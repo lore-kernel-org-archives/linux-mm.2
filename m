@@ -4,108 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55C01CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 15:31:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B97C0CD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 15:31:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 926A66B0088; Thu, 28 May 2026 11:31:54 -0400 (EDT)
+	id EF29E6B008A; Thu, 28 May 2026 11:31:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D75F6B008A; Thu, 28 May 2026 11:31:54 -0400 (EDT)
+	id EC9F26B008C; Thu, 28 May 2026 11:31:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7ECCF6B008C; Thu, 28 May 2026 11:31:54 -0400 (EDT)
+	id E07166B0092; Thu, 28 May 2026 11:31:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 721856B0088
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:31:54 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0D5C0140898
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D59FE6B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:31:58 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 77463408BC
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:31:58 +0000 (UTC)
+X-FDA: 84817219116.10.CE1DDA4
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E869A1C0017
 	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:31:54 +0000 (UTC)
-X-FDA: 84817218948.02.8BE4122
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3DF3840008
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:31:50 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=WSsYghy6;
-	spf=pass (imf11.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cx4hFQ29;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779982312;
+	s=arc-20220608; t=1779982316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5qZOrPfBY5z6252HcGXjHXbe3jcHPNuwLEhKhMfcXxE=;
-	b=Q0wpCIpOOv6hJVWRFzBTW1YCHoFRbInqfKYzxnzQ7blphfUwpPbMtiIzTMsaewQDyb5HWX
-	1jFZMeazIHUbdGn7JboP1GTLA9b+OHbONP9KFRBG+ieETTmj8REEQXALviHi7CLvenhuLR
-	Cvm8v39Jsm+oZB8mUgED1qg7Mbzwpdo=
+	bh=J1oUqKehXs+Ix+t66SPeM6NBPV9gb1+9jfmojtKA5LI=;
+	b=aVmDRtlV0tX+jwI1ePguPXXL9jfCUYZ5jPz4m+zq9eJ4NNfAGojw767IxS+eXd6ZdIccQO
+	mUEMle90iSTmoAg8VSVEL6GFf7ZVoc5MWj2LqsAv5/wCF2JjPF+oTkoaUlBSTzMFHEFXt5
+	itllcV5rZL9MxV8ne8smUZs4JAwYw3o=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=WSsYghy6;
-	spf=pass (imf11.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779982312; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cx4hFQ29;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779982316; a=rsa-sha256;
 	cv=none;
-	b=Rmzp+nJnxgNQgWZOH1NucDVBY8hSe50jp1E4JBcuWlQCPcg22SC2mgH0tJtwqt2vrCT8H5
-	YeWWQeUDGL9LD6b9CAohxI9oASUVpADSweF8buHLa1p0xe4obw4IV2zkYmXCisevXvikJY
-	XGwDTQFjlUuuMNLbcwJ0/HMyxz+mDM0=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4B8B640E0031;
-	Thu, 28 May 2026 15:31:47 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7P0cXjPFcvT9; Thu, 28 May 2026 15:31:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1779982297; bh=5qZOrPfBY5z6252HcGXjHXbe3jcHPNuwLEhKhMfcXxE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WSsYghy6yed+4DuVw5/3JHCoAqivyd58i58+OKxpg5aNyku/y8hIskguVcnhgc8LU
-	 fjV8/hzP7o/jT7sgywe0zMVD955t2jIv9szUbQX+rSivUarrN9EUmHld04zTs6cupP
-	 MCBTmM0DQiyBmM33w+FOcOwEdaoCnZ2CwsxgzUjwHFnhnyyP1cUMnNsf/ow7WHnQhC
-	 5z8lbhpeyA3r9S3J5hnZR4bf2ZNoI2csoi1Tds0fi3zWSiGbi3L5OTZDO8hBJtJ79n
-	 Ia6PFPwNUy8v6ipp31aVUbm5xuR2RLr4uivv3VWWR1OEul4jTyxTFn1yB9qujSnCjC
-	 Xj3DNye8kgBoY+h7w3cTp1YRUSUimrXi1Fw6vwKPhJXE/qBWPZbDvflsTWtZqX7nhI
-	 b80MnPySU6wcxfvws2qTb84wlDF4VcS80uIgzno3Q1/pTCyiujadCUzO6GQAj2jaOR
-	 gLa+KIUYfFbWiOc2ZQtiqFeJYRWvTfhtCyq24jLLbSc7OUcZUyVfxAU7MSE4f+oYZN
-	 9Gq4h9qL7pzWozvOPX451VQ73JYf8/V9z0vUlGTfFcpCHSFbNy9Rmf81bHNPqre0TJ
-	 756jcZ83M//hEWkok4eBeqM/bI/BHsip/LmdQgwm1iXmttO5M/w8PaVjvL011/7h8M
-	 tA6sn7Rgf2rEl9cLQnUZkVL0=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00:b8a3:f58e:8829:9ca6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B895A40E0140;
-	Thu, 28 May 2026 15:31:27 +0000 (UTC)
-Date: Thu, 28 May 2026 08:31:18 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	Karsten Desler <kdesler@soohrt.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [REGRESSION] x86/hugetlb: AMD F15h VA alignment offset breaks
- MAP_HUGETLB alignment
-Message-ID: <20260528153118.GBahhfxo0BmTjX72Qr@fat_crate.local>
-References: <20260527143643.GO31091@soohrt.org>
- <ahcTYufV7P5Cmotq@localhost.localdomain>
- <ahc31AChKqnfItHW@localhost.localdomain>
- <5f70e840-9d0e-4cef-8574-b355cf26e0c4@intel.com>
- <ahfWdMdxX68ni4ZM@localhost.localdomain>
- <ahg4zTSRK6THd2yP@localhost.localdomain>
- <ahhLIOB7u210pjfA@localhost.localdomain>
+	b=7EWMN2Zckn4YDjeW15KpD7tiPo3wnbFwad1LAGumw5kHyMNm++74zrAi0t+121baTLLzYT
+	COjhu5bKIyWgpon5k2vmCsB6WsLG2bdS0hb/OzQ4sh7QAllXfJIkq69GZg63Aa+wQUKPsi
+	y7euAYUpUc8jaB1kbCL3VFtE5RoPB7M=
+Message-ID: <6c138c46-9ef5-4dab-b65f-53f644b507d6@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779982312;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J1oUqKehXs+Ix+t66SPeM6NBPV9gb1+9jfmojtKA5LI=;
+	b=cx4hFQ29ac85axRefP3M5Zn1R7OcYorIPr7yFgQnJSKJP+xteuaLDNny5Wlt35GhtLJprE
+	tYA/Fs8ehAM4OMZWLWihC59axuJa1+jn4WFbuVBq1573THJ7V92ueZ/8f7B/zqhTqx5bW9
+	WiTQyUk1NeVjWUfngkYaAwp3pIhOysE=
+Date: Thu, 28 May 2026 16:31:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ahhLIOB7u210pjfA@localhost.localdomain>
+Subject: Re: [PATCH v5 9/9] mm: switch deferred split shrinker to list_lru
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>,
+ Dave Chinner <david@fromorbit.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
+ Kiryl Shutsemau <kas@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Kairui Song <ryncsn@gmail.com>, Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260527204757.2544958-1-hannes@cmpxchg.org>
+ <20260527204757.2544958-10-hannes@cmpxchg.org>
+ <6f9c78b2-3846-4f75-bcc2-41bf91230513@linux.dev>
+ <ahhK3AKksNbJ4zbY@cmpxchg.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <ahhK3AKksNbJ4zbY@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 4ghbn3a5pi116tsfoijgidznbj7f64tn
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3DF3840008
-X-Stat-Signature: jzfhfhi368gh36yzt4hdak9wx9wdsyef
-X-HE-Tag: 1779982310-383035
-X-HE-Meta: U2FsdGVkX19uT0Ng05BW6iRwGc74fXtqL7R4afycLW5zJ6FUX5s4NNOJBHlB0WP+30BDpDp52rhCYGCcMcORw46e0bq2/1y12V5kGlW2w/+epY7eDzeigKJGEqpMH/RYHadVxyRpC5b4orbI+mB5m4QQOwXBBkIIBmnC+xc11AXTxrS8z3zWurcyEwuoYRAfkTnJ1DMPSkBOfRfn5aaeqH4cvcKrkZPQHh7QwJtUtJY6MMv/vSuqWIn2WpUJch8YNUNTjshVUeZSUsqsRothEVlkd0TwOl8Je+9Fpknajmyq2sLrTTKq3mDKAemZfPnZMWsXijKxcKIzZjNUOvBDuAUcwCDf4HwdrctTu9IQfxmiGe+6GYal/oOGYoyprKUZTsB4yGEA9DGS3PwpJ57sepvmzvTOK7YgT20X4aevWaNYFmSi3CQLQ3QNHLprYoOnh4YQlBzM4bhLpI2cazL+Ep+2dKX+hFh29CVjKgg0iUitqrp7Z/DgvmfyGZ8JDFHzIRIUcFL/MXW56bM+u3jA11xArq9yrORWjiFuWqhr5i30urM7onD9wg9+5pTGK5RZ8fvv1nciTb7JgGjUHvXRbtFd2EIbG3jDduV1Nve7XvIo6zeFcbqfiQ7wPxoDPWoYgosqgyoIY2efgoaaQfB/8EsIjDMRbDmdP3z2slNA6vdfYzdohKSGdNLDWISkVYFefOh86R4BLc2xTU7o9FDbv8pX25IiP9uUDJs64bq/uxfP9JfozqXn0MJXbEaQPXr0t/urxEj/X2NWTTyQKsY1DbmuTpCjwWmMP5+zMIn2KJXJ3UHkYMizKK3DAT7Ari/+aGc/lCzaj9fhpRIhlWqzQEf0VKu+9VW4zKw4cH1Hjw2jTNyPPXrx65czwfh2x3fKoWL57Obr9qJfGQu+KnUgqtmHflPJ0/PBBB/C8usSwirrwJamyi82knt4eSH8FGhtI8I8GQ0mk2cZQns30th
- G80gggod
- BRQmIUrMLuYM16x1qdkkersNJ/MJg8LNoLlCQNN2K1yu8ry5Rz6eTB1CdJm33sTW7UhvJaR6v3lEGgQ4er7VqijnCNrPxavB3XKpZS1rg5OMNjIzRliX4v/Rt0sXaNRb62W66edAFdPfYfGjxUL+lmRX1pCZw+M1e2tFZtDHm2RMUaOzCLOQEdZBGJVcta6kXRlYyr5QdspJKk5n/UTedXphznn18hALpbPyMSPwbDLyZ+E3HpQzk08ESVkyyG5uE1vy79TbYdrrxNrQ8vVyBRt9o+Oo1RbQS2l7c2lvO2pdXpa0phecsvQl6QezXSaYEQrhjuetnXftSrJjli2YqCYnU8F3lpIMYJN/X9KQa8q/Sa17yNABiWc3aeA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E869A1C0017
+X-HE-Tag: 1779982314-99033
+X-HE-Meta: U2FsdGVkX18+JPEWXeSaDleM/90qJryWPeXj4m0nmapQqRUExvdKTatINgh/Dn4rhgiZpZkFy2c3tsjWeKMG/gMrGdjnnK0Yg2nRbz65zP6AfPkC9X5L+4TuAB4e0+86WAhB0wCqqkmZ26E1U5zFpPLgZldNX8DAVCnXKYnZV+QHImylJrMtKFKtHeO89Y/o7wpELY/a9n5b/EK/PKrCRBuq3m/yk8KhfB3tipLenwhc3Q+ccaUoKfDuLbgUrkRyDtmSdZaQgZsNQAP1ZIRj6tv5PnMB2OoNYUyTp+Xu6W7gxhn+NiVjAJj1xH5f70EuRq6w6Kes7pclGQPsYz3WlHhlHzYEbxvVk9+BB3BWl6fTeSIf7Z10TaHt8WlbuviSa2KzbYgL63482ntrcgpWxj7yrA9znCx4VXI+bDEnPwtTWef1YskgMW4Gd5ze+xhmdUKX74Er8BOthi3kaVym9MDXJloyU0ManRbxUQwDPq31VOsMj30IAcfSlYmhTyJsaVHbdn/qoO7kBe4m41+4XyNNe8BPPUOH/XLDpHlEMJMdNNhJWJwPB4nLgLB4zfwBhozhW9i9nbs6VEuatJp7TlreBX59UusvhgePbsqDh3Nmzy8Xp0vPCJO4hYHkyTAJGd1a0GUWYhh0Ef149xuvNI/VERqGWwy8K8w79w2h9FfP+O3AyfotyBr1wfYM6FiHPOoSCSx6KuIwoAjSmycZSZe8VtodT3D/SRqJk5gTqYdyzL9ZjznHex2e2Ow6REvSGxN9Y6Z+Q+EmXP+kF+fYtF2DS4elqNYlNQCavd7g4alUtVrsbChR1gQIgsKxBphcw60lAifBNic229GQ+khg7f37hwnsCo7YPOHPEVW+Ahsv0dagseq4HowoBbLcKdfXb+Bx3B/Sju5A7+uUoUh6LgbwFgRr2a8J0rOMzTgx8wC6l8kRTP0fL+NmfleQBZH4jwP7EiYPNaKpUvZmg9A
+ Z64UciYY
+ lEA6SL8gAOIR3bCkC04hvrq82iNKWvzSJm/7SUlxVuBk703Isqoz2r/rV0zUOxvKJmnrhHULk0kWUVVjm+uqU/TnV9FIrEqI8bsvBhiMdmQlsmzXIlSICA0yHhwLJ8gxEcLhQ9Q8AHtftIdExiI+iuTVK6XWBURVrkAAbvtepD3lAh+thsbK8SVGAjaziW4YDLcf6DKfgrXJonzogd6i8UU2l8FEwuiTe1FDbyI+n8F0R2WavckPHhWUMUWpogWkofK8Lef+PtM0fC4hf4yzZ4gcs15NwcfICmekAh2Uw95clZjusWnAjpl3C1PyI2rPpNB2rdcOlo4UAH5PGXZsnt/c6XU/5tCKAgq5+BTSCgARCVSQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,23 +104,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 04:03:12PM +0200, Oscar Salvador (SUSE) wrote:
-> On Thu, May 28, 2026 at 02:45:01PM +0200, Oscar Salvador (SUSE) wrote:
-> > The only thing bugging is, should not the same happen for THP-file-backed mappings?
+
+
+On 28/05/2026 15:02, Johannes Weiner wrote:
+> On Thu, May 28, 2026 at 02:32:06PM +0100, Usama Arif wrote:
+>>
+>>
+>> On 27/05/2026 21:45, Johannes Weiner wrote:
+>>> The deferred split queue handles cgroups in a suboptimal fashion. The
+>>> queue is per-NUMA node or per-cgroup, not the intersection. That means
+>>> on a cgrouped system, a node-restricted allocation entering reclaim
+>>> can end up splitting large pages on other nodes:
+>>>
+>>>         alloc/unmap
+>>>           deferred_split_folio()
+>>>             list_add_tail(memcg->split_queue)
+>>>             set_shrinker_bit(memcg, node, deferred_shrinker_id)
+>>>
+>>>         for_each_zone_zonelist_nodemask(restricted_nodes)
+>>>           mem_cgroup_iter()
+>>>             shrink_slab(node, memcg)
+>>>               shrink_slab_memcg(node, memcg)
+>>>                 if test_shrinker_bit(memcg, node, deferred_shrinker_id)
+>>>                   deferred_split_scan()
+>>>                     walks memcg->split_queue
+>>>
+>>> The shrinker bit adds an imperfect guard rail. As soon as the cgroup
+>>> has a single large page on the node of interest, all large pages owned
+>>> by that memcg, including those on other nodes, will be split.
+>>>
+>>> list_lru properly sets up per-node, per-cgroup lists. As a bonus, it
+>>> streamlines a lot of the list operations and reclaim walks. It's used
+>>> widely by other major shrinkers already. Convert the deferred split
+>>> queue as well.
+>>>
+>>> The list_lru per-memcg heads are instantiated on demand when the first
+>>> object of interest is allocated for a cgroup, by calling
+>>> folio_memcg_alloc_deferred(). Add calls to where splittable pages are
+>>> created: anon faults, swapin faults, khugepaged collapse.
+>>>
+>>> These calls create all possible node heads for the cgroup at once, so
+>>> the migration code (between nodes) doesn't need any special care.
+>>>
+>>> Reported-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+>>> Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+>>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+>>> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+>>> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+>>> ---
+>>>  include/linux/huge_mm.h    |   7 +-
+>>>  include/linux/memcontrol.h |   4 -
+>>>  include/linux/mmzone.h     |  12 --
+>>>  mm/huge_memory.c           | 364 +++++++++++++------------------------
+>>>  mm/internal.h              |   2 +-
+>>>  mm/khugepaged.c            |   5 +
+>>>  mm/memcontrol.c            |  12 +-
+>>>  mm/memory.c                |   4 +
+>>>  mm/mm_init.c               |  15 --
+>>>  mm/swap_state.c            |  10 +
+>>>  10 files changed, 150 insertions(+), 285 deletions(-)
+>>>
+>>
+>> [...]
+>>
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 135f5c0f57bd..f22e61d8c8de 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -5222,6 +5222,10 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
+>>>  			folio_put(folio);
+>>>  			goto next;
+>>>  		}
+>>> +		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
+>>> +			folio_put(folio);
+>>
+>> Ah sorry, should have caught this in the previous version, do we need
+>>
+>> count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK);
+>>
+>> here?
 > 
-> Aha, no, for THP we do not set align_mask (at least on x86), and the masking off is being
-> done in __thp_get_unmapped_area().
+> This isn't an allocation we expect to fail with any sort of routine
+> that we'd need to capture it in the event counter. It would warn in
+> dmesg if it did. But in practice it can't happen at all, since it's a
+> sub-costly-order slab allocation and the allocator would loop and OOM
+> kill stuff until it succeeds.
+> 
+>> or maybe we just goto next instead of goto fallback and trty next
+>> viable order?
+> 
+> Again I don't think it matters, but fallback seems a bit more correct
+> because the size of the list_lru allocation doesn't change with lower
+> orders (until we hit 0).
+> 
+> So I think we can just leave it as is.
 
-I hope you found this in the proces:
+Ack!
 
-dfb09f9b7ab0 ("x86, amd: Avoid cache aliasing penalties on AMD family 15h")
+Acked-by: Usama Arif <usama.arif@linux.dev>
 
-It is from a different century tho and perhaps not too relevant but I thought
-I should mention it...
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
