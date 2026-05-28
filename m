@@ -4,116 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDF1BCD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 08:15:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2682ACD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 08:16:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC88A6B0005; Thu, 28 May 2026 04:15:03 -0400 (EDT)
+	id 5FE586B0005; Thu, 28 May 2026 04:16:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B52426B0093; Thu, 28 May 2026 04:15:03 -0400 (EDT)
+	id 5AE1A6B0093; Thu, 28 May 2026 04:16:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F1AA6B0096; Thu, 28 May 2026 04:15:03 -0400 (EDT)
+	id 4767C6B0096; Thu, 28 May 2026 04:16:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B78B6B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:15:03 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B0E714075B
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:15:03 +0000 (UTC)
-X-FDA: 84816118086.22.FBB0D9B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B6989140005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:15:01 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vrn7sjU8;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779956101; a=rsa-sha256;
-	cv=none;
-	b=tACbtRsHB9wJ5kYA2LOH4TY4OzexRvgxoUfphIE1boRSXZGI6hz8n3FcMAR64LFcKkE6Cs
-	nPV+IUbqnJ6rH6uh25WHIisk/UlpgaCKRGLhOVPWXxrYP+OsGXWJF0ySDpDKtyNWNH2ehF
-	46IIHc79DvDioXSRLUww7VhwDEA6DMw=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vrn7sjU8;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 380226B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:16:01 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 057E4161E30
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:16:01 +0000 (UTC)
+X-FDA: 84816120522.07.2094B45
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 548BE40009
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:15:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aSlrDZfb;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779956101;
+	s=arc-20220608; t=1779956159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G6nhRcxWI3QvMmb/a9I27Blh4TlqlFHzUdwx6Eh9u8c=;
-	b=H/1pZvxEbNP3VqW3AdGL/TlAQV0SS+H6xccLwpELhIIHhvYIzrR5OPGBFj8VKs8dWaNgYc
-	EybjCkaVxNpcAErktp5CPl4PBVJkdBwngRQKdExj1OmkItr8jfrTQA6e0+unD+t87DH/nn
-	+2WYCHn2XimG33a/zBe0OOnqM0y+rgg=
+	bh=rYivG+khnFG9l2jgbn4uQMtFgxumzEgDULtiQJb8tf8=;
+	b=0dbYoqo2C2t5sqTp8vTrglSmIUkxVMvxK1o/90O+UrnZeZrOeWW4r6woN71noqH6/MOOrB
+	Bh6RRbedfj79snM+tBs+mle/nizGdSud9hQHHpvWiV1Re63mwr4ZyyQDRQa5nRVd4p8kKY
+	E7pUEmcIoMKMWf2uVu9Ro2lkfdmVwy4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aSlrDZfb;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779956159; a=rsa-sha256;
+	cv=none;
+	b=6Sq9rW+udy6KB7gOgexDdTSqN8gAgoE+XnlgTSIRv3eVljubUyN+WQOtMCgfuV50CvZ858
+	v2gCETF+FEPr1pciUNYXkcLZU1HhNIFLazXXKPumK1VLA9NkOVioVB1oxjPP081jBN6e0f
+	FP5bgtXVq+DXgt/N7dfD7HsdMQPjVBY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF91C605D5;
-	Thu, 28 May 2026 08:15:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E6D1F000E9;
-	Thu, 28 May 2026 08:14:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 63F5440897;
+	Thu, 28 May 2026 08:15:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B7A1F00A3A;
+	Thu, 28 May 2026 08:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779956100;
-	bh=G6nhRcxWI3QvMmb/a9I27Blh4TlqlFHzUdwx6Eh9u8c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Vrn7sjU8PwtWgLSTKUb/ONKyECnR73JdOuVnaTtJGBeZFHG4ofRHbi9w0vD5a6Nr9
-	 FuhXoVOSIbkG7o+NFwgC6CQrXzkQlT6vF+Le8gd80vjFGA/AnszJgGUrnobIcv8bka
-	 hGzceJvfLLbFkl9ss3BJNg3dsNw+77mSYR0sKcwwk0M+dQGpFihyaDmuCCwyXD78mK
-	 3muxnfDMAau6vM6GjDKDrIwIwIZh2YmcAEFsDcCTURhV7aFYqL3Q2vGdy1hFu8reXF
-	 9KeqBNiWOsETUM+k5ePUEAosh8SlaFi0R46YE7WqboSOy2Dr3IBBcRhaEQvDEd4knH
-	 GVJPOfRZOG3eg==
-Date: Thu, 28 May 2026 09:14:44 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: wangtao <tao.wangtao@honor.com>
-Cc: "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
-	"will@kernel.org" <will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>, 
-	"willy@infradead.org" <willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>, 
-	"kees@kernel.org" <kees@kernel.org>, "luizcap@redhat.com" <luizcap@redhat.com>, 
-	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
-	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
-	"jack@suse.cz" <jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, 
-	"harry@kernel.org" <harry@kernel.org>, "jannh@google.com" <jannh@google.com>, 
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
-	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>, 
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
-	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev" <lance.yang@linux.dev>, 
-	"xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
-	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, "matthew.brost@intel.com" <matthew.brost@intel.com>, 
-	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com" <rakie.kim@sk.com>, 
-	"byungchul@sk.com" <byungchul@sk.com>, "gourry@gourry.net" <gourry@gourry.net>, 
-	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>, 
-	"pfalcato@suse.de" <pfalcato@suse.de>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"ryncsn@gmail.com" <ryncsn@gmail.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>, 
-	"jparsana@google.com" <jparsana@google.com>, "dvander@google.com" <dvander@google.com>, 
-	zhangji <zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Message-ID: <ahf2mJg9OOWvu0jA@lucifer>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <ahcANgFDFwfC0v1q@lucifer>
- <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
+	s=k20260515; t=1779956158;
+	bh=rYivG+khnFG9l2jgbn4uQMtFgxumzEgDULtiQJb8tf8=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To;
+	b=aSlrDZfb/5RsiSrR8rmCTTypOOOKFVgi9zYKSlF3sd4mgApK9155eC+hyaurxtkfI
+	 ruaWl73zB/O9mV3KdPmWUXwN6mLqeg+gky6zhChycDMWgVy7NsSFdesVY1NCV8yIeG
+	 91bBe9LEqG1fgxU2uNTnyd2RntEr3klMjimGrw/nhroQ3CnGqlV4+RBtW+8uNihRwH
+	 4rBRzbbIyfIlS7yYx98cpHuZyK8YSY8fOoP9Sf1SBFcWTUWgkNuPvrJM1nlvlTOPQu
+	 pDd2XGZAVKM3AXDIyor9vr61JDAhikEdDnrxrOpIteMevFHP+i/pKqnVPjp8pRkHZ7
+	 h0tKdLaXs4YnQ==
+Message-ID: <98aadcdf-6062-4aea-9b33-e64b4b613618@kernel.org>
+Date: Thu, 28 May 2026 17:15:33 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
+User-Agent: Mozilla Thunderbird
+From: Harry Yoo <harry@kernel.org>
+Subject: Re: [PATCH v3 1/2] mm, slab: add an optimistic
+ __slab_try_return_freelist()
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, hu.shengming@zte.com.cn,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>
+References: <20260522-b4-refill-optimistic-return-v3-0-2ba78ec1c6ed@kernel.org>
+ <20260522-b4-refill-optimistic-return-v3-1-2ba78ec1c6ed@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260522-b4-refill-optimistic-return-v3-1-2ba78ec1c6ed@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nbdsirnnub11aunykn8tke5ykk6jbfwq
+X-Rspamd-Queue-Id: 548BE40009
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B6989140005
-X-Stat-Signature: 67nn1kuacrjcgzjdmmodz8mmhzp638m4
-X-HE-Tag: 1779956101-881817
-X-HE-Meta: U2FsdGVkX1+bbyzBUe1QmEfl352SG026JaFJe3XSEGXHtG6sZJtxvEL045rw3RpUuPTvcVbrPqgc4bkJ86NGcZOEPfgijUtxzEK7p4sPmGbdDa/kbKPOb90t0e8NsCBgFo2gNrIZHl+ZQopqUMlgHRpjq4eSstli/FOjza6UNl3Ah/tlO628WZp8AZni+b4eETTRPeIojPsb4jVRytmJCokcBwNGvYg4AxPc0uKd3ejImGUgreKR2LJQzg9YbbSd0d81lB0NK0eg7ShYoHa4SxUnA1uLdYmEPUv42qOsDm89uY5w3YV8YAloG2wJqBSOfapvHPzvM5QbWw1BGEB/zpUdcwk4/38rJXI3CyBEoUWU0ZFPfgDPY2ybDd5gtPFl+DyrI5DUEY5Wti0Se5WoshYNAm2oTxhjlFoIDl7bSQ1tDxNlcAIa9BoC3xYdOEl+9/U5TI+o/EhZQvC1ZpLrMJ4W4sn7OM55//z0bw5Zqxqh3u0iVygu1O2lNa/iTsNiVHElbWkZ/wGSc9iNqKKDbSVthqxIK3czYgNMLYfvD00hDUwdRw9FRSVuFxaNgQaLYLTUpOH8t/wkcrppjZsbdhFMr1svLXfosopVqxeLlUk+M/iucl3NQv9mOhv5s36tsI2jIliHc2dtER99QUWCIZAPgepGhciLZ2RKhEZnU9tk49Oy2+RHOwtHdtHK/ocxs2wjuz6TfZ/29Un2U/qOCr8RE/NtBAhAOcqZK5+l5KErA3BHWkHCVOQSjiUUvT3qS9p4VT+D1BWTIYoxOiyJrjyvHL86SvQSTzRnLYpyUpZW6fjN1h30VjlCccc5qGLdfNF308H5W7mX9OHeHpF7HSofgxJx5zdJWGFH5nd66re3NVFvYHYGdyqV/Hl9W+J8mbVZuPM9syfDO8dVd+lVQKqEB5T3soHcLB69EPA78kOfaS6gKedsCNzBqBvI6Joc9eI739MlB2TLufmfWjk
- fC1m0vo5
- i3imHE6e68pYj83e768aivwOH1A6jMVGy+KjlmfpHWwI7u4JFrOhG+/La2/vSaKlmhwRNpbacmZ+knd1WoTcCo40JAUweefR9DmR8eZdDWD5HWbCCTw11CPKACgeMrQa6HjP7Q1D9fDSmcnK3BrTlupYgST9vTaGjdFGr5n5K0xtBkLQYZW5lJZC+N55yWsNVa7AI9wFLKLNQRAY3odNzOelcjz25wFnIfnUxyPcybkA2D/OyYVhKvIKqc/Zb+ZxRLX0qMrOU+eDHvKa/omZAnR33eJ+hty+cK3x6IWRL3LupTfJ0e7xwf7LQUoFDOPeD81O/fAL6n3ajqayAdOOF1U94bP1PZ1hkS6zJg+QgsTfI5ZvoNFzIX7oM6ELFTBlBq6+RUDGD0aSNgWyKH5g6EBrylDL1VtySPI9W
+X-HE-Tag: 1779956159-593993
+X-HE-Meta: U2FsdGVkX18ZhBEVivZO7XqbVG/AM4DkGObOB5lQhQen0FXoEHgEfFVGxQMufhmDhZLBjTelRzyPB32h80B//Z1ljWEaxXKccgtpSyGvIvp34MaM64vvwT6fXUwycdRLTRLadfsJLn4BdxVGcebcs0h18EWMnOyB61w707v2rKly/ViUkzWN2Xpor3xeK6V1C+2Pb3FSxcOGxWKfocpi1FPlGnPv5lZoBky7zW0X5SgLkrNyhdnDhzXslYKRGCnEqYFUw4HaFW9wd8MUQKPDMZOn3LrCv0WChIJfG7Sl96xij44pqT0RlhTBMzI7G/6BTD1vdOYMiXO3IA7nVk/p+r9ZhGmORWe0frEXvGL8SoyBNJXrKkPkRfuRyDKBHZAwGy+0ODocU+dLaY2bKeakTlu42tntwuTFh4/wVpB1EjggAQ6sd/iRRcUSMVy0GX/a85MtJWKnxEtLc/TwlUiapyqgA/okVUxTegsGxj0X3zforWBC5Glo+A6f1uqFeKcIn9RVYgiWwQzeC+nN0C/6QfOt6+OK5x2NQ1/7jw7x7MqwM4rmrstC0Ho8M82VmyBroWRTMdDe7I3CmibSykfq5P7Z0RoCXwbAai4vbuSJXgukEuraWRQ4Yk7xwqVAKQrBWlAd0WqTUXMwo5zICayOtwrrSmkU33QWMKvslMxvWllHkd9zEJpqLBLojWABmX3FFvIpkB0Cg0YMfJIdmWEJ5RDFE9tPC4sYLdweOpaBh2b0iiUyuddz3X8peKJ4OknzPwKUbRhOnyLR0n0WEHkYBluu32bNE9khUIN3FM44QI2GWGIetTGRWq4wQ2JYM5pPI4fd671gs6CGDRF+84CBnKw1Hl4V+1pRG8Fma53t/yAwntEZfBasqeVhFESVC9nikxDzsXeC3PoOeTmJyl4AoRCc1bUfInXiqNBqVfshFnJPDVeKQsS2YMun4N46o1vVI9Ey99xMtZ973ePP6li
+ AZHjaAKl
+ UnFEamkxgg8k4IuEzQueR+4sOEXsryfOWAadN9cMZ+nG0/hw52Y/o4/v4RoA4hqp5B0eRifILHoY8KehrvwTO6ICmo3nfAe3nod0gjDi3FXNMQMgl6kcMEXkstG4c1nzssw6RVTjGAD5ium/guPstB0ETrDWZmJIJ9vxHe8rzQV6PKGJRQclS3jXzEKyckso3IkbJMJQawTplGfV9X7p/nDagDuiemnDUnpU4jsxoN8ZCmeliSDW/NQpbMZpD3dH81pcGLArjP3tfPUSVl5Kz9uPQvsFOTi+7Ag/iHJZdcd7rMgyil689SK04KYRvBcqvdUhbp9P2kMIlL0x4a9gwlQy1i+wobJeCL+7B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,101 +99,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 07:57:31AM +0000, wangtao wrote:
-> > Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred
-> > anon_vma creation
-> >
-> > OK I've had a look through more thoroughly now and:
-> >
-> > NAK and NAK any approach like this.
-> >
-> >
-> > Not only is this structurally all wrong, it does some insane stuff (pinning
-> > VMAs - no), the RCU usage is highly dubious and I suspect you've completely
-> > broken the anon rmap for things like migration, or have at least added very
-> > dubious edge cases.
-> >
-> > You've added insane complexity, and also have failed to add even
-> > perfunctory tests, which is also totally unacceptable.
-> >
-> > The implementation is wrong, and the approach is wrong - we do not want to
-> > extend or build on anon_vma. So this is unmergeable, or any approach like it.
-> >
-> > I also, unfortunately, strongly suspect AI here. The turn of phrase, and poor
-> > commit messages, you doing this out of nowhere with absolutely no rmap
-> > experience before, your total lack of communication before.
-> >
-> > Claude puts the probability of heavy AI usage at 85-90%, and I'm pretty
-> > convinced. Either way it's utterly unmergeable but that you (likely) used AI to
-> > generate this much work for us makes me actually pretty annoyed.
-> >
-> > As a result, I would strongly suggest you no longer submit patches for the
-> > reverse mapping part of mm, as there is now a real lack of trust.
-> >
-> > If you wish to rebuild that, I suggest you _discuss_ concepts and ideas, e.g.
-> > send stuff on-list with a [DISCUSSION] tag, and engage with the community,
-> > and go from there.
-> >
-> > It's also important to synchronise - I'm working on an anon rmap replacement
-> > that I'm more than happy to discuss with you or anybody else which should
-> > achieve the same numbers in an architecturally sound way.
-> >
-> > You going off and, in a vacuum, generating a bunch of code with an
-> > unacceptable approach is not a civil way of engaging nor is it a good use of
-> > your time, or maintainer time looking at it.
-> >
-> > Thanks, Lorenzo
+
+On 5/22/26 11:23 PM, Vlastimil Babka (SUSE) wrote:
+> When we end up returning extraneous objects during refill to a slab
+> where we just did a get_freelist_nofreeze(), it is likely no other CPU
+> has freed objects to it meanwhile. We can then reattach the remainder of
+> the freelist without having to walk the (potentially cache cold)
+> freelist for finding its tail to connect slab->freelist to it.
 >
-> Your email is very unfriendly. I hope you can point out the specific
-> problems so we can discuss how to solve them.
-
-I already did, you've not responded to any of them, and I'm simply not
-spending any more time on this.
-
-The series is totally unmergeable, please do not make further rmap
-submissions.
-
+> Add a __slab_try_return_freelist() function that does that. As suggested
+> by Hao Li, it doesn't need to also return the slab to the partial list,
+> because there's code in __refill_objects_node() that already does that
+> for any slabs where we don't detach the freelist in the first place. So
+> we just put the slab back to the pc.slabs list. It's no longer likely
+> that the list will be empty now, so remove the unlikely() annotation.
 >
-> I am not good at English and need to use AI to translate commit
-> messages and comments. This reply email is also translated with AI.
-> However, the code is written by me. I do not know which AI you are
-> referring to, but the AI tools I use currently cannot effectively
-> write kernel code.
+> However, also change that code to add to the tail of the partial list
+> instead of head to match what __slab_free() did and avoid a regression,
+> that was reported for the earlier version by the kernel test robot [1].
+> This change will also affect slabs which were grabbed from the partial
+> list and not refilled from even partially, but those should be much more
+> rare than a partial refill.
 >
+> [1]https://lore.kernel.org/all/202605112204.9382cecf-lkp@intel.com/
+>
+> Reviewed-by: Hao Li<hao.li@linux.dev>
+> Signed-off-by: Vlastimil Babka (SUSE)<vbabka@kernel.org>
+> ---
 
-We're fine with using AI for language, or in general as long as there's a
-clear understanding of what's being submitted.
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-However I'm very unconvinced that this series wasn't generated.
+-- 
+Cheers,
+Harry / Hyeonggon
 
-You have 2 patches in the kernel for the entirety of 2026. One in bluetooth
-and one in the scheduler.
-
-Prior to that you have patches from 2018 in device tree drivers.
-
-You have exactly 0 contributions to mm.
-
-Out of nowhere this year you have a big series for DMA, this series for
-anon_vma, having done no work or any contributions to rmap, let alone one
-of the trickiest and most complicated areas of mm.
-
-You have a total of 39 mails on the linux-mm mailing list.
-
-Suddenly doing a giant bit of work like this using code that looks entirely
-like it's AI-generated, and which after assessment by AI gives an 85-90%
-probability of AI generation is really suspicious.
-
-Now, if I'm mistaken, and you have a different name/email/identity I missed
-with many mm contributes - I will eat my words here (the series is still
-unmergeable either way though).
-
-So sorry, there's simply no trust and as a maintainer of rmap again I must
-strongly suggest that you no longer submit patches for this part of the
-kernel.
-
-If you wish to build trust up again, begin with discussions, and maybe try
-some smaller patches in mm to demonstrate that you're genuinely acting in
-good faith?
-
-Thanks, Lorenzo
 
