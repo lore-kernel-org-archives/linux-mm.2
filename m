@@ -4,91 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F28AACD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1559CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:53:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC9FB6B0005; Thu, 28 May 2026 05:50:00 -0400 (EDT)
+	id 10E656B0005; Thu, 28 May 2026 05:53:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C79D16B0088; Thu, 28 May 2026 05:50:00 -0400 (EDT)
+	id 0BF0C6B008A; Thu, 28 May 2026 05:53:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8F8C6B008A; Thu, 28 May 2026 05:50:00 -0400 (EDT)
+	id 001716B0005; Thu, 28 May 2026 05:53:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A69DE6B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:50:00 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E8721A07DC
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:50:00 +0000 (UTC)
-X-FDA: 84816357360.29.1C25811
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A684E4000C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:49:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hTggJ2xA;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id E32D06B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:53:12 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF9891A07EA
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:53:12 +0000 (UTC)
+X-FDA: 84816365424.14.4AD62D8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0E2BD20004
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:53:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aco6Gx/G";
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779961798;
+	s=arc-20220608; t=1779961991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NFfgee4KJN7CaFHQFyefaFVIdlWaWFayLfKlgnxXDKg=;
-	b=rIRQ06yVzsjz9yvuQvV8OcdtXaQQ7a+O/PXgtjwEc1052ZOtnEa6vWXjGZoABCoaoZrL4e
-	Ai3U2NZ0KZmvyDdJFcijFvz1TGSZL5xA4quSmWXCJEYsd/73ZFKNJO4V9SCR/pKD/JYIEo
-	tUByDFMgpx3DYIWlqR/xw7BzuM4DYUU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=0tbtnOuHhIH4p/NZ7nvRGoECzQt7IqPJgxAKHDaqYjY=;
+	b=2iWF4W7s12vS6tbhI08y1K0kkBkx6lyZnm7PCu36JLUmmQDTSjjr6RhlXKmShoXRHVpzLC
+	04I7w53g7MvHvUGv1b0ndA5hHUWr1Ly/7IwY4CKFLqy0qjOKLHP4ipPCjlad82Ygn/lNCW
+	MJj+Uqx8DoQxR9rLHViZWRuLGD5NuuQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hTggJ2xA;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aco6Gx/G";
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779961798; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779961991; a=rsa-sha256;
 	cv=none;
-	b=ok9j27oAWpFPT0FJM0YYjwJSOa+ZZxfnCGdZK5uTu/GGygue8rjRCCB8x/vurBDFqRdyye
-	xfM9eU6hsUUswQXPVHbHKZqHOIJxNXbJPo8N4vto6jizCecqKGEiDsUtVBOqwzQTZ82TJf
-	cXQKYGC9aKsoJgd6ko6BYBaLrKdi2Lo=
+	b=6Bp131rbuFCC7npt6KD1kgiNUcg1Wa6Ayp0fcKCeQAQib0OP9UG4j0+dUo01/2MRdvVv/I
+	N6Vjx7M9/X2I5SIs8xo1oIBLffhVHYTLBXPnkmXy2S1Y+qNMABqIiTvlq5ADwjT/5CP+s3
+	KmLzkUD6JerglQXtVLcS+O1RG4ihmwE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0BF2F605A8;
-	Thu, 28 May 2026 09:49:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CBA1F000E9;
-	Thu, 28 May 2026 09:49:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 39FE0402C1;
+	Thu, 28 May 2026 09:53:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6749D1F000E9;
+	Thu, 28 May 2026 09:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779961797;
-	bh=NFfgee4KJN7CaFHQFyefaFVIdlWaWFayLfKlgnxXDKg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hTggJ2xA9vUCE88ZExAMAIk2r9IAq4H8LLgE0KyTsqkpBHLyQXgylvOniRKr9fnqW
-	 bgGOCN5FByHNGnh4uJz9Apen59PIy0pKbhgZnfOuPJPd4j7SoF9k5Sj6K6Vo3WPptJ
-	 LvUbVDUu5LclcAUrWxBppzcxqsweJKpPs7lr6hlqO39zMgRaX4twvQ22BiPl1YoFsN
-	 82MAOrGfV4/LYZ2/IaRl9wrbRGawsKMj+lDUioHFc1hrQYU+Ru60wafkTGStT+0w+l
-	 5dGjiKV9yeX0ECDGoPGifn8AObraKM5k2XqKj54e3r4d1uItE+U/4IKGQQj3wUQD6S
-	 lE1iS6pk1XcEQ==
-Date: Thu, 28 May 2026 12:49:51 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Li Nan <linan122@huawei.com>, Song Liu <song@kernel.org>,
-	Xiao Ni <xiao@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-raid@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] xor: use kmalloc() in calibrate_xor_blocks()
-Message-ID: <ahgPv4DoUlZOQQLD@kernel.org>
-References: <20260528-lib-v3-0-feccddf1cb6d@kernel.org>
- <20260528-lib-v3-1-feccddf1cb6d@kernel.org>
- <ahgC1PDFtFrJrsKC@infradead.org>
+	s=k20260515; t=1779961990;
+	bh=0tbtnOuHhIH4p/NZ7nvRGoECzQt7IqPJgxAKHDaqYjY=;
+	h=From:Subject:Date:To:Cc;
+	b=aco6Gx/GpBhsPG/P3VohKBtFNaTzZ98Ku0yJRh/58TyUNEpm5KJrSzFMpJuoeLMjE
+	 9u/R8z90S1sXcgJnnhwfrueYDDVRoD5D+En37T0ibrdvFjdJzvifmAi796YjscyOOm
+	 dJvUmikOKI6OHNAoRKiR60cYfSqLXCPGlT/l44L07VL9c7nTNK3jAlBahFqkKS59uX
+	 ciXYGer7SEQjiAaD2bUBv70L27T59EBgqJTbXnmE21m9BRPBvLB73Pjcm998Ua2fBM
+	 bL40igHYhpg6M5THEMgU17zuC5FDEvmJi/31eG0lOsjuoZF3W1CTP6yNsuLXDPqnP2
+	 WpsNYaMQSOqFA==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH v4 0/2] lib/raid: replace __get_free_pages() call with
+ kvmalloc()
+Date: Thu, 28 May 2026 12:52:59 +0300
+Message-Id: <20260528-lib-v4-0-4e3ad1277279@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahgC1PDFtFrJrsKC@infradead.org>
-X-Stat-Signature: zkpxogwiuuqycy9bunzj1nmcwgmmfagq
-X-Rspamd-Queue-Id: A684E4000C
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHsQGGoC/2XOOw7CMAwG4KugzATyohQm7oEY4sShhipFSalAq
+ HenoQuI8bf92X6xjIkws/3ixRIOlKmLUzDLBXONjWfk5KfMlFCV2CjBWwJe2wA7JbXRYsumyVv
+ CQI/PluNpzvkOF3R9oWUCbEYOyUbXlBKYNUXqS6eh3Hfp+XlgkGXD761BcsEdaGE2gEH5+nDFF
+ LFddenMyrFBfaNqRqogq4MIThmQ5g/pb1TPSE8ooHPeB+mg8j9oHMc3Gvoupy0BAAA=
+X-Change-ID: 20260520-lib-8afb92134307
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@infradead.org>, 
+ David Laight <david.laight.linux@gmail.com>, Li Nan <linan122@huawei.com>, 
+ Mike Rapoport <rppt@kernel.org>, Song Liu <song@kernel.org>, 
+ Xiao Ni <xiao@kernel.org>, Yu Kuai <yukuai@fnnas.com>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-raid@vger.kernel.org, Christoph Hellwig <hch@lst.de>
+X-Mailer: b4 0.15.2
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 7ybjuz5go9s988se14uqk56pgma8mz98
 X-Rspam-User: 
-X-HE-Tag: 1779961798-807076
-X-HE-Meta: U2FsdGVkX1+lUwaH76JlYEk0IGIKsI3p8E6MPkr6Lstxv8ye7Wigv9TH0163Xl4Dp8FVf3zO5KPXi2r+RazdgAucOGQEpChhygw1gdOd3jQmkwO11NRqJghdB6DR8aCk5lBIe+Rkiccsx3OnuYAQ3EoC1s+Bx70haKBzWQYBTYGiIFLMbLVXtocaoi19Nek+sb9Uw6P6w92B26PRD31XP3iVnDSZsFpvE4dvrdotZccajsX98vyR/O7C9XXmdNA7FZJakwITWSqpxnGEAHR/9WbcnZ4Ezef9JBRltdrqZ5dVsywS1HNqVObEJMmMSHM4baCyVIuFVQ5i+P+9f313+KDSC6NoL07eh81T4XT0twaNgQuduOC0w3laXXnYkATFsalujM3OZfsm8uVQbLb6pFgebjfEWs6QwmpfhrMktiZ7SV+aElcZHvYCPLTUbm+m/kqh/hhW18LtESoElNOyBllr1BuBd4dnb9C+H+psR+j73Q/TGANza1JDH2twHg83cYUDFnmA6LKnlZxbXf98PRVtKhJj4COZelM4xsvXG7HR7ASc+riQxbNlMzbbHYzJl7ow1RMSpQ+DShiTgnXgZ3CEcDPWcC+HDXx2ZrV7l8iZ6l1ZocU3hKXQjTwGSKma0joXxhSP027iEImgbMWVJReArLjRR0Wrs0LeAd/b2jEuaBS/Jxa6/DLzYG+xYDRGioJ+fDcTHWCRg6FDOSzsB8rV4sUv5SvuSmHiJytnf8yVM5poAyuR+8M/D7WkuhqyETbk1ONzFoXxBuMZD2iwvbVAJj7JrUFj+buXBGw9J8EEhuPnghrRNLwSOdTyjtZVcA2IJmndgdyFXxEecdujTmsW2sUSl4hxN/agt+XA+OVPuVDkr1Tt+/QWIKsUOJrMK9B2FhSLVRR/PXiFNJmw1OxnX2uy/JpP+2E5PLOxg5Crru7i+VUSDQcEJG2t1KLua9JZDUFd2XIRZZoZqba
- Ndz3qLww
- bBMi+IpbzV8mGqdly+Fca0JpIBFghil2lEZyOBm7J+vS9uDfWGqW4ikNS5t2weDIagPc0lqOtIBo4ceKGmMQsDNYmU+HqVJtSZ0zptHCdID5fqQb/DDIDcy3jXwcKXbGUpuR5HweQBSegsBbjdZ0w7FpuY6SSv1Efk5phBNWbZqDYF4QAAzZ+t5K6BlVDQibP7ntuTqq82eoKh9yz3firhwrM7wkow2hmQPKHcgGL6tZJ+kM8uxYGKGeBxw+mCkQ2iLPtyXtXegWuCEM/OSuygkGrWmXW5I391EV6kTFah66whEvnv/vRvhrm9e/NYmb0Hx4ShRO0I+Btt0xGuK/nTdm16nhV/dKiwYVwqRvtV0x/QtVVrtDQP+isSQ==
+X-Rspamd-Queue-Id: 0E2BD20004
+X-HE-Tag: 1779961990-917034
+X-HE-Meta: U2FsdGVkX1+khVHUiXBQ4EnjiEZ+GOntYFWdwNIeUbZ2rxUSFA3eXpNm14R5xtCocL2zFSUMl9YwOykJRWvepYNqdJDpPOAL8u00V1hPEDUCqPva/+npKE7gPVeOcMe1jgTZVnldX4SNZUakJEE0Srfqv+Q24tU/KcQnr8u6miL46v5OsE7WWcFKbQzeTHjjCGAfwSm49s+eGcjEjOBLBqI1P4LOlkkHR7GQDwZhBehgy1d3CJT/RAEE7W8eXfNOtf/ySwjO9YR+hIcfPHrfslf80XG1ZLLhZO2umg6fSk7BGDvdiUVVKwc7ArcXLAiXezJnbOjT7FxJmUoy4QINwU7R3wyH19sUaAyLB/yBertvxP9ddoaCzuCjVHR25r8smJ2x8L8su7Fep8+eO+nhWotkBYysMfaTXz6GDaayNnzRtc7uVvZglh4VtVvXqKUdImgR7J3SRepE3jEojgoMDRsFe+Np493akY8wGZdl5Zh8YVSeTMc0iHgc2qmTD+R26rHPtSMT+R9fFIDvoY9dCuMhwTYrSNHoKFSbKTjsbaEsIttW7KyrCVZ9y1CXRAhcgPKanubXgk4e6fxJDiJPd2RqBuS2eufkqyg3wzSoVFSW5MpSMeebrYddGq66Y8qoHrBofBcUsQ3y9XPjjQBFWWKcxZlYgPQ8DdEufCHNYfRyFnclwfumTBBVY/LOIZ3+UJFRey/qm09djABfM0Hjm8FoGD3Y2c1+6rOzeEjLq1YhJNMNJzpUFYuz5ioq3TGkj9lrCOtoKNlo4hs3gYntBuJlayqrlzBsz9EAs4gzosoAz6VLhvWMyYdWRkMsK6GsrB027Oz/PsMvdCuBVkSl+jNAMBAjIwZQVYceypnGY+Hb1TNR501dcyULUpj6cbTKomG1qTvcUWuInvkZSmadwUIuuR5TURCsj2UwPoXHvIwwLPZTTt9xQY0CGv9MukpEXz+SPFOOLhV++58Rw3E
+ sGfTJirh
+ 9G06kCXJmBAFisT42ZaO/BtIQ8XFhyllQbIGrFqt7uvfOPi8E49verFi46sbYcN6HACHK+pUMiJVfpwcLrfqi6+VLRxzAB7duJXZB+p6knbHk+MOo/iNjZjFlYJ3rtTinkrA2cgbNqYIQwh3pbQ5H6yI3iw/zg//qrr29fXO36qIYY3pW6IAdlAgAt+/EWxa9GGSy1Jg0PI+PN+pJN9nW09D2qX17T6/KSx4KPVKY6laKdWFQqVdBzYI8jkp0IBaWvjQDWTVjh2RqkLLp2JH+t+xOIyky/zu1y3OWpZqJi+sGX6i73+Bgh7jSt8SHAODix5g4ddQBc/fKuYE/vuVP+MRMXvJ/3ltDEh3D+8tMiphFpa7uvH3x/GynqVPIBdlcaWQo/4tGU1YG8bGKe2KbHuW2ruOJwlNX7tEDV43vtQg6iDnc1yoFh0aRagwBqm+NKorNQdzjA3sYajdFWlLQ7Hx57RGrKOxFLnAAhtwBBmWnCV+EbY7WSqooCRcl0/+ai/rDx4Pc+kBOOlbh3Gkx0/1jSyaKpHUJkCmU0nAVRjXKWaxAQoXirMuQbZ8Q/376sskjrhgxHDKzRf55RGmI4x0ytbKO0Ph5v70G8B5329bTtiFZH2b2FqMkfySzShe7JIs1bJxGTzkPTX8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,25 +99,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 01:54:44AM -0700, Christoph Hellwig wrote:
-> On Thu, May 28, 2026 at 10:27:55AM +0300, Mike Rapoport (Microsoft) wrote:
-> > -	b1 = (void *) __get_free_pages(GFP_KERNEL, 2);
-> > +	b1 = kmalloc(PAGE_SIZE * 4, GFP_KERNEL);
-> >  	if (!b1) {
-> >  		pr_warn("xor: Yikes!  No memory available.\n");
-> >  		return -ENOMEM;
-> > @@ -132,7 +133,7 @@ static int __init calibrate_xor_blocks(void)
-> >  	pr_info("xor: using function: %s (%d MB/sec)\n",
-> >  	       fastest->name, fastest->speed);
-> >  
-> > -	free_pages((unsigned long)b1, 2);
-> > +	kvfree(b1);
-> 
-> This should be kfree now.
+This is a (tiny) part of larger work of replacing page allocator calls
+with k*malloc.
 
-kvfree still works, but I'll send v4 for pedantry sake ;-P
+Nowadays the right way to say "I need a buffer" is kmalloc() rather than
+ancient and ugly __get_free_pages().
 
--- 
+---
+v4 changes:
+* s/kvfee/kfree
+
+v3: https://patch.msgid.link/20260528-lib-v3-0-feccddf1cb6d@kernel.org
+* restore kmalloc() per Christoph
+* update changelog
+
+v2: https://patch.msgid.link/20260526-lib-v2-0-ca3f0fc24b14@kernel.org
+* replace kmalloc() with kvmalloc()
+
+v1: https://patch.msgid.link/20260520-lib-v1-0-cb3045bef2d8@kernel.org
+
+---
+Mike Rapoport (Microsoft) (2):
+      xor: use kmalloc() in calibrate_xor_blocks()
+      raid6: use kmalloc() in raid6_select_algo()
+
+ lib/raid/xor/xor-core.c | 5 +++--
+ lib/raid6/algos.c       | 6 +++---
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+---
+base-commit: 5d6919055dec134de3c40167a490f33c74c12581
+change-id: 20260520-lib-8afb92134307
+
+Best regards,
+--  
 Sincerely yours,
 Mike.
+
 
