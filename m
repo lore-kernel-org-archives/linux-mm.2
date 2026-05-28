@@ -4,127 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11E76CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:02:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5AF9CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:03:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78DAC6B0093; Thu, 28 May 2026 10:02:14 -0400 (EDT)
+	id 19BCE6B0088; Thu, 28 May 2026 10:03:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 765D96B0096; Thu, 28 May 2026 10:02:14 -0400 (EDT)
+	id 14CBD6B0098; Thu, 28 May 2026 10:03:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67BB16B0098; Thu, 28 May 2026 10:02:14 -0400 (EDT)
+	id 03B4E6B0099; Thu, 28 May 2026 10:03:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AF486B0093
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:02:14 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DDF321C1126
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:02:13 +0000 (UTC)
-X-FDA: 84816992946.13.721A163
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D8B3910001F
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:02:10 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CoQXGXR8;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of bmasney@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bmasney@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EAD8D6B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:03:17 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 949661A0887
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:03:17 +0000 (UTC)
+X-FDA: 84816995634.15.C175516
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3F2EB100016
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:03:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="Vsq40Sr/";
+	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.167.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779976995; a=rsa-sha256;
+	cv=none;
+	b=skdCUdQuBOlo5QjmP/dQy5XW/zG62I3qf7bVAdJgsF/zVbgt9fEYCH0Pafaoc+p00sNYHn
+	cAJkNRDy08W0hcw5Mgh8Pl3TwsVpSRtgloF9gSRUzU/vBiY2WMkBQBOMzQW+gAn316olnJ
+	xeDNNqRGVO/xjXSaudqkY6qapZmPiqA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="Vsq40Sr/";
+	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.167.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779976931;
+	s=arc-20220608; t=1779976995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sb89AkexlC8S7MoHF9+cz/eT1YgX2gdgA5YSkoKvstc=;
-	b=2e+aBU3fLg5VmcqguKOTu1BHG7xVbgX7AsTWCT5fwo9f8drO/7zAFOQ6oV5UfhhIX+098G
-	jK1S+5d0e7dHPDlA+PqSa4s99mlDbnYCQkAsjZIxljVu/+RKtsN1bBZFl9hgPetr/efma2
-	TfnW8EzSuurNhm/t8dMGgj7CAwHJ5sY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CoQXGXR8;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of bmasney@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bmasney@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779976931; a=rsa-sha256;
-	cv=none;
-	b=U9ZPmdWsu9MT+1Oqapp+jRHeIVLsDA5t+cK++IdE+4LzzY1rQt1e48eK+jYAdd7NMIEDVc
-	l86wgJ7oCk1cC9KozsH/YY8jENmezV1VkmJpF1C7jyDlUMUC4WIQ20WyIEPzlwNGfuDmjG
-	IsmTw7joEVnoQI3CxTonAKcfT1lTJ8s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779976930;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sb89AkexlC8S7MoHF9+cz/eT1YgX2gdgA5YSkoKvstc=;
-	b=CoQXGXR8ne6kxyxJL3tWne6z991E0wYQLwxSfU11mI6Q5U1/5Zhy2q3AtjtbQjEb/HSaeh
-	AaDMRbGqR+L/xaXnhnPz6viELQSgjSu5nsGgttptPooU0bKydQCpPPkf7NvPoERIzO0tBH
-	IW833yCKfVldMoG/R1yA0p2r8jBV1Ac=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-564-r1rhC1KLOxGqQ5BVnF701w-1; Thu, 28 May 2026 10:02:08 -0400
-X-MC-Unique: r1rhC1KLOxGqQ5BVnF701w-1
-X-Mimecast-MFC-AGG-ID: r1rhC1KLOxGqQ5BVnF701w_1779976928
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-47d193590f4so19451709b6e.0
-        for <linux-mm@kvack.org>; Thu, 28 May 2026 07:02:08 -0700 (PDT)
+	bh=rO+A7GjX2+2QgmOEjNdtI+NV3B5SN9zhDQg6nEMiyz4=;
+	b=IDND0EL5rWrx6oBAu8iMnPpTWrT5yUv1obwH6S5yed8RFqqBvCESMI9PSJaV4C2vuVrFLq
+	yK+uaYyMJL+Tq/R8EsAguwNvfKtYQk3WoGwKfGIArYw+pJ4LXsPrWyhR7uFgWeL0eYDsIi
+	JinkMqm16n7Pu3pA3ZIIfupJKHE22yI=
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-47cba53479aso8280626b6e.0
+        for <linux-mm@kvack.org>; Thu, 28 May 2026 07:03:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1779976994; x=1780581794; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rO+A7GjX2+2QgmOEjNdtI+NV3B5SN9zhDQg6nEMiyz4=;
+        b=Vsq40Sr/rR5rgTkhv+NhWCZwUcWXweoQz40+y/2QQJHfM7xGDZqCKMhZRMpLzHIWeF
+         TLhyOAGptAKybGXqiCJ9YWZTw9Z1RyNWbM+b3dovLK7i++pccY78qXGbciusfGVCtZNJ
+         /xy+8S9FLTf/NfqZN0wlyvecP4y59LuXGU7j7byFXPbPVTBo/b2ycp6ayZKwkyRFN4rh
+         9eHX6Sw37SgR6tQ25nAk8PRYWtQVH1bn5fqQu8ppbHAj3qE3VjRXuxlc1M66E3C+iFYs
+         KOpalnCJrq+/rpOb8Re58vTBjoXp08HFbET/sEGqFeIu8sVlSAZPk+1W8Pc5i5EU7TpR
+         ujfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779976928; x=1780581728;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sb89AkexlC8S7MoHF9+cz/eT1YgX2gdgA5YSkoKvstc=;
-        b=AJwZVHDm9Ibe+6OKOrMwl++A8wQBODfQV3wTZrWR2ZLZCtUJPNstOx9gfHGyhE69Oq
-         6YL7k0Yn8jXNaxi3+pNUL5iUzizALzl8fPHiJ3gM5L8ZUe9dciEjiTL0PZp2Zf9TWpWS
-         UGasXgeyMDsQtpuvmECnBAbDWrpz5c4Pq/Ba1OA3oE9FlBbxZ+PjQ1FDWBino8RRKiSi
-         pV6GxQsne+kt2UTmsD3qJTmGn0+Kn4wjyAta/s4biKM/VaWoyd2ILoxhBnNtW+mBKrFE
-         VCCvcSlb34O0dZIgHcyvovxu6VOkoMd8MGD5FbWHQl9scacdPTHfA5U2fRqi5/zPrdLg
-         ka/w==
-X-Gm-Message-State: AOJu0YyoKqMT6EeB4GKEmEDf6RN/NdjfSM5VLvxRUl5RTOPN44ZQ8FQu
-	cgqaQRPh3raDwR9T2JbIOAX4LIsSLvrUJ/WHrOnkNagWMfkfmlJVJvO+oJVGqe0arzHzsLfo3Nc
-	JHf6KGpt18YULlqSOI3dnpQe4L2X9E3siThMrR6ggxOCpl0nLkHDw
-X-Gm-Gg: Acq92OFl+3/TfK20TKeHNoanv9cHueUFwuAO8/gbFh8z4wZCf+ijDdbJ6AdqrIxWP5b
-	Ty93QnrtOSJDrktIg+sAn5VRcjIVq+QOkN2aFvOCVpIaEQE8WUB+iIc21WRXCrSg5vP1TcC4qv3
-	ZY35pPTFk7vAXiARFHVrmBhSsioR8f1i9PKKoLDNs22b38+w429PBMPgetT0/dBk3lPd9ezkC2L
-	d9swful+nEhvlZMiDKwUF7xl1MgE5cX+z8EefR20jv2UT46Q08DIte0dEEdxUMOpLkq3FjQBSjE
-	mRLP4RS5LhmoPTt6qAmuimX3kWnCir9GY5rq4DhRUHb3PAcJ5vFfEwg1INSdiJ9DwAAXe+Ev4CJ
-	XA2rraMc+qoxXqUSh98qpXgtgbmTYJw2DquX8m+ElkRKRm7gkRZpGD6c5rsZ1mCOKRaw=
-X-Received: by 2002:a05:6808:1482:b0:485:5430:2bb7 with SMTP id 5614622812f47-485d94ff023mr674762b6e.6.1779976927751;
-        Thu, 28 May 2026 07:02:07 -0700 (PDT)
-X-Received: by 2002:a05:6808:1482:b0:485:5430:2bb7 with SMTP id 5614622812f47-485d94ff023mr674628b6e.6.1779976926679;
-        Thu, 28 May 2026 07:02:06 -0700 (PDT)
-Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51706adc446sm72730071cf.15.2026.05.28.07.02.02
+        d=1e100.net; s=20251104; t=1779976994; x=1780581794;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rO+A7GjX2+2QgmOEjNdtI+NV3B5SN9zhDQg6nEMiyz4=;
+        b=MWkV0RtlVlHPjxT+1DZ8hiHEfdbZpRqujf5SnPuv8+1+jbLltgo3crRJRhIYbOB8AU
+         SWQvNaXsVliH4gtNsHXExXNLU2JkrOaTSJs/ARh/n+/P1g/0fJr9QWg/fDfdtQ/81Vwu
+         2I45SvSAUFrHVQewjwiQIPInWHssyP0TSeWKtLhgD6I1Zm7fa5Ig+Of2dsxHs9+LFMSJ
+         92PXZ0bugtjItsIPZIxtAPN+Y6ImKX9fb3SAxgODftnCZOx6Q22Ra0J0AtkARPFfN2ra
+         ju1v8yKqnG5P94cR8tH9Sh3ryfQMDI4NCeLvlWpsDJ19SFTSk43jv7bVn4Sm+7onhgxK
+         w0Fw==
+X-Forwarded-Encrypted: i=1; AFNElJ9zaGoiThyho3XqcPvMUaVTd0sJ1jWVIvcLYs3dRyS9yZZyow5U16bhYZTobkiUezkkB3UUPzCNQA==@kvack.org
+X-Gm-Message-State: AOJu0YyYS/yZsWJ3byP/+yigEMAb+Vv6sOtzv0MHnotqygJ/nP5gk6k+
+	W+BiCTIfekkQ45uMB5sb+EseXUcudXFnzFcphphfTTEXwPI+EcC7JjCiAcHMFSUT6gc=
+X-Gm-Gg: Acq92OF2qni5DDBtp/TQ/eAgFE9ScOsA4XlflE2GRB5ib0qhS9lk6VhWgXchTp2ZUi8
+	tQi97k5gJ/G+ykactg1zWDSzc5WNnaat85f5hXlpQWSpCxrkS12pkh7vI8QzVOe8lv5p5WYxSPw
+	Equ9THHZCp1fUJaaXeoN/rYeAVUFa3uHCMgl6P/nvlH1PsqDXGDd/XEq65SHEgt8XijnHY18Rmn
+	jBlv2ItdQ3BJuYZfJmc8e3cOhrX7j0p6STRuZj0oS2WMrBusOmzeaYStXPftJsRH8SsLFhfgb1n
+	qEMjyutAS1WOkBNDCYlS+gO3dSgmgIs1afDdp7EHxfbGSce9a7AAv/2H+RDx0Q7eE8DN1TYaNuM
+	IWfjBhQqnov5fCuRscJxLVFIju9cPm9+It6W7+65F/RjgebMvWkst5uXxq0uV2H0qGyXDUSXEXU
+	lnlfeARhd/69HabPzAisFRIfLpxHZQHiQV9EyybnRmJ6g=
+X-Received: by 2002:a05:6808:191a:b0:485:48da:132e with SMTP id 5614622812f47-4854a224419mr15508945b6e.27.1779976993865;
+        Thu, 28 May 2026 07:03:13 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51706af4fd2sm73661071cf.25.2026.05.28.07.03.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 07:02:04 -0700 (PDT)
-Date: Thu, 28 May 2026 10:02:02 -0400
-From: Brian Masney <bmasney@redhat.com>
-To: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+        Thu, 28 May 2026 07:03:12 -0700 (PDT)
+Date: Thu, 28 May 2026 10:03:12 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Matthew Storr <mstorr@redhat.com>
-Subject: Re: [PATCH] docs: mm: clarify that user_reserve_kbytes has no effect
- when overcommit_memory is set to 0 or 1
-Message-ID: <ahhK2nEo-HPgodNF@redhat.com>
-References: <20260528-mm-clarify-docs-v1-1-aa88e83b4bfd@redhat.com>
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Kairui Song <ryncsn@gmail.com>,
+	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>, Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 9/9] mm: switch deferred split shrinker to list_lru
+Message-ID: <ahhLIBSC7rxgXSEU@cmpxchg.org>
+References: <20260527204757.2544958-10-hannes@cmpxchg.org>
+ <20260528070807.144064-1-sj@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260528-mm-clarify-docs-v1-1-aa88e83b4bfd@redhat.com>
-User-Agent: Mutt/2.3.1 (2026-03-20)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: WyNbJTGBFbPzwyeaDf3RKkzuR4BRcnHFSr3jOtdDaAQ_1779976928
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Stat-Signature: qfk98zpw84pmcsy67ur8j9pczfuy3tem
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D8B3910001F
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260528070807.144064-1-sj@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1779976930-951352
-X-HE-Meta: U2FsdGVkX18RBiM3AxLcQjAz3OKhos+JzKOPpD4ItRACUwRriXYUf4TpM83hbUhLDpT1e6h13PJyvc5z0WUX/XdiibyyOGFDEBTHXYXI6pbk0X3Fplf9SycUcKqzQEh/XI5LUkEtx5C50IrrhyzNIfLgqh8OvmSqsGINjj5cEqFTKpJRDBiRgabLf+vmfPTqOaJTvaCErrGlcPQEm01FjfDnfQ+jLG/+ztMBh1RBzyBwTi4vO+vyNe+W3amcuaJORgp/2ufA4o77Gd4zEsWK40XZPjQ4wSp7/2+a31jYqF9qsILFz+A/DAO7toyZZEhSMnbfeEAQsBSMHNLVrTiJIwUwZ60uZZTLNs2axyPG3ino6EXjkR4BPKB1EKi9MTQ8fO4+C+mUsL6dvy0+1zTAdBLCgHWrwlqO9gg7OnGQPiBA7XdaWUUt1T4Ur9SGOp9vftIWyEMXlVIDgzHlTj4zSeHXK0xWZUfFo85PAEyFTVJzGCEMg7jcc2fF0SV/q4Tdzj6AjbGqAD1bYgYDXnwTI9H+hH9WmSMamVbQnV5Xts479cuMcGzdIXC34L9ZoPLaqprG/zdyPB9bNiBJg+Ydci32geLhRCBrfbOsbw03QMwEqjpsGmZtExc5Q39Bd7HfFTBa3OOaUMqifSB96j/J9kf1ln5CVr/hPB62GgRskKH8feGEVG1tdOYxIynt/xUApP4dQPZI9U2Yhn/ccHHYSvkwBpD0GezFG3dhN52X0nUB/oizeDS2UlOZ7lzfFSfv998Ef5ts3s8viQdRzUBDUFROGw6TEkzqcKFFsLizK7Rwky6/+LnON7cYuvU8jDABq4vK5RC3YO0ohfjUgukz6Y+0xJZDurYxriDveI4BcB8yJOwfJmg9PsnwOqRGxlb3v2DHBiEeo9YF7tekGrgq7nHrC9QKzZM1uhvv8PUHMBH44LggFianC3yUb3Zkdr8sFdfTfQEQ/8cwosnopoy
- WK1k3fFw
- jZ+6gBxHefu6i/LM5L9vjiCC5yzKzLX4hETgiHbDZuQ20XjsucLl4Y1iverj8ZagCivJPBfGoUw/nO0EInS6f9asaQwiE87Es1QPY652yxFVk301FnkN1Gh9deBteURu1mEnBchumSuucANR72dKKL09wsoZZjaLpJ3pLqKhv+KiMTetpjlZfBKyFVT+Ld8PnfQl7OdWEWqon8D3/tO0QOrznWl7BnziRb+Whqz5t/tGmcsmfbNrWpO3S52SKa8Z2Q2FEyk8bPMINgssdpD7Du2cwTIXnVOZR20KH3afj/z6JqcsFFHcZq5Vchj7h51lMhKjx92zuA4FTByjQGUVVwjQoSkEO89Pp0N3odLp4yI06WkPUVJ7iGKrITREkuiKXpiBlXlX/ZSv8osnYQjSJgSnGzzdP8Yhz0C+pjG/yzOuinglV4OgTW0qtxFT4AmMr3wZFBTPQnWCRNavHJ2TkSV9X0VKmCVAkrdUIFmPoh8VHdX8=
+X-Rspamd-Queue-Id: 3F2EB100016
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 7p8w5cde4so1qr7k1qaqhir87zue1fq5
+X-HE-Tag: 1779976994-999540
+X-HE-Meta: U2FsdGVkX18QZ8hVSQ4pRLLnkwI7VuaDPgKzyVdyxILoOsExZYxSG6wjfxAybU0MK3Id8a5CXztJIhKYpWeMvSGEP51f8QgUt6xSg9SKubodAiKQLaLfPltHS7ok6srrhyI4LupQH9DX+TbNN/r5eteaSHtczrnZDz1cdVtEqA2ZDP9B2Be3I/VQNoSdzckRlRDvvQE2EqvsF+Pk84WR2Vadq+fKzo5S2JYHSNRPMEhf8UR5qmLicuJxd5y4NK0BmBdMZN/XMtYOeUDZ2G1Q7Qsoa8I4FGyEHcYb2wI/HWLqnOu6QL13XpM6/SEUuXocEoxBmaRVXw10cya59b4DzAAH9QfZomSo1oG3kllx2W/BdDIuwb6DhgiaAhXpk/sHP9PR+X6H+FvsOjGUUxLXP+E91Wjxv5VdXiGyr6FvwJyiVJ5D6jfhBieJSHpxImoYOEVMSQPkwql7Xn3NBN1svlvag8f1eKUBphE5d1pCd36Pt+9eaObgG7QswCnKd6V3276PIkzgFOWJd8zZtiI9WCPGg1osk7RnbKpFaWM9b3YFlrjg+4PC4FbkqW3ktmBnZfhDrEqZlSsOZC5YxBxyUrMn29q5nV3VlNetFFZ0gkvbfSoN9XTUWvmx3Vsbr8h9YeFtXRmDMx/3sVkAie7XgK5WIEfl7i6wmg77wneelnUU3AbhmJhIuf2CHC1tFIdQ1ucMafutHhhzO2aZee4VIoq3Pt8ZvH2y2/RUZ8Q0b1e2VAtx8RTJybQBTEzzyYLXr4Qe1Dg6aYm2/um0tZbfqHx4smB0RTx3XFmPiTbWXusVHF2B8L0AGeCCc6NGSCk4cNgGNWUEkNxhWXhvD5HmHi38AP1mM3GzamkMIMjAn/hpCO8rc7dTIAbqP/K7BUE4jtzvZENBCtf1Kc/DH7scXDV0fjoTYew6RVgZ5Vw+68KO0hgXQuO5T0D9Syjx82c8otuuPpj9f4aeB9IaR5L
+ AodfIFsf
+ A+pyxEuhsquaiFqSIzBSoQOklhm9YPxy6o67Y4eqtnOk11Tbh8NwCvm8/epl1PiIFdrNgv+bHYdvEXnjRxElYfHT3KIiNzdlrLhwN7g+2fDJfpH9iutgSe9WJ4sfsrxVi8olIElnu5zD+LL9OF1B6JVd2svqYgpxfUFM+JBNeoHONYilVZeRXEaRNDWvMqBc7OgP+vsVakEVT9imSjW85yrVKA0BTER2wrj1MRavfNv4kLqPJW3p+Wwxx4uG2xFPQhWMa9d0cv+L3k+oYo2EqLrDqFJhB1+W/hpIwtTFUQvbelHPIYY/D4NHmaWmqRGCFRsLlTD3m7yeCPTnkVjKD9+2O2e5JfKYgwzwfuclNhhYEwTYMbtpKvOpThEe/g8kUhZ5Cht5piB+HHZl3INB64EJgj49jWVqpY7QiAeOS4N/K8FpX8EEkd+Fv/OJ70Su1V/rdVCfJrrHc/HFNVk3E5FYkAMuEgGPxK6AJgfqDhmvuOYFGj1J2bhP+cm4JPVYhzuU5mVRzoddC9xxPI4RrmhoPdA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,42 +137,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 09:45:10AM -0400, Brian Masney wrote:
-> Looking at __vm_enough_memory() in mm/util.c, user_reserve_kbytes has no
-> effect when overcommit_memory is set to 0 or 1. The documentation for
-> overcommit_memory already references user_reserve_kbytes when the flag
-> is set to 2.
+On Thu, May 28, 2026 at 12:08:05AM -0700, SeongJae Park wrote:
+> From 23b5800dd49085707baee5774b74782c3e424f24 Mon Sep 17 00:00:00 2001
+> From: SeongJae Park <sj@kernel.org>
+> Date: Wed, 27 May 2026 23:58:07 -0700
+> Subject: [PATCH] mm/huge_mm: define memcg_alloc_deferred() for
+>  !CONFIG_TRANSPARENT_HUGEPPAGE
+> MIME-Version: 1.0
+> Content-Type: text/plain; charset=UTF-8
+> Content-Transfer-Encoding: 8bit
 > 
-> Let's go ahead and add a clarification to user_reserve_kbytes in vm.rst
-> that it has no effect when overcommit_memory is set to 0 or 1.
+> Without this, UM mode kunit fails like below.
 > 
-> Signed-off-by: Brian Masney <bmasney@redhat.com>
-> ---
->  Documentation/admin-guide/sysctl/vm.rst | 2 ++
->  1 file changed, 2 insertions(+)
+>     $ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests/
+>     [00:00:02] Configuring KUnit Kernel ...
+>     [00:00:02] Building KUnit Kernel ...
+>     Populating config with:
+>     $ make ARCH=um O=.kunit olddefconfig
+>     Building with:
+>     $ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
+>     ERROR:root:../mm/swap_state.c: In function ‘__swap_cache_alloc’:
+>     ../mm/swap_state.c:468:26: error: implicit declaration of function ‘folio_memcg_alloc_deferred’ [-Wimplicit-function-declaration]
+>       468 |         if (order > 1 && folio_memcg_alloc_deferred(folio)) {
+>           |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+>     make[4]: *** [../scripts/Makefile.build:289: mm/swap_state.o] Error 1
+>     make[4]: *** Waiting for unfinished jobs....
+>     make[3]: *** [../scripts/Makefile.build:548: mm] Error 2
+>     make[3]: *** Waiting for unfinished jobs....
+>     make[2]: *** [/home/lkhack/linux/Makefile:2143: .] Error 2
+>     make[1]: *** [/home/lkhack/linux/Makefile:248: __sub-make] Error 2
+>     make: *** [Makefile:248: __sub-make] Error 2
 > 
-> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-> index 97e12359775c..b9b0c218bfb4 100644
-> --- a/Documentation/admin-guide/sysctl/vm.rst
-> +++ b/Documentation/admin-guide/sysctl/vm.rst
-> @@ -1034,6 +1034,8 @@ min(3% of current process size, user_reserve_kbytes) of free memory.
->  This is intended to prevent a user from starting a single memory hogging
->  process, such that they cannot recover (kill the hog).
->  
-> +This setting has no effect when overcommit_memory is set to 0 or 1.
-> +
->  user_reserve_kbytes defaults to min(3% of the current process size, 128MB).
->  
->  If this is reduced to zero, then the user will be allowed to allocate
+> Fix by implementing the function for CONFIG_TRANSPARENT_HUGEPPAGE unset
+> case.
 > 
-> ---
-> base-commit: e7d700e14934e68f86338c5610cf2ae76798b663
-> change-id: 20260528-mm-clarify-docs-76ab8f82826d
+> Fixes: https://lore.kernel.org/20260527204757.2544958-10-hannes@cmpxchg.org
+> Signed-off-by: SeongJae Park <sj@kernel.org>
 
-+ Other MM maintainers / reviewers. Sorry for not including on the
-initial patch posting. I initially missed the separate MM Core subsystem
-in the MAINTAINERS file.
+Whoops, thanks for the fix, SJ. I'll incorporate UM builds into my
+final compile test before sending.
 
-Brian
-
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
