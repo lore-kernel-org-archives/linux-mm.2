@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59E5BCD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 16:50:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 139CACD4F54
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 16:56:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 929EB6B008A; Thu, 28 May 2026 12:50:24 -0400 (EDT)
+	id 257B16B0005; Thu, 28 May 2026 12:56:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DA736B008C; Thu, 28 May 2026 12:50:24 -0400 (EDT)
+	id 22EF26B008A; Thu, 28 May 2026 12:56:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EFC06B0092; Thu, 28 May 2026 12:50:24 -0400 (EDT)
+	id 145766B008C; Thu, 28 May 2026 12:56:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CD906B008A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:50:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1DF591620BE
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:50:24 +0000 (UTC)
-X-FDA: 84817416768.02.FD15451
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0375B20007
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:50:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vjPIq6ZD;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 063606B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:56:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A4D3B1C075A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:56:50 +0000 (UTC)
+X-FDA: 84817432980.27.1D6EBC0
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BA93B1C0009
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:56:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U7Z8PWaX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779987022;
+	s=arc-20220608; t=1779987409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yzlo3xmXqUYFotfdaId9HTkqzJoOffcAET7WuagY9zo=;
-	b=LFUq5MI6QfUbBv3zBcMHoR8B4TmRrGoUtTum4qQ2inedwFNaVghPV8O2Jwxi2q3xx1t+0O
-	XNEnDDWbBN/gWA2nbwzw72SW4bq9LMVysYd6tLrRwi9ezohRWspMupxx+oN0CBBTxbf5dR
-	Djv86Z/Fm2gCbh9K5B9zKv84j/+O4O4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dlemPSM8cSUroxllpFZm7gDDts2mYGGMK9+8gF6D+hE=;
+	b=ju2bUk8mrKR+LhbkljOwLtFySOuiW8Fd0V9cXImnKPacx6YB3ci1lBFArhMgXZtjiMQ/Z3
+	TMD5kupBFrx0p8EZUYY9RGmzxQH8FS1JcRm7PdXmkJMjO0SCkiM5XSb03AR7AqTDDn/hRx
+	yPFsNFDgfKwsttpQGbvtsQ/pSI9dPyI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vjPIq6ZD;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779987022; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U7Z8PWaX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779987409; a=rsa-sha256;
 	cv=none;
-	b=OvlPFt9836txkNJKRXbhgotpjSziC7RvWpBI1ZUtacc2XyXIbUymoinBn6L4Vs9MF96QhX
-	9GX9UfdRFbVeST2f3X3gP1jGZPIIgfiL/X0Ocrx6RpLSzR6MNgdmErQntnAEzaPw9Ragbb
-	JP5kXYD42VUDAQF5mOqDB3QKztynpnA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E811922EE;
-	Thu, 28 May 2026 09:50:15 -0700 (PDT)
-Received: from [10.163.163.35] (unknown [10.163.163.35])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4F9863F905;
-	Thu, 28 May 2026 09:50:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779987020; bh=yzlo3xmXqUYFotfdaId9HTkqzJoOffcAET7WuagY9zo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vjPIq6ZDu7S+lXbMMtbiAQqjvZhkELukdEvuZFJQjnXp/y97U/1n/LcWMAeS0FZng
-	 SWQhjYd2EqRs0YnPPesizRKGwqpQoEZJ9//BO6jwsQ13NqkIkYawgnPIwaYF0U31B2
-	 JJAQAvP+JDgsvU27Ur3+iwU81Yb5NwYpOCzMEtX4=
-Message-ID: <f8d10097-95d9-446c-bf9b-6590c543370c@arm.com>
-Date: Thu, 28 May 2026 22:20:02 +0530
+	b=TQ3h+HHk0HEvR+8lAeQMel++Oyrkj/SNfji3ZaBmxo5ssmNG7vawpagy7ARALRznR2o7/M
+	gnDKd/Fbdw5KJuYkxjgnyVYxsDcEc4dPh8qsjPZIipRZv9v4X6VeZKk2I0YTMrpbSdn/o/
+	tN6+sxarP+HtqIRDQf2S32U4BI5Yl00=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779987406;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dlemPSM8cSUroxllpFZm7gDDts2mYGGMK9+8gF6D+hE=;
+	b=U7Z8PWaXd1LiVL34NeRBv++9TxQ5+BvQJaqmv3qHs4qdcZ4SAYffV8Jj9zelpzfvPRTCS+
+	nNLI9BC1UB6RQgWglYhvQhLHeiOnYqEKPhqehjIG/e2abaaIVg2QC61UHaDyKbUMtkXTCX
+	4V2AfSHeFbkx5ICVntSD+v4mGoe7sDI=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	willy@infradead.org,
+	ryan.roberts@arm.com,
+	linux-mm@kvack.org
+Cc: r@hev.cc, jack@suse.cz,
+	Andrew Donnellan <andrew+kernel@donnellan.id.au>, apopple@nvidia.com,
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
+	catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
+	kevin.brodsky@arm.com, lance.yang@linux.dev,
+	Liam R.Howlett <liam@infradead.org>,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
+	npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
+	rppt@kernel.org, surenb@google.com, vbabka@kernel.org,
+	Al Viro <viro@zeniv.linux.org.uk>, wilts.infradead.org@kvack.org,
+	"linux-fsdevel@vger.kernel.l"@kernel.org, ziy@nvidia.com,
+	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+	kernel-team@meta.com, Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v6 0/2] mm: improve large folio readahead for exec memory
+Date: Thu, 28 May 2026 09:55:18 -0700
+Message-ID: <20260528165635.2068012-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/12] Optimize anonymous large folio unmapping
-To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- chrisl@kernel.org, kasong@tencent.com, hughd@google.com, liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
- baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260526063635.61721-1-dev.jain@arm.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260526063635.61721-1-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0375B20007
-X-Stat-Signature: 85e5j873tb4dd4inzue83m5xxkm4s6ut
+X-Rspamd-Queue-Id: BA93B1C0009
+X-Stat-Signature: ubasere8wxsa7416cidhyj6zoipoq1ec
 X-Rspam-User: 
-X-HE-Tag: 1779987021-718461
-X-HE-Meta: U2FsdGVkX19AHc2KdDqMHXv/7PLar93lKJ7EIUs198stSA74LXv70lFLeqp0aWJVJIB4jzsWJ7roNfWA2S+CBVWBfKlCM3okRIwUOYlHPNjSIoV7jFzQlimD4/hNdg1uC+9gFyhKBfzvk3SgHh8wzRc0NTBXD9lA+4bf0c8L3oRm4LiXzZ1dSRYJexTII4+Z69vWMt8M62Q5a6tRQZ7SmXZw94ILLoUThhpaNQniCAICWPHIlEIsr8LGWejM8Y6cvkmt4VKBLHSC7uQsntnpUAUUXDjoerDGiK+sEhe4jsl7q4INjEqc/ROP0/awfkIzlySuTHi9ZM6UAt3d3TOeyOyIiW6R3bueo2GAtgMRx/ItblXHBbOTfUIPb9fDoL4BxEfoMBdN61DOloK595eNNAAhoo3Qc9S0RmoUmHGtV5ymqtuQYswnCejxr7felYb2vGipFelfiESQsx7SSM9ATFTTodjjxaauFRDKysxfsOTg/OVurlfaRGGXoG0hIg74ZllDFwRvJYXwg2MFWLKw6GGn4IZ4hF/T/4xkLYOOaOatUuHDT1W7xfdyMLkVDfggG8J5dyra0sdxRXWTRjQyfDmWQ4QWhwnemm8rSaCzTbnosxKoz9H+hw6rZaVXkly58tGsr9E/iUZG/pw/0LnvOzeUWIb1yc2W7cBworis79+KSTTJUGDoMtPh1IadqGmdrEqyIvpu3FwHGNuQF/ivFkqNVShgIQ4rnyZIhE+L7Y5abdUIoB+m2ndJtaVCqv87ZA3Hu5oXwDJVSvL0wVRBsIO2zmxoZRmKUzChawYrM9JcSdAgQFdp6Nfm4V1ebafALiiYnTlZ2wNIwrmDGb7fPbqOIVeyZYsVVlUvOGDqoXOROubcY43F5PZ0FOL2DvZE5VWJbfLQErj6F1Ro2EyZRLbzuJx5iswUX096Avxp3TeS6E2ff0C6rmduGmtpXGCahrK0C8CXSKq4g0xblKR
- 4w2MhOgX
- VrXs0zxjJsWewGiQXOkCRSuGxuwEiUKLUxfq+pY6gbOKamexhoKNKmMaYLQP+fFGkbd17GWwKlA/8lIMILOFUmSFUh8qOp+HUiYMCWpYoWmjxPrfsUjzfs7i7ISdRYW6zQfDNqpStwYfHp3+NvS4UXaKMSEJB6PYEKwVLaLgTWYaOiV4tF26i8PMcxKROhdnDMVf4gktbCLfmmF5MJ45AYrnmLOTtwAx5lrlb87WB250C0FM=
+X-HE-Tag: 1779987408-477800
+X-HE-Meta: U2FsdGVkX19NEJfzY9Rp4PBskxyY092AB/LJ4ySynly5DWRGc9xncaDcuIepn5GWkXimc6uct4zc6xANIIV+PifIdahc6TX09P3GIhrMdfZetN5N5FSar4GADHHD52dFyvQqdsT7cYgpAGNTOh7XS491L+asjN7vJhGUwVfxrTWwuJRdgN2AZOKruAyXDKY4vLhsMvxspc58TmFjYhQX4nOi2+oevA92U3Lgp4A1O8iPcDE/9i/yGe7HiJEj0N8BYbLTnrinwkx+wrwv03CvHgSZlKBnX2AZ6WjK4YrjfoxzWXydXftrBvcEoQ/rtHtI7TYuCdRfmf84Om5mL/0s/ksRamh3Ucn5Ca6lEvFTKeMcDwWBh2N9oUpTv6Ud4/lDTi2hQ5GRLFoPdo9jyq9+YwTLFJpwc1O/xjSORlZAwyx7EA2rwjSw34jYxpDqHiXmIytMSXs3GZ/WBV/JrM5WS93h5sIRmuABPtn3H2AKZT6RLE45rellT/JwiofsPLT3vQJPWtKnoBkx7iRjC4N0R37fubM+Di360Y2U2SKjOyBLNKSo54V50Fsi2UROAWz5zq/cLD8mgmNpk3BSzjo9IWU6eMH5r/YxZfcedFhnqIIFbuG4w9Ag8hhW5hgYF/apccgWwZancKCvU04ZsQQl2osOFgqIbK5HA/A/v8rPxxlfaMY4aqpmMSXnaUN1kn0FCRf36QSb6PWOWXTpUOR82IYMDKXJ08qa6K7YGSmCMWLtB0RafmdoyRKAoJyg3w7PzkklYwK6C4gWuq+Mk3OytzOJkIdHWR1H4LFtM/NUS/FZVZiVMtB2ITEME3Z3ZnDD1rImmuwOuv5WEbQXbKQ2hn10WsK4Nal97TiWGPEwVsWRUK4mvJFEw4UNFWEAjXBydMUxaOFKCE/Dsv0hBf606QMNCXDk8vJvjjiBHHL7eJOS4XI3QLD+qWAwvgNl3sv77XTtuWJHdTyql+d9IHs
+ FZjDjQRC
+ pdQSUIDVZZMLD++gO/cQYdh2J/mBR2iHn6aOGm8YkJ6LJ16ZbPhxYhqgqjBBzJEo6yFBXuucf1CK7U5tFFu25tXf9tbf5uD7WTaeVG66x45YfZTxjboUbrMfBFpAbR+xiITXSPDUEh4m3I0FTRzYNLs286P9MmjbQhYxXaZfiyEdCiqQCmHWlbVSkkCitHRyREjP4bKiB8wENHrAkNLbbiLkRHSbEvjIZ8NBuURj+lc0jwWmMHVe0Qq9V70c7QpPdjK6HpKcTcVpUyIbgX9yS+zeFmfSQV5etmF6vhbzQC/3L1O+FzeElJSCF418EFYTwGH3KWxut/dCuf8g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,41 +99,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sashiko:
+Two checks in do_sync_mmap_readahead() limit large-folio readahead:
 
-Patch 9:
+  1. The mmap_miss heuristic is meant to throttle wasteful speculative
+     readahead. It is currently also applied to the VM_EXEC readahead
+     path, which is targeted rather than speculative. Once mmap_miss exceeds
+     MMAP_LOTSAMISS, exec readahead - including the large-folio
+     order requested by exec_folio_order() - is disabled. On
+     configurations where the mmap_miss decrement paths are not
+     active (see patch 1) the counter only grows, so exec readahead
+     is permanently disabled after the first 100 faults.
 
-About anon-exclusivity: At this point, the batched helper is not
-called with nr_pages > 1. Later, anon-exclusive uniformity is
-handled.
+  2. The force_thp_readahead path is gated only on
+     HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER and always drives the
+     readahead at HPAGE_PMD_ORDER. Configurations where
+     HPAGE_PMD_ORDER exceeds MAX_PAGECACHE_ORDER never reach this
+     path, even when the mapping itself supports usefully large
+     folios well below the cap.
 
-On PUD folio: that is never passed to folio_try_share_anon_rmap.
-I was following the pattern followed elsewhere, given that
-PUD THP is not supported yet. Although there is no harm in
-changing the check to (level != PGTABLE_LEVEL_PTE).
+Both issues are most visible on arm64 with a 64K base page size,
+where HPAGE_PMD_ORDER is 13 (512MB) -- above MAX_PAGECACHE_ORDER
+(11) -- and where fault_around_pages collapses to 1 disabling
+should_fault_around() (one of the two mmap_miss decrement sites).
+However the fixes are architecture-agnostic: patch 1 reflects the
+nature of VM_EXEC readahead regardless of base page size, and
+patch 2 generalises the gate so any mapping advertising a usefully
+large maximum folio order can benefit.
 
-On hugetlb folio: that is never passed.
+I created a benchmark that mmaps a large executable file madvises it
+as huge and calls RET-stub functions at PAGE_SIZE offsets across it.
+"Cold" measures fault + readahead cost. "Random" first faults in all
+pages with a sequential sweep (not measured), then measures time for
+calling random offsets, isolating iTLB miss cost for scattered execution.
 
+The benchmark results on Neoverse V2 (Grace), arm64 with 64K base pages,
+512MB executable file on ext4, averaged over 3 runs:
 
-Patch 11:
+  Phase      | Baseline     | Patched      | Improvement
+  -----------|--------------|--------------|------------------
+  Cold fault | 83.4 ms      | 41.3 ms      | 50% faster
+  Random     | 76.0 ms      | 58.3 ms      | 23% faster
 
-Existing bug: doesn't look like it. uffd-wp is not there for
-a migration-writable softleaf entry.
+The patches are on top of mm-unstable from 28 May
+(8a74e22643189e0ae339afc91110ddb4cab1941b) which include patch [1]
+that make mmap_miss accounting symmetric for VM_SEQ_READ which was pointed
+out by sashiko in the previous revision.
 
-Patch 12:
+[1] https://lore.kernel.org/all/20260525145751.2671248-1-usama.arif@linux.dev/ 
 
-ABout sparc64: Yep I'll change this to #ifdef or something. Apparently
-is_defined() doesn't work in case the macro doesn't have a value.
+Kiryl and Jan, I have kept your Reviewed-by tags from the previous revision
+for patch 1 as the concept is still the same, please let me know if that
+is not ok.
 
-About dirty young and uffd-wp bits: we don't care about dirty and young
-bits since we are converting to swap ptes. uff-wp uniformity is preserved
-through folio_pte_batch.
+v5 -> v6: https://lore.kernel.org/all/20260522162422.3856502-1-usama.arif@linux.dev/
+- Based on top of patch [1] (sashiko)
+- Changes to commit message to make it more accurate for patch 1 and skip
+  mmap_miss decrement as well. (sashiko)
+- Keep old behaviour if large folio mappings is not enabled (sashiko).
+- sashiko pointed to a TOCTOU data race that was pre-existing. My patch
+  could make it worse. Dont make it worse by introducing thp_order local
+  variable.
 
-About stale nr_pages: The patch initializing nr_pages = 1 at the start of
-the loop is already in mm-hotfixes.
+v3 -> v5: https://lore.kernel.org/all/20260402181326.3107102-1-usama.arif@linux.dev/
+- (Looks like I messed up the versioning here and went directly form
+  v3 to v5.)
+- Drop patches for elf thp unmapped area alignment and deal with them
+  separately. These patches will just bring folios smaller than PMD
+  at the same level as PMD. The 2 patches now should be much easier
+  to merge.
+- Tackle size of THP for exec pages at the same point as PMD instead
+  of tackling using exec_folio_order() (Ryan during LSFMM, Thanks!)
 
-About O(N): Yes I will update this to retain the nr_pages == folio_nr_pages()
-early bail out.
+v2 -> v3: https://lore.kernel.org/all/20260320140315.979307-1-usama.arif@linux.dev/
+- Take into account READ_ONLY_THP_FOR_FS for elf alignment by aligning
+  to HPAGE_PMD_SIZE limited to 2M (Rui)
+- Reviewed-by tags for patch 1 from Kiryl and Jan
+- Remove preferred_exec_order() (Jan)
+- Change ra->order to HPAGE_PMD_ORDER if vma_pages(vma) >= HPAGE_PMD_NR
+  otherwise use exec_folio_order() with gfp &= ~__GFP_RECLAIM for
+  do_sync_mmap_readahead().
+- Change exec_folio_order() to return 2M (cont-pte size) for 64K base
+  page size for arm64.
+- remove bprm->file NULL check (Matthew)
+- Change filp to file (Matthew)
+- Improve checking of p_vaddr and p_vaddr (Rui and Matthew)
 
+v1 -> v2: https://lore.kernel.org/all/20260310145406.3073394-1-usama.arif@linux.dev/
+- disable mmap_miss logic for VM_EXEC (Jan Kara)
+- Align in elf only when segment VA and file offset are already aligned (Rui)
+- preferred_exec_order() for VM_EXEC sync mmap_readahead which takes into
+  account zone high watermarks (as an approximation of memory pressure)
+  (David, or atleast my approach to what David suggested in [1] :))
+- Extend max alignment to mapping_max_folio_size() instead of
+  exec_folio_order()
+ 
+Usama Arif (2):
+  mm: bypass mmap_miss heuristic for VM_EXEC readahead
+  mm: use mapping_max_folio_order() for force_thp_readahead order
+
+ mm/filemap.c | 41 ++++++++++++++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 15 deletions(-)
+
+-- 
+2.52.0
 
 
