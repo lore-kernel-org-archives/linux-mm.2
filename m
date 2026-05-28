@@ -4,94 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1559CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:53:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1631FCD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:53:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10E656B0005; Thu, 28 May 2026 05:53:13 -0400 (EDT)
+	id 5057A6B0088; Thu, 28 May 2026 05:53:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BF0C6B008A; Thu, 28 May 2026 05:53:13 -0400 (EDT)
+	id 4B7006B008A; Thu, 28 May 2026 05:53:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 001716B0005; Thu, 28 May 2026 05:53:12 -0400 (EDT)
+	id 3F4106B008C; Thu, 28 May 2026 05:53:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E32D06B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:53:12 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 309096B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:53:15 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF9891A07EA
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BEC7B140782
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:53:14 +0000 (UTC)
+X-FDA: 84816365508.14.4CE80EB
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 095D6C0002
 	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:53:12 +0000 (UTC)
-X-FDA: 84816365424.14.4AD62D8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0E2BD20004
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:53:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aco6Gx/G";
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ra/Ithy0";
+	spf=pass (imf28.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779961991;
+	s=arc-20220608; t=1779961993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=0tbtnOuHhIH4p/NZ7nvRGoECzQt7IqPJgxAKHDaqYjY=;
-	b=2iWF4W7s12vS6tbhI08y1K0kkBkx6lyZnm7PCu36JLUmmQDTSjjr6RhlXKmShoXRHVpzLC
-	04I7w53g7MvHvUGv1b0ndA5hHUWr1Ly/7IwY4CKFLqy0qjOKLHP4ipPCjlad82Ygn/lNCW
-	MJj+Uqx8DoQxR9rLHViZWRuLGD5NuuQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Xx63pevhIvHmAd7I82DAKAH03djxp5+URK5s8BIYmFg=;
+	b=OLLFYT7rPrMreo702QuXqXf8TyA9po1HnuGcPTFU+bwjVQNGTmPgM96Rn7bxuVM0Z5rtlo
+	YaPA23zyGR2uGte0YgjwB20VThJ0QBKlvm9wYo9qHa++A4a/mPjOS87QPRYBfBtlkFWk9v
+	ofCkfv0zPNrAyXquD6WRUcRryNiPW5g=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aco6Gx/G";
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779961991; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ra/Ithy0";
+	spf=pass (imf28.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779961993; a=rsa-sha256;
 	cv=none;
-	b=6Bp131rbuFCC7npt6KD1kgiNUcg1Wa6Ayp0fcKCeQAQib0OP9UG4j0+dUo01/2MRdvVv/I
-	N6Vjx7M9/X2I5SIs8xo1oIBLffhVHYTLBXPnkmXy2S1Y+qNMABqIiTvlq5ADwjT/5CP+s3
-	KmLzkUD6JerglQXtVLcS+O1RG4ihmwE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 39FE0402C1;
-	Thu, 28 May 2026 09:53:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6749D1F000E9;
-	Thu, 28 May 2026 09:53:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779961990;
-	bh=0tbtnOuHhIH4p/NZ7nvRGoECzQt7IqPJgxAKHDaqYjY=;
-	h=From:Subject:Date:To:Cc;
-	b=aco6Gx/GpBhsPG/P3VohKBtFNaTzZ98Ku0yJRh/58TyUNEpm5KJrSzFMpJuoeLMjE
-	 9u/R8z90S1sXcgJnnhwfrueYDDVRoD5D+En37T0ibrdvFjdJzvifmAi796YjscyOOm
-	 dJvUmikOKI6OHNAoRKiR60cYfSqLXCPGlT/l44L07VL9c7nTNK3jAlBahFqkKS59uX
-	 ciXYGer7SEQjiAaD2bUBv70L27T59EBgqJTbXnmE21m9BRPBvLB73Pjcm998Ua2fBM
-	 bL40igHYhpg6M5THEMgU17zuC5FDEvmJi/31eG0lOsjuoZF3W1CTP6yNsuLXDPqnP2
-	 WpsNYaMQSOqFA==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH v4 0/2] lib/raid: replace __get_free_pages() call with
- kvmalloc()
-Date: Thu, 28 May 2026 12:52:59 +0300
-Message-Id: <20260528-lib-v4-0-4e3ad1277279@kernel.org>
+	b=3ESQrulRbNiTesL2tdcKfBRxoN3NFPP9aCE0XInMRCIEZ16XNyIH/JRStEXnF8LUtbxSLf
+	faVYLVtyExc7QfCyW3BkSHWMuA2s1dBiclDbMPPH/fjsWeA06KSO9IZnxGH17j83LmCgmR
+	Cu/dr0+59tSCg0qiF8QcOjcHOAZzpXU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779961991;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Xx63pevhIvHmAd7I82DAKAH03djxp5+URK5s8BIYmFg=;
+	b=ra/Ithy00r6TNwU5FTp/Bc6N7TJJ4zwPoJ0OOASNlN3w3vqAf7tlS6Ybo8zwpqA7Ks4fl4
+	uTIycdD+UIN8iXwk7lgHe0dHKh8BNmh351V7v5Ok0uONwmmY5unLd1JmF5ZMUMCnJlrN1k
+	2Ay0OIQ98XfdOBWg3tyBruXtyh5OSLE=
+From: Hao Li <hao.li@linux.dev>
+To: vbabka@kernel.org,
+	harry@kernel.org,
+	akpm@linux-foundation.org
+Cc: cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Li <hao.li@linux.dev>
+Subject: [PATCH v2 0/2] mm/slub: batch partial slab list operations
+Date: Thu, 28 May 2026 17:52:42 +0800
+Message-ID: <20260528095254.43721-1-hao.li@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHsQGGoC/2XOOw7CMAwG4KugzATyohQm7oEY4sShhipFSalAq
- HenoQuI8bf92X6xjIkws/3ixRIOlKmLUzDLBXONjWfk5KfMlFCV2CjBWwJe2wA7JbXRYsumyVv
- CQI/PluNpzvkOF3R9oWUCbEYOyUbXlBKYNUXqS6eh3Hfp+XlgkGXD761BcsEdaGE2gEH5+nDFF
- LFddenMyrFBfaNqRqogq4MIThmQ5g/pb1TPSE8ooHPeB+mg8j9oHMc3Gvoupy0BAAA=
-X-Change-ID: 20260520-lib-8afb92134307
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Hellwig <hch@infradead.org>, 
- David Laight <david.laight.linux@gmail.com>, Li Nan <linan122@huawei.com>, 
- Mike Rapoport <rppt@kernel.org>, Song Liu <song@kernel.org>, 
- Xiao Ni <xiao@kernel.org>, Yu Kuai <yukuai@fnnas.com>, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-raid@vger.kernel.org, Christoph Hellwig <hch@lst.de>
-X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 7ybjuz5go9s988se14uqk56pgma8mz98
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: aqz5kru6jj47by55j88qug9p6e8pfeur
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0E2BD20004
-X-HE-Tag: 1779961990-917034
-X-HE-Meta: U2FsdGVkX1+khVHUiXBQ4EnjiEZ+GOntYFWdwNIeUbZ2rxUSFA3eXpNm14R5xtCocL2zFSUMl9YwOykJRWvepYNqdJDpPOAL8u00V1hPEDUCqPva/+npKE7gPVeOcMe1jgTZVnldX4SNZUakJEE0Srfqv+Q24tU/KcQnr8u6miL46v5OsE7WWcFKbQzeTHjjCGAfwSm49s+eGcjEjOBLBqI1P4LOlkkHR7GQDwZhBehgy1d3CJT/RAEE7W8eXfNOtf/ySwjO9YR+hIcfPHrfslf80XG1ZLLhZO2umg6fSk7BGDvdiUVVKwc7ArcXLAiXezJnbOjT7FxJmUoy4QINwU7R3wyH19sUaAyLB/yBertvxP9ddoaCzuCjVHR25r8smJ2x8L8su7Fep8+eO+nhWotkBYysMfaTXz6GDaayNnzRtc7uVvZglh4VtVvXqKUdImgR7J3SRepE3jEojgoMDRsFe+Np493akY8wGZdl5Zh8YVSeTMc0iHgc2qmTD+R26rHPtSMT+R9fFIDvoY9dCuMhwTYrSNHoKFSbKTjsbaEsIttW7KyrCVZ9y1CXRAhcgPKanubXgk4e6fxJDiJPd2RqBuS2eufkqyg3wzSoVFSW5MpSMeebrYddGq66Y8qoHrBofBcUsQ3y9XPjjQBFWWKcxZlYgPQ8DdEufCHNYfRyFnclwfumTBBVY/LOIZ3+UJFRey/qm09djABfM0Hjm8FoGD3Y2c1+6rOzeEjLq1YhJNMNJzpUFYuz5ioq3TGkj9lrCOtoKNlo4hs3gYntBuJlayqrlzBsz9EAs4gzosoAz6VLhvWMyYdWRkMsK6GsrB027Oz/PsMvdCuBVkSl+jNAMBAjIwZQVYceypnGY+Hb1TNR501dcyULUpj6cbTKomG1qTvcUWuInvkZSmadwUIuuR5TURCsj2UwPoXHvIwwLPZTTt9xQY0CGv9MukpEXz+SPFOOLhV++58Rw3E
- sGfTJirh
- 9G06kCXJmBAFisT42ZaO/BtIQ8XFhyllQbIGrFqt7uvfOPi8E49verFi46sbYcN6HACHK+pUMiJVfpwcLrfqi6+VLRxzAB7duJXZB+p6knbHk+MOo/iNjZjFlYJ3rtTinkrA2cgbNqYIQwh3pbQ5H6yI3iw/zg//qrr29fXO36qIYY3pW6IAdlAgAt+/EWxa9GGSy1Jg0PI+PN+pJN9nW09D2qX17T6/KSx4KPVKY6laKdWFQqVdBzYI8jkp0IBaWvjQDWTVjh2RqkLLp2JH+t+xOIyky/zu1y3OWpZqJi+sGX6i73+Bgh7jSt8SHAODix5g4ddQBc/fKuYE/vuVP+MRMXvJ/3ltDEh3D+8tMiphFpa7uvH3x/GynqVPIBdlcaWQo/4tGU1YG8bGKe2KbHuW2ruOJwlNX7tEDV43vtQg6iDnc1yoFh0aRagwBqm+NKorNQdzjA3sYajdFWlLQ7Hx57RGrKOxFLnAAhtwBBmWnCV+EbY7WSqooCRcl0/+ai/rDx4Pc+kBOOlbh3Gkx0/1jSyaKpHUJkCmU0nAVRjXKWaxAQoXirMuQbZ8Q/376sskjrhgxHDKzRf55RGmI4x0ytbKO0Ph5v70G8B5329bTtiFZH2b2FqMkfySzShe7JIs1bJxGTzkPTX8=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 095D6C0002
+X-HE-Tag: 1779961992-972452
+X-HE-Meta: U2FsdGVkX1+LHkUw5DFahSsdINyo8n5Ab6ljBMTZlj/kBHwRRL1WYwxgMplPgpYHimxVFGfhqtnQqhvwxjufSVNH+/+VBpWnE/f2EvhZyzChS2EcshP7tiouU2u59IAjYXbXlKPI3WIthWtUEtfZxSe+V9aNC0Hk1ox3vQGXCZ5mx2byhVT57SW/RkoSNtFiuQP2XmEhh5tA+/6mHjrXEu/sTDMg2PAti0QffwvvIF9b+z1GcyXMHx96wS0awv5iLZa9ND9Ar5YX4SilmmXOjkrN03eAC/BYDL80B8qpFy7oXHygT0rcL9WTtv4iDJHIpkJipXkMXbcKqyIgg4PbphsQ6Nnupf7dTR31Nx68EyuDRP9z35shrPKaFfhry1Ohd78kH4kUOOS3Cu3gqI732lyIOaIOwu4oH8qAP8eB71n0luhxatti8C6RlLZ3UC7n5OGDcozhImJFeKZFyCDuPEUvA0HH3lUUg8X8b0fVCo6v9rTMMlTSDY4DOZf0VgcY7bnUgOZCiqBflB95zZO0vrBZJFZ4zY8UTN8qWYInuATBbTxSy+I6MWB3o6Qw59f7EDK9WJl6rcjXy7vyCXjtrXh1yem3n6v0yWHqu0lGWfw+vg5Bjr8rve0DuhRfEyDvvlqxXyIXoAQ9aJ24gpU6/hz1ecHxyLkRQbrw3nsEEspJCjxLZeithU8FmWCRmNcgSXlsKG/cB3reVAgGZX0QYdlMhfx2qiRehsKGizks97+5ePQ1e/ajJiPm9U8Uow2+Guu8OcfZuzqZqIRS9dk6yKrfIurzL8dmPzVo/+yoYEiIhYGFiuV4Ew/iE0Kyc3wfA6IwAdOtQvMuFIub+xIgZriYS8N/mnTsohTn3HKkGfegz2W7r/69iMccg3JcWW3dm4aqo6Y6rrp+/lJbY/6FtPYDmc/Ha0d4qQ+BSiVRkAa9+BFpWqJWQyJFY320LGpEQsJFlBn35WERLOWmJNf
+ 6A0VbMmX
+ BN+slTDVClge0JFQZT36M9eQat+ep5udljQ3kcfyJTlUgMnfKJGiG0O4SXtLq2txD7ftXL8Gja+leWLVSbTGnjGRrOIlBPlbMFZB4qEueegbxVjR5mtIBCB82/w7XCHs+HM5uANOKvKlBHVFg470P61hYni1yGbOmOjbaL9Np/gGVD9z12y8F8Nb2QC1Bk3S5vdoX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,40 +89,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a (tiny) part of larger work of replacing page allocator calls
-with k*malloc.
+The loops in get_partial_node_bulk() and __refill_objects_node() perform
+individual list operations for each slab. This patchset optimize this.
 
-Nowadays the right way to say "I need a buffer" is kmalloc() rather than
-ancient and ugly __get_free_pages().
+Patch 1 reduces the number of list operations by processing slabs in
+batches, thereby minimizing the time spent inside the critical section.
 
----
-v4 changes:
-* s/kvfee/kfree
+Patch 2 is a cleanup patch that wraps duplicated code into a helper
+function.
 
-v3: https://patch.msgid.link/20260528-lib-v3-0-feccddf1cb6d@kernel.org
-* restore kmalloc() per Christoph
-* update changelog
+Changes in v2:
+- Patch 1 apply the same optimization to __refill_objects_node. (Thanks
+  Harry and Vlastimil)
+- Patch 2 introduce a helper to wraps duplicated code. (Thanks Harry)
 
-v2: https://patch.msgid.link/20260526-lib-v2-0-ca3f0fc24b14@kernel.org
-* replace kmalloc() with kvmalloc()
+Hao Li (2):
+  mm/slub: detach and reattach partial slabs in batch
+  mm/slub: introduce helper to decrement partial slab count and clear
+    flag
 
-v1: https://patch.msgid.link/20260520-lib-v1-0-cb3045bef2d8@kernel.org
+ mm/slub.c | 43 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 31 insertions(+), 12 deletions(-)
 
----
-Mike Rapoport (Microsoft) (2):
-      xor: use kmalloc() in calibrate_xor_blocks()
-      raid6: use kmalloc() in raid6_select_algo()
-
- lib/raid/xor/xor-core.c | 5 +++--
- lib/raid6/algos.c       | 6 +++---
- 2 files changed, 6 insertions(+), 5 deletions(-)
----
-base-commit: 5d6919055dec134de3c40167a490f33c74c12581
-change-id: 20260520-lib-8afb92134307
-
-Best regards,
---  
-Sincerely yours,
-Mike.
+base-commit: 6b41dc6749232c14f3e069f8115084a7bbeee402
+-- 
+2.54.0
 
 
