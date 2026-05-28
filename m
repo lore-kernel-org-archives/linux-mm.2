@@ -4,116 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F62CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77FE8CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:16:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32EB66B0088; Thu, 28 May 2026 03:14:42 -0400 (EDT)
+	id 5A36C6B0005; Thu, 28 May 2026 03:16:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 305E46B008C; Thu, 28 May 2026 03:14:42 -0400 (EDT)
+	id 5540D6B008A; Thu, 28 May 2026 03:16:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21B916B0092; Thu, 28 May 2026 03:14:42 -0400 (EDT)
+	id 48FE66B008C; Thu, 28 May 2026 03:16:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 106526B0088
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:14:42 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D30FC1C1CDB
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:14:41 +0000 (UTC)
-X-FDA: 84815965962.11.1C74086
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 28520180008
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:14:39 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VCYo/kAn";
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3968F6B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:16:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C08DD1C1F70
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:16:41 +0000 (UTC)
+X-FDA: 84815971002.03.2A6316C
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 01652180007
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:16:39 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779952480;
+	s=arc-20220608; t=1779952600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AMHRCZ/Uj48KQbmFraAMkWjb/Yi2LkWhbHoiVD5mViA=;
-	b=UEdSpKNhtt29Dlr5r1aU+IfBa04uba4r4uplmsAs1VknDXQhqcZZ7un4mYMzOcMQrRhZj7
-	GudNXoizVtCWfSUy3kpe2AlC6nLXRKBqITBeiqzhfc8UzIx61L6LyVVUPskqNNzEnc0cIg
-	WiLgANuZlrT3OuSxfonJI/DZw+yonpM=
+	 in-reply-to:in-reply-to:references:references;
+	bh=1itDI4n1n0mH1UBtuFOYwvdaKOCLmOzQbFutCY8dx4k=;
+	b=KkeRNrMAE68MYGKokuqppRTfiEfGk0rr71JCxW3Oo2U3N/POPHMIXtDVh/HWTgZ02nDt8y
+	3Dcoqx6SaQJem1EJF5vdwPYE7P+Nk6ODa2V+e+b14r0rjokK7ecKB+G4J4qWiPKCcYAL68
+	Pk36Sfu1AkN9fF/6z2YtEBb6bzF9dsE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VCYo/kAn";
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952480; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952600; a=rsa-sha256;
 	cv=none;
-	b=K6T7Bo1a0RwiYE9NZ7w0LtW8sRGvauZrrs9+mK3AS4TOsqw1Q6SYkH2WSBZGOQ/zJcD7BM
-	vpZsoaq2ef74DXaMiV61TvAC0nFDOXHdRTCFlYFhc1mDKgJ4REdHtgzzpr4ZFDqpJK0+m2
-	yEzw1We4YbysjzBiks8isDj3I3CCMD4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4A55344195;
-	Thu, 28 May 2026 07:14:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A1F1F000E9;
-	Thu, 28 May 2026 07:14:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779952479;
-	bh=AMHRCZ/Uj48KQbmFraAMkWjb/Yi2LkWhbHoiVD5mViA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VCYo/kAnidj7WuNhU0XFKQXOcDvDd/yD85UGCv9mwdHK+JS0RAVNF7KU9fdNcSszP
-	 q3DhFo9mP3UPpT4llrLK3PAdb015+g1MqHUNYBFjramxw/+NA55SpoMw2afX2FPbqA
-	 dPDrYC0TszCnjWWIvp73l9RfsDBQoRQNXw9IyIBwATsuwL5A0YGnxHp3mhXGJxoKb8
-	 njAZvOUs7KjOyK8q9Ej2Ts56p6Z7IYxFXEQhdRxWxhC+cVJOHy+OXR2SI/0ljM79op
-	 f59S3iQd7f3v8Vxj3jOhXRLSqucGWsIY3wo0U5HwRNTi9EGGggJzE41xcSGKKM46Rq
-	 o3Z/5yWTfsPZA==
-Date: Thu, 28 May 2026 08:14:23 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: wangtao <tao.wangtao@honor.com>
-Cc: Pedro Falcato <pfalcato@suse.de>, 
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"david@kernel.org" <david@kernel.org>, "willy@infradead.org" <willy@infradead.org>, 
-	"sj@kernel.org" <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>, 
-	"luizcap@redhat.com" <luizcap@redhat.com>, 
-	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
-	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
-	"jack@suse.cz" <jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, 
-	"harry@kernel.org" <harry@kernel.org>, "jannh@google.com" <jannh@google.com>, 
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
-	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>, 
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
-	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev" <lance.yang@linux.dev>, 
-	"xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
-	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, "matthew.brost@intel.com" <matthew.brost@intel.com>, 
-	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com" <rakie.kim@sk.com>, 
-	"byungchul@sk.com" <byungchul@sk.com>, "gourry@gourry.net" <gourry@gourry.net>, 
-	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"ryncsn@gmail.com" <ryncsn@gmail.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>, 
-	"jparsana@google.com" <jparsana@google.com>, "dvander@google.com" <dvander@google.com>, 
-	zhangji <zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Message-ID: <ahfqKUDyIt6fhgts@lucifer>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <ahbSwczOpsBKby7o@pedro-suse>
- <800d894e9a54440fa1d7f7b76e50a45b@honor.com>
+	b=fvEWaEzyiuuwllCELLFRaC+1n0Tk2Pj9UDzaD7bESltlNNo23Rc0712T7OAcIfFXV6osyK
+	HjEaK7ayismOxnR3FH+SImvbUafHwdKNlHvoaPWCQ3R7quovoXPDjUhFca4wGH8B7d/7RR
+	V97KqzlwyzS3Axew/aFwWDDLh1HJZh0=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 5567568B05; Thu, 28 May 2026 09:16:35 +0200 (CEST)
+Date: Thu, 28 May 2026 09:16:34 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Chris Li <chrisl@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, baoquan.he@linux.dev,
+	akpm@linux-foundation.org, usama.arif@linux.dev, kasong@tencent.com,
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-mm@kvack.org
+Subject: Re: RFC: better block swap batching and a different take on
+ swap_ops
+Message-ID: <20260528071634.GA1184@lst.de>
+References: <20260515120019.4015143-1-hch@lst.de> <CACePvbVvhJ7Kz2wtUUu+PoNweOsq5XABSMqKrabX6FTdK2fpuA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <800d894e9a54440fa1d7f7b76e50a45b@honor.com>
+In-Reply-To: <CACePvbVvhJ7Kz2wtUUu+PoNweOsq5XABSMqKrabX6FTdK2fpuA@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Rspamd-Server: rspam12
+X-Stat-Signature: dbgthu66fda5ya1py3jyfwxjxpor4q73
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 28520180008
-X-Stat-Signature: ibz7ozz5s15mqwatyym9odcrx99me3xh
-X-HE-Tag: 1779952479-366698
-X-HE-Meta: U2FsdGVkX18VdY6MeqGjMWLgXDm3AMlxLd1As2ZZ19Eauec49xGHUxk3IT/f4iapI30g5jOITxcr2rr7K12thZ4vWzFz44wBeSYFpl67vdfzlp5PlAaCFsOIACkArZPhX+4GN1o68maMiAp8AKRWn2O1MDkVZSx6/nb3ftbJOa/FuCpCSf4JTAdiE5RQfNekmUJjmj+o+y1I5Qn0fsKCT3LSPBeSLPOdXoQsNUD+iycjM5mtN6or0K1sEjYpl7TNBHUr9z1nZ+U7llTsCq/kZNyDiiz/KpZ5riqAxwBe3q3dX2lDbLDVNR/dIP58z4EdAxRXUuP7NFvO98XnCdGL9+x5IqOlUvLoy1aJoMZAJ3IThcjZoHrutiILiGuYLn2CcLzbLbq2FCBHEcpBnBa0ZEqUMI40B2T7KcGgGal2iSL1LxF98/xlyGzZRQeAgntIOGaI6cG6+b78ktHZtJd8NlfSkleqB3Rm5P+4wbG9ttiC8ni0R1bkLHlhA8qiVT71zzyWwQUx5oTRHBSzBKWAzzTWUZ6rPKRH8KUmf7rLFgEw59FZesNGpLnpbdiRb00I9Jhi4P//sV/oWObM4v8bJwJiwnQdnmfLbuRuPdmIkpOw6CId6jYx7jxwsdmeP10435QvM/yT89gJX5wuDoy7isH7jafBjaf82dk3AsoGqUeY5clh3h5v9Y9hxvs6ldhFanLz+kx0qMzJU1qQPpM7R+kUn2+2NyeMRjdAUWfidzY4bJSf61LymhaQ0lHIkU5T+LRheDHDD4qJkEbMM3Xn6G9exHOZu0PrdWpL5alx/aligXgkBQgNHfG/6BmyyHDoNNV+HDGSRLMsLmivFS9I+k3h8l5wNIvYYSRyq0dWGY4TXV1eMnvxO+uw23BZHacfRKw3uEKyaJR2CP3axNaj4g9n2jtW8wjxtTjvVSAcEf6RDze7KdAFUKZufrW6S8O31gHootBbhmeJ3QVHBhP
- l1WwDHza
- qeZ/2Z4XF+EBxvExvF2TBiudf98a3RioL3TK1sGrD8vyFxgmfis0f5UQ3vQ1FeszdLDJhL7ErrUyNQaASnTV3yARErhivss7Phz9NwMwvzkfIJQX+YLdOhVoG4WGUTxgyb68JpE+H3Kyr5Hu8n62BAdOcp73jxsBgfm4cSEaVF4U2PNoLDR6VcV13L8l+M18fvWqRnd6wdKESPBtPDms0kVwCQa84hoIl5quVfGUYGLcJlCGeDMqAiEhgmOuQmfYQkk4Hp4BjJaknhpDKnNgz6ZULu2kRA+mb10hYOgDbW/2CgRPFk7t1/zGDvAHhM8rClpPMSHbigY0L9fx0bGsJaMzC3XBlC6xAFGZj18JES74/UTil+VmIA7M8TuFux7FGmtMDxs9TPqpabUcEUWNNX2yDsMXLPpWtDEatRV2rk43H0uYhwGoBJom010/yM31Ylqz1+14sm5tt3BKv69ppCj1blhcZT00QyZjxJr/neU70whW3ZmiwCS198g==
+X-Rspamd-Queue-Id: 01652180007
+X-HE-Tag: 1779952599-77062
+X-HE-Meta: U2FsdGVkX18KWx0qTKoA/PLmUblxlsecYRj+ytrjYvYJ8Duvba4PkCt10R62wdcLpJnduNLuaZxyqcRoixCEWARWXaF+QeW1k+GhCMxvulk4B6/0y0HSJ8W8GSCv+fYZWvR2RTiyKMC3+aM3PNLUGbqkM+6OzfFgAxBkweGVdUrW4KEbtVJbo9FEmoBXH5888Qzq/Q0Zawt4Mt7GrTNWx7kqsrFjWToX4hIW0WPuXSqRLaki8CTLWgAK46mY/b/3HvwLHmg4YQnYGR932c7U7hXan6LlXYG+ZJ76yz4GRjuy8Q5SlY1jKhSwYVp5KEhXvSiDYVIBUMU/VLogjSgMv9HcKGprCwrf6tIfiNi6/r3x8WX3sPACg7xvMfUXb30XPJ+ocSMJfLGtcpamQ97bHNwFxQUgmQ3yaJplhYgpYVqNFKR4Ee9uYakYIsa/JaDzbIByz0TobHUkYmcAZSBxSitzcz1xYJYrYhzQZ6m+2CpwVbrSjmaFJxyEAOKk3DkxWrmjt4truQQEaIe7njAySXNGwKniT3YBuXFD++dhhU4Zl4d5RAPlFSqCZf5rHeqRtEd9Sf5peujZ1JOrH6QhyxsKl1LcxOrCRiT2eeYkatRuSPXtdU1OfKYnqoQ56R4UG+XSCYnz/4FkbwiCyJ7bhSQvLxJE3hEKEGdvfwuvaoIRSzuZxG/eElRy9gGoSB2MNTOAaINc0cREySHyt8AMtyV2hlvzu8UbaUrArHNCwYHZZAmVWFxihzZ8oD9Nl0MU4srvglTAYI7bN3OL8cIvuIRlM1zVcOhFOX7QTd0hjOxVv5GQyg6XrBqC5DpqP+tgWPVWhgTu/2L40FCUcIwEF6SZ+byYpSmJU3IEH0VG3wgHSJPtwX0/8C1Zq98Rp9kG5HxfB9SPMDa7k0IuPgo+YKkELMeGfELc/r681ujJSKbBMdzZ7Fx0x2itL8hAVkzkGScrIjYCBO7xAEszzBN
+ QuDbd2tW
+ D721wDYAvjcYp1GIuDyRoLIwwsKFwfhUhykQwT+WvD0WKcMKX57kBy8OyPJDwmiTF0BqWx2dHVMLr2Wi+MI5wSkY4ds5F0Dn6RoopaT8TKiTp+vUB16MvYG5TApfLbBShKlYz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,68 +81,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 06:45:07AM +0000, wangtao wrote:
-> > >
-> > > Feedback and suggestions are welcome.
-> >
-> > I'm afraid, per previous discussions[1], that no one is really willing to maintain
-> > extra complexity for the current state of anon rmap and anon vmas.
-> > Sorry :/
-> >
-> > Also, please don't send series this large without previous discussion and _at
-> > least_ an RFC tag.
-> >
-> > [1] https://lore.kernel.org/all/aec533b2-37a7-4f44-a279-
-> > c4aa604206ac@lucifer.local/
-> >
-> > --
-> > Pedro
->
-> Thank you very much for your reply.
->
-> As I am not very good at english, I haven't participated much in community discussions before and I'm still not very familiar with the usual process.
-> I realize now that I should probably have started with a discussion thread first, and that this patch series would have been more appropriate with an RFC tag.
-> I apologize for that.
+On Thu, May 28, 2026 at 12:10:48AM -0700, Chris Li wrote:
+> I like the direction of this patch series. I suggest you send it out
+> as formal patches without the RFC.
 
-Thanks, appreciate it.
+I've been planning to do that for two days, but I'm still waiting
+for the buildbot result as the buildbot seems to have some delays.
 
-It's also for your benefit - regardless of AI usage or not, you've spent time on
-this needlessly, which a discussion could have avoided.
+> One observation is that, this patch series aims at situations where
+> block io merging would be beneficial. This makes sense for the
+> physical block device. However for the memory compression based swap
+> interface, block IO merging might not offer additional benefits. What
+> do you think about a combination approach that allows the swap back
+> end to select whether to use bio merging for swap or not? The end
+> result is that file system swap will use your swap_ops flavor. The
+> zram and other memory-based swap backends use an API that behaves more
+> like Baoquan's original swap_ops series.
 
-Also as I said, going this way has damaged trust, which also doesn't benefit
-anybody.
+There are two approaches how we could do that:  make the can_merge
+callback more high-level to avoid merging, or offer additional hooks.
 
-mm is a welcoming and open community, the best approach when looking at
-something like this is to engage with us :)
+> We can merge your bio merging swap_ops series first and then design
+> how to allow swap backends to optionally bypass the bio merging as a
+> follow up step.
 
->
-> I will read the discussion in [1] more carefully. I also noticed the related code here:
-> https://git.kernel.org/pub/scm/linux/kernel/git/ljs/linux.git/log/?h=project/cow-context
->
-> Many years ago I had already noticed that data structures such as vma, page_table, and anon_vma consume a significant amount of memory.
-> However, since the mm subsystem is quite complex, I didn't look into it in depth at the time.
-> Recently, with memory costs increasing, I revisited these structures and analyzed their memory usage again.
-> Since anon_vma seems to have a relatively smaller impact compared to vma and page tables, I started by exploring possible optimizations for anon_vma first.
->
-> Although anon_vma is relatively simple, there are still quite a few uncertainties.
-> So I waited until the basic functionality was implemented before sending the patches for discussion.
+Yes, I'd rather do that when we have a consumer.  My impression so far
+was that the main support way to do compression was zswap which sits
+above this, and we would not optimize for low-level compression.  If
+we have to do that for some reason we can do reasonable optimizations
+for it.
 
-Thanks, I am more than happy to discuss my approach. You can also see slides
-from my talk on this at LSF/MM at https://ljs.io/talks
-
-(Note that the code linked is an incomplete implementation, simply some early
-code to give a sense of the approach taken!)
-
-I would ask, however, in general that you hold off on anything code-wise before
-I am able to issue my own RFC implementing this approach so we can avoid any
-overlap/confusion.
-
->
-> Thanks again for taking the time to reply.
->
-> --
-> Tao
->
-
-Cheers, lorenzo
 
