@@ -4,78 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 525E9CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:28:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D72BCCD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:28:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89A1E6B0088; Thu, 28 May 2026 03:28:06 -0400 (EDT)
+	id 1E3DF6B008A; Thu, 28 May 2026 03:28:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84A6E6B008A; Thu, 28 May 2026 03:28:06 -0400 (EDT)
+	id 1BB216B008C; Thu, 28 May 2026 03:28:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7615F6B008C; Thu, 28 May 2026 03:28:06 -0400 (EDT)
+	id 0D0A96B0092; Thu, 28 May 2026 03:28:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 64B0F6B0088
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:28:06 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 03F66C1941
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:28:05 +0000 (UTC)
-X-FDA: 84815999772.19.A7FB88D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4E4B914000F
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:28:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eA7c4CQC;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F2CE16B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:28:08 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B892A1C0664
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:28:08 +0000 (UTC)
+X-FDA: 84815999856.24.28FCB9A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1DCA3140002
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:28:06 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mC/kwi6U";
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779953284;
+	s=arc-20220608; t=1779953287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=34mIzU/HK17mAF70IBteNDWQtmnNv3IMAkT2Gk+MBOU=;
-	b=zYjlDoc+gj8vcYUWuRXM/ozrRkRTcQqQKa10bT4Oen+fYmM1YTV7JkcSjwMymVve5ZeC5h
-	qD4CjREGADs6dYxmExdfWTsTVCJajuPnXWu0kmvE5qCvjq/v8JHGJLCcGFu0LO+Z7ZJ9fL
-	mIz0kAmdd2Cku87u6i1AhBvbgrg8r6Y=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eA7c4CQC;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779953284; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vK6XINV85j2s6TrgSUq08NPf3qvCIuW4cqZINOK3rPs=;
+	b=7nP/XqNIt9tpjysTIAfuVlfvDkwu7TA/kjiNYMeoceuu3b3DdT09rGh8nSKUgR8UmwwzBM
+	PM7P7Y2ot3nEo6QMbPcva6P716Hcs32OekeyOxvfkEwbmTRxB8WszxW2FzEu/OfTrmsihu
+	V0UePv32fFBRroiH+ZRlYjEZ93Y2SDY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779953287; a=rsa-sha256;
 	cv=none;
-	b=YEAFtjEFQLXAeKBmpE/Bdrqmvy6Ah2qYBHWs/5kwGyfaVh5duiM7ttRM+R0wgyDTAerpUd
-	tzuOLupMpfcOWIWm2JDEZW8PLg3hQbg+cmqV15D2oqLW6HNRNnoBDLWvveNr738EoOusdH
-	70+vCRWGSkDZ0YB2hEJ+BP6lbSutp+Y=
+	b=Oc+WkaS3bmh1E6JV9iS6GDfY9xsrKN6FGJpd29CFpKEohNy08uqF+8g7hj54KsxKl46X0p
+	zNghK4LNRRzdt+DEFZVG32dV1/R3xz42WrJq7wMb2aaNxaphFRXjs1+yXbUE4rKRkobyms
+	ScnFJ+Pw/Ln3E6i+c9NQNi1SHrAI0zw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mC/kwi6U";
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 67415440B7;
+	by tor.source.kernel.org (Postfix) with ESMTP id 84E76605D5;
+	Thu, 28 May 2026 07:28:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F8A1F00A3C;
 	Thu, 28 May 2026 07:28:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15A21F000E9;
-	Thu, 28 May 2026 07:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779953283;
-	bh=34mIzU/HK17mAF70IBteNDWQtmnNv3IMAkT2Gk+MBOU=;
-	h=From:Subject:Date:To:Cc;
-	b=eA7c4CQCCcbL+LFrSOiL7OpADj/sn38z/f+wwzPMWsajyyd+yM9nxlnsjO/Z6lDR5
-	 2TCx8ETAIGXiIl9K+BMbs6PYBElYnMhW4jKzS9B+O4H2nGihd3ITgE6kk6f1KJPUL3
-	 XZmprZBXUSBxcb4fPLF+7VFQqyp1kMxWWqX0qYtxg5NRRX4QnY1jQvjYBW+pwX2Jfx
-	 1gXGmcpePwS9Ly2I9JDD0a20XUjhwJ4XzxOMdIZu5WvnAu+SPN7nNe9xab/aoSpvxa
-	 /SJgx9bw59oaycFcEv/MT/kb59d/wjn6XG5wejS4S7L2y/yBGbs9Sz+5QGDc3+eXSq
-	 3cvZF92pGTYXQ==
+	s=k20260515; t=1779953286;
+	bh=vK6XINV85j2s6TrgSUq08NPf3qvCIuW4cqZINOK3rPs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=mC/kwi6Us+Mzhj4xAvTHS5kxwU9UeMAmB0sQKTZCMBfY25IK4gsFMM3ydQLs1zjzq
+	 zJekufNp37Cz6cKdT9UztYZUKsRww4WsfKBw4h3xo8ZG9gFuWzpg5puC3sTdlgk4Br
+	 FxqTwbyYJUT7ixVWza5yfEiprUHPJTwzSogSa6V7YeaLjby7sYaFvF2gnliBJVg01f
+	 rAkfgW5IbBuqvoYQLndkKHFegPRiE7Gz85i+375gEkLBD+dwrVn7SnWX6DfLCtZhue
+	 250wtDJ4rL78Mo+9dW2Pd8GoYM3SX/kMXec6t+Cr/RDpQ5XyoYkVwCyfGHk9fjbMBw
+	 74AdQFn3iQ37Q==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH v3 0/2] lib/raid: replace __get_free_pages() call with
- kvmalloc()
-Date: Thu, 28 May 2026 10:27:54 +0300
-Message-Id: <20260528-lib-v3-0-feccddf1cb6d@kernel.org>
+Date: Thu, 28 May 2026 10:27:55 +0300
+Subject: [PATCH v3 1/2] xor: use kmalloc() in calibrate_xor_blocks()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHruF2oC/1WOwQ6CMBBEf4X0bLW0BdGT/2E8dMsWVkkxLRIN4
- d+leJHj7M6bmYlFDISRnbOJBRwpUu8XoXYZs63xDXKqF82kkKUopOAdAa+Mg5PMlVbiyBbnM6C
- j95pyvf10fMEd7ZDQ5AATkUMw3rbpBPpAnob0aSkOffisA8Y8JWy7xpwLbkEJXQA6WVeXBwaP3
- b4PDUtlo/yHyh8kE2SUE85KDbneQPM8fwGBDGQk+AAAAA==
-X-Change-ID: 20260520-lib-8afb92134307
+Message-Id: <20260528-lib-v3-1-feccddf1cb6d@kernel.org>
+References: <20260528-lib-v3-0-feccddf1cb6d@kernel.org>
+In-Reply-To: <20260528-lib-v3-0-feccddf1cb6d@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Christoph Hellwig <hch@infradead.org>, 
  David Laight <david.laight.linux@gmail.com>, Li Nan <linan122@huawei.com>, 
@@ -85,13 +82,13 @@ Cc: Christoph Hellwig <hch@infradead.org>,
  linux-raid@vger.kernel.org
 X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4E4B914000F
-X-Stat-Signature: b66cgjww36xokmeba4spss1kp3q9u6eu
-X-HE-Tag: 1779953284-82142
-X-HE-Meta: U2FsdGVkX1+MWd8BUl+ppMdnPzPIsSZO7qaL1A0MNuysM8orjrdh94mNSFptAwswQwMeH6JA1ESOLVBisqycEotCLQdKPJyzBosA7V6LM9drOaDkuftz/KAJfmTgjo/guS81mFICLDNLHGTRTZ6tcsbbDUXN0uz8j1lCO/DJad47jgXVNSB5ZsQmZIqbU86smfH1MO6ZSYi9mvNr3BOuAK7fpo4wSyUnWesHi03c3yeZNKmAZQXn0gCfJbzrKfeJmDXIn5YMW2jCzorHR7YE2facsq1Q4iEEJuipwUKd1zbwAAONDffNx/hWARW2uRKvJgF6L6zPdcml7SHx6lYuZ15b1gYa9/NJkytEyIUOUcNEyvOUrXKdpAQUqh4+bgqyY1nAD/PecaFzOlgF+mqzM3DTyIQOlEwvoHt9rualwMcRsNCEXUx1itpLa8XDaYg2yiR6eIsOWCWLjiAqtGUlL3WURYe+Hvjt83AFAQY567IKUqMkcpwcNJt3lNZ09ayPKmeiS6p/zlLECoVqU2dC9At1MRq9AGYmFe6qkx9nfrP3xoHzH6B2mWxGu9F9yr32Kz/KBMFplXQ+shmqcpEF3Trjzh0SlcmBPSs1aUhgDzmSZBUyh6W5hbr3pNRmZH2oq1gypawBtPFDXYGaZ/r0/gYq5Fa+kZ/NtNAWxfRnpKVcgqbVhh2ZTn3CMmwHsUzZs4dgKAETi1tWQztd5xPYA25qemPwf0EDhrj8mAjgn4j0RWiYth4aq2ZNQ0idWmBu3bTNzrEOqEhE6BR5WtlaIt+WFmaOr7gXVL/3F1gb1pVx6WMg0r10pdlpSAuov280nlXexdzBySg6EDjw3/+Jt6UcbvU+gtlRU+Uuakh5/LmqUGq0eXVsKfGaftsBNASegqMYgtgSk/Yjff7QyEl0a9Ckr/30byvkbeelW31fJxJ4Qk7CE4sfHXgCcKdA2Gj9DhTscIqC6oriy5kKptF
- icpmMMxK
- 08L1O1WrtSq+4yrqIuVuJAe4TWN1MFuXgnTdJWhKXWNtqW9bbUsuXhz31NfSEYexB1vAjfDiYxwoekuvT6N7GbOmQ0FL3O4x0QvI7kH/P2h35RiBnFqyvXH04X7kFBkjAixIOv6BDpWD2tzqv24+2otriFrFfTrzKnRcnbjjJPIECfIJeu/MQeuCTIXkdYnEMib5ZaUs/3HMvqvPQ+WWzVVtTEN3UuZrxJe2JSU6QKidLGpD8RNpXWloZLDDcZp6Wl0cbJm/0RSoHGBkThnOSBtZEJExT4goKs+5mClOBVEe/pLxpDN5JfAeOHx06FOWxFzNArCHSkjS2TNiB7pfL8U5C33W3kDq/ckD1VQfK2QxTpwtVPIzdkzPBB50cql1Ha2A9x8schO2oxcr771DwjKGgwKjeIeD1TewQG1BU4HX5FvBHH54zErRwWVXA8gTN4XqQ
+X-Rspamd-Queue-Id: 1DCA3140002
+X-Stat-Signature: y3o9rwtkwmnkjht4skoohai9dw67e1m5
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779953286-427430
+X-HE-Meta: U2FsdGVkX19hSvdv7zr2IgC0T8+T+hvje+jmHoKl47I6+2EUJRtpzEjv5vzqIiYGjkEx4J+mtPN/dZsnAKDQ+5SRFAJmgYeMYQ2Z14jhiB9E4wC1SCkynqdqjlg2Mcuzk2x2qM0Uj1npB5C0F5WqHrmmu70hmJ2rbSg3ePAHxCqp4y5rSVjkCiM+FaYWBF+Ap1a3hnhIneKa05T3ihU6dYV1njphcDnJveeVBnErugVyuHgo7NOWeGVB2c5EMRPQ1SIuPTxx2dVmZ1KLA4Wu/IDbQz5EzZ8GJF8+2NBVgexSTUAx0/K+ULKrSEeikH68MqmMSXlIHY8C5rIY4vHmj1QG0YuKtor9um2NJR/3jz3jNnCyaA4FERILxytpuYglbJUKI0Tgt8GFz6LR030QBBKiVx1eNzSDaLo80iL5WB7t2ODStBYsbhpLKraqiqF63EgPIXGdhOAxsJ+yosTFfCJaWvEy46desGtTG9A7pYkhBpiw/UfK+GqQaFPYXsd9eDqoPLuiyvmGvXk0U+OPOOfsxzUwhUo/DiFVkpROCrrza0Rb+GT9KFtwuyXP6g0rOXwHC4dPfm8sEDORsXWVBMOr32YfBzq5x8qRJuQPpFUnBE+ChUPe57qj2N1xz9Btuap03o/O9mCfExI9zquS8Iq7tkmya89DI1kZAkM5/8K60Y575sCmSXaFwr/mSe0NvpuaYGNGwQjtWNtECZ9p7PucwT0KPgz4Ce0LMchbAPNJBYuGlTaWnjJPQgnazj1ocZM61xMT+KTBLMlbvYA62iVKDaRLQbbu8nzBeu1iJX2XqUkYuUxF0UsTVuHqYBf2khdM795qkV7xewjGxJ1MEi+8K+QKtHIBSIIo+P5tFs4Kxgn9Fe74pwQ/5tBerWr/qVoJgDNF0x+aPrCY8ZlEPjyAvrPmVGkOwiIO/b/ZH2M00frh1NdCypYMYR/AZzZ8IadgNVzwiUNxLHLYwne
+ XsnzND74
+ /hAQF+JtN89qgKbJG/ULDFUmeQwOgEl1oCWUCN0nEIwKCaqA4WwduL79nhJqrXKVA726JCOSscWArbKwfQjPfQQ3FoJwgu4+Zo2POEqqcwqUvRw9ZkA2eaId3Rtkh57W25gKvQMJ1+20E6hnpIETabIww927z4vy+VU9xhdDvwSD6w4xUBWBSOtKRM3mzXpR7XvJzei0cFpLRFBEaa5+XRgXzSuZi3JWMh5FMUcl6zEy8Atv3E3oh+3MCO/dv+FstKEfKT15tVUPs3H2WCZ1zvWoI04ZzTvlqYEO6ctBSTylh+E+90ts58adaDkj6/4CojSQu0BhUaagUhoXnJpotufDg+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,37 +96,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a (tiny) part of larger work of replacing page allocator calls
-with k*malloc.
+The xor benchmark allocates 4 pages for a scratch buffer that is used
+purely as a CPU-only XOR working area.
 
-Nowadays the right way to say "I need a buffer" is kmalloc() rather than
-ancient and ugly __get_free_pages().
+This buffer can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
 
+kmalloc() provides a better API than ancient __get_free_pages().
+kmalloc() does not require ugly casts and kfree() does not need to know the
+size of the freed object.
+
+There is no performance difference because kmalloc() redirects allocations
+of such size to the page allocator.
+
+Replace __get_free_pages() call with kmalloc().
+
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-v3 changes:
-* restore kmalloc() per Christoph
-* update changelog
-
-v2: https://patch.msgid.link/20260526-lib-v2-0-ca3f0fc24b14@kernel.org
-* replace kmalloc() with kvmalloc()
-
-v1: https://patch.msgid.link/20260520-lib-v1-0-cb3045bef2d8@kernel.org
-
----
-Mike Rapoport (Microsoft) (2):
-      xor: use kmalloc() in calibrate_xor_blocks()
-      raid6: use kmalloc() in raid6_select_algo()
-
  lib/raid/xor/xor-core.c | 5 +++--
- lib/raid6/algos.c       | 6 +++---
- 2 files changed, 6 insertions(+), 5 deletions(-)
----
-base-commit: 5d6919055dec134de3c40167a490f33c74c12581
-change-id: 20260520-lib-8afb92134307
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Best regards,
---  
-Sincerely yours,
-Mike.
+diff --git a/lib/raid/xor/xor-core.c b/lib/raid/xor/xor-core.c
+index bd4e6e434418..7f6436774644 100644
+--- a/lib/raid/xor/xor-core.c
++++ b/lib/raid/xor/xor-core.c
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/module.h>
+ #include <linux/gfp.h>
++#include <linux/slab.h>
+ #include <linux/raid/xor.h>
+ #include <linux/jiffies.h>
+ #include <linux/preempt.h>
+@@ -114,7 +115,7 @@ static int __init calibrate_xor_blocks(void)
+ 	if (forced_template)
+ 		return 0;
+ 
+-	b1 = (void *) __get_free_pages(GFP_KERNEL, 2);
++	b1 = kmalloc(PAGE_SIZE * 4, GFP_KERNEL);
+ 	if (!b1) {
+ 		pr_warn("xor: Yikes!  No memory available.\n");
+ 		return -ENOMEM;
+@@ -132,7 +133,7 @@ static int __init calibrate_xor_blocks(void)
+ 	pr_info("xor: using function: %s (%d MB/sec)\n",
+ 	       fastest->name, fastest->speed);
+ 
+-	free_pages((unsigned long)b1, 2);
++	kvfree(b1);
+ 	return 0;
+ }
+ 
+
+-- 
+2.53.0
 
 
