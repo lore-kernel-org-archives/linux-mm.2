@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F09F0CD5BC9
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 00:42:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEE5BCD5BD0
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 00:42:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDCD76B00A6; Wed, 27 May 2026 20:42:36 -0400 (EDT)
+	id AA7026B00A7; Wed, 27 May 2026 20:42:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D659F6B00A7; Wed, 27 May 2026 20:42:36 -0400 (EDT)
+	id A55876B00A8; Wed, 27 May 2026 20:42:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B90CF6B00A8; Wed, 27 May 2026 20:42:36 -0400 (EDT)
+	id 884306B00A9; Wed, 27 May 2026 20:42:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A4FB56B00A6
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:42:36 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67ED414067F
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:36 +0000 (UTC)
-X-FDA: 84814977912.19.2FC778E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 718EF6B00A7
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:42:37 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3FBFB1A0738
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:37 +0000 (UTC)
+X-FDA: 84814977954.01.1B41CF8
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B9B7F20008
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:34 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=bds+T53Y;
-	spf=pass (imf31.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779928954; a=rsa-sha256;
-	cv=none;
-	b=AAuDqY758wDCh1b4JEjrzHibAVmWSnOhK5BaVkk+KDU5E9eclmz5B2rKa1N6GcHoL8rwO6
-	gt7UPgVFxmugg8CmpxMqAYRjYBmQ6KbbyM8GxoZnbqMw9bqFWdOdyi43sExDIL2cqxIBSt
-	hgHaaynrE1ZIsuDm0wLeN45rgZvlWCI=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=bds+T53Y;
-	spf=pass (imf31.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
+	by imf01.hostedemail.com (Postfix) with ESMTP id A1CC54000E
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:35 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=PIEHqNEC;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com;
+	spf=pass (imf01.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779928954;
+	s=arc-20220608; t=1779928955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lTYSobW1vcaiuFaW/ih0lOZTdJfa7tMYIcB/6JUObEE=;
-	b=qAzgHhQY0GDdrWrv2UxCXC/oftqUkX7VyW+wSYRzlA9jtD0AV8C0Oa8qyVIDE7F2PEKeNO
-	aoxliWJ+reObAYEFzmhH3nM+dSWy/BT/hblD8ocZQm499nmm62UdZg0J8zmzzqNrDx3oXS
-	zt60PIs2QXvynAlyId757GtZrqGlWzg=
+	bh=Cpp3h87G8qknuAl35zSdpszjamPTiyZ/dw7XF2/OzTk=;
+	b=tfJ+/kMTxRc+37x4rTO85wPEGoN2Hpa0TriHGxFESpHIMgRKaWVh22Sihiy2ioRxa7kg0J
+	FO+1GWqZMz4WWVWq1Lj3rhAiq4vQkK+5RDwEsqAW0doQvoWmAsyrwqH9r7dt9P4ous8mF1
+	zgmyLht8dcWdQI8/Q259a597PWkjpzo=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=PIEHqNEC;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com;
+	spf=pass (imf01.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779928955; a=rsa-sha256;
+	cv=none;
+	b=379+MgXVsJqzzNKCiAn5DWrmlYpSc9W8ipjDM3IRQFt85dOFXoEY3I0z58/iSlGMVPFUhH
+	OXEwk1pominPPEr7NBT8Az1Gz8BXbjw0Wsg028OEVBUyicq8vxXr2g+XtiLzqOayDt4P+5
+	VMg/fS0M+zspcH49mvdJUfUdkko8/xI=
 Received: by linux.microsoft.com (Postfix, from userid 1241)
-	id EC17820B717A; Wed, 27 May 2026 17:42:23 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EC17820B717A
+	id D7DDE20B7187; Wed, 27 May 2026 17:42:24 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D7DDE20B7187
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1779928943;
-	bh=lTYSobW1vcaiuFaW/ih0lOZTdJfa7tMYIcB/6JUObEE=;
+	s=default; t=1779928944;
+	bh=Cpp3h87G8qknuAl35zSdpszjamPTiyZ/dw7XF2/OzTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bds+T53YSwua67KRic1D3xTDVI8g2FG5kFyh9yUH+NKfBwH0s5MxGdFticf7R97vc
-	 C6Xh5MCYze42oBrgNFWnDpyid/h5MQYDeNPF/7cyO0UVqYZALjK7f4naGCfMw8KflQ
-	 CRrvEG5Kw9ij3UM6KLbWJBmrvJ8vse+aL8vwqdDw=
+	b=PIEHqNECP5CTqhXoOkn4rDFNUhRk3G8ySSEWPLqOtUqj80vbwQHXMFlUQhyAXL6nk
+	 Lkhsmhg721K+zYQEUnUOCDla7QLptnzUdto/HtBqJ3+Y+YsgwYNi4ynRenpctewPNA
+	 Xaw+l3dqh3iNA2xMzdvnzv7XVsaBKTonUE6FHXyI=
 From: Jork Loeser <jloeser@linux.microsoft.com>
 To: linux-hyperv@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -96,22 +96,22 @@ Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
 	linux-kernel@vger.kernel.org,
 	Michael Kelley <mhklinux@outlook.com>,
 	Jork Loeser <jloeser@linux.microsoft.com>
-Subject: [RFC PATCH 16/20] mshv: Add debugfs interface to page tracker
-Date: Wed, 27 May 2026 17:41:58 -0700
-Message-ID: <20260528004204.1484584-17-jloeser@linux.microsoft.com>
+Subject: [RFC PATCH 17/20] hyperv: Reserve crash MSR P2 for page preservation root PA
+Date: Wed, 27 May 2026 17:41:59 -0700
+Message-ID: <20260528004204.1484584-18-jloeser@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260528004204.1484584-1-jloeser@linux.microsoft.com>
 References: <20260528004204.1484584-1-jloeser@linux.microsoft.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A1CC54000E
+X-Stat-Signature: h7yh97oxksszsrpj315w35u1po498nmx
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B9B7F20008
-X-Stat-Signature: pmq6nf8zegib8ifpy51tucmfjnnrpq9u
-X-HE-Tag: 1779928954-677775
-X-HE-Meta: U2FsdGVkX19s1DksDe8/cnCTKoBMYw4M8TGb/laxLUpxOgsqaNWbyJcBn+3UXZvmXPm1cUEZyNnh6eSd+q7MXWtLRTMK5dl90qjz62ao+PN/JFJX7jV/MoIb5YyAnaKGOAWMiCC6FApTLElOZcxE38X5hV5QwR252yr2lLmlfOUppSo2e6Vok3yN2VE5Iw6NubAPkQdtwLM8rRkb3rYONw4ur8y3CxI9EhrQt4JGlONvou/TORFszH1LHKz95WkIhviMCku+MV3ty6V2mWcskos9MO9dQ/A7gnFlt5MaZLxD3dRVE0cIlXpbBE65BwwqlANw7h2rwkp06+opvvoCsJb53Rf1f9YTPDldC5ABhcpdEV8ARjMc3woYseH7DFw9HkvjK/vStx3KoretX0v53PLalZvbqVgoZe82o5oPaTG7+ucAsEJmSeqNtCiLQx25k5myU5TNo+yBtJIuFHQUR3SSkPqOCxdzMPpJtqqnaR27geYcmNVNuX9XrUtJmxuhKjcxDxBdzr41UKD3v7FNsHzaGBMALYsa/3zEVNpUeMrc+yckcqv5Nwu7Ixa2sCpdeAbHtn8EyBkuIImVNsyqeBrcSo3r3kJlaV24yDPvsZzuT9+52ts9WFfqCse4dZ33189Vzz3hI9eY8batU4rS7q2CER/z8F+nDCCQ+jvSU5udTtOLTPuQmBfP72kO9tCWvF8L+qZKqYI8nI2ewNVDUI+jcWwG7+ox2Kgvx0FsL3IOazMp6v5O5bxYmhufE8OyFZiavSLB6+JCkOSXWZavMl/ocfcyf1CsxIsu3ffPLLPpkUKaJU8U5m+C1226KOg9qRrE3Xlyl/4XIynePx+WwZFwpyT5SadbTAqwGJdG6t0RnYDKuytvIV4dStJzlc+/w4k73++1G6yZr87KyQ2kO93u/9oLzQ+mXIBF6Qpx65ytiq6W+aNJLVttofG9kUtwylO2PhFllZbDKv7ZZen
- WxKFS0C6
- rjkMlAqYXwCwI1EoUx5aWZ7y8SbiTucHSp9ci7cCSUJsY7dGxTC8EiYtcPuyj0Oc2ViBdU26HO2j1CXMHU/Bjikrek5IADXBT5OMRqUoywAjJr982Aqu1lPfoX+OUMX3v6R9fNxu5cUuKenQcjZPn/Y8jLWz+bDr62UdKyHNCtK3beT5qGpJy5JfAGuTWtgArvJAw7K4YrWpQkPJ0UTBRJk5We+t0YjKBVDl0X/1reHZ1OpnNNJt4ML8+ayWxHRbt5Rae
+X-HE-Tag: 1779928955-817359
+X-HE-Meta: U2FsdGVkX1+HkOgb/PKdud+XGWu4yH6Fv55Es8asxuYxulXsRrdsSq+ql5qNBOydxQl6478/bLU5SBtuV4aOW0xJkpKnO8Xm+yXpsBF7Gue5pZi/5K6qe66iOoRXW0NxEBrd7g+C5Wdju8mYsGxmGDK1Q8wPXcq4U0lgc7HyzaYcy1b8v3Lb6HmEKKlm/htqjcS2j1NMp4SL6+eJgdpN10/fiEGI8gw5/hoQvH4i7R1Hog4zpcPCg+X2BKsOIJ+pW6R+KlK+1RK/y7bc1jWFNNo52vGx7uuYUMs5LsCk/CS+6xFWQCsRh5XFI8rVc3O0vnE0JAtZTyHr5kGq7lqzv+3QzhYRMb9fZusqzRGIJqLWTfu2aOpM2wMmsVJRVOyjihFK+nTdW6dpSf0qPHLUXKlWJbmF0frBjyzvFsG3Po5JpIeBRk42tyYGsy39tr5TYPa5v3tgQqfOUWZRaB21p3McsbwEy4RVjk2O6PQJKY2V91A3h1jnxt7cqqVnzj/TGoSYiNLF3tzp6clOwBW17o9akcERhniKqt1X7tNfS2WoeBMk93v1BQipE593TOi2lUaHypyKESeaeIQLXWfjHf1gzlJRY1Y2b6B31nxLT88i5TDj3svzsiSUlIwMsPRYXK32p9YtDxYlU+FVUMvrrR/vQlfcVkAyQkyvMUKpZnRYbvbQlkkMoX5z60+HBbCOZcE2ETcqD3yXXxzPX8RHPXz/2M+UnNL94PSWcPykzmbPomevZiRQZo9GuiiUjWiG8LY/eSrcOXrpy8Zx4ghW+hcwpS+lVVvu1uKZX/mneXKyLg90AO+rGVPAI4RscdCCuhVVLXm00rOawJssHt+ZYf26Dl6NXv8pIk5gINcbBzPsG1b2fXiGdjJddlWvSzqIufndhDly+Tsnxx7aa97g2ZzABN36jRIoF3eJaZTCau2zKa3iIUwXKyODc7zNpJyemIl21+g6kytD4KlLd6Z
+ TVjX5T9s
+ zQW8jvgNgMgPTMyWGGPl/PM5NrC3NkGFS7EXZCfiPjy2tIKSpbNyLGX57ncjXNI2+iiulr1UlX5/k1c+Dtjo1+iPYxgWPjHKwPkSP/q6zP3Sq5dp8QmZ161+tHN5MXQJNOcMC2MHhANIpuGatNxNosoTHyWerZ/1CfPX/wOmqrZ7f4oHBHqpN3+Xe9x4PTtPKc/PNUARsyGTQB3eaIRRgNU5OKuGk4ECYQGk2KSUlmbaMv6UXp5WsS7D+BnRPMZ8Bi290
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,217 +119,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-- expose stats (page-counts for data & metadata)
-- expose tracked pages
-- expose scheduler type
-- add mshv_iterate_preserved() API for walking the radix tree
+The crash MSRs have no formal semantics and nothing depends on their
+contents, so the register assignment can be reshuffled freely.
+
+Reserve crash MSR P2 for passing the KHO radix tree root physical
+address to the crash kernel for MSHV page exclusion during dump
+collection. Stop overwriting it in the panic reporting paths.
+
+Move IP/PC to P3 and SP to P4 in hyperv_report_panic() on both x86
+and ARM64. Remove the P2 write from hv_kmsg_dump().
 
 Signed-off-by: Jork Loeser <jloeser@linux.microsoft.com>
 ---
- drivers/hv/mshv_debugfs.c       | 99 +++++++++++++++++++++++++++++++++
- drivers/hv/mshv_page_preserve.c | 13 +++++
- drivers/hv/mshv_page_preserve.h |  3 +
- drivers/hv/mshv_root.h          |  2 +
- drivers/hv/mshv_root_main.c     |  2 +-
- 5 files changed, 118 insertions(+), 1 deletion(-)
+ arch/arm64/hyperv/hv_core.c | 6 +++---
+ arch/x86/hyperv/hv_init.c   | 4 ++--
+ drivers/hv/hv_common.c      | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hv/mshv_debugfs.c b/drivers/hv/mshv_debugfs.c
-index 3c3e02237ae9..d79898e21b36 100644
---- a/drivers/hv/mshv_debugfs.c
-+++ b/drivers/hv/mshv_debugfs.c
-@@ -33,11 +33,18 @@ static struct dentry *mshv_debugfs;
- static struct dentry *mshv_debugfs_partition;
- static struct dentry *mshv_debugfs_lp;
- static struct dentry **parent_vp_stats;
-+
- static struct dentry *parent_partition_stats;
+diff --git a/arch/arm64/hyperv/hv_core.c b/arch/arm64/hyperv/hv_core.c
+index e33a9e3c366a..b75337c4892d 100644
+--- a/arch/arm64/hyperv/hv_core.c
++++ b/arch/arm64/hyperv/hv_core.c
+@@ -185,9 +185,9 @@ void hyperv_report_panic(struct pt_regs *regs, long err, bool in_die)
+ 	 */
+ 	hv_set_vpreg(HV_REGISTER_GUEST_CRASH_P0, err);
+ 	hv_set_vpreg(HV_REGISTER_GUEST_CRASH_P1, guest_id);
+-	hv_set_vpreg(HV_REGISTER_GUEST_CRASH_P2, regs->pc);
+-	hv_set_vpreg(HV_REGISTER_GUEST_CRASH_P3, regs->sp);
+-	hv_set_vpreg(HV_REGISTER_GUEST_CRASH_P4, 0);
++	/* P2 is reserved for the KHO preserved-pages tree root PA */
++	hv_set_vpreg(HV_REGISTER_GUEST_CRASH_P3, regs->pc);
++	hv_set_vpreg(HV_REGISTER_GUEST_CRASH_P4, regs->sp);
  
- static u64 mshv_lps_count;
- static struct hv_stats_page **mshv_lps_stats;
+ 	/*
+ 	 * Let Hyper-V know there is crash data available
+diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+index 55a8b6de2865..cd75e2be19b2 100644
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -675,8 +675,8 @@ void hyperv_report_panic(struct pt_regs *regs, long err, bool in_die)
  
-+struct mshv_pt_stats {
-+	unsigned long count_data;
-+	unsigned long count_meta;
-+	struct seq_file *stat_file;
-+};
-+
- static int lp_stats_show(struct seq_file *m, void *v)
- {
- 	const struct hv_stats_page *stats = m->private;
-@@ -668,8 +675,89 @@ void mshv_debugfs_partition_remove(struct mshv_partition *partition)
- 				 partition->pt_stats_dentry);
- }
+ 	wrmsrq(HV_X64_MSR_CRASH_P0, err);
+ 	wrmsrq(HV_X64_MSR_CRASH_P1, guest_id);
+-	wrmsrq(HV_X64_MSR_CRASH_P2, regs->ip);
+-	wrmsrq(HV_X64_MSR_CRASH_P3, regs->ax);
++	/* P2 is reserved for the KHO preserved-pages tree root PA */
++	wrmsrq(HV_X64_MSR_CRASH_P3, regs->ip);
+ 	wrmsrq(HV_X64_MSR_CRASH_P4, regs->sp);
  
-+static int pt_count_data_cb(unsigned long key __maybe_unused, void *stats)
-+{
-+	((struct mshv_pt_stats *)stats)->count_data++;
-+	return 0;
-+}
-+
-+static int pt_count_meta_cb(phys_addr_t phys __maybe_unused, void *stats)
-+{
-+	((struct mshv_pt_stats *)stats)->count_meta++;
-+	return 0;
-+}
-+
-+static int pt_stats_show(struct seq_file *m, void *v)
-+{
-+	const struct kho_radix_walk_cb cb = {
-+		.key = pt_count_data_cb,
-+		.table = pt_count_meta_cb,
-+	};
-+
-+	struct mshv_pt_stats pt_stats = {0};
-+
-+	mshv_iterate_preserved(&cb, &pt_stats);
-+	seq_printf(m, "Data pages: %lu\n", pt_stats.count_data);
-+	seq_printf(m, "Meta pages: %lu\n", pt_stats.count_meta);
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(pt_stats);
-+
-+static int pt_tree_data_cb(unsigned long key, void *stats)
-+{
-+	seq_printf(((struct mshv_pt_stats *)stats)->stat_file,
-+		   "data pfn: %#lx\n", key);
-+	return 0;
-+}
-+
-+static int pt_tree_meta_cb(phys_addr_t phys, void *stats)
-+{
-+	seq_printf(((struct mshv_pt_stats *)stats)->stat_file,
-+		   "meta pfn: %#llx\n",
-+		   (unsigned long long)(phys >> PAGE_SHIFT));
-+	return 0;
-+}
-+
-+static int pt_tree_show(struct seq_file *m, void *v)
-+{
-+	const struct kho_radix_walk_cb cb = {
-+		.key = pt_tree_data_cb,
-+		.table = pt_tree_meta_cb,
-+	};
-+
-+	struct mshv_pt_stats pt_stats = {.stat_file = m};
-+
-+	mshv_iterate_preserved(&cb, &pt_stats);
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(pt_tree);
-+
-+static int __init mshv_debugfs_pt_create(struct dentry *parent)
-+{
-+	struct dentry *d;
-+
-+	d = debugfs_create_file("pt_stats", 0400, parent, NULL, &pt_stats_fops);
-+	if (IS_ERR(d))
-+		return PTR_ERR(d);
-+
-+	d = debugfs_create_file("pt_tree", 0400, parent, NULL, &pt_tree_fops);
-+	if (IS_ERR(d))
-+		return PTR_ERR(d);
-+
-+	return 0;
-+}
-+
-+static int scheduler_info_show(struct seq_file *m, void *v)
-+{
-+	seq_printf(m, "Scheduler type: %s (%d)\n",
-+		   scheduler_type_to_string(hv_scheduler_type), hv_scheduler_type);
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(scheduler_info);
-+
- int __init mshv_debugfs_init(void)
- {
-+	struct dentry *d;
- 	int err;
+ 	/*
+diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+index 8a593117e9b8..ae6415f42f25 100644
+--- a/drivers/hv/hv_common.c
++++ b/drivers/hv/hv_common.c
+@@ -212,7 +212,7 @@ static void hv_kmsg_dump(struct kmsg_dumper *dumper,
+ 	 */
+ 	hv_set_msr(HV_MSR_CRASH_P0, 0);
+ 	hv_set_msr(HV_MSR_CRASH_P1, 0);
+-	hv_set_msr(HV_MSR_CRASH_P2, 0);
++	/* P2 is reserved for the KHO preserved-pages tree root PA */
+ 	hv_set_msr(HV_MSR_CRASH_P3, bytes_written ? virt_to_phys(hv_panic_page) : 0);
+ 	hv_set_msr(HV_MSR_CRASH_P4, bytes_written);
  
- 	mshv_debugfs = debugfs_create_dir("mshv", NULL);
-@@ -694,6 +782,17 @@ int __init mshv_debugfs_init(void)
- 	if (err)
- 		goto unmap_lp_stats;
- 
-+	err = mshv_debugfs_pt_create(mshv_debugfs);
-+	if (err)
-+		goto unmap_lp_stats;
-+
-+	d = debugfs_create_file("scheduler_info", 0400, mshv_debugfs, NULL,
-+				&scheduler_info_fops);
-+	if (IS_ERR(d)) {
-+		err = PTR_ERR(d);
-+		goto unmap_lp_stats;
-+	}
-+
- 	return 0;
- 
- unmap_lp_stats:
-diff --git a/drivers/hv/mshv_page_preserve.c b/drivers/hv/mshv_page_preserve.c
-index a79725a74663..bc3a3a688f5b 100644
---- a/drivers/hv/mshv_page_preserve.c
-+++ b/drivers/hv/mshv_page_preserve.c
-@@ -52,6 +52,19 @@ int mshv_unregister_preserve_page(struct page *pg)
- }
- EXPORT_SYMBOL_GPL(mshv_unregister_preserve_page);
- 
-+/**
-+ * mshv_iterate_preserved() - Walk all preserved pages
-+ * @cb: callbacks invoked for each key/table entry
-+ * @data: opaque data passed to callbacks
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+int mshv_iterate_preserved(const struct kho_radix_walk_cb *cb, void *data)
-+{
-+	return kho_radix_walk_tree(&preserved_pages_tree, cb, data);
-+}
-+EXPORT_SYMBOL_GPL(mshv_iterate_preserved);
-+
- /* Preserve a single page identified by its PFN key with KHO */
- static int preserve_key_cb(unsigned long key, void *data)
- {
-diff --git a/drivers/hv/mshv_page_preserve.h b/drivers/hv/mshv_page_preserve.h
-index 0609002e5f1d..ac99b4e33285 100644
---- a/drivers/hv/mshv_page_preserve.h
-+++ b/drivers/hv/mshv_page_preserve.h
-@@ -6,10 +6,13 @@
- #ifndef _MSHV_PAGE_PRESERVE_H
- #define _MSHV_PAGE_PRESERVE_H
- 
-+#include <linux/kho_radix_tree.h>
-+
- struct page;
- 
- int mshv_preserve_init(void);
- int mshv_register_preserve_page(struct page *pg);
- int mshv_unregister_preserve_page(struct page *pg);
-+int mshv_iterate_preserved(const struct kho_radix_walk_cb *cb, void *data);
- 
- #endif /* _MSHV_PAGE_PRESERVE_H */
-diff --git a/drivers/hv/mshv_root.h b/drivers/hv/mshv_root.h
-index 362768786c17..216053f8e0ab 100644
---- a/drivers/hv/mshv_root.h
-+++ b/drivers/hv/mshv_root.h
-@@ -379,4 +379,6 @@ bool mshv_region_handle_gfn_fault(struct mshv_mem_region *region, u64 gfn);
- void mshv_region_movable_fini(struct mshv_mem_region *region);
- bool mshv_region_movable_init(struct mshv_mem_region *region);
- 
-+const char *scheduler_type_to_string(enum hv_scheduler_type type);
-+
- #endif /* _MSHV_ROOT_H_ */
-diff --git a/drivers/hv/mshv_root_main.c b/drivers/hv/mshv_root_main.c
-index bd1359eb58dd..5fbd01c12ab8 100644
---- a/drivers/hv/mshv_root_main.c
-+++ b/drivers/hv/mshv_root_main.c
-@@ -2134,7 +2134,7 @@ mshv_dev_release(struct inode *inode, struct file *filp)
- 
- static int mshv_root_sched_online;
- 
--static const char *scheduler_type_to_string(enum hv_scheduler_type type)
-+const char *scheduler_type_to_string(enum hv_scheduler_type type)
- {
- 	switch (type) {
- 	case HV_SCHEDULER_TYPE_LP:
 -- 
 2.43.0
 
