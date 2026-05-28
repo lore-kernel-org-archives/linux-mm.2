@@ -4,134 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89D62CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:55:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C771CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:57:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A22596B0005; Thu, 28 May 2026 03:55:18 -0400 (EDT)
+	id B378C6B0005; Thu, 28 May 2026 03:57:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FA176B0088; Thu, 28 May 2026 03:55:18 -0400 (EDT)
+	id AC1AC6B0088; Thu, 28 May 2026 03:57:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E9846B008A; Thu, 28 May 2026 03:55:18 -0400 (EDT)
+	id 989696B008A; Thu, 28 May 2026 03:57:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 804F06B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:55:18 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 320DB1C0659
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:55:18 +0000 (UTC)
-X-FDA: 84816068316.21.F124B3C
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E4077C0002
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:55:15 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Hgng53K1;
-	spf=pass (imf10.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 851496B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:57:49 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3EB7214071E
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:57:49 +0000 (UTC)
+X-FDA: 84816074658.02.7772638
+Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B7FD01C0003
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:57:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf20.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779954916;
+	s=arc-20220608; t=1779955067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IfZQVgKAAwLvYFg3L5bnbvTsJtOephcrYlweJ87h5Qk=;
-	b=yWtbtftTrYlwfl/75Zbs1TOZW2lINDoFy/DNMDwJp8N5fWNXpLOxtLNjeHm7OXNMJEMUE+
-	5hq+HMlE+xyCj/NfltJfC/1PS3wJImboonlNzSlKSwA9SeT598l023zdjyUKsKnXz2yT3c
-	hFFPstC9OA2qWVCb4LySpotNv/m7Alc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q91cpL+t5mN4xLdLsyeOw4a9kRHo4YYKKrYt3uKuKLY=;
+	b=zovOPVfrBRzusyt8/fERqKTd3wE4aFOeadiD6xGodG4n2DZ9Z9kvJEGLvNZgh19YJAiLCV
+	jWLwxs6k5qfBnt2VQ7b/f+Cg7e0rYrQNBLhLMcn2BaBgTgxuWhN8vLOt2Hfys2zDAUoYGs
+	yxC/dRQk0cWj7MbCudOo/olTceGT2vQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Hgng53K1;
-	spf=pass (imf10.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779954916; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf20.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779955067; a=rsa-sha256;
 	cv=none;
-	b=aBBTOTQq8tSg0QaeNUCgqapm+w6+vETrjAgQ9/UHQZeIGr+jbo+Lmm7dTQNafjzlfFmTRu
-	rLWjxzmb8SCZQU7df1NApRQYK75/jwzn+UmFP9ed6Jz4Q+Tz3UTxYl6S9VEdHwxjnanpkk
-	7/w97nZxe69BK04tAkewrPkfNmNobEM=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64RL7FJN2480393;
-	Thu, 28 May 2026 07:55:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=IfZQVgKAAwLvYFg3L5bnbvTsJtOephcrYlweJ87h5
-	Qk=; b=Hgng53K1AxQTylOYnZYiW9HdgAZY9ax/jmCLirMjcrlVHL0g4oma22+EQ
-	5PA5WFWWwwtc/rsgjl9FMOp1Qd98ZsF7YlH1PhJXi/mArg6YnX735A+OEMzcVql2
-	NO2wyXxzXmwhM8fs8vhR63QhIzn4j+aue++wBRAl5/P/l32+2hjZ8bK8NMeQ3+Fv
-	u5+RKSaZTSfG1Kinr/d/BoYIDp7JNk1pL/qPJAR/ztq/ZoU/V1EFFSTfSxPD9yOo
-	+5/Zx2BsA5VK2KyH7hitHMmutefrQ5VzLp0LRS3GOANkUK1HmU7I3MJSdfV22Dy2
-	n2LaR2sqaCbEenN4ojfg4cgSR/avg==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee8869xj3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 May 2026 07:55:10 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64S7d9Ms030378;
-	Thu, 28 May 2026 07:55:09 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4edjrb72us-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 May 2026 07:55:09 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64S7t7bO29688070
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 May 2026 07:55:07 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 974752004B;
-	Thu, 28 May 2026 07:55:07 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7249320040;
-	Thu, 28 May 2026 07:55:07 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 28 May 2026 07:55:07 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 5B3CEE0993; Thu, 28 May 2026 09:55:07 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3] mm/page_vma_mapped_walk: Use ptep_get_lockless() for lockless access
-Date: Thu, 28 May 2026 09:55:07 +0200
-Message-ID: <20260528075507.1821939-1-agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-MIME-Version: 1.0
+	b=8NZP1ObX/mgtEXIgw9BpSrKzb5noRAdgdErmHLWygQHxezaTFyPz3niHN3LYMKxXlNjW4B
+	M5DsgIbwPk7RKmkot3HRyMLkdZFS5psX0WGnNXU8gzr/iOPgg8X9y7atkxUyIyMy+HUw+Z
+	cq82vgq3gP2QJobxHFIMhCXJo18OF7I=
+Received: from TW005.hihonor.com (unknown [10.72.0.123])
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4gQzM86sgQzYmnW2;
+	Thu, 28 May 2026 15:56:04 +0800 (CST)
+Received: from TA001.hihonor.com (10.77.210.32) by TW005.hihonor.com
+ (10.72.0.123) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 28 May
+ 2026 15:57:41 +0800
+Received: from TA003.hihonor.com (10.72.0.43) by TA001.hihonor.com
+ (10.77.210.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 28 May
+ 2026 15:57:45 +0800
+Received: from TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1]) by
+ TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1%7]) with mapi id
+ 15.02.2562.037; Thu, 28 May 2026 15:57:31 +0800
+From: wangtao <tao.wangtao@honor.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+CC: "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org"
+	<will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"david@kernel.org" <david@kernel.org>, "willy@infradead.org"
+	<willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>, "kees@kernel.org"
+	<kees@kernel.org>, "luizcap@redhat.com" <luizcap@redhat.com>,
+	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>,
+	"kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"liam@infradead.org" <liam@infradead.org>, "vbabka@kernel.org"
+	<vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
+	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz"
+	<jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, "harry@kernel.org"
+	<harry@kernel.org>, "jannh@google.com" <jannh@google.com>, "jgg@ziepe.ca"
+	<jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+	"npache@redhat.com" <npache@redhat.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
+	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev"
+	<lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
+	"matthew.brost@intel.com" <matthew.brost@intel.com>,
+	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com"
+	<rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>,
+	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com"
+	<ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev"
+	<shakeel.butt@linux.dev>, "ryncsn@gmail.com" <ryncsn@gmail.com>,
+	"21cnbao@gmail.com" <21cnbao@gmail.com>, "jparsana@google.com"
+	<jparsana@google.com>, "dvander@google.com" <dvander@google.com>, zhangji
+	<zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
+Subject: RE: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Thread-Topic: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Thread-Index: AQHc7cjw5r5ki6LAJ0S2mW/rJEfblbYhaeaAgAGnM1A=
+Date: Thu, 28 May 2026 07:57:31 +0000
+Message-ID: <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
+ <ahcANgFDFwfC0v1q@lucifer>
+In-Reply-To: <ahcANgFDFwfC0v1q@lucifer>
+Accept-Language: en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.163.18.240]
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: 1DMXsV5nP_67MuleWw1hhQC9cplM1fFf
-X-Authority-Analysis: v=2.4 cv=Z8Dc2nRA c=1 sm=1 tr=0 ts=6a17f4de cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=r6uuodyqXXh6h6eviuwA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDA3NSBTYWx0ZWRfX6dIXLh37xcZK
- Ua+X3saVK/tPAfPj83UA+EfHYVLnJeVKaMIcVR2345xjN4e5LZmWkqkqVsCaDxwfHL9oJ2C/zOZ
- zexwt9LlmxvW1nM1NQG3altOquqkIOM6jbn+L1WEI1t7u3ky56vyKU8J0Fyn+MW0NxKOQ1uPmCN
- 2UVVADFpvMkDxQqZaKoCINas9IQWPEyGDi57EVlEqyubSDmdZxQWdFQGn1qCik9oZuVLKt3zrxU
- T+cVrdkwy88GWtFOv7BpeHJgYYWsilwmnaVbvpE6ZSQvrzmaJjNZDkmVqhWnIDjj8nLG+E7VcE6
- 66mCI3bgTRk+l7U0PauiHZyEzha5FbfkRAXVpp37IFAzIbz53eGMBYeS+uce6iupbWdhmTR9u1N
- jq9sYrrRZWwxYVkErzC2bKWr7WAFGhQpM0IPlcIU8DiE3ZCsaYCg66vyLRQnf92/p+DuzjwiU3f
- NtUFiJqrqkEHbC6h09Q==
-X-Proofpoint-ORIG-GUID: yz-3GX041ELtX3Cw9Wm6FzJMiqL9lp2G
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-28_02,2026-05-26_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 phishscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280075
-X-Stat-Signature: 9knkxh8aom4wn776yqqrejywq15fh86y
-X-Rspamd-Queue-Id: E4077C0002
-X-Rspamd-Server: rspam07
+MIME-Version: 1.0
+X-Stat-Signature: jkhmpfsid7zqzp41tp4twyz8j7yn1m9s
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B7FD01C0003
 X-Rspam-User: 
-X-HE-Tag: 1779954915-906540
-X-HE-Meta: U2FsdGVkX18IIRhXyQbK8tUW3xknGdqwYwtkJuFfBBbPxen/YWyCoo5i7O+r5ADznAs2Ny/2AxZIpgnWKD6Mo/IYPzutQcMOc5A3DXMjk7sk/D/u9sBjv4UMaQ7bXBbBPJI4CmfgMCdLCj3Em4J164EQzSzV8UbqMtqMPnWFgG75AhWewOir6FDdCpAFfBuGyaPYHaKUrJQ5qpMEvpm9AyHHAv3GavPTmCaMHqHZCwsqs9tqKHcdzMZUniTSa/wQliJ04PlQmuaFnMfhcgocrMeS1Gor8FU3vyUeCpgh+Zk1I77DiXfOFoZZ7h/1ZCYOagop0z2Dt/x9yQtGKo0gYux6rjxPwSU0gEHzG68LUNa6Q5EsEDz+W+87fwFNlCQ2D5bV8QZ9IMDGaA1OYrZ8C9AL4lB1T1aNnxECvZXVzGMCtgq+urNJjnbZstbezPm6VDrLB+5J/37bMNNPHOMk8qTlDXWHaM5Sj5j7t0OcCMLEd+r0DsuloY47lEjjyvWFzWWB1eBIhQ5idDWdJMEuFuTLfP9iQ8KO7XCetJTl7m3zOZzm+kYGqRRfirtZRBVAyoWmIBmcPA2JP1D2mWJc06AWWDyUUdlF6I3VdB6VvhDSS87e1Ge8OZ+PSHH9G0vJuFyG5LDC/DRco0bh2093biyShFJETexzIq0YC05Bn27Sf9vONnide/iF6DGfJulkJkwyZP70vghdjBE5Yoe3oi0//0zr9Ig7PLKU1wBOVWBsil/0U6nf604RLSFD/1bkA7DgpIoH3GaZ3S+VAu92Z5lHYbEyw5N5aLdxt4SX9tJzTIIlOGFeL3EMQFIFoNVIY5x4a9vowJM6IPtn3rak5UzSknsIFrQq8YCZC7ChLmNqJh1elwZu0Nz9W6QRh4wNPtJkFtnGmb0o4c71jDFweD4EexpRIg4cBdGvcdflHz0FS8L5YHj8SOKL+sNf4qXi0Q9zPvrNnyAHshnR2Vd
- 8bAb1fIt
- wveM9E8/OWEETjiZlHFk4Swmm8D8ybljCzzl6tS/5cl6l4Hz0gWczl/HNq4K9shRbD0NHOjYv8F2naN+ZE/Nx5JJ/Yluf+MBmheOKW547PjtQmcNBUmGk8HGFhM0XWKEg0j3JQz7Mt02ATHVMihB/E8VdLj1Eb1tAZ9SAKIPU9BIFUaxps1QBHDKLEHjc4KLzYVgEdyIsJuxGJuLzqYbwG9kTotzS4MW8fbc+SDjGFOxEb6efCG04f/jfQEx9Z+cbHP8ISRz1eXbtoa5bRbeG414Xlk6pIqgGAI/Q3kwEj82lnQZc+f4eRghcawciJdmPZ+0z6NrgJ/GfveMg4gtvbZoNErn0e28Dd6gp+RwZW1nkZ1r3qsyxb64Nlzga2BrsIiBfYuVVs3TrmQioJuEo+mSUUeuWFZb3utq3
+X-HE-Tag: 1779955066-560643
+X-HE-Meta: U2FsdGVkX18Sq8t8oOfXLICK9TUHugeqSr44FS/Eg0VHldfCayA9I0QXd9HBWiBC6ZxLx0GmMUb90ZWCj8itwuNPe3HKbevi2Iz4IkILpJAM0PDk1qH8sSYae/so1d7xZvWfLJxQMxR4dyeeEwAxR9aswje0fC8HrjrAke7ufjSRtcqpDUvg0WT2Jo9iet6SzghvDbb4kLZqpBuenr7RbDqc4t4JlqTMtl0bwtmUiRti8ZomGnSaibXo+63/mUIvOQPsNaVVR8gSwGZxXSAluMV4S5P3nCMdYZQtuDODYKOR+Mc7BO4Fry0pjFn09NhmbmkIeita5pKjIwjACFw9aefXC6yYJ31MSlm+aZ/jlY6X7ZaPMWRiD3rqMBL6Zf9kbFRVIkfsGxHFHg7Xz8VdlNX6HBBMLg91p5aw8KBNOxVDqk+/F2Rtn5AoVBMggeTsOlsibFu0Z8M97w/R14Mlm+ZpjFTSeNFpiD4P0TwirjTwkziuILwcCaAe05lj7zDFCReqU/qoZqesqHUaC3W/i/RVyDtwREgCfIEKujG4UVJwwEO1JvQ5qhRUrgYwnW5dfjnwAuIjiVgfL8AwhRoTr5/tZxs3inZNff7Z1cxWjOeVQN+VV+HwvJ3ao3wm0uq5V8JgxeKm8HbP9Kd1NViFW28HXc1b4ZwR/Ut5+s14KAo/h+LKBunnwpOgZMbdCGZFXuSHTtCWLOmJmaG7VG5VlI6FNBE07vNMZ+xfbO0Mkjp8z18l1Jrd97JbcvkDuagTap9v4+xF4HXVnM1UtCbdRRj932sZmQPGmYtg/oJIQVHznvCrhPXSYsAwlPsy3ghZJBWHSWdxgN1wmVxzRXhu2k6U3l++EAAVkcaygwYk2Cg3UsAzpCJidfMrdK/n+gL7PIXkPvKB4sgHIjC2F94BlPv6gVy4uT+XM5GFxHZRawt620NlRTKs9Ii/iXEurhf5JEhyv86dY8L7YE3MORM
+ ipH5md7g
+ JopAmnsRRCcspjJ2EHb9N14iOkNt1QAK+2tmXqX2aOYe9mOcnjSrgV0lCYTLFqXOq3h5z35SMErb/W3R7503d0yfUSj2NZaWOazVu7kxNZ7ZMih20vhVgb3kwDeihyLB5SsQNssTETlSCeyf9GBO9tqQeXrwMEeiIciEx/jPcDuN2OOmIrvHgGugEyZNuTCXaPsVoozYtlHPKwGM/1an+PeznnYomGiUGtdgs0HcUi9lL9JkTQ2r47I3A7oZbqI+WmyCN6VhejAZ18yvbv7vnUPnz4VP0BQKBFXGxToNH0El132rCg1Vphd8aqVyKW5Xo3RX8gw/hTpNPGyiQEoh7Tzj858OOXKKkBI97T5yF6MoCVTJuicouFVEWUnqxSNKOeiuT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,52 +136,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Switch from ptep_get() to ptep_get_lockless() accessor for
-PTE reads when no lock is taken.
+> Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred
+> anon_vma creation
+>=20
+> OK I've had a look through more thoroughly now and:
+>=20
+> NAK and NAK any approach like this.
+>=20
+>=20
+> Not only is this structurally all wrong, it does some insane stuff (pinni=
+ng
+> VMAs - no), the RCU usage is highly dubious and I suspect you've complete=
+ly
+> broken the anon rmap for things like migration, or have at least added ve=
+ry
+> dubious edge cases.
+>=20
+> You've added insane complexity, and also have failed to add even
+> perfunctory tests, which is also totally unacceptable.
+>=20
+> The implementation is wrong, and the approach is wrong - we do not want t=
+o
+> extend or build on anon_vma. So this is unmergeable, or any approach like=
+ it.
+>=20
+> I also, unfortunately, strongly suspect AI here. The turn of phrase, and =
+poor
+> commit messages, you doing this out of nowhere with absolutely no rmap
+> experience before, your total lack of communication before.
+>=20
+> Claude puts the probability of heavy AI usage at 85-90%, and I'm pretty
+> convinced. Either way it's utterly unmergeable but that you (likely) used=
+ AI to
+> generate this much work for us makes me actually pretty annoyed.
+>=20
+> As a result, I would strongly suggest you no longer submit patches for th=
+e
+> reverse mapping part of mm, as there is now a real lack of trust.
+>=20
+> If you wish to rebuild that, I suggest you _discuss_ concepts and ideas, =
+e.g.
+> send stuff on-list with a [DISCUSSION] tag, and engage with the community=
+,
+> and go from there.
+>=20
+> It's also important to synchronise - I'm working on an anon rmap replacem=
+ent
+> that I'm more than happy to discuss with you or anybody else which should
+> achieve the same numbers in an architecturally sound way.
+>=20
+> You going off and, in a vacuum, generating a bunch of code with an
+> unacceptable approach is not a civil way of engaging nor is it a good use=
+ of
+> your time, or maintainer time looking at it.
+>=20
+> Thanks, Lorenzo
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- mm/page_vma_mapped.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Your email is very unfriendly. I hope you can point out the specific
+problems so we can discuss how to solve them.
 
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index a4d52fdb3056..2ccbabfb2cc1 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, =
-pmd_t *pmdvalp,
- 	if (!pvmw->pte)
- 		return false;
-=20
--	ptent =3D ptep_get(pvmw->pte);
-+	ptent =3D ptep_get_lockless(pvmw->pte);
-=20
- 	if (pte_none(ptent)) {
- 		return false;
-@@ -183,6 +183,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk=
- *pvmw)
- 	struct mm_struct *mm =3D vma->vm_mm;
- 	unsigned long end;
- 	spinlock_t *ptl;
-+	pte_t pteval;
- 	pgd_t *pgd;
- 	p4d_t *p4d;
- 	pud_t *pud;
-@@ -310,7 +311,11 @@ bool page_vma_mapped_walk(struct page_vma_mapped_wal=
-k *pvmw)
- 				goto restart;
- 			}
- 			pvmw->pte++;
--		} while (pte_none(ptep_get(pvmw->pte)));
-+			if (!pvmw->ptl)
-+				pteval =3D ptep_get_lockless(pvmw->pte);
-+			else
-+				pteval =3D ptep_get(pvmw->pte);
-+		} while (pte_none(pteval));
-=20
- 		if (!pvmw->ptl) {
- 			spin_lock(ptl);
---=20
-2.51.0
+I am not good at English and need to use AI to translate commit
+messages and comments. This reply email is also translated with AI.
+However, the code is written by me. I do not know which AI you are
+referring to, but the AI tools I use currently cannot effectively
+write kernel code.
 
 
