@@ -4,93 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85C85CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 10:34:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1760DCD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 10:50:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 988816B008C; Thu, 28 May 2026 06:34:02 -0400 (EDT)
+	id EA9DD6B0005; Thu, 28 May 2026 06:50:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9655F6B0092; Thu, 28 May 2026 06:34:02 -0400 (EDT)
+	id E5AC36B0088; Thu, 28 May 2026 06:50:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89D9F6B0093; Thu, 28 May 2026 06:34:02 -0400 (EDT)
+	id D71396B008A; Thu, 28 May 2026 06:50:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 78C546B008C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:34:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 257BD12079F
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:34:02 +0000 (UTC)
-X-FDA: 84816468324.08.80DA08B
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 41DF480003
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:34:00 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WrQtffea;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C68F66B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:50:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6A1A2C287D
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:50:22 +0000 (UTC)
+X-FDA: 84816509484.13.8F4903C
+Received: from outbound.baidu.com (mx13.baidu.com [220.181.3.100])
+	by imf07.hostedemail.com (Postfix) with SMTP id DB53040009
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:50:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=LMevlbg8;
+	spf=pass (imf07.hostedemail.com: domain of "prvs=md1602058C6B=lirongqing@baidu.com" designates 220.181.3.100 as permitted sender) smtp.mailfrom="prvs=md1602058C6B=lirongqing@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779964440;
+	s=arc-20220608; t=1779965420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/9PYvt3JwwPNYerWVYVdCS35JrCkCHXUQJKIbp7gJyU=;
-	b=YeG39UlG8lI6SZuzgLRZX7Qi30WBs1j7kyQVMf510tBbkilvi1R65Oxe/A0D7QxZXAYfZ3
-	KTIHYlf4DxTck2chl7zxcV7TwuiL7RlsXP8Rcgvk+vAzBFadr1l9hvt0HpDafaC0SH9cu2
-	yvsiijX5AEG2clOFaXQ5bc+EE4GjwnU=
+	bh=diaE5/DkVHL2OlpMmyZVGR0NbaFP0CVURipa1X2Xp6o=;
+	b=ZcDvw7W2itO1x69mqlXy8IvsMIt4sPsr34l31ZgUZlcT0gGE2EqlT8n5m++2dkr9CezfHE
+	6YrXkktdufxLoACi7T8pUVfUD7K0JjvbREJdGxZIT5RZBtrHeEFdqeMXeu4Ss96siOGUwx
+	Q0+LVluPq6E+Vr5R7iTKnuiR8LnKiNk=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WrQtffea;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779964440; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=LMevlbg8;
+	spf=pass (imf07.hostedemail.com: domain of "prvs=md1602058C6B=lirongqing@baidu.com" designates 220.181.3.100 as permitted sender) smtp.mailfrom="prvs=md1602058C6B=lirongqing@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779965420; a=rsa-sha256;
 	cv=none;
-	b=DQRk/1LkUZfdgnptgANdoy49qPFTybRdTsM3iYKjFzrmlxkjYyRXwVtoE26Awt/lltwOmG
-	eB2LGOZSKhg5BgpvmD8cti94g7kru5hmdSMG/Y4cdU76A76nSiuCOI0X9p5UOxBKHPzQE9
-	iacttKgTPA1JvVKyKLej/AxhJhvhtDE=
-Message-ID: <ddb499d5-6821-4fa7-9fec-563bdfbc8cbc@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779964438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/9PYvt3JwwPNYerWVYVdCS35JrCkCHXUQJKIbp7gJyU=;
-	b=WrQtffeaYoBmjfv2xZDFN0GJ1sqxUc/HlP+t5t++0IDzezsB2TGDKJErFtcwNQvQJHglGZ
-	tXwOutqy1FwhOUBPx1J2QL8t980Zm5xd5E3iOvJyF3ZidpdQHP+iSPolW7wvUNPcPGOeMt
-	QZd3Wn7rWyqJQPeGE6jbOTEv/8V8kTA=
-Date: Thu, 28 May 2026 11:33:39 +0100
-MIME-Version: 1.0
-Subject: =?UTF-8?B?UmU6IOetlOWkjTogW+WklumDqOmCruS7tl0gUmU6IFtQQVRDSF0gbW0v?=
- =?UTF-8?Q?mempool=3A_use_static_key_for_boot-time_debug_enablement?=
-To: "Li,Rongqing(ACG CCN)" <lirongqing@baidu.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
+	b=TWtaMliVDl50nS6sjkNANrOGKxoZz0STC4fQRz3i+UWVVTvoGTrURj2VHnCELKM0vaLuSi
+	+uFF8Lq6GhaZnmFJbIOJyRysWTk2StFgEP+Vhc9gLsx0aC07sWxR6rr34umRf5HT0V5gls
+	A6bZQ7RgmNq/Q9q5qujXNTIsGwmKhfI=
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.45
+From: "Li,Rongqing(ACG CCN)" <lirongqing@baidu.com>
+To: Usama Arif <usama.arif@linux.dev>
+CC: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, "Christoph
+ Lameter" <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman
+ Gushchin <roman.gushchin@linux.dev>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: =?utf-8?B?562U5aSNOiDnrZTlpI06IFvlpJbpg6jpgq7ku7ZdIFJlOiBbUEFUQ0hdIG1t?=
+ =?utf-8?B?L21lbXBvb2w6IHVzZSBzdGF0aWMga2V5IGZvciBib290LXRpbWUgZGVidWcg?=
+ =?utf-8?Q?enablement?=
+Thread-Topic: =?utf-8?B?562U5aSNOiBb5aSW6YOo6YKu5Lu2XSBSZTogW1BBVENIXSBtbS9tZW1wb29s?=
+ =?utf-8?Q?:_use_static_key_for_boot-time_debug_enablement?=
+Thread-Index: AQHc7cYaHc/KlS0U5Emb14FdSgycW7YhUMwAgAFsxkD///uqgIAAiCNA
+Date: Thu, 28 May 2026 10:50:09 +0000
+Message-ID: <b9d53cb0be024778b09e1bb1ef7d0211@baidu.com>
 References: <20260527104634.2434-1-lirongqing@baidu.com>
  <20260527130337.983366-1-usama.arif@linux.dev>
  <fcf5585aba18414cbd0ab01935eeb1df@baidu.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <fcf5585aba18414cbd0ab01935eeb1df@baidu.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: t1xjejnrn7qxjyddyijwwh8w3yf59h7c
-X-Rspamd-Queue-Id: 41DF480003
+ <ddb499d5-6821-4fa7-9fec-563bdfbc8cbc@linux.dev>
+In-Reply-To: <ddb499d5-6821-4fa7-9fec-563bdfbc8cbc@linux.dev>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.31.62.16]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1779965411;
+	bh=diaE5/DkVHL2OlpMmyZVGR0NbaFP0CVURipa1X2Xp6o=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=LMevlbg8ORAE/8iub4uXYG6v4ByP0QcXWKjkjADI6sqrg0lYvn0tRjYFJyGOGRz0L
+	 ni0/tGhJDCPl08BTaytKCqTCpMqTdgR9grKP3XJ8grcDkSb9lwxFVQ0REper0oR+4o
+	 JuLjX8QZhczhIWJS8dOO63lGgnpwZz3lyqnuMnOErbjKwIt98LnJTMVyElw+XN3YEU
+	 X3X5TzkbGJiToOb2pDwGBXpzxaZ2AbyoARhZQySqb2b7ugD2yhpLgPr3dEZDu1PSip
+	 OGFINLMgP97rpKoalhY1dFCh7QgI/6/fLhlGuVMIlFmNBFxVmmZCXSxU7zZ2Ng1ezb
+	 IPtolwc/KK2tw==
+X-Rspamd-Server: rspam12
+X-Stat-Signature: yr39r3iy9ef9n4w9r5n9kt99b5cb4iuo
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779964440-802645
-X-HE-Meta: U2FsdGVkX1+xJGEmm93lbC0i7Ia1JmMdPtiSKu+pGhv0JrrowtvApCjsu4oMkceeGbjwtZX9uOaXTjFAbNY/DYFctqAyrB+vroyClSV5nbcA2DjprkOG0oDD87QFR4THC4ypCtEkXrzum4B/bUOcQz6eM7AW68dwGQBVQAEssPrxOnr2LnT4kigPOrjC+Ib5gpmrA1m0PUaZWtv3+d7eUEYZuXIkFqhgJpcugAOVOodkBa5XLZVG47yrGn4DAndWleetdlZ8yR8kXiwuaUw0GFSDJ5RkK6Yi9D0UPMEySuvScX0KO3xT6ufVJRktQ4fV1mpLIH1BRk3EutV9Ltvb+uXXqAqjxOd1NJZKH5TDlzudrxk0PKvoq4HOAIr9YHzrTSnDcBLtfC70pwQFBGBM7P4LUuzWB0ba4unDHJxmnjcuGuFPX2GNfaUE8Ahlhu+mIulPciupglWKtcfqnmzxYNYr6qSoXQ9EqV3Zfa84Vu8u8jJyLsJE7RsbVZfhtFAradlHbemWfa+Y76HL/qjtNcgNwyqLtc7bHmKDF4xN3bPdfGKpqv5aFzTOE6LT8ZhCrQkbnWlrQQyr+a+LbJj48XuzhEHIsT5ktBWNhv/jJ03Z7ekKWRxdnDUzHAAe7tNHysuo2BVqpQMFbhlZ89lHNpnCYX2xze/GXn29kzpH5Vp9BEn8esxAMG/pabTvdM/H4gh0RZ8ZfPL162clWP2N9UhB+7DXQPgyy0MhT0IUvU5R5mgZ9P5IptmrSI5ic1k+NG/LAVMcBdCwCWvQfOmRLU/S1RcehotMXrK/s2qRaIoI/exYsrlS5hbMVN7r59OmbMOlRDxU92LamzohSIG6U0GJgHX382fD6YGc8op1vJMAB6jVaKrRBY0sM/WztxIVQYzvQ4D4879NTQwvbSPAf9/54P7HcGZ+q3+PrI+9ibZTnlhZVQld1FoZ2CwthddEeZR/EcRuFuJHCau2HFK
- RoxvMBGQ
- a+f3EYjod5cOSYiLzn/VQAXkufeT2/0J6nOrC3puMWfmOQ1ACG4i3mP+3leXS76elMVKT3KJIrC2WtdJuwLZXtZlCPIoFxFfj+400m1MwiVAaBWCRsdqqyxQ5Dv5rycr62NZrlaIw1WexeufoXt05b9AyGOxzEKbymSFVYFdRB+GtDtglW6jiy+MxuW3+2evXmY2rOSDFiafgZcKtBt2FKs/JeboVxQHGjbfstMHPBadGAsOI3GhM1hlMUghYCiX3js+6jbExpH+N9lBhcmyp3In3ST+RJgjaTwBIdTMCEtlODmcFmTugnfdt+nI9wJE+0Mtk8IrXFFqZAvtiu6ljPw0jKYgsYVeyngKCWznW3fW+jYqBrDUVcNxdXgPVhJSVLOOMIKbAYRbD3Q/jPExZCDMfwhf1YrAvr50RI+Ok/ysdpO9DHXXT1FLjLncy+qEYv5wtTiykmJd2xGR+wh/zGNOsTw==
+X-Rspamd-Queue-Id: DB53040009
+X-HE-Tag: 1779965416-621919
+X-HE-Meta: U2FsdGVkX18GHO72X/JzDR4HUwmmk4aJ6LOESdp7g8R5awv6u+RY71hKsMhZ4zjPqadtfhxaR7BOPQoklE/vMlnBuLjMOEb5YZTyy1dp5bFl5p5dnqRcOp7sUDB6sIweH1Mgj4qNfAaAeweuL7efDtXQ6kfFnLxt7bkWlPzNtcCnrcXXZEsIJ3BLn7uAjkTuKjOMs6GifkPR9k5CqC/t9La3pFSUpFaCxTmHlfdMBpuFadZEbsGU7nSHqG/O/ILcyWSltOryYaXdXIH2cyXbGV2TLoO+qefvbKnLw+9SeHMYcWFWuIJnC/5icsjka5EUsJ24XtS4rt+6yBvGg5dXbGrsp8RsfKPCFE8E0bknscB3+rjKtBIk4CM4ltI90ySBTJo5JyNbYAJABAMRnvOGF1MkGc1anOU83SGb8cL4LJg6ge4KfoPQY4079jQ9C2Hm5DGceTO/lTkZKzTm5EpLx2OireBwfmemsrO5vFdtXFo5nwmD9HZNgJWAwuAUr5hIPPQzOs/7VklBzkAbzGQVcbZ/FGqbMWsvwbd6RnG+8S5YGRHSb7ZyiSELzkEOiepDJBIqhyptj+IzSYeWQ//leFI6gZE5DYbx+P4OYG9Z/hBi7LAWaeOn0QRUx0CztU+YDL3BCcE40zG9ADpOB/4h/P5RyxYT0oLwBrHmOO/kYqmHSYTu+bTlT1Y7WpZVTUhIivlVA2UaDx0+GC9J9JLitre+63aQivwRg/1hg2L1aC07UJR5RfG3fghBMtAnJpRIuzkLCENsOpDUF22p7p0hh2L1hoq8KRuTGxoDUKoxxxAdDl21IKolWrsvmLgg9i2sZTtTQZ2nH4mVYtu0/y70+rmDVnE0Ec5OOVjnLHTY+Fj+hQJ2scU9ylM/Wrj788QVG/FcvqGyhdCO9TL+dN9Sh4lP4h5wfpjI+WwNdPwsBEbMnkRkVKSVHN2aw6HfFLlTwo50mpsSMuCQVPPrfby
+ ww3B8Fgh
+ s/BQYwvRqOmSGw+BNRXu13Fp5ogLXgAlazW5GTfjXnd0sS18CIMttg1v9ESKbcEUaB4a/UO7bpfhbf90tjpCvtevR43vXLN5NSMm3oVOJDQYP2Vy9v1Ii14zXxwuUotdLEcjMa2oMztOKalNmqKO5D7fFk37EGgvF7vnwfAlgPUAqNq8C9QGvqbib0UiI1001LTdL1mxjfGpzPYxQWm9oiQNbPZknoBO09ZhG7wR47CRp0Udu6Abi5rMFNNgZE7mzBsgAO+i3mm21Ngfw9AvcGgDRvYTx+ZQmwIcWNkzDe4ndTzWN+b4YQTs1dVxrMMX2jHDunzV6l40nBbYqj7pWyYNLN101NSM9d7M12wSJOD/7JZziPOPRl+d0/7ES0jkxu0GLt2QwvP1NdV+KaibaGmX5kQ+POt6yGe0/rQQ8mZOzEKuXEYskTcCWoJ8zR+qRIu4MQkD05f7kJ+p5c52QpCk53ZJSUpeVfX7nD2OMNCxnYS7s4xp4LxLiyQVbU+7orlX9Zv1Qrczu6D1TspeQnggAP59l329BceDzJhpV3OpKhNMPalqmy6IotO6cBK7Nyqu1XVheMsZTnFWA9cc0FJ377ngJJjrq3F/efPmcT1rPpmtzWeumTqn/BrKWZmZYHKdwdiZpNAG4zaPhIYWF5P6kJbsSitKkcA5VOXaCPbmDpVO0qw6xqbR+kiNEIkLjJcB+gxAgC6ik0syt/2t8/ptCrgsWY9b+IhnT0jf5wX81h/WoVanbRH10wrPNt5Vt5c6JGY8qTpPJhyIUfTY+hr6c7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,219 +106,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 28/05/2026 04:00, Li,Rongqing(ACG CCN) wrote:
->>> From: Li RongQing <lirongqing@baidu.com>
->>>
->>> Replace the #ifdef CONFIG_SLUB_DEBUG_ON conditional compilation with a
->>> static key (mempool_debug_enabled). This allows enabling mempool
->>> debugging at boot time via:
->>>
->>>     mempool_debug
->>>
->>> Instead of requiring CONFIG_SLUB_DEBUG_ON at compile time. Benefits:
->>>
->>> - Debugging can be enabled without rebuilding the kernel
->>> - Uses standard kernel static_key mechanism with minimal overhead
->>>
->>> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->>> Signed-off-by: Li RongQing <lirongqing@baidu.com>
->>> Cc: Vlastimil Babka <vbabka@kernel.org>
->>> Cc: Harry Yoo <harry@kernel.org>
->>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>> Cc: Hao Li <hao.li@linux.dev>
->>> Cc: Christoph Lameter <cl@gentwo.org>
->>> Cc: David Rientjes <rientjes@google.com>
->>> Cc: Roman Gushchin <roman.gushchin@linux.dev>
->>> ---
->>>  Documentation/admin-guide/kernel-parameters.txt |  5 ++++
->>>  mm/mempool.c                                    | 32
->> ++++++++++++++++++-------
->>>  2 files changed, 28 insertions(+), 9 deletions(-)
->>>
->>> diff --git a/Documentation/admin-guide/kernel-parameters.txt
->>> b/Documentation/admin-guide/kernel-parameters.txt
->>> index 35ed9dc..5a070e6 100644
->>> --- a/Documentation/admin-guide/kernel-parameters.txt
->>> +++ b/Documentation/admin-guide/kernel-parameters.txt
->>> @@ -3998,6 +3998,11 @@ Kernel parameters
->>>  			Note that even when enabled, there are a few cases where
->>>  			the feature is not effective.
->>>
->>> +	mempool_debug	[MM]
->>> +			Enable mempool debugging. This enables element
->>> +			poison checking when freeing elements back to the
->>> +			pool. Useful for debugging mempool corruption.
->>> +
->>>  	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable memtest
->>>  			Format: <integer>
->>>  			default : 0 <disable>
->>> diff --git a/mm/mempool.c b/mm/mempool.c index db23e0e..4f429a1
->> 100644
->>> --- a/mm/mempool.c
->>> +++ b/mm/mempool.c
->>> @@ -16,11 +16,28 @@
->>>  #include <linux/export.h>
->>>  #include <linux/mempool.h>
->>>  #include <linux/writeback.h>
->>> +#include <linux/static_key.h>
->>> +#include <linux/init.h>
->>>  #include "slab.h"
->>>
->>>  static DECLARE_FAULT_ATTR(fail_mempool_alloc);
->>>  static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
->>>
->>> +/*
->>> + * Debugging support for mempool using static key.
->>> + *
->>> + * This allows enabling mempool debug at boot time via:
->>> + *   mempool_debug
->>> + */
->>> +static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
->>> +
->>> +static int __init mempool_debug_setup(char *str) {
->>> +	static_branch_enable(&mempool_debug_enabled);
->>> +	return 0;
->>> +}
->>> +early_param("mempool_debug", mempool_debug_setup);
->>> +
->>
->> Can static_branch_enable() in mempool_debug_setup() run before
->> jump_label_init() has set static_key_initialized?
->>
->> Looking at start_kernel() in init/main.c:
->>
->> 	setup_arch(&command_line);
->> 	mm_core_init_early();
->> 	/* Static keys and static calls are needed by LSMs */
->> 	jump_label_init();
->> 	...
->> 	/* parameters may set static keys */
->> 	parse_early_param();
->>
->> This will trigger the warning in include/linux/jump_label.h has:
->>
->> 	#define STATIC_KEY_CHECK_USE(key) WARN(!static_key_initialized, \
->> 	    "%s(): static key '%pS' used before call to jump_label_init()", \
->> 	    __func__, (key))
->>
->>
->> mm/dmapool.c registers an equivalent debug toggle via __setup() rather than
->> early_param():
->>
->> 	static int __init dmapool_debug_setup(char *str)
->> 	{
->> 		static_branch_enable(&dmapool_debug_enabled);
->> 		return 1;
->> 	}
->> 	__setup("dmapool_debug", dmapool_debug_setup);
->>
->> I think you can reuse that.
-> 
-> Thanks for your review!
-> 
-> While this boot-time ordering used to be a generic issue, it seems many
-> architectures have already aligned or fixed this internally. For instance,
-> 
-> commit ca829e05d3d4 ("powerpc/64: Init jump labels before parse_early_param()")
-> and commit 6070970db9fe ("m68k: Initialize jump labels early during setup_arch()")
-> explicitly relocated jump_label_init() before the early parameter parsing.
-> 
-
-I think 32 bit ARM doesnt? 
-
-> Furthermore, leveraging early_param() to directly manage static keys is still
-> actively used and accepted in the current core kernel. Some examples include:
-> 
->   - early_param("randomize_kstack_offset", early_randomize_kstack_offset);
->   - early_param("threadirqs", setup_forced_irqthreads);
-> 
-> The primary reason for using early_param() here instead of __setup() is that
-> mempool allocations can happen extremely early during the boot phase. Moving
-> this to a later stage like __setup() would mean missing the tracking for the
-> most critical early-stage memory pools, which defeats the purpose of boot-time
-> debugging.
-
-Ack
-
-> 
-> Therefore, I think using early_param() here is the most robust option to
-> ensure full coverage of mempool allocations.
-> 
-> What do you think?
-> > Thanks
-> 
-> -Li
-> 
-> 
->>
->>>  static int __init mempool_faul_inject_init(void)  {
->>>  	int error;
->>> @@ -37,7 +54,6 @@ static int __init mempool_faul_inject_init(void)  }
->>> late_initcall(mempool_faul_inject_init);
->>>
->>> -#ifdef CONFIG_SLUB_DEBUG_ON
->>>  static void poison_error(struct mempool *pool, void *element, size_t size,
->>>  			 size_t byte)
->>>  {
->>> @@ -73,6 +89,9 @@ static void __check_element(struct mempool *pool,
->>> void *element, size_t size)
->>>
->>>  static void check_element(struct mempool *pool, void *element)  {
->>> +	if (!static_branch_unlikely(&mempool_debug_enabled))
->>> +		return;
->>> +
->>>  	/* Skip checking: KASAN might save its metadata in the element. */
->>>  	if (kasan_enabled())
->>>  		return;
->>> @@ -112,6 +131,9 @@ static void __poison_element(void *element, size_t
->>> size)
->>>
->>>  static void poison_element(struct mempool *pool, void *element)  {
->>> +	if (!static_branch_unlikely(&mempool_debug_enabled))
->>> +		return;
->>> +
->>
->> Before this change, building with CONFIG_SLUB_DEBUG_ON=y compiled in
->> check_element() and poison_element() unconditionally, so the poisoning and
->> corruption checks ran on every mempool free/alloc.
->> After this change those checks are gated on the mempool_debug boot parameter
->> even when CONFIG_SLUB_DEBUG_ON=y.
->>
->> Existing users who relied on CONFIG_SLUB_DEBUG_ON=y giving them mempool
->> poison checking will silently lose it on upgrade unless they also add
->> "mempool_debug" to the command line.
->>
->> Would it be worth defaulting the static key to true under
->> CONFIG_SLUB_DEBUG_ON=y, for example:
->>
->> 	#ifdef CONFIG_SLUB_DEBUG_ON
->> 	static DEFINE_STATIC_KEY_TRUE(mempool_debug_enabled);
->> 	#else
->> 	static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
->> 	#endif
->>
->> so the previous default behaviour is preserved.
->>
->>
->>>  	/* Skip poisoning: KASAN might save its metadata in the element. */
->>>  	if (kasan_enabled())
->>>  		return;
->>> @@ -140,14 +162,6 @@ static void poison_element(struct mempool *pool,
->>> void *element)  #endif
->>>  	}
->>>  }
->>> -#else /* CONFIG_SLUB_DEBUG_ON */
->>> -static inline void check_element(struct mempool *pool, void *element)
->>> -{ -} -static inline void poison_element(struct mempool *pool, void
->>> *element) -{ -} -#endif /* CONFIG_SLUB_DEBUG_ON */
->>>
->>>  static __always_inline bool kasan_poison_element(struct mempool *pool,
->>>  		void *element)
->>> --
->>> 2.9.4
->>>
->>>
-
+DQoNCj4gDQo+IE9uIDI4LzA1LzIwMjYgMDQ6MDAsIExpLFJvbmdxaW5nKEFDRyBDQ04pIHdyb3Rl
+Og0KPiA+Pj4gRnJvbTogTGkgUm9uZ1FpbmcgPGxpcm9uZ3FpbmdAYmFpZHUuY29tPg0KPiA+Pj4N
+Cj4gPj4+IFJlcGxhY2UgdGhlICNpZmRlZiBDT05GSUdfU0xVQl9ERUJVR19PTiBjb25kaXRpb25h
+bCBjb21waWxhdGlvbiB3aXRoDQo+ID4+PiBhIHN0YXRpYyBrZXkgKG1lbXBvb2xfZGVidWdfZW5h
+YmxlZCkuIFRoaXMgYWxsb3dzIGVuYWJsaW5nIG1lbXBvb2wNCj4gPj4+IGRlYnVnZ2luZyBhdCBi
+b290IHRpbWUgdmlhOg0KPiA+Pj4NCj4gPj4+ICAgICBtZW1wb29sX2RlYnVnDQo+ID4+Pg0KPiA+
+Pj4gSW5zdGVhZCBvZiByZXF1aXJpbmcgQ09ORklHX1NMVUJfREVCVUdfT04gYXQgY29tcGlsZSB0
+aW1lLiBCZW5lZml0czoNCj4gPj4+DQo+ID4+PiAtIERlYnVnZ2luZyBjYW4gYmUgZW5hYmxlZCB3
+aXRob3V0IHJlYnVpbGRpbmcgdGhlIGtlcm5lbA0KPiA+Pj4gLSBVc2VzIHN0YW5kYXJkIGtlcm5l
+bCBzdGF0aWNfa2V5IG1lY2hhbmlzbSB3aXRoIG1pbmltYWwgb3ZlcmhlYWQNCj4gPj4+DQo+ID4+
+PiBTdWdnZXN0ZWQtYnk6IFZsYXN0aW1pbCBCYWJrYSAoU1VTRSkgPHZiYWJrYUBrZXJuZWwub3Jn
+Pg0KPiA+Pj4gU2lnbmVkLW9mZi1ieTogTGkgUm9uZ1FpbmcgPGxpcm9uZ3FpbmdAYmFpZHUuY29t
+Pg0KPiA+Pj4gQ2M6IFZsYXN0aW1pbCBCYWJrYSA8dmJhYmthQGtlcm5lbC5vcmc+DQo+ID4+PiBD
+YzogSGFycnkgWW9vIDxoYXJyeUBrZXJuZWwub3JnPg0KPiA+Pj4gQ2M6IEFuZHJldyBNb3J0b24g
+PGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+DQo+ID4+PiBDYzogSGFvIExpIDxoYW8ubGlAbGlu
+dXguZGV2Pg0KPiA+Pj4gQ2M6IENocmlzdG9waCBMYW1ldGVyIDxjbEBnZW50d28ub3JnPg0KPiA+
+Pj4gQ2M6IERhdmlkIFJpZW50amVzIDxyaWVudGplc0Bnb29nbGUuY29tPg0KPiA+Pj4gQ2M6IFJv
+bWFuIEd1c2hjaGluIDxyb21hbi5ndXNoY2hpbkBsaW51eC5kZXY+DQo+ID4+PiAtLS0NCj4gPj4+
+ICBEb2N1bWVudGF0aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dCB8ICA1ICsr
+KysNCj4gPj4+ICBtbS9tZW1wb29sLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8IDMyDQo+ID4+ICsrKysrKysrKysrKysrKysrKy0tLS0tLS0NCj4gPj4+ICAyIGZpbGVzIGNo
+YW5nZWQsIDI4IGluc2VydGlvbnMoKyksIDkgZGVsZXRpb25zKC0pDQo+ID4+Pg0KPiA+Pj4gZGlm
+ZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vYWRtaW4tZ3VpZGUva2VybmVsLXBhcmFtZXRlcnMudHh0
+DQo+ID4+PiBiL0RvY3VtZW50YXRpb24vYWRtaW4tZ3VpZGUva2VybmVsLXBhcmFtZXRlcnMudHh0
+DQo+ID4+PiBpbmRleCAzNWVkOWRjLi41YTA3MGU2IDEwMDY0NA0KPiA+Pj4gLS0tIGEvRG9jdW1l
+bnRhdGlvbi9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQNCj4gPj4+ICsrKyBiL0Rv
+Y3VtZW50YXRpb24vYWRtaW4tZ3VpZGUva2VybmVsLXBhcmFtZXRlcnMudHh0DQo+ID4+PiBAQCAt
+Mzk5OCw2ICszOTk4LDExIEBAIEtlcm5lbCBwYXJhbWV0ZXJzDQo+ID4+PiAgCQkJTm90ZSB0aGF0
+IGV2ZW4gd2hlbiBlbmFibGVkLCB0aGVyZSBhcmUgYSBmZXcgY2FzZXMgd2hlcmUNCj4gPj4+ICAJ
+CQl0aGUgZmVhdHVyZSBpcyBub3QgZWZmZWN0aXZlLg0KPiA+Pj4NCj4gPj4+ICsJbWVtcG9vbF9k
+ZWJ1ZwlbTU1dDQo+ID4+PiArCQkJRW5hYmxlIG1lbXBvb2wgZGVidWdnaW5nLiBUaGlzIGVuYWJs
+ZXMgZWxlbWVudA0KPiA+Pj4gKwkJCXBvaXNvbiBjaGVja2luZyB3aGVuIGZyZWVpbmcgZWxlbWVu
+dHMgYmFjayB0byB0aGUNCj4gPj4+ICsJCQlwb29sLiBVc2VmdWwgZm9yIGRlYnVnZ2luZyBtZW1w
+b29sIGNvcnJ1cHRpb24uDQo+ID4+PiArDQo+ID4+PiAgCW1lbXRlc3Q9CVtLTkwsWDg2LEFSTSxN
+NjhLLFBQQyxSSVNDVixFQVJMWV0gRW5hYmxlDQo+IG1lbXRlc3QNCj4gPj4+ICAJCQlGb3JtYXQ6
+IDxpbnRlZ2VyPg0KPiA+Pj4gIAkJCWRlZmF1bHQgOiAwIDxkaXNhYmxlPg0KPiA+Pj4gZGlmZiAt
+LWdpdCBhL21tL21lbXBvb2wuYyBiL21tL21lbXBvb2wuYyBpbmRleCBkYjIzZTBlLi40ZjQyOWEx
+DQo+ID4+IDEwMDY0NA0KPiA+Pj4gLS0tIGEvbW0vbWVtcG9vbC5jDQo+ID4+PiArKysgYi9tbS9t
+ZW1wb29sLmMNCj4gPj4+IEBAIC0xNiwxMSArMTYsMjggQEANCj4gPj4+ICAjaW5jbHVkZSA8bGlu
+dXgvZXhwb3J0Lmg+DQo+ID4+PiAgI2luY2x1ZGUgPGxpbnV4L21lbXBvb2wuaD4NCj4gPj4+ICAj
+aW5jbHVkZSA8bGludXgvd3JpdGViYWNrLmg+DQo+ID4+PiArI2luY2x1ZGUgPGxpbnV4L3N0YXRp
+Y19rZXkuaD4NCj4gPj4+ICsjaW5jbHVkZSA8bGludXgvaW5pdC5oPg0KPiA+Pj4gICNpbmNsdWRl
+ICJzbGFiLmgiDQo+ID4+Pg0KPiA+Pj4gIHN0YXRpYyBERUNMQVJFX0ZBVUxUX0FUVFIoZmFpbF9t
+ZW1wb29sX2FsbG9jKTsNCj4gPj4+ICBzdGF0aWMgREVDTEFSRV9GQVVMVF9BVFRSKGZhaWxfbWVt
+cG9vbF9hbGxvY19idWxrKTsNCj4gPj4+DQo+ID4+PiArLyoNCj4gPj4+ICsgKiBEZWJ1Z2dpbmcg
+c3VwcG9ydCBmb3IgbWVtcG9vbCB1c2luZyBzdGF0aWMga2V5Lg0KPiA+Pj4gKyAqDQo+ID4+PiAr
+ICogVGhpcyBhbGxvd3MgZW5hYmxpbmcgbWVtcG9vbCBkZWJ1ZyBhdCBib290IHRpbWUgdmlhOg0K
+PiA+Pj4gKyAqICAgbWVtcG9vbF9kZWJ1Zw0KPiA+Pj4gKyAqLw0KPiA+Pj4gK3N0YXRpYyBERUZJ
+TkVfU1RBVElDX0tFWV9GQUxTRShtZW1wb29sX2RlYnVnX2VuYWJsZWQpOw0KPiA+Pj4gKw0KPiA+
+Pj4gK3N0YXRpYyBpbnQgX19pbml0IG1lbXBvb2xfZGVidWdfc2V0dXAoY2hhciAqc3RyKSB7DQo+
+ID4+PiArCXN0YXRpY19icmFuY2hfZW5hYmxlKCZtZW1wb29sX2RlYnVnX2VuYWJsZWQpOw0KPiA+
+Pj4gKwlyZXR1cm4gMDsNCj4gPj4+ICt9DQo+ID4+PiArZWFybHlfcGFyYW0oIm1lbXBvb2xfZGVi
+dWciLCBtZW1wb29sX2RlYnVnX3NldHVwKTsNCj4gPj4+ICsNCj4gPj4NCj4gPj4gQ2FuIHN0YXRp
+Y19icmFuY2hfZW5hYmxlKCkgaW4gbWVtcG9vbF9kZWJ1Z19zZXR1cCgpIHJ1biBiZWZvcmUNCj4g
+Pj4ganVtcF9sYWJlbF9pbml0KCkgaGFzIHNldCBzdGF0aWNfa2V5X2luaXRpYWxpemVkPw0KPiA+
+Pg0KPiA+PiBMb29raW5nIGF0IHN0YXJ0X2tlcm5lbCgpIGluIGluaXQvbWFpbi5jOg0KPiA+Pg0K
+PiA+PiAJc2V0dXBfYXJjaCgmY29tbWFuZF9saW5lKTsNCj4gPj4gCW1tX2NvcmVfaW5pdF9lYXJs
+eSgpOw0KPiA+PiAJLyogU3RhdGljIGtleXMgYW5kIHN0YXRpYyBjYWxscyBhcmUgbmVlZGVkIGJ5
+IExTTXMgKi8NCj4gPj4gCWp1bXBfbGFiZWxfaW5pdCgpOw0KPiA+PiAJLi4uDQo+ID4+IAkvKiBw
+YXJhbWV0ZXJzIG1heSBzZXQgc3RhdGljIGtleXMgKi8NCj4gPj4gCXBhcnNlX2Vhcmx5X3BhcmFt
+KCk7DQo+ID4+DQo+ID4+IFRoaXMgd2lsbCB0cmlnZ2VyIHRoZSB3YXJuaW5nIGluIGluY2x1ZGUv
+bGludXgvanVtcF9sYWJlbC5oIGhhczoNCj4gPj4NCj4gPj4gCSNkZWZpbmUgU1RBVElDX0tFWV9D
+SEVDS19VU0Uoa2V5KSBXQVJOKCFzdGF0aWNfa2V5X2luaXRpYWxpemVkLCBcDQo+ID4+IAkgICAg
+IiVzKCk6IHN0YXRpYyBrZXkgJyVwUycgdXNlZCBiZWZvcmUgY2FsbCB0byBqdW1wX2xhYmVsX2lu
+aXQoKSIsIFwNCj4gPj4gCSAgICBfX2Z1bmNfXywgKGtleSkpDQo+ID4+DQo+ID4+DQo+ID4+IG1t
+L2RtYXBvb2wuYyByZWdpc3RlcnMgYW4gZXF1aXZhbGVudCBkZWJ1ZyB0b2dnbGUgdmlhIF9fc2V0
+dXAoKQ0KPiA+PiByYXRoZXIgdGhhbg0KPiA+PiBlYXJseV9wYXJhbSgpOg0KPiA+Pg0KPiA+PiAJ
+c3RhdGljIGludCBfX2luaXQgZG1hcG9vbF9kZWJ1Z19zZXR1cChjaGFyICpzdHIpDQo+ID4+IAl7
+DQo+ID4+IAkJc3RhdGljX2JyYW5jaF9lbmFibGUoJmRtYXBvb2xfZGVidWdfZW5hYmxlZCk7DQo+
+ID4+IAkJcmV0dXJuIDE7DQo+ID4+IAl9DQo+ID4+IAlfX3NldHVwKCJkbWFwb29sX2RlYnVnIiwg
+ZG1hcG9vbF9kZWJ1Z19zZXR1cCk7DQo+ID4+DQo+ID4+IEkgdGhpbmsgeW91IGNhbiByZXVzZSB0
+aGF0Lg0KPiA+DQo+ID4gVGhhbmtzIGZvciB5b3VyIHJldmlldyENCj4gPg0KPiA+IFdoaWxlIHRo
+aXMgYm9vdC10aW1lIG9yZGVyaW5nIHVzZWQgdG8gYmUgYSBnZW5lcmljIGlzc3VlLCBpdCBzZWVt
+cw0KPiA+IG1hbnkgYXJjaGl0ZWN0dXJlcyBoYXZlIGFscmVhZHkgYWxpZ25lZCBvciBmaXhlZCB0
+aGlzIGludGVybmFsbHkuIEZvcg0KPiA+IGluc3RhbmNlLA0KPiA+DQo+ID4gY29tbWl0IGNhODI5
+ZTA1ZDNkNCAoInBvd2VycGMvNjQ6IEluaXQganVtcCBsYWJlbHMgYmVmb3JlDQo+ID4gcGFyc2Vf
+ZWFybHlfcGFyYW0oKSIpIGFuZCBjb21taXQgNjA3MDk3MGRiOWZlICgibTY4azogSW5pdGlhbGl6
+ZSBqdW1wDQo+ID4gbGFiZWxzIGVhcmx5IGR1cmluZyBzZXR1cF9hcmNoKCkiKSBleHBsaWNpdGx5
+IHJlbG9jYXRlZCBqdW1wX2xhYmVsX2luaXQoKSBiZWZvcmUNCj4gdGhlIGVhcmx5IHBhcmFtZXRl
+ciBwYXJzaW5nLg0KPiA+DQo+IA0KPiBJIHRoaW5rIDMyIGJpdCBBUk0gZG9lc250Pw0KDQpZb3Ug
+YXJlIHJpZ2h0LCAzMi1iaXQgQVJNIGRvZXNuJ3QuIA0KDQpIb3dldmVyLCB0aGUgY29ycmVjdCBh
+cmNoaXRlY3R1cmFsIGFwcHJvYWNoIHNob3VsZCBiZSBmaXhpbmcgdGhlIGJvb3Qgc2VxdWVuY2Ug
+DQppbnNpZGUgYXJjaC9hcm0vIHRvIG1hdGNoIGFybTY0ICwgcG93ZXJwYyBhbmQgbTY4aywgcmF0
+aGVyIHRoYW4gY29tcHJvbWlzaW5nIGNvcmUgTU0gDQpjb2RlIHdpdGggdGVtcG9yYXJ5IGJvaWxl
+cnBsYXRlIHZhcmlhYmxlcy4NCg0KSSBwcmVmZXIgdG8ga2VlcCB0aGUgbWVtcG9vbCBpbXBsZW1l
+bnRhdGlvbiBjbGVhbi4gSWYgQVJNMzIgdHJpZ2dlcnMgdGhlIA0Kd2FybmluZywgdGhlIHByb3Bl
+ciByZW1lZHkgaXMgYSBmb2xsb3ctdXAgcGF0Y2ggdG8gYWxpZ24gaXRzIHNldHVwX2FyY2goKSAN
+Cm9yZGVyaW5nLg0KDQpXaGF0IGRvIHlvdSB0aGluaz8NCg0KLUxpUm9uZ1FpbmcNCg0KPiANCj4g
+PiBGdXJ0aGVybW9yZSwgbGV2ZXJhZ2luZyBlYXJseV9wYXJhbSgpIHRvIGRpcmVjdGx5IG1hbmFn
+ZSBzdGF0aWMga2V5cw0KPiA+IGlzIHN0aWxsIGFjdGl2ZWx5IHVzZWQgYW5kIGFjY2VwdGVkIGlu
+IHRoZSBjdXJyZW50IGNvcmUga2VybmVsLiBTb21lIGV4YW1wbGVzDQo+IGluY2x1ZGU6DQo+ID4N
+Cj4gPiAgIC0gZWFybHlfcGFyYW0oInJhbmRvbWl6ZV9rc3RhY2tfb2Zmc2V0IiwgZWFybHlfcmFu
+ZG9taXplX2tzdGFja19vZmZzZXQpOw0KPiA+ICAgLSBlYXJseV9wYXJhbSgidGhyZWFkaXJxcyIs
+IHNldHVwX2ZvcmNlZF9pcnF0aHJlYWRzKTsNCj4gPg0KPiA+IFRoZSBwcmltYXJ5IHJlYXNvbiBm
+b3IgdXNpbmcgZWFybHlfcGFyYW0oKSBoZXJlIGluc3RlYWQgb2YgX19zZXR1cCgpDQo+ID4gaXMg
+dGhhdCBtZW1wb29sIGFsbG9jYXRpb25zIGNhbiBoYXBwZW4gZXh0cmVtZWx5IGVhcmx5IGR1cmlu
+ZyB0aGUgYm9vdA0KPiA+IHBoYXNlLiBNb3ZpbmcgdGhpcyB0byBhIGxhdGVyIHN0YWdlIGxpa2Ug
+X19zZXR1cCgpIHdvdWxkIG1lYW4gbWlzc2luZw0KPiA+IHRoZSB0cmFja2luZyBmb3IgdGhlIG1v
+c3QgY3JpdGljYWwgZWFybHktc3RhZ2UgbWVtb3J5IHBvb2xzLCB3aGljaA0KPiA+IGRlZmVhdHMg
+dGhlIHB1cnBvc2Ugb2YgYm9vdC10aW1lIGRlYnVnZ2luZy4NCj4gDQo+IEFjaw0KPiANCj4gPg0K
+DQo=
 
