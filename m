@@ -4,112 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30C7ACD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:59:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 625C4CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:59:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 695196B00B6; Thu, 28 May 2026 05:59:05 -0400 (EDT)
+	id 9A26C6B00B8; Thu, 28 May 2026 05:59:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66CA46B00B7; Thu, 28 May 2026 05:59:05 -0400 (EDT)
+	id 979D46B00B9; Thu, 28 May 2026 05:59:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55BA66B00B8; Thu, 28 May 2026 05:59:05 -0400 (EDT)
+	id 8904B6B00BA; Thu, 28 May 2026 05:59:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 423D56B00B6
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:59:05 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 075181A07D6
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:59:05 +0000 (UTC)
-X-FDA: 84816380250.03.78029F3
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 195AD40008
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:59:02 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=fB2poWTT;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf11.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779962343;
+	by kanga.kvack.org (Postfix) with ESMTP id 7B6546B00B8
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:59:17 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A2FA407A3
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:59:17 +0000 (UTC)
+X-FDA: 84816380754.13.A270F58
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 43DDCC000D
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:59:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Cx/KDjUw";
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779962355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FDRtEtjtIvSHNVwloa1d75aPePQb0NsWFeazlEaiOCE=;
-	b=UFMs+wLbI7RgE2pibIdxK6+rivpYxYh73XnBWkjX5ChkVoahw0hg1MSF6PKfHdGMfSJ8pz
-	+Jq9vCLsO2VuupD99kSG+3UUeqKaEzin5kRaK/uAOnjUSxWc+wqhmcaXPrykJGumo+gpkz
-	LnRh7eiQXEMNYlpkUuJiCb/X1IwBDd4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779962343; a=rsa-sha256;
-	cv=pass;
-	b=21qbmbGk7R1wWVZ6l0mH9tHLuS+eW/I22q7L6KGWfb9jzNYgQfCoWByewfzQLhpF23K9Fy
-	MSXgzBozkH1G6IKDGvRleJN6w6FP8BJYlaa8TG8k2IuqYSCc5BA9yF0h206zAAnUToJn8t
-	PJYuwMBqejh3JXj+iiol7d9uMlS9B8I=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=fB2poWTT;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf11.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Seal: i=1; a=rsa-sha256; t=1779962086; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=IV+H3sR/s4LGSiLXOx1PnR+Nukag6obH8xuIZbHHMcHnvSdvg/dKK9XVoQkzlQYJh8698Un01ZAi4nWycBICxxSSZlpVoDJvtZ6fBuqQaiZCvc+wpfnyybofe8sV8NNlYa4cffCrcEtJ0tXQKhz1D2hmyTNFzKCDkBJRr/lLm2M=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1779962086; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=FDRtEtjtIvSHNVwloa1d75aPePQb0NsWFeazlEaiOCE=; 
-	b=MeLLDTsLE+wCC14RD5Fk+oIlV0C7Zwn//LnPiBhw/z+RolOX+VofYUMJMKbVgmhD980fUygLGSfz0Z6r3nqwnjnzUcX9woTYpViTEPeSzfGDKpl5ddPB8eVDUB0HYV4LiG+uZodbDyby2EMJFPt0iEdFXXhDvR88fibKoQLLtEw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779962086;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=FDRtEtjtIvSHNVwloa1d75aPePQb0NsWFeazlEaiOCE=;
-	b=fB2poWTT4hqNMJvy4+J0IcPlguQBHa1w2BGiMHKSfCz4ps7V84meo3h85WjnwKLs
-	arrm+GNyafNthjskyXUMfktGgv7nWUhtxDOhZrUocDO3eGg+xJ0a8dA8YBYLBOoJY5c
-	r7Z9ETU8zav0wARgfeMz3M8f3V+Qb5x14QmYgcwk=
-Received: by mx.zohomail.com with SMTPS id 1779962083230365.44773868125844;
-	Thu, 28 May 2026 02:54:43 -0700 (PDT)
-From: Li Chen <me@linux.beauty>
-To: Christian Brauner <brauner@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	x86@kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH v1 13/13] selftests/exec: cover spawn template basics
-Date: Thu, 28 May 2026 17:52:34 +0800
-Message-ID: <20260528095235.2491226-14-me@linux.beauty>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260528095235.2491226-1-me@linux.beauty>
-References: <20260528095235.2491226-1-me@linux.beauty>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam11
-X-Stat-Signature: cpo4feubjyqudqjahh9uqwedoikxbjeu
-X-Rspamd-Queue-Id: 195AD40008
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=SzY55nFqnsKo/LgokyYRTDsyvITE44X205hY7udu7SU=;
+	b=A0Oql1BHWkcmaQFThFX5Wwm+o1g7YBm/sj0p74n9i+Fj9LZAN6UZdHonXO5zqkzT+TOhLA
+	tzL1z+2gEQZB0+HWSAz7xUyFOpdifofQ2/ofrRGHDJBbpa7TF2lCx7ghW9foBJ6tUxQy7g
+	OIleU57ZB1L2aokUllIcDUDysd29OGY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Cx/KDjUw";
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779962355; a=rsa-sha256;
+	cv=none;
+	b=GlGhfVN5gyykmWKiT6a+lI4cMplQ0XLPSYh5azDKWOc6XS/a8h9dq8YxE6MRNCrDNYCY3j
+	MwQiSi9Ni1jEjvVUe+E/LXcC2Y+6egGvSDyJf9lryrq88u7S/7/j8UBI1KPXs8CxH7Qc8r
+	A2cLauARXPQ1oXY7odle0iMcsLDFDyQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779962354; x=1811498354;
+  h=date:from:to:cc:subject:message-id;
+  bh=YcSqz8rIvXiHdos4uH83Vi6/oh8HcyJ26DO/bOa0v+Y=;
+  b=Cx/KDjUwngJWmG9b+5D3k7sPvvDyhkwqX10zV2FIhCZgR4LhuxMRror5
+   dVv6pw2KEF0p3e10Ib/8MPaVDjSzREGf6zFE38bhPtAiWvNB/675a7DmC
+   E/LmetajrDgLuA08CAraptstIrJftEfOUxvE2yrnnI8CrGdpxMQHnes5v
+   waqNuQFEaxQnHM3Yr4zd4KWZRXXlVeiLqbqDznPNhr5weHnXM5XPTeKDT
+   Wfy1DZz+YjpN6P9EriCDv4DqPGxxJhrCdBzTYt2YESHfRvC83yRiwq2d7
+   w3zgmZ07VN+JCXqvc18qIorBR5J8QYVq5YOVuH3MFsYZ9Arn96va3Uc5x
+   Q==;
+X-CSE-ConnectionGUID: Y4OIK9C6Sma667u6OALOqQ==
+X-CSE-MsgGUID: QUTJl+w3S0e9hrJKb16wdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="103475571"
+X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
+   d="scan'208";a="103475571"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 02:59:13 -0700
+X-CSE-ConnectionGUID: 1FjPrJFQQ1+Oxhf9yFQ8GQ==
+X-CSE-MsgGUID: THrLNQ56Ta2juBfqiuYhwg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
+   d="scan'208";a="239933896"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 28 May 2026 02:59:10 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wSXW7-000000005oM-1KFU;
+	Thu, 28 May 2026 09:59:07 +0000
+Date: Thu, 28 May 2026 17:58:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kairui Song <kasong@tencent.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-unstable 199/420] mm/memcontrol-v1.c:651:24:
+ error: call to undeclared function 'swp_cluster_offset'; ISO C99 and later do
+ not support implicit function declarations
+Message-ID: <202605281711.bSeZlErK-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: 3sted87ayc8etau333zxrbqbrtmwdui6
+X-Rspamd-Queue-Id: 43DDCC000D
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1779962342-19022
-X-HE-Meta: U2FsdGVkX19uPS4e85x0/W75ded5VDSpdVhJasYTxxKdvgFJOoIwajIqaa3aUEf01XG0OKtGHKvHWXoOpq1QZK4dRN1Z/0ppdOQ4rk5VNX918NAV/2FbTIjVUNyL5aKaSils3N+3ABdweDy78JbndW1ZOkcH+pbyqe3D4bBPZupQPs+Hn7XgUDXYnYFryhGwCglnC0pv0A/Ai/pZXCjX3jI2jSXlyIuuZkcucrUjz6W6I5ElvwJSXL+RVDu3QGMVWCtNFg+UiRHufmz6njBf1cdetrAVGoEluol2IcFZqKAJ1x2nm3imaxQORAmv2p38s/aG8eAuBQTP1TC/R5jEWjqS5DaWt6lTDA7LJQImOlRUSXRzT+FWg4MamkWaVBwEkeYUQLiKXO4Y8T/GaHRzVcxwbPfl3Ia3DuFPICXQF551HKDxag6GYwDa33MAnQmFfr0oqowtOWTL9hgGqe4tJ1AJjpdmt6g2xQT0g7HUQT/B99dl3gc9Y0a1Q8ac1+AUvbj1ZNAlkx6s1uQ7eFYJtAFM1aaZGI1eaittgx5S2JLLkN90jeJtvGRpyGKrP7o39OLoLTqDkAgh9b+L00BfJWOlJWcwf1eEqfnvhLive1cKAlPC04DAtwNpHZM0oc8Vbhnrqylgn9wl/Ko6A7sgjB+ChriuM4JQ3B7JmuXbLAerG2gPJuQ+yl3H5Qd871/LvORqownY4nwzioGDa0Jo5JiaggPZ/vV5fO7MdHVekvsXPRo8s+IulMDkOl3d++orvzy4ZRk2tg3Wtx7uaJxmYoD0S4ILcS9pT6iiEfAINiVC1hagmKskN1zxj+86bUmFIlCMTTpIMHcPHU/ZD4gEh0Qxu2/tcefyt9RLW6inq5y0aNlswdDOR6OboZNBPay4l+ZXTGA8uFXwRgRtaws4qNnRU8597L+uHjifAEW3HtCze8A83esILbgmIYjfuEC6EfmKunH8299fC2qRAYE
- zeH1CI6F
- aBI9wMeMd5JNX34x96s6CptcBSz1KECQq7R+txSbPiJhvQBimAOqA+xDvbRidwjhyUeiNdZOLXdz0+nD1dza0y5eTq+ELRnUwD+z8CzIsOL63a/UcHrXKt2pCnQxJgvbnS1gdLjIm3d1LCvxok14ujufcF16IUM5dr+R9Yxl0Xzwik1K2mc6J28k31pr9h04BFNwLcALCeNn57lofJHT/mqswwoceZc0a8HlbrsqXkn6HCoJPgq0gVIeuf+FDvnk1bf3jEiaop7ezeJkPfS1wpo8CooaKwQaik+MPURC23Gt7pzeBiKo3EWdFEvXMNyv+3lyWx3EN4fZTAQxK2oZm7yYdZqyvpogN35KplQ1VCoChnhQUuRT9jW9YqiAUcv4P7+8XEwfzODAagbZwR92ISvziso+MsQiuZulkwTCYvFfWJmQbLIxQiSK4/K0Sspqx+RhM
+X-HE-Tag: 1779962353-209832
+X-HE-Meta: U2FsdGVkX19tyEA95fzH8l4JVr1SCvQLxo8LkMQmmC/3qqDNjLin22Uj7/mnCeIddVXGimX3ivmvh3ZY0lUqS29oxZUjkObGwtRBGDDzvyDHMQq640FKLHd0Ieqywb8/RWCkejAoonwx8pBRYUkhMj/Rx3Ux0/tjywPz74PjPRBjcGwZssPM5cGbY4jk6hSF//e+0C3lHlQuzwPYurTDi6f9b+mbcNGczOguuqfCAjEXQBaZvkGr5novhduMmSTDrERpU3tvl0A9fVM5viWO0yhYzgXHa+JOX8Xsyyaw4fQusQcFWFSSmyRjHKMGjXGdOS0RauqO2oS6HocOOE/SgM+lAMHRfryus8rGwOyWYCV+9HHlK4QT6d18xaSUQuzgbCrQGIM6aeDt40spfTtivxOG8YfNbBy7wwrWslHt9qjZkgR4zu9sYkUwmKXWdB1JF7aQq2KxXrTAoOlGRWRjjcFF0ZueDAPwavKlWwLvI/7je/WS/gsb4ErJsE5JrPQ3QoCcMmNAQdF5C1YBuGdaROOZ2z6Iska1yJCs06+RGXb23znvy3PBkpH4VFzo6MzYn0o6lstuucvQB64/NGE5UjmxDZpozMm/fBZDp5KD+FQj+D4GhLBZzLr+nRbHiJOiFZFMLj8uiwmwfazRe4RBipHvl5k5k5FLf9bobUUeqcBUsZgdGrkBJAdP2NXsHikgjXmtEniufEPd6Jf/zd45mWs0D6q+uX1l3D2JYUYcGf5ik58JjwT/z/A8+YNXtaq1in+jixONDVHB60YcEtBuVYlwpW0OMyg3KApON4QwtvIfyUxFVsFO1+05urkaUee5smhrENpCKeRg2NkYbkrgBB8Kdbo4I+AMK3ugoe0WS45FltDMsrkXEgHDm6hlZ/FUCKa5Sw3Gv+xayZGOm6HBoOuT2fLoD2AGUCl8YXXoWMm6fd1//Zibr8PtN3cEMtPo+9Ffn1Vm5PFPVhZ8LEd
+ 8OzcUqCk
+ QYHBiBdy+sQvyaWdbJLbbomOENdFIXonTlAa1D6NvV+pdev5e5MrC6A0njpBXNSdBK2a+kQ9t2u0Q01uXR+3GjPFwD1FD+0ePYrPzZmIyb1MJppxj0R36hpXbTi/fGmb3e1HcL0h8Fa16Dxf1otxv+keH41FfnaZV/x5Kp7ETEwNckkPUfq/ab92tNvVd/2xRooVikjPr2rJzW/UMqvyt6Byeh1Qa0UiOeVidnfUCHueZbvJL2ZZm9/PmC+PowQ/Qtto5nCYIbVr9QwzIFrhV52Vgp7bA9QmDVnZw1hw+xxWURTl/RO6T8iQJfE4ktNwER9Rb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,1051 +105,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add exec selftests for the spawn_template ABI. Cover basic spawning,
-relative path rejection, execfd execute-permission checks, default fd
-closing, close-range actions using newfd -1, and stale path rejection
-after executable metadata changes.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+head:   8a74e22643189e0ae339afc91110ddb4cab1941b
+commit: 93680c2b51fa1f84fe50800b71140dbd283372b8 [199/420] mm/memcg, swap: store cgroup id in cluster table directly
+config: arm-randconfig-004-20260528 (https://download.01.org/0day-ci/archive/20260528/202605281711.bSeZlErK-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9409c07de6378507397ecdb6f05f628f58110112)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260528/202605281711.bSeZlErK-lkp@intel.com/reproduce)
 
-Also cover atomic path replacement while a template fd for an old path is
-still alive. The old template must reject the changed path with ESTALE, and
-a new template for the same path must execute the replacement.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605281711.bSeZlErK-lkp@intel.com/
 
-Signed-off-by: Li Chen <me@linux.beauty>
----
- MAINTAINERS                                   |   1 +
- tools/testing/selftests/exec/Makefile         |   1 +
- tools/testing/selftests/exec/spawn_template.c | 997 ++++++++++++++++++
- 3 files changed, 999 insertions(+)
- create mode 100644 tools/testing/selftests/exec/spawn_template.c
+All errors (new ones prefixed by >>):
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3e737097940f9..77b3da32b4d2a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9747,6 +9747,7 @@ F:	include/uapi/linux/spawn_template.h
- F:	kernel/fork.c
- F:	mm/vma_exec.c
- F:	tools/testing/selftests/exec/
-+F:	tools/testing/selftests/exec/spawn_template.c
- N:	asm/elf.h
- N:	binfmt
- 
-diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
-index 45a3cfc435cfd..cf39fe916b9ba 100644
---- a/tools/testing/selftests/exec/Makefile
-+++ b/tools/testing/selftests/exec/Makefile
-@@ -20,6 +20,7 @@ TEST_FILES := Makefile
- TEST_GEN_PROGS += recursion-depth
- TEST_GEN_PROGS += null-argv
- TEST_GEN_PROGS += check-exec
-+TEST_GEN_PROGS += spawn_template
- 
- EXTRA_CLEAN := $(OUTPUT)/subdir.moved $(OUTPUT)/execveat.moved $(OUTPUT)/xxxxx*	\
- 	       $(OUTPUT)/S_I*.test
-diff --git a/tools/testing/selftests/exec/spawn_template.c b/tools/testing/selftests/exec/spawn_template.c
-new file mode 100644
-index 0000000000000..26708143ac9dc
---- /dev/null
-+++ b/tools/testing/selftests/exec/spawn_template.c
-@@ -0,0 +1,997 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <signal.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/stat.h>
-+#include <sys/syscall.h>
-+#include <sys/types.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include <linux/spawn_template.h>
-+
-+#include "kselftest.h"
-+
-+#ifndef __NR_spawn_template_create
-+#define __NR_spawn_template_create 472
-+#endif
-+
-+#ifndef __NR_spawn_template_spawn
-+#define __NR_spawn_template_spawn 473
-+#endif
-+
-+#define SPAWN_TEMPLATE_MISSING_SYSCALL_ERRNO	38
-+#define SPAWN_TEMPLATE_KERNEL_NSIG		64
-+#define SPAWN_TEMPLATE_KERNEL_SIGSET_WORDS	\
-+	(SPAWN_TEMPLATE_KERNEL_NSIG / (8 * sizeof(unsigned long)))
-+
-+static const char *true_path;
-+static char self_path[PATH_MAX];
-+
-+struct spawn_template_kernel_sigset {
-+	unsigned long sig[SPAWN_TEMPLATE_KERNEL_SIGSET_WORDS];
-+};
-+
-+static void spawn_template_kernel_sigempty(struct spawn_template_kernel_sigset *set)
-+{
-+	memset(set, 0, sizeof(*set));
-+}
-+
-+static void spawn_template_kernel_sigadd(struct spawn_template_kernel_sigset *set,
-+					 int sig)
-+{
-+	sig--;
-+	set->sig[sig / (8 * sizeof(unsigned long))] |=
-+		1UL << (sig % (8 * sizeof(unsigned long)));
-+}
-+
-+static int read_fd_string(int fd, const char *expected)
-+{
-+	char buf[128];
-+	ssize_t nread;
-+
-+	nread = read(fd, buf, sizeof(buf) - 1);
-+	if (nread < 0)
-+		return -errno;
-+
-+	buf[nread] = '\0';
-+	return strcmp(buf, expected) ? -EINVAL : 0;
-+}
-+
-+static int write_file(const char *path, const char *data, mode_t mode)
-+{
-+	size_t left = strlen(data);
-+	const char *p = data;
-+	int fd;
-+	int ret = 0;
-+
-+	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, mode);
-+	if (fd < 0)
-+		return -errno;
-+
-+	while (left) {
-+		ssize_t written = write(fd, p, left);
-+
-+		if (written < 0) {
-+			ret = -errno;
-+			break;
-+		}
-+		left -= written;
-+		p += written;
-+	}
-+
-+	close(fd);
-+	return ret;
-+}
-+
-+static int create_template_path(const char *path)
-+{
-+	struct spawn_template_create_args args = {
-+		.flags = SPAWN_TEMPLATE_CREATE_CLOEXEC,
-+		.execfd = -1,
-+		.filename = (uintptr_t)path,
-+	};
-+
-+	return syscall(__NR_spawn_template_create, &args, sizeof(args));
-+}
-+
-+static int create_template_fd(int execfd)
-+{
-+	struct spawn_template_create_args args = {
-+		.flags = SPAWN_TEMPLATE_CREATE_CLOEXEC,
-+		.execfd = execfd,
-+	};
-+
-+	return syscall(__NR_spawn_template_create, &args, sizeof(args));
-+}
-+
-+static int spawn_template_start(int template_fd, char *const argv[],
-+				struct spawn_template_action *actions,
-+				unsigned int actions_len,
-+				unsigned long long flags, pid_t *pid_out,
-+				int *pidfd_out)
-+{
-+	char *const envp[] = { "PATH=/usr/bin:/bin", NULL };
-+	struct spawn_template_spawn_args args = {
-+		.flags = flags,
-+		.argv = (uintptr_t)argv,
-+		.envp = (uintptr_t)envp,
-+		.actions = (uintptr_t)actions,
-+		.actions_len = actions_len,
-+	};
-+	int pidfd = -1;
-+	pid_t pid;
-+	int ret;
-+
-+	args.pidfd = (uintptr_t)&pidfd;
-+
-+	pid = syscall(__NR_spawn_template_spawn, template_fd, &args,
-+		      sizeof(args));
-+	if (pid < 0) {
-+		ret = -errno;
-+		if (pidfd >= 0) {
-+			siginfo_t info;
-+
-+			waitid(P_PIDFD, pidfd, &info, WEXITED);
-+			close(pidfd);
-+		}
-+		return ret;
-+	}
-+
-+	*pid_out = pid;
-+	*pidfd_out = pidfd;
-+	return 0;
-+}
-+
-+static int spawn_template(int template_fd, char *const argv[],
-+			  struct spawn_template_action *actions,
-+			  unsigned int actions_len, unsigned long long flags)
-+{
-+	siginfo_t info = {};
-+	int pidfd;
-+	pid_t pid;
-+	int ret;
-+
-+	ret = spawn_template_start(template_fd, argv, actions, actions_len, flags,
-+				   &pid, &pidfd);
-+	if (ret)
-+		return ret;
-+	(void)pid;
-+
-+	ret = waitid(P_PIDFD, pidfd, &info, WEXITED);
-+	if (ret < 0) {
-+		ret = -errno;
-+		goto out_close_pidfd;
-+	}
-+
-+	if (info.si_code != CLD_EXITED) {
-+		ret = -EINVAL;
-+		goto out_close_pidfd;
-+	}
-+
-+	ret = info.si_status;
-+
-+out_close_pidfd:
-+	if (pidfd >= 0)
-+		close(pidfd);
-+	return ret;
-+}
-+
-+static const char *find_true(void)
-+{
-+	static const char * const paths[] = {
-+		"/usr/bin/true",
-+		"/bin/true",
-+	};
-+	unsigned int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(paths); i++) {
-+		if (access(paths[i], X_OK) == 0)
-+			return paths[i];
-+	}
-+	return NULL;
-+}
-+
-+static int copy_file(const char *src, const char *dst)
-+{
-+	char buf[8192];
-+	ssize_t nread;
-+	int infd;
-+	int outfd;
-+	int ret = 0;
-+
-+	infd = open(src, O_RDONLY | O_CLOEXEC);
-+	if (infd < 0)
-+		return -errno;
-+
-+	outfd = open(dst, O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0700);
-+	if (outfd < 0) {
-+		ret = -errno;
-+		goto out_close_in;
-+	}
-+
-+	while ((nread = read(infd, buf, sizeof(buf))) > 0) {
-+		char *p = buf;
-+		ssize_t left = nread;
-+
-+		while (left > 0) {
-+			ssize_t written = write(outfd, p, left);
-+
-+			if (written < 0) {
-+				ret = -errno;
-+				goto out_close_out;
-+			}
-+			left -= written;
-+			p += written;
-+		}
-+	}
-+	if (nread < 0)
-+		ret = -errno;
-+
-+out_close_out:
-+	close(outfd);
-+out_close_in:
-+	close(infd);
-+	return ret;
-+}
-+
-+static int test_basic_spawn(void)
-+{
-+	char *const argv[] = { (char *)true_path, NULL };
-+	int template_fd;
-+	int ret;
-+
-+	template_fd = create_template_path(true_path);
-+	if (template_fd < 0)
-+		return -errno;
-+
-+	ret = spawn_template(template_fd, argv, NULL, 0, 0);
-+	close(template_fd);
-+	return ret;
-+}
-+
-+static int test_relative_path_rejected(void)
-+{
-+	int template_fd;
-+
-+	template_fd = create_template_path("true");
-+	if (template_fd >= 0) {
-+		close(template_fd);
-+		return -EINVAL;
-+	}
-+
-+	return errno == EINVAL ? 0 : -errno;
-+}
-+
-+static int test_execfd_requires_execute(void)
-+{
-+	char path[] = "/tmp/spawn-template-noexec-XXXXXX";
-+	int template_fd;
-+	int fd;
-+	int ret = 0;
-+
-+	fd = mkstemp(path);
-+	if (fd < 0)
-+		return -errno;
-+
-+	if (fchmod(fd, 0600)) {
-+		ret = -errno;
-+		goto out;
-+	}
-+
-+	template_fd = create_template_fd(fd);
-+	if (template_fd >= 0) {
-+		close(template_fd);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	ret = errno == EACCES ? 0 : -errno;
-+
-+out:
-+	close(fd);
-+	unlink(path);
-+	return ret;
-+}
-+
-+static int test_default_closes_extra_fds(void)
-+{
-+	char fdarg[32];
-+	char *const argv[] = {
-+		self_path,
-+		"--check-fd-closed",
-+		fdarg,
-+		NULL,
-+	};
-+	int template_fd;
-+	int extra_fd;
-+	int ret;
-+
-+	extra_fd = open("/dev/null", O_RDONLY);
-+	if (extra_fd < 0)
-+		return -errno;
-+
-+	snprintf(fdarg, sizeof(fdarg), "%d", extra_fd);
-+
-+	template_fd = create_template_path(self_path);
-+	if (template_fd < 0) {
-+		ret = -errno;
-+		goto out_close_extra;
-+	}
-+
-+	ret = spawn_template(template_fd, argv, NULL, 0, 0);
-+	close(template_fd);
-+
-+out_close_extra:
-+	close(extra_fd);
-+	return ret;
-+}
-+
-+static int test_close_range_max_action(void)
-+{
-+	char fdarg[32];
-+	char *const argv[] = {
-+		self_path,
-+		"--check-fd-closed",
-+		fdarg,
-+		NULL,
-+	};
-+	struct spawn_template_action action = {
-+		.type = SPAWN_TEMPLATE_ACTION_CLOSE_RANGE,
-+		.fd = -1,
-+		.newfd = -1,
-+	};
-+	int template_fd;
-+	int extra_fd;
-+	int ret;
-+
-+	extra_fd = open("/dev/null", O_RDONLY | O_CLOEXEC);
-+	if (extra_fd < 0)
-+		return -errno;
-+
-+	action.fd = extra_fd;
-+	snprintf(fdarg, sizeof(fdarg), "%d", extra_fd);
-+
-+	template_fd = create_template_path(self_path);
-+	if (template_fd < 0) {
-+		ret = -errno;
-+		goto out_close_extra;
-+	}
-+
-+	ret = spawn_template(template_fd, argv, &action, 1,
-+			     SPAWN_TEMPLATE_SPAWN_INHERIT_FDS);
-+	close(template_fd);
-+
-+out_close_extra:
-+	close(extra_fd);
-+	return ret;
-+}
-+
-+static int test_dup2_stdio_actions(void)
-+{
-+	char *const argv[] = { self_path, "--write-stdio", NULL };
-+	struct spawn_template_action actions[2];
-+	char out_buf[32];
-+	char err_buf[32];
-+	int out_pipe[2];
-+	int err_pipe[2];
-+	int template_fd;
-+	int ret = 0;
-+
-+	if (pipe2(out_pipe, O_CLOEXEC))
-+		return -errno;
-+	if (pipe2(err_pipe, O_CLOEXEC)) {
-+		ret = -errno;
-+		goto out_close_out_pipe;
-+	}
-+
-+	actions[0] = (struct spawn_template_action) {
-+		.type = SPAWN_TEMPLATE_ACTION_DUP2,
-+		.fd = out_pipe[1],
-+		.newfd = STDOUT_FILENO,
-+	};
-+	actions[1] = (struct spawn_template_action) {
-+		.type = SPAWN_TEMPLATE_ACTION_DUP2,
-+		.fd = err_pipe[1],
-+		.newfd = STDERR_FILENO,
-+	};
-+
-+	template_fd = create_template_path(self_path);
-+	if (template_fd < 0) {
-+		ret = -errno;
-+		goto out_close_err_pipe;
-+	}
-+
-+	ret = spawn_template(template_fd, argv, actions, ARRAY_SIZE(actions), 0);
-+	close(template_fd);
-+	if (ret)
-+		goto out_close_err_pipe;
-+
-+	close(out_pipe[1]);
-+	out_pipe[1] = -1;
-+	close(err_pipe[1]);
-+	err_pipe[1] = -1;
-+
-+	memset(out_buf, 0, sizeof(out_buf));
-+	memset(err_buf, 0, sizeof(err_buf));
-+	if (read(out_pipe[0], out_buf, sizeof(out_buf) - 1) < 0) {
-+		ret = -errno;
-+		goto out_close_err_pipe;
-+	}
-+	if (read(err_pipe[0], err_buf, sizeof(err_buf) - 1) < 0) {
-+		ret = -errno;
-+		goto out_close_err_pipe;
-+	}
-+	if (strcmp(out_buf, "stdout-token\n") ||
-+	    strcmp(err_buf, "stderr-token\n"))
-+		ret = -EINVAL;
-+
-+out_close_err_pipe:
-+	if (err_pipe[1] >= 0)
-+		close(err_pipe[1]);
-+	close(err_pipe[0]);
-+out_close_out_pipe:
-+	if (out_pipe[1] >= 0)
-+		close(out_pipe[1]);
-+	close(out_pipe[0]);
-+	return ret;
-+}
-+
-+static int test_open_action_stdin(void)
-+{
-+	char dir[] = "/tmp/spawn-template-open-XXXXXX";
-+	char path[PATH_MAX];
-+	char *const argv[] = {
-+		self_path,
-+		"--check-fd-content",
-+		"0",
-+		"open-action-token\n",
-+		NULL,
-+	};
-+	struct spawn_template_open open_arg = {
-+		.path = (uintptr_t)path,
-+		.how = {
-+			.flags = O_RDONLY,
-+		},
-+	};
-+	struct spawn_template_action action = {
-+		.type = SPAWN_TEMPLATE_ACTION_OPEN,
-+		.fd = AT_FDCWD,
-+		.newfd = STDIN_FILENO,
-+		.arg = (uintptr_t)&open_arg,
-+	};
-+	int template_fd;
-+	int ret;
-+
-+	if (!mkdtemp(dir))
-+		return -errno;
-+
-+	snprintf(path, sizeof(path), "%s/input", dir);
-+	ret = write_file(path, "open-action-token\n", 0600);
-+	if (ret)
-+		goto out_unlink;
-+
-+	template_fd = create_template_path(self_path);
-+	if (template_fd < 0) {
-+		ret = -errno;
-+		goto out_unlink;
-+	}
-+
-+	ret = spawn_template(template_fd, argv, &action, 1, 0);
-+	close(template_fd);
-+
-+out_unlink:
-+	unlink(path);
-+	rmdir(dir);
-+	return ret;
-+}
-+
-+static int test_fchdir_action(void)
-+{
-+	char dir[] = "/tmp/spawn-template-fchdir-XXXXXX";
-+	char resolved[PATH_MAX];
-+	char *const argv[] = {
-+		self_path,
-+		"--check-cwd",
-+		resolved,
-+		NULL,
-+	};
-+	struct spawn_template_action action = {
-+		.type = SPAWN_TEMPLATE_ACTION_FCHDIR,
-+	};
-+	int template_fd;
-+	int dirfd;
-+	int ret;
-+
-+	if (!mkdtemp(dir))
-+		return -errno;
-+	if (!realpath(dir, resolved)) {
-+		ret = -errno;
-+		goto out_rmdir;
-+	}
-+
-+	dirfd = open(dir, O_RDONLY | O_DIRECTORY | O_CLOEXEC);
-+	if (dirfd < 0) {
-+		ret = -errno;
-+		goto out_rmdir;
-+	}
-+	action.fd = dirfd;
-+
-+	template_fd = create_template_path(self_path);
-+	if (template_fd < 0) {
-+		ret = -errno;
-+		goto out_close_dirfd;
-+	}
-+
-+	ret = spawn_template(template_fd, argv, &action, 1, 0);
-+	close(template_fd);
-+
-+out_close_dirfd:
-+	close(dirfd);
-+out_rmdir:
-+	rmdir(dir);
-+	return ret;
-+}
-+
-+static int test_sigmask_action(void)
-+{
-+	char sigarg[16];
-+	char *const argv[] = {
-+		self_path,
-+		"--check-sigmask",
-+		sigarg,
-+		NULL,
-+	};
-+	struct spawn_template_kernel_sigset mask;
-+	struct spawn_template_sigset sigset_arg = {
-+		.sigset = (uintptr_t)&mask,
-+		.sigsetsize = sizeof(mask),
-+	};
-+	struct spawn_template_action action = {
-+		.type = SPAWN_TEMPLATE_ACTION_SIGMASK,
-+		.arg = (uintptr_t)&sigset_arg,
-+	};
-+	int template_fd;
-+	int ret;
-+
-+	spawn_template_kernel_sigempty(&mask);
-+	spawn_template_kernel_sigadd(&mask, SIGUSR1);
-+	snprintf(sigarg, sizeof(sigarg), "%d", SIGUSR1);
-+
-+	template_fd = create_template_path(self_path);
-+	if (template_fd < 0)
-+		return -errno;
-+
-+	ret = spawn_template(template_fd, argv, &action, 1, 0);
-+	close(template_fd);
-+	return ret;
-+}
-+
-+static int test_sigdefault_action(void)
-+{
-+	char sigarg[16];
-+	char *const argv[] = {
-+		self_path,
-+		"--check-sigdefault",
-+		sigarg,
-+		NULL,
-+	};
-+	struct spawn_template_kernel_sigset mask;
-+	struct sigaction old_sa;
-+	struct sigaction ignore_sa = {
-+		.sa_handler = SIG_IGN,
-+	};
-+	struct spawn_template_sigset sigset_arg = {
-+		.sigset = (uintptr_t)&mask,
-+		.sigsetsize = sizeof(mask),
-+	};
-+	struct spawn_template_action action = {
-+		.type = SPAWN_TEMPLATE_ACTION_SIGDEFAULT,
-+		.arg = (uintptr_t)&sigset_arg,
-+	};
-+	int template_fd;
-+	int ret;
-+
-+	spawn_template_kernel_sigempty(&mask);
-+	spawn_template_kernel_sigadd(&mask, SIGUSR1);
-+	snprintf(sigarg, sizeof(sigarg), "%d", SIGUSR1);
-+
-+	if (sigaction(SIGUSR1, &ignore_sa, &old_sa))
-+		return -errno;
-+
-+	template_fd = create_template_path(self_path);
-+	if (template_fd < 0) {
-+		ret = -errno;
-+		goto out_restore_signal;
-+	}
-+
-+	ret = spawn_template(template_fd, argv, &action, 1, 0);
-+	close(template_fd);
-+
-+out_restore_signal:
-+	sigaction(SIGUSR1, &old_sa, NULL);
-+	return ret;
-+}
-+
-+static int test_inherit_fds_flag(void)
-+{
-+	char fdarg[32];
-+	char *const argv[] = {
-+		self_path,
-+		"--check-fd-open",
-+		fdarg,
-+		NULL,
-+	};
-+	int template_fd;
-+	int extra_fd;
-+	int ret;
-+
-+	extra_fd = open("/dev/null", O_RDONLY);
-+	if (extra_fd < 0)
-+		return -errno;
-+	snprintf(fdarg, sizeof(fdarg), "%d", extra_fd);
-+
-+	template_fd = create_template_path(self_path);
-+	if (template_fd < 0) {
-+		ret = -errno;
-+		goto out_close_extra;
-+	}
-+
-+	ret = spawn_template(template_fd, argv, NULL, 0,
-+			     SPAWN_TEMPLATE_SPAWN_INHERIT_FDS);
-+	close(template_fd);
-+
-+out_close_extra:
-+	close(extra_fd);
-+	return ret;
-+}
-+
-+static int test_pidfd_waitid(void)
-+{
-+	char *const argv[] = { (char *)true_path, NULL };
-+	siginfo_t info = {};
-+	int template_fd;
-+	int pidfd;
-+	pid_t pid;
-+	int ret;
-+
-+	template_fd = create_template_path(true_path);
-+	if (template_fd < 0)
-+		return -errno;
-+
-+	ret = spawn_template_start(template_fd, argv, NULL, 0, 0, &pid, &pidfd);
-+	close(template_fd);
-+	if (ret)
-+		return ret;
-+
-+	ret = waitid(P_PIDFD, pidfd, &info, WEXITED);
-+	if (ret < 0) {
-+		ret = -errno;
-+		waitpid(pid, NULL, 0);
-+		goto out_close_pidfd;
-+	}
-+	if (info.si_code != CLD_EXITED || info.si_status)
-+		ret = -EINVAL;
-+
-+out_close_pidfd:
-+	close(pidfd);
-+	return ret;
-+}
-+
-+static int test_create_actions_rejected(void)
-+{
-+	struct spawn_template_action action = {
-+		.type = SPAWN_TEMPLATE_ACTION_CLOSE,
-+		.fd = STDIN_FILENO,
-+	};
-+	struct spawn_template_create_args args = {
-+		.flags = SPAWN_TEMPLATE_CREATE_CLOEXEC,
-+		.execfd = -1,
-+		.filename = (uintptr_t)true_path,
-+		.actions = (uintptr_t)&action,
-+		.actions_len = 1,
-+	};
-+	int template_fd;
-+
-+	template_fd = syscall(__NR_spawn_template_create, &args, sizeof(args));
-+	if (template_fd >= 0) {
-+		close(template_fd);
-+		return -EINVAL;
-+	}
-+
-+	return errno == EINVAL ? 0 : -errno;
-+}
-+
-+static int test_script_template_unsupported(void)
-+{
-+	char dir[] = "/tmp/spawn-template-script-XXXXXX";
-+	char path[PATH_MAX];
-+	int template_fd;
-+	int ret;
-+
-+	if (!mkdtemp(dir))
-+		return -errno;
-+
-+	snprintf(path, sizeof(path), "%s/script", dir);
-+	ret = write_file(path, "#!/bin/sh\nexit 0\n", 0700);
-+	if (ret)
-+		goto out_unlink;
-+
-+	template_fd = create_template_path(path);
-+	if (template_fd >= 0) {
-+		close(template_fd);
-+		ret = -EINVAL;
-+		goto out_unlink;
-+	}
-+	ret = errno == ENOEXEC ? 0 : -errno;
-+
-+out_unlink:
-+	unlink(path);
-+	rmdir(dir);
-+	return ret;
-+}
-+
-+static int test_deny_write_while_template_alive(void)
-+{
-+	char dir[] = "/tmp/spawn-template-deny-write-XXXXXX";
-+	char path[PATH_MAX];
-+	int template_fd;
-+	int write_fd;
-+	int ret = 0;
-+
-+	if (!mkdtemp(dir))
-+		return -errno;
-+
-+	snprintf(path, sizeof(path), "%s/copy", dir);
-+	ret = copy_file(self_path, path);
-+	if (ret)
-+		goto out_unlink;
-+
-+	template_fd = create_template_path(path);
-+	if (template_fd < 0) {
-+		ret = -errno;
-+		goto out_unlink;
-+	}
-+
-+	write_fd = open(path, O_WRONLY | O_TRUNC | O_CLOEXEC);
-+	if (write_fd >= 0) {
-+		close(write_fd);
-+		ret = -EINVAL;
-+	} else {
-+		ret = errno == ETXTBSY ? 0 : -errno;
-+	}
-+
-+	close(template_fd);
-+out_unlink:
-+	unlink(path);
-+	rmdir(dir);
-+	return ret;
-+}
-+
-+static int test_stale_path_rejected(void)
-+{
-+	char dir[] = "/tmp/spawn-template-stale-XXXXXX";
-+	char path[PATH_MAX];
-+	char *const argv[] = { path, "--exit-zero", NULL };
-+	int template_fd;
-+	int ret = 0;
-+
-+	if (!mkdtemp(dir))
-+		return -errno;
-+
-+	snprintf(path, sizeof(path), "%s/copy", dir);
-+	ret = copy_file(self_path, path);
-+	if (ret)
-+		goto out_unlink;
-+
-+	template_fd = create_template_path(path);
-+	if (template_fd < 0) {
-+		ret = -errno;
-+		goto out_unlink;
-+	}
-+
-+	if (chmod(path, 0600)) {
-+		ret = -errno;
-+		goto out_close_template;
-+	}
-+
-+	ret = spawn_template(template_fd, argv, NULL, 0, 0);
-+	if (ret >= 0)
-+		ret = -EINVAL;
-+	else
-+		ret = ret == -ESTALE ? 0 : ret;
-+
-+out_close_template:
-+	close(template_fd);
-+out_unlink:
-+	unlink(path);
-+	rmdir(dir);
-+	return ret;
-+}
-+
-+static int test_path_replacement_allows_tool_update(void)
-+{
-+	char dir[] = "/tmp/spawn-template-update-XXXXXX";
-+	char path[PATH_MAX];
-+	char new_path[PATH_MAX];
-+	char *const argv[] = { path, "--exit-zero", NULL };
-+	int new_template_fd = -1;
-+	int template_fd = -1;
-+	int ret;
-+
-+	if (!mkdtemp(dir))
-+		return -errno;
-+
-+	snprintf(path, sizeof(path), "%s/tool", dir);
-+	snprintf(new_path, sizeof(new_path), "%s/tool.new", dir);
-+	ret = copy_file(self_path, path);
-+	if (ret)
-+		goto out;
-+	ret = copy_file(self_path, new_path);
-+	if (ret)
-+		goto out;
-+
-+	template_fd = create_template_path(path);
-+	if (template_fd < 0) {
-+		ret = -errno;
-+		goto out;
-+	}
-+
-+	if (rename(new_path, path)) {
-+		ret = -errno;
-+		goto out;
-+	}
-+
-+	ret = spawn_template(template_fd, argv, NULL, 0, 0);
-+	if (ret != -ESTALE) {
-+		ret = ret < 0 ? ret : -EINVAL;
-+		goto out;
-+	}
-+
-+	new_template_fd = create_template_path(path);
-+	if (new_template_fd < 0) {
-+		ret = -errno;
-+		goto out;
-+	}
-+
-+	ret = spawn_template(new_template_fd, argv, NULL, 0, 0);
-+
-+out:
-+	if (new_template_fd >= 0)
-+		close(new_template_fd);
-+	if (template_fd >= 0)
-+		close(template_fd);
-+	unlink(new_path);
-+	unlink(path);
-+	rmdir(dir);
-+	return ret;
-+}
-+
-+static void run_test(const char *name, int (*fn)(void))
-+{
-+	int ret = fn();
-+
-+	if (!ret)
-+		ksft_test_result_pass("%s\n", name);
-+	else
-+		ksft_test_result_fail("%s failed: %s (%d)\n",
-+				      name, strerror(-ret), -ret);
-+}
-+
-+static void check_syscall_available(void)
-+{
-+	int template_fd;
-+
-+	template_fd = create_template_path(true_path);
-+	if (template_fd >= 0) {
-+		close(template_fd);
-+		return;
-+	}
-+
-+	if (errno == SPAWN_TEMPLATE_MISSING_SYSCALL_ERRNO)
-+		ksft_exit_skip("spawn_template syscalls are not available\n");
-+
-+	ksft_exit_fail_msg("spawn_template_create failed: %s (%d)\n",
-+			   strerror(errno), errno);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	ssize_t len;
-+
-+	if (argc == 2 && !strcmp(argv[1], "--exit-zero"))
-+		return 0;
-+
-+	if (argc == 3 && !strcmp(argv[1], "--check-fd-closed")) {
-+		int fd = atoi(argv[2]);
-+
-+		return fcntl(fd, F_GETFD) < 0 && errno == EBADF ? 0 : 1;
-+	}
-+
-+	if (argc == 3 && !strcmp(argv[1], "--check-fd-open")) {
-+		int fd = atoi(argv[2]);
-+
-+		return fcntl(fd, F_GETFD) >= 0 ? 0 : 1;
-+	}
-+
-+	if (argc == 4 && !strcmp(argv[1], "--check-fd-content"))
-+		return read_fd_string(atoi(argv[2]), argv[3]) ? 1 : 0;
-+
-+	if (argc == 3 && !strcmp(argv[1], "--check-cwd")) {
-+		char cwd[PATH_MAX];
-+
-+		if (!getcwd(cwd, sizeof(cwd)))
-+			return 1;
-+		return strcmp(cwd, argv[2]) ? 1 : 0;
-+	}
-+
-+	if (argc == 3 && !strcmp(argv[1], "--check-sigmask")) {
-+		sigset_t mask;
-+		int sig = atoi(argv[2]);
-+
-+		if (sigprocmask(SIG_BLOCK, NULL, &mask))
-+			return 1;
-+		return sigismember(&mask, sig) == 1 ? 0 : 1;
-+	}
-+
-+	if (argc == 3 && !strcmp(argv[1], "--check-sigdefault")) {
-+		struct sigaction sa;
-+		int sig = atoi(argv[2]);
-+
-+		if (sigaction(sig, NULL, &sa))
-+			return 1;
-+		return sa.sa_handler == SIG_DFL ? 0 : 1;
-+	}
-+
-+	if (argc == 2 && !strcmp(argv[1], "--write-stdio")) {
-+		if (write(STDOUT_FILENO, "stdout-token\n", 13) != 13)
-+			return 1;
-+		if (write(STDERR_FILENO, "stderr-token\n", 13) != 13)
-+			return 1;
-+		return 0;
-+	}
-+
-+	true_path = find_true();
-+	if (!true_path)
-+		ksft_exit_skip("could not find true executable\n");
-+
-+	len = readlink("/proc/self/exe", self_path, sizeof(self_path) - 1);
-+	if (len < 0)
-+		ksft_exit_fail_msg("readlink(/proc/self/exe) failed: %s\n",
-+				   strerror(errno));
-+	self_path[len] = '\0';
-+
-+	check_syscall_available();
-+
-+	ksft_print_header();
-+	ksft_set_plan(17);
-+
-+	run_test("basic spawn", test_basic_spawn);
-+	run_test("relative path rejected", test_relative_path_rejected);
-+	run_test("execfd execute permission checked",
-+		 test_execfd_requires_execute);
-+	run_test("default fd close", test_default_closes_extra_fds);
-+	run_test("close_range action max fd", test_close_range_max_action);
-+	run_test("dup2 stdio actions", test_dup2_stdio_actions);
-+	run_test("open action stdin", test_open_action_stdin);
-+	run_test("fchdir action", test_fchdir_action);
-+	run_test("sigmask action", test_sigmask_action);
-+	run_test("sigdefault action", test_sigdefault_action);
-+	run_test("inherit fds flag", test_inherit_fds_flag);
-+	run_test("pidfd waitid", test_pidfd_waitid);
-+	run_test("create-time actions rejected", test_create_actions_rejected);
-+	run_test("script template unsupported", test_script_template_unsupported);
-+	run_test("deny write while template alive",
-+		 test_deny_write_while_template_alive);
-+	run_test("stale path rejected", test_stale_path_rejected);
-+	run_test("path replacement allows tool update",
-+		 test_path_replacement_allows_tool_update);
-+
-+	ksft_finished();
-+}
--- 
-2.52.0
+>> mm/memcontrol-v1.c:651:24: error: call to undeclared function 'swp_cluster_offset'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     651 |         __swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries,
+         |                               ^
+   mm/memcontrol-v1.c:721:31: error: call to undeclared function 'swp_cluster_offset'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     721 |         id = __swap_cgroup_clear(ci, swp_cluster_offset(folio->swap),
+         |                                      ^
+   2 errors generated.
 
+
+vim +/swp_cluster_offset +651 mm/memcontrol-v1.c
+
+   606	
+   607	/**
+   608	 * __memcg1_swapout - transfer a memsw charge to swap
+   609	 * @folio: folio whose memsw charge to transfer
+   610	 * @ci: the locked swap cluster holding the swap entries
+   611	 *
+   612	 * Transfer the memsw charge of @folio to the swap entry stored in
+   613	 * folio->swap.
+   614	 *
+   615	 * Context: folio must be isolated, unmapped, locked and is just about to
+   616	 * be freed, and caller must disable IRQs and hold the swap cluster lock.
+   617	 */
+   618	void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+   619	{
+   620		struct mem_cgroup *memcg, *swap_memcg;
+   621		struct obj_cgroup *objcg;
+   622		unsigned int nr_entries;
+   623	
+   624		VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
+   625		VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+   626		VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+   627		VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
+   628	
+   629		if (mem_cgroup_disabled())
+   630			return;
+   631	
+   632		if (!do_memsw_account())
+   633			return;
+   634	
+   635		objcg = folio_objcg(folio);
+   636		VM_WARN_ON_ONCE_FOLIO(!objcg, folio);
+   637		if (!objcg)
+   638			return;
+   639	
+   640		rcu_read_lock();
+   641		memcg = obj_cgroup_memcg(objcg);
+   642		/*
+   643		 * In case the memcg owning these pages has been offlined and doesn't
+   644		 * have an ID allocated to it anymore, charge the closest online
+   645		 * ancestor for the swap instead and transfer the memory+swap charge.
+   646		 */
+   647		nr_entries = folio_nr_pages(folio);
+   648		swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
+   649		mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
+   650	
+ > 651		__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries,
+   652				  mem_cgroup_private_id(swap_memcg));
+   653	
+   654		folio_unqueue_deferred_split(folio);
+   655		folio->memcg_data = 0;
+   656	
+   657		if (!obj_cgroup_is_root(objcg))
+   658			page_counter_uncharge(&memcg->memory, nr_entries);
+   659	
+   660		if (memcg != swap_memcg) {
+   661			if (!mem_cgroup_is_root(swap_memcg))
+   662				page_counter_charge(&swap_memcg->memsw, nr_entries);
+   663			page_counter_uncharge(&memcg->memsw, nr_entries);
+   664		}
+   665	
+   666		/*
+   667		 * The caller must hold the swap cluster lock with IRQ off. It is
+   668		 * important here to have the interrupts disabled because it is the
+   669		 * only synchronisation we have for updating the per-CPU variables.
+   670		 */
+   671		preempt_disable_nested();
+   672		VM_WARN_ON_IRQS_ENABLED();
+   673		memcg1_charge_statistics(memcg, -folio_nr_pages(folio));
+   674		preempt_enable_nested();
+   675		memcg1_check_events(memcg, folio_nid(folio));
+   676	
+   677		rcu_read_unlock();
+   678		obj_cgroup_put(objcg);
+   679	}
+   680	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
