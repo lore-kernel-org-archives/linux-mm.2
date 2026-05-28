@@ -4,138 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79CCBCD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:00:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84A6CCD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:01:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B488C6B0005; Thu, 28 May 2026 05:00:11 -0400 (EDT)
+	id B97586B0092; Thu, 28 May 2026 05:01:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B204B6B0088; Thu, 28 May 2026 05:00:11 -0400 (EDT)
+	id B48186B0093; Thu, 28 May 2026 05:01:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A360B6B0092; Thu, 28 May 2026 05:00:11 -0400 (EDT)
+	id A85266B0096; Thu, 28 May 2026 05:01:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 940DA6B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:00:11 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A21E1C1FAF
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:00:11 +0000 (UTC)
-X-FDA: 84816231822.18.5AD2C66
-Received: from mta22.hihonor.com (mta22.honor.com [81.70.192.198])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 84B10180005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:00:08 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=WASDnVpC;
-	spf=pass (imf24.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 96FC86B0092
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:01:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 32D74A07DA
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:01:02 +0000 (UTC)
+X-FDA: 84816233964.16.9597BAC
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 69DF1A0007
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:01:00 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779958809;
+	s=arc-20220608; t=1779958860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XD3hORJdYdgNuk6+D4BQV8kmKZ7YLD8FvucsViATNX4=;
-	b=lsNxJ4q6peYBpLEB7lwccVrkrkQIQSqxGiV9KqZa0lsqvx5YmwQokU3u9FFyc3ccXikySC
-	bL+5xSjhiu9zdbe+CVWzEj8ZQ6bX/6PIzhtWfPxJL/I1LVNYQjHOdqopuh72Xvzc3P/Yy2
-	PaLluRyTCeNZK+N3ECakMsHpD15WEgk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779958809; a=rsa-sha256;
-	cv=none;
-	b=1V0sirm1eEvIHjcpvWG4RYsSlffVIBxQMdeQWVtckAGr2JP5jbWmWhZvYHuQtOqWA53feT
-	PCZd8vZ3dUZRkrpvggd6idtjcZwmBkGUUlnmcf5ADdplpOBrU5zpXWG9hlWAlllxhxperd
-	TTxa0jh/82YmRJtFP37c2O9vCrrKEk4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g3IEh3p9BTcBWzmZfCfMXP/txe8uVJe+M3Ryd2QrU8M=;
+	b=W4liLWGZgkTnr1wzwV+tyVBPkFiiuJ8aXt9bPhzmegr5QzgByd2qxZCC4PNK8UPiO4KgbV
+	eOlThdGG08tV3CMcVYh3OyDBMw6I9ZCHp+B2yl4pXvTXDj8SoaXMayCinx/icl+1KO8sAR
+	wCKPtaPT6GgdEbSXkHnmvkBzt32U1Ek=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=WASDnVpC;
-	spf=pass (imf24.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=To:From;
-	bh=XD3hORJdYdgNuk6+D4BQV8kmKZ7YLD8FvucsViATNX4=;
-	b=WASDnVpCEPy/DfZY9zA6UOFUvEQqxkvnRV1po3xn/d/NwIl+ux0JVJEQSKeFAuqA5QtrueMZR
-	KnRicy9kFmXVEKoIbAqhWZ4fjsIxKPwsUkbX148kjnjSzfE42VzBDj/GomPvnbh7RTocuIxyEQN
-	89bvgsqsegQyYL1C3p8go+0=
-Received: from TW003.hihonor.com (unknown [10.77.199.161])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gR0lX0CxyzYkxhn;
-	Thu, 28 May 2026 16:58:48 +0800 (CST)
-Received: from TA002.hihonor.com (10.77.230.8) by TW003.hihonor.com
- (10.77.199.161) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 28 May
- 2026 17:00:00 +0800
-Received: from TA003.hihonor.com (10.72.0.43) by TA002.hihonor.com
- (10.77.230.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 28 May
- 2026 16:59:08 +0800
-Received: from TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1]) by
- TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1%7]) with mapi id
- 15.02.2562.037; Thu, 28 May 2026 17:00:03 +0800
-From: wangtao <tao.wangtao@honor.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-CC: "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org"
-	<will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com"
-	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
-	<x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"david@kernel.org" <david@kernel.org>, "willy@infradead.org"
-	<willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>, "kees@kernel.org"
-	<kees@kernel.org>, "luizcap@redhat.com" <luizcap@redhat.com>,
-	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>,
-	"kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"liam@infradead.org" <liam@infradead.org>, "vbabka@kernel.org"
-	<vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
-	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz"
-	<jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, "harry@kernel.org"
-	<harry@kernel.org>, "jannh@google.com" <jannh@google.com>, "jgg@ziepe.ca"
-	<jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
-	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-	"npache@redhat.com" <npache@redhat.com>, "ryan.roberts@arm.com"
-	<ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
-	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev"
-	<lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
-	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
-	"matthew.brost@intel.com" <matthew.brost@intel.com>,
-	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com"
-	<rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>,
-	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com"
-	<ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev"
-	<shakeel.butt@linux.dev>, "ryncsn@gmail.com" <ryncsn@gmail.com>,
-	"21cnbao@gmail.com" <21cnbao@gmail.com>, "jparsana@google.com"
-	<jparsana@google.com>, "dvander@google.com" <dvander@google.com>, zhangji
-	<zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
-Subject: RE: [PATCH 03/15] mm: introduce anon_vma_tree_t for multiple anon_vma
- topologies
-Thread-Topic: [PATCH 03/15] mm: introduce anon_vma_tree_t for multiple
- anon_vma topologies
-Thread-Index: AQHc7ckS0nHB17pDfk6r1PTPwH0GsrYhPg2AgAHhCFA=
-Date: Thu, 28 May 2026 09:00:02 +0000
-Message-ID: <f53d9327cf064c87aec7c50e867b0e0d@honor.com>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <20260527110147.17815-4-tao.wangtao@honor.com> <ahbatfs3G-Qkh7Vk@lucifer>
-In-Reply-To: <ahbatfs3G-Qkh7Vk@lucifer>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.163.18.240]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779958860; a=rsa-sha256;
+	cv=none;
+	b=lx/sYLXAF81frm8zHr0v2BzQ2MS4MxjULHgA3i4V98YCrIxPyus4B22IPEi/eTjOqXJHs1
+	Gtq3DWExcB5pFXD0vAlEhYUrl+CfKzB4euf+QnRF2VQhiqq/dsy3BMRWu8GZgJg19IkvJc
+	OINm9387zcon8/FbElMtIGtKkvfjHUw=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id CA31868B05; Thu, 28 May 2026 11:00:54 +0200 (CEST)
+Date: Thu, 28 May 2026 11:00:54 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Chuck Lever <chuck.lever@oracle.com>
+Cc: Christoph Hellwig <hch@lst.de>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-nfs@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: revisiting alloc_pages_bulks semantics?
+Message-ID: <20260528090054.GA8376@lst.de>
+References: <20260527071816.GA17632@lst.de> <df21e8b0-a67b-4b71-8178-91221b596949@kernel.org> <20260527121920.GB6079@lst.de> <276835c4-78d4-411d-8097-93cdfb000648@oracle.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <276835c4-78d4-411d-8097-93cdfb000648@oracle.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 84B10180005
-X-Stat-Signature: gcrfmqi1mfcoudajtsn754umdpsmesj1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779958808-679814
-X-HE-Meta: U2FsdGVkX1/SL4g/fDcwmUVM5krDTaAHl0VO4FcKCFELqZj5aePML/YJZzTGXZsk8QzynBxtBZHq2nBjh/zgVa8dmTYfWJ8YtfyLbFrLIXcBboeBeK+Wh+NvhaT++PikB889G0VJeguOFKQGtVxUkpayMb9Aes2ozMjTxA6ogK3gYAR14JtSkeZfmXTPDH/LXBtLYCIrlc80kVEtN9Z8oNwLe0HkQdh9s7afaWm8/gXKbt7eCavSff0RL7NTgKwgRy8XbYAEeYiNaaZHlcieqzIXFv67ehBvd8ige0msdRq8WrekW0GnE84W6IoD5Ihk55P395n1wr4/DaL8zQJ2ZU/XTiBT6cBnRehXgNW2FSZLhBswBrArS5ZYVZ6jMIFEPyEmYP+NXFEJndnFgcAoboQuCVs2bdWXanP/PiefO5L+BRUwOgmAOoE5ziqh3YXghoSQ7ubeHMCubZp2grCTMey6pFViqx5sbK++vc3S/mGJdVnpYfl0hm3H7rN+TRVOn2CXSFoJz/Ub0gh3YMmSPHBTSpXDqu+mFdpfJEy+c4LwSM5Unsxj7GLrHDxxjQgYCIX7XU3PsBwp1dxcf4V0MtyNWv4eT7h27LI4f18dnIecCDBPhiWap1CA5ADW3248WoAgdrBAUEqf39DdSJGQzKRjKjwqpEEMLO9twYeyCV7VUV7XMFkBO0cJOmviQAwZ/2eMxqNZDC95Rp2RNeX+U24B1O1DHHFgUrcqc95ZI2XDMIfRyPffy+9QA8wgwlpTucxuYXB9NSdGn/V5JHYUGCs9N/DdZlciLUBFciGdcxjMlfNtO6hWIii5i5hkaelzLgaiMYVV5OzkcTXc0p3C1Ym61nJ5m3IhiTfqAYTdhvmwsusCJjzBjvKyapEbT6L+5+qwYgLp4VVIvZ5hj/U1wYNa8r8ArFBlZWSyI36fCNAY9CL0okiHqOu3yhx1L7IUaeBs0rbPImedicYmZn2
- fLcr3MNe
- 4xtnYoRuCqRhtQIKba4Hgh3VqhvNX1WIFOmEXNWlEvf+Fbvd0kjt38C9lRUDLK9alIt58g6whQzLg4crQhlkGaa445EMOz86mON1wwJl9KwZdQWjFzPAz3Z0hRLgNmV9LR+vvjHpRKJoX+WL1EckFtxbPNyusSoqbzQTyaqpBK6XJH6OJyt5ziYccmcMLSrDWbXqDVnWMjt1ZGO/lq7cQ6q2oYFoFvzBSUWZ2mrodNCTQoFdY9TSosFpbV3G4O3w3rf7lGa/UH4MhflniqpKIYvsqfti+tibgDDsCpkuO/rTYMz0ysZoqf5L1ROkNfwKzIXiFCWHGwgwVEO3TdclO+OzVQngV1cJenkHdCGvsnZa0x3y7IQAEi6350uUNgDqcl5DLGbRirrlX6OB5eZlHOV7detHTHgEl3aB+AsamKZ9AorzzHL/yHICqr7RfVrmMe7QhFIlbeaoWxmZa9TZFQPQw2zHlGZPb7FFcK/+BJ4IlUpU7Xf14/hBBldKFcrxcs2nDYrpldLLoL+mEElVC1W1AB+DqDtgTFxGElk27pGTYJLdxS4CEeTKaFC0XBjGo/1YE
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 69DF1A0007
+X-Stat-Signature: r536hi57e9ocxadegbqkb9g7g9kspiz4
+X-HE-Tag: 1779958860-281038
+X-HE-Meta: U2FsdGVkX19GGWIHlaiUDUaV2lcs81rcSeAd8zusgVIrqLVfWBRgTdCHKsQxkWOQTtmgDnWQ5yJgbkXc7chKY6DKLD50Se5sz1Zh9WfmEOwgVk971jnm0TZLwHYTmzoQ5niYIz4ngalJe2hctjVG9z3CZw8JsvKOM4MU323zgPwoKX3XAhvJmqPA/GrmoVm2y6Dtxj0m8v/MOg3v1GITYflKmXaushhC7jMDdnKtO7/NnV5CdodHATPBi5OEQhMKW526Bar5q/iGjoccdpQBaFrePh7ipB1Pmn3CAN3+5zi/fFO2uka4rDXDKTKV83j78QbjDibL15I62UEU83HBxUcwuGTEGfWDH8MYJP5Up2dNxkQfxaxnrPatMkxDZIz1QXde3OV0kPJ7GjuU1LMzuxujPxPuFVQKVMweUZseahBMq1640AATGLeCqbAQsiSlD82HqYCQd4YaFlSEdbfg/1ZZTGFFXVrWgIpBEKX98cE9ArSE5j+TQd5Wg1QOC4kk+02eKcxHisOqAYUX0WdXCVnUZAvyHrWeqzShFZSK6MI9WGJaPSZmKOpCPguRM/lgBuMPa/Uty2GnKa4/LNH4EYic+Nns4+gytcdGvQXpLqZ1VrJCpt1izTnJrDcHQ8BVoJOdF9lCCRcV+3+TbCgOhgwWTNdgBuspfQjkQGZEG/zIeTtFDdN/NMDJhA+ZRjYWiPIrB6smzbaScIqarTcskH1vJ+r3L3Pm2q7PMsq/pOgK0vdDGU40EJVpKd2bi/+yXKCV8hF/hfkfVvoIee6IL+NGbZBy+UHwh5vlLb1P+VSwTHpEeHrL7hiKGosWAWoDY8cjhkFSMvdV129R3jhO6EM4gOH5PRTYwQC7RKzAhRnEKzzO7ViRVHEBUlvAwM5i5E3a8+kgfkf/wR35C6eQeKPR2HbzvyRE4ziBnnfnoC4BfQh+uLNbU3teMoLPuJ0xYy5kZi1EWLZ4UqA9eke
+ +Qa3ULlZ
+ Gfzla3xaXI6JisbS1bbp/MRCFSr7n6EVm16S6+QjnHDfnI96zQHakVNRiRyuUWu5C47eYYMZRFLdhwRfQOnnficHz+yWlxGveffPvRDWN0MwtemBxH4DOEXc1EMIYBr2YseY6vbbFXze6HXu8xEEzFWNjxk+yvvhqkI6lh4Br3NwTQBFPSyExDO5de40nvqWNpKqk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,99 +86,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Subject: Re: [PATCH 03/15] mm: introduce anon_vma_tree_t for multiple
-> anon_vma topologies
->=20
-> On Wed, May 27, 2026 at 07:01:35PM +0800, tao wrote:
-> > Prepare for upcoming ANON_VMA_LAZY support and RCU-based lockless
-> rmap
-> > traversal by clearly separating anon_vma topology handling from the
-> > anon_rmap semantics.
->=20
-> RCU is not 'lockless'... and if you truly get RCU semantics you break a b=
-unch
-> of stuff as I found out.
->=20
-RCU is required when acquiring anon_vma or vma. When calling
-rmap_one, RCU lock is not required; the lock is obtained with
-anon_rmap_lock_read() or folio_lock_anon_rmap_read().
+On Wed, May 27, 2026 at 09:58:11AM -0400, Chuck Lever wrote:
+> On 5/27/26 8:19 AM, Christoph Hellwig wrote:
+> > On Wed, May 27, 2026 at 12:06:08PM +0200, Vlastimil Babka (SUSE) wrote:
+> >>> alloc_pages_bulks can do partial allocations for some reasons, and
+> >>> users usually have a fallback by either looping and calling it again
+> >>> or falling back to single page allocations.  This sucks!  Why can't
+> >>> we get our usual try as hard as you can semantics, requiring
+> >>> GFP_NORETRY or similar to relax it?
+> >>
+> >> If we do that, do we keep the possibility of partial success, i.e. return
+> >> how many were allocated? Seems wasteful to suceed N-1 and then throw all
+> >> away, if the caller can use a fallback only for the last one.
+> >> Do some callers need all-or-nothing semantics? Should a flag indicate which
+> >> one to use?
+> > 
+> > A lot of callers (but not all) need all or nothing semantics.  But
+> > freeing already allocated pages is the not a major problem - the caller
+> > just has to add a release_pages call if it didn't already have one
+> > for cleaning up later failures.
+> 
+> What the svc/nfsd thread is trying to avoid is sleeping uninterruptibly
+> waiting for memory resources. That stalls server shutdown, among other
+> things.
 
-For regular anon_vma, the anon_vma lock is still used. For
-ANON_VMA_LAZY, there is only one vma, so the anon_vma lock is not
-needed; we only need to ensure the vma is valid.
+I'm not fully understanding the sentence.  I guess you mean that
+you want svc_thread_should_stop to intercept some memory allocation
+waits?
 
-> >
-> > Prepare for supporting multiple anon_vma topologies by introducing
-> > lightweight abstractions used by the VMA and rmap code.
-> >
-> > Introduce anon_vma_tree_t as the type stored in vma->anon_vma:
-> >
-> >     typedef unsigned long anon_vma_tree_t;
-> >
-> > It represents a tagged pointer encoding a reference to the anon_vma
-> > topology. The low bits are reserved as type tags to distinguish
-> > different implementations (e.g. regular anon_vma and lazy anon_vma).
-> > This keeps the VMA representation compact while allowing the topology
-> > to evolve without changing the VMA layout.
-> >
-> > Signed-off-by: tao <tao.wangtao@honor.com>
->=20
-> The commit message is at least better on this one, but this approach is a=
-gain,
-> predicated on extending a broken abstraction.
->=20
-> You could have saved time and effort by coming forward with this earlier =
-to
-> the community.
->=20
-> You're also adding a bunch more messy code on top of anon_vma. It's just
-> the wrong direction.
->=20
-I will update the commit message to add more explanation.
+> > I've added Chuck to the Cc list, but from memory sunrpc actually does
+> > make use of this feature and he objected to previous attempts to
+> > change it.  So a first step would be to have a lower-level helper
+> > that works as-is and a wrapper that zeroes the array, even if that
+> > doesn't feel as efficient as it could be.
+> If sunrpc is the only user, it might be sensible to hoist the "zero
+> fill" capability into sunrpc.ko.
 
-> >
-> > +/* anon_vma_tree_t APIs */
-> > +
-> > +static inline anon_vma_tree_t make_anon_vma_tree(struct anon_vma
-> > +*anon_vma) {
-> > +	return (anon_vma_tree_t)anon_vma;
-> > +}
->=20
-> You're literally returning an unsigned long of an anon_vma here?
->=20
-> Why is the anon_rmap_t a wrapped struct and this an unsigned long?
->=20
-anon_vma_tree_t uses unsigned long because it is used internally
-by rmap.c and vma.c. In other places it is mainly used to check
-whether a fault has occurred.
+As far as I can tell it is the only one.  But I don't really see
+how you could implement that functionality outside the core, except
+by falling back to single allocations, or looking for empty slots.
 
-> > +
-> > +static inline struct anon_vma
-> *anon_vma_tree_anon_vma(anon_vma_tree_t
-> > +anon_tree) {
-> > +	return (struct anon_vma *)anon_tree; }
->=20
-> The anon_tree is an anon_vma? What?
->=20
-> And it's a tagged pointer but we don't bother clearing any bits right?...=
-!
->=20
-When supporting ANON_VMA_LAZY, the lower bits definitions are added.
-I will add comments to clarify this.
+I'm curious what you think about willy's comment, or if there is
+indeed a way to always use the pages from the beginning or end in
+sunrpc.
 
-> > +static inline void anon_vma_tree_unlock_read(anon_vma_tree_t
-> > +anon_tree) {
-> > +	struct anon_vma *anon_vma =3D
-> anon_vma_tree_anon_vma(anon_tree);
-> > +
-> > +	anon_vma_unlock_read(anon_vma);
-> > +}
-> > +
->=20
-> You keep adding more and more code on top of the existing mess. This is
-> NOT what we want.
->=20
-Additional handling is introduced when enabling ANON_VMA_LAZY;
-I will add comments to clarify this.
+>     svc_rqst_release_pages() NULLs only the range
+> 
+>       [rq_respages, rq_next_page)
+> 
+>     after each RPC, so only that range contains NULL entries. Limit the
+>     rq_respages fill in svc_alloc_arg() to that range instead of
+>     scanning the full array.
+
+Does it NULL the entire range, or part of it?  Because if it is the
+entire above range, you don't really need the check for NULL behavior
+at all but just point the bulk allocation to this range.
 
 
