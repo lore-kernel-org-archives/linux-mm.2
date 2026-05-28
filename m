@@ -4,92 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23D61CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 05:45:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2CA5CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 05:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 231F06B0005; Thu, 28 May 2026 01:45:34 -0400 (EDT)
+	id E8F4C6B0088; Thu, 28 May 2026 01:46:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E29C6B0088; Thu, 28 May 2026 01:45:34 -0400 (EDT)
+	id E3FB66B008A; Thu, 28 May 2026 01:46:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F8806B008A; Thu, 28 May 2026 01:45:34 -0400 (EDT)
+	id D557C6B008C; Thu, 28 May 2026 01:46:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F14B46B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 01:45:33 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 538FF120752
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:45:33 +0000 (UTC)
-X-FDA: 84815741346.29.433C021
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C607F6B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 01:46:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75C0B1C0663
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:46:16 +0000 (UTC)
+X-FDA: 84815743152.18.1FB74D2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AAF91100009
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:45:31 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EomFiBJ6;
+	by imf05.hostedemail.com (Postfix) with ESMTP id D29E4100003
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:46:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=USTJwMyG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779947131;
+	s=arc-20220608; t=1779947174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IfakfS8RRgOOidKTiKlmZXDO5zaiJlaw59yW5XZxCy4=;
-	b=xfhf1yQoOKGKQkNHQsjgpnaXFPZyqPmTuYxe6fSCeOG5lq3yGSUaC5IOFooch2/oLaRi21
-	YvgenTo2SfDsaPwuvWsEPmX7KedGI36g2rZA0o9g6W89lI/4tM9Jt4gIWftquPkgcciK3I
-	Fb2SCgGO6iLk3SotF3wuS/LD9MRJVo4=
+	bh=95SOoqGn6jyE0UfkDK15/NBpH9CmgAfhjJteJqSZdCE=;
+	b=tFxzwFONMhczQuszqSovO/LDrxakK003oS1f7jt1PSDrH9H1WmvjSTQB6lnuxBKX7KKDPJ
+	z9XFLcBJ4RVF1RaMaXmoFg3J5TDFpogO1AmqQ0HLhVscXZrz9TSPrxpLtb9fN6rvjH3zjY
+	ZXAiVApuUzc20L/vM0NL4U/OyUdRBcI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EomFiBJ6;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=USTJwMyG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779947131; a=rsa-sha256;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779947174; a=rsa-sha256;
 	cv=none;
-	b=Rbc3bKDw1gXxXROXCm4gmWwSLif7tWeisQnDBRajKxjC7q2X44SIRciyHrQ+arDLX2921p
-	eoqbcLQHxAWHBy+saKxBtiSmNDryO4UrgmB176HJ0AjK17Qrcc00EBf034Evt9H9MpCow/
-	xUOhEylBgIW/ww9zSia4QNyYA7VEFmw=
+	b=ZBLMmEtILO0Gs39e1Suzu/CzB2e1/MOdkLJr0UNkwK4AtDnhYPzqoNxgWXTk1EgaJcxqHA
+	u2UKXDO0WjbXUPjV8/93vUpEjhSKOn0VW7AKNpcAg3eycaBwbl+RYoskHEwQtccuPfLfS0
+	AM5+mHyJ3mXWE9HXRS6vQAjv+UxLgvw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9659D438AD;
-	Thu, 28 May 2026 05:45:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479831F000E9;
-	Thu, 28 May 2026 05:45:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3794C407A8;
+	Thu, 28 May 2026 05:46:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA4C1F000E9;
+	Thu, 28 May 2026 05:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779947130;
-	bh=IfakfS8RRgOOidKTiKlmZXDO5zaiJlaw59yW5XZxCy4=;
+	s=k20260515; t=1779947174;
+	bh=95SOoqGn6jyE0UfkDK15/NBpH9CmgAfhjJteJqSZdCE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EomFiBJ6qMIKdaH51IJowVJb+LsJKhSgjpKTETpHiowkp4BhqAZ+WHVGn74vtjX8G
-	 JTWeeUtFyXmS38J/PqmCnbmkB7ao6fXjrC1E37LQ5p09Kj055N0sBe/U6O0CkTw59m
-	 HLfrSEW0cG1AMmW24RsMZ5VvwnXvsS4Ok//hVT3kcKaumx/4Kn6bpTrXJIjuC6cGqS
-	 /7lWA3xwcto44YSIpr3Xd74XWELeKFMntXA/+XxJ7b43x03NCTAfHVLSrKZ1mLDa17
-	 vir6Jvc+GnRzFMB1m3scmSTWWM2VFftrVDaI5Y+eZIUHDxu5ApokX6SzFSY/QBuEaW
-	 6Ynj5PBEdIbYQ==
-Date: Thu, 28 May 2026 07:45:24 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Karsten Desler <kdesler@soohrt.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [REGRESSION] x86/hugetlb: AMD F15h VA alignment offset breaks
- MAP_HUGETLB alignment
-Message-ID: <ahfWdMdxX68ni4ZM@localhost.localdomain>
-References: <20260527143643.GO31091@soohrt.org>
- <ahcTYufV7P5Cmotq@localhost.localdomain>
- <ahc31AChKqnfItHW@localhost.localdomain>
- <5f70e840-9d0e-4cef-8574-b355cf26e0c4@intel.com>
+	b=USTJwMyGvWXoMbf/S3Hkuw/RAJZlgHz1wf6Rv3/jmc2THf0cyKGDOtGKt9FmAlIO2
+	 bEzFbeCt0rnDn/8rlPAlmhLya/lie2fE7s0Ml45wXgkLiE48k3nYrM5tUD//wtZoUe
+	 Or1W+w7erYiqub4kaHP0qkQb3RECfdmHprx1Vj3YKxor8X2FJMM9b4kv+OtRUUTLhY
+	 dmdFE+f1EYTQmxHd5kFze5j7kVMcZ/PDIzwqvicbpyNpYnweMPLgb8vUH92a7Ecsu/
+	 AQ6G7A7Ro/8u63LF4IMK8XJnfB3/MXr6DrdO23eJ8HfBnbe96tH4zBoN13i1Sk2LFH
+	 iU1t+RcUX53pg==
+Date: Thu, 28 May 2026 08:46:04 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Liz Prucka <lizprucka@google.com>,
+	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-sh@vger.kernel.org,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: Re: [PATCH v6 13/15] sh: cast away constness from the zero page when
+ flushing it from the cache
+Message-ID: <ahfWnLIwZXJvbvNg@kernel.org>
+References: <20260526175846.2694125-17-ardb+git@google.com>
+ <20260526175846.2694125-30-ardb+git@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5f70e840-9d0e-4cef-8574-b355cf26e0c4@intel.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AAF91100009
-X-Stat-Signature: 7z48wasew4ghum84ey7cbyu1w4gjky6o
+In-Reply-To: <20260526175846.2694125-30-ardb+git@google.com>
+X-Stat-Signature: 4p7qzqijdfq4jfujdmdkwckzrtc7traz
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D29E4100003
 X-Rspam-User: 
-X-HE-Tag: 1779947131-210961
-X-HE-Meta: U2FsdGVkX18NQY1UGf2/zEz219HkaMv8OIz2sUKbM1lbAn7dOFjxrROfS5gs7oJrFbkdg4DlK3zGQgwicJW2nUGPqZNG/mTgsZkwEdQAKIQ0bhmdIbybOpGJk82RVUUmqsdDBWbdU9A8FE1Cib1hvbdkLRnXOO+0vOI2Wg7tvNG5Q/Hx+UhU0FLBucYc+CAqm4btb0H9TJg9gB93F5B1qQXPu//EFfftLQ8cVlZQz286jVuZU7HzHbLyBJV1q1u5tp/WwCG+4fu4KHFlM5xJ2JhTJItIwEH4RRLno0TqoXd6Km5Vy8pXIkpAXO4YbyBLNqNADmtO8B18LW1kshxvzJ0x0g5VLCSsJUxlkhiFy+mSYMR6n5CK9YDb329STQCPZNdVMbx/WAm5oBPms5FT/tX9FOtdHmsJb6kCsHJmsXkbwEQrl1aBPPA5XDVV85r1rvuKqc8dvEAsuwL9ecC5BJVRbR0Jb3RG7NSvMd+xM4wCNXo80+LZWLLYji32R4pajCX5KVyLtnraKx8UDkaMCoKlHvb62uYbrzxZILc1CkMHEqOHSIhbL59Z5qoUNQNjn2MchBeVt7Gjm1oS9mwqyiuMNfnALkM/JzhuEmmkCs8Ap0SEdfLEAXa0yskkVX0ap/kZrJoUSvQILlLoWjrp4D/c3VV6ByVdNnnwqY9VcOkZchxPaTwDIFS02Pf6CN5ZvmpMyGbyqBkX1kwDNNWAYec8IMh6vS5umEYRDXdizR5PEDlux2SFu9E7ndH8CdU8HoGQW7aOgGaQnFXWk3SE34A69DHDstAgB3qjmtf+HI04UxqTNzPuNWXL2dm6QxUReJ9Z3dfVBDmgImGj68JmNEgZPNIKQXndJ0uBarhCSnhxVT4kmOw2KW03b6jupYkuZMcD3YEMPZ6DRPkvJq+jHbFbep96t7xMKMf/I2KpGA0+OTmmWjvKJumos1MkMZ5C8qhFpu2ndELbu3LsFqv
- EYBP/lH+
- PHrAT2zvwuOYjM+jTNgytdHZk+xUGQXiqsQf06nHJRPUzIvgLERkgAhAUIskFDSkxcq7MBSEppzvgXkREK8L4McqtGCeOtHzssx48oQIYJanvDQrxlXydaolnwXwTJRfaOd4nBxWSEL3IGB4EAviUUwjecJ/uRg6ccqicG9bWJnaVHfk3VqeBz+6MBzqB3V8UZdd4/OBclR+aCWcwppfYXocBkBYoXZwQ7sTPZT2WjQT3GZSHszgCngcF4LBPkkwaZsKA
+X-HE-Tag: 1779947174-884381
+X-HE-Meta: U2FsdGVkX19n5WZAb8zSET/lHF8DyKk1t23WLeHNIIahrQ8ejtdGIt956eSPvVzmo6Bi3DljN26PCxQ2s0uEtJGYMiGU9UISNc8WiAXkw1iVQoRrIo/o9a08ZblRRujbeYq/cLLu2/wyHkaEHyD/xnaUf51af2oAn/ztPBsNMKGNTJY4sNJ2kkdt5S1zbvFWIsg4RcDvzZZWw7ULZAd0m0DYVW+riNpRmCG7m+M3DlfiKyV7MqS22jh4mWdmXCYPZLk5o6YN9NtuuBZ+eDJmCxV6o/U7jDhGfq5PmSl9cR0WZdWIaBVMDqxL09hhiXG21wbkxxUBuTSXD0Z+BPlTDb7sNAuq7eOb+CpJ8CE2hUHO5bozxYiVLxZhh9WVgYW7caa+MFq+Ktu4GSUsMhDkXfiiCigafzOxJ8A2ndcE3Lok2L2t3sDC8N6kDDYRi6F4jWaezF9wNZmjbZpVZ2hkwUos6TQPNsju4M/jL+e+4KbTtWfAINPDF1d9LkFDY+a85tuVjaRLk1q6Rvx131aKoeCl3/L7cBq3n/UV1FLwOkgC20u102ER0lInk1dLkU3sR5MSFgkEfti/vh3jQa2MNh+kqXoFb43LGDv/FpRCyxowPgtTrQlN65CfgBcmU3aOETkfAFqHxEkru6NUSynmNFmFsj6XTR9maranIw6TugdRAJqxAqUJB8ZY23gyIfR+QDHJEa2yt0r/L2+BFleb/KOCLAl7lg410VtVDdU7B/qBlwkbyvekYGCCMB2Idw1KHWnYE8AuRpT3u2GDidaVWQ7MrD62GiqWXaJxBhMb5BEuG878RYgFtSj1KQbNsKInfG+bam0J6czTWdJkZeSn+AOTPefm0nUpZ58HoeeCD890QosyI9ATFL0+2caZ7UEMuU75lvqeQmCFoxmuAhIuhutdHPGWl9kc2QUbSSjSdDuDdMxQF74QIUyEzHNBJUVNnBOwlq6XOQSZfI8fL9F
+ Dm1dlRkA
+ trcvDWGfY3/UNdzSLg1/tSrNvo03IYrDEJ9A1GXIgaEjyfczMat49EKdKbrj58BIvgeP/LQP06cFp7dKiucg1k3ycSa0l++bs/5cjWnNk7eAT7+iWYFER1qDFthZSB/uR86FklA/R0vH4TrZeerxOwyZvxhTgZE5f3wjYDA0iAenn3wuF0drheT+6OYZC0L3JKMZKDNagqQK5J0UU6va7tdHvW7vVpvnUbHncHSkPP4FXQwnHUFQgRJ8Vt3y3b7g86T90haega5Mailx0xPtUrweywxkz6pa8ITrH0FaBK/TG85ifL0o79XGhzMrM07LKfvCFqkH5AwUyA3/djioiGX6r8RmmVHd5d4sCFuptFc+c2HeZoHHYcpSRN7vTUZDmLXWOxdmRIZEoN1eEKPCIJa3Z5KDzxEKEBXJP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,40 +105,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 02:04:10PM -0700, Dave Hansen wrote:
-> On 5/27/26 11:28, Oscar Salvador (SUSE) wrote:
-> >   	if (filp) {
-> >   		info.align_mask = get_align_mask(filp);
-> >  -		info.align_offset += get_align_bits();
-> >  +		/*
-> >  +		 * Hugepages must remain hugepage-aligned, so skip adding an offset
-> >  +		 * in case we enabled 'align_va_addr'.
-> >  +		 */
-> >  +		if (!is_file_hugepages(filp))
-> >  +			info.align_offset += get_align_bits();
-> >   	}
+On Tue, May 26, 2026 at 07:59:00PM +0200, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
 > 
-> That's a good hack to show the scope of the problem.
+> SH performs cache maintenance on the zero page during boot, presumably
+> to ensure that any clearing of BSS that has occurred at startup is
+> visible to other CPUs and DMA devices.
 
-Haha, do not worry, I myself have 0 interestin spreading hugetlb-specific
-code around (on the contrary), but I wanted to proof the point.
+It flushes the cache there because before 6215d9f4470f ("arch, mm:
+consolidate empty_zero_page") empty_zero_page used was for boot parameters
+at the very early boot.
 
+I removed memset(empty_zero_page, 0, PAGE_SIZE) that was a line above but
+missed the cache flush. 
+
+This whole "clear zero-page" can be removed IMO.
+ 
+> The __flush_wback_region() function takes a void* argument, which is
+> conceptually sound, but given that empty_zero_page[] must never be
+> modified, it is being repainted as const, making it incompatible with a
+> void* formal parameter.
 > 
-> But I'd really rather this be dealt with in the arch-independent code,
-> not by adding hugetlb hacks to arch code. It isn't even clear to me what
-> exactly goes wrong when you set a tiny ->align_offset and have a larger
-> ->align_mask. Shouldn't the tiny offset just get masked off?
+> Given the above, and the fact that __flush_wback_region() is in fact a
+> function pointer variable with multiple implementations, take the easy
+> way out, and cast away the constness in this particular invocation.
 > 
->         gap += (info->align_offset - gap) & info->align_mask;
-
-I would assume so, but something is definitely going in with the calculation,
-as I could reproduce this if I artificially set align_offset to 0x1000 for
-hugetlb mappings.
-
-I will find some time today to have a deep look.
-
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/sh/mm/init.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+> index 4e40d5e96be9..acbb481cdbfe 100644
+> --- a/arch/sh/mm/init.c
+> +++ b/arch/sh/mm/init.c
+> @@ -332,7 +332,7 @@ void __init mem_init(void)
+>  	cpu_cache_init();
+>  
+>  	/* clear the zero-page */
+> -	__flush_wback_region(empty_zero_page, PAGE_SIZE);
+> +	__flush_wback_region((void *)empty_zero_page, PAGE_SIZE);
+>  
+>  	vsyscall_init();
+>  
+> -- 
+> 2.54.0.794.g4f17f83d09-goog
+> 
 
 -- 
-Oscar Salvador
-SUSE Labs
+Sincerely yours,
+Mike.
 
