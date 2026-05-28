@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0071CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 08:11:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C027CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 08:11:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D70856B0088; Thu, 28 May 2026 04:11:21 -0400 (EDT)
+	id 30F5D6B008A; Thu, 28 May 2026 04:11:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D21DC6B008A; Thu, 28 May 2026 04:11:21 -0400 (EDT)
+	id 24BBB6B008C; Thu, 28 May 2026 04:11:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C36C16B008C; Thu, 28 May 2026 04:11:21 -0400 (EDT)
+	id 0ED846B0092; Thu, 28 May 2026 04:11:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B3ECC6B0088
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:11:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 67A9FC27D6
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:11:21 +0000 (UTC)
-X-FDA: 84816108762.23.58CB678
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7F33140004
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:11:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Vzt2yiV2;
-	spf=pass (imf12.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.92 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F2AD66B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:11:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B6D7B90C49
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:11:22 +0000 (UTC)
+X-FDA: 84816108804.13.E70447A
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BC160C0002
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:11:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=jtCpSd8y;
+	spf=pass (imf10.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779955879;
+	s=arc-20220608; t=1779955880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yJmNoPx3oaeA6PqMQ34pEZkGLLkXi0yOR8EY4hpMPHE=;
-	b=o+WDkQQwbvqv/mmI16ETT8gevskf/lVo7rYXq6O36t0HxUM6aLK1uRx2MPdgkaXwa1WEeA
-	TJrM/JNCQKh+Efbyl5iX8jn+9FtOWkLOBvte7Uv3DPVhhAzFqqPzFnYMBDBNUUUTKF8C//
-	n1R4wreutsUS1p6tFOqP+1aeXMvNMk4=
+	bh=OtizzlCEw0/53zw8NLPj1j97omDIHUW4gZwvkbZ+ZR0=;
+	b=GEXn3gHrhhDf0o18Dd1LE8QEIi9JQoXUFtw31qpdzZJwm2VDte5nYxkN1FVonpnQ2p9ZuB
+	uWb5Ri8e15MG99GITLpjYvuEsV6TkxtIRLb7Qabyqki9WqnFVP4zmnIjsoJRToYeISfBoQ
+	gHGMLgxTGs2b28FWaDLNo4nZu9SUrqY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Vzt2yiV2;
-	spf=pass (imf12.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.92 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=jtCpSd8y;
+	spf=pass (imf10.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779955879; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779955880; a=rsa-sha256;
 	cv=none;
-	b=R1+Z3Oye7qpVhnGQ+fLrL69Dy39AKAqYZWS5nsWokEaIAHN5TCWnAt/pQPrvISRQo9xMm5
-	7xv8lhFrCnStHGsIJvZbsNywnuydM2SfjcdqAEnvG28WXNPYJEhdmW3u67OMoktt23/nXk
-	qh+T0I0Z9HFg78JA2hnCZMPiz8YSeYE=
+	b=wfXAduWX/EWgcP0+IoYXLZgJSc0GUwq+A5FsmpCgwI9sA5xbs54pKznw+vbN/CVboF20fC
+	XWDIupyBfar4GKLwA7M5tiQbKH7edq53L0D9pRwk2nb6ijF5h6gLwLjbkkEX4gc8z2mDNW
+	yVL5h++oCGs4fMBoS4QOncuQLIBmoHM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1779955861;
-	bh=yJmNoPx3oaeA6PqMQ34pEZkGLLkXi0yOR8EY4hpMPHE=;
+	s=onoh2408; t=1779955865;
+	bh=OtizzlCEw0/53zw8NLPj1j97omDIHUW4gZwvkbZ+ZR0=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=Vzt2yiV245oaZEy+00DqMKw2DFAUlWyO9X25zJbHDIpHAuDBZ5Cm9nZbNC+OJFQGW
-	 LIXGFie37/PztMztdDdD5PxWkwrQtjqx69+VawEYalp7iGHG3xHah0YHISRh/Xra+E
-	 JoVRvwaWW0yLiPK0T/b5hwyGRBwE3uLHX2IlCtBQ=
-X-QQ-mid: esmtpsz17t1779955849t1d49df90
-X-QQ-Originating-IP: nZ4UXvetsIyyKOSyybdUT3u/PhenXD2LCe9anBkoWec=
+	b=jtCpSd8yUgtgkbrH0WGkEe6oirzTbSwJ+bBxQBRJJRbApOVBJa7XX9xS6Vqqoq6Qk
+	 UVptZBVP5nHCpkef8cF3IqeLGL3mSGiob5hET6EZUhO7MVlngX3j9MXxWuHXz+fYHm
+	 k9Q05D7/iE5ljTaCtJkmpga9hmJI4m94CLnHDm0I=
+X-QQ-mid: esmtpsz17t1779955854t571d6731
+X-QQ-Originating-IP: w+8TIl4HFrhrX5MF7IR7jCKdH1MZYRedCQ+TRDM3QPg=
 Received: from PEN1097 ( [61.183.83.60])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 28 May 2026 16:10:46 +0800 (CST)
+	id ; Thu, 28 May 2026 16:10:52 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 7792598639397190847
+X-BIZMAIL-ID: 4212579660610101544
 EX-QQ-RecipientCnt: 8
 From: niecheng <niecheng1@uniontech.com>
 To: sj@kernel.org
@@ -73,9 +73,9 @@ Cc: shuah@kernel.org,
 	linux-kernel@vger.kernel.org,
 	kernel@uniontech.com,
 	niecheng1@uniontech.com
-Subject: [PATCH 1/2] selftests/damon: fix DamosFilter memcg_path assignment
-Date: Thu, 28 May 2026 16:10:38 +0800
-Message-ID: <9B7A70233DF773F5+20260528081039.1192194-2-niecheng1@uniontech.com>
+Subject: [PATCH 2/2] selftests/damon: validate memcg filter sysfs readback
+Date: Thu, 28 May 2026 16:10:39 +0800
+Message-ID: <406BD1BA0F6AE326+20260528081039.1192194-3-niecheng1@uniontech.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260528081039.1192194-1-niecheng1@uniontech.com>
 References: <20260528081039.1192194-1-niecheng1@uniontech.com>
@@ -83,34 +83,34 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: MoAHuhB82TZgToQTVHt3NDbioWJedjP1nMSJAQ4NgqlJ9mz/3Pey+t8+
-	D+L3CU1X/u7ohkhKnb+ebFv5YD9ix3moFjRKVeeMYce2QDwZRifIaaCUL8vTuJqotW42M+J
-	dnl9yHbQBYHXORM2yNtGn6B3222ayVeh2AmOKpHFl2mLpI8fPFAkaAamwBSDV1ovnw55EXl
-	Z+7kYv5bDhwRjNEFdLvXpdSm4AImdcjbbvgDlPS0jVzR56Jzmx5RvxcqRjEKrxznKW+ZAvQ
-	ZZqnUiUm5Uk8l7OqmziSk4y1On3E7noRsY+y8H/v7qh8O0MImbiTloprMZaR06mVJumxpcW
-	JpOiwF+1HOpsGtXNvFtjdStRhbJn63fN1/JiCLJJjJGA0Z7QdsPNrzS2cH2Sp951nkxdjIo
-	R2g9tztasbqoqbnxrxPV+0tMBXZqs0mDoVwLIgRVvq239whqLo0RP7fxYx49/kEjk94MOOc
-	FFbyOo90LvfQpvTCiHUigr5w79xd8zqwV4j4vzVDY6m4y6g958BspPQNO07C6mSgE2TJ+Or
-	/7JhDlqJgrAYLYWeA18EkDLdZdk4EfS/rONH2aKBc694kX/hskXk4yr4kLsqhGKtLFQG6t/
-	2wDPzSsc1mAy1vJHv92I8AVmapR+zcm3MBXNxcQgAB+vmMaLjujIZOqrpHRkKcuy4IsDnWO
-	QCFlzcKLUpurtXPq14t3T0CGWq0nuH2E404J9y6VDFL3lILdCfK73I1p2ZVtx7By54k0BTM
-	M50GAhGT1GCoiWrM1ApHRPZW5OSRjRmQ5E0rg+WTeAJNP4zIkRQ4CvPBkyf1nc4zRu/en+l
-	lnIjztkCDB3Hs2O5AUNx86qXfGqvtZY/4+5tvZc7ttC04Jr3IJyvcITfURRDiehEkOdRDYO
-	/f/M/rf2PjyQckYSzvsAetHSQjVVG0e3F/JCcnCKJkbkgAnC9pUMgS2FFgzusOMHo7zfsuk
-	xRY0T6fAE403UAUU+OfIgzgwPcu7q312+t8mZi0BOnv56bKsUNHD2aehUB6cwPvDh1x21mp
-	K18elLMyB6AEbl3zUjLjRibyGq3IqI4GYSf/Vwd3VcZ102yvn8bwuh+QCSZ5BPh5u/OzkJS
-	nr8/FtqE0QMp+ttWFhq5ol6ynq4iXbRQTnpuXH+9GAbWaOrhhBN+nfzXPMd85bfrBrZJm7h
-	SEl09+yngOt7UHI=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-XMAILINFO: NlwPN3mHkzpj3UwhfU1CKWFXrqw1yA5fsK21L0/+1bkHnvM2JJsAa7da
+	EFRAMPDq/Yj4tIVVqjhE6ioWY8hthQp50Gx81VCmhkkw0h7q8LbwbtBg/uc+EtIHh2Xwjsm
+	nIhalH5WZswNzPZtYfyfh7dG5IHaC5Amc9A3fjcWDBJFeu7FH/pOyq+FoimS7OH0jraLJ8+
+	iGLHF6zqMyxQllPRSm+WiwGMgG3tdpfuC4LlJd6hCp51ILSYZLhvsuOFLAKP9s/ICr2XTJn
+	ULGHxQzVF//uLjaORVV0bIHE6Qw66EjkwvETzvQgWhSqF9feVe5HaLL5vLlSO+ElQLrln9D
+	30Z01Pmz90vnvJmywZaIK0XJlPh/stMzVAZ39gR4t/4yrw7ATgC9v4Pekl1JFypv8utkx1A
+	I5CUjN7R+gI4bF/kOn+gUs/LU4orvacNg5XkwwnuBwNiI0Qv6snw9Xnyz4xszIoQoFXSobZ
+	90Zd1fgv/KCJPv2aMGjlro0vlYty+g/u0hWlvSb1GnbvMt+64nd1AxQvnr61rbqBrQVkGlP
+	9oscdbJvtWO5bJbLm1QI3kEB1YYLnHziVtPIZb91Mns1bO/+5oBeQZaHc7U3gBVe+KjqepN
+	slNcwV6jftnup7OPXvwiHAEKwrwvirz/lYwNo+yPdALYqpYXu2MJP4qqPxDJMMBDGsmCXxS
+	/FQLMMg5WYfTJN2qbFUV8ANEKUGyArVCR0+MMb0t/yPR5pC1UU4u2eGCcE9AzlHcA8MVBIN
+	75sHkYjJvCqS+KsUOiaro7Jm5MPOptjEG5tG288qN/R/xCdlhfWJskQFuj9P7OW1WwYPKjc
+	Zouc3IzDQpapraYpfZP8Uku/+AVGKZ0MVD379Qms+okL8CJ6AvhvqjH7TcTyzLpCRqmZHXR
+	srAIU6SzeXukTPtGMlQinv/sKg9xOWiBBTwCWRWO86zM3iX+ONIcZmYP/oYqAW8ke6rpY7P
+	c6TDP4iZrdTVTcBJyo8S+vhmda9XVq6uz+TKcTZ5Fob6rtEhx9eKXiQ0sUw78EkUqP+Wzcq
+	2y07OEIx9cHujaDcJd+r/27uBMrOG+YCaWF84AJcpVu3oq+POPB1YJDVhnBF/6sY2j4Dsnj
+	MCOXhkcpuIBe7exHx5LkRhib4AkZp11WM1FTDo/uxUQ0t0lIFdTHx7ajJujb88FItmn6KPi
+	YJ/vWh0f88V5Ygo=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
 X-QQ-RECHKSPAM: 0
 X-Rspamd-Server: rspam12
-X-Stat-Signature: jrui1hskfe1foehdg3k44jkxocsfrz1b
+X-Stat-Signature: zy38fixas3qdbamc9th9yyayuo5649xu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F33140004
-X-HE-Tag: 1779955878-669728
-X-HE-Meta: U2FsdGVkX1+EuzXOG8uAbIhjT/Mxs25xZji3TCyVNt9aS9AZR5DW7oPULUT6+iPOlseKUqMta4DBIsiw53WLlyBgMlbWdmsoWlLan+zOMoXiEESjZ/dWCsK+t5hvpXScGAx1lZcE2+vHuL3ASs/AWQCxFlMz+3OWdnleorEHpOK7VEUH+MR6Pxa/MJNQhQjvBdLdeCAaWOqB/JdapENdSi5fOl5EeJPAmDfTXfWmT0m4HfSaWt/BWTamPuNFShvR2cDV5h3NTcBw6mPiZnSycyaS9jHetUtUHmTEgleyqnoTgGdcKR7PX3lTX7vvWcPx/lg3BZRBPgwD8ooIwP4v8iwMQh+8Gv2pqwDkt6OudyTCJbT1PHEAhjs4U8g4X+MeSBFqZV624XLg7HtspoM+zyqZKJsjtTpVfPtJe3zmIkSb96n9putawD/FPWwV7fK8ecd4rOXWvwQ9fi05sAorXnIc4GObqz4BwGekvLTqXKj76GbWCVqf2UHikAr2M1ndoNaMR7KzS/4Vm3uUiWIj9KAoEFIytwI+PasvLBDGu50ccyxeAKqF9Akh52rAWvvOuF2/CnXl8UankGQypk3X2qY5q9iir43kqlyM+Pk7GQGcMN8Teoc8qgCEKm1yU00r0fiSlxm2EirgOrpW66sDf8E1f1yhRWqPLgjpHluCwRlPFtCCa97VBkiEbpk+QWWL17O79R4YPnl2+FH4uPtFwJyOf7Sjy5BGRuJbJ5F85eg5nntX1X7pgZ+C5S4jNyjmpRSxwG4YhdfmK+pxGTy9cONgc8k6IqqkoZV4w+Sn/4yxIn2hFLrrH7yUR36Za9Op1hfgN3FThPIf2eji86R7FGbHOs4DYfMtpBXm+ogRgITLmTve2aflaxa2xaKJefOM4DEaR5vb8pRrWeGv/RpIBJJn29rsh1D2zEofQl3Cd3eHWokZKetzo9JDNkjG8KdpqVjNbrncJOTvYAE1BiA
- IOKWcBLF
- yFhPkiJMv/Co7Js4bIlomOZA6PRZ5T/vg6UAx+j82YERDHrG3lpUtgYLJMJpEOY9oJtUbbJO3eCXUBC0wqFzTGgXNRyjfC/QF4mCoNZ/zFvX8LtKuyPzwMIZHMp1/CPBPgI+V1hb4O+xHxxsoxwzvam6RHxVOVTwvt+xKZLfrjusLdkCCTK9YK6LBJC88relzjlHfBeBSmrWxFP7nQOl6R+Cw0xN5MPL0thkArFUcXj3C7g2ESSucKBQoyADPNZjPI1ZWXzl4Duk86X2eezPOzR9YgEsIisMxlJQ3SxEutPLFn0gwZK3y75g1OeOAKRQmb+nwMsj8BGoajHkhGyYSlulV8zKxStZzygkdD3hDfCVtPPY6soaQ2CHlAlEMG8ROt4c59IyeqOtYjIXtBl2R4ToRE5sBwxrPBTxqKLP00Y+KAhE9mUeGy5hAqQ==
+X-Rspamd-Queue-Id: BC160C0002
+X-HE-Tag: 1779955879-157487
+X-HE-Meta: U2FsdGVkX1/I7Uu+OmOFU2U5TEWO3GwILzeyfcY8HVPWg0HT02Iz3KfbzRYjnVar0ms99C546jm/fAAqbp4TuB1CufR9RLlH9Mbz9ajZ8rKtpvm/JC1r9Rt0vrBLcpAmavNeo0wH3pE+vSI3U776+6tkxVKIFdNebCPps52+dLDreiK9ovvkI31Wp9iTPjj0Wx9PJ+16Ymny8WL6Fk/y7PWLn3xzIjDomZ013BR7nLGcaM3+gUbsk5rNhLylfkAWmQaGtfgkg+3roJOSzU/A/iLjQy5RM8m3G3/T9Upd7m3lViQEncFBd4d6fFgmQJBxGykS1Z4EkTn1KgU/z3z40fKhv0UhxDNgzV/r90NHg09FOR4u30sv8cDdnYJXRsO3+9PIFmxE8RDiqiRtfqrwrmWNWMm/wApRGs7QYwN3s69isPnve+aXklrdmBDMKWOTmOioDywlYjY5EfvJsHTzxYqEThSdcknKrzBjm2ddfG8myZ4dEigK+H34UC24RrBfYPonDXnw260nFfxAHSuemkEFauECDUWhHoZ7W35L4Uqc+aF9kw6Fr2ZgYgAyE8eXSJ97u2hRHTFQaiRr4jqTVwNSa6zYV/zZpP3ag1aIMUj472Bolyy53UtBoNLyfTrAYczrhdTl83Rcc0u9TE5OxO7ZOrrSsF0NW0HzYvk2RclcL8DNzG1TceDv5/hggwg0HsD1qakLutpQXpz+3f933HvulEppvZH38OkA2435KLX/om4ijovDbKsEuyaEOcwsOhj9dC6p4KjXwQNcdX2JEH3uRygNnW2eGCTVuqhLuCGdpc8WFDcf2ftoRXDqwzp7mTJCe6JmZbt/7c3iq66lYECmHBvv1fn3PwKsOhmNeQJTKBlcfZ6on0k4XELVK2eWPndePlg0/y+Kcyw3RIE2sIJ7nEW2KNmGCZxS0kBkweErcwY111gsojkxYUyHjoCwwtN9bSHADPuDv8pSSFm
+ wb0qETP+
+ 6+vCLZPx4Ns6irZuZ1ceNX+yiic/C9823OdfZIZ8kFAXs2EU9FMul8mSwL7L32jTgHn0idcWiAwrVw1EuiBylRHcky74KyqCQFi+Foq4uX4tcBRIs30BauWmNTUvxz4/2XxIw5F/m9pluH6GB0s/TgRU0ZbpepaoyblehlUAwr8Ls4T3TQJOkS/AIe3uzF2W5Y8fkeKu9AxZ/if0uO37jUVDCyXaFBGsIectnW53Oatt7qkJR0U7evnqRtVzXl7dqQ7oq5913lZo+nMt5SzHIjQ5XsgDs50iRu3rueeIciPR+7kJ0vdYukW3JIBJs34rkK3od9iGJ4Ur4/2LVobFHh3pbNSIQ0K282lv5NxGB8ITdwnfbXW7WmvNjjeYNIXhzdBW3L5cgIWuKgCU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,31 +118,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DamosFilter stores memcg_path for sysfs staging, but the constructor
-assigns it with a trailing comma and therefore turns it into a tuple.
+Add memcg filter validation to the DAMON sysfs selftest by checking the
+memcg_path sysfs readback.
 
-Fix the assignment so memcg_path is stored as the intended string.
-This makes memcg filter staging and follow-up validation use the
-written path correctly.
+Validate the readback path rather than a derived memcg_id so that the
+test stays focused on DAMON sysfs behavior and avoids depending on the
+local userspace cgroup mount layout.
+
+Also compare the readback path while stripping only the trailing
+newline.
 
 Signed-off-by: niecheng <niecheng1@uniontech.com>
 ---
- tools/testing/selftests/damon/_damon_sysfs.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/damon/sysfs.py | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
-index 2b4df655d9fd..022f0d392204 100644
---- a/tools/testing/selftests/damon/_damon_sysfs.py
-+++ b/tools/testing/selftests/damon/_damon_sysfs.py
-@@ -254,7 +254,7 @@ class DamosFilter:
-         self.type_ = type_
-         self.matching = matching
-         self.allow = allow
--        self.memcg_path = memcg_path,
-+        self.memcg_path = memcg_path
-         self.addr_start = addr_start
-         self.addr_end = addr_end
-         self.target_idx = target_idx
+diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+index 3aa5c91548a5..b595da24f698 100755
+--- a/tools/testing/selftests/damon/sysfs.py
++++ b/tools/testing/selftests/damon/sysfs.py
+@@ -33,6 +33,7 @@ def assert_true(condition, expectation, status):
+     if condition is not True:
+         fail(expectation, status)
+ 
++
+ def assert_watermarks_committed(watermarks, dump):
+     wmark_metric_val = {
+             'none': 0,
+@@ -90,8 +91,14 @@ def assert_filter_committed(filter_, dump):
+     assert_true(filter_.type_ == dump['type'], 'type', dump)
+     assert_true(filter_.matching == dump['matching'], 'matching', dump)
+     assert_true(filter_.allow == dump['allow'], 'allow', dump)
+-    # TODO: check memcg_path and memcg_id if type is memcg
+-    if filter_.type_ == 'addr':
++    if filter_.type_ == 'memcg':
++        shown, rd_err = _damon_sysfs.read_file(
++                os.path.join(filter_.sysfs_dir(), 'memcg_path'))
++        if rd_err is not None:
++            fail('memcg_path sysfs read', {'error': rd_err})
++        assert_true(shown.rstrip('\n') == ('%s' % filter_.memcg_path),
++                    'memcg_path_sysfs', dump)
++    elif filter_.type_ == 'addr':
+         assert_true([filter_.addr_start, filter_.addr_end] ==
+                     dump['addr_range'], 'addr_range', dump)
+     elif filter_.type_ == 'target':
+@@ -258,6 +265,8 @@ def main():
+                 ops_filters=[
+                     _damon_sysfs.DamosFilter(type_='anon', matching=True,
+                                              allow=True),
++                    _damon_sysfs.DamosFilter(type_='memcg', matching=True,
++                                             allow=True, memcg_path='/'),
+                     ],
+                 )])
+     context.idx = 0
 -- 
 2.51.0
 
