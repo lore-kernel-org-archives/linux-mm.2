@@ -4,97 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA219CD4F54
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 20:27:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF4B4CD4F54
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 20:30:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABCA56B0005; Thu, 28 May 2026 16:27:33 -0400 (EDT)
+	id 1C0A66B0005; Thu, 28 May 2026 16:30:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6D4D6B0088; Thu, 28 May 2026 16:27:33 -0400 (EDT)
+	id 197EC6B008A; Thu, 28 May 2026 16:30:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 982E26B008A; Thu, 28 May 2026 16:27:33 -0400 (EDT)
+	id 0D5366B008C; Thu, 28 May 2026 16:30:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 89FF36B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:27:33 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 28F1EA09D7
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 20:27:33 +0000 (UTC)
-X-FDA: 84817963986.03.5B1A192
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 88A874000C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 20:27:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1406wq47;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F044D6B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:30:13 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C62C162171
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 20:30:13 +0000 (UTC)
+X-FDA: 84817970706.24.F5B140F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B1493C0008
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 20:30:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WNECfLJB;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780000051;
+	s=arc-20220608; t=1780000211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qbT0AxMHd2QIhEY5Y8KbM/8oDNJsPUw1xw7s/5tIMDk=;
-	b=XCKUuNx8Puc9uwk9PSG/F5q6VUlYyp+LRBB76QFlAUplimYHCIgyOZbvAvAOyTtFUMR0Pp
-	S7qwTC8OL31i2ltktknCwt/ade432SiWqd39Ho8Etr1tlpuTmPseb6qmRodcFvhcshamxD
-	6vd26iaYgD7TGLA6V1bZvwFXls+NwLs=
+	bh=R+ua/mjvw+I573uBdpP33D1T+QacscMq/uJH6WyPC4M=;
+	b=QsxpxqGl8lKhp5xRJ6ACOiff2TSivByTtCiOKiQSAP8hjxF/4nCLsYfAzIBQsUNXj4V972
+	m74bLYB71PSSkG05e6HFIk+YSAei7waIja9wI1Y/LT1ZbUL4OJxJpHYm37vC8MulD6wtwG
+	KUttVCR9pFt1KyS7RdTA6C6c40KK1XI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1406wq47;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780000051; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WNECfLJB;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780000211; a=rsa-sha256;
 	cv=none;
-	b=TCYjCZpF5sb2c68EeZwa+AFw5LXd+SSFXrubCAjjBUj3jd4bMAdQEIsMZa1R4KMXEjdmGV
-	xhEG3OHtJ4o+Mdly8Qetxf+5N46WUo5ORG9/s76PQfQ7ze9+7lsY5/L8BC0Vm0+TpbyFaw
-	/1GJCsWNcBsOy59D8QcO0+dq2sVkZbE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D1E7C6020A;
-	Thu, 28 May 2026 20:27:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CF81F00A3A;
-	Thu, 28 May 2026 20:27:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780000050;
-	bh=qbT0AxMHd2QIhEY5Y8KbM/8oDNJsPUw1xw7s/5tIMDk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=1406wq47Wcf6v+Jomv5SSsDRc9sK3PYzAg2jEi/qCqCBwndSK+M0IH8esUQRaSajU
-	 IZjBlqJ0yuDguYb94FYgbWgCi2qWVBPpYjx+jDUO1JyPig1a59QYvPaCKh3e3bi5+e
-	 655V9UOtGqlAqlXZi7itKsgs72CgC0PU2LKyJMSw=
-Date: Thu, 28 May 2026 13:27:28 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: david@kernel.org, willy@infradead.org, ryan.roberts@arm.com,
- linux-mm@kvack.org, r@hev.cc, jack@suse.cz, Andrew Donnellan
- <andrew+kernel@donnellan.id.au>, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
- dev.jain@arm.com, kees@kernel.org, kevin.brodsky@arm.com,
- lance.yang@linux.dev, Liam R.Howlett <liam@infradead.org>,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
- npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
- rppt@kernel.org, surenb@google.com, vbabka@kernel.org, Al Viro
- <viro@zeniv.linux.org.uk>, wilts.infradead.org@hp2.hsd1.ca.comcast.net,
- "linux-fsdevel@vger.kernel.l"@kernel.org, ziy@nvidia.com,
- hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
- kernel-team@meta.com
-Subject: Re: [PATCH v6 0/2] mm: improve large folio readahead for exec
- memory
-Message-Id: <20260528132728.c47a38e7506483d587f64eb7@linux-foundation.org>
-In-Reply-To: <20260528165635.2068012-1-usama.arif@linux.dev>
-References: <20260528165635.2068012-1-usama.arif@linux.dev>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8q6gsjrgp4ty1chho9x79385xb61ww9x
+	b=LxoOJQKfsTgjAXDSlSDx675u332KcP9aWBESE3YoDY0njw70fm7tmonVGtMkR3wEI+ZMBf
+	NusAkvITxd/smxpMnj5xLaDzW+XOPmM4gVPHUKrM3tQc9LthObDUESqzKVpYfRsiNqoIGk
+	x5y/N1N1p/38lMVlvQdLlPceTESFnCI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780000211; x=1811536211;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ODNxYs339E2YF89enQLYGjmAuCOA1Oyzei0NMHrO2jE=;
+  b=WNECfLJB5/V5KiFGe1WoC25tQadJRBTKhD8xp027vhgbqBauxQ8cAxW2
+   9YLUTj859XmftfS0bt7jgrjUxoEae+jOq0DspzaPb6IeFdKqtOCNulhLK
+   fMfesUpm+PNhciUFGJ13ZOuo2rUARcyswDGYPyJMTxP4ODkBon9JLZALP
+   0ky2noE93c64QigQ+d29gVIyychlAZcmGiGL30ATPN/uOZagt1mS7MUhY
+   mHqP2LY39KGCukKm1wvL6IgEIzYzWkOjNetGih9dSfT/Revm6gUmDYDXA
+   lwJBKzd867Yly4XVN66PuMtQOFjyHBTWtIU3DOzFtYH2XNVfLKazfC3rj
+   w==;
+X-CSE-ConnectionGUID: aRLgJ+1dQoG4CipUaCqtDA==
+X-CSE-MsgGUID: yOi4cuKSSGquZFAhGq+A0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80751927"
+X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
+   d="scan'208";a="80751927"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 13:30:08 -0700
+X-CSE-ConnectionGUID: D0LZuv9tTsKm4VJfEniS6w==
+X-CSE-MsgGUID: XweaD3oNR+Sqd5m0kCTstA==
+X-ExtLoop1: 1
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 28 May 2026 13:30:04 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wShMf-000000006Q2-2z5X;
+	Thu, 28 May 2026 20:30:01 +0000
+Date: Fri, 29 May 2026 04:29:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: hu.shengming@zte.com.cn, vbabka@kernel.org, harry@kernel.org,
+	akpm@linux-foundation.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, hao.li@linux.dev,
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	zhang.run@zte.com.cn, cai.qu@zte.com.cn
+Subject: Re: [PATCH v3] mm/slub: free prefilled empty sheaves consistently
+Message-ID: <202605290406.mjAKJqbo-lkp@intel.com>
+References: <20260525211000387LYqTHmxYL900XIB8qwV3h@zte.com.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260525211000387LYqTHmxYL900XIB8qwV3h@zte.com.cn>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: kksxabnsbhz979s5du8niagksyhhihzm
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 88A874000C
-X-HE-Tag: 1780000051-623130
-X-HE-Meta: U2FsdGVkX19/2H9gS4VQUA5JUwCLH0RsGJ3qq0g8cPeSSzb/6/JJiztNt6FvaY47iGjsD2SEgrYQ294U3YENwZ+0tdO4+xsfbSOFvkwXtUszCxmLMdi7+/hfZUG9Fcu3Js/b1rvAVqiy6iYjhstxJ3q6WUPvJeOlFaMEkaZyYeclpDY7rd9fSK5A5AkNWntv/TzsDK4p2ngHHsDi1QoLrwo2HeJ7+1l1UROYP1rhjkMevc1A1Rm90iVK5B5xu73ljkrPmmCIcghzd+RHsgVngm2vkiMBK7tjLY/7z575/LSsNdu6L25nwe4+vBDuqAgJn9DUGf8WVpzNjL6+utDCn59/DQiTboNugHe0o12Yw3tpBe3SPh4yuB6acklMMjJLRNu3eZHHDwD3AsIcZXl5eaJuGNViL2fj5hG/aJv/Nik8NlhJbK6XhBifxS4UO4OwBO84yI07MHjuRIjebZk/0Urg2BJPDI33ilo9X4NvhYLn6avzVci0jbIQFGuMw8Z1qXP88SVgbKdUgxkIRrPrmaehrlNH8KjfdZicNH8QlBf/PfAXvcfU6H19UCkI0DUho0THrbQvq0QiPeqQDq2N1d7e8BpQpuC3vTtKmSXV+pIwJ9/G+Cdj5vTz7cM9KRAjPLiEmYOoF+lNcoBL+siO6zq2tSCJET/5/Gn15QBE5APlZ3lCRRvPGbXR7VonvyX0Ya/TVj4s1PsZDElI/2jv13dUIKzXnDaZ9a1Ej42uDLWPoTx1Iu8BT6gVSqsFw4Vw9pDu4l7kxUJcQIOdrzjUKW0KyVeTJpYGnpq4qWup4S2ZIddkSPy6Q85tOj1rNo2XXrodjZO44yuZIdCSvGWEOZd6zOegYfnEqp28Bpyn8Dhv997MuVR7PdZ+/RJCC3j43XMqIFJz4ife/BmWUIckmrO538w8FheOLYSkjqE47NvLaJ4lhkhpnKoeF7f1GD9cgCtkeoyCiY2kJtJ3EcN
- fjwXEI41
- hqyCAkGRbdYL4CHAckmHa+tSGXVEhz007p9sKkJ0q7wL8CCGk7eAKGkSj5jbNAuhFqkM8inaNLrqkfXshDcoO9NkmVNkysplQ2RwMiqCXbl2KqD682sX7vUFW12drYTCtZfNRQa7ix2GU1O0aY0bkyT37W6j4LQuuxP15H+WTe7kG8pL5n4oCWf7OFoTCmsAdpoSCeWjnhIILbBSEUaewTuYKOET4GxozqLu/Z/+8ubpvIiJedq/S57T7qL4gMtS/VIT3waLsxmbI1zoAxfF5b7C9HvlEgScA33E/r7M7GSFmFejOgRIQyE4mbm6Tze/Ams1zJfJpoXeo0Lw=
+X-Rspamd-Queue-Id: B1493C0008
+X-HE-Tag: 1780000210-385628
+X-HE-Meta: U2FsdGVkX19abeb3gonvhkjsttDhnZQNJ8jPywmyHhz6G0rMVVIegPjxRXLX4LihGILrOdAorHtRxaF1ivKJvbH8sqd3OYfbAitc6QXZLiuxWOL+0UuDkhLZD7mT5JrR4GObw1hFNcq03s8S2/yH314Ro+oTd1TxMo0cX5IgmeCnoEzlP6bYgGKH/3WWNaFKdua3klfzCFYhoIJmKAGfRhp+YGUbwnKMu0gGCvFbGBxDYK3YX2T4KVgJ21UVIEqnD9jQIJ+SeotHISxvCfbdUadp7vAmmf8oG0sIulr0+SAlZL5K5oszWE4ZMszPewefo5Qk+PBdlPrZrx0wXhO+R+zlthQZs5KozrJxfgYVAHuvMA8Opw5ciKErc6q85+Tz2TUo5z1LFwDNAbMmoPnjwWYq0BvxPY+CiI+j0kkK4qIJof3ig34DXyqv6fd2JGMYTwI2p2vcxoYqLypTeBr/pIUnCTdYQ5PAFdwXm8OPvwFwRXWBDIt8zBsmITKIRr4bl1wvfwRoqQm6EcZ753QBb+Uc/a1oJJIkSnIXealrPEW65hTxtgvAk4B27mnMirGPSg3ASbHWIcnEw+7cnXY9czG+Jm7R9x35dNy8kEVEdUDYnqW3ivvIAlbD1rRovA9uPbFwlbhPuHXONuoPoPImRPKVoH2MNOIWdSyvPTfRLwxjxIBsYlw7c93OwdL185Dx2b/2TVttNPAM4Kq8jJw6m66itXBY4d7RECOKjh3Z6bofzT0ITShmUT9DycHTmDQgLwEexK9oQ+aTkvwMLhhBBra7Z5VVueblN+Ya6uI+MokTmvnAMel1gkEJhfDX2+vWv/vHB0JTX8IFFjzpZe5aN3IInNNjqj/0VhpCWCCROrjzlWOMefNxiuNtn1sZdsZFbsuhDfRrrDsv2zOWv+E73KXZ5cNQDji3njHAav/FFj6S7gCljt4nBhYn31u5OA/1FM6Sa0DzrBtDusbUaCv
+ zJbNpPgG
+ xDT4U+s8RjcEFF2NuOZRgH2v4l2X5WAGRgFsjrgmDxnif5pEliTTboPDS7QZupFUeo+6bLyYWPf9YS/keyhd/gy5SL1dW38OrBKFvtPXZL8CgryGQ1RLDBqK8mEZca2n7fos6iH8dZP4HWP733dVIcaemDRn+gOt/c45zq1CXAGmUZmJ3Xg8yc7rlqM0pMzyFmRfNKsgPVEotQA/kFwPOpcB0FKrlMcH4QtSL+FOVngdTS28ucklV0AVB7ewSsyuPJjyDIGEC8Tlf8e1C+LtnC47mJKox47rIbG5jiYYcdB5Z5AXMfTZ2SkbnCrfqsXpoT08X6bIGcML/kIKAETmptmYrEaa5VZeqsskDn+5yXwhCSAp94c+Z03l+lcxkYRylY+tAsoD/lC5fxwC10dVADnTNduMQv2ty7mliwL4ocJaW8Co=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,36 +107,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 28 May 2026 09:55:18 -0700 Usama Arif <usama.arif@linux.dev> wrote:
+Hi,
 
-> Two checks in do_sync_mmap_readahead() limit large-folio readahead:
-> 
->   1. The mmap_miss heuristic is meant to throttle wasteful speculative
->      readahead. It is currently also applied to the VM_EXEC readahead
->      path, which is targeted rather than speculative. Once mmap_miss exceeds
->      MMAP_LOTSAMISS, exec readahead - including the large-folio
->      order requested by exec_folio_order() - is disabled. On
->      configurations where the mmap_miss decrement paths are not
->      active (see patch 1) the counter only grows, so exec readahead
->      is permanently disabled after the first 100 faults.
-> 
->   2. The force_thp_readahead path is gated only on
->      HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER and always drives the
->      readahead at HPAGE_PMD_ORDER. Configurations where
->      HPAGE_PMD_ORDER exceeds MAX_PAGECACHE_ORDER never reach this
->      path, even when the mapping itself supports usefully large
->      folios well below the cap.
-> 
-> Both issues are most visible on arm64 with a 64K base page size,
-> where HPAGE_PMD_ORDER is 13 (512MB) -- above MAX_PAGECACHE_ORDER
-> (11) -- and where fault_around_pages collapses to 1 disabling
-> should_fault_around() (one of the two mmap_miss decrement sites).
-> However the fixes are architecture-agnostic: patch 1 reflects the
-> nature of VM_EXEC readahead regardless of base page size, and
-> patch 2 generalises the gate so any mapping advertising a usefully
-> large maximum folio order can benefit.
+kernel test robot noticed the following build errors:
 
-OK, thanks, it's getting late and [2/2] hasn't yet been reviewed.  I'll
-add it, just, because I'm a sucker for speedups.
+[auto build test ERROR on akpm-mm/mm-everything]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/hu-shengming-zte-com-cn/mm-slub-free-prefilled-empty-sheaves-consistently/20260525-211805
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260525211000387LYqTHmxYL900XIB8qwV3h%40zte.com.cn
+patch subject: [PATCH v3] mm/slub: free prefilled empty sheaves consistently
+config: powerpc-randconfig-002-20260529 (https://download.01.org/0day-ci/archive/20260529/202605290406.mjAKJqbo-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260529/202605290406.mjAKJqbo-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605290406.mjAKJqbo-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> ld.lld: error: relocation R_PPC_ADDR16_HA cannot be used against symbol 'decrementers_next_tb'; recompile with -fPIC
+   >>> defined in vmlinux.a(arch/powerpc/kernel/time.o)
+   >>> referenced by time.c
+   >>>               arch/powerpc/kernel/time.o:(decrementer_set_next_event) in archive vmlinux.a
+--
+>> ld.lld: error: relocation R_PPC_ADDR16_HA cannot be used against symbol 'ppc_emulated'; recompile with -fPIC
+   >>> defined in vmlinux.a(arch/powerpc/kernel/traps.o)
+   >>> referenced by align.c
+   >>>               arch/powerpc/kernel/align.o:(fix_alignment) in archive vmlinux.a
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
