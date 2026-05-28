@@ -4,131 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 185A7CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:11:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F62CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:14:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28E556B0092; Thu, 28 May 2026 03:11:29 -0400 (EDT)
+	id 32EB66B0088; Thu, 28 May 2026 03:14:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 265476B0093; Thu, 28 May 2026 03:11:29 -0400 (EDT)
+	id 305E46B008C; Thu, 28 May 2026 03:14:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 154886B0096; Thu, 28 May 2026 03:11:29 -0400 (EDT)
+	id 21B916B0092; Thu, 28 May 2026 03:14:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 035556B0092
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:11:29 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 73A45120740
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:11:28 +0000 (UTC)
-X-FDA: 84815957856.28.F805E20
-Received: from mta20.hihonor.com (mta20.hihonor.com [81.70.206.69])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A53A6A0002
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:11:25 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 106526B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:14:42 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D30FC1C1CDB
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:14:41 +0000 (UTC)
+X-FDA: 84815965962.11.1C74086
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 28520180008
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:14:39 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VCYo/kAn";
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779952286;
+	s=arc-20220608; t=1779952480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e56WHfRH4AwVIeOtxnRpQ/XH8nHxcWdeHjdGBWwaDqQ=;
-	b=Yh/vfjPZa5UzZW7ctFES6iGp5WnAMYui7jwF7Shgz73e3E4Jy3MCDlPGjJaJqXte7DAyCO
-	1JxdDzh0lYMyJV8K3FuNOnWl2ampzGA54q7moE/BVfxb4hDSl6/i0Zc2OIQUrnqRJWzKqj
-	kUnLLLvYAPiQFn4mEjzTL6XMnFq96bQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AMHRCZ/Uj48KQbmFraAMkWjb/Yi2LkWhbHoiVD5mViA=;
+	b=UEdSpKNhtt29Dlr5r1aU+IfBa04uba4r4uplmsAs1VknDXQhqcZZ7un4mYMzOcMQrRhZj7
+	GudNXoizVtCWfSUy3kpe2AlC6nLXRKBqITBeiqzhfc8UzIx61L6LyVVUPskqNNzEnc0cIg
+	WiLgANuZlrT3OuSxfonJI/DZw+yonpM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952286; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VCYo/kAn";
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952480; a=rsa-sha256;
 	cv=none;
-	b=B6sTU2L1U4UaFr27r+eRg10h2X1IQ8I3iVc8Dw6o/EYP5DpLmF6uKMwNRdud6TS13rasZF
-	atIXydSnpn14uD+i2Tg//DnJXWIHx8oljDMpvsIo9kFRyttwmV5O0J8JRcxhg7vWaYUJs9
-	VJtMnOHPgn3IXwbT9RosDUR4cwYI0RE=
-Received: from TW005.hihonor.com (unknown [10.72.0.123])
-	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4gQyKs47bzzYlLKr;
-	Thu, 28 May 2026 15:09:53 +0800 (CST)
-Received: from TA002.hihonor.com (10.77.230.8) by TW005.hihonor.com
- (10.72.0.123) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 28 May
- 2026 15:11:20 +0800
-Received: from TA003.hihonor.com (10.72.0.43) by TA002.hihonor.com
- (10.77.230.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 28 May
- 2026 15:10:24 +0800
-Received: from TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1]) by
- TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1%7]) with mapi id
- 15.02.2562.037; Thu, 28 May 2026 15:11:19 +0800
-From: wangtao <tao.wangtao@honor.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-CC: "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org"
-	<will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com"
-	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
-	<x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"david@kernel.org" <david@kernel.org>, "willy@infradead.org"
-	<willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>, "kees@kernel.org"
-	<kees@kernel.org>, "luizcap@redhat.com" <luizcap@redhat.com>,
-	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>,
-	"kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"liam@infradead.org" <liam@infradead.org>, "vbabka@kernel.org"
-	<vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
-	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz"
-	<jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, "harry@kernel.org"
-	<harry@kernel.org>, "jannh@google.com" <jannh@google.com>, "jgg@ziepe.ca"
-	<jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
-	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-	"npache@redhat.com" <npache@redhat.com>, "ryan.roberts@arm.com"
-	<ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
-	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev"
-	<lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
-	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
-	"matthew.brost@intel.com" <matthew.brost@intel.com>,
-	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com"
-	<rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>,
-	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com"
-	<ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev"
-	<shakeel.butt@linux.dev>, "ryncsn@gmail.com" <ryncsn@gmail.com>,
-	"21cnbao@gmail.com" <21cnbao@gmail.com>, "jparsana@google.com"
-	<jparsana@google.com>, "dvander@google.com" <dvander@google.com>, zhangji
-	<zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
-Subject: RE: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+	b=K6T7Bo1a0RwiYE9NZ7w0LtW8sRGvauZrrs9+mK3AS4TOsqw1Q6SYkH2WSBZGOQ/zJcD7BM
+	vpZsoaq2ef74DXaMiV61TvAC0nFDOXHdRTCFlYFhc1mDKgJ4REdHtgzzpr4ZFDqpJK0+m2
+	yEzw1We4YbysjzBiks8isDj3I3CCMD4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A55344195;
+	Thu, 28 May 2026 07:14:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A1F1F000E9;
+	Thu, 28 May 2026 07:14:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779952479;
+	bh=AMHRCZ/Uj48KQbmFraAMkWjb/Yi2LkWhbHoiVD5mViA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VCYo/kAnidj7WuNhU0XFKQXOcDvDd/yD85UGCv9mwdHK+JS0RAVNF7KU9fdNcSszP
+	 q3DhFo9mP3UPpT4llrLK3PAdb015+g1MqHUNYBFjramxw/+NA55SpoMw2afX2FPbqA
+	 dPDrYC0TszCnjWWIvp73l9RfsDBQoRQNXw9IyIBwATsuwL5A0YGnxHp3mhXGJxoKb8
+	 njAZvOUs7KjOyK8q9Ej2Ts56p6Z7IYxFXEQhdRxWxhC+cVJOHy+OXR2SI/0ljM79op
+	 f59S3iQd7f3v8Vxj3jOhXRLSqucGWsIY3wo0U5HwRNTi9EGGggJzE41xcSGKKM46Rq
+	 o3Z/5yWTfsPZA==
+Date: Thu, 28 May 2026 08:14:23 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: wangtao <tao.wangtao@honor.com>
+Cc: Pedro Falcato <pfalcato@suse.de>, 
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"david@kernel.org" <david@kernel.org>, "willy@infradead.org" <willy@infradead.org>, 
+	"sj@kernel.org" <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>, 
+	"luizcap@redhat.com" <luizcap@redhat.com>, 
+	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"jack@suse.cz" <jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, 
+	"harry@kernel.org" <harry@kernel.org>, "jannh@google.com" <jannh@google.com>, 
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>, 
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev" <lance.yang@linux.dev>, 
+	"xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, "matthew.brost@intel.com" <matthew.brost@intel.com>, 
+	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com" <rakie.kim@sk.com>, 
+	"byungchul@sk.com" <byungchul@sk.com>, "gourry@gourry.net" <gourry@gourry.net>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"ryncsn@gmail.com" <ryncsn@gmail.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>, 
+	"jparsana@google.com" <jparsana@google.com>, "dvander@google.com" <dvander@google.com>, 
+	zhangji <zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
  creation
-Thread-Topic: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Thread-Index: AQHc7cjw5r5ki6LAJ0S2mW/rJEfblbYhNsEAgAHJA7A=
-Date: Thu, 28 May 2026 07:11:19 +0000
-Message-ID: <288935c5d9d84794a9120893f61e670b@honor.com>
+Message-ID: <ahfqKUDyIt6fhgts@lucifer>
 References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <ahbSrt0B1aQTwrk4@lucifer>
-In-Reply-To: <ahbSrt0B1aQTwrk4@lucifer>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.163.18.240]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ <ahbSwczOpsBKby7o@pedro-suse>
+ <800d894e9a54440fa1d7f7b76e50a45b@honor.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <800d894e9a54440fa1d7f7b76e50a45b@honor.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A53A6A0002
-X-Stat-Signature: pm1bjb17mg7jx9mmdzns3ngfoqt4zjay
-X-HE-Tag: 1779952285-738512
-X-HE-Meta: U2FsdGVkX19soh4PZGOPpTztX9HWta2P0PNasEAZDhwWvy8lMhn90MPiyFcHmtXtlL9wGPbTzZNdXSnfE+ctbzoa5A050AAvuKWeD/IVHjEbS6YdABnSVptohTWgX8yw83hwj63Xv27vlHAyKfo4JlfZTtZn0PtW3s9kaKLxzqCevKazt//8gbx67Ty/rpE3glEYmo5oOpPzFq1EYWkjyEPKgaYwSopdF35I7gj0Ka4gUmadCgtyRIelvy4kv7QkJkE6RQO0A6tBix6syaLD8H2PKFyZqGP8nuLg43ZuNAqJbY3OxpcjhoPwXZpPmO3nRLp5Z0C4GNYZxbf14k33dXht0c6DBrwSBPAHCSYlwefCIzMQjI35xQzXfpPgXMcV+CNdeSvBGCxOoD7VDVxPcq95W/393fyoWdw7aF2PUAVGYkuJvq8IPufHbsY6Qz/OcjMsPmVJHpfjSglgTfXDiwI4D24447ly0qiDH0GiXYSQ8M8DStDV5UYo4HI+6p5wCHnpkseZTic3Gd2L9tRPBYBOsvay2/lHM1QCE6WXfpiUBlXi3EA0rqYMJHhCd2vJGPfPRHztuRlzusqzMNK5oSjWc1nSN1SR53WDVwSHG/YqA/I4F7uON57HcFr17yZfbZ1hTP5XesWDztkLzQCVQW1Jg0tdvXFNcc1RfycA7DgMAiUK7DCESTA2Z3vw35fpW1aT9s7ohgOG6g4Mye7/BKggaqgT2u8UNCLRw4pmt+zK1zp4JApifgxuFUm5YHP2/GSf6+SOnuuJIs3sFubZ2d7MgospHVXIAFFmpf8x8uo66MDYOFS0/yQ9Vzayzw1gpsobtioQ3YHtLfYBw+nbuo4ZhClE26zNFoBhR113t7QYDq8Af6zgcmisBeoPpnjsflIGB3upnSOwhiifGJYB27sHYoOOm3SM3bVBj3PkbcRFM9z8y5piQNfNfO/bLQkMHcSBlpqF52IK68lpURC
- F+5pyG8i
- plEiT8DSU7ERhzTErYxOvRSDEt7R1k/6EPypJZfulH+9xgfJzpzYjvC3Rahp9HktR815yv3gDjRX3Tk9OJ7IkirzeHTn5roiaxntCCVSgoa8KTBUQTI//SkItltD+G05hueK2EXYKP8573aZMl2yAfuNlk5KLjHJFhw9EB5iaA66thi/R30H5ir5aHL2jUeqf+l6Raqp4xbmpnck43PXc1Rrm8WwIhYWO5BhEGoiVGK5wGlT005uOUKH1d1XV6o0PndUuNFbntsOuSBChc6QM5OqYi3m5BLxXWNx5LjcnDdq5AWlomvddAI0ZeqSuV5rnQF/pRNpTmYzLjgNLAAcaNwpZTGSb3jk1Nv2c1X1+m+45z15JYpwqGlwrM2dLu3UhejIQ
+X-Rspamd-Queue-Id: 28520180008
+X-Stat-Signature: ibz7ozz5s15mqwatyym9odcrx99me3xh
+X-HE-Tag: 1779952479-366698
+X-HE-Meta: U2FsdGVkX18VdY6MeqGjMWLgXDm3AMlxLd1As2ZZ19Eauec49xGHUxk3IT/f4iapI30g5jOITxcr2rr7K12thZ4vWzFz44wBeSYFpl67vdfzlp5PlAaCFsOIACkArZPhX+4GN1o68maMiAp8AKRWn2O1MDkVZSx6/nb3ftbJOa/FuCpCSf4JTAdiE5RQfNekmUJjmj+o+y1I5Qn0fsKCT3LSPBeSLPOdXoQsNUD+iycjM5mtN6or0K1sEjYpl7TNBHUr9z1nZ+U7llTsCq/kZNyDiiz/KpZ5riqAxwBe3q3dX2lDbLDVNR/dIP58z4EdAxRXUuP7NFvO98XnCdGL9+x5IqOlUvLoy1aJoMZAJ3IThcjZoHrutiILiGuYLn2CcLzbLbq2FCBHEcpBnBa0ZEqUMI40B2T7KcGgGal2iSL1LxF98/xlyGzZRQeAgntIOGaI6cG6+b78ktHZtJd8NlfSkleqB3Rm5P+4wbG9ttiC8ni0R1bkLHlhA8qiVT71zzyWwQUx5oTRHBSzBKWAzzTWUZ6rPKRH8KUmf7rLFgEw59FZesNGpLnpbdiRb00I9Jhi4P//sV/oWObM4v8bJwJiwnQdnmfLbuRuPdmIkpOw6CId6jYx7jxwsdmeP10435QvM/yT89gJX5wuDoy7isH7jafBjaf82dk3AsoGqUeY5clh3h5v9Y9hxvs6ldhFanLz+kx0qMzJU1qQPpM7R+kUn2+2NyeMRjdAUWfidzY4bJSf61LymhaQ0lHIkU5T+LRheDHDD4qJkEbMM3Xn6G9exHOZu0PrdWpL5alx/aligXgkBQgNHfG/6BmyyHDoNNV+HDGSRLMsLmivFS9I+k3h8l5wNIvYYSRyq0dWGY4TXV1eMnvxO+uw23BZHacfRKw3uEKyaJR2CP3axNaj4g9n2jtW8wjxtTjvVSAcEf6RDze7KdAFUKZufrW6S8O31gHootBbhmeJ3QVHBhP
+ l1WwDHza
+ qeZ/2Z4XF+EBxvExvF2TBiudf98a3RioL3TK1sGrD8vyFxgmfis0f5UQ3vQ1FeszdLDJhL7ErrUyNQaASnTV3yARErhivss7Phz9NwMwvzkfIJQX+YLdOhVoG4WGUTxgyb68JpE+H3Kyr5Hu8n62BAdOcp73jxsBgfm4cSEaVF4U2PNoLDR6VcV13L8l+M18fvWqRnd6wdKESPBtPDms0kVwCQa84hoIl5quVfGUYGLcJlCGeDMqAiEhgmOuQmfYQkk4Hp4BjJaknhpDKnNgz6ZULu2kRA+mb10hYOgDbW/2CgRPFk7t1/zGDvAHhM8rClpPMSHbigY0L9fx0bGsJaMzC3XBlC6xAFGZj18JES74/UTil+VmIA7M8TuFux7FGmtMDxs9TPqpabUcEUWNNX2yDsMXLPpWtDEatRV2rk43H0uYhwGoBJom010/yM31Ylqz1+14sm5tt3BKv69ppCj1blhcZT00QyZjxJr/neU70whW3ZmiwCS198g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,69 +121,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, May 28, 2026 at 06:45:07AM +0000, wangtao wrote:
+> > >
+> > > Feedback and suggestions are welcome.
+> >
+> > I'm afraid, per previous discussions[1], that no one is really willing to maintain
+> > extra complexity for the current state of anon rmap and anon vmas.
+> > Sorry :/
+> >
+> > Also, please don't send series this large without previous discussion and _at
+> > least_ an RFC tag.
+> >
+> > [1] https://lore.kernel.org/all/aec533b2-37a7-4f44-a279-
+> > c4aa604206ac@lucifer.local/
+> >
+> > --
+> > Pedro
+>
+> Thank you very much for your reply.
+>
+> As I am not very good at english, I haven't participated much in community discussions before and I'm still not very familiar with the usual process.
+> I realize now that I should probably have started with a discussion thread first, and that this patch series would have been more appropriate with an RFC tag.
+> I apologize for that.
 
+Thanks, appreciate it.
 
-> Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred
-> anon_vma creation
->=20
-> I'm sorry but this is not how kernel development is done.
->=20
-> You're sending a series that's very invasive, that you've not coordinated=
- with
-> anybody else, nor have you mentioned it at a conference, nor engaged with
-> in discussion with anybody else in the community in any way.
->=20
-> And you've sent it without an RFC, at -rc5 is... quite something.
->=20
-> We do NOT want to extend or expand or hack in anything like this on top o=
-f
-> the existing anon_vma machinery. It's a mess that requires replacement, n=
-ot
-> more hacks or expansion.
->=20
-> I've been working on a replacement for the anonymous rmap, recently
-> presenting at LSF/MM, and all of that has been very public.
->=20
-> In fact I have engaged in recent work which reduced lock contention in
-> anon_vma, it's really quite discourteous for you not to have contacted me=
- or
-> the community in addition to the above.
->=20
-First of all, thank you very much for your reply.
+It's also for your benefit - regardless of AI usage or not, you've spent time on
+this needlessly, which a discussion could have avoided.
 
-I'm also glad to learn that you have been working on optimizations
-related to anon_vma. I noticed your work from another email in the
-thread.
+Also as I said, going this way has damaged trust, which also doesn't benefit
+anybody.
 
-I apologize if my approach caused any inconvenience. My English is not
-very good, and I have rarely participated in community discussions
-before, so I'm still learning how things are usually done in the
-kernel community. If anything I did came across as discourteous, please
-understand that it was not my intention.
+mm is a welcoming and open community, the best approach when looking at
+something like this is to engage with us :)
 
-Recently, due to increasing memory costs, I revisited the memory usage
-of anon_vma and found that it might be possible to reduce its
-overhead.
+>
+> I will read the discussion in [1] more carefully. I also noticed the related code here:
+> https://git.kernel.org/pub/scm/linux/kernel/git/ljs/linux.git/log/?h=project/cow-context
+>
+> Many years ago I had already noticed that data structures such as vma, page_table, and anon_vma consume a significant amount of memory.
+> However, since the mm subsystem is quite complex, I didn't look into it in depth at the time.
+> Recently, with memory costs increasing, I revisited these structures and analyzed their memory usage again.
+> Since anon_vma seems to have a relatively smaller impact compared to vma and page tables, I started by exploring possible optimizations for anon_vma first.
+>
+> Although anon_vma is relatively simple, there are still quite a few uncertainties.
+> So I waited until the basic functionality was implemented before sending the patches for discussion.
 
-My original intention was simply to experiment with an anon_vma_lazy
-mechanism to reduce the memory footprint of anon_vma. However, while
-working on it I realized that anon_vma handling is quite complex. In
-particular, after multiple levels of fork the topology of anonymous
-pages can become quite complicated, and it also interacts with other
-subsystems such as reclaim, KSM, and migration.
+Thanks, I am more than happy to discuss my approach. You can also see slides
+from my talk on this at LSF/MM at https://ljs.io/talks
 
-Because of this, I tried separating the functionality of anon_vma
-into two parts: anon_rmap_t for anonymous page reverse mapping, and
-anon_vma_tree_t for topology management.
+(Note that the code linked is an incomplete implementation, simply some early
+code to give a sense of the approach taken!)
 
-anon_rmap_t provides the reverse mapping interface used by reclaim,
-KSM, migration, and similar components.
+I would ask, however, in general that you hold off on anything code-wise before
+I am able to issue my own RFC implementing this approach so we can avoid any
+overlap/confusion.
 
-anon_vma_tree_t manages the topology internally for operations such
-as fork, clone, split, and merge, and can also indicate whether a
-VMA has experienced page faults.
+>
+> Thanks again for taking the time to reply.
+>
+> --
+> Tao
+>
 
-My hope is that by separating these responsibilities, it may become
-easier to reason about and further improve the anon_vma design in the
-future.
+Cheers, lorenzo
 
