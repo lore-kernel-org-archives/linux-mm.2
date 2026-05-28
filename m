@@ -4,87 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B61CCD4F54
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 19:12:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DA5CCD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 19:36:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 744026B0088; Thu, 28 May 2026 15:12:32 -0400 (EDT)
+	id 47E2E6B0088; Thu, 28 May 2026 15:36:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F46D6B008A; Thu, 28 May 2026 15:12:32 -0400 (EDT)
+	id 455936B008A; Thu, 28 May 2026 15:36:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 609816B008C; Thu, 28 May 2026 15:12:32 -0400 (EDT)
+	id 393056B008C; Thu, 28 May 2026 15:36:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F0B06B0088
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:12:32 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E075D4081D
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 19:12:31 +0000 (UTC)
-X-FDA: 84817774902.18.72FC5E9
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A8CBF4000B
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 19:12:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=3kUGFbhU;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf07.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E9516B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:36:46 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D42E41408AE
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 19:36:45 +0000 (UTC)
+X-FDA: 84817835970.19.BE2C4F7
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EEA0210000A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 19:36:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JRYMFMMU;
+	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779995550;
+	s=arc-20220608; t=1779997004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d1DLc0W611Kw3zuQKx1t6s7+eLHqWB4PhdsbwTC+/FA=;
-	b=mRp7NNSySfjZdG6Hd1jzHY9/mxG3g5Xa8qeeCsteNyAQEWe9IXDPTXOU8k4gsFST8MBPtU
-	KWdsEWw8243n0o+HLbc2mdvFQBWGGa4ZKL2rVH9Mruf91AFUQOWjMIqgR7DxLXZXccp2FP
-	OrP5GeQFfvyIG5x+gz3XUXX6Saxj8TU=
+	bh=8F0pWvXpBQ9tDTtRSJ6URm6g4dHDcnjjGX6VQLGXPyU=;
+	b=kRZzQdKtZfx1ojpxvfH2GGn5TC5tEBNsC0LLUUH1xU93a4h3agJrHY4NBx+MQmpG/lbEMv
+	SJHCQcfpQkYyNRcOfar/3FziBeNxDO7gBbGIWmFDLYiyULtvP5+jnBVpMuEkAWm1VTPGzG
+	4XvTIlq5h3gJiXDTVjcV1BKeVcqO2qc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=3kUGFbhU;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf07.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779995550; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JRYMFMMU;
+	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779997004; a=rsa-sha256;
 	cv=none;
-	b=M5Tn0HLCzCB0v4elVdIc67CxPPkYKaIKsOhTcKm9mMksd3WznPFeKLsip6HYmDirOZFAVu
-	fctJjTEXG2i7SmRgoVWBRNFt54w3w6IITwwkkhuSqkNNB6mxdkGyMvxNQ3i5CRSHt0xW4k
-	mdEjIValQwRBTdC2Jug1nqEuWJ6uJZE=
+	b=yzNG7rvgga/dtQpdPbBrSZ0w2mr4wrSp9T+Jkq2EClNyncKhBnoiemyA0vHw3uJVgPJQ3p
+	l4hiDtXMdeuV/E1JVICpT79jROT/dJ04rqlY014cjr8YD3paMBV4ymArNUtsToehNUHv1E
+	+DSzc/moirpaI1mFNEZ5eE64UIde+fU=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=d1DLc0W611Kw3zuQKx1t6s7+eLHqWB4PhdsbwTC+/FA=; b=3kUGFbhUp7SFwh4tQ0y9rU7Z8F
-	yLoiMwJ0W7WSDqyKRi79P/1zof6MX60NAilusI5loY9bj9I9jw9SR/z6y3ee6kBFtEegNBNJLAOg1
-	DiX4RO0G22azBWbA7CmG48R46uj1LI1VwST3DNJyMj1LoZOpsjaVHCVYEUkQKprW4MHsi54t0auby
-	g8jd0znwhPmty8WTzBYq/5c4Nc8y/p4MsrRA4jlYMQra9V+x8k8Gr6LNpT6kxbNxlOCFLWy4uLa9P
-	kkX80CtavJv7GgWyhkLKW67Tpour349ZS4HWuXhDQieTdRWnBMM5JI/fuScoyUyJWBHCtv+Oh/aMS
-	KrWSBG9Q==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSg9b-00000006GND-23UD;
-	Thu, 28 May 2026 19:12:27 +0000
-Date: Thu, 28 May 2026 15:12:13 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Brian Masney <bmasney@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add vm.rst to memory management core
-Message-ID: <p72rlykrihniurkbavzsqhvhmfygaht4kdsv25olras7xhf3pq@kpetmyqizgoh>
-References: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
+	bh=8F0pWvXpBQ9tDTtRSJ6URm6g4dHDcnjjGX6VQLGXPyU=; b=JRYMFMMUmIt+Ltyl9sQbvX97s0
+	VD5j57l9FIq6bZcWQ1EA8YYtzEb8jUOSu/8fH/b3sQlj1QaB0x44GaBPtu54kC9Av3dPePcxl3D4A
+	43FDUmdVszYklFreqEVlN0De8B1nujQTrH5y2ar8ZqhIAvN2glKhvMyMprIAhMZARkir6P/qjsSzQ
+	kaolzBR1PT40+KzPSjEVD/X9dbuyi+JafqY19ukDe1QGkC4hrzlV9jG3iwc5T+1dn+z853w+1JN+o
+	/5pkqxjkyy7sTDODIoKT/ekB1z/gUnyq3u1QWM2ZulCTjl3jenUMU9GTVLV/xfn5shjyAsEQBBx4l
+	iwYCMWxQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wSgX0-00000004mIh-1Q3T;
+	Thu, 28 May 2026 19:36:38 +0000
+Date: Thu, 28 May 2026 20:36:38 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Theodore Tso <tytso@mit.edu>, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Akilesh Kailash <akailash@google.com>,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
+ remembering inode number
+Message-ID: <ahiZRpE593n4blxn@casper.infradead.org>
+References: <ad30g9xMs9wNJhFb@infradead.org>
+ <ad_AVHe7RMnGrGTb@google.com>
+ <ad_HwhzlNPUEKQi6@casper.infradead.org>
+ <ag7HfNryTmQ-bVIS@infradead.org>
+ <20260521155748.GA79343@macsyma-wired.lan>
+ <ag_OVwPF49LSZ7rz@google.com>
+ <20260522141115.GA8258@macsyma-wired.lan>
+ <ahCNmWbcd_2lAJyk@google.com>
+ <20260522224108.GA18663@macsyma-wired.lan>
+ <ahTzHyHBL8t0iNBR@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A8CBF4000B
-X-Stat-Signature: whnwba34rxetgrnbhtf1ut1qckzgr1cx
+In-Reply-To: <ahTzHyHBL8t0iNBR@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1779995549-607937
-X-HE-Meta: U2FsdGVkX1/Mk9LMXiYr8VaRsJG7Fp3Tl06yEZ3iT2RckYBnDJtHcCymybkYRTVulFOf5MGZbUraWpzUOAs2oyqJv7mY7VSE70H7g7Pd+iMtj005kHnBRDNJJqClcER30TgAgDULSciuRabvBjCvycZBbPoTAJlxpgbKSQg80xXdd2rLHtHphloWIM60zGWR8FWIILOC6qC9G5GDOJiH6YHYDlbMFCXQ2Ph/O3X5xMs0K940mQ5DG45xJpjlAognpAhGemC3sTYivj9dk6nCXOOWLP+wBqQMzwGxo5aOzbo/jQ5d0qplgm2fcWzzyq5krjbe43M8lO9+yVyR9iHCl2OIEBwAY79CZvqahT8OLtYw4TCWD0mc5ZUrSZFcuThCtNRos/WNhj9y6yDMf6PKHx7FTbD2I58+LAYUxbH1A46fRlQz1HVF/Do55RyHR0XIruf5eUx/3Pa+7wt2fQprVv7QxdqSPFVJ+d+c2m9BWpNf2h86QPiXm4nRPg5pLbyOerS4ul30pM8JTd9S/aYTj1/Okuk5jkaGsxZlvx4DBcL4M3iyLlsmDCB1LQwWupalGCJd4L7jf4CgOuraQiyWEudt7tXQ35OHV2i36Fd9cgSqGCwizLerDuI+5+RvrFWKDyhU+foPqvDJmwvmya3MNSZnaED/U+uoLIN+sPnLR/tVEjUtfbxIIg/QGJmink6Eo9tNnOGlKeprhnNlu3M6JSkvf9xt2BsrxSnpPluulDRGS0KnWJjuPpcEW5U8bNHTWTs/oGblAkHe+tROJ1sCYLa1RpFNOBUsRxFV8NEI9Vfsuqp/xYO2j00S+Aa7DDw321Oy0WqzoiupE4wegAx75BH1LvvY32VtFDMP/4M8vYxpD/HcSXFEzOHLbvFkJPvJM8ygceI42jiXYZjKPiM426jXmrIwQWdtGU1IEDwU/nzJ2ENy2aCaJ+Zt1Kr1Qb4TOAYnD4hWgndNtk1szYF
- PhNvtt7d
- 5Rh1XJ577E485tZXBIUmhGH2SZx+b5sZ4RuDDoEhBSRbDz+AvU1hcmMnGhuIhyfGS/9IwDtfxuf/3gVvQUcdqIw4GbS+BVHGe8Mj6zNq/HjJGrFoqjPOqmQiUge2fFcq8qB2WO6VLoiZS5YBZUWL5QaRP4I8UxRXroKxS2B3KSUViNGIBWwZ0a41NZ5KRH6inBUWMIywIowlbGZ/1YWSooNjn5ord54QqRHvD7r1mEeNx8wdXg5KkTU0bd0aGq+ZMjcGdaJ3alnQY0AfLjCE3Hds8c3Xc23XWCcZqdLk4udvi4IKPxLNg9kF9r1vAEqRi7wAREaEm0hEtF00T0tVXFW2yH5crWbGW6QeXb/AsDNLlgfqHDlnXfJY/GgzBun4Ni3ImDw8LI7tjixvupTDWuVSUp7PK4sTPwF1c516M2ZS/hTBoLf8FTXhIvkAmyEXL56Q33aO0VytXXpTnvh01rK0YISAO4SFO/hbFsjVqsaj0TZxcEnhGjPfDBpNsySCq8dO3
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EEA0210000A
+X-Stat-Signature: s8mos68cipf8xkm6ayouy4r7mi7ue5po
+X-HE-Tag: 1779997003-384094
+X-HE-Meta: U2FsdGVkX19H7tKiFrwvfDDEqL7XTDBNy0Cyefx365LEBAxrW9tPeUSUyTExv2trsmGZ8f/ZFqnaNou85gelFFU7fjcNPlC1GBjJNl6hiyRdMhrScVgRP75SOHn0YKSPQizgJNvykuWPSo+v7sG/aZ0GGaIWyj+i9YbGJm20FDDWd/0bc3jleK03o49QnGpJXkmQWPv7BdCrIgzws+KaNTmgGvyug1CdrWbuJ+LwSzInE+2pyGgLH2m5e43jOPmyGjZ3mXfUMI58HQa9uF36VN/JkpNf/DFLMikO33DcsFUmaUqmkzCma91p0SU5W0OKWzPeDLNhXZcu0PDu37+ocAe6BStQyhRq4tTdIpQdLPlyM9+ENSHEeZrerS8hyHc6rZTGsnwHpX07AvoNabefQYYz/IbSyCfu+9u92D1E7JJOSelzBmotZgaN2G/G2BKou5L7KwIqmkud7j7dMKh7+76diGTgJdYTXn/QvCNZv2JwVMyzde+NZMxljh2Z+p9KbqwWrv0jEyUWZ0326m09IlEd3oNfmzYUi+8zcqeAZvWRmoFCy+ziqtnWTgg6qlErrdFTvJTWo1M+2vRufjSWGZAftUyDVtJXrMYhUHsu9evk4Pnsv52Wk+cjvpHzQZY+bGB97Oqopd2qv0Q/kzOtfQ77iFiCJczlPo35nBPQNs+AVE2xcjqmF647OhwT/aQiooMY/h21tM0JLIvMPACvFtDQy8T0o+HpF79y2PELxYQXJfzR6H9PyquB1a22BGWSw6WkIh7CUe0m0VCEEw6KgyARcIM+LILq+4SAT2nzr1+Jpfd1eRayhNCwbBDjh26UeE2Cu1wLF7zMFd7XuE8l8rx3O20vbHv59Dj3xtYGUw+nWL/qdOtSpOEUhFC5RAjo351G0b+Rz7+JfdJy41wdCwK1FRhY3f56/1bZIdkyVO6cLDCxV2ps5XJYJ24vgl2Yp1WGFhkat+DwQMPNgN8
+ YmnWPIWl
+ M6TY/+HeAA1A9Mkf09eVkW4YB0Eoh5mC/16cR8nxWqKpmOxl02AeGVETAX8U6LUmEssUMTuPWX2EpdzJKo7p/FPzhVYqXecQK2zn4UsLFgDr1zjenPTP2bto5ecdPafkamfciVsWOGFVmTh+NbqcBq9ATvIi7SAlOzlTmEk4nBIyEe6dVA6rdDcxxRZ27ThG1aNWhnSOXarbAMuDe2KP7Enr3Czj00yrhPBP+jku0FLc/SO00LW4L/BNPvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,39 +103,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/05/28 09:56AM, Brian Masney wrote:
-> The vm.rst file is currently not listed in the MAINTAINERS file, so
-> let's go ahead and add to the MM core subsystem so that the maintainers
-> are CCed when changes to the documentation are proposed.
+On Tue, May 26, 2026 at 01:10:55AM +0000, Jaegeuk Kim wrote:
+> Background
+> ----------
+> The primary use case is accelerating AI model loading, which demands
+> exceptionally high sequential read speeds. In our benchmarks on embedded
+> systems:
+>  - Using high-order page allocations allows the system to saturate the
+>    Universal Flash Storage (UFS) bandwidth, reaching 4 GB/s even at
+>    medium-to-low CPU frequencies.
+>  - In contrast, standard small folios cap performance at 2 GB/s.
 > 
-> Signed-off-by: Brian Masney <bmasney@redhat.com>
+> The performance doubling stems directly from reducing CPU cycle overhead during
+> memory allocation.
 
-Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+When you say "AI model loading", are you mmap()ing the file of weights,
+or are you calling read() to load the file into anonymous memory?
 
-
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c99f0650b334..d8dcc4f25ccf 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16923,6 +16923,7 @@ L:	linux-mm@kvack.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +F:	Documentation/admin-guide/sysctl/vm.rst
->  F:	include/linux/folio_batch.h
->  F:	include/linux/gfp.h
->  F:	include/linux/gfp_types.h
-> 
-> ---
-> base-commit: e7d700e14934e68f86338c5610cf2ae76798b663
-> change-id: 20260528-mm-vm-rst-maintainers-file-1baa6da1e7ef
-> 
-> Best regards,
-> -- 
-> Brian Masney <bmasney@redhat.com>
-> 
+This matters because for the first operation, you need to allocate folios
+of PMD size in order to make best use of TLB entries.  For the second
+operation, it's more important to iterate through the file quickly,
+freeing folios behind you after you access them so they're available
+for the next batch.
 
