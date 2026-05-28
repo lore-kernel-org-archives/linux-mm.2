@@ -4,82 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41B49CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:05:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23CEFCD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:09:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55C776B0005; Thu, 28 May 2026 05:05:15 -0400 (EDT)
+	id 42B2A6B0005; Thu, 28 May 2026 05:09:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50CE26B0088; Thu, 28 May 2026 05:05:15 -0400 (EDT)
+	id 3DCAC6B0088; Thu, 28 May 2026 05:09:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 471246B008A; Thu, 28 May 2026 05:05:15 -0400 (EDT)
+	id 2CB576B008A; Thu, 28 May 2026 05:09:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 38A166B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:05:15 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CAE0F140769
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:05:14 +0000 (UTC)
-X-FDA: 84816244548.26.6F67163
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 30CEE4000C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:05:13 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf04.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779959113; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 196A96B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:09:51 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3D8D1C1F1D
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:09:50 +0000 (UTC)
+X-FDA: 84816256140.02.4FFB779
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C5A364000B
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:09:48 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=db4TyZ7N;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779959388; a=rsa-sha256;
 	cv=none;
-	b=M0pCBWkv8pEb6kQvdVCgaeGj+SV9D1wqMfRoN8nl9bmskTZtxySYXR0MJ7CgOQZGA2WolV
-	RwDXThetBDtBtBUEqy+o+V1t4J6G/OqbdeTHCBVF7AnYhjOKtky9jAqRXu+6YpIUfZYXK8
-	kxWUfd+xe7NUqBxJ7WKE8JZef4UfPYc=
+	b=ImpLjbmlQrjcXW6IuQInEZyArZV6dm+ixYT7jlKtL9OkzjbKt6rBFT44qSd0rXjLx/1if/
+	1f7IHAn3Pe+FCHN/baaLUJgvKl4SX5T3d+fcAa47Bc55R/u5h/o+psMi41CTxsIQKJsekY
+	q/pJZpt3mmvTpnBTFzyK/5WRbX0FB08=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf04.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=db4TyZ7N;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779959113;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1779959388;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zbKw4fve+YTHq4Xx3/EyIgv1vFEvs4cJROllo/YH5yM=;
-	b=yw7BkVxmOE7Es8ZgtQqE8am6oZ9btKzBDAgrneyxClrieXkrLIkA3xrGT2kPo0PB5s4pG0
-	+SXZc1pvJsvFBp8EkVHl2R6Nn6jxy+mqlg0xZX3UGB5PZ23EM6szug8BlqiFfqtR5T3qgN
-	BjJAiUibv+XUGtdtFhwz/tatjerrnaA=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 454E468B05; Thu, 28 May 2026 11:05:09 +0200 (CEST)
-Date: Thu, 28 May 2026 11:05:08 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, io-uring@vger.kernel.org,
-	kasan-dev@googlegroups.com, bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: improve the kmem_cache_alloc_bulk API
-Message-ID: <20260528090508.GB8376@lst.de>
-References: <20260527070239.2252948-1-hch@lst.de> <ee817070-cc7a-40d5-92a4-2bd8e9e65fbe@kernel.org> <20260527122148.GA6838@lst.de> <482ee03a-c5b3-4873-a550-cc5743068616@kernel.org>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4oQKIQh1sPjJnNR31xrjNByxiIuwWJnJkv/ei6fL+Js=;
+	b=tZAFQwvJsLJ3wqFIjMAUv3eFa3GabKGrPI50mzNGPpi1csw7VWTbYU8QJsvgIiDRWdsBVh
+	DzMvh888cwwcPMIv31l9MkRuQYjDTmBva7ODw/CB3kqRRho1ykPCLbcV2JzD9yAoR99qDI
+	X7mNyp/VMAYM6jGhX4Jjsf4Il7PyUsc=
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bd2e8931915so2505282966b.1
+        for <linux-mm@kvack.org>; Thu, 28 May 2026 02:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779959387; x=1780564187; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4oQKIQh1sPjJnNR31xrjNByxiIuwWJnJkv/ei6fL+Js=;
+        b=db4TyZ7N6JXv8LD24RBRVTkg4xYilfBx0SM+XbwLFhQ37biOHyhfVksdI7vjlECc3j
+         MZESO2j//cMR4nvrdYXRlEtt7GJXneldFqd1FC9ExbZB9ECMZkhxTND5uJouK9tLJYrX
+         ymnC5Zk9UlXrcLPr/2wBBthIwPtXK1Jrdox/x2SfQtAHt1cvB9ynTN3nZ58xy1S8wEXi
+         6UcHR1mgvSn21jmSecGmJBf275Cbyhiw8KNdkMtd036Ey50K5Ivq7fpFxM3YdAFrNnay
+         aCry1ASBYNUMnG9rh9DOuzGJGPVEwD9zghJWi5RwFOZzg1iirchHLucpPeW5/OD7ugRm
+         TYLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779959387; x=1780564187;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4oQKIQh1sPjJnNR31xrjNByxiIuwWJnJkv/ei6fL+Js=;
+        b=qGk1lRLnJOoQRUdaogvFuYi9T6kw1q6i2zV51e7kk3Eqxk7DkkbskNAKNIrCUUs5bC
+         OD8mJQ0keK/IRuWtK7zr//OMOysr4xte6AIcVFUSjSNcizuh1nYXgGNa7bks8/gNlUSv
+         4+yWyELd37850tdkFL34B0Nf31KE2OH4mkekrYwDYkYaQnOuBvUV4EOvK5vXscIDmSx8
+         u7mPicwsgUAfa1Ql+DpA3QTTdpHJWpVuzhib6xuLd6dwc9Zd2BYU8faVHSYe2A73Q/uX
+         BzXZGdIkfGtVzKXKwuPOV0HmuVv24Pdkmzj6sIJZyl2adi+a3Hv8rB37mbbl3dn5nQx3
+         LBFA==
+X-Forwarded-Encrypted: i=1; AFNElJ9X1JX0NWCbitUyaULykvAX/h/pqReveUyYuQL6tNlvx7fDRtsD0qzBdTg/t/h6NwgOa0Oimpndyg==@kvack.org
+X-Gm-Message-State: AOJu0YxpBqNdeUf9c5B/QmCGrfXx2gRA8xxvR/80J06tCJqLliF2QxoF
+	qjJgMCWehOCOcoLgLEgxKPC3q5+4bxfN0Ef2THufll+AQRSgx3Czdacj
+X-Gm-Gg: Acq92OENn9Mjxu7Q1xzDrJd3E8YLndFlkBk2XiIcrE2NTD7cE3S8tfCbX2Likn4dOfw
+	m0KDj3u8haudvz7FdMSeio/xhammo9QUW2wfAFXplL9cGak6rcfrew35hEkakYbjTLfy41iNSpc
+	7WX4O0SFm82Lj8zcUlrDXioW2Yt4eMCZ3UYNm7VZ7pU/EUofEadtanFQUgmIkQUJSgcoE9CFOLr
+	tfTdYnfShXkjZb+2tRSgNx0TvQns8JRyEtD8vdr8hDJwk6FYaOafZbzUButkOlQMnipaQNTeHC8
+	G3jZ1S9wfS65n4JOrgmRWFRCgjtSd9rGFRjkxNOLGDJU11Rpfz9n1+N9Kh1mq04wmBMJE9sGFbI
+	O4zqcEmyBL+//dzCJ2iLiVmei2fNaUtRsa/XsE1z6aBW5E8D4Ocl2rFwqPs0dyjVDvvIUCJshJI
+	X3hoFWOE46YPUMJSeA9sKXrXbC+uGAvlr7
+X-Received: by 2002:a17:907:d09:b0:bd2:44de:d698 with SMTP id a640c23a62f3a-be87bc2a556mr45218766b.17.1779959386947;
+        Thu, 28 May 2026 02:09:46 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-be1d4678920sm357239866b.31.2026.05.28.02.09.46
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 28 May 2026 02:09:46 -0700 (PDT)
+Date: Thu, 28 May 2026 09:09:45 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Wei Yang <richard.weiyang@gmail.com>, linux-s390@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_vma_mapped_walk: Use ptep_get_lockless() for
+ lockless access
+Message-ID: <20260528090945.xjnj5hmyox7sahhg@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260528075507.1821939-1-agordeev@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <482ee03a-c5b3-4873-a550-cc5743068616@kernel.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20260528075507.1821939-1-agordeev@linux.ibm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 30CEE4000C
-X-Stat-Signature: orfjxok8pind9kdxxi8ckk5e9jap8aid
-X-HE-Tag: 1779959113-759862
-X-HE-Meta: U2FsdGVkX18mV/vgGD3B14nrdKvQ1nC0kGnJGYWsmLTfYZdCc+8Clqf3dDiJBLgdc7fkF2wDpJsFQxVj9LfvS1mpoamvHo1WSqdarYy+67PJxslYYv64R3g5PExBTWGXZNDVu7jxD0gTRzA9IlH+py/dtlF8e7+6f+jTLpRO36QsIG98o+LZ2euKTPAm1xStT6pN5V7/JBMAdKTcbt5HOUbyLNcccfU03yZGu/U65A6TtWEesdwdmFdRCtsTAjSEtbOCIPWmwF8PO5jU1lk17oBZXLUKS3rahx0lWiW1zVYGNi0WhQ/mbQUlYc8IA00Qci7gOn7iEPR6NMIzMc/ih9mRRgZH3LzrodiJPKK6iUvNxL+m7QyZTb4OEp7RjPeMXhI5gPxDx15NsIR/DB4107wVq2Ie+uePyyS37jW0/CD+KpARs02riMIKzR3x+RB0KxRpCKz4JSwzu28+VG6X4rJPhu8rQDhYFDmfXtPV4V+cvuOuR6C19WBNv8NrAA56RuHAlBcKHq66tSoMgHrDTFgcUMgqrpIL32Ek/0qHNO1xVPGZ7Tge5xmUYXwtSPoYyxgvBNgThVmUZqPy/O7RZPCd/ElvHJ2C3rqva4DSmUS792EzpyNUpRY2XHDFWPzUPOubuNWsihgIs2YzY4pD5F3fKnQdbAkCfJwQxJy3U0BSa9BqP1wYEOjnvERVqMIZXGOqZRGXvP6n2yyCABVd1EFP6sNWvnsqO3+I8g6Yxg+Yfl1pDbo4byw/XRthivFiBYi1zCEjyPGaBAXWqR8fePgti9NsM/EUmoviU2v1eNA8sgG+ieE5NejD8dgO0g5qlxfYLptdLzcREPEcGzGs8MukXHa8rsyMcCz9bAZpAyzju4a4Q8kHCxT6WwVomq/kaI/mjS/TLiblFKvfPpbbjFGn3BMLURmrs5LMfLdfjBoytuqT3/TfMKUN6JR24x/HFT1Q+Z2DGt6JsiirxY2
- f2GwXj64
- mPGlZMz2aDHAMk5CdFZTwnMNoQh/CmpdMDtUy0L1USdPnm4XWcJUu4aS59RgS8dkHw0razUYLIVC3CyFA5TckJDbRq4JHuHoRJkssTpAj50RifLZ4QB23A3S8g52JRSoWEgQku/WjJ4E0P3o=
+X-Rspamd-Queue-Id: C5A364000B
+X-Rspamd-Server: rspam03
+X-Stat-Signature: xgdcitzo6r97x3ex7mugfqs4wd7em6jm
+X-HE-Tag: 1779959388-974372
+X-HE-Meta: U2FsdGVkX181sl1AFZdxRwTWJ11UitTRI0ghpQ1UiF51MeKcL4ePyPzswIHJ4v37X6HQsh3lLzz04zE2+ngyKfoHxCkgBGzi5+OufaulON1LnHcaipJccnrJNNxuYg3svqG/PGHXmBKew1pcp8+7pf+Z2N/ZECL1m/622UDqJtrT91WH2ReY/LAuczDSxMqYVnwA0Y2V7+CWgtB6MzYHRzzPL3plPDRm3dIxyJroAewC8fw+crJjB3L3ZsAC4kHAuDjstx3+HgMOHeWtNIAsWGXqGKzi5/W3WADi0TdxCbwD+hAt93JLecwcHB0mGw96uVRlrLxzi5Q8roLBxO04amRgqDgZmnvmtYWYCYwCIBtHsHbMvrsRwGj/s7fRDgYlelRhJN5QhIJaFCpQZi+qXMHiW6Fx6MFVP2PVhagkjjnyvOyqGjrOgzX9CCI93xTPhDiFi85fabs6C9QJsgoz3hGgzPR+135Qn2fnjw6aRyAqQ2hwxy26hT3kqpEDf3RSIcLhK2IWy+VhphYN9y3Qzaz7GbVXRCWqSUU4Z7uP9HHnSNkAhy0INb+tlXlkf4lPdWuaxS6ihRPpn/zIe0W90s6BT81yRFfNfKAIRMLhAOgSgbrl8PvS2cKcNSZGU6ocz9mBMYebSOfpq0TtRQyCCPS+JX43mFObYvS0EfarNoC3zQze2Pm1HxmSwG2aOYVzP6KD6Leo56UZdph7tTVq8oMilNKecwPJbcPbZffPekYd7USucaHl22Z7aYr29WOqu9z2urUkuxnd78XMm8wUt11FbKzBlWxwiv0uI2Eal+AP5jQlVxp0PZC0CWywVlmC7fB1jRHwy/26b/u2otGEmel5UhOL1Zm9LFdOPfaxT3cGwu5vw70NaIU45FjTsRaZZyEuAEiTR3Y6uYrCIZriJFleXWEBzmoH95REk7so9clWN+iguosKO7rsb+CGkU4235ynikpha2LlpXxDDJm
+ DbKQIOjQ
+ +O/Q7ohn0fsI4LiZHHx9EdD7m2rh4KqOSRphB/AiJxKdO6TpWmAjs2A79CqMPNdHHGSTe/UhN/HtKTmIJ0SMDsih6+WvQlYhioCWhjQRmA2tkRBRmbMSprXVMpk8Vcspj2QuQh5S6wtxM+wGA0LLxrisjDyLfuP/5c0i69DG3WZ8cjB6V5F3mpl8gKZopgm2LZStn1C8XEBMPjugS7/B6CMj9TZs+Eu2Z5uKDK2GNmt+Gmx8AGRQf6ZsG6Vqe+E4GDbWSfp7KQpevSpIqhuqXwGWx2ed29LU9qGd2QP2gzvMkISPyJqS25HvOyx7+VZiS5d8z54pdDHf6Fv2nl0vvgpsf/QjOevESdXpS7iSS/Usj3V5SwTs8hJUrsuA6Fbs6zWl8y9s2Khblu70nzSBxReGyaVXRSRyeDDnkvav93HGJ+/poVBCvblHE8z4lu+5y4DCteuptLIBl7xBaM79u+XPbAaeju3fyAydNXJzlqm9UDC79hh+8FUwOi3+rQlO4AoxC6U/zfGKh72KiIUkUeL07nnEYwSQHnl8JuFL6jlcwGYI88fRBoEV/obB10JZULwXrMakssPwVLnzkR3CPkwsvIO+yJhfUee0eV2tUOjNtyplzNCZj/kFtci8YzzEJ5+eQpBf7XKm1aPuja6s2bhWlWru/b5npAzNpmYIlAFbitU/kjAxYsmQWPUFwzBtNaanJ65JArffneqbQyzZXpMlRAPX8gERgZRxwod9H9FDAUk1dDsf0VLeaX56oUl5jKlVcl4mMS7OQTyhZvniwmHJSHBxBtTnPZLStPiiqT4YGyX+LZhtN8XzH1iDpD/SDneCCxYoyFQ4LH+npsejVkKAIEmSFvP5UagdMpSAi7zQfJmlBeGLt3kKeLh98jtpPJPPb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,17 +125,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 04:07:12PM +0200, Vlastimil Babka (SUSE) wrote:
-> commit 46dea1744498 ("slab: refill sheaves from all nodes") from this January.
-> Previously it was just interrupts enabled.
+On Thu, May 28, 2026 at 09:55:07AM +0200, Alexander Gordeev wrote:
+>Switch from ptep_get() to ptep_get_lockless() accessor for
+>PTE reads when no lock is taken.
+>
+>Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+>---
+> mm/page_vma_mapped.c | 9 +++++++--
+> 1 file changed, 7 insertions(+), 2 deletions(-)
+>
+>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>index a4d52fdb3056..2ccbabfb2cc1 100644
+>--- a/mm/page_vma_mapped.c
+>+++ b/mm/page_vma_mapped.c
+>@@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+> 	if (!pvmw->pte)
+> 		return false;
 > 
-> > but by requiring separate functions so I somehow doubt that was meant.
+>-	ptent = ptep_get(pvmw->pte);
+>+	ptent = ptep_get_lockless(pvmw->pte);
 > 
-> Yeah, it's expressed by the _nolock variants. But slab propagates it internally
-> by the gfp flags, and since 46dea1744498 it affects kmem_cache_alloc_bulk().
+> 	if (pte_none(ptent)) {
+> 		return false;
+>@@ -183,6 +183,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+> 	struct mm_struct *mm = vma->vm_mm;
+> 	unsigned long end;
+> 	spinlock_t *ptl;
+>+	pte_t pteval;
+> 	pgd_t *pgd;
+> 	p4d_t *p4d;
+> 	pud_t *pud;
+>@@ -310,7 +311,11 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+> 				goto restart;
+> 			}
+> 			pvmw->pte++;
+>-		} while (pte_none(ptep_get(pvmw->pte)));
+>+			if (!pvmw->ptl)
+>+				pteval = ptep_get_lockless(pvmw->pte);
+>+			else
+>+				pteval = ptep_get(pvmw->pte);
+>+		} while (pte_none(pteval));
 
-So what are the GFP flags that affect spinning?  I can't find anything
-related to that in either Documentation/core-api/memory-allocation.rst or
-include/linux/gfp_types.h.
+Use ptep_get_lockless() when lock is not taken.
 
+LGTM, thanks
+
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+
+> 
+> 		if (!pvmw->ptl) {
+> 			spin_lock(ptl);
+>-- 
+>2.51.0
+
+-- 
+Wei Yang
+Help you, Help me
 
