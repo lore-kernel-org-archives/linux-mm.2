@@ -4,90 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A541CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:32:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8E26CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:42:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0F176B0093; Thu, 28 May 2026 10:32:19 -0400 (EDT)
+	id 002A86B008A; Thu, 28 May 2026 10:42:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBEED6B0096; Thu, 28 May 2026 10:32:19 -0400 (EDT)
+	id EF5456B0093; Thu, 28 May 2026 10:42:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD5CA6B0098; Thu, 28 May 2026 10:32:19 -0400 (EDT)
+	id DE3BE6B0096; Thu, 28 May 2026 10:42:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CD9C86B0093
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:32:19 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 791BE40856
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:32:19 +0000 (UTC)
-X-FDA: 84817068798.11.BBCF0E8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C8A2F6B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:42:04 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 733C014084C
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:42:04 +0000 (UTC)
+X-FDA: 84817093368.07.57C0A01
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E49E380010
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:32:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iUCKmi9r;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id CE43516000F
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:42:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kZT86gGL;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779979322; a=rsa-sha256;
+	cv=none;
+	b=XJjNULTkJ/awq0cXByiV8cgSwsjJZDPuQhKC/Ubzp6EyNbePYauoayfgyh2hjt9mmkl57m
+	27WwKqX9SvI+qr5eKvtVMpglCyJTOV46Zoxn+0WwXRROE1SJPKcVSypYBx6XhksU0zkvsx
+	qxlcGv6a41CiJnpllxz3zlAoSN1CAwQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kZT86gGL;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779978737;
+	s=arc-20220608; t=1779979322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L6Hoh14jwpBsk0F4PvvCTKLeaoeOEHn1zN3j2kuRmgA=;
-	b=g5Kg37mvZu64ygagOWsqqFAKJA5hINL9P0idvV+mp/qT51himP4mBHxB0UjiXcYdPBXxEX
-	WV9yXbUVZ8JPIDZ1dFKfI760mKEPTPi44mZwUkGsBFEJeTHPkACa2qhunQgGIf8XYNNeRE
-	RWoWm+Q8X6eTYKnUwAmDimEINWL5Nl4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iUCKmi9r;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779978737; a=rsa-sha256;
-	cv=none;
-	b=AjgI1MbS5Tn+lBfdzVRj4hbXJ24eAPm3fdqeIWxBdC9vt0yCHD8Kw2NlLLdqGiu+lRoA45
-	Gj/IZUa4Iw7m26gaTJWcqUU6tERvTOFstVRezdJR+GaljxejIDIlKDfz1yNTWGZT6FR2+R
-	8xm1clVy8n7wM3Tcvp86u2qVZamrlhU=
+	bh=NidMkUmESVDNlcSyssCD7iZp1v/eAgCquicEmOON/mM=;
+	b=3Ob2BZbdT0fSpVRA1BwWJMxR8p+3qHTIfhtIMzCWDnutu1aUvhvn8zo8/amum0357xY7PG
+	r67Zg1L5d0AAlct08xzRWnl/iPV4qfBck8o77Esl34/J13z0T3xhuoVnEv8u9HLEycnVzl
+	tth4lOKo5wlWS37rBPPDB8tnMixjZm0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B19660561;
-	Thu, 28 May 2026 14:32:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FFA1F000E9;
-	Thu, 28 May 2026 14:32:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 401536020A;
+	Thu, 28 May 2026 14:42:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6B61F000E9;
+	Thu, 28 May 2026 14:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779978737;
-	bh=L6Hoh14jwpBsk0F4PvvCTKLeaoeOEHn1zN3j2kuRmgA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iUCKmi9rswbLLaQKV1pfqUD1CcXPyXEPmZYpdrdV8+ZvVgg3/B522kSKrIYWGO/ZA
-	 6OvDO/iGk185dYkGrH0V0/o5vPPArjiqayglj82BZ7DTGgODLYCFDqTUZx7k7xGedF
-	 IpP3htgfk29MzCkFqcLgl+Lc/Ss+v5wziT58Rd4ZISqmRyvN0EbfXG2yor4nmipke/
-	 /rpXuLdcZkDUaP780lwsCHF/Y1GKhZaQQbCTa6NjVoNCjouRgtprcOmq2/45/dTS1R
-	 n8fqCxXdwm3q3aj21ioe+tIvYHpVeMa4YNerudehoAiO3G8lV9W8KhjM+QVjgBkxMA
-	 GMYekX4H/wpuA==
-From: SeongJae Park <sj@kernel.org>
-To: niecheng <niecheng1@uniontech.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	shuah@kernel.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel@uniontech.com
-Subject: Re: [PATCH 0/2] selftests/damon: fix and validate memcg filter memcg_path handling
-Date: Thu, 28 May 2026 07:32:03 -0700
-Message-ID: <20260528143204.153713-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <9479D47690DD7F07+20260528081039.1192194-1-niecheng1@uniontech.com>
-References: 
+	s=k20260515; t=1779979322;
+	bh=NidMkUmESVDNlcSyssCD7iZp1v/eAgCquicEmOON/mM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kZT86gGLszALBo+IVJWP75sjtXaeROUt9a9FO4bIW3ZUmT751p4s78vUy72+nH3uY
+	 as5+HZZnfsBTp4+kpTUaPyuQwKLXPM09JM57thOilmhX6A8dq0DZFD/f5HS6FZ+7nu
+	 gh/2f8SB2LA0OrM4BUL9kulFb/zsPPVIs7VsF4BOa/P9qgvIXGVYlj5xlKUi+KMzaP
+	 6rilsaQQ4gBp9OcchqbJ3nRmDYJ2Ppd34GoC1E8DSxiMQvGi41Od6STQb05NiXtzhS
+	 mPx4e0zZQsl/cRscgGJYrAd8V4HEZi8KRbWx/9RmYFfAa5kmcE5zLheCWTc+KQufs5
+	 +/R87HLTa+KUA==
+Date: Thu, 28 May 2026 17:41:55 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Carlier <devnexen@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Heechan Kang <gganji11@naver.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] userfaultfd: verify VMA state across UFFDIO_COPY
+ retry
+Message-ID: <ahhUM0A8-q0UqFv1@kernel.org>
+References: <20260527184751.4147364-1-rppt@kernel.org>
+ <20260527184751.4147364-2-rppt@kernel.org>
+ <ahhAHNSZOeW49ms2@lucifer>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ou3quejcnybkyoe1ifsfgx4zhp1j3en1
-X-Rspamd-Queue-Id: E49E380010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahhAHNSZOeW49ms2@lucifer>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779978737-341099
-X-HE-Meta: U2FsdGVkX19WTvFKx1ojar6Bn0LD5VPCG7qgFiqVPaS967wa0mKpYLUW8vB3eU1ir6Bmvkmwwrv1EjUsyGQt4GJjkJ2GOx0dD8VecWUFLbNhCuFPgOwBeNi07CjYy3GIuDFuzdY3VBLVo87pYtC9od1m3HF1GNuQn4ceizTbNqyrTWt65rVswI46oHZm09oC6BAXsznX5bTimII7Rf0972ZyxlKPkgGkSbLtVc2yy2NSidFNWwTK9v7dkeUlxT1/HxAxxR9xMnIN5a65lBO4o9cOfDD8vuWBSzDBN2NfhIOz+4Q0zcM7GrhKGxhwJVcD9tcPTy/wkw9JagikcjpDEOTAPV8mPaGJFY35g20GIQPOAgJRluXwxC3hVZzGSoRNRU4cOQOPQ+mb1+EWP/+CAoKCxGdGvdo3Sh00dOO2ps4yqvfQKOuLLy+pCUfpBGzePGkhSXfrpFYQtV2CLaWQE6VXRFc9cstdM+x858wnuDG1tRFU17fgae/ZEpjCZZpwMgKLu2lk5No7/eUtR0ia4rYdVTD7lw3lUR5QXrJdLNaN5nirNKnOfJ2vL4sBl32kFMFN81RXygkdoXCIfgEI4VVvaBDznRLzi3zgHLzpZ2d8dc5PJ7+fIiVhZVUl6+4nDWHAa/LLow7U60ASd49mcMudOXCD74SObmCaEBQnzPYdNCD0qalJIufx+BUcRBdB0kGpd1KazQ+beXgfFgTbUX/N0b+LHPdBYggNyQleoA6dSuKtM+OohoiumRqV62j+2ElOhe1jdpOvZIIQBfObNyNpiBPzKvU2+RbBlOGCrZ2b+2cWS3a/K0HxTah0C7HXQ7ls+kCk3/e8jRzWsCuDQV8BACh2M2UbCjK8JELDNB1bPHctnHfZnF7NxHjK8L2mSFeYKsyDLqNDAMqG/E+bzuvlGTchF5Zms7/Vo82O/r0KhpqE7xkUs+tB+1vDlh7ig7An5QDxQ2y7HAt2RSd
- ULRcnx3Z
- EUXt0DRp74dVe2MAim4R6ZqOKBim0g8ec/O04jTTBHJ9vKZOYBV9susC5r2feaOFK0zqTfV4eX5B6OfkyFYcEgAEj5QFShQACpZPc2COFzQbHP6s0YadrKW58u+Vy/E9zMjmi4VBX1g7sGrfoc4aJp5/OToVKuuW8UKguHm/jhIk/5u5VTLMawkL7Cfst55wQcRr/E146KMLirZ1IXhZQL4AMbwh/NHA9awrZqWuZ+dnCEKnYY1avRt8E0vHH0c3ZJzl0LtsegT0mq/ufiadqXaAJVQYLzJu/EMRyEUxHd6FFIdzwViLZ01d7viUdRiVcjbu+U/nQwW+TL46kGLpnx52J8w==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CE43516000F
+X-Stat-Signature: 96qzm1mo18b7b86ysdxm5ssgcrux3jmb
+X-HE-Tag: 1779979322-675737
+X-HE-Meta: U2FsdGVkX18xwomvEIroo3uGQ2635mcduxH8xUBjlMi1GnW3/QixIWKui+3kU9wH2w0iCO9T7ViqVelBZQYXaVOC+V14gcHcP/RKyXEpzXrMuelbZN4xJy2r9M+X5KTpM59EDST16qebp1EyIU/xLidkHmcO9dyu7fxaF2eygqx1VgUS/2iyeGiU/ryq/6SzTiQD0cCwo1ihGh0yi+AqIf3niTwzzSLf2LidQ4rcKUM9BHXhkgkB8GSX0PR0x0pF7eTbSAoCsTcogp+0Zenr+YGEYRK0a/N3ECPVSzQqH7evaPXOW+9VP/5AXxcRA18qXo5eT8G/48oCNAV3YOwKh6bV5UMNQWzLdJcoWFaonWwb4rurKocjLBpLk2rrw98o4GOUWNvDTd8f55Ve81PSz2AQc+zebCH1KDqYEyQ3x7gmyfr3umKHHUe6MTiEMKrIxTNypwfk4JJUYdw5bx2kgYI4+dbVhdWX+S1wkeyLtuLcjPX4x1ffe5DUDo0UYAd2lu9MEnqbZjq7ljvRDGVy8dqc17Lu3IruB41LM7GKqaHlnC9vCjKE8SCaYvtfniLDIPNyrszpIJ5dOchdGPZxEAMW6Mfz5XJpbhGWwNlEV0eBD8LWFZuIwnxzNWaI41DMjkRaUmTr5MufpVo/yWmUkOvNyFpM2b/EZh0FGeJm40CBGt0nj6XaizV5tU8j9qJXt2MXS+xQEsj1GaE5qkbo0B0EMrt0AWbELJ3C659f0ab66PQLdZd226Afnhwi70AOk7/jHEUq6kQIfHK1K3qBOgQUHavUrGiduOMuMl1D/RmCuOtQyfm5Oi8g3E5KOvCaWMRJfOmXFpn6pXybz4U+9FOEFqXpWYbYhPVSyJK7df8mwXlLhWpgBHnAvUtt9mr8mHh4MC7KXiq8D6RLygvAwfqWCfC7huNftj1kVI/ap8ZI7shyx8s3fX5GRMnSDr6qlGx17alHeEHvpN5p8/x
+ En0Ir+dF
+ qwMtLJ7l8LcSzR12H0StHTBU/C253CARtMLRl3fHmWSEn96Ogu8U3tez8utOtaBqrJOPSDJs69sdQ2IKCfqDA5CpaKNqcIJP3kOEHw+Rrn1QJC3GWj2VLcXLu5u3ueq7EwF3M5OG8J4BLUYsRcZFKZaLRAExEcYRRo8G64LpbJ/v1oqTww1Y5mdMeM3nfjCpPsnqOI44alWnJp3UOiF3Vu+hN+wmvo6BnQVr+g7khkRpbXMwej7Y00sE6e0JTOdi+SUWEBeBcRmL6dv1KY428GBNneNDY3EI8Oja1/dDodqgcKF8LWAAHrIgUDwJ7338UaFocJPElFGofa6lCs/DIC9D+pZ6hCOCPwguRgO41usH/kfd3wVLsGtRyTUBB8fLEctlAuUP0axacFIpeMziqj03jQK1QUEGoRA0oZ/Zb1AmAB/v/cDSmTl0TLHuKcZL4sogz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,26 +99,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Somehow the mails of this series don't have correct 'in-reply-to' field, and
-therefore not constructed as a single thread but three individual threads.
-Please check your setup for next time.
-
-On Thu, 28 May 2026 16:10:37 +0800 niecheng <niecheng1@uniontech.com> wrote:
-
-> This series fixes memcg_path handling in DamosFilter and adds memcg
-> filter validation to the DAMON sysfs selftest.
+On Thu, May 28, 2026 at 02:31:00PM +0100, Lorenzo Stoakes wrote:
+> On Wed, May 27, 2026 at 09:47:49PM +0300, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> >
+> > mfill_copy_folio_retry() drops the VMA lock for copy_from_user() and
+> > reacquires it afterwards. The destination VMA can be replaced during that
+> > window.
+> >
+> > The existing check compares vma_uffd_ops() before and after the retry, but
+> > if a shmem VMA with MAP_SHARED is replaced with a shmem VMA with
+> > MAP_PRIVATE (or vice versa) the replacement goes undetected.
+> >
+> > The change from MAP_PRIVATE to MAP_SHARED will treat the folio allocated
+> > with shmem_alloc_folio() as anonymous and this will cause BUG() when
+> > mfill_atomic_install_pte() will try to folio_add_new_anon_rmap().
+> >
+> > The change from MAP_SHARED to MAP_PRIVATE allows injection of folios into
+> > the page cache of the original VMA.
+> >
+> > There is no need to change for hugetlb because it never uses
+> > mfill_copy_folio_retry().
+> >
+> > Introduce helpers for more comprehensive comparison of VMA state:
+> > - mfill_retry_state_save() to save the relevant VMA state into a struct
+> >   mfill_retry_state (original uffd_ops, relevant VMA flags, vm_file and
+> >   pgoff) before dropping the lock
+> > - mfill_retry_state_changed() to compare the saved state with the state
+> >   of the VMA acquired after retaking the locks
+> > - mfill_retry_state_put() to release vm_file pinning.
+> >
+> > Use DEFINE_FREE() cleanup to wrap mfill_retry_state_put() to avoid
+> > complicating error handling paths in mfill_copy_folio_retry().
+> >
+> > Fixes: 292411fda25b ("mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()")
+> > Fixes: 6ab703034f14 ("userfaultfd: mfill_atomic(): remove retry logic")
 > 
-> The first patch fixes DamosFilter so memcg_path is stored as a string
-> for sysfs staging.  The second patch adds memcg filter validation by
-> checking the memcg_path sysfs readback.
+> Did we want a Cc: Stable?
 
-Nice catches and improvements, thank you!
+Andrew adds it when applying.
+ 
+> > Suggested-by: Peter Xu <peterx@redhat.com>
+> > Co-developed-by: David Carlier <devnexen@gmail.com>
+> > Signed-off-by: David Carlier <devnexen@gmail.com>
+> > Co-developed-by: Michael Bommarito <michael.bommarito@gmail.com>
+> > Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
+> OK the logic here looks good, thanks for the changes. I have one comment below
+> re: a redundant check, with that addressed feel free to add:
+> 
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> 
+> > ---
+> >  mm/userfaultfd.c | 85 +++++++++++++++++++++++++++++++++++++++++-------
+> >  1 file changed, 73 insertions(+), 12 deletions(-)
+>
+> > +static bool mfill_retry_state_changed(struct mfill_retry_state *state,
+> > +				      struct vm_area_struct *vma)
+> > +{
+> > +	vma_flags_t flags = vma_flags_and_mask(&vma->flags,
+> > +					       MFILL_RETRY_STATE_VMA_FLAGS);
+> > +
+> > +	/* Have any UFFD flags (missing, WP, minor) changed? */
+> > +	if (!vma_flags_same_pair(&state->flags, &flags))
+> > +		return true;
+> > +
+> > +	/* VMA type or effective uffd_ops changed while the lock was dropped */
+> > +	if (state->ops != vma_uffd_ops(vma))
+> > +		return true;
+> > +
+> > +	/* VMA was anonymous before; changed only if it no longer is */
+> > +	if (!state->file)
+> > +		return !vma_is_anonymous(vma);
+> > +
+> > +	/* VMA was file backed, but file, inode or offset has changed */
+> > +	if (!vma->vm_file || vma->vm_file->f_inode != state->file->f_inode ||
+> > +	    state->file != vma->vm_file || vma->vm_pgoff != state->pgoff)
+> > +		return true;
+> 
+> Doesn't state->file != vma->vm_file render the inode check redundant?
 
-I left a few comments on individual pattches, though.
+Nope, struct file is TYPESAFE_BY_RCU, it can be recycled with the same
+file * pointing to different objects.
 
-
-Thanks,
-SJ
-
-[...]
+-- 
+Sincerely yours,
+Mike.
 
