@@ -4,77 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B64CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 17:59:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C17DCD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 18:24:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AFBC6B0092; Thu, 28 May 2026 13:59:27 -0400 (EDT)
+	id 37A996B0005; Thu, 28 May 2026 14:24:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6600C6B0093; Thu, 28 May 2026 13:59:27 -0400 (EDT)
+	id 352306B008A; Thu, 28 May 2026 14:24:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 576A46B0095; Thu, 28 May 2026 13:59:27 -0400 (EDT)
+	id 2686E6B008C; Thu, 28 May 2026 14:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 47AD76B0092
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:59:27 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09C94162160
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 17:59:27 +0000 (UTC)
-X-FDA: 84817590774.23.0A748A8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 177AD6B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:24:28 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B7376140914
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 18:24:27 +0000 (UTC)
+X-FDA: 84817653774.19.46196F3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3AB8D1C000A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 17:59:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WABDmyaY;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id B5F6C1A0009
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 18:24:25 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f9vGQZ6P;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779992665; a=rsa-sha256;
+	cv=none;
+	b=kjxvc1EYZ4yaGHM9aLN9PyrGtd0caNVy/uNSZVgbbzpnwWKrYK6sFzhC7H8ChebibzTg9X
+	ity6lFHLVLk462NgxH/NRpk+yZt60x0Tm3xi5w3/NBzmFjGstUEypy1KAvvlg0JmpJtafj
+	F2rTBJwqy7v3KGLBvRibgANZkosSpHU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f9vGQZ6P;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779991165;
+	s=arc-20220608; t=1779992665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lkmpRH9UNpSvrtaG0hoUp63QJw6OttsyKLxOKt4UekE=;
-	b=CEPDb+s7UkYKUMqwHKmir3534U4ejk3eBxVNCNDGqCD3uk9tDL2yJeu5oPq3k7BrD3VaOo
-	g6PKaqYskHThW1l3xZ0b7kz0SkOObYz78arBT+CWtoE9d822oTJTlJRcaNFFSmMxrvHyRR
-	jTewIz+bbFzpdhhq0/hx3WUClkyCa3M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779991165; a=rsa-sha256;
-	cv=none;
-	b=VDWxS46RpAvSP0AFappIXqf8ZFmlsMMtdIiwp0W06e6nzvYxXUNaaXEjKJ9UwMJXfzEH5R
-	XIPpX7FPtOwmX3pYPmNRBskgzfc+QYCyKUHf8G3IepMVw29Yi0IdmM0HeSuu4o9qA9lYSr
-	uYlfzlZPPrYxovqhWJe74GyLQxRA2Jw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WABDmyaY;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=gB4nu31yDCvzFZgkpHNlp8skj58NUE9KQQaYhdOVdhw=;
+	b=e6T7v09teuxwcxr9HBd05krAQAmMu/XOLFvZFvwv0PSaic2SOVQ/RHzUieu1MjSAbuqYgN
+	H7rwvnFTwPuKaA2Ev1N5QYviZH1+AKGLZz8DbxhQWi8BuvVwCOJJIacxROzoogO8X67pQX
+	HWaF+YkDmiI8DUJL+qufGiIImoiyYRk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B70243961;
-	Thu, 28 May 2026 17:59:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AB31F000E9;
-	Thu, 28 May 2026 17:59:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C0B3F418A1;
+	Thu, 28 May 2026 18:24:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990851F000E9;
+	Thu, 28 May 2026 18:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779991163;
-	bh=lkmpRH9UNpSvrtaG0hoUp63QJw6OttsyKLxOKt4UekE=;
+	s=k20260515; t=1779992664;
+	bh=gB4nu31yDCvzFZgkpHNlp8skj58NUE9KQQaYhdOVdhw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WABDmyaY4CmqSIRKitMqyYR4m7+sNSlgG7XnwB2ueRz+whknEeVOr93I+7N+OoMuI
-	 U0PvZATRvkrQNcdnXDsg6xaOq1Q4n1XppsNXR4+xUrgDmuUhdvZCpweNUHBe9X25WR
-	 mg8rTlHac60MKJPEQWNREo5vPGfap/q+8HnyV3+XzErx0kNbjJN3o9En6K7Hx4uZ6k
-	 gcFU+JJAv+gCFdZxftU53M2g+tCwIYQ3/wOr8f+nPIb2Ug6XFcfFgNIOd+2UKqFfLW
-	 zLazeHbFSrOWtZiZ3PBvOyGd4esgjgC6bJTlTKWRyHf1EqBkiyI9oGzoYLUkFonOOD
-	 KMTsXLHvz9jkg==
-Message-ID: <61a25965-cb89-4a6a-bd69-16a467ce84f2@kernel.org>
-Date: Thu, 28 May 2026 19:59:20 +0200
+	b=f9vGQZ6Pe9ocW5MvHzpFT+VZrU4hVYBEl4eVp14GRFda4FPq5o9xIWklJ/rrpVXFI
+	 6//KYPeBd2BxM8zQtEqbEOlOD/7uyCU+CEOQpwD7IrjmzZaLnyD+S3Pd5Y95UGcfvj
+	 H09Qqv1Pw1xOvphodYgKrD0/jteonfbvID/pzIs5BTpjQQuitkEEoH0aZbs2mMs/Iy
+	 W9fsgtRAaDM8+EDyJ1wrc2hhP673KYLf70SelWLEBeZ1SSbt3ahk8YEJsZcOBtdnio
+	 j/1wsfbwbqYcqNo5jkQgVRukoLzwrFFiNg2/fGMGunnyviyRC7HG75XZO5uJiTn7Ws
+	 Wp+AuAF3Wl8IA==
+Message-ID: <0a805d5f-079a-4eaa-ae37-6b7355a96626@kernel.org>
+Date: Thu, 28 May 2026 20:24:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm/slub: use empty sheaf helpers for oversized sheaves
+Subject: Re: [PATCH] mm/compaction: respect cpusets when checking retry
+ suitability
 Content-Language: en-US
-To: hu.shengming@zte.com.cn, harry@kernel.org, akpm@linux-foundation.org
-Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- zhang.run@zte.com.cn, cai.qu@zte.com.cn
-References: <20260528193537623nAo-xYBNYBysGKSBjREuO@zte.com.cn>
+To: fujunjie <fujunjie1@qq.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org, Zhongkun He <hezhongkun.hzk@bytedance.com>
+Cc: Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org
+References: <tencent_F59F2BA2CC5779308E10DF54593C736D3E0A@qq.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -115,17 +117,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260528193537623nAo-xYBNYBysGKSBjREuO@zte.com.cn>
+In-Reply-To: <tencent_F59F2BA2CC5779308E10DF54593C736D3E0A@qq.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3AB8D1C000A
-X-Stat-Signature: gg6o5a57mmh937aj7yka4oqkp6rr6c5s
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779991165-655150
-X-HE-Meta: U2FsdGVkX19eRJULeBRAlGq/mUcTC+8UGXdbLRwQd/4ZOyXBee+oLe7+oo129d9f25HDX0KxFgW/Vcf6jcD99NLmfMJ8oQpditM4aI4KjjBDyQm4FxRmS00eXut+3k4k88gNrtrZIkuAi64pE1tRjC3+1HXm0HUr5vERK9V48NIQAcpLO4PSPpFHcpl8W+UgONjNgODlF7Kt+XhqONygdhiFg3FSeA4YU83ZsUiwjNDQwE1hcFwgPDACaOl3LzGQpSvFAG5PkewSYzCwBL5iq1o8++gS74oNHp5NtL6kVTLfaV8i/rjAb2Ki+4WHw8guvqh5k3A7lpP8oLdH/v4S0T3dQA14pHjxInUqa1ugZZWr7tB/Uuu406jRAfsWucb5iFgN2s5X+15E7QLJkkOn15EWfTEzYKLQtavOJ5WwXctseHdi8RiUphMOEjwcsJzFbwjxJrvH7TZkt4cXnrbOoBWsYFYLNptbIpWHPkn0MR0JhSmEDalvXw1lcWwM65uuAOorPsG0TbXV4pl76cYaazPb8n3nSi/iSnx4tDONXgICRNOTT5XY8bd91JmspKuuWpvcfwESBW9E0A/mw/r2M4p/lbNV4en1ODS4ZrXDODoza/41KkJCJB+c+zRanDuXYFzfXk7USCCUbtN1+GqBQLw6BAKcSDuztHbxkYcfX2qQKSAwiTeXafObp7VfZ5pvLeQTbv7eUsHsKNVojiH4t75dJGXmv+4lO3tVmGVJHlAWwwmNUMP2x0Iz+79A1vrPcCqvrF4ugTNyXQmRjIQjGOAOUQJUCGauwHTbNjv49Sg53XIsws/YGdgsTX7zHDj7I7qdBMGl+x/8SftIXudqzZVwoWmBj3dA3soLSHQQX7E1Nbt9PWeu23IM7oW1KXxEvnZUBhDyV3D5Kix8Tx4LyObwZB1N7uqXDaSxCQkGs5aRunzP1rJXrYLZc9UWbxNK+HYMHnICaKx+Ez0tJrx
- 1TpA5AGF
- iErQy9vjWo3gN8pEXlMvMsUlvaabmjhrd5ArrUKfKPqf+WynqpS9Ib+B1LPJUF5Vyywz76/qg2iMIEdMhTvahEzmGuwAGjQFmX7H/h5FDxriEvYkG1Exk+Hy8KCRzZ0GyWiDV9rgaMYJyWaFMxr8ov8fSAmg3c2fXgTXp3yXazz5KjH8gT8Z8JVvHrT0vx2jQGomiToCM7LgUpejmap7JKYQm5o/AJXH2oin0heDuPtZeJ9B5bVsus3AXU868pleExfm92T6lDJBp0MYNuDu4gUDx6NeqEpM/HcoGRi2XCLdjf3vKA0MCqWdblTrPB1QFdPXY
+X-Rspamd-Queue-Id: B5F6C1A0009
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 5e7mowwperi4oh8xjsadhxsfqxnotj3k
+X-HE-Tag: 1779992665-393796
+X-HE-Meta: U2FsdGVkX1//jUefcNjDnZ5WRdUAQGa6skjD/vwI7lYulTEzOqfONv2a6OdBsKvm46y4caF4FsUWonZeIg/EkE4ZnUzKNGJph6qUVVa4iNr5OO/YJ6/4Xmcc5JeKRBTUPH7Y+6sNUTSrIwNJIbMTzAtKRQ8sIal25qkk+4HFQTFX4PSFo7b9oTD0fWAUCTo592jOfFCqiFCwo2y1+F4fkwD8ER8qJQMddf0tpNR1ZrWle25jhwxoye2xnIbu5n1DN4KzKcIANO534Cr0dR/OiuaMKqIeQVuKMYZ9efz2gA0jcGXwciR3QeVN+ZfGYNHSWBGrcBkgEgRp9D2jwYN0VkUt1DFWHwbaYUteVw89fY2HuBlgIda5U2lwJ21JQGCjUANQ9/ZdxSxdZ8vrGH4s+DXSfr6BlmlXjldKNuybd3mSfqXVp/XUriJojOFD105JoE4ADkJciQxIeZqWn3suWQVsffDCCvX2seWqcAVF00qZuMssy1NeuOPF1IPFp+By7cAMs8lxlBUP6QGi1MDO4oDiU6++lzK1FaJze+8Lhm8Ju5xS9rL6F7bs2nDV411UiOg39Ig/Z0Dvds5bjgqvO5sG5OVLlcu8cZcilhadsJgCGxOlv56V57xw5Fw361E+Hb02ZjmsP9osPfJc/g8N//UxNxb+zPBOqwPUPJmy4z0+fg6A6uAbFif9vrD5hFERU7IC4TIOXlWMkixyaAK2ppeeGH3WWMjDw2SFx4ByGDPRv2891ILCKXr0LT0EIWU3LNTWyo2dBIjqznxKB7JGAbNd1Kqr3ayHcKvL3J28JJCsAr/gtdGHGDYZNSulKX1ricUJXNZxC/sMv8N6eSZteu3rnxzIXloRlB/T6Qfwz9+Icb4AN/736p2cLTR77bL4ChnopcLTFJpg48CfAGXwuhVHl6VDweq19jIaA8I+CoH7JJ/nYuJ8+vN6tZmT9DAv7FpCAWdF5WlcqxERmqy
+ 4fWBr+8Y
+ DAkBf4gRwewR7YyIqeh1zMmzD0bSZukXN66TemnZSoJwY+usehLhWFg85aVanmR360wSxkC83vXQJMS3C0O5a++9a/3E3cRG5usycGqdZdx2+9pORcsCDfLx1xAsQau2/kk8o+cwxeBjk/IYiHwkYge7w/l49JEAUyNQ56Bx5E6K4t8Papxl1F0EToK4qcDNvOjhmH1kLDpmQ8qQI8GOP6Gr4zN8ndmmORnSJTc5xORu2hCnkzr27+eha7nIPrG4H91pV5TSujiQCKBLIS2dXrYNbLGAGKo65Dw12VYEIW8m2BpeQJTYh2x3zXk03fMDmXW1DYXt6v6vaTCMLFR5LOz9pZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,36 +135,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/28/26 13:35, hu.shengming@zte.com.cn wrote:
-> From: Shengming Hu <hu.shengming@zte.com.cn>
+On 5/26/26 14:22, fujunjie wrote:
+> should_compact_retry() handles COMPACT_SKIPPED by asking
+> compaction_zonelist_suitable() whether reclaim can make a later
+> compaction attempt worthwhile. That answer is used for the current
+> allocation, so it should follow the same zone eligibility rules as the
+> allocation itself.
 > 
-> Oversized prefilled sheaves are allocated separately because their
-> capacity can be larger than the cache's regular sheaf capacity. After
-> they are flushed, however, they are empty sheaves as well, and should be
-> released through the same empty-sheaf helper.
+> When cpusets are enabled, allocator slowpath decisions are marked with
+> ALLOC_CPUSET. The allocation path, direct compaction and reclaim retry
+> all skip zones rejected by __cpuset_zone_allowed().
 > 
-> Allocate oversized prefilled sheaves with __alloc_empty_sheaf() and free
-> them with free_empty_sheaf() after a failed prefill or after they are
-> returned and flushed. This keeps the oversized and pfmemalloc return paths
-> consistent, including the SLAB_KMALLOC-specific __GFP_NO_OBJ_EXT and
-> mark_obj_codetag_empty() handling.
+> compaction_zonelist_suitable() does not apply that filter. It only walks
+> ac->zonelist/ac->nodemask, so it can return true because a zone that is
+> not usable for the current allocation would pass __compaction_suitable().
 > 
-> Keep the caller-GFP filtering in alloc_empty_sheaf() instead of
-> __alloc_empty_sheaf(). In particular, do not clear OBJCGS_CLEAR_MASK in
-> the raw helper, so the oversized prefill path does not unexpectedly drop
-> caller-provided flags such as __GFP_NOFAIL. The SLAB_KMALLOC-specific
-> addition of __GFP_NO_OBJ_EXT remains in __alloc_empty_sheaf(), matching
-> the free_empty_sheaf() assumption.
+> That does not let the allocation use the disallowed zone. Later
+> allocation and direct compaction paths still apply cpuset filtering.
+> However, it can make should_compact_retry() retry based on memory that
+> this allocation cannot use.
 > 
-> Since oversized sheaves are now allocated and freed through the empty
-> sheaf helpers, SHEAF_ALLOC and SHEAF_FREE also account for oversized
-> sheaves. Update the stat comments accordingly.
-> 
-> Keep the capacity initialization in the oversized prefill path, since
-> capacity is currently only used for prefilled sheaves
-> 
-> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> Pass gfp_mask down and apply the same ALLOC_CPUSET check in
+> compaction_zonelist_suitable(). This keeps the retry decision aligned
+> with the zones that the allocation is allowed to use.
 
-Thanks! Applied to slab/for-next
+Nice find.
+
+> A temporary debugfs probe was also used to call the old and new
+> compaction_zonelist_suitable() predicates in the same two-node NUMA guest.
+> The task was restricted to mems=0 while ac->nodemask covered nodes 0-1.
+> After putting pressure on node0, node0 failed __compaction_suitable() for
+> order-10 and node1 passed it, but node1 was rejected by
+> __cpuset_zone_allowed(). In that state the old predicate returned true and
+> the patched predicate returned false.
+
+Nice that you verified it like this.
+
+> Signed-off-by: fujunjie <fujunjie1@qq.com>
+
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+Also probably this? That commit introduced the other cpuset checks for
+direct compaction.
+
+Fixes: 435b3894e742 ("mm:page_alloc: fix the NULL ac->nodemask in
+__alloc_pages_slowpath()")
+
+(not stable material though)
+
+Thanks!
+
+> ---
+>  include/linux/compaction.h |  2 +-
+>  mm/compaction.c            |  6 +++++-
+>  mm/page_alloc.c            | 15 +++++++++------
+>  3 files changed, 15 insertions(+), 8 deletions(-)
+> 
+> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+> index 173d9c07a895..c829c48d1c71 100644
+> --- a/include/linux/compaction.h
+> +++ b/include/linux/compaction.h
+> @@ -101,7 +101,7 @@ extern void compaction_defer_reset(struct zone *zone, int order,
+>  				bool alloc_success);
+>  
+>  bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
+> -					int alloc_flags);
+> +					int alloc_flags, gfp_t gfp_mask);
+>  
+>  extern void __meminit kcompactd_run(int nid);
+>  extern void __meminit kcompactd_stop(int nid);
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index 3648ce22c807..2295b2487dfc 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -2447,7 +2447,7 @@ bool compaction_suitable(struct zone *zone, int order, unsigned long watermark,
+>  
+>  /* Used by direct reclaimers */
+>  bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
+> -		int alloc_flags)
+> +		int alloc_flags, gfp_t gfp_mask)
+>  {
+>  	struct zone *zone;
+>  	struct zoneref *z;
+> @@ -2460,6 +2460,10 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
+>  				ac->highest_zoneidx, ac->nodemask) {
+>  		unsigned long available;
+>  
+> +		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
+> +		    !__cpuset_zone_allowed(zone, gfp_mask))
+> +			continue;
+> +
+>  		/*
+>  		 * Do not consider all the reclaimable memory because we do not
+>  		 * want to trash just for a single high order allocation which
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index ddeb79fa12db..93d56ba339fb 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4199,7 +4199,8 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+>  }
+>  
+>  static inline bool
+> -should_compact_retry(struct alloc_context *ac, int order, int alloc_flags,
+> +should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+> +		     int alloc_flags,
+>  		     enum compact_result compact_result,
+>  		     enum compact_priority *compact_priority,
+>  		     int *compaction_retries)
+> @@ -4221,7 +4222,8 @@ should_compact_retry(struct alloc_context *ac, int order, int alloc_flags,
+>  	 * migration targets. Continue if reclaim can help.
+>  	 */
+>  	if (compact_result == COMPACT_SKIPPED) {
+> -		ret = compaction_zonelist_suitable(ac, order, alloc_flags);
+> +		ret = compaction_zonelist_suitable(ac, order, alloc_flags,
+> +						   gfp_mask);
+>  		goto out;
+>  	}
+>  
+> @@ -4274,7 +4276,8 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+>  }
+>  
+>  static inline bool
+> -should_compact_retry(struct alloc_context *ac, int order, int alloc_flags,
+> +should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+> +		     int alloc_flags,
+>  		     enum compact_result compact_result,
+>  		     enum compact_priority *compact_priority,
+>  		     int *compaction_retries)
+> @@ -4892,9 +4895,9 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	 * of free memory (see __compaction_suitable)
+>  	 */
+>  	if (did_some_progress > 0 && can_compact &&
+> -			should_compact_retry(ac, order, alloc_flags,
+> -				compact_result, &compact_priority,
+> -				&compaction_retries))
+> +	    should_compact_retry(gfp_mask, ac, order, alloc_flags,
+> +				 compact_result, &compact_priority,
+> +				 &compaction_retries))
+>  		goto retry;
+>  
+>  	/* Reclaim/compaction failed to prevent the fallback */
+> 
+> base-commit: e8c2f9fdadee7cbc75134dc463c1e0d856d6e5c7
 
 
