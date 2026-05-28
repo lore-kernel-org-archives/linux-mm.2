@@ -4,100 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0B51CD4F54
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 11:54:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0458CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 12:39:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFED56B0005; Thu, 28 May 2026 07:54:43 -0400 (EDT)
+	id 95C2B6B0005; Thu, 28 May 2026 08:39:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB0336B0088; Thu, 28 May 2026 07:54:43 -0400 (EDT)
+	id 8E61D6B0088; Thu, 28 May 2026 08:39:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC5C36B008A; Thu, 28 May 2026 07:54:43 -0400 (EDT)
+	id 7D5DC6B008A; Thu, 28 May 2026 08:39:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C8676B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:54:43 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 457AF1A080C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:54:43 +0000 (UTC)
-X-FDA: 84816671646.03.E10F695
+	by kanga.kvack.org (Postfix) with ESMTP id 6891E6B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:39:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0A8841A07C7
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:39:30 +0000 (UTC)
+X-FDA: 84816784500.27.6713BFC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AFC1314000A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:54:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TqPvOn1B;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 755A420007
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:39:28 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TdX3A6Wh;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779969281;
+	s=arc-20220608; t=1779971968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EWDXgypc/7XooyW97XM8K/TWQykaNtrC+ELRkmzs9jk=;
-	b=OiOVDANOUvDpzItusWVgXI1Nx50tEFnBVO0x1EwsP6bq+e/51aAEIVJdEEJsrycQzEthQA
-	KlGaZrF00mdRNNz6j3Hvfy+YnIaqYSu/gjJWtA2Zew+iH702G9eoy7cqXgSrLcqOVCOxYg
-	Su7eKGtsDArx8BseGfXbUWCqTc0JlJ8=
+	bh=LjOzL2NyUyCTma94sZKS4fSd2UcLIZWOihtjlrGif9M=;
+	b=0VrKsovXaoW88k0kBnD7nYNea2hQnDKz5hP9wR8/fZdFLjWmqUn9+2K/7gvVAt1v2nvzq4
+	4tNdhWPtjotwQ25r5gPXd81/apKb5buGDK/Ud7dfuY7RbEnRL6jBUmwLQABeE8oZ4+RXo2
+	dCyJbobrxZH3wo6kXVLE0yAigsMqDdU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TqPvOn1B;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TdX3A6Wh;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779969281; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779971968; a=rsa-sha256;
 	cv=none;
-	b=C/QS3dT2oimtqma1wdYTpEeLOsuxLCVRQkMLqL7bvxX5UT7/Flz0bs/HnNFKLRz3rZM6Ay
-	BServZuHGcTDqhcSHeQH5DNtnL0vYd2FnpnNU+MjNuAjXeBU4mjAwU17eInGF4lmjxvBla
-	BvlFx1Oq4xKYJC5kmxRT/jjLAZymbZs=
+	b=8TwWxUE4J/7p5EdfNZlh8Dqe26Ax3qyLZzKptU0Wa7u8mz7bOWJKJNhQvKmNWTlUHw4G6O
+	ZcO75yZTxZoaQHNhqZ3PCMJFBNMelIh5Znu7mkgsPJwqSUk2icmH6wyDeYGZQl/8lEDfu9
+	8NfDxwB+VsvKOiOhWU+pRGHmE5gIBlg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F5F2601DD;
-	Thu, 28 May 2026 11:54:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9981F000E9;
-	Thu, 28 May 2026 11:54:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D5D8D6054D;
+	Thu, 28 May 2026 12:39:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1981F000E9;
+	Thu, 28 May 2026 12:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779969280;
-	bh=EWDXgypc/7XooyW97XM8K/TWQykaNtrC+ELRkmzs9jk=;
+	s=k20260515; t=1779971967;
+	bh=LjOzL2NyUyCTma94sZKS4fSd2UcLIZWOihtjlrGif9M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TqPvOn1BLY5HNy2XQTNp3rfgM5ZSnWb9w1Q0sDdSCzMEBGniOisYaEaj4aSaabiQr
-	 3fGzjMMyHa5yCJBM2853gj6h8T0N96bHhz1EAA5vdbQxyl843T6c6tpX7fHy7kHkE4
-	 TSGhcKc+p44nhjR7V9dL4x0b7fHT2H5KhF/avwXCxwdOORgdrNGwavUotFkbxmk4f9
-	 q6Cq6bhzJ/4ALknDd8Dun5mIJgnpR4EpsPrG2WLPRRosJ42w6jhR4cn4b5HSdGWmGo
-	 +/575jOvQ5LEQneF/1h+zG077ZMa+AARJQc1HyC3YekgpottsIWdsviDnSgeaVEiiJ
-	 3tjInNdJYnPQA==
-Date: Thu, 28 May 2026 13:54:30 +0200
+	b=TdX3A6WhsV2nqy6+cmmWG145Nlh49u8GVavjcX97KRruYVRyz/sGeGpKyv9mPrkSs
+	 Cxe1Rjip23w422M4eSOW6H70usxBTO+ieZzkGKi7P0PG4PBRR4cgQV8cTfgypLhbpF
+	 BM57rT5leqcqmysGGsLIUlfyEuDNh2ngYqxbiSTKKWnDOtOz5BkqlffrhOjWow/75Y
+	 NQ28Q+/UQReKL7O6PWOxTBcJVBszmh5e+45Z7BJGTSDyAglZC0gCtijikOwx63voFo
+	 A2khGbG0CIOWxww3k28B4ahItobPCUnsScQP7aeohU5zh+P9EHxV0HBjeDa6hQXXd4
+	 bF5ivNkVQEDHg==
+Date: Thu, 28 May 2026 14:39:22 +0200
 From: Christian Brauner <brauner@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
-	Viacheslav Dubeyko <slava@dubeyko.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Chuck Lever <chuck.lever@oracle.com>, 
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Dave Kleikamp <shaggy@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Breno Leitao <leitao@debian.org>, Kees Cook <kees@kernel.org>, 
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, linux-nilfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	jfs-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 14/17] fs/namespace: use __getname() to allocate mntpath
- buffer
-Message-ID: <20260528-geregelt-unsozial-apathisch-c8b484e0932e@brauner>
-References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
- <20260523-b4-fs-v1-14-275e36a83f0e@kernel.org>
- <lwnrjpmzbv6swapmnmb5jki3xxxzqsxuks5vykniwhakvhqh7i@rhff3qrwfnoj>
- <ahVisehwQGXEoM0g@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Kiryl Shutsemau <kirill@shutemov.name>, Peter Xu <peterx@redhat.com>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/2] userfaultfd: merge fs/userfaultfd.c into
+ mm/userfaultfd.c
+Message-ID: <20260528-raumakustik-absitzen-verzweifeln-885bd6a70835@brauner>
+References: <20260523173759.3964908-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ahVisehwQGXEoM0g@kernel.org>
-X-Stat-Signature: sor7qoqspn7eo98ib615u1ozoj5oucj1
-X-Rspamd-Queue-Id: AFC1314000A
+In-Reply-To: <20260523173759.3964908-1-rppt@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779969281-708098
-X-HE-Meta: U2FsdGVkX18+4CttkU5/0DFCJ2ILUlp9qzbbNXxgCFfDeZqlqHgPpIor0HmmmgxJ6tM1hmNX/bmSTcdVXvLD8q6z59IfuHY3JmAVSeKn3R42BsI7M8vKAdfnM3kon8QwfIlmRts77uaKcBB8yOWNTZss7jz/AksjlcwuTnaES6CHEHyrfkTNuIos/EfwaTXUsoWPvqDNtqwH7PNqoMgVO7yBMWrBeufnMZ/HJSoBR9i2P20Zid+gSDnQUanc9daWXLMJXK0eOl++b00SX3QdDbjjHewXvRsP++jtpFsdezcmq01osZBcPxL6w3dQoE8qAQPHDP7Au1MThtai3BGGOPkAQPb2FbYTBXeXvZ7DBzK+UCaf6QSICcajNzktGh8YBINjlBc5a1GzyWvJLfQrecAXqFartB/HydBu/UEGEYjgf7lMzGheBGTPzmgrSpGdsi0HPjlBoKSok8uP462zV9mWDDmEZy20dvGZ0hdfikX/CwnMc2Cg7e5IVSO1xNqosYIYZITM9k1BS3NOEdUuK7f8QGUWEJNiT4ASuOUEOuyk5y1yzufgB7WNOOPnRIrTwME/XbEeFSPWdDc/WvUEayhhL+PJ2qlFV811G+aqcBfXdBZSYbGJLKZ+Ypx97AldTA1rWNyt2DwgeUvfgZoIzcN4zziZoBgqCvY2RIRZ54hLxEhwnDOa0jpwMJCOpna4mCdYNkkfb9fBUQpI+8tjhGzxa3b0SKrHUtTxTeJ0y56VSLnhx9RWP4C6zmfhNO2WybPRqT3d6ePjPYVka52tiCvGSb3I1usA3fn5ZYYi1QZd+Td08Vtj2Eh21PfjzuQ/GxGvUxzg3hWSY4r3erxD5x8/Gio5lykwj2k4AbwiQlyxkHLs/r/IqIzmEHbLFcp6ZQUyqgZ1T/V4GyyQHCJzDQxXMpFlu9CzC2r0Tn41xgYFcl+Rgm5Y2HGYd4zQW2aRLl5CSf65SJEJUn4E33x
- qixCKdsr
- 9Yb5B2ifSLy8HHSLAu1KpXt/Wo7Nug3ovBrbimPTMU6hok2ZgJFttRHGvm8fwDyfkqmXajFfOw5MfFUibUe7B09yDK4anmt01sqEsdaRZCKqiQJl1IGQuN+im/y6qr/w1z7jRI+gzl9dYdNKqvOdtzuviJ50URabDIg1SMwrBaBxPCN0jZqf71mVIPc5sp2CHAX0r9xoRjht73vcTPUTb0+XSZJEHbQfAhhDvStWG2Hl9BPKS8ijNb8vOv13bBqgebCLHY2rTR374trqAqK3skfpT8l1hjtzT5SZ/+InRYdUsomVtG93zABU/8I9Qj2gY+5pDNuo4lP4Ey6hEeVIY67vnCo5EjyJx5QZarut7ZeJY1dhrExHQx8A+UxtGmRVy112Wloh24buYO/eb58KSuW6SxLonRvIGzn2fKSErR5x0qXQkzehXyQq886XQxtBg6MYe
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 755A420007
+X-Stat-Signature: arct434s69494f577e783h1w6b1y7h9c
+X-HE-Tag: 1779971968-351593
+X-HE-Meta: U2FsdGVkX1/zOmDJrFtaxz4i1lRL/idA5H5qerc6OTRhs2zf3BDXzwDHPBDEk0B0Cw4dZ4aVTVi+TyelqW273x8pbGIbF/8ACg6nLy+ItsnNLhti4kwwNGbb5qwrIdtY8zaWTdWAOenG1whW/OMyw/MqPT1t4Y6G+pzXVFKfpLqH/H6Siw7hOlK2inF9gUia5iVWVMBlYrFBKLCzKLwcu4sy70jbfeqlIkdXqmGUVJli0cRLj5cWkOz2dKi+lCwo52AoJKA/dLxW0AckO5K/Ay7GR1790o6aoYlOYxD7jj12JWwPhBVSy/x7v03YhhBiPt8tbDO2+w72pKs7ZC1IvAU38pPycjahOblK1xVvrqFICSYS7rVNWpDueTrEGT4iPxgbRDzk/i06JC0kNZvSpGYx4yRf2r4QWUG9xYCnwmjHgPqsWAIQaEg1RlNRZ+U0UwjV6QXtJhJJCnF5NW6IpiKseWp1VO08kz25JSnWYx2rP9geymu68a1WzpYBfuw3pmP+A9Cc+/GzaqRTv2QM5pb0n3LPBJjKJUkENvdqHHHX4AEKLVwumaUqBGaYhgvlVTneLmxpd6CJpsUUSbEFwlSpBAlGVp0waJRnkdFDhenuOgHvzXiqbX0637QIJjpllRq/NtgrDViyqudSb+vMOcc+ljEelCnZf3+6pBUVuehRuYk2vMVkvsGYFtAiByN2xiWsX++6lZy2r/GxrVOGVPTEolE9QdjGSgXqoV8bhexRaY2w8gZuV5F/mZJ6uHM9FBpdy33Udy+f7t+ad7q2OIgS/H3kZxJE69sJeeHzSDCUfOxV9YcNwL2WjMIVmlTkqNR8B21qzpWi5m6zcVDdocAU4Ra2rYcaZ9wtS12UmcblziUQC9u0XSZ0k+lK782nAix2zAmauSbmP89+XvqE/8oKe9wUz5R0UKqFKq8D9DawNjGljrR+hcsb7HdyTXWNbqVkl15uKc9BVgGhwF6
+ GLdvqN54
+ 8ffx4FFsnUU72se3oS7uYz5hY2JAvQTaiZHhF+OIMgcV6xmGbRzLA/cn+mDuovPwwuwnjr3hWzlcTSAM90tE9Pa1pUDuYeeRwL3H7DTIzFzaQBI79ZTWvnlniJn2o2KIxJZqafKxWTc7SbBjG9sWvzeMQOXt4Dq7/tfxISSYbEFxKZ0tKIVBR7O+aaYm/OGxMOz4OkgPpJfOCKemoJ+gI6i/OYhYRdYssIsDfcLcJm93s0U/gb2u4xD+wvkfDmZlNsdO4z9zNiVMG7yndmwrGIKJ/OdDuvSYw/Q9aSNnVxHdyrZB3vWC1uypNtUCEJ6Hz/vN8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,48 +93,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 12:06:57PM +0300, Mike Rapoport wrote:
-> On Mon, May 25, 2026 at 06:22:13PM +0200, Jan Kara wrote:
-> > On Sat 23-05-26 20:54:26, Mike Rapoport (Microsoft) wrote:
-> > > mnt_warn_timestamp_expiry() allocates memory for a path with
-> > > __get_free_page() although there is a dedicated helper for allocation of
-> > > file paths: __getname().
-> > > 
-> > > Replace __get_free_page() for allocation of a path buffer with __getname().
-> > > 
-> > > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > > ---
-> > >  fs/namespace.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/fs/namespace.c b/fs/namespace.c
-> > > index fe919abd2f01..2ed9cd846a81 100644
-> > > --- a/fs/namespace.c
-> > > +++ b/fs/namespace.c
-> > > @@ -3303,7 +3303,7 @@ static void mnt_warn_timestamp_expiry(const struct path *mountpoint,
-> > >  	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
-> > >  		char *buf, *mntpath;
-> > >  
-> > > -		buf = (char *)__get_free_page(GFP_KERNEL);
-> > > +		buf = __getname();
-> > 
-> > Fair but d_path() below should then get PATH_MAX and not PAGE_SIZE.
+On Sat, May 23, 2026 at 08:37:57PM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Ack.
->  
-> > >  		if (buf)
-> > >  			mntpath = d_path(mountpoint, buf, PAGE_SIZE);
-> > >  		else
-> > > @@ -3319,7 +3319,7 @@ static void mnt_warn_timestamp_expiry(const struct path *mountpoint,
-> > >  
-> > >  		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
-> > >  		if (buf)
-> > > -			free_page((unsigned long)buf);
-> > > +			__putname(buf);
-> > 
-> > And __putname() is fine with NULL so no need for the if (buf) check here.
+> Hi,
 > 
-> Will fix.
+> These patches merge fs/userfaultfd.c into mm/userfaultfd.c and make
+> functions used only inside mm/userfaultfd.c static.
 
-I've folded this myself.
+Yes, please take this thing out of fs/
+
+Reviewed-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
