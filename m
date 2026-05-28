@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 347CCCD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 06:23:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 471E6CD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 06:37:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 775916B0005; Thu, 28 May 2026 02:23:48 -0400 (EDT)
+	id 9D5BD6B0005; Thu, 28 May 2026 02:37:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 726446B0088; Thu, 28 May 2026 02:23:48 -0400 (EDT)
+	id 985DD6B0088; Thu, 28 May 2026 02:37:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63BE96B008A; Thu, 28 May 2026 02:23:48 -0400 (EDT)
+	id 89B8B6B008A; Thu, 28 May 2026 02:37:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 53B876B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 02:23:48 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 06DFF40218
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:23:48 +0000 (UTC)
-X-FDA: 84815837736.07.1FDA219
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 53EAC20008
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:23:46 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 78C796B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 02:37:43 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2684E12046A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:37:43 +0000 (UTC)
+X-FDA: 84815872806.22.AEDFC3D
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4AE7E20003
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:37:40 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UDEGgVG8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779949426;
+	s=arc-20220608; t=1779950261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0RgJd/j+vMw4rGJufzEiUADtvpwL8OLKBT5M1pXfwa8=;
-	b=RBoGs+cqKbOXDy+Oh/VzpWr7wF5wG+v39FC24G/L6p/xxoFHMGzm0TBZYQkMdCflyqNVOl
-	D3n+WdFfFy1JdUg2nmBJr4eY092TQNipOm0vmlOhNeK001Kzb5Tss1Ak9xPVr7FMWWUvwv
-	G5kzKtTzlQUW1bNDZLh1XX/jjy0vslM=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HZ6IxvhMqjUGBTjHDLo6tubQL5kpPdWgOQqDyNrHzyM=;
+	b=F1tHVJ5uAONXZxp7S3IN20i3VieUzsSWuG4BdCdZ7ckWXA/nYuMitwxe/xfeS3NOOSFjBo
+	/fH1x28uWZ26LiiF6uBRGMZZYizkCDS2y19fjZtweYZYXCgu/uPe8RiH+9elc1kDoH158u
+	yvsOh9kyFzynC83Jalrx623rMJdm9/4=
 ARC-Authentication-Results: i=1;
 	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UDEGgVG8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779949426; a=rsa-sha256;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779950261; a=rsa-sha256;
 	cv=none;
-	b=SvMS592Sd7X93XqkkpEgbOTN9FshgR1UfiBEE7/K2engsr8pMSL+ce6020yC3CmMG1RmVX
-	vZRCJYF/emcFuCBnRV8waUaf2JPJZdzGzXQ5FT6fCWZtWiefzHvybe0ClNvTyOEcIS++22
-	vkZJc24Fqrsj8LYZUDfnwW9+u0jKGrI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5CD2C404B5;
-	Thu, 28 May 2026 06:23:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BA31F000E9;
-	Thu, 28 May 2026 06:23:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779949425;
-	bh=0RgJd/j+vMw4rGJufzEiUADtvpwL8OLKBT5M1pXfwa8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UDEGgVG84Pw+wHmviNQ5eNI4lTxiyNPcShJqSqyPl+Us1cz3Ezq14jtDvAg88/3m+
-	 Xj1mBTPKb4iHYalhZuxc7x5r4MD6GET3+M/V9T0Hk2tWjkXQfPuoyq+kiaOa8wRwLV
-	 o3FMtFQnaKC7VJFMES1Baw8drUKUTUcsqNv1IogCnnb5QSZJv7zQZ0A5kKGLg1xHK8
-	 rA1/bWqezRA/lM+928OusBqefoWFXk1ptC39QwHCjFJJle8ISwQINoR4H01pcOhWN5
-	 KdcsjCcuO/orh1LYyXIbVFKnul+seX/hxOXvzylyTk8oD17sZXWYVrXFMgjVdKme2H
-	 C6Rm0bRuLDm/Q==
-Date: Thu, 28 May 2026 07:23:35 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Jiaqi Yan <jiaqiyan@google.com>
-Cc: "Oscar Salvador (SUSE)" <osalvador@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, nao.horiguchi@gmail.com, william.roche@oracle.com, 
-	tony.luck@intel.com, wangkefeng.wang@huawei.com, jane.chu@oracle.com, 
-	akpm@linux-foundation.org, osalvador@suse.de, muchun.song@linux.dev, rientjes@google.com, 
-	duenwen@google.com, jthoughton@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, boudewijn@delta-utec.com, ziy@nvidia.com, harry.yoo@oracle.com, 
-	willy@infradead.org, linmiaohe@huawei.com, hannes@cmpxchg.org, jackmanb@google.com
-Subject: Re: [PATCH v4 0/3] Only free healthy pages in high-order
- has_hwpoisoned folio
-Message-ID: <ahffSyK30HtBYDe9@lucifer>
-References: <20260202194125.2191216-1-jiaqiyan@google.com>
- <CACw3F53U8xNTHJkdJMo-74_t0a2dX2cJtQOjpjizU8=UNLQRqg@mail.gmail.com>
- <ahXFPh-a_Zt1Q_r_@lucifer>
- <ahXVuBoNUeEvLRrb@localhost.localdomain>
- <CACw3F51tWMjcCX-xkfUEKb+nUo+O_Q_gpAi+UhiBL+8i+T8MQg@mail.gmail.com>
- <ahaNtdwdLvHxFCg4@lucifer>
- <CACw3F51nnzwZ3cYqBXU33+DfiAfDd1r3BoH_7DD55OD-4mxH=A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACw3F51nnzwZ3cYqBXU33+DfiAfDd1r3BoH_7DD55OD-4mxH=A@mail.gmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 53EAC20008
-X-Stat-Signature: rfd7ppzcrcerg4gsnfq5bj4ucdegnzdp
+	b=xeRD+6yrFvIY/c0pZxRmSVDDFZJCUbxN0jZxleNRICVUsQpG5/v827duUJ/EHFrNvc1T9D
+	RlO7Or2nQ4DlbvbmM7LnMtrQLHE5nDaj978l6IMMZux9NL8oDZxbqc70SPgxMzjYs19Nsh
+	LlPq+OOtK6kig5s6ugdOXXzhkJTLz7E=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gQxcd1tWTz8XrrX;
+	Thu, 28 May 2026 14:37:37 +0800 (CST)
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl2.zte.com.cn with SMTP id 64S6bVS6031773;
+	Thu, 28 May 2026 14:37:31 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp04[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Thu, 28 May 2026 14:37:33 +0800 (CST)
+X-Zmail-TransId: 2afb6a17e2ad7af-39b90
+X-Mailer: Zmail v1.0
+Message-ID: <20260528143733563XhbDWw9ZGOiFU9KHd72Xu@zte.com.cn>
+In-Reply-To: <44b8ba46-a002-4668-ab99-4bf01f4b66e5@kernel.org>
+References: 20260527214840093l-oER8Ds4tJLCyI14we0S@zte.com.cn,44b8ba46-a002-4668-ab99-4bf01f4b66e5@kernel.org
+Date: Thu, 28 May 2026 14:37:33 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <vbabka@kernel.org>
+Cc: <surenb@google.com>, <harry@kernel.org>, <akpm@linux-foundation.org>,
+        <hao.li@linux.dev>, <cl@gentwo.org>, <rientjes@google.com>,
+        <roman.gushchin@linux.dev>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <zhang.run@zte.com.cn>,
+        <cai.qu@zte.com.cn>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2NF0gbW0vc2x1YjogdXNlIGVtcHR5IHNoZWFmIGhlbHBlcnMgZm9yIG92ZXJzaXplZCBzaGVhdmVz?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 64S6bVS6031773
+X-TLS: YES
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Thu, 28 May 2026 14:37:37 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A17E2B1.000/4gQxcd1tWTz8XrrX
+X-Stat-Signature: zn69ts5eihafyhzu83yg7y86qbzmwb4s
 X-Rspam-User: 
-X-HE-Tag: 1779949426-407996
-X-HE-Meta: U2FsdGVkX19CpnXXgDK1akne2+s+PB1//ndMWl/VqFKfnu5FYgpUf+EpVh3p+PDI0Ml0CVDfbBXb+Wu7XMHs0PmLm1KQFVEiT8w3rpgwwQiUkIAfjXfytWmiKStgSiqbJSVFOEzhIvCVNxoBgazNSih2laCspjazT3l8NF/+Z+2GXcm5HNLaISI9puaaY/yffgLbHVzUO4+hWY03PdrjmHZZXA5+UO5vi7Gv/wcAuN5ixu4B+/6QA8mTOGSpP4s1qtRLZgAd2oeuBpm5+U4Uh1f3ZFG4k7+UoTXVufjSlGsL8dxjW7LNvFBWxEg/n3sTLvlwbt+rtBK94UU/3P1wkISzDXtiAA4YALC5URqq3uJ7OUWeN1Ies+jMozC1z4BX4DCjjx6dZED5xOjm9crXrMk5nFOUSqq5+HSgInxVA3uJ1cfmT4QoLLLyXMCrrD+oHwKztAmlnM5+y8KlLrpcYqcqsXbmNgp2vjnGCW+r1vAudZBRr/7FY+cdsdZNPci8QdJaGXukjCfeRRYJ5SJCHEZvlKCZH8Nb1XUlBqe0tl0tnYCQ8iNDIOErixmgozBGZOrSpx2dcW3yIIFINKbBFbkRWty56lMjpLxDhNP872HdMku53P6Z7xG2Jd6O0w89BX8SWhB8pdezWE5cObZZHy4mnSKv1/bmngJYchHphVxT7eWIl2MMVneRSJvH6qBx8uHSVVvLW/oKuKibHu9KUQHuzNX53NAXn94wmOD1oW4bf72GLdbUNXmkLdW93EuwmL82hoHOVaWQjsu+VsF2WLZ7uKGfJ4ivPwdNOZHSBSBlzMNNkCBt+nHnFxqgeTJ7HLZZfKZw4mXfmL9lnoaBiMednJxsGu5B+PTDCqr2NiiiSGNG7fqqXPZd9c1K4N9oOtSH5DHEEDj44P+F9lF+lpBTSk6ennIt2CUasEcOyntkRm+agQ74IMZ3qgDTIBFfhzhV1LVABCvfd7JEtSA
- 2gN1MoRS
- 7CHc4ievandaevrKvgOyY0UUXiZJ3FuPOxpZLhAoycYHuCkJn5Lpiqp9P4imvnOpIi4vdyjfuQGmd10nHCad6LDcYRS77cYe75Zdbd2LvvFip5L8ryaiJbJIxRmGZJc0dWVJt7Z9DxeKFXBGYF+zHcw/4kNEapWFqJ/UUwSZ1tmETMszNT7IktQHpqqqS4riDOfEXy25fQXE+5O3ihvJKs71dzxqCGU1q8KSl1crdtM/0OuiqYkm3q8TCO6I+JcSW3cHtSNHLk671N/u35WiATosVVv8+CDFiWmSpp2MCrajpfRuGTskTKV+bXlJGLGcdqb5rCBvBNLQJ+T5YSR2Ejn/IEIEWBAln6v/8IZLcQtmHfNT8NC6GFyNIkrDDfoeP3E8Q23hCg9w0TZF2tgOZsbZUcouGKptRjacl3hdjjuz8bv4pIZNCtjDYynvsjAvDs4ZvBlyQWR3MWCx3It5fH55BOTGBkhb3pxf4
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4AE7E20003
+X-HE-Tag: 1779950260-105922
+X-HE-Meta: U2FsdGVkX1+7gZCzXu7WYEXx1DvZ/IcRd96RmOwDgt85NTHy0QYKAn6auTpzC+GwvuW9qYg2uacN4oXnQ/k0o7pp4Ab0hOLWIb+pGAXxe9W0VwlMgDuFdInZK7IlI02CD6Ac3gy2EA9JurHeGCpXL6q22Z2VsLQ2oqWQMvjElTUERWOZAlCR77/QoLK8Ph4Emsyqcrk14Jg/+d/S6facWgrk38HDMDiQ6dZH1gA2KNQ3SmslgIdcD0hWW+VOHi51SafVVRitgV81LGwN6a3BF3+GJKE6yv581i4UHgV1qcItdyWH9LlA3Qekt2YrJWO2f/AaQ+8oLFrVJf9Uu3PHIxZyRAPn2FTHA4jGKzTBzJuNLmqbTQZCvyZ1ChVY1i1MF/d5NHR+de1B1GqMaRQz0CGQz8tIeuUYw098qF6bsW3RNdt6plShCjp13eSCPPC/57voq/XNXXX5YojJmbr7uk9iTUillI3vZ6nwHYYbRdEo81wm6bslxt35OGs4A4mPkSzSDtZI/kGeaxTun6GZnbNS9hG846guPGYDcTCHURbt6eKbNCTNNMbyrSUpEojVaDwHa6NyQn/LXCnAUMCNcisz1z/If3byYiqSaIsUrCvGMAr1B5KNkuMMjpuw1aCht9CAzBCupScSx1CLk/ekchgK9d0pKdVb5IKvq27F1bAnbUAloC0j4T49/LEOf0NUAr1JEuLyeOyOM4qhGOXORDCRQPod/Yi2nv/VrQPGTnUwGp4yutu/SY1plhID/Q11jNZRjXqGB/Kald+5KulRk8KbyOu3QSuV/BNEH9Q2FZ9PnsdFd2vaPBLRVb1fveWPFU63nyUU3gRVsQKeqX+dByg0Qw1HOFFdOwBW3E2EePHLI/ATzmN7SSGPSCfTB+mjueHDAEKf9NPFyODxtlbdrjaLzMvpqD+MpoC39H5XxwXXXBuK6HLHpZfezZu67mo80BViaDBMaVhMS/i1v2N
+ IpUu4GfP
+ Xhb9GxNfBqNTkYSluiq1c+e1agn2VSpWJcV1bEeUvZOWFeOzwkTTo3dav6Uh0XDWhXs26NdjfUf3shhjcDaCYgUAYSak65KN9EKdr8cDaxb/QdFP6ssqU/sbqmK5jw9CsVydeQ5XrmNx7QAlz0jhQ/sosYI3Ls83zj5vp0DhYhao/bInUrqGDMh1chN1odtUet2HmeKxKuL5Plk0Dn79xK7upJAFiMC+QvK/2+sYs/HRGzglIdVLaHGjRhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,75 +100,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 09:29:19PM -0700, Jiaqi Yan wrote:
-> On Tue, May 26, 2026 at 11:36 PM Lorenzo Stoakes <ljs@kernel.org> wrote:
-> >
-> > On Tue, May 26, 2026 at 10:00:06PM -0700, Jiaqi Yan wrote:
-> > > Thanks Lorenzo and Oscar.
-> > >
-> > > On Tue, May 26, 2026 at 10:17 AM Oscar Salvador (SUSE)
-> > > <osalvador@kernel.org> wrote:
-> > > >
-> > > > On Tue, May 26, 2026 at 05:09:28PM +0100, Lorenzo Stoakes wrote:
-> > > > > On Mon, Feb 23, 2026 at 03:17:57PM -0800, Jiaqi Yan wrote:
-> > > > > > Hi Vlastimil,
-> > > > > >
-> > > > > > Could you and other page_alloc.c reviewers share your thoughts on this
-> > > > > > patchset? Thanks!
-> > > > >
-> > > > > Hi Jiaqi,
-> > > > >
-> > > > > I guess you are blocked on review here, did you intend to return to this?
-> > >
-> > > Yes, as long as this patchset is useful to the community.
-> >
-> > Yes it is, thanks!
-> >
-> > >
-> > > > >
-> > > > > I'd suggest attempted a respin to get some movement here as clearly this slipped
-> > > > > through the gaps last cycle.
-> > > >
-> > > > This fell off my radar, I plan to have a look this week/early next week.
-> >
-> > Thanks Oscar!
-> >
-> > > >
-> > > >
-> > >
-> > > By "respin" do you mean I should re-work the patches on top of the
-> > > latest akpm/mm-stable or linus/master, for whatever the changes in
-> > > mm/page_alloc.c and mm/memory-failure.c since Feb?
-> >
-> > Rebase on to mm-unstable would be easiest, we're late in the cycle now (rc5) so
-> > this will probably have to wait for next cycle, but doing this early makes
-> > reviewing easier :)
-> >
-> > You can either do a v4 RESEND or it may be simplier to just send a v5 where the
-> > latest version is just the rebase to avoid confusion.
+VlastimilBabka(SUSE)<vbabka@kernel.org> wrote:
+>On 5/27/26 15:48, hu.shengming@zte.com.cn wrote:
+>> VlastimilBabka(SUSE)<vbabka@kernel.org> wrote:
+>>> On 5/26/26 17:24, hu.shengming@zte.com.cn wrote:
+>>> > From: Shengming Hu <hu.shengming@zte.com.cn>
+>>> > 
+>>> > Oversized prefilled sheaves are allocated separately, but after they are
+>>> > flushed they are empty sheaves as well. Release them through
+>>> > free_empty_sheaf() instead of calling kfree() directly.
+>>> > 
+>>> > Use __alloc_empty_sheaf() for oversized prefilled sheaves as well, so
+>>> > that they are allocated through the same helper as regular empty sheaves
+>>> > and released through the matching helper.
+>>> > 
+>>> > Since oversized sheaves are now allocated and freed through the empty
+>>> > sheaf helpers, SHEAF_ALLOC and SHEAF_FREE also account for oversized
+>>> > sheaves. Update the stat comments accordingly.
+>>> > 
+>>> > This keeps the oversized and pfmemalloc prefill paths consistent after
+>>> > flushing.
+>>> > 
+>>> > Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+>>> 
+>>> Hmm, __alloc_empty_sheaf() does "gfp &= ~OBJCGS_CLEAR_MASK" which includes
+>>> __GFP_NOFAIL. A caller of kmem_cache_prefill_sheaf() with __GFP_NOFAIL might
+>>> not expect failure. The __GFP_NO_OBJ_EXT handling is also not necessary for
+>>> prefilled sheaves.
+>>> 
+>>> Well maybe all the gfp handling could be simply moved to
+>>> alloc_empty_sheaf()? The other caller of __alloc_empty_sheaf() is
+>>> bootstrap_cache_sheaves() and I think it doesn't need it either.
+>>> 
+>> 
+>> Thanks for the review!
+>> 
+>> I agree that clearing OBJCGS_CLEAR_MASK in __alloc_empty_sheaf()
+>> is not right for the oversized prefill path. In particular, it changes
+>> the caller-provided GFP flags and can drop __GFP_NOFAIL. I will move that
+>> part out of __alloc_empty_sheaf().
+>> 
+>> I am less sure about moving the __GFP_NO_OBJ_EXT handling out of
+>> __alloc_empty_sheaf() as well, because that seems to make the free side
+>> more complicated.
+>> 
+>> Currently free_empty_sheaf() assumes that sheaves for SLAB_KMALLOC caches
+>> were allocated with __GFP_NO_OBJ_EXT, and therefore calls
+>> mark_obj_codetag_empty() before kfree(). If __GFP_NO_OBJ_EXT is moved out
+>> of __alloc_empty_sheaf(), then oversized prefilled sheaves allocated by
+>> the raw helper would not have that flag anymore, while regular sheaves
+>> allocated through alloc_empty_sheaf() would still have it.
+>> 
+>> In that case, the return path could no longer use one free helper for both
+>> oversized and pfmemalloc sheaves after flushing. It would need to split
+>> the two cases, for example:
+>> 
+>>         if (unlikely(sheaf->capacity != s->sheaf_capacity)) {
+>>                 sheaf_flush_unused(s, sheaf);
+>>                 __free_empty_sheaf(s, sheaf);
+>>                 return;
+>>         }
+>> 
+>>         if (unlikely(sheaf->pfmemalloc)) {
+>>                 sheaf_flush_unused(s, sheaf);
+>>                 free_empty_sheaf(s, sheaf);
+>>                 return;
+>>         }
+>> 
+>> There is also the bootstrap_cache_sheaves() case. The sheaves allocated
+>> there are regular-sized sheaves. If such a sheaf later reaches
+>> kmem_cache_return_sheaf(), it could not safely be released through
+>> free_empty_sheaf() unless it was also allocated with __GFP_NO_OBJ_EXT,
+>> because free_empty_sheaf() currently assumes that SLAB_KMALLOC sheaves
+>> were allocated with __GFP_NO_OBJ_EXT and calls mark_obj_codetag_empty().
+>> Unlike oversized sheaves, these bootstrap-created sheaves have the regular
+>> capacity, so the return path cannot distinguish them by
+>> sheaf->capacity != s->sheaf_capacity.
+>> 
+>> So I wonder if it would be better to move only the OBJCGS_CLEAR_MASK
+>> clearing out of __alloc_empty_sheaf(), but keep the __GFP_NO_OBJ_EXT
+>> handling there. That would fix the __GFP_NOFAIL issue for oversized
+>> prefilled sheaves, while still keeping the allocation/free assumptions
+>> consistent and allowing flushed oversized and pfmemalloc sheaves to use
+>> the same free_empty_sheaf() path.
+>> 
+>> Would this approach be acceptable, or did I misunderstand your suggestion?
 >
-> Ack. I am preparing v5 on top of mm-unstable.
-
-Great thanks!
-
+> I see, thanks. Could we perhaps move the mark_obj_codetag_empty() code to
+> alloc_empty_sheaf()? If not, then do as you suggest?
 >
-> Interestingly, I notice [1] introduced free_prepared_contig_range()
-> which does almost exactly what free_contiguous_pages() in my patch 1/3
-> does. I will try to re-use free_prepared_contig_range() during the
-> rebase.
->
-> [1] https://lore.kernel.org/all/20260401101634.2868165-2-usama.anjum@arm.com
 
-Nice :)
+I looked at moving mark_obj_codetag_empty() to alloc_empty_sheaf(), but I
+don't think it is equivalent to doing it on the free path.
 
->
-> >
-> > >
-> > > > --
-> > > > Oscar Salvador
-> > > > SUSE Labs
-> >
-> > Cheers, Lorenzo
+mark_obj_codetag_empty() only marks an entry if the slab already has
+slabobj_exts. For sheaf metadata allocated with __GFP_NO_OBJ_EXT, the
+allocation hook will not create the object extension. So if the slab has
+no obj_exts at allocation time, an allocation-time mark would be a no-op.
+A slabobj_ext can still be created later for the same kmalloc slab by
+another allocation, and then freeing the sheaf without marking it on the
+free path can still leave the sheaf entry with a NULL tag.
 
-Cheers, Lorenzo
+So I think the marking should stay in free_empty_sheaf(). I can still
+move the caller-GFP filtering out of __alloc_empty_sheaf(). That includes
+both clearing OBJCGS_CLEAR_MASK and handling the early rejection of
+caller-supplied __GFP_NO_OBJ_EXT:
+
+	if (gfp & __GFP_NO_OBJ_EXT)
+		return NULL;
+
+Moving this filtering to the caller would let the oversized prefill path
+avoid losing __GFP_NOFAIL.But I would keep the SLAB_KMALLOC-specific
+__GFP_NO_OBJ_EXT allocation and the matching free-time mark together.
+
+Please let me know if you have a better suggestion.
+
+--
+With Best Regards,
+Shengming
 
