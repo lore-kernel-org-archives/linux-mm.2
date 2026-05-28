@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1824CD4F54
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 12:46:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E38EECD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 12:46:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C6BD6B009D; Thu, 28 May 2026 08:46:43 -0400 (EDT)
+	id 548796B00A1; Thu, 28 May 2026 08:46:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1501A6B009E; Thu, 28 May 2026 08:46:43 -0400 (EDT)
+	id 520886B00A2; Thu, 28 May 2026 08:46:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0B376B009F; Thu, 28 May 2026 08:46:42 -0400 (EDT)
+	id 45D906B00A3; Thu, 28 May 2026 08:46:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DB2BF6B009D
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:46:42 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9EECAC2909
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:46:42 +0000 (UTC)
-X-FDA: 84816802644.30.4A19C92
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3460D6B00A1
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:46:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F3A46161F5E
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:46:52 +0000 (UTC)
+X-FDA: 84816803064.10.1369E36
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 17C1740003
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:46:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=vtQRG6OJ;
-	spf=none (imf11.hostedemail.com: domain of BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 64A6C40005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:46:51 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=3ls+WRfT;
+	spf=none (imf27.hostedemail.com: domain of BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779972401;
+	s=arc-20220608; t=1779972411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XuKF/3p5aflR1cRcCINx+uxdyhy7hGKXqb3xE6eFG6g=;
-	b=2sDdAQpyF5jKWuaq0yKNLfr5Avb7orsfpUXb8IitPcNtAMI0oyUV5fnDkxePFCBOTo+Lgc
-	ng+QVkGyJZkUsEINl0bZvowfw4RryDSezMOXiEoralQOVWa6NS90Nxk5YEJSHHIeB9EtZy
-	RY/G3u1Wzy1mWjNu0gEI2FxNUSwQofI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779972401; a=rsa-sha256;
-	cv=none;
-	b=O33w/wZKGX9haJsOizz+g31GBBxrk3rY02nl2GM+yDGhUdiCUpEBBpXgkryzLVO02SXYXh
-	EAyo4qjRCfSGxHYy/+diHA5joWKYWCb0Hnnc5rxNs8IMls63CpcLTJ/t/pj8seOeuA/wJV
-	RRc+EtzUaoM5pwkHimDH6Z/HYDoRGws=
+	bh=YnFpCfWtNBmp0xQCfXEwNqltsuhf50Vy49KtpIfZqxU=;
+	b=8izHAccMHF/zkDvIIBa4KHcmqg8+SYDm0pk4mrZxwSDvBAS7Bug78uS7zhHrMGbxyLfo1M
+	rS/Rj+KVthN0QruGyOPrXn2l2/C8dxU+iXDDBG00NK5OgsMi/vX3RbxNhm+eiRxxbmWLC4
+	/Q5d2J+vTnMuz1Uk5QH2wy5d6yWwEOo=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=vtQRG6OJ;
-	spf=none (imf11.hostedemail.com: domain of BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=3ls+WRfT;
+	spf=none (imf27.hostedemail.com: domain of BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779972411; a=rsa-sha256;
+	cv=none;
+	b=aNu7nO4tqC3xP3e5MD4pNmfMBBDzz3cj6l1fciwT2vGLCMX/iPveo8ZbKLoZlAXOaPbgbE
+	HdG87lYff2Q5l7GOO5oA/lGIjMrM62Dyy4xQIeJCisaBbKuV30+m820Wg6jtHfdM5NkPVL
+	DlD2uXuddHkaPAvFWNqqs7M7R4CJAuc=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=XuKF/3p5aflR1cRcCINx+uxdyhy7hGKXqb3xE6eFG6g=; b=vtQRG6OJR04Hif9jEjyNI49nIw
-	aESI4+qXF/kgVXIpakpVx3FkbXuJFVVYSQ3sZHJ4cCASiepnzKYnISdvCVF7gEIpDrGJc5lKquVEC
-	OKS3BC62SnXdQRq5nHOf+CNwBB3bvQh94MW8kY1LgD1uPOJhz8BX0RhNfKUZMKhEi+IZnlL/DsCr1
-	mH4wCC83Gbkk1OA+Skzm6Arwb471pR5uQmZhg1z06P+3Pim1HhhXYpIqT14aplvmiRwBy6mVamFBS
-	2LEXdZsNaF/GngnFX313JR1QittZCRMNPAjLl2GWDifnW4WNvcVlYvsF4wF8tg6gYaVOI0Kjc3GcR
-	z+bhR0rg==;
+	bh=YnFpCfWtNBmp0xQCfXEwNqltsuhf50Vy49KtpIfZqxU=; b=3ls+WRfT04Kn4W6R497mKJAzr4
+	Jwo2VLYjGMIW+84jp6EmuLN8hTfAQLgw1TEEJhYAQqvsuLg/1fwUYuoDfDuvNbOnwJVdIZW1Dw5xh
+	TdN5hKi5tVaYBZqPEqInHlVLccObvLSFKAXuVUM7RgFWamYY6DomvqYpE4JRpejjfq+ZAvpmlaLaX
+	LKZ6oUx3AwYHkZ/K6Nl8dciuL5hKiIM9ehVVF6gbsML2W5y7YDUujEbkmWFn7BIQ9PM2bcaeGDNUg
+	tKacHb50K1EVRqtzURw0FpuVe6cctu4Ji+3o2V2uP5KQF2LoGMGYdFKzpbY1EoJGd7HSWSjuRwYVQ
+	BLyQl9RQ==;
 Received: from 2a02-8389-2341-5b80-decc-1a96-daaa-a2cc.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:decc:1a96:daaa:a2cc] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSa8E-00000005jgt-0zp1;
-	Thu, 28 May 2026 12:46:38 +0000
+	id 1wSa8J-00000005jhZ-0NTU;
+	Thu, 28 May 2026 12:46:43 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: 
 Cc: baoquan.he@linux.dev,
@@ -73,23 +73,23 @@ Cc: baoquan.he@linux.dev,
 	shikemeng@huaweicloud.com,
 	youngjun.park@lge.com,
 	linux-mm@kvack.org
-Subject: [PATCH 07/10] mm/swap: remove count_swpout_vm_event
-Date: Thu, 28 May 2026 14:45:23 +0200
-Message-ID: <20260528124559.2566481-8-hch@lst.de>
+Subject: [PATCH 08/10] mm/swap: use swap_ops to register swap device's methods
+Date: Thu, 28 May 2026 14:45:24 +0200
+Message-ID: <20260528124559.2566481-9-hch@lst.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260528124559.2566481-1-hch@lst.de>
 References: <20260528124559.2566481-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam11
-X-Stat-Signature: sx7uq6psawwk59dwdebu1ktuq1qcwgs3
-X-Rspamd-Queue-Id: 17C1740003
 X-Rspam-User: 
-X-HE-Tag: 1779972400-530090
-X-HE-Meta: U2FsdGVkX19yTJ6v/8gtjxU4sf4ZuppmqljeQcsgxTgwBpLO656p1Fd5ZasEGIcqANMOdketx2hX7/QWMslYTzuzeJSh2cPF+rln6ZYhRpqnohnGgmG1W8puX2SYGs6Kwpp5P5mIoeZ4VZNbCjSO7cV65n2BaCX/DsPjqbfOs+Pl9fKlEbuNGK3L/0B1IoKrjit9ppd4wjIZYEoZDeTGWkwu3QYfkTo2iGKN2uOrlE76uW20x96OzMS/Sx3jcwtK8domwCM4fOI7Hi3LibeYvRV2o6m5/XDeKf63qtHACZ5+0Yma9kC5cFgIz2xxDxlbpa4tVV3vR9/Hg/UsDHUFfL0wGRgpODoB0CrYXpMXRckttv6fsnbWq3+dHV/6kMgUwsd3kgYW+a+vClLF3lXkBjTnABkktiM8EO0koJGd90RcJiJWHFrG4QiNzo+Hy+yXnD/38/GBJvyJByJ8xBYVymyVY4EsR5W6/5O34lkM7JxcZdST+thMbE0SY8h+v31WNlpSN0UyNNOJI5PRG896ETlv0a0Dz21+IvuSeLMMYKp8K74M8Am0LQsIZGW1+as4NxcpO1D+ZkSPBYRXEA2/PmCZaiVLIlizuhQYc/ZfyGp7CFpDc3n9pmYadbonv1rW2oacwsFZ1LnXZZCaEO8L7oqR8EgghAv+gbqw0GTIcPGYam83ry1JyiXQlpTJn0tIC5g3sezNH7hePWpNMQ+MsGLOh911bsUbnQv5DIFMRirj4haIdff+YAisDBk7BDiNVKV+dXoRYx6TyBErTUffWDQocBNwBI6yu6vAMUVm37e3hvdndMnWcOovdzMaZNdf2pzOHpbmFRklOZEp8Ykx2VDw4SCa0T/KlBhakvPYSReRo1OWD9w65B1OOWz/uZ8Blpl7GtvlEbw/SL6GJtnVMbDaQV8J7NzHNBqjFqaEu2bW57VZiwpQDFeAJldgbaw6xAbNwCO6ryPJeeDKQMD
- O/BMmYgY
- sPsdv2sgFx0fWFCLZ7fNkDUP7CY6rXivH5HovNVmg891JF4KlQQ6p/lgDejzbqyjGOvwMqW89RqtBljs37+IbfepFfhWqvabSzSuHhVEfqRx8X8bNJMO61/v+m+8VtHqbuYohcK94u1xekP885E+xSwjLbA/vpZ68ysJF4Px/XO1+sc5H4VymlRvt+UF84izYogZM3dJHvWMCyAlApPyX4QCid2e8j6WeEQHkdz0DyJEsOOcxesfnPPcDfBfjKcOeIGIgynwO2o+rVDt7rgp2SB9q2Xn94TKfU+CWm4JJYqeZGVuZ9WGFLDo5OeQCKu8LBiaOkAHmy4xT/dS+XM5R9+m8Vunt0j01NuljXqJ4ngIObiTABxugU21QyrTy4UMsnMxkEfuwjgdMQRId0IBpgyS5B1TeNZMjnhaGTWwsAvxVUtY59RLf7pdh6EUK0hShdj7bSkvaGwvBku1Em+65J4Ggrqw8fvbGolgW65901BSD3BIjUpK20vINBRLA9iOOkpHCEayjWrgbu18o8KoWewwgoHWjPeJ8SCEzRfp/I2N04S84s3wVqAja3Q==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 64A6C40005
+X-Stat-Signature: 6z9g8yxajw5pita5qdi1w7mng8ps9tgg
+X-HE-Tag: 1779972411-564158
+X-HE-Meta: U2FsdGVkX1/OMFbS6BQ/WpWMxnZizcwIFpiO/Pm1CUn1xUSBqsnEsEXz9ZUOxRqNPuVrANSvmendi+a+qQspSqBKZRGLqcn8JKat9aFG0e9bWvMHuEi2E3cBWRgmbuQvOYDunLw3qQMmE3facIyqI/Vns48gS2/Si3frQm4TyK2291kL94BdFDyurwL9ogGSnk0vRnHRIZknBT4cfZ6dLDFsnxD/74cZxVgSXLRsJ0i/5EFLbDKaAm6IPJYVHN/a0ljke8x6S2SIVxFVjFSXO5zj3pbOnstYks2WgN1Yno4xEnEP99fYG5JhOXKwRi3JM0KGY/KQA7CyE3UT0btda67ZE5Qg1zkyqJfx9SuawOMVIDov5ylJkEpQCXTFh94+KMBF74tvJD4JJDP1RtoIpYzhOAZLTX0/3BSZNjfSVKjf3uT/3ZNQirJ9mFPgSY0zLjxym2eJxAx9n9edCARt1UIz/aoLQVAyvUSFPTW2ahR2W05FdPxDl0cfr2JkqlMkfYZK05tUyh4D5CeXAHoin3NIgSkSjVu8PFbX+z43M06aujaZcT4QhW10gnc9ZxeyDoL7nuaV6R3lm0CYpEHvcQciDtabj2Ax52ZFCXdiOItdGkNKfr/LjaUsAqrD8xNVUVdqYM9YIpiqk/poY0ohL5RrZjqaCfIgK2sKxrzVQ0JmpcPK+uv5w6BziKsxRNbplWnja4IgwTTKemzWIf3EV2SToJWLRlMjOW0Si6+Rsb5FkIiETW/vrv/+GXY4jE4tFsO7O51sCRYcYSOZpCPUTrsQmO+yMhpUNW60/Z8hfNvMWgkB59qxSIVoaF1UqSw43DCtpEyVEZr+B28UeI6gGfGoENrEwm67tZvk4f9Wxh/oSkSFK/G0adVNrFGd5oAhs3e75papY+NCMVe6MZsEXa3MqDKPhtQ+QOz5Qn0+KvStm/oJiLNK3Vm36X9F7bhPn4Ce279zT8cFdP+mPIF
+ 75jCL8Sk
+ kWKji7V7OHuAisq5bSUqQZPR6T06qPul61IozQsCOd9DbamB9a5Ii+wyhFiAQrh5PHVQdaLWzducYUJB9Tm9VqDSlxbZJ6jAcdOIEiH6utYRRpD6+tLNuWztJUW16uiLe0UaoMYqy3wuILzkyBbIpsyigEpkX+4/TZ5ifxHdOJ2AKEv2ZnyAS5fHQIQwYrOGmIkBrKQbGnyT1WBihtbG0YlwcsZUxG/FUwcAH2OA1fgRKCAOrXofJJM720v3mOJO1VulTgyUGORuCxkY6FLKPBUekUWpiJGm14zGlVHLqGAqMp94QazaFi0ppHyfwvkPOyIouIdxBx+bEJRGFM+ez3thQSJcVqhgpnLRi108Rpnxoj1sIx77n1zfbcCpozDf1LX0wwNkHtB7UaM9LuQH+Kw8S6xHgdo8cT9rBdO1V2x/9CKWyW6m4ZSCXTEtRoLtFA5w7CIf00HYIh6X6C06odPBo4PhSgCqX2xXEfDI+YQwpPiO3nvUbtekObJKtP5zo+RncBC5Nshv3fp0ymLRX/YkY3SN3+mVz72kpMHYPZgR30/ytGWK58sreYWgyDOI/X3h50NeA8hCTRJ8Heoyjw6hBDXm6twT96mur6ihz2JxHmwtVPsIotXac6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,55 +97,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There is only one caller left, so merge it into that.
+From: Baoquan He <baoquan.he@linux.dev>
 
+This simplifies codes and makes logic clearer. And also makes later any
+new swap device type being added easier to handle.
+
+Currently there are two types of swap devices: fs and bdev.
+
+Suggested-by: Chris Li <chrisl@kernel.org>
+Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+[hch: updated for the new submit and can_merge abstraction]
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- mm/page_io.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ include/linux/swap.h |  1 +
+ mm/page_io.c         | 62 ++++++++++++++++++++++++++++----------------
+ mm/swap.h            | 10 +++++++
+ mm/swapfile.c        |  4 +++
+ 4 files changed, 55 insertions(+), 22 deletions(-)
 
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 8c43bc3055c9..2d6fe268c82a 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -281,6 +281,7 @@ struct swap_info_struct {
+ 	struct work_struct reclaim_work; /* reclaim worker */
+ 	struct list_head discard_clusters; /* discard clusters list */
+ 	struct plist_node avail_list;   /* entry in swap_avail_head */
++	const struct swap_ops *ops;
+ };
+ 
+ static inline swp_entry_t page_swap_entry(struct page *page)
 diff --git a/mm/page_io.c b/mm/page_io.c
-index deb902398919..d5f69c1566bf 100644
+index d5f69c1566bf..1d5b891dee97 100644
 --- a/mm/page_io.c
 +++ b/mm/page_io.c
-@@ -254,19 +254,6 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- 	return ret;
+@@ -312,18 +312,7 @@ static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
+ 		rcu_read_unlock();
+ 	}
+ 
+-	if (sis->flags & SWP_FS_OPS) {
+-		if (swap_dev_pos(folio->swap) !=
+-		    swap_dev_pos(prev_folio->swap) + prev_folio_size)
+-			return false;
+-	} else {
+-		if (swap_folio_sector(folio) !=
+-		    swap_folio_sector(prev_folio) +
+-		    (prev_folio_size >> SECTOR_SHIFT))
+-			return false;
+-	}
+-
+-	return true;
++	return sis->ops->can_merge(folio, prev_folio, prev_folio_size);
  }
  
--static inline void count_swpout_vm_event(struct folio *folio)
--{
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	if (unlikely(folio_test_pmd_mappable(folio))) {
--		count_memcg_folio_events(folio, THP_SWPOUT, 1);
--		count_vm_event(THP_SWPOUT);
--	}
--#endif
--	count_mthp_stat(folio_order(folio), MTHP_STAT_SWPOUT);
--	count_memcg_folio_events(folio, PSWPOUT, folio_nr_pages(folio));
--	count_vm_events(PSWPOUT, folio_nr_pages(folio));
--}
--
- #if defined(CONFIG_MEMCG) && defined(CONFIG_BLK_CGROUP)
- static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
- {
-@@ -372,7 +359,16 @@ void __swap_writepage(struct swap_io_ctx *ctx, struct folio *folio)
- {
- 	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
+ static void swap_add_page(struct swap_io_ctx *ctx, struct folio *folio, int rw)
+@@ -621,6 +610,20 @@ static void swap_bdev_submit_read(struct swap_io_ctx *ctx)
+ 	}
+ }
  
--	count_swpout_vm_event(folio);
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	if (unlikely(folio_test_pmd_mappable(folio))) {
-+		count_memcg_folio_events(folio, THP_SWPOUT, 1);
-+		count_vm_event(THP_SWPOUT);
-+	}
-+#endif
-+	count_mthp_stat(folio_order(folio), MTHP_STAT_SWPOUT);
-+	count_memcg_folio_events(folio, PSWPOUT, folio_nr_pages(folio));
-+	count_vm_events(PSWPOUT, folio_nr_pages(folio));
++static bool swap_bdev_can_merge(struct folio *folio, struct folio *prev_folio,
++		size_t prev_folio_size)
++{
++	return swap_folio_sector(folio) ==
++		swap_folio_sector(prev_folio) +
++			(prev_folio_size >> SECTOR_SHIFT);
++}
 +
- 	folio_start_writeback(folio);
- 	folio_unlock(folio);
- 	swap_add_page(ctx, folio, WRITE);
++const struct swap_ops swap_bdev_ops = {
++	.submit_write		= swap_bdev_submit_write,
++	.submit_read		= swap_bdev_submit_read,
++	.can_merge		= swap_bdev_can_merge,
++};
++
+ static void swap_fs_submit(struct swap_io_ctx *ctx, int rw)
+ {
+ 	struct swap_iocb *sio = ctx->sio;
+@@ -641,15 +644,34 @@ static void swap_fs_submit(struct swap_io_ctx *ctx, int rw)
+ 		sio->iocb.ki_complete(&sio->iocb, ret);
+ }
+ 
++static void swap_fs_submit_write(struct swap_io_ctx *ctx)
++{
++	swap_fs_submit(ctx, WRITE);
++}
++
++static void swap_fs_submit_read(struct swap_io_ctx *ctx)
++{
++	swap_fs_submit(ctx, READ);
++}
++
++static bool swap_fs_can_merge(struct folio *folio, struct folio *prev_folio,
++		size_t prev_folio_size)
++{
++	return swap_dev_pos(folio->swap) ==
++		swap_dev_pos(prev_folio->swap) + prev_folio_size;
++}
++
++const struct swap_ops swap_fs_ops = {
++	.submit_write		= swap_fs_submit_write,
++	.submit_read		= swap_fs_submit_read,
++	.can_merge		= swap_fs_can_merge,
++};
++
+ void swap_write_submit(struct swap_io_ctx *ctx)
+ {
+ 	if (!ctx->sio)
+ 		return;
+-
+-	if (ctx->sis->flags & SWP_FS_OPS)
+-		swap_fs_submit(ctx, WRITE);
+-	else
+-		swap_bdev_submit_write(ctx);
++	ctx->sis->ops->submit_write(ctx);
+ 	ctx->sio = NULL;
+ 	ctx->sis = NULL;
+ }
+@@ -658,11 +680,7 @@ void swap_read_submit(struct swap_io_ctx *ctx)
+ {
+ 	if (!ctx->sio)
+ 		return;
+-
+-	if (ctx->sis->flags & SWP_FS_OPS)
+-		swap_fs_submit(ctx, READ);
+-	else
+-		swap_bdev_submit_read(ctx);
++	ctx->sis->ops->submit_read(ctx);
+ 	ctx->sio = NULL;
+ 	ctx->sis = NULL;
+ }
+diff --git a/mm/swap.h b/mm/swap.h
+index 63d2dc41b213..908ac0e0d021 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -84,6 +84,13 @@ struct swap_io_ctx {
+ 	struct swap_info_struct	*sis;
+ };
+ 
++struct swap_ops {
++	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
++			size_t prev_folio_size);
++	void (*submit_write)(struct swap_io_ctx *ctx);
++	void (*submit_read)(struct swap_io_ctx *ctx);
++};
++
+ #ifdef CONFIG_SWAP
+ #include <linux/swapops.h> /* for swp_offset */
+ #include <linux/blk_types.h> /* for bio_end_io_t */
+@@ -476,6 +483,9 @@ static inline unsigned int swp_cluster_offset(swp_entry_t entry)
+ 
+ #endif /* CONFIG_SWAP */
+ 
++extern const struct swap_ops swap_bdev_ops;
++extern const struct swap_ops swap_fs_ops;
++
+ int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
+ 		struct list_head *folio_list);
+ 
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 2372f7cc4653..a670635e0fbe 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2846,6 +2846,8 @@ static int setup_swap_extents(struct swap_info_struct *sis,
+ 	if (ret)
+ 		return ret;
+ 
++	sis->ops = &swap_bdev_ops;
++
+ 	if (S_ISBLK(inode->i_mode)) {
+ 		ret = add_swap_extent(sis, 0, sis->max, 0);
+ 		*span = sis->pages;
+@@ -2856,6 +2858,8 @@ static int setup_swap_extents(struct swap_info_struct *sis,
+ 		ret = mapping->a_ops->swap_activate(sis, swap_file, span);
+ 		if (ret < 0)
+ 			return ret;
++		if (sis->flags & SWP_FS_OPS)
++			sis->ops = &swap_fs_ops;
+ 		sis->flags |= SWP_ACTIVATED;
+ 		return ret;
+ 	}
 -- 
 2.53.0
 
