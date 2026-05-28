@@ -4,100 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B627CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:34:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58F30CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:36:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AED16B008A; Thu, 28 May 2026 05:34:54 -0400 (EDT)
+	id 7871F6B0092; Thu, 28 May 2026 05:36:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55FED6B008C; Thu, 28 May 2026 05:34:54 -0400 (EDT)
+	id 75F6B6B0093; Thu, 28 May 2026 05:36:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44E166B0092; Thu, 28 May 2026 05:34:54 -0400 (EDT)
+	id 674B26B0096; Thu, 28 May 2026 05:36:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 322566B008A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:34:54 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE8F612050C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:34:53 +0000 (UTC)
-X-FDA: 84816319266.26.24E8635
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0FBE31C0004
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:34:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=UdwJSlwG;
-	spf=none (imf21.hostedemail.com: domain of BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779960892;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5618C6B0092
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:36:47 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F306EC27FC
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:36:46 +0000 (UTC)
+X-FDA: 84816324012.13.9EE9739
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E1CEF40008
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:36:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=P3IMthxj;
+	spf=pass (imf07.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779961005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xIEmh9cJuZ7QDznvu36mC2c+m1LHMnAwVRG0Zaa/+UI=;
-	b=KR1HGGoN3OHqkVKJ0zrC5mPEFL34FqT5gNCVggWkYmZ8a9Nti8rcFO70KlWLEdt0OZlKSs
-	ttUK7dt7AUq0yWs8HUxhoSfa4nFnI27JEiElLFvOkbDJT9LYUOglloqS7wUKwetuXV5t5S
-	hUoEb8ePz+H+XQ2SiVy8E8I2cGJuePk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=UdwJSlwG;
-	spf=none (imf21.hostedemail.com: domain of BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779960892; a=rsa-sha256;
-	cv=none;
-	b=FQIys9n/EosNNzNVrTgHPnXNWOixhlujQ10FMAFNd/AQL9hqMMVOTKc1TZNr4LcG7z+WAt
-	DBgr2+/lxtH/XfLijh9KMSwMwmkhYgqKEIiLB6SsheMHD9DB8YHvfJTg+VtgRoJo6HnLvD
-	m4gM8x8NYWgew1eiwU8EaiSupnQY+9E=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=xIEmh9cJuZ7QDznvu36mC2c+m1LHMnAwVRG0Zaa/+UI=; b=UdwJSlwGYXHY0aNdOlFLgU8+A3
-	Vm9NuAUu1g95X50e49OXca/tWP7AJOY2H8+9U6UnhXgKz2p9bHm0oHf80trs0gK15Yvzk4GTjcOHM
-	9Rc9lH5m976sbim6KrNgYwKtTMKFDTr5Z3dIhVNjBogQcVCZjSTZCCfiY0lkj0xcKsknUd/IRZM74
-	N6khPYl8NimmXOG46IYzL/mvgKko/JrLdmoCVuA8ROO9Lv0JH4uISFs8JuEwqqqtOTfYgr95+pWBU
-	Tp2BN8XGiuZxuUEtzNDo2oqj71V8S/muNgLwVgaAA0Lz7WHywwSs+tVUFPn5oslaC8+s5gNbEPIKk
-	ADWFom2g==;
-Received: from 2a02-8389-2341-5b80-decc-1a96-daaa-a2cc.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:decc:1a96:daaa:a2cc] helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSX8b-00000005WEM-0evp;
-	Thu, 28 May 2026 09:34:49 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	io-uring@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Subject: [PATCH] mm/slab: improve kmem_cache_alloc_bulk
-Date: Thu, 28 May 2026 11:34:32 +0200
-Message-ID: <20260528093437.2519248-2-hch@lst.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260528093437.2519248-1-hch@lst.de>
-References: <20260528093437.2519248-1-hch@lst.de>
+	bh=okJAHKr2FRoEu7Zvqgqg5rnovsf6ah+xiiUgmbVNkGk=;
+	b=EvB15m8aIyhzr+lc6ghhZ5KBrymi0P0fHGDOqbLD5E+C8mQ1gjG1SworItBG1dvXjPifdU
+	6wvEpo54xJC5Yu3+xRksV0DMrNNise1Szt+PmsjfJpVko7oqKspBPl+scy0hnIxgLTIwwe
+	nhkvZEjz2budn2cGCmLcQ+gkY9j2JUI=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=P3IMthxj;
+	spf=pass (imf07.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779961005; a=rsa-sha256;
+	cv=pass;
+	b=1/YIkcJ/dll+AIMukdrIBrbxGvbbwjwuCblXc9vhpbO2lM1shcm2yF7u/M5MTOgQJhDgCr
+	yosjyZP8YttW38AzJ3D+magkmObviXZSc7K9gFSbN6xkRuA6iXJ12/diIwm58BjKLBYEvj
+	4EVDpISNEH/xUQ1eevSxGcy02C7TDcU=
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-39397d637e6so16272381fa.0
+        for <linux-mm@kvack.org>; Thu, 28 May 2026 02:36:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779961003; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YrGg3bE/ifpAKP5yBh9BKCnZ5Oe4x9ywnmGBO1Jx5Z82vg7HlaUFlsfZzVR3rW4MFp
+         Y1i0OE0Svyd6h+QY09Qyd7NRc9B624dsvPkWw2QpoPP/oi9zYTxsTmZFG7i5txVvdZK/
+         zcUsgE2cghYFORU4MgOviyV0enf1a/eqWIQwijX0rzfh2a+4YWJMOUTh89M2Px2mhEp6
+         Nm6b+9E/K1BR9TfmHkRxAHKksajNWXmdsTNX7T3TVW6rnGtMBTPyFpFbkvxDMAo66AAU
+         q8CNgQcxVxFydjTYUI3jW2hjMPlVfhvrFYpAtdbXssIFCfiusAXTw4qzIlg4L5VWLv4u
+         3Mng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=okJAHKr2FRoEu7Zvqgqg5rnovsf6ah+xiiUgmbVNkGk=;
+        fh=Pg/Sbg8G9FcG5RR1FxUdTFZuD68A6nVphXyjtbN+ww4=;
+        b=LBfaCS1Lf+GTfHRQXacRE8bX50cLno7R+o5koh8bdNYsZ/HPMPU9tGaqrogcCvdD93
+         EHGQfUfI95umwfH3uf7ZLWw+OIYVu1e9GbpzgAKS2GPKt1ZXdzoFpxUz7ANFzMPV3CLD
+         lVMR1f9kZyD947n3hPzdEoJuuoDR/WtW12R12j9B7Ljp350+R50WTr8tzuzxyMei0HXV
+         Q+iksIV4rG8bXzLnqE3IXIi7MvkDA9hgGiFYsjm4h4yfbJz+Dg9q3JPYSjJ+6eHNvWa4
+         NFL1RW+jRYGNukds3dExUPGb/1NSR/aMb9wclv9tRoPoHGy2tyvFiPgsnYqxLlIu1Bmw
+         Z47g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779961003; x=1780565803; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=okJAHKr2FRoEu7Zvqgqg5rnovsf6ah+xiiUgmbVNkGk=;
+        b=P3IMthxjAFckGyk78IvG14m/WDro7hmKd9z/rIkW3dhSqzCaMx6vY8gMZ2G8do6uK9
+         t3kESBjesgma1aFWY9V0Yx2QHjAOE8k59tCwx8bImEgd//FTuhUOBnlsdYmi8oEsec5o
+         yAshbbGEOHRWZrYaSeyovcC6BqztwKtDAEWlb4j4rZ7zizxwSl4/GpZZLk1VTnuqqqu8
+         V+ZrwbGDX9HknpOpdsEiyC6XGeQWJSNyvxmElL0F/PdSbdZ0SZ/i6rwN82lyKQEtNgfC
+         IK4IBbzMQcscP7/DHBZXpvN4ZOueXf3PivCiOUSWLqrIVi15s7UqXqMdsPruItYS6Rhs
+         USLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779961003; x=1780565803;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=okJAHKr2FRoEu7Zvqgqg5rnovsf6ah+xiiUgmbVNkGk=;
+        b=R/vgF7GAKSWurmxCIvjQ4sMG0wBveRNzb2+cro2/lkDZhv1+0WTT8eqeUu0Ut5J4cv
+         inMAmHosnChBa/IsTUuoRAkSjO/2OS1stwejx/RMYfyJLSdZp1/hCsMrK/7SDcXm7edw
+         UdD3An77sxbZ5K6wPITmnZlbv9AXf4DnmtL/LTGfZzMOSbPIqZcdFeP4LwYXKu+Dq0VA
+         ws8vikhpMlLEP62LYj1Keb5+C3W08TXTWA96HL9SLkJwbd1QRbKkL3rbwobR3Ks0wyTG
+         XkrF2HC8I6RAF3gxvPsqnEOMgyH0CXoHPIMNi9WTq5lSzQ6gBwIRsVEPqM3sKZZCvVWx
+         yQsg==
+X-Forwarded-Encrypted: i=1; AFNElJ8rWFT9LbFmSl9IobC8dsDcsHpbu8qSEFfHksIXNM1sCJAASqttJLR1qLCnyacOLCVtEFeEmnJ0QQ==@kvack.org
+X-Gm-Message-State: AOJu0YxrBsWFzncDYOv7js7XXaSOd8A3iZqAbUSnDufP2pXlRftu/c1K
+	SU5iiwcfKdOKZSTP0jlPWbjCXrxy5oSLmEzBHLUTWCBQbY4rd97WWLwCHJauBlGJalUvsJctPCF
+	mjNZeDmSANle9PBdPgn+St5uJ6hbF5Qk=
+X-Gm-Gg: Acq92OHwZqVN3MVUtGEclw6mIEbK5hmgj0n1SK64x92igH7zbQBXfF/Ey+WFwiAI9Sn
+	xMzgnwXyPGkFNp0Wpt98q55GCpnHqltYLSfFm5n78+xL3FkYAIVQzHa+81zt6Yts/NvR/l31oLl
+	gjwHaGlJEt3Hv0jNzxrVfuKp1/Xe1jbxZ8tbaF+4B5VyvhA3VPxVvX1v+GnjIfFclmwil9WGaty
+	/5rxMc4y38hT81F6i2ilsXBXB6DbKkUpk+xA/3S65inO2nXy+uHNzqH5qhW1LSHqJZthE3u1Qvs
+	35h21a46viVmXXxwLCkpXIUVxFrGcw==
+X-Received: by 2002:a05:651c:1073:b0:393:a31a:ab30 with SMTP id
+ 38308e7fff4ca-3963a90ec06mr2931781fa.0.1779961002622; Thu, 28 May 2026
+ 02:36:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <20260527085622.1298437-1-zhaoyang.huang@unisoc.com> <CAGsJ_4zVu=XooHPzOVtNRV8iV0CEKM0rBwqUBBxfoxiZS-g4-g@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zVu=XooHPzOVtNRV8iV0CEKM0rBwqUBBxfoxiZS-g4-g@mail.gmail.com>
+From: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Date: Thu, 28 May 2026 17:36:29 +0800
+X-Gm-Features: AVHnY4LFpA-tRWvhZS8vTWzBTMM2MDik_pb4I_EbYXeQWRhTu-IirDcbtzqEWVk
+Message-ID: <CAGWkznGmDtr9-PaH2+2kbrpe-YZ7w70HpzyH2fzE5u-3MZ+ouQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/mglru: improve positive_ctrl_err for low refault samples
+To: Barry Song <baohua@kernel.org>
+Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, steve.kang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: eqmztqxk7c4eiakstpjzx35gn318tqt7
+X-Rspamd-Queue-Id: E1CEF40008
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0FBE31C0004
-X-Stat-Signature: nun9t54fdk8asi6wa773ja3gdcxn4tx7
-X-HE-Tag: 1779960891-757446
-X-HE-Meta: U2FsdGVkX1/q3edawXGACuJdzN9LcWuVQj44qDQzDiTZwFUDMms4B0CchnOZ0q6qkrlDVIAgG9trbdpzFB+caygiY4FjZeVWOW8uZv0B3kMixHFTvDZucw1D9BKfp37CJ55Zkf2UjhPrWmSIlOlvceRHYdFqJ0U8Hm5T0lrBike+J7atfSHBbdHkYFBCtDK0whNDxWj5vHXxljjP/roi/bKpwjfd2DDKlr8fRrapqXJWFG9EA0w0vNIH0G/M5qfxv/993U9Bws93Lh0/JOSiMgeBkvEPHxELZTqQWsQ90nJOu6U0qOiAynIGd5YIBZbemwu9VK11N2SMkMHn44S18Nuv4A+6PfZppD5ZAhoG4HSXX0Yq4UEaahjvPmRzE3fLh+n4NY6AuRc2eNxJr7DSgdNNuvu033YHH/kznMm7VoIxeSTLCJsyzNjZod5tMk+C9vadGHa1ENd8N7COMFaWu3YfvY/lBVJCgBSR1tJeNEQrovfmblKegN1fb5uf4JwEiaDYGyoHUXTIR/xR9xss8rv5lNQ9UqZudT61cXQH5YmGYWMTvJm+T8eghBCljh85rx4Ri8ZDfzWfSBhdVu/7yRHxbMW87sqcObbbMgKo1jYvpdg9MEXcFHMBPUR7tIeiQpfJWhxhR8pD0twsJ/PhUd/ra7AQB0Z7JC5ei2NkQ5x2QQlRODzt8/z5GgAgfwojuSzMuUBXIET/nM78WZxgNU8WozRqJyvbQG//Q1h9R3xDBahtRFnS/XCSdEGVY1zm+p/cMm32+4upi6uYDPv18xCBCllPBZP5jC6Sw2+imB86xVrNEV7sIWcyOMburU2nyqT+ZOlgNUyiEbQI0ENd9dDlWsUCzyqN0mitE+0sNzVyyICq26jQq5IvE+nRo2iFeOmLfex8zoxHnqq9320k1Y0qkoH0/z6s8dLRVRWijNrid4xZCIgH1Dcy9PV9CCb0EDURV/jhzv/DgEH2Wck
- P581jxB6
- Vx2PIxPfwpmeLiYCV8xa+yPfksCsRbnpU/Nu7mfdWRxC+1ymkJ06c8uRnY1nQXHxJ/sF/sHzQa3uWxCsRfhdERkHDrVc4jzFA82radj/T5s8bc3BO/eqMJDIu+7NqjTWovdHNaCoLQPhUEN81ocj5qip6sqjhXgr3j0GqGnQ4Oy6ipc4SmSUyNEVbDabo2vUJHqsZe7z6X6aR4WcwimyAOrBg2KMfQfCibXL852+pRTjofNLhhFyxJkOt1k/8H1s92rniFWDpegFBV1tRpY2vo7wqSE/tPVlm53MKoTsKU5lcnG2uD2s6csUIV1QVrYXRqyk1NaSZela5p3n4NWJoVgePjTkBWyFJ/wRZCrsrtWSpyUPianiK7Y8oXVVzjOZvMMANDLS0cdm1u4HrEPPH9Z5DWF6hIEChbjldRyAXVvDyPa/kQ2qg40vRwgrCDClM3zGW5EwHa31Mw/S30N2Ly0tU5DJH/W4VMHqkR92zrsh4iQ+0jKqMdyCCyX7edfmJAEixYmLsMfqj0keeUbem1Q+nrc5pk0LUAA6niKKmMvkgBdR2Hi8+wJvhuuvtio70K6ZikxSqQdiV7I0dHwX1qYOYVixoHwoDlDMl1Tyy8da4k9nn2Xac9bv8JA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779961004-876787
+X-HE-Meta: U2FsdGVkX19pl4J5UwKpJtO3x6LJpscWpa+JpCuiA0YFB3jL7owinLST/r6yINZ/5pDvmAPIswtoZwrhtFi6eOO/PY2NuCBD4B5mRLLZR5Sc2+/g8gn3KPolGBKGM/Vtxzktm5/+MTDsZRfGFHdxTQg3rAt4IYmy616vEXqARGa4DsGqJEQ+k+4mr3dOU6lUsQXeKuGc1DFvdij8BDoT3A49ugboheWYY3M+5xPpxYG6nE+74eym//WVeBj1n5uzyHzMD6sVcny+FFvCeEY4wXqpYh1r0uLc1Zn4EB0mKpajGNolm5NrIjztP+wXWhlu1wMEnUlvL1W13Lu2SdhxNfTJ3xT4bIJ/93d667a3o0Tv9537Qz6tuxiFzEMnqW/B2uDW7NCvBG6arrW92O45Hu+arYA4sShWF4LummySy8NUpA4fWUeidbXhXroPiNHmia0ADkI1ELJj/QtWx3cEvyWai8HXaCjjrEB4s5ZzmLs5PfZXeyXveypyiY/qVvTCgGyZb97UhkQDj6PGHKMoKLWfbxb2Azp2QO8oM6UzsOMxE2BUfpXsaWpgTn/JgrivZ95+l8Y7vtj0FUE+uTnclOg2nE4Jvw3obA79xgrLz1yNMA1IiiKWMEE+sjQCSdcAarJO7ej/D8WeYctItTs0mwS6toeWLHy/Fm2zGxjMpvjbJYwtC1MlpR52wtiAGGZxcUuEOPryrWkvPedrcAzrwKQBTGalgu3vsqK0Ho6HIxishVSXlMbwMVrAy4S5zLnMdKBIAjb7JpmBelkdj/oKj912KTrlZrWFs8NzboErOyRBc5tBnwtqo3BYLxTcIaEHkfxiMAm1/g4G+UUnY4edd5WB3oD1yyPA4O9SbHum4pm03Ba81NjSSLvwa/7qQumwPYe3S1i6nGSFK0HWHnplWl+2Zs7nhjqrQrC6QBS5EyIb93+eepqHX/balzaZQ2ojov9qRtxYnObTiPslzVw
+ mgTvTqec
+ 3C0JNE2BeSNZsr1HDn5TxnyTnsPNdq7nQD600DHKdQICyCC15Qfjn0iixH+f0iWAAJbygAabxM9ZtTQslYWqK9v9AXggQcCYsvvZmjHIktUaWOTN3i77dPq2BauE1tmIKakjo2X4deUlq847L5HVMlpLsHmowa0UpBIoVRYrKTdUrVZuC6uZnarDnVo5AAGWQRCdyheHThS+R/bzzJAKQaRqH93GkblZF9sTfJ3CnrrKCpvvs5YQkxm3KfHcXuEaTaqPGO0v0MV9o6ZOOS82UQvVDhtR0WDKeZNHzKYeukoUfc9UMlb3PHwGEzfpzP4E731Ztz+E5/s3O3Km+fR+WBdFR7VJHr9ymwCryOAUb6DOREusiS+qVQEiS+cKFpLnS/EB/+sjn4bOcnacL7meVvIfB0At2AEdYkBqLov9qa08edc1EWuZd73drtTZpRSGZTosvxZTgotzqB6lPORQnCiMd3a76/jrmK2v0UfNK4f4p8EUaQkh3LlECd3n/icyJ3kRnCGVIMjEf3OVWuDYbu42pww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,529 +143,261 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The kmem_cache_alloc_bulk return value is weird.  It returns the number
-of allocated objects, but that must always be 0 or the requested number
-based on the implementations and the handling in the callers, but that
-assumption is not actually documented anywhere, which confuses automated
-review tools.
+On Wed, May 27, 2026 at 5:15=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
+e:
+>
+> On Wed, May 27, 2026 at 4:57=E2=80=AFPM zhaoyang.huang
+> <zhaoyang.huang@unisoc.com> wrote:
+> >
+> > From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> >
+> > The memory.stat under per-pid memcg & MGLRU[1] observed in android
+> > system which means current type selection by judging the refault rate
+> > almost failed since file page's refault count remains 0 which will
+> > shortcut to file by 'pv->refaulted < MIN_LRU_BATCH'. The reason could b=
+e
+> > both of small lruvec size and bypass of the file refault count when it
+> > refaulted in another memcg.
+> > Refine the MGLRU PID comparison when lruvecs lack enough refault
+> > statistics, using gain-aware fallbacks which is simply respect the
+> > swappiness and historical integral value without affecting the usual
+> > refault-rate path under sustained reclaim pressure.
+> >
+> > [1]
+> > /sys/fs/cgroup/apps/uid_10123/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1123 steal_direct=3D32=
+ pgactive=3D58
+> > /sys/fs/cgroup/apps/uid_10136/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D2491 steal_direct=3D64=
+ pgactive=3D48
+> > /sys/fs/cgroup/apps/uid_10237/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1355 steal_direct=3D0 =
+pgactive=3D1
+> > /sys/fs/cgroup/system/uid_1002/memory.stat: refault_anon=3D3 active_ano=
+n=3D1 refault_file=3D0 active_file=3D0 steal_kswapd=3D1162 steal_direct=3D4=
+ pgactive=3D3987
+> > /sys/fs/cgroup/system/uid_1027/memory.stat: refault_anon=3D1 active_ano=
+n=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1157 steal_direct=3D1=
+4 pgactive=3D1517
+> > /sys/fs/cgroup/system/uid_1037/memory.stat: refault_anon=3D0 active_ano=
+n=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1461 steal_direct=3D0=
+ pgactive=3D247
+> > /sys/fs/cgroup/system/uid_1046/pid_1251/memory.stat: refault_anon=3D0 a=
+ctive_anon=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1643 steal_d=
+irect=3D18 pgactive=3D2914
+> > /sys/fs/cgroup/system/uid_1047/pid_724/memory.stat: refault_anon=3D0 ac=
+tive_anon=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D8924 steal_di=
+rect=3D449 pgactive=3D3753
+> > /sys/fs/cgroup/system/uid_1047/pid_789/memory.stat: refault_anon=3D0 ac=
+tive_anon=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D3864 steal_di=
+rect=3D157 pgactive=3D3062
+> > /sys/fs/cgroup/apps/uid_10090/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1285 steal_direct=3D32=
+ pgactive=3D36
+> > /sys/fs/cgroup/apps/uid_10123/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1126 steal_direct=3D32=
+ pgactive=3D70
+> > /sys/fs/cgroup/apps/uid_10136/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D2474 steal_direct=3D69=
+ pgactive=3D52
+> > /sys/fs/cgroup/apps/uid_10175/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D3264 steal_direct=3D10=
+ pgactive=3D861
+> > /sys/fs/cgroup/apps/uid_10211/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1447 steal_direct=3D32=
+ pgactive=3D21
+> > /sys/fs/cgroup/apps/uid_10237/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1354 steal_direct=3D0 =
+pgactive=3D2
+> > /sys/fs/cgroup/system/uid_1000/pid_471/memory.stat: refault_anon=3D0 ac=
+tive_anon=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1296 steal_di=
+rect=3D4 pgactive=3D65
+> > /sys/fs/cgroup/system/uid_1002/memory.stat: refault_anon=3D18 active_an=
+on=3D3 refault_file=3D0 active_file=3D0 steal_kswapd=3D1286 steal_direct=3D=
+4 pgactive=3D3979
+> > /sys/fs/cgroup/system/uid_1037/memory.stat: refault_anon=3D0 active_ano=
+n=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1462 steal_direct=3D0=
+ pgactive=3D246
+> > /sys/fs/cgroup/system/uid_1041/memory.stat: refault_anon=3D17 active_an=
+on=3D5 refault_file=3D0 active_file=3D0 steal_kswapd=3D4429 steal_direct=3D=
+30 pgactive=3D5239
+> > /sys/fs/cgroup/system/uid_1041/pid_820/memory.stat: refault_anon=3D12 a=
+ctive_anon=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D2441 steal_d=
+irect=3D17 pgactive=3D2034
+> > /sys/fs/cgroup/system/uid_1041/pid_839/memory.stat: refault_anon=3D5 ac=
+tive_anon=3D5 refault_file=3D0 active_file=3D0 steal_kswapd=3D1357 steal_di=
+rect=3D10 pgactive=3D2055
+> > /sys/fs/cgroup/system/uid_1047/pid_1166/memory.stat: refault_anon=3D0 a=
+ctive_anon=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1577 steal_d=
+irect=3D70 pgactive=3D1130
+> > /sys/fs/cgroup/system/uid_1047/pid_732/memory.stat: refault_anon=3D0 ac=
+tive_anon=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D7661 steal_di=
+rect=3D115 pgactive=3D3681
+> > /sys/fs/cgroup/system/uid_1047/pid_799/memory.stat: refault_anon=3D0 ac=
+tive_anon=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D2847 steal_di=
+rect=3D62 pgactive=3D3573
+> > /sys/fs/cgroup/apps/uid_10129/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1153 steal_direct=3D18=
+ pgactive=3D42
+> > /sys/fs/cgroup/apps/uid_10136/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D2336 steal_direct=3D21=
+0 pgactive=3D49
+> > /sys/fs/cgroup/apps/uid_10165/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1491 steal_direct=3D43=
+ pgactive=3D525
+> > /sys/fs/cgroup/apps/uid_10175/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D2229 steal_direct=3D10=
+8 pgactive=3D863
+> > /sys/fs/cgroup/apps/uid_10211/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1299 steal_direct=3D16=
+3 pgactive=3D23
+> > /sys/fs/cgroup/apps/uid_10237/memory.stat: refault_anon=3D0 active_anon=
+=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1323 steal_direct=3D32=
+ pgactive=3D2
+> > /sys/fs/cgroup/system/uid_0/pid_1203/memory.stat: refault_anon=3D0 acti=
+ve_anon=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D2927 steal_dire=
+ct=3D12 pgactive=3D252
+> > /sys/fs/cgroup/system/uid_1037/memory.stat: refault_anon=3D0 active_ano=
+n=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D1359 steal_direct=3D3=
+4 pgactive=3D253
+> > /sys/fs/cgroup/system/uid_1047/memory.stat: refault_anon=3D0 active_ano=
+n=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D4269 steal_direct=3D5=
+5 pgactive=3D6308
+> > /sys/fs/cgroup/system/uid_1047/pid_721/memory.stat: refault_anon=3D0 ac=
+tive_anon=3D0 refault_file=3D0 active_file=3D0 steal_kswapd=3D2745 steal_di=
+rect=3D44 pgactive=3D2761
+>
+> Yes.
+>
+> I agree that the current positive_ctrl_err() has some issues
+> that could be improved. But could you describe the user-visible
+> behavior affected by your patch? For example, does it improve
+> swappiness behavior? Does it eliminate the over-protection of
+> anon memory?
+This RFC mainly aims at Sashiko's comment. The main concerned static
+value within /proc/meminfo changed as below while the ratio of
+pgscan_file/pgscan_anon during monkey test has no change
 
-Fix this by returning a bool if the allocation succeeded and adding a
-kerneldoc comment explaining the API.
+before:
+Active(anon):     759900 kB
+Inactive(anon):   202540 kB
+SwapTotal:       6291452 kB
+SwapFree:        6116352 kB
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com> # skbuff
----
- drivers/gpu/drm/msm/msm_iommu.c       |  6 +--
- drivers/gpu/drm/panthor/panthor_mmu.c | 13 +++---
- include/linux/slab.h                  |  6 ++-
- io_uring/io_uring.c                   | 23 ++++-------
- lib/test_meminit.c                    | 23 +++++------
- mm/kasan/kasan_test_c.c               |  5 +--
- mm/kfence/kfence_test.c               |  9 ++--
- mm/slub.c                             | 59 +++++++++++++++------------
- net/bpf/test_run.c                    |  7 ++--
- net/core/skbuff.c                     | 24 ++++++-----
- tools/include/linux/slab.h            |  2 +-
- tools/testing/shared/linux.c          | 19 ++++-----
- 12 files changed, 97 insertions(+), 99 deletions(-)
+after:
+Active(anon):     360536 kB
+Inactive(anon):   308368 kB
+SwapTotal:       6291452 kB
+SwapFree:        5866340 kB
 
-diff --git a/drivers/gpu/drm/msm/msm_iommu.c b/drivers/gpu/drm/msm/msm_iommu.c
-index 058c71c82cf5..533104d71f6c 100644
---- a/drivers/gpu/drm/msm/msm_iommu.c
-+++ b/drivers/gpu/drm/msm/msm_iommu.c
-@@ -330,17 +330,15 @@ static int
- msm_iommu_pagetable_prealloc_allocate(struct msm_mmu *mmu, struct msm_mmu_prealloc *p)
- {
- 	struct kmem_cache *pt_cache = get_pt_cache(mmu);
--	int ret;
- 
- 	p->pages = kvmalloc_objs(*p->pages, p->count);
- 	if (!p->pages)
- 		return -ENOMEM;
- 
--	ret = kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, p->count, p->pages);
--	if (ret != p->count) {
-+	if (!kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, p->count, p->pages)) {
- 		kfree(p->pages);
- 		p->pages = NULL;
--		p->count = ret;
-+		p->count = 0;
- 		return -ENOMEM;
- 	}
- 
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index 75d98dad7b1d..b12c641af46c 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -1274,13 +1274,13 @@ static int panthor_vm_prepare_map_op_ctx(struct panthor_vm_op_ctx *op_ctx,
- 		goto err_cleanup;
- 	}
- 
--	ret = kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, pt_count,
--				    op_ctx->rsvd_page_tables.pages);
--	op_ctx->rsvd_page_tables.count = ret;
--	if (ret != pt_count) {
-+	if (!kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, pt_count,
-+			op_ctx->rsvd_page_tables.pages)) {
-+		op_ctx->rsvd_page_tables.count = 0;
- 		ret = -ENOMEM;
- 		goto err_cleanup;
- 	}
-+	op_ctx->rsvd_page_tables.count = pt_count;
- 
- 	/* Insert BO into the extobj list last, when we know nothing can fail. */
- 	dma_resv_lock(panthor_vm_resv(vm), NULL);
-@@ -1328,9 +1328,8 @@ static int panthor_vm_prepare_unmap_op_ctx(struct panthor_vm_op_ctx *op_ctx,
- 			goto err_cleanup;
- 		}
- 
--		ret = kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, pt_count,
--					    op_ctx->rsvd_page_tables.pages);
--		if (ret != pt_count) {
-+		if (!kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, pt_count,
-+				op_ctx->rsvd_page_tables.pages)) {
- 			ret = -ENOMEM;
- 			goto err_cleanup;
- 		}
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 2b5ab488e96b..6a7b452d43a0 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -815,8 +815,10 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
-  */
- void kmem_cache_free_bulk(struct kmem_cache *s, size_t size, void **p);
- 
--int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size, void **p);
--#define kmem_cache_alloc_bulk(...)	alloc_hooks(kmem_cache_alloc_bulk_noprof(__VA_ARGS__))
-+bool kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags,
-+		size_t size, void **p);
-+#define kmem_cache_alloc_bulk(...) \
-+	alloc_hooks(kmem_cache_alloc_bulk_noprof(__VA_ARGS__))
- 
- static __always_inline void kfree_bulk(size_t size, void **p)
- {
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 103b6c88f252..bf847ca823f7 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -978,29 +978,24 @@ __cold bool __io_alloc_req_refill(struct io_ring_ctx *ctx)
- {
- 	gfp_t gfp = GFP_KERNEL | __GFP_NOWARN | __GFP_ZERO;
- 	void *reqs[IO_REQ_ALLOC_BATCH];
--	int ret;
--
--	ret = kmem_cache_alloc_bulk(req_cachep, gfp, ARRAY_SIZE(reqs), reqs);
-+	int nr_reqs = ARRAY_SIZE(reqs);
- 
- 	/*
--	 * Bulk alloc is all-or-nothing. If we fail to get a batch,
--	 * retry single alloc to be on the safe side.
-+	 * Bulk alloc is all-or-nothing. If we fail to get a batch, retry a
-+	 * single allocation to be on the safe side.
- 	 */
--	if (unlikely(ret <= 0)) {
-+	if (!kmem_cache_alloc_bulk(req_cachep, gfp, nr_reqs, reqs)) {
- 		reqs[0] = kmem_cache_alloc(req_cachep, gfp);
- 		if (!reqs[0])
- 			return false;
--		ret = 1;
-+		nr_reqs = 1;
- 	}
- 
--	percpu_ref_get_many(&ctx->refs, ret);
--	ctx->nr_req_allocated += ret;
--
--	while (ret--) {
--		struct io_kiocb *req = reqs[ret];
-+	percpu_ref_get_many(&ctx->refs, nr_reqs);
-+	ctx->nr_req_allocated += nr_reqs;
- 
--		io_req_add_to_cache(req, ctx);
--	}
-+	while (nr_reqs--)
-+		io_req_add_to_cache(reqs[nr_reqs], ctx);
- 	return true;
- }
- 
-diff --git a/lib/test_meminit.c b/lib/test_meminit.c
-index d028a6552cd6..68c3b9da090e 100644
---- a/lib/test_meminit.c
-+++ b/lib/test_meminit.c
-@@ -229,16 +229,14 @@ static int __init do_kmem_cache_size(size_t size, bool want_ctor,
- 	for (iter = 0; iter < 10; iter++) {
- 		/* Do a test of bulk allocations */
- 		if (!want_rcu && !want_ctor) {
--			int ret;
--
--			ret = kmem_cache_alloc_bulk(c, alloc_mask, BULK_SIZE, bulk_array);
--			if (!ret) {
-+			if (!kmem_cache_alloc_bulk(c, alloc_mask, BULK_SIZE,
-+					bulk_array)) {
- 				fail = true;
- 			} else {
- 				int i;
--				for (i = 0; i < ret; i++)
-+				for (i = 0; i < BULK_SIZE; i++)
- 					fail |= check_buf(bulk_array[i], size, want_ctor, want_rcu, want_zero);
--				kmem_cache_free_bulk(c, ret, bulk_array);
-+				kmem_cache_free_bulk(c, BULK_SIZE, bulk_array);
- 			}
- 		}
- 
-@@ -348,23 +346,24 @@ static int __init do_kmem_cache_size_bulk(int size, int *total_failures)
- {
- 	struct kmem_cache *c;
- 	int i, iter, maxiter = 1024;
--	int num, bytes;
-+	int bytes;
- 	bool fail = false;
- 	void *objects[10];
- 
- 	c = kmem_cache_create("test_cache", size, size, 0, NULL);
- 	for (iter = 0; (iter < maxiter) && !fail; iter++) {
--		num = kmem_cache_alloc_bulk(c, GFP_KERNEL, ARRAY_SIZE(objects),
--					    objects);
--		for (i = 0; i < num; i++) {
-+		if (!kmem_cache_alloc_bulk(c, GFP_KERNEL, ARRAY_SIZE(objects),
-+				objects))
-+			continue;
-+
-+		for (i = 0; i < ARRAY_SIZE(objects); i++) {
- 			bytes = count_nonzero_bytes(objects[i], size);
- 			if (bytes)
- 				fail = true;
- 			fill_with_garbage(objects[i], size);
- 		}
- 
--		if (num)
--			kmem_cache_free_bulk(c, num, objects);
-+		kmem_cache_free_bulk(c, ARRAY_SIZE(objects), objects);
- 	}
- 	kmem_cache_destroy(c);
- 	*total_failures += fail;
-diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-index 3f4ed29178b3..b9e167ed5be3 100644
---- a/mm/kasan/kasan_test_c.c
-+++ b/mm/kasan/kasan_test_c.c
-@@ -1225,14 +1225,13 @@ static void kmem_cache_bulk(struct kunit *test)
- 	struct kmem_cache *cache;
- 	size_t size = 200;
- 	char *p[10];
--	bool ret;
- 	int i;
- 
- 	cache = kmem_cache_create("test_cache", size, 0, 0, NULL);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, cache);
- 
--	ret = kmem_cache_alloc_bulk(cache, GFP_KERNEL, ARRAY_SIZE(p), (void **)&p);
--	if (!ret) {
-+	if (!kmem_cache_alloc_bulk(cache, GFP_KERNEL, ARRAY_SIZE(p),
-+			(void **)&p)) {
- 		kunit_err(test, "Allocation failed: %s\n", __func__);
- 		kmem_cache_destroy(cache);
- 		return;
-diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
-index 10424cd25e5a..c472e66e7242 100644
---- a/mm/kfence/kfence_test.c
-+++ b/mm/kfence/kfence_test.c
-@@ -761,9 +761,10 @@ static void test_memcache_alloc_bulk(struct kunit *test)
- 	timeout = jiffies + msecs_to_jiffies(100 * kfence_sample_interval);
- 	do {
- 		void *objects[100];
--		int i, num = kmem_cache_alloc_bulk(test_cache, GFP_ATOMIC, ARRAY_SIZE(objects),
--						   objects);
--		if (!num)
-+		int i;
-+
-+		if (!kmem_cache_alloc_bulk(test_cache, GFP_ATOMIC,
-+				ARRAY_SIZE(objects), objects))
- 			continue;
- 		for (i = 0; i < ARRAY_SIZE(objects); i++) {
- 			if (is_kfence_address(objects[i])) {
-@@ -771,7 +772,7 @@ static void test_memcache_alloc_bulk(struct kunit *test)
- 				break;
- 			}
- 		}
--		kmem_cache_free_bulk(test_cache, num, objects);
-+		kmem_cache_free_bulk(test_cache, ARRAY_SIZE(objects), objects);
- 		/*
- 		 * kmem_cache_alloc_bulk() disables interrupts, and calling it
- 		 * in a tight loop may not give KFENCE a chance to switch the
-diff --git a/mm/slub.c b/mm/slub.c
-index a2bf3756ca7d..57b2af707e95 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4981,8 +4981,8 @@ static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
- 	return ret;
- }
- 
--static int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
--				   size_t size, void **p);
-+static bool __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
-+		size_t size, void **p);
- 
- /*
-  * returns a sheaf that has at least the requested size
-@@ -5154,9 +5154,8 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
- 			return __prefill_sheaf_pfmemalloc(s, sheaf, gfp);
- 
- 		if (!__kmem_cache_alloc_bulk(s, gfp, sheaf->capacity - sheaf->size,
--					     &sheaf->objects[sheaf->size])) {
-+					     &sheaf->objects[sheaf->size]))
- 			return -ENOMEM;
--		}
- 		sheaf->size = sheaf->capacity;
- 
- 		return 0;
-@@ -7289,9 +7288,8 @@ refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
- 	return refilled;
- }
- 
--static inline
--int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
--			    void **p)
-+static bool __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
-+		size_t size, void **p)
- {
- 	int i;
- 
-@@ -7312,30 +7310,43 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
- 		stat_add(s, ALLOC_SLOWPATH, i);
- 	}
- 
--	return i;
-+	return true;
- 
- error:
- 	__kmem_cache_free_bulk(s, i, p);
--	return 0;
--
-+	return false;
- }
- 
--/*
-- * Note that interrupts must be enabled when calling this function and gfp
-- * flags must allow spinning.
-+/**
-+ * kmem_cache_alloc_bulk - Allocate multiple objects
-+ * @s:		The cache to allocate from
-+ * @flags:	GFP_* flags. See kmalloc().
-+ * @size:	Number of objects to allocate
-+ * @p:		Array of allocated objects
-+ *
-+ * Allocate @size objects from @s and places them into @p.  @size must be larger
-+ * than 0.
-+ *
-+ * Interrupts must be enabled when calling this function and @flags must allow
-+ * spinning.
-+ *
-+ * Unlike alloc_pages_bulk(), this function does not check for already allocated
-+ * objects in @p, and thus the caller does not need to zero it.
-+ *
-+ * Return: %true if the allocation succeeded, or %false if it failed.
-  */
--int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
--				 void **p)
-+bool kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags,
-+		size_t size, void **p)
- {
- 	unsigned int i = 0;
- 	void *kfence_obj;
- 
- 	if (!size)
--		return 0;
-+		return false;
- 
- 	s = slab_pre_alloc_hook(s, flags);
- 	if (unlikely(!s))
--		return 0;
-+		return false;
- 
- 	/*
- 	 * to make things simpler, only assume at most once kfence allocated
-@@ -7352,18 +7363,18 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
- 	}
- 
- 	i = alloc_from_pcs_bulk(s, flags, size, p);
--
- 	if (i < size) {
- 		/*
- 		 * If we ran out of memory, don't bother with freeing back to
- 		 * the percpu sheaves, we have bigger problems.
- 		 */
--		if (unlikely(__kmem_cache_alloc_bulk(s, flags, size - i, p + i) == 0)) {
-+		if (unlikely(!__kmem_cache_alloc_bulk(s, flags, size - i,
-+				p + i))) {
- 			if (i > 0)
- 				__kmem_cache_free_bulk(s, i, p);
- 			if (kfence_obj)
- 				__kfence_free(kfence_obj);
--			return 0;
-+			return false;
- 		}
- 	}
- 
-@@ -7382,12 +7393,8 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
- 	 * memcg and kmem_cache debug support and memory initialization.
- 	 * Done outside of the IRQ disabled fastpath loop.
- 	 */
--	if (unlikely(!slab_post_alloc_hook(s, NULL, flags, size, p,
--		    slab_want_init_on_alloc(flags, s), s->object_size))) {
--		return 0;
--	}
--
--	return size;
-+	return likely(slab_post_alloc_hook(s, NULL, flags, size, p,
-+			slab_want_init_on_alloc(flags, s), s->object_size));
- }
- EXPORT_SYMBOL(kmem_cache_alloc_bulk_noprof);
- 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 2bc04feadfab..99ab9ddb05e3 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -243,12 +243,11 @@ static int xdp_recv_frames(struct xdp_frame **frames, int nframes,
- 			   struct net_device *dev)
- {
- 	gfp_t gfp = __GFP_ZERO | GFP_ATOMIC;
--	int i, n;
-+	int i;
- 	LIST_HEAD(list);
- 
--	n = kmem_cache_alloc_bulk(net_hotdata.skbuff_cache, gfp, nframes,
--				  (void **)skbs);
--	if (unlikely(n == 0)) {
-+	if (!kmem_cache_alloc_bulk(net_hotdata.skbuff_cache, gfp, nframes,
-+				   (void **)skbs)) {
- 		for (i = 0; i < nframes; i++)
- 			xdp_return_frame(frames[i]);
- 		return -ENOMEM;
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 44ac121cfccb..73045b688385 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -288,11 +288,11 @@ static inline struct sk_buff *napi_skb_cache_get(bool alloc)
- 
- 	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
- 	if (unlikely(!nc->skb_count)) {
--		if (alloc)
--			nc->skb_count = kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
--						GFP_ATOMIC | __GFP_NOWARN,
--						NAPI_SKB_CACHE_BULK,
--						nc->skb_cache);
-+		if (alloc && kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
-+						   GFP_ATOMIC | __GFP_NOWARN,
-+						   NAPI_SKB_CACHE_BULK,
-+						   nc->skb_cache))
-+			nc->skb_count = NAPI_SKB_CACHE_BULK;
- 		if (unlikely(!nc->skb_count)) {
- 			local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
- 			return NULL;
-@@ -353,16 +353,18 @@ u32 napi_skb_cache_get_bulk(void **skbs, u32 n)
- 
- 	/* No enough cached skbs. Try refilling the cache first */
- 	bulk = min(NAPI_SKB_CACHE_SIZE - nc->skb_count, NAPI_SKB_CACHE_BULK);
--	nc->skb_count += kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
--					       GFP_ATOMIC | __GFP_NOWARN, bulk,
--					       &nc->skb_cache[nc->skb_count]);
-+	if (kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
-+				  GFP_ATOMIC | __GFP_NOWARN, bulk,
-+				  &nc->skb_cache[nc->skb_count]))
-+		nc->skb_count += bulk;
- 	if (likely(nc->skb_count >= n))
- 		goto get;
- 
- 	/* Still not enough. Bulk-allocate the missing part directly, zeroed */
--	n -= kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
--				   GFP_ATOMIC | __GFP_ZERO | __GFP_NOWARN,
--				   n - nc->skb_count, &skbs[nc->skb_count]);
-+	if (kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
-+				  GFP_ATOMIC | __GFP_ZERO | __GFP_NOWARN,
-+				  n - nc->skb_count, &skbs[nc->skb_count]))
-+		n = nc->skb_count;
- 	if (likely(nc->skb_count >= n))
- 		goto get;
- 
-diff --git a/tools/include/linux/slab.h b/tools/include/linux/slab.h
-index 6d8e9413d5a4..2e63c2e726aa 100644
---- a/tools/include/linux/slab.h
-+++ b/tools/include/linux/slab.h
-@@ -183,7 +183,7 @@ __kmem_cache_create(const char *name, unsigned int size, unsigned int align,
- 		default: __kmem_cache_create)(__name, __object_size, __args, __VA_ARGS__)
- 
- void kmem_cache_free_bulk(struct kmem_cache *cachep, size_t size, void **list);
--int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
-+bool kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
- 			  void **list);
- struct slab_sheaf *
- kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size);
-diff --git a/tools/testing/shared/linux.c b/tools/testing/shared/linux.c
-index 8c7257155958..e9c3bc9b3272 100644
---- a/tools/testing/shared/linux.c
-+++ b/tools/testing/shared/linux.c
-@@ -154,7 +154,7 @@ void kmem_cache_shrink(struct kmem_cache *cachep)
- {
- }
- 
--int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
-+bool kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
- 			  void **p)
- {
- 	size_t i;
-@@ -213,7 +213,7 @@ int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
- 		pthread_mutex_unlock(&cachep->lock);
- 		if (cachep->callback)
- 			cachep->exec_callback = true;
--		return 0;
-+		return false;
- 	}
- 
- 	for (i = 0; i < size; i++) {
-@@ -224,7 +224,7 @@ int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
- 			printf("Allocating %p from slab\n", p[i]);
- 	}
- 
--	return size;
-+	return true;
- }
- 
- struct kmem_cache *
-@@ -271,8 +271,8 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
- 
- 	sheaf->cache = s;
- 	sheaf->capacity = capacity;
--	sheaf->size = kmem_cache_alloc_bulk(s, gfp, size, sheaf->objects);
--	if (!sheaf->size) {
-+	sheaf->size = size;
-+	if (!kmem_cache_alloc_bulk(s, gfp, size, sheaf->objects)) {
- 		free(sheaf);
- 		return NULL;
- 	}
-@@ -284,7 +284,6 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
- 		 struct slab_sheaf **sheafp, unsigned int size)
- {
- 	struct slab_sheaf *sheaf = *sheafp;
--	int refill;
- 
- 	if (sheaf->size >= size)
- 		return 0;
-@@ -299,12 +298,10 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
- 		return 0;
- 	}
- 
--	refill = kmem_cache_alloc_bulk(s, gfp, size - sheaf->size,
--				       &sheaf->objects[sheaf->size]);
--	if (!refill)
-+	if (!kmem_cache_alloc_bulk(s, gfp, size - sheaf->size,
-+			&sheaf->objects[sheaf->size]))
- 		return -ENOMEM;
--
--	sheaf->size += refill;
-+	sheaf->size += (size - sheaf->size);
- 	return 0;
- }
- 
--- 
-2.53.0
-
+>
+> >
+> > Assisted-by: Cursor:GPT-5.x
+> > Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> > ---
+> >  mm/vmscan.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++++----
+> >  1 file changed, 52 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index bd1b1aa12581..5fecfaa392d8 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -3179,14 +3179,62 @@ static void reset_ctrl_pos(struct lruvec *lruve=
+c, int type, bool carryover)
+> >         }
+> >  }
+> >
+> > +/*
+> > + * positive_ctrl_err() - return true if SP is hotter than PV
+> > + *
+> > + * Drives MGLRU type and tier selection in get_type_to_scan() and
+> > + * get_tier_idx(). A true return means the setpoint is hotter than the=
+ process
+> > + * variable and reclaim should favor the other type or a higher tier.
+> > + *
+> > + * With reliable refault statistics on both sides, compare refault rat=
+es. That
+> > + * path dominates on large lruvecs under sustained memory pressure, in=
+cluding
+> > + * the node-level lruvec when memcg is disabled.
+> > + *
+> > + * Small memcg leaf lruvecs often lack reliable refault statistics: fe=
+w pages,
+> > + * infrequent reclaim, and counters reset on generation advance. Treat=
+ing a
+> > + * low PV refault count as unconditional evidence that SP is hotter ig=
+nores
+> > + * swappiness and tier gain and confuses "no samples yet" with "cold".=
+ Using
+> > + * the rate comparison when only SP lacks samples skews the ratio. The
+> > + * low-sample paths below apply gain-aware fallbacks and apply default=
+ing to SP
+> > + * is hotter when neither side has eviction history.
+> > + */
+>
+> I assume the new algorithm and the above comment were generated
+> by AI. Could you rephrase them in more human-understandable
+> language?
+The code is originally by myself and updated by AI. The main idea is
+ignoring the PID things(refault rate) when no enoufh refault count
+generated.
+>
+> >  static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv=
+)
+> >  {
+> > +       unsigned long pv_ref =3D pv->refaulted;
+> > +       /* Used by the rate comparison (SP only) and the total fallback=
+ (both). */
+> > +       unsigned long sp_total =3D sp->total + MIN_LRU_BATCH;
+> > +       unsigned long pv_total =3D pv->total + MIN_LRU_BATCH;
+> > +
+> > +       /* Both sides: compare refault rates. */
+> > +       if (sp->refaulted >=3D MIN_LRU_BATCH && pv->refaulted >=3D MIN_=
+LRU_BATCH)
+> > +               goto compare_rates;
+> > +
+> > +       /*
+> > +        * SP only: PV refault count is not statistically meaningful; t=
+reat PV
+> > +        * refaults as zero and use the rate comparison (yields SP hott=
+er).
+> > +        */
+> > +       if (sp->refaulted >=3D MIN_LRU_BATCH) {
+> > +               pv_ref =3D 0;
+> > +               goto compare_rates;
+> > +       }
+> > +
+> > +       /* PV only: trust PV refault signal; SP is not hotter. */
+> > +       if (pv->refaulted >=3D MIN_LRU_BATCH)
+> > +               return false;
+> > +
+> > +       /* Neither side has eviction history, pv is colder */
+> > +       if (!sp->total && !pv->total)
+> > +               return true;
+> > +
+> > +       /* Neither side has enough refaults: compare gain-weighted tota=
+ls. */
+> > +       return sp->gain * pv_total <=3D pv->gain * sp_total;
+> > +
+> > +compare_rates:
+> >         /*
+> > -        * Return true if the PV has a limited number of refaults or a =
+lower
+> > -        * refaulted/total than the SP.
+> > +        * Rate comparison with margin on SP total and refault only; PV=
+ total is
+> > +        * not padded so a meaningful PV refault rate is preserved when=
+ sampled.
+> >          */
+> > -       return pv->refaulted < MIN_LRU_BATCH ||
+> > -              pv->refaulted * (sp->total + MIN_LRU_BATCH) * sp->gain <=
+=3D
+> > +       return pv_ref * sp_total * sp->gain <=3D
+> >                (sp->refaulted + 1) * pv->total * pv->gain;
+> >  }
+> >
+> > --
+> > 2.25.1
+> >
+> >
 
