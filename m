@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33817CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:03:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE8E8CD4F54
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:06:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B2316B0098; Thu, 28 May 2026 10:03:22 -0400 (EDT)
+	id 43A836B009D; Thu, 28 May 2026 10:06:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 962726B0099; Thu, 28 May 2026 10:03:22 -0400 (EDT)
+	id 3C3CE6B009E; Thu, 28 May 2026 10:06:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A0486B009B; Thu, 28 May 2026 10:03:22 -0400 (EDT)
+	id 28B106B009F; Thu, 28 May 2026 10:06:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DA946B0098
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:03:22 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 48099C2982
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:03:22 +0000 (UTC)
-X-FDA: 84816995844.12.EA4D8E2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 147116B009D
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:06:50 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D09EC1A0858
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:06:49 +0000 (UTC)
+X-FDA: 84817004538.11.8A55DA9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A629D100016
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:03:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HiVW2yH3;
-	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779977000; a=rsa-sha256;
-	cv=none;
-	b=gS9iRcU0N6GAQrlvwo75bStiZ8XJi+K68fXTP+ARNFYxOyoKPbxe5W7o+KYA4bT63YSI0/
-	Optjg/fBANSXJmGPQneLs1t5b02ac8vef92sAdUh6XWPqeOkJsD6stzM15iYPwCqB0I1wC
-	IAuFktSXEWQJofMSM004CHhODfi6Xao=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HiVW2yH3;
-	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4282FA0012
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:06:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pvb1CXpr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779977000;
+	s=arc-20220608; t=1779977208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XpxnCGqlRrEHebmmwDWgQQACrD5dqRhOE4/6MV1vagI=;
-	b=601aktTj9Zy/2wPw7mHraIBBFjDZkEQYGM5GzYSlqGsfR3HuiqoS/oN3m4G3Edis7mIONj
-	/zIiKWiLv4BhrqmHbNZnCwQyq0cn187mpIDDA7WYK30FelWLM0See/RRTLLBpnjLoFdrCV
-	pehj63w0Sm5pDpARteUF0cZPmqBHLtU=
+	bh=EslBfza86xJv9Gc7bf96swVB3Sut/phxGTZEKo61jTM=;
+	b=dIKUzDA+NMIj3mNMwYZOqEfqwf3l7WZ9oSJazA35UMAZHlmVddQfidGesbhFl4oorapNub
+	NWi909nMzmcdnrxLxomEhNssw5+o1kqKbN7I0IJMrEM+I1Ar6dLoyaBQ0JzOrbXI2ipQTh
+	iPU1lg65Lc/asUmPVCacbJyGimsBZN8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pvb1CXpr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779977208; a=rsa-sha256;
+	cv=none;
+	b=NL5zuU128uo/Y60tvM6tKah8HH1lhEVw3L5GJc7M78F+w40gwCSBxQQifSnIaISrly2JPt
+	3xjqcOvx7oUrs1F5vAVN8+A4d3krfP4mNi27xnw81GZs4hBuvI/mdRosmSs1u7t5VifUwd
+	8HlG2v7BeGyh5tpy6rhL8Bufd7MXMWA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C85C240806;
-	Thu, 28 May 2026 14:03:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787BC1F000E9;
-	Thu, 28 May 2026 14:03:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 624C943709;
+	Thu, 28 May 2026 14:06:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72BD1F00A3C;
+	Thu, 28 May 2026 14:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779976999;
-	bh=XpxnCGqlRrEHebmmwDWgQQACrD5dqRhOE4/6MV1vagI=;
+	s=k20260515; t=1779977207;
+	bh=EslBfza86xJv9Gc7bf96swVB3Sut/phxGTZEKo61jTM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HiVW2yH3s3ZBqVBJKx8WVnShIc8H+iOmdkAIwz/pS9P/L4tlr6mcwfQqj5HFjiw0/
-	 VXn7u3UxK5MIvAkm8T3BYsm0AhwEyl9gt0txfouQ1IJFyaymSWk9k6bJaF414YulV5
-	 LuQj9pmWe/SoUOcX2B4mJSlxWFVO8q88auVe8fLmDbYtzOKxYmPJ6cVHpLe3lumO+1
-	 uwzu5T2OHSY8TwZxn++EQKNsFEoSom68JvLQzekGrPx/6teBT4HH8SgL1Xhg2gYPRd
-	 b7F9/I9rVBj6Vxfxfd+88U+QRR4JC9PB/KuDA9qcWtvvrC9XFLIFZqqgl0TpmR/tyq
-	 ef/SgEshS+0Mw==
-Date: Thu, 28 May 2026 16:03:12 +0200
+	b=Pvb1CXpr/acSDEgJNqprj0XeEzYpf8q1fRcb7Me58XIdeNyB8q1xTvNkeR4E3JGit
+	 CEiH32Gt7tVvh+fbS4u8UntcOtXo1d5XFADreJcDyMIt/i5dM/Q0AEwuZZMn2Zi7BY
+	 6Hp0fnRN0ud5N6cVgxCEGFSNgE2I2T6p6l/ZVIPdZFjyZpK+AHs+KyDXaoXtCuMj+6
+	 tNXMjNCJ160XzDKLw9nKKxXdojfL02mjM/jj2bHdBJ49TNoOprtZEU9+V1tlX4ZUZ4
+	 LuYvxAXkEy7fdcIxYkw5bihvG9ayyDfyjJmI2n2jHuufuotGNCIWb+WtXfOBw0+Nh2
+	 WiYHf0bucrkWQ==
+Date: Thu, 28 May 2026 16:06:40 +0200
 From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Karsten Desler <kdesler@soohrt.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [REGRESSION] x86/hugetlb: AMD F15h VA alignment offset breaks
- MAP_HUGETLB alignment
-Message-ID: <ahhLIOB7u210pjfA@localhost.localdomain>
-References: <20260527143643.GO31091@soohrt.org>
- <ahcTYufV7P5Cmotq@localhost.localdomain>
- <ahc31AChKqnfItHW@localhost.localdomain>
- <5f70e840-9d0e-4cef-8574-b355cf26e0c4@intel.com>
- <ahfWdMdxX68ni4ZM@localhost.localdomain>
- <ahg4zTSRK6THd2yP@localhost.localdomain>
+To: Brian Masney <bmasney@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: add vm.rst to memory management core
+Message-ID: <ahhL8CaE9jFcNjWJ@localhost.localdomain>
+References: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ahg4zTSRK6THd2yP@localhost.localdomain>
+In-Reply-To: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
+X-Stat-Signature: ih95jrwiftnkjjg1cy66iuucgwor3p9o
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4282FA0012
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A629D100016
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 73fisi1hfbf5uhxpdbab99g3kcnhsh3i
-X-HE-Tag: 1779977000-437647
-X-HE-Meta: U2FsdGVkX1+yUloJOar8VmYObiStVLJRr7bWuNnPnHbl5h4ufzV/VYFhquCM4VqnNWhAHwKtudRsmZCfrjBECve7pxLVpujyobwv450Ua1oObGXFRPBPqRFxbDLt36WKTDSO6PHrQcyRghZKBF34nHgxRlNTQa0fOuKIK4M92mN2Zfn6IDYVDsT8dIyJ4y8ipRb+KUyx6bH978tGz4ux54VpnQHgZkAW7zt2tpJ2tS1jw9QOJ7an0kOKPrpV1rdNVMkhL0W8cLn7bf8WMEYHmytl4NpRLqjS5iDgPXwNi79595ctcWqygSK7YjZq21Zq5sppZ/c+HPRhfbuBD1pJFr2lwXdt5eLn9V47amiu2pW303+pKGlEqQW+woczSdetsif5NZ84Y8rgP/8xY/xsbfwLVAa2aPUjjhs4/mHniGsDJ1BRi4WUjC/J0pQbHNRHi3ba57XgBgLYXKkV5wpJbf05nd1p91Bailxt4cKut6QpsOhSmfSb4AJlv2oPt5xXw9+HeLg+QydRrgphgAmhh26r4Qm65WHrI3MljlNfWsNWg280lCEf0af4TjWmvv7oQ3vOqvS8deCaOTmZ4ze7zVr+lJG1WXWgjDi+dMwJBwSc/+7N04KjvnipsnLrptXZu8CoWWxBcMdZBxsOAYYV+HD6t7pm4l7gpfQfJ3NLpHJoa5hjZ2fBNt8Zv1QMItIHg++evOPMoCRQnd61UzkrXNTCgmVN8iEXFTvWba33ZTT7mvXwtLe+UrJaoz9vhqizGNjdBMrWx/Xyf0Bed2HS0SHGkiZgA1o/D4iIqPo7Wz3rSo9qLZ+azhvTDaPJhAbm4wKeGuMhbZ1EFhKEzO03TSEm75qOmUmMTvDW9V6l4fkBvbNob4j/ALSYzB/w3QbCNqysFCF6J3ClBBgA/Jh9tGt1uV6Mep16+EvyXDPKDnSgMdwKuJrTxOTHbzwqR0ORy0W3aN4Z8IC8FPVsB+f
- Y22Kzfhu
- OLSSgfJGxH2BSrnHr082e179xyRzUzdrTFFvhTsvEVTvUD2gzph2zt/9VNzs4Li63QEw7rBfb+eO1K8cb/3tB7RwC0w5slgb3oujtmgdedTTLT2AIYMJ4sLITmt1WcTAzuqDngjDNPC3rrguWRwhzZP6EddM7VUaGNi1a7CaVy+5cLOJnFfZi3JolpNabeL697WFt6Q2JZO2LyPWda/fxRb5c5Di7aT65P2B/XFOEkksz/JdesU/6XZuUGrV4sKRYSUri
+X-HE-Tag: 1779977208-592571
+X-HE-Meta: U2FsdGVkX18jaTCE7cPmMA9+b/3bMGmySnfO+aSVjyTldyX+1wNnF3DPyf71PglRQGzxjqfuBo/0bv9CFLea/8QQjZM0xDLpRZPtgJzopqRztSZ8M/ZjAJFzl0Pbc5EOimMb9p7mfu+rCTR1pKLvEvf+4uzfeP4FVv1LleixzwKRChJHEXmVJpqNcgP9C9R+az5YtYJQx8vSQdali6XoKaiMDdKB5liLciMqgds10Z+9hpzE3B4AiOuR1PMD2Ohu6NcOhttU360XPEA8numVoGEzc/JfOZlBqEf/Lu2poXAQ2LX29RE9p9kAdpWRMnt/5K2EeYthwZ8yEr4WLyjnK5aNxnml11+2lY0PSgpaoGU6M3GkNR//ha9nZzOXhGzjk0mdtcVzQ0Jn11NeBJtcglPhZqt6eF+eKcLbwKrqBrjM/QfJzgqiGAhAslUgvWuRFcrAWqmOZvexdu6MzrH2tLPW+svE9ArHfoXr5ytB3rAxK2w4sywcohIoqWtWbsQIIOn5saN+oh6pNJsStYfxY6gKsJ4d0PmMleBKSRpKd6udX4hVfo1hGM13N/4QgNcgC1mr/yRygHCNeC2/Fgqxd6qgFgpAb7tJHpINU6O5Pa78Cg+6J7IVQld9URSgvyBK5v7ryMshDwj33plE41ndLy8o1eYqolzb+cm5xjtWqWZQYNuu+entpSVrSTqkwdAccbSybEtnCtMtn8dVPnoouEjNSLCG7eCAkvJKpiRmlX8qY4s34mEA0nLWPobzCx1h3APYgxn6uG5u+LoFxCnDHZr/li/hoykECV7M9GQkmaeZts0MxroBaoEcsze7T3I5yw+rIdWzXXbobzkId89vaUD+QppULqxtQduUOYvHC1anbkG3tdZNbAFmwwqlFPrxhjwTGk4lNhlFAwMS/Pex0+AZN0Qg40Ajauu+JTN6A22Tbay1wmtnhM2OQ5EkA6Ma1pDZMD+zjBTY6Y7Myif
+ PJHVglsV
+ Ad1e+hawzhj6vxvirMsexOgkarMBDHU8Is576XOqCVnsUoIF0o6QA0o+h4RR+KSghxF3aZS8s+2DXNN6LzHzDUu9GEUMzis+JV+EkH6h3gRyOu17GRM865WP8oVb7gzd4Atxo8ak+S+aI4GVo1Zl5dC//43uSvx8xc77lGIwFfHl3K6YTlMZ6YJWIeafLiDEzWrnLYiDHC0g3xZgs/mowdZoBpFWEXIBaRajs61fYcZMBS+Oefu2NwbP9mcM4LdMdx7eI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,11 +97,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 02:45:01PM +0200, Oscar Salvador (SUSE) wrote:
-> The only thing bugging is, should not the same happen for THP-file-backed mappings?
+On Thu, May 28, 2026 at 09:56:14AM -0400, Brian Masney wrote:
+> The vm.rst file is currently not listed in the MAINTAINERS file, so
+> let's go ahead and add to the MM core subsystem so that the maintainers
+> are CCed when changes to the documentation are proposed.
+> 
+> Signed-off-by: Brian Masney <bmasney@redhat.com>
 
-Aha, no, for THP we do not set align_mask (at least on x86), and the masking off is being
-done in __thp_get_unmapped_area().
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
  
 
