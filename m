@@ -4,131 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B24BECD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:29:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2D91CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:30:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25FF16B008A; Thu, 28 May 2026 10:29:33 -0400 (EDT)
+	id 261ED6B008C; Thu, 28 May 2026 10:30:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2373E6B008C; Thu, 28 May 2026 10:29:33 -0400 (EDT)
+	id 213636B0092; Thu, 28 May 2026 10:30:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 127196B0092; Thu, 28 May 2026 10:29:33 -0400 (EDT)
+	id 12AEB6B0093; Thu, 28 May 2026 10:30:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 019076B008A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:29:32 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ABCF712085E
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:29:32 +0000 (UTC)
-X-FDA: 84817061784.01.05AF741
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E0F1640006
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:29:30 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AUUu8yrt;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 009046B008C
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:30:49 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C0BF1C201C
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:30:49 +0000 (UTC)
+X-FDA: 84817065018.07.17CF145
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3EDB2C0015
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:30:47 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=H3AZPpwU;
+	spf=pass (imf22.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779978571;
+	s=arc-20220608; t=1779978647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5BA6dKKBNlOGQi64KHMmEqDOAVzKaNmuRrG2iObP2CM=;
-	b=7qa8i522q28bkeXrsz+mmTZ2tn6DYDsn5xn5wuU4g+6DRXcmcktBLaGFidBCYfT27Wkn7V
-	rWyoNyVz8lw0tQRgrTUH1DJIlD1sGuwfJ5tQNHulikbfw5dUO3nag1m3L++5XhlbYkO5Pp
-	X6ZXtQTTxPaWVHR2ohjI/QqKQS5oWlI=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AUUu8yrt;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779978571; a=rsa-sha256;
+	bh=QsqDsY1NrK7VRWFqbftBylBJ8QP1P2YIVQ8OKMQC9Eg=;
+	b=AJ9E/P/Bbc6a6qAyN1HR50AaNG4ol52a8Af+PiCi0ErBbQXrCUiEQ8Tfv1qmZCsDGb3BY0
+	IceOyXNHaaeFzuiYtcAnWdNJHh0/nkLzhXRkJeVNlXpYdu9iOjVZ8+E2MDdzDYb8mSq6tZ
+	FIcvB8G3AIygYNo1KQFsgoAKny7CPEw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779978647; a=rsa-sha256;
 	cv=none;
-	b=C9E7CRhrlx26J/cP0nBimcZZedMI5hLX7O1xrIcVnN+TbpPlNXqmGvQps0dPM2lCfkSYyt
-	Wd5ZZ8ERpc5rdat1KD/v/2X1NGbp+vC/ZNFLK650ANqy3/DL99MZiDgFpG+Be2um6dMb0y
-	z+FIjwqHa0tr58jCg3FZ3KHgBA+yg6s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 12914407A3;
-	Thu, 28 May 2026 14:29:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9681F000E9;
-	Thu, 28 May 2026 14:29:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779978570;
-	bh=5BA6dKKBNlOGQi64KHMmEqDOAVzKaNmuRrG2iObP2CM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AUUu8yrtNtz9lxvBi5v8RskjXS8SYRIECkH8bIL4SrxFeTsTXmvL8y6433fDYU4HM
-	 ClQhyqWH5WyBBJOJRIXbQJbJC3B4OjZ/GIkL9SPsqXu7NG3Wi7ZOPlbPULz+oIWcAB
-	 /XzKXAxW/wfgevx2iJ9u/b5O3NC2ciKPK8T61u3B2UoeuMZloBg8bSEyUXVQgV7utN
-	 rxopDswt8KeAnKtUCrNB1NdkaWtXi8iHId31SvIwTpeKOKFBwSSABZHenwFeXeAjQ8
-	 gDgweFe0fAaWVBaG2FiBxhIgOy0NB+1Ipi0FrGx+90iQckdBPxMxpXzgOogaAgTbj1
-	 DHpxqskbLJd6w==
-Message-ID: <d1fdfb33-12b8-48f8-bd0f-c9d90407a2e1@kernel.org>
-Date: Thu, 28 May 2026 16:29:26 +0200
+	b=eRCRrZWXc2CQuAlauDfQISReoKDqUdPwiVLPxfGJF2FyoXVhawMFAODiW8HMzSG0gRp6mi
+	FZFZViPX1BMWqK3BmEEVzXWQRSY5OVXaUexcLKXT63u0j+4HVVHQlFmGMD+QmpHbhhMy0g
+	m6X1o9U/8OJavKB8HyJQTdIwckY4DmA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=H3AZPpwU;
+	spf=pass (imf22.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SCROhn2479650;
+	Thu, 28 May 2026 14:30:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=QsqDsY1NrK7VRWFqbftBylBJ8QP1P2
+	YIVQ8OKMQC9Eg=; b=H3AZPpwUvdpBklLeXnVusk9BRo2KXBzTH+2CM64rgXsTg7
+	7or7eOWEh6v63juSc5gwlPXjs775JmD2O9vb+QrI+8JMl5UFEivg+slYzd9hrTpt
+	CtzjZMTCD2TBI/A9ecxazawomqWZ2vOBuXF0OED6TcHqML9Zr1toEtYrC1iW/vt9
+	If2UNPeFzy+NFheMOGX/ua1Ntxsfl+SuxoSQQ9BYgC5PNsj7ItyubWalifS4Vjql
+	p+mSjaadHGTbT75Ptqq/mcUzPKN/lTKAvz6UPCDNKPMAcSfvV+9hdMljivKU0TR5
+	RL+oLWXx+ksPrPcCVPDacG3WfnKvctg07VLqz/Fg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee886bgty-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 May 2026 14:30:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64SEOQfX031571;
+	Thu, 28 May 2026 14:30:40 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4edjrb8gx4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 May 2026 14:30:40 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64SEUdmn29557002
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 May 2026 14:30:39 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EE5D62004B;
+	Thu, 28 May 2026 14:30:38 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 18D5120049;
+	Thu, 28 May 2026 14:30:38 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.54.90])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 28 May 2026 14:30:37 +0000 (GMT)
+Date: Thu, 28 May 2026 16:30:36 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>,
+        Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Wei Yang <richard.weiyang@gmail.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_vma_mapped_walk: Use ptep_get_lockless() for
+ lockless access
+Message-ID: <07baafe4-7d1c-42b0-9103-3e5666770061-agordeev@linux.ibm.com>
+References: <20260528075507.1821939-1-agordeev@linux.ibm.com>
+ <ahglqif-I4TjFK9X@lucifer>
+ <ahhNq0pFKvSKZQbR@localhost.localdomain>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: fix deferred compaction accounting
-Content-Language: en-US
-To: fujunjie <fujunjie1@qq.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>,
- Suren Baghdasaryan <surenb@google.com>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Charan Teja Kalla <charante@codeaurora.org>,
- David Rientjes <rientjes@google.com>
-References: <tencent_368AF1F3821E46232637BE16D65C45CF3308@qq.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <tencent_368AF1F3821E46232637BE16D65C45CF3308@qq.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahhNq0pFKvSKZQbR@localhost.localdomain>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: Kt87eysoh7DYALPhN2Lv2zuqdzePaw-c
+X-Authority-Analysis: v=2.4 cv=Z8Dc2nRA c=1 sm=1 tr=0 ts=6a185192 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=tabJ_l0G7vvt5ToZ1lAA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDE0MyBTYWx0ZWRfXwyKYNov82R+3
+ ogg5Y/eFgIy2zeyn8OBaGpldKVycXmwhU037w6W7THqhh37mEKaNxEAxNHguMRe4E6PLe1yptak
+ b9aePKjEWnQUDymYY40W3+lePCmAMXhjNp0ZKrcQ+yKFRADV6iVsj3/y/PUIAJVVvec5O3KmOk2
+ dQMGoiMTg0ZYUvhyXf0zUKuOhBlVXR+kG5ltn0JzwfhbHzzTdASUurEAXSSWhpW6W9gU6uHGNHA
+ PeQ/2pbZu89maTojBsnNramkA+b2Jq4YfkRVi8UnILW1UBVYHyhXlByljIDiyUz39/LOImBD7xa
+ eO0RL+a+1sgj8Rbo5elCygEwyiR/rIgh6mjY0XXfSZkUdFtPM/JFGZJbqmFT14vHxxhvDFKzWaW
+ dEtJEI1icDZq85Q+ICT66PtfXxx9KTRutpAM3ZnviNzESYoyQxP9NDUxHl7mZDZm7sHzsL9DS9k
+ YOdAiJ6Kt1NRulFss5g==
+X-Proofpoint-ORIG-GUID: eoGu_O8F5vnm42UoxVe2EIZn9XCmxJp0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-28_03,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
+ malwarescore=0 phishscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280143
+X-Rspamd-Server: rspam11
+X-Stat-Signature: t9sh4g3qtk8pmxr33uenzgzya6bc6h7m
+X-Rspamd-Queue-Id: 3EDB2C0015
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E0F1640006
-X-Stat-Signature: ob1texabmf9fypofngh6g5bt7rzbfbo3
-X-HE-Tag: 1779978570-867211
-X-HE-Meta: U2FsdGVkX1/dViYrEcAm/6eDeoAB62pOchlBZGEcqDPCSa/Dl0wmAfqyBQdJlPobW90pGGnvK3Bez4TpVhr0E/g1Nt3SSs6sY58WdMKg92zrWI5F7ZtGI9YKCHtzrxtPEjYA8QTtmQIh3Fbvx++PhlsOvnaxnxlczd70Z96Mo6L/V1ArajB64Cb+f1cqezKzTwCo7xMWSmKeCXBsRGKtOTfqQFOvzgsLLt/FRSQItEMUj6ptzkb+btMGEa9VTt+afTrBAqnCzMaY6ErnKQ4TSgqj6QOVa9shYHloAHShknWymR+P7m30PrI46xTGHqrXrkguq/gUpCAJrRKswadGoTUOS4f09yR41eTOyJtL/DE1yniv+H9UGUqxy38tWrelrXYzl6OTuSSUqWHAqHETClqSBnLT0YR6dEuQZeDq/M9wyKwXI2SY49LSjs1r3hpSDO+K8Telr7gqCayjqkG2qU0pFpB1m60fIcryeZH02eXJol9Jj0Y3W64jSwBp2dCa4YrChbJheNM4GZs2x1COgEC1fZZ7P5dUSmqXghWgHmTVPAOLDH7NZBqcbogoJJTX4P5c+zNHMBIHtjWaHZ7du8yRGWeH32x37nIBYQ+oo0mOct2iM/XbZyxLQV/YAPNEgk+YFJr5wopFvyES58HN1MA5zPYcsuLvIjkcFLx704k4hu2rno6PeBPXh0Cs6Cct70Wg6zas4b/vGXZo3ZmJkXSEuv6nI1aMf9bEmwbI1vtC9NZo2CQnR3oIASXixrkkf3xJdaSW9TKGUJamp+xq/qKAkxXUvYPQDlTZmOHfAyQWRzqszRFzY1xanDMMLvYPXz9OrCN3oLW/oSZ1RdxaMoyeDtU30xiejtoXkpk3qVote3GXP2Ea6t2YHtcMQTbARJ15JwBrsitQ1ewKxTsWnFVhEVguD+u34juAtMqXWIdhlIgg8pSFzQynH4Qmi8XvbFomHwS+AAP9b3YMp6T
- TBG6aX9Z
- 3kRsUVY4Y1gmbfjzFMnCrYKsDlw1oUWVzKIOApphbg0X9RZ7fQqLO93RLS3+N0S30h0eOlfSbjIKLYA8vzDOgkT7ZB5stVX6o5e6ZqWeqYQNjpT7sLYcKBC1cAM2ZTuimVnY62sAgVSGtkWqvc/3+hZzBUsOgrImMOSNjbk+lGA/R/OUwA431IikLCSFuU2uBfOMMPXzqbitxjN4zP1iq8qMJ1Efr2oU1m5nni9e644nq0U9NTxjx8oZyHRT+zw220ThYoMwJOZDGWCSVwF03dBLEBmPjxuJXftSBiXjT+rRMe/ij6sWmGgXiugs99mEvrwL2gsHN9o5Z8EDgSas12iBcwgc1/oALalFm
+X-HE-Tag: 1779978647-328521
+X-HE-Meta: U2FsdGVkX1/m+/njo7AEA4Z+d5UmdQQnTW3NDF3fCHxuLELfjRvnXbCzaNjD3EqV9hGKTxnHc705jQmYesMyujWFQhr7ShuFd6P3GNQJip8BvjiyQEjmpqznHYg1GlG0ldDM68E0NmuJe72rOlayJCN7JHaa/bL2rZ4390mevIFdM0ERccsupbEBTxR88uiPvlcyavKUy+DD3UcPB4tlqGiqWEyMFeHfAproJJ0J724HLP/gwfaw1cvZfSL71+KWWreEymo7goQ9ZfN92UCYxWopy/fnzX5xT+WGsmYKbyN66mX1h/yVRUnyMQxqkDJwDeBKnqDGyd8gtGMhkWHhcNLYNAiVEgQqqWF6x6NSWP2zHkfNmjArjPW1g6RHuP+9t3+IrdhH9WFe5JpGFyJPVUoZpd83XRuX8i474miOQV1tCHHFPbMAM5dZYBc0vug4s86ReoqiilhawjZCNqTfeTipu6lPwPhQlWA7hgiBr3OEI/H09+JNnmjKscVSJe3ggsMhNENZ41v/SZ5DzIgrHZncLFZc0x58Xrp4znTs9Yb7HfL1HtvrkuX3DLyTHiVBV6vS/7gW9Mb+wYA/ffQayu/eCxzKpFrW+wiY0bNBWf0agx3WlCbnZWevRhe6wNthmDOmBm2n1+ankLqkfuSMP/+GtM5+1OpYTxRGPcSaLH8GofRWkwUqxx8ASd1ngUQcGjNrjZSj5jzCeoTW27qyYvGB03Mtral1WudT5+2OrQbQ6Fc0JmFTU5dtIA1hFJi1eSqvm9gk5jQEB8Sx3vYHZLzFp53yZlE5rQeo7NE+UfFlqF62oxCSYgoHGfFJgZrjoujTHiwTdivmXtj/ipVtnz8Co4qWJI9xlthl1Pp4opzOZBLFmSV4BpmwUcBphIJ89eNqb6GauEW08toHNg8qKuk5jDhMNOM+oU+8aRgoj12kuf1xwQUp4xqZjo9kxTrbmNNb32iVpZxSjjrMnlo
+ EqP30B3I
+ +yJBbA6OZHFGA+Jc0w5w5F0wOrSAO2tcT/3O3KS8gCMSCJLgMWMQYgPXK7ZV2dc6boTQGr6RKJqvPdv9xNtsnq0b+1BymxRPGR8K3+uuw2Jn5fnYulO4a4X5jIeNeBid73zcbMXCKnIDOTWu1xPtL6dwc6/SdleETKMw7970VLFnpdR8jf4oz7qWz3g7gCCyU2vxo4/AHt6fyRMolX2ALM9VRfhKsk+kLvv4Pe0A5Hs+sYj+7ATy7EqLRy0irYaf/Bxkj5TvuA5N/9z1d0JOMh1HhraFPbkLD8rWse0hWlKdsEqjTaEi9AlXBdxRIvaPkQzqbfKKmSnHuN0mXaLGpsjyIj+09FtmxcYJXraJP65qTr487MAa/pKpyRbZV3BsY0yYQYFbo9U/nsoVY3h9nR64nwHJ2kDwxXM+V8xeAL/PbwFFfhNOcu8JcJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,60 +144,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 11:12, fujunjie wrote:
-> COMPACT_DEFERRED means compaction did not start because past failures
-> caused the zone to be deferred. try_to_compact_pages() returns the
-> maximum result seen while walking the zonelist, so a final
-> COMPACT_DEFERRED result means no later zone reported that compaction
-> actually ran.
+On Thu, May 28, 2026 at 04:14:03PM +0200, Oscar Salvador (SUSE) wrote:
+> On Thu, May 28, 2026 at 12:24:35PM +0100, Lorenzo Stoakes wrote:
+> > On Thu, May 28, 2026 at 09:55:07AM +0200, Alexander Gordeev wrote:
+> > > Switch from ptep_get() to ptep_get_lockless() accessor for
+> > > PTE reads when no lock is taken.
+> > 
+> > This is an insufficient commit message that's just saying what you're doing,
+> > which isn't very useful.
+> > 
+> > Please explain why you're doing this and what the benefit is please.
 > 
-> __alloc_pages_direct_compact() skips COMPACTSTALL and COMPACTFAIL
-> accounting when try_to_compact_pages() returns COMPACT_SKIPPED, but not
-> when it returns COMPACT_DEFERRED. A deferred-only direct compaction
-> attempt can therefore look like a stall, and then a failure if the
-> allocation still cannot be satisfied.
+> Maybe something like
 > 
-> Treat COMPACT_DEFERRED like COMPACT_SKIPPED in this accounting path. If
-> a later zone runs compaction and returns a result above COMPACT_DEFERRED,
-> or compact_zone_order() reports COMPACT_SUCCESS for a captured page, the
-> final result is not COMPACT_DEFERRED and the existing accounting still
-> runs.
-> 
-> Signed-off-by: fujunjie <fujunjie1@qq.com>
+> "When not holding the lock, there is a chance that the pte gets modified
+>  under our feet, so we need to use the lockless API to make sure that
+>  the entries remain consistent during the read."
 
-Hm I wonder why didn't we do that right away in 06dac2f467fe ("mm:
-compaction: update the COMPACT[STALL|FAIL] events properly"), seems like
-even back then there was nothing that would e.g. convert _DEFERED to
-_SKIPPED from try_to_compact_pages(), and the changelog did mention deferred.
+I would gladly use this, if it makes sense for everyone.
 
-So I guess for posterity we could do (but no Cc: stable, it's just stats).
+@Lorenzo?
 
-Fixes: 06dac2f467fe ("mm: compaction: update the COMPACT[STALL|FAIL] events
-properly")
-
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Only arm64 makes use of it though, due to the contpte stuff and being
+> unable to do it atomically.
 
 Thanks!
 
-> ---
->  mm/page_alloc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 23c7298d3be2..ddeb79fa12db 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4161,7 +4161,8 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
->  	psi_memstall_leave(&pflags);
->  	delayacct_compact_end();
->  
-> -	if (*compact_result == COMPACT_SKIPPED)
-> +	if (*compact_result == COMPACT_SKIPPED ||
-> +	    *compact_result == COMPACT_DEFERRED)
->  		return NULL;
->  	/*
->  	 * At least in one zone compaction wasn't deferred or skipped, so let's
-> 
-> base-commit: e8c2f9fdadee7cbc75134dc463c1e0d856d6e5c7
-
+> -- 
+> Oscar Salvador
+> SUSE Labs
 
