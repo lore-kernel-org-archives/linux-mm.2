@@ -4,140 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61DB8CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C423CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:23:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97C396B0005; Thu, 28 May 2026 03:22:47 -0400 (EDT)
+	id C63116B0088; Thu, 28 May 2026 03:23:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 905B66B0088; Thu, 28 May 2026 03:22:47 -0400 (EDT)
+	id C131F6B008A; Thu, 28 May 2026 03:23:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CD9C6B008A; Thu, 28 May 2026 03:22:47 -0400 (EDT)
+	id B021E6B008C; Thu, 28 May 2026 03:23:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 68AA36B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:22:47 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08BA41A0759
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:22:47 +0000 (UTC)
-X-FDA: 84815986374.20.145CC27
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1046EC0002
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:22:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TlT2qqKy;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf28.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779952965; a=rsa-sha256;
-	cv=pass;
-	b=pWQTwWOkEy6bZ5+J3hzG0ycLHQvUn4+vKGYxnBcJ3iO6x888N1mSaSxiNGtV9xjtncSHak
-	TAqM7/dy44M5C5eJwIw+BPzx/8YpBGuwMFeaOa8A46ZXV8lBk/AdsJ3tBDY+qEJqxpkE/o
-	kskUCgW60G4LSY4Y6iun6OTaZlFpDck=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TlT2qqKy;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf28.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779952965;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F0AE6B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:23:07 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 31AEE1404B6
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:23:07 +0000 (UTC)
+X-FDA: 84815987214.21.E51DF7F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8AC60140005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:23:05 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OTIRfDt/";
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779952985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NMnKlWxCY/+1GhRWPt544lPDFtnUff7dJFrRIxp1dWs=;
-	b=j/Dt5bMuO+Hb+sqTJ7fQxyOeT2aw6Z0901fLpsJe4Ib/AyDi7//OUW9+wOvTs5oj1KIsKT
-	4Fw30twX9S5QhZvp3LOqI/ePJ14mjjbkuKVXVhSTZEj0XOoITQWkJElGpnwvrKfiqzW2Nl
-	jdvr44XO6z7tVn3h6jNALAptlvW6U7c=
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-304d4e57d33so32564eec.3
-        for <linux-mm@kvack.org>; Thu, 28 May 2026 00:22:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779952964; cv=none;
-        d=google.com; s=arc-20240605;
-        b=a6IeiixBu6zOHOtG2Y2s6F1m/NoZ8dPo6TCv8yBNbbjW2Yj13klscPiYWMQ1/ebQkT
-         F/mZTyDSfcxQ5zCpnH5RRx7hfD2RT//oedlfDK0pbisIjGHxXKV4wLEvvMuenvMwCM5f
-         ZfB8D+v42rLTpC71zCYrXHhv67/lHkwXQeyfrIzcOS7+2JMzgR903VES092VwwvdyofL
-         kagBTAvoc1Mtz+j6BF9Yolh3EHdx7kk5kKYwG38ppVNAvpm3pktLn6Z4RmsvACi7u6iM
-         0+pXGITnGg2T0y+4kAnHM59gTM5F+ZKL/lA2s/IPnPlx+96nwCmolaGqUS2Ff8rWdTlD
-         tm6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NMnKlWxCY/+1GhRWPt544lPDFtnUff7dJFrRIxp1dWs=;
-        fh=djjaeGg6I2hqJYHnKaGaAoCb03662c7ogeZXOhz3pbM=;
-        b=ACKa/5JW1JZGipSv5h24XXcUb8v11aGVRodEPNmf4AqVUEXr+DxYABM1DuCtl50PPt
-         /75eNqwquAwsGoZR4oNwUN2KCC/p3G4ly5WH7smPhsBKMZr4s+N1V3fnY2s6Yi9HSi2G
-         /YQJCAAxtptW9uUwMUefMlwVlRT1AhOwdo1tykk0r3K7o2K7JRL3tC5JnmpP4gN9NiDP
-         1ZCRJaOoiAOrkhe6pstLs1i4AR0evpyC+q9VMQv8McsCOMfE7QA0Ev1FT8PsDuMwJtrw
-         UMb50fRZTTvIW+qWEcW95n28aIbdxwn5Fwr9OG0dCbmGcrqkDbfrFNcHSun9+yKTleNe
-         JQNg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779952964; x=1780557764; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NMnKlWxCY/+1GhRWPt544lPDFtnUff7dJFrRIxp1dWs=;
-        b=TlT2qqKyuWYVSA2pqKuKx/6tfkn+mvO6skszthBafY2Jh18eXUVHK2lhbGSo4fjJqq
-         StZaJKlTKQnil+gh0fOW7KEddVH/+zGFxKfmniOo0+fJ9VAFXiZWxxqiJzetqy58PKBj
-         60OeDo0BfUnrvrXhkGNHPAtHHId/pUvUNrOthSS5iX0vNNuHrL95cRN7vjqq7+wdGAfX
-         AUOItKC/RyTtamZ/ubmdQWSZS5HNEgv4TJJL8lIkhDr0b/xf9OUO7KeQumKaSvRDiNOC
-         +FWHL+vVBvC8zHQ5k0OAHLFCjtPFpZKTXlWEfcO/XKq1m9GWOx9k0YWlxrhRq0JxrVnn
-         7WTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779952964; x=1780557764;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NMnKlWxCY/+1GhRWPt544lPDFtnUff7dJFrRIxp1dWs=;
-        b=SQvvwcAZLbntNuUDrr/eaoMz4PI1ijoi3uyR6ERLzaAq+35bPD4ApgUoFjIWCIQPCJ
-         sZ+ImwVS9qBcOKYp6ZtkDeF2Oemv0iqv6KrejFeCHajKhuNXixmDNCrBNhsBC3We6WFb
-         K1AgJF1ZQMCkO4WW52NkCPCAXSb221atjyZKGDvXprBs5GUYiB+G5HnD9Jms3+F8GahE
-         9w5wOLlab/87nDSjcWKMHNviOBdqLVs+sjSDdmAv/iU9Ymbq+DmgieIBazlzTUS8U2PQ
-         SPoAk3ltnn04mJ72N8cNLAKxeFT16zeVeVM82t3XlqPSTcugUS2/kjEcWbqpwxX1GkA7
-         FQag==
-X-Forwarded-Encrypted: i=1; AFNElJ/AHZMPQPkhXyg2+fE/tAs6MAwJunW2M7nGFZOKecBkk0tg/cGOjpmN/w/yBVXuDLJ6jr/YP8Q/uQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw0YRzb1BhtbUxL4Arse5oFpcAlUJ+d1srx/IZzZZu9jsnbByuC
-	EFrk3gkoadfOdNDfXz3VeR/w2f5xAQ0o3hpSbnzue0GR1yjXkOcqpBHC8+prHuziv1JFmRHLrAH
-	THt7xJ6pzFGWqobCCmzwTsE9nB8aTQwk=
-X-Gm-Gg: Acq92OH6QHsn6jyZk1PemWDAzqBOXXb4ixWVQstlpzRMFZQUth6SQ9A6OXAafmSRv1j
-	i7BrzjXm8mnMLCwL2TxnwZrfewspcxmmgWs+0ElzLvHqKlvYVVMKtEgYBZo54/PpLmqmtMi5iml
-	LgLjf7pVnmo8Y+eW08naBXWQ4uWwA5Rsav22oe5qigcBwdBQB90B8rf2Km+2lQpJVUnxCgmW1Lk
-	e3YxO6Z3Ah5uliG0ektPzHLJ8L86Alq4LFHc1VM3zdECyOduDcHGWpMLRfZ+YpC6sJo04dfITGI
-	sOxeDdhUsqyz3cuVQkEjfeMSl5PlzZYxmMQ3lEBHMrpzbRhROC6ngtoetn1Gar4vetOWb37mFBo
-	drnfRXQjT3a/Yadj/wMFlpPpombnnx5oODvEipvj0Kf4b
-X-Received: by 2002:a05:7300:1496:b0:304:8361:a8a7 with SMTP id
- 5a478bee46e88-3048361af34mr3809620eec.4.1779952963671; Thu, 28 May 2026
- 00:22:43 -0700 (PDT)
+	bh=HHXMoFquiYqwF/6HKOfa/oV8pMDJswOIvcYE8om1ODo=;
+	b=7uQZxDiG/ey40wPyGzfzVND14cAXT/tatcqNiTcZMZJAxMSEi7lYDxC7QuXlwLNGZesZF4
+	xU+0YOeK2SKQCjSiWjbo7dY9gaKIVJ+MzG0CbCPW+WUmiKQMHmPzBy2kB7YirNOboCA4z+
+	knr4Vj5X0FHUTHM5s+15gNjBndbHY5Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952985; a=rsa-sha256;
+	cv=none;
+	b=nMakHKyAF1vgFcEjlkvjK7CMSyQ42OlLZ6CscpAaM0S0lM1SFAOZALtc7VssggdQNKIuyM
+	lYeABaZse8WXzZfeu7of1hv1VUeCrJDsxlvfx6l8H51LAXV5Fb+G2NasnUzM07m4qM9Sw/
+	clJByZDUvzB7RUfq3u/EJ5oi4MsM5b4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OTIRfDt/";
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8D58F437BC;
+	Thu, 28 May 2026 07:23:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC161F000E9;
+	Thu, 28 May 2026 07:22:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779952984;
+	bh=HHXMoFquiYqwF/6HKOfa/oV8pMDJswOIvcYE8om1ODo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OTIRfDt/2crw/q20AADL1qU3uFYcIxvzokAPq57kqI0Dt8zEfl1g1NHG1Nb26nU/F
+	 DHFzUIUYs1CV1HX3AuFsYZv8rP49097eA9j0zjzuOCvXjHxV1MNVCDilr7IF/W84tx
+	 Xia0Bn0OXpFx/TEE3++mvy8okZ3sKdRUTl53UkwFO90uScJPgrnevqogE7olUAUIHO
+	 ntY8Ju1RmAsHVIEDDKZrW0iJRivTGwnL2hVQuRydTRvQjZfhWcuBqMerbEZigtcjK0
+	 1C88h/AeIRGhRjW6T61m9LqiitqN2pEI8SU4e71uQ0AdquRlmsaCCEV72/eGyNhT9Y
+	 L/NXndorMH/mQ==
+Date: Thu, 28 May 2026 08:22:48 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: wangtao <tao.wangtao@honor.com>
+Cc: "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>, 
+	"willy@infradead.org" <willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>, 
+	"kees@kernel.org" <kees@kernel.org>, "luizcap@redhat.com" <luizcap@redhat.com>, 
+	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"jack@suse.cz" <jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, 
+	"harry@kernel.org" <harry@kernel.org>, "jannh@google.com" <jannh@google.com>, 
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>, 
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev" <lance.yang@linux.dev>, 
+	"xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, "matthew.brost@intel.com" <matthew.brost@intel.com>, 
+	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com" <rakie.kim@sk.com>, 
+	"byungchul@sk.com" <byungchul@sk.com>, "gourry@gourry.net" <gourry@gourry.net>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>, 
+	"pfalcato@suse.de" <pfalcato@suse.de>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"ryncsn@gmail.com" <ryncsn@gmail.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>, 
+	"jparsana@google.com" <jparsana@google.com>, "dvander@google.com" <dvander@google.com>, 
+	zhangji <zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Message-ID: <ahfrzwK-RsQOKxy_@lucifer>
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
+ <ahbSrt0B1aQTwrk4@lucifer>
+ <288935c5d9d84794a9120893f61e670b@honor.com>
 MIME-Version: 1.0
-References: <20260523-is-vmalloc-addr-build-fix-v1-1-73c919440c41@zohomail.in>
-In-Reply-To: <20260523-is-vmalloc-addr-build-fix-v1-1-73c919440c41@zohomail.in>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 28 May 2026 09:22:31 +0200
-X-Gm-Features: AVHnY4I6oIW3zBw9jPnRTR4wEl8EOAz2Ezw6z0v81WcoSkqQ_LyCTT5fYHJi5Ik
-Message-ID: <CANiq72=pTmG8qkdqXj7vw7e4QTzccjaz8ny38iL_9V_ramLHAw@mail.gmail.com>
-Subject: Re: [PATCH] rust: helpers: add is_vmalloc_addr wrapper for NOMMU builds
-To: shivamkalra98@zohomail.in, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Linux-MM <linux-mm@kvack.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <288935c5d9d84794a9120893f61e670b@honor.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1046EC0002
-X-Stat-Signature: zehmcycxx4dr8thowu5arpasmmeghypq
-X-HE-Tag: 1779952964-140483
-X-HE-Meta: U2FsdGVkX18h4dPB6J0i4MHrHcniEOmLyuLCnFRUieYfLtz2M0vr+P/7E/r+stCkwpvnsxwYmUJsM5TmGD+0BbHe7VMB5IC4eVcT5BjwBfxESwveeXQIEvMN8+aQhVO5MdZSFqKktUV83HwPS+1kESz4OvoP6OZB9pSLktSB4eiT6OwG73o6f+ZcalmYkMAAPOYUDhi49kBtqXMBgAn7vf8eyPJ9eKaMXOg3bgBa1G8JSwBo9mCdK1Uru21JdiAa5kG96gcFACv5A1no7LuEfkzdCmTczrtL79+FLrOQHbkQIqILOfqfJbUdkMw8NZFpmeMl3Mztg9SyQaqjWrxX5cYRbQy0zKW20XtzSGQZCyOopkAiRzz9Lz0g747nrvVxy/+CbdNb782q2KCfCWwe+cjBxLyS8/FosaAOuzbqaUvuqm2q3DOVkr1f7Yg+pmYSwgqQ5C/hntFP4cqBsjHN+skCcMTn26ddZGXnNjQW5DHd2e+NbA52JVoADHgEWFEZoyPTvaEtiU9aAXeSQugjA3B1FXXw892LDb3mQT4SRmb98a28Uxwtiecunn34NFcaTS3HpGc6WHIyXELsj1hGsxVSEmtiXUSgY7HD3uPgt1dqm5Ffcm5gPcrfuGtpX0Uuc2/tIJjjl8xACiZ2BqE/Bp1ffwrlKj00BTEJVHWUTrSB8MFt1gJsQK9AUVvG/c3KDY7BzsRaeyoOIsA+hmaVQKbkPjfqtyZbjUAa97aYE+AIcWcQH0wfF57frHRImcVOYn27ME1bn+1OqpBpYS4Zx1IQ7L8Gus3FQBtVPaHf1eAQXoULAjmg4RVO/5Dc2e603OzkrnzN+W0idHVx9AXLaKeJd0QcfpfnIlRQ8p3ct2rCFn+opniTpvNMDzYggUVCkDFsN+THKqG8ppyS/nu7Zx0g4e0Pds8koBp2jPev7Rt8RfoC/6KjALh5Pg6Af2TlyGHWSUC079goaAU4LxG
- CWwX0Sqd
- Tg5FpHAlU41LsMvqvu3XzSm1ELa2OFfGFGYoPoxbX56Rax093Dd4KFreLXqezFfdydsr3jJanD2zNh/YRJYb4j5xILb1RL/anWIpk9ko0KTPhptxcGdg2E5isqjCqu6RFt2Jx5PKrKwgKr+ceEwwVqMRG+HaG7jO2Pv/0bTCIUfzw+3u6f8rHEZxi0GAIgzMWfbtV6FHr05QwQB9o3qfY6P4fDFkeCudLQ5v6jgkv/9dkjOqNaK7CQZGECQGRiVFOGa1L9hc6OsEwg8V/u6gCiS7xppqUTYuiBeVv0XGDhcZmw2Uu/eTWnhXRvBvw5fuReNu3D3oMvD4t9bTErUIburChfI4XXrmi/IcLl0fpXtLUeknv3IfNJIznN6sqZBBQb1xzFme9G3kE30zqtiX3ijLfxMQKUD50dI3oU7H2QAJQxOaATxR1+dLEVfCDqRnSpShnhQtDuslG0qab8FXKTLjNyJ2VY4YiK/HGrdHkO6KPgBsFXLb37B55ifkobJoKCTIWB4ZrAf1fTxqE9Jk1HX1kMDlAmYlywRsl5R9lAKwtiCq8ixFj6mkLZ/NLRmyd3ZpfHzdbpymnTmim+QNxkVU95gT09g3oqSwXLEqpgbHSGII=
+X-Rspamd-Queue-Id: 8AC60140005
+X-Stat-Signature: d1bekig8ri6m5umj8rdjka9oizwtg7u9
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779952985-22773
+X-HE-Meta: U2FsdGVkX18Snw5+H78jCO9GsbpyewTtkAAcdTiQ93bOrHGrAPdCpT5qPf46cL1ML0uaKndOXMNQBCL7d5i50e+Fx2ZAc3K7v0gFxt4SMu5FYpRq8ibPhwgJHStb9hIvmx/SLr/PpM32+9tJamVQqu6651ZG/lTyTacza1hsRcBgUD7RD9RF+D8HGVzo+F19SK7KC7ZhAr4OkCQYAOGPYESAiyugd6kbUkzR5h/4ey4A/pbO8du5CAzu3Pds/Gf1FeHOkb5uXbQTuoR9zHu2nZAUNs+VIaKgFmZXeKun0Gq3ODyWjJ6IIWxbMI6voZJmlrUVoXg+I+6If6uqWczNoGEwsieQ50qgChSgI/w7V7xJkaQeB5DgOXWBmu3ocWElUvmELAXAfb1kQtDGWoib3TrzZbhB0IDcGr7l4PD/KXtM9XmPUHOQG054yToJQfBiNWYcJirK23Du4CaMudBs5BfvWfARYxi+TC2lcw6R2sxHLujaF6/itODaIWGdw1iP2bmv2KJPKknBzumbU6HM79ve3lUTHNKwuT7sGf5hqvuvZBjqhvJ0zwkZO1eKpUmzP4gPgBuqH6tPcE2xP/YNQfAtox2pKEf96NkDRykVs6CPs0aCqTyJAaQSS7LwsRkEGeElvVVGEkI9WtFKRqFFc9vqltaCkqNeG3k/hZ6EpE0OyfaZqQ9+mYE8N6AsiciwjZYvE38W9PEPHLdB9UuSqv2nLjAoMHhk4jiUT5BQCE6wThjaEIls3e+8/25Du/cH563YEhb7MJklRudYVxO4kyHBdRBW2vGGoFLPBxXx7o4VM753ya5nWPKUm3aL2nczAJ0oZRIuxM5+7vZqzNZUPYvSXKpzjBKeO6au+tSkL1khg4c/HZ8QaDzJBYU2iOaIv6qjL9hpEgpQmlLV5RaU2MLjWU/UjPxsgQNlYBptKcQwTFnB7AaAcqeejj8G1eEJfDxjT9YXF+mmIIgoEJX
+ IMhX7NaO
+ pU/Dx2OEF2WcHc0Zg55LIFBsS9YRNNa+e20iWNkNgLMf22/6B5YkPsOaFOLDWocGqqqKtK3lAuJ/hTo4wh2YHQnyM4WFZWuRGTvrKCML5kgYWnefkcMgx0mN5FAHeYxe/4/erXZVWymfkKj9iu316tEHKIm8XY2FMOLeiLgeL89sdywflLftMqaNInoXAPncUhhgosCqEzxnCqMuwQ0DHubaR4ohmnKI2N+X0N4hmEllUvus6bSjFp18Q2/BSfGU4Fyr+w+3AAD9sTq8J2vbwVsTgQ+WvUYud1UFyPbTy4+Mn5Oy8K48W9+UViDp8cO9MVmw+Rd4HI4ZeQFVooaMWO8NC+/0YooNcd0gjTk/WnmE1NCIclu5zJI+Dnka1Xr2EOBNxbdQ6ZGFJVUvV2wRRx4e85bW64lemF7dt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,44 +121,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 8:54=E2=80=AFPM Shivam Kalra via B4 Relay
-<devnull+shivamkalra98.zohomail.in@kernel.org> wrote:
+On Thu, May 28, 2026 at 07:11:19AM +0000, wangtao wrote:
 >
-> From: Shivam Kalra <shivamkalra98@zohomail.in>
 >
-> Commit 47ac2a4b5cd8 ("rust: kvec: implement shrink_to for KVVec")
-> introduced a call to bindings::is_vmalloc_addr(). However, this
-> fails to compile on architectures where CONFIG_MMU is disabled,
-> resulting in the following build error:
+> > Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred
+> > anon_vma creation
+> >
+> > I'm sorry but this is not how kernel development is done.
+> >
+> > You're sending a series that's very invasive, that you've not coordinated with
+> > anybody else, nor have you mentioned it at a conference, nor engaged with
+> > in discussion with anybody else in the community in any way.
+> >
+> > And you've sent it without an RFC, at -rc5 is... quite something.
+> >
+> > We do NOT want to extend or expand or hack in anything like this on top of
+> > the existing anon_vma machinery. It's a mess that requires replacement, not
+> > more hacks or expansion.
+> >
+> > I've been working on a replacement for the anonymous rmap, recently
+> > presenting at LSF/MM, and all of that has been very public.
+> >
+> > In fact I have engaged in recent work which reduced lock contention in
+> > anon_vma, it's really quite discourteous for you not to have contacted me or
+> > the community in addition to the above.
+> >
+> First of all, thank you very much for your reply.
 >
->     error[E0425]: cannot find function is_vmalloc_addr in crate bindings
+> I'm also glad to learn that you have been working on optimizations
+> related to anon_vma. I noticed your work from another email in the
+> thread.
 >
-> When CONFIG_MMU is not set, is_vmalloc_addr() is defined as a
-> static inline function in <linux/mm.h> that unconditionally
-> returns false. Because bindgen skips static inline functions
-> when generating bindings, the symbol is completely missing from
-> the Rust bindings crate.
+> I apologize if my approach caused any inconvenience. My English is not
+> very good, and I have rarely participated in community discussions
+> before, so I'm still learning how things are usually done in the
+> kernel community. If anything I did came across as discourteous, please
+> understand that it was not my intention.
 >
-> Fix this by providing a C helper wrapper, rust_helper_is_vmalloc_addr(),
-> in rust/helpers/vmalloc.c. This ensures the function is reliably
-> exposed to Rust regardless of the MMU configuration. On NOMMU builds,
-> this allows KVVec::shrink_to() to successfully compile and correctly
-> route all allocations through the kmalloc realloc path.
+> Recently, due to increasing memory costs, I revisited the memory usage
+> of anon_vma and found that it might be possible to reduce its
+> overhead.
 >
-> Fixes: 47ac2a4b5cd8 ("rust: kvec: implement shrink_to for KVVec")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202605220811.LRplxeBR-lkp@i=
-ntel.com/
-> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+> My original intention was simply to experiment with an anon_vma_lazy
+> mechanism to reduce the memory footprint of anon_vma. However, while
+> working on it I realized that anon_vma handling is quite complex. In
+> particular, after multiple levels of fork the topology of anonymous
+> pages can become quite complicated, and it also interacts with other
+> subsystems such as reclaim, KSM, and migration.
+>
+> Because of this, I tried separating the functionality of anon_vma
+> into two parts: anon_rmap_t for anonymous page reverse mapping, and
+> anon_vma_tree_t for topology management.
+>
+> anon_rmap_t provides the reverse mapping interface used by reclaim,
+> KSM, migration, and similar components.
+>
+> anon_vma_tree_t manages the topology internally for operations such
+> as fork, clone, split, and merge, and can also indicate whether a
+> VMA has experienced page faults.
+>
+> My hope is that by separating these responsibilities, it may become
+> easier to reason about and further improve the anon_vma design in the
+> future.
 
-Applied to `rust-fixes` -- thanks everyone!
+I understand your approach, as discussed it's not viable.
 
-    [ Pasted exact compiler output and expanded it. - Miguel ]
+As mentioned elsewhere, please refrain from further code contributions to
+rmap, as there is now a trust issue due to a high likelihood of undeclared
+AI-generated code.
 
-The compiler output did not seem to be an exact copy paste for some
-reason (at least from my testing when reproducing the issue), so I
-updated the compiler output.
+You are, however, welcome to engage in discussion, and I'm happy to discuss
+the approach publicly on list or via private email whichever you prefer :)
 
-Cheers,
-Miguel
+You are also welcome to engage in discussion/review/critique once I produce
+my RFC for this.
+
+Thanks, Lorenzo
 
