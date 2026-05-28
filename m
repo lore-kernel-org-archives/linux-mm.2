@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 880B6CD6E49
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 11:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28D7DCD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 11:11:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C28A36B0092; Thu, 28 May 2026 07:04:56 -0400 (EDT)
+	id 5C9A46B0005; Thu, 28 May 2026 07:11:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFFB76B0093; Thu, 28 May 2026 07:04:56 -0400 (EDT)
+	id 5534C6B0088; Thu, 28 May 2026 07:11:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3CF26B0096; Thu, 28 May 2026 07:04:56 -0400 (EDT)
+	id 442216B008A; Thu, 28 May 2026 07:11:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A2C4A6B0092
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:04:56 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4129DC2897
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:04:56 +0000 (UTC)
-X-FDA: 84816546192.24.8BDBAB7
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F7B16B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:11:39 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5B9FA07E4
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:11:38 +0000 (UTC)
+X-FDA: 84816563076.15.EFDE697
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8D3DFC000A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:04:54 +0000 (UTC)
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3F06EC0008
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:11:37 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCbfHbhj;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JOtIqTs7;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779966294;
+	s=arc-20220608; t=1779966697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1CtNhjUDYMnWJZV/Dh2r76Lj7h4Wsj50+rJVpRB4uMU=;
-	b=SCgax+zrBl8RAlkHg8XR0efOl3e1HhBXRp4wL8uxApMj55ETbh0Fo4UALDoavGygNK7d7c
-	SkpVH+IpmRDdtZfw+o+njA6/PH4mdkVrvEC7eCbaItXt5471QTQHJSTboNUs2StNOMbDXY
-	gaaKYId0bRUXek0QHweOTJaJhZeWHjg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779966294; a=rsa-sha256;
-	cv=none;
-	b=R7nK7MdRvDCZE9KPa30Q5dta80c2GJ3CoHj9QAdy54qyHxv7Y4PU/hbNAoC3M8sAwgfLHK
-	BpD6Cmrso3aBd/T8JnDWqilcydhueZ2+iL5fDjv2O7L49WPwYpHa8JWvlP0JnVC3EagVTL
-	uCCiU5AMfxnsOhpUsILzmipeYJfyMtg=
+	bh=ne5ApovZMbkOettABh46HNsZEAWwxelReJI++i/88Ow=;
+	b=KPE8IwoAdxwFuqNaEfSHc6O68tu9Qo+UCAQPFBywZIaOIzkhG5hTjWFksQiRU5PiUiM9HJ
+	LA8ivSHa0NH1xP26ghqLoAY6cYLPOK26ATurKsEN8H5CyhddMmGBPJReEgSLk11jbvdztj
+	8qIE049cWKtlzgSPzPd/sakUfv/ALZY=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCbfHbhj;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JOtIqTs7;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779966697; a=rsa-sha256;
+	cv=none;
+	b=STJXD+vY+KWEf0UBTjXHpZgodTwgxbCpSzVbcQ5qCRExeioVl6pmvEq1NNiL7Hfgo49P/h
+	jRb8z8LjfN7LxWcxc4+6xqxz2jqYQ1OsZLsEFGVI0Y3GRLER7tLMG29jvE6QE3n2kObOZ6
+	eo4LxtGe2jisSFuYBt9vcdRxJMiCtjg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D544A4185A;
-	Thu, 28 May 2026 11:04:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9901F000E9;
-	Thu, 28 May 2026 11:04:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 61ACF439D1;
+	Thu, 28 May 2026 11:11:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5561F000E9;
+	Thu, 28 May 2026 11:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779966293;
-	bh=1CtNhjUDYMnWJZV/Dh2r76Lj7h4Wsj50+rJVpRB4uMU=;
+	s=k20260515; t=1779966696;
+	bh=ne5ApovZMbkOettABh46HNsZEAWwxelReJI++i/88Ow=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YCbfHbhjlXZWCfKJpb2O3XC8LEjKZ6k7AbSaY2ch87NRacAc53wORdw1mKyoXIgTL
-	 nHJCayohntixBeIdQyNTUJpDEZjs7f9dumba6qLLN2tG5FUt5xlsrJgvGcNSzEDxh7
-	 +Eg9MhxtvjAWmve64F8Rd+VRQ6h4s/oZzvqlmII6656WaN9KHGu647gDmLcRkPpmc4
-	 Y44VW/9OJnMgIy1Vfn2+qwKUOvdaBoA25LhoN+Tu+5hUcN7hBPNuQCV2Wb5vxTBe5r
-	 5IC0/ksIxwXEwETTdi6Q2I08V4f1Q+m278bVLidsQOPbhIlAdioVG86tnMtrbCwfUA
-	 gFkqKdWD02dUg==
-Date: Thu, 28 May 2026 13:04:47 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Tal Zussman <tz2294@columbia.edu>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Subject: Re: [PATCH RFC 00/11] mm/filemap: split out folio wait and VFS code
-Message-ID: <20260528-gepflanzt-losging-ballen-75e4489d9b9f@brauner>
-References: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
- <3dxzu3ck5y3wxw4pp2qhzwwb6y3f7mwhvgxfpl56sokw4ymop7@xaaoxsa5yu5q>
+	b=JOtIqTs7UeLBWdtsSWzM+GSBfqiIy4adGPClaPp0l0XYKtsM5StuRWFTvq7iveF/P
+	 vvxmfRPg/ti2kC0n1H1QPtrSlOl4pINysNuWq8kX8F5crno1c0DlFVt1OeZcUtY7pJ
+	 2z0elgZKMvESunPSiCZipFA/FJjzq4XbPEM0858XbZhS6U0kesX5V62bqmCZZg6HbS
+	 lmaBqjjEP8vcAVjm0ceN8givCPZJhHepqCy3K6r9wCvc97IdsjwXUAL6PEa0nmHbAi
+	 yZ+h+NZrRlKzZ0JgO2vMEm5u4Is1e3NwP7f/ADZSDgSlOfgERPekDe20moqvKDZXnR
+	 UiscGPtsPQJrw==
+Date: Thu, 28 May 2026 14:11:28 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Hongfu Li <lihongfu@kylinos.cn>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com,
+	shuah@kernel.org, surenb@google.com, vbabka@kernel.org
+Subject: Re: [PATCH v3 1/2] selftests/mm: refactor pkey test helpers and
+ unify assertions
+Message-ID: <ahgi4I3_hHZK4HdY@kernel.org>
+References: <ahbWZJ2BbR8mmDd_@kernel.org>
+ <20260528091300.2082967-1-lihongfu@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3dxzu3ck5y3wxw4pp2qhzwwb6y3f7mwhvgxfpl56sokw4ymop7@xaaoxsa5yu5q>
+In-Reply-To: <20260528091300.2082967-1-lihongfu@kylinos.cn>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8D3DFC000A
-X-Stat-Signature: 3sf587djj9os8dyho4ka9j54k6ryzz6d
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779966294-168196
-X-HE-Meta: U2FsdGVkX19C8vz+VRagg3qvIsNqSVRl/R685ISK65CLEbqqCtWB4etdPVuCGVuVGtz4YLRmRuruQK9MiVLNOqj3YIKwcv7s1jiwRKbTbqpYiTxQzA2WXz3CXvwt182YcaWzYSJLqNT8R4EaPR0Dy2abQWtzj261YEKm4cgcj/A4V91DFJ2rjy9X9s1uLLNi6gHPNk62m7B6VuPq9upl5qAG5sbsZvopaf7bWYNWTQ6lz+NozOcK62XTYXKd2XN6Kt3wXIJN9mswbRasm2OmegZ0SroXrECQxNDHRZW8lnlMlm+Ha715KIMriMgEmlXxnennzyzdND3D2492uhiiuwJZ5KKL70OpCrOwDars8VBCIADlBMXjogfVjaSPdIi1B9sS5gjeIR8tmPidodCW1NB1nDjnwsL1wkR7UtM89gYbPz8BLXNLfr89tTrqW1Yw0h1jHe00leMPAiK57UIEw1aEk98S9SO7UQbKpwUb/pVW2I+aegH1svX8peN9FLzH4dtKE/y4BUOo/V8QEB9PG55LSZJsGm4Ux+iqBQRrMIZTJOS1QkWiQLTgQLBqvZH/D/Er2Z2AZAOirbM/73F4zSZ7fWqp2YAibJXLOHKZzNnRJNdwvwf0UDJQePbidMckXDMQVgrgbsQawB4W15tAyny8Yafad8W18DxJjSrlVIcv4tawaSHTz4RMl8FP90w0iReBfVqkbFj5Gv/DORplf60iY4ZqSFaLbwokeHA/Qnp5gYK9Hx0Dy+ItCpc8w9a1OiGdb0DjxQXu4hHlhgzu4w7naDP1jYyuNgmQ/HmATKX49eiq/rPeUJd0xWzJIoJISqcLkcdcgOzAo65xbFMoZca/dKAf60LM+ACJYRa+sfK6F8JN7Ny69t0KPyrvBGSaT8dYvdPhcKEWltjWYJoz1K3nwLQNFo51Td/d+Lj8tSbiKZYOabEqwyuwnnHMv9AwW9Tf7/5WRUlIrxLN2wW
- TxpCvTC1
- nFWzMaPDH4sLFcHF1Ut2K/FaGnxgRGdZTAGhh66BOQLj8DqiQhV7kYhElBbi1lTGzghmPto20WUPXqMGDCGdl3EO/H/b6EIPd3jZljzr7T9iHAf5+gcdLrKmjAupoCRiLuUCyDUsgBJhNFR/RAvtU+I/SI5nJxiP1PO6LGomVXwjqt3/mjkAQu/za/NdABh1X315uCo4z2ZkdXIKzER6OE3tp9H1aMeiIsr7Rp2DcK4wRlhardh7YnnhepYuu/CjXT+83P8Iu08Mr5htWSHlVXnl9h4VEDkOIluqgACT/uRGkQIM8DASDm14P83wsjbiZPHYliwzkF6bjjNwjttrqayJcnQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3F06EC0008
+X-Stat-Signature: jq3am1y8xkizp31y7dt9iat88fg6w9xd
+X-HE-Tag: 1779966697-545050
+X-HE-Meta: U2FsdGVkX1+C7BBLT5Rtz+m9opauQckbvQIWvm+6VTp9usIKxcD5VZAJBzGa2HM08Dcdha9NCHt+Z/nYt8ukblI+FZoaRJLZrb2be1hgdfjIL4FBwGCdzz3Xmr5q0QQQcvncYF5KVPgrdSFtyFEpLUbG0ZkaZ9T//OEbRqcCoX3U1XrbVUDc1EMEKQvRABl8n0xUicjo0G6m8c0diTFgCr00qxrMg4KOLP6Gsr87SzrIXjpzwKu01odHjhHaSzpjmr3fKRWVkuMrSBpwJYdk0tZNQSst1ThiRJD4nnEnQVYquLCVunoA9RVmbW09Sbw5+O4e2WQLtWcXVKoe5fCU4QUFSjDVPJ2pEzSMFcPNPG5cMpAn2L1rW/iuFzUPjpErAJkmCR0jFK+awqHSNVPi2z6gUJrwGy8KuHmH8oIwVkQot6wA/5pT/KOIEJXbbbg8zpmYlWaH3c1ZEFjifBQsXwuXvDD7huP5LVzONkXKWQnRsBssS2PpLqrqu6L+fkZz6fxTYMPPxlt4DIzJMTCbSGxXBpQgUcPwKQBfbBAbeqA6jO4bhl5HOeqtajrPmZvc7xic1ke9Vo5MfAiZl76DJkgg1OwJKnT5edErA0QiC130u4HZxQurF8RYW6j7Ew0Yx2VMXWQH6v2Mrc7ZDJ4/kGisRu1Bi6WXNXlHYeaOnwVw+swT/XJjsJtk+hJ7W/kuPeL3Jw6LN/8rP4eBnGNw8gi19+HLYMVCgZ/HrOeQKVyT6eoZc7FCDww5APtgPegbaYK2nbaMzVrn8Yh+iczi7t0gi7cB1JrTA1c7zpRRlLSmLgbomalqkMjLOzBOtk9pq/7JDnu1WyMhCD1wtVQV4OyE8rvDw7AMT5KgANTnBUTi+J5lb0woBdPDqZL8t6ZkzuFPK3YIV62iYDBk8G4EavP1mHD1l6stj7TGRehJFXkxiDxgB7Tph/82JQZrIFmy8nzRv+rGK5n/7jFC64B
+ XKufAYc2
+ H4IfBtWV2X94HkT9uvyOxnKvqfneIYSxa+eJB7KTlyuPRBHUAaFoceAW/AkrPX/aPP9Hy20V8DyUIvmpp9zR8n0SlSfA36mGJbaLFFCdo45QFl1par0vVRFduezhbnN/9AardVAsiM/TaJ0Qi49LrT8R+2mX6phjGirWrME/s0byke0Momt6X5IDL3dWH9SMRdWBf95S7999ywcG+XHgaaJEsSCoE9v/UUaAM+vm4HgQJEogtgdCmiSD8dnW+O/8DXJOZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,45 +94,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 11:22:37AM +0200, Jan Kara wrote:
-> On Wed 20-05-26 16:48:51, Tal Zussman wrote:
-> > mm/filemap.c has accumulated additional infrastructure over the years
-> > that is not directly related to the page cache. It is currently nearly
-> > 5000 lines long. This series splits out the folio bit-lock and wait
-> > queue code into separate files, and moves the VFS-level
-> > generic_file_{read,write}_iter() family of files to fs/read_write.c, in
-> > order to provide better separation of concerns. This also slims down
-> > mm/filemap.c by ~1000 lines.
-> > 
-> > The folio wait infrastructure is centralized in mm/folio_wait.c and
-> > include/linux/folio_wait.h, with functions moved from mm/filemap.c,
-> > mm/page-writeback.c, and include/linux/pagemap.h. Afterwards, the code
-> > is cleaned up a little, with functions and data types renamed to refer
-> > to folios rather than pages.
-> > 
-> > generic_file_{read,write}_iter() implement the VFS-level read/write path
-> > for filesystems, including support for direct I/O. These functions and
-> > their helpers are moved to fs/read_write.c, along with other VFS-level
-> > read/write functions. dir_pages() is also moved to include/linux/fs.h.
-> > i_blocks_per_folio() is not moved from include/linux/pagemap.h, as it
-> > requires folio_size(), which is not currently available in
-> > include/linux/fs.h.
-> > 
-> > No functional change is intended.
-> > 
-> > Note: I have additional cleanups to mm/filemap.c ready to go, foremost
-> > among them centralizing on the filemap_*() naming convention and making
-> > the exposed page cache API clearer and more consistent, but I've split
-> > these patches off from that in order to avoid sending these logically
-> > separate patches to ~60 maintainers.
+On Thu, May 28, 2026 at 05:13:00PM +0800, Hongfu Li wrote:
+> Hi Mike,
+> Thanks for the review comments.
 > 
-> Overall this makes sense to me. In particular I agree it makes sense to
-> move the file read/write helpers into fs. Regarding the page waiting bits
+> > > Move shared tracing and assertion helpers to a common file, then
+> > > convert the sighandler test to use pkey_assert() for consistent
+> > > diagnostic output, and add per-test tracing around test execution.
+> > 
+> > This sounds like three patches to me.
+> 
+> Got it, should I split this into three individual patches?
 
-Seconded.
+Yes please.
+ 
+> Best regards,
+> Hongfu
 
-> it makes some sense to me as well although there it's more of "I don't
-> really care" opinion so let's see what Matthew and others think...
-
-Agreed.
+-- 
+Sincerely yours,
+Mike.
 
