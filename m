@@ -4,158 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D84E0CD4F54
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 19:07:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B61CCD4F54
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 19:12:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 392BB6B0088; Thu, 28 May 2026 15:07:47 -0400 (EDT)
+	id 744026B0088; Thu, 28 May 2026 15:12:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 343CD6B008A; Thu, 28 May 2026 15:07:47 -0400 (EDT)
+	id 6F46D6B008A; Thu, 28 May 2026 15:12:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20BD76B008C; Thu, 28 May 2026 15:07:47 -0400 (EDT)
+	id 609816B008C; Thu, 28 May 2026 15:12:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F0D56B0088
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:07:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE922A09B3
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 19:07:46 +0000 (UTC)
-X-FDA: 84817762932.27.21B4A03
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011061.outbound.protection.outlook.com [52.101.57.61])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DEFF0A0013
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 19:07:43 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gfArPyKF;
-	spf=pass (imf15.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.57.61 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779995264;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F0B06B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:12:32 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E075D4081D
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 19:12:31 +0000 (UTC)
+X-FDA: 84817774902.18.72FC5E9
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A8CBF4000B
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 19:12:29 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=3kUGFbhU;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf07.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779995550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Au5A1OF474HJu48oC3lFKncV/ByED27KXTXyPRGkzIY=;
-	b=TDl+o5IPlVKG7xOCCFHM8iO8Up7hzF54id5SX0o9yN5oNYiMkluFsUwWKqxn3I+Sh7R0aX
-	1sNNYY1MZ+HdHIclOkNLLc1B1+Hbe6qxNxSwDF9CARooRdH7yfVS7g7WAGi5i3aZKKiijA
-	dz8OfICnjxYw8clrc7QQJQqma91mxxQ=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gfArPyKF;
-	spf=pass (imf15.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.57.61 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779995264; a=rsa-sha256;
-	cv=pass;
-	b=g5x7tVasb7yI1utLPSrXEVTLGsNPcrZ15T/90igW9By8xWPmS+wKShcROdYng/m2VsHavB
-	bBHt9cZvwR4M5VFwwdxM9UEgd4lf1rfcbdglwFBb9w6gPFOOaLs+pXiGpUZswXhJHgHyt1
-	6OriLrAZsc8cfSAkwRnURDWCi9ybSnU=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D+ArOZg3W96VZ1K1ygjf6JIZs/vm2LCcV2KbQU78z2wgn3KcxEF7BzWJN9E8w3Tq87TN8VmwfZFFCqeyYX/J+dqTrBCIb4IfnjzUMDl4DN5gP4hAZqhzWPi/OI2ty0R5XoFU+TRN0p1SdZZ7ZGVnKhn7i2IUuQtaV5644ZZxKMWt1cRZ0q7iBWJ3xNABIAu3Ff3QMCHz07AsZbJDQ1UPMsoS7LCUsb7q0wCsQExeQvT5fcsIb9IzS3aFIu2+994reQoljk4JeaU8m7WuuClOsrN6MSPfF0GoFyuBP70kTbV+Itpfg+28I5s7PGNcYy5msY9rrdiLDlXR25arCf3LSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Au5A1OF474HJu48oC3lFKncV/ByED27KXTXyPRGkzIY=;
- b=U2xUQe8xeOV0R68SM9fjVWqa3tnEOFfZ1LWwxKPgoeGuRBnIparl9DuedxiJ1WPwahSPKKjCAcC+ucwQu88SYUyIrc+LgAH74G1UINVZBgVGvwQsYFqLcDFLxZmxP3pSki60e3b849rIPVxBKwCzoHja5nWN54motnrJW42t1Tx5njc2TL1GIwUA0WwdMtq+BW3ndkTjAjsscLL7VZ6fkY0mfnwB8CLnXI7wN8ZxJBCcuKzhDCXp5UiQJ373JVaH+rh8GU7BBOw3NJnXOngxItd4ZWRSa3hy+NEYireuitKAhB/bGyV3CedqPL8g63fxkDZaukcQEfTwi4boXyI5+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Au5A1OF474HJu48oC3lFKncV/ByED27KXTXyPRGkzIY=;
- b=gfArPyKFrm7ajSjwStnCvVgYJbqdEgqvDJfGp/POqzDsXJliEMgv3Ie7ch9h0yAPmkagmG1Kes8eTjuNiwzYNECua+VmV/Nzcs/UyAWfFbIwxYOS0XrYE6kWVRs7D6Ec/IoR2Ih3IPC0aDXAQYww7GrdZWRT/9LPFbs+yEkeDNeUGg2jXTEpqYzUY16GSd9GJ48B9UGb6Winb5cmC72UHRlcQ93ZIoqhir7gofd4dNleEWwzwJmbZG66qFY0RxnsHcBkUv4Y3ByjrANMzq8cWljqJm1y8Jd12pR+JTIWyp44XpaHYeMTneEilfAFMVOv3qO/SaTN8vdnhwQQdFdWVQ==
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by IA1PR12MB6042.namprd12.prod.outlook.com (2603:10b6:208:3d6::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Thu, 28 May
- 2026 19:07:38 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0071.011; Thu, 28 May 2026
- 19:07:38 +0000
-Date: Thu, 28 May 2026 15:07:35 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Farhad Alemi <farhad.alemi@berkeley.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Yury Norov <yury.norov@gmail.com>, Waiman Long <longman@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	bh=d1DLc0W611Kw3zuQKx1t6s7+eLHqWB4PhdsbwTC+/FA=;
+	b=mRp7NNSySfjZdG6Hd1jzHY9/mxG3g5Xa8qeeCsteNyAQEWe9IXDPTXOU8k4gsFST8MBPtU
+	KWdsEWw8243n0o+HLbc2mdvFQBWGGa4ZKL2rVH9Mruf91AFUQOWjMIqgR7DxLXZXccp2FP
+	OrP5GeQFfvyIG5x+gz3XUXX6Saxj8TU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=3kUGFbhU;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf07.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779995550; a=rsa-sha256;
+	cv=none;
+	b=M5Tn0HLCzCB0v4elVdIc67CxPPkYKaIKsOhTcKm9mMksd3WznPFeKLsip6HYmDirOZFAVu
+	fctJjTEXG2i7SmRgoVWBRNFt54w3w6IITwwkkhuSqkNNB6mxdkGyMvxNQ3i5CRSHt0xW4k
+	mdEjIValQwRBTdC2Jug1nqEuWJ6uJZE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=d1DLc0W611Kw3zuQKx1t6s7+eLHqWB4PhdsbwTC+/FA=; b=3kUGFbhUp7SFwh4tQ0y9rU7Z8F
+	yLoiMwJ0W7WSDqyKRi79P/1zof6MX60NAilusI5loY9bj9I9jw9SR/z6y3ee6kBFtEegNBNJLAOg1
+	DiX4RO0G22azBWbA7CmG48R46uj1LI1VwST3DNJyMj1LoZOpsjaVHCVYEUkQKprW4MHsi54t0auby
+	g8jd0znwhPmty8WTzBYq/5c4Nc8y/p4MsrRA4jlYMQra9V+x8k8Gr6LNpT6kxbNxlOCFLWy4uLa9P
+	kkX80CtavJv7GgWyhkLKW67Tpour349ZS4HWuXhDQieTdRWnBMM5JI/fuScoyUyJWBHCtv+Oh/aMS
+	KrWSBG9Q==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wSg9b-00000006GND-23UD;
+	Thu, 28 May 2026 19:12:27 +0000
+Date: Thu, 28 May 2026 15:12:13 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Brian Masney <bmasney@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [BUG] lib/bitmap: divide error in bitmap_fold() when sz argument
- is 0
-Message-ID: <ahiSd4NoTdrYs579@yury>
-References: <CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: add vm.rst to memory management core
+Message-ID: <p72rlykrihniurkbavzsqhvhmfygaht4kdsv25olras7xhf3pq@kpetmyqizgoh>
+References: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com>
-X-ClientProxiedBy: SJ0PR05CA0179.namprd05.prod.outlook.com
- (2603:10b6:a03:339::34) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|IA1PR12MB6042:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e1d4a27-56e2-4f30-917d-08debcec6277
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|56012099006|11063799006|5023799004|6133799003|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	hiy6QMmwZxkvPJSvTk9x/5hJVHcbkALivhxm1fgXhKhO+PWcPHf4LN7BYs2P8d25JD55oV+W7d0n4pirzD6l9tZPv+U5H1yAPeovJ7/pSw+2u4ZrLPbDC0hWx8QQRCwT7wDujUst4EwR34dj39AIkY6lf/bZpyh3O+kDtVkBY8M/WJ82oyVrM7fuzQRnv85SN3Qwy7N5asbTXLFyG9LMb4UTK5gjOD0WUtwM/tCue/JMcIvxphyB5tgtfOQD2azDZlyzb+braAXDXJRS7SQg8lq4CcA60edWwoWOZ0LzTzXjbp/l/2CRG3OIeR+AYWwFKYi0a2DtGwtB416ZX7Ah+NmKZVYbu8GrzMGkf8YRSR2Tk9ZM16HzvuaMQ/enEnEf6bLH5U3QFDtWhs0ldLcURcPcpj9Ja/OHWm7tUJ8PL4VfDwaKoToFdUd/i342URQ9zaDUzZirGieYF4L7Jk/Z/pN8fzVIu8dMe/k3vApKX99OGHFZz2/ATAZKiuPsejCZowZyYBOLieEkJ0UzrzJ6mwz+0lRTR67Ss0qLL1S7TJEeCdav9q+ICLqTWH8LtfLOuRtBq/zb/zknhaAml6tueI+Zod2W6gHmMU7dt5ugCiaEKNedF41dZ2CeBsTn4nrQrxy4mOpaife2JwTfR50OEKWHjZjZtsOCoE+ktEggrWN/QuUDf+HCpLB04g0rjrGm
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(56012099006)(11063799006)(5023799004)(6133799003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ereh0hC8XjS3raHCS1feondMWwtV5D50I7k6U/Ww5EavzyxmOLubbHKbvNKB?=
- =?us-ascii?Q?fL2q9Ry5ITktWBhip3SWcwMsDqvMXvaEDpMlWIXCqwHwNfbPJ6hT1IU+1JLT?=
- =?us-ascii?Q?slGlT+SyK4gp45HVueuRvyMTQnBmetF4rjCn+jfmchm4acyj9IQsae0PeXk0?=
- =?us-ascii?Q?yvPZeKjRkKHyb3E6u9WnrroksNN2QJlx6UJ/BriAn5YLHxkPLPZSSViUHMW4?=
- =?us-ascii?Q?S/POxdudWWKFM9Wsd4nrJu2fOz3vDbFini7NWuJ44sHpX4N9+O4Qcl8FB49X?=
- =?us-ascii?Q?iDlcFxH+EattGfY4CRfCNrf41Omq8KP6SIaDOim2svpv0qPqPUON7seig/9J?=
- =?us-ascii?Q?SyV5/yCJMvU/Y+YPfyHD4WkUCTZJ/9DkgwSK1SPeUYYO+rOV2rH7Ji1wmmE+?=
- =?us-ascii?Q?Zi9VtZtCQuY3cR1HtFF2BRuU8zD4zbA4TX4paJmIM1IysV0GQeLPRGGRpaXA?=
- =?us-ascii?Q?313yvWu8hSp7habAqjhqSYgkYopTqsiSLJxSTwtViBRywL6CUwXq+mGql2rO?=
- =?us-ascii?Q?Bszl8JW+8ZLSpu4xuqz3Gtx+GibKC8/+6VjeusJWdn8bTc37SI3lxr5CnIJB?=
- =?us-ascii?Q?28a/nlx5M5Vbj+MCRcEhZUHPniHQICcdTBXUJFaOAnH2rRkle9m0KV9KNAPl?=
- =?us-ascii?Q?AOweWzc68Uq6NKoWNyNXKzBQdOckD+oa3F4yzYi/XH2fD2lNY/PR8IyhQjRS?=
- =?us-ascii?Q?Q3hWSKUlcqdluZetunCH6iz0AR74MO/VYXNpgpW8mqPCsFGTkF1kbL2evN7/?=
- =?us-ascii?Q?RNT8FKYKGnAzFz1DdLNSfYcOdY80bAF9SinfPq3vYNHHHdpJNL8H9l7m4fyD?=
- =?us-ascii?Q?zj6zg/it1wn+UVKs+VSoLLF7q5RqMgMMYmcfyD7UFiKrYDwMLExEjIrZjxbH?=
- =?us-ascii?Q?iMSVuqYDRcf0z2pUyp65mEhS9f+Bs7xCu9wTyu34br6GUQYxA3tlCfTcknYb?=
- =?us-ascii?Q?+JyIG3Ovn0HP0xVSkTRw5pQ+84+FOgLRBiBE/YkxfsjWcpW65VTm+41ZVmH8?=
- =?us-ascii?Q?kqB7bh+NUuj53vOIpdLoBgguhKT8H+eMP11bGL0WlvESbLDSMrC03zP8Br4q?=
- =?us-ascii?Q?TefWPrddXr2QJ+m3XhbPfGphUoiDwxzHq9TqvoP0DQjfsxeWvDQ4Cm+W3DbT?=
- =?us-ascii?Q?Lfx9sy9ygQ+GoCoyxBJF2NeqdzEtCa23/tyJUhfKJPCj/9shscvHsMGMC4jf?=
- =?us-ascii?Q?mw0J4HvPO/iuQz5ZeA5Z8LtZ3cM72Ybg/DpuICzJXoAblYYe+vterGQTJSVa?=
- =?us-ascii?Q?+KxtpV0SoYRpUJaXKBG4QCJPa68K9fcvMF1L6p95xk3TRbF/RnGUHUgRrECP?=
- =?us-ascii?Q?uylhUMjXWwBsDKfvN1buArpWeRAA34C+i/10+gPLzteX//uB7w14H1lUkrOt?=
- =?us-ascii?Q?kVgoi+weg5/rTj9E/cR/6J0bubPyEOXNQSF2UXu4rvrUiMSLw7CaylGG0PSa?=
- =?us-ascii?Q?faXh8O9XK3neJWzMhuZ3rRPc7dPaYR1kGx6eVe4U/p/zrObkiD8O5yQdV4re?=
- =?us-ascii?Q?agG18sGwbmdeqJ9L9zxgNjsLRn4RKWRmzIOnvLnSt3fupplZ3pajoopR+mLH?=
- =?us-ascii?Q?S/SQslnYv0hV/CHzkzWVaixq1W+oug2n81lRhfn0ZxgQWz8Ps2f7qS/dQwfL?=
- =?us-ascii?Q?mSq/JGzGxQkqt0VDnNuZ8MTXdsWDfn1HDURaH7svVnE2U8SqHPZdWBLaHOkg?=
- =?us-ascii?Q?AQ7yJWiks48W5UJfzHw2R8ROkoSetFZxR2+rYLwAuiGDGU1q3Bs+84N3ey6k?=
- =?us-ascii?Q?Co9VsidTPboBO1jQxVt9LljWrRCG+sVasGWsvhl6OVTYlW+yzk4x?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e1d4a27-56e2-4f30-917d-08debcec6277
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2026 19:07:38.5593
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ld1gwOYl1n6usmXh8/LF7geR9a9omBdkXfD/tcFLEq6p9YjCaGsQhh4U88mO1BIPvK1jZ1dKJKOc4lmDaiduqA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6042
-X-Rspamd-Server: rspam12
-X-Stat-Signature: kojpe8793a8j4ppb1k3o16gdw4e5s3m8
+In-Reply-To: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A8CBF4000B
+X-Stat-Signature: whnwba34rxetgrnbhtf1ut1qckzgr1cx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DEFF0A0013
-X-HE-Tag: 1779995263-810172
-X-HE-Meta: U2FsdGVkX1/m6792c4EyjvBP7A6NzV6qvQuFLpLYJN/w4kI92igfaLuayilumrrcHl2NImtjzvwGTti7TBPcbWE4mNMUsK2cAYms6QOljPJkLuWjmmVuBR7/GK4TI3ZyVkmyD59/1EJJlM0z+4NFna/zHGvMm6S4LfRX1kpcrt6YL9D3p9KF/BkM6wwOBYhhNvTFr2L3Yx+Ik2atpVB9JSImHpQgPWB2pY8KSXE+TwOlLZNCARyKVXAbmeICVWRCIo/xZLe+ec/1GqKgisDS/a+LNqGhutUoFAi/PCCfcE3+B87yxH59YvuyF7VZQmk3UAYJjD8AtrXITjYsKTlqgUjCzG5LYuGNisIzTiqZqilmS1YGqFKfNJDiRyOx9wJRh48T+x59qH6DA1waQNjmPZKnk90QnucoXC/XT1SKYYIm/asYbW7sFj44TB1d1jM4oa/V8Q1AUyru4rEwtI567aS1vF1z2ZKYcWJcM5Cbwej7oYXVIlmm1c2Q6q5E8N+3ybHzfNDtpVNAKXR4p51EGRdlNpgD90of0lpwSH/GFcJWq44Cwx9Cj8e8dADDYu8FHdzlY7e1L+FAvmGKolBr1eFvp5Rcot9qBFsxN1z/DfqPpnzkX2Bim5QAEBo25ec+8ipFC2jX9wmZBa2jQUpTdEcly4QHMSDqpxkrHBq4hpkJ41GHHIA8uSXcOVNNE+EyJ7liRicNQ/63/Yo1XBumVs/n6wu3mWdpKPLVkArh633GWX43QhLZtRHmQ6nhylG6Q5vFojW8H8wyZcT7V5gvG0JYNbgHa6E2qej4pCTrS19C+Y++z4tUzRrGdQaQe0z8HXw2eJUO+Y0627RjQf5gTLF5tlKRYW/NpH+WtluXkaWfCuGYeyhelroCc9L9yzqARmiEqsuC6cTAHYf+bC4CEpOhw/SowXiGMj4LTKwkTHvb11TzkpFtOXiHN4aiYlQlZ1J3OAan0iM/pBw4W1A
- avb5yL81
- IpG2ZKxfnAvOBHM++KhiFNLqWmLcISPcEf6l5rk9jF3xRsUP/NOG/dZQrvIXYiUmOXz48bqxQEfRoNfEqG5IYfArWm53RE6kZPUuKousctLBP/jkWAyx7dpMhMSKNdbKVosNpTBlS97+IbVrV1cc4ztw6s3mUVfOiBVtO5JYMCqkfi2cmNEoV6A+zyGHm+pVaHTPdz6AweF6zCdcEMDM/TKmJxrEggZpD7JTGT8gVqJ74lLkJvyvIJ0NE9KzPbPUDqjDzLxEitj9dAGl77z304Uy7CzHlGiQjRJ8eoLnkbUcDt0pgFJVJ58T9Ht/Jwd1Bx/FQwJZe/sizcTX2hKnLoc8wi+Qk0Y+EuDobpatZ/mxoLuv1Z1dv+pjs6i5wa8I1PT0ex0+iTy3cOAS4P0+95YGJ+WgOc0hI9AJJDuM5DNY39r9bI7pHThMaJUpn6bN13LW+JCRAENACQAYE40964rR8LKXxy1FmD0xxc1eIZ+ptZNfswu64rrvHau7+dOd83vUAMK7np9k8Q486Oh6LVnmUq48HTYGlIkJ3iePHX4Ban2NZ7An3zrgpC4/FSWBxTxD2Sl/pJ1LO6fe3C6Ie79GV5aGitiReEDwHLK9DPD2PN+jDGG6hKYiloQ==
+X-HE-Tag: 1779995549-607937
+X-HE-Meta: U2FsdGVkX1/Mk9LMXiYr8VaRsJG7Fp3Tl06yEZ3iT2RckYBnDJtHcCymybkYRTVulFOf5MGZbUraWpzUOAs2oyqJv7mY7VSE70H7g7Pd+iMtj005kHnBRDNJJqClcER30TgAgDULSciuRabvBjCvycZBbPoTAJlxpgbKSQg80xXdd2rLHtHphloWIM60zGWR8FWIILOC6qC9G5GDOJiH6YHYDlbMFCXQ2Ph/O3X5xMs0K940mQ5DG45xJpjlAognpAhGemC3sTYivj9dk6nCXOOWLP+wBqQMzwGxo5aOzbo/jQ5d0qplgm2fcWzzyq5krjbe43M8lO9+yVyR9iHCl2OIEBwAY79CZvqahT8OLtYw4TCWD0mc5ZUrSZFcuThCtNRos/WNhj9y6yDMf6PKHx7FTbD2I58+LAYUxbH1A46fRlQz1HVF/Do55RyHR0XIruf5eUx/3Pa+7wt2fQprVv7QxdqSPFVJ+d+c2m9BWpNf2h86QPiXm4nRPg5pLbyOerS4ul30pM8JTd9S/aYTj1/Okuk5jkaGsxZlvx4DBcL4M3iyLlsmDCB1LQwWupalGCJd4L7jf4CgOuraQiyWEudt7tXQ35OHV2i36Fd9cgSqGCwizLerDuI+5+RvrFWKDyhU+foPqvDJmwvmya3MNSZnaED/U+uoLIN+sPnLR/tVEjUtfbxIIg/QGJmink6Eo9tNnOGlKeprhnNlu3M6JSkvf9xt2BsrxSnpPluulDRGS0KnWJjuPpcEW5U8bNHTWTs/oGblAkHe+tROJ1sCYLa1RpFNOBUsRxFV8NEI9Vfsuqp/xYO2j00S+Aa7DDw321Oy0WqzoiupE4wegAx75BH1LvvY32VtFDMP/4M8vYxpD/HcSXFEzOHLbvFkJPvJM8ygceI42jiXYZjKPiM426jXmrIwQWdtGU1IEDwU/nzJ2ENy2aCaJ+Zt1Kr1Qb4TOAYnD4hWgndNtk1szYF
+ PhNvtt7d
+ 5Rh1XJ577E485tZXBIUmhGH2SZx+b5sZ4RuDDoEhBSRbDz+AvU1hcmMnGhuIhyfGS/9IwDtfxuf/3gVvQUcdqIw4GbS+BVHGe8Mj6zNq/HjJGrFoqjPOqmQiUge2fFcq8qB2WO6VLoiZS5YBZUWL5QaRP4I8UxRXroKxS2B3KSUViNGIBWwZ0a41NZ5KRH6inBUWMIywIowlbGZ/1YWSooNjn5ord54QqRHvD7r1mEeNx8wdXg5KkTU0bd0aGq+ZMjcGdaJ3alnQY0AfLjCE3Hds8c3Xc23XWCcZqdLk4udvi4IKPxLNg9kF9r1vAEqRi7wAREaEm0hEtF00T0tVXFW2yH5crWbGW6QeXb/AsDNLlgfqHDlnXfJY/GgzBun4Ni3ImDw8LI7tjixvupTDWuVSUp7PK4sTPwF1c516M2ZS/hTBoLf8FTXhIvkAmyEXL56Q33aO0VytXXpTnvh01rK0YISAO4SFO/hbFsjVqsaj0TZxcEnhGjPfDBpNsySCq8dO3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,197 +92,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Farhad,
+On 26/05/28 09:56AM, Brian Masney wrote:
+> The vm.rst file is currently not listed in the MAINTAINERS file, so
+> let's go ahead and add to the MM core subsystem so that the maintainers
+> are CCed when changes to the documentation are proposed.
+> 
+> Signed-off-by: Brian Masney <bmasney@redhat.com>
 
-Thanks for the report. Submitted the fix and added you in CC.
+Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 
-Thanks,
-Yury
 
-On Thu, May 28, 2026 at 11:25:36AM -0700, Farhad Alemi wrote:
-> Hello,
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> I am reporting a divide-by-zero crash in bitmap_fold() found by syzkaller.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c99f0650b334..d8dcc4f25ccf 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16923,6 +16923,7 @@ L:	linux-mm@kvack.org
+>  S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +F:	Documentation/admin-guide/sysctl/vm.rst
+>  F:	include/linux/folio_batch.h
+>  F:	include/linux/gfp.h
+>  F:	include/linux/gfp_types.h
 > 
-> Summary:
-> bitmap_fold() at lib/bitmap.c divides by its `sz` parameter without
-> guarding sz != 0:
+> ---
+> base-commit: e7d700e14934e68f86338c5610cf2ae76798b663
+> change-id: 20260528-mm-vm-rst-maintainers-file-1baa6da1e7ef
 > 
->   void bitmap_fold(unsigned long *dst, const unsigned long *orig,
->                    unsigned int sz, unsigned int nbits)
->   {
->           ...
->           for_each_set_bit(oldbit, orig, nbits)
->                   set_bit(oldbit % sz, dst);
->   }
+> Best regards,
+> -- 
+> Brian Masney <bmasney@redhat.com>
 > 
-> The call chain in the observed crash is:
-> 
->   mpol_relative_nodemask()   mm/mempolicy.c
->     nodes_fold(tmp, *orig, nodes_weight(*rel))
->   __nodes_fold()              include/linux/nodemask.h
->     bitmap_fold(dstp->bits, origp->bits, sz, nbits)
->   bitmap_fold()               lib/bitmap.c
-> 
-> When `nodes_weight(*rel)` is 0 (i.e. the relative-nodes mask is empty),
-> the `sz` argument passed to bitmap_fold() is 0, and the
-> `oldbit % sz` expression executes a divl by zero.
-> 
-> Observed on:
-> - Linux v6.18.32-dirty (where the bug was originally found), x86_64,
->   QEMU Q35
-> - KASAN enabled; panic_on_warn set
-> - The only local dirty file in my tree is drivers/tty/serial/serial_core.c,
->   containing a local ttyS0 console guard for the fuzzing harness. It is
->   unrelated to lib/bitmap, mm/mempolicy, or kernel/cgroup/cpuset.
-> - The crash fires in a cpu-hotplug kernel thread (Comm: cpuhp/1, PID 21)
->   reached via sched_cpu_deactivate -> cpuset_handle_hotplug ->
->   cpuset_update_tasks_nodemask -> mpol_rebind_mm -> mpol_rebind_policy
->   -> mpol_rebind_nodemask -> mpol_relative_nodemask -> __nodes_fold ->
->   bitmap_fold.
-> - Source inspection of linus/master at commit e8c2f9fdadee
->   (v7.1-rc4-754-ge8c2f9fdadee) shows the buggy structure is unchanged:
->   bitmap_fold() at lib/bitmap.c:718 still computes `oldbit % sz` with
->   no sz != 0 guard; __nodes_fold() at include/linux/nodemask.h:365
->   still forwards its sz argument; mpol_relative_nodemask() at
->   mm/mempolicy.c:370 still calls nodes_fold(tmp, *orig,
->   nodes_weight(*rel)). I have not re-run a reproducer against
->   e8c2f9fdadee as no standalone reproducer is available yet.
-> 
-> Impact:
-> A divide-by-zero in a cpu-hotplug kernel thread context kills the
-> kernel:
-> 
->   Oops: divide error: 0000 [#1] SMP KASAN NOPTI
->   CPU: 1 UID: 0 PID: 21 Comm: cpuhp/1 Not tainted 6.18.32-dirty #1 PREEMPT(full)
->   RIP: 0010:bitmap_fold+0x5e/0xb0 lib/bitmap.c:713
-> 
-> The crash report's code disassembly pins the trapping instruction to
-> `divl 0x4(%rsp)` (bytes `f7 74 24 04`) with %edx pre-zeroed by the
-> preceding `xor %edx,%edx` -- i.e. a 32-bit unsigned divide by the
-> on-stack `sz` value.
-> 
-> Relevant stack:
-> 
->   bitmap_fold+0x5e/0xb0 lib/bitmap.c:713
->   __nodes_fold include/linux/nodemask.h:369 [inline]
->   mpol_relative_nodemask mm/mempolicy.c:372 [inline]
->   mpol_rebind_nodemask+0x1e9/0x2d0 mm/mempolicy.c:508
->   mpol_rebind_policy mm/mempolicy.c:542 [inline]
->   mpol_rebind_mm+0x3ab/0x680 mm/mempolicy.c:569
->   cpuset_update_tasks_nodemask+0x22e/0x340 kernel/cgroup/cpuset.c:2777
->   hotplug_update_tasks kernel/cgroup/cpuset.c:3882 [inline]
->   cpuset_hotplug_update_tasks kernel/cgroup/cpuset.c:3985 [inline]
->   cpuset_handle_hotplug+0xe52/0x1200 kernel/cgroup/cpuset.c:4089
->   cpuset_cpu_inactive kernel/sched/core.c:8377 [inline]
->   sched_cpu_deactivate+0x497/0x600 kernel/sched/core.c:8493
->   cpuhp_invoke_callback+0x44a/0x860 kernel/cpu.c:195
->   cpuhp_thread_fun+0x40f/0x870 kernel/cpu.c:1105
->   smpboot_thread_fn+0x546/0xa50 kernel/smpboot.c:160
->   kthread+0x73e/0x8c0 kernel/kthread.c:432
-> 
-> Expected behavior:
-> Either bitmap_fold() should guard against sz == 0 (return early or
-> WARN+return), or the callers in the nodes_fold / mpol_relative_nodemask
-> chain should not pass a zero `sz` (e.g. short-circuit the rebind when
-> the relative nodemask is empty).
-> 
-> Reproducer:
-> A standalone .syz or C reproducer was not produced for this seed; the
-> crash fired during broader cpu/cgroup/mempolicy fuzzing. The console
-> report is attached as crash-report.txt.
-> 
-> Novelty check:
-> I searched the syzbot dashboard's upstream open, fixed, stable, and
-> invalid (per-subsystem mempolicy/mm/cgroups) namespaces, the Android
-> dashboard, and the marc.info linux-mm and linux-kernel archives, for
-> "bitmap_fold", "mpol_rebind_nodemask" + "divide error", "__nodes_fold"
-> + "BUG"/"Oops", and "cpuset_handle_hotplug" + "BUG". I did not find an
-> exact match. The recent Jinjiang Tu series (mainline commit
-> 3d702678f57e, "mm/mempolicy: fix mpol_rebind_nodemask() for
-> MPOL_F_NUMA_BALANCING") is a sibling fix in the same function but
-> addresses wrong-rebind logic under NUMA balancing, not the
-> divide-by-zero in bitmap_fold().
-> 
-> I appreciate your time and consideration, and I'm grateful for your
-> work on this subsystem. I'd be glad to test any candidate patches.
-> 
-> Regards,
-
-> Oops: divide error: 0000 [#1] SMP KASAN NOPTI
-> CPU: 1 UID: 0 PID: 21 Comm: cpuhp/1 Not tainted 6.18.32-dirty #1 PREEMPT(full) 
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> RIP: 0010:bitmap_fold+0x5e/0xb0 lib/bitmap.c:713
-> Code: 31 f6 e8 a5 4e 20 fe 41 89 dc 44 89 ea 4c 89 f7 4c 89 e6 e8 84 f2 01 00 49 89 c5 44 39 eb 76 2d e8 f7 fc b9 fd 44 89 e8 31 d2 <f7> 74 24 04 89 d5 89 d0 c1 e8 06 49 8d 3c c7 be 08 00 00 00 e8 39
-> RSP: 0018:ffffc9000016f520 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: 0000000000000040 RCX: ffff8881026a0000
-> RDX: 0000000000000000 RSI: 0000000000000040 RDI: ffff888126f6f218
-> RBP: ffffc9000016f630 R08: ffffc9000016f5a7 R09: 0000000000000000
-> R10: ffffc9000016f5a0 R11: fffff5200002deb5 R12: 0000000000000040
-> R13: 0000000000000000 R14: ffff888126f6f218 R15: ffffc9000016f5a0
-> FS:  0000000000000000(0000) GS:ffff8882abcc4000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007fcd8c9c6fe8 CR3: 0000000192758000 CR4: 0000000000750ef0
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
->  __nodes_fold include/linux/nodemask.h:369 [inline]
->  mpol_relative_nodemask mm/mempolicy.c:372 [inline]
->  mpol_rebind_nodemask+0x1e9/0x2d0 mm/mempolicy.c:508
->  mpol_rebind_policy mm/mempolicy.c:542 [inline]
->  mpol_rebind_mm+0x3ab/0x680 mm/mempolicy.c:569
->  cpuset_update_tasks_nodemask+0x22e/0x340 kernel/cgroup/cpuset.c:2777
->  hotplug_update_tasks kernel/cgroup/cpuset.c:3882 [inline]
->  cpuset_hotplug_update_tasks kernel/cgroup/cpuset.c:3985 [inline]
->  cpuset_handle_hotplug+0xe52/0x1200 kernel/cgroup/cpuset.c:4089
->  cpuset_cpu_inactive kernel/sched/core.c:8377 [inline]
->  sched_cpu_deactivate+0x497/0x600 kernel/sched/core.c:8493
->  cpuhp_invoke_callback+0x44a/0x860 kernel/cpu.c:195
->  cpuhp_thread_fun+0x40f/0x870 kernel/cpu.c:1105
->  smpboot_thread_fn+0x546/0xa50 kernel/smpboot.c:160
->  kthread+0x73e/0x8c0 kernel/kthread.c:432
->  ret_from_fork+0x4b4/0xa30 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
-> Modules linked in:
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:bitmap_fold+0x5e/0xb0 lib/bitmap.c:713
-> Code: 31 f6 e8 a5 4e 20 fe 41 89 dc 44 89 ea 4c 89 f7 4c 89 e6 e8 84 f2 01 00 49 89 c5 44 39 eb 76 2d e8 f7 fc b9 fd 44 89 e8 31 d2 <f7> 74 24 04 89 d5 89 d0 c1 e8 06 49 8d 3c c7 be 08 00 00 00 e8 39
-> RSP: 0018:ffffc9000016f520 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: 0000000000000040 RCX: ffff8881026a0000
-> RDX: 0000000000000000 RSI: 0000000000000040 RDI: ffff888126f6f218
-> RBP: ffffc9000016f630 R08: ffffc9000016f5a7 R09: 0000000000000000
-> R10: ffffc9000016f5a0 R11: fffff5200002deb5 R12: 0000000000000040
-> R13: 0000000000000000 R14: ffff888126f6f218 R15: ffffc9000016f5a0
-> FS:  0000000000000000(0000) GS:ffff8882abcc4000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007fcd8c9c6fe8 CR3: 0000000192758000 CR4: 0000000000750ef0
-> PKRU: 55555554
-> ----------------
-> Code disassembly (best guess):
->    0:	31 f6                	xor    %esi,%esi
->    2:	e8 a5 4e 20 fe       	call   0xfe204eac
->    7:	41 89 dc             	mov    %ebx,%r12d
->    a:	44 89 ea             	mov    %r13d,%edx
->    d:	4c 89 f7             	mov    %r14,%rdi
->   10:	4c 89 e6             	mov    %r12,%rsi
->   13:	e8 84 f2 01 00       	call   0x1f29c
->   18:	49 89 c5             	mov    %rax,%r13
->   1b:	44 39 eb             	cmp    %r13d,%ebx
->   1e:	76 2d                	jbe    0x4d
->   20:	e8 f7 fc b9 fd       	call   0xfdb9fd1c
->   25:	44 89 e8             	mov    %r13d,%eax
->   28:	31 d2                	xor    %edx,%edx
-> * 2a:	f7 74 24 04          	divl   0x4(%rsp) <-- trapping instruction
->   2e:	89 d5                	mov    %edx,%ebp
->   30:	89 d0                	mov    %edx,%eax
->   32:	c1 e8 06             	shr    $0x6,%eax
->   35:	49 8d 3c c7          	lea    (%r15,%rax,8),%rdi
->   39:	be 08 00 00 00       	mov    $0x8,%esi
->   3e:	e8                   	.byte 0xe8
->   3f:	39                   	.byte 0x39
-> 
-> <<<<<<<<<<<<<<< tail report >>>>>>>>>>>>>>>
-> 
-
 
