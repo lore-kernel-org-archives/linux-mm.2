@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A77B1CD4F54
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 20:11:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA219CD4F54
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 20:27:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D62EF6B008A; Thu, 28 May 2026 16:11:19 -0400 (EDT)
+	id ABCA56B0005; Thu, 28 May 2026 16:27:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D13916B008C; Thu, 28 May 2026 16:11:19 -0400 (EDT)
+	id A6D4D6B0088; Thu, 28 May 2026 16:27:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C29B46B0092; Thu, 28 May 2026 16:11:19 -0400 (EDT)
+	id 982E26B008A; Thu, 28 May 2026 16:27:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B3D456B008A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:11:19 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 644231621E2
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 20:11:19 +0000 (UTC)
-X-FDA: 84817923078.16.072C3D0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A9E99140006
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 20:11:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ekq60DDN;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779999077; a=rsa-sha256;
-	cv=none;
-	b=forvTg+i+bcf4tH3zZpZOqtgZpHUbShUx1bOXQc40v+vl/fHQBZl+0QF/xQ2GO3AE9gDzE
-	a09oVCjeIqRqguzz25Fn+Qorr6bUe3Ul2jNJ8kY6OXMEbSxL2ECEce8n81setJj2BDkcoS
-	plOYon83ylsgkukSrSJKjljxF1kdads=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ekq60DDN;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 89FF36B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:27:33 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 28F1EA09D7
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 20:27:33 +0000 (UTC)
+X-FDA: 84817963986.03.5B1A192
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 88A874000C
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 20:27:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1406wq47;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779999077;
+	s=arc-20220608; t=1780000051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RUpZENdsRQQGhSTXMjyju/sJ1S/GlspTzkqqk0lo4CY=;
-	b=JVyjK6YnnqNF65J7xdDVgYPZleO00/C4OEArKDB/9OWko39dgEA3yJr1VwZUOWyVMYLI0N
-	g0Wd/zkYF7+jWxnLgJQMBkQCwprF4VHZ+DJFQY1WRdLkxEMpqA52IU/ov2MwWzE25jOpdQ
-	I5JTZORm50kxH19xPLyqwHFbYgjYzNE=
+	bh=qbT0AxMHd2QIhEY5Y8KbM/8oDNJsPUw1xw7s/5tIMDk=;
+	b=XCKUuNx8Puc9uwk9PSG/F5q6VUlYyp+LRBB76QFlAUplimYHCIgyOZbvAvAOyTtFUMR0Pp
+	S7qwTC8OL31i2ltktknCwt/ade432SiWqd39Ho8Etr1tlpuTmPseb6qmRodcFvhcshamxD
+	6vd26iaYgD7TGLA6V1bZvwFXls+NwLs=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1406wq47;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780000051; a=rsa-sha256;
+	cv=none;
+	b=TCYjCZpF5sb2c68EeZwa+AFw5LXd+SSFXrubCAjjBUj3jd4bMAdQEIsMZa1R4KMXEjdmGV
+	xhEG3OHtJ4o+Mdly8Qetxf+5N46WUo5ORG9/s76PQfQ7ze9+7lsY5/L8BC0Vm0+TpbyFaw
+	/1GJCsWNcBsOy59D8QcO0+dq2sVkZbE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A3AA443477;
-	Thu, 28 May 2026 20:11:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5A01F000E9;
-	Thu, 28 May 2026 20:11:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D1E7C6020A;
+	Thu, 28 May 2026 20:27:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CF81F00A3A;
+	Thu, 28 May 2026 20:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779999076;
-	bh=RUpZENdsRQQGhSTXMjyju/sJ1S/GlspTzkqqk0lo4CY=;
+	d=linux-foundation.org; s=korg; t=1780000050;
+	bh=qbT0AxMHd2QIhEY5Y8KbM/8oDNJsPUw1xw7s/5tIMDk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ekq60DDN0/EfqbYTRZfD1WiirUXWxQTPTxY16rdb4/7wMAOQIUWk323IYixJjRiPk
-	 jkmhpvi9QLv+pmc6Yu7hQnEn5mwLQcrYWkOPOryXldXhd3rlh3reJtix4vap6bVGE2
-	 Jewn63vowTVwVLGqclVBqi7ztiwbv7FXpQC6FQNo=
-Date: Thu, 28 May 2026 13:11:15 -0700
+	b=1406wq47Wcf6v+Jomv5SSsDRc9sK3PYzAg2jEi/qCqCBwndSK+M0IH8esUQRaSajU
+	 IZjBlqJ0yuDguYb94FYgbWgCi2qWVBPpYjx+jDUO1JyPig1a59QYvPaCKh3e3bi5+e
+	 655V9UOtGqlAqlXZi7itKsgs72CgC0PU2LKyJMSw=
+Date: Thu, 28 May 2026 13:27:28 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Stanislav Kinsburskii <skinsburskii@gmail.com>
-Cc: Liam.Howlett@oracle.com, david@kernel.org, jgg@ziepe.ca, corbet@lwn.net,
- leon@kernel.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org,
- shuah@kernel.org, skhan@linuxfoundation.org, surenb@google.com,
- vbabka@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/3] mm/hmm: Add mmap lock-drop support for
- userfaultfd-backed mappings
-Message-Id: <20260528131115.184c178d03d516e11248a1ae@linux-foundation.org>
-In-Reply-To: <ahidV_iSq3E-FtMI@skinsburskii>
-References: <177928604779.589431.14703161356676674288.stgit@skinsburskii>
-	<20260521163309.c5cc5d3f6cf16bac212cf90b@linux-foundation.org>
-	<ahidV_iSq3E-FtMI@skinsburskii>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: david@kernel.org, willy@infradead.org, ryan.roberts@arm.com,
+ linux-mm@kvack.org, r@hev.cc, jack@suse.cz, Andrew Donnellan
+ <andrew+kernel@donnellan.id.au>, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
+ dev.jain@arm.com, kees@kernel.org, kevin.brodsky@arm.com,
+ lance.yang@linux.dev, Liam R.Howlett <liam@infradead.org>,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
+ npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
+ rppt@kernel.org, surenb@google.com, vbabka@kernel.org, Al Viro
+ <viro@zeniv.linux.org.uk>, wilts.infradead.org@hp2.hsd1.ca.comcast.net,
+ "linux-fsdevel@vger.kernel.l"@kernel.org, ziy@nvidia.com,
+ hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+ kernel-team@meta.com
+Subject: Re: [PATCH v6 0/2] mm: improve large folio readahead for exec
+ memory
+Message-Id: <20260528132728.c47a38e7506483d587f64eb7@linux-foundation.org>
+In-Reply-To: <20260528165635.2068012-1-usama.arif@linux.dev>
+References: <20260528165635.2068012-1-usama.arif@linux.dev>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8q6gsjrgp4ty1chho9x79385xb61ww9x
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A9E99140006
-X-Stat-Signature: p5tw41mfguqqpi7wgaw9xptg8gr5dy4s
-X-HE-Tag: 1779999077-852224
-X-HE-Meta: U2FsdGVkX1/r4/cDciSa62+EHsRzmbQypjxU2AwpJJUIzkSDGnGHzFe+jcHXECLwZ/qNbyb54MTXVFQqk52WaJ6IWbf0uj+vHECwn5R1B831MB1HbjhZYXMGllGz1zMfKcUqoc8fEFffCDVVWcBr0lbR7Z6UhLjmDl99YJd30PRrVsKZXiZZjxr1MwDW3xlQMOP0x6wGi2MGgCtsk+GzNaG1R8bTGiriqemKKO1wEvlYHlZRkXp4OxBKKLPs8DnrEfe/WWJ4g0WiL1TTGKecKflxwSffloHuA3cqSho8bYqFe4uWaA8hJa6qMmQwUch9uJipltUUV4UGxneDQX2PLOmfLcYSrNFS+UcYjYFSJZzny3SD7voZXGc/LIzeMToVxkRrg0KBCPYDHOWdyaFNaPMCon+IILjF1av+lrR9gEZ7A6WGf1ccTDMyVJdptbX5zUayl8o4uoUj7GnuYAdxvS1aqoP79ESdQNnHBltdoVq+beUus7MeAWrku+sAtejbfrCu2gXlHpje1tNNSc0CBsiHK2Ia4ecqXPi9IkCZTJBixGRinf7bx7dVAufiPPXoW+hcvOFU0QCAFEsSIfBS5o3qsB81XqYPfK9uMPd/Ww9y4Bl2ddwJp/FEzF7dMfis8vuqcNP+SD8H8DNCocjOfyGYkMGp8NnKVVX1S0VMJNIHQdSog8YePC2dgkOpjkDTrJ6cQY0I4bocmCR49HfLw6S9en44RRRWmWoC1DggrFYqxdj1qIUe10qabmyOTLdFUCxgIZ2aGd0+M6SOsxnoHTMB8hPThsXHzFa3KvZk2r4bpCN4wYgPKsMCr8UZ/tBwmqWDGeVzmIkfIzobdmnYzHaLozSKk/57Q6o433HM/RhCe9wXtZXQ+Of8Xd6L1Q54TFiHEZnsElsTQfN09BboiHvF82CAdfry389H7aDjlGiJqjiAWWFJsYjocvQSD99n8qTDb345Z6IHpRWKLri
- siOWFhtP
- s+a/vIxkvwmrLklSnQdJGCoBjqNF53UiLkcq7VQ8Lg7B/DpE4bhLyFD3/NjOF+1ErSkELJT7oeS72DN3M8JsGP+XVdDkzzGj4jfg3apxpz5C2naLd0IWpO/KmUO7lG7U/8dyXy/UImrqZRWb3eLJ/laDjJly2cdvnhYa/Adu0GivGXrbhs00WY3QAaa/NzyJFrkuOxvJwZaiTbTJBjxN3W/O3OEJzZAVZOeyjOfotIM/KMCo25cRH73v8ELkA2/Kk4fYOW3wgt+hwCwFM0eRFNVNZRoEhm+ju/0GXaiMiyTPpu3M=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 88A874000C
+X-HE-Tag: 1780000051-623130
+X-HE-Meta: U2FsdGVkX19/2H9gS4VQUA5JUwCLH0RsGJ3qq0g8cPeSSzb/6/JJiztNt6FvaY47iGjsD2SEgrYQ294U3YENwZ+0tdO4+xsfbSOFvkwXtUszCxmLMdi7+/hfZUG9Fcu3Js/b1rvAVqiy6iYjhstxJ3q6WUPvJeOlFaMEkaZyYeclpDY7rd9fSK5A5AkNWntv/TzsDK4p2ngHHsDi1QoLrwo2HeJ7+1l1UROYP1rhjkMevc1A1Rm90iVK5B5xu73ljkrPmmCIcghzd+RHsgVngm2vkiMBK7tjLY/7z575/LSsNdu6L25nwe4+vBDuqAgJn9DUGf8WVpzNjL6+utDCn59/DQiTboNugHe0o12Yw3tpBe3SPh4yuB6acklMMjJLRNu3eZHHDwD3AsIcZXl5eaJuGNViL2fj5hG/aJv/Nik8NlhJbK6XhBifxS4UO4OwBO84yI07MHjuRIjebZk/0Urg2BJPDI33ilo9X4NvhYLn6avzVci0jbIQFGuMw8Z1qXP88SVgbKdUgxkIRrPrmaehrlNH8KjfdZicNH8QlBf/PfAXvcfU6H19UCkI0DUho0THrbQvq0QiPeqQDq2N1d7e8BpQpuC3vTtKmSXV+pIwJ9/G+Cdj5vTz7cM9KRAjPLiEmYOoF+lNcoBL+siO6zq2tSCJET/5/Gn15QBE5APlZ3lCRRvPGbXR7VonvyX0Ya/TVj4s1PsZDElI/2jv13dUIKzXnDaZ9a1Ej42uDLWPoTx1Iu8BT6gVSqsFw4Vw9pDu4l7kxUJcQIOdrzjUKW0KyVeTJpYGnpq4qWup4S2ZIddkSPy6Q85tOj1rNo2XXrodjZO44yuZIdCSvGWEOZd6zOegYfnEqp28Bpyn8Dhv997MuVR7PdZ+/RJCC3j43XMqIFJz4ife/BmWUIckmrO538w8FheOLYSkjqE47NvLaJ4lhkhpnKoeF7f1GD9cgCtkeoyCiY2kJtJ3EcN
+ fjwXEI41
+ hqyCAkGRbdYL4CHAckmHa+tSGXVEhz007p9sKkJ0q7wL8CCGk7eAKGkSj5jbNAuhFqkM8inaNLrqkfXshDcoO9NkmVNkysplQ2RwMiqCXbl2KqD682sX7vUFW12drYTCtZfNRQa7ix2GU1O0aY0bkyT37W6j4LQuuxP15H+WTe7kG8pL5n4oCWf7OFoTCmsAdpoSCeWjnhIILbBSEUaewTuYKOET4GxozqLu/Z/+8ubpvIiJedq/S57T7qL4gMtS/VIT3waLsxmbI1zoAxfF5b7C9HvlEgScA33E/r7M7GSFmFejOgRIQyE4mbm6Tze/Ams1zJfJpoXeo0Lw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,17 +102,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 28 May 2026 12:53:59 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+On Thu, 28 May 2026 09:55:18 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 
-> A gentle reminder as requested: do you think this change could be taken into
-> the mm tree?
-> It's beneficial not only for the MSHV driver, but can be used for
-> post-copy live migration of GPU states in future.
+> Two checks in do_sync_mmap_readahead() limit large-folio readahead:
+> 
+>   1. The mmap_miss heuristic is meant to throttle wasteful speculative
+>      readahead. It is currently also applied to the VM_EXEC readahead
+>      path, which is targeted rather than speculative. Once mmap_miss exceeds
+>      MMAP_LOTSAMISS, exec readahead - including the large-folio
+>      order requested by exec_folio_order() - is disabled. On
+>      configurations where the mmap_miss decrement paths are not
+>      active (see patch 1) the counter only grows, so exec readahead
+>      is permanently disabled after the first 100 faults.
+> 
+>   2. The force_thp_readahead path is gated only on
+>      HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER and always drives the
+>      readahead at HPAGE_PMD_ORDER. Configurations where
+>      HPAGE_PMD_ORDER exceeds MAX_PAGECACHE_ORDER never reach this
+>      path, even when the mapping itself supports usefully large
+>      folios well below the cap.
+> 
+> Both issues are most visible on arm64 with a 64K base page size,
+> where HPAGE_PMD_ORDER is 13 (512MB) -- above MAX_PAGECACHE_ORDER
+> (11) -- and where fault_around_pages collapses to 1 disabling
+> should_fault_around() (one of the two mmap_miss decrement sites).
+> However the fixes are architecture-agnostic: patch 1 reflects the
+> nature of VM_EXEC readahead regardless of base page size, and
+> patch 2 generalises the gate so any mapping advertising a usefully
+> large maximum folio order can benefit.
 
-Still no review, alas.  It's not a trivial thing, affecting both hmm
-and userfaultfd.  And we're closing in on -rc6.
-
-I'd prefer that we revisit in the next cycle, please.  Refresh retest
-and resend after -rc1?
+OK, thanks, it's getting late and [2/2] hasn't yet been reviewed.  I'll
+add it, just, because I'm a sucker for speedups.
 
 
