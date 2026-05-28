@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94C40CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 00:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD531CD5BC9
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 00:42:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4661B6B00A1; Wed, 27 May 2026 20:42:34 -0400 (EDT)
+	id 047566B00A2; Wed, 27 May 2026 20:42:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37AF16B00A2; Wed, 27 May 2026 20:42:34 -0400 (EDT)
+	id F12CF6B00A4; Wed, 27 May 2026 20:42:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A6F46B00A3; Wed, 27 May 2026 20:42:34 -0400 (EDT)
+	id D8D996B00A5; Wed, 27 May 2026 20:42:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F2D8E6B00A1
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:42:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE9591A0731
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:33 +0000 (UTC)
-X-FDA: 84814977786.19.C85E796
+	by kanga.kvack.org (Postfix) with ESMTP id C27DA6B00A2
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:42:34 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8B46B405EB
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:34 +0000 (UTC)
+X-FDA: 84814977828.25.B04D264
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1FBFE20002
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:31 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=nT1WAQhY;
-	spf=pass (imf31.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779928952; a=rsa-sha256;
-	cv=none;
-	b=SwcQzFMEA3j7ozZGsPFl3xxx3cmaNBeBQRLtv2Akvz9VwPVYE+2gJ1VGkLeHzZWlmM+QQ0
-	mR4ej0ywczC0+H/n7655v5ioUnW0cUJ1Z4UVsw6ApI8AayrKH2D6G6mI8y6CfBckeTjUcc
-	JGhLcBS/SoTxdmezwAjVhdHRFNd6YEg=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=nT1WAQhY;
-	spf=pass (imf31.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
+	by imf01.hostedemail.com (Postfix) with ESMTP id E3D9640011
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:32 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=XVCPSidA;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com;
+	spf=pass (imf01.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779928952;
+	s=arc-20220608; t=1779928953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XmiM0zp4RpwFxnSgF35nU0/vhB3kyRAcJWx3icQ9ch4=;
-	b=KcUsS9V3SBmjJlGpgJqGxoUaxlkyO6L12FjtQSJ9LF0d7redRjAwViFT09awvViTm8kHKu
-	2aorDmU8a5TH3zQnqpvhYI41Qzv7rRWDeT7UiBxJnPGN04BwPmxa+4NPzeC7C5WL8mG13i
-	qCv1C4zjecwG4XihZputc7WATmcK0a4=
+	bh=w9dQKTBesfWptSkwPiRIMzAcNQuxg/BKJwCMO44AZfg=;
+	b=5z9brOKSmDAeuCU28wjvyo2y7bKnXcYTMBIT8bqWAq/T+yD8LLAdUrStrLeNf7fP1ejWIz
+	oAW2dVVsBmEQMAVUM6ngPv2GKmfNLI5+w0vKTQr1STB4om6UZSDqhrS30L37cr7zu43+F7
+	mOY/DHnHkOiIY3CXvQgbrwKtKIecy2E=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=XVCPSidA;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com;
+	spf=pass (imf01.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779928953; a=rsa-sha256;
+	cv=none;
+	b=H8uVDCs26o+4k7QzCIYH62PoBZ0+FtQezD3sH7u+MKFBgKSvJ+c25uiclVHWzUGg2VkDBs
+	FS/gNJYt6lOwLHmG9HiD011qyELynOQ61ht1q4iKN6C5loHWvLPIS6nABPJcKpT0LN0NI6
+	ujxAxj/KUUbl68a0OHA7cF9map4QjAM=
 Received: by linux.microsoft.com (Postfix, from userid 1241)
-	id 34DCB20B7179; Wed, 27 May 2026 17:42:21 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 34DCB20B7179
+	id 1B1D820B7175; Wed, 27 May 2026 17:42:22 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1B1D820B7175
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1779928941;
-	bh=XmiM0zp4RpwFxnSgF35nU0/vhB3kyRAcJWx3icQ9ch4=;
+	s=default; t=1779928942;
+	bh=w9dQKTBesfWptSkwPiRIMzAcNQuxg/BKJwCMO44AZfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nT1WAQhYVhGyQcrpwbh+CUuDn4l7hSwQ+9uxGmhB3nC0ccpLqDneLzA5HOAC4gcP0
-	 XE/P6+XloPaQe44ldBRelsVosfdKGOxFV4YKTqHcQyjrMNZBuBDzpNthSEaExCfyPe
-	 xuDZ/6yBo8hPaZmgKUYioRILvs5pkRdZegB9bmO0=
+	b=XVCPSidAnGdHB1XpCGnE5OzRo9wqEl3lK8az8GeJAkdMTDi6QvS5UgoQ9IgB915Pd
+	 dlJU0HBIv+wFptvDvgMWvzcBah1eeYO7dGzeeoC4bVOKKk20uPM0w/8SyfDk1WOWkk
+	 7ZoEp3xh9hJ0xuG840/IpGNcOfkm0h7aJbTCn+3M=
 From: Jork Loeser <jloeser@linux.microsoft.com>
 To: linux-hyperv@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -96,22 +96,22 @@ Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
 	linux-kernel@vger.kernel.org,
 	Michael Kelley <mhklinux@outlook.com>,
 	Jork Loeser <jloeser@linux.microsoft.com>
-Subject: [RFC PATCH 13/20] kho: add radix tree freeze and del_key() error reporting
-Date: Wed, 27 May 2026 17:41:55 -0700
-Message-ID: <20260528004204.1484584-14-jloeser@linux.microsoft.com>
+Subject: [RFC PATCH 14/20] kho: Add crash-kernel-safe radix tree presence check
+Date: Wed, 27 May 2026 17:41:56 -0700
+Message-ID: <20260528004204.1484584-15-jloeser@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260528004204.1484584-1-jloeser@linux.microsoft.com>
 References: <20260528004204.1484584-1-jloeser@linux.microsoft.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E3D9640011
+X-Stat-Signature: 34ia58ay5fhzucazr6orrqoi684bfx9i
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1FBFE20002
-X-Stat-Signature: o9y9r3t7pqx4y5s8p9ry8nbhx3urij5f
-X-HE-Tag: 1779928951-473699
-X-HE-Meta: U2FsdGVkX18GPTD4E4ZoPm2e3A/AZigXWTunulwqOsWnUoIm4DkfxIclN19LPbUBQy9wSbu/gwUMM3aHwwi0HWPFtvCR7v/0ztSia13QvQ2fbrTtuz73YW7ESu6hSKVk60/mo53++nHSn/pOfKXBObb6Pc97JszSsZ8mDZyyj/fKzX0myWUigrhhGYPNmd85cyg47Ou47wax3QzpPLe6Be+mrFIa1WQCvWP0x2XgRg7Thh4hj0xrbBMEnhnc6xgVqEBDNXpMDY7lhzEMOhvW8UrPXd40mcdINE6Z0vfQsBBT6Z8UxKni5Pb5qIms6QsAsySyrFeoXewruC7IMB2XVOAYGWZNEdI2IkSXsqM4AovFDb5R2f1v/ezTw1f1lwP0VuKQRjIWRVeg3GJ18AxzbLB/JXl9/zqbLOFNIpL9FQBcwl9ydJQsWN9Hdj+tXQ0Rmjyp5A2yMGtTGOV9NjlVxtgt+mmhl9W6RXvP3+967pQ6ohksq3EAC8IdhHkqWgdYNQzYW2AKsceulrw027LUm8bpNDxcJJZQ52Ex3GW4yykIgnkJ1SNhBPRez1V/sWnEcVaQC3Mtb++wVD1oLWl9Ob4g71hnrqBGjaHgUEE9QBWulS8zvKyKeHm+F9D2zN3/vuT6/HiiVfoIkBcjNYQ8a7fXtEQCqyHhihrk12ygHt2AKSkX7npx7iVjFvf+8up9v6nQvc+ThIoG0TOdNSuzmosBcK6W6XEKvcfYFwcQCjMZetv1VHI6oqc75sDW9GBcceZp57n9pAkiq2SKLb8U44b8tfIrLunADnu1WFADAGURDTEQ+29zf0oUbXtcs+zMeoOW8ZHdPOt9IzTL2xfOMTG8wXrKvFEd9ipXMRfXH8myaG4jPw0uzVjZKL7P1RvilQfQ6KautmYF8gUnPImnqEXS2EXQLCp7AEcwARqoeeBn+8x3n9bFT6Op7OzWI+UdbBJ00r0h0FcmMuBDy97
- 7C2i1Vjl
- XrhjwK5yeicHTh+A/wwKA+KEVlMuBgNuJNtz6byE0D3hKU0pubLQsKfER4Lu4BFQfektCvvbuHx1aLxAL2BuEeidPXU+gyfKJAOFJv7EEZw/J46iL3W2/G3bxv4jC29B7+Gap7z7nxwbJN5rDxkTFB/uj4h7XLcSSZxNFfRM3QmEba1bzHF6NvBU62uGAPIfI717L4frCx+9qwAI74xaQtZX4UkQauIY//iViM/f1q/i/jyAChLXUbsxdytQOmK2U6cMA6DN8ogvvqwsksa37t5bvQcZJKoGqZo0QmrGbf/SLHOT59+iIzvTEi3MqVI/k2cZ4e1bX+rDwk3VJ3ZjXxOE6ow==
+X-HE-Tag: 1779928952-384973
+X-HE-Meta: U2FsdGVkX19Ve6Ji70YkIsTYGxsACiFak8ND8LKEPCGTcTDR+CnBaXkaPJK0OoaNV/J/ZwV7EYt6uRbzaDOTnxmwDWQppJrQJYFDaiqZZpf9R8hNevTbzKoYXEZugK/51JAhWvMeF02EbR7DervOausqt6AakASEfNLAqecSo1jWB/8rgz/Lo0EymCZAeYzzDin0YxpYAuDovXrY8deyZ7WrBdB6Kxnc+3hlg2ZK+tYJ2oJxVN6HhcKfTjMyhpeYKnBtFRdUmXX8XCFu7+43UIXY+TU4bd7iqLoGK5cGfRHxHU5X3YgQNr5zBdhAg/DTda86vAnnxZB3TtuNv2KjAhfmI4a+MEhz5WCfyaiRb0kLthVVGNqsaxIOPg2rY61wuQMVeqwPb0VllKUBHGEWsiVcnVrPsJhdAEmErCxQVOvfru/QzpkwFTXZ+KfC0hB3/a6RXkJEN5ztNqCtKl7d2Efq3pj15AjMjL7+LQEZJ7djcmQhxGEOdRYKDE7JeWsiH8TmIXtXAILPNDKrj9i47pJSb3dpJV+aabg0/BVUyV50w0XJhb2tte39s5Z/wyfxlmCcgaHSpy2mFczi7vkNq2REdLBsyGplvTb97T4pfPkkR479tsd5sXUUGnoXa8lDE1EdnnnnK4AMOOKPLQ4ab9qjKdDrCBlUZXw8DoqJ4HK9a3AJMiOLoDsDTGeWGEdrXRD0CChNFgmtkCCCWBUdZ4KeDRZX01Dot3H2L6yNKmipJU7O6m+ByChw30Zn7IyuC7z0G3aPJm1Vt3pxHQxlyXry/a4OKZgAYyh5CBXb7fIjokiTHw6AodfmjKPQr/5PksSBPE4mPkCBQZjzhTty1h5SZUk5pAVTrQoZlIs8t9YYh8VNf+WBA7vM8TkCqosDuOBa7wY7eFbUT+9HihxGHQWUUx1czjhdJBZ92Duau5WaO0yBb9BtPUDAm/MGJnoIM7SpPrCaZu7VRj5PXCe
+ 4ZLIwIyJ
+ vMJGIdaLKP+3hYCABcTQv/fkOt08KZ+LdkdKN6zi+xjPh238IOnde4iY1gL5YNsOCjdbdBQxl+6ftKs2sq1ChIzdoGUUhz1dPbZSeAb/OpJkWvnnv4Cvpz4Cj9wzHbveWOxepWuab00c1FE0ETnpyD88p/50kYCAclhYgeFkT0bSrsza7MNMqXOOCnHUZnBtgG9eZ1Z/GgLdjQzLlwMwtxcNQwDdF6pYEzdM29RIJThikpjPjhgkDcrNx+4IxvwgIO4/O
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,218 +119,217 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add kho_radix_tree_freeze() to prevent further modifications to a
-KHO radix tree. After freezing, kho_radix_add_key() and
-kho_radix_del_key() return -EBUSY. This is used by the MSHV page
-preservation code to lock the tree before serializing it for kexec.
+In the crash kernel, the old kernel's memory is outside the direct
+map. Add a read-only radix tree variant that memremaps nodes during
+init so that subsequent page presence checks can traverse the tree
+with plain pointer dereferencing.
 
-Also change kho_radix_del_key() from void to int so it can report
--EBUSY (frozen) and -ENOENT (key not present).
+This will be used by the MSHV driver to exclude hypervisor-owned pages
+from /proc/vmcore via a pfn_is_ram() callback.
 
 Signed-off-by: Jork Loeser <jloeser@linux.microsoft.com>
 ---
- include/linux/kho_radix_tree.h     | 24 ++++++++++----
- kernel/liveupdate/kexec_handover.c | 51 +++++++++++++++++++++++-------
- 2 files changed, 57 insertions(+), 18 deletions(-)
+ include/linux/kho_radix_tree.h     |  30 +++++++
+ kernel/liveupdate/kexec_handover.c | 124 +++++++++++++++++++++++++++++
+ 2 files changed, 154 insertions(+)
 
 diff --git a/include/linux/kho_radix_tree.h b/include/linux/kho_radix_tree.h
-index c0840ecb230c..4fe2238e1e30 100644
+index 4fe2238e1e30..e906a874e612 100644
 --- a/include/linux/kho_radix_tree.h
 +++ b/include/linux/kho_radix_tree.h
-@@ -21,10 +21,10 @@
-  * scheme. Each key is an unsigned long that combines a page's physical
-  * address and its order.
-  *
-- * Client code is responsible for allocating the root node of the tree,
-- * initializing the mutex lock, and managing its lifecycle. It must use the
-- * tree data structures defined in the KHO ABI,
-- * `include/linux/kho/abi/kexec_handover.h`.
-+ * Client code must initialize the tree using kho_radix_tree_init(). Pass
-+ * a physical address to restore a tree preserved across kexec, or 0 to
-+ * allocate a fresh empty tree. The tree uses data structures defined in
-+ * the KHO ABI, `include/linux/kho/abi/kexec_handover.h`.
-  */
- 
- struct kho_radix_node;
-@@ -32,6 +32,7 @@ struct kho_radix_node;
- struct kho_radix_tree {
- 	struct kho_radix_node *root;
- 	struct mutex lock; /* protects the tree's structure and root pointer */
-+	bool frozen;
+@@ -49,6 +49,19 @@ struct kho_radix_walk_cb {
+ 	int (*table)(phys_addr_t phys, void *data);
  };
  
- /**
-@@ -51,11 +52,12 @@ struct kho_radix_walk_cb {
++/**
++ * struct kho_radix_crash_tree - Read-only radix tree for crash kernel use.
++ * @root: pointer to the remapped root node
++ *
++ * In the crash kernel, the old kernel's memory is not in the direct map.
++ * This variant uses memremap() during init to map the tree nodes and
++ * converts the physical address table entries to virtual addresses in-place,
++ * enabling efficient pointer-based traversal without per-lookup remapping.
++ */
++struct kho_radix_crash_tree {
++	struct kho_radix_node *root;
++};
++
  #ifdef CONFIG_KEXEC_HANDOVER
  
  int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key);
--void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key);
-+int kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key);
- int kho_radix_walk_tree(struct kho_radix_tree *tree,
- 			const struct kho_radix_walk_cb *cb, void *data);
- int kho_radix_init_tree(struct kho_radix_tree *tree, struct kho_radix_node *root);
+@@ -59,6 +72,11 @@ int kho_radix_init_tree(struct kho_radix_tree *tree, struct kho_radix_node *root
  void kho_radix_destroy_tree(struct kho_radix_tree *tree);
-+int kho_radix_tree_freeze(struct kho_radix_tree *tree);
+ int kho_radix_tree_freeze(struct kho_radix_tree *tree);
  
++int kho_radix_crash_init(struct kho_radix_crash_tree *tree, phys_addr_t root_pa);
++
++bool kho_radix_crash_contains_page(struct kho_radix_crash_tree *tree,
++				   unsigned long pfn, unsigned int order);
++
  #else  /* #ifdef CONFIG_KEXEC_HANDOVER */
  
-@@ -64,8 +66,11 @@ static inline int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long k
+ static inline int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key)
+@@ -91,6 +109,18 @@ static inline int kho_radix_tree_freeze(struct kho_radix_tree *tree)
  	return -EOPNOTSUPP;
  }
  
--static inline void kho_radix_del_key(struct kho_radix_tree *tree,
--				     unsigned long key) { }
-+static inline int kho_radix_del_key(struct kho_radix_tree *tree,
-+				     unsigned long key)
-+{
-+	return -EOPNOTSUPP;
-+}
- 
- static inline int kho_radix_walk_tree(struct kho_radix_tree *tree,
- 				      const struct kho_radix_walk_cb *cb, void *data)
-@@ -81,6 +86,11 @@ static inline int kho_radix_init_tree(struct kho_radix_tree *tree,
- 
- static inline void kho_radix_destroy_tree(struct kho_radix_tree *tree) { }
- 
-+static inline int kho_radix_tree_freeze(struct kho_radix_tree *tree)
++static inline int kho_radix_crash_init(struct kho_radix_crash_tree *tree,
++				       phys_addr_t root_pa)
 +{
 +	return -EOPNOTSUPP;
 +}
 +
++static inline bool kho_radix_crash_contains_page(
++					struct kho_radix_crash_tree *tree,
++					unsigned long pfn, unsigned int order)
++{
++	return false;
++}
  #endif /* #ifdef CONFIG_KEXEC_HANDOVER */
  
  #endif	/* _LINUX_KHO_RADIX_TREE_H */
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 797ec285b698..2e2b4e73f00d 100644
+index 2e2b4e73f00d..0dfdf0f9781e 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -79,9 +79,6 @@ struct kho_out {
- 
- static struct kho_out kho_out = {
- 	.lock = __MUTEX_INITIALIZER(kho_out.lock),
--	.radix_tree = {
--		.lock = __MUTEX_INITIALIZER(kho_out.radix_tree.lock),
--	},
- };
- 
- struct kho_in {
-@@ -180,6 +177,28 @@ static void __ref kho_radix_free_node(struct kho_radix_node *node)
- 		memblock_free(node, PAGE_SIZE);
+@@ -15,6 +15,7 @@
+ #include <linux/kmemleak.h>
+ #include <linux/count_zeros.h>
+ #include <linux/kasan.h>
++#include <linux/io.h>
+ #include <linux/kexec.h>
+ #include <linux/kexec_handover.h>
+ #include <linux/kho_radix_tree.h>
+@@ -396,6 +397,129 @@ void kho_radix_destroy_tree(struct kho_radix_tree *tree)
  }
+ EXPORT_SYMBOL_GPL(kho_radix_destroy_tree);
  
-+/**
-+ * kho_radix_tree_freeze - Freeze the tree, preventing further modifications.
-+ * @tree: The KHO radix tree to freeze.
-+ *
-+ * After freezing, kho_radix_add_key() and kho_radix_del_key() will return
-+ * -EBUSY. The check is performed under the tree's mutex, so there is no
-+ * race between a concurrent add/del and the freeze.
-+ *
-+ * Return: 0 on success, -EBUSY if the tree is already frozen.
++/*
++ * Convert a crash tree node's children from PA to VA in-place via memremap().
++ * On failure, already-remapped pages are not cleaned up -- the crash kernel
++ * is short-lived and will reboot after dump collection, so the leak is
++ * inconsequential.
 + */
-+int kho_radix_tree_freeze(struct kho_radix_tree *tree)
++static int kho_radix_crash_convert_node(struct kho_radix_node *node,
++					unsigned int level)
 +{
-+	guard(mutex)(&tree->lock);
++	struct kho_radix_node *child;
++	unsigned int i;
++	int err;
 +
-+	if (tree->frozen)
-+		return -EBUSY;
++	for (i = 0; i < (1 << KHO_TABLE_SIZE_LOG2); i++) {
++		if (!node->table[i])
++			continue;
 +
-+	tree->frozen = true;
++		/* Validate: PA must have bit 63 clear and be page-aligned */
++		if ((node->table[i] & BIT_ULL(63)) ||
++		    (node->table[i] & (PAGE_SIZE - 1)))
++			return -EINVAL;
++
++		child = memremap(node->table[i], PAGE_SIZE, MEMREMAP_WB);
++		if (!child)
++			return -ENOMEM;
++
++		/* Overwrite PA with VA in-place */
++		node->table[i] = (u64)(uintptr_t)child;
++
++		/* Recurse for intermediate levels; level 1 children are leaves */
++		if (level > 1) {
++			err = kho_radix_crash_convert_node(child, level - 1);
++			if (err)
++				return err;
++		}
++	}
++
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(kho_radix_tree_freeze);
 +
- /**
-  * kho_radix_add_key - Add a key to the radix tree.
-  * @tree: The KHO radix tree.
-@@ -210,6 +229,9 @@ int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key)
- 
- 	guard(mutex)(&tree->lock);
- 
-+	if (tree->frozen)
-+		return -EBUSY;
-+
- 	/* Go from high levels to low levels */
- 	for (i = KHO_TREE_MAX_DEPTH - 1; i > 0; i--) {
- 		idx = kho_radix_get_table_index(key, i);
-@@ -268,20 +290,26 @@ EXPORT_SYMBOL_GPL(kho_radix_add_key);
-  * This function traverses the radix tree and clears the bit corresponding to
-  * the key, effectively removing it from the tree. It does not free the tree's
-  * intermediate nodes, even if they become empty.
++/**
++ * kho_radix_crash_init - Initialize a crash-kernel view of a KHO radix tree.
++ * @tree: The crash tree to initialize.
++ * @root_pa: Physical address of the radix tree root from the old kernel.
 + *
-+ * Return: 0 on success, -EINVAL if the tree is uninitialized, -EBUSY if
-+ *         frozen, -ENOENT if the key was not present.
-  */
--void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key)
-+int kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key)
- {
- 	struct kho_radix_node *node = tree->root;
- 	struct kho_radix_leaf *leaf;
- 	unsigned int i, idx;
- 
- 	if (WARN_ON_ONCE(!tree->root))
--		return;
++ * Maps the old kernel's radix tree into the crash kernel's address space
++ * by memremapping each node and converting table entries from physical to
++ * virtual addresses in-place. After successful initialization, the tree
++ * can be traversed with kho_radix_crash_contains_page() using direct
++ * pointer dereferencing.
++ *
++ * This function is intended for use in the crash kernel where the old
++ * kernel's memory is not in the direct map. No locking is used as the
++ * crash kernel is effectively single-threaded during dump collection.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++int kho_radix_crash_init(struct kho_radix_crash_tree *tree, phys_addr_t root_pa)
++{
++	struct kho_radix_node *root;
++	int err;
++
++	tree->root = NULL;
++
++	if (!root_pa || (root_pa & (PAGE_SIZE - 1)))
 +		return -EINVAL;
- 
- 	might_sleep();
- 
- 	guard(mutex)(&tree->lock);
- 
-+	if (WARN_ON_ONCE(tree->frozen))
-+		return -EBUSY;
 +
- 	/* Go from high levels to low levels */
- 	for (i = KHO_TREE_MAX_DEPTH - 1; i > 0; i--) {
- 		idx = kho_radix_get_table_index(key, i);
-@@ -291,7 +319,7 @@ void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key)
- 		 * return with a warning.
- 		 */
- 		if (WARN_ON(!node->table[idx]))
--			return;
-+			return -ENOENT;
- 
- 		node = phys_to_virt(node->table[idx]);
- 	}
-@@ -300,6 +328,8 @@ void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key)
- 	leaf = (struct kho_radix_leaf *)node;
- 	idx = kho_radix_get_bitmap_index(key);
- 	__clear_bit(idx, leaf->bitmap);
++	root = memremap(root_pa, PAGE_SIZE, MEMREMAP_WB);
++	if (!root)
++		return -ENOMEM;
 +
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(kho_radix_del_key);
- 
-@@ -346,6 +376,7 @@ int kho_radix_init_tree(struct kho_radix_tree *tree, struct kho_radix_node *root
- 
- 	tree->root = root;
- 	mutex_init(&tree->lock);
-+	tree->frozen = false;
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(kho_radix_init_tree);
-@@ -1746,11 +1777,9 @@ static __init int kho_init(void)
- 	if (!kho_enable)
- 		return 0;
- 
--	tree->root = kzalloc(PAGE_SIZE, GFP_KERNEL);
--	if (!tree->root) {
--		err = -ENOMEM;
-+	err = kho_radix_init_tree(tree, NULL);
++	err = kho_radix_crash_convert_node(root, KHO_TREE_MAX_DEPTH - 1);
 +	if (err)
- 		goto err_free_scratch;
--	}
- 
- 	kho_out.fdt = kho_alloc_preserve(PAGE_SIZE);
- 	if (IS_ERR(kho_out.fdt)) {
-@@ -1807,7 +1836,7 @@ static __init int kho_init(void)
- err_free_fdt:
- 	kho_unpreserve_free(kho_out.fdt);
- err_free_kho_radix_tree_root:
--	kfree(tree->root);
-+	free_page((unsigned long)tree->root);
- 	tree->root = NULL;
- err_free_scratch:
- 	kho_out.fdt = NULL;
++		return err;
++
++	tree->root = root;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(kho_radix_crash_init);
++
++/**
++ * kho_radix_crash_contains_page - Check if a page is in a crash-kernel radix tree.
++ * @tree: The crash tree, previously initialized with kho_radix_crash_init().
++ * @pfn: The page frame number to check.
++ * @order: The order of the page.
++ *
++ * Traverses the radix tree using direct pointer dereferencing (the table
++ * entries were converted from PA to VA during init). No locking is used as the
++ * crash kernel is effectively single-threaded during dump collection.
++ *
++ * Note: This function checks specifically for the presence of the page at the
++ * given order. If a larger order page that encompasses this page is preserved,
++ * this function will return false.
++ *
++ * Return: true if the page is present in the tree, false otherwise.
++ */
++bool kho_radix_crash_contains_page(struct kho_radix_crash_tree *tree,
++				   unsigned long pfn, unsigned int order)
++{
++	unsigned long key = kho_encode_radix_key(PFN_PHYS(pfn), order);
++	struct kho_radix_node *node = tree->root;
++	struct kho_radix_leaf *leaf;
++	unsigned int i, idx;
++
++	if (!tree->root)
++		return false;
++
++	/* Traverse using VA pointers stored in table[] */
++	for (i = KHO_TREE_MAX_DEPTH - 1; i > 0; i--) {
++		idx = kho_radix_get_table_index(key, i);
++
++		if (!node->table[idx])
++			return false;
++
++		node = (struct kho_radix_node *)(uintptr_t)node->table[idx];
++	}
++
++	leaf = (struct kho_radix_leaf *)node;
++	idx = kho_radix_get_bitmap_index(key);
++	return test_bit(idx, leaf->bitmap);
++}
++EXPORT_SYMBOL_GPL(kho_radix_crash_contains_page);
++
+ static int kho_radix_walk_leaf(struct kho_radix_leaf *leaf, unsigned long key,
+ 			       const struct kho_radix_walk_cb *cb, void *data)
+ {
 -- 
 2.43.0
 
