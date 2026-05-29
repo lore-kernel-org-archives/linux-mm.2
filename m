@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CF4ACD6E4C
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:25:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADB74CD6E45
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:27:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FAE56B008A; Fri, 29 May 2026 04:25:49 -0400 (EDT)
+	id 04B316B0005; Fri, 29 May 2026 04:27:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D25D6B008C; Fri, 29 May 2026 04:25:49 -0400 (EDT)
+	id 023146B0088; Fri, 29 May 2026 04:27:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80F736B0092; Fri, 29 May 2026 04:25:49 -0400 (EDT)
+	id EA1BB6B008A; Fri, 29 May 2026 04:27:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7127E6B008A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:25:49 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 34E5FA0DBA
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:25:49 +0000 (UTC)
-X-FDA: 84819774018.07.43082C5
+	by kanga.kvack.org (Postfix) with ESMTP id DC5876B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:27:49 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C5F6A0BCD
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:27:49 +0000 (UTC)
+X-FDA: 84819779058.04.57B3415
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5E9442000D
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:25:47 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nLeLgcyf;
-	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id C250680009
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:27:47 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sZLc3D9c;
+	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780043267; a=rsa-sha256;
+	cv=none;
+	b=jNcfo1csrUOrTS/1NMHuEpp1wtCH35kx7TXOxH9SHyqwOHvkFn3cD4ahPurEkUQ/3iM2Yt
+	K1FzESkjreqMMAxMgnlY9sL6FRh7R0EoMXud2pl1qdPdrWIm3Td3yqMAWoABDxsV8vkCDP
+	DLdfvERvoVZnZD5QO7paUX+VE0bHrz0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sZLc3D9c;
+	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780043147;
+	s=arc-20220608; t=1780043267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O9W/ydPv1rdqzqLveu863U04ADFNJiE8EEANHLM3s+0=;
-	b=E108G/4OhVVu5m19YjNt9jBt0KzNgDywDGTyckbclvr4ZiwguKPDFFENoHjXK3pImHO29P
-	zqulboifnJVny/tLr8yED9jAF3V8hADfy6iz5f/hB9HBstCX0USPcwP9sfsZCl+q3zImcR
-	xOjoEGkZ/6aE8nx72DXxbLGWS6WftzY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nLeLgcyf;
-	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780043147; a=rsa-sha256;
-	cv=none;
-	b=aF0GxQ4ftv17KHaWa9YydFajU65Dz6EPTZJdpCOeF0dmORCUjmUpkLP2xgDXC4xwVS3V4/
-	cb3zRsVgRACEdb9t+WXE9MI5BhQT3U0+duq9e9PmZDk2Gzu9IuEkPujAAtN0t+9y+5c2iO
-	EFCdnuDsAxO/tjc1S9FJFQNohbY6tvg=
+	bh=CH0z2W4yhgf/tO2JKbxj0lz1C+rTr91+0P7YFlO3hzg=;
+	b=Sw+9a4xU1mqpv9xLa1CqViGCQTg4FAmQSzZy9+U2ORZnIeuuPiXqCQ0UrBTajez/JxjSj7
+	4iUAi5ahYFu6zs1xfJ2mlY20Dlt5P/lloAW/yw2I6oeGePbb7QFIjHMLDrgqW0V8arKaBE
+	RpU0IbynBj9Sboe+rL4sH1EqBz+le50=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 26BB920E3;
-	Fri, 29 May 2026 01:25:41 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B2265201B;
+	Fri, 29 May 2026 01:27:41 -0700 (PDT)
 Received: from [10.57.91.162] (unknown [10.57.91.162])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB3B03F632;
-	Fri, 29 May 2026 01:25:41 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F36E3F632;
+	Fri, 29 May 2026 01:27:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780043146; bh=XELYFuViuZqrLLxfdD4PGyPtxf/Au3oWznf3FJ0ages=;
+	t=1780043266; bh=vGqKwtowp8PNMRvBO7niOdxzr80Af+Ycpil33LSytq8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nLeLgcyf0k0ldux0TFh1jZXIYKRbC8G2USuqOmM/9EmYadwJutsqHi6rAS3wJ4LeP
-	 LQ0tUrmOO60rTr/DJhKXdMc6ZEjfiLBQ3YU7iRkmjIzZx6xkLa0FfaMwWkTN/fTA4l
-	 YY6GEpLN1I96rm5mjpzFJBCMsGNrpegHKxst0bvg=
-Message-ID: <9493da99-3476-4fdd-818b-19e424b46f8e@arm.com>
-Date: Fri, 29 May 2026 10:25:39 +0200
+	b=sZLc3D9chfT7SLPciBg3CzU4tEgQd2MgnitSwynPVzMJkASztCzaS8U6eG48NlXUj
+	 NjlYJAnCst9GC7POcH6vB4eJQPJcLzWDvzqPHQrCfUmthlePWs5wgYHTV4sko2IV+Z
+	 aIr2mh8cXNbx5h2aQZIulPua6F09KFpwA+oUzHNk=
+Message-ID: <2a6f9f05-ac57-4ef8-9328-74cc8ccfea16@arm.com>
+Date: Fri, 29 May 2026 10:27:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/15] arm64: mm: Permit contiguous attribute for
- preliminary mappings
+Subject: Re: [PATCH v6 09/15] arm64: Move fixmap and kasan page tables to end
+ of kernel image
 To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
  mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>,
@@ -79,20 +79,20 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
  linux-mm@kvack.org, linux-hardening@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
 References: <20260526175846.2694125-17-ardb+git@google.com>
- <20260526175846.2694125-25-ardb+git@google.com>
+ <20260526175846.2694125-26-ardb+git@google.com>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <20260526175846.2694125-25-ardb+git@google.com>
+In-Reply-To: <20260526175846.2694125-26-ardb+git@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: h9isz3guc1f6ddrnghzdhdtredtsprm4
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5E9442000D
-X-HE-Tag: 1780043147-940225
-X-HE-Meta: U2FsdGVkX18YYJyPJwy4eGy4xJzWnb+iXJDRLnErHX5GornCdqPzOppsgSXcM/gaL2Rj+aNgxKfuKQcbfYOtp63Nk0ceijQXlU1TyR9eov1/sxuxz9RY9XNkKIVQtzfD3niZhCRaUqJKPa0EQ6yvFIUdPFU6ffmxl0jegxr5RHwMGHsTVW2WV2z7WEknDkPiCCCnM5uHbGhRDTiZrcPuc3TNG0wHidzs4tyPiOBegbK2V9FzwO09zGASUzmTkkvATXY90tuk3PesL0aK3NDf6GRTvjPpjKuk/tqkgFzqFgkFDPJdhDoT6DIomU8cw5SZV/Bm25ex2rE6C19EA6Ix7R+wtOpxeSXRdcpB8dUCn10SMbyMiNJnaWUWimYfize4LRV0m0da2gmCOrdrIaQiy+9qRDYssahSoXJEyixNENrPEVaxRrOlHlrI0ElUhLXQfGHlYJ6wumJwqGv7kZyZwtauwn5jrEkqYINuHXqQ6+M4LwpmbXKA1qBAHOW93e6gOWNeGvjUO95KsDCe0MyT6BRgrlauKVyiRRN+6X8uY1CTP6RAHbhvcdJ89BU072pxBmDPbBU/hiw4Ui3DdVemhrRM6ZeuZYzJjiKhWguWdjXId+UgZ4LIBoxgxeOmw4fhN+GVm+UkThsRcjp5OfSsiKxmmdKWnDj8KgnIaWIRMdyOitqbr83KCPLLerAUjc43lOR6rJK2XUYngCwnVjtROg8ICuB4I2thTmkoHjwSol63kCvigQAXiwv+fyz9cGCNfT3wjnUlpX5bDgCYCYoEvo7GCrSOA4NR7gHykinyvcUMsCfzXg1nG4+Ft3BSVVpudu5/WBK524b2CAo/Lpb0asYyRjWD3Ga2oMMomzDmoP9WqYwMT8whyN4tt4dwGCIMKGvHs2BtoldCt++8xnvcU46OX3EXTlA4lj5b8SrZdBLfEZdtqZJEFSLBO3aV7DhcCTac7/GSC7j5sRWmYx6
- wU3BW3pE
- 8CNvKFk7U9X1WKcpLzSHqFh04S7Q7c9j0g3X2EaI85jilLnZE5zfW1UjCB1bfrWPGYTogoA5GRVbh20ensJSIOXSIdObSRo5aHVZ2Zs9XFJdXNqAMuNQqhsT5tJ8VkkfjLpCCLukuKfZz6gbrKexnTre3V8GXcgtTL5okoACXHnj+csOxwoofY/I4j0/D4l7Qv33GyJxgMZINrlUVhFJ5Yb2qpsGCR+lv3ZhknJ2xjS5E67Pg96uU9Y7/J06rYhmyqSNWSSAdIHfxQv+UOyIthkkwwYT+xtM2wkburGORprsdZ2cQVo240WHRwzJpm5zHUw7OYuMrf6nb8+tuJ427Nzte2nxyfdsU1HPJjEFMZIhKDFL6zNj68bk/BHexEbYNDddi0hrXoJSRdHU=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C250680009
+X-Stat-Signature: mfi36ykxgyg95j9tmj963m1w6gtpc4qh
+X-HE-Tag: 1780043267-893624
+X-HE-Meta: U2FsdGVkX1+nX7Pb5hwZpc6V4c4PLFWsJhIztPnbLAXAx69EjDqisPyqtfncgEcsZHPzklrMz3AwfLy6y7KM2r5OUsQ8R/61TugWT4zjhRBIMeve4ZsG/zzRuJBXSpktEdMbl/es2NP15n0qwUx2yCysAMU2NVsCThQZa6bJl543WV90ErrCSrqJGPtTdMxdhCynqSgLPvISXJDKGgUGG/UiDHTMHySu+5KowHsNDHnxVjXMndths8YTpB7BteFIZyI3mgz15gkYIg+jfpl9HTbQrOqPvoBNppp2IIJrcoI59jY8GmbFv+IoAJzDpiaR+xI19fQeMuPhCuBcjwTgjLQqHshC2P9ZBX8iwmsmr/IZsEUoRQfMoq3qFrUUj2UzfMxy9XvqM3hATyBUdgx8eVqUA0fZOoNsqScddtFrKLVEYhZf7V0wiXjwDO04BEzJEbkqC4qS36TG2Ke/pth9gnjVxM0q7OkqMPkrzYXKtY4I7P+ypiEs5W4CkwoiXbHVA5GjdxtffUrOs4qo4E+uRqgFocXlZ22xR/BcNyf10PDHuQyfnlbOcnVUgSl1dXvblb9bFq7Db9VogZWuCm19PKNjPs0LMXpZDOSpchEiOGiQP5v13InilfC3cvdXWRCJtdM1HcpBMGkb0g0z6oxkGrtiP1h1zB2OXO6RvJNLHLGS0ElWJYS6NUWOVuaNfUdX8nkDUmpUMA0blFVoXPxWlr6/h3bsx0wet6dEAhan50Kp1OHMmpjRZFAF0MOzMtxuqK7Cepy05VTsDRQxFR/zlg/8CWzKEJ29+JjOfkQnPPYkbB4LYFOP33vAGhn/+cPkktpM5ej6yvTf6FnXQL8pB1+41WqM+WKCLSgGUeq999F4rE+ZBYOKlZE6n5nsxXNqPahekExs7NXbDWdAxnKvwhAI5fEi2f5ziawzul28B6s8fJMmXx1bdq5x9o2D2W6Nwh7i3Pu2l7IqK9Dd8Fg
+ BhQCHDM0
+ XUeUnvoIH/bvbJ3T/NwDAKOvhVj/9L3zDxaqJ8Y8l5OQrDRBg2wTPnH78O7u8i5RRuQgjH1aSdWJP+ww33sdJoF4ucWHOqKLWcWRfMzyv56p4fviurbdGbJ5iQNey3f88fhOt5g48KXuyfiSBzmc1l3k8WjFF7akxk0CKOl015iXLkLnEVtp2dZE3YTtGLjY6UI6BCUHMnVPOzTozO9mR0mq9OnNYlNlZjlvnLrV1Kbw23sWBoKJIzGbNEomGcHh6IybvM5T8wsKWx59IMwXJTkEj60Bmni2ieAbFfU0kMjKCBu43gNpoXNm9cFFnSvQcW++gWBXC8UWisGlE9YvNxMI8KP5E5jIpsO0p6nacqd4QeHECrw4s15BRXqGKCJ6YwtAR3bFVZeUg4d4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,74 +103,93 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 26/05/2026 19:58, Ard Biesheuvel wrote:
 > From: Ard Biesheuvel <ardb@kernel.org>
 >
-> There are a few cases where we omit the contiguous hint for mappings
-> that start out as read-write and are remapped read-only later, on the
-> basis that manipulating live descriptors with the PTE_CONT attribute set
-> is unsafe. When support for the contiguous hint was added to the code,
-> the ARM ARM was ambiguous about this, and so we erred on the side of
-> caution.
+> Move the fixmap and kasan page tables out of the BSS section, and place
+> them at the end of the image, right before the init_pg_dir section where
+> some of the other statically allocated page tables live.
 >
-> In the meantime, this has been clarified [0], and regions that will be
-> remapped in their entirety, retaining the contiguous bit on all entries,
-> can use the contiguous hint both in the initial mapping as well as the
-> one that replaces it. Note that this requires that the logic that may be
-> called to remap overlapping regions respects existing valid descriptors
-> that have the contiguous bit cleared.
+> These page tables are currently the only data objects in vmlinux that
+> are meant to be accessed via the kernel image's linear alias, and so
+> placing them together allows the remainder of the data/bss section to be
+> remapped read-only or unmapped entirely.
 >
-> So omit the NO_CONT_MAPPINGS flag in places where it is unneeded.
->
-> Thanks to Ryan for the reference.
->
-> [0] RJQQTC
->
-> For a TLB lookup in a contiguous region mapped by translation table entries that
-> have consistent values for the Contiguous bit, but have the OA, attributes, or
-> permissions misprogrammed, that TLB lookup is permitted to produce an OA, access
-> permissions, and memory attributes that are consistent with any one of the
-> programmed translation table values.
->
+> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/arm64/include/asm/mmu.h    | 2 ++
+>  arch/arm64/kernel/vmlinux.lds.S | 8 +++++++-
+>  arch/arm64/mm/fixmap.c          | 6 +++---
+>  arch/arm64/mm/kasan_init.c      | 2 +-
+>  4 files changed, 13 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/arm64/include/asm/mmu.h b/arch/arm64/include/asm/mmu.h
+> index 5e1211c540ab..fb95754f2876 100644
+> --- a/arch/arm64/include/asm/mmu.h
+> +++ b/arch/arm64/include/asm/mmu.h
+> @@ -13,6 +13,8 @@
+>  
+>  #ifndef __ASSEMBLER__
+>  
+> +#define __pgtbl_bss __section(".pgdir.bss") __aligned(PAGE_SIZE)
+> +
+>  #include <linux/refcount.h>
+>  #include <asm/cpufeature.h>
+>  
+> diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+> index e1ac876200a3..2b0ebfb30c63 100644
+> --- a/arch/arm64/kernel/vmlinux.lds.S
+> +++ b/arch/arm64/kernel/vmlinux.lds.S
+> @@ -349,9 +349,15 @@ SECTIONS
+>  	_edata = .;
+>  
+>  	/* start of zero-init region */
+> -	BSS_SECTION(SBSS_ALIGN, 0, 0)
+> +	BSS_SECTION(SBSS_ALIGN, 0, PAGE_SIZE)
+>  	__pi___bss_start = __bss_start;
+>  
+> +	/* fixmap BSS starts here - preceding data/BSS is omitted from the linear map */
+> +	.pgdir.bss (NOLOAD) : ALIGN(PAGE_SIZE) {
+
+Do we actually need the NOLOAD type here?
+
+Aside from that:
 
 Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 
-> ---
->  arch/arm64/mm/mmu.c | 10 +++-------
->  1 file changed, 3 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 55bb40348a47..04cc579c7a15 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -1016,8 +1016,7 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
->  			&phys, virt);
->  		return;
->  	}
-> -	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
-> -				 NO_CONT_MAPPINGS);
-> +	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
->  }
+> +		*(.pgdir.bss)
+> +	}
+> +	ASSERT(ADDR(.pgdir.bss) == __bss_stop, ".pgdir.bss must follow BSS")
+> +
+>  	. = ALIGN(PAGE_SIZE);
+>  	__pi_init_pg_dir = .;
+>  	. += INIT_DIR_SIZE;
+> diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
+> index c5c5425791da..1a3bbd67dd76 100644
+> --- a/arch/arm64/mm/fixmap.c
+> +++ b/arch/arm64/mm/fixmap.c
+> @@ -31,9 +31,9 @@ static_assert(NR_BM_PMD_TABLES == 1);
 >  
->  void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
-> @@ -1044,8 +1043,7 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
->  		return;
->  	}
+>  #define BM_PTE_TABLE_IDX(addr)	__BM_TABLE_IDX(addr, PMD_SHIFT)
 >  
-> -	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
-> -				 NO_CONT_MAPPINGS);
-> +	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
+> -static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __page_aligned_bss;
+> -static pmd_t bm_pmd[PTRS_PER_PMD] __page_aligned_bss __maybe_unused;
+> -static pud_t bm_pud[PTRS_PER_PUD] __page_aligned_bss __maybe_unused;
+> +static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __pgtbl_bss;
+> +static pmd_t bm_pmd[PTRS_PER_PMD] __pgtbl_bss __maybe_unused;
+> +static pud_t bm_pud[PTRS_PER_PUD] __pgtbl_bss __maybe_unused;
 >  
->  	/* flush the TLBs after updating live kernel mappings */
->  	flush_tlb_kernel_range(virt, virt + size);
-> @@ -1191,10 +1189,8 @@ static void __init map_mem(void)
->  	 * alternative patching has completed). This makes the contents
->  	 * of the region accessible to subsystems such as hibernate,
->  	 * but protects it from inadvertent modification or execution.
-> -	 * Note that contiguous mappings cannot be remapped in this way,
-> -	 * so we should avoid them here.
->  	 */
-> -	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, NO_CONT_MAPPINGS);
-> +	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, 0);
->  	memblock_clear_nomap(kernel_start, kernel_end - kernel_start);
->  }
+>  static inline pte_t *fixmap_pte(unsigned long addr)
+>  {
+> diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+> index abeb81bf6ebd..dbf22cae82ee 100644
+> --- a/arch/arm64/mm/kasan_init.c
+> +++ b/arch/arm64/mm/kasan_init.c
+> @@ -214,7 +214,7 @@ asmlinkage void __init kasan_early_init(void)
+>  		 * shadow pud_t[]/p4d_t[], which could end up getting corrupted
+>  		 * when the linear region is mapped.
+>  		 */
+> -		static pte_t tbl[PTRS_PER_PTE] __page_aligned_bss;
+> +		static pte_t tbl[PTRS_PER_PTE] __pgtbl_bss;
+>  		pgd_t *pgdp = pgd_offset_k(KASAN_SHADOW_START);
 >  
+>  		set_pgd(pgdp, __pgd(__pa_symbol(tbl) | PGD_TYPE_TABLE));
 
