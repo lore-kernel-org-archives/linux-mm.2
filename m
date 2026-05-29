@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85F4FCD6E49
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 23:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEB81CD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 23:40:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 493696B0005; Fri, 29 May 2026 19:36:24 -0400 (EDT)
+	id 1DB6D6B0005; Fri, 29 May 2026 19:40:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 444F86B0088; Fri, 29 May 2026 19:36:24 -0400 (EDT)
+	id 1B3166B0088; Fri, 29 May 2026 19:40:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 359B96B008A; Fri, 29 May 2026 19:36:24 -0400 (EDT)
+	id 0F0BF6B008A; Fri, 29 May 2026 19:40:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 23B846B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 19:36:24 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE98CC1786
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 23:36:23 +0000 (UTC)
-X-FDA: 84822068646.29.3FE97AF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 128FD80003
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 23:36:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="ulUk/p9P";
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 026466B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 19:40:48 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA4391C1063
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 23:40:48 +0000 (UTC)
+X-FDA: 84822079776.25.FBAB062
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CD22FA0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 23:40:46 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Doa2M2Qa;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780097782;
+	s=arc-20220608; t=1780098047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k3wCANRDmAKnXOY0pPU0bwPiXfptLlw7s4pYpBbRNU4=;
-	b=p3qa2eCdFAnZO4yr3AXifumeC99RTVytaSdfbkuooiRCJqoB1ZT/p5qxn3F0CPhf/yjErB
-	P+Uc8sLIeC33CGK8SJUuG2g1Ek/hdlxBfarUwHzf6F5oKVVE92e/iHp2okzx9Qzf4d70I/
-	ITYf0t5lXrrKlxWwaQ2cE+B+GrKsiig=
+	bh=wqG+2yJQhX3QhV/XJDjT22cZXnVygwf7uv1jGGIA8wo=;
+	b=byHwXw5lr5yl69jfTf2nlwNnli9neSt/DjFt1T3QPupQ8LnG+pJJyVXkrip+CCKRwmZMkV
+	230E2humOTOYs/YZMrNvjcp/zLk54Vj/TlUZm2scqgDjJJ7OCy43ctLSBJmsVck35TGMyk
+	cb3Hgp8hixHacWzwxJTAz/+ReC2XcMQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="ulUk/p9P";
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780097782; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Doa2M2Qa;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780098047; a=rsa-sha256;
 	cv=none;
-	b=0fd2XBLop9IvC2+zcjLb2ao1NbyMXbX7WqVQAM47nh7/aTtqqklpnCM2agnnCX8PgyrYW6
-	xaISsqJbEEZEWgorVwm63AxUoe2xcEmgzroslDqQeGFS2agl16XHa1bdD5KBYFoL28ntyS
-	I+SlZPtQUHTKkSeH+ja4MLsVz8i67+A=
+	b=qWOymx+//ZJkVAMC83wshZ7ak/R5pwbfiulK2Tohgtc+0fjyAuQGcFrf/uraIUVNfEqE3Q
+	WIrZzZXewwkt8MCMtRVRTKo2DJxohcsQmmhup975iyhL/R2t/6DFTvhC/lSnk65B//lKFY
+	xJHNdXqXamd/GO+E9GpIdpX7ZSj4JZo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 45E7660103;
-	Fri, 29 May 2026 23:36:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F5B1F00893;
-	Fri, 29 May 2026 23:36:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780097781;
-	bh=k3wCANRDmAKnXOY0pPU0bwPiXfptLlw7s4pYpBbRNU4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ulUk/p9P7YXsrGGptPVWPz2KPipAsJg/6MY76t9tFV+gqOTYJs0eAMBbniM2mJwc0
-	 g6iBt611x45wbrhaEJrVgM0xixkRg5S/3BuNLpsOokCV8yxW2udIy/lswLlVRW76Bw
-	 CXycO56vcCfWETEgvzF0gK0ZONBTV2d6/CK1IFTE=
-Date: Fri, 29 May 2026 16:36:19 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>, liam@infradead.org, jgg@ziepe.ca,
- leon@kernel.org, david@kernel.org, shuah@kernel.org, vbabka@kernel.org,
- jannh@google.com, pfalcato@suse.de, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, balbirs@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-Subject: Re: [PATCH] fs/proc/task_mmu: do not warn on seeing non-migration
- pmd entry
-Message-Id: <20260529163619.fecd655a4db1f4a6543d5342@linux-foundation.org>
-In-Reply-To: <ahmdJFCw2arBdsd9@lucifer>
-References: <20260529111704.1078346-1-dev.jain@arm.com>
-	<ahmdJFCw2arBdsd9@lucifer>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: iznh4dr41mxron9tdgnmcmmpp6nqadi3
-X-Rspamd-Queue-Id: 128FD80003
-X-Rspamd-Server: rspam07
+	by sea.source.kernel.org (Postfix) with ESMTP id 595A044590;
+	Fri, 29 May 2026 23:40:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864E71F0089D;
+	Fri, 29 May 2026 23:40:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780098044;
+	bh=wqG+2yJQhX3QhV/XJDjT22cZXnVygwf7uv1jGGIA8wo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Doa2M2QaJTMnV1NU8nm4lmlz/+tfEfm+WuMuK1PKUAmocD+JvBdI2ZbJ/Ro/t+oS7
+	 tGEYZwT7b6a5pUC/wWo0nkhtuXq+rMLVMX0UaYp48QHiikO/nkdIBrIKnvHDe+/28b
+	 S5BgB76t5PisQaYK55ECIrc2dOwPbhSI+mOZXuW7op5xec1xe+XW27hvjUIVWWRoQY
+	 3jfS8lVNRIezTsNRk1nbXCqEktLkl4Cbj9kpS5JHn6FxkK/fzYes0LvjbfvVKopgon
+	 Qib4FHagEy7N0GLDTlpJKm+5zdfgWbmfaOOhw/yT45bjbVuEIRbw/ZjYmAsi2iulNz
+	 Ix4Lm/p0JOMPQ==
+From: SeongJae Park <sj@kernel.org>
+To: =?UTF-8?q?=EC=B5=9C=EC=9C=A0=ED=98=B8?= <dbgh9129@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/damon/stat: roll back context on damon_call() failure
+Date: Fri, 29 May 2026 16:40:37 -0700
+Message-ID: <20260529234038.87184-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CACrCO_Xend-ivqq6TZ3GDhfTm-JsyoYJQjgNa5pdeU+5sFwKrg@mail.gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1780097781-806454
-X-HE-Meta: U2FsdGVkX1/K3rpK/NCNhNBKzX24tAxKzkyEEfK3Tx4WO+UOsk18aVRBYPNNYS0DC7gbN4C92zjfC1qIs1sP5pQKk1kRx53/EOlFndNqBDuHw07e/9CC6XBX1hKUN5K8ltXcnLuT+dG6caXe4dE/D0bm569EtEG9paCZ57sqZMJA4lqdQ0qHH4vQl0M+mOC8qfIID6ylGYpF4YsT5G66usDE5G8Xoj/3tqdFFWlVOzTHEeJztLEI1KbAW/UmyaOw7gWMrqoqR2f1Ch4RIXecJleuUjrUxqkxK1rs7BxbZd7NJkoNT4GMbihJ0ibnLTdkmC6EyMKG+Gr0rloNvoZQySN16gvgMwMQX2PXmpBr53O5JfSKjC9eUi2SoMDcNRj0lNixNzTUhAjYEhgkcaymcO80s9vBFHcxa8rZSE3TgxlWAuzuCicp0y0bVWtHKPg3phSuampheLgHzGs4cuI1Kvrqw6XQWqVCrcx2gmvuJ3cRRkbxOL3KSRV2wv9YBlCkJeBNpA3Tkw9zh+3xwHta+rmTqZPykn5010spdMTL8tEjuq5+PSRkhucOuTA9lmRmg70aFJSnh9bcCLc5LFvuz5R5McvQBJQIKX67Jx3RUqhyTrIvacgAVmSy0xwdU6F2DKGlZsq8/xVr76tzvMopZSJ7C/0YkelgDGzrOCRfLSbAXmpcsWRpf3jfPm+9knvD0u/Lusm3UZMpcfLv5X7cQ0UbO3o+qiGI220cehl7fFLqcGjF6qKm0tWe0KyPiEm8jONU8Cvh1oL1u+CDczMUyppZDVfDwWgTi5+iwhrL0DYkZu5fDGJdiviBB7LYJqoeZ0oUQxsrFXNniIrW99HXPldmVfc14xsroZJ2QUVw+x703Exmx0LPDshZg+y+5l9B5T6nx1VyiCpaRF5qvwxmV4Qq8JW5gr2u+ciApP6On91ctAti9GXBovFP17bROSiA76N2ZqIXi1dMJMQIgy0
- Db+U3ZND
- uDWFHVxawTkaNQc+Ua5zZQknIdd6kBNbwOP5pQV4zi+tVYA3d2TRsSng78yTQ/WJZ0mR8J/oEiHqdEj3kYE4Vg++nNc0BtnRPRiOwdDFWVMfyE1eP42ALAYJP8Psg7b6ZauJEs/4a2CboSmRBe7wCKMo4fTpSDzrZ8gxb2PQm1+jXSC+Tgpfyy8W7G5ZxuXAKXXpzqmFPOCq9IXv6ttxG/eR7f3VTQq+NF50CRHflREwCWDpZ204eL43aFO69MUyuSo7E1Qubc0/ZOVL77RtPimzoI+SD4ZNT8pZ7Twa0SkaKc5Wn1fTWiyq6GMcs4zzvi3Pp
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CD22FA0005
+X-Stat-Signature: wprp1gzce1umazzobr8fd8qzz1rd95xp
+X-HE-Tag: 1780098046-444006
+X-HE-Meta: U2FsdGVkX18RJKQAKnpJxbm94H6hvhsyxB203zkQgVvOMpGUZ1uBr0WSItJj2MPNlyRiMAXAgyH26bNwbUeRB8tUlOKWJE5KAkSL4UUx8RTMPsdQA0sMw9UOMGoyCoWIqDCe2IDH1Fg+2Rz3A1y7UL3mrDJuhDjKAdamPBSMEsHjOi1uTDEjYVcA+zEDOaYM6al1gsuvl9RvoZd6dHaCXiQyP721+xpYLvx5izHmUHRePCwJUw8VeAuCAioqHBEqNKtrWR57Y0oaIm5YkQ1wDJbinuMnczxlkqqJhU/9A2HnzbQHdRRXHZjfWZ9kkf9EEEUT17VCmwqkQ6HclebUM2aEXDhpd7uIJGpS6TERLdQoPBmrhNYms9njZDwZY4uJ/QZq2m8Zdwx8WXEYHL1DheSHzfCUtySNS0PzRbHQmg51icTMKdgDW+RRSm7fvnm9127cRY6FaBZdiqhh6Bw1wjqXe1c0m4wAe52oDPIxuk3uUSxL8ti592g8fkdsOSxdjkJPERI9IBnGS+N5BtoTT7bKgQx5+8acK0nAM51LEHH9Og3N5gsRSdfI3UDDO6qqzwcX7mnlm01W4c4AnY4kN4mml9gKVXnkfdF3CE9A3+VwF7qoqZo+LYbrGmpVLt8GL4MutueQ3rSoZEjHaqABsN0dh91oBWTlJW8trieiEr+kRsE/AeKW/G1VzdRh11ZBdVT2ZIPuuzyBmaNjbqkBFJ6OxHs1Bn0ek7YDDuuyO9ONjFy58LPO+43u0IspcLS4RFgBSnrzWB3z+9OjbZ5zlTrpkBxYpIYDtrrnIccSjrBH/MRek+lZvQcLsg6w3YFNbEWHEQM9mRKwbGks2I6oEsoRNypLBVGujpP2AG/VDrhudFGdZ5KMqr0pG8puWaJM7h3AonW+LuCLAylQr4VIqlKW67TXUY1AbkP9g/cbtFI9/bvdxSOPS/dxP/FhUJ135EegHGw5E8M1PtAawz1
+ vxb8aani
+ y8Ux9q+7nt2ws1Ex/9BkP6nTVNqJrVXGKwkBEKA5OHeHIMElOC0DIUEzzRL1lghXib7LtAzSTKaAPVaLt5oB8EihV4w2Cimj1a78siyIhcHAzXju6bHbvv2+/F44p6LVS3I3ZxwJ7ty/2Meuw5xh42l85VKrPMJRI+WudfbRj2ffCehrhCtseyEn4H0N7xkJ2eQG5K0WAVe6PG0xArKmhksPTCV7TKqiKH9pzTjE1PBD62jM7q880eoyEvKqdo2b3n5fwsB2ratKXgPDaHpAXG+ePTDKY5Thi0NaLwx+xlJbR1FlcXrCwrrwcZh9mRKI6ZOMVIrYUxdh3YdDDrrptMffRNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,20 +95,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 29 May 2026 17:45:24 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+On Fri, 29 May 2026 16:29:44 -0400 최유호 <dbgh9129@gmail.com> wrote:
 
-> > +	/* Exercise pagemap on a PMD device-private entry. */
-> > +	ret = hmm_read_self_pagemap(buffer->ptr, npages, self->page_size);
-> > +	ASSERT_EQ(ret, 0);
-> > +
-> >  	/* Check what the device read. */
-> >  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
-> >  		ASSERT_EQ(ptr[i], i);
+> On Fri, 29 May 2026 at 12:00, SeongJae Park <sj@kernel.org> wrote:
 > 
-> Thanks for this!
+> > Thank you for clarifying, Yuho.  I think the current cleanup is ok, but I
+> > understand it is confusing to read.  Apparently that confused you at least, and
+> > that's not ok.  What about adding a comment explaining the context?
 > 
-> though, hmm it really feels like you maybe want to add this as a test and
-> make this a series :)
+> Thank you for the explanation.
+> 
+> That makes sense. Looking again, I noticed the same retry-time cleanup
+> pattern is also used in lru_sort.c and reclaim.c, so the behavior
+> seems intentional.
+> 
+> I'll send v2 patch adding a comment explaining deferred cleanup and
+> retry-time handling.
 
-yes please!
+Sounds good, I'm looking forward to the v2!
+
+
+Thanks,
+SJ
+
+[...]
 
