@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65E2BCD6E43
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 00:01:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 478AECD6E4C
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 00:01:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 919B36B0005; Thu, 28 May 2026 20:01:18 -0400 (EDT)
+	id A15F26B0088; Thu, 28 May 2026 20:01:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F0736B0088; Thu, 28 May 2026 20:01:18 -0400 (EDT)
+	id 9DB426B0092; Thu, 28 May 2026 20:01:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DEF66B008C; Thu, 28 May 2026 20:01:18 -0400 (EDT)
+	id 854646B008A; Thu, 28 May 2026 20:01:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DE916B0005
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 73EE86B0088
 	for <linux-mm@kvack.org>; Thu, 28 May 2026 20:01:18 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 075081A0B48
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31478C34A8
 	for <linux-mm@kvack.org>; Fri, 29 May 2026 00:01:18 +0000 (UTC)
-X-FDA: 84818502636.15.BA97F4F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6D1D312000C
+X-FDA: 84818502636.18.8848232
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A1AED40013
 	for <linux-mm@kvack.org>; Fri, 29 May 2026 00:01:16 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fPK4lzw5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z2ylaYJ7;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780012876; a=rsa-sha256;
+	cv=none;
+	b=iKp98v/cXO+gI3zrOLeGOLdZAAeKcgzq16kzczMDwFhOLiN/TmrW54jsfFwUOX90yJbHu4
+	t/MLcL0e8ln1cQ9IuASPXMddMhMeRzz7iUbp9lVNuwt9srRER4uclsFcMU+Y283zSXMFly
+	N/gSDFUjf/7BkcUph2tMZdeHkoiEKrg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z2ylaYJ7;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1780012876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CK6rWCS8LFvFBXjfIvuhhFhQ6PGQWXZdEx0+rj0MOdk=;
-	b=SGNNtgPn05FDKkUYvSv4a7yOMlnS5b5VN/4v4gCmA0InHhd7UU3GhFrxW290Swit8CoQCz
-	WQavfvvXXJYJuKCXNCpyALfC7ls6H2XmXe3d0FV4wPH4OGrpj8xYiUfGRy5AttG8e3m27n
-	yn/KiNdTNci1pCSmJ1zsGFx19ahEDxQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fPK4lzw5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780012876; a=rsa-sha256;
-	cv=none;
-	b=qfVviyGai8qQGtBOjxFIgvDMo/bwbWQGPV69mtUNXNKsRWDQRkvVICR0bZ32BtCfG3B24f
-	uxRWgjpO8OolBRXa7wo1H/aajQ6qY+yZbNVjqjmLZnPqBD/U6UjVjFnreHVDKaJANyTsJQ
-	VK4wzd7O8st6rZbjCU5lN8sMd3B//dA=
+	 in-reply-to:references:dkim-signature;
+	bh=vx8oJBN/wcV5EZq/agtzr1qbPBazCkEMU+Yp1WK1pgI=;
+	b=3Vildq27kInv1SeRL4KvRgZBW+HH60fabGu/SntSuPM/tlBjThDV+6np9g3e+yQI0Ze4pi
+	U4Uft1PPLN9kg3df/K3dq78vGu4ibPF9qUcuOZN23j54t7gVI/PbK0LQUl6e7YhMb9jqXN
+	7/XBgEJJnAEuSDAcRTC5LBa+AisVBbc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D77136022B;
+	by sea.source.kernel.org (Postfix) with ESMTP id 54AA3441A9;
 	Fri, 29 May 2026 00:01:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF281F00A3E;
-	Fri, 29 May 2026 00:01:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACB51F00A3C;
+	Fri, 29 May 2026 00:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1780012875;
-	bh=CK6rWCS8LFvFBXjfIvuhhFhQ6PGQWXZdEx0+rj0MOdk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fPK4lzw5k7IzIyNZpg+Qt+0FuVA88Hrx6vLXTH50CRMamVCLc5aY9RMKTq6dzEFCY
-	 lvAoE0Rey1ZVJs/Bfegtwbc6ZTodQOniz44JS4A9BnSGs1EdaVGri0W0ms5LSvFvD9
-	 3d1X7Riy+QEXVIL6UYHpPGSSp4WSwaL3m2lqBlN8ZH5gFPZPVMrrooj4KgpGg630Zp
-	 5BEsb1gmfsZT8yRzOxxfyKjRoaaSd7WA8eOvlC9p+TmJR+qpOw761exZbPiN1ZAPQF
-	 3wrkaDXV4WQ/iEsCezgxV/llqDGlXaNA2aQgWvEk4+SvlWuCmZpYqPQoLloEfr5fFP
-	 EhGE7Sp1RRF9g==
+	bh=vx8oJBN/wcV5EZq/agtzr1qbPBazCkEMU+Yp1WK1pgI=;
+	h=From:To:Cc:Subject:Date;
+	b=Z2ylaYJ7M09cBU0Fuam7Bwi8DzsJOsHupO82ITB1zUpZFyTFLKslIxe92qEd+hhqs
+	 IEBptpel1r45Ve0Xtiz2CK5c2GluXxHt9iWMmUeztnz1p7XU6mZndg497nExcuvl2o
+	 0dJzHEDqPLPtN8Uan62+Es3pilQ2uw+I1PTCeuxegBQkXJIin0+XjcWz/3lGQIiXP0
+	 elo5A+5/NmvD8Q7apgKuCtq53LcS4qsB6KWRtr08fYMOQvM3l4cSIGItO1dQbEinMk
+	 CHyVJVttZGrBPxoYxFjSI2OGYjdWVS/sYBLrMYDGR0QtdRPu2kwodXtWQIaOVlcuwv
+	 nwTxeBkiCI9yQ==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,20 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/2] mm/damon/reclaim: handle ctx allocation failure
-Date: Thu, 28 May 2026 17:01:02 -0700
-Message-ID: <20260529000104.7006-2-sj@kernel.org>
+Subject: [PATCH 0/2] mm/damon/{reclaim,lru_sort}: handle ctx allocation failures
+Date: Thu, 28 May 2026 17:01:01 -0700
+Message-ID: <20260529000104.7006-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260529000104.7006-1-sj@kernel.org>
-References: <20260529000104.7006-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6D1D312000C
-X-Stat-Signature: ozwd7pa3fnqk4po1xbf8ffjpezj5tp11
 X-Rspam-User: 
-X-HE-Tag: 1780012876-592721
-X-HE-Meta: U2FsdGVkX18nx1YZHGZHZ65sn74JxqiAdlHBNoMAA3Kw3Jtx4WW0WWIpu9gYo4Bwm1Ket36+Mf8IobW5qh0iBLfeWAnhPIDWezSjPblO3Lj7O65qr3ThDRVEkcKyYlr4fDIq3cmpnWJRlY1r9OoLhuKWRi9XCxtQn7FKivdAGqPfPK6SC3IhDfzepx4uDNTiJKc+NpquXrqctOoIzcyf8HkLdSKychmYDP4P7VJ7vkjNURP0V6/X8TUYyp1w6wsmueJjw2UXQ1Pg2eRhi8uw4wL5uF1GMhXjTcM5KV/q3TmglDsOQLmAJD3NnPSOQPwA+KHjv0Hew01g9Cl2noQCU1bV4QGWNgOmaCxhKsoqjt7ar144iIY6qZ+98crC2+89mAjNzuwYR2fomk2uW6tKADe67iQD3Bdc9ZqJKuP9b5opKYvvD/hrwCQ70N+jF6OY8rhgI+S70mEy0i0Q7pAP8bzndHkBu53k462pHLSuvodYmp4DMopr9FhHygx7cskitGmsgRpM0+UKHe/r5keG5+c7hCk+t8Lm9MYHYwX8Tb5rTQjQ+mXtfhiBjWJ2lRrAobnHMVBm6Rm1BLzQqhkVTEZ7y94/Gry9dkm+5gcfxv0yFTL0VKEVQGeOJOd1oN/hRjlbkZBn4pWWry1e9Sbp9NEgJdF39QRbTDfETucsJQSWgh8rlqegoK+UtGtpQmOIj9qUk661h+JJB3fnoRdXv+7ymJlFcyHijGQ3N+zoeUN6vQDkHLZ8/WEL+yeCa8RVlgWcjN/XmuTdUa+RMxB9Wn2KY2Kn76FYEGS+PDIv5TNCkVoZINN8d8cefvMG2w4uFyBFhYPw8G2vIu1e3iFEf887hC9XpejNuiWvhTujZo9fwPwNNfefiSOu81QWhCZwS+UQL5bXLZyQ5S7fMWawjeuPVpOVruD1FY31Q7YU6mllomcL+JftxXTa3bincbgVgI9BflmIT7niuyfTQCd
- OxwQ21aW
- EfF6plVreVXeaihZzmBcPh7Q47AWl56u8quPKf0RFvXVdTrAtAgIrzbjH45bwrVS7bJS/8yAFgN7I1oorElnhv5vgyIhmhmPBBDdtqzdUBHfosSkXv30ZDngI0IEFxSO6YkYS5ESxO+z/vqIW4P/yI5tIjYw2WSG3oWGl921o26lGpic3exID278wVxmIL8AElRZI2YL5u5Iq6aKvqNdh7JjIxVt3kSPDqEpMh2GfBsCbMPo=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A1AED40013
+X-Stat-Signature: amwgcc3kbzxzdfuczxfcdx7poewtum4n
+X-HE-Tag: 1780012876-444964
+X-HE-Meta: U2FsdGVkX19kM/4p4Ofu4Fan8J5g/lDooP9Tuw0tG4HXbxuIAvFUXOG2q/Ri1/oNM6pS4LkdqCPC7/8xTPZILZLz1nCJ0jciXL1kacjwLyAbwm7XmXeK1cHhVe6eMEdvm3QwLuET3x+X+JQKgxIgh7hxiqKTiwACyT5h3xD+FcDo7A398ofmnSf7y9d1pLgnm8F9QklEdQEs/QZk55uLOED9ageppAesx1Vqj3zrkS6IuGRYEldo2ZrT3RQXCKSlAAPwVm1J2RMjUvHj5YaPpkz8Qjkl9z7Bw+h5m2oy4MvJ3KNfGsqrcs1LZPLTd81EuZMvWglS6HLlh/ne4VoprEN6DpVReopt25p+LHH6Mghm3N8Ibx84KoMbHsb/Dx7dD8rcXtt6I+zkQn83W9h0LBL07PUOaaYbHgu9M/zgYKweGsSrXPJrYf0dAOS6LsDk99050913ZGEL5CNnhDrx0Hb+tqm1F/A2wPnyxbAHXpLeQmPXeaJd3Sn9GmHMyAklTlalNNSzKgFVaxnuRJsrLAUKYHN6IQ/J6c6VfSFb9H4aMNZak/eyQh+Pk0TCHw4wucUnNCqcXFHkse5eqE1DSwIG325E+XOd62ovKb9I1ffAbv9ryk8xVuyirRIp4tFXm1+UkwGsfdj3S4jZyjiQa+++iBzOC78xyi7z5/wOhyINaqwQwWFp5JRSu84p2h3FrffsFkK3ouDl0jZwgg5hmSUKaSzKbuHWvDqcyZvfBOtuGQ/wMxgMZpmYmaAjohLXSX55IIzDvWRHfsWMawAOYCrBjCZfLlAu2oFtVX559dZ7KBP/RU8x/aBGYYvxnEx4nCCd8MsnX3r+wV98oj1fcl/wL0QZ4L4Z684Jmldq9jZ5gNvz9DF8/0buhLYCrRgaJJSMkJcTVLy7cVLxPT6bCKcgvbd8ebpoYHqMYnMOmzQHg5/sKVZPKIGprRJH9cuew1A/wQZSUCawaII0zsN
+ ipWKfqMZ
+ 7DBf3UbOPQRCGzdrdUMU/PZ51eDaPF6JdOvuPv0lKN2eZYqZFKbUgwkztqCCyirxrGiJdIC7RutWxHXTFwUWrr1Ojnr90/o3nQb00bksPTPU288alXNujOUYCoRq6SABWiAz1kIMdRYtnj5gQsYLpqeFXfKty77xGRgT/hS2FYgN3KslDbSeidEyvd3oL7JjY3UeFwvhasD4QcZkQFfsMCXTmT7iAE58q5PVdoCmbye/qUwTk6WMyJZYJmm1U5kdTAC6ZQL9zloCaK31B6lO/CjKYsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,35 +91,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_RECLAIM allocates the damon_ctx object for its kdamond in its init
-function.  damon_reclaim_enabled_store() wrongly assumes the allocation
-will always succeed once tried.  If the damon_ctx allocation was failed,
-therefore, code execution reaches to damon_commit_ctx() while 'ctx' is
-NULL.  As a result, it dereferences the NULL 'ctx' pointer.  Avoid the
-NULL dereference by returning -ENOMEM if 'ctx' is NULL.
+DAMON_RECLAIM and DAMON_LRU_SORT could dereference NULL pointers if
+their damon_ctx object allocations fail.  The bug is expected to happen
+not frequently,, because the allocation is arguably too small to fail on
+common setup.  But theoretically it is possible and the consequence is
+bad.  Fix those.
 
-Fixes: 3f7a914ab9a5 ("mm/damon/reclaim: use damon_initialized()")
-Cc: <stable@vger.kernel.org> # 6.18.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/reclaim.c | 4 ++++
- 1 file changed, 4 insertions(+)
+The issue was discovered [1] by Sashiko.
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index ed446d00ef1cf..ce4499cf4b8b0 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -399,6 +399,10 @@ static int damon_reclaim_enabled_store(const char *val,
- 	if (!damon_initialized())
- 		return 0;
- 
-+	/* damon_modules_new_paddr_ctx_target() in the init function failed. */
-+	if (!ctx)
-+		return -ENOMEM;
-+
- 	return damon_reclaim_turn(enabled);
- }
- 
+[1] https://lore.kernel.org/20260419014800.877-1-sj@kernel.org
+
+Changes from RFC v1
+- RFC v1: https://lore.kernel.org/20260528061110.2172-1-sj@kernel.org
+- Drop RFC tag.
+
+SeongJae Park (2):
+  mm/damon/reclaim: handle ctx allocation failure
+  mm/damonn/lru_sort: handle ctx allocation failure
+
+ mm/damon/lru_sort.c | 4 ++++
+ mm/damon/reclaim.c  | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+
+base-commit: 62a58b8764d8e485eee4c12d24ee107ef11c98f5
 -- 
 2.47.3
 
