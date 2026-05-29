@@ -4,91 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9FFDCD6E50
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 14:33:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 439E2CD6E4A
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 14:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33A8E6B0096; Fri, 29 May 2026 10:33:33 -0400 (EDT)
+	id 542A56B0088; Fri, 29 May 2026 10:41:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C37D6B0098; Fri, 29 May 2026 10:33:33 -0400 (EDT)
+	id 4F3916B0092; Fri, 29 May 2026 10:41:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13DC36B0099; Fri, 29 May 2026 10:33:33 -0400 (EDT)
+	id 3E2566B0095; Fri, 29 May 2026 10:41:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F19336B0096
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 10:33:32 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BD9B6160C3A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:33:32 +0000 (UTC)
-X-FDA: 84820700664.23.898773F
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2DAA62000F
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:33:31 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DafaDXjj;
-	spf=pass (imf13.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780065211; a=rsa-sha256;
-	cv=none;
-	b=BhE/JFAbGxJdJuCABn/irEJaFdE9THfbZtX0/ztJinKqWls+OlFlTIYEq+XT0EBYyZv34W
-	NP6XK6YPaKUiGVZIwf4gNgEj6xkwzdYOOqZH8Jm96z1+fxl67KtTBQp8NF3eWJHD2XM61q
-	QNcVAlVrpv8iy2IFodqBuSKSRYLgRjg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DafaDXjj;
-	spf=pass (imf13.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 289AA6B0088
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 10:41:19 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC01F160B08
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:41:18 +0000 (UTC)
+X-FDA: 84820720236.22.E57388F
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BA29120004
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:41:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MZK7aznu;
+	spf=pass (imf03.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780065211;
+	s=arc-20220608; t=1780065676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vyAIkWzZgGB6LrCF6zuZOLFTfkZ2Yg44+ju3GGAi4XQ=;
-	b=vnnP6pBvNOjTZgu0U6mw/zNsFf4TdCYyCilYyP4qe5WZZklhs32wbqsTu1r7M6cvZL5RPd
-	jCBiUJX1VUn1UOoqtPu5MFpH8b9CYkdUiTI+NdT5XdYS1zNF1DeH1rLmc4dnIx7n3pzZZM
-	hKjoGkYsq8XBEDv3WM0zQlrGba7QTQE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780065209;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vyAIkWzZgGB6LrCF6zuZOLFTfkZ2Yg44+ju3GGAi4XQ=;
-	b=DafaDXjjSeXGtjcjH2mCT9Xli+n/rYnZ0YEXjHK9TESaf44ilrrY9qDK2pVPBNOUC6X2W8
-	r5hjtFAUjrfNCw94N3YpQ0/74WSpfZLeHgojtLEPfX3phj3XxYiJg061ipNs57HTx5U1YJ
-	+aJMEBCCPHZRhAQq1vkm8Fe0d7cADrw=
-From: George Guo <dongtai.guo@linux.dev>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>,
-	Alexander Graf <graf@amazon.com>,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH v2 4/4] selftests/kho: handle QEMU not exiting after kexec on LoongArch
-Date: Fri, 29 May 2026 22:32:38 +0800
-Message-Id: <20260529143238.169169-5-dongtai.guo@linux.dev>
-In-Reply-To: <20260529143238.169169-1-dongtai.guo@linux.dev>
-References: <20260529143238.169169-1-dongtai.guo@linux.dev>
+	bh=ifCetNsGhGXROpWXdUZu9k5jgo1IT0uJlL0ioftjkf0=;
+	b=e4tnyzPuu2dBMJeLG0k2PbT+J46/orqRDDDksk41aTYFoDa54LAWKCBol/1QPjw+XPBsco
+	SUPei+EnkAzE7rc4kS9ucin4NutCacsULlCTVvhzZCudb57wimCMlHLoxk8DhdieKSqMsj
+	Rw24wjJwIMwahRwA7f0+0nLqFHf5cbQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MZK7aznu;
+	spf=pass (imf03.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780065676; a=rsa-sha256;
+	cv=none;
+	b=EcpWRxqVgDrsJlJTLeCEgEwnAb9JgJR9dnLnPVofDpw1tGv7DA+Eye9sdr8eAMFLk//V4S
+	uaJ0E0HSO005SBGEs4qfUexhw0f9NFzUJax2UrkC69CkIGCacxy3/c0M6Fu36v8Dh4khKr
+	tOV01sqYWsgDGpOQUJt2rqF97VIJWMw=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8354461da74so6556379b3a.1
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 07:41:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780065675; x=1780670475; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ifCetNsGhGXROpWXdUZu9k5jgo1IT0uJlL0ioftjkf0=;
+        b=MZK7aznu7Mvj4LEvNk0Iz8REEK4E3UP4X4lAlLIcMAohzTP7iyIbz0gNNgnemevtvt
+         EuHWvU1a6Ti0D1/gekmxtaN69AkWv7YZrbw1+1PfZ8Mr1a776R3kUA5lNkunLrD/TPMo
+         Q0JjElF9jby5RFcPVNM+rBXccrOvr2+qkaoKBHNGwZbQOukBWva/2qWtIjIKjIdokvBz
+         PtiFRAcnPXbQTa9nFi7RMJQI2jB1dM0zX0Sn/PU1GfvjSPyl0GpBvQiNP4NazW0Rsil7
+         Af1pLW/OixuD4EUv0FdOayhShgrJBt38YflGlFk45rSAQOwsGdKUYBcdavvksYPs+YEn
+         +UDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780065675; x=1780670475;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ifCetNsGhGXROpWXdUZu9k5jgo1IT0uJlL0ioftjkf0=;
+        b=X34SuBEnHJcF/MQUJ9fzQACBb33VesY077f8YlvBsg+0orupfniATLKf2tUrhUDA2w
+         CcjJo+kekYJGbtVFzP0QpKv/S6n93rVWli2+MvZSwjzDfchmrwN4RpsnZ7NHb8GzsYKm
+         FtKt0FDHOzasyjpM+OQImzEiFIsukZD/r2la1u8pJw7yu9V6r2VtTYv+F75DJrdICWlL
+         DevFi8EGFe+jklBpWrSG3YvpOVLuhUETamNM2W3mvX1+42f+4QW+BDksIpEU2/8KPwr+
+         BKZ1w6ygIvUHGp6/UMR4Qgbe+LU68wl15hKDZo0P0FEAXs0xwx4WS/a0Ia8bSQS1mo0N
+         7KOA==
+X-Forwarded-Encrypted: i=1; AFNElJ83ApUkBdrI+IEQqSsfXGd6rwcpTEt+/v6lTeHUNcxzf9Uqkgtg3RSUN83WCRzqaxLPsfeUY6f23Q==@kvack.org
+X-Gm-Message-State: AOJu0YxMw61z1SSwv+6M5hHoIetmOVjoMPsp1HMMkkyUF1DOeVlf7QmX
+	kgrj53+NADes9wBoYbvnt1JdnOd2UeyzR6/BW07soGgXcnBsT3AOJMwH
+X-Gm-Gg: Acq92OFrmDXQYa/gCf+KnB7Myj2FEoRzgDqWS/oA5dfTzfDK6O6kzjVrPdrD+LyzNEt
+	5RMaKJYXsHDT6laWoGQwkZzrnfB7J6lGVD+dDy6h5uZOGfUs0siQlER3K9rlCyuPhIJunyv0vGK
+	Ho4nqwcLW6nrIZhk7PK16lkgXxN4SGbaAeLYIRy3FiQmz6A3AWC0IxutZi8Wvg5HVBizEZHPNmz
+	l4jBIMR2Y9vJJOII5QzTye95GnO/V4EdarMXGhBT8795rq5Yb0yZDjm4r9xU3WEqCYdkosQdlHn
+	LEQMzK+hUUDNjKt6sm/ymkLiYpawDOOlVa1OzSX/ROzI1nSm5YdLamp+cIFJEqX8zD4gStrnEA9
+	m3kV+phNYOcdgV7jpbeX5Z/5QadE9/tgKEtQTUpU3e8+1qqMhVV2MsvJJPUFKPbOfUbt2S6D6iy
+	yOtUOySxFMp3bhxVXmLG6uvb3nJl3pM2Rif/e7XeM8erL32O6MysoOD0cqWNB8Fm0lbL8tMbjgB
+	UzC
+X-Received: by 2002:a05:6a00:94d1:b0:841:edbf:6424 with SMTP id d2e1a72fcca58-84212c03459mr3360610b3a.13.1780065675248;
+        Fri, 29 May 2026 07:41:15 -0700 (PDT)
+Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214b67a11sm1946082b3a.27.2026.05.29.07.41.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 07:41:14 -0700 (PDT)
+Date: Fri, 29 May 2026 07:41:12 -0700
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Liam.Howlett@oracle.com, david@kernel.org, jgg@ziepe.ca, corbet@lwn.net,
+	leon@kernel.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org,
+	shuah@kernel.org, skhan@linuxfoundation.org, surenb@google.com,
+	vbabka@kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/3] mm/hmm: Add mmap lock-drop support for
+ userfaultfd-backed mappings
+Message-ID: <ahmliNJiR-R9N4M3@skinsburskii>
+References: <177928604779.589431.14703161356676674288.stgit@skinsburskii>
+ <20260521163309.c5cc5d3f6cf16bac212cf90b@linux-foundation.org>
+ <ahidV_iSq3E-FtMI@skinsburskii>
+ <20260528131115.184c178d03d516e11248a1ae@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260528131115.184c178d03d516e11248a1ae@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2DAA62000F
-X-Rspamd-Server: rspam03
-X-Stat-Signature: jm5e4srrafs3ahwpn4rc6fc7stqgryp7
-X-HE-Tag: 1780065211-364186
-X-HE-Meta: U2FsdGVkX19zjQpUzjhL9utpERi2bXrxcVRdaVwCQo8Ruvle77bID4R4kzAw6ttpYSduTR77gLb08knDEH8DHgKDGx9/RcVISCIfJtdlTGEZLT2P5pCYCftoI5Oupewc3bkn6kPuW5yhMAVU9U9dMA0Q45qa2yw+Gv5MoaRxSnpM9psWJmlePoZQuQzkKFV3BygSBREaicVe1vHBKehM3p+wDvugrvIeEeLoMAgdLQwxaXwKVfy47/889l2RFY3iUD7HiPNhSu7hymikFm6LcuXR8H8GiE03MNNTCGjrzbWG32FJE+BcjnG5YsooScmNWM5gK/9FzAqT6ayKgwMdH/eRrVTPxB3p+FxPXx/tuNZXw0BYngayEPdQSNSzOawkyfctWM4v7bO53mOwVSMvMANp7RzpEbI5P8xy8PQ4mm7oEbaB6mVq6rTa47bbrjlCDks4ez75kva9c4jjF69yWFj1HhgyPZ6vSK7W9x+2/6jykPGQpsuL4X0Vl2Ekb9OXLVTcy7oesqeZhoRaeiYTZzTYM8zYElmyCey1UnOUCIo2s9mk95fTMczZF1puDyRWJb8+BfscVKqTaz9d40u0rLcHTK7YHi0QLr5tSsEInIsBT9xBeokZBbrakC7z6mvQ2I3zMcY9O5n6bEZypEPet9uhtD923WA21ihYPpkhSbVUtu55iPx0AgdhaW6fE8ql1okdGC9sbkaHT7gTfcoi5qUWIoX4o+rAtr6eCT2NxlFdGfBPJ/pA9lOdks+tmyIhpEMYKJ50yrkixDMzyJzo7jJnn6FQojmCNxX/sd11s5yEf9r5acg7bXCrwLmA9zCl5rWg6gGykr6z0IAj09GBVwPpgzyzvXP9bI3whuYTpE+Qmp/kUFoiDftSttlm9NOjOhKXrjtyYv4/10+k1ppdAOgLtW+/EwlYb6xU1Dl4fLNiqj8mSDPhrEN0WE3grpjw0o283U9g2MWkzmE9c6d
- aDNAiKb1
- Wfk5Nh0vXTzzicg0qeusq1o2hU7hYaoTHq/4LCbFTFbRxT65nfsSMS6IQmfdafZXpFwBlKAy55x6i1PRFxU+z44U8U5GfIqlDJCromNJMpoUTwi4rlH4uh0OIs1fvPo5TGrmFmvvqqZGJ2VanceQssfCur6gVatmyq37TemMQh9VsAz65Mkq6TlEUboQmBXSXh6/ayq/ZSKa9LCHKxzf69gbFb/yNA9y5gAq6
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BA29120004
+X-Stat-Signature: 1o3yc5h6mc68dc8afbpmgx1t13esugkj
+X-HE-Tag: 1780065676-76938
+X-HE-Meta: U2FsdGVkX18lT7uIMtyJWp6Nj57A3N0rKuFPksJINZBKgMrehLAFKYu1LY+NzSF9a8gqLb0wJsb95p14rXiZsoRK1EcynPrm5XhWaGnfgCEZ5slH2+t42XeIslX49pxepLgsIdcKRHlMt/GA15SSd1mqn7yK7CKTgYS9Hf8TnXN3hO2w8Y7wVApr9hBRXKALtK2Uf63YpLdomki38GhB89p3GQjrbqTervXJ1OvfVKw1RBCs4bav7i02JWVEDVXGTOr/V/Od7+sxjOlGn9KHPgTJ9j2V8Bil5pm2VQsq8jpGQLKeV76gZEzftAQaR4tCIg24ZEnO/MHPOGLDZwNKA9HqR/8Dz4827CCGTyYfhqoGSiaVfJy83JqwLRDZ6bo3lWYk/WkCVebAFl7B2LS07Go1ugAi8d4wrcyboKZYd42Phwfv6Q+rV7qRkd+JhMFeW27iLMsTJsWk2l0bnP6ppr5TZp51PFxY5uznZ17f+nUhlmmFPS9X7H4Ftpfmda9qDWs2cOaV0KIZgFERFDVpBR1Y25easJhAYyOIOG2neL7thnMXgzmjamp4yilDHMN4K+iNUft+eT/E99LqeIgIFUnsd1Otq3uroPMFX/VoTF5/kOIP3JNlRuJlHEvVPOtnEkPNOFhptjo9C26ZwGHWZKF7XHsv6j0YcvmQF6zSSktlOrsW8tx8/sSi1dSfg1sfaJexQW55qxBd3xBRdrGSW21wwDcUlQhUdKTrC+JsOl/Pn89DDgA4ktdD918aV9ElCk5bCPdaOX/KcsmG96Kysc95tHOfh9qiloOCSAb0pXIp5bPEHZJvaOPBEi7exMBUQm4cKNTlYE0Yh2yGeFA6EEN2zrTMmM1Lm42B10CSfO3oG4gVaevoPKmHUJxid3ici7QZQvzJCzRnYuiIdg0pwdGi7xwtKHXNaSoWq2mtzDpdQ2Kw2H0pTAlP9vywY00ScGjzYvRDTBN49ikcERq
+ Z5cCa18r
+ iuyjWMatcHH6EsznSIVSKZdcn04aZ1z+xtPxsvt7Jy7amXJmIepLjJ1eijCvyqeVKmVGlJQRGFfxqH4+ucfmHsfZVFD7jjLpIjZoJMon7+LG1FwCH7dJNoqnWoG1MHoPD3MTFzy2t01UhYz6eKjx7slz2s3HhrdUNwOvhrzO8z94EUf4UAXrWpdJsIaX1odNQ1X9oAvUMwlymRAiZz93yiSsSEjy3nCIXgcVzzL/mXCLp0Xb+CcZYl5Y8nXvGVyvoZsflsksWX4N0hR62tKzNmoTJRdi2rjSWZOTUyKn0VEUYErQ3GQMAmAFeVmSgJd1/DRb/UUogV/GAxPUROg2948LVf42Nx1ybVaDOi0JHJC5uVhJU8sygWkmk11ARKmBZY/uRem5TA71I05B/BahMU7C+uFYhzAllY+cmB/3YPSVh5EnmLxb6v6s6cgXaJWcdLj15wTs6bQf7ngUPviDnzSi6hv7MdcDfHDZW08IvE/pU6/rZlENj/4lc21GopflXKoUp5UGn+bMvh1mvrcNk5jheCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,78 +125,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: George Guo <guodongtai@kylinos.cn>
+On Thu, May 28, 2026 at 01:11:15PM -0700, Andrew Morton wrote:
+> On Thu, 28 May 2026 12:53:59 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+> 
+> > A gentle reminder as requested: do you think this change could be taken into
+> > the mm tree?
+> > It's beneficial not only for the MSHV driver, but can be used for
+> > post-copy live migration of GPU states in future.
+> 
+> Still no review, alas.  It's not a trivial thing, affecting both hmm
+> and userfaultfd.  And we're closing in on -rc6.
+> 
+> I'd prefer that we revisit in the next cycle, please.  Refresh retest
+> and resend after -rc1?
+> 
 
-On LoongArch, QEMU provides only a minimal EFI stub with no runtime
-services and no ACPI tables, so machine_restart() falls through to
-its infinite idle loop and QEMU never exits after kexec.  The test
-result is already printed to the serial console and vmtest.sh reports
-success, but the user must press Ctrl+C to get the prompt back.
+Sure, will do.
 
-Add QEMU_NEEDS_KILL=1 to loongarch.conf so the test completes
-unattended.
-
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
----
- tools/testing/selftests/kho/loongarch.conf |  3 ++
- tools/testing/selftests/kho/vmtest.sh      | 32 ++++++++++++++++++----
- 2 files changed, 29 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/kho/loongarch.conf b/tools/testing/selftests/kho/loongarch.conf
-index 0145cb49e5b2..02a6add633f1 100644
---- a/tools/testing/selftests/kho/loongarch.conf
-+++ b/tools/testing/selftests/kho/loongarch.conf
-@@ -8,3 +8,6 @@ CONFIG_SERIAL_8250_CONSOLE=y
- "
- KERNEL_IMAGE="vmlinux.efi"
- KERNEL_CMDLINE="console=ttyS0 earlycon"
-+# QEMU never exits after kexec on LoongArch (no EFI runtime services),
-+# so vmtest.sh must kill it once the test verdict appears.
-+QEMU_NEEDS_KILL=1
-diff --git a/tools/testing/selftests/kho/vmtest.sh b/tools/testing/selftests/kho/vmtest.sh
-index a6ae9ac09595..821e13fa69a5 100755
---- a/tools/testing/selftests/kho/vmtest.sh
-+++ b/tools/testing/selftests/kho/vmtest.sh
-@@ -107,12 +107,32 @@ function run_qemu() {
- 
- 	cmdline="$cmdline kho=on panic=-1"
- 
--	$qemu_cmd -m 1G -smp 2 -no-reboot -nographic -nodefaults \
--		  -accel kvm -accel hvf -accel tcg  \
--		  -serial file:"$serial" \
--		  -append "$cmdline" \
--		  -kernel "$kernel" \
--		  -initrd "$initrd"
-+	local qemu_args=(
-+		-m 1G -smp 2 -no-reboot -nographic -nodefaults
-+		-accel kvm -accel hvf -accel tcg
-+		-serial file:"$serial"
-+		-append "$cmdline"
-+		-kernel "$kernel"
-+		-initrd "$initrd"
-+	)
-+
-+	# If the target does not exit QEMU after kexec (e.g. no EFI runtime
-+	# services), the conf file sets QEMU_NEEDS_KILL=1.  Run QEMU in the
-+	# background, poll for the test verdict, then kill it.
-+	if [[ "${QEMU_NEEDS_KILL:-0}" == "1" ]]; then
-+		$qemu_cmd "${qemu_args[@]}" &
-+		local qemu_pid=$!
-+		local remaining=100
-+		while ((remaining-- > 0)); do
-+			grep -q "KHO restore succeeded\|KHO restore failed" \
-+				"$serial" 2>/dev/null && break
-+			sleep 1
-+		done
-+		kill "$qemu_pid" 2>/dev/null
-+		wait "$qemu_pid" 2>/dev/null || true
-+	else
-+		$qemu_cmd "${qemu_args[@]}"
-+	fi
- 
- 	grep "KHO restore succeeded" "$serial" &> /dev/null || fail "KHO failed"
- }
--- 
-2.25.1
-
+Thanks,
+Stanislav
 
