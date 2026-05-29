@@ -4,96 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF174CD6E51
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:02:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA3A2CD6E50
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:02:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 675826B00BB; Fri, 29 May 2026 11:02:25 -0400 (EDT)
+	id 91A736B00BA; Fri, 29 May 2026 11:02:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64A386B00BA; Fri, 29 May 2026 11:02:25 -0400 (EDT)
+	id 75D636B00BE; Fri, 29 May 2026 11:02:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 514176B00BD; Fri, 29 May 2026 11:02:25 -0400 (EDT)
+	id 5D71C6B00BC; Fri, 29 May 2026 11:02:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CF806B00BA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 451B46B00BB
 	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:02:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F34A3401E7
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC949160CFC
 	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:02:24 +0000 (UTC)
-X-FDA: 84820773408.25.26AB887
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B134510001D
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:02:22 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=doZ3F9mc;
-	spf=pass (imf05.hostedemail.com: domain of 3fKoZaggKCI8tAwu+z1Cz77z4x.v75416DG-553Etv3.7Az@flex--ardb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3fKoZaggKCI8tAwu+z1Cz77z4x.v75416DG-553Etv3.7Az@flex--ardb.bounces.google.com;
+X-FDA: 84820773408.28.562E17C
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2CF4240019
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:02:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fgML6bBa;
+	spf=pass (imf11.hostedemail.com: domain of 3e6oZaggKCI4s9vt+y0By66y3w.u64305CF-442Dsu2.69y@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3e6oZaggKCI4s9vt+y0By66y3w.u64305CF-442Dsu2.69y@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780066942;
+	s=arc-20220608; t=1780066941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U/mwSEvShIHWF2QZpE0iwPRub+uC5Pg2lSQX62+z6MM=;
-	b=0zQ3JZcpSNosppmnQ2BgVCjLTEnbG/Xqro6TrfqF8XSI1a8nyLQ6aKoxcpjvwfJYrhG4yF
-	xa5oopVIKp/cM4djPFmEukJojmFTkXByy5pvl1u5PBlTJTc//NcXOA8qt2xlN4cxti99kh
-	JkJJIRcVVtUXJz0Z2WDglM3z5nZVra4=
+	bh=RHwZV4K/OQyLo87ubxB2N7tui2RqyNeWqpTDKGM1mWQ=;
+	b=75y4XvBeHQjRVwRy6jjX7N7Srhx0nAk2pe4fVnJLdQaq+PmvXYYZrlpGM7Z4msmIU7GKlF
+	cAmf3zPuRs/c64H6cZtwM2kdHcEV/WFFu3zvy7dvD8y9ByGnpqkTprgXI71EUpVruKf1rb
+	pUmehzsMwmOdZZRo0WkziMb2ayFUpJA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=doZ3F9mc;
-	spf=pass (imf05.hostedemail.com: domain of 3fKoZaggKCI8tAwu+z1Cz77z4x.v75416DG-553Etv3.7Az@flex--ardb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3fKoZaggKCI8tAwu+z1Cz77z4x.v75416DG-553Etv3.7Az@flex--ardb.bounces.google.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fgML6bBa;
+	spf=pass (imf11.hostedemail.com: domain of 3e6oZaggKCI4s9vt+y0By66y3w.u64305CF-442Dsu2.69y@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3e6oZaggKCI4s9vt+y0By66y3w.u64305CF-442Dsu2.69y@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780066942; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780066941; a=rsa-sha256;
 	cv=none;
-	b=Fu2dC1nXScjw8OFkObMSgK0d4HwyUBm3T919V/H8a2JkMsugxqhvkYwrcaAcR7IDZ0FdNf
-	x5CVm9vYOnKMJLU+3QIHz9Ws04m3rDFfXM6a9cKDxSyFghUTM44CyOSmykDCNsmqjk4RL5
-	MEjFaK+yMaguhZgSkYIM9M4HP4/MwiY=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-49045f93baeso55068085e9.1
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:02:22 -0700 (PDT)
+	b=ynzDyWva9fVhECfKjhbd3+akRFCMuodKGtgbyj9uw2wcm8iLzYp3OzRzcIRonay7R6Vgpo
+	kL0GDkfwNMTOrNWz8MVD15x26KT0LHJDH+b9jl+g8kcIxzrowZzGA1Ut0JISRrMQ6Q2LAF
+	MQxOIp+iqLYpB0G3RcHq3S4LujRXmpw=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-49058e91639so46545775e9.3
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:02:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780066941; x=1780671741; darn=kvack.org;
+        d=google.com; s=20251104; t=1780066940; x=1780671740; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=U/mwSEvShIHWF2QZpE0iwPRub+uC5Pg2lSQX62+z6MM=;
-        b=doZ3F9mcTY+2mJJr+2a+moAUmJT0mf4XBouQ3OGCfRARPjl88G2mIDCFDomkQORu/7
-         7/HBYhQY4sZ/TqI1CR6TfLA5mB+KjgRnK8zCFUoq/4gRkZUWs4bbf1tKnSTGbt9WV+L5
-         gu0UghGn5frWvGrr+9eeKvhY+I4W1vU4qqus+PkTXdWcexYDQzuW6BO0tqGWzCkl6hEf
-         L50fdRRdb9g53oOnbixYwCkDgvZAHCQB3jZ+n/hXlHraVtML44o1ZduB/dHqS6rdIHwj
-         KxB6vcSjYJeSpiWiP72nmsVrJYmYobD/ehpgs2IhMvcTkvO/Ycuz2VB0tzHZg8csvNRB
-         alIA==
+        bh=RHwZV4K/OQyLo87ubxB2N7tui2RqyNeWqpTDKGM1mWQ=;
+        b=fgML6bBaM0EX4iXGBlHZBJXK+HU4v2vX169Ld5umBiBXJ50XXhFLhDSIcmSDn6ho9d
+         zqAgYt1MPhwVGWMxEOujO4J4t6V0uLNhkt5ljTLTzoEBYx5vdS2Pu+EnPqenVCNhIW4x
+         KFJM9z9wibbnqPRBtO55q8qzQPrOkj15USQyV0Zzvv8dNqyLfPjzQeUQd9O1DXDZ9MST
+         QJgsQTr0w3rWqpWP1H/W3m6SZ5KcnKxwkefoKZlBHRihza37fp1DMcMAMB+7s7QNBj+X
+         s1wyOryLQ4tGjZTFhgzSno+GdNzYobk629f7ztJE4OBcCG5aCb2TdQW1vBPq26DCDisW
+         DStQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780066941; x=1780671741;
+        d=1e100.net; s=20251104; t=1780066940; x=1780671740;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U/mwSEvShIHWF2QZpE0iwPRub+uC5Pg2lSQX62+z6MM=;
-        b=HFiSfEmyTj/8WyJFfeFMGX/ZRZ9o4O+O2EyM8CJKo32Nt4xYo+7qo+KZXriQbw+mg8
-         1DA/vCJ5PxzP0B98k3x39or/fMWKdDoqze005gSiXVx/IqAahyU7RVdewFwrx0xeN44w
-         3mpPAbP5I9yIpVlI2BsPNc3s2bAsxUCpCHE+JIgJsqmBZZIcTgh1qYHAHiNBeD8pxOKF
-         d/LOQeO7TQmBfYyTFc8Cu9K1+TGmDHD/gHKix10s7v76xZvcVIsGvtNmYWRMTfq07EiF
-         SZLVaZMva0brjjCFRpXFKfh6n284wtZiEF3MWP5np+iHIluhfHySYMzuZzkjl7mljH2i
-         h+9A==
-X-Forwarded-Encrypted: i=1; AFNElJ/rr5324GhseS6jkVg0ezw5scbC/kLPmJCXpp/1DSd/6UV3Z5upr8IGS8spoqXk7kI1uOu7ScNkFA==@kvack.org
-X-Gm-Message-State: AOJu0YyjYk4qN407CjwVhOwHTRpve3QBoc8YTgJ4YjZgAkQ/AwMFo7No
-	MLevc1DKLTYaBTAa/WrRGK0DipXoi8EUI7Mg/7QYNyDSBqMmpRqgMoejbysn4pVqWWSeB6/SmQ=
+        bh=RHwZV4K/OQyLo87ubxB2N7tui2RqyNeWqpTDKGM1mWQ=;
+        b=Px7sLdruKetifrRX8LoG2N97ORbAbdp569bn5ukUYHg5Zxwp+PbOPoPu9EmxGekBfW
+         Jw7cYwla5jVxOcqraP76V+57ifViJ60ZByKfI4C3DR1tSYJyJxEOtIG/uYVqI46mfIoG
+         jVYhPCKVo/BD6BCiQsACZ9JfAwPbVDHxePGKBcoAttzxZ8b1nUoYF2Tw4wQuF4dCWksq
+         rdtgm1r2eLZQqrEt30viL27sGkIUonM1WWwm3vs/TLKHv8Z5exALO44OgO8w0J8o6Hm8
+         fooeC7Id10luasAY3eyBT+W6doNkJi36M1LSjQX4s+xT3/+f48nQSHDssa7jLQjUkvJT
+         Ca6Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8EiJOfDGuH2FZwk8gXzze0+c3KsINi3GR2qlAnFaJbySCP/v++POEJVJQp6sSXixRKWnp5NrfxAA==@kvack.org
+X-Gm-Message-State: AOJu0YzlOCKlspoHnHD9a9EfjBypl7PaEA4kI6U014oNkieIOg411zuQ
+	iAsfxiN8qrgXO/g6LI6+N+HRO6GJCDZbgjT17QNXfs8YFKcOni9NpeA5AWRK9L8MAOiTWXFKnQ=
 	=
-X-Received: from wmos19.prod.google.com ([2002:a05:600c:45d3:b0:48a:6a1b:6c3b])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:e489:20b0:490:6869:46c6
- with SMTP id 5b1f17b1804b1-4909c0c3aa4mr45310045e9.31.1780066940967; Fri, 29
- May 2026 08:02:20 -0700 (PDT)
-Date: Fri, 29 May 2026 17:01:54 +0200
+X-Received: from wmbz2.prod.google.com ([2002:a05:600c:c082:b0:490:3d2f:edc])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:828d:b0:490:507c:bdb1
+ with SMTP id 5b1f17b1804b1-490a291cbbemr329805e9.15.1780066939649; Fri, 29
+ May 2026 08:02:19 -0700 (PDT)
+Date: Fri, 29 May 2026 17:01:53 +0200
 In-Reply-To: <20260529150150.1670604-17-ardb+git@google.com>
 Mime-Version: 1.0
 References: <20260529150150.1670604-17-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2121; i=ardb@kernel.org;
- h=from:subject; bh=bTKeTgp6cCkzZ1W18Sd9Cjl54RAT9moCkecsCk8B5PI=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIUtyVRLb9epvd/g6Z6nXCMU1XxDqFp7StynL770hk8KPC
- 3fVkv52lLIwiHExyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIm42DP8T+QPDuZ5kJNY4Fq0
- fndHhtCalPXbZGdn3574zC/PNP3pckaG3SKqFZWbT0T+XSk3T86mOHw7v2nxfgWXR9PW1P5ftia AFQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3439; i=ardb@kernel.org;
+ h=from:subject; bh=RVK4+kwUNBzT2vP63qv/oNPK4oNSEDZX2ULcXiZameE=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIUtyVeK1gth6p/IV1dd2mU+oVf+4YqKnwbIQxumu9bquP
+ Yfu1HZ2lLIwiHExyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIncvMPIcGzv+x2vrDJc2eUk
+ LtltCDno/Lq1Z7LA5Ge9k44qbfyXuZqR4dqGMNajx9vSleJns73yeprz3enQ4h9HLk24LK1xMO+ dISMA
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529150150.1670604-20-ardb+git@google.com>
-Subject: [PATCH v7 03/15] arm64: mm: Check for pud_/pmd_set_huge() failures on
- kernel mappings
+Message-ID: <20260529150150.1670604-19-ardb+git@google.com>
+Subject: [PATCH v7 02/15] arm64: mm: Drop redundant pgd_t* argument from map_mem()
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com, 
@@ -105,14 +104,14 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
 	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
 	linux-sh@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ff3y696awic7dqf6dp1mwsugsfizgxbw
+X-Stat-Signature: 1smgwixejf8hi6iubx6wq1wx1qgqo61n
+X-Rspamd-Queue-Id: 2CF4240019
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B134510001D
-X-HE-Tag: 1780066942-695132
-X-HE-Meta: U2FsdGVkX1/kVKcLicSayrwpdYdzAWySNZbEHGMZnH8EIQfYKAc63La1DWnqGMlUOXJaUByA23pI+M5plBxpFtz+yRcFj1umV27WNNOpFkKlTJ8Sg1j6Kbf1I3RlkGWiSXUQKgyYW26OTyddWGLSC9Zl0OCL2uQGx8aaYL8d2lInlCScOxBBp7rhSS5iU/xqVIloKMBC7pduaJ0qcQUl9C+46Mz4I7RHxYU3uSs17O2ZjD2+2V6iO/DBFz/ZCMV+g27+lI+2Unp+yOq1nFpWMd6PJWlzipvgWQ8zIZch2Uq/8hNVhhY8dbDATs+zEJ7LF1yU31X3VcplcHSksrfLrqzS6ea5M7gsOQbMkNiDEteQWlrJ9LY6BZgjrarkELMY1d6/oUALam+H7DLkj5fTtC4RKeuetLVb83YFnaY3LVWWoy1FqnzH0quCmPb1yJ2ePnxQtAeh+v/BGR2wF73r8782v4hU0dCtlNpA7FXgr2GrXH37Dd2cwv88hI8d/KE5QDuXsafziyycvyNGXQ/N2MwQbEqBHQ9NimL/PaIE7wFv5JVZvHng8P+2NEd6LSgijMSmbWjDDk8QMlH6L7G20L1d38pBllqKfuJj/3w9O7+s6oYGVB5e3jj8j+KnrzP+dUhGpuqgFRWlAneAAYmfMLAJ5yhGTPd6AKbcb28E07lsN6JxmN04SqINJspUwFjfspx3+Sg9OWzY9xpEvMe6+h0M9QFrqByd0gm8b8x+HRCT0qU04X4WqSK2J1szN2nNC0UWKUMx9QSzP5ph4Bu0FJrk9nK13GwbQjIoEHeT+hKOutJfkwjGkAuDh1gaJ8BKMFdPR0993B54rxNTmv2CESX68cRJLdFCR71abcc3EwBwTvWR2fKT42mUugvgroTVivZUbXyUUyN3A7MSpHlWL097ePd4jLVgFlAhEL5kq3Km+vCN+3gBhHDg2hJLuJhwJLkmGcvfwySRVheOpF4
- TPfkkL2h
- Gv22hBdvGh8gY7XxYbzh8FICpvcOtVlWVhfWGknCn0fWRssiHdYQ+milsOjh9ekuzlr7/R6IDfcsBETq86ET2XbTJEzco3DtRE03elgdCjzscWyteCeWPAWk8bnQrjYrnjKe4IUGR2ziURBPdXjjGTZqS9QOry3FxZCcGyhaIE7BxGnK1HMjeeDCkRyiwVAdgBP+D2wqDtukmtdAywfoDaFXqmThLzygBXTiSIkIKDPN0i65OsQXxxhmwLtgLDx64WnEl2aeg0qW8van8G0XzzXS8/D929N+8UazKHpjziVRaIZXp8+N7d+2wV7I/XFLq4zDlXRk8YMTMAXle9L/tg0OF2pJf8YYO3hrGAMqvaK7ke7hB7y2e14+XsOBCr80NlgmEZS7vZn77xXE7EWn+/oaCTc0yoTw5QA4Arts2+YvdUkD0WSGysm3c0XjS9CB0KlPVTytATy9ooqMQwu0VhRcQsdOuwZt/vI5dYzpA6JeD74k2NcYUfwbqPWaT3gWiAyg8ETPYTU0Gwky3lINuMXvXgzv5R7JDnBFRNgdnlYxsYiV9mQyVl0tA7cCfG6K6syk7CLuxOFYvSoMzxpGJltYZjaWsZTvgG5s3VT/wb0p6muPotQUr3tCeTKG/zrih8KFObIMPnLRlex6OVMQRwBdMfQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780066940-211731
+X-HE-Meta: U2FsdGVkX195LKpczp6LBc4iG7a9nryoYtRur+nFgvuQGcJuod0tNzvUCe9JmsEcxW5LT/IiAg5K7BgFKpLEH0PTk0eU457h1169atRmDAJvRXxZZJ09Rp6mRdddG9Sar0MJPwqoKyEHUOIpUb51pvk53cenWoRlnno7ogxhrI3ubsppQZqDZseLHspdgMT2Fy2W6OY3afEMddelCiR/FqhgvW2WcgI2UTClaXz5b0B8H/dR9+qgXIz4L8+pBgytUa1muMUCRZaLmnWILbxWWtdntDfMlhGHkw/Ffp5AN4Lhsr5uHQ+OPZP5zrbpA/DgJ5GXkU3L75KIasxI1v/iMolNPpARFBX8RRy6zLQcY5q/rdCvZKsUfXUBzoQn7+oybJYqT7I5BBs0Y6ZEwVxfRFQnlx0vsSDz7jY6vWQI34QjNkKJLkUFmQWYeOf7pOHkwvKLsEX2tn5z6A6il9SOpSNbTWLXbwLCPgVqoGbiqOjWC/+IPWi9lKPe3jBZMXAOub2mLdOY/p5qrNO32p/EtynQm2gjzipnur3Q8dzvOvuFmq2Bjdy/i5JzyxsvZRbWk96N85K9ddwuav85ojuhR/RbFNZffqX2sYL68Q8naWk4GsNrW8DICojmBJy2p09TLeX1E1UlPPmBD0xGW241UQHf8BbRYq5Ks7Lo1tce1nR3VRzGyz2nIOCCu5S/eDrNBIgMbGAyVVxmfemMRY8Rn5xA5AkrLTqcjV7z7PQHkeFTI2YHuqFEVgSxtqAJx2icrPaxkU5qs/ex4nrxEsqDlrYcz/wrzluxCgwvCG1Vmc4TgnEF8oRtlXSHBVzW2sB/vKKA8NuFxdLqj3UxbfRcpFbRdXdXrWVn9NbERv74xnFcHDH0Nc9Nbg3K/PaS/VY3Foqz7lyxqGlg9frJyLOfKftvbkUutcDxGHzd7lXsRN2YC6BO3YLMDXjmd3bmCf61xe+BmNrXuVDvwGRMd5m
+ h4XEuNg1
+ ywQKW+cS1ttxr0qF9Cqj9k++l1CDwyVopDFBjbudvyG5rzid7HhfwAEc7ZTd3NS6vEdp+Dv7PmRWgnZFsc8ThJ+psKg9o2BuOSD4d61mzIUCTeQovYEb3TzUT4YiEWWCM5vnoRk/g+fsvCxqg7+QrR0H8LZ6aunqsz1aCyOxEU21f4kTXO+xVedRE6Ae67x5DhPcRu4jW74UF2q5p/os18QUcY4i716TucTFQCzrbWgFjRunNEIJrzOuRvlvT0wGoxaS+3uV/IPr88keJqx9sqRAUp8HwSJBgHpD9hq4/vznIad1HZzaJdm7GeKHc9p7NUxOrwNirG5vIhQNQgLOSiNl7k1fvShcdxrTPb0oVKVKfbcepulzh6wj3ihGWvji/SQBpVwaWpUJozSl8qGyYjc3Qqd6MO9z9db1WPKK6t3tJFCq5MVKfc+WMq0CN+KcfVZuJF6EPfomhuuzyqNlDEIZZp2Uu5INFwCz0BAqovHB5Omuz2NIFHwrN7bobg7GeLVQKPtk++VNu2tmRlqYJKYA8lMi9Ulxq+jgyryDfO46pSwtCBIfE8I88GHSYM9HBGDdkVPUjTqocQt4eolshCIstsHKHmkBfN2mih4HWPrKEMFDzLWTwNa88AilQNWDKXR8503rN2abS7M60RiCruD9+llRF/wXizkHGYcswBj3J4JU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,55 +121,97 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Sashiko reports:
+__map_memblock() and map_mem() always operate on swapper_pg_dir, so
+there is no need to pass around a pgd_t pointer between them.
 
-| If pmd_set_huge() rejects an unsafe page table transition (such as
-| mapping a different physical address over an existing block mapping),
-| it returns 0 and leaves the page table entry unmodified.
-|
-| Because *pmdp remains unmodified, READ_ONCE(pmd_val(*pmdp)) will equal
-| pmd_val(old_pmd). The transition from old_pmd to old_pmd is evaluated
-| as safe by pgattr_change_is_safe(), so the BUG_ON never triggers.
-|
-| This allows invalid and unsafe mapping updates to be silently dropped
-| instead of panicking, leaving stale memory mappings active while the
-| caller assumes the update was successful.
-
-The same applies to pud_set_huge() in alloc_init_pud().
-
-Given how it is generally preferred to limp on rather than blow up the
-system if an unexpected condition such as this one occurs, and the fact
-that there are no known cases where this disparity results in real
-problems, let's WARN on these failures rather than BUG, allowing the
-system to survive to the point where it can actually report them.
-
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/mm/mmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/mm/mmu.c | 25 ++++++++++----------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
 diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index aa0e2c6435f7..b2ba5b35c35f 100644
+index 112fa4a3b0eb..aa0e2c6435f7 100644
 --- a/arch/arm64/mm/mmu.c
 +++ b/arch/arm64/mm/mmu.c
-@@ -257,7 +257,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 		/* try section mapping first */
- 		if (((addr | next | phys) & ~PMD_MASK) == 0 &&
- 		    (flags & NO_BLOCK_MAPPINGS) == 0) {
--			pmd_set_huge(pmdp, phys, prot);
-+			WARN_ON(!pmd_set_huge(pmdp, phys, prot));
+@@ -1035,11 +1035,11 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+ 	flush_tlb_kernel_range(virt, virt + size);
+ }
  
- 			/*
- 			 * After the PMD entry has been populated once, we
-@@ -380,7 +380,7 @@ static int alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
- 		if (pud_sect_supported() &&
- 		   ((addr | next | phys) & ~PUD_MASK) == 0 &&
- 		    (flags & NO_BLOCK_MAPPINGS) == 0) {
--			pud_set_huge(pudp, phys, prot);
-+			WARN_ON(!pud_set_huge(pudp, phys, prot));
+-static void __init __map_memblock(pgd_t *pgdp, phys_addr_t start,
+-				  phys_addr_t end, pgprot_t prot, int flags)
++static void __init __map_memblock(phys_addr_t start, phys_addr_t end,
++				  pgprot_t prot, int flags)
+ {
+-	early_create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
+-				 prot, early_pgtable_alloc, flags);
++	early_create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
++				 end - start, prot, early_pgtable_alloc, flags);
+ }
  
- 			/*
- 			 * After the PUD entry has been populated once, we
+ void __init mark_linear_text_alias_ro(void)
+@@ -1087,13 +1087,13 @@ static phys_addr_t __init arm64_kfence_alloc_pool(void)
+ 	return kfence_pool;
+ }
+ 
+-static void __init arm64_kfence_map_pool(phys_addr_t kfence_pool, pgd_t *pgdp)
++static void __init arm64_kfence_map_pool(phys_addr_t kfence_pool)
+ {
+ 	if (!kfence_pool)
+ 		return;
+ 
+ 	/* KFENCE pool needs page-level mapping. */
+-	__map_memblock(pgdp, kfence_pool, kfence_pool + KFENCE_POOL_SIZE,
++	__map_memblock(kfence_pool, kfence_pool + KFENCE_POOL_SIZE,
+ 			pgprot_tagged(PAGE_KERNEL),
+ 			NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS);
+ 	memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
+@@ -1129,11 +1129,11 @@ bool arch_kfence_init_pool(void)
+ #else /* CONFIG_KFENCE */
+ 
+ static inline phys_addr_t arm64_kfence_alloc_pool(void) { return 0; }
+-static inline void arm64_kfence_map_pool(phys_addr_t kfence_pool, pgd_t *pgdp) { }
++static inline void arm64_kfence_map_pool(phys_addr_t kfence_pool) { }
+ 
+ #endif /* CONFIG_KFENCE */
+ 
+-static void __init map_mem(pgd_t *pgdp)
++static void __init map_mem(void)
+ {
+ 	static const u64 direct_map_end = _PAGE_END(VA_BITS_MIN);
+ 	phys_addr_t kernel_start = __pa_symbol(_text);
+@@ -1178,7 +1178,7 @@ static void __init map_mem(pgd_t *pgdp)
+ 		 * if MTE is present. Otherwise, it has the same attributes as
+ 		 * PAGE_KERNEL.
+ 		 */
+-		__map_memblock(pgdp, start, end, pgprot_tagged(PAGE_KERNEL),
++		__map_memblock(start, end, pgprot_tagged(PAGE_KERNEL),
+ 			       flags);
+ 	}
+ 
+@@ -1192,10 +1192,9 @@ static void __init map_mem(pgd_t *pgdp)
+ 	 * Note that contiguous mappings cannot be remapped in this way,
+ 	 * so we should avoid them here.
+ 	 */
+-	__map_memblock(pgdp, kernel_start, kernel_end,
+-		       PAGE_KERNEL, NO_CONT_MAPPINGS);
++	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, NO_CONT_MAPPINGS);
+ 	memblock_clear_nomap(kernel_start, kernel_end - kernel_start);
+-	arm64_kfence_map_pool(early_kfence_pool, pgdp);
++	arm64_kfence_map_pool(early_kfence_pool);
+ }
+ 
+ void mark_rodata_ro(void)
+@@ -1417,7 +1416,7 @@ static void __init create_idmap(void)
+ 
+ void __init paging_init(void)
+ {
+-	map_mem(swapper_pg_dir);
++	map_mem();
+ 
+ 	memblock_allow_resize();
+ 
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
