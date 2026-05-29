@@ -4,125 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14503CD6E50
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:26:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84FEBCD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:40:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 782B46B0108; Fri, 29 May 2026 11:26:24 -0400 (EDT)
+	id 9BA1D6B00E5; Fri, 29 May 2026 11:40:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75ABB6B010A; Fri, 29 May 2026 11:26:24 -0400 (EDT)
+	id 992806B00EF; Fri, 29 May 2026 11:40:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6704A6B010B; Fri, 29 May 2026 11:26:24 -0400 (EDT)
+	id 8A74D6B00F1; Fri, 29 May 2026 11:40:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 552E26B0108
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:26:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 19C271C0196
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:26:24 +0000 (UTC)
-X-FDA: 84820833888.26.7C962C4
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2F37916000C
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:26:22 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=emMQzIZH;
-	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 78D496B00E5
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:40:52 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1A1B1C0A5B
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:40:52 +0000 (UTC)
+X-FDA: 84820870344.01.5F1DF8B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 56B7F18000B
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:40:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QUNwOBtd;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780068382;
+	s=arc-20220608; t=1780069250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hXXCbhIHtRNsHen8pCYQ+YRxwoUgedEKjJY0J2w8T+s=;
-	b=zNF1/htkeQMqj+lrz6UIVAm138jri4oNY2lr7JI7fEUJD4VtxJKGviTyR4sZsqOk9Im1BR
-	XfkNeX6v8u9PZ3BU/KqxiFDgrGJrcHJOktqU6fFDHsRQz1gM05rvFbQmbL/LGiSTmPm7jh
-	3K+7znWPY5vkvDvu127myO5VlW4oQ/o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780068382; a=rsa-sha256;
-	cv=none;
-	b=N/f2a05Ldf78udmXvK5JKCend08N1dWiYnraOGVcryZZDlqXfuXM2keLDSl0+oYxU9lIjt
-	Oku45XftqYGejwvvmIzvZBxJUQfCo8dXekNCKQYCgRfyFJ1MGo5xY6TOmSftznwHsmEJmc
-	/Gdz2c2f21gF76yVYjr7EGj5FvSqRcI=
+	bh=hAYoCu/RXfyftNoJ6VS8vSHQtBSJuT1PmOIzykcmtbQ=;
+	b=UK4/hOoQHIFb3iy2fRCXt4c84XOz2Ie7XiNWxW/BHG986ZrSIuaYKEUqPr9O2RnxgQAk+Z
+	I6IsXCJ3lIJrBHXBeFncXotpFSG+kGNwW3WXCSJ59CkKMDug6YyHCJQJC+wK2j4/0486LX
+	4iuYLDolxAWD20bw03DD+j7tny22tUI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=emMQzIZH;
-	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-479ef2b78f3so12268920b6e.2
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:26:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780068381; x=1780673181; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hXXCbhIHtRNsHen8pCYQ+YRxwoUgedEKjJY0J2w8T+s=;
-        b=emMQzIZHtD2r25LPYH2Or5YlhAucyjqcvDnXXeNtAa2OJFUWBQFVsm4KVLpmulmKRo
-         1cruRX6CSytuEWi+K2fjy2KQGzVlnE6AXbgYD9WHxUUv/53m7U1FuDRwyIYsSCCW8CmQ
-         BegvA+3vAtnUvT/02q/3wtqcKtMZM2k1HuXs7MVANJMVEUr73a19/tYES+qre/wKQVLk
-         0nEk8/HTTzQQ1S3FJ5UMAs6pofghM3A/KGnBekVVDCpNLJdGEkbIhH5lC6SM0d6g7s7f
-         4ci4C2ACy3b9N3J1scKuqIUQbxuX7BLHYm31MO9iK8bvwk9KLH5IJzgkpZEySo9v93C5
-         YD5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780068381; x=1780673181;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hXXCbhIHtRNsHen8pCYQ+YRxwoUgedEKjJY0J2w8T+s=;
-        b=oP0o4MWY8AbDVZZtKMN6zcSKjFpeVUe7zKaap8Uauuux7QH6BCTPP6XtSogqEAs1+c
-         Ot3KY9KzOEVZpiI0dkT9gM4fVBawkbkQqTuNzi6LaFjKSwOAbRGxyFhlk/EnXHMG/xUE
-         PffK1U2gyAWJaSzsIwRJsqutVLD368bQx7HECyiD2cvcyQ2qkHTrWRJ3tUFT5M+Gjouh
-         pX/1X85tZXB7ULjz6rOnmZbyY/lZT4Z2O8hbPtXvByo8LXWFhDdlgVwhvtJXdZzHJHMA
-         MCc55vlaFH9vrI+nGgROi5YG9k3Ei5d3hVT7AhHSSuFnUxZRN2XOQe2mHal8QDbr4Gn/
-         +oxA==
-X-Forwarded-Encrypted: i=1; AFNElJ+UTOWJapbjNl1wa4fNg3yaiJoJN0pRe5ZkYjRMP/1h1sd7rODShnt6HUNe5I+XDPDcHs1bC9FgJg==@kvack.org
-X-Gm-Message-State: AOJu0Yz3c8yImcC8u10iib7FCnt/tm5wwRs35Qpwn6NwcWk+D08jgI5Z
-	iMAZADsUy58Pmv/FGTgbAceI+DupyaxsXcuB8X96lm054qXviT/6JdhU
-X-Gm-Gg: Acq92OFOsiPG3TPurKKQ0ByQgXVZ8Vx949VQ4L5230b5gUiCCKfg/7OTZLi3yKNLHZn
-	ROIdzJvJOX6K6BgDvnpPsVCleG//hYdr0qluujDXLr4DT8f0p7IflpK0IMcXCL3akGBTrN2NAqy
-	cyyziyMIkKpujeZt+TRHgdjYGFJY0TY/LU+04HecOSsoKfYh7W59hi5SrZkJ35iOJ4oxkL2vesv
-	y+++idMzj7V5S32VOTJYamZjM8E+aOEYlKPN66STB8Nn2LVUpMsztYXvZPkyGgrBeQCCSSzowwx
-	TBK2aAisXQ3mxywBAAd9MkApDHzATVkcfyqmNOrteO1eUpqbpI6HJ04WNgZppJPo8XuFl1SVvHG
-	kXf40vqbRU/WZ7hZnlKCdXH7JHjpqmWw6STRNR+frQ96oMEJ7AzfM6/n6eoUIA7cW77kR+9fwBr
-	5VgFigOf2DvIQ2qWnOnhcMpoZz4/lNKp4T7Bh5skK6st3SpfWB+Va82SDwhWJrkO8=
-X-Received: by 2002:a05:6808:170b:b0:467:254:b90 with SMTP id 5614622812f47-485e698fcb0mr1813824b6e.10.1780068381169;
-        Fri, 29 May 2026 08:26:21 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:b::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-485edc5fa67sm792027b6e.6.2026.05.29.08.26.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 08:26:19 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Yury Norov <ynorov@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Farhad Alemi <farhad.alemi@berkeley.edu>,
-	Waiman Long <longman@redhat.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH] mm: don't allow empty relative nodemask in mpol_relative_nodemask()
-Date: Fri, 29 May 2026 08:26:15 -0700
-Message-ID: <20260529152616.2308736-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260528124133.c88c27b11a8ea0ef05e494f7@linux-foundation.org>
-References: 
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QUNwOBtd;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780069250; a=rsa-sha256;
+	cv=none;
+	b=JW0delGN9V98IrcDHBbGQ/g6Z31ujL1JE1DCKoXKRoPMdeVwkINjrTcM9rqQZJUnRsVWQu
+	1Pu9+28zGchlRnDhORJMS0egxHv8uNN7a0XoeBJlmIrXXTJcMz2s5qsyeeJI47fZbEgryg
+	jZ4uC+SG0Ojn5+t1oyPRSgdUKdBeccY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E1D9B44550;
+	Fri, 29 May 2026 15:40:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC151F00893;
+	Fri, 29 May 2026 15:40:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780069248;
+	bh=hAYoCu/RXfyftNoJ6VS8vSHQtBSJuT1PmOIzykcmtbQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QUNwOBtdHlaVN6zntNCHNfsn9Ya0qsXlEmh52j+bxLKsBC7DIzIhnvBoM/3IgCcca
+	 SCvz/Xu9OuvcHaAxbRg085ySDA5hW8nz97lugGsuVBxcKgxO0GYiYRmxvcuKmWaXGe
+	 /yCDUypGwkcF+2Nio/qTMTlS5VxsGSXdcEvsi7O20rDRUhEG6P6txj3YadQLjzqxAa
+	 SWQqIOHjkCz1TNbdHPsMERpiVQQKHfxRiuXjUNscx6ltv+N2VO6QzSyvNZP+YDsMHV
+	 XYgxVmHVu1BvYKm/VTdcnV+jNFcB1EB0mOjWOr7ioAP8W/elBicMpuRwJrXVyYr5Uj
+	 Y3d3AMnr7Thcw==
+Date: Fri, 29 May 2026 16:40:33 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Barry Song <baohua@kernel.org>, wangtao <tao.wangtao@honor.com>, 
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"david@kernel.org" <david@kernel.org>, "willy@infradead.org" <willy@infradead.org>, 
+	"sj@kernel.org" <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>, 
+	"luizcap@redhat.com" <luizcap@redhat.com>, 
+	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"jack@suse.cz" <jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, 
+	"harry@kernel.org" <harry@kernel.org>, "jannh@google.com" <jannh@google.com>, 
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>, 
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"lance.yang@linux.dev" <lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, 
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, 
+	"matthew.brost@intel.com" <matthew.brost@intel.com>, "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, 
+	"rakie.kim@sk.com" <rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>, 
+	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
+	"apopple@nvidia.com" <apopple@nvidia.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"ryncsn@gmail.com" <ryncsn@gmail.com>, "jparsana@google.com" <jparsana@google.com>, 
+	"dvander@google.com" <dvander@google.com>, zhangji <zhangji1@honor.com>, 
+	wangzicheng <wangzicheng@honor.com>
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Message-ID: <ahmzXSN_sQYmq2Jp@lucifer>
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
+ <ahcANgFDFwfC0v1q@lucifer>
+ <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
+ <ahf2mJg9OOWvu0jA@lucifer>
+ <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
+ <87qzmu2r0t.fsf@trenco.lwn.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: czy5spu5j9y5g6g4jrz5me8jotm3qx1y
-X-Rspamd-Queue-Id: 2F37916000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87qzmu2r0t.fsf@trenco.lwn.net>
+X-Stat-Signature: 68t1t4d3tdn5sssjj4d6iy14hahi5q53
+X-Rspamd-Queue-Id: 56B7F18000B
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780068382-515915
-X-HE-Meta: U2FsdGVkX197ZTM4oQ5jXRYbTpoWAyk2ZQBoK8cqWBoeiR2LGxDFoF1MlqJ/6Hs60OWNkzCH2c6vHArp9q1dMcKgCrNkhJvoL1ORwIJNuHcylLFWKk7son/wvDytgS47fXqJBOSLewp7IxKZXrin3bpRZStrZ+RzBwRt5NSh6yuvQ/hWwQiLxV7SHkJ6Be96UOBtUPrfhz1CEfS0BVAGczBU22p8CLdD32U8wuS/z0UAzJjW4BPh+HfEH92e2qOBl4W42/0lYLxVixysOBsabOL7nGc1KMFa5SuawazhT8kIRLk1QmcybnoH37Qa4g1QS4UtjPn3OJDwgmujqAHyzTXmrVlWkxfF9THhzKbqX9XFEcnVKyd4d1p4UIhKKrkf8kH6U8kQIib5wu7N536tFQXGw6biSw8scmVh50ROViyj/bu2aJ0GM/Nekf4WJ7D2gVcD+6Pia+lpIX0QbMtER65hDY9+U7eTWLIrQK3UgzLow2CScpQXpcgDigHQlmddVtnY8sWGPl2k5PkayzMi9quLZjVdZPzLw4I2XT6wL16M9wbNyjjMeMmgvnQ3kFZuehNlynRjsl2ZXBszRZv3qe4WlcVW+LzPdxokJ4fH7NOt9QIb1km3t6bsmkLq9VlLHDq8lpHQfBl3ZEbOB1dlMQXe39lltdApDonP/JyvaFDHkTngHGtlNX35t00tVtbXtTnkNNNK3vSwo/OJ/+NdOSLonIlKu8b1OfMhDrTlFBb+PP0FFpLcSvDQHc5TufmYHFqSPIFwYcI+/IAFxSqS7b0RCsa07rJGTl9TfLhH0FqOv+UdAC0zdQv//r/brlfeJ5i/gFWd9Dhjw3/FwY5Ri+JrdHtVww2JuzamNLCwaiKBkvuo1UQJA7HWKSTAp9uuJNcZbW11chwoh040JIq6AzIW18mKlgTA8iwhGRTQe5UudZpzEO/X1+hAxWKovM0fBsgeTNiXk3scDiPoU2u
- snyiVnA8
- NlG5Dxv/mzl/wgewhyFKH6u+5HF7yupzSXwyed1NSg0ef1D7CVW23AoOj4VatGr2NiWgrTlDYWtHDhg6PDTBJAzgB0nqHA+iziguUysdNjv+k5HlJjX+6WbFaMmSwnPytp65dQih3k2HWFDAzgFJJsuaaiGRKNXk+agENg09htEH2cNht6WdJyM9ppDFmELizZZ8cotebFRy7LzbSUc1Od1GzvQ3iNyQOhRJqQs4RWdpqH8SYuH8qvQfpdZQt4zNpgoefWj9944TDkeSwe4XETgFgehtM1+7GTvmQuP82YC4q+20QscdK6P4tHhMPBxMpPLWgAmLiTFgWbKkaL0/e7gA9Q+KOFBUqPxOa8ABsRIXfPsuioiIWAlNBvyOQpRX0VDusJilV2bqwaCg4rGMD5e2HdfWT17fxYnnTE2m972XIimTgTJfi3Xt1WiTPZpF+GMu/Q/3lNYXtdsNaMgIJIOeiNBM3ZrNXYg9pvwr9L0mMp57ZbILQ0PCvujKFD++g30AvqvrCF3ga5lDCV7feOimSBwJFEyHEsMqNUb95aAfHn58AQb2U5R/47u484UD0OsvO6PHYnQF+QYYQzuJyXncdp83/3E/V8lnLdqysDWbewXbZV+53Dl4ERRxeNCSbBoeRvBjpxtpZHGGCbPUWBh8q7Q==
+X-HE-Tag: 1780069250-355399
+X-HE-Meta: U2FsdGVkX1/oxC+szHe4yDr2YNwX52WmQV0ZorHKsP37QAPbk5TnF1pqWztOXa2X3PX2qNUd0EAZiqp3n5p3CvhIFv2iw/A8XktbuuD7X+zU0rg3fA35SWQnCOhghLvo9UaFSCExAzXHKspnHeT0a9N0eEG+6xfRtPT/SMzpdVebUxrKPNpuh02Nrf/OKoVkHAp2JTm+jgz8oQB+d7/u/0zSrY/fTDXX+IxU646yFT4IkNEfMSbrZh6WH38tMgJEtXWid5NX6W0MEyj40bw8OuJwfWWZsWFkysR/Lh+eO2/0mKvKhxZX/jKAQ/Ak6q+vn5VHTT6jKPuBSDc1BfNUMvGyChMMzd7+zcgThpzTro5xaQKmAbGEuKckLRFRWw//6+w0dnhF99x/ra/P6Oq3AMQrdVKuhgaZ9W2Ia1a7HlVF9z2i0JeiDbpxQGL/5BmNCYBHUsSTViNgk+HFrjTkuwyFWXvViCkNQVM5F+0eZ0SOzlTu+HXYK8sLp/xqTNGLxiKmikiF5wG9zDrXoWgyJ1rBZFq1EmZCPRjjT8hmCeAmVFsBuBfdVD7L8zdv2+4XPyBtF/whsmzv0VAEEDVWz/jozAsAQ89zZBjN5dVkHaHs2oUHijK3BfhIhD6UNbKUgaZ5euiatCwInwyIeRZwcCeNa3hXF7h4Vs6i0OCc4RQZrZeYX8SzhcNnqLh2qlHY5rZUxWHozqBcUfwYe6ktcAdH2l7h5vhU7ELix5srpjNeQ2jX3DY8RMgSj+FgC1o4J36d4cPvkYENkQ4ElA+rmGkb9LLERZ24JpkKiJn4YaZ3GJH7d8u1zyrIytEh8RaSdMkoadkSZ6w0PMXmT/a3RKiyCdCf46S80U29DQHRCoI0pPuc1QNM+SwpXK/q6KS/LYNqQgUNZwrHDzW+FUhnxbutm++Dbw/imDgO3/yuAfaRZxWdQWSf72Xyc56k2oYmWIbAz9gA1kST8VQl7AW
+ pLGU0qGi
+ FZjqKhhVpRagzUvuM3FGof5cCcH/XkYf21W2brusAyY8N4SUQSNLxDK8esRnPQfYH3HNpTE7bj8WLllo6nacRT86xt+ygtAXS5jKbZ7J7pt4IAu7N8DMD2+6jheb1yxyNo0h3xrdYo247kzYrS+zr+fcsw4BLT1mPymnGPkC4d9R7U87LAuZuvkvCZHJgskPq7TnpPam5RASxIrPwf/UuDC4aJNq79kIxvxSuQFzbjRxRvy2lvGnI1IoWLDvJo6M2bIiJsA99Gc1VBiEeBTieJQlymKjpYCmKF0mjIASGMrGRZ6y+bJjfuiMaYhoBbRZGx6qb/11JQhniALxBcvL9R6KCqbK0uApLNmXHvITIOiWw83c8gBr9uI6HYIQX6EN+irB5RsQ5Uw8svmeXUT/95zgerL4lG3ptyFpy8WCvSRk85to5z7CzN3syaoS/rR+U3S3pQc8e1TFNqgV2bTzSDt1g2D+zJJaYHlzmNIP4bYjM1Mn7s0uIyz9auQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,64 +124,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 28 May 2026 12:41:33 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Fri, May 29, 2026 at 09:07:30AM -0600, Jonathan Corbet wrote:
+> Barry Song <baohua@kernel.org> writes:
+>
+> > After coming back from Zagreb, I kept trying to find one or
+> > two full days to read Lorenzo's code and slides carefully and
+> > write a blog about them. Unfortunately, I have been completely
+> > busy with other work. Sigh... we always seem to have too many
+> > non-upstream tasks.
+> >
+> > If possible, I'd really appreciate it if you could take a
+> > deep dive into it and write a detailed blog post. I'd be
+> > very eager to read it and better understand the overall design.
+> > Otherwise, I'll try to find some time next week or later to
+> > go through it myself.
+>
+> It's still somewhat superficial, but in case it's helpful:
+>
+>   https://lwn.net/Articles/1072378/
+>
 
-> On Thu, 28 May 2026 15:03:37 -0400 Yury Norov <ynorov@nvidia.com> wrote:
-> 
-> > Reassigning nodes relative an empty user-provided nodemask is useless,
-> > and triggers divide-by-zero in the function.
-> > 
-> > Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
-> > Link: https://lore.kernel.org/all/CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com/
-> 
-> Thanks both.
-> 
-> It looks like this is very old code, so we'll be wanting a cc:stable in
-> this.
-> 
-> > --- a/mm/mempolicy.c
-> > +++ b/mm/mempolicy.c
-> > @@ -370,8 +370,13 @@ static inline int mpol_store_user_nodemask(const struct mempolicy *pol)
-> >  static void mpol_relative_nodemask(nodemask_t *ret, const nodemask_t *orig,
-> >  				   const nodemask_t *rel)
-> >  {
-> > +	unsigned int w = nodes_weight(*rel);
-> >  	nodemask_t tmp;
-> > -	nodes_fold(tmp, *orig, nodes_weight(*rel));
-> > +
-> > +	if (w == 0)
-> > +		return -EINVAL;
-> > +
-> > +	nodes_fold(tmp, *orig, w);
-> >  	nodes_onto(*ret, tmp, *rel);
-> >  }
-> 
-> I suspect we should address this at the mpol level - it should never
-> have got that far.  Hopefully the mempolicy maintainers can have a
-> think.
+I found it to be great as usual :)
 
-Hello Andrew, hello Yury,
+> jon
 
-I agree with Andrew here.
-mpol_relative_nodemask is called from two places, the first being
-mpol_rebind_nodemask which is the calling function seen in the bug report as
-well.
-
-The other place is mpol_set_nodemask, which has a helpful comment that notes:
-"mpol_set_nodemask is called after mpol_new() [...snip...] mpol_new() has
-already validated the nodes parameter with respect to the policy mode and
-flags".
-
-So it seems like we are missing the big if-else if-else if block from mpol_new
-in other places that should in fact have it, like mpol_rebind_nodemask.
-
-The approach proposed here of just checking whether the node weight is 0
-won't work for a few cases, namely for MPOL_DEFAULT and MPOL_PREFERRED where
-empty nodemasks are actually allowed. So what should really be done here is to
-do the full policy-nodemask checking section in mpol_new and call that from
-mpol_set_nodemask as well.
-
-Thank you for taking a shot at fixing the bug report, please let me know what
-you think! Have a great day : -)
-Joshua
+Cheers, Lorenzo
 
