@@ -4,100 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57EB9CD6E45
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 05:36:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BD71CD5BD2
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 05:36:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 982176B0005; Fri, 29 May 2026 01:36:45 -0400 (EDT)
+	id D2B906B0088; Fri, 29 May 2026 01:36:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90CF46B0088; Fri, 29 May 2026 01:36:45 -0400 (EDT)
+	id CB51E6B0092; Fri, 29 May 2026 01:36:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D37D6B0092; Fri, 29 May 2026 01:36:45 -0400 (EDT)
+	id BA49E6B0095; Fri, 29 May 2026 01:36:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 696C56B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:36:45 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F363340DAA
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:36:44 +0000 (UTC)
-X-FDA: 84819347970.06.A403BD7
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6B8D81C0006
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:36:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="vZ6FwFY/";
-	spf=none (imf21.hostedemail.com: domain of BATV+07363440a70d19ca35bc+8314+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+07363440a70d19ca35bc+8314+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AA6386B0088
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:36:50 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50DD79B7E4
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:36:50 +0000 (UTC)
+X-FDA: 84819348180.23.0E725D8
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 708CA1A0003
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:36:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xqOG5kXU;
+	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780033008; a=rsa-sha256;
+	cv=none;
+	b=IWds0ki3jju/+YyoNY5QSXk7OP0rKL6ewLUpg5tAkJZlxashWE7O0+5vmTotxOJSZW+Syt
+	UDo5fw9O2ayTPu+/zLbtuzR0+hnYBiyINTPV1XCVj5QUlELRakyjnBwQczCflWw7M8N8N+
+	J30G9/9GC7apY8I99aiHae06wFXMtLQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xqOG5kXU;
+	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780033003;
+	s=arc-20220608; t=1780033008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aWo/gTZ+lk7qCswHD1K4xHit8Q7TVDZZNoyS6wwTu8Y=;
-	b=I7GXGrMUiRCt9WydCia85Ts23M/wZ+ylPr9zS4bskabSCiSM4PjNhnvr/mHGTGBAOn+26p
-	KghbLm9daGYw2LcO1R2+LqZQLgEEpaxIi93IbsbLbgO9OaXq293cr1YImJDWsiAuaU7YeO
-	6X6WwyaACvMtdnOqvB046X+vduWPJF4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="vZ6FwFY/";
-	spf=none (imf21.hostedemail.com: domain of BATV+07363440a70d19ca35bc+8314+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+07363440a70d19ca35bc+8314+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780033003; a=rsa-sha256;
-	cv=none;
-	b=n5o/egLGYwBYK5aDCkJ52mcW4Hc2ZpEf2WkaYKZQpVv+RZnFGGvSfz7uRuLvL9njMcDIUV
-	qJyUSraAFL3O7UV8fcvCU/Z6U6zX9R5I3olv+c/Z4GGyIxgektfqXIPPxfqw3HmZHKP0Fs
-	1VxowiBG1bAPIHqiCOR0dd6UtTv1nYQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=aWo/gTZ+lk7qCswHD1K4xHit8Q7TVDZZNoyS6wwTu8Y=; b=vZ6FwFY/6VqF6WzikjGIZxuBlC
-	FLMmpJLHB1p5hx2CsiBI/QUAU2dEbJULNxIZqhYJcJWSj4LkthqJ3RzSqurUj8ga5p7zkk+DGxIbb
-	l0CrRbsr9CTjvx51lSw1qc0faVXR5JH0vmj6Ikbyfh23v42jgWYoZ6v2AbGP/kjGmb2GZAjzcPI6z
-	IluxeI7aHavbJ3PLPUbgjtngBQyObKDGlnQbakChVVkOGCAP4EJy/6Umqu93cGXoPGws54kMp3tED
-	U+OMb9FtkrQnZhUtkvZlDtU4ulHdOD05FgUGQCY0ug52p0Bk0z6/rwsAHUr9uOCWNjjK+d9jeTFmX
-	Q1Ew1VRw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSptf-00000006laY-1dEg;
-	Fri, 29 May 2026 05:36:39 +0000
-Date: Thu, 28 May 2026 22:36:39 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Bart Van Assche <bvanassche@acm.org>, Theodore Tso <tytso@mit.edu>,
-	linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-f2fs-devel@lists.sourceforge.net, linux-mm@kvack.org,
-	Akilesh Kailash <akailash@google.com>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>
-Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
- remembering inode number
-Message-ID: <ahkl52N3RDcusCNd@infradead.org>
-References: <20260521155748.GA79343@macsyma-wired.lan>
- <ag_OVwPF49LSZ7rz@google.com>
- <20260522141115.GA8258@macsyma-wired.lan>
- <ahCNmWbcd_2lAJyk@google.com>
- <20260522224108.GA18663@macsyma-wired.lan>
- <ahTzHyHBL8t0iNBR@google.com>
- <ybmbjekuvzmaw4hmlxd7nxs546dqtwmxqxwyali74d6m3u7tat@b4q3japqnhrl>
- <f4e521ac-2381-49ca-8dcc-3cb3cf3ffaea@acm.org>
- <ahaPDHiXcJoVShPv@infradead.org>
- <ahcU5xbVy7xjps02@google.com>
+	bh=MwGmArfXyP/zPLMRZPXwscMyFYlmjrr/pMjvdbtZZ1Y=;
+	b=qjWyAaHcn6/rCHNa4aHc/fLaiutsuLfg7iqVpK0z0f2/XhRmIM09L8Mr1H8PqqPuW+ymVd
+	XudYwC89CqK8fDd5HSN7/wj8x9d1ETKq37LT6IbyuhJWhDafYA2nVfNTSXk3j5muDSX0V5
+	aBg3AcwJB80CcyhSJe+1VpzfPgOjF/g=
+Date: Thu, 28 May 2026 22:36:38 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780033006;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MwGmArfXyP/zPLMRZPXwscMyFYlmjrr/pMjvdbtZZ1Y=;
+	b=xqOG5kXUMqhUfDjhh10O4x865465aXvQZNQygbSMapm+kfmcM5Onf1Wq7n0ZsFQJdmSLPP
+	ZBRtFi1EL8WTkTSxmLLaooUHVpxzm+caaKT7xjQ0ULXp0RAPGNbvtMS6rTo9PJD2Rj2jTC
+	Mp0Xrk46QGk3tIjwSquNG4ktjDvTNBQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
+	Kairui Song <ryncsn@gmail.com>, Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH v7 01/15] mm/mglru: consolidate common code for
+ retrieving evictable size
+Message-ID: <ahklEbzZn3HQgS9f@linux.dev>
+References: <20260428-mglru-reclaim-v7-0-02fabb92dc43@tencent.com>
+ <20260428-mglru-reclaim-v7-1-02fabb92dc43@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ahcU5xbVy7xjps02@google.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam12
-X-Stat-Signature: pw7boytshfp7mse1ybnhknt1qram6yjx
+In-Reply-To: <20260428-mglru-reclaim-v7-1-02fabb92dc43@tencent.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6B8D81C0006
-X-HE-Tag: 1780033003-626304
-X-HE-Meta: U2FsdGVkX186tf0L+Iz/A8TvVjZon7kfBdEBm7gdu9Yrf9j2NjHVVw8MUnApK3XWwWwfDz4ByIAAe4A0PH17ipt+FjqQgUq1FNL2Vc+7SjTvr8CNIP4gArwghafKpvl2M/of9R2sn5p8wJuKDfdnKlCfVi+PQcJrj5ZgVTs8m/HUMIj//XJA9wxBrAmxmrPirZHd5dG0vgyaF6m94ZaI9ri7Rrs6K8l8bVw81qWaei/9cp9h67oCzUVA/9XTon0uOZoPgrWIM5cnSkvt29+vwulFay8UgIn6gp7pdJcr0g25kFlrvG8zJt8XwIChtdqDqgzKtVkV6TmnVS3NK5s+OjWvGfGZjzs24m6OT08UCZ65qVR/aYmPuCcwzTHXjblXMTG3tH5dLJpKpcylBrpy1fZv6BJ+5QsYeB2OAWD/Rv4fSz5HOkZVlYaCw4xVJxNtvx1r9RLkwpxwkYRj9tFWWX6ESOnstXWLjH9Tu+u9uVbTtFqbPyh1WpKRx17hpSorHlRNFZwb0J8fG0496mr3NvQkbuJO4XY+TTblovuRMAaWUSQs5cMh9g+1EAlBVBn8f6wHWdNwdK8bOnKTk9MhO1zyMfoB5lJ4pJnDgYM0L5QCspWA7kZeNwXBXLpZ1nBhJnUruEwbNKeKcBKKeEfxPWsXXL7ybBkkpiBfy8E/IaPjf1qdnuYXCc9s+r3qso2Kx6SDyu6wAmAaZqkhXOmmKqzMpIgvj+I3H4kSLAZousarTTeuM5p23c9EGmXKriRJD7mx1HbV22ncGbindo6IQD+Cpe/oElYEE04PVVLhFyEr8lHmffKRSlFkKCBcY3JJPHuYSm2xjrAE620jlP9aaF7qOCQG4ggf5BI9+SG7W3UMZksf9gArb5z1ECcZNiwxTiFoZci76ePiiDzhWXyjjUGHNei3V4GVF2qn0PrL0ady668/ArLUzDwB9RzQ8DmddMhwCmgp9MleMxXREok
- sTyD2xM6
- jGOYyb4nSREEUXsVlB+MiqEhHytiBeGKepGdS3mwgrh0Orbv3PQ6Esq9J38d4g7d6OPF3Xop3zg2nkzUsB8TkvyAhwntVaKbFnuOiS1S5+LRmLlRC06a27h3LLW3b/P3LzH3D2KZt1ZQ6QSqtt0o0uRk1i6TGcfxyMU2YCSGgDMzoPdQE9EW0HMrJ32lFQas0kiQ8jnJssoYfu5uBv1BtUjU2REoW5MvuVWeNxPv7y7tQ3gOehpE5xsedFocS/XXiRzNsZFayEvDmx+FCP3ZWYa95JQecAijNJ9eAgjt9rS2NcLvzyqURWgh+q5Ae/FDTXDfWcPvR2gWkdB2zZjFsEPkMyHpCEGt7vxGiS3EHQSKhXDikSnYnCfy0iKUx0JjOeEsbfB99eqWpXzfKSWuUgFhHTws/qauKR4IgYdW/dq9fkp3HSRp9Z9JZNSNCtVeYHwgQKk+gK1XV1NgzMbM/L2vI+2Jd5Db4cbhCbbN+iz2mpYoRyY3/8kTJTA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 708CA1A0003
+X-Stat-Signature: 9ns9n53dudfm419nmfdciox4r4qkbh47
+X-HE-Tag: 1780033008-78620
+X-HE-Meta: U2FsdGVkX18o1W5ESzgSLnkDWgw5GI+f5dmxVt0IlOS6ae3RoL73l/F+I+Kw6oWxmQsmP8Fq2ojqPr+5+5e+k+4Ezje+GkEp6WaybbHV3uyREtaFy6hFsLSofIf3+M49KCPUPQOHhxEKjsl4GUSoFvXiU2e++xxydZ4C2V9vCWzdA5Pptr0AyfoQLlArisIhcW5Mecxskrb5sTQYjUo8MQ2S5aTO/COMajCEOAaOzeW3uclthUHpR6UNuYkqs5yCM1RxouFlSK4XphV1sNH7g6O+5JpQionLovYyO/+akmhOI+Aru4xS2bmfOHYulOGFV4hBnUEFrUOzZUaFTAz6dHh99/UedxmBVowOMM5R0WRnDkuSlk8cFA85fQi5Zf+77SQnz+rLHiqOF717bSA8bPwSW/jPwkZaXS7MuhfTUb1XDVRB/RQE5kyvWi/aM/sPNiwZVqEmrAKc1FbDsKaZgIELRBK5g7Sj85Mo7bnYCkBnlXUksQPxAbmpD4SPwSnIipcoyEkVGaXCAsFE++iOL3Dknl4hJQk/EEMe7ANx/vY+XKt6mH3lbfQwwu/46Bs/RS4BKnOeWJ1Fq8CRztEVYMaWCY5KBhlBKLifrWL1quBc9pZ5lheYw5vuOgka1nvuJJv8YlJTKaowAQItexNVBV/s+OhdVtnKlqZkvUtmEm2R+i2T6cr+lqrVu0zikm4sRb5u5iw+W07CflV3UQHseOyiFZfyktrwkQ1RZImNeFqBuezdVz0CUveATYkw6A7NfnMj4BQSKAZdkyLZaig/PHXTyNU8D78IIGeh3142ZEFNUbh9Q9uJWz6i0JYQhjHuxU+W8a+7Y9filZKv7wxLZEXwPT2QTzqgdwwRMGrcZqM6KVcLNP64uebDCtS0pAjXbyKiW882+mjmiL4ggYTEIkrwYBW5IeY2YZqOdNIp7g/c4jRrqrEMZTrubwu7QKWEURtw6KvmOXJflCAg7PR
+ izDxN0L/
+ K1sqoQitJ0ArbkjxZI7QJVjVITRILak7CwFZ5WwaCAj0S2BAG26Fv6FNytqKgWDsRlR4FdKyw5J40ovcNJKpcsdzNYLp+x9X12T7Z9O49DlWLNzIUU2FkCuBb0Lb8Ydt0yDl+r7E0TZR383S1OASM+eIS6owzDsj5mP0L29A1rbxlo0Z9VkLmqVtdKGri3nn/4Z3tV7GkFL2IAIzQcB+LY6sYHsZUy2FSq95C8PIG+PIqTFUOj8PCZhAyZMz30fNo5HMi6sbckZGmRnh8D8HSMQIm+LambPOYHOUtisrBxHveCYGdDVMIQ+sXq5eil2wL+wuYNqtyBghMmSpZpV3YR6dhLMNGcifkf4dKM5Gcndf9lV/v5ZXu3l7C0gbqcTzjIgoRM91FWboLKgCAJLizcHquDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,28 +96,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 03:59:35PM +0000, Jaegeuk Kim wrote:
-> F2FS merges bios before submit_bio, regardless of small or large folios,
-> since the block addresses are consecutive. So, I think IO subsystem was
-> working in full speed.
+On Tue, Apr 28, 2026 at 02:06:52AM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> Merge commonly used code for counting evictable folios in a lruvec.
+> 
+> No behavior change.
+> 
+> Acked-by: Yuanchu Xie <yuanchu@google.com>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-As does every other remotely modern file system.  But that merging is
-surprisingly expensive, which is why using folios gets really major
-performance improvements.
-
-For one doing these checks to merge touch quite a few cache lines.
-Second, devices are often a lot more efficient if they see fewer SGL
-entries.  I.e. having a 1MB bio a single SGL tends to work better than
-having 256 of them.
-The same is true in the kernel code itself, both in the submission path
-(dma mapping and co), and even more so in the page cache handling
-both before submitting and in the completion path.
-
-See Bart's patch about how long the walk of the bio_vecs in the f2fs
-completion path can take.  We had similar issues in XFS even in the
-workqueue completion path due to lack of rescheduling, and these simply
-go away when you do the folio manipulation in larger chunks (LAZY_PREEMPT
-would avoid the need to explicit rescheduling these days, but that just
-papers over the symptoms in this case).
-
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
