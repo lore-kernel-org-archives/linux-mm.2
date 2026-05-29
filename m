@@ -4,125 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B73E5CD5BD2
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:35:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F360CD6E45
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:43:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E111D6B0005; Fri, 29 May 2026 04:35:20 -0400 (EDT)
+	id 543C26B008A; Fri, 29 May 2026 04:43:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2326B0088; Fri, 29 May 2026 04:35:20 -0400 (EDT)
+	id 4F4086B008C; Fri, 29 May 2026 04:43:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB17D6B008A; Fri, 29 May 2026 04:35:20 -0400 (EDT)
+	id 40A166B0092; Fri, 29 May 2026 04:43:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BAC6F6B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:35:20 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 523B1C3553
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:35:20 +0000 (UTC)
-X-FDA: 84819798000.05.4B71C9F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 581E11A000B
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:35:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eHiWA6Jm;
-	spf=pass (imf19.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3392F6B008A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:43:30 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D7134140A80
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:43:29 +0000 (UTC)
+X-FDA: 84819818538.28.07A7C57
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4329D40011
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:43:28 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IF1RvRg2;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780044208; a=rsa-sha256;
+	cv=none;
+	b=c5opRHYoCicHka1eYp3/lQD/qbaiFTQ7z8Qdf7Md1HXhipJZN1GYn9zb27XPYdMX9lVwnU
+	CBtR3SGZ7/B0FifMQjdeOWE5enAKHrXFNk0UCSmxI9o/WYBPrazTOC43OeSTsAWHkYKCe2
+	co4KypJZk/Moo+Ng8M9ZDuAwTIPrxZE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IF1RvRg2;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780043718;
+	s=arc-20220608; t=1780044208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pb8hRl9aeM4TyobxS9yOnAKjXiRrSGZc3kFIWxU6xN8=;
-	b=2ihMH0tkoo1Y3T/MouJDyrPjAr7Se8FlypwzVX2QhNdtMpoIqjpTmoOIxkXsSUAAuvMDkm
-	cJYLnxuvkkFJszmNBsdsMspx4sRP0qBmxPjBCq8UKIhQ0zqfzLsl1Ra4Hev7y7a5gkUdAf
-	NRNCZHuAjvXOUk7oT6CIesDD69vasWQ=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eHiWA6Jm;
-	spf=pass (imf19.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780043718; a=rsa-sha256;
-	cv=none;
-	b=m9S8eyW//PqMCCP/k9qF/boJcIj4GjO9YMNOQPSJZcGENmbLj0dRSo5W11B2eejG1vJxfp
-	/B6F9eg17KMuf0O13SL1g93uLrsMl8HpNtREHiqBDfQGxIvZRE05VEfiQu43muPsYmjkcf
-	btiv33rtx3AvdeIjmxXhSuN7WKYWqes=
+	bh=uXnHakRi/0adsncYDlGuWfuJsPpVHFQFEDTYwyaoHko=;
+	b=11aub7fd1+2Q2d8HkpwV21AnLeriZyoBL5EMgVlwkIi8LX59FJkXKIOAH25FzM7W2WXJpl
+	e6YLL7EIDLWZVz/uW/eUvYpHwQlkxlEJydFFY/Tz71jR5nkv9/wIK4x7CJqTu7sFTqAoem
+	YIZVblckBFK6aEb4J9CZTqLLNL22TRM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A645860594;
-	Fri, 29 May 2026 08:35:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBAF1F00893;
-	Fri, 29 May 2026 08:35:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4AA11400E9;
+	Fri, 29 May 2026 08:43:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8CC1F00893;
+	Fri, 29 May 2026 08:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780043717;
-	bh=pb8hRl9aeM4TyobxS9yOnAKjXiRrSGZc3kFIWxU6xN8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=eHiWA6JmmhYrHhKFbvxiZTW2xJNbosNU9RTUq54HJ9qxC8j3R64ua2CiUQZSUqrGR
-	 E4C4UAZoPRV+CsP2askx3paA4itfF9NPWE1l5jJvDfGPFPkEGz3bxaowNb98jVhwYd
-	 sIzZwjUPwcgBigvncsDX4VRpDg0Tb6nhoOntqVSjMBnwzxSdSiLFK6FJIf15NU1oue
-	 2e06gPFOVDKImLo61ENrTCqi0Vur53PFnTt+HyeKotfWsgoxzzM/t3v5FSFnxqJZ1x
-	 5vkt06vWKXTJUvw6Aip6rqRQinfTHQ/h0Ol1LDsXkJDGByoWsG4GKZzw2U9VgRPNk4
-	 X+1bHuoen9KnQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id BFDBEF40071;
-	Fri, 29 May 2026 04:35:15 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-01.internal (MEProxy); Fri, 29 May 2026 04:35:15 -0400
-X-ME-Sender: <xms:w08ZakpiqlRdTFy9M8HRTgnxe37LK5skX4bkamkDB8ZQY6J_BXof0g>
-    <xme:w08ZalcpocRSklO6G3o4eP1S-C7Au03jLquVqT3dZ5DscMRpjm2bm4i_76NXPzOYq
-    8m4qP5eSsmGjQA1h8D2q0tixCicp_xLKZTHbImZhneyxQr7DFoP86w>
-X-ME-Proxy-Cause: dmFkZTEQkc69D4Zmkpn7XYQpl901Rkrrlg7dZ91u0M7kyZwKWzkp8pPC3OUm3GoeIl8ZEa
-    YfWBmvqFv7f873bL+J6awk4ALyVkWsyPN8hSWHWjLy526VQi+F7vLkb0Se4dJsA0+9AZhC
-    mbOE8Rse92D/zIxqfxjhk+KGvVsWFXzvhiWzaNvH5HcjXMs97MFy2Ahat6AJXkgvUokmXr
-    /Gu6KLlQhkZMYy3mWkvL+fDWGnmRPKdBsaBtjexICmnhLEzeFMUm63gl1KF4NntnTnrGCZ
-    5uP9Ng/N2EwYovqYva2VTXsDVpCTseypQ4wv1F7Roh5FxvMHGn/c9ZuTyDPXb5H5cYd9OF
-    ouUVMrrrUvOBF+JwFSgKrNDT1DaZWGqGqIruNwSE/opEQSzIQ9zrw0wSLqFYazgl+kiQ2Y
-    sOA6HQbJZ1rsrjuuE8457H8E9j+gYAMNvf2x/vyO3yPcSYsc6/o4Qv5NP528gMTHdvJaAm
-    67pp6LKTMNBnVUl5+cMWaa7+cdgW/ehxUAOYaKGkKA+PbVR4+3EA/jVGZ6CQAJR+U55MP8
-    RJ3nfWIh5Zcdgam/v5JKyDfCEfILxKZWGoRhtzNLhOLpeh2LqHMVG6TV6WbGBbiSYPAVd9
-    5RD+D/lju40uQTEYWt1/7jLvi8oS4Hu5DB5XqNd+rkUXwkCvApYca1SMpU/Q
-X-ME-Proxy: <xmx:w08ZalSR2fUKHnUGeophPGZfIoa3FLSiVorE0-OEfUNGV2uLw-_6ZA>
-    <xmx:w08Zal3v_7ek3COIKrCDsZfg2jQl0m4Z3rI0TedAf7i9hjoae96Jag>
-    <xmx:w08ZaiiajKIvWqZEZyaQI_aMtzFW-TTcZjHXYOCntS4zV902fIzDwQ>
-    <xmx:w08ZajZHTB-r0fcFpaVE-YRBz0k-6zzT2wtxgkCJgsY-Wxa2QTmtlg>
-    <xmx:w08ZarPj9tOVHrNBAweSV_sZUvum-foitmXNYw4RmHdlg2YpKR9_xRaz>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 9B247182007A; Fri, 29 May 2026 04:35:15 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20260515; t=1780044207;
+	bh=uXnHakRi/0adsncYDlGuWfuJsPpVHFQFEDTYwyaoHko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IF1RvRg2pqYFk8NBtwRTwuopel/5dnd3b9bmYsdrorGgzJYCUjEmH5vXdoHYgvAQv
+	 Gd83x3+CXAElPdCTr7cEUBIQ+mr2PD08s5dd1jIL+st1XcT2J5R76cL/KZhEgx3DHv
+	 0VsueIUciBpy4Q6sIH5KeXGYTxUcxDZyQwOMIIRFXareZ8pq0FRTH0FnP3n4+0jfds
+	 amahNhyZC6CXJ3+AcmXpc5UBWNC7/TlHrSGCvxsi5xA5oIQ1pSfBLEN+Cw4yngDFGB
+	 VuCEdaRspi2q++1DGriDtiy0ThJtopoJhCWzH/zJfYfwNcJrzyv+1q6ad4zF/pS5zb
+	 YQhR3ccnxxu0w==
+Date: Fri, 29 May 2026 11:43:21 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-serial@vger.kernel.org
+Subject: Re: [PATCH 3/4] tty: serial: men_z135_uart: replace
+ __get_free_page() with kmalloc()
+Message-ID: <ahlRqd3e94ojSfWE@kernel.org>
+References: <20260528-b4-tty-v1-0-9da9f7aec5f2@kernel.org>
+ <20260528-b4-tty-v1-3-9da9f7aec5f2@kernel.org>
+ <18bb4a45-c26b-4a89-b598-a844d3aadafa@kernel.org>
 MIME-Version: 1.0
-Date: Fri, 29 May 2026 10:34:49 +0200
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Kevin Brodsky" <kevin.brodsky@arm.com>,
- "Ard Biesheuvel" <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Mark Rutland" <mark.rutland@arm.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Anshuman Khandual" <anshuman.khandual@arm.com>,
- "Liz Prucka" <lizprucka@google.com>, "Seth Jenkins" <sethjenkins@google.com>,
- "Kees Cook" <kees@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "David Hildenbrand" <david@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Jann Horn" <jannh@google.com>,
- linux-mm@kvack.org, linux-hardening@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-Message-Id: <8082b77d-6522-472a-9030-317087ecd7e9@app.fastmail.com>
-In-Reply-To: <22042b98-cfcc-428e-bb08-ebcfe785eb69@arm.com>
-References: <20260526175846.2694125-17-ardb+git@google.com>
- <20260526175846.2694125-32-ardb+git@google.com>
- <22042b98-cfcc-428e-bb08-ebcfe785eb69@arm.com>
-Subject: Re: [PATCH v6 15/15] arm64: mm: Unmap kernel data/bss entirely from the linear
- map
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: panz7z7zhme8ydqx4myccws4zutyrt5k
-X-Rspamd-Queue-Id: 581E11A000B
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <18bb4a45-c26b-4a89-b598-a844d3aadafa@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1780043718-10561
-X-HE-Meta: U2FsdGVkX18QFTuywVNTKYJJGHXzn2QhLlHAcHP8vrB5nQ7lHQNeepqRmVLhLOY6CrAqjb3DU9fpCFnEtRBKEshK5iEL6ympqrEGtvMQJ2aLt2a0zek2ZFnz14UdMMO2XjctZkR++uWMG5EKK4XSr9IYKIiB5JhAPUtsyWwSR0XkaN776QDWUpDgiZn0fbHauB04x0/kVcfSECkPGabAOIxUrESkSCVAET4VWhUYA0EHe/9zDqAhZ+DM+yjroUMy3g/2NJa+hTDQwMAOy+majkgLJ3Fd98Of0ZJVjLr5rFAq8w/6nXWxFO/g3DDjTO6no/x3lwhy4wlbX1jQHaunzQzGXor7dZajmMXR6tsd2s+leZLDkd0ssvsAAWj/4RcjXZoEb+qld3yKyeuPpRWYCQSVzDEVRyv/py4feBZ18d0Vh9nGe2RtjzbIGjzIKkabOxQXTuQzFFfyHleckvHsU00ZjqS1pFGUInZ2nUUdbevxyTaJvK9b9gPgAEc7/jtb1nVOFosfheLWZ9Ish+dOkhRwuauAuZBQ48kK+i4GMnDNRuv68X2utt5hQmI1jYng74amCbStwQPvp7QCrp20AX44XHF9S/uXGQ0PNWRGXqVSWdw70crDm8q8g8HzZF58GhW4zSfXHDi5zzBkhg8gK+Se/New+LlAaziXS8lkYsDzOb5gOaNbqlGOQ/6Xv9QPw8LsgE81+FCGzdOr75objBnzmnxQPZ6iHTaVrpJErcMf/4uQMFh/HXppnBCc4U2ep1VpkDQhyJJ/MFsSzayAYF5lRihxuvtOOcvU5mcPuPjFelhPKhCo3zpuzgDy91akQhQXmozqbtszI2/kRPu3vV30drCqeK4ChFGgsdq0lygxbRh0QmiBzgDh9vhp2jZ22ajhOoMop5Fa+6NOyJcVjAM46LWBDUTgWch10UozFq08gZxu82OSYexJsJiGXuZdeeltZLbMGjH41/fKdNm
- hQ0B06C5
- HKPI3BGTh83pMyeAFnht+lm6sv20hpvVwtRNRI97MasRYHbG8yppEyEll3RnQ8N5++pXlvqxgtRuELq9Z780W+2R1vVt4bVTS7eL8qzUNrHf8Zif+SXbEd4VQwU9ecMFIRipEiIeuRr9LEDp05vz8tJ0ZpKoOefJH8acPpUUaY9Qtvso1D30ODINMtJcOfbNPkYqVXOPYZKu3RX9DuG7WO+hrU1v/dq6Y5su7KTVmzOLHle5eJs0ellcQSZdKPcW4o6iA3cYkdAVAAH3xGrOuRKuqwo2q9d1RVddLU6OsOghc6zQCLVAbPu9HWU4J6B/SOTvtSl3hus8DG6w=
+X-Rspamd-Queue-Id: 4329D40011
+X-Rspamd-Server: rspam03
+X-Stat-Signature: asjqknwn4xtn4amjw4uezaa5s75myow4
+X-HE-Tag: 1780044208-643843
+X-HE-Meta: U2FsdGVkX1+9OOrCiC02D/QXE/xaCz8s5SikAGrBXgErhRrWuglzAQ0Z2wST9oNdXuxyl4sOaOk0G7qV1cdlmNt94xvUEfwXojI/h1GCJdXkrd6OIIqR7kAQfQtUiV0hmH8IasXP88hSI0oF9EcHS2PhXaDRAB7KjX8Zx2zvPhfAFd1EpLAcEtaOrTMjUYyBkCaRnurD8I71s1AHLmkDCwttz3/lXUXyWLTUBR1UNs5JsSagQZNHrTl9jCbPSGrx1b/pkKjh17QJkKz2mZBBBwjF/tVqG4zY4XgfwhMqaaoVjgIvtZtbGp2tBtWI8jqlX/hvcUJPP6eZK5okT/a7xA4xWM+8TQfyxycAyC5rnJhU5R5BhhiCgzbFfjxNQDUf56tfD3G+SMfEz1FbifMSoSyta2gPHWsMcBSk+LbeAPrRtMqMaw5PeHT4IACh5NBT0QB63my6feaay3VMFozwVhQ1Hi72I3iqVouEWLNmENFYnzIO3dx1YaL2F3KHakZUJy0URUXP17TPZSdz3YAVdtyJ1SruPEeg1p+YFIstTzEQGBd80b2hNDZScqV06+n0vwggD/3Am+T5YpiqDBxrIBXGRjP20syCKo7v9KeBjgms870OuGcTfeLmL6+Gf7YvnXmvAQUmegzagq3TmLxC6zCNTc3cMFd5kF1z9v7AW8l2hENJeFc3BllxyFZL3Eu06mx+6V2Ct3WzsTVlDDCLjL+8WTNYOa7q1dEzSc5LfFxRi+Vh+DeO67FaB1cdwhBEv4CFrEyGaSM2dUfMrVrV4C16pBweOTaXqW5v9K4E3OQyUzwFa9+QK71se1dizxfqHmdzKUWWnvB5oP2HedAoaaj9v2tjAVfDQJwYlu79sn7E++SIDCx+lTMjfR4emNs9FXVMt8MoQMJQCXW/9Ojlh15/3XDAPy95G8lCgXTb6lj9959Fu8A/2OwmCmWllN2vDd6xxpH0oxcDRA1AB1N
+ NYeuwuKf
+ kngfJsTh/JAVAvIfy6Q5fE8qm/p2Uj7GDgRs/iuIuQ5H4VEf20qOKMRHMsUoklVW4uoJ7q31R1sc+GEYXR/3X/ImliRACLXmbQSpb07sfA/FDAeAiGs7r+d2jG4cP0n5Ofm6MLRCFu7XKLPl3ArNp7IyXzCQyZi7whAwRtUUn/Mwd6ewcCFJa47BjgedBlIAs6o5bhmBhjqoiU3bhrIsh7M4EX0djzTpQlpLHnSqO2TypkFr93Qqy5JAiEt2SO8M38bzwdr33CMu9b8VQtHkNzQA/MAa81cOjFI3ThkUEnGMJVf2QsuCON9CvRPRxSeNY4lmkA4b9QBhSQYeLoCBpQYzEOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,103 +94,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, May 29, 2026 at 09:47:33AM +0200, Jiri Slaby wrote:
+> On 28. 05. 26, 12:24, Mike Rapoport (Microsoft) wrote:
+> > men_z135_probe() allocates a receive staging buffer filled by the
+> > CPU via memcpy_fromio() from the device MMIO region.
+> > 
+> > This buffer can be allocated with kmalloc() as there's nothing special
+> > about it to go directly to the page allocator.
+> > 
+> > kmalloc() provides a better API that does not require ugly casts and
+> > kfree() does not need to know the size of the freed object.
+> > 
+> > Replace use of __get_free_page() with kmalloc() and free_page() with
+> > kfree().
+> > 
+> > Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >   drivers/tty/serial/men_z135_uart.c | 7 ++++---
+> >   1 file changed, 4 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/tty/serial/men_z135_uart.c b/drivers/tty/serial/men_z135_uart.c
+> > index 6fad57fee912..9c32b01edc9e 100644
+> > --- a/drivers/tty/serial/men_z135_uart.c
+> > +++ b/drivers/tty/serial/men_z135_uart.c
+> > @@ -17,6 +17,7 @@
+> >   #include <linux/bitops.h>
+> >   #include <linux/mcb.h>
+> > +#include <linux/slab.h>
+> >   #define MEN_Z135_MAX_PORTS		12
+> 
+> This one is misplaced.
 
+Do you mean an empty line is missing? Or there's particular order of
+includes here?
+ 
+> thanks,
+> -- 
+> js
+> suse labs
 
-On Fri, 29 May 2026, at 10:29, Kevin Brodsky wrote:
-> On 26/05/2026 19:59, Ard Biesheuvel wrote:
->> From: Ard Biesheuvel <ardb@kernel.org>
->>
->> The linear aliases of the kernel text and rodata are mapped read-only in
->> the linear map as well. Given that the contents of these regions are
->> mostly identical to the version in the loadable image, mapping them
->> read-only and leaving their contents visible is a reasonable hardening
->> measure.
->>
->> Data and bss, however, are now also mapped read-only but the contents of
->> these regions are more likely to contain data that we'd rather not leak.
->> So let's unmap these entirely in the linear map when the kernel is
->> running normally.
->>
->> When going into hibernation or waking up from it, these regions need to
->> be mapped, so map the region initially, and toggle the valid bit so
->> map/unmap the region as needed. (While the hibernation snapshot logic
->> seems able to map inaccessible pages as needed, it currently disregards
->> non-present pages entirely.)
->
-> I'm not sure I understand this, is there something wrong with the
-> kernel_page_present() check in safe_copy_page()?
->
-
-No. If the hibernate code decides to snapshot a page and it is not mapped,
-safe_copy_page() will do the right thing and map it on demand.
-
-The problem is that pages belonging to the kernel image are marked as
-PageReserved, and so the hibernation logic will not even consider the
-pages for snapshotting if they are not mapped.
-
->> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->> ---
->>  arch/arm64/mm/mmu.c | 39 +++++++++++++++++---
->>  1 file changed, 34 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index e7ca53d20b87..cb00e42abbe1 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -24,6 +24,7 @@
->>  #include <linux/mm.h>
->>  #include <linux/vmalloc.h>
->>  #include <linux/set_memory.h>
->> +#include <linux/suspend.h>
->>  #include <linux/kfence.h>
->>  #include <linux/pkeys.h>
->>  #include <linux/mm_inline.h>
->> @@ -1056,6 +1057,29 @@ static void __init __map_memblock(phys_addr_t start, phys_addr_t end,
->>  				 end - start, prot, early_pgtable_alloc, flags);
->>  }
->>  
->> +static void remap_linear_data_alias(bool unmap)
->> +{
->> +	set_memory_valid((unsigned long)lm_alias(__init_end),
->> +			 (unsigned long)(__bss_stop - __init_end) / PAGE_SIZE,
->> +			 !unmap);
->> +}
->> +
->> +static int arm64_hibernate_pm_notify(struct notifier_block *nb,
->> +				     unsigned long mode, void *unused)
->> +{
->> +	switch (mode) {
->> +	default:
->> +		break;
->> +	case PM_POST_HIBERNATION:
->> +		remap_linear_data_alias(true);
->> +		break;
->> +	case PM_HIBERNATION_PREPARE:
->> +		remap_linear_data_alias(false);
->> +		break;
->> +	}
->> +	return 0;
->> +}
->> +
->>  void __init mark_linear_text_alias_ro(void)
->>  {
->>  	/*
->> @@ -1064,6 +1088,16 @@ void __init mark_linear_text_alias_ro(void)
->>  	update_mapping_prot(__pa_symbol(_text), (unsigned long)lm_alias(_text),
->>  			    (unsigned long)__init_begin - (unsigned long)_text,
->>  			    PAGE_KERNEL_RO);
->> +
->> +	remap_linear_data_alias(true);
->
-> As suggested on v4, something like mark_linear_data_alias_valid(false)
-> would be clearer.
->
-
-Ack.
-
-> Also, is there anything stopping us from doing that directly in map_mem()?
->
-
-Excellent question. I will investigate.
-
+-- 
+Sincerely yours,
+Mike.
 
