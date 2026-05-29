@@ -4,97 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C072CCD5BD2
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 06:48:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71180CD6E45
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 06:49:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E83D76B0005; Fri, 29 May 2026 02:48:54 -0400 (EDT)
+	id 9555E6B0005; Fri, 29 May 2026 02:49:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E35B46B0088; Fri, 29 May 2026 02:48:54 -0400 (EDT)
+	id 92D406B0088; Fri, 29 May 2026 02:49:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D23AD6B008A; Fri, 29 May 2026 02:48:54 -0400 (EDT)
+	id 81C5B6B008A; Fri, 29 May 2026 02:49:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB8206B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 02:48:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4BFF1140FC8
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:48:54 +0000 (UTC)
-X-FDA: 84819529788.19.11AFF6A
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5BEB320007
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:48:51 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=La1pc6j7;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 718B36B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 02:49:52 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3BD2199B96
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:49:52 +0000 (UTC)
+X-FDA: 84819532224.23.7620438
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0B8E5140005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:49:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kLZ9x0XE;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780037332;
+	s=arc-20220608; t=1780037390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=gygP29OgPJVFAqvv+VuheVl1koHP1+b70A2olM+LHsA=;
-	b=nHbXhlbouAzOy9hvYGmYi5uIk4US/o2GrmV+WK0OMVBNxaDZFdbjZ1ef3oKoC3AcibqW4y
-	GHC8sCu7QVHfwO5DfLlhvKP5HRsePdqYECXqTKHmT1Y6c82mXF3fOyH/2YfiWvejSHqegf
-	tIymxtFFwgXGsSDgcJoYKql97oy9Vuk=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6brmnY3liayu5xTfblnfxHdDW47PpxGEv/wHEZc/oBU=;
+	b=0/uyYMx7mO1Km6upIqTuRJpU9FUDcIOs1HTVD1kLv7ZMjKaKY1uGQd6Pc885vdFGRzBQ+0
+	h+I7z5bS/oQbw9VwAXfpfnMqPTiDthxuOnc8Xop9rL5IjXRemQEyiBrOD/KGGPRzFDNIum
+	tr8cubEkxjVHF5Sct8Nq2kVydw2PHBY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=La1pc6j7;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kLZ9x0XE;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780037332; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780037390; a=rsa-sha256;
 	cv=none;
-	b=49AFwvohKSYAMqjMh8tIfGR5JqiSq9zKmMMiTwnvh3JljuH0DMSJD66CwzIRl+1Pd2NZ38
-	6+LdV2RgDw/0Da70td19TIYxMnqJTdj+J0ojVlqEWV5milDow47wjQmCgtktDzFbxe/VqQ
-	hh+CCuQESh4YS9EK9qRG+S5JcwH7gYw=
+	b=5rZiHY385ntVh6KM7M+KnynfJyXXndSPcSCJNxIdqk9ZtQSJGcb2rA5udnypxCTAlBa/Az
+	bePphWg0wJIiZv6pKr2lrUAXnkYkC/QyIKS6kUpEDBnkZdKQNGhq0Jq5xAfpIYTc6HZnGk
+	TZz/CC+jMwYUkJKPsBEg9L7D9/Ua6dA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780037332; x=1811573332;
-  h=date:from:to:cc:subject:message-id;
-  bh=QCcYSlDs2edHMkTkgzHoNlccYhjpsFhCqp7gDvxMZAw=;
-  b=La1pc6j7mlL8mwGNhmG/TwjTtiylDBqkTtj6x890NyG/kV2BX0dBKMuh
-   TrUlNkmSSFRis6mWy9HyJRV48iJTb6iKgix1VkDNY73wizIIlmWnCTLsP
-   BeqA8n3RgpF/9FVvYRoanYBnclZtRRW3tbHcWomjlVu2X487T1P7HDMMF
-   Tz0K0DvGJUopBuIjH2Zi0kXSqcptrgVfRRL8vBj0cp4awDZuPRAUSl49e
-   SQR+bV+NI7pMCqdDhcUKI11q04FlpxmcKjJ5BGqCQH1P+CU9vAqVfiGkY
-   1zjwxVTQSHNYE5eLTbJ9tZx+vdKrMsQLk3KUMNN3+6CIls0LL/dCUQgZ8
+  t=1780037390; x=1811573390;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4xx0DbleGfoyvUuQjW3FtKSISI+UIEl20NwmXWATzKo=;
+  b=kLZ9x0XEiKSU2xolx562X8mh1j1obXCdILxQm2TSmz6JBhS1guOP1hR7
+   9sJ4dTl7sYZbwBa9hJyzzqaKU6+pOS7PvZ5HZBu9yK3nuKc8lM88FSHeP
+   R4/C18uN+ubTZ8j0FP2i4zoaz14PQh0KYHmfzErSUoRAsRvVMP8JUl8eJ
+   n5lEWOYHRMGYH5ltiQqW/TeUkZnwb95NL8UNFEWHTIs3rT2q395KnT0fK
+   otTd2heX/OucWDva0GmRYywWlki6L26uSrVR4/1FSD1FabkYKP3Tb94CL
+   oCg8mnkAWn5RNasQ6uN72+9sVcczalGRQV2z8HbOdEDy0XRpK/7H0yfLb
    A==;
-X-CSE-ConnectionGUID: u/23kaPUT1WGFFAuifv0ZQ==
-X-CSE-MsgGUID: LMsbdFPVTjCveU/JIp9ViQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="84511728"
+X-CSE-ConnectionGUID: E2xZb7VTTpqMJhThXfy4FA==
+X-CSE-MsgGUID: lVDbfQh9TiCR35Fr/35MAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80857838"
 X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
-   d="scan'208";a="84511728"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 23:48:50 -0700
-X-CSE-ConnectionGUID: l+MX/Lq1QZ2yKqNjfMTvfQ==
-X-CSE-MsgGUID: utlMrY4/QJyJJQH7e33U1g==
+   d="scan'208";a="80857838"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 23:49:49 -0700
+X-CSE-ConnectionGUID: 5ftVuP7NR5aF2glJOos2Bg==
+X-CSE-MsgGUID: w0iBaxAxSIeYrez9/ZMeqw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
-   d="scan'208";a="236415580"
+   d="scan'208";a="238373530"
 Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 28 May 2026 23:48:47 -0700
+  by fmviesa006.fm.intel.com with ESMTP; 28 May 2026 23:49:47 -0700
 Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1wSr1Q-000000006rO-1JFF;
-	Fri, 29 May 2026 06:48:44 +0000
-Date: Fri, 29 May 2026 14:48:19 +0800
+	id 1wSr2O-000000006rS-1Rn7;
+	Fri, 29 May 2026 06:49:44 +0000
+Date: Fri, 29 May 2026 14:48:52 +0800
 From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- cgroups@vger.kernel.org, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD REGRESSION
- f7af91adc230aa99e23330ecf85bc9badd9780ad
-Message-ID: <202605291459.sRvqvCtT-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+To: liuqiqi@kylinos.cn, linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	akpm@linux-foundation.org, ying.huang@linux.alibaba.com,
+	Qiqi Liu <liuqiqi@kylinos.cn>
+Subject: Re: [PATCH 1/1] mm/memory-tier: add node_tier_id as stable tier
+ identifier
+Message-ID: <202605291449.2jXZbqUJ-lkp@intel.com>
+References: <20260528134212.240492-2-liuqiqi@kylinos.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260528134212.240492-2-liuqiqi@kylinos.cn>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5BEB320007
-X-Stat-Signature: 3bcy31mna7gcmqijacn499jzpa1orumw
-X-HE-Tag: 1780037331-328020
-X-HE-Meta: U2FsdGVkX19w083euRXU3WwtdrLDkuwH/OTC9dabD+t7v6v8tux4HaREUKsnal+HL2kE/IbQOJjoCPzxg07hXYcR/GXdN8u8CySgXjAu/7Dathen4uxHHCJR2aie61l21r2/EoBeHiO8bFGvZYRYQYENh2Cdjgof2/4i2dwzh8ohkz4kOhGLiDBfgl9cGx62wDowEo8nu/1pHLbOhqAKGklohPc+n4LIrGCmnB9nnCv5LuIt20UXhJAK6dCOpPmycHzj2sQK/IXz8Z0f0RIa6KwtSmeOqlxcWxA8F6rCgYtbiM2cDErYBUXS9b/eqa3pJEu4kue6DSmbRpuVYXKcXkBPZVznzqeKIXR5qcOdiV9VAiaM/MizUbbyBfWj0QTsoHld3jgROlB1e3/hZ/xd86NeTkvsjL93NBzMwn2NBTceMcIHlUVjZQ0XSA3VB4sgmdFP3PPgdVKjjbCCZAoiz9/+JDoQCQBuF0iD9cT1dyquHzPmDvXYPPXvyuIdmlrnJ5AvZIzwGgTJNbPK+0++fPqQozA7YKGnDk6b0MYv77A3PmmPc7kd3y1yctVWnkl4z8vjaqBfEkstrXB3YA9+rHqOJBKgXNqjuhp19n86uXVLCcEt5tyzWRff9ByhDcrG/XimD0dVqqAGlus7Kg0k1ynDUBurjgEURvLrrA0E6WoQxww/fYI6yhkrMommp14PWx8ICao/nFJBG+xtnqDmlXYYNsdDcHWovnNv08SqdqAqbZnjaYH45+fij/tSGdI9MJvSsOI+vDBykk2o0R7sZAWDCwVz5CdpVJ9VEP+4euvE/gw+lGbHGnGnh7IBiSO2PnYZN5JFZknSy2gRPxdr/k+qnXnxPNC7VYnXXDCYr1N0q4LTLjuX1l3/porqkVoXhshC9nkw7TiWbCrS9uqTvnyQPn2hMQm9s3k88Z2mFeIVVXABYW9qX9O8SUgtdfH7fI4l9+7bmuaE1Z1FEIj
- 5wDRgiG+
- XNxRCpTsFFLAOxr+piWgBgZO2BG0bjO6PPSz2fuyxSpKxP1er/fR9XTT3xfmqVC+pHbtCBQB/Gj7ezAHfeSsN9IXhBh3ENERDXTiKHMPLyILPQnClUIchbiDu56lIN8SHcHco1WX18I+wAFHGTRFv4gwx72btKoQNZXqM5vJiAwQnleRiXgheDfZoHw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0B8E5140005
+X-Stat-Signature: gsghmhru39nbwdf1yekr65wbj6s1d43r
+X-HE-Tag: 1780037389-884264
+X-HE-Meta: U2FsdGVkX1/LaIshGdBm+cCB+bueVcQ2PEQI4eyl5olAWOW5tpgEI6y9gFWU4YP1P3UW5KgKWbTnkdsnxQAjxdVyA2oDjAW3umaOae8qC2mNYi8CQXqOpGSdfDxh6Zg8BKt3QbLFcwoUZ4RSHnPJE1a0I42w9EFdL6+1rnQhDZpa2/tZbh3VcdSz/lCLSBcm/FLQK5cdAQKRUX/HwzJ2vO+SrrKWK2oLEKa/8BMtGN0t6oKevM0txX2ujuq+Q6fBFdSAgFC0xLeEz3uEVv9NxtJT1gLeW7vJjxV5agntipy6ztIEGtxko/q5nLgBDAWBfvjgPrVkNAAB/mwG79OhEZEjPbXdypLpRdAB3/BQFEMfql9xUfgzXaTENDyoLS88gV79bN7J5TFZMSWlKPxjl+WITgY35Y4byjbrzZMbZR2QqJqImeQySXvreuP9bjcIgWETKAdsM1oh0qz7LEdImS3tixlrxQT9Ui5VDopZgoKTe9uhSNyF9nnweUoNlX8r3rz5Zwe5FtqnQuoRwJrFEFAxIKPeuLTTfnpTqNOPIbzxFczG9Fb9XTY3iAq00CslGt+RQltTJ11Ll+3r40szT2xQBTiYsWwlmTU+J4IOwdx+7Jtpcn5LN1St/REx1Xcvbo9uvMctwzo55O0bjFgD5mYk/jsQsfeJ59/cWqF/fxiQfh0dO+cSflp6EMVk5pn0ycjzXGiIVBiT8YQghkMfOHFMipJMDdiZwXPkU/pngKlYUczj1a/q6gAMkUwVoqrIdqTISSsNm1icSajP4NdYfrsOU0gOydI+OVH8JOSLUca2Cwng9eamb7aLUarVStCDhXaDm+R/WA9utS7nyhbTvsZ7bp5DlB5+OrhZZf88jUB0NjJ4u7Tb5MZp+UaCkizueqgLCwZTuJ2LdKM31ZVxXlJHaW2Sfw9+nMIyMeKTlN4yoVwVL9EsFSHnYkRqPEuDg7vLUCMC4X17wtvmscw
+ MEmFJYgP
+ Aen45Gpipt9oWVlrOQ9kG2JCfCbOnIBqtFuL00fB93wYujYnXJQJD09/nx9P0EAxCsm9LBPnOepi83/aEJqSpDqpD78s9kqEZuKl2WHan0VXmbGPzJbJe9A7AYo3iIm76cqFO0wnO69uSucJiZ9Txq99SkXO9SEdIgc7GLXaWr3iNKZO6MsXaEpCT59MgWzBkeliHgm79u+7cyCa0f8CpoSCIszSIqdB/B0g7pAcWZXiUITxo4c7OQtjmaGYEESf3BHkKx6QScxDEn8JXksFGRX77Hx+SitxdeCwxhogsdNoRUiFD9BFXPp4GlO4n0Zh99axc5W5HnJpHkzi93pt/JwIusoNuuT7H6f+Qu+iRNGqtJ8ui+Cc2hFlqeqR+7kK8MvkVeLwIsVsH4/I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,252 +108,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: f7af91adc230aa99e23330ecf85bc9badd9780ad  Add linux-next specific files for 20260528
+Hi,
 
-Error/Warning (recently discovered and may have been fixed):
+kernel test robot noticed the following build errors:
 
-    https://lore.kernel.org/oe-kbuild-all/202605290432.Pyzd4kuW-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202605291041.seNEWvLQ-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202605291334.abNeADbG-lkp@intel.com
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on rppt-memblock/for-next rppt-memblock/fixes linus/master v7.1-rc5 next-20260528]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-    drivers/net/arcnet/com20020-pci.c:225:52: warning: 'snprintf' output may be truncated before the last format character [-Wformat-truncation=]
-    mm/memcontrol-v1.c:651:31: error: implicit declaration of function 'swp_cluster_offset' [-Wimplicit-function-declaration]
-    samples/rust/rust_driver_auxiliary.o: warning: objtool: _RINvXs5_NtNtCshc5sK6KjdJJ_6kernel5alloc4kboxINtB6_3BoxINtNtNtCsbsbRiabPlh9_4core3mem12maybe_uninit11MaybeUninitINtNtBa_9auxiliary16RegistrationDataNtCseULRbgTYaTO_21rust_driver_auxiliary4DataEENtNtB8_9allocator7KmallocEINtCs57PXBekmiam_8pin_init12InPlaceWriteB1L_E14write_pin_initNtNtBa_5error5ErrorINtNtB3y_10___internal11InitClosureNCINvYIBH_B1L_B35_EINtNtBa_4init11InPlaceInitB1L_E8pin_initB4u_IB4O_NCINvMsc_B1O_INtB1O_12RegistrationB2l_E3newNtNtBX_7convert10InfallibleB2l_Es_0B1L_B4u_EE0B1L_B4u_EEB2n_: symbol name too long, can't create __pfx_ symbol
+url:    https://github.com/intel-lab-lkp/linux/commits/liuqiqi-kylinos-cn/mm-memory-tier-add-node_tier_id-as-stable-tier-identifier/20260528-214338
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260528134212.240492-2-liuqiqi%40kylinos.cn
+patch subject: [PATCH 1/1] mm/memory-tier: add node_tier_id as stable tier identifier
+config: um-allnoconfig (https://download.01.org/0day-ci/archive/20260529/202605291449.2jXZbqUJ-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9409c07de6378507397ecdb6f05f628f58110112)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260529/202605291449.2jXZbqUJ-lkp@intel.com/reproduce)
 
-Unverified Error/Warning (likely false positive, kindly check if interested):
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605291449.2jXZbqUJ-lkp@intel.com/
 
-    block/partitions/ldm.c:1487:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/base/bus.c:801:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/dpll/dpll_core.c:238:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/hwtracing/intel_th/msu.c:1277:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/infiniband/hw/mthca/mthca_memfree.c:220:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/media/common/siano/smscoreapi.c:744:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/misc/eeprom/at25.c:466:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/pinctrl/core.c:2168:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/regulator/core.c:6262:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/staging/greybus/uart.c:917:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/usb/core/../misc/onboard_usb_dev_pdevs.c:124:1: internal compiler error: in final_scan_insn_1, at final.c:3073
-    drivers/usb/dwc3/gadget.c:3474:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    fs/jfs/jfs_logmgr.c:1417:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    fs/notify/fanotify/fanotify_user.c:1746:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    fs/ntfs/super.c:2537:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    net/rxrpc/sendmsg.c:497:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+All errors (new ones prefixed by >>):
 
-Error/Warning ids grouped by kconfigs:
+>> mm/mm_init.c:1713:9: error: no member named 'node_tier_id' in 'struct pglist_data'
+    1713 |         pgdat->node_tier_id = -1;
+         |         ~~~~~  ^
+   1 error generated.
 
-recent_errors
-|-- alpha-randconfig-r072-20260529
-|   `-- drivers-net-arcnet-com20020-pci.c:warning:snprintf-output-may-be-truncated-before-the-last-format-character
-|-- csky-randconfig-001-20260529
-|   |-- drivers-base-bus.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-misc-eeprom-at25.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-pinctrl-core.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-regulator-core.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-staging-greybus-uart.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-usb-dwc3-gadget.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- fs-jfs-jfs_logmgr.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   `-- fs-notify-fanotify-fanotify_user.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|-- csky-randconfig-002
-|   `-- drivers-usb-core-..-misc-onboard_usb_dev_pdevs.c:internal-compiler-error:in-final_scan_insn_1-at-final.c
-|-- csky-randconfig-r112-20260528
-|   |-- block-partitions-ldm.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-dpll-dpll_core.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-media-common-siano-smscoreapi.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   `-- fs-ntfs-super.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|-- csky-randconfig-r122-20260528
-|   |-- drivers-hwtracing-intel_th-msu.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-infiniband-hw-mthca-mthca_memfree.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   `-- net-rxrpc-sendmsg.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|-- sh-allyesconfig
-|   `-- mm-memcontrol-v1.c:error:implicit-declaration-of-function-swp_cluster_offset
-`-- x86_64-randconfig-004-20260529
-    `-- samples-rust-rust_driver_auxiliary.o:warning:objtool:_RINvXs5_NtNtCshc5sK6KjdJJ_6kernel5alloc4kboxINtB6_3BoxINtNtNtCsbsbRiabPlh9_4core3mem12maybe_uninit11MaybeUninitINtNtBa_9auxiliary16RegistrationDat
 
-elapsed time: 753m
+vim +1713 mm/mm_init.c
 
-configs tested: 178
-configs skipped: 2
-
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    gcc-15.2.0
-arc                                 defconfig    gcc-15.2.0
-arc                   randconfig-001-20260529    gcc-14.3.0
-arc                   randconfig-002-20260529    gcc-10.5.0
-arm                               allnoconfig    clang-23
-arm                              allyesconfig    gcc-15.2.0
-arm                                 defconfig    clang-23
-arm                                 defconfig    gcc-15.2.0
-arm                   randconfig-001-20260529    gcc-14.3.0
-arm                   randconfig-002-20260529    gcc-8.5.0
-arm                   randconfig-003-20260529    gcc-13.4.0
-arm                   randconfig-004-20260529    clang-23
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260529    gcc-8.5.0
-arm64                 randconfig-002-20260529    clang-23
-arm64                 randconfig-003-20260529    clang-23
-arm64                 randconfig-004-20260529    gcc-15.2.0
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-csky                  randconfig-001-20260529    gcc-15.2.0
-csky                  randconfig-002-20260529    gcc-15.2.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-23
-hexagon                             defconfig    clang-23
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260529    clang-23
-hexagon               randconfig-002-20260529    clang-23
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260529    gcc-12
-i386        buildonly-randconfig-002-20260529    clang-20
-i386        buildonly-randconfig-003-20260529    gcc-12
-i386        buildonly-randconfig-004-20260529    gcc-14
-i386        buildonly-randconfig-005-20260529    gcc-14
-i386        buildonly-randconfig-006-20260529    gcc-14
-i386                                defconfig    clang-20
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260529    gcc-14
-i386                  randconfig-002-20260529    gcc-12
-i386                  randconfig-003-20260529    clang-20
-i386                  randconfig-004-20260529    clang-20
-i386                  randconfig-005-20260529    gcc-14
-i386                  randconfig-006-20260529    clang-20
-i386                  randconfig-007-20260529    gcc-12
-i386                  randconfig-011-20260529    clang-20
-i386                  randconfig-012-20260529    clang-20
-i386                  randconfig-013-20260529    clang-20
-i386                  randconfig-014-20260529    clang-20
-i386                  randconfig-015-20260529    gcc-14
-i386                  randconfig-016-20260529    clang-20
-i386                  randconfig-017-20260529    gcc-13
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-23
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260529    gcc-15.2.0
-loongarch             randconfig-002-20260529    gcc-15.2.0
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    gcc-15.2.0
-m68k                                defconfig    gcc-15.2.0
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    gcc-15.2.0
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260529    gcc-8.5.0
-nios2                 randconfig-002-20260529    gcc-8.5.0
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-openrisc                  or1klitex_defconfig    gcc-15.2.0
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260529    gcc-8.5.0
-parisc                randconfig-002-20260529    gcc-8.5.0
-parisc64                            defconfig    gcc-15.2.0
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc               randconfig-001-20260529    gcc-12.5.0
-powerpc               randconfig-002-20260529    clang-19
-powerpc64             randconfig-001-20260529    gcc-15.2.0
-powerpc64             randconfig-002-20260529    clang-19
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-23
-riscv                               defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260529    gcc-8.5.0
-riscv                 randconfig-002-20260529    gcc-9.5.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    clang-23
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260529    gcc-8.5.0
-s390                  randconfig-002-20260529    clang-23
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    gcc-15.2.0
-sh                                  defconfig    gcc-15.2.0
-sh                    randconfig-001-20260529    gcc-15.2.0
-sh                    randconfig-002-20260529    gcc-15.2.0
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260529    gcc-8.5.0
-sparc                 randconfig-002-20260529    gcc-15.2.0
-sparc64                          allmodconfig    clang-23
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20260529    gcc-11.5.0
-sparc64               randconfig-002-20260529    gcc-8.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-14
-um                                  defconfig    clang-23
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260529    gcc-14
-um                    randconfig-002-20260529    gcc-14
-um                           x86_64_defconfig    clang-23
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260529    gcc-14
-x86_64      buildonly-randconfig-002-20260529    gcc-14
-x86_64      buildonly-randconfig-003-20260529    gcc-14
-x86_64      buildonly-randconfig-004-20260529    clang-20
-x86_64      buildonly-randconfig-004-20260529    gcc-14
-x86_64      buildonly-randconfig-005-20260529    clang-20
-x86_64      buildonly-randconfig-005-20260529    gcc-14
-x86_64      buildonly-randconfig-006-20260529    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260529    gcc-14
-x86_64                randconfig-002-20260529    clang-20
-x86_64                randconfig-003-20260529    gcc-14
-x86_64                randconfig-004-20260529    clang-20
-x86_64                randconfig-005-20260529    clang-20
-x86_64                randconfig-006-20260529    clang-20
-x86_64                randconfig-011-20260529    gcc-14
-x86_64                randconfig-012-20260529    gcc-14
-x86_64                randconfig-013-20260529    clang-20
-x86_64                randconfig-014-20260529    clang-20
-x86_64                randconfig-015-20260529    gcc-14
-x86_64                randconfig-016-20260529    clang-20
-x86_64                randconfig-071-20260529    gcc-14
-x86_64                randconfig-072-20260529    clang-20
-x86_64                randconfig-073-20260529    clang-20
-x86_64                randconfig-074-20260529    gcc-14
-x86_64                randconfig-075-20260529    gcc-14
-x86_64                randconfig-076-20260529    gcc-14
-x86_64                               rhel-9.4    clang-20
-x86_64                               rhel-9.4    gcc-14
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                          rhel-9.4-func    gcc-14
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                    rhel-9.4-kselftests    gcc-14
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    gcc-15.2.0
-xtensa                randconfig-001-20260529    gcc-11.5.0
-xtensa                randconfig-002-20260529    gcc-8.5.0
+  1698	
+  1699	static void __init free_area_init_node(int nid)
+  1700	{
+  1701		pg_data_t *pgdat = NODE_DATA(nid);
+  1702		unsigned long start_pfn = 0;
+  1703		unsigned long end_pfn = 0;
+  1704	
+  1705		/* pg_data_t should be reset to zero when it's allocated */
+  1706		WARN_ON(pgdat->nr_zones || pgdat->kswapd_highest_zoneidx);
+  1707	
+  1708		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
+  1709	
+  1710		pgdat->node_id = nid;
+  1711		pgdat->node_start_pfn = start_pfn;
+  1712		pgdat->per_cpu_nodestats = NULL;
+> 1713		pgdat->node_tier_id = -1;
+  1714	
+  1715		if (start_pfn != end_pfn) {
+  1716			pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
+  1717				(u64)start_pfn << PAGE_SHIFT,
+  1718				end_pfn ? ((u64)end_pfn << PAGE_SHIFT) - 1 : 0);
+  1719	
+  1720			calculate_node_totalpages(pgdat, start_pfn, end_pfn);
+  1721		} else {
+  1722			pr_info("Initmem setup node %d as memoryless\n", nid);
+  1723	
+  1724			reset_memoryless_node_totalpages(pgdat);
+  1725		}
+  1726	
+  1727		alloc_node_mem_map(pgdat);
+  1728		pgdat_set_deferred_range(pgdat);
+  1729	
+  1730		free_area_init_core(pgdat);
+  1731		lru_gen_init_pgdat(pgdat);
+  1732	}
+  1733	
 
 --
 0-DAY CI Kernel Test Service
