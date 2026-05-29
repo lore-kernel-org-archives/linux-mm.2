@@ -4,136 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13AE1CD6E49
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 20:03:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5334CD6E49
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 20:24:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4902C6B00A7; Fri, 29 May 2026 16:03:15 -0400 (EDT)
+	id BFBB66B009F; Fri, 29 May 2026 16:24:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43A2E6B00A9; Fri, 29 May 2026 16:03:15 -0400 (EDT)
+	id BAD396B00A0; Fri, 29 May 2026 16:24:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 328C56B00AA; Fri, 29 May 2026 16:03:15 -0400 (EDT)
+	id AC27A6B00A1; Fri, 29 May 2026 16:24:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 21D876B00A7
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 16:03:15 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA4E68CE25
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 20:03:14 +0000 (UTC)
-X-FDA: 84821531508.05.D87B8DB
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D1B9280003
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 20:03:12 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mEAkcaM2;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B1E46B009F
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 16:24:44 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3DBECC15E6
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 20:24:44 +0000 (UTC)
+X-FDA: 84821585688.08.A15B668
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 792CCA0012
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 20:24:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JKO3uwNW;
+	spf=pass (imf25.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780084992;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780086282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8vV7V3CMoBNjkJhOUfmZqE5k0G0M3MxFKAVMCFWrXI0=;
-	b=mrlwvKJg5WnrTvDe3nHW+k/C4VkEW7eMz7TCArCL03gr2bTpK3sWq2Mm5jghhoz1Cb55GJ
-	AFDQIQ06mzGZ77RKY8KH0oXueFJ0IuqMQKs4xWXuVzZjt/4EZLu95Do8W6MsABFIs9aR2l
-	1qevhdfBHNQ2o4o4MoOH3qdkYB1qM3Y=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mEAkcaM2;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=mTfhntOxmFkuBVIN+P1OGqxgUDuhd3I9XKbqS4UoT2I=;
+	b=UXxAxeTOpnvOt3eCpNqDKE1HRUuaCtnNy/+v+KIQH7lKRvE4RUtyAFJgZUshL1UxKniXay
+	oYma7q9Un+F5FiYuvG8K216shdxy0TVPz7IKaiyxFjuXkLUq+ESvJf6OZC7UEpwt58RNTW
+	/jty8xGLDw5ACUikRBSgm8hdjS8bYXM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JKO3uwNW;
+	spf=pass (imf25.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780084992; a=rsa-sha256;
-	cv=pass;
-	b=e1Cnj9OHPgZp0PCw1FM+MdfzKtoYvAP69fzFsIvYyr0ERMpT3eIgNWbO9CLozzcGWyfLXI
-	YJexSiQBOWiFTv+5mO3Cw52XA0oI44gkCDvZi4HbQuGScJgqpZlx5BFIiqN/HPG9FKq2DY
-	MPFrO3067KcVAnYrBn81gF5vvBV2V9g=
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-45ee1a56328so2479370f8f.3
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 13:03:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780084991; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Plm5QyOGbruK7b6Kz6XCkGrl/Q7Twqz1B7TgDUe+u1z2HL0mKt4+X+h3UfsYdrFUKv
-         McCgZPP1/eEgSDadjKuBFOi/Lv3dDJW5zQqMGZ42HYTAoG1wqaUU4SYh3UICIiRwL4wH
-         09P7FmupzgOpWFCABI7LE01qubfGqsk/u5RfWZjLasGe7ty6KRUg9AWCSs342BmWIE9Z
-         CH6OLaOabaMA7ie0x11saWRljXdVbJR/ZsT0kDiOwkhaeGV+IdrSTXugyGMl0twBRwB1
-         CENwqsdzaM+T0hUiSeS3qTGoWj90mveRvogWL+sTrFQOWngwtu2632AzcyLNsl8wWkMB
-         zcww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8vV7V3CMoBNjkJhOUfmZqE5k0G0M3MxFKAVMCFWrXI0=;
-        fh=t+0WUGun87AmQHFmDMbH5svJCGvlQvVQQY1z6n7B40w=;
-        b=VxtZysYi10WiTOBfHNSAmL929gQW9ht6O8dPwUAajFLEXfnDhYaKybjDLwmLlheH3S
-         9dR8FIy1mHeNheh304lLZ4zR1oDFTsDo/HX7XyEHxrJpOU/uschsNy49bnavfVCMcPLN
-         u0+qwyyTqv9+sqdYSdl589Qx5DXKDba2Zq7PKpt65i+5OA3/j6C5o6lkXM716YkSVuD/
-         vMbKnLDJTHn1lx4y4KacrxSqbSdduTz26uE2EF7ZxND9DQnYUIroc/NBRQ3lCpn3vxWh
-         XBLIuQ96O5Iblnb01I2hdNFPgeGqQ6aAu3UpqOrDZQ13tPADjKhrVDf+o9l86Mc0KhEm
-         +0Kw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780086282; a=rsa-sha256;
+	cv=none;
+	b=w0jGyU7U+QZoBD2cBc+iH9C9CyLTyFSlN0v2a7xbMUpoZih0GALCawVl5mnpUUZBMEOcdx
+	Il8qJWXIdwq+ibOeAq2CVy2ItXf4wIf8Im9xThtUxdHIXTYWGuUyNA1dDCIQF/J6aFq8C9
+	ueU4JiVJ8U3vtamqd4AWbqGmZrphC/Y=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2bd9c3b550aso98110435ad.2
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 13:24:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780084991; x=1780689791; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8vV7V3CMoBNjkJhOUfmZqE5k0G0M3MxFKAVMCFWrXI0=;
-        b=mEAkcaM22oKi9NMXpfz1xl7vEw8ohK3qbldSMEIv0puUWAbMCzRU8iLQzp6/Yd7o3Y
-         8CccHKIIwgkuY8g+JWd9V2Ycm4gjFMoEnuXEJRQOG5gHr0FjR8U5XoBNV+Ply3RM0Apv
-         uKXfbLJvCD+nRnseNvyn27i3zB2LABxt7iAO3529VJonGA2ZEaOOSdwJ7FGE+HXqSqvs
-         4mPoqp53K//Yxk0/W1lAMTwfrpsVtJJNJk2CVmp4PZcycvcEsVh3K4JLkWTBRnXCrzAR
-         ZGiJCidQg5wwOni2Wf8SrjMSMy/VvDmIGgEQc3OuQZlCgRox9+nBkuEsQc0KSo/pn+lR
-         NKKA==
+        d=gmail.com; s=20251104; t=1780086281; x=1780691081; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mTfhntOxmFkuBVIN+P1OGqxgUDuhd3I9XKbqS4UoT2I=;
+        b=JKO3uwNWT+rLKZbyGSga9AgQl5YlZC/x8T+ASe7wALlIBLfDe2RUquCCSV33jpaf0i
+         K5sS/uGzxpyjKdwFJl5DWfBrikBpYWqO2EsQ7A5qlBwSnzfleibjCfy/gehAECyM6qua
+         KwBUsW8vN6JlO8uaD71+62/VRjVhOtDx4P26DEGF3gUFAZtz6l/BIS51VJT2oYVgGe/T
+         9S0Cnv8aEWdnTBRewuuxlz9J3oUTnEML6OQ9TciCfGkbA4M6e/x0IWAmsaJPhjBOxire
+         BX/C3aaHJfj/hoZIndl/0vYVFJrrpor4dDAUl0ilxH6Tx3/6SEnC2LzpSzpw6vqh+5J3
+         ecfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780084991; x=1780689791;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8vV7V3CMoBNjkJhOUfmZqE5k0G0M3MxFKAVMCFWrXI0=;
-        b=XViAdaNT4MBXETtkMyNmDSNAUkxVRIlQA8s54ih+H29aP6m3M41ubXtwUCk24gXMzn
-         lUrSjKGGgzvUUM+7jUhMPBL+6ch2D5HQyiEEhuE0w0p4lWy0/A2EAsrx6NH7AJQiOc9v
-         JWYpFpT7AYNH+TA6JCqBa/Gazm0kE7PEjrfsVJRu7FDg8T5ZzpkI98jh4SoRp3REWn1t
-         jhJaAiPRUUpD9q6/EscFZBMZ3zHbLKjAQM517eOV+dsHWNs64iYlBk2i7u3mxCnp+F1X
-         C43BWgKtbtvUmtcmGfNOSkEzfeg1+jrCRMjsxYnitbXu1Xr83U8mCI++I5BWdijb62Ha
-         3cZw==
-X-Forwarded-Encrypted: i=1; AFNElJ/zxDJShqaSMeORDWf8B6DrsDj55RpYd7p81YI86zIvEvdf+L7cKdVsPBF6gn5uxlHotuP4gFkkug==@kvack.org
-X-Gm-Message-State: AOJu0YzLFH2DIlFe9I4OBUwUzezkIh5tpchCcZa7agNkYT8Z/grhq8T2
-	t6RjqRvQsSUnBrCJ/9irwmk6KwMuphpYJnjo/rZK7UHNABkm4LTH1gRdsapoWx7yFZ8x91EM14P
-	+Coyb85iArQvR/SVpD918dV96ecOeGVE=
-X-Gm-Gg: Acq92OEYgS1kWSoghjIKBHZsWXImu+DLOYjqjIigMCsO+Ap8yz16BCUB4NjoVWuLRJ0
-	iXmZF060nA7nZDC64VSsthyFriR3SmvaegnfmIjRTHOEuPP4yl9HeG5cxEJYoOZnkxHf99EknKV
-	ToKhhj/dK+CAdwzHvt0dCVAAjBM4MD0x/bWcvA/vvpIrhNUhz0SbkggNkK5Vg4G+kNvB8uWjn+l
-	JniB6buEv1313awHDoCyqdAb8gDxDoHQ9lXp9L9I3MVwRBg5D2jeLv6/iusm8rVEjg+7MAOsYtO
-	lPTMyNf2h8dygNo663Rz3RB7FkZjd+VSxe6lTERhFIzk2zR5Kg==
-X-Received: by 2002:adf:e510:0:b0:45e:ef4a:819a with SMTP id
- ffacd0b85a97d-45ef6b1fb03mr1966464f8f.17.1780084991071; Fri, 29 May 2026
- 13:03:11 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780086281; x=1780691081;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mTfhntOxmFkuBVIN+P1OGqxgUDuhd3I9XKbqS4UoT2I=;
+        b=KO3EQFZ1MjMqed1m4G77/J9n8cOdQh/hXZoOUOz4jgljoSmchYBrz0kI+lrdDnvTIL
+         OPI/FOC34k9GqRkyjbVaMhwu44VNZtQRdGuYq5IpgAro0edbuwUwkYJWvflI6RUFOfGq
+         I+lzmckL0sOR83Sugxmb3U396Q+U7tWVCkYCu8Cnduh5KossA8M1gzz+KxtjMPKo8fQE
+         O22j85vKykBjsZrkkH92+htQ4Bs6QzFTgwtWyZuMPgDRvjcsA96yD4KfwC7/x3oYEqWF
+         BxizQRnQ08Mc37Z24zI9O1DGqA/o3lyEFQGEhKugeBrORoSnm9rdi8p4gBIORhvtT7JS
+         w3PQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+Mg9+S2EUy0E3KePnfQXfXfXXRcRrDhlMnTe2JlDk18WOCCq8kof1Zy62+t8Ff/vwZUOX+vt2KEQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywmm6Iy/2p0U01GAA9gwnixiL/RM3z9YLQHcmBOEyIP/UICfmjQ
+	Jn5cRSvSrtCS33GHqc/61sxzpiYwBiVufytNuUMAWJP5nHjvd2CWsrd9
+X-Gm-Gg: Acq92OHQB/V/1Ss9iF8EA2FkPsg9jWsD+ZUTAMRDWo4rF1C2A/LZnsJXZSUZ3vDpJOx
+	JJ3JphRm+GpF5sarNCC1T2YFb6pN2r3QB+xQqWueRgzfhEjOBaglCjeZa9oVPK5x2jie2o5uKVy
+	+0Z9idnM2XPnpsetuzSwdKuDOgGAJBSBNFy+KRWdLiy3/YZAgsqH/hj0XrpkMSaMrjAwTfsPNeU
+	yTGcmbX3XNaoPC7HznwXgBz4nwzHti8jZLntvJn42bjwBRUSRqyqtdS2zRvCrbPd1ukty2uxH77
+	mD/r/Dk30vJU7ojCtU9eLcaujwTGZv2jVeQOIvkyxFizJSuLFBR1QAzY01VmtBVJMNJ4HVSdMHS
+	m6+SCkYV1mLnrhtJ29MvgnzrI2oUnAUZQObC8tJu0ODQDyoV+RB/qvJpcSg/24DcPt+bfV+yrGy
+	jJrrhy6YmFi6iOx6eonF6EwTr7fzxp4EEUsnRZM9ehggIVhac8d+6Y23ZKzsQS+cCSb8rlO9UC/
+	poBCuku2iY+rLlEycS1zInckTPFGTPv7MkTzWr3GLKs141x6M4ZHOJGUIrgMP4P8iVY4gOG
+X-Received: by 2002:a17:902:e74d:b0:2bf:28e3:a5e7 with SMTP id d9443c01a7336-2bf36793522mr15387015ad.6.1780086281172;
+        Fri, 29 May 2026 13:24:41 -0700 (PDT)
+Received: from localhost.localdomain ([2601:600:837f:c470:1879:8422:922b:e5d3])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239e6fe9sm27740905ad.2.2026.05.29.13.24.39
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 29 May 2026 13:24:40 -0700 (PDT)
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To: bpf@vger.kernel.org
+Cc: daniel@iogearbox.net,
+	andrii@kernel.org,
+	memxor@gmail.com,
+	eddyz87@gmail.com,
+	vbabka@suse.cz,
+	harry.yoo@oracle.com,
+	david@kernel.org,
+	tj@kernel.org,
+	roman.gushchin@linux.dev,
+	peterz@infradead.org,
+	linux-mm@kvack.org
+Subject: [PATCH bpf-next 0/4] bpf,slab: Introduce bpf_arena_alloc() kfuncs
+Date: Fri, 29 May 2026 13:24:33 -0700
+Message-ID: <20260529202438.16408-1-alexei.starovoitov@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-References: <20260526114601.67041-1-jiahao.kernel@gmail.com> <20260526114601.67041-5-jiahao.kernel@gmail.com>
-In-Reply-To: <20260526114601.67041-5-jiahao.kernel@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 29 May 2026 13:02:59 -0700
-X-Gm-Features: AVHnY4IOqjjiOdCG6Ozo0C_CJ8lU_HS1P7B7pgVtIcaK6gtGQOhL7OfGo5YfYKU
-Message-ID: <CAKEwX=Mj8hxSma0DN4zvCgRo3HMs7cbB145+s2=LbTjiKUXh1w@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] selftests/cgroup: Add tests for zswap proactive writeback
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, mhocko@kernel.org, yosry@kernel.org, mkoutny@suse.com, 
-	chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 477ywtaixduehcje4b3ax5wb3nxakyhg
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: e9676xefjkgfxiww7fbxhr4h5tgybogf
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D1B9280003
-X-HE-Tag: 1780084992-403038
-X-HE-Meta: U2FsdGVkX18a+tR64g90zneKBaEJ8b+qJxHOUVzS3m8v6C5D/5BQAoFCwj8qTi/4KPOtj34Pt31Q8QupRaYmY5ETOGlGNbhOIcArewLgS8jYvckBZDK01QqiyvB2sAI8hFwQ8iRbyoOtOMvl/tQCeARiSQUPEjj8Cuvs+g+D+iT6WIU+yuG8YzdhS9LlRwlYS5Zabe5QKovToD56MFfNinmrHC7My9BfsQ0wVW+3Asby133ZzD8r8erXijU0I13FwgcYM7dPed2WZ2B+mraNGBfMXUALx6OR4gTWQjCxSvttNgdF7RaK13DK/3o0hYhCSIQ2KoY20D0my4fntXg8FIsPmQHV0dOqKOb/o1+DNyqZj0tuaaWdK7lqiLiV3Cg8jack5UbhQIC5LXDDHKLRlXOF8nMVNdYEqJ2cxl6kk1VSwI/gMPM1V99+U5vItH41IYA0mPke/bik2Nqf++e7VEIzBwRRTiLACTHYBJnMxvtzBS70IDXd4TfNZoGT/sxCea9urmNoCeyebcPpFrWrmJEDxq+rbQuitO5R6TI/hNnG96xntjqL2tjZIdteLsYLZxuBf0xnJxPNOBoxTIZrLd7wEc9/40xkcNz8GZEyEaBzTLEec0XqNO8LbIU31LYcefr5r57UtypdOz40tNNxizUpParRwB2NTNTqHsUY1KASiQopkSoxFSkuxYMWnGGnzc58oJtFF9mDzNOWvtAnkoro+5mZuCFmw5O93yH7xdg7lKK29Juuqyrke12clrB1+Pwq5aDNpjatKWQMi+3TOFh3BfDPjspYxDiRekMFvkzFPKZrVE+v6qbfoW3tF6iEp6cHdG9aMOCp79v3M78YztV+uHrCYjntQdVYmmQo8j4ouo+ht5GzlnZgP7ACKrL9UZBXoaue6fntaEAlk32zJkZaqhkvDuo5MEiI41TdtAG7YwEHwrFCOTXJbmtv02wkARmrkzYBDkYzysYO7vd
- m9PDoUSI
- AlCVl8hrWTtxUyuwN/Ga2+o6uxJV7Ss4NmKMC6evnK2ljdTkBmx9BK3SuPeW/LinfsvzWwpFHqEjIm4qa8Wcps2yXv09f1AU1FI2N3HOtqJ4scTsy8zWPs9WBmseEkMlIgs7aHnUEEVHT5dVmcRZCZleM+LQP6jBfFF9awGIW+BvlWKINfuEvDjipsskOOQkkCLMzryS1YDQujTcn0XAgMr59wb7DK+NYgSja9ZrXxDoOQO/EPX9CkkPxnZPTqK0zP9QAnF1+EY8ksFITrv3EQ8sOoKTEhoBY27Svu4pCFETVsw5WbOBhSiVXYScRNQZJwEQ7H0tzUTHGPQehU0T3e5uj955kU8156FFTAgmTddgzeYG6rd1NeXOkOOYH7jpkiE1rmPCrNEABKqQZq17gQVmGv7SXH/hklldGw10EB+CLf+5iX7ULM57R07sve3R+mY+jzuJAoaX6dTmu0ORAZKU4tcUzYA/GHEOLR+KJ+c+yRRGk+cmdqXqRU8LPY36kuFGKdYRrYq/ZA7eIQJrVkcUpMM4H+9bRvrQqhGzghrHBWnM=
+X-Rspamd-Queue-Id: 792CCA0012
+X-HE-Tag: 1780086282-323261
+X-HE-Meta: U2FsdGVkX1+7nkDHJS+uZMjWkENvcRMWNvHp2Ou/LH5PAOCwq48luJ3fW7T/jf73WGjxJEM9zEPkvBTrdbyYGW2g9d0vMWHN+tbREeuHaekAqQv9bg36ZuMt60j8aU0O8d/AE9ej/N0/KzDyT3ey0Khp2AQ9vVQ3IIDCfQIpoDPREv3qTQ9M7jb4G+SHPFKb5spQRGUXatsTjxHj9VS6QLGKV40qYya9ce2WHLtPg4oO2iy/CVxk4fHVd7cWZ58RyynGAoo4s6X+IV27NZ/HgVYMqGtpg+0sIPTdJ7gCcf9RaNHotTfyXKmVG15YU7OxbKB2MNHmzbVmBpRLmTWET+qEEZvvKBizHbQvADvyVR4ywFrZLlAlhqVK2kvkZuarsU56Yw1YxtHDQ2PYL7fv6izETpMNlPvADO6SZ5XDDK3m6mSOhyn0dfwpSoOzzDcx4Nxs1NvP5zJIV2npA4skATsdcG5eD2zcOXZKfWgTFQZams9Dho33ySqqWHcT5qHsNWpTzsW2x4iSq5wkXeMstuCNZm8b70QFYA6bBFUMOMvMm+cmlRBydamDEjwQHrXwldOjReIKNhCp8dEhuKGQxKtrko3XK17nOG+Ex9zKUo+CL9OZr3NOfY55Ag8ElXZZ+9bM5wM7E8yxvD7Iw8XRsJqVNlKHYmywDO7lRUCv/gQHQ2vlElZLrU7Vizq1T4wSVcz2iX5p+Do/Ho433T1hfpSh8uXiSSzqKPgfFpqIYSPZ0uc0WwIeCaOW3uqTwHBcXin0v7jfwKzalFyxAM8FARf5gz3Xu2pbnQP1MHgUA3oeL13HkN3p5f1QL15OmXABVPShhEdgbL+EIFygKus+u71ywn3qrzyUTN5WXv6DLsLKHHL2kX87ML9n/UdiOOTMnvJiE9T//WD8/ClfuQYLPBvEN98pLuqXXiApY2nOaTrBcyqrMYWsMDnOwX67Yt1DB/Y4JV56Bg2wjpIUJM0
+ vyRbmy2n
+ OoMSB9xkMfIz4fB6mki2yP8J3x43yQY3mXQv768hS3TmdqTMR6gn7zaCGLG506erH16sg4fqpXAFHyisy/4lUk+n/8k64/Bo7RWbjBNy2DXL643C8flSr9YsRC0l4j2kVhh2svKQsfoD/B2FWa0SvMfEHogORVfqUjCDAQyIyQm+XBMI/hUIB/j3iH22OBhHhyMnALYL4xlsUffslqrhI1REHpSJLCTfE88se9jk+4i46mGuD3q97w8fKF79wBeKXhKZlqX9KLtKOkUXw6ZGfcp9G/qmmzmBXfS4WdPLdOew0YNhyRrSD7QtUGiwqWOhZ5ThnfbrBSiENzfFjRN8kb1lTMNg9R/6J54+CzNgwGsUHKEIzUBNvSFrSgz3oXNlUA9vsHXgCb1EokhfzrxaJBBiMrZFUdgFr3i56QsDt/YafVVx9dv0DlzfYTPFSNv29kPh5ZZuu2Rip9VfYQrnHKa23mS/NsvtI4tEeSxmPhv7DBmJRZEzuSIU8Bd1d9RMzRMNyXKk6/FfWUup9OTJExII+IEbJQ57FP8hA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,23 +124,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 4:46=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> w=
-rote:
->
-> From: Hao Jia <jiahao1@lixiang.com>
->
-> Add test_zswap_proactive_writeback() to cover the new memory.reclaim
-> "zswap_writeback_only" key. The test populates a memory cgroup zswap
-> pool, triggers proactive writeback, and verifies the behavior by
-> observing the change in zswpwb_proactive. Invalid input combinations
-> are also covered.
->
-> Extend test_zswap_writeback_one() to assert that the existing
-> non-proactive writeback path leaves zswpwb_proactive at zero.
->
-> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
+From: Alexei Starovoitov <ast@kernel.org>
 
-LGTM.
+Let BPF programs and kernel allocate objects in bpf arena via
+kvmalloc-style API: bpf_arena_alloc() kfunc.
 
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Currently sched-ext BPF programs implement various allocators
+as BPF programs on top of bpf_arena_alloc_pages() kfunc. 
+This is inefficient.
+
+Recently sched-ext kernel core introduced scx_arena_alloc() backed
+by gen_pool_alloc() to allocate arena memory too.
+This is also inefficient and gen_pool_alloc() is not fast enough.
+
+Hence adopt sheaves and slub as allocator.
+See patch 3 for algorithm details.
+
+Alexei Starovoitov (4):
+  slab: Introduce kmem_cache_alloc_nolock()
+  slub: Pass kmem_cache to alloc_slab_page()
+  bpf,slab: Add slub-backed allocator for bpf_arena
+  selftests/bpf: Add tests for arena slub-backed allocator
+
+ include/linux/bpf_defs.h                      |  13 +
+ include/linux/slab.h                          |  27 ++
+ kernel/bpf/Kconfig                            |   3 +
+ kernel/bpf/arena.c                            | 366 +++++++++++++++++-
+ mm/slab.h                                     |   6 +-
+ mm/slab_common.c                              |   2 +-
+ mm/slub.c                                     | 201 +++++++++-
+ .../selftests/bpf/prog_tests/arena_slab.c     |  59 +++
+ .../prog_tests/arena_slab_freeptr_stale_pcs.c |  28 ++
+ .../testing/selftests/bpf/progs/arena_slab.c  | 179 +++++++++
+ .../bpf/progs/arena_slab_freeptr_stale_pcs.c  | 120 ++++++
+ 11 files changed, 977 insertions(+), 27 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/arena_slab.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/arena_slab_freeptr_stale_pcs.c
+ create mode 100644 tools/testing/selftests/bpf/progs/arena_slab.c
+ create mode 100644 tools/testing/selftests/bpf/progs/arena_slab_freeptr_stale_pcs.c
+
+-- 
+2.53.0-Meta
+
 
