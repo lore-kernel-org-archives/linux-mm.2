@@ -4,83 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAE73CD6E45
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:44:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CCD0CD6E45
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:48:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 630706B0005; Fri, 29 May 2026 04:44:59 -0400 (EDT)
+	id A7A226B008A; Fri, 29 May 2026 04:48:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E48F6B0088; Fri, 29 May 2026 04:44:59 -0400 (EDT)
+	id A2B746B008C; Fri, 29 May 2026 04:48:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F7396B008A; Fri, 29 May 2026 04:44:59 -0400 (EDT)
+	id 968D36B0092; Fri, 29 May 2026 04:48:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 402676B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:44:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E473F120A1A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:44:58 +0000 (UTC)
-X-FDA: 84819822276.29.683A484
-Received: from a3-12.smtp-out.eu-west-1.amazonses.com (a3-12.smtp-out.eu-west-1.amazonses.com [54.240.3.12])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2D58420008
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:44:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=20services.com header.s=resend header.b=jKbPFrL+;
-	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=S4XfhCSI;
-	spf=pass (imf03.hostedemail.com: domain of 0102019e72e86cee-5021539a-b223-4067-bdd1-85be7fbfae7b-000000@send.20services.com designates 54.240.3.12 as permitted sender) smtp.mailfrom=0102019e72e86cee-5021539a-b223-4067-bdd1-85be7fbfae7b-000000@send.20services.com;
-	dmarc=pass (policy=none) header.from=20services.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 872B86B008A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:48:08 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D2CD1A0F87
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:48:08 +0000 (UTC)
+X-FDA: 84819830256.16.B86E3B3
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 309B7A0009
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:48:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fHUb1N4h;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780044297;
+	s=arc-20220608; t=1780044486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=/x2Lj01ifkva5AU55mmdE2vUwmec9pC/aDSBpZ86k9k=;
-	b=m4rz9aP8BwINQ9XCJua0OJUccG8Ceaot0T1E/lwIkyPIV2JhMbswVMG4xvN9oLXUV9Ykwo
-	GnSzbTluyJYVAdjiMEn1vht4fvyaxXdHsjG6LepQC1zIbw8MqXyMO6lljqiCqPMYqJEVIt
-	0tsYsY1J6qBxYQQQvsHGb1Cuk0R8QRk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780044297; a=rsa-sha256;
-	cv=none;
-	b=hydWhJrCBm70lQwS1KFPeQl0Ug72dQNWMnZzMt46gG/aDmWZ4/FA8Nh4YhqZBhlPFMzGn/
-	tzv6MNrMYaLWPItepzAkEY5Pd3fGPk+vqtcLQbH/vBRDXks7hqMx3q1oJZ9TSkSwmeQIgB
-	K4UsCahRrXq9M9Fon1G90kRI4OzMbTc=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2Wya9UPIcmPAPl5XVBvF2WHQdh2/f2rYVl+3awRgb3I=;
+	b=NX88rd6zPXU0ZtzpsaozvkzlAKabVz9qb5NcAT+Dc1w5DaYr2vgO4v1pGHZMIkJQIKqyTQ
+	BD9O+ga5gcYl10ZdnP/pBpGgVLsY4UxZwtWqXQ5C2CmmRiLp8ATXZ5n6utEkMjNHsEiSY9
+	FBTc1+smXSMwjXN+gWeXwzVTOqoylr0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=20services.com header.s=resend header.b=jKbPFrL+;
-	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=S4XfhCSI;
-	spf=pass (imf03.hostedemail.com: domain of 0102019e72e86cee-5021539a-b223-4067-bdd1-85be7fbfae7b-000000@send.20services.com designates 54.240.3.12 as permitted sender) smtp.mailfrom=0102019e72e86cee-5021539a-b223-4067-bdd1-85be7fbfae7b-000000@send.20services.com;
-	dmarc=pass (policy=none) header.from=20services.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
-	d=20services.com; t=1780044295;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type;
-	bh=n9jgRDDPzgyJ6piRHXR6n9x9Lo18KmEJyT0Oik6KC5U=;
-	b=jKbPFrL+2lIBU+s8RHt4n06nz7FYTE08eRPLrZwk3TZQJBK2ElU32PlQsXxzX2Dc
-	OiXtOCNeFFK5UdjR3JsV+eSY8bJAsERyk4YyEEzzHWgK07kF9lJgmjsYVyav2tsseT6
-	0kNlevdHEL81js4Cyo1dcxmrmUr/olf+ZlnUXaeM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1780044295;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type:Feedback-ID;
-	bh=n9jgRDDPzgyJ6piRHXR6n9x9Lo18KmEJyT0Oik6KC5U=;
-	b=S4XfhCSI7VWfNSJKEcbXTsk33oBnLKTl23XCQYaMKDlcjoW0q8oH0n0CbFEPfAez
-	1ZPZ7RSFQ//UIZp2ifwsaBvHzgAEtpqCHJsljTgFY1WkzQxuIEQCzBDPawjeLsMSJ2p
-	cbNuNs5qgjb/b+Bc0eb629X+gcv24Ndpj3zgbWTk=
-From: =?UTF-8?Q?St=C3=A9phanie_David?= <contact@20services.com>
-To: linux-mm@kvack.org
-Subject: Essai d'appel aujourd'hui
-Message-ID: <0102019e72e86cee-5021539a-b223-4067-bdd1-85be7fbfae7b-000000@eu-west-1.amazonses.com>
-Date: Fri, 29 May 2026 08:44:55 +0000
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fHUb1N4h;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780044486; a=rsa-sha256;
+	cv=none;
+	b=OS9gYfyMEi4vlZh3YDP0mxqlLPGKA0ni8waFO2YuNpqbx3IzvYSp4y3M0inDbWt8ajov2/
+	eBBrJJG2XnjdOjNKJlU0UMM8+Vq3Si9S2rRD1xXPWmlK5mBPpoHnKNhtMXISFjZKdlJwQJ
+	6gg3G0s14D3fp5dneKE2mKf9gPkaTaQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780044486; x=1811580486;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6AWLmlUtfnCHN56YA869w6PKgs0+gUIV71eS29nK1aI=;
+  b=fHUb1N4hLJG75g8Id3oNwrUcbt76RuNef/ZA/0ZaFMCOsWwzAE8NRPkn
+   y+dTWkWjWIfVOobGLJLUwJoXvJ5+3GZexDYG4yffBVziRmQPo7rUDHBk4
+   GA1Ye90Na/sLgf1Dry9HKDWlu87k6CECF99KXSYGk2DfKLx5EjwjdEbMQ
+   A9aPx+m19t4tBaopTr0LzW1+0E9QPhrSlVAuAUD7Lyco64TG+cQgxrJJS
+   rIr77ytauGiV+s5VXt445JtQuZ6C69ynqM5iuezV+/+Ku80TpQ4FgIzaj
+   IItJjopeWI4sDW7ZWHB/fFzHokSPZmj/IEFndEr44zHOidDeqk2GSw7oU
+   A==;
+X-CSE-ConnectionGUID: szAg/ruGQACTRZqAuLMFnA==
+X-CSE-MsgGUID: 55pVKi0cTSOY66HPovWTLg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="98310084"
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="98310084"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 01:48:04 -0700
+X-CSE-ConnectionGUID: FfDdqrpOQKCTSLgvgbJbPg==
+X-CSE-MsgGUID: cm7/T7dEQP+9c9ico/Is8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="280915197"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 29 May 2026 01:47:59 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wSssm-00000000702-1IAn;
+	Fri, 29 May 2026 08:47:56 +0000
+Date: Fri, 29 May 2026 16:47:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yury Norov <ynorov@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Yury Norov <ynorov@nvidia.com>,
+	Farhad Alemi <farhad.alemi@berkeley.edu>,
+	Waiman Long <longman@redhat.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH] mm: don't allow empty relative nodemask in
+ mpol_relative_nodemask()
+Message-ID: <202605291631.6MATSv6v-lkp@intel.com>
+References: <20260528190337.878027-1-ynorov@nvidia.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="--_NmP-c8f002b0c5017026-Part_1"
-Feedback-ID: :1.eu-west-1.odfysvPh6zIV8acxyCJwJLcUwKPIFrHf3ZBMJqkLfJF4mXCi9w38U10W8+N+erwxUC6nILehEDZJs3esBULblR/lBi9guIyVkWzSGpDvIG9Z9juTZARUbOKD+6laLM0K/FfTFRvE6dVTmQG8pih15O8eChgywf33gd5jumDDWm0=:1.eu-west-1.duyiEkLYPi4nGdRFd7LaGmAjRWieZlOvGu1wIBVR/Ks=:AmazonSES
-X-SES-Outgoing: 2026.05.29-54.240.3.12
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 7youqwy73f5gtfycmhdwhkwozznnkhwp
-X-Rspamd-Queue-Id: 2D58420008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260528190337.878027-1-ynorov@nvidia.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 309B7A0009
+X-Stat-Signature: rnt5i9ogcnuhtge9swsossbhkmrbjup5
 X-Rspam-User: 
-X-HE-Tag: 1780044296-474284
-X-HE-Meta: U2FsdGVkX1+uNvug1A4IqKer7uySnTfNTzvjLR/Tj3nnCybKC1fsOnIJlFTv3arc4IYLrn4FAS5Yr283LngnIzjWRugNsbhmYZkpqPyegGJnUtgVpEYjx1T/vansJBGlmvuXFF7jkhIhkCvISVxPtNOB8rLgV+hRlVKM250bmkHW/e7+kkv8u7yWPUurdeWPRExC8IGtoj5yjUYen0/bGqvflnKcJnsixwEoZk+ZRf3xRJFoYBK1x3iOFbN0WxDGxPiv3ta7krPc6d5t/VwLTcjDtzAadvqXfRuPWLrmKm9qGVacIjReFNBCFQJV0Z2tZzB9FZnUqZbKDJ1sE1FpaYcneE4FgVT7luTnFUfEbXzjySgdsHd4TmJDblm6kmza/Po4jlFBGg6Kr/acJLYBJrstYmiYpUgr1PjLVQvo7es+IBHgHnw7f79Se9wVf/DHSu1ECfrAqaqLkiIZHfhZeeO5D3wH90NPI1nlwGWKVKDeeK8ijfznlSDXIY4zE8htJxbWppp5Z6E+FKhlFotuCMSSL4klu78yl5Nx7hNB/CAgzdUrBz9hgjH3VsmG4VMkPSH8xUCJRFuAVITrurqSOr9Cyw3X7c4dtln5b8Azb5D5qm1ialjduMWop7mmj2OW0lEMRLfAFVLhU2o7zf6ZCBZ3XVhK6wTVOQXdZMqAe9sjHu80g2FxtgMF+e9cZDfsfpUFJyYoiemw/Z8cUhFmgLufA+AKJhFL0CwsuFthxb4CLgXwQ4FZqxhD3FqI0RzK1HOZ8uOodStwgW/xHQo0kjrrbzk/dScE+Bz+lYGBBb9OwiZDqUYw62+bajtSFH0IZCCUoKwCg4Uu/MtmdQcfUchTppqJuRrpdYkr5dBKxdR4QiXfuxTCeurUsEIO2PEP8n4rHACG2KYwItHi8Kkk6ZxMhJIrEZLqO7MjYGyu+LgZ4BFgzjhT4XL8R4CtpwtZ7HgsV27oHMf3GX0FVn/
- 49D8Yd/v
- OCRGGk02pLO/iDnkbDH2vGfrsk6WUg2FqKrX9jn15YYAukvSKXH59MGmYse8520LT8wQYZw/jeLqbHHrzNFfE0DGkmX+TS00J3vWFIeSwwPxq7ABklwuojKr2oTSkENioebwjNOT26tit5q1fOyd1y8iXvkHrE6xBD8b7lbAJp4eHgGz7EMRwEqeVJo9cUQixR1JNlIb77AN6cXXrMUrqH277OK7PzFH20TbqvFRaa+M5vvy9Kxr6LHeYaQrw8nuMGgl8tMNLmE6NVhm5YP67KHSAkLD4yLXB1tk+kyPQTG6D9NOz3B4B5UQ3YvSbhewcE317cv2w9lsxXDGVzUKX8AydMxqHrY0zZP0cOpEoP8rb7qgJsjA5VHdMjJOdiPMIz5pObQBqBHo0yLzrnkuhSnnSTmzEOE/IHJQA4vKrcCHI0QJ76pMKY9FCxnFwVU5NovgFgU8bkk16siDOeZpsisECqhNU67m7xM3aReOoPLyenjSu84diYuBdoDYfQsyiJRN8aQ31lpkHkCAkqb4ZmJFcY/Xt0fQu2OkHrt9MSmII1RgH2KYXnlvuuQF8Ib+hiKgdYT34NdzWRZZBvC0SNaRgxSihmUKudJRD9lrsecSk++o=
+X-HE-Tag: 1780044484-82007
+X-HE-Meta: U2FsdGVkX19Nb0ts24qlh7qz9+1l4wfri5rG4MiJRPmNNyzgYlendLYhXcNENsdw+uxzzcNiy6evu7UvGWOHfgG3PBLcseCejoHfSQy7xGPJP3iIF2ul2JT0RPR0bvJhKpyR8MdEGCGUqacSu2lk/4VFg5heQXfa9fN0ODeBucMWjOrD5v3fNYiTUHOaV7iMiZSlh23vM7b7pqkMundZPN/CCrbeStLxjYnfoEArM0wZ4kyLywQK+ctMhWVzxdPrYH0W5ipr94q6KHFHfyO6CStdIgsiW3PnKEFAT2Ee+XmOB/5dWGwbmHpjFo8WKxu3drUk8g4OeX/XxvD+1CMKl2T6kqBthz3okM4usd9jmgFZ4QgC4HPgmszw+aYrtBIFr+HuPUL3FP8XzvVlF8gXM4OvKEBjzLLeic72L4Bj/Isyll+3teULaOWl7Q1/KjQIIp7L8tkv30w5KEyBgC9e3iQsI1K4DUC57iVtetnrksIzkfUn4gZL9sliivjM2anlA/P2iyS7gUYPsdw1DlAvIrpVuu6+dWIa6C1EKuwkXe081eybIbG27dVAsjsuTekZu+P2D1exkaMvQdnbCGfqtEr47ONWL00JV1uXbmZ9fZQuyJFRBpP841ZRfOOLv7DGIJ8WKWJBe5W7dmvm2ZKoy6xhr8hXzyUYs1LfHGXm9jJ8FouAET3/AOI0Xf8zdrKxUUBkiopG4Lp3cLB01hbTmIaehD5bxho64cWGxnVRWS69FBHZZa6sTBZLy6pE0K9KigVDQuBTOrmBQqFJS4HviUbWJo8Pg9TnS5qb9E85esW6m3WtRcL2jELQbKhOWtyzynApv2OsHzdrdXgz/4j2ITqdy7bubj9dWYqoaYUN4yzaUeNZxKncT9MJOiTDXZNKzpMrzchbnnqpGH6p8gxPPKtMP1UTyrWHUK808fiZbvRM7xBkxF832uI/s4Kv14mDYO+Vgcm8RDCiURBolx0
+ +2Y4+32j
+ 1Zeur8y92kw6/8kT2LIop8sYW13ByqfVpaeSmNt3hRBnIaG+l2Ey+aDQeJz5AfJeWwxJtl1050tlka06rFbZTTdWr2fArMqzhK5bWaCHx5Y19mYdesZZQwwji2oQTIhakSFMgHl7R01d2AF1XmGVVGVhdCjB+qSxg2BiSBowlhPKpMOY/wqpn4fGqPc0wwFwHb5SuEVVwpRM24LRmdtuzsV3oqeihFpvR8QOlOeX8ltInFQlRI+W9PSqrqfWYBwDyb/vgGIbm8DgZ57NOPj32onjEzG3JEcauKQPl3c8p72+/rpmU7RtRgOIMGGlVkSF1QeRLg2haC6BKMlI8bqdmOTON+sQ0aubOKkOWGDI1AZlybM8rgzn65OJNWmiYcLOgylrTJzIqXesNTzUj1jLM3vD2o+2V3b8xxHyW3OYrPxn2Dv5JRD7R+8eZRfWbpPuil7Fv6lt4dDHcXUWfaj1bWdY8JA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,114 +120,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-----_NmP-c8f002b0c5017026-Part_1
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Hi Yury,
 
-Bonjour,
+kernel test robot noticed the following build errors:
 
-Je vous ai pass=C3=A9 un appel il y a peu, sans parvenir =C3=A0 =
-vous joindre.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-Je vous contactais afin de vous faire d=C3=A9couvrir la =
-secr=C3=A9taire IA t=C3=A9l=C3=A9phonique mise en place pour votre =
-entreprise.
+url:    https://github.com/intel-lab-lkp/linux/commits/Yury-Norov/mm-don-t-allow-empty-relative-nodemask-in-mpol_relative_nodemask/20260529-030835
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260528190337.878027-1-ynorov%40nvidia.com
+patch subject: [PATCH] mm: don't allow empty relative nodemask in mpol_relative_nodemask()
+config: x86_64-buildonly-randconfig-003-20260529 (https://download.01.org/0day-ci/archive/20260529/202605291631.6MATSv6v-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260529/202605291631.6MATSv6v-lkp@intel.com/reproduce)
 
-Elle r=C3=A9pond =C3=A0 100 % des appels, =C3=A0 toute heure =
-du jour et de la nuit, et g=C3=A8re :
-=E2=80=93 la relation client
-=E2=80=93 les messages t=C3=A9l=C3=A9phoniques
-=E2=80=93 la prise et la =
-gestion des rendez-vous
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605291631.6MATSv6v-lkp@intel.com/
 
-Le mieux est encore de l=E2=80=99entendre par =
-vous-m=C3=AAme.
+All errors (new ones prefixed by >>):
 
-Testez-la d=C3=A8s maintenant (2 minutes) =E2=86=92 =
-https://acordameetingsconnect.com/stephanie-ia-4-v4-light.php?=
-telephone=3D03%2029%2008%2040%2030&nom=3DROLLIN%20JEAN%20PIERRE&adresse=3D1=
-80%20RUE%20VALLEROY&cp=3D88800&ville=3DHAREVILLE&dirigeant=3DROLLIN%20JEAN-=
-PIERRE&email=3Dlinux-mm%40kvack.org&r=3D4ro5pe
+   mm/mempolicy.c: In function 'mpol_relative_nodemask':
+>> mm/mempolicy.c:377:24: error: 'return' with a value, in function returning void [-Wreturn-mismatch]
+     377 |                 return -EINVAL;
+         |                        ^
+   mm/mempolicy.c:370:13: note: declared here
+     370 | static void mpol_relative_nodemask(nodemask_t *ret, const nodemask_t *orig,
+         |             ^~~~~~~~~~~~~~~~~~~~~~
 
-Je serais heureux de =
-conna=C3=AEtre votre opinion.
-
-St=C3=A9phanie David
-Secr=C3=A9taire virtuelle IA de votre entreprise
-
----
-Pour ne plus recevoir nos informations commerciales, : =
-https://acordameetingsconnect.com/desinscription.php?email=3Dlinux-mm@kvack=
-.org
-Pour nous signaler une anomalie : https://acordameetingsconnect.=
-com/abuse.php?email=3Dlinux-mm@kvack.org
-Ce mail a =C3=A9t=C3=A9 =
-envoy=C3=A9 =C3=A0 : linux-mm@kvack.org. Conform=C3=A9ment au RGPD, vous =
-pouvez exercer vos droits en toute simplicit=C3=A9.
-----_NmP-c8f002b0c5017026-Part_1
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE html>
-<html lang=3D"fr">
-<head>
-  <meta name=3D"viewport" =
-content=3D"width=3Ddevice-width, initial-scale=3D1.0"/>
-  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8">
-  <title>Essai d'appel aujourd'hui</title>
-  <body>
-    <div>
-    Bonjour,<br><br>
-
-   Je vous ai pass=C3=A9 un appel il y a peu, sans =
-parvenir =C3=A0 vous joindre.<br><br>
-
-    Je vous contactais afin de vous =
-faire d=C3=A9couvrir la <strong>secr=C3=A9taire IA t=C3=A9l=C3=A9phonique</=
-strong> mise en place pour votre entreprise.<br><br>
-
-    Elle r=C3=A9pond =C3=A0 <strong>100 % des appels</strong>, =C3=A0 toute=
- heure du jour et de la nuit, et g=C3=A8re :=20
-    <br>=E2=80=93 la =
-relation client =20
-    <br>=E2=80=93 les messages t=C3=A9l=C3=A9phoniques
-    <br>=E2=80=93 la prise et la gestion des rendez-vous
-    <br><br>
-
-    Le mieux est encore de l=E2=80=99entendre par vous-m=C3=AAme.<br><br>
-
-    <a href=3D"https://acordameetingsconnect.com/stephanie-ia-4-v4-light.=
-php?telephone=3D03%2029%2008%2040%2030&nom=3DROLLIN%20JEAN%20PIERRE&adresse=
-=3D180%20RUE%20VALLEROY&cp=3D88800&ville=3DHAREVILLE&dirigeant=3DROLLIN%20J=
-EAN-PIERRE&email=3Dlinux-mm%40kvack.org&r=3D4ro5pe"
-       style=3D"color:#f97316; font-weight:bold; text-decoration:none;"
-       target=3D"_blank">Testez-la d=C3=A8s maintenant (2 =
-minutes)</a><br><br>
-
-    Je serais heureux de conna=C3=AEtre votre opinion=
-.<br><br>
-
-    St=C3=A9phanie David<br>
-    <strong>Secr=C3=A9taire =
-virtuelle IA de votre entreprise</strong><br><br>
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for MFD_STMFX
+   Depends on [n]: HAS_IOMEM [=y] && I2C [=y] && OF [=n]
+   Selected by [y]:
+   - PINCTRL_STMFX [=y] && PINCTRL [=y] && I2C [=y] && HAS_IOMEM [=y]
 
 
-        <footer>
-        <p style=3D"font-size:13px; color:#888; text-align:left;">
-          Pour ne plus recevoir nos informations commerciales, <a =
-href=3D"https://acordameetingsconnect.com/desinscription.php?=
-email=3Dlinux-mm@kvack.org" style=3D"color:#e67e22;">cliquez ici</a>.<br>
-          Pour nous signaler une anomalie : <a href=3D"https://acordameetin=
-gsconnect.com/abuse.php?email=3Dlinux-mm@kvack.org">cliquez ici</a>
-        </p>
-        <span style=3D"font-size:12px;">
-          Ce mail a =C3=A9t=C3=A9 envoy=C3=A9 =C3=A0 : linux-mm@kvack.org. =
-Conform=C3=A9ment au RGPD, vous pouvez exercer vos droits en toute =
-simplicit=C3=A9.
-        </span>
-      </footer>
-    </div>
-  </body>
-</html>
-----_NmP-c8f002b0c5017026-Part_1--
+vim +/return +377 mm/mempolicy.c
+
+   369	
+   370	static void mpol_relative_nodemask(nodemask_t *ret, const nodemask_t *orig,
+   371					   const nodemask_t *rel)
+   372	{
+   373		unsigned int w = nodes_weight(*rel);
+   374		nodemask_t tmp;
+   375	
+   376		if (w == 0)
+ > 377			return -EINVAL;
+   378	
+   379		nodes_fold(tmp, *orig, w);
+   380		nodes_onto(*ret, tmp, *rel);
+   381	}
+   382	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
