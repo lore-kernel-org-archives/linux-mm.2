@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B4EBCD6E51
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 12:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB717CD6E43
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 12:19:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D01D26B00A0; Fri, 29 May 2026 08:19:47 -0400 (EDT)
+	id 798CC6B00A3; Fri, 29 May 2026 08:19:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7BC66B00A1; Fri, 29 May 2026 08:19:47 -0400 (EDT)
+	id 7235A6B00A4; Fri, 29 May 2026 08:19:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B91646B00A3; Fri, 29 May 2026 08:19:47 -0400 (EDT)
+	id 5EC1C6B00A5; Fri, 29 May 2026 08:19:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 990496B00A0
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:19:47 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 673711C112C
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 12:19:47 +0000 (UTC)
-X-FDA: 84820363614.28.4FB0E61
-Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D058A1C0010
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 12:19:44 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b="bg/vJ0vD";
-	spf=pass (imf20.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780057185; a=rsa-sha256;
-	cv=none;
-	b=Z/S3ZL1ZYaExNRLBQKm6DwmlpIN49Lrx7i85memxOANQA4Rb402Z3paZfwNXgcVpkdnxAo
-	K+YgO0aG0sOJm1HsOvuIbZWwnm2hUnEoVtz0aOSe1LFJqZpZc34MKmLFHxUPhMsbbwF9FI
-	sEBGxUGNVsd1THGHT6EF/1V/VIHD2oI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b="bg/vJ0vD";
-	spf=pass (imf20.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 45DD26B00A3
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:19:50 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1590B1A0002
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 12:19:50 +0000 (UTC)
+X-FDA: 84820363740.12.046AEA7
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 58AA3140017
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 12:19:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b="ByB/4PuR";
+	spf=pass (imf09.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
 	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780057185;
+	s=arc-20220608; t=1780057188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LLCdcZM28LSqnhskCBNjIY/IATM4Pd8LdF/tlghQRJQ=;
-	b=usMaboxEbsqDWKwgV5p1Ls3suDVepUdi7TVGduSgxjrLgba70lZaoNa6zw2S4E0qkrGh9W
-	NQfVKj1vqG+3lPW0ucUu/0ySne1cUsLcbtsQ5INgXhHv2MVHu2KIFVwHCbRiu793ouXGZ2
-	GxS6RdpqbjtucV8Jlee+OngAihO4SyI=
+	bh=cGeZMeV+6Toy2BfwU50kHDN1vTufg8/wOGuq0DvP3ZE=;
+	b=c1kA7yW3GCEAc2DkM5RSANdN/20Six2wkns9ayODbIa4Pn5TDwHcX6LyjlPcIFV0VTxLzl
+	UF8w5yhLkZSSQjLsVIShytlcQUrVUW/DTrynp0pJInM73q4dkgDbKAT+tYp3xgY0KOv/Gf
+	DWYMLjoAMuxI2/nTRlxo49khdsSDQrk=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b="ByB/4PuR";
+	spf=pass (imf09.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780057188; a=rsa-sha256;
+	cv=none;
+	b=PaoXTOj9VNKxw5OtBR9UV29wMfDN+KxN5uio5Mh6fJ1xL2c5fp+j7U1dmAMTuyRd1TzTAZ
+	RwL30Fd2h/zvK42cocnTaxFN4m8XHnYwbwwgrrVJDs4Bg6pdn+owUbsfO5jt+PrAwnCCBk
+	3aMa4MB3ug5gsUkpmhqLWFo55MhYN+M=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1780057181; bh=LLCdcZM28LSqnhskCBNjIY/IATM4Pd8LdF/tlghQRJQ=;
+	t=1780057184; bh=cGeZMeV+6Toy2BfwU50kHDN1vTufg8/wOGuq0DvP3ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bg/vJ0vD8Wq0E8xQ9lzRiF2CcmID31e+p9BP697CZf008EDAhLiqgi/G+SyfO1EhC
-	 jpiezYKBUAoDoo7KWwZBFkvdR7QdfLPc/tNIhgLI8JXSAii3DfHe/TekIyu78dmIF/
-	 nbi5hAtlAIzswGMAolgpOS3lTeuahX2KL+SqvQHA=
+	b=ByB/4PuRcDjKit48/Z+8HZbE49AkAq5DYuzffYFSxAIbxsPdxjlsaETNd3iXV+sEv
+	 59ojVQbTqz3AR8ssy29SlEwMxZGf4S8Ms79tbxeMXQfawAkjCzDvg4co4XFu+8g54p
+	 O4Aqb5rr45e1Pq1PzD06Dk1zhxi+Poak9/5ToObM=
 Received: from node68.. ([166.111.236.25])
 	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
 	id 4DC10017; Fri, 29 May 2026 20:19:28 +0800
-X-QQ-mid: xmsmtpt1780057178t8d71qf7g
-Message-ID: <tencent_913470853E9B289ECF0379248E24DFB4590A@qq.com>
-X-QQ-XMAILINFO: MZtEYADUG4AgFKeqSv1IeByIiaUnNl54ksdfcW2cSvrmU+UkYbeDznU9ZeKWcW
-	 Fa+snv+S5Hh8iRLGeTdFPQy6v/uDbbAxElaP+GdWL1jv1GUoon3bMyomyKlDb2joL4deC9UcFUdh
-	 jrdkn+9GB2y7uy8jMSO4LCWrJYqQGdJDfr8aB6b72wsxjDj7tKka3KOqSo6BWX9s7hqEhBZVAPgy
-	 1pw3i5IAr3kIYT9bV9ab8m6+4IgWGGl1WWDCWrxWSf3ubJGR0Z+dMQNcK7VU80LdrMqVwQZNklUi
-	 X4gLiztR5flLNtzfpqa6lOakdPqCcC7xpvSEfL7oDo4eWtiX1Eg/RdDAwdXEHKwlFn2SCPCI0N97
-	 sg4GjU2G5ub0CsBjw1/zGN1nSuwFoI0ghjrq59bSLAeP3vDn5PlvT0Q1sfI+TP8r22UhUpOLvA18
-	 K8UF5A5fbdIxWom4TQ6Js1pxoEQ1/lLgQ2J4j9Lfqqnk6ifMuJ6zu4x8OEHsg54zPX2m9Eiy+fVD
-	 nh/AXqAxQbyhoMa0DMQfWw3ti7N2vi9FQbsobRalnefxIJ+Dhi8DUaSnZLb1lKxql47IeTggC27y
-	 wu92J78jkOkEWMKCB1M7KPEPoEJ6YGNJbpp7UrdVdCtx4bbjBC03uLD9zVNVWpOzEei/UT3ygdHx
-	 U5HMqjD1WbgIagPg6JFuenf62rVAoZA21QX3Dvs+g21NLdmVZNiEIgxX4pgW/Cb+FNqB3gG8Kkgj
-	 e8VTkq7zSTolqLjFHp1IYBVnwurn9rABUxFkkPkSsu6kw2ep9ZrBXdlwzbnYEKX8hIsars4l9K6M
-	 3kPCF6HRnRI32pJ2S39kD8tX6AxN+KwCuOhnfTI2fxXZh8l9TjdjEGlLlh91KfsRILyQfq3ks0Fx
-	 brQNXSIztgvz7hIwZ55iTToNhhx+q6tB0LFUeiCaDUl0RNTaazo3ZCrVvI9AT2WGNOq+vHXYvEZQ
-	 tUXcB3RfkPaFY8/jt4xGm0ItYEiEj/v7tJg7OCHN3+doHSHZ6UPsYHJaAVXMK0A5PBo+aYufpYAH
-	 72vYPw5VAu82yPkzMmsZMq4Z5kYCXYxkvBQ66bPrfog+4FWHHNCUP+McfAgLuzn4OXouHWnQ==
+X-QQ-mid: xmsmtpt1780057180tkgo7kc1y
+Message-ID: <tencent_A2335C92CF3C8A7EF3121E4A23D437531608@qq.com>
+X-QQ-XMAILINFO: NGZp1yYNf7Y+XlrNUl1Lxurg2YUpupTBj+94wLieCfHcv0JrqBr9ojPlIzbJqI
+	 x386pIbILgiph0fcnAAdez/p4vVKlgRXojF+wmEB5ZY7a9m7zElx+jUi6NEpdq6D3+uxyqpjhCgI
+	 WNrxNLKhLIMM9915NjPrml5pw1rOJY8NCxptsD4LYTdTSYiiD37GDyqa/WqfyaLXgvxG81S3Sq+j
+	 34xI8IlJCZwsAJZQLhFsggR804KMeWER3l8eCo6GtrHle981IvR7mB5qhwZKuuPdvO9tWf5oXue8
+	 db5F+5LlCb7ky0SqFz/8ECb0Y63scxgKvddp6HcPFWDgHyou2diJp6RC4ZrjAELeyxxfEKv3HFoJ
+	 cJ0rcz5XrTl9wW+KmFXTN3mweDxeQFy4etXz2AnnkEUx16bAupA1NCObm/e6+gTlcq6nfLqiqYSg
+	 +PqQX+Fc8dih2wIvYxFVOzpAwA31J4vNHE1CUwMqH2pIRs1rElumI5dVpRQbuBAB75+wQt0ZyYIt
+	 qN4GSCu6hSJVqlaZ19mY1v1W+w1wLCoW89IkL85LEIkFW6w+Efc1ma99G564fOJ4B/JYooxYU0Si
+	 EjbwIsmrIH4aNqdb9X2pp7pex4NVVnkKQvCiLUqIXkykzmDCAHv979boLO5y4uToWSBBa+5C9kqO
+	 dKLJtNHIgVec+bMDneMhz1TVr06qjmuK7H2noH3umPYqRaOTgQpcui2/4QXFksVJr9dLliSHXANw
+	 y3K8cdC9BjfNSptWmOivQUcTwHKzofvSVMA2YGCyCsu9Rm3qZg2L6h4okkpZ4/p2jdqnfVtz3Fq+
+	 Wie6Aq60x60wATTWD6tVXEPFC1/OEx3AiS6brGN7SbnoKkYQT5+pdyyHuVB3t0i4Ct4gGqAwPn+E
+	 99jccLH7PL2dm8BAKZLBKV08PWyYaNmwOS2dS/yDQ2SUK1IGBuVHrRSdY5Vfx9hxVmJR7gFpEKyZ
+	 +B2cIwX+8LA3JHi560XBMpBYR9X4boC0KHiTSRkVoQ4fCpuq5BRyrT105Y8erdJqT7na3WhGN04t
+	 uaEx0vLH6nnB/agzx/qqna9bL5n5IdOKqN4k+GWQ==
 X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
 From: fujunjie <fujunjie1@qq.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -91,22 +91,22 @@ Cc: Chris Li <chrisl@kernel.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org
-Subject: [RFC PATCH v2 6/9] mm: provide anon locality evidence for zswap large swapin
-Date: Fri, 29 May 2026 12:19:25 +0000
-X-OQ-MSGID: <20260529121928.4115683-6-fujunjie1@qq.com>
+Subject: [RFC PATCH v2 7/9] mm/shmem: provide VMA-hint locality for zswap large swapin
+Date: Fri, 29 May 2026 12:19:26 +0000
+X-OQ-MSGID: <20260529121928.4115683-7-fujunjie1@qq.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com>
 References: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ohtc1jhq73xy63mf9uyunugdqywju939
+X-Rspamd-Queue-Id: 58AA3140017
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D058A1C0010
-X-Rspamd-Server: rspam03
-X-Stat-Signature: uogwrsg1fytssqpdc9sd9nxcfzafhcgu
-X-HE-Tag: 1780057184-833835
-X-HE-Meta: U2FsdGVkX1+oh8x2l0oUSZsWi338/uZpbQLlbT5Xja5YEFMw4k3Tteb2K204EPFd463rvxI/aBue04y2uQD8+c/sSbWcNB1DvwmR8C37i77CYJGqrCgtmP2WP1gF+tf+2LirRNnor54ucOsDEAjPmNdtWYiJuBMF2xSz7HzEjrbhzgmlRkmpHee6f/kUL90Y0PgkgUVRTabJXbU/MfftmB+InpMaBy9x0JCW/XInygaCr7wYpnZdFcCHGKVsE/uMn//T3OYWWd1Mv6SgbjA3NJcx9VQlwAdat+bqyVNSuB5Y57QiX6dcQizXLxvahGWZdWGEf10TO6VpDXex/a/zPcilNG3XOJTkWyFw5PUCzyPgfy/5SUkUh4HnNxJ1rgJWgUqPwDJzSLZ9GiEOzjpc6jOeWiQFZ1fkas3Vb0GucfBirgI4oKCuy3AXmW+1Sadmcl9jrYuaQejGuzTQ5K53VTxc5vHuKfF8VEBfqB3CayzXsQtjqUqjQ3yVOW3Qr9ztChIzCCS95CsS7wQm+PRYZcRK6eyuM0Rr5Px1Syo8bqs0qmtnM2DbB8HoB8E4csedFH63apvMv+xgpKfU1kXow+vOf5LnbvbmEirboM/beRJfedPAfbdsvWWiQZBx4YGKFjEh6TEbvmTXPrRhoB4EHZeyafBiheVQa0RRl8kYpMqFwDg74et2Z+95ap1rTGDQxDVVrIWH0+LBa9LXRjpAyck03epU0Um+GVU3iuno83s85wA+69g6zzpAKlRG0yD9wrBWKeV0eZT1RgaNzyx9vlbrchrO5KfM3rOpH8EyJUBnOeAPeZUm+Xuz9CLwpL7uGCekBiJWu5tMqrHxfVCtKqSE8prKUiXR5sXxm3hltdHfxNVwt0gGhkI1Jmh4WHmDaDxzcQqweQc8mkJQU9JkadWEp2114v9M/czRtgRu39Cwv6M2UMOOHNUtoRxw8H5Z6pGdlGGCJl6fz+Bh8qM
- O6eKU0FO
- lPUsr/gnuMJPTyjjOGsm2ghmjAUhPiofq836xlI5br+KSbH+dY66TnNaZQ5ilrKm3alOTXAPXIf+nnUdIxrPy9UgfzNfz8uNtwJ/24fE4NVIXFoKqMLIAVMU4dj/iHWPEGq2uxQ3ixYDx+KT2Ww/dqz4I9K91TmMLm2FbzmcTEgYVqTOLoe8BYQQQvZtzJvp938erTC0bV4VpSvmWZ4eWHaStzV9CbSeG4FLTfloXBIHD74SYZWoMiux8jNuDb7hGsCZpCWjvOd2upLs=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780057186-675303
+X-HE-Meta: U2FsdGVkX18Jcf7ZqtQM0fJksrm6qoEVOulhss8EQ659UT+KvraEWomq2G+Zo2tjm6xXSUSDDMTUX5CMOyuiXx1sR5yAL2WDY/GN7VFuT253x4IqGTFS1JEqfIxOQUEjiIFylKIEbBwWwdY9x0TRD117tXqUBOuazTkILY8Bublj2LOI9rBzaWMJZu9Cb44qrLLozIDFSf04sjN4t2lUcCELCKgrhSa2/CX3Jmbq3FaYY+ubo550icS9AR9mxIMI/RDLYf8MJILDb0wOyUqWV1R62YGdXZ6ic+H5llpUPuKmYBIXoA9qSmRW9vWpMphPZOogxJxJgtL0AFWLTYZ3T3nalgiLPor+prlVy3nYNvlRLXv9jyPDRMcbtMH06mawvsmtss6oaXYBmbXIkwWzon84/acEYQf7j6bggmrTpgpIvOVGNfkGKuD14+FnPLda+6Yb4i6gPosiaXmCEVI2oTCisFViZq7GG1T2eEDLVEK5l9TIZU+J/lzOCl2nXVhFp/mGRN7JF8+bdLOxH6jzHoWNacCdW6MgO1bntW4V7i1bQag0uclj4jKoaFTKVdmVJRhiKjtoF6+hQIuUhwuYauAMnkFwdbxK0j2d+ORA/NjUMWQKi1pSP8nQ41ePblBMbjhH9ke+1MQnWaPz3gDbH1sHu3/Plh2otzqL5T2jCWRIFHmg5rc2ELRW6Yt4/IGwWFpWUkCzh090UoXHHlgGY63za4EpDLJrbLpU3zd8thX2JNY8VPFjS0YzMjr6VHXEhs0ZVpZDVHNKfFJXRk0p332Z566ZGdNq2dPB5mRvv9TepAL+yYKlYiGrRukzgv7Gm5w5WyLPwR1/QVV4B4AH+/FvOhKgK9XG0rW0OCHLwK2EEUFIHyju+toX+lV37OFAq6B+/Sx3uL2JxoCcyYv0PqHZ4GT4f4hRstEHTNfu4kOpC7Rvk789kyK9tOhCAdTYCgXe4gjFACB2eIhkn+E
+ WW54xDRx
+ trbE6ztw+07R38Z/aVP5UjNBmpHGA6IHHAq9D50KEk1La27/FyxVhP1tm49FsA+LxnCY6IXLun3cPAVNR2Uxn6qDu57JrysbD5HZSer8BOqPBh1A8o+XeCVm6MZHUEKEW6NzBGfX8wZdnLEEadlzM+bCJxxda1mQMlo0synGLgTWZuqTxBrK3N1YkMppa3qVJ1EWQ8eEOpaDW/MTGw7rQu6HWBv1/9ukRiqviFZpYGXlFYZ0QUaeqGNmYjXSLKi3tI8viG5TnQHGWjylcyDMZIqlmVFcL/bazmrRvEYGWSSxIhIY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,382 +114,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The common zswap large-swapin policy needs locality evidence from
-callers before it can admit a large folio. For anonymous faults, provide
-that evidence from existing VMA hints and from the PTE young state left
-by earlier zswap-backed large swapins.
+Let the shmem swap fault path pass locality evidence into the common
+zswap large-swapin policy. Shmem does not have anon PTE-young density
+evidence, so this first step only treats explicit VM_SEQ_READ as
+positive evidence and VM_RAND_READ as a veto.
 
-Keep non-faulting PTEs old when mapping a speculative all-zswap large
-folio. A later fault can then require a dense young previous range before
-admitting another large swapin without adding VMA state.
-
-This also removes the old zswap-enabled guard from the THP swapin
-candidate scan. The common swapin path now classifies the backend range
-and falls back to order-0 for mixed zswap/disk ranges or races.
+The non-fault shmem readahead path remains unchanged. This keeps large
+zswap swapin limited to synchronous shmem faults where the caller
+supplies a VMA and the common policy can still fall back to order-0.
 
 Signed-off-by: fujunjie <fujunjie1@qq.com>
 ---
- mm/memory.c     | 234 +++++++++++++++++++++++++++++++++++++++++++-----
- mm/swap.h       |   6 ++
- mm/swap_state.c |  15 ++++
- 3 files changed, 235 insertions(+), 20 deletions(-)
+ mm/shmem.c | 42 +++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 37 insertions(+), 5 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 92a82008d583..7bbb89632000 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4556,6 +4556,35 @@ static void memcg1_swapin_retry_folio(struct folio *folio,
- 	folio_unlock(folio);
+diff --git a/mm/shmem.c b/mm/shmem.c
+index fa99b48ed62b..a5ac35ac85fb 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -30,6 +30,7 @@
+ #include <linux/fileattr.h>
+ #include <linux/filelock.h>
+ #include <linux/mm.h>
++#include <linux/memcontrol.h>
+ #include <linux/random.h>
+ #include <linux/sched/signal.h>
+ #include <linux/export.h>
+@@ -1791,6 +1792,29 @@ static struct folio *shmem_swapin_cluster(swp_entry_t swap, gfp_t gfp,
+ 	return folio;
  }
  
-+static void set_swapin_ptes(struct vm_area_struct *vma,
-+			    unsigned long address, pte_t *ptep, pte_t pte,
-+			    unsigned int nr_pages, unsigned int fault_pte_idx,
-+			    bool fault_only_young)
-+{
-+	struct mm_struct *mm = vma->vm_mm;
-+	pte_t old_pte;
-+
-+	if (!fault_only_young || nr_pages == 1) {
-+		set_ptes(mm, address, ptep, pte, nr_pages);
-+		return;
-+	}
-+
-+	old_pte = pte_mkold(pte);
-+	if (fault_pte_idx)
-+		set_ptes(mm, address, ptep, old_pte, fault_pte_idx);
-+
-+	set_pte_at(mm, address + fault_pte_idx * PAGE_SIZE,
-+		   ptep + fault_pte_idx,
-+		   pte_mkyoung(pte_advance_pfn(pte, fault_pte_idx)));
-+
-+	fault_pte_idx++;
-+	if (fault_pte_idx < nr_pages)
-+		set_ptes(mm, address + fault_pte_idx * PAGE_SIZE,
-+			 ptep + fault_pte_idx,
-+			 pte_advance_pfn(old_pte, fault_pte_idx),
-+			 nr_pages - fault_pte_idx);
-+}
-+
- static vm_fault_t pte_marker_clear(struct vm_fault *vmf)
- {
- 	vmf->pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
-@@ -4628,6 +4657,157 @@ static vm_fault_t handle_pte_marker(struct vm_fault *vmf)
- }
- 
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+#define SWAPIN_ANON_YOUNG_MIN_PERCENT		75
-+#define SWAPIN_ANON_MAX_FAULT_SKIP_SHIFT	2
-+
-+static bool swapin_anon_prev_young_dense(struct vm_fault *vmf,
-+					 unsigned int order)
-+{
-+	struct vm_area_struct *vma;
-+	unsigned int nr_pages;
-+	unsigned int threshold;
-+	unsigned long size;
-+	unsigned long base, prev, addr;
-+	struct folio *first = NULL;
-+	unsigned int present = 0;
-+	unsigned int young = 0;
-+	pmd_t *pmd;
-+	pmd_t pmdval;
-+	spinlock_t *ptl; /* protects the previous PTE range */
-+	pte_t *ptep;
-+	unsigned int i;
-+
-+	if (!IS_ENABLED(CONFIG_MMU) || !arch_has_hw_pte_young() || !vmf ||
-+	    !vmf->vma || !vmf->pmd || !order || order > MAX_PAGE_ORDER)
-+		return false;
-+
-+	nr_pages = 1U << order;
-+	threshold = DIV_ROUND_UP(nr_pages *
-+				 SWAPIN_ANON_YOUNG_MIN_PERCENT, 100);
-+	size = PAGE_SIZE << order;
-+
-+	vma = vmf->vma;
-+	base = ALIGN_DOWN(vmf->address, size);
-+	if (base < size)
-+		return false;
-+
-+	prev = base - size;
-+	if (prev < vma->vm_start || prev + size > vma->vm_end)
-+		return false;
-+
-+	pmd = vmf->pmd;
-+	if ((prev & PMD_MASK) != (base & PMD_MASK)) {
-+		pmd = mm_find_pmd(vma->vm_mm, prev);
-+		if (!pmd)
-+			return false;
-+	}
-+
-+	pmdval = pmdp_get_lockless(pmd);
-+	if (!pmd_present(pmdval) || pmd_leaf(pmdval))
-+		return false;
-+
-+	ptep = pte_offset_map_lock(vma->vm_mm, pmd, prev, &ptl);
-+	if (!ptep)
-+		return false;
-+
-+	for (i = 0, addr = prev; i < nr_pages; i++, addr += PAGE_SIZE) {
-+		struct folio *folio;
-+		pte_t pte = ptep_get(ptep + i);
-+
-+		if (!pte_present(pte))
-+			break;
-+
-+		folio = vm_normal_folio(vma, addr, pte);
-+		if (!folio || folio_order(folio) != order)
-+			break;
-+		if (!first)
-+			first = folio;
-+		else if (folio != first)
-+			break;
-+
-+		present++;
-+		if (pte_young(pte))
-+			young++;
-+	}
-+
-+	pte_unmap_unlock(ptep, ptl);
-+	if (present != nr_pages)
-+		return false;
-+
-+	return young >= threshold;
-+}
-+
-+static bool swapin_anon_accessed_neighbour(struct vm_fault *vmf,
-+					   unsigned int order)
-+{
-+	unsigned long size;
-+	unsigned long base;
-+	unsigned long fault_idx;
-+	unsigned long max_skip;
-+
-+	if (!vmf || !vmf->vma || !order || order > MAX_PAGE_ORDER)
-+		return false;
-+
-+	size = PAGE_SIZE << order;
-+	base = ALIGN_DOWN(vmf->address, size);
-+
-+	/*
-+	 * Without a sequential hint, require prior young-density evidence and
-+	 * only allow faults near the start of the candidate range.
-+	 */
-+	fault_idx = (vmf->address - base) >> PAGE_SHIFT;
-+	max_skip = (1UL << order) >> SWAPIN_ANON_MAX_FAULT_SKIP_SHIFT;
-+	if (fault_idx > max_skip)
-+		return false;
-+
-+	return swapin_anon_prev_young_dense(vmf, order);
-+}
-+
-+static bool swapin_anon_fault_starts_range(struct vm_fault *vmf,
-+					   unsigned int order)
-+{
-+	struct vm_area_struct *vma;
-+	unsigned long size;
-+	unsigned long base;
-+	unsigned long first;
-+
-+	if (!vmf || !vmf->vma || !order || order > MAX_PAGE_ORDER)
-+		return false;
-+
-+	vma = vmf->vma;
-+	size = PAGE_SIZE << order;
-+	base = ALIGN_DOWN(vmf->address, size);
-+	first = ALIGN(vma->vm_start, size);
-+
-+	return base == first && vmf->address == base &&
-+	       base + size <= vma->vm_end;
-+}
-+
-+static unsigned long swapin_anon_locality_orders(struct vm_fault *vmf,
-+						 unsigned long orders)
++static unsigned long shmem_swapin_locality_orders(struct vm_fault *vmf,
++						  unsigned long orders)
 +{
 +	struct vm_area_struct *vma = vmf ? vmf->vma : NULL;
-+	unsigned long locality_orders = 0;
 +	unsigned long candidates = orders & ~BIT(0);
-+	int order;
 +
-+	if (vma && (vma->vm_flags & VM_RAND_READ))
++	/*
++	 * Shmem does not have anon-style PTE young density evidence. Start with
++	 * explicit VMA access hints; future shmem/page-cache readahead evidence
++	 * can be folded into this producer without changing common swapin policy.
++	 */
++	if (!vma)
 +		return 0;
 +
-+	if (vma && (vma->vm_flags & VM_SEQ_READ))
++	if (vma->vm_flags & VM_RAND_READ)
++		return 0;
++
++	if (vma->vm_flags & VM_SEQ_READ)
 +		return candidates;
 +
-+	while (candidates) {
-+		order = fls_long(candidates) - 1;
-+		if (swapin_anon_fault_starts_range(vmf, order) ||
-+		    swapin_anon_accessed_neighbour(vmf, order))
-+			locality_orders |= BIT(order);
-+		candidates &= ~BIT(order);
-+	}
-+
-+	return locality_orders;
-+}
-+
- /*
-  * Check if the PTEs within a range are contiguous swap entries.
-  */
-@@ -4644,9 +4824,9 @@ static bool can_swapin_thp(struct vm_fault *vmf, pte_t *ptep, int nr_pages)
- 	if (!pte_same(pte, pte_move_swp_offset(vmf->orig_pte, -idx)))
- 		return false;
- 	/*
--	 * swap_read_folio() can't handle the case a large folio is hybridly
--	 * from different backends. And they are likely corner cases. Similar
--	 * things might be added once zswap support large folios.
-+	 * swap_read_folio() can't do mixed-backend large folio IO. The common
-+	 * synchronous swapin path will recheck backend state and fall back to
-+	 * order-0 if a zswap/disk race makes the range mixed.
- 	 */
- 	if (swap_pte_batch(ptep, nr_pages, pte) != nr_pages)
- 		return false;
-@@ -4693,14 +4873,6 @@ static unsigned long thp_swapin_suitable_orders(struct vm_fault *vmf)
- 	if (unlikely(userfaultfd_armed(vma)))
- 		return 0;
- 
--	/*
--	 * A large swapped out folio could be partially or fully in zswap. We
--	 * lack handling for such cases, so fallback to swapping in order-0
--	 * folio.
--	 */
--	if (!zswap_never_enabled())
--		return 0;
--
- 	entry = softleaf_from_pte(vmf->orig_pte);
- 	/*
- 	 * Get a list of all the (large) orders below PMD_ORDER that are enabled
-@@ -4708,10 +4880,13 @@ static unsigned long thp_swapin_suitable_orders(struct vm_fault *vmf)
- 	 */
- 	orders = thp_vma_allowable_orders(vma, vma->vm_flags, TVA_PAGEFAULT,
- 					  BIT(PMD_ORDER) - 1);
-+	if (!orders)
-+		return 0;
- 	orders = thp_vma_suitable_orders(vma, vmf->address, orders);
-+	if (!orders)
-+		return 0;
- 	orders = thp_swap_suitable_orders(swp_offset(entry),
- 					  vmf->address, orders);
--
- 	if (!orders)
- 		return 0;
- 
-@@ -4741,6 +4916,12 @@ static unsigned long thp_swapin_suitable_orders(struct vm_fault *vmf)
- {
- 	return 0;
- }
-+
-+static unsigned long swapin_anon_locality_orders(struct vm_fault *vmf,
-+						 unsigned long orders)
-+{
 +	return 0;
 +}
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
++
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ bool shmem_hpage_pmd_enabled(void)
+ {
+@@ -2020,18 +2044,22 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
+ 		struct vm_fault *vmf, pgoff_t index,
+ 		swp_entry_t entry, int order, gfp_t gfp)
+ {
++	unsigned long locality_orders;
++	unsigned long orders;
+ 	pgoff_t ilx;
+ 	struct folio *folio;
+ 	struct mempolicy *mpol;
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
  
- /* Sanity check that a folio is fully exclusive */
-@@ -4777,6 +4958,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	unsigned long page_idx;
- 	unsigned long address;
- 	pte_t *ptep;
-+	bool fault_only_young = false;
+-	if ((vmf && unlikely(userfaultfd_armed(vmf->vma))) ||
+-	     !zswap_never_enabled())
++	if (vmf && unlikely(userfaultfd_armed(vmf->vma)))
+ 		order = 0;
  
- 	if (!pte_unmap_same(vmf))
- 		goto out;
-@@ -4845,13 +5027,22 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ again:
++	orders = BIT(order);
++	locality_orders = shmem_swapin_locality_orders(vmf, orders);
+ 	mpol = shmem_get_pgoff_policy(info, index, order, &ilx);
+-	folio = swapin_sync(entry, gfp, BIT(order), 0, vmf, mpol, ilx);
++	folio = swapin_sync(entry, gfp, orders, locality_orders, vmf, mpol,
++			    ilx);
+ 	mpol_cond_put(mpol);
+ 
+ 	if (!IS_ERR(folio))
+@@ -2339,7 +2367,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+ 	if (!folio_matches_swap_entry(folio, swap) ||
+ 	    shmem_confirm_swap(mapping, index, swap) < 0) {
+ 		error = -EEXIST;
+-		goto unlock;
++		goto failed_swapcache;
+ 	}
+ 	if (!folio_test_uptodate(folio)) {
+ 		error = -EIO;
+@@ -2369,6 +2397,8 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+ 	if (sgp == SGP_WRITE)
+ 		folio_mark_accessed(folio);
+ 
++	if (folio_test_large(folio))
++		memcg1_swapin(folio);
+ 	folio_put_swap(folio, NULL);
+ 	swap_cache_del_folio(folio);
+ 	folio_mark_dirty(folio);
+@@ -2379,9 +2409,11 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+ failed:
+ 	if (shmem_confirm_swap(mapping, index, swap) < 0)
+ 		error = -EEXIST;
++failed_swapcache:
++	if (folio && folio_test_large(folio) && folio_test_swapcache(folio))
++		memcg1_swapin(folio);
+ 	if (error == -EIO)
+ 		shmem_set_folio_swapin_error(inode, index, folio, swap);
+-unlock:
  	if (folio)
- 		swap_update_readahead(folio, vma, vmf->address);
- 	if (!folio) {
--		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
--		if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
-+		/*
-+		 * Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices.
-+		 * The swap device is pinned while checking the flag, matching
-+		 * the existing fault path.
-+		 */
-+		if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
-+			unsigned long swapin_orders = thp_swapin_suitable_orders(vmf);
-+			unsigned long locality_orders =
-+				swapin_anon_locality_orders(vmf, swapin_orders);
-+
- 			folio = swapin_sync(entry, GFP_HIGHUSER_MOVABLE,
--					    thp_swapin_suitable_orders(vmf) | BIT(0),
--					    0, vmf, NULL, 0);
--		else
-+					    swapin_orders | BIT(0),
-+					    locality_orders, vmf, NULL, 0);
-+		} else {
- 			folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE, vmf);
-+		}
- 
- 		if (IS_ERR_OR_NULL(folio)) {
- 			/*
-@@ -5110,9 +5301,12 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 
- 	VM_BUG_ON(!folio_test_anon(folio) ||
- 			(pte_write(pte) && !PageAnonExclusive(page)));
--	set_ptes(vma->vm_mm, address, ptep, pte, nr_pages);
--	arch_do_swap_page_nr(vma->vm_mm, vma, address,
--			pte, pte, nr_pages);
-+	if (folio == swapcache && nr_pages == folio_nr_pages(folio) &&
-+	    arch_has_hw_pte_young())
-+		fault_only_young = swapin_fault_only_young(folio);
-+	set_swapin_ptes(vma, address, ptep, pte, nr_pages, page_idx,
-+			fault_only_young);
-+	arch_do_swap_page_nr(vma->vm_mm, vma, address, pte, pte, nr_pages);
- 
- 	/*
- 	 * Remove the swap entry and conditionally try to free up the swapcache.
-diff --git a/mm/swap.h b/mm/swap.h
-index dd35a310d06d..5d1c81ab49b9 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -327,6 +327,7 @@ struct folio *swapin_readahead(swp_entry_t entry, gfp_t flag,
- struct folio *swapin_sync(swp_entry_t entry, gfp_t flag, unsigned long orders,
- 			  unsigned long locality_orders, struct vm_fault *vmf,
- 			  struct mempolicy *mpol, pgoff_t ilx);
-+bool swapin_fault_only_young(struct folio *folio);
- void swap_update_readahead(struct folio *folio, struct vm_area_struct *vma,
- 			   unsigned long addr);
- 
-@@ -430,6 +431,11 @@ static inline void swap_update_readahead(struct folio *folio,
- {
- }
- 
-+static inline bool swapin_fault_only_young(struct folio *folio)
-+{
-+	return false;
-+}
-+
- static inline int swap_writeout(struct folio *folio,
- 		struct swap_iocb **swap_plug)
- {
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 5a4ca289009a..80dff6a1ee65 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -747,6 +747,21 @@ static bool zswap_needs_order0_retry(struct folio *folio)
- 	       ZSWAP_RANGE_MIXED;
- }
- 
-+/*
-+ * A speculative large swapin may install PTEs for pages that did not fault.
-+ * Keep those non-faulting PTEs old so a later anon fault can report
-+ * PTE-young density as caller-provided locality evidence without storing
-+ * state in the VMA.
-+ */
-+bool swapin_fault_only_young(struct folio *folio)
-+{
-+	if (!folio_test_large(folio) || !folio_test_swapcache(folio))
-+		return false;
-+
-+	return zswap_probe_range(folio->swap, folio_nr_pages(folio)) ==
-+	       ZSWAP_RANGE_ALL_ZSWAP;
-+}
-+
- /*
-  * If we are the only user, then try to free up the swap cache.
-  *
+ 		folio_unlock(folio);
+ failed_nolock:
 -- 
 2.34.1
 
