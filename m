@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B3D2CD6E49
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 19:00:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADC52CD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 19:22:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 787446B00B3; Fri, 29 May 2026 15:00:32 -0400 (EDT)
+	id CD8696B00AD; Fri, 29 May 2026 15:22:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75E736B00B4; Fri, 29 May 2026 15:00:32 -0400 (EDT)
+	id C61DD6B00AE; Fri, 29 May 2026 15:22:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 674A66B00B6; Fri, 29 May 2026 15:00:32 -0400 (EDT)
+	id B02CA6B00AF; Fri, 29 May 2026 15:22:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 540F86B00B3
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:00:32 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8AD0C1457
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 19:00:31 +0000 (UTC)
-X-FDA: 84821373462.03.E08A467
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A43C1140029
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 19:00:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rGKyoBT2;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 99AEC6B00AD
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:22:32 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46F471C10A3
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 19:22:32 +0000 (UTC)
+X-FDA: 84821428944.09.64DF3BF
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 326AA2000F
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 19:22:29 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oYfVDMeS;
+	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780082550; a=rsa-sha256;
+	cv=pass;
+	b=MqgH63IS+9SbLNCE7N7UyQK7mZ4Wo5784oOfVvL5a57oZon1xMl3U/vhxLJgVsl46oiWda
+	eRf1ThPySNwyNwxXDt0KtWoogZ28EBGglS8ozb6yd9LqEA74xu4Xr+f9yf7VWVdHRBxff1
+	uy9b07ud+p6VTQV+pkJTTmY8sk9N6eg=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oYfVDMeS;
+	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780081229;
+	s=arc-20220608; t=1780082550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aGQR4YysPBB/foRQIvAUmjWKvFtUy/aEBc6VLae5pA0=;
-	b=fVgLf2GdSqkROYBLB+Kq+5QyemvmrgTPHz+qaQbl60B9YLtt/FBqskQSDV9ikN8cygLBt/
-	8wq4UGMeE2JMXal7NU3sD9BKSaGmmfU5qIfSfmUdHDsexFo0NzoQPzN4+M4vpbSROT7GER
-	yZ8UrfnSMP52+vKTIYjJbZNNupTZ+Kw=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rGKyoBT2;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780081229; a=rsa-sha256;
-	cv=pass;
-	b=LZO0dweS9h0dwQ+ec7CcQqfQbEIDp8C0I1OiSMPovhBjTJGtbPbTjzI77YMWWJ2Ext6Yil
-	iY3JQ4nLfhw+/ZYV+Ow0BPeM0T1a1yOCuKOoTEY/NQg2m7Ql4+1YfhDHlnNBnWgKEbUmZU
-	hjFOX+AfYOiYNhSvzvXpp37upcgD328=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-45ebafde87cso5170592f8f.3
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 12:00:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780081228; cv=none;
+	bh=/6XCh02b00Qi+J9V1RsLv+n1OUX7vNSIf/jjmHUvXP8=;
+	b=ZRhdpJFQ16lCmPQYERAUfj+WeBCfxltGXSM4X6rk1ioHpppaf1/R0s8XFd4j6i3ZtJsjyC
+	vATsERf2wyEy1kQzz0NgvU8JYCSuz6c1yu8bnB75hG3MfiPTKm/0hrYUoNDKxRwRuagR/L
+	hfOrDElzQiSvEhrP4CjDxb/LukDDdMA=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-45ef56d9b67so486532f8f.2
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 12:22:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780082549; cv=none;
         d=google.com; s=arc-20240605;
-        b=Jz3Md5ts0ASdIhbkRYAyvT9wU7pnoT/0m4RHAHsDVxDDLLxrxm/Rz2iNKyOaecp2bu
-         hiulWfjTxFMabkLHFtM6bCkds9yIHHgIqn60NAhVfcyBY5GY0n5nlayvzL6tp/yugme4
-         pwfAuivZRpibpQPTKBy5LFk2KxHxJYqaUPhp3zjQ2eBncLMeuwNks7ioqaW6mE3umtUB
-         Od/bfd1ieAt6HEpAWn6c0VCMmKd1E7fL9mmbhnnJHNkCwpwFn++1qADD1tnaw98wzDdx
-         yZPycdpy6a6H4hvcD92A81k4NQ62+MhGpdEuqUZPthAgbskGCl74e+xLYBGbS1vgAoCP
-         Iivw==
+        b=KB0xco8tZK8cR4D492sNj20NzEhXQ7GuYkR9OS90evFyNnRRtFuxApANK7HvR3mj/g
+         i/ybcoDrVc0itWOEqM3iHC9JH9ut3YLl/SCwP2VpukOTPC31y2nwA4GTGXL0wCUr6KkG
+         PoaABKQj/NK2C/9pYyMGeG7A15ikY5ADqqqSc7Q+6G0ix1vrEdqnffWT4I2ez+GhwJd4
+         xfk70O3m7UwltHTBy3xp8DDH8+3UQOuhCy8zfDG9AVmJTr0elYC8ngTArvKjMi7uVP9s
+         EGuDlcJre4ufzPvBEVggOVi//zRsEhFCYUoyYVHVPHGOSTZ30SdrA2CVWh8gD3hKcgwv
+         KZJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=aGQR4YysPBB/foRQIvAUmjWKvFtUy/aEBc6VLae5pA0=;
-        fh=gCdIlauTWoc2iRLVu9gDiZzN7kg2RjrsHMm2QABMvCY=;
-        b=GD5t4pur6Y1MYsNc0xOHodKNQeY6yjM1XpKhB/cBoITMvMptJAVDvGpzS6I9GsX8Jz
-         EsMwehzHvD6S8Hb4S0vepKVabqrD3ONN9G6rEOjJngDWoELeRFIk81S6egu1mnGM7Nqo
-         6GXyMvVHlQWfwNHZu4BhK1WGkFWHxhH7fCr2YA/di2YNR0vEJ9y8KAxDS+u4LHG4STDI
-         PhmbKnhGM5MpwJ4LpxIbX6NeOBMfjeDA5182tDTo2xTBaR9aem1XMPOvyIcgvD6fvdZg
-         h0QZO1i58hWttVQrc+W2TAZjGul78pfkRNMJr2HrpU4+xkBvKoq0WtLRsai85/eXN0ey
-         rFIQ==;
+        bh=/6XCh02b00Qi+J9V1RsLv+n1OUX7vNSIf/jjmHUvXP8=;
+        fh=nMeHfs1qOHPXc5rvJ7woWVyHqKFzYK9Zat5+113cUDU=;
+        b=Mu4zTZDAAVGjdJuILTmnmhVfd8mWOe53atmv8hYh+XLa7UWxgPSGFNEHIdWMRvFH8M
+         Eyifiv1VSOYJyiFuS7qix17eq/E8F9i0C9Nhtl+Y67J5oMlYjHSKS9g/hE7+JO/41ks6
+         JBl3Xz/g7QpOnt2diyjNbEpfAxfO6F/xBp3UzElZ+Xbp2SFvoRorh0+QmVDrjWjqcQLx
+         8VHHru6DtCeT0z3CJXFVWoKayg15rHUvo+23LVNFZpixMKprjQ2cFpvbthFfDuqnDDSv
+         Kix+C/nhlZHvH1mPC57SrYT00W2Zumw/AIZDdrXIpura+GZ3k9u2ykgeFofT04OnIxzG
+         wDTw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780081228; x=1780686028; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780082549; x=1780687349; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aGQR4YysPBB/foRQIvAUmjWKvFtUy/aEBc6VLae5pA0=;
-        b=rGKyoBT2qX1P0eIxeCOmSHCArJSn391iuYbLPPNbywsE/uVmTkS5Yypx7GMyWG//xK
-         iCooT8ZWd0RdgS8DCz/9JOi94nbI5EyS0oDA6gTi0PmZNexQz9ocIzMvGUrUJNQCvGWb
-         97XnKU/ldhXH7roCTUzJvuIYVHUWsLS8miFRuPVKHuUFgEPfxJjVqS/dNEIBx4AZEpE2
-         Oc7yComkjq/QGuK70hzYZruyxI/raEDDEZlMHdZD8K9Aa/okQWMN6aT1SHSek5avxTE0
-         viU9NpZ/BQI41HiylDD5lREMA1BN43KB8cKlFs0bzMI1hVCqsk4nn6rH0otY27vRx4RG
-         Wo3Q==
+        bh=/6XCh02b00Qi+J9V1RsLv+n1OUX7vNSIf/jjmHUvXP8=;
+        b=oYfVDMeSe5YLAMFyDvw7W3JObvC84zEmO1+Z2EsxfWXT5AtljF/NEiSDCk2Rft+5M2
+         lcfimQhcp1DCxnj+3RHf+q2BF+KrFYiVT+ExayvQjVPzEbkW1rGGQQAhCsG8Nznv534O
+         eNQHDiCJrTdVVPMkwXB2jfCwZJ6kAgtBsiKRulZpmsxWJ4MfC6odEYtsThiHIX0kdCE4
+         omXmDn9rXYpKG4OV0sJUx3EKgKHAUi+SK1QX6jUtc6dwVmaLo2sOlLH8WYeuTOyjv+25
+         QmUK4LuxuBtd9VVKVqPkNaF/vb+pCS8I9aZ/+H8n8QbNoevF34yJvwSxnL9mAE3H42AW
+         irpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780081228; x=1780686028;
+        d=1e100.net; s=20251104; t=1780082549; x=1780687349;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=aGQR4YysPBB/foRQIvAUmjWKvFtUy/aEBc6VLae5pA0=;
-        b=avmPbFsG1YPJFiLFdWrX8X8LsPPV+2MQWt1WTN3/0ZHI5bbMJxVw4bOw7BMLl9fmOz
-         KylhnnVfSSLWk9/ArhHB+3lJZqACzy3ieJfhgtpExUZwBmVENwtUY9YBW+xbZQByjMyb
-         LMQ4POTvy99bE7ZjOxz8U4CfvIHnw/CkfeUiqwzYXLa93yAB42pK9cp8b3pif4KXEWxD
-         ZPSwJbvhckHYd/1IAXaCth4Lwo9SzziGTruNBjIVLNuIXqeay/KHI4Uw6TR9AmjmUVBz
-         NcDlDJB83dUJejy4TxpZ/jkyexvSqyPJCDhLiPGVoln2uFoCcHmarWfo+wrutd1M/Rly
-         tI1A==
-X-Forwarded-Encrypted: i=1; AFNElJ9KHEjY3cP84jSa7MCrDnztFSxU4lg76Xxkwng4YcwVGfRXcZZRpUs0pCr2qglj6H9zixJIJjJwrw==@kvack.org
-X-Gm-Message-State: AOJu0Yw2TQJLV1bytyKX+K5sRcQIj/Q9qAveCkSK52gbXw0KLKvFIQn3
-	uIySevQpVRBQOd6+s8iY19r43Zog3hdy37scVgYCsXCsiK7jaiDvIMl7rpmPZc3EASWGHUN66vw
-	1UoaAHIrVmsC6thswJXZRy/kEGV8x+EI=
-X-Gm-Gg: Acq92OHnx9dCdiT1Bc1xaJgFCF1RyC6ohboHR4B7BLaTK98b/u6BUWrOn3XL7MDIB0R
-	Lln77R+G0B4bDUUozCb/AWl4+zYUMv9GwLbv6lfV/XZHOfZ5TmOuTOmocFWzL4KHVH+lt35r6bn
-	uu7TTUug8nawrEQBmqLc4C3LZ+/dlVLC5e9f07b5SnlhM+Mf21ThtWhrNxpA7+4YQ7Vy9vvl3sw
-	wUBEWYQVOBq5bggP+IxZEIzJtwcLJlTcLDzY+s/SVxUb7cVCRz5dj4KWKBIRH5VcjuFwPVh+3AT
-	JhHWtuES8OFGdDcIJ8UGQO2IlkR2BZFk9eF3LHRhN0nKbRdtrTnXoMQ4ZGEz
-X-Received: by 2002:a5d:6e42:0:b0:45e:ec27:b4b0 with SMTP id
- ffacd0b85a97d-45ef6b6b9e5mr1263048f8f.18.1780081227932; Fri, 29 May 2026
- 12:00:27 -0700 (PDT)
+        bh=/6XCh02b00Qi+J9V1RsLv+n1OUX7vNSIf/jjmHUvXP8=;
+        b=FMC0h1pAv+2NJ6HVPy1Tg9/vOVrcdciy8m6mZHq63AUdirqq2h5XAIYuapCr+tyeOd
+         39OGKViRaZPBL4noEuSQRpNaj4YoD4xKHZVLf/gARDdDziEtByoeeNk6Z6U3PLTk9Prf
+         2kodjTsNW1OsFsWdcMEGnBFRdCS08/GeokF7lK1MIwqKaX+MKqh74uo1AOgdfRGu+sTv
+         0DxSCCLrQN13dn1XxoMp5yumflIy7lpeBGEOUpox8TQJzjeIaH3/lhHhDmPiz9UQdjMp
+         QxMk7EKp8Gjh60AyFPQJPiowW/wEWk5eeDMRxe6kDR7UMVBXtbG6MbJBC+qLjuAcKCFn
+         fVtQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/vqXgak/6PzzvAqe4usE+wy6+OdXciPBpgYBLLOevrcQdFjt0qtt2JT6mlA7OWXeBaFftqeAbW7g==@kvack.org
+X-Gm-Message-State: AOJu0YxDQ4/3tqKtYQ9/46KlHs16RmF2QVmwWQTS6MIA8osM+7mSLY4n
+	rIpyobOfV/Rw7/pVFJ9USCAaU7T7M+2e97JZ+Ry6MwUfqTF1KT767DC8R4l1LPJrwARQvwlyvLI
+	8YHfWRl346QYdhaE64oM1ZVZR4or67wY=
+X-Gm-Gg: Acq92OGAEukfcec75EuvnRn6wp+xM4Zs1wvNcDCjr6mvRGf9VTGdjScluDb02wXb6mQ
+	wlCJGrL9Y1pkAj7jfif8/34bBVrQ13J5xukhUN7/IJX6SZrnNcCpsY4OWiWmX35bjHJpfgFGyNc
+	SMZBDlFj3EEj7WCkFt7o1T+aQDkpTmzJI29DCjkafN2V7oqZuaxXdRgmHCG0jyemA76X2X6OLrj
+	XCTBjcsihOxmYgsIYkJqflsoUM2X+vgvSXjkV0hkE06UEOY5W1RdbXb/rCcJZkH7K0iKeFO2wT3
+	6iVNFC5xd2oE7eqLlYohmWlF8vVqXFKZNZqlalB2XZ4+BwlN9w==
+X-Received: by 2002:a5d:58f6:0:b0:45e:e50e:3bc with SMTP id
+ ffacd0b85a97d-45ef6b71573mr1443359f8f.29.1780082548503; Fri, 29 May 2026
+ 12:22:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com> <tencent_69E7033C2446FE6E922D28B82E9F59142D09@qq.com>
-In-Reply-To: <tencent_69E7033C2446FE6E922D28B82E9F59142D09@qq.com>
+References: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com> <tencent_913470853E9B289ECF0379248E24DFB4590A@qq.com>
+In-Reply-To: <tencent_913470853E9B289ECF0379248E24DFB4590A@qq.com>
 From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 29 May 2026 12:00:16 -0700
-X-Gm-Features: AVHnY4Lmd5EuNAmRswfTBPzH28gWST3OFE2RsUoUHLPyi7DvUKM0_DWVHRndTho
-Message-ID: <CAKEwX=O_Jt3aCxocDoY1h5AY=-eOYnj_0saQ4rMbdfnLzPAFxw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 5/9] mm: add common locality admission for zswap
+Date: Fri, 29 May 2026 12:22:17 -0700
+X-Gm-Features: AVHnY4L80PLx_iDOZ80xwVOsu9v7r1-5cHH_ebtBp8oo663yjgvDU9xhef7hoAI
+Message-ID: <CAKEwX=MDSwMoU-=h3NOG==-ru+qT3LeTi2_PADLWFXBB9aZZ+w@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 6/9] mm: provide anon locality evidence for zswap
  large swapin
 To: fujunjie <fujunjie1@qq.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
@@ -129,14 +129,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 7t9p9ihu47z3kyyn761iorz73iyrrft7
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A43C1140029
-X-HE-Tag: 1780081229-25433
-X-HE-Meta: U2FsdGVkX1+OMTzeMe7A+0VjTltmPFBQGF/NuxPjOjiHU5zgMjUwa9YX3Rx4FnhXu5iW3FFFVuiXgiLNpUt6Vq/wHpslyy92HCb22NlB1DTKs2M2aXGQSX3J1fn+UXjnwkVAG2vq463SdAmsobDjWhbik3NcSwRyLZcjT5IYEBZ1EN8Gskag1oZ9o8CkGPGCkQ3kdQx2q+pihnAPxaX0ryi6dOQKJB3bpphxWHmlx18yFKCeI7oR5D92t4qj8dk/C452a4V+ODCbJNmrKETh+QzVTsMzsaOlWFvE7onQx1fuSWiMvw6rIoYi+/61UzdwujrNT8CWObfQ0C5DmCwCWZTNnu/i48Azte2maifoItBZ0xMfvYAZ9xicUnQqqdXIYRuiB8biRM3ME5P9dagFh23yiOOZbEEuMkK1is6w+qUHp1urYjPxs7e54TgNqouYmU3ev7Afcqla83gcH+vcDoZQOt3mVLgp+AGLjBh0OMNhqtKNGvhP2MvGUU5yaEPpr+0qLdt3shOiiKLPv1TiYtgYApjA7ShG1ZIypwNxcTFsxWpE/bUhienR+PbyWHNWhWb0vTnQ9DVPJ5z/RHqk7Fqi16bOTqITtFNmTluUZHaDSh2gZlLXGf7zdRwjkKrUus+tKJhhXtqv9wZvanS36hAQrvzQkfh+lzZzvJVJlYVd7rRBKn7dD+GFAJrqeTQZnal3HQgLRG47vQCecZQrd7rPx29Fha0mnDaf4QPOT6pcQZpjgYcG6MLiwJ05opleIvqK0FRkx5ZDjH2nvFBVNKlkpYONQnbAz4T1+S0ynR/jkU7S98AtK1O35UEZ2nxGPZmheNqdlMGg9KYz7aL1evvgBkOgkjsApUk5ycdayST+pm7zsI4G8J7Iw7MT6FcBGCrLvLYMgMSIqXRHFgwwnjwTOqFnVCM6dDPhV1EcIDXjqn2sIq+Ucy1zSOTGScndxRVgcGZXixEP3by59MO
- o3GY/mPy
- lMtdqRbvLcYYy0dHt0+YAQ2Rw4a6P+hVkTtJYj8aDRYxHzmqEpedF/OXnBCRURIUlbDVXjx+N6yT498olFIQZzolsBc5zd8xwEyUj1L5rogQm4fe9zqiTcTkPMxQz2Ko0/cPi9sG0LNWVFGK6QX2Y6KGfqeP0yRHIxbVb71EeSKz9cHAKLROa9X2Co8ysxb+01Cno4eFqcNsxMoXXW1769ACAtDuAQGmyfcZrJJ9hKie1YutuF/B2qv84EhubMPnQqvn+bzOwiBKjSl456Him3AgFue8CR00voiEppdFia4lLa5AgwQj/iAhhzRYPGkITkO4BHAnirsOfqzAPiw5vq8Az3irVJcqnx94eAGzZ3MXVjPC32UvxhVUgnkVfbhP53vDm
+X-Rspamd-Queue-Id: 326AA2000F
+X-Rspamd-Server: rspam03
+X-Stat-Signature: kncgcn7w68oexj9y63cphjnnzsh5u9h3
+X-HE-Tag: 1780082549-456513
+X-HE-Meta: U2FsdGVkX1/rGoF+doESw5qs9lTVzjk3vq0oPGPgzD1XN1DGa7uV0n1BbLKSfME1fVuDqyjjTcyp85+WM49Tw2zjbhJEhXqDK708/Ku4hg+g/BmcBr9IRITOolDSt1gOhGPQGsvzOnbdW12ZWGlcWegNYextJf0g5QfwLjJ+K318OpQy7vi8bH/DD2A9e/i2pb5Qgr3WTuojBzEYmWs8+uKwVpTaf0PMivatfrRnT6+U8DFwPvci3FVUORPAk9z26KCUg8tqiDOLNlVtmgbdrk6dppJQZfc+QasIXnwnVfpy1q1Noj2y2tFF9BJVdc76/0q/5j4OzO38UnDU7O41rFg6283eO5bF6XyfRhBqWDwbT0WdyfD/q9vY+m1a4C2emlrO3M/LQl1yRatbUcNCZRfBMdUrDUyZr9XpOYvr8xRXBz5sYYtrhdrT+gSFh/sMIBS8/AjKQOWURxDLCRIbtjBOX47EBOAMcM4CEBE216AXzpyQSIsJqFk0ql36k6Bxkk/QwnrZgS6Njx8szzuxTyZAnXaGJvndF8pOSsz074Z64ay3q2J0yxEtnKtPn+rBXejxkyxfiOkGnQbP6FgNc2z+3nTZZptONP6qVE2ALNym7DqzV/2XTqUl7nO4yFjPI1MlWR1n9u3/8vSkjURYQydtFtobNZXIsgwh0ILQDGrPUECWQJoSw5ti1/Culzp8caDvGR7ggnIn1C5pI5Pkcddz5uhsCgChEjrmy+AKdXMa1QXAMJFCnCary2K4s3t1yVMG8r7htGAh/DJ/C07rH3Z9Nnx4JLT7y/skxUlxPVN4mh8CXe2sojtGq65B+NS3DREaxNuJay+AAXe78ifh3vAfEPTpcjZUiV7az2jFfI2zco0UTltnLmX5f8tQ0VI4MUbwoAlFabTkHfl452qGU4G6gOQbUMV40HAVePRL6SHibPh3al2ogXvSOj7a3tAYbz+XLvKljw3LRRtw4KH
+ 1o3rhrwC
+ /OyJIfMzSpho3gsxyPzPOHtrKdW0wMnT4QSI5TlYuRAy6AjDfcJW9GJcmzTofm8Ydhr3MvECd+2Zfojff1CktUr7MqLcwnlGNfZP4fcx0EtuPLvyzArqS0w4W6HElJhmV/sXSZooXhTObBDIiNsC4tPNpOmIFGER2keAvptUICk6FjV7XV1+TIqZiF6lJiu5GTwiq38BlQcGhe2Oj9x9jCPrg+FETbbNuefL3z0CoKslRj3WcA5OfMxJlfJ7NrcWKLn1uTgH1UlLO5e/1I8EuEKoJjCFbYNdShXalbI93MPdfHq5KFb3QxOoocfsLVh+9KsVZeFN7qZswxg4XMvvwY2+ZcffRwS53F0KBEp7wKIJiiDHH04iCEPY9G1f1ZxEADsvzSQ5zmAcCL8pp9zARrXO3Apc25SC/Py9xD7ctFPVkZgM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,328 +146,431 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, May 29, 2026 at 5:19=E2=80=AFAM fujunjie <fujunjie1@qq.com> wrote:
 >
-> Fully zswap-backed ranges are safe to load as a large folio only when
-> the caller has a reason to expect the neighbouring slots to be useful.
-> Otherwise a sparse refault can turn one 4K demand fault into a 64K
-> decompression and swapcache fill.
+> The common zswap large-swapin policy needs locality evidence from
+> callers before it can admit a large folio. For anonymous faults, provide
+> that evidence from existing VMA hints and from the PTE young state left
+> by earlier zswap-backed large swapins.
 >
-> Add a common admission gate for zswap-backed large swapin. The common
-> layer keeps backend checks, the 64K cap, recent-refault rejection, and
-> zswap reclaim-pressure rejection. It consumes a caller-provided locality
-> order mask instead of looking at anon or shmem state directly.
+> Keep non-faulting PTEs old when mapping a speculative all-zswap large
+> folio. A later fault can then require a dense young previous range before
+> admitting another large swapin without adding VMA state.
 
-Can you add more documentation about these policies, both in patch
-changelog and in code? I'm pretty confused by the
-zswap_pool_reclaim_pressure heuristics, for e.g
+Makes sense to me.
 
 >
-> Callers pass no locality evidence for now, so this patch only installs
-> the common policy hook. Later patches add anon and shmem producers.
+> This also removes the old zswap-enabled guard from the THP swapin
+> candidate scan. The common swapin path now classifies the backend range
+> and falls back to order-0 for mixed zswap/disk ranges or races.
 >
 > Signed-off-by: fujunjie <fujunjie1@qq.com>
 > ---
->  mm/memory.c     |   2 +-
->  mm/shmem.c      |   2 +-
->  mm/swap.h       |   8 ++--
->  mm/swap_state.c | 118 ++++++++++++++++++++++++++++++++++++++++++++----
->  4 files changed, 117 insertions(+), 13 deletions(-)
+>  mm/memory.c     | 234 +++++++++++++++++++++++++++++++++++++++++++-----
+>  mm/swap.h       |   6 ++
+>  mm/swap_state.c |  15 ++++
+>  3 files changed, 235 insertions(+), 20 deletions(-)
 >
 > diff --git a/mm/memory.c b/mm/memory.c
-> index d73a19692dea..92a82008d583 100644
+> index 92a82008d583..7bbb89632000 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
-> @@ -4849,7 +4849,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->                 if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
+> @@ -4556,6 +4556,35 @@ static void memcg1_swapin_retry_folio(struct folio=
+ *folio,
+>         folio_unlock(folio);
+>  }
+>
+> +static void set_swapin_ptes(struct vm_area_struct *vma,
+> +                           unsigned long address, pte_t *ptep, pte_t pte=
+,
+> +                           unsigned int nr_pages, unsigned int fault_pte=
+_idx,
+> +                           bool fault_only_young)
+> +{
+> +       struct mm_struct *mm =3D vma->vm_mm;
+> +       pte_t old_pte;
+> +
+> +       if (!fault_only_young || nr_pages =3D=3D 1) {
+> +               set_ptes(mm, address, ptep, pte, nr_pages);
+> +               return;
+> +       }
+> +
+> +       old_pte =3D pte_mkold(pte);
+> +       if (fault_pte_idx)
+> +               set_ptes(mm, address, ptep, old_pte, fault_pte_idx);
+> +
+> +       set_pte_at(mm, address + fault_pte_idx * PAGE_SIZE,
+> +                  ptep + fault_pte_idx,
+> +                  pte_mkyoung(pte_advance_pfn(pte, fault_pte_idx)));
+
+Hmm, does this mean that without THP swapin, the faulting PTE is not
+marked young, but it is marked young if there is a THP swapin. That's
+a behavioral change right? Would this throw off other heuristics
+relying on this bit, or any justification that this is fine?
+
+> +
+> +       fault_pte_idx++;
+> +       if (fault_pte_idx < nr_pages)
+> +               set_ptes(mm, address + fault_pte_idx * PAGE_SIZE,
+> +                        ptep + fault_pte_idx,
+> +                        pte_advance_pfn(old_pte, fault_pte_idx),
+> +                        nr_pages - fault_pte_idx);
+> +}
+> +
+>  static vm_fault_t pte_marker_clear(struct vm_fault *vmf)
+>  {
+>         vmf->pte =3D pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
+> @@ -4628,6 +4657,157 @@ static vm_fault_t handle_pte_marker(struct vm_fau=
+lt *vmf)
+>  }
+>
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +#define SWAPIN_ANON_YOUNG_MIN_PERCENT          75
+> +#define SWAPIN_ANON_MAX_FAULT_SKIP_SHIFT       2
+> +
+> +static bool swapin_anon_prev_young_dense(struct vm_fault *vmf,
+> +                                        unsigned int order)
+> +{
+> +       struct vm_area_struct *vma;
+> +       unsigned int nr_pages;
+> +       unsigned int threshold;
+> +       unsigned long size;
+> +       unsigned long base, prev, addr;
+> +       struct folio *first =3D NULL;
+> +       unsigned int present =3D 0;
+> +       unsigned int young =3D 0;
+> +       pmd_t *pmd;
+> +       pmd_t pmdval;
+> +       spinlock_t *ptl; /* protects the previous PTE range */
+> +       pte_t *ptep;
+> +       unsigned int i;
+> +
+> +       if (!IS_ENABLED(CONFIG_MMU) || !arch_has_hw_pte_young() || !vmf |=
+|
+> +           !vmf->vma || !vmf->pmd || !order || order > MAX_PAGE_ORDER)
+> +               return false;
+> +
+> +       nr_pages =3D 1U << order;
+> +       threshold =3D DIV_ROUND_UP(nr_pages *
+> +                                SWAPIN_ANON_YOUNG_MIN_PERCENT, 100);
+> +       size =3D PAGE_SIZE << order;
+> +
+> +       vma =3D vmf->vma;
+> +       base =3D ALIGN_DOWN(vmf->address, size);
+> +       if (base < size)
+> +               return false;
+> +
+> +       prev =3D base - size;
+> +       if (prev < vma->vm_start || prev + size > vma->vm_end)
+> +               return false;
+> +
+> +       pmd =3D vmf->pmd;
+> +       if ((prev & PMD_MASK) !=3D (base & PMD_MASK)) {
+> +               pmd =3D mm_find_pmd(vma->vm_mm, prev);
+> +               if (!pmd)
+> +                       return false;
+> +       }
+> +
+> +       pmdval =3D pmdp_get_lockless(pmd);
+> +       if (!pmd_present(pmdval) || pmd_leaf(pmdval))
+> +               return false;
+> +
+> +       ptep =3D pte_offset_map_lock(vma->vm_mm, pmd, prev, &ptl);
+> +       if (!ptep)
+> +               return false;
+> +
+> +       for (i =3D 0, addr =3D prev; i < nr_pages; i++, addr +=3D PAGE_SI=
+ZE) {
+> +               struct folio *folio;
+> +               pte_t pte =3D ptep_get(ptep + i);
+> +
+> +               if (!pte_present(pte))
+> +                       break;
+> +
+> +               folio =3D vm_normal_folio(vma, addr, pte);
+> +               if (!folio || folio_order(folio) !=3D order)
+> +                       break;
+> +               if (!first)
+> +                       first =3D folio;
+> +               else if (folio !=3D first)
+> +                       break;
+> +
+> +               present++;
+> +               if (pte_young(pte))
+> +                       young++;
+> +       }
+> +
+> +       pte_unmap_unlock(ptep, ptl);
+> +       if (present !=3D nr_pages)
+> +               return false;
+> +
+> +       return young >=3D threshold;
+> +}
+> +
+> +static bool swapin_anon_accessed_neighbour(struct vm_fault *vmf,
+> +                                          unsigned int order)
+> +{
+> +       unsigned long size;
+> +       unsigned long base;
+> +       unsigned long fault_idx;
+> +       unsigned long max_skip;
+> +
+> +       if (!vmf || !vmf->vma || !order || order > MAX_PAGE_ORDER)
+> +               return false;
+> +
+> +       size =3D PAGE_SIZE << order;
+> +       base =3D ALIGN_DOWN(vmf->address, size);
+> +
+> +       /*
+> +        * Without a sequential hint, require prior young-density evidenc=
+e and
+> +        * only allow faults near the start of the candidate range.
+> +        */
+> +       fault_idx =3D (vmf->address - base) >> PAGE_SHIFT;
+> +       max_skip =3D (1UL << order) >> SWAPIN_ANON_MAX_FAULT_SKIP_SHIFT;
+> +       if (fault_idx > max_skip)
+> +               return false;
+> +
+> +       return swapin_anon_prev_young_dense(vmf, order);
+> +}
+> +
+> +static bool swapin_anon_fault_starts_range(struct vm_fault *vmf,
+> +                                          unsigned int order)
+> +{
+> +       struct vm_area_struct *vma;
+> +       unsigned long size;
+> +       unsigned long base;
+> +       unsigned long first;
+> +
+> +       if (!vmf || !vmf->vma || !order || order > MAX_PAGE_ORDER)
+> +               return false;
+> +
+> +       vma =3D vmf->vma;
+> +       size =3D PAGE_SIZE << order;
+> +       base =3D ALIGN_DOWN(vmf->address, size);
+> +       first =3D ALIGN(vma->vm_start, size);
+> +
+> +       return base =3D=3D first && vmf->address =3D=3D base &&
+> +              base + size <=3D vma->vm_end;
+> +}
+> +
+> +static unsigned long swapin_anon_locality_orders(struct vm_fault *vmf,
+> +                                                unsigned long orders)
+> +{
+> +       struct vm_area_struct *vma =3D vmf ? vmf->vma : NULL;
+> +       unsigned long locality_orders =3D 0;
+> +       unsigned long candidates =3D orders & ~BIT(0);
+> +       int order;
+> +
+> +       if (vma && (vma->vm_flags & VM_RAND_READ))
+> +               return 0;
+> +
+> +       if (vma && (vma->vm_flags & VM_SEQ_READ))
+> +               return candidates;
+> +
+> +       while (candidates) {
+> +               order =3D fls_long(candidates) - 1;
+> +               if (swapin_anon_fault_starts_range(vmf, order) ||
+> +                   swapin_anon_accessed_neighbour(vmf, order))
+> +                       locality_orders |=3D BIT(order);
+> +               candidates &=3D ~BIT(order);
+> +       }
+> +
+> +       return locality_orders;
+> +}
+> +
+>  /*
+>   * Check if the PTEs within a range are contiguous swap entries.
+>   */
+> @@ -4644,9 +4824,9 @@ static bool can_swapin_thp(struct vm_fault *vmf, pt=
+e_t *ptep, int nr_pages)
+>         if (!pte_same(pte, pte_move_swp_offset(vmf->orig_pte, -idx)))
+>                 return false;
+>         /*
+> -        * swap_read_folio() can't handle the case a large folio is hybri=
+dly
+> -        * from different backends. And they are likely corner cases. Sim=
+ilar
+> -        * things might be added once zswap support large folios.
+> +        * swap_read_folio() can't do mixed-backend large folio IO. The c=
+ommon
+> +        * synchronous swapin path will recheck backend state and fall ba=
+ck to
+> +        * order-0 if a zswap/disk race makes the range mixed.
+>          */
+>         if (swap_pte_batch(ptep, nr_pages, pte) !=3D nr_pages)
+>                 return false;
+> @@ -4693,14 +4873,6 @@ static unsigned long thp_swapin_suitable_orders(st=
+ruct vm_fault *vmf)
+>         if (unlikely(userfaultfd_armed(vma)))
+>                 return 0;
+>
+> -       /*
+> -        * A large swapped out folio could be partially or fully in zswap=
+. We
+> -        * lack handling for such cases, so fallback to swapping in order=
+-0
+> -        * folio.
+> -        */
+> -       if (!zswap_never_enabled())
+> -               return 0;
+> -
+>         entry =3D softleaf_from_pte(vmf->orig_pte);
+>         /*
+>          * Get a list of all the (large) orders below PMD_ORDER that are =
+enabled
+> @@ -4708,10 +4880,13 @@ static unsigned long thp_swapin_suitable_orders(s=
+truct vm_fault *vmf)
+>          */
+>         orders =3D thp_vma_allowable_orders(vma, vma->vm_flags, TVA_PAGEF=
+AULT,
+>                                           BIT(PMD_ORDER) - 1);
+> +       if (!orders)
+> +               return 0;
+>         orders =3D thp_vma_suitable_orders(vma, vmf->address, orders);
+> +       if (!orders)
+> +               return 0;
+>         orders =3D thp_swap_suitable_orders(swp_offset(entry),
+>                                           vmf->address, orders);
+> -
+>         if (!orders)
+>                 return 0;
+>
+> @@ -4741,6 +4916,12 @@ static unsigned long thp_swapin_suitable_orders(st=
+ruct vm_fault *vmf)
+>  {
+>         return 0;
+>  }
+> +
+> +static unsigned long swapin_anon_locality_orders(struct vm_fault *vmf,
+> +                                                unsigned long orders)
+> +{
+> +       return 0;
+> +}
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>
+>  /* Sanity check that a folio is fully exclusive */
+> @@ -4777,6 +4958,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>         unsigned long page_idx;
+>         unsigned long address;
+>         pte_t *ptep;
+> +       bool fault_only_young =3D false;
+>
+>         if (!pte_unmap_same(vmf))
+>                 goto out;
+> @@ -4845,13 +5027,22 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>         if (folio)
+>                 swap_update_readahead(folio, vma, vmf->address);
+>         if (!folio) {
+> -               /* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devic=
+es */
+> -               if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
+> +               /*
+> +                * Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devic=
+es.
+> +                * The swap device is pinned while checking the flag, mat=
+ching
+> +                * the existing fault path.
+> +                */
+> +               if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
+> +                       unsigned long swapin_orders =3D thp_swapin_suitab=
+le_orders(vmf);
+> +                       unsigned long locality_orders =3D
+> +                               swapin_anon_locality_orders(vmf, swapin_o=
+rders);
+> +
 >                         folio =3D swapin_sync(entry, GFP_HIGHUSER_MOVABLE=
 ,
->                                             thp_swapin_suitable_orders(vm=
+> -                                           thp_swapin_suitable_orders(vm=
 f) | BIT(0),
-> -                                           vmf, NULL, 0);
-> +                                           0, vmf, NULL, 0);
->                 else
+> -                                           0, vmf, NULL, 0);
+> -               else
+> +                                           swapin_orders | BIT(0),
+> +                                           locality_orders, vmf, NULL, 0=
+);
+> +               } else {
 >                         folio =3D swapin_readahead(entry, GFP_HIGHUSER_MO=
 VABLE, vmf);
+> +               }
 >
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 56c23a7b15c7..fa99b48ed62b 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2031,7 +2031,7 @@ static struct folio *shmem_swap_alloc_folio(struct =
-inode *inode,
+>                 if (IS_ERR_OR_NULL(folio)) {
+>                         /*
+> @@ -5110,9 +5301,12 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 >
->  again:
->         mpol =3D shmem_get_pgoff_policy(info, index, order, &ilx);
-> -       folio =3D swapin_sync(entry, gfp, BIT(order), vmf, mpol, ilx);
-> +       folio =3D swapin_sync(entry, gfp, BIT(order), 0, vmf, mpol, ilx);
->         mpol_cond_put(mpol);
+>         VM_BUG_ON(!folio_test_anon(folio) ||
+>                         (pte_write(pte) && !PageAnonExclusive(page)));
+> -       set_ptes(vma->vm_mm, address, ptep, pte, nr_pages);
+> -       arch_do_swap_page_nr(vma->vm_mm, vma, address,
+> -                       pte, pte, nr_pages);
+> +       if (folio =3D=3D swapcache && nr_pages =3D=3D folio_nr_pages(foli=
+o) &&
+> +           arch_has_hw_pte_young())
+> +               fault_only_young =3D swapin_fault_only_young(folio);
+> +       set_swapin_ptes(vma, address, ptep, pte, nr_pages, page_idx,
+> +                       fault_only_young);
+> +       arch_do_swap_page_nr(vma->vm_mm, vma, address, pte, pte, nr_pages=
+);
 >
->         if (!IS_ERR(folio))
+>         /*
+>          * Remove the swap entry and conditionally try to free up the swa=
+pcache.
 > diff --git a/mm/swap.h b/mm/swap.h
-> index ea7e1f3c4410..dd35a310d06d 100644
+> index dd35a310d06d..5d1c81ab49b9 100644
 > --- a/mm/swap.h
 > +++ b/mm/swap.h
-> @@ -323,9 +323,10 @@ struct folio *read_swap_cache_async(swp_entry_t entr=
-y, gfp_t gfp_mask,
->  struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t flag,
->                 struct mempolicy *mpol, pgoff_t ilx);
->  struct folio *swapin_readahead(swp_entry_t entry, gfp_t flag,
-> -               struct vm_fault *vmf);
-> +                       struct vm_fault *vmf);
+> @@ -327,6 +327,7 @@ struct folio *swapin_readahead(swp_entry_t entry, gfp=
+_t flag,
 >  struct folio *swapin_sync(swp_entry_t entry, gfp_t flag, unsigned long o=
 rders,
-> -                          struct vm_fault *vmf, struct mempolicy *mpol, =
-pgoff_t ilx);
-> +                         unsigned long locality_orders, struct vm_fault =
+>                           unsigned long locality_orders, struct vm_fault =
 *vmf,
-> +                         struct mempolicy *mpol, pgoff_t ilx);
+>                           struct mempolicy *mpol, pgoff_t ilx);
+> +bool swapin_fault_only_young(struct folio *folio);
 >  void swap_update_readahead(struct folio *folio, struct vm_area_struct *v=
 ma,
 >                            unsigned long addr);
 >
-> @@ -418,7 +419,8 @@ static inline struct folio *swapin_readahead(swp_entr=
-y_t swp, gfp_t gfp_mask,
->
->  static inline struct folio *swapin_sync(
->         swp_entry_t entry, gfp_t flag, unsigned long orders,
-> -       struct vm_fault *vmf, struct mempolicy *mpol, pgoff_t ilx)
-> +       unsigned long locality_orders, struct vm_fault *vmf,
-> +       struct mempolicy *mpol, pgoff_t ilx)
+> @@ -430,6 +431,11 @@ static inline void swap_update_readahead(struct foli=
+o *folio,
 >  {
->         return NULL;
->  }
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index f03ad4832f16..5a4ca289009a 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -21,6 +21,7 @@
->  #include <linux/migrate.h>
->  #include <linux/vmalloc.h>
->  #include <linux/huge_mm.h>
-> +#include <linux/sizes.h>
->  #include <linux/zswap.h>
->  #include <linux/shmem_fs.h>
->  #include "internal.h"
-> @@ -556,6 +557,24 @@ static struct folio *swap_cache_alloc_speculative_fo=
-lio(swp_entry_t targ_entry,
->                                         mpol, ilx, true);
 >  }
 >
-> +/*
-> + * Initial conservative cap for speculative zswap large swapin. Locality
-> + * evidence is supplied by the caller or by generic VMA hints; the commo=
-n
-> + * swapin layer keeps backend safety and pressure decisions here.
-> + */
-> +#define SWAPIN_ZSWAP_MAX_SIZE                  SZ_64K
-> +#if PAGE_SIZE < SWAPIN_ZSWAP_MAX_SIZE
-> +#define SWAPIN_ZSWAP_MAX_ORDER                 \
-> +       ilog2(SWAPIN_ZSWAP_MAX_SIZE / PAGE_SIZE)
-> +#else
-> +#define SWAPIN_ZSWAP_MAX_ORDER                 0
-> +#endif
-> +
-> +struct zswap_admit_ctx {
-> +       bool pressure_checked;
-> +       bool reclaim_pressure;
-> +};
-> +
->  static bool swapin_zeromap_same(swp_entry_t entry, unsigned int nr_pages=
-)
->  {
->         unsigned int ci_start =3D swp_cluster_offset(entry);
-> @@ -586,11 +605,84 @@ static bool swapin_zeromap_same(swp_entry_t entry, =
-unsigned int nr_pages)
->         return true;
->  }
->
-> +static bool swapin_zswap_locality(struct vm_fault *vmf, unsigned int ord=
-er,
-> +                                 unsigned long locality_orders)
+> +static inline bool swapin_fault_only_young(struct folio *folio)
 > +{
-> +       struct vm_area_struct *vma =3D vmf ? vmf->vma : NULL;
-> +
-> +       if (!order || order > MAX_PAGE_ORDER)
-> +               return false;
-> +
-> +       if (vma && (vma->vm_flags & VM_RAND_READ))
-> +               return false;
-
-what about VM_SEQ_READ?
-
-> +
-> +       return locality_orders & BIT(order);
-> +}
-> +
-> +static bool swapin_zswap_refaulted(swp_entry_t entry, unsigned int nr_pa=
-ges)
-
-nit: this does not seem zswap-specific. Just call it
-swapin_range_refaulted or sth like that, maybe?
-
-> +{
-> +       unsigned int type =3D swp_type(entry);
-> +       pgoff_t offset =3D swp_offset(entry);
-> +       unsigned int i;
-> +
-> +       for (i =3D 0; i < nr_pages; i++) {
-> +               bool workingset;
-> +               void *shadow;
-> +
-> +               shadow =3D swap_cache_get_shadow(swp_entry(type, offset +=
- i));
-
-This seems inefficient. Can't we just lock the swap cluster once,
-check all the shadow in the range, instead of repeatedly getting then
-dropping the swap cluster lock?
-
-> +               if (!shadow)
-> +                       continue;
-> +               if (workingset_test_recent(shadow, false, &workingset, fa=
-lse) &&
-> +                   workingset)
-> +                       return true;
-> +       }
-> +
 > +       return false;
 > +}
 > +
-> +static bool swapin_zswap_admit(swp_entry_t entry,
-> +                              unsigned int order, unsigned int nr_pages,
-> +                              struct vm_fault *vmf,
-> +                              unsigned long locality_orders,
-> +                              struct zswap_admit_ctx *ctx)
+>  static inline int swap_writeout(struct folio *folio,
+>                 struct swap_iocb **swap_plug)
+>  {
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 5a4ca289009a..80dff6a1ee65 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -747,6 +747,21 @@ static bool zswap_needs_order0_retry(struct folio *f=
+olio)
+>                ZSWAP_RANGE_MIXED;
+>  }
+>
+> +/*
+> + * A speculative large swapin may install PTEs for pages that did not fa=
+ult.
+> + * Keep those non-faulting PTEs old so a later anon fault can report
+> + * PTE-young density as caller-provided locality evidence without storin=
+g
+> + * state in the VMA.
+> + */
+> +bool swapin_fault_only_young(struct folio *folio)
 > +{
-> +       if (order > SWAPIN_ZSWAP_MAX_ORDER)
+> +       if (!folio_test_large(folio) || !folio_test_swapcache(folio))
 > +               return false;
 > +
-> +       /*
-> +        * Treat zswap-backed large swapin as speculative. The common lay=
-er
-> +        * consumes caller-provided locality orders, but does not inspect
-> +        * anon-specific PTE state or shmem-specific mapping state direct=
-ly.
-> +        */
-> +       if (!swapin_zswap_locality(vmf, order, locality_orders))
-> +               return false;
-> +
-> +       /*
-> +        * A recent workingset refault shadow in the target range means r=
-eclaim
-> +        * already saw churn there. Keep the refault path narrow instead =
-of
-> +        * speculatively decompressing neighbouring slots.
-> +        */
-> +       if (swapin_zswap_refaulted(entry, nr_pages))
-> +               return false;
-
-Hmm this depends. If it's just a refault coming from a speculative
-read (readhead or THP (z)swpin), which is then promptly discarded,
-then yeah we should backoff here. But maybe the refaulted page is
-workingset one?
-
-But yeah I guess it is better to be cautious when you are uncertain :)
-
-
-> +
-> +       if (!ctx->pressure_checked) {
-> +               ctx->reclaim_pressure =3D zswap_pool_reclaim_pressure();
-> +               ctx->pressure_checked =3D true;
-> +       }
-
-Why do we backoff if there is zswap_pool_reclaim_pressure (which only
-check if the pool is full ONCE in its lifetime)? What's the rationale
-here?
-
-> +       if (ctx->reclaim_pressure)
-> +               return false;
-> +
-> +       return true;
+> +       return zswap_probe_range(folio->swap, folio_nr_pages(folio)) =3D=
+=3D
+> +              ZSWAP_RANGE_ALL_ZSWAP;
 > +}
 > +
->  static unsigned long swapin_admit_orders(swp_entry_t entry,
-> -                                        unsigned long orders)
-> +                                        unsigned long orders,
-> +                                        struct vm_fault *vmf,
-> +                                        unsigned long locality_orders)
->  {
->         unsigned long candidates =3D orders & ~BIT(0);
->         unsigned long admitted =3D orders & BIT(0);
-> +       struct zswap_admit_ctx zswap_ctx =3D {};
->         int order;
->
->         if (!candidates)
-> @@ -616,9 +708,14 @@ static unsigned long swapin_admit_orders(swp_entry_t=
- entry,
->
->                 state =3D zswap_probe_range(range_entry, nr_pages);
->                 switch (state) {
-> +               case ZSWAP_RANGE_ALL_ZSWAP:
-> +                       admit =3D swapin_zswap_admit(range_entry, order,
-> +                                                  nr_pages, vmf,
-> +                                                  locality_orders,
-> +                                                  &zswap_ctx);
-> +                       break;
->                 case ZSWAP_RANGE_MIXED:
->                         break;
-> -               case ZSWAP_RANGE_ALL_ZSWAP:
->                 case ZSWAP_RANGE_NEVER_ENABLED:
->                 case ZSWAP_RANGE_NO_ZSWAP:
->                         admit =3D true;
-> @@ -769,8 +866,8 @@ static struct folio *swap_cache_read_folio(swp_entry_=
-t entry, gfp_t gfp,
->         ret =3D swap_read_folio(folio, plug);
->         /*
->          * Swap readahead allocates order-0 folios. -EAGAIN is reserved f=
-or
-> -        * retryable large zswap backend races and must be handled by the
-> -        * synchronous common swapin path.
-> +        * retryable large zswap backend races and should never escape to=
- this
-> +        * order-0 path.
->          */
->         VM_WARN_ON_ONCE(ret =3D=3D -EAGAIN);
->         if (readahead) {
-> @@ -786,6 +883,7 @@ static struct folio *swap_cache_read_folio(swp_entry_=
-t entry, gfp_t gfp,
->   * @entry: swap entry indicating the target slot
->   * @gfp: memory allocation flags
->   * @orders: allocation orders
-> + * @locality_orders: orders with caller-provided locality evidence
->   * @vmf: fault information
->   * @mpol: NUMA memory allocation policy to be applied
->   * @ilx: NUMA interleave index, for use only when MPOL_INTERLEAVE
-> @@ -794,16 +892,20 @@ static struct folio *swap_cache_read_folio(swp_entr=
-y_t entry, gfp_t gfp,
->   * existing folio in the swap cache for @entry. This initiates the IO, t=
-oo,
->   * if needed. @entry is rounded down if @orders allow large allocation.
+>  /*
+>   * If we are the only user, then try to free up the swap cache.
 >   *
-> - * Context: Caller must ensure @entry is valid and pin the swap device w=
-ith refcount.
-> + * Context: Caller must ensure @entry is valid and pin the swap device w=
-ith
-> + * refcount.
->   * Return: Returns the folio on success, error code if failed.
->   */
-> -struct folio *swapin_sync(swp_entry_t entry, gfp_t gfp, unsigned long or=
-ders,
-> -                          struct vm_fault *vmf, struct mempolicy *mpol, =
-pgoff_t ilx)
-> +struct folio *swapin_sync(swp_entry_t entry, gfp_t gfp,
-> +                         unsigned long orders,
-> +                         unsigned long locality_orders,
-> +                         struct vm_fault *vmf, struct mempolicy *mpol,
-> +                         pgoff_t ilx)
->  {
->         struct folio *folio;
->         int ret;
->
-> -       orders =3D swapin_admit_orders(entry, orders);
-> +       orders =3D swapin_admit_orders(entry, orders, vmf, locality_order=
-s);
->  again:
->         do {
->                 folio =3D swap_cache_get_folio(entry);
 > --
 > 2.34.1
 >
