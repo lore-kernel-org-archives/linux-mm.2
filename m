@@ -4,132 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E9B7CD5BD2
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 09:56:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D2B7CD5BD2
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 10:01:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 478B86B0005; Fri, 29 May 2026 05:56:34 -0400 (EDT)
+	id A9B076B0088; Fri, 29 May 2026 06:01:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42A0E6B0088; Fri, 29 May 2026 05:56:34 -0400 (EDT)
+	id A4B8E6B008A; Fri, 29 May 2026 06:01:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33F7D6B008A; Fri, 29 May 2026 05:56:34 -0400 (EDT)
+	id 93A726B008C; Fri, 29 May 2026 06:01:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 24FA56B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:56:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C089916310C
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 09:56:33 +0000 (UTC)
-X-FDA: 84820002666.01.FCF63F6
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D11BC40009
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 09:56:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eLkvPkcV;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8054E6B0088
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:01:31 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D0851C0BB9
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 10:01:31 +0000 (UTC)
+X-FDA: 84820015182.16.69C549E
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3A3DD10000F
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 10:01:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=reQyoAZg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1ck1i2jT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=R9MbOLjn;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8dtnSBU8;
+	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780048591;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1780048889;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QlBVL2w9TAGD5JVBams2MPk6DO1Ps9XKY2pj6ZAb950=;
-	b=alggYpUg+BNNJn4dhWAc/7EfW0s2CQfaWLsPdOTyzJ5g+wLInXRHjvTWc4uGfcni8mRhsb
-	bVF6OOHWXrs3xF1rp9slr8ht9E+AKYO/zxkudHFkI9O09AguVw12/D7/j5IKB0yRpAmzYa
-	dOdYdIwwlxHo2pYs1lJC/YgddT8rFNo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780048591; a=rsa-sha256;
-	cv=none;
-	b=aZ9ejeOXajjOR+klDbCT7xffWArVVB9m0zg4ZLIu92LkKcUF4pzkFV45hbbSJNSOH6xXij
-	gACp+k8tvqesTuw3tIGJk+Z6xr30wZmdkzWKBu9AmiwIBFtUsiAXjwKLgJ77TO4C5jvGPN
-	WV6LS6WOpjfSHisTnKdP2FPoMrsDthM=
+	bh=IDCpu1/nuWgxfdw1LsjaHJ9L6YwcwToPNO7yEAIUT+Q=;
+	b=fFj6BDOJdtmfQeIMNjuD1ub+sjLz6+YEvRokhVQR2/MoSlwHnYIu3oAWYUq7aBrvqqR8hD
+	JOmgNg5hy/SNl/j9SXRKgIHCZ+iBoMR9TguHWHJb3sYPAkQhXtAjoMYllKGM8KOn4RhPQA
+	anjFbSzr2QHpNL8TMwU1CQvygbNpp+M=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eLkvPkcV;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-45ef1629ff4so357079f8f.0
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 02:56:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780048590; x=1780653390; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QlBVL2w9TAGD5JVBams2MPk6DO1Ps9XKY2pj6ZAb950=;
-        b=eLkvPkcVnjv/X8sfIJiJd50Vgb8tJkkzEp1zsCIbMOiuM2G0nozLe+jHI1jnWmZpOy
-         jtVU6/vkmzY9h7OogFqAFx3bIutxW1N4iMqiLIkbkQcSrquyV7jkMOj7fjRwDJ7bkUUh
-         3iN7hqUF0sWcTKcXqZ+A+R930JNuZBOnxVzPkKiMlXTMzwRmsX2wm77CtJFK7/xTvA9O
-         GpCJKFQP0ddwJ5SXBn8CNY3+tJ6xvboIkxDm1jwo6k7f1QYgmXJjQ0f/3ppK+rS4ZJXq
-         XjcK6W0ky0fLhX8VJ7MWDdVPDeQTBgherMKtFAOEa4jJZyKD6mQj2CaQ7oP89HDx4aU4
-         N4Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780048590; x=1780653390;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QlBVL2w9TAGD5JVBams2MPk6DO1Ps9XKY2pj6ZAb950=;
-        b=oeFTOXpWKVldOuxYZHhev+tp/rTldRwrnfkk6cjBJdhn5bMQVgBbiLJYjb1ziRtALw
-         Z6IDs+A0FVCM6X9EYR9gk8XyOaDmnMepdL8SKg3HS2j6hY9ZqPGnrzulHXh04F6liyMa
-         8AzU27cJH3puGGJotCngoqXspHU66k8yQSF2PfvFuJkSGwYPGBqOC3Ndub5y77tGxV6i
-         m9OcISpnCYAnNiI63PycusB2ZRCON/30YtPXVQ/3GooXciuE0nPma1GE7hnQXYAi5W09
-         lEUOpGCi8aOY6F4D3LyKpfD+NlFB6SZl17ae5b7RvDw2/oNzLTrp13w7BOy+noRCpewr
-         ++Xw==
-X-Forwarded-Encrypted: i=1; AFNElJ8godZghbCQ90K9Xpr/BUOk99ViUxbCwqlx9fj+XfebI4jH7rItD+ygzKO1jc7rnklQO/zKQUsdZw==@kvack.org
-X-Gm-Message-State: AOJu0YwOjsHp2uELFNlMFFf4Oaj+AKF4flvbDeaCobp8WWs0Yhr27nX1
-	yOF2DdPasgODGnw0eSLSZS+dfB/R7Z4dn1rqYdBZc5cvnzquhDwGBRA6
-X-Gm-Gg: Acq92OH5YlMab43fPSUiJyN6K+op1I3yBxPae/2SJXQN2PUaN3XgrAIqLt6oF6oJrmu
-	WsNSLcCQWYPlYkdt+heKt4d5kI4P9mJIl8B8Ps/yCUVWYcq3rJWnbxRoBemiKb5mdiXvAin9pgq
-	GzTCpmSA3oy1avQtzHo6EOyxmRc2/k0o1Dy1+hq8hHbIH75jtsGZ+rBZdwg3EkUX0L8bwMr679O
-	A+W7z0RRTG+SrJSvDpEAcTfErM7zmHOuHb1Oq5jYtsRMA1vkd99ykAKhQWlOrr9QWm/Sy/hm+Ax
-	Dbd3q+UvUmAwC+ZHVGrn3x+K1cDyPSdzNLR7WD3qKfFwKNOLZ0MZAh4xiOSVODmCpM3Xx+QuUKa
-	au8gdNWqkbojSzULvyI13C+K0Yt93RUdMuDDQrAnSmZq59+DxIQP/F/rwRojYW1/Rcfeo1H+g4j
-	PzJl8M2ozAI+ij2GukmaNR04tz0NyxgusG
-X-Received: by 2002:a05:600c:c168:b0:490:50eb:b777 with SMTP id 5b1f17b1804b1-4909c07267dmr43425645e9.5.1780048589855;
-        Fri, 29 May 2026 02:56:29 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c09ab75sm11200965e9.6.2026.05.29.02.56.28
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 29 May 2026 02:56:29 -0700 (PDT)
-Date: Fri, 29 May 2026 09:56:28 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Kairui Song <ryncsn@gmail.com>,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>, Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 5/9] mm: list_lru: deduplicate lock_list_lru()
-Message-ID: <20260529095628.nagjdy3f24z6qjtk@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260527204757.2544958-1-hannes@cmpxchg.org>
- <20260527204757.2544958-6-hannes@cmpxchg.org>
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=reQyoAZg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1ck1i2jT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=R9MbOLjn;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8dtnSBU8;
+	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780048889; a=rsa-sha256;
+	cv=none;
+	b=AuBVhZJWgjaTWvtzu0XgwIAs8ikSf26PLiDV5+UZes1D2N9MjXiQOPqasWElGJ/oQtBp5D
+	03lrJ/TulBQdkoOGfe580XgwoaNnVcJnPqbjd4M9944lP3qgboE53rsleGLLRAfSp+m6U+
+	cJj1vqBf/kGITBv9+LAhAZ3/LZ9TCHM=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DDF066AADA;
+	Fri, 29 May 2026 10:01:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780048887; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IDCpu1/nuWgxfdw1LsjaHJ9L6YwcwToPNO7yEAIUT+Q=;
+	b=reQyoAZggaokCNF1+0IkBjyJV72pNQ5r6ET1CR/g/LQfhNd6xCcPR9XLudh+nM7iUKWBVf
+	BuQ1Cpazko0Of4tlGW5M0CH7OTeTuoJe6VwIy8g1nuE71kvaeTCaBnYc1027ZUUimsUJtS
+	Hy9cHwMBT6yCLUf2aJZhQZzweUj4JJ8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780048887;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IDCpu1/nuWgxfdw1LsjaHJ9L6YwcwToPNO7yEAIUT+Q=;
+	b=1ck1i2jT0HYfHibf1hHQDlmVSZbD6UgcIrXbtrCJzfHZuSETmb/WiPxaV6xxJj7MqJiAXi
+	3FQNPTLDZGvG3lDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780048883; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IDCpu1/nuWgxfdw1LsjaHJ9L6YwcwToPNO7yEAIUT+Q=;
+	b=R9MbOLjnfaB2OW5h+RPzQd1GQdd/hX9knnauDawYIpyznWihIT9ezMl7VjfwWKHA8ehS+7
+	5Si53dwcl4+/Xo4JPBj6XnR1v/f4o14yiMnDDiXi22woGtIPSlOXMe21y5gtUcA5s7SwW2
+	CBWkiDImwPBOD75ig5qfV1Cgcrao6nI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780048883;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IDCpu1/nuWgxfdw1LsjaHJ9L6YwcwToPNO7yEAIUT+Q=;
+	b=8dtnSBU8SRtvS0iRSEMWihwBKq5EHV3pfDBhkQnqsaV46vO3PCbFFla6qu6WdqzEqV9/sv
+	DwiELJFLHklF+sAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8797A779A7;
+	Fri, 29 May 2026 10:01:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id I2KYHfFjGWrNcwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 29 May 2026 10:01:21 +0000
+Date: Fri, 29 May 2026 11:01:19 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org, r@hev.cc, jack@suse.cz, 
+	Andrew Donnellan <andrew+kernel@donnellan.id.au>, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com, dev.jain@arm.com, 
+	kees@kernel.org, kevin.brodsky@arm.com, lance.yang@linux.dev, 
+	"Liam R. Howlett" <liam@infradead.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com, 
+	npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com, 
+	rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Al Viro <viro@zeniv.linux.org.uk>, wilts.infradead.org@pedro-suse.lan, ziy@nvidia.com, 
+	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH v6 2/2] mm: use mapping_max_folio_order() for
+ force_thp_readahead order
+Message-ID: <ahlh2vdHEGo6ZSot@pedro-suse.lan>
+References: <20260528165635.2068012-1-usama.arif@linux.dev>
+ <20260528165635.2068012-3-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260527204757.2544958-6-hannes@cmpxchg.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20260528165635.2068012-3-usama.arif@linux.dev>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D11BC40009
-X-Stat-Signature: rhwp43ow8t8d4jd4me7d6aipdgdg6maz
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1780048591-47818
-X-HE-Meta: U2FsdGVkX18yCGnsQcRDzgyw6Fkuqqu8IM+QO9uuYozvYKLcygE5EE+0wxLxuP93edmhv60M3FxpxnRo73FVFd5w3cMVPuBLTgYhhEIAE2R8WWL2zUEYn60K6zWsQGUGzyJjIR/CnhjNJcNjV2NSkdeHgYXP4Ls5aQlGd7WV8a2pxBQ9+gSX6a4H1AL7sVvV55c25/s0EgwNBYylCebcUJmwljguCL1N9c1SuW4FX6mPP1/uT9hnhu9bQMhDqB6VyGBuLri9poXsXdvzdIb5VIajJKXNcVZkDlpXAqkp+NQlKAQR0RwFGQHqopuVhTuEbaOzbAf0AaXFjJa9Lxxoj0nsLkk4Xhv4ou0OJMsB7ixYBCMFvE3JtGKnFv0oiFeFzXdJwycRn7UtllfDWdCIVGD3MYS5sChSTSr9L5htlX33nlBixwG/VWCRjBcbRRxYu6jf9+TMX+N62LYzTZgaQ3KWyuuKOpXx4PqNs0VWC8/g45XPcXWPpfLy3APpaGNQwloEoxCGfkkC3y55WBqPf3Bzpl9WweSfszZtW/Gg1Pdc1BDFIMTDyP9yOJsNS+1mOIt8tWoKYSmpryaww4NLxxaN6iq2m5wzqy6jAU+5yUWQlBu4tyBU3p+i2w+VL7FFEGFO5fDSN9nYh/M9sjobj0p0QS8XHuNhxmEQhKj/iqevWqcGsBmOSWKoPg4gAdadeGUxBeq2JSWKWlfVUNcsDqraR/cEstt8zX2E5a38cYE8bQNARt9OjswTeYfBQ3NV8TsZLf/7v0YR4KcoG+utnLbwZ9IJHP0TjSDIZirhMjHxtpz6S6kgWmmfzInDFzUZXX66HjvPycLMeL53/ooyLGGJ0eUGUk0390leuw4QNmjbEduRteRu7iBGzKdmXgjwBk0uvs6K3VuXL8uESIptE7spuLMmS+jqJlYK+3/1ywWxJdgHYatA6oyGUbcAioX8nWp/c+6y4D9w2jjXKVW
- hybFIjck
- fk/shbYAl9TzU9wIIUlLkq57T0XAM03bcVsOK9Pl2oixTf/+Iu99zS7xwVfWspLW5E1dQpAhTJ216SEYTkjeg/1mGKLkJId48dmD589+kqwznPTWgv8ujay+BWRR7gEE4fz06WOAMmhs5iK7GlNsTKJWa2LHBKIlbwWHhowoaIc61f0iu1y5ecDPhcCzAU0UeA72P44BIzBWCksSEPop8WPOQyAh3IAvgN0t7kHgPxukS/GyyeBYi6wBmIb/TDETgLS1JOnVdLVERFdBVGZ/bbdSrb6Ax96sTp9eNTtfToj8cScwA0AOsHdZ1iBHC+7NRQBJZib4bVBotiL+41PWzuKbYuMDWdbU4M12IzfCSFqUyS9tchJZOAiiaW0PYSAi6jEGprSi6JliqrVdQPNl8o67zTdiIH6WUu37Wcs0Jfrynml4RXFntfyLb19lVLGd32/QHzExO8gPG6An/PoykR4k1leIN2ZnnFeDd/LdbRNo8Mb3rOLIUNLHDKYG/uhtETGII3x+cVF1IcMpLL6VFHM2/CsVVtW2GVgCkui5Vhug1eptyEE3YeYiTE0H84qyV2/i33egtcKBEidUn0dx9N/NKW5OIiHI6PmkguNx5cbNeskYVJ4LNRVeLD3+xExipyHfVbgULVVnCsIO7giUQ0AcMpRs2blP498sF29A/zKnhVxR2zSMsvpCahluCiMWXXhaWn4yf3bw2LlZlFLSnTEhS/C+EGJazDJUPama5NlMwISvvAWLPBcaN/Mhvu4WO4qClkOaw5bKxp+Zfgen4xNVZloFwppw9QV21QQqc5G6hATZGDYqMJw7F19Qh92GneqQ9
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3A3DD10000F
+X-Stat-Signature: y17nczy9nwjjoxdi944k35kbwzhppthm
+X-HE-Tag: 1780048889-138589
+X-HE-Meta: U2FsdGVkX1+w/XbS50Xrmx7I4q96Yjjk20F3ju2EWjZ7QOhUdMsgJYbuKsgKZzAIQEfCcQbVLdT2Pbf2Ta6J7j8/G84JnS50Vpl8IeiAiPQ7xUGLu5dqwD9Gjgmr3yP5PwinsHq+r2eRbd88Y0/5gt9zf6xNbAJsjNaPVl6R4Kz1DlD9WdHVvBLdbJ/ahKZ1d9RjpQ9TOh8hHp/U/iVNzoYKzY6knUS3DTepJa9+/3tWaW/6WBgD30CZKRZq2Y8cuAE2KNwHWJMYVVB2V1JmUkBC79qJkQBlxM1p35h3W7gH6rZO3dlY00ITF3RTVywFMUxhvgs0/Azep4SAgEABSIXo42Q+npYxgWGa5A+VKasxhzuWLO7ogZvxfAPtls6hDNMoe1joa4KcHhn0VaSN/q38qZfR/7UgFNgCCDwi1fwnq3vZYk4HTWdjR4PLq7290sZG085sYDRE1llhDUx/SGprFKns/piI6KXrwzzhPYrk1cCM0UtO+O8M1aQwM+0KKQT2Y224wF8QeInpjhy0TUeiyBmVtEEU8gxef02k59SnsNmA9QTObdZtiH2n7KriW5Hawe4giyXMCpPQ9Lf05ZRBdTo2ipNGLwVmu2HfDkUhvpW7nv8NdnUwt54PP02qy3B8LVOz47SYHZuFJwEOy0isAGQs0JLUfstW9EDPkOMyIUONpGPtUtwShlPYZuRUgFkee4R5p10VhRBqfxxjfPzYTDvTmb7EikhbjlhcVv8YTa5EHyxwpF9BwKosM6sdd9F4EO2bU7WZlLWbjyjxLDhyW1FVyfC2oT7UE6mJOgnVsFfrITE84ZZwNJDMztrO/uXODLRTlM9Ak0bfBRlxHW6nb7B9i+Gcw9XY7mr4LuF5YndPjjLUgRbphY98E8z9Oz1Mu0Jc6gxNSArucOnz8gzAzTOePrdUZyP74SohVsqZp1nJGTGzTKfpjxtFlC50MGg6ZNc0p5MtfHqdBnu
+ CsAP5b/g
+ nG6bpezVJX7RbTpdgQe+UeXhBhFfqV2qLzMUrd3YcasJv6Syqn9qBNF4H1vpqaMyWnUDyEFita1baMEk84E5o0O1mQ5Z44F2Jhkc0eQS/R6qUHV2NNJBpmBU6TExbEKFqctRg4aFIgSAU8S2U1bjbbsjXMA3BV3z05FqZndwOqadbTNKyIl7z4LgPF1VbB8vZmg7+eCAXEfiFARrkA2ZuEM5TkAN9hXUhqrUcXM6Hbq7Pxq/fHQaHdO1/5LQDs3qZ58teuvWZoiMeysADsIlbPm3BcPkmuPQfqKpp4+i2RUVuatoUFtJAV7OAWJD2wDDcVfbanO0rUDlJFH7f5mqNblRl3XJVB5suGqS+K7Oh1a4LrAuCqrYGSHXtkedf4hosqx01Ptc5Vp/BQmk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,52 +141,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 04:45:12PM -0400, Johannes Weiner wrote:
->The MEMCG and !MEMCG paths have the same pattern. Share the code.
->
->Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
->Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
->Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
->Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
->---
-> mm/list_lru.c | 21 +++++++++------------
-> 1 file changed, 9 insertions(+), 12 deletions(-)
->
->diff --git a/mm/list_lru.c b/mm/list_lru.c
->index 7d0523e44010..fdb3fe2ea64f 100644
->--- a/mm/list_lru.c
->+++ b/mm/list_lru.c
->@@ -15,6 +15,14 @@
-> #include "slab.h"
-> #include "internal.h"
-
-Hi, Johannes
-
-One very tiny nit below.
-
+On Thu, May 28, 2026 at 09:55:20AM -0700, Usama Arif wrote:
+> The force_thp_readahead path in do_sync_mmap_readahead() is gated on
+> HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER and always requests
+> HPAGE_PMD_ORDER / HPAGE_PMD_NR. On configurations where HPAGE_PMD_ORDER
+> exceeds MAX_PAGECACHE_ORDER, notably arm64 with a 64K base page size,
+> VM_HUGEPAGE mappings cannot use this path and fall back to the non-forced
+> mmap readahead path even when the mapping supports useful large folios.
 > 
->+static inline void lock_list_lru(struct list_lru_one *l, bool irq)
+> Keep the existing PMD-sized behavior when HPAGE_PMD_ORDER fits in the
+> page cache. When it does not, enable forced readahead for mappings that
+> support large folios and request an order capped by both
+> mapping_max_folio_order(mapping) and 2MB.
+> 
+> 2MB is chosen as the cap because it matches the PMD size on x86_64
+> and on arm64 with 4K or 16K base pages, so the size/memory-pressure
 
-Here we use @irq.
+16K base page size's PMDs should be 32M, no? Am I misunderstanding what
+you mean here?
 
->+{
->+	if (irq)
->+		spin_lock_irq(&l->lock);
->+	else
->+		spin_lock(&l->lock);
->+}
->+
-> static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off)
+> tradeoff for folios of that size is already well understood. On arm64
+> with a 64K base page size, 2MB is also the contiguous-PTE (contpte)
+> block size, so the resulting folios coalesce into a single TLB entry
+> and reduce TLB pressure on the readahead path.
+> 
+> The final allocation order may still be clamped by page_cache_ra_order()
+> to the mapping and request geometry, but this gives VM_HUGEPAGE mappings
+> on such configurations a large-folio readahead request instead of
+> dropping back to base-page readahead.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+>  mm/filemap.c | 27 +++++++++++++++++++--------
+>  1 file changed, 19 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index a16b33e0fc71..bfb891d9da1f 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3312,14 +3312,23 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+>  	struct file *fpin = NULL;
+>  	vm_flags_t vm_flags = vmf->vma->vm_flags;
+>  	bool force_thp_readahead = false;
+> +	unsigned int thp_order = 0;
+>  	unsigned short mmap_miss;
+>  
+>  	ractl._max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
+>  
+>  	/* Use the readahead code, even if readahead is disabled */
+> -	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+> -	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
+> -		force_thp_readahead = true;
+> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE)) {
+> +		if (HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
+> +			force_thp_readahead = true;
+> +			thp_order = HPAGE_PMD_ORDER;
+> +		} else if (mapping_large_folio_support(mapping)) {
+> +			force_thp_readahead = true;
+> +			thp_order = min_t(unsigned int,
+> +					  mapping_max_folio_order(mapping),
+> +					  get_order(SZ_2M));
 
-Here we use @irq_off.
+This looks somewhat arbitrary to me (as does the old logic). It seems more
+natural (correct?) to do this:
 
-Do you think it would be nicer to unify the parameter name?
+	if (THP_ENABLED && (vm_flags & VM_HUGEPAGE)) {
+		if (mapping_large_folio_support(mapping)) {
+			force_thp_readahead = true;
+			/*
+			 * Cap THP readahead to either the max folio order the
+			 * mapping supports, or the max order the page cache
+			 * supports (useless to try more), or the hugepage PMD
+			 * order (CPU can't benefit from larger).
+			 */
+			thp_order = min3(mapping_max_folio_order(mapping),
+					MAX_PAGECACHE_ORDER, HPAGE_PMD_ORDER);
+		}
+	}
 
-Also the name in callsite and the argument annotation. Would it be cleaner
-readers?
+> +		}
+> +	}
+>  
+>  	if (!force_thp_readahead) {
+>  		/*
+> @@ -3354,17 +3363,19 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+>  	}
+>  
+>  	if (force_thp_readahead) {
+> +		unsigned long folio_nr_pages = 1UL << thp_order;
+> +
+>  		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+> -		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
+> -		ra->size = HPAGE_PMD_NR;
+> +		ractl._index &= ~(folio_nr_pages - 1);
+> +		ra->size = folio_nr_pages;
+>  		/*
+> -		 * Fetch two PMD folios, so we get the chance to actually
+> +		 * Fetch two folios so we get the chance to actually
+			  ^^ large folios?
+>  		 * readahead, unless we've been told not to.
+>  		 */
+>  		if (!(vm_flags & VM_RAND_READ))
+>  			ra->size *= 2;
+> -		ra->async_size = HPAGE_PMD_NR;
+> -		ra->order = HPAGE_PMD_ORDER;
+> +		ra->async_size = folio_nr_pages;
+> +		ra->order = thp_order;
+
+This part LGTM.
 
 -- 
-Wei Yang
-Help you, Help me
+Pedro
 
