@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE1F7CD5BD2
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 07:47:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D40B3CD6E45
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 07:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCAE06B0005; Fri, 29 May 2026 03:47:23 -0400 (EDT)
+	id 4A10C6B0088; Fri, 29 May 2026 03:47:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D79FE6B0088; Fri, 29 May 2026 03:47:23 -0400 (EDT)
+	id 451536B008A; Fri, 29 May 2026 03:47:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C683C6B008A; Fri, 29 May 2026 03:47:23 -0400 (EDT)
+	id 341876B008C; Fri, 29 May 2026 03:47:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B5E566B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:47:23 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 66B031A0B00
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:47:23 +0000 (UTC)
-X-FDA: 84819677166.20.B2E6FEC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 91C1F2000A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:47:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Q3iCK/ws";
-	spf=pass (imf03.hostedemail.com: domain of jirislaby@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jirislaby@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 252126B0088
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:47:39 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B1370120ECE
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:47:38 +0000 (UTC)
+X-FDA: 84819677796.25.6472EF7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EB5F51C000A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:47:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FNzeZCYW;
+	spf=pass (imf20.hostedemail.com: domain of jirislaby@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jirislaby@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780040841;
+	s=arc-20220608; t=1780040857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KJVHCIKDFd/VxKvCLnBm26kmDeQyFV1KEq89/6Ye570=;
-	b=ExzPwGiufHmqe5aYdJ1+rRqqaaZ85iBkdXTguQTzaamoCyV1th4lMGidc4nJN5VdahPQBs
-	wIMOi/w/w+UbPq0XUzB5tytyVHSdp7d2moLXg34GY5BzbNq2DbQgVLJE2tVanQ4ALX1Whu
-	ShMbtr4avPPkYTlO6rjVhYUAfWSvOTM=
+	bh=XmNFt19sfIlkcuJPBReQqrZSY8aoNNa0IyVf/lXiX2M=;
+	b=YBZK+TfScx65odvImHe48TRrvBjAXD5ufTUVFovMjO/zZzFHz5/eGYqRNj/uZCXpBjBf0B
+	fQBuT5hiWZkgP0RrgGH8jYF+yer+tmtAuVZ8ejBX3vbZgGdcj+6SADvAxVNLyPR2cMACWc
+	4BB4Oi5gsKXdk3ljlu7Pk4qnNI5XGFk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Q3iCK/ws";
-	spf=pass (imf03.hostedemail.com: domain of jirislaby@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jirislaby@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FNzeZCYW;
+	spf=pass (imf20.hostedemail.com: domain of jirislaby@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jirislaby@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780040841; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780040857; a=rsa-sha256;
 	cv=none;
-	b=BfaBbHmDOfB5Bo4Z+iNa2c2PGEVMgwt7iPGvL5dRBCDcE1QZiS2s9dvtgvepO0dBiXRkcd
-	Uun56nh6s727UPRr7ZG6Rp7eHwZ9gAQsS7vuQ5LpTF3JSD6IjA/+/BYp7/vS78Dikn7Zi0
-	fgQ96vctD9ms58yWurID6aqA0QX8BSs=
+	b=SfyfqSHt0U5LMj+RSe5c97tdPFXNuyCIqDvEcMX6DedUFkHc7qYye0Ryn2REKYRLqTBir9
+	ubngtaY/d8xmr604lDqvdVPQ/36U1cGlrR4M/bcb78LvbuW4GJkn5f5wYJIk1ujGATk9dU
+	l10jbwCQCeWE/qTuFt0Gjcr3Myj2lwM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5531C40368;
-	Fri, 29 May 2026 07:47:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278C41F00893;
-	Fri, 29 May 2026 07:47:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C03460565;
+	Fri, 29 May 2026 07:47:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA331F00893;
+	Fri, 29 May 2026 07:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780040840;
-	bh=KJVHCIKDFd/VxKvCLnBm26kmDeQyFV1KEq89/6Ye570=;
+	s=k20260515; t=1780040856;
+	bh=XmNFt19sfIlkcuJPBReQqrZSY8aoNNa0IyVf/lXiX2M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Q3iCK/wskmU2X7hkIWhpJyLWwu9ZWi+sB8uvRfb3Mtwfbb9MfE7d53l8Xl5IyUjir
-	 TNe2uY2hwhiCLP/zPspwKPRVJlC1Nca6dzZbDXpRBExAXDeq5kCdj+GEp/ObNTdRMY
-	 hq8smDF6QuL1pZqTPk87DywtWLLLCyXlrOolOhyI5ES5MgXfUK+Idobhy8QLzEC8e0
-	 eA4MURci7szOKS39N9HuAEF0SstReoNm7zOEmyLe4vzcykBCwtZaQcN6f5yHDFPXnS
-	 cjUkIYroJVzjXt93zdIeqoJ5Sr06EqvnL0t3QrjhulPRd++vjLk60qbbhMLZhDM8s+
-	 cVbwL0/FZNEaA==
-Message-ID: <aea14426-4ed2-4c3f-a200-bdad5a5aecca@kernel.org>
-Date: Fri, 29 May 2026 09:47:17 +0200
+	b=FNzeZCYWj5hs2WFOzdDJLLUOzi8MJFvLzU1iRNVWJDzVl0O/EdU8glXvjInyW6nDy
+	 Y69qBMICwsSNeeauTzfRfCAu4jp+o/aWJ3cvvJZpjgvpGWFkmQsRwGAT1U/Ado64oy
+	 fcWhON2gZL6pSv2JVydhNMioPHvIKLKMn7VYLhhW4U5BZ7sI8LFc/XhuFQFMnSAL3H
+	 C/SiPJGOmXbm1HfGVaO8XCx91haxLkGUtUrsqdfY0ZE2+B873lrUFzI5o9+lNy4sJ0
+	 1Bhl8p82/r/NA/kDpQQKE1bRPkD2c0tOTGLzLd6Xm+HagF8qYRNYgF2KXRbV+1HYE7
+	 H8jGiJE/1PvjA==
+Message-ID: <18bb4a45-c26b-4a89-b598-a844d3aadafa@kernel.org>
+Date: Fri, 29 May 2026 09:47:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] vc_screen: replace __get_free_pages() with kmalloc()
+Subject: Re: [PATCH 3/4] tty: serial: men_z135_uart: replace __get_free_page()
+ with kmalloc()
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-serial@vger.kernel.org
 References: <20260528-b4-tty-v1-0-9da9f7aec5f2@kernel.org>
- <20260528-b4-tty-v1-4-9da9f7aec5f2@kernel.org>
+ <20260528-b4-tty-v1-3-9da9f7aec5f2@kernel.org>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -119,17 +120,17 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20260528-b4-tty-v1-4-9da9f7aec5f2@kernel.org>
+In-Reply-To: <20260528-b4-tty-v1-3-9da9f7aec5f2@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ogk83wuf9kmn3j3jwpp31o3k9buf3378
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 91C1F2000A
-X-Stat-Signature: 9y9jri4odrn8y7hhx53do8xnqrixfk1y
-X-HE-Tag: 1780040841-599381
-X-HE-Meta: U2FsdGVkX1+DarU/hKKL7eAK7wRwX5tMyKINmego8ZxponvQPq3FbMrS0mzgbqmFFMOTntowric7wb1JPDgTa1+tbm19sdGPx8B9ffKroP13rl2h6N/QpSr5xMiUjdN4RmqL7egprDm8h2KR4QBrvL9xErFUdf/vtQOiPb+9AJm2sAbfWc/aCDdUNIrzioD9g1KXiCoSl6rTt8TpyJgca3Mq+TFv8JZxsA7M4DKARO2JyJqzkZAfa08FtQquIbc7HkUVXz1WSgldZX6F6dW0KWWCxg9y92oGnyZjHUZAHMUwzTvL665q31UhNXCCf94jDw9Vz1mY+2sH+5Tg4bUUCb+JGT0GntGLnLStThyQzv2sCNNp9zD7vfpww5JkDIRw8sKB4GdIS+sP5G3pq2f8gSdF3KW13ntS25FDFjAG8ekOg0Hv56/JFxg/rneb1CqglY6aNBiKpLc6eKsgyz3GMA2rlymAgOczgBiDKvsSmCtXZXP6uBkcwAx3D2EzccZ3bcUbfbpDy1vjdykZJ5QU0GFePbWkoSGUS4D+RaUa3ZnuXkhMVbTKo5csLTX/CFbBJ/JrqZaDPs/jEpEaUg1dvOT/06F3Wr4kd4btOYcqhxrEUQiqGr+AGnbMytCL3MCavHIeuEFPNae9GKbQcx0cPqHDSW6f0rdDBFPn9TbJDZNzbmdzhtRiGlP6RMDf32fRqACB3gCv3yIwCrYlhrqjdt4SFfwySEeRHfLdG6ZSkwAgt0CTRKBbXkXlBPHxH0Svz9hXTv/K9xCHrcL99vxkpIgS8EnE4itkvjx6JhQIO/Jf8/3dUJrzB7acm7pizb+dfYIg14wYA/nvEn7sm+gLFMaNPlcHQvCUdszfmEH6uoQx73F/Giukq6VsW3hdI+SPRQVkkUy9Na6tdR5mVnM1PnY+QDyxiqPyguycKPBraYTv3bCtzFKkF/gcDh8IJYPRjvPKC/CEPbO4KkulQAv
- CRwFB4kE
- mBJRRWix8oTR1US4aAorF1HGUUhPv1uq9oo3KzxQ+Dt4tN9WdsEKLUBm8tj+51BTE/irNcIZQp/ZluPz+91G7hsCRs2k+rnbxwKhJr3c/9cEe9e/7smYEMfDhySRILd3KQThoiXm9TrxNeQA4d6nFVMrh3lq+J7/ZnEwa/cCSbUWG/Kjf6VO51pnf/T7sNv8/U3gE+abfaZq2GlCeHz40H3Br0+VKn8mLQ4DsQ3+qLF3vElbCTm68ww6DpGyhbx2+QgTPWrMtNk7NLhk5JKbJVcGYutg+CAiRlY8eU+y4cHuOfwJcr/HxAmn94jLlvX0gBSenTfhhCMhoFEBWIj7ufrr2YxN01qf0KI9g
+X-Rspamd-Queue-Id: EB5F51C000A
+X-HE-Tag: 1780040856-363316
+X-HE-Meta: U2FsdGVkX1+7AihbmykF9pAgRqItUSeJDgnX2Av63+pbQotg7cWrINXv3YLW+77teVBY6oMUzX4aF32Pq3GLpA5lm6Hy8R7DijQQJBCILYUBO9m2F88sdseeGuHXSYs65PomY8Jeuwgkf/kWpex2zkv8sanZGY0UiTtYoj78a+VvOhyxUG8QfqVpSGI36Oq9lq9ZXYHtUy4vlvm1oDxhZU+IhGEYhJT18n8VkDZzTtyugNIAice85Tn/ZI/w67zHhgKP4rgxKlROikgkzNBp8RlXGRzFD43yQ4Kb41H3nx/iAUQan4TKjNNGj+EOk5VXbIMFP9oLYIPRNnbOpH1QPZHq8cfcQOSPXdNYv2XSvmUNQr7K8OM5e5P4xurLaCXqFjxQ8EGA8iVCzUrmQQoQ6+GABxEse6VrD8LtYw9y9+Q1hA8ex7Ash83Wk/tjXqCkN43eMS472edrJE9xfWu7xhP4EpNblmKyjPerXBlNJW6Z3ffwA9dNzLomptKsZaSi52encw7japvrt1SfB1MrfYKqvrD82GD92+uSj8cT+peUh8bGklEA1PpKgwUOqeGueMLLHQIleNxuhn+TE81+dVHRPS9PUJUYSFGWKMl3wakz5Cek9eGEqdYXkk+ovxEm9cY74NFJRAa1F9RdobdYPye24TzAEATcPrU4MubMRh3w+E94C1otWsGpCTN2lxHEeMAG4IB5TsOQLxmwNFcNRWYq0Q9+jDQpiRGG4Iw2mUijqLNizIi9a8IVh9Y2oTsRR9ltWyTh1/AavSalLbTq5Zh4u+p4maFYPWjuvXpdu5AitZ66TImfvRO83YmeZuiDa/bxMYPylJtY/Xwe4jdJfqeyk5J4EqPK+1YvE5cLueICQynizUMDeC+7D5ejlWUFlSqJshqmrcLuQ0wxTlcsAol4abBOtloS8jJQAGBMoQVrNCH3mzJSlLSHOgvzIwwhKMFrzeeEb+LNUV6DZLx
+ W+7lAvUP
+ BmjmAXmg8QN1JuEJ8fC0H8Yrlc68EqggMTYTOJqVohXo2a/5bVGO1cRShf7RRlVHU9fjkPVngqwvku8uBA+rnI4DPbd6Kf1T43fiyajoCkAfpwDOEhElK2s0+uD2531TUpbSOFJnvS6H8bBXQrGM2OMcaZhhw8/TYlrc/wny7f1zjJN+p/RZCfb57XXJ250rmYYbjG0S5S8FZRloOkivip2BskXV2BvtNik2cdKJwby9dpIPmDTgWLSwBSobvjM0QZuFQJ7ZagHtQlQ28i9j2YRF4Maciq9ihKgD6lH0Tl944Q5xERByglDZvoM7Cr0CxbLrmMP++xC+TnORkaPV486Rp/NYW47V+yFKtjVSsXxCPaK7Ho6SAikEegU3KfSNAPCAHCxyRFP6s3WcNmEQOr9+ZgpklxlfHpngOXYGuar+9a8MzuhOBd1QX85/48nO/gj3OOXjQbth1+X/r+sQNw8KDtg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,61 +139,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 28. 05. 26, 12:24, Mike Rapoport (Microsoft) wrote:
-> vcs_read() and vcs_write() allocate staging buffers with
-> __get_free_pages().
+> men_z135_probe() allocates a receive staging buffer filled by the
+> CPU via memcpy_fromio() from the device MMIO region.
 > 
-> These buffers can be allocated with kmalloc() as there's nothing special
-> about them to go directly to the page allocator.
+> This buffer can be allocated with kmalloc() as there's nothing special
+> about it to go directly to the page allocator.
 > 
-> kmalloc() provides a better API that does not require ugly casts and it's a
-> modern way of saying "I need a page-sized buffer"
+> kmalloc() provides a better API that does not require ugly casts and
+> kfree() does not need to know the size of the freed object.
 > 
-> Replace use of __get_free_page() with kmalloc() and drop unused now
-> DEFINE_FREE(free_page_ptr ...)
+> Replace use of __get_free_page() with kmalloc() and free_page() with
+> kfree().
 > 
-> Link: https://lore.kernel.org/all/700c5a5f-3128-4671-99aa-827ca73f5cdf@kernel.org
 > Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->   drivers/tty/vt/vc_screen.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
+>   drivers/tty/serial/men_z135_uart.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/tty/vt/vc_screen.c b/drivers/tty/vt/vc_screen.c
-> index 4d2d46c95fef..386c80efc672 100644
-> --- a/drivers/tty/vt/vc_screen.c
-> +++ b/drivers/tty/vt/vc_screen.c
-> @@ -53,8 +53,6 @@
->   #define HEADER_SIZE	4u
->   #define CON_BUF_SIZE (IS_ENABLED(CONFIG_BASE_SMALL) ? 256 : PAGE_SIZE)
+> diff --git a/drivers/tty/serial/men_z135_uart.c b/drivers/tty/serial/men_z135_uart.c
+> index 6fad57fee912..9c32b01edc9e 100644
+> --- a/drivers/tty/serial/men_z135_uart.c
+> +++ b/drivers/tty/serial/men_z135_uart.c
+> @@ -17,6 +17,7 @@
+>   #include <linux/bitops.h>
+>   #include <linux/mcb.h>
 >   
-> -DEFINE_FREE(free_page_ptr, void *, if (_T) free_page((unsigned long)_T));
-> -
+> +#include <linux/slab.h>
+>   #define MEN_Z135_MAX_PORTS		12
 
-Indeed, I don't know why I came up with this in the first place :P.
+This one is misplaced.
 
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-
-> @@ -371,7 +369,7 @@ vcs_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
->   	loff_t pos;
->   	bool viewed, attr, uni_mode;
->   
-> -	char *con_buf __free(free_page_ptr) = (char *)__get_free_page(GFP_KERNEL);
-> +	char *con_buf __free(kfree) = kmalloc(PAGE_SIZE, GFP_KERNEL);
->   	if (!con_buf)
->   		return -ENOMEM;
->   
-> @@ -596,7 +594,7 @@ vcs_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
->   	if (use_unicode(inode))
->   		return -EOPNOTSUPP;
->   
-> -	char *con_buf __free(free_page_ptr) = (char *)__get_free_page(GFP_KERNEL);
-> +	char *con_buf __free(kfree) = kmalloc(PAGE_SIZE, GFP_KERNEL);
->   	if (!con_buf)
->   		return -ENOMEM;
->   
-> 
-
-
+thanks,
 -- 
 js
 suse labs
