@@ -4,118 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E43CECD6E45
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 06:57:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 886EBCD5BD2
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 07:09:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FC9C6B0005; Fri, 29 May 2026 02:57:02 -0400 (EDT)
+	id B97D96B0005; Fri, 29 May 2026 03:09:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AD346B0088; Fri, 29 May 2026 02:57:02 -0400 (EDT)
+	id B46126B0088; Fri, 29 May 2026 03:09:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F049E6B008A; Fri, 29 May 2026 02:57:01 -0400 (EDT)
+	id A62306B008A; Fri, 29 May 2026 03:09:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DFF436B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 02:57:01 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 74634163132
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:57:00 +0000 (UTC)
-X-FDA: 84819550200.01.5D796ED
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C192A1C0006
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:56:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q3wokvyV;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 93EE36B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:09:57 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 26CBFC6943
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:09:57 +0000 (UTC)
+X-FDA: 84819582834.04.F16BA2B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6CC9BC000F
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:09:54 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GchEa3v4;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780037818;
+	s=arc-20220608; t=1780038595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bYhbJ03zngjCzkJ2hPrDNjIkIlO3ghoI+gEguCBz3YM=;
-	b=xIa6HvnhR0b9vh7Mjs8u42jVDjCh3DCqky5EwG1OAeBUNMpA8pS8+JVEGGZK9YglbVcYFd
-	+Kesx02D7qzXOtX1EN3BAWY+TlEnkzNM30IZeAW2wh8zicpslMJhbTtYtCBk4ttLqHgzkd
-	ff8v7VzPX4lufcrJPTFslli3FM96py0=
+	bh=xcoOd69cYkfgsrV+dRR4Y2bFwBglK8L2y7k9wZRFa/Y=;
+	b=zBCKr9ENzUjdkcggT897NBmLSo2Y/QjRPAjWDGCi+jHgeyc/mOmb69DPdGyTFVkv8xYq/M
+	bltib/Um1iJfzVOB/R1w7STOzhU1SWOgkASEiAoyPj10kAM0d3TEfGiC1J0SSOKHPNeUo3
+	nY129+8xzTsE/OLIdFNDBnp1scq+Im8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q3wokvyV;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780037818; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GchEa3v4;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780038595; a=rsa-sha256;
 	cv=none;
-	b=dkg5VOidgM3iPv/1TSq8VMex9QyHJjyS481SLtcW2tHN0vEThA5lT3SAxPmWRBkrGE1a4K
-	KGv7eARpESwDy9KU9puLKbtOaN7ObhbrG1W3ZKdC3PG6ucK889SHH/VqhPsPwDLlFqR874
-	kYgj3ppBZWSjXsgwKEYZoayZ1WRx0/A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A506A4409D;
-	Fri, 29 May 2026 06:56:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E761F00898;
-	Fri, 29 May 2026 06:56:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780037817;
-	bh=bYhbJ03zngjCzkJ2hPrDNjIkIlO3ghoI+gEguCBz3YM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Q3wokvyV5MKZlsvJg4UNtT918QlXzkB1U0kHy4MQZf3J8TNDLjCs6GWuK6gBtLL2S
-	 XwxTTnb8J8zHH5LRtHazfGYB3Umrz1PHhEDR9QNPU0EOEIaA3XN4JVt7wCnygoA1zV
-	 4q+FTfFAUbdKZZbslBEY/VDMaQPAemhXbHlqgR6SKTL5Rr5iKO6uEFjESpmfoIwVLb
-	 AEq9ZYzwDZSXe5A0SDEA94a3R1N1gVz2W5Cz4tTFDGKSsdQLDLv+lIcvVy+XKCnFA7
-	 OOK4ThbmBiMKIXV7eLFB/GpX8xtJZgGZD4WmS5hEg3F41Iq5zx4rb+uQBIuKEyOAQl
-	 hXnsGCXkomZXA==
-Date: Fri, 29 May 2026 07:56:39 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: wangzicheng <wangzicheng@honor.com>
-Cc: Barry Song <baohua@kernel.org>, wangtao <tao.wangtao@honor.com>, 
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"david@kernel.org" <david@kernel.org>, "willy@infradead.org" <willy@infradead.org>, 
-	"sj@kernel.org" <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>, 
-	"luizcap@redhat.com" <luizcap@redhat.com>, 
-	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
-	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
-	"jack@suse.cz" <jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, 
-	"harry@kernel.org" <harry@kernel.org>, "jannh@google.com" <jannh@google.com>, 
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
-	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>, 
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
-	"lance.yang@linux.dev" <lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, 
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, 
-	"matthew.brost@intel.com" <matthew.brost@intel.com>, "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, 
-	"rakie.kim@sk.com" <rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>, 
-	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
-	"apopple@nvidia.com" <apopple@nvidia.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"ryncsn@gmail.com" <ryncsn@gmail.com>, "jparsana@google.com" <jparsana@google.com>, 
-	"dvander@google.com" <dvander@google.com>, zhangji <zhangji1@honor.com>
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Message-ID: <ahk2JJkUdpHQIqFa@lucifer>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <ahcANgFDFwfC0v1q@lucifer>
- <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
- <ahf2mJg9OOWvu0jA@lucifer>
- <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
- <3f7112ea7bc0409885f0fb0b4d09561e@honor.com>
+	b=pSBt+XBmU0AH6QPDw67S6WT8wo/JWFIvs0DsnuzVclWyOlrbW+PI+XYxF1LH1j6N7sFcd9
+	ehk5t7hOInXA0vWDdzVvWpTxyaofZE+xEeG9AD14HZFCPR8perY1pANvaSOJmsMvOSjPvH
+	rNTULfIMeoRrozF5Qyy/fDcetCcBN4E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780038595; x=1811574595;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IVXGCmJYd3atIRp24DxE9XBI0PNQwZcgFCN+Pv3VN/U=;
+  b=GchEa3v4Ga5CyV8tSf9cqucbURBHwcHvQ258XdmyYZ2lfdtMy716i3WW
+   +NZ0xqq+8c83fl1Z1DX3p2dWajENlAo7n/JGEBe3eXo9DAyFX02Ffhhcd
+   P0aTC4woLTIQSX/FcbrU0L/6hvCP6wDqdPMVz0ex0aCEyzQgFgZ4L8s14
+   jg/kSz+LVn5laap8m+mZx55PEgk7ynkB70ECH/LZzaLhm4+F8Plp/7zZm
+   qgIHGw243Ia748kHrZ1vvvO22fMzvOwGEDd7SbY7vxlT5N6Iy5t42vr9O
+   LEZzxIFGorL87pRRAg8u9NnWRkA1rgYK/iYK8ad3RExDGm9xZA4PVOkgi
+   g==;
+X-CSE-ConnectionGUID: +uddBtVSQO2pmvaLruC6rw==
+X-CSE-MsgGUID: sMeJP6OaS4yj0ews5bFu1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80741240"
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="80741240"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 00:09:50 -0700
+X-CSE-ConnectionGUID: vuzsPRqoRTqPEr9XjjZCyw==
+X-CSE-MsgGUID: htdXkUk2RJ2fyCEtfaz18g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="239759452"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 29 May 2026 00:09:48 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wSrLm-000000006t0-0qZu;
+	Fri, 29 May 2026 07:09:46 +0000
+Date: Fri, 29 May 2026 15:09:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: liuqiqi@kylinos.cn, linux-mm@kvack.org
+Cc: oe-kbuild-all@lists.linux.dev, akpm@linux-foundation.org,
+	ying.huang@linux.alibaba.com, Qiqi Liu <liuqiqi@kylinos.cn>
+Subject: Re: [PATCH 1/1] mm/memory-tier: add node_tier_id as stable tier
+ identifier
+Message-ID: <202605291430.iafzIZCL-lkp@intel.com>
+References: <20260528134212.240492-2-liuqiqi@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3f7112ea7bc0409885f0fb0b4d09561e@honor.com>
-X-Stat-Signature: 6hmrmbr88ecpr8t5xyrandy87cxo9xcg
+In-Reply-To: <20260528134212.240492-2-liuqiqi@kylinos.cn>
+X-Stat-Signature: ms88nr95x3hawrybzmzuo37erg1scsf4
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C192A1C0006
-X-HE-Tag: 1780037818-855063
-X-HE-Meta: U2FsdGVkX1+5EHG7Uwrhp9hyyOlOqmRrK2zEYIBvuIJHld8VxM16oc+YUpmMsI0oLD7dE9IgM5FVBNdQacEDac79Ik2FXR7hb6O/bAYOmzqsL0hadxdrOjxVEKDIYKJiD8VnnbTD1iXHOP0cAO2zkq7hv65g+WCoA94oWH4SeuYFJseLbhgbK7SygzqAGmHBBPAarAcPZtJ0OF5+Jl43qVffgfEQFv0jGYKfvuh8HTamuquAHK0AbYh9/3T4Yz0t6sre7ESIBbEJEnLMiNd9AYSfalCx/aqn2p6OE26BzNNLD9NdYHJ4IhZjEYRMQxl5vNBdKlwt4m9lnVttTaPZWNWxKeorBFS30ZSBPnaHg8VNfgxOhSzDYqJV1dLf6v3i/IMZxIS7PSmc0cfG1MJ4eyGZtokVN/tmn3BZHVbk7Rj/mvWVFBjtmAD4MoQkzlZ/ZfytdBkQPzAzDWPgW4rf/7fkd4LQXXyy3tuzBX/RvdoIjEw6rpi8YSDMG8GMOqVh6MxExypJgEp+IGMHO6DD19mlLU3vnQEqHIxNZcL3Rcmi2MPoqxvPLLR3KIB07IHGaWu67eG6DWw5GC35NdFvldkGWAQAfVfCfk2PEcvnIEXmeB0vd7+NMevFUAuSXNWteYjW0k17i385q6rpnbw3o8qGhKMo4TmHe3t73lNh7ExQAsQ2FRyKh+spIVxs0rLiop3zpwjqm2eTU7j9ZVU89zhRfn+gi30SxK1DD3CBlK98f0EXyQ7gjqzd4UKCDh9quYHqsRM66a7v/8WktObL9MEsguo+BQje94Vg7XhqDZ4wkbQ95HrxdkSh9g93dwoFNUq8NFgJn1WXZO/nD3gHFG8AH8mwrcQuvYK2VjdY/+XI/O3Gz1lklR8QpRIKnCMsUAo8e76yxP8daT2Wldl7sED705Ko3yHmGiHGmi8WsriOi5icc0U8orR9Xv31KWueG3gwT4rtZ6/vsLotR80
- LfsXzvTx
- CsVFnJ3/PX5dSSGMcmSdG2DtluzPWr+coT+qQDZ+APzu41BJ+qOP3xaj6BJko+cJx4wClqZn5MfVG9Wiycr+egMc90maxgPxR3zaQs7IAYiqF3nwcIhKnNFpyjZQTl1EF8HeaGnSG0uF8krvPbOgEmpPNYG0i9KZofwE9pfopqv4Doc/TdshCsYG81Zj5Q3aQYF7OTvuHpzWXQ1JA++gBw+QYA28rNj903GfNY79fEL5Vrd9Aal2rGHp5CkEV+phU0IOShAj2FkpTsRQyfNcwQGPM6nnVTEYiwvYbY7QaQhDEtRFsfjA+CmWRIxHfpGYZDQ3HXfSeAkgl3FCn+kCKfmW5n4CwqHKYC47gPaCGO9t1qprbMFmYN2ToRV/3GKDWLKZhUfgUwTkmtIY1csy3NcfoU0eH666Y1XPm
+X-Rspamd-Queue-Id: 6CC9BC000F
+X-HE-Tag: 1780038594-152316
+X-HE-Meta: U2FsdGVkX1/dKDBSaXaXGBWfcviMONblxpbiQJoHHsOOTZZNrNRFRdKrPpeJO5H0eAXw+rk2FWkgmAuAJo/ZVw5zVjFunQEinBtHs9/qOO4so9goFjw53238+SWbktbw8jLo0RrL8V51sdSxIvA9aqVoYdk0zhbpAReHLeYjHJ13EMCIGArNfkh7NtLyDkivB22FacBvPuqsB6r0OigMDto7/4xCB5eKSdUT9N3nQLHyoFAQUelHqnymBkCqlL4mo9YOac8u/YVULr2G9U6isnl/REju5CesMiSgDzo8UjlhhN0DEMze0KoTky31BiTvB1folq1dHZdSKbZgCgkUcB/E821FzXTVI7PvXMzlVlOImOaCbz4GYhkHPInrvojuQckR9Df/R7VnpBXlMOrVBe3zFTqZyUiQpkgali93/YeHE5oeRGd5R0eWrNHWVGH+rREwFh9pzHzRR1vm/hcv0MdbWyL7sR0m20cvu+UQ5pM1z4A2j0rmMPU/IDqDAor4+xlw51jPNs3BxDnlU9yTzfHA6IfgA7sfThvcgtcJdZ+KQoDQx9qgmRs/VaMANTqpKW2s4n2GHBK5nAOJByqpWinFNfFFe86puxYCKAQU9rfY4T+br+BxAE6m4G2BXZyWk4pIv4ubuaQZluG3NC5sz+5Hi1xj73lGQN0LObGqHy4k81bvKOBEwTMp66CyQHkfGBIXdeanKRRMJmz+bUznlvR9FT1wuksJTz0llNNvhn2ljTLxdSCjFgPl866os+tlPB84HW7cn2sZd0dNAnWT2HK54aJJXW20lfeSvKuwfxgYu2vN/l0DQZkiR7mas6PbPaNqKAn7BlJWN2swwSxjFw6sbKbOvhqqBeJrNCUE8ILLpFQQ8M6ybam+L0NU+RZvVpuMe+Wqf+E5CKnTb6NlS5TqSXuNR3IcBOatyLhcKw66vDr9FzNMoCmXTtnPrNWgC2oMCQ0LpPo1hg8FjvJ
+ JCqnYQsv
+ xrC3948ETZeUSHshAfrKLwMRNVokTUZHGTu2EatEc579wvKTL87iS2LYGOl2CDc6lm4NVBoUssrC3QwiroOY3KZSxokjR9y5SsISDv+vrc2dPgiu7Fu//8hMG+b87rHoNAf4TG10su1vKb0vv3YBOmXeFigFXYys/ccb5BVRrTkna7Jv3jVte3iuKBYopUHHp66ZXW2KuLZkg46L29plfHh7aSJ1nrTLZG+jROe+OrT4LoX1+gsb7pKBmTC1ZxDudkNRTw72KbwwKN8b7fXuxsYhzvTvEyQA7VOpSYHt054RWvLxYgymf5Wkd5hTY8JCsWz099rif5UsrhpRul6xFCkx5K+Sxn6X21gHJB0IPu4nLtH57/SLbF6kjP8U4utVhaCE/UkYpdXvCTJY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,61 +107,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 02:20:38AM +0000, wangzicheng wrote:
-> Hi Barry,
->
-> Thank you for your guidance, it is very much appreciated.
->
-> I work with Tao at Honor. The motivation behind this work is genuine and practical.
-> The memory cost has increased significantly, and we have spent real effort investigating
-> and prototyping solutions to reduce it.
+Hi,
 
-Thanks, appreciate the input from your side Zicheng.
+kernel test robot noticed the following build errors:
 
-The series is unmergeable as-is, regardless of provenance.
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on rppt-memblock/for-next rppt-memblock/fixes linus/master v7.1-rc5 next-20260528]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-What's unfortunate is that early discussion could have saved effort (and/or
-tokens :). This is often the case with firms that develop something in-house in
-isolation then present it to the community suddenly.
+url:    https://github.com/intel-lab-lkp/linux/commits/liuqiqi-kylinos-cn/mm-memory-tier-add-node_tier_id-as-stable-tier-identifier/20260528-214338
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260528134212.240492-2-liuqiqi%40kylinos.cn
+patch subject: [PATCH 1/1] mm/memory-tier: add node_tier_id as stable tier identifier
+config: sh-allnoconfig (https://download.01.org/0day-ci/archive/20260529/202605291430.iafzIZCL-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260529/202605291430.iafzIZCL-lkp@intel.com/reproduce)
 
-And as I said to Barry (+ Tao previously), the circumstances surrounding
-this series are additionally very suspicious, and while we are fine with
-LLM assistance where the authors fully understand it, it feels that this is
-not the case here.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605291430.iafzIZCL-lkp@intel.com/
 
->
-> We're happy to join "constructive" discussions and learn from the community.
+All errors (new ones prefixed by >>):
 
-So with the negativity above said, I'd really like us to move to a more
-positive and constructive situation :)
+   mm/mm_init.c: In function 'free_area_init_node':
+>> mm/mm_init.c:1713:14: error: 'pg_data_t' {aka 'struct pglist_data'} has no member named 'node_tier_id'
+    1713 |         pgdat->node_tier_id = -1;
+         |              ^~
 
-One thing that is clear is that - we all want the same thing.
 
-Reduced memory usage, reduced lock contention in the anon rmap.
+vim +1713 mm/mm_init.c
 
-So one thing that could be very useful is for you guys to help assist me
-with testing of my anon rmap approach as it develops, and also provide
-input, critique, and review.
+  1698	
+  1699	static void __init free_area_init_node(int nid)
+  1700	{
+  1701		pg_data_t *pgdat = NODE_DATA(nid);
+  1702		unsigned long start_pfn = 0;
+  1703		unsigned long end_pfn = 0;
+  1704	
+  1705		/* pg_data_t should be reset to zero when it's allocated */
+  1706		WARN_ON(pgdat->nr_zones || pgdat->kswapd_highest_zoneidx);
+  1707	
+  1708		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
+  1709	
+  1710		pgdat->node_id = nid;
+  1711		pgdat->node_start_pfn = start_pfn;
+  1712		pgdat->per_cpu_nodestats = NULL;
+> 1713		pgdat->node_tier_id = -1;
+  1714	
+  1715		if (start_pfn != end_pfn) {
+  1716			pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
+  1717				(u64)start_pfn << PAGE_SHIFT,
+  1718				end_pfn ? ((u64)end_pfn << PAGE_SHIFT) - 1 : 0);
+  1719	
+  1720			calculate_node_totalpages(pgdat, start_pfn, end_pfn);
+  1721		} else {
+  1722			pr_info("Initmem setup node %d as memoryless\n", nid);
+  1723	
+  1724			reset_memoryless_node_totalpages(pgdat);
+  1725		}
+  1726	
+  1727		alloc_node_mem_map(pgdat);
+  1728		pgdat_set_deferred_range(pgdat);
+  1729	
+  1730		free_area_init_core(pgdat);
+  1731		lru_gen_init_pgdat(pgdat);
+  1732	}
+  1733	
 
-I'd also love to be made aware of any testing you guys have done or input
-on that, also any workloads where you have observed particularly
-problematic memory usage or lock contention.
-
-Please note that my work is currently under heavy development so the
-proof-of-concept code provided is incomplete and not yet functional (it's
-just there to give a sense of the shape).
-
-I will likely provide a pre-RFC series to interested parties prior to
-sending an RFC on-list.
-
-I'd be more than happy to include you guys in that.
-
-And as I said previously, I'm more than happy to engage in discussion
-on-list or privately regarding this work :)
-
->
-> Thanks,
-> Zicheng
-
-Cheers, Lorenzo
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
