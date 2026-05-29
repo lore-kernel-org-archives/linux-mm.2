@@ -4,135 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CCC5CD5BD2
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:52:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6290CD6E45
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:55:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1B326B008C; Fri, 29 May 2026 04:52:56 -0400 (EDT)
+	id D45E96B008A; Fri, 29 May 2026 04:55:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF2B86B0092; Fri, 29 May 2026 04:52:56 -0400 (EDT)
+	id CF6CA6B008C; Fri, 29 May 2026 04:55:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C07FC6B0095; Fri, 29 May 2026 04:52:56 -0400 (EDT)
+	id BE5D46B0092; Fri, 29 May 2026 04:55:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AD67C6B008C
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:52:56 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F40E1C2B80
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:52:56 +0000 (UTC)
-X-FDA: 84819842352.02.233F35C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 76FD120004
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:52:54 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AB9726B008A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:55:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4E6CAC3DE2
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:55:41 +0000 (UTC)
+X-FDA: 84819849282.21.BBBE046
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 787C520008
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:55:39 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kly1uSR1;
-	spf=pass (imf03.hostedemail.com: domain of jirislaby@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jirislaby@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780044774; a=rsa-sha256;
-	cv=none;
-	b=ieeS2mjS1p6i30iv+D2/H3SV8UUmROdtB6DWMXIA2m8ZLWmFVjNAsQZoLic8JOlTJZYjWj
-	///wIfgYldVnH8tZJRxiEC25Gh4jeocuQZTT3r0eylck/EW+SlF0Vav3isvL4N/NOMI3NX
-	iZ6AKUZYmSDHBjp2CA2ZKx2fY207u5Q=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kly1uSR1;
-	spf=pass (imf03.hostedemail.com: domain of jirislaby@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jirislaby@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XAivuMiX;
+	spf=pass (imf03.hostedemail.com: domain of nakamura.shuta@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=nakamura.shuta@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780044774;
+	s=arc-20220608; t=1780044939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bwfWO5ylsSIxckFIR6JvOs3hi0LSk9IH+1TJ7RISKWU=;
-	b=Jjt0lUMnVz22wAXJROdldXs2h/Xr2EPc/9QtgP6Kwn8dtxO4UBey+J/LksghSWCHXAHyla
-	MOeqiQ5n8T+43//tE51mYnYPU/GlkM+/3NCfD4YIJl9ulD6DaDYZ9k64gSCFc3V0vjdvi9
-	iXpvNdgqMYE/rkEByo3Pv4V6+Faxsk8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B57440A0E;
-	Fri, 29 May 2026 08:52:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2B61F00893;
-	Fri, 29 May 2026 08:52:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780044773;
-	bh=bwfWO5ylsSIxckFIR6JvOs3hi0LSk9IH+1TJ7RISKWU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kly1uSR1H7SUbGt+pgv1Du70uRlv9LbWIZlTPKTyZbdCZ9nDIli84ih+5Mv4c+jsE
-	 8c9m5PwrcPCTpzCrmeT/YzD3dBYPjIN+hiY0DBulWa9uqcxr1chJPtPkEoIxrl2UaH
-	 nIZmLZU8boYKEwogyUeSu3rj+QRlq4KP5q+kVpLJdntJYg2rr/8d0Dddj0wjvOZwKF
-	 ytGTr/oFMLyvcL6uKxVlc7I+MkwDV4c6NbaNiGlSeWmpqASTC+1Y/6lyA9IhczaKuW
-	 dHVo/6j10Rv2fsOD2Ad1MHCSWpPIkMirRkQlIT/Pb9xQQVhABfPuKAyh8KhzNuDWyu
-	 XbrL6H11zlYFQ==
-Message-ID: <98ebf7d1-244f-4fbc-afc4-3e8940df5422@kernel.org>
-Date: Fri, 29 May 2026 10:52:49 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JB/AJdGnqIf/Ml4hT7r5UXyiGQNpweafn+GD5Bd5gsc=;
+	b=q/6Jh46heyAGB9A5dNqzqJSLPETALwRk9ev/irN45tkHt5O6zZK3s2TKKYHu0CHGLmJ8e3
+	nfv/Y588bbSbL+wCuFoTj6uxWlKxnpDCfSP8jccm8RKjmVYfXrQ78gOhAt03Gxo2EUUcbx
+	Ofa1MXNrkvM4pOUsB8IVpEjKJ9JA4to=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XAivuMiX;
+	spf=pass (imf03.hostedemail.com: domain of nakamura.shuta@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=nakamura.shuta@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780044939; a=rsa-sha256;
+	cv=none;
+	b=3S3OhlhhvV1BXpA/M6QnxOVRC7UGN2Dr9732A15N26po1+kmNgnHAkNE8uT5WUNuTn1wVp
+	2TVVfOIIn6Rx9PeZ6gD9GedindOOs5uU6ZvV3r49f489+sTJCj2EVnqLm6jYs7KbGYz19X
+	8ZwyPlp9A59D9vQPoXHSkFsLK/StIhw=
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-368f25ff4c4so7911769a91.2
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 01:55:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780044938; x=1780649738; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JB/AJdGnqIf/Ml4hT7r5UXyiGQNpweafn+GD5Bd5gsc=;
+        b=XAivuMiXIbxPpfQgvDMgC1g3DXfUCpzz3v14nn62IvAmE1PAsY5+ozeBPT3FCgSs9Z
+         JQGpQVwGDd2OfptTymfWGretgD3DzqoX0ZnDBKHFTmZrsA+jIkKxafU999wb4Km3niaV
+         aGmpby6AspRA7Idqf1k65EfVCW3oP51v+8ukc4vbljOS4ZL0dTIufNIn2b+3TwdKQ+sp
+         +my5cMX9Lpj4/Zia/H0ZUDrsGQw5kG/sZBY6xxdINEJ3FSvjY2WEWD34Nfn2Eyfrb5aK
+         dUrqWuU5gSrLmkRxFOJpLmGDaDSZ7IQRdIl2h7K4bKM2iQBEHlGBQdMZ6ad2U9PRxkQc
+         Bd+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780044938; x=1780649738;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JB/AJdGnqIf/Ml4hT7r5UXyiGQNpweafn+GD5Bd5gsc=;
+        b=flNbnvxDYPf+8ot4bdWWZ0vbBNDq/wpPen06NNvce58NYxj3RUbCQOaP+ZCR+nm9Q/
+         114vO8SYj1Rvt84O/Bg9sAuRLgKC7BvbFx4xxDsnlNCbe1wn297D/sJpOPMxLDQ0UbCN
+         M/eAPt22B8Cgs+3pBwz0Yqx/uiFKaAEMGl/O8ldUnXGYCJAshbDoW04OEBOT+dAHNksa
+         iNtEA2g9QivOtQmH2HWsD/MYG1+4aSaf5Bh+iJpS3tPuh8WTezFhBbQBMmQOGh6//44P
+         qTX7nOv8YVKk0TlIDXPh5YxfBYbOocaneMhjuMSRLKn56zsAVzGtEsfn+qB9P0cj2Twm
+         HVTQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+ZiYqSoYnMDJG4Uwvj03sTV5Y2jVW9HnFb0tp3q7WXqcnR6KOF1ajLykLb8YYB95e9A70KIPQX1Q==@kvack.org
+X-Gm-Message-State: AOJu0YyTU2zfi10L9FamWrhE97c3iuSG+d5sp2PeJLrAjOF1DJ9//bXi
+	0GfvHtwNG332dH+NxNMYGqz3leMHO/RgiLhwrkaZJk6YoHITLszT0uyo
+X-Gm-Gg: Acq92OG1V4g9PihlmAIikGow47igpXm461womy34yK05Rcj1L92qRqHZT2DlYgrLAu7
+	ewT4HN1ce0ikYIrvb8nqlZPL8RmbVsxT4EJYHikUoGamYHEcmv/TcrZEctFjEQubsqnILukD+jI
+	bfIrxmn3RcM5LlA5mPNYOteFgCt7aLtGLoZtKTLRCuPtwfJUZbPCZ68rHaO+DnDsjorslgKhxg0
+	wsIYyyIlffWPFVAwpBh6QbH+1bvXJYDgnSTK7JUgWcXAZ3MymXPfXYP72zkGIRDXMSoqjvf4R5p
+	20Ptb6mcxMKXz+VYB9zJLUPoAwittWESxZmZi8xNW6tSZ20beT+Y2LRHgDLTE7u5iQW9LkJUuSp
+	Ah4vKHbykL2u3cyUBkHReMDjbtVLfu39pLTNfBmxK2P4F0FPM/RT2asq4gaD8BGwax8INK2XE0n
+	gkCjvMae32P7SCa/UTTZNmhu9dDh3v2ttlPkJQO6ygcJ3QjftY/AmyaGAQkb0NaMkFhuUEJqpuh
+	oNdius=
+X-Received: by 2002:a17:903:4765:b0:2bf:2243:d4ee with SMTP id d9443c01a7336-2bf2243d83dmr26285365ad.18.1780044938035;
+        Fri, 29 May 2026 01:55:38 -0700 (PDT)
+Received: from ubuntu (softbank060152129044.bbtec.net. [60.152.129.44])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239e7019sm12732315ad.11.2026.05.29.01.55.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 01:55:37 -0700 (PDT)
+From: Nakamura Shuta <nakamura.shuta@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nakamura Shuta <nakamura.shuta@gmail.com>
+Subject: [PATCH] rust: page: mark Page::nid as inline
+Date: Fri, 29 May 2026 17:53:16 +0900
+Message-ID: <20260529085316.27432-1-nakamura.shuta@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] tty: serial: men_z135_uart: replace __get_free_page()
- with kmalloc()
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-serial@vger.kernel.org
-References: <20260528-b4-tty-v1-0-9da9f7aec5f2@kernel.org>
- <20260528-b4-tty-v1-3-9da9f7aec5f2@kernel.org>
- <18bb4a45-c26b-4a89-b598-a844d3aadafa@kernel.org>
- <ahlRqd3e94ojSfWE@kernel.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
- rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
- rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
- i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
- wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
- ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
- cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
- 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
- w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
- YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
- IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
- BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
- eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
- 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
- XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
- l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
- UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
- gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
- oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
- o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
- Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
- wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
- t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
- YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
- DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
- f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
- 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
- 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
- /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
- 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
- 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
- 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
- wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
- 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
- jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
- wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
- wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
- W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
- f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
- DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
- S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <ahlRqd3e94ojSfWE@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1agb87amugo7tjhe5f14zky9psix7uh9
+X-Rspamd-Queue-Id: 787C520008
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 76FD120004
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ybjq59ytooby3xe7rz18qgbq7te4cuf8
-X-HE-Tag: 1780044774-608982
-X-HE-Meta: U2FsdGVkX19QJxB5joGhKJDimsB+Xw548gBYGyDkdO27DdT4MmZHu09PbGbT/ejhoIma9v4uVyN26tTP9VMMxj/dCZfOC4R/Noi6Vi5QG3CKHw4RlEo7EqM7JVoS7nzc2rQqznaKwz66pr3iUjijGW9CzbFKYij12otHoNAnY7Ln+omvIAYQ6P4K/PljqWMihx1UsziXzb0EvbNVG2LCxgoKJBuFWbtNWv2MgvEahvmTDeePkSlrtGXExckiTA0trcWTizNzXGsOQoLHTtCtzBMGiSmqF+yP2hIsAa02LcXl5ghbwFbWKHk9ApH4C7huKnJ4vxhIaPXS9IHPzL07hRf5SKmPAle/JlBZSMAKg2hI6WOjtn9GKRGDMVnQcohNKGZ/N8zlbxJx1w0jsv2+myjxwt6wTaZjfOAXmoFijCLm3UHltbA7nfeAK4EbkHVgy267uMb6S2M2F5zvTsYSbWe3P30ji8VE3xf1+d1JfN9aEGVEIao9huc7Bnne7g5FMqhi09LlyN3zEaiyLaRdljpJqORRuq8ka5H9qftUZGMXUVae3iuv9/k7D4aC8clnruKN0QpgsH+pcMn4w82Xn6o4EwNVq0h7FUOK4KsI+H2+AawQHktuw5cHsIT4McTpXK63HviFy9sglWDos+sjYhXkV5PG/HNzZxvMwFlNrSQp4UaVQTiWhu7xGnjhhB0tJ66xDyBtlEIe650ARTweJfc5BxXAVfkQmPyR1xZDacysQ1W6Vcyxvjkh3Jyv7UuuTk8gxZH6VGcGLngF+YFY6srfJBq5XXNhxtzOnfYuHcZ7nEu66jqEFMsxZ7y6PMS2lMv9c0SSh+2bmmgA2W/HaLw0NkxU6i+yZGX1PlPGychAeCDNRj9UK6Vc16kMYnGCowomf/aqE4XyrVxOn50RHPJLaYwCY2AB5r0bf8MHJ5Qsv1NMCKp52CTWXhptLvOCGz3iimvcAjfd9Gd4Hbv
- CpMDGLTO
- Rx01m6R3X+E5TI+nvsJp2+V+4axwbASdMpF0CWrKy3PjOpeymz9HdB3joRYYM63upDOdA246LEkJRwhji8Qkf5FpZPGwfJRwsNdh7SxQpn3Q8tCBhpOch8hZusB7OH0d8C2Jl1/kJnpuvuTqq6noWV+ULkEOJ4E91a0gC+w+JJS7gyH0YWk95YUokCOdgLw1n/OCD3zwZFTEgPSrMbcVfJ0Q5Jn+WGfU0nOa8Lp5QU44MzxPVswaJih7WoKxTRo9ShbxQZwtywWd9mMbVbpHFyhmY0XnyjWVNWvVRWmXLjX+fNdpmkRq1tO6jQGuLPgPY+lmBLdIPLGfJ6clwX9J3bfI7LzucV+QlWYLB
+X-HE-Tag: 1780044939-140284
+X-HE-Meta: U2FsdGVkX19bz+5qZJvnPKLbwoklyhNzkU32BagNEUshgX/Dbsc0PVJwCK6X3b/P1GXwKqvA+m7+acZQAlus9q8CGfHf66nIMmXLd9S0RTdU3OJLXMoSZUX63j5sE0XZZ8kwgjAPeQOGp5E83PGkll8nqtybbV9MChPtsuUDIymYpIo4Imqt5Vq2C+3ZQ9aGv68yuShkvvbPrJsfV46sRVucgm0uRfgtIhFYNCRnfHVLfx3wFsypqy7jcBFGm7TOA3O54LemsLXQZpLrXkANl2B0PQGXtqT09aLtUY8sTfh7nfVefZmfMD8PXntbckYR56ul3SpvociTLSmJmzWXXHoVTCn9hC3sj+e5hnAOKftqVd5N5YguRQ0Rk97Uk+/QUYkfgiUhJ5meNQzell5vfd8+6xMEZBsYU4ZdPPfqSxG2HskxOheIkIxefJSOAK55a2BsxK751IKPwJ1cfSe6xKoEz+omUd5OmHe1ADyPvWiVhNN0UqjZogV4bls3ecAHwhdUCDsYtz+bBd/Re2o+7wm7u/7MPfX5zYHkG8Yr8uFVr6Crf2IlCiKI8wYrW0V+XtY0VWpuFuvMb4B8DnoadBqBu8AtRFa0iDaDoqInQCF9fnA/aex3Tvg0XBZ2dcn/ioUY2ETL/c5ZhFrdGyRp6wyKin1sUtGtHbza+SS/Pk1klMQcesJSSdZ2jPe5pO0URlH37GdFFrW6rRwqvI1FlGeC3Mo+hPNXG4d7pNvryZeUy3UA0P70vMd/eP+d0XB/dgV658ULLngm3klxzlT19jy51HnXPwfhPWaMsZGhCEhvMR0ak4CHzooTVHwWS8b/L9P29pKcQAg15Gp+2XjL4Ggumd0dOYdTCl2qsflJob6Bc8uUqhj4UnbM5oCoZ7MYHsH5aqTxKUKP/9Ioop0CAKfs/iU4ZeOeH5+4RANji5jTUHySYMI+Cy4Q5kPj82acEvB4NcpI7X4YMML3+XZ
+ MbwcFxhV
+ AEqAvDp6iSIayluieTji4bvvvd0ESGVszoi2wuMk6wlRA0NV+PazP6bXnnk0Bql4Vw+t5UQSyXqTPqDrzOSJxqTl1REknQ2BTj/FfkZF8ulMq/UxHIWw7wk/zfatTs/UdgofgNgSl88GcgYMfJTkSfpAKvAewnmGAd3h4KVT7vM+qe8IXANnG4VdyYivAu0g1RA2RJw6EBEJ+ke0/zBFc0bjsbkSpMsuU+1BfaCfQ1niDoCYtwueHnvCd9aVP6lNMSzDZMIR78VjdufB5CeB+QxOhWsp9jFXY37Ef89IIbC02AfYUOnG3Kvz4U77zEe9jKICYz6q0+Hl23vUIezJTgkmQ0IqKE4ybDc4S6ZyDQqgY7n7/6Tdr/Zr5CPz5NCsFzAJjP4F0Rmk5X3MX/QPR73n5SZe1IXbZEapSgvnR7hHqDPuIpry8T040DPDxsEzgMfYuvQcRGUFtbujkrQTSzOXcL2fBGwVvtkqt31uMOrXNa45MX5d/dbcQ+/0ALy5sej8p0xAGwskia+onsMmyYtY0ZUEkA7e8lPg8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,53 +127,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29. 05. 26, 10:43, Mike Rapoport wrote:
-> On Fri, May 29, 2026 at 09:47:33AM +0200, Jiri Slaby wrote:
->> On 28. 05. 26, 12:24, Mike Rapoport (Microsoft) wrote:
->>> men_z135_probe() allocates a receive staging buffer filled by the
->>> CPU via memcpy_fromio() from the device MMIO region.
->>>
->>> This buffer can be allocated with kmalloc() as there's nothing special
->>> about it to go directly to the page allocator.
->>>
->>> kmalloc() provides a better API that does not require ugly casts and
->>> kfree() does not need to know the size of the freed object.
->>>
->>> Replace use of __get_free_page() with kmalloc() and free_page() with
->>> kfree().
->>>
->>> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
->>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> ---
->>>    drivers/tty/serial/men_z135_uart.c | 7 ++++---
->>>    1 file changed, 4 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/tty/serial/men_z135_uart.c b/drivers/tty/serial/men_z135_uart.c
->>> index 6fad57fee912..9c32b01edc9e 100644
->>> --- a/drivers/tty/serial/men_z135_uart.c
->>> +++ b/drivers/tty/serial/men_z135_uart.c
->>> @@ -17,6 +17,7 @@
->>>    #include <linux/bitops.h>
->>>    #include <linux/mcb.h>
->>> +#include <linux/slab.h>
->>>    #define MEN_Z135_MAX_PORTS		12
->>
->> This one is misplaced.
-> 
-> Do you mean an empty line is missing? Or there's particular order of
-> includes here?
+When building the kernel, the following Rust symbol is generated:
 
-You added it after an empty line -- along to #defines. You should had 
-added it along #includes instead -- before the empty line.
+  $ nm vmlinux | grep ' _R'.*Page | rustfilt
+  <kernel::page::Page>::nid
 
->> thanks,
->> -- 
->> js
->> suse labs
-> 
+`Page::nid` is a trivial wrapper around the C function `page_to_nid`.
+It does not make sense to go through a trivial wrapper for this function,
+so mark it inline.
 
+This follows commit 878620c5a93a ("rust: page: optimize rust symbol
+generation for Page"), which did the same for `alloc_page` and `drop`.
 
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Signed-off-by: Nakamura Shuta <nakamura.shuta@gmail.com>
+---
+ rust/kernel/page.rs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index adecb200c654..764bb5acc90a 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -193,6 +193,7 @@ pub fn as_ptr(&self) -> *mut bindings::page {
+     }
+ 
+     /// Get the node id containing this page.
++    #[inline]
+     pub fn nid(&self) -> i32 {
+         // SAFETY: Always safe to call with a valid page.
+         unsafe { bindings::page_to_nid(self.as_ptr()) }
+
+base-commit: 72d33b8bfeacbfdccf2cda4650e8e002def036f8
 -- 
-js
-suse labs
+2.51.0
+
 
