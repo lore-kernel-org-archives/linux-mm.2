@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57CF8CD6E50
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:02:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D69E5CD6E4A
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:02:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27D8E6B00C5; Fri, 29 May 2026 11:02:31 -0400 (EDT)
+	id 479266B00C7; Fri, 29 May 2026 11:02:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11D046B00C7; Fri, 29 May 2026 11:02:31 -0400 (EDT)
+	id 3DC876B00C9; Fri, 29 May 2026 11:02:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F00446B00C8; Fri, 29 May 2026 11:02:30 -0400 (EDT)
+	id 1E15C6B00CA; Fri, 29 May 2026 11:02:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D4E096B00C5
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:02:30 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9CF07160C42
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EC0F16B00C7
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:02:32 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6070C0A9A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:02:32 +0000 (UTC)
+X-FDA: 84820773744.11.5BC5CBC
+Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 80EBF40017
 	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:02:30 +0000 (UTC)
-X-FDA: 84820773660.22.77B46B6
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A548F40003
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:02:28 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tXxto+D9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3gqoZaggKCJUzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3gqoZaggKCJUzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=D4zryxbr;
+	spf=pass (imf01.hostedemail.com: domain of 3hKoZaggKCJc1I42+79K7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--ardb.bounces.google.com designates 209.85.208.202 as permitted sender) smtp.mailfrom=3hKoZaggKCJc1I42+79K7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780066948;
+	s=arc-20220608; t=1780066950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i9tlxHwsxA6eqo2SKmJcmasVfNUkIRzlQyYjktT989Y=;
-	b=cgEZxETJeXWV8ZLWBwOu17l47LhVfsHbkUQDXFm++2yPMP4+OrY2OLxdE89RhQHDDG3WFo
-	idkzqKruRoH+cYsUxMVT9quqJzTx/HMjVkfyFsD3TmcEqaD7C7mOEX5JT0w/T+Rxf76xVg
-	02GMxs0hTXCiWw80fuagSZYc2dk+3YI=
+	bh=xs8UZJaaGpDG2dm36q3rutkvNlrSNXe/Bj9mb4oSyno=;
+	b=HlNMu7WCa3j5UFCfIfaEKVkP++xJ4tD9+h/TPqjni/XzoyYn8eEPPBne+/uDM4pe0GR7pS
+	QFZzY916Djy44Ed7TKv4A6aabfW2f2LnZUnEdrIvQps8lLrMsq7dq0KQbfA/cW7rD8Kq1a
+	vuQuAyPpwpxGmwelBEpLwve2QZ7pAsE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tXxto+D9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3gqoZaggKCJUzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3gqoZaggKCJUzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780066948; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=D4zryxbr;
+	spf=pass (imf01.hostedemail.com: domain of 3hKoZaggKCJc1I42+79K7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--ardb.bounces.google.com designates 209.85.208.202 as permitted sender) smtp.mailfrom=3hKoZaggKCJc1I42+79K7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780066950; a=rsa-sha256;
 	cv=none;
-	b=vG0sqtty5HhH9w8UjCFL7HQbBBVyL6rST76aiH87ACWg1MZcznDa2nC2y53lAzfcJu0753
-	GG089zSzDeCHgMkswG/DUJ80ST8kn/TsMyiYQtTSWX6n991dNGrJ/RGoddvzFZdBJJ4lVi
-	aDp/hvtMFp55bk4pPn+SfRD/yVK1aG8=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-49058e91639so46546335e9.3
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:02:28 -0700 (PDT)
+	b=CeWI6vUovHtgaNQdaOVjHpdUSFFPkNGp11nKR5E+7ncI+kD7czymlAeTs8GQffnHixnG40
+	aOK+DfExPUny+/AubdYTZwUFoiZvs3IaGEDb7XbDMsiG4nLUrO0P4Pc4Kje1HOFmWbVBfp
+	jedrgYhvQuas0AwDHpJo8XJfxz2i+kE=
+Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-396623d338fso775741fa.0
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:02:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780066947; x=1780671747; darn=kvack.org;
+        d=google.com; s=20251104; t=1780066948; x=1780671748; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=i9tlxHwsxA6eqo2SKmJcmasVfNUkIRzlQyYjktT989Y=;
-        b=tXxto+D9u80KXyemvxDZEoMqoAkZ0IUArYe0yej+xGYACKUI1LBGmFF6Ir47Lqhto4
-         jHQUeOLpzLkmzPA6msG2NYUuVZf2oAkK5mVBKxd4FN9Q6Ot4NTXGoCc5Dj6oChjAV7ms
-         Msze9IYn4NZ+MXeZuYcSpsg/uiG7XReBKxyShKGsj+Vlc+ZbLmyJ0dElCHrgPWWoRQ9v
-         Ez5hIh7KgLPZPjSh61+AdpmKLZi4E+tZ7Xs7JlXfJLzL5lU3um/rK+8Zgtjp4PJDsODa
-         D/tq4YjeQxptW15OW/qwnTUILzQCPXrkW82QXI4Idiko2XVpBDmvNIbUSetFs7AAblc3
-         2aEg==
+        bh=xs8UZJaaGpDG2dm36q3rutkvNlrSNXe/Bj9mb4oSyno=;
+        b=D4zryxbrUbsomVJKByUWXs5v1w6YhUGeJ20R89h52X7J15pL9wPdKioCybJTBkFW2j
+         K543qJsdS9sR3xGMMXOGO/YpGZaIwvuAFpJwnImB3308qR774nBYdEHB4s/ywb4HT21O
+         k7AKvkuyQb6KK5SDlVz5iQ0DnMpvLfjQci4hMzTHJ8ID4V0qUHpLRx+WmNTAW5czL3gi
+         jBUgGTF7EbnIfdkcBaJf57F/yfB0MxqXu44RaFjU2Bt/+L+MMv86l3WmPnn/npBvzlWy
+         K+b65lBGz0d240IkF3u98XH+4DjiDri9FBtlbfIAQ5OfJjnD1+9xwlHljxPpr6M+Bv7n
+         CxfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780066947; x=1780671747;
+        d=1e100.net; s=20251104; t=1780066948; x=1780671748;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=i9tlxHwsxA6eqo2SKmJcmasVfNUkIRzlQyYjktT989Y=;
-        b=pn9x2vvF35WcNwQ27pVpwp5w79WrUQCFQ1mGVe+iUY6DJv0UGDTg0sW5PMAIiLYqEW
-         ShdiQNpcXUJUjdKMX3aAJsvsPeJSfmM9+8KhJLvk9VRUyb5Uu6G0/c1luUan3KDNVPFl
-         rM9svVk5XdrM2/JjswFWbGWlSsTxpetOYMvzzg/8R6TQbk+sdfXmgJQlJI7ZXTWLxGSH
-         /xbihdPfX3FRimc+6i/SM0boQNaPTTkvPmrMrz+AZWvSzH67DMMHxcfAP/9w5y/50NVu
-         vKh7dD6NxU0MoGk9FBfjQYDyS6Iy846N1ct7kBnpBPI3QM82flazTeAFokLvnVXKNG8i
-         Z4kg==
-X-Forwarded-Encrypted: i=1; AFNElJ+EzYEn34j12b5UOeczuaCm4ysvVw87qRbMSyUz1KRQlp01IQuW6x4YBXilS+lIv2hjfLszqntcSg==@kvack.org
-X-Gm-Message-State: AOJu0YzrkbQm9hvCfpxVhBgYZa97cdPph+oh9F1IAJ35wRh5JhIgXYZy
-	+sIZNNnZi0fNGBL7ERMTbMqFFYn0pFuVazW5VYqWp2t55SxfiVmIpnHBXz/uwK/+li9e/ZU91g=
+        bh=xs8UZJaaGpDG2dm36q3rutkvNlrSNXe/Bj9mb4oSyno=;
+        b=jw5d6BcOevlIwsnCAq8s3vIz8Ml2obsIiZ8aS1hRI0QgUPYiy6hcSxszFnkqzOzF85
+         wjvcpNYKMgdpSbIYJ/zZcCZ0DiPd6RwIb2TI6uYf1eqQZWIZZxJGfZIZtslgrIs4KDSZ
+         +v/OrXbibCNlAZD38itcaiz7M87j7Wu9C3BfQ04HYvmi0vm97qTl0DGAbpqfA11iR/Qo
+         xVvmXSI+XSzgxr+Cxr19JCcbw0eCKdzweZxu6qa+segsLU9lAGLrZBX4mnkLN9xSMmPj
+         DJ4OPYpPg2kRh5xL62TAyuNVZ3C/kNqRtKM444LbuOfTin744w7OZN/FPPvS6+C3GYL8
+         C6xw==
+X-Forwarded-Encrypted: i=1; AFNElJ9Q0ubYJ8AQWeWrAQtzgPRQmueRdaC/mL+SR+7zT/CGWfjuwl9smHTvtTbbji+/47uAyLwnzJ3kGQ==@kvack.org
+X-Gm-Message-State: AOJu0YzGLbvgz/Pnea8spQO1kXCHmQ3OraMdedDjI766qbOh+7uC3x2e
+	6Zk4c8ruaV9Fs0Yhen/o1pbm4EPtbpXz29ZBB9EJ+stAbhmplZC3yxVrZoBesP9a7jWhr9Hf8w=
 	=
-X-Received: from wmaq22.prod.google.com ([2002:a05:600c:6c96:b0:48f:dc9f:6f14])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b14:b0:490:4b89:5361
- with SMTP id 5b1f17b1804b1-490a2904d7fmr303015e9.7.1780066946805; Fri, 29 May
- 2026 08:02:26 -0700 (PDT)
-Date: Fri, 29 May 2026 17:01:59 +0200
+X-Received: from wrjb2.prod.google.com ([2002:adf:e302:0:b0:45e:f542:3761])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a2e:990d:0:b0:395:ae3b:3375
+ with SMTP id 38308e7fff4ca-39664e981c0mr41301fa.2.1780066948187; Fri, 29 May
+ 2026 08:02:28 -0700 (PDT)
+Date: Fri, 29 May 2026 17:02:00 +0200
 In-Reply-To: <20260529150150.1670604-17-ardb+git@google.com>
 Mime-Version: 1.0
 References: <20260529150150.1670604-17-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2952; i=ardb@kernel.org;
- h=from:subject; bh=TyyULer9eaKHyQ1BOINcFoCv1vvnMukGL48REtJhPzs=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIUtyVUboiS16Xkfr8iLbWErOKcytU4vuVJk0+76BcO5Hz
- rb1+sUdpSwMYlwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCKqGxgZNjU07DG6GaTpezdh
- zbZrEwzidjxa865atLfK9/GeO2emyzH8d7MLuK/p3ZH8ib3z+D7vti6R81b7wgsSZrk1v7x+zKK WEQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3242; i=ardb@kernel.org;
+ h=from:subject; bh=QwDzTM46GdUE+NivIT38dC1HutxUWa2GWKTenTtP7nY=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIUtyVWb2gvjDypnblG6ZO3Wv1Bft/jrhexd79oV7t577u
+ RU+EnfqKGVhEONikBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABNZI8zw36neUKL4j/F/nsar
+ u7+2BlcevsMd8uPEywc1ppJzt9RzHGb4K8J9S++osuTMJf0rlUt33Z06V/Xzwox9+yqmH1l/Qee ZAysA
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529150150.1670604-25-ardb+git@google.com>
-Subject: [PATCH v7 08/15] arm64: mm: Permit contiguous attribute for
- preliminary mappings
+Message-ID: <20260529150150.1670604-26-ardb+git@google.com>
+Subject: [PATCH v7 09/15] arm64: Move fixmap and kasan page tables to end of
+ kernel image
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com, 
@@ -105,14 +105,14 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
 	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
 	linux-sh@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A548F40003
-X-Stat-Signature: 6jyese1q9x8sdwixigh63j7cqte9fp6k
+X-Rspamd-Server: rspam12
+X-Stat-Signature: fsdxejh1teabxrg9dx1e7kt47u7wof8c
 X-Rspam-User: 
-X-HE-Tag: 1780066948-588579
-X-HE-Meta: U2FsdGVkX1/KTGM1zikIJ8N2DMM3EA9VBsHfkRxmT44WWxbF+UmdNOh50pT4EjYtyUFpGeNlr3c3tllrhT4XazKUkZ8l+uJO02+Uzge6t79KYt1vfUwIGip51VzO/oXbHYzB354rffflskbdQ8VHJUUDwK5cGlIqP82e45UrZ8XujtLGNMco7/0K68qFylLBCSDBcpx4NS9FjLiEjgggwNagxnkWqZLctBF6RnYg1tfpH+FvEfcMGGTOWVMNS22dJYiGohTGzhQk8F0GkFIj2Sl3uo9B/l8aszICc/ak02FRwSAZbVZ9QeXZjeScgaCbPsivTDWR4wL0aNgWPLRwXDmYclyUs3/myCNjECexXOJMcC/uPynXYLlFk34lADGXHy+gz5Z3cQoh1k85/joSSMkiWze0hqb7XDihtYcwa4V88Saga3jCJL/KcB8kG+vjAXYft+gKCpzDdTSsbwzRVPUQ4m2ckc0gvgDzxCgMxFHKmB8IiGRLVWztVU1gFjpeS9VvZ7Q1HH0Fw7+k4GIi4iaYJif7LJM0iIUTf7E7Y3ARJpyyAFIK1kMc4FNFPscPo5WF44DfHFX0NjQzvErr2aHE/UppEQ7UiTOcGvtV/KQ/N17A/uWyhkWJbDUKYycuGa5Xp3vfJjDJ6LdznjOr3gdmHevafUb3j1K1jqmQvUzgHSNjGbhLpdUnaKlPswKi8dHGg4uC1L3BpAFSWXtJ6wSVmqRvxbKgPd+its5bYRpN7k+K3Tf8MTKvE9zQGYLMV2SGe5bws7jfPcDvf2Vs+ISY32CkejhlxFSdELyCxIW2kzu9M8mslrbLJYPZt80PquAZHv6FvT+2VGr7giOhwHX75hvwVw5/2UB9ph29bM4hqgny9i3k3SHD6OQfPnbTDklaLe6lrT8YfqlL1YTwg5eqDyqabFPRrVy8YLwcnksGA0sDxKzBHXVagUmwrJ+HsnD/rHOjk0mC7mgrvMM
- eVWc7gLs
- yJuMWF/5FtA1SbSgAgKoJ5wURCnJNLNN4TK6jB2uco+2HTql4Oa8z8039X73Nb9n7JY0MXipxm6eWHXOF3JLjUCMSLhhjRnYp3tfZgowVbN50S+nLrzjB6DlN7UwsSo6vToou1Z65RTLbtFPEY8DFfuseTYWMThOVV/OfFVQ7H0GVAwFWTjLG6uJAck5eXQQosf+K/8TiDo1/Xk9YtrQCMZbUzFw2K4DLVKoFfa3alHTwo49BsjGb3ki+CLgdIldx0a6OrTvxJBfyjt4pg+PKGhETABxSz3SFrWB+XkDDpimbzkLcHKW0Dlv21ijMflwFMFagett2IACd80GVv5KlYMcKpWMJaeE4bwiU1ff3+01PGW9Ju5rd8CnHc0ubzP+W6fTv7j7yyfS1aGjuvZhm66k/iFEbuOSuX28tin/WvFIer81ZjW3Cz7Xe4GFUjsKa9LdcItyublzQJx5ttmjUnJS7grneOBPCwS5Fr8n64WnknGhlhxxzOD2rIoTY/C9Jh3R+P0DWqeZ4lvNnrlRu98PwNlKtWORzW157bsPaAz5AmefKZT+2HoKunmsW7Y7D7W0Btvgqtaz0uVcJjeXkXC+CSsfFiYZupeOefXp+pWTHd+c8RfpGRHx7qf6mCqA1heuL
+X-Rspamd-Queue-Id: 80EBF40017
+X-HE-Tag: 1780066950-338843
+X-HE-Meta: U2FsdGVkX19hecbZ2gzllLGqKu64XWH0i3ILKitlUGUbLKkHI67ggln6fLTa/6qdTOg8BM0RjSOygRVlWjHicbHfA4wnEUebpcQLKWsgDqHpwGF4oVyH7yctFj6VNgmAwGYVPQkGUbNes5ll2a93SMjeNvZlaKKXdKQxmsLEseCIIuCajkz5t2GXgnF8Dm+BApxw8wsRT+ZpiobMSos2S0P0C2dY7NCDV5T6r6z8JpW34eHvUH+RMt6R+FHg7YHH7Go+lO8OQCY5LqRIqLKTAGCCTVKwlGRR14arYM0xXBbYABq8ujPlnYkJMMPZYk1fFXWfsYiJrrdgbURw/N/YX6Scz7dQsg/jYomKV1bSd76tjhA7VRD37b4MoPKiGbyhhtJBqwUgo9ce5p4rv2Fn6gnWjAJA3UKA18ULXxNm50PYW80GE9wSm2M1cVQ/aRkQ7kAHyV/pFT7spetYuGM2Uyt22eOLmvGHaJtCkDgZZU8FUNpUnoQXVeORLeFc9XpG0cm/6WLCz3iSnMfPIQuiVZiIWfHB1jmttIHhwEzN3vtZ9qELwQP1k3xDv/QveqxE1SgBk324dd+QGyzP8wWbY1gq4zu5Di6Cx0x2G1yjNXdiIaWLklGjgdyr1LITzMmI3BKT2sppB+JC/moYCUs+wb5Ja1QC++y6YOKYnP5lJESxbYinl6Wl5rgeIYL9PtnzW95vfMeJpXQvn5SCTiuKFlPEll90L1ulCCJ4D2GFKr+A0qjHlizeTRdzjNP6e+Cs5ZaLGlobQoeKlLp5q8RnyslfgrDOXW9nXSnnMqlZlZpAq+NkKyNd1JQfO6qOmoq9qFpltiFa+K0G/+5Tp8iaBzQsXeyhbcCEUrkDfIC5bDd2zUSplJKxl9/w1nuGEdQqn2/+vvxw4lP5fQP+/8McIgzOHQ4ZEaEe2QX482v8xPbadr1wl8XVBBd3KqZM1+dI/pVIOJcQ5fqzKuo+8zt
+ XVMkPkSI
+ Q3OFMxfB4RlBRSI1BZSctb1tEStr6Q7hYTAwVbeMH68ECl71olUuWP/AkZWo53BTOPQCyovUAAwOtvoqTPV90tQEEg/ob55hBXZuIaP3jcDZ6v+6IVxur/oFtzzDD4NudoRFxG1a5iLldPx6CLl/6qqLyx4wb7y3f1BUTu+eh7ZNmYmUsDa7aYWy7DN3ocX5cbgTetDLMIP3J99qUzBxxsm8jh8J3WTMljjEi6SIs4E1p90GWhIMzo9hl0tAVrITJFPtMhhFNqJvwkpx5YSEDXC+vmLCGoJFVLGvqTzN0fIv9FtRPE24oPpS5b2T24fgx6q6mtp8Qm25WoyRYslJEwaPavZzsRnv0QlCKdJwH5gq3S+QYhMH8HQ7rksSt7KC/yThw7ysYJ1n3hD5AhZCtN9Fvb5hiQlBrVOFJbxbgIezit0NY1lglW7MKC+bx3Rd3mrc8uBNzDbBz55kZjwkofaYJ1ED0kF0r3nAF5qqAxDis0t5wlpb9HKke3YLfIjFOKcmjvDG62wIthNizqnFmxWgRf9Ga7PQ0tqa3Q43k2p8fEhk0LpP7FtZakp4U1H4YtHTIqkLpOFFkDvG3w2MAbSyBvqn22meAkyEy/f2qwoLh1GMt3IsRUwbYf/p5Ilwp9liRyKxCqJ/soTIY63yM+O1o7YRP9J/jpYxrSqe8ST8JZTc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,72 +122,88 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-There are a few cases where we omit the contiguous hint for mappings
-that start out as read-write and are remapped read-only later, on the
-basis that manipulating live descriptors with the PTE_CONT attribute set
-is unsafe. When support for the contiguous hint was added to the code,
-the ARM ARM was ambiguous about this, and so we erred on the side of
-caution.
+Move the fixmap and kasan page tables out of the BSS section, and place
+them at the end of the image, right before the init_pg_dir section where
+some of the other statically allocated page tables live.
 
-In the meantime, this has been clarified [0], and regions that will be
-remapped in their entirety, retaining the contiguous bit on all entries,
-can use the contiguous hint both in the initial mapping as well as the
-one that replaces it. Note that this requires that the logic that may be
-called to remap overlapping regions respects existing valid descriptors
-that have the contiguous bit cleared.
-
-So omit the NO_CONT_MAPPINGS flag in places where it is unneeded.
-
-[0] RJQQTC
-
-For a TLB lookup in a contiguous region mapped by translation table entries that
-have consistent values for the Contiguous bit, but have the OA, attributes, or
-permissions misprogrammed, that TLB lookup is permitted to produce an OA, access
-permissions, and memory attributes that are consistent with any one of the
-programmed translation table values.
+These page tables are currently the only data objects in vmlinux that
+are meant to be accessed via the kernel image's linear alias, and so
+placing them together allows the remainder of the data/bss section to be
+remapped read-only or unmapped entirely.
 
 Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/mm/mmu.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ arch/arm64/include/asm/mmu.h    | 2 ++
+ arch/arm64/kernel/vmlinux.lds.S | 8 +++++++-
+ arch/arm64/mm/fixmap.c          | 6 +++---
+ arch/arm64/mm/kasan_init.c      | 2 +-
+ 4 files changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index cdf8b3510229..971996e46fd1 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1016,8 +1016,7 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
- 			&phys, virt);
- 		return;
- 	}
--	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
--				 NO_CONT_MAPPINGS);
-+	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
- }
+diff --git a/arch/arm64/include/asm/mmu.h b/arch/arm64/include/asm/mmu.h
+index 5e1211c540ab..fb95754f2876 100644
+--- a/arch/arm64/include/asm/mmu.h
++++ b/arch/arm64/include/asm/mmu.h
+@@ -13,6 +13,8 @@
  
- void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
-@@ -1044,8 +1043,7 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
- 		return;
- 	}
+ #ifndef __ASSEMBLER__
  
--	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
--				 NO_CONT_MAPPINGS);
-+	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
++#define __pgtbl_bss __section(".pgdir.bss") __aligned(PAGE_SIZE)
++
+ #include <linux/refcount.h>
+ #include <asm/cpufeature.h>
  
- 	/* flush the TLBs after updating live kernel mappings */
- 	flush_tlb_kernel_range(virt, virt + size);
-@@ -1191,10 +1189,8 @@ static void __init map_mem(void)
- 	 * alternative patching has completed). This makes the contents
- 	 * of the region accessible to subsystems such as hibernate,
- 	 * but protects it from inadvertent modification or execution.
--	 * Note that contiguous mappings cannot be remapped in this way,
--	 * so we should avoid them here.
- 	 */
--	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, NO_CONT_MAPPINGS);
-+	__map_memblock(kernel_start, kernel_end, PAGE_KERNEL, 0);
- 	memblock_clear_nomap(kernel_start, kernel_end - kernel_start);
- }
+diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+index e1ac876200a3..2b0ebfb30c63 100644
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -349,9 +349,15 @@ SECTIONS
+ 	_edata = .;
  
+ 	/* start of zero-init region */
+-	BSS_SECTION(SBSS_ALIGN, 0, 0)
++	BSS_SECTION(SBSS_ALIGN, 0, PAGE_SIZE)
+ 	__pi___bss_start = __bss_start;
+ 
++	/* fixmap BSS starts here - preceding data/BSS is omitted from the linear map */
++	.pgdir.bss (NOLOAD) : ALIGN(PAGE_SIZE) {
++		*(.pgdir.bss)
++	}
++	ASSERT(ADDR(.pgdir.bss) == __bss_stop, ".pgdir.bss must follow BSS")
++
+ 	. = ALIGN(PAGE_SIZE);
+ 	__pi_init_pg_dir = .;
+ 	. += INIT_DIR_SIZE;
+diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
+index c5c5425791da..1a3bbd67dd76 100644
+--- a/arch/arm64/mm/fixmap.c
++++ b/arch/arm64/mm/fixmap.c
+@@ -31,9 +31,9 @@ static_assert(NR_BM_PMD_TABLES == 1);
+ 
+ #define BM_PTE_TABLE_IDX(addr)	__BM_TABLE_IDX(addr, PMD_SHIFT)
+ 
+-static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __page_aligned_bss;
+-static pmd_t bm_pmd[PTRS_PER_PMD] __page_aligned_bss __maybe_unused;
+-static pud_t bm_pud[PTRS_PER_PUD] __page_aligned_bss __maybe_unused;
++static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __pgtbl_bss;
++static pmd_t bm_pmd[PTRS_PER_PMD] __pgtbl_bss __maybe_unused;
++static pud_t bm_pud[PTRS_PER_PUD] __pgtbl_bss __maybe_unused;
+ 
+ static inline pte_t *fixmap_pte(unsigned long addr)
+ {
+diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+index abeb81bf6ebd..dbf22cae82ee 100644
+--- a/arch/arm64/mm/kasan_init.c
++++ b/arch/arm64/mm/kasan_init.c
+@@ -214,7 +214,7 @@ asmlinkage void __init kasan_early_init(void)
+ 		 * shadow pud_t[]/p4d_t[], which could end up getting corrupted
+ 		 * when the linear region is mapped.
+ 		 */
+-		static pte_t tbl[PTRS_PER_PTE] __page_aligned_bss;
++		static pte_t tbl[PTRS_PER_PTE] __pgtbl_bss;
+ 		pgd_t *pgdp = pgd_offset_k(KASAN_SHADOW_START);
+ 
+ 		set_pgd(pgdp, __pgd(__pa_symbol(tbl) | PGD_TYPE_TABLE));
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
