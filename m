@@ -4,104 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C337FCD5BD2
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:49:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CCC5CD5BD2
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:52:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 351A86B008C; Fri, 29 May 2026 04:49:47 -0400 (EDT)
+	id D1B326B008C; Fri, 29 May 2026 04:52:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DAFF6B0092; Fri, 29 May 2026 04:49:47 -0400 (EDT)
+	id CF2B86B0092; Fri, 29 May 2026 04:52:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CAF96B0095; Fri, 29 May 2026 04:49:47 -0400 (EDT)
+	id C07FC6B0095; Fri, 29 May 2026 04:52:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 074D66B008C
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:49:47 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9B7B6C353D
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:49:46 +0000 (UTC)
-X-FDA: 84819834372.13.AFCBAF2
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E9966180004
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:49:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=PezPME7C;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=hXpBCHC4;
-	spf=pass (imf24.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AD67C6B008C
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:52:56 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F40E1C2B80
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:52:56 +0000 (UTC)
+X-FDA: 84819842352.02.233F35C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 76FD120004
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:52:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kly1uSR1;
+	spf=pass (imf03.hostedemail.com: domain of jirislaby@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jirislaby@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780044774; a=rsa-sha256;
+	cv=none;
+	b=ieeS2mjS1p6i30iv+D2/H3SV8UUmROdtB6DWMXIA2m8ZLWmFVjNAsQZoLic8JOlTJZYjWj
+	///wIfgYldVnH8tZJRxiEC25Gh4jeocuQZTT3r0eylck/EW+SlF0Vav3isvL4N/NOMI3NX
+	iZ6AKUZYmSDHBjp2CA2ZKx2fY207u5Q=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kly1uSR1;
+	spf=pass (imf03.hostedemail.com: domain of jirislaby@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jirislaby@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780044585;
+	s=arc-20220608; t=1780044774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RIQTzMrAiz60EQXjnvZkMfXRLxi3s6ETa0YnTZQN3V0=;
-	b=1kLGwq3sf+31AR0XnvJe8TKXkYihJ8pZahPh+IpW88IcscbvuNQbFmDjG/hOYXq8o7Ex9w
-	DlJpZs3L0zt78dMuxx78xnJf0guPHf3a9pC7lINSjebeQfW90WrheMjmePcaxQ+PJsfJIJ
-	hLpF3FpezulANINPH11wW0yYm3yvXYs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780044585; a=rsa-sha256;
-	cv=none;
-	b=KVxPUEvuUVzZGGpLTUw6Favbe720fxYbYnBCbd3+xj5j+dFUbHMlhgW06j0waGhEnuddql
-	cPdkaWc4/EKMvJMWZpe4ZgZ5WvAYfuu28Fz4Lg32OSQrz8HPX9iopX23EHOM6KWCdCn7dx
-	cmBpOrP/q4wor0G4dq4xhRlqx4GEwck=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=PezPME7C;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=hXpBCHC4;
-	spf=pass (imf24.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-Date: Fri, 29 May 2026 10:49:39 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1780044582;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RIQTzMrAiz60EQXjnvZkMfXRLxi3s6ETa0YnTZQN3V0=;
-	b=PezPME7Ck4DYD3pliNLx80vlw7cBwz4loyN4hp4vr99ld5QeCjXUaYDk4HPjJWNIaQnq4f
-	0LxxtzVOUWhqIHIH7twCdRAVZ4CLMCdeIYdJe5JdlFewz1xVNoOu78DAFqsfcYlkoIcDT9
-	O/XNOzNEuARiVjFPEv7yXpTcaMjFZqQ2LZYMPvDbih3OvYfdJi/vdTvDq7xh8iGIbQTDzW
-	yDWvl0x9xn7yNXjZ9k9dcBmv54e/1zv0kJh5cvQZSczWuVAf4haoNjwrQ1mjH9Y00UK3oQ
-	6HjviRT4QUJQa+RVtekFJTWsggcUGZeLOBhi2MTnepnzenOqovMnOrV4JCrYfQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1780044582;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RIQTzMrAiz60EQXjnvZkMfXRLxi3s6ETa0YnTZQN3V0=;
-	b=hXpBCHC4cVaCxy8mohdL9CuJryevkV2GGrSOm/4C3/y0Ka2S2b4kEgKL/boonjNbSwUhFS
-	2C4ZWQ/P7coXDPBg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v6 1/4] block: add task-context bio completion
- infrastructure
-Message-ID: <20260529084939.bWkYVTj4@linutronix.de>
-References: <ea6fc01f-5cb7-4a04-9f92-bbd2791fea51@columbia.edu>
- <ahPdDtu3vXfNpb__@infradead.org>
+	bh=bwfWO5ylsSIxckFIR6JvOs3hi0LSk9IH+1TJ7RISKWU=;
+	b=Jjt0lUMnVz22wAXJROdldXs2h/Xr2EPc/9QtgP6Kwn8dtxO4UBey+J/LksghSWCHXAHyla
+	MOeqiQ5n8T+43//tE51mYnYPU/GlkM+/3NCfD4YIJl9ulD6DaDYZ9k64gSCFc3V0vjdvi9
+	iXpvNdgqMYE/rkEByo3Pv4V6+Faxsk8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2B57440A0E;
+	Fri, 29 May 2026 08:52:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2B61F00893;
+	Fri, 29 May 2026 08:52:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780044773;
+	bh=bwfWO5ylsSIxckFIR6JvOs3hi0LSk9IH+1TJ7RISKWU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kly1uSR1H7SUbGt+pgv1Du70uRlv9LbWIZlTPKTyZbdCZ9nDIli84ih+5Mv4c+jsE
+	 8c9m5PwrcPCTpzCrmeT/YzD3dBYPjIN+hiY0DBulWa9uqcxr1chJPtPkEoIxrl2UaH
+	 nIZmLZU8boYKEwogyUeSu3rj+QRlq4KP5q+kVpLJdntJYg2rr/8d0Dddj0wjvOZwKF
+	 ytGTr/oFMLyvcL6uKxVlc7I+MkwDV4c6NbaNiGlSeWmpqASTC+1Y/6lyA9IhczaKuW
+	 dHVo/6j10Rv2fsOD2Ad1MHCSWpPIkMirRkQlIT/Pb9xQQVhABfPuKAyh8KhzNuDWyu
+	 XbrL6H11zlYFQ==
+Message-ID: <98ebf7d1-244f-4fbc-afc4-3e8940df5422@kernel.org>
+Date: Fri, 29 May 2026 10:52:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ahPdDtu3vXfNpb__@infradead.org>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 1utwhryszfp34mt7tf6axdio5ikmy3ji
-X-Rspamd-Queue-Id: E9966180004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] tty: serial: men_z135_uart: replace __get_free_page()
+ with kmalloc()
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-serial@vger.kernel.org
+References: <20260528-b4-tty-v1-0-9da9f7aec5f2@kernel.org>
+ <20260528-b4-tty-v1-3-9da9f7aec5f2@kernel.org>
+ <18bb4a45-c26b-4a89-b598-a844d3aadafa@kernel.org>
+ <ahlRqd3e94ojSfWE@kernel.org>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <ahlRqd3e94ojSfWE@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1780044584-590167
-X-HE-Meta: U2FsdGVkX1+7I8I2KSou953aumLBQF0Uim8CGTyYHMZH3ZS5LTf7BjdtJMETzflig7UG5BYJZjDYWr2P0Jj1xX7btkx8gTqiZXQAElXvhLPWZTQcVb/695x1ahrTYAT2CwL9ZPOrpXQlpZcXQ/dNK+K4mxFRYwAQ301fUTq0LBDLhJiZCoqkHIB8I627Shj3hvhCBEVskCOqc5BX2ibX3D0EBijV80ityzw3HVBf9tkPMPjK4Q7RjpCEg/h12CclzqPdpR+sLDOFxv9hyGjxyHH70b7UCAV9Vnz2ShDhpjBscXTH9C85Wzu+TBsYvc9n3GyY6eC05/CeZp/AvL7nWY21OeczX9IcAeH2f1qxRIIiFN84UwUEh+A1jgvaetAohaOXYv+yoly0HWlHChvZ5DO6MgJOVkA1he+voDdwgh8B+ujGG1DQRN6HOuH0eq4yV1+Xk5fZEaieyf8Szr2846MPvvM1e6EQI9X79/o4Yq5aJasLqPUzYSgV89+WB7jfYbXGoBxt3LgSznXPZYfBEEA0yqBjY/rWftpgTcT26XZrTTwynmWiLRNfJaGcBvz0cRNkxqwtL3DPESeusG+sR5VJDu27IHFBgpeTTkCunrjnob21+hZPO5eOZB7hD8jGS85NrDTn6UIuOSkQfmJQzuAjjqja84Hiz7yLmmn3DlftQXwR3fRCbDCxBPWyAPutpYm8kLLYjtoCa8i2p7mEi/UPTnv6WkLg+yy4JdytoCQgQP7pCLeY5ftoop8fMRM69+lNl7566rUpcQAD19Z4lKJlfx5l9x7WvLDkbMUVo40sJZKyiFW7PmB0aVyeV+GKXdNZfrnRKnSol6HjJrTiWyJkReMpnjNF1M2FfP7AxlWZ7xE/+rZV3dXhtk74uTpUNtrHqWTODns0XGV0VC1UCsG+ZnukTjyw81IN6iNUCzvi/3u8mf3kI68WqIykit2OivNQv896CMAr8EH/VuJ
- bwqMv+om
- 8C7HGv7wQ0W8J/me64WeS+APJZNYWavHxJeRx6/sVd2zHJehsCjL+QaFPE4sIeQ1O1qiEijVL1L0CygiWvXmzXd/ZZU3uPcg2/EZJUZ3PrcxYqjKMftbLNdA93Bw0MrKCCeC6+bIkBsGnNh3lcaBnu82Cv55WA0GdxFKCyXDRpLuwUf0kddQT6JFDYdusTFo8wGTQ
+X-Rspamd-Queue-Id: 76FD120004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ybjq59ytooby3xe7rz18qgbq7te4cuf8
+X-HE-Tag: 1780044774-608982
+X-HE-Meta: U2FsdGVkX19QJxB5joGhKJDimsB+Xw548gBYGyDkdO27DdT4MmZHu09PbGbT/ejhoIma9v4uVyN26tTP9VMMxj/dCZfOC4R/Noi6Vi5QG3CKHw4RlEo7EqM7JVoS7nzc2rQqznaKwz66pr3iUjijGW9CzbFKYij12otHoNAnY7Ln+omvIAYQ6P4K/PljqWMihx1UsziXzb0EvbNVG2LCxgoKJBuFWbtNWv2MgvEahvmTDeePkSlrtGXExckiTA0trcWTizNzXGsOQoLHTtCtzBMGiSmqF+yP2hIsAa02LcXl5ghbwFbWKHk9ApH4C7huKnJ4vxhIaPXS9IHPzL07hRf5SKmPAle/JlBZSMAKg2hI6WOjtn9GKRGDMVnQcohNKGZ/N8zlbxJx1w0jsv2+myjxwt6wTaZjfOAXmoFijCLm3UHltbA7nfeAK4EbkHVgy267uMb6S2M2F5zvTsYSbWe3P30ji8VE3xf1+d1JfN9aEGVEIao9huc7Bnne7g5FMqhi09LlyN3zEaiyLaRdljpJqORRuq8ka5H9qftUZGMXUVae3iuv9/k7D4aC8clnruKN0QpgsH+pcMn4w82Xn6o4EwNVq0h7FUOK4KsI+H2+AawQHktuw5cHsIT4McTpXK63HviFy9sglWDos+sjYhXkV5PG/HNzZxvMwFlNrSQp4UaVQTiWhu7xGnjhhB0tJ66xDyBtlEIe650ARTweJfc5BxXAVfkQmPyR1xZDacysQ1W6Vcyxvjkh3Jyv7UuuTk8gxZH6VGcGLngF+YFY6srfJBq5XXNhxtzOnfYuHcZ7nEu66jqEFMsxZ7y6PMS2lMv9c0SSh+2bmmgA2W/HaLw0NkxU6i+yZGX1PlPGychAeCDNRj9UK6Vc16kMYnGCowomf/aqE4XyrVxOn50RHPJLaYwCY2AB5r0bf8MHJ5Qsv1NMCKp52CTWXhptLvOCGz3iimvcAjfd9Gd4Hbv
+ CpMDGLTO
+ Rx01m6R3X+E5TI+nvsJp2+V+4axwbASdMpF0CWrKy3PjOpeymz9HdB3joRYYM63upDOdA246LEkJRwhji8Qkf5FpZPGwfJRwsNdh7SxQpn3Q8tCBhpOch8hZusB7OH0d8C2Jl1/kJnpuvuTqq6noWV+ULkEOJ4E91a0gC+w+JJS7gyH0YWk95YUokCOdgLw1n/OCD3zwZFTEgPSrMbcVfJ0Q5Jn+WGfU0nOa8Lp5QU44MzxPVswaJih7WoKxTRo9ShbxQZwtywWd9mMbVbpHFyhmY0XnyjWVNWvVRWmXLjX+fNdpmkRq1tO6jQGuLPgPY+lmBLdIPLGfJ6clwX9J3bfI7LzucV+QlWYLB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,78 +140,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-05-24 22:24:30 [-0700], Christoph Hellwig wrote:
-> > > +	local_lock_irqsave(&bio_complete_batch.lock, flags);
-> > 
-> > Q: "Is it safe to use local_lock_irqsave() here when called from an atomic
-> > context?
-> > On CONFIG_PREEMPT_RT kernels, local_lock_t maps to a per-CPU spinlock_t,
-> > which is a sleepable rt_mutex. Since __bio_complete_in_task() is specifically
-> > called when bio_in_atomic() is true (which includes hardware interrupts or
-> > execution under a raw_spinlock_t), attempting to acquire a sleepable lock
-> > here would trigger an "Invalid wait context" lockdep warning.
-> > Would a lockless list (llist) be more appropriate here to avoid sleeping
-> > in atomic contexts?"
-> > 
-> > A: This seems legit, but I'm not super familiar with PREEMPT_RT. I don't want
-> > to switch to raw_spinlock_t, as it seems like that would add unnecessary
-> > overhead on non-PREEMPT_RT kernels. I think switching to use local_irq_save()
-> > (as is done for the per-CPU bio allocation cache) should work.
+On 29. 05. 26, 10:43, Mike Rapoport wrote:
+> On Fri, May 29, 2026 at 09:47:33AM +0200, Jiri Slaby wrote:
+>> On 28. 05. 26, 12:24, Mike Rapoport (Microsoft) wrote:
+>>> men_z135_probe() allocates a receive staging buffer filled by the
+>>> CPU via memcpy_fromio() from the device MMIO region.
+>>>
+>>> This buffer can be allocated with kmalloc() as there's nothing special
+>>> about it to go directly to the page allocator.
+>>>
+>>> kmalloc() provides a better API that does not require ugly casts and
+>>> kfree() does not need to know the size of the freed object.
+>>>
+>>> Replace use of __get_free_page() with kmalloc() and free_page() with
+>>> kfree().
+>>>
+>>> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+>>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>> ---
+>>>    drivers/tty/serial/men_z135_uart.c | 7 ++++---
+>>>    1 file changed, 4 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/tty/serial/men_z135_uart.c b/drivers/tty/serial/men_z135_uart.c
+>>> index 6fad57fee912..9c32b01edc9e 100644
+>>> --- a/drivers/tty/serial/men_z135_uart.c
+>>> +++ b/drivers/tty/serial/men_z135_uart.c
+>>> @@ -17,6 +17,7 @@
+>>>    #include <linux/bitops.h>
+>>>    #include <linux/mcb.h>
+>>> +#include <linux/slab.h>
+>>>    #define MEN_Z135_MAX_PORTS		12
+>>
+>> This one is misplaced.
 > 
-> Adding the PREEMPT_RT maintainers for this as it is above my pay grade.
+> Do you mean an empty line is missing? Or there's particular order of
+> includes here?
 
-The local_lock_irqsave() seems to come from __bio_complete_in_task()
-which sounds like preemptible context in general. So yes, using so is
-safe.
-It should be even save with interrupt handlers and so on since they are
-threaded in general.
-There is this new bio_in_atomic() this looks a bit odd to detect softirq
-context as calimed in the comment. Anyway, on PREEMPT_RT
-rcu_preempt_depth() will work as intended. The preemptible() shouldn't
-get false because softirq handling is not recorded in preempt-counter,
-interrupts are forced-threaded so you should never be in hardirq
-context and things like spin_lock_irq() don't disable interrupts. So
-unless you do local_irq_save(), preempt_disable() you should remain
-preemptible (even in softirq). This might or might not do what you want.
+You added it after an empty line -- along to #defines. You should had 
+added it along #includes instead -- before the empty line.
 
-> > Q: "Does creating this workqueue with WQ_MEM_RECLAIM break the local_lock_irq()
-> > protection in bio_complete_work_fn()?
-> > When a workqueue has WQ_MEM_RECLAIM, it spawns a global rescuer thread that
-> > can execute per-CPU work items during worker pool congestion. This rescuer
-> > thread executes unbound, meaning it could run on CPU B while processing
-> > CPU A's work item.
-> > Since local_lock operates strictly on the currently executing CPU, the
-> > rescuer thread on CPU B would acquire CPU B's lock, while popping elements
-> > from CPU A's list (derived via container_of()).
-> > If an interrupt on CPU A concurrently calls __bio_complete_in_task(),
-> > it will acquire CPU A's lock and modify the same list without mutual
-> > exclusion, potentially causing list corruption."
-> > 
-> > A: The rescuer should run on the same CPU, not unbound, so this is not an
-> > issue.
+>> thanks,
+>> -- 
+>> js
+>> suse labs
 > 
-> This is another area where the PREEMPT_RT/scheduler folks might be able
-> to help.
 
-Not sure what the question is. WQ_MEM_RECLAIM is one thing WQ_UNBOUND/
-WQ_PERCPU another.
 
-bio_complete_wq is WQ_MEM_RECLAIM | WQ_PERCPU. So it will run on the
-requested CPU. The container_of() and local_local() looks like it will
-access the same thing but having a WARN_ON() if they don't would be a
-blessing. Or just use this_cpu in the worker FN to avoid all this.
-
-The need_resched() check in bio_complete_work_fn() is bit odd. So if
-need_resched() is true then you want to leave (and you care !PREEMPT
-kernels). On PREEMPT_LAZY you could just continue as there would be
-preemption sooner or later.
-The bio_list_empty() check below is futile. If it is empty then you
-leave doing nothing (so you could just leave without the check).
-If there is an item, then the enqueue "thread" should have invoked
-mod_delayed_work_on(, 1) claiming the work. That means the
-mod_delayed_work_on(, 0) in this function should do nothing because the
-work is already claimed (so you could just leave skipping the extra
-work).
-
-Sebastian
+-- 
+js
+suse labs
 
