@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92ED2CD4F54
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 20:24:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E91E0CD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 20:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E451C6B00A0; Fri, 29 May 2026 16:24:48 -0400 (EDT)
+	id 593E26B00A3; Fri, 29 May 2026 16:24:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF6806B00A3; Fri, 29 May 2026 16:24:48 -0400 (EDT)
+	id 543936B00A5; Fri, 29 May 2026 16:24:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE5116B00A4; Fri, 29 May 2026 16:24:48 -0400 (EDT)
+	id 432A66B00A6; Fri, 29 May 2026 16:24:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BC7346B00A0
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 16:24:48 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 766641202D0
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 20:24:48 +0000 (UTC)
-X-FDA: 84821585856.26.A701F77
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7DC59C0002
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 20:24:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tMynjDyw;
-	spf=pass (imf10.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 30E486B00A3
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 16:24:52 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB9B514027A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 20:24:51 +0000 (UTC)
+X-FDA: 84821585982.05.7DFA7C1
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E062980013
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 20:24:49 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Sj5FxLc1;
+	spf=pass (imf30.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780086286;
+	s=arc-20220608; t=1780086289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oguaUT6+V1DypHAutD3qNEDdgfOr6liguLrL5/SdR+Y=;
-	b=7jZNgV6x9mPEtOhNSShOlR9G7YtFRG/lwbOL3nKBpVkJ0z/ygQnu/orxZ0UbKENwpI9fLN
-	Mt+Z7vVhnlbmLyCfF1n0h8beRJ0TXeXsp3eicHOVHvXQcLfTdbTUW6eI8TuE5Sqng/UQZw
-	/GqCsQ0QzsWWRgxtT5qM/KtrvRjwoNI=
+	bh=evn50r5ng9H9NfR/F7shpk5eakICeNR87P7QydzAfto=;
+	b=7cQku9O7WDrXWaM7/iSeqnlAmLXO+kbYeBSQKFhDm0JsZatO/3LTovLFJ/OAOYc3lTFJK6
+	N2Cfv+N9IB2uiG6DXIQFcLRvL+lTdUn3q726UM/zAFCb9wsMMoLJi+NkHM8xFfyLhNLqtW
+	QwUKhwGZWRbkSc75gt7+YBDynGMTqpk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tMynjDyw;
-	spf=pass (imf10.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Sj5FxLc1;
+	spf=pass (imf30.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780086286; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780086290; a=rsa-sha256;
 	cv=none;
-	b=SrByGXxY8988aSUJJEazKELlYML/kVpLbeFwj1bLvcaSXCfwbMxRc/QngscAh40gS5Mh8G
-	vy8cYObi7PWFykfJMRjMYtB6sKVo+CC1bS6pnh/OAYNga60nQ7xMiFt7waqfPFALlAUwv9
-	3K1Kz3v4Dpi+F7HB77UpV7EIywjOiBw=
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-841513664bbso4680578b3a.1
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 13:24:46 -0700 (PDT)
+	b=5JcrQwjS/XswwKliZi851R864fra4WzQEebtK1kqESQCgQbvFs3vVQgr3DaCUjoj6LllB0
+	H1EH2bUZg0IUmDlw6Ft1Det+tGWmNwaApjN599VGzL9rAkFa7CLEm5NUspt5dv9ai13IOA
+	dhuZ6boMmqFkam8OE23/T5/SS5M+3/4=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bf2e8ccca1so4550885ad.0
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 13:24:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780086285; x=1780691085; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780086289; x=1780691089; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oguaUT6+V1DypHAutD3qNEDdgfOr6liguLrL5/SdR+Y=;
-        b=tMynjDywHZxWNfbUjqaP+TrztJMftg24B6WcWfcWeZZKJIzKBTDrfzOlaeeYObTHXK
-         wdjo8kPZoTD4QktYyqZe06nht/Vm94n+J58vhmfKSsZLb2QjBlJqYT9SiNAQ5K+neFqY
-         HJUiZ8msqMmQF5hm6k1EloyLuPOLWhr6UTfRiqBm1GZuJ7nejxbP5TbsdaxoOUI2UdAk
-         a4ENrRtfGrPQwN61IJSDg/bTm876iS9yOZVGC2HXfLTw9LbUovTw+JnEBwuR6HfNLcbw
-         vOcazeaGIHwnQluFW8K9K6xmQVSO3lrhGeSusTByt9lR+Kk6l65VLdPosJZD2SKbsfb4
-         t9FQ==
+        bh=evn50r5ng9H9NfR/F7shpk5eakICeNR87P7QydzAfto=;
+        b=Sj5FxLc1ntKGg3L5ZUcJDZh2HRfU5Bi6n09NslbUuDcK5D9p6ZHRT6RpO817k2wgQ4
+         q4omTfI/InSwePZfbjliB21XgwoHBWo3e8C+x7phtz9hq0+jtiJzMBF47Oax1oOppzt5
+         4aLQG0rWieZmmfc/zGJNDu3PS0zjiKLqRa/LxSZ09s15MovtTU4WjfblLCJvU9hUhfDq
+         DUdPF8CTMqBnN/Oh9IdTIBeyYPxIxXPzA3nHKxeqJKntBF+epIkNZNZqE5zvZu/EjUuc
+         tT8JSAJ4iwZ2v2jA/ki3J98BkTQ58/pO+Tb1NOdUFafHTyVfPKLvnxnJIenwYEZcB+6u
+         thCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780086285; x=1780691085;
+        d=1e100.net; s=20251104; t=1780086289; x=1780691089;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=oguaUT6+V1DypHAutD3qNEDdgfOr6liguLrL5/SdR+Y=;
-        b=X2xMALKp0aAMjE9xRzx11tFKxynsypyOjll6EuqP2tyWtm5mlW/pBHoHQe9F/IiVyT
-         rVAIX8bvEfOm8V5GmEbFpKUFe0Y+ack1T/KmJtYXy3AaKR9nuU3s/CysKDrmMjJKmCFg
-         AWD+7HhNn9scT2yi8PezFUx0DNtyOwtypgCcUm9JeO5IHsqYThaDVa86r8KhCeCtt16c
-         BZ5+VFkGr2kbOIWr9AIiPJyVKCmxusar+pTO1OsZud3+2eVddK+k8Tm03B929cqjStiT
-         176LtDP3u6HGE67KPpa/J7GqyMCoyVux5raFkecF3MHAO3WjAicWtxpZQEa04V8mY7FP
-         QWfA==
-X-Forwarded-Encrypted: i=1; AFNElJ9sz/dgnla13Ig40shojH2fOCnM5sjmmcQy5EHe3TCc+hUVw0w/plygRh/S+CyEb/Ta5lD54QCB3Q==@kvack.org
-X-Gm-Message-State: AOJu0YwJCpxDjZBRcbTKlZzNcggMaTmVp0zCFXregmrqhGQ/LBNxbiqj
-	kjunf+hhJKHzRZaa284POS0Fold4zeTrWKg+LdmSWqGyX+oSPnWJ1y/a
-X-Gm-Gg: Acq92OHVmEGGP5nMZhapQz9efas97Gd2hbzJyHqq3+0otDRhHepmozHMXh1C6xKPXeT
-	y1MtGYoVYsbaL8425sOVl1bAxbTRisgBvCSMs7fXLGrJSaOxMf8WjdjaTf8yGaa+mbI/BSxntxL
-	sHU1NugoyzYEAGSdvqbNpD4Nii6vf5XbsA0SiFm4XoEhRAgNavZqk5BpS2s34cQktseiLbBXR/D
-	1ij9HEcMgX3USevJHWdIYZDq1Hw3ip4twcRfJWOtPInutAA15ZmoXzREdDX/T6EqxIuAg5hQ5aU
-	uR9m/0qUZ7CmTKRoxwlSN/AeZsfqqnOCWseaxPnd37PUWMSypZ+m/wgAWlA0IXzK4dxGj+49rSy
-	giLD13zc1NX79Y/iGN1L5ZdV4tZrxSKtaazW/GzhwFSsNEtgcKU0X5HEdPtxPwJkMYIp7CMbkus
-	wGVf/91FkSVoxy1PvHV01v2GSHhhGbQnMruVtZeCykG5vA4F9cV1AImjpPSzrVuBvgqGTFUZ+Xo
-	FN8ExljRa+8XVrmQrWxEWMInJ+ACtaFRPM+217w/Rm6yQ2sX5iuqG/Tytl2BkrcSAtHZC1g
-X-Received: by 2002:a05:6a00:1798:b0:842:2082:5fa4 with SMTP id d2e1a72fcca58-842257b0543mr666943b3a.1.1780086285218;
-        Fri, 29 May 2026 13:24:45 -0700 (PDT)
+        bh=evn50r5ng9H9NfR/F7shpk5eakICeNR87P7QydzAfto=;
+        b=GyBrW0PCK5xdGOQf6LDGnlN7rihxjoCpwsG9btiv6Mjjb3UUv/IkoDjHmSBKYzwedK
+         PovjhP8LH2EnmR4xfObd25l0HAFaNBOC+WOh03fvtGmG59lS3izYX8IHNM5zltw3sg2w
+         zxSBROAatleGSxy5YU/iPuS3IAD1Ms/AP89/r4zzw354+EYmGefB6RKiImtCoJ/eXK6U
+         P2I10fl1IHZrrUwdCK0BKD4V7aZsLvPSh0Zh7oHxoGY5JnexvsIbiOKGw8wneqWAz29K
+         WnwYOY7YcJUQ1+ICLJwOVnIl7LddIpaoMiGdFUWZI7LSyBbLsOWr47rdGT0cf9O/O0qq
+         z1QQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+H6G5uVLLcVtRhYsKfulgGgWbUNJYwPYax0ieYRZqRQ/Q0GjhFvh5hO32EUmLOK9kpfzZ8vDOmQA==@kvack.org
+X-Gm-Message-State: AOJu0YwdCxqHq56VZFDzAIL+/ynZPLpsh1bPJ9irztSZfjQtlhSpEn+Y
+	NQrUbIs8Hy605qgLquLU6o+q9BdcahmxpgBGZGffZQTibjc6cxADuZSJ
+X-Gm-Gg: Acq92OEElZCTNbPkUxITyYlWoYue1gReCIE8zpgblp6Kb/58i8f/KWonv4jL1bM1kQa
+	E9YVhZAj/c/AVByDuR7/o6VIBi65O37J8V80KFM/mD/EChCrHp5Auowu8pohJ2nB4zrlXP3ml9u
+	u4xAy0HkBcm4jZXIzV9jmg2LXESvNjMWYBBky9jkf4kjwdAMRGkmi/gErbjD71mKBOvz4nMj0vS
+	YoZgYxsrYMaabhQiaj9RW28S0xlcz6TrDKlYJVbc+mwJRCGceKQXc/MVcBhPRgJhZsVNKhSFBCz
+	sROcrV3la7Ol6jDq4cup97LGb4ADMsiwobFrlwLI5llK8ZuXN+0PwbzEqpcVQ9CPr88uRoylXB7
+	qx/vu1tTsVoUgVQHuCzy7PxHYxFece8LGXsNMkZoQy3IVsNgqv4fvyUCDl8/vtzl6lqsEE1Y6pq
+	1rOoSygH57VCZcAM6en4nQO1FSF1hLG1VjPqD0UU5RMB0SfoL1HLx3ZzdxL3Sh0qWwnVndKS3+C
+	eTO2EguXp1qtOfnNmTr/WQAZLHQNnFmM5R603gXOROQcle4/TeDLfjBnvFY0fv3Y/e6lVWD
+X-Received: by 2002:a17:902:f78b:b0:2bf:9760:b963 with SMTP id d9443c01a7336-2bf9760bc96mr8152055ad.26.1780086288619;
+        Fri, 29 May 2026 13:24:48 -0700 (PDT)
 Received: from localhost.localdomain ([2601:600:837f:c470:1879:8422:922b:e5d3])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214b67b8asm2632846b3a.25.2026.05.29.13.24.42
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23c4dd4csm28681335ad.78.2026.05.29.13.24.47
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 29 May 2026 13:24:43 -0700 (PDT)
+        Fri, 29 May 2026 13:24:47 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -104,22 +104,22 @@ Cc: daniel@iogearbox.net,
 	roman.gushchin@linux.dev,
 	peterz@infradead.org,
 	linux-mm@kvack.org
-Subject: [PATCH bpf-next 1/4] slab: Introduce kmem_cache_alloc_nolock()
-Date: Fri, 29 May 2026 13:24:34 -0700
-Message-ID: <20260529202438.16408-2-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf-next 2/4] slub: Pass kmem_cache to alloc_slab_page()
+Date: Fri, 29 May 2026 13:24:35 -0700
+Message-ID: <20260529202438.16408-3-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260529202438.16408-1-alexei.starovoitov@gmail.com>
 References: <20260529202438.16408-1-alexei.starovoitov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ycmceq4ahm1ikpdyx144hfkm6k7349xe
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7DC59C0002
-X-Stat-Signature: jodgj9g6x5m4nddk1m8pz3efzosnfqn4
-X-HE-Tag: 1780086286-86950
-X-HE-Meta: U2FsdGVkX18WjvL2fclHyg6QtTXGQxeHH7jRHo6XV5ebFbGb/Moee7YwYLd5Rn0p8dfNKQxIfk/2d0ia1M7ix9uzqTAPBEQVKSmY3V8/4/wA7WWweilFvF2I/240QHiic4kuGKhgDT1GJEgOVLq6P6Za/o99eA5WQmrtuuCcU7AvkMtTvw+npxEFDfq/9NXK+yUsbLdSUVz/yyfhZbI5PzZlWmqHzLYo20PvEfK6fgRLe8T0JnlRIuKXZyRkTUsCBOHOreZoD1rCDBDH3Q9bk7B1ZYs0UAUhpUuYeT72tddw+55gbSaprDpdIizJA6sw7En9/91s9SJMXeipv0RvhLLUhmrt970JHR0QLqFh8CmB0O3cTI3LlmmQutKG5olRuUmxeJgNGxmpvQXw47aBcUiGSlykVjhveP1Vp+eocOKVicgeTf9lx40IwwCjtHqxFYSonRcObw94NO+AWhk+CuQxPEgMQvVeFvRpLIXoKuu7O6bFWwX+YQYEUUfe6HxNCcvyE666GMkXNy4zYYNmE4WYanCGtGMU4LI/IgNc7Klusc6IapFeUwVBF4t1ahYZr3vkM+wX5p52zH640J11rkTrJzq91a+RLqke4GYJ4l0JOAnYr68X2PNKNtvNho170LKhn4+BHYs5FFxFQk8Ngg2w+qdwchieNtElA1rfgP+BWUlmSIPTnHtGrvQrqKBgAmP/8kj8V7Ihw2Jfwfd7OjkWyQdJI/c8yVrkCXyFvZ6ZQ2vJ1TcoVTehptQmIEKak5ZJKRf9KxMayJgokUoDBPIcpClUIIqhYQJK/Yud64q3kOwGGKHZAKQMkD2RzZasblwfz8v2ySdVisN75/Ac7By0gwroxqkbmrV4H6mFg9aqfPys7KYDP+KEs28LRp9f9yQo9IKXh07QcfSYLEQrAbh3STCeNjxKEkCJqgDuc1mx3qGSZqcUj0ME7vzcCBZ5EF/rlZKoBrtR0WkLPEE
- KsxX7mbw
- kjjO1mAuwd9HzJLRggB6sp/mcpSqCpzPpmuRQyItauwaYxNd76toF6yqlaLY1dYk8ckNwxHVQpppvTcFDYZlBuy/fVguLrQkuID8MN8jHRspAAyyN6L2+8EmqAxLkg4cbX8peSlss5GUwM4tvIsIarMX1nvZg4nvrDtVIoSM1yECyxu/3F723HRHKnFNvh3C9VBYpM6Ga45ipw7jHzdL9IlAoZYD0SP9/RdeGXKmx7AOth0siW3V5dNKGNEZvYBEyaHbEwqTHvnofPBPTSszk+hB7Xhr94zgJS+Zw/RHTZyTstPL+Fbi2WkcV/+AHLn9HDj8zZVRRlQ0sKBQKwEIaNqALHLQ8ftN1+EeCafzISFUcWYl/yqaZs+8mBpRUmTbOcCMQJ2cXR0zQ3JlmAdrGQle0VCz1M+aT1zMI0/n1v7MU2JZG/bMRQm6B/UsbEaxgg7NXT1UBnLihapi2cLTqnmotDF+uqv25QK5HjL9GZEdFV/VZ2uFVo4ox7SAU3RIIV2ZxNoOC4vsmKPksYghwwI9VXPDLbrGTpiHK
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E062980013
+X-HE-Tag: 1780086289-560852
+X-HE-Meta: U2FsdGVkX1/wjQLplrRXxfuRRB79e3RnvTAz5xLSPNB/9czZDROS8hmylyuwMow+Zm6KI8h50fJT4A3WelbmBsj2OG5hRA87BaPDXU1aaQUCjjZqerirLey1pQ+L6cvJn4yIYy5CXgcqxBaISjYHEqv1bjfWtYMbTVGlVxGKYYsbwiditRttVA2wQwO96SQKZER/y+y4Hm2tVLy4fZPp0IR7PMwC2Bp/r1R4kymXum4dXBr4aJYxaFhPV0dvjD1xD81iosjy/47lZcdLQ/lz146qWK5l8i5xHs/l9inSIReMePwHYvmiW+RD0+nEXWj6NlL7KoYQ1UB8wmxNpre2kdomQZ6HZHVaQN2mB6xx41vnCIO98lYZLYmhlNLUS/+zEBgy96e/idVn/p62CgkY0SwD6Clht2mFOlFCX/t3dmvC7y8Qz+UkSjlMz+KHV3PHxLz5aLBv77bkK84cX8zSxTwpDWB8bghSdyn45VDo6L7auzCL/mKTlcsj8/pQUPzDY5b5eGzvZyNAV+zgOl+KXHrStkd1AAcfII6cJViXqmG/1Y6Ll+zNGuvq67mDaownj/moy7O0dZP9UmIbXlyTd7btp/BUb6ba/uk2UK0k9sx1koKWnB+CztZ9mTm1GdfsbgNTVhQXcGT/NeX776VPikmk8w24XG86eu3B/sVBXdYWCFPkNEvnrOEs4GX77HVYIx98LubyQsb+zPaewoczTUroq0V+HCWiwBpA7P68jKQQnyovueV4MpDcaZKNSEV0j/gseOP9wJ1jONn2v0RwCKgQOciox8dmC6WwjJ6/KfpoDh0enfF/M+xe+TIzKm52tIVrmPXiF4TlbGeD3pDQ07LAR39r9Tm0i2sSM8x2iebtA3twmAOOsvvEftPOy/8eJoUg8jQ1CFIbjTl3UbUQRDhlYRoS5IzrOZyv1DoxpoD+alXg4JVCEPzsIVKE+g7Vy7maW+TsFvR3CXUvbCC
+ +WRi+QHP
+ XwxoCcPkaMW6VBrC6BQZYObcsyRyCdxz2+riyqVyKJDaFCPkoVuFFfhK9x0jxeoZDFcXwek6ZrnDlO7kZIY1TcJydMa3lGEk0dAE8SUSSvr7wxtMmHUDQXvjCKiz+JOsu1Ll9VwJ8TAo7bGXHf6ze9c+NRe/uRyxnnNhUn924RXUeiwsLIX71TBsk1r/VOn7qiuO+69Xf2iLJBqQf7Uldq2Qr7irgBUIKUtv7cRfqwOEALFhVNmv+Tl4XamgGMEAVwO/DcV8nprs63RfdcLyMtK1viO53kHdAv+jZKqDIpuRF1aOCk5Hl+7K5e44DFUjOYkp2Kn1p3q8yOuEoJJ7Y+yLgYcFK+TOCggLXDEEUz2zyAnxpd1qbOezC1+eCg6Rmv02AcG0762mxbBNLHb9YGrGHpxQNYe2j804+0ohkFrAciiIcfq/KfZUL9/eL/vbyj4BLfgSqlmrswCpwBKYNhpMg46jKcljZb/Lp52wf/UzaLrL2BVlr9WXmkDTbil+4jv+bO9Ske007CSY4F6lDXJoFWiSOwaox6kL+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,86 +129,51 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Alexei Starovoitov <ast@kernel.org>
 
-Add kmem_cache_alloc_nolock_noprof() and its kmem_cache_alloc_nolock()
-alloc_hooks() wrapper, mirroring kmalloc_nolock(). Allocates one object
-from a specific kmem_cache and is safe from any context, including NMI
-and IRQ-off, returning NULL on transient trylock failure.
+Add a struct kmem_cache *s parameter to alloc_slab_page() and update
+the two call sites in allocate_slab(). No functional change.
 
-The new function is needed by the upcoming SLAB_BPF_ARENA kfunc path so
-arena object allocation can run from BPF program context.
+This is a preparatory step for the upcoming SLAB_BPF_ARENA support,
+where alloc_slab_page() needs to consult cache-specific state to route
+arena caches through bpf_arena_alloc_slab_page() instead of the page
+allocator.
 
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- include/linux/slab.h |  5 +++++
- mm/slub.c            | 39 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+)
+ mm/slub.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 2b5ab488e96b..7ce9125a6a2c 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -958,6 +958,11 @@ static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t f
- void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node);
- #define kmalloc_nolock(...)			alloc_hooks(kmalloc_nolock_noprof(__VA_ARGS__))
- 
-+void *kmem_cache_alloc_nolock_noprof(struct kmem_cache *s, gfp_t gfp_flags,
-+				     int node);
-+#define kmem_cache_alloc_nolock(...)		\
-+	alloc_hooks(kmem_cache_alloc_nolock_noprof(__VA_ARGS__))
-+
- /**
-  * __alloc_objs - Allocate objects of a given type using
-  * @KMALLOC: which size-based kmalloc wrapper to allocate with.
 diff --git a/mm/slub.c b/mm/slub.c
-index a2bf3756ca7d..601986aaebdf 100644
+index 601986aaebdf..1daa89105e04 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -5402,6 +5402,45 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node)
- }
- EXPORT_SYMBOL_GPL(kmalloc_nolock_noprof);
- 
-+/**
-+ * kmem_cache_alloc_nolock - Allocate one object from a specific cache,
-+ * safe from any context (including NMI/IRQ-off), like kmalloc_nolock().
-+ *
-+ * Returns NULL on failure (including the trylock paths that may transiently
-+ * fail under contention).
-+ */
-+void *kmem_cache_alloc_nolock_noprof(struct kmem_cache *s, gfp_t gfp_flags,
-+				     int node)
-+{
-+	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_NOMEMALLOC | gfp_flags;
-+	void *ret;
-+
-+	VM_WARN_ON_ONCE(gfp_flags & ~(__GFP_ACCOUNT | __GFP_ZERO |
-+				      __GFP_NO_OBJ_EXT));
-+
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
-+		return NULL;
-+	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
-+		return NULL;
-+
-+	if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
-+		return NULL;
-+
-+	ret = alloc_from_pcs(s, alloc_gfp, node);
-+	if (!ret)
-+		ret = __slab_alloc_node(s, alloc_gfp, node, _RET_IP_,
-+					s->object_size);
-+	if (!ret)
-+		return NULL;
-+
-+	maybe_wipe_obj_freeptr(s, ret);
-+	slab_post_alloc_hook(s, NULL, alloc_gfp, 1, &ret,
-+			     slab_want_init_on_alloc(alloc_gfp, s),
-+			     s->object_size);
-+	return kasan_kmalloc(s, ret, s->object_size, alloc_gfp);
-+}
-+EXPORT_SYMBOL_GPL(kmem_cache_alloc_nolock_noprof);
-+
- void *__kmalloc_node_track_caller_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags,
- 					 int node, unsigned long caller)
+@@ -3261,7 +3261,8 @@ static void barn_shrink(struct kmem_cache *s, struct node_barn *barn)
+ /*
+  * Slab allocation and freeing
+  */
+-static inline struct slab *alloc_slab_page(gfp_t flags, int node,
++static inline struct slab *alloc_slab_page(struct kmem_cache *s, gfp_t flags,
++					   int node,
+ 					   struct kmem_cache_order_objects oo,
+ 					   bool allow_spin)
  {
+@@ -3464,7 +3465,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	 * __GFP_RECLAIM could be cleared on the first allocation attempt,
+ 	 * so pass allow_spin flag directly.
+ 	 */
+-	slab = alloc_slab_page(alloc_gfp, node, oo, allow_spin);
++	slab = alloc_slab_page(s, alloc_gfp, node, oo, allow_spin);
+ 	if (unlikely(!slab)) {
+ 		oo = s->min;
+ 		alloc_gfp = flags;
+@@ -3472,7 +3473,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 		 * Allocation may have failed due to fragmentation.
+ 		 * Try a lower order alloc if possible
+ 		 */
+-		slab = alloc_slab_page(alloc_gfp, node, oo, allow_spin);
++		slab = alloc_slab_page(s, alloc_gfp, node, oo, allow_spin);
+ 		if (unlikely(!slab))
+ 			return NULL;
+ 		stat(s, ORDER_FALLBACK);
 -- 
 2.53.0-Meta
 
