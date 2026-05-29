@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63A6ECD6E49
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 18:34:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF39FCD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 18:35:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B57D06B0088; Fri, 29 May 2026 14:34:27 -0400 (EDT)
+	id EDC6C6B00D0; Fri, 29 May 2026 14:35:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2F646B008A; Fri, 29 May 2026 14:34:27 -0400 (EDT)
+	id EB4846B00D3; Fri, 29 May 2026 14:35:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1D786B0092; Fri, 29 May 2026 14:34:27 -0400 (EDT)
+	id DC9EA6B00D7; Fri, 29 May 2026 14:35:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D7916B0088
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:34:27 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34B0D1C02EF
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:34:27 +0000 (UTC)
-X-FDA: 84821307774.25.9D5A83E
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 13A574000F
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:34:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=c4SbVtOm;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id CC1446B00D0
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:35:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D2DE140265
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:35:52 +0000 (UTC)
+X-FDA: 84821311344.29.1190C95
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9274380010
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:35:50 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=invRujqj;
+	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780079665;
+	s=arc-20220608; t=1780079750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=24YU1NBoUybBTpcYsacpUWpYJ0m9Z4yMIofjF2AMjYQ=;
-	b=UmkVea6KwN44Up57eIUY/8wlnL8PGyhcaX0PnCFNkW+EBudVXPaS7sCzed3vKCi6c395QZ
-	Op3jj7UbykdfB2juD50/Do+vebRrfUUdp/0QqM0nAyAWATV9ACKKS1VCX0EgH7uF4XL+Am
-	5ZK/BfLNQsN705+u0dU6UXQ4CFHzCIM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780079665; a=rsa-sha256;
-	cv=pass;
-	b=wst9HnvKAHQcUxRn/lWPugYagW3EHnBZJtpCu3lmn65o+blyNrixlTnxtmbS7LIZpV7mxO
-	+Sh+7230gVuRgM5DcAfDO6sj2kersQSOt1vHMtT48qTBr08En9fFEN4mGPQMrWZhSBWJzZ
-	uG+6w3lfZrWENxsPC4OQQX5t/KKw09A=
+	bh=MGl415x2fsqiOBBpTEJg/XXf8v3MH+BgP2tr0DmzY7M=;
+	b=ENx4BoSeLMQ/bL70D8R59qeotY6H45TEHJLcFFPJF9nPESYBGFmoKksl1rxSLp3zs4mKjE
+	FkPvFAujBNjONO4bHMXp3Yzy+Y2fdBmwNTKcLgivXq1yTP5Wwnuorzm3f3xVfe4inGRS8U
+	rgOFhm2s/Ed1UW4FMn9XJLwafen/pV4=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=c4SbVtOm;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-45ef616daf6so541456f8f.3
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 11:34:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780079663; cv=none;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=invRujqj;
+	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780079750; a=rsa-sha256;
+	cv=pass;
+	b=TtuphLu9Rf1FxAoAYRmxQZPiwQRwsHV4VFxyDdr2ey01gf5pCpOfEG+4NV/9t0oNe/lzEG
+	K04o1jyIz/Z6A9Z2Og4mw/U/30rtsZutk3aukiTlwuSGsenZeUv4/VBc3A6H+P3Z5qZmwy
+	RwPgLamX3Ky2FQjotj337C+LIQq01c0=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4909e3fa4b2so8367335e9.0
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 11:35:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780079749; cv=none;
         d=google.com; s=arc-20240605;
-        b=O/bFgXT1dhqxJcx2m5EDikG0xDpxFmcn3gibvCV14RoVFbOTNuZiJYklot/2McBxg4
-         V2ff3g3HfUVoLNRn4g/Y3XRPU+808uPTvBwvrbnsuNg+xkKPCbdeeVMhJd86DP7nQJ6H
-         mXYGeTifota0xlyKGZ3yoXIYSf02uYgmmJcIP1BE16xCOhSNt9DZ7qRZuwGUnaCRlKou
-         ypelW4G1Yzs6zER1Lg1OEmHhmsRDmZowt1ocO/sw+fprm7ottR9hvgKwXwabwX9SJMu1
-         antUBgxzU0BznywdWle32yArnPQC6I2G2M5pXJb9ZpbaCAWBYfSxh3bGrgpoY1sVfgSn
-         ROoQ==
+        b=RmMJ3O8128Yn87XCcpMG6IcA++wse+HsDfjR3zqmyZkRYKFWMrsmxGujZF1SRfTZQ1
+         j9ca6eBh6SW1yqvh103dgU7Gy79YAqlbwbitYCK8XMdgk+uMD7pgCkeOBGc9y7Jh7Bk4
+         w+KqFCmf/4LiLXQArZSdctOEEpSx+CmJLbmbU5Wmu1eesGiyQJPrTHCp65w3RXDJXLKO
+         B6locIOhPYkznzehRyu89HealS/WgVvcBZ5rsMicEONGgteek1hy5fjmTHxOJXDa+zjO
+         7k9g2OGZi7ssv6oS2b5giyELP+ghjvN7BtGqIm5inCyn2n53VU8puNZJxEufBeuDBCkq
+         E+PA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=24YU1NBoUybBTpcYsacpUWpYJ0m9Z4yMIofjF2AMjYQ=;
-        fh=uQWzRCJRTgVc0reNr7KNDCzP3UqvgVzwgp+5gIQ0JoI=;
-        b=QdZYEfyKxlFkI2ioIv6Wkc43OOCsuUnPn/ikSBsSukY2bZz+OdhdzeL+YXJLALmoIH
-         H3p982cLUS2P9hUINnn6t00trLppcMha/c+vG7Yc6MYrC1ZG1kOg9IRahaMdN+MZ6W4r
-         jOywNOLaKEAE09HpvDAgOf+SntwVAmR9eWytnwuHLFgO4yQFt2HWN//3STIM1Fl92VD/
-         DZf3Jw52VSdtbgYiObckBiY8yN8UFhAZgs9NEfrh1HvBfmK8zLLj2RqMxL2lVjDn+DZp
-         hedOfjagXWHIqZfz+QCG+4GKMnfYgW3iiVnEQMJvmZP4D2HDXWFkOCUFPzFdCqb4Dpnq
-         +8zw==;
+        bh=MGl415x2fsqiOBBpTEJg/XXf8v3MH+BgP2tr0DmzY7M=;
+        fh=2QErpmKHb+u2TTKCFw1BCd2rW6Dtsk98G7G1d25zx9s=;
+        b=K9GYGIOvzSUmn6hvTG+gDE9c91vF/iLgjBcTb93qYMFQ3iiyZhHjVo1VZ4VuUz5EhP
+         nDrk7aXsWxATKW+GtxxdCC5ExMz5M3SsgxGRQJt0AXO3jDF/mTIovw8/UW7rWhMWPZye
+         V6nSlg3L+TNiQ7A5kG9RSS58Hk5/nOgdEwm4hTFK3PZ5YKQnM3aJNnCoo+I6blRIwIQR
+         YmnXio28L0C91vPzIkZix3j8grsEhhcWWmYJYaBeslrbZ/9k4EA42/4lNojiDRQhdCV+
+         hVHtZYB8awzgIJa7yhPdEvcW7l/scLjAEQUWdA/6+9enaZC5LEGCjOZnL9NPgBmXTCiL
+         aSXQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780079663; x=1780684463; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780079749; x=1780684549; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=24YU1NBoUybBTpcYsacpUWpYJ0m9Z4yMIofjF2AMjYQ=;
-        b=c4SbVtOmS5tmAiv6Xs0ZsWuJ9e+XcmPY/8bSMSE3SdkqxDBfToM2o51+mJu7oANlrE
-         0geU3cLHk9I/cA25BCMBEQGF5mvjHQ11TsGFN+3fP8IeWV83g3lIE0BsAGn41kgsbc3k
-         GKRDtuizkE+FsKgdJNlRRdaNA+tS+MP6NiEObdxP4Ak5SAgxB9I/cT3I9rD6xWQUFpwV
-         TvPEKDmyt3qOPffgdR3XL/tIEAwjBu0KC79UzRVQFGe9eC7xK8D6k4JTsl5WsoKrmfhN
-         rSczz44GcrQPiYhczIqolnz6PPKw86oIxgFP3K1ah7xhY8hdQkLC0bfK26DjMtXKJiIa
-         oQRg==
+        bh=MGl415x2fsqiOBBpTEJg/XXf8v3MH+BgP2tr0DmzY7M=;
+        b=invRujqjgJsip0wzgsIWcBvr679/QOIO27mwgiujT0e0niYB/qkab6iREwooWpL35u
+         J7FNF+I2K24cd8/dFx+sVEIkUgtQCkzzH/Ip0jUQCUcCGx7rJCvE98aujSQlQm8L+aj5
+         emi4oMM9bA6o3Bu+sg6z+naUVwRODPMQLv0mjiKpekoPk0nQA6wytTFNmZYPa+Dkdzml
+         20JCAihpiPEU+aEmG4SIvMKb2N2Fr9ZwoRXOyTbn2b/bEOWh8cZYdmEOizM4Xpk7heCy
+         AZswcRHXbXMwVVOydTDgTHVa2JX17m1fzLxX9hdjpY+b4eKcLK4zvQrIOfFLdpCl2dL+
+         twaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780079663; x=1780684463;
+        d=1e100.net; s=20251104; t=1780079749; x=1780684549;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=24YU1NBoUybBTpcYsacpUWpYJ0m9Z4yMIofjF2AMjYQ=;
-        b=lcZNso7KJBz3GbL/RWJ1t8TB6rr7WTei0bi2N+YHAqP6gt1H+cpFs0Jqt9Ld+xCzcg
-         etegMN9ScZsKmXDEwntzMRi+z9zRKxfcJPf5dHIKbKMyQ4tTtVWIFh/AbLLb9Qal3Tf8
-         +6Bb/j02bUswJXiCzmzYvRVhMopngxVKa87crU6ovKEC5kWgzYI/tVz1lCg7QBvOS6Wy
-         Jla7+wjZeinRqkPJwl8K1Mzs51+m7dxzblvPM2GH3gRPAHAnBz4JboDizkTMunW/p8OQ
-         Z66kwJx8UsLqwUUsekEFmILpK5prT+Vksc8OscCa1zMayHDeq08IZAFm8tgro2rGOEqM
-         N39Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9RGU9o0kg1b5U/k1QsVgkVRaPFBnDS73id+dueGcrZ9wx7AdhSuhfpK0gdJyvwv6G8Wx7fw9dq2g==@kvack.org
-X-Gm-Message-State: AOJu0YzKJe07fy3+fnLUNnmk6Y+CaYC1raZVbEBXOkpGqbkxjR+fvEXM
-	cC6qqSOo10k/4ch3uzUKEZo1a71Zy4HY+ds7RLCueKKc2uVPkjhbXLm2XKXA2ceneYO62cls5HS
-	4MhZdZBReNfYOWbwcxBAMFtXt3hWhRlQ=
-X-Gm-Gg: Acq92OG3Mh9hPPwn9hFiBLn9WRmBAxSIntUIe0TwbLBbsbSDA6m0vAcOT/qX0IGTPJ8
-	dIaBsqPj57kK+e1IbEJVOKWcYadO1wLwAdEElCC97Fju+AqC+rZzpFCba4LtQs+FLzvvone4EYT
-	hfYiW0fTR4yIppD6Bfti1Pml6V68riCuOGQrYn53HWJtfdDcGsS7gDoDsZH7EjVLAjbfr7rQjA0
-	yMZ8X8ohxvRffc24hAYvBTBvY77yM/iJTVCmgqxpYr0/Tj0HY/xlr8SPx5XAkEW8nbWxk1wsWXe
-	6aQtTjqdx9XrLmAJUZIEAjlrYdEQDtjKqUUn3iQnOYPOkepV3NK0iD8RTDFi
-X-Received: by 2002:a5d:6842:0:b0:43b:5672:efe with SMTP id
- ffacd0b85a97d-45ef6b0153cmr1499734f8f.9.1780079663307; Fri, 29 May 2026
- 11:34:23 -0700 (PDT)
+        bh=MGl415x2fsqiOBBpTEJg/XXf8v3MH+BgP2tr0DmzY7M=;
+        b=lffCsmEMrwy2UavbvnKWX/TjeHpZ1wYN6Kjp67SOe8gdHILrAaP/eDvw0NkQ2/lsmH
+         S3tDW8vPSdFbccRqVXuWAAYf5Oib8A34aKWvXd4ABpjzad1vAFbMIlBeXPV6NU3npkF1
+         a396jZpyHGCo45FA9402trC+FycRL7nDsXJaMtc5g8zAOtMr82k8KmiFmqRTEfYRCfCI
+         RIwYGTpaHnNs+Kz2xTWjGX2BJUx39HYWWaCOu2IAx5WLjbhfAQaHvcl8hEoRhrkS3rfd
+         JdcFB+hUaaoBMKYLZtBh+2jVBehoiggoY4sqpjzuPZFu/AGGA87u86dexiV8L1ZTYORZ
+         SEHw==
+X-Forwarded-Encrypted: i=1; AFNElJ9CA1GJqReZdfWFj7v3XiFNfIc80d3i1Ti2MZVa7hA2/w7h3gNzd+ElWiV64kBm6D67k5Rg931+6g==@kvack.org
+X-Gm-Message-State: AOJu0YwFMMO2BCHYnQxFd17+dNdc44UrcYgboI0Hqo7Zpo6Zm7AcDkG5
+	WgE85Llk+FpCwXZKVNFoNgPYOg7At39MQHjp4j8QKPLbVI8OptmibxG4stbGTRIJLHDUITWVVt7
+	MLqg5LF1fGH5omYaydool668n60PEKBY=
+X-Gm-Gg: Acq92OF/4shvKJH7+AtFSmmukTx1wlLh/FYU5SBf3VG9URKUzFcSVUbavmaA3imCEv9
+	tCLKJ/yKNi7t49uToIDo0m5lt5PtkZHlPftcykFRtRNoiEw/PsWQgJUWrUV7gC8qDGwUn6EDe9K
+	Tzx2XVTBeVtNPUZeag5e3rAYh1VKfJbeSncLdYahnLb47STgfFN+UhbINcsCDNiO4qWQkbB1+lQ
+	nZ3wdoMxiZhpfUCZpGZ9fYXfNxiMT5AVVlMtM6+n8wHIUgRrY+RRIC1Ang4cbjIKnafBmjiv3kB
+	azMg3jZ5jFPUCETlIWH2zUgJE13LobdMGR/o09Ep8uemWSHufg==
+X-Received: by 2002:a05:600c:4714:b0:490:53b0:9e53 with SMTP id
+ 5b1f17b1804b1-490a290bdfcmr14252835e9.1.1780079748969; Fri, 29 May 2026
+ 11:35:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com> <tencent_EB78848E34DC7858C873193D67286ECD4B0A@qq.com>
-In-Reply-To: <tencent_EB78848E34DC7858C873193D67286ECD4B0A@qq.com>
+References: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com> <tencent_C78A02F3C41E15233C371816825C7DCF8708@qq.com>
+In-Reply-To: <tencent_C78A02F3C41E15233C371816825C7DCF8708@qq.com>
 From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 29 May 2026 11:34:10 -0700
-X-Gm-Features: AVHnY4Iug6gLEMoRTeLo5UdQvkvVMFVMPi6Ej_gA1JFadUnPf0B4TOcY1sBxJ8M
-Message-ID: <CAKEwX=PvcM1u1n8TTikCAaqJN=GtgfwvnXtU2wCf=Qjp6E_Zew@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 4/9] mm: admit large swapin by backend range in swapin_sync()
+Date: Fri, 29 May 2026 11:35:37 -0700
+X-Gm-Features: AVHnY4LFWwMiv9dobFO7ohhoACD8Hf7dh6YZvBHF6MmRjK_iIIRP5J0Z3jFSKQU
+Message-ID: <CAKEwX=NUQb5b4T49dbRV0_41QYRRuLkQNUg+FVDpJiobCCCh7g@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 1/9] mm/zswap: expose range state for swapin policy
 To: fujunjie <fujunjie1@qq.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
 	Alexandre Ghiti <alexghiti@meta.com>, Kairui Song <kasong@tencent.com>, 
@@ -128,14 +128,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Stat-Signature: ewg7dz8cn7zkw7kmuxdbftbz9f3atjx5
-X-Rspamd-Queue-Id: 13A574000F
 X-Rspam-User: 
-X-HE-Tag: 1780079664-960135
-X-HE-Meta: U2FsdGVkX19yeRsUv+agjwacENXCrH4DnC7N6XI2mVahjfpG0MPNU4o0hERjgYpuLd1tSZNeDCnBrkhU1lzchSKE94TtYaoFZv1cdBrVZxOBOjZQ8w//Tx+YBb9x970AypyPvs/ktB9XIurtgzfP+CjXfp5zBkYgf1P1FI/wGz0wPVij3qLxR58qd9U8vhvB/1IYFYnr13zZWqSzCOErD6TZ+dsOE9MZFE4sPJNsI/8cI3zATKGDuuIEQHNNEmBjrPf8rlIQGpOfJr23HLJYoUJiv1lS5C3p5E0IaxyZ/q47PMoSns3a5kt49YCj6rLQoVQ8kih31+0HO20V3Fyj+AxjJyflW7IntwDEuiRGYf7ihuXO/5CTexPj8rlebyQt8baJW0zYn+cpMPCuU+mi41tkZc481iAOAsUpaYFOseOSc8ihBtO2M2KLevJDo3j5KyW8rpJRvQgFoAyt7YOEpoTALPwMi8y38jkQzKbmPuDMhJWCGoErKimPHG5P8a4qXyLL2g5rh+GXMF9rs8P+jdHTTMVqV1YBTWHzwya/cpzu4spJIXZ+IYknaEvwotZfMeRcSEhb78D3klaEbDjJOv23S4Kj0e2Z80fCm44EOgHdXT+eH52E4Iv9nzG+n74QcL6v/FZD+BJsIbAtiVS/j8lBmx1KPBuCydC8B8fIPoIdgJsI9j8oBxA8VLmQPK2bq9HQ4/4uDT+UCU1JmPgNdSTeXTyGQ7V6gR9GcXSO0RoX/kf1B5VvvkMwtm+pI3x/9KXq/9PZk8vO6HOR3YYVlqDYiRx0t928t6nlYxva5bUP1YEPsVENsfVlbcHWiIMj8oeEGXvw7ATtVlhTsd8tFkCyFMwizLI4N+ZrCHr74rwQGGYpQnnrDOLNq1bNZXJwWKh8V6FLVo4ZJ/Fb+gwqa+YlTB0GjC8EqqEbDlfpcNBzpUyhc5u5MVmB5renHMdp+z9IHHdv2L82ioTnSsv
- XG9JBrQK
- tT21FrJFsxF24D5eQ4UiyZhHK1Wfs2Sn9J2IiKjYdFni0vNNZqMBgjR/Yy+FsVr45ARzvQU1ufw/SyVgd9PTPdsggMnirWtneIR6bkhnnhHpLWPhmRGNrwwNcUmJYIeihG/3xbFZkkm8b4G8VuBwu6EFXB/CRgN/VNuOr3b4Kyjbve7v4SJnjLl3pG8glw/J9fqJ4Lh6UKI6Do66Ez9bKVsw+YyLfex1hLU2NWB/VSwd+sThpEPf4a4HSQAzdjPHYqw520zNoqrkNOGNvfZsRwO8cY2/66StjdP8WGYF4zKqj29kRVQ+XyBjUJq2KT49DrYVfOw15NZtpIbVpNZQbRR1fib5SLkVlA2QE6al+YcD811H+SCFOGQ2H0mp9890WvUCB+l7LJ+jxtdZ23i490NNZtP9wyZLTdiTFl8/5CfcMNX1hr7k9dcDPL+Oe/OBWQ9rxOcB8zUOlgVpASHGvPy3nesYQ+hTtIjSmFMzQkqpHmBM33Eqitx42Uw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9274380010
+X-Stat-Signature: 8bcz18y4531kk1mpsnfsrxut94yoazen
+X-HE-Tag: 1780079750-709521
+X-HE-Meta: U2FsdGVkX1/fms+w/KsMWw67FhM2IZrca8kE/FC4SVWCmWg4t3XgRr3A80meII2Do+EGB68f8mMt/EpfElZj8mvU165aNf1PiZ9dg5/Im/1ijmg9QP/S+U/o/7qxVxsN47dXEdsNzWykXerEYOgvQ70lVZZaHlfghf/sHhStXLyFJ3tbND8ACW3rDdKjIU9y6aQWa108zCnC5dBKJhbn0Xvn9/yTfMFxe4YHs/pK5Qs1D7IO1mNL+clZyyBNS5orfx/ByyTBvF7QntAezQt9DTe8Z++Y98cZoIcRBuwiJvqjw5pDvZiN7z5tHuY3bQg6znpnBxPyxb5oZleHY8HdE7kFvSg5e3sFKWn+MuC8I1fX7x1ERI8kQ7kxbs5YPphO9R6YTpvBA6Iq98b8pepoNURTz9JR4C8ZE+wkaF1NN/taB1JjtcrYtX31RAYOu7Ab66yfL/WSWo8OgFOKstr9ieqiwdRXn01++XdzKBOWpTPvHH3tffSznHwNL24tLSwEyevp5hrcXMMD3pX3yn+gg3v7chAzF7dhd6HIQ0gPYc4Dq/3Q8smk3PI32Hzj69QkCKK2hNxw9G5rp1yVirgHlDEk+M4aUm7kuupKzmEMXnxdNJ+SUykHFZ7iabTCNYo4VgwD+CKyNCw3gR56JgLKtt776Q8vxp8LfXq2/aGuOGJnLgQgQo/Zs26IuOotXDRJic8TPkyJ18/nBIsrR9jGQseanjOj2RhqIBNsw2QXQHDvzZYk0h5Nsr15IntEjnkuA6pOEl9h7T1YmzJ0DwkX12NS1GiPd1jeMLbANNg6WnHgSJ3+1yxS43g49/Ojpj39m+qSi8GndaWFsJTInNorJm8BUFg0XmNoa/pNwomhejjhZx7YpabEIfK5QFu3POS9yVLOkZlg8VEtMHy8w4/dmg3RmQzKhukEiMvuUjLKfnuIv63l85frEFDmSc/peuzr0RmGRxbhrOyJrBuA0ME
+ gpZnTx2B
+ NdOKf7sCkQ0UHDzjhxd22k9rKC/Cw3VwP1TtxWl5ut+acT4iAvr0Hu8XsmP8OG+Q0Lj3l06fozegzz5kbN0tbTtWo+vv34n4xrVyMeVN+Z3XdjHb2umQQDtATgbvZwkOZkAhwhPt+bTZsQd+7JCu35DJgviIsw9o3i4/TRmRKupiVjo+cy60D+ozlCp8PmustMUF6pfOHlZ/za+A9yFEi1JWd68zXrQhjvdYZ+hE6RGlqkuNvEA06wFt/HbvhnysjQfUvIqCKkeV/0I1qEPUi0QO52zMvU+87CJppRwi3XGBstqHRjtcmhj+y4UaFqdSYnr1GCUupspisdgzmlFAlaUIvAfJ22NiiQHcxqK0l2SdEu4kLDQdQXKhAop5ZSdJxodhi5qy0yUhf9rrU3TeSlvbZ66/phl7z0UVnAlnvZlah0FAB6KYtQIClPhAiEicfqgru2P+wAwjZXD4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,410 +145,140 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, May 29, 2026 at 5:19=E2=80=AFAM fujunjie <fujunjie1@qq.com> wrote:
 >
-> A large swapin can only read one folio when the whole range has compatibl=
-e
-> backing. Mixed zswap/disk ranges must not reach large-folio IO, and zswap
-> range probes are only snapshots.
+> Large folio swapin needs to know whether a candidate swap range is fully
+> backed by zswap before it can choose an order. That decision should stay
+> in common swapin code, not inside zswap.
 >
-> Filter the orders passed to swap_cache_alloc_folio() in swapin_sync().
-> Uniform zeromap ranges and all-disk ranges keep the existing large swapin
-> path. Fully zswap-backed ranges may be tried. Mixed zswap/disk ranges fal=
-l
-> back before allocation.
->
-> After a large swapcache folio is installed, recheck the zswap range and
-> drop the fresh folio if it became mixed. Also consume -EAGAIN from
-> swap_read_folio() the same way. Both cases retry order-0, where each slot
-> can resolve its current backend independently.
+> Export two zswap facts for that caller: a lockless range occupancy snapsh=
+ot
+> and the current zswap reclaim-pressure state. The range state is
+> advisory only. Writeback or invalidation can change the backend after the
+> snapshot, so users must recheck before issuing large-folio IO.
 >
 > Signed-off-by: fujunjie <fujunjie1@qq.com>
 > ---
->  mm/memcontrol-v1.c |   8 ++-
->  mm/memory.c        |  31 ++++++++-
->  mm/swap_state.c    | 169 ++++++++++++++++++++++++++++++++++++++++++---
->  3 files changed, 194 insertions(+), 14 deletions(-)
+>  include/linux/zswap.h | 26 +++++++++++++++++++++++++
+>  mm/zswap.c            | 44 +++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 70 insertions(+)
 >
-> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> index 765069211567..5b11b8055c66 100644
-> --- a/mm/memcontrol-v1.c
-> +++ b/mm/memcontrol-v1.c
-> @@ -682,8 +682,8 @@ void __memcg1_swapout(struct folio *folio, struct swa=
-p_cluster_info *ci)
->   * memcg1_swapin - uncharge swap slot on swapin
->   * @folio: folio being swapped in
->   *
-> - * Call this function after successfully adding the charged
-> - * folio to swapcache.
-> + * Call this after the charged folio has been added to swapcache and the=
- caller
-> + * is no longer going to drop it back to swapped-out state.
->   *
->   * Context: The folio has to be in swap cache and locked.
->   */
-> @@ -721,7 +721,9 @@ void memcg1_swapin(struct folio *folio)
->         id =3D __swap_cgroup_clear(ci, swp_cluster_offset(folio->swap),
->                                  nr_pages);
->         swap_cluster_unlock(ci);
-> -       mem_cgroup_uncharge_swap(id, nr_pages);
+> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+> index 30c193a1207e..8f9aee97517c 100644
+> --- a/include/linux/zswap.h
+> +++ b/include/linux/zswap.h
+> @@ -9,6 +9,18 @@ struct lruvec;
+>
+>  extern atomic_long_t zswap_stored_pages;
+>
+> +/*
+> + * Advisory zswap occupancy snapshot for a swap range. This is not a com=
+plete
+> + * backend classifier; callers must recheck before depending on ALL_ZSWA=
+P for
+> + * large-folio IO.
+> + */
+> +enum zswap_range_state {
+> +       ZSWAP_RANGE_NEVER_ENABLED,
+> +       ZSWAP_RANGE_NO_ZSWAP,
+> +       ZSWAP_RANGE_ALL_ZSWAP,
+> +       ZSWAP_RANGE_MIXED,
+> +};
 > +
-> +       if (id)
-> +               mem_cgroup_uncharge_swap(id, nr_pages);
->  }
->  #endif
+>  #ifdef CONFIG_ZSWAP
 >
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 5a365492a9a2..d73a19692dea 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4538,6 +4538,24 @@ static inline bool should_try_to_free_swap(struct =
-swap_info_struct *si,
->                 folio_ref_count(folio) =3D=3D (extra_refs + folio_nr_page=
-s(folio));
+>  struct zswap_lruvec_state {
+> @@ -27,6 +39,9 @@ struct zswap_lruvec_state {
+>  unsigned long zswap_total_pages(void);
+>  bool zswap_store(struct folio *folio);
+>  int zswap_load(struct folio *folio);
+> +enum zswap_range_state zswap_probe_range(swp_entry_t swp,
+> +                                        unsigned int nr_pages);
+> +bool zswap_pool_reclaim_pressure(void);
+>  void zswap_invalidate(swp_entry_t swp);
+>  int zswap_swapon(int type, unsigned long nr_pages);
+>  void zswap_swapoff(int type);
+> @@ -49,6 +64,17 @@ static inline int zswap_load(struct folio *folio)
+>         return -ENOENT;
 >  }
 >
-> +static void memcg1_swapin_retry_folio(struct folio *folio,
-> +                                     struct vm_fault *vmf)
+> +static inline enum zswap_range_state zswap_probe_range(swp_entry_t swp,
+> +                                                      unsigned int nr_pa=
+ges)
 > +{
-> +       if (!folio_test_large(folio) || !folio_test_swapcache(folio))
-> +               return;
-> +
-> +       if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT) {
-> +               if (!folio_trylock(folio))
-> +                       return;
-> +       } else {
-> +               folio_lock(folio);
-> +       }
-> +
-> +       if (folio_test_large(folio) && folio_test_swapcache(folio))
-> +               memcg1_swapin(folio);
-> +       folio_unlock(folio);
+> +       return ZSWAP_RANGE_NEVER_ENABLED;
 > +}
 > +
->  static vm_fault_t pte_marker_clear(struct vm_fault *vmf)
+> +static inline bool zswap_pool_reclaim_pressure(void)
+> +{
+> +       return false;
+> +}
+> +
+>  static inline void zswap_invalidate(swp_entry_t swp) {}
+>  static inline int zswap_swapon(int type, unsigned long nr_pages)
 >  {
->         vmf->pte =3D pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
-> @@ -4857,8 +4875,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 761cd699e0a3..da5297f7bd69 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -506,6 +506,19 @@ unsigned long zswap_total_pages(void)
+>         return total;
+>  }
 >
->         swapcache =3D folio;
->         ret |=3D folio_lock_or_retry(folio, vmf);
-> -       if (ret & VM_FAULT_RETRY)
-> +       if (ret & VM_FAULT_RETRY) {
-> +               memcg1_swapin_retry_folio(folio, vmf);
->                 goto out_release;
-> +       }
->
->         page =3D folio_file_page(folio, swp_offset(entry));
->         /*
-> @@ -5067,6 +5087,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->         if (unlikely(folio !=3D swapcache)) {
->                 folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSI=
-VE);
->                 folio_add_lru_vma(folio, vma);
-> +               if (folio_test_large(swapcache))
-> +                       memcg1_swapin(swapcache);
->                 folio_put_swap(swapcache, NULL);
->         } else if (!folio_test_anon(folio)) {
->                 /*
-> @@ -5076,6 +5098,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->                 VM_WARN_ON_ONCE_FOLIO(folio_nr_pages(folio) !=3D nr_pages=
-, folio);
->                 VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
->                 folio_add_new_anon_rmap(folio, vma, address, rmap_flags);
-> +               if (folio_test_large(folio))
-> +                       memcg1_swapin(folio);
->                 folio_put_swap(folio, NULL);
->         } else {
->                 VM_WARN_ON_ONCE(nr_pages !=3D 1 && nr_pages !=3D folio_nr=
-_pages(folio));
-> @@ -5132,8 +5156,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->         if (vmf->pte)
->                 pte_unmap_unlock(vmf->pte, vmf->ptl);
->  out_page:
-> -       if (folio_test_swapcache(folio))
-> +       if (folio_test_swapcache(folio)) {
-> +               if (folio_test_large(folio))
-> +                       memcg1_swapin(folio);
->                 folio_free_swap(folio);
-> +       }
->         folio_unlock(folio);
->  out_release:
->         folio_put(folio);
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index d37097913b30..f03ad4832f16 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -21,6 +21,7 @@
->  #include <linux/migrate.h>
->  #include <linux/vmalloc.h>
->  #include <linux/huge_mm.h>
-> +#include <linux/zswap.h>
->  #include <linux/shmem_fs.h>
->  #include "internal.h"
->  #include "swap_table.h"
-> @@ -403,7 +404,8 @@ void __swap_cache_replace_folio(struct swap_cluster_i=
-nfo *ci,
->  static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
->                                         swp_entry_t targ_entry, gfp_t gfp=
-,
->                                         unsigned int order, struct vm_fau=
-lt *vmf,
-> -                                       struct mempolicy *mpol, pgoff_t i=
-lx)
-> +                                       struct mempolicy *mpol, pgoff_t i=
-lx,
-> +                                       bool defer_memcg1_swapin)
+> +/*
+> + * Expose whether zswap reclaim pressure is active. This is a backend fa=
+ct:
+> + * zswap_check_limits() sets the state once the pool reaches the hard li=
+mit and
+> + * keeps it set until the pool falls below the accept threshold.
+> + */
+> +bool zswap_pool_reclaim_pressure(void)
+> +{
+> +       if (zswap_never_enabled())
+> +               return false;
+> +
+> +       return READ_ONCE(zswap_pool_reached_full);
+> +}
+> +
+>  static bool zswap_check_limits(void)
 >  {
->         int err;
->         swp_entry_t entry;
-> @@ -466,7 +468,8 @@ static struct folio *__swap_cache_alloc(struct swap_c=
-luster_info *ci,
->         }
->
->         /* memsw uncharges swap when folio is added to swap cache */
-> -       memcg1_swapin(folio);
-> +       if (!defer_memcg1_swapin || !order)
-> +               memcg1_swapin(folio);
->         if (shadow)
->                 workingset_refault(folio, shadow);
->
-> @@ -495,9 +498,12 @@ static struct folio *__swap_cache_alloc(struct swap_=
-cluster_info *ci,
->   * Return: Returns the folio if allocation succeeded and folio is in the=
- swap
->   * cache. Returns error code if failed due to race, OOM or invalid argum=
-ents.
->   */
-> -struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
-> -                                    unsigned long orders, struct vm_faul=
-t *vmf,
-> -                                    struct mempolicy *mpol, pgoff_t ilx)
-> +static struct folio *__swap_cache_alloc_folio(swp_entry_t targ_entry,
-> +                                             gfp_t gfp, unsigned long or=
-ders,
-> +                                             struct vm_fault *vmf,
-> +                                             struct mempolicy *mpol,
-> +                                             pgoff_t ilx,
-> +                                             bool defer_memcg1_swapin)
->  {
->         int order, err;
->         struct folio *ret;
-> @@ -512,7 +518,8 @@ struct folio *swap_cache_alloc_folio(swp_entry_t targ=
-_entry, gfp_t gfp,
->
->         do {
->                 ret =3D __swap_cache_alloc(ci, targ_entry, gfp, order,
-> -                                        vmf, mpol, ilx);
-> +                                        vmf, mpol, ilx,
-> +                                        defer_memcg1_swapin);
->                 if (!IS_ERR(ret))
->                         break;
->                 err =3D PTR_ERR(ret);
-> @@ -525,6 +532,124 @@ struct folio *swap_cache_alloc_folio(swp_entry_t ta=
-rg_entry, gfp_t gfp,
+>         unsigned long cur_pages =3D zswap_total_pages();
+> @@ -1559,6 +1572,37 @@ bool zswap_store(struct folio *folio)
 >         return ret;
 >  }
 >
-> +struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
-> +                                    unsigned long orders, struct vm_faul=
-t *vmf,
-> +                                    struct mempolicy *mpol, pgoff_t ilx)
+> +enum zswap_range_state zswap_probe_range(swp_entry_t swp,
+> +                                        unsigned int nr_pages)
 > +{
-> +       return __swap_cache_alloc_folio(targ_entry, gfp, orders, vmf,
-> +                                       mpol, ilx, false);
-> +}
-> +
-> +static struct folio *swap_cache_alloc_speculative_folio(swp_entry_t targ=
-_entry,
-> +                                                       gfp_t gfp,
-> +                                                       unsigned long ord=
-ers,
-> +                                                       struct vm_fault *=
-vmf,
-> +                                                       struct mempolicy =
-*mpol,
-> +                                                       pgoff_t ilx)
-> +{
-> +       /*
-> +        * Speculative large swapin may drop this fresh swapcache folio a=
-nd
-> +        * retry order-0 after backend or page-table revalidation. Keep t=
-he
-> +        * cgroup v1 memsw swap owner until the caller commits the folio.
-> +        */
-> +       return __swap_cache_alloc_folio(targ_entry, gfp, orders, vmf,
-> +                                       mpol, ilx, true);
-> +}
-> +
-> +static bool swapin_zeromap_same(swp_entry_t entry, unsigned int nr_pages=
-)
-> +{
-> +       unsigned int ci_start =3D swp_cluster_offset(entry);
-> +       struct swap_cluster_info *ci =3D __swap_entry_to_cluster(entry);
-> +       bool is_zero;
+> +       unsigned int type =3D swp_type(swp);
+> +       pgoff_t offset =3D swp_offset(swp);
+> +       bool present =3D false, missing =3D false;
 > +       unsigned int i;
 > +
-> +       if (ci_start + nr_pages > SWAPFILE_CLUSTER) {
-> +               VM_WARN_ON_ONCE(1);
-> +               return false;
-> +       }
-> +
-> +       rcu_read_lock();
-> +       if (!rcu_dereference(ci->table)) {
-> +               rcu_read_unlock();
-> +               return true;
-> +       }
-> +
-> +       is_zero =3D __swap_table_test_zero(ci, ci_start);
-> +       for (i =3D 1; i < nr_pages; i++) {
-> +               if (is_zero !=3D __swap_table_test_zero(ci, ci_start + i)=
-) {
-> +                       rcu_read_unlock();
-> +                       return false;
-> +               }
-> +       }
-> +       rcu_read_unlock();
-> +
-> +       return true;
-> +}
-> +
-> +static unsigned long swapin_admit_orders(swp_entry_t entry,
-> +                                        unsigned long orders)
-> +{
-> +       unsigned long candidates =3D orders & ~BIT(0);
-> +       unsigned long admitted =3D orders & BIT(0);
-> +       int order;
-> +
-> +       if (!candidates)
-> +               return orders;
-> +
-> +       while (candidates) {
-> +               enum zswap_range_state state;
-> +               unsigned int nr_pages;
-> +               swp_entry_t range_entry;
-> +               bool admit =3D false;
-> +
-> +               order =3D fls_long(candidates) - 1;
-> +               if (order > MAX_PAGE_ORDER) {
-> +                       candidates &=3D ~BIT(order);
-> +                       continue;
-> +               }
-> +
-> +               nr_pages =3D 1U << order;
-> +               range_entry =3D swp_entry(swp_type(entry),
-> +                                       round_down(swp_offset(entry), nr_=
-pages));
-> +               if (!swapin_zeromap_same(range_entry, nr_pages))
-> +                       goto next;
-> +
-> +               state =3D zswap_probe_range(range_entry, nr_pages);
-> +               switch (state) {
-> +               case ZSWAP_RANGE_MIXED:
-> +                       break;
-> +               case ZSWAP_RANGE_ALL_ZSWAP:
-> +               case ZSWAP_RANGE_NEVER_ENABLED:
-> +               case ZSWAP_RANGE_NO_ZSWAP:
-> +                       admit =3D true;
-> +                       break;
-> +               }
-> +
-> +next:
-> +               if (admit)
-> +                       admitted |=3D BIT(order);
-> +               else
-> +                       count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
-> +               candidates &=3D ~BIT(order);
-> +       }
-> +
-> +       return admitted ? admitted : BIT(0);
-> +}
-> +
-> +static bool zswap_needs_order0_retry(struct folio *folio)
-> +{
-> +       if (!folio_test_large(folio))
-> +               return false;
-> +
 > +       /*
-> +        * Admission sees only an advisory zswap snapshot. Recheck after =
-the
-> +        * large swapcache folio is installed; if the range became mixed,=
- drop
-> +        * the fresh folio before IO and let order-0 handle each slot.
+> +        * This is an advisory, lockless snapshot for common swapin admis=
+sion.
+> +        * Callers must recheck before depending on an all-zswap range fo=
+r IO:
+> +        * concurrent writeback or invalidation can change the backend st=
+ate.
 > +        */
-> +       return zswap_probe_range(folio->swap, folio_nr_pages(folio)) =3D=
-=3D
-> +              ZSWAP_RANGE_MIXED;
-> +}
+> +       if (zswap_never_enabled())
+> +               return ZSWAP_RANGE_NEVER_ENABLED;
 > +
->  /*
->   * If we are the only user, then try to free up the swap cache.
->   *
-> @@ -634,7 +759,8 @@ static struct folio *swap_cache_read_folio(swp_entry_=
-t entry, gfp_t gfp,
->                 folio =3D swap_cache_get_folio(entry);
->                 if (folio)
->                         return folio;
-> -               folio =3D swap_cache_alloc_folio(entry, gfp, BIT(0), NULL=
-, mpol, ilx);
-> +               folio =3D swap_cache_alloc_folio(entry, gfp, BIT(0), NULL=
-,
-> +                                              mpol, ilx);
->         } while (PTR_ERR(folio) =3D=3D -EEXIST);
->
->         if (IS_ERR_OR_NULL(folio))
-> @@ -677,18 +803,43 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t =
-gfp, unsigned long orders,
->         struct folio *folio;
->         int ret;
->
-> +       orders =3D swapin_admit_orders(entry, orders);
-> +again:
->         do {
->                 folio =3D swap_cache_get_folio(entry);
->                 if (folio)
->                         return folio;
-> -               folio =3D swap_cache_alloc_folio(entry, gfp, orders, vmf,=
- mpol, ilx);
-> +               folio =3D swap_cache_alloc_speculative_folio(entry, gfp, =
-orders,
-> +                                                          vmf, mpol, ilx=
-);
->         } while (PTR_ERR(folio) =3D=3D -EEXIST);
->
->         if (IS_ERR(folio))
->                 return folio;
->
-> +       if (zswap_needs_order0_retry(folio)) {
-> +               count_mthp_stat(folio_order(folio), MTHP_STAT_SWPIN_FALLB=
-ACK);
-> +               /*
-> +                * The folio is newly allocated, locked, clean and not up=
-todate;
-> +                * no data has been read into it. Removing it only restor=
-es the
-> +                * swap table entries so order-0 swapin can resolve a bac=
-kend
-> +                * race without attempting speculative large-folio zswapi=
-n.
-> +                */
-> +               swap_cache_del_folio(folio);
-> +               folio_unlock(folio);
-> +               folio_put(folio);
-> +               orders =3D BIT(0);
-> +               goto again;
+> +       for (i =3D 0; i < nr_pages; i++) {
+> +               struct xarray *tree =3D swap_zswap_tree(swp_entry(type, o=
+ffset + i));
+> +
+> +               if (xa_load(tree, offset + i))
+> +                       present =3D true;
+> +               else
+> +                       missing =3D true;
+> +
+> +               if (present && missing)
+> +                       return ZSWAP_RANGE_MIXED;
 > +       }
-> +
->         ret =3D swap_read_folio(folio, NULL);
-> -       VM_WARN_ON_ONCE(ret =3D=3D -EAGAIN);
-> +       if (ret =3D=3D -EAGAIN) {
 
-Can this happen? After you add the entire swap range to swap cache,
-backend is locked. Zswap writeback bails out if it fails to add the
-page to swap cache.
+Can we use xas_load() to make this check more efficient? IIUC,
+xa_load() walks the tree every time.
 
-I think you can just check (zswap_probe_range or wev) before
-swap_read_folio(). If the range is still fully backed by zswap, you
-are good to go. Otherwise, bail here immediately.
-
-Then you don't need all the complexity with extending swap_read_folio
-to handle mixed range errors (for now at least).
+(We used to use a bitmap here back in frontswap days. Good times....)
 
