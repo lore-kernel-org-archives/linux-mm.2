@@ -4,157 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E706CD6E49
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 22:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAF26CD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 23:00:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDF806B008A; Fri, 29 May 2026 18:54:14 -0400 (EDT)
+	id 2FB426B0005; Fri, 29 May 2026 19:00:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E896B6B0092; Fri, 29 May 2026 18:54:14 -0400 (EDT)
+	id 2ABED6B0088; Fri, 29 May 2026 19:00:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D51356B0093; Fri, 29 May 2026 18:54:14 -0400 (EDT)
+	id 173EA6B008A; Fri, 29 May 2026 19:00:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C019D6B008A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:54:14 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5A3241202FF
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 22:54:14 +0000 (UTC)
-X-FDA: 84821962428.13.D4132CE
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 06F6520004
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 22:54:11 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=UwuJ6v5W;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf31.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780095252;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 06A0C6B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 19:00:07 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99859C1776
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 23:00:06 +0000 (UTC)
+X-FDA: 84821977212.23.4419DA9
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 834C840002
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 23:00:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RSdjPcwo;
+	spf=pass (imf12.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780095604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GOZu5NR42SpEsku8Ns1Xem+A9XCgYdtBxKbxW3wb/Q8=;
-	b=6TEhs+4lyQfLSdQuX1Yy4ieLWRCx1kdmpKUq/MhmhqU9+CWdLpHZ1ON58yYlVaYUSTjUgQ
-	9jDwjFmCb66KTpE86P4VWdRgrRkTiDSZ2TCuyUbOsK8TYSWDspZcqZozjq8SsTNxHft/bo
-	+Uzp9KHoE3xTbwA8AIEKP49kV60Slbg=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=UwuJ6v5W;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf31.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780095252; a=rsa-sha256;
-	cv=none;
-	b=lylanxTpqRJG8jvpXQhfvVUnx39aZ+unaTErOfFVDLTlKktLz3Qx2xw/IAi7qCmg0Re5eW
-	gIEsz4pQ00g+db/qG+3uE4Gb8fIBE43FmA8bro8Wc+nYlwzJ6609E1SJyqPmobkXTO1z+k
-	0aZ1VD+69WHq6mF/Pli+0GqTNk2Llv8=
-Received: from pps.filterd (m0167072.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64TMCQCb1404571
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:54:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=GOZu
-	5NR42SpEsku8Ns1Xem+A9XCgYdtBxKbxW3wb/Q8=; b=UwuJ6v5WZJ0OeCqb38nZ
-	HxEw2K5Cim53nr0/UyKGLlTxJ8iXCu7a1kzXow6FM8Jm2xVS/jS6fXhXw7NmrG+i
-	6Ynjd0MEmmJHxai0llD5mTU106Dx+HBK2yTwvKbRxKZ0Gi3l2kG4Evjxx9XH5tnf
-	U6xdc7bZuNMv8AdFXqojAJecp7t44lFRQjuiCn2fRWu3hGsG/u83f6ivFjj67M93
-	DssaA27UFx5/Z6enDS2FA5FfbGcpreXwLfICcVDyOb0KSG3OGeelkvVpmMdzfyVV
-	qhIQRMNBFt+9suOoW4qapI52ys14Wg13IPwJ73GHax4AgwXM6/Y2JPKDy3tT63tc
-	zQ==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4efj9x0m4m-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:54:10 -0400 (EDT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8ccdd96f25fso33316226d6.1
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 15:54:10 -0700 (PDT)
+	bh=esBJv1XmH81oqfMvMS6FKEsXTHYPPlye955uwcqZrYo=;
+	b=H7l7dYLc3/eyH0mwh7r2V7E7s7RR3rrVRN9DKUGutDrfMRIZT9W1DiaAeD3sedqRVlA0IQ
+	z1sgG6/w/nRkiMVfMeMnTDeWFfxWJr305oSkCSpjOvAQA4xmfU0e7JSCd/nVkoncE1Dmfp
+	SsPU94AQBeYXkURDGr1U0tKiOnMv6aE=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RSdjPcwo;
+	spf=pass (imf12.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780095604; a=rsa-sha256;
+	cv=pass;
+	b=KtQyoq8HCM7yFxtU2kdR+MNPBljSr9TkkuiWiGc508rUPuMq+LolHUXjWRr30WVy/8D86H
+	FKZpJsna92q/+P87fn0DE5rVsVr9WepWCa2fol6/1+kDKCd4W2fTQESMf+IHNhOj3P3Uf5
+	WcWlCy2Oq72HN8Cyc9Av2OMUfOIg5Js=
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-45ef616daf6so720215f8f.3
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 16:00:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780095603; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iFVGluOpyPlfqL9vtB8ScalkeIv/Gf1gdji/49qsCfW5qQb3BliAX0JbU1exnZNLko
+         8m5ROcFRs6JGUJVEiwg6XXwpeqWGPvrTyd/ZGS3UEFxh1FWQg5kQ7KqVGYAC/QVLoMr6
+         2i6397gIlWCCmF2hhxlWC24RehTgCiu3bYw+vkZHqp4yNJEvidhYE8Wb4Qj3ZEojHzb3
+         OSH58PTp9uamIytsggt1LNyWgj/ICvAS82AZ9MoZnV8stT1tuETaMCd6F4DX163zJhJU
+         LrfGyWqnyqHuoQX49tMTGJuGOZxkkNrOjQUdrYgvax4C22j+hwyR2LSYtz4FEVGVRTvu
+         0O3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=esBJv1XmH81oqfMvMS6FKEsXTHYPPlye955uwcqZrYo=;
+        fh=owjxmPQf3nx0Q3xLVCT2vvF9vh62LAHUJxmAji8M42s=;
+        b=X866zg3VrEaJ3ynVi8dPGDZLnKFNBmkU2amNP0dFDxYrqsuhpWrzREbYrISEEiKd2o
+         86Cjcr/IQJYWTlA6MSr1oM1nPKJ+ZdNu6hT2+tRb0Xb/IPpTmOVMrfYBlL4RQDrrlXxl
+         YC2A3YofTk8QZPbjjjAdkhIGmIwyjYbWN5MNXx0Z9bJzMjTHqik4qKGNMNJr1tHkKWxT
+         /b+zjNotOT1QlTRqVjKn72IUV/FtcTZ1VWk6SkN5EaXkTvm4RX2pzKEIHMQHS6dIIiNR
+         QpTYJrp9LtRZhaZ7HHQxSr36zHhqTNVXM7jxd6x3cICE4NfVMorjxUjC8+x0MrSHvTkq
+         QAFg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780095603; x=1780700403; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=esBJv1XmH81oqfMvMS6FKEsXTHYPPlye955uwcqZrYo=;
+        b=RSdjPcwoixfljrvhitAV+R5/ZEWhEsH1qMJrQT67xztbPjGZnwgnOSe9KSkxl4uNtN
+         oJMnky0VKg4NSPQKubazWoX6t4EL9VgFRTf5XxOiyLM30pCX+nnyDH1pSZ9D2gvew9bJ
+         /jNp5IaR/L6ovxPd7xx/Hzm7U6+sGf91V8silxWpXUE7iQue2+br59S6viwhv1UNy2d3
+         mJawKhNSquMykGSlNzJIFxRWE0tlUt0N7Q9pHdliqkfBqE4mpCSqFebJtlEhCDKPFDdm
+         Vw0yJfRs/0dfLponMYp86UeNfmF0hBllAcgoSDVk/0mDabxfwCuPnw+D8/GlDy3pb5dK
+         Ou6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780095250; x=1780700050;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GOZu5NR42SpEsku8Ns1Xem+A9XCgYdtBxKbxW3wb/Q8=;
-        b=ZwKvFkHU2lpN50uDLbJhanwg4cAeAgIfpWZRagh8e4JJVK+8lKOryA7oQe5YnE2FGG
-         01hoZVbNHSAIJV9sJTM2rolKdQoSLyq19SUHkombN4JUS5gjYcY742DDlXS5I122Lfa4
-         75g2GghWhhoS62ev0imBsDW1B3ikLmIipz5I5Jyq4nINKcKvqbn3fxhITI8WqNlCRxzw
-         WBF9tvYMkYgtT4597CmRPfP6RPvM1DHwNaCmNL5M/Vq48f8mLNZ9O7lmEZ3SFzN2untm
-         dkeNgCmpImeYwM3CfvcsUGyC9dcitIcIGBRBgchVW9r+iHiUXDfCk+uGR0152MYWIiPX
-         o8iQ==
-X-Forwarded-Encrypted: i=1; AFNElJ99Kd4h6/nAmcKGk5/rqw6LwguX47BD/8EHsDIxCNIDTovsycPCxmdclaQh+SeEY88wAPppN5CsFQ==@kvack.org
-X-Gm-Message-State: AOJu0YzLBc5CiKd6NYGU2K5ZWqQC2isHusgPj9Fe1xcrz8s+NVVjMr86
-	gB4eVejBFLeBa8qvq41z2X4HKbyNYX3Fb18JYLeNk4HHiBVsejn91tI2GQeo55sRPuB4OAIdZcj
-	bRbYSZzKbHxIlr3EkUuPsC+FS/PKm8JR+dldzbtcJeceJEKbI
-X-Gm-Gg: Acq92OGihNhaIFkKChR/jW2BebqDi3xE5QdzXoY9YTz1uBJdTFMWXlHLKKvrpqnkFEI
-	9yc0j7f3XOpfPYADQoAV3XFtkY1p/G3Lna9BWaMAzGR4++RxEpR3sAwU4/07ZtMNLXo1HtUV82O
-	CahA2Cc1ZXq5FGWzwaIG6MNlc71H6Ejjxxab06Z7OjRjQSlW7079Z4hXqGqzEQD2KCq01x5Sfra
-	jZ9A8LNvMsmbvYW3U1ObAmO0QCeP1t6Ftll8qvsT85ywdusKPph6AMmujKoRxWpisgnuKueSxP5
-	Pz10vekdXmW3gTFXab7fKmZuMPe0fdjsL+5wqsInP8hV3HnuwhmOCo0ZCHtMusViMIqpz9hFVUe
-	pnWr+Wn0LsPtlDDCS49Z/bMlqOHO79GLvAlgC+lbvR+MrkGUWsBO9qtSEdPoD6fADyab0A3RzXo
-	y5kb+LNQcQCKcp6EcdrGXiAqaFqw==
-X-Received: by 2002:a05:620a:7005:b0:911:d96d:139 with SMTP id af79cd13be357-9152f91aae8mr628980685a.11.1780095249714;
-        Fri, 29 May 2026 15:54:09 -0700 (PDT)
-X-Received: by 2002:a05:620a:7005:b0:911:d96d:139 with SMTP id af79cd13be357-9152f91aae8mr628978785a.11.1780095249321;
-        Fri, 29 May 2026 15:54:09 -0700 (PDT)
-Received: from ?IPV6:2600:4040:974e:fe00:c8bb:325f:9d37:a5f? ([2600:4040:974e:fe00:c8bb:325f:9d37:a5f])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-91532628f87sm335923385a.35.2026.05.29.15.54.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 May 2026 15:54:08 -0700 (PDT)
-Message-ID: <fb59cca8-28b0-4231-a109-a6ae0ea12a03@columbia.edu>
-Date: Fri, 29 May 2026 18:54:07 -0400
+        d=1e100.net; s=20251104; t=1780095603; x=1780700403;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=esBJv1XmH81oqfMvMS6FKEsXTHYPPlye955uwcqZrYo=;
+        b=RhboPLLHoo6+ZuAE9jF20na+NyB8cl6toaT1AWRqYMyJU5esAHZ3GWSmF6S1gvw6Uy
+         fhpp41gC+n1s9yUy3CRMpLKgN82EKDNMZFwa99Jo2f5auMMD8WLfNTBzFgjuxQeC1jH5
+         HXBlSQX2jrrumnH5BOoG19vB7MJ8Vu840mGNTIOPDF8LP9yGtDRQ+ApWxCfmm2h8DKPT
+         pMnCT4knaI4HxTpBS5RzqjXqhkGo80HmAhu0mfxMP+LCYeTVxGxmDbpDJr7ShITdGFfm
+         pAP1E1llqAVgZ+Cl6k9BOqjGRoaiEwrvWnGsoQdfObMvqzmREhv04RIyfC3JuAD0trpY
+         f64g==
+X-Forwarded-Encrypted: i=1; AFNElJ/ZL4p+WCtC/Zs9FM14MQQjSjRV3XF55NTU7G7R5J+7jB1UnJ8Zzkvn5jThfJpB12BuO8KWzTubqA==@kvack.org
+X-Gm-Message-State: AOJu0YxcFFPdQDknGHKCUvPeKp4tbq8gwrbULgMvrRd0Ygl5kBgr1Jlk
+	abe9vsOEd0hBcP4AR/iDCp8X3zz4sYMA98V/o0rnMNrLjfyRGYZu8qePtd72jvItrncgwDLnBgR
+	xDRKHu0prp+iUuEML0qoO4NxciisikKg=
+X-Gm-Gg: Acq92OHvNnsh0YdMtbVcRtWe/CNbQpCZ/nmUGkZ8jfRUzFu5XdTxCDvRj5otJWyqDg0
+	3D+LfFFCq4Ld29a+KXPzNPCetVVWRPPYT3+f2VEyg825VliNn0ujD92HIswbR/Fg2QypJnI556F
+	JZBuBJtV3/LtW6S4/IJDf1gpGYZ3/5MMzUP+DkPaaE5sIC/cOsXLV65kipWS4r8+PniuQ6+1sKo
+	eSE3oXx1Z9j7IXmGX+j0w6Fw1I+6CKLvAL5oN3rbZPiyGxAqG7jyCh60YP8nNHx2ezlGZ9KjZZj
+	CAJwO8wS0W5BkFKZDhRuFESz96bozWqiyoz9nkJIintsvcn+3Q==
+X-Received: by 2002:adf:f089:0:b0:43d:77c6:be78 with SMTP id
+ ffacd0b85a97d-45ef6ba1425mr2108467f8f.39.1780095602639; Fri, 29 May 2026
+ 16:00:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/11] mm/filemap: split out folio wait and VFS code
-To: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-References: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
- <3dxzu3ck5y3wxw4pp2qhzwwb6y3f7mwhvgxfpl56sokw4ymop7@xaaoxsa5yu5q>
- <ahg55Ei8Fc3iRsnA@infradead.org>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <ahg55Ei8Fc3iRsnA@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=RKeD2Yi+ c=1 sm=1 tr=0 ts=6a1a1912 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Da8U98TiO7q1upZEImrf:22 a=SsB-OO3BMngHh3ZO9fOt:22 a=lO0XnYq6BgjnjRCXdOAA:9
- a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22
-X-Proofpoint-ORIG-GUID: YlGmW9H-A5cRyWWvM-A7zukD64bBPW7Q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDIyNyBTYWx0ZWRfXwy+Ek5ZVZyZZ
- sK4RcYeaFXNLfqH7obXnTIg3tJNjMf30mjriLGnc2C16JaUVRAhxXitMIscxUvFRItOCvWmKexV
- MPrVvH0RjltIIBRn7GvWf5mFIWuUYvCvY9p2oO5ii2EyFN4izEk9WOtFASCX2oVxWilHUXvVM7J
- bEYYADVRY0eTTnNbjoE0hSzgLg0MNm6WFUBxJ5D2zikT/MnAFWH5eZAh6lztjRsPDNFit1+T06o
- 9yFCL6Kpc/1vOp/xkjhMDkCWOTOAqxbne7b+iD+fIu8YUZTjYXGp1HyAEGipDTmahyEE2m4LXeQ
- zQY8ruITjXxylK16pF1bVbFLfuSaPRLfAoVswRv2E9p418g7vBwuEQwTMQmGEPVhwodaH4zBa24
- 80FyZPlAq0MyBQhjhrOiCEqxCcu9T0NEBhbIhueWBRKIfMBjIPLRbLHAzclPPm750U+or5z/qGV
- 8vc12YzQKNA/VqA7EUQ==
-X-Proofpoint-GUID: YlGmW9H-A5cRyWWvM-A7zukD64bBPW7Q
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11801
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 phishscore=0 bulkscore=10 impostorscore=10
- adultscore=0 spamscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=10 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
- definitions=main-2605290227
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 06F6520004
-X-Stat-Signature: pcqywf1c4aen6trq589t4g91keqm7i4a
+References: <20260527115930.3138213-1-haowenchao@xiaomi.com> <20260527115930.3138213-4-haowenchao@xiaomi.com>
+In-Reply-To: <20260527115930.3138213-4-haowenchao@xiaomi.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 29 May 2026 15:59:50 -0700
+X-Gm-Features: AVHnY4LNv6nJBLUBxh0JlN7CTnCDxua4YFUwff3Kk-OXI-Bg9n_-qXcdHjq1V3E
+Message-ID: <CAKEwX=OjEkm766-js+mxRr2KBTSpLxc6wRWXxVuBXt-OT+drcQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 3/3] mm/zsmalloc: drop class lock before freeing zspage
+To: Wenchao Hao <haowenchao22@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Xueyuan Chen <xueyuan.chen21@gmail.com>, Wenchao Hao <haowenchao@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 6h8ezj74frws1dq1zde6nnfdktw15cqq
+X-Rspamd-Queue-Id: 834C840002
 X-Rspam-User: 
-X-HE-Tag: 1780095251-127144
-X-HE-Meta: U2FsdGVkX197hewSm8mjsXtDYwkrp6uN0uoNlVR8WPu6tJaq1QZza+25IcmWjN3iFfI07CNiUKVTvs6FBYjvWtk4Vb2iFPOeAypseUmJeWrhD3nWY2qWZKMCrbMoQo6W24KjSAJqbdPitM0fg1JM/8aeYrYoIvpUlyZ9qs7JiyqSIYqSUxjBxIK45PuuM5mEFRvUTrnShr2eCGQAP8stCysJ+c3IV/y20l6uW0kq8zdSEjOpvEECQBtYDNWX7/u4UNB9Z/5hmkXlzuLEyzKvKFFgJtKY+bVx4+64YKSxQbBxowbKv99reFiJralmjEX//1jqldGX4N6PL1jAiRGC2NtlF5bkf+9b9KuUwPFKgTDf0w3QYBMZa4TK3x6aSxH3Td1v25tKiF0RoP2i1a/ACX5kxyYibHuartfO6hRcqMJ+/uo8YCsS5bYqnhX70KNpKpknginletm2PHuggO9jkuKf9ttYo1/zaDl9/yX41YeqiCqEtGhY2CbuSLcyoW19Wf6CNdtyvMQqHy13SZYhE1LbIGY4eiKpMz9Wv+JQyn4EyHBkY+78vecZzZoltWSvu3VDj97dUrmf1bWz703uzms/+Y8XYnOP/ZSNeBADzs2UWpyP+YsPlgAR9wNsI0ELXXf+OvSQPWHG/jCgCOIDq+HQz12n1bWQILOQ1e1Ircor47OHti6cuIdgV8MqeNZDiPond2Ts28E5gnVEdQ15BCrLvMxU94/Xuk6e6NSF+fDB28NQdPxPdW5BFbA8JFIqmKuw4mFFd4XYlaTl/BMOD9ncsjwS+qCNknnSeh94N5k2CfREK4q8/POt6Zy8NCqlwMHkMQ8eeQwrAOWAGCnE0vdqJ0hm1UBtb1Xzuvfzlt9TI2SCzLkHWGlUmK7o2ygg3qnrrfbVKDrRbJ8x3tbsF/KW3vkHHWTPLQak+fkdkCwgpkh70xrqy2avRJoLx3hf7gD8kGX3pT3rL42+829
- 0RZClQ+H
- 02wevD81YhEny9W4vptr4R9jhrV4HzE4lfqaEYyJ0OeIi2EJzg68aE0Y+Ix50dnSRbt+5VG3D6q0AtQmC7O3bVbcKSZ8UIQn1bWuqVvgZq25KQpf6tuqh3kiOt5SFWzoa1wohaorR+A8FLgop6avWfAIlAeeuVRjuP0ZzVWGJvMLGXFMVjxnzS3VoBMOIGzbYLnE8LeGdzuY8VRxJap8lOsGSOyjnmT1FhEjQhOtGUV3lZXM4kZDmqug6hhmIhlVD9/Evxq3bWFFH8pcaTWj7j1s+YhCfjSA19qraGum1hGwAuPry876hDRe6FsGoPT5a2mwNeSN2o/RLkJJ60L9zYDfD3tx1j5Up/ByxfmomYr6v86005TTz8tbfUlqEKfeOgXEcqpNE+FI/y+tf4OccsUcCEt4tnMS0dlKubi/6rZXKr90H7cyM5K26G1zRf8GakyRvKQSvlcZq6F9cOn227r40xAbQrNRmIVll5J6/NDGCCYLW+RII0SOT7BnRQ8qMhyp1aPIO+5b7XtH4GBG8ozacwbnzVEkDWynE4rWeuX6wwus3TATuMtcp0w==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780095604-912566
+X-HE-Meta: U2FsdGVkX19/6Qru74qIWY3gZzaSpolchFsZ5cDBzmxPI0Rz6ELvF46vwBU6qYQn9JVBTOgEZ1rUsehNUjrnEF1zB9gIKiuJasn7FjIy0n5lZHtgY+sdCpTRdQpLPdnl1IzkvfHIg7ChA7nk/cSttol3u9imcqZZwq2eRTKNLpxDB2IwUPG2Xhqz4NdLfRd8culjVxKFEdFgty3vzsltOBpgfp2+MLbnTdcsF+4TcpdRed9q65MDj8lEBG7wTZhyrdU/rgO6akLIyXeTgCEFLMKQJaEveckZfM0Gsk8kjl2KIwcfJvc0nGEUeXTYyRyUKL7x9+FkZbwWWntEiL/f8/luGVfIy4SQfpmJAGzUvYvwsLGvSxAdr0CKjbyxO7vCT50S0nbb1hFSph/dEyU0AEByASemGvQn05xdZjBAOOdry/unxyKjPpgiiazz/2645etGSy4ssMGQwJGJ38xOaaDwB7RrLrsXRFtnB8ERjTjh8QCuYbF5YouLj86mBjFJG4BZ0mfqqJ69G4zuOrkrRrE0ltOrIhphM0NEMHsv1waLGpJVqPQ3LIqeWuCTMYlyYkCrmXu3AUcgyBJr8mGqvl6FtWzfTXnNKWfGM/1EKrQ+cqnZ4+Mz9/uBbofqEzEnx4Jp30SQILPzuVvqGQeZRKdEul/ZFymQzvEvxoAd1H+h/dZunVskiREeXtw6op+XjMu6XEnxjvNJhzXxoM19RrTYqm+cmkN1CyyBFWwsHSdR5hr00WVWke29uuISBUKmNNryG5OsiaoLNq924a+XctwfIKPiU/BqyterigongxbIhB+3E9eavNejoSLccdSEcHEQYQSM8RcndgD+EuvGgurP4QaOcL0FBoMQnoCKxFOghaZNJnrJWaHcU5RTejvxFkYLxwqEWGeqkftTXwRT0lqoVTLpPRa6XRFq96eo7D2Bk4B/IGRSwbyv48fJCx4tAEHdCJ5CHplD7tGXU0o
+ IXsIQC/w
+ 5GM6ydiv7rAVKDa01Ozszk+y2QIts5PdmbrSWEkGAXJLIgM9gq642yzExGyC2bAVxa7vvLmuEWDTNnZYc+T9Z6qjGAxkqRtZlOErGMMgyjoukNhDH9Fa8hGLCvG2l8BgeRFLKjlDPo3YSfiMRh9mYaKrxu53K5aLvDZ3+NJ19iv7TzO5dnW0REoG9J7WRmeo1Btm3m/SU+yoJqWJM3vKLrMkp3bSroYnRO0jA7eaFe1UlDMvi9u5zLwsRT1AUUY9BbA5ypUcx76wcTSlnDPU+cKVrl5OM9ILBlhuHd1oPx3TULpkjVs1NPvGrniQxDXGpB1+6pD/aE7npvRmtKuyhd9BeI8dmaeOhE57Ekx4QDeQ0avLELaytkOFd/zNe0Vth3hzIsuFOuTDsJLqSE8eyUC37AiOhUC/CjL8Bu1U1uERjsanMf2ZXhuA9IWrdOQXWsnaQsptqTJHvjZquEC8SJlb5SvYGruKEPa3e4SW3oKLe8Pt2ZWhXoLREBqOh7nqIs539Af4dZgvOsfc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,29 +140,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/28/26 8:49 AM, Christoph Hellwig wrote:
-> On Thu, May 28, 2026 at 11:22:37AM +0200, Jan Kara wrote:
->> Overall this makes sense to me. In particular I agree it makes sense to
->> move the file read/write helpers into fs.
-> 
-> I disagree very strongly.  Mixing default implementations with the
-> higher level APIs is a really bad idea and leads to people taking
-> stupid shortcuts and other layering violations.
+On Wed, May 27, 2026 at 5:01=E2=80=AFAM Wenchao Hao <haowenchao22@gmail.com=
+> wrote:
+>
+> From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+>
+> Currently in zs_free(), the class->lock is held until the zspage is
+> completely freed and the counters are updated. However, freeing pages
+> back to the buddy allocator requires acquiring the zone lock.
+>
+> Under heavy memory pressure, zone lock contention can be severe. When
+> this happens, the CPU holding the class->lock will stall waiting for
+> the zone lock, thereby blocking all other CPUs attempting to acquire
+> the same class->lock.
+>
+> This patch shrinks the critical section of the class->lock to reduce
+> lock contention. By moving the actual page freeing process outside the
+> class->lock, we can improve the concurrency performance of zs_free().
+>
+> Testing on the RADXA O6 platform shows that with 12 CPUs concurrently
+> performing zs_free() operations, the execution time is reduced by 20%.
+>
+> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> Signed-off-by: Wenchao Hao <haowenchao@xiaomi.com>
+> ---
+>  mm/zsmalloc.c | 28 ++++++++++++++++++++++------
+>  1 file changed, 22 insertions(+), 6 deletions(-)
 
-fs/read_write.c already contains some of these "generic" function
-implementations, including generic_write_checks(), which is called by
-generic_file_write_iter() in mm/filemap.c. Right now the two files are
-unnecessarily interdependent. I do think fs/read_write.c is the natural home
-for these functions.
+LGTM for the most part, with small nit.
 
-> Splitting up filemap.c makes sense, but I'd rather keep the generic copy
-> into and out of the pagecache code with the MM infrastructure for it,
-> as it is not VFS code, and making that clear to anyone touching the code
-> is important.
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
-About half the code moved is implementing direct I/O or multiplexing between
-page cache I/O and direct I/O. It definitely shouldn't be in the page cache,
-and I do think it is VFS code. The one exception I see is
-generic_perform_write(), which is analogous to filemap_read() and should stay
-in filemap.c (and probably be renamed to something like filemap_write()).
+>
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 88d10f814da9..5511c347d00b 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -856,13 +856,10 @@ static int trylock_zspage(struct zspage *zspage)
+>         return 0;
+>  }
+>
+> -static void __free_zspage(struct zs_pool *pool, struct size_class *class=
+,
+> -                               struct zspage *zspage)
+> +static inline void __free_zspage_lockless(struct zs_pool *pool, struct z=
+spage *zspage)
+>  {
+>         struct zpdesc *zpdesc, *next;
+>
+> -       assert_spin_locked(&class->lock);
+> -
+>         VM_BUG_ON(get_zspage_inuse(zspage));
+>         VM_BUG_ON(zspage->fullness !=3D ZS_INUSE_RATIO_0);
+>
+> @@ -878,7 +875,13 @@ static void __free_zspage(struct zs_pool *pool, stru=
+ct size_class *class,
+>         } while (zpdesc !=3D NULL);
+>
+>         cache_free_zspage(zspage);
+> +}
+>
+
+nit: we have *too many* versions of free_zspage now. Can you add some
+small documentation for:
+
+free_zspage
+
+__free_zspage
+
+__free_zspage_lockless
+
+to help reader distinguish between the various cases? What do they do,
+what cases are they used, etc.?
+
+Can be a small fixlet or follow-up patch.
+
+> +static void __free_zspage(struct zs_pool *pool, struct size_class *class=
+,
+> +                               struct zspage *zspage)
+> +{
+> +       assert_spin_locked(&class->lock);
+> +       __free_zspage_lockless(pool, zspage);
+>         class_stat_sub(class, ZS_OBJS_ALLOCATED, class->objs_per_zspage);
+>         atomic_long_sub(class->pages_per_zspage, &pool->pages_allocated);
+>  }
+> @@ -1492,6 +1495,7 @@ void zs_free(struct zs_pool *pool, unsigned long ha=
+ndle)
+>         unsigned long obj;
+>         struct size_class *class;
+>         int fullness;
+> +       struct zspage *zspage_to_free =3D NULL;
+>
+>         if (IS_ERR_OR_NULL((void *)handle))
+>                 return;
+> @@ -1502,10 +1506,22 @@ void zs_free(struct zs_pool *pool, unsigned long =
+handle)
+>         obj_free(class->size, obj);
+>
+>         fullness =3D fix_fullness_group(class, zspage);
+> -       if (fullness =3D=3D ZS_INUSE_RATIO_0)
+> -               free_zspage(pool, class, zspage);
+> +       if (fullness =3D=3D ZS_INUSE_RATIO_0) {
+> +               if (trylock_zspage(zspage)) {
+> +                       remove_zspage(class, zspage);
+> +                       class_stat_sub(class, ZS_OBJS_ALLOCATED,
+> +                               class->objs_per_zspage);
+> +                       zspage_to_free =3D zspage;
+> +               } else
+> +                       kick_deferred_free(pool);
+> +       }
+>
+>         spin_unlock(&class->lock);
+> +
+> +       if (likely(zspage_to_free)) {
+> +               __free_zspage_lockless(pool, zspage_to_free);
+> +               atomic_long_sub(class->pages_per_zspage, &pool->pages_all=
+ocated);
+> +       }
+
+I think Joshua has a point here. Just plain "if (zspage_to_free)" for
+simplicity?
+
+>         cache_free_handle(handle);
+>  }
+>  EXPORT_SYMBOL_GPL(zs_free);
+> --
+> 2.34.1
+>
 
