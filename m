@@ -4,111 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC76CD6E4A
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 11:10:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2461CD6E43
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 11:17:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E85FE6B0005; Fri, 29 May 2026 07:10:25 -0400 (EDT)
+	id D2F4D6B0005; Fri, 29 May 2026 07:17:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0F596B0088; Fri, 29 May 2026 07:10:25 -0400 (EDT)
+	id CE0676B0088; Fri, 29 May 2026 07:17:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD7756B008A; Fri, 29 May 2026 07:10:25 -0400 (EDT)
+	id BF5E16B008A; Fri, 29 May 2026 07:17:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B8ED46B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:10:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 465951411D7
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:10:25 +0000 (UTC)
-X-FDA: 84820188810.25.4F9A90A
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C6B161A0009
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:10:22 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jD0ZTL7V;
-	spf=pass (imf19.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780053023; a=rsa-sha256;
-	cv=none;
-	b=uW3xdo5M8AbzEhW4sAWo9r1hMqY9s56YuOsDV/nyPdLsMnLjNQm8Bl1VWvjcCd0DW4s9gh
-	uLmf3ykldLGrfIGngRZVBsZ2gQPHxBKcg7cOyk4K0oEZIJQBp7BWJeptunYiCfS4eD890w
-	5vyG2ZAM7RBBMi0sZyqh5dIMVngUzbQ=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jD0ZTL7V;
-	spf=pass (imf19.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF04B6B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:17:21 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3DF174130D
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:17:21 +0000 (UTC)
+X-FDA: 84820206282.04.2345DBD
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 609F51C0010
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:17:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=cmig+QQR;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780053023;
+	s=arc-20220608; t=1780053439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nRkEGXP11hFVJhyK9fz69KbA7K+xdDcBYB3fNOZPNoc=;
-	b=sBM5+0xEWE5BfLZnoMDyuJbRhIpOkk0L9uIp8TS5kOoteIwGsVWx4eNn9nnJYtEFvOjRyn
-	FYGk8Fp8zdDOQnAnw8keBMc7GTq4zrKh+MQxkpa1hlnznQcijRSgcUlmtrRkvTLUR8Hxna
-	wTxBn9JwuYfCg434dDNxUIwb+OWsKJA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nRkEGXP11hFVJhyK9fz69KbA7K+xdDcBYB3fNOZPNoc=; b=jD0ZTL7VZL3PdRN8lqnvI7EMm/
-	cwIN41nkcKFCkXuhq9JMAaNjzoF5EmP/5hSA05BsKqCwFXKlPpqQ3u5dKlnO99GUuV8jyO/fBaCCB
-	Z0Zwa2NDhkxXBQYRoGqPjbM7LC47WJhSdvG3dKwaq7/KYnyZGmGCvZAMOKGQ8A26r1pfNONyyvwon
-	BsJuSJfYSNH+AGaBXjF2Ei01nwJmWB36T8VzStOmpSdRy6iK2xTXjFsRIqCr+oiIoUyBpbHvtX2U/
-	e9OfFFdrv44Dl78xJDJ48IN6BEynEF9gXrR75FToAdOYZyF/e2EQRuSseX39PW3HzEDSJ/tATWsdn
-	VCnlsYlQ==;
-Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSv6S-000000060Uo-2N4R;
-	Fri, 29 May 2026 11:10:12 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 06D5E30036F; Fri, 29 May 2026 13:10:12 +0200 (CEST)
-Date: Fri, 29 May 2026 13:10:11 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Zi Yan <ziy@nvidia.com>, Yosry Ahmed <yosry@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Lance Yang <lance.yang@linux.dev>, dave.hansen@intel.com,
-	dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, arnd@arndb.de, ljs@kernel.org,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, shy828301@gmail.com, riel@surriel.com,
-	jannh@google.com, jgross@suse.com, seanjc@google.com,
-	pbonzini@redhat.com, boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, ioworker0@gmail.com
-Subject: Re: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent
- them
-Message-ID: <20260529111011.GH3493090@noisy.programming.kicks-ass.net>
-References: <80ab39c2-efb9-4a23-bd56-46d9bb4e41bb@kernel.org>
- <20260424073145.b990fe9b925da304508aad71@linux-foundation.org>
- <644e65dc-3d39-4137-b51f-51d953b67d50@kernel.org>
- <CAO9r8zN1pRfyC0Rh+UdW-Lsret=z3oveT3=gnZftX-Sr_ubyyQ@mail.gmail.com>
- <20260424190141.GA3783056@noisy.programming.kicks-ass.net>
- <E375C69C-557E-44EB-9B3C-618C9F7BA9D8@nvidia.com>
- <20260424192250.GC3783056@noisy.programming.kicks-ass.net>
- <20260424193529.GA3853824@noisy.programming.kicks-ass.net>
- <7ia45x5gktx9.fsf@castle.c.googlers.com>
- <20260424201159.GD3783056@noisy.programming.kicks-ass.net>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=267QOHGgx7sVtrdH9KP39kxcpDvI7QRg1mO8AKlytqc=;
+	b=LKt0qKJ/C02PHqUf7jZ63mSDXIENoS1CW02oCg/ciiFhDABiHECKOr8hRQzlVRv1GknRl3
+	gidhXbNbHY/YZrucwVLEUzezq6jizgFwImwQTW7ehgivHXOAArpp9bzVotMfRS8UVIfwMY
+	BOqzZsx/N25ZcKfaMPg3eLxTk++pQJ4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=cmig+QQR;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780053439; a=rsa-sha256;
+	cv=none;
+	b=Vu1b28pMGivt0YrWsDxErcwSSMEjQoKBS14NJpz98ZFTZaKxXsGZNGQrNkX4/4UfgtY8/Q
+	5N7hTt7xkUVvRNEkc9wSQR9VPm0YAirLsWIoTiHE7fiVy8XJ1a0J4UQPzDgK31c9qP/ifO
+	RBU57NXGliaaJIVlsBj6LRuZKE7AeMs=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 40F072247;
+	Fri, 29 May 2026 04:17:13 -0700 (PDT)
+Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.31])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 30ED13F905;
+	Fri, 29 May 2026 04:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780053438; bh=cx9bkGJ2eDRyMtzNNbeuK1dl0e/7tAqg3VyKX3JjrwQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cmig+QQRNEziskriXoC4pzo9VhXrb3OFQb0apJK+kRtxnbwjtcgcZktmT193CNieV
+	 233HUHFvMNrJwFG/lOUU41/ZbqMDIhECIBUhNb4/7jDeCbDbnGLyA22ih+GePPa+Eg
+	 Ycwv0YyxmHAIdnPjbSWPowjJt+L/O73CN84pDsuM=
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	david@kernel.org,
+	shuah@kernel.org
+Cc: Dev Jain <dev.jain@arm.com>,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	balbirs@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/proc/task_mmu: do not warn on seeing non-migration pmd entry
+Date: Fri, 29 May 2026 11:17:03 +0000
+Message-ID: <20260529111704.1078346-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424201159.GD3783056@noisy.programming.kicks-ass.net>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: f8ik1f4u171tjbc3w3561ot1osxot36w
+X-Rspamd-Queue-Id: 609F51C0010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C6B161A0009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: kyk1rini9sa3b6cu1ssi4wextxiafhbr
-X-HE-Tag: 1780053022-900105
-X-HE-Meta: U2FsdGVkX1+eFF+PVs1xbEuOWQJAossXhHOgFCWBElRlrJTVmJAAu6KM8zLZWuia5p6MwKEcN5S0qfuU5yoaypnEK9gLjX8M2gG7VV6yUJXJN6yGO8DbK8sit09FTnYXjgoMIEMKqUAInLbv01AR+gwvjzYAjUb43ZrzMZk/MZ0mzctY9C+JCX5pJK8p/+dKCUIY1pJrRKJlhVzGA8gzwi/jccPHX5ALbmjLZgtLfYPIHk67BVmhgtnMD3O7LdjdK3Sb3H+jP1WpCBQZX1+DZkx+vC7pMqkJAg/JcKC8/kXI8GhChQfiuoHse+rRuU4G1+0skSIsmMkBZ7M3DwyR2N+nX1F/v/YxbjoupWbydHZIcaPXky1S44AM8fJfXRvIim6EmnRVLHG1DiqKDIoCyHdgM2RVpGhSrofit8X38U/RPOXUtTUWm5eCvdL2EM1TJ1zZJ9Mwl1GFaCNQPZ7eJ6KgPgYraLLghUJa5x2AN/SWIgOnVpMf/YS2OEcDxSbBUkB5F93p/OCKApcQt6EjVA9J4OWhJ4/btllaqSWxbwFn0arvYDyaDuAPq6m+O5wjergsXnP1ITPk/rCCGFemt4XaVqJVc19BxAtKI0UaVSlxpGwbqsaPfurRFWTw7SakGw9QmfLcSLBvGdo03lEIIT+440FX1qbUiLqCT9y3G782UJktNk1Ha4CRTz3Zkqz2D6h1dc3GzphVWu6V1i1yG2Yg64PPVhYPdUNC1yRHZLIqnSDh7MfZvXIMb+ouB5IKELeRpitx87HsiOHylWWUKwykHlkmiQGRY8tu5WPxh4qywbSHhVWlKuDr1zlF460H5Sf4K3VBHiMHBEh6toBJt04TWrViDG1awWiDP8KoMJ4h3SFyq2D+txk+DzDMYs4ibtNzN+JIykEFum5fK/xBVZ2tDRY9FrtLXVWhIdCjJU5DKPB//e02i/5Kdw4gYcXN5cz+JToVMM1dQx56qFj
- R0I09tI8
- 1ivJ8/jGgg3oovFXCwTeRgftkvrZhruW4fXEEw5+L4Gf/oMY9zWRXyew6iu3m9Wt+M6jBe5YwMVp1AyJzP/3BLqanETDAPrb2NmYQBM2fMRKH4tVp8XokMdURHa1B4vF6FhXYwtkc7Mwq83qJkaV+J3V5PAaR9cWTpsN0CdFUgBNa5lskcuwI1pn4ZpZwguYAPcRPD4GhMwzyfV774l90jbJIGCbfT8Anvp5XC0Qhp39IKypbi/N0cPSMpTKhjcpUMOIDLqCLX4n+Rt/J4c6rQK2wXwYASt4x3zggoMtdr/o8w2zuj+6iWjVxtDDAZsw+Cf0B
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780053439-82517
+X-HE-Meta: U2FsdGVkX1/t04de+ORl2jAcVE3Z9/PmxqULwgNCrpxQm9Q0eisRS47UG0n3s4qL+7aURh3OIp2cWXPbWSkMOYNMlkf1btrx8WN30PM8ptvTiGkdouJm/hap7kjg78rMcalWNgOnEL5tjxLD/KrWsr8DRISHgx/GGfk3E7/8Ms8gtUcpgnWDlOImtKk2zkckXahXHLd3rysVBy1bxJwIfH1E+y9WiD4wfKVPlkol0Y5gcPzdw4cxcBncpJVWVaKyIE+o9oEmr1HnQ1Ckr5R2KBNb7qOd1fVduXHjObl91OU+X0A8/UlE7yoEH8xR76iShpjNkpPRJqAahQyyDNvn6mNJZ+c634CsJ4umqNte8dgsISe/XnSqwoR8KVwMorHpQZIkENRGQis7TvedtlMyK+NudpCEVQuh54PFQ4EOJhAJ1qjPXTy5o6QgVtRw+OQc01kMLLadiRrSWnnBQZP7kBBPrPvb2/zWKcsVcLtvYBnu7vexdgjCaL9Mbwwl0uXosVrrLbcKpuPAaC6u5NkzNIqOCmb81K3d+1OQ1f3md95MZ3TLr/m2exi+85neJeV13h14qUpxThni21jcHOiNpA0+jkpfAzM6e6giaUN+COKORlZgH38RFAELTZqqTAniRQLoZSAH5oF5UcQbgdjkxS8Dk3KqgoG+v2Vlr9cvY5gZrrGJWGZ5NPr5TRyuqXP3zHRjSLsDF9yzO9NHV1/34KjXYKZ+g+PWBnzx1fu7jga0Qm1/rtJL996DO9toUZIf1L+j5/BRJ5Lm5X/l5n5x3QBVA8Pg8W91NDKRNvGSGyCg1lfCb7yNjpXAM3997SngIciv/+b9g6hzR0GkULDQH2nfR/DjnjQlw3RLfinr0sH1h7LOMg8UbCSutgrT9CaD0xUaP9F69bZ3fW07BcRKsTIRyBdJ7Mz/5lnHXOyccU/96kOyPXEbEGwES36ao6wTj6z92OqEpL0itkVkjuo
+ IF0qDSSZ
+ +dwbKvxXZSem6kjFQYLbfJidb8rGVWUCISEnTbfDumnfHGrHmqr7kfGdJrd8K78PwOg6yMbEAWNrKCn4ndoBCDzS/JmzczMzIqsPyAXwhdtpXrEV+7Yo8L+F7hCjMGvlRi88KvXVMUtiyWW/RZULV6zed/ynW0qI/7dqLQtA7i3KqWlzszx8Gzc+nEv3lFh/my/qdagrUcU3tRUgeLOPGSUVe/iD4jwV0GZG99NKel7++lQoExQubZm6YKmhDwChCfTMtTRRmCDD8XMIimM3NA9Qz/KrnBoh/pfo8wNYy1sfIw2WuKczNh4yThnAvXibNmYl/BiA/GgckoLDqWQ23bkhv2hSOwUKGssVEgaj0/ps9cjc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,59 +104,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 10:11:59PM +0200, Peter Zijlstra wrote:
-> On Fri, Apr 24, 2026 at 08:03:14PM +0000, Roman Gushchin wrote:
-> > Peter Zijlstra <peterz@infradead.org> writes:
-> > 
-> > > On Fri, Apr 24, 2026 at 09:22:51PM +0200, Peter Zijlstra wrote:
-> > >
-> > >>     mdir = mailbox.Maildir('~/Maildir/');
-> > >> 
-> > >>     for i, r in enumerate(reviews):
-> > >>         inline = r.get('inline_review', '') or ''
-> > >>         if not inline:
-> > >>             continue
-> > >> 
-> > >>         author_name = r.get('author_name', 'Sashiko Reviewer')
-> > >>         author_email = r.get('author_email', 'noreply@sashiko.dev')
-> > >> 
-> > >>         msgid = msgids[r['patch_id']]
-> > >>         subject = subjects[r['patch_id']]
-> > >> 
-> > >>         # Create the Email object
-> > >>         msg = EmailMessage()
-> > >>         msg['Subject'] = f"Re: {subject}"
-> > >>         msg['From'] = f"{author_name} <{author_email}>"
-> > >>         msg['To'] = "peterz@infradead.org"
-> > >>         msg['Date'] = formatdate(localtime=True)
-> > >> 
-> > >>         # The critical threading headers
-> > >>         msg['Message-ID'] = f"<review-{i}-{msgid}>"
-> > >>         msg['References'] = f"<{msgid}>"
-> > >>         msg['In-Reply-To'] = f"<{msgid}>"
-> > >> 
-> > >>         msg.set_content(inline)
-> > >> 
-> > >>         mdir.add(msg)
-> > >> 
-> > >>     mdir.flush()
-> > >
-> > > So Ideally I would have 'Reply-to' header set to the original sender and
-> > > added 'Cc' like the original email. However, AFAICT the JSON does not
-> > > contain this information, and while I could use the mdir object to find
-> > > the original message in my Inbox, this is incredibly slow.
-> > >
-> > > I have a TODO to use python-notmuch to do this, but haven't gotten
-> > > around to doing this yet.
-> > >
-> > > With that 'fixed' I could actually reply to these messages and it would
-> > > all 'just' work. For now I copy/paste when needed.
-> > 
-> > I can add an api to return a json with the review and all
-> > meta-information by the original msgid, will it be useful?
-> 
-> Oh yes, that would be more convenient. Thanks!
+pagemap_pmd_range_thp() warns if a non-present PMD is not a migration
+entry. This became false once device-private entries at the PMD level were
+added.
 
-Roman, did you find time to do this? If not, I'll patiently wait :-)
+One can hit the warning by patching hmm-tests.c with the following:
+
+diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+index e1c8a679a4cf3..7f0a3384f3c5f 100644
+--- a/tools/testing/selftests/mm/hmm-tests.c
++++ b/tools/testing/selftests/mm/hmm-tests.c
+@@ -209,6 +209,37 @@ static int hmm_dmirror_cmd(int fd,
+ 	return 0;
+ }
+
++static int hmm_read_self_pagemap(void *addr, unsigned long npages,
++				 unsigned long page_size)
++{
++	const size_t entry_size = sizeof(uint64_t);
++	const off_t offset = ((uintptr_t)addr / page_size) * entry_size;
++	uint64_t *entries;
++	ssize_t nread;
++	int fd;
++
++	entries = malloc(npages * entry_size);
++	if (!entries)
++		return -ENOMEM;
++
++	fd = open("/proc/self/pagemap", O_RDONLY);
++	if (fd < 0) {
++		free(entries);
++		return -errno;
++	}
++
++	nread = pread(fd, entries, npages * entry_size, offset);
++	close(fd);
++	free(entries);
++
++	if (nread < 0)
++		return -errno;
++	if ((size_t)nread != npages * entry_size)
++		return -EIO;
++
++	return 0;
++}
++
+ static void hmm_buffer_free(struct hmm_buffer *buffer)
+ {
+ 	if (buffer == NULL)
+@@ -2314,6 +2345,10 @@ TEST_F(hmm, migrate_anon_huge_fault)
+ 	ASSERT_EQ(ret, 0);
+ 	ASSERT_EQ(buffer->cpages, npages);
+
++	/* Exercise pagemap on a PMD device-private entry. */
++	ret = hmm_read_self_pagemap(buffer->ptr, npages, self->page_size);
++	ASSERT_EQ(ret, 0);
++
+ 	/* Check what the device read. */
+ 	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
+ 		ASSERT_EQ(ptr[i], i);
+
+
+Therefore, remove the stale migration-only assertion.
+
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+Applies on mm-unstable (404fb4f38e8f).
+
+ fs/proc/task_mmu.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 1e3a15bf46f4e..58938e62154d9 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -2129,7 +2129,6 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
+ 			flags |= PM_SOFT_DIRTY;
+ 		if (pmd_swp_uffd_wp(pmd))
+ 			flags |= PM_UFFD_WP;
+-		VM_WARN_ON_ONCE(!pmd_is_migration_entry(pmd));
+ 		page = softleaf_to_page(entry);
+ 	}
+ 
+-- 
+2.43.0
 
 
