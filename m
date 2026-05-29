@@ -4,97 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3417CD5BD2
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 05:55:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B571CD6E45
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 05:57:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1D1E6B0005; Fri, 29 May 2026 01:55:49 -0400 (EDT)
+	id 758306B0005; Fri, 29 May 2026 01:57:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECDAC6B0088; Fri, 29 May 2026 01:55:49 -0400 (EDT)
+	id 72F456B0088; Fri, 29 May 2026 01:57:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBC3A6B008A; Fri, 29 May 2026 01:55:49 -0400 (EDT)
+	id 645936B008A; Fri, 29 May 2026 01:57:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C44FF6B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:55:49 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 676E3A11AB
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:55:49 +0000 (UTC)
-X-FDA: 84819396018.02.FD9FC51
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf15.hostedemail.com (Postfix) with ESMTP id ADD40A0002
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:55:46 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="DPLfV/RT";
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780034147; a=rsa-sha256;
-	cv=none;
-	b=rcc/ROCsg2ZKdKDPKNTsrn1/o4bWge9QyEg6YBvw1OAXRZ0XalssE/dHIaZrHWhak9U2PC
-	35WF1+jA0PTtQKt+TFO1ehjZponZYltDliFeNEBt5GC4KWyBhzZQ0tZo2TzziHGRn/0eOH
-	2vsZU6c21a0ozmefFDwhyifx44Moij4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="DPLfV/RT";
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5443A6B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:57:14 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E246640DED
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:57:13 +0000 (UTC)
+X-FDA: 84819399546.10.1BA66CB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0DEC14000E
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:57:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Fgqx2Y8R;
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780034147;
+	s=arc-20220608; t=1780034232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=1duF9vl2eNSzsTCC+gJjq1qmoJk6njlhRLK2k1VsfWg=;
-	b=v3q5L7fZvVvj/Zd9BVJLe89fDnDwlH8dlHcvNV0UQ//dfG999LbGxTQzIurOUKgfG0E4Ql
-	xl0elsRrIlIeV6tLU6r10HBzj4/sQMHS1Ar/FoaKdZBeFgAdMtRooAm+UTbO8fU1TnDuQ0
-	uFozRxPhVQqDF2M+JVRv2vGd9f2bIFE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780034147; x=1811570147;
-  h=date:from:to:cc:subject:message-id;
-  bh=JK0LUCE0peVgGY8IO/ARXuwtHxegxsrHg0YpZIXyQFA=;
-  b=DPLfV/RTmlTDgZM7kqUhQtgbe51EMOLupZOiMOdY5MbpjIklNEzxI/i3
-   xkUkg8/HEZV5q4Y96P6ZInqhUAsz+2ilG9CGsXBMpy744C2cHkZVT5qIL
-   ZmV1uOiUBpNUCfogx/O0fDHEouzPeOCyX1fEItJp6QcyEslGtHbz9yH7x
-   cXas65Lf2ovbwO+whavfBCntPtWELNah2MXbleXmm0bo5VbM+Qh4pxtLJ
-   grPv67lHAz18okjxoP8i7tbnYb4UNdLhJs9i7kUogXne2KN5xtkXrHiaz
-   f59CGEicVAmapx6FCiOog1V6beSdeSAaSG7tEeFBwk03j6hc5j1hSXxjd
-   w==;
-X-CSE-ConnectionGUID: Y7i20hPkToeT0OyaucYOJQ==
-X-CSE-MsgGUID: vEKq4FXyROeA8Z96M3XaDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80996012"
-X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
-   d="scan'208";a="80996012"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 22:55:45 -0700
-X-CSE-ConnectionGUID: bA5KttrAQuWQN4a6VpMJBQ==
-X-CSE-MsgGUID: Mlps386ZT8mJxptYAnZEiA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
-   d="scan'208";a="246767638"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 28 May 2026 22:55:43 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wSqC4-000000006oc-2DgV;
-	Fri, 29 May 2026 05:55:40 +0000
-Date: Fri, 29 May 2026 13:55:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kairui Song <kasong@tencent.com>
-Cc: oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 8522/9137] mm/memcontrol-v1.c:651:31:
- error: implicit declaration of function 'swp_cluster_offset'
-Message-ID: <202605291334.abNeADbG-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bikGWbo7Z8u+Y86zGUnLKB2GE1vzG3CgAboXfzOGk8Q=;
+	b=PoLh6PudS0BjE3n1O0oX8JRA/sl+m/hxYDVJ62R5jWpkJmvGh4A8/MkyjLKYY1Xi7AKKgQ
+	a2iVNZCZQnk2R76Eunz5MDvMKqM8F0JTtUEwliTdPEsNU7agQEbok9tRJrzVSjOdOTBBQ9
+	V857N3kYTx8JFbtY9sjgmXpVxQVIfhg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Fgqx2Y8R;
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780034232; a=rsa-sha256;
+	cv=none;
+	b=efXLesxgvjEQB485ogNcy+LJF41hoyS/+Ec6zt4VEIRLJuGw+hZzeQkvCvzHuwQy2qZRpv
+	RY8zMRXxu8lBsn9g70NGipnUP3gMjB6olYr1phGdHpunJx8X0WrZlOLs3neN/aww1PNqEO
+	SgMQkkbwtkf6N88TQ+oMkBXbdSCHRXQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC81C20E3;
+	Thu, 28 May 2026 22:57:05 -0700 (PDT)
+Received: from [10.164.19.8] (unknown [10.164.19.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 08C023F7B4;
+	Thu, 28 May 2026 22:57:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780034230; bh=xtznZdFjBfsx+x5Ya5ydKOlmG98EyGoHWLUMAFrCTzA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Fgqx2Y8RR687yU7zdX7ZpAqBz6WeA7sNuW3FzjxAGEN1Z7gVhSnzL5ZXasdq2mGvp
+	 905qzto8FzndnoeDZUaU/fLkjBxjXTkaV4N86n9HCvGjJVkq4Ksnd7IOMxL6ZT9FeW
+	 9GMisM4bQxSR4tTSRIe40iHkFT2ePhj7hn4oYxlg=
+Message-ID: <176c83fb-edf0-47b3-9823-21a92ea8b4c7@arm.com>
+Date: Fri, 29 May 2026 11:27:02 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/6] mm/vmalloc: map contiguous pages in batches for
+ vmap() if possible
+To: Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
+ urezki@gmail.com, baohua@kernel.org, Xueyuan.chen21@gmail.com,
+ rppt@kernel.org, david@kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, ajd@linux.ibm.com, linux-kernel@vger.kernel.org,
+ jiangwen6@xiaomi.com
+References: <20260522053146.83209-1-jiangwenxiaomi@gmail.com>
+ <20260522053146.83209-6-jiangwenxiaomi@gmail.com>
+ <340c811e-2501-46c3-8a55-19e955c5ae8a@arm.com>
+ <CAHKocdHOT13DHdz+DsT2BaP0EJSKdoWU2NO-wjFwB9+--CqsHw@mail.gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <CAHKocdHOT13DHdz+DsT2BaP0EJSKdoWU2NO-wjFwB9+--CqsHw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: efc6ztb57bw3dfkog9eio4zq4fsofky6
+X-Rspamd-Queue-Id: 0DEC14000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: ADD40A0002
-X-Stat-Signature: o8jzc1tzdruz9tpjyqtboa8exxugq1u1
-X-HE-Tag: 1780034146-696528
-X-HE-Meta: U2FsdGVkX19k/Pnfj5lIgptXV1csbW1IQlyccULOIox9KxZyFobrp8RrbUt/9eEr4uNVeVTrt1u4GzPP9gTg5p4a2h9bkKMk6VD1NSHNxLtFlXV5a1bLre8u6IOSGnpxBuUdM8JFWr+DqOhG8yirqzXBV45pEQ0/4sIGXJoCOOM19PiEHACbjzVuXsMc0HmAgE59uI4bAG839Wtf0AvKC63RqjkUmv42jriubIwEb087boYFAgguUh7/18Lq+rwWZV2p01vGs7e+5sGmMTtxD7SNyVDGFVOWZE3TiwP8A+5/EA4O7MgDyVsk7ptB0FaT9kgSBcE8yL1pLY0ZWAq5aUbMMDNKO1leoA8nYTZuSnaUEmhAoExJTf1MIs59UE9Y8nulZ7FA12uYl+NcAgw1+pL7iKaRjuHvra1QgY3vFAFpTqHwi80XvbsOkkS2Zn0B7VJki25ebGncX3Tv0txTrF/MPbATUYACBEcVhiZxEe53o3ta0/fOEI+U6fhOpg8dMZuk2hw9ruTMZr3JmfsIe5OSo7knMMNGSGSNbRNjPF02KZ3y3+UWgSG6efRc1EriHVp0EUgCeyImrRiPcyP3ckmEOndlzwefpmE974PVqwbpYPCdGU96Qmt05xaD8+WLFUAMKmzkfOw9ftJhg1JSL35r6Uii3YyNVJR4SBbX9IWERvmCh1rwaCd36oZaLBy3Eo05E0jMKUY/qYJsLKd/J8TTXwvZ/UnDDWZkDm8XTg9WFb0ZNXNEdfI8N0L/orbTUlKbGpub27rmYX5Uj2jsAYqtUrgiuEs6XLfhkTkd75wh3pA/K0PG9dtcgtffjOrVfOf9N3tszlEypnmbgv2q4GRCEBMT3cWZ3ZX+xHlip8G/zXBViJD1IsdGBbJMHoj38hU+XGztoX+qo68LS8H3KaPcnoQdP0TPl1Mxwmo7NenaRFhC+hlmZeyKbo9HzCNnT+sioWITWapN+UST+Xq
- bo/5wfQQ
- up8tVg9NDC9BI61Gb1MRKdEiXkOSxd4rGh2L0wVD7WDed+G7gEewqBY2s7eMH/Ftw7n39J2w7HA6RP/niGQ89LpwT2kTOtn507A7XuLLd+CUk98CBe6k3ZxnvdvEgQP0q1+ncxusCxYKLMuLAf984jSP2GjQ0c052wdFPrirT1nPUAfSGbBuEIc+XHTEHL2uaWdEEynGMsSfJ4xYMq0RbvyU3wl/AOmIs1zQvY1qkYZOCw3HWzUMwNYTFGK3Af9nsXRKZTA6ZGVYWXUrr7JglomnrCLTbGhyFQbwL
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780034231-303936
+X-HE-Meta: U2FsdGVkX19kF7lR+DG4GDdo5Gge2dULfKkztEDz7aIDiHucRz7NWwzpXzB8uaRZNVyDomxvMzmd758tIG5tRyxQ3IzRwSkgzjrEWIPfLI5nDVvysi0qQhRY5vaKWWB4leEYdihMcms6xA4s4cUIcPzU7QRqSE8J2shwaRCNqgkkJ/FOArSA1OYjFSpLtu8Z+vwmT+RwF9JNIfZUSbRbY9qnDDkVVliybEtttQwXTKnMddXmQ+aVViVH65IODqNzqKBQbc46q/eYMTfyHjDCONkVaLdQs2rC9hRtSokNfI/OWMjlNnUyud5VgB8dd4l+yacRGpPJTGV3g6NJ7IGYDR9FU0UxFo6uXO4Vl1lrkew2Ngbi+pKb9ST8oZuHUw+wOcAEsmy5SzoS3Oq70R14zNiIT/o79TKBCj32Q0TFlx9RptbTcGownEXZaVHslreomu6zCXZS80Ocv+Zx42uAZMe+3bh6d3KW1LDESqrmbO+sz5t83FYoQUbnDRi6AyqiQ23q0PQwiYSDFMEP+oqdG3K2uk+sSnnbgxh3L8gY31/W0JUVrXO/HbezbWYI1hbavSVzCM9ifua/y3hMnIiPNeKCsaQruNap0i7qYEDgjU4EweUOXUFvBv82YkEmL9dvpdk5KnDw02CQ0OrN/Wy2wceWYhxByckLazYM06FADKHy6pT5XmTIal5hcY6XerijAArimB2kEv903CQ56T5ibN+F9DNf438kPnikN8N65EqfKccYK4Kzo5ASKkZ6Ar0Oit/TcjeySpwl3gLzWH4ALxWsxCNDxYODBQbY+3hys/hogXImjU5v8fg+50b0Vqv4i1cJQdvraoE3bK7b9MYNaMqgn8pgxI2lommQNxe1Vsyhj0zRPGcapzS4O2bBK7Ee0IrtmuVbi/j6qm0r5qh4YLnFO8K0ibsxV+UNJk8fVZHVNTBHTZl2XyVo+xxYxfEedca7mDM5SwpQnu8WrOc
+ ccdF4SlP
+ F0dapxUrtpbB2+BRpHgzvGMvuTcHHa3MYkXEa2ghNW1UQq4v6IoWiZK1gzhbSIB9/6QNo/6kS1wPbLPAfmJzr32YgLCK3nwMbEDaejT18pUOJOv8iMXCO8cLh06f9Lhpv3xxUzTld2xIIb1GzaGWsRNL6LHyq3Yu1FhRh4GtcQvpcTCoMdulSSpHzS/f8fBYZqqEEtFQ+rsVeh0mbFKxDSg/B5hht8fA2zHNhfVGV3ZDMSLMSFlDpvuynOAqQrbEYc1YxosUbAzFIFHSKRCyvWy4OxDUaNpFHcU+2sRQ5BOrq8ya/4rAZY2LxFS7ToSsNLq+5RmWSOM5l5YVhO2tKV6ALQ4JrZWtu40v/Uxez31twK21lqbNDs0wSlfv27JKlHdxETwRt/MU2o/DNp5NjECY8XZ2TzOTC7oB2bVRpIsClHIQUm8G6wqcwDTnVUASCOKftzXvaxaTW2tA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,105 +98,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   f7af91adc230aa99e23330ecf85bc9badd9780ad
-commit: 93680c2b51fa1f84fe50800b71140dbd283372b8 [8522/9137] mm/memcg, swap: store cgroup id in cluster table directly
-config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20260529/202605291334.abNeADbG-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260529/202605291334.abNeADbG-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605291334.abNeADbG-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   mm/memcontrol-v1.c: In function '__memcg1_swapout':
->> mm/memcontrol-v1.c:651:31: error: implicit declaration of function 'swp_cluster_offset' [-Wimplicit-function-declaration]
-     651 |         __swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries,
-         |                               ^~~~~~~~~~~~~~~~~~
 
 
-vim +/swp_cluster_offset +651 mm/memcontrol-v1.c
+On 28/05/26 9:12 am, Wen Jiang wrote:
+> On Wed, 27 May 2026 at 16:28, Dev Jain <dev.jain@arm.com> wrote:
+>>
+>>
+>>
+>> On 22/05/26 11:01 am, Wen Jiang wrote:
+>>> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+>>>
+>>> In many cases, the pages passed to vmap() may include high-order
+>>> pages. For example, the systemheap often allocates pages in descending
+>>> order: order 8, then 4, then 0. Currently, vmap() iterates over every
+>>> page individually—even pages inside a high-order block are handled
+>>> one by one.
+>>>
+>>> This patch detects physically contiguous pages (regardless of whether
+>>> they are compound or non-compound) by scanning with
+>>> num_pages_contiguous(), and maps them as a single contiguous block
+>>> whenever possible. The first page's pfn must be aligned to the
+>>> mapping order for the batched mapping to be used.
+>>>
+>>> Pages with the same page_shift are coalesced and mapped via
+>>> vmap_pages_range_noflush_walk() to avoid page table rewalk.
+>>>
+>>> As users typically allocate memory in descending orders (e.g.
+>>> 8 → 4 → 0), once an order-0 page is encountered, we stop scanning
+>>> for contiguous pages since subsequent pages are likely order-0 as well.
+>>>
+>>> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+>>> Co-developed-by: Dev Jain <dev.jain@arm.com>
+>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+>>> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+>>> ---
+>>>  mm/vmalloc.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+>>>  1 file changed, 80 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>>> index deb764abc0571..50642246f4d40 100644
+>>> --- a/mm/vmalloc.c
+>>> +++ b/mm/vmalloc.c
+>>> @@ -3542,6 +3542,84 @@ void vunmap(const void *addr)
+>>>  }
+>>>  EXPORT_SYMBOL(vunmap);
+>>>
+>>> +static inline int get_vmap_batch_order(struct page **pages,
+>>> +             unsigned int max_steps, unsigned int idx)
+>>> +{
+>>> +     unsigned int nr_contig;
+>>> +     int order;
+>>> +
+>>> +     if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP) ||
+>>> +                     ioremap_max_page_shift == PAGE_SHIFT)
+>>
+>>
+>> Why bail out on ioremap_max_page_shift == PAGE_SHIFT? The code
+>> path for ioremap is different from vmap right?
+>>
+>>
+> 
+> ioremap_max_page_shift is under CONFIG_HAVE_ARCH_HUGE_VMAP which
+> controls both ioremap and vmap huge mappings.
 
-   606	
-   607	/**
-   608	 * __memcg1_swapout - transfer a memsw charge to swap
-   609	 * @folio: folio whose memsw charge to transfer
-   610	 * @ci: the locked swap cluster holding the swap entries
-   611	 *
-   612	 * Transfer the memsw charge of @folio to the swap entry stored in
-   613	 * folio->swap.
-   614	 *
-   615	 * Context: folio must be isolated, unmapped, locked and is just about to
-   616	 * be freed, and caller must disable IRQs and hold the swap cluster lock.
-   617	 */
-   618	void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
-   619	{
-   620		struct mem_cgroup *memcg, *swap_memcg;
-   621		struct obj_cgroup *objcg;
-   622		unsigned int nr_entries;
-   623	
-   624		VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
-   625		VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-   626		VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
-   627		VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
-   628	
-   629		if (mem_cgroup_disabled())
-   630			return;
-   631	
-   632		if (!do_memsw_account())
-   633			return;
-   634	
-   635		objcg = folio_objcg(folio);
-   636		VM_WARN_ON_ONCE_FOLIO(!objcg, folio);
-   637		if (!objcg)
-   638			return;
-   639	
-   640		rcu_read_lock();
-   641		memcg = obj_cgroup_memcg(objcg);
-   642		/*
-   643		 * In case the memcg owning these pages has been offlined and doesn't
-   644		 * have an ID allocated to it anymore, charge the closest online
-   645		 * ancestor for the swap instead and transfer the memory+swap charge.
-   646		 */
-   647		nr_entries = folio_nr_pages(folio);
-   648		swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
-   649		mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
-   650	
- > 651		__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries,
-   652				  mem_cgroup_private_id(swap_memcg));
-   653	
-   654		folio_unqueue_deferred_split(folio);
-   655		folio->memcg_data = 0;
-   656	
-   657		if (!obj_cgroup_is_root(objcg))
-   658			page_counter_uncharge(&memcg->memory, nr_entries);
-   659	
-   660		if (memcg != swap_memcg) {
-   661			if (!mem_cgroup_is_root(swap_memcg))
-   662				page_counter_charge(&swap_memcg->memsw, nr_entries);
-   663			page_counter_uncharge(&memcg->memsw, nr_entries);
-   664		}
-   665	
-   666		/*
-   667		 * The caller must hold the swap cluster lock with IRQ off. It is
-   668		 * important here to have the interrupts disabled because it is the
-   669		 * only synchronisation we have for updating the per-CPU variables.
-   670		 */
-   671		preempt_disable_nested();
-   672		VM_WARN_ON_IRQS_ENABLED();
-   673		memcg1_charge_statistics(memcg, -folio_nr_pages(folio));
-   674		preempt_enable_nested();
-   675		memcg1_check_events(memcg, folio_nid(folio));
-   676	
-   677		rcu_read_unlock();
-   678		obj_cgroup_put(objcg);
-   679	}
-   680	
+I don't get it. So with this patch if nohugeiomap is passed on kernel
+cmdline, then vmap-huge is also disabled. That does not sound correct.
+Currently ioremap_max_page_shift does not play at all with the normal
+vmap code path. It is only involved in ioremap_page_range().
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+> 
+>>> +             return 0;
+>>> +
+>>> +     nr_contig = num_pages_contiguous(&pages[idx], max_steps);
+>>> +     if (nr_contig < 2)
+>>> +             return 0;
+>>> +
+>>> +     order = fls(nr_contig) - 1;
+>>> +
+>>> +     if (arch_vmap_pte_supported_shift(PAGE_SIZE << order) == PAGE_SHIFT)
+>>> +             return 0;
+
+Also, for arches where this function does not do anything special
+(i.e return PAGE_SHIFT), we will effectively not do any huge mappings
+for them.
+
+
+>>> +
+>>> +     /* Ensure the first page's pfn is aligned to the order */
+>>> +     if (!IS_ALIGNED(page_to_pfn(pages[idx]), 1 << order))
+>>> +             return 0;
+
+This condition is a bit fragile. It may happen that we have, say 2^8
+contigous pages, but they are aligned to only 2^4. We are operating
+on a page array and have no idea if the caller has passed some
+random subrange of the array.
+
+I think the purpose of these checks is this - to do an early bailout
+if arch does not support huge mappings, or the alignment is not correct,
+instead of finding this out very deep into vmap_pages_range_noflush_walk.
+
+So you could do something like (completely untested and may miss some edge cases):
+
+order = ilog2(nr_contig);
+
+order = min(order, __ffs(page_to_pfn(pages[idx])));
+
+order = vm_shift(PAGE_SIZE << order) - PAGE_SHIFT;
+
+Where vm_shift() is the helper I had used in my patch.
+
+>>> +
+>>> +     return order;
+>>> +}
+>>> +
+>>> +static int vmap_batched(unsigned long addr, unsigned long end,
+>>> +             pgprot_t prot, struct page **pages)
+>>> +{
+>>> +     unsigned int count = (end - addr) >> PAGE_SHIFT;
+>>> +     unsigned int prev_shift = 0, idx = 0;
+>>> +     unsigned long start = addr, map_addr = addr;
+>>> +     int err;
+>>> +
+>>> +     err = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
+>>> +                                             PAGE_SHIFT, GFP_KERNEL);
+>>> +     if (err)
+>>> +             goto out;
+>>> +
+>>> +     for (unsigned int i = 0; i < count; ) {
+>>> +             unsigned int shift = PAGE_SHIFT +
+>>> +                     get_vmap_batch_order(pages, count - i, i);
+>>> +
+>>> +             if (!i)
+>>> +                     prev_shift = shift;
+>>> +
+>>> +             if (shift != prev_shift) {
+>>> +                     err = vmap_pages_range_noflush_walk(map_addr, addr,
+>>
+>> It would be worth documenting vmap_pages_range_noflush_walk() that
+>> it can take an array of pages which are not all contiguous, but it
+>> may have contiguous chunks, as hinted by page_shift.
+>>
+>> Otherwise this looks good.
+>>
+>>> +                                     prot, pages + idx,
+>>> +                                     min(prev_shift, PMD_SHIFT));
+>>> +                     if (err)
+>>> +                             goto out;
+>>> +                     prev_shift = shift;
+>>> +                     map_addr = addr;
+>>> +                     idx = i;
+>>> +             }
+>>> +
+>>> +             /*
+>>> +              * Once small pages are encountered, the remaining pages
+>>> +              * are likely small as well.
+>>> +              */
+>>> +             if (shift == PAGE_SHIFT)
+>>> +                     break;
+>>> +
+>>> +             addr += 1UL << shift;
+>>> +             i += 1U << (shift - PAGE_SHIFT);
+>>> +     }
+>>> +
+>>> +     /* Remaining */
+>>> +     if (map_addr < end)
+>>> +             err = vmap_pages_range_noflush_walk(map_addr, end,
+>>> +                             prot, pages + idx, min(prev_shift, PMD_SHIFT));
+>>> +
+>>> +out:
+>>> +     flush_cache_vmap(start, end);
+>>> +     return err;
+>>> +}
+>>> +
+>>>  /**
+>>>   * vmap - map an array of pages into virtually contiguous space
+>>>   * @pages: array of page pointers
+>>> @@ -3585,8 +3663,8 @@ void *vmap(struct page **pages, unsigned int count,
+>>>               return NULL;
+>>>
+>>>       addr = (unsigned long)area->addr;
+>>> -     if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
+>>> -                             pages, PAGE_SHIFT) < 0) {
+>>> +     if (vmap_batched(addr, addr + size, pgprot_nx(prot),
+>>> +                             pages) < 0) {
+>>>               vunmap(area->addr);
+>>>               return NULL;
+>>>       }
+>>
+
 
