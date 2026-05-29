@@ -4,100 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADCE4CD6E45
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 06:07:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 547C6CD6E45
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 06:16:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C08D6B008A; Fri, 29 May 2026 02:07:08 -0400 (EDT)
+	id 6FF2B6B0005; Fri, 29 May 2026 02:16:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 171CA6B008C; Fri, 29 May 2026 02:07:08 -0400 (EDT)
+	id 6B0146B0088; Fri, 29 May 2026 02:16:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 087ED6B0092; Fri, 29 May 2026 02:07:08 -0400 (EDT)
+	id 59EE86B008A; Fri, 29 May 2026 02:16:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EEE7E6B008A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 02:07:07 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 945A2121063
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:07:07 +0000 (UTC)
-X-FDA: 84819424494.01.3184B53
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A800118000A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:07:05 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 45F266B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 02:16:24 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E8A3B9B67A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:16:23 +0000 (UTC)
+X-FDA: 84819447846.14.EAF3E9E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C007B180006
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 06:16:21 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=SkU6pnDJ;
-	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Qfb4o4xO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=55Xr3bsa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Qfb4o4xO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=55Xr3bsa;
+	spf=pass (imf24.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780034825;
+	s=arc-20220608; t=1780035381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M9obVAHQrw+ENpLNs1uO9YRPt2EFA0yXLwmKqvF5fn8=;
-	b=TuKk61yUDUL0bIryfF+qwkSiC9WC2NeYfBOAMluB9H9iiDdnpysuGYaDHvpxRc1ocwXwSL
-	lS7xo+vlMULB6EHspNH4ydhlxskKHgc02Nk1oYhajsmSAZWMtgjx2lWh+MYcpLMfeiVOYW
-	oUNFiMRhW/FC7VLASVYOUR6mrBkyB1w=
+	bh=2AoKt5jawG2SYWcB6lrzc86SNhTgrdb3Hl77qm/udGg=;
+	b=TKJp8ZeWDaqdaaj7xF8sk3wUzZroW+BBgz5FLvyUSHLAqI11TcsfcPXZEQo3gQ8miGjjXj
+	ooNwH4+tbnn9vdR29C7VfdboqAALdIWxW5cPGFqzGPvaxSM/2sr6QZ4O3Om2Or7WwYpzp3
+	7SZxhNMjtQw7tW86Jlk2Z5k8zwydJTo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780035381; a=rsa-sha256;
+	cv=none;
+	b=Ts5XXITSaN1ckUfm1/i+oGgW+50nIDIzzO8Tzhhd9rJvEbzbmWG/FhxIVoSOZW7TheZG0q
+	z1b8Z+6PCxKO7wry1TWIQKLIqN9Nfc4s4PhUvvi0hyAllcOLHic4o8/YC7G5VOjEUzFNJ8
+	fRSf2QfBqfSgtFPLs1RzSHfymd6UNs4=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=SkU6pnDJ;
-	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780034825; a=rsa-sha256;
-	cv=none;
-	b=Qdmx/Iyof7Lm1VOb6Nl2hollSOGxn0yeqHgzQrk8JUOiyfi7JXGBl5QZLU+NGIxUHdz95T
-	6bzYs9Eo+9pMPdvl4woCEsS34IJn8D9ie8dF7VpsCOEz0nGhkCTk6hjtozey6d/666ExoY
-	/nKSl+r87i15wbFywBHjv5EKd4qLbuo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F4D42103;
-	Thu, 28 May 2026 23:06:59 -0700 (PDT)
-Received: from [10.164.19.8] (unknown [10.164.19.8])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 64EFC3F632;
-	Thu, 28 May 2026 23:06:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780034824; bh=j1QJ/JmF3RS+ozhNYH5F0EegwZ0H7PPlXq/gF5R0ts8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SkU6pnDJjmyiq7jNIHs/4qjwq4joS6Tv4B4sKtWqsFNbqhAWZOAr7vvM6LdOyv2pu
-	 G6IotSJ1X+DveHH0bhwTU6BC6wRX4wLL1CdEZI/7Ieq+SVSSeqEYZGJElKJAC72i3I
-	 DeY2Ugfk/8/NJ+9Tyfsn3yfkI6UhlMMozIVbzpeE=
-Message-ID: <403181bc-eab0-4f4a-b986-dab1d8c49bf3@arm.com>
-Date: Fri, 29 May 2026 11:36:53 +0530
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Qfb4o4xO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=55Xr3bsa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Qfb4o4xO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=55Xr3bsa;
+	spf=pass (imf24.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 37B4267235;
+	Fri, 29 May 2026 06:16:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780035380; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2AoKt5jawG2SYWcB6lrzc86SNhTgrdb3Hl77qm/udGg=;
+	b=Qfb4o4xO+07ViaKys2o47r7MyhBBn7VCldgc9aQMA42RDxzWNTpNhgKGMNEgnYu8lXaIdo
+	YGegcOh6sqXcjlRR/2FPXVCtdmJyS50aFeGNBATUIr78i4YycGZMuUnTX8Cf4IkTAA7/e7
+	fcgvXf4f6pnlidprw+PAtvlYWhOAO2g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780035380;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2AoKt5jawG2SYWcB6lrzc86SNhTgrdb3Hl77qm/udGg=;
+	b=55Xr3bsauaj3J+QpR1BRYMOqu6SWpjBvG17MEHVnmQEd6/NwhnVm19X4Em4G9FdR9o2rGj
+	PNd6mlV+kKrMNqBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780035380; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2AoKt5jawG2SYWcB6lrzc86SNhTgrdb3Hl77qm/udGg=;
+	b=Qfb4o4xO+07ViaKys2o47r7MyhBBn7VCldgc9aQMA42RDxzWNTpNhgKGMNEgnYu8lXaIdo
+	YGegcOh6sqXcjlRR/2FPXVCtdmJyS50aFeGNBATUIr78i4YycGZMuUnTX8Cf4IkTAA7/e7
+	fcgvXf4f6pnlidprw+PAtvlYWhOAO2g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780035380;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2AoKt5jawG2SYWcB6lrzc86SNhTgrdb3Hl77qm/udGg=;
+	b=55Xr3bsauaj3J+QpR1BRYMOqu6SWpjBvG17MEHVnmQEd6/NwhnVm19X4Em4G9FdR9o2rGj
+	PNd6mlV+kKrMNqBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F097D5B1C4;
+	Fri, 29 May 2026 06:16:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gzPiODMvGWpfEwAAD6G6ig
+	(envelope-from <hare@suse.de>); Fri, 29 May 2026 06:16:19 +0000
+Message-ID: <36673080-f216-4c85-a9f6-ad9395dbd56e@suse.de>
+Date: Fri, 29 May 2026 08:16:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/5] selftests/mm: separate GUP microbenchmarking from
- functional testing
-To: Sarthak Sharma <sarthak.sharma@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260527142432.230127-1-sarthak.sharma@arm.com>
- <20260527114752.cf4dd3e1bda93fb8ebab5a76@linux-foundation.org>
- <3b4176f4-e099-490c-a5e2-6a36d00b1207@arm.com>
+Subject: Re: [PATCH v2 1/2] block: Add bvec_folio()
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ io-uring@vger.kernel.org, linux-mm@kvack.org,
+ Leon Romanovsky <leon@kernel.org>, Christoph Hellwig <hch@infradead.org>
+References: <20260528175905.1102280-1-willy@infradead.org>
+ <20260528175905.1102280-2-willy@infradead.org>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <3b4176f4-e099-490c-a5e2-6a36d00b1207@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qdcdbq7kdiqsm87ussgqzrs3ber7n359
-X-Rspamd-Queue-Id: A800118000A
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20260528175905.1102280-2-willy@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780034825-737006
-X-HE-Meta: U2FsdGVkX19jTILgbHZjRb/ZoXqj9+ySVEVgVU0qLeIt6AGYoo4xFOvW5AbaoYqhtjVuT2FhLYT9snD5ziZNo8HuvlaEwNqJMs06UON1PZj897rDYYcOL5soNvkmrWVwc0BhxRzA9UHQy/ewDIa2zg99zXJ/eBoW0kata4SOlivMF+iMFZROnmvYfv3gRSWq84EenrlD0R1Dg6cIRp6O1QfXbqIZj4yKyS74cyk5OSA9s8yZpRCdp5rolGIjVilJgXj8DPi8h8LPrs6DGaXpY217KolEn6DENeLfZlUVJ7+caTbc4NN1Irp93vbt3ubL1v/vCxvW1QsUwI6wmdqfhuDOUbTOBA7dN/xiY/a8tO92cwZ614asRUsOQBfVNl6Pzfwhc9D5BmhpJC4bIj49QLXXxVBtWD/KHPtRXWjHRadvDfZ20QF8RI0g4ivQyUGFwGnmoA1owfTBYXwjm4L6zIP1ebS2snTrKsuwwyzm7L/9VCjjGq7JeucXGQZjv9IWJoMgFukMfbpOZ1mWxBEM2+Rcum3DR2JuBf2wY6u4pWjTLWgeIb1M6yeP+z/oVayEXJJo+Kt2n9jvhyyGgR1dyz5vQdtKPwfC/1+C4jRBwL9y57HUU0LjxhxiW1vFmRx2LpP/L0wyaEXlu1r9N0KM7E/oRGIgskd/FAakE7xjwNYVZsam+ldkE2qWBhh+0Q4Lye4d1jaMeyCVbswOJGqlgNYtQPFenyzk+6gjou//hGllt86xylAxhL1TB/LhgF8BN08Du77CesgAkP5FDaaGzGrGmk8pxAJrEtVC2DywM4wJ0vRnPHPhzBnp8lVfaD3bgj2nfncmOu+4XlrdAgI4RuaRfal2ey8k74qglw0ybCe3NGUZ0TIL80FIswFRgwm1P1oBI/hZ3bCSi/8999r49wVO0SMdSo6B2nMusadl7lcxY6on5CRpC1XIrQrAKcOQU0FoE5ld0s9NkNsf6lx
- 4Ih08CVY
- 856eTHWtgHT+KTSiwI0TawdxVWw9oG5SauXmr9LSz8uj2fGR0x+xuZ0u180t8tZkA+3yKp5HBiBM20DP34ekDzgnLC1Bs4RpnuG35TJRZ8WFynE7Z2PLBf1W6tz57wK4y6jQqoYAvJPf44igr7L4uwPWuh4SCUF9YmIVqwfc5caNXejHoaBFxE+Nsni8a7OtwgwEoLytTUXLzjfspDcDtA9MjWSVC/3EciDmrk3H1CIg7eJekzsW+rp73zhYKFeYbiO6IIx+8eHBOvuzP0z/1s0eUK9LEVLea1M+3VmIzzMyxUOXBxNkzUe0eIF/oDbnPExex/dV3ON9SuQLdoEuW/Gq9/mZ675IUJRB1
+X-Rspamd-Queue-Id: C007B180006
+X-Stat-Signature: ytgjrep78miumd5r36mk36i34ifuez8t
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1780035381-195458
+X-HE-Meta: U2FsdGVkX1/63QmCF7CovBb93Fx9Zr4fxigbjkyNUkhXHVeOzVxgkLlCmZmu5qUPva42ZljbLOzbm6cbIOxa4aS48IOYfqeFP3QMycAdOROGogyTrT/tgLw3HDNwUtbFz6X69tYtxpPerqi48sV7ArSV6YC6DBwWiTwCSYvIN+RYE9mUwueWwe8xJOQ4lAfUpvbeEIjb+5Rd5npx4Wap5tvKvYcPlp1wYCP+2OtUc4b2l0d4a/4jdMy30/kPcqow1/KdKi3GeObH0dXvHOyzI23p86HvZZ4R+DGscqIIPyVVSAruf4fkQ1Tlx5kLm4RuLVnxw3H65+3Ul7qFgHMvbU1WqgiiAv4n5AuisMtki8HssP4Xi1cdCpKKST4yrAmgMaWFoXn5VagjEiGZJFAlaz9Mh5+7L2lY8ysggQe0G15AlIEkPy997GSBCJiHxoezr4PJs0M273Cv+0Y2oUPTzc7lUGHmCcRrUMLOySFRY1kwrft8ix04jlzeTUL+SRMgcIH3W1/AunWTjtIu+LeLVWTele7kcsnBTkdd6khzM5P+Jhm+imueCI/PWQwwtCHmS6fLBh/mpGBOjjPy3wOZ5y9bhoXSO8/oS+JifmfQ3lTpQB2wKUcStUxy9qPMyw+GpYBm3K+ifZeRUQo2th36CrH1MQLm/H5g+2I76gkT5I1Q+aAvBhxO9EVizWM1KWSOY61sDo/n4q/yDY3m9IrFQhpRUmPck31WBvAHSdaK/5uw9lL3exiphgTeBGRR5engx/lRw4YM+NQRFZflTb0/q5VPHnTNyxgPaik4AvHusCMcZwcWiGLpSDO/VXUA9jTBa4UcE/+CHeiE/eFPCPpIl9P+f+QnxF5pN++2UM8F4SJWYN2sQkUFDZyiGXoSxsHJuw/gHxQ1N/aqZ6sQ5CmYNUn1HtS+evHefCqTdonVkHVL+z4JiPH0AdHJoCzWr92FWQnPkQgRkjReKExMpFj
+ UAygx6Mh
+ c9kqbSn1+UvLd3EL+6CzrKHa/T8Uhto+OqVUHx6IS9A5T7BnhvGAejMvgmFaWTK4NcAwelsRJ2T4WiCyEOQ12+8n0B3MLTxTOc8W7i/STChooFvSb7b8wq0/M80xMOqbEEacwlXKcR+D93GbqB+xr0zg/57v2DiO9ORnzlxKRxg/igQx4QOI8JrW8nxMZdO/9dxGr6HQtQfhJzf3T1QqGWJWDRGKwtZpEjF2kjbTG3CExDUJS6Q8uWb/wx8FUBFMD8SOC6PW4uGLnaa6Pfklkl+3wBpSz8QFdip5+ifzV7UnsbTuPAf6fuZV9MaWscInHbDd4hIrnjTD4yVGs5fcdOEikDuZ88/TjvmXTtthPAJ5SA9nNiGvzsYovU1VAU0P829jzQTkAnIUSfZbJD5v95Oz06fqBjGks9jLzAFmLNz1HA/w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,53 +139,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 29/05/26 11:27 am, Sarthak Sharma wrote:
-> Hi Andrew!
+On 5/28/26 19:59, Matthew Wilcox (Oracle) wrote:
+> This is a simple helper which replaces page_folio(bvec->bv_page).
+> Minor improvement in readability, but the real motivation is to reduce
+> the number of references to bvec->bv_page so that it can be changed
+> with less work.
 > 
-> On 5/28/26 12:17 AM, Andrew Morton wrote:
->> On Wed, 27 May 2026 19:54:27 +0530 Sarthak Sharma <sarthak.sharma@arm.com> wrote:
->>
->>> gup_test.c currently serves two distinct purposes: microbenchmarking
->>> (GUP_FAST_BENCHMARK, PIN_FAST_BENCHMARK, PIN_LONGTERM_BENCHMARK) and
->>> functional correctness testing (GUP_BASIC_TEST, PIN_BASIC_TEST,
->>> DUMP_USER_PAGES_TEST). Mixing these in a single binary means functional
->>> tests cannot be run or reported individually and run_vmtests.sh must
->>> invoke the binary multiple times with different flag combinations to
->>> cover all configurations.
->>>
->>> This patch series separates the two concerns: tools/mm/gup_bench for
->>> benchmarking and tools/testing/selftests/mm/gup_test for functional
->>> testing. To avoid duplicating HugeTLB and related file helpers, the
->>> series first prepares the existing file helpers for sharing, then moves
->>> the common helper code to tools/lib/mm/ so it can be shared by both
->>> selftests and tools/mm.
->>
->> Thanks.  I'll duck this for now, see what reviewers have to say.
->>
->> Sashiko still has a couple of nags.  Minor stuff, arguably ignorable.
->> 	https://sashiko.dev/#/patchset/20260527142432.230127-1-sarthak.sharma@arm.com
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Leon Romanovsky <leon@kernel.org>
+> ---
+>   block/bio.c          |  6 +++---
+>   include/linux/bio.h  |  2 +-
+>   include/linux/bvec.h | 15 +++++++++++++++
+>   io_uring/rsrc.c      |  2 +-
+>   mm/page_io.c         |  4 ++--
+>   5 files changed, 22 insertions(+), 7 deletions(-)
 > 
-> Thanks! I went through Sashiko's review.
-> 
-> Both the points are valid but look very minor to me: one is a temporary
-> x86 build issue fixed by the next patch and the other is stricter
+Reviewed-by: Hannes Reinecke <hare@kernel.org>
 
-For the sake of bisection, we try to make patches such that each patch
-when applied one by one, does not break the build. Sashiko says that
-applying this patch breaks mm-selftests build for x86, so this needs
-to be fixed : )
+Cheers,
 
-Although if there is no other major review comment, instead of respinning
-you could simply reply to this patch with a fix patch and Andrew can
-incorporate that : )
-
-> argument validation for -F in gup_bench.
-
-> 
-> I don't feel they require a v5 on their own. Let's wait for reviewer
-> feedback. If a respin is needed then I'll fold these cleanups in as well.
-> 
-
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
