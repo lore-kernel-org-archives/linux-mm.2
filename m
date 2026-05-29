@@ -4,94 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 468DFCD5BD1
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 00:25:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22E65CD6E43
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 01:19:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34AC06B0005; Thu, 28 May 2026 20:25:36 -0400 (EDT)
+	id EBE2A6B0005; Thu, 28 May 2026 21:19:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FBE46B0088; Thu, 28 May 2026 20:25:36 -0400 (EDT)
+	id E967C6B0088; Thu, 28 May 2026 21:19:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 210F86B008A; Thu, 28 May 2026 20:25:36 -0400 (EDT)
+	id DABD96B008A; Thu, 28 May 2026 21:19:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1079F6B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 20:25:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 990E9C37A2
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 00:25:35 +0000 (UTC)
-X-FDA: 84818563830.02.E56C2F2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CB0B06B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 21:19:44 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 24A0E95557
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:19:44 +0000 (UTC)
+X-FDA: 84818700288.06.7D4C084
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F2EFF1A0003
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 00:25:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MUm/5P+P";
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7266FA0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:19:42 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nLzj7OCG;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780014334;
+	s=arc-20220608; t=1780017582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UnopgqY2bbWXtxWqNirNFrJ9L7lhAVtnRuP5BLUuwAM=;
-	b=naQTpv5YHtoyXj7Snu0WqDHjaMFkeYbaFPLWSl6kX+4nQjMt3Aa7FNTNfq7JIwl22ICWps
-	ZNX8AemxLVmYlTfQSCUvwmjy3HCHSvqqK3+gCe2mL8BVWRN/ayxgmu+uCBJfVMGIZI0VkR
-	h0v4UbK+C2ypkL4yVbUHIcrrbIYRfuk=
+	bh=Ozq/Ru3FRyhUKHioj+TdgdTtFgDpQkgRBP9R3Cod/9Y=;
+	b=BZHWYMOJ/wOVG5cY+aSlWfVyhDLZ/AYRYT1s7EtdcbIeJHvfsU8qF2+NrhCVsr0wy8u8kx
+	FCp2gF02+yA8JJVmIX0NrL+nXrYXEWTHEcab5SbrbZu+KatWBPqEL2YaLuBNTqIiHLN9cd
+	RGsveIPBYWimFugtEx5erNcl+bC4h4U=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MUm/5P+P";
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nLzj7OCG;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780014334; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780017582; a=rsa-sha256;
 	cv=none;
-	b=1lC315XS1XJHfnoypUz2RtdtI/NBUOX+EHuBf7/Mojr8M9x3prYe3OJ002rjc3KkZMPB3i
-	KNsPAQC7Qi0D6h8yHxSdshOQNkz01KmsH06VykNDJhLLJOzTF6ZGa+pFW1D2JKVyaQ42JE
-	qNCAXykpcKhfI5tDOd8UyyNpSxLAKzg=
+	b=LWs97mkCLB5ancnfLL5jbUxme52rPdY/c46lP3O7jbhLL2QcA7BcYUU5UinX0Wg/s3sIHD
+	Mqa7Pz7G+Q4uNrP1czFt9E1hgIJH7zqEupN0momDfkyK6ht7XGrZwiLbdKX4YhLFP8Xfua
+	2G4xbQ2eI8RdUZ3f69zsoB8IAQ//1V8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DB757442A2;
-	Fri, 29 May 2026 00:25:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5351F000E9;
-	Fri, 29 May 2026 00:25:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4D70943F42;
+	Fri, 29 May 2026 01:19:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AE21F000E9;
+	Fri, 29 May 2026 01:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780014332;
-	bh=UnopgqY2bbWXtxWqNirNFrJ9L7lhAVtnRuP5BLUuwAM=;
+	s=k20260515; t=1780017581;
+	bh=Ozq/Ru3FRyhUKHioj+TdgdTtFgDpQkgRBP9R3Cod/9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MUm/5P+P1FGVS8gjdS/EZG4XyKjy/K/ptSQLrbbN+n3p9iTeoH8Si+nFU7MfOzsqH
-	 pM5S7eKMDf4NLW3EUWdaiUA4yubAL73VHIyLgZGEZ35JB2gfHhiiNwbii8pfFNBkE0
-	 BjSa2QAFk8nZzBGqYOFtEzFVhaBKUl5z3OjF5M4Kl0cGRixXqzyb/f5D6W/tg8bbL1
-	 AVlHCNklDzafA9QqEPWNzZbi/FxnCxpaV0XGm+tztwpiqrRwkoeeZ/yyH28WGygqAZ
-	 lXF05evKPOcW7wZOGpNLkPwFQDJ5QtV1+obDK+n6qFv5rHECTO5Jb4Bt4PzhVGs30b
-	 hwtkt2TUPwJUQ==
+	b=nLzj7OCGbAYQphViYclXtHITMmaEevm6G40K5z5oGF8OxchRHxEKKiPboc7ARFeiq
+	 E1aWmqls8XpEIW6+93ygxdQGIXL8Q3EjpR/7xVLB710yIvO6tcTx/KKn/wAc24xA/X
+	 aEq1Yv9XwNS5lbmC1lexYYQDitbtWDngkVPHuUYbjpsuscfMfP5YssJ60G/ZzVSFYv
+	 GMF4sAAQO96eKev9xxg6btXLcKm8b5oGv4CzFzICSsALDvTntxaScC/kNvmBua7NUz
+	 RJDFb4/OeQx7kYsv9aD/BiNTS9Ar5294YKFIq/uV+B7z4ijcE2KS6aRrt4W+WAIob2
+	 zz7a/yt8o2Xyw==
 From: SeongJae Park <sj@kernel.org>
-To: Brian Masney <bmasney@redhat.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
 Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	Liam.Howlett@oracle.com,
+	ziy@nvidia.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	jthoughton@google.com,
+	aarcange@redhat.com,
+	usama.arif@linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add vm.rst to memory management core
-Date: Thu, 28 May 2026 17:25:24 -0700
-Message-ID: <20260529002525.7939-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kernel-team@meta.com,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: Re: [PATCH v5 09/18] mm: add MM_CP_UFFD_RWP change_protection() flag
+Date: Thu, 28 May 2026 18:19:34 -0700
+Message-ID: <20260529011935.8433-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
+In-Reply-To: <20260526130509.2748441-10-kirill@shutemov.name>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bj3a1hcwo4cnom7f3isfjkufx7mgchaf
-X-Rspamd-Queue-Id: F2EFF1A0003
+X-Rspamd-Server: rspam12
+X-Stat-Signature: xscnb3xubcoefsi69b9emksezfdbz8o6
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780014333-484220
-X-HE-Meta: U2FsdGVkX1/TMKDyZ2XLcpJMVUeWRVVp5hHMFqc9AgnjsiPZtJCl5v1JUyxWD3WtKOcW+3EaKFjERjMK6gOu8p+Bb0YL7lcooiRgDV5rXqcoYAyaMemN0NSDlrCPBuBzPYwbGL80ta8lbSv3FjoWeTaqoQ+oMn2VcJw5KQ6flTWjsXhzAUoPRrAPVLkTON9dOEFrRMIfYjSFQ22P6Zm3Jvv6eGXTLVcmaOhG4KbBKINpzBZqvTnH+5mMG9Aa0l/Ve8TYW7t2qUVrs8JmiBFf9XZ7MjE69BD1yBDofkkS19X7aOayO/cxKvG8fvGK5tEQnYSyaiMQ6b1hDhcqDlttXOLwNjaLG2xoLcsMPWp8zkpO/deV4tVKeZSHxdVb4krIJ3Rn+M/UguEVV6bqUzIHv/zGC3tAbWv/aEFAbmFU75oT7+nbra0VMuK6wG3D6/N/vp++J1gJZshcD5clMLBV5+yP+DwWVZXLftakavfS2Q9THf6XkjNtuxw61ny5i5GGKOjzhn8ca/GtnNEQvux0tf1uwZtV/X8r5GlIy7RpYFgiOxdfI0k9MxEYQJpIdGVFh9n3s/P02KUnUn9REuuEtp2JkxiTfEukSy6UWKzbcUOZIv5UYXScgySrB/1yIrLI11jz6/RTn9b1Kc5d8J1EjvO+Fh9IdPMDVdSOCyTVdiPhB4jxEqOqUJeOd0qQb1LmZmq09XFZ3SQs/d5Ot+WYV+km5Uf7kg7nfd/HptYjXvBPH8y/zfhEloj2DmNNnr83vVB7mkJv3OdMgT4FrLY3SatBJ6wTIpRMuADYJDfCUITef+pqLSAZ9lf5Ztjv9qWeK86Hf132+BTBBOG6wgP2coTh0O8kp4Ve9YtiUsoEdyHI+6IMa0b96784vzq1JUv/1GiiXTsKkdAWqMlCGm0OFQducu9RRB7FKRLCUOPh7Z6gTdf+S80pH6FTkb19xhyS5r2xcbMZvUtVxYJVPv+
- 91gI2VBm
- Vc7kdgOcwu2hN//p8yW+ByjxRZ3kYsJZVn7dtg9x415XRmJQUmm2fElTtzZn+lyspUDpOwHp55ZY7Aj77d4jazV1jbdQTn6csyZDyH8j6uvguODx7Tk62w1JwAW9fsaltvGSSrcjPEoJuDW1OY9qPPXq9PiXxmTMcbCmA8pROrIofezffWPgFUfOcfQQUkHooEGwi3HpErtjKrYGPMY7fFkDjtaHItmCejl/Jfub9VETVdC7nS5UyRKJC0XhZ0JdsQRqv
+X-Rspamd-Queue-Id: 7266FA0005
+X-HE-Tag: 1780017582-887657
+X-HE-Meta: U2FsdGVkX19Ocw39HTCrmWBWfp+UM1o+d45IYkl8aAHq3RahXuHCJH/OLv01biw74lllyu+5iulfSfvW7n6CHrcz2+ZLGpNp4/NyoTD6NDrQuoit3T/VNfan7yRtgp80R6ckg31Ag33EHfMZe/vtO06LgMoguGLbAmOPtX3wrrhqB4PaRLQ8d9k+8fyaTg0TC3WI5E8BTbntXNzy13ESBItuzqZggKelIF7Mj98Em/7yZfJW9lpYIXHG5wfYE2/MEQnIMC8U0BnQu6KjMkcBRFLieKpA5iLBEwhQ615zMdLA3ebAE0q7cL14Trzg6pAfb25vb3A0/WoGBar4mcqCWm/i5hFayQJPLUnfrlAtChBFXNyzVKx8m4GZlGXNdonsTFu/ShVyzKWSCyz4k1DNLsnVo5Re5LRyJ+wtlA8LoDUCQvrGwMy+EiXgBpBhfW7+Zt9aDm5IQOT/9A6T0iUeVTRxRbt5WKPtYgeI+IKDE0SCOdQFCgwm+Av3tlAPVvVVQim7lnLHoz7ALOGwDFwqGjhlW+QQYxfbgPay3+VKg7OYRqWxqzfoxytQyeQzdWM/XyMB8KRPMr2Xzzfn4zqUNeVfdWI6cEYxpXB0FKAxt140WEA7Vf26y35QZYTDd9Au2ewwi3Kgah5Yi+gHGGRoRbHnw7lFoiGrwYhg8Xx+Sp9B9bkeFeUh5kzohIa2YjlsqubG/43cXOuOjKlApelkTplP/35pLXhPmAy+Yf2U02Fid/vFOUQghtgJpvNnxArtjNXvNwBwfVshe4diy/PqBLmjhxMZ7jxTtOdX82OOK2beW+pRBOt7Ejwv+DKRpd/fM06SClzzXq20cMa4sHqQLErRL4te++uK/n9Ut6CYrslHc0XXRHB+lJtwTMGlfLeg+PMdWYk+O2FbHJjypvgPqk8ea8l1U9tMPYyN0R7oiSlY/ag+eC0A1ATQTqT8hk+pVNvYC3sgJ6Fi37IT0Bp
+ 3wt2Y/m7
+ lv6bBANAKGuokoHb0vXPmcT0X4jZ/Vq0UWkUdYqjPdLYoxsPA6P+6MHxT0zAKyqXPTy3W2QjSOHcBfsrEzXvnYyOm49VmOPMXtOm3+dLyEGNp/3/jTwC2psDDqyfypb5PwVMzytSUmy/PeA/x4f4lHYhrlfkv0jGG5HbSzn1SFFmRrRSyng3Kxl57pOEolZ1QvABpZCdtmNoTKhhO66+ZsGCvhOQMp5mv4uAVrXH/IaLswXr30N4Au5F28+vtuaGW98nJ2GjwJmCuHXHnakP8pDGjhinQjfUfktmX0rpBL5TGMM3lI2kN6AuYI6au/RRL6YpgABygeyk6cdA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,23 +112,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 28 May 2026 09:56:14 -0400 Brian Masney <bmasney@redhat.com> wrote:
+On Tue, 26 May 2026 14:04:57 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-> The vm.rst file is currently not listed in the MAINTAINERS file, so
-> let's go ahead and add to the MM core subsystem so that the maintainers
-> are CCed when changes to the documentation are proposed.
-
-Makes sense to me.
-
-Probably out of the scope of this patch, but would it make sense to also rename
-it to mm.rst, like we replaced many 'vm' parts of file names to 'mm', e.g.,
-commit ee65728e103b ("docs: rename Documentation/vm to Documentation/mm") in
-future?
-
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> Signed-off-by: Brian Masney <bmasney@redhat.com>
+> Preparatory patch. Add the change_protection() primitive that
+> userfaultfd RWP will use.
+> 
+> An RWP-protected PTE is PAGE_NONE with the uffd PTE bit set. The
+> PROT_NONE half makes the CPU fault on any access; the uffd bit
+> distinguishes an RWP fault from a plain mprotect(PROT_NONE) or NUMA
+> hinting fault. MM_CP_UFFD_WP and MM_CP_UFFD_RWP share the same PTE
+> bit, so the two cannot be used together on the same range.
+> 
+> Two new change_protection() flags:
+> 
+>   MM_CP_UFFD_RWP            install PAGE_NONE and set the uffd bit
+>   MM_CP_UFFD_RWP_RESOLVE    restore vma->vm_page_prot, clear the uffd bit
+> 
+> Both are wired through change_pte_range(), change_huge_pmd(), and
+> hugetlb_change_protection() so anon, shmem, THP, and hugetlb all
+> share the same semantics.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-6
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+>  include/linux/mm.h            |  5 ++++
+>  include/linux/userfaultfd_k.h |  1 -
+>  mm/huge_memory.c              | 30 +++++++++++++----------
+>  mm/hugetlb.c                  | 25 ++++++++++++++-----
+>  mm/mprotect.c                 | 46 +++++++++++++++++++++++++++--------
+>  5 files changed, 77 insertions(+), 30 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 6499cfb61dc4..f79801816f32 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3297,6 +3297,11 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+>  #define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
+>  #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
+>  					    MM_CP_UFFD_WP_RESOLVE)
+> +/* Whether this change is for uffd RWP */
+> +#define  MM_CP_UFFD_RWP                    (1UL << 4) /* do rwp */
+> +#define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* resolve rwp */
+> +#define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
+> +					    MM_CP_UFFD_RWP_RESOLVE)
+>  
+>  bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+>  			     pte_t pte);
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index 0aef628514df..564eb2aac321 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -361,7 +361,6 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+>  	return false;
+>  }
+>  
+> -
+
+Nice cleanup.
 
 
 Thanks,
