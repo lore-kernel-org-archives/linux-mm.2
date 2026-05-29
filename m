@@ -4,146 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F5DCD6E49
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 18:38:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E42C2CD6E49
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 18:41:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 480CF6B0088; Fri, 29 May 2026 14:38:38 -0400 (EDT)
+	id 372BC6B0005; Fri, 29 May 2026 14:41:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 457C56B0092; Fri, 29 May 2026 14:38:38 -0400 (EDT)
+	id 323B76B00C8; Fri, 29 May 2026 14:41:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36E2F6B0093; Fri, 29 May 2026 14:38:38 -0400 (EDT)
+	id 239A56B00CF; Fri, 29 May 2026 14:41:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 24C8B6B0088
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:38:38 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D859A140255
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:38:37 +0000 (UTC)
-X-FDA: 84821318274.08.E8D7E3A
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CBB072000D
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:38:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Pd3aI4Hq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780079915;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 137E96B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:41:07 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A074DC1457
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:41:06 +0000 (UTC)
+X-FDA: 84821324532.14.B79AE58
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BB9C510000B
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:41:04 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="IyW+gY/y";
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780080064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/iWiuvGopjfPOqN1ltMMiCqrYpx4WW05J/mF6yDghGQ=;
-	b=prwAfNxPFTf356DUuakPNm7DC9VlOwKFZtltBXhI2HLyd+ZTmmOG6NW3k4MOaqKT1WYBb2
-	L0p/wdBH3SiWA+xLIj2azoI/R+AhUs0RDjDMYGSSAy1+NPQAZyNIYYubScATYKXQXHOU0w
-	thgLObpkZO2Ofjgnnc9igSmA5J/QksU=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Pd3aI4Hq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780079915; a=rsa-sha256;
-	cv=pass;
-	b=cz4JcxsJQ1KwD4z27T+HNRhWIaaYIO4GfrBylF0CRwJLzRGrYvvxiof44lMr8Kx9xSV7MX
-	6ViebV0xQMcGSTvfJIXnqcORwxRfPVmRufGb5KovIj3Rvrq0wjZ+9aXRE7RRN3XpNdccRa
-	jMG3v++GX3Oxe7WBQu8RMjkPiLI16Mo=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490388fd0dbso85809975e9.0
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 11:38:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780079914; cv=none;
-        d=google.com; s=arc-20240605;
-        b=C9akoo8HPk0uB+hZOZllUM6Va3gKgitKQc2rVWrw5KeLggOecTfWBhJo3An3V/w/S7
-         Aj75R1VL9SUq9cJZMrGxu7KepKizOiPhvj6kV31srkK58SmszjqmJR5vEF7kAKfEDJai
-         GYM8pFGWQDqgSE2QcvqhD0RZ3bCQ1Z9Cq4ByqXL4FYk2alEC4Nu6WlPpPOnE82NoFH9E
-         gshLczlmR7MCBsZL5mZuUAQ487D/D7aahD+IT7pk+siS2bSUX3ttlETi6WVC6ROdNppv
-         EcusreWeaa7ZBhAEcXF26+3bH2aIoUCnR05RVZvgOGW6dszu3TtzWragH4LrX6tYN7O9
-         PBOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/iWiuvGopjfPOqN1ltMMiCqrYpx4WW05J/mF6yDghGQ=;
-        fh=av1Y1KOHxQmQVY1IZrbtBF0mlRoaBRRPe/NNWJ10Mjc=;
-        b=bU8lUVM3NJbGurKxiWPccLvJcPeI/qIhCjEgso9CSYdcz75VGw/gVMNwVIKhYpe03c
-         hPvBKfji+NfU4ifvRg3RcXEXKEXLhbUmLvWcQUDeCv/KbC30r6hU2NkxeeqgmyR14/tM
-         Z19bz3lR9oees6lRr67UXvUOyT+OEr2jbQhT8Qs7a/eosOjjWlUeCMttXY6lcbpCHhJv
-         u7SJE2R4O8t+IOR5aD778w04VgklO1L0khha4NvJTV1VOMSpWEnyoMRDEelFcYGdHgii
-         BpYIuk6eOTKAOUp2DkMZpIPlQ6aeL21PIeLz8Wkvpvm5Xy3N0eg6hVTtjGXNIHaz9npT
-         bMlA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=VG2Yp6iNC/83YtFKga+pv9BmUEKJyvbZYWLhtH4z0Rg=;
+	b=AvS7oH/xDsbAgRIfGQx//gbh4kJGQDHhlPLqfnPQGcnWk/LARe8WwP5vKIOOo3PaWPORQZ
+	aKlceO+iY+nagPwxyqGm2mBAPcMfZdVT3YES0/flaxDWBTpiUbxXrh3W0FAZSjKU94gH+e
+	VQp2Eb09ebDez4hCCnEhBsxbNusCHNQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="IyW+gY/y";
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780080064; a=rsa-sha256;
+	cv=none;
+	b=1ciBXSu/toVrML7X/PErXthi49UL3eiSxehBfmQHmTNC1r9pjz88zmtIvQhGgdx+kVHXMB
+	labIWnTsp3+3bNmDIujNFfZmiLN5MrPaCry1gfpCOeFro9yn9iv8U/RlA+Swv+ejlFFQoY
+	1CCEYCXkgct5e2L2C1stvZp+iag661M=
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-694891f8f62so7530690eaf.2
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 11:41:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780079914; x=1780684714; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780080064; x=1780684864; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/iWiuvGopjfPOqN1ltMMiCqrYpx4WW05J/mF6yDghGQ=;
-        b=Pd3aI4HqbUgUpr3QBwnJESo6DH3nZ1K7vGe9CdQosHBZ/gZaiyPMx04UUHJqU35tFH
-         3T1mIAtrs/Fxbm9IhNA6FrrCrwUatzPGKbmYuKchAaxDTFGO1EM7hGzOExyrg7hfGwFB
-         GczQepyDcPr8hI0LBShvN2oY3oKX8o/WZgltIJuJTbEjEspwMhpFYaJCiyctdNksdnJW
-         BJteMHimc82KTZZ7eHXHulrHwrki5dMukNK9RUN4GFo1yGdvi/Dt2jAhvDjGnIxYv0iZ
-         CqnOTnzBcBBoGBTO2D0b2vE+0yjXwoSyoCJvi8+I9qa8I/ScULVZCGYG6ufSWqFY5jJ1
-         hSBw==
+        bh=VG2Yp6iNC/83YtFKga+pv9BmUEKJyvbZYWLhtH4z0Rg=;
+        b=IyW+gY/y6GgVGDz3S2MWuUtnzPjcDaLX48A76DF0yojN2wde5No4o2dYJyov5pXDJ4
+         Mw+JnuiYT6qCOmbyld3S3ukXzHiaxFxP0zVo0F8QOamrzwU8tLS46AWmI4aiWeJCnee4
+         etpMqXVNEP+ALtEjMt45hAdFThTskKDkAgvSTW8h12DF+smxf319Ga8RtM5yr/AqbXtO
+         pw3O1+8aIPySEH4MO4/wGIy78HscBdXMy7S+hciuYe4yb+LmxxzCwLmr0fFKz/apxuAr
+         K6Nkg2PmZMRftaana7rAPbraL3+5GnQhXRg+MHUgfi5s/5UnmeZHGEQ+kIQ2LmMdUx7Q
+         jh5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780079914; x=1780684714;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1780080064; x=1780684864;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/iWiuvGopjfPOqN1ltMMiCqrYpx4WW05J/mF6yDghGQ=;
-        b=fx06aMvMKVbtgOLW+D72WigTZDl6ISzP6lhZccD9fN+W3q/C4ZhiPKb3bLivTGfW5p
-         ZL9qQ8U1EKrIza5w/FNKGnJTWSIf5GkdDZf8c6j3RN0IdHpBUXCp0u3UN1eJbt7S9gZd
-         YI7Y00gFIeUDKBZU9EssdtfjC9q4L+d/vqu03mb2UwHLBgGPk6hDiLZr7RBowfSdpUmf
-         sF6UEIwMfhVtuQJnJnG4oBYW+4U64yWnOKBrNeriqpVTnt72OSfgExjZ5CpA7SOowOlB
-         TsS+GAm7ezAVAjj2jFCBWLilMiXmUUI3lcBkJunEOT0+WXU/gs6UuOlbNkg22yIwhAuE
-         e9jA==
-X-Forwarded-Encrypted: i=1; AFNElJ+wzrZv8E3MvYerbGnYUtARQIzdnaVbNf59oQxI2ksBNnL/jVLit3gkGaIWuZUUnL6vKr3LgkvCkw==@kvack.org
-X-Gm-Message-State: AOJu0Yz5rbjt2XtGNknNjrUQpB8YYN/xArLhDZWOYEU6sIKCt8jONXzd
-	dkUG3pLIZ7wf2gE1EMSjtr2fYnSsWqPV4mcXeJWNTtBXEE1qchYgwTmDP4bw731vfci3lNVx8IN
-	tOsiK6xNxX2MjDMaT9y+kXj/U/LaMlGs=
-X-Gm-Gg: Acq92OEBwukXKf8O5nhbEBmBKHDk57CZaRGysSWoTuqm/uZuLhf5Thl/wKGHMWdolck
-	vpsvAMf15qadtrsAc/ipKnmkQRsp0+CzTbIgbakMJe3C//FYzzfoEZlQ8XGh824azZbSgcDLNi1
-	pLy7d9+bRUb5vMNCcLtjBPchGHdx9LH0dJ39oPolp+82ejLbx0N2G0HnLlyKnHzu9j59ms6yEaq
-	rTvpaWQW9JiPZMOyM98zxjfqSKJmPpc6woC5DfCORl7116EwetZFDpNyyT1zlRkyOj9Pb/pS/QX
-	TLw1kIYXYLaZqeK6c7D+Cpj2DRHFRs+T9egzUlPfob4JmPSft++CDUaT1QV/7vTtHXUjjSzSvA3
-	1aescFGRqjvT1CJSQIIAXOEwtZdfjoKMwXNVq5ldUkK4HKmk=
-X-Received: by 2002:a05:600c:34c8:b0:488:ac01:72de with SMTP id
- 5b1f17b1804b1-490a2b6e3d2mr7261425e9.5.1780079914175; Fri, 29 May 2026
- 11:38:34 -0700 (PDT)
+        bh=VG2Yp6iNC/83YtFKga+pv9BmUEKJyvbZYWLhtH4z0Rg=;
+        b=d1C6HYeiBQJLwFuG8OQ7bmZzDvMcefegDiAvX9ll7UtUsTVfQUTNkjXyafTZb99G6r
+         Dt7qqj09NfB9axXQuMSWvIA4mmMU/HTxhPb6+Z7y8f5h4bRgRNP+EeULJQbPGYOTjQZb
+         qyZwktwDA8FYaSSVqDdBLr7NipjgrbtoI70JFNZt2XDZBe1z4G/CLKcP7V+OoqE5Ax5y
+         hG3YvQhPVVvoccBle1wb110uznCbv951HGWSBmMIjrtjLHUAJV+MMzxMYPbRVGb7M22/
+         X+6FARMOIG0dSXMUxxutIGsPTHhvfsE4xMM6DiD93WplC7HcSagjhEElEVXI8sWI6xpN
+         hK3Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9tfLFKU13v1J4SqCtraDZyoGOYka3MEzi7cz+1/YXIPtbp5Kzvv56KP2+zWALw/mRzfJDXxxXc/g==@kvack.org
+X-Gm-Message-State: AOJu0Yyla5f7vIRk1mZTmlJbx/eBA+ZrYXuq0KRTryVFz0/zD6fay88q
+	PuH8CTe3MFotAfqWiuuy7dYI/hro7XcaOJtzZRXsKuO0fLeeYH2AqQjN
+X-Gm-Gg: Acq92OGxV/xY+C/sAcHqFEq+/KC/q2JY2V1T0iohjBxGFvtClNppoulT0HXQoSq2QK+
+	EPsuuPYxhIf436qPh1FwqMHZa4059uesAsny8VK0Um5S8EJEH8mgNQYGLL+OflZj0nLRQzG6gCD
+	GMERPXD6el6hb+xwzNkyxjQz+P/jdmw8V4jxsnPuqjd3Am3FmdPPrC+nhe6m8OX2yhl6dYyGiHC
+	nbeVjY3f9qO4aPLEvIFRnaLF+vForqVARYG24AhR5Ut/7ENwEDj8Num+PraxyqpLmN70UTA4SVa
+	JZmkeX3hYkliHIqgP92ctRV+I0w1lCnUPFZVrhy5OwYcbqQwBLO15Xb0Ikx9RemXs4BaJq7ztwF
+	oqiPrZlZv4/vJ0QAbJjrrUe8+L0ustNjL+QqiM4ojehGZlEj1ojqvrkWcVV1fBAsWcAAyjCNMJ3
+	TtNFcLLXBBUvntoa8Ws6yLb6V2UArLYXf1QED96Me82izrwMRSnGF3XU83eB+jLDw=
+X-Received: by 2002:a05:6820:2082:b0:69d:9e3d:4e19 with SMTP id 006d021491bc7-69e1038541emr288425eaf.30.1780080063615;
+        Fri, 29 May 2026 11:41:03 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:9::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-43c93a22989sm1468687fac.1.2026.05.29.11.41.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 11:41:03 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Farhad Alemi <farhad.alemi@berkeley.edu>,
+	Waiman Long <longman@redhat.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH] mm: don't allow empty relative nodemask in mpol_relative_nodemask()
+Date: Fri, 29 May 2026 11:40:59 -0700
+Message-ID: <20260529184101.294638-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <ahnRIDBk4bQ3xX2q@yury>
+References: 
 MIME-Version: 1.0
-References: <20260522172219.1423324-1-tj@kernel.org> <20260522172219.1423324-3-tj@kernel.org>
- <7fd673df-22f3-4d70-a779-ea0b878188b3@kernel.org> <DIUMP21RASZI.2VNQV45RIL209@gmail.com>
- <3901fe0537edee9d7acdfd91695ead28@kernel.org>
-In-Reply-To: <3901fe0537edee9d7acdfd91695ead28@kernel.org>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 29 May 2026 11:38:21 -0700
-X-Gm-Features: AVHnY4KtV1pUn-d6UzBaLOg5AUfIedwDfvDWPug9r5TxPVQH38dOVxXqqoga_T4
-Message-ID: <CAADnVQJ+CqAszS2sSVu7gSfA_g4oaTR+SWmLNMX3_8c=OdR7NQ@mail.gmail.com>
-Subject: Re: [PATCH 2/8] bpf: Recover arena kernel faults with scratch page
-To: Tejun Heo <tj@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, David Vernet <void@manifault.com>, 
-	Andrea Righi <arighi@nvidia.com>, Changwoo Min <changwoo@igalia.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev, 
-	bpf <bpf@vger.kernel.org>, X86 ML <x86@kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, linux-mm <linux-mm@kvack.org>, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CBB072000D
-X-Stat-Signature: zrhkz5wtzqjr7wcyq33z4d61938payhh
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: tnk43qhmqu6t39njjodednucyh4gw8fq
+X-Rspamd-Queue-Id: BB9C510000B
 X-Rspam-User: 
-X-HE-Tag: 1780079915-201179
-X-HE-Meta: U2FsdGVkX19FRdXXWH7ZMUSnHgn1Jdl3Cse3URwvhuleeHotZUfiP8iHQt2BVuXVZ4EbVafasJmsdq/z68WEFHvJBiN6MDxn3/Yd3wZnyyEPD35yRkX+vOGLR1l64w48WoWDYopKk7hfT3Kow/bh3OHW3P0twhfKv/B++hsWQo/Fa7Jt6TIiiAvrawM7lcX32xdCg5PLdvA/dncwqpJrUkEvmddsp3L0lb8m7/Fac4Klc1rbxd5e+VPAQgVW7zrbh8NfR+SHo2Xei+shojOJT1Jv4foh4TlOGGomZV6+OdZT8wji5NpPP25p3/19NP1XJ058aC2sBJuLo2NuLWakpu3h8JPrP8tpbvbXgvobMoCsFV1lcqLrUHiveUJTrayqfgmSozNGAKhv6Sv/KFdSttm3NwGSumzpdMECPfrEXb+TJgXy1Q/6SvCZ9O+El74vTyCbx4EOpXsRydYFlMvSRfBiYeNKkYz/CZrVQWFedRThVeuWyVTx49dFy3EbSYpdp5JPG4XWD/RGHOPMZS6jnn0MAGMKgrkX6I0gGGfOXuG9M4ayLvXePxzNAm1K0zZNNX7Vz/gQyJGuE2berEjELSdymOiqfAjKw2CJ3RUIRWUzMpQLVZP/qf5v6NZuebUxkcZ43d6rE3rleXEn+5CJEqfHew+fhoBtDDLgwp3g6AxQ/RwCYEDa++FdXzMFyCqxFFoJtxd4pjVtxZ/ybMHbFR+l09i7MKWyRKm7D1JBeZWykT7JwLQp/NZICHyZv4L69/+euEUTW5NdZrZGF7AiNNTsUpC2es2UcUlttCZio2WSEDfZiwaKxYgJZQwBaWFyCZO3UpYl1FM2ZYex72+BpptyDxCs+RzVohU5V2V/m2fA+olnXDPj75Lt9Tk1aBeLEoEmxD1RNiglcJXCbToYtcaJ9XTtXSvqy9pThywzApXutNXmCXHbOyWsF2n6XOSvjp4mrOdPDkeljj8syyz
- lYSQoaqB
- eMy28AiKkYAiyXhrRlWqHq7IJSMj0zmIeKT0/lLjlhcpox+DpGslUqNi9U1UTYiz8Ib7g4pp6lobCyMeOrRdX9WjgKWKWWMvuv1QNurZByrz9E0hgrfyC7zor3U2esyHfbfZbjNeEAXcN4Wi++1m91o3iDew0z2Nm0WHqbhN5rMoPjziM64E/FYUS0mopUMvsY6x27W/IU/g7klv+fVT+FZuoW+LU1wH5iGoUYY6DIk8mjqU88oO+amHSJlifya6T2mwevtBGpe9tZJYh72rGGDuEdrB4o+TaUIzlT1Wc5+5iGut6lAB0WGC0iy49u4vL2/ib8UdqIAMFNl0x8aNkULoUr6KCc9EJhDsTNHffPFwSshwKOgssw2g1WrEkHBZJLNH/ZpNQ+dX1aR3+yCxxa9FNt1Cx6PmmVdiQaLQdFROZ+FI+JcRh2ghtqA+BRhV4Fx2K9l+PPOJaY+0=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780080064-392999
+X-HE-Meta: U2FsdGVkX1/x6+Z7FmYzRx/Ri7jYy/f55YnZ2pfdcOk4JkHWXgTZJxHPtWYO1YC4JKoN7dZA5MwJCde8L9XkV5R+PISS9+xqM/zvIl8bFhR7UBlKHk46zuXzqCJB9hcmWtyMOziKshiH2jrH7IND/J45bJZKytDvwBEAa4vzcn/zORw/r2bWPLSxGtXjaanBx0oTnaoAt3jlEKDrmYYskRzUVNOQaem80DD0R0yso/E7nLITlopBiB267VNn+0C7zssphczt54Z6pHL3M3n/eu/mWxG9q8o74UKawGR8dezuQvlEYik03cvOJ506wVrtELpugbyFUKS+JiSMNHo4O1647E+iPH0LgmpViQdWxtGQGFnxLtDxkXtGhhGgMlU0WovbMrkW9coW1dfyBcRlFdm+i/vilcpb/hehlcr9nSRznc4A8HF8/CvMj6M7XGW8VhgI/9Ppsk8+8nK1nag3h9h9Bu0Sau0Xlyf9wMpx4zd9KnoKrPLiwAHIVvEkPus6218G58C2StYvLZOE0yRY2lTyEukKxT/tWvo21s6vOoGwqxbtAlieG9eAkiufnD5bOq9OpBIqkQQ2wipTcR+xuy/557MbH6v2kDCvCUzgJnAu6DPGZt6YqY8hBPvnRnR+oh31trdi1deizCjbKExIatphsFpftWllK28rIsHN2xVsD6NwvvgtEeC+OauAO2FEDcthZezvp2/ydDE71N11RrTwMjwrkbLX4H5YiJN9AqQPGPHDe2X0QFLlSSrYIv9fSfdFhNBXDwPh39OygYDwofqerQtq58ZS5/fDgOnimbqqdLhaEir8IMv+8uiqroUDQM+nGg0tN4H2a0tVPKbkLjldFrphYgwkZWkf7HXsO/Rwao9G9Wk23NHWm2Fo1RetIvw5A2s5XUBwGlQ6aT9erP7cizELuNIS+9sLtMgZfbkZI/gsrgaLL+Z7m7j27Sl1O//cVWJuCDrzcRXVb5I
+ 6maywe/X
+ KOJ/MDq1Z32eK5YqPzXPtFjpeYYOTK92PV+BtnNR//C/oJQE9JdLfJrW8zQbuX2kBvlPbRAkpTYMnLapyJjjNFlaFg71Erd7wZXLrSnXSjI5XGmrBc8r7ujCkhpgj/BeI4shylrUNhCWW/qbqs5OfVw8WF4/P83CXjpNHcGQHFxQbtAHxjV9Z0/Oz8CfnJXSEAHyShO9edtmQDqcWvJAivMcD+uYfxuACdTUK8wp62qNHtBroEenxt5BlQiVVmrnKBfkKJjMoD93HBM29CqgLvxqUK02oacQuWmzT9b9SUjbTa77Fitm90O2f871jmf5Iy//VHVQh5aw/p+3d/zqHbTAp1Y5ysvGTUAQpjZiqAR8iqaUOFPZemtgdjnbkTAkXNxBvKlztII4HPqocmUvnLf7tIh1/gQ3lo13+7l46Uy05gpt9ytZpz6wiDON2SGZHnhQa8l12x1zeyO4fzD4cIqjKImyXldpmqN5sjog7qoGagpCqh1gXSOn8SpLReABMAdngkRo6Kfvm/z68WtTW4c61HyvUOKNdZ8UIAb/RA/NFR4VOd/tE8tGMSyfdtBV6srgYbeYmiXOusn9OicCc6VRkkbJenX100W+VLqhz2F8cyJkKSrQ6+Wyvhs7R0eWktOTKx05gr9vgRqgvnakUiCKawQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,34 +130,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 11:12=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote:
->
-> Hello,
->
-> > It should do set_pte_at() unconditionally.
->
-> I think two concerns are tangled here.
->
-> 1. The racing write. set_pte_at() and the scratch installer's
-> ptep_try_set() hit the same PTE with no common lock. On x86-64 and arm64
-> set_pte_at() is a single atomic store, so it can't tear against the
-> cmpxchg, but a plain store racing a cmpxchg isn't atomic in general.
-> David, is that the worry - an arch where set_pte_at() is split and could
-> tear - or something else?
->
-> 2. The SEGV. It's a BPF program failure propagating out as a SEGV. Maybe
-> not ideal, but as long as we surface the BPF error properly, it doesn't
-> necessarily seem broken to me.
+On Fri, 29 May 2026 13:47:12 -0400 Yury Norov <ynorov@nvidia.com> wrote:
 
-returning EBUSY because apply_range_set_cb() hit scratch page
-is SEGV out of arena_vm_fault() and arguably ok-ish,
-but bpf_arena_alloc_pages() returning NULL because scratch page
-was in the range just sucks.
-Earlier bpf prog passed the wrong arena addr to kfunc and triggered
-that scratch page. It broke the contract and kept the pieces,
-so ok-ish too, but overwriting scratch page with proper page
-during bpf_arena_alloc_pages() is imo much better behavior.
-That scratch page will cause all future bpf_arena_alloc_pages() fail as wel=
-l.
-Hence I prefer that check removed.
+> On Fri, May 29, 2026 at 08:26:15AM -0700, Joshua Hahn wrote:
+> > On Thu, 28 May 2026 12:41:33 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+> > 
+> > > On Thu, 28 May 2026 15:03:37 -0400 Yury Norov <ynorov@nvidia.com> wrote:
+> > > 
+> > > > Reassigning nodes relative an empty user-provided nodemask is useless,
+> > > > and triggers divide-by-zero in the function.
+> > > > 
+> > > > Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+> > > > Link: https://lore.kernel.org/all/CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com/
+> > > 
+> > > Thanks both.
+> > > 
+> > > It looks like this is very old code, so we'll be wanting a cc:stable in
+> > > this.
+> > > 
+> > > > --- a/mm/mempolicy.c
+> > > > +++ b/mm/mempolicy.c
+> > > > @@ -370,8 +370,13 @@ static inline int mpol_store_user_nodemask(const struct mempolicy *pol)
+> > > >  static void mpol_relative_nodemask(nodemask_t *ret, const nodemask_t *orig,
+> > > >  				   const nodemask_t *rel)
+> > > >  {
+> > > > +	unsigned int w = nodes_weight(*rel);
+> > > >  	nodemask_t tmp;
+> > > > -	nodes_fold(tmp, *orig, nodes_weight(*rel));
+> > > > +
+> > > > +	if (w == 0)
+> > > > +		return -EINVAL;
+> > > > +
+> > > > +	nodes_fold(tmp, *orig, w);
+> > > >  	nodes_onto(*ret, tmp, *rel);
+> > > >  }
+> > > 
+> > > I suspect we should address this at the mpol level - it should never
+> > > have got that far.  Hopefully the mempolicy maintainers can have a
+> > > think.
+> > 
+> > Hello Andrew, hello Yury,
+> > 
+> > I agree with Andrew here.
+> > mpol_relative_nodemask is called from two places, the first being
+> > mpol_rebind_nodemask which is the calling function seen in the bug report as
+> > well.
+> > 
+> > The other place is mpol_set_nodemask, which has a helpful comment that notes:
+> > "mpol_set_nodemask is called after mpol_new() [...snip...] mpol_new() has
+> > already validated the nodes parameter with respect to the policy mode and
+> > flags".
+> > 
+> > So it seems like we are missing the big if-else if-else if block from mpol_new
+> > in other places that should in fact have it, like mpol_rebind_nodemask.
+> > 
+> > The approach proposed here of just checking whether the node weight is 0
+> > won't work for a few cases, namely for MPOL_DEFAULT and MPOL_PREFERRED where
+> > empty nodemasks are actually allowed. So what should really be done here is to
+> > do the full policy-nodemask checking section in mpol_new and call that from
+> > mpol_set_nodemask as well.
+> > 
+> > Thank you for taking a shot at fixing the bug report, please let me know what
+> > you think! Have a great day : -)
+> 
+> Hi Joshua.
+> 
+> Indeed, quick and dirty shot.
+> 
+> The problem is that nodes_fold() can't work with the sz == 0. In
+> other words, folding to a 0-bit bitmap is an error. We don't check
+> that on bitmaps level because it's an internal helper, and it's a
+> caller's responsibility to validate the parameters.
+> 
+> nodes_onto(), or more specifically bitmap_onto(), is a different
+> story. In case of empty relmap, the function actually clears all the
+> bits in dst and returns.
+
+I see, thank you for helping me understand. Yeah, we probably don't want
+an empty nodemask here regardless of policy, as long as MPOL_F_RELATIVE_NODES
+is set.
+
+> I see 2 options to move this forward.
+> 
+> 1. Simply disallow empty relmap in mpol_relative_nodemask(). There's
+> no valid cases for it, AFAIK, so the nodes_fold() limitation looks
+> reasonable. We can consider it as a new policy.
+> 
+> We've got 2 users for mpol_relative_nodemask(). In mpol_set_nodemask()
+> we can simply propagate the error; and in mpol_rebind_nodemask() we
+> can throw a warning and do nothing.
+
+I think we should never be able to reach mpol_set_nodemask with an empty
+nodemask if MPOL_F_RELATIVE_NODES is set. Not sure if we need to be extra
+defensive here.
+
+For mpol_rebind_nodemask I think we should actually do some more checks,
+I think we should do it in mpol_rebind_policy since it gives us an opportunity
+to catch other sources of failure too, like calling mpol_rebind_preferred 
+with an empty nodemask as well (which shouldn't be allowed for MPOL_F_{
+RELATIVE, STATIC}_NODES) as far as I can tell from the checks in mpol_new.
+
+Setting empty nodemask for mpol_rebind_preferred won't throw a div0 error
+like for mpol_rebind_nodemask but we can at least throw a warning like you
+suggested. 
+
+Does that make sense? This is your fix and if you would prefer to address only
+the div0 case, that makes sense too, since the empty nodemask for preferred
+is more of a semantic incorrectness and will not cause panics.
+Entirely up to you! : -)
+
+> 2. Follow the spirit of the nodes_onto(), and in case of empty
+> relmask, clean the ret mask and bail out
+> 
+> I'm in a favor for the 1st option, because empty relmask looks buggy
+> anyways.
+> 
+> > The approach proposed here of just checking whether the node weight is 0
+> > won't work for a few cases, namely for MPOL_DEFAULT and MPOL_PREFERRED where
+> > empty nodemasks are actually allowed.
+> 
+> Not sure I understand this. The mpol_relative_nodemask() is called
+> only if MPOL_F_RELATIVE_NODES is set. In mpol_rebind_nodemask(), if
+> both MPOL_F_STATIC_NODES and MPOL_F_RELATIVE_NODES are set, the former
+> wins. How would the RELATIVE mode mess with the others?
+
+Yes, you're right, the case that MPOL_DEFAULT and MPOL_PREFERRED allows empty
+nodemasks is precisely when !STATIC && !RELATIVE :p this is my bad for missing
+that case completely.
+
+> Anyways, I'm not really deep in mempolicy domain, so please educate me if
+> I miss something.
+
+Thank you, I have also learned a lot looking into this to think about what the
+best solution is!
+Joshua
 
