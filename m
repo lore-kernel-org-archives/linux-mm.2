@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22283CD6E49
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 17:27:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45609CD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 17:27:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 883666B00D4; Fri, 29 May 2026 13:27:44 -0400 (EDT)
+	id A7EB56B00DB; Fri, 29 May 2026 13:27:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85AB66B00D8; Fri, 29 May 2026 13:27:44 -0400 (EDT)
+	id A2FBE6B00DF; Fri, 29 May 2026 13:27:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 770E86B00D9; Fri, 29 May 2026 13:27:44 -0400 (EDT)
+	id 945516B00E1; Fri, 29 May 2026 13:27:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 664746B00D4
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 13:27:44 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 00A624027E
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:27:43 +0000 (UTC)
-X-FDA: 84821139606.07.83221CF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C64BD180005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:27:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RDbwJoS7;
-	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8320C6B00DB
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 13:27:56 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4748B12026B
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:27:56 +0000 (UTC)
+X-FDA: 84821140152.14.6CB8FFA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 508614000A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:27:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nec8atXG;
+	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780075662;
+	s=arc-20220608; t=1780075674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hTy85+CBbgePeScVZ3smE24qgHSrvtQVk5MU+uCFfm4=;
-	b=gB/FsetoOwMdwD1XIwiJVZeYFmGFjjJdTo+b5dibJRYLMaaHTewGRWpGfYRYg2e7OPizXH
-	E/XXhivPMecF+Vc79pSrs3rh1AexYHuiLx4nD+aBpiL9QhfmxEejD7ugpxaGLgcAxtEqJ7
-	qhnWmr3aHU+mdcDwVrNXds349rYBY88=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780075662; a=rsa-sha256;
-	cv=none;
-	b=0Pdw0F88MHf+AHRVbrnH/KmzFRoSsyenYArgC64nWNODHjDSyGP9ae/fTfcmdL/n3cUvHa
-	DbDpwwBQlaUHbsZ1YVEpazDXvWbrp0ETPOzMoB999B6S7sKthVAN1Xgunt9Mzg7V9n7uVX
-	/C/KFd20N3RMp2rUGva56nElbeRZ5js=
+	bh=SQ1nDTsRLGDl2EAMFRNs5j0bNOh8Bj7CANx4ag7x/sY=;
+	b=hcCi087BLsLHXljkSHj39PRSXNBMMMiopU/wPBNmyQhN/Umy6eYv/fMybtufaN0wqnkv5+
+	Yna3NpM8uGZrKwmVl+KH4NvsaaXMfqSLlKn0kUaOFofXlSURlAKhnB2kdsuApIOLwxbQM2
+	cCf8f2n6Wgg1DpFx8PIFnpyO8e26Txs=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RDbwJoS7;
-	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nec8atXG;
+	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780075674; a=rsa-sha256;
+	cv=none;
+	b=HhfB6PWr4YYA5TJdNuXvzxnZHu8rQhzdirfwG+izV1fSFfPIz3JNbHLixihwIfnCzi6H9/
+	pXVor0NMHYIpDPENyQ0SENHtoRJ734/D5YKHnleB6hfZ+Sdt/QSN2gcpJQRjQFFNi/FaCF
+	IX31Z1sn2yjbP/3GjswsQAmwRM13rWY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D4D8C442C8;
-	Fri, 29 May 2026 17:27:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A951F00898;
-	Fri, 29 May 2026 17:27:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E524C605D7;
+	Fri, 29 May 2026 17:27:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4AC1F0089B;
+	Fri, 29 May 2026 17:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780075660;
-	bh=hTy85+CBbgePeScVZ3smE24qgHSrvtQVk5MU+uCFfm4=;
+	s=k20260515; t=1780075673;
+	bh=SQ1nDTsRLGDl2EAMFRNs5j0bNOh8Bj7CANx4ag7x/sY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RDbwJoS7uLoKuAbdJB4NnfL6jC3kDkJN3wYpuy/6ROOKojxp1NKOqZbE4nb4OcQ7Z
-	 /wTZRMsOvhvUtADTYnvLu0g48fmQxixftxr1JwBRMQDe059j8eemfNEi33wW7uOosq
-	 QhwG/eIArisdHqGICzCnmiqc5A/DwCoQb9Osv2UELwSZSgCw9nfhJ8ust371MCjZmc
-	 rmc4NgiqH0ikhm6zU06608cGGOnRwPJo2d6lnljScBOSqg6fcvL9c75PP7NonQuT2f
-	 etpklpipUMm5Roki+Ebyve5P79ACt0XKE886te/8wzrp6BomcdGdrIEmmPpzdnp13k
-	 qhsErrJp/JKQw==
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6398CF40070;
-	Fri, 29 May 2026 13:27:39 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Fri, 29 May 2026 13:27:39 -0400
-X-ME-Sender: <xms:i8wZasTpA4NryHYoIhmEOluYAnp3I5nmlSHcIt0MR7ZG8SKnZN7bhg>
-    <xme:i8wZatvnipOF9i_KACpbKGjLnbGgi709E1VzaE0i724a4KBJB9WUCmKXxUPcrZuU7
-    aSywO8xweTus39I4cXx0VqPa28nlSJN2MVhktWGhOFs20bcU35iFpk>
-X-ME-Received: <xmr:i8wZaiW6FI8DWyJFS0GFmlIoagYcYFbQoqlm1tOH3AqSsSQE8-1O5z8YM3sO0Q>
-X-ME-Proxy-Cause: dmFkZTGahW8s3xjZ3arjCZYsPeROx1tHGGIOxZ4ZTborx5JIY1xfx8o+3Ks6DBHpwKdcBc
-    M0LV7UYzyw5BBW/MLyCvRpPXH4b3j/O36w1UIutGmjGoZPWXllz5NGLuWKcGXqDNqja7AN
-    LjyibA8JUH8LlxNww+LolPBmmXeffckfCMyZ3ofUE4q+w091KUDN+vWzLN57aJjrFHnLmA
-    DJhoBTsevLB+L7lFnUlwKPgFqlT5AUPgwhCfp483ir0podeZjRFOwVO5acGk8d/hTIZjyE
-    iTtkTrHlenKgPfeJb7TkHTrSkVle7vVdqqUtJoKJ+Cofq6CG9ZD2U9nUSpGxcnBPWB+GLg
-    ISthShzrqhcW9pUcv6aOKq0EubxlohSWfJGN/I0MulPgypl+zMtesi11RGu1adttYdtAo3
-    mwxdmiDGciG2aaHKhNIp2YhGN5a8JTy/f5woCV4RH/YBPXqp3HdWp36dvaAFSBbpoc3/Ke
-    wdYSVHpEcR7T3cZUztN4TDUvSqG0hUl1J7LCdC8c4o0GbXtyvNqaD6FwmH9ZcID3KxqQhd
-    tYjLHzsbaQH0EROxpAf3O9l6eFiwZSwFL8F1cfYudh4cz51Fj0d0JbqKFlrPQoAlPbJt4o
-    kYHY7psyNCtk2w57Ud2t4hrYY9xLiPClx4cxMnmk08Wd9fJWZBtrHL40jXRg
-X-ME-Proxy: <xmx:i8wZapmQCK0KMH10QpquRJsmS6nGNOdYhO5VY2BTnQaU7XWODyMAzw>
-    <xmx:i8wZatBZYyiVbwS-cgQfKyxj139EolOCa0ljZrndKRWPCAC879qqFg>
-    <xmx:i8wZam8vB6AEEej17TT-s4VJQFg7AFeHagrOcoqiySVuvra864tcmg>
-    <xmx:i8wZanQS8uP9hp6F_Owu-WnTbirjdC80ohp-4KEyNUFjQ9IfE2psKw>
-    <xmx:i8wZak5COH5ki4wc3N0MhWPqzZFzYJqfu489JevE1GD7SnCE0UtepOvF>
+	b=nec8atXGkJujJy7W2x4RHeh46PyG43lwX17Al4yfDKD2PJi9hzW+FGqt0/jfwtaxv
+	 8Iz8IXxQt2kesi3AVnRMvmM7gQtKPiuw/755WryrO0nCG5ESZ42N4YTj0TTgANSpH5
+	 Dn8STpqqEFEj93dlVLHoCOacVswN4P8LSw6nwdZOvjM768/1s3adgceTMnkqn0f8v2
+	 mkX0T0NjgYuWFQiHh1R7QLORYC/4HxgqrNOhcZuR23mgXBXK5aIB9Wqj7A2fHTiMuX
+	 MhxhXkrLCzfBEkjGKrj1NuGymRZkdd4wiErdmHAjdQfWxf7y8Z9Ya72AnUnfFRmPk0
+	 iLz9Sda5XClWg==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 13B7DF40070;
+	Fri, 29 May 2026 13:27:52 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Fri, 29 May 2026 13:27:52 -0400
+X-ME-Sender: <xms:mMwZataQBwkAuGSzsJdlgqbFu4hB7fOQSLqO9IHHZZqKkX8BpoZfVA>
+    <xme:mMwZaoU2y4sOdXm4hc57giUEm2IYFv2CZ9Lvi6vSutUbz4qplttYbsjeTt8VusIxH
+    k7PAJ5o7mPv-XOQmBjJgCHI8zxS_LSLBKoOw5Cppss1H4TDTyEl3s0>
+X-ME-Received: <xmr:mMwZaof02vmZPAh9NSuJoRC5idaSuS5pyUWuqWG4HoPkbGU7N6GVluko3zZefw>
+X-ME-Proxy-Cause: dmFkZTEUyOwNbDmHa1KNnZhhp0sknwyB5iYBikO499ls5PXcb2OBGZ+LtCI75nkUeooCiF
+    UzrXo04XJ8+Ua/uZDk13qfrbBwlZ5p9xJmobKJQlMbnj7l7Wa1HVN1RPiFo+pMeAxt22yi
+    61vTsKtOSGFbPiuQJwzf8kDMk7i9oYKVPojpqHuO0mt23+5gFs2X9nq4e5eFTuainOibKw
+    /PjyCpBsVGYk6ilHJDmI324wGNqP1tQqUfnSbHSEKXH/CNKWAMLzoIWnryvyvz0mzyGoSH
+    2C2M5+XUQ3GxwG6CgDLP16c5lhscyjq12y5muGouPR8MZ3kTeYPrBARrvcwg6KATek/ZWq
+    +dP0D1rsZmQ1VFiNA+xyuNFvJNCjaMNMPCLtlNpIj6q9b06VrZoOfLYh6a5mPwNib0hkRL
+    c+ZWzy8ciJA0v6d/VtEpjxVHWwAipQCSTrc9sxdVPlecEW53mOgLz+tV1zJ7JLvKwfawMO
+    qVXArPzUPOoTGowwQnDvJrO7egZwJGKJkwMQDaQbsj+yUcxyiVKnn/amGJ9qd5HJ9Sp4sO
+    7gte4/4huMO65wclA1C+VepBODWBRI0A5r+98PASSCy+d7rtf8X9OJnFiQibhGontdXFK3
+    qWaGg4A2UenLkAl7DzOZU688UcpGeTPHuTKZu/nwkn6RY9O7b2wuki171pbQ
+X-ME-Proxy: <xmx:mMwZalN4OwoS9J1r7c6qSZ2cRpNcVkaIEM_T5vYZyWev-4WYa2I77g>
+    <xmx:mMwZagIguX5ExgrFreFQuALWRzdHd8OdnqhslN_tEma2KIBe4wHRgQ>
+    <xmx:mMwZarl-tYRoGhZPOhI6mAG3iKJZNU0I2B5ZHliu1Z4BUWkICTB23A>
+    <xmx:mMwZavZQniFpJBej5AJGO1IDL2mZtuovV2zk9fCECmydqdLvle9Odw>
+    <xmx:mMwZaqirj9zWG3hh1xGvkPz3mckosWYd0VlCrqCCYal2WJeHbzvM3_qP>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 29 May 2026 13:27:37 -0400 (EDT)
+ 29 May 2026 13:27:51 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org,
@@ -115,22 +115,22 @@ Cc: ljs@kernel.org,
 	kvm@vger.kernel.org,
 	kernel-team@meta.com,
 	kas@kernel.org
-Subject: [PATCH v6 02/15] mm: rename uffd-wp PTE bit macros to uffd
-Date: Fri, 29 May 2026 18:26:31 +0100
-Message-ID: <20260529172716.357179-3-kas@kernel.org>
+Subject: [PATCH v6 04/15] userfaultfd: test uffd VMA flags through the vma_flags_t API
+Date: Fri, 29 May 2026 18:26:33 +0100
+Message-ID: <20260529172716.357179-5-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260529172716.357179-1-kas@kernel.org>
 References: <20260529172716.357179-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: j5gqzn8n1pot5zzrxgio6nkphwqbp4ty
-X-Rspamd-Queue-Id: C64BD180005
+X-Rspamd-Server: rspam12
+X-Stat-Signature: onjedismzdxzx6366jybbtfugug587bg
 X-Rspam-User: 
-X-HE-Tag: 1780075661-627150
-X-HE-Meta: U2FsdGVkX1+xEbT7qR2fyzNrtb3HDtqLHk1A/L8nUVu9wxOJ5PQHhM5R0cRe1XQnpA7qSq+Q4WmA8PUJ1J571uR6oTgHN0DkdYzzzHqijkgg2MkOamyK4WO746hIg7uWNglDly8YyXPR6YR9fEBDDNP9S5+YLi2bqTFIup58ebWZ0V1+64VAIP8aq4bAeELPk9v8JE/OToeJnXn3oPvXFsxt5mXXygk6OsZgWti1gYVJaV2OBBydTJek7JAAlJZxC3WAL6T9kxMZ8QGg3cPerSbk4USOL3/BRIN6+GQ4Fuhw75hNpD+q+Z1Bt1czqxRuu7dnKpxCsu1G4hy5XQcBHrzkqYVVNTzbTg7znj16uabHkFM4w8PzmV02IJ+jNkWhkFmU5PoyDlesEFuSvbAsEttD2kT8iLRxoKrG/p0yFYDEXVCEkJ8Ajap4/X005g/FgCPAI7xdvLJ2CbMKFe2CNQurDCtcLByUwMYUQkiIM0garFqpEE9rWUIOkDOqbua2g2V1qBjmhAqktSR9f3YiCRPlNdBzXsDyV/dC90K16bfFS30ksZ+85CBfQ+TVhElNEO+RBYGZ4ukej+5dQD3nwTsT3oI/YDrxiO1lvr9BO2mo8ctGePAhnNztSjkh527VpjxhCXSxPiKqi8Ne36l9ZL74iNesBI88wK4HLpriQxfkdYKPtd/yVwuLE2oS4/NPoSgQ3zS/JqGWBZyNJ8bdJoKrP2lLvp3AIiTYR/NW2FDtZ04/yWg5vxhIMLrJr4MbfDqH36a6PvPFR7Po7CmtajI+bDdDuOOT4OE3j1zS3epi3mS+MMV8j0k3K69ktEXRXAO2MFltnLkmAvYqIlysc0zOGqlBsu1vFfH4/9Zb3m4Y9MvYy744AzJX9B+mgunDUmAKosDu7TdrK8gUj+P6aOFkddn0UHzOMTSGHvl0XMdAiiQ2TmGzAQzgnPhzkv0S57tzgl+G8/Bi6G5mVnY
- GQ2aCsxN
- Gdpz2Y7qXJiDQCvwbPv1pcjLT8DLczOYyiDcpK5u6oiK1DM1ccfSVYWuC2Oo7vqiMfWiLn6A0eHEobMV6pSVghtxWUTgBkWBeQi7vQ1YTEKXSA6pt5SKiY0ue8DY8c0TQMwSI4gbhnU8EVugN8TVkNjAvpEy3JVSFGWxuN8nfu7d1I2DY+n9e4fNMVnFqnA+BFUeAAiQ2ct41T6tfPRDpS1fCt+vLOsbO/VEtZJnwhih5fP9EHsYajzMXtkeLPamLn7Ee
+X-Rspamd-Queue-Id: 508614000A
+X-HE-Tag: 1780075674-442419
+X-HE-Meta: U2FsdGVkX1/wPw4OqzoNHa+53WpArziOcqfMgGmJBG6KCSn3FTLpFONJ2PAYL79U+z+Kw/jXrdjikYV4Bhgsugo/Ny0WczRaaSIhDvrm+hcIc774AQt6u96rvAJo3CiRgd3bmN1VnBu8v3ZAR6WDhKdd+kA5ulpzUF9yvkhLCV6mX9M2iM48TpBpMV7wrrWkz/icGxzpB/ExiK0pxzwsXRmUf7llNAGH8gbUfoZ2zlZ7Pj7IN/Ub7JYbELXnbnizj+soiFA0EOGRSdNw6xZJ11naKjaPhKeTZUbAU1AwcTqI8lLpqkLgkJmxkpk8wLwVPw3F+uz58Ty/j7thgOh44ZpKXrOLMMa5kg2e/pz3KgR2+nLXG765IjKXx+Vs4mttxBEfVwiaS0bMFYFGClNFQQeq6a6VBwbdZlMc0A1RxuWn6xVxa9BnYSjamJQTpTu/SPxJPm/yIGujlJ+1SVG09FpO510hkgDP8BO7UqfYPepmbL5bhcr9wK35j/gOYhbu2bnLRCnAyM6Ek3Fhp8pprRhP+8jgOssI49ZhWkJnB1x+w45lJArowvzRP61ieXNFfNsbga4+C961FAJz5mZliKiJr6Xn/DWXoCmoJ6XqsDiPfSZnPT0ttvgk7Rbxh/j7hovW+GLwvcIo/cxNe0xPDVxdI7pWPoS0INNM6C9WaxDBc6Ppnl4ltrs4flJLtHwIKtNqlnzirYrJfgcVxMa1OVFktpNLUoOAfKgb2VdFzxE/cby9ovpzTfzT7qCnekMdqz8mx/VJtNadQIxeQZG7ZLAX+Y9clfWqkz85VLCaclgmayhq3xvb0OvO6xwp5O6e7esKl/fD8DjIc4IaYmx/+uvPSg8RwzLod3fceoWcOIGBs6JyPb6q0Xy9wqeHfr+H7AXu1dboAHfLwLGsPRRnIfW3E5N5rLLJB/nEyIN8xFG1gYsgwEJJUkD4NRVMmv50S3mmIiP/rmGBxuzHNSQ
+ zf5tg6am
+ hcmHd18krSI+wZpibIP4cJI5aCGPp0eEAj56AbFW7QnFs07HsBtWJk3Xud060U4knxcY/ALD4uGH7Y+ozXprhrDM0WuaUrD7cq09JWrF49dYHmRD+RM7k7StRTGDkN+BgryVGCnyHPyhWtFGcJKtzvBG8h/rIZq321SoH2TCxXVVtPYKH7fex5N6DOwbhxL0ZzvB8s4pVOhgzgv1ddjHkLvhttGAGDyGfXPKsubp7edJiQ3a1NJZ0WrnYBeAUm4JXLjK5f/fKncQtFyBPUoGkKdRbOFZ0DtFBJm2O/bBt1Bn85F/rOD8QLuV6Vf2bT5KyyCmi9wnTZxuDIQaUpZdyZJ81HRrsTYmBdwRRK1H/C51FGwcD6HVTuKt6tg4/O99WPCiv4FnBJvDeMMiqrSQzfpa3BBtv0MSQhVa7ZKAzEnJhDpU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,326 +138,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The uffd-wp PTE bit is about to gain a second consumer: userfaultfd
-RWP will use the same bit to mark access-tracking PTEs, distinct
-from mprotect(PROT_NONE) or NUMA-hinting PTEs. WP vs RWP semantics
-come from the VMA flag; the bit is just "uffd has claimed this
-entry." Drop the "_wp" suffix from the arch-private bit macros so
-they reflect that.
+The uffd VMA-flag helpers read vma->vm_flags directly. Now that
+config-gated per-mode masks exist, switch them to the vma_flags_t
+accessor vma_test_any_mask(), which is the going-forward API and keeps a
+single place (the VMA_UFFD_* masks) that knows which modes are available
+on the current build.
 
-  x86:   _PAGE_BIT_UFFD_WP  -> _PAGE_BIT_UFFD
-         _PAGE_UFFD_WP      -> _PAGE_UFFD
-         _PAGE_SWP_UFFD_WP  -> _PAGE_SWP_UFFD
-  arm64: PTE_UFFD_WP        -> PTE_UFFD
-         PTE_SWP_UFFD_WP    -> PTE_SWP_UFFD
-  riscv: _PAGE_UFFD_WP      -> _PAGE_UFFD
-         _PAGE_SWP_UFFD_WP  -> _PAGE_SWP_UFFD
+No functional change: vma_flags_t is in union with vm_flags, so the same
+bits are read, and the masks fold to the same code the open-coded
+vm_flags tests produced -- verified identical on gcc and clang, 32- and
+64-bit.
 
-Pure mechanical rename -- no behavior change.
-
+Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-opus-4-6
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Assisted-by: Claude:claude-opus-4-8
 ---
- arch/arm64/include/asm/pgtable-prot.h |  8 ++++----
- arch/arm64/include/asm/pgtable.h      | 12 ++++++------
- arch/riscv/include/asm/pgtable-bits.h | 12 ++++++------
- arch/riscv/include/asm/pgtable.h      | 14 +++++++-------
- arch/x86/include/asm/pgtable.h        | 24 ++++++++++++------------
- arch/x86/include/asm/pgtable_types.h  | 16 ++++++++--------
- 6 files changed, 43 insertions(+), 43 deletions(-)
+ include/linux/userfaultfd_k.h | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
-index 212ce1b02e15..09d7c00cf405 100644
---- a/arch/arm64/include/asm/pgtable-prot.h
-+++ b/arch/arm64/include/asm/pgtable-prot.h
-@@ -28,11 +28,11 @@
- #define PTE_PRESENT_VALID_KERNEL (PTE_VALID | PTE_MAYBE_NG)
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--#define PTE_UFFD_WP		(_AT(pteval_t, 1) << 58) /* uffd-wp tracking */
--#define PTE_SWP_UFFD_WP		(_AT(pteval_t, 1) << 3)	 /* only for swp ptes */
-+#define PTE_UFFD		(_AT(pteval_t, 1) << 58) /* userfaultfd tracking */
-+#define PTE_SWP_UFFD		(_AT(pteval_t, 1) << 3)	 /* only for swp ptes */
- #else
--#define PTE_UFFD_WP		(_AT(pteval_t, 0))
--#define PTE_SWP_UFFD_WP		(_AT(pteval_t, 0))
-+#define PTE_UFFD		(_AT(pteval_t, 0))
-+#define PTE_SWP_UFFD		(_AT(pteval_t, 0))
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
- #define _PROT_DEFAULT		(PTE_TYPE_PAGE | PTE_AF | PTE_SHARED)
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 873f4ea2e288..3eecb2c17711 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -343,17 +343,17 @@ static inline pmd_t pmd_mknoncont(pmd_t pmd)
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
- static inline int pte_uffd_wp(pte_t pte)
- {
--	return !!(pte_val(pte) & PTE_UFFD_WP);
-+	return !!(pte_val(pte) & PTE_UFFD);
- }
- 
- static inline pte_t pte_mkuffd_wp(pte_t pte)
- {
--	return pte_wrprotect(set_pte_bit(pte, __pgprot(PTE_UFFD_WP)));
-+	return pte_wrprotect(set_pte_bit(pte, __pgprot(PTE_UFFD)));
- }
- 
- static inline pte_t pte_clear_uffd_wp(pte_t pte)
- {
--	return clear_pte_bit(pte, __pgprot(PTE_UFFD_WP));
-+	return clear_pte_bit(pte, __pgprot(PTE_UFFD));
- }
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
-@@ -539,17 +539,17 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
- static inline pte_t pte_swp_mkuffd_wp(pte_t pte)
- {
--	return set_pte_bit(pte, __pgprot(PTE_SWP_UFFD_WP));
-+	return set_pte_bit(pte, __pgprot(PTE_SWP_UFFD));
- }
- 
- static inline int pte_swp_uffd_wp(pte_t pte)
- {
--	return !!(pte_val(pte) & PTE_SWP_UFFD_WP);
-+	return !!(pte_val(pte) & PTE_SWP_UFFD);
- }
- 
- static inline pte_t pte_swp_clear_uffd_wp(pte_t pte)
- {
--	return clear_pte_bit(pte, __pgprot(PTE_SWP_UFFD_WP));
-+	return clear_pte_bit(pte, __pgprot(PTE_SWP_UFFD));
- }
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
-diff --git a/arch/riscv/include/asm/pgtable-bits.h b/arch/riscv/include/asm/pgtable-bits.h
-index b422d9691e60..d5a86b4df3ce 100644
---- a/arch/riscv/include/asm/pgtable-bits.h
-+++ b/arch/riscv/include/asm/pgtable-bits.h
-@@ -40,20 +40,20 @@
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
- 
--/* ext_svrsw60t59b: Bit(60) for uffd-wp tracking */
--#define _PAGE_UFFD_WP							\
-+/* ext_svrsw60t59b: Bit(60) for userfaultfd tracking */
-+#define _PAGE_UFFD							\
- 	((riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)) ?	\
- 	 (1UL << 60) : 0)
- /*
-  * Bit 4 is not involved into swap entry computation, so we
-- * can borrow it for swap page uffd-wp tracking.
-+ * can borrow it for swap page userfaultfd tracking.
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index 658740df2978..c4f2cc6dfcf0 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -178,7 +178,8 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
   */
--#define _PAGE_SWP_UFFD_WP						\
-+#define _PAGE_SWP_UFFD						\
- 	((riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)) ?	\
- 	 _PAGE_USER : 0)
- #else
--#define _PAGE_UFFD_WP		0
--#define _PAGE_SWP_UFFD_WP	0
-+#define _PAGE_UFFD		0
-+#define _PAGE_SWP_UFFD		0
- #endif
- 
- #define _PAGE_TABLE     _PAGE_PRESENT
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 48a127323b21..ca69948b3ed8 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -405,32 +405,32 @@ static inline pte_t pte_wrprotect(pte_t pte)
- 
- static inline bool pte_uffd_wp(pte_t pte)
+ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
  {
--	return !!(pte_val(pte) & _PAGE_UFFD_WP);
-+	return !!(pte_val(pte) & _PAGE_UFFD);
+-	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
++	return vma_test_any_mask(vma,
++		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
  }
  
- static inline pte_t pte_mkuffd_wp(pte_t pte)
- {
--	return pte_wrprotect(__pte(pte_val(pte) | _PAGE_UFFD_WP));
-+	return pte_wrprotect(__pte(pte_val(pte) | _PAGE_UFFD));
- }
- 
- static inline pte_t pte_clear_uffd_wp(pte_t pte)
- {
--	return __pte(pte_val(pte) & ~(_PAGE_UFFD_WP));
-+	return __pte(pte_val(pte) & ~(_PAGE_UFFD));
- }
- 
- static inline bool pte_swp_uffd_wp(pte_t pte)
- {
--	return !!(pte_val(pte) & _PAGE_SWP_UFFD_WP);
-+	return !!(pte_val(pte) & _PAGE_SWP_UFFD);
- }
- 
- static inline pte_t pte_swp_mkuffd_wp(pte_t pte)
- {
--	return __pte(pte_val(pte) | _PAGE_SWP_UFFD_WP);
-+	return __pte(pte_val(pte) | _PAGE_SWP_UFFD);
- }
- 
- static inline pte_t pte_swp_clear_uffd_wp(pte_t pte)
- {
--	return __pte(pte_val(pte) & ~(_PAGE_SWP_UFFD_WP));
-+	return __pte(pte_val(pte) & ~(_PAGE_SWP_UFFD));
- }
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
-@@ -1157,7 +1157,7 @@ static inline pud_t pud_modify(pud_t pud, pgprot_t newprot)
-  *	bit            0:	_PAGE_PRESENT (zero)
-  *	bit       1 to 2:	(zero)
-  *	bit            3:	_PAGE_SWP_SOFT_DIRTY
-- *	bit            4:	_PAGE_SWP_UFFD_WP
-+ *	bit            4:	_PAGE_SWP_UFFD
-  *	bit            5:	_PAGE_PROT_NONE (zero)
-  *	bit            6:	exclusive marker
-  *	bits      7 to 11:	swap type
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index c7f014cbf0a9..038c806b50a2 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -413,17 +413,17 @@ static inline pte_t pte_wrprotect(pte_t pte)
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
- static inline int pte_uffd_wp(pte_t pte)
- {
--	return pte_flags(pte) & _PAGE_UFFD_WP;
-+	return pte_flags(pte) & _PAGE_UFFD;
- }
- 
- static inline pte_t pte_mkuffd_wp(pte_t pte)
- {
--	return pte_wrprotect(pte_set_flags(pte, _PAGE_UFFD_WP));
-+	return pte_wrprotect(pte_set_flags(pte, _PAGE_UFFD));
- }
- 
- static inline pte_t pte_clear_uffd_wp(pte_t pte)
- {
--	return pte_clear_flags(pte, _PAGE_UFFD_WP);
-+	return pte_clear_flags(pte, _PAGE_UFFD);
- }
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
-@@ -528,17 +528,17 @@ static inline pmd_t pmd_wrprotect(pmd_t pmd)
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
- static inline int pmd_uffd_wp(pmd_t pmd)
- {
--	return pmd_flags(pmd) & _PAGE_UFFD_WP;
-+	return pmd_flags(pmd) & _PAGE_UFFD;
- }
- 
- static inline pmd_t pmd_mkuffd_wp(pmd_t pmd)
- {
--	return pmd_wrprotect(pmd_set_flags(pmd, _PAGE_UFFD_WP));
-+	return pmd_wrprotect(pmd_set_flags(pmd, _PAGE_UFFD));
- }
- 
- static inline pmd_t pmd_clear_uffd_wp(pmd_t pmd)
- {
--	return pmd_clear_flags(pmd, _PAGE_UFFD_WP);
-+	return pmd_clear_flags(pmd, _PAGE_UFFD);
- }
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
-@@ -1550,32 +1550,32 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
- static inline pte_t pte_swp_mkuffd_wp(pte_t pte)
- {
--	return pte_set_flags(pte, _PAGE_SWP_UFFD_WP);
-+	return pte_set_flags(pte, _PAGE_SWP_UFFD);
- }
- 
- static inline int pte_swp_uffd_wp(pte_t pte)
- {
--	return pte_flags(pte) & _PAGE_SWP_UFFD_WP;
-+	return pte_flags(pte) & _PAGE_SWP_UFFD;
- }
- 
- static inline pte_t pte_swp_clear_uffd_wp(pte_t pte)
- {
--	return pte_clear_flags(pte, _PAGE_SWP_UFFD_WP);
-+	return pte_clear_flags(pte, _PAGE_SWP_UFFD);
- }
- 
- static inline pmd_t pmd_swp_mkuffd_wp(pmd_t pmd)
- {
--	return pmd_set_flags(pmd, _PAGE_SWP_UFFD_WP);
-+	return pmd_set_flags(pmd, _PAGE_SWP_UFFD);
- }
- 
- static inline int pmd_swp_uffd_wp(pmd_t pmd)
- {
--	return pmd_flags(pmd) & _PAGE_SWP_UFFD_WP;
-+	return pmd_flags(pmd) & _PAGE_SWP_UFFD;
- }
- 
- static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
- {
--	return pmd_clear_flags(pmd, _PAGE_SWP_UFFD_WP);
-+	return pmd_clear_flags(pmd, _PAGE_SWP_UFFD);
- }
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index 2ec250ba467e..af08d98be930 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -31,7 +31,7 @@
- 
- #define _PAGE_BIT_SPECIAL	_PAGE_BIT_SOFTW1
- #define _PAGE_BIT_CPA_TEST	_PAGE_BIT_SOFTW1
--#define _PAGE_BIT_UFFD_WP	_PAGE_BIT_SOFTW2 /* userfaultfd wrprotected */
-+#define _PAGE_BIT_UFFD		_PAGE_BIT_SOFTW2 /* userfaultfd tracking */
- #define _PAGE_BIT_SOFT_DIRTY	_PAGE_BIT_SOFTW3 /* software dirty tracking */
- #define _PAGE_BIT_KERNEL_4K	_PAGE_BIT_SOFTW3 /* page must not be converted to large */
- 
-@@ -39,7 +39,7 @@
- #define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW5 /* Saved Dirty bit (leaf) */
- #define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW5 /* No PTI shadow (root PGD) */
- #else
--/* Shared with _PAGE_BIT_UFFD_WP which is not supported on 32 bit */
-+/* Shared with _PAGE_BIT_UFFD which is not supported on 32 bit */
- #define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW2 /* Saved Dirty bit (leaf) */
- #define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW2 /* No PTI shadow (root PGD) */
- #endif
-@@ -111,11 +111,11 @@
- #endif
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--#define _PAGE_UFFD_WP		(_AT(pteval_t, 1) << _PAGE_BIT_UFFD_WP)
--#define _PAGE_SWP_UFFD_WP	_PAGE_USER
-+#define _PAGE_UFFD		(_AT(pteval_t, 1) << _PAGE_BIT_UFFD)
-+#define _PAGE_SWP_UFFD		_PAGE_USER
- #else
--#define _PAGE_UFFD_WP		(_AT(pteval_t, 0))
--#define _PAGE_SWP_UFFD_WP	(_AT(pteval_t, 0))
-+#define _PAGE_UFFD		(_AT(pteval_t, 0))
-+#define _PAGE_SWP_UFFD		(_AT(pteval_t, 0))
- #endif
- 
- #if defined(CONFIG_X86_64) || defined(CONFIG_X86_PAE)
-@@ -129,7 +129,7 @@
  /*
-  * The hardware requires shadow stack to be Write=0,Dirty=1. However,
-  * there are valid cases where the kernel might create read-only PTEs that
-- * are dirty (e.g., fork(), mprotect(), uffd-wp(), soft-dirty tracking). In
-+ * are dirty (e.g., fork(), mprotect(), userfaultfd, soft-dirty tracking). In
-  * this case, the _PAGE_SAVED_DIRTY bit is used instead of the HW-dirty bit,
-  * to avoid creating a wrong "shadow stack" PTEs. Such PTEs have
-  * (Write=0,SavedDirty=1,Dirty=0) set.
-@@ -151,7 +151,7 @@
- #define _COMMON_PAGE_CHG_MASK	(PTE_PFN_MASK | _PAGE_PCD | _PAGE_PWT |	\
- 				 _PAGE_SPECIAL | _PAGE_ACCESSED |	\
- 				 _PAGE_DIRTY_BITS | _PAGE_SOFT_DIRTY |	\
--				 _PAGE_CC | _PAGE_UFFD_WP)
-+				 _PAGE_CC | _PAGE_UFFD)
- #define _PAGE_CHG_MASK	(_COMMON_PAGE_CHG_MASK | _PAGE_PAT)
- #define _HPAGE_CHG_MASK (_COMMON_PAGE_CHG_MASK | _PAGE_PSE | _PAGE_PAT_LARGE)
+@@ -190,22 +191,23 @@ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+  */
+ static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
+ {
+-	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
++	return vma_test_any_mask(vma,
++		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
+ }
  
+ static inline bool userfaultfd_missing(struct vm_area_struct *vma)
+ {
+-	return vma->vm_flags & VM_UFFD_MISSING;
++	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
+ }
+ 
+ static inline bool userfaultfd_wp(struct vm_area_struct *vma)
+ {
+-	return vma->vm_flags & VM_UFFD_WP;
++	return vma_test_any_mask(vma, VMA_UFFD_WP);
+ }
+ 
+ static inline bool userfaultfd_minor(struct vm_area_struct *vma)
+ {
+-	return vma->vm_flags & VM_UFFD_MINOR;
++	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
+ }
+ 
+ static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
+@@ -222,7 +224,7 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+ 
+ static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+ {
+-	return vma->vm_flags & __VM_UFFD_FLAGS;
++	return vma_test_any_mask(vma, __VMA_UFFD_FLAGS);
+ }
+ 
+ static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
 -- 
 2.54.0
 
