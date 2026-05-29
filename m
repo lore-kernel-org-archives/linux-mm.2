@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E8E2CD6E49
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 17:24:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36ECACD6E49
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 17:24:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 019616B00C8; Fri, 29 May 2026 13:24:18 -0400 (EDT)
+	id 9B6656B00CD; Fri, 29 May 2026 13:24:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F33126B00CD; Fri, 29 May 2026 13:24:17 -0400 (EDT)
+	id 967226B00D0; Fri, 29 May 2026 13:24:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E48FD6B00CE; Fri, 29 May 2026 13:24:17 -0400 (EDT)
+	id 882566B00CD; Fri, 29 May 2026 13:24:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D2A2D6B00C8
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 13:24:17 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 64388C01C7
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:24:17 +0000 (UTC)
-X-FDA: 84821130954.20.85B625F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 70F0516000A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:24:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YTtJGEh7;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 771316B00CD
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 13:24:21 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 393228C8A1
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:24:21 +0000 (UTC)
+X-FDA: 84821131122.11.5CA7773
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2C8B020002
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:24:19 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+LQqFiO;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780075459; a=rsa-sha256;
+	cv=none;
+	b=Cn8PaGVdaUY31xPxgYXIp8GVUCr+KWBQAir6AS63H4hROyWUN9trnUmNax4Gwt+yN6O+gz
+	2z53fn1tZ4QsQLiIZYDEviMX5FcBR0zVEUozDdZ9AdiyQylwmlFKjJe4o+t/AKVf3EhPX1
+	yNxu6bqaWR+HsvDe5mbSSLlzTPZBYxQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+LQqFiO;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780075455;
+	s=arc-20220608; t=1780075459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fbbpli+hXkiBIhpDsuI5TYzprk7eDfizGvmgjVMK96o=;
-	b=SfeUz8naqZMU4Rc4f85QnKs+gaku0UjWMF7meTyOcCb3haoSKkf91OjxGgAEWpzDGyPfWA
-	7Efv4WwvhhYEZQ0QcCntL9eYIvrhu4DeyQQRdohpvgfT5Op0y3Y/wjrB44TbesgLrGJ5pB
-	9sOGtfDtOKQreBF29falMXlA7XyxdMk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780075455; a=rsa-sha256;
-	cv=none;
-	b=Lu4oceRKYt6VYPxttZoPzuUCSQO51qkyGtoqCP14S9YQqU67ep8kv6b+Axhex3OsjzL+dE
-	paLbFwVt2aHcd/qZYih9EoyTkS3wsjugd6QOlRzGEVeLXE1LjXFCW/dqNr64OuYqfdBclE
-	8uMSZVrWLGBjPpXR7IIz8SYCaOVRnqs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YTtJGEh7;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=XeG9LCEJFa4u0fWY5Mnfc8ZMY6z2gJj23YToDXVIM3Y=;
+	b=hwMMXLxwiBf+YylHKh0OIS+hXHWHEjZYK01lAf2T/jEPo9W9g7UERhMKkIya2cZhqq/5KO
+	bCYLKuMYQfotsUwd9OSnof20JkuiM/fEwOPcJYLL/PMimN38k4le2VICdsQDQBY4iJk1Ar
+	FuD1Xz4buQmC8wrlK50LmEdZhOeDgDU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 04F53605DB;
-	Fri, 29 May 2026 17:24:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308971F00899;
-	Fri, 29 May 2026 17:24:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4CFE943EEA;
+	Fri, 29 May 2026 17:24:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37341F00898;
+	Fri, 29 May 2026 17:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780075454;
-	bh=fbbpli+hXkiBIhpDsuI5TYzprk7eDfizGvmgjVMK96o=;
+	s=k20260515; t=1780075458;
+	bh=XeG9LCEJFa4u0fWY5Mnfc8ZMY6z2gJj23YToDXVIM3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YTtJGEh7Mm/KsO0ad+cS2miLHGEUbr39u5u2xM9Y2h6nuK4ndN/FjmfSHlvrQqKqy
-	 DYekQYcuQZpKYD9Ml3nEoHVWaVJxiCL3/7FC2HsSvdCL0+h5jKZs3U4VixQUlD0xC+
-	 Nn8UIwuIFl2ymSweMZP8GYYRuS2/K4OchuOOIlUxY58xBxjlZbc88XLYpQBvRxX6ni
-	 bv5ZEb0lsX7Dv8yfnRxp2PdKyLROn5vzsCTTU0oVnrlzg/jQroWFamkOu7gRq8GV+c
-	 c9PsRwf4abnjdO0fmtbKBelE6GrrKZf7u4Yodc+682Zyca5zJ/aX9K0rYDDBg8zRgJ
-	 2nlzus/Po9QSg==
+	b=n+LQqFiOrrE+y48YJVShBHh09EBlf/KfbOr/+DglsfsudubBwGEcOuV/86RGkBrEW
+	 PO6UUw2W6zT0zBEnQSu0Mn+8+UaYRFX9sMEaz6cdgqlrFuFBPk344udWQUkT8rSii9
+	 jiF1+OfFFcXmtEWu15POIX+CzsIUL3BrmUf2+ifllCG3sRQ2EMMxeMU1mSwKK3SDug
+	 ueU37TNVC07ovUNAdqN5P5gGDp4EjChGLK8e4Fpm6Bdg6Z604AdB4N0sLMtSgJyyU5
+	 yaDLEeYqkHRjH1BVc062zkNLzMQsUzzvh+rm8R/VQ/vbVLf0GQ4k+bEEtAA0t/q7+i
+	 95rhGgBX6x0wg==
 Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 83AC1F4006E;
-	Fri, 29 May 2026 13:24:13 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 29 May 2026 13:24:13 -0400
-X-ME-Sender: <xms:vcsZaqgNi-dPsjvESoXOibqniTCH1aaiII-D7KGP0oxGGd6HDGu7WQ>
-    <xme:vcsZai93UM9cV5OQKIy0I7pi3TZqp9NDqwiUmMRsDEHXHHaJmZ9w3DJPzJhIsIrup
-    vqMpxg98bgDWhNOra06n-5512Amd_91yn1XBBhHGH-zNpcpdH9YY5A>
-X-ME-Received: <xmr:vcsZapQCUUf-dC0JuicBhoUlEeTMsSZQuIXx1p-yf6xdyVBGm5eLnGy4RiG4-Q>
-X-ME-Proxy-Cause: dmFkZTEZfpMr5/eRRE28w8SXJrP2dhbWJDto6huRdd/cnfVbAAhK4j6L5mXvQtvbZW1Tgn
-    qdHjS1xVDGkdt7hr1SYRochmR7yuP2KsuqbhH6HkebbwRdIZkVYqIRv2TfGI9SaQtUiic8
-    G8SBlRV6/L2Xtb05bm6QmOQTKoj3b/RGprk0F6woL4YfqntUvh+0D5sL6ruauatQhdAfx4
-    sxg873kOfAaKAVmot+PkxhAMe2YWyy/aSlFAam2C/bHdTY9DLsPBVhceLLRJtCvIR2Q+zM
-    kaoJA5O2aRPotfcyz8zPVtzBiOjMLe5Pw3NzV/bo4OKaUt+lobJ5eojHQXZMuqCslD6ADP
-    cnvxXMLJ+GGO+YsdKG/VtAzip3oPKBED00TGmZboavLxb51m+v659bwaubg2JY1xQjHuTg
-    UmCM8Q2oSZdxrvMk3bWtd5KMX1M2Pd6UArm6jSDfw81nsFHKAMQ4fbbfRC+vk9N/Vgfi7V
-    oqaul2hByG2eXK5j2n6x3xF395psx+G0RTb5h9LdHo131yNJ4WEPG72PtkjD4woebIeM/+
-    o5O0e2DGUKzrXWs7x4haLKZGLWCkhawOH+sDfIB69Q8admleEF9xdNHiVEu2gjwY2cS4MD
-    0S3PRQnsWFPiUiwqDqufDTz1neUdguM5GjjW9YxmtF3DDBpmERQbvTJuH76A
-X-ME-Proxy: <xmx:vcsZaptuIvMWKVIoDfSSxAt5uSo66EGK16NJygpha6IAG0F3Yet0CQ>
-    <xmx:vcsZaj6s24cmbOwqFZUU1reTXtOLJe0YCCi0MiJJrj1ybaEbrm2_6w>
-    <xmx:vcsZaoJCJucrLRtgQHE8U_Whi1DSZLTKevFkg4XWEjcOnn5s9I0s2A>
-    <xmx:vcsZatQRQvFd3-rD4Ak0Pj9NPRui0PDQ4siQ5W1BH_DXH07U4TRxSw>
-    <xmx:vcsZarrmZ9lZy446Zyhoy--4ni-DCz-f0txBjarbHVUvrXTETQHXN6tL>
+	by mailfauth.phl.internal (Postfix) with ESMTP id 0EDD9F4006D;
+	Fri, 29 May 2026 13:24:17 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Fri, 29 May 2026 13:24:17 -0400
+X-ME-Sender: <xms:wcsZak-NgfpOzhZZuL_DUVc6QSlV7NKTafXAW12NDzu5Yi__Z2OXog>
+    <xme:wcsZajPEXzq_kv1SnUAjaG7zgbEV3QwhcNZFhX6PqT8mXSjKXzjWRIl0gKg8iGpY7
+    Jy_0eQBHzKapQgv-ZMZwhAAd7wfLo8rMHRKDiK_FjbJiQeWAI3oVnBk>
+X-ME-Received: <xmr:wcsZaoBm-pZZfQj0I4SXoa4BGVXUD_UVUbb6cwmVde0u3BhL8z2ZyuL9jaGtaQ>
+X-ME-Proxy-Cause: dmFkZTFrgX5MM3DUSJ7xzqsXiT9K7Mp6hFpPFfxmC0MA+iN7AjFohwvWx7oxJHZ+5oTsa/
+    eNprXeJ/674yJe1dHbWF7GZb1XnToVb0R4autdIDJiozLrBStYEb9fpXa/2JrApUqbrre1
+    LdBuyJn9i8qKcJffyvK1YIhy0raIMBiWiOnHjwA5r86k+Zhi6bSohRFuPzPhOdP14jnWJI
+    /xiWZuCo09JkwaiWtT4Gp2J4EUMHafSQnln9uaxNuylCfDh3CVEdSw0SaHR74GjGjlbPAf
+    5lIf5oHRJw+wgkoNP7G5YvX9mPChAnbwGYXnMrRN1deEijcEXsq+k9G0Lzj5Q5OMaNJVHB
+    4OOwyJkq6mBqr043+j7zRMjiXH5kV6zXX7/bgSmKaz/4+CS2nFJJ/vmFn/GaYqZ+ipcj+9
+    zaCSc4zsH8zhnIMSsXMMe8+k11/OpeFmN4szkrGrgFc21nOEwGIKONCBFrCimY714mJP5y
+    eKIrJe8HvjiBOndrTcALefXl4v4JeJuPsrnHxXfOBEoBkarzNgrbvXTpxFmHceYD/BAmlo
+    sLsztvo3cGZYIOqO78ihV6vneu2kX8mZI5NKqYckQd3GswUUBMSNKmUqO3ygONGUdHdS59
+    BfN7xsE7X4zcmiX30qSzkdNfO6eHulZVz1QW+CycnZ7Z16VTgUR+37tDLTVg
+X-ME-Proxy: <xmx:wcsZanPwXsySgx8tIW5IH8ELE20ra9TtJi9lyZEs5dOgdbS_BIG1jw>
+    <xmx:wcsZaveVZS4i744WZ1v7MJzcReHKQY9oYsVHlt5-hQ_G-6AltmbUXQ>
+    <xmx:wcsZao63dhUGYiSYrJ_Dx7kTJsIx2ukNhbQ9vwY-BjKlpnzp9f0Bbg>
+    <xmx:wcsZahIJ1e721__wC-Z9iskTxDan-x0gIATk8VBCChuhleyP980ptA>
+    <xmx:wcsZaiVQ8z8F4yAQbed8dFKYJ4N-Qxkj-lmKCWttfOwkJqFTMyze0OY4>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 29 May 2026 13:24:11 -0400 (EDT)
+ 29 May 2026 13:24:16 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
@@ -100,32 +100,26 @@ Cc: linux-mm@kvack.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	stable@vger.kernel.org,
 	Sashiko AI review <sashiko-bot@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH 4/6] mm/huge_memory: preserve pmd_swp_uffd_wp on device-private PMD downgrade
-Date: Fri, 29 May 2026 18:23:28 +0100
-Message-ID: <20260529172331.356655-5-kas@kernel.org>
+	Peter Xu <peterx@redhat.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Jerome Glisse <jglisse@redhat.com>
+Subject: [PATCH 5/6] userfaultfd: gate must_wait writability check on pte_present()
+Date: Fri, 29 May 2026 18:23:29 +0100
+Message-ID: <20260529172331.356655-6-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260529172331.356655-1-kas@kernel.org>
 References: <20260529172331.356655-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: rsubrfdjk9odzgpb4a395ruad1qeickx
-X-Rspamd-Queue-Id: 70F0516000A
 X-Rspam-User: 
-X-HE-Tag: 1780075455-767782
-X-HE-Meta: U2FsdGVkX18aMbVpzAqqHvU8P/H0LRFVm0VHI0shUd9e/HdyR66TdmZUNqep/NQRsC1Atl6HhSGGAmYzKcF0BulgknmkjWzuPmU6xrl8RuoEzG0oMHWpowPWOiTX8BjKr9EZ11sfI0L7MtxbEXCD16JrHMslknV5yw6jFWx0ZTVkOx9nUNdpAe+U9tHI95O5ftMQEf7zfy5tLDtuQrEO9os5Ggd87OavZX7AbvdxWZDcHVULED+xJkdkOqB1iCb71tfCOOJpDUczvW8Mjwd0SluAae1lz9voe6ecok8O90oZm7JNj6Cga7ICqW42VJwQ3NGOMnYlbYEOyF+N43RedmFGwriD195vJdfGS5DUBcWP2q5E474kYqevxt7+7f/4m9lofMzuFnOkKQYwgNgGbwjW5IUQ4VTGXTIXCx7vDTDKCMr4AmMsCinZN2qi8zInG//gWHdKI69q5hg6aFzOCKdLW7xVR5q20xaJ4tuRd9tu8C43rAvpIiHyU2hAA9icohHvFoMcZ889ayhgkmqyGFI9M0fK6NRXNRNn21u0X6xUgygL6hFxS2nPXHmB6hQBCWChAm4zpBmRI6l+q1PyTUKSei4ZzEv5a6cUeBkumDznvF4Lnhe3Rhcn6mw5NfPOOIFrm/+W5CgHj2XhH0Ovq7YRJ5sIxYI0rjCyknt0W5dQOThv7kl6gw6P0MwP7zwbjklABtrUc26vP4vLy2yvF50EjevUGksXiKX7vy3YZwW5CRhR8Nzs4BDqz5547A7xCzfHjBZ0uUgYQPyNaz13q+4ndc6ATMmVxnrHrC80i0CS5sB5CRC9KQLtsPUUg7LqWg0oUU37q6YPnGL//Ue6S2tfScc+CIVuo42vcZap4Xi9SKACgPk5fZx3qd6h5PzD49CbuZnCnszlXXqVPEB+Mr3Jr1OxfumSU/tkolcCMGyOq71UxgcL3xSeyL5fnIQ6sxcHVAjmEBO0Q196xXp
- 4TqRatqF
- LrJhj6z1xEmmdOEqw/jUt/F69MTuLPMzkIS0KuuA+3j87r6CI7UDdGr69gXouuZAx+Crtk1e1Jk/OBiJPrptF3D5SjYdQku+UCL5G1XCZTIx0UyFarUP8vQQo9xbTlh835bdErCdOImZMeKEb5oWXChjSIHt8HwMuJ9T+uvQSNaQ18W1yPySd3LeX+pVmVeSbEcY9nWsgEAbYPk6H8GX/fZ2hrYxZ7edBszPCrMLbNcOtcVpWgMwx8k+j8Jjvm483Nb62N3VJiMj3kzZRchZ2bPa4ZP3N3rrHOiDBz7ClflJXB/h0OrfGHXICi0C8Tpm+4WP3yrFtygjx3KnRU/KeIJ41Lg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2C8B020002
+X-Stat-Signature: gaq59mwb114dqx3xc9chw6e6ie5onbe3
+X-HE-Tag: 1780075459-757151
+X-HE-Meta: U2FsdGVkX19r0OKQw+MhME+sv6BRggZMQuTZoFlLMzT6ucc/WdiCiSU52gN131xfuWC3rK8o0lYSY33JBn0tX2bA/hQMqdu6xU6YkahmwkmItheejlv9IBO+pC1AeSC1y7jqYQWJKA0PPNQvdGwwPQ0g0bz8Qgo3DUarvjfQ6s3xAS+3BNP/SvuDe99EjB6vdR/xhxTDrICKhiRUkxld5CFqEKSR5cIcPBSxuukDNH6D4oHVQ3S3rDqP1qusxS0W2XYY6zYrbhBTZurEfmDvXmSPYe3iIfdbwKwmk9R3ZEoaq7whM2qKuZoHyIlVgQF396J1uhI1AG4pvtARhQPgG0PSuXr5/8AUEwD1AWMkDXcJYXFN2aGnARXezGSenw4FWzDGgl1m6+LUk18rgsCvJKWcNPEaj/86ykIhybTjrtmsaA2IdOIy981Fz14D4vKiWhqtMruFTiOhp80EcAZ4CzVcJMVOK0M2Mpf+A3uV9YgCLUbXDG7bESBKEJPttL8qY9SQqrL2MfLSVyug6vlMyVj0kJ154vfJRpxx6jCulFkBlFNkfSXqAsPvaiq89ehbtcnSSfYVrF3MDVWjHJLHrd0iEOEIGABXP5xMrLw4qB9gRDfZoirENNGSuNpVQz3X5kDfCArj1D1mVxNC4BxLNgE0l23Nk/pgMoSWrxv7Z2eTqYpkipC15Y4oTvkJdMJyXeMO019qpnbThd+3jpgl1LsPRwbFU8W8RGlHw0nu9x2TdkwGSGJzQ7dXB3Rih4X+tnir1gfLOYGZYYWFLzKZc3xjXZu3jVWFKEc+4/Tfs9oH9cdI6qL+CrgB0fle1sTgFFw44bAltM002fnDQO9pka+9DbfyXJzvercYeLnhcHf3EaCZtvBsu6fLYe7ZxUGbbeRkkPy4PNRJYC5Jr6tXvTg7lNy3VG0Su6NfORPbjFMTCpvDFJq2lIGKb5YSrAk4pQWLF4LuGqJNWIc7lpK
+ jFXrtJSk
+ ENn6toMYF57mwBt655/IUJQshNuNNFTF1tWC6qLI0dpsYY+vLVcKyiwVM9nRLNykaYM0/KBbbYY8p/o2FeVQJq6SACiZ8DOQdM8Dn0lnMTldylVMnqaqeh8yHfnz8/v4SIkdPjjDYNcslIoki4N7h9ZnrePqF2LrcHF5vwI2T1uqthH58yRKFyyKcanisG4Z1jVbMEizIOxSDPhcO8NCTzBfpM9DFZQRYHPXatZar25dfQEdhCFAlaPYjM08vHRXnZH8Iowi6hQ6jVNI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,35 +127,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-change_non_present_huge_pmd() rewrites a writable device-private PMD
-swap entry into a readable one without carrying pmd_swp_uffd_wp()
-across. The PTE-level change_softleaf_pte() does this correctly;
-mirror that here, matching what copy_huge_pmd() does for the fork
-path. Without the carry, a plain mprotect() over a UFFD_WP-marked
-device-private THP strips the bit and the trap is bypassed on
-swap-in.
+userfaultfd_must_wait() and userfaultfd_huge_must_wait() read the PTE
+without taking the page table lock and then apply pte_write() /
+huge_pte_write() to it. Those accessors decode bits from the present
+encoding only; on a swap or migration entry they read the offset bits
+that happen to share the same position and return an undefined result.
 
-Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
+The intent of the check is "is this fault still WP-blocked?". A
+non-marker swap entry means the page is in transit -- the userfault
+context the original fault delivered against is no longer the same,
+and the swap-in or migration completion path will re-deliver a fresh
+fault if userspace still needs to handle it. Worst case under the
+current code the garbage write bit says "wait", and the thread stays
+asleep until a UFFDIO_WAKE that may never arrive.
+
+Gate the writability check on pte_present() so the lockless re-check
+only inspects present-PTE bits when the entry is actually present.
+The non-present, non-marker case returns "don't wait" and lets the
+fault path retry.
+
+Fixes: 369cd2121be4 ("userfaultfd: hugetlbfs: userfaultfd_huge_must_wait for hugepmd ranges")
+Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
 Cc: stable@vger.kernel.org
 Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 ---
- mm/huge_memory.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/userfaultfd.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 42b86e8ab7c0..b7c895b1d366 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2663,6 +2663,8 @@ static void change_non_present_huge_pmd(struct mm_struct *mm,
- 	} else if (softleaf_is_device_private_write(entry)) {
- 		entry = make_readable_device_private_entry(swp_offset(entry));
- 		newpmd = swp_entry_to_pmd(entry);
-+		if (pmd_swp_uffd_wp(*pmd))
-+			newpmd = pmd_swp_mkuffd_wp(newpmd);
- 	} else {
- 		newpmd = *pmd;
- 	}
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 35b206cc9aa6..f6d2a1c67019 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2535,6 +2535,15 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
+ 	/* UFFD PTE markers require userspace to resolve the fault. */
+ 	if (pte_is_uffd_marker(pte))
+ 		return true;
++	/*
++	 * Concurrent migration may have replaced the present PTE with a
++	 * non-marker swap entry between fault delivery and this lockless
++	 * re-check. huge_pte_write() on a swap entry decodes random offset
++	 * bits, so gate it on pte_present(). The migration completion path
++	 * will re-deliver the fault if it still needs userspace.
++	 */
++	if (!pte_present(pte))
++		return false;
+ 	/*
+ 	 * If VMA has UFFD WP faults enabled and WP fault, wait for userspace to
+ 	 * resolve the fault.
+@@ -2621,6 +2630,17 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
+ 	/* UFFD PTE markers require userspace to resolve the fault. */
+ 	if (pte_is_uffd_marker(ptent))
+ 		goto out;
++	/*
++	 * Concurrent swap-out / migration may have replaced the present PTE
++	 * with a non-marker swap entry between fault delivery and this
++	 * lockless re-check. pte_write() on a swap entry decodes random
++	 * offset bits, so gate it on pte_present(). The page-in path will
++	 * re-deliver the fault if it still needs userspace.
++	 */
++	if (!pte_present(ptent)) {
++		ret = false;
++		goto out;
++	}
+ 	/*
+ 	 * If VMA has UFFD WP faults enabled and WP fault, wait for userspace to
+ 	 * resolve the fault.
 -- 
 2.54.0
 
