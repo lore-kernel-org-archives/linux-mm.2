@@ -4,98 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8825CD4F54
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 18:12:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59BE7CD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 18:25:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD0816B00D1; Fri, 29 May 2026 14:12:39 -0400 (EDT)
+	id 88C516B00C8; Fri, 29 May 2026 14:25:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D816A6B00D3; Fri, 29 May 2026 14:12:39 -0400 (EDT)
+	id 83D5C6B00CF; Fri, 29 May 2026 14:25:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C70726B00D7; Fri, 29 May 2026 14:12:39 -0400 (EDT)
+	id 72C6A6B00D0; Fri, 29 May 2026 14:25:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B17186B00D1
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:12:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1B8C58CCAB
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:12:39 +0000 (UTC)
-X-FDA: 84821252838.11.8E5D847
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 94FE51C000A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:12:37 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UecRj9nC;
-	spf=pass (imf20.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780078357;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 635366B00C8
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:25:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE2731C0DE8
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:25:49 +0000 (UTC)
+X-FDA: 84821286018.24.520C105
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C4B252000C
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:25:47 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ecEURisF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780079147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=WjF3Brf6cRxJkzPL/ipfulgSkES6dK/SaDc1kkuFm9w=;
-	b=fKwIaL6smH6lOg/N9R7S9eKtF9RCG/Qzni0wVFdicfRHbWZ0k5yV8lsLXtzGYl3Hijyg4s
-	XBauxmqW4pZb+RZBLHqZPMh0VQNo0Prf3B97xfKZk9kW01ep/ZhQKbP8hz2eIEIH5mlhyn
-	R5uoHM65eqr42KDY9Z4KNR2hHUE3yxM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UecRj9nC;
-	spf=pass (imf20.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780078357; a=rsa-sha256;
-	cv=none;
-	b=ztWB46BETLGb0yqq8KPw/M4zOSWJ22THdiVQUq3QcRm+1HdFw6GBv4cfJU1rS3nIw7hToh
-	+VRHvSx7uXs7paKf0xwczv+VUIqruaq07ocffo9UCKIVAFYqxf8PPYaPqalK2J5gIyuxwN
-	KqmzNj1/PlH7hssdVYMv853CLBVRiE0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E895E60136;
-	Fri, 29 May 2026 18:12:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6141F00893;
-	Fri, 29 May 2026 18:12:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780078356;
-	bh=WjF3Brf6cRxJkzPL/ipfulgSkES6dK/SaDc1kkuFm9w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UecRj9nCTx6y0yJqMUOAJoOTqbT9S71bZ/5V6yr5lUgZLmSRRZ+b9yZ32/KlvirZF
-	 2D+cZ98qJc23CtZ9PRjAUBJ05fv1yAGnSt4G8o4qyhI5QjO4amK32O1MnklaEoPG5F
-	 0rhA0SwYNTPzDsqn+5qjm81KTsfzrLPwpSndxwYSfNyT5+Uca/5J2ROvfC8a43rwOv
-	 J6Eu/RvYDqKD4e4ABWzwPqZ6GI17kHnR+mUPYsupQCGdjiIsdJZgofv1Cyq1vnsG0w
-	 xm2jCd8A1EbQh6ovD04PtWDhkOfsswYua4dYZa6gGkWJyPK5z4Xh8hbKM3C/OlPknV
-	 HXYPui3QG45FA==
-Date: Fri, 29 May 2026 08:12:35 -1000
-Message-ID: <3901fe0537edee9d7acdfd91695ead28@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: David Hildenbrand <david@kernel.org>, David Vernet <void@manifault.com>,
- Andrea Righi <arighi@nvidia.com>, Changwoo Min <changwoo@igalia.com>,
- Alexei Starovoitov <ast@kernel.org>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Andrii Nakryiko <andrii@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
- bpf@vger.kernel.org, x86@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/8] bpf: Recover arena kernel faults with scratch page
-In-Reply-To: <DIUMP21RASZI.2VNQV45RIL209@gmail.com>
-References: <20260522172219.1423324-1-tj@kernel.org>
- <20260522172219.1423324-3-tj@kernel.org>
- <7fd673df-22f3-4d70-a779-ea0b878188b3@kernel.org>
- <DIUMP21RASZI.2VNQV45RIL209@gmail.com>
-X-Stat-Signature: uk5it7mfyz5bnoz6nkfc5a8toqewnucb
-X-Rspamd-Queue-Id: 94FE51C000A
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=n/7VoLmlkelTnjhAVM+WgpRo6OCkYvMP+6JN8/8y21k=;
+	b=0Fj3dJD0/RE2yJsiMte4sxPQY9AxM0XXYrYZYXnDm7kbT/jsCkYogs51Giptsy+TohAmRP
+	nkcBAGE4LJmwH+lrRBQPXbeK7+LYIQzNtm5C+a4Ru0HYrg/QAX1SQrIenkXjDf4r9zO+Hf
+	YFQSSw2RqPqy3Q5sF1gX3Zhyju7gX9Y=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ecEURisF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780079147; a=rsa-sha256;
+	cv=pass;
+	b=XEHiiiN3YYcACnW8kOvKAzfI6f6ZLa7lT/ZRebZtCWryRfgKT3/81BA90UbSvyHLV6JUIF
+	ui2cG6MVeeKFT9BB96mNtbN1jNBvej3fC+Z9XtxHVYHD6JfHQpNXGnxd3yvtRGojXRrewD
+	uBv0RwVWKxhMogW7Y+H9bCPQStQzj30=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4903997fcb5so84742875e9.2
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 11:25:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780079146; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bgDNBJIZjtHHs+3nM3oknhWMk5Or5Vsro7Y0RTPmV5N8lsAMMvA8KQklt1dhXCx1nv
+         F6jpKSBw/nrcT3UzouZ+jQKf+Mq2/5GosLDUVPNkhn6IC7zQODRsSFbaxV16/NMrJVKP
+         haujSAeLoleSTG8OsuarR9hRRQpKxiND8/jzWg0P8cr0hwL9JL5IOtRlIUit0SV684jC
+         3CxWYFId+9NHm5TCVXWA4LpGoHmFC28y8oQdMrNezby9otQisSAZUGZg/HhLDVv84I8l
+         fHqStbHEOMozvvA6posXe6dWH5Fm6Gb4ZyD3s9Kw2O5a0SGhPu26Ypr1zHsqe8D3hDp8
+         PhBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=n/7VoLmlkelTnjhAVM+WgpRo6OCkYvMP+6JN8/8y21k=;
+        fh=1h+2o/ckBsiGpHfFKnAzaImliHkdoPNc4/HoBEN7ekE=;
+        b=IbNA6XlqNrgC07muF2D2upTqUhnCr2DZrB4K69TIlEjXPr4Wk3c1ATf13yshislJkE
+         RYaPO3QgEMYThlutkSolfWXZw+iWNABeEGJB28fZuvu19JpxLSoVqqXILhgz0QFs1wr9
+         UDLkXrv5tYtLr54XRFOdRXGp7Y8TzHIG4FFLzctP8zbQOfKxRsYhbEbC7TTM7GwPVw7E
+         GFKRKMtY53VcMlOZYBcVJBBPxxu7DHL6gb+Ad/gXAhiRpe33ljMk3ivZ4gnzkUltuG8f
+         gnw13kBIHgQjIhrjo3hmNrAI11Q34SQV8Mv86T0d0m0Qb8v1jS251iJmccHm3qCq1xuu
+         QEsw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780079146; x=1780683946; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n/7VoLmlkelTnjhAVM+WgpRo6OCkYvMP+6JN8/8y21k=;
+        b=ecEURisFQHcQfkqf8Dgd71LqlR4ZZCKMJHa3ArxsOSKwTGjDYFD5hqVZO6QPL/K0W/
+         lgBGLCgOEiVUkohiYv7DZtzo3XBywzs4iGLpRcxzswNVRX32MpUjNC88QJXNepOIs5sF
+         nnOp+VrmyIA70wPy0veXvoQkOOhTwR7YkjeJkp+cR4rw1D+JD3p1RlgYxXC/y8hK8Q+E
+         vuw9K6f75ub5TMAUW4DUT2YmpLUhwgvpib+cCeLUhjVFz+dHf3scmOc+D07gahsTJCUr
+         ANnxzNesgfCe/aVMrNQHUroz6uNlIukub5GHMVr1IHpuF6fNYlQi3v8tCPg6UQLJWJdB
+         5akA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780079146; x=1780683946;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=n/7VoLmlkelTnjhAVM+WgpRo6OCkYvMP+6JN8/8y21k=;
+        b=M6pxdWmXc5SZwa0ps8pdJMXQHAGTrDKVbNy4cSC+6sXLz+NR6j4kMjFqGEm09ebLP0
+         HSFznnW75vgvXzrnfqkOo+/y6T/YqpdPiLPXDCaiuE1z6eOFMP6xGJSDgh21Flv+JCpM
+         we1O4XVaKQxrJfo4bS4GHs3Eipjrb89rIuhxEOWFh1MBhyOsU5KkrtEMDle0o1MePQoD
+         XAy4/vnDLyMHiJtwBkCcYhe2ZQkG3nQsNDR2zx16Ts0j4KPhbAUCqP9axo76GY4Xl1bY
+         /11SqXsmmRTFjyCxq50v4EHFgqU3Zju2svkvw9gsXIRdR8+S5McWK/OJe2jCKGy3Rmw7
+         PscA==
+X-Forwarded-Encrypted: i=1; AFNElJ+2q/MB3GhPu+Qe4xqmfRTahtu+7wH0W4qmZuX3oTSb0LWf06r4cPYMKyf2ptwc/BizRzanLU4WdQ==@kvack.org
+X-Gm-Message-State: AOJu0YyTuhRA4AHRKOhujKnSeh335PhRl8nC7L+6ccIQdSF60uR7teyV
+	1mnvRkSTzDW84iq5J8HA+mBIyf+RaHbBXWoc9onPGd9E5XH68qog+jIi6c2DFv3fIjx9HGZiplE
+	1RJT8UEIcRp9YalkyOmw88ROVr/BKyA0=
+X-Gm-Gg: Acq92OEOjkCj+kGn+IefEETWLb3GfIa63bwLtLdAoRmwDXxntSYIRHZ6puR1jT63Nsc
+	ggqWL7jb7zS5J/UP1gUh3XvwCZuytaVzTgzzRJhbm/0KjTcN63YFOdaHsonX4RzgY5DHrtdblzX
+	uR5+E7iwgWvvn/eVJ2D8wIkTrIUaVwZMfPnXViBsNgvdxg2QxCXAl+xg/rD+dj9x7vmaratEzUI
+	6arq1hFYEQVbWmCHlvf8pOK9ecdG1vn1J+0UKaHRfGchSPAFunL7Cb3eMMiWA1pj14306UtEJl1
+	tsvoZV8PGk+I1BYRXYbHuQAD6EL2uzt5U9Xfcw3u1fvQGVtn9A==
+X-Received: by 2002:a05:600c:c092:b0:489:1ba8:5bf0 with SMTP id
+ 5b1f17b1804b1-490a2959113mr10743195e9.21.1780079145975; Fri, 29 May 2026
+ 11:25:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com> <tencent_7D186EDC2C9AB9009F9915C1E68F3CF44609@qq.com>
+In-Reply-To: <tencent_7D186EDC2C9AB9009F9915C1E68F3CF44609@qq.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 29 May 2026 11:25:34 -0700
+X-Gm-Features: AVHnY4Kp-sEPE-FFUF6bBOJrz20u3PpASZs17QhUX4WKimDdvMA9ZEAzM1igyBk
+Message-ID: <CAKEwX=Or6forBoArv1b=MZuhOuF+MTuLLZWPKgUmkBVaoBoYSQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 3/9] mm/zswap: support fully zswap-backed large
+ folio loads
+To: fujunjie <fujunjie1@qq.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Alexandre Ghiti <alexghiti@meta.com>, Kairui Song <kasong@tencent.com>, 
+	Usama Arif <usamaarif642@gmail.com>, Chris Li <chrisl@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: unsj7ia8hae9rmhy1wncw6u481fsc3e6
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C4B252000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780078357-718996
-X-HE-Meta: U2FsdGVkX1/PcGOPVU65JisA351+fwDEnxMZKqBEyH+Dd138CpOkR2rAgWswmJxL/wK+M0wAln9b8TERJkjzZoG9HjQIqaJH3WybShcdV2IUYke69uIpn2tQ+KNesoWQNonmyB0X1/5h37KNAFOPc+T7F2psHsI++6N0Vs1NkB0Q8wCMwwpIqNupJ5PhgDZPksEzcw8WU755dvEnFuh9foxYo9nKtGfI0nr/evRtOgUFbpL82zDHebnav7bvvNLh3ioD5hD64vdYU6LlYYgIoob1c86gqNRH35FvUUIwPTO7TEr97EkKaNRQsnLyUp5xNZk7YYg6MbrvWiReaH9jZbacqx+ZXJPUbD0EhuvfNe2OiSMksQWzRMp4/xLLXm7X+rDGoSAw+CKAHoMM/nSBL9vyYzWOIukNsksVlwLw7x8ckLauup6FFpLcz3UI9QErLjypKsH4RS8OmZoPnf548mJZMMc56U2fS8Ud1MAykgC22M320Pop6b84O4k5ZbqdXza+jE/Y0ICC0CRvydjEmRHpV7rqgotsQQZd1pQkqcNRqdcCeSmSGfOiE+bkfomvNfZw9qLbUEkLppyWVdZ0FYBZEZ1zWdPrfIcVZ48q2Y93zCRUTwnP0+we+4WnydcoLHvgf96u8dIU6vZIh6ARRJz0C09+a4pOtHY39cHK20pGIoBU+k91V7HC/o/TsIf0uG/9LhnfRl2ueMIklgaqHejZ9WFr/Fn8rDzuvDkX+STfbVgL+snC8U/oGtCHM6ssOPj/ObsBDBrjTTl2aI5INBA6ybkzlAwnkEu/86YmI3Vhd6Lxbe7wgq4i3EHSw8JlR7fLZ3mwLAvbFAW1aeuvH6uBOk16sFwNYf1wsIMGKZzdDXYdrUuwJuvR/mII3GH5tQfSwj1cufpH/ijy3pYLTkOPApFZAMgPfv7g3SRqupBFddJjJpSTVNTYKVxp/lshiN+PuHjItQ3Pfh1XWUm
- qFLTpKjz
- U97zMC1LQ/ELYxVvn8qBaUmD9HHRwnpz5kXs4eTwH8I5LlqGOO8ZdPuYyfjqgiK3nZpHwKbo2ifHPpGCRufrc8qennqTR/clVN4tJ/INfS7Qv41KYi5tBVkY/7Jq2V2hjiOsY9AqlIZiCAl9yURs61XNkZUjiJxQKtG8EsKEoAVJ9vpYmqVpsP5lHdEMn1SF2POyzgzr/FBu3heTlfC1z6znBCGx4PJayYYj0HWdpSy+nuZ0qWuicYVQiPvMBR+5H3ANt5tJeQ7pw8AC3KD2Si4pSAg==
+X-HE-Tag: 1780079147-354638
+X-HE-Meta: U2FsdGVkX18XIPBt53dp0d9sQSYFJ+l1firt9TItlzXhVGkGZVMr3vC49UR1/CHew7iuRgcZAuQPKHqGq8FPRLWgj7xSmONJjXtl8fFNFKLLKTV95mgNQdIT9d7a8txaEJvzY50YYXnTeYx+YhJwXgD+hQnMjiuDSPcFsxhmVmZ7WiV9rb02N4TVVOok4UBYQT417Q56ukgEV8AfRwIRB8XzKNYZKYptJq+ZXKy6jFopkubdN6ZG7pt31q3zd5/L19ExSFdT50EBj1rEp8OzTyh+HkHHA0ftG31L1pWjxrUtzUeXVZdk9dbDatw8YZ2uBd7I7PlaQTvpTXFhz8CcUmopDrfBXlRTgP56+aprs2wEYOh4CckvtKyNXM/W/+BhLhbUBZDmjwhkra1JuiQLzNZxPPAye1uuCiyeCU2+20u2d6cLrEC7Z+5+BGQmKs10V4XEealGeC5rKVsXNuJxQoeaWxBS9rRWYmDpswTS8JPCGvabVzMyyHQsADbQExzUR4IKiFck8XOjuiRkwfyCOQci4R5ZrK1UeMzCeY74kprOUHPo3siT8VY612zEFh/kH6cF1FfCicEj0ljps7dTEh13P6rwAP4tEOJ2oKYqz3cwmfyO3+ieLy5QD672SzwOP1HNRxQ8sBDq+N/fYmD//tAVtEmgkyixR9ztNbQQS1pxdJZfKTouo0ouvKRPrjTOl/jtp6QWNi5NP7dYdwkL/5zhnkM411WqYc3TNJgv+tnKxBFu+q7RK4E3q0vIhmzGpxmZLm0090bzl/m3T+gdYFpkfaBsz8dAfegdp2JzuJZw4YUgVOgwi4s40+D1dgpbvYU4q9+lqg7pjUC3LYJ5qj0VVke0V2/sX+nEGCBdHSMtZml5HF4c58ne4zwWEn6/bmmTghijaQeecmXEy7c11unl9uwzR4vYlI7TMfbYlTB45Z0yjS86sXefoqXwSXtqwJ+75Xp/Dhi9dAJtydi
+ RP3n8qae
+ V+f3vmJkLmlrcO+q2rxUuC2UQQuPq9lJebb/YhvBfsXq2zWNoibQ9+G4BzDeNTynbDG1SAI2T5oDptgdFDmHtshe2vaFsN0ew0vnse53qhWM4vc3rjWG68pAAURcMeomvMfQ5wGfO80lTZGfjhqDkDdBIwadeiPy52xYxgOQfbtWIeWOAecLUxidyi3Lq+47VwUNGY56S46rYIjinp1ZVq8RFunLC2KfWsPZDqIzTZxN7c/XXwgrIF0vZheSnz7nu9KLARzHJArL6u7/PZjdNThJzJ88UPOwu5bwdSdSvdROChLNC4lLPajxJBVLQvmiHSBowS6nBWjrYrLReNzzDN/OFHGIxT451Tlto8NRPuHqDl0x7fiBYxMCWrBXGljF4z4GFquvqK001KPKmE8zgQza1RCDinrd8Y2VISgwMcYhEGk8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,25 +144,246 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Fri, May 29, 2026 at 5:19=E2=80=AFAM fujunjie <fujunjie1@qq.com> wrote:
+>
+> zswap currently refuses large swapcache folios. That is correct for mixed
+> backend ranges, but it also prevents the common swapin path from loading =
+a
+> range that is still fully backed by zswap.
+>
+> Teach zswap_load() to fill a locked large swapcache folio by decompressin=
+g
+> each base-page entry into the matching folio offset, then flushing the
+> folio once. A missing entry after zswap data has been seen is reported as
+> -EAGAIN so the caller can drop the speculative large folio and retry
+> order-0.
+>
+> The large load keeps the zswap entries in place. It is a clean speculativ=
+e
+> fill: until the swap slots are freed, zswap remains the backing copy if
+> reclaim drops the large folio before PTEs are installed.
+>
+> Signed-off-by: fujunjie <fujunjie1@qq.com>
+> ---
+>  mm/zswap.c | 105 ++++++++++++++++++++++++++++++++++++++++++++---------
+>  1 file changed, 87 insertions(+), 18 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index da5297f7bd69..94ba112a2982 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -15,6 +15,8 @@
+>
+>  #include <linux/module.h>
+>  #include <linux/cpu.h>
+> +#include <linux/mm.h>
+> +#include <linux/huge_mm.h>
+>  #include <linux/highmem.h>
+>  #include <linux/slab.h>
+>  #include <linux/spinlock.h>
+> @@ -934,7 +936,8 @@ static bool zswap_compress(struct page *page, struct =
+zswap_entry *entry,
+>         return comp_ret =3D=3D 0 && alloc_ret =3D=3D 0;
+>  }
+>
+> -static bool zswap_decompress(struct zswap_entry *entry, struct folio *fo=
+lio)
+> +static bool zswap_decompress(struct zswap_entry *entry, struct folio *fo=
+lio,
+> +                            unsigned int page_idx, bool flush_dcache)
+>  {
+>         struct zswap_pool *pool =3D entry->pool;
+>         struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 e=
+ntries */
+> @@ -952,14 +955,15 @@ static bool zswap_decompress(struct zswap_entry *en=
+try, struct folio *folio)
+>
+>                 WARN_ON_ONCE(input->length !=3D PAGE_SIZE);
+>
+> -               dst =3D kmap_local_folio(folio, 0);
+> +               dst =3D kmap_local_folio(folio, page_idx * PAGE_SIZE);
+>                 memcpy_from_sglist(dst, input, 0, PAGE_SIZE);
+>                 dlen =3D PAGE_SIZE;
+>                 kunmap_local(dst);
+> -               flush_dcache_folio(folio);
+> +               if (flush_dcache)
+> +                       flush_dcache_folio(folio);
+>         } else {
+>                 sg_init_table(&output, 1);
+> -               sg_set_folio(&output, folio, PAGE_SIZE, 0);
+> +               sg_set_folio(&output, folio, PAGE_SIZE, page_idx * PAGE_S=
+IZE);
+>                 acomp_request_set_params(acomp_ctx->req, input, &output,
+>                                          entry->length, PAGE_SIZE);
+>                 ret =3D crypto_acomp_decompress(acomp_ctx->req);
+> @@ -1042,7 +1046,7 @@ static int zswap_writeback_entry(struct zswap_entry=
+ *entry,
+>                 goto out;
+>         }
+>
+> -       if (!zswap_decompress(entry, folio)) {
+> +       if (!zswap_decompress(entry, folio, 0, true)) {
+>                 ret =3D -EIO;
+>                 goto out;
+>         }
+> @@ -1615,10 +1619,9 @@ enum zswap_range_state zswap_probe_range(swp_entry=
+_t swp,
+>   *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_=
+page()
+>   *  will SIGBUS).
+>   *
+> - *  -EINVAL: if the swapped out content was in zswap, but the page belon=
+gs
+> - *  to a large folio, which is not supported by zswap. The folio is unlo=
+cked,
+> - *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
+> - *  do_swap_page() will SIGBUS).
+> + *  -EAGAIN: if the swapped out content belongs to a large folio, but th=
+e
+> + *  range is mixed or raced with writeback. The folio remains locked so =
+the
+> + *  caller can drop the large swapcache folio and retry order-0.
+>   *
+>   *  -ENOENT: if the swapped out content was not in zswap. The folio rema=
+ins
+>   *  locked on return.
+> @@ -1626,9 +1629,12 @@ enum zswap_range_state zswap_probe_range(swp_entry=
+_t swp,
+>  int zswap_load(struct folio *folio)
+>  {
+>         swp_entry_t swp =3D folio->swap;
+> +       unsigned int nr_pages =3D folio_nr_pages(folio);
+> +       unsigned int type =3D swp_type(swp);
+>         pgoff_t offset =3D swp_offset(swp);
+> -       struct xarray *tree =3D swap_zswap_tree(swp);
+> +       struct xarray *tree;
+>         struct zswap_entry *entry;
+> +       unsigned int i;
+>
+>         VM_WARN_ON_ONCE(!folio_test_locked(folio));
+>         VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
+> @@ -1636,21 +1642,84 @@ int zswap_load(struct folio *folio)
+>         if (zswap_never_enabled())
+>                 return -ENOENT;
+>
+> -       /*
+> -        * Large folios should not be swapped in while zswap is being use=
+d, as
+> -        * they are not properly handled. Zswap does not properly load la=
+rge
+> -        * folios, and a large folio may only be partially in zswap.
+> -        */
+> -       if (WARN_ON_ONCE(folio_test_large(folio))) {
+> +       if (folio_test_large(folio)) {
+> +               struct obj_cgroup *first_objcg =3D NULL;
+> +               bool same_objcg =3D true;
+> +               bool saw_zswap =3D false;
+> +               bool saw_non_zswap =3D false;
+> +
+> +               /*
+> +                * The locked large swapcache folio now covers the range =
+and
+> +                * conflicts with zswap writeback's order-0 swapcache all=
+ocation.
+> +                * If the range is mixed or an entry disappears, retry or=
+der-0.
+> +                */
+> +               for (i =3D 0; i < nr_pages; i++) {
+> +                       tree =3D swap_zswap_tree(swp_entry(type, offset +=
+ i));
+> +                       entry =3D xa_load(tree, offset + i);
+> +                       if (!entry) {
+> +                               if (saw_zswap)
+> +                                       return -EAGAIN;
+> +                               saw_non_zswap =3D true;
+> +                               continue;
+> +                       }
 
-> It should do set_pte_at() unconditionally.
+Can we use xas_load API here instead of traversing down the tree again
+and again?
 
-I think two concerns are tangled here.
+> +                       if (saw_non_zswap)
+> +                               return -EAGAIN;
+> +
+> +                       if (!saw_zswap)
+> +                               first_objcg =3D entry->objcg;
+> +                       else if (entry->objcg !=3D first_objcg)
+> +                               same_objcg =3D false;
 
-1. The racing write. set_pte_at() and the scratch installer's
-ptep_try_set() hit the same PTE with no common lock. On x86-64 and arm64
-set_pte_at() is a single atomic store, so it can't tear against the
-cmpxchg, but a plain store racing a cmpxchg isn't atomic in general.
-David, is that the worry - an arch where set_pte_at() is split and could
-tear - or something else?
+Can we get different objcg at this point?
 
-2. The SEGV. It's a BPF program failure propagating out as a SEGV. Maybe
-not ideal, but as long as we surface the BPF error properly, it doesn't
-necessarily seem broken to me.
+> +                       saw_zswap =3D true;
+> +               }
+> +               if (!saw_zswap)
+> +                       return -ENOENT;
+> +
+> +               for (i =3D 0; i < nr_pages; i++) {
+> +                       tree =3D swap_zswap_tree(swp_entry(type, offset +=
+ i));
+> +                       entry =3D xa_load(tree, offset + i);
+> +                       if (!entry)
+> +                               return -EAGAIN;
+> +
+> +                       if (!zswap_decompress(entry, folio, i, false)) {
+> +                               folio_unlock(folio);
+> +                               return -EIO;
+> +                       }
+> +               }
+> +
+> +               flush_dcache_folio(folio);
+> +               /*
+> +                * Keep zswap entries until swap slots are freed. This is=
+ a clean
+> +                * speculative fill; zswap remains the backing copy if re=
+claim
+> +                * drops the large folio before PTEs are installed.
+> +                */
+> +               folio_mark_uptodate(folio);
+> +               count_vm_events(ZSWPIN, nr_pages);
+> +               count_mthp_stat(folio_order(folio), MTHP_STAT_SWPIN);
+> +
+> +               if (same_objcg) {
+> +                       if (first_objcg)
+> +                               count_objcg_events(first_objcg, ZSWPIN, n=
+r_pages);
+> +               } else {
+> +                       for (i =3D 0; i < nr_pages; i++) {
+> +                               tree =3D swap_zswap_tree(swp_entry(type, =
+offset + i));
+> +                               entry =3D xa_load(tree, offset + i);
+> +                               if (WARN_ON_ONCE(!entry))
+> +                                       continue;
+> +                               if (entry->objcg)
+> +                                       count_objcg_events(entry->objcg, =
+ZSWPIN, 1);
 
-Thanks.
+xas_load() here too?
 
---
-tejun
+
+> +                       }
+> +               }
+> +
+>                 folio_unlock(folio);
+> -               return -EINVAL;
+> +               return 0;
+>         }
+
+>
+> +       tree =3D swap_zswap_tree(swp);
+>         entry =3D xa_load(tree, offset);
+>         if (!entry)
+>                 return -ENOENT;
+>
+> -       if (!zswap_decompress(entry, folio)) {
+> +       if (!zswap_decompress(entry, folio, 0, true)) {
+>                 folio_unlock(folio);
+>                 return -EIO;
+>         }
+
+I wonder how much of these two paths (order 0 and larger order) can be
+unified...
+
+> --
+> 2.34.1
+>
 
