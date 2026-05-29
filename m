@@ -4,124 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27268CD6E49
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 03:21:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EB2ECD5BD1
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 03:28:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 142046B00A1; Thu, 28 May 2026 23:21:27 -0400 (EDT)
+	id 5DEB96B00A0; Thu, 28 May 2026 23:28:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CB6A6B00A2; Thu, 28 May 2026 23:21:27 -0400 (EDT)
+	id 58ED06B00A2; Thu, 28 May 2026 23:28:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E861D6B00A3; Thu, 28 May 2026 23:21:26 -0400 (EDT)
+	id 4CB436B00A3; Thu, 28 May 2026 23:28:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D4FB16B00A1
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 23:21:26 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 86B66162ED7
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:21:26 +0000 (UTC)
-X-FDA: 84819006972.22.A9A1CCF
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BCD4820004
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:21:24 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fcdJCZJS;
-	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3ED876B00A0
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 23:28:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E6353C288A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:28:15 +0000 (UTC)
+X-FDA: 84819024150.15.A1727BB
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8B57340008
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:28:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Qdh394vT;
+	spf=pass (imf11.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.92 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780024884;
+	s=arc-20220608; t=1780025294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DD7mpkHwGkKw+XnhrMPNwFwDdntpab6EeONlinrdH5M=;
-	b=o7JrNI3dknfg9rv6xkEi/Ncdcqm80v+r85X1kbp+orXJVHE71pA/t3iYRKCFoxKCNMAqds
-	/fYhSsJYGZ6uqlnwk1aGiq+HaSeopQ0QSyYZ0pdOcHR4QhMA/tGroMWxzcapx70mvL6GTl
-	Tl2NYSJIXv5B6J4HeW4i3T3o6gnZkHg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fcdJCZJS;
-	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780024884; a=rsa-sha256;
+	bh=h6PEc5psigEz/kH0bVSk2Y2gyiMDJw494/MMiO7Z36M=;
+	b=zXB2WCiEYTxKhsf4jJ+VYzb2ygLyYfhBbp930+hyA/RG/xNRZLac0irGIJusBsTMzYbuPC
+	AVVDFbUAkqQL91mlBmzFgDkDgQK3Kn9a9uvqwknpkB9biMF1x02Dt4IyD010sqsJSJ6uYQ
+	Z0U0S+VXmIgRinsDmnwq/4WIoAhOMAo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780025294; a=rsa-sha256;
 	cv=none;
-	b=4EkQtgfDFnpdm5YB19oRgTJdGSXRfyQLqotORKbNXPnNSJn4YWiHKOF9dlKrlQ488uetnU
-	9MJ9UTUdwqNUAs4iu5ZWUQn0xyMe/yFEThc7H7Qm9S2Rx1BzJO0QNo/yK6hhv7X96G6/YP
-	I08WZNx7A3DZOABcIN1oKFfn0nKCswU=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-9106ea78cd8so2044178285a.3
-        for <linux-mm@kvack.org>; Thu, 28 May 2026 20:21:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780024884; x=1780629684; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DD7mpkHwGkKw+XnhrMPNwFwDdntpab6EeONlinrdH5M=;
-        b=fcdJCZJSlmBCOFOhCEOm3vRc47fFoRPB+nQCUZVRy3pH5F4qL1+o6YIlrmdmX0QtOk
-         n60dpDmEQ3UfjuaG+L/0t81Et+Dr72xyjin0bVNE/Kwa9TuJatQeuLzpmG8M0DrtWyIe
-         9vf8/NsQCaTEXYa4O3fRrzPu0c1Coy/+Hw/ToGI/O12Onzi43hTPENhxyAA7VljzMKel
-         EwOgwtWYO6O0g6EClRbaqbQh0gMJq33jCuxKHwbfu4KO9P60kLKzZpmZQsdYNt/UPUS7
-         KzKeV8Tc/qtBcj3amUnqxQHutHsE9liiiXayWf+rdE0PfK7qJw8D0ABRdUCYF7dvb7GJ
-         nlGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780024884; x=1780629684;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DD7mpkHwGkKw+XnhrMPNwFwDdntpab6EeONlinrdH5M=;
-        b=oFJp5p1piIjdSO7wZL2S1bryL8EL/bdbZSIXF4DJePJnrVnG+/MouUrMMAavk2fDWf
-         aMUMCwgz/WOyooH5iBWjFNPccEXWYpf04AgcHezWk68EYQy8/3F8ic1up1mRgehTPRbg
-         wHqTz5R8oCqbaXfumzDIqEe1B4w6p0uw0+y2Mp2/4iI40SuEbj7FiGPIBMPdjb24HBGo
-         zyM19ePdejuagl+Dtwzo196JrBsF7pkwn+RGhTp6NaqAgh9xH44Z0DotfGZca1pWYWQn
-         j2odrZgUgxJEB2b3bLO1Ej4WeQqGH2eUhiqcoj0eCHJn8doxY6hISDegZXQYoLb6ASxl
-         VmAA==
-X-Forwarded-Encrypted: i=1; AFNElJ+SJsWK1CBTDKB6CAYGSj1OF7QxzmY+etmA98Sz2Ds6g5ZCS4t06ilnxNJ8t89EWfAEyTkyOnh4BQ==@kvack.org
-X-Gm-Message-State: AOJu0YxPqHcCwlH6PVKD0xaQksf/JLNrdhr8pwLYPjFIRPKpOokWiyAy
-	43tcc0PFiJASGu1WEJdqHWh0cO+I7SM7WQ/eKLte/Dp+WBm80ec0FtuMr2D0pNZOBOs=
-X-Gm-Gg: Acq92OFotjCPf5vcxQK42y2U4MfZqnD3HiRzghJ1mXh6/4VTxHmULup2ND4oh85I4Nl
-	4zcYHSLRBTTFzfFK1N4uhIZmhryImJdCyLmrt6j4j2njJN0CGx2y3QAQ+cM90F/yOzl2Op+6Lbm
-	csxd2vRjY3HpWkGj4+as9fi1mRhvaLVVPRATW3GWwH4irWg5KD0DaqFUgljuhzmyuJ0lwiCKFIV
-	ZMcKQTlTG41wcUZul4LaxCQ1lbyszNx4K8FLrnjSQGFqzbq4qbtJGjtFyUgxTjWOUsObCsjchmt
-	dbFdLaR2kHBr/cv9eS+1mpIm00SVa5xAr8A+1m+ZzSCPFNItY+oUF+T9qEb7ckmXg8o5eW9ErGf
-	/mQWIFciab8dZADhwCdceEOxU0iPln47c3kJ4NmDjyWnHhHNY7/+NlbkHt5Cud9Q4jOJa9f3L3R
-	9A5NdlySYA5Entv+HyGQLtowkq/716BPyzlLLcfgj/MJwWOZXnatVNgSdRWEYZEw==
-X-Received: by 2002:a05:620a:4709:b0:914:bb8e:915b with SMTP id af79cd13be357-9152fd2fc49mr147943985a.21.1780024883867;
-        Thu, 28 May 2026 20:21:23 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ccea26d286sm1179476d6.48.2026.05.28.20.21.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 20:21:22 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: linux-kselftest@vger.kernel.org,
-	rppt@kernel.org,
-	shuah@kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org,
+	b=J4bFksJyfrK3Qm84b25SiITt7EgESirPs+/0PnMcYxIchqX5iq0OhXrMQMxkboHLLD0nH0
+	i7Z98ZAxSUMxb0/QIoDAwBrxfsdCYZGa9E20gJTOXQ9wjOF+xB6sr2zwwra9kglpzWy6uU
+	zbDU4GvGeuZyDmmzT8H//OQicXy4tzM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Qdh394vT;
+	spf=pass (imf11.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.92 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1780025268;
+	bh=h6PEc5psigEz/kH0bVSk2Y2gyiMDJw494/MMiO7Z36M=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=Qdh394vT/vI/ySlc5OYI2nLiVE1WQ4H0HGAeJAj3ReyLOIw7R3pSyvs3GxuUR4jOg
+	 YdBJk+4sCv9Jxf+k601Y3qNq2443wn0oW4CX2J22tHNnLYUvwN+2KzKB7222erR5Vl
+	 82IOLEedAghxebDHOB+aq0NNbtuQc6kO3+iJL/Vc=
+X-QQ-mid: zesmtpgz9t1780025257ta18e5e23
+X-QQ-Originating-IP: i22l7cR4uab6Epn6Jsxfji0CDWCVfMPMotNMblrXw6c=
+Received: from PEN1097 ( [61.183.83.60])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 29 May 2026 11:27:35 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 8449337721891734476
+EX-QQ-RecipientCnt: 8
+From: Cheng Nie <niecheng1@uniontech.com>
+To: sj@kernel.org
+Cc: damon@lists.linux.dev,
+	kernel@uniontech.com,
 	linux-kernel@vger.kernel.org,
-	corbet@lwn.net,
-	pasha.tatashin@soleen.com,
-	dmatlack@google.com,
-	kexec@lists.infradead.org,
-	pratyush@kernel.org,
-	skhawaja@google.com,
-	graf@amazon.com
-Subject: [PATCH v3 11/11] selftests/liveupdate: Add stress-files kexec test
-Date: Fri, 29 May 2026 03:21:06 +0000
-Message-ID: <20260529032106.1505796-12-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260529032106.1505796-1-pasha.tatashin@soleen.com>
-References: <20260529032106.1505796-1-pasha.tatashin@soleen.com>
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	niecheng1@uniontech.com,
+	shuah@kernel.org
+Subject: Re: [PATCH 2/2] selftests/damon: validate memcg filter sysfs readback
+Date: Fri, 29 May 2026 11:27:35 +0800
+Message-ID: <AEAE007AE486E7ED+20260529032735.1564733-1-niecheng1@uniontech.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260528142819.153573-1-sj@kernel.org>
+References: <20260528142819.153573-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7n5riatoh7uc59a9jawjfcagrtdubzst
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: NJC1vxR0K3U+co+ZB9/PBPXOqB4jNN5WenhxLVWhlk+8QM68mOyHqYM4
+	j9MeKvnbki5bkipvzhr5vfdwcHYQ4c2KnfWYl+jyJke0QeiY//HjP0XAF1nC70eqDzLuk+D
+	62xQVBwTMwGNhZDxIwNnz8Pny3s4B4ZMUZgo/5LR5JtkOHzCrVczb3UodQbVmW+JVYN7zNb
+	HDG/wW4m66EuXrW9S+ZNGvzOqhsuRGIjcCOZn5l6iAjpKNv2BzujN/IKnxQYyyM9pUzST5G
+	JSYtZjufe14avYO6YyR3MQqB1OMkJ27A68thlbB+Rl30q9kbKSAYN5Zkb7Pg644ZwHmyMzy
+	gfHpeZV7wSVp5e2+KlxR2CTlh+SSIbpCjHb2m5dC3kWKQOlh0WYD3zuDX4V6TNJigPUP2/p
+	fAfaZn4R0FVwsTCkBfoFuuOJBjawtc3N+TU14P8+SoRpWqkJf0ZQavEUNKVVrD78avrUAz6
+	r1Xcw4TVbr648szQAZvq9dEn0cHIrFiTkWFhetiIb2DBQL9/c5JY/Yaj5pNbolJPFiLqvoA
+	qfqnkjq4K5JXNNi6MdAY8RPMr9YkwIG/ppNHe8jUbIA2fFRcyVqNNmcxmPBugZoOplhfKt8
+	tKk/Lxinsn5b9lcBJYUQELzRf7S01SM9lmp8NodEEeSOSjTaDjJ9c7BDaI962BB08suzupd
+	L4vnG2oLgiLO5gm1szyS5dIhMQyS5u6h9zI3cR0brFG0XV/LsoV/XLYlDpz8bJAa59cKeME
+	VVG+dyLYar/TkVnMp/gI06n/3dXBUNjgc0Jg69NoowUial6YnClhAtYyrUgzeqoaPVjEmVt
+	3uw0CUasQp044hpGozP0fhFbvWqY5lCwVEeAAjWg2tGCctiGSV9NTQc4WudmxSyMzfach8d
+	qImEbW0gl/CukjU5J1KjBAOrgaB4nDSR8wyR5ermHcqpesIfK1TA+9geiUwEj8Ox/1J955a
+	WQ9uwGolkr1R3bEEaJU2g6TRthcN5IWBufyOEJByuxUdujsZd6y+BiYZvWfjNwsAnSNc3OZ
+	TzkZmnK0yR/TJLq6ZLCJDuQglRv/2pRi89oQBbgdhLjRIGcIZiifxzucP/ARkf+ae4BC2Ht
+	MwsqptsSty/gDOTTyUdEaCTmA+jKJuiSIa4YkEOvcWXeYNQ7WhLePM=
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 1ob6kpeodpt36jaigcbce8761gi6ftqq
+X-Rspamd-Queue-Id: 8B57340008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BCD4820004
-X-HE-Tag: 1780024884-687202
-X-HE-Meta: U2FsdGVkX1/1OgKqeFVfZxMAVw2hJRwmmMJzViOdvfaONdG2SRb9JSZAP2+Cbf/4I+9H5UnDgGIn1W3WZUHMEtilv2aPDREHNXiTphbGnE0szqC76ksYmP7fPDuTIQbZ6gi8s6EVmEPHecaMcdtQVAh4t+rv/CFMjHXWDaf8CVP6mLYbXIRe+/jTqWKssk3aV6Rwpd138O6PmAjlOKtTi4RFNlLiYxcVWyh03mVHEpXMSBYtHJhQ6M/BgnM49W1FBsGUwPTNvGbrMrhBWB4JYBq2tV2mcgn9P0Fr4wDFwBTCFE+Q6r8PZSs5lwgUD3lqXodBKjVEHFCqxZiLXLbaE59SkM/r0Bkb+Xr2lxXEdMkmG0FV111gdqhTCHc06WMYXGFxuRa6VwGizRFt/MF7tVnZ0lqwekpjFQGfiFqWesw89H0wdwCEc8v1yLfXborzDctyWbERNC4PoEo9X6WOd+h/f7SyWMOR1bs2Ptk6NFLp7nJHZ2XjFAtlNqPDkylnPmzTkyxEvJ//a22RGfc/mTaTbDFoII0pXi3NIAv7xX0IXrmUpVscWTLnuk94NrDK3CNv52xbUHjAHyUPuJgrtvxxzlzDtjNqkSMHAZK9f4Lc0qIDHVsFaiWQOxsk8m/SxXwgkNCLAsCMB90KnykPOasWTvIMnWsT6k6LOlofQeTvqFs7kYdFOk/Njh+ztpuel+Og/d/U1YMJOI/0y3vc1Bm+dYAJJCFEW6flv5VcjIYVeu3rKHB2WCRcZmSMYbH4UfJuOjPkr5KssnP9yYUiGU9lcwHyKnZq3ZNjyhxLA0MojI7NTOJTLf0GsQDZHaM2Ucmg5wWPYko3oBikmrQtqwa9N+GhI5ciwm9T8mnf1InJhNoqLgAC/zkJl7aMVmqpCY3ciAxNeIgr/lRKMXEoMnb7eIfky59edLv55YjKKA/OWs3H1hnH3yes82ILDte/IjYY9oBLuXJ+8IR7Emz
- ERTHTdfF
- e24ClJfe+6/vXe0APTECLF80Vdzbe5zxQCsfNrDFuBong++GNi1evGnC57bwFsAK6sQ38HsBY/kMQM8Vzbw7UU2cGF2dM9mpY3nw7torUT6acgKkflfUkLPBIeX07x3RyZAX8sPTwu4jzhY8OkaKYzydXcjSYZ+tMkaQea/kIOikGVxWTGfByjZ0cp9yzAbkD48zfiwXLNvfGiS7SmY6uY219fwIRuGkLofUXJhkcZpoIpglYEMXQPs0uG/FWmOF+uMQcHxvqRUSHAeet0nQbdKTdCsFt6ohhzCQSqiRNo0h0B6+AR1SOinUBxxbSv7Ln/eCDoUA5dFQ4XaoU6RgzQMNhigbPsBbBl3uYZg6RRvshUwW34bKe3B/zkPRtBCEOOoED688Zxt1cfWxaIhs5uiR4nV2COLovDOEM/vZahctTdQrBVTisUoT/nA==
+X-HE-Tag: 1780025292-401256
+X-HE-Meta: U2FsdGVkX18X+mV/YQCzlMzXnMmMI7V5aKmx81jy1U2ZWRfHQZSuf/WkhhySDY9fvRzwh9CykJp3qYFCS89Ul39c4sMvy3u3WX+FcmmE2ToWwNxz/ecjkA03O2BBW+rJ2ds5h33b9uxi0GNArk4LeShPeorfuMr4KWTAVIMBWQEbmKEu/E800ehg5yODHTTM1IJn1IfPz6bGuSXkmd6flhyR2FIOJRvTGuDMmfyXh6wQASy4tzzKjYl9A+BF2B9zMGhBrYvuylXFYDmm7IGd9KPBAnTsMgzkRmjylxAGn6XAFnWgPhdoDbF6UlYB1F4WSXCIJuPFOdp8zYgmelWGvUx4QymvR42bNFJ7Wz1ImgnNU/SCC4vnBE+B8xrcw9KtCcAoDHN5lQc3kzr9wLFQ3MEuwxN6STIR3GkGqAilT6G5klMH7V9GPWRNFC4SLO4uF/jZVYzyjKWrmuMVSoGc8znWy3GJecOOuY+JD2rJco+vnEF6EUdZGtAVO/5MQv3q/uwmjuN/wVXCiBNP39dI97TMfznrkInAcxdS7zIezasLU269kvGKnIBHcPETPYJQ8aSfqYZsEkJMQyUIDqtBQkwrvAb6CzhdeVeOMqvtg5voak2NtPM8G0P5bFvAhRD7SwD2ydkzg7E+t2gjV77BLJPWTs91qP3alzIAT9Ga0m9pdqhbsMhTiAkYHH2Ir0BeVkOvzjVGqS19dP09JeP9qH2eQuile8ryhdVq0FIMpnw47dmFZhrRPiG27hOMcMI/m0z4k72JjskazBp3fA/34ZvldALKc/NbkdNC0OfWi6U87MXf1SUiAUY20vKe4AKh7MIAaE3bzcsG1lsU5r8jOj7aURikbg4oTFgaiSCXqlhvPnPoEwp8pgKXR1RgyKJs10bVf0frtXA+t9IUv2cWP9rjIKGad3IwsxuWL2xtPs1Pj5LZWZrVC0CAVaqfdTPjUJeZbU90n5Ny2o7DGry
+ /AGTr/WP
+ H+Qs4mgOd+juzqadG/Rqm7rEe+qC5PyQ9mkwdOvMiB1kRIQABP1QGx8UTm/+H9pYorGLNqvTJPwPtjk9kgIqgzM03oYYsklGb68rGMGGYNZQa8ICfgqjbYcFxwY7jCQSLDNm76DWm1lRgepjFwtGWu8GlKOIEpQTBZHlLZPzSPMXmV+9IKO/1KX9yp+EaeTyPyiXbTXJFiCJBr6mgPzQf8TT+c6Qkah5ZGoLzkXtzE7oGOa8wey+gpU2CtD3pCP5Rel4DBcYIO0BNPwf3n9IDtq9+Wdp0H5sM0YLD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,138 +117,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a new luo_stress_files kexec test that verifies preserving and
-retrieving 500 files across a kexec reboot.
+On Thu, 28 May 2026 07:28:18 -0700 SeongJae Park wrote:
 
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
----
- tools/testing/selftests/liveupdate/Makefile   |   1 +
- .../selftests/liveupdate/luo_stress_files.c   | 101 ++++++++++++++++++
- 2 files changed, 102 insertions(+)
- create mode 100644 tools/testing/selftests/liveupdate/luo_stress_files.c
+> Could we use 'selftests/damn/sysfs.py:' as the prefix of the subject?
+> That will make it consistent with other commits and let us easily know
+> to what test this change is made.
 
-diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
-index ed7534468386..30689d22cb02 100644
---- a/tools/testing/selftests/liveupdate/Makefile
-+++ b/tools/testing/selftests/liveupdate/Makefile
-@@ -7,6 +7,7 @@ TEST_GEN_PROGS += liveupdate
- TEST_GEN_PROGS_EXTENDED += luo_kexec_simple
- TEST_GEN_PROGS_EXTENDED += luo_multi_session
- TEST_GEN_PROGS_EXTENDED += luo_stress_sessions
-+TEST_GEN_PROGS_EXTENDED += luo_stress_files
- 
- TEST_FILES += do_kexec.sh
- 
-diff --git a/tools/testing/selftests/liveupdate/luo_stress_files.c b/tools/testing/selftests/liveupdate/luo_stress_files.c
-new file mode 100644
-index 000000000000..b6a0c3899890
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/luo_stress_files.c
-@@ -0,0 +1,101 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/*
-+ * Copyright (c) 2026, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ *
-+ * Validate that LUO can handle a large number of files per session across
-+ * a kexec reboot.
-+ */
-+
-+#include <stdio.h>
-+#include <unistd.h>
-+#include "luo_test_utils.h"
-+
-+#define NUM_FILES 500
-+#define STATE_SESSION_NAME "kexec_many_files_state"
-+#define STATE_MEMFD_TOKEN 9999
-+#define TEST_SESSION_NAME "many_files_session"
-+
-+/* Stage 1: Executed before the kexec reboot. */
-+static void run_stage_1(int luo_fd)
-+{
-+	int session_fd, ret, i;
-+
-+	ksft_print_msg("[STAGE 1] Increasing ulimit for open files...\n");
-+	ret = luo_ensure_nofile_limit(NUM_FILES);
-+	if (ret == -EPERM)
-+		ksft_exit_skip("Insufficient privileges to set RLIMIT_NOFILE\n");
-+	if (ret < 0)
-+		ksft_exit_fail_msg("luo_ensure_nofile_limit failed: %s\n", strerror(-ret));
-+
-+	ksft_print_msg("[STAGE 1] Creating state file for next stage (2)...\n");
-+	create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
-+
-+	ksft_print_msg("[STAGE 1] Creating test session '%s'...\n", TEST_SESSION_NAME);
-+	session_fd = luo_create_session(luo_fd, TEST_SESSION_NAME);
-+	if (session_fd < 0)
-+		fail_exit("luo_create_session");
-+
-+	ksft_print_msg("[STAGE 1] Preserving %d files...\n", NUM_FILES);
-+	for (i = 0; i < NUM_FILES; i++) {
-+		char data[64];
-+
-+		snprintf(data, sizeof(data), "file-data-%d", i);
-+		if (create_and_preserve_memfd(session_fd, i, data) < 0)
-+			fail_exit("create_and_preserve_memfd for index %d", i);
-+	}
-+
-+	ksft_print_msg("[STAGE 1] Successfully preserved %d files.\n", NUM_FILES);
-+
-+	close(luo_fd);
-+	daemonize_and_wait();
-+}
-+
-+/* Stage 2: Executed after the kexec reboot. */
-+static void run_stage_2(int luo_fd, int state_session_fd)
-+{
-+	int session_fd;
-+	int i, stage;
-+
-+	ksft_print_msg("[STAGE 2] Starting post-kexec verification...\n");
-+
-+	restore_and_read_stage(state_session_fd, STATE_MEMFD_TOKEN, &stage);
-+	if (stage != 2) {
-+		fail_exit("Expected stage 2, but state file contains %d",
-+			  stage);
-+	}
-+
-+	ksft_print_msg("[STAGE 2] Retrieving test session '%s'...\n", TEST_SESSION_NAME);
-+	session_fd = luo_retrieve_session(luo_fd, TEST_SESSION_NAME);
-+	if (session_fd < 0)
-+		fail_exit("luo_retrieve_session");
-+
-+	ksft_print_msg("[STAGE 2] Verifying %d files...\n", NUM_FILES);
-+	for (i = 0; i < NUM_FILES; i++) {
-+		char data[64];
-+
-+		snprintf(data, sizeof(data), "file-data-%d", i);
-+		if (restore_and_verify_memfd(session_fd, i, data) < 0)
-+			fail_exit("restore_and_verify_memfd for index %d", i);
-+	}
-+
-+	ksft_print_msg("[STAGE 2] Finishing test session...\n");
-+	if (luo_session_finish(session_fd) < 0)
-+		fail_exit("luo_session_finish for test session");
-+	close(session_fd);
-+
-+	ksft_print_msg("[STAGE 2] Finalizing state session...\n");
-+	if (luo_session_finish(state_session_fd) < 0)
-+		fail_exit("luo_session_finish for state session");
-+	close(state_session_fd);
-+
-+	ksft_print_msg("\n--- MANY-FILES KEXEC TEST PASSED (%d files) ---\n",
-+		       NUM_FILES);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	return luo_test(argc, argv, STATE_SESSION_NAME,
-+			run_stage_1, run_stage_2);
-+}
--- 
-2.53.0
+Will do in v2.
 
+> But this is in the middle of assert_filter_committed().  As the name
+> says, this is for validating if the user inputs are passed to DAMON
+> internal.  I think this is not the right place to test its 'staging'
+> functionality.
+
+Will do.  I will remove the memcg_path readback check from
+assert_filter_committed() in v2.
+
+> What about adding another test case at the end of the main() function
+> for the validation of memcg string staging functionality?
+
+Will do.  I will add a dedicated test case at the end of main() in v2.
+
+Thanks,
+Cheng Nie
 
