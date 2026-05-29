@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82242CD6E45
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 07:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6099CD6E45
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 07:16:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3C856B0005; Fri, 29 May 2026 03:16:52 -0400 (EDT)
+	id F21F06B0088; Fri, 29 May 2026 03:16:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEE4B6B0088; Fri, 29 May 2026 03:16:52 -0400 (EDT)
+	id EF97F6B008A; Fri, 29 May 2026 03:16:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B02AA6B008A; Fri, 29 May 2026 03:16:52 -0400 (EDT)
+	id E368A6B008C; Fri, 29 May 2026 03:16:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F8BE6B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:16:52 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 414E8A0BE1
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:16:52 +0000 (UTC)
-X-FDA: 84819600264.12.DF02C62
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D820B6B0088
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:16:55 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 86FF61C0FA2
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:16:55 +0000 (UTC)
+X-FDA: 84819600390.19.C61ECCA
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 76F92C000E
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:16:47 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+	by imf04.hostedemail.com (Postfix) with ESMTP id D0B3E4000E
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 07:16:52 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780039009;
+	s=arc-20220608; t=1780039013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=/+XgHBMtp/y0PV5K0/8risG+6bC6au6kifOqzQWntAE=;
-	b=Zk/YU0JSqs/2bNYKHUlKgsJF52HCzQ4WyAxUx/t8vVds3CTD+E+6ixBOUlhDweUsjO1TKY
-	0vbIONaW6cUlLOds6eaVRfAQbOd853Xi7Q2uZ0sLggG6xTl6zbOnsL3mdsTwH0DvG4BpC6
-	IJM9Ssc34OA/4AaG6fAHnlCMAm6DxeE=
+	 in-reply-to:in-reply-to:references:references;
+	bh=dGjNBi3OKwtZoMSzezwHJQVs1boMMjpPJiceXARZMEU=;
+	b=gqlC5weEf+nZ2/p7rzODGtoNhz8ojRS+6fg8WBvsmlqzZC+uULo46NYKAByXxRZEQtBBVX
+	SfAgClKypX6HvKcmwc5Yh2g47InbL6G9mBBjZLGY6igCHg8mGqwII3hFk1EoOf2BW248tJ
+	oq4WG22VQDLbEqlwwb9LtexpRm7d+IU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780039009; a=rsa-sha256;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780039013; a=rsa-sha256;
 	cv=none;
-	b=0L7MmaBg2IxrIMH/R+xtS9Q+7z/Exsm6+1rJasn/WZHyUo/KhNdtM56MvSEgiqxSHMs5jD
-	jtZ65VZkHxBrMtO+tbnvYZxmkgImLbK0M1uYh1k+PdkvwzHlGCu8mhzdwYjNBX7pjt5aqU
-	iHPSlrn0+k+qZyYM5J3da2w+j3q2Gb8=
-X-UUID: 55667f485b2e11f1aa26b74ffac11d73-20260529
+	b=sYQv8pi5xuqua1l59vA9DLBe8pHxGBTVDOI7CmvmVzPEMytMWOX6IrchM+pZ3b+YmXflLY
+	E8EDbXQm/tr2z1XXxg+UU450GYXdNBDVHC9iU6StEtJ4e7lCeHwvC4o4Ccvhb/JVy1utri
+	vjjilvOAkuYNBCdmLCJmYXb10YdllKc=
+X-UUID: 57e720425b2e11f1aa26b74ffac11d73-20260529
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
 	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
@@ -56,27 +57,27 @@ X-CTIC-Tags:
 	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
 	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:f7c0792c-2e1d-4cca-a68c-0b03cb29a632,IP:10,
+X-CID-O-INFO: VERSION:1.3.12,REQID:a19f7d76-04af-41da-86a9-7550af511965,IP:10,
 	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
 	N:release,TS:5
-X-CID-INFO: VERSION:1.3.12,REQID:f7c0792c-2e1d-4cca-a68c-0b03cb29a632,IP:10,UR
+X-CID-INFO: VERSION:1.3.12,REQID:a19f7d76-04af-41da-86a9-7550af511965,IP:10,UR
 	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:5
-X-CID-META: VersionHash:e7bac3a,CLOUDID:69b4f09c5df088340c9f7f839c9324f0,BulkI
-	D:2605291516391VZCB8W4,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
-	850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,File:nil,RT:nil,B
-	ulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR
-	:0,BRE:0,ARC:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:1b31b111623e58da5bfaa0e10929bad1,BulkI
+	D:260529151645CVNH2SBZ,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
+	2|127|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:ni
+	l,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,
+	BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 55667f485b2e11f1aa26b74ffac11d73-20260529
+X-UUID: 57e720425b2e11f1aa26b74ffac11d73-20260529
 X-User: lihongfu@kylinos.cn
 Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
 	(envelope-from <lihongfu@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1738305913; Fri, 29 May 2026 15:16:38 +0800
+	with ESMTP id 1554856261; Fri, 29 May 2026 15:16:42 +0800
 From: Hongfu Li <lihongfu@kylinos.cn>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -91,20 +92,22 @@ Cc: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH v4 0/4] selftests/mm: refactor pkey helpers and fix mmap error handling
-Date: Fri, 29 May 2026 15:16:29 +0800
-Message-Id: <20260529071633.2807814-1-lihongfu@kylinos.cn>
+Subject: [PATCH v4 1/4] selftests/mm: move pkey selftest helpers to pkey_util.c
+Date: Fri, 29 May 2026 15:16:30 +0800
+Message-Id: <20260529071633.2807814-2-lihongfu@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260529071633.2807814-1-lihongfu@kylinos.cn>
+References: <20260529071633.2807814-1-lihongfu@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: t8uicf5rzzwiffemohtz819bigo4149m
-X-Rspamd-Queue-Id: 76F92C000E
-X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780039007-107623
-X-HE-Meta: U2FsdGVkX19zTIRkPXsCv2Bv4gzY+BoQcFP+OWWRnA5ETOF1uJweFoUNs5dR8qq4Y7kgT3OgS27e4Q/XcvqOOM3i2LB4vu5lvaA0Lx4WTL06R31B02j84FU9Ye559S2PEIwKt5wbdHlxv8DIVevjwlNn0XDxYslphgeoRDNEMIuXYv2KvCOxLVMVweRtxAhOxjlQ3+R0n8gH1FiRYlgOJMUsEtXFDgPjEvRADTtgr2Tws6FStJqXqY75+YYrYyxIXe73xlBkc3Qlgjdc6Ay2MDRhyIQ4GW07qLXK/Ip8q6wFPnEoA4BxUTrvWAqLSxZhscmh2fPHHLJ9neJQguttVoGJSNC4j3MgA4jQJsg8PVcfhnlgp8MAJV4dJ9ZEnxKV/ae9jISwQtPJsK7OZIDAbJXmjKlQ17LwTU7QqgqA/Iruhm785dimoZp6K/VDINMIm3gVEIDWdOCIrEr6wAkxivRQ1QxCBbk13mmiaUvBhesU7Mun2N1jIuEk3gv4GRthiWI+Dp6zQp7As5bXvgOBnn0PH4qzOTZT/iIySkf3SeqlW5rQRILFwZ9c+eXjYtNFweQzpPR2HLtvC+z4WgDGLdleC88k+M7LI+T6KbbGN+umxphn0ZRjr13bhfxDoY0IJ8a8JYETTGqtFnUI3hAnXNpk5txPBb4pH9lmx50nTnWMYO1jR+a4W+3s5dXDBx0O5e1xC7Gv5nvydZwP7mVf71dXb+Mn7kjSl8eEnzywGWRkQ3Nq0vJ41jhkCJiljVQ+wHPln/w4RzZjVU5EBLnKyRB6zkjU0hDtAmKQ3VTtm6p2GlX/hSTpyhd0u5XGArogqmuipzLc5tT5HHx41jATYqBRL4a8UwkmQBloGH2aFOGiVLRlWm/XmTY9YE9ClHJl4Wa1dWKnApuVpjAqxfkbuHTb6X/FYzb1bGUXhEtIY9mYBNbXpcKLo84dbZwkctUhVvlNzhIIz3vRj2p8DGg
- EutqfaAX
- T/3c93sD9ER62ToCEyO5FCxyUJA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D0B3E4000E
+X-Stat-Signature: mssoazb7wpxa5jtierjfjndzf3i1g8ze
+X-HE-Tag: 1780039012-171138
+X-HE-Meta: U2FsdGVkX18Vl0QHdBqYK7A4yJeIYm0WYg4elKoudUDMyPuiePcBL9GHLWCHMbL08u9cNRbT2OBSh7rlGc7Jv2Fi4RqnfcHBC8PfI9Dt/yI6xJ15VtTzz1WqhaLZSnej5QNEcTPMl1nAp9n/q20ewWNabakx6VfiERcJZgPUIK6Yar7HxiFhi2kHy6NHdiZFL1wsX9MgY0Cs1/1sfVa9iKyYYfOw6RjRt6xlTQ4Rr+6SdP4UVFwilwrPpiSqK6F2RIykTrvTumqcROs33QPfLnIVUdM8UialeKFJnS75zo40mOHwr8LWxvfhq3jkwnAPgoCWF3uINI7Ik0mNrxbBlyI5t4+femwd9zyJOs8rh+D2jwls6b9wvsFnVPYHUMmrH0Nj2q7Y5X0QM/+cP+BWPeslseFZdKbk+O5VUI09VGOIN7BWZmu8MvopKkNlhfBmcZOUh7KTyuzy8r/obhm7cJ/Npxb0He7BHpd0LTCmYUhHxhL7EANvSLZxhEdCdBYQqy2y7WKHjJkFJPpweIRl0EvDkpgd1vMMM9Rfdj0bDzC67qu3inINb9VRrMGydvgStPirhh6xB4lHcS57TDPghSZwZ2Fd6T1hJtM4ArHtuY9Shs2EqnBA5AZMS04RfF3SMBW1QihvcL2dUR08SDRc+T3yDL9+JlaG38WmQQtqgcohaAzsOiBQMK4xBccVbyiTWJg58VySqZbOz0bdu6a8QQ32BGu0HsrxQUHVcqB34e9htKMj6Vl3b6NDXeeYjVtzYETuzgvN2kNhh6aw/8KP90JXHUFEXMRe/G0kPO92SvDEnjpDEkePF4vrPW/bn+bzAk73eUNXBFp7A0G/848JdlN/+Y9bcbfUF7Lft3OhiUOV3p2porvLv1SwiYSDxdiVw0zvIfA1tt5WZvtybfL1Y3897vBwEAdO6T49SmyEylY8IZC2BTccZzxWr+arZb9ocvFzBGKkKlzEbVPNYml
+ NzjfkWE4
+ /icfYSfkZxuUNXNDh7VHgCCaIKWM6HecBzSTQeliidqZqmlvQzlSuvffHSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,42 +115,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The main changes in this series are to refactor shared tracing and assertion
-helpers into a common file, unify both pkey selftests on pkey_assert() and 
-per-test tracing for consistent diagnostics, and add missing mmap() return 
-checks with MAP_FAILED used throughout for readability and consistency.
+Move pkey selftest debugging helpers into shared code so both pkey
+selftests can use the same tracing and abort-hook logic.
 
-Hongfu Li (4):
-  selftests/mm: move pkey selftest helpers to pkey_util.c
-  selftests/mm: unify pkey sighandler selftest assertions and tracing
-  selftests/mm: use pkey_assert on clone_raw failure in pkey test
-  selftests/mm: add missing mmap() return checks in pkey tests
-
- tools/testing/selftests/mm/pkey-helpers.h     |   5 +-
- tools/testing/selftests/mm/pkey-powerpc.h     |   2 +-
- .../selftests/mm/pkey_sighandler_tests.c      | 110 +++++++++---------
- tools/testing/selftests/mm/pkey_util.c        |  86 ++++++++++++++
- tools/testing/selftests/mm/protection_keys.c  |  95 ++-------------
- 5 files changed, 152 insertions(+), 146 deletions(-)
-
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 ---
-v4:
-- Base changes on top of the latest mm-unstable branch.
-- Split the first patch into three:
-  patch 1: move pkey selftest helpers to shared code;
-  patch 2: unify sighandler selftest assertions and per-test tracing;
-  patch 3: use pkey_assert() on clone_raw() failure.
-- Use ksft_exit_fail_perror() in main() for mmap() failure.
-v3:
-- Use pkey_assert() for remaining sigaction() and clone_raw() error
-  checks for consistency.
-v2:
-- Update commit message
-- Move shared tracing and assertion helpers to a common file,
-  replace assert() with pkey_assert() in sighandler tests
-- Drop assert() from main() in protection_keys.c and add a proper error
-  message instead.
-- Link to v1: https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+ tools/testing/selftests/mm/pkey-helpers.h    |  5 +-
+ tools/testing/selftests/mm/pkey_util.c       | 86 ++++++++++++++++++++
+ tools/testing/selftests/mm/protection_keys.c | 83 -------------------
+ 3 files changed, 90 insertions(+), 84 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
+index 2c377f4e9df1..cfbb8fa2af3c 100644
+--- a/tools/testing/selftests/mm/pkey-helpers.h
++++ b/tools/testing/selftests/mm/pkey-helpers.h
+@@ -68,7 +68,10 @@ static inline void sigsafe_printf(const char *format, ...)
+ #define dprintf3(args...) dprintf_level(3, args)
+ #define dprintf4(args...) dprintf_level(4, args)
+ 
+-extern void abort_hooks(void);
++void cat_into_file(char *str, char *file);
++void tracing_on(void);
++void tracing_off(void);
++void abort_hooks(void);
+ #define pkey_assert(condition) do {		\
+ 	if (!(condition)) {			\
+ 		dprintf0("# assert() at %s::%d test_nr: %d iteration: %d\n", \
+diff --git a/tools/testing/selftests/mm/pkey_util.c b/tools/testing/selftests/mm/pkey_util.c
+index 255b332f7a08..81723db43223 100644
+--- a/tools/testing/selftests/mm/pkey_util.c
++++ b/tools/testing/selftests/mm/pkey_util.c
+@@ -2,9 +2,95 @@
+ #define __SANE_USERSPACE_TYPES__
+ #include <sys/syscall.h>
+ #include <unistd.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <string.h>
+ 
+ #include "pkey-helpers.h"
+ 
++#if CONTROL_TRACING > 0
++static void cat_into_file(char *str, char *file)
++{
++	int fd = open(file, O_RDWR);
++	int ret;
++
++	dprintf2("%s(): writing '%s' to '%s'\n", __func__, str, file);
++	/*
++	 * these need to be raw because they are called under
++	 * pkey_assert()
++	 */
++	if (fd < 0) {
++		fprintf(stderr, "error opening '%s'\n", str);
++		perror("error: ");
++		exit(__LINE__);
++	}
++
++	ret = write(fd, str, strlen(str));
++	if (ret != strlen(str)) {
++		perror("write to file failed");
++		fprintf(stderr, "filename: '%s' str: '%s'\n", file, str);
++		exit(__LINE__);
++	}
++	close(fd);
++}
++
++static int warned_tracing;
++static int tracing_root_ok(void)
++{
++	if (geteuid() != 0) {
++		if (!warned_tracing)
++			fprintf(stderr, "WARNING: not run as root, "
++					"can not do tracing control\n");
++		warned_tracing = 1;
++		return 0;
++	}
++	return 1;
++}
++#endif
++
++static void tracing_on(void)
++{
++#if CONTROL_TRACING > 0
++#define TRACEDIR "/sys/kernel/tracing"
++	char pidstr[32];
++
++	if (!tracing_root_ok())
++		return;
++
++	sprintf(pidstr, "%d", getpid());
++	cat_into_file("0", TRACEDIR "/tracing_on");
++	cat_into_file("\n", TRACEDIR "/trace");
++	if (1) {
++		cat_into_file("function_graph", TRACEDIR "/current_tracer");
++		cat_into_file("1", TRACEDIR "/options/funcgraph-proc");
++	} else {
++		cat_into_file("nop", TRACEDIR "/current_tracer");
++	}
++	cat_into_file(pidstr, TRACEDIR "/set_ftrace_pid");
++	cat_into_file("1", TRACEDIR "/tracing_on");
++	dprintf1("enabled tracing\n");
++#endif
++}
++
++static void tracing_off(void)
++{
++#if CONTROL_TRACING > 0
++	if (!tracing_root_ok())
++		return;
++	cat_into_file("0", "/sys/kernel/tracing/tracing_on");
++#endif
++}
++
++void abort_hooks(void)
++{
++	fflush(stdout);
++	fprintf(stderr, "running %s()...\n", __func__);
++	tracing_off();
++#ifdef SLEEP_ON_ABORT
++	sleep(SLEEP_ON_ABORT);
++#endif
++}
++
+ int sys_pkey_alloc(unsigned long flags, unsigned long init_val)
+ {
+ 	int ret = syscall(SYS_pkey_alloc, flags, init_val);
+diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
+index 9a6d954ee371..e504544e2197 100644
+--- a/tools/testing/selftests/mm/protection_keys.c
++++ b/tools/testing/selftests/mm/protection_keys.c
+@@ -62,89 +62,6 @@ noinline int read_ptr(int *ptr)
+ 	return *ptr;
+ }
+ 
+-#if CONTROL_TRACING > 0
+-static void cat_into_file(char *str, char *file)
+-{
+-	int fd = open(file, O_RDWR);
+-	int ret;
+-
+-	dprintf2("%s(): writing '%s' to '%s'\n", __func__, str, file);
+-	/*
+-	 * these need to be raw because they are called under
+-	 * pkey_assert()
+-	 */
+-	if (fd < 0) {
+-		fprintf(stderr, "error opening '%s'\n", str);
+-		perror("error: ");
+-		exit(__LINE__);
+-	}
+-
+-	ret = write(fd, str, strlen(str));
+-	if (ret != strlen(str)) {
+-		perror("write to file failed");
+-		fprintf(stderr, "filename: '%s' str: '%s'\n", file, str);
+-		exit(__LINE__);
+-	}
+-	close(fd);
+-}
+-
+-static int warned_tracing;
+-static int tracing_root_ok(void)
+-{
+-	if (geteuid() != 0) {
+-		if (!warned_tracing)
+-			fprintf(stderr, "WARNING: not run as root, "
+-					"can not do tracing control\n");
+-		warned_tracing = 1;
+-		return 0;
+-	}
+-	return 1;
+-}
+-#endif
+-
+-static void tracing_on(void)
+-{
+-#if CONTROL_TRACING > 0
+-#define TRACEDIR "/sys/kernel/tracing"
+-	char pidstr[32];
+-
+-	if (!tracing_root_ok())
+-		return;
+-
+-	sprintf(pidstr, "%d", getpid());
+-	cat_into_file("0", TRACEDIR "/tracing_on");
+-	cat_into_file("\n", TRACEDIR "/trace");
+-	if (1) {
+-		cat_into_file("function_graph", TRACEDIR "/current_tracer");
+-		cat_into_file("1", TRACEDIR "/options/funcgraph-proc");
+-	} else {
+-		cat_into_file("nop", TRACEDIR "/current_tracer");
+-	}
+-	cat_into_file(pidstr, TRACEDIR "/set_ftrace_pid");
+-	cat_into_file("1", TRACEDIR "/tracing_on");
+-	dprintf1("enabled tracing\n");
+-#endif
+-}
+-
+-static void tracing_off(void)
+-{
+-#if CONTROL_TRACING > 0
+-	if (!tracing_root_ok())
+-		return;
+-	cat_into_file("0", "/sys/kernel/tracing/tracing_on");
+-#endif
+-}
+-
+-void abort_hooks(void)
+-{
+-	fflush(stdout);
+-	fprintf(stderr, "running %s()...\n", __func__);
+-	tracing_off();
+-#ifdef SLEEP_ON_ABORT
+-	sleep(SLEEP_ON_ABORT);
+-#endif
+-}
+-
+ /*
+  * This attempts to have roughly a page of instructions followed by a few
+  * instructions that do a write, and another page of instructions.  That
 -- 
 2.50.1
 
