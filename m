@@ -4,96 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D9F7CD4F54
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 21:29:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AAD1CD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 21:34:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09A416B0005; Fri, 29 May 2026 17:29:22 -0400 (EDT)
+	id 81B1A6B0088; Fri, 29 May 2026 17:34:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 072216B0088; Fri, 29 May 2026 17:29:22 -0400 (EDT)
+	id 7CC236B008A; Fri, 29 May 2026 17:34:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC9D96B008A; Fri, 29 May 2026 17:29:21 -0400 (EDT)
+	id 6E25B6B0092; Fri, 29 May 2026 17:34:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC2DD6B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:29:21 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 77B031C03A9
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 21:29:21 +0000 (UTC)
-X-FDA: 84821748522.22.3AE468D
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 85BF8120008
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 21:29:19 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Qs/GeC4J";
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780090159; a=rsa-sha256;
-	cv=none;
-	b=fxvZkCtTQJokSFMCZxtSAyGLNie529Ynwojhrkl5MWIe3k6MRd2ZXEk5zHESBAb1aVnkWJ
-	0UKz385E6eIZXSrfkSyFx/oDwpo8mZY3GQWEvuVQXPG/PjULkh5yzc7xnLScc2cY4/CO9r
-	XqiptY81CbdTXNVUTNOBVbfqT4HvJ8Q=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Qs/GeC4J";
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 607426B0088
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:34:24 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 253671A029C
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 21:34:24 +0000 (UTC)
+X-FDA: 84821761248.21.9C55CE7
+Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6ABBB40006
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 21:34:22 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of 3XQYaagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3XQYaagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780090159;
+	s=arc-20220608; t=1780090462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JywH/3otXdM4lGyU+6UvJoj0eraUl9jHOX9YN/uPgf4=;
-	b=XCnXg3zexX/jo3Rpdywc6gVfw2dOGvrxp1A5vPJnTxhM2olDBPdjALsYxf4tIo9xaKo8Ug
-	oatX2BHBdh7Osfbxqun8ZhF8wSDqR36q3Fa8oe6OrsAnpiLkW2ZD+aoLFwjSlWhRABjzyQ
-	Jmmmv8MBTQAqdn7/8+6JdUxr2c2NvPg=
-Date: Fri, 29 May 2026 14:29:01 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780090157;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JywH/3otXdM4lGyU+6UvJoj0eraUl9jHOX9YN/uPgf4=;
-	b=Qs/GeC4JcxgJ+DiZ/fwuqRIk0L6jEEntFkyGxQUh81YDcysn1RvUVWpULR5+YQ1oxvpWxH
-	Ycwr7h9W7aPgdGFNBrPPcWKHcvUvytW/ca77pWi+IlepBdX+8XfJEO9Y4oyRxDNOWoTbRL
-	gRq5HJqKi1tbtKAfk+zT8dkw09KdKRg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
-	Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v7 03/15] mm/mglru: relocate the LRU scan batch limit to
- callers
-Message-ID: <ahncWUAJlPZhNGr8@linux.dev>
-References: <20260428-mglru-reclaim-v7-0-02fabb92dc43@tencent.com>
- <20260428-mglru-reclaim-v7-3-02fabb92dc43@tencent.com>
- <ahkmMLW9zIyZJLN7@linux.dev>
- <CAMgjq7DYAyu15Fn6k6A7bozonT+hrV6ZrXL3NTmg7T+DWPj7pA@mail.gmail.com>
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=B6aPnpvyAVuQFC8Pl1asar8RzwoQlcJgQai84S0/104=;
+	b=uxQ4lGOm7AP16/B95RHjgRDV14i/WD1OsIf/Ph1Tz14gBKVb19jSZDiiWkN8ICYTTnkh9b
+	lYHtsvtTnasGOf1fhMA7bBZHnL1z2GBgltDqtnTDvKIZhuqLW7NSqbM96OWLLG5OOuIjT7
+	JS33g06HqN7mkye3veSoEaQdhrn2w8w=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of 3XQYaagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3XQYaagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780090462; a=rsa-sha256;
+	cv=none;
+	b=X2011d+8SXOSXCAwZ7M4PIZX8DkoA0RtlUkpQxdbWVWB8lcgteTDKNISmQB2gzrVOphnP8
+	PqLSZCm2CcKX6tX2OF+Ui+m7U4819PhdS7oH+pGbMYxwHUswrBqjBRRUNH3DnRPZuEb1WM
+	kB1tpmkcUCH4KO1gJ6CsbsljpNEjjaM=
+Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-69e0a282136so738913eaf.0
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 14:34:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780090461; x=1780695261;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=B6aPnpvyAVuQFC8Pl1asar8RzwoQlcJgQai84S0/104=;
+        b=nhyGJYvGQ+u4yHDHiPYRTx7w4ct3YjgtYUW6ZkEbYy7eyWJNJulbHuxMkt9ejc55o1
+         uuoncus8JyFZtS9flFcdICSRGwfEb81Hy9F533m1XylCIAuX2S0qK3Llc8xeGcE1CGSA
+         39m7q4Bdbl7UdNZ+BgmoeVoDkWlMnrBeWxpoilyQDXDsOa6xYDu4nG+6DyRAZP6lBMyH
+         Dq+r1iAc6ZUxWVkGZu4axXP0sPpRpAMV7m977G956zyQJgigYjido+TX3DWdUbyNoWSg
+         hzJejEUpwfB7wGgjAH/nOMEZFe/AePlxkLSwynKVpuhbO8ZL3jBcUwmCjkD3oHbeBswi
+         b6zQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9zUnwVYt/bdF47ZoBGeu1bOz4UsdZEFei6/859Mue2bWVBFiEQ42xOln3SnGXa7fGvidEkUiApOQ==@kvack.org
+X-Gm-Message-State: AOJu0YwwyFm7ypoiab9bMy+P0Fmra4UicaE3gRHeJhdttJX/SOwCnDTI
+	U769bVLMRPmOf+OCgmEB67pT0xhSSrG6C5wVXLy/YfKKFz1qXFEmPR4DeRJ98W4VGZrK0DM3eCE
+	CKlJEukSz7kFoyFn10w9w1OlAk+mMbW3Ed0NlDduYejrdHFFDsKYP9oIg0qs=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7DYAyu15Fn6k6A7bozonT+hrV6ZrXL3NTmg7T+DWPj7pA@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+X-Received: by 2002:a05:6820:6ac2:b0:69d:eccd:e5a7 with SMTP id
+ 006d021491bc7-69e10403fc5mr507800eaf.1.1780090461483; Fri, 29 May 2026
+ 14:34:21 -0700 (PDT)
+Date: Fri, 29 May 2026 14:34:21 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a1a065d.ba3b1513.1890b4.0004.GAE@google.com>
+Subject: [syzbot] [mm?] KCSAN: data-race in _copy_to_iter / _copy_to_iter (2)
+From: syzbot <syzbot+3058ff8dcc2e370c7572@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, hughd@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Stat-Signature: rtye77in51co9irerix9g73bkoryujgw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 85BF8120008
-X-Rspamd-Server: rspam03
-X-Stat-Signature: e41dh1mihwhd5z9n3gfaqwa9fojnkp7m
-X-HE-Tag: 1780090159-937820
-X-HE-Meta: U2FsdGVkX1+T+N/d8hhrkcsOrRuXkmhYZyDsOXLrkkvbs8t2bAYnBmthzsSzRSxRrrTVKwKUdpKUTT3wVy0MRJC/thvwEirhsCvgh8I1qkvtFKlxOawnpBwit8CSO2wPKdaKNGVmHMMZ/kEl0G/gcaHTBFbKO1ws8ZE7yBkFK5KIaF7eoHAjIm9QGrPDfMjx8NKV0oaATaYRHtG+8sb/J0KnJ1rZjlvgwvUF99QUocEXNNeMropHH7knGCXyBTIBagahU4GYh61nfjzCQWFuHrGADa9jwD15c5rRA6uFjUvsfwI+uvLlW+m5AQn3F3OMgbD7IMCVzz5g9P5c79tvfZVTsYoNrCS77el1ip/RifwcaqRXpp183UikSmXuv+4dEYsV6P0jg7Z193By1unI8v22WfeRrBAJI/hKHqGQn4eoEnHwZR/cn/elsDLUSIdoM/P+I6LTbMnGfh2o4kiUlSAf5FfJ6pVPBwlHGAwkzb53ZDXtkrcDyYaRAkTiZ2aZnpFY4TbTFI834uoIUGPMwodR9MsdtBpL5a8rLE2sryi3hybcy/w4hS1kyNS6BKyMyNnmYHLTT8xiVuLOLleTeZr8F4V6qipjaINKb9+E7feS+uUlEAcT8WteRw4PZiePnqJ03a1Pcd/pPqHeB7cPZ7YnpgPDN7+Xj8VYLksQPOq2/KBEmK0G45R7pvoEf4sg4kbKa/S3ATJYv+nH1V0ZvbnCXYZHfLEMpd4rAVXB1I6OnT/AjCPR1gdfO4g+VnR/FzkD/LyNqtC3ZUJx1AF/ycuGhkDlWa9Wn6R3dQcsJM6OafIIXZ5o2VmzocyAC4gMBDkiNBIeVFW4Y0rIitEIHhWDHQ+YdDacneLI/h3JxK23n0LAlA+vtfRup1Y5ARYydkuxJoaBUfyNo+OYgH7eS6fIiA3irD1Au4g8JCJDHfnAONpeLpqIjmfhhWOb1+ZH1JtSn+d4SBxHZg9wzkb
- tmsg4WBJ
- m8iUtOQZkpiwldbZoiwUYILB4gWlOI+DvPfR/S6BSJbsLmv8/RGPlOGVlC00NC22Es1U4Kp3Gg2U0PDltW03EuFvpCw1MzahyDcSNZ4rVp83YbhBRRdMCwhYH7cIqFw34EqlER7eKxCbsgLIKdnPm41IRGu1lrVZBqrw60nxoUiUf0n8yRmQU++L7DiMD7Rlt8O6AKAyNHvNuiGfb7Mvs8Z3NYMiIdWQNcomJa4oZErMKK4JVKyAESNkIWQZGEp95xnAtpJyItLFewXsfTvPPGgmigfVb5c0Ym/WqsQwhNppU2UK8zQwsFUetE5ivOszvQ5XY2e0x54+CMBKwaWMMk9YjUrNd62rOpeIvL+QjbJOErdRjMqQNrS6e4OjBZcvjzBWzqGQRreFvPxOaUDA8nmKmUi8uqAG9GIPZzgGlnnNFWi4=
+X-Rspamd-Queue-Id: 6ABBB40006
+X-HE-Tag: 1780090462-731424
+X-HE-Meta: U2FsdGVkX1/rFAB9O8Ge7avvc+c6Z9bQAT3T78w06mwNlPFFLwjudYBblkyf97uiokWGhxZqXpJGvFtFeA/3ugKWgnDah+Ez8ecRBBVOzx3EDPLzyN0CXZwIOA/YX2BGF9Ai+NOenJKSCp0IAKV9vPLLblbDWig8bjfc0JpDVaWBklBYcH66Dq97hD2hByk7y/jS0/AgM/9HzlPXjxD9yaid2Bt3EdTbDwLzr470ALoNt+X8GN6phvEVOxKxrkbEVsroce4LZfzQt1qkT33GEGNtNXlI9I4a02lC2k8hhF9se0hZnq4T3ChJKzv7B4QrLApCMWqCZnykmkpKRhOktT7XAuBEIZmBqSGoq5hwpt42k7IA0we48jECZYNS96kTbULPWSF683kW+94MaYRt1pvUnYnpMhGGHH8eQ31FrXUJWRrUik0hx/9XZPNWD1SIaJjv5+FFJpNhehYgFqu/mpAbqvL71ZQQ3VY5Q0UCRxiimpxJkmyfuicx5u0KH3gcYMkdHElb5uRa3mVy1wtyjXVg8Doh8PuL0Ix3YikBlx+Z3rDPIQ4uqAP/U8M0DzbylR5TR4loKHHQBGrQAQmI++mBoVIU+6KBCeV6gWteIOsMhUFrdqxeau8qkLGTdjkOLC+K/7Cush+k29n09TOatfNdha3vBLq2aEhYd8o4nwMAoTqpYqanDL+WOTV80dmwG2YbtR3XXms3gIHGeJl4N6hvJ8eJM+WDVu5Lygq4Ic58Uv7lUpQNV+g+Wn6v90CAaKAU9GC/rLHhGBsMIJK2qyt8ie772h1GUAHzUXcyuw3T19OE2B+Ki9YsKUl3Q78gd7E/v37rEIheVJ8KFTZSmbw25RvTnaDJnJv+C/pOIk6hp/l+znpC4koQZbD9CkuDgcnv1kxXpgzqai4BlE3dNCvUkRs7GYdoQQM5LFIa+atlhYOSAnFEj2SUWa3s9s2WehliWWaZcb+f5XqXDOI
+ RuwcXkFQ
+ YsUy8joUvTFQ0UerrJCltX+87wCIScLlXwVwLcZyo23juYeMp/wvhfR56wKm5Zu085h4Z5Uq0xeQLUJY1nVijNyRM/JfEY2vSb32/xA/LQIL6u1+6v9j7jjr9WH41mFGvEQgfNC7mSb/Puybolx9AUirM+Qw6gpF1HD093spaCfuq+nD+ODWHxj5hds4x8zB1u9RVNmkyJFFktiN6MndavzMZx3BlnnBd/M4fFnKoH8aD8/g7n397mcHkr9VYOY/eoQyIRQYgQbzBTTnsdTVUR/IIvoUe/j/TqWkBOiY+82gu0Rn+PktdSb+ct+CVMU2NqaUlYrwRtGifE7AKfUiWEmUpZpTfc1T7yelXptohG+q9J7GuynLd+/nEqb2FBqhAPmXlVTzEkshbhCFk4i9u/19/Mn0RkaESCn1OZJ7xIcwu1Bt+0qzv6yZmajNZ+joxrMKB6Vub87aFi9OKE4iLpGXEdLzuKrsX5WL6HSMcSw+VMjwt31lTJ1GC221M6K26kNoHRXChOyEzYzvG7mKbHYgshITZEfX/3lSVJMMML2b6ontZignESdH9UO/9G/2DzTJW53y/HDIYQgu1Z74UASVDUS/OScmCc3snIecZR/Ld0GszIzhnKdlRmVJ24TYuDiO5EleHHM8tgucPIzKsO8l8r3vy7WzeXna0n/NeJvcZbnYp46y7eHiqQIfi1zCHWuariIb3V+YKLSGOObbIcehaLjgvFXgdQyAggSA6/ObD06fCB42JQfIQhwaKXNCDLIoOmLlQDDUd/9+SEMlYK1pvIh4xq3wntDmUk1mFTlY+BshxML+ICN5qfDQU/5IAkjjxVmZzPRrmXUe5uONApPKQHFCzkgscYGyjInwnwOy/zFw1gh05aBqFvnNol5UuG7+hrAtl/d7BzVACd8viqR1rDwyiM+N2KVielllGCd5O5lVHw7IzZP7+SGtUVNjbWy1/UW18cMvBwA+QhnbE7khfjPQr
+ rTn3owKU
+ paHbRmQxWoCFjWLlkXsvnnDWBbhYbYvJm7Min6toHfPT2pDcx30aDfQPFY0qaopRksWrBV8IV5JQyqKy1Nbht9v7zWs/tfnI8IRvgVa+ewH7/NsVdJf/AF/2xnExSEONd0yrHLmLYE+P6n1c/0USBkmZ3X3Eps1bWxwLzY8X9TLpnWUs2V79nTTSgxGmZU+BvkEO82lUdA0at18EMrEi5CvPIEX8IswHnXIDdAdgcFrf1P7PssPJ1tnGbB8m7SCkOPqRYdMtmbWxAFJ4n7VSNZo0oBlNZblpxD/JsvcswOuUPy9xyFNcWXmxHkBLvkmdguiM0jVbg70vDW2CIFM7DrmcoMfHDNG/EjxCepd599tQyQJ/PKKpNutUPWQv/sv+pnWUEQd20YDnCd1mgRPsJipEVf7PDRvuDZtn3+xs2Gnh4V2pad5zPqM3g5vEhFqgQSTQ+3vsWHbxImHzbZJPZO2pGrJ1dObH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,66 +95,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 02:01:43PM +0800, Kairui Song wrote:
-> On Fri, May 29, 2026 at 1:40 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> >
-> > On Tue, Apr 28, 2026 at 02:06:54AM +0800, Kairui Song via B4 Relay wrote:
-> > > From: Kairui Song <kasong@tencent.com>
-> > >
-> > > Same as active / inactive LRU, MGLRU isolates and scans folios in batches.
-> > > The batch split is done hidden deep in the helper, which makes the code
-> > > harder to follow.  The helper's arguments are also confusing since callers
-> > > usually request more folios than the batch size, so the helper almost
-> > > never processes the full requested amount.
-> > >
-> > > Move the batch splitting into the top loop to make it cleaner, there
-> > > should be no behavior change.
-> > >
-> > > Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> > > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > > Reviewed-by: Barry Song <baohua@kernel.org>
-> > > Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-> > > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > > ---
-> > >  mm/vmscan.c | 16 +++++++++-------
-> > >  1 file changed, 9 insertions(+), 7 deletions(-)
-> > >
-> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > > index 7f011ff4c478..a011733a6392 100644
-> > > --- a/mm/vmscan.c
-> > > +++ b/mm/vmscan.c
-> > > @@ -4695,10 +4695,10 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-> > >       int scanned = 0;
-> > >       int isolated = 0;
-> > >       int skipped = 0;
-> > > -     int scan_batch = min(nr_to_scan, MAX_LRU_BATCH);
-> > > -     int remaining = scan_batch;
-> > > +     unsigned long remaining = nr_to_scan;
-> > >       struct lru_gen_folio *lrugen = &lruvec->lrugen;
-> > >
-> > > +     VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
-> >
-> > Do we really need a warning here? Also why are we limiting it to MAX_LRU_BATCH?
-> > For memcg/proactive reclaim, we can get larger number. What will break if we
-> > remove this limitation?
-> 
-> Hi,
-> Isolating a large chunk of folios off the list is usually a bad idea,
-> livelock is one concern, besides, concurrent reclaimer won't see them
-> anymore, and LRU operations on them will be skipped (eg. roration).
-> Under heavy pressure, this could lead to premature OOM because some
-> reclaimers will see the LRU as empty. or accuracy loss.
+Hello,
 
-Oh this is the isolation count/limit. CLRU isolates SWAP_CLUSTER_MAX folios at a
-time. Any reason why MGLRU does 4096 (on 64-bit machine)?
+syzbot found the following issue on:
 
-Later we should evaluate what would be the right isolation count and use same
-for both unless there is some inherent reason behind the difference.
+HEAD commit:    d60ec36cab33 Merge tag 'mm-hotfixes-stable-2026-05-25-16-2..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=142ce056580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d830408e2d151f21
+dashboard link: https://syzkaller.appspot.com/bug?extid=3058ff8dcc2e370c7572
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
 
-> 
-> There is a LRU isolate throttle for CLRU, which is missing for MGLRU,
+Unfortunately, I don't have any reproducer for this issue yet.
 
-I am not a fan of that specific (too_many_isolated) throttling. In the long term
-we should properly throttle the number of direct reclaimers.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/bc5554f13e6c/disk-d60ec36c.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d0317a873b98/vmlinux-d60ec36c.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6ceafe75f601/bzImage-d60ec36c.xz
 
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+3058ff8dcc2e370c7572@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KCSAN: data-race in _copy_to_iter / _copy_to_iter
+
+write to 0xffff888131894000 of 1024 bytes by task 49 on cpu 1:
+ memcpy_to_iter lib/iov_iter.c:77 [inline]
+ iterate_bvec include/linux/iov_iter.h:123 [inline]
+ iterate_and_advance2 include/linux/iov_iter.h:306 [inline]
+ iterate_and_advance include/linux/iov_iter.h:330 [inline]
+ _copy_to_iter+0x602/0xea0 lib/iov_iter.c:197
+ copy_page_to_iter+0x178/0x210 lib/iov_iter.c:374
+ copy_folio_to_iter include/linux/uio.h:204 [inline]
+ shmem_file_read_iter+0x29e/0x4b0 mm/shmem.c:3426
+ lo_rw_aio+0x67d/0x730 drivers/block/loop.c:-1
+ do_req_filebacked drivers/block/loop.c:-1 [inline]
+ loop_handle_cmd drivers/block/loop.c:1925 [inline]
+ loop_process_work+0x56c/0xac0 drivers/block/loop.c:1960
+ loop_workfn+0x31/0x40 drivers/block/loop.c:1984
+ process_one_work kernel/workqueue.c:3314 [inline]
+ process_scheduled_works+0x4f0/0x9c0 kernel/workqueue.c:3397
+ worker_thread+0x58a/0x780 kernel/workqueue.c:3478
+ kthread+0x22a/0x280 kernel/kthread.c:436
+ ret_from_fork+0x146/0x330 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+read to 0xffff888131894000 of 512 bytes by task 3290 on cpu 0:
+ instrument_copy_to_user include/linux/instrumented.h:130 [inline]
+ copy_to_user_iter lib/iov_iter.c:24 [inline]
+ iterate_ubuf include/linux/iov_iter.h:30 [inline]
+ iterate_and_advance2 include/linux/iov_iter.h:302 [inline]
+ iterate_and_advance include/linux/iov_iter.h:330 [inline]
+ _copy_to_iter+0x130/0xea0 lib/iov_iter.c:197
+ copy_page_to_iter+0x178/0x210 lib/iov_iter.c:374
+ copy_folio_to_iter include/linux/uio.h:204 [inline]
+ filemap_read+0x407/0xa10 mm/filemap.c:2857
+ blkdev_read_iter+0x22d/0x2e0 block/fops.c:855
+ new_sync_read fs/read_write.c:493 [inline]
+ vfs_read+0x6c0/0x7f0 fs/read_write.c:574
+ ksys_read+0xdc/0x1a0 fs/read_write.c:717
+ __do_sys_read fs/read_write.c:726 [inline]
+ __se_sys_read fs/read_write.c:724 [inline]
+ __x64_sys_read+0x40/0x50 fs/read_write.c:724
+ x64_sys_call+0x2886/0x3020 arch/x86/include/generated/asm/syscalls_64.h:1
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x12c/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 UID: 0 PID: 3290 Comm: udevd Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+==================================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
