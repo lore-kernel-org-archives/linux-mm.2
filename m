@@ -4,165 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DC97CD4F54
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 17:47:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF83CD6E49
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 18:07:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D8406B0005; Fri, 29 May 2026 13:47:29 -0400 (EDT)
+	id BA49F6B00D7; Fri, 29 May 2026 14:07:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B09C6B008A; Fri, 29 May 2026 13:47:29 -0400 (EDT)
+	id B55726B00D9; Fri, 29 May 2026 14:07:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C6726B00E9; Fri, 29 May 2026 13:47:29 -0400 (EDT)
+	id A43FF6B00DD; Fri, 29 May 2026 14:07:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CD8F6B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 13:47:29 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4705D1C0628
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:47:29 +0000 (UTC)
-X-FDA: 84821189418.09.7505812
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013015.outbound.protection.outlook.com [40.107.201.15])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6A18D180002
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:47:26 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KeNTl0ho;
-	spf=pass (imf16.hostedemail.com: domain of ynorov@nvidia.com designates 40.107.201.15 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 94DB96B00D7
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:07:11 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D9691A0236
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:07:11 +0000 (UTC)
+X-FDA: 84821239062.03.62603A0
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 30A6D2000A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 18:07:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PsFNyGWp;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780076846;
+	s=arc-20220608; t=1780078029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i1NdEc8EFoSv8gDJynk8YxJXTJBMkiTq0KnOaAqSXEs=;
-	b=r5hAulgJv7oVEDXyMZ7Yxib5gWgyYt8daLFgtu9WXYkP4Q5IUSmbcP6r5oiPaXZZs8xv+T
-	P98GAhddwXk/x75ZYc3nVI2VgYSqgXyWk9dq7MokLoQNyOedL0cfCj/aqyLNZ9foAWoc5x
-	vFgJQvkZQ7CgYByAqygy4JW0VddhAmg=
+	bh=MZoHrQ02OOCar3J/zEZO4IwdNcb2UEkvFMGplj3lU9g=;
+	b=MMMFtf5VpljxRagx797FYjTWipEOXsLztC+7HaY6wdvi+lPBfotU/FGD0zu5UwCy1Fu0Ma
+	hafejAA/3yqyPoFaiNvrwBfal7CDdn8w5O+Wl4Izd/FizcxA5jEC7asGGaEPQUCOh6HuBc
+	wQDPwUYM4dMiDdbOd6irjN/bLUZ/5LM=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KeNTl0ho;
-	spf=pass (imf16.hostedemail.com: domain of ynorov@nvidia.com designates 40.107.201.15 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780076846; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PsFNyGWp;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780078029; a=rsa-sha256;
 	cv=pass;
-	b=2I50jsj8eHYBc9jJR3a0/ZCOX+GK5fILj3oc/wh8nZEiCGs4rty1o67ozwJmK8TGT+LiRZ
-	M3OKQQJ0pZsyUfCEYsXQzl9XqcJm3rFjPHvMFFf+BXi6ijn+I6lIl9sLzorrTJ8WyPOP1s
-	kPg4iBm4+Cxlew5D7NUSwie6WuqDbSI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PN1m+mEv4Q3Izz51eu1sniphuEAJUW5NTqjVRD+1Zi2ukiwpHJhlenIuPg5p1/ggWlW8erqCBcVQa4uPk7P3mBg0Z23H6WxkQJQc9MDLhM19MVwy6T0x0IoJQfQ0j/7cbuF0ha9vR2vnsAUNSNX5sYNdrxWNP/vhdGTtDBRiQa9q1oFFk4jsf5uiuRix+OU9OpTLS3rtdL4W0SRVrNABekL/ozqOGLNHfvS3GV3s9H7J1OO4RWFZdtf5l61UnCgRhRZ/GKtO2S6vUS/ic+2i2hiAXWAhSaYbdxOjOgDFSdkUvj3b2lMxN/fFG5zyAbdTyB/fG3jTM8zOHJhqT6nSfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i1NdEc8EFoSv8gDJynk8YxJXTJBMkiTq0KnOaAqSXEs=;
- b=eZZqBDnFjprj62hXGarymaDqVrQZCJzj9W7c2dHl3PGULIM1WzX53WsKpkiwXt80Owa0IyIko4zYviKZGvXKpsIeqEvCWK9Mx2KNjri0hB4VID+67BEjB+3mL3nZOTQ8a9swd0UF/dIEpZM+UoGVrrpa3e9+2sg53LdjGBcb+rqJH8/NURn2ziWL+e/HV5bs9WqduQuYisi7KWElC1nmqIm2nJ8Ft43okN/I0ez/OAltO9pKEXFjD4J9GwSByHnSAFOwOA62hQKwKEjoilR08xbQJ24FkWCYIFqNviwParwcJAH3q5CR/PNmHX6tZJOZGqsXIO1e1jxwIZ8nMgmbnQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i1NdEc8EFoSv8gDJynk8YxJXTJBMkiTq0KnOaAqSXEs=;
- b=KeNTl0howmNusRdjPBbDoy0+xLyp4GYemP0G+0kOvxZOE9p+lrhV0py861lmJQM3Rx4QXzHGMYYDtj1gadDou7zlWZlkyHGalvmwx0vaTN6yeXBCTqg9RCOAz58WTjUfA+pmmorJNCcYNYv+qFaQSWhGkr77CL/9PqC/4JrPN4bPq//o3EEpIZfxfkD7IWljDlq+01WXJ8A6lpSFccyrvZh4GVY69gN6BE17qYhjA5qto8aLJaI5gDEE4zdj/fGciPK/uUWnrAlMRfru0enAbLCUJmj94By5OZj0S00jgcMdzxFKkG7JoDbHOEG+jdgwOhs+8BiCuLOr/okD9hPkTQ==
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by LV8PR12MB9183.namprd12.prod.outlook.com (2603:10b6:408:193::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Fri, 29 May
- 2026 17:47:17 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0071.014; Fri, 29 May 2026
- 17:47:16 +0000
-Date: Fri, 29 May 2026 13:47:12 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Farhad Alemi <farhad.alemi@berkeley.edu>,
-	Waiman Long <longman@redhat.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH] mm: don't allow empty relative nodemask in
- mpol_relative_nodemask()
-Message-ID: <ahnRIDBk4bQ3xX2q@yury>
-References: <20260528124133.c88c27b11a8ea0ef05e494f7@linux-foundation.org>
- <20260529152616.2308736-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260529152616.2308736-1-joshua.hahnjy@gmail.com>
-X-ClientProxiedBy: BY5PR04CA0019.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::29) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
+	b=AbFk8f9w/6iHQo98c3IcktaK6Y4YuX0xK3g8AVQodEoMmBV9HZk0HhRuRdeuVLJUQK6w4y
+	nLkub06IyVWtexrKdftKriW81s2tJL1XmpPnry04qdZdPGZquGvWylx+OIXJHjUfE6IX+h
+	ENUMf4+ZrmgR211Ksqfx2pZptgVuS4Q=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-45ef1198766so611274f8f.0
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 11:07:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780078027; cv=none;
+        d=google.com; s=arc-20240605;
+        b=S23O2V2AAFswCPKqE+zdFYBDug6fxIDnPoZ7lviUNosnX9cA78j+LSSmWXTrhsNdim
+         NGv4ErI4uYN0hPYqG7VXlZD67ZHAvdgl4ANaRTY6c8dc5z8Xw4YZu3LRZuO5lC8wCLSq
+         wXJ1yq2YHg1ZeaWzYsgQHJJIemAy80awCDca8tQB3BkMNUk0KhCEYbBnI94Uby7Go0pq
+         7qFpo/7o0NXJPCidRU6y8fQ1FZEjSMpOU8f5O7Gb+92yfIbpExF95gfwaW9dqA1JX2qt
+         8xHagXRMHceuvQ5WxTv2vjGMRf1SxcAP/ect+H1eDrRu7ApLuRTLYn6ZOT/wLnDOY/6z
+         Z1Dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MZoHrQ02OOCar3J/zEZO4IwdNcb2UEkvFMGplj3lU9g=;
+        fh=4cjbSOsUVS2DQ4ZvnpIux/FhQUyJ+NQYuzXTFSJvMuI=;
+        b=ZfAZ4p9TThTiXNKd3QczpdMQD3bTRIxlZJYPbsJJtErPOgzKiIuronp1XJ1/Sre6nr
+         V1tJzXnKGKTafbIO0jYipUvsoj8x8lhQ1GlNZGPGeiKwEMLwIf57WJvc2GHuMez2AKQ1
+         xead5pRg8BrLHWzVHTphUGMmNHtVoe2yME0mmDnmvDjWSOsTZPxzAoqI8Tbv7MA1tWV6
+         SWIX/3DayyNO5kwDX3hFG+yS7dR2jlvsPRyhkavmGL/FALOTiN3UgYZTb5A/9b2Z8JtM
+         hXX7aueTShwbgMRqOVFcvJ9P/aYjWRPaKk8bkt9sY1CiAJ6HUPza2lMc7Wv9N0wJNbhy
+         xqkQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780078027; x=1780682827; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MZoHrQ02OOCar3J/zEZO4IwdNcb2UEkvFMGplj3lU9g=;
+        b=PsFNyGWprvc3eJMnSW19DEmxrgkjMCCmW8JHuLQqOsvDz+NTXow8JdaRnTfPFLJlR6
+         68km/Gh3HWNgNgG67EtzRo6mFLCZYJnZiedqpBXggsUzw2Ax2KYFlB2Wp/YPL6OY63OQ
+         M3ui0RPom6VsCK5tV5nHADCQw6pAl4ilUE44vh1r8g7KY7DHXuvpT67VRFll+W/XmrG1
+         cVus4RPhV13L4jVZurrBbh3uNWgbx1xweGgRzJNapuKDjkF3TZm37rYS4dtkKTWxoiPU
+         oYuxC7kFg4OLc/+FTAbT23k9YTOOFYBZOul2Dv1VxSO5g1EwD9LTOKmW1UdU1bZL/5fh
+         /GUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780078027; x=1780682827;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MZoHrQ02OOCar3J/zEZO4IwdNcb2UEkvFMGplj3lU9g=;
+        b=CobuHQ0r8CI4um5bnWChL6frWX3/J6CujcHjRAPYS7YEVTphRdKUigG6lXCbsktoDm
+         /eCsF1cjuYETcQzOvTTQi7n7TZshpam67/KGwA9+ZwYM030auijKthw049NPpejQEf1A
+         VU7mGtO9wTj2ZgbNrNXncEKIj2XrFug5d4RMlWHjSpafWqFsfg9++yS+YOmi7HbLnAmG
+         hgOtTzpJeAMMcSzMPJ5I10XdRGP3wihD0w+J8QFbqtth7OlK9bwzEHWUCaL/4uRUP5W6
+         MokUX5u7aL65g+rRR2/9/uScA3o4Yl/rL7oyc9ptkU/XwJwfLDIdTjsuEoRZW+FugTIk
+         +hCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ86pBNdp82JqDHmoUoX+V8cm1EOcVyIvw1KTPELtMd5vXdBxO07BmwXhu19Scb99p73u+9mOuApJQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx8BxFzSUQUMFWiFs5q/CxK41w9EJfISp9eX7tmsjQ6CS2uHkni
+	FnL1/lIt3RS+/Vh1rYAO1e6eFoYJq+P1cFHV66CuhGhP8reKo6g3KdokGZ6LqrOgMcIIp6jx9ub
+	lP1pWh/8/114Zy33F2vFoM9ptLwtlRn48QNtn
+X-Gm-Gg: Acq92OFcYyjDeXPo8c5KYmqJ0mXsi/7mp3SdAEE+MXj23c/oK1Ba1SCT/toiBaHGcf3
+	WYdqs8EdNKmyZRXMxXPyfKrsUK6jo8eUOYohhV7sPkAZC3GJKS+uNaq5e/7vhLeaGcA1nAhvnj2
+	ozqkADRjm+/1Zsxw2q7Ee0+bXquaHGDbdZ104EBilK5Qj8ZU7vpGo8AqWiYrvgwQut0eSbdvzS3
+	RCeib2RuQ7/ndW3n9fjslerHuVwzpW52HI4GZvkCnW/HkNTYdKgEH85UWAoH//9KwjdNYARu0OT
+	OY/wgh3e4qs0IUbjiiBJUqTCQfP9HMcqjTWaGP6DD+LAtP5MeQ==
+X-Received: by 2002:a05:6000:1869:b0:45e:8e69:955a with SMTP id
+ ffacd0b85a97d-45ef13397c2mr6590756f8f.9.1780078027311; Fri, 29 May 2026
+ 11:07:07 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|LV8PR12MB9183:EE_
-X-MS-Office365-Filtering-Correlation-Id: f96b4a13-134b-4adc-a94d-08debdaa5267
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|7416014|376014|366016|22082099003|5023799004|11063799006|3023799007|6133799003|56012099006|4143699003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	FTznmb+lWo7WJxr2DT6zArJSd9ftF+Y+BvZAF8G14y/m/Dk5K2jZMWAPOLxllqSLfPRpBeN6x+9fmsh4ULoI+w8McR5/5Vht2MBYkK4811Bb6qXVNEd+W5A0Pgqw1cpZv9+mLc7bcGSyHlvEgnLbrIaZoJHE5k666x5WWfNba4pBJtCtAXI6euIvmNRQfxpcYI5J3QJ8WS8n8pyAn2lkDvRn3pf7QHy22QlZ6bjPaFn2me6IojEOST8z/U+TT5qAZ4R87ZAIIzXIQcWnI5SMKv0aLqKCHyKdZQbbAeSwgIZF0DkO1GYdgayD3b0aVf19r8cZ/meMU/YgzouPW5UwGMcdE+sfFpxYptM2NL69DXo8VEv1cQKg7dYZFZ6hf+hvXJj3ENmPS3d4+Yq+ICjpxZ1Kf9a+yjpir0Z+85/mS7QRWHM97YpbLQe/xi8o0J+Td6ZQjK+shhDjm+B2Cwm3N8uMlfP6QFrFMdkbZEhwKPazlECtOWRGicPRN+pHCSQzP4pAv5YXN2MuToSU9YYk1V77WOZpYoqUywygyJbDQ0I1VJiEVpexKtZgnEgnZo81TJmbt1rnRKiLNksUlj5/D+wCZHWRhf0IY8Ym9IJF8oBwFvhKR3L/y+JmGIdXZopdfbCoMIAVeeWCm6v8l989JXyw5xmQrz/MMhQx0oBy2I8Y1IpWHzt8+1ixD7m/JMJ/RsMkmUekC82TTZppS9FRVQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(7416014)(376014)(366016)(22082099003)(5023799004)(11063799006)(3023799007)(6133799003)(56012099006)(4143699003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TJH3jxjwixCGr3Z/X3g8gg/E/Kb2AItNfzZzsShb5/p7L3kRiTW0AB6iCTZK?=
- =?us-ascii?Q?wsIDsP+0+5lvOfDlRvTZNLhy5Smn8eSqixWy99ZVijmIV9m+TVGFZQAewOge?=
- =?us-ascii?Q?LIl6p+nUThUGAlkOLKds1PxiLYkSgzCIBOLDO930CgxKRHN3lhioR1IYNJj0?=
- =?us-ascii?Q?PgjCoAPssX8gbNZ3ZG42+gUIOVKCbjtrFO8CbnyeT7sc/xX1nw0lZG8BNaBW?=
- =?us-ascii?Q?Nd+W6r71/+UUAAc2Pc2l4/ZbgepJSH7NL1QVSOx3zF1O5zDw5zUyjzx20CyP?=
- =?us-ascii?Q?noXXpCsS/ELI4J4tbR+aPLBbMPH8f/Qac6VMXFAn/qbcgDPBXz20hpf1bF2G?=
- =?us-ascii?Q?/rVUN4W/TSFFbAREwKmLWRJwGvA+4d8cOwxCmldgGRkXKpw7Zolxi/HrWSpq?=
- =?us-ascii?Q?lbW89UsX65xbordanznClf3hek3SEXtopX3TMUbBjaXnx/sKza+vC8tGdvm8?=
- =?us-ascii?Q?R5XXL6UjoNvhP8pvj+x8+DY411suImWs6CJjTzKrdj3iE8YvBoSI2fE9egHW?=
- =?us-ascii?Q?rlqvxk9/IZGaArjmKlkCz98njlHlD771ocvA90AfDKN+uHhc2ElkNGuWQFZF?=
- =?us-ascii?Q?FRclJDsP50N0sNf9znb3q54fQM9K1uxkUFUvKFkeIppQ+fbzj52D0tUjnIe4?=
- =?us-ascii?Q?JxFu54swJVTd0ZvEtc5iEwUNog++PSMb041yaViLwy0fgc/auI+NB4q22Ml7?=
- =?us-ascii?Q?oLxjRSWmwUI2CRJwQAHFj5oussLY7Xw/7AxAMIggPEZoHFmBu/nXgouxgyGP?=
- =?us-ascii?Q?7CNV2Ra3Hp5KKlqQKOTxhfHYkT15C/S1rdqG11W0pDXvU60mciMlYR6EyBBA?=
- =?us-ascii?Q?CrydE+e2RkwQKd5SjTPaZ9T3XCJekR1De85wz5GjHaafV6mahvovmVaWvjL1?=
- =?us-ascii?Q?h+67Opq/UMOME8i9QDzd7/qYjCCI0pkPRCfa8Jik8FqqdAOjb1E9Vx5RDtRQ?=
- =?us-ascii?Q?u9UVSKYCu+/0smRv6bAghVr9uIhYdJ43/CyhctlKptcDOPyNsbVNe7tgYPVz?=
- =?us-ascii?Q?AZoOT7pkjbNXDT92aWgU1V6C+CspMJyt1Qq/G9Lh+XWQgayA0fOV88EW84jN?=
- =?us-ascii?Q?SJOW9uP2U6RQ4DMBguF9YOV08wl+KD6WNXH0Aj7XuFbXppj9w7NQ5vwCn2Q7?=
- =?us-ascii?Q?1Jsd3cuEs6a2p4itUxloWAaCkTBU17HDQjT+Qt6yJVROaoOfl+slIR+qAsZg?=
- =?us-ascii?Q?VOyGsO/5erl+EgItNiq/vdwd5FAGrfNM4tJw2jlT1YwQtfc2I6xMNEyTlYZP?=
- =?us-ascii?Q?iJM97y3hsJETfVMbtvaGQDdqD/GpA8eE7U1onzeKhMYioDfxwyneHtq9eHf5?=
- =?us-ascii?Q?I3bkwFPs605Cb1+lgEBWCnm60YYpgO2GyQAcvl/ZCjFI+WBErAEbE2ewTwWn?=
- =?us-ascii?Q?QVhweXsPOR5NtQmVu2Ywth+8v5b947hfwollMm6xyhOKgYMATPyNT6Q1d3fi?=
- =?us-ascii?Q?hXvoY9wntnMz03Z0MUfTVNjI6h9z5+rSHLxnseTdu1GQX6S6RhqGjaTxzjwH?=
- =?us-ascii?Q?IH0eS/gACT8DJT1E3bWF4GGPh+6nMsoXSTN0SJdF+YyB2mnXXoVg1eIqsgOJ?=
- =?us-ascii?Q?lJ44brkn7dj5cdGPPQKFmIfeMi8rXZx7HJipo/Q0f/pp3UUj8Bff7qylZQVk?=
- =?us-ascii?Q?uHMStCL/DSveN7eYuNa8UIn3BH+URQdA16zaghmB44M34BCv/PSiV1VNQbI7?=
- =?us-ascii?Q?MYFVV17DKwBhh19m5X63V0d6XkIewLWXL1AezR7Kjc6cq0LnuU0nIP/B7UrP?=
- =?us-ascii?Q?T3ZeXJmmFoc7Sowq98NMTCEA/9XLoKbH/Xsl41BQwOOzvcwqZwIM?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f96b4a13-134b-4adc-a94d-08debdaa5267
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 17:47:15.9375
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: G+4EqFpvWl6NWvft7EYXXfa4nTcDj2/kLfl7TQswLjt5CTjKwMKXblTxy9j1aketEYS/Zxz+jwxuQFl4ozgXGw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9183
-X-Stat-Signature: 1im4955zyc4khzm3amn5dx3gx4uj53wr
-X-Rspamd-Queue-Id: 6A18D180002
+References: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com>
+In-Reply-To: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 29 May 2026 11:06:56 -0700
+X-Gm-Features: AVHnY4LiKS9AOV875xFexbH0858oyjx1YBqN9AQEaDywp-8XC4Ly2QmE4FmtL2E
+Message-ID: <CAKEwX=PdQb2nDbFaZYuRa9_mYrMCnMEJHpxxABebKkVz+OgDHg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/9] mm: support zswap-backed large folio swapin
+To: fujunjie <fujunjie1@qq.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Alexandre Ghiti <alexghiti@meta.com>, Kairui Song <kasong@tencent.com>, 
+	Usama Arif <usamaarif642@gmail.com>, Chris Li <chrisl@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 8gu4s5w5h1ixrfqcqci59khbrtxuy6k3
+X-Rspamd-Queue-Id: 30A6D2000A
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780076846-597676
-X-HE-Meta: U2FsdGVkX1+iBXspHgSaHIDjZ9Msy4qszVaKAjnd7q/8hbWz3bM2+ous6ik7OO81xJ7Gu7oCZgSDyxkVvSMXdX+OduGSUkiacix/OfzjMPTlNXzhPVo6UvRABp10a8cImwm8T2hcOaLw+wuvmE8o7g1jl9aMSmECiWN4O5iFv0wfwJdct5YaEo4og+UVN7LcgI7MPLjL2uoqfPZ0+IlpZtWEB8to//TtKzZKl+db3qMyy6GRGiaJG0nd84J3B24oObfMkG3ITrlxUWmF/Oq42mxp6QMQT5A8IBrkWVgf5u06JuqGh8ycncaLKjX2S0OQ0a18h8YHqnJNTbWItol7DF1Ki4xqYxtz240q37aD+mLel/rBmPYX3wY+1kQ429pYgDmkuYdWwDp4tRKMfgffxSIromi7Gn6L6vAbwQd6JI7VLvagqZg/jxDXglsYjZ8cGOIvZrWX5593Noc+yr9VWX3wSS5tg7OvuXKNpJvnR3zb6KabciogQkso/Erxb0ps24vggYJ8HhRlJz6Pr1HHgNwghUhHOb90+agmOp3RlWThC56qO5mb3GNLq3p+q43ozURLaTty8m1CiD5nL7aajzMLDhSeOCVJvb/d0f1LTZ5tCqefIvh6HxF+/cGHikMzb0Za50ej3f2gx0Btn3zaSjlqEnm3+BAHFKlbfCZuwyCWn/qFMi0CcYMrT8C2S7aCf0x90hEIS5cXDL3DTbzW1oVAee2/AWA90aWC0y4k9b6+mFw62mut3CAd6ntnmH/XUt5aO3mfo9lku9yIITx/eUQyLh92j+39u6Zi99QLJwBQxjUt5kkekADLFcP4S15KGl4DVsxv81svhbLAEWLOCr0jRBgcLn/wdw8rPuakyskyHpErVdMXmzDvNCXpkMfzpbHpyec27otrZQYOhpz8uZwfOyt+T/muaWd5VRQD5rfHvFOM5fZIk3dZ056pO7KjUhH9cZ4rBc4uxHVt9hB
- RAFq7/g5
- A1SeN7HQXRnSX38WNhLd2cLkpdI2RN0F0m17ZQDmov/jGIo6YJBPsmVouBTUUUCgTHJA2WR1MGVgOWc4Lf7+u8O7sCoNm88xP9lEInA1SQGoaX7EdnkZEWUiaTXxXxR8/yOK1rXCuqg9YPm4CraVdXKD4EgpcX+Ep6n1uZB/xs853bmjUpHq59VEL66dynE952oXXV79Qdf6ywy5efyxolMirXRMJm68kWOFfSBs34bearfc81YG1+emmitleSGKNmLp4Rs7wHVs1sby/3TSxbMDbtp5m20IxENXUQi6JQvyj7IPhT7I0ULJXQO7SxVJe1v4jQglMmLOnNS6G9vSv57YsCiA2hA9wsOGGQyph3IYQcrBGP9Vx3HmuOx5kdQldTOwsgkqx/+ROTqD+yKwvcVI5VCDctVQITiX+inECmMQ2dAHiscmeVF5d+lfUAzjVWmbWqmlH5oSgPc02XpIh1mjRPszWalPXaFwuV3LSxYRepmxASSwPY6HcXUlI2eE9RtpcB8/w8jh6op8CVflj5nhIajakJqFyXbwZYE0HxCwAU8XAvqRJk07KneeDdLwl2sdVsJ3Gt88Gy0spT2E7tcP448S5T91hnsTFbhdJWG/FgtzK2ymOI6lF8onUciVdG2M8JPsmM7Y5dlR1RLnn4sEUIQ==
+X-HE-Tag: 1780078028-800266
+X-HE-Meta: U2FsdGVkX1/wsCdwkDcJC4MBZtBajL8h91ZzZe4Omrm7REzg1QpXmX/RaReDVzw+oCQaffgYv4qoZUKmIb7yD2QcqN/mJRPYms4rViZ6uZVUTvRaa9474flDyFGVKgy4Co/FAjVS7RUgFXsEie6OHMJEwtrqk9uKMY5JkrJGOoZmIZ9BosZToPF3k1vxy5zQ4SYV64zbQpxWAod6ASR3RkYcYIJ803uMThvQDJ3m06eAlANqY+v11RVzcLPbNFO3ZSXuzMdRUwlM46/bH5lVXMez3Ut023XbYOilYuZD3XzfmY5SEJdVE580+Ft24nCVkeS8b6hDtRHG1HDZzyKqrT2HJFO6EMOoJE4zMHmiiVUUyVtiQ3MROX0+N5dHXizNVAZDgosyQzoO1fh6I+tmZGtaAoelcrJRv/b5MqitBgW5Gz0iMxPXZcjFO2GS2I4Ffq8a8QDsRaOCLu1k2QFEv66iu34E5A9UuqJqlgLcxhdHlHsuHzKBWgfql4r+XhY8seRH29WtiisYEfusXhFLQweBePTpDeAVCAXyAP/pjeSy3H5FPyyKwCwZCQU2q0NawkWAdbZMAGYgFj5LzTsENU11RuPoRPF5LzeAi4GoAbi7cd68JqA1AIwyFfOaAgrNxh4A+vy1bOoD2NdLVBfIOsEXpV5aKZw4Yb0pyybxcdWMjCmyXtTOYy611ptN8LZ40IpkduAA2X34VogBoYK/oQbke1IZEWeh+/BmrReAKZK0E6ViRKrLYFYomIqt7Z8RJXpIIsKfv79uFbtFP8HevDhW9ePZO3YtSEOKsvPYGw3YpYvcB2Z2+REZxttUMreoDhZDoKUAKwwZ5jxd2UP2GhAT5fTHe1/oReT5SkKVbp3JeWs8x50VXrNwTi5vy62fgPJ9F+iG44MVLCjh+m3z/ImBN2pxm3VmzznvXR310vtao7tufAiwuJGpALfmnfSzrfFWGHPdubR2TH3tNv9
+ kJNfkd/H
+ OjBB4xkznY2gR+aG0u+qZh+K0mcF+42/2CbG3FNUlyRLEufw9f++rKgRJ4v+R4oTQqa/bKrihwRoIOxHf7MwPU0pj3vbsSIcKEiPQ+4lNhYXte7OkIx5PQ9Lr1bgHxk5pDAw+rizGI3xExN9/4ci1ZgKM+WhrTPkGUejwUfIcqJsoJWrU71lH45ems6QY5Qud9rTfATf9jyzQfXvFj8INbpmtiBqrPyuJZueCcKOjvazYuzdb3zuIqjjxCVSwzJ6AvVlTh/4rhYKrlx8LNodnouvrPTg5tHOMrnyvazTtwdz7BsQdaT/fFqzgW/ZjkSH7IRsSzNWBU0UGzi4EUXZ2DElbji0rsx4qwdYAsYvSFaRARI33NcIH1wUo2+cczzpcgbHAgnYXQJwc6l4ZWmeSHlaGCR8qO+TL+B65eXGtQGf4Az65UgNJLRXBxeg2TU3SWkfWPX/uIsuqktsCAFSSm8M3Qd5FAx9lW/Zh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,112 +143,280 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 08:26:15AM -0700, Joshua Hahn wrote:
-> On Thu, 28 May 2026 12:41:33 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
-> 
-> > On Thu, 28 May 2026 15:03:37 -0400 Yury Norov <ynorov@nvidia.com> wrote:
-> > 
-> > > Reassigning nodes relative an empty user-provided nodemask is useless,
-> > > and triggers divide-by-zero in the function.
-> > > 
-> > > Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
-> > > Link: https://lore.kernel.org/all/CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com/
-> > 
-> > Thanks both.
-> > 
-> > It looks like this is very old code, so we'll be wanting a cc:stable in
-> > this.
-> > 
-> > > --- a/mm/mempolicy.c
-> > > +++ b/mm/mempolicy.c
-> > > @@ -370,8 +370,13 @@ static inline int mpol_store_user_nodemask(const struct mempolicy *pol)
-> > >  static void mpol_relative_nodemask(nodemask_t *ret, const nodemask_t *orig,
-> > >  				   const nodemask_t *rel)
-> > >  {
-> > > +	unsigned int w = nodes_weight(*rel);
-> > >  	nodemask_t tmp;
-> > > -	nodes_fold(tmp, *orig, nodes_weight(*rel));
-> > > +
-> > > +	if (w == 0)
-> > > +		return -EINVAL;
-> > > +
-> > > +	nodes_fold(tmp, *orig, w);
-> > >  	nodes_onto(*ret, tmp, *rel);
-> > >  }
-> > 
-> > I suspect we should address this at the mpol level - it should never
-> > have got that far.  Hopefully the mempolicy maintainers can have a
-> > think.
-> 
-> Hello Andrew, hello Yury,
-> 
-> I agree with Andrew here.
-> mpol_relative_nodemask is called from two places, the first being
-> mpol_rebind_nodemask which is the calling function seen in the bug report as
-> well.
-> 
-> The other place is mpol_set_nodemask, which has a helpful comment that notes:
-> "mpol_set_nodemask is called after mpol_new() [...snip...] mpol_new() has
-> already validated the nodes parameter with respect to the policy mode and
-> flags".
-> 
-> So it seems like we are missing the big if-else if-else if block from mpol_new
-> in other places that should in fact have it, like mpol_rebind_nodemask.
-> 
-> The approach proposed here of just checking whether the node weight is 0
-> won't work for a few cases, namely for MPOL_DEFAULT and MPOL_PREFERRED where
-> empty nodemasks are actually allowed. So what should really be done here is to
-> do the full policy-nodemask checking section in mpol_new and call that from
-> mpol_set_nodemask as well.
-> 
-> Thank you for taking a shot at fixing the bug report, please let me know what
-> you think! Have a great day : -)
+On Fri, May 29, 2026 at 5:17=E2=80=AFAM fujunjie <fujunjie1@qq.com> wrote:
+>
+> Hi,
+>
+> This RFC explores large-folio swapin for ranges that are still fully back=
+ed
+> by zswap.
+>
+> Large swapin is currently disabled once zswap is in the picture. Anonymou=
+s
+> faults stop considering large orders after zswap has ever been enabled,
+> shmem does the same, and zswap_load() refuses large swapcache folios. Tha=
+t
+> keeps mixed zswap/disk cases safe, but it also loses the dense case where
+> every slot in an aligned 64K range is still resident in zswap.
+>
+> The series keeps the policy in common swapin code:
+>
+>   - zswap reports backend facts and provides the large-folio load helper.
+>   - swapin_sync() filters candidate orders by backend range.
+>   - all-disk and zeromap ranges keep the existing Kairui large-swapin pat=
+h.
+>   - mixed zswap/disk ranges stay order-0.
+>   - all-zswap ranges may use a 64K folio after locality admission.
+>   - anon provides locality evidence from VMA hints and PTE young density.
+>   - shmem starts with explicit VMA-hint evidence only.
+>   - swap readahead uses its existing VMA/cluster window as locality
+>     evidence; it does not also run the anon PTE-young rule.
+>
+> The backend range probe is only a snapshot. If the backend changes after =
+a
+> fresh large swapcache folio is allocated, the common path drops that foli=
+o
+> and falls back to order-0. zswap_load() can also return -EAGAIN for the
+> same retry path. If a late fault retry keeps the large folio in swapcache
+> instead of deleting it, the cgroup v1 memsw swap owner is committed befor=
+e
+> returning.
+>
+> This is mTHP/large-folio swapin. The mappings installed by do_swap_page()
+> are still PTE mappings, not PMD mappings. The expected win is fewer fault=
+s,
+> batched PTE/rmap work, and preserving the large folio across zswapin
+> instead of rebuilding the working set as order-0 pages.
+>
+> Prior art: Usama Arif posted a related RFC on 2024-10-18:
+>
+>   mm: zswap: add support for zswapin of large folios
+>   https://lore.kernel.org/linux-mm/20241018105026.2521366-1-usamaarif642@=
+gmail.com/
+>
+> This RFC keeps the same broad goal, but moves admission into common swapi=
+n
+> code. zswap does not decide the policy. Mixed zswap/disk ranges are
+> rejected before large IO, and the first cap is 64K.
+>
+> This is a rewrite of the RFC posted on 2026-05-08:
+>
+>   [RFC PATCH 0/5] mm: support zswap-backed anonymous large folio swapin
+>   https://lore.kernel.org/linux-mm/tencent_8B437BE4F586C162950BF71954316C=
+1EDB05@qq.com/
+>
+> The v1 series was anonymous-only and kept too much of the policy near the
+> anon fault and zswap paths. This version is rebuilt on top of Kairui Song=
+'s
+> common swapin infrastructure. It keeps admission in common swapin code,
+> rejects mixed zswap/disk large ranges, and adds separate locality produce=
+rs
+> for anon, shmem and swap readahead.
+>
+> Performance and behavior
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> The A/B tables are 10-run measurements. Elapsed values are seconds,
+> shown as mean +/- sample standard deviation. "phase" or "refault" is the
+> measured refault subphase. "zswpin" counts zswap loads. "pswpin" counts
+> swap-ins from the real swap device; pswpin=3D0 means the refaults were se=
+rved
+> by zswap even when a disk swap device was configured. "RFC 64K" is the me=
+an
+> number of successful 64K swapins.
+>
+> The numbers below show where the large path is used and where it is
+> rejected.
+>
+> zram-backed zswap microbench, 64K mTHP, 8G guest:
+>
+> +-----------------+----------------+----------------+--------+--------+--=
+------+----------+
+> | workload        | base elapsed   | RFC elapsed    | delta  | phase  | z=
+swpin | RFC 64K  |
+> +-----------------+----------------+----------------+--------+--------+--=
+------+----------+
+> | usama_1g        | 11.260+/-0.235 | 10.301+/-0.140 | -8.5%  | -22.2% | 1=
+.000x | 16381.1  |
+> | nohint_seq64    |  4.398+/-0.085 |  4.025+/-0.022 | -8.5%  | -21.1% | 1=
+.000x |  6221.1  |
+> | seqhint_seq64   |  4.283+/-0.060 |  3.948+/-0.062 | -7.8%  | -20.6% | 1=
+.000x |  6223.5  |
+> | stride64_sparse |  3.095+/-0.051 |  3.086+/-0.025 | -0.3%  |  +5.8% | 1=
+.002x |     1.0  |
+> | random64_sparse |  3.095+/-0.046 |  3.076+/-0.016 | -0.6%  |  +0.7% | 1=
+.001x |     0.0  |
+> | random64_full   |  4.423+/-0.067 |  4.405+/-0.018 | -0.4%  |  +0.1% | 1=
+.000x |     0.0  |
+> +-----------------+----------------+----------------+--------+--------+--=
+------+----------+
+>
+> The usama_1g row follows the shape of the 2024 RFC benchmark: allocate 1G=
+,
+> fill it with compressible per-page data, reclaim it through memory.reclai=
+m,
+> then time the full integrity-check refault. The seq64 rows use a 512M
+> target and 768M of pressure. "sparse" touches one 4K page per 64K region,=
+ while
+> "full" touches every 4K page. "seqhint" uses MADV_SEQUENTIAL; "nohint" do=
+es
+> not.
+>
+> Virtio-block swap device present, zswap enabled:
+>
+> +-----------------+---------------+---------------+--------+---------+---=
+-----+--------+---------+
+> | workload        | base elapsed  | RFC elapsed   | delta  | refault | ps=
+wpin | zswpin | RFC 64K |
+> +-----------------+---------------+---------------+--------+---------+---=
+-----+--------+---------+
+> | seq64           | 4.399+/-0.100 | 4.279+/-0.216 | -2.7%  | -10.5%  | 0 =
+     | 1.000x | 3110.7  |
+> | stride64_sparse | 3.103+/-0.047 | 3.119+/-0.086 | +0.5%  |  +6.2%  | 0 =
+     | 0.999x |    0.0  |
+> | random64_sparse | 3.142+/-0.112 | 3.097+/-0.030 | -1.4%  |  -2.2%  | 0 =
+     | 0.999x |    0.1  |
+> | random64_full   | 4.473+/-0.147 | 4.445+/-0.088 | -0.6%  |  +0.9%  | 0 =
+     | 1.000x |    0.4  |
+> +-----------------+---------------+---------------+--------+---------+---=
+-----+--------+---------+
+>
+> This run uses a real block swap device, but the refaulted data stayed in
+> zswap. It covers the all-zswap hit path with disk swap configured, not di=
+sk
+> read IO.
+>
+> Virtio-block pressure/mixed run, zswap max_pool_percent=3D1,
+> low-compressibility full fill:
+>
+> +-------------------------------+---------------+---------------+--------=
++---------+----------------+------------+---------+----------+
+> | workload                      | base elapsed  | RFC elapsed   | delta  =
+| refault | pswpin base/RFC | RFC zswpin | RFC 64K | fallback |
+> +-------------------------------+---------------+---------------+--------=
++---------+----------------+------------+---------+----------+
+> | seq64_full_pressure           | 5.908+/-0.195 | 5.790+/-0.235 | -2.0%  =
+|  +3.0%  | 90258/99038    | 20327      |   0.0   | 3730     |
+> | random64_sparse_full_pressure | 5.104+/-0.069 | 5.068+/-0.090 | -0.7%  =
+|  -9.1%  |  6201/6196     |  1297      |   0.0   |    0     |
+> +-------------------------------+---------------+---------------+--------=
++---------+----------------+------------+---------+----------+
+>
+> This run reaches the disk-backed path: pswpin is non-zero in both base an=
+d
+> RFC. It is mainly fallback coverage. The RFC does not install 64K folios
+> for these disk/mixed-heavy ranges.
 
-Hi Joshua.
+Ok this results above look good. Basically, if we don't have spatial
+locality in access patterns, we don't do THP zswapin. Nice.
 
-Indeed, quick and dirty shot.
+>
+> Policy matrix, virtio-block swap device present:
+>
+> +------------------------------+----+------+--------+--------+-------+---=
+-------+
+> | case                         | pc | hint | pswpin | zswpin | zswpwb| 64=
+K in   |
+> +------------------------------+----+------+--------+--------+-------+---=
+-------+
+> | pc0_seq                      | 0  | none | 0      | 99559  | 0     | 0 =
+       |
+> | pc3_seq                      | 3  | none | 0      | 99498  | 0     | 0 =
+       |
+> | pc4_seq                      | 4  | none | 0      | 99512  | 0     | 31=
+09     |
+> | pc5_seq                      | 5  | none | 0      | 99657  | 0     | 31=
+13     |
+> | hint_none_random_sparse      | 5  | none | 0      |  6265  | 0     | 0 =
+       |
+> | hint_random_seq              | 5  | rand | 0      | 99488  | 0     | 0 =
+       |
+> | mixed_seq_full               | 5  | none | 97725  | 20147  | 84    | 56=
+9      |
+> | mixed_random_sparse_full     | 5  | none |  6230  |  1302  | 0     | 0 =
+       |
+> +------------------------------+----+------+--------+--------+-------+---=
+-------+
+>
+> The pc rows show the readahead-window gate. The hint_random_seq row shows
+> the explicit random hint veto. The mixed rows use a small zswap pool to
+> force disk/zswap split backing; most mixed ranges are rejected, while any
+> remaining 64K successes were all-zswap at the time of the fault.
+>
+> Kbuild pressure, zram swap, 384M memcg:
+>
+> +----------------------+----------+----------+--------+--------+---------=
+-+
+> | setup                | base     | RFC      | delta  | zswpin | RFC 64K =
+ |
+> +----------------------+----------+----------+--------+--------+---------=
+-+
+> | zram swap, 384M memcg| 2060.323 | 2047.516 | -0.6%  | 0.991x | 2797    =
+ |
+> +----------------------+----------+----------+--------+--------+---------=
+-+
+>
+> This is a single-run zram pressure smoke. It did not show Kbuild
+> regression, and the RFC run installed 64K zswap-backed folios. The result
+> should not be read as a tuned-performance claim.
+>
+> Kbuild pressure, virtio-block swap device, 512M memcg:
+>
+> +-------------------------+----------+----------+--------+--------+------=
+----+
+> | setup                   | base     | RFC      | delta  | pswpin | RFC 6=
+4K  |
+> +-------------------------+----------+----------+--------+--------+------=
+----+
+> | disk swap, 512M memcg   | 1420.671 | 1409.263 | -0.8%  | 0      | 7497 =
+    |
+> +-------------------------+----------+----------+--------+--------+------=
+----+
+>
+> This is a single-run pressure smoke. The disk-swap Kbuild run also stayed
+> on the all-zswap hit path, so it is pressure coverage with a disk swap de=
+vice
+> present rather than proof of disk-read large swapin.
 
-The problem is that nodes_fold() can't work with the sz == 0. In
-other words, folding to a 0-bit bitmap is an error. We don't check
-that on bitmaps level because it's an internal helper, and it's a
-caller's responsibility to validate the parameters.
+Why a single-run?
 
-nodes_onto(), or more specifically bitmap_onto(), is a different
-story. In case of empty relmap, the function actually clears all the
-bits in dst and returns.
+>
+> Shmem smoke, tmpfs huge=3Dalways, 64K shmem mTHP:
+>
+> +----------------------------+---------------+---------+-------------+---=
+-------+
+> | case                       | refault hint  | touched | 64K shmem   | 64=
+K in   |
+> +----------------------------+---------------+---------+-------------+---=
+-------+
+> | nohint_seq                 | none          | 65536   | 4096        | 0 =
+       |
+> | seq_refault_hint           | sequential    | 65536   | 4096        | 40=
+96     |
+> | random_refault_hint_sparse | random        |  4096   | 4096        | 0 =
+       |
+> +----------------------------+---------------+---------+-------------+---=
+-------+
+>
+> That matches the current shmem producer: explicit sequential refault hint=
+s
+> allow large zswap swapin; no hint and random hints do not.
+>
+> What this RFC does not establish
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> The 64K cap is deliberate, but it is not tuned. The anon PTE-young rule i=
+s
+> only anon evidence. Shmem has the framework and explicit VMA hints in thi=
+s
+> RFC, not a page-cache locality producer. For larger orders, the anon
+> producer should probably use bounded sampling instead of walking every PT=
+E
+> in a 1M or larger candidate range. The mixed-backend tests cover fallback
+> behavior, but this series does not add mixed zswap/disk large IO.
 
-I see 2 options to move this forward.
-
-1. Simply disallow empty relmap in mpol_relative_nodemask(). There's
-no valid cases for it, AFAIK, so the nodes_fold() limitation looks
-reasonable. We can consider it as a new policy.
-
-We've got 2 users for mpol_relative_nodemask(). In mpol_set_nodemask()
-we can simply propagate the error; and in mpol_rebind_nodemask() we
-can throw a warning and do nothing.
-
-2. Follow the spirit of the nodes_onto(), and in case of empty
-relmask, clean the ret mask and bail out
-
-I'm in a favor for the 1st option, because empty relmask looks buggy
-anyways.
-
-> The approach proposed here of just checking whether the node weight is 0
-> won't work for a few cases, namely for MPOL_DEFAULT and MPOL_PREFERRED where
-> empty nodemasks are actually allowed.
-
-Not sure I understand this. The mpol_relative_nodemask() is called
-only if MPOL_F_RELATIVE_NODES is set. In mpol_rebind_nodemask(), if
-both MPOL_F_STATIC_NODES and MPOL_F_RELATIVE_NODES are set, the former
-wins. How would the RELATIVE mode mess with the others?
-
-The mpol_new() code seemingly tries to disable empty nodes in case of
-MPOL_DEFAILT and MPOL_PREFERRED + MPOL_F_RELATIVE_NODES, but obviously
-it doesn't work very well in the rebind case.
-
-Anyways, I'm not really deep in mempolicy domain, so please educate me if
-I miss something.
-
-Thanks,
-Yury
+The mixed IO can be deferred, but I think we should figure out a rule
+to extend this hint to arbitrarily sized ranges, and preferrably shmem
+too.
 
