@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E8FCD6E49
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 03:51:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71B6CCD6E49
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 03:51:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64DE96B0005; Thu, 28 May 2026 23:51:47 -0400 (EDT)
+	id D7A316B0088; Thu, 28 May 2026 23:51:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D7986B0088; Thu, 28 May 2026 23:51:47 -0400 (EDT)
+	id D2AC96B008C; Thu, 28 May 2026 23:51:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EEB96B008C; Thu, 28 May 2026 23:51:47 -0400 (EDT)
+	id C19A96B0092; Thu, 28 May 2026 23:51:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AD266B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 23:51:47 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD430C43C5
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:51:46 +0000 (UTC)
-X-FDA: 84819083412.08.0ECA8E1
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 474C61C0004
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:51:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KKudH0N4;
-	spf=pass (imf21.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B085B6B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 23:51:53 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 589C9141054
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:51:53 +0000 (UTC)
+X-FDA: 84819083706.29.03ED1BF
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A867FA0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:51:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=deJpLXPn;
+	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780026705;
+	s=arc-20220608; t=1780026711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Om+9rENfxhYxcbjRM0HRMEqhY91mSkBoqb3WHHhFk5M=;
-	b=42byYxAcjVpjZ/PETzX+NLE02k96DVuefx4LfEasaVLY0Jlq/zAMTi7+1FqyM2j8sHpGlU
-	szUspLN4xiUqKnXa8DNLrVBPxcTHyfLHFhXvthxOP+InbUu3bq04earhX37JzlI4lvQtGr
-	HZXFYvmOdwTl4Y6PkQNLj0pFvxcTH6I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780026705; a=rsa-sha256;
-	cv=none;
-	b=MJ6HWkNY+PBQ4AJboLwvRtehnXi3IBxMrAxYZIOkWU7x0W9UbUbbpvIT+Qwpd1vYBk/XP9
-	uqlXLDx3D0g8UQ90ZkmC8ZEU0o+tgwc9p7np2IPzxJtv4W3fOLJ8VAUxGPljL7d1wFlWdI
-	+PgKPJ+eujFm0tlrWjKCrO4agutIYeQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0B/bCGwErREfiHqYBbNLfFiWmSgms7I7OCV4Ix5QlOg=;
+	b=nnq2r1LGK6oAnfoUMxMywzKh/5xObgjef8BGKP31fhpttFck+lP59QGkRkrVVFyHGs17Sh
+	6XjtuEM306fKveKVUR26aeSIxk7WFfwsj+SHxQVB9E6jX6++KMKnRWKwXfy4I1eGdm+PoX
+	ZHoNZ9PhHPYfQd92FW4OCpHHf/E/t7k=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KKudH0N4;
-	spf=pass (imf21.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=deJpLXPn;
+	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780026711; a=rsa-sha256;
+	cv=none;
+	b=D7PxBoBjZEUjDQ+n2z8VB1OChcZkUPr1eRkn7jD/+5MiUIcUnamW8meNx31lin4yRnb7s+
+	joSOBs1Gq/TZHSFsp/kxN/h2ql+4Jmg/HH0aZ5Zc8vm+7a4Vsu9BjrMt/VoxO84j9mGf1S
+	Ds5A+SwPMCwDYugyTD8M2o/nB2y4/jc=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780026701;
+	t=1780026708;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Om+9rENfxhYxcbjRM0HRMEqhY91mSkBoqb3WHHhFk5M=;
-	b=KKudH0N4UN1XACB2rtOpVcH6cVASD1OJbFI26I+ETm3F157R6v50OPVUSi33rSv7pm+n6K
-	bXEqsfRMPUAfxa0NMYMrG/utt8pG7TafNwSZ3+U6OhA86H7Sz8wg3Bkj58OOidR6VP2bYm
-	0Rwio8d/fyiRnY8ZM4ZDb/obxb9jHY4=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0B/bCGwErREfiHqYBbNLfFiWmSgms7I7OCV4Ix5QlOg=;
+	b=deJpLXPnqBZX3xG39KVWI1DoXBwP0OQ8KIFV3yIrnfpDUPnOG5EO2JYevOBV7b+AmSrMHI
+	MHD85XCZKUrdzImMMsKoS5+giXII668/nj/LzilMpnAwfy/7rqujGuZxwBvBezg7680b7e
+	Js+pdQWpT9Q23nhOI+DpS1qO1qJRD+s=
 From: Hao Li <hao.li@linux.dev>
 To: vbabka@kernel.org,
 	harry@kernel.org,
@@ -68,20 +69,22 @@ Cc: cl@gentwo.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Hao Li <hao.li@linux.dev>
-Subject: [PATCH v3 0/2] mm/slub: batch partial slab list operations
-Date: Fri, 29 May 2026 11:50:50 +0800
-Message-ID: <20260529035120.81304-1-hao.li@linux.dev>
+Subject: [PATCH v3 1/2] mm/slub: introduce helpers for node partial slab state
+Date: Fri, 29 May 2026 11:50:51 +0800
+Message-ID: <20260529035120.81304-2-hao.li@linux.dev>
+In-Reply-To: <20260529035120.81304-1-hao.li@linux.dev>
+References: <20260529035120.81304-1-hao.li@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 474C61C0004
-X-Stat-Signature: pe9m663pdn1ehmdwswt115exeqkdm86c
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1780026705-120685
-X-HE-Meta: U2FsdGVkX18PzrsyNzbYRSgnP5zVIermMaYmWKM1rjKgxRSnw5B+/YxQNGzcLeaXyoxaupF+h+L8RKWCL+/C4OgdRCtINtECH6sr+ubpqew0T8Op2dyO3HE8jlGFQr8qEvdOIugPMYZKAtSeuihZ3i2Vs6LMkZ3r7Z6t58DR01jseIW6EnNGZgh3xYVNMM3MwTquMrMTY7lDfdah8QiUK6x26A0D1oWr+jiJvGg528YqJ/f3cgIQpbbD6V/IF61I5RurGNmA0b0tcwQwXQ+ECY/I+gbGhcnRwJRNnX5OaLouAMY5zEOyDb+s5XlH/frBGKekRAkuB/PbJvCDccBLmqwAc8l4MJDvkAA/6hxfRrb/ZscltjX9kwGXqtCYyKf+/CO8uziAtPou86yqWwRTg8xEsRzoNItPGiTpyQVAsTINdeHFzK4wuy/mzpDfOx3MCn03TJl1f+6eZnoR8sc9Crf7mYKmP6+UmJsTYWoqlzPymbro+CR1bZKd0/ZNYZagQ++GcW1rcjo5L5NU06Yz5MZXZW68X7rHjQiRSRXjI/c/1u2XQtRzrhoQIGZXrWi/0FlpSsyyt8XFUI0LpuxMl8hnsOwV20JsVEeyJeDIgBGn3fE5DZoYSsR1XxVBb/BotWeVzliNgOUvnMTeBgYzNZzwY5e6kh878UYGJRWRfZXHu6GjVYABMFqrIjM6RfOhQ25oesKAGwa3QDBXVG/VKmz7y/oTIcq7X6SUYEA3OPvdeoCGZt8aikjnrIITPpylld36UuYkUATSTV+i/PVmOSk/gwgIt+2tyyiydOJC1buwJJiIKSfft/7IGkn7WJaDQzDxsaaD8oRQHxho13gfXGaYvDWLSerCwzMls1J0cLlWylXUi1pF7AOKlnL9tWUeJTGB/qlkA4fytlxGWIblusZ3h0i7lkDJld4cuOneNDwSoi/KFzfakLcFeUwzUef/A8SbDOhgj7halhkxynK
- m5CeltYa
- hwVIsHuG4h/FHYonguuNg6q0wdf+0qGv5OmmeScC1zBKdiF+Y+ap+6ZMRqk+Mg6s2myVquq04oP/ftkXHCcknC6lIyeJWKgWzte52qta9lqS4RwQnVWHhKLCPm7Hhy3fneIeh0JCC9CgwSvUrC+ZT373EMzvGwbL2PJmhVdL9Ujy84MWlhZGmu8tCzIYHRZT5DNA5
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A867FA0005
+X-Stat-Signature: jwcfjifbtqcxe8f6k3sgp5b779zrihjs
+X-HE-Tag: 1780026711-570626
+X-HE-Meta: U2FsdGVkX1+5uJhlpMCIMGrC2dHOYlWqmUrvVsj7u1tRv609R1X2ECDNoGXWiEVv2T6d6GW+dM4DLOU8Q3Vx0KV9qBf1q3VoJolNClsfpzciLyJD6w2nwFysst/uXev7y2XFyb7ZPCvNX1bgxTwTPe43VKTl8FHJchtQWzgcm3WOz7w85F5Pkmo4x38MKHJceXpGgs6h6JFJqGZ01AiXfDvlxcm3MXSI1cze5D7m9M/ZXOEbyt6q9mQiP6NlGj9qcTKnTPlt7k6xpAb2Ogu+BadWsugZUcrZLRlSv80Uz1jBxxKNPMM4nfGVWgCjbwDMkKLuXdYfo2DwVYlZuP3lzbGi0C1oRMyXpBmSpPzFf0KDBQY9vDDnFcV3f8rPzSU9Tav7B97Muzv7JvgDzIgUyx/R0aatpWr2PXeY3TVVT3btbQUJwoAARZXwI1YePIMFqAWBDekEQXdoHeDPyuWFNC3Zdgj+2zm28BEklBg75OXVEh0vC8gQFDdaDd7V+ZRgq/jUERkTyGKymW9AuGJF95ynuuOUtKkPoXIimbRuFTfB5+fJ0e6VigbUp0ar5Dv0yHsWi24KI0MTa+PAt9jvhUVOqq177X6pMCwTKNrI8vjCQkV2+8VMsc1j6kxU3t8Lk7avG1an1adKI6kn4Qqt4qTEyR6blZ40YM5LLJYh5Im1+SWPZzCSObLB1M++tZQ6CL7W03mHV9+8c/jHTycNk65C7jc0Dwmw5dpEFLz6YTdkfzcOFtIGKtrNHZD/Mb69I/mLEvljTnzyUfj9UpOgrgo8k5peILjKhqZO1WCVBYkW2X0WwRIfLPIhOZ6Bcw13ZcQuLR2Q9Nz9uxeEhu2R2i1qmEJCaj+xqjZNVeMFlTv8cUqt5Dzy/TXvv9xEuRxwJ4esHqTNyVssLzNtkr+1joJGu3uRVeBeUB12K3c6EAD70Xiiv/FeFMOWU/knt1ZDt7/YdepMoxlLFt5QIRn
+ a0PP94k/
+ B7/N1fXzrl6lPzyDokjgSbGBuDVyo+XzXE5nB7i9YaO167KDouZ0pdZLfmhqWwttSls/6rUdlOlDKZnrTx874wz2zcpyaMbjZ50GYKBcGO360T5qTOCsgTyDxzt4zvMAvjExG5Kh13O3LLeB/k8vi3+9n4G3cMQxMfsmsqsjoBJlTHBen1Acf0QEVFPd14yivY6OWQ63F/Ayt1b46Lm3HykYu4n8kRLEEPl4aXPmcrLVLWh+fHcNnW2cK34ewZL3rJP5r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,32 +92,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The loops in get_partial_node_bulk() and __refill_objects_node() perform
-individual list operations for each slab. This patchset optimize this.
+Wrap partial slab count inc/dec and flag set/clear into
+helper functions to reduce code duplication.
 
-Patch 1 is a cleanup patch that wraps duplicated code into helper
-functions.
+Note that __add_partial() is called locklessly in
+early_kmem_cache_node_alloc(), but since there is no such use case for
+removal, __remove_partial() does not exist.
 
-Patch 2 reduces the number of list operations by processing slabs in
-batches, thereby minimizing the time spent inside the critical section.
+Suggested-by: Harry Yoo <harry@kernel.org>
+Signed-off-by: Hao Li <hao.li@linux.dev>
+---
+ mm/slub.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-Changes in v3:
-- Reorder the two patches for better logical flow. (Thanks Vlastimil)
-- Introduce set_node_partial_state for symmetry. (Thanks Vlastimil)
-
-Changes in v2:
-- Patch 1 applies the same optimization to __refill_objects_node. (Thanks
-  Harry and Vlastimil)
-- Patch 2 introduces a helper to wraps duplicated code. (Thanks Harry)
-
-Hao Li (2):
-  mm/slub: introduce helpers for node partial slab state
-  mm/slub: detach and reattach partial slabs in batch
-
- mm/slub.c | 51 +++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 37 insertions(+), 14 deletions(-)
-
-base-commit: 6b41dc6749232c14f3e069f8115084a7bbeee402
+diff --git a/mm/slub.c b/mm/slub.c
+index b9f10b869914..45aa0a834f97 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3521,15 +3521,21 @@ static inline void slab_clear_node_partial(struct slab *slab)
+ /*
+  * Management of partially allocated slabs.
+  */
++static inline void set_node_partial_state(struct kmem_cache_node *n,
++					struct slab *slab)
++{
++	slab_set_node_partial(slab);
++	n->nr_partial++;
++}
++
+ static inline void
+ __add_partial(struct kmem_cache_node *n, struct slab *slab, enum add_mode mode)
+ {
+-	n->nr_partial++;
+ 	if (mode == ADD_TO_TAIL)
+ 		list_add_tail(&slab->slab_list, &n->partial);
+ 	else
+ 		list_add(&slab->slab_list, &n->partial);
+-	slab_set_node_partial(slab);
++	set_node_partial_state(n, slab);
+ }
+ 
+ static inline void add_partial(struct kmem_cache_node *n,
+@@ -3539,13 +3545,19 @@ static inline void add_partial(struct kmem_cache_node *n,
+ 	__add_partial(n, slab, mode);
+ }
+ 
++static inline void clear_node_partial_state(struct kmem_cache_node *n,
++					struct slab *slab)
++{
++	slab_clear_node_partial(slab);
++	n->nr_partial--;
++}
++
+ static inline void remove_partial(struct kmem_cache_node *n,
+ 					struct slab *slab)
+ {
+ 	lockdep_assert_held(&n->list_lock);
+ 	list_del(&slab->slab_list);
+-	slab_clear_node_partial(slab);
+-	n->nr_partial--;
++	clear_node_partial_state(n, slab);
+ }
+ 
+ /*
+@@ -8271,8 +8283,7 @@ static int __kmem_cache_do_shrink(struct kmem_cache *s)
+ 
+ 			if (free == slab->objects) {
+ 				list_move(&slab->slab_list, &discard);
+-				slab_clear_node_partial(slab);
+-				n->nr_partial--;
++				clear_node_partial_state(n, slab);
+ 				dec_slabs_node(s, node, slab->objects);
+ 			} else if (free <= SHRINK_PROMOTE_MAX)
+ 				list_move(&slab->slab_list, promote + free - 1);
 -- 
 2.54.0
 
