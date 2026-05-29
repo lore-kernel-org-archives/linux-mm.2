@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7269CD5BD2
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 04:03:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CFE8CD5BD2
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 04:54:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32A1A6B0088; Fri, 29 May 2026 00:03:01 -0400 (EDT)
+	id 264EA6B0005; Fri, 29 May 2026 00:54:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DB706B008A; Fri, 29 May 2026 00:03:01 -0400 (EDT)
+	id 23CED6B0088; Fri, 29 May 2026 00:54:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F1016B008C; Fri, 29 May 2026 00:03:01 -0400 (EDT)
+	id 179C16B008A; Fri, 29 May 2026 00:54:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F5F86B0088
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 00:03:01 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B19A91C0B8C
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:03:00 +0000 (UTC)
-X-FDA: 84819111720.29.2297826
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 06C1D6B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 00:54:21 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A63916308E
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:54:20 +0000 (UTC)
+X-FDA: 84819241080.25.F27259B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9931580004
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:02:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=OOY3mvD2;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com
+	by imf07.hostedemail.com (Postfix) with ESMTP id C3F334000B
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:54:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=HyJ4vwp5;
+	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780027379;
+	s=arc-20220608; t=1780030458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eaGfYqsccDWsJTN0WYM3ff7hRWxPyaL2TevoJQw06eY=;
-	b=mjnn3hd8/2Ug0Gw1jlDXpdUzTSvz5CLqtTeLQ+NDcWKXSFfR9rvR8QEXKnpuMNn6t8K3OM
-	+mmqrpWqJXBu8h5RlbtIHjyBsmxoCc1z02SDkbJ8N64it15ZiW5blqQmTo1gtLRgRYJcp7
-	1lERa74Hob1r/wPnWdPMjQX83j3cuqU=
+	bh=YmBYU/C9A8DuyO6OzJPCqgCvC1lOYcpnLM+Wing3FTU=;
+	b=mxtTPA8eIfWYh/Pq+gWSYEmvF87zGm1cNOsIeOUKMvdhcCrJXxkp0cy2B3cWljjxAdUtBi
+	PSaLs6JuYpps3E05rKPMqDvuWFROP1KaEhuddrSNRay9kcYpdsLe7p04aneORrAEKewSyU
+	Rdsha2v8P8eJJCnFS/qAUYj3nvceEY0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=OOY3mvD2;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780027379; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=HyJ4vwp5;
+	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780030458; a=rsa-sha256;
 	cv=none;
-	b=rAcokl04DzD5OlY9k5tDgIXxe7wQLnDCoO88AtXn4x+z69JqCLFMAjXw8tdY+XxVPLVD1q
-	CHh5RwVKbHnkkdYgNp00KU4/itA8N9We4+v8mMbddIUXgs/MdzuU9vL7dq16D1XW31o4HE
-	uS/Mf++lAOc/+FmA3q1h2Y1RGnLZ5zY=
+	b=goKMxxXtZOQYGTUV8Tqd4ame1G+HbecbXTSy+BhB2JJ1MRjayOlJLcGHzjplocQFqW/ZO2
+	0GWboBLGGI9pkdVSxv/cS/P5HABlhBca5J/QmuyfyQNEnfBT3AxiAOuzWuhnBrVKY7gKZX
+	LXPVoBTXKhHkaLLZi+/sbmnuO9yHbJA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7B0CC16A3;
-	Thu, 28 May 2026 21:02:52 -0700 (PDT)
-Received: from localhost (a079125.arm.com [10.164.21.37])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 82F1E3F7B4;
-	Thu, 28 May 2026 21:02:56 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C728D22EE;
+	Thu, 28 May 2026 21:54:12 -0700 (PDT)
+Received: from [10.164.19.8] (unknown [10.164.19.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FD753F632;
+	Thu, 28 May 2026 21:54:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780027377; bh=eDyqfPL3Tk2ANdqi4jSCbSbhgcCNem97wosvoWpsFcg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OOY3mvD22sd6y3WIPIIBcAbQvrNOHJdbg8VSwgi08Y8G4+HVYqhi78mSOgyEElCPS
-	 Ro423BqzSe1PsgPppGukcVfWG5BAtkTRz5nbljRvC3GK70b/CNF/WOmP+OAVY9L0p6
-	 3RicJRMfamLoi/GNNA6iHWitua0Dnln1bXAOOp9Y=
-Date: Fri, 29 May 2026 09:32:52 +0530
-From: Linu Cherian <linu.cherian@arm.com>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Usama Arif <usama.arif@linux.dev>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC V2 13/14] arm64/mm: Add an abstraction level for tlbi_op
-Message-ID: <ahkP7IWLX-0QCoul@a079125.arm.com>
-References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
- <20260513044547.4128549-14-anshuman.khandual@arm.com>
- <37917d56-ae26-4789-ac4c-15f8ee12398b@arm.com>
+	t=1780030457; bh=9ZeCdBi+o6rNm0JaiPfWqhFJAJ+0UGMwKBp+YQQgMao=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HyJ4vwp51VA+tyI509PRHllcQY2Yp6pbcF7a9QbRTNIwW8DrrHeR7zZBFwPOr2yiS
+	 JqIgVnEOUZsMNvv5VRH5nD5q+5mmY6zX6vzG3uzwe7y9YrOwTqgkT3bFDPQTZiXN+P
+	 3zC8Dfzyf0L4mBABE36fGYRXsAUP0N1GqG9j0nT0=
+Message-ID: <cb2b4151-e096-4de5-a064-ee3bfa8cdc2c@arm.com>
+Date: Fri, 29 May 2026 10:24:12 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <37917d56-ae26-4789-ac4c-15f8ee12398b@arm.com>
-X-Stat-Signature: 1zppc86qjdyn5dprgcp7cbejd9ayj64t
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9931580004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vmalloc: Fix NULL pointer dereference in
+ is_vm_area_hugepages()
+To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+References: <20260529014130.671291-1-hui.zhu@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260529014130.671291-1-hui.zhu@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: m566id5kqmeqt49ie5rzycnm9scppafk
 X-Rspam-User: 
-X-HE-Tag: 1780027378-635644
-X-HE-Meta: U2FsdGVkX1+WFLc7lgE7zB5pXfc7YW/pybbg/+zpqGd6vP15TE1G0hDJ0tzYK3yi/T0miWgwaY5fYO7tNM/kRh94ZDRlqe8tEY0neW4bSrZXVYTiJgrphMuw+2zWRa7YwDIByRcHrPtLhneqEMt2w7aJfkUennoQOfJJH0rSVMwlt9qNGctzCQ3+CnoZqoPWDQhN7y2ErIqz1ZpK+YIYlkaqOsM+7NDuuKf/tjmk57FOE2/eY4vl94FTq1cCiF2JOHRhiPb9KQZRng2m6Gezmmm3rmSiRf52l6B8Mm//P3ZOlsapvUf9xyzXI9mkx+LMnYdGhi79N8IgAgqg3H4JhXhdSSvBowmoSHTXV8eCo+JDiTMt8ON5ruKue54ac7aknak5bke5sVfZLnARnEnnME+LfMS6etoWaULFgHK42YcBTxvuPip8YhaoGr7AoHByihDslBlLzwSI9xHLQTP5t+ANJEho6PdqvC8QDzxDVMnXizK0IS7VpOnfUqMt2jxyn/AAtwbYK/NrQWrxeJ0PdoTlQg6PRbOJh324QhV3PppXh19PrBqpv9/x0pqsxBnotdTLCArbE3Llv/zqNnXhWuQdGJnrkIAZ4KfSA6HufUU7zqAJYilUai+erWgDk2VrljUStUS32TpQSYOGL/mQNXNr0tZblcp55beUHMbCpTscs+Br+GIgW9wRM6oLMvFddJf9Shmt6HQzyEwnu31E9ljD7g0DQvSzWixl9HFK/1PHlMh/3WO1otlUBJC7v9mCRhghZVppRmndctrsI3+sF7MGUGmIXaQnwPG4bytvVfPuCO4CfwY4qkawTDMuPwxxmil30IuzxSVY871KVac4y7EACzwwXeAwHtsx9T5pPY8Q17hMQu8CtmIrA29p9fv51+fbGhze9SQXcJ2zNHXu/deYiEtv91i/ro4Yooo73mv2nKCdj9NexlugjGCgIhZtOhXH/ec74RUeVgAtURE
- +cpEgPsG
- 88WWNDEVHyokmDU+0TexeZWJf8k/euAReIKBNpq0BeXs9E4j6mbfykwZlx4/1As83hapD8+EX62dBisAU1wmLBb9qBaZqel/pDZfdwHpt1/IsV+8E0fihFK4XqrNzQVg39UMkdQ6sIop/eSktbRPQz8vYB9hz7bKKuWFrluc+4yj0yuE22b+OUewXjN7IFPFXP/uUk79h7iBXk5ZGi2bBkNdhwtKAU66VMwMheIwbnodbxEAu8OPWqCpAc5ZQDA6BDdy3d49taS5CANJjjYKYQKUve4LtZkxX7kNhphwnNI8Ro/ldkQXl+eAP4uG9H976vwAcgUYMRRYQOaZMQsieXiMlqrHAaR5SxWxqAfHB11nSS2o8dcV6T2Qc/9kYxig1eOX3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C3F334000B
+X-HE-Tag: 1780030458-410735
+X-HE-Meta: U2FsdGVkX19BFaCvHeXOCXQU3uRiZN/Id1l12qs1PDq0U0/4V1L2lhA7+Z5Shbhz3EwFPFNdqRlUbgar9f84Gpfir9kl6TWPQ+31M0HrF99/uufl8KlpUZXQqcHMiyTspTfTvIhItkYkQk2EusAaauRF4hfJEhKCW3FhOnsXwPVHz2pjeuG6UeZfs4pGLQtIM/BTJyP79xkp5wK+nqN/2BtWmM1cnSVg0Jdich0VxJ2XQtCpmeXfKhYuKkWBBIRTooqc7L+lUKuBlt42C3m6uR/voMeOUv0ATo9feaO55665QESaWqP0YqtO2krJtGWO4w/PSBYnCSPqlbU9s9YCgDs1xW+B9LozFyj2k7f9YZB76jaGaEIMYKl687zV2Rnk1W4tHwW2IgIXfNm2gTnFUQ4Cg3Z1V/xDSFhdglOq0fRrJPEY4nOynZns5VGD3tfejUWZb+dIJhdM3w8LvEyJ3/WBasf7XfxIyVqr3Az+zb1RnHWSD4ANEWC2zluGGirTJ1xii+PdRQCEIwtN75jTq7Oo0kcx+e64x7tF/e3mXE9ppXCj6tk2aMh2RHXESK/Yb+gJ98mQGautq7ImabnUmuHMHq7tC+jFGjENlSQtJya3Crk2D6R2oABM4x2r3jOR/P5S8RN8J/JU8m18Yn+gmGbh/66XmjICthACG4gcidp5ZVhEqPDuS9qO3aCrh5ddB2Hn+3wFEJvE6UY+uYIdYr7st3BnPazhh85fYKtV2Kt9UCmWA6G96lpzVK4oAGVn8IFOpQrFfBPg7iSNtRUWTzzR8qXLcaGOQ0HKaoktb9wEZIVkhH2V0Tk5JqOh7SPJUUD/05IdY+lFfxvBJO5aGGa5YCzf2qp3WvzGS2/8yV7HzwH0SefuRyhVCZ7MisJXdgIsoFed6pYxsxOwoHcCJnqmd3jR05P4244vbbVAcpI2JRU30ObNpFhCs26pFYzxta/KdzLBsGEHq7nADrA
+ heDecuKv
+ ZKBpPlQcbx+MRJzh6mCM/SpaHAGDqU9Hsc8op9RUPEwXQv/b2p4LqrTR2dByB/4ySB2y71KN6u/2bmbOaI0v1wuO0XG0NKTiU64h3znA/vyVXPnUg/b4u4LYpg0zPkuOpHkXxuB3TN6IXytQoVrz5RgTkykiNnthEaI6YMQESmhIpSVb1vEps/pZZdVDz7Eigt1DCBtqE35widdP146ejtbzxMyUjV45SS44NAqyEferpjm3x/rU6e+ojs/m6HQRh14iv3sjwo/xAJAxUjgTkU/8PNLEOdQeGQdhqdY0tkFAiW5PXxXhU/xLGpxuPldQdEqPlyF40gn6NdGt5UOBgilyrSg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,49 +92,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ryan,
 
-On Wed, May 27, 2026 at 03:50:10PM +0100, Ryan Roberts wrote:
-> On 13/05/2026 05:45, Anshuman Khandual wrote:
-> > From: Linu Cherian <linu.cherian@arm.com>
-> > 
-> > With FEAT_D128, a new instruction aka TLBIP is being introduced for the TLB
-> > range operations which has an argument size of 128 bit.
+
+On 29/05/26 7:11 am, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
 > 
-> nit: TLB range operations -> TLBI-by-range operations ?
-
-Ack.
-
+> find_vm_area() can return NULL if the given address is not a valid
+> vmalloc area. Check the return value before dereferencing it to avoid
+> a kernel crash.
 > 
-> > 
-> > Add an abstraction level to void (*tlbi_op)(u64 arg) helpers to support the
-> > D128 variations when applicable.
-> > 
-> > No functional changes are introduced with this patch.
-> > 
-> > Signed-off-by: Linu Cherian <linu.cherian@arm.com>
-> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> > ---
-> >  arch/arm64/include/asm/tlbflush.h | 70 ++++++++++++++++---------------
-> >  1 file changed, 37 insertions(+), 33 deletions(-)
-> > 
-> > diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-> > index c0bf5b398041..361d74ef8016 100644
-> > --- a/arch/arm64/include/asm/tlbflush.h
-> > +++ b/arch/arm64/include/asm/tlbflush.h
-> > @@ -162,49 +162,53 @@ static inline void sme_dvmsync_batch(struct arch_tlbflush_unmap_batch *batch)
-> >  
-> >  #define TLBI_TTL_UNKNOWN	INT_MAX
-> >  
-> > -typedef void (*tlbi_op)(u64 arg);
-> > +typedef u64 tlbi_args_t;
+> Fixes: 121e6f3258fe ("mm/vmalloc: hugepage vmalloc mappings")
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+
+I think this makes sense from API PoV.
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+>  include/linux/vmalloc.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> nit: tlbi_args_t -> tlbi_arg_t ?
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index 3b02c0c6b371..d87dc7f77f4e 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -265,7 +265,9 @@ static inline bool is_vm_area_hugepages(const void *addr)
+>  	 * allocated in the vmalloc layer.
+>  	 */
+>  #ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
+> -	return find_vm_area(addr)->page_order > 0;
+> +	struct vm_struct *area = find_vm_area(addr);
+> +
+> +	return area && area->page_order > 0;
+>  #else
+>  	return false;
+>  #endif
 
-Ack.
-
-
---
-Thanks,
-Linu Cherian.
 
