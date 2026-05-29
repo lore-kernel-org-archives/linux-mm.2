@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BD71CD5BD2
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 05:36:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADD36CD6E45
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 05:37:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2B906B0088; Fri, 29 May 2026 01:36:50 -0400 (EDT)
+	id 20AB36B0005; Fri, 29 May 2026 01:37:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB51E6B0092; Fri, 29 May 2026 01:36:50 -0400 (EDT)
+	id 193256B0095; Fri, 29 May 2026 01:37:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA49E6B0095; Fri, 29 May 2026 01:36:50 -0400 (EDT)
+	id 0823C6B0096; Fri, 29 May 2026 01:37:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA6386B0088
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:36:50 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50DD79B7E4
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:36:50 +0000 (UTC)
-X-FDA: 84819348180.23.0E725D8
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 708CA1A0003
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:36:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xqOG5kXU;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780033008; a=rsa-sha256;
-	cv=none;
-	b=IWds0ki3jju/+YyoNY5QSXk7OP0rKL6ewLUpg5tAkJZlxashWE7O0+5vmTotxOJSZW+Syt
-	UDo5fw9O2ayTPu+/zLbtuzR0+hnYBiyINTPV1XCVj5QUlELRakyjnBwQczCflWw7M8N8N+
-	J30G9/9GC7apY8I99aiHae06wFXMtLQ=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xqOG5kXU;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id E84CF6B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:37:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB4AB140BBA
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:37:38 +0000 (UTC)
+X-FDA: 84819350196.26.B9A9258
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 10A281C000B
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 05:37:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ndaCXlcS;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780033008;
+	s=arc-20220608; t=1780033057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MwGmArfXyP/zPLMRZPXwscMyFYlmjrr/pMjvdbtZZ1Y=;
-	b=qjWyAaHcn6/rCHNa4aHc/fLaiutsuLfg7iqVpK0z0f2/XhRmIM09L8Mr1H8PqqPuW+ymVd
-	XudYwC89CqK8fDd5HSN7/wj8x9d1ETKq37LT6IbyuhJWhDafYA2nVfNTSXk3j5muDSX0V5
-	aBg3AcwJB80CcyhSJe+1VpzfPgOjF/g=
-Date: Thu, 28 May 2026 22:36:38 -0700
+	bh=9VASAwgiYpw4DqJgbzJssFNBsWa2yfmiHUKRKx8zKLs=;
+	b=VRieCPys9e8fpTV0fRw9LfuU/zb6T2QA44KWQaolpknLhsNtPo9zqw4m4HaUc9qkaWwWmX
+	40etdi0TK5YwMthtAxoj/s+N+ID8kWzTk6LjQrtmmWgSTr29HcHrZy6uYA8qCaGqPRLkA5
+	li+2Cca0yflxLmAeebPKCqmeAJZhj6g=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ndaCXlcS;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780033057; a=rsa-sha256;
+	cv=none;
+	b=oGu4PFFTAJnXwght4O9mz8N9J7vzBUpnlEQ2rzTf5YYSWp/JSLQMrc9q3AX9e881QHoMSv
+	cQNWMW2EpDfqBlmakPonD6Vh+6L2zBkubkETZCmLacYZhbpVn4x6FoTLATHi3tl6WGwcAs
+	o1eJBcRB8fhyhi4iTSrOa99Qp5GagDQ=
+Date: Thu, 28 May 2026 22:37:23 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780033006;
+	t=1780033053;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MwGmArfXyP/zPLMRZPXwscMyFYlmjrr/pMjvdbtZZ1Y=;
-	b=xqOG5kXUMqhUfDjhh10O4x865465aXvQZNQygbSMapm+kfmcM5Onf1Wq7n0ZsFQJdmSLPP
-	ZBRtFi1EL8WTkTSxmLLaooUHVpxzm+caaKT7xjQ0ULXp0RAPGNbvtMS6rTo9PJD2Rj2jTC
-	Mp0Xrk46QGk3tIjwSquNG4ktjDvTNBQ=
+	bh=9VASAwgiYpw4DqJgbzJssFNBsWa2yfmiHUKRKx8zKLs=;
+	b=ndaCXlcSrs2qiNtCkoEJhocDDYeE4i4kCxOw0RNtDG96zSe/UUWHtr6Yx87BFrCNh0Y2y0
+	OmmxwdymUPELGhUAkguhoO+iHyfsuTTPCOV27CQIE844BJxAWftn/r4YffBFYsRhj6HwZY
+	wSLrq68kQjMb3rJOFF+9Ptk6J1Gj2C8=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: kasong@tencent.com
@@ -71,24 +71,24 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
 	Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
 	Kairui Song <ryncsn@gmail.com>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v7 01/15] mm/mglru: consolidate common code for
- retrieving evictable size
-Message-ID: <ahklEbzZn3HQgS9f@linux.dev>
+Subject: Re: [PATCH v7 02/15] mm/mglru: rename variables related to aging and
+ rotation
+Message-ID: <ahkl9PXrbgb9QyiL@linux.dev>
 References: <20260428-mglru-reclaim-v7-0-02fabb92dc43@tencent.com>
- <20260428-mglru-reclaim-v7-1-02fabb92dc43@tencent.com>
+ <20260428-mglru-reclaim-v7-2-02fabb92dc43@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260428-mglru-reclaim-v7-1-02fabb92dc43@tencent.com>
+In-Reply-To: <20260428-mglru-reclaim-v7-2-02fabb92dc43@tencent.com>
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 708CA1A0003
-X-Stat-Signature: 9ns9n53dudfm419nmfdciox4r4qkbh47
-X-HE-Tag: 1780033008-78620
-X-HE-Meta: U2FsdGVkX18o1W5ESzgSLnkDWgw5GI+f5dmxVt0IlOS6ae3RoL73l/F+I+Kw6oWxmQsmP8Fq2ojqPr+5+5e+k+4Ezje+GkEp6WaybbHV3uyREtaFy6hFsLSofIf3+M49KCPUPQOHhxEKjsl4GUSoFvXiU2e++xxydZ4C2V9vCWzdA5Pptr0AyfoQLlArisIhcW5Mecxskrb5sTQYjUo8MQ2S5aTO/COMajCEOAaOzeW3uclthUHpR6UNuYkqs5yCM1RxouFlSK4XphV1sNH7g6O+5JpQionLovYyO/+akmhOI+Aru4xS2bmfOHYulOGFV4hBnUEFrUOzZUaFTAz6dHh99/UedxmBVowOMM5R0WRnDkuSlk8cFA85fQi5Zf+77SQnz+rLHiqOF717bSA8bPwSW/jPwkZaXS7MuhfTUb1XDVRB/RQE5kyvWi/aM/sPNiwZVqEmrAKc1FbDsKaZgIELRBK5g7Sj85Mo7bnYCkBnlXUksQPxAbmpD4SPwSnIipcoyEkVGaXCAsFE++iOL3Dknl4hJQk/EEMe7ANx/vY+XKt6mH3lbfQwwu/46Bs/RS4BKnOeWJ1Fq8CRztEVYMaWCY5KBhlBKLifrWL1quBc9pZ5lheYw5vuOgka1nvuJJv8YlJTKaowAQItexNVBV/s+OhdVtnKlqZkvUtmEm2R+i2T6cr+lqrVu0zikm4sRb5u5iw+W07CflV3UQHseOyiFZfyktrwkQ1RZImNeFqBuezdVz0CUveATYkw6A7NfnMj4BQSKAZdkyLZaig/PHXTyNU8D78IIGeh3142ZEFNUbh9Q9uJWz6i0JYQhjHuxU+W8a+7Y9filZKv7wxLZEXwPT2QTzqgdwwRMGrcZqM6KVcLNP64uebDCtS0pAjXbyKiW882+mjmiL4ggYTEIkrwYBW5IeY2YZqOdNIp7g/c4jRrqrEMZTrubwu7QKWEURtw6KvmOXJflCAg7PR
- izDxN0L/
- K1sqoQitJ0ArbkjxZI7QJVjVITRILak7CwFZ5WwaCAj0S2BAG26Fv6FNytqKgWDsRlR4FdKyw5J40ovcNJKpcsdzNYLp+x9X12T7Z9O49DlWLNzIUU2FkCuBb0Lb8Ydt0yDl+r7E0TZR383S1OASM+eIS6owzDsj5mP0L29A1rbxlo0Z9VkLmqVtdKGri3nn/4Z3tV7GkFL2IAIzQcB+LY6sYHsZUy2FSq95C8PIG+PIqTFUOj8PCZhAyZMz30fNo5HMi6sbckZGmRnh8D8HSMQIm+LambPOYHOUtisrBxHveCYGdDVMIQ+sXq5eil2wL+wuYNqtyBghMmSpZpV3YR6dhLMNGcifkf4dKM5Gcndf9lV/v5ZXu3l7C0gbqcTzjIgoRM91FWboLKgCAJLizcHquDg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 10A281C000B
+X-Stat-Signature: tobrmcagzce99gtmesfk7hdsqyini14p
+X-HE-Tag: 1780033056-843757
+X-HE-Meta: U2FsdGVkX18vyi24O3PPYydeUDOOa0b09Is7eoqLy+pbwoEsidL+cWgJ2AXp6uDLU0B9KuW0k8Fm01YmtTXcDsBTmNf7JB/7TDuT8CXp2WbS9rFq64O5uAtVpoJOwGYp0Jk9e1hMhhJE3ftKyg1qBlxzVZ3sbteHXRoY4CeiM/417EMx84LBvxVXClTBabty+ckNRvBeIHhIlmucBz/4VDHznOwmht8EIRbzS4MEdkn8Egv59yNQJ138BnFtNA3xHs8GF1mGF4Y6UbVpt8WqJJ6YyCKthUkYnHuLQbj3sV9HWRbx9peFuly+OuO11xinOZKNSxmcOMHVEXqnroVo+Bh/lCybfi6lS4jBUMqWa6g9RgdYiQGrETZsM2FIPXmTh4/dYR4oljy+E5OiFQl866qbnk41Lqh2CLc8hu1VQzebw8PfMWwc28eMqoXejsKB/HqFlC9vJKGzFfaDEexzevI0o06qPITUrtX8nGOgRiCLFbkTZH0PXJ4t6dKJakXTFcEo0YNjU2YxoY0BP9FOWC5QuS5D+2bcc+IfZPSZyrg36rZHdNdYEF4dSCVASUerTn6GvABgC7u3DJersb9g/JP/fKNEvTLYZyxoH/VL9SXwZiSupWrjt8GHVw+8pWApTwXz5627kdezO8unTaKUcmvGuLvWwE+drn5NqXDHr+us2IC+E2ESsBrW5Tr6rPMYFgO6/V2f8H6gMVc4YtZi9S6VIcMmKJDTF90V6YZPRuLNazzOPt31/2thXYNvWrBonj83zp/0ZyihMbNNpgB6qOa7+zwq51+49f3xgOgAluaQIa5zzqiRq/v3mYBefegSY67LjXvpp4xgPE/X8P5+4+7/0X/yxoNIXrCc5XeAafOlD4obmVZc3MkY+DZAq+6E7zuDly+l4lY0SGjsacNJBQpWkGvQHJqffYpLJBoeofmihKRGdhnadUpJFlp/WRhPUkf9s7Lw+21ocaEUv34
+ 9T+2EKDr
+ S6+eIQS3ukl/6VtlMTo0sFT0AJfGRaJW0a/YB0Q+npV7GZ6d3k68VOpb18JE+DV7csT44ftlF7WtVV3PQIHinUUeNgAvYubbXoOz2Yv52ElcXQ5ncihL8vxnycJkk5Bhpvn3WRqoUBpUnB05Cgwozp1yZ5Qsm96Qel44T+zQXt9X/OV49PZZYpqX7z4AC8kRu5BQ/UCwGTvWamW6+3k+zCVgAMNhsPXFUSJu9Ta3x6kABZ18XntJDXcgUuTGBUkWVdY3M6ggrUr/w8wur4rV3NsrN1+bsJAn49++gmHv60yO24ePUXWTJ/zPjTo7dms+1+JsKyl8lFvb+/ZuvlmmE6PMVjtB9o9cYrH58C6xS6FewyE9qH/poKHf7/7EZF6fKYm7NtD9UTluFa8I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,18 +96,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 02:06:52AM +0800, Kairui Song via B4 Relay wrote:
+On Tue, Apr 28, 2026 at 02:06:53AM +0800, Kairui Song via B4 Relay wrote:
 > From: Kairui Song <kasong@tencent.com>
 > 
-> Merge commonly used code for counting evictable folios in a lruvec.
+> The current variable name isn't helpful.  Make the variable names more
+> meaningful.
 > 
-> No behavior change.
+> Only naming change, no behavior change.
 > 
-> Acked-by: Yuanchu Xie <yuanchu@google.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> Suggested-by: Barry Song <baohua@kernel.org>
 > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
