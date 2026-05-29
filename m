@@ -4,94 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB03ACD6E43
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 01:26:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 604EACD6E43
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 01:42:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0A6B6B0005; Thu, 28 May 2026 21:26:22 -0400 (EDT)
+	id A4E646B0005; Thu, 28 May 2026 21:42:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB9ED6B0088; Thu, 28 May 2026 21:26:22 -0400 (EDT)
+	id 9FD166B0088; Thu, 28 May 2026 21:42:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACF1E6B008A; Thu, 28 May 2026 21:26:22 -0400 (EDT)
+	id 913396B008A; Thu, 28 May 2026 21:42:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F7686B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 21:26:22 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 245661C26E2
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:26:22 +0000 (UTC)
-X-FDA: 84818717004.16.5A8C9A1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 73634C000A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:26:20 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nZ0PZeR7;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780017980; a=rsa-sha256;
-	cv=none;
-	b=l0YtX+TlPUnZJGBAusoztsnF8Zh5TB4Y2h3dVd+jtgQAc0hInppr1KmMoKZYiVPgDYvWRN
-	5GTw2wdblDXQxs0ByR527rbzAcpewakI1xFL2xT8Gxnk/2y/EQbfvnr5OjAKSNZL00NFdR
-	v/+PWXoPUGaTQ/hkLDc5pUOfWUvkM1c=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nZ0PZeR7;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 820556B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 21:42:13 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 384841C0CFD
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:42:13 +0000 (UTC)
+X-FDA: 84818756946.20.765B2F9
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7C7421C0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:42:11 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YgztwgLt;
+	spf=pass (imf18.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780017980;
+	s=arc-20220608; t=1780018931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fR0iSISNGo6Jq+jXpakAdJqfeIknPVsI985rMOxNdrQ=;
-	b=fdl+M9SjGML7csw9ynz58WqNddzbjjg544akG09A+vcm3R71Vf4QrNi8RQIYUABl+Iqd6k
-	RYp1C80uKrSl2a9nQU4HYkFDReLHY57KTA9/FMPAPjnZV6/oLbtSHi7PaUnH3xQxKgmxCl
-	DY2qgIGR/VeR2aYBwSbl7f01pvZQGfI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3E40044372;
-	Fri, 29 May 2026 01:26:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5251F000E9;
-	Fri, 29 May 2026 01:26:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780017979;
-	bh=fR0iSISNGo6Jq+jXpakAdJqfeIknPVsI985rMOxNdrQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nZ0PZeR7SKEeZ/tojrXVox8QY/4rtENkXOgA/QmpJelh6VpsDLNqbebR2dlWN9zN1
-	 F65D8A1aGY7VXoSvdM9itDvb0LGJX36+hWHNFxlBrTJ3FQUW/FqCCLvGgEK5oDG96l
-	 YcFVZOqCrqpgnJ3+fQcQy/rgvmTpW5Y4XEnvOBAjRKQkG36tjrfe3NTiI+AmS+cXcV
-	 4GK16qOaE1UGwMx7gB/VPqMrcZMRkat5+CzyYG2C7El37ch32yM7oGRoRZ1HLcUmZ0
-	 pQTZ90Fat8EqBfd4dU9Q5OlKDRWsUDs7mfFRKfhEaWHF6OQfBpDc72d+w6XEhmVavv
-	 FFEk+Eb/H9zaw==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Brian Masney <bmasney@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
+	 in-reply-to:references:dkim-signature;
+	bh=ziMz6HVoieYrDjrV2NAuiQxTv94f1tu4Knq7c+x4ci4=;
+	b=uL1St6jpyXmK9hjQzgSn48bWJviC3A7cUrTexK3qnbR2NVbfiCOYLj1BlBGSzw/Cw9dfn/
+	7Ks+AGlCBKrz7xeUKCLUxGSK+y0OzcW9F++7BQzjdGcNnUi2+k/YsTYxdNohk/GEqE+NeI
+	c9izFtgNA7fAT5PiJjFSI5Nlc42BKHc=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YgztwgLt;
+	spf=pass (imf18.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780018931; a=rsa-sha256;
+	cv=none;
+	b=oFSwuP+ucN3YPRdHYc3nnon+Tl+OjJbo/YS5jB/WUUZXNi+X6GlvkH4pZEL4FHmCMENjhZ
+	wghaQ/9KMcQ+KDZiDijKNEIygV00+ic/k1406ndEuEEzPz+EBtt7/4tYv7sTWHo2SOLJiC
+	FoeTc9YFiz2qjOa+bmOqhz15e4UCh3Y=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780018926;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ziMz6HVoieYrDjrV2NAuiQxTv94f1tu4Knq7c+x4ci4=;
+	b=YgztwgLtIHL1/MEG/04MmSqxTZ3CdCeEWT1HE0UiN/6o852nNWi2yOiGVMiGDP9wdUrY9b
+	ceRtFCXWzvWGVDf6R2bfQ9Kg4I7eYnb6aqnHAeCGyDkhpfnaU2F+y8hknZ+BFyLdk23umF
+	lG5EH0PG2hahyXDX8pwamp/aig62Nmw=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add vm.rst to memory management core
-Date: Thu, 28 May 2026 18:26:10 -0700
-Message-ID: <20260529012611.8578-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260529002525.7939-1-sj@kernel.org>
-References: 
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH] vmalloc: Fix NULL pointer dereference in is_vm_area_hugepages()
+Date: Fri, 29 May 2026 09:41:30 +0800
+Message-ID: <20260529014130.671291-1-hui.zhu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 73634C000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: yzm7nkeddzqru3qggk4td38p95f3z3ka
-X-HE-Tag: 1780017980-180604
-X-HE-Meta: U2FsdGVkX1/m1u4ZdTmhvlPU+nbGYKMP2Ias6Gc10b7/5a/fjCuRtZems2K0HPGEpdPSb7uiR36NlrJP7O93Qj0VOBxWqjcefYCOPbiu+2APz7DkdlwqdBxq6VHGmjlL/ctp0zfH0+dihgMpVt3OJujgfguFxvs0VvfbsyJHALpTxO/EJzIHElPl84lKxC6z3Rr1cmxSSjP3PVS2WwUzXsOpeSd2D3NsB0aj0xqQLTNoIzkku+NLndAV9ayY5CP/R8/y9GMKKteam9+eIBPgjm8neH9UuIreeSZ4Hyt0uaf1NKFct7ddq/m1o5dpRdKUEGKmNYfAops6ZdGPUMRLdhjegZq7ezG28K3SYHy5Qw7aZ+45MkgStlv9M2up+l3vNS0mREEVj8GhgQ2CbaztHFw/4wWlFJVIo3Mza3xPxgg6Dc4Eas0iPlpLZ/h1TqBEABBk/x+QsByNAN6f/5wCtTyHPiUKEkVu8XeM93WSyBwSWNRleniROU1msUNvlSO9IcUR3Sd3k6tAFycyPMTQEX7tWWyQrnsBkHxtUY8gVL3hJZBW5JweYuWpx+Skpm5Oc0neLGgiUHNAC/lZTQJJEUENnSn1iNIvcpCDSJdUXopDOdgbhryX2EknzXbNoKLQsL9ZyWZKIoC9uNrgRQsLKzcYS2nr8sJcJ6sujxRHlUOiR7asmLHPyCqEbhp+1YwXcwWfuIOiCYXWsppHL3H0OHOqQXvmVF8kJ5XnlSE6oK04Jip7E3EcHn7vldMuo1YvMdC+ut1oMNO+hpgbTvJOr6fV6W5VnRqZrD1iuWldwEC8AAfY879MwcKbc/nzSf9Rkj2aOB4Ty1/wZpc9SyLlnGhcK5l2gH4iun8C8uqHmRQy7UZp8XWqNOEa3hG0kFxM3MegjGsgcRoECSHNC++Wl3JeoqwjV4+Dz6XHIQdD1Ztge07cmkceD0DJjsrRnoVPBP7mdBkUuEzH7rPjiYG
- EDUAUjBx
- 2jS+WFtAV8XZqI14nNLU1PrOnCmJqq/VpaX6mj6bgqcM0Lwmx2D9gQFNascTcRQyA+9yrPINF6AiFHbiXF7/0+XdE9TA0nSYKrT+xbhKbNMQsgh90ApLmSxoGU+6DC4jNy3vYUpnQmqN/hFUt25UhDFASZm8q3etNUNrJ0sSrMDGNHXMjSRnYgagzPH0wF1WRFSRYdofQe02GVwdMuIQiLpayBCy06vVWlnsN6B8KGWvdqUyX1HrtGm5U6LbOl2L8WALa
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7C7421C0005
+X-Stat-Signature: uj1qbj97iusn4ecig933ygeajr3scttc
+X-HE-Tag: 1780018931-246881
+X-HE-Meta: U2FsdGVkX18JA6K+Td6g6xthAvvQxPtWreB5yt/eaKq07RF6oCDti62nhBfHL2fsb2dgcxylC2qgXXj00Z36ByH12VMugsL0vIyM17j9A3UNED6vCFGV6dHLrLlXEjFqVZYmr6IhRgEssBHfx8FDmskNVAgaZEQkED/gI2TMy8v6Bi72zxwCU72rGWadxrVhJ6ftFNHiPQYyvtfV+2l8EDUG4GUlWWlmoT60oxhO1yjUlS1v2o8MaUQHceWuKgYzk+E8pIeLZR8RjjDoo4xv0i9zPIapd0EhG+v019qIlfr/Puj+jsozxZYj506M9pvfMGbj/W2r/Tv+KmqLKgaX2Zun56HW8f4hus4w+SCUEtrNZK6+v1PE9E8nRkOz0ALSA9d0oPtTMORANIUfGdau++Dr99IbO54uCqr+axVJFXyjkafI/fYdANF9txT1sf/ZPLwccScYb+vf6Tt3FxW3D/VdggSg7YL3gfXZvckmhVh0pKsv8RWP7GwsrH/bowzJi0fNcAkiRN0EmpwcW0knC9XDXzy/x0UipgVHeYjk2xnwSXZY9E+4GoQZNvC8P2N4rTYLG0UPAWXRmV5wG7Shrb/su4qaKHLTFRKtXAmDkgPezIBPf6DTQgPJ+5hNjHoS9Sbz1xr03kYeLcfRFSxYZ3MsCamk6qzuQyn71/0XTXgKYmktZmY3urv2X4jNPFnCHmLD98YQ5M8YXSpRDpoqhFnWeLs0RUW31Nl72dVA/XHsUUZF9/60yGAJ4wrNqIJPW31TDdc5C77k3FNwof1QYC2cCz57T/Oc9lmu74FqKw42ZdOjIfQLDdt6TBpN0tdvuvWrSJWYPmLnG9nPShfqfgJ3u+XljJ/u1Jd7+o/q8gYGmYKDCw7/d3zodnNpxr6HDiOpsYPEYks64dEPuy6iEthMlTEZpOIFWyfdReE3Sl5ew/CFagkOl/I2KPh2vbyMqGe5BhDS2WL5698J/Gw
+ DCW5UGs6
+ 2/3lUyjPxtex6YzWZHXRMsh2h7+bpSKmF3y3p0t3/jBRRBhzdjlF7QPWiOtU7pulFNvnUzXCxrtKhMUujMXAMiBf0V36uOX3HBR+iNq7tO92aMRZ0qsdLLcu2/SwR+3EHVqaNFhInjlIZeN1nGvGfSnld670SJM1Lp0wb41HSEI5pjJM7K4HJU7/geGn1rxF6Pq8iyO+/MpYoorfo8+zmueA5KWPvmTTgYoLm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,30 +86,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 28 May 2026 17:25:24 -0700 SeongJae Park <sj@kernel.org> wrote:
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-> On Thu, 28 May 2026 09:56:14 -0400 Brian Masney <bmasney@redhat.com> wrote:
-> 
-> > The vm.rst file is currently not listed in the MAINTAINERS file, so
-> > let's go ahead and add to the MM core subsystem so that the maintainers
-> > are CCed when changes to the documentation are proposed.
-> 
-> Makes sense to me.
-> 
-> Probably out of the scope of this patch, but would it make sense to also rename
-> it to mm.rst, like we replaced many 'vm' parts of file names to 'mm', e.g.,
-> commit ee65728e103b ("docs: rename Documentation/vm to Documentation/mm") in
-> future?
+find_vm_area() can return NULL if the given address is not a valid
+vmalloc area. Check the return value before dereferencing it to avoid
+a kernel crash.
 
-Reading above again, I think I wrote it in a confusing way, sorry.
+Fixes: 121e6f3258fe ("mm/vmalloc: hugepage vmalloc mappings")
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ include/linux/vmalloc.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-I mean, it is "definitely" out of the scope of this patch.  I'm not asking
-Brian to do such renaming.  I'm just loudly wondering if such renaming is
-somewhat worthy to do in future.
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index 3b02c0c6b371..d87dc7f77f4e 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -265,7 +265,9 @@ static inline bool is_vm_area_hugepages(const void *addr)
+ 	 * allocated in the vmalloc layer.
+ 	 */
+ #ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
+-	return find_vm_area(addr)->page_order > 0;
++	struct vm_struct *area = find_vm_area(addr);
++
++	return area && area->page_order > 0;
+ #else
+ 	return false;
+ #endif
+-- 
+2.43.0
 
-
-Thanks,
-SJ
-
-[...]
 
