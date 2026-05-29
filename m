@@ -4,122 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6290CD6E45
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:55:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E75A9CD5BD2
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:59:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D45E96B008A; Fri, 29 May 2026 04:55:41 -0400 (EDT)
+	id 55C776B008A; Fri, 29 May 2026 04:59:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF6CA6B008C; Fri, 29 May 2026 04:55:41 -0400 (EDT)
+	id 533C56B008C; Fri, 29 May 2026 04:59:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE5D46B0092; Fri, 29 May 2026 04:55:41 -0400 (EDT)
+	id 4706A6B0092; Fri, 29 May 2026 04:59:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AB9726B008A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:55:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4E6CAC3DE2
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:55:41 +0000 (UTC)
-X-FDA: 84819849282.21.BBBE046
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 787C520008
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:55:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XAivuMiX;
-	spf=pass (imf03.hostedemail.com: domain of nakamura.shuta@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=nakamura.shuta@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3707D6B008A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:59:09 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5E11A0B9A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:59:08 +0000 (UTC)
+X-FDA: 84819857976.08.E5B4E5B
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8E8C4C0007
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:59:06 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dMyqNsDw;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780044939;
+	s=arc-20220608; t=1780045146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JB/AJdGnqIf/Ml4hT7r5UXyiGQNpweafn+GD5Bd5gsc=;
-	b=q/6Jh46heyAGB9A5dNqzqJSLPETALwRk9ev/irN45tkHt5O6zZK3s2TKKYHu0CHGLmJ8e3
-	nfv/Y588bbSbL+wCuFoTj6uxWlKxnpDCfSP8jccm8RKjmVYfXrQ78gOhAt03Gxo2EUUcbx
-	Ofa1MXNrkvM4pOUsB8IVpEjKJ9JA4to=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NH7IMRL43BZOIBOOdaV4MADR6q5EEB0yRLWDx7JoyP8=;
+	b=8H6LxwlK8bqqZWs7f6RWiBWwwLlQqQJAA0xWhY0uxoy1+q2g+UMDlh5pKYG9Yr6gKDKMir
+	0dViP5e1wJDL/u92SXA9itvqZh1YXZsWOLcHIIYVnFfRbhSMybDgFfEqPMAm7M+UzEB8zW
+	CQFkceHf6HXM7C7aXTV5eSTX8pGl9TU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XAivuMiX;
-	spf=pass (imf03.hostedemail.com: domain of nakamura.shuta@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=nakamura.shuta@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780044939; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dMyqNsDw;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780045146; a=rsa-sha256;
 	cv=none;
-	b=3S3OhlhhvV1BXpA/M6QnxOVRC7UGN2Dr9732A15N26po1+kmNgnHAkNE8uT5WUNuTn1wVp
-	2TVVfOIIn6Rx9PeZ6gD9GedindOOs5uU6ZvV3r49f489+sTJCj2EVnqLm6jYs7KbGYz19X
-	8ZwyPlp9A59D9vQPoXHSkFsLK/StIhw=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-368f25ff4c4so7911769a91.2
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 01:55:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780044938; x=1780649738; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JB/AJdGnqIf/Ml4hT7r5UXyiGQNpweafn+GD5Bd5gsc=;
-        b=XAivuMiXIbxPpfQgvDMgC1g3DXfUCpzz3v14nn62IvAmE1PAsY5+ozeBPT3FCgSs9Z
-         JQGpQVwGDd2OfptTymfWGretgD3DzqoX0ZnDBKHFTmZrsA+jIkKxafU999wb4Km3niaV
-         aGmpby6AspRA7Idqf1k65EfVCW3oP51v+8ukc4vbljOS4ZL0dTIufNIn2b+3TwdKQ+sp
-         +my5cMX9Lpj4/Zia/H0ZUDrsGQw5kG/sZBY6xxdINEJ3FSvjY2WEWD34Nfn2Eyfrb5aK
-         dUrqWuU5gSrLmkRxFOJpLmGDaDSZ7IQRdIl2h7K4bKM2iQBEHlGBQdMZ6ad2U9PRxkQc
-         Bd+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780044938; x=1780649738;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JB/AJdGnqIf/Ml4hT7r5UXyiGQNpweafn+GD5Bd5gsc=;
-        b=flNbnvxDYPf+8ot4bdWWZ0vbBNDq/wpPen06NNvce58NYxj3RUbCQOaP+ZCR+nm9Q/
-         114vO8SYj1Rvt84O/Bg9sAuRLgKC7BvbFx4xxDsnlNCbe1wn297D/sJpOPMxLDQ0UbCN
-         M/eAPt22B8Cgs+3pBwz0Yqx/uiFKaAEMGl/O8ldUnXGYCJAshbDoW04OEBOT+dAHNksa
-         iNtEA2g9QivOtQmH2HWsD/MYG1+4aSaf5Bh+iJpS3tPuh8WTezFhBbQBMmQOGh6//44P
-         qTX7nOv8YVKk0TlIDXPh5YxfBYbOocaneMhjuMSRLKn56zsAVzGtEsfn+qB9P0cj2Twm
-         HVTQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+ZiYqSoYnMDJG4Uwvj03sTV5Y2jVW9HnFb0tp3q7WXqcnR6KOF1ajLykLb8YYB95e9A70KIPQX1Q==@kvack.org
-X-Gm-Message-State: AOJu0YyTU2zfi10L9FamWrhE97c3iuSG+d5sp2PeJLrAjOF1DJ9//bXi
-	0GfvHtwNG332dH+NxNMYGqz3leMHO/RgiLhwrkaZJk6YoHITLszT0uyo
-X-Gm-Gg: Acq92OG1V4g9PihlmAIikGow47igpXm461womy34yK05Rcj1L92qRqHZT2DlYgrLAu7
-	ewT4HN1ce0ikYIrvb8nqlZPL8RmbVsxT4EJYHikUoGamYHEcmv/TcrZEctFjEQubsqnILukD+jI
-	bfIrxmn3RcM5LlA5mPNYOteFgCt7aLtGLoZtKTLRCuPtwfJUZbPCZ68rHaO+DnDsjorslgKhxg0
-	wsIYyyIlffWPFVAwpBh6QbH+1bvXJYDgnSTK7JUgWcXAZ3MymXPfXYP72zkGIRDXMSoqjvf4R5p
-	20Ptb6mcxMKXz+VYB9zJLUPoAwittWESxZmZi8xNW6tSZ20beT+Y2LRHgDLTE7u5iQW9LkJUuSp
-	Ah4vKHbykL2u3cyUBkHReMDjbtVLfu39pLTNfBmxK2P4F0FPM/RT2asq4gaD8BGwax8INK2XE0n
-	gkCjvMae32P7SCa/UTTZNmhu9dDh3v2ttlPkJQO6ygcJ3QjftY/AmyaGAQkb0NaMkFhuUEJqpuh
-	oNdius=
-X-Received: by 2002:a17:903:4765:b0:2bf:2243:d4ee with SMTP id d9443c01a7336-2bf2243d83dmr26285365ad.18.1780044938035;
-        Fri, 29 May 2026 01:55:38 -0700 (PDT)
-Received: from ubuntu (softbank060152129044.bbtec.net. [60.152.129.44])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239e7019sm12732315ad.11.2026.05.29.01.55.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 01:55:37 -0700 (PDT)
-From: Nakamura Shuta <nakamura.shuta@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Nakamura Shuta <nakamura.shuta@gmail.com>
-Subject: [PATCH] rust: page: mark Page::nid as inline
-Date: Fri, 29 May 2026 17:53:16 +0900
-Message-ID: <20260529085316.27432-1-nakamura.shuta@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	b=BDGSB05tuQ7ElVao76sGnRa9YKOL53wGojfBWKt1rf51yi240Dob3OTg16hi36hmAl89xm
+	BMNOClPuqdktm2o3RgzzL3L/PtnCIOzezQ6UG0P5+WGdkZ5frk4hMzQ2kL5KrTytDW32WP
+	ds5oT78mcL+E4FKQWtbnEd6FMv66RmA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780045147; x=1811581147;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kT17TFaVMuzhehcDGfOX5jz4/y7vwK9PowtC8aVxbbc=;
+  b=dMyqNsDwFEtBCTJon41RJVEe7Sr+2cAk4YR2gi0XUSVIoDXjVOmZnHpu
+   eqmVGW7JZKaLXxCp3AYRqfs2Oa8b8uuTtOMdwT2+y4oF6JP/ye0NuDiYk
+   vY/W6UGTpKR/hsoE7iLlQOJhd90QLMrwOHkLz6wOBNgXBhSYt79VQnZD9
+   jG8BB+SVXPSchRo1Wy9l6QQGVS2pvqMDXO0lRsmm0Je+TNmxsdhsj/t/9
+   xrvL4sElpmJqXnYgwxWnP7p2SGvj2AEwNO5GP5H0K9lXKib5QQx+9k5Qj
+   3FV7wSAvxoLyv44nZ8PHPwel2bk3F5D8Z0szyr4BZrJmHyQWJuX0mds3N
+   A==;
+X-CSE-ConnectionGUID: amhvIXD5Q+2Vw8TMTTvO7Q==
+X-CSE-MsgGUID: QG8wRBUlTAOSSsWVHqn+Zg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80795029"
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="80795029"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 01:59:06 -0700
+X-CSE-ConnectionGUID: fTjGFbSZTdOevsLtgfQEfA==
+X-CSE-MsgGUID: T68RK7tKSXS5sDa6pImfFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="247740206"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 29 May 2026 01:59:01 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wSt3R-00000000714-14pf;
+	Fri, 29 May 2026 08:58:57 +0000
+Date: Fri, 29 May 2026 16:58:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yury Norov <ynorov@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Yury Norov <ynorov@nvidia.com>,
+	Farhad Alemi <farhad.alemi@berkeley.edu>,
+	Waiman Long <longman@redhat.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH] mm: don't allow empty relative nodemask in
+ mpol_relative_nodemask()
+Message-ID: <202605291609.AR5UEvmT-lkp@intel.com>
+References: <20260528190337.878027-1-ynorov@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1agb87amugo7tjhe5f14zky9psix7uh9
-X-Rspamd-Queue-Id: 787C520008
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260528190337.878027-1-ynorov@nvidia.com>
+X-Stat-Signature: ppqqswbocu5ct5ebtqfm3933bi7u1ues
+X-Rspamd-Queue-Id: 8E8C4C0007
 X-Rspam-User: 
-X-HE-Tag: 1780044939-140284
-X-HE-Meta: U2FsdGVkX19bz+5qZJvnPKLbwoklyhNzkU32BagNEUshgX/Dbsc0PVJwCK6X3b/P1GXwKqvA+m7+acZQAlus9q8CGfHf66nIMmXLd9S0RTdU3OJLXMoSZUX63j5sE0XZZ8kwgjAPeQOGp5E83PGkll8nqtybbV9MChPtsuUDIymYpIo4Imqt5Vq2C+3ZQ9aGv68yuShkvvbPrJsfV46sRVucgm0uRfgtIhFYNCRnfHVLfx3wFsypqy7jcBFGm7TOA3O54LemsLXQZpLrXkANl2B0PQGXtqT09aLtUY8sTfh7nfVefZmfMD8PXntbckYR56ul3SpvociTLSmJmzWXXHoVTCn9hC3sj+e5hnAOKftqVd5N5YguRQ0Rk97Uk+/QUYkfgiUhJ5meNQzell5vfd8+6xMEZBsYU4ZdPPfqSxG2HskxOheIkIxefJSOAK55a2BsxK751IKPwJ1cfSe6xKoEz+omUd5OmHe1ADyPvWiVhNN0UqjZogV4bls3ecAHwhdUCDsYtz+bBd/Re2o+7wm7u/7MPfX5zYHkG8Yr8uFVr6Crf2IlCiKI8wYrW0V+XtY0VWpuFuvMb4B8DnoadBqBu8AtRFa0iDaDoqInQCF9fnA/aex3Tvg0XBZ2dcn/ioUY2ETL/c5ZhFrdGyRp6wyKin1sUtGtHbza+SS/Pk1klMQcesJSSdZ2jPe5pO0URlH37GdFFrW6rRwqvI1FlGeC3Mo+hPNXG4d7pNvryZeUy3UA0P70vMd/eP+d0XB/dgV658ULLngm3klxzlT19jy51HnXPwfhPWaMsZGhCEhvMR0ak4CHzooTVHwWS8b/L9P29pKcQAg15Gp+2XjL4Ggumd0dOYdTCl2qsflJob6Bc8uUqhj4UnbM5oCoZ7MYHsH5aqTxKUKP/9Ioop0CAKfs/iU4ZeOeH5+4RANji5jTUHySYMI+Cy4Q5kPj82acEvB4NcpI7X4YMML3+XZ
- MbwcFxhV
- AEqAvDp6iSIayluieTji4bvvvd0ESGVszoi2wuMk6wlRA0NV+PazP6bXnnk0Bql4Vw+t5UQSyXqTPqDrzOSJxqTl1REknQ2BTj/FfkZF8ulMq/UxHIWw7wk/zfatTs/UdgofgNgSl88GcgYMfJTkSfpAKvAewnmGAd3h4KVT7vM+qe8IXANnG4VdyYivAu0g1RA2RJw6EBEJ+ke0/zBFc0bjsbkSpMsuU+1BfaCfQ1niDoCYtwueHnvCd9aVP6lNMSzDZMIR78VjdufB5CeB+QxOhWsp9jFXY37Ef89IIbC02AfYUOnG3Kvz4U77zEe9jKICYz6q0+Hl23vUIezJTgkmQ0IqKE4ybDc4S6ZyDQqgY7n7/6Tdr/Zr5CPz5NCsFzAJjP4F0Rmk5X3MX/QPR73n5SZe1IXbZEapSgvnR7hHqDPuIpry8T040DPDxsEzgMfYuvQcRGUFtbujkrQTSzOXcL2fBGwVvtkqt31uMOrXNa45MX5d/dbcQ+/0ALy5sej8p0xAGwskia+onsMmyYtY0ZUEkA7e8lPg8
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780045146-519781
+X-HE-Meta: U2FsdGVkX1+tOCrTIj2dAuF00wMya/42FJqtpaTXCN7XwiKD12FrZc5GIP9LwaY/wBm4SXr/agcJ6IrVFODC0oAfuZD27yF/vLlB/t/Qw+/fze8Pl2WkYhnKbMTRmkfrz9CtzmCsLi2/VX5EIblDBSRAZY9t+zqpgW2I0Jrd8xway3NaDXVipj4S+rhHI+AtcnGkxtB5+t+FFJvv9I2e3OdmKFlhd6llJKcid0ctG5e+t+717JIrXvYsXCU0CW/BhIpMOgi2D+Do1aAEH1hh39iUbIGHMVEUkMbR6qa7eyVIftBHT5AqYtn5HU5brE/1UuDZXSGAXkqJZWAiGf0VsQntFLX1EqOrNQWAAiz4qKIKUw5oyAvloCzK3HubL50XWpvdg/fiQMa5rzbZxsFTkd9ae89J3ZIeVwRBsIiKSqjzqR86Hd8U+8ogxXCpN0rPdGBXJ2bEjwrWeAHK8ZHxMd6cZWFWo13PE+2LI3AITxV3vQ4FR3PKUUtAM0ZHhI1dTEQG9JrDkU9oFsf57jsDlgJ0+F1JQRqHDDKRQ6dCyedVXb0VGrN6pXYEumNlFYOQPOUPHVa/M8X0kyq8SVifLmsWw3Zsfz3iGxJ7G/Zh+yJDm//yLMLtZOmwpNIc7daAy371mu0dwa+P7T3GcOemH/Pp9I/DWsMAVk0FU3m2ounq8TNkzB/iHNnDaswzhkvC240DY2rgYootFxHu0jGvDFLbSNwEzxCYKpdZKmPXya4R6hYxgDJf0aI0+GOQ0okb4GeI8b8U/B6UfgX6MW8cvUUGkE1zHePNK3IsASWn9n9RCRvCjOhd87Trlsmobpsyz4f0mE3tzxHqfeKVI1ROcZLLmxOqiEleLGX2Ohj0otcFYR89xbLz3XHaBi6lvOb3YXNvAaQcMI4RbQfHJaK8qG8NkF2G4dijJ6y5fLU2RzKPJvvGDrg+/fVsZkuHcySjoodi0E4EtzlTIW5xM7b
+ W9AK9v+r
+ qiyR8mp8lxonBzY7uWIqeRHkJ/kR0LTPIzZRFyElzndPSHjpeZVhNL4A5Sh27UOyKyvsZ37AyFoGj/wYlf/ly0nRR1ebeGEzfvIWU9KbrVmMugEA2jDAbiJnUFZvatekkkomMn1Ywn4ROknBCh1KNOLSe+mGa8I3WeaPN0gMzTK0HFMWdjpNxdjcWi/PBBdsvepr25aVqVvqg0br+eKeQgRF80Ao0crk4WJH5MgUPBhAaG4e7B1mN3pSNWEksdREz7AHPAYEiYn4KP9ODTY082ez9i247Ci58OehDrphMq92ydvbO4HN+c7wyKVnKx222uxcwS1015MnOkAyHtdP8OskWKuObGD9NNNeS1GAZssPF6RW6b93jygdtrsbGz5HPR65ggbiX3fv/Cmr+XDbuzWnD09lv0ZVedmsMZ9ke4bcmyQc9KnsS9BjGC0UstHW3kml++c5sUSMWqFke+28Rnh3eV43HNYAHNoZiBiswZ3QJUF/hiUmMoqEMng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,39 +120,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When building the kernel, the following Rust symbol is generated:
+Hi Yury,
 
-  $ nm vmlinux | grep ' _R'.*Page | rustfilt
-  <kernel::page::Page>::nid
+kernel test robot noticed the following build warnings:
 
-`Page::nid` is a trivial wrapper around the C function `page_to_nid`.
-It does not make sense to go through a trivial wrapper for this function,
-so mark it inline.
+[auto build test WARNING on akpm-mm/mm-everything]
 
-This follows commit 878620c5a93a ("rust: page: optimize rust symbol
-generation for Page"), which did the same for `alloc_page` and `drop`.
+url:    https://github.com/intel-lab-lkp/linux/commits/Yury-Norov/mm-don-t-allow-empty-relative-nodemask-in-mpol_relative_nodemask/20260529-030835
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260528190337.878027-1-ynorov%40nvidia.com
+patch subject: [PATCH] mm: don't allow empty relative nodemask in mpol_relative_nodemask()
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260529/202605291609.AR5UEvmT-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260529/202605291609.AR5UEvmT-lkp@intel.com/reproduce)
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1145
-Signed-off-by: Nakamura Shuta <nakamura.shuta@gmail.com>
----
- rust/kernel/page.rs | 1 +
- 1 file changed, 1 insertion(+)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605291609.AR5UEvmT-lkp@intel.com/
 
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index adecb200c654..764bb5acc90a 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -193,6 +193,7 @@ pub fn as_ptr(&self) -> *mut bindings::page {
-     }
- 
-     /// Get the node id containing this page.
-+    #[inline]
-     pub fn nid(&self) -> i32 {
-         // SAFETY: Always safe to call with a valid page.
-         unsafe { bindings::page_to_nid(self.as_ptr()) }
+All warnings (new ones prefixed by >>):
 
-base-commit: 72d33b8bfeacbfdccf2cda4650e8e002def036f8
--- 
-2.51.0
+>> mm/mempolicy.c:377:3: warning: void function 'mpol_relative_nodemask' should not return a value [-Wreturn-mismatch]
+     377 |                 return -EINVAL;
+         |                 ^      ~~~~~~~
+   1 warning generated.
 
+
+vim +/mpol_relative_nodemask +377 mm/mempolicy.c
+
+   369	
+   370	static void mpol_relative_nodemask(nodemask_t *ret, const nodemask_t *orig,
+   371					   const nodemask_t *rel)
+   372	{
+   373		unsigned int w = nodes_weight(*rel);
+   374		nodemask_t tmp;
+   375	
+   376		if (w == 0)
+ > 377			return -EINVAL;
+   378	
+   379		nodes_fold(tmp, *orig, w);
+   380		nodes_onto(*ret, tmp, *rel);
+   381	}
+   382	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
