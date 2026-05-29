@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 473F8CD6E4A
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:02:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEA45CD6E50
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:02:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A45D36B00B6; Fri, 29 May 2026 11:02:21 -0400 (EDT)
+	id CB8866B00B8; Fri, 29 May 2026 11:02:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FB476B00B7; Fri, 29 May 2026 11:02:21 -0400 (EDT)
+	id C40556B00BA; Fri, 29 May 2026 11:02:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E4BE6B00B8; Fri, 29 May 2026 11:02:21 -0400 (EDT)
+	id B08276B00B9; Fri, 29 May 2026 11:02:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 78CE66B00B6
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:02:21 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 479E1401B9
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:02:21 +0000 (UTC)
-X-FDA: 84820773282.27.519C1B2
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 140E340007
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:02:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Vzd4Z0Gv;
-	spf=pass (imf04.hostedemail.com: domain of 3eKoZaggKCIsp6sq+vx8v33v0t.r310x29C-11zAprz.36v@flex--ardb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3eKoZaggKCIsp6sq+vx8v33v0t.r310x29C-11zAprz.36v@flex--ardb.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CCDA6B00B7
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:02:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3FC73C076D
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:02:22 +0000 (UTC)
+X-FDA: 84820773324.03.4AA2A11
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf14.hostedemail.com (Postfix) with ESMTP id EFDAE100018
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:02:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=borVo+NB;
+	spf=pass (imf14.hostedemail.com: domain of 3eqoZaggKCI0r8us+xzAx55x2v.t532z4BE-331Crt1.58x@flex--ardb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3eqoZaggKCI0r8us+xzAx55x2v.t532z4BE-331Crt1.58x@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780066939;
+	s=arc-20220608; t=1780066940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=HpQ+gbfLV3ep0KH+7DICYy7iPk4t74I7YHv+Lp6qVhM=;
-	b=A7y6prikIa44ZccC8N2NZf+3GVXIZVG/pjERNY8T/j2V1U2Bt8oGNcfxyaoxJ8XHqvZJT2
-	t3JS6kCoYmRylYGxrFVopMotlvFfWvBextB6rm+R76tvAvgCvCDGcERnYX20besm+x/Xjv
-	VlvOGz4ra52MUl8+Uy5fdTdzFBPvytQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ADUQ++mlFIW7e7IV4zrfNK16oe25OrryHFNLylPLx9Q=;
+	b=Lc1bs/p7SJekisI9ScaB5ltSvxDCYwt3y0qxs0QzIPcnYElUbOCVqolA9ew8yZk9sFyT/d
+	7IMN6tepwSvHmKpgxE8ZnTHbJIOuW0vZl5hVNU9Yn2uytYI2eZiBEzk8KrzrbkCCXahAke
+	JkVbGLdi2+czOHcnL9SGCveWCSSH+BI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Vzd4Z0Gv;
-	spf=pass (imf04.hostedemail.com: domain of 3eKoZaggKCIsp6sq+vx8v33v0t.r310x29C-11zAprz.36v@flex--ardb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3eKoZaggKCIsp6sq+vx8v33v0t.r310x29C-11zAprz.36v@flex--ardb.bounces.google.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=borVo+NB;
+	spf=pass (imf14.hostedemail.com: domain of 3eqoZaggKCI0r8us+xzAx55x2v.t532z4BE-331Crt1.58x@flex--ardb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3eqoZaggKCI0r8us+xzAx55x2v.t532z4BE-331Crt1.58x@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780066939; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780066940; a=rsa-sha256;
 	cv=none;
-	b=z6gU9LAI3eFWCc8oNmbkZIdJLZWEFAbmWdnTpRtedoTMm40OZBmE3zCAinqV4Dql78csuI
-	/bmOnDd3qW0OW/J1vuwJC7ylQvm3vBDPAI7dupigexQz5sgEsXOYZ28cwt2yXNMO+QayYS
-	YBaDe0jYKhJcm//bNWjcYLXHxZsm+v8=
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-bd9a6aae530so1062121566b.1
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:02:18 -0700 (PDT)
+	b=Z7FdlJwLl3eNgbAPEchF2ViPGIhnouaNMFf6UfnthpRg0/GhIfJ8zV+ChRmDHfkgPMUKKI
+	AxbNZXxDc5RbWQKF7R4RvSi9hgjbUEnUlPZUddW7DFr79HhoFky79ZDe/ktasJgXVFGSIo
+	0xCk/CGuFvEvnxQvSztPVxa/vm4qq9A=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-45ea38c03a1so7499573f8f.1
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:02:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780066937; x=1780671737; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HpQ+gbfLV3ep0KH+7DICYy7iPk4t74I7YHv+Lp6qVhM=;
-        b=Vzd4Z0Gv2nREXHpNr5qgN3s1xCvb11j2x6/N5dg8OVNYS/y/pQSiketNtj7WYe4pqG
-         hNg2HC+rYvk/yiFr5DZv02N5zDBG6m60wO7RWscigIxMS+6PgWjMu0S72PUfhXw1eJ9E
-         9ZE+Y1mNeUwek3BRxJ9xqqJmufDnouMsv8TKp8LEbMp88W6QUwg2NLX2IdyBUNHplHAu
-         kQ6ZW8CV9Z57dsDyXk18va3nM5umMWnQEsNPWk9V9tnqodIaHrpt6OITMy8Z6ejKzHhO
-         XGrscINUE25LA8w17fZEhgFYNzdgpnnkPCgYwQLHlRFFcSYkezW7/2Vr5CO99G4Hkg9J
-         Szrg==
+        d=google.com; s=20251104; t=1780066938; x=1780671738; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ADUQ++mlFIW7e7IV4zrfNK16oe25OrryHFNLylPLx9Q=;
+        b=borVo+NBslsl14Cc1QWa+tAdXucSBjYkcsV9t6+RX3jDDLXT7xytdrDRKUqimrx6/G
+         9Jsi5aIaYWoRQCKvtJP0gm3rRCm+tHMvc+hL3JIiW5vEBBvhDVyG/G4EmVSj4rJ36Ufu
+         U3zU5n9oqiL/tXS49PlPFD1xx/sDXKW5RZgbmJlGp6ZctnnBUuXBxkT2AYbmpU4SAbDR
+         jAXC2G0hiEh+vDdUexjQiIZNDbdTjpbQG/ly0FlPN8Xy9ma9iV6zCGB9utTvNzsWaopi
+         Pj87TRglGOCjIgwnssjEy7jXyFf+QSuJBd06NyOJXWT1Nq/mC+PaBFlDqM8yyYWZsypZ
+         EnXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780066937; x=1780671737;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HpQ+gbfLV3ep0KH+7DICYy7iPk4t74I7YHv+Lp6qVhM=;
-        b=rhVpNCB8pQAYGDAghNWK/2HxXR9+nBqDXeDJQJAu7LoEA0IY63y+9Rg8phTgSC04Bh
-         dhrBQWEsZ77WxU2LkCD83LCfiTcApA8AR2UCPDkF/0//atGP1POt5GjSAMcDYkO96gYr
-         jHvItcfv6t5LEpiQzfSHKMjMIpt6cI6EFUTNiOk6egP69hFnHZKcvVKOTADN3hV7U91/
-         VPeUIJ0yH+0jTp+la3yVSZWhGem6tulBorSq8J1VvigmVe/7yPvfpCdzYeuOqIPNz0Bq
-         1J7mgEq9tRumsf64M0lnzrJkQLPzk5BvmBVzB1wg+HJ6E98JvR7JsjnE30jaabAryy4+
-         15GA==
-X-Forwarded-Encrypted: i=1; AFNElJ+yBouSo5HIN8dJlOHRvKhKjFXhCxFEUmpc3UEeXuAEHlTElgfmkDX+2k5hxa5IuXngqz7kyw3T2g==@kvack.org
-X-Gm-Message-State: AOJu0Yzjtk+zrXq5xd9NzhIN+l2NbUZf+1fThXXOdQPY29wAz2NMtITS
-	144Ld+qPDQcEfUinXlW+45hCec4CVKL+F6i/44jSbPXTNSul99nyEBl9b57yHpCYUIhCO5lkJg=
+        d=1e100.net; s=20251104; t=1780066938; x=1780671738;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ADUQ++mlFIW7e7IV4zrfNK16oe25OrryHFNLylPLx9Q=;
+        b=mocvtYcatevjKnmQlJeuPmpyCCPUMUYyfmRNn4lA7FcVpp2rqSMbY1B6/Sa2+xeSsk
+         FHtxkHJODlhQEZTi9iXdjJetAqiULgKminx80esPbyyPsGD39ZJrToc7GV9xsOIvNW5A
+         CNjD2PzeDXCbsVbW3WuNaUudzrNMKFVT1u6NqtMVSZFJA97bv4wCjYvTfvhwdMJKeZSG
+         p0ezjh8lzBShwoalkkiHZH8ZBWw4PixJZBd6FukWSi22ejVxc60mwDUcNjG/+FfdIL29
+         hfTE7ch8nv+CcBEr3GBqJx9Ly1F+QOcouEDJ9fitllapGABC904IwPZFdfHqXW5VHz2j
+         TSFw==
+X-Forwarded-Encrypted: i=1; AFNElJ962SW43BfLk3CzSCFXF6Ddxxx3UufbjFjzadwJMUKk9+G90e8wduTVoSWv73SLXFm/KwI3s50zFQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxak6ZDFA3iAIgH8/79NBfV/H8vIgTypBEP5H4lHidIxj5xnYTi
+	LEd2ghbs9hd+0/0mUD5lKDkIU1LVvJU/0YhW0AXw4LIflGxGa+6AwhALjGPyY3X66cKXDJr6GA=
 	=
-X-Received: from wrub1.prod.google.com ([2002:a5d:4d81:0:b0:43d:77d4:5f14])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:7945:b0:bce:a1fc:6877
- with SMTP id a640c23a62f3a-be9cad0b276mr172778166b.24.1780066936607; Fri, 29
- May 2026 08:02:16 -0700 (PDT)
-Date: Fri, 29 May 2026 17:01:51 +0200
+X-Received: from wmco20.prod.google.com ([2002:a05:600c:a314:b0:48e:9137:b54d])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4616:b0:490:8470:31f7
+ with SMTP id 5b1f17b1804b1-4909c0b0175mr35812255e9.20.1780066938306; Fri, 29
+ May 2026 08:02:18 -0700 (PDT)
+Date: Fri, 29 May 2026 17:01:52 +0200
+In-Reply-To: <20260529150150.1670604-17-ardb+git@google.com>
 Mime-Version: 1.0
+References: <20260529150150.1670604-17-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6016; i=ardb@kernel.org;
- h=from:subject; bh=1J4/eBxWUzNbzISy66s5wYlPFITBFouUFXFgBmOizGU=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIUtyVbx/uurJFp+7lxfraxzxO+j8qpt7ylXD8r3Oblc1D
- 1q97K/sKGVhEONikBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABOZzcnwPzZyX86SrtObDbx+
- z714VZhZY8c1Kb2LJRHXPl3UVlXMUGL4X+DuW1oyQ1zWb99Z/cx301JrXATZI7vYmbc++evbL/u BEwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1021; i=ardb@kernel.org;
+ h=from:subject; bh=xJBQ0hvsJWcxX3OF+aBCCahIM1cYmsTmsethYm+trqI=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIUtyVcJX97Dz7W+MMlK2LNwkUx18YdWxeHbuRF3RixVzy
+ 2VZWh91lLIwiHExyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIncsWH4K15aydfEzd4bZFBo
+ IRJ1wOPhL4sFl+slZr0uKIyeuuzbIoZ/xqFpXiaXjdJOHT9lXb/2g8g/3TdHPNLmFe0v7lp74/s mHgA=
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529150150.1670604-17-ardb+git@google.com>
-Subject: [PATCH v7 00/15] arm64: Unmap linear alias of kernel data/bss
+Message-ID: <20260529150150.1670604-18-ardb+git@google.com>
+Subject: [PATCH v7 01/15] arm64: mm: Remove bogus stop condition from
+ map_mem() loop
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com, 
@@ -102,13 +106,13 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
 	linux-sh@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam12
-X-Stat-Signature: oduffynrrctur7zpmw6ir58ym5ha4g8a
+X-Stat-Signature: zc3tbtzhmiew7dbdgpwf45u6gaijt1ko
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 140E340007
-X-HE-Tag: 1780066938-906421
-X-HE-Meta: U2FsdGVkX19MAdjdbndq3ADklZFe0Dc7gC4vBFfUNfb3o6qQYYB6ZWiqyydbnSFZtUx/HO+A4gP/8uJqsj6rpv9UwF+DRgDns1cyOBLOimxsWK4Yc5q3hkguCKkCnnhxYZh3UxEjf26TRV+Vd6M3kA1DuH/YR99OqUFSlnQyE/Or4gReNhtAm218E+lWjBehYBweOe4ZUbGudsMDhfq7xUvT/rv04Odaw4lc3/3boshCvbbjvjZzTya88ud14+NkKVUiZ86vTASlNPUfD8kw9x5wRSLRNUSeBP9/DC9w6JV/yviNi5ikR+MPLFoz90DXnsRSt+9ZZqRQbgaqOgPkVoSbkZ6nGCg2CpnWYRnMG7pwmQWCPfgLpwKjsbYTGgp0OnnoMOiBxyNAA/B7Jhecfamp67rjy7YvQ2bgLcyNFNzYlMz2j4jQGp31VwYyxbgjAqid7FIAy99LjFX75+FQEajo58DoBG0vx4arVHpQQj8Vq0Sy6pKugkhv08lwvBWpuXxzqps40Qkh0U5DIyQGlZjtQ2BzZbCl0Qwl0XUFIHwoL7NY4T8wnmp68fFaDLh0lMS+nBeeb7/8DGGNzx2ndEeyMGn3Sb6wP3Jq1wKcE7aM/5Flp1CgQVwweI9LE6EckpsYjQ0l8nETzWUTfPBnfv1cfkW1iCHb5GE1AfAohqnnzoDXE17L73+Gw3uBGcHDHDIPKouNc++yOB+erk9/kVUD7Dl+r8gcmKy+KeBzbmbjyH1UPP1bKhLrBk6gijrRPsPfKNYwQxqp8rqt/jFUcoHlZnfR8XSkzrpoT9d8Sq5BjoJBGJEjxjxjpi2eBd7zKWtPD2BJNST6L7TBRXvFrs/Ro7MgctNR2iy2XZC+6DPIdHujL3DldGjnvcqpNK1LF0q9b05mPB6Oyhb6uULW2dOwgTu0tJhcVHSodJCky/wSgXCJjwLgK3KgEIu7jcsIGs5p7OycyeNZlRGYdlT
- 5c3NRzoZ
- 9RmigYvBrMiEHquuOFULGNrcCoESg6fPCHgecLRMtWQuVHjj9yAoeSbbyx2YF3dtInskBtogZbX1K2dPtpupmYD9V615VDvV5Apg7qrH99HIadWu8XSuL0sLEkYjWUCZwlFY8kBcYldQZqtToEeIEhtZBlFBZTyFp4IpnBcUqyiI7jR+htyNI6gfqoO1bTIGs53R1pIv8l/NXRN5+HHVB+n8yAQhiRbudwyMG1FkUqupToY81XepimtpqKDYwLYwKYdC8TqEfG7CD6CnefTa9mjLfRxF1jtOcVN1wKa3iofSMQGcAis/hOkFNXEa0h1mcd6vZBm5JM72gLt7ODqPEkEmrxG0b4UiUSWZhGk29r2xsxcp8nx4sl/c5K2RIBEh7fXVpk/ahSo68IHyZYU8llmhTmMSezh+NrPyz/qpH0nuA1T9UI6nlPiwn7Mx/sxG2Dp2b7DJLt/7jbcoBFRGNy42KH54RUXyWzYTeiNiuMzB5hSCwYiTUeGz5YOL7tFyW9d6mfaGeGvI1PkWLlI7HqnY9mnY36Ba9zAuE7TT1oeZzvMp2sRve5Wpckal5V8+dWM5kAibpbN9T/POJ5dxG7R+gjljHI3hOd+4UV0DqqpwiHFUNGcWuq/0lgDHgDMmi9LOLUR4Vhr5oY9tvPPEb6m3Jje1LsI5aI7C7/m6CboyTA7Yt+5BePknq2pgZ9azXx5nQ+aJ6OTaFfJ6DwBLUP01P2yZSghlbQtA8T/nshTZd/Zyss4mmL1+WCepZ4dnr8i+GonTcF8/CMBQq2Hs0h5HtrGxdlAwF5CcUlTshNJoC0QeAqo0PQhY9w8fnVPhuoI36IWgsD0USFO1WwnED5hqpV7FULqxTuVU/zfwFoDthKOZdOQwBF+cg1jz/JzwmcFFN
+X-Rspamd-Queue-Id: EFDAE100018
+X-HE-Tag: 1780066939-28103
+X-HE-Meta: U2FsdGVkX1/AtzNiJnQBsbz3qC7MPt0tX64KtSNs2zfCaiFI3DNtYT86z8edAmZTHNcOKw7sDYf+PClL9W3AcDlrai5SFSeVRsAVCwOEU6yU5Ys6Mr7+0fzNLJXNe7O7UYl265QARfwQ7nlfTHZWiZoMZvjKRk0Kz9X+mgvFDGx5t99BPtB46+vThF3ujgT7tz3OjqEFpAAVFqMUSSjci5/KHf9nL8oJZ0WUo8q6kgWWq6qjp/jBTvwmG5In58bzxx9KxcrcLVMDYIsnbk8MQcb0Jao4Xn6DVQZor/92HvxprvejhHFy3nRiY9xSI7FeAboFdTQLn2BwKSkqm4xn+KgMLGaCEdJXRwX3I5KUl9h9GR1TEtv0S70DxJFkB0xTAvVe7X/bI+oDL3cymTnJG0paC0DsywCo5SENqqjvCRXAeTkV4mwZVlcnhvB4ZELwSeTXbx7WbkCw6MvcSHQ+MAcaoOE8ZIjh10h6XeruaGqllZkjnFVe9AUBzLjseCapBuE4GUB3yzOxX+WKA+ezRTxUyyugxqohQdkIqSYBu/wm4kvfIKIsemfnI2BlA6C9KoLY1Z6aTTNGs5DmvOJmB1pAtGZ5lMI+qfm6SbNTJ7IlGyn1PVLcCJXUsSTPTz5bejloP/HxyazmbFI5vFu0xNPQblFI+G8Xvtsy4/kkgXqGEFJ2pnDbbYj/sYxB1M9gjBQe3t0Tl0hIHKP3QhkD9NyX1LTdQm1/haIbS7zkUr2PAucmNM2P7j2Yj/CNHRAUZB6mUNs1Ihn7SLpZqssMUTBeS4JOlR/MQfqMTeIfC03QQsU8CMPP0Qkh56qMhA95t/e48fKZFt0Ffbj3MxRmhjYtAAd6YFwY2L3QWvhmiWcG2Mv2DNPO1Gi9jdwC7gq9uu2+TZ3oIBlTYdHwIDKCVEYc9vBmd/WhKezCoqI+6oO/2N4NdlqlyNXYs32VjV/GdF0iIQUfEecdR8ymggE
+ HgknN9En
+ jQk0EL12gRHQ4i0UzBPXmlX6AbS8tnOgCco2PR9xM7ecsyS3kFkCM5eFFmjyURdu+WSfK1Z0ae9Oem0/X05OfZ3AyZ7cmGKiXVbvLaj5fVSSx6H99IO6oUj2+cj3TBjHzSHwJMslfQUfVlMd0bjAAPsUo3O1uztZyiIBUmAB/Ptb2pvwWPUoNgDz0xpgV2+8MQlrRRwH5b4FZ26+surLAU73LlxS/lJWtVI92vBmFKHJhil3aPnI22DL5Q3ES18yZHokN5xn99XmqW52jPLh7T/aWTJ0wLMYW/4NFDLHVBBNUg6XySGkLHis83x+H3euAxDJ7SLlU4/D+ZVhMEOplStqTQQ9vmu5/EhEVb1kQJLaOf3is960DbMSEIg+/9AeF2C/ouIJT+eWFV4AcdmYqNF7KLixKcFTTBNG3n+jYgTyfQnMlIpZ1fsd0FtBKmaRTbnfVV6t6fwEpJgKo25hfnxcQqTvY1A1jSizi9zUc53/EoH8uqA88qDUr9tJ8Cc+nVjDDgn74PE1K69JyQb0OY3+I8oo81HS/xaZ6dx89GBBmxCoql7eRSQSGzT9zieyWV+LAm+iEGwn5xofP6JaUHf390hnxL5r0gZHwm+HWovp2QuhEcQxPkup4IeBM7TCv0eUN1Ly70h0eJ8tXmC2luo/xKtS4ZVff1f4fMjDuvJF9KnNDdOiDAIWJ+hQMVi+c7iRmJrlWuKH3FN0qHzyblW67gw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,136 +122,33 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-One of the reasons the lack of randomization of the linear map on arm64
-is considered problematic is the fact that bootloaders adhering to the
-original arm64 boot protocol (i.e., a substantial fraction of all
-Android phones) may place the kernel at the base of DRAM, and therefore
-at the base of the non-randomized linear map. This puts a writable alias
-of the kernel's data and bss regions at a predictable location, removing
-the need for an attacker to guess where KASLR mapped the kernel.
+The memblock API guarantees that start is not greater than or equal to
+end, so there is no need to test it. And if it were, it is doubtful that
+breaking out of the loop would be a reasonable course of action here
+(rather than attempting to map the remaining regions)
 
-Let's unmap this linear, writable alias entirely, so that knowing the
-location of the linear alias does not give write access to the kernel's
-data and bss regions.
+So let's drop this check.
 
-Changes since v6:
-- Improve commits logs and comments
-- Add acks from Kevin
-- Reorder patches so remapping data/bss R/O occurs after moving the zero
-  page into .rodata
-- Drop zero page cache flush from SuperH rather than casting away the
-  constness
-- Map kfence pool with NO_EXEC_MAPPINGS
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/arm64/mm/mmu.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Note that Sashiko had some comments on patch 15/15 [1] but none of those
-seem accurate. (I have tested both suspend/resume and hibernate under
-QEMU and both work as expected)
-
-Changes since v5:
-- Reorder series in ascending order of impact, so that the first few can
-  be merged earlier if desired. This also makes the patch that remaps
-  the data/bss linear alias as tagged redundant, which is therefore
-  dropped.
-- Add patch #3 to address an existing issue spotted by Sashiko
-- Fix thinko in contiguous region check (#5), where the whole region
-  needs to be considered and not only the first entry (dropped Rb as
-  well) - this addresses the kfence issue Sashiko reported on v5 [0]
-- Update commit log on #6 to clarify that changing permission bits on
-  PTE_CONT entries is safe as long as PTE_CONT itself does not change
-- Likewise, drop hunk that adds the PTE_CONT bit to the 'permitted' mask
-  in pgattr_change_is_safe(), as changing it is not safe. (#8)
-- Move kasan's additional page table to pgdir BSS as well
-- Use (NOLOAD) on the .pgdir.bss section so it does not get emitted into
-  vmlinux
-- Add powerpc and SuperH patches to deal with empty_zero_page[] being
-  made const
-
-Changes since v4:
-- Update the correct [early] mapping in patch #1
-- Make empty_zero_page[] const instead of __ro_after_init
-- Drop patches that remap the fixmap page tables r/o for now
-- Don't force page mappings for the data/bss linear alias, as it is no
-  longer needed for set_memory_valid()
-- Add acks
-
-Changes since v3:
-- Drop bogus patch adding hierarchical PXN to the fixmap mapping, which
-  breaks the KPTI trampoline (thanks to Sashiko)
-- Add generic patch to move the empty_zero_page to __ro_after_init, as
-  it now lives in generic code.
-- Add patches to remap the linear aliases of the fixmap page tables
-  read-only too - these live at an a priori known offset in the linear
-  map if physical KASLR was omitted, and control a priori known
-  addresses in the virtual kernel space.
-- Rebase onto v7.1-rc1
-
-Changes since v2:
-- Keep bm_pte[] in the region that is remapped r/o or unmapped, as it is
-  only manipulated via its kernel alias
-- Drop check that prohibits any manipulation of descriptors with the
-  CONT bit set
-- Add Ryan's ack to a couple of patches
-- Rebase onto v7.0-rc4
-
-Changes since v1:
-- Put zero page patch at the start of the series
-- Tweak __map_memblock() API to respect existing table and contiguous
-  mappings, so that the logic to map the kernel alias can be simplified
-- Stop abusing the MEMBLOCK_NOMAP flag to initially omit the kernel
-  linear alias from the linear map
-- Some additional cleanup patches
-- Use proper API [set_memory_valid()] to (un)map the linear alias of
-  data/bss.
-
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Liz Prucka <lizprucka@google.com>
-Cc: Seth Jenkins <sethjenkins@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: linux-mm@kvack.org
-Cc: linux-hardening@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-sh@vger.kernel.org
-
-[0] https://sashiko.dev/#/patchset/20260519151616.2557018-15-ardb%2Bgit%40google.com
-[1] https://sashiko.dev/#/patchset/20260526175846.2694125-17-ardb%2Bgit%40google.com
-
-Ard Biesheuvel (15):
-  arm64: mm: Remove bogus stop condition from map_mem() loop
-  arm64: mm: Drop redundant pgd_t* argument from map_mem()
-  arm64: mm: Check for pud_/pmd_set_huge() failures on kernel mappings
-  arm64: mm: Preserve existing table mappings when mapping DRAM
-  arm64: mm: Preserve non-contiguous descriptors when mapping DRAM
-  arm64: mm: Permit contiguous descriptors to be manipulated
-  arm64: kfence: Avoid NOMAP tricks when mapping the early pool
-  arm64: mm: Permit contiguous attribute for preliminary mappings
-  arm64: Move fixmap and kasan page tables to end of kernel image
-  arm64: mm: Don't abuse memblock NOMAP to check for overlaps
-  powerpc/code-patching: Avoid r/w mapping of the zero page
-  sh: Drop cache flush of the zero page at boot
-  mm: Make empty_zero_page[] const
-  arm64: mm: Map the kernel data/bss read-only in the linear map
-  arm64: mm: Unmap kernel data/bss entirely from the linear map
-
- arch/arm64/include/asm/mmu.h     |   2 +
- arch/arm64/include/asm/pgtable.h |   4 +
- arch/arm64/kernel/vmlinux.lds.S  |   8 +-
- arch/arm64/mm/fixmap.c           |   6 +-
- arch/arm64/mm/kasan_init.c       |   2 +-
- arch/arm64/mm/mmu.c              | 164 ++++++++++++--------
- arch/powerpc/lib/code-patching.c |  52 +------
- arch/sh/mm/init.c                |   3 -
- include/linux/pgtable.h          |   2 +-
- mm/mm_init.c                     |   2 +-
- 10 files changed, 121 insertions(+), 124 deletions(-)
-
-
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index dd85e093ffdb..112fa4a3b0eb 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1173,8 +1173,6 @@ static void __init map_mem(pgd_t *pgdp)
+ 
+ 	/* map all the memory banks */
+ 	for_each_mem_range(i, &start, &end) {
+-		if (start >= end)
+-			break;
+ 		/*
+ 		 * The linear map must allow allocation tags reading/writing
+ 		 * if MTE is present. Otherwise, it has the same attributes as
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
