@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E2E1CD6E4A
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:24:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C66BCD6E50
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:24:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB4586B00E6; Fri, 29 May 2026 11:24:14 -0400 (EDT)
+	id B77856B00E9; Fri, 29 May 2026 11:24:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A641B6B00E9; Fri, 29 May 2026 11:24:14 -0400 (EDT)
+	id B28386B00EA; Fri, 29 May 2026 11:24:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9319F6B00E6; Fri, 29 May 2026 11:24:14 -0400 (EDT)
+	id A3E316B00EB; Fri, 29 May 2026 11:24:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 81A1A6B00E6
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:24:14 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C445F1201E7
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:24:12 +0000 (UTC)
-X-FDA: 84820828344.18.2EB3828
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 908D816000D
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:24:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y1rDkGx+;
-	spf=pass (imf08.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 905316B00E9
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:24:19 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 586D81C028E
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:24:19 +0000 (UTC)
+X-FDA: 84820828638.08.E5BF785
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D0EC518000A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:24:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="hmjHS/xz";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780068250;
+	s=arc-20220608; t=1780068257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YFnBVDBDzVeV9p9dYXmJ4JPUR3YMu/6T3H2GlWvoQjs=;
-	b=pAlN6mxIHJ+IFLN4RGKfWgjjBvBGLSICMjcFe5sFLwHim7pVimLIBLzfeB54bj6XENaN26
-	g7LAuVJ/UiPsNgJ0oqYS9V6uIdPMzTDyewu8vUeNWYPoJHmuejglvQ2LcoAFZ0qxBJw7zh
-	VWuTkXYfbIe6H8yqPRazSvxMhrRPrrA=
+	bh=Ha0MKvEjPpqKYjU+TNR9cOwfxNwOYM3BFVBNkyNiIfo=;
+	b=gKvE3Ok7XMopyJrf8zY+qTVWpdLArdvT/mNRm6Wc4/MZeC0wrXdF334ukxbgj6P3O+5OOo
+	K+i6fN6k50uanXEql0QC2ouspq55awFJmP+ds7q1xREI6fl4FlSk91w3iJPZxyOSjkvS3q
+	w37TiEJJJhRMkRVCaFPHV+F+gtL0/+k=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y1rDkGx+;
-	spf=pass (imf08.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780068250; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="hmjHS/xz";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780068257; a=rsa-sha256;
 	cv=none;
-	b=wOojDO7R85m9jJUXZf4MP7ErfgH1kWFxhMRB81uGl0BrGmXvBHhWQ+ES7wdSssksMz29Hk
-	xiSNJ4aT1JawDkS3PChYhyd6u3ATit9ClaytpxppmcdHcTNebwHFuW8KZ164Vbmb2u9NwB
-	mRzLM4+L4U5ZZIG7qgHBtN94m05Nk7U=
+	b=rgGLv12BcqXiZHKCFCs4KxKN3aevPTgDZ10qE40nfkTz499asI9mO8QrZ9RRP+4vcd7VbE
+	Co1TenrwmD0XZU/UiYu3cpcdNdrOxfkOaZMZyCmm11Cn3QKAyBg1DTqDceN9KU8V71+/mI
+	wAI196xbgF6UzELI3o0BbGYraOZgvtY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780068250;
+	s=mimecast20190719; t=1780068256;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YFnBVDBDzVeV9p9dYXmJ4JPUR3YMu/6T3H2GlWvoQjs=;
-	b=Y1rDkGx+vgybkYSA0eHhqScEYfbjq18Eq4ln1deiNEyAPONZEixy18jVjqfT/cTf1HO3kk
-	4hL4yJL2v6riSxiIebrW0uPvLzWMTTvKeF+DjvotMkozORVeUx4cO9qibTJpSxv8cZ9sGM
-	8ZIU55mHaYg9GNDKVWJN5GKOaqaG+3w=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Ha0MKvEjPpqKYjU+TNR9cOwfxNwOYM3BFVBNkyNiIfo=;
+	b=hmjHS/xz6CWhW6iIu6yN2Rj+aC6ePhv1TnPgBFi2JTpyqu0lb0JeLiP82KBRifb3qI/72m
+	lAiHZuNk42XbfB67HCHlmW8iS0KLE40f8i6U84rvNO3QeIjGUZp8r3YHr/vWaZj5HvFpol
+	iaoRJUHx/4Gy76tmL1+SgeC8/mTYrS8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-g77pzJPUMha9ojqJRgyTlg-1; Fri, 29 May 2026 11:24:08 -0400
-X-MC-Unique: g77pzJPUMha9ojqJRgyTlg-1
-X-Mimecast-MFC-AGG-ID: g77pzJPUMha9ojqJRgyTlg_1780068248
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45ef55779d1so241384f8f.0
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:24:08 -0700 (PDT)
+ us-mta-567-C7WTWQzyPz2Gtl_RDwy1qA-1; Fri, 29 May 2026 11:24:14 -0400
+X-MC-Unique: C7WTWQzyPz2Gtl_RDwy1qA-1
+X-Mimecast-MFC-AGG-ID: C7WTWQzyPz2Gtl_RDwy1qA_1780068254
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4903dcb32f8so69896395e9.0
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:24:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780068247; x=1780673047;
+        d=1e100.net; s=20251104; t=1780068254; x=1780673054;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YFnBVDBDzVeV9p9dYXmJ4JPUR3YMu/6T3H2GlWvoQjs=;
-        b=KG1LXpvaCOTVE4B19MhKqyITtt/BA6mn0ZbdYkmbYp4olKzxz2NYu6cKfwaylSO5Af
-         vMcI0c8CjohBUgGyK1y+29RkyaoPO8AKpazx6eHbqUqQb+sBil+3cFG4G99AHamixtta
-         aUs4s8S80xtd3kHrYERx94alJetm6OYHg6ueJJpPdbAhc77B2m2VoAhP+ToJhHa3L869
-         /rKxoO6nUTv+TJ6cPd3BUttqRpiYBNGmD16o7Nu4L2s4syvzMFg2HpXfs2I8yt8sMrib
-         2Hr/IrVd3oCAFQeMv9MOGxg3tcEqDxT6+IT/JyI7+OfhUBntmBZflJq5fgqJLSeaz9N2
-         lJjw==
-X-Forwarded-Encrypted: i=1; AFNElJ8o5KOJlbdLRSS807QcA1tqYeCuq8x5VGFtKVcvd6z9BdIbF9by2zvBxlhvy+jW+Yj9cM466rMrbA==@kvack.org
-X-Gm-Message-State: AOJu0YyReXRC3Q2GI2fBkpMvmf1Q2/YN5H6usGC8gVbJiHTC/eEmN98u
-	naEsOpvA2vFCwbHvOFrF0gmOo5edvTjq4zzvB0aMorNZ7UJ40iljUvwgk2Pb2iLwxdr5TDyrOiw
-	KXgY7wmTBeAC1Ndg4uZTLJormufeU7j11tBq1yjtnFicpUnvtzFC/
-X-Gm-Gg: Acq92OF3Kkef15IsEXxChgCHvqdI2fEzk91bQFBlc6QE/GhXU9oWtp7I0AJtWIHcJOu
-	MUZTMDSvaYLoI9DjV0nUvA/4FldmEDiR8rF82tz0oTslbVqgqE1c+1ZNyO1E7nMDsxabXTV/647
-	+jW0LS0uZAcJNQyZTOwnrod2JTZowNpwmc1KN86sl7DLgPNIGi5GYa6zULjejZPyaNFzqXZnboh
-	LdtioGblSzF+IPrBzoVZSjBqWPtXm9jH4m7FlfX4pj9fiGTMqlETt0Tm5ov43ojzOUmE4GiQfX3
-	TMG25uxm1z/r7mFXyrjfXTbEYh/xu5ucUKzN0yyzE7hPkEtBWOA2e7JvUw2pVU+sM70YceYQMP7
-	BE3hJ3Cnfl3YtBXcPeEgTTLnP101+8bbHuWUCic/FCjLWUekjdEvWrw==
-X-Received: by 2002:a05:600c:6385:b0:490:40f1:5314 with SMTP id 5b1f17b1804b1-490a290ec08mr2724765e9.1.1780068247457;
-        Fri, 29 May 2026 08:24:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:6385:b0:490:40f1:5314 with SMTP id 5b1f17b1804b1-490a290ec08mr2723495e9.1.1780068246818;
-        Fri, 29 May 2026 08:24:06 -0700 (PDT)
+        bh=Ha0MKvEjPpqKYjU+TNR9cOwfxNwOYM3BFVBNkyNiIfo=;
+        b=Wx0JOIH03+caOWCP/eMvkYPZR5/8LrA/1GOifjjVzDJEebn4P5aCO0y4QTIu5RtoAr
+         Fe3dIocxeByB4n5KKCuwO9DiK3IJsCAsZ1hoEr8LIc09pet3ik0U7wuvclj8SyJK7cOe
+         u/gCagffY9msGYFgYJ2+/OKXYtnTeV1WcdwJrPQfyTK/VHyStCBMl92wqDbZE7s2zwXX
+         zKsnByDCU4kLLkY0mKPYog1r6qazjk7usDix+Wed7YZ4sBK8QO/Sz/u4SfCSV+vdfZXs
+         8I3L/LW4550iKmsltSvIZkE8Szun0kFXeNe9YD4zwwobTD20wlvvF0+wBroaPaiB4Jjl
+         izJA==
+X-Forwarded-Encrypted: i=1; AFNElJ+2ibpj0+eKIwAxGa+pjfHh4tBNbq7ySY9hg1joLMsg+aesSW10Qy5vBs13H1BOODG6atwPXUe3og==@kvack.org
+X-Gm-Message-State: AOJu0Yzvf0ina1N5oAVCEiuLXwc/twAfzjLf3FwLAnY1sn4YtcWmFhe8
+	uj3/4tD7vwNJY28o4DOE4pNNCjXhi6wk8F5f54AoAuS29Yvg7GybnYQvhPnRxU/GR05EVUheQVn
+	Q6O0/Unie3/KrWX2fGZ5g1t2HnSqojGgVFk6eyN9WkqQGmuVfsC62
+X-Gm-Gg: Acq92OEOdrnDMZOsL68ruldjctZIOtcttih/MAe3NlbakDbjTu15c1JReUrqiZB/6c+
+	KRxKbaAhNlfpDvfH75lESncYprE5hGWFkfNuoXjvXc6clVAOgOF7JsKF6BKcQP5zGMa2xwElxk7
+	X7C1M3/0pnJG4k9ljhGzOAvv5IApZ+Bbo0bfU0ejM4fH7uAwrBr3civcfuBl3MiuRfuJvU8QAt2
+	kooQi2gshk1nX5YPz3orktJ5MFxh0nAmeBvQYKFHR/avhcga8XvXBd5FNDd+6FsjXc2guxvI7RN
+	aHjS2rTSUVolUJkx6p7KN5i7D6OZNssiyI/tPt/OHp7np1MGDweo1sGPJLpzhKLcLp/FsXFhRJc
+	avEg2kPjb/sL9GZESSQVFnWbPG60b4padMDT+PMqYY6m7uoXdGBZCgA==
+X-Received: by 2002:a05:600d:640f:10b0:489:2005:b36e with SMTP id 5b1f17b1804b1-490a2941d4emr1178705e9.19.1780068253486;
+        Fri, 29 May 2026 08:24:13 -0700 (PDT)
+X-Received: by 2002:a05:600d:640f:10b0:489:2005:b36e with SMTP id 5b1f17b1804b1-490a2941d4emr1178125e9.19.1780068252950;
+        Fri, 29 May 2026 08:24:12 -0700 (PDT)
 Received: from redhat.com (IGLD-80-230-25-45.inter.net.il. [80.230.25.45])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c09abadsm16343845e9.1.2026.05.29.08.24.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c103a89sm16422195e9.20.2026.05.29.08.24.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 08:24:06 -0700 (PDT)
-Date: Fri, 29 May 2026 11:24:01 -0400
+        Fri, 29 May 2026 08:24:12 -0700 (PDT)
+Date: Fri, 29 May 2026 11:24:07 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
@@ -134,27 +134,27 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
 	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH v9 20/37] mm: hugetlb: add gfp parameter and skip zeroing for
- zeroed pages
-Message-ID: <783540fe912fe437c98385c1b288a7695ef45ab9.1780067977.git.mst@redhat.com>
+Subject: [PATCH v9 21/37] mm: memfd: skip zeroing for zeroed hugetlb pool
+ pages
+Message-ID: <43b19542a07b568279d1a6e734d6729d347b78d5.1780067977.git.mst@redhat.com>
 References: <cover.1780067977.git.mst@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1780067977.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: YsTeXeLfcd3zkZthe9nIbWwOjcNwI8QTcBiC2IxLg6c_1780068248
+X-Mimecast-MFC-PROC-ID: 16FtGbsTLQN9JTSHb6stidwtTXF194yV5l74HXKt41s_1780068254
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 6qtoz1ynpokaxfcsbgi9i9gnc8os64n6
+X-Stat-Signature: amsyjg76wkhz8ae11cgiapuiyn3k3znd
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D0EC518000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 908D816000D
-X-HE-Tag: 1780068250-559816
-X-HE-Meta: U2FsdGVkX1/bH2iFNv0tXDGQnUYNwTq2aoNIOq1XShvnNVdVccnpa4r2pmN8mTXu5n1wBD1tj+IW0t9izk4IvOTz5ZVaXVQpF/MTlYrCAwsPnVSjDr4Xk2xxOupzAqJNkRDvJ1a0lcCmklTFoM3H1M2ae6844wBTRFYo1XVKzRfJboV/aNCm/4ejRl6t5jW8xsBHb4iUmxfOf9cf8zGw1D5lagvOQZWsMDG1u1QjEo7fT140cR6KOYVJHMYzUChhJx/UWnFnGtCsclT8+FQWrqTu99MmP+Kb7ecA0o4KvkB1bXFDOWFER/bCK5VF6sVFSFHYqODP0C5ZYwDPXPNcLPPjbGXjtgF2QB3SjfYW/Lgj9DC6BH0Bgr+FE4ozv/Xu/+M9nEkwMpQV9P35waAjeECX55AHHkUt/cpEx5jMZkc/MBBB23CuDIj+SJQpYAhiPZx7rbrOfQNCCwEl69WTkYuMy11XB4KOkIE4ZG/qNy4+u3RzHTLGgA6MojV7ojqAOKLVlYhWqcqJTHEKJTxdIT23kImAfccFK/9FRx2c0ziGcfu4Vfm1c0Jb5WLD70vV1LPADIOjm3F+GFNxBGTrE2I3Qp3E4DBfXpLYHpQ2Pash7bXBnxa35LP28EmFSETMGC7/sBqMZ+m1Pau2T+Bus+BwiD1xLfLX6VTE8XPVoHnP2d//qXtJT5FrCGklKboxn4g4UFAl2J+ttFn5GSgDwnBrLf0RyG9KmaIeBe8eASVqE/UyIDhpo1Frba4a7qSDgUKzqwUSqW/Z0ga4t+CmUntjHbPgXepEFz1YqbhWtZTdicQjn3OXCch7emYF4mgsfqV3OSPUgjmq+WSMBZjlAb3RbhlSXcdNl1ly2SnYGbwEsIbQbbv6FFhKtyJLoQCGjNdhqGp4QpbXoDFd1HzCiP5m8fnvbqwuIx491zxYg9pfWxMO8+aRikFZTjcldnfjK9JwuaysSRL9LHEc9V4
- tqivJAZ1
- 4LmlZbMSmdGYgKzCktJoTKAFyMIau6FI1D97MXukdRUYPnLS60zxgO/upIfeq9J1G6GQbw5gA0KpCbSjE61jHjNP4OP+KXfs3jAKtudOsMHau1GuWli8+P9ZnmNxer8sCiBXcWCZTfsc8jmtIKnCjZzdx2LZn0s/8ZlwKZcDeaLZJUe22K8J+zQyVey2zWWBbhwOIj3ZHEMaLsUSR1Wyu0NjwE9iCNNqmKmpfAzQdopmCG+mZv5XntrLeOM9HtF8W+2dOXTrh/0IWtwxoun6Ct3QGfYAL2gbQime9RerdvVl30wRjUPDT47YFrLRHs3YXG5MFecgDwHzeXdvQjEC+6BcLGzz4mledhk31T/R+Ab+F0Xq/JinMgcWIxtGVxBKPRR9MOC/G+7O058PQU4CoXmpokJoeph4y+ByN800WQth3EYIJ4hx4O2M+2z+uSCMv8iN9VYqBjpjDw+XQ8ZbKGtaXG2IxEhWEs4JJdX+Kxg2LyVoZf+DIBMVl/+qag+hbyi1EyKjo/A4VC9RMCFnCh05/Tmg7ojjHyaqV0pBhno4QGwwBxMHyyaCHpEyQxkBxUZgP
+X-HE-Tag: 1780068256-367610
+X-HE-Meta: U2FsdGVkX1/Xhhvq6RmNsHI6mQoHuLlOUL8EjoUV8QgD0keA9QBZzoBsLlOix8fc92znqZByEX6G5hrCKSWTY8aDi/0BaKyqzKX8+1UxafYUI8OZXz66m70emry/JbaBzI67120NcuQ87N0yHgLJqNU6rn2q4N/fWF1cEjgQD2AoLYvsFrDp1DST9jrCddEu4LgRQ2YZMiMtXiL6rbOY6q1a2mkksm+xMj8E9LjKmfUBl8cutRILcZenaWBH+n9T0f13gz8R2yCGe1iuuowBSyCMk6KvbVINTqJhOd9b3FWeAMMuEZI3xUXjlFLRR3IV0Qv5bOE/YKRvfhu8d3oe36ALozjALfIBrBP0wx9wrTibnEUb091JHpovnsZ4yeyiI7aa5c1K6DmMz0xrFFSe/rmO6uX5es0rKq0VkytSpJZBYB4DutlSq5VBs2wGE6oHPUeH+1KmDI1d7l9prZpsCEjrZXeJsw3TUWeyTkrl9WBcs7HOvE1Bu70aJJfjBfgpuwVkE9uHw9235A0plE30JhrO3NZMvBLqC0XCqOO86LWAeVJm4DwP38z2dBVfxei9jyocasm/RnjKHn3Z5v5YtIQlDrzquEK7iWOt1aZBsluugiOvpKDRzcPFlD0oV00K1uei/wcC1crLZ3GkaMala0Oa615QeRMryJ2UFXyR9DOHpu48nqX6YPfybgYo3xjYgbNN155N8EleVxQnkpk4aq4vN6YFgRVNoWDXw7v0g0bffg7flDowsOz8N7AsTuNoXM/b70OSz+bN0lvXqTqrMrLENTpU5MBTrH3m9hiW+aST6byZgsb/FsTC3pI6GKzlAh/8knlF/7kdbaP1zObM0l+Jprboh7624sghKuYgTtNgmHkm3KRnCC5pGf0Sl1pVvFvPhum50WK0yvJUkKF6mzv2mvGwvUZyNC9InrMBPw89/BasNyMwO9ve3YxV5gF/Yz0Yfk31TnBaZ4bE7xm
+ LF8hjQjQ
+ RTHXmY+nOyG0yBM6nfChnY1RubHdtmjiGzntTViroW03WTDFSVTJD09IO2UU5xxK/RocaepS5xm1Zq1QP9mP2NCAHTVNBIxAanGtQjsELMgAhgy0z+ZNwhjiXjhR/IMIAtP3YeM5AjCMyyrcEztVixj1JIBpWVzvvBfpVmfH5dCbjj1JbpNo/VvUbGrijXANDgRxt8eBM4phowdMVhstlMCYHFQqPoDMGUlZV076sb3IR52SlFiTxqWxTUgIpkPg3kUC4oLO5VfwT5uY6Gxg8fpysXQ505Te0KOizq9Y6hq3fz5IG7oQLNnpzTBkLUsDEcjquOg5tA5s09B5N/FN9ZHtSc4f+hAWHdupDkaXGaInOZTSlY9i7v6qXLaHoKJtgRmT6pDslYSGdmPY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,233 +162,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a gfp_t parameter to alloc_hugetlb_folio(). When __GFP_ZERO
-is set, the function guarantees the returned folio is zeroed:
-- Fresh allocations (buddy or gigantic): zeroed by
-  post_alloc_hook via __GFP_ZERO, HPG_zeroed set by
-  alloc_surplus_hugetlb_folio.
-- Pool pages with HPG_zeroed set: already zeroed, skip.
-- Pool pages without HPG_zeroed: zeroed via folio_zero_user().
+Add bool *zeroed output to alloc_hugetlb_folio_reserve() so
+callers can check whether the pool page is known-zero.  memfd's
+memfd_alloc_folio() uses this to skip the explicit folio_zero_user()
+when the page is already zero.
 
-The address parameter is renamed to user_addr; the function
-aligns it internally for reservation and NUMA policy lookups.
-For pages that need zeroing, user_addr is passed to
-folio_zero_user() for cache-friendly zeroing near the faulting
-subpage.  All callers pass a page-aligned address; the
-hugetlb_no_page caller passes vmf->real_address & PAGE_MASK
-for consistency.
+This avoids redundant zeroing for memfd hugetlb pages that were
+pre-allocated into the pool and never mapped to userspace.
 
-HPG_zeroed (stored in hugetlb folio->private bits) tracks
-known-zero pool pages. It is set when alloc_surplus_hugetlb_folio
-allocates with __GFP_ZERO, and cleared in free_huge_folio when
-the page returns to the pool after userspace use.
-
-Suggested-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Gregory Price <gourry@gourry.net>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Assisted-by: Claude:claude-opus-4-6
-Assisted-by: cursor-agent:GPT-5.4-xhigh
 ---
- fs/hugetlbfs/inode.c    |  3 +--
- include/linux/hugetlb.h |  5 ++++-
- mm/hugetlb.c            | 42 +++++++++++++++++++++++++++++------------
- 3 files changed, 35 insertions(+), 15 deletions(-)
+ include/linux/cma.h     |  3 ++-
+ include/linux/hugetlb.h |  6 ++++--
+ mm/cma.c                |  6 ++++--
+ mm/hugetlb.c            | 11 +++++++++--
+ mm/hugetlb_cma.c        |  4 ++--
+ mm/memfd.c              | 14 ++++++++------
+ 6 files changed, 29 insertions(+), 15 deletions(-)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 8b05bec08e04..5856a3530c7b 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -810,13 +810,12 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 		 * folios in these areas, we need to consume the reserves
- 		 * to keep reservation accounting consistent.
- 		 */
--		folio = alloc_hugetlb_folio(&pseudo_vma, addr, false);
-+		folio = alloc_hugetlb_folio(&pseudo_vma, addr, false, __GFP_ZERO);
- 		if (IS_ERR(folio)) {
- 			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
- 			error = PTR_ERR(folio);
- 			goto out;
- 		}
--		folio_zero_user(folio, addr);
- 		__folio_mark_uptodate(folio);
- 		error = hugetlb_add_to_page_cache(folio, mapping, index);
- 		if (unlikely(error)) {
+diff --git a/include/linux/cma.h b/include/linux/cma.h
+index 8555d38a97b1..dee88909cf5d 100644
+--- a/include/linux/cma.h
++++ b/include/linux/cma.h
+@@ -53,7 +53,8 @@ extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long
+ 
+ struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
+ 		unsigned int align, bool no_warn);
+-struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order);
++struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order,
++				       gfp_t caller_gfp);
+ bool cma_release_frozen(struct cma *cma, const struct page *pages,
+ 		unsigned long count);
+ 
 diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index f016bc2e8936..49e5557d6cc0 100644
+index 49e5557d6cc0..3d23267014e6 100644
 --- a/include/linux/hugetlb.h
 +++ b/include/linux/hugetlb.h
-@@ -599,6 +599,7 @@ enum hugetlb_page_flags {
- 	HPG_vmemmap_optimized,
- 	HPG_raw_hwp_unreliable,
- 	HPG_cma,
-+	HPG_zeroed,
- 	__NR_HPAGEFLAGS,
- };
- 
-@@ -659,6 +660,7 @@ HPAGEFLAG(Freed, freed)
- HPAGEFLAG(VmemmapOptimized, vmemmap_optimized)
- HPAGEFLAG(RawHwpUnreliable, raw_hwp_unreliable)
- HPAGEFLAG(Cma, cma)
-+HPAGEFLAG(Zeroed, zeroed)
- 
- #ifdef CONFIG_HUGETLB_PAGE
- 
-@@ -706,7 +708,8 @@ int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list);
- int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
- void wait_for_freed_hugetlb_folios(void);
- struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
--				unsigned long addr, bool cow_from_owner);
-+				unsigned long user_addr, bool cow_from_owner,
-+				gfp_t gfp);
- struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+@@ -714,7 +714,8 @@ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
  				nodemask_t *nmask, gfp_t gfp_mask,
  				bool allow_alloc_fallback);
+ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+-					  nodemask_t *nmask, gfp_t gfp_mask);
++					  nodemask_t *nmask, gfp_t gfp_mask,
++					  bool *zeroed);
+ 
+ int hugetlb_add_to_page_cache(struct folio *folio, struct address_space *mapping,
+ 			pgoff_t idx);
+@@ -1134,7 +1135,8 @@ static inline void wait_for_freed_hugetlb_folios(void)
+ 
+ static inline struct folio *
+ alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+-			    nodemask_t *nmask, gfp_t gfp_mask)
++			    nodemask_t *nmask, gfp_t gfp_mask,
++			    bool *zeroed)
+ {
+ 	return NULL;
+ }
+diff --git a/mm/cma.c b/mm/cma.c
+index c7ca567f4c5c..27971f6264ab 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -924,9 +924,11 @@ struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
+ 	return __cma_alloc_frozen(cma, count, align, gfp);
+ }
+ 
+-struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order)
++struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order,
++				       gfp_t caller_gfp)
+ {
+-	gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN;
++	gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN |
++		    (caller_gfp & __GFP_ZERO);
+ 
+ 	return __cma_alloc_frozen(cma, 1 << order, order, gfp);
+ }
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 3a6afbe99116..4ccf4eb91d92 100644
+index 4ccf4eb91d92..649972101ace 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -1712,6 +1712,9 @@ void free_huge_folio(struct folio *folio)
- 	bool restore_reserve;
- 	unsigned long flags;
+@@ -2208,7 +2208,7 @@ struct folio *alloc_buddy_hugetlb_folio_with_mpol(struct hstate *h,
+ }
  
-+	/* Page was mapped to userspace; no longer known-zero */
-+	folio_clear_hugetlb_zeroed(folio);
-+
- 	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
- 	VM_BUG_ON_FOLIO(folio_mapcount(folio), folio);
- 
-@@ -2113,6 +2116,10 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
- 	if (!folio)
- 		return NULL;
- 
-+	/* Mark as known-zero only if __GFP_ZERO was requested */
-+	if (gfp_mask & __GFP_ZERO)
-+		folio_set_hugetlb_zeroed(folio);
-+
- 	spin_lock_irq(&hugetlb_lock);
- 	/*
- 	 * nr_huge_pages needs to be adjusted within the same lock cycle
-@@ -2176,11 +2183,11 @@ static struct folio *alloc_migrate_hugetlb_folio(struct hstate *h, gfp_t gfp_mas
-  */
- static
- struct folio *alloc_buddy_hugetlb_folio_with_mpol(struct hstate *h,
--		struct vm_area_struct *vma, unsigned long addr)
-+		struct vm_area_struct *vma, unsigned long addr, gfp_t gfp)
+ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+-		nodemask_t *nmask, gfp_t gfp_mask)
++		nodemask_t *nmask, gfp_t gfp_mask, bool *zeroed)
  {
- 	struct folio *folio = NULL;
- 	struct mempolicy *mpol;
--	gfp_t gfp_mask = htlb_alloc_mask(h);
-+	gfp_t gfp_mask = htlb_alloc_mask(h) | gfp;
- 	int nid;
- 	nodemask_t *nodemask;
- 
-@@ -2877,16 +2884,19 @@ typedef enum {
-  * When it's set, the allocation will bypass all vma level reservations.
-  */
- struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
--				    unsigned long addr, bool cow_from_owner)
-+				    unsigned long user_addr, bool cow_from_owner,
-+				    gfp_t gfp)
- {
- 	struct hugepage_subpool *spool = subpool_vma(vma);
- 	struct hstate *h = hstate_vma(vma);
-+	unsigned long addr = user_addr & huge_page_mask(h);
  	struct folio *folio;
- 	long retval, gbl_chg, gbl_reserve;
- 	map_chg_state map_chg;
- 	int ret, idx;
- 	struct hugetlb_cgroup *h_cg = NULL;
--	gfp_t gfp = htlb_alloc_mask(h) | __GFP_RETRY_MAYFAIL;
-+
-+	gfp |= htlb_alloc_mask(h) | __GFP_RETRY_MAYFAIL;
  
- 	idx = hstate_index(h);
- 
-@@ -2954,13 +2964,12 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	folio = dequeue_hugetlb_folio_vma(h, vma, addr, gbl_chg);
- 	if (!folio) {
- 		spin_unlock_irq(&hugetlb_lock);
--		folio = alloc_buddy_hugetlb_folio_with_mpol(h, vma, addr);
-+		folio = alloc_buddy_hugetlb_folio_with_mpol(h, vma, user_addr, gfp);
- 		if (!folio)
- 			goto out_uncharge_cgroup;
- 		spin_lock_irq(&hugetlb_lock);
- 		list_add(&folio->lru, &h->hugepage_activelist);
- 		folio_ref_unfreeze(folio, 1);
--		/* Fall through */
- 	}
- 
- 	/*
-@@ -2983,6 +2992,10 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+@@ -2224,6 +2224,12 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+ 		h->resv_huge_pages--;
  
  	spin_unlock_irq(&hugetlb_lock);
- 
-+	if ((gfp & __GFP_ZERO) && !folio_test_hugetlb_zeroed(folio))
-+		folio_zero_user(folio, user_addr);
-+	folio_clear_hugetlb_zeroed(folio);
 +
- 	hugetlb_set_folio_subpool(folio, spool);
++	if (zeroed && folio) {
++		*zeroed = folio_test_hugetlb_zeroed(folio);
++		folio_clear_hugetlb_zeroed(folio);
++	}
++
+ 	return folio;
+ }
  
- 	if (map_chg != MAP_CHG_ENFORCED) {
-@@ -4991,7 +5004,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 				spin_unlock(src_ptl);
- 				spin_unlock(dst_ptl);
- 				/* Do not use reserve as it's private owned */
--				new_folio = alloc_hugetlb_folio(dst_vma, addr, false);
-+				new_folio = alloc_hugetlb_folio(dst_vma, addr, false, 0);
- 				if (IS_ERR(new_folio)) {
- 					folio_put(pte_folio);
- 					ret = PTR_ERR(new_folio);
-@@ -5520,7 +5533,7 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
- 	 * be acquired again before returning to the caller, as expected.
- 	 */
- 	spin_unlock(vmf->ptl);
--	new_folio = alloc_hugetlb_folio(vma, vmf->address, cow_from_owner);
-+	new_folio = alloc_hugetlb_folio(vma, vmf->address, cow_from_owner, 0);
+@@ -2308,7 +2314,8 @@ static int gather_surplus_pages(struct hstate *h, long delta)
+ 		 * It is okay to use NUMA_NO_NODE because we use numa_mem_id()
+ 		 * down the road to pick the current node if that is the case.
+ 		 */
+-		folio = alloc_surplus_hugetlb_folio(h, htlb_alloc_mask(h),
++		folio = alloc_surplus_hugetlb_folio(h,
++						    htlb_alloc_mask(h),
+ 						    NUMA_NO_NODE, &alloc_nodemask,
+ 						    USER_ADDR_NONE);
+ 		if (!folio) {
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index 7693ccefd0c6..c9266b25be3d 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -35,14 +35,14 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+ 		return NULL;
  
- 	if (IS_ERR(new_folio)) {
+ 	if (hugetlb_cma[nid])
+-		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
++		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order, gfp_mask);
+ 
+ 	if (!page && !(gfp_mask & __GFP_THISNODE)) {
+ 		for_each_node_mask(node, *nodemask) {
+ 			if (node == nid || !hugetlb_cma[node])
+ 				continue;
+ 
+-			page = cma_alloc_frozen_compound(hugetlb_cma[node], order);
++			page = cma_alloc_frozen_compound(hugetlb_cma[node], order, gfp_mask);
+ 			if (page)
+ 				break;
+ 		}
+diff --git a/mm/memfd.c b/mm/memfd.c
+index fb425f4e315f..5518f7d2d91f 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -69,6 +69,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	struct folio *folio;
+ 	gfp_t gfp_mask;
++	bool zeroed;
+ 
+ 	if (is_file_hugepages(memfd)) {
  		/*
-@@ -5780,7 +5793,13 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
- 				goto out;
- 		}
+@@ -93,17 +94,18 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+ 		folio = alloc_hugetlb_folio_reserve(h,
+ 						    numa_node_id(),
+ 						    NULL,
+-						    gfp_mask);
++						    gfp_mask,
++						    &zeroed);
+ 		if (folio) {
+ 			u32 hash;
  
--		folio = alloc_hugetlb_folio(vma, vmf->address, false);
-+		/*
-+		 * Passing vmf->real_address would work just as well,
-+		 * but PAGE_MASK helps make sure we never pass
-+		 * USER_ADDR_NONE by mistake.
-+		 */
-+		folio = alloc_hugetlb_folio(vma, vmf->real_address & PAGE_MASK,
-+					   false, __GFP_ZERO);
- 		if (IS_ERR(folio)) {
  			/*
- 			 * Returning error will result in faulting task being
-@@ -5800,7 +5819,6 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
- 				ret = 0;
- 			goto out;
- 		}
--		folio_zero_user(folio, vmf->real_address);
- 		__folio_mark_uptodate(folio);
- 		new_folio = true;
+-			 * Zero the folio to prevent information leaks to userspace.
+-			 * Use folio_zero_user() which is optimized for huge/gigantic
+-			 * pages. Pass 0 as addr_hint since this is not a faulting path
+-			 *  and we don't have a user virtual address yet.
++			 * Zero the folio to prevent information leaks to
++			 * userspace.  Skip if the pool page is known-zero
++			 * (HPG_zeroed set during pool pre-allocation).
+ 			 */
+-			folio_zero_user(folio, 0);
++			if (!zeroed)
++				folio_zero_user(folio, 0);
  
-@@ -6239,7 +6257,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
- 			goto out;
- 		}
- 
--		folio = alloc_hugetlb_folio(dst_vma, dst_addr, false);
-+		folio = alloc_hugetlb_folio(dst_vma, dst_addr, false, 0);
- 		if (IS_ERR(folio)) {
- 			pte_t *actual_pte = hugetlb_walk(dst_vma, dst_addr, PMD_SIZE);
- 			if (actual_pte) {
-@@ -6286,7 +6304,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
- 			goto out;
- 		}
- 
--		folio = alloc_hugetlb_folio(dst_vma, dst_addr, false);
-+		folio = alloc_hugetlb_folio(dst_vma, dst_addr, false, 0);
- 		if (IS_ERR(folio)) {
- 			folio_put(*foliop);
- 			ret = -ENOMEM;
+ 			/*
+ 			 * Mark the folio uptodate before adding to page cache,
 -- 
 MST
 
