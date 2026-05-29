@@ -4,119 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8439CD6E43
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 12:04:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A897CCD6E4A
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 12:17:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 363226B0005; Fri, 29 May 2026 08:04:12 -0400 (EDT)
+	id A068A6B0005; Fri, 29 May 2026 08:17:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F2E46B0088; Fri, 29 May 2026 08:04:12 -0400 (EDT)
+	id 9B7426B0088; Fri, 29 May 2026 08:17:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B57F6B008A; Fri, 29 May 2026 08:04:12 -0400 (EDT)
+	id 8CC7A6B008A; Fri, 29 May 2026 08:17:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 05FA56B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:04:12 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5DC21C2D88
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 12:04:11 +0000 (UTC)
-X-FDA: 84820324302.12.2A2210E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BACF3180012
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 12:04:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SXwaAx3i;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D2C56B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:17:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 14E781C113E
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 12:17:23 +0000 (UTC)
+X-FDA: 84820357566.20.2D6ADE1
+Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5EEFB4000E
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 12:17:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=NMBX8Oi3;
+	spf=pass (imf04.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780056250;
+	s=arc-20220608; t=1780057041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S10gyhVYxahoA8Irz4eAewQjf2OZmpshI7uoubc38/E=;
-	b=ehdBqHW850o8F9hKOX3rsdOGoHUDx35FKpvmRP9tKHyoJdtgZiS74Yge3iwCglaZgjwE1y
-	dDairNSABURLzZBX4mKrz4gkCCTJmU63TnV9Zta+mu9eR1uPcFYx6oU/zL24oZtfwUGNWu
-	8GZ1Pd3d7pPDlLV1DyKlI67cVlmZLEw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SXwaAx3i;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780056250; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TQCHoLM8U9tVWW8Tlb6iZC9KTC9D3mCOEdsmVLWTGcw=;
+	b=sER9O2P0mqzsuLjLRh2rIEZ+wjFbgzh5y7McmgOdkn7K2uy1OvzAQgBorP4fNsqve9rkqE
+	w9UiyOBjgd2dwz9sreBi8w2i+wRDhrLj3cv2RTp4+LCGcZbvYEhnq7pw8+RA6JEk+KnKvW
+	CTOQQz9+N8DES7x9q0E05yYmsBAraj0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780057041; a=rsa-sha256;
 	cv=none;
-	b=HsrFPNTkgOlg38bjTN+h4j5B9GiNg3pS9WwaWaRXILS+NBypnUNHFvsetqp0q8TCuz/Ezn
-	pWHADstmSd2azGdozX2RPTqK3UIn6O8limB3oguI3GW/FDeQXTUCCnPlP4fV9SPvWpXIL3
-	UYd+AxJW2xRLv6A0MVhotwDV0WF/HLM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B15E0441F8;
-	Fri, 29 May 2026 12:04:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E861F0089B;
-	Fri, 29 May 2026 12:03:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780056248;
-	bh=S10gyhVYxahoA8Irz4eAewQjf2OZmpshI7uoubc38/E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SXwaAx3iEvTQtUvlgzMSScqJifFY1t2jzb7lWTw7MFUJfI+AuUj1bFRememAZ2fm/
-	 7KXJexgp3I8iSkyNeWNAgMD8lhCObwWUL6TemUN4yE+WM+AOMxIwtm6hxkv0giNAna
-	 77x2jcfZuS2Cbek6EzeuDMYDqxKzjx9sgi26NZj9LG0MWj3vFbFcD++D4an+t+vWGW
-	 5Jt4mVinrFsvaIc3hWqRCPoLlfYMyhlFODqhQ/v/sh/5FRSLIf25f+Iw0C3pkJZWxm
-	 t0jIfbiUKgjSYdGrMOOOm4n5hxuK2WBrBpRguD18NCHcHZO8xUBAag/hkKHUyMWDvj
-	 CSczn3LWb33MQ==
-Date: Fri, 29 May 2026 13:03:52 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: wangtao <tao.wangtao@honor.com>
-Cc: Barry Song <baohua@kernel.org>, 
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"david@kernel.org" <david@kernel.org>, "willy@infradead.org" <willy@infradead.org>, 
-	"sj@kernel.org" <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>, 
-	"luizcap@redhat.com" <luizcap@redhat.com>, 
-	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
-	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
-	"jack@suse.cz" <jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, 
-	"harry@kernel.org" <harry@kernel.org>, "jannh@google.com" <jannh@google.com>, 
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
-	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>, 
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
-	"lance.yang@linux.dev" <lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, 
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, 
-	"matthew.brost@intel.com" <matthew.brost@intel.com>, "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, 
-	"rakie.kim@sk.com" <rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>, 
-	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
-	"apopple@nvidia.com" <apopple@nvidia.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"ryncsn@gmail.com" <ryncsn@gmail.com>, "jparsana@google.com" <jparsana@google.com>, 
-	"dvander@google.com" <dvander@google.com>, zhangji <zhangji1@honor.com>, 
-	wangzicheng <wangzicheng@honor.com>
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Message-ID: <ahlzj--3Gm5pD9ge@lucifer>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <ahcANgFDFwfC0v1q@lucifer>
- <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
- <ahf2mJg9OOWvu0jA@lucifer>
- <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
- <99dfc4a50f3643a6bef6deaeccfcf115@honor.com>
+	b=oms77zLtUV0a4/Tn/CRWTb10nZgGgOX/Sn5SyMon5/GE0heSX3bIpyJzym1f2kgsxNclgg
+	n4Kg/pneBtGTwAVOA2w1Dxdsza4opS55NQzrfSEUenSPpdbrI1/D6bWHJPb02IEB8axDKh
+	fxN+iLubJ/LgGSfC78cpt8XXyimI1ug=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=NMBX8Oi3;
+	spf=pass (imf04.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1780057035; bh=TQCHoLM8U9tVWW8Tlb6iZC9KTC9D3mCOEdsmVLWTGcw=;
+	h=From:To:Cc:Subject:Date;
+	b=NMBX8Oi3wMP6rjH9u5yCkMnZGXv78tr8Nr50YxHfOxCOpG2HLLwbcw4gIH01HTM0Z
+	 UY+/UVXkADUUDKkzl4VvyOOLqginszbMI2YJGT9fgRyGQx5QX1+fqvVemIT8TXQBqP
+	 pOuPEeg3nnBkPP8+VAqpkt6Zj/0cQor2MdEw/wPY=
+Received: from node68.. ([166.111.236.25])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id 44BA509C; Fri, 29 May 2026 20:17:11 +0800
+X-QQ-mid: xmsmtpt1780057031tq300lfll
+Message-ID: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com>
+X-QQ-XMAILINFO: OQjltBcbYeaf7saNfZdyqVYHXLfijFEy2Z1ODhLjxXdYxC/JMHKeXYPoVKbp8U
+	 CXLQpDbP7o0LHmXvJhqqFX+/N4x41MK6x01aUN+zl5oFlnj3J+b77bo/vvsrrOahfTsy2dCxf2gO
+	 laSsrjw5h4ZSm00Mkmm5XBnZzbMm8SiBmCeHMtFQBivV6eZGXb1udBHUWQYma5wFiZtC/9ISPJOV
+	 j1VMDx81sEIL24ab22nhfb9IMzeRUPTcfO7aBds8ow78L8rAoJgYgnEM2OlEVIuxqfWq8AYCYKUz
+	 90VFgm9R6uRu2LlnZ1U918YpRN2F7P/0fSVrl/3ua6ky1GfyRsK6QuxoDYOO12PnthiAFgFTQMLD
+	 xIUSzSPdbcEdsJfEsosYgGgVlVwG9toA/M4oCl3xJ632vVs8zM/UtUgvmAWCqydZDUwShHFIS7hB
+	 BpG5fu1rk1WVE7SIRfF205AD0Klm4m4ZDAfamaLVnsR7vefRtglgV4Lms38U8HEKULdMD/bu8gBN
+	 mz7FrtYpPCUDT46p9IsOL8UGLnBV7CSYKhqgMo/F3TZDlxP7urWIdA6yrT5YhLEIIHBvsKmxaHNe
+	 1HTWh4jgDgbuFYtRQ4JloycgO2ErRjlCDAEiR57uAx2mZcjpU7ZegmbUD29+fbjKVuOYydpCc64t
+	 5RnEgKfkYW0kzbVWQETfEc/QwiTW5IIwg1JWafIMRyxpSkKtyS8a9kmH90NQDzRH2p3SiqC7I+Wq
+	 0BRbOsmiljCxcFGwNmFdwfqgYXUkFweZTCexJML3VuyQ4AChUnTeFqssKpMvu6GS8diRySk/kNP3
+	 TztSmaV3tx1yp+/6vfRseTkm3uyL6TDvc+LCiNTbXz2aAc2JogGTHs/VMSjZtmZ9b8EoT3Va01A7
+	 fVbdxbk9MQmVrRWh3aBPsywRDfYvRMS4AatZ9Z5Dw0GO+A/d/cW9gSVIZiyog43I08DbzEAqsCbK
+	 RBP1qHtU6b1/3jPg3lxgsbVzRLCQ200zVljfH8ALFEyIVgNFSngQ422sC1rsN3rHzH6+NflDo99I
+	 dOxP+KYmIx6w6kPVaS++pvqCXUmFIddSKE9VmmPKvmCAc2v/pHDngVJ5N50iM=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: fujunjie <fujunjie1@qq.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	Alexandre Ghiti <alexghiti@meta.com>,
+	Kairui Song <kasong@tencent.com>,
+	Usama Arif <usamaarif642@gmail.com>
+Cc: Chris Li <chrisl@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org
+Subject: [RFC PATCH v2 0/9] mm: support zswap-backed large folio swapin
+Date: Fri, 29 May 2026 12:17:11 +0000
+X-OQ-MSGID: <20260529121711.4114537-1-fujunjie1@qq.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <99dfc4a50f3643a6bef6deaeccfcf115@honor.com>
-X-Stat-Signature: 8779ptae7afquj9werp16rwnp8dgyurc
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BACF3180012
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: yopy1gof85bn9t4ynzjzom8jnnno1uoj
+X-Rspamd-Queue-Id: 5EEFB4000E
 X-Rspam-User: 
-X-HE-Tag: 1780056249-290387
-X-HE-Meta: U2FsdGVkX187l4L5L7fYk1EQ/18w7qO58x20eUShZypRCB3ZP0HvyJ5Dbv/rI8NbZxcNeIju66dAmHE5hj8CsgcAuWZLqb7h1X0zRS1tlXjC/gzFvQ3xN59c7apwTHEXzsZF07LPosZWv/6R4BQw48W6ZVfmRhr1RYCOudSpqMpWSs+5srZr349CM4iy09qP2FCLJoHwA5Qrv6LOfhHScX68HK2kNP7+weG5S0xhu1HQ6eKzlyvNrfdIN+59o5n48duJnG9YXmQu04Fwv12qhsmnj3+7yzpyGv4bBN4ntedWp1HnukSz/QVZ2CCu5o+IhlPx1EHDkqO9G1QoroKUXUoAD5e57aWFu2rYewoN3HSdnR3ERrS7C7DljiCeMSbCDwT//O733H3Af4wJci3QGvUVHb+bMTtOOUGjOJgCnQiE8EJ3Yq3DU+bZVWpNHg0sJbugnrKJEXRaCdr7UO/I1Vw5bKTA7qxH4RjfIbesjvrSquIzaSa1Fs6SZupqDmRECflo1jtmT1a89QAJm7s8qNBjESBoy81ENk1woQ2DjIMz8nlpmnNP3v+aj6G2sGPhCLoO7Yfiw32LmFaS/n3zZdsipZhAolfvf98O9jzpJMLXenpBuYkqg1ygDC4FH5spPzOCK5BhRrSREaNmxHHnnSZAaqGSc6zzmm/E3/wSMnhQb17rdU9wqLYlREzlShGCgI7ljrwFCmkL6M7XGuT3RXplqaREMHzNuHCJhncYa5JhqYUxCMb40TxwUreVPU1o1ZRUIa7pO2vUxeN63aUBBkpB9rHFWrgNaPjwHaebWMF4tdV+n6X//nWOrVOxn1GGaLUrJGmm3w/Pgj/HkYOZS/HoUFUAKKKWse93qSCeYhq4yibg+wJbWZRbgDnaIJ1ihD+NfdrpNTeeXx0S6LdUgQ22OABCWg23UJTc/648CGLg95Vwr7ZcJQxjmuEgoMd8vdrhVPv9btLX5yflyrD
- 3viZhaNW
- 2tmEHPeQyrxtZW9t/nHhdLg/Tlg0sL/Q1Byk/P0ile/X5PS3Twp8MFh6KIu6VCfhLLw99ecB0Dqwvu/p47SMgx7gs9KflnpZkxPq0yIfpsjUMQsvhUo3q4FnH2Xsx56bxABiopB1KRAPuL27VA3qKDenl6jW3iaNEiBR60Cq48HidzrDgo51kP7ExsQ/3IY13X1Bggbc6P3Vcs3VpX79AFywN3+AHzUY2rb0MYDgQyHkoO98xQcvLJ8FnY/9VN+32T+caWZiI+UeUB5ZFeBeD8pzDc93tqhVgdDtINERCMofm9jPnmGNgh+hm9QjNEsTILLn6rb+YCIzp1bE/LdNmdPxrtBjg5tiAhSfnl4AMPlGS6lLCbnpePN3l2JuC1UnJ0M8XLg28PIeKZBPMMidQqxv4n9r9kMUF1oforOOuAB5V6FvQnLdZHY024w==
+X-HE-Tag: 1780057039-121113
+X-HE-Meta: U2FsdGVkX1/gc5iG+ILy0293irp4HahE6+shlrCuG9vnBOAsQeHBzE+Q5uMhd7Bjmg47ErZYGuPKYDinj07VvvCnWImG9qzkUVyPLbUCwQqf45/keKCcEILFSxGM/Fswmpa3xTINekjNEaCu5rgIES5udOn6qEvDNlfr1wAABq+kGk9v65rcLF3K9/efRk+ynMZky4jcZHnDmCrvU5gBULoN7jI9Au5WOF1b6uEPNZKfHSB/IA/0E+bHcCmkiEvGHPV6HQVUehyyvERbOrIeOh1r3ZZxcjo88g29Rn1/EYQyl6649bC9v0gjdkp2iiWJF9iwooBaPg9v64gehMZsNyzL66Ci+z0kkCT0RNIaypJSwxqehPXMNPNwlRBXrbvd7Ax4Ahqn0nVWyBcewMH9iHKt8r3mnAxODVad++cb00x5gJprlZZA8/CFLNSkG5n53t3T3tHPR7s8Bq4/Kd3pPKCW/dsA8vlrs+6U9ok2YaK77w4FiowJutG67jvm+DcrRRFElq57gNQnB2ktP+eVM2vjtqNwv61aIyxOFSm+IylYyli2em8m1QBq4rv0QJ30WKNAtm1ObBg2JAc5QDkDXA7rYler5wJO3viz2ipA6pqpALs3+aEaO/7SxoX7TkMgNM0aJYA7O4wD1qhSZQ05Yeup8lU5017/ntpmIoQ26Bo9PrDBtbKbFTAgEVz7Ea1UzFHIBryV+8j/Yg2gJIzSI2j2g+2HLxyMj6lX/Dv7ScaplE3O6617/nwprcFxTK4IbYigwGaBHkkwZxjBIRF5RqbVzVjZbMiQtoSx+aRjjmOMmyCOKMb1irn9P429ihFtYmc86FIwGXyiDMyJMxeJ4SxclKKCGIGLzB9DiQVzYXvP2t2e50Uz5shBQB1ssJ1RBDYNDmyU1uqsdn+bsdjyjvVMRi6vz/IdD1N43wLp9GFRPes+ICKVRKbXHUNbV82wjwDtxSzOza6tP8M3K3a
+ k8R7+5ua
+ gJoBB+1faFZvK06oyK+w9rlVyESfHC1wy3MHvZuB1lYg3XLUVW3IL686qlgVN3PjuCXoswvdjksOEWFqbT2nQM37Scyr16z+kjJ83a54SjNlpY9d+NRqg+z+m5vvfer3tJTFRc7lMgPhH4K4tr0uuuDegqvqch8as1+yz+zKhIJEncszttE9OXNqD6TcCTRVkhRQ2VWAJjWLwAFVzgPGOsVkrkkT1vrtm179Mdq53jQuxAZVzdYoy+JhoU8s7gPlK6bAXJ++g/gfO8wL25uMfYM7bsny4ixdMSLorEyIzaRwtpf0LV9CikzttswUDXo0F7bqndRPjPWCnHa0W9DxOyoNhbQw2B/M3rlLb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,96 +112,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 09:41:20AM +0000, wangtao wrote:
-> > Hi Tao,
-> >
-> > Lorenzo had a discussion about rmap in Zagreb here:
-> > https://lore.kernel.org/linux-mm/aec533b2-37a7-4f44-a279-
-> > c4aa604206ac@lucifer.local/
-> >
-> > He also shared the PoC code here:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/ljs/linux.git/log/?h=project/
-> > cow-context
-> >
-> > and the slides were shared as well. In case you can't find them on linux-mm (I
-> > actually couldn't find them myself), I am attaching them again here -
-> > "scalable-cow-lsf-longer-version.pdf"
-> >
-> > After coming back from Zagreb, I kept trying to find one or two full days to
-> > read Lorenzo's code and slides carefully and write a blog about them.
-> > Unfortunately, I have been completely busy with other work. Sigh... we
-> > always seem to have too many non-upstream tasks.
-> >
-> > If possible, I'd really appreciate it if you could take a deep dive into it and
-> > write a detailed blog post. I'd be very eager to read it and better understand
-> > the overall design.
-> > Otherwise, I'll try to find some time next week or later to go through it
-> > myself.
-> >
-> Hi Barry,
->
-> Thank you very much for your reply.
->
-> I took an initial look at the cow-context code, and a few points
-> might be worth noting:
->
-> 1. cow_context_walk currently assumes that the rmap walk runs
->    under RCU protection. This may need to be adjusted early,
->    since paths such as try_to_unmap_one, page_vma_mkclean_one,
->    and try_to_migrate_one may involve task switching.
->
-> 2. In cow_context_walk, traverse_contexts appears to involve
->    multiple nested loops. When there are many child processes
->    across several fork layers, it may not be as simple or
->    efficient as the current anon_vma approach.
->
->    It needs to traverse all child cow_ctx, and within each
->    cow_ctx, remaps_for_each() has two levels of iteration:
->    remaps_for_each_entry and remaps_for_each_entry_offset.
->
->    In other words, it first iterates over cow_ctx and then
->    traverses rmap_mt inside each one. The rough complexity
+Hi,
 
->    seems to be O(#proc * log(#rmap_entries_in_cow)), which
->    may be somewhat higher than anon_vma's
->    O(#vmas_in_anon_vma). However, in most cases the number
->    of processes is not large, so the impact may be limited.
->
-> Previously, I also considered converting anon_vma's rb_tree
-> to a mapletree. If one entry records a single VMA, the
-> average overhead could be less than two longs per VMA.
->
-> However, unlike rb_tree, mapletree does not support storing
-> multiple elements under a single key. The key would need to
-> look like (vma_id/mm_id + pgoff). On 32-bit platforms, since
-> 64-bit mapletree keys are not supported yet, the remaining
-> 12 bits are not enough for vma_id/mm_id.
->
-> Because of this limitation, I later started thinking about
-> ways to reduce anon_vma allocations instead.
->
-> I will try to find some time next week to analyze the
-> cow-context design and code more thoroughly, and then
-> write up a summary.
+This RFC explores large-folio swapin for ranges that are still fully backed
+by zswap.
 
-Tao,
+Large swapin is currently disabled once zswap is in the picture. Anonymous
+faults stop considering large orders after zswap has ever been enabled,
+shmem does the same, and zswap_load() refuses large swapcache folios. That
+keeps mixed zswap/disk cases safe, but it also loses the dense case where
+every slot in an aligned 64K range is still resident in zswap.
 
-This response is so full of misunderstandings it's not really worth me
-responding to any of it. You've even hallucinated an imaginary field which
-is REALLY suspicious.
+The series keeps the policy in common swapin code:
 
-You've no mm expertise or history and came up with this in a few hours. I
-asked Claude to analyse it and it puts it at 75-80% chance of being solely
-LLM-generated from cow_context.c.
+  - zswap reports backend facts and provides the large-folio load helper.
+  - swapin_sync() filters candidate orders by backend range.
+  - all-disk and zeromap ranges keep the existing Kairui large-swapin path.
+  - mixed zswap/disk ranges stay order-0.
+  - all-zswap ranges may use a 64K folio after locality admission.
+  - anon provides locality evidence from VMA hints and PTE young density.
+  - shmem starts with explicit VMA-hint evidence only.
+  - swap readahead uses its existing VMA/cluster window as locality
+    evidence; it does not also run the anon PTE-young rule.
 
-I simply don't have the time to deal with this, so unfortunately I'm going
-to have to withdraw the suggestion of further discussion with you on this
-topic.
+The backend range probe is only a snapshot. If the backend changes after a
+fresh large swapcache folio is allocated, the common path drops that folio
+and falls back to order-0. zswap_load() can also return -EAGAIN for the
+same retry path. If a late fault retry keeps the large folio in swapcache
+instead of deleting it, the cgroup v1 memsw swap owner is committed before
+returning.
 
-I am working on the scalable CoW project and will solicit opinions of those
-with relevant expertise.
+This is mTHP/large-folio swapin. The mappings installed by do_swap_page()
+are still PTE mappings, not PMD mappings. The expected win is fewer faults,
+batched PTE/rmap work, and preserving the large folio across zswapin
+instead of rebuilding the working set as order-0 pages.
 
-We are not interested in your approach or analysis.
+Prior art: Usama Arif posted a related RFC on 2024-10-18:
 
-Thanks, Lorenzo
+  mm: zswap: add support for zswapin of large folios
+  https://lore.kernel.org/linux-mm/20241018105026.2521366-1-usamaarif642@gmail.com/
+
+This RFC keeps the same broad goal, but moves admission into common swapin
+code. zswap does not decide the policy. Mixed zswap/disk ranges are
+rejected before large IO, and the first cap is 64K.
+
+This is a rewrite of the RFC posted on 2026-05-08:
+
+  [RFC PATCH 0/5] mm: support zswap-backed anonymous large folio swapin
+  https://lore.kernel.org/linux-mm/tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com/
+
+The v1 series was anonymous-only and kept too much of the policy near the
+anon fault and zswap paths. This version is rebuilt on top of Kairui Song's
+common swapin infrastructure. It keeps admission in common swapin code,
+rejects mixed zswap/disk large ranges, and adds separate locality producers
+for anon, shmem and swap readahead.
+
+Performance and behavior
+========================
+
+The A/B tables are 10-run measurements. Elapsed values are seconds,
+shown as mean +/- sample standard deviation. "phase" or "refault" is the
+measured refault subphase. "zswpin" counts zswap loads. "pswpin" counts
+swap-ins from the real swap device; pswpin=0 means the refaults were served
+by zswap even when a disk swap device was configured. "RFC 64K" is the mean
+number of successful 64K swapins.
+
+The numbers below show where the large path is used and where it is
+rejected.
+
+zram-backed zswap microbench, 64K mTHP, 8G guest:
+
++-----------------+----------------+----------------+--------+--------+--------+----------+
+| workload        | base elapsed   | RFC elapsed    | delta  | phase  | zswpin | RFC 64K  |
++-----------------+----------------+----------------+--------+--------+--------+----------+
+| usama_1g        | 11.260+/-0.235 | 10.301+/-0.140 | -8.5%  | -22.2% | 1.000x | 16381.1  |
+| nohint_seq64    |  4.398+/-0.085 |  4.025+/-0.022 | -8.5%  | -21.1% | 1.000x |  6221.1  |
+| seqhint_seq64   |  4.283+/-0.060 |  3.948+/-0.062 | -7.8%  | -20.6% | 1.000x |  6223.5  |
+| stride64_sparse |  3.095+/-0.051 |  3.086+/-0.025 | -0.3%  |  +5.8% | 1.002x |     1.0  |
+| random64_sparse |  3.095+/-0.046 |  3.076+/-0.016 | -0.6%  |  +0.7% | 1.001x |     0.0  |
+| random64_full   |  4.423+/-0.067 |  4.405+/-0.018 | -0.4%  |  +0.1% | 1.000x |     0.0  |
++-----------------+----------------+----------------+--------+--------+--------+----------+
+
+The usama_1g row follows the shape of the 2024 RFC benchmark: allocate 1G,
+fill it with compressible per-page data, reclaim it through memory.reclaim,
+then time the full integrity-check refault. The seq64 rows use a 512M
+target and 768M of pressure. "sparse" touches one 4K page per 64K region, while
+"full" touches every 4K page. "seqhint" uses MADV_SEQUENTIAL; "nohint" does
+not.
+
+Virtio-block swap device present, zswap enabled:
+
++-----------------+---------------+---------------+--------+---------+--------+--------+---------+
+| workload        | base elapsed  | RFC elapsed   | delta  | refault | pswpin | zswpin | RFC 64K |
++-----------------+---------------+---------------+--------+---------+--------+--------+---------+
+| seq64           | 4.399+/-0.100 | 4.279+/-0.216 | -2.7%  | -10.5%  | 0      | 1.000x | 3110.7  |
+| stride64_sparse | 3.103+/-0.047 | 3.119+/-0.086 | +0.5%  |  +6.2%  | 0      | 0.999x |    0.0  |
+| random64_sparse | 3.142+/-0.112 | 3.097+/-0.030 | -1.4%  |  -2.2%  | 0      | 0.999x |    0.1  |
+| random64_full   | 4.473+/-0.147 | 4.445+/-0.088 | -0.6%  |  +0.9%  | 0      | 1.000x |    0.4  |
++-----------------+---------------+---------------+--------+---------+--------+--------+---------+
+
+This run uses a real block swap device, but the refaulted data stayed in
+zswap. It covers the all-zswap hit path with disk swap configured, not disk
+read IO.
+
+Virtio-block pressure/mixed run, zswap max_pool_percent=1,
+low-compressibility full fill:
+
++-------------------------------+---------------+---------------+--------+---------+----------------+------------+---------+----------+
+| workload                      | base elapsed  | RFC elapsed   | delta  | refault | pswpin base/RFC | RFC zswpin | RFC 64K | fallback |
++-------------------------------+---------------+---------------+--------+---------+----------------+------------+---------+----------+
+| seq64_full_pressure           | 5.908+/-0.195 | 5.790+/-0.235 | -2.0%  |  +3.0%  | 90258/99038    | 20327      |   0.0   | 3730     |
+| random64_sparse_full_pressure | 5.104+/-0.069 | 5.068+/-0.090 | -0.7%  |  -9.1%  |  6201/6196     |  1297      |   0.0   |    0     |
++-------------------------------+---------------+---------------+--------+---------+----------------+------------+---------+----------+
+
+This run reaches the disk-backed path: pswpin is non-zero in both base and
+RFC. It is mainly fallback coverage. The RFC does not install 64K folios
+for these disk/mixed-heavy ranges.
+
+Policy matrix, virtio-block swap device present:
+
++------------------------------+----+------+--------+--------+-------+----------+
+| case                         | pc | hint | pswpin | zswpin | zswpwb| 64K in   |
++------------------------------+----+------+--------+--------+-------+----------+
+| pc0_seq                      | 0  | none | 0      | 99559  | 0     | 0        |
+| pc3_seq                      | 3  | none | 0      | 99498  | 0     | 0        |
+| pc4_seq                      | 4  | none | 0      | 99512  | 0     | 3109     |
+| pc5_seq                      | 5  | none | 0      | 99657  | 0     | 3113     |
+| hint_none_random_sparse      | 5  | none | 0      |  6265  | 0     | 0        |
+| hint_random_seq              | 5  | rand | 0      | 99488  | 0     | 0        |
+| mixed_seq_full               | 5  | none | 97725  | 20147  | 84    | 569      |
+| mixed_random_sparse_full     | 5  | none |  6230  |  1302  | 0     | 0        |
++------------------------------+----+------+--------+--------+-------+----------+
+
+The pc rows show the readahead-window gate. The hint_random_seq row shows
+the explicit random hint veto. The mixed rows use a small zswap pool to
+force disk/zswap split backing; most mixed ranges are rejected, while any
+remaining 64K successes were all-zswap at the time of the fault.
+
+Kbuild pressure, zram swap, 384M memcg:
+
++----------------------+----------+----------+--------+--------+----------+
+| setup                | base     | RFC      | delta  | zswpin | RFC 64K  |
++----------------------+----------+----------+--------+--------+----------+
+| zram swap, 384M memcg| 2060.323 | 2047.516 | -0.6%  | 0.991x | 2797     |
++----------------------+----------+----------+--------+--------+----------+
+
+This is a single-run zram pressure smoke. It did not show Kbuild
+regression, and the RFC run installed 64K zswap-backed folios. The result
+should not be read as a tuned-performance claim.
+
+Kbuild pressure, virtio-block swap device, 512M memcg:
+
++-------------------------+----------+----------+--------+--------+----------+
+| setup                   | base     | RFC      | delta  | pswpin | RFC 64K  |
++-------------------------+----------+----------+--------+--------+----------+
+| disk swap, 512M memcg   | 1420.671 | 1409.263 | -0.8%  | 0      | 7497     |
++-------------------------+----------+----------+--------+--------+----------+
+
+This is a single-run pressure smoke. The disk-swap Kbuild run also stayed
+on the all-zswap hit path, so it is pressure coverage with a disk swap device
+present rather than proof of disk-read large swapin.
+
+Shmem smoke, tmpfs huge=always, 64K shmem mTHP:
+
++----------------------------+---------------+---------+-------------+----------+
+| case                       | refault hint  | touched | 64K shmem   | 64K in   |
++----------------------------+---------------+---------+-------------+----------+
+| nohint_seq                 | none          | 65536   | 4096        | 0        |
+| seq_refault_hint           | sequential    | 65536   | 4096        | 4096     |
+| random_refault_hint_sparse | random        |  4096   | 4096        | 0        |
++----------------------------+---------------+---------+-------------+----------+
+
+That matches the current shmem producer: explicit sequential refault hints
+allow large zswap swapin; no hint and random hints do not.
+
+What this RFC does not establish
+================================
+
+The 64K cap is deliberate, but it is not tuned. The anon PTE-young rule is
+only anon evidence. Shmem has the framework and explicit VMA hints in this
+RFC, not a page-cache locality producer. For larger orders, the anon
+producer should probably use bounded sampling instead of walking every PTE
+in a 1M or larger candidate range. The mixed-backend tests cover fallback
+behavior, but this series does not add mixed zswap/disk large IO.
+
+Changes since RFC v1:
+
+  - rebuilt the series on Kairui Song's common swapin/swap-table work;
+  - moved large-swapin admission into common swapin code;
+  - made zswap provide range facts and fully-zswap-backed folio loads;
+  - rejected mixed zswap/disk large ranges before large IO;
+  - capped zswap-backed swapin at 64K for this RFC;
+  - added locality producers for anon, shmem hints and swap readahead;
+  - covered cgroup v1 memsw accounting in speculative large-swapcache
+    fallback paths;
+  - added 10-run microbench data, mixed-backend pressure tests, shmem
+    smoke tests, and zram/disk Kbuild pressure data.
+
+fujunjie (9):
+  mm/zswap: expose range state for swapin policy
+  mm: let swap_read_folio() report retryable zswap races
+  mm/zswap: support fully zswap-backed large folio loads
+  mm: admit large swapin by backend range in swapin_sync()
+  mm: add common locality admission for zswap large swapin
+  mm: provide anon locality evidence for zswap large swapin
+  mm/shmem: provide VMA-hint locality for zswap large swapin
+  mm: try all-zswap large swapin within swap readahead windows
+  docs: mm: update THP swapin counter descriptions
+
+ Documentation/admin-guide/mm/transhuge.rst |  11 +-
+ include/linux/zswap.h                      |  26 +
+ mm/memcontrol-v1.c                         |   8 +-
+ mm/memory.c                                | 269 +++++++-
+ mm/page_io.c                               |  19 +-
+ mm/shmem.c                                 |  42 +-
+ mm/swap.h                                  |  21 +-
+ mm/swap_state.c                            | 681 +++++++++++++++++++--
+ mm/swapfile.c                              |   2 +-
+ mm/zswap.c                                 | 149 ++++-
+ 10 files changed, 1099 insertions(+), 129 deletions(-)
+
+
+base-commit: 404fb4f38e8f38469dfff4df0205c9d18eeb1f57
+-- 
+2.34.1
+
 
