@@ -4,115 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC944CD4F54
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 12:48:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66FB5CD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 13:01:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 246B66B008C; Fri, 29 May 2026 08:48:24 -0400 (EDT)
+	id 801496B0088; Fri, 29 May 2026 09:01:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21E646B0092; Fri, 29 May 2026 08:48:24 -0400 (EDT)
+	id 7B2B36B008C; Fri, 29 May 2026 09:01:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 134D36B0095; Fri, 29 May 2026 08:48:24 -0400 (EDT)
+	id 6A1436B0092; Fri, 29 May 2026 09:01:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 049216B008C
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:48:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C95D687871
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 12:48:22 +0000 (UTC)
-X-FDA: 84820435686.04.185B258
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5D879A0009
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 12:48:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DXlwZEPm;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5944D6B0088
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 09:01:35 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1FD41C0043
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 13:01:34 +0000 (UTC)
+X-FDA: 84820468908.03.0AA611B
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BF1C3140013
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 13:01:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=IvHzpoPF;
+	spf=pass (imf26.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780058901;
+	s=arc-20220608; t=1780059693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mkYD/Al3N8PtfGcjNcdeq1qN9B7ZvocgPMR3slOBtZE=;
-	b=wpkyRR13X8ts9/Lq6abYRJLqInYpTTdeUn/BaVBZIzmrbMX09EXopaGkeMGabAbXWnVMxd
-	KOzm+Bk8IRHdSAg8ImEZWHe+nFjKSy5fEykMX9p3B7WUrphufppt6tEkpLqKhI+w5hVyyL
-	SCG2ZAUKz2oxZUKYhW7gLznMu1nk8eg=
+	bh=TKlBWJ3ijSz9GFQ8lE7XQuNEddJ05fSbljPGAX3zb4M=;
+	b=nsQn273ja4m7acVjYMSQHxy2TO9ns2+60Lzt7dXPY9WsR4NZMaEW7xf+XZA0mdxT0s7WR8
+	w5tpKJSRNjyXwvVK4P72If7WZLmB8ntyr/nqPBNVB8bcnD3H+gfF/MdFWOaqnHubofJib/
+	laQNzGtB37ARXcdAKWPUdccCvfs5318=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DXlwZEPm;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780058901; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=IvHzpoPF;
+	spf=pass (imf26.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780059693; a=rsa-sha256;
 	cv=none;
-	b=ifX5bITX+dreO+FX49ktSwNEREZ/FQ/r0Yhs8c61Rf4qyr9we+mzt0AXp2tP8vwCQccsg2
-	lqZxeEoE3sH+0r9HqVOL2eaAEjZTUVHBB/X2H2kuHj7BYwb61ZHo1uiTZPiVxI9zaMCwAI
-	QzUmCv3igOvtKKdUZ+PT+A50T6Y6E4c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780058902; x=1811594902;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HO1WR6twZag3h0xFdgAKX/czudAafCz+VLFaYqj8tHY=;
-  b=DXlwZEPmwzPJCFfI4nt20EIlnbY8kP872ZCEwEdzVslEgsGPEc4rIc9Z
-   EAifT+cfOeO0ZCgryt70vQ1vg6EWrg+DGACWT9DDlhYGYzl7rGbRhnryp
-   zrJscOR1JGmXyU3rsX3DsGuxtSE2G1IY9vFx7xBQwuRUwd1cTdhH5acMQ
-   WRWHTL59bflzOXIhVaWMNEgdP9Po0NxuSaK+uJep6Vj2y+Kg7l6uTtwMd
-   QPFXMRo+OhiCAi7bio93CDXMdagMJOdZ+LNnAkHzWcfyHiT4mKKQL+1tY
-   w2e3scZ9eRu8iu7Hg1vScsVGnzyE8sFxHnsX4udM4kjfN9HaWZCvrV5Ar
-   g==;
-X-CSE-ConnectionGUID: FZAfD08PS06xGi1+crVKVg==
-X-CSE-MsgGUID: RQIH54XeSkKRtSZgz8ieuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11801"; a="81092968"
-X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="81092968"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 05:48:20 -0700
-X-CSE-ConnectionGUID: U45MxQSeSeayqC7nDdmzOw==
-X-CSE-MsgGUID: lttKo//4TxeWrxIwEzQrzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="240294353"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 29 May 2026 05:48:16 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wSwdI-000000007EM-3wbN;
-	Fri, 29 May 2026 12:48:12 +0000
-Date: Fri, 29 May 2026 20:47:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yury Norov <ynorov@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Yury Norov <ynorov@nvidia.com>,
-	Farhad Alemi <farhad.alemi@berkeley.edu>,
-	Waiman Long <longman@redhat.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH] mm: don't allow empty relative nodemask in
- mpol_relative_nodemask()
-Message-ID: <202605292049.eaIv99hr-lkp@intel.com>
-References: <20260528190337.878027-1-ynorov@nvidia.com>
+	b=Qbv7v1ISk/PhWRpgWGXbjsQEfjFxUCx4Glo8P+UFjTfzmFTf/XD4/Az9f8k49P5qborV59
+	vOiZwN+6N439oeTaQKa6J6GNwnLvhc70M/n9EwAcQhPyWDZCp/qg762VZBI9fs6ZV7LAHK
+	wxYoCtaP+Aj0DrPyAs0sBujPqoLKeOc=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4903d730b1fso71228125e9.2
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 06:01:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1780059691; x=1780664491; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TKlBWJ3ijSz9GFQ8lE7XQuNEddJ05fSbljPGAX3zb4M=;
+        b=IvHzpoPF+T9hmmqMe19m/ZR8uhORbzmfcqOOVW80crxb9AqJLCW7QfQmlcjSm50aFK
+         MUshZ7ClJ+TPEk+s7OOU0LoV+C4/M2sXbZaGNCPy+jKSKr3xc7t8D/JBqYo5Syd6nj5U
+         PPPXIyzK+ATKjMoqbya2a0T7yLTGXrIATl65axWv4uf8G1ILrj8qJqye7+ebxf0MM0p0
+         O3a7rmlTOG94vBUBTm+x3o9cucvCkK8zu2i0D0RpOZPjZNwBgrO18L1pRtEXDHFmwVnH
+         to8JMUq23Wxk2Wr5cPRn9i86MjlptXHCW9lt0/q2wNo/6Cd3xHm0HfN04vxITDFsG2Lk
+         17Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780059691; x=1780664491;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TKlBWJ3ijSz9GFQ8lE7XQuNEddJ05fSbljPGAX3zb4M=;
+        b=jw5mtnKSVtjHRD5/tQTJqNB7pTWSVsYlaadXQ5X8TIQz9V1oir1iaFQCNeRvQZcntK
+         H/0bGKsNpo0zObrF6OHRa7K30dA05UqhlGP8NqPyKZij1yT406AuUBboDf3O2U0Qk5bA
+         nSKEITnx2nUDYgrogAnM47smJ6TsB2+uiPTniiECqzudHPwz+U6AHj1R3nlmtx2udl7g
+         nl1ldlh9Wu7lX6Kg1cc2JpN8UCR5tx47vi0VfgmkGWA3yH1+eRZlwnuEGKmC+HKSwUAl
+         djHjlVAQkajQA7vqHHA2gCqtknuSI2LicrrTsgPPPxMVwHa1+9x4gxFp444b2PaKHfj6
+         Ed8Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+kpBD51DdQ/Ijm2otjo6e+F1xirMdAYjz/VyPAgVcXXCi+a753n/uk9UpweYEj5UtvIPlAu4Fbpg==@kvack.org
+X-Gm-Message-State: AOJu0YwzsnydGr4YVqe9QHKxkjIGObdyt/vSjmo5KsMkR31mEgiks5qq
+	KPeATdVFXHhVN2BKUxkC9Sr7sC3XqtNw0QzYynA2wl0g+kKzdWcFfwTbRbw5Kw07c3A=
+X-Gm-Gg: Acq92OGE6N77jSda2p6GrjYuTcUXVa2Hrozp0VABURGhMZDZtvHdZz+AT8j2CT0jCPo
+	y12UGrCE8CmvsiXMM3rZQyUoFvnOT0j6kB6ueyxY1kZguo0CogbMCMwCBBOyVLgU8J+A1LDFIDW
+	J6d0RCwYt7amtcbSgoxtyoYGpilWWWtpwR+ephNJd7SCt6UepQcBdI7e4zQ+kUM8E2qLMkW7Qye
+	DNNFWy0W0t4j1vZA8A60zZN4V3TI4mPb22Gf9hBPO56axtZZu3N4Mhy4pEkPhNDnmNqzTdTomxH
+	XIvDY3O6XfkedF6KSsUNk88+3svk/OjHrKUWZ3K3ISrGeujjpepK5ZmH0tErmeoF+Jd4nbopneC
+	YJCGWMV9cSDG8lMClNahLgefK3/qztUti/VZs4HxoKLY2DzsGmoMHIs3J6qT326W1bHDXqIATgV
+	sh6oNvOiK9Q9+gNgzEhrUu+dFH9itEM2v/tDHZs9CdkEhFCiIG6HLZGogHeC4=
+X-Received: by 2002:a05:600c:560d:b0:490:4ee0:82f9 with SMTP id 5b1f17b1804b1-4909c0920c0mr38130535e9.7.1780059690792;
+        Fri, 29 May 2026 06:01:30 -0700 (PDT)
+Received: from localhost.localdomain (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909ca6575csm70478955e9.4.2026.05.29.06.01.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 06:01:30 -0700 (PDT)
+Date: Fri, 29 May 2026 15:01:27 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Maarten Lankhorst <dev@lankhorst.se>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
+	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Maxime Ripard <mripard@kernel.org>, 
+	Natalie Vock <natalie.vock@gmx.de>, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, kernel-dev@igalia.com
+Subject: Re: [PATCH v3] cgroup/dmem: introduce a peak file
+Message-ID: <ahmOBo02TA8u8RW2@localhost.localdomain>
+References: <20260514-dmem_peak-v3-1-b64ce5d3ac38@igalia.com>
+ <ahCISfTlN10gD8e6@localhost.localdomain>
+ <89901220-0a43-4668-9d20-aaecc72c58dd@lankhorst.se>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2z43jkempbrnq7gp"
 Content-Disposition: inline
-In-Reply-To: <20260528190337.878027-1-ynorov@nvidia.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5D879A0009
-X-Stat-Signature: 131ho9beh8nktgxsy3zetwxk5eppm1z8
+In-Reply-To: <89901220-0a43-4668-9d20-aaecc72c58dd@lankhorst.se>
+X-Stat-Signature: 159oxowc9z7hzqffaxmmbknxk8tiz1pq
 X-Rspam-User: 
-X-HE-Tag: 1780058901-324926
-X-HE-Meta: U2FsdGVkX18jvZYUZLBskfTemyYRtpa72hznSHFtu8o4RTvmZHDGo0PMnb+TnNhsfsTaOlGJRXXMeAL/idwfmkMxz/K4uGB2uftn9Ge2GUBZzIk8b9MCdEcPQZGHXnQc7pO56i20xRyaZnQGg6yb/AVsl5lKo+KLhZFRk5exE8Bit2DsDUhFJZftBqv4H4y2RR0HLKfYXBtYMhWUy7yDdIQ/d6FVKYxuvbyP2N2H0lFlTwvRbYhPDSWOHXPaO3h+Tr5haKsTupm9GBHUGqt7m5PlBYtn+F6xWJWcNJp0g/mqs0CUKJ6lVlR7pMGEHNGuDlgvIMY00IfemiRlugg3SE0zoBtAGsVgBvGsGP05f3sV3F0S/aYOIyDd7nyhCjwgRUqNlWExI39jxI+qMAiIM3UHiKK43lfjN45wGKHOj3ldq8eZ8zYKgvOt1a1qg75KG8O8MvMKnMOmTQ5PI3tXzI4IaI8OfGHLekHhAPkLu6yL8qUqjJAdcZNtNvjMxeiKxD9rJ5sy0E6K7Q8qto11qQinucc/h7uZGb3xWMOMthhfNQlQW8k+odqdD0zgYQa4w943YdvFhuLBeed68IFqPFifckWuxOg+h8OekzOIvt4yQ9Y7vzkB5x5jvd9MxGqxfYt8PTmidiOYLoY4cRVGqzHkfxSP0gAQtY37mzy7Ld5W+ID38fGr/huSaD1qQHMm0zk1virFUBpN+do6ylB9fGZiE2rZGAF2cZRNMl/iEnk8bJhB5cw0joqOQ0rkD+TSOmPsB0PeIosRgOQFCM3GGFttal9dBjNOEVhXIWhFmOXtY+ReOfEi1UtosAjgOSW5e4hDQ5NVUW35zd6qxP4/1aEqTLstsnFyg4AbKt8dviXNLZh8yZW8pcDwpxn/zWXIe3wuu2Z6u4RCl9y7JLExCsjOFkGhndiLbP3c0oczsQPtOubx6i2oo2Mfie+XdPkrWEicn93BN4VEpPUhJ0t
- PmhdI0/t
- xgr8xTjp96VOgiDSw3R4Php0zAwFGRCwFCLyo8/fN7LwkF+66+xDA4qwNNbqtSmXwr43hx83dmlaJ4Px+sVWkNm3z7LStka2Kj4G5ap4ovKd3CXyIhrmiVKRZPcUcU7EViQ1WDYguUTSAnFH2AXd11sZiRaeL0/ohPRR9vBpx5ZTOnRtRR9EZ47D9WU/P7Q6tcetA+kcPtPp01vu+GHg7X2s9vk4J/2x8M/Hd2oWFKt4KOTWMsI53oeuv8sSqvR3p0KgIeod3xyLQ2MLYI2DtWVV2IP4epFA9ibkNovQ6wqDq6iTdC/uMpijF0VkaQwoIMZCS6pwzr004qzSzLlkUzPi2jSgvls0NOI+jUEAPd5b6Edjq5X8GrrT904II7U5siQTtCQn//Mdcw4nzlcVaBix2A20wWpj/ck79zvrKuDnS+3SVf5eCYkZ4q6xpfy2Is6Mb1VpFYd4YBpZe+kyEwuknVw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BF1C3140013
+X-HE-Tag: 1780059692-644442
+X-HE-Meta: U2FsdGVkX19NVktYeYpJH2yD4aMIP//TSml2FoR/lHVP9T0zBTd2aii+Jp1pnD52bL1J5LB7OBZWGSqNaE0/dq2Dyf2kEAZ6Xo7COJH3l3HS6GhGF2jTOfDXYFmX11QBpuVEbDcnG2sbh8jQZxJ80K3dvpuxAgOhwzq5shN6AaS6hIm4AbNKyLFMy4XYXRrH+BMo0abeZoQpUefgwSSZZalDc31cKcy1g0RwSnrs4UBNUCLrUjWctQLiWlQjPQGPgOeXQCRebporfEye57ERyjJeEqC+cLMSmVCFlcSikWPvIhsAHRE2NAcmd6GbfWh9pIZB/oJojUK6k8PaseqNGUNbIYy5KTbgTbY1k43b9spceTgnv2/fZiCh/HVqWW8KaY3lmW8efnnakO9AXPQsEQbaGNJredHb6yZv9Id+9z21Z2PIRWUB9tSYCL1tdPCT5cq/S63L1qqFhxDf4C/AGs1wvwEh3h2EmXyj26LzpSH0FYV7jmmMV7bss2SLy5daO5oYz06G1d4cbrZqA7PrUBCclLnQQhWBeEsdJ349i6ykbdDemzXVopcFaofLKEynz8+Y017iJmUom9x/0rruQ17I3/krAG8fLeQCOWZabUDLo8jmq5APMktSvWALR+jkRsRvjgzKghD8mimqcLe83l1pP8lcMuFZzRIhOE7TO9lLYHew9In6DoYFyeW0Hip7qQWFNU5pjwMY1wyHH0D+smLufvPxo2ZFs0zzQRfJ9+TUBPdHFjE1mb1RRJdud3ZMu8Aq6qHED5FXqkxncPMY3cX5T7E8Gz6SfwCZHGxuSe17KRwmo4XWjhauCKjStkw9QN3Cj9z32SAjUG0qLgYwFCqCC2JErZYEbuNVvUDlZWvHABJLUnpExY4s3jZ2uC7JQ+w48RT4THWFA87RgbJNm0OCWWjuzbAT/BbbmkbhDm7lL2lTGkYqhE1jifC+9fKKSWXd00+iZM5FwH89blV
+ LRa23BRE
+ da0kff9+rp2JsoOThsENhvZVSTIfPwgvUHQhwt3YC6Tg14tyt0i+RZnWHRKRiRaHOv4Lbxgu5biipVMTfWh8zaMjswN4GcyLQ4adlvs7W070/E3tqwJRko4WFR2p4iMbw/swqfBt1+uNNnqPPVXIca5235spqsVCRbiAHHBmdIwd9nE2sopxXPfuVbcOoRBB5yKtWzRqgZgj7Tg2TXrYHd4GioPkto7c94W4IZzfmwvWugtLn/ZZPDFuDtqLBL0725c8BMIqRnA/u8EQkr9MbFNdnbG/vgWahjGRzcZE61iqLIzLgrgmLyGPCoR+qM3FoeUWERO+Dt2Tv984x6kXya23D13dfxtM4pIqQTROyRtI5yGzeE8AhGHoAEeXvvi62aDp3lUXXQTBu3WiT3iW8wV7w2UwHAXwBL7qzN04jVE9xU1odCeVnVPd7qMOPfc9TUrj1by8qJnNEE6M1HUW9tyWUoagjW/dJB8VIm7F4q6vCP2clSxfvjJ+oInKjHE/fh5vIQzrwlKScQrw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,54 +126,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yury,
 
-kernel test robot noticed the following build warnings:
+--2z43jkempbrnq7gp
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3] cgroup/dmem: introduce a peak file
+MIME-Version: 1.0
 
-[auto build test WARNING on akpm-mm/mm-everything]
+On Fri, May 29, 2026 at 09:34:28AM +0200, Maarten Lankhorst <dev@lankhorst.=
+se> wrote:
+> > Reviewed-by: Michal Koutn=FD <mkoutny@suse.com>
+> Reviewed-by: Maarten Lankhorst <dev@lankhorst.se>
+>=20
+> With your r-b it's ok to push it to the dmemcg tree?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yury-Norov/mm-don-t-allow-empty-relative-nodemask-in-mpol_relative_nodemask/20260529-030835
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260528190337.878027-1-ynorov%40nvidia.com
-patch subject: [PATCH] mm: don't allow empty relative nodemask in mpol_relative_nodemask()
-config: sparc64-randconfig-002-20260529 (https://download.01.org/0day-ci/archive/20260529/202605292049.eaIv99hr-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260529/202605292049.eaIv99hr-lkp@intel.com/reproduce)
+Please go for it.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605292049.eaIv99hr-lkp@intel.com/
+Michal
 
-All warnings (new ones prefixed by >>):
+--2z43jkempbrnq7gp
+Content-Type: application/pgp-signature; name="signature.asc"
 
-   mm/mempolicy.c: In function 'mpol_relative_nodemask':
->> mm/mempolicy.c:377:10: warning: 'return' with a value, in function returning void
-      return -EINVAL;
-             ^
-   mm/mempolicy.c:370:13: note: declared here
-    static void mpol_relative_nodemask(nodemask_t *ret, const nodemask_t *orig,
-                ^~~~~~~~~~~~~~~~~~~~~~
+-----BEGIN PGP SIGNATURE-----
 
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCahmOJBsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Ah7GAEAt/V3wEPGggC+JULstS3y
+dmXXZPqpxAaQogu6yCs89g4BAMQxskRRFxPIHcGypjWfGqkYS3FsM2hfhSaRrkTr
+5X8P
+=a4Ed
+-----END PGP SIGNATURE-----
 
-vim +/return +377 mm/mempolicy.c
-
-   369	
-   370	static void mpol_relative_nodemask(nodemask_t *ret, const nodemask_t *orig,
-   371					   const nodemask_t *rel)
-   372	{
-   373		unsigned int w = nodes_weight(*rel);
-   374		nodemask_t tmp;
-   375	
-   376		if (w == 0)
- > 377			return -EINVAL;
-   378	
-   379		nodes_fold(tmp, *orig, w);
-   380		nodes_onto(*ret, tmp, *rel);
-   381	}
-   382	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--2z43jkempbrnq7gp--
 
