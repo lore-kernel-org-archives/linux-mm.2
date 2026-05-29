@@ -4,98 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E77D7CD6E45
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:49:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C337FCD5BD2
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 08:49:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39F2E6B0005; Fri, 29 May 2026 04:49:27 -0400 (EDT)
+	id 351A86B008C; Fri, 29 May 2026 04:49:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 329356B0088; Fri, 29 May 2026 04:49:27 -0400 (EDT)
+	id 2DAFF6B0092; Fri, 29 May 2026 04:49:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 218616B008C; Fri, 29 May 2026 04:49:27 -0400 (EDT)
+	id 1CAF96B0095; Fri, 29 May 2026 04:49:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1049E6B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:49:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C7B0E407C8
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:49:26 +0000 (UTC)
-X-FDA: 84819833532.10.70502AD
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 039A540009
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:49:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ivprReKs;
-	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 074D66B008C
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 04:49:47 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9B7B6C353D
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:49:46 +0000 (UTC)
+X-FDA: 84819834372.13.AFCBAF2
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E9966180004
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 08:49:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=PezPME7C;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=hXpBCHC4;
+	spf=pass (imf24.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780044565;
+	s=arc-20220608; t=1780044585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Yr74bm5b1I6er6TsjOHvM8O63leqKbgA8DFDU1A6jw=;
-	b=Ifd+V+7suf1n7lHyCJgCUD2ajvaeORWx2N7AMRACnEUl6RhN6OK/09++EICE6WEknwv8E2
-	fuzinJcYX6O4suIhuPDCWo+zy4jbwHrSX6zkKbnmHdoItKwxZWJCvcDAxMWsmTEs+apfnO
-	prjjV3rVnGkjYT1qyeZo0orivT+DJIo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ivprReKs;
-	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780044565; a=rsa-sha256;
+	bh=RIQTzMrAiz60EQXjnvZkMfXRLxi3s6ETa0YnTZQN3V0=;
+	b=1kLGwq3sf+31AR0XnvJe8TKXkYihJ8pZahPh+IpW88IcscbvuNQbFmDjG/hOYXq8o7Ex9w
+	DlJpZs3L0zt78dMuxx78xnJf0guPHf3a9pC7lINSjebeQfW90WrheMjmePcaxQ+PJsfJIJ
+	hLpF3FpezulANINPH11wW0yYm3yvXYs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780044585; a=rsa-sha256;
 	cv=none;
-	b=DsGOb7GLA8CGZu4LIxDbsgldEd9yFpHA56VL7g/nQQsDOShsQaMywx36fCxipPv2BSNHu3
-	PscWy1yVGMoNRXq1CLL0SbcDeGxhZ15/cV6B6CzYEPldm7zinEwFPokw/gdkBzYy/Td6wL
-	vVqR/kjqa0hddV1//oCmtjuGdGr6SS4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 20A2E204C;
-	Fri, 29 May 2026 01:49:19 -0700 (PDT)
-Received: from [10.57.91.162] (unknown [10.57.91.162])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 430AC3F632;
-	Fri, 29 May 2026 01:49:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780044564; bh=0Yr74bm5b1I6er6TsjOHvM8O63leqKbgA8DFDU1A6jw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ivprReKsUadaCcTb8g0Y6fux7oLRv4zPPNFSi1TEM201qLpgF3A20EQN4tJDBDtM3
-	 S0nbog1ouGDatXNHMgkBAd+V9ATrxI5QR8icYHXBy454uuQh3yuqWKsVaGy/XI47P3
-	 ZKILKdQnLDYLJUH2p/YTF/kixb3dzjPrfQvx+zsA=
-Message-ID: <32458c49-0e3c-4d27-b1cf-0e2d7ee0273d@arm.com>
-Date: Fri, 29 May 2026 10:49:17 +0200
+	b=KVxPUEvuUVzZGGpLTUw6Favbe720fxYbYnBCbd3+xj5j+dFUbHMlhgW06j0waGhEnuddql
+	cPdkaWc4/EKMvJMWZpe4ZgZ5WvAYfuu28Fz4Lg32OSQrz8HPX9iopX23EHOM6KWCdCn7dx
+	cmBpOrP/q4wor0G4dq4xhRlqx4GEwck=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=PezPME7C;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=hXpBCHC4;
+	spf=pass (imf24.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+Date: Fri, 29 May 2026 10:49:39 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780044582;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RIQTzMrAiz60EQXjnvZkMfXRLxi3s6ETa0YnTZQN3V0=;
+	b=PezPME7Ck4DYD3pliNLx80vlw7cBwz4loyN4hp4vr99ld5QeCjXUaYDk4HPjJWNIaQnq4f
+	0LxxtzVOUWhqIHIH7twCdRAVZ4CLMCdeIYdJe5JdlFewz1xVNoOu78DAFqsfcYlkoIcDT9
+	O/XNOzNEuARiVjFPEv7yXpTcaMjFZqQ2LZYMPvDbih3OvYfdJi/vdTvDq7xh8iGIbQTDzW
+	yDWvl0x9xn7yNXjZ9k9dcBmv54e/1zv0kJh5cvQZSczWuVAf4haoNjwrQ1mjH9Y00UK3oQ
+	6HjviRT4QUJQa+RVtekFJTWsggcUGZeLOBhi2MTnepnzenOqovMnOrV4JCrYfQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780044582;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RIQTzMrAiz60EQXjnvZkMfXRLxi3s6ETa0YnTZQN3V0=;
+	b=hXpBCHC4cVaCxy8mohdL9CuJryevkV2GGrSOm/4C3/y0Ka2S2b4kEgKL/boonjNbSwUhFS
+	2C4ZWQ/P7coXDPBg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v6 1/4] block: add task-context bio completion
+ infrastructure
+Message-ID: <20260529084939.bWkYVTj4@linutronix.de>
+References: <ea6fc01f-5cb7-4a04-9f92-bbd2791fea51@columbia.edu>
+ <ahPdDtu3vXfNpb__@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 15/15] arm64: mm: Unmap kernel data/bss entirely from
- the linear map
-To: Ard Biesheuvel <ardb@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>,
- Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, linux-hardening@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-References: <20260526175846.2694125-17-ardb+git@google.com>
- <20260526175846.2694125-32-ardb+git@google.com>
- <22042b98-cfcc-428e-bb08-ebcfe785eb69@arm.com>
- <8082b77d-6522-472a-9030-317087ecd7e9@app.fastmail.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <8082b77d-6522-472a-9030-317087ecd7e9@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xn1omyw9msmbordn11jpkbr5okadaqdt
-X-Rspamd-Queue-Id: 039A540009
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ahPdDtu3vXfNpb__@infradead.org>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 1utwhryszfp34mt7tf6axdio5ikmy3ji
+X-Rspamd-Queue-Id: E9966180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780044564-311899
-X-HE-Meta: U2FsdGVkX1+6KU5F86gZ+GcS3wnpNL+rWvEOMDRL0AgbrdngLQ2upHdSLMoGyWzwH3WbZ+wXzs0yh2lGZKLgV6BVTL5jc+/dfqCM5Yq9D/QEQkAnWq1x0kEmcQwVJMiunotywtA7EZG4WxMv3J7ggpZLnvIxSVdu0LXLd9jKnoTLafqIKAjKV3K2qwCflIMnwpwlv7TNpUaEWaNRk//W6VoOXfhmEQrqi+bN4Cmax2KovoRSd7MM7STIyHNaeTJiuigx2QaYdTW7Bfx9W+ls2/n2bqSprGrOZ3oq59ZOnXylzOebozzVjiL+cpVewm3nNBXMB6WD6yPAJRmlo7SJe1a8GQkY6A/FXnMrQglwCDYFqxozZoQeyUHuU5m1P9mFoH4YKohbCf7tSxygjqZxTsl5ftHR2LLLoHu52ot7PHTH/w/MziHw8btUk13oQX0NAalRbGle8KO30OYuMXNF1FwHnmUzgwNwXzvUCvoaygfYMt7C2BShnOkKsi5lqzs5Rn9jqOBAHPetWzAkXfOhhJHIeyTxjnmJy69lUImmTderzuPeZa7K+5VgotcduUHc9bzfyWwsjqjdQt44xdwtvYdWWwQvJikkjRL86SqBnAtAOPBdVuts/giG9gdwt3P5ZGecKCOs/34xQZlfWGhzCtxYesVCGne5ZuI9XvP4ns2MneAs676iYIHt4JibT7ZqfBKrswzCBXX6Tsj1Dyjz44NzhOEMSjhubNwpsfnWY9rkdL5MzFTbByI+vaizQ/JREkenJ0YX9G3ltPB77nGp80aOrQe9nj4eCVVLuookzeItsq/yhh3e4VC0jFuk+tbm0eslmaMCqc4uWhTyes0WSYLroVkPQ5tSulqz+oDrPPvqxrR5NCbDZGyYpxizR7pqSmjSxLff8ax/pNcivHW3PFlJQrFzUMaYVV2wryNrT/g7fHhyf0iQPaSV64R/QwreVKxDJiGN+1p0swjSn/+
- J3tX7IWG
- vrRGsTWQd15KVOOaV4STplGOyp7YbrhcMrg2+Wj5HcC/BmSrBdmXqflddUY0WZ5XmNATzThNHvbtnd4dWrPZCZVtQwtFfBrYf4UWaeNK+VjGaJXuB5bTekoeFhA25W5D/hiNlxdSCC15zwMVHrzdZaWmjWBZJmzdsZcbj6ZUJBfHzVkc0L2+1SweX7N3cjfkACsUVttPhNIIt20GnIthnKfNwqGYb6latS66Vz4xjWICYqJCb72cd9ZeWUxQfWyDczPnHUq2rtOEkY5AAmDOzCNbHxPYm3EI8++BuKGEuIIHxDD+5U/r8h12iqH623U/GUjDxrdMtMe3Pnc0=
+X-HE-Tag: 1780044584-590167
+X-HE-Meta: U2FsdGVkX1+7I8I2KSou953aumLBQF0Uim8CGTyYHMZH3ZS5LTf7BjdtJMETzflig7UG5BYJZjDYWr2P0Jj1xX7btkx8gTqiZXQAElXvhLPWZTQcVb/695x1ahrTYAT2CwL9ZPOrpXQlpZcXQ/dNK+K4mxFRYwAQ301fUTq0LBDLhJiZCoqkHIB8I627Shj3hvhCBEVskCOqc5BX2ibX3D0EBijV80ityzw3HVBf9tkPMPjK4Q7RjpCEg/h12CclzqPdpR+sLDOFxv9hyGjxyHH70b7UCAV9Vnz2ShDhpjBscXTH9C85Wzu+TBsYvc9n3GyY6eC05/CeZp/AvL7nWY21OeczX9IcAeH2f1qxRIIiFN84UwUEh+A1jgvaetAohaOXYv+yoly0HWlHChvZ5DO6MgJOVkA1he+voDdwgh8B+ujGG1DQRN6HOuH0eq4yV1+Xk5fZEaieyf8Szr2846MPvvM1e6EQI9X79/o4Yq5aJasLqPUzYSgV89+WB7jfYbXGoBxt3LgSznXPZYfBEEA0yqBjY/rWftpgTcT26XZrTTwynmWiLRNfJaGcBvz0cRNkxqwtL3DPESeusG+sR5VJDu27IHFBgpeTTkCunrjnob21+hZPO5eOZB7hD8jGS85NrDTn6UIuOSkQfmJQzuAjjqja84Hiz7yLmmn3DlftQXwR3fRCbDCxBPWyAPutpYm8kLLYjtoCa8i2p7mEi/UPTnv6WkLg+yy4JdytoCQgQP7pCLeY5ftoop8fMRM69+lNl7566rUpcQAD19Z4lKJlfx5l9x7WvLDkbMUVo40sJZKyiFW7PmB0aVyeV+GKXdNZfrnRKnSol6HjJrTiWyJkReMpnjNF1M2FfP7AxlWZ7xE/+rZV3dXhtk74uTpUNtrHqWTODns0XGV0VC1UCsG+ZnukTjyw81IN6iNUCzvi/3u8mf3kI68WqIykit2OivNQv896CMAr8EH/VuJ
+ bwqMv+om
+ 8C7HGv7wQ0W8J/me64WeS+APJZNYWavHxJeRx6/sVd2zHJehsCjL+QaFPE4sIeQ1O1qiEijVL1L0CygiWvXmzXd/ZZU3uPcg2/EZJUZ3PrcxYqjKMftbLNdA93Bw0MrKCCeC6+bIkBsGnNh3lcaBnu82Cv55WA0GdxFKCyXDRpLuwUf0kddQT6JFDYdusTFo8wGTQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,40 +109,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29/05/2026 10:34, Ard Biesheuvel wrote:
-> On Fri, 29 May 2026, at 10:29, Kevin Brodsky wrote:
->> On 26/05/2026 19:59, Ard Biesheuvel wrote:
->>> From: Ard Biesheuvel <ardb@kernel.org>
->>>
->>> The linear aliases of the kernel text and rodata are mapped read-only in
->>> the linear map as well. Given that the contents of these regions are
->>> mostly identical to the version in the loadable image, mapping them
->>> read-only and leaving their contents visible is a reasonable hardening
->>> measure.
->>>
->>> Data and bss, however, are now also mapped read-only but the contents of
->>> these regions are more likely to contain data that we'd rather not leak.
->>> So let's unmap these entirely in the linear map when the kernel is
->>> running normally.
->>>
->>> When going into hibernation or waking up from it, these regions need to
->>> be mapped, so map the region initially, and toggle the valid bit so
->>> map/unmap the region as needed. (While the hibernation snapshot logic
->>> seems able to map inaccessible pages as needed, it currently disregards
->>> non-present pages entirely.)
->> I'm not sure I understand this, is there something wrong with the
->> kernel_page_present() check in safe_copy_page()?
->>
-> No. If the hibernate code decides to snapshot a page and it is not mapped,
-> safe_copy_page() will do the right thing and map it on demand.
->
-> The problem is that pages belonging to the kernel image are marked as
-> PageReserved, and so the hibernation logic will not even consider the
-> pages for snapshotting if they are not mapped.
+On 2026-05-24 22:24:30 [-0700], Christoph Hellwig wrote:
+> > > +	local_lock_irqsave(&bio_complete_batch.lock, flags);
+> > 
+> > Q: "Is it safe to use local_lock_irqsave() here when called from an atomic
+> > context?
+> > On CONFIG_PREEMPT_RT kernels, local_lock_t maps to a per-CPU spinlock_t,
+> > which is a sleepable rt_mutex. Since __bio_complete_in_task() is specifically
+> > called when bio_in_atomic() is true (which includes hardware interrupts or
+> > execution under a raw_spinlock_t), attempting to acquire a sleepable lock
+> > here would trigger an "Invalid wait context" lockdep warning.
+> > Would a lockless list (llist) be more appropriate here to avoid sleeping
+> > in atomic contexts?"
+> > 
+> > A: This seems legit, but I'm not super familiar with PREEMPT_RT. I don't want
+> > to switch to raw_spinlock_t, as it seems like that would add unnecessary
+> > overhead on non-PREEMPT_RT kernels. I think switching to use local_irq_save()
+> > (as is done for the per-CPU bio allocation cache) should work.
+> 
+> Adding the PREEMPT_RT maintainers for this as it is above my pay grade.
 
-Right I see the check in saveable_page() now. Maybe it would be worth
-spelling it out in the commit message (hibernation logic ignores
-non-present Reserved pages).
+The local_lock_irqsave() seems to come from __bio_complete_in_task()
+which sounds like preemptible context in general. So yes, using so is
+safe.
+It should be even save with interrupt handlers and so on since they are
+threaded in general.
+There is this new bio_in_atomic() this looks a bit odd to detect softirq
+context as calimed in the comment. Anyway, on PREEMPT_RT
+rcu_preempt_depth() will work as intended. The preemptible() shouldn't
+get false because softirq handling is not recorded in preempt-counter,
+interrupts are forced-threaded so you should never be in hardirq
+context and things like spin_lock_irq() don't disable interrupts. So
+unless you do local_irq_save(), preempt_disable() you should remain
+preemptible (even in softirq). This might or might not do what you want.
 
-- Kevin
+> > Q: "Does creating this workqueue with WQ_MEM_RECLAIM break the local_lock_irq()
+> > protection in bio_complete_work_fn()?
+> > When a workqueue has WQ_MEM_RECLAIM, it spawns a global rescuer thread that
+> > can execute per-CPU work items during worker pool congestion. This rescuer
+> > thread executes unbound, meaning it could run on CPU B while processing
+> > CPU A's work item.
+> > Since local_lock operates strictly on the currently executing CPU, the
+> > rescuer thread on CPU B would acquire CPU B's lock, while popping elements
+> > from CPU A's list (derived via container_of()).
+> > If an interrupt on CPU A concurrently calls __bio_complete_in_task(),
+> > it will acquire CPU A's lock and modify the same list without mutual
+> > exclusion, potentially causing list corruption."
+> > 
+> > A: The rescuer should run on the same CPU, not unbound, so this is not an
+> > issue.
+> 
+> This is another area where the PREEMPT_RT/scheduler folks might be able
+> to help.
+
+Not sure what the question is. WQ_MEM_RECLAIM is one thing WQ_UNBOUND/
+WQ_PERCPU another.
+
+bio_complete_wq is WQ_MEM_RECLAIM | WQ_PERCPU. So it will run on the
+requested CPU. The container_of() and local_local() looks like it will
+access the same thing but having a WARN_ON() if they don't would be a
+blessing. Or just use this_cpu in the worker FN to avoid all this.
+
+The need_resched() check in bio_complete_work_fn() is bit odd. So if
+need_resched() is true then you want to leave (and you care !PREEMPT
+kernels). On PREEMPT_LAZY you could just continue as there would be
+preemption sooner or later.
+The bio_list_empty() check below is futile. If it is empty then you
+leave doing nothing (so you could just leave without the check).
+If there is an item, then the enqueue "thread" should have invoked
+mod_delayed_work_on(, 1) claiming the work. That means the
+mod_delayed_work_on(, 0) in this function should do nothing because the
+work is already claimed (so you could just leave skipping the extra
+work).
+
+Sebastian
 
