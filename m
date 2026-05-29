@@ -4,125 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 122DACD6E4A
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 17:24:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6075BCD4F54
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 17:27:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76B2D6B00D0; Fri, 29 May 2026 13:24:23 -0400 (EDT)
+	id C2BF26B00CA; Fri, 29 May 2026 13:27:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CF366B00D1; Fri, 29 May 2026 13:24:23 -0400 (EDT)
+	id BDC426B00CE; Fri, 29 May 2026 13:27:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BDC06B00D3; Fri, 29 May 2026 13:24:23 -0400 (EDT)
+	id ACB246B00D1; Fri, 29 May 2026 13:27:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 448DC6B00D0
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 13:24:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D7B5A120241
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:24:22 +0000 (UTC)
-X-FDA: 84821131164.13.CE5027B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 98D316B00CA
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 13:27:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 70B181C069C
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:27:27 +0000 (UTC)
+X-FDA: 84821138934.27.F8BAE51
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id C711720004
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:24:20 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aQGn8jt5;
-	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780075460; a=rsa-sha256;
-	cv=none;
-	b=BSqTSP9iq34PzAnsJtY5tmlXc4CkKEjAAuO8y1yCVu0Y1/iAqi3B7ygo7FG1gQBPF6zWsP
-	OPRv0ZHxPZRadRAo51myYdni9nOrJ8cWN6Yt+oqVXc2kBVafG4rZW2zEwpMniQBvL0Gsnx
-	PL1skSaor+WbfniwVvt1eLF7Wz0X6Lk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aQGn8jt5;
-	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5BDFB18000C
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 17:27:25 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=loQx2kSe;
+	spf=pass (imf24.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780075460;
+	s=arc-20220608; t=1780075645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iVoJCbkI8s/nRA3AM39fhnw9JOfOtPPsCwAz6Lm0b5Q=;
-	b=eDxk+SenmsVsl35eUweb2vQTwG70GrC73mdJzMjRSOgs6aK9grMypbX3hcEWy+45GLddut
-	pz82OoVgnqKY65F6Hdv4TEVXWocwRGgtKzo/vhTRLqbOK2UCWsn/qJu3RGWFapkJBmpVa5
-	RH0hxKFJOI1ApuSw0oACTcgA+Pzpmhw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=NfTzwAtyC5pYFlbHqtPUTEyIV17MhkMv9IDQiAjYQnI=;
+	b=Qzxb7FA9C0aqpgAXSWh2am1DXjsLWi7f+vNs3SknpS4Orn3ThhBUcEFaCuxvp6Cd9kWTOz
+	ba8+drVOXRBzsWovd3YJmDa86MXOwZolXvztIquc0u1uf1zqx0ppKsh5dOdD+EJr/76CBc
+	IH7jLRASnhImAkEJS72wjAnhymyQ3ng=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=loQx2kSe;
+	spf=pass (imf24.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780075645; a=rsa-sha256;
+	cv=none;
+	b=DFknNyFNcdehoLiCTGJ3yl+c/tid9lJjcV/9VcbRio+LxJWx7XPxcLwTMhiLSB/uHEev3W
+	uleOoKxkqRabfxE8pC3P2YusHEFPWRGXR8oRBq7Uq/ck4KxF0ebfl9wsB2s6naAf57IMKZ
+	bzZqNk3Dwf5LT8bv0KgzXcvwHs3rZQQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6C8C43B51;
-	Fri, 29 May 2026 17:24:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE611F0089A;
-	Fri, 29 May 2026 17:24:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5FEAE442A9;
+	Fri, 29 May 2026 17:27:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B361F00898;
+	Fri, 29 May 2026 17:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780075459;
-	bh=iVoJCbkI8s/nRA3AM39fhnw9JOfOtPPsCwAz6Lm0b5Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aQGn8jt5JO/pV0IPHLlF1MTcUbTx3kEDpUNSRD6eMocxYb9wKOacw+2grb3qpyQKh
-	 cDBAYgAPCps2/YVZMZADwzwlTp9y30dA14IPaDohu8njgJap/DjLyQTs18jgs8DWJc
-	 v3QnFexlWZZn2u9ZVT6iuOw2WIaT/rrIR8r90j/PE9aDLeQXiIm8KfHL8Rlktpoopd
-	 udu6BsLOyOxjGzk/zRfwcJ2YZX+vGYR2YAf27WDT9gPKs37nJ72mbAmLTQFos/ceJg
-	 +1iyTvWbQhAtoeXIFMy273NLTIhWrjh+It/Z7PIr9CIrWW63mx8CbEnyMVi70magMo
-	 czYPo+mYzzxBw==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id EFD09F4006E;
-	Fri, 29 May 2026 13:24:18 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Fri, 29 May 2026 13:24:18 -0400
-X-ME-Sender: <xms:wssZahfg1iyrILJmAVPn7Y5U71gDd_f-OFbYItmdd0KPr3aLCPjhIQ>
-    <xme:wssZamzjlwLLUcujOH6KKlzR-PvvDyHa9Z2NXBsaygguBo-FVd16klFtnkK_fjf2E
-    iW5z3kLcn-qSM7tzlzLMePx-KqFEv0KSlzt9hFSIFlAcFD2mI6XjA4>
-X-ME-Received: <xmr:wssZaqLnOfsoBBQMQHAYUIYoUG0jX5HCxDlCdtIvnFwAQp9bt9GS9MxcWwivOA>
-X-ME-Proxy-Cause: dmFkZTFrgX5MM3DUSJ7xzqsXiT9K7Mp6hFpPFfxmC0MA+iN7AjFohwvWx7oxJHZ+5oTsa/
-    eNprXeJ/674yJe1dHbWF7GZb1XnToVb0R4autdIDJiozLrBStYEb9fpXa/2JrApUqbrre1
-    LdBuyJn9i8qKcJffyvK1YIhy0raIMBiWiOnHjwA5r86k+Zhi6bSohRFuPzPhOdP14jnWJI
-    /xiWZuCo09JkwaiWtT4Gp2J4EUMHafSQnln9uaxNuylCfDh3CVEdSw0SaHR74GjGjlbPAf
-    5lIf5oHRJw+wgkoNP7G5YvX9mPChAnbwGYXnMrRN1deEijcEXsq+k9G0Lzj5Q5OMaNJVZP
-    ynHfTSCMN2Wglln7FwCeGxWcRR9bI2b3w8oJShKhvuMKIwP0IBVzf44fyIK2FGEUvOK548
-    Eq/sQNY5Z1h23soaVM4lhxLQFbLksIU3Fsd8HKslIEZ0s+EQ8tfFmkcDNslrl9b1g0noyB
-    LxGGX71AMWfXhsgBQSLBvluF8XBHVSeIQ9sxPjxnVVXsDHHaAwEFV3ywTZoDM30+wwW2T+
-    e1UAgp4FmIIfSe+xihledFa9IIacTucEedO4UqqAbpFgVcLaeNQxsxaRON9wmaMXnTxUnr
-    JggfNJowpV6m3GFgUHO3Qq9TKFsPiXlu4b06H73uaWUCYGZiIDRpW/m3fzVA
-X-ME-Proxy: <xmx:wssZanuLzrazh-39vUG6hczDKFciamDflbxJP20bLeZXbscQwzr4GQ>
-    <xmx:wssZakRt97rWJ0ocgpp2stNMAFQhYcJTUDdwRcMkHcbBIFbSX100Iw>
-    <xmx:wssZagTcunkjrPIn-hJ-SoryF7MMRp0AG6MRenIXzsmao8VRQswdtw>
-    <xmx:wssZaoph53enRFsixzoXKibo1H-xB5oMXn2GCdjnyo1Ofv9-X8AqiQ>
-    <xmx:wssZaoDPxFfR1qG98TB-qkzqNA8guPLhR4muQ4DkAhvNNa4Y2T4nAvuh>
+	s=k20260515; t=1780075644;
+	bh=NfTzwAtyC5pYFlbHqtPUTEyIV17MhkMv9IDQiAjYQnI=;
+	h=From:To:Cc:Subject:Date;
+	b=loQx2kSeAW4WGlbFF0SGccV3kFJaF+FgtJlJYVlFoJvme3GQ0VClJ/v7YHyvBT2XX
+	 yJo2Tke4/qvLXVUS6jKk7zpYP9vRgl13mK7hMXlVUPYhzbOBgYxsPljG9q/VxAbuEC
+	 m/cvId4ydW2GZ1WLYjGUIDF0PdRebv9RsgVUk1I+aJ00NVNEXJKkY/lHzC9bvay96F
+	 kFl+mbK4B0mRuKPWZSnohV930dqs+dusBX0eZE7bAGKJwRtRjipIa0LTd7QE559Rui
+	 F3x3ClaImIRWaZBLoCJZskLq4PblpsRn9B9xRfDiNNCLYCKuBp+YCfO/y0lRnEs+q3
+	 0q5D0IAbh10Aw==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3EEB2F4006F;
+	Fri, 29 May 2026 13:27:23 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Fri, 29 May 2026 13:27:23 -0400
+X-ME-Sender: <xms:e8wZat_1nNXv5CAdHB_HskvXv9SA7HT312ToLhM2ypvTldvN5NduHA>
+    <xme:e8wZalpRedKX_up8i1mqRKcNoPad8j0aWZhI8YY96Mc0Et1x9lCUDw2oDX37vh_i1
+    55RMExzVyRmqrB0gtW0f4ZTGrWK9MVu7Ikdo00v4t9YGpX20j-RoG4>
+X-ME-Received: <xmr:e8wZaji_c_ARQdrw05OHCov1PcrYiFkmsptProFoVTdAjHE9ku-Wui0V0tuPEA>
+X-ME-Proxy-Cause: dmFkZTFLqO2jamm4P7y4lIO2odxfIY2Q4usIAWWS/LuD7Qeu9DEkfQoY8X0zLzNn27/W0K
+    vPAn66qDVYZ3B59GlkltUfBGXhHi4cMOTSpefcOSVS4BSujNAPqNjBnuaalAYApfmqJGCl
+    PjiiIE8ahLGpAyEV8i51oONbzHPeeMgFWXGWXVTjhn2ou7ajp9XLjIEj3QVTj3ZEyL4Clq
+    Om2XB5Xj94E2HEXocz3aMcBewUn2ZGX1VabLUKDQY4siPVTnjLgvSoJiWxt4Py9ppBw8Wz
+    YFk1w+pg1vzY058LWIw8qWieUQvvCAcu1/5J6VptzCXcHLnyN2jEKM+QaNuF1DAT7g6yGl
+    AwVZkfUIJEXHUZA/oYBBQbtbJHlySn1cVRG/uGpQxCRV+Ck8z6evUsxK1ZnW0mwUGmvPBl
+    GJGyWqapotf69yDdTb1WfzPTzvbsSLhMhtPgw/WMdqB1ITnab7BzJu9a4GFUMAAYqNsNoP
+    YEyh5WPYPpW3KaFyVFwGqDX3ma3usQEFA50FEI7q74CMocYl8WHlVDgpxVPIi0emKtSTQ0
+    GJGvpzR/dR49fV5t/qnCT/WyiXopuEXz4Cg+JXNeYXZlOSAObkIJkP85o4Xtx2aOhLuYVl
+    D7hUvwS2YVXSdZM2pZnE9xplWtQuvebkidV/0yd9ye8sKZKghnAM8pOzZnXA
+X-ME-Proxy: <xmx:e8wZarDLkKiYxbqDPGTXMD00i2sTrYLiijkVd6XJ7tG_LsOVhLcgEQ>
+    <xmx:e8wZapssrxGS24UCos53QVMLvOLehmL29ZY_9TXhy1lSCAcQh-OzIg>
+    <xmx:e8wZat5R1nF8GKzaH6Oz1vxGfgDQfe-v1U_sOmOZ9c4wqFW5tuob9A>
+    <xmx:e8wZard1Z1L3zdyTC-fn-QlsZqBQQc1htk50wn6ssWhD4YbYEOy9hQ>
+    <xmx:e8wZatW3JZnHEE7iQ1eIV_qGD95Uy9ebTQJIUGuspqgW17VB3vtT02vQ>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 29 May 2026 13:24:18 -0400 (EDT)
+ 29 May 2026 13:27:21 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
+To: akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	david@kernel.org
+Cc: ljs@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	Liam.Howlett@oracle.com,
+	ziy@nvidia.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	jthoughton@google.com,
+	aarcange@redhat.com,
+	sj@kernel.org,
+	usama.arif@linux.dev,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	stable@vger.kernel.org,
-	Sashiko AI review <sashiko-bot@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Peter Xu <peterx@redhat.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6/6] userfaultfd: build __VMA_UFFD_FLAGS from config-gated masks
-Date: Fri, 29 May 2026 18:23:30 +0100
-Message-ID: <20260529172331.356655-7-kas@kernel.org>
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kernel-team@meta.com,
+	kas@kernel.org
+Subject: [PATCH v6 00/15] userfaultfd: working set tracking for VM guest memory
+Date: Fri, 29 May 2026 18:26:29 +0100
+Message-ID: <20260529172716.357179-1-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260529172331.356655-1-kas@kernel.org>
-References: <20260529172331.356655-1-kas@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C711720004
-X-Rspamd-Server: rspam03
-X-Stat-Signature: xdqxymmk3mumthrcxsp59e4m58yjck4f
-X-HE-Tag: 1780075460-203819
-X-HE-Meta: U2FsdGVkX1/oKQdF4oO62PaMyeyIUPmALEneF9LK4yFXRmaO7Oc/Tr+aopLJ7r/V0Trwde34be9SN+VjORaKE4XvsD7xEx9d8g0wzNz8BBjErDVUyArQhRXF2FjRIICRa7+B95ivyc2zMWg5xF0vGnqoYmMCpudSTnz4195ofPh4pFK7+Ny/uYilsAKH/UhV02QzOalLiP+0R7OE9p+9Fw93aKbLaWaOjP/XoelGE0MEdKRv+GApNE+Y09B5AufwO6n4o2BcV+gUmk6jualSFDD6U1s5DPKu9d9rEAQT5z0K4dYMEcf64uLClzjAitcG2PGbFKCdPBrRzwQcAYOGAlmmhEZiWt7YuvR1ZeX16fgk5wspGSdKTGE4r9Ut9zQ0TEPrBYdYdiOYNZ+h5HrCzaIT/fIT/uVjAIzJgwmdlmfu9F20qcSShAjChqQv9YoPZ02KngepTI0V9fOcVWN0ZBoIJVKXMl1JYz3Eo4Azn2RZp6D21687Az84AsGOllDftr8YMSXP6nel8eSECADVxqXidzqeXOJyjvgw3s0d7dC2bLNOMq+1XB1aQT71FBlvp7jFSoc8fjy4BEIGyn4cKdX/M2YNtiNXjPaidvddCHBo8qV8eUuMZ23Wl9LgiR3yiUqvzrSCO1rcZ6zPdHhaxQw0XpgSZgtmvXRh7zIPqG8ttxWvp6QiiNIexUIpFS+BqOq3XgSjC1oKKwNqLRNRQLZaqKsFGnQkAGMZMX4UU8cIv4H3V2+LOSIdMjL4rLSDx1vliZR61n78DiILbJskUmxrbiAwFs4Lj0mjNyoVgplCMudv5HsYeNKhUkoojjNsQ9OFegc3kQ3ey2aryVyCEb2e4WA8EfMRXdOJrURd92i/siP9ZVjm8sOEOgdSYDTjE0wUDeaz6ezcRBDnSiEzD6dQvVlP9sc1EMxYRJs8StfF92qEURpF9Sn1MGtgKFdQgO2AgBBOumRZXOd6HrH
- 8FUU+IyF
- SxPq4zQkuJ10oqvYFpKUa7eYcD7q4J6XFSZX1JciWtxr9pMvnIn9JRTmv8z93guz7hQdtLAiJMyh/bUb0Kafi7aNGhirK6DDtCo1HWXDzNF+f67fE/O1m4vSLlngKGUfv9KspJTZxC4WYq/Lh/Qe0a2+ZrLM0lEmzBdwFPw9CrlCEjhmbC/UQ4bNHHL58vQtqkxeCC/W9UUhgcCHzTq9OfPUcfq/Wfo9dlHnRsyUzF7eaQKuKEa7WI3oafGH8EcDydeT3d+veASge3OJ725TW6Ja30K72+l3U4NqbG+s+zQigcYmxVBCQ1H1kSA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5BDFB18000C
+X-Stat-Signature: swzt8rkhfho6c6u5ako1f3dfjcogn4ka
+X-HE-Tag: 1780075645-210280
+X-HE-Meta: U2FsdGVkX19jxTDbOgDdAc08Y2orH3VL9EjQGw/nYylUE54SeI0VDOmMElVG8A2wxZjpoXQAnbD1T0SLvmHmVJNtTSVHzseEZ9IoH/J3O7Fc0JvbzCoGWY48aU//kf94tObfGMLrfWhYea9qQAEq88ZD7TlijicjLds81chYJMpkOWmJY6BQPrNTHeHY+jm1tw2D3D09ewiUx1yC1BYdJM3TwMUca6Tdil/epjGCULxEgsqJcck2NlsiStYD9H6TiT41q3H1VrXkfoZTLeXQoGM0os/WJ3jBQVq8vpSPqvrx5B1lO+VOCEArbQaF8GcpNGx3oa/UJwHqWoA6WEGretWpibcR2pHxr6Df3vkKMl1htzZO6U0Yw8zEKj3ON6RhSFT9lveUKUt57Nrd8CW5CtaPAB/MtbuIookGqFBet1xZJg1zUNXFiPh/jSPZW2ehVRWNKdXyJw8RGFgzDcukJBUEYjPHSayK2UcsAgI2coN5uCT2UhLp6nbBdfz5TBstdsCj85Z4pMEgEi1IlviEMb4NlcG8+dh9bBsd7/dAb156VzLCFVY3IOU376U5LMDjBcRzFwe9ev4ENBmA+GQv7fLyL4WNynr2/kHq4VKLCu4AwOOmL6xLR2mIc+j67jvzpjRwE0MSQBDFC1KUsxrDR6flESRs4JHrnzF5xS4fn4myV4JJY7wLQhTr1lM+AyWSPCnYzCLkfV2NIx1XCCDzckJkGpU9iZJce5yMY+PqR8yrc3M3HIlcTJ4ctPrT02u2e4Jdh3bTuGhaislojQGHiz7n4zRH5QI+TMtHFOCc7h12Vjkf9JtLw24qMlpzQehMCT117a0vmocH8g1sspBUmCzX6+FGLVuDqd+7nUhAHmqP0ijXf0wKPfg4wwft+kTOU5arZcQeLgas+tCSiduu83PzzuWTDmG/aD2PfORSN8GxbNfZ3yc1wBO7pJo3/T6nx2b/1sYLe0EWD9BHAZe
+ kCJrfBzL
+ v2xYr5nBKD3pUGjbcktW11tu50E99FaX6JV8ozP5oXEYu9RhjwJxCnogYfemKZaU9Iscm0BaOI5nz2UeOLc577wQ9Cxj/AetBSeSOhtgSgaUzoXpoSWkZApcJokurOSLvKK/5RTBQbmPtM6hCopqO2mr1vXLwnZqXE08MueveeAa1ilRLXEbNnBNnOssSaULUtISRUdjS2ciwrBx9jQr6t3xU6A9OkCanKtY3yphk4V0xPdXJBdl9AWKTmLoapIX+nJ+HCRXBAHwwfbY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,115 +137,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The VMA flags bitmap is a single word today: NUM_VMA_FLAG_BITS is
-BITS_PER_LONG, so on 32-bit vma_flags_t holds only 32 bits. (The bitmap
-type exists so this can grow past BITS_PER_LONG later; until it does,
-anything declared above the first word is out of range on 32-bit.) The bit
-enum nevertheless declares some bits unconditionally above BITS_PER_LONG --
-VMA_UFFD_MINOR_BIT is 41, with VM_UFFD_MINOR == VM_NONE on 32-bit so no VMA
-actually carries the bit.
+This series adds userfaultfd support for tracking the working set of
+VM guest memory, so a VMM can identify cold pages and evict them to
+tiered or remote storage.
 
-__VMA_UFFD_FLAGS feeds VMA_UFFD_MINOR_BIT to mk_vma_flags() unconditionally.
-On 32-bit that becomes __set_bit(41, &one_long), a write one word past the
-end of the single-word bitmap. The compiler folds the out-of-bounds store
-with wraparound (1UL << (41 % 32) == bit 9) into the first word; bit 9 is
-already in __VMA_UFFD_FLAGS so the mask happens to come out right today, but
-it is an out-of-bounds write all the same, and any high-numbered bit whose
-mod-BITS_PER_LONG position is otherwise unused would silently OR an extra
-bit into the mask.
+v1: https://lore.kernel.org/all/20260427114607.4068647-1-kas@kernel.org/
+v2: https://lore.kernel.org/all/cover.1778254670.git.kas@kernel.org/
+v3: https://lore.kernel.org/all/20260522133857.552279-1-kirill@shutemov.name/
+v4: https://lore.kernel.org/all/20260525113737.1942478-1-kas@kernel.org/
+v5: https://lore.kernel.org/all/20260526130509.2748441-1-kirill@shutemov.name/
 
-Rather than feed bit numbers that may not exist on the current build to
-mk_vma_flags(), build the mask from whole per-mode masks that collapse to
-EMPTY_VMA_FLAGS when their feature is unavailable. Add
-mk_vma_flags_from_masks() for that, and define VMA_UFFD_MISSING / _WP /
-_MINOR alongside the VM_UFFD_* flags, gating VMA_UFFD_MINOR on the same
-config as VM_UFFD_MINOR (which implies 64BIT, where bit 41 fits). An
-out-of-range bit is then never materialised, on any arch, and the in-range
-fast path stays a compile-time constant.
+This series is based on the "userfaultfd/pagemap: pre-existing fixes"
+series, posted separately; that series carries the pre-existing
+Fixes:/Cc: stable@ patches that used to live at the front of v5 (the
+four from v5 plus two more surfaced since).
 
-Fixes: 9ea35a25d51b ("mm: introduce VMA flags bitmap type")
-Cc: stable@vger.kernel.org
-Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
-Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-opus-4-8
----
- include/linux/mm.h            | 39 +++++++++++++++++++++++++++++++++++
- include/linux/userfaultfd_k.h |  4 ++--
- 2 files changed, 41 insertions(+), 2 deletions(-)
+= Changes since v5 =
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 0f2612a70fb1..485df9c2dbdd 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -496,6 +496,21 @@ enum {
- #else
- #define VM_UFFD_MINOR	VM_NONE
- #endif
-+
-+/*
-+ * vma_flags_t masks for the userfaultfd VMA flags. VMA_UFFD_MINOR is gated on
-+ * the same config as VM_UFFD_MINOR -- which implies 64BIT, where the bit fits
-+ * -- so an out-of-range bit is never fed to mk_vma_flags() on a build whose
-+ * bitmap cannot hold it.
-+ */
-+#define VMA_UFFD_MISSING	mk_vma_flags(VMA_UFFD_MISSING_BIT)
-+#define VMA_UFFD_WP		mk_vma_flags(VMA_UFFD_WP_BIT)
-+#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
-+#define VMA_UFFD_MINOR		mk_vma_flags(VMA_UFFD_MINOR_BIT)
-+#else
-+#define VMA_UFFD_MINOR		EMPTY_VMA_FLAGS
-+#endif
-+
- #ifdef CONFIG_64BIT
- #define VM_ALLOW_ANY_UNCACHED	INIT_VM_FLAG(ALLOW_ANY_UNCACHED)
- #define VM_SEALED		INIT_VM_FLAG(SEALED)
-@@ -1238,6 +1253,30 @@ static __always_inline void vma_flags_set_mask(vma_flags_t *flags,
- #define vma_flags_set(flags, ...) \
- 	vma_flags_set_mask(flags, mk_vma_flags(__VA_ARGS__))
- 
-+static __always_inline vma_flags_t __mk_vma_flags_from_masks(size_t count,
-+		const vma_flags_t *masks)
-+{
-+	vma_flags_t flags = EMPTY_VMA_FLAGS;
-+	size_t i;
-+
-+	for (i = 0; i < count; i++)
-+		vma_flags_set_mask(&flags, masks[i]);
-+	return flags;
-+}
-+
-+/*
-+ * Combine pre-computed vma_flags_t masks into one value, e.g.:
-+ *
-+ * vma_flags_t flags = mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR);
-+ *
-+ * Unlike mk_vma_flags(), which takes bit numbers, this takes whole masks --
-+ * each of which may be EMPTY_VMA_FLAGS when its feature is unavailable -- so a
-+ * bit that does not exist on the current build is never materialised.
-+ */
-+#define mk_vma_flags_from_masks(...)					\
-+	__mk_vma_flags_from_masks(COUNT_ARGS(__VA_ARGS__),		\
-+		(const vma_flags_t []){__VA_ARGS__})
-+
- /* Clear all of the to-clear flags in flags, non-atomically. */
- static __always_inline void vma_flags_clear_mask(vma_flags_t *flags,
- 		vma_flags_t to_clear)
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index 3ec8e1071673..68edac4dcd78 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -23,8 +23,8 @@
- /* The set of all possible UFFD-related VM flags. */
- #define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_WP | VM_UFFD_MINOR)
- 
--#define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT, \
--				      VMA_UFFD_MINOR_BIT)
-+#define __VMA_UFFD_FLAGS mk_vma_flags_from_masks(VMA_UFFD_MISSING, VMA_UFFD_WP, \
-+						 VMA_UFFD_MINOR)
- 
- /*
-  * CAREFUL: Check include/uapi/asm-generic/fcntl.h when defining
+  - Split the pre-existing fixes out into a separate series; this is
+    rebased on top. (Lorenzo, Andrew)
+  - Rework the mk_vma_flags() OOB fix to config-gated per-mode masks
+    (mk_vma_flags_from_masks()); moved to the fixes series. (Lorenzo)
+  - New prep patch 04/15: convert the userfaultfd_*() helpers to
+    vma_test_any_mask(). (Lorenzo)
+  - 08/15: gup_can_follow_protnone() forces the RWP fault only on
+    accessible VMAs, fixing a FOLL_FORCE loop on a VM_UFFD_RWP VMA that
+    was mprotect(PROT_NONE)'d.
+
+uffd-unit-tests 113/113, pagemap_ioctl 117/117.
+
+= Problem =
+
+A VMM managing guest memory needs to:
+
+  1. detect which pages are still being touched (working-set
+     tracking);
+  2. safely evict cold pages to slower tiered or remote storage;
+  3. fetch them back on demand when accessed again.
+
+= Approach =
+
+UFFDIO_REGISTER_MODE_RWP is a new userfaultfd registration mode, in
+parallel with the existing MODE_MISSING / MODE_WP / MODE_MINOR. It
+uses the same mechanism on every backing -- anon, shmem, hugetlbfs:
+
+  - PAGE_NONE on the PTE (the same primitive NUMA balancing uses)
+    makes the page inaccessible while keeping it resident;
+  - the uffd PTE bit (the one MODE_WP already owns) marks the entry
+    as "userfaultfd-tracked" so the protnone fault path can tell an
+    RWP fault apart from an mprotect(PROT_NONE) or NUMA hinting
+    fault.
+
+VM_UFFD_WP and VM_UFFD_RWP are mutually exclusive per VMA, so the
+same PTE bit safely carries both meanings depending on the
+registered VMA flag.
+
+In sync mode, the kernel delivers a UFFD_PAGEFAULT_FLAG_RWP message
+to the registered handler, and the handler resolves the fault with
+UFFDIO_RWPROTECT clearing MODE_RWP. In async mode
+(UFFD_FEATURE_RWP_ASYNC), the fault is auto-resolved in-place: the
+kernel restores the original PTE permissions and the faulting thread
+continues without a userfaultfd message ever being delivered.
+Userspace then learns which pages were touched by reading
+PAGE_IS_ACCESSED out of PAGEMAP_SCAN -- pages whose uffd bit is
+still set were not re-accessed since the last RWP cycle.
+
+UFFDIO_RWPROTECT is the protect/unprotect ioctl, mirroring
+UFFDIO_WRITEPROTECT.
+
+UFFDIO_SET_MODE flips RWP_ASYNC <-> sync at runtime under
+mmap_write_lock() + vma_start_write(), so a VMM can run in async
+mode for detection and switch to sync for race-free eviction without
+re-registering the userfaultfd.
+
+= Typical VMM workflow =
+
+  /* arm */
+  UFFDIO_API(features = RWP | RWP_ASYNC)
+  UFFDIO_REGISTER(MODE_RWP)
+
+  /* detection cycle (async) */
+  UFFDIO_RWPROTECT(range, RWP)
+  sleep(interval)
+
+  /* freeze the cold snapshot before scanning */
+  UFFDIO_SET_MODE(disable = RWP_ASYNC)                  /* sync */
+  PAGEMAP_SCAN(!PAGE_IS_ACCESSED) -> cold pages
+
+  /* eviction (sync mode traps races) */
+  pwrite(cold) + fallocate(FALLOC_FL_PUNCH_HOLE, cold)
+  UFFDIO_WAKE(cold)
+  UFFDIO_SET_MODE(enable  = RWP_ASYNC)                  /* resume */
+
+= Series layout =
+
+Patches 1 to 4 are preparatory:
+
+  1: decouple protnone helpers from CONFIG_NUMA_BALANCING.
+  2-3: rename _PAGE_BIT_UFFD_WP, pte_uffd_wp() and friends to drop
+       the _WP suffix, since the bit now carries WP and RWP meaning
+       depending on the VMA flag. The SCAN_PTE_UFFD enum's ftrace
+       output string is intentionally kept as "pte_uffd_wp" so
+       trace-based tooling does not silently break.
+  4: convert the userfaultfd_*() flag helpers to vma_test_any_mask().
+
+Patches 5 to 8 add the in-kernel mechanism:
+
+  5: VM_UFFD_RWP VMA flag (aliased to VM_NONE until 09/15 introduces
+     CONFIG_USERFAULTFD_RWP together with the UAPI).
+  6: MM_CP_UFFD_RWP change_protection() primitive (PAGE_NONE +
+     uffd bit, plus a RESOLVE counterpart).
+  7: marker preservation across swap, device-exclusive, migration,
+     fork, mremap, UFFDIO_MOVE, hugetlb copy, and mprotect().
+  8: handle VM_UFFD_RWP in khugepaged, rmap, and GUP.
+
+Patches 9 to 13 wire the userspace surface:
+
+  9: UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT plumbing.
+ 10: RWP fault delivery; turn the UAPI on.
+ 11: PAGE_IS_ACCESSED in PAGEMAP_SCAN.
+ 12: UFFD_FEATURE_RWP_ASYNC.
+ 13: UFFDIO_SET_MODE runtime sync/async toggle.
+
+Patches 14 to 15 are selftests and documentation.
+
+Kiryl Shutsemau (Meta) (15):
+  mm: decouple protnone helpers from CONFIG_NUMA_BALANCING
+  mm: rename uffd-wp PTE bit macros to uffd
+  mm: rename uffd-wp PTE accessors to uffd
+  userfaultfd: test uffd VMA flags through the vma_flags_t API
+  mm: add VM_UFFD_RWP VMA flag
+  mm: add MM_CP_UFFD_RWP change_protection() flag
+  mm: preserve RWP marker across PTE rewrites
+  mm: handle VM_UFFD_RWP in khugepaged, rmap, and GUP
+  userfaultfd: add UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT
+    plumbing
+  mm/userfaultfd: add RWP fault delivery and expose
+    UFFDIO_REGISTER_MODE_RWP
+  mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
+  userfaultfd: add UFFD_FEATURE_RWP_ASYNC for async fault resolution
+  userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
+  selftests/mm: add userfaultfd RWP tests
+  Documentation/userfaultfd: document RWP working set tracking
+
+ Documentation/admin-guide/mm/pagemap.rst     |  13 +-
+ Documentation/admin-guide/mm/userfaultfd.rst | 253 +++++-
+ Documentation/filesystems/proc.rst           |   1 +
+ arch/arm64/Kconfig                           |   1 +
+ arch/arm64/include/asm/pgtable-prot.h        |   8 +-
+ arch/arm64/include/asm/pgtable.h             |  47 +-
+ arch/loongarch/Kconfig                       |   1 +
+ arch/loongarch/include/asm/pgtable.h         |   4 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h |   8 +-
+ arch/powerpc/platforms/Kconfig.cputype       |   1 +
+ arch/riscv/Kconfig                           |   1 +
+ arch/riscv/include/asm/pgtable-bits.h        |  12 +-
+ arch/riscv/include/asm/pgtable.h             |  59 +-
+ arch/s390/Kconfig                            |   1 +
+ arch/s390/include/asm/hugetlb.h              |  12 +-
+ arch/s390/include/asm/pgtable.h              |   4 +-
+ arch/x86/Kconfig                             |   1 +
+ arch/x86/include/asm/pgtable.h               |  56 +-
+ arch/x86/include/asm/pgtable_types.h         |  16 +-
+ fs/proc/task_mmu.c                           |  98 ++-
+ include/asm-generic/hugetlb.h                |  18 +-
+ include/asm-generic/pgtable_uffd.h           |  32 +-
+ include/linux/huge_mm.h                      |   7 +
+ include/linux/leafops.h                      |   4 +-
+ include/linux/mm.h                           |  65 +-
+ include/linux/mm_inline.h                    |   4 +-
+ include/linux/pgtable.h                      |  32 +-
+ include/linux/swapops.h                      |   4 +-
+ include/linux/userfaultfd_k.h                |  89 ++-
+ include/trace/events/huge_memory.h           |   2 +-
+ include/trace/events/mmflags.h               |   7 +
+ include/uapi/linux/fs.h                      |   1 +
+ include/uapi/linux/userfaultfd.h             |  54 +-
+ init/Kconfig                                 |   8 +
+ mm/Kconfig                                   |   9 +
+ mm/debug_vm_pgtable.c                        |   4 +-
+ mm/huge_memory.c                             | 159 ++--
+ mm/hugetlb.c                                 | 158 +++-
+ mm/internal.h                                |   4 +-
+ mm/khugepaged.c                              |  40 +-
+ mm/memory.c                                  | 135 +++-
+ mm/migrate.c                                 |  20 +-
+ mm/migrate_device.c                          |   8 +-
+ mm/mprotect.c                                |  70 +-
+ mm/mremap.c                                  |  17 +-
+ mm/page_table_check.c                        |   8 +-
+ mm/rmap.c                                    |  18 +-
+ mm/swapfile.c                                |   9 +-
+ mm/userfaultfd.c                             | 387 +++++++++-
+ tools/include/uapi/linux/fs.h                |   1 +
+ tools/testing/selftests/mm/uffd-unit-tests.c | 765 +++++++++++++++++++
+ 51 files changed, 2300 insertions(+), 436 deletions(-)
+
+
+base-commit: 9110948da327947a01830604020e0548c15b96f1
 -- 
 2.54.0
 
