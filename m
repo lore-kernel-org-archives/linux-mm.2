@@ -4,128 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5FC0CD6E50
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:07:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44CE4CD6E4A
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:17:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20FF46B0092; Fri, 29 May 2026 11:07:35 -0400 (EDT)
+	id 37E986B0092; Fri, 29 May 2026 11:17:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E79E6B0093; Fri, 29 May 2026 11:07:35 -0400 (EDT)
+	id 32F7E6B0093; Fri, 29 May 2026 11:17:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D74F6B00AF; Fri, 29 May 2026 11:07:35 -0400 (EDT)
+	id 21E9F6B009E; Fri, 29 May 2026 11:17:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F18566B0092
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:07:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DC58401CF
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:07:34 +0000 (UTC)
-X-FDA: 84820786428.18.0989820
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DE5071C0013
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:07:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=YHFXwrZp;
-	spf=pass (imf20.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780067253;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D15D6B0092
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:17:17 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB22712020C
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:17:16 +0000 (UTC)
+X-FDA: 84820810872.10.2B6421B
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9B2BA40002
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:17:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KMa9QZEH;
+	spf=pass (imf12.hostedemail.com: domain of dbgh9129@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=dbgh9129@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780067834; a=rsa-sha256;
+	cv=pass;
+	b=Q1R0Q/0YLxjMjvhmcHR5tVMfKAfokALdLqqzX0f6sul/ttUaEsmMe8HbbZIwam4UX3boby
+	EhUW8GincQMFi6Yjc0Ga7Ws8Ris7neljtgUEBNa78U5tJ0MjI1RD1CeLBaagfAn4H1z+mL
+	Q9zBE5Ocdan+HTS5bOSa5/flSJFuQnc=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KMa9QZEH;
+	spf=pass (imf12.hostedemail.com: domain of dbgh9129@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=dbgh9129@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780067834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ebIP9u+W/NdprxD2plfJ1x4u07OsUSk6F8cbjhxlAs4=;
-	b=Fve8JiBq7EUvcld+0OdxsvjLU1GCnBALu0e2H/OFNl/842JCOVM1yNNslIxdpVtt0L3SIV
-	6m1NudZSh4mgvfiC7ut88HH6vHm+K2egVe1TJBSEQXMBFgH5/hHUaYnrdT+mc2eY9beRNL
-	bWmM+iBCs8eIG7GtLlbzZH0ll1uycv0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=YHFXwrZp;
-	spf=pass (imf20.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780067253; a=rsa-sha256;
-	cv=none;
-	b=HYT7aCBfO4oxhSPI2ekAuvQavnRB6lxRHjG/BnvKQ9Yvpaalz/rbcPj9skfNBugx6UB/zY
-	Mj7TB73jYgOk0rm430A+KF0mqv3jKN4aubfgohJqw/Eeb9rY0Pa/kcEDOULs+zyq8RsDC4
-	I0ajCFQLh3WXz07AKzvj+MEVEeSq52k=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 10C8440E37
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1780067251; bh=ebIP9u+W/NdprxD2plfJ1x4u07OsUSk6F8cbjhxlAs4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YHFXwrZpXpELJCTLz1aonU6ujOlC3U+3KBMyzDRJIeqAQxcKO89EUcmvxyoUQM96G
-	 GofDbotXK9F4W+ymH9hdnOnS1IvDgr+Lwj66tJhtDzp5UmEbp+e5byw5Etm+YfUK7D
-	 /Ecut4iJxA08ifiuuZA6Vcwyd0e4utrKgns8b6tGmNx2OtCMX5T+skVL1jEXVmAbCL
-	 2QNrsrRMp72ArGrSCZhPWChA7mnro+R7Uv2NUXuEvWX6U49hDb9rCBCBah+o8+OAx/
-	 +rLwQA0b7r+EZwuhVhdFVhVfiBkLpFeYS21diLH8um6X9eUyPadg/1mjT/mKpeCdmY
-	 G6+x3PczFpJBw==
-Received: from localhost (mdns.lwn.net [45.79.72.68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 10C8440E37;
-	Fri, 29 May 2026 15:07:31 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Barry Song <baohua@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: wangtao <tao.wangtao@honor.com>, "catalin.marinas@arm.com"
- <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
- "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com"
- <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
- "willy@infradead.org" <willy@infradead.org>, "sj@kernel.org"
- <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>, "luizcap@redhat.com"
- <luizcap@redhat.com>, "zhangjiao2@cmss.chinamobile.com"
- <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>,
- "hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org"
- <liam@infradead.org>, "vbabka@kernel.org" <vbabka@kernel.org>,
- "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
- <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz"
- <jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, "harry@kernel.org"
- <harry@kernel.org>, "jannh@google.com" <jannh@google.com>, "jgg@ziepe.ca"
- <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com"
- <ziy@nvidia.com>, "baolin.wang@linux.alibaba.com"
- <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com"
- <dev.jain@arm.com>, "lance.yang@linux.dev" <lance.yang@linux.dev>,
- "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, "chengming.zhou@linux.dev"
- <chengming.zhou@linux.dev>, "nao.horiguchi@gmail.com"
- <nao.horiguchi@gmail.com>, "matthew.brost@intel.com"
- <matthew.brost@intel.com>, "joshua.hahnjy@gmail.com"
- <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com" <rakie.kim@sk.com>,
- "byungchul@sk.com" <byungchul@sk.com>, "gourry@gourry.net"
- <gourry@gourry.net>, "ying.huang@linux.alibaba.com"
- <ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>,
- "pfalcato@suse.de" <pfalcato@suse.de>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
- <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>, "damon@lists.linux.dev" <damon@lists.linux.dev>,
- "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, "ryncsn@gmail.com"
- <ryncsn@gmail.com>, "jparsana@google.com" <jparsana@google.com>,
- "dvander@google.com" <dvander@google.com>, zhangji <zhangji1@honor.com>,
- wangzicheng <wangzicheng@honor.com>
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-In-Reply-To: <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <ahcANgFDFwfC0v1q@lucifer> <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
- <ahf2mJg9OOWvu0jA@lucifer>
- <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
-Date: Fri, 29 May 2026 09:07:30 -0600
-Message-ID: <87qzmu2r0t.fsf@trenco.lwn.net>
+	bh=422uQuN4lSGGFpmZWWpR93/cChKRMGbONBnG6JNiRpo=;
+	b=V04BzLLLXoBOrTi5bVMkNDf8hHpKrqTLwBdY+/sdfChNXDUvwAvfNTTtOaGiBTtYZaY9vw
+	xp35eLQAUt1ftjB2VZ4Ia9ncISX5BYe5z5kmwpej86FV9xMlRW2KFNAULArN9eT7aIj/6n
+	9fI4zWhD13TxyYVft451hU2PCCOujEM=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-68bfcf11050so1590236a12.0
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:17:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780067833; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bU2U2G6ZWsA3sImlpFOzw2RE39byZ2uMTKhZMBpJAG7LaJxqqaxBKSVdy1/zfqdNzD
+         aOBpDzqa6lolazhz1m0gLeEfGo0q37bt2zoNZ1drdh+w2ZKbw3/UPbtkkfPakTgc8JIy
+         0SxV+3Wjr95HaofuPZvnwndmqkbZkCiLjNSJMkpOUAMVCk1mV9PFxaz4arVVeFN5pZBy
+         K+TDa5uVrQ0PG7K48bMr+w3ZAurnbjYGPNRVRsrFCIPSiV5qoGeLThkakt/2zR5ZQdiz
+         ESHjCLA4fc+umxsG92bT8IDDrpGev1L2lrfNqwiw6ILBnLoiYy4ZyMcmxJNpmesuNrRc
+         Cr6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=422uQuN4lSGGFpmZWWpR93/cChKRMGbONBnG6JNiRpo=;
+        fh=7XtU5G+4DrVi86Oh4XpBIX/cJr3nzO96lpVabx0ti/U=;
+        b=VKMBsowzJkgxwKibeTgEhACnqcrqXeIcdkkI16VbXerqt9RtVvu1P4yteKZfQ1mqcK
+         q5o50a9iTOcCN+RFRMnXtPQ6SKNZp3iEBRjoyiwBGOWWYKkVPTSzop0F4nYjCQPt3KlJ
+         aZySBOsMh1yiqpYX2YOopjZpLySMppUoz0j9GoW14XjTKS+4/nqiwY6IyvdZr4wdmEKI
+         o8EcoKoR03fDgqO/YQCwKadtGFnCdNCnZnhP9VGEkwaphdXUggxysNiAsSEWpXz+iQZo
+         YlQx4+3v1tRUcvNnWIUuJrU1gYhxBnc0d4O+O+tEOdFddeJe9WJ2afSO+Bg1HWIOKPSM
+         RBRw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780067833; x=1780672633; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=422uQuN4lSGGFpmZWWpR93/cChKRMGbONBnG6JNiRpo=;
+        b=KMa9QZEHk4OoSz3Rf//HTmXXvCDzoEZj6gD9u/J4xwPt8rZcqUpbQnkgpk1NPNVyuC
+         6gamCGbxGvb7/sk3fLQ/VSm3jm3m/VMrprpVvSWrHJuafEtxu4xwfwXIN2A2rhBr4r8I
+         aWgyRhRfqzsUKMCjxauvRS4SX5jq52Fpm/vDmHO5M/DF+BaUND+zS6yPieCmFxLga/OY
+         eDjgpA5COXTif1Fmo2wdmErtWfr5Nyz1oVM96BULZXWjCY1Hh1wXXBcwSxhxSouc0TP4
+         oCAqqVflOAPsfeKr379/zUG0V9lmFXAZXaMtAn5nclOMGMlajxIYAbCbxUWsvn/IdSx4
+         2+OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780067833; x=1780672633;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=422uQuN4lSGGFpmZWWpR93/cChKRMGbONBnG6JNiRpo=;
+        b=WVlw70PGFEyxe+cBO4a6g/q3h4He6KbnLuBcxuwGMau6Y5gSDwxQ9dwZCYOYOcALaV
+         un8prSZZXYFnENZVbYm2U1PFYQj++Zdw6vpwSWgUZFeq4Yboxj3dqDUJx5ZxZOXNsOjn
+         LI2xOaY395Qi43xRIVIjHTiTKBY8JCRzVTMAHgT9lsIDudxCAKBc2cbvq/fob3zK/gcV
+         jsMa8iiUoDIFoc0dParw44fzYmp7zeHJoB+NJEhszVL+ZFb+OmPS0lJb7ZBbCk9QApak
+         cgO6Nn8RkCbz5IcH44UCkK5lEUX7DaMNxS4sH/zXZTtfjKzvc80Cf/TnyXYewhj+GFu8
+         WWng==
+X-Forwarded-Encrypted: i=1; AFNElJ+z4b2XyBv9FWvKdLR+6vletuuCfu1oWJTQFKfZF2vE4dJcmEOX5dfcVsxLzq8KvVQQPSSc3c+q2Q==@kvack.org
+X-Gm-Message-State: AOJu0Yzs/rX5DhzkM9VY1NhpB1t2pCNOeOTOa44dmdmUdiUehEVzH7hi
+	5aXXVallF+s3F8+9zasTvXmh7BPz2T5hIjBRcaB5d3F4eXmDBCMGvjPFnbXY6Xopl9331/LK0E6
+	MhIcIneSfDjqQzEW9PEnCKBGDLpLih+vm5hIAWs+cPw==
+X-Gm-Gg: Acq92OFv/AkgWxS7fTXgQzDf6kRHftgbzpdpw/mxwoCWYxJUGpifWI1XsGVd7DVaBNT
+	GYnmXi45965PD55zObwZj6CJFIu33/Wk5NCDDcfbAItzPVlKFxrUHkpcQQsoUY3/LBbG6ShG5rU
+	S/7YHkOqiAUjYTjCoy6yodMyp4KAYw8LQB76736voQqp+qpFTEXqjThxEUYwJMeb+bCxsNohZdg
+	Vq44rp72X46oOT1M9Db9iaId8Dzf16VOf4fKeYmSUhnTGshne9YtuCLm0oMddZ2vruxckZHG8qI
+	sXmiU2OF0VEkCDPYpjy9cUFhtfc6
+X-Received: by 2002:a17:906:5a47:b0:bc6:2bd3:8176 with SMTP id
+ a640c23a62f3a-be9cb20282fmr140019966b.35.1780067832744; Fri, 29 May 2026
+ 08:17:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260529031519.1617000-1-dbgh9129@gmail.com> <20260529144435.83930-1-sj@kernel.org>
+In-Reply-To: <20260529144435.83930-1-sj@kernel.org>
+From: =?UTF-8?B?7LWc7Jyg7Zi4?= <dbgh9129@gmail.com>
+Date: Fri, 29 May 2026 11:17:01 -0400
+X-Gm-Features: AVHnY4LfUA7LxM08-JOQeLV2s6GMBtHuAdF6kpv6DseVHeWASDyQQhyK7FI4U5A
+Message-ID: <CACrCO_XCxTDk7b8wo66CrxzfOXG50-uCxdE9tjJppH_ei5Wo+A@mail.gmail.com>
+Subject: Re: [PATCH v1] mm/damon/stat: roll back context on damon_call() failure
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DE5071C0013
-X-Stat-Signature: 4rfc1j1pedwhc3k1tz7jbtda9ig3ougg
-X-HE-Tag: 1780067252-607456
-X-HE-Meta: U2FsdGVkX1+CmJ+EkIxIkOSgEsElvZb+h8xSBJtzjIbpVErMZhoi2l5JrjJLn4/NzeKz5/l8C6fg8eGAaEF9sEyTexYndpgfj4ZFVx4SoMOnzoQsqR12aMxRQaeilXV2imWBv9jJGnOr+J9jUTMxgO0/ceL9o7DsxkQZ/nVqHW5FzWFojic2Iz6emqPHZLcMNY0xkibehbkKbhcUjLwjl//wgX6JcHZIbgY5/JSWK2E4hLAJY686z+Th74w3uWlbXIDyKqik8xEmYL3OD2XhZd9nqGrahPcVUk2Q8xXw9ib1oDd2bBwfgnDPiMeWuKHvy7a2+M/yIH7y8sw6Yuy0t/Zzz6xQyB9bXh7lGd8kMme6MXAiQfdj1bdJfxkbQdT3uzkoSi+joPezVoelvEJHNKqM8rZ8EN4G+Gpw2EFT4CEyAUMux+suxVCCySy1H+BypNGNs0Xw0o7OUsWLPtPxCXP+eJvNxWOt8ThBG13hcAxQTX1JysfkT2h2bfYrQndom4k+EEqcaP/BSM6CR3UV6f3JD3icXjnWtG5vaoqB0gBbIAKHXY4pPFen1u1KENVZ9tC54DjORi/CWPe6H63iyG6LSqrL5qEMzNVFeDk1QbjC+9Hi9qdZ3dlwDBb5G0MzrEmk0g6fuBE9mxQoxSgEH78FJtkLVtHtlT/jDPW+MnxetCtEcPAi3+6H8xcKbSrVkuU+qSYQH218bVtqI8TgKedbzbryH5dmRb0fhyD6WIGBru3tVv14KwoZOsfDLFQOViYpy7BFx++tKMICrEXsPN3glwf2GX+tXYn181aOV/xjPlkPf7aPGdNIWw0Wj8i6e+5Q2pWOwSuJO3VRSgcp0soJbLjc9YCKcM5OPgE4tou5F/QBiEVCxyMs9p+1Ub0unUHx11/6PvRiFJ9gHWOvCMqrAYMyHP/Vwx8eSK6QKKUJCmcAalQG13sruvtTkzqssQRgzkX4lYfK1RIups4
- xrD41cj8
- kdrbUGAw4mg2XhySHLfIySsedCOd1pylwWLTkDfQyL51MKZV1B8V91MnBNHGhqWnhp/O6SNGzRr6uEJgXnLWGSJpi8AqjUJUhw39m1iH3Q0G6lroj61/9rnWJadWqlvCrkCuoCTmvD9wIqbqfg0ao0sBhIz3dcr0y0m9O/foZS9Yk3ic/Gxf9yS2SCakXcdOkipEyASAPWxhknJDOThBjqFaCkKcPrSIyuLAPaOPwhXewPYvUFnCVSr5g6BOI52J8fPhnTIJWQqh0lwa7O0XyfpSIOBCx/Qhf0BbY0GPOZXnFrSUHBc2mLXr5xTwf6+3r2JbIdZv1HGFSFbE9Mxt4F/HNUtGn2Pii3duUD26IkycG5SWZsztkrrFByvv3FraT1oEp9gYbSdxbPVYc6jikfRvJzPfIPYZ9ruLRKBxkdMKPCx0iVJPjWDWmZHJ0L0X60vgncjnTQT61YobTMm00BjdSVK7u/QvM3a80vfwbk8zh9Hjqv0VtHVviBEMRTjCn8wRo
+X-Rspamd-Queue-Id: 9B2BA40002
+X-Rspamd-Server: rspam03
+X-Stat-Signature: xfjj16mssd1dhw68eejnsxswcpp77qib
+X-HE-Tag: 1780067834-826719
+X-HE-Meta: U2FsdGVkX18p04y/IJowKvQ3avia3P+ZkSaSsit4TXK9rlMe4LJZQkdn1xbrRHwJA3OCOUNR2pysRlMIabLA3UjT/5OdJF3f8Dhg3MivzubLTPJKockSdrwtWO2wMEgsEB5Pg9dveAPZpVSwkknj1LLx/vze8w1o1+W55/DBj9bfTss3mFFSiASNp1Gjuprz7W6s/rpYe446g8w8dbZNUaOuebNOGd5IL6yRvdzuMfUBFov2ZgjXHFPTf6QPWdqPKrUcDPGIkqtagYFcyc1nDu2GC4l4pexzedaymxd9thsEIWZvS3X4QanLB4fON3YJPqThLHvDMB3o/Zlo1yde2eLBsrweQEQFbuEkI42eX35n5UHi1qpi6p6p9tyoDR8j5bTmE1ocz4PXG5qrQYZ2SXPcUIsex3DLQBr9xeS/QzBN/DtXKfH/Ic+io428r7fq5JiuIcgXA4akTLelNcX+imnQShWq3BhZxpPwv8QvEYnqqK3GMdXtm2kV8VfVe1IjsZUNaIEYW7QPF38cCH0HVgkGSiR1DBrFOunqtYW1rCSfqEtFkqvUQSpkiH5IivUoXAw/23/ZFqkKvrMZKtRmcv3xrOhEkTZhGoGgXIzK53JcnJYHPKcQ0e1jlI7yOfClXU/k+fp7oWKaeUmiC7+NEaML0Ab3o/TYa1/9vMYrvDmkcARUJ3+pXWwZL2lgh3Hz+JHEmGrMiU6KguJ6aFjzFK95GhjE6NQQ6TLkhq7rO9C1yGjZnGsPNf91SjbhWflByMQtqBlXymXejgDoYOcIOx0rTKQ9vOnKvphGksf+dZI4U24nz353FHnT/DuCtTjx2xrDHOaUFETVFDeqmDUSuShMqBLrAKTDIFF98MYFPT0z3x4Sq7m1bl4O2yjSPUaYfl6a8UJpimHkTzd6f3c9XcM/bSsplIvKYJ9Va8gkFO18ivo+ro/RsjMPNk5uY9bHT5oB4i+nJF7GMDJz8N2
+ 9vLY2dCh
+ 1+QYYdlv1ftaz6mW7fXpAE2FElFfP3XvTtXWMGML5WAGg7QoDQbVljnEcfDTyXzRV9foo71CnpaNnWCoh9ihb8ZTbDeje79bU20mrEyD1fhFp7lIvK9+9XVBJwF58A6sZeflO2Ztmb0+z/dF7UKNtnBZYEBCg2dd6hW3FpZxMNR+hE7SJSP9ttuL4fgIENU+HBnQGE09cbc1rdyfs7OAxS669x+Nq4wPqx2xPcdvawF6XBOuJKyYZOVKbDrUAPuOOPfF2vCgbsKtsURBciffNhabBTNtHAnPnIHUH0uXh3BrUPE8trAfX1rDzFiXndcpEs1OcMnVLmxl+dpO907Bf5E7YveuCarbYmjw3PQtBml4Tf5knWGoH3qx3uh6HssYUggC8g9s0hHUzLQgdRHGKr4+4PMRmY7+o0EHlVmP7FpGgfzF+ju5ebhD0SPMYA0t6MXtnbBw0FU8XgYvsbP3qQDdK9snwY1xq45nLYuaBd1AhFKQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,23 +135,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Barry Song <baohua@kernel.org> writes:
+Dear SJ
 
-> After coming back from Zagreb, I kept trying to find one or
-> two full days to read Lorenzo's code and slides carefully and
-> write a blog about them. Unfortunately, I have been completely
-> busy with other work. Sigh... we always seem to have too many
-> non-upstream tasks.
->
-> If possible, I'd really appreciate it if you could take a
-> deep dive into it and write a detailed blog post. I'd be
-> very eager to read it and better understand the overall design.
-> Otherwise, I'll try to find some time next week or later to
-> go through it myself.
+On Fri, 29 May 2026 at 10:44, SeongJae Park <sj@kernel.org> wrote:
 
-It's still somewhat superficial, but in case it's helpful:
+> But, having one damon_ctx object in the memory is a real problem?  Why?
 
-  https://lwn.net/Articles/1072378/
+I agree that keeping one `damon_ctx` is unlikely to be a serious problem.
+My intention was not to address memory pressure but to maintain
+failure-path consistency. If initialization fails after the context is
+created and started, the internal state remains in place despite the
+operation returning an error. The cleanup is then deferred until a
+subsequent retry.
 
-jon
+For this reason, I think this is worth fixing as a correctness issue.
+That said, if you feel the current cleanup is sufficient, I can drop
+this patch.
+
+Best regards,
+Yuho
+
+> [...]
 
