@@ -4,88 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D709CD6E50
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 14:44:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23467CD6E50
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 14:46:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F1586B0099; Fri, 29 May 2026 10:44:43 -0400 (EDT)
+	id 6F8956B009D; Fri, 29 May 2026 10:46:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A1F16B009B; Fri, 29 May 2026 10:44:43 -0400 (EDT)
+	id 6A91E6B009E; Fri, 29 May 2026 10:46:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B8346B009D; Fri, 29 May 2026 10:44:43 -0400 (EDT)
+	id 5BEAA6B009F; Fri, 29 May 2026 10:46:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 689CC6B0099
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 10:44:43 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1AF351C0188
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:44:43 +0000 (UTC)
-X-FDA: 84820728846.02.DCDE1D1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 74CAEC000D
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:44:41 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F68S+BVI;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780065881;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B9E36B009D
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 10:46:12 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 14DF8C0656
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:46:12 +0000 (UTC)
+X-FDA: 84820732584.04.4CB53AF
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 09AA520013
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:46:09 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=d5z7EGuA;
+	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780065970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eSDXs1iBErDS79NVdNdY9EDtRW55Oz5UnXhb1rHekmU=;
-	b=8jbCqGpWqt6gnriHAlt7BOAN/lMEtbwyAYlzkeosaY6J+8XroPNSc5M2XfODkjtZEJ1wmM
-	n6ZijmoachptEPRWhdHWwoyFqcALW5m8skzm0oSB2N3OenpPf1KUB6M7aWVSPG7trb7C4F
-	4XdH/+MaTuqMA4G4XVxf4dnN+c8Uf80=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F68S+BVI;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780065881; a=rsa-sha256;
-	cv=none;
-	b=O9mSHFk1xjAYur14/lcwgdAeh+/fwkO0vBhL5SLI3kdzPXP+UJy4Fnhwv0kXokqDP49hcV
-	KY6PXfkyMzTuzQ23/cf+zo1Zy0szOTW+9O+dogeljHLg6arCZIcrzQb1wOx6vXfBBsRg7C
-	sAzeMWv6ffAWBTI8Gdui4jC5Fln+6fY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A6FC43B2C;
-	Fri, 29 May 2026 14:44:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2ECF1F00893;
-	Fri, 29 May 2026 14:44:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780065880;
-	bh=eSDXs1iBErDS79NVdNdY9EDtRW55Oz5UnXhb1rHekmU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F68S+BVIcO7kPPYdQx2I1f5VR2PTd+HJbmJNR8WPxoi84zXHrZ9zTAZsBh28UzmuX
-	 8RfsK7Jfs2M/rIkssc9Ka32W9NuMGY47tK0ipgDsnbEORXCko8nNHiEUFd9y6Nc6Cf
-	 77XoF7ml7YHp+i5bFYPzNYM6DCKqzR8xu7fKTLgZXjwcIhuRlePiag944fUsLi/55H
-	 8njBfyF5yy5Hx7Jc8zuGYrkvo47+S2qTt4mIP/hxJhYBhN6WaG1k6v9x+EpUybKQDl
-	 gen8amrxTbYdeag/BrCtTZIRAyZt22LlLNVrmoZtpEucwti1eVD6zNW89zYVuPq/xT
-	 vnP7LtiJjn1ZQ==
-From: SeongJae Park <sj@kernel.org>
-To: Yuho Choi <dbgh9129@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/damon/stat: roll back context on damon_call() failure
-Date: Fri, 29 May 2026 07:44:35 -0700
-Message-ID: <20260529144435.83930-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260529031519.1617000-1-dbgh9129@gmail.com>
-References: 
+	bh=G6iX20sxRFgzRU/6WWLyIcEgqd92EjfEQ5ikoGiyUDs=;
+	b=O06YZ95filhaYysvkkDi8z1/6usJ6as23DCx0EHLYO6F+15io90qny+nsa4vL9jlqHAwxd
+	XtoiNErRIq5JyPd5678/LsFlSfxVZQe9pP8OP5XrTFBneSrgbjKyHIRQORnZ3fymRQOgYP
+	QD897PY1FkIGUopIE65wTKuvXgF2QYw=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=d5z7EGuA;
+	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780065970; a=rsa-sha256;
+	cv=pass;
+	b=xJOk43mTiOBr8/ZkZKIJIb+1q7HFz9wGmKA2N8DlBuea654XSGNB8gSJjBHiAgBruMQ5vt
+	hnbfVHKmuW4vP+f/1JmAtSi4xjHhs/5ouks8ZnsO4UqE9VZK6zAbhcOKqn9en+ewdjhgoE
+	ZZRf1pNJ4qVpOUsOCn8uEoND8oEzdhg=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-bd8f6ef4ba6so2121011966b.3
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 07:46:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780065969; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UqoBRkPqT8+TLJ+83sP/SfJ86sWdG9VVfvsL+PXFfh/Cc8dx39Hp4EGpTB6IlhN5We
+         Yin1vTYCLa4M4qm9UBVMQ7geDSVTM9pqNxy1VwACLahQOsvNGen90E6G825mjCKGORUS
+         whGdp1Kl+z1Izr2QWHdBd6BFweitJ0QUFlGNs8q9q/wNg39J/+LC6SP5UNWprcgb1DTr
+         siKN0f3Vxyoie8g/CZw9kTfPpS0FrxY2wMxv5yk1q89jRF5mihLL0ks64xzBZo13/T3T
+         YY7SIOlhBBrkqrbCmkHsaK286jkbwkcSOQbpUxHjqTyXNXITi/kz9r5vd7ut8njkE1At
+         bsOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=G6iX20sxRFgzRU/6WWLyIcEgqd92EjfEQ5ikoGiyUDs=;
+        fh=XrMwMRhRa47VRwE6pnnQOjHM9Ph6KuzqWZZ9KYYGNmA=;
+        b=PuusAE4ON9BzTkQMq5eP3MhVGwdoPZXenCG3ZfHcrkR0fZM0KEKe4mRXpy4jSPsnHz
+         H+tQhh5Ycp/igJxwdKqvw+30x1wYiRJn0ZXm/Jz5ht7HO/KXU5jx7XrDC4TP788Vi5Gt
+         XR5HjxPdfV7Hmk8HRnoJvmllWlCfoq9OySEwvA+a1VUh3t4i1f5J766QQQVFTUBitxeL
+         4DgoXIojbCHkxPjSbUouNl8dYCAPkeuNmSBRR/EfV5s8qhY3iB8KsyS+mfieCt3ahc8X
+         t5rBeCK/+LIPQIN1U6VJeqS9OplH8SIHbrJnkID/FyFF9QHxcEThX4cP+myIar+2ElvV
+         9hsQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780065969; x=1780670769; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G6iX20sxRFgzRU/6WWLyIcEgqd92EjfEQ5ikoGiyUDs=;
+        b=d5z7EGuAV352aBEGQYsYob04WXa5wIzrMwkOjtFPRgSURtK7FV2NOUir8ikSMDd8rK
+         MbkFSXYI3cwwyLUrrJCuKzHOe1qmBBAN9h4MxBkG2ftbMfcinduqwch/VHsiUW+kaD2g
+         6A51U6fkDoE2HcJTyNmAYDz00259Ux0+MsRCA/SLbyCxRhkYXKC4XzAj29LujR2qeTpT
+         BAp1y2tnSaL+Z5or8jK51jHlexfrZ0NOajuntcqf3Ft1zynKq3QGOdaj49EpQPx3m+J8
+         wMnpHnIFBZVqds7bYM3N7TCbzpxLjhswu+0+lM+847F8XDsMKBqjxw1FaNAOr87+Oie1
+         09IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780065969; x=1780670769;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=G6iX20sxRFgzRU/6WWLyIcEgqd92EjfEQ5ikoGiyUDs=;
+        b=lV3eqKRtIUv3XufF8bAzFBd5tROxF/mKr7pNXJH5t2aRcNjYhX4KZqwZrQ42jn4OJQ
+         yrYLo6lp4fJ4lamMGoOx+X5WtiDABfVoF4AMWiVk6qmxqEnvq7vic8MHuARXsmx48Kns
+         ruSeaPE8RU4axCNIiRLC9NLzqkH3tSvWsLKGmPva4Os5TJfMAeHLuHFQfEgGGu0htA5+
+         OK77RGN7jM6LSsgzfNaedSz89EPldJ7F1HBatMsKhrsv2Kf1m6sJKLSsvOmPH/P+nEVo
+         6E5WquRO6Epkfap/3mVTq9/cApNgFuISl0nfuFeQUQEXqYb3pG85rAvlmI9ntuPwR+qt
+         kWYQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+LQWWfklNO4iRBxuoA+u6y3LXD7vG/U3HmLi2L8dgwrBR64XQqvTbY525HgMGbd0lOkSVhp7M49Q==@kvack.org
+X-Gm-Message-State: AOJu0YzXyKvvWjlOm/2ElkWhYorYf8yN5qE8D/856k82eS44CI0igT9Q
+	5cY9QmWFrUtzqzW33X7leyyVNITI4Bh8L1/l8JJHGKTWtcMTq4EbXpuZXUhlr1Tz+2Q4eYGP7OV
+	Df6+Eal0Bo3HgTWusrwm60SD8DjNfP5w=
+X-Gm-Gg: Acq92OHlZQbTqtsPYhLdRcGIWPo3jhDk8O9lz3bDudvc/lIk+pX8UZYXLrjv9msEab0
+	eGx6khYLVAX8Je2G4XsShC/OGQWz3QGAukxJhsuTW+FThgKZcS5N0QkRMu+xleE+Qq+fC4KcJ5Z
+	xhcMXcq5H/5KLb46c2CvcS5K6JpDskzXS88Rf2lbD/CtowpEwU9zDeOMr+nXWM7dB5blTAF475U
+	HvTttkJosMhUndKdcFLyo316csABqv4IazajTEh9c86HA+h8lNrUjPG0AgYdD4Vei1vxBxxTJqY
+	pU9XAVKdZnx7bivP4IQhO6dzrZO+4W7qCrosFtIMnvOE2exqUZ4=
+X-Received: by 2002:a17:907:2675:b0:bd1:4da0:b0d3 with SMTP id
+ a640c23a62f3a-be9cac109d5mr144354666b.9.1780065968066; Fri, 29 May 2026
+ 07:46:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nrybb77ydport4pxwn3ycprmchgf56as
-X-Rspamd-Queue-Id: 74CAEC000D
-X-Rspamd-Server: rspam07
+References: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com>
+ <tencent_EB78848E34DC7858C873193D67286ECD4B0A@qq.com> <CAMgjq7AA_1esgtA8VyxaBLWBBRM12bCBpxO2Jch5OESBZSg--A@mail.gmail.com>
+In-Reply-To: <CAMgjq7AA_1esgtA8VyxaBLWBBRM12bCBpxO2Jch5OESBZSg--A@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 29 May 2026 22:45:31 +0800
+X-Gm-Features: AVHnY4K86HI17pY8YJEJfJmy5evEk78o1qo-0ZFpkl9b6nLVN3I00fORb5XL1GM
+Message-ID: <CAMgjq7AQwF6oNpnGTxxJWb=oyZ3dLfPL4oSNoS+eQxtuzZPgTQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 4/9] mm: admit large swapin by backend range in swapin_sync()
+To: fujunjie <fujunjie1@qq.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Alexandre Ghiti <alexghiti@meta.com>, Usama Arif <usamaarif642@gmail.com>, 
+	Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1780065881-36609
-X-HE-Meta: U2FsdGVkX18LmlPLNjLoaj0jqZh9gV1jvvv05ND6XtH3hJpvEhL/OP4iJaSQq/xZ7Vixl58OeLUq5gdRz6Ye5cEROVdZz4yk8fNmBCwv/IjW1unPt9xJLDxgLPBiDtB0M9VYIKoqQ/i1bko+EaSQvoRRmugvOt59PdVR10aHjYwiVGga3FhD/+SwU83Tr+GE1JfOBPTYR5cxjkFyYB6WJfzMRJpOJ/W0TormSHOjdC+N0vp9GEQwGgN/31TXK1ruPH2bo0B+qaw+BblnF3MOJk0UGOtB+IhfHf2d76TDsOurpjA0MYG/sPwxYsNeMoGjsnyVPcgn2FZlj20nA5Kp4kENHOgZCz+jEtOS9cDSNuvYfGgaZCocRO1L9GhwR0WgWgPFgqXaO5XnTZZirwFg60WngAlu4+xzd6Ctn8RZ3V22ickEUK25A/Bgz3B9ieIEyxCPM+lE3wzAKMT377jpCdzDh46E5NguZ2aUtCeaXMonBX4oANERMNIBgPiXi2YEIKHFQSZHbnoNpMgWwxdBMHQM51RoZuKzfcsZbGhJqghA26Voa30fB7edP4wP3jsT9v1C4bPAYAao0IIKC6+Zfe3H52hMbfwT/Ds6V/LkL7bpYqMN4b7chlJHl/7Vxf1yrq+KbgVm6WXsIue+mBW1lX8K+GX1GNNbcTbjCh9/JujB2tVqUSfq93q6RGWu1z7hxrcs+oUOfx0to8QnalF1/jYpA8bRbhqhquvp1PmdVVU4bWEXHlrFyJFCkbFNymmZXdfsuSsT0jGf/BE2i3e2XRKUdHDDvtEuD2oVwxWzEO7WV6KbVvxxCU2NZ0CpajH7BhMd13JiZ5oFNYexyDJFU3S9/B3o997Img54zz2EfqK+ci66xMrqch8l3EGoCsAx4XPmzWUFVbFEh0d4mguohtOz1dtwf8X6jZ1c683Klf2RfpxS8mujeytwVyv26vZaAxrA4/7BIJ4cCJGfig+
- /jPAnCDU
- ANwAX705eK9Z4HCu6jCLILRZH+CLhqD0wl76JcHy3nAP1AEmc49kLeXEefVNm0Iq3YxaXAi7SCNGbHXmAEBERg3A21wofh0t49Kj1bNhSWmFJfRGjIjrRvd+o15t+gkT2DC1/fL0rr92q4v3ghJHbTYG8kxPk3iIO90GPvwPSmAJ5YjYeISzTW45EFNtbfkMPEiKAwcxI+R40PrdqouCwI/bAJ9YCII6YqDEOIUQzW/mHQNf73uOMXTyMU9ywMqs1yni6r3sjCaGyxcMQQPsFdNX/JQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 09AA520013
+X-Stat-Signature: 3hsqdudf5fg9hhnjqsnwamh8kerqfy36
+X-HE-Tag: 1780065969-653986
+X-HE-Meta: U2FsdGVkX1/3jNiJIR1Xxb9LeALiNCXN//sbkR9p2MbiLEtL7cOrAZG9YoOMCBCXaOXAbPq8A/KYLao536iCUEBxpmNsC/PLeZWUwnFyDU3IO0zijjRtwaNutp9HyXe0/QqTpia2kKue/QjkF26NhPdAjC3Q3nxw9oaZAHC07lkhTM7zJIDEMRMsuYS3cyULW39A7x+aL41b7EiNqu4KzRPa+iZu+IfxS/hg1dirtJ3y4LsADLLOa1n2IdNrvkZwL6hICyzfFUArz8kaaBQJUAkX6mcXMu/ltOpkSq6cuO+WeUf8VaXOecO7+2JTxL+sg0YIOChjeVLBeHnWREE37JFm6yBSvina7s+a/Ff0vtYX6R1snJ0ILJsE0jnhydVUL2PCkMscGf0A8ljfa+V+HL9GMIfQAtjarqwCOkNk68lqsYeRzVJvhfJ6bEjqu706BpGSiNw49/TY+uT+9M4+3txx9i4Cx4WtWWBXAO5ADVXz+lts4KrYJbnJkujVFGUKP6w87ZU7wGqRWzHfScnACDrIIhqUpjtwoW/HFUtaULJ3I2MQxKhB6wpOaU+EYj+Opp7p68qk4rMyzdXddIhEEgJnhSR/+9KZUk73Br7qUcluatuzX3e77RZTaNYvVIeKZSDZ30bsLOoAwzSaihNpRvoa1GLegRFlsqYXsj2oaO28rcSFFJdobayXO6siQ9vPW2E2CM9iqb0NxMjZfpLB3baF7jPrSqtFuq/hV+XXQecmx0Rz4NWPwOb8WsD8EeLp+l8frV68Wfoq4r6+8n5M8MAb0rxapwz6AbvXy7rOD/f2+JyQYgrM/4wVPHPiYFKeeibhl+CkwnNfunOIBxpVsCwb7VfNa85bEBSBY7R9ln6ygKX/gpiC/bu7P48rfw2GPlg34kraf7nCrEfZJFk/TmedGVA0muWeP7H5Gnb7T9CE5ETdz5+/hUP6fQu6spMHUVJumvjFi1DxLN1m2yj
+ LbxzV/rg
+ kYscqAc7+8+m/egU/CdCZwQFlIIuJ/tbU5jnXpJ5xzEmlrX3CiAs5LeZzCKHNxQ/mEgVOgD9bMZdHYXRZov8haHKAGEB/j8pppa+mDQLJNzMXLiSFqhMb3AKsXHCC3ZFSeXhJ5g3z/Z/QS51uwjDtUlVmdHjcTw++R/zxS/vqnGkrD3a/TiCtax+K/2ihqSkDfncvc10XqkheQeuBD2KluD9W1EFQZz9DH1lfHB2nzWAeMy7pSfkGtCfFPUDq33a8/BkEotIfRP2gp2sDbEG9X/yP8SiLQxbixXxgqmak0qNS+yE7ZUJWrDOlHHDJUG9gLnqFFR2vEdrKJTuLaqDCGgvR7YxnXOlrupVoRxDsag96spUr0kmCaZsx/7ON4lWO2GUI7bPaEvsInGw7xnbs4jnBuy05+C4OTHkKbtYiKz6UWYdF/CTOPM3FZqHjJ3rtxyS3sU5t4GKAvqNcFY2swjMQXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,33 +143,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Yuho,
+On Fri, May 29, 2026 at 10:43=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
+te:
+>
+> Hi Fujunjie,
+>
+> Thanks for the update, but this whole defer_memcg1_swapin thing is so
+> ugly I don't think this is the right way at all.
+>
+> If you really need this, maybe you can always defer the memcg1
 
-
-Thank you for sharing this patch!
-
-On Thu, 28 May 2026 23:15:19 -0400 Yuho Choi <dbgh9129@gmail.com> wrote:
-
-> damon_stat_start() allocates and starts damon_stat_context before
-> registering the repeated damon_call() callback.  If damon_call() fails,
-> the function currently returns the error while leaving the context
-> allocated and stored in the global pointer.
-> 
-> The retry-time cleanup added for this path only runs if users try to
-> enable DAMON_STAT again.  If no retry happens, the failed start leaves
-> the context allocated indefinitely.
-> 
-> Roll back the failed start by stopping the kdamond before destroying
-> the context and clearing the global pointer.  damon_stop() waits for a
-> live kdamond via kthread_stop_put(); if the worker has already completed
-> teardown, there is no kdamond left to wait on and the context can be
-> destroyed.
-
-But, having one damon_ctx object in the memory is a real problem?  Why?
-
-
-Thanks,
-SJ
-
-[...]
+Oh and I'm not saying I'm against this series or the idea, I'm just
+saying this particular design of this one patch needs some improvement
+:)
 
