@@ -4,124 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCCB0CD6E50
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 14:56:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA13ACD6E52
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 14:56:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35E8A6B0095; Fri, 29 May 2026 10:56:16 -0400 (EDT)
+	id 9793B6B0099; Fri, 29 May 2026 10:56:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 336116B0098; Fri, 29 May 2026 10:56:16 -0400 (EDT)
+	id 94FEA6B009B; Fri, 29 May 2026 10:56:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 272CA6B0099; Fri, 29 May 2026 10:56:16 -0400 (EDT)
+	id 817A06B009E; Fri, 29 May 2026 10:56:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A35E6B0095
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 10:56:16 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D837C401A2
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:56:15 +0000 (UTC)
-X-FDA: 84820757910.06.B8FB3A4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 010E418000E
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:56:13 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WWrEDI9P;
-	spf=pass (imf24.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 68F406B0099
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 10:56:17 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1DDFE160C7B
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:56:17 +0000 (UTC)
+X-FDA: 84820757994.15.0EEDC5B
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2E77620013
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:56:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=IQlbYRrU;
+	spf=pass (imf13.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780066575; a=rsa-sha256;
+	cv=none;
+	b=nJsjDs/zRedkBcht28G5rVlBwW+iIC7XqJnJrKJjZFpPJ78ZYDnPBZDfeA4QiVPUk5FR9u
+	3Wvs+/1T2frNkUj+Ezo8pu0jNwUOWoKc9zuIsL4WaajrjYzc6O0aWf4wNA4KVOCvh8PSwv
+	3rcT1MSoMMcHWyqThHlUvWdM9vEmhS4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=IQlbYRrU;
+	spf=pass (imf13.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780066574;
+	s=arc-20220608; t=1780066575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wq2aReJoaCIHA3G1FUxsafEMhjRdM5rz3ZQBKVlRJtM=;
-	b=XKe2RThPyiUNnejC5zSJFQerSGgebx9sSfmVQ5Bhgfwj1FO2+7RRe9b+AzgbrinxhRNGI3
-	6maRivTlMsilB8BIcpqBXDZL8JWrpIJvzMLXeS3pM500tSiEj0uLmsJ2kpg2aWHxT4/6y9
-	LGVca0vdTWLDgEHj+NqqHZbuPdnSlx8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WWrEDI9P;
-	spf=pass (imf24.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780066574; a=rsa-sha256;
-	cv=none;
-	b=RnbD0n6S3Mu2I3fQ0n5Vafn2NilofZf+0D9zfUAhR8WXNxxhFgWcw/ewRNtXcI73bZuzIe
-	J9x5fdBK4dUsPgEWO+va2WOesyV9DTQre4cGII2flPLkIZc+n9WacG/34lEEw2my3wu+VN
-	3l6z4YXlWMjsUDFyeRbIV0KvrltVutw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780066573;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wq2aReJoaCIHA3G1FUxsafEMhjRdM5rz3ZQBKVlRJtM=;
-	b=WWrEDI9PXY5CYMutu0zBI4Tt1NpbDH/4oarv7l3D1iuWGx848Rca08zOYHIYqZb9Fg1vmw
-	WDhN6XMIIen5CGQ11gebb/GNTExWbufcG27m4Arjq28xrzny5fHj1bLJUkVhmazn9pEGLQ
-	ukxqAPbH73ZNc0WOqzODjxZmlnKNAyI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-550-lM2A8pZ4O9WzrEK2Kmw7ww-1; Fri,
- 29 May 2026 10:56:11 -0400
-X-MC-Unique: lM2A8pZ4O9WzrEK2Kmw7ww-1
-X-Mimecast-MFC-AGG-ID: lM2A8pZ4O9WzrEK2Kmw7ww_1780066568
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D503718002C9;
-	Fri, 29 May 2026 14:56:07 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.22.64.88])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 929393002D2D;
-	Fri, 29 May 2026 14:56:02 +0000 (UTC)
-From: Luiz Capitulino <luizcap@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	david@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	ziy@nvidia.com,
-	lance.yang@linux.dev
-Cc: corbet@lwn.net,
-	tsbogend@alpha.franken.de,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	agordeev@linux.ibm.com,
-	gerald.schaefer@linux.ibm.com,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	x86@kernel.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	ira.weiny@intel.com,
-	hughd@google.com,
-	dave.hansen@linux.intel.com,
-	djbw@kernel.org,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	akpm@linux-foundation.org,
-	yintirui@huawei.com,
-	ljs@kernel.org
-Subject: [PATCH v5 01/14] docs: tmpfs: remove implementation detail reference
-Date: Fri, 29 May 2026 10:55:19 -0400
-Message-ID: <426d01d487656dc97b6ae00717de32efb232a04d.1780066530.git.luizcap@redhat.com>
-In-Reply-To: <cover.1780066530.git.luizcap@redhat.com>
-References: <cover.1780066530.git.luizcap@redhat.com>
+	bh=4sxBURKEIs5vdCG6YL1mHOm0YuBgobmnmOVB3aNVSj0=;
+	b=3Kqr7FkObAzGGv/J0r5Rbd/4df23pXC3tuAjojUDK4vZWqxD4yFBzDDFx5fIyqA+3gQU8E
+	E0CK7F5/IitiK2q/MpYM1+r2/mnRstJlUl8QmixBqVv+OllWgvwBOkOA9MxzVa15e21qD3
+	Bv/W/OAqMxByOQx5GeUndYbSBg5HZaI=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4906869f0cbso64066135e9.1
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 07:56:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1780066574; x=1780671374; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4sxBURKEIs5vdCG6YL1mHOm0YuBgobmnmOVB3aNVSj0=;
+        b=IQlbYRrUXiE4fY9cfLDeKQsfuO1qhsknzUijcJwf2J8t3TJPBM6TbTVg5DvrhYMyBz
+         45DFuVw9BFxNe5EAFmafAjLDovkRisGoUpPTZIO0Lmw2fSIWwQ62U6mVpDYOs8EOjuWl
+         QXt3VlTfOW6FveyX2qltbhGYMUfCCRw5VLR6ns/M7W50cYJxkA4U38pHqBWkUJW9dYtK
+         aMdRDYqgZjEWN/ajsIY0/9UMFT79yVKkX8ffVXDBNnsOtvQiXZj+Kzf5VUkhZ8uQ8zal
+         xdKjNKYxPUy81HMG4rucww3mfdpj396nJ3rupFI2kqu0EGewIsGeJfkbcteKhINNbTJX
+         IZ7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780066574; x=1780671374;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4sxBURKEIs5vdCG6YL1mHOm0YuBgobmnmOVB3aNVSj0=;
+        b=IcAcSYzoa18MHg9T/RHz6+BVkvNSJPLdxkCOgy4P+JgT589PKcmFi7946coNBe7ZNX
+         OpqYIf2zEAw1KGVlxM08HAZ6DxBKT3T81uWdpClggd6Sjghn3XmnnjcwFVNj9MsJs1N7
+         wPao0QWBcOPlfVU9ZcqOB/ErW4YITJjz3PzL2iisxwTDrAtpZYNOiE9jFifR4e4l8vF2
+         /1r0J05HOThpmTCPsav8gxPzoX0Eb/dC681uc2iXiJnM9RTVKLIB2uVRB9E8lOS5ULec
+         sqC1OXnwFVUWtLznfV9NmDG0JgWF0VUDPWKzvKbthaLlkcLzImrCOs+7sdLw6HtHqH4f
+         sY6w==
+X-Forwarded-Encrypted: i=1; AFNElJ8JOHdugctYlHLy063UfvtU0WIdjTodoZQr+vKM9JXuYmVNlPShr8X6pYFju/A97xVdTu4/C2reFg==@kvack.org
+X-Gm-Message-State: AOJu0YyhKXgQr+Dg3SpKTGNGB2+bEBZhwpn7FipfTjhoFIGPSIxjWNs1
+	PI7gUguYaCXbMFXvHefrNZ/4bmhrWAtxpLPrOhSa9mAWu2ZV4JkAAwtEvYlViRU6TDM=
+X-Gm-Gg: Acq92OFE36Fr5ffm7sxboOOXk3c3mIS7BKGrtzDk+1vFhg3Qoidy8eb9GYh51I9cFxK
+	uDBarY7M3NsEtns13+JrwdTLvkqjwzRzZ7t3wyhJnpLZxpfHwt73ocETNCo+979tjKOAZEwOQeh
+	4VfKEMhAd+uwfdJnEv7bAfNCduPJSplhoVV5BnnAT1fmh8SjtGv9sx64v1pMMEVUCQynedyjgbj
+	BxZQMhYGv/GymX+N0CTgQVC+HOv0ndfybDn2GYZ/nh3R0I2XT3Q+Zio49Y6q14LM6y8UD3oUZpB
+	vzrDi+DrkuXAwHUzUfbnNrRplLOxV5mfV8SL2YNEUTrUABS/9wVkDt6luRhyIgIfnv783VKdqpI
+	X3iCeEAy5tEyHbU+hYAYCLFvCT8nEnNPCG+DXIQeaRl5hufkNaPbVWnXCoCmY4rEmRODurj6WiY
+	AqdFycVeyME8KHapbOyukGMBbIRGPlVFRSbZ6KivC9LAiVRjecuru7524o5SM=
+X-Received: by 2002:a05:600c:4e55:b0:48a:9428:5522 with SMTP id 5b1f17b1804b1-4909c0a7eeemr64821725e9.16.1780066573715;
+        Fri, 29 May 2026 07:56:13 -0700 (PDT)
+Received: from localhost.localdomain (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909dff2a80sm51054325e9.3.2026.05.29.07.56.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 07:56:13 -0700 (PDT)
+Date: Fri, 29 May 2026 16:56:11 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Eric Chanudet <echanude@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
+	Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>, 
+	Dave Airlie <airlied@gmail.com>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm/memcontrol: add dmem charge/uncharge functions
+Message-ID: <ahmoDiQ8Q11xUgtV@localhost.localdomain>
+References: <20260519-cgroup-dmem-memcg-double-charge-v2-0-db4d1407062b@redhat.com>
+ <20260519-cgroup-dmem-memcg-double-charge-v2-1-db4d1407062b@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: OieA0pnOoF0zbRMJIyJSu85GyosoH4nVDuKWK7TTSiI_1780066568
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rwilhpywdsxyo6sd"
+Content-Disposition: inline
+In-Reply-To: <20260519-cgroup-dmem-memcg-double-charge-v2-1-db4d1407062b@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 010E418000E
-X-Stat-Signature: ecfkmtadpud6ot5ffeo91j7mxrwg6u6f
-X-HE-Tag: 1780066573-240354
-X-HE-Meta: U2FsdGVkX19rV4vEjXMHwuEdx2JxO7ohI5UnwfgwumCOCJd13TZGHn+Gtp7nOAxMpikK99cfi+9A086WFBrvYvb5CzKEG3Am9LhiJQ3KfKzPwLvtzMnI/wkn3WKapQnd0CLG2OlMAlCz4K76es0BAPNyP2EWo65NUlRkZZQdWwbb7V59KuZ7GdzeBFZ22lTqMCSzzggS69KkI/NSllXjYU8gKDVbqH2zNsRhdnCRDVFj2QgUCla9pYA8NCGyL3aXZi2t8CJkQGIfW61zb2emdDFJDaOOa8oT1dsOETP8EjMvhLvD7z5fCjRPUZp8HKajxgEGyyBk+Uh7WA+Peh1HOPO5pwh/g16dyslsYhvxJMZZQMm7iVWWMlBVdvIvzbubE/ccT96D1T6LoS87OhU5NMCnZfh+n/BRAmqdt5rnjAI2TS5mqqoOIOTKLw0vH+Cqmx/PMy2clnGZ5CQeK7zQkDQFoNgg3DC68Q91sK8XdK4/oakDF299JXv8StgdzDd+yOEbJd2ajRgzCkx4MSruppB2A8ekujZHu2lsNYy1hm9Jznpy8aPxofNKXS1nIoIjwbpV+RycnTekQZN4GGySDtQCc62YhKOAZtFx59sVl3MqN4ztPkSmXova5aCUCMku4nXVsM1c5lXPA8Xr+rUFm2TOmJpG9gqJW8AiE7eesnamMl+zuRJNXxpdOjWRMt6PUak6PIItEZA2ojncW0GigfJ8nboAIXGyJtU90sMwX6DrdsbJlluTCHfNYVdBM4BgH2ptFoqSZYd/+dH5TR173uqQvyZ44ITXmSGc3SWrZeHnfBU4WBLOzzpJQsijgxAN0a5noSh9ymzI24yLDI6xnf/QdApMRfpXGQF/BRgiwkdq3apmwtFLi8PHygSvP1P+/oAaRgEzL/JP4l32+iD+mr155GlHUkTc3UYo9J0VVEHtOoGyuRkqbVc0OWKL6S61QZBV+rjkRbWUAesCKU9
- 9+WIWfYI
- JyrB6OCIxiww+bWH6FIJbY/aSqeCwlokFp+HpLc8iwB7OnbsVnva6+EorRy0FqV8KHgxggALdpOSj0hTzfw0QLP3oA2F0mFLvQc9lVUGfqcZRmUigh3HX1bI2CYQnp2VBWqZyHKsxm1otqVXZfUfUMdOhwbM/TuSU5IBZ5yjVWp6i3M5FUX5qYceN3jRpRUuNGdTazprBNmD7t8Ml3YK2wDzdkdHSUnOBxg6Su7D/KzIh4AMMGvvPYogGVlTdewjDOl2CeWTDmy21DMialgN5E10XFtDD0bCeweuZyxrwlOZnJKiNoEQlz3Hmh+BApQVkA3MkdNqshIfBGn91qxIsy8wU7QAsBYa0WcqFmnVwqXV02vC6MCX/jX9D1C7uOnY/haUokmnC23VpkkFEvqbUt2RKJjUHtmA91T4y
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2E77620013
+X-Stat-Signature: m8pbz91h86p67zse11gmmesnst5s8grw
+X-HE-Tag: 1780066574-707364
+X-HE-Meta: U2FsdGVkX1+zsMCW1wr2zdr5qp9s4J7nWPMhuBF6mHryXCisHf/QI3wtIaLKSe47zgQi36vEruFV1pqGxA08NF0C2kbItwsLoqr43r3ZgI/EKnWf66scxwBdJ7uZHrr5WJ0J/NKurUEAAjeWsVMGq6Nq153YU8SUaK4bBPqKcBJZKVsy1dRhkvioLtJTySpRhnbJpsurW6OOBP4+BZFtlvCvvm2aiRjBojAMUQRaGJcpoUi5RDx+hg1mbWoF9/JOBnzcsISseGg+uveMABHdJw79ZKfJkqDI07RGiCMqAzoRhVe2IUnSyhOyQIZbMGdH3cMladha7GjHiBrUnmZA5cv/KteXVgpz4/TS02egMcz80kL8nEyHt40ZUBfmB4wU/+32TAaUovK/TNs8HCwQHcTtbizypSBcyhdZap1E7rzd2e/pgJ/PTh9VT+3gBEgYil0NWQot5Q3rrW+qVo+coSiWWUfPHkilLru2ELH8uNW6TRp2Sf4bdxA+sqX+wpmWaB3/ipnGcy1py/yK4ItCb/3h2Zua7g4aooBAphLzK/vyTjtQtC9ABQK0+WlZWqgMTezaKv5O1yqvODyyt82GfkXb7wvb0Tm1S22H9pMQ+OqP1z3zkCnRGGS1grz7q+tq+NflBJg8V3yg2deuXBHVwZU6110yExwuiJSZda+Idg5kn+TznlzcxE+HUGN1LZA2c95kTM2W53czYzZmJDZCXsWtpeV9hnu+29i04TouEjJvCtJWXXDdqsPFdZB4nzV199y9Dkw1U+NmrQZpxGAK6+n8lcFtCFl1UTXCorr1nnz/UxH7sDL+/4ov7igirK1Jj6SVhyzlsRQSbdiEur75gIvA9csnhfHZLzEuUcz1JGc/LaGQ9LW40a3s3aXEsL1Cy9UCoJH8mwGfx3wJj3Uy0TL/Wgc2vxV3299U0suDKgzBOSMmMxUQVaRGZZWHuNFLzvcOAxO1M7pwVF9JzZn
+ XN3+4gAG
+ xpyD1NEXUflknf8uAPb/R7oXjeUhFsaVz8/ky2Qz2PfidXQ/oqG5zAhg8t0LpYPPdA9MNQYKT5L4X468rQhnTKGobYGdIWFxjRy4+HUvnoZQTa7DpSyZVqJLcWLqlpJUV+mVQUWQyupMwA5xX0UCiYj0PnEzvCq4qRI0AJ70XdDODNNIA6oLnW03csc9YEcqkQ6p2NwrhIYJhhU5XYOVc0zhS3hMNP1XQCRC3ISrY9BVqOWjBHyhTMLPA3cB8LuA6zFWfb6nrrK23vZHGAtb898tbFpFNy5JpRjvDrbIM0kgC1p7R+yHylksxIv9Hr9t869CcTxhvvtxOs69RrVoK/AUB6sl4q9Fp7kHotF8cdLrq9qz6uIEilpigbQPBG2yRMmcGT3AvMyCy43QTLw81qfXgDKwMTOhV+vgXABYEWze+qbM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,36 +126,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The tmpfs.rst doc references the has_transparent_hugepage() helper, which
-is an implementation detail in the kernel and not relevant for users
-wishing to properly configure THP support for tmpfs. Remove it.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
----
- Documentation/filesystems/tmpfs.rst | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+--rwilhpywdsxyo6sd
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH v2 1/2] mm/memcontrol: add dmem charge/uncharge functions
+MIME-Version: 1.0
 
-diff --git a/Documentation/filesystems/tmpfs.rst b/Documentation/filesystems/tmpfs.rst
-index d677e0428c3f..46fc986c3388 100644
---- a/Documentation/filesystems/tmpfs.rst
-+++ b/Documentation/filesystems/tmpfs.rst
-@@ -109,9 +109,8 @@ noswap  Disables swap. Remounts must respect the original settings.
- ======  ===========================================================
- 
- tmpfs also supports Transparent Huge Pages which requires a kernel
--configured with CONFIG_TRANSPARENT_HUGEPAGE and with huge supported for
--your system (has_transparent_hugepage(), which is architecture specific).
--The mount options for this are:
-+configured with CONFIG_TRANSPARENT_HUGEPAGE and with huge pages
-+supported for your system. The mount options for this are:
- 
- ================ ==============================================================
- huge=never       Do not allocate huge pages.  This is the default.
--- 
-2.54.0
+On Tue, May 19, 2026 at 11:59:01AM -0400, Eric Chanudet <echanude@redhat.com> wrote:
+> +/**
+> + * mem_cgroup_dmem_uncharge - uncharge memcg from a dmem pool allocation
+> + * @cgrp: cgroup of the dmem pool
+> + * @nr_pages: number of pages to uncharge
+> + */
+> +void mem_cgroup_dmem_uncharge(struct cgroup *cgrp, unsigned int nr_pages)
+> +{
+> +	struct cgroup_subsys_state *mem_css;
+> +	struct mem_cgroup *memcg;
+> +
+> +	/* CGROUP_DMEM and MEMCG guarantees this cannot be NULL. */
+> +	mem_css = cgroup_get_e_css(cgrp, &memory_cgrp_subsys);
+> +
+> +	memcg = mem_cgroup_from_css(mem_css);
+> +	if (!memcg || mem_cgroup_is_root(memcg)) {
+> +		css_put(mem_css);
+> +		return;
+> +	}
+> +
+> +	mod_memcg_state(memcg, MEMCG_DMEM, -nr_pages);
+> +	refill_stock(memcg, nr_pages);
 
+This doesn't look right.
+Here should be memcg_uncharge().
+
+Regards,
+Michal
+
+--rwilhpywdsxyo6sd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCahmpBxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AjhCQEAr+BVWEm8zFPKmbprS/Y0
+DGDmEkJvmxq53yv7/M98beIA/RFe/RMHQUNUp4via8ejOQCz9uiKLY1q3PFlk5c+
+ByIA
+=eOXW
+-----END PGP SIGNATURE-----
+
+--rwilhpywdsxyo6sd--
 
