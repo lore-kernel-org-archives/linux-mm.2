@@ -4,157 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86D3FCD6E4A
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:26:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14503CD6E50
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:26:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAEC26B0107; Fri, 29 May 2026 11:26:06 -0400 (EDT)
+	id 782B46B0108; Fri, 29 May 2026 11:26:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E86BE6B0108; Fri, 29 May 2026 11:26:06 -0400 (EDT)
+	id 75ABB6B010A; Fri, 29 May 2026 11:26:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9D646B0109; Fri, 29 May 2026 11:26:06 -0400 (EDT)
+	id 6704A6B010B; Fri, 29 May 2026 11:26:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C58E66B0107
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:26:06 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86D9940181
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:26:06 +0000 (UTC)
-X-FDA: 84820833132.20.8AB5280
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1058610000D
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:26:03 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KzEjJAAC;
-	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 552E26B0108
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:26:24 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 19C271C0196
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:26:24 +0000 (UTC)
+X-FDA: 84820833888.26.7C962C4
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2F37916000C
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:26:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=emMQzIZH;
+	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780068364;
+	s=arc-20220608; t=1780068382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A+sAoCfzYzafV/AuzgTCD2HmceB0XqeceJe9byk3cHc=;
-	b=d8cVDt68FPE3tOaSLJRg/uB+6EvobUUkoszWIkC/56yf/ODqukSfd7AzV1KbgL91Ukoeh0
-	tqvIkHZ0sN/HXb26egmHS/HXTpW5ovg7tX6uJLJaMhRXMEa+rNoHTYjGVkJbX2aairMoBA
-	tsiw/vBanm4KmuiQ/KRCgUy8OEWcWX8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KzEjJAAC;
-	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780068364; a=rsa-sha256;
+	bh=hXXCbhIHtRNsHen8pCYQ+YRxwoUgedEKjJY0J2w8T+s=;
+	b=zNF1/htkeQMqj+lrz6UIVAm138jri4oNY2lr7JI7fEUJD4VtxJKGviTyR4sZsqOk9Im1BR
+	XfkNeX6v8u9PZ3BU/KqxiFDgrGJrcHJOktqU6fFDHsRQz1gM05rvFbQmbL/LGiSTmPm7jh
+	3K+7znWPY5vkvDvu127myO5VlW4oQ/o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780068382; a=rsa-sha256;
 	cv=none;
-	b=01LSnQBxG8+aUdzkTbXdjlh+2sJh2tFFsBVO4WAutXNCKrHeGmq8bY7frKFs0EWe21xy2D
-	nEhYbTPBKO3E3agOUkDrIiFJax1bf14adKEd6JdI7xOSPK3KMDI/sfrF5Ewj5HFLoujekJ
-	N16LB8QGEb6LBbZs5Zsv/xOQ4BlkoVc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780068363;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A+sAoCfzYzafV/AuzgTCD2HmceB0XqeceJe9byk3cHc=;
-	b=KzEjJAACuxHAULTWm4w13QaFVZF0EGqjaTUbAToh+rWaxJMPwz4glzQ4ZGfltcmWRLbg/3
-	QoNHi0o9bhu87b/PWkfVUQGLG1JRRwL7dULknZc/AXWtOeRq6T0Bu/zISV4aPFj1GoFDwP
-	m2igU1lf9SfBoOnzyZIwFKv/L+EgAYE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-554-WLFnslcFNhOaZbeiacKVxQ-1; Fri, 29 May 2026 11:24:55 -0400
-X-MC-Unique: WLFnslcFNhOaZbeiacKVxQ-1
-X-Mimecast-MFC-AGG-ID: WLFnslcFNhOaZbeiacKVxQ_1780068294
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49048e21ea7so39531865e9.1
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:24:55 -0700 (PDT)
+	b=N/f2a05Ldf78udmXvK5JKCend08N1dWiYnraOGVcryZZDlqXfuXM2keLDSl0+oYxU9lIjt
+	Oku45XftqYGejwvvmIzvZBxJUQfCo8dXekNCKQYCgRfyFJ1MGo5xY6TOmSftznwHsmEJmc
+	/Gdz2c2f21gF76yVYjr7EGj5FvSqRcI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=emMQzIZH;
+	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-479ef2b78f3so12268920b6e.2
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 08:26:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780068381; x=1780673181; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hXXCbhIHtRNsHen8pCYQ+YRxwoUgedEKjJY0J2w8T+s=;
+        b=emMQzIZHtD2r25LPYH2Or5YlhAucyjqcvDnXXeNtAa2OJFUWBQFVsm4KVLpmulmKRo
+         1cruRX6CSytuEWi+K2fjy2KQGzVlnE6AXbgYD9WHxUUv/53m7U1FuDRwyIYsSCCW8CmQ
+         BegvA+3vAtnUvT/02q/3wtqcKtMZM2k1HuXs7MVANJMVEUr73a19/tYES+qre/wKQVLk
+         0nEk8/HTTzQQ1S3FJ5UMAs6pofghM3A/KGnBekVVDCpNLJdGEkbIhH5lC6SM0d6g7s7f
+         4ci4C2ACy3b9N3J1scKuqIUQbxuX7BLHYm31MO9iK8bvwk9KLH5IJzgkpZEySo9v93C5
+         YD5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780068294; x=1780673094;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A+sAoCfzYzafV/AuzgTCD2HmceB0XqeceJe9byk3cHc=;
-        b=gZiYvLUE+JcS+PAtjC6ILTHO/zG8kNfrNrZPk0nAjcITj9X+n2N0pe9A84DdN30cSf
-         uQg/JCSBwoXzLoMH5NZSKwU/Fi5M8LqLfG5wmdYZCbtOxepWkEXXF7hnozZRkRlxzExY
-         Sdna9XPN2+7krrOdy6CGT2HiRAL+m/oAeFLkFLdgyW5sxkjJMGLkAcqc1PKsxaHHxFid
-         nQSDDuzj2zBLfv+rA81na/uIwCBQwclwk6w3/Bp36ltj2Ll7TJHJFVleKGnRhLuQvxd7
-         lAi2KGzFux6+IMQ7kDOUNc0qiTDry0ZLCjIekNOtBc606qcsqZ11XVZ7YvPGaCr+MZ8T
-         F8Uw==
-X-Forwarded-Encrypted: i=1; AFNElJ+ixjV+tYZD+Au3mYr/K0NAX0M7O+o1TdN4oWMr9SVrholXseF3v8bdA+iq/SDGjePuiwAuhvakJg==@kvack.org
-X-Gm-Message-State: AOJu0Yw3VRhycdKIcvQqKGPxfeE9tOC8Syrg0l20RPRqlvp3PmNnp4Oh
-	129R8QRUfPPrwX+W6m1O++41uZLp+6N5L+HaLyqbnx7CeqK484j+MixPhAIFe2rGmPluZd4kZeu
-	2L3SSscL4f2C8igx6A98RJ3ZxalavpOkk4dMh14RlNs3rX3WCo1J+
-X-Gm-Gg: Acq92OGT4v7fuzic7mc/dTuriYEwBKZVwenhbu/iw2Zkltyjw2MXrP5mNkfqGnpRM6A
-	5C5O6KWpzUVAkjTxiUq1OysBDkVugSn4qRICF/ais/zWelz1ENnacO9EYn5QCcnSE60Xrn1CGVz
-	uvn99Z0L6bJPvbX8iIwKWJKR91VWdUvXvyGK3T4uWeg9i6tj2PKI3D8CVmfApzCqdyqshzst4in
-	ZwrpyttUs6KN+7FX/N1Ukw05dwsXCA8je1/4J38GyKZXlCwoDAi/Vi5XZNcRK04lZriYlRo3bba
-	N/q2Z8F2+y96DO9wtu2w8xOCaJjY6hES5b7P7cLwAd7ldB7/t3kllthFn2u2S7NPE19oRWUfVTm
-	J4356iTuLjSIg07ZZUqkXRh3Jey9RSRyKGyN8aLjTtFxX/ytWkxiKHA==
-X-Received: by 2002:a05:600c:1c1b:b0:48f:e230:29f4 with SMTP id 5b1f17b1804b1-4909c639d91mr48523105e9.15.1780068294235;
-        Fri, 29 May 2026 08:24:54 -0700 (PDT)
-X-Received: by 2002:a05:600c:1c1b:b0:48f:e230:29f4 with SMTP id 5b1f17b1804b1-4909c639d91mr48522645e9.15.1780068293714;
-        Fri, 29 May 2026 08:24:53 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-25-45.inter.net.il. [80.230.25.45])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909ca6575csm82033265e9.4.2026.05.29.08.24.49
+        d=1e100.net; s=20251104; t=1780068381; x=1780673181;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hXXCbhIHtRNsHen8pCYQ+YRxwoUgedEKjJY0J2w8T+s=;
+        b=oP0o4MWY8AbDVZZtKMN6zcSKjFpeVUe7zKaap8Uauuux7QH6BCTPP6XtSogqEAs1+c
+         Ot3KY9KzOEVZpiI0dkT9gM4fVBawkbkQqTuNzi6LaFjKSwOAbRGxyFhlk/EnXHMG/xUE
+         PffK1U2gyAWJaSzsIwRJsqutVLD368bQx7HECyiD2cvcyQ2qkHTrWRJ3tUFT5M+Gjouh
+         pX/1X85tZXB7ULjz6rOnmZbyY/lZT4Z2O8hbPtXvByo8LXWFhDdlgVwhvtJXdZzHJHMA
+         MCc55vlaFH9vrI+nGgROi5YG9k3Ei5d3hVT7AhHSSuFnUxZRN2XOQe2mHal8QDbr4Gn/
+         +oxA==
+X-Forwarded-Encrypted: i=1; AFNElJ+UTOWJapbjNl1wa4fNg3yaiJoJN0pRe5ZkYjRMP/1h1sd7rODShnt6HUNe5I+XDPDcHs1bC9FgJg==@kvack.org
+X-Gm-Message-State: AOJu0Yz3c8yImcC8u10iib7FCnt/tm5wwRs35Qpwn6NwcWk+D08jgI5Z
+	iMAZADsUy58Pmv/FGTgbAceI+DupyaxsXcuB8X96lm054qXviT/6JdhU
+X-Gm-Gg: Acq92OFOsiPG3TPurKKQ0ByQgXVZ8Vx949VQ4L5230b5gUiCCKfg/7OTZLi3yKNLHZn
+	ROIdzJvJOX6K6BgDvnpPsVCleG//hYdr0qluujDXLr4DT8f0p7IflpK0IMcXCL3akGBTrN2NAqy
+	cyyziyMIkKpujeZt+TRHgdjYGFJY0TY/LU+04HecOSsoKfYh7W59hi5SrZkJ35iOJ4oxkL2vesv
+	y+++idMzj7V5S32VOTJYamZjM8E+aOEYlKPN66STB8Nn2LVUpMsztYXvZPkyGgrBeQCCSSzowwx
+	TBK2aAisXQ3mxywBAAd9MkApDHzATVkcfyqmNOrteO1eUpqbpI6HJ04WNgZppJPo8XuFl1SVvHG
+	kXf40vqbRU/WZ7hZnlKCdXH7JHjpqmWw6STRNR+frQ96oMEJ7AzfM6/n6eoUIA7cW77kR+9fwBr
+	5VgFigOf2DvIQ2qWnOnhcMpoZz4/lNKp4T7Bh5skK6st3SpfWB+Va82SDwhWJrkO8=
+X-Received: by 2002:a05:6808:170b:b0:467:254:b90 with SMTP id 5614622812f47-485e698fcb0mr1813824b6e.10.1780068381169;
+        Fri, 29 May 2026 08:26:21 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:b::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-485edc5fa67sm792027b6e.6.2026.05.29.08.26.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 08:24:53 -0700 (PDT)
-Date: Fri, 29 May 2026 11:24:48 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+        Fri, 29 May 2026 08:26:19 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Yury Norov <ynorov@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
 	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Rakie Kim <rakie.kim@sk.com>,
 	Byungchul Park <byungchul@sk.com>,
 	Gregory Price <gourry@gourry.net>,
 	Ying Huang <ying.huang@linux.alibaba.com>,
 	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH v9 29/37] mm: page_reporting: add flush parameter with page
- budget
-Message-ID: <b40a2db51c2ac3a69219c467389165a0a53d9ac4.1780067978.git.mst@redhat.com>
-References: <cover.1780067977.git.mst@redhat.com>
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Farhad Alemi <farhad.alemi@berkeley.edu>,
+	Waiman Long <longman@redhat.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH] mm: don't allow empty relative nodemask in mpol_relative_nodemask()
+Date: Fri, 29 May 2026 08:26:15 -0700
+Message-ID: <20260529152616.2308736-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260528124133.c88c27b11a8ea0ef05e494f7@linux-foundation.org>
+References: 
 MIME-Version: 1.0
-In-Reply-To: <cover.1780067977.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: HtZ_vr7ohD0iUKF1YQIoImMuM1JpAnOai5Kc_V04Mts_1780068294
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: sh65ubwgksefnsnq7bcsfinc16txi1yy
-X-Rspamd-Queue-Id: 1058610000D
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: czy5spu5j9y5g6g4jrz5me8jotm3qx1y
+X-Rspamd-Queue-Id: 2F37916000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780068363-988472
-X-HE-Meta: U2FsdGVkX1+bqLwNdRRWJzEEwp9yRiRWv/Ph6/g5iAGvHEMfxZFCEh3BeeBIvld+4HF48aom5AWCt06xf+89Ffm3engBxta9hukcbQsYDIfDFCvdBKHZ3Fokta8MrJln0Bl7PANquLTOGGWRSJ5fBxjoB8zBNadxZFfVgvNSALT0BILWOJeJt1bRmSvXBPwulhA0K4haYqQ01ypAb/tzUFtBosW4+dNlZ0wcMcUxUbvYkw8XAxWWPDqNNDL8n81UFJAUVUEC2WO9Dfadxr0+9N/hCvxUK23bCaQopGkOP3CE8ajwNfaXTfcGNNQ/cypGCW9gBlegEE4bgb8X2A3O+tyx+yl6UnvJ2UjSlAwnkDVdn2XZpRYTm77oO7eQq0Bc6p4VZv2PAFase14GVF7Oo5mRrcl/RKmMXrzjSR6CvSyJXKYuKG1H0lTBo+A4orMXa7AU7YrSe36J3ZANb2nM+AQefGDh7rJ65MQxYfHFpoE9CLaAg1y2el/BFjUXncVbZiPvkMoo4CCYnok1zeM8rpuZJXdY+MWut7/3IUm7skrvuKI5ZgGi6nOIHQ8oTX7QFGRvaXJZ01YlIPPqphUipZY7A0yv20OG0bTk0uxKXJ/EdT9M+ZuftbouGRo3BUA2CDov6m9C8VNqsTHi3bRNElI9hunO10H0K+MCc5FrVld+qTKPl1oE4S864kEVsat3F85oB7c31o1Xi9IXtdIHezcjVDX4T4LITd2aUT1qIiOPbF5mQDMw7HZFhF8rHTC9DIpsaJQ4mgT1VxKlD2u0DjDjOl7Vf+HNaUbNP+Fyj12JgDYuwOZefkIC0r2wV4q3MYR3KgfWhOrb0IUCLPG6WdXWAH6mAp6osNBDJ4MOAcHqWZ/Eh+D/hpo0IDA1lzty3PD+Wt086g+JCdNigtxBDVdz/b/+/Wha8Bc2LRZEMeQ7Bqcc53jkc5ksZW6Ti6IJssWys9JtR/8HOsk0ZBL
- GKzBJNOj
- fUNE2flt5ugDwPib/XwNZCqcYTbjuc61tzlTa7DKmY9Tw2a6Cmd4nDkTv1G13zxnS3zdn5VLgAJNWRR1IRsvC3gO/NjWrv7gbzIAspQrmMhX1tYik+fQ20wCh755J9ktUPLsvjdYwVMlZXKYqj33TmzIVSggsx0s3QvLlu4zTKVU9P0IU3XpTeKhRZ23AWN8WmiHV2odVKnQAVUwHb3ZL7kCEOwmyibdbRDd5b0aiZ2UVAhHLPBIqVOn2O1TYIUgT0zzD5JBE5GsL3MKIDtzFjtnkLJpMVuhdmC83EqekrgAKBBHU0nXGdgwALLvhD5cQx36sKZ7ReK07ZIE92oX9O93Dcb+OuLz5JAuv+gHiX34iqpQuZ5WtXSx7U9n93eqRpcyLJMs+zb2TLc6tbs5MgLuErQDRtXLPOZSaNS8c+r7cJ2VoOOHATgunY+q1vdQMwQLL
+X-HE-Tag: 1780068382-515915
+X-HE-Meta: U2FsdGVkX197ZTM4oQ5jXRYbTpoWAyk2ZQBoK8cqWBoeiR2LGxDFoF1MlqJ/6Hs60OWNkzCH2c6vHArp9q1dMcKgCrNkhJvoL1ORwIJNuHcylLFWKk7son/wvDytgS47fXqJBOSLewp7IxKZXrin3bpRZStrZ+RzBwRt5NSh6yuvQ/hWwQiLxV7SHkJ6Be96UOBtUPrfhz1CEfS0BVAGczBU22p8CLdD32U8wuS/z0UAzJjW4BPh+HfEH92e2qOBl4W42/0lYLxVixysOBsabOL7nGc1KMFa5SuawazhT8kIRLk1QmcybnoH37Qa4g1QS4UtjPn3OJDwgmujqAHyzTXmrVlWkxfF9THhzKbqX9XFEcnVKyd4d1p4UIhKKrkf8kH6U8kQIib5wu7N536tFQXGw6biSw8scmVh50ROViyj/bu2aJ0GM/Nekf4WJ7D2gVcD+6Pia+lpIX0QbMtER65hDY9+U7eTWLIrQK3UgzLow2CScpQXpcgDigHQlmddVtnY8sWGPl2k5PkayzMi9quLZjVdZPzLw4I2XT6wL16M9wbNyjjMeMmgvnQ3kFZuehNlynRjsl2ZXBszRZv3qe4WlcVW+LzPdxokJ4fH7NOt9QIb1km3t6bsmkLq9VlLHDq8lpHQfBl3ZEbOB1dlMQXe39lltdApDonP/JyvaFDHkTngHGtlNX35t00tVtbXtTnkNNNK3vSwo/OJ/+NdOSLonIlKu8b1OfMhDrTlFBb+PP0FFpLcSvDQHc5TufmYHFqSPIFwYcI+/IAFxSqS7b0RCsa07rJGTl9TfLhH0FqOv+UdAC0zdQv//r/brlfeJ5i/gFWd9Dhjw3/FwY5Ri+JrdHtVww2JuzamNLCwaiKBkvuo1UQJA7HWKSTAp9uuJNcZbW11chwoh040JIq6AzIW18mKlgTA8iwhGRTQe5UudZpzEO/X1+hAxWKovM0fBsgeTNiXk3scDiPoU2u
+ snyiVnA8
+ NlG5Dxv/mzl/wgewhyFKH6u+5HF7yupzSXwyed1NSg0ef1D7CVW23AoOj4VatGr2NiWgrTlDYWtHDhg6PDTBJAzgB0nqHA+iziguUysdNjv+k5HlJjX+6WbFaMmSwnPytp65dQih3k2HWFDAzgFJJsuaaiGRKNXk+agENg09htEH2cNht6WdJyM9ppDFmELizZZ8cotebFRy7LzbSUc1Od1GzvQ3iNyQOhRJqQs4RWdpqH8SYuH8qvQfpdZQt4zNpgoefWj9944TDkeSwe4XETgFgehtM1+7GTvmQuP82YC4q+20QscdK6P4tHhMPBxMpPLWgAmLiTFgWbKkaL0/e7gA9Q+KOFBUqPxOa8ABsRIXfPsuioiIWAlNBvyOQpRX0VDusJilV2bqwaCg4rGMD5e2HdfWT17fxYnnTE2m972XIimTgTJfi3Xt1WiTPZpF+GMu/Q/3lNYXtdsNaMgIJIOeiNBM3ZrNXYg9pvwr9L0mMp57ZbILQ0PCvujKFD++g30AvqvrCF3ga5lDCV7feOimSBwJFEyHEsMqNUb95aAfHn58AQb2U5R/47u484UD0OsvO6PHYnQF+QYYQzuJyXncdp83/3E/V8lnLdqysDWbewXbZV+53Dl4ERRxeNCSbBoeRvBjpxtpZHGGCbPUWBh8q7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,96 +130,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a write-only module parameter 'flush' that triggers immediate
-page reporting.  The value specifies a page budget: at least
-this many pages (at page_reporting_order) will be reported,
-or all unreported pages if fewer remain.  The actual number
-reported may exceed the budget since each reporting pass
-processes a full cycle across all zones.
+On Thu, 28 May 2026 12:41:33 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-This is helpful when there is a lot of memory freed quickly,
-and a single cycle may not process all free pages due to
-internal budget limits.
+> On Thu, 28 May 2026 15:03:37 -0400 Yury Norov <ynorov@nvidia.com> wrote:
+> 
+> > Reassigning nodes relative an empty user-provided nodemask is useless,
+> > and triggers divide-by-zero in the function.
+> > 
+> > Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+> > Link: https://lore.kernel.org/all/CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com/
+> 
+> Thanks both.
+> 
+> It looks like this is very old code, so we'll be wanting a cc:stable in
+> this.
+> 
+> > --- a/mm/mempolicy.c
+> > +++ b/mm/mempolicy.c
+> > @@ -370,8 +370,13 @@ static inline int mpol_store_user_nodemask(const struct mempolicy *pol)
+> >  static void mpol_relative_nodemask(nodemask_t *ret, const nodemask_t *orig,
+> >  				   const nodemask_t *rel)
+> >  {
+> > +	unsigned int w = nodes_weight(*rel);
+> >  	nodemask_t tmp;
+> > -	nodes_fold(tmp, *orig, nodes_weight(*rel));
+> > +
+> > +	if (w == 0)
+> > +		return -EINVAL;
+> > +
+> > +	nodes_fold(tmp, *orig, w);
+> >  	nodes_onto(*ret, tmp, *rel);
+> >  }
+> 
+> I suspect we should address this at the mpol level - it should never
+> have got that far.  Hopefully the mempolicy maintainers can have a
+> think.
 
-  echo 512 > /sys/module/page_reporting/parameters/flush
+Hello Andrew, hello Yury,
 
-Note: the set callback runs under kernel param_lock,
-so writing this parameter blocks other built-in parameter
-writes until the flush loop completes.  This is acceptable
-for a privileged debug/test parameter.
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: cursor-agent:GPT-5.4-xhigh
----
- mm/page_reporting.c | 54 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+I agree with Andrew here.
+mpol_relative_nodemask is called from two places, the first being
+mpol_rebind_nodemask which is the calling function seen in the bug report as
+well.
 
-diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-index f68c79e57427..3f584f538c68 100644
---- a/mm/page_reporting.c
-+++ b/mm/page_reporting.c
-@@ -358,6 +358,60 @@ static void page_reporting_process(struct work_struct *work)
- static DEFINE_MUTEX(page_reporting_mutex);
- DEFINE_STATIC_KEY_FALSE(page_reporting_enabled);
- 
-+static int page_reporting_flush_set(const char *val,
-+				    const struct kernel_param *kp)
-+{
-+	struct page_reporting_dev_info *prdev;
-+	unsigned int budget;
-+	int err;
-+
-+	err = kstrtouint(val, 0, &budget);
-+	if (err)
-+		return err;
-+	if (!budget)
-+		return 0;
-+
-+	mutex_lock(&page_reporting_mutex);
-+	prdev = rcu_dereference_protected(pr_dev_info,
-+				lockdep_is_held(&page_reporting_mutex));
-+	if (prdev) {
-+		unsigned int reported;
-+		bool interrupted = false;
-+
-+		for (reported = 0; reported < budget;
-+		     reported += min(prdev->capacity, budget - reported)) {
-+			/*
-+			 * First flush completes any previously scheduled
-+			 * reporting work.  Then request a new reporting
-+			 * cycle and flush again to execute it.
-+			 */
-+			flush_delayed_work(&prdev->work);
-+			__page_reporting_request(prdev);
-+			flush_delayed_work(&prdev->work);
-+			if (atomic_read(&prdev->state) == PAGE_REPORTING_IDLE)
-+				break;
-+			if (signal_pending(current)) {
-+				interrupted = true;
-+				break;
-+			}
-+		}
-+		if (interrupted) {
-+			mutex_unlock(&page_reporting_mutex);
-+			return -EINTR;
-+		}
-+	}
-+	mutex_unlock(&page_reporting_mutex);
-+	return 0;
-+}
-+
-+static const struct kernel_param_ops flush_ops = {
-+	.set = page_reporting_flush_set,
-+	.get = param_get_uint,
-+};
-+static unsigned int page_reporting_flush;
-+module_param_cb(flush, &flush_ops, &page_reporting_flush, 0200);
-+MODULE_PARM_DESC(flush, "Report at least N pages at page_reporting_order, or until all reported");
-+
- int page_reporting_register(struct page_reporting_dev_info *prdev)
- {
- 	int err = 0;
--- 
-MST
+The other place is mpol_set_nodemask, which has a helpful comment that notes:
+"mpol_set_nodemask is called after mpol_new() [...snip...] mpol_new() has
+already validated the nodes parameter with respect to the policy mode and
+flags".
 
+So it seems like we are missing the big if-else if-else if block from mpol_new
+in other places that should in fact have it, like mpol_rebind_nodemask.
+
+The approach proposed here of just checking whether the node weight is 0
+won't work for a few cases, namely for MPOL_DEFAULT and MPOL_PREFERRED where
+empty nodemasks are actually allowed. So what should really be done here is to
+do the full policy-nodemask checking section in mpol_new and call that from
+mpol_set_nodemask as well.
+
+Thank you for taking a shot at fixing the bug report, please let me know what
+you think! Have a great day : -)
+Joshua
 
