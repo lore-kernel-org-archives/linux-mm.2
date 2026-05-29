@@ -4,124 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 765F6CD6E50
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 14:57:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5084ACD6E4A
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 15:01:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D71C46B00B3; Fri, 29 May 2026 10:57:11 -0400 (EDT)
+	id 847CC6B00B5; Fri, 29 May 2026 11:01:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CACCD6B00B5; Fri, 29 May 2026 10:57:11 -0400 (EDT)
+	id 7F8456B00B6; Fri, 29 May 2026 11:01:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9BCA6B00B6; Fri, 29 May 2026 10:57:11 -0400 (EDT)
+	id 70DB16B00B7; Fri, 29 May 2026 11:01:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AAB696B00B3
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 10:57:11 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 71B651A017A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:57:11 +0000 (UTC)
-X-FDA: 84820760262.21.200E5E9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 78B0916000A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 14:57:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jHqixT3Q;
-	spf=pass (imf08.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5BCD46B00B5
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 11:01:21 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 04D221A018C
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:01:20 +0000 (UTC)
+X-FDA: 84820770762.16.4D03D89
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 16549140019
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 15:01:18 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K1b5V6y8;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780066629;
+	s=arc-20220608; t=1780066879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vZ/3SDoifl8f0cLPCsdOx/VHK2TElW/aB5rioFk5LQw=;
-	b=M+FgemOiQA/BNzr9Z2CabL2iWWCrRf0Umsgw+xUOZ6Wp6L5yu6FrLkUezK0dBoSsNtGfiq
-	gHgDnbrxEYInsYE55nuIZf1xp2PJJY0+n03goE7SbeSGwvr2KOhnO7OjaSY0Nc8Lt8AEso
-	Dpn80pmh78k8VtDYGXywIe9cgxrEOYk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jHqixT3Q;
-	spf=pass (imf08.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780066629; a=rsa-sha256;
+	bh=3ShsIQPosHpMnirHmH4xFd5qCR/Qbqzv+ZOS1pe/kbc=;
+	b=NZ90GFk8ERgqjNoy53GvEIwtMoRiZwkuA6qiWbpDKRaDZ9NK+ZsMQOPp0PZAsWldMA/NT7
+	hNxbAp27fLPDwhj0jWqan1eTHBVqltDDX+P8YVZvWwgNBmJlRLYap/rLAHIUXv4Pt0grIm
+	+hUjvYzm5MLTS20PVeYN6CKzDVuCDwM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780066879; a=rsa-sha256;
 	cv=none;
-	b=m0jrlz57v2GLR6G8jYplqLyXhxrL/II2pmtSj7KVsRc/nvCL0zkVzSod47QmbRn90G7ydx
-	3JKB1POQnHzDk6jE2viQf3PUwUEqKZt6S/7u7XjD4S4XtlYoh3x+Me5f7m6rOOFB68PHby
-	qyR1r1h2K2xT2zRYm3txfzMRKRzIF9Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780066628;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vZ/3SDoifl8f0cLPCsdOx/VHK2TElW/aB5rioFk5LQw=;
-	b=jHqixT3QLxCw5bgkUFvRBA9f1Jnf7dp+sX/O1F+IFJxzNwhGyyO/H57zsJwgQADFGX+lNZ
-	TXnXnW66YirO/RRSS78wJwqW9gy4zHA3ZAwKvXO0vBwl2uiUXL5wmXL6m22xbErklWgdj3
-	kj2iAB2hHUqcin5lu5wybBCJ8dGloYg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-116-wsw1JObFNN6taHimYi1MlA-1; Fri,
- 29 May 2026 10:57:01 -0400
-X-MC-Unique: wsw1JObFNN6taHimYi1MlA-1
-X-Mimecast-MFC-AGG-ID: wsw1JObFNN6taHimYi1MlA_1780066618
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7F7A719560B3;
-	Fri, 29 May 2026 14:56:58 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.22.64.88])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2CAB130001BB;
-	Fri, 29 May 2026 14:56:55 +0000 (UTC)
-From: Luiz Capitulino <luizcap@redhat.com>
-To: linux-kernel@vger.kernel.org,
+	b=alNNLIAgz8LNh01KtpgKufBsMCvvo0+gBCRNLPz7RLPl45oeXDgfLzxOgayChGuo4GXo1h
+	aDiUt3RmKK4SRSaZ8lyNF5n5h+laShrPuWcx0JxHHstfC6HrY0Toj6OuDeoLkmoq6p3SzJ
+	eSCV9up47mPXMdYhdsM1zuqkjJUcK8M=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K1b5V6y8;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EB28140371;
+	Fri, 29 May 2026 15:01:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825971F00898;
+	Fri, 29 May 2026 15:01:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780066877;
+	bh=3ShsIQPosHpMnirHmH4xFd5qCR/Qbqzv+ZOS1pe/kbc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=K1b5V6y8fHjzldH5MYPUCQotj/88kq8UPiKAfP48FgDCJrs6LhbUNWDZhSKdPE3EW
+	 cwvLI+8VBgLRWCYaCGMTsPYiEF7QemHD845Zty5y9YE+GHnJ44pCOXM2hQ5QfLPVvE
+	 D99s61wSEjQ7keqXkTRrUulvX0970/bUO9XAwoT9lMH+HrG6LBqU7CLnssLHMPBncQ
+	 j4S5rorAIowxpyDjPSRxAaDE+CcDZjPrhZ/QXEtfpf014sggaYR7BXL6K86trSO0O3
+	 nP6EtjrDyo480gssnYzAsy63XZxpSExgzFTDPKeH8nag1UNciYV8sxQ613Vj/ehhtk
+	 QYTy2uJHwB5eQ==
+From: SeongJae Park <sj@kernel.org>
+To: Cheng Nie <niecheng1@uniontech.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	shuah@kernel.org,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	david@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	ziy@nvidia.com,
-	lance.yang@linux.dev
-Cc: corbet@lwn.net,
-	tsbogend@alpha.franken.de,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	agordeev@linux.ibm.com,
-	gerald.schaefer@linux.ibm.com,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	x86@kernel.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	ira.weiny@intel.com,
-	hughd@google.com,
-	dave.hansen@linux.intel.com,
-	djbw@kernel.org,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	akpm@linux-foundation.org,
-	yintirui@huawei.com,
-	ljs@kernel.org
-Subject: [PATCH v5 14/14] mm: thp: always enable mTHP support
-Date: Fri, 29 May 2026 10:55:32 -0400
-Message-ID: <8781a9a0f115705ee11884ed3184b65a1ce39923.1780066530.git.luizcap@redhat.com>
-In-Reply-To: <cover.1780066530.git.luizcap@redhat.com>
-References: <cover.1780066530.git.luizcap@redhat.com>
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel@uniontech.com
+Subject: Re: [PATCH v2 2/2] selftests/damon/sysfs.py: validate memcg_path staging readback
+Date: Fri, 29 May 2026 08:00:56 -0700
+Message-ID: <20260529150057.84753-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <FF9A1552C03B7C88+20260529092131.1703337-1-niecheng1@uniontech.com>
+References: 
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: V9bjnyUtqJDmN3GDMLqWQ6wolqgMiXYs6l-EC9_MqTY_1780066618
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 9pyqqfmepr699q6uo9hi4e5o3s5g9ajs
+X-Rspamd-Queue-Id: 16549140019
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 78B0916000A
-X-Stat-Signature: jhunyk1cgibjymqhu7f9k5ncsqdm1k5d
-X-HE-Tag: 1780066629-471358
-X-HE-Meta: U2FsdGVkX1+B3DJKe80B5/OM2XHpK3GhqWmG0QEuTLUw12NkuOt5dp71Py3o9OVG1TS+XC4D/0KzSaTcoADAOkp+yZOitxf5gQEeFN+hjFoi0mN+h+HiY3cpkBeaJ/X+dxcByiokrMAMe9a5FBqBqCWdq63VJGXwhHCpfmxxZfv018SdXHZp0zL7FCcCSwqPVA7fXtsDUOrBP83gtiUQeyuS2TiSJdtblyPOlIpPwCjC8txccJ5zDMRwUrhNrPk0leo9p6SjNOUnuIoFcuF5DDScgoiKcDO/vHDU+7a3xDPFc7kOYzzrToq3908oQNGhC6j9F3YFmncix+58FTtLVHUhtkV4PThXJhsipK+15IkWfEbXIiynF1d9v7bG9u03PdhuCoWLQiEm6AxM/YnhWG0B+x0an70OYvPRsRd0AF44m/xAaXJmyI1BMa/q46xjtwNOj8JSJICrV8JdpMPeG1TlJJOU4lOO3tZ3zYzfRs8aZvTOdtktf/zAKBxMR/raSjEZeLVFrJ58GM7wEWCXjFIwfWhQ0qJqJtin0RpWHeuria2QU+lXL34abYsC2rAgkD13OZnIqV2qmilpdbG5Ze+6++9vLCIVd2nhvVXc+4a1z60PFk30yq0eGPeeoD+fw4/C7ingiu3SrS8deNGD1DXDtyEXqOFfYkZCmQ1EQ99Hf4VKYiYMgVw6ORyFzVuO3g78Vt4Et0wHl14nWOWrrJ8jyI3mlWnGanPe8OqMHnKMuI4CsyRUvsyYPXGJ62pgcMdO+Cw93j3GjXm03AwUf0icpIV1eLOeywWgukAKMMqiyWD9embk3+2zZo8lukL3RF/xjTOiNIB7tpp5w7BjVUq73WhBrRBV46p0HUJxXC9DppBklUB6k9cn/Cle5tA2j+RfhG1QoMwfBWE4+7CvkJN+zfMBNL+inZcNwSbJEtpWje3qSKSFnvfgyzwnLTuT9yfRx3YGjdJfk4CEcni
- vZ8wpUoN
- UPZO+iUIRIVmAaT0tcHcjFnKI4Ia4S9i8jeUFg/0cZ7rcbegQpYT2sB/hJNLHbY2xre9Z6u3EiD8s3nXibCNcITdiYJbIJPlf6K0Nk69t7IJK/cabbH9JNNOkxVz3S7jkjnRn44rZXJp+x3bT8/lzvYXvOWtNjx5Y9Yy69O6rWhKHXnX94RP2A/fsrX04gdakGx0Keky9/vyzRp9WESphulr6nxJ/b6hzZe0tggsc/aQwtMxrxOhBpu8AYBMatJ2PVfGfok1qc42yC6iygOC5FJ/czGbvliDhl9UFzAU/F14nddvo5SmixWk9gqOG0kfZpeABSXs/R/r/qclZlAHCPSdQtg==
+X-HE-Tag: 1780066878-755501
+X-HE-Meta: U2FsdGVkX19EcBU8ZHXSOYp7DMEHC6XG7+9XAAkIobtGXWZ2iZzdXAW2W4y4RZyGuFU9P3psLR9V4+W4Tna2vj49uO6dfJaQxWqqO2j+4qHFDZQlcuuS4nNlTrcCMJaIW3cVMXOSymwA+T3LCkG0LNVUtVfSpOMQ09aaxDtKnMz+GoT4vqJ/BR9iklyBR+rCBh21dwowzRwDJ7TbCcQVxPR4GCStPXLKAKHEksfTGh9pf2eiZGITNZqjbu7/bw3Ihvux35oVkXXvW7C4HGD5j5TrrwkwHvJg2tWA0KKh0eZwByjEmLBVHd82svkknTjLXfkvrfIx9KeB0F0xGrLXMczlt30Tvv0+Kg9JmYbQ/2ErcsTJE4hHZJun8VbK9xDMW1QPUdIo4O+tUQbNv6AsNkWEeYrMzjWKQAK5xocHfArsll+CrlmT1A6YZ3IutDS4vqcUtmTOY1Zdy5sXJjGPkXvuAJ5OdEMSgFeKYuNo4vFWEtTmdwi7erZFyPb0v77VWvyVPEL7rffCZQyj6hrhX2YPeNdbLZ4X0ZGP6suzr2s8rpE1I0GvJb/laLYESrm/2CnUzVOwMsTs9taA4ntlT/sH4Qs3wOZNKcABf+CLYuUrlfc+DD34EXHu6yncGj5PFP7lFfmxAnJhRKeWA8EhMXtG1Q1rOE55XSBiJyggXLQXXx1DbdlK6aiFgAimt7KgYaxkh97mLhfY50jJRkpu5dpqOeefEj+Lw0wRJSL321H2Uzb+Ce2bXt4McRb8NG2diJg4t99PSFGCNzGGZw9XIU+jnOe5WQb/O5v5bej4jgC8gZFVPogUN1fGEUfXEnMpKjxdbmXV7KZ0+AiywVI711dMJa4H6fWpiZEv3MyiQl5WvDOC3TnjRogF516Svg0XgVxf6cyc9Y40VKp9RIJ4rFc2Sq1fezUZ6DPnxX2WudiGO6Kp5WgZKoMKbVQTheGSqyK7LvqT/fMei7ozcXQ
+ ecOZpQVe
+ 4sWk5AsOihG2QMALcnCrzJYORDFOHZI9UQIFr7xIIVpMBEkPNw6eWCMDevsoaXmDg02nwVSGXSuWUUM/ishfihIPMdHbnfdB//cu4Ye+djd0n/oQh3laFmZsj+vEf8Cj4GUkdvaV5vhPkxNbJz8LNj8TagjinIf4IxxT+Nhejk84/9UmLNL+TOym5ME3SH8dvu1Y+8BGYtGMmrueulN/mWaZyYPUHq8ebQcMqI53CRpRO3oCJ8kE/CT9asEsTGyJmRC1uVxzXkWKESsfHOuC72X133CYyXeS+Gsog4vwxGc+dgQFsRJB/TQPYELUaBDxHSb1YBI2EDASJKDXu4QUVwg7vzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,146 +95,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If PMD-sized pages are not supported on an architecture (ie. the
-arch implements arch_has_pmd_leaves() and it returns false) then the
-current code disables all THP, including mTHP.
+On Fri, 29 May 2026 17:21:31 +0800 Cheng Nie <niecheng1@uniontech.com> wrote:
 
-This commit fixes this by allowing mTHP to be always enabled for all
-archs. When PMD-sized pages are not supported, its sysfs entry won't be
-created and their mapping will be disallowed at page-fault time.
+> Add a dedicated test at the end of main() that writes memcg_path to
+> sysfs and checks the readback path.  Validate the readback rather than
+> a derived memcg_id so the test stays focused on DAMON sysfs behavior
+> and avoids depending on the local userspace cgroup mount layout.
 
-Similarly, this commit implements the following changes for shmem in
-shmem_allowable_huge_orders():
+Nice addition of a test, thank you!
 
- - Drop the pgtable_has_pmd_leaves() check so that mTHP sizes are
-   considered
- - Filter out PMD and PUD orders from allowable orders when
-   PMD-sized pages are not supported by the CPU
+> 
+> Signed-off-by: Cheng Nie <niecheng1@uniontech.com>
+> ---
+>  tools/testing/selftests/damon/sysfs.py | 39 ++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+> index aa03a1187489..0f20bc9c46b7 100755
+> --- a/tools/testing/selftests/damon/sysfs.py
+> +++ b/tools/testing/selftests/damon/sysfs.py
+> @@ -250,6 +250,43 @@ def assert_ctxs_committed(kdamonds):
+>              if ctx in ctxs_paused_for_dump:
+>                  ctx.pause = False
+>  
+> +def test_memcg_filter_memcg_path_staging():
+> +    global kdamonds
+> +    memcg_filter = _damon_sysfs.DamosFilter(
+> +            type_='memcg', matching=True, allow=True, memcg_path='/')
+> +    kdamonds = _damon_sysfs.Kdamonds(
+> +            [_damon_sysfs.Kdamond(
+> +                contexts=[_damon_sysfs.DamonCtx(
+> +                    targets=[_damon_sysfs.DamonTarget(pid=-1)],
+> +                    schemes=[_damon_sysfs.Damos()],
+> +                    )])])
+> +    err = kdamonds.start()
+> +    if err is not None:
+> +        fail('memcg_path staging: kdamond start', {'error': err})
 
-Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
----
- mm/huge_memory.c | 25 ++++++++++++++++++++-----
- mm/shmem.c       | 14 +++++++++-----
- 2 files changed, 29 insertions(+), 10 deletions(-)
+I'd prefer the error message to be in form of something like "'memcg_path
+staging: kdamond start (%s)' % err" for consistency.
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 32254febe097..059901a8c6cb 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -126,6 +126,15 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 	else
- 		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
- 
-+	if (!pgtable_has_pmd_leaves()) {
-+		/*
-+		 * If the CPU does not support PMD leaves, assume for
-+		 * now that it does not support PUD leaves and disable
-+		 * both folio orders.
-+		 */
-+		supported_orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
-+	}
-+
- 	orders &= supported_orders;
- 	if (!orders)
- 		return 0;
-@@ -133,7 +142,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 	if (!vma->vm_mm)		/* vdso */
- 		return 0;
- 
--	if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, forced_collapse))
-+	if (vma_thp_disabled(vma, vm_flags, forced_collapse))
- 		return 0;
- 
- 	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
-@@ -848,7 +857,7 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
- 	 * disable all other sizes. powerpc's PMD_ORDER isn't a compile-time
- 	 * constant so we have to do this here.
- 	 */
--	if (!anon_orders_configured)
-+	if (!anon_orders_configured && pgtable_has_pmd_leaves())
- 		huge_anon_orders_inherit = BIT(PMD_ORDER);
- 
- 	*hugepage_kobj = kobject_create_and_add("transparent_hugepage", mm_kobj);
-@@ -870,6 +879,15 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
- 	}
- 
- 	orders = THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DEFAULT;
-+	if (!pgtable_has_pmd_leaves()) {
-+		/*
-+		 * If the CPU does not support PMD leaves, assume for
-+		 * now that it does not support PUD leaves and disable
-+		 * both folio orders.
-+		 */
-+		orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
-+	}
-+
- 	order = highest_order(orders);
- 	while (orders) {
- 		thpsize = thpsize_create(order, *hugepage_kobj);
-@@ -969,9 +987,6 @@ static int __init hugepage_init(void)
- 	int err;
- 	struct kobject *hugepage_kobj;
- 
--	if (!pgtable_has_pmd_leaves())
--		return -EINVAL;
--
- 	/*
- 	 * hugepages can't be allocated by the buddy allocator
- 	 */
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 079e299ea789..c15dffd0eb41 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1844,16 +1844,19 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
- 	unsigned long mask = READ_ONCE(huge_shmem_orders_always);
- 	unsigned long within_size_orders = READ_ONCE(huge_shmem_orders_within_size);
- 	vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
--	unsigned int global_orders;
-+	unsigned int global_orders, disabled_orders = 0;
- 
--	if (!pgtable_has_pmd_leaves() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
-+	if (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force))
- 		return 0;
- 
-+	if (!pgtable_has_pmd_leaves())
-+		disabled_orders = BIT(PMD_ORDER);
-+
- 	global_orders = shmem_huge_global_enabled(inode, index, write_end,
- 						  shmem_huge_force, vma, vm_flags);
- 	/* Tmpfs huge pages allocation */
- 	if (!vma || !vma_is_anon_shmem(vma))
--		return global_orders;
-+		return global_orders & ~disabled_orders;
- 
- 	/*
- 	 * Following the 'deny' semantics of the top level, force the huge
-@@ -1867,7 +1870,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
- 	 * means non-PMD sized THP can not override 'huge' mount option now.
- 	 */
- 	if (shmem_huge == SHMEM_HUGE_FORCE)
--		return READ_ONCE(huge_shmem_orders_inherit);
-+		return READ_ONCE(huge_shmem_orders_inherit) & ~disabled_orders;
- 
- 	/* Allow mTHP that will be fully within i_size. */
- 	mask |= shmem_get_orders_within_size(inode, within_size_orders, index, 0);
-@@ -1878,6 +1881,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
- 	if (global_orders > 0)
- 		mask |= READ_ONCE(huge_shmem_orders_inherit);
- 
-+	mask &= ~disabled_orders;
- 	return THP_ORDERS_ALL_FILE_DEFAULT & mask;
- }
- 
-@@ -5461,7 +5465,7 @@ void __init shmem_init(void)
- 	 * Default to setting PMD-sized THP to inherit the global setting and
- 	 * disable all other multi-size THPs.
- 	 */
--	if (!shmem_orders_configured)
-+	if (!shmem_orders_configured && pgtable_has_pmd_leaves())
- 		huge_shmem_orders_inherit = BIT(HPAGE_PMD_ORDER);
- #endif
- 	return;
--- 
-2.54.0
+> +
+> +    context = _damon_sysfs.DamonCtx(
+> +            targets=[_damon_sysfs.DamonTarget(pid=-1)],
+> +            schemes=[_damon_sysfs.Damos(ops_filters=[memcg_filter])])
+> +    context.idx = 0
+> +    context.kdamond = kdamonds.kdamonds[0]
+> +    kdamonds.kdamonds[0].contexts = [context]
+> +
+> +    err = kdamonds.kdamonds[0].commit()
+> +    if err is not None:
+> +        fail('memcg_path staging: kdamond commit', {'error': err})
 
+It seems we don't really need to do commit().  As Sashiko mentioned [1], it
+also depends on CONFIG_MEMCG and active cgroup configuration.   It would be
+suffice to simply 'stage'.  We don't have stage() method on Kdamonds, though.
+What about setting all parameters including the memcg filter at the beginning,
+do 'kdamonds.start()', but ignore the failure, and check the content of the
+memcg_path file?
+
+[1] https://lore.kernel.org/20260529094327.6D5031F00893@smtp.kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
