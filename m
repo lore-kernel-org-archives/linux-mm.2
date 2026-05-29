@@ -4,107 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22E65CD6E43
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 01:19:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB03ACD6E43
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 01:26:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBE2A6B0005; Thu, 28 May 2026 21:19:44 -0400 (EDT)
+	id C0A6B6B0005; Thu, 28 May 2026 21:26:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E967C6B0088; Thu, 28 May 2026 21:19:44 -0400 (EDT)
+	id BB9ED6B0088; Thu, 28 May 2026 21:26:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DABD96B008A; Thu, 28 May 2026 21:19:44 -0400 (EDT)
+	id ACF1E6B008A; Thu, 28 May 2026 21:26:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB0B06B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 21:19:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 24A0E95557
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:19:44 +0000 (UTC)
-X-FDA: 84818700288.06.7D4C084
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F7686B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 21:26:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 245661C26E2
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:26:22 +0000 (UTC)
+X-FDA: 84818717004.16.5A8C9A1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7266FA0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:19:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nLzj7OCG;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 73634C000A
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 01:26:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nZ0PZeR7;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780017980; a=rsa-sha256;
+	cv=none;
+	b=l0YtX+TlPUnZJGBAusoztsnF8Zh5TB4Y2h3dVd+jtgQAc0hInppr1KmMoKZYiVPgDYvWRN
+	5GTw2wdblDXQxs0ByR527rbzAcpewakI1xFL2xT8Gxnk/2y/EQbfvnr5OjAKSNZL00NFdR
+	v/+PWXoPUGaTQ/hkLDc5pUOfWUvkM1c=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nZ0PZeR7;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780017582;
+	s=arc-20220608; t=1780017980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ozq/Ru3FRyhUKHioj+TdgdTtFgDpQkgRBP9R3Cod/9Y=;
-	b=BZHWYMOJ/wOVG5cY+aSlWfVyhDLZ/AYRYT1s7EtdcbIeJHvfsU8qF2+NrhCVsr0wy8u8kx
-	FCp2gF02+yA8JJVmIX0NrL+nXrYXEWTHEcab5SbrbZu+KatWBPqEL2YaLuBNTqIiHLN9cd
-	RGsveIPBYWimFugtEx5erNcl+bC4h4U=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nLzj7OCG;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780017582; a=rsa-sha256;
-	cv=none;
-	b=LWs97mkCLB5ancnfLL5jbUxme52rPdY/c46lP3O7jbhLL2QcA7BcYUU5UinX0Wg/s3sIHD
-	Mqa7Pz7G+Q4uNrP1czFt9E1hgIJH7zqEupN0momDfkyK6ht7XGrZwiLbdKX4YhLFP8Xfua
-	2G4xbQ2eI8RdUZ3f69zsoB8IAQ//1V8=
+	bh=fR0iSISNGo6Jq+jXpakAdJqfeIknPVsI985rMOxNdrQ=;
+	b=fdl+M9SjGML7csw9ynz58WqNddzbjjg544akG09A+vcm3R71Vf4QrNi8RQIYUABl+Iqd6k
+	RYp1C80uKrSl2a9nQU4HYkFDReLHY57KTA9/FMPAPjnZV6/oLbtSHi7PaUnH3xQxKgmxCl
+	DY2qgIGR/VeR2aYBwSbl7f01pvZQGfI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4D70943F42;
-	Fri, 29 May 2026 01:19:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AE21F000E9;
-	Fri, 29 May 2026 01:19:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3E40044372;
+	Fri, 29 May 2026 01:26:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5251F000E9;
+	Fri, 29 May 2026 01:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780017581;
-	bh=Ozq/Ru3FRyhUKHioj+TdgdTtFgDpQkgRBP9R3Cod/9Y=;
+	s=k20260515; t=1780017979;
+	bh=fR0iSISNGo6Jq+jXpakAdJqfeIknPVsI985rMOxNdrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nLzj7OCGbAYQphViYclXtHITMmaEevm6G40K5z5oGF8OxchRHxEKKiPboc7ARFeiq
-	 E1aWmqls8XpEIW6+93ygxdQGIXL8Q3EjpR/7xVLB710yIvO6tcTx/KKn/wAc24xA/X
-	 aEq1Yv9XwNS5lbmC1lexYYQDitbtWDngkVPHuUYbjpsuscfMfP5YssJ60G/ZzVSFYv
-	 GMF4sAAQO96eKev9xxg6btXLcKm8b5oGv4CzFzICSsALDvTntxaScC/kNvmBua7NUz
-	 RJDFb4/OeQx7kYsv9aD/BiNTS9Ar5294YKFIq/uV+B7z4ijcE2KS6aRrt4W+WAIob2
-	 zz7a/yt8o2Xyw==
+	b=nZ0PZeR7SKEeZ/tojrXVox8QY/4rtENkXOgA/QmpJelh6VpsDLNqbebR2dlWN9zN1
+	 F65D8A1aGY7VXoSvdM9itDvb0LGJX36+hWHNFxlBrTJ3FQUW/FqCCLvGgEK5oDG96l
+	 YcFVZOqCrqpgnJ3+fQcQy/rgvmTpW5Y4XEnvOBAjRKQkG36tjrfe3NTiI+AmS+cXcV
+	 4GK16qOaE1UGwMx7gB/VPqMrcZMRkat5+CzyYG2C7El37ch32yM7oGRoRZ1HLcUmZ0
+	 pQTZ90Fat8EqBfd4dU9Q5OlKDRWsUDs7mfFRKfhEaWHF6OQfBpDc72d+w6XEhmVavv
+	 FFEk+Eb/H9zaw==
 From: SeongJae Park <sj@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	Liam.Howlett@oracle.com,
-	ziy@nvidia.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	jthoughton@google.com,
-	aarcange@redhat.com,
-	usama.arif@linux.dev,
+To: SeongJae Park <sj@kernel.org>
+Cc: Brian Masney <bmasney@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kernel-team@meta.com,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: Re: [PATCH v5 09/18] mm: add MM_CP_UFFD_RWP change_protection() flag
-Date: Thu, 28 May 2026 18:19:34 -0700
-Message-ID: <20260529011935.8433-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: add vm.rst to memory management core
+Date: Thu, 28 May 2026 18:26:10 -0700
+Message-ID: <20260529012611.8578-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260526130509.2748441-10-kirill@shutemov.name>
+In-Reply-To: <20260529002525.7939-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: xscnb3xubcoefsi69b9emksezfdbz8o6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7266FA0005
-X-HE-Tag: 1780017582-887657
-X-HE-Meta: U2FsdGVkX19Ocw39HTCrmWBWfp+UM1o+d45IYkl8aAHq3RahXuHCJH/OLv01biw74lllyu+5iulfSfvW7n6CHrcz2+ZLGpNp4/NyoTD6NDrQuoit3T/VNfan7yRtgp80R6ckg31Ag33EHfMZe/vtO06LgMoguGLbAmOPtX3wrrhqB4PaRLQ8d9k+8fyaTg0TC3WI5E8BTbntXNzy13ESBItuzqZggKelIF7Mj98Em/7yZfJW9lpYIXHG5wfYE2/MEQnIMC8U0BnQu6KjMkcBRFLieKpA5iLBEwhQ615zMdLA3ebAE0q7cL14Trzg6pAfb25vb3A0/WoGBar4mcqCWm/i5hFayQJPLUnfrlAtChBFXNyzVKx8m4GZlGXNdonsTFu/ShVyzKWSCyz4k1DNLsnVo5Re5LRyJ+wtlA8LoDUCQvrGwMy+EiXgBpBhfW7+Zt9aDm5IQOT/9A6T0iUeVTRxRbt5WKPtYgeI+IKDE0SCOdQFCgwm+Av3tlAPVvVVQim7lnLHoz7ALOGwDFwqGjhlW+QQYxfbgPay3+VKg7OYRqWxqzfoxytQyeQzdWM/XyMB8KRPMr2Xzzfn4zqUNeVfdWI6cEYxpXB0FKAxt140WEA7Vf26y35QZYTDd9Au2ewwi3Kgah5Yi+gHGGRoRbHnw7lFoiGrwYhg8Xx+Sp9B9bkeFeUh5kzohIa2YjlsqubG/43cXOuOjKlApelkTplP/35pLXhPmAy+Yf2U02Fid/vFOUQghtgJpvNnxArtjNXvNwBwfVshe4diy/PqBLmjhxMZ7jxTtOdX82OOK2beW+pRBOt7Ejwv+DKRpd/fM06SClzzXq20cMa4sHqQLErRL4te++uK/n9Ut6CYrslHc0XXRHB+lJtwTMGlfLeg+PMdWYk+O2FbHJjypvgPqk8ea8l1U9tMPYyN0R7oiSlY/ag+eC0A1ATQTqT8hk+pVNvYC3sgJ6Fi37IT0Bp
- 3wt2Y/m7
- lv6bBANAKGuokoHb0vXPmcT0X4jZ/Vq0UWkUdYqjPdLYoxsPA6P+6MHxT0zAKyqXPTy3W2QjSOHcBfsrEzXvnYyOm49VmOPMXtOm3+dLyEGNp/3/jTwC2psDDqyfypb5PwVMzytSUmy/PeA/x4f4lHYhrlfkv0jGG5HbSzn1SFFmRrRSyng3Kxl57pOEolZ1QvABpZCdtmNoTKhhO66+ZsGCvhOQMp5mv4uAVrXH/IaLswXr30N4Au5F28+vtuaGW98nJ2GjwJmCuHXHnakP8pDGjhinQjfUfktmX0rpBL5TGMM3lI2kN6AuYI6au/RRL6YpgABygeyk6cdA=
+X-Rspamd-Queue-Id: 73634C000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: yzm7nkeddzqru3qggk4td38p95f3z3ka
+X-HE-Tag: 1780017980-180604
+X-HE-Meta: U2FsdGVkX1/m1u4ZdTmhvlPU+nbGYKMP2Ias6Gc10b7/5a/fjCuRtZems2K0HPGEpdPSb7uiR36NlrJP7O93Qj0VOBxWqjcefYCOPbiu+2APz7DkdlwqdBxq6VHGmjlL/ctp0zfH0+dihgMpVt3OJujgfguFxvs0VvfbsyJHALpTxO/EJzIHElPl84lKxC6z3Rr1cmxSSjP3PVS2WwUzXsOpeSd2D3NsB0aj0xqQLTNoIzkku+NLndAV9ayY5CP/R8/y9GMKKteam9+eIBPgjm8neH9UuIreeSZ4Hyt0uaf1NKFct7ddq/m1o5dpRdKUEGKmNYfAops6ZdGPUMRLdhjegZq7ezG28K3SYHy5Qw7aZ+45MkgStlv9M2up+l3vNS0mREEVj8GhgQ2CbaztHFw/4wWlFJVIo3Mza3xPxgg6Dc4Eas0iPlpLZ/h1TqBEABBk/x+QsByNAN6f/5wCtTyHPiUKEkVu8XeM93WSyBwSWNRleniROU1msUNvlSO9IcUR3Sd3k6tAFycyPMTQEX7tWWyQrnsBkHxtUY8gVL3hJZBW5JweYuWpx+Skpm5Oc0neLGgiUHNAC/lZTQJJEUENnSn1iNIvcpCDSJdUXopDOdgbhryX2EknzXbNoKLQsL9ZyWZKIoC9uNrgRQsLKzcYS2nr8sJcJ6sujxRHlUOiR7asmLHPyCqEbhp+1YwXcwWfuIOiCYXWsppHL3H0OHOqQXvmVF8kJ5XnlSE6oK04Jip7E3EcHn7vldMuo1YvMdC+ut1oMNO+hpgbTvJOr6fV6W5VnRqZrD1iuWldwEC8AAfY879MwcKbc/nzSf9Rkj2aOB4Ty1/wZpc9SyLlnGhcK5l2gH4iun8C8uqHmRQy7UZp8XWqNOEa3hG0kFxM3MegjGsgcRoECSHNC++Wl3JeoqwjV4+Dz6XHIQdD1Ztge07cmkceD0DJjsrRnoVPBP7mdBkUuEzH7rPjiYG
+ EDUAUjBx
+ 2jS+WFtAV8XZqI14nNLU1PrOnCmJqq/VpaX6mj6bgqcM0Lwmx2D9gQFNascTcRQyA+9yrPINF6AiFHbiXF7/0+XdE9TA0nSYKrT+xbhKbNMQsgh90ApLmSxoGU+6DC4jNy3vYUpnQmqN/hFUt25UhDFASZm8q3etNUNrJ0sSrMDGNHXMjSRnYgagzPH0wF1WRFSRYdofQe02GVwdMuIQiLpayBCy06vVWlnsN6B8KGWvdqUyX1HrtGm5U6LbOl2L8WALa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,69 +99,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 26 May 2026 14:04:57 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+On Thu, 28 May 2026 17:25:24 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> On Thu, 28 May 2026 09:56:14 -0400 Brian Masney <bmasney@redhat.com> wrote:
 > 
-> Preparatory patch. Add the change_protection() primitive that
-> userfaultfd RWP will use.
+> > The vm.rst file is currently not listed in the MAINTAINERS file, so
+> > let's go ahead and add to the MM core subsystem so that the maintainers
+> > are CCed when changes to the documentation are proposed.
 > 
-> An RWP-protected PTE is PAGE_NONE with the uffd PTE bit set. The
-> PROT_NONE half makes the CPU fault on any access; the uffd bit
-> distinguishes an RWP fault from a plain mprotect(PROT_NONE) or NUMA
-> hinting fault. MM_CP_UFFD_WP and MM_CP_UFFD_RWP share the same PTE
-> bit, so the two cannot be used together on the same range.
+> Makes sense to me.
 > 
-> Two new change_protection() flags:
-> 
->   MM_CP_UFFD_RWP            install PAGE_NONE and set the uffd bit
->   MM_CP_UFFD_RWP_RESOLVE    restore vma->vm_page_prot, clear the uffd bit
-> 
-> Both are wired through change_pte_range(), change_huge_pmd(), and
-> hugetlb_change_protection() so anon, shmem, THP, and hugetlb all
-> share the same semantics.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Assisted-by: Claude:claude-opus-4-6
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Probably out of the scope of this patch, but would it make sense to also rename
+> it to mm.rst, like we replaced many 'vm' parts of file names to 'mm', e.g.,
+> commit ee65728e103b ("docs: rename Documentation/vm to Documentation/mm") in
+> future?
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Reading above again, I think I wrote it in a confusing way, sorry.
 
-> ---
->  include/linux/mm.h            |  5 ++++
->  include/linux/userfaultfd_k.h |  1 -
->  mm/huge_memory.c              | 30 +++++++++++++----------
->  mm/hugetlb.c                  | 25 ++++++++++++++-----
->  mm/mprotect.c                 | 46 +++++++++++++++++++++++++++--------
->  5 files changed, 77 insertions(+), 30 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 6499cfb61dc4..f79801816f32 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3297,6 +3297,11 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
->  #define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
->  #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
->  					    MM_CP_UFFD_WP_RESOLVE)
-> +/* Whether this change is for uffd RWP */
-> +#define  MM_CP_UFFD_RWP                    (1UL << 4) /* do rwp */
-> +#define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* resolve rwp */
-> +#define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
-> +					    MM_CP_UFFD_RWP_RESOLVE)
->  
->  bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
->  			     pte_t pte);
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index 0aef628514df..564eb2aac321 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
-> @@ -361,7 +361,6 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
->  	return false;
->  }
->  
-> -
-
-Nice cleanup.
+I mean, it is "definitely" out of the scope of this patch.  I'm not asking
+Brian to do such renaming.  I'm just loudly wondering if such renaming is
+somewhat worthy to do in future.
 
 
 Thanks,
