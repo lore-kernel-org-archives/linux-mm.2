@@ -4,112 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4E10CD6E43
-	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 03:03:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F11BACD6E49
+	for <linux-mm@archiver.kernel.org>; Fri, 29 May 2026 03:09:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08B3E6B0005; Thu, 28 May 2026 23:03:31 -0400 (EDT)
+	id 06F5A6B0005; Thu, 28 May 2026 23:09:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03B636B0088; Thu, 28 May 2026 23:03:30 -0400 (EDT)
+	id 01D4B6B0088; Thu, 28 May 2026 23:09:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6C656B008A; Thu, 28 May 2026 23:03:30 -0400 (EDT)
+	id E75616B008A; Thu, 28 May 2026 23:09:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D3C426B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 23:03:30 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 71CA2410C8
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:03:30 +0000 (UTC)
-X-FDA: 84818961780.29.D4900C0
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B34B6A0006
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:03:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="kVk/euDV";
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf25.hostedemail.com: domain of niecheng1@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D60616B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 23:09:41 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8863E1C1D35
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:09:41 +0000 (UTC)
+X-FDA: 84818977362.28.48700AF
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B01741C0007
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 03:09:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="rPW2L/Aw";
+	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780023808;
+	s=arc-20220608; t=1780024180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UO25NXFfDr1JQbaCIs3jucG8rynGMrbJHIu0alItT/Y=;
-	b=tu5aGVMymVFU6GwfeYGESIJWBiF2qGFBQI2qMwKjootqt0zWhT8xg6yj017vI8hP2ykGv1
-	7QO9CcvWj+Tolcx0BiEn6TmE7V39J6ADDtQmrtSO/k++M1hSYhbONcNvIg1U6zukDmVQ+2
-	mTXbr4476Sv/hQXfQwNeS812iP6U+dM=
+	bh=TK0Ooz++M6ADTeqrK3RvYBVcHOibgpzwEbnFPIpXtyg=;
+	b=Ma+EmSryzyfDyGqTRljAL/ngK3a5JD2CxQVm44Asw0H0q1QnzKm1AW6TakdNfozS0m51Uk
+	S7JqHpIqtWSWJ21jbC4qzz2upK2wYhESirwEbspbVfZ1FqYQFdg1DQMWjbAVvSk8ZITxjb
+	NT760wk0uCZqKVHxOpHR4BwZEosFDLk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="kVk/euDV";
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf25.hostedemail.com: domain of niecheng1@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780023808; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="rPW2L/Aw";
+	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780024180; a=rsa-sha256;
 	cv=none;
-	b=VOxgpKGySzhJaMz/8LMIDZD98zyxq6gFvfOrMSFWiSzWQbWXsMh3ZUIQRBtZe1VL6eY88W
-	HHSUc6PYBSPRAr5tNo4J3+3pPCXvpk2cBMpcf5K0nqsA005an9fdVjI+9Vp4NrR9ZhZW3a
-	THdNHdwj7GHYJIXihEox3ITstEKwAuE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1780023778;
-	bh=UO25NXFfDr1JQbaCIs3jucG8rynGMrbJHIu0alItT/Y=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=kVk/euDVNUIjx0cu5qU99sYMYIfIZZUnQCYtHPTU8cmJ2wpbFw/1E6g1xUKTiqCQR
-	 TIW+z9XctVHJnGZajAM/NOjSVVrW+eMrce7NnnUMguXS3+k2/VjiHiO5BJ8/7xyRBY
-	 H4w+s+fFePFG88rMsGo/+BB8MG6PTpk4Hzc0bsxA=
-X-QQ-mid: zesmtpsz1t1780023764tac51051f
-X-QQ-Originating-IP: MfmWebu0CGkWeYxMGyswxnR9rxACMxe/KsnSWW94zTo=
-Received: from PEN1097 ( [61.183.83.60])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 29 May 2026 11:02:42 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 772953753065975309
-EX-QQ-RecipientCnt: 8
-From: niecheng <niecheng1@uniontech.com>
-To: sj@kernel.org
-Cc: damon@lists.linux.dev,
-	kernel@uniontech.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
+	b=rrTDIO3GQUTkutcfzpAW6ASvbJlIp1baDyC7tDE6xSjG/1sOBG5rCxN2oAz8i0PONTDPd7
+	S4iEavT9dL3FdmUZKyVal9F49K3M1TYPm5rNhmt3J36m2FoKH0E6SmLgOeXctzpzZVmYlV
+	d54S4Zikm+n5iAJot13Am0ExWDUuCwo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780024177;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TK0Ooz++M6ADTeqrK3RvYBVcHOibgpzwEbnFPIpXtyg=;
+	b=rPW2L/AwIYHoiWPp2eOwE0adHHwnFnOKbGhcWqGIMYN5aqkat2mrGz4RqBT4mgPHOoKR/b
+	ZlE0dx4rkYNhcztLXz5+G/x9mfCdx/BjU9xVDTgp6qacNPe3uEONvKerIPhutbo1UvuEGS
+	AoYMONqZpJtbsaFd0uo/gZtTNsBzZwo=
+From: Lance Yang <lance.yang@linux.dev>
+To: yang@os.amperecomputing.com,
+	dave.hansen@intel.com,
+	jannh@google.com
+Cc: xueyuan.chen21@gmail.com,
+	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
-	niecheng1@uniontech.com,
-	shuah@kernel.org
-Subject: Re: [PATCH 0/2] selftests/damon: fix and validate memcg filter memcg_path handling
-Date: Fri, 29 May 2026 11:02:41 +0800
-Message-ID: <7C41953A77335257+20260529030241.1554009-1-niecheng1@uniontech.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260528143204.153713-1-sj@kernel.org>
-References: <20260528143204.153713-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	lance.yang@linux.dev
+Subject: Re: [RFC PATCH 1/3] mm: make persistent huge zero folio read-only
+Date: Fri, 29 May 2026 11:09:15 +0800
+Message-Id: <20260529030915.37767-1-lance.yang@linux.dev>
+In-Reply-To: <c0f9a811-0286-4e1c-8790-8e31d95e5819@os.amperecomputing.com>
+References: <c0f9a811-0286-4e1c-8790-8e31d95e5819@os.amperecomputing.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: N9ftk+EKvgGZRNFpA5ZkVMwXFBAZUMF2lE8x9u/XxaiHv/lREbo/jm1B
-	wWVf8/WOPK7qJM44SZsww58VvLgaCYqeQchTwXiWR+1i0Sa0j4iQHQyqHaaUQXyXqRXGZTs
-	nB8bKXUQu+xFlZtGLfngs+2mEz6Mr1X3mpfkAJPI7zOb8nHoFN7T44/jYxsZd6NFMJao5yf
-	iVX/WlvKvPO6iF556bHMQWctQc0XDsjdrIoEovOAm/JgvxYsI8kroF9vzKe9Ygl9BeCMgK8
-	mJN0FviM+FekvDZFHnkwMkBVTaI7xdBaAYl4rsXBvjjj4c/uWAP6G3g+lBrXsgtmJ7bHRzn
-	FtVmPrAv7cAUNoZTw6ZJWVjUMdyzcXRQ+qQ0rU/9z+qNFxZ508QQL/XYDRGSu1CMeLU0Ahi
-	+4ozrwMQL4FFsF8MgRjM/CAH5p7Kqv8fmln7FvdSSPRQCKdJxhkvYAcUfXG/MPOzl2T+4lN
-	KFfKiPG4HKJugXmoNPJ2tHqkdMRvKOv2uDiPYOkMMWW2uMrZUBX1DFklHnLJEKzEHkpFMkP
-	GF18ELSuqAWb4AkFyz0By7hTOZAVQ66cWYIMsXDf/KuCqGtoFWbITTx4F9tjuv3D6dyj7VD
-	JHGdi/EPRLmXc/zT/RqsXqXyV6D/A4qgWH/vRMh2w4a968+HTLAf/jXaMGaPZDtCYDBPs2q
-	SdL63oDu3daj2V7kGfCX0SUu0t9L2RZb+q3K26pNNwIGT8RpNNRt8D9UR2lDU5n7An1/rvE
-	glLxYPJ1zQ12u85bcvBnUY7Bm42LK5ZFaiv14CYXGztKfiDGyohyK1BMIGk5SZnYSTconbx
-	OywVhFG3Uba/puGEMVo2l5DOX2rbL32dlqhydsZ/tIvixk/3rn9oZJHYZKEWTVsfA2DXaPD
-	rndK2aDm76txi3MhT6HOKJ+2YUqpQ+wVa4GHbouvHZU7gAzqTB4JsTzRYiG+CpqhJsdt1Ug
-	W7PSero523YMtAe6xeH8j5hUuwEpd2JoLuFevemAto4iSQTjJ8aZMGpFbZ+86Xc3bMi2ntT
-	vfJvy6/JPTRVs4emMniRs9ktjKaIE53+Il3ZTWfUmb2HJ1Yhibthiq9V27Jpv3yUzaXnJ9/
-	tohxeDTO9sEdKLYvca1FrE=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B34B6A0006
-X-Stat-Signature: oqkttpd9yder7q17xbrznmeqmp5anufr
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: j785ekdtg1umw6ach69cfcu49iqb1d9c
+X-Rspamd-Queue-Id: B01741C0007
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780023805-489008
-X-HE-Meta: U2FsdGVkX18eH2s/NSsBn8vKQOnllcH2EUraUv0JwF5WSEjNNjHJ0eqwn+QdNg/wK52ACz/8bPFjyw1UnHPWhLnY6pWOv4cQE48uVpCnTEhu/tS06qWYaebJtUJuMJwvYxt/D+QR4M7GHSu0iPGTQmIrShpE4+a8uHXlueKGGlDRoaYW3ToW7uyjyV9lrSgpNYC308dFIF8yDvZSkZm39rrItpSo/59M9+9NDrdw/jYlTaS9t6RYcGx0QTNyqOIN1p9PnTAzAb754G25PcnzeClBaKKLn9r7RW8502SfRAgZ7Hy0ko7nAURJrECr183/Tt0Pw+M+GHMcA0+QN7x3XwA9p3sP3GF50/L8tSq0IKN5jRhfkk3Yf8tHavO4R9v4jJ5BS+RTdks7pFwyzeXzDhBOstZK5Oe1GZ8XJBypPIRQXgk95ic6Ssh/1/OwHTUW/dptIn9l7uDqQ3vITWpeZHXmK8RFsJDtpE1Oof4Q3S/6GlqSsa7sWIKQ+HQLopRBdDSaX0pRz+NowPhPIDEM1Ax9U02KuamIU3WxHIqPUpT3A/weWV0R71fh9QRnl4SY97jyNZI07OYOGEw5Y1qBdNvTEtI8JjuoQ5zA12uhwKFhXowMz71+4r89DONdk7pVYzvJFf6m+sPKKTj8vkFie0+opJododndWM5NPwRma5mdeQ44rnVY/X9ZvCwgB9q/E8ar3SdLOHEI1aflvNguXvV3xrkG5acld7MvGjkL0n1iBDJJBOtjEQptV0XipCZWiFRJc5WWt3USV1+MrS2oAp77TNbg6ozG15psbpy9unfr7WOydDo5xPL8K5pOnS3fH/xU3GvgXwkSySdqFNz6/ksarZfLs0JfffniywokJIABN8lFMv3Tlp4yZAkGeZxpsnalHZdyfXvRXs58dKUBqQgNKzk8sVtZ37YfkaJEZt3bOxuK5TD/MROLqaENGb3+fAz87AK+V9j4G9a/qKI
- In5VoPdO
- ZWR87eLoEhhpGfbpt56eQfQc7xzcRWokPFaNHsnGRS7cd5N0eDMHoCc1LtjvI5NKqWN6zuKloz98qRD/vSXwPFAgOQIPPuZ2I1K5bGRJMsY/VDU1fbLwmNoqOYnO7nIiqbZU9IJrw1oax3NdP6594buDTcs5q1E5L8TAq3I4xsQL32h6Lvt8bMZRPqo57K1S2Uze0i7Hp1kAwFr+pB9+gKp/G7uW49BLIwQy0z9eCRd4wxIGZDkEAy8PaNirr0hee0Awb0aW4XGp0wv+Chuxe8AFUamQBL6+/WpnB1kH37pohZgPK+9IJvcgKR7K6J110SOWIrCJAu376tXg=
+X-HE-Tag: 1780024179-270979
+X-HE-Meta: U2FsdGVkX18oyBpqRWKnb7arFA3tx8eJLMUDM+zKefiI4xmQ79yXWWdH7/5svosY+lImLKlFecxOKbK/MV7T86Y/oHrvLBAqrTHOoxtk5hMENPaAq+MqwXqXvzzh1Kws27BX1jCFZ3Qz4wemMxapxS6dClJPpH5DQc/Je8/dSKekd5iRDKw1ekRCnmYS/dlLtJY7G/gtqOzIWnoh2tOMcCA9ta+aVbG8IbQwfmTHfugESw7Z9DAukfTN6M+PMJROxOljlGclr+rZDv3H8Iar2/+ziZn0IAAc7B8FkQp+V6XQFpJ5sSSzP8H2LAg19Vs7CQZNdh/+8HGyA4tqnVmam9ryGbUFlbj6A/FG+9NR5EDf/yQikS/jqA1qpz4Mc81PsDm98cYFhz0Kc5qg9A3uVhesUjWgN0tJH9zodOrWCyBzQ17c2+y1768vomYJ7cq6Dc7MWeg07zW99XAkHSDgqGQy5Nf67c/+xUVWmJ9aNvaNao2nfEBwiHY9lBWQF5yyz6ic6oP9947U5zNPGDWQU3gqfmzDHMEWve7gXB6taFzW9nYzu6D36bXPBRjw50ltYWiNhVpxmn4CnK/oKucH654lOdwhKmq+6lJ1WvtxxfFhTP7oghFLsHrybPlWhuVmEdUHwqtUk3geFLG0ruXKBqGCCYPt/9h85z+LwFJylVw3YnE1zUACL9tOZsdhLFldSfuOJX8e2WLxSPScrumt3+Mx54/L9KOH1BGgukKPomaIk/tdVvSD36040OPmAfDgs3sZDijeUAoe6g9t+S5Ak4zqvFkB2A1b0HjoKA6fsZYtRPUsVpD/Sqcvz8vyQ2AtRNZDHKDIZN1VM2uu6qMsaLbioSCCZSrARItB+tuk4gYSSrkfNVa2w2cSUOGphPFUmtGULO2VDx4yHHdTY0AI9fjJebdcR/Tv50BA3FORVQtnRufj+W+kp7GJsV2jXKPDH/Zbv15UYPB9TCUdEhh
+ oEehUaP/
+ 2QNT6IpfqvuZCxeIW6Fjw/pJozR2hNItkFpgn+eLDLzF9esFwnS/1Nv/E+UEbdE5zVCaB6pwYvdLN+9h0xSpk7vO6mY00G7Dxv1fOf7ZUEj4TmfEJuneC3YTyILzJQNnSMx313Wpcu7SiAxzKujM8ubbgmG09SWh6xUps7Rjb7307PpRHYhpnEhz1SP3TlRfcAAxv/oVrlKe+0nckWGURo9CyVJJPPZaCj2BDqJpWsm4UX+81JPVApKoigr8MEKCrfPFHflZz/bYECl7+DpowOwY0kGNGTKWB6yJDpoUQtjNs1TnzlLDtKNOgOxUTVBbUZXe9fNnFyngZKzQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,22 +108,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 28 May 2026 07:32:03 -0700 SeongJae Park wrote:
 
-> Somehow the mails of this series don't have correct 'in-reply-to' field,
-> and therefore not constructed as a single thread but three individual
-> threads.  Please check your setup for next time.
-
-Sorry about that.  I will be more careful when sending patches going
-forward.
-
-> Nice catches and improvements, thank you!
+On Thu, May 28, 2026 at 11:43:40AM -0700, Yang Shi wrote:
 >
-> I left a few comments on individual pattches, though.
+>
+>On 5/27/26 9:20 AM, Jann Horn wrote:
+>> On Wed, May 27, 2026 at 5:55 PM Dave Hansen <dave.hansen@intel.com> wrote:
+>>> On 5/26/26 20:56, Xueyuan chen wrote:
+>>>> +config READONLY_HUGE_ZERO_FOLIO
+>>>> +     bool "Map the huge zero folio read-only in the direct map"
+>>>> +     depends on PERSISTENT_HUGE_ZERO_FOLIO
+>>>> +     depends on ARCH_HAS_READONLY_HUGE_ZERO_FOLIO
+>>>> +     help
+>>>> +       The persistent huge zero folio is shared globally, and nothing
+>>>> +       should ever change its contents after initialization.
+>>>> +
+>>>> +       When supported, mark the folio read-only in the direct map so such
+>>>> +       writes trigger a fault instead of silently corrupting the zero contents.
+>>>> +
+>>>> +       If the permission change is not supported, the kernel keeps using
+>>>> +       the writable persistent huge zero folio.
+>>> I vote for no Kconfig options here. Why? This adds "security" with
+>>> _basically_ no extra runtime cost. The runtime cost is, what, usually
+>>> one kernel TLB invalidation during boot?
+>> Plus potentially a bit more TLB pressure from losing a huge PUD in the
+>> linear map, IDK how much we care about that.
+>
+>This shouldn't be a big issue on ARM64. The most ARM64 machines have 
+>linear mapping mapped with PTE if rodata is on. Some machines with 
+>BBML2_NOABORT support have linear mapping mapped with PUD/PMD, but those 
+>machines typically have large memory, having 512 PMDs instead of 1 PUD 
+>shouldn't be a noticeable issue IMHO.
 
-Thank you!  I will address the comments on the individual patches and
-send a v2 soon.
+Cool! Thanks Dave, Jann, Yang!
 
-Thanks,
-Cheng Nie
+Yeah, that sounds reasonable. No need for another Kconfig option here;
+one less knob for people to care about :D
+
+For arm64, I think Yang has it:
+
+1) Without BBML2_NOABORT, rodata=on already forces the linear map down
+to PTEs, so nothing really changes there for most machines.
+
+2) With BBML2_NOABORT, this may cost us 512 PMDs instead of one PUD for
+that. I don't expect that to be noticeable either ;)
+
+So let's drop the option in the next version.
+
+Cheers, Lance
 
