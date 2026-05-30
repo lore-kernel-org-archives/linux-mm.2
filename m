@@ -4,142 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E74B3CD5BD0
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 15:16:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CAB0CD6E49
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 16:19:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA4E56B0005; Sat, 30 May 2026 11:16:34 -0400 (EDT)
+	id 348346B008A; Sat, 30 May 2026 12:19:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2E5B6B0088; Sat, 30 May 2026 11:16:34 -0400 (EDT)
+	id 2F8E16B0092; Sat, 30 May 2026 12:19:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF6BD6B008A; Sat, 30 May 2026 11:16:34 -0400 (EDT)
+	id 20EE26B0093; Sat, 30 May 2026 12:19:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BC0286B0005
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 11:16:34 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4C5601C0BEB
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 15:16:34 +0000 (UTC)
-X-FDA: 84824437908.03.B254BC5
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1508B18000B
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 15:16:31 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Qa+LcmTW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PFpj0hi2;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Qa+LcmTW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PFpj0hi2;
-	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 125056B008A
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 12:19:51 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F1704038C
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 16:19:50 +0000 (UTC)
+X-FDA: 84824597340.06.6440812
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BC3ABA0009
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 16:19:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZl0+4I9;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780154192;
+	s=arc-20220608; t=1780157988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SE90/JszZ/IRjGrWEI0Bz20FnK4+6DcEq7PwC6UmGJk=;
-	b=6Y2rJGckxqzWrkqQd9J0Z7nw2X4WBhCT118Ha6Qakb6OAFqf26vGydv6jqqDKtVTczb1Aa
-	v+f3FTI4iu0PK29bHXoB66+kNkjeW3aViawiVDg5P1pRo1GIAF/WpDF07Sjq2G1VvnABc8
-	GXWKjzuWTpl6wwPtGJpfDChfLNXN1QA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Qa+LcmTW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PFpj0hi2;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Qa+LcmTW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PFpj0hi2;
-	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780154192; a=rsa-sha256;
+	bh=WxYmQxwwBxgWs6asR9XSCI+irQfqn2faBEqKE1hn53E=;
+	b=q/ITkzL3qZIkqEPT9flce7HPg+nc0dnK1EF8vJ9vgCQalcy+9dJ2V0l9z04yw0BKY2nuSY
+	+2MtxLeZcjshN8+Uk20GtZnDJ++iEISarNI+3gSYG12y+aS0OYKfTmii0J4sLTUG8CmQ9e
+	CrBRyomwgNGb++/geYP5e7nhua75YFg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780157988; a=rsa-sha256;
 	cv=none;
-	b=ecxaCGZOa0t1EBGap7DVGiREUNWvqh/x8fRQQ1VXvh2TFZeSzyQjHlxSJdhhewSnURSQWL
-	hNBEA/YQXRvXL3rhmZSmoQ0V5BpOB/sO4Zy22tCC6BYOMPkf75Yep9sCYq+4b1tOJm3MIh
-	2KU2u8Q3pVPp4MU+2AFCc3ZaOrAz7qs=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 443A86BB03;
-	Sat, 30 May 2026 15:16:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1780154190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SE90/JszZ/IRjGrWEI0Bz20FnK4+6DcEq7PwC6UmGJk=;
-	b=Qa+LcmTW0ZOv9LibRf4M14HYx6ONzmia57kRHvqcPwTd3BcxiGBEeG6TM8YKzB+RKO8H2n
-	PZw8uaca7wIUEt0oSClLTTozzT8ZwSJFgeVqU2OBk5dNGZiji2PDHA1w3PVqlrLjX8ul34
-	gLdIrfF0XCXJgrSiHsUxfgs9b0aFqUI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1780154190;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SE90/JszZ/IRjGrWEI0Bz20FnK4+6DcEq7PwC6UmGJk=;
-	b=PFpj0hi2yZT/rs7ItscQI1gzyO9nEwyIjbHSvtCf+NkEtx0A9KaNoFgp53A3WJWGc08WSW
-	v4b6RbI4syEl2xCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1780154190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SE90/JszZ/IRjGrWEI0Bz20FnK4+6DcEq7PwC6UmGJk=;
-	b=Qa+LcmTW0ZOv9LibRf4M14HYx6ONzmia57kRHvqcPwTd3BcxiGBEeG6TM8YKzB+RKO8H2n
-	PZw8uaca7wIUEt0oSClLTTozzT8ZwSJFgeVqU2OBk5dNGZiji2PDHA1w3PVqlrLjX8ul34
-	gLdIrfF0XCXJgrSiHsUxfgs9b0aFqUI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1780154190;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SE90/JszZ/IRjGrWEI0Bz20FnK4+6DcEq7PwC6UmGJk=;
-	b=PFpj0hi2yZT/rs7ItscQI1gzyO9nEwyIjbHSvtCf+NkEtx0A9KaNoFgp53A3WJWGc08WSW
-	v4b6RbI4syEl2xCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2EDC7779A7;
-	Sat, 30 May 2026 15:16:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MAHOCk7/GmoTBwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Sat, 30 May 2026 15:16:30 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 83C05A0EBD; Sat, 30 May 2026 17:16:29 +0200 (CEST)
-Date: Sat, 30 May 2026 17:16:29 +0200
-From: Jan Kara <jack@suse.cz>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Pedro Falcato <pfalcato@suse.de>, willy@infradead.org, jack@suse.cz, 
-	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org, 
-	r@hev.cc, Andrew Donnellan <andrew+kernel@donnellan.id.au>, 
-	apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	brauner@kernel.org, catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org, 
-	kevin.brodsky@arm.com, lance.yang@linux.dev, "Liam R. Howlett" <liam@infradead.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ljs@kernel.org, mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com, 
-	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Al Viro <viro@zeniv.linux.org.uk>, wilts.infradead.org@pedro-suse.lan, ziy@nvidia.com, 
-	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v6 2/2] mm: use mapping_max_folio_order() for
- force_thp_readahead order
-Message-ID: <u52xvwk2fjjk2izdb4wvuqq2zhc5neb4q6usimcxejluuyngxw@d64sc6rvojyp>
-References: <20260528165635.2068012-1-usama.arif@linux.dev>
- <20260528165635.2068012-3-usama.arif@linux.dev>
- <ahlh2vdHEGo6ZSot@pedro-suse.lan>
- <cc9a1cf7-7b96-439a-b0be-ecdcf27b5da5@linux.dev>
- <ahmSolHvUChl-3vM@pedro-suse.lan>
- <185f1caf-b33d-4467-beb5-51bd8520ac78@linux.dev>
+	b=iEAE33cLwIzGnvaWuPx4C3ANjl54uSQ74qtas1NY9+cFldVmquvc24TelJi1VNTzbK0AmC
+	aiZFBwmcQdUyk1VuGmL4gUTtCZv5FjeZ8Mt185XzjsBoePL2VKdn0lu7fbRftkZ0FUdxgq
+	9RvSRuHPBbEEbo86doc+8vRx25/PKBQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZl0+4I9;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 18ACC600BB;
+	Sat, 30 May 2026 16:19:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD33E1F00893;
+	Sat, 30 May 2026 16:19:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780157987;
+	bh=WxYmQxwwBxgWs6asR9XSCI+irQfqn2faBEqKE1hn53E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WZl0+4I9eq0OPPyxyDBdqCGRR+y0CoJpx7P9J1ZNHafWZGZX1fuK9HT7HOCSp1FVU
+	 9ddWJ9lDITFjq9eKGfZ8XgcPI1Gceue8QxkZpOu0JwKjN75XEWJg4tA2a8UNAkWZvu
+	 d2ASsHkW3EY1IZ3rOpPzq31XPfEMQM756K5+/fSW612wkX78yv2eAZ66ejeZV4LlfY
+	 gAu+RNJYW42KKsssq+PHsl1z2ZSd/eOK+QZCgtAc5FgOD8sjUj3miMaJcP2gtaD17q
+	 8U+HAlTtH77+9KCSbzDnS36KQEJCJesVoZVR5wfQkL3btqSLgCjvtjIMAmDS1I+rUb
+	 wf48OWQ3Lcqyg==
+Date: Sat, 30 May 2026 19:19:36 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Liz Prucka <lizprucka@google.com>,
+	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-sh@vger.kernel.org,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Re: [PATCH v7 12/15] sh: Drop cache flush of the zero page at boot
+Message-ID: <ahsOGMc7ys3H_oAt@kernel.org>
+References: <20260529150150.1670604-17-ardb+git@google.com>
+ <20260529150150.1670604-29-ardb+git@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <185f1caf-b33d-4467-beb5-51bd8520ac78@linux.dev>
-X-Rspamd-Action: no action
-X-Stat-Signature: nkwipwkwerz6whitiaxuhar19itxk7ts
-X-Rspamd-Queue-Id: 1508B18000B
-X-Rspamd-Server: rspam07
+In-Reply-To: <20260529150150.1670604-29-ardb+git@google.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: hbocaoxt9xc8fgdxbt5agejm9cuyagdm
+X-Rspamd-Queue-Id: BC3ABA0009
 X-Rspam-User: 
-X-HE-Tag: 1780154191-663626
-X-HE-Meta: U2FsdGVkX19w+GRNB07h4+FPXHG1IKWbH2QsP6WYhnJQtsuYJULcvBBdM19UsZzOtXSxICDlZ+VQ6VxqW0ZZBg8rb+eQ6nx4zwEzPGqQSc6uo0olVGri075L55hzpLGk/9HDlDf5OC8HXuO0sI/aP8NBQKUdBxtNnGODVhSCOhh4jaiEmmN0X3Trr0m1Qlgl1YaC3S7DARHqg6ebcXYenZIvgAikIcbNb8nyfaIoehbvfE+oqC0QUq7X3lwMbcpXI05TGhM4oCHw6mXn8AukjLPzIa7ILYk8ya2GVS+oIFSCUp4ugWXl0psZXCuNftJwwwDOuwZTEC6v2G2fkSdjXoOe/Em0jVwdCAcGLie9pOMp8DeSn+mhNtSoBX9sMBsQsDDwsNwgL0js0ZsovBuyqCob7Nj2ktGVu1s0h1p99/QjOgjhlZIp+MXJ3znFKa8guTf4S41Fp/sc94K3/flRWmeW3tXQNTh152ljTdA+D4AIfJwnUTIDvbdizyuvPV/a/OovcxJAb3LcDbRCNYDMiOk/LTB2M8OtFVk0JRIYZieIrxkmFAS8TXCjoJ8bF4DzT1z/QPCDQ5Ei1k/WwOum/q28evMz1NHHkug+aYMdrf4U5m0MbL1D3heFCZYR6pg2kKBm7v0+bYQR+6V9y8VrwTIscLL7BIL2C8XZ5ye5r64GJnOzz5S+2toSaNVeqTpGLPetBgKCOyLh41lDxAO1DdQpIoel75K4kmVLkZ07CdjvvcKEKOZTSWZ2L19LuJv6NQIaFMod0w4j8pSeg7BlpdMPYon/eRTaCv6WF82HqC6hc0dVMTmDuE/DzF+432LzKEFS60++/LL5GI+X8/92mHPZaVWr/DTnvaJDQ4UTOkiap0iP4DExQqpDHx7tm1fVJruMgB5E4knXhwE5YgWUL7eViYEforQHUxQZ58rL2AKuPJGoclSZ+pldnVeMIdgSjiFpnY03MIlQf+HWlGa
- WHpTUwhL
- VPZ503wRKgPo+oW+OV9Z/bWWV/+MdDD2NNbFfBYQ8Zu/kVzXUdjyedIEcTS9rZ8W/NXMXLCqFYyqgqczm0GcDWqnmAp8e8YGF/RzOnQwG556RjbyEBcZigfBsVpfSzN3zfuBdWC78xCQddVUL7Nm9d6VuP3+uk61NX4dK903dXTQIpnIkqfongR9wjOZPi3Iow7UBcKGtT4vznuigP5Uw2KtERMDtVnsCnGunehZgF08DtAbG5jqPultypQzXPgndrjW0UUgSaJLuw7W+WAvyo4fVZYwDGG6U6bVMB1P7YprQdBPqloxDjIZt/LwQj+KfBKBU8KqNyoQMUCCysGcmcZV6GSZjLTzToN2SvV70o0Hl+z41yYx3700N03NW5KGmFdJGcz9uzzRhWDTCZWJ9rEhjnITv1ItJVgvgADl8yNEV1VoGzbHYwPLat5PlctWjbBNhvxE8opc/Zpf/DW7bs1/kbw==
+X-HE-Tag: 1780157988-532449
+X-HE-Meta: U2FsdGVkX1/lf3BjvEobfBlf3hr0fpqEqarrdLPtJVbpPmkL9hnOQiRn2Kl4KifCccBAry1AYv4geiDgewVEVcSSCde1r7f46xFLhW9HIcZqd/pEHPvg3gsLmqbeED0PJVu/802owIIWlbnHguy7kLHZV1CVcDs6lIqMK8brBVqSC6MS5uigsdHsTeNwTyhXtfru0V9/edmiDonfXZS5jabdOmztf+PLn9ChJKVjg86fq/9zSJZxgxcIFauGWQTAsZomN505G4yxpNRSzTY9pU8M2OYqbYz1bD8XoTl1hyTTndBdI3zeXvOfE5VxUZ76GZDVj1oWOJcikwuLSgz77FO7SBveHz8Gp2+s4c+UDNZZqlRQfg4r6zvLrq0xYN3oA3/IH9pfKDTXkE6gAtqLkyKXkc9HeiYZ7jrQRjQIacSSJ49p6VjqHwTTLnQYOioLlRAOk1vBw5I7GVD8L7HDlfo6ePNGZT7V04VJvjF8N9FXgMupm0l1spowqHVdVEC2GMEZkG+LV6HvGhEAU6oHlFmWtJftQDuIbpCrCOQgtImsXZJ8Vu7bLE02F0wTfBtaY/9vAUINYlqnwW7Y+B5SaBuhpJPKGW4M6koy+WJY6OVQj3JD9k7hfiJfgSWGffLjkXdzasgCZozp5bYBk6vkiEcCBXJe1sYO6nS2khDxDZnvJx71csNE2tKwduW9f+jwYmqDfRaYo8AnvWNrE1w1Ppq4fRZZTc4ABoGtVtRRcYBZgAfhX9lZFiFUxD5wonrr3SpXDQUgyaD0Uy2lv8jVtA6eXchSp4fI8hrEbL9pS12gbJRhf6HGHjjhNK2+UT0xj92QeWuyNdpKm2tDA6k9Gf06t6Fki6PP5ZNWz4jle0iP7rV7NEJGGnsPfUs/+DYI9ltcbXDsV77aIMwVLxoYX2dRggzvU1nLJSazvUdUQ+7jOwxngKA1tCHKqfhXerbR4CHttk7wD3kv/CcHK1m
+ zLR3KpV1
+ nhqdsh/rbE6oJx/qs6XFA93dYhUlogVjC68+/5qor5RUPr96kKmSqw+SG0AZgbqVfbyTkQG+5YZnEsJaJFFgGbl8mRpAPenFr/R/yfXmUpaAkpR+rqsv0TelcyLaHtW9tEHoia2r2c/p9hoCXk5qk9VLEkswgS4oeu19aew9R1v5/nq5ZKivh7wJjrKmcaT05n/Z9WkLOyyoSGHKx2OtxWAM7jDb9rP4ahrfUgu+srS2EYSXsAjSqZGNN4xszI3RIy63IB+PGcyrr3fGIjT/6w+dqhjNHyp7brF93l6hOQuV/F0Sn1hzaU6gVsfvyIFwIzNM08PEn2iwcTlQiohgXm6cwGHd2gvr3SzjJzlfCM9Ef8F49ZM3blZiZ4IHaiM65L94BiMMM0kjoJ38B3Kcjh+5j69rNBufftNH1z2ZX+oTX/OA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,73 +106,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 29-05-26 15:11:54, Usama Arif wrote:
-> On 29/05/2026 14:40, Pedro Falcato wrote:
-> > On Fri, May 29, 2026 at 01:19:03PM +0100, Usama Arif wrote:
-> >>
-> >> which means mapping_max_folio_order(mapping) <= MAX_PAGECACHE_ORDER <= HPAGE_PMD_ORDER is always
-> >> true, and you dont need the min3(..) in your diff.
-> >>
-> >> Now the question is if then why not just do:
-> >>
-> >> 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE)) {
-> >> 		if (mapping_large_folio_support(mapping)) {
-> >> 			force_thp_readahead = true;
-> >> 			thp_order = min_t(unsigned int,
-> >> 					  mapping_max_folio_order(mapping),
-> >> 					  get_order(SZ_2M));
-> >> 		}
-> >> 	}
-> >>
-> >>
-> >> This is because this will regress the 16K ARM case where we already got 32M
-> >> folios. Someone might upgrade the kernel and start getting 2M folios now.
-> > 
-> > So maybe limit to 32MB? It's still arbitrary but at least you get simpler
-> > logic. If the architecture does not support 32MiB folios, it will clamp
-> > the maximum folio order to HPAGE_PMD_ORDER, and you get the same result.
-> > 
-> > Does this sound correct?
-> > 
+On Fri, May 29, 2026 at 05:02:03PM +0200, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
 > 
-> Yes, so if we replace it with SZ_32M, it sounds correct. I just think
-> the 32M size is too large. But as you pointed out, even 2M can be too large...
-
-So AFAIU the practical discussion is about two options:
-
-1) limiting at 2MB with a slighly more complicated logic to keep mapping at
-PMD order for 16k pagesize on ARM but use 2MB pages for 64k pagesize on ARM
-
-or
-
-2) limit at 32MB with simple logic which results in larger (32MB) folios
-with 16k and 64k pagesize on ARM and thus larger memory overhead.
-
-I'd like to maybe offer option 3): limit at 2MB with simple logic. This
-will reduce folio size on 16k pagesize ARM compared to 1) but do we really
-care? I.e., is there big enough practical performance impact with conpte
-and other tricks ARM is playing?
-
-> > Bottom line is that changing things will always affect someone :) Particularly
-> > since the logic we have is not too careful at deciding what should or should
-> > not be a THP (both in anon and file cases). And if (once?) we make it smarter,
-> > it will surely also regress someone!
+> SuperH performs cache maintenance on the zero page during boot,
+> presumably because before commit
 > 
-> Yes completely agree on this as well.
+>   6215d9f4470f ("arch, mm: consolidate empty_zero_page")
 > 
-> So personally I do have a preference of keeping the cap at 2M atleast initially
-> while we currently try and solve the issues we see with 2M alone. As we are already
-> seeing reports of thrashing and compaction with just 2M, I dont think the logic
-> in this patch with just an if else is that complicated.
+> the zero page did double duty as a boot params region, and was cleared
+> separately, as it was not part of BSS. The memset() in question was
+> dropped by that commit, but the __flush_wback_region() call remained.
 > 
-> Matthew, Jan, do you have any thoughts or strong preferences on cap size?
+> As empty_zero_page[] has been moved to BSS, it can be treated as any
+> other BSS memory, and so the cache flush can be dropped.
+> 
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-Frankly, no strong opinion. I'd think 3) is worth trying for its simplicity
-and seeing whether somebody complains, otherwise I can live with both 1)
-and 2).
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-								Honza
+> ---
+>  arch/sh/mm/init.c | 3 ---
+>  1 file changed, 3 deletions(-)
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Sincerely yours,
+Mike.
 
