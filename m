@@ -4,109 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70805CD5BD0
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 19:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7954ACD6E49
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 20:46:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A1876B00A5; Sat, 30 May 2026 15:49:30 -0400 (EDT)
+	id 6D0956B00A7; Sat, 30 May 2026 16:46:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 853376B00A6; Sat, 30 May 2026 15:49:30 -0400 (EDT)
+	id 681306B00A8; Sat, 30 May 2026 16:46:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 767AB6B00A7; Sat, 30 May 2026 15:49:30 -0400 (EDT)
+	id 5973C6B00A9; Sat, 30 May 2026 16:46:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 64FDD6B00A5
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 15:49:30 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EDB981A0156
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 19:49:29 +0000 (UTC)
-X-FDA: 84825125658.24.9F35C49
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2F8A6180007
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 19:49:26 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Bj83evpA;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C32D6B00A7
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 16:46:35 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8736A8D7D0
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 20:46:34 +0000 (UTC)
+X-FDA: 84825269508.05.5E25198
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D204D14000A
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 20:46:31 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kmX7QEu8;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780173992; a=rsa-sha256;
+	cv=none;
+	b=cDq2kRNrD7Ng0zBQtBlQ+DOu6CYx6foclq8ws3WkdRLij9GRUsrqleqZlzNQWLrSe152aI
+	8Mb+4JRptHU+IGbg/mUnOGT/Fp80dsnt0Uv9W+H3FpILbMFOk4JTR+wc6Wek38O2FoUX8j
+	2cE9m4eYj8V8WRPtnxEqWFfE9gdabTE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kmX7QEu8;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780170568;
+	s=arc-20220608; t=1780173992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5jsiPV03p9qXK6UAhNTUB3Gg8jLbZ8F5+WyNP3D4YAI=;
-	b=hk7em/IKD4XHhKJChe7o2QnXXkWbNfLjK0skjL1krcHZeptw79ePiAI7ILIZMEb/2ovUrA
-	XJctqtSfK5ePiGE6CrjvQWTBXoqQXVAxtLViVvZJq2RuLtik95zGQnkXXt2LtbyHby78HI
-	TRgMXmvJKI+hm1sP4RSy6R/x8JjELQs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Bj83evpA;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780170568; a=rsa-sha256;
-	cv=none;
-	b=PbtSoL8X6aeCzeK1DxIk5ztNpOoslcxZcd5LSUaGFtJ3qhrO9IJAuZotmvhBB6nddVYs4d
-	q0aTB+3iYv4IO1SyMKR88E57jyU91m3OrgyOjtsyP6wqBC8adCOYggh19pvLNJLhvUiXhV
-	IggjdNIwBVHl1cdPuPu5Fa2zDOwC2Gw=
+	bh=N5IdoUwdC5PkO8GvZoEw9lpuz2Ii9C3Dqv3BsRg7330=;
+	b=NqEkDX559rs79akJKYEqxxgkGGNUsmKMmf0rQPTJh/eWnwugoAeb+a2FbNj4CVlakjmOB2
+	TO66iZ6o/ijZYey4wwFoD7pEKUf5awnEoVsv7ldctW5R8USFzpIpVXHrRowv359XhQ1bQM
+	6J+F45heTt7DibMTsYt1eatentA25fw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780170567; x=1811706567;
+  t=1780173992; x=1811709992;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=r2HYZ1309/OZlVyvOT2l/OJyonDxhgfEY4CEmE5YdKQ=;
-  b=Bj83evpAQbHIiFwQMJzLgSJSzWgmfTQOGsl6rOS3Bx6BqK3NniDMw9wD
-   Ln+OGxI9TdgFsvzIp8R9K+5GaO5OKKPiTLUU67q16+EyEnEctNG2yzvh/
-   7735MJF//0lNhaVkQBsUVtQLzEkEEPDYWy16v8m+01UT2FN7QKLXz5uOn
-   nf/8Mu96MyEXvEfrJtOGs/XIu9nezHK9QQegKoEqGmiicjw5ldwblKPCH
-   k4eT7xE0YD7Xgi28z6UpPmHIiRd/M03Tnz2khQ/qtApHK1QpV+PiRqdxE
-   bs4iudqCYlhp8JdXuUdBSPn4vZdOlxaKI6CO1Bzqnrcda3k1LxPGvF5Cr
+  bh=IKhWW7LSJTC41x0mWNouiX5kSdHnHIBXrgOzOcenlZ4=;
+  b=kmX7QEu8xqMhn/rpIp0aO49N3GBUapKlDE38OjpaXUzjMlhTt535bNYy
+   ecMHONdO+piv3Hpq+iD3JU7DEWyT52pcAh68PhwyyPN3rEG3/3qShFnE9
+   UkSj8x3Bjqv9zeo0ueGFIRK1t60y3ZIfCchu1MS/fzEnett8h3iuEREEV
+   fqq9JDjtFyl3cpiNZDkaH+RrYA9AMLXCXlXDQnqq/jfak6Yz4pPQk96FX
+   kEbM80OrxI2rS/eJo7bogFbaa0ReHueOXKdsO8kLYtwYqToYF/KHmlUUy
+   bVRM0KBAFwU1IA3OGE98TpATYPVknadPsMTysDSoEzefmaVNu4p9/UYCD
    g==;
-X-CSE-ConnectionGUID: arhep6D4Seesdj0iAQjPWw==
-X-CSE-MsgGUID: GKssiRxiSiWSfEWAu7q3xQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11802"; a="92367067"
+X-CSE-ConnectionGUID: JI4ECg/RT5uwlPWvak63ew==
+X-CSE-MsgGUID: yYfGFvBgSxaNubz7wBVe8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11802"; a="80716598"
 X-IronPort-AV: E=Sophos;i="6.24,178,1774335600"; 
-   d="scan'208";a="92367067"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2026 12:49:26 -0700
-X-CSE-ConnectionGUID: WrVI3wmXSVSZaKetzgcb6g==
-X-CSE-MsgGUID: neI8wEgjR/qzIuBfSXLVLw==
+   d="scan'208";a="80716598"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2026 13:46:31 -0700
+X-CSE-ConnectionGUID: DGrd7KQqQsK+ayMD8X3rew==
+X-CSE-MsgGUID: MmoRbom1RdK7+lt6il1nYA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,178,1774335600"; 
-   d="scan'208";a="244979562"
+   d="scan'208";a="238985489"
 Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 30 May 2026 12:49:23 -0700
+  by fmviesa010.fm.intel.com with ESMTP; 30 May 2026 13:46:27 -0700
 Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1wTPgN-000000008p8-3PBB;
-	Sat, 30 May 2026 19:49:19 +0000
-Date: Sun, 31 May 2026 03:48:44 +0800
+	id 1wTQZc-000000008t4-1F25;
+	Sat, 30 May 2026 20:46:24 +0000
+Date: Sun, 31 May 2026 04:45:53 +0800
 From: kernel test robot <lkp@intel.com>
 To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
 	Jens Axboe <axboe@kernel.dk>,
 	linux-block <linux-block@vger.kernel.org>,
 	LKML <linux-kernel@vger.kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
+Cc: oe-kbuild-all@lists.linux.dev, Bart Van Assche <bvanassche@acm.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Linux Memory Management List <linux-mm@kvack.org>,
 	Ming Lei <tom.leiming@gmail.com>,
 	Damien Le Moal <dlemoal@kernel.org>, Christoph Hellwig <hch@lst.de>,
 	Qu Wenruo <wqu@suse.com>, Hillf Danton <hdanton@sina.com>
 Subject: Re: [PATCH] loop: reject binding to procfs and sysfs files
-Message-ID: <202605310318.dbidMe6W-lkp@intel.com>
+Message-ID: <202605310413.Xgk6vCeB-lkp@intel.com>
 References: <148efba2-a0b6-47d7-ac76-b19d2f4b696c@I-love.SAKURA.ne.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <148efba2-a0b6-47d7-ac76-b19d2f4b696c@I-love.SAKURA.ne.jp>
-X-Stat-Signature: bx6ufczoagsxmt8hi6zc8iasguspksn6
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2F8A6180007
-X-HE-Tag: 1780170566-727684
-X-HE-Meta: U2FsdGVkX1/RHJ/SCDd6Y+VfntBrDX3yVVRRzhQHo9VBxFVx1JjmImi6cFNIuyLehnvq3leuWf+4zT4IT4L1GFnGwk6qxgdbhaGZxB3WYSNVW+xXb+KCvaHy3reNj24z6JLSBfg+dikuqtXXSnAmsWqDHQiTHrDdt1b/cYvy2P/4Ki8YDx3W7CotMnZyOzDmpczknJRCP8F8Q4QCW7ShbbX05hifz/MFxB86+F3SucmyAWchOZma0jUEUpXkdYVp+aOrabbhsAaOs5+J19j+B4RooFnImCMVqvYwEdFe9iuoaMfW7LFY5S8cvS3Ky6mgcaceeMCoFsVm38Cnzb/Rmit1tAwD9dGsVasXEkrE9tBl/uqPFJIjsTBGUEVEir5aIWdbTr9S3YsravxuKy4XlP1lwWInrzitfsXrnsso/ifOFowqQTUy0Wx3KClbGfaCFpOkb6Pq0jnFPL1QsYGUMK/DaScinNpmostjGCeePanMPq4v7l45dbSR8U25SgmbyzibfEzNZQbcdDRIJVEDbnSUkim9/SQRpJYr0gcnesGtceK7XFNRxwIrXJOhFp1KHqpqsUYn0e5HdCVO05+et6PWsRBfIqY4s8KJnfYJzNM1OH21lDm9K4AoGjq5DCaZtWEGpU1Bc7bGIbNS6k7grY0XxWqpyxeoO4REa4FZPwWuQruv9kn6oypJDkebYW6DKNt+1cYplhP1sS+Rv01L6AJ3SS/In96/vDJV6cBWrBCMLgFsVe78/Oelp2lNanJi491H2Hn3kXP1bBzXFWAOESlirw75edgIDdZdG1GXSb+5m56pY3TtqJrDN7hDOL1BXQUHkHhpqBiWXBjyZj0qfyzKBRK2gz17xo1ilDtPrQCo2FcD04rPoSRBhsCwr863o3nZBGjz/Pe5V6EXAO7QVI0e0KgATs4dpViFAzTQAadgW1gtkYi7atLs1UjhG3wP/s5GKXqD9RvWfjKI5uE
- 7M4HEwWe
- usL4ZtniIIHuuL3a9RrpzCVP8FALXji0npXpyxuS3sOcpbtYbUa2nksJeQri36u4cizyLIPgVvbsuYm6fWRZH4o+kWJRYtwlmajZKbskwGioOLEzShhKVLnpOt+y8TzPJ0elU+4E4ZjG9uHDk86isWS5Kov+wsmbdRIKs/A+KTa6XvUrHa8sPP1CsPi6tAASCa3F+KRiCUxx4qPu/XxhljCdLOW224HS7YMvhjUnXaLgCAjR8RgyS42bOOMmDGfvFf/3isCEWiQSR2as1npvGxfru9avx4ffjoJmQ/kMp5NRheF3zYQGzExkjF+A8TzoGXQOYmC6ghCIn1MwnMY+NMV9pvEhfo4RkfDAWstAzzupjsLxUB9g3DxJOfEmwkA+P+ZS52ooLuS8ZoECzTmEThFMhZ+I+Fu1WNkCgfus3s4dSgbk=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D204D14000A
+X-Stat-Signature: 3ap9jzz3ym9754qr6rguq5c5xa4mwjm9
+X-HE-Tag: 1780173991-276434
+X-HE-Meta: U2FsdGVkX18ZmBFPTWwKjRMiO3QVCfhuABzhVWLPz2CXZbjfFMxz3t3pi+SMdpiLAAXxSpgT7ulvTYeGbz3hM4Go5LrJV3L9LVVNgyODWSdVINONYz/a7iz43zv1PUkT2fJXrcl6fwLweTweoZr/xtFZfW4keqmqtkBI2gQTqm3Kpbv7bJqne+Ef83mypMsVfznudCDGzYxiOunsItVSEU3ruEfgqJDF2wTBFZ/Uw/wENOiB8ZoXin/zl6LglZdmqKwfHMWAfmXYf2IF+uubsoDRSPDjC5U/BCBnkWNhomBRSTlLYA8ZA3Tq14oGGg+3gkQk3IkIUSmB0VXFYjysxIIDP2E078swRKtaFg9+Sl6/tcaU5fBNWBzOxV8DpKkXcpGE3UJ83ULXA2MzHgeRroNGI63TpXLSspRvW4vvD4Gk2g6kdTal/jweofCiQPMComNKsdmiWbjnn7OwcJFoeND57SmP9SwZq9H3kHKrm5gxCwHnFe/J/TNZAi71j44LztmY36HF2qi+mIXlv9aCQPK25FTvge6Bio58snulKfqgM1+AwbP08cczOjI0kdnjNn5+4XAAJHcaXoFaJ/4VJu0RSt/9uxR+RrLUhbu13CKUzEoo7pd1Tcsv1f4PuwHgMmNis9vB2My/h9I9oYVKFlP5mAE6taP9MccIEUzaupli4/KG7LgL0ZCCzyY5tCN68WJgren2yJwQd8rlgl1HsXXaO3ul6Ae1Du7m5HmmVGmZFGXfyFbHNV5dYxvCAxshJeIU32K84kRrl+7i1Ti9SH7ejfjYcPIEZ+mTSAwVaRJ8Pqp1eh/7aBTidqVLaCdc6gnEV7PRU05FUJVbKXlxkBEjzc6mqBOI22GUrl5hwnbqzPFIohFsLpqLD63GfDTQQVeqBL8V4nfCqrt+n5HMhILQOPM5LfRmNWsKAB71svWWgube6tsEt/VtWr6ikOHEQEaKCZJ2zCKw+UszQGL
+ kItceXTn
+ 2vnO+JxFfgtiQ/qGKToeXp5EfWqsAyHdFoBqOjMwYn4Vp5BtOUGQ8qP4P089ApAWG8DeaU1e/88apmlTGgIS002JXjKB8ZjG+5fYZpHlxHrEYqtVI5XDr/1+3XdS1zPv3BmlOc5UQtledrDfMRIOqqFGCMzK1Yj4HeG1Hs3I8jGx5dwW4EwahPaoJAmdW5FcZUWzSbmrS6Z0QAFHOjN6jPQIUWFYpXUw4D6nix0xRWXH+FnXt+ZhPmtxgllIXLqrZ26MyFzW97YOLzW/YsG1Om9o2xw0WTtWXpRWK3GB1CChvWszAGKrL1XAsuotfDpsl9KsB6PoT+ML8oyRHdLTBN5iHmOZnEHX1UmMSqVvikS9wRxaEO92qqq3ufnq6hVlXNhlPW+SqkPMlNhQGYT0oXqkWvoaeZ8iJCZYv1qw9sTeIJSA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,24 +127,25 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Tetsuo-Handa/loop-reject-
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux.git for-next
 patch link:    https://lore.kernel.org/r/148efba2-a0b6-47d7-ac76-b19d2f4b696c%40I-love.SAKURA.ne.jp
 patch subject: [PATCH] loop: reject binding to procfs and sysfs files
-config: um-x86_64_defconfig (https://download.01.org/0day-ci/archive/20260531/202605310318.dbidMe6W-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9409c07de6378507397ecdb6f05f628f58110112)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260531/202605310318.dbidMe6W-lkp@intel.com/reproduce)
+config: nios2-defconfig (https://download.01.org/0day-ci/archive/20260531/202605310413.Xgk6vCeB-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260531/202605310413.Xgk6vCeB-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605310318.dbidMe6W-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605310413.Xgk6vCeB-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> drivers/block/loop.c:504:7: error: use of undeclared identifier 'PROC_SUPER_MAGIC'
+   drivers/block/loop.c: In function 'loop_validate_file':
+>> drivers/block/loop.c:504:14: error: 'PROC_SUPER_MAGIC' undeclared (first use in this function)
      504 |         case PROC_SUPER_MAGIC: /* e.g. "losetup -f /proc/sys/kernel/version" */
          |              ^~~~~~~~~~~~~~~~
->> drivers/block/loop.c:505:7: error: use of undeclared identifier 'SYSFS_MAGIC'
+   drivers/block/loop.c:504:14: note: each undeclared identifier is reported only once for each function it appears in
+>> drivers/block/loop.c:505:14: error: 'SYSFS_MAGIC' undeclared (first use in this function)
      505 |         case SYSFS_MAGIC: /* e.g. "losetup -f /sys/power/state" */
          |              ^~~~~~~~~~~
-   2 errors generated.
 
 
 vim +/PROC_SUPER_MAGIC +504 drivers/block/loop.c
