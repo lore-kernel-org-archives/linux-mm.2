@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2F81CD6E49
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 00:05:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A830CD4F54
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 00:28:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A65026B0005; Fri, 29 May 2026 20:05:12 -0400 (EDT)
+	id 444C86B0005; Fri, 29 May 2026 20:28:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A15D06B0088; Fri, 29 May 2026 20:05:12 -0400 (EDT)
+	id 41C436B0088; Fri, 29 May 2026 20:28:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 904796B008A; Fri, 29 May 2026 20:05:12 -0400 (EDT)
+	id 332876B008A; Fri, 29 May 2026 20:28:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B72F6B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 20:05:12 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE43E1C043D
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 00:05:11 +0000 (UTC)
-X-FDA: 84822141222.27.890AF32
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 24A3D6B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 20:28:10 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B1D7C1A024B
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 00:28:09 +0000 (UTC)
+X-FDA: 84822199098.01.FA6556E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 43CA58000A
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 00:05:10 +0000 (UTC)
+	by imf02.hostedemail.com (Postfix) with ESMTP id 29BE780004
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 00:28:08 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i+z8niQ6;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780099510; a=rsa-sha256;
-	cv=none;
-	b=Ijb/x0BGDxajFpgM6PuAF3mL0r9NmmMR5nwV5V1LTya7T1YNt47Ep5BSj+lg+7OmY31WZL
-	juAv8U4Tuj+pzBTIFQbaMzxPfPsgI91jow1lZ5RXaEMkw6YvgvT3+jGxmHn8R9oHk6Q6To
-	1TYO4vbYZApb2cJt7JdslP8N5BrEKoQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i+z8niQ6;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B9YP5sjw;
 	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780099510;
+	s=arc-20220608; t=1780100888;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=njDJvj09HuPHDKjMB6WRVtdXJLDfda9NGRMsHpQiz3E=;
-	b=50ZukFgBM0+rRITAUqYNKOF+ADoOk1n/24qMLv0LNxatQf3duNqLIMjQ8dkPZeHKpbWL1w
-	tGWTF4EE228wj+8+u1XZ7GmIahe9E3DIphZgXawq331CrEUllwiSn96NM0zqDu++HwhnQr
-	rb86L4MAWF5IWHYtO101fLbv8SzAoa8=
+	bh=05VuIf28x1kwUtDQQxztMZ5Dutlt/L3Du+VseyWwTYs=;
+	b=KNuFRnQY+y6QjqukVlQc+O0CvJK6e/MAjl6P1TdSFeHKcDenJZ9Kibu9rIO8cdVtpUUC0G
+	8t1hiIzya3+6wW+8A6JltXXqjMJ1P7mm8Ps0PtVoETvHaeCndL0MX2gaI5qzbxl4ry3L+C
+	l03UgvFGd9Uu4D6ccYKXFC08GOqHLuM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B9YP5sjw;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780100888; a=rsa-sha256;
+	cv=none;
+	b=OqU11bMbjhLgGmwGv5eBio8+In7FWDU/er726MUZ0WfNgSovBwErUiPSRMJs1KsZZ58u73
+	TpKYc0UrNtj54DXR9BEnGQvLOfXKa/qFZLPU4nlSYKCf/rZM1BYT//lK4O9xzmVkndPz3u
+	DhGoBYz4wILcibd3hvV3Gl95oAbTxZ4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE00960103;
-	Sat, 30 May 2026 00:05:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1B51F00893;
-	Sat, 30 May 2026 00:05:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A48A160103;
+	Sat, 30 May 2026 00:28:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FBE1F00893;
+	Sat, 30 May 2026 00:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780099509;
-	bh=njDJvj09HuPHDKjMB6WRVtdXJLDfda9NGRMsHpQiz3E=;
+	s=k20260515; t=1780100887;
+	bh=05VuIf28x1kwUtDQQxztMZ5Dutlt/L3Du+VseyWwTYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i+z8niQ6GdLZBj5TiMTO1yYO1Bo/zTV+xgkYgPNYO55YV0MzKHxVPAg4iVuSxDeP7
-	 XWPs6CrguNLPUXa4auUshFm6/HbX0wuOVPIphS9MLuZ7tz86C/VNkcSjQn6dxC8lCG
-	 gUgYrGPb3psK0Ovgf2husPTkj4qPhxBt5WIOZUcRJDwwDvfwEFI4RqI6j/q/7yUpCN
-	 oEwd1DxBIJ9NtFd5ztdHTmndRLPQ9P+tC3zAKK2G1bi/GVYWx4ccg91RbTTY6pn325
-	 jDuPWenkYuhfpGkOXMkqB6mnoXJwZuvyyWUjtKHFxmz80ayQf3Lt9dloK4QybvbW2a
-	 QY5NuMAHOwZUA==
+	b=B9YP5sjwCnpBB+zSHP5Z25aJX5n5GnNVmimq2ROR/HujPd5/3lU4JkGq0fVDunhll
+	 yW/5zdkc5utsLp130I6WWKQEH1hrMFa2VB1XiGWj69Pg6g2PGZOw9YkXfiqjM009/J
+	 wfm4OdbnkbGvZ4NbXRG50OG3U8o/PSw2Sent05iRogy5vzF48+0qVpn8XL2/nrp3T+
+	 hzX/6Cv1BOyI277ip+rYOaZT552MAIPejqSI8pVN9sSMMqWSzvwBKuAiilPjVNwWAe
+	 Gl38eRoaHUfFNsEK+O7A8zQx/pQ0gu+AAFI681XDP6gojyIAQyqdv7FN0kXejRi+xe
+	 OBmzfJERHGl/Q==
 From: SeongJae Park <sj@kernel.org>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	akinobu.mita@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com
-Subject: Re: [RFC PATCH 0/6] mm/damon: hardware-sampled access reports
-Date: Fri, 29 May 2026 17:04:59 -0700
-Message-ID: <20260530000500.87407-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/nodemask: Correctly describe nodemask operation return types
+Date: Fri, 29 May 2026 17:27:48 -0700
+Message-ID: <20260530002749.87977-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260529165640.820-1-ravis.opensrc@gmail.com>
+In-Reply-To: <20260529202755.1846800-1-joshua.hahnjy@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9kqpr9x7qgfwfw1up71yt7zc3y7bh9md
+X-Rspamd-Queue-Id: 29BE780004
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 43CA58000A
-X-Stat-Signature: 9rqc5ez69tpc65gzwfpgpzyox5cj1ifr
-X-HE-Tag: 1780099510-920903
-X-HE-Meta: U2FsdGVkX18ZQLHX5mQT0ErncVLgYBR277+ejabVSpRSZ97ouFVmnvotRp7UfiYfxZlYs3OiuXlCypN1edclyWMCL1XBUj8vMJd6e0tpawU5LrUMpeDE/YV9LyVP1sFhrePJ1p7DTC0Jy1xiuSDsyxhs4OK9zV10QtTkaHdkj3tK6ikepLlcL/mMs/4mfzA7GXBuocCBQYJWhYdlNmTEQz6Bohoayu9sRPFJ5nttI5hxWnjzPYD6lv9aeTdkQhwvi+x0wW/C4lKMlL1NkVWj2UG6OYfhOtWVYyT1yHNpNJGkL5S5XjoSxEgYpVqkL/KZiTiE9lZ1kGAhZq90AaOkVFfMSBiRkaH2JkaCvKmeSHRzBb3XgERJWF7pkVJ4GhH07NMFnpONbaT2MqORfMvzi8lc9VGKm+foIAOv6wGyMTjccL+V7uBRYj6NnliGRIocrNSkWw2GvdBDkr53rn7T8pLtZ37lJ7X8gmukh4SlXrKGYuGbi8n8vxzYz277Qa3MUDCgDI0+CmD3x2ii4ErW7b5mVmikqkLojgVUlTsVJznCWqL1kByW8F6d4qY80iIXHdK9Ndj+D95uwS1bks0lBJo7+lbCRGficXZuSin+9B2J8/4LDWqXgJ638+8T93nsAR7SNses1K0sCnQnZl7h9ziYsubulbSAYmZkMMAwr1fOCGPomeadtNbSYaxRIqUTq63rQCw1Lo87TG0oYNiFGPudKdymKEuAK8hP1FVN9ulEnn1QHPPWIjDX6DBOKylg0zWIaaXM7yL0Yd98QzHdkbdVJYIId4a9gTSTJOcmE6ZXVyY4pzql215EFyJd11HwZv2phcXCI4a3rpYhvKloE+bdXH1xgE1WR7hTsXUyHpnOpWlqGa6i+XhV7T2uHI6MDU0DDtVffdK98IW97Eg44G7klGGVkVj9Nnqs5G4j4MYdTZ1OQqg9NPS5JqhDpSmd7mESAb9l+zsYSFg8Bsm
- g8Qlfn9s
- XjGlN/t7wOJXU10X/TH7XMdu2nTRci6DndbJxIpWwWme6nuIMKrGEl4mGsUMdJCsinS5WovzB8Ru9whOgnDomDLwWzD/GXwuXaFXcK1XjycYtOX/2uVvIseacBGwXhj2xqUlTAjmTszcDX7jlTpTpOPbkpT2VuqTAinFwgBZPMZFQAnMD7+CnmE6ULMOYDSf8QC2Gv0rvyPNjqznulSXHFPjVXERiI/GgG0sV6lwK5mubu6dd2Q8by5pJWza47+/lRvaFCJbNXSB86VNtvBdXQ5eo8SrT/HlPqPQyCg7VfrYe4Lta/SohbeynlXFyvxxAHWgdCacQpPXSeXs=
+X-HE-Tag: 1780100888-564585
+X-HE-Meta: U2FsdGVkX1/52fpM27t0ULmqKFRJwc9mj0GV2NRQK3pe7N+1dqKgTdhjXtGu7VCchgatP3ckY18EQvuxIdjFrVp4i7mcgAmITGPclqvs/33jfvhHlxgjVvNA4fkDCZOGqJdRftcwC2XgaA7VPutlKk3WdieCp/u1OVgDT5WahHdZGgHV5wCxml16PU8bvbQH+cv6Of1Mg+9JHnmhE2+EwieZ9pz/MlcorDUEOm2YBR8Yw/yDVJGfdQLuq7tDHu7TQtorVucrVBdVQ6Q829jwenrbd6itzNDcr1GFAPc9FfdG8cdtH2HuSqwIbrdrlQ7o5x1VBgwV8hkJ4L/VcQW1Cyg9xa1vOQjdM3eZU8i4TWPFkKnYkt0/b3lkrrD4ANCzJYZOD4bYybXVy7edDsMJ+TShl6zT9a2Y0UBxhxFDrdyN6VLelIQMMusLgeuds/XpRTBAJ3jKPzEn3nPaTWHPHAwjRJmHh6J9TgOsK8ILJN6YerbphMEEak2soorfxeTbsI85w3J/HjY2HBx97sBtQdkB/fYUUywSudrw4Hfj5mKXLpcFTJXtfOBT6E1euEXIjTFga39lxGM45x43laMIJeIus4+yWSq0uPddlA7fNdzGd9KSL1bucr2BJAwjdO+ZAkPe8ptRkHZP4P5vLagpqdQzCIF9MNwkH3+Mi8ZWI84jeftyWq5H0/VQ5+/+weYMnYMhd7Gf3cmII2HQnfPjwaFY4S83OHzCodPPueosc3PRVmZvMhjskFFOAqrA8o8X5Uzcb/7RZlS/+FxoTE6s4ZPqTcstlZuLWJgsXVKwi+KC/1z9eY5+fjhpLUoPVX90Ygegp8c+vtFm+kqzZwqOHH1rvkSX/62pJ3PCyBLXx+1/YQCrl4iDUkwnyHtVqxbKP0XsVdzsdcNRCPD3homOrYAq6OfnHux9dK95kD3mHrkjJeLHJzeNGzdOYkuAopv16LxvaAH5NDSUi/BNWEV
+ J5nJy11p
+ /Bx9JhY5pZLoelqzn9OVK/YzCboIEVT3zssIJM3B9Ia/1rsHGXngncuggEcvzg4qCd9vBvhHXMlLDMnSy1a4B2ox6rVkZLG2GpO46xz2ODZ0SCu+DMiTq/yL2MEnjhSuB528P7sJb8ae4LT12tc/UcHsT3S65Ss2oVxuMWA7VHUnLFsYJfCYwbw5SFw9qA5SXg/1pAenDXRTgX2zL8JEukrdA5RxX/3R9/FUq2eF11mOT6CVtjNU6xzB7NSFkBFcOhw81ILLs/n2Pzfaf3TkFsNlm4bllJHirMHXGx/dYGUmWtrQ/TZxibIecEHFSUKnwzoQ1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,216 +95,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 29 May 2026 09:56:34 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+On Fri, 29 May 2026 13:27:54 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-> This series introduces a vendor and PMU-agnostic substrate inside DAMON
-> that consumes hardware-sampled access reports through the standard
-> perf-event interface.  Userspace selects the PMU through sysfs (raw
-> type/config knobs), driving either Intel PEBS L3-miss sampling or AMD
-> IBS Op sampling.
+> Commit 0dfe54071d7c8 ("nodemask: Fix return values to be unsigned")
+> changed a number of nodemask operations that used to return int
+> to returning a bool instead. However, it did not update the comment
+> block that described these functions, leaving the documentation
+> incorrect.
 > 
-> Why a unified perf-event substrate
-> 
-> Earlier hardware-sampled access-monitoring proposal [1] took an AMD IBS
-> specific module path backend, owning its own probe configuration,
-> sysfs knobs, and lifecycle.
-> 
-> SeongJae Park has previously highlighted the advantage of Akinobu
-> Mita's perf-event proposal [2]: let DAMON register kernel-counter perf
-> events and consume samples from any sampling PMU that perf core knows
-> about.  This series builds on that direction
+> Fix the comment block to accurately describe the functions.
+> Also fix a typo (unsigend --> unsigned), and fix a callsite in
+> mempolicy.c that did not get updated during the conversion.
 
-Ah great, so we have no unclear challenge (additional loadable module support
-and conflicts with other IBS modules) on our road for now!  That is, we can
-reuse the stable perf event interface and achieve all our goals!  As I
-previously shared [1], it would take time, but I'm very optimistic about the
-success of this project.  I don't like promising too much, but this project
-looks like something that we can "consider it done".
-
-We can also say that the current candidate of the first
-damon_report_access()-based data attributes monitoring (milestone 2 [1] final
-deliverable) is the perf event based monitoring.
-
-> with the changes we
-> needed to run it cross-vendor:
-> 
->   - a per-CPU lockless ring between the NMI sample handler and the
->     kdamond drain,
->   - per-CPU events that follow CPU hotplug cleanly,
->   - events fire only while the monitor is running -- created disabled,
->     armed when kdamond starts, disarmed and drained when it stops,
->   - all-or-nothing init across CPUs: a partial-CPU create failure rolls
->     the whole event back rather than leaving silent gaps,
->   - safe handling of vendor sample-validity flags so a stale or
->     unpopulated address is never mistaken for a valid sample.
-> 
-> What the series adds
-> 
-> Patch 1 introduces the substrate's data types: a per-event
-> configuration struct and a per-context list to hang them on.  A
-> CONFIG_PERF_EVENTS=n build folds to no-op stubs.
-> 
-> Patch 2 exposes those types through sysfs.  Each entry maps to one
-> perf event and lets userspace pick the PMU and how to sample it: the
-> raw PMU type/config, addressing flags, and period or frequency.  The
-> defaults are tuned for Intel PEBS; userspace overrides them for other
-> PMUs.
-> 
-> Patch 3 wires the sysfs apply path so configured events get attached
-> to the running monitoring context.
-> 
-> Patch 4 is the core of the series.  It replaces the mutex-protected
-> report queue with a per-CPU lockless ring fed from NMI by the perf
-> overflow handler and drained once per sample tick by the kdamond.
-> Drained reports are matched to monitored regions by binary search
-> over a per-tick snapshot.  The patch also wires the per-event
-> lifecycle into kdamond: events arm when the monitor starts, disarm
-> and drain when it stops, roll back cleanly when per-CPU init fails on
-> some CPUs, and a second context that asks for the substrate while
-> it is in use is rejected with -EBUSY.
-> 
-> Patch 5 is the perf-event backend.  Two stateless overflow handlers
-> (one vaddr-keyed, one paddr-keyed) are picked at event creation time
-> and submit samples into the per-CPU ring.  Vendor-specific sample
-> validity is honored at this layer.
-> 
-> Patch 6 adds a tracepoint at every node_eligible_mem_bp quota-goal
-> evaluation so userspace can watch goal convergence without polling
-> sysfs.
-> 
-> Userspace setup model
-> 
-> Userspace selects the sampling PMU by pointing the perf event's
-> `type` / `config` at it, and chooses the scheme topology that suits
-> the address space the PMU reports on.  No module load or unload step
-> is involved; `echo on > state` arms the substrate, `echo off > state`
-> disarms it.
-> 
-> Two configurations were used for validation.
-> 
-> Configuration A: AMD IBS Op, paddr ops, system-wide PULL+PUSH tiering
-> 
->   IBS Op stamps samples with physical addresses, so DAMON reasons over
->   every backing page in the system regardless of which task or guest
->   touched it -- the substrate becomes a system-wide tiering controller.
-> 
->   Setup (abridged; `D=/sys/kernel/mm/damon/admin/kdamonds/0`):
-> 
->     echo 1     > /sys/kernel/mm/damon/admin/kdamonds/nr_kdamonds
->     echo 1     > $D/contexts/nr_contexts
->     echo paddr > $D/contexts/0/operations
-> 
->     # Two regions, one per NUMA node (DRAM + CXL).  PA ranges
->     # are derived per host from /proc/iomem; omitted here.
->     echo 1 > $D/contexts/0/targets/nr_targets
->     echo 2 > $D/contexts/0/targets/0/regions/nr_regions
->     echo <DRAM_LO> > $D/contexts/0/targets/0/regions/0/start
->     echo <DRAM_HI> > $D/contexts/0/targets/0/regions/0/end
->     echo <CXL_LO>  > $D/contexts/0/targets/0/regions/1/start
->     echo <CXL_HI>  > $D/contexts/0/targets/0/regions/1/end
-> 
->     # IBS Op event, period-based, paddr-stamped:
->     PE=$D/contexts/0/monitoring_attrs/sample/perf_events
->     echo 1 > $PE/nr_perf_events
->     echo $(cat /sys/bus/event_source/devices/ibs_op/type) > $PE/0/type
->     echo 0      > $PE/0/config
->     echo 1      > $PE/0/sample_phys_addr
->     echo 0      > $PE/0/freq
->     echo 262144 > $PE/0/sample_period
->     echo 0      > $PE/0/exclude_kernel
->     echo 0      > $PE/0/exclude_hv
-
-FYI, and as you may already know, the current plan [1] is to use the attributes
-probe interface.  With it, the above IBS Op event setup part would look like,
-
-mon_attr=/sys/kernel/mm/damon/admin/kdamonds/0/contexts/0/monitoring_attrs
-echo 1 > $mon_attr/probes/nr_probes
-probe=$mon_attr/probes/0
-echo 1 > $probe/filters/nr_filters
-filter=$probe/filters/0
-echo perf_event > $filter/type
-echo ibs_op > $filter/perf_event_type
-echo Y > $filter/allow
-
-Of course, more details could change later.
+Nice catch, thank you fixing this!
 
 > 
->     # PULL scheme: migrate_hot toward DRAM, gated on
->     # node_eligible_mem_bp(nid=DRAM) goal target_value=TARGET_BP.
->     # addr filter restricts source to the CXL range.
->     # PUSH scheme: migrate_hot toward CXL, gated on
->     # node_eligible_mem_bp(nid=CXL) target_value=10000-TARGET_BP.
->     # addr filter restricts source to the DRAM range.
->     # Both schemes are migrate_hot; they converge from opposite
->     # directions on the same hot working set.
+> No functional changes intended; changes are purely cosmetic.
 > 
->     echo on > $D/state
-> 
->   Userspace tunes the steady-state DRAM:CXL split by writing the goal
->   `target_value`s; DAMON's quota autotuner drives migration intensity
->   to match.
-> 
->   Workload: a QEMU/KVM guest pinned to one NUMA node, running 32
->   multichase multiload threads each touching a 4 GiB working set
->   (~128 GiB aggregate) with the memcpy-libc kernel.  The guest sees
->   a flat single-NUMA layout and has no direct view of the host's
->   tiering topology, yet its hot pages are migrated to DRAM and cold
->   pages pushed to CXL by host-side DAMON acting on IBS-stamped
->   physical addresses -- the application inside the guest benefits
->   from tiering it never had to be aware of.  Validated on AMD Turin
->   (132-CPU EPYC).  The configuration converged to its target ratio
->   in seconds and remained stable for 7+ hours continuously, with no
->   perf core auto-throttle and no measurable drift in the achieved
->   interleave ratio.
-> 
-> Configuration B: Intel PEBS L3-miss, vaddr ops, per-PID weighted-dest
-> 
->   PEBS reports vaddr samples in the context of the running task.
->   DAMON's vaddr ops monitors a specific PID.
-> 
->   Setup (abridged):
-> 
->     echo 1     > /sys/kernel/mm/damon/admin/kdamonds/nr_kdamonds
->     echo 1     > $D/contexts/nr_contexts
->     echo vaddr > $D/contexts/0/operations
-> 
->     echo 1     > $D/contexts/0/targets/nr_targets
->     echo $PID  > $D/contexts/0/targets/0/pid_target
->     echo 0     > $D/contexts/0/targets/0/regions/nr_regions
-> 
->     # PEBS MEM_LOAD_RETIRED.L3_MISS, frequency-based, vaddr-stamped:
->     echo 1      > $PE/nr_perf_events
->     echo 4      > $PE/0/type           # PERF_TYPE_RAW
->     echo 0x20d1 > $PE/0/config         # umask=0x20 event=0xd1
->     echo 0      > $PE/0/sample_phys_addr
->     echo 1      > $PE/0/freq
->     echo 5003   > $PE/0/sample_freq
->     echo 2      > $PE/0/precise_ip
->     echo 1      > $PE/0/wakeup_events
-> 
->     # Single migrate_hot scheme with two weighted destinations
->     # (DRAM + CXL).  Userspace tunes the steady-state interleave by
->     # writing dests/{0,1}/weight.
-> 
->     echo on > $D/state
-> 
->   Workload: 32 multichase multiload threads with a 4 GiB working set
->   each (~128 GiB aggregate) running directly on the host, monitored
->   by DAMON via the multiload PID.  Validated on Intel Granite Rapids
->   (144-CPU).  Convergence is fast and the system is stable.
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-Thank you so much for sharing the great prototype implementation and test
-results!
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
-I will try to make fast progress on milestone 1.  I will hold reviewing details
-of this series for now, as there could be more changes.  But in the high level,
-this looks promising.
-
+> ---
+>  include/linux/nodemask.h | 18 +++++++++---------
+>  mm/mempolicy.c           |  2 +-
+>  2 files changed, 10 insertions(+), 10 deletions(-)
 > 
-> [1] https://lore.kernel.org/linux-mm/20260516223439.4033-1-ravis.opensrc@gmail.com/
-> [2] https://lore.kernel.org/20260423004211.7037-1-akinobu.mita@gmail.com
+> diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
+> index 204c92462f3c0..b842aa5255464 100644
+> --- a/include/linux/nodemask.h
+> +++ b/include/linux/nodemask.h
+> @@ -24,23 +24,23 @@
+>   * void nodes_setall(mask)		set all bits
+>   * void nodes_clear(mask)		clear all bits
+>   * int node_isset(node, mask)		true iff bit 'node' set in mask
+> - * int node_test_and_set(node, mask)	test and set bit 'node' in mask
+> + * bool node_test_and_set(node, mask)	test and set bit 'node' in mask
+>   *
+> - * void nodes_and(dst, src1, src2)	dst = src1 & src2  [intersection]
+> + * bool nodes_and(dst, src1, src2)	dst = src1 & src2  [intersection]
+>   * void nodes_or(dst, src1, src2)	dst = src1 | src2  [union]
+>   * void nodes_xor(dst, src1, src2)	dst = src1 ^ src2
+> - * void nodes_andnot(dst, src1, src2)	dst = src1 & ~src2
+> + * bool nodes_andnot(dst, src1, src2)	dst = src1 & ~src2
+>   * void nodes_complement(dst, src)	dst = ~src
+>   *
+> - * int nodes_equal(mask1, mask2)	Does mask1 == mask2?
+> - * int nodes_intersects(mask1, mask2)	Do mask1 and mask2 intersect?
+> - * int nodes_subset(mask1, mask2)	Is mask1 a subset of mask2?
+> - * int nodes_empty(mask)		Is mask empty (no bits sets)?
+> - * int nodes_full(mask)			Is mask full (all bits sets)?
+> + * bool nodes_equal(mask1, mask2)	Does mask1 == mask2?
+> + * bool nodes_intersects(mask1, mask2)	Do mask1 and mask2 intersect?
+> + * bool nodes_subset(mask1, mask2)	Is mask1 a subset of mask2?
+> + * bool nodes_empty(mask)		Is mask empty (no bits sets)?
+> + * bool nodes_full(mask)		Is mask full (all bits sets)?
+>   * int nodes_weight(mask)		Hamming weight - number of set bits
+>   *
+>   * unsigned int first_node(mask)	Number lowest set bit, or MAX_NUMNODES
+> - * unsigend int next_node(node, mask)	Next node past 'node', or MAX_NUMNODES
+> + * unsigned int next_node(node, mask)	Next node past 'node', or MAX_NUMNODES
+>   * unsigned int next_node_in(node, mask) Next node past 'node', or wrap to first,
+>   *					or MAX_NUMNODES
+>   * unsigned int first_unset_node(mask)	First node not set in mask, or
 
-[1] https://lore.kernel.org/20260525225208.1179-1-sj@kernel.org/
+I feel like this comment block might be easy to be outdated in future.  This
+comment block is introduced before the git era.  I think this was the best and
+great way at that time.  But now we have modern documentation tools like
+kernel-doc.  I'm wondering if it makes sense to convert this comment block to
+kernel-doc comments in long term, after this patch is merged.  If we sure these
+APIs are quite stable and expect no many changes in future, such conversion may
+not make sense, though.
 
 
 Thanks,
