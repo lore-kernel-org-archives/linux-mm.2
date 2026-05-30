@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04168CD5BD0
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 14:10:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EBDDCD6E49
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 14:12:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00DC86B008A; Sat, 30 May 2026 10:10:26 -0400 (EDT)
+	id 604B26B008A; Sat, 30 May 2026 10:12:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F00AB6B0092; Sat, 30 May 2026 10:10:25 -0400 (EDT)
+	id 5B50A6B0092; Sat, 30 May 2026 10:12:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E167B6B0093; Sat, 30 May 2026 10:10:25 -0400 (EDT)
+	id 4F1DF6B0093; Sat, 30 May 2026 10:12:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D0F536B008A
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 10:10:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 34C3D40396
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 14:10:25 +0000 (UTC)
-X-FDA: 84824271210.25.5AAA299
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DF706B008A
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 10:12:47 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA4C8A0363
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 14:12:46 +0000 (UTC)
+X-FDA: 84824277132.10.F482BC2
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 156332000F
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 14:10:22 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VlZTu6wO;
-	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780150223; a=rsa-sha256;
-	cv=none;
-	b=RTPaEkwMT17GNV0aVcxXs4NXdOr3qk5QrHFrfl3UR4B48+zmCk1W0ArxLAVpvhyX5RbpUc
-	rxGF/uTL7exYXeuBYWLf7IWWZtuzX8t62WO+1Bbx8+uYBkT5M/PyQ/RSA9JrtRI6Icmatj
-	5oWfo91nzRje6cI0sEPo8tQ8pKCirf8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VlZTu6wO;
-	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9E2561C000A
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 14:12:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IBH2a7TF;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf20.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780150223;
+	s=arc-20220608; t=1780150364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rHzj0oWHgChdLmB/fyna+PsMVuLCqphhK0Q0cKp+AZU=;
-	b=zbxb0WoH65AxwOZeGlJTtYdbp/3/K//Cnalw3wABqnFoMxOqgMgk6ax+r1ORFbyBOnh/yV
-	kctsbDJI2fgYBW1fYjUVkDGTDrM+OmoXxCO2y0Iw7yXwZs3g6pPrX2i6rRh9dfK6Cfgki4
-	8IYAvWFvoC2TykCBb9mqxmGd0YylgaM=
+	bh=4T59/uglHamDOIexbZb00j6qdA4rH0lNQTHPsHuJ4ZE=;
+	b=hybuLqLH48FVI/Fz6dOfgoWZrnkFMIKN2jXUHbXFg9ftoRq/uH+lVd8mlXRPJEX7AeoOIu
+	KkJOl2yF38MBaTfos1QTSOWLJQtFF2k+PIo4NH/gXMT07A+heS/gt0pvRCbvtlilVTtCjq
+	VHgAdaKu9c5pj1HONwR6cZmNCXNnZG4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IBH2a7TF;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf20.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780150364; a=rsa-sha256;
+	cv=none;
+	b=SPH6B6ZBmM+3pf52vyiRVTLdVxNx9nPRqPSIb9fD+dGfSVjquvQpQ4RWIvhdJZnCcGFaY1
+	Z50XOPDVQg1DQCiYK7xdzW2H2TXFsHMyTygfL8fXwy/w7975qOQ8XAPA15FAq8oUVeNjnQ
+	dglCBBmehwzzICTbCUQv30J3gJNHkHE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780150221;
+	s=mimecast20190719; t=1780150364;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rHzj0oWHgChdLmB/fyna+PsMVuLCqphhK0Q0cKp+AZU=;
-	b=VlZTu6wOx3VlbolB5LEcaIHqMuuzJg87Q8GZNGiaDrMJpSAX8+qho5jvHebxNCzJ/DV8m/
-	kVajxYkrZ0xPhvwyF9A0tb2adsjl7UflWpk/W+jJYX8Ek/uTaDqpCp5hRGeUOeJPpfE9lU
-	+mxolcvHV9iu9a3hQEGdbMAk9LIs1Ms=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=4T59/uglHamDOIexbZb00j6qdA4rH0lNQTHPsHuJ4ZE=;
+	b=IBH2a7TFmvT9wXyuzzTSn/vFVO2y+tp1tCqm1cui6IW1XXrPs6exl/lMJzNH0OFSRg4WkB
+	kQ2Na/Vo79pu6NfvRv7yvgwYLBwgdKBOfyJuRztbO9VXYXNoL9SS9AEKyHa6Ng+HiiQ+M8
+	TPM+Lw8xB6s7tYMn7RDxdcN94kzTwWw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-319-yosW6iIYP0Wf3gDnZmBWEw-1; Sat,
- 30 May 2026 10:10:14 -0400
-X-MC-Unique: yosW6iIYP0Wf3gDnZmBWEw-1
-X-Mimecast-MFC-AGG-ID: yosW6iIYP0Wf3gDnZmBWEw_1780150212
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-uhd7VoB3PmOUkdAVWvY-jQ-1; Sat,
+ 30 May 2026 10:12:39 -0400
+X-MC-Unique: uhd7VoB3PmOUkdAVWvY-jQ-1
+X-Mimecast-MFC-AGG-ID: uhd7VoB3PmOUkdAVWvY-jQ_1780150357
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 749DC195604F;
-	Sat, 30 May 2026 14:10:12 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5B50518005B2;
+	Sat, 30 May 2026 14:12:37 +0000 (UTC)
 Received: from fedora (unknown [10.44.33.166])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 3CA2B1800352;
-	Sat, 30 May 2026 14:10:08 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 233321955F22;
+	Sat, 30 May 2026 14:12:33 +0000 (UTC)
 Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sat, 30 May 2026 16:10:12 +0200 (CEST)
-Date: Sat, 30 May 2026 16:10:07 +0200
+	oleg@redhat.com; Sat, 30 May 2026 16:12:36 +0200 (CEST)
+Date: Sat, 30 May 2026 16:12:32 +0200
 From: Oleg Nesterov <oleg@redhat.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Christian Brauner <brauner@kernel.org>,
@@ -83,24 +83,24 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	Kees Cook <kees@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
 	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH] mm_access: simplify the security checks
-Message-ID: <ahrvv-XGt8SiZUvW@redhat.com>
+Subject: [PATCH v2] mm_access: simplify the security checks
+Message-ID: <ahrwUGytgulEwujN@redhat.com>
 References: <ahrsfJE3NkKjShEX@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <ahrsfJE3NkKjShEX@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: 0DWHlHnJ91nkeK3yJaoOdRBWHV3pprABxRslJ5NDyLs_1780150212
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: vNZ6aFWx24IChQjd-clEJleOpONnoG7Zj5OsOz7XD6k_1780150357
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+X-Stat-Signature: 46fdxeyub63hrs9ay6bn9xbcis1xqnn8
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9E2561C000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 156332000F
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 9wy457dgk8erz9i86ykezwrux5jdb6cs
-X-HE-Tag: 1780150222-378172
-X-HE-Meta: U2FsdGVkX1/zBrOwdO7VCt9NJI36BfQ5sfr8S6edcGHpwTXpCPc1DcWOKPm6pGdWhrJjkZpoMIVCsqkzVDyyNBlINDteMQMLeNzUpp9hMjsZKxodRuqzNPCD+j8QrqgVGlypCWB1O7BCJu26X4oTT2fmaxuStDdM7LT4AWvxiy5+wil2oKTOCtfk2KjH5rbYbPBmoYtbNmBA0eSZ+4DXd7SjR8jW/HrMXCzq9nhVv9XFwbg3CORTZBwUk0r9X7spAFFMacayO3x82TzIDi+8fJ1HaJG0x6TH01mzzikAXE2gTL0e3WvR7ExgaoQwSxGbmtYjLExgoUnlzP1OQCQ2n/YUON+Lnhg4sk16mH8RuIDKfQsK6/MGjaDk6UPA1yDb2zaj/pa6WQkN03+MNPyqRW70RIKFWaWlg7/gCWZyJpR4KPyDCtPMJSyaJtPTwgrS6wXlM/ypjaWa3Teb2h9RbvEDG89XkkyhAS+InvUkeL1jSaG/7AOwXGWWGynQW0BlAS/5c7DSuQ3Do6HuVxV51T4DnAiXPmoArEIJpRb6g+HZawhhUnqkZlG1IuI4KSE7o+GGKjTe70u69ONBAVHYMvKJpD2s0VBuIBAMlhvblhh6tgk50bP0HnZOgzQP0Q0/D5y1bpZThxBa88tCTUqrN3WOrBll6kpM9hk5X8CCBvNP/ApROGTFAKLVqu4MUX17L14gzh2M8SwYqJYC7ZD8O+Rxtulr2ZBqeuY/t9xI/HUlEO6UrqOor/XuF6D5DFJOqaSyCdUiIpe6a2MEqWJqM2uR8JhuYQdpy970zlEm3nJ/VU/tE+2eZuqtl/62WP9ZYJnFSpTxzgz+19X7Pq2G8AmulW4tCc8Z6ZSfpuC54U7YMqXkntZy0UwXDz3zQyHFU4Vc4NiFocYux4tZBJ0geGKOyWPbKiJPW1eCJiRDN0xiIC9Wh/gn839VwXHsx/9YLMBs4M+WU+XI3Qefh+/
- 4pkoqilJ
- Nz47iiVJwPU9NAy6yitPpxfVmy7l7LSJ1+yO6uPfgxXeV7AkjvLxra2SuiNq3FIJuIDK10y8XJoyaQMS1C3FnxnDYyT+fzmlurMEJH8udN8LHE8WdOi4W6c73nCbJ8wadpvFUSuISu4jN5fTqp2kZUqATK0IGA4583PBHBj/NmbX9quJBmIT7Q8vT+RSJqHSXWyNkzqTllzcG9S32/fkQ+hcTWHs9XWbKEwP7L3dq8teIXB8v6afP5U60TSv9z5DrzKyXHiHR0kGD9/UUYYbEBI4nnSyfQp3tNN4/eWcWwiCS7voMWMDuZHKigxGzXMbT8OXPbPBOP+wKMgzt6jtXjkA76+eyyOsd/JpRDo6I/ZTfeedY04VhoNqI9zmcr6ptDrqAPsUNBM+sEIddwWyxJAsS9Q==
+X-HE-Tag: 1780150364-196976
+X-HE-Meta: U2FsdGVkX1/RpH91ouuex1wqE2Zj882Ymn6XrAlNWPI/uj1cERfOnlVPTXHOfSzBvD3Fal6aDK1PZ6TRzrYwG/girxpwlXPBl4z5TEfQ/egaewyw7ZjFMYuZSI4pc2WgeF5vZovMJtySOpM3iZLvyLDLUXi8PXZEGpZCk+g9PXFaoZtYARb5OMhljqCC8K4HQOXwyiJZcu8l5H27GOzjCpvya4eGaFCtJbgO/JSccYyIF71PR91VJAl5ia6gGK0br9kzanvOpQzcb02yw9I5HtKOxO7y0DWx+r8CZLnSw2nLpwNbJ6uwznBbogF/LyNWmDSdrrB6bRjCblT2bEoP3rDlLjyUPjEabh0JvvGqLE1/Ihu8Q8aMMTDZZkjifyA2DsZIPuHMWdWD5uxeXOv+matG+T/lb3kAr6mP/n5eOWFREDrW8AFfkdfUxU+8pJNDcxoVtxENMUS2dkE42RUz34xiWlis+KWwdpaYHdjLQQ328kqi+wEW554ZwuTuhzOYu65sdJDkNAsonEaqbVkt9+DLQ7PDzjzuFF9Y8/UTUHnBsfULSkv/vhzGehVevQld4U/3ZXqGVc/UCWHC02rKTQhoWW2InHZFTzuzDds/Rq/kVb1xRA1CNdM1V4E+pPoNNfRiJaFN7qPHOFI8ISZEiPg/+ZKI23ek47YZz06Ne9juS74rok3RqQJJ3VhwiqIH+H/epfw2yCgbZLWHHYOrLkf5QOatyzNLDvJ1vzyd0PSyzFtYeJ6kWit0kjvMMmukcPYh6YCepJX+2z/0dFfbLRPowUrcSXSC5mMLm2Acwi8S7yaTJq/+Gis2VIncT4RiTaLHxOxfUCmkVg8ezE8vH9YbllIliSl1F1lLa3G2uUj9yE2L6oKsDKiIRRt7OEAQxjwS70XjOCsa4duLRaJjC3f/VFynW0Lb2fbCqC+bwFdNefRNNPhLXYqRiYH+2lXqiwek0h+EtAS6ykRjRRZ
+ v+BtKAbr
+ p65QGkvsCoYfUkfVNWvowX5fjEeF4N7+tu87uZKIdGoam9J9vGOVnoPV2X4u9rAlGWJXKlIy6StN5+i6U4YDZYVhbalk+r7XB7E8oRpDR7Sn/tRBn5D4Ks74Zwx468jw9udTQSJQiIkW43gHuq++y0YdUbaX2pXFPhmhALRTQ9G5EoFTIHWXzwfyok//JTnK8kT5B2Mz3z6mkDpvKdWEjUzzDtlGZA5HEn1b5PErbDI6aYOj0iAqRuH2xdNFl4IusYoBMuXsZzADTLnzaHL0+kTCt+jCGKdTDAzRwdLxwMD/UUu6D4U5KcisOJnlKdxE7xWqMTMdhQzB3zH86be3Eipc2IeYKYQH7/Z6v9vnpZ8DZAMtFXunQ64/xqnFqU5XCblk7Uss+YKWmse7K5AJFhNBY1kJhJWGmmjkJdbaemRk9Wxw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,19 +108,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/30, Oleg Nesterov wrote:
->
-> 2. With the change above may_access_mm() doesn't need the "mm" argument,
->    so we do not need to call get_task_mm() beforehand, we can call it
->    only if may_access_mm() suceeds.
->
-> 2. With the change above, may_access_mm() doesn't need the "mm" argument,
->    so we do not need to call get_task_mm() beforehand. We can call it
->    only if may_access_mm() succeeds.
+1. Shift the fast-path "mm == current->mm" check from may_access_mm()
+   to mm_access(), and do it locklessly.
 
-OOPS. Somehow I wrote the same twice. Will fix the changelog and send V2
-in reply to this patch...
+   task->mm is not stable but we do not care. We can race with exec,
+   but in this case we pin/return current->mm. This doesn't differ
+   from the case where the target execs after we drop exec_update_lock.
 
-Oleg.
+   All we need for correctness is READ_ONCE() to ensure the compiler
+   won't reload task->mm. This is not enough for KCSAN, but we already
+   have other lockless ->mm LOAD's. We should probably change exec_mmap/
+   exit_mm to use WRITE_ONCE().
+
+2. With the change above, may_access_mm() doesn't need the "mm" argument,
+   so we do not need to call get_task_mm() beforehand. We can call it
+   only if may_access_mm() succeeds.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+---
+ kernel/fork.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
+
+diff --git a/kernel/fork.c b/kernel/fork.c
+index b8b651abce8b..3239380ab93b 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1381,10 +1381,8 @@ struct mm_struct *get_task_mm(struct task_struct *task)
+ }
+ EXPORT_SYMBOL_GPL(get_task_mm);
+ 
+-static bool may_access_mm(struct mm_struct *mm, struct task_struct *task, unsigned int mode)
++static bool may_access_mm(struct task_struct *task, unsigned int mode)
+ {
+-	if (mm == current->mm)
+-		return true;
+ 	if (ptrace_may_access(task, mode))
+ 		return true;
+ 	if ((mode & PTRACE_MODE_READ) && perfmon_capable())
+@@ -1394,20 +1392,24 @@ static bool may_access_mm(struct mm_struct *mm, struct task_struct *task, unsign
+ 
+ struct mm_struct *mm_access(struct task_struct *task, unsigned int mode)
+ {
+-	struct mm_struct *mm;
+-	int err;
++	struct mm_struct *mm = READ_ONCE(task->mm);
+ 
+-	err =  down_read_killable(&task->signal->exec_update_lock);
+-	if (err)
+-		return ERR_PTR(err);
++	if (!mm || (task->flags & PF_KTHREAD))
++		return ERR_PTR(-ESRCH);
+ 
+-	mm = get_task_mm(task);
+-	if (!mm) {
+-		mm = ERR_PTR(-ESRCH);
+-	} else if (!may_access_mm(mm, task, mode)) {
+-		mmput(mm);
+-		mm = ERR_PTR(-EACCES);
++	if (mm == current->mm) {
++		mmget(mm);
++		return mm;
+ 	}
++
++	if (down_read_killable(&task->signal->exec_update_lock))
++		return ERR_PTR(-EINTR);
++
++	if (may_access_mm(task, mode))
++		mm = get_task_mm(task) ?: ERR_PTR(-ESRCH);
++	else
++		mm = ERR_PTR(-EACCES);
++
+ 	up_read(&task->signal->exec_update_lock);
+ 
+ 	return mm;
+-- 
+2.52.0
+
 
 
