@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9426CD6E52
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 01:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C93F5CD6E52
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 01:24:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2A116B0092; Fri, 29 May 2026 21:19:03 -0400 (EDT)
+	id 160386B0088; Fri, 29 May 2026 21:24:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDB566B0095; Fri, 29 May 2026 21:19:03 -0400 (EDT)
+	id 111B86B0092; Fri, 29 May 2026 21:24:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF0786B0096; Fri, 29 May 2026 21:19:03 -0400 (EDT)
+	id 027256B0093; Fri, 29 May 2026 21:24:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BDA796B0092
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 21:19:03 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4FB661402DE
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:19:03 +0000 (UTC)
-X-FDA: 84822327366.19.3832EAD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CF62920006
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:19:01 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E731C6B0088
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 21:24:34 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 915E21A015A
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:24:34 +0000 (UTC)
+X-FDA: 84822341268.08.BE045A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E167D20011
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:24:32 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f/OACeMT";
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F7MNhqe+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780103941;
+	s=arc-20220608; t=1780104273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=zavFXgPgtkfujBTAMgZU+Bxfz/sYALE+9GnT1He9zF4=;
-	b=SwiJ0rr5chXSng8tJJdL0AvuI4Bj04PhG2te1j/TN5YqIT5/TPddMLTWTj+ojDxCd+muBp
-	ZPm6l3Hex1/XvaywCJySa69Le6UCeScUKyc9iV6oDUlgn/pFPVEcOGtRWUfD5ppn417kaa
-	hrRwVRLRtJXoNGlpq9ErNafwJnOSvrs=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=//Pa32naUxmjScgI2Kd3HsHRQJ9KXrVWN/zHAstPObM=;
+	b=QCvSATvHqQMywrm97AsQdMh2I2/ClYQjifed2UNqjlkvGAkSWrH4JOgX168Fwr2rL+l/VK
+	6wYuqm9jOEWZUX5hpQU3j02f6t7vIu2Q7AWJMRfWZsPNPUMQWnU40LKgVxjerGUTteYGZQ
+	i6kkfj4piEJRrSK4YxYKmSbNcDUlylk=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f/OACeMT";
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780103941; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F7MNhqe+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780104273; a=rsa-sha256;
 	cv=none;
-	b=x7lzCiBFeh87yfzpqxf28Dvg/lboVjp41evIzH61YeD/CRKWUXwmQNV5LeaKLJm6zd0O7s
-	Fa0cPXN6KD22f2y3GBvTZV1oecSdnWp8LXsEOLudxU8d1JpOQokRw70SLoos7tLQy9yvS3
-	ht5dJThRxMOhCosOf8lj6Tnw1k6MWgg=
+	b=FBPaC01tuj3U4FSuuGY+2l1YwgLcaJkfBXPwKTuzZEFyanCUcnzG+SEMJi06uRyKrtY6Mc
+	8BrRIjshP4YmkEP4toqUTBxzIZWqSXEKTXL+o4HhCNIxFXLoiuwS+JKizPmaSXiXjtXQZL
+	igBfsy2+GjaszBt913TAzkFayHSYcwU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2ADBA60103;
-	Sat, 30 May 2026 01:19:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689EB1F00893;
-	Sat, 30 May 2026 01:19:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AF57C4093F;
+	Sat, 30 May 2026 01:24:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0359A1F00893;
+	Sat, 30 May 2026 01:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780103940;
-	bh=zavFXgPgtkfujBTAMgZU+Bxfz/sYALE+9GnT1He9zF4=;
-	h=From:To:Cc:Subject:Date;
-	b=f/OACeMTdRDSkdOYCNN/dpJFMolB8lHP5PzJyszLkICvTNrhL215pqHed5se0ti0N
-	 XkGlfcsa0JDhBcbUP0wh5amh0tL1iO12hdmbgF8KWbKmwaDZvs2WcZJ1iR8svT0iAV
-	 g+qhMf5Wbnap8XqGefKuJsEthBXDWu4/pUg299i06q2u/J5dObFvpcXAVUK+dTpC8C
-	 BVXDSc4wzZMEXJsp0gDUjmsBgsHl3/jV9HQ7ai2+ZRIlCiFcuerCQlMWak0+L3Y/w8
-	 KGtr05YfHUvdMpmi0t465rak3QnwF+NIWcOtKUOaLBOWIlxF9u8LH4dAaLLGr5pihf
-	 sCDaXwXc4nRhA==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH] MAINTAINERS: add ABI documents for mm
-Date: Fri, 29 May 2026 18:18:51 -0700
-Message-ID: <20260530011852.90663-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=k20260515; t=1780104271;
+	bh=//Pa32naUxmjScgI2Kd3HsHRQJ9KXrVWN/zHAstPObM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=F7MNhqe+0Chu3B+AvEvjUu6v/Z/wPCHxWkFcmVFSzR7y0KprtUrixtAgwSjqlSncP
+	 17wExybPZwPr+UICr9SQHV7lGdEbwdK8Gb25DsoMIXKZvNe/13nsb2jIo9HOpJjCA+
+	 8FB+plkEkrQmZsZhpWPm24iqknsf0vGKdYid2c0QO81NFgA1DqBUzA5AYHzog2ZrZV
+	 wmMtRvsayeFLK2F1VjvdguIfgME68J2Vm8Y9DTZaIJ/1ve3JzRhFv5/e1vpjgh7NAs
+	 nHU0vjrFgtS2A30v9gZTqKDIweQRlw84bSGM5V7y1HBKCk5qOqAT5vlJotvK/djUfI
+	 G3sqdHBY/s2Mg==
+Date: Sat, 30 May 2026 01:24:29 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
+	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor
+ per-memcg
+Message-ID: <aho7nepN5jZtKmef@google.com>
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-2-jiahao.kernel@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zjiyaqpfnfnywk947zi5d7oa5tj1wjid
-X-Rspamd-Queue-Id: CF62920006
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526114601.67041-2-jiahao.kernel@gmail.com>
+X-Stat-Signature: zrfy8ysenaphxyyzq1zga1jqn11eiep9
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E167D20011
 X-Rspam-User: 
-X-HE-Tag: 1780103941-11400
-X-HE-Meta: U2FsdGVkX1+mVEx2K8O8xx0fmv3J2/KBOcxPVIGROZM5DcEcg2z0MFAxBv6h5yHfiB3lyl7JsBRULSqf98YpEC5/6DY3nklIYpORI3AQmdcu5ae747qlMxu7fWDir0+V5Sq7D2RhqHHS3BY4BhEgZWj5V9hyqPOaX0oIIjrhtBcE0Zj07UZKk93P66L/ruvgaB8zEEJxELbbQELW0YvZ/Q2/I8mMlTK4O701lqbtL6SPGzbDx+UyGtJhoVTl3T4MdZX9FJgg3XoY60b4961DkO+m7E6qW/OK/JG8QcsSIfF35SAfVSbNSMdt1pK8ipkwQjSAkhtPayKVw98BNnoGHsuJ7OR7T8mnjfhpnj2pL+WwNOfcVn+g+NBKW5cYXmZ0l0sRfUqZ+0Cz+HGtYMgiUT5+pXGyziEHEJgIlxgCYhcKLi45dTt5PKklYcsrymbQxqUbENsw0KtLQlbcwvm/n4hR0/+Bze4FRqS1BI7RZQi7M2WVuGF5wwPTv9wegldsfrZxQWmK1CHKp64HmIPWuIEMbXqtPuDqVq4Ri2lMdjIpYDz7rZiX4BIp31vqkujFAxtJh5QbjQHnA4eyhrBfq6wMT2D0+GXUTqUvuFEqgldqYbrOdQSPSF0MIebD3K+6eZ2LWCtHrl/bz+YkrLYOX/K1q+0abJ2EL7RQ2bFSHpt4y/AnV7G/HcXJPlg7WRhRN4iB3WAhFcJ87BpSDWdxNt24ESj/T2cy1qwOB1/47JYrVQdXTKIRCygBxdbCl72rXw0Phf3qMnOHf121VqXvnFxY6K8N9UKtjH/k6JqSU/LNy8jJiGFMgrfEPsPmP0xwG1mPKvcbtwVuweVskC0wjmHLkRw6ziANG1zQcaYCdTw7WYYPV48yQ7+kdAYlFA23gTCq/yQFVw99xl1y1rhK6dBLP28JwO1h7JTDe7fJ6K3GXqL1uhsBM6zpIVyPitZ939qMSD1GsMDiGWIW/zi
- 3BjI2G5h
- 80Zq0p1Kba3lNOK5+oiHv8pldmYm5BIm742RCHc4+B4hZfx9/4iY89kd4Yy0xIwm5wDxtQjIbAUkBMFYU1/WqfETjUsrP0ukGwjbwLpwzx+gI6BIpFPr/ZlOPScQJ9RoBJiuOdqUQwDXyGzDzM2di+6Kg3h87DQZc01ShVrauh5xW8I1TQ80pgnN7OyaGNUgJIwgAqjAy0BfUc0/uaIQLzb0IgXBGU9Y4u9Yg9cKwxn+7e/UViDcXoEvstvlZ2ykhgvzR0jD8KSIcjFK6/m6D/O51bgAo88ayKUjjI2o2SaI/Cw9hJtb04mmuubY24cZJmLIOTiIgaFNWjrrzt7fWcj7puNYQUW/VwzRf+BJo+nC2EDVswVlKVMSvAw==
+X-HE-Tag: 1780104272-418916
+X-HE-Meta: U2FsdGVkX198AcXQN+MF94OkT+bz79rbe517VgIF+YMJTj1cV11BPGw4zgIKeDQJOhPaqA4jdMZ2BghpRUz0mKgYy+PpuRB7yg3ERkqZgobKxEzcGfuoP/vmGU+D0Kz9XrjrTu04fclxCXq9o8m/yFX1EBFsM2/NGvXNtWCVGexpP0CoTlNJPtsNHkHHQ2Czuk6i6bn7G5ShFmRAR3qvG9Hw/bW8WZKQ9WnsxUFMFu3PPzyzRvgmHfZqT2Xu8LUdLB80AJ8uGe92SXU6oojF4k+F2h1mJPxHuxNjfJ+drGCwuA5nFqQ9fTNFh4s87PZ5B4QxgcjnyjbtyTsDY9mAeJrMrqpgCKQC6NhUNQkybqsAOOQhYjFR6+t8C96Yi08f3LylWqgYsgHkA7w2IY5RZkWDxNqpJu01Mlm4Qq+MaDn3O7s05kZNSswOzN5FpiOOD1hbtoLNnMhJeSKN7URupbIgzH+S19NZK0GxszDuwSWMm3KL0ZKyHdl8QtSbWrWwgir7Cvrc/aNuWW3kNmVVJaP4hl7T77zHgWAdRvOSEvl93H75O1UjhRGLwQGXvA7dX2soa6DbChhJB92TLwsA1Q5d3eRehW8aKlLciFl8xL/86C6ym+37k89mU9BNSH08QQqb41Njhw+iGYOYk4qkyQ681nH0iGTylVrCSxljEq3mVZw1yyF+XCdhzNbb0BgwtL/F2hyb7vLoJehz9gNcdwXDLqCF4i+wsVDBAPoLZvcWsxAc1aqLuAWG0GiZuaAQP5x1K6qDLu11H9rPZfa6azsWmb9G73hiZ9MSUcMwUEYkIIMEnKfcf2A8WoN2njfK/3C7EuS1oCNHmmKsDDa6NSEXEfoVxny55uHtRp2rUpcp4kQlhHYE/gMb32m464Fn9Y2nOjSVJ2S19fDniYVcPZ6hW27VyJd1yf6xJvIrwUfzJ060sQGAw136/OycnD+AsjavdxrLBjT24lZ/9RT
+ HKtT/Kda
+ vl4OssA1Ba/SsR0eil0yqN/atFbflsrNoOWU3itkzSh9SDoBduY3YhMnE1G9sPbsfQDdo+GPdYZfzuYO3bdycsDmY/Q6hK8/A92OVrBuMPSWJCpTZlylB0vlTfP0NxmkzC40TXcKzZUz0a977Y6VMLgL9PqAQLlysaKhlLqjsAZLj9sUk6XCFIZIcmkG274pTSJGl4kopphX9wWQ7MKwaGoid8eieslkDDLv+66n54oIU8RzD/Vjg+trzgpIyqggizXq2Z6YMMfHx6R/H/tKOgVAb9JebkanDup7EYRdsMsPQ4DG6K7AyegJFTZtHx4EYlEdqnqTsf1Tmg83z3H8E5NpFwsLmzDoWQHzdG6c1pjexqR84bMIPgiglD0PPH8hpiDTaG00hbl5WPPFO6u03Q8si30v3HQiAG67Y798YGX/SINw1aw5Y30OfBBmDz9MFSVsNpIkBwUOtGmdbVvzUVB+wCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,71 +95,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A few mm subsystem entries in MAINTAINERS are missing their ABI
-documents.  Add those.
+On Tue, May 26, 2026 at 07:45:58PM +0800, Hao Jia wrote:
+> From: Hao Jia <jiahao1@lixiang.com>
+> 
+> The zswap background writeback worker shrink_worker() uses a global
+> cursor zswap_next_shrink, protected by zswap_shrink_lock, to round-robin
+> across the online memcgs under root_mem_cgroup.
+> 
+> Proactive writeback also wants a similar per-memcg cursor that is
+> scoped to the specified memcg, so that repeated invocations against
+> the same memcg make forward progress across its descendant memcgs
+> instead of restarting from the first child memcg each time.
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
-1. I found no better place for mm, mm-cma, mm-memory-tiers, and mm-numa,
-   so put those on the 'MM - MISC' section.  This is an RFC mainly
-   because I want to know if it concerns someone.
-2. Also, Cc-ing only 'MM - MISC' M:aintainers and R:eviewers to avoid
-   too many recipients.  It becomes ~50 recipients if I add all
-   M:aintainers and R:eviewers.
+Is this a problem in practice?
 
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Is the concern the overhead of scanning memcgs repeatedly, or lack of
+fairness? I wonder if we should just do writeback in batches from all
+memcgs, similar to how reclaim does it, then evaluate at the end if we
+need to start over?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e119182a8911d..a31f6f207afd8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16854,6 +16854,7 @@ L:	linux-mm@kvack.org
- S:	Maintained
- W:	http://www.linux-mm.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-+F:	Documentation/ABI/testing/sysfs-kernel-mm-ksm
- F:	Documentation/admin-guide/mm/ksm.rst
- F:	Documentation/mm/ksm.rst
- F:	include/linux/ksm.h
-@@ -16876,6 +16877,8 @@ L:	linux-mm@kvack.org
- S:	Maintained
- W:	http://www.linux-mm.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-+F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy
-+F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
- F:	include/linux/mempolicy.h
- F:	include/uapi/linux/mempolicy.h
- F:	include/linux/migrate.h
-@@ -16918,6 +16921,10 @@ L:	linux-mm@kvack.org
- S:	Maintained
- W:	http://www.linux-mm.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-+F:	Documentation/ABI/testing/sysfs-kernel-mm
-+F:	Documentation/ABI/testing/sysfs-kernel-mm-cma
-+F:	Documentation/ABI/testing/sysfs-kernel-mm-memory-tiers
-+F:	Documentation/ABI/testing/sysfs-kernel-mm-numa
- F:	Documentation/admin-guide/mm/
- F:	Documentation/mm/
- F:	include/linux/cma.h
-@@ -17041,6 +17048,7 @@ R:	Barry Song <baohua@kernel.org>
- R:	Youngjun Park <youngjun.park@lge.com>
- L:	linux-mm@kvack.org
- S:	Maintained
-+F:	Documentation/ABI/testing/sysfs-kernel-mm-swap
- F:	Documentation/mm/swap-table.rst
- F:	include/linux/swap.h
- F:	include/linux/swapfile.h
-@@ -17068,6 +17076,7 @@ L:	linux-mm@kvack.org
- S:	Maintained
- W:	http://www.linux-mm.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-+F:	Documentation/ABI/testing/sysfs-kernel-mm-transparent-hugepage
- F:	Documentation/admin-guide/mm/transhuge.rst
- F:	include/linux/huge_mm.h
- F:	include/linux/khugepaged.h
+> 
+> Naturally, group the cursor and its protecting spinlock into a
+> zswap_wb_iter struct, and make it a member of struct mem_cgroup to
+> realize per-memcg cursor management. Accordingly, shrink_worker() now
+> uses the lock and cursor in root_mem_cgroup->zswap_wb_iter.
 
-base-commit: fdaad90bb73cbc2dad3a72c3bdbdfc05a12b3a85
--- 
-2.47.3
+If we really need to have per-memcg cursors (I am not a big fan), I
+think we can minimize the overhead by making the cursor updates use
+atomic cmpxchg instead of having a per-memcg lock.
+
+> 
+> Because the cursor is now per-memcg, the offline cleanup must visit
+> every ancestor that could be holding a reference to the dying memcg.
+> Factor out __zswap_memcg_offline_cleanup() and walk from dead_memcg up
+> to the root.
+
+Another reason why I don't like per-memcg cursors. There is too much
+complexity and I wonder if it's warranted. If we stick with per-memcg
+cursors please do the refactoring in separate patches to make the
+patches easier to review.
+
+Thanks!
+
 
