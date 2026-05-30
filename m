@@ -4,93 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85AE9CD6E4A
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 09:10:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50A1DCD5BD0
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 11:28:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF0416B0005; Sat, 30 May 2026 05:10:32 -0400 (EDT)
+	id E87746B0005; Sat, 30 May 2026 07:28:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC7486B008A; Sat, 30 May 2026 05:10:32 -0400 (EDT)
+	id E380E6B0088; Sat, 30 May 2026 07:28:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDE186B0092; Sat, 30 May 2026 05:10:32 -0400 (EDT)
+	id D26906B008A; Sat, 30 May 2026 07:28:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CD4AF6B0005
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 05:10:32 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9283DC0303
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 09:10:32 +0000 (UTC)
-X-FDA: 84823515504.23.672700C
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2D317A0006
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 09:10:30 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf25.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780132230; a=rsa-sha256;
-	cv=none;
-	b=0p0jekJFKSNY/bWs+AWDxHlshwWNszsh6wSRlu7QvmUjf3tcLp5VH40/nQZioxFYuo4QxA
-	RjK81NNhozZC7VMH5QvXzcpfDEZaLomyhgzccWROIyPNtH/npry3KzrofQwDBhydWcOdpS
-	5CE3x+zA/byIxNVkBSz5nZe+ytVEPkE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf25.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C2B396B0005
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 07:28:27 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4953A40315
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 11:28:27 +0000 (UTC)
+X-FDA: 84823863054.16.C9DC6CD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 48028C0009
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 11:28:25 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JDIWChJZ;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780132230;
+	s=arc-20220608; t=1780140505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=94fZOutZRHVll0k9gh0U4uHwTaeLJtJDgaIsJ9plFjA=;
-	b=QszYZ823449rXjtk96LygTK5QbbDf+f6eT4DXbfYZqOaoegTUrtRGsmz8416B8Su9dUBB+
-	6OfrJXgvogqIbsx5i81G/GKwBR9CmTtwcHlrnzpWRVWs7sqX/Gw1F7/loqSBRhlax9sMsb
-	OlEFWw85SClaJkxl83CvBq31tUwBsSo=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gSDw00J9Xz52RpX;
-	Sat, 30 May 2026 17:10:24 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl2.zte.com.cn with SMTP id 64U9AJOT052872;
-	Sat, 30 May 2026 17:10:19 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Sat, 30 May 2026 17:10:21 +0800 (CST)
-X-Zmail-TransId: 2af96a1aa97d777-20e7d
-X-Mailer: Zmail v1.0
-Message-ID: <20260530171021329670dwn6uVqrmEL6L1A8ib@zte.com.cn>
-In-Reply-To: <20260530165907829ZSDzDdMc110MnOflRzf9P@zte.com.cn>
-References: 20260530165907829ZSDzDdMc110MnOflRzf9P@zte.com.cn
-Date: Sat, 30 May 2026 17:10:21 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>, <xu.xin16@zte.com.cn>
-Cc: <david@kernel.org>, <chengming.zhou@linux.dev>, <hughd@google.com>,
-        <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <ljs@kernel.org>, <corbet@lwn.net>
-Subject: =?UTF-8?B?W1BBVENIIHY3IDYvNl0ga3NtOiBhZGQgbXJlbWFwIHNlbGZ0ZXN0cyBmb3Iga3NtX3JtYXBfd2Fsaw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 64U9AJOT052872
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Sat, 30 May 2026 17:10:24 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A1AA980.000/4gSDw00J9Xz52RpX
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sq2iLDCXi6pDren51u1cQUzgAX9nwmLUuBb8+qFvt4c=;
+	b=T1KuQuuBMZxw3o9Uhmta+dv6I5DSLoiNW7eYGjeMKzJIYVM09RceROCktU/6BkaM/myLQO
+	gbEJpYbWKj3Gn9/ejPgZnBrbZ4FHHw5qSjcVTORbKpImlnc8Jzc/M1pVrynMxz4nae6l34
+	9EA+IFUnjJ8k2svtWsSGzlrhjgj25/Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780140505; a=rsa-sha256;
+	cv=none;
+	b=v9e84nQKBsajetdeF0SLRAEYZf4O18vV+YqnJ5a0goBg75PNwOg1sHRtsgPHHJNOdsRHY8
+	2zF2vyl2dL86AMoQ6ES7dwx8zh3E98D1wOpfhJM9SPpoWAGTRuqhT6EaYWSL2nsmacwN43
+	o8gV5k1j6DMZAO7qdAKTC3RJZeVh7Xg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JDIWChJZ;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 40D4A44117
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 11:28:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240C31F0089A
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 11:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780140504;
+	bh=sq2iLDCXi6pDren51u1cQUzgAX9nwmLUuBb8+qFvt4c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JDIWChJZ5HBvxKRLY86aQ4mCtPB3mchD3+6j9CO4V3Zfldriy00F20T5l3/KrTzEY
+	 4iR2RT0/j4sFVS1dQZ/Kbkfjh+fEolP841WKNsjUJFg8pH7aW7wVjF2094d8vdd0yT
+	 HfLx9I2ayMHn6z3e0AlbCQldDW0lN2gN+c90HvIUP+7aJ7IsKwQGIOKBSeqTjRsoBI
+	 ko7ERB7kigumw4pkHRSD43tDFRqmRP5JBD5hbwk+j2P9SMScEXjdbJq2rCbpw0pIli
+	 7OftayBRqrL6XlN3WhscSpvzvxc1T1f7oK8QNIhax3GHkFLgbDcsu2J8qGGruoUQ+p
+	 p14DeXvsONWtg==
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8c9166b26b4so171046186d6.0
+        for <linux-mm@kvack.org>; Sat, 30 May 2026 04:28:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ96HNOpbHyOMn2YP3D/PNltPYI9k4WTWa80j95ma4vbokbId08djFyEFbb/Ab+6+YPCjMrHObFNYg==@kvack.org
+X-Gm-Message-State: AOJu0Yz3cuXECQ/Dleqd29xVnfpdTW9qAz+ndQT/W2Y2aTRJh8FFYHSQ
+	dSPXfyxuZ4JuUEYCBVfQx7CxaJhD4CebWXiTDdPECb15IvD0i9p1scLnlz03+buy1F+xWZnIlZh
+	Zx+onVV7g8bu99HgFsVRdH+wJLiT8hSY=
+X-Received: by 2002:a05:620a:45aa:b0:914:c246:ac9d with SMTP id
+ af79cd13be357-9153d9f76eamr544656885a.28.1780140503550; Sat, 30 May 2026
+ 04:28:23 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260527110147.17815-1-tao.wangtao@honor.com> <ahcANgFDFwfC0v1q@lucifer>
+ <b24b4a8198ba412f8b8b42c43dccd058@honor.com> <ahf2mJg9OOWvu0jA@lucifer>
+ <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
+ <87qzmu2r0t.fsf@trenco.lwn.net> <ahmzXSN_sQYmq2Jp@lucifer>
+In-Reply-To: <ahmzXSN_sQYmq2Jp@lucifer>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 30 May 2026 19:28:12 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yDek3neUQ_Le8nWr1XA7YrqZDKXZJX+u5f9kvv9=d0vQ@mail.gmail.com>
+X-Gm-Features: AVHnY4LYmPGlt-SyUQzP7ovTfzzfgSTVLh1_UKbg7JbyXYbDT08n9Dn5EUIKOuU
+Message-ID: <CAGsJ_4yDek3neUQ_Le8nWr1XA7YrqZDKXZJX+u5f9kvv9=d0vQ@mail.gmail.com>
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma creation
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, wangtao <tao.wangtao@honor.com>, 
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>, 
+	"willy@infradead.org" <willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>, 
+	"luizcap@redhat.com" <luizcap@redhat.com>, 
+	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz" <jack@suse.cz>, 
+	"riel@surriel.com" <riel@surriel.com>, "harry@kernel.org" <harry@kernel.org>, 
+	"jannh@google.com" <jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"ziy@nvidia.com" <ziy@nvidia.com>, 
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"lance.yang@linux.dev" <lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, 
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, 
+	"matthew.brost@intel.com" <matthew.brost@intel.com>, 
+	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com" <rakie.kim@sk.com>, 
+	"byungchul@sk.com" <byungchul@sk.com>, "gourry@gourry.net" <gourry@gourry.net>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>, 
+	"pfalcato@suse.de" <pfalcato@suse.de>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"ryncsn@gmail.com" <ryncsn@gmail.com>, "jparsana@google.com" <jparsana@google.com>, 
+	"dvander@google.com" <dvander@google.com>, zhangji <zhangji1@honor.com>, 
+	wangzicheng <wangzicheng@honor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Stat-Signature: wm7spefxeyomoun366acef5gp7fxfq86
+X-Rspamd-Queue-Id: 48028C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2D317A0006
-X-Stat-Signature: o6zrmdut9oxbcg3q6a5on5n5jrp5k8fm
-X-HE-Tag: 1780132230-981889
-X-HE-Meta: U2FsdGVkX19DtPcOvs/MQNqJxaucThRhxYDmE7P77WY3Tbou2MKTKwpQtNvLpodUsrNA0LBjLJ680OZgqLzYPd85bmg6RdjNg8itBpdNQS5h5KlLS/dHT/gjGdEYaj72V5UXXCEVBk/oSqtI8ByWiZxukBWq1crbDqhQLrIHe1BE2OSMAFniPRlQx4gTJf2NqisNEjQ+wwYuM/C53uHXCGrq+jQbSDHP5PMrybc8c/vTCHdS0eGtJ8JQTz1OTVrfMm5aNRJjbpa9ezBEpeB98R3jjKfr6n4seMBolz8GEmKJLLqvsS4W2+6GpEgH5OvggU13D/jktHLRy90v620VBh8utOvMi2kx+i7+nnwHB0idK/KGXIV1JFZubdfDvl1y6O1PAP1TlWA+4T6+N2TVqne8kh6YP4OMC22U/5C07vWP0/6gX2Smrmabo4uJKmV4RAR0EKSGe4mTeMyP366S0wKVzIqr6k0sXIrlXDThAoptpYxKSiMsNj8zY0JUF9Hk8D3BqGy3XdQE1hhI5y5z5uYUhNWajIwy6z8DKU+NZMMiQq4dOAl8jGyXnIeD6ZmjUwWBgd6Umun2jfJZVy/Pf0/SEDzBa+wId1ogxh4SoJ7j+W//TzlvDhxuAJTsAeHAWcxKZjO2KpgLKK7pbdI1ITlaE3/Otg2dpYevIo5LlAcUx5i8HBB+OQ2gMG6dzRWPTd3IJBHXJ5scP3F0u08ygZWbRLVBnT16GZreR+cwrCwJ+YSKsjpgXadj/rwe8vGSZY+XwPJJjnTJ5+FxNmvmRY5jKSWlmmOu2FlnenEjmgFxKqSbRFnqXelH/dA1Mnv96v18FmyA+eFDneQez2N0WmsL6fgIAkAILPSbl8OjwzDmhGkGHlCywdnk2D+uO3/mtf+cmucbKeEcFWrzmHHgElN9qc2EQD3YHDfRPH9ZF+IfRIuKkDUO2J1u8TTaoOLegEnur9Qanp7htVQzgEG
- c64qqmC4
- HTJTxtjmTJG4MSREt5JMOYYJpi333LUrN9B82s94zJD89/9aRELT9yKjFt1sbTqdnfbxxDq5f9kizDAva0OH0R7jC3mfMUd283wLjrSHOWJDPoEfOBcjHs6X5dVd7maQd53v/Qh4CHpMibuQePZ+tSFRp4XYSbyiuknUzRhucxc3/meMF6yVZ/Z33rQrQoWtG0PpWU34yrNwyb/8oEYahsudg5HDWTjlfjY/UYf6KLWC3+1SgHdDsKMIYBYSUsS/Df4GUdzZxpvapNNPUJqNNZw3J+znaCDGgNlAoeg4mZo/hnWwqOE2g27cE0w==
+X-HE-Tag: 1780140505-173436
+X-HE-Meta: U2FsdGVkX198B19aBuJ2XxIN0Ly7wyxBqQH2r9Mfpm45Acp3Gy03Px0pCqWfB6p26FSroQ8SIYW/hqRRRNsA1Wx89D32/rHIRBBA/zS/WhvfGVZsy63Sl1kYvRnZXjHuRGOfzunj34mN7pS+e+3nGLORMQpKU2qNQeGbypmpiR3iOa2Ch2e4yd6VRvSd5MFHJBV8MGuINuSD/DSYFHCWrYP06G7efIjQXat7XtuXXWuaYyyc9spPNPgMiXnOo/XDW/GC7KOLGAen852stP7Zrlx436pIP4rg0IsAVoHA26fVOIVhavmFbJoWdQV9/VIeynE2umxVBNSukRRfB8pIL7X15TC0htYMpfE/GEP06amB3dBKKQ92KwCnlOApL8tiIj+j8bNxIgIgt1OMSXbXXlJCJuuTEWKTSe0RHPM6EWJqHi7Ohr8ubtCdNnSTw+Z5KJlhlXV9ltsCFiXUfsc+PYLC3IjAX5Eqx+eQ/62Ns6pHiBVc8feGsKsd0JUNtWstCF0JYphZmsrcfZt8C/uUBkah4RAy7BP+V23MRNiK1SjJ1i+nm0YLi3Zd/dKKvxWJmaSP8LfXwucNKdLUYOkBo8wHsa9J/QsawD97YVx/yANuTJZckBJ1kOHZambO21Z/hp58179ET01h6jOO46PZZW8guV/ndAtgb/rm0yTOS0tRMRGhSWSyf8zIsqK+cL81wGmsr3tBibhF3W0GmttV2eOXdFEcyJKzk7U781+0QGKi1uWlnhtQ8ygMF07wRFFBijz22+GMAS3aGuSEgqQgbzc+Fa46QHAC5Dt9BDe30BJ+J4KxmX/bq0XRUBBdBpaxgyNEWNsEPOFT4gIp3nZYXEnfz08yj4ZD7wyQxZbrKoZsBGR5ZfX+O/aiYV5ak15oDgRTPn5G5GpxOF+RvXsJfpuFaTfC4Pj6KOsz8sahi60RnZycsZ+wt5z6B/7k8cRGqvLZei46iMVcvddCNC6
+ DJKKA/x/
+ gWK8Cng5PhyDB1YhhqVjPQp1tB3vGntcmIbX6ykf/I0LrGejzGcXWjGGS26EV/f+BV8+YmU6RQ+seZujrDgv1LyGP3dFy/7m+vsOjC4ALjL5Cvy7A8aDsA4CAEwo2HnR+CAbVRel5ulL0aYOg2lRTB6sgwnK4Iie8pkt7gMeMCBFGy1LUXAqjKKcNfXPLcwwhhpFSa0jpodyFPUJ8DH/9T1XCQvdCL9qxedpVpFu4rYawxWDYEjm2yndJUYpqODWzKqgGVJfvdIrxBYncEtSfGD6OsVkTjsMHTw+1yv76JGV6ewCE76fIjpFzAWXtzoP9fG5F6hXQDWx9Qdq9baLVIi97ExBGSZnKhQumYmxVcXnRkea3FRfRH0X/BkFW7bNKYzFRqT/ehnNnWpuG53KskAZhZUGC/KyqtkO3ApiX7KobyngcSXbCTp/ad5wajnSr0fbKP/k11B9Qy9hr1VgIswejMCBvbVcxnwhHzv5OkpJRC997TccuHsY4Pa0wBq7T+9DAw1Ye4lcMdP7CRco4ZCLGuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,205 +135,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: xu xin <xu.xin16@zte.com.cn>
+On Fri, May 29, 2026 at 11:40=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.org> w=
+rote:
+>
+> On Fri, May 29, 2026 at 09:07:30AM -0600, Jonathan Corbet wrote:
+> > Barry Song <baohua@kernel.org> writes:
+> >
+> > > After coming back from Zagreb, I kept trying to find one or
+> > > two full days to read Lorenzo's code and slides carefully and
+> > > write a blog about them. Unfortunately, I have been completely
+> > > busy with other work. Sigh... we always seem to have too many
+> > > non-upstream tasks.
+> > >
+> > > If possible, I'd really appreciate it if you could take a
+> > > deep dive into it and write a detailed blog post. I'd be
+> > > very eager to read it and better understand the overall design.
+> > > Otherwise, I'll try to find some time next week or later to
+> > > go through it myself.
+> >
+> > It's still somewhat superficial, but in case it's helpful:
+> >
+> >   https://lwn.net/Articles/1072378/
+> >
+>
+> I found it to be great as usual :)
 
-The existing tools/testing/selftests/mm/rmap.c has already one testcase
-for ksm_rmap_walk in TEST_F(migrate, ksm), which takes use of migration
-of page from one NUMA node to another NUMA node. However, it just lacks
-the scenario of mremapped VMAs.
++1
+Thanks very much, Jon. That's really helpful.
 
-We add the calling of mremap() and then trigger KSM to merge pages before
-migrating, which is specifically to test an optimization which is
-introduced by this patch ("ksm: Optimize rmap_walk_ksm by passing a
-suitable address pgoff").
+>
+> > jon
+>
+> Cheers, Lorenzo
 
-This test can reproduce the issue that Hugh points out at
-https://lore.kernel.org/all/02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com/
-
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
----
- tools/testing/selftests/mm/rmap.c    | 97 ++++++++++++++++++++++++++++
- tools/testing/selftests/mm/vm_util.c | 47 ++++++++++++++
- tools/testing/selftests/mm/vm_util.h |  2 +
- 3 files changed, 146 insertions(+)
-
-diff --git a/tools/testing/selftests/mm/rmap.c b/tools/testing/selftests/mm/rmap.c
-index 53f2058b0ef2..e548d00762b3 100644
---- a/tools/testing/selftests/mm/rmap.c
-+++ b/tools/testing/selftests/mm/rmap.c
-@@ -430,4 +430,101 @@ TEST_F(migrate, ksm)
- 	propagate_children(_metadata, data);
- }
-
-+static void prepare_pages(struct global_data *data, int nr_pages)
-+{
-+	/* Allocate exactly pages for the test */
-+	data->mapsize = nr_pages * getpagesize();
-+	data->region = mmap(NULL, data->mapsize, PROT_READ | PROT_WRITE,
-+			    MAP_PRIVATE | MAP_ANON, -1, 0);
-+	if (data->region == MAP_FAILED)
-+		ksft_exit_fail_perror("mmap failed");
-+
-+	/* Fill all pages with identical content to encourage KSM merging */
-+	memset(data->region, 0x77, data->mapsize);
-+}
-+
-+static int mremap_merge_and_migrate(struct global_data *data)
-+{
-+	int ret;
-+	void *old_region;
-+	void *new_region;
-+	int nr_pages = 32;
-+	long base_shared, base_sharing;
-+	long shared, sharing;
-+
-+	/* Take baseline before creating our pages */
-+	base_shared = ksm_get_pages_shared();
-+	base_sharing = ksm_get_pages_sharing();
-+	if (base_shared < 0 || base_sharing < 0)
-+		return FAIL_ON_CHECK;
-+
-+	prepare_pages(data, nr_pages);
-+
-+	if (ksm_start() < 0)
-+		return FAIL_ON_CHECK;
-+
-+	old_region = data->region;
-+	/*
-+	 * Mremap the second half region to the first half location (FIXED).
-+	 */
-+	new_region = mremap(old_region + data->mapsize / 2, data->mapsize / 2,
-+			    data->mapsize / 2, MREMAP_MAYMOVE | MREMAP_FIXED,
-+			    old_region);
-+	if (new_region == MAP_FAILED) {
-+		ksft_print_msg("mremap failed: %s\n", strerror(errno));
-+		return FAIL_ON_CHECK;
-+	}
-+	data->region = new_region;
-+	data->mapsize /= 2;	/* mapping is now half of original */
-+
-+	if (ksm_start() < 0)
-+		return FAIL_ON_CHECK;
-+
-+	/* Attempt to migrate the merged KSM page */
-+	ret = try_to_move_page(data->region);
-+	if (ret != 0) {
-+		ksft_print_msg("migration of KSM page after mremap failed\n");
-+		return FAIL_ON_CHECK;
-+	}
-+
-+	/* Ensure ksmd scan two turns at least to update ksm counters */
-+	if (ksm_start() < 0)
-+		return FAIL_ON_CHECK;
-+
-+	shared = ksm_get_pages_shared();
-+	sharing = ksm_get_pages_sharing();
-+	if (shared < 0 || sharing < 0)
-+		return FAIL_ON_CHECK;
-+
-+	if (shared - base_shared != 1 ||
-+	    sharing - base_sharing != nr_pages / 2 - 1) {
-+		ksft_print_msg("Unexpected KSM counters: shared delta=%ld, sharing delta=%ld\n",
-+			       shared - base_shared, sharing - base_sharing);
-+		return FAIL_ON_CHECK;
-+	}
-+
-+	return 0;
-+}
-+
-+
-+TEST_F(migrate, ksm_and_mremap)
-+{
-+	struct global_data *data = &self->data;
-+	int ret;
-+
-+	/* Skip if KSM is not available */
-+	if (ksm_stop() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/run\" failed");
-+	if (ksm_get_full_scans() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/full_scan\" failed");
-+
-+	ret = prctl(PR_SET_MEMORY_MERGE, 1, 0, 0, 0);
-+	if (ret < 0 && errno == EINVAL)
-+		SKIP(return, "PR_SET_MEMORY_MERGE not supported");
-+	else if (ret)
-+		ksft_exit_fail_perror("PR_SET_MEMORY_MERGE=1 failed");
-+
-+	ASSERT_EQ(mremap_merge_and_migrate(data), 0);
-+}
-+
- TEST_HARNESS_MAIN
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index db94564f4431..bfa88937485e 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -648,6 +648,53 @@ long ksm_get_self_merging_pages(void)
- 	return strtol(buf, NULL, 10);
- }
-
-+long ksm_get_pages_shared(void)
-+{
-+	int fd;
-+	char buf[10];
-+	ssize_t ret;
-+	int saved_errno;
-+
-+	fd = open("/sys/kernel/mm/ksm/pages_shared", O_RDONLY);
-+	if (fd < 0)
-+		return -errno;
-+
-+	ret = pread(fd, buf, sizeof(buf) - 1, 0);
-+	saved_errno = errno;
-+	close(fd);
-+	if (ret <= 0) {
-+		if (ret == 0)
-+			return -ENODATA;	/* unexpected EOF */
-+		return -saved_errno;
-+	}
-+	buf[ret] = 0;
-+	return strtol(buf, NULL, 10);
-+}
-+
-+long ksm_get_pages_sharing(void)
-+{
-+	int fd;
-+	char buf[10];
-+	ssize_t ret;
-+	int saved_errno;
-+
-+	fd = open("/sys/kernel/mm/ksm/pages_sharing", O_RDONLY);
-+	if (fd < 0)
-+		return -errno;
-+
-+	ret = pread(fd, buf, sizeof(buf) - 1, 0);
-+	saved_errno = errno;
-+	close(fd);
-+	if (ret <= 0) {
-+		if (ret == 0)
-+			return -ENODATA;
-+		return -saved_errno;
-+	}
-+	buf[ret] = 0;
-+	return strtol(buf, NULL, 10);
-+}
-+
-+
- long ksm_get_full_scans(void)
- {
- 	int ksm_full_scans_fd;
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 1a07305ceff4..3b40727c3f1f 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -151,6 +151,8 @@ void *sys_mremap(void *old_address, unsigned long old_size,
-
- long ksm_get_self_zero_pages(void);
- long ksm_get_self_merging_pages(void);
-+long ksm_get_pages_shared(void);
-+long ksm_get_pages_sharing(void);
- long ksm_get_full_scans(void);
- int ksm_use_zero_pages(void);
- int ksm_start(void);
--- 
-2.25.1
+Best Regards
+Barry
 
