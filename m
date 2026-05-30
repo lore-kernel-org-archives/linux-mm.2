@@ -4,135 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6579CD6E52
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 01:25:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0C92CD6E51
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 01:37:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 078CA6B0005; Fri, 29 May 2026 21:25:13 -0400 (EDT)
+	id 042426B0005; Fri, 29 May 2026 21:37:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04F216B008A; Fri, 29 May 2026 21:25:13 -0400 (EDT)
+	id F2EC46B0088; Fri, 29 May 2026 21:37:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAE406B0092; Fri, 29 May 2026 21:25:12 -0400 (EDT)
+	id E44506B008A; Fri, 29 May 2026 21:37:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE6866B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 21:25:12 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 88B708B951
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:25:12 +0000 (UTC)
-X-FDA: 84822342864.29.AF3FC66
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8AA8D40005
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:25:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="CWmun2/W";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D2C4D6B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 21:37:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B6D41C0DE0
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:37:22 +0000 (UTC)
+X-FDA: 84822373524.16.A2A9548
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D45044000E
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:37:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AzsUAUVP;
+	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780104310;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1780105040;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=blzWfs+CdYUoQumGPXqABGcwSvz3mulcURHwgoS7ZCY=;
-	b=7xcaoGXAevFAq/H43x9dzXI+nqaL1dzB2uIjWW///AtlZ3Fl7a/xgAnW7m7YakFoF7GXuI
-	sZA/b/KkLdFOjxYDL+Hn/c4KYivgGzE579yekTU5/unHynA1Q3bNJALcePWMD23jeON78r
-	tvG6eomxQ1z6XDPctjw3PoVNl8ACLJc=
+	bh=nO0cIl82wPxeZvS2+pe+To1HD6LqNrV1MR7nS3Y58H4=;
+	b=x2AJa/h/xzHNJoa6Ya14FsHw3nPcugGt8OZiM/lxiGnBEnOsqAVGOHu85st5Luea2pVBzC
+	v50mjZRM2+Plw+NQXXxayz0OYGFAyU8xboePR4IB4p4EZqCAjVw0V9TLtyjUwZeB8gKnWV
+	h+TInqjvwGhUOMkSC/xRDmC/WwWy31k=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="CWmun2/W";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780104310; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AzsUAUVP;
+	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780105040; a=rsa-sha256;
 	cv=none;
-	b=MLSk8ZUmE95lSVHyLjO4hH4Vf7MEoZ6A3WpohIGbEPfv9oxDKdcXIdkHuwuzvu7aHcKy9e
-	hc/q99wmPOkkMKa48aHTpNrizuLhBru5nDrqRQ7HQTmGXxZzdMxytzJZAXnEKCb6YKaQWF
-	8gcA6MUntvPd+1/GmAn7dHBzrgW/v3U=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-bd8f6ef4ba6so2190519866b.3
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 18:25:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780104309; x=1780709109; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=blzWfs+CdYUoQumGPXqABGcwSvz3mulcURHwgoS7ZCY=;
-        b=CWmun2/W3H/1/W0trND0Z4PIV732C+SfL1PqJH94l5LqOFmoOjlP9KPdFCwS/xTOTh
-         zC1uvSB3ebmWWMlJ09Y/Tw0paWnB8Ftpv/bMn2YFhYimAz86K2wIsUljdR3WsGxHugHB
-         sAQc57Dg3VAsqY8Cqg9Avg0zSXuGl+A4Mh46bNb1daf21wOhF9Wh7P2JJwzVXdJCsvZr
-         qDtI8LFVz7nza5qjLAOgcOffgmU19OOq6/ie7h2e9vzuSv0gJuxjsU9F6jtRtdpcuiAx
-         /LHTzcVXX+EEZ/qVH8m6S2wtcv5B2PwFklMEc+9taI0rfosq2E9QY6PvdXSwGJo1ZuC3
-         iEoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780104309; x=1780709109;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=blzWfs+CdYUoQumGPXqABGcwSvz3mulcURHwgoS7ZCY=;
-        b=SBB+pceT0GeNcXiDgw1NRWkqwb5PR29ID1+axBplCd1BEy6DDZP6RSeVrnj8ByCIrI
-         5Jok5XwIqyUtn5z5iNTyQ8X14LS4EXpkuBgHGt9H+JMbCvBSzlHUibDc7ydJW/Z27nHK
-         +cY72xNuiXtGp3Pgv5fHRzw5JL+VamwnRVwZ8dnOACD2yAC8OmDooBdZbclP6vGKbpiN
-         kMdEL3DGSARNhzmoeiyrjbMK1gSD9pegm5YWjCp3nbyyUbYtw6vadppW+zEdXOvIuavt
-         u1F9rkAFqY3ZA/CKnBQdkWeHmuoS/QQnerBa0dMFfpb1IRfkWgZrB4dCQsBdcO2GiZvS
-         4V8w==
-X-Forwarded-Encrypted: i=1; AFNElJ8N2a6eYaG4503xLjCd8Iq3trjHXM4d62zDwgsrJ1354qeVmZcOqvh1wlxJUVlwnuTDivhuFYGO7w==@kvack.org
-X-Gm-Message-State: AOJu0YzfwYNwy7LT7Tgl1eaMCJD3ZRyyQJUQdhWDcRftbihMEFe4SDx/
-	GTaSmGs8IzS6OJZ8HkbOEJw8ewaM98BP74iemK4bBPazU4v+QdCZEFED
-X-Gm-Gg: Acq92OF364A7gTwTXf4n0t9mGVxPbvIBdmMr5t5TUSldclUmDGOaXNugePSwHWrZMnN
-	LE6dQvGVkQJRnGfxlcReziuM9NwL//aPc36yN75NBgdTRokiPGBy0B3+yYWQK3ZafPgSwIMJmMI
-	w4+s1+6n95ERrv7TDjeBwtnYfBTNqy73bcLElWA2njhmSVt+8uk15z/nC9nXOIYNBtxS2OIAbUV
-	jWomVKz2oFaTQ3G6T89opupYgP8tsW5KdSQhHE+71lueOOlQQygXUmJype7KW7MDfR+xPa5WAk3
-	lKOJqiKoQDo3m3asKwH5BZ6DBc9Y3PvNOqBTZrULvHAxhoWGspD6ZnuyQGnZNPYvXQOY8H9iuJU
-	XsR+evNaYQDZQkcyx5yveXZxzZBhqhdkSTZYP2m1hKKMSeKvDIV3c6uBD3RANerYtuOnfvo5o7J
-	qAWWV6OwVATmIrEOfR+FK/ChIx2E6A+6lWDNkJozHmSkQ=
-X-Received: by 2002:a17:906:c10f:b0:bd5:7a3:a590 with SMTP id a640c23a62f3a-beab6cba322mr85730566b.47.1780104308756;
-        Fri, 29 May 2026 18:25:08 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-be9d27f224bsm114374166b.3.2026.05.29.18.25.06
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 29 May 2026 18:25:07 -0700 (PDT)
-Date: Sat, 30 May 2026 01:25:06 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Kairui Song <ryncsn@gmail.com>,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>, Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 5/9] mm: list_lru: deduplicate lock_list_lru()
-Message-ID: <20260530012506.yui5w25n3axgzpoc@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260527204757.2544958-1-hannes@cmpxchg.org>
- <20260527204757.2544958-6-hannes@cmpxchg.org>
- <20260529095628.nagjdy3f24z6qjtk@master>
- <ahmXqjQ0Vz4pb4u1@cmpxchg.org>
+	b=T7Lf63hh8AR4gw9Ed4w9t7R62IbNou/koa9rffpNMHCafkFWt9tcGeYNIRYBy9yIUCBV2e
+	1vO5yeXk0E+7FCib+4FVp83WtAKCzlwKSX0/37/cEGjVt6hpD6YtOtGbFzCSvgTkQ64ylL
+	EBWkBZO5UYun5wb8VUHW2j/fMvzuCkA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5629260103;
+	Sat, 30 May 2026 01:37:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706F51F00893;
+	Sat, 30 May 2026 01:37:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780105040;
+	bh=nO0cIl82wPxeZvS2+pe+To1HD6LqNrV1MR7nS3Y58H4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AzsUAUVPsLR7I7C/g6G1sNgiaNwjyBjcx4VXK1rGDUE+KeFuH+qr9lt+QZoIftpGe
+	 zDlTKF+/SrGarcqWMVsCqpPMdjfOtpS/HBQzr/LeAZ+yODO9O9apiCfsUGDxXn3kDK
+	 ZhfgnoGOrdiQWy8mww3522kArTFMwMd9iEQDknvI4pLn6/XB2EfHmcMQjGqEwr5nFu
+	 pC16ARFKIg63BifO/IJoQ4ABoEAT00o38Aj8xoh5rW/VJzSBHSlHteIjOd1DH1Fzl7
+	 +pzohQWzrkPteaoygGwIFlpjTkFL5cRl9TUOWgSKOSY2feSmHw1/Dm9PC4vuWjVofQ
+	 jnyVNGdWki0Ow==
+Date: Sat, 30 May 2026 01:37:18 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
+	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
+Message-ID: <aho-Z6wshceTAYd9@google.com>
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-3-jiahao.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ahmXqjQ0Vz4pb4u1@cmpxchg.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8AA8D40005
-X-Stat-Signature: 4zrytuigfd86gc6k1djzte8zwa7fu8ye
+In-Reply-To: <20260526114601.67041-3-jiahao.kernel@gmail.com>
+X-Stat-Signature: 5x1kd8ezw4sp67gbdnhci38mw6dxwqnx
+X-Rspamd-Queue-Id: D45044000E
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780104310-202102
-X-HE-Meta: U2FsdGVkX191G5jXPs7X1xtc+udtKaeKhH26/ndqfsmG3CVNteEwLf1N2QsUiw2htLNDxoBRlKnmhnbhrf6hzfjHIbqIuyMCzW5pL2mCWTEiwyJ/IKOGDsLNJ4FVpUGhI3Mo+xsDPE64pwbnNmUky+SYVLBlPch34lm5OU57w9E0PgN4PfqBzzjeKv0vLm7rajumCYAq4ewaTxbC5lt/fdlDQ1DXk6whKWjKkr0ghX6jjRn/5wE9oYShExv5R5YY/Gs+ohrb4MQEsqA9uAuJpcNCAjKlKTBYGZ+BUI+nVtUw68PMbp12KjztALfbKFtsArSxzRfqS7JH4mSPFR4Bqka/OLvbWE83V+XvWIx1mcdGxdotLntcOMXbHTZGP0u8U59HcNWRlLNM63rUZO1CbygSnCvoF4G8Yk37GpQXvKD18JP3rvnAT/XCyEV5DoF/4yLuGlOBkj4NpbZfZrHcevICFfSgVU5GW6BswvW+UBmV461czBRWZYJN8GtwiSMdIoxEeyX18SQtzySxPe2ispqcLy55Nm9oNJ63jRdSAFuE4NPtlnHAIVg7EyaRxuftfrZc6gzudLyNTGVm4XAbs/FY+2EQO0JkzLO7zuWAxMHT/M3o2INZOOkUXYdV1l1SDv7YyPp2w/iSMb7T2jdboyhxmxYaEFRX1tZcD/nFp1rGeTFP61FA9Ds5SzpyRc+p4CJCu45g25Z25xnxrQ6li4eNgtf8ByZEu10b4VCE52r75cBtUoADbjUnL3DyTnhVNuISNRwm7k/FdtPcTBUqRkVwPzi1WeWMM0qmjtzMTuj5YE8e4doGzr+Qe1OD4YQx9Enz5s9pSl76dOtkDPxQ+kOQJZcUz+Slp2VzdvG1R8pevNXGwtWRFa25lFJZLDJRsSf3cJZ6vDr6jB75IpiBQcSIf4/wOXs+xxzeKioin/UNXT8HriS8O01UmuyXPJpjJWIkZN18cLm8MetPMvN
- A90JYw6L
- nl/vrJJ0pdv0dJv1IOjI+Oww184mrlDfzkd4swLIGmU31f5VG0r+lB5PaCaVWExAcKf3yDiCZ39HsLZPb4TGjuSBxK89Lr+UeQVJZEqHGRldgKQ7jkD2Yew8dr3NtL6LVJvBKFGfJoJ3wiyPchuaiOyUdYcCr4FHavEnItrkmdSl/GhxTFZEJXdBdQS+460D1WXCppqnS1+Yrp8W74o9a26b/G6eMKzWqeXoJTZI7evqSzklO+Yd8Rdk1WII/91Io7/AEUzsC0/qlVow3gh9A3BewgCMNX6j8zRYAsHOohiHby6zW+5k82jjkGSDtAndvi/kn0yG2oQWuIq5U+d3U4VSqHjIvM3vOP1UUxVjNQe3CrdYaSnLBTes8+gS6Dljx60JJiRH4NUnWDQ5AYdUwXLxsEy4X4+oxTGRuJZ3KmiKMDM61btIxpNE9aMwtqgT1biUheS7s1b+EkcbEHzUVHe63HAaySwKI9ELZ9YVJLNCc5pPTiO+CA+DOiT4jVNqV65syxb0XKfhiJals4NU5Q45AA/oZyThfb7udWw5lmlTCwrEy4d2VcXCtVJMziIbdpYEEJJsaR7W7akrdtsEPWzLVOkdbCW9izxnS5vyXn5JyvbK6eA8K7obIFEmshX1UGxcB6PbqFUzSyoZ7QNkGh273VUzu1nRxpUriQg3Lhs/627EaVAF2ipZwNOAV4vOycxRVq3vxEG8sxoQm23BLyRKUGcsnFl4nvms50sU49e31GLU2mEku1IWhojPnmDAfK6AobcCgdfykr6F3fQ2E5maiiiL6/uIRguwxovi9de9nEPSCSxsIqTDyS4nw+t67HIE+CXjBabz39NwpVmcX2wMog1/xoEvOgx+IDmDxVQn0BodSuZvKR6W69b115eBzy/aE4P4ngfVoIOY=
+X-HE-Tag: 1780105040-714170
+X-HE-Meta: U2FsdGVkX1/5noOMnYZZbBt5wZi6pEXIrdvUlUDrKWRn+c8KuLZ8WC/MDFZiUslBgfpAIJeYrzicyhofKHNgA55er1HDzJmjniq1rrVvi4NzuBihzKKfu/dNfAKsLuagWjBEZ0GRDfppz3NZ+PROrp9QPZYxHt+1fMu/CxbtVsMdZmeuTjHUOZzfbF6cq2wRFVo97DoxbajglizK+V/GDUSDSLb9UXo/+29wDJB43mosB4/eMJ9J1S9mhJMrDYFfCtswBxoMK22aGFhGKn/CHlSpXh0TolMtqsk45LkjlNT7/1ns33kScEzOR2VULIVMb62hq6kB/NpK3FppEN2x6V7He1mmANhJEtxZUbbwO1F6L3yaXUzS3Tjuphpjt6rK7e1CgjD+Ygmzv+8jaDnkrbjM73WBhg4tigUiNdnVEuweXptVH7N6bEk0eOnNJL8wYg2KrGOabCrHg8A+S7obLfY/bGfSUb2Pi+/yqjmt67I7nxCZVXvD9FcjHYvVKJsBFYmAnWjPIRx239GZZSAUxwitoi54e1YhZpn94XzG7YfUriwIvTphKZGaxf/Hw8F2ND1NTU7UGqJE4gldq0BmYuiYbyTJtOsyC2KlUZMmjXTqfuLX3dI23uQEWpB5YM7rT+Y4fNOgo0i52UX1yb6LAtLB47f9jovpDrek7y55GgEh3cW+4Iqc4cvlKOMlZ5vzOAU8p8TdpUPc/ZfYnpetVXWuq4tyo9Z5eOYcQNe1z0r+OC+Rgw5u7/oldPMaN8WPMzJGx0LFYbWzjAsEXlBX3u25C798Soppz6xZxufmCEuR3nu4KsjdhsvwtOmQqTBZ4rStSlCM5N4aO8dan+/WvJyGMDuaVF2aXBiA4/2DkEU3I8lU4SSJZTxxRU+8WF5o+idVoA6uM5qVknoYIi6A2C3TaXerLvrxHp9nBOsvXleD87HeU1UlEti4EYWg53H1TPOH3HwZj+AxfmRZZNE
+ plzKu0tl
+ ZtaEiwsNeiwr84iZcuFEJ8fYf4U6oFIWwFqIArO3gqdx/e+xqusYuuQKOeKqTgTobuoPrwDnzDI2fjSSQguuB7qfxXT265zG/q4ZIy6g2qqAu/gaN/O/Sqdewe1M+xr7LTLxG3e5upyJBw5mGmYcUx7w7GeQ8U66ZAsZFka6atW5MQBmK3C4HYDH5eFPY7AhlO9NlfqNTv8EJUAaupqQS+aaoqhfd38z+Yy8v2GkIoPSwwwJDdkYX6a0CfXCrdvIbVza+Eekg2caC4y5b+wWmckRkbHarUFpv1SflTFL0vNum6swBPmXpb00xoeUvjgYpfB3evydkWBjcGucxXpq8cGKBo7NeEikxf0r3e9s/RFoRA7WITy1gqM5W1xoSMY6u0QJfJuRPkFd+clzEf42WI6nHiPoJcEZgM3iz9lxUlGrqYk4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,68 +94,242 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 09:42:02AM -0400, Johannes Weiner wrote:
->On Fri, May 29, 2026 at 09:56:28AM +0000, Wei Yang wrote:
->> On Wed, May 27, 2026 at 04:45:12PM -0400, Johannes Weiner wrote:
->> >The MEMCG and !MEMCG paths have the same pattern. Share the code.
->> >
->> >Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
->> >Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
->> >Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->> >Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
->> >Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
->> >---
->> > mm/list_lru.c | 21 +++++++++------------
->> > 1 file changed, 9 insertions(+), 12 deletions(-)
->> >
->> >diff --git a/mm/list_lru.c b/mm/list_lru.c
->> >index 7d0523e44010..fdb3fe2ea64f 100644
->> >--- a/mm/list_lru.c
->> >+++ b/mm/list_lru.c
->> >@@ -15,6 +15,14 @@
->> > #include "slab.h"
->> > #include "internal.h"
->> 
->> Hi, Johannes
->> 
->> One very tiny nit below.
->> 
->> > 
->> >+static inline void lock_list_lru(struct list_lru_one *l, bool irq)
->> 
->> Here we use @irq.
->> 
->> >+{
->> >+	if (irq)
->> >+		spin_lock_irq(&l->lock);
->> >+	else
->> >+		spin_lock(&l->lock);
->> >+}
->> >+
->> > static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off)
->> 
->> Here we use @irq_off.
->> 
->> Do you think it would be nicer to unify the parameter name?
->
->Yes, I think it would be nicer.
->
->Note that I inherited this - we had irq on the lock and irq_off on the
->unlock before already. I didn't want to mix even more yak shaving prep
->patches into this series.
+On Tue, May 26, 2026 at 07:45:59PM +0800, Hao Jia wrote:
+> From: Hao Jia <jiahao1@lixiang.com>
+> 
+> Zswap currently writes back pages to backing swap reactively, triggered
+> either by the shrinker or when the pool reaches its size limit. There is
+> no mechanism to control the amount of writeback for a specific memory
+> cgroup. However, users may want to proactively write back zswap pages,
+> e.g., to free up memory for other applications or to prepare for
+> memory-intensive workloads.
+> 
+> Introduce a "zswap_writeback_only" key to the memory.reclaim cgroup
+> interface. When specified, this key bypasses standard memory reclaim
+> and exclusively performs proactive zswap writeback up to the requested
+> budget. If omitted, the default reclaim behavior remains unchanged.
+> 
+> Example usage:
+>   # Write back 100MB of pages from zswap to the backing swap
+>   echo "100M zswap_writeback_only" > memory.reclaim
+> 
+> Note that the actual amount written back may be less than requested due
+> to the zswap second-chance algorithm: referenced entries are rotated on
+> the LRU on the first encounter and only written back on a second pass.
+> If fewer bytes are written back than requested, -EAGAIN is returned,
+> matching the existing memory.reclaim semantics.
+> 
+> Internally, extend user_proactive_reclaim() to parse the new
+> "zswap_writeback_only" token and invoke the dedicated handler. Add
+> zswap_proactive_writeback() to walk the target memcg subtree via the
+> per-memcg writeback cursor, draining per-node zswap LRUs through
+> list_lru_walk_one() with the shrink_memcg_cb() callback.
+> 
+> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
+> ---
+>  Documentation/admin-guide/cgroup-v2.rst |  18 +++-
+>  Documentation/admin-guide/mm/zswap.rst  |  11 +-
+>  include/linux/zswap.h                   |   7 ++
+>  mm/vmscan.c                             |  14 +++
+>  mm/zswap.c                              | 138 ++++++++++++++++++++++++
+>  5 files changed, 185 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+> index 6efd0095ed99..6564abf0dec5 100644
+> --- a/Documentation/admin-guide/cgroup-v2.rst
+> +++ b/Documentation/admin-guide/cgroup-v2.rst
+> @@ -1425,9 +1425,10 @@ PAGE_SIZE multiple when read back.
+>  
+>  The following nested keys are defined.
+>  
+> -	  ==========            ================================
+> +	  ====================  ==================================================
+>  	  swappiness            Swappiness value to reclaim with
+> -	  ==========            ================================
+> +	  zswap_writeback_only  Only perform proactive zswap writeback
+> +	  ====================  ==================================================
+>  
+>  	Specifying a swappiness value instructs the kernel to perform
+>  	the reclaim with that swappiness value. Note that this has the
+> @@ -1437,6 +1438,19 @@ The following nested keys are defined.
+>  	The valid range for swappiness is [0-200, max], setting
+>  	swappiness=max exclusively reclaims anonymous memory.
+>  
+> +	The zswap_writeback_only key skips ordinary memory reclaim and
+> +	writes back pages from zswap to the backing swap device until
+> +	the requested amount has been written or no further candidates
+> +	are found. This is useful to proactively offload cold pages from
+> +	the zswap pool to the swap device. It is only available if
+> +	zswap writeback is enabled. zswap_writeback_only cannot be combined
+> +	with swappiness; specifying both returns -EINVAL.
+> +
+> +	Example::
+> +
+> +	  # Write back up to 100MB of pages from zswap to the backing swap
+> +	  echo "100M zswap_writeback_only" > memory.reclaim
 
-Reasonable.
 
->
->Mind sending a follow-up patch on top of mm-unstable?
+memcg folks need to chime in about the interface here. An alternative
+would be a separate interface (e.g. memory.zswap.do_writeback or
+memory.zswap.writeback.reclaim or sth).
 
-Thanks, I am glad to.
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 73e64a635690..7bcbf788f634 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1679,6 +1679,144 @@ int zswap_load(struct folio *folio)
+>  	return 0;
+>  }
+>  
+> +/*
+> + * Maximum LRU scan limit:
+> + * number of entries to scan per page of remaining budget.
+> + */
+> +#define ZSWAP_PROACTIVE_WB_SCAN_RATIO	16UL
+> +/*
+> + * Batch size for proactive writeback:
+> + * - As the per-memcg writeback target in the outer memcg loop.
+> + * - As the per-walk budget passed to list_lru_walk_one().
+> + */
+> +#define ZSWAP_PROACTIVE_WB_BATCH	128UL
+> +
+> +/*
+> + * Walk the per-node LRUs of @memcg to write back up to @nr_to_write pages.
+> + * Returns the number of pages written back, or -ENOENT if @memcg is a
+> + * zombie or has writeback disabled.
+> + */
+> +static long zswap_proactive_shrink_memcg(struct mem_cgroup *memcg,
+> +					 unsigned long nr_to_write)
+> +{
+> +	unsigned long nr_written = 0;
+> +	int nid;
+> +
+> +	if (!mem_cgroup_zswap_writeback_enabled(memcg))
+> +		return -ENOENT;
+> +
+> +	if (!mem_cgroup_online(memcg))
+> +		return -ENOENT;
+> +
+> +	for_each_node_state(nid, N_NORMAL_MEMORY) {
+> +		bool encountered_page_in_swapcache = false;
+> +		unsigned long nr_to_scan, nr_scanned = 0;
+> +
+> +		/*
+> +		 * Cap by LRU length: bounds rewalks when referenced
+> +		 * entries keep rotating to the tail.
+> +		 */
+> +		nr_to_scan = list_lru_count_one(&zswap_list_lru, nid, memcg);
+> +		if (!nr_to_scan)
+> +			continue;
+> +
+> +		/*
+> +		 * Cap by SCAN_RATIO * remaining budget: bounds scan cost
+> +		 * to the remaining writeback budget.
+> +		 */
+> +		nr_to_scan = min(nr_to_scan,
+> +				 (nr_to_write - nr_written) * ZSWAP_PROACTIVE_WB_SCAN_RATIO);
+> +
+> +		while (nr_scanned < nr_to_scan) {
+> +			unsigned long nr_to_walk = min(ZSWAP_PROACTIVE_WB_BATCH,
+> +						       nr_to_scan - nr_scanned);
+> +
+> +			if (signal_pending(current))
+> +				return nr_written;
+> +
+> +			/*
+> +			 * Account for the committed budget rather than the walker's
+> +			 * actual delta. If the list is emptied concurrently, the
+> +			 * walker visits nothing and nr_scanned would never advance.
+> +			 */
+> +			nr_scanned += nr_to_walk;
+> +
+> +			nr_written += list_lru_walk_one(&zswap_list_lru, nid, memcg,
+> +							&shrink_memcg_cb,
+> +							&encountered_page_in_swapcache,
+> +							&nr_to_walk);
+> +
+> +			if (nr_written >= nr_to_write)
+> +				return nr_written;
+> +			if (encountered_page_in_swapcache)
+> +				break;
+> +
+> +			cond_resched();
+> +		}
+> +	}
+> +
+> +	return nr_written;
+> +}
+> +
+> +int zswap_proactive_writeback(struct mem_cgroup *memcg,
+> +			      unsigned long nr_to_writeback)
+> +{
+> +	struct mem_cgroup *iter_memcg;
+> +	unsigned long nr_written = 0;
+> +	int failures = 0, attempts = 0;
+> +
+> +	if (!memcg)
+> +		return -EINVAL;
+> +	if (!nr_to_writeback)
+> +		return 0;
+> +
+> +	/*
+> +	 * Writeback will be aborted with -EAGAIN if we encounter
+> +	 * the following MAX_RECLAIM_RETRIES times:
+> +	 * - No writeback-candidate memcgs found in a subtree walk.
+> +	 * - A writeback-candidate memcg wrote back zero pages.
+> +	 */
+> +	while (nr_written < nr_to_writeback) {
+> +		unsigned long batch_size;
+> +		long shrunk;
+> +
+> +		if (signal_pending(current))
+> +			return -EINTR;
+> +
+> +		iter_memcg = zswap_mem_cgroup_iter(memcg);
+> +
+> +		if (!iter_memcg) {
+> +			/*
+> +			 * Continue without incrementing failures if we found
+> +			 * candidate memcgs in the last subtree walk.
+> +			 */
+> +			if (!attempts && ++failures == MAX_RECLAIM_RETRIES)
+> +				return -EAGAIN;
+> +			attempts = 0;
+> +			continue;
+> +		}
+> +
+> +		batch_size = min(nr_to_writeback - nr_written,
+> +				 ZSWAP_PROACTIVE_WB_BATCH);
+> +		shrunk = zswap_proactive_shrink_memcg(iter_memcg, batch_size);
+> +		mem_cgroup_put(iter_memcg);
+> +
+> +		/* Writeback-disabled or offline: skip without counting. */
+> +		if (shrunk == -ENOENT)
+> +			continue;
+> +
+> +		++attempts;
+> +		if (shrunk > 0)
+> +			nr_written += shrunk;
+> +		else if (++failures == MAX_RECLAIM_RETRIES)
+> +			return -EAGAIN;
+> +
+> +		cond_resched();
+> +	}
+> +
+> +	return 0;
+> +}
+> +
 
-Since this is trivial, I would wait until everything is settle down.
+There is a lot of copy+paste from shrink_worker() and shrink_memcg()
+here. We really should be able to reuse shrink_memcg().
 
-Looks good to you?
+Is the main difference that we are scanning in batches here? I think we
+can have shrink_memcg() do that too. If anything, it might make the
+shrinker more efficient. Over-reclaim is ofc a concern, and especially
+in the zswap_store() path as the overhead can be noticeable. Maybe we
+can parameterize the batch size based on the code path.
 
--- 
-Wei Yang
-Help you, Help me
+Nhat, what do you think?
 
