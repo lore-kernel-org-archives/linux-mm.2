@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66C89CD5BD0
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 17:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0558FCD5BD0
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 18:02:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5328D6B009D; Sat, 30 May 2026 13:51:25 -0400 (EDT)
+	id 2D15B6B009F; Sat, 30 May 2026 14:02:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BC366B009E; Sat, 30 May 2026 13:51:25 -0400 (EDT)
+	id 282516B00A0; Sat, 30 May 2026 14:02:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35D906B009F; Sat, 30 May 2026 13:51:25 -0400 (EDT)
+	id 170D66B00A1; Sat, 30 May 2026 14:02:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 172966B009D
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 13:51:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A608A403C8
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 17:51:24 +0000 (UTC)
-X-FDA: 84824828088.26.9A8E64D
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 980974000C
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 17:51:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=B22oubhX;
-	spf=pass (imf01.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 05D626B009F
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 14:02:19 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 850081203A5
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 18:02:18 +0000 (UTC)
+X-FDA: 84824855556.17.AE5F99D
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 552611C000D
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 18:02:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ecihxyzO;
+	spf=pass (imf21.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780164136; a=rsa-sha256;
+	cv=pass;
+	b=8rgoxpzu13z9uUMh7F71n27I8TWygJrO0jnEDk2jFXBF/K3FR/oKgASk7MCdqhfeXv8RpD
+	yMj2dCoECGkYTc0whqq4SgZjdjl8T1cIrw34qcpamn20F8SqL8D9Wjz3EiZSIs64sKl8Z2
+	rA09HS7by+BMjyWU5Z45UlxlC4ZYuLU=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ecihxyzO;
+	spf=pass (imf21.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780163482;
+	s=arc-20220608; t=1780164136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fEiQIzcLvG0Dvxwk1kFzCaCJ5b25r1mlSzZk1lm1fL8=;
-	b=dpMUzzDvPkE/+eskgxjgXOxHnM/gpgCg2ows7JPDdhiEpWPKB8kz5If5bthY3hyHN6/IAv
-	adXXPjIAZJkTbQEo6BtHXf8TuVLXnudcyyD3wEreAbAJ/eAXMxKT0oX6zYD/87c4h/Z8Pa
-	UYha7Q13OV93WJo7hAC3lvUZEKG554s=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=B22oubhX;
-	spf=pass (imf01.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780163482; a=rsa-sha256;
-	cv=pass;
-	b=VNC/DTz9B+QJDXWM0dxsvf15OtwAAp8ju/iR3nUZUtvCQfiRHm1Nvrxn+A1xf+t5TE7p4O
-	05fdin6R9N8M44eCaQMepxntQK2tgKvLpYAJI5k9SIwGJ7FkxL4oEpx1OFKzlqnnT9V2cK
-	A+3iaHMpejS63t90abfOO3ZFeN8B9Xc=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-45eecb8bf67so1970615f8f.2
-        for <linux-mm@kvack.org>; Sat, 30 May 2026 10:51:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780163481; cv=none;
+	bh=+ga18sFo9W9MUc2fn4OlM42GAS8XhXOzY2C140cpNYs=;
+	b=HceGuNk9rb9+XjiOKzf7n1Tz4zDDkIJasErdpDpkH14zQdvuUF4RuITCSlxfWmAJexEVyj
+	0+FvmxFyGTZKxIypbkv4UJ+YeApF6Ajs9DcUOVqtET/TNYbpvjMFu8fsnEwEUfO53IcS3g
+	kiT7VmYpRyWfqk9lgtQl4pkERaBYEOM=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490a7a34493so114955e9.0
+        for <linux-mm@kvack.org>; Sat, 30 May 2026 11:02:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780164135; cv=none;
         d=google.com; s=arc-20240605;
-        b=Ach0rr2pZqqzh//5HjG6sGOURq/YW1B8nQ4pV4ccuZDxFBkNSUqVuIy2R5330d2cre
-         MStJHDsT6Z7vyfzHY+5U/ab25x3hV7etstc+7FrGOKICTv1SKTjAA5kGmyDPd4oETNJg
-         36ATOsPnSN6gVneKr4+BeY5q01Fqz4gi+SunUnxMEV+lUh58bE6EbaFsdcDDnlKcP54I
-         v2Yxc2kZkCDLxnh38FEc7yfKoW6usxWF/qISNhBLrzVgyLQx3RvZZhLepyl9HTEvs3K9
-         33GvBO1LRs8jzUbC3UpMw817nRo7fsdo/YS5XEfwUycxWNOqE/ZdtP56ev9F+feQQVEG
-         4ejA==
+        b=NMTr1Mr5dg6xza8X+fzaZBm5CvNe1oqq75maEA/p2aM/7MsIKTlxDacm7e7Zph/odx
+         8ContK8EMYbpxNTO2w7BBGZq3mQPgKGBZwN41A6FIdGPkrk94uEVBNvgFpITjZUmq36w
+         9kHwXy3E5vIm9vbTBERTlncz9loXKn+vVvQIJ8It1J7/784d09GlZgzaZ7JPA3DWpz8M
+         nJ/Kicyxz1CowbtHRx69stC7TbgofhXJPaN3N8u1Y5GHAG60xpV66+aCASRVJeJ5Qzo7
+         aTU77inHB/0sy8lgVYTQiX/BE8XH/HSaYKMPBy7m9GQVjN9MQg7/IELcPcnEQ/e1GRVR
+         /GHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=fEiQIzcLvG0Dvxwk1kFzCaCJ5b25r1mlSzZk1lm1fL8=;
-        fh=gOz+F44QAmuqtjcwrnfpbPmmHsd3IsMUULdDDdsY52Y=;
-        b=ACW9doVgrbKe/juerzg0x43TTaTo9tE7pZ+xbroNj6QVsPhZNvKS1SSc7MD7ZRzLCY
-         6/Uf/AjKXcSsUSnUY7y3rYS7mbrRGEJDevIwTOLvJNiuKQfRT282Gj9aEuSfhPsy5EVD
-         87R9k7zS2NEYaRPNiQr7WW8dMPe4cVpP5xzgA2dXGKqr1UTO6fwqZvCYkHITiiLkR1wM
-         cSYS2k2hGdvATSWFmpXLQBDGsTl+KNiHhlq/6BNr2DsMBjcV0Yr1p1QiuLnUFMCHtQbM
-         nwm9zj8Bz/5TAxsUkxwSn2s9zYDLCWpMzXLzVwAGb8nQEqohPgiSUyMslCaTv39R9n5Q
-         GQxw==;
+        bh=+ga18sFo9W9MUc2fn4OlM42GAS8XhXOzY2C140cpNYs=;
+        fh=br+bUqFHjT0FPZ/gdLVAMbaJ28+bb89KESUfoga8dhY=;
+        b=FeC/DaVR0WG6gzCvRqaWOBErsFjhIl879YHAz4rQHydNZYJUzLpssceoG/mcGZ2r52
+         rWHlQ/ETJbHicrZo8GAbxEm5w851MnWWKLGdp2pfKJQ+g5lF5dQ6+3HLzmVvlnztlE2Q
+         I3wdsYR5ZHurWApqA+2L0Bt3Fjc8X8cvcJoEd8uka7/NnF1+bq13nXQXxAh1R1FmO4Lo
+         lYVBW3Ah8VdRkXHh+Fqyj5FjpIr831nztnBtwpF/Pj/w35wR7raBQu67cRWscXeaRNKo
+         ZQo1d4dhRG96oZEixbFJfhiEYrALW9B/lcXxHoxZCThPAi8ZPRy1+95CpAesa56sDyk1
+         Tg2w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780163481; x=1780768281; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780164135; x=1780768935; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fEiQIzcLvG0Dvxwk1kFzCaCJ5b25r1mlSzZk1lm1fL8=;
-        b=B22oubhXvdUFVzShJzfLAKvD5hKdJfJAsRVivvSGMiR846yQciUaUiKHsth331phBz
-         JI/y/5mmCvrn3E9wJJQmlbieTfxrajbpTzfRXxbtuTXSsJAbweyN2jhy54hF20kft34w
-         JLuw5he9pxcIcOMtRNhFCf56PpNk+ibJqYI7Y9S4CpUUEbrqGZuYy0654DUe+RMcZtPK
-         z3h8/4K+Liqw8XpQtPWe8mCAECkG2RqpvFldtLuwdZIlD/86gYs/OcRAx/okLX+m2DS/
-         Dtlc9B2j/G+lc2IeRqdQwr0eBqJFT8DyKEvvbiM/KZepj1Ln/A8/SSzmy+oLI/RGLNbQ
-         BIww==
+        bh=+ga18sFo9W9MUc2fn4OlM42GAS8XhXOzY2C140cpNYs=;
+        b=ecihxyzOVVHNcgFFB+k1tgqWuOQORcahskofFT8L7TGYs0p9KL6jPCL0BPfY6x0IuM
+         5mUfGYiTKg/uV15rivmhXfHbekZvWLVStKIjd5zg1JX5Ao+mdmEc7+0jteITMDF1ni5k
+         KzGaafdVbzVXFq1Bw8CWauEh0yIkDKWVxJSL2JfKK18kwJdki6DDdS61deDNe3/I2VUp
+         CrFzDVIeEMUHXYKKrrcKSFwO4AVC6+mTnmdCT2dmUUT0Ro0x3myjAlM618DxH2zVOAmN
+         qVVmC1/VtdFxESPO5rhNH22XaDdeTOLC6o8GE1jPWB5g4IeNK2QIYM0ChZmLJUki1N+D
+         PfRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780163481; x=1780768281;
+        d=1e100.net; s=20251104; t=1780164135; x=1780768935;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=fEiQIzcLvG0Dvxwk1kFzCaCJ5b25r1mlSzZk1lm1fL8=;
-        b=SyXrA1pDTbL8NM1mVQ221zndaYFOmG0Tq/+lbyUyade+/8SgvQa0llBj9x7i944TY/
-         k93d6opg5KOLDj4AkleDJguCayOj34KVpciXzJXAVw2tlorb3weupPTJpKRqn7xXst7/
-         6D7bhJ+Z/WxU2PqdDiuHeKXgIaex8F5AnRQxA+l+WuC0P/1gxR06f0yF0qUSw1srSnE6
-         lhlgdEdd7UWOcWqEh/B+nv4CSxgPH1cQ5U9ZET1owrrHTUYsTfy9ymR62SwuBQO79D4V
-         KSJhcdrh0GRPnF130OX+y/NIi2eFTS8LhZvnQ1Zz+DLjDF3I/6KVzsdOrS9uB4i05tgV
-         UI7A==
-X-Forwarded-Encrypted: i=1; AFNElJ9vLvSvoxNZt9wKXAK9yTimPpUZ5wvB+Kh7wkZhZwCMB0TrNY3C6ukFrQKv6Cp2ZjPYdYscqgSElA==@kvack.org
-X-Gm-Message-State: AOJu0YwAJY0qlBiskryQaNsvVRk6n/kYV0Ymq7g8RxOyaaE2a8kNqd3t
-	iwBNIOqUJp+GqiySe68GuZjGenYPCMY1BG/ml09ViS8tEBnex1qGJwL3aXP4oIQk+bryEBnQQHu
-	dSAaY69Ej35SMzKxrD7BRYXh0B0oF0NQ=
-X-Gm-Gg: Acq92OHNl8/ww3ZVbPoLUzgnDVmQFg+Je90vxwgZ6kmycaLsfP28OYKTj8HpOObpLrQ
-	PrMA60bAKBX7cJGALqyBtqeJVOySNjrkG3lJ3Yr6DQzdIzE6pBrdruLE5W+tl0OqcfBJbln07xe
-	8djUjTDhFk7NiQn25I6TH3+Jfsg9QeEow7N62GW2hip187vd3eL38e88tmcD0/ZsRNQWRhPodkF
-	scd2ZnlquBEpJSZf4p3A6t0wa5IiPrNMq1WnjTRSz1oAVVwMUCFZsd3SUB1VLMa2dnSLnGvW//K
-	3PrRe18YwuONijB125E3ekTmtibiSEvdiT2eOuDKzeIWd/Sr/g==
-X-Received: by 2002:a05:6000:41f9:b0:43d:d037:d59c with SMTP id
- ffacd0b85a97d-45ef6b21a0emr7571210f8f.16.1780163480771; Sat, 30 May 2026
- 10:51:20 -0700 (PDT)
+        bh=+ga18sFo9W9MUc2fn4OlM42GAS8XhXOzY2C140cpNYs=;
+        b=Hb6gDxBKIKjc8ZvCzCPUchfNp2kR7Zsz5tRcX4iSU4Go8F9e5VwuXhiWYltt1hV4JN
+         4iflAOh5J1r+awFrNwt4qz+F1/f+ImBYOAqzd+9UKSU2mNlHFfOSKJg5v5JYo/CQ8AHD
+         lu7LUXF1rch+vdi/RZMGGlvDGxznnkkls/Bv8Mby29+IAUqjh/t4w9hQ7H7OFB4pRB9z
+         L+JVoedldxIumFzODiB5Rs7aMwzJ9DhreUIzL36BjSLIdhpx+MeUfxdRK1sOJs54LM71
+         SOx1oR8Rjzicchamp6Q9rQx5XLXt6n41gyvX3utkcDRhAtWf7CiGCfHYcMlkm25w7zCE
+         /tpg==
+X-Forwarded-Encrypted: i=1; AFNElJ+uB1QrqY1tWFTboquZG2e2kRRrL6DTlxUF036V7Okjsq+P42Icq3GJNnmShjRSck/rC/QM2+wPjQ==@kvack.org
+X-Gm-Message-State: AOJu0YwhFrFpcI3px12eqP3JJGNJY3h9/H/K82dbyapQvRwLIyM9VpfZ
+	OBd/mpmJnnJll9UUwz/35s7yTCNIqXs0Pb5Oba7rhpiidV1aFlrvfGgiEiHDebYhAwmxmjB4KDI
+	Rv4vf7o9GnOKTzkBiPeAB4VliqQYedr4=
+X-Gm-Gg: Acq92OGnqbNCdjveDZLqDjVIJU/ypWzCFnDM4ixA1cv0UBa/as2r7IMurAM91sAh5P/
+	4ffbiB6JuZu8rgTDYGn895VPM/dvMZ6OSToAUDyjt4uM5Y6ukYbQrzGVk+3iMH5MD6LJiyxPihR
+	9nkqGfYpoMTCaspINO+r6f1FIqNo6BBwmi9mlAbV6B+9oOV5U3BEEOmn9k+4hmYwVs3X5ZL3eFX
+	0JiQaFcUWwHkmhQZYUpjtzUVnukoSf4J7vUOxHMVUJKvpqd4zeJhbkJRoZFqjCY9Dlt5PUizTN7
+	ctzGbO8qp98QF3LjKeNLY65lkJsTY+u9n2DM9kacCyukBuPeJg==
+X-Received: by 2002:a05:600c:37c3:b0:48a:79d8:a8d6 with SMTP id
+ 5b1f17b1804b1-490a2a2713bmr55746815e9.7.1780164134577; Sat, 30 May 2026
+ 11:02:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260527062247.3440692-1-youngjun.park@lge.com> <20260527062247.3440692-5-youngjun.park@lge.com>
-In-Reply-To: <20260527062247.3440692-5-youngjun.park@lge.com>
+References: <20260527062247.3440692-1-youngjun.park@lge.com>
+In-Reply-To: <20260527062247.3440692-1-youngjun.park@lge.com>
 From: Nhat Pham <nphamcs@gmail.com>
-Date: Sat, 30 May 2026 10:51:09 -0700
-X-Gm-Features: AVHnY4K_JUreZofOuMIpcH2pYrhoIRKIoA8T3KmoVj7Y7nP_Lo7fr1UunDUAmsg
-Message-ID: <CAKEwX=O-_OZ8x0UC96a_k+0eZfAE+mWMWDdn68uy1LHRq=JC0w@mail.gmail.com>
-Subject: Re: [PATCH v7 4/4] mm: swap: filter swap allocation by memcg tier mask
+Date: Sat, 30 May 2026 11:02:03 -0700
+X-Gm-Features: AVHnY4LlgsaObV8OzPDPf_LpIqaNKpOQFAb8yvCAbXMYYoaNetnSwkLdSigY-MI
+Message-ID: <CAKEwX=PkiWdgNtoHberaXafQDoDngw5kycfaXeU22MnrXBoAXQ@mail.gmail.com>
+Subject: Re: [PATCH v7 0/4] mm: swap: introduce swap tier infrastructure
 To: Youngjun Park <youngjun.park@lge.com>
 Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org, 
 	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, kasong@tencent.com, 
@@ -129,13 +129,13 @@ Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 980974000C
-X-Stat-Signature: h6pskbc6amcnc4ebr73i6rri97s1az3s
-X-HE-Tag: 1780163482-943319
-X-HE-Meta: U2FsdGVkX18mJwCSxfcltFeAsckztHmyGvSFholDSTl4APl+ANGRR8NWKqqJsTT+i0XlafeEC0wJIMR3kRIiD3nLokuL5Yee+eXir/ynG4CseB2OF4C+SN22Bbg7ajUXvrKvfPCjm20+h6BlgD7TNJr4mAL05Ef/omkJAbmt3RSRDBq/c6qVV7rETO7eQ9mVFeeRgBvRFA5n3VU+NJZ4Gt5e6PBwvBQSfEQkJFX8UrNs38Lxb5vM6GVS00MT0c2OIwkQwUozNTw2ZbHCfgD/Ztmc/qqHy91NVULK1pRgCOZ/kyMxK7x3U2k8VEzFqaL0lvs4UdcOuKrm+TLEe305MC5U85sLsPfhIe4LMvE49pi4Mt82KfrzWr+MSWUzQvhQbXLxsLapKJnHmhaMCGsnat0xSt1xZ61Im8WWR7N5DZthVLgeYll8JEIPxgjd3vpSJCNyLmEAittbgb4Q30IIDG7F7Vx2+VqjW6+Foen3rYmJ72vGKQm4FMK7j0D3mfzUXq/FWjEYXcVGDMUVpBD5dhNyABS8FHQhT3rWC5PG4iT4mpTUw9oJd5ekxukyIjMXT56qHOCBgqJmGHM0hRsnUpGm6xyCs47q+9AGhezjhFr4bSoX9mhCl1cKp42UR26xq9HUlw7dEJM+9+cfZDg06//1StB96+Ow5/QQ7IZ3PsHgP1TGTnKwM5vJSKq1oTSmmHaF/+IcgsaMjufxzn7ZQjbApr1odVK4FbAZnqR2mySqm0zE65e7NZwcPsnOEQln2lrQAWt4GeNQHqfHpMsHNIYrNAubwuMACP5iwf/aI3iVkOrj5Lvg6Qmz4KZ1qkcjP/QaR3rEqRvWOf6HXg7QcxO1r1XXzejYYEaktH6JmxOb2hkYdVSFUnCh16JBrSXl2nRM4VrdnMV+xYt1XZRCtQqsnokcNWLPp+wwGyoIUXnZVMYysupnFNhA26H4iFqBazpbuHTkFv79+p/Zk0D
- VwiRFDq8
- hf4zNM9TEBT/gI8vGESYkQC7YcOjwiiSfM7eZFv6QDa7WL+IrV+azSwgPd04+kqEIXt6u350hfoNJQgduaQVq/kL2oy7TcWnGHjYdtFgiqF1b73qhjgKYAYQiyMuubHrHaywF3/Me5xM2BSQXNBfc3xUr8e3CTdUg06Z+T4F6Gf3q+Gy9cHoAY+Tfdcg8atunP74XwDr+fPPza/RziTmeRxpL+9+IaJTqtVD1VHH9VOa3Ha72KycRJcMoNiA93VWmPe8weGOQ4JWkfde+zOkrFiyO76nUPawUH8m3i6ETtYaTCElPAw8sz6ViR6LCtzNsGUyUcX8eP9b51pm6AIrl8THRvJCWbFxe6P0ku81vOhOmmeHAy8ZbcJtlJ8cqdqlPvmOlyfR0xOp7mEky68Fc00IIQkpLipD1VvG31dqJp/bfVRiH1mFW4RxjkpaNp1QZ3UvK1wdGRJjXXnf/TKkSltcMp/v5upNjc2Li
+X-Rspamd-Queue-Id: 552611C000D
+X-Rspamd-Server: rspam03
+X-Stat-Signature: bxr9seffdqrf9d4sdf1rfdyw7sgygwhy
+X-HE-Tag: 1780164136-71326
+X-HE-Meta: U2FsdGVkX1/R7G/pfI6B5936haFel/4aLBw5JbZo69ShXjPCbJ/ywaRPQrfMifkBL1LKXlC6XhiBtp6N0vdmZ7HCH661QoiG33vXLyI6C5x3ZGz7WsVx5mupGvAWITU/Dv1PZjLqQHfHcy+NUKYWgLVd57O7QEX5XM4tHxJTuE2sl/OWFxuRMUkC69CbU0ZqdIcPT8WlmgpSxiNvL83j25AWvEiV1sjckGd4J092hbXO8EhTtC5je3RHAuESm6nPFU4EODOBjME7CkY3ow5ss/J9pIqognc96h2GBTig3Ah0LK9srFqTR1Wyac3BJyYnwgzhsDRuDfAMpXUKfg37mKS7xNQLwvu0Jci2204xjq6sajfj7JeGrX4lazU78BDi12DAAiI5QD0pRXC7KuUIlNu3tmts+Eq3qQWmM0zq1O9eBUfAN3jk80CTaKwSsTddt+/l+Oc+7E41ANdPswlSWSa3ymSaoBJdmM6lp8bVttPzepXRipvuAJSdk4CBW89ScCWF5uEEU5y/yqwFihBC9lIgvcq/sj7xxj6TK4xULYhtriu0i4DWIq1FDD9L1mMFBDtSFOgcTDMs8FaKv40GKGguGtirMUCBIp/rl8PjhWYs8oS9hD14oJ4Lvd7KzGxDNtSEIipRURpArWOfRsYXgsmiGIyA6HufjRfm60h8VK7Az1iAp79n8Psun6WIho2eJK+50oa54uyKnMay2dZH1fUop9KXxA3ujEDeSiMgIrgZpMaCt012ONwJvkwxYibMveMe/lnYY0R31u469kRt0tT0p1EcV6fc8uUERcKOgeuzPdlIsGq4ZXJSQutn823aaYkHlcXFtkw8vU8CkfWpbO+gSlHBJ5iKiR7J+AGitX4yNlGEpqdZdD5uB41q2uDFHB8e/JFXIuaIemYqr7ihoGe/4LTAYaBInfQJybp/jG29TTazHJF58FJkV92uEstZ/IdnQqKwnklLHd0WHPA
+ Hr47PfCs
+ no7WLCBDLHsjBhmEk54RbrHspPhp5i+xLTQ+7wE6/NAaMFzNAiQ+fa3RBXcvUgECyJrYVoSyNNNvvNUezbXrhG8RjxY8ULI5AuQbkOBisigTTvoqaPSLqbUAu/RIH9sDMbkjFkkkKL+IA3JlT4S9DF+L8YuMKpSyAsgDeYHib8H8SGxzpSJKdGTkDVD7m5o1THa3x3Jjy3zbJGGq1RqC3YO5DLXlkcFeQCi/XcAbdvHpBwmoYJCQdBnI2PliHNGPMRveC/SRvHLS/5QnbMl7UFwU6Q9kAyDmmc0CDBL8sv2/T/rd7YO3tbqyHS7rR+CPWZwTnyrwr5K00VP/Z7aZGwfwL9LXsxoylfOS0865i1AmtB+rBuCBo6n2nibh4Fi01p0KL+FAmdGy7JW71/lWz9Bd6Tl1nkrp4OBBom+jxCkU4IaMxGgUgem0Ohwwa/0p93pWCmdfXQuRtP3GxQextqqj8CRmnhi+tpmZiK7r+CMnQLKQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,42 +146,153 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Tue, May 26, 2026 at 11:23=E2=80=AFPM Youngjun Park <youngjun.park@lge.c=
 om> wrote:
 >
-> Apply memcg tier effective mask during swap slot allocation to
-> enforce per-cgroup swap tier restrictions.
+> This is v7 of the swap tier series addressing review feedback.
+> The cover letter has been simplified.
 >
-> In the fast path, check the percpu cached swap_info's tier_mask
-> against the folio's effective mask. If it does not match, fall
-> through to the slow path. In the slow path, skip swap devices
-> whose tier_mask is not covered by the folio's effective mask.
+> I revisited the design (see Design Rationale). Since our use case
+> fits best with a memcg-based model, the implementation remains
+> within memcg and preserves its resource accounting semantics.
 >
-> This works correctly when there is only one non-rotational
-> device in the system and no devices share the same priority.
-> However, there are known limitations:
+> Alternatives considered:
 >
->  - When non-rotational devices are distributed across multiple
->    tiers, and different memcgs are configured to use those
->    distinct tiers, they may constantly overwrite the shared
->    percpu swap cache. This cache thrashing leads to frequent
->    fast path misses.
+> 1. A separate sysfs interface under swap. (Workable. But, it would still
+>    need to reference memcg paths, and fully decoupling it would add
+>    swap-layer logic to manage memcgs, making it secondary option.)
 >
->  - Combined with the above issue, if same-priority devices exist
->    among them, a percpu cache miss (overwritten by another memcg)
->    forces the allocator to round-robin to the next device
->    prematurely, even if the current cluster is not fully
->    exhausted.
+> 2. Making the feature non-default.
+>
+> Other interfaces were also reviewed. Aside from sysfs and BPF,
+> the options involve trade-offs and are largely design choices.
+> BPF was excluded due to possible disablement on our embedded
+> platform, though future extension remains possible.
+>
+> Overview
+> =3D=3D=3D=3D=3D=3D=3D=3D
+>
+> Swap Tiers group swap devices into performance classes (e.g. NVMe,
+> HDD, Network) and allow per-memcg selection of which tiers to use.
+> This mechanism was suggested by Chris Li.
+>
+> Design Rationale
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> Swap tier selection is attached to memcg. A child cgroup may select a
+> subset of the parent's allowed tiers.
+>
+> This
+> - Preserves cgroup inheritance semantics (boundary at parent,
+>   refinement at child).
+> - Reuses memcg, which already groups processes and enforces
+>   hierarchical memory limits.
+> - Aligns with existing memcg swap controls (e.g. swap.max, zswap.writebac=
+k)
+> - Avoids introducing a parallel swap control hierarchy.
+>
+> Placing tier control outside memcg (e.g., via BPF, syscalls, or
+> madvise) would allow swap preference to diverge from the memcg
+> hierarchy. Integrating it into memcg keeps the swap policy
+> consistent with existing memory ownership semantics. There are
+> also real use cases built around memcg.
+>
+> In the future, this can be extended to other interfaces to cover
+> additional use cases.
+>
+> I believe a memcg-based swap control is a good starting point
+> before such extensions.
+>
+> Use Cases
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> #1: Latency separation (our primary deployment scenario)
+>   [ / ]
+>      |
+>      +-- latency-sensitive workload  (fast tier)
+>      +-- background workload         (slow tier)
+>
+> The parent defines the memory boundary.
+> Each workload selects a swap tier via memory.swap.tiers according to
+> latency requirements.
+>
+> This prevents latency-sensitive workloads from being swapped to
+> slow devices used by background workloads.
+>
+> #2: Per-VM swap selection (Chris Li's deployment scenario)
+>   [ / ]
+>      |
+>      +-- [ Job on VM ]              (tiers: zswap, SSD)
+>             |
+>             +-- [ VMM guest memory ]  (tiers: SSD)
+>
+> The parent (job) has access to both zswap and SSD tiers.
+> The child (VMM guest memory) selects SSD as its swap tier via
+> memory.swap.tiers. In this deployment, swap device selection
+> happens at the child level from the parent's available set.
+>
+> #3: Tier isolation for reduced contention (hypothetical)
+>   [ / ]                    (tiers: A, B)
+>      |
+>      +-- workload X        (tiers: A)
+>      +-- workload Y        (tiers: B)
+>
+> Each child uses a different tier. Since swap paths are separated
+> per tier, synchronization overhead between the two workloads is
+> reduced.
+>
+> Future extension
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> #1: Intra-tier distribution policy:
+>   Currently, swap devices with the same priority are allocated in a
+>   round-robin fashion. Per-tier policy files under
+>   /sys/kernel/mm/swap/tiers/ can control how devices within a tier
+>   are selected (e.g. round-robin, weighted).
+>
+> #2: Inter-tier promotion and demotion:
+>   Promotion and demotion apply between tiers, not within a single
+>   tier. The current interface defines only tier assignment; it does
+>   not yet define when or how pages move between tiers. Two triggering
+>   models are possible:
+>
+>   (a) User-triggered: userspace explicitly initiates migration between
+>       tiers (e.g. via a new interface or existing move_pages semantics).
+>   (b) Kernel-triggered: the kernel moves pages between tiers at
+>       appropriate points such as reclaim or refault.
+>
+> #3: Per-VMA, per-process swap and BPF:
+>   Not just for memcg based swap, possible to extend Per-VMA or per-proces=
+s swap.
+>   Or we can use it as BPF program.
+>
+> Experimentation
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> Tested on our internal platform using NBD as a separate swap tier.
+> Our first production's simple usecase.
+>
+> Without tiers:
+> - No selective control over flash wear
+> - Cannot selectively assign NBD to specific applications
+>
+> Cold launch improvement (preloaded vs. baseline):
+> - App A: 13.17s -> 4.18s (68%)
+> - App B: 5.60s -> 1.12s (80%)
+> - App C: 10.25s -> 2.00s (80%)
+>
+> Performance impact with no tiers configured:
+> <1% regression in kernel build and vm-scalability benchmarks
+>
 
-I had very similar issues when I tried hacking vswap on top of swap
-table too... It's even worse over there because it's not just
-performance - vswap needs special handling in certain cases, and in
-some places cannot be used at all (for e.g in zswap writeback). I
-ended up having to add separate caching for vswap device:
+Bit late to the party - working on my review backlog right now :)
 
-https://lore.kernel.org/all/20260528212955.1912856-1-nphamcs@gmail.com/
+I see some parallels with this and memory tiering work being done. One
+future line of work could be considering how to ensure fairness when
+multiple cgroups share same tiers:
 
-How expensive is it to add per-cpu caching for each device :(
+https://lwn.net/Articles/1073400/
 
-Anyway, as a first step, this LGTM. Reviewing from swap's mechanism
-perspective, and leaving the cgroup side to memcg folks:
-
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+I can imagine a scenario where one noisy neighbor eagerly swaps first
+and occupy all the space in the faster tier(s), pushing the other
+colocated tenants to the slower tier(s). We might need to figure out a
+way to ensure fairness here (while letting cgroups occupy fast swap
+backends opportunistically if there is no resources scarcity).
 
