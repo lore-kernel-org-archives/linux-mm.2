@@ -4,90 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FF94CD5BD0
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 05:48:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 990F4CD4F54
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 07:47:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B0396B0005; Sat, 30 May 2026 01:48:20 -0400 (EDT)
+	id 7BC516B0005; Sat, 30 May 2026 03:47:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 366006B0088; Sat, 30 May 2026 01:48:20 -0400 (EDT)
+	id 76C4B6B0088; Sat, 30 May 2026 03:47:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 275B26B008A; Sat, 30 May 2026 01:48:20 -0400 (EDT)
+	id 6829B6B008A; Sat, 30 May 2026 03:47:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 169C06B0005
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:48:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 21BDD161675
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 05:48:19 +0000 (UTC)
-X-FDA: 84823005918.02.DA6CDAC
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1F2FC40002
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 05:48:16 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aaER4iwQ;
-	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 562B86B0005
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 03:47:14 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89080161791
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 07:47:13 +0000 (UTC)
+X-FDA: 84823305546.29.593EB32
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8DCDE2000A
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 07:47:11 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XlU47XZ7;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780120097;
+	s=arc-20220608; t=1780127231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0hcBhYnTviqnkqr5x+aj/JEW43JSHVchdPdrSidMsHk=;
-	b=5nNn2mKVynac7bRP1SafdEyawTx2yxI9Hby8407smH6rrKWPiJfB7h8SflNwW7hn/lvrgJ
-	IRXs71w84IICUvK2FESBeAfJXdZpHPV/iJeWaoDqY6gA8AbRpIaM872e9xOjCRddSO7plT
-	eAMQNqM3tMUE17NDMUqmi2Nu5atTdQE=
+	bh=KxXQXGjA8Ez+LLNGezkt0TxaGdPDqNizkUCvoA6K7p0=;
+	b=iP378f9cDP5wPbyYwlqqGe/OZWUWLCeTG0jxjXHJnnfe266HDwlveh0ucMIXLhwdLl79Ms
+	TYBBGra83sqZtP9PJigba7fdNcD3q2bj5OAzsRya01djFFoUGCcTr7duObdzTc3PxALM/H
+	8xArP/Y5w6lAKKL4HSJCCeK9qpdsLDk=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aaER4iwQ;
-	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XlU47XZ7;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780120097; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780127231; a=rsa-sha256;
 	cv=none;
-	b=A+AKcpEl2PwQI6ZSwJmeB33OMBF7svfELc0Z+cZnJmXXFcgPE8niccl5Pf7rD32BdnfFQh
-	rTLSSsAMc5uYtZr6xWK6JUAUXXSpZawfgsXBRP2n7Yd+/fi4ucPMKzu35wbbrLKET3QizU
-	ligdZLQgySDWWM+HaBQWAgqkNFUDwVg=
-Date: Fri, 29 May 2026 22:48:01 -0700
+	b=QNEGcjKN6fvs3y2MOfVXFMeF4tiEhjLMvedeVbz5HhPE3S+SBZi2+6leQDsIX1zDeVXdFQ
+	AQZxx3yXM4yxe9nwfFhgpX0s56nJl5cNxWjr4mCag+HLnINZjfto9e2CZytuP86eIdsal5
+	6DnlWyumZJXJXj1x3OgpfZaaELJmIQs=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780120094;
+	t=1780127229;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0hcBhYnTviqnkqr5x+aj/JEW43JSHVchdPdrSidMsHk=;
-	b=aaER4iwQJoxVjwTXYGLtqEzwlBJ8D/J95+cCIEhME5nkyVSDz87+CDxL2QA6/raZy45t2R
-	QCNJvK8IL0oMrL9WWrwXPgk5psjjLMPmlQeiHkhA4yvwPE6yYrdRoG4SBtIzAVbdnGC0s1
-	vQCDUF8tPP+geC2IJZ9AQ1XwJotBLcI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
-	Kairui Song <ryncsn@gmail.com>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v7 04/15] mm/mglru: restructure the reclaim loop
-Message-ID: <ahp5UEnswEZkU8j2@linux.dev>
-References: <20260428-mglru-reclaim-v7-0-02fabb92dc43@tencent.com>
- <20260428-mglru-reclaim-v7-4-02fabb92dc43@tencent.com>
+	bh=KxXQXGjA8Ez+LLNGezkt0TxaGdPDqNizkUCvoA6K7p0=;
+	b=XlU47XZ7t70fUvpZtLoR7bU5qgPv3nVY/flIm+FlY+aCJVaW/2OcOM37f9BjQ1OEGJvAaI
+	OZwER44ej+Z8rnIZum1fy9fCFDR8gZ0vOuRCpNdMO4klHc3Ei1+TdY1vtL2fGXk3go69Md
+	ozbTnRO59SwW8/C48shqyJgtE1VzN6g=
+From: Lance Yang <lance.yang@linux.dev>
+To: dave.hansen@intel.com
+Cc: xueyuan.chen21@gmail.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	yang@os.amperecomputing.com,
+	jannh@google.com
+Subject: Re: [RFC PATCH 0/3] make persistent huge zero folio read-only
+Date: Sat, 30 May 2026 15:46:48 +0800
+Message-Id: <20260530074648.33513-1-lance.yang@linux.dev>
+In-Reply-To: <54986350-dfd4-4065-b960-e1ba30fee4b8@intel.com>
+References: <54986350-dfd4-4065-b960-e1ba30fee4b8@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428-mglru-reclaim-v7-4-02fabb92dc43@tencent.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1F2FC40002
-X-Stat-Signature: htnbwieafq6fg3sjw7srs3opq7sqesob
-X-HE-Tag: 1780120096-95138
-X-HE-Meta: U2FsdGVkX19wum78iA2oGnKv6cTohcudn/cIrVIGkh54Hrge8t4o8JmYUaFnQ9DD9sIjFi0Tg0135yS9FOyFIxKWPsjDfyIt1xaBvz3ZgU9S71GyjPrXAwPHBQdE/KvEUPzWnDaAn8p+znJcAbN0BZVL+kv9ZAI3z1DHZFHjCyL12i99QR/L9A63GibdTCfShHLwWoIzlF9obT90+cYUw/hTAu0v/2lK/AJUU5nHM4vMlJi7m4m1AZlTV3HgMxP3GaMKlBQe3pZQO73lq6tNXIxU4uhtZfqs7kO2dE7GcC/J/DK359G8BXNjW4UTY7JCEgEBV9T7GSMiFcwGLmt/sWJeaXRBnJ8CkGMpCkwrkVe6zZCrjhIaqCLCDWTJXCJqskNERO9eXsOGS9Lz2s0Fy+ER/Rr9jNzJXHjgzlLm4SbaejszR4BxOtVT277SXgPVlMIBQH4tEmEIqjtaiDbGLKENIby7ME2SPfcLTCWQE+RxaQcHckRk4WV2cIv2C5zmLS+48EbfkEoNsOJ49dXNjKindglAB1I0kuM/qyQ9c95WSnl9ZPgwbjlkj/1l52mN6BFPbox4qXzwuWfeVfixHoLwx0Qv3AWmbF8bDWGGSTIlqwopk26F1EnhYLomZthhbINon1oSDoO+jPuj9LBPJko1dxHRkKOzhrGp+BEkptABSOk0KfgbLiaQr8SIZavDRq2Z9pECfj8gjSksboKrNTsPC5+rUeYTQAgm6fk/bzpjqO+drkPcZHrfYvYlNVv1ZYS8YjZ6/H9dFIBwn/vhDElfpqTOCUm/7kqHW3LKsy4/+Hq3M2XQlKmzO5eL5qBFvxmBSDKibVhEznBKvdhHZ7Bu8fiHK6tx365OlY+SWxc7S+TSa4/3xg5osSiduAkofyr1YAncDw+8zUpc4SIBGlHF/4l7/le/I3in+9KPSLaIYyjW5xa039uZ6cPEGkS3ocxFfHMFZ7Dh+PbigK6
- fbUtW+iV
- WXJ6QychxTyR8I1IQf7IzBIkPQFpXzHvFZjm6KG3U0K5MBsxjC1kbYpWGDbeKyA/ow/vmbCNfVGkZxTzgZ5FPfjkRhL3JjPWmjwLzjpN3ZhwU2kG7Eru9+v08JngROpI4Wye91wzsTLCwIPMuLDOKDsUkHsLPrm0vGuRw2T0CpprS7sKe82nBP/cFjH2HwA85/QOZGzDGrqAIoAuB2Aug2iW5HsAto8hdMp18orEFPiWuvLxRbnSFgjlYrCTraEfPYIyec3roevxpa53fI7LfzegQtCYy1J2M866xlBv/ATf9Fk5YZ0GPwQPVDT5J5rYemsz8lJ1A/oBl41Q=
+X-Rspamd-Queue-Id: 8DCDE2000A
+X-Stat-Signature: yhk1fj4ypesrswpx1bmr8yffsadyr8ig
+X-HE-Tag: 1780127231-174979
+X-HE-Meta: U2FsdGVkX1+AppIxaxixx36daftuFQJBnnN+MlImqU0SaOGoI3Gxq5i7oLOEfHKQbMxUvRyTOqN3o1BJIJTMTndh7OWPfgeDF2Rt4Nximab5NLa/iRCz5zJ477ytGn11PDrqBsXRL9lTiKc4uOQCiBVG3iG05bEmfbO5amDLqTLIHPKL5qlm6aGWh/pHrI0ceGNz3SBKDFZuXfC8ov5DogTyTKuNUnjojibAGB0RdX4zfI+Vaz9knj3d+fU6nE1ew+zL2gXq7i7ybLs5mZ4s7p0ZwiXGC/WRSjpTOFQI1zeK8WstggdFsgIR3Xl5OVH0QWL8VwQyh73ObOxRJTEKX958e3PeNmh2S18iPaEaiVQZJmVGOBzic2A2FkO5SNyAcvrWtSFxdKiFczaSBjPgKqgzKvjFYIwxhy5t1n8PsoxE+Fc6fAzvYaWl9E1tD30JCIkZpnuWhNB8QYhF5dMp2GG4QTPxCs3x/aWmhnrEou8IeTrlrcYQ9BqNgb56JrFgjyPjHOlApkpM9i6S7Z2rY2tM3y68HhA5CopJHACIqeElypQ13xIEttam08Gj/O52mvAVYxT3m1lZ/UhlfShQZ/sq21arg/xwiuElGZn/1qeH7JsVgxYWqbEeSeRhv1kWMnGM0oOEuZ/44Joe/gVYho7y7xhbJhcvm4tnO51//UOkbvxhrQqiR79COm62dgePS0N1WMt1TOTIVfmOtDOacH4OrUUdySxvy/TLLIE5EoGShEWAIr40ViNnuM+tPHn3RGPcG8xf5YtbLa3W1P6tAF6o8sZP1wgCSEYYG0AgEJYXddStOedSnVQDXh3Rr5h4o81AeizKPM3ZtseYhsqZzkg/v22IiGJG/aKBPn9NKxGu/Yeg9IBxjjJvT8HUZIXKY96QAny8dUxu/6ktDTzQXeCYM6OdH2DlQ88asVNvKHiOdS4Lj6/u41x//HcmLxHLS05Wqb6b4JnsYDe/YTe
+ CCT7tZnU
+ u0DRxYuJ+Y9LmtVrC3GEIRagi2nUBfJH7VxXoVxOKJP2qVOARrxXC4abEsdjNuOs0yXB1ASrWJMORKsYJIiBfHZZL4DmPrxSnt9o8u6EU//CBgnQ1S0ERwC+NL6nVC8Fmjqu6ikRwloJ9M9ISgHzGeLcmpfvmHN2KZZspho17LkH93TFv+4+giPooz60OdJK3B6beLuXzZ0L0wLnTSIspSWY3tvq6JL5H3XY21R7eNsrxReEuAn0MCjPxbiGIvamxEkt6uH3PAUqN35r6PGRa9QlPRA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,52 +108,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 02:06:55AM +0800, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> The current loop will calculate the scan number on each iteration.  The
-> number of folios to scan is based on the LRU length, with some unclear
-> behaviors, e.g, the scan number is only shifted by reclaim priority when
-> aging is not needed or when at the default priority, and it couples the
-> number calculation with aging and rotation.
-> 
-> Adjust, simplify it, and decouple aging and rotation.  Just calculate the
-> scan number for once at the beginning of the reclaim, always respect the
-> reclaim priority, and make the aging and rotation more explicit.
-> 
-> This slightly changes how aging and offline memcg reclaim works:
-> Previously, aging was skipped at DEF_PRIORITY even when eviction was no
-> longer possible, so the reclaimer wasted an iteration until the priority
-> escalated.  Now aging runs immediately whenever it is needed to make
-> progress; the DEF_PRIORITY skip only applies when eviction is still
-> viable.  This may avoid wasted iterations that over-reclaim slab and break
-> reclaim balance in multi-cgroup setups.
-> 
-> Similar for offline memcg.  Previously, offline memcg wouldn't be aged
-> unless it didn't have any evictable folios.  Now, we might age it if it
-> has only 3 generations, which should be fine.  On one hand, offline memcg
-> might still hold long-term folios, and in fact, a long-existing offline
-> memcg must be pinned by some long-term folios like shmem.  These folios
-> might be used by other memcg, so aging them as ordinary memcg seems
-> correct.  Besides, aging enables further reclaim of an offlined memcg,
-> which will certainly happen if we keep shrinking it.  And offline memcg
-> might soon be no longer an issue with reparenting.
+Hi Dave,
 
-After the lru folios reparenting, we should not be seeing folios remaining on
-offlined memcg LRUs. So, the above para can be removed.
+Sorry for the late reply.
 
-> 
-> Overall, the memcg LRU rotation, as described in mmzone.h, remains the
-> same.
-> 
-> Note that because the scan budget is now pinned at loop entry, tiny
-> lruvec might skip this reclaim pass, also skipping aging, which could be
-> beneficial as aging is not helpful since it will still be un-reclaimable
-> after aging. Reclaim will go on as usual once priority escalates.
-> 
-> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+On Wed, May 27, 2026 at 08:58:38AM -0700, Dave Hansen wrote:
+>On 5/26/26 20:56, Xueyuan chen wrote:
+>> The motivation comes from Jann Horn's read-only zero page work[1] and the
+>> follow-up discussion[2] with Yang Shi. As Jann pointed out, the kernel has
+>> had bugs, including security bugs, where pages taken with read-only
+>> semantics were later written to.
+>
+>My overall concern with this is that it's just a code hack for the huge
+>zero page and nothing else. It's a total one-off.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Fair point. I was trying to keep the first version simple, so I
+special-cased the persistent huge zero folio. But agreed, the arch side
+should not grow a huge-zero-folio-only hook :)
 
+>I think you need to make the case here that the huge zero page truly is
+>a special snowflake and deserves a one-off special snowflake solution.
+>Because it doesn't seem *that* crazy that there are more things that the
+>kernel dynamically allocates that it wants to keep read only.
+>
+>Maybe there aren't many things that get mapped to userspace like this.
+>But the case needs to get made either way.
+
+For RFC v2, I think we should make the arch hook generic, probably
+arch_make_folio_readonly(), with a weak default implementation. The
+persistent huge zero folio would just be the first user.
+
+But even with a generic helper, we still need to be careful about the
+model. I see two possible ones:
+
+1) Treat "read-only in the direct map" as real folio state. Then core MM
+has to know about it and carry or clear that state in paths like
+migration and freeing. It also makes the possible direct-map split / TLB
+cost a more general MM issue, not just a cost tied to one caller ...
+
+2) Only use the helper for folios with a simple lifetime: allocated once,
+not migrated, not freed, and not written after they are made read-only.
+
+I'd start with 2. Keeps the arch API generic, but avoids teaching core
+MM a new folio state before we have a user that really needs that. The
+persistent huge zero folio still works fine with that model. It just
+becomes the first user instead of the special case :)
+
+Thoughts?
+
+Cheers, Lance
 
