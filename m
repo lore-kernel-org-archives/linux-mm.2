@@ -4,90 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56527CD6E4A
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 08:59:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D036CD5BD0
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 09:03:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAA4D6B0093; Sat, 30 May 2026 04:59:21 -0400 (EDT)
+	id 60BC96B0005; Sat, 30 May 2026 05:03:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5B546B0095; Sat, 30 May 2026 04:59:21 -0400 (EDT)
+	id 5E3496B0088; Sat, 30 May 2026 05:03:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A71266B0096; Sat, 30 May 2026 04:59:21 -0400 (EDT)
+	id 520686B008A; Sat, 30 May 2026 05:03:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 94B7B6B0093
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 04:59:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AE4C16175C
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 08:59:21 +0000 (UTC)
-X-FDA: 84823487322.01.45BE296
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3ED1A40006
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 08:59:18 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 430C76B0005
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 05:03:23 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E922114032F
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 09:03:21 +0000 (UTC)
+X-FDA: 84823497402.02.148EEBC
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 571D14000C
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 09:03:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf17.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	spf=pass (imf04.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780131559;
+	s=arc-20220608; t=1780131800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=0wm9EV2iw/7y5jYdgNSKZg9qMCwkEGtT9+mgsf98Mxo=;
-	b=EUVynzxNqtn7hDHuE7XHGsj5n2L5i/PxOgsF8c0OFGwZMXGLrWugWIugo+WiszLqGU6oxV
-	lCYArUAtlEaYTifoIjwLngcrxDfShoTo2UuhFkNwEvnLfR8Hnl5Gxik2K4apy6DeT9PF9N
-	BLiGZZ+hTGjNOqWZmUU/cV5LWJcAs7Y=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hiSPvchToXRI8zCyMe1yxvW8pfwyWM8/RZsUHLd5bCo=;
+	b=AaVo65LX4Wm/I702SLYS4p9gF3WiV3/1zKLr3DbBHNLQSGsnHdBWf8Eo3StPn0BSqY+4nv
+	f/t2h5ZdxYdeHo01Vsp2+vxccWDAOxVpXOP6B0K0z5RVLG7tPEi38KcGjrmb38q59tam7m
+	HOQbMt4aW97eDMxuSAsf/NkLL8Zcr5E=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf17.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780131559; a=rsa-sha256;
+	spf=pass (imf04.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780131800; a=rsa-sha256;
 	cv=none;
-	b=glFdGpJ6aH0DwfEia+jWvuSlQCvsgTM20oc6+Hom3CoItroB1h7e05iqk7h3KegRG3jkjM
-	rfkk7DawnY8ZnGtVI8D2CpDH7OPA1jsyL56jla1kG51lMKA718jZSoMEd9zgPbzIfdssbI
-	s0sya/p1cv37/AcClRky4+Kn2Bbc7e0=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	b=Scxe1EqlTNv3JexTfUIiwUDm3yn1x5op3RUFCvfjhiI934kqwfd0okYKC0AasyuRXpGKFr
+	Tut5gvMsFzOQWFEPftD3l14qpC3CBEoSxMc+//83c3W5wrusyGWHyLTbNJYCC0uetwhZix
+	lqRnwa/bpw9T5qT4+nZjSQfpnUlJHY8=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gSDg16fxlz52SFw;
-	Sat, 30 May 2026 16:59:09 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl1.zte.com.cn with SMTP id 64U8x5oG021296;
-	Sat, 30 May 2026 16:59:05 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gSDlm2pSlz8Xrnw;
+	Sat, 30 May 2026 17:03:16 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl2.zte.com.cn with SMTP id 64U937c1049996;
+	Sat, 30 May 2026 17:03:07 +0800 (+08)
 	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp05[null])
+Received: from mapi (xaxapp01[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Sat, 30 May 2026 16:59:07 +0800 (CST)
-X-Zmail-TransId: 2afc6a1aa6dbd8f-104a6
+	Sat, 30 May 2026 17:03:09 +0800 (CST)
+X-Zmail-TransId: 2af96a1aa7cdd7b-1a488
 X-Mailer: Zmail v1.0
-Message-ID: <20260530165907829ZSDzDdMc110MnOflRzf9P@zte.com.cn>
-Date: Sat, 30 May 2026 16:59:07 +0800 (CST)
+Message-ID: <202605301703094695zmVgcSC27BNR0rH0N8_x@zte.com.cn>
+In-Reply-To: <20260530165907829ZSDzDdMc110MnOflRzf9P@zte.com.cn>
+References: 20260530165907829ZSDzDdMc110MnOflRzf9P@zte.com.cn
+Date: Sat, 30 May 2026 17:03:09 +0800 (CST)
 Mime-Version: 1.0
 From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>, <xu.xin16@zte.com.cn>, <david@kernel.org>
-Cc: <chengming.zhou@linux.dev>, <hughd@google.com>, <wang.yaxin@zte.com.cn>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <ljs@kernel.org>,
-        <corbet@lwn.net>
-Subject: =?UTF-8?B?W1BBVENIIHY3IDAvNl0gS1NNOiBwZXJmb3JtYW5jZSBvcHRpbWl6YXRpb25zIGZvciBybWFwX3dhbGtfa3Nt?=
+To: <akpm@linux-foundation.org>, <xu.xin16@zte.com.cn>
+Cc: <david@kernel.org>, <chengming.zhou@linux.dev>, <hughd@google.com>,
+        <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <ljs@kernel.org>, <corbet@lwn.net>
+Subject: =?UTF-8?B?W1BBVENIIHY3IDEvNl0gbW0vcm1hcDogYWRkIHRyYWNlcG9pbnQgZm9yIHJtYXBfd2Fsaw==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 64U8x5oG021296
+X-MAIL:mse-fl2.zte.com.cn 64U937c1049996
 X-TLS: YES
 X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Sat, 30 May 2026 16:59:09 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Sat, 30 May 2026 17:03:16 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A1AA6DD.000/4gSDg16fxlz52SFw
+X-Fangmail-MID-QID: 6A1AA7D4.000/4gSDlm2pSlz8Xrnw
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 571D14000C
+X-Stat-Signature: fzhupd63cpcywc8og854wd1ygkqy7h5q
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3ED1A40006
-X-Stat-Signature: 1i1yyamnhsaicd16jjx3xept4qhrja1y
-X-HE-Tag: 1780131558-652091
-X-HE-Meta: U2FsdGVkX1+a5IyMj6iiytqnaIWte0LsQY5Ixnaeep3O3N/cgsyenPyQv48X63CXRo7x9dHl2XNvwM4/1bQSz7cNCur8I38Qfxw5zeSadIfECh4GeDf9lEarxGmSsGQ3ov0txwY6YEbUIHFSO9edcx+UOqpE28sN34LVtkxT8VGq4KQvS7cn/HJRGnTIw+cG40/5rHFNYQKchMkmZ8X7iZeKYGCaiulNWuIKSajZJNSvLQ66FVyF+urt1YrpKblUlvtBw6qXyfDIKjaVPpEhkR5ewEStCZH3bDq1aW0W22BHJ0qgqt63infXv+h5chs9jSYhd/SqMME8MWffnFoUZt9XETcuW+h6sXUBAOU52/qazLuhDv9aTyrwlC+KVVaTYg9IXGHiXm054q/DHuVCnGr7w/DJ28/tnkW/fihR2crfz6fm9fRBzAVI29omZPzo6UZ0uTZDwyv7DTMD+iGtrlIzUl61N1FxmzK3PcatSfNbKxRHmjoElveO8FCJ+RTMKvL8XxNbO47G//qogMLwKWi8zzn01A4nk5xwqjnwcbQrS/mW+0z0/o2Xv557dkAQAgSlj4h4hmlSAYAHJSsyQnZtID5Sm26OzGRWfhxkLadMIPJrfk0/foLrjUQO1uvE4/bjfdXOOR3nOsweVBx+TEeyvdS0AS2PM2/fcA3HKrIIBFSOlhWgEGh2cXa02Dl8SOWhwgOtq7FeR2MuimpDHe+hkipp/j1pP/ZdnglELlwX2WY7Ph/jEJojcpjqaJuIpGY3WaluwvgYDfax+GnFGt53jvMhhUZUE08wJGLhFcVRjKlZNO5kos6zXip2S7RE0RsGYWGMgAv4kMBpsgLQ/WVi5Digkf+fNPKGIgt99Q7vt0coHgNk5uscZ/VAyEiG9+Px2FlnXNr0zhmQQgFVX5p03/hgbVxIWjDQOnD4xBNT4zncnOFjVmOtiIwrEmFp+iIIkYNkcscg/d0oCEL
- PqtGXWFo
- 8l94IGwpnmxefBMjRsa01SPduoJQkCq/vWjNW3WNJgNZDTO7QMBsWz5bFrIqDdGP5yDxqsGBsXJpFzxoi48QBofWKTVbfYSGkdZuDIO4WPMZqU2e/Na5z1pRs8WNZjJqLIPEd08V+3au2hDarevxZFSWulnOr5Oipq5F234oKVrGg4Ro4aFfeee8ZkZSOY2THwaD/+Z135UxikvIF8bZ4bqeR3WOsTdVsaB7S75FZBKuaCEUG+9L/hl1+BNY9l/fO94GH9x1h8sd0Ak8/wRYdfsFGmwBOsDBItoMzYIIyhOYuPod4pJnOcWMrIbPdkesEOWzmde11Ub1RfH9vNuWSc6Cstk2ZlFBRFC5PdD6kMXPeWyi1DH7dns3HGfUlZ4T0yxAtQy6ynS5mWBY=
+X-HE-Tag: 1780131799-690725
+X-HE-Meta: U2FsdGVkX1/LMD5dcqqSjT1bm0/u1MPCpWMvzDUca/KoBAIMvkbmaeXURAtJA0BQkZWedRS0Lhe5esUgTcAM6kRxRgarHLCYeu8PZXK7wq5zjx/hQRPx8d1xOr2NmnR6YIGOBuYb2+orXj82/bOHM9gEwhjPr3i9WPmhhw9Vty0UTtolIi9kA/XqEtKP4k1c3CM+87KA37SAt3q0KhqIUx7Zlj4ILgiwJALq1rztvR6bpk5bGAX3aRrcp3lcbMxYvPk5vzF2m2OdO80pxeXv1Bd+mVuT83dOmnjIksuIE2JOPQkeOlah/CcrxHDngPqaEkbsh/w5mJ3xLGb/Dt6aYpCp1Qt0S3KRM6yLBGD3cyzgWv05/PIAld52uWcK520igcIqZPjlrsxYrlieUSUpvs3Hvg54eyIAzQDhWR0Xm6ONHdZzX7d/osqeLuZ33ih/DFhb8vbIM/W4SJVQXrFlppNueih8FhT0pcDZGzFm7wTJh0fR4MDhgOiadMPNwSHex+8/lSwlPxS1HXT7Qx3sP6CvKb2+IbxOaBhfyKK5D8dAy5nvMWPkFRHP2DhLwCM/RJj0tXVPNZzpUpW2Ou0UPUqQ1x5mwj2vSF344vhUnpbxoBemh7/unDu4jnVLzWDmX4fTavkMryYUPIS4Ldueb/f1rlfGPze5Gw07IRhws8SzpVTICrwejcQvFaXkw92Ab/1rOLkFrvG4LK82cmsbKAV4eMVCNrAUJgrXxZlYAQ1qn/CySwGO63JG8Zbgys4QG2ntxff81N84A/0uknMKNpp4J7MEevX61eVyaQujyQjffaChkwb9bBBJe81X+I++3RGYyzbd2svqFqqxZd0Rd9WZwmL3WBdEF/j9Q00zrNgunjdrIwnfkS/C90FYLv+e3kUHHFAhcT1z8KaBRPN30yp2bOxgaNEiyRowkIlBoMKN1O+Vd5Rbq+4ZY0dc/5NGBz5H1kZc8GMGXbcNqdc
+ NS83rQIa
+ zlD5555FgJmFvZW88Zm7cog/M20PXX2SjiRwTFr5ivWGdLN8yVd/YA10VirwmumfXbRx1Hhk5ncgltEz/7/K56e75hw/LcXisKLVFCXWZMNGwJWc4LiQ86FayVixzrZyFXsNpoyNA1x3QFBQP6L055cllixOh80SKa3Nac2m5lxF6cN7htyrSMotXtLl/C1E0SYbMB6BS/CvIfphX2yt8c86gUfsR8sGAN9b+E5SaxYimcqosRh5MO7dXwHOOob7YMO28vtoxvujiFfI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,155 +100,142 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: xu xin <xu.xin16@zte.com.cn>
 
-This series fixes a severe KSM reverse-mapping performance problem
-that can freeze applications for hundreds of milliseconds under
-memory pressure especially when a lot of unrelated VMAs sharing a
-single anon_vma.
+Add trace_rmap_walk_start() and trace_rmap_walk_end() to bracket
+reverse mapping walks.  Unlike manual clock sampling, these
+tracepoints record no timestamp; latency can be computed offline
+by tools (e.g., perf, trace-cmd) using the event timestamps.
 
-Two key highlights:
+When tracepoints are disabled, the only cost is a static branch
+check (no clock read, no duration calculation), making them
+suitable for production use.
 
-1. Lock hold time drops from >500ms to <2ms
-   - In our benchmark (20,000 VMAs sharing an anon_vma), worst-case
-     anon_vma lock hold time during KSM rmap walk went from 705ms
-     down to 1.67ms (max) and 1.44ms (avg).
+The information (folio type, locked state) helps diagnose
+performance issues in KSM, anonymous, and file-backed rmap walks.
 
-2. Real user impact
-   - The anon_vma lock is also acquired by page faults, reclaim,
-     migration, compaction, mlock, exit_mmap, and cgroup accounting.
-
-   - A long hold due to inefficient rmap walks stalls application
-     threads, causing latency spikes, reduced throughput, or even
-     container timeouts.
-
-   - The problem occurs even without fork() – VMA splitting (e.g.,
-     via mprotect or madvise over time) can create tens of thousands
-     of VMAs all attached to the same anon_vma.
-
-Real-world examples:
-
- - JVM / Go runtime: These use mmap for heap regions and later call
-mprotect(PROT_NONE) for garbage collection barriers or guard pages,
-splitting the original VMA into thousands of small pieces over time.
-
- - Database engines (MySQL, PostgreSQL): Large shared memory buffers
-or anonymous mappings are managed with madvise(MADV_DONTNEED) to release
-specific pages, which also splits VMAs.
-
-* Why the benchmark numbers are realistic: We observed ~20,000 VMAs sharing
-one anon_vma on a production system running a Java application with KSM
-enabled. The lock hold time before the patch was measured at 228 ms (max)
-during rmap walks triggered by memory compaction and page migration.
-The benchmark reproduces that VMA count and lock‑hold behavior in a
-controlled environment.
-
-For systems that do not have thousands of VMAs per anon_vma, the
-patch adds negligible overhead (a single pgoff comparison). For systems
-that do suffer from this issue, the improvement is dramatic:
-1) Worst‑case anon_vma lock hold time drops from hundreds of milliseconds
-to under 2 ms.2)This directly reduces blocking of parallel operations that
-need the same lock – page faults, reclaim, migration, compaction, mlock, and
-exit_mmap.
-
-End‑users will see lower tail latency (fewer application stalls),
-higher throughput under memory pressure, and no more spurious
-lockup warnings or container timeouts caused by excessive lock hold
-times.
-
-In short: workloads that do not hit this pathological pattern are
-unaffected; those that do will see a 100x to 500x reduction in lock
-hold times, which translates directly into a more responsive system.
-
-Change Log
-==========
-Changes in v7:
-Mainly to fix some issues AI review points out at:
-https://sashiko.dev/#/patchset/20260522105234715fKI7KSsjC5XpEVMwoV6rI@zte.com.cn
-
-We have completely correct those possible flaws according to AI useful suggestions.
-- Patch 2: There are mainly 3 changes as follows.
-	(1) Use COMM-PID filtering during trace parsing to precisely match the right
-	    events.
-	(2) Graceful handling of single‑NUMA node. trigger_rmap_walk() no longer calls
-	    exit(1) when no other NUMA node is available. It returns an error, allowing
-	         the caller to clean up (disable tracepoints, restore KSM config) before exiting.
-	(3) Fair comparison for anonymous / file tests with KSM. anonymous and file‑backed tests now
-	    use fork() to create thousands of child processes, each sharing the same physical
-	    page via copy‑on‑write (or MAP_SHARED). This ensures that for all three page types
-	    the latency measurement is based on a single physical page mapped by many VMAs (≈ NR_SHARERS).
-
-- Patch 6: There are mainly 3 changes as follows.
-	(1) Fix mapping size tracking after mremap and protect the original pointer on failure.
-	(2) Use baseline delta comparison to eliminate interference from global KSM counters.
-	(3) Fix error-code confusion caused by pread/close interactions.
-
-
-
-Changes in v6:
-- Patch 1: Defining a single event class once and instantiating the individual
-	   tracepoints with DEFINE_EVENT, as AI said:
-	https://sashiko.dev/#/patchset/20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn
-
-- Patch 2: Suggested-by AI below, three useful changes are done:
-	(1) Safe event pairing – Now stores folio and rwc addresses for rmap_walk_start
-	    and matches with the same addresses in rmap_walk_end, eliminating
-	    cross‑thread interference.
-
-	(2 )KSM configuration preservation – Saves original KSM settings and restores
-	    them after the KSM test, avoiding persistent changes to system behaviour.
-
-	(3) unlink in advance to prevent potentialfile leak – unlink(filename) called
-	    immediately after mkstemp, so the temporary file is automatically removed
-	    even if the program crashes early.
-
- - Patch 3: a separate, standalone patch to update the MAINTAINERS file.
-
-Changes in v5:
-- Patch 1: replaced local_clock() with tracepoints – no overhead
-           when tracepoints are disabled.
-- Patch 3: switched from vm_pgoff (unstable after VMA split) to a
-           linear page offset.
-- Patch 4: adapted to the linear page offset; added user-impact
-           description (real workloads, lock contention examples,
-           VMA splitting scenario).
-- Patch 5: simplified to a single process with 32 pages (instead
-           of multi-process), as suggested by David.
-
-Changes in v4:
- - Add a tracepoint for rmap_walk
- - Provide a testbench for rmap_walk
- - Add vm_pgoff field in ksm_rmap_item
- - use vm_pgoff instead of address >> PAGE_SHIFT (Suggested by David and Lorenzo)
-
-Changes in v3:
-- Fix some typos in commit description
-- Replace "pgoff_start" and 'pgoff_end' by 'pgoff'.
-
-Changes in v2:
-- Use const variable to initialize 'addr'  "pgoff_start" and 'pgoff_end'
-- Let pgoff_end = pgoff_start, since KSM folios are always order-0 (Suggested by David)
-
-xu xin (6):
-  mm/rmap: add tracepoint for rmap_walk
-  tools/testing: add rmap walk latency benchmark
-  MAINTAINERS: add myself as reviewer for rmap section
-  ksm: add pgoff into ksm_rmap_item
-  ksm: Optimize rmap_walk_ksm by passing a suitable address range
-  ksm: add mremap selftests for ksm_rmap_walk
-
- MAINTAINERS                          |   3 +
- include/trace/events/rmap.h          |  67 +++
- mm/ksm.c                             |  48 +-
- mm/rmap.c                            |   9 +
- tools/testing/rmap/Makefile          |  11 +
- tools/testing/rmap/rmap_benchmark.c  | 674 +++++++++++++++++++++++++++
- tools/testing/selftests/mm/rmap.c    |  97 ++++
- tools/testing/selftests/mm/vm_util.c |  47 ++
- tools/testing/selftests/mm/vm_util.h |   2 +
- 9 files changed, 950 insertions(+), 8 deletions(-)
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+---
+ include/trace/events/rmap.h | 67 +++++++++++++++++++++++++++++++++++++
+ mm/rmap.c                   |  9 +++++
+ 2 files changed, 76 insertions(+)
  create mode 100644 include/trace/events/rmap.h
- create mode 100644 tools/testing/rmap/Makefile
- create mode 100644 tools/testing/rmap/rmap_benchmark.c
 
+diff --git a/include/trace/events/rmap.h b/include/trace/events/rmap.h
+new file mode 100644
+index 000000000000..55a319ba6235
+--- /dev/null
++++ b/include/trace/events/rmap.h
+@@ -0,0 +1,67 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM rmap
++
++#if !defined(_TRACE_RMAP_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_RMAP_H
++
++#include <linux/tracepoint.h>
++#include <linux/rmap.h>
++
++#define GET_RMAP_PAGE_TYPE(folio) (folio_test_ksm(folio) ? "ksm" : \
++		(folio_test_anon(folio) ? "anon" : "file"))
++
++/**
++ * rmap_walk_template - called for start / stop of rmap_walk.
++ */
++DECLARE_EVENT_CLASS(rmap_walk_template,
++
++	TP_PROTO(struct folio *folio, struct rmap_walk_control *rwc, bool locked),
++
++	TP_ARGS(folio, rwc, locked),
++
++	TP_STRUCT__entry(
++		__field(unsigned long, folio_addr)
++		__field(unsigned long, rwc_addr)
++		__string(page_type, GET_RMAP_PAGE_TYPE(folio))
++		__field(bool, locked)
++	),
++
++	TP_fast_assign(
++		__entry->folio_addr = (unsigned long)folio;
++		__entry->rwc_addr = (unsigned long)rwc;
++		__assign_str(page_type);
++		__entry->locked = locked;
++	),
++
++	TP_printk("folio=%p rwc=%p page_type=%s locked=%s",
++		(void *)(unsigned long)__entry->folio_addr,
++		(void *)(unsigned long)__entry->rwc_addr,
++		__get_str(page_type),
++		__entry->locked ? "true" : "false")
++
++);
++
++/**
++ * rmap_walk_start - called before a folio is rmapped.
++ */
++DEFINE_EVENT(rmap_walk_template, rmap_walk_start,
++
++	TP_PROTO(struct folio *folio, struct rmap_walk_control *rwc, bool locked),
++
++	TP_ARGS(folio, rwc, locked)
++);
++
++DEFINE_EVENT(rmap_walk_template, rmap_walk_end,
++
++	TP_PROTO(struct folio *folio, struct rmap_walk_control *rwc, bool locked),
++
++	TP_ARGS(folio, rwc, locked)
++);
++
++
++#endif /* _TRACE_RMAP_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
++
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 78b7fb5f367c..52f795f768e1 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -80,6 +80,7 @@
+
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/migrate.h>
++#include <trace/events/rmap.h>
+
+ #include "internal.h"
+ #include "swap.h"
+@@ -3098,23 +3099,31 @@ static void rmap_walk_file(struct folio *folio,
+
+ void rmap_walk(struct folio *folio, struct rmap_walk_control *rwc)
+ {
++	trace_rmap_walk_start(folio, rwc, false);
++
+ 	if (unlikely(folio_test_ksm(folio)))
+ 		rmap_walk_ksm(folio, rwc);
+ 	else if (folio_test_anon(folio))
+ 		rmap_walk_anon(folio, rwc, false);
+ 	else
+ 		rmap_walk_file(folio, rwc, false);
++
++	trace_rmap_walk_end(folio, rwc, false);
+ }
+
+ /* Like rmap_walk, but caller holds relevant rmap lock */
+ void rmap_walk_locked(struct folio *folio, struct rmap_walk_control *rwc)
+ {
++	trace_rmap_walk_start(folio, rwc, true);
++
+ 	/* no ksm support for now */
+ 	VM_BUG_ON_FOLIO(folio_test_ksm(folio), folio);
+ 	if (folio_test_anon(folio))
+ 		rmap_walk_anon(folio, rwc, true);
+ 	else
+ 		rmap_walk_file(folio, rwc, true);
++
++	trace_rmap_walk_end(folio, rwc, true);
+ }
+
+ #ifdef CONFIG_HUGETLB_PAGE
 -- 
 2.25.1
 
