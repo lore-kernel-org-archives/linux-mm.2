@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81C5ECD6E52
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 01:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B95CCD6E52
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 01:14:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D39116B008A; Fri, 29 May 2026 21:13:57 -0400 (EDT)
+	id 7E19E6B0093; Fri, 29 May 2026 21:14:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D101A6B0092; Fri, 29 May 2026 21:13:57 -0400 (EDT)
+	id 792546B0095; Fri, 29 May 2026 21:14:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFEC26B0093; Fri, 29 May 2026 21:13:57 -0400 (EDT)
+	id 659286B0096; Fri, 29 May 2026 21:14:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B08556B008A
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 21:13:57 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 16BA31C12F9
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:13:57 +0000 (UTC)
-X-FDA: 84822314514.03.F10DEE1
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 336AB140009
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:13:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="O/j+Ecez";
-	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780103635; a=rsa-sha256;
-	cv=none;
-	b=SL2c/fw00mb4zkm5HlrgASeVbAhxHOc5s8Kt/nlDne4XT73mIHq3eJ/3XK9c5ckhLiAcT0
-	Pph1LW3jmqqU/ip7gQ5MeCf/q2cO2HeP83pqm4SuRxKIZgrvx8dg05/CJY8z22jwdsbs+1
-	9VrKfVJ6D8/Cy1fIOGoYcaomVZmZ5bU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="O/j+Ecez";
-	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 449536B0093
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 21:14:01 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 035711C12EE
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:14:01 +0000 (UTC)
+X-FDA: 84822314682.24.87399F9
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 05CDCC000E
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:13:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DPGtLxnE;
+	spf=pass (imf10.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780103635;
+	s=arc-20220608; t=1780103639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rUCi6apnDaYquXe57OZzeZfrFZn6x9QqO0qDPXuYS0A=;
-	b=67blyJI6px6b1J+breaSn5s9C+U2WJ48OmXiO+UKL7UZoaEKl+hmMDN1N3U8IFthEhSN29
-	KaiWcF7NqBec9BsOGR6QAe4eUnl0528DxzG+dfYSSZh6lYR4HvS/Sh1mLU37jvzC1Ivap+
-	hZFFcji+S2NGLqhohPyzPxd6rB/Bn7I=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-36ba285e98bso1940881a91.2
-        for <linux-mm@kvack.org>; Fri, 29 May 2026 18:13:54 -0700 (PDT)
+	bh=jYZR11HPQfogsAxGQMfpjcgpHYi++9UAGIrfMa+YGXw=;
+	b=fOQuYIylY2t6Ail6ulCkCd70jbzDEfnMmXWkiNIyW4r8cnKxd+aI7yNxv9w8xAwqy8x7s0
+	qKFtqCYtGALdOStdO3rQqQB2Q7AhpeagdXOY7ypFQ7NVnAfMV13OVZLJrWQSviG65kl0I7
+	aJq1ZuWecVaNapCvEnKr0CnFhYDYEg8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780103639; a=rsa-sha256;
+	cv=none;
+	b=sTzGnh2pXGuiLFV1PvoeuBXJw/yI9V/yfrzv7l5MV429tL/9bR79Er15jHZr9ER0Oji7zI
+	abKZdauXHB7KnlMWSD7C71jRUfL8cRUyI86s/pzifdGhwePEZf1vCbXpHEz3cAezuHEisl
+	sbQydUNIuDf2sLlN6Rzkeql/OkgHKR4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DPGtLxnE;
+	spf=pass (imf10.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-36bcbd7821fso541886a91.2
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 18:13:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780103634; x=1780708434; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780103638; x=1780708438; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rUCi6apnDaYquXe57OZzeZfrFZn6x9QqO0qDPXuYS0A=;
-        b=O/j+EcezbY2J6u8FW9DysQAzJm0JqsvvZuH7PQMqQovds4LKfyhS1UEXD8VlK0/b9n
-         kNtLG8fXXHsQ0A4bj6NakHVSQfSoszSfRH6gtMxfbAH5yIR7YPAOgXZ/DQIVR0PGzePW
-         f7FpFeYUzhZb2CxoBjpOhHvhxpRxgXvteXW56cMw/kr8eISw1ryGs8WyfAAL3wN0monQ
-         X/XmOKuIjuH7m8c07bZbboH9e9PfPpKv94HRD837nNPLbjZEJPhrz+BX/NdXUU4nr6Z7
-         tbaxyDc8dP1RIfjE2s+d39JnqcXDw7rvgju04GV9/0At28oiR6YMB9ARiUB8bjSEVUuy
-         QlVQ==
+        bh=jYZR11HPQfogsAxGQMfpjcgpHYi++9UAGIrfMa+YGXw=;
+        b=DPGtLxnEeXPoeYgX38/5r6vn9whFs9rzlnSQc2RcC4CQaifPAOiySFHFuce4+IPtcd
+         6u6kVn39XFD9RceNDoh7Wk2COACWDuUYDTIUKnfgmpfPBRs9XSorU1YZUiI6HwL0Evjw
+         2XfA9kfOsqqBknRQH/0NpdqmapMiKkn/zA4yyyn40FI4l4rFUlzbhIe09M2ajj9GtnmN
+         lyrDEDspcY81My6ZE27dZuDn6W3oAXkOvwb2O99Nlw/CYyu15utw8gTBydvAT9jvumzQ
+         bnyg84bgcxzyiwwONz0EUb8Gp8vF4rwvmrUPYNTQ4A9ALzsK+TU0194uoqih/CsS/KmM
+         Hiwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780103634; x=1780708434;
+        d=1e100.net; s=20251104; t=1780103638; x=1780708438;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rUCi6apnDaYquXe57OZzeZfrFZn6x9QqO0qDPXuYS0A=;
-        b=dzyLlo3V2Fo9MxRofmEcMXNcjlaWXQUdBDJDeK/7jUoe5mroJlZJE/akEYJJ9yIfVO
-         A6kDhngYNOoezGPxKgovwsk0Gjcd4qpm9rZpKRYVLM4Og9cZTdtgR9aivSZGd1/c+hkM
-         HsmJaIphBVHcErfmIfKQjaqV5zxALpTKD/j1f/ZovkE3w7nSNnvI6vSlLzTAtnqjLuIO
-         wW/KJIyP6rd2NMfeCJirAYXmVHuv8lqQotvT33+y9acRL6E89Gx+KobtX9RBR9NkUbqh
-         b468ASKTKZE5Eoj5GbGHGEuRiLKkl5NyskZ3Xoq+FmFH9E7T2o3KWae4pCyITWumtAZO
-         OAGw==
-X-Forwarded-Encrypted: i=1; AFNElJ8Rh+4lJVdH6m0eXMiGRi5Y5F3EWeUOqMyqjrKl1JdqfyxqTMRK/fCtJzGTJpVwiwI+3uuCmOFPvQ==@kvack.org
-X-Gm-Message-State: AOJu0YxIStBmlS9n6MbPC2jjvV3g9+1Ngc7asiFOmNJlauqVUfAG2q9l
-	5gynGWuZKbd3A/cp4JJww/iX7WmPDJmOiyZ4/PB+HrUHfs6fLsqQpqGX
-X-Gm-Gg: Acq92OHm0CSoPvXtMm1J1AZfZFIoX77zNdiyPMafk0zWbcLFHIS6iOTWaFt2zvx1pRK
-	g6CYO0iAHOG1+sahJh5k3JOaYHOJ97Ookyrdml8862bP8SM9rENwwpRiMP3C0X38gGaCLXwuLWY
-	rEwFDb4+n1Q4OdcZYI5Wx+4HnmEVuWDqLjiwwL+3kr0GE57/Mga+6dE1keIEAtvmhtLtGCysABv
-	ML51vKgD/ywYEoBB/q+mKLUkATkNARuh1i1VK9wA3WOohfFoePvBGFF5WrbScnKQ8of8m266JT/
-	dB5ibQOpLT9cgkXP5vzFvnPun+XMdD2q3PYz700ENmJ4jga1+25cR+Wu4x7Wpidrj0As8ELY+7i
-	vflMBFWapZlm2sz9UR3oBqiIbgV5zZoYbKvWKXEjouE1JmsLNWis9t87oTYDDrAc/3fms+Y5VCF
-	DmpDvruqZiwCkwUSVOcVaXDmsmxn3HShhc4bChNYiLmaLkIL9PvX69pEBynKR13UC9XXaAd/5pl
-	xX/b4v0K1biHqlMKHWxgokLaLSHWlWZ+R/pbE42KwpKIRCNnkFzA6UGEyxVOdvVXzjnWicl
-X-Received: by 2002:a17:902:f60d:b0:2b0:6a22:5165 with SMTP id d9443c01a7336-2bf36793657mr23140475ad.7.1780103633930;
-        Fri, 29 May 2026 18:13:53 -0700 (PDT)
+        bh=jYZR11HPQfogsAxGQMfpjcgpHYi++9UAGIrfMa+YGXw=;
+        b=RiyJPf4A198XozSjg66nizV4hgdGAYhnXjkRQLamgkcw/kGWjPqvL7b8o5StzsUscq
+         44xFxckxJXneD0jltZm/n0pehGcKw2xe4x7P3gzKI50EzS6OJEk54ABvdTWbISfQ6qLA
+         Ci/86d/57DbWzYmRsL1RMRZModsgjP6O2KtoPOBzhE/vEsDIhkqWOtFLg16M507WwyaL
+         P9vLR1Bi98PN60p8zePa/wAiX/6iN5oxxmHL6bxKiXm7Us1ujydsPYHsBIDoFqo6K9Y2
+         DNptpnkEX9JfZz0LO+tq8c1/AIZTm87GDck/0ZtawLMkTxUgypfCBOc2TBjiE0xjnAcs
+         eQSA==
+X-Forwarded-Encrypted: i=1; AFNElJ+lSBBfV/lg/Ah7GYHfro6Gv08RJ9Vd6YwXZbuIYCfO6cztcafaRrq3T/oGJuNrxDYiFVUAbzHaAQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw/nqMKuUUDFWUAKYxVdz6cRBVYyynsqZttHi7x+Y9ZD0g9+lFY
+	RhN08Zdm81Glyzt/cXfNyaCpBk0l63o1Pub1Pj2+YBtxHZQVcHGERhGc
+X-Gm-Gg: Acq92OGgV36F0TqlE8xSGFJskkFnCCXZ8ovfmvYpj9PkON4i7TYgFYFf2/ub4HgYZSY
+	JSPlwXVqGYhVS+SkHr0rnOq+GtKShkXX69lTwqB4XZ5/Up2XjAjesIwdGanMUKXJHkjOZGRjGYq
+	Oi4BBnZiG9JcsHstdtuFIctjeZV9ZOhETIWR7LhVT7TKMbJq7mJdKGhE+VEHWOrdvOnM+cD+olU
+	RPKGmi/rwudn9Ll7cMuFryVJwBRkXRGKOwDj3DxKt7/15QG8zURXuF81aNGUrCeJyTZ+z6Xy4Bs
+	Brpi+fbMeG8iS/gUVqkce66sXfckKHxy3r2j0KntijYWGit918NUNamq6T47Z//W6yJhkP2E9dq
+	GFfNW4PWIkpbbf7nR4iu/6V+uaXdzd9g1Z6QNc0CijW7/2XDRRKL8roe9c0xut24RRo7CnjZhaw
+	EhOXBWCUnR/UeGLwUOl0y70JK2zPnIhOw6OlpgyTM/qqmCx8qgGPPXKqitarashwk8nkFfwsxSe
+	j2Htukkr6Aj2Z9cbqN8GcUu0vl5ZIbjcOxpmmYYNQ+P7ETXxAtRIaEMe8HP7V0fZtZAz5/G
+X-Received: by 2002:a17:90b:3b90:b0:368:78da:803 with SMTP id 98e67ed59e1d1-36c4ff86dc5mr1608453a91.12.1780103637462;
+        Fri, 29 May 2026 18:13:57 -0700 (PDT)
 Received: from localhost.localdomain ([2601:600:837f:c470:1879:8422:922b:e5d3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf369c790esm10775925ad.56.2026.05.29.18.13.52
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36bc6a340b7sm3282544a91.11.2026.05.29.18.13.55
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 29 May 2026 18:13:53 -0700 (PDT)
+        Fri, 29 May 2026 18:13:56 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org
 Cc: daniel@iogearbox.net,
@@ -104,22 +104,22 @@ Cc: daniel@iogearbox.net,
 	roman.gushchin@linux.dev,
 	peterz@infradead.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 bpf-next 2/4] slub: Pass kmem_cache to alloc_slab_page()
-Date: Fri, 29 May 2026 18:13:42 -0700
-Message-ID: <20260530011345.99342-3-alexei.starovoitov@gmail.com>
+Subject: [PATCH v2 bpf-next 3/4] bpf,slab: Add slub-backed allocator for bpf_arena
+Date: Fri, 29 May 2026 18:13:43 -0700
+Message-ID: <20260530011345.99342-4-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
 References: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 336AB140009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: iyybuuxmtqak1pzbymqhtrodpm4rgjtk
-X-HE-Tag: 1780103634-948436
-X-HE-Meta: U2FsdGVkX19cdKUtNSZUtErIov7Vfl0DF4YxwTcVRCQj6eG5yrm9W0bwaKy7VFLRN7cky4iFSr56cbllZymbFMAg/AWTWbf0QYK47bgRyQr7YttMzLcnbQxCp2bU5rgg+QAgT37H6clRa51JQBKATY4CJhSxbBXp942LhXsV5P39tVxS+mWugCGc02LX/vH0dhRgR0Z/dFM3Bq6LgVHPI9eTmU2mt/7Qp4fp1ue6o1Hj8DsVI3XrqliS7dY39c9KqjYzjiE2NzSlOqLVDpZBMVsMuYThwcGy/40fIbbcd/mprSQAFOBivGI6fi9zxykqwAbGmsISUcn7j+7nO+bD2Qv0d0eF+Otc/mJ9jC2asIR6h4VmP4AbHSPmP+yg/tTCm6waJQ0pSdS/F+GR8uHkeVXPvJaYOgHkzA5JXRZdkeV9BxN7y+F+Awk1V9GJMCnK1BdJTLqOGP+dK97EyD3dLi4e81xN3BTLvRif71PX0XeZQ5iRwKU/ww9yIHskv1yXJWionNIUFrCOsQVZGr5brIWs8cfK6l/6j8jpScXnVGl5NlRGfUNr03wpdGXW4PDzxIcI/HUt/NDxq3RCIyeWR9EdLUgpSkrqGB0aDPOf4zi+qPE3pPsnFK2XwLYC3KKXnt3xPBSonVyV+O6KTGRGlPPUcviGAKEM1WlOy3BuSXqI8yacv4zBJ6P7/j1woPiny9vYh/ML7R5G17VZ3L9ouNmZAf+WemZUJA/NxbLlrD6u6bx95r0H71tCppj4YKt0nYxLaOOMS3meyCwsctsjDPnnAjSmRjnyzHumUuN1q2I7VXlhYfhDqTHfbhbMaPziudNJLzsxtfGkPMZzGotvKw4GGYQVMmG/CMqhDhEchAx2CXsNuXYaE+5h0O2ixx7+4ZWwTQnD1LTTZHOErrbOB+BqJhfIYqB3ShmmUDmN7yBaQWdv4jSBRPZqbTjOXhk60jYo/lEfJafqeJjC0pC
- l+C7vJCb
- w6Qban8XOxs7h/LYq2p6dYxRAe6OireW7mynMaSKbVWkIUCCmjEfu4xK60KrFgHe9fyrvG6S7xclB+0vWVFTnCJYKGAAS0lFeco+aqDmQEhVzH0m0GFAgCttGOXjCtgvRvcscOZt97DQ5LfUw4zK1E4TY56rNcv+GEedqe07wRFCWUARAEoUNFB3C4XI+v5GzuDS4zfsTVX3oG20Y5JvanmdouCrWKQKuYSN4GkPF0ZEUp/cOJ+dXLASGQGBkVlOzR3BPLE4PxLlF1//YWKXkGGkAkccX5O1q0iHvAG+im2Xkc0iwAnRK8IMaKZSjXo7Ge/xBN5k2t+3VGo6ndQDDoTCCWxHBvpvciUG7A1kqn0nCKBAe4qMHtQPPSARnRbByHwfUqO41IQtw7bp+6aEwGigHHKfj+WdeNnFX79Ls6PZn/3fgYvvHxwB8hG6At91vvHb+CsrbQIcQQYIyvbziyP8shAinQxaZ3BwXPSwGvzzAvqd5cviYaRUIhaPS38K1lsC6guKMXYN36cQbmZctg1oJ1Q3K9idnfl7R
+X-Rspamd-Queue-Id: 05CDCC000E
+X-Stat-Signature: r5gnxatp3yq67ibpcw15gpxiomeoomo4
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1780103638-316265
+X-HE-Meta: U2FsdGVkX19NlWbTwwOwg75K/rb0/4utBNtCvCGQTldZDn3xLbsRNuerEF9eak/7Zv5b0OVjfvjms2C3EAChqEIvbNpYwPfcWyLK6m/vQf/0Hx1YOtzjyUXG414XUMN2PIpTwkJPDcx2XggqTiY3/OSB75aBLsSuQRRm0Gm0s1YBYkCpLgtL128gN7BaeiTK1JTGIj/7Y0VuQBaimeL+RbRqW1LQE+IqWMIgMN0Q1DtSGd6tPSh7sAbgGeDw4s7b83wIa7/9lY48CRwZp25eX84w31WfaZQIxvooE4Wr+w9/6TRel9uSxD7O0Cx1CQftsBV+CWjnXnTMV/WRpuO0lNzF3VkW8bd8Dh0kmlB4U4Zja2QHm1XoTfKlo6LG01T0aS2jppIsiM5eeGDG/5jbwBcHTfdYaBwt5IMNIl4+QZH5QN6D4cKG83KgQA5kHY3Rl8BEPSA21PQ2gjBzRZTXw0oD9dGDS4ImU6anQXY9strQqkPDVCqhwJ6o7DKfOcgjmVnFm86LYcKEj21CLlwvIHaD0qXx+tD8jLFY0f1p3Kee4N6FHyKPHsW3uS9HcF7u3otVgjZjHUbxdjOLICGOQG4cwkdbGgpXVkBe8XEjj3c9nogSpuJtZ0Pd0Y/UBSg0t1ohmHN/JCjAyJYQGArU8ek56wSFilj08DhQAp5nJRbBjaEMEoPEVYwWQoqUr53Xg1fP3DeuMVPVHRpfEPjoIgiAsK8c+HOI7lqk3HAu02+EVqdOEa7nxw4WRVgzj3QmPp/nwrfM0ds4RNxHyNwioecMQCtE8dm1bb2j/0Fb3A34xr2ZFhs3rZ3aSjvz1CfbYuRsQ8G6SVDmmldqYc7ASJenKOM8Cd/k4GlFFEQaereLxRoAcqTsxY9HQSIiLZsxzqVQMU0jCYxz5CEBvmE8rGvpiGz5598j1oXgoLdbdMhcrgnyXBfP085EeG2y94jxrtdgSkb+F5fCT/ckc/3
+ ymN35Jwd
+ MzGNAG2I3NsvryCeKDLF1tuD4ycOngotmz3AF2xsOPERiZggj3BUFRCDn2NBVBp+ZTkMzn1/ImFpwxaUlOQ2ERfAX3dZmQ3fEyH3ziEFcmhP7FC8aQ6nQPa7AylwRhisawCY8CJXz0s2r58nhWpCZE8rw4aL1vaMb/Q7vPhdjLHBMSglKrILkNlbKPo8pH1DdMgV865M0MKRzSJjIUIhu3gnbpm9KOWQFRM7d93yT2AWwG9aUyMx56b0OiCY1nVgpU7sQ7X885w4IUwlsxpN212Y8TEeFmrVztec8sv34xXm4JiCAwbtoaoxZOXG0ioTSD/JcatJXY7sYcC/TdQzwPPo6ImJSRdvQYg0lpxB8ix8IsSf2GcfqKISagilzacYxzb1AU2eLt5rGlGVUFLK/p2XIkxiO7jlIoRz2DkFJxGyEUtKlzFLzT9uwRXyiGvBADfzavFaThovxFdyEhBAgX9BXenwGF+SLH/z02Pgje17zcDIXP7TsfTs1vFV3uREgfP9UQTCKV8F5HqE8e3VpbGSB+Z1q0Hf+/VVc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,51 +129,1154 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Alexei Starovoitov <ast@kernel.org>
 
-Add a struct kmem_cache *s parameter to alloc_slab_page() and update
-the two call sites in allocate_slab(). No functional change.
+Let BPF programs allocate typed objects in a bpf_arena via a
+kvmalloc-style API: bpf_arena_alloc() routes requests up to
+PAGE_SIZE through per-arena slab buckets, and falls back to
+arena_alloc_pages() for larger sizes -- analogous to kvmalloc()
+choosing between kmalloc and vmalloc by size. The fallback page
+is stashed in arena->slab_pages[pgoff] (without PageSlab) with
+page_cnt in page->private, so bpf_arena_free() can recover the
+multi-page allocation from the arena offset alone and release it
+via arena_free_pages().
 
-This is a preparatory step for the upcoming SLAB_BPF_ARENA support,
-where alloc_slab_page() needs to consult cache-specific state to route
-arena caches through bpf_arena_alloc_slab_page() instead of the page
-allocator.
+Each arena page now has two kernel VAs that alias the same bytes:
+the page allocator's direct-map VA, and the arena's vmalloc mapping
+at kern_vm_start + uaddr32. slub uses only the direct-map view --
+slab_address(), virt_to_slab(), in-object freepointers, percpu
+sheaves, partial lists all work unchanged. BPF programs see the
+arena view via kern_vm_addr + (u32)ptr addressing. Translation between
+the two windows happens only at the bpf_arena_alloc/free kfunc boundary.
+
+slub side:
+
+  - get_freepointer() clamps the decoded pointer to the same slab
+    page via (object & ~slab_mask) | (decoded & slab_mask), NULL
+    preserved. Worst case under BPF corruption: chain aliases within
+    one arena page.
+
+  - arena_alloc_slab_page() stashes uaddr32 in slab->stride via
+    slab_set_stride(); arena_slab_uaddr32() reads it back via
+    slab_get_stride(). alloc_slab_obj_exts_early() is skipped for
+    SLAB_BPF_ARENA so its own slab_set_stride() doesn't clobber the
+    stash.
+
+  - Arena caches get percpu sheaves sized by object size like any
+    other runtime cache.
+
+  - __refill_objects_node()'s trailing freelist walk is bounded by
+    slab->objects so a BPF-induced freepointer cycle can't loop
+    forever.
+
+arena side:
+
+  - Per-arena kmalloc-style bucket caches built at map_alloc cover
+    sizes up to PAGE_SIZE; larger requests fall back to
+    arena_alloc_pages().
+  - slab_pages[pgoff] gives O(1) page lookup, and also anchors
+    fallback multi-page allocations for bpf_arena_free().
+  - bpf_arena_alloc: kmem_cache_alloc_nolock -> slab_get_stride -> uaddr32.
+  - bpf_arena_free: slab_pages[pgoff] -> direct-map kva -> kfree_nolock,
+    or arena_free_pages() when page->private records a multi-page span.
+  - apply_range_clear_cb() leaves PTEs of PageSlab pages installed
+    and skips __free_page(), so bpf_arena_free_pages() on a slab-backed
+    offset can't free a page out from under slub. The page is torn
+    down later by arena_free_slab_page() after __ClearPageSlab().
 
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- mm/slub.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/bpf_defs.h |  13 ++
+ include/linux/slab.h     |  22 ++
+ kernel/bpf/Kconfig       |   3 +
+ kernel/bpf/arena.c       | 425 +++++++++++++++++++++++++++++++++++++--
+ mm/slab.h                |   6 +-
+ mm/slab_common.c         |   2 +-
+ mm/slub.c                | 177 ++++++++++++++--
+ 7 files changed, 613 insertions(+), 35 deletions(-)
 
+diff --git a/include/linux/bpf_defs.h b/include/linux/bpf_defs.h
+index 2185cd3966d4..e271ae78c4ce 100644
+--- a/include/linux/bpf_defs.h
++++ b/include/linux/bpf_defs.h
+@@ -6,14 +6,27 @@
+ #ifndef _LINUX_BPF_DEFS_H
+ #define _LINUX_BPF_DEFS_H
+ 
++#include <linux/types.h>
++
++struct slab;
++
+ #ifdef CONFIG_BPF_SYSCALL
+ bool bpf_arena_handle_page_fault(unsigned long addr, bool is_write, unsigned long fault_ip);
++struct slab *bpf_arena_alloc_slab_page(void *arena, gfp_t flags, int node,
++				       bool allow_spin);
++void bpf_arena_free_slab_page(void *arena, struct slab *slab);
+ #else
+ static inline bool bpf_arena_handle_page_fault(unsigned long addr, bool is_write,
+ 					       unsigned long fault_ip)
+ {
+ 	return false;
+ }
++static inline struct slab *bpf_arena_alloc_slab_page(void *arena, gfp_t flags,
++						     int node, bool allow_spin)
++{
++	return NULL;
++}
++static inline void bpf_arena_free_slab_page(void *arena, struct slab *slab) { }
+ #endif
+ 
+ #endif /* _LINUX_BPF_DEFS_H */
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index 152ed0aefd89..312e3f2e6d5d 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -62,6 +62,7 @@ enum _slab_flag_bits {
+ #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+ 	_SLAB_OBJ_EXT_IN_OBJ,
+ #endif
++	_SLAB_BPF_ARENA,
+ 	_SLAB_FLAGS_LAST_BIT
+ };
+ 
+@@ -248,6 +249,15 @@ enum _slab_flag_bits {
+ #define SLAB_OBJ_EXT_IN_OBJ	__SLAB_FLAG_UNUSED
+ #endif
+ 
++/*
++ * Cache is backed by bpf_arena pages instead of the page allocator.
++ * Slab pages live in the arena's kernel vmalloc range and are visible to
++ * BPF programs via 32-bit arena addressing. Freepointers stored inside
++ * free objects may be scribbled by BPF; get_freepointer() reconstructs a
++ * pointer that is always within the arena's 4GB window.
++ */
++#define SLAB_BPF_ARENA		__SLAB_FLAG_BIT(_SLAB_BPF_ARENA)
++
+ /*
+  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+  *
+@@ -372,6 +382,15 @@ struct kmem_cache_args {
+ 	 * %0 means no sheaves will be created.
+ 	 */
+ 	unsigned int sheaf_capacity;
++	/**
++	 * @bpf_arena: Opaque arena pointer for SLAB_BPF_ARENA caches.
++	 *
++	 * When non-%NULL, slab pages for this cache are sourced from the
++	 * arena via bpf_arena_alloc_slab_page()/bpf_arena_free_slab_page(),
++	 * and freepointer reads are sanitized to remain inside the arena.
++	 * Caller must also pass %SLAB_BPF_ARENA in the flags argument.
++	 */
++	void *bpf_arena;
+ };
+ 
+ struct kmem_cache *__kmem_cache_create_args(const char *name,
+@@ -961,6 +980,9 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node);
+ 
+ void *kmem_cache_alloc_arena_nolock(struct kmem_cache *s, int node);
+ 
++struct slab;
++void kmem_cache_force_discard_slab(struct kmem_cache *s, struct slab *slab);
++
+ /**
+  * __alloc_objs - Allocate objects of a given type using
+  * @KMALLOC: which size-based kmalloc wrapper to allocate with.
+diff --git a/kernel/bpf/Kconfig b/kernel/bpf/Kconfig
+index eb3de35734f0..42ef4fc3a6bd 100644
+--- a/kernel/bpf/Kconfig
++++ b/kernel/bpf/Kconfig
+@@ -34,6 +34,9 @@ config BPF_SYSCALL
+ 	select NET_SOCK_MSG if NET
+ 	select NET_XGRESS if NET
+ 	select PAGE_POOL if NET
++	# bpf_arena_alloc()/free() stashes uaddr32 in slab->stride which only
++	# becomes a real field with CONFIG_SLAB_OBJ_EXT.
++	select SLAB_OBJ_EXT if MMU && 64BIT
+ 	default n
+ 	help
+ 	  Enable the bpf() system call that allows to manipulate BPF programs
+diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+index 1727503b25d8..0f389ccf4c8f 100644
+--- a/kernel/bpf/arena.c
++++ b/kernel/bpf/arena.c
+@@ -10,7 +10,9 @@
+ #include <linux/btf_ids.h>
+ #include <linux/vmalloc.h>
+ #include <linux/pagemap.h>
++#include <linux/slab.h>
+ #include <asm/tlbflush.h>
++#include "../../mm/slab.h"
+ #include "range_tree.h"
+ 
+ /*
+@@ -47,6 +49,15 @@
+ #define KERN_VM_SZ (SZ_4G + GUARD_SZ)
+ 
+ static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt, bool sleepable);
++static void arena_free_page(struct bpf_arena *arena, struct page *page);
++
++/*
++ * Per-arena slab buckets. Mirrors the kmalloc size classes (powers of 2)
++ * up to one page.
++ */
++#define ARENA_KMALLOC_MIN_SHIFT		KMALLOC_SHIFT_LOW
++#define ARENA_KMALLOC_MAX_SHIFT		PAGE_SHIFT
++#define ARENA_KMALLOC_NUM_BUCKETS	(ARENA_KMALLOC_MAX_SHIFT + 1)
+ 
+ struct bpf_arena {
+ 	struct bpf_map map;
+@@ -63,10 +74,20 @@ struct bpf_arena {
+ 	struct irq_work     free_irq;
+ 	struct work_struct  free_work;
+ 	struct llist_head   free_spans;
++
++	/*
++	 * SLAB_BPF_ARENA: kva <-> arena offset translation at the kfunc
++	 * boundary. Forward (kva -> uaddr32) via slab->stride; reverse
++	 * (uaddr32 -> page) via @slab_pages[pgoff], sized to max_entries.
++	 */
++	struct page **slab_pages;
++	struct kmem_cache *kmalloc_caches[ARENA_KMALLOC_NUM_BUCKETS];
+ };
+ 
+ static void arena_free_worker(struct work_struct *work);
+ static void arena_free_irq(struct irq_work *iw);
++static int arena_init_slab_caches(struct bpf_arena *arena);
++static void arena_destroy_slab_caches(struct bpf_arena *arena);
+ 
+ struct arena_free_span {
+ 	struct llist_node node;
+@@ -143,6 +164,7 @@ static long compute_pgoff(struct bpf_arena *arena, long uaddr)
+ struct apply_range_data {
+ 	struct page **pages;
+ 	int i;
++	bool set_page_slab;
+ };
+ 
+ struct clear_range_data {
+@@ -166,6 +188,13 @@ static int apply_range_set_cb(pte_t *pte, unsigned long addr, void *data)
+ 	if (WARN_ON_ONCE(!pfn_valid(page_to_pfn(page))))
+ 		return -EINVAL;
+ 
++	/*
++	 * Tag PageSlab under arena->spinlock so a racing bpf_arena_free_pages()
++	 * sees the page as slub-owned (apply_range_clear_cb skips PageSlab).
++	 */
++	if (d->set_page_slab)
++		__SetPageSlab(page);
++
+ 	set_pte_at(&init_mm, addr, pte, mk_pte(page, PAGE_KERNEL));
+ 	d->i++;
+ 	return 0;
+@@ -179,9 +208,22 @@ static void flush_vmap_cache(unsigned long start, unsigned long size)
+ static int apply_range_clear_cb(pte_t *pte, unsigned long addr, void *data)
+ {
+ 	struct clear_range_data *d = data;
+-	pte_t old_pte;
++	pte_t old_pte, cur;
+ 	struct page *page;
+ 
++	/*
++	 * Skip slub-owned pages: BPF must use bpf_arena_free() for per-object
++	 * slab frees. The PTE stays; slub releases it via arena_free_slab_page()
++	 * after __ClearPageSlab(). Non-atomic ptep_get() is safe -- ptep_try_set()
++	 * only fires on pte_none, and arena_free_slab_page() can't race on this
++	 * offset (range stays allocated in range_tree for our walk).
++	 */
++	cur = ptep_get(pte);
++	if (pte_none(cur) || !pte_present(cur))
++		return 0;
++	if (PageSlab(pte_page(cur)))
++		return 0;
++
+ 	/*
+ 	 * Pairs with ptep_try_set() in the kernel-fault scratch installer.
+ 	 * Both sides must be atomic.
+@@ -290,12 +332,25 @@ static struct bpf_map *arena_map_alloc(union bpf_attr *attr)
+ 		goto err_free_scratch;
+ 	mutex_init(&arena->lock);
+ 	raw_res_spin_lock_init(&arena->spinlock);
++	arena->slab_pages = bpf_map_area_alloc(attr->max_entries *
++					       sizeof(arena->slab_pages[0]),
++					       numa_node);
++	if (!arena->slab_pages) {
++		err = -ENOMEM;
++		goto err_destroy_rt;
++	}
+ 	err = populate_pgtable_except_pte(arena);
+ 	if (err)
+-		goto err_destroy_rt;
++		goto err_free_slab_pages;
++
++	err = arena_init_slab_caches(arena);
++	if (err)
++		goto err_free_slab_pages;
+ 
+ 	return &arena->map;
+ 
++err_free_slab_pages:
++	bpf_map_area_free(arena->slab_pages);
+ err_destroy_rt:
+ 	range_tree_destroy(&arena->rt);
+ err_free_scratch:
+@@ -330,7 +385,7 @@ static int existing_page_cb(pte_t *ptep, unsigned long addr, void *data)
+ 	 * the TLB entries can stick around and continue to permit access to
+ 	 * the freed page. So it all relies on 1.
+ 	 */
+-	__free_page(page);
++	arena_free_page(arena, page);
+ 	return 0;
+ }
+ 
+@@ -347,6 +402,9 @@ static void arena_map_free(struct bpf_map *map)
+ 	if (WARN_ON_ONCE(!list_empty(&arena->vma_list)))
+ 		return;
+ 
++	/* Tear down slab caches first so all slab-backed pages return to arena. */
++	arena_destroy_slab_caches(arena);
++
+ 	/* Ensure no pending deferred frees */
+ 	irq_work_sync(&arena->free_irq);
+ 	flush_work(&arena->free_work);
+@@ -359,6 +417,7 @@ static void arena_map_free(struct bpf_map *map)
+ 	 */
+ 	apply_to_existing_page_range(&init_mm, bpf_arena_get_kern_vm_start(arena),
+ 				     SZ_4G + GUARD_SZ / 2, existing_page_cb, arena);
++	bpf_map_area_free(arena->slab_pages);
+ 	free_vm_area(arena->kern_vm);
+ 	range_tree_destroy(&arena->rt);
+ 	__free_page(arena->scratch_page);
+@@ -461,6 +520,9 @@ static vm_fault_t arena_vm_fault(struct vm_fault *vmf)
+ 		if (page == arena->scratch_page)
+ 			/* BPF triggered scratch here; don't lazy-alloc over it */
+ 			goto out_sigsegv;
++		if (PageSlab(page))
++			/* Don't return slab-backed arena page */
++			goto out_sigsegv;
+ 		/* already have a page vmap-ed */
+ 		goto out;
+ 	}
+@@ -625,7 +687,8 @@ static u64 clear_lo32(u64 val)
+  * Later the pages will be mmaped into user space vma.
+  */
+ static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt, int node_id,
+-			      bool sleepable)
++			      bool sleepable, bool set_page_slab,
++			      struct page **out_page)
+ {
+ 	/* user_vm_end/start are fixed before bpf prog runs */
+ 	long page_cnt_max = (arena->user_vm_end - arena->user_vm_start) >> PAGE_SHIFT;
+@@ -633,6 +696,7 @@ static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt
+ 	struct mem_cgroup *new_memcg, *old_memcg;
+ 	struct apply_range_data data;
+ 	struct page **pages = NULL;
++	struct page *first_page = NULL;
+ 	long remaining, mapped = 0;
+ 	long alloc_pages;
+ 	unsigned long flags;
+@@ -647,6 +711,13 @@ static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt
+ 	if (page_cnt > page_cnt_max)
+ 		return 0;
+ 
++	/*
++	 * out-path rollback can't undo PageSlab on prior batches; restrict
++	 * set_page_slab to the single-page arena_alloc_slab_page() caller.
++	 */
++	if (WARN_ON_ONCE(set_page_slab && page_cnt > 1))
++		return 0;
++
+ 	if (uaddr) {
+ 		if (uaddr & ~PAGE_MASK)
+ 			return 0;
+@@ -665,6 +736,7 @@ static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt
+ 		return 0;
+ 	}
+ 	data.pages = pages;
++	data.set_page_slab = set_page_slab;
+ 
+ 	if (raw_res_spin_lock_irqsave(&arena->spinlock, flags))
+ 		goto out_free_pages;
+@@ -695,6 +767,9 @@ static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt
+ 		if (ret)
+ 			goto out;
+ 
++		if (!first_page)
++			first_page = pages[0];
++
+ 		/*
+ 		 * Earlier checks made sure that uaddr32 + page_cnt * PAGE_SIZE - 1
+ 		 * will not overflow 32-bit. Lower 32-bit need to represent
+@@ -720,6 +795,8 @@ static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt
+ 	}
+ 	flush_vmap_cache(kern_vm_start + uaddr32, mapped << PAGE_SHIFT);
+ 	raw_res_spin_unlock_irqrestore(&arena->spinlock, flags);
++	if (out_page)
++		*out_page = first_page;
+ 	kfree_nolock(pages);
+ 	bpf_map_memcg_exit(old_memcg, new_memcg);
+ 	return clear_lo32(arena->user_vm_start) + uaddr32;
+@@ -754,12 +831,36 @@ static void zap_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
+ 		zap_vma_range(vml->vma, uaddr, PAGE_SIZE * page_cnt);
+ }
+ 
++static void arena_free_page(struct bpf_arena *arena, struct page *page)
++{
++#ifdef CONFIG_MEMCG
++	struct obj_cgroup *objcg = arena->map.objcg;
++
++	/*
++	 * Slab-backed arena pages had folio->memcg_data (aliased with
++	 * slab->obj_exts) cleared by slub's init_slab_obj_exts() when it
++	 * took ownership. Without it, __free_pages_prepare() skips the
++	 * __memcg_kmem_uncharge_page() that balances the __GFP_ACCOUNT
++	 * charge bpf_map_alloc_pages() took, leaking the charge and the
++	 * obj_cgroup_get() reference. Restore the objcg so the page
++	 * allocator's uncharge runs. Mirror the alloc-side check in
++	 * __memcg_kmem_charge_page(): no objcg or root objcg means no
++	 * charge was taken. Non-slab arena pages still hold their original
++	 * memcg_data; in that case the assignment is a same-value rewrite.
++	 */
++	if (!page->memcg_data && objcg && !obj_cgroup_is_root(objcg))
++		page->memcg_data = (unsigned long)objcg | MEMCG_DATA_KMEM;
++#endif
++	__free_page(page);
++}
++
+ static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt, bool sleepable)
+ {
++	long page_cnt_max = (arena->user_vm_end - arena->user_vm_start) >> PAGE_SHIFT;
+ 	struct mem_cgroup *new_memcg, *old_memcg;
+-	u64 full_uaddr, uaddr_end;
+-	long kaddr, pgoff;
+-	struct page *page;
++	u64 full_uaddr;
++	long kaddr, pgoff, i;
++	struct page *page, *fb_page;
+ 	struct llist_head free_pages;
+ 	struct llist_node *pos, *t;
+ 	struct arena_free_span *s;
+@@ -770,14 +871,29 @@ static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt,
+ 	/* only aligned lower 32-bit are relevant */
+ 	uaddr = (u32)uaddr;
+ 	uaddr &= PAGE_MASK;
++	pgoff = compute_pgoff(arena, uaddr);
++	if (pgoff >= page_cnt_max)
++		return;
++	page_cnt = min_t(long, page_cnt, page_cnt_max - pgoff);
++	if (!page_cnt)
++		return;
+ 	kaddr = bpf_arena_get_kern_vm_start(arena) + uaddr;
+ 	full_uaddr = clear_lo32(arena->user_vm_start) + uaddr;
+-	uaddr_end = min(arena->user_vm_end, full_uaddr + (page_cnt << PAGE_SHIFT));
+-	if (full_uaddr >= uaddr_end)
+-		return;
+ 
+-	page_cnt = (uaddr_end - full_uaddr) >> PAGE_SHIFT;
+-	pgoff = compute_pgoff(arena, uaddr);
++	/*
++	 * Drop bookkeeping for any bpf_arena_alloc() fallback pages within the
++	 * freed range. PageSlab entries are owned by slub and must not be
++	 * cleared here; slub clears them via bpf_arena_free_slab_page() when
++	 * the slab page is released.
++	 */
++	for (i = 0; i < page_cnt; i++) {
++		fb_page = READ_ONCE(arena->slab_pages[pgoff + i]);
++		if (fb_page && !PageSlab(fb_page)) {
++			WRITE_ONCE(arena->slab_pages[pgoff + i], NULL);
++			set_page_private(fb_page, 0);
++		}
++	}
++
+ 	bpf_map_memcg_enter(&arena->map, &old_memcg, &new_memcg);
+ 
+ 	if (!sleepable)
+@@ -817,7 +933,7 @@ static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt,
+ 			 * page_cnt is big it's faster to do the batched zap.
+ 			 */
+ 			zap_pages(arena, full_uaddr, 1);
+-		__free_page(page);
++		arena_free_page(arena, page);
+ 	}
+ 	bpf_map_memcg_exit(old_memcg, new_memcg);
+ 
+@@ -939,7 +1055,7 @@ static void arena_free_worker(struct work_struct *work)
+ 	/* free all pages collected by apply_to_existing_page_range() in the first loop */
+ 	llist_for_each_safe(pos, t, __llist_del_all(&free_pages)) {
+ 		page = llist_entry(pos, struct page, pcp_llist);
+-		__free_page(page);
++		arena_free_page(arena, page);
+ 	}
+ 
+ 	bpf_map_memcg_exit(old_memcg, new_memcg);
+@@ -952,6 +1068,135 @@ static void arena_free_irq(struct irq_work *iw)
+ 	schedule_work(&arena->free_work);
+ }
+ 
++/*
++ * SLAB_BPF_ARENA: per-arena kmem_cache buckets backing bpf_arena_alloc/free.
++ * Slab pages come from the arena pool; slub uses direct-map VAs internally,
++ * BPF sees the arena vmalloc view, translation happens at the kfunc boundary.
++ */
++struct slab *bpf_arena_alloc_slab_page(void *arena_p, gfp_t flags, int node,
++				       bool allow_spin)
++{
++	struct bpf_arena *arena = arena_p;
++	long ret_user_va;
++	struct page *page;
++	struct slab *slab;
++	u32 uaddr32;
++
++	/*
++	 * set_page_slab=true makes apply_range_set_cb() tag PageSlab under
++	 * arena->spinlock so a racing bpf_arena_free_pages() can't free it.
++	 */
++	ret_user_va = arena_alloc_pages(arena, 0, 1, node, allow_spin, true, &page);
++	if (!ret_user_va)
++		return NULL;
++
++	uaddr32 = (u32)ret_user_va;
++	slab = page_slab(page);
++	/*
++	 * Stash uaddr32 in slab->stride; allocate_slab() skips
++	 * alloc_slab_obj_exts_early() for SLAB_BPF_ARENA so it survives.
++	 */
++	slab_set_stride(slab, uaddr32);
++	WRITE_ONCE(arena->slab_pages[uaddr32 >> PAGE_SHIFT], page);
++
++	return slab;
++}
++
++static u32 arena_slab_uaddr32(const struct slab *slab)
++{
++	return slab_get_stride((struct slab *)slab);
++}
++
++void bpf_arena_free_slab_page(void *arena_p, struct slab *slab)
++{
++	struct bpf_arena *arena = arena_p;
++	u32 uaddr32 = arena_slab_uaddr32(slab);
++
++	WRITE_ONCE(arena->slab_pages[uaddr32 >> PAGE_SHIFT], NULL);
++	arena_free_pages(arena, uaddr32, 1, false);
++}
++
++static int arena_init_slab_caches(struct bpf_arena *arena)
++{
++	char name[KSYM_NAME_LEN];
++	unsigned int i;
++
++	for (i = ARENA_KMALLOC_MIN_SHIFT; i < ARENA_KMALLOC_NUM_BUCKETS; i++) {
++		struct kmem_cache *c;
++		struct kmem_cache_args args = {
++			.align		= sizeof(void *),
++			.bpf_arena	= arena,
++		};
++
++		snprintf(name, sizeof(name), "arena-%lx-%u",
++			 (unsigned long)arena, 1U << i);
++		c = kmem_cache_create(name, 1U << i, &args, SLAB_BPF_ARENA);
++		if (!c)
++			goto err;
++		arena->kmalloc_caches[i] = c;
++	}
++	return 0;
++err:
++	arena_destroy_slab_caches(arena);
++	return -ENOMEM;
++}
++
++static void arena_destroy_slab_caches(struct bpf_arena *arena)
++{
++	long max = arena->map.max_entries;
++	unsigned int i;
++	long pgoff;
++
++	/*
++	 * Drain per-cpu sheaves of every bucket before walking slab_pages[].
++	 * Sheaves cache pointers into slab pages that the force-discard loop
++	 * is about to release; kmem_cache_shrink() flushes those caches back
++	 * into their slabs (and frees any slab that becomes empty), so the
++	 * later force-discard cannot trigger __slab_free() on memory that has
++	 * since been recycled. Frees triggered here go through
++	 * bpf_arena_free_slab_page() which clears arena->slab_pages[], so
++	 * those entries become NULL and the loop below skips them.
++	 */
++	for (i = ARENA_KMALLOC_MIN_SHIFT; i < ARENA_KMALLOC_NUM_BUCKETS; i++) {
++		if (!arena->kmalloc_caches[i])
++			continue;
++		kmem_cache_shrink(arena->kmalloc_caches[i]);
++	}
++
++	/*
++	 * Force-discard every slab page slub still tracks via slab_pages[].
++	 * Catches orphans not on n->partial (trylock failures in __slab_free)
++	 * and BPF-leaked slabs with inuse > 0; without this kmem_cache_destroy()
++	 * would see n->nr_slabs > 0, WARN, and leak the kmem_cache descriptor.
++	 */
++	for (pgoff = 0; pgoff < max; pgoff++) {
++		struct page *page = arena->slab_pages[pgoff];
++		struct slab *slab;
++
++		if (!page)
++			continue;
++		if (!PageSlab(page))
++			/*
++			 * Leftover bpf_arena_alloc() fallback page; freed by
++			 * existing_page_cb() in arena_map_free().
++			 */
++			continue;
++		slab = page_slab(page);
++		kmem_cache_force_discard_slab(slab->slab_cache, slab);
++	}
++
++	/* Let deferred page frees from the discard pass run before teardown. */
++	irq_work_sync(&arena->free_irq);
++	flush_work(&arena->free_work);
++
++	for (i = 0; i < ARENA_KMALLOC_NUM_BUCKETS; i++) {
++		if (!arena->kmalloc_caches[i])
++			continue;
++		kmem_cache_destroy(arena->kmalloc_caches[i]);
++		arena->kmalloc_caches[i] = NULL;
++	}
++}
++
+ __bpf_kfunc_start_defs();
+ 
+ __bpf_kfunc void *bpf_arena_alloc_pages(void *p__map, void *addr__ign, u32 page_cnt,
+@@ -963,7 +1208,8 @@ __bpf_kfunc void *bpf_arena_alloc_pages(void *p__map, void *addr__ign, u32 page_
+ 	if (map->map_type != BPF_MAP_TYPE_ARENA || flags || !page_cnt)
+ 		return NULL;
+ 
+-	return (void *)arena_alloc_pages(arena, (long)addr__ign, page_cnt, node_id, true);
++	return (void *)arena_alloc_pages(arena, (long)addr__ign, page_cnt, node_id,
++					 true, false, NULL);
+ }
+ 
+ void *bpf_arena_alloc_pages_non_sleepable(void *p__map, void *addr__ign, u32 page_cnt,
+@@ -975,7 +1221,8 @@ void *bpf_arena_alloc_pages_non_sleepable(void *p__map, void *addr__ign, u32 pag
+ 	if (map->map_type != BPF_MAP_TYPE_ARENA || flags || !page_cnt)
+ 		return NULL;
+ 
+-	return (void *)arena_alloc_pages(arena, (long)addr__ign, page_cnt, node_id, false);
++	return (void *)arena_alloc_pages(arena, (long)addr__ign, page_cnt, node_id,
++					 false, false, NULL);
+ }
+ 
+ void *bpf_arena_alloc_pages_sleepable(void *p__map, void *addr__ign, u32 page_cnt,
+@@ -987,7 +1234,8 @@ void *bpf_arena_alloc_pages_sleepable(void *p__map, void *addr__ign, u32 page_cn
+ 	if (map->map_type != BPF_MAP_TYPE_ARENA || flags || !page_cnt)
+ 		return NULL;
+ 
+-	return (void *)arena_alloc_pages(arena, (long)addr__ign, page_cnt, node_id, true);
++	return (void *)arena_alloc_pages(arena, (long)addr__ign, page_cnt, node_id,
++					 true, false, NULL);
+ }
+ 
+ __bpf_kfunc void bpf_arena_free_pages(void *p__map, void *ptr__ign, u32 page_cnt)
+@@ -1023,12 +1271,155 @@ __bpf_kfunc int bpf_arena_reserve_pages(void *p__map, void *ptr__ign, u32 page_c
+ 
+ 	return arena_reserve_pages(arena, (long)ptr__ign, page_cnt);
+ }
++
++/*
++ * bpf_arena_alloc: allocate one object of @size bytes from the arena's
++ * slab buckets. Returns a value whose low 32 bits are the arena offset;
++ * BPF programs use it as a void __arena *. Slub gives us a direct-map kva;
++ * its slab page carries the arena uaddr32 in slab->stride.
++ *
++ * For @size > PAGE_SIZE the slab buckets cannot satisfy the request and
++ * the allocation falls back to arena_alloc_pages(). The first page of
++ * such a multi-page allocation is stashed in arena->slab_pages[pgoff]
++ * (without PageSlab) with page_cnt in page->private, so bpf_arena_free()
++ * can find it again from the arena offset alone.
++ */
++__bpf_kfunc void *bpf_arena_alloc(void *p__map, u32 size)
++{
++	struct bpf_map *map = p__map;
++	struct bpf_arena *arena = container_of(map, struct bpf_arena, map);
++	struct kmem_cache *c;
++	struct slab *slab;
++	unsigned int idx;
++	void *kva;
++	u32 uaddr32;
++
++	if (map->map_type != BPF_MAP_TYPE_ARENA || !size)
++		return NULL;
++	if (size > (1U << ARENA_KMALLOC_MAX_SHIFT)) {
++		struct page *first_page;
++		long ret_user_va;
++		u32 page_cnt, pgoff;
++
++		page_cnt = round_up(size, PAGE_SIZE) >> PAGE_SHIFT;
++		if (!page_cnt)
++			return NULL;
++		/* sleepable=false mirrors kmem_cache_alloc_nolock() */
++		ret_user_va = arena_alloc_pages(arena, 0, page_cnt, NUMA_NO_NODE,
++						false, false, &first_page);
++		if (!ret_user_va)
++			return NULL;
++		pgoff = (u32)ret_user_va >> PAGE_SHIFT;
++		set_page_private(first_page, page_cnt);
++		WRITE_ONCE(arena->slab_pages[pgoff], first_page);
++		return (void *)ret_user_va;
++	}
++
++	idx = max_t(unsigned int, fls(size - 1), ARENA_KMALLOC_MIN_SHIFT);
++	if (idx >= ARENA_KMALLOC_NUM_BUCKETS)
++		return NULL;
++	c = arena->kmalloc_caches[idx];
++	if (!c)
++		return NULL;
++
++	/*
++	 * Use the arena nolock variant so this kfunc is safe from any
++	 * context AND so KASAN does not track per-object alloc/free state
++	 * (a BPF program double-free must surface as an arena violation,
++	 * not a kernel KASAN splat). Memcg charging happens at the arena
++	 * page level, so no __GFP_ACCOUNT is needed here either.
++	 */
++	kva = kmem_cache_alloc_arena_nolock(c, NUMA_NO_NODE);
++	if (!kva)
++		return NULL;
++
++	slab = virt_to_slab(kva);
++	if (!slab || slab->slab_cache != c) {
++		bpf_prog_report_arena_violation(true, (long)kva, _RET_IP_);
++		return NULL;
++	}
++	uaddr32 = arena_slab_uaddr32(slab) |
++		  ((u32)(unsigned long)kva & ~PAGE_MASK);
++	return (void *)(clear_lo32(arena->user_vm_start) + uaddr32);
++}
++
++/*
++ * bpf_arena_free: free an object previously returned by bpf_arena_alloc.
++ * The arena offset's high bits identify the slab page; slab->slab_cache's
++ * bpf_arena hook confirms it belongs to this arena. The kva handed to
++ * kfree_nolock is direct-map, so its virt_to_slab works normally.
++ */
++__bpf_kfunc void bpf_arena_free(void *p__map, void *ptr__ign)
++{
++	struct bpf_map *map = p__map;
++	struct bpf_arena *arena = container_of(map, struct bpf_arena, map);
++	struct page *page;
++	struct slab *slab;
++	u32 arena_off, pgoff;
++	void *kva;
++
++	if (map->map_type != BPF_MAP_TYPE_ARENA || !ptr__ign)
++		return;
++
++	arena_off = (u32)(unsigned long)ptr__ign;
++	pgoff = arena_off >> PAGE_SHIFT;
++	if (pgoff >= arena->map.max_entries)
++		goto violation;
++	page = READ_ONCE(arena->slab_pages[pgoff]);
++	if (!page)
++		goto violation;
++	if (!PageSlab(page)) {
++		/*
++		 * Multi-page allocation from the bpf_arena_alloc() fallback.
++		 * page->private holds page_cnt stashed at allocation time.
++		 */
++		u32 page_cnt;
++
++		if (!IS_ALIGNED(arena_off, PAGE_SIZE))
++			goto violation;
++		/*
++		 * Claim the slot atomically so a concurrent bpf_arena_free() of
++		 * the same pointer doesn't race: without cmpxchg both threads
++		 * could pass the !page check above, read page_private(), and
++		 * call arena_free_pages() twice for the same range.
++		 */
++		if (cmpxchg(&arena->slab_pages[pgoff], page, NULL) != page)
++			goto violation;
++		page_cnt = page_private(page);
++		set_page_private(page, 0);
++		arena_free_pages(arena, arena_off, page_cnt, false);
++		return;
++	}
++	slab = page_slab(page);
++	if (slab->slab_cache->bpf_arena != arena)
++		goto violation;
++	/*
++	 * Reject arena offsets that do not land on an object boundary. Arena
++	 * bucket caches have power-of-two s->size, so a simple IS_ALIGNED()
++	 * suffices; without this kfree_nolock() would set a freepointer inside
++	 * an unrelated object on the same slab page.
++	 */
++	if (!IS_ALIGNED(arena_off, slab->slab_cache->size))
++		goto violation;
++	kva = page_to_virt(page) + (arena_off & ~PAGE_MASK);
++	/*
++	 * Arena variant of the nolock free: safe from any context AND
++	 * keeps KASAN out of the loop so BPF-program double-frees show
++	 * up as arena violations, not kernel KASAN splats.
++	 */
++	kfree_arena_nolock(kva);
++	return;
++violation:
++	bpf_prog_report_arena_violation(true, arena_off, _RET_IP_);
++}
+ __bpf_kfunc_end_defs();
+ 
+ BTF_KFUNCS_START(arena_kfuncs)
+ BTF_ID_FLAGS(func, bpf_arena_alloc_pages, KF_ARENA_RET | KF_ARENA_ARG2)
+ BTF_ID_FLAGS(func, bpf_arena_free_pages, KF_ARENA_ARG2)
+ BTF_ID_FLAGS(func, bpf_arena_reserve_pages, KF_ARENA_ARG2)
++BTF_ID_FLAGS(func, bpf_arena_alloc, KF_ARENA_RET)
++BTF_ID_FLAGS(func, bpf_arena_free, KF_ARENA_ARG2)
+ BTF_KFUNCS_END(arena_kfuncs)
+ 
+ static const struct btf_kfunc_id_set common_kfunc_set = {
+diff --git a/mm/slab.h b/mm/slab.h
+index bf2f87acf5e3..2b0272c3f5fe 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -248,6 +248,9 @@ struct kmem_cache {
+ 	struct kmem_cache_stats __percpu *cpu_stats;
+ #endif
+ 
++	/* NULL unless SLAB_BPF_ARENA; opaque arena pointer. */
++	void *bpf_arena;
++
+ 	struct kmem_cache_per_node_ptrs per_node[MAX_NUMNODES];
+ };
+ 
+@@ -414,7 +417,8 @@ void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
+ 			 SLAB_TYPESAFE_BY_RCU | SLAB_DEBUG_OBJECTS | \
+ 			 SLAB_NOLEAKTRACE | SLAB_RECLAIM_ACCOUNT | \
+ 			 SLAB_TEMPORARY | SLAB_ACCOUNT | \
+-			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE)
++			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE | \
++			 SLAB_BPF_ARENA)
+ 
+ #define SLAB_DEBUG_FLAGS (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER | \
+ 			  SLAB_TRACE | SLAB_CONSISTENCY_CHECKS)
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index 8b661fff5eed..c9eb6daf649a 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -49,7 +49,7 @@ struct kmem_cache *kmem_cache;
+  */
+ #define SLAB_NEVER_MERGE (SLAB_DEBUG_FLAGS | SLAB_TYPESAFE_BY_RCU | \
+ 		SLAB_NOLEAKTRACE | SLAB_FAILSLAB | SLAB_NO_MERGE | \
+-		SLAB_OBJ_EXT_IN_OBJ)
++		SLAB_OBJ_EXT_IN_OBJ | SLAB_BPF_ARENA)
+ 
+ #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
+ 			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT)
 diff --git a/mm/slub.c b/mm/slub.c
-index c3899cc1dd1d..82862d57c0cd 100644
+index 82862d57c0cd..7229befdba8b 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -3261,7 +3261,8 @@ static void barn_shrink(struct kmem_cache *s, struct node_barn *barn)
- /*
-  * Slab allocation and freeing
-  */
--static inline struct slab *alloc_slab_page(gfp_t flags, int node,
-+static inline struct slab *alloc_slab_page(struct kmem_cache *s, gfp_t flags,
-+					   int node,
- 					   struct kmem_cache_order_objects oo,
- 					   bool allow_spin)
+@@ -21,6 +21,7 @@
+ #include <linux/bitops.h>
+ #include <linux/slab.h>
+ #include "slab.h"
++#include <linux/bpf_defs.h>
+ #include <linux/vmalloc.h>
+ #include <linux/proc_fs.h>
+ #include <linux/seq_file.h>
+@@ -531,11 +532,25 @@ static inline void *get_freepointer(struct kmem_cache *s, void *object)
  {
-@@ -3464,7 +3465,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
- 	 * __GFP_RECLAIM could be cleared on the first allocation attempt,
- 	 * so pass allow_spin flag directly.
+ 	unsigned long ptr_addr;
+ 	freeptr_t p;
++	void *decoded;
+ 
+ 	object = kasan_reset_tag(object);
+ 	ptr_addr = (unsigned long)object + s->offset;
+ 	p = *(freeptr_t *)(ptr_addr);
+-	return freelist_ptr_decode(s, p, ptr_addr);
++	decoded = freelist_ptr_decode(s, p, ptr_addr);
++	/*
++	 * SLAB_BPF_ARENA freepointer slots are BPF-writable. Clamp the decoded
++	 * pointer to an s->size-aligned address within the same slab page so
++	 * chain walks stay on legitimate object boundaries. Arena slabs are
++	 * always one page (order 0). NULL preserved.
++	 */
++	if (unlikely(s->bpf_arena) && decoded) {
++		unsigned long obj_mask = s->size - 1;
++
++		decoded = (void *)(((unsigned long)object & PAGE_MASK) |
++				   ((unsigned long)decoded & ~PAGE_MASK & ~obj_mask));
++	}
++	return decoded;
+ }
+ 
+ static inline void set_freepointer(struct kmem_cache *s, void *object, void *fp)
+@@ -543,7 +558,12 @@ static inline void set_freepointer(struct kmem_cache *s, void *object, void *fp)
+ 	unsigned long freeptr_addr = (unsigned long)object + s->offset;
+ 
+ #ifdef CONFIG_SLAB_FREELIST_HARDENED
+-	BUG_ON(object == fp); /* naive detection of double free or corruption */
++	if (unlikely(object == fp)) {
++		/* BPF double-free of arena objects must not panic the kernel. */
++		if (s->bpf_arena)
++			return;
++		BUG_ON(object == fp); /* naive detection of double free or corruption */
++	}
+ #endif
+ 
+ 	freeptr_addr = (unsigned long)kasan_reset_tag((void *)freeptr_addr);
+@@ -3270,6 +3290,9 @@ static inline struct slab *alloc_slab_page(struct kmem_cache *s, gfp_t flags,
+ 	struct slab *slab;
+ 	unsigned int order = oo_order(oo);
+ 
++	if (unlikely(s->bpf_arena))
++		return bpf_arena_alloc_slab_page(s->bpf_arena, flags, node, allow_spin);
++
+ 	if (unlikely(!allow_spin))
+ 		page = alloc_frozen_pages_nolock(0/* __GFP_COMP is implied */,
+ 								  node, order);
+@@ -3485,7 +3508,15 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 
+ 	slab->slab_cache = s;
+ 
+-	kasan_poison_slab(slab);
++	/*
++	 * Skip KASAN tracking for arena caches. Per-object alloc/free hooks
++	 * are bypassed at the kmem_cache_alloc_arena_nolock / kfree_arena_nolock
++	 * boundary; mirror that here so slub's own accesses to objects on the
++	 * slab page (set_freepointer reads/writes, freelist setup, etc.) don't
++	 * trip KASAN.
++	 */
++	if (!(s->flags & SLAB_BPF_ARENA))
++		kasan_poison_slab(slab);
+ 
+ 	start = slab_address(slab);
+ 
+@@ -3493,9 +3524,11 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	init_slab_obj_exts(slab);
+ 	/*
+ 	 * Poison the slab before initializing the slabobj_ext array
+-	 * to prevent the array from being overwritten.
++	 * to prevent the array from being overwritten. Arena caches
++	 * stash uaddr32 in slab->stride; let them keep it.
  	 */
--	slab = alloc_slab_page(alloc_gfp, node, oo, allow_spin);
-+	slab = alloc_slab_page(s, alloc_gfp, node, oo, allow_spin);
- 	if (unlikely(!slab)) {
- 		oo = s->min;
- 		alloc_gfp = flags;
-@@ -3472,7 +3473,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
- 		 * Allocation may have failed due to fragmentation.
- 		 * Try a lower order alloc if possible
+-	alloc_slab_obj_exts_early(s, slab);
++	if (!(s->flags & SLAB_BPF_ARENA))
++		alloc_slab_obj_exts_early(s, slab);
+ 	account_slab(slab, oo_order(oo), s, flags);
+ 
+ 	shuffle = shuffle_freelist(s, slab, allow_spin);
+@@ -3538,6 +3571,10 @@ static void __free_slab(struct kmem_cache *s, struct slab *slab, bool allow_spin
+ 	__ClearPageSlab(page);
+ 	mm_account_reclaimed_pages(pages);
+ 	unaccount_slab(slab, order, s, allow_spin);
++	if (unlikely(s->bpf_arena)) {
++		bpf_arena_free_slab_page(s->bpf_arena, slab);
++		return;
++	}
+ 	if (allow_spin)
+ 		free_frozen_pages(page, order);
+ 	else
+@@ -5447,6 +5484,32 @@ void *kmem_cache_alloc_arena_nolock(struct kmem_cache *s, int node)
+ }
+ EXPORT_SYMBOL_GPL(kmem_cache_alloc_arena_nolock);
+ 
++/**
++ * kmem_cache_force_discard_slab - force-evict a slab page from its cache
++ * @s: kmem_cache that owns the slab
++ * @slab: the slab to evict
++ *
++ * Removes @slab from any per-node list it may be on and then discards it
++ * (decrements nr_slabs and frees the backing page). Intended for arena
++ * teardown: arena owns the page-tracking array and can enumerate every
++ * slab page it allocated, including orphans not on any partial list (left
++ * behind by spin_trylock failures in __slab_free()) and slabs whose
++ * objects were never returned (BPF program leak).
++ */
++void kmem_cache_force_discard_slab(struct kmem_cache *s, struct slab *slab)
++{
++	struct kmem_cache_node *n = get_node(s, slab_nid(slab));
++	unsigned long flags;
++
++	spin_lock_irqsave(&n->list_lock, flags);
++	if (slab_test_node_partial(slab))
++		remove_partial(n, slab);
++	spin_unlock_irqrestore(&n->list_lock, flags);
++
++	discard_slab(s, slab);
++}
++EXPORT_SYMBOL_GPL(kmem_cache_force_discard_slab);
++
+ void *__kmalloc_node_track_caller_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags,
+ 					 int node, unsigned long caller)
+ {
+@@ -5594,14 +5657,19 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+ 
+ 			n = get_node(s, slab_nid(slab));
+ 			/*
+-			 * Speculatively acquire the list_lock.
+-			 * If the cmpxchg does not succeed then we may
+-			 * drop the list_lock without any processing.
++			 * Speculatively acquire the list_lock. If the cmpxchg
++			 * does not succeed we drop the lock without processing.
+ 			 *
+-			 * Otherwise the list_lock will synchronize with
+-			 * other processors updating the list of slabs.
++			 * Arena caches may reach here from kfree_nolock() in
++			 * NMI/irq-off context; trylock and orphan the slab on
++			 * failure. A later allow_spin caller adopts it.
+ 			 */
+-			spin_lock_irqsave(&n->list_lock, flags);
++			if (unlikely(s->bpf_arena)) {
++				if (!spin_trylock_irqsave(&n->list_lock, flags))
++					n = NULL;
++			} else {
++				spin_lock_irqsave(&n->list_lock, flags);
++			}
+ 
+ 			on_node_partial = slab_test_node_partial(slab);
+ 		}
+@@ -6671,6 +6739,15 @@ void kfree_nolock(const void *object)
+ 	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, x, false)))
+ 		return;
+ 
++	/*
++	 * Arena freepointer slots are BPF-writable; defer_free()'s in-object
++	 * llist chain could be redirected. Route through __slab_free() instead;
++	 * it trylocks n->list_lock and orphans the slab on failure.
++	 */
++	if (s->bpf_arena) {
++		__slab_free(s, slab, x, x, 1, _RET_IP_);
++		return;
++	}
+ 	/*
+ 	 * __slab_free() can locklessly cmpxchg16 into a slab, but then it might
+ 	 * need to take spin_lock for further processing.
+@@ -7224,16 +7301,22 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+ 		/*
+ 		 * Freelist had more objects than we can accommodate, we need to
+ 		 * free them back. We can treat it like a detached freelist, just
+-		 * need to find the tail object.
++		 * need to find the tail object. Bound the walk by slab->objects
++		 * so a corrupted in-object freepointer (e.g. BPF arena cache
++		 * where the slot is writable from BPF) cannot loop forever; a
++		 * legitimate freelist on this slab has at most that many nodes.
  		 */
--		slab = alloc_slab_page(alloc_gfp, node, oo, allow_spin);
-+		slab = alloc_slab_page(s, alloc_gfp, node, oo, allow_spin);
- 		if (unlikely(!slab))
- 			return NULL;
- 		stat(s, ORDER_FALLBACK);
+ 		if (unlikely(object)) {
+ 			void *head = object;
+ 			void *tail;
+-			int cnt = 0;
++			unsigned int cnt = 0;
++			unsigned int limit = slab->objects;
+ 
+ 			do {
+ 				tail = object;
+ 				cnt++;
++				if (unlikely(cnt >= limit))
++					break;
+ 				object = get_freepointer(s, object);
+ 			} while (object);
+ 			__slab_free(s, slab, head, tail, cnt, _RET_IP_);
+@@ -7806,12 +7889,21 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
+ 		return 0;
+ 
+ 	/*
+-	 * Bootstrap caches can't have sheaves for now (SLAB_NO_OBJ_EXT).
++	 * Bootstrap caches (kmem_cache, kmem_cache_node) carry SLAB_NO_OBJ_EXT
++	 * and are created before kmalloc is available, so sheaf/barn setup
++	 * can't run yet.
++	 *
+ 	 * SLAB_NOLEAKTRACE caches (e.g., kmemleak's object_cache) must not
+ 	 * have sheaves to avoid recursion when sheaf allocation triggers
+ 	 * kmemleak tracking.
++	 *
++	 * SLAB_BPF_ARENA caches also set SLAB_NO_OBJ_EXT to suppress per-object
++	 * extensions, but they are created at runtime and want sheaves like any
++	 * other cache, so exempt them.
+ 	 */
+-	if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
++	if (s->flags & SLAB_NOLEAKTRACE)
++		return 0;
++	if ((s->flags & SLAB_NO_OBJ_EXT) && !(s->flags & SLAB_BPF_ARENA))
+ 		return 0;
+ 
+ 	/*
+@@ -7936,7 +8028,17 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 	}
+ #endif
+ 
+-	kasan_cache_create(s, &size, &s->flags);
++	/*
++	 * Skip KASAN cache setup for arena caches: their misuse from BPF is
++	 * reported via the arena layer, never as a KASAN splat. Skipping also
++	 * keeps s->size a power of two, which the freepointer clamp in
++	 * get_freepointer() and the IS_ALIGNED() check in bpf_arena_free()
++	 * rely on -- kasan_cache_create() would otherwise add
++	 * sizeof(struct kasan_alloc_meta) and turn a 32-byte bucket into a
++	 * 48-byte slot.
++	 */
++	if (!(s->flags & SLAB_BPF_ARENA))
++		kasan_cache_create(s, &size, &s->flags);
+ #ifdef CONFIG_SLUB_DEBUG
+ 	if (flags & SLAB_RED_ZONE) {
+ 		/*
+@@ -8650,6 +8752,27 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
+ 	s->useroffset = args->useroffset;
+ 	s->usersize = args->usersize;
+ #endif
++	if (s->flags & SLAB_BPF_ARENA) {
++		if (!args->bpf_arena)
++			goto out;
++		/*
++		 * Strip every SLAB_DEBUG_FLAGS bit from arena caches.
++		 * Masking (rather than goto out) keeps arena maps creatable
++		 * under slub_debug=... cmdline.
++		 */
++		s->flags &= ~SLAB_DEBUG_FLAGS;
++		/* Non-debug knobs we cannot honor: refuse the cache. */
++		if (s->flags & (SLAB_KASAN | SLAB_TYPESAFE_BY_RCU | SLAB_ACCOUNT))
++			goto out;
++		/*
++		 * Suppress per-object obj_exts for arena caches: accounting
++		 * already happens at arena-page granularity (bpf_map_memcg_enter
++		 * in arena_alloc_pages), and per-slab obj_exts would cost
++		 * sizeof(slabobj_ext) * objs_per_slab of overhead per page.
++		 */
++		s->flags |= SLAB_NO_OBJ_EXT;
++		s->bpf_arena = args->bpf_arena;
++	}
+ 
+ 	if (!calculate_sizes(args, s))
+ 		goto out;
+@@ -8666,6 +8789,17 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
+ 		}
+ 	}
+ 
++	if (s->flags & SLAB_BPF_ARENA) {
++		/*
++		 * Arena page source currently allocates one page at a time;
++		 * force order 0 and pin s->min to s->oo so allocate_slab() has
++		 * no fallback path and get_freepointer()'s slab-mask sanitize
++		 * (oo_order(s->oo)) always matches the actual slab order.
++		 */
++		s->oo = oo_make(0, s->size);
++		s->min = s->oo;
++	}
++
+ #ifdef system_has_freelist_aba
+ 	if (system_has_freelist_aba() && !(s->flags & SLAB_NO_CMPXCHG)) {
+ 		/* Enable fast mode */
+@@ -9671,6 +9805,17 @@ static int sysfs_slab_add(struct kmem_cache *s)
+ 	struct kset *kset = cache_kset(s);
+ 	int unmergeable = slab_unmergeable(s);
+ 
++	/*
++	 * Hide arena caches from /sys/kernel/slab: shrink/validate/etc would
++	 * BUG_ON on BPF-induced inuse underflow or corrupted freelists.
++	 * kobject_init() (no kobject_add()) keeps the destroy-time
++	 * kobject_put() -> slab_kmem_cache_release() path working.
++	 */
++	if (s->bpf_arena) {
++		kobject_init(&s->kobj, &slab_ktype);
++		return 0;
++	}
++
+ 	if (!unmergeable && disable_higher_order_debug &&
+ 			(slub_debug & DEBUG_METADATA_FLAGS))
+ 		unmergeable = 1;
 -- 
 2.53.0-Meta
 
