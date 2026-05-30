@@ -4,98 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 828BBCD6E4C
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 09:06:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36B37CD5BD0
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 09:07:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC7456B0088; Sat, 30 May 2026 05:06:36 -0400 (EDT)
+	id 9E2836B0093; Sat, 30 May 2026 05:07:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C29866B0092; Sat, 30 May 2026 05:06:36 -0400 (EDT)
+	id 9931E6B0095; Sat, 30 May 2026 05:07:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7C386B0093; Sat, 30 May 2026 05:06:36 -0400 (EDT)
+	id 881DC6B0096; Sat, 30 May 2026 05:07:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 955636B0088
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 05:06:36 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A6BEC03EC
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 09:06:36 +0000 (UTC)
-X-FDA: 84823505592.25.E1168E2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4724D14000A
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 09:06:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dNEg1+6p;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 745746B0093
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 05:07:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0C7C31A0181
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 09:07:20 +0000 (UTC)
+X-FDA: 84823507440.05.29B3D33
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9E766C0002
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 09:07:17 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf10.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780131994;
+	s=arc-20220608; t=1780132038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wCBniN88NBrAU11hxUYCzYT71eLxOw57Wf0bmI/f5BA=;
-	b=zVK3X6ONCUAoaZunD3IJ0vLd+cDPacb1qCHolzMtiWd/8cSorN0EE8Mf5mrmJYc6eDwFcP
-	+OMnc5o3Hkgo4sspXpjoYJaTqgeBQug9VZEcUzCDLxcdyzHCGDQPB8zQKGhyVfLBuJSuHn
-	SGGP+WH6CtZNiYFp3Jha6nfP1sZniWc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780131994; a=rsa-sha256;
-	cv=none;
-	b=Mg+u9x1S1yI4eWZ9+BJqd7iZPhobBbxyEwkkuOuzDpxTdHk2Xj0yc/tPRVGufYBhiTpYyU
-	XjAWYwkvxmHEb0RFpc0OpEE0cKYx62T5jTomOxBzStu149ubxfMu3cXvsAkCKhFEAHdUVp
-	SHZvSFJyZlpPRuRD3t/XJy2zufwevB8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MdhhnA8vEjdFXaLOuAUDq/tNb/CAaWxDa9KGNAIetpM=;
+	b=1h0RwQ5YYaz2+hwn8pp8n1U9M3mJPs0IvXEU8WctX+ArIg+26FbmLzfFG5yAYbiwjRSK0g
+	+gBtAbbPbGqT/SoWI1FhccxCqTZaERmPDjZqJIKXWrzVEM4jr9bwghTey1CeC9HBkLZ72m
+	A0iFP9rm/B2KXKpFTnQDY+/9JkG0YK4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dNEg1+6p;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1805D3515;
-	Sat, 30 May 2026 02:06:28 -0700 (PDT)
-Received: from [10.164.11.56] (unknown [10.164.11.56])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BF8283F905;
-	Sat, 30 May 2026 02:06:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780131993; bh=F0p1JUNXdPw9WM8ZvqkieC/oNoI7GZ3ZiURm7l0kcHU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dNEg1+6pYnhWTOOlXa+3OmugwTNXX7EZHMrHrspJwwLNfQDM1rNven1dKHpjKewYT
-	 6w//+zwvelx4A/tz5Lh4kJsIuq+P/tFD2r/IbDvWryJcclu/5qukk3oUdgkFDdr439
-	 rZsOVxjnqYg+pqg8TXWRsqSj4+Xq+6fVzqtIvwtA=
-Message-ID: <593c5a6c-efcd-4790-9398-1b0e6b94fa8a@arm.com>
-Date: Sat, 30 May 2026 14:36:21 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 8/9] mm: memory: flatten alloc_anon_folio() retry loop
-To: Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>,
- Dave Chinner <david@fromorbit.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Kairui Song <ryncsn@gmail.com>,
- Mikhail Zaslonko <zaslonko@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260527204757.2544958-1-hannes@cmpxchg.org>
- <20260527204757.2544958-9-hannes@cmpxchg.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260527204757.2544958-9-hannes@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf10.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780132038; a=rsa-sha256;
+	cv=none;
+	b=TtwHPCe4Y3A4oNru0C028dYJDu6uWh97jWIMR9CIddjazeDgBpFwuvCGTjs9phd+Y1VL+o
+	SMHhzRhswTzZnO/rowUzh9axNhWDL9wH5MCzCBA1xn71xeqhjdRqX8AhjV1azlVBHAVeBT
+	ybE1at0W4AA7g1GdcciqL2sVamCBAMU=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gSDrM1dx3z8Xrr9;
+	Sat, 30 May 2026 17:07:15 +0800 (CST)
+Received: from xaxapp05.zte.com.cn ([10.99.98.109])
+	by mse-fl2.zte.com.cn with SMTP id 64U9794S051514;
+	Sat, 30 May 2026 17:07:09 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Sat, 30 May 2026 17:07:11 +0800 (CST)
+X-Zmail-TransId: 2afa6a1aa8bfa14-28113
+X-Mailer: Zmail v1.0
+Message-ID: <20260530170711362Lxt422zijBMtOvPlJD-0-@zte.com.cn>
+In-Reply-To: <20260530165907829ZSDzDdMc110MnOflRzf9P@zte.com.cn>
+References: 20260530165907829ZSDzDdMc110MnOflRzf9P@zte.com.cn
+Date: Sat, 30 May 2026 17:07:11 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <akpm@linux-foundation.org>, <xu.xin16@zte.com.cn>
+Cc: <david@kernel.org>, <chengming.zhou@linux.dev>, <hughd@google.com>,
+        <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <ljs@kernel.org>, <corbet@lwn.net>
+Subject: =?UTF-8?B?W1BBVENIIHY3IDQvNl0ga3NtOiBhZGQgcGdvZmYgaW50byBrc21fcm1hcF9pdGVt?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 64U9794S051514
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Sat, 30 May 2026 17:07:15 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A1AA8C3.000/4gSDrM1dx3z8Xrr9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4724D14000A
-X-Stat-Signature: yq5iujhmzqnw8kp94sjrd9e6rzer73ki
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1780131994-139230
-X-HE-Meta: U2FsdGVkX19b4WnyZQ8enfP9tXVwnug5s4Gd1BnyfFkC6lFdNHPEYWyqR0mCGDN86q3BI1ld0OSvotCQO/U9XNNpK8Lpz0/May3+OdjIzZNbsibP3mvl0JvsmH0PMxS58tmYJvNPot672/TfvLxSB/p8X+6L199Oc2PcRw7Ia+Wd7FUvI/l2EUW2TXriAxjiUbTgiPFXMdZmnqA0qOknLc5Z1Ra1YysajDOzK0cQojIlOmWuuurtEoF7/IIdo+/PDWWwLVeir+lZkF43y8/R8Pr9+QZY2/9Psxp782qfGmwAq7EwaPS/us5A0cdiZOi4w6mAAn1NZIARGN3nf9nmlIeUPxi6lK2c5zm23t7bcHmdmuutriqIjfmISjd4cTTHPN5hBh0tLj6eQXKarZ76PD1C38TOmJMY9wg4YAL16iUozi1ZInyRws9GkXAu+/wrTYrez+04DwVxxLqjzdyG9vGqs8qxosPNJO2Qo8+ffAohOf+FqfubLcDunuSNLHi0i7whgZvfko09yic2ZfbaS5fvEOICLOI4V4se2fPBHEGGw4vgk1Bh2qy2ZMsTh/aTFeZz3vs7neOAUUUfr2HvagVtozfaAK/XKqj5pNO9pPW6PwSaaYiSrxyuRk49LB3n4M5MHWRmxI46ozfqEulF6IZo8VsL2ZLnSMKU3WMSJxSzCC8AiND233sk+5jqbDmXGZEk8xUokcOmnoK8wlav1MkCZ4zatQwHXXO7sA+bi4oBzlB7FqPibg31FdTDHcuqdQnsbbyQmhJ2+wJ75ZAimXlDVYCygww/jUb/hO5FuvMVnXw+6gDBKNF321u4mY1x0QcqVMNHpQJHw1kuPLbvNgIAlnskuXD3fTUeV/qh8t7oHF25DIwyqQ61DWjON9UCrhPsAh6qchAWkt924SA2MEM1mAQtI05o6NbDeDE7+jBV0YattOp2g818s2dC5Rx3ImcejprbTkPJckEe5Ej
- vXts4Z6+
- 8wZKgj3V2BgY5C655ITPb+88+p26NczjScFDkB+l0q2TzefUa5xSMft2EB+Uc+QBZsCkLqDILhEMR5mR7ITo5KfRGE+UoTjZZKkD6T8eJwRxcPp1mdLCDlre7K4xXkcBVGVO7t2yPJTWnlivNT74OdlhhkrEw0EGWBS39cJ8JPdCE3TjoNwAj57F1uydg6hJj2kYg5j+bTSeoYZSpPWwdR6pG7Z/DB6jdb/tWBqUDUd1J8J1sqo9Aa2qRwPB66CKJc1+a4AaQHKBO9gwSTwLqyiC+iV8pGM1EC8lhayqkRd/vPxjGY1rdCHCYzuJpLWe9HtrrsDxc1yNpikTjtH4JjZX4rdPdct4oktHY289524z+H3AMbWPHbAtlOzZaLqfr9YYhh31qjhApg1alS/boDV1EToM57b9wS1gsnutkI6HIlOmhtYFnN30v9xVR9kmzp4u/oqbSzT/U5a8=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9E766C0002
+X-Stat-Signature: 157kqorakq6sdjhayio71gnp3ypjyb8i
+X-HE-Tag: 1780132037-85308
+X-HE-Meta: U2FsdGVkX1/1wQqdhRfCKpVrvdrJdduJ4thRUC1VqdQogAzuzoGNnzpDliVgV4pbTgPGv2JHmGTYN5Zp1j+ykW5Rn1BHgunZzmEVOBqWxLGeN7UAufrU0Zwwgovov8xjfnotKILRrFgBACHvarOA5oUsJ/vA7dkZBy0L/MkbT8jEqJ0L4eGuy9/fqvbkiUDVaZckgT/pwygI+Ew0OigFeZx7vp4vEzAWA14NpJ380O/KIG3RUTqfybSKEFLrrIxzPYd6POktTB10ate85uAK5dA5240rDvqKnJyyYsOMGmSPT/bOYcleyCrL5zPmcZYMIZvRTeSbFBt5Qb0KcmvtwoGY5L2eCVZnUGx/i+ZWj9oEXDEVITnk0A0oABmKdkpx8JvktTwRWSiFy2sr257o4eiSf6eddka1XnGsO9MTzFDsrQTDm4TsH/QkxqWYc6kTktzGfFst+WjD4t1EP+yeC3KnM/UcS9BSNJbeFxjvhGfMQh4bm7fKMdWTym6WXK5hyClyBAdcl1HxAxYYmm54IMFa+vxvBcbocZ5HZOs1ybMsago9GTj8dfjYeR+UcifqFBwvPKr/6sUzw6S4OhpazZmaCKDwSF8yFAitZcKv/5d/8hjjJNeBgh38ZpQxh0lI4GIBNSbrl9ZpcPnuiGWQo/RW/351pKoIK/RjMZil0bhatbQ5xTiTm4cgVNDhgtYu2NGiqS6Z9UeA+/S+DwclRdA9bfyev4Y3shV/SGg0+5ZSrgHkmnQmgdMOPfO6/S8QkWesBS0fZAG/6ghRs+esGE6BpCRcfoQ28Z3RuOFsUfSUGm+iUkh4wYeu1OjBvrepsjyjzf5CS7hgY6MfEZH7lOytqwOtMpheP2DuTCi2Dzd6mxD7eptftg/0ZLy7EttA4Ou74C5LuODtyVs0A/fhJ0GOEdXfJPU0yKqn0DLm+ssNIHkjTdMErBQ9dNjk45XX+yZh1AIFT/3g3d3RYgd
+ 3i3NEvp+
+ Sh9wrurX8x1AHKSdzTQTUccOTC0vPx4+ATLcYFLQ8FEKJfDAZmVihRg0iK+Iq882GIj+BBSNdGwBb+bfqzFpNuMl1xse74WsORulxFijmHDj41unrwUyUk7rTj7kTXPIgjiXOSwjwrZfNhZXS6A/fCzahq9wmLiCN/86sZviP4bNg2cHFHj6XxpcQsWpL778uDNQBtX7s1Kab6YLVYJd569KgoeHiJTzgi6oBLE7pFJIa16u+bZ6YE8omCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,75 +98,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: xu xin <xu.xin16@zte.com.cn>
 
+The reason for adding pgoff to ksm_rmap_item has been discussed in previous
+mailing list threads [1][2]. The main purpose is to allow the KSM reverse mapping
+to obtain the original page's linear page index, so that during anon_vma_tree
+travering, it can conditionally locate the VMAs and avoid scanning the entire
+address space [0, ULONG_MAX].
 
-On 28/05/26 2:15 am, Johannes Weiner wrote:
-> alloc_anon_folio() uses a top-level if (folio) that buries the success
-> path four levels deep. This makes for awkward long lines and wrapping.
-> The next patch will add more code here, so flatten this now to keep
-> things clean and simple.
-> 
-> The next label is already there, use it for !folio.
-> 
-> No functional change intended.
-> 
-> Suggested-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> ---
+To minimize the size impact of adding pgoff to ksm_rmap_item as much as
+possible, a trick that David suggested is to use a UNION that groups the members
+related to the unstable tree together with the newly added linear page index. The
+members that valids only when in unstable tree include oldchecksum and age information.
+However, the function should_skip_rmap_item() in the smart scanning needs slight
+modification, since this function still uses the age information even when the
+rmap_item is in a stable state (the page is not KSM), a situation that occurs
+during COW faults. After using union, the size is still 64 byte without increasing.
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+We keep the same way to store the pgoff as rmap->anon_vma which is set when the page
+is merged and become a KsmPage at try_to_merge_with_ksm_page(), and reset at
+remove_rmap_item_from_tree() and remove_node_from_stable_tree() and reset when break_cow.
 
+To be specially clarified, the reason for resetting pgoff at break_cow() is:
 
->  mm/memory.c | 34 +++++++++++++++++-----------------
->  1 file changed, 17 insertions(+), 17 deletions(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 7c020995eafc..135f5c0f57bd 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5215,24 +5215,24 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
->  	while (orders) {
->  		addr = ALIGN_DOWN(vmf->address, PAGE_SIZE << order);
->  		folio = vma_alloc_folio(gfp, order, vma, addr);
-> -		if (folio) {
-> -			if (mem_cgroup_charge(folio, vma->vm_mm, gfp)) {
-> -				count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
-> -				folio_put(folio);
-> -				goto next;
-> -			}
-> -			folio_throttle_swaprate(folio, gfp);
-> -			/*
-> -			 * When a folio is not zeroed during allocation
-> -			 * (__GFP_ZERO not used) or user folios require special
-> -			 * handling, folio_zero_user() is used to make sure
-> -			 * that the page corresponding to the faulting address
-> -			 * will be hot in the cache after zeroing.
-> -			 */
-> -			if (user_alloc_needs_zeroing())
-> -				folio_zero_user(folio, vmf->address);
-> -			return folio;
-> +		if (!folio)
-> +			goto next;
-> +		if (mem_cgroup_charge(folio, vma->vm_mm, gfp)) {
-> +			count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
-> +			folio_put(folio);
-> +			goto next;
->  		}
-> +		folio_throttle_swaprate(folio, gfp);
-> +		/*
-> +		 * When a folio is not zeroed during allocation
-> +		 * (__GFP_ZERO not used) or user folios require special
-> +		 * handling, folio_zero_user() is used to make sure
-> +		 * that the page corresponding to the faulting address
-> +		 * will be hot in the cache after zeroing.
-> +		 */
-> +		if (user_alloc_needs_zeroing())
-> +			folio_zero_user(folio, vmf->address);
-> +		return folio;
->  next:
->  		count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK);
->  		order = next_order(&orders, order);
+- When a page successfully becomes a KSM page (i.e., after stable_tree_append()
+  sets STABLE_FLAG), both anon_vma and vm_pgoff are stored and remain valid.
+- However, during the merging process there are several failure paths where a
+  page that was temporarily treated as a KSM page must be reverted back to an
+  anonymous page. Examples include:
+    * The second call to try_to_merge_with_ksm_page() fails in
+      try_to_merge_two_pages().
+    * stable_tree_insert() fails in cmp_and_merge_page().
+  In such cases, break_cow() is invoked to break the COW mapping and discard
+  the KSM state.
 
+Currently, break_cow() already contains a put_anon_vma(rmap_item->anon_vma)
+to release the reference taken during the aborted merge. Because 'pgoff' is
+logically paired with anon_vma (both are only meaningful when the rmap_item
+is in a stable state), it must also be cleared (or reset) in break_cow() to
+avoid leaving stale pgoff values that could confuse subsequent rmap walks
+or scanning logic.
+
+[1] https://lore.kernel.org/all/adTPQSb-qSSHviJN@lucifer/
+[2] https://lore.kernel.org/all/202604091806051535BJWZ_FTtdIm3Snk24ei_@zte.com.cn/
+
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+---
+ mm/ksm.c | 41 ++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 34 insertions(+), 7 deletions(-)
+
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 7d5b76478f0b..4761ca3fa984 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -195,22 +195,28 @@ struct ksm_stable_node {
+  * @node: rb node of this rmap_item in the unstable tree
+  * @head: pointer to stable_node heading this list in the stable tree
+  * @hlist: link into hlist of rmap_items hanging off that stable_node
+- * @age: number of scan iterations since creation
+- * @remaining_skips: how many scans to skip
++ * @age: number of scan iterations since creation (unstable node)
++ * @remaining_skips: how many scans to skip (unstable node)
++ * @pgoff: pgoff into @anon_vma where the page is mapped (stable tree)
+  */
+ struct ksm_rmap_item {
+ 	struct ksm_rmap_item *rmap_list;
+ 	union {
+-		struct anon_vma *anon_vma;	/* when stable */
++		struct anon_vma *anon_vma;	/* for reverse mapping, when stable */
+ #ifdef CONFIG_NUMA
+ 		int nid;		/* when node of unstable tree */
+ #endif
+ 	};
+ 	struct mm_struct *mm;
+ 	unsigned long address;		/* + low bits used for flags below */
+-	unsigned int oldchecksum;	/* when unstable */
+-	rmap_age_t age;
+-	rmap_age_t remaining_skips;
++	union {
++		struct {
++			unsigned int oldchecksum;
++			rmap_age_t age;
++			rmap_age_t remaining_skips;
++		};			/* when unstable */
++		unsigned long pgoff;		/* for reverse mapping, when stable */
++	};
+ 	union {
+ 		struct rb_node node;	/* when node of unstable tree */
+ 		struct {		/* when listed from stable tree */
+@@ -776,6 +782,10 @@ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
+ 	return vma;
+ }
+
++/*
++ * break_cow: actively break the write-protect of the VMA. This is called when
++ * rmap_item has not yet become stable, but page has been merged.
++ */
+ static void break_cow(struct ksm_rmap_item *rmap_item)
+ {
+ 	struct mm_struct *mm = rmap_item->mm;
+@@ -787,6 +797,8 @@ static void break_cow(struct ksm_rmap_item *rmap_item)
+ 	 * to undo, we also need to drop a reference to the anon_vma.
+ 	 */
+ 	put_anon_vma(rmap_item->anon_vma);
++	/* Reset pgoff that might overlay age-related information. (still unstable) */
++	rmap_item->pgoff = 0;
+
+ 	mmap_read_lock(mm);
+ 	vma = find_mergeable_vma(mm, addr);
+@@ -899,6 +911,8 @@ static void remove_node_from_stable_tree(struct ksm_stable_node *stable_node)
+ 		VM_BUG_ON(stable_node->rmap_hlist_len <= 0);
+ 		stable_node->rmap_hlist_len--;
+ 		put_anon_vma(rmap_item->anon_vma);
++		/* Reset pgoff that might overlay age-related information. */
++		rmap_item->pgoff = 0;
+ 		rmap_item->address &= PAGE_MASK;
+ 		cond_resched();
+ 	}
+@@ -1052,6 +1066,8 @@ static void remove_rmap_item_from_tree(struct ksm_rmap_item *rmap_item)
+ 		stable_node->rmap_hlist_len--;
+
+ 		put_anon_vma(rmap_item->anon_vma);
++		/* Reset pgoff that might overlay age-related information. */
++		rmap_item->pgoff = 0;
+ 		rmap_item->head = NULL;
+ 		rmap_item->address &= PAGE_MASK;
+
+@@ -1598,8 +1614,15 @@ static int try_to_merge_with_ksm_page(struct ksm_rmap_item *rmap_item,
+ 	/* Unstable nid is in union with stable anon_vma: remove first */
+ 	remove_rmap_item_from_tree(rmap_item);
+
+-	/* Must get reference to anon_vma while still holding mmap_lock */
++	/*
++	 * Must get reference to anon_vma while still holding mmap_lock,
++	 * We set these two members of stable node here instead of
++	 * stable_tree_append(), maybe because we don't want to hold
++	 * mmap_read_lock again. Here mmap_read_lock is already held to
++	 * find_mergeable_vma before merging.
++	 */
+ 	rmap_item->anon_vma = vma->anon_vma;
++	rmap_item->pgoff = linear_page_index(vma, rmap_item->address);
+ 	get_anon_vma(vma->anon_vma);
+ out:
+ 	mmap_read_unlock(mm);
+@@ -2458,6 +2481,10 @@ static bool should_skip_rmap_item(struct folio *folio,
+ 	if (folio_test_ksm(folio))
+ 		return false;
+
++	/* There is no age information in stable-tree nodes. */
++	if (rmap_item->address & STABLE_FLAG)
++		return false;
++
+ 	age = rmap_item->age;
+ 	if (age != U8_MAX)
+ 		rmap_item->age++;
+-- 
+2.25.1
 
