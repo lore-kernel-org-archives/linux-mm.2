@@ -4,83 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E19CCD6E51
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 02:00:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8FACCD6E51
+	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 02:38:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AC366B0005; Fri, 29 May 2026 22:00:00 -0400 (EDT)
+	id 885666B0005; Fri, 29 May 2026 22:38:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95EAF6B0088; Fri, 29 May 2026 22:00:00 -0400 (EDT)
+	id 85D6B6B0088; Fri, 29 May 2026 22:38:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8724A6B008A; Fri, 29 May 2026 22:00:00 -0400 (EDT)
+	id 79A9D6B008A; Fri, 29 May 2026 22:38:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 75C0C6B0005
-	for <linux-mm@kvack.org>; Fri, 29 May 2026 22:00:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0F6DE402A0
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 02:00:00 +0000 (UTC)
-X-FDA: 84822430560.01.2984FD8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7D8BAC0005
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 01:59:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mLO7b6lr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F1336B0005
+	for <linux-mm@kvack.org>; Fri, 29 May 2026 22:38:09 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EBF491402F0
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 02:38:08 +0000 (UTC)
+X-FDA: 84822526656.19.F1D65C9
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E0E8FC000D
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 02:38:06 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SlPSbHli;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780106398;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1780108687;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gvQEeaYLW/wYQCXduLu+dmOxzqQTLbCPPqALp/1B/Us=;
-	b=iUVBYes+FWhXwqY94XUTH64JJ/3qPcYw8BnaoeGgZdllyx2fd/kiXU0+JqJHrq9egZ5uRv
-	nr3T2tPsMNzwnwO67kHj8nMS9DrPdQmLQfEyXib4CBSDdwgrV4mZSmI4wPTVc5Xisw/BUB
-	tWGlLrZZkZBgCbpMtKueULW5rVulJzc=
+	bh=xka95KubKnbbs2owwDRl8KytmLnYPZfdx9pjSujQuJo=;
+	b=WBV8IWf6t9Ze3gf6vv5bcH66IYAGk/Jd1a34jz5nZQPubhv5QEZ777KNIQeAgS/0C+6rVR
+	1Ab21ZH9rNSAGnGmJNdA7Cuj9Cus7jOi2q9B9CpFJALo+tu+x/dXL6khd4cEZzjwqAImF9
+	sOgjBey9jmJGRlT0ipXLDjGpNd/6DZo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mLO7b6lr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780106398; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SlPSbHli;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780108687; a=rsa-sha256;
 	cv=none;
-	b=VCD28hi3Y8txzKOnBWyUJHOsBZqLdggTyMqm19FqrWqxyHR4TauoMRFGY0tejc8bJIEmAF
-	nGrHQThc3g/uaMU7xTuTnFx+wA9hvgdnDwUgpyYEWMT6gLR/KjMi046W/8dGVycK3hoozR
-	4m7mXz08sl6bLtQFIndffSTl62Y/vvk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0689F423D6;
-	Sat, 30 May 2026 01:59:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E821F00893;
-	Sat, 30 May 2026 01:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780106394;
-	bh=gvQEeaYLW/wYQCXduLu+dmOxzqQTLbCPPqALp/1B/Us=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=mLO7b6lrgVqTATAo0H4I+EfeTnXCdbM6R9moHmNM6ps+5yguFdEQ7tyi5N4SJUXiF
-	 D6k1oG/wR+bmvPdYl9/tY4Dm2hIF63xBrA4Xg0mmGmprxWx5MAeizaTsBm4qfMHASR
-	 CLiNTcoHxFLOh4Jta/mqm7wEXGz5Pu2i6EWJmsvOsVl5igjQovsh7Z4I4jgjoW4oES
-	 73YpBy64HhyIWmBo9abbKoolf53eM6R7XRYz7eGm4oDNyeJg1w1SRzaeSttcF2i2Nm
-	 q+nGZNK6UodvwD8IrFHh3mi7HiERsh1oQLYWjqIOUKMjirUgymnz/B68K2LxCkoJWi
-	 lNMtvieJdqmvg==
-Content-Type: multipart/mixed; boundary="===============4695289581068011818=="
+	b=lNNUHwf/z7KDKtlgsgLikJIrFuZ+PVt+vwX3zKBVbdsuJEPgemAm3PcVPR1iSr+nUBI+9C
+	zqGm+mDL01vuoqTZv6Vt1Jf9LzLkxDSve1GHw/cWM55ShCaJD2GmENXhRpkK56aNnIZ+4e
+	FrNJX/1b06qI6ayT5tmmrAKrvzyYVCA=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-bd6460b0d11so2526053266b.1
+        for <linux-mm@kvack.org>; Fri, 29 May 2026 19:38:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780108685; x=1780713485; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xka95KubKnbbs2owwDRl8KytmLnYPZfdx9pjSujQuJo=;
+        b=SlPSbHlin+QfTK6Mtmp5Rj2VmVkvQjYLaucYig2zPIhgyRvbJVUbM8XKXl5JHIbQBI
+         9T1gRQ8bYa/jji1B54WNI8+ig9gJNoqrl37rwQYYZvqICKkhr/zPJaIbaPPFGZcB9JQY
+         W+zqOWRjOlUwvt+PlM7AiQ6kGh20gYC+TlV8OhlhVQaeLodEQtWHC4tX1FnPdlddMhLL
+         OKiFWlyc6ByQjKRHzXPVyxt69R6LZ5bg+FuPOTpluQ505vdB5PcAgj6AOlMk9NCYODD9
+         Ll2xYeEnFjHKysYnuVCZA4aagY/UY72yeIEMyQ6J4A8PV8DPfncH9xxVKB1KY5SYc2oA
+         74Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780108685; x=1780713485;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xka95KubKnbbs2owwDRl8KytmLnYPZfdx9pjSujQuJo=;
+        b=A+/T8pd6DM0giK58+rEOSDWDJ8FPjhYB8clvSNI9oKel9UdeOVR5LAKSFrs4qXTQv2
+         HOPuoeqkGSyt+Z+tSjoAnyM0QhRIYR9vch1Iy0SLY3l0yUWGxPFBtVeoZHZmytBR6VPQ
+         VJZS6WWn5Hpt93VrwNGK0THkqru4o85MGWT2vdGv8yfAPJrfwg3lBYer2sCBHtcFL+Cf
+         SEnfuXERqLxMgN2TBV7FNKl4WBc/3UVQA6xeNtoA4vY39Tk5NpRK8romfJGzn4bHYbSX
+         Fyg4ySH4WeGY4sSfaaZThXTCYWpwV8x/PpniHKU7LLVrF8y0uF2T+fSnDBae1gXa6y2y
+         HiQg==
+X-Forwarded-Encrypted: i=1; AFNElJ+GmD0PCyMlJ2b28ihGspBB3o986Qd89pz+NtnOR/g/oNkf2rWmLEaWamvsBQIi5PvrLymb+3Wolw==@kvack.org
+X-Gm-Message-State: AOJu0YwGmSjcYVMZh3xg5Jt50gGy4Z+Y8Pp0LtxR81bNgJWv5/p51Mx8
+	E+4qW4lalipzJkWLFI2jWRJsoaiNvz4dUXoVjO/QvOCMMwcroxDRM2VN
+X-Gm-Gg: Acq92OFp3uc5+t9vA5ZD6noio3l9B9b/mZXoyKrinQp1gF2FONP0+9IqPTJN3fsdPPN
+	T6Uenxtm2alHeMtu2UTaA0zOhdToHgv6xviWXSC1iSFGqWmbId7GxrSvTA29sO1/o9zqkFAyJKR
+	1zaoj2LVilITd/Nijmi1UZT8iqPV/ALKdFmhzVwwN/8CSBqhxuzlVIxMi8yxzi2M4T8dDjAxkDC
+	WKBY7acZi45u+8qeeW2EJw6aL9GnwukLTj6u32e2Za/2hEr+QyGiA4FeSn1mOUZWWdtwBeohPqw
+	20jOOHRYQ4nE82Pr0CkwY8QOrLJTueTP5+xUj4qd/7sEKzbcLNGoX0+E2K3XR65RHeGACotsnNI
+	k7a5HAl3FhZW9I98bNNhssAsCKBEiwai8zlImm5Wyod2JNxEUQwUXKzrfZR2j5j+pmK4z0QcXdn
+	OAy5W8q1FIb6zAWO0A0rt1Il2JUcOVy+ZQ
+X-Received: by 2002:a17:907:d9e:b0:bd8:1c88:cfef with SMTP id a640c23a62f3a-beab394bc61mr117829566b.5.1780108684896;
+        Fri, 29 May 2026 19:38:04 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-be9d5cd7b15sm118510566b.39.2026.05.29.19.38.02
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 29 May 2026 19:38:03 -0700 (PDT)
+Date: Sat, 30 May 2026 02:38:02 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Kairui Song <ryncsn@gmail.com>,
+	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>, Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/9] mm: list_lru: fix set_shrinker_bit() call during
+ race with cgroup deletion
+Message-ID: <20260530023802.l5f6ywulxl2bpafg@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260527204757.2544958-1-hannes@cmpxchg.org>
+ <20260527204757.2544958-2-hannes@cmpxchg.org>
 MIME-Version: 1.0
-Message-Id: <b629b9f1f284359ed76a11cf1ead7b9061854c0bdd7f67b2b046886c254af005@mail.kernel.org>
-In-Reply-To: <20260530011345.99342-4-alexei.starovoitov@gmail.com>
-References: <20260530011345.99342-4-alexei.starovoitov@gmail.com>
-Subject: Re: [PATCH v2 bpf-next 3/4] bpf,slab: Add slub-backed allocator for bpf_arena
-From: bot+bpf-ci@kernel.org
-To: alexei.starovoitov@gmail.com,bpf@vger.kernel.org
-Cc: daniel@iogearbox.net,andrii@kernel.org,memxor@gmail.com,eddyz87@gmail.com,vbabka@suse.cz,harry.yoo@oracle.com,david@kernel.org,tj@kernel.org,roman.gushchin@linux.dev,peterz@infradead.org,linux-mm@kvack.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Sat, 30 May 2026 01:59:54 +0000 (UTC)
-X-Stat-Signature: zxopfemsj38w3zy3i754pg7gn4kakwam
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7D8BAC0005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260527204757.2544958-2-hannes@cmpxchg.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: eee86ik9ksqcnwfih5zkzpnw8trs8ga4
+X-Rspamd-Queue-Id: E0E8FC000D
 X-Rspam-User: 
-X-HE-Tag: 1780106397-332997
-X-HE-Meta: U2FsdGVkX1+EqHhgYBSGv/HNtd/J4I6vjbTqNfwzAJq11OazMO+ZRUiivOdYthSZo3mN4t6Pv40PO4uuGGHX2+VzpKj3FB0wSaJNofDgn3b8ZaFqkau4nA2RhYcasxFhEEvd2XFFjJTtqt/UfO1jS9FpK8E/Z6D4417x06P5QhigfFSmxr8Egm5hqYI/OdjL01oRPEiSR25nWscPMFFuxdW0QvzVJN41bSrK40I2+lWfCX9NXP2Gs9QT7VLdPUPIK8MNcs654z0E8jC5zPe9oaIRb14d0yrxcAkQyuF6WZZQZeYklxZBvic/sMDnsb/aLaa3BF7xnxmDhrKcy6G9ICtHl6kk5RC7J+0UfISNo44pFNQ3uDB0daVv2tTK7HJpimKGVIJvSaEV+WtuuMnLOzRq/TicCbV5VTL8HzlUSFvs6/t2RmlWN1jrQqcweaU2C7EZB9bYRBwByFn0lqdTa8b9Tw44upOxEvNrVzNSlEDwvLtOVu5EVkulJWoCuzQvJKCMmMgZo8dGTjfsEoW0S9LlcBMtJv2OBS+Y2lnQXKNVkoagDAnoS0FaDkjylQNTZSSr7wB8ZjWYc6OpSK4c8iA2JWhCMZFtpYgUwGEPEK6O9wsLUp9Gy85qYmyd1RAcgKjs9aFTpu9SeTdMcaoqhHJXauJS1vZ8CyD51PoJE48uSks6ObpV8rjK0nrZwBj/eHyPDHaF3Wz0+vuwi9S/pBvShz/p4YnhYrnNRef2g8NULGE1CNuhlnQUNDyMGxUNTXo7rOwljLsHs6ZyTuQwvbj0wCv0FsC3El8Jq6xMdSpa1aSvEvV1WGgy5BYyoQv8k7hbowdqdY/VpkffbCvivyeOa1VVDrpmqJQqA+hyhMcJJMc7UHpnUt/5R5tex2ZhaonGyK+3P7KDZj9u8OTT2fH4/1HtPKN/lEedw+3nhBaRoT96stFhfPoogXp+Jmn0ej5oCa4oj40vllwUhVB
- v58nZnEi
- Ezet0MKXdSrv3FJhfihU0o5UbwLTfMwWxmPrpUnRpACtZMc8uwTvLVgsZCYTyZi+Rnec8VTNI5gBsk4l22MDvgbmLOOEed7m6/BbY0D4ACfD2ejifC6FIw3LdqmbWgMCeToU/hxEldN1lU08iC6jxRcJc/M0dnNkAHWY1HPiSNE1zOp8i1rBsRjZ6Z/TxAlSPBR12wzYYSSO8Wsya9voEjIp8yty/MNaJZxayYyEm7C3mGjbgjDBPTw6Ev54gNFVoeg1+nvp/DOyT/A97sR3AlUQiGv5BMBkg+KYqDiMBA+NAK24P3/WuplxS12+c69kNGunNNWo7YiLMpYEdeSg68QTDhuCzVhQA1uzvNEX1p482M5oOX8iTE8UyZqJIjCb/Z6jcju5HIHUHkxHxKLSYylsqaFMtu8IsPWHVNrvN48IJ7euK3jQBMJ/wRcD2k9cHEBopHZMmBlR2XGqifuszHA4CwmOAGxEywKkdPA7c1dIZXASMLJ28Gdk3cq2kkZMgu3l54SmgWIfOGfvYaRLio4uM/sPviS5vIoOq
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780108686-67663
+X-HE-Meta: U2FsdGVkX19kMYE8Eds3COijWUtM1H/MGweStBFzyCS1hIHOtDLvqt2AbCEcMb9RJGym/57Ae8YxYJJPDnMH6PxEBVXgQ3FSzF3djea5AsQYU1OonF4TXJ/iTDwP1WBKSnDjqmhYKANq2S9y6UDZ6k3xVJdkZ68cGv4voe1zC75SBYdHZOJC4Byw20C/3M4ad0g3oWGObmGiuvIHtVGJPeixJ4q32fAOZk9dKdEH8QdbgkPef82Fhu8LQsOTZ9XxmhMVsSAvD000glxF4KptrbNMkF7DsLiZTCJOMHwJln6Je5j0myQUWvB8MoLbn8pWkdOpJWyyk545tdkyG3vimTfByLb/l/EaVfh2RlGAjQyItfRELAc8VR48AkY6n/yxztPJEaWUO9tVmu6DrlMzuTxOZQSl3y60u6w9GIARij0WoZNpCJg5GGBxNcpBiNb4r+L9j2B5h4FhzQOJLodMpYg5AoJURENdrmv4NZ0sG1gSpNAWmw56B5HRnRINlvLisanSvRfCShTDJTq1Wx3wmbgkRfg4koUCUceOeIREL5MVj/ydyZo7RsB6/Bm5IzYgcKwbcw0lpwbJsgWS/S/s1NWgw+COT/0w2wiEILvj73K0r8Z5eGg5QKBDJzemYhVy1oG9kWbUkEub8Rzu2xp/qtDSPP8IwwivF/4v+ehFyHj9XkIl+504OR2qf8Inp5ApfXXQcRVTzUjmMPBHXy15NKS4F/UCea0beo7NTYVOYJ1NNJhdp1arY7TTMKDFX2iILsc36YVuuiApRISzpn9EZL/TkHYnVuyu7p0RK1oNImk0tUvPy47QT+1z4zTM+n2IulW6CjUKUk2zi7+/jW/dvYqP7jCH8XIq9PYhScqldITG/g7tsBYigOVi8znZ6czpVCM1RKITplZyX2FDt4d31pkrLR1I5BBj6kK6TN5ymP0hicMtcj7TDfAAVm1fpD+T6i0vztmJdHuAusdH2li
+ Ng9BI+1l
+ F9BpJIrnPDxHchJBFODaymxErrFLcyGsDMt6A+sPglQDqB4Keo9+t/LaL4qS17ChFnqtMAbLNk2W8C6zYpObZbd62pzl1O0dHjmLHM+EGcCwPVJh4lLt27mjGhsDQcMmZ3Srl3AZAbQD7Z860srsDYaa+eAB4KHTS7+WjrDtoDc4qhETWFdFQDfxoeEsgxaIL8Ag8l9PnOiVw7dUpe2xspcCUuRxuseE6kecLcF9zyYMJMPsd5QVShGGogphZNBSHV3ywJ2jxW54ETxg7sMXG2ho+9EB+NUFAbCdrVO5GGnbopKZsWKyn8B7a69S9R3G7THiDxErgxsAZva+Lc1kOJ/CrEcveOBkd4LihXEP8bry5ktsMjPlcvs2BKnwpNT8vCIZh6fqgoQ8LNujab0sGuXGRLpyHGQF0h13qfSA5d7jgtPJEmltIxy2fHM/JOZuC26IajUm5VYx+OE+YVL0r2g70YOeKPhAtkC5TQyrMjDOrw8qASedAIo/BjErjlU78WEDUv1OahRlEEjfzbItaQHkFl2K7CIJ/miw6kNNsnCNHK+m3AGS26nh5FxOo3+XGLavu3sBgio7TIFLklpw54kF5q8Qu1yfn3XQV2x0GJOBx/thR9iW02oxJwZ5C+iFeenD17UyhppNUPzrwLzlStYKHXfbDBV8ncaUwuBKRGNtTq4ZywZRd7XdcGrN7vgBGE0OTY4PVxqv9U618JyEdLvulKspE+nsIt66MdqjJ28eW7Ywg2MBTYslSc/YV7uYj2lzhmvX88PNWDbE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,266 +138,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============4695289581068011818==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> diff --git kernel/bpf/arena.c kernel/bpf/arena.c
-> index 1727503b25d8..0f389ccf4c8f 100644
-> --- kernel/bpf/arena.c
-> +++ kernel/bpf/arena.c
-
-[ ... ]
-
-> @@ -63,10 +74,20 @@ struct bpf_arena {
->  	struct irq_work     free_irq;
->  	struct work_struct  free_work;
->  	struct llist_head   free_spans;
-> +
-> +	/*
-> +	 * SLAB_BPF_ARENA: kva <-> arena offset translation at the kfunc
-> +	 * boundary. Forward (kva -> uaddr32) via slab->stride; reverse
-> +	 * (uaddr32 -> page) via @slab_pages[pgoff], sized to max_entries.
-> +	 */
-> +	struct page **slab_pages;
-> +	struct kmem_cache *kmalloc_caches[ARENA_KMALLOC_NUM_BUCKETS];
->  };
-
-[ ... ]
-
-> @@ -290,12 +332,25 @@ static struct bpf_map *arena_map_alloc(union bpf_attr *attr)
->  		goto err_free_scratch;
->  	mutex_init(&arena->lock);
->  	raw_res_spin_lock_init(&arena->spinlock);
-> +	arena->slab_pages = bpf_map_area_alloc(attr->max_entries *
-> +					       sizeof(arena->slab_pages[0]),
-> +					       numa_node);
-
-The slab_pages[] array is allocated with exactly attr->max_entries entries.
-The struct comment documents it as "sized to max_entries" and indexed by
-the logical page offset within the arena's 4GB window.
-
-[ ... ]
-
-> @@ -625,7 +687,8 @@ static u64 clear_lo32(u64 val)
->   * Later the pages will be mmaped into user space vma.
->   */
->  static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt, int node_id,
-> -			      bool sleepable)
-> +			      bool sleepable, bool set_page_slab,
-> +			      struct page **out_page)
->  {
-
-[ ... ]
-
-> @@ -720,6 +795,8 @@ static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt
->  	}
->  	flush_vmap_cache(kern_vm_start + uaddr32, mapped << PAGE_SHIFT);
->  	raw_res_spin_unlock_irqrestore(&arena->spinlock, flags);
-> +	if (out_page)
-> +		*out_page = first_page;
->  	kfree_nolock(pages);
->  	bpf_map_memcg_exit(old_memcg, new_memcg);
->  	return clear_lo32(arena->user_vm_start) + uaddr32;
-
-arena_alloc_pages() returns a 64-bit value where the low 32 bits are the
-absolute arena offset: clear_lo32(user_vm_start) + uaddr32. This uaddr32
-value is (u32)(user_vm_start + logical_pgoff * PAGE_SIZE), so it includes
-the low 32 bits of user_vm_start.
-
-[ ... ]
-
-> @@ -770,14 +871,29 @@ static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt,
->  	/* only aligned lower 32-bit are relevant */
->  	uaddr = (u32)uaddr;
->  	uaddr &= PAGE_MASK;
-> +	pgoff = compute_pgoff(arena, uaddr);
-> +	if (pgoff >= page_cnt_max)
-> +		return;
-> +	page_cnt = min_t(long, page_cnt, page_cnt_max - pgoff);
-> +	if (!page_cnt)
-> +		return;
->  	kaddr = bpf_arena_get_kern_vm_start(arena) + uaddr;
->  	full_uaddr = clear_lo32(arena->user_vm_start) + uaddr;
-> -	uaddr_end = min(arena->user_vm_end, full_uaddr + (page_cnt << PAGE_SHIFT));
-> -	if (full_uaddr >= uaddr_end)
-> -		return;
+On Wed, May 27, 2026 at 04:45:08PM -0400, Johannes Weiner wrote:
+>When list_lru_add() races with cgroup deletion, the shrinker bit is set
+>on the wrong group and lost. This can cause a shrinker run to miss the
+>cgroup that actually has the object.
 >
-> -	page_cnt = (uaddr_end - full_uaddr) >> PAGE_SHIFT;
-> -	pgoff = compute_pgoff(arena, uaddr);
-> +	/*
-> +	 * Drop bookkeeping for any bpf_arena_alloc() fallback pages within the
-> +	 * freed range. PageSlab entries are owned by slub and must not be
-> +	 * cleared here; slub clears them via bpf_arena_free_slab_page() when
-> +	 * the slab page is released.
-> +	 */
-> +	for (i = 0; i < page_cnt; i++) {
-> +		fb_page = READ_ONCE(arena->slab_pages[pgoff + i]);
-> +		if (fb_page && !PageSlab(fb_page)) {
-> +			WRITE_ONCE(arena->slab_pages[pgoff + i], NULL);
-> +			set_page_private(fb_page, 0);
-> +		}
-> +	}
+>When the passed in memcg is dead, the function finds the first non-dead
+>parent from the passed in memcg and adds the object there; but the
+>shrinker bit is set on the memcg that was passed in.
+>
 
-arena_free_pages() correctly uses compute_pgoff() to convert the 32-bit
-arena offset to a logical page index before indexing slab_pages[]. The
-compute_pgoff() function subtracts (u32)user_vm_start:
+This means we just miss to reclaim some obj, but won't crash the kernel.
 
-    static long compute_pgoff(struct bpf_arena *arena, long uaddr)
-    {
-        u32 start = (u32)arena->user_vm_start;
-        return ((u32)uaddr - start) >> PAGE_SHIFT;
-    }
+>This bug is as old as the shrinker bitmap itself.
+>
+>Fix it by returning the "effective" memcg from the locking function, and
+>have the caller use that.
+>
+>Fixes: fae91d6d8be5 ("mm/list_lru.c: set bit in memcg shrinker bitmap on first list_lru item appearance")
+>Reported-by: Usama Arif <usama.arif@linux.dev>
+>Reported-by: Sashiko
+>Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 
-This gives the correct logical offset in [0, max_entries).
+So we don't want to cc stable, right?
 
-[ ... ]
+The fix looks right, so
 
-> +/*
-> + * SLAB_BPF_ARENA: per-arena kmem_cache buckets backing bpf_arena_alloc/free.
-> + * Slab pages come from the arena pool; slub uses direct-map VAs internally,
-> + * BPF sees the arena vmalloc view, translation happens at the kfunc boundary.
-> + */
-> +struct slab *bpf_arena_alloc_slab_page(void *arena_p, gfp_t flags, int node,
-> +				       bool allow_spin)
-> +{
-> +	struct bpf_arena *arena = arena_p;
-> +	long ret_user_va;
-> +	struct page *page;
-> +	struct slab *slab;
-> +	u32 uaddr32;
-> +
-> +	/*
-> +	 * set_page_slab=true makes apply_range_set_cb() tag PageSlab under
-> +	 * arena->spinlock so a racing bpf_arena_free_pages() can't free it.
-> +	 */
-> +	ret_user_va = arena_alloc_pages(arena, 0, 1, node, allow_spin, true, &page);
-> +	if (!ret_user_va)
-> +		return NULL;
-> +
-> +	uaddr32 = (u32)ret_user_va;
-> +	slab = page_slab(page);
-> +	/*
-> +	 * Stash uaddr32 in slab->stride; allocate_slab() skips
-> +	 * alloc_slab_obj_exts_early() for SLAB_BPF_ARENA so it survives.
-> +	 */
-> +	slab_set_stride(slab, uaddr32);
-> +	WRITE_ONCE(arena->slab_pages[uaddr32 >> PAGE_SHIFT], page);
-> +
-> +	return slab;
-> +}
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-Does this array indexing work correctly when user_vm_start has non-zero
-low 32 bits?
-
-The slab_pages[] array was sized to max_entries, which equals the number
-of pages in the arena's 4GB window. It should be indexed by the logical
-page offset within that window, computed via compute_pgoff().
-
-Here bpf_arena_alloc_slab_page() indexes it with uaddr32 >> PAGE_SHIFT,
-where uaddr32 is the absolute 32-bit arena offset returned by
-arena_alloc_pages(). This includes the low 32 bits of user_vm_start.
-
-For example, if user_vm_start = 0x7f7d26200000 (as shown in the file's
-comment at line 35), then (u32)user_vm_start = 0x26200000. Right-shifting
-by PAGE_SHIFT (12) gives 156160. If the arena's max_entries is 262144
-(1GB arena), this index is in bounds. But if max_entries is 131072
-(512MB), the index 156160 exceeds the array size.
-
-The same indexing pattern appears in:
-  - bpf_arena_free_slab_page() at line 523
-  - bpf_arena_alloc() fallback path at line 683
-  - bpf_arena_free() at line 736
-
-Should all four use compute_pgoff() instead, matching the corrected
-indexing in arena_free_pages()?
-
-
-> +static u32 arena_slab_uaddr32(const struct slab *slab)
-> +{
-> +	return slab_get_stride((struct slab *)slab);
-> +}
-> +
-> +void bpf_arena_free_slab_page(void *arena_p, struct slab *slab)
-> +{
-> +	struct bpf_arena *arena = arena_p;
-> +	u32 uaddr32 = arena_slab_uaddr32(slab);
-> +
-> +	WRITE_ONCE(arena->slab_pages[uaddr32 >> PAGE_SHIFT], NULL);
-> +	arena_free_pages(arena, uaddr32, 1, false);
-> +}
-
-[ ... ]
-
-> +__bpf_kfunc void *bpf_arena_alloc(void *p__map, u32 size)
-> +{
-> +	struct bpf_map *map = p__map;
-> +	struct bpf_arena *arena = container_of(map, struct bpf_arena, map);
-> +	struct kmem_cache *c;
-> +	struct slab *slab;
-> +	unsigned int idx;
-> +	void *kva;
-> +	u32 uaddr32;
-> +
-> +	if (map->map_type != BPF_MAP_TYPE_ARENA || !size)
-> +		return NULL;
-> +	if (size > (1U << ARENA_KMALLOC_MAX_SHIFT)) {
-> +		struct page *first_page;
-> +		long ret_user_va;
-> +		u32 page_cnt, pgoff;
-> +
-> +		page_cnt = round_up(size, PAGE_SIZE) >> PAGE_SHIFT;
-> +		if (!page_cnt)
-> +			return NULL;
-> +		/* sleepable=false mirrors kmem_cache_alloc_nolock() */
-> +		ret_user_va = arena_alloc_pages(arena, 0, page_cnt, NUMA_NO_NODE,
-> +						false, false, &first_page);
-> +		if (!ret_user_va)
-> +			return NULL;
-> +		pgoff = (u32)ret_user_va >> PAGE_SHIFT;
-> +		set_page_private(first_page, page_cnt);
-> +		WRITE_ONCE(arena->slab_pages[pgoff], first_page);
-> +		return (void *)ret_user_va;
-> +	}
-
-[ ... ]
-
-> +__bpf_kfunc void bpf_arena_free(void *p__map, void *ptr__ign)
-> +{
-> +	struct bpf_map *map = p__map;
-> +	struct bpf_arena *arena = container_of(map, struct bpf_arena, map);
-> +	struct page *page;
-> +	struct slab *slab;
-> +	u32 arena_off, pgoff;
-> +	void *kva;
-> +
-> +	if (map->map_type != BPF_MAP_TYPE_ARENA || !ptr__ign)
-> +		return;
-> +
-> +	arena_off = (u32)(unsigned long)ptr__ign;
-> +	pgoff = arena_off >> PAGE_SHIFT;
-> +	if (pgoff >= arena->map.max_entries)
-> +		goto violation;
-> +	page = READ_ONCE(arena->slab_pages[pgoff]);
-> +	if (!page)
-> +		goto violation;
-
-The bounds check pgoff >= arena->map.max_entries cannot protect against
-the out-of-bounds access if pgoff is computed as (u32)ptr >> PAGE_SHIFT
-instead of compute_pgoff(). When user_vm_start has non-zero low 32 bits,
-the raw shift produces an offset that includes those bits, which can be
-far larger than max_entries. A 1GB arena starting at user_vm_start =
-0x7f7d26200000 would have max_entries = 262144, but the first allocated
-page offset would be computed as 0x26200000 >> 12 = 156160, which passes
-this bounds check even though the array only has 262144 slots and the
-correct logical index should be 0.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26670515779
---===============4695289581068011818==--
+-- 
+Wei Yang
+Help you, Help me
 
