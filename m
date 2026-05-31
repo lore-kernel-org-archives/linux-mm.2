@@ -4,110 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1C46CD5BD1
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 12:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1712CD5BD1
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 12:35:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 027EA6B0134; Sun, 31 May 2026 08:34:17 -0400 (EDT)
+	id 3F9FD6B0136; Sun, 31 May 2026 08:35:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1AC96B0136; Sun, 31 May 2026 08:34:16 -0400 (EDT)
+	id 3840A6B0138; Sun, 31 May 2026 08:35:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E09C66B0137; Sun, 31 May 2026 08:34:16 -0400 (EDT)
+	id 273386B0139; Sun, 31 May 2026 08:35:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB19E6B0134
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 08:34:16 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8C1898F487
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:34:16 +0000 (UTC)
-X-FDA: 84827657712.24.850BF71
-Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F293FC0008
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:34:12 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=KlKsRsJL;
-	spf=pass (imf28.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.190 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+	by kanga.kvack.org (Postfix) with ESMTP id 120D66B0136
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 08:35:44 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CA0028D136
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:35:43 +0000 (UTC)
+X-FDA: 84827661366.21.AA87956
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DECEF120003
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:35:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aHJ+jbXp;
+	spf=pass (imf29.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780230853;
+	s=arc-20220608; t=1780230941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HL+wohryqOhpKGEyagy/lOHeWmop01YnUKtre6cBpa4=;
-	b=GUwCHcTE49q43vqSsb48KEx+K2b93FdrLePiqxQ6BDsJTNqHl6X1C7D2sY2ZneDRl20++1
-	eexqrkVvQeP36z71ed0oVishjudM/Ods+agvwvCQ8U04x4GXpL0ZNaX0U0AX44WCSfUMvl
-	qnJ4bTWAxuzIvCyZJJth4zwwZDAMMJE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=KlKsRsJL;
-	spf=pass (imf28.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.190 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780230853; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=EfgyKc7oYPiDXAc6Y5k9wYfmjU0jfx8Oqt1OQ3/P3TI=;
+	b=zynl/99OF7t9O7Q1Oe3mtLXn/LcFsTWOIN9/5lr9RcfsYBukalQOycSntvgdw9C3L0e2bU
+	s9XmubdQX6pJc/z5gAAvLBfH4+9Ra4rAfqGVvnm/LJgJ5WKF70RLQF1K7jvThA1BgLDjdp
+	wZ2gIAAiIJMrhrAYerKTQBafLFjq5rs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780230941; a=rsa-sha256;
 	cv=none;
-	b=eaNTbZpzQ3ZvoldWBoVVuWJ37tw7Z4OjTzaHJMajKlhLo7z21OTP8Snvr/j9Y3H5FbOoWi
-	SjozacB9AWgvyORlWSH3HeKuyNie8kdITwWwnMZn35aGqhmQ008GrmhzDLMDwNX4nwhDrb
-	ySFIHVBoVIVBM/LOMKsJt1O87HofJVE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1780230848; bh=HL+wohryqOhpKGEyagy/lOHeWmop01YnUKtre6cBpa4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KlKsRsJLZ3ZLT9ffrwic5MT6BmS572gbfCGbHY3YA7nBJtZNAo+KhxhsHqvCatQXu
-	 gzr986sYUxHqbrXMMRCytxque3qSPe46FlkPMh9/FDejfZ9/2mfW9rUjSVaNscicCZ
-	 54SO1Q0XQ7MThGmu+ynrl8M5p7UY2/PMUyH0FDTA=
-Received: from [10.24.9.42] ([123.112.11.230])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id 88587460; Sun, 31 May 2026 20:34:05 +0800
-X-QQ-mid: xmsmtpt1780230845t6jodq04y
-Message-ID: <tencent_859FD9151DE6F13D2447C86ECA2CEAB9D809@qq.com>
-X-QQ-XMAILINFO: MpYZqmNm/7vMmnst/jX7M/5lIu0zok5pcX9bgbd/L55BNRONuZnTr8CFF7x+hi
-	 Lm8Pc6o+SnwpYTDFwgAUG3KGyLgs07kCNt3JeGgJh8HSSm2htgO5UwIEfhD9/OpmrqcvfI6YwpHH
-	 yS8sSrdIok2pzZhn2eGrHuNTbqhFaDKm+XHadLsKV8KoXE4cZqfiaPEnQXIGoRDTuu/OfjdQI7eR
-	 iCz6VW92AA25Rq6zpg7e5E50Ip7qtcRrak/13rWOG90s2I73dK2KTJ/LdDV6avtMfVzEdlSpf6Lq
-	 Vb/KbDAVuggLvjLkCucUWzTL1GeE4wbkcnOQCpoxlL3bfYJWynDftEwQ9iPkJQe18bfCNLSO9U0D
-	 8uCyyfay/mOr1ms3Giv7DNGyRag8dehwGeci7erd+R4tJpMWrAtgCvp7V/z56Fvp5ML18vwKulc5
-	 7+isBuSeeNmymq4jzMdJm4WNUFh05jyKXNNL3c3c3cxE21vn6Jvq3vJ1dK1TKivm/l7D7zpS5jmk
-	 +iXN0FfFlWP1HBts7x43JyjgKR3XHodb4MFTRDGttRpK0tkJV7tVz26lOwdbAtAF74Oelm//ObEd
-	 GsBOI70by6vm+WZlqnD14CnlfWGn8/Klc+2F+H4VqCPFErxDR9/YUvGd9Mfw/AgRS0LT41bnosnh
-	 JDW5f29TY70mAqdP/933Gbaxyny0dwDyKZQg0k12lGmvUEqtn+3pgyYRSQiC/pqAkA4OmISl/Xrs
-	 0BKnbWpxQRUVU5WcCWZkY4ikC4J/bkNCkUXpZcVYm20PEXdcTkYr70LMo1hGoDImVA8ag+znDSHF
-	 3Br2z2IwOVHpCJIFKMAWrPSlGpTdjnDw9YVocGAHgx5n4xRE6/0dumHk7O4j+wfkDiwtqhi+KBJs
-	 BZuw7XZ6Y1Ei0kFPhti54DHQcxFNH6zwvsTXTckqQCnDyn2F95w5YeoLuFBdAy9QQrq3MJHcn+HL
-	 U0fMaFsTEoMfpFOg5P4zdWtUw9DfNQmQBJrViqtqSfjzw49QsJ54CKUILaO8t7kUb3RMyqHZXJAM
-	 gpM2KTJy7zj+FTDA/NwvqnQZ5qWUaXKNbjgt6noLGLo/gje1MiwKGsifBCBnRPY1QbNstzt9BIYn
-	 Cux1llYlj7+C4jvq/vkTJbL+FNy3TliHAvzriFrBY4YeghhB04c5T1bBPxpw==
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-OQ-MSGID: <fe224381-fda2-4d7f-abed-49387fc9872b@qq.com>
-Date: Sun, 31 May 2026 20:34:05 +0800
+	b=ru1/shn9AGsOvB6gN27+TwguX1u8fb0TPEQexsIXJLKdlYFsJnazI1G/xnUnzq5FHIEw71
+	el+N3yMcpsKKXziQHbylN38x6queeCcXo4X/LDlt94jqV/DthQXOCWPJuMxnXU+ILxjfS1
+	hpcjYoIMsvScgL7z3oqf+Ld7uBr35G0=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aHJ+jbXp;
+	spf=pass (imf29.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2c0c2d8b95bso3131705ad.1
+        for <linux-mm@kvack.org>; Sun, 31 May 2026 05:35:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780230941; x=1780835741; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EfgyKc7oYPiDXAc6Y5k9wYfmjU0jfx8Oqt1OQ3/P3TI=;
+        b=aHJ+jbXpUHcCuBUEJvP6oMvA/QqD2pDmY9tA9fxCpszqPYK1++z1pDTeGhAKClOHoJ
+         Lr8AjWSy+dJA6Cn0bqicv4mTau4Pj+oxnvrbt3gvvErmxgZPoH+JTuiyVL2Zqiqnht0p
+         lzUckcS7qXB9pB/EWFfex76uNctB1HCkdhw0nMi56WMb6vS23EeOpQKHpBicVKWcdZYb
+         7ddIMMeWdgniOq6IVnFns94R4PwkoV9TUDGp7EzCWz+HwlBZ8nZBv7VfQQoQeoUWP02K
+         nzCmrgotPfgMn+BI0am4wE6sKFRuvX07NNl3HCHsy079qkhteFcBsYZSdFKtS6rq5G26
+         WMhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780230941; x=1780835741;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EfgyKc7oYPiDXAc6Y5k9wYfmjU0jfx8Oqt1OQ3/P3TI=;
+        b=KRk9hhw1HU1az2YXrnsisNhRXDR27pt+LYoqE1Uv41UQKyIuSVVoeYTfQHKMXfnhj6
+         xOZmU6+BsKLFPe/3t16Xm0MmKXrO1j7UwMXWSvSqMAY0ODXd5xAMPh+8X/rYC04Fsbog
+         LmbmtlKA4TAAtqPDEBTWnCUtgNeKZ4ZeObto/bLNTWBdxLEfaYuZRGjyRU2yCJ8w5j92
+         Xnn/capGndwhDOOZ79Kx1mi8DNuq6Sjn+OBWcFJj8LdjsfB9uW+wAjCSUmqsBYWfRZsa
+         1SkERmZDeFCKs8xtBn6luf1y2zCxEtAjaWanhBJ3Tq5m7L1G6C4V4tluXEDe7DpGPv9H
+         mM/A==
+X-Forwarded-Encrypted: i=1; AFNElJ/PsdJhKOQ0YWRRP0WtPZ03jtwta3KclNFxXyH4dEl7kwFhZdkuyscH/9f7Rsf1h5aGc67oqRu+jw==@kvack.org
+X-Gm-Message-State: AOJu0YyL+K3FiEvXb/z41MDJuqQXbgFdkiFf1edNPDjN8Fbcn6CubNWZ
+	PuNG4Y8CtnasYGIboRhbUhoVnrFcxqFcK6xB0Kw3NM1i8/9NoaLwcxs0
+X-Gm-Gg: Acq92OEZ0ft2EsF5MBxHYGG4UIMTdpRe3htsJhTp6StCBkt+Bqi5LRXqE8CdoUV74uy
+	aRJl/GdwMl6gRFdrpyUuU9YFbsGRrZmyDI7KL3gzmELO/Tt/6VPXlHbE1yTrg7QyGrtIpr5RMJz
+	g++6d47+m7jd3fHpvPS7I95e1tglDqCEhl3gm7ffW3TVxNMrdkpN3y1BHIThb573Sx5Xx54B+HM
+	1r3EeZ8jai/CIGLT1gVkVcydtFZi7YWl9oWxrCQdEEO1vUDxkVyhxY3RO6tFx1va8TFGBRFmcjv
+	GGZ0ABeuDR4zrMkjf7jkb7wqqEcrywsVJCNBUlW2DX57Ci8PlaGqgxwxzqqqTt/71HaNb9PCiIN
+	Q1zsLx4vDW1cI0xhIaCYPs1Tn6OOOMPmta8FczO3cpRz/Y6RDTciSX+tCWn+7B01+tj53dmxTNh
+	qBAhtRknmAWtuZ1uDZEKRGombaGLupdOYk295eKkqbMPsI3w1FI4pyXz9SrmcVlpK58E4NQlkrT
+	bF4Eb2f4g==
+X-Received: by 2002:a17:903:3585:b0:2bd:a5e:4c66 with SMTP id d9443c01a7336-2bf367c2510mr81775325ad.14.1780230940704;
+        Sun, 31 May 2026 05:35:40 -0700 (PDT)
+Received: from NV-J4GCB44.localdomain ([103.74.125.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23b011d3sm75581205ad.52.2026.05.31.05.35.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 May 2026 05:35:40 -0700 (PDT)
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Sun, 31 May 2026 20:35:16 +0800
+Subject: [PATCH] zram: fix partial I/O config check
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 4/9] mm: admit large swapin by backend range in
- swapin_sync()
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Alexandre Ghiti <alexghiti@meta.com>, Usama Arif <usamaarif642@gmail.com>,
- Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
- David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org
-References: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com>
- <tencent_EB78848E34DC7858C873193D67286ECD4B0A@qq.com>
- <CAMgjq7AA_1esgtA8VyxaBLWBBRM12bCBpxO2Jch5OESBZSg--A@mail.gmail.com>
- <CAMgjq7AQwF6oNpnGTxxJWb=oyZ3dLfPL4oSNoS+eQxtuzZPgTQ@mail.gmail.com>
-From: Fujunjie <fujunjie1@qq.com>
-In-Reply-To: <CAMgjq7AQwF6oNpnGTxxJWb=oyZ3dLfPL4oSNoS+eQxtuzZPgTQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1m49tpqau5hytkntneyppretwq5c4pic
-X-Rspamd-Queue-Id: F293FC0008
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260531-zram-fix-partial-io-config-check-on-akpm-v1-1-eb085d98faea@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAMrHGoC/x2NSQ7CMAwAv1L5jKUmQFi+UnEwxmmt0iRyEEJU/
+ TsRxznMzApVTKXCtVvB5K1Vc2rgdh3wRGkU1Edj8L0P/XHv8Gu0YNQPFrKX0hM1I+cUdUSehGf
+ MCWkuC3Lw98vJH1yIZ2i5YtK0/2q4bdsPilMcgnoAAAA=
+To: Minchan Kim <minchan@kernel.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, Jens Axboe <axboe@kernel.dk>, 
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Barry Song <baohua@kernel.org>, 
+ Baoquan He <baoquan.he@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+ linux-mm@kvack.org, Christoph Hellwig <hch@lst.de>, 
+ Jianyue Wu <wujianyue000@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openssh-sha256; t=1780230924; l=1070;
+ i=wujianyue000@gmail.com; s=id_ed25519; h=from:subject:message-id;
+ bh=5K6jI7JFHe7FUIvV9uN1RWnD5dUnVYFc8z5pQxjkUFc=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgW51Zh3v9nG0Wlld2Ti8ylp1TnO7yB
+ H+z9CbXty/WEAQAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QBkwggpDqSVHNBr+N81oydCDWAZf7H8FHq6RvO+oz1JCXQJEzyz8+E3c5iCUO5K71cROfmO25gN
+ o1oQ7x00ADgE=
+X-Developer-Key: i=wujianyue000@gmail.com; a=openssh;
+ fpr=SHA256:gVWBPJbHGWlCIw+V8F63Ff0k21S7AB5+rZt8+huemvg
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 3xez54pt4degzzgt3jtty3d469drer9i
+X-Rspamd-Queue-Id: DECEF120003
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780230852-99850
-X-HE-Meta: U2FsdGVkX1/N1orWAqkc8SfSTvouBz6OMRtvv46PSzttB1jdtiCNgbBFw4+x+rrIU2NMAKIUaiVj0ih/tKvYp9uynFz/vJRamDiXOf1fWKTlITJEbAscpR7CJMwVRVZ8zuu5WOwHlZR0FsP/N7EyoXguDv2UA8Mo5h4o+ZZayEyUhgo4qkEJFZiSu07WUGZ1ZiC6qkUMvpapOV/Rtp7yqioF0ZTLOXK2zEkyTe0Ct6C2imJfH/qBDhaPga3rKKwR4deNxy4TIy308nBxx+M4m4UjszL74zs3ykPC1oWe2omh2HUGUBsbKJbyJ+jyPoqwZKrdAufLKzsHDKIek0zmrlFdfIBLGyiQO3v15exrSCrLxOurKMTsFx8ZgWurqKwSftp/cVeAOx/Ru/lCd7vDOt4sFmjEpK4mSElF0DiWWrPxjlGzulG+LhyvLJJmrbjO82E3O9vIH2aJdjXhoxPQ4lvacdynVbNBY5iUxF1yk1dPhtVnc7UVtd9inUDC/kvyBwFfEjvtAwqHLQ3vCqkoq8gxnL4QxD1kaj/Rz4QYEkn2e+CGxeYKEUeaTzh1y7g+QFdz68QSPwDQ/k+W8AiZqBWACF/l5qBICchZP6VzpoLyti0V5WWoYUzGAoB7oOatYia7r5ftSXWqy5yBuC7WCwBObch2uz/fu8dPRYYOIX3AdHVrQhca9FquU1228vTHHvfSFrcgUcgfLob9jzXJeERdeOMkfK6+PmJTW66TS5Q0hsCBlD3cPPxAV29CI1r0VOylYoKYQbac6xDIbcxbhfVYQ7GnXMh49Irz029n3oCqVw7T75zW6xxahGbbd9TBCfIxvjYYHst+SHB/PIwcq7sUwf1mdyXikUjG1R/G8c1LmRk6nSaM5JDs4UXmrz4pOCXDOzigCTq8YXCokRLVuN4cPgL9Jf0VPkVBnKq6alyv8iei0QzS9eq1+W8dRXkJgyhpQsJS85kw6RXCHqb
- 5/hjbiZ0
- 412KIg+H3yTOMYRQb2xyrzqNfxjoqlXyj+LV/FSBM4JNU9LJayDPeiTDxw5ftCfpxe6GeY1XRocdOjPZFpe4jsON98522nfNFwVqJfH4stsnTJ5NW+UVhiR+/2KCueB5i1gKsiO6AXfMMNapbF8W8XzQLheAiHyZRr4CruN4N9rLrLItJk0CDLJ5BwH6i+4rk13MyURay3r5khcSkeoue64kFankUHKnSkctnPACnaRbNSX+rH8mk/jsKPuQ1q2hCH5zdyrPWcpEUL7IFUKKLOGk0uYigyM2MQiO3mePL2ecrALnq4WavPskBkhChTVyolnKbAstKHqe2MNQSNAQNTXJMNxQ9haiO2rV8uzGV9fPKLXdbq5UdfBd/Y32G9TpZPgkDqKjblA24yIBj/TauOFT2qAd6+nPtQsIfpCogAYxPyEJV3ON/9OK/p3BBRw7T/Nhi6hIzJyJqfkI=
+X-HE-Tag: 1780230941-469845
+X-HE-Meta: U2FsdGVkX1/thsdmMBB/kiPyXsl4HJtQOrNz735PCcneYddRxXJ5bNSDRjxsG75UFKjPRMmBDj4ueogff2zrK2FKQP/X4l0P3awG5W6Pl+YUt9IRyfcwXmoNjjXWRxeUtZy7WGVtva9r30HbUKfdWg/qsIDt15YNLM9pIqIyrKmQTcft5bZj3BrVX1VvODUNOGFZ3L8jTccRbr7p3vhren4co8Dc/7A/32EO57LxalK/fofUIVLxkIm09d4n2Y8WghpJ6GGGQLY4Nl57VwBN2zyzAJHOvh/xlz6m7csTyRGvZTvsj6CNMLYzlegQS3MAPUFjhk/u/ehedYZxY5y8NYPIiY+iWHC10U2TQt50Zr22Oe/2Gq3shq1z0nE3mcnvPAGYUkUgj+aOXJJEcoSuuabOfz9T83OG7oqG6VhHvHV2vkst0ydjWQdjJro0/7KTNnigl3fXuJP0Fz33vNAhhdGJ5+K6FBuRg8DdpqBgxpXFwgzN6K5swrg9RmpfN7iuKvfQNyZ03AOyoplByCXE5v2n57jb26SD+DXAn7Kdo7CAYRZuqWq+A0UE8RvbRZ+4UwltOZd6GhupnWF/tQwK2ffIaTSjLDSxcroAXhOBbgmVwHmhdG5dsq8fJRd+C0Mwkq6refrFpy+vnWj/q3fB4AtDe7SS+f9e/kOz1G9ijT1trKEJxnVKTpR2+4yAVPrPQWjIgiPTWXMnJDi7h8r6Q8kB8c5Xr2XLh1VgHQoaifjPSlAPu21WIWfiHwrLM5ANV7We9zj7DenzhAzU+DUdtOT61qtJuOEDr0Hcb3cnTOws97aya57BzwN4V6MeQH0eUpU1lk6Da5uP1nHFcgg3+I+V8Up6KyCCxXKHcQy5oEpBXVTohkogxrh0Yp0fDBV8VgjKKFQ+LanBrjvBYh17gZuiJMqqUYrUs3HDFOqs0da6JEl+f8YNYZQTkIDcT576gf/Jqz+83rUMTcr6/Da
+ i8Alog77
+ cOf4kotdn5bXJkl8aCsLwyqfzhTW8tHCAd2kuXs6I3992YlvVDhK2uJ+89a7jHd5d0zn/irdZhru9rP2zAncA51dq5/k34nPf0hJ7TZz6DdkR/2OLhqZEquBey88CKKUaF9MIxM6otfwFWa3GqcOqhX5isIV1XDcmIf2ZMNn7O7yRWTf/p+pDWENFbj8Oyiegl+DhuKLWRcCNkc7fsfdV6IJQ265YW0XwfnxkuxB6Q5toRrcCV+n8xXqyzgb6R2Hx1w1ZM2Q/bHw/7OdFVPfCWR5p07KbI24VIxLHs1SG9rc2aUARXJ0KCy9Wr8/yx1oU+Y9/7qyflKGIVFSgxIbpGLWGdHvJh/MrHoSGEfHJ6WYLpA+cvmFv7DFlsUXV96nruB+XkMVkIB8uaB0TUSfPufzIRGu/vYdDZAKOk0c3vH3FIfuLDLBgkokXV+ZrHlEpfJQY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,22 +133,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+IS_ENABLED() expects a CONFIG_* symbol. Use the real Kconfig symbol so
+this warning reflects whether synchronous partial I/O is built in.
 
+Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+---
+zram: fix partial I/O config check
+---
+ drivers/block/zram/zram_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 5/29/2026 10:45 PM, Kairui Song wrote:
-> On Fri, May 29, 2026 at 10:43 PM Kairui Song <ryncsn@gmail.com> wrote:
->>
->> Hi Fujunjie,
->>
->> Thanks for the update, but this whole defer_memcg1_swapin thing is so
->> ugly I don't think this is the right way at all.
->>
->> If you really need this, maybe you can always defer the memcg1
-> 
-> Oh and I'm not saying I'm against this series or the idea, I'm just
-> saying this particular design of this one patch needs some improvement
-> :)
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 6e1330ce4bc1..72f89fd5572e 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1510,7 +1510,7 @@ static int read_from_bdev(struct zram *zram, struct page *page, u32 index,
+ {
+ 	atomic64_inc(&zram->stats.bd_reads);
+ 	if (!parent) {
+-		if (WARN_ON_ONCE(!IS_ENABLED(ZRAM_PARTIAL_IO)))
++		if (WARN_ON_ONCE(!IS_ENABLED(CONFIG_ZRAM_PARTIAL_IO)))
+ 			return -EIO;
+ 		return read_from_bdev_sync(zram, page, index, blk_idx);
+ 	}
 
-Thanks for your review! I will improve the implementation.
+---
+base-commit: 404fb4f38e8f38469dfff4df0205c9d18eeb1f57
+change-id: 20260531-zram-fix-partial-io-config-check-on-akpm-c62b972416f8
+
+Best regards,
+-- 
+Jianyue Wu <wujianyue000@gmail.com>
 
 
