@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C55D3CD6E52
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 14:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CFA7CD6E52
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 14:36:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC1AA6B0149; Sun, 31 May 2026 10:31:53 -0400 (EDT)
+	id 527B96B014A; Sun, 31 May 2026 10:36:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C72E06B014A; Sun, 31 May 2026 10:31:53 -0400 (EDT)
+	id 4D8A96B014C; Sun, 31 May 2026 10:36:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B88856B014B; Sun, 31 May 2026 10:31:53 -0400 (EDT)
+	id 3EEC76B014D; Sun, 31 May 2026 10:36:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A9FB06B0149
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 10:31:53 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5DC9B12048C
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 14:31:53 +0000 (UTC)
-X-FDA: 84827954106.23.A3EEFAD
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 32ACB6B014A
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 10:36:36 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A7FF51A0423
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 14:36:35 +0000 (UTC)
+X-FDA: 84827965950.26.0125B0B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C98E38000B
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 14:31:51 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=itLeleWj;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1737FA000D
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 14:36:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fuc7Iyfi;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780237911;
+	s=arc-20220608; t=1780238194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VH65tbFn/cmtsF072HRQao+gX1EFVbFjdBx5iGwdBNw=;
-	b=BUuVwsQxC7NW+brxEBUFtNsz172epJEQGWfD1EfRWwZQGoEbm8bspCQcpwk5NFMXTpgNF0
-	HK0r2thXgxTbEe5+F/qWQxHD1fUio/0igEKJ34IRO3e1Ll3/P8BUXZS9ljfvp4wofr5lQh
-	E6lou+Gk3Nev8DUzERI2idS98zp4sWs=
+	bh=hPApO5PSuZbWVoDOqItwGMqueNSdbpN7A+B7zA27RpY=;
+	b=lHdoxLTR9alkXLr8sM8zymEsKARZXYUJdVTUengxgAkFY4dxr1g+CMDhHYDElTxHMnr8Q6
+	KvbU5gGgA6dU1ajWz/z5Sm6p9HGnFC1t/1Af3/mbc16JPD5iKZT85eyHIXTXJPoSc4vpDa
+	2PvN58D/32lpQ6U/szPWgKgaJYoBErs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=itLeleWj;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fuc7Iyfi;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780237911; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780238194; a=rsa-sha256;
 	cv=none;
-	b=U2AfcjCbhXhQ68xCelaUFS8KzHnd1Ohtz9QGzGc2uyJYrk9tcMZPtRIOHWjACC0YCSI6O7
-	hivnLv/TmV72aYu8B5SG/I7VqosQ8lUJNr5NvhpxnXh1qz9tcfYoq8yKrIPNW1BMam5ixE
-	BwlJ4pLkrhGk7j0bm34S3BjHnIxtoWI=
+	b=S97Mf84Xogm03QkSS7GGsMPslVYHtMlVpWLFPFTsvvUAtq3SOaC5mhU0GFDmwscojBWRTo
+	6cb4QtxFMM+b/POgs6kLTxWcJxMjMyq0lfqiKJRrDbOP1PzjuSXqeypGIGSbYk1SSdcDgR
+	/9lxxXutCAo4vv5mEBa2EqixinZjtYA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 45DFB601FD;
-	Sun, 31 May 2026 14:31:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D121F00893;
-	Sun, 31 May 2026 14:31:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 667DF601DE;
+	Sun, 31 May 2026 14:36:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2BF1F00893;
+	Sun, 31 May 2026 14:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780237911;
-	bh=VH65tbFn/cmtsF072HRQao+gX1EFVbFjdBx5iGwdBNw=;
+	s=k20260515; t=1780238193;
+	bh=hPApO5PSuZbWVoDOqItwGMqueNSdbpN7A+B7zA27RpY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=itLeleWjfiVH9EbXtx0ATIlQrtbycOnld+xJp/WELYVcoAHooVNGfTto8GAJaMjZZ
-	 3UrhZkBgMWD82y+1XsAllxPLHNz2Mimt9K8EZywOoju3sWVJ56mGJZ/+qRR683BsEG
-	 XDesXW6/ZW9359/Tdibb2CAu+uFpzjkmAcZdc7Z5+WHzocVB1J6GiDavTksfvjeXWK
-	 2rLzur0pScv0nxJr2vIMG/Y8f34uMcDkQaGSG9TZhIBUEiJxDFJAFXalRxnN9DWvmV
-	 H4EJ4asejInO5H9bijLUTmlaXddp+AAwfSH6lNZhuIihAX+gSZzav9JZidYYhV46rB
-	 r7eS8oAtgg75g==
-Date: Sun, 31 May 2026 17:31:43 +0300
+	b=fuc7IyfiSOek8PfZse6emleEPNfYRfDKOl6mqmyBG7s52mjxGzJCaL4Cp51ims6Os
+	 fzxHGYqSXFviP0rozHD+x7NoYjraRc5m3aqfgoZ6L4oVeck/Id3F/uYQSbjHhxsyMK
+	 ULGzD3DEdO7komuxKYNaOvzVNkFYN/iuKBynX9/OvL4SbzYssdRsHQT9kZXzrIDqvL
+	 wzbcU4VgELLaq8rqTON0KU+e2SX+L7zB9dwvEE++yRoH/CVCiX0cAC+Na+1BZVZdKv
+	 XxieYMD1F9QSIVcoMfOYcFKgzchdfty8MLM8t6yZwP+gxF94FnGBuZ+J3WCcIPVPnS
+	 +nZpLF27aorVg==
+Date: Sun, 31 May 2026 17:36:25 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Hongfu Li <lihongfu@kylinos.cn>
 Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
 	liam@infradead.org, vbabka@kernel.org, surenb@google.com,
 	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/4] selftests/mm: unify pkey sighandler selftest
- assertions and tracing
-Message-ID: <ahxGT9Q4JjhHBK0z@kernel.org>
+Subject: Re: [PATCH v4 3/4] selftests/mm: use pkey_assert on clone_raw
+ failure in pkey test
+Message-ID: <ahxHaQFr3Uer2GBP@kernel.org>
 References: <20260529071633.2807814-1-lihongfu@kylinos.cn>
- <20260529071633.2807814-3-lihongfu@kylinos.cn>
+ <20260529071633.2807814-4-lihongfu@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260529071633.2807814-3-lihongfu@kylinos.cn>
+In-Reply-To: <20260529071633.2807814-4-lihongfu@kylinos.cn>
+X-Stat-Signature: iizujnqk1w4p5kqqtb3anbqegetwdgu4
+X-Rspamd-Queue-Id: 1737FA000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C98E38000B
-X-Stat-Signature: efh71ixyc4bspyiysg478tceci4k4n1t
-X-HE-Tag: 1780237911-834253
-X-HE-Meta: U2FsdGVkX19FZZiUQh8IlgDDHlkPg3iN+/0LrLDC6VT+X8hUBL7kDGsZJkGNulF0BGkmn7NH3pewlLEacPfVwKca1hBG5ci/ja1PJbO7CDSWpZaazYQzIIv3w40uyjPGyE9n3myo7dnxE8lQ/julLSEfZjHIPEqO66g4BOYkRGPNw4+60cjEXeIsQ3bcsJbflFx5hToyWpJVwnm0cPmFK9M+9KmWvHy8nZNjitZGfdCqSx9fIwGTVrtRXAKYng8csqgYodPsGtSPYrQsWsLSYeF6ndgWbz2zTFWdT5eEeY1xgRXspXSjrjgyMEYLJm2VhGrZYt9DnvSHn0hm3Itib0J/U1cwicEspojw0duVkdu3Xu4a4SUfGW5k4neqx0OAzs6Fm/51WvrSfq1Ngo6uimkHuCEp78nOOxHdfmzRcjlrtOcnal+D9lVy/TCHMK/TFi01b6vLjDlX0tkDXkCKUzfGiPeLcx5JSX82u+7I1lRkvqrYxguFYTZC3HFUsPdmpm8MInmDxQI3C789cwQdu14QkPlFdK/cwH2mFCees76Anrc4khfoV5al4g54qj443E5TszTzV9v1R3GkTsCIg1vihvQ44vkOuu85wFWFESKamjTdDMMvQAoQ0aTKqsLtFeuNM5GnG9XtUPj2Xnmjg0QORS7pRe/ZCsjvBKPgv341St3IylM6xaB0DOcb1cgMD7Tdxg3L+8fXmxNfpUdvb6IuKG0tB1CSXHJT1LuTeLLG4UiVa0+6g/zuJvflFrB7m3jL3YVEG4kTYbiySuVauKaILraSWYb0eN/bI36c1/1Sp49f4C+4Aspwnm907sArsa12iVeAMEzG78Gsm7pVR2hbBTVa5zrz1huXSYiajLOUhpMyE2R9thwnXaMqUPpESPXITcmY01cBABfFfvzdi8nXffGQtvOzctssi5+ye9TDnt4eC9gAik8R8PYxQxkKtwamPx+Y4Ci5Ve4Ri3W
- waqrJYS3
- DZ0GdRCj0cVtQmHQiy1l2cWalcuuDTw39v8rUjg569ZcoRmGmcsisJChhm0IVRHddp+5b3IlqjAsnDl2eMbMJaBV4+WVT+Ej2HDHI+vbi+Zj4bZNGeqQJaZfS+8noe9vCRpzRdxo4l+lCl+ePxURHBI5kIoLaiSUDJjXCzDdHucnkAo4wMsCnAV02ML9AbsC/0G8/9PVAxMLym8LoYg9wZZMlBMKWeUfxei3OiWnZHrUw4OM09j5IWre4MTWspmoACee+
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780238193-76726
+X-HE-Meta: U2FsdGVkX1+zwM4DLKIqTQYJLaRQOhcs/aKKxBqzb3zRnmA20ay2uW3KEQe9ecU7gJKyfqVgutHkZmkiBIcwYi/sJeWNzGRTiyZx/6YFs6o9TWdUENFE/fInDfY3xil0IM4UOilVfQp27bGzm2+GMH0G6yRZ3Me2DrmcAid9DGT+A0AOZ228TwTS+jR4SeKOztJjkUBRp2QytizqW6YVj7o7Mbrmo68YNtGhSiCr3AcJMapuAm42ixTDhUYhrD9FuRNad32a+c6vQeq9BkdAe5zgJYTTgva6lBEcDjxarIM41PsYfootMC8PMD2t0jli9utVHQuE1s9ma81hYPFbLtTKOwbLb+s+a6pYDHuLkJcXDPoLN+thJy8nEdcTnNlRX1bUDeP5K/q9GJbWWh5tGNTHlz71xp5LR0jjRn+lL0EEYDtmxOPFX8h0nCV+8UUGcW9TJ/3CUZjnSfna28Du7tl8WMNzjk19vP4HwU0qKsWg87oAFqbqhvb2+LrZ+RREgKjRHT/Gd4+gqExZg6KXSEFmVjn/lE0G4gVkEhBtB3q4Jlp10EkPdopowAsn9Nx/CI1h/rf/HC6/c7kS9p5rXzuGL42mCvZa38rJRGkOwb94kDwMXVA7REV9jQCT06wUUn+y34+3CHIhQL8nXGo7MIjvPLVbCIKx0S1KEOxQW2A+gAwBpYO45yT7iE7plrKMrK2AVNO68lDcYFjO+OXJwuq0zXovPQGY8xTrLf91/yTPNPZXdVx2OG+slYDX6elcxsZozh6jFrOQY9e/EXHHUzICapbACyN/Qk4cFcu5+RhSSw+ay7yNXRRLug6FwhPT2KDQWhBv8WGlinQu2MSL7NdT1cAvo9qY7swIVwBbZT/z5eWOM14KRMgfCeoPBH4T0BdfATPRmK+y19sUNgdfY3obuIvR/EgumeKYC5KTX2PbOBf1VJTflvLM3a0J+c4JpDRIqdnoA1TWlQUcO1O
+ RmyUUzKZ
+ /8/sIxvGMGGNDb4cEVrbPfW/5MfKOWBPfCUj0nVdGwct+Z+VUy8RXscuyealkp/5GL34uQmn5IlxhouYF0jWLZCfi+FvEv+yYHw51zoVtjAuqjCQzdeOabykOfoFO7SDxE7Dr/z1TQvUR2V3b6ZZ9VeI7lXOYZ8x3WnEHeoHa/uKFUXxDKmxPwYM8n+ajpRrf8WD0f3Xp3MadVKw5jPmqCX6THqanwSHhgXAHuYcuys46qBvgsoCepR2ZQ00kj9+xxSqAwUXFwN80lIxYf6ile6wRF65VHaCtMuMO24gcC1F4V/4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,89 +96,46 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi,
 
-On Fri, May 29, 2026 at 03:16:31PM +0800, Hongfu Li wrote:
-> Add per-test tracing to the pkey signal-handler selftest and use
-> pkey_assert() for error handling. Each test enables tracing at start
-> and disables it at end; on failure, pkey_assert() calls abort_hooks()
-> to turn tracing off so ftrace is not left enabled.
-> 
+On Fri, May 29, 2026 at 03:16:32PM +0800, Hongfu Li wrote:
+> Use pkey_assert(0) instead of perror("clone") when clone_raw() fails.
+> The old path only printed an error and continued; the test now exits
+> via pkey_assert() on failure so it does not hang or proceed with an
+> invalid child.
+
+Looks like clone() invocation changes in patch 2 belong here.
+But is there actually a need to change ret = clone_raw() to
+child_pid = clone_raw()?
+ 
 > Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 > ---
->  .../selftests/mm/pkey_sighandler_tests.c      | 104 +++++++++---------
->  1 file changed, 50 insertions(+), 54 deletions(-)
->
-> @@ -323,18 +323,18 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
->  	memset(&siginfo, 0, sizeof(siginfo));
+>  tools/testing/selftests/mm/pkey_sighandler_tests.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+> index 80b5b3dad86f..231dfb079075 100644
+> --- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
+> +++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+> @@ -333,7 +333,7 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
 >  
->  	/* Use clone to avoid newer glibcs using rseq on new threads */
-> -	long ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
-> -			     CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
-> -			     CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
-> -			     CLONE_DETACHED,
-> -			     stack + STACK_SIZE,
-> -			     &parent_pid,
-> -			     &child_pid);
-> -
-> -	if (ret < 0) {
-> -		errno = -ret;
-> +	child_pid = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
-> +			      CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
-> +			      CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
-> +			      CLONE_DETACHED,
-> +			      stack + STACK_SIZE,
-> +			      &parent_pid,
-> +			      &child_pid);
-> +
-> +	if (child_pid < 0) {
-> +		errno = -child_pid;
-
-This change does not seem related at all to the patch.
-
->  		perror("clone");
-> -	} else if (ret == 0) {
-> +	} else if (child_pid == 0) {
+>  	if (child_pid < 0) {
+>  		errno = -child_pid;
+> -		perror("clone");
+> +		pkey_assert(0);
+>  	} else if (child_pid == 0) {
 >  		thread_segv_maperr_ptr(&sigstack);
 >  		syscall_raw(SYS_exit, 0, 0, 0, 0, 0, 0);
->  	}
->
-> @@ -494,23 +490,22 @@ static void test_pkru_sigreturn(void)
->  	sigstack.ss_size = STACK_SIZE;
+> @@ -500,7 +500,7 @@ static void test_pkru_sigreturn(void)
 >  
->  	/* Use clone to avoid newer glibcs using rseq on new threads */
-> -	long ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
-> -			     CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
-> -			     CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
-> -			     CLONE_DETACHED,
-> -			     stack + STACK_SIZE,
-> -			     &parent_pid,
-> -			     &child_pid);
-> -
-> -	if (ret < 0) {
-> -		errno = -ret;
-> +	child_pid = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
-> +			      CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
-> +			      CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
-> +			      CLONE_DETACHED,
-> +			      stack + STACK_SIZE,
-> +			      &parent_pid,
-> +			      &child_pid);
-> +
-> +	if (child_pid < 0) {
-> +		errno = -child_pid;
-
-Ditto.
-
->  		perror("clone");
-> -	}  else if (ret == 0) {
-> +	} else if (child_pid == 0) {
+>  	if (child_pid < 0) {
+>  		errno = -child_pid;
+> -		perror("clone");
+> +		pkey_assert(0);
+>  	} else if (child_pid == 0) {
 >  		thread_sigusr2_self(&sigstack);
 >  		syscall_raw(SYS_exit, 0, 0, 0, 0, 0, 0);
->  	}
->  
-> -	child_pid =  ret;
->  	/* Check that thread exited */
->  	do {
->  		sched_yield();
+> -- 
+> 2.50.1
+> 
 
 -- 
 Sincerely yours,
