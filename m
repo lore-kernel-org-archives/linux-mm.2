@@ -4,81 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3879CD6E56
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:12:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB7A9CD6E56
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:19:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDEA26B0170; Sun, 31 May 2026 15:12:02 -0400 (EDT)
+	id E75386B0172; Sun, 31 May 2026 15:19:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB5B06B0171; Sun, 31 May 2026 15:12:02 -0400 (EDT)
+	id E25676B0173; Sun, 31 May 2026 15:19:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCC246B0172; Sun, 31 May 2026 15:12:02 -0400 (EDT)
+	id D14C96B0174; Sun, 31 May 2026 15:19:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CBF436B0170
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:12:02 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46648C211D
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:12:02 +0000 (UTC)
-X-FDA: 84828660084.05.2B4960D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7DDAA180071
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:12:00 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HxsXn3w4;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BCDC66B0172
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:19:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 677541A0469
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:19:35 +0000 (UTC)
+X-FDA: 84828679110.17.25E5EAD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9688A1C0003
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:19:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FmkniLuD;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780254720;
+	s=arc-20220608; t=1780255173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4j/mmrMqN9cVeiG6v3MT7PKSh12sT3iMOb3Zkg1yWvI=;
-	b=vXs0hmvRJr/jnpKxL0Bffeh594u6ZNj5Zox7ujMwVvgaT5HeFeB6kAEbL8xsX3wLH2bxOd
-	ZqMfm/DARf/acE4DhIgUJVStHFbjX7L6+ooeewNoclE2xY//x1DiwYXzjpf1B7evWXHojZ
-	pl23BFL1KCiTvenQv8DXOb3AToNiPwM=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HxsXn3w4;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780254720; a=rsa-sha256;
+	bh=9j7VeWQLosUvbqnA5WOjfBEafgKybim/sLzzb9SBJmM=;
+	b=nRO5X63BjNxje9c9fEF5sDhe3YWH/6qEPLDJaD0VU8ofDU1o92pA9wvr3CZfjWD5ACOHIz
+	Eau2Nl92nCtjqBZN4aCmZO/NkMcGx65QfiFp4YmjXc41SINFUCXMh0nw/VAGD9gbbrrdlo
+	L701AgkIckIG/sqD1l91ZMLN2nU1oiA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780255173; a=rsa-sha256;
 	cv=none;
-	b=C25v+UCCKztU2NBgkTnYUuwM0J03mf/4vYeTKyIz9PaqKaQN9FDYIKZoAUG8CEO71nc4FA
-	w/t1COZY6qLnXgeP5u5OhxJwNLr5mfLZfNMHvQzzwWB1OnNj2OBnbq05FEfEdIzJtZmo0/
-	9es5fOFa7rq6ZkfovdPF8OiW1sIdjSA=
+	b=W3ogwONOpMCz7mpITKsc1Opg9IVNacW1xh1SycqMzPOVAvDScv4YUBbPzpN4A49nwT6nSj
+	o3A5OIreZhxNswlq6JK85kCP38SNpBsrka/gSQVlOOEqqNypUh+slGm4rSirPHvCNMhG7i
+	8VMiGLXorsoIR0AvS12ywXLnsQS/eCo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FmkniLuD;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CEB9A60204;
-	Sun, 31 May 2026 19:11:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FE61F00893;
-	Sun, 31 May 2026 19:11:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A3229400CA;
+	Sun, 31 May 2026 19:19:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C45F1F00893;
+	Sun, 31 May 2026 19:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780254719;
-	bh=4j/mmrMqN9cVeiG6v3MT7PKSh12sT3iMOb3Zkg1yWvI=;
+	s=k20260515; t=1780255172;
+	bh=9j7VeWQLosUvbqnA5WOjfBEafgKybim/sLzzb9SBJmM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HxsXn3w48nhvETfvikl1vwgfbymIGXFrRHsZTddKAZCyDvq2pmZaamPZaoMCUGJXw
-	 KkL4tM95gB98srql2xgLuVe3Yy9VrSK2K60kSZ0Ey65Qf1/7KWdOGoM+/DGWNulerX
-	 psDfrdfKwSMDYer0qdZid69g/TjAhZ3zI/gk5jR5bIJDVfOeGY5AgFOtECP3GF+lZc
-	 eqGIL98TbRgqw7Cgc9+3i7LbsyS70CXgaiC9DhF8lbn0/tI3andx0y3zK0jtR34ghq
-	 uBxKx3uNpB5BDPsXuAWlMv/TVpsoZbGkZzpfjl2JGeElVdBKisI9DGnfGxDtRXN7fU
-	 o3IsqqY0WTr5g==
-Message-ID: <a62302f8-24ea-4d21-963d-48bec766766b@kernel.org>
-Date: Sun, 31 May 2026 21:11:53 +0200
+	b=FmkniLuDgY7S7fwzGdd1AWC6ze+qaOfUDuGkIvtSK5gQn+AxlrePBX5eGwiFBl2wa
+	 SWvamc08tsydUBY4UxKJCiAO8mL0PINs01rx2Wl4IfU9+n25soygiD/L94zH5X+57d
+	 z1lPM2tU7QEjpRCGULcRrR6CfK8nT2ZKdZ2+9jTxoICEx/o15aVuES8RRI5DG0wlmm
+	 C+Nuqxx2iZslFQ5B8k4R0nhd0RoG37DWcm+bU8W+Y04bbcA2OCMjBm6hvxxKI1RKmy
+	 wQH9jfHvQVRKl2pLKgvxZdeANv1a4FeyfTMGeDnZ6KLbuENdayNm1LJzaKhmRUCZO6
+	 P0xHyzz9ZEE8w==
+Message-ID: <9271c3c0-0b04-47f8-adb2-83f5f89674ad@kernel.org>
+Date: Sun, 31 May 2026 21:19:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/proc/task_mmu: do not warn on seeing non-migration pmd
- entry
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org,
- liam@infradead.org, ljs@kernel.org, jgg@ziepe.ca, leon@kernel.org,
- shuah@kernel.org
-Cc: vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, balbirs@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260529111704.1078346-1-dev.jain@arm.com>
+Subject: Re: [RFC PATCH] MAINTAINERS: add ABI documents for mm
+To: SeongJae Park <sj@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260530011852.90663-1-sj@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260529111704.1078346-1-dev.jain@arm.com>
+In-Reply-To: <20260530011852.90663-1-sj@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: pjz7dnpmk7bjioidbm91sedgnudrdsny
+X-Rspamd-Queue-Id: 9688A1C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7DDAA180071
-X-Stat-Signature: oob8dcm3iixuf9r1yrbtqdimjmyhcrq5
-X-HE-Tag: 1780254720-808425
-X-HE-Meta: U2FsdGVkX19U143pqNxyDANcBlRKwTPP48C/Wh1KWSms163pI9m2brDvSzvuD/Cb9CtgNFLrafEDyA7YXj5eLdBrHTb+mBHHvgmyS/N5E1VCvMJinMF7d6yoimnVkMQ0iOKqvnh8ZH66VYYeAAwNUaIKbj+4bFUYvX8YuKgERnVr4682R3JfMje+q56IriSbUu7JK86VNTUixer8NPa9/8geV4rFspWAGSWrem8CAz5x01jWCR13RQb7hC+YDNawutObV2nEm2m0P/wuv9cqIcgHrZ90gmDOw53iz/Zdzp3zee2jdiKKL1jHcCSQzAut+WW5eI21IMW1r7uU87zVcpJ3+xfVnCSXAyEj1EVg3gWrleXGqGZd+vQ6RMyy43+vb4cAccVf3wwnL/n7G0zCGkAxdFA6TwNIah46NdgECw1ian9jgTNS8enhJb+qA5Xf76DsrKOxtt41NTv/Md9m2il7vENpwewWDWCltVxihhxWxyal143O5ZoJu2GhQrzqwa9ZRnBsxbof66knZyTuXfW5Ql04r1FP7AdDj5i4Y5cVmd5wtDZ/mAsBLB8+w9pGzFCTh2VQDvRqg3wyLQkks9piNIQuHU0DHmVeR/KiNAbm/r4/15RCsbvc1tMOu0aA81abzx8p8EYrtN7DJPHJ8UhMelsjiSDQ08ZKYgxUpMFhxjU3KoZuJGJlO3ae3IghVETSaJS4T9U8beZThnDZl1FVhV3Ht7jMmG3eJTo+3glLsDAe/U047GE9QulyiJJsFjTCU3jYITACPeHq5X/sFDfyxUb5wDIcIXOPeIwG3wY6Wo1n0e81OhWFffHuy9Vinm8VGiRcqWcXKaE7vNy4+VNeLERqZqrtk6ZcP0DMCYiSzNAWTMRSGf3hgNTNWweHesJoofDUxf+Tmm6Ssm8fI54bTdWfmTGgLDna2R8ObvHXxFymFRW8FjjZwt4iy+cnD00vyroS2m/iwTZzDJG
- T0Wow/sr
- Ee4Tnr9Wg61GUSfUgxvpxMcqLIg4KnfBg54SG26tKNScXD93RBHijjeIkmPNj46zD/jOqyW/1B1mQd/6c4udndJnpq80RMcGGS5ScGNpvFjBWBfWSfDn4jeZ39ejWzQooUd2MBlQKYES6K4O+28u5ah6eW2CV3KFuhxTT6UVFSvIDwYqQUblXiqxA7YTCJutPU5/eG3y2TmEevEQyVuISDqzdTkIu8oZM0IZuurvz95yf2315daJk4P/xky41C9YsDYzT84JT2pLY7i22M2emLOQRZRSyc0JtbeJ3Sd1zWaPtj+FEqLuEiwIKuReBe85VnXc+BCNjYohB4IcIOafpD3FRc65U5sw1DO2e+bqpBKXCcUT85oazMhReIU8S8XEiD5vVH6Cjq+en3Tcl2xdZ4KD/0tcmbK7f762ncb1XpezTYU2mZfBrTiJjOA==
+X-HE-Tag: 1780255173-439822
+X-HE-Meta: U2FsdGVkX19ZJ2WX6fimTrwVG9eikrUqG0MeL692L9SXW4Z3Cx6FrEkCEZSv5oV4lF8lU29gnzz3eEskVK2oiumT4Olqkcqslvfl0evvv9laugmTtvQU9cJe1hv+uFYt2rVQ/J/6vZT31ODoK3khgvYT1raA/OKIeH9gkw6QyImGkXB/qbqL+Nb51W3usporFZiu1F3mFkP1AqzS4Pc3FnpsNFycVSSythO503B7BJVbpw+KX3jfJSdBs+e+IUQCHqLuL0/gRP6+vZizLnkV7SH07/kKUxXGlE1aODp0mD1ehT0RdAU8fvHu67JKTMHQ7AI+INl9HCYq3oJxCF4ogWEsoRKSlEp99ZTy2I1V0RcKozI2iAovh6i+jB9xpwZZyco7chZPcLlG/TCVasa4/Wouw68O8QD+jh7j+WL5NWO6C/vR6BAH8eOF6Qba+iupvxVoV2x0+TfmqarhtIryyCH6141nAbajxmvou63ZA0d6HUhi0eOEoyrIPBhNi5eK/uTQ/NNZkLGs83wxryRMx4tp2YCWqPjPyhVZKajiLVtvyJgMORrHc8d/YstcT8p9GE5ynCOhrOWla3ILKV0MOFSvMA57SX1qREOP5zk4PiBgvMuKBusM0l4+UU7dL65aXzbKxTXBFvtMwthFCTlFi2D1/ny4BqNjMFNkBB/0Rjb49z5XRImrVBL6WK7rVTAvnExTqTBUPwlgmBoipPugrDEh6VAUg65+TlewbHUP5LJswpv4XP8v0Y+uvhC9HqTOUbZwmO4LoHvUULytVLHRGto788UivAg6lSyMWVnHE2ayGF4j3MhNb+nhYiRlIEUG2l+mdbK7VVnEC8jwtb2gGC3j+FxKQrKw2K/6T9ISuV50kgDPaq7AvwrycVpw9a39VA+/Ev4XOVfjekIP6QFVZa+cekl3BSzcq0Bb9aNrHJdX129tsxs/LYyrpEiwcFIObcS2SOcgqyBoSOU8heQ
+ MTrpQC+u
+ /VnW2Mjf0cC4Qzb3nmUTvPplk5dHnJ2ScVFqcnJqkl9i6Zk51XpLv66zgBHol0zgIQbLDsvymn9TtzJm9Ck2lqtcTtfKQX2KCPsg4+gMWizR5QHdZJmVo9C3sM6SpmXM/a9JGCmfJNuNyFHorpt4/hzhMd8LBW5FeVv4CVz3I37YJzq1/gZKDaKOocdxNnvQcNAuMs5QA69Gs1bfcu0WYqg6kAxeOWPxogyF6kYPFGeNICoZ1XmOVXvErsm+A5tbUGftST4riEVuYmDwCr11YygRjahF/6WwTtWurxacgSlmpqoNyyYYaMklBsatSMht0X57he27NzuX8zaq0yKqNPphQrJ586NlLRxK6s1e5lbyywUdPyLu2JRN4WgPcH2jK56e6sUryaWlWoFDiLfRkg5JV3JiJEy+zAujwBtr15KPXeqw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,109 +140,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/29/26 13:17, Dev Jain wrote:
-> pagemap_pmd_range_thp() warns if a non-present PMD is not a migration
-> entry. This became false once device-private entries at the PMD level were
-> added.
-> 
-> One can hit the warning by patching hmm-tests.c with the following:
-> 
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-> index e1c8a679a4cf3..7f0a3384f3c5f 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -209,6 +209,37 @@ static int hmm_dmirror_cmd(int fd,
->  	return 0;
->  }
-> 
-> +static int hmm_read_self_pagemap(void *addr, unsigned long npages,
-> +				 unsigned long page_size)
-> +{
-> +	const size_t entry_size = sizeof(uint64_t);
-> +	const off_t offset = ((uintptr_t)addr / page_size) * entry_size;
-> +	uint64_t *entries;
-> +	ssize_t nread;
-> +	int fd;
-> +
-> +	entries = malloc(npages * entry_size);
-> +	if (!entries)
-> +		return -ENOMEM;
-> +
-> +	fd = open("/proc/self/pagemap", O_RDONLY);
-> +	if (fd < 0) {
-> +		free(entries);
-> +		return -errno;
-> +	}
-> +
-> +	nread = pread(fd, entries, npages * entry_size, offset);
-> +	close(fd);
-> +	free(entries);
-> +
-> +	if (nread < 0)
-> +		return -errno;
-> +	if ((size_t)nread != npages * entry_size)
-> +		return -EIO;
-> +
-> +	return 0;
-> +}
-> +
->  static void hmm_buffer_free(struct hmm_buffer *buffer)
->  {
->  	if (buffer == NULL)
-> @@ -2314,6 +2345,10 @@ TEST_F(hmm, migrate_anon_huge_fault)
->  	ASSERT_EQ(ret, 0);
->  	ASSERT_EQ(buffer->cpages, npages);
-> 
-> +	/* Exercise pagemap on a PMD device-private entry. */
-> +	ret = hmm_read_self_pagemap(buffer->ptr, npages, self->page_size);
-> +	ASSERT_EQ(ret, 0);
-> +
->  	/* Check what the device read. */
->  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
->  		ASSERT_EQ(ptr[i], i);
-> 
-> 
+On 5/30/26 03:18, SeongJae Park wrote:
+> A few mm subsystem entries in MAINTAINERS are missing their ABI
+> documents.  Add those.
 
+Maybe spell out "testing ABI" in here + subject, because I was concerned there
+for a second :)
 
-> Therefore, remove the stale migration-only assertion.
 > 
-> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: SeongJae Park <sj@kernel.org>
 > ---
-> Applies on mm-unstable (404fb4f38e8f).
+> 1. I found no better place for mm, mm-cma, mm-memory-tiers, and mm-numa,
+>    so put those on the 'MM - MISC' section.  This is an RFC mainly
+>    because I want to know if it concerns someone.
 > 
->  fs/proc/task_mmu.c | 1 -
->  1 file changed, 1 deletion(-)
+>  MAINTAINERS | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 1e3a15bf46f4e..58938e62154d9 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -2129,7 +2129,6 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
->  			flags |= PM_SOFT_DIRTY;
->  		if (pmd_swp_uffd_wp(pmd))
->  			flags |= PM_UFFD_WP;
-> -		VM_WARN_ON_ONCE(!pmd_is_migration_entry(pmd));
->  		page = softleaf_to_page(entry);
->  	}
->  
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e119182a8911d..a31f6f207afd8 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16854,6 +16854,7 @@ L:	linux-mm@kvack.org
+>  S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +F:	Documentation/ABI/testing/sysfs-kernel-mm-ksm
 
-The whole thp_migration_supported() guard is a bit shaky, right?
+Makes sense.
 
-I guess device-private entries currently imply thp_migration_supported(), but
-that thp_migration_supported() check is really questionable and should likely
-just go away (else if -> else).
+>  F:	Documentation/admin-guide/mm/ksm.rst
+>  F:	Documentation/mm/ksm.rst
+>  F:	include/linux/ksm.h
+> @@ -16876,6 +16877,8 @@ L:	linux-mm@kvack.org
+>  S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy
+> +F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
 
-Staring at pte_to_pagemap_entry(), likely we'd also want
+Makes sense.
 
-if (softleaf_has_pfn(entry))
-	page = softleaf_to_page(entry);
+>  F:	include/linux/mempolicy.h
+>  F:	include/uapi/linux/mempolicy.h
+>  F:	include/linux/migrate.h
+> @@ -16918,6 +16921,10 @@ L:	linux-mm@kvack.org
+>  S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +F:	Documentation/ABI/testing/sysfs-kernel-mm
 
-to prepare for PMD swap entries.
+Maybe that one should go to CORE? But MISC works for me as well.
 
+> +F:	Documentation/ABI/testing/sysfs-kernel-mm-cma
 
-Anyhow, both are unrelated (can you send patches to clean it up?)
+Given that CMA is here, sounds about right.
+
+> +F:	Documentation/ABI/testing/sysfs-kernel-mm-memory-tiers
+
+Given that memory tiering stuff is in here, makes sense I guess.
+
+> +F:	Documentation/ABI/testing/sysfs-kernel-mm-numa
+
+That's all about page demotion for vmscan ... but again, also belongs to memory
+tiering. So makes sense.
+
+>  F:	Documentation/admin-guide/mm/
+>  F:	Documentation/mm/
+>  F:	include/linux/cma.h
+> @@ -17041,6 +17048,7 @@ R:	Barry Song <baohua@kernel.org>
+>  R:	Youngjun Park <youngjun.park@lge.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> +F:	Documentation/ABI/testing/sysfs-kernel-mm-swap
+>  F:	Documentation/mm/swap-table.rst
+>  F:	include/linux/swap.h
+>  F:	include/linux/swapfile.h
+> @@ -17068,6 +17076,7 @@ L:	linux-mm@kvack.org
+>  S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +F:	Documentation/ABI/testing/sysfs-kernel-mm-transparent-hugepage
+>  F:	Documentation/admin-guide/mm/transhuge.rst
+>  F:	include/linux/huge_mm.h
+>  F:	include/linux/khugepaged.h
+
+All LGTM.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
