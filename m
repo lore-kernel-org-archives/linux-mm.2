@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CFA7CD6E52
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 14:36:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2BEFCD6E57
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 16:25:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 527B96B014A; Sun, 31 May 2026 10:36:36 -0400 (EDT)
+	id 7547F6B014D; Sun, 31 May 2026 12:25:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D8A96B014C; Sun, 31 May 2026 10:36:36 -0400 (EDT)
+	id 705486B014E; Sun, 31 May 2026 12:25:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EEC76B014D; Sun, 31 May 2026 10:36:36 -0400 (EDT)
+	id 61B9A6B014F; Sun, 31 May 2026 12:25:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 32ACB6B014A
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 10:36:36 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A7FF51A0423
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 14:36:35 +0000 (UTC)
-X-FDA: 84827965950.26.0125B0B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1737FA000D
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 14:36:33 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fuc7Iyfi;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DAEB6B014D
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:25:04 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CDADAA042E
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:25:03 +0000 (UTC)
+X-FDA: 84828239286.12.B9B40DF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2AD3F120008
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:25:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HH8R+L8H;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780238194;
+	s=arc-20220608; t=1780244702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hPApO5PSuZbWVoDOqItwGMqueNSdbpN7A+B7zA27RpY=;
-	b=lHdoxLTR9alkXLr8sM8zymEsKARZXYUJdVTUengxgAkFY4dxr1g+CMDhHYDElTxHMnr8Q6
-	KvbU5gGgA6dU1ajWz/z5Sm6p9HGnFC1t/1Af3/mbc16JPD5iKZT85eyHIXTXJPoSc4vpDa
-	2PvN58D/32lpQ6U/szPWgKgaJYoBErs=
+	bh=a4xwiQThCs7F6+XmjiaWulJyRMq8uwTndHHdVcApUeA=;
+	b=zc9j+JXPBH+arvG3D4dzYOeqg7dpobwJJ1dFkJ6GSWhHes0LNZ2xU5qaey9OVjb0kOkaSQ
+	33krAT/+W6xninzS1HGCRYdAIWNhWVNdjS9PAGlWRO1mmNKMVpfGOzV+4WH5O2qo4++yQO
+	HGqR21izi0K99+JU8S2iYPOAc5qHEcw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fuc7Iyfi;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HH8R+L8H;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780238194; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780244702; a=rsa-sha256;
 	cv=none;
-	b=S97Mf84Xogm03QkSS7GGsMPslVYHtMlVpWLFPFTsvvUAtq3SOaC5mhU0GFDmwscojBWRTo
-	6cb4QtxFMM+b/POgs6kLTxWcJxMjMyq0lfqiKJRrDbOP1PzjuSXqeypGIGSbYk1SSdcDgR
-	/9lxxXutCAo4vv5mEBa2EqixinZjtYA=
+	b=nf+k1bnfrNrYQKGldkvhKbdf8N8aC5jziitJqKPeKrPk78fSUhNKNjS8seeVg3fjk36Ey9
+	u6eqgj5aJeSpvmWqO1I4jib1UvZp/oKbDN74eRKSYMxC5kbR0Jzn4Maqj/94UMDoNKuTgj
+	H0452zMNtfGoZ/BO3nqJLC2w9AmDhW8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 667DF601DE;
-	Sun, 31 May 2026 14:36:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2BF1F00893;
-	Sun, 31 May 2026 14:36:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F3D42418FC;
+	Sun, 31 May 2026 16:25:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955F81F00893;
+	Sun, 31 May 2026 16:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780238193;
-	bh=hPApO5PSuZbWVoDOqItwGMqueNSdbpN7A+B7zA27RpY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fuc7IyfiSOek8PfZse6emleEPNfYRfDKOl6mqmyBG7s52mjxGzJCaL4Cp51ims6Os
-	 fzxHGYqSXFviP0rozHD+x7NoYjraRc5m3aqfgoZ6L4oVeck/Id3F/uYQSbjHhxsyMK
-	 ULGzD3DEdO7komuxKYNaOvzVNkFYN/iuKBynX9/OvL4SbzYssdRsHQT9kZXzrIDqvL
-	 wzbcU4VgELLaq8rqTON0KU+e2SX+L7zB9dwvEE++yRoH/CVCiX0cAC+Na+1BZVZdKv
-	 XxieYMD1F9QSIVcoMfOYcFKgzchdfty8MLM8t6yZwP+gxF94FnGBuZ+J3WCcIPVPnS
-	 +nZpLF27aorVg==
-Date: Sun, 31 May 2026 17:36:25 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Hongfu Li <lihongfu@kylinos.cn>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] selftests/mm: use pkey_assert on clone_raw
- failure in pkey test
-Message-ID: <ahxHaQFr3Uer2GBP@kernel.org>
-References: <20260529071633.2807814-1-lihongfu@kylinos.cn>
- <20260529071633.2807814-4-lihongfu@kylinos.cn>
+	s=k20260515; t=1780244700;
+	bh=a4xwiQThCs7F6+XmjiaWulJyRMq8uwTndHHdVcApUeA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HH8R+L8HsK2swvjdoSOvXv3+R79dEhpbNVvX6VDjStjqIShSbGmPEwr2fYd8Dl/LK
+	 JLEb6N5PGpp/LY+/L5yvIBi+ueq4Q7VOfEcBRuhqgyDHs9HTFQGS8o1ICSzilFwmn6
+	 t8aRDA0UEoUXgw6SMCErJ8xPNmPdWjvU01VmGRVqPoEI2d7cwrO4eScHqNfW5XuSnm
+	 Wj83jVeKR7nPAZCE5vst6YxFiJB+zgJyGJLW/0LXURwk4NJ2NIJfa0pmrpHAUQX0SQ
+	 Q9jOPabpqBfkIXQtWhqJDs5JrQvOv2N9RWEZOPZ9OzZns1/04r5Xmmjq0oUHjQcVgq
+	 up3Gnj1ihLZWw==
+From: SeongJae Park <sj@kernel.org>
+To: "Kunwu Chan" <kunwu.chan@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	"Kunwu Chan" <chentao@kylinos.cn>,
+	"Wang Lian" <lianux.mm@gmail.com>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon: fix stale TLB young-state handling on arm64
+Date: Sun, 31 May 2026 09:24:56 -0700
+Message-ID: <20260531162457.98724-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cfa837d8641972b79a404f4f9d489644dd6675f7@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260529071633.2807814-4-lihongfu@kylinos.cn>
-X-Stat-Signature: iizujnqk1w4p5kqqtb3anbqegetwdgu4
-X-Rspamd-Queue-Id: 1737FA000D
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: d31eb5wzpqy5srz7e178u3dkq8ggnrb7
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780238193-76726
-X-HE-Meta: U2FsdGVkX1+zwM4DLKIqTQYJLaRQOhcs/aKKxBqzb3zRnmA20ay2uW3KEQe9ecU7gJKyfqVgutHkZmkiBIcwYi/sJeWNzGRTiyZx/6YFs6o9TWdUENFE/fInDfY3xil0IM4UOilVfQp27bGzm2+GMH0G6yRZ3Me2DrmcAid9DGT+A0AOZ228TwTS+jR4SeKOztJjkUBRp2QytizqW6YVj7o7Mbrmo68YNtGhSiCr3AcJMapuAm42ixTDhUYhrD9FuRNad32a+c6vQeq9BkdAe5zgJYTTgva6lBEcDjxarIM41PsYfootMC8PMD2t0jli9utVHQuE1s9ma81hYPFbLtTKOwbLb+s+a6pYDHuLkJcXDPoLN+thJy8nEdcTnNlRX1bUDeP5K/q9GJbWWh5tGNTHlz71xp5LR0jjRn+lL0EEYDtmxOPFX8h0nCV+8UUGcW9TJ/3CUZjnSfna28Du7tl8WMNzjk19vP4HwU0qKsWg87oAFqbqhvb2+LrZ+RREgKjRHT/Gd4+gqExZg6KXSEFmVjn/lE0G4gVkEhBtB3q4Jlp10EkPdopowAsn9Nx/CI1h/rf/HC6/c7kS9p5rXzuGL42mCvZa38rJRGkOwb94kDwMXVA7REV9jQCT06wUUn+y34+3CHIhQL8nXGo7MIjvPLVbCIKx0S1KEOxQW2A+gAwBpYO45yT7iE7plrKMrK2AVNO68lDcYFjO+OXJwuq0zXovPQGY8xTrLf91/yTPNPZXdVx2OG+slYDX6elcxsZozh6jFrOQY9e/EXHHUzICapbACyN/Qk4cFcu5+RhSSw+ay7yNXRRLug6FwhPT2KDQWhBv8WGlinQu2MSL7NdT1cAvo9qY7swIVwBbZT/z5eWOM14KRMgfCeoPBH4T0BdfATPRmK+y19sUNgdfY3obuIvR/EgumeKYC5KTX2PbOBf1VJTflvLM3a0J+c4JpDRIqdnoA1TWlQUcO1O
- RmyUUzKZ
- /8/sIxvGMGGNDb4cEVrbPfW/5MfKOWBPfCUj0nVdGwct+Z+VUy8RXscuyealkp/5GL34uQmn5IlxhouYF0jWLZCfi+FvEv+yYHw51zoVtjAuqjCQzdeOabykOfoFO7SDxE7Dr/z1TQvUR2V3b6ZZ9VeI7lXOYZ8x3WnEHeoHa/uKFUXxDKmxPwYM8n+ajpRrf8WD0f3Xp3MadVKw5jPmqCX6THqanwSHhgXAHuYcuys46qBvgsoCepR2ZQ00kj9+xxSqAwUXFwN80lIxYf6ile6wRF65VHaCtMuMO24gcC1F4V/4=
+X-Rspamd-Queue-Id: 2AD3F120008
+X-HE-Tag: 1780244702-571448
+X-HE-Meta: U2FsdGVkX19/g9Bo205PO9m0hf+ZaaddoD/5B7iQxvo0/bJIh97o5OWh8FI2p5wIeOWE/4y4Dr2mTAK022OhBpVFC8zKZ+hSmICnpRdZqPVEjCY1Qa0gJQnCJI9eLXzlgIsOuowzMIhiSFbpmXSpvjQz4z4d7rzGvX7lujmSOaYQi4lfEWx9Furom4aBqnoqyIecakqt8MJv6SznlZArvh6F8bfw0sIrrKDJSGnCtbUGrRi901pivoKOShS+WplwfK6+T/bTBBvMtjGMFsrNfwbU1jRqo8SRTk3xt4N5w4CgcNng/mCWahZBQzkNbAbFPpLjPwVunb1XY+dCU3PaD1Z47TccY+G9X91qkDvPAvRLvu7qa//2s+4EFZwwt9wIKL4Jwp+otwIdKNG5HJL0kaV7I6pEBIjz1HKTaRydUIxWtBo1lbVw+IkWK/XFhTNbM0mlELhF1+bWC8/6idisV+j5X5468XVtdWlxblWJf5fpgQS+7y5t8MkqkXW/k/yOcidvWJBkSJMIxZsF/B4e105IVar88E8wHg0lAcy2z40V/O9YoUwjCSUcT4H7TclrqfuxqUQTCVv+OwfWLr9E2gdTAsYhB5QlRYMF72DBUEIAF0uh0R1bf8xZe8EeNZ5AmLrgEUZfv5bM5DBgOaeibaHIby72tY4VWZXOifxNFDAmNzEYzLujIoeHkdRmB6eEQKQsWKxs3SkjZFQz0HuErJjRD5lrQA3Dx4kX0dLyAE4eYK2QvS6sBGEVPeyUSBeWbrs1/GDQNIpWs+EMNbu7cE/an4FGTWPhqTR8QiPT3S4OL8ucgtAYkkwKtMq2SsSZMRUEsydJVh2fuh9Ya3mkp5bwLLHRPzBSOJ/fN5Vs1qEg379HA0TO+Yn/XtdHmLOBPcp4H3I8Rj6P8jhdbLkatoe/HLXJDl2cQOBPMYgqbvlrebhTMdqCV3kfImOHR9L3QR7Tu3rZRZEiPMFlrD4
+ KpMk0C12
+ seEbEUAA1HwJ4lh6hl0UcCOX0z/m0gMAecnJdVFGT4Z4aBcbzFXLxC6tEZUQgqVzx/0ZI/F2zTVCSs/sPBGZG75kpTOYWicun5BRtnsTO+pYIE9AlhoyMwc0DpI7OLKO8uE8DCRHL3J1JA6gQomm4PSeI9QuqcebFIXiTUO7ueHS6y9wBtecDXjS6ykdMAg6oo6gHkCGGgHKUgpJgWFL8o92A8PvFUktGd94c5iyNZsxCm2LC/X9Y640wEA3xmJ+1D0TO5HArPRk7jXQcbxqLOjyA83gVAgsXbrUeFIQddHbkt16O8FmH4lh2qu5u0u887HXBS4jZ06bu/GHMmx20NHFmlWEYEd4Hg5aEOQpz5LUOEIpjp/9LAoF2inA9SirYNLJryB+JcFDEQFc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,50 +95,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Sun, 31 May 2026 12:16:49 +0000 "Kunwu Chan" <kunwu.chan@linux.dev> wrote:
 
-On Fri, May 29, 2026 at 03:16:32PM +0800, Hongfu Li wrote:
-> Use pkey_assert(0) instead of perror("clone") when clone_raw() fails.
-> The old path only printed an error and continued; the test now exits
-> via pkey_assert() on failure so it does not hang or proceed with an
-> invalid child.
+[...]
+> We think that makes sense.  Explaining the rationale for not flushing TLB,
+> the limitations this can introduce for tests, and recommendations for
+> choosing reliable test working set sizes would be helpful.
 
-Looks like clone() invocation changes in patch 2 belong here.
-But is there actually a need to change ret = clone_raw() to
-child_pid = clone_raw()?
- 
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> ---
->  tools/testing/selftests/mm/pkey_sighandler_tests.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Thank you for kindly accepting my suggestion.
+
 > 
-> diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> index 80b5b3dad86f..231dfb079075 100644
-> --- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> +++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> @@ -333,7 +333,7 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
->  
->  	if (child_pid < 0) {
->  		errno = -child_pid;
-> -		perror("clone");
-> +		pkey_assert(0);
->  	} else if (child_pid == 0) {
->  		thread_segv_maperr_ptr(&sigstack);
->  		syscall_raw(SYS_exit, 0, 0, 0, 0, 0, 0);
-> @@ -500,7 +500,7 @@ static void test_pkru_sigreturn(void)
->  
->  	if (child_pid < 0) {
->  		errno = -child_pid;
-> -		perror("clone");
-> +		pkey_assert(0);
->  	} else if (child_pid == 0) {
->  		thread_sigusr2_self(&sigstack);
->  		syscall_raw(SYS_exit, 0, 0, 0, 0, 0, 0);
-> -- 
-> 2.50.1
+> If we later find cases where the documented recommendations are still
+> insufficient, we can revisit more intrusive approaches.
 > 
+> I'd be happy to help with the documentation work if needed.  Please let
+> me know if you'd like me to prepare a draft patch.
 
--- 
-Sincerely yours,
-Mike.
+Yes, please feel free to send a patch! :)
+
+
+Thanks,
+SJ
+
+[...]
 
