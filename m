@@ -4,138 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76A64CD6E55
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 21:21:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103D6CD6E57
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 21:38:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3903B6B0188; Sun, 31 May 2026 17:21:47 -0400 (EDT)
+	id 072A56B018A; Sun, 31 May 2026 17:38:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3197F6B0189; Sun, 31 May 2026 17:21:47 -0400 (EDT)
+	id F3E696B018B; Sun, 31 May 2026 17:38:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E09F6B018A; Sun, 31 May 2026 17:21:47 -0400 (EDT)
+	id E2E346B018C; Sun, 31 May 2026 17:38:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 059A36B0188
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:21:47 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 48F0F403F5
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:21:46 +0000 (UTC)
-X-FDA: 84828987012.18.02E2238
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3B4554000B
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:21:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Xxeqz5tV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780262504;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CCD166B018A
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:38:18 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2E0CE1205D4
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:38:18 +0000 (UTC)
+X-FDA: 84829028676.17.D95B624
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 50BDD180002
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:38:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ujsb38R3;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780263496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HK+FQZK/X2670pSoGvJT+eXxMm/YbYUTBbsmMo4Pt1U=;
-	b=MGxHz9GMDElLs052t7FDMW/ZdDhPZ6sdp46+MHzQRMxsllCKrkBMrWuWEswPXeC26sLgak
-	cZxreiioh9OoKFVEWL+8entQgn7AlaoyRrrEXh5mTDHfvcl3BiUdFyx3a7NFO8ozkBH1+m
-	Y6FLzpsVtv0FMhndoyftnyMRBYl4W18=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Xxeqz5tV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780262504; a=rsa-sha256;
-	cv=pass;
-	b=RFZEZ7dPcXfBu4LMaJPtuKbd50WUONAbONL11hINy7BAtN4UGRQczG/sDmo5fnygrsyPJJ
-	mpop7LVO4pLiQRf3FzWHSmQGwsv4hjJXIbgf4QuDbmDw8XMy6bTWZvzqTwIMad7J0WiAeS
-	FbNpiqWABuJ26lxDA00GkY71X5bfJ/s=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-68b73f1a8ebso5490093a12.1
-        for <linux-mm@kvack.org>; Sun, 31 May 2026 14:21:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780262503; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hX7yKoTPvH23qfrnbCR681ihVOjs/6A1V8Rm//A1bNYEBSfheWEHMTKd5MPL18SlZh
-         Mkt2RAfKHqs/zwYCdNLkhOKy+ToS4o0zLERN4WfZMZcfe6AsPgH3pBcxe/gklctAy34W
-         lNHv0N/GrNYXkamS4LrrvIHeHdd8Z9t7zcSZyFzGQ6y55xur27h6NxVLAQqYUWLs91GL
-         nRPma091NtD+gYHd7Owi8gyPWfbgsLBzFi4ULnmy79+ZvgKIsNm05TaL8mn3e1DCzCiE
-         44x/OzrvykBg2GSvvb8iILR8eEBJftSD+lC9IvQZ98fV1MaZOq9otop0mIBvSUtek9Y9
-         cGIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HK+FQZK/X2670pSoGvJT+eXxMm/YbYUTBbsmMo4Pt1U=;
-        fh=v4VNdVskbyb3d2uK5Q1uKnX2Z0tfWYqfewsPi1rDFWA=;
-        b=QMCE1yJBL9606pNrXoiqccxRKLTHxtzDkK7ilpK0M1itQCaIcM+1bwcYYzS+vsjNXt
-         QF5JOO8YqZ9e1IN+9tBh53CZ2kLJuHELutntz9V9mmkhDXnmWccC9InX/dqs/ITYLNOs
-         zIMtH5pVWTcyd/NOyQGk0fi8CUPZ9tQW9ib1oDBNXDM4cHGEgAeNjSR5prCNJt1dJLjR
-         5XsFMLSYg/5tqvW0r/YZjk0liLYGT9/MIPP52OYOB1TRP5RaR+4HUMdDc+wnmRxNjZlV
-         jDNQ3d5LFFl++fLWHXXgkR/Obb/F/giTJLv6ljHTvSHZDve6FBBEVEZtxBJh8aFwc01m
-         f8EA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780262503; x=1780867303; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HK+FQZK/X2670pSoGvJT+eXxMm/YbYUTBbsmMo4Pt1U=;
-        b=Xxeqz5tVJxKb8u7BjwlOEcstGkIIuioG4TYC8vrS4UdAd1Hpucg08NXPXzStA2/4Xq
-         TyXOnklUWZyAK836Veua7Qcodbf6kAYb/xGSBzbV/njcJwJl3bCIdwLESzO4Q56dnxMe
-         y/IZelFp1MqZhj7AMxFon+YZROJNT/nUMlTNbV7ccm0LqjYppSEXQV0jgiin6yjfIMVO
-         yK62RKNLXu+y0SPTQfueq3NvunM5+Sh4F4jKSfyrYjAO4fTkH7Bz7z/gUXvSk7xuAM5V
-         xW5wrnp/aZR+WW2+Q1PBh/TuaJvln4tUYdfm2PHYuvKUcT1S9pofCiahGv6GtiTS75uR
-         Q67w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780262503; x=1780867303;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HK+FQZK/X2670pSoGvJT+eXxMm/YbYUTBbsmMo4Pt1U=;
-        b=Br28+SRChBcus2+VIy6H5GBwO4Ldi6F8P/Df/2k1xxEfBaH4gHUwfn2imPeY9uGSfA
-         r7w1MPAVS1p99ErMuzc41k9Y3NdcUw+JRPlgqlpa6YszwPNBTW1jDBq4yurU+iWABbkn
-         J8UBADutzMJlH+/PNUos/7Hz1r8NSiOeyGt2mx/4zF9/fjAR09+pkapAdPRvBaVx2YRm
-         EjwH85FRF4HzOMXEJVHEM21RPM/N5170eo29aQJmSlqgru1nE78ONhW2Cmn1I21UVLoQ
-         6qEFvs6vVEM5vzno+2t0bqrtw8CkAR4ZjcR1ULzzcx/hqyJznucwPJygaSkK0jnpCnrs
-         Iuhg==
-X-Forwarded-Encrypted: i=1; AFNElJ/U8XGRZaUvxrAoLQ1B80j6vQw35zxT204AtlEiwF1DifkjajQlEsgg6GIwVUCoO/askq5MqsC+yg==@kvack.org
-X-Gm-Message-State: AOJu0YzgI5qkVWa25Dvo55qBGl+4BrRJZZdx5LcAVwVC1+UM1i8nj+IA
-	EmeZs1QRiQwwfq2k+0vZRDBTt+gMaLTLlbHvQianUFDC8JCpXVCHZJeg/uhQEyDb7JU4+mKCWAb
-	vWx4xzO2pEhQGSdVcLxQ2iaRicTCTees=
-X-Gm-Gg: Acq92OGRPz60GTeWs/O4pQMSKsZifK5N3bT+y8kPUg9CCVeGjvSzIqq615bZ1fyCqrK
-	xZLUx3NrKBFfX3O9OSeftLnVCMvMOn1KsEwGzSUmyNMT44QtJ++UyNfO5qI6GpC5tcxK/bLDUYh
-	xzLwPv+X4GWCgYWnhfCJP2jMWqMLXBANG23xWdLwY0qWv6FDE8ZQHIa+CKLS0hjn+Qmh/fJAG9d
-	q/VXgpMhSQlt/A0ZpbUGLBKofjjCgaOEdzkqLWBSyMzhxvaFNjKy/SzH1Qmojy8rkRhqjOQc+T0
-	MAfogz3rEYxCi99Fuzj049wQIxaN
-X-Received: by 2002:a17:907:d02:b0:be2:dd37:facd with SMTP id
- a640c23a62f3a-beab4339068mr455362966b.20.1780262502221; Sun, 31 May 2026
- 14:21:42 -0700 (PDT)
+	bh=3ChlNi3gY4pmClyTFzjJW4JTye0c8PTWwo1dt2DbBgA=;
+	b=sApw1eTVSvXQUZZv0NEYrRQMGnwjUqMZxzDuEZzBx6OhWcr2Q6f0Rv0tfOV+Ywp2/pLyab
+	MFNx9hAcWtiYk6w7dzbouc/mDR0Zf1ZitTY4YoXBhHERM+Oate4t89B9b60QtiKjtW/bd5
+	gICoWbzIc43h+SnjA+j1J5/FTQVSNJY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ujsb38R3;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780263496; a=rsa-sha256;
+	cv=none;
+	b=LKBL7fGYVyd8BYm7S/WdQ1zl5baXjhbxPVO19IVh3FQQT5ZFXbtum02nfJGAXLzsU2tayA
+	DcgBUSgK5Dsuq8ZkDbXWuQpTe/xBHnM8XEOg2GcRSQeGe3kZXxjlM04l6Xmq00J9+u0rsi
+	cdWwm8K8NjK5QwS9QMF8gEmJR6d4tz4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A91BF601FE
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:38:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFC31F0089A
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:38:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780263495;
+	bh=3ChlNi3gY4pmClyTFzjJW4JTye0c8PTWwo1dt2DbBgA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Ujsb38R3V4L+gQguxzwB8Xb+Q2WVperpa4SQqvZHHDKn6GCqR51/eYLNiz7UoTaUE
+	 cb7cK6dY8Opj2E5hWjo66rJS1KuH3scYI8FLzLA0bANRhyLLwai95gckI3xhizj6Oh
+	 4KV9+I7Y00c8yeGbcxFjbcy9Rs2K/csucO0eD7aVmQrf2skHut/6Fpwb7QJp0pg5V6
+	 a+WT5HinCfwb4RQvZUsxtjLEBNMnCveigF5G0aUtSbdNsB87fXEhSccqdC6xf88cIC
+	 C8gqSQZ8eH7ZIFTyClyDxJI/9K7KM2xzfKX6730jJXzzGLKziWv2QgFFq7SXSH3hjt
+	 edhpaguCEJTpg==
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-91550eced6bso96719985a.1
+        for <linux-mm@kvack.org>; Sun, 31 May 2026 14:38:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+Fo9QX/Ih8ntKmN+Nk5IRE4jg6In1iEnWrxUdp1R76fWfEouGa5yXLw0H4IMv+klq01flx8T3BxA==@kvack.org
+X-Gm-Message-State: AOJu0YyAxDocKeT5Mo8XC3fN/ZCXiaB4uD1ak5z+o0nNOGS/86AsRR25
+	lxFfWcE3Wocy1RkJry9qDCBihUnLK8CUnOpKzyma8uTfQIQ2Cbo4RvRPBZYt5ibjrdxsLoZ/k4K
+	+ZG9t1iK22+LWiwdp185en5wpy64qIWk=
+X-Received: by 2002:a05:620a:448d:b0:914:dbb1:1487 with SMTP id
+ af79cd13be357-9153da3f0f6mr1264775885a.53.1780263494750; Sun, 31 May 2026
+ 14:38:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260531010107.1953702-1-safinaskar@gmail.com> <ahv16ogY8Zx3Rtox@pedro-suse.lan>
-In-Reply-To: <ahv16ogY8Zx3Rtox@pedro-suse.lan>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Mon, 1 Jun 2026 00:21:06 +0300
-X-Gm-Features: AVHnY4IV40jpJJDRQFbdKVprCBGPqL0nWYb_1HSlt6FzSI1F6gq0u1bXknLpLA8
-Message-ID: <CAPnZJGD5QR5jrNMAem7FjMRTtw+Ue+jm7Dc2Kp8Lcjj+9TDw_Q@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
+References: <20260531-zram-fix-partial-io-config-check-on-akpm-v1-1-eb085d98faea@gmail.com>
+In-Reply-To: <20260531-zram-fix-partial-io-config-check-on-akpm-v1-1-eb085d98faea@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 1 Jun 2026 05:38:03 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wB5XyUrPpg1O-pkySxo91RsHxaaUkR+Kt+heP4_OeeqA@mail.gmail.com>
+X-Gm-Features: AVHnY4L6_UdjcCk4-_UTU0q2GUVmZ6B69Ux11hFD72dT9usvr_K3TiSBY_9PUJM
+Message-ID: <CAGsJ_4wB5XyUrPpg1O-pkySxo91RsHxaaUkR+Kt+heP4_OeeqA@mail.gmail.com>
+Subject: Re: [PATCH] zram: fix partial I/O config check
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Jens Axboe <axboe@kernel.dk>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <baoquan.he@linux.dev>, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org, 
+	Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3B4554000B
-X-Stat-Signature: dehitbw38u4twjwdysfrfg3ozq4yzf63
 X-Rspam-User: 
-X-HE-Tag: 1780262504-597652
-X-HE-Meta: U2FsdGVkX180c5/8SDatq+enHZtRpALUGuBJlLtIwFsIXildsgj+c06A8LUDW+MYOOkX5Dwdws3Ak6LDks5OsECxWmlIqm4sqHIm3Nj0ize7/4the64iUdeIx4nB7HBM4FbQyya8RjRQgNMzyvG8I1s4uzkbjJPIGv68gX/qacFplCAW4/mUOWCWXvk5uG94BKXqg5i3Dro7rT64pm35RIs4IVP6Vw/HbjMhW/oeF3cLxkmUgWFqpZ7A8JCKxg/i+KBbwF/0nvi5hriz2OGSSyib6TN63w69zHqSd6GK+hX6Tzp4i8IjOuwUkFuhGQGzwiONmKYhe+FqTs9Lk8GMQ2AKCHgeqYP574tMDcF7djf54YocVN6o0zDrGSjJfC3QiCA5krvBbHTMYyDZDvxaGnHlPLESkXoXepiK3DgyJbSBsnZ3hxDNr9+DCEGa+C2yuv7BlDCj2n8xhWymi12T07BI7/ppjJ2TRKumsQx30cxH5Lr/Hzp2zEVyTtHNd8wxPlxTveSGTEhhyEhDTR6VVOX7JgR0o88+qiI5ZzPDpc4SOMIHl7sRHfLljf00bEPly26IYLfgSbSNhwG2O+pYOh/6evTqpBIGjr0yKv59C91v4MV3sydqh5IsLwVHMO0Cs01LoOzRdNam2FBIV1eOobTRzCFThgggpltggAYahFHkewMIElfDdYnp0rksg5/uP1iN4WNdR4nnqUyUBE2NSwTqC1MN0ioDVljoY36Y1H4s+GqoSYWcnSmm4LftNObxnbt44kK58gu7SAAFZCIpshjCCyIqykDqfaXFiAHqRQ2NbkI5FXoKiy0m4wIW17xUAhLESuYYPvzG6YxLCxu79vI5iY3uElkVgsQJFuT4ErzKBKeMhZkpajJDIfeRVufpopwYcitgnViekdko1rRP1ModKOp9/eSTB8Cbb9VuzkE07k/yNnsvumVgxe4/gYQ2KLlHXve9J3PMGOpEBq+
- YTq3fd3l
- c9CUxabpXXrWdOpetjGuy0v2syZzel3XJnE1ftZQ7qPKoFGP4giLAUf8Osgo0qkYwQDbZMpkVIPpcEWAvg6M6I3YSuCdgoWv0jiDYrxFYWzliEshv5k5QMXWM8WQ4PmqebX1a8ZYA/V7WOvovUnvEZwXE2jBnc3XDdT//3J+gSuPRzAPeWv1qcybRUjDialLZTupFahkyHbVArRJ04V09uzNNdz4emtlLmuaJArAZjD7jcAsToh2hvmEMOwFeoQNPdPn5kZyMSX5WgIckdHgxDV0LevX3cnr+jZh4EcbVtW8egac5BHrQhx7ipNd81Vl73KQDtXElYF9FaW52Ix1sKi/VZ928xN8dW+crTolKs61GujFC0MP9z0ARxYXg2B0MxvibYsY9cDKA076ZYe8pFUgxRTGNl/PLI4akwjdaBW0oLtc780c59xGhckMSMTHtcw0HCFQF+AMl3OLIQDxXxdWkSli55ceM6GLo
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 50BDD180002
+X-Stat-Signature: baiuw973m3d7w1t5gafdce8z641smcs9
+X-HE-Tag: 1780263496-464262
+X-HE-Meta: U2FsdGVkX18OzRryzAJ1wk+YRGrAFHjnYebh/KCR0MWBKzp2K+cR1EfGLRSRF463YAO/AgRvjtwe4vCcutgMsojfZE0aVwnQMF3vcsYIm0oPLJt7xUtq3OSXMdCHr4F94hRI9gDgSjyJ/YFUHgoc1Cj/LH8adAV1/DuQsFVwuWLTCeUtMP9qeHlC0WWG5pT3iAfFwF7a8NlrUSs0QOcgM8dEDzIj+LlzjzCa5bOz1fmeENMVCXmf0sVVl38HlOQ7xKw5R8Ex1cb5n1T3HLhsLy5ZipvBosZ7UmsLOPHyVzw/s8X+JhZ8uySaqxT0GSp+822Kt4lwOxtrvsxDgfXg0vy5nmXSXk4Op5c+BovTXfnA8n4cq7rCeO3LkLKlbmohb+3sJywLhq2vxFY/2nqPiDZxnswkRxr3l7TCnMhYb7idP++b1lWTdOvP2QZ9oZtjMz7waprgtxqgLPB79fR3gem3biELbrIu304txXapYO+Kt1Naj4ortpPFI39ldGED2b4P+RTIlwNY+Wk28RKRYwvnfiBNodGmTJQOo+u4OI0Tz7LEYcZYBJ4Fe/HLej3zbMLfZ5EwPihaRqFX12jgg643EZhCiT/l5MXUYgyZtWaGUKV3hprAGrs4pa7ibnLzdFfhWyMFbPe/OVNwF7BmNkPpwt0EaXdO7RDK/RH+5gmE6IAuakzA3KWZVThX3LES6b2J5otMsKSntR0XPwuHz3f0G//kH7LEaSbvjQWHP32aLvKYxzi7kVZFxuLhEhXj5UoYNw6qzNT39512VB2Z9hkazBH1N5w7szGO8OI12x80QxaPXAUAWkFkBaEGa5SPASCAINcULJj2qcSQE8ODxKHH6DF7CtP43f5KYg4qGOkFiaf/W+Yj7fnNNH48yLElzPvkCE7Z4l+7sASKAkRS1UK0XYnH3NKzxHrUxgqwRgwb5lAPlySkhN14PReXJ1AzFR175qno9jskeFACneI
+ kiFTa1UX
+ 3Pxy+vajYeIzJAZJpTq+Jb+2dd3MbPlYhkMcxjp8vENJFSoKBnm6fcdH5qkt/rE7DDJnszl7YJC6U2JAhcgIk4iWhTbahzdgU42BWc4GRaD+D9sr/T4AIX84xD349ERwm+CVkMIS2fyUtLWr/bF1OzAN+8/zTy/3Y3ZDvPTiMzWOX+3mjIEdtvBMK2UI/LTpbb8MZQp0YjBBuAwuPzOeQmpG3Jed9wJTBKfGrOZ008Z1TKu18DR1V1w2Tb9nY/PYUELhgwwTRA6AlVOWpvRQ1/OyGiIoEaE8nPQS3voX0MFJZ9/fWumdtrKJqZj32wj3L67itw3xAyC9Y4i0q6nvvOAIixw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,66 +105,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 31, 2026 at 11:54=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> w=
-rote:
-> So, you took an ongoing discussion with an ongoing RFC patchset, and you
-> decided to reimplement part of the idea on your own, as a concurrent patc=
-hset.
-
-Yes. But I propose an alternative solution to this problem.
-
-Brauner said in discussion for your patchset:
-"So I'm not very likely to pick this up as is".
-So, I decided to submit another solution.
-
-Pedro, I'm not trying to insult you.
-
-Other kernel developers will decide which of these two solutions they like =
-more.
-
-Many people in discussion of your patchset said how they
-dislike splice/vmsplice, and especially vmsplice.
-Hellwig said "vmsplice is the worst".
-Brauner, Hellwig, Horn said that they dislike vmsplice.
-They said that vmsplice in its current form should not
-be used, and that it is broken.
-
-Despite all these problems nobody managed to fix
-vmsplice in all these years.
-So I propose just to effectively remove it.
-
-You may think that I just saw a recent discussion and decided
-to jump in. No. splice/vmsplice is my topic of interest for many
-years. You can verify this by searching "f:Askar splice"
-on lore.kernel.org . I simply decided that given
-recent vulnerabilities now is the perfect time to solve
-all these vmsplice problems once and for all.
-
-I explained my position here:
-https://lore.kernel.org/all/20260523204100.553125-1-safinaskar@gmail.com/ .
-Nobody answered, so I just posted this patchset.
-
-If my patchset is applied, then I will try to deal
-with splice-pagecache-to-pipe somehow,
-probably by removing it, too. :) I decided first
-to deal with vmsplice, because it seems to be
-easier problem.
-
-> > vmsplice(fd, vec, vlen, vmsplice_flags) will
-> > be equivalent to preadv2(fd, vec, vlen, -1, rw_flags) if you have
-> > readable pipe and to pwritev2(fd, vec, vlen, -1, rw_flags) if you have
-> > writable pipe.
+On Sun, May 31, 2026 at 8:35=E2=80=AFPM Jianyue Wu <wujianyue000@gmail.com>=
+ wrote:
 >
-> This does not work. https://codesearch.debian.net/search?q=3Dvmsplice%28&=
-literal=3D1
-> There are users.
+> IS_ENABLED() expects a CONFIG_* symbol. Use the real Kconfig symbol so
+> this warning reflects whether synchronous partial I/O is built in.
+>
+> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+> ---
+> zram: fix partial I/O config check
+> ---
+>  drivers/block/zram/zram_drv.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
+c
+> index 6e1330ce4bc1..72f89fd5572e 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -1510,7 +1510,7 @@ static int read_from_bdev(struct zram *zram, struct=
+ page *page, u32 index,
+>  {
+>         atomic64_inc(&zram->stats.bd_reads);
+>         if (!parent) {
+> -               if (WARN_ON_ONCE(!IS_ENABLED(ZRAM_PARTIAL_IO)))
+> +               if (WARN_ON_ONCE(!IS_ENABLED(CONFIG_ZRAM_PARTIAL_IO)))
 
-Yes, they are. But my solution is compatible. vmsplice is simply performanc=
-e
-optimization. vmsplice will work just as before, but slower.
-And, most importantly, vmsplice design problems will be gone
-(nobody managed to fix them anyway for all these years).
+However, I don't see ZRAM_PARTIAL_IO defined as a Kconfig option.
 
---=20
-Askar Safin
+#if PAGE_SIZE !=3D 4096
+static inline bool is_partial_io(struct bio_vec *bvec)
+{
+        return bvec->bv_len !=3D PAGE_SIZE;
+}
+#define ZRAM_PARTIAL_IO         1
+#else
+static inline bool is_partial_io(struct bio_vec *bvec)
+{
+        return false;
+}
+#endif
+
+
+>                         return -EIO;
+>                 return read_from_bdev_sync(zram, page, index, blk_idx);
+>         }
+>
+> ---
+> base-commit: 404fb4f38e8f38469dfff4df0205c9d18eeb1f57
+> change-id: 20260531-zram-fix-partial-io-config-check-on-akpm-c62b972416f8
+>
+> Best regards,
+> --
+> Jianyue Wu <wujianyue000@gmail.com>
+>
 
