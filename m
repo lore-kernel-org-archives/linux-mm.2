@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2BEFCD6E57
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 16:25:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67F6ACD6E52
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 16:30:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7547F6B014D; Sun, 31 May 2026 12:25:04 -0400 (EDT)
+	id 44FB36B014E; Sun, 31 May 2026 12:30:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 705486B014E; Sun, 31 May 2026 12:25:04 -0400 (EDT)
+	id 400AC6B0150; Sun, 31 May 2026 12:30:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61B9A6B014F; Sun, 31 May 2026 12:25:04 -0400 (EDT)
+	id 316F86B0151; Sun, 31 May 2026 12:30:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DAEB6B014D
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:25:04 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CDADAA042E
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:25:03 +0000 (UTC)
-X-FDA: 84828239286.12.B9B40DF
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FD886B014E
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:30:56 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B7B73140495
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:30:55 +0000 (UTC)
+X-FDA: 84828254070.15.83567BC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2AD3F120008
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:25:02 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HH8R+L8H;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 28F738000A
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:30:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=et2lfG5Q;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780245054; a=rsa-sha256;
+	cv=none;
+	b=Ti0MDCLFqz0N/ehD9G26k6YlZ7mQ1EGCZh5oY/mbrabvKSRtYBGqlWDGnpqOeJbkunyl1z
+	t7wqOt6vklsY/5hGVsAufp7Ct82yIcBBMbQ0VwQvT/Uy7+YbpkTMLQX83WnK2lQ3+ztnoj
+	aSSrhthKtK3HNIhBaE6g/ljtxRRNVAc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=et2lfG5Q;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780244702;
+	s=arc-20220608; t=1780245054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a4xwiQThCs7F6+XmjiaWulJyRMq8uwTndHHdVcApUeA=;
-	b=zc9j+JXPBH+arvG3D4dzYOeqg7dpobwJJ1dFkJ6GSWhHes0LNZ2xU5qaey9OVjb0kOkaSQ
-	33krAT/+W6xninzS1HGCRYdAIWNhWVNdjS9PAGlWRO1mmNKMVpfGOzV+4WH5O2qo4++yQO
-	HGqR21izi0K99+JU8S2iYPOAc5qHEcw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HH8R+L8H;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780244702; a=rsa-sha256;
-	cv=none;
-	b=nf+k1bnfrNrYQKGldkvhKbdf8N8aC5jziitJqKPeKrPk78fSUhNKNjS8seeVg3fjk36Ey9
-	u6eqgj5aJeSpvmWqO1I4jib1UvZp/oKbDN74eRKSYMxC5kbR0Jzn4Maqj/94UMDoNKuTgj
-	H0452zMNtfGoZ/BO3nqJLC2w9AmDhW8=
+	bh=ooHLjrYde68IF9paeXUdfTOnJaxqfaEudXi3V/Gpzfw=;
+	b=5wc5YLPojYrxkL5gTtvjlouvjHdOPuUCgv6wq26eWethC7y3tHpAbF9pUwwepLeD2CPcur
+	wACXb0E1PUqGzU6tSad+8PfWCwI43e6eEVMAfvaUH6erdPlOU8IvNt2Od4lSzJ0FhkPdaM
+	0WAHpbVHm0+cicpgzfsXrVGUnKWsWGY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F3D42418FC;
-	Sun, 31 May 2026 16:25:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955F81F00893;
-	Sun, 31 May 2026 16:25:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A233403F2;
+	Sun, 31 May 2026 16:30:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12421F00893;
+	Sun, 31 May 2026 16:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780244700;
-	bh=a4xwiQThCs7F6+XmjiaWulJyRMq8uwTndHHdVcApUeA=;
+	s=k20260515; t=1780245053;
+	bh=ooHLjrYde68IF9paeXUdfTOnJaxqfaEudXi3V/Gpzfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HH8R+L8HsK2swvjdoSOvXv3+R79dEhpbNVvX6VDjStjqIShSbGmPEwr2fYd8Dl/LK
-	 JLEb6N5PGpp/LY+/L5yvIBi+ueq4Q7VOfEcBRuhqgyDHs9HTFQGS8o1ICSzilFwmn6
-	 t8aRDA0UEoUXgw6SMCErJ8xPNmPdWjvU01VmGRVqPoEI2d7cwrO4eScHqNfW5XuSnm
-	 Wj83jVeKR7nPAZCE5vst6YxFiJB+zgJyGJLW/0LXURwk4NJ2NIJfa0pmrpHAUQX0SQ
-	 Q9jOPabpqBfkIXQtWhqJDs5JrQvOv2N9RWEZOPZ9OzZns1/04r5Xmmjq0oUHjQcVgq
-	 up3Gnj1ihLZWw==
+	b=et2lfG5QLbYIoA3FgGbare5SGurLAvM5KBRLjqiOh9RUqierVbKf9wzyH3wgiGycU
+	 tVJhavGlm8ky4grJeEbtbgCylyY0hbuqLt/+qECeq3e6+idodR2N/iiCmbGpLWd15W
+	 X4ouvEPx3w9juaWoxSGHtEad0nv8FsGaOGB0uWm1BWZYzQ8T5JNx3h0qPdWxxLyq1b
+	 4wsEqQx1Ntt+GA/1nNhWfSyn2kEqOItpBH8H+15iwZdJhyVjEv2afMgIjHwC8bI3Al
+	 dC2P3qG+Kw8nNQ8BeF4js2pbcn4dQKerZ3462G/HkGjQvXkGJs7YKEG6NtOFx4Q3Cl
+	 qzWAJvrxehV3A==
 From: SeongJae Park <sj@kernel.org>
-To: "Kunwu Chan" <kunwu.chan@linux.dev>
+To: Kunwu Chan <kunwu.chan@linux.dev>
 Cc: SeongJae Park <sj@kernel.org>,
-	"Kunwu Chan" <chentao@kylinos.cn>,
-	"Wang Lian" <lianux.mm@gmail.com>,
-	akpm@linux-foundation.org,
+	shuah@kernel.org,
 	damon@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon: fix stale TLB young-state handling on arm64
-Date: Sun, 31 May 2026 09:24:56 -0700
-Message-ID: <20260531162457.98724-1-sj@kernel.org>
+	Kunwu Chan <kunwu.chan@gmail.com>,
+	Wang Lian <lianux.mm@gmail.com>,
+	Kunwu Chan <chentao@kylinos.cn>
+Subject: Re: [PATCH 1/5] selftests/damon: prevent cross-context state pollution in DamonCtx
+Date: Sun, 31 May 2026 09:30:49 -0700
+Message-ID: <20260531163050.98908-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cfa837d8641972b79a404f4f9d489644dd6675f7@linux.dev>
+In-Reply-To: <20260531091724.84381-1-kunwu.chan@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: d31eb5wzpqy5srz7e178u3dkq8ggnrb7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2AD3F120008
-X-HE-Tag: 1780244702-571448
-X-HE-Meta: U2FsdGVkX19/g9Bo205PO9m0hf+ZaaddoD/5B7iQxvo0/bJIh97o5OWh8FI2p5wIeOWE/4y4Dr2mTAK022OhBpVFC8zKZ+hSmICnpRdZqPVEjCY1Qa0gJQnCJI9eLXzlgIsOuowzMIhiSFbpmXSpvjQz4z4d7rzGvX7lujmSOaYQi4lfEWx9Furom4aBqnoqyIecakqt8MJv6SznlZArvh6F8bfw0sIrrKDJSGnCtbUGrRi901pivoKOShS+WplwfK6+T/bTBBvMtjGMFsrNfwbU1jRqo8SRTk3xt4N5w4CgcNng/mCWahZBQzkNbAbFPpLjPwVunb1XY+dCU3PaD1Z47TccY+G9X91qkDvPAvRLvu7qa//2s+4EFZwwt9wIKL4Jwp+otwIdKNG5HJL0kaV7I6pEBIjz1HKTaRydUIxWtBo1lbVw+IkWK/XFhTNbM0mlELhF1+bWC8/6idisV+j5X5468XVtdWlxblWJf5fpgQS+7y5t8MkqkXW/k/yOcidvWJBkSJMIxZsF/B4e105IVar88E8wHg0lAcy2z40V/O9YoUwjCSUcT4H7TclrqfuxqUQTCVv+OwfWLr9E2gdTAsYhB5QlRYMF72DBUEIAF0uh0R1bf8xZe8EeNZ5AmLrgEUZfv5bM5DBgOaeibaHIby72tY4VWZXOifxNFDAmNzEYzLujIoeHkdRmB6eEQKQsWKxs3SkjZFQz0HuErJjRD5lrQA3Dx4kX0dLyAE4eYK2QvS6sBGEVPeyUSBeWbrs1/GDQNIpWs+EMNbu7cE/an4FGTWPhqTR8QiPT3S4OL8ucgtAYkkwKtMq2SsSZMRUEsydJVh2fuh9Ya3mkp5bwLLHRPzBSOJ/fN5Vs1qEg379HA0TO+Yn/XtdHmLOBPcp4H3I8Rj6P8jhdbLkatoe/HLXJDl2cQOBPMYgqbvlrebhTMdqCV3kfImOHR9L3QR7Tu3rZRZEiPMFlrD4
- KpMk0C12
- seEbEUAA1HwJ4lh6hl0UcCOX0z/m0gMAecnJdVFGT4Z4aBcbzFXLxC6tEZUQgqVzx/0ZI/F2zTVCSs/sPBGZG75kpTOYWicun5BRtnsTO+pYIE9AlhoyMwc0DpI7OLKO8uE8DCRHL3J1JA6gQomm4PSeI9QuqcebFIXiTUO7ueHS6y9wBtecDXjS6ykdMAg6oo6gHkCGGgHKUgpJgWFL8o92A8PvFUktGd94c5iyNZsxCm2LC/X9Y640wEA3xmJ+1D0TO5HArPRk7jXQcbxqLOjyA83gVAgsXbrUeFIQddHbkt16O8FmH4lh2qu5u0u887HXBS4jZ06bu/GHMmx20NHFmlWEYEd4Hg5aEOQpz5LUOEIpjp/9LAoF2inA9SirYNLJryB+JcFDEQFc=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 28F738000A
+X-Stat-Signature: 3s1oi3s7sqk3i5ug9trkiic9n5zjfudf
+X-HE-Tag: 1780245054-814708
+X-HE-Meta: U2FsdGVkX1/OTenL98Rj4oot76XrrY9XwJBcapyfmCjiliEiuQe8UEMVXEG8QivR6DPx944ytOGPWxFm3c3/MCJSx33I8NgsPqtPOOIG1fQLheBTFBTyUHFLGnn4IYAPGTqWjCV+mngug5ELP0RzKQmDa5MC7kz5z5GrS4iqTUwvJ1zwEswlMw9GgEZdDsMwD/X9ZY1GysDrSbhbHsmtx22vqjPyqWkgqW3j1iWiHIX3HVpXaPlhXmsi5J4ZFXMUsrO3ORM1KFL5db30tA0jLhkZELCR+EJ0BOZEd8k9rSF0Fu6q7El0RiFTyWK4Z46zRcxbNegjhjJqG5fRyYiaJg64i9cBCa6NBzjlpos+yL+CaGTQaItJWTJZk+9mjNMyiRyCwqqwBlNkGkI0sz9rMHaZm3lo+iNvb6N8aOknVBUqn+nNXra6rGOGD/FVwCzf3FnyvzF3qbObBBHFWTqp/nbDDHkMBytQ3n9DopolFtl5NP3Vd9zWsdYH1dymfJIwirQwCRac0Rr8Cd0u06rrd7Gj3TVWlYzgldH3jIhMVodzvWsBk6XLD4ddNrc3Qn2Pi0OO+2LFWVlDeZITTo/qFMepKqtLIaiaCNKFZV7effmqTgKgVu9VpInHpufW9C/p6CRD4lNUJ9K1rR0p+ngN342ifB0iDS3TrwjSMwttFm7YhtMNbiJsrPj9BR/zS5ttcdcbW7LyId+8jf36n/MHwp+TbzecFWiYNorJQ+y6MGOEWCVhg61F6fJYBXYS3MDNjnWBLEouzetEhNdEK3oQKjiAd8YlJZI+Lwd7t/JInYzbXwm1HNXeMa43ki7Sp1NGLqRBE6FVasyoJjJjZe3b4ZAAmk2Em2sJ+aS2UMiFbAIHYdGQWTUVQX7WBaUZ4ELWCSQYW/cKG6U1CgIgwO4IdrqaRCVV8lqE0+iTufb/qLjyLMnotsTE+CEtlgf7WYCKtljaKCnivaE500AYi+e
+ cq+czN7A
+ 5zjtBZRDIc0iIwWHBP+i0e0CjjMNKFnwlQvFGNMC10ETPve47s/RhsVp+XpcWtCBXadMlchfrPEtCVbOZqJZAwOaAkDyMSuaG8ZoOPcp3fffqENy54rqtjFZ/NjgAd0620BK4IqOkCmFxRm+13aIqGGy2ib9cUhe9GTUh9TyHPrTRqfIeAZnkQqu3niIzrF727jBIoOUdzAh9KIX0TD2BFHbjwXUz474dP0wWbVc6Z8nvtNB6bPWN7WJxzxBmG/m9zkWfvcJv844QIBjJVzt0AOvM/VlZNB58lWV7m0j17ApRKBTkn4tYoNBoaA5yz/jfbFGbJg8lYzZ3Ch/VtWN8KL+c1A0Klz8vMM4y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,23 +97,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 31 May 2026 12:16:49 +0000 "Kunwu Chan" <kunwu.chan@linux.dev> wrote:
+On Sun, 31 May 2026 17:17:20 +0800 Kunwu Chan <kunwu.chan@linux.dev> wrote:
 
-[...]
-> We think that makes sense.  Explaining the rationale for not flushing TLB,
-> the limitations this can introduce for tests, and recommendations for
-> choosing reliable test working set sizes would be helpful.
+> From: Kunwu Chan <kunwu.chan@gmail.com>
+> 
+> DamonCtx.__init__() uses mutable default values for
+> monitoring_attrs, targets, and schemes.  In Python these are
+> evaluated once at function definition time, so multiple
+> DamonCtx instances can unintentionally share the same lists
+> and DamonAttrs instance.
+> 
+> Replace the mutable defaults with None sentinels and
+> initialize the objects when needed.
 
-Thank you for kindly accepting my suggestion.
+Nice change, thank you!
 
 > 
-> If we later find cases where the documented recommendations are still
-> insufficient, we can revisit more intrusive approaches.
-> 
-> I'd be happy to help with the documentation work if needed.  Please let
-> me know if you'd like me to prepare a draft patch.
+> Co-developed-by: Wang Lian <lianux.mm@gmail.com>
+> Signed-off-by: Wang Lian <lianux.mm@gmail.com>
+> Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
 
-Yes, please feel free to send a patch! :)
+checkpatch.pl complains as below:
+
+WARNING: From:/Signed-off-by: email address mismatch: 'From: Kunwu Chan <kunwu.chan@gmail.com>' != 'Signed-off-by: Kunwu Chan <chentao@kylinos.cn>'
+
+Other than that,
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
 Thanks,
