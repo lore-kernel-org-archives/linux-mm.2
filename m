@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21623CD6E57
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 16:59:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 117F6CD6E52
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 17:08:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C9406B0156; Sun, 31 May 2026 12:59:29 -0400 (EDT)
+	id 3503A6B015A; Sun, 31 May 2026 13:08:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 453216B0159; Sun, 31 May 2026 12:59:29 -0400 (EDT)
+	id 328EA6B015B; Sun, 31 May 2026 13:08:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 341BB6B015A; Sun, 31 May 2026 12:59:29 -0400 (EDT)
+	id 2665F6B015C; Sun, 31 May 2026 13:08:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2102A6B0156
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:59:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CCB03A0459
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:59:28 +0000 (UTC)
-X-FDA: 84828326016.27.292E3A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 32087100009
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:59:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JMsr4u3h;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 163806B015A
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 13:08:18 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B83D7A0456
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:08:17 +0000 (UTC)
+X-FDA: 84828348234.13.0D5DD9D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1689A20008
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:08:15 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T67PVWQC;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780246767;
+	s=arc-20220608; t=1780247296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nrT+q/sFejGms772rTU3bPFIOL/KvZhb0vOS6qeCZ8I=;
-	b=Vw1WRiF/j7AcFA8ZUE26zJSGf6zFTBhjYxPMeIiODZEwLTKVi+K/Q+EtU6fOTYUCZdy+cy
-	1wUg9goOEdcD1yLvx/cIm4hwW/D+tqdVdr04KlIUkqQyf8njXkovO+Mq9Gah5feKEzNVLL
-	3vPtm2Af499xWixz0kTEFmS8Y7gx83c=
+	bh=q0kft5uZTu7IpkVqR8CNYuSgsRuNK2ZGN1ogEISTcwU=;
+	b=Hwje8WfKvbdm9d7TKRh09u0CSMwahqOTWydqtA+Z+ehEnVssoy3feHz8YUEnVidyePelgf
+	t5vLtGdBB0dnZcPWegb4XlhWprBtXXuDMGmv4g+WIe4ZmiI7TngxNqIIPTJN/VLihmZxvZ
+	2ih7Vh/Y5OsOmhtLUhyACOrm7hZzVgY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JMsr4u3h;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T67PVWQC;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780246767; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780247296; a=rsa-sha256;
 	cv=none;
-	b=JF/6zfCOQgv9i27rH5Vqt1GLHSMQZ+LyEuQ/NCF1mzG8P4aA2md1YkmXEiBD0xsr+DNJMj
-	kJ8M4FoSkTfccaZOTYbyvLWOJ8GfDU9A6O2urrr0Pp7Vfu205HYwmY7q6Vy6aXNiedZkmE
-	YVcWOZURv8MN+RiNf0mF5K9qIDdBEPw=
+	b=T4B6vnOnr4J0toTk+0asaYj/pPVxUFOVoIdlZHWrH5UDglaHAL5c9A3wcahN+pUIr8yyJu
+	nbpdhajqCyYMAdlU1JZpupgcp8H2x9BzR7l6CaU43F4cTwhYN3gFT1nMCk70ohGYOgHjXd
+	yQC93QeDUYYMSHfschtRhRk+ExBSoRg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6E853435FC;
-	Sun, 31 May 2026 16:59:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F071F00893;
-	Sun, 31 May 2026 16:59:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 88A186008A;
+	Sun, 31 May 2026 17:08:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA85D1F00893;
+	Sun, 31 May 2026 17:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780246766;
-	bh=nrT+q/sFejGms772rTU3bPFIOL/KvZhb0vOS6qeCZ8I=;
+	s=k20260515; t=1780247295;
+	bh=q0kft5uZTu7IpkVqR8CNYuSgsRuNK2ZGN1ogEISTcwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JMsr4u3hZLzTZFrTd6WQOzGuUNvqjWRPyTyjgyKhnaYW9wIaCnQVEkMvtMFsCHYmZ
-	 QC5/K9t/6KKkHZKrZFzw4ZP4Nw8/pTs3jaS9MG8n3np9c7wQoe8JYI8ibIkV5zrHDL
-	 Q9QwZpK1O757FvlkEBqgB4uGZ9n7+rOunVbz1k88uj6OLo/xPf+w9zSPEZcYLrl+RC
-	 AOc+WhBYSDGPw5YpwHX1CUgHMWEluii8ttBMIvFJoyeMMI0Sdl4GdyDyYYHNGxeSHT
-	 YumtZ55eaTLZ1cSpF3x8pl1FCMV27JWv5shf/05b4Lj1CP9f7SC1Q/NKOxW8HeUyPR
-	 yHc54751Te4Pw==
+	b=T67PVWQCsaBBMEvoIVNH5eCFp2G8RFJWaM1NeWF9umI9ALi1cKs6OHZbf/RpzCs51
+	 iVZN1/DWiYRMSwp6nNzK7r6ay5bE8FTr7aVI0p252zfLFV8fJQLQf++S8RXta1FqUn
+	 WzlH1M/CV9T5wlMGhH/H848kG1aqeZoH14BbC5Gx3mLfvNaFiuSuwetKOLd0OBgVWa
+	 bZAehCUUlYhdApZ1F6iOeI/3S+AXsVSErx0eRo+15mIB63JKQNKr/XQZTU7xLM6zKV
+	 IgMP9e9aBiwTi2Ae2qyLuDuBGxsMYUQtIKv4bKHDW/HxKDlb1Gns8epCEr4Qq78gG4
+	 b1sAB8xU5s43w==
 From: SeongJae Park <sj@kernel.org>
 To: Kunwu Chan <kunwu.chan@linux.dev>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,25 +71,23 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Kunwu Chan <kunwu.chan@gmail.com>,
-	Wang Lian <lianux.mm@gmail.com>,
-	Kunwu Chan <chentao@kylinos.cn>
-Subject: Re: [PATCH 5/5] selftests/damon: fix dead code, skipped checks, and broken lookups
-Date: Sun, 31 May 2026 09:59:22 -0700
-Message-ID: <20260531165923.99684-1-sj@kernel.org>
+	Kunwu Chan <kunwu.chan@gmail.com>
+Subject: Re: [PATCH 0/5] selftests/damon: misc fixes for test bugs
+Date: Sun, 31 May 2026 10:08:06 -0700
+Message-ID: <20260531170807.99856-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260531091724.84381-5-kunwu.chan@linux.dev>
+In-Reply-To: <20260531085633.48626-1-kunwu.chan@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 32087100009
-X-Stat-Signature: q8wzqkegpkuokrqxzxp8imjyc98k6g4d
-X-HE-Tag: 1780246767-801194
-X-HE-Meta: U2FsdGVkX1/Ea0D7QiPuzJNCBu7Y9qTcvTe27buWBe5xbM59KNSTIdMXopHKMRl+i6zvN1TVyMSyVASiTnHOpN73IQS/owrLuG/A4+uj9w8lGEUtCVckT6hqoxfxc/zCd6rJFUlbBPbeObUhuh82ZW8h5Rntw5zcsSv8z8xfxZftFtByJb9G/S/FcMIxjaN25PFVKwTTOXNBw9MRqRgwL8UYOnBk/ZrV1N9316JM4an4R1FAdag78wK4YQgMAZNj6qMYfcVOG1GPtiG0sYB3BO+phreVP6cDPSeFRBqjFgR3xySfPU5SRkhAFaNznD+Zw3idQCSRiwonXXd1AzqFEnJLyAAdK2A0de9PTtgo3W/yJF4aE999G4Nu4GysDCGITCQJLODCbTOzqNJ5xWtJkKa5unzMCG9eFht+84GSNQwMPh0woadEHcm2lAjSsEpPXQmX55dSja0GWOA9Q5fc9BigdIQLEPo2RlApKDrJsuuw4GhZKD3V0BkBAD1b9H9LY4R2fEnLlID9KVfiGRie2Med9peRd5C0CqiJl6vcfmyZ6Q+i7q0Hxk9KnNulAqRIQZPMDtqYM6GwN27SuQ7h/FoiaOgX45eTOL1NgqpRho6ssWwIiF/5F6UTB2MhcjkBcWKFRrRsIugfPOpFabDhXKY4GtPfBFuMc8RDVopFXF330eTspyNn6MTgDSh/swvGwvwkGkoEv+9eQsNe2Pxm3I1NF2WCYb6wwxQnSuIRFC3Ohed0zogFKLN1Ed519ztgwsHlYf0G4aB4/x8QYwX1l2fTA0MTe1L44zfKutpvshDCDLGszcCHo7SmlarYSTk7ADy/iIwHM+5fW9xsgK8Zi6nLb1oYG7RwiakXay6SGCJHcojTo7CstEIKZUcYBqHnZB+gR7eulg30wxsJfz6pqDVTM8OrMRM+e2J0mse3tG53mqu6VdpZDALOoSHfxMud5pSAPShGsJu5uir2rqM
- qmq9FdKH
- riu8wGXCLotL8yQOIMPFAIf26kzm+iVScxSNfhPMYxMO6QAdmOGGB8w3At1Z2tfL7QLIO+5c5DYarZkV33qz5Y/9T/xNRfla9mkPCXXtpdpwQuJFCjB2k1R+CxlYj449ZG6FHnaHHYibcSTDAwQAcVhBOg5I0T1eO34aXG0DCZnMj6SduDxX738loqMNYADqMk8pZKcqqacvThT+fXYpBq8HKaGPCfr4bdSdXGEy9ycEZ1NSsHWLMfGE/7Q7UYe36beuevrkkMnz2MMQ5jEU2aMG5BetT/iPiylu1VGeJkzfsGPNhaHXoC9QZk4RiUURTIbHoyUjEG3mhh6AF0eVXZbKY7eCHm5ObVrzs
+X-Rspamd-Queue-Id: 1689A20008
+X-Stat-Signature: ij7isdm931shxp36myrjmyhjdxpmaoaq
+X-HE-Tag: 1780247295-617062
+X-HE-Meta: U2FsdGVkX18fx6bz9AxLh7tfJw506o6nGySGtu8K5sOk2KrrBM3p/LGS2dsctve7ESaHnba7Siw3AspWS+HID2VCnOzuhQ5Rlqv/Ve5hD5eoSzMtSWYMQcgyMssyIor9DjhCaEFN/2VY58SXA+rMTvFP7sGUSpKUmCoAFAsPpFNhaXqSHkj1/iwsJ9nFAAgXqnwr7Pq/Ezgz8WNppHkOXS1MuCDtsYrcbvYjHuBlWwCpgB8YSGC0dh7z1gRIXQP4tFopidm0lihn8XcrBbBuOHo9nbNEas4/kKYAmvPfqbPq/qBP8N9pSlAgz91cFJzDkSntsgnRX7GypceJ/nOrqY6+cK6x0fz04hiOyPNWBZya0o2YvZYZLIvLQqC6qdBL736NdQVI/lHoNggHpKW51PDQ/xWtVrsuAiFDzJ25ON8/ILeaZ4XI/3yyvWg1UbIqdx/n+cM1E9a75JHYgiEPZSOW4EXDL9kXUS6nOoSbHrW61AvtR6oJegxKlGEGriEZAYppDx0ZaCoYs6kXM4tEIu/NHgOubw3ZsZZeFcQyplJdFsBHJdGGZwDm4RgeDnq6A3FUrhIpRsx4GxYwk1WI2dgn+gxYS9/nVhwm0EyI7+8GLe2+oxaSMf4tfgRwUNCxQjftkrRMYY3bOsQghLXkLWyrkUqGbGMcgKhV3N40R5MCLQPRmJCXXO/bHfOp0f3Mt+9FaiNpHYWzfJpX0gCwzWxRbB9MX80iGMhf3a0oJriLWiBIRWN7gbGNYXG1pSx1NMfPpLRFNgMj86YsCwR9uKTBXqG6YEI1hmtctwYunqILzSvLD7Png1U+JZEnp4fUvSg0yJWjvX++ubY/nhzzw1BY4LgCke2CvOlGe4SCecr3yn1GRHjlXNGbj4RSU11LPcfcw5QY/Dv9eYjr4wRDPQshI/tucaR4ciidOdGcw4WwxGmMSHCfahgjExYxVEzi6I9WggM0ejJ29N7bGHS
+ XO/+WZnV
+ WTUsdMh5Q/lS/OIMa40VauBo5t4cswFcUDM/PAdlIArbbd3UlSrwQ6NjB3/rWYXgaIdUbnX2NVoW6c0BL1opsDgiYcKEoibyBt1yqKjMAyX2XRCM1q91EEkwwUFVytPhPxrhL4SsZVUXfD4Utb4zTym8DgjZGtI3xJtZTs8SyLldsHyAKeSDBUMD2kCyUxyQr/ljsZUHDZLdIGt+K/9lOwnes5UkMcw3Q0fsJA5IoFkd4kQFGEVwJVvxzwP9O8s++zki+NKz6tk+WptSmg18MWCjCn1OWV4aBvZ1YnN+7pFGHXLY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,32 +95,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 31 May 2026 17:17:24 +0800 Kunwu Chan <kunwu.chan@linux.dev> wrote:
+On Sun, 31 May 2026 16:56:28 +0800 Kunwu Chan <kunwu.chan@linux.dev> wrote:
 
 > From: Kunwu Chan <kunwu.chan@gmail.com>
 > 
-> 'hugeapge_size' in drgn_dump_damon_status.py was a dead elif branch.
-> $fail_reason in sysfs.sh was undefined, silently emptying the error
-> message.  'exit' instead of 'exist' in sysfs.sh skipped a file
-> existence check.  'nohugeapge' in sysfs.py broke an action dict
-> lookup.
-> 
-> Fix other wrong strings in the same files.
+> This series fixes several bugs in the DAMON selftests.  Most are
+> trivial but cause tests to silently pass when they shouldn't, or
+> fail prematurely on slow machines.
 
-Good eyes!  Thank you for fixing these!
+Thank you for sharing these great changes, Kunwu and Lian!
 
 > 
-> Co-developed-by: Wang Lian <lianux.mm@gmail.com>
-> Signed-off-by: Wang Lian <lianux.mm@gmail.com>
-> Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+> Patch 1 fixes mutable default arguments in DamonCtx.__init__()
+> that cause state to leak between test instances.
+> 
+> Patch 2 fixes a trailing comma in DamosFilter that turns
+> memcg_path from a string into a tuple, silently breaking memcg
+> filter setup.
+> 
+> Patch 3-4 fix bugs in damos_tried_regions.py: wrong operator
+> precedence drops the "not met" prefix from failure output, and
+> empty early aggregation cycles cause premature test failure.
+> 
+> Patch 5 fixes several wrong strings that produce dead elif
+> branches, skipped file existence checks, and broken dict key
+> lookups.
 
-Checkpatch.pl will warn as below, and it should be fixed.
+I left comments to each patch.  To summarize,
 
-WARNING: From:/Signed-off-by: email address mismatch: 'From: Kunwu Chan <kunwu.chan@gmail.com>' != 'Signed-off-by: Kunwu Chan <chentao@kylinos.cn>'
+Patches 1, 3 and 5 look good except signer/author info mismatch.
 
-Other than that,
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
+For patches 2 and 4, I think we need more discussions.
 
 
 Thanks,
