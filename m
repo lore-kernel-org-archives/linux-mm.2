@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67F6ACD6E52
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 16:30:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 007C1CD6E57
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 16:36:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44FB36B014E; Sun, 31 May 2026 12:30:56 -0400 (EDT)
+	id 1991F6B0150; Sun, 31 May 2026 12:36:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 400AC6B0150; Sun, 31 May 2026 12:30:56 -0400 (EDT)
+	id 171116B0152; Sun, 31 May 2026 12:36:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 316F86B0151; Sun, 31 May 2026 12:30:56 -0400 (EDT)
+	id 0AE736B0153; Sun, 31 May 2026 12:36:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FD886B014E
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:30:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B7B73140495
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:30:55 +0000 (UTC)
-X-FDA: 84828254070.15.83567BC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 28F738000A
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:30:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=et2lfG5Q;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780245054; a=rsa-sha256;
-	cv=none;
-	b=Ti0MDCLFqz0N/ehD9G26k6YlZ7mQ1EGCZh5oY/mbrabvKSRtYBGqlWDGnpqOeJbkunyl1z
-	t7wqOt6vklsY/5hGVsAufp7Ct82yIcBBMbQ0VwQvT/Uy7+YbpkTMLQX83WnK2lQ3+ztnoj
-	aSSrhthKtK3HNIhBaE6g/ljtxRRNVAc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=et2lfG5Q;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id F209D6B0150
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:36:17 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B746A8ED2B
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:36:17 +0000 (UTC)
+X-FDA: 84828267594.27.9BF1DD3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2CCCA1C0009
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:36:16 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jEbwjG3Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780245054;
+	s=arc-20220608; t=1780245376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ooHLjrYde68IF9paeXUdfTOnJaxqfaEudXi3V/Gpzfw=;
-	b=5wc5YLPojYrxkL5gTtvjlouvjHdOPuUCgv6wq26eWethC7y3tHpAbF9pUwwepLeD2CPcur
-	wACXb0E1PUqGzU6tSad+8PfWCwI43e6eEVMAfvaUH6erdPlOU8IvNt2Od4lSzJ0FhkPdaM
-	0WAHpbVHm0+cicpgzfsXrVGUnKWsWGY=
+	bh=SDD6tD/6kl7HLKjD6lcvgrwFf3qY0h09b+OnpA83jp0=;
+	b=OlBtcgRzMKqfgKGY+jtxEoNUBMoWac2tvrh9DsgNKSAFZSQUwZMzgQQiPaxVJlOOwfTuTo
+	gShQ1lK9i1sfiSUZl2XfBoMZ5bMZES/oZcO7K4tQrEZZftgSIl633MZb10JvKYUK8Iqyan
+	2qqQabT2CE1kbsAipA8MXzNWhPn2A8M=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jEbwjG3Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780245376; a=rsa-sha256;
+	cv=none;
+	b=DL1HuJ3VwHMHJLUqLbMXM7Y6tJX+KS0wxVfwv0LCALjvzvRw3MO6dqa7mU2eXYUrVU+tvs
+	LFFVce5hkEOwxalsPBSJVCh7wATShWysvsqHsLilz+WBJgQSr0KFdiHSCGoNi8gesJoMW1
+	sB/KESZJY8XRDR7NsCoa0zq5bx96lWA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4A233403F2;
-	Sun, 31 May 2026 16:30:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12421F00893;
-	Sun, 31 May 2026 16:30:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7915C6008A;
+	Sun, 31 May 2026 16:36:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D40F1F00893;
+	Sun, 31 May 2026 16:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780245053;
-	bh=ooHLjrYde68IF9paeXUdfTOnJaxqfaEudXi3V/Gpzfw=;
+	s=k20260515; t=1780245375;
+	bh=SDD6tD/6kl7HLKjD6lcvgrwFf3qY0h09b+OnpA83jp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=et2lfG5QLbYIoA3FgGbare5SGurLAvM5KBRLjqiOh9RUqierVbKf9wzyH3wgiGycU
-	 tVJhavGlm8ky4grJeEbtbgCylyY0hbuqLt/+qECeq3e6+idodR2N/iiCmbGpLWd15W
-	 X4ouvEPx3w9juaWoxSGHtEad0nv8FsGaOGB0uWm1BWZYzQ8T5JNx3h0qPdWxxLyq1b
-	 4wsEqQx1Ntt+GA/1nNhWfSyn2kEqOItpBH8H+15iwZdJhyVjEv2afMgIjHwC8bI3Al
-	 dC2P3qG+Kw8nNQ8BeF4js2pbcn4dQKerZ3462G/HkGjQvXkGJs7YKEG6NtOFx4Q3Cl
-	 qzWAJvrxehV3A==
+	b=jEbwjG3YtCqiGX66HJp9b9X1dSeLuVMEnPhmiHWOPmET15hr3rreAYsinTBYl+VWO
+	 udjp+Rraex35LS3OSuE1jQNLQkp5DFni2CmwrMp1iwOBaQIO2XGR5Sfp8C6x5fbYp8
+	 3/0ZBvI9XhdsnYkTtXS6QYEM8wmbau+tyuVf6kgi4nExomjUqXUbKkbbAn1t0YMiws
+	 TtPTUi1+emVG5BtjWXC4xxGXVQEHlnrCUEE3YqnoxwgvYPrSjj/Xex9mLvRWyTlOUo
+	 kfSOt/EA/PJWA9CwwrflSahxgiK4O93B55nwHZJXkg4cYCwvBvR7DWkNOXSw/YqpaB
+	 ipOBmL+Vmthdw==
 From: SeongJae Park <sj@kernel.org>
 To: Kunwu Chan <kunwu.chan@linux.dev>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -73,23 +73,24 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	Kunwu Chan <kunwu.chan@gmail.com>,
 	Wang Lian <lianux.mm@gmail.com>,
-	Kunwu Chan <chentao@kylinos.cn>
-Subject: Re: [PATCH 1/5] selftests/damon: prevent cross-context state pollution in DamonCtx
-Date: Sun, 31 May 2026 09:30:49 -0700
-Message-ID: <20260531163050.98908-1-sj@kernel.org>
+	Kunwu Chan <chentao@kylinos.cn>,
+	Cheng Nie <niecheng1@uniontech.com>
+Subject: Re: [PATCH 2/5] selftests/damon: fix memcg filter path handling
+Date: Sun, 31 May 2026 09:36:06 -0700
+Message-ID: <20260531163607.99063-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260531091724.84381-1-kunwu.chan@linux.dev>
+In-Reply-To: <20260531091724.84381-2-kunwu.chan@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: kcckrxxicxitee6q83knrf8nkebnpq33
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2CCCA1C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 28F738000A
-X-Stat-Signature: 3s1oi3s7sqk3i5ug9trkiic9n5zjfudf
-X-HE-Tag: 1780245054-814708
-X-HE-Meta: U2FsdGVkX1/OTenL98Rj4oot76XrrY9XwJBcapyfmCjiliEiuQe8UEMVXEG8QivR6DPx944ytOGPWxFm3c3/MCJSx33I8NgsPqtPOOIG1fQLheBTFBTyUHFLGnn4IYAPGTqWjCV+mngug5ELP0RzKQmDa5MC7kz5z5GrS4iqTUwvJ1zwEswlMw9GgEZdDsMwD/X9ZY1GysDrSbhbHsmtx22vqjPyqWkgqW3j1iWiHIX3HVpXaPlhXmsi5J4ZFXMUsrO3ORM1KFL5db30tA0jLhkZELCR+EJ0BOZEd8k9rSF0Fu6q7El0RiFTyWK4Z46zRcxbNegjhjJqG5fRyYiaJg64i9cBCa6NBzjlpos+yL+CaGTQaItJWTJZk+9mjNMyiRyCwqqwBlNkGkI0sz9rMHaZm3lo+iNvb6N8aOknVBUqn+nNXra6rGOGD/FVwCzf3FnyvzF3qbObBBHFWTqp/nbDDHkMBytQ3n9DopolFtl5NP3Vd9zWsdYH1dymfJIwirQwCRac0Rr8Cd0u06rrd7Gj3TVWlYzgldH3jIhMVodzvWsBk6XLD4ddNrc3Qn2Pi0OO+2LFWVlDeZITTo/qFMepKqtLIaiaCNKFZV7effmqTgKgVu9VpInHpufW9C/p6CRD4lNUJ9K1rR0p+ngN342ifB0iDS3TrwjSMwttFm7YhtMNbiJsrPj9BR/zS5ttcdcbW7LyId+8jf36n/MHwp+TbzecFWiYNorJQ+y6MGOEWCVhg61F6fJYBXYS3MDNjnWBLEouzetEhNdEK3oQKjiAd8YlJZI+Lwd7t/JInYzbXwm1HNXeMa43ki7Sp1NGLqRBE6FVasyoJjJjZe3b4ZAAmk2Em2sJ+aS2UMiFbAIHYdGQWTUVQX7WBaUZ4ELWCSQYW/cKG6U1CgIgwO4IdrqaRCVV8lqE0+iTufb/qLjyLMnotsTE+CEtlgf7WYCKtljaKCnivaE500AYi+e
- cq+czN7A
- 5zjtBZRDIc0iIwWHBP+i0e0CjjMNKFnwlQvFGNMC10ETPve47s/RhsVp+XpcWtCBXadMlchfrPEtCVbOZqJZAwOaAkDyMSuaG8ZoOPcp3fffqENy54rqtjFZ/NjgAd0620BK4IqOkCmFxRm+13aIqGGy2ib9cUhe9GTUh9TyHPrTRqfIeAZnkQqu3niIzrF727jBIoOUdzAh9KIX0TD2BFHbjwXUz474dP0wWbVc6Z8nvtNB6bPWN7WJxzxBmG/m9zkWfvcJv844QIBjJVzt0AOvM/VlZNB58lWV7m0j17ApRKBTkn4tYoNBoaA5yz/jfbFGbJg8lYzZ3Ch/VtWN8KL+c1A0Klz8vMM4y
+X-HE-Tag: 1780245376-586866
+X-HE-Meta: U2FsdGVkX1/HPXUhxI6bpLDhLpWoJoUIqVeQt3CkkuW5tv26K54OeraZRQIqO+foBCk8Db0OQN4yw7pHWs8BeXLPIh2Fr8QVC2w1A3Uf5Kr4bG4PBougXefPlc9US08m9j1snKhYC/XAbtVJLrqfAj3Q8LEDFz13DQ8BDL2pJZS3LWzWmLRhtT97j7VkVbuEu2CCW9J1eGljnzyK9OcrjjMDeHD1rlo+6QFIh6lOzTJMPAoRU3Exxw8cQKgnrwWBYt7TUlFrttVjwpqmXQ36CF7a7P9wyc9/0MRey1KtX1A+4a0KdSE0DzFceLW6cYqfqILVJOCy/5E07lPk/V6r6nVJ71mXYbeL1BVbMm2epocjzl08+N7Uim+3hJkARI0FJg0PMmkCBrB+ZhjlqSENpU4gS6rFhNISFPBjZ4qPkEeurYljScdmSeN/Khc4+pGTrrjJf4C9UITuhU+hEAxhynq8NH0EgCKh4emHGiQ4mIxxC6z+HY2b3xQ9J2lJp0aiJSI4ordQtzsYgghrzYDTbznEpczXgFmb+CTJRzfKSw2G0rG+RhjPxW1yBzGhROgfZLH5NqVw6IAixWB5X6tW9U737x82Ryoe5Yx8MJt/HpumM29RaUg+yrbwHDsbCa/UGQgHstUE7HOvOo/XnQ/33BLMwTjiX0ZnO65QQsnPstuCavZ47yxjnV/uOjUmB/VsaU6bAx5Ml+wXWh849Bi76RDfgCmkdESSq94iWeTftTepjnG+3n5q2VUvUWQZW+Y+c42QY+btdvYYKOISEIzriKFY4mogxinN/7l6eF9RJlbQK/0OrrxIp7xOh8O+pUFI33bYcpUE54nzdzaZIjyIUCZ4/ls19LPaYrV50GIZALFG1ZOaQG8ijyU6Sdgp5HQDE4kVZvrNdRxuv6T8VC46V4TQarW6/LqBjwwbGHWcEVFdBeNskLJrdZPgBTzPhIqfyHM58TnFjZRcSylsKRD
+ U+kWbnCl
+ wIaxX5QddRiAq7kIY1V56tW4401T5t0K3owC4EHUFO17cxmbPoYvAAnXO/GZ2sQmBWmM2niPTj9x6Czlf1nv3Um1hFNln/6u7Ulk0qVLdJZfwEBrH88TE4nQnLw2B4sbfcCqs96uMPEx6NeKlmA393S+WqgdK5AcIV11XJtPU2P+Hy0uMD89WnqMGcKWuh4aUWE6QcAe54LR85e4XF13b3cb5MHn6PSfR1HWMszOwufiSugHEiyTN1RKMBvCsOavk0Y7UKBDlmsu2ww2Tt9xbwh/PhuITzEg8yFr5YuaiJZVNlGo5q8T5R7MLNIQdVrrksOhN/fVEd3MGxbY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,33 +98,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 31 May 2026 17:17:20 +0800 Kunwu Chan <kunwu.chan@linux.dev> wrote:
+Conventionally, this mail should be sent as a direct reply to the coverletter.
+But somehow this was sent as a reply to the first patch of the series.  Please
+send all patches of a series as a direct reply to the coverletter from the next
+time.
+
+On Sun, 31 May 2026 17:17:21 +0800 Kunwu Chan <kunwu.chan@linux.dev> wrote:
 
 > From: Kunwu Chan <kunwu.chan@gmail.com>
 > 
-> DamonCtx.__init__() uses mutable default values for
-> monitoring_attrs, targets, and schemes.  In Python these are
-> evaluated once at function definition time, so multiple
-> DamonCtx instances can unintentionally share the same lists
-> and DamonAttrs instance.
+> A trailing comma in the memcg_path assignment makes
+> memcg_path a single-element tuple instead of a string.
 > 
-> Replace the mutable defaults with None sentinels and
-> initialize the objects when needed.
-
-Nice change, thank you!
-
+> As a result, an invalid value is written to sysfs and memcg
+> filter configuration fails.
 > 
-> Co-developed-by: Wang Lian <lianux.mm@gmail.com>
-> Signed-off-by: Wang Lian <lianux.mm@gmail.com>
-> Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+> Remove the comma.
 
-checkpatch.pl complains as below:
+Good findinng!  But, Cheng sent [1] a same patch earlier.  I believe Cheng is
+working on revisioning it.  I think we should give Cheng more time for that.
 
-WARNING: From:/Signed-off-by: email address mismatch: 'From: Kunwu Chan <kunwu.chan@gmail.com>' != 'Signed-off-by: Kunwu Chan <chentao@kylinos.cn>'
-
-Other than that,
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
+[1] https://lore.kernel.org/20260529145248.84593-1-sj@kernel.org
 
 
 Thanks,
