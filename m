@@ -4,112 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FD6DCD6E52
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 18:48:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ECD8CD6E56
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 18:51:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D82D26B0168; Sun, 31 May 2026 14:48:57 -0400 (EDT)
+	id 4106C6B0169; Sun, 31 May 2026 14:51:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5A6D6B0169; Sun, 31 May 2026 14:48:57 -0400 (EDT)
+	id 3C2066B016B; Sun, 31 May 2026 14:51:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6FE46B016A; Sun, 31 May 2026 14:48:57 -0400 (EDT)
+	id 2D7546B016C; Sun, 31 May 2026 14:51:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B52986B0168
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 14:48:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 538748F06A
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 18:48:57 +0000 (UTC)
-X-FDA: 84828601914.26.668CCC0
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 60B80180007
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 18:48:55 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AQFQ6xul;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B7536B0169
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 14:51:20 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A43B512037F
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 18:51:19 +0000 (UTC)
+X-FDA: 84828607878.15.A0FBC72
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1AAA9180002
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 18:51:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+RQr4Xc;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780253335;
+	s=arc-20220608; t=1780253478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cg/AjrXDwe2lskvjan1cekt4xlGxpsrXMJuFn7kTY44=;
-	b=rNJ6y/hY5/6npbr1Nk6IYHgrAUHN1jeVclWyYq1pYa1Mi4f+MowDCfMmBNl9XOSUNFhLzv
-	NdBzOv6w6nujyAk7k7iOnbyyiUmzKt/pdnyCwpP5ivU2/lql/DUYSKjSJlz/KHNlEuPjRL
-	Q2cppJ+XTj2K8jeQUL3L7mdHP6hq/PY=
+	bh=FAxCb8wt4MDofHdr7bDysjYqqW+0dO2zfePgF4EMiLc=;
+	b=raGCLq0TJy8475sV9xYhdYtBARACtIvgWz0yN/1ZYx4igzkL8t0TELrTFKahc1i5HzBHFM
+	YNlX5dNoJF7Z4kSKuoJZBAp5xh4xZK5LijcF1KNKq39MxYHlg3m8osKB8KJFJv/gyLn9ji
+	NSs+gdiDnbHOLVmhzjexbuNG4Y+jiRQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AQFQ6xul;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780253335; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+RQr4Xc;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780253478; a=rsa-sha256;
 	cv=none;
-	b=Hi5pOmS7xk0/q8GWG5d/7wbdsp5asbTNEglGIJoIshfiuU9EH7y2X9FDm6B00xvx+nBpxd
-	1Bm8pTvjIQMIq1POAt8AK7oJScLAF1i2YuipE7dmi+67pJ1EZXCMK0DljEge6J+Sz8f7Ua
-	akvDEV4AS5eN8mrDV0X9d6fy+TPwapU=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2bf1cda2b17so18336695ad.1
-        for <linux-mm@kvack.org>; Sun, 31 May 2026 11:48:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780253334; x=1780858134; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cg/AjrXDwe2lskvjan1cekt4xlGxpsrXMJuFn7kTY44=;
-        b=AQFQ6xuloGu8p9GuEEvR3bBN4N4N3pIcOOVDFGhM+CMGnfCe87itdXgT9/z67It+jZ
-         tg28pAIqHrKctSVR0tA5CEawsKfsDU5ospanYLCGhfrK8GhDVbfspQZcgz4CP/7AQY2X
-         KFUYl8MLJ3hfVot2g02/bigkDfNz1UQPZCj/u+rWB/vmvc5IQSiCywPVwd6WQPtPNGSV
-         SfEXE3byJIxRjO1jR3sGzG2+7angMdG0iBhV5T5slKmSEWFYwdcbXyhpK36ff9yVvafE
-         B0rNOEvItgp01/Z+i1AfM4yQS5zvadjhbMSY5eMCJKb37Jwm6sS7kx23WuxNK3qLBnXf
-         7x4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780253334; x=1780858134;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cg/AjrXDwe2lskvjan1cekt4xlGxpsrXMJuFn7kTY44=;
-        b=ovYzTWyl8QaIkNlPlYgq8n3aj7UW0/2syeHx/FdOc6J5eBZwVPrG7mJoS9/6qtK+QX
-         YKjNKYesVS2mI1CADWgCyYJggMrfjELAAwrhgKJMxTDpdihf1NOQq0n5zDgUGyMGEL4S
-         jA7iCr43hi/atOFB88hG45PPpu5JNzl2cqhQ2mZtLV0O4odezM8BWi/Sv94ea7iuOUWm
-         vuvT6TaUQMQVyGSkXOccUueYYxmScj1NjL+fVAJlwhQbYiG5a9csrKCG0A/m5wXGtSD4
-         fIC3d8xG047RDQ5qx7Y5rfzwa6VXMwvuwpBD9IMpeqcXo6m+ackVAySAayFidmEoBuZr
-         Bgig==
-X-Gm-Message-State: AOJu0YxmzNowpf88AaqdpJau2ADB+lMSpsRDdKapihbDe6aJEAi3grvw
-	SvW13JdaIQYm5S2yYcbLoqUurlyrsTx4cqvb11S1Dfv/5XrnTRPZHjae
-X-Gm-Gg: Acq92OH8uwkD4THzusriQfZvtUUDO1KCRNBvbn7ZA5eW+wRceO13PbIEL2ovJbvSRTx
-	DpEQSCRdEiG/VR9v4l8ygLr4HwxQQMj8WFGbat1LcIwyl6w3H2zTC5FOfThUSbWfM9zW7TWcc1T
-	FIAtvJtm0r84S+lcPQizYB7vbc6PKCETdMAbTaHQn4M4P2jILsfoYPmPmc5fj0UMOLHoXYjjC2L
-	abs5p/ffJvGaWuakTUxPlTcQbTs+zpFrOdPrBdd2+OuDTpmh60uyXCtRE1pBdipndI0tiSplOoN
-	Yj7T89LbG1qNOYKQzSuE9wIiGyOozufFbYLMF1ECGHZoozcAkW0OPKIDexl+px/UZ6v4PTe2Nvw
-	2jgsiq9u54WG7v9AcZD1Wnu/1bzGptcoRQ4Fa/PLL97UGWgIS5QCGqYfC7WM/jOCaZA+bJTtbXk
-	Fve8E1F3S3y4eFWCq372BxSPdeCJty7wkIdpE+NnSxX1j/JntVdyQu1e89CM4sPuKEiDNS9w==
-X-Received: by 2002:a17:903:9ce:b0:2c0:d1ad:d13f with SMTP id d9443c01a7336-2c0d1add9d5mr18109025ad.4.1780253334045;
-        Sun, 31 May 2026 11:48:54 -0700 (PDT)
-Received: from KASONG-MC4 ([115.171.41.232])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239e7019sm82869655ad.11.2026.05.31.11.48.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 May 2026 11:48:53 -0700 (PDT)
-Date: Mon, 1 Jun 2026 02:48:44 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
-	baohua@kernel.org
-Subject: Re: [RFC PATCH 0/2] mm: swap: allow per-device skipping of
- zero-filled page check
-Message-ID: <ahxeXOlodtwjpVcH@KASONG-MC4>
-References: <20260518073455.2495934-1-youngjun.park@lge.com>
+	b=Ym+YrN5JRGJf8BM9G4KFKxqwgaB6BLIcY0hE0Oqam9HLkRPLBHxAmgDGY7ichDenX+maPm
+	ynp+iPZJoJ1Ns8EUK9NzhqUT2KddI0nrMPpKJ9cOGt4RhWzAwE7u99FeOs3nuDYaHghM46
+	fyrPoKcu1gnPVrVmEUuyuNCXaJFPTdE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 736826008A;
+	Sun, 31 May 2026 18:51:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E041F00893;
+	Sun, 31 May 2026 18:51:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780253477;
+	bh=FAxCb8wt4MDofHdr7bDysjYqqW+0dO2zfePgF4EMiLc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=G+RQr4XcxsfKqn/e3SCfS3h9uirQNGVtyU7yFFUFtiaMRwqJpqhfubECNmUCiGK8P
+	 YRX5pdjgi775fLQnPYtqhj26Lye5uqnK6D5co+pxhbEIfh1NlRlA1QGfLxlYTVUxKO
+	 KhvpfEzmKfkvYVUhJgR21RNGCsHz24aAwBlNjDY6wQ6rBBuNOeDL3Q8dU2e56E8M4q
+	 pDJrM3jMgyDlbzB+Q3tELtdfGg7ZrnSoE3Ht4caejeMbAt2e5hbvbpdjt0fnbGKM4w
+	 6JYGnMwpbOlQdzWvpfqSL194r6Tq0eE+YauGMYOh5UD9qOapZm6PoN83BK6DXX02kw
+	 V5xsWw1ScHvnQ==
+Date: Sun, 31 May 2026 21:51:09 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/12] memblock: introduce MEMBLOCK_KHO_SCRATCH_EXT
+Message-ID: <ahyDHVSH5eLsnp3C@kernel.org>
+References: <20260429133928.850721-1-pratyush@kernel.org>
+ <20260429133928.850721-10-pratyush@kernel.org>
+ <agHGOxSnP_VraH1M@kernel.org>
+ <2vxzecjhc2s8.fsf@kernel.org>
+ <ag-a4ru9bMkDMthO@plex>
+ <2vxzse7j7ai9.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260518073455.2495934-1-youngjun.park@lge.com>
-X-Stat-Signature: roafip7h1jtwbjwisx3aghsjddp1h9fk
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 60B80180007
+In-Reply-To: <2vxzse7j7ai9.fsf@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1780253335-741357
-X-HE-Meta: U2FsdGVkX1+N/iTp9UTrxuzRKPAyeIYLwF9h+FHTkCxLj+3Py8WhzH/L/0c1A1SfpUEZuoBt5IGREBdcjgnb3gUJ8fsK6YPDvCENj0BTXVSU5GarcQr9CLg6SeSb8rTZ1c8U91P66PWhxejLyrS9eitvpzhdsGcPynZ1GV3oekRWp2pMQeGVBAgKB1GzKU/U7qe5PDMcjvJlFzlFmUMa3clBXV13oOr2m5M6QHPtftQqMWXad7KvMt4zIq1LWBW+Pb/WLcFOB9ZWn3/FsDGOg/UzgjcuhmMytn6H0+1KvEFuG2HEO030B0QK/gRbK12YDdvbjta4+IbrS3rkngFAoQ2yU+7WqlHfDVfwiwhVEWcdzr7ySrXqegznuCfYHelDagLQvaMJvxUNC1SSaCk3wpbGxr/1oz2MzCEL45j7jonlWl/vG3QoNIXWqMgDDGcdgb3TEGl29asaOxFsoU3ap4N0cjYWNs0PEBHDIDze5LduzZkrTvzXngsxI89m1KM1I+ou1B0LJaw+VSyn6ldgTuK2yOWBJo+OTWFEKPoWzOUEx5tQTuFy07oSdA/TNUzB5KfWP/Jg9H3Ep7RcYH/P6PvzDc2VnNFDOpO1Sz4DBcSymDHgxoekxH/BAv7JGRMMhR4Os8vmqpkja3zVMdJoSCxEYDfj+1N1Hb4jrUHNsP15cM3yfovai7QOVNzQAm0Y6bTbPNyn54lSpiz1ziUipd2dgpOyqqn4HxZbZLkpj1JkapkIkd5xw6zWyZ1ag0KzxXQRT+hqidzJMM/HtiqCmr/pgVBj2lY3P+L+DMe1lol7a21UVa7/q7LFnIW+0GQoDCNvB1ax4twDc0dmrAuR0aGirsZETJXYpjCsTyJOja1bu06wh/GqloWSyr8bp3mVbxURneNW9UK8rfxelmiu2d9aBtCfuzEHR1vu0+tKr8mwUSmLbTdujcrRtVF2eSJRUjk94SW72zxQcjX2X1F
- sKO8Uhda
- yUSfvRpxGJqgcViCK0dEZUzm+/P5JZSHIHYzWcdbIPKiNk22GanuXXvVxi9rq1J3IYAsZs9ht6ffuna//AwrXlXggcmAWQjTQ79ZdB+8m8iT/FEO4MsJIzhjD17XHGkqro+K/NlPHWda6byaIw+dZi1ZcB+lOugDaKHp3Z7PV5wf3nwnuV/r6G073YUKXF4j+ct3uoPqeJ2WP0GKwJCdJNaucfovOCLWVZhQ1l1LCyxdyZD8fl8CMzrHrDaO4axuu1D7T45L4ZTxKVcxCNPrq1KL98Jga0w5/mtz66lorqcn+YYc5K2soi6KTi+omXJoBmyvD6saTPLFf7iCjVzQiTxrzvmwOtgbVLAn8c+ntT86lQ9UXYSgXvv/0qyfBnBM7DfVqC/uwI09H5DMjtBBDZfY29zUOJQycRzi3i7WuE/6MKRjIB1Q5Bpj9dmJkPWwCzyQCIX//O+ZNz9Ggfig3V2cCG4s8hkej9F9t
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1AAA9180002
+X-Stat-Signature: sr54z4wpbu7x1c5ko38iabmix9cznoob
+X-HE-Tag: 1780253477-847399
+X-HE-Meta: U2FsdGVkX18cq3rla4gn0+jcAzZB313SIT9ZIFheIeuqNqBzVNpcKoxWO1z5T3DJIwVlehqOtILq8GkYaXSAB+CjCWlVbUlhQBX+DOysDma+UHigNnIooKCrzZCK6VOzWjjPxx5+90RU6joFqGLomOZW7yIxpt2LsdbiaIbi3mRvMPwEkryVhObgc17xf1rK8DldthPqeSkhke8EiZYIhDmHOdIB61g4q+HXm6p2o1vgf/JaXEap5bemTZHbhX0mfeY36v/8W0QdA4vzj+Y+VUfV2L5FjdiMoWLXS+EHfGsOwOKxXuHoK8hkGm3fON9f64UcRr+3NdaXDFIrDr7mPxA2/kaCA/U0h04J9EvGUMVW0c0Ijdf/WrJzdGRiHmbP7Isvx76sqDsLDX0mrXT74KWBBq5pLCXJwhStz39QEZlF2ockeYPuloYC8njkd3JPWoept5O8R3suKOjWMG0QOQxTj8OXm32tCH852606ILUPFWxGtfaJRipA7l1E+d4DAre40DOLGDEJ1PKLTGE4HD4KJUgpagWseU2Lt7KQJHlkMdJ6jmYbcsrEcSQF9hPwb3YR+LdSXYUX7zCwL1lCvHc5e8zXBxu62uixynn3Xcnvt10+2BlePdCkGg/OYSgUdou0xKoZ4wgfriK2BJvLmkGTW0/ONJYUiJHGZghEB1xinmx/hkMLFrx6QRIphQZKLto6Xix+wqfbylJOJ772410aAiNFqON5F/tW8yGikiZH0AHnlwWvVKJg07eYBv0URoKA/0ixcR5dl8ylpkFCAdpmzZ3ZMU/PDn1OKHv48hzgbjoxsWdj82B9pVyH1VdvEGHy8vnQZoxfAD53cGq5zbqjhXAtIMU26sL6FNao81BfyNGYAHAHghYNKTA7PcEq4Sao5ddcEQei02pzloxnXgO6u6e4TygEQBhqS6HXgQmWdZ/rUBP+nirIRIm4QX2iffLkMf2cSd50DOzQSkB
+ we6rQIA8
+ m1Xwt/i6AI3ZTS7eWRL0lB8l3jspcbZ8xoGgKdxe+7c3T0UxApBiyRczAXwrx0zV3nIfLw6bp5OhB3bDRsekvhoidIgSleEQL4L439yvJDjmOutPaUlNXY4mh1RbH1uCv2Q/6LCxeOhqKo8WzMS63Nwfc6e+vj9MYhkZRioEBiVaqAFyY3k2HMP3wJCpigabejnYdbsBmZo5UcrPk7IiutEfB0JpCPKurhi1iRIsd4mY6C65nncnO3rLbUjicgCBg+VYU05OKi86OODG7e+nOdJFtz+KfhRVmHFpgJFNBeBGNG0YzAwoTCroLY6BdCCt4Gv2Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,72 +101,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 04:34:53PM +0800, Youngjun Park wrote:
-> Currently, the swap layer checks whether a page is entirely zero-filled
-> before writing it out to the swap device. However, some swap backends,
-> such as zram and our custom swap device, already perform their own
-> same-filled page checking internally. This results in redundant CPU operations 
-> checking same page pattern.
+On Fri, May 22, 2026 at 05:02:38PM +0200, Pratyush Yadav wrote:
+> On Fri, May 22 2026, Pasha Tatashin wrote:
 > 
-> This patchset introduces a new swapon flag, SWAP_FLAG_SKIP_ZERO_CHECK,
-> to eliminate this redundancy. I introduce this as a per-device flag
-> rather than a global setting because traditional swap devices still
-> benefit from the swap layer's zero page check to avoid unnecessary I/O.
-> By using this flag, userspace can selectively disable the zero check
-> only for specific backends.
+> > On 05-11 18:46, Pratyush Yadav wrote:
+> >> On Mon, May 11 2026, Mike Rapoport wrote:
+> >> 
+> >> > On Wed, Apr 29, 2026 at 03:39:11PM +0200, Pratyush Yadav wrote:
+> >> >> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> >> >> 
+> >> >> In the upcoming commits, the KHO will learn how to discover free blocks
+> >> >> of memory by walking the KHO radix tree. It will then mark those regions
+> >> >> as scratch to allow memory allocation in case scratch runs low.
+> >> >> 
+> >> >> To differentiate the extended scratch areas from the main scratch areas,
+> >> >> introduce MEMBLOCK_KHO_SCRATCH_EXT. Use it when choosing memblock flags
+> >> >> for allocations during scratch-only. Teach should_skip_region() to check
+> >> >> for both flags before deciding if the region should be skipped.
+> >> >
+> >> > Why there's a need to differentiate SCRATCH and SCRATCH_EXT?
+> >> > SCRATCH (I still hate the name) means "memory memblock can safely use for
+> >
+> >  +1000
+> >
+> > I also strongly dislike this name and mentioned it in another thread
+> > earlier today.
+> >
+> > If we ever decide to s/scratch/something-else/ globally, that should be a
+> > separate cleanup effort. However, since we are introducing a brand new flag
+> > here, we can discuss a better name for the _ext portion to avoid overloading
+> > the "scratch" concept.
+> >
+> >> > the allocations". Initially this memory comes from the reservations in the
+> >> > first kernel, but if the second kernel can find more memory to extend it,
+> >> > why that additional memory should be treated differently? 
+> >> 
+> >> Two reasons:
+> >> 
+> >> 1. We mark SCRATCH as MIGRATE_CMA. We don't want to do that for
+> >>    SCRATCH_EXT since this memory can be used for non-movable
+> >>    allocations.
+> >> 
+> >> 2. Gigantic (1G) huge pages can not be allocated from scratch. They can
+> >>    be preserved memory and thus should not be allocated from SCRATCH.
+> >>    See patch 12 that does allocations for gigantic huge pages only from
+> >>    SCRATCH_EXT.
+> >> 
+> >> I will add this in the commit message for the next version.
+> >> 
+> >> Naming is hard, so if you have any better names I'm all ears :-)
+> >
+> > IMO, this scratch_ext is not "scratch" in the traditional KHO sense at all.
+> > The traditional KHO scratch is what is passed from kernel to kernel and is
+> > guaranteed to contain zero preserved memory. This new memory is not passed
+> > from kernel to kernel and can contain preserved memory at runtime. It's
+> > essentially just memory that we identify as currently unpreserved and release
+> > early to the system.
+> >
+> > If we want to keep the naming aligned with the existing codebase for now:
+> > MEMBLOCK_KHO_SCRATCH      -> original scratch
+> > MEMBLOCK_KHO_UNPRESERVED  -> for the new memory (instead of SCRATCH_EXT)
 > 
-> Furthermore, on certain architectures where the zero map is managed via
-> a separate bitmap, skipping this check allows bypassing
-> the bitmap allocation entirely (saving memory).
+> UNPRESERVED sounds good to me. I will use that for the next revision
+> unless Mike objects.
+ 
+Can we make it shorter? ;-)
+
+UNPRESERVED makes sense, although I'd love to completely remove KHO_ notion
+and make the name reflect how it's used by memblock. I was toying with
+PREFERRED instead of SCRATCH, but it didn't feel right enough.
+With two of them that surely won't work :)
+
+> > Alternatively, if we do want to tackle the global rename of "scratch" later:
+> > MEMBLOCK_KHO_BOOTSTRAP    -> for the original scratch
+> > MEMBLOCK_KHO_UNPRESERVED  -> for this new dynamic memory
 > 
-> This modification is based on the previous discussion with Nhat Pham [1].
-> Additionally, this patchset is built on top of Kairui Song's recent
-> patchset regarding swap table and zeromap modifications [2].
-> 
-> Tested simply with zram on QEMU to verify zero-filled page handling.
-> 
-> References:
-> [1] https://lore.kernel.org/linux-mm/acQvNRLpHwnHt7i+@yjaykim-PowerEdge-T330/
-> [2] https://lore.kernel.org/linux-mm/20260517-swap-table-p4-v5-0-88ae43e064c7@tencent.com/T/#t
-> 
-> Youngjun Park (2):
->   mm: swap: add SWAP_FLAG_SKIP_ZERO_CHECK to skip zero-filled page check
->   mm: swap: do not allocate zero_bitmap if zero check is skipped
-> 
->  include/linux/swap.h |  4 +++-
->  mm/page_io.c         |  7 ++++++-
->  mm/swap.h            | 12 ++++++++++++
->  mm/swapfile.c        | 14 ++++++++++----
->  4 files changed, 31 insertions(+), 6 deletions(-)
-> 
+> Or perhaps BOOTMEM? I suppose either of the two are somewhat better than
+> scratch.
+
+Well, if we have BOOTMEM_HVO, we can have BOOTMEM_KHO as well :)
+
+> Anyway, can we please do the SCRATCH rename as a separate series? I
+
+Sure. We can continue bikeshedding in parallel.
+
+> would like this series to not get muddled in the naming discussion. I
+> will use UNPRESERVED for the new concept in v2 though.
+
+That might warrant v3 even if everything else is perfect :)
+ 
 > -- 
-> 2.34.1
-> 
+> Regards,
+> Pratyush Yadav
 
-Hi YoungJun,
-
-I think this idea might be useful, some workloads with very few zero
-folios doesn't benefit from this zero folio detection and it's more of a
-burden than gain:
-
-For example, one test result with MySQL:
-
-pswpin      129323368
-pswpout     131460192
-swpin_zero       4641
-swpout_zero    248210
-
-Less than 0.3% percent of the pages are zero, and almost none of the
-zero pages are swapped back.
-
-I think the zero page detection is actually better combined with
-compression, e.g. ZRAM & ZSWAP which will always have to touch the
-content of the page. But some devices may be able to just accept
-the folio as it is and CPU may not want or need to read the content
-again before pass the folio to the device, that may save some CPU
-time I think?
-
-How we can make this zero check as an interface is arguable though.
-
-So I think the user might not be limited to ZRAM.
+-- 
+Sincerely yours,
+Mike.
 
