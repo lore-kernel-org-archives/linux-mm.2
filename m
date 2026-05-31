@@ -4,81 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 753BCCD6E56
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 17:48:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4A46CD6E52
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 18:40:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64A906B0164; Sun, 31 May 2026 13:48:02 -0400 (EDT)
+	id E60736B0166; Sun, 31 May 2026 14:40:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FB796B0165; Sun, 31 May 2026 13:48:02 -0400 (EDT)
+	id E115E6B0167; Sun, 31 May 2026 14:40:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 538AE6B0166; Sun, 31 May 2026 13:48:02 -0400 (EDT)
+	id D270D6B0168; Sun, 31 May 2026 14:40:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 42F806B0164
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 13:48:02 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F11DE1C0709
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:48:01 +0000 (UTC)
-X-FDA: 84828448362.05.4ACB68E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8F286140002
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:48:00 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iuDXv0f1;
-	spf=pass (imf09.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C4CB26B0166
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 14:40:18 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4F39D1404C5
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 18:40:18 +0000 (UTC)
+X-FDA: 84828580116.23.A01975D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 94FC54000E
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 18:40:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EfEXoBUS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780249680;
+	s=arc-20220608; t=1780252816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=SRhng7ZwRas2P1ADM7h74381kykfPa3pcL8IR8Sgsag=;
-	b=mCDN4l95h0l2BqM7IFO78A200cA/xg/JHlKbBkpGJXfQkLSmKg2AIr10bnRtKYmkeGoyZz
-	RdwNxI3YCMapR1WM0jPWwG30WGChqQo8MxyFUdQ11WXK6SObQdYQQ7yNKNzx2Sm446N7LB
-	RZCk8nOAGxy0tloDhD2Lij+Ao/bOSnc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780249680; a=rsa-sha256;
-	cv=none;
-	b=n8YSDUpaaavWydmP9lTF2AXymMZJVWzODDSxI3QHhPYGCGLRI6gmHEhn9eHFWV4JcglpaJ
-	VMoCkimtTXT54nZ3SdkwbCgn2560vhJiIFbLS4itcBvmknkmndDChYsU3gMn7i3d5voGRA
-	l8fd4efIiR2jPDpPbxBKXqAQ6sxsicQ=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gDniEbMiB4BenIn/IEHnw5RVCpuSrlVy3WIRuPpMhNc=;
+	b=xSqFJipHXbMFpXKllburGzeCVTbWjiiCcM11DfYJI1tL4ZTWsEmWLgnSltU8eyWB8YuKIo
+	KnsFw1BeRVO7NRHXCO38k0wcrdaBq5rAnAfYO9Tgq5VLPz2XsCYK3OQwq/1WYezmenvY8J
+	1J4HSFL1i6dkuOVNgQ8fWqJqHhHFlOg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iuDXv0f1;
-	spf=pass (imf09.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EfEXoBUS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780252816; a=rsa-sha256;
+	cv=none;
+	b=g/lMce9ZCjzFjx9H3eFLwdvF5kCjdlzF4qjmd2QpVVDpcTg0sYmu02MZPziLIDlyW+bgNY
+	Qn4UVwy3v9D0ZoyHylhJzYSNH6V5KcfqSP3+cn/sIz5C3IJCs3twMMyLsYivXlnWluyLB0
+	Ku0vN1UqBDlg71ml5wD4Rq0CJUwtirQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CDA4D6008A;
-	Sun, 31 May 2026 17:47:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA811F00893;
-	Sun, 31 May 2026 17:47:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8FC2042D61;
+	Sun, 31 May 2026 18:40:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C921F00893;
+	Sun, 31 May 2026 18:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780249679;
-	bh=SRhng7ZwRas2P1ADM7h74381kykfPa3pcL8IR8Sgsag=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=iuDXv0f1iop3nim+N4Thcks0PngriNRgeVPiAgKtBxzypHnxoTMMjLjp/89E9JBRZ
-	 J7oClLQY++qvZPFaL7cOm6gepiOYfT3domo4RNKpi6RmfTbt4FORCfaHxm2ETsL/xi
-	 NqGfxszFTID7uGZw41CWjkVP7+KI1W5ueUQrg5fHeWOpaiKiMbpzVIWCNV/G3S/Kfz
-	 uXzOBEF+equVHqy2k6NFGA1UG/FPQnRZteKEQgm4iUUEcJYruwNY4f+ZMsHxOi6u5J
-	 GhlaseKU9FawVQ+Iy2xlZSW+1IvWgPYeLqfjhqyspX4s4XfERaakiGk82QYGyeXAx+
-	 lTa3BvBR6Kovw==
-Date: Sun, 31 May 2026 07:47:58 -1000
-Message-ID: <8cc56c7a4aa29628b7d17d85be7eadb9@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Alexei Starovoitov <ast@kernel.org>, David Hildenbrand <david@kernel.org>
-Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>, Changwoo Min <changwoo@igalia.com>, Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev, bpf@vger.kernel.org, x86@kernel.org, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/8] bpf: Recover arena kernel faults with scratch page
-In-Reply-To: <ahnedQ33ZH8ogjbC@slm.duckdns.org>
-References: <20260522172219.1423324-1-tj@kernel.org> <20260522172219.1423324-3-tj@kernel.org> <7fd673df-22f3-4d70-a779-ea0b878188b3@kernel.org> <DIUMP21RASZI.2VNQV45RIL209@gmail.com> <3901fe0537edee9d7acdfd91695ead28@kernel.org> <CAADnVQJ+CqAszS2sSVu7gSfA_g4oaTR+SWmLNMX3_8c=OdR7NQ@mail.gmail.com> <ahnedQ33ZH8ogjbC@slm.duckdns.org>
+	s=k20260515; t=1780252815;
+	bh=gDniEbMiB4BenIn/IEHnw5RVCpuSrlVy3WIRuPpMhNc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EfEXoBUSjPod8EiHuVf9Lmqp1p4/N3NVQlW5lhUe0FyWBvAktt2PWa624j/IOePkn
+	 0Ewu+Agvw+xgJUP1FX3jaxtxBh4l4ZEIHu/P767mkGRGv+d/L0vBSmquJZ0DNd4G2S
+	 L0Vw2YD1OmSRoghPver90S6gJIFsTqVfmEIFMKmwtELvbyQRz48Wj/WkWjbuBx62zW
+	 NziZEd9RUrErHU38a2ERl7/PFegHNGF2rUikdBUOD3gFdSKn79Z5/9tMz8YG62/lMB
+	 x9/lSQ3C4QTa8Nd2lIQi7Tq3/70a0zbjjtGb9wGeAyHy7iEPCmwXeBcBBIhjSl/zPW
+	 jwwu4bwp5UgXw==
+Date: Sun, 31 May 2026 21:40:07 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 12/12] mm/hugetlb: make bootmem allocation work with KHO
+Message-ID: <ahyAhyVGzXdrigIw@kernel.org>
+References: <20260429133928.850721-1-pratyush@kernel.org>
+ <20260429133928.850721-13-pratyush@kernel.org>
+ <agmS5yZRflzN1M8U@kernel.org>
+ <2vxzo6i37bs6.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2vxzo6i37bs6.fsf@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 94FC54000E
+X-Stat-Signature: ti5kaeijrenjhthaphb9ahinwi3zjgz5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8F286140002
-X-Stat-Signature: 9o84msmr9hs7633t1ukuh3hawht18qsp
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1780249680-809507
-X-HE-Meta: U2FsdGVkX18KpUrkOF6HH8oOhrwWmOTlnME4xltICWS0AGKl84FPAhYFXVgwKA5VnNEb+Tff2SDOYYla75ZYm/olrrAMcZ7lLUko9wKaXrrqHQQhR6lWkC0j9TDyqYtpr2W1thvDS3np7wyFvPmoni9h19abdO7IhZQzDPSwxrgITKXQauKE8BzeuBkm6iTn4VCsNK5TNKLE3BftjM+V/2Ix+RhHupj3cUYlUdR0DmKIGWZ+ioVe86uQEf53cEntiyNoZk+vAe7uPS7xKbpCCPbyuw9yshPN+INJ4JNdOreAs75JswLTBSFaZ5yHFH3TuycW/FsMLbRSYfS4w/NC6gYKX1SOngPKyZW5OoqGU/aZ/rix5pPkVlWfGef/MAwh+EJZAgrAi/wk+gmGNXMnXdb43jZc5V8yG4m0sSjatNKwSwXGh1b3TZezEJoV5E+2rycx/itM7SFqUgV4an+w1R0JYx80OgmVpH77LKQuaZvc0xc+yuMLaGBPR38eB9g1TWcr1a/iRLXQzj4RzZzTeCM1+K4D/poU3i728KgkM6J0VidbkdBqy2zh54sr1JycTpDA3g761H4UFlqfARC1BMAuVzrdHN0bnI9wwLNkcBFtxltEx3Lqs/XBSGJ5R/jVKNh9hDxCDvmtY0mencaLG/O6rXtyfD/9LCcWRO2PJgjvKkgeqHIi1ZonmB4MLgvdUp65m+K936Yl2aOZFynHsfFfcrJzcksx33xi7xRwbSPfEQg83Iye6xkwAo/4NCbVkmUa8/7MV9f6Q5/yLI8xPrXTTzbt+Ig7yJFl0mg46V/j4XtFPohtnW/vi38a1k/a5jJTW2HEQpmYK7Zl4B3FwKk3sKsyVDkHwt9NrcpQnCn+zvEIElL51hWC1cmoL+uUZhMzJ+DwNcVfyy4tZMa77YRiVdxR+8Q2FxxZeUDQxyUA/c/hpKVr5JYpB4OClpdyhrgecEa9r9v/A6wnuY8
- bUl6MzfF
- GBhiPgHLHRJ4l2TVQ6DiemAOSRxKasURSCEh/zbBB5mP/DeP1HYf0f5C7mUzIrF6NSz3yvK2W6abfXthZHtAbGYBK0n2d+hfAoDRL+GmKRz5xd1onjc5k4b6f0V07gtumApuq4h1EbOKovFiNG4V1JoKK1oH0sV7W3mMrJuXxX2HOKESlk7o4aVobmErhsxN2E+o7KJAMWxrU+TwVU+1SE50c7fQmiUla2370JeHXoPflx4o=
+X-HE-Tag: 1780252816-783193
+X-HE-Meta: U2FsdGVkX1/BkMCAEE3vVJCVSNyPcn+tnTRiBGwGLK76IsLFgwYP5lR4h8HLK6v0cMxowI269Ed6j8oG8+XCxPMlEpLM4ng0T2R1ScXMf8rXOLfXPPIYcpMEEqGC86APUwNw/iZOgKh+YzeUoa/o2eSLjoGZL/J9tMvVJCLXAS8mptvD2ppIo7Xi5LsUxvuwS63yHB3/58ZbZ/fC5luHEVqgfmfLEC1uZnq8DpPIUi3M1egCY3mc5f28+0S/7fHPUF41tsjX7avcpy6DnvB9MkQCiDIwQSJ+FRS5c3/n/Lqib2J/cmXJf3XA5W4kw8p+T/mbBe/B3RpmnLEwbAqgB3Yw1BPNp5OjbYpzObg96ihP3V2DqfamZRyUpxYN4QAKbHP1kYhngGY8cKnITVw3re++2FhtWwoCsTqRK8xXNK354ldKwqktJwqW2ltQ1FIGBoXvV8m2eqCQSbzKSFXD7uSIVtPxOAqC//8CvwM1/AC8UImn1ikp4HZ2KN3Jl8ywylgnR3H20sSzJ/gCvvfLrqFqpqo8Ik+UF+sSyYccWuBEthazsNUxuL+KTL+UkFMC07LCD5+FpW4g/gIK8mIUK4Zu7icawnpX9scRuzpdSqoF6TF07ydf0sqA69WqBKS8CdI3rf9+G9kCKRXX060zsalXgInkfph7PbLfKR0cXhYhgFrSD1WXvSOVNZiB7DGiPQnoTc4ymj/BKlPKF1hBBZzSlhJ6A/X5CHMh2J4NA92+aPFGO0dU/DWFvTpwVJnat1YGKK085ZJU+vS3YapBc4I1Z7rywuT/eRbFaaYh/loOEumRXm6HPhITTYd6JXI5oJbhe/Dn3LlkjPvIOaHghhrwVSXsrbP5JHzWyLtGkFHouy89pqE/6YwAH0/Tdnje91uottDlgf0mw/X01xc0wWTjkMtd6uEiZuXUoUh7W8fehirFFplMPvfnWIjFLzztGSL/Zh2Y5LOjaKrtImn
+ Mkqd0NfJ
+ ceAllfJ3buMfQzyVVMoMHs1AnUpzW2Z5lzG8W3kAI4hf1B3wZmDh6K22YYl9DV20ugS33TFOOac/4yyEkYBWjAQu7peMNahtPgmumaUVw85SXjLon2DXqZXW0fPvJ5CSK5E2cx9IC34V0R1pI09FNZmXobZ0kDh25yF4r3vO0yB0Sy6CUmEHY9rDzV1Gy32rE3rw3CtN+PZoxgM+HRVTmkMQtEQMkQPThRNNzkkJPnjMLv7d3zlbkL1NcqeSJUWYTQiKbT4s12uIv9bglB2cOBA/0Vw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,43 +99,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Mon, May 25, 2026 at 05:24:09PM +0200, Pratyush Yadav wrote:
+> On Sun, May 17 2026, Mike Rapoport wrote:
+> > On Wed, Apr 29, 2026 at 03:39:14PM +0200, Pratyush Yadav wrote:
+> >> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> 
+> So, in summary, I would like to pursue option 1 and try to make it more
+> appetizing. But I would like to at least know if you hate the "extended
+> scratch" (ignore the name) as a concept or only the code it results in.
 
-I posted the check removal [1], and Sashiko's review flagged a
-break-before-make problem with it [2] that I think is real.
+Let's retry this one :)
 
-The scratch page is a present PAGE_KERNEL mapping, so having
-apply_range_set_cb() overwrite it via set_pte_at() during
-bpf_arena_alloc_pages() is a valid->valid PFN change. I'm not familiar with
-arm at all. David, my understanding is that's a break-before-make violation
-on arm64, and that on any arch the stale TLB entry keeps resolving to the
-shared scratch page until it's flushed, so a later access can hit scratch
-instead of the new page. Is that what you were worried about?
+I looked more closely, and it seems that mixing SCRATCH and SCRATCH_EXT
+should be a lesser headache than going with option 4.
 
-So instead of just dropping the check, the install should route through an
-invalid entry rather than overwrite in place:
+Tracking the changes in gigantic pages in hugetlb also does not seem
+something we'd like to pursue especially considering that memory from freed
+or demoted gigantic pages could be reserved.
 
-	while (!ptep_try_set(pte, mk_pte(page, PAGE_KERNEL))) {
-		old = ptep_get(pte);
-		if (pte_none(old))
-			continue;
-		if (WARN_ON_ONCE(pte_page(old) != arena->scratch_page))
-			return -EBUSY;
-		ptep_get_and_clear(&init_mm, addr, pte);
-		broke_scratch = true;
-	}
+If we add a dedicated memblock_something to allocate gigantic pages, we
+can reduce branching in alloc_bootmem() to
 
-ptep_try_set() only fills a none slot, so the slot goes scratch->none->page
-and never valid->valid, and the loop copes with a concurrent fault
-re-scratching it. This also closes the set_pte_at()-vs-ptep_try_set() race
-I raised earlier, since both sides are now cmpxchg. A broken scratch entry
-was live, so the caller flush_tlb_kernel_range()s those pages when
-broke_scratch is set, like arena_free_pages() already does after clearing.
+	if (cma)
+		do_cma()
+	else
+		do_memblock()
 
-[1] https://lore.kernel.org/r/20260531165852.555930-1-tj@kernel.org
-[2] https://lore.kernel.org/r/20260531170854.31EA51F00893@smtp.kernel.org
-
-Thanks.
---
-tejun
+For hugetlb_cma we might want to teach CMA to create pre-allocated areas
+and then it could reuse the same memblock API. This seems useful even
+regardless of KHO.
+ 
+-- 
+Sincerely yours,
+Mike.
 
