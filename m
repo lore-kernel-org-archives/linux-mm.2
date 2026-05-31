@@ -4,83 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4DFDCD6E56
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:49:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B28CCD6E52
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:49:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9973C6B017A; Sun, 31 May 2026 15:49:08 -0400 (EDT)
+	id 7269C6B017B; Sun, 31 May 2026 15:49:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96E5E6B017B; Sun, 31 May 2026 15:49:08 -0400 (EDT)
+	id 6D83A6B017D; Sun, 31 May 2026 15:49:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85DE16B017C; Sun, 31 May 2026 15:49:08 -0400 (EDT)
+	id 5ED986B017E; Sun, 31 May 2026 15:49:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 75A8A6B017A
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:49:08 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C2AB405C8
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:49:08 +0000 (UTC)
-X-FDA: 84828753576.21.BB42BE8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 38BF614000A
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:49:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aF9n1T7D;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 503836B017B
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:49:55 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EC5D5120465
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:49:54 +0000 (UTC)
+X-FDA: 84828755508.03.12BE463
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4083C140005
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:49:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hi2oZ76z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780256946;
+	s=arc-20220608; t=1780256993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mK2Bhf6YoJh2Z2OyeiRaRcIGKaedQsLjME5c0Ozqbs0=;
-	b=VHZWPdMFIg/CjrHiJfoAqQ/anuGe5lAnTRoakuecwLNYVzA1TqI+9sE3/OILfEn1Sahr91
-	jXN+T4kzdlUl3ymLbQMuY6fmXmZyFvDztSBmbKdkfwuGbLjPVaOiuV1Jw6VCk8D7ySp9eL
-	/fAbOwG7MxH1PVPOQaUCjE3N047PHfc=
+	bh=JzgiLAWTT+8hb3wVDklQJ1QdmY7O+bXqn2rYAgmL3Bs=;
+	b=v65FVh2mm+NPyxgPtGe0vyjeng8ScxE5Czd6ckuguNS8fRh97tVjx8p1X4iSUW4BCDg/1t
+	uhAqNUWjvJbYnIVEC0Zc5qu+/sEM80spPZhDS82NO3e88F71zFJwujvjLJGGMedQOc/M/o
+	2Mq4JY4P4nl4nG5PCcfMTEXErEkbuNs=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aF9n1T7D;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780256946; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hi2oZ76z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780256993; a=rsa-sha256;
 	cv=none;
-	b=UtPvsOb0wCinqZ4Z3AxzbhTWIvprl214AhnBBQxENgCm6VVvO8jcI4vVpX6ovDtjrcfPi1
-	VCPs/Z2zYwQ7AHaKsZytxCUwAZaZ6nfQI+kWMHM8zfHECl3OoYXlxWFVs573cHgG2LQUaV
-	Yll7isxZ5WExmStaG45YX9UMhklM2cY=
+	b=mmJngPBhhEzHLy/taMqKahCNXpAaA4gF5Y70pLR19ytAlhQkvsnc8jGvg/CRBrNeLOwf8K
+	e6BcZ1GXab/9pPNrafle5U+EN9dwsoC0x9SS6wIb1c7V/N7TWjQn/Vyhl0C9KFF6KbbuSt
+	nh/7p1JtLPXQpLNZ+SQGH3kVsW/XRsg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4A83241569;
-	Sun, 31 May 2026 19:49:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39C31F00893;
-	Sun, 31 May 2026 19:49:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AB72B601FE;
+	Sun, 31 May 2026 19:49:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA041F00893;
+	Sun, 31 May 2026 19:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780256945;
-	bh=mK2Bhf6YoJh2Z2OyeiRaRcIGKaedQsLjME5c0Ozqbs0=;
+	s=k20260515; t=1780256992;
+	bh=JzgiLAWTT+8hb3wVDklQJ1QdmY7O+bXqn2rYAgmL3Bs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aF9n1T7DCVy1Hkc5fpzdyVCBZZhkp+kaL1rI5Ax02PcKOU7ga0DmKNtwfAjAGiEyi
-	 84PLNj2H4A12vPsVja9NqV1Ngi2fbkDIrRANB9RVOeG9yhBrMQRoIHrEpykGSN8qQN
-	 y07CpYsQGEw4US40Tg2OK7L6HVCSBswDv8zueXLMSOK7tlS6QO6fzhXHsWzYdO0z34
-	 NKVCtVmAc5mOHWoELEpZgZhVc2kT38sdXZCbVGmAdLona1awLOkcL6gdcWkbyUDLVb
-	 YMkmx7LTrTPKrXGRDhGoGuEI/czhR4WOKJvNqci5gTwhFJfJlKAk8B/NANIMtsqkAt
-	 rUG98FonuYKEQ==
-Message-ID: <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
-Date: Sun, 31 May 2026 21:49:02 +0200
+	b=Hi2oZ76zuOyqgAKzwkh+Tj3Z68AdgAhljPJbC/zVN6EeSegwC+wRGTq/dPFs911MN
+	 3lZ1kn7kKebyRLl5KKVhllKyMnsstuzyfzDXKO+WZthQ5+WQwmNjti8EPBtg5gACsx
+	 FiA6goisKZGXNovh5p6TwOGE/KjhXhhrNosF6VtrUtOzNdZnmOIjag0xdfN3EprhZG
+	 v4xyVnc3/+20U22+qr6tYZaBSfRMBc3Z6DQAAqanWmO/ReTczoOT0YAkn7slMJNgnl
+	 c9IZC0TZlaCY8l/12yoE+CSExH3sJgsfVz2YkSVugu70tHrrEDsPS90EgKSySssvlJ
+	 yYBgrcsKs1EhQ==
+Message-ID: <fa674c4c-11e7-4383-8c1e-dbe7f16575e7@kernel.org>
+Date: Sun, 31 May 2026 21:49:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
- khugepaged: add mTHP) collapse support
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>
-Cc: Nico Pache <npache@redhat.com>, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, liam@infradead.org,
- mhocko@suse.com, rppt@kernel.org, vbabka@suse.cz, willy@infradead.org
-References: <20260522150009.121603-1-npache@redhat.com>
- <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
- <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
- <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
- <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org> <ahVX1iq_-95vd0PN@lucifer>
- <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
+Subject: Re: [PATCH v2 0/2] mm/hmm: A fix and a selftest
+To: Andrew Morton <akpm@linux-foundation.org>, Dev Jain <dev.jain@arm.com>
+Cc: liam@infradead.org, ljs@kernel.org, jgg@ziepe.ca, leon@kernel.org,
+ shuah@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
+ balbirs@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, linux-kselftest@vger.kernel.org, usama.arif@linux.dev,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260530085413.1270139-1-dev.jain@arm.com>
+ <20260531122458.864e9deac7425e1b71c14f3a@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
+In-Reply-To: <20260531122458.864e9deac7425e1b71c14f3a@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: thjqpf7ru9j7q11wkxkp766oo9nat6ch
-X-Rspamd-Queue-Id: 38BF614000A
-X-Rspamd-Server: rspam07
+X-Stat-Signature: gjtkg7mpuqap6wjtzarcybr7ur1mzjjr
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4083C140005
 X-Rspam-User: 
-X-HE-Tag: 1780256946-146614
-X-HE-Meta: U2FsdGVkX19vc2GuDwIa+X04GHj0OS2QqFav1kTKFI3QMAO7kL/OQTZc4FZ8xGycDdHKUhgrJdXj57aBI45t1ume87WWe0LwwUSLoUgq/L1LEPzHC33UKpExlS9P0Wu8l06M6VH0cBj+onIND6iGGpqDItW7GM/vDv/jTzNtz7GTOUsHiLZh5KfBxv2NiD2c6fUFf9YDvJy0AGoHPv5sfFB+UQr3sEKxrPSAyd4pc5uu4+UTfTaDfhYsfA4dGu96StwPrNeV+qtgGJ3Er4y437deSmrtFoEXRd0Aii7MXrba+11BZkelya7XAGaTUWpP0E/fW9I499wNQjRiD5LaUlaIwR4kPXFWXW2F/Dsg8+BkZsd31pTN93xgEGqYyoQVMQnoxFCMyhyenzzjIUwjyxo9zxcc5Xg5gDyX/S7bUtUhagZcawBAja76ruL4al6OOObFi1RV7iRQK0WMEv+hLrHuwL2LC7WPuqGlggHDzLOdav9Ky7/8w1jiuC/n2A2mj6EWwlSkJYFfdKV+fvK9H1VmGy9TFY/NQ64m9sb0d0YwripcPKCWp98vc59zXyyROLCDTCHgMFSIdxxgEy9S6Z9PQYGVwWHtzKw61b7KgO128h1Wdw9ViDigrUh7TDZfVsfEYpx4Cwg6aPfuBoj+zdEhwFxyrUPRSqfTRLqZvIdjwI1h7pVxd2ZAfHC0b9UHJkLsg51kwEuhRRsQt62m6AvwREWZ3R3XAdgYePm6vhJk3IxgSoVeDQNIiVbXDmufIHufN2s4GBoWG7sQoKhNd4825n7HeHyW0nInXURFDZC0h7/fiYpA5+GpOcqC9onFyv+DHv9lgKA/x6oU+LiddBoSHCtMsxn+uoG7iWmchA6T3jvD3otaBGAQNsI9JIqlQVrdyhr+355tLMw3FyaAhCXSmQ0ZGJyRl3hnORGqKOdFH5ZG35RsivwwJ5ZRGbRz9f8m9NenLxVvp06AF6z
- QHpr0nho
- y3QH+0++zK1NwFK/xX9Ae0ba0cwu8Nu3xgp2r9HI7KqKzygO/UK9Pxj24/8azvx/xjYwmgt0NMEBmPOlN9sD4az5xbaxyKH/2t+Z6mOB/C+odkKkCSZBzhun+kH9gn6havauiGqxDrBLBOupxwMOEv56ceGRx4Q5Fyeax7K7lZCgUZUqhbv/rSeUA9QwaPiCoSRt6LeaE3WuNUruwPS2FKP7kKKODc07DH0IdbzIdp2CmfpnU9JsFQQbUwnatz+3Utmhy
+X-HE-Tag: 1780256993-600141
+X-HE-Meta: U2FsdGVkX1+p+BZEnX+sE9qZc2XuekrY8BMG8mAmDhD+xs1w+4wfKfrS1JULgFMbN5eN2siKDxH5v6HkGT/33fY69a0O+ftmeh7Lq9K1dLwFhky6mdQ1t6anIkZD/cX8uaC98/u/vLh1oda+prgJOwe3O0NETZNIGNYQyKgeynFtn2R6L2WhQXmJnc1upGdaOqC85Olk4BzefFb9Ve20uwZ2yhNFMteGoIo+rJN++6pbot/mEIpHxksZ3CEyHWx4GI83d6EaA+V2b6iGDaNorF25NENxlD0TAgpE8ElkUB1oLp0ZqlMdy53y1M98xxtE+fP9QDrKf5wns4ccRF/6d4fGl6UZWAZxqNGYFhmey3nKy077WzuYQjOtJHQ/pJ/zcWifsUdp+zjGgPKnvJXSvakgDe5CsMFnT1ubcDcuc0qwrlkCDii8D56hW8KUbOZutdXuyl2g2fJY3Tq3v8cKC60koSXeOi4dz5FKkdvmH2RRVtVyz1g8SFmqhYXSM+b3mJHdQVnIDVr8Kar5RMAAFox3Ur0AaL1/DaYXVAQqdI0rGmFTLYS/Ehx/V0IszuBi3gIncjxJ6OvYGc57hMOJZb3K0QEUJRFJe/BkAk9AsC7MrrlIii2lLwtsjuikfpTohTQENXMQdeFgE82nwk5PY5N5O1+Q6FBPwi5S4s/UTbkA7t5Z2f5eOUHb2ydWGLfFKF5Y04ne857edNgeNuWyYqwtX4mk5tNQxyiW8nRLsuG6dcfjjAsFaBPQkv2xu5tb0hOdkFRYvMKXIKhM6Ez5eoSlrx4Zo0HqS1JNOty4ZVY6itR70Ns9/D5Y13IxA1dia04mBoCMJXRkmT0FS+zTAEOfc0GntFa2uWXANqztvlFETdIrv/4sVWBUaVazssNpbaWF1F89w5aOLXeWqyisbFCP80mephNBcgeODnl0gSO9T4GFWPrq0yf2kFeW+WQnGjvfUIxCN7xK+u+9d4l
+ 7c6s9Br6
+ eU/stSWcHi67lI6xT2oei0Bnvp+h+grzdDXFuzd4EyyptdKIqMXoQRFY66zHeCzL8d+AtON0jTacJ+KK+heV4CYErnzdCqJ6ZFsOiDn/Wgpv1/Pn2eJGYzCNQ8E2UhzyixpNtfGqJ0I5vZRappIpoe9TMWui2Hi0IybdHNfhHYV+X1QkccZ4+fIjDQUe77RS09achv1MtQbP4vRdUG6eIirE6xkxRuHgib+ChWOan36Gimt9WPAe6FFnDriLQ/MgIJwOhEZcYCcn32TeduR+UaGtXnzO8Oa8ynDyYiVoeJYeTHYUb5hLqRLlPS80n9F9KmB92
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,47 +142,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 5/31/26 21:24, Andrew Morton wrote:
+> On Sat, 30 May 2026 08:54:10 +0000 Dev Jain <dev.jain@arm.com> wrote:
 > 
->> and have people
->> base work against that?
+>> Patch 1 fixes a stale warning present from the time when only migration
+>> softleaf entries were supported at the PMD level.
+>>
+>> Patch 2 adds some code into hmm-tests.c which exercises the pagemap path
+>> for PMD device-private entries.
 > 
-> This I'm not so sure how it would work. Assuming we have submaintainers with
-> their trees and branches, the final "stable branch" is merged from those.
-> But it's not a good base for work targeting the same merge window, as that
-> work would likely go to one of those submaintainer trees. But then it can't
-> be based on the result of merge of all submaintainer trees. That could only
-> work for patches targetting the next cycle (after the stable branch becomes
-> part of rc1).
-> 
-> So either patches can be based on rc1 and applied as topic branches in a
-> submaintainer tree and then merged, or if they really depend on something
-> already in a submaintainer tree, then based on the respective topic branch
-> that's part of it.
+> David, I'll retain your ack on patch 1.
 
-Right, most patches can be sent against the "stable branch", but cherry-picked
-on a submaintainers branch / topic tree.
-
-
-> 
->> This would be 'source of truth' and what we eventually send to Linus.
-> 
-> Yes.
-> 
->> In that world, the maintainers perform conflict resolution, but with git rerere
->> we need only do this once.
-> 
-> I think the conflicts would arise from merging the submaintainers' branches
-> to the mm-next tree, and if they get updated and the merges are recreated
-> (like linux-next works) git rerere avoids resolving the same conflicts again.
-> 
-> Hm like Andrew said, this needs a diagram indeed :)
-
-It's one of the first things we'll discuss in the upcoming meetings ... I want
-to talk to some other folks (in particular, TIP and KVM) to understand how they
-are handling that.
-
-Hopefully I'll find some time after my inbox calmed down a bit ... jeez, 1500
-mails in one week if my eyes didn't betray me.
+Thanks!
 
 -- 
 Cheers,
