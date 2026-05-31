@@ -4,84 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93965CD6E52
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:29:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11430CD6E56
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:31:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 005536B0176; Sun, 31 May 2026 15:29:28 -0400 (EDT)
+	id 363A16B0177; Sun, 31 May 2026 15:31:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1F906B0177; Sun, 31 May 2026 15:29:27 -0400 (EDT)
+	id 33A726B0179; Sun, 31 May 2026 15:31:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E35126B0178; Sun, 31 May 2026 15:29:27 -0400 (EDT)
+	id 251106B017A; Sun, 31 May 2026 15:31:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CE5836B0176
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:29:27 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5470405A7
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:29:26 +0000 (UTC)
-X-FDA: 84828703932.16.00F5523
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1732F6B0177
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:31:42 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AAFBC1404E1
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:31:41 +0000 (UTC)
+X-FDA: 84828709602.06.71A90BA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 23DEA140002
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:29:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AFXG7Gwm;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id D059EA0006
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:31:39 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YsBb5rGZ;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780255765;
+	s=arc-20220608; t=1780255900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qu2+WTwuJ2gVSCxV3OmrdSWwWtogPX4uTQ5dajqvUVA=;
-	b=aMWioXbaZ7Ho2NFTZbjUbDLGhAPDZA8HHUw1YfcdPxPFSyYikHlxhSpeRuaV530vtEBru5
-	quEvx0QJY1VceJ5/t+MnkCWYaw2J/Sc/in8WyPpx/G8DxKcWSXKst+qeEeKDyxRnvFeN4V
-	pl9+E78CXrxFklA6cpzvPuARdg9eSPs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780255765; a=rsa-sha256;
-	cv=none;
-	b=pmkmWme9vLJIvxADasawA/SihZxyTPnSmCBRXMmAmDRJJI30PM3We8Q8FBguBEmsZSOrFU
-	/kJ3/ldYi2PAEnQkx4O/gISVDFu4jTvxSXsKJXr/+AU8c4crQJWOYIy157xirPVhsfu3Ux
-	glfq9Lnvpt0GZDN/UHA/PWGY7PdruJc=
+	bh=eblzQlHm4oOugOyF3LKX6wnd3wUruGdjyINpmbI8UYw=;
+	b=4s+zhlm4lnH+AzSyBL+u+5EAbEcuPVU/Fuh7tbDBex93LpHMNxsgE4CsLzRR3RfChSGbZc
+	SHsfh+HhNURfA5SF6KiqgFOFVoOn5T3uTv7ltOvC9G8W7PQiKJZZWChFXlIJQSABo10l9E
+	Y7D7Eli2n7IClKtJAoPIAHF8fZIQakY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AFXG7Gwm;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YsBb5rGZ;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780255900; a=rsa-sha256;
+	cv=none;
+	b=1ZKpaMWP+RQ+OickavGoIkX1aA+jeTRZ3L4+WqAd4Vtg/AZ3//FOYJIsjHolH46ILkeFQe
+	OigN4ZakIuOd2vtY9/o0hmmxkBSx+55Vknl553Vdwk6WloxKck6RL8loEpdLy+Jt6sShKL
+	MpbDidO8y/UquqzL0oBlxnHOUk/YOu8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4D7D841762;
-	Sun, 31 May 2026 19:29:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3D61F00893;
-	Sun, 31 May 2026 19:29:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EE2AC40DA6;
+	Sun, 31 May 2026 19:31:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A54B1F00893;
+	Sun, 31 May 2026 19:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780255764;
-	bh=qu2+WTwuJ2gVSCxV3OmrdSWwWtogPX4uTQ5dajqvUVA=;
+	s=k20260515; t=1780255898;
+	bh=eblzQlHm4oOugOyF3LKX6wnd3wUruGdjyINpmbI8UYw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AFXG7GwmXhucIfzukLXOgDvZlVmnV9j9ty1ByoXrpRN1ioDyphHHOHlrVv1gakqUg
-	 KTlxAHcEq8++l4cHTAc330eModcJymsBYpvtBM2qCbji3PeNjnKxwNrdqyii6EH3K0
-	 FhzHHvfdF2Kjq+f8G3BnISidcHkCMQLL93qInxxEkHqXghsN3WFRFDy4CNl0Jte+K8
-	 6UMNMQnhTlbRb9LZOYQFes0x9AaJ+T7wRMG6KhTwmG87PnXKQozeUgmUGGXvhbjRd+
-	 HcJl+37dRYS5su40Rb/zEoPXIb6vDzDHiWzLnciUTKCGNF8vZQ+/S2JO2Dboz89Q/M
-	 NE/JwmRFRRunw==
-Message-ID: <6f6e6998-7dd2-469d-852f-4ff7bbb768b9@kernel.org>
-Date: Sun, 31 May 2026 21:29:21 +0200
+	b=YsBb5rGZSEEW1ukZETMd0KNSrFDySISTPqhEu/WpPUTH6ObggVr7nxGNd0Nc2ZSrG
+	 sojZNqFRtnshP9pqFaUjhmhaLHLmUmAZc7um/gDHgQtB9KuxD9hrJHRJOPBNqDsQ6K
+	 usCzE3lEjZVz4rMQeSCYzv7pwQmGx0WRPTaSAPWL7KCF4KL2vucHyzygsoeTAH4Uds
+	 cjO1aUeX1BC2aUs1uM2JZmo0+ysKbC8rbh89ly2yeTyjNSwlvT7fNLz4YAXvX5orc8
+	 0PR9VVQedT041AV4MeAY2wplG66KWfbj0xXNAXYqqYZjRG/ZmCEPzcdPg8nJ/b0EZc
+	 ZE+4g9hNkZrKQ==
+Message-ID: <122fe9c1-c953-439b-96ae-8d9a1a2e901f@kernel.org>
+Date: Sun, 31 May 2026 21:31:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
- page tables
-To: Kevin Brodsky <kevin.brodsky@arm.com>,
- Vishal Moola <vishal.moola@gmail.com>,
- Catalin Marinas <catalin.marinas@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Alistair Popple <apopple@nvidia.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org
-References: <20260521032730.2104017-1-apopple@nvidia.com>
- <20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
- <ahACfQ6kCfONqz5h@arm.com> <ahAjudlB32VbkKbG@fedora>
- <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
- <1be38262-53de-4a27-9841-393e12fc1475@kernel.org>
- <db11078b-a283-4717-bed2-da56e77c7132@arm.com>
+Subject: Re: [PATCH] MAINTAINERS: add vm.rst to memory management core
+To: Brian Masney <bmasney@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <db11078b-a283-4717-bed2-da56e77c7132@arm.com>
+In-Reply-To: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 23DEA140002
-X-Stat-Signature: iziyn19tg8733kcdyhdjffy8m96s3f6i
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1780255765-447720
-X-HE-Meta: U2FsdGVkX1/5OE6Dr1ClDeYDEGnhbcffsq3pApK+JCsY1Z1M6la1zRuvk5ZjDAuC+BtyhUoB89tJ3YVSSJ9ybHJLBSSFh5yI2sXktRYXBtSZmtE0yDxrAynrrdm5KX1EpbRrNGDAbBY8p1zUm9Ij/nt/PZNYID0tVOjnW5PQdyC1v1/z7YBdO19Y2jz7WE5kp7J2O9zr5OWQNYJ0tnHuiwcqf6+k+H+DtRXge9RV/D67VsdwA16aGi50Avz/KdFJTlTa0b8K1nWZWCOpZOm36RJMuUDym8ziLW1xSxG53jo+EVmYwGiO5O2lDX96A0JVhG7c+OFEYNIS+HIy3qfjtpdED95SKzZ5o/69PsbQz9A1ujSXa0eVc9lIO9RwjrvprzGmQKO4PrNIaxe/f3webYfkN6L8SqZo78xD5zsSzBpWD3PydGzs5wgkFhgWOanOSRHYpkOGOMG7NYZ4RwFle99hPoBuem1cA8lZQA4ULdj11yfukfYNW/xFQ/Tm3NCCYo/s2Hc3S+kjbb5B5pg2KJbajjQ++ieBpSJbpe2vGCEmbH1ftyndwCVi6swCU8oryxXK0Sv4pj4wX2hDTpQ7s+/DgqY+gyBgmdo+JiSpe6IVTi40sphL0aGpMqsL7Og/o0xVYpvWK9pMRllDKFtZLvybpjqVZPKPxjGrBp1SXSgjKrHjQMy9vxhCRtB8FqsrlBuQzMqaQZfHyrWxCBBJpxEthAhXf9Kw3x8JddqkpdYydfyD1OHCxHNIKYfNpzP5MCga2Vru41lmkrCwVyxmj+cjKlsQVKmUNeuGjD55ZCICVlf1XG0FriHBMoDZ/aeYw1RrBbCZm7GRqNgnc3pDoX0kfWOjB+r6oMaK7CHaAT2OiAnhZdpFJd0N4YlR//bwb++P/4EBCXF5OL3TSi1wvDwSg1TWjS+jJXXR96DKoLifYXaE2HZUwoW4kLmb6kecKFwifg7g3z2WqEcIJlZ
- KNTL0ZLu
- Z/iKLOAhyUNmqK/DYzDh1urn62RFDCAPW4fdVXrTQkRAxOlHW6nQVX7ZCsXm32eyt0eXlPoATAArbem767jn3nyORTR+qe0FXWM6NErYcjiAP0KiXYo0+06jz1AryMrsVcJgbAyqPMEwLBbkY2f82oyUFyGsuq/HPunPNCozjmmPTBxso66srsD4tz5r+LKlycGSKdoeiRU/K7pi+FC6W87TYHb3dk4KHm9bgfGOLkzWGw0HngP6Mzvzpo8RXwUZS/GkQMdDgNXLRoajc4p7r4EA2+hZaeRLsZgaeFdzSccVdTBxwAbRxbNWid5rsZs5vpGlVaw9dOoyUo7s=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D059EA0006
+X-Stat-Signature: h5qb6tsdtt6m7zx7nmomzmqdedrsfyab
+X-HE-Tag: 1780255899-389617
+X-HE-Meta: U2FsdGVkX1+1jgU8OH3S9r91SaykyN7iNUSEsD9/3xAYAUQo+94ZPBuNojmbEMxZlgOIfnvQ+QdjjBqbRxMSFzbuzXEK2/7Goou1q+DnAjRKHPfAcawmUHQZrzO119xdRBENqFBtwMRxXkukn/nIDGMbAFy1J7CrqaOhWA7Nd1uZJQQ+a0z4QTSf/TW08Tfc7SDN6D+QhX5F5CMcjhNah1QX11Ol556QAPpLWg4Ex+JTcb1QfbATMvQ0bOVdUZyzXS0kU624VQKCVscHaOCOPgQz9QCAqjRhv74S7o0gXW8IGLP2GXN08x0mm5vk9YHFpQ7WkyuwtkGc7RxS+MVipXeYVLG/jttcakOMgnhYzcYb7kUk4QWKIGxb+P3FsILdnPPV3kT+f+7WW+0RFhFmV8Vhp3rfEOk7rkWUGT1YA2qvCuCX8WsEJYRQ4YALXHVWlZX3KvixyCI0m4GZPILdbG3Pk05jbl0sE8VFOXNtkr/SmjpDR65A7/l+mLQR/CFKeyw8gG+C4fr1gIUgM2mHUl2bcy13sqw/YfB6s7z03V9lnloz2GhjVQMYEYDiVcvaxinmtgumvlmrGg1DYYUd+tKEIPZ/9jvv3NAF0hjQ4AByX/2PBfEXQMOe/fhOX5XjUOZkotnNW5kGjCNxkmKuAL09Mb/F09JDcPzidA1YcTVViDhIS68dlAfQiXkucGI8w5cyoUpO7kss2S2plrODgqbmRYDmZgs4Nh/yrKGDwkr4RiaX0yLxov/R2Z0aFq34hcnM4qFkALkK8fJWY1t78joUxp0OcvHCG1zL+6yhBwf0+8/4uiYL+ZPe4dGnLi2AIOYRMAw562oe/Gk8uHygI9DneaI3UF9S1U/FgjmB/FOEVMy25q5dbmajAiPnGkyb3uLM3pPKEtn0iR0JiHfIU8G68xl9VgHDu+arIp4xL6cLjsC/hK0zRTIQPhtavNkWTmoRxXQkdNhYAxtJtWu
+ zdwCZ5wO
+ 6yC+Jy14ZNAOgdcxtEQrnaVZ7HYdPHD1FxJw+uBYsd/4jBYkdFZtiAVXPF6J0Iv6HOg8iUmXBN02a/wtQ0VDHY8IA+7ry9fdfiRf5ArVIy2sdSYOlBG/1vFksoY0q1fWuFVeFK+mdrvOV1pwcrNfqONWh3Q6R3ix0o87U8qN8Dk9bvrlN6O939WVzp8CQ0ZiOmq51gOAm7TyKECiuafR3ZhdLk6Oqew5OuoNvONj6QarCRwLAPQXXCdY/4LLMzcSOtCqX60vRSCQTaQJLLemAgosLlKzjr3TYrDS3sVvaIBNhf3wBMt5fxeBDWWuT3Aki8rbultXVVk6fApb/d7Mb0PX5fEPc6wUwvO9Ir1zqyb6SxlZ8Muqq/F5E/Ui4HgXP0HFaqiWRgKDBeJXDq33i0u1acojm0BPB14kkN5Mh4ymPalg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,32 +140,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/27/26 09:34, Kevin Brodsky wrote:
-> On 26/05/2026 14:31, David Hildenbrand (Arm) wrote:
->> On 5/26/26 13:54, Kevin Brodsky wrote:
->>> Agreed, I think this is the right thing to do, something like:
->>>
->>> if (folio_test_pgtable(page_folio(page)))
->>> pagetable_dtor_free(page_ptdesc(page)); else
->>> free_hotplug_page_range(page, PAGE_SIZE, NULL);
->> That code pattern is wrong.
->>
->> folio_test_pgtable() shouldn't exist.
->>
->> In the future, something is either a pgtable or a folio, not both.
->>
->> So check the type against the page, not the folio.
+On 5/28/26 15:56, Brian Masney wrote:
+> The vm.rst file is currently not listed in the MAINTAINERS file, so
+> let's go ahead and add to the MM core subsystem so that the maintainers
+> are CCed when changes to the documentation are proposed.
 > 
-> In other words use PageTable(page) instead? Interestingly I can see a
-> few calls to folio_test_pgtable() across the kernel but none to
-> PageTable(), maybe just an antipattern then? The ctor/dtor also use
-> __folio_{set,clear}_pgtable().
+> Signed-off-by: Brian Masney <bmasney@redhat.com>
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c99f0650b334..d8dcc4f25ccf 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16923,6 +16923,7 @@ L:	linux-mm@kvack.org
+>  S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +F:	Documentation/admin-guide/sysctl/vm.rst
+>  F:	include/linux/folio_batch.h
+>  F:	include/linux/gfp.h
+>  F:	include/linux/gfp_types.h
 
-We started running into the wrong direction, and now have to undo all the wrong
-things we already did :)
-
-In the current design Willy has in mind, doing a page_folio() will later return
-NULL if it's not actually a folio.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
