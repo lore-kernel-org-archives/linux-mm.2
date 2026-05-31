@@ -4,131 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C29CD6E51
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 08:54:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D8CDCD6E51
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 08:57:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19E9C6B0113; Sun, 31 May 2026 04:54:47 -0400 (EDT)
+	id 414446B0114; Sun, 31 May 2026 04:57:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1504E6B0114; Sun, 31 May 2026 04:54:47 -0400 (EDT)
+	id 3C5356B0116; Sun, 31 May 2026 04:57:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03F026B0115; Sun, 31 May 2026 04:54:46 -0400 (EDT)
+	id 2DAB86B0117; Sun, 31 May 2026 04:57:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D896B0113
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 04:54:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 889CC1202B0
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 08:54:46 +0000 (UTC)
-X-FDA: 84827104572.18.668A1DE
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6A32B180006
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 08:54:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1PfAKGNY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ksGbBsF0;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1PfAKGNY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ksGbBsF0;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BFE16B0114
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 04:57:31 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9374040462
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 08:57:30 +0000 (UTC)
+X-FDA: 84827111460.27.75FF51E
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 09FBF40007
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 08:57:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I1ib2Tdv;
+	spf=pass (imf04.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780217684;
+	s=arc-20220608; t=1780217849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oA5hgG6eSfUw2CEvXNqok4AuUZspexuZlfa6cYW2Y4A=;
-	b=E5gQWW6znk1YjlnqCIl4kHUdg7PYEZUplove/sASg7VIIjNS6raUQj624xyjkZfapZ3FIk
-	xLbKKuE/cjZyL/QauL80IUC+0kooyseCyBZvWEFvG1d+YqFu9nfMpPj4qmLdeO1Td/BFJB
-	Zh+LterdCCNfDu4iEBEXWVu4e2H0gHw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1PfAKGNY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ksGbBsF0;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1PfAKGNY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ksGbBsF0;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780217684; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=iiJNrzdhmETedEmIXH5LzZ4qCUgffcIFtMWEWQCqUyg=;
+	b=sUx6v/4mGPtuh1zjjMEFiLNx9AgUfWPJGn64D+cfEah519sy0sR0+55sz0Ykg+i4xsYyfY
+	zA3YWj+vCPt+RG+TZzmDneRaDdJyzyTgPsim1qfJ6rCeOvWTHFEDlJqZt0qN/4cDik91GB
+	LTVVUHlpvgN2WY3qttcrgI9i2unqPJw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780217849; a=rsa-sha256;
 	cv=none;
-	b=j7010bAEabf18/YKUWN/HcfXQpwXz3MD7Haf2zkpPZq7Ro4FWwAQBZ2d/d74WtRJLs87rA
-	fymPnHJLS4gpyJ8zVU5Jrq2fe7aL3F5usbKctP2fGijbbtxcicdqmdVuKr1kZqVrV5plzz
-	3oiqAh4f33JTH2X7zJfCnYeoHWm9jUA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A2B286BA92;
-	Sun, 31 May 2026 08:54:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780217682; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oA5hgG6eSfUw2CEvXNqok4AuUZspexuZlfa6cYW2Y4A=;
-	b=1PfAKGNYLhagnBvHtb+ubUaVyu9eogDCXRol6ohlXDMFxCVLhFUItxHBits6KpctmU2d6t
-	hjOkZY+H+sW25hQOlhwUmoBGxnvWinhWyOjXTFHii5/+Zyi1L4jRc0FGHpofRv/ahs6J5V
-	2o6/tAb0rqCc+3mrBE1xUVyLpmVJQ3Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780217682;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oA5hgG6eSfUw2CEvXNqok4AuUZspexuZlfa6cYW2Y4A=;
-	b=ksGbBsF08j/fhsEIBfTY36miAanUPKePhehRER4eUB5+fCdFIDz6w/p2pNFvC/CmI5vu1X
-	Bh+SJJZVD3cLMxAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780217682; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oA5hgG6eSfUw2CEvXNqok4AuUZspexuZlfa6cYW2Y4A=;
-	b=1PfAKGNYLhagnBvHtb+ubUaVyu9eogDCXRol6ohlXDMFxCVLhFUItxHBits6KpctmU2d6t
-	hjOkZY+H+sW25hQOlhwUmoBGxnvWinhWyOjXTFHii5/+Zyi1L4jRc0FGHpofRv/ahs6J5V
-	2o6/tAb0rqCc+3mrBE1xUVyLpmVJQ3Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780217682;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oA5hgG6eSfUw2CEvXNqok4AuUZspexuZlfa6cYW2Y4A=;
-	b=ksGbBsF08j/fhsEIBfTY36miAanUPKePhehRER4eUB5+fCdFIDz6w/p2pNFvC/CmI5vu1X
-	Bh+SJJZVD3cLMxAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6892A779A7;
-	Sun, 31 May 2026 08:54:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wCuGFVH3G2qdXgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Sun, 31 May 2026 08:54:41 +0000
-Date: Sun, 31 May 2026 09:54:39 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Askar Safin <safinaskar@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, 
-	David Howells <dhowells@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <ahv16ogY8Zx3Rtox@pedro-suse.lan>
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
+	b=YkfsHFlkMBeWd+Ke0dN110XbTw6QVX+SGsuVIQlw+debqq8oKCchEXPoat2Q1Qr9E0/1kw
+	9Vpuiov/4DjNRX/V92vSnflNZCqxPTt6Zhq7MAem5YxKhlNwD2wPvOqrMwn/weeBtEv9oz
+	imBaJ7yH9poyhkXTE+SZbFsnnfhud0I=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I1ib2Tdv;
+	spf=pass (imf04.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780217847;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=iiJNrzdhmETedEmIXH5LzZ4qCUgffcIFtMWEWQCqUyg=;
+	b=I1ib2TdvfLWD0ag/Tn7NwVs7KCqNVBsMX9C6ZwMs7x0kANWNk43SwvDWiUVk/klTEd0UEn
+	d4a0rOForr1bHx2ntIF9xwXSab40PNCukXvrbaF4e9pKQaQ9/PKIBsEdyr/bIXcNHAA/o8
+	ZQdDtqmwXY/IboWXT9k5dwfAvZAYEmg=
+From: Kunwu Chan <kunwu.chan@linux.dev>
+To: sj@kernel.org,
+	shuah@kernel.org
+Cc: damon@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Kunwu Chan <kunwu.chan@gmail.com>
+Subject: [PATCH 0/5] selftests/damon: misc fixes for test bugs
+Date: Sun, 31 May 2026 16:56:28 +0800
+Message-ID: <20260531085633.48626-1-kunwu.chan@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260531010107.1953702-1-safinaskar@gmail.com>
-X-Rspamd-Action: no action
-X-Stat-Signature: wkej8go8189pw4osp3dhx51z8gur4t4g
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Stat-Signature: isj3mmzecxhxuabotnmpdwh5m78dopbd
+X-Rspamd-Queue-Id: 09FBF40007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6A32B180006
-X-HE-Tag: 1780217684-72656
-X-HE-Meta: U2FsdGVkX18k1zJ4NfEFW/+mNe2AzWa/OlfAiNtONyNcAlKLehMFxYoHeJsf3hJoRdWx1DQAYhhBSuoD9N88CThSszqHwf4gYB4228nfYAejloz7/3z01bVSkJU077ehHP6hOp+5K9ZMVHGkOAMEB/BefphfpFKkH1DKQ9OXxlebuPM4znY6YhGcJBRTTGHzefyoWzLRoL4wbY5ljCM/LnfGgskIbG8yU/5ltbifpnQQw0qto87Zd8dQyYmC7XGjmo4e5oqs0IvYM3bb5JmlX25oNk/y8e5ghNat9P1LW+hPYYVrCUKKdU989wgBRL/DLbX9zHMI6VDUrpyzytF7m8c1NYaEJbbxQ561ciD6X4/IQvQ5OnwGfywDyxl5GfQ/qksinJ7phTPZaYAQBnEpcvF9SSXKGxoCiVWISlc4IqUYEjjn8/PDASubYDsLicTE5USWQvEgrqiqxTPWQbdvb5lvee2LUONIkRDUu6A8CHgrTe+/V28OW5S5yiD+xpEO3LX1zLv/PhfrCU1oj+dFGebMnwM6YPUoxk5OEV+4nBuCSHbcVfXzjEE+h+xGulxi3OBUxGe4Rci2PzZ1EdtNJk7HFdQR6EtNB//PCFfuQqhzxUQdQSZdOpiF8Qq72flNfpxb3nbLna6DXmUhvLRMdDfAJ9hB4srZVaXaAbNvp5kmIs04sm5z425GqFRQiPv/uSJd0Y2csioPx/ZoR6DD1bI8H8nj6EZ3VeUjZY3PGS/vkeHmGMXO7/hYTChCysnq9f5l8fmve+kSK3xkq5t875aKwgYVecsMTDRbOVartbOqBC9xPf6AjDX7tCxjMZUFMfIUj6rUpHldFycE6ENp38B0Z6A1gjCA/qqJnneqxfSW4KUnwoa4qeBF15kzPsqwwzup3tqUrJs5OP1qoLiYIDZm3HlilPg+f6TQT/s48EHU2OzByyQzZyTIIuLkDjt1jHd1u/i9mxPWbBlLR+a
- CVjkD+kp
- 7IccHE6dOrMdhWPxfbbJHSr4uPYwLXtrMQ9FlwQFMF2L88k1oe1MDIfDqrzc4pGARBvNtLYUhQgdgArLMTcmKDsililuylPsClkuxwUk9Khw7Xmekd3FmbqmICIDFJxwdQkgmaeiIbwKS3Fo+Bt3oSUiUdNNCUAlsWW2tAav4dg6hlXOxlZwVV1JISHknqD+3nBGRNIyuc5lie+ouDeFUd02wrfEXDwwY7ifFxlPAHcrW9pj1RE5kojste++U26chYXpDfkHc4jubRzYCdoe/9PLu/hc0du5M4gxd3iX0NLCvmy4Jh+NtvOQgla3sV9fE61Ap9s2tiHov6gmeKtYgIuGMhoga8Ei8Z/KJzJkMLtw0SMy71hPuxsS39K5D24KrKU7WlfryqEp8dItzdd9L01H3hOS9iGc5xrXRFe48LWb0ek61auRLB6ppfKgpUgEc3ECJvCePNJDkFtM+ASZrDPtLXrhjdVlDLi38ENc+YvWs4qI=
+X-HE-Tag: 1780217848-52733
+X-HE-Meta: U2FsdGVkX19bigJ3n8XG05cSeBuNGzEvNYYzUKaS2OpFWSSPozB+nWxV8b1F2BXRFKwUdY922esV2szHYQex8c9zPTJ4HINbVA9497fQ3sEVAqTLUwQumSyyB35sMkWNoOSNq+cV7r/Mtm94l5ROxZm9lF3uK98e18bAofM2ffwO+pnDgDREFMrQ4dref6dbl/m5Wv7SbXLaa4vtrJvVf2eAxdGHCfVEG2OiawXdj2uZ5moK/ELOGLxb5IEwZC6HZu4PYijxcvlswbt7smYbqnRszZNgMFPIjoMx+b6JSzEit7ygC46H5tHpAHzF2AS4pGP6/ziz5qd81d8KbcycRXZyiRUomsW4wTHqtbMWC+tXjFoYFyS5bVw43nNzGBa6M/VjGLCnmuoiYwIPQB7FJgVdjb82xR+bUNQmsR8H2DS46zXQ4w7RCFFhkt/wCi06jrapYY7UZHA4ehaIIvWmdr5s+DN1VHWcAx4ZuGbD85VgqSriI82JryXyPP1faA23fSAhJeUu4avXQH2ooexAf1vvmnMBMVtuS+3SA09g4ymhTYlGSofnBTlcPHURQ4PGfW4xzAqeiOeNTfoHTTLOTDgJ9QR9HQVkXbQSJxpbdmYcdeObB+hqVasfU9YouAlDh8Xk6q+v4FgfcJcq88gBP28qw66Ct5sJwGkPRgBGDxj5brcskZUsEZ7HjYyhEja8295QVB+hvhvGq1xhGoJFDAlLn+1u6Ax5mFM5T5pbL55KfDecRBGvYDk1EMgkwbfTF8dcrdyDnOhSIl+1il45CUz8dbGEJvUorGOJ10oJ8pFnF7k0pH4y1Z8bHFmNnx87byoZOknZPWmgdRP/njXOeeo/6pUPiVgMiLqAX0MdfEd0By+WuGbCBlrmrpkffCed6LkiO1srC6WOuk9bfFOVd3Wq7XEq4Svibj3/PRtgq+EI3RSfctrCmoLmRdrjv3F/EsvEvMlWOECHcafaDM9
+ NpSCIIJW
+ lrRA5+5E9d7a5655VldY8tkvOFtpnqmOl+QMNGQyiyvJRUtPPAELu1hoztDp1wRVtvNkcoRv7Btu+KbFpUx5FzZ83GFVYxS1vgfw8n1qWlTBnI8jdWAJxEpo/e4+/kuIExn620HE2n8hPqW0Op2gN5DDgAmDUY6chNDV1QfgJsFtur4/KUjV54ELvJnZnxGa40kR4ZktTos1vrYlYNOT5jSSxdfW1YAj0Abk4YKfm2xjoS2ssaU11m9XxVg3wXBuMtf9X+p8RATQBtJjSuoqScwRpVaiNwbby/Prk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,52 +87,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 31, 2026 at 01:01:04AM +0000, Askar Safin wrote:
-> This patchset is for VFS.
-> 
-> Recently we got a lot of vulnerabilities in splice/vmsplice.
-> 
-> Also vmsplice already was source of vulnerabilities in the past:
-> CVE-2020-29374 (see https://lwn.net/Articles/849638/ ).
-> 
-> Also vmsplice is problematic for other reasons. Here is what other
-> developers say:
-> 
-> Linus Torvalds in 2023:
-> > So I'd personally be perfectly ok with just making vmsplice() be
-> > exactly the same as write, and turn all of vmsplice() into just "it's
-> > a read() if the pipe is open for read, and a write if it's open for
-> > writing".
-> https://lore.kernel.org/all/CAHk-=wgG_2cmHgZwKjydi7=iimyHyN8aessnbM9XQ9ufbaUz9g@mail.gmail.com/
-> 
-> Christoph Hellwig in May 2026:
-> > vmsplice is the worst, as it is one of the few remaining places that
-> > can incorrectly dirty file backed pages without telling the file system
-> > and cause the other problems fixed by a FOLL_PIN conversion, but it is
-> > the only one where we do not have any idea yet how we could convert it
-> > to FOLL_PIN due to the unbounded pin time.
-> https://lore.kernel.org/all/agwFlBKvKytjURDO@infradead.org/
-> 
-> See recent discussion here:
-> https://lore.kernel.org/all/20260516182126.530498-1-pfalcato@suse.de/T/#u
+From: Kunwu Chan <kunwu.chan@gmail.com>
 
-So, you took an ongoing discussion with an ongoing RFC patchset, and you
-decided to reimplement part of the idea on your own, as a concurrent patchset.
+This series fixes several bugs in the DAMON selftests.  Most are
+trivial but cause tests to silently pass when they shouldn't, or
+fail prematurely on slow machines.
 
-Riiiiiight.... I don't think I have to NAK this, do I?
+Patch 1 fixes mutable default arguments in DamonCtx.__init__()
+that cause state to leak between test instances.
 
-> 
-> For all these reasons I propose to make vmsplice a simple wrapper for
-> preadv2/pwritev2.
-> 
-> vmsplice(fd, vec, vlen, vmsplice_flags) will
-> be equivalent to preadv2(fd, vec, vlen, -1, rw_flags) if you have
-> readable pipe and to pwritev2(fd, vec, vlen, -1, rw_flags) if you have
-> writable pipe.
+Patch 2 fixes a trailing comma in DamosFilter that turns
+memcg_path from a string into a tuple, silently breaking memcg
+filter setup.
 
-This does not work. https://codesearch.debian.net/search?q=vmsplice%28&literal=1
-There are users.
+Patch 3-4 fix bugs in damos_tried_regions.py: wrong operator
+precedence drops the "not met" prefix from failure output, and
+empty early aggregation cycles cause premature test failure.
+
+Patch 5 fixes several wrong strings that produce dead elif
+branches, skipped file existence checks, and broken dict key
+lookups.
+
+Based on next-20260529.
+base-commit: 7da7f07112610a520567421dd2ffcb51beaefbcc
+
+Kunwu Chan (5):
+  selftests/damon: prevent cross-context state pollution in DamonCtx
+  selftests/damon: fix memcg filter path handling
+  selftests/damon/damos_tried_regions: fix expectation output and join
+    TypeError
+  selftests/damon/damos_tried_regions: handle empty tried regions in
+    early cycles
+  selftests/damon: fix dead code, skipped checks, and broken lookups
+
+ tools/testing/selftests/damon/_damon_sysfs.py | 14 +++++++++----
+ .../selftests/damon/damos_apply_interval.py   |  2 +-
+ .../selftests/damon/damos_quota_goal.py       |  2 +-
+ .../selftests/damon/damos_tried_regions.py    | 20 ++++++++++---------
+ .../selftests/damon/drgn_dump_damon_status.py |  2 +-
+ tools/testing/selftests/damon/sysfs.py        |  4 ++--
+ tools/testing/selftests/damon/sysfs.sh        |  6 +++---
+ ...te_schemes_tried_regions_wss_estimation.py |  2 +-
+ 8 files changed, 30 insertions(+), 22 deletions(-)
 
 -- 
-Pedro
+2.43.0
+
 
