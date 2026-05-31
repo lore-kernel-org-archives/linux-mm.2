@@ -4,119 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD700CD4F54
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 00:14:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FF81CD6E4C
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 00:35:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B2416B00CC; Sat, 30 May 2026 20:14:54 -0400 (EDT)
+	id 6C8926B00CF; Sat, 30 May 2026 20:35:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 262FA6B00CE; Sat, 30 May 2026 20:14:54 -0400 (EDT)
+	id 652A06B00D0; Sat, 30 May 2026 20:35:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1789D6B00CF; Sat, 30 May 2026 20:14:54 -0400 (EDT)
+	id 51A2F6B00D1; Sat, 30 May 2026 20:35:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 094406B00CC
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 20:14:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9F66A403DF
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 00:14:52 +0000 (UTC)
-X-FDA: 84825794424.07.BD1DC70
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BFA6B1A0003
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 00:14:50 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YMSUURqr;
-	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B9896B00CF
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 20:35:32 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E086E140337
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 00:35:31 +0000 (UTC)
+X-FDA: 84825846462.22.FB29B08
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4D3311C0007
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 00:35:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d53H0TLH;
+	spf=pass (imf20.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780186490;
+	s=arc-20220608; t=1780187730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z6WHUv35EmdQ4QWk4JR3Y1fgG/+v8aK/cHw1Gj0rc90=;
-	b=N3LucMx8OA/94F1qkIKF0xwXUlxZzluTrphx/3OikzQf4b/6QGAF7cxOqBvwkmZUSYzmj0
-	LhdYy/kAjh83UP05vqebenpE54D12HhhE9+1P+wS088P3E4Oypu4EkZcEjRaa4i1XGk++X
-	n+A66vX4EoaTZGc+rWc//ULVsMGrgtA=
+	bh=c8RBaPvCP6ZMekNwxeunAIbpIE5CulD2vhb0civMEuc=;
+	b=QRn9KNRV0ySwNNk8dzbRLMlw6Luz5XdPqoSwl3FLndY6F1xlwrtw83SFVUq7zGKavGURWg
+	+hgFuv/p6vkwu2MJlZ3aHYCy0GRUDaBnV+oL16x5G3IOTuDQdneGdPY2kj9iUAVNGrloVc
+	3K1QAvicRtlZTPhV+2oQXUsAVSCFFIQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YMSUURqr;
-	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780186490; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d53H0TLH;
+	spf=pass (imf20.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780187730; a=rsa-sha256;
 	cv=none;
-	b=pgB51cFwGnlBVwUF9cYmekQbdGVGoFMcNtkWgrx3xZlepqI8ZREcbwN9TCxEG0BERCRRGR
-	BkBtH6XE6z1qa8DNLdGOEoHMgyVqyWgFeY1to2+1KDye7dC+KVP741VRg/L8IgcQXS8gqS
-	TI9Zk/S6hibpYukTTTzgONNwIjDOzEE=
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7e5fd39cf11so7701187a34.0
-        for <linux-mm@kvack.org>; Sat, 30 May 2026 17:14:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780186490; x=1780791290; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z6WHUv35EmdQ4QWk4JR3Y1fgG/+v8aK/cHw1Gj0rc90=;
-        b=YMSUURqr2h1GW0CoKP/OsTa72sM5HQj8z2m0rgcpcG96YH+DeTRkLsWjvBfRh2+Hqr
-         RhVy5j/nNhSOEGxWlgFqQSopF7bClKhCpNH+s2CL3SV5li5tO8B8AKCe7XcC9wttk4c5
-         wy2X6pFwc3B15WryhDLqNdA1V/FlftL/j5gITqlqMK6aw0a58dLLxPFrUuI4+WMDqqnU
-         eUSrVRmjOM8J9A7V3L91IS3L+FLR7PwOe4O2TZC1FkHslaO4WW2WF4K9+rwwrRME78Ph
-         uF5nBF7pSeOSMmyY+zXbBX6ZDd+6qRbvEuc1OyGWHFFGjX0XRAfLoJHdcAV3iasJITsf
-         rIwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780186490; x=1780791290;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z6WHUv35EmdQ4QWk4JR3Y1fgG/+v8aK/cHw1Gj0rc90=;
-        b=SO0fYca1FFBxynT/WiJqiRls00jCNCuGgA/Icvo26pz+S5PcveCHHkMmHIy9LcL4s2
-         qFBVdgn2qTmAhsLovW3BzjzyR8uqWQLJzl1ATHH4mVrilaCtvBIG9RDfCktV3HHoyqNl
-         +wHqk65+PS6gnAdI+r2rLYcBRHGrs0NjEUIvVzH0l3iCouE0PHCjZcj1KVqtqUIheInl
-         wr33fv9ehC/hPPlPSO+jUjV3ojQP7vOGyPBUCvnSoW/IzGWIWS337U3fOOMuPXxmNx9Z
-         nWiUZafT6+vdmJ2GNn0oVYTES1xnIVFOKvrzRNRymP+JgUt3aI4Qhk91hMlptbGNmGhT
-         /Irw==
-X-Forwarded-Encrypted: i=1; AFNElJ9uzOTGOOCFJQhWN0m36gq4w/0g1Hz798fNZXrwDTtBSN2BT4vop9fdU1qWS+KXXxESkgqTi4xrRw==@kvack.org
-X-Gm-Message-State: AOJu0Yw80imo8DcREJQmeDCW0EAL1MPdPEI6gHbm99bLCKNgltLW38Pj
-	LqGqSUEyN+LGZ2tZScHr3G/JazlQXYpizm0/e/1l97RD/JivL3bWoN/6
-X-Gm-Gg: Acq92OGtuZXhlHW/bMmbQSpxFC9uA9OXU4OdA5bVTta/N33de6s+jTIE0PWhFVLkAmP
-	Qq4VSJ5NpWgN0pjJplBo7BjybBhanlFlTibxpTA/dTR1m7haV+oq/PjaXGS6rpJITD2RvGFOo/5
-	LjXT+NriPScxyDxGr8zFJ5t8ZkUCggEQ/7d5lmmnUUXTr4BJaseyoqRoyXuzxtC/o1vS6XYq6gI
-	RqoRBzp3uVUNwn70IdI1iRFFJSkj39EYVGVt5Uz5MNWoYkTdyKGdTruvzmVaQjpOnaYWDqX2LPi
-	6l+SrHeeYenTdwJviDtxEOQCJmoccxLtcHZrV5lxsCwSf5J+MBQcdfUZyABA5zB10olpVWqLKUJ
-	d7J1/RLU+P7/JPOYohWjvY4h1Mlfld1MkeQV+3XTeQgQIMSNHFq2GiXshnLEGuq1gRcupsvI74G
-	KecE/Tv1t88tfXrM3sPyyFV+/H+yqdmQCH7Nr+/783qP4UqSJHGQvG/sS2jTsMMzBJZ3dBBYfcE
-	5QezLP+XJoAZ+xK726F3PV8Yl4o
-X-Received: by 2002:a05:6820:1c8c:b0:69d:7a88:9cdf with SMTP id 006d021491bc7-69e10469737mr2718415eaf.15.1780186489512;
-        Sat, 30 May 2026 17:14:49 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:42::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-69e069b55ddsm3918373eaf.13.2026.05.30.17.14.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 May 2026 17:14:47 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 30 May 2026 17:14:45 -0700
-Message-Id: <DIWFFX9PVY0Q.2CKQ7GZGFW0TK@gmail.com>
-Cc: <daniel@iogearbox.net>, <andrii@kernel.org>, <memxor@gmail.com>,
- <eddyz87@gmail.com>, <david@kernel.org>, <tj@kernel.org>,
- <roman.gushchin@linux.dev>, <peterz@infradead.org>, <linux-mm@kvack.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Hao Li" <hao.li@linux.dev>
-Subject: Re: [PATCH v2 bpf-next 0/4] bpf,slab: Introduce bpf_arena_alloc()
- kfuncs
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Harry Yoo" <harry@kernel.org>, <bpf@vger.kernel.org>
-X-Mailer: aerc
-References: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
- <7f62762d-fd91-4c07-9917-7d977441e17e@kernel.org>
-In-Reply-To: <7f62762d-fd91-4c07-9917-7d977441e17e@kernel.org>
+	b=zlnf4m8cfIZLUqA9lEmrhKPwXR6xyb9/k+eLQsM7aF0bfUMibsQ+67i8cZNL770EJCjfCr
+	eXuOqLt07jMQSBnc52OTa83doFvLpWyHZ1fT428hHvSf2vqCSBkpIw3CSxPipIVkDwlWy0
+	l6EBsSpDpr3EnCIWGil9VJzfl9gq+eM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AD8356001A;
+	Sun, 31 May 2026 00:35:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0179E1F00893;
+	Sun, 31 May 2026 00:35:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780187729;
+	bh=c8RBaPvCP6ZMekNwxeunAIbpIE5CulD2vhb0civMEuc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=d53H0TLHSiX4+p2qwlrpbYNSkQr89x9B3WOu78Q9gI0I8WEUkK4/F0Zh3HERksKXa
+	 hg3haxL1FnZcxondubwZwSNMfqkYHFUlb1pVtumAOLYPxzg9iYQ0pDorDrMaBgKOD/
+	 19SMFIXoJdy9v1FI3zZfF9v/cgA9sSj7H7cQk2XdS8zrPotiR+MuiE0Uv2MC7VN0Oj
+	 D9qPYvBnffngDkemA2x1OvI+zzU9n1afjMGdGZN9X7wZzeaN3mSqLcp9+AZOQIZICx
+	 RomPOo2yIKZt95Ctpt1mPpJrInk8xy5K7p3NidJmIZRd+riM76W06RmR+UlHx97mfR
+	 4qsbhgJyW6jMA==
+Date: Sun, 31 May 2026 00:35:27 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Theodore Tso <tytso@mit.edu>, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Akilesh Kailash <akailash@google.com>,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
+ remembering inode number
+Message-ID: <ahuCTzdbvhCBJzcl@google.com>
+References: <ad_AVHe7RMnGrGTb@google.com>
+ <ad_HwhzlNPUEKQi6@casper.infradead.org>
+ <ag7HfNryTmQ-bVIS@infradead.org>
+ <20260521155748.GA79343@macsyma-wired.lan>
+ <ag_OVwPF49LSZ7rz@google.com>
+ <20260522141115.GA8258@macsyma-wired.lan>
+ <ahCNmWbcd_2lAJyk@google.com>
+ <20260522224108.GA18663@macsyma-wired.lan>
+ <ahTzHyHBL8t0iNBR@google.com>
+ <ahiZRpE593n4blxn@casper.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahiZRpE593n4blxn@casper.infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BFA6B1A0003
-X-Stat-Signature: qtko531reftwzdj188t7zw1psqooha65
-X-HE-Tag: 1780186490-90524
-X-HE-Meta: U2FsdGVkX1/fPq1SGBbOBTExT0mEAhx2dTtgOoO9RW4UAS7RErwSUNitsb+5RGzOlYQbeH7P2kBY03Qhnzts/8A5O32cY0ehOL3EZYoT/NXwhhsZGLvESVI9M6kBG3vcEUwoM3nS7/1xT8erLPT/kpfMHaNHQbufS7y9IdBMIrhpFgBa19imDZl2jW9m1gleSAPJ3YjWUozfu1PNKEsHWTqM23EqsiMz9OqW+bZrkBkFd6x4yTExP5cCU0kjjWqC1N9biR8HmjTGQxGCkcng8DdbglK9hAFD+95o6yXXPP3OxdYvN+gVof20yjjPn9JTjU5xOXGxkfrF/sh4GjdiVzUpnHCHBkYXfYXFWdDZXrIpv4OGIzFqwH43HvlKVRHadUpiXCh4qwHnPVJ20hPhUgekRd0QbHZoubF8hL0E+y5CfeBszH8YED969aL/pcHx73r3KCZzeztLtfRed5tw9tVSrk0vqXNVw9IXLGy84wlu5HVx8uv4V0vwAS4XvOgkBtxO1slFHP5Jxf36FLYFiadLi6NqNDqH2knL95k5HV5uVFt1Wro0ySgI0e/B4lia5ecPL0TbL6eT01Kv9jMAosmMh1NcLxIX6hvNLSlEI+T3ptR8DZGiVnZnKh6KUu9dRijfP2UKsehPjebFwScYZZn7FS63qXooCa8PsR3v+SX6OBuFSfWUDlquX8Tz20T4ue/TyzYR5RHoU+h3P6ZXYLXV6i+tj/1EBtACqBZ586lvGF9v09peVAoICRwqn+JTwS92nQMyRFPf4miFjLEbU+AjmjwOjlhSS2wMD1yrOIB9xApLUw6XItDBxG0xnR1//uPfnDHbHatM4NMPM1HkN7cbk4Sexd2hwwZsDN0gB/WPJZRgZp+YDQB3i1TDGcZxSCfG9IhuEkfTf7p26Kk9p3iWPGqtkKnMAthFAo9hZBVBPpI/ejMgO756wjZwPeIktRVL4PUsrRmeP0diZJE
- e7NaX4dD
- m1UCm8KgPoKAb3Zuka4pWk/xQKFM7qcu3K0KZ0PH8JqDf7L1tZKq9tfK705mUawzRMtUKsbVbVgmya1hrqFqywxrBy27h2/HoVHTiPlPaJpQOBG+WRRGWGQC30D3G1zfMy3GQYv2ekb+UPTIwHN/spkIEdmRl9fc1lZ+A/c/Np7lsgQGMnGUNSnY+FAF4Q0fii/UAqC5mxliIICls9lWHaf1nSZyUge09PJtQDFHFOFS7KFuGPorGXOmCwsV7uTtEL6OUOXoxfMUjlAymMk9SFNjGT9YuzRMG5GlcQIalNAB8lPBaZVYixm1QKdE8oThhiEMLMZ9mKIRp4Qd4FYuLOK1PKxg5GI26+nJ8ObO1HPnFp7soloPtUazQ66hqfwsqP0F2/ZYWlj7kEneHP1Tx4RQ7ccdQwsXdchEfDsRCdP8IjPG8IdJk5BMib55woG30JWUTUKlxbgO0N+/MXdj95Csq+iA1Pa9JDoU/N2BYLwnCRNcakWxcV8F08o2OR5tgmcpQ36dIvtAcmqpB4ru90NvVKcigkbawheMK75bmP6JT7g7h4ZlfPVXmGvBWJapVSKoK02GmfccdA5X3OcGHuzFz0/BoVZBuFbKLrcsowdmk7DVlb4pNl0LZJ65Cqwd9/L+U
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4D3311C0007
+X-Stat-Signature: nzyg17h47gucy9pxtfgssuf46g3h4pxn
+X-HE-Tag: 1780187730-305068
+X-HE-Meta: U2FsdGVkX1+EpBvZ99Y4axMMkJ66v5GGZ7Wo1hnnBOzyBxM0oAgmD6apyo1ZL9yv4Xw8l9eivkvZua+Qf/NsO3y0IZdHYS3eqXyJetY9ldWIq7bxPshDvxbUxbgMKc7T9BJoAyUW1Txi9TKu4/29mJuaMZKTnB/02KMzndqsBSB7I9lVFToyNDKgN3H9Rxzb9te8ymfg8Ebc3eSqUDpw498Y3gi39x012kTXCsEsYjfH9bW0FcONTkfXdNGh/rYXWqnrmNjV/00+RnSUQEcSJk2CVIFHYmpLylGxgg3pPLVEUG8YfjOnl67kFxXQa8isk2jltRbxblHMC1JJlSk9Xo07f+OhpoZs8NrL5sr9OBSy0q62WaMruLLDYTu4r9qZpHaIPH7vLO/66DiZrgCCmTLnzm2ZqVQGiyzGfy18W0mN9g95WpUcoKAAjef6LKwNvF+IWV3CsTykgKHHQFrV3UNS1SDV8wCe+rUyt1je8JrvJcBeSMqnZmYU2y7YN16vj8ZQk85ljFUuPJGpJrxyT7SG623B5KsspBOBI07YCpr1xUlmcxPBvcBVlEeBlHm4DSe0faAHJZo3BU0RMO9kBo9WxGx5/Y0NcyQU3IQG77a9xGCsPC9XIyuGLUjTbnMZotLd3eSbZbybH9vIZyK4I/5CiZrb2Tua1mPFZsqvkNdw5g+UMZyWtjZ2OuHy2X8pamttfFKkmiT1mbKIGwWLPCShqg1xqVB5CKkjalEauBpd1Fex2LNz3DE4zhLD9Pc6HtnN4cYGhQB6zhbLZyk/srJ4EIyEwowEpDEhNL1ourxO3S5Jf/wmbkAwReBZKEQKfF+SRWx+FgUzBUmJNa5qzGypf7a8T2cuCK2bvDm7KuqivkkXFtlxvbYJDupq2pjSmvZan7KYAaAbUfs9c5V6rxe0zxmusvojuxwWl85YdQ1f6CFfzbmXSEVcIe/XL20UFo7G/suWVbxewpAC7Ge
+ xds3eTMW
+ qPOJF13LGQzJcCEynM+W3oe3a3ClLksh6/XOiLIobsuosCKQlO2NO2FgcqBac7ct+vB8hK/r7TgbcA6s/eSxk7A+7mXoiAi5qTbyn4hpdoMOEobz1mimYkzU6e3QNJEfTuYzz6sTCaC5MvIEynbACsOuxaMR3KP/+TwwTTb/Msdrn6NAtFSW6IxauGBNv8NULxPIWEN6nIYS7IXHe4QN5RQusmyUja/0OJgp0AUfluOrlHpKBs4Bnkw5qBTQcQbSVCusaythCCsmYHw31pZgX7dzKKBhDkyBjSwm0y/X0SiwQe38k3WyoRW01Ew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,74 +105,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri May 29, 2026 at 9:12 PM PDT, Harry Yoo wrote:
-> [Replacing Vlastimil's and my old emails with new ones, and Cc'ing
->    Hao Li, who's a new reviewer in the slab subsystem]
->
-> A bit of background for MM folks who may not be familiar with BPF stuff=
-=20
-> (including myself!). Please correct me if I'm misunderstanding.
+On 05/28, Matthew Wilcox wrote:
+> On Tue, May 26, 2026 at 01:10:55AM +0000, Jaegeuk Kim wrote:
+> > Background
+> > ----------
+> > The primary use case is accelerating AI model loading, which demands
+> > exceptionally high sequential read speeds. In our benchmarks on embedded
+> > systems:
+> >  - Using high-order page allocations allows the system to saturate the
+> >    Universal Flash Storage (UFS) bandwidth, reaching 4 GB/s even at
+> >    medium-to-low CPU frequencies.
+> >  - In contrast, standard small folios cap performance at 2 GB/s.
+> > 
+> > The performance doubling stems directly from reducing CPU cycle overhead during
+> > memory allocation.
+> 
+> When you say "AI model loading", are you mmap()ing the file of weights,
+> or are you calling read() to load the file into anonymous memory?
+> 
+> This matters because for the first operation, you need to allocate folios
+> of PMD size in order to make best use of TLB entries.  For the second
+> operation, it's more important to iterate through the file quickly,
+> freeing folios behind you after you access them so they're available
+> for the next batch.
 
-Thanks for great summary.
+We deal with multiple options tho, what I'm looking at is mostly a preloading
+models by mmap(MAP_POPULATE) which takes the readahead path bumping up the order
+by 2. Previously I also looked at fadvise(WILLNEED), but gave up due to the
+broken interface. OTOH, we use RWF_DONTCACHE for read() case, but I don't
+think it's ideal for the best loading performance.
 
-> BPF arena [1] is a 4GiB area shared between userspace and BPF programs.=
-=20
-> The BPF arena can be sparsely populated, and therefore the kernel cannot=
-=20
-> assume it can reliably access it. (There is a patchset from Tejun that=20
-> addresses this [3]).
-
-yep
-
-> Since BPF programs interact with the kernel through kfuncs and=20
-> struct_ops callbacks, ideally the kernel wants to share kernel objects=20
-> with BPF programs; however, you can't put kernel pointers directly in=20
-> the arena, as the verifier won't allow directly accessing them [2].
-
-Right. Technically bpf prog can write kernel pointers into arena,
-but they immediately become untrusted scalars.
-So no access can be done through them.
-
-> So=20
-> the kernel instead wants to allocate objects from the BPF arena and lets=
-=20
-> BPF programs access them directly instead of current workarounds=20
-> mentioned in [2] and [3].
->
-> sched-ext is going to use a gen_pool based allocator [3] to achieve=20
-> that. It works, but we need a more efficient allocator for BPF arenas=20
-> without re-writing the slab allocator from scratch.
-
-yep.
-
-> This patchset achieves that by enabling SLUB to allocate objects from=20
-> pages that are mapped to the BPF arena. Since the kernel cannot access=20
-> the BPF arena directly (at least for now), SLUB always accesses objects=
-=20
-> via the direct map while BPF programs access them via the vmalloc=20
-> address space (kern_vm_start).
-
-Right. This design: slub via direct map, bpf prog via kern_vm_start
-is done for performance reasons, so that bpf_arena_alloc/free
-can do page_to_virt() and virt_to_slab().
-In my earlier design I used kern_vm_start based addresses
-for both (slub and bpf progs), but it meant that bpf_arena_alloc/free()
-needed to do expensive vmalloc_to_page() translation.
-
-> Given that BPF programs can access slab pages in the BPF arena=20
-> (userspace programs can't, see arena_vm_fault()), one interesting aspect=
-=20
-
-yes. had to disallow mapping arena-slab pages to vma.
-
-> would be to make sure the kernel avoids panicking and falls back=20
-> gracefully in case of errors in the slab page (while maintaining=20
-> reasonable performance, of course).
-
-exactly. that's what patch 3 achieves.
-slab needed very few changes to make the whole thing work.
-
-Don't confuse this slab-arena with orthogonal work to
-introduce call_rcu_nolock() and typesafe_by_rcu_tasks_trace
-to remove bpf_mem_alloc. These are two different things.
+> 
+> 
+> _______________________________________________
+> Linux-f2fs-devel mailing list
+> Linux-f2fs-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
 
