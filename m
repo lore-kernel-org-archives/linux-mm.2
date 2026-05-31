@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C468ECD6E51
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 04:24:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8553BCD6E51
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 04:24:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 200F96B00E0; Sun, 31 May 2026 00:24:28 -0400 (EDT)
+	id A3E966B00E3; Sun, 31 May 2026 00:24:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B12B6B00E2; Sun, 31 May 2026 00:24:28 -0400 (EDT)
+	id 9EF526B00E4; Sun, 31 May 2026 00:24:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0797F6B00E3; Sun, 31 May 2026 00:24:28 -0400 (EDT)
+	id 8DEB56B00E5; Sun, 31 May 2026 00:24:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E6FDC6B00E0
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 00:24:27 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A55E5140455
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 04:24:27 +0000 (UTC)
-X-FDA: 84826423374.08.D68CF69
-Received: from outbound.mr.icloud.com (mr-2006c-snip4-2.eps.apple.com [57.103.70.5])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B513240007
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 04:24:25 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=GnpxXBYw;
-	spf=pass (imf04.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.70.5 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 792446B00E3
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 00:24:39 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8706A120435
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 04:24:37 +0000 (UTC)
+X-FDA: 84826423794.14.DB2E52C
+Received: from outbound.mr.icloud.com (mr-2003c-snip4-7.eps.apple.com [57.103.69.10])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 888BE20002
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 04:24:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=DhU3144m;
+	spf=pass (imf13.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.69.10 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
 	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780201465;
+	s=arc-20220608; t=1780201475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t9h/Ynv08eT/7kBNC5M5hKRxLaGxANkcJA7nimD4RAY=;
-	b=VFLZ/mKXJQbKfByJUpsf16uYEfxh0FsZGmufIoC5fN5Is1sHN3Ukua0ECP+fQFakzWJkZ8
-	hREekGKE4cnfUX5RLlK7faZPOeBAxQEgQUd3gfYZDYd1d1KBDBcj+7w2kU9zX3dU1k+JEo
-	IMIBA0wq+XGun4+ng9AbtMh1HnjGGy4=
+	bh=dismuyxgoUu32oVKxariHZH1KvI6gzuA1yZho9b0qn4=;
+	b=8G1BTHkqdmyUKv5iPkGmDhCrwL6OFfFPjm4rOI8GhznCJgSZhYMQ2lh/NvUDns8g9IT2KC
+	LPMU6bMP8S79vf2MDU+YAg3UwGfmNO7YpcfP2zKpWda3VlDy8co/CyVLjZQ3zPkhobaURD
+	BRODqDyQbcZl4g7ckg2opRO509hO3Pk=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=GnpxXBYw;
-	spf=pass (imf04.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.70.5 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=DhU3144m;
+	spf=pass (imf13.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.69.10 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
 	dmarc=pass (policy=quarantine) header.from=icloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780201465; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780201475; a=rsa-sha256;
 	cv=none;
-	b=P69vuzvXH2qnqkwh+T+GglLthHAwtfHssOf0IK0yT/3xyfAcwaJR7f73YKAAbhw4kvfVqg
-	Fo8aNwrM9eyjBzz4IUJDaMaUzApxSzOd8m+fS75yBOC3Mv+rTWcVLnlEOl9JeKKEr1mBvY
-	q+jm+n3mGKH7PPeHt6aVKDWIFjA8V9I=
+	b=uyBS/F0w0IqoyvhX/rFriVQdfYfpGuRFs0PzlmOW2pmLM7AFH4rWjkJ8HZiCc5Fqqx+NcW
+	8+fwYVyIuBeqoClsQB1tQmp+Z/6nTN7lL8BE6UW0Czr1kUHT+ZPzbp3rWauS5JN0c0qSp7
+	nuVM0g90bfV3DY+pJG2CXO+LTDDegS8=
 Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-3 (Postfix) with ESMTPS id 600701800152;
-	Sun, 31 May 2026 04:24:22 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhJB0MFXwteDUAdVAVLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEEVABWB5WXloXXk1FCA9CAVhbCFsEDx9MDFECQgVWXlQKHQRUB10FXVZQAlpLQgRLRWhcBVwcQBdIHV9qS1YUBBFQAVgeVl5aF15NWgJWTQVKA18BWwdDCFVHBUc0UR9VFFIdRA5tGFAWR0BBWh9CFB0ECw8IAEAKTQVfBitGFVcbVgNDRVEfVEYTGU4bV01QG18CQg8=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1780201464; x=1782793464; bh=t9h/Ynv08eT/7kBNC5M5hKRxLaGxANkcJA7nimD4RAY=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=GnpxXBYwN4yqsrLNGVjVjc5BgfZVIVQP3ncDcxui9Kxz8GRsmF3D6OWe151oq+cV4k7tueJJiDy1gSz240wAAst2DUdXElpuPcJMuRnTSLf0Z5zZ+W/APuxzYd2Tx7ftj7y43OrG/rH2cyubtVh7x4CGWrtqEWvpGPl+C7C/whO4uNWJYotXN9CghsWfGPOWz/s9K9uXdeMnzho1wbSxK2YcLnPgwJH1hWGNWcorlg19vMONWznByCiPXUDvBba6U2iFR2HuGte89iNTkJn8p78NqOu7kQZ/g05MM6Qz6BIjFYdaPvw/89h6shjQH7Pr8z/EWwScNXDbllPvV4SVYQ==
+	by p00-icloudmta-asmtp-us-west-2a-100-percent-3 (Postfix) with ESMTPS id 3EA2C180008D;
+	Sun, 31 May 2026 04:24:32 +0000 (UTC)
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhJB0MFXwteDUAdVAVLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEEVABWB5WXloXXk1FCA9CAVhbCFsEDx9MDFECQgVWXlQKHQRUB10FXVZQAlpLQgRLRWhcBVwcQBdIHV9qS1YUBBFQAVgeVl5aF15NWgJWTQVKA18BWwdDCFVHBUc0UR9VFFIdRA5tGFAWR0BBWh9DFB0ECw8IAEAKTQVfBitGFVcbVgNDRVEfVEYTGU4bV01QG18CQg8=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1780201474; x=1782793474; bh=dismuyxgoUu32oVKxariHZH1KvI6gzuA1yZho9b0qn4=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=DhU3144mRtDgJUjto6m8BwILlv/zoYCMe49V2Gy8TMWkzra2WifF/MsMlqH3rvV+HGPIHJCqbFD+FG8r73yeG79tK6dG0w7hH8HEfV6Yba6C1ylEXIEXrIEBG7+3IqCZaKTc+z+7JD1aioHx6bK6cvACpcRxPsSXKY5K8/zSGXG4OZ4OJ1ARgZwwqzV4q5FNqXhvH/gNw1dVbygG241lrVvx+TaA+WPSVTxNomD2Y1T4mu5DCo4Os9y0oWQyTwbDkvRxLlKUbGOlxCqEOU1N47vRz7ItOOFP1wyUkuwmsPVZrkQRxGfcGp6egjZTevgnvE/Qs0ttvqnS/WGrnqkNxg==
 Received: from [127.0.0.1] (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-3 (Postfix) with ESMTPSA id 1F7B01800135;
-	Sun, 31 May 2026 04:24:12 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-west-2a-100-percent-3 (Postfix) with ESMTPSA id 75716180015A;
+	Sun, 31 May 2026 04:24:22 +0000 (UTC)
 From: Luka Bai <lukafocus@icloud.com>
-Date: Sun, 31 May 2026 12:23:50 +0800
-Subject: [PATCH 2/5] mm/khugepaged: use slab cache instead of normal
- kmalloc
+Date: Sun, 31 May 2026 12:23:51 +0800
+Subject: [PATCH 3/5] mm/khugepaged: add deduplication when adding new
+ collapse hint
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260531-thp_collapse_hint-v1-2-e7f8c2035621@tencent.com>
+Message-Id: <20260531-thp_collapse_hint-v1-3-e7f8c2035621@tencent.com>
 References: <20260531-thp_collapse_hint-v1-0-e7f8c2035621@tencent.com>
 In-Reply-To: <20260531-thp_collapse_hint-v1-0-e7f8c2035621@tencent.com>
 To: linux-mm@kvack.org
@@ -84,34 +84,34 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, linux-kernel@vger.kernel.org, 
  Luka Bai <lukabai@tencent.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780201432; l=2998;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780201432; l=7996;
  i=lukabai@tencent.com; s=20260501; h=from:subject:message-id;
- bh=IK4miDrmdbabkQyFGW59A5b6GPx3fnGu+q5Q4xvrQwg=;
- b=qK5zrbTJtisyR+NW+EpEaQwvDavZnmZa7UsxawqaJ9Gzz12GKaYF9g3TSlb3B6/TtJzOpv92D
- 8CanBl0VBhODOoEefC41u8Q8hPB70UYd5y2UeWlSzFOeMAHSkRpZQPF
+ bh=N3P/iJQ8BlWvrseSb9JBmO8QdT3darHooCxwnlA5qr0=;
+ b=N16rmmaibecaLsuTfgCMAzS54slVGIDMGU7XMADvW98uC0Phb1GC1LsxzueBZyiyww/wFqM0z
+ /OylNn/E+A2CrY6ODErobdOLfE9nvUqYkVf5oxyY4E7f5/6hL5/vEiP
 X-Developer-Key: i=lukabai@tencent.com; a=ed25519;
  pk=KeaVteSWd00GIAjFyWZnuFsKAKixjga1ZkLMcI66nPM=
-X-Authority-Info-Out: v=2.4 cv=AcS83nXG c=1 sm=1 tr=0 ts=6a1bb7f8
+X-Proofpoint-GUID: j-_8UMnyrnxggoewd7hZP2Fd-kHmwmka
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTMxMDA0NSBTYWx0ZWRfX2CB6DZu4Lezh
+ 6p9yMxfFFLCdad1JK3wA156ebueMVC0xfgjETodnsy4aLI0fFFtHUZf2iVBXWGo/MntYtvq1//K
+ vHIhtGHx6hN02jdjdxmp6LZqT1hubMtY/YOf/GWb0p6nICAli3SzRrpmlS1ZcmtwMxyy4Osz1QX
+ t8ZqaeXvU82obnA0MgYS0rwz/bEo0vdSAsO+tSX/kc8n970N4c0135QfXJ0/6kI2irpgmWNZUoG
+ Lgtl3VAOpMihWO077RYGVLxgHRQgYepDlYDZe9V4IQBBGGP3SUqepr8MxLOI5rftCbpKQPlErQB
+ 1aSF71e1ZzUHHDHKJ7PGcrC+0V3FT6aEUro2MrhdY53K26apR5gS3kQSoLI0AY=
+X-Authority-Info-Out: v=2.4 cv=K90v3iWI c=1 sm=1 tr=0 ts=6a1bb802
  cx=c_apl:c_pps:t_out a=9OgfyREA4BUYbbCgc0Y0oA==:117
  a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
  a=x7bEGLp0ZPQA:10 a=UaoJkeuwEpQA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=GvQkQWPkAAAA:8 a=gYzHG_maUEIFqAho4fMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: B_25PpsYthx_2GB5CPRjr7NKC0y3rCcS
-X-Proofpoint-GUID: B_25PpsYthx_2GB5CPRjr7NKC0y3rCcS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTMxMDA0NSBTYWx0ZWRfXyiXca6Dkd1a7
- QOXxv9TE21ZnGWEUqm6vvV5dCUyPVy56XBSdu6nMYUQRIngFA5wOE8VK3hJEvuuXXiVbJeKLYdK
- dwk6GCWg9gE5JK10s7JghJI/YkIU4sfsbUuUYFwv2YdK2FhdY2LYu74h+Z5Kga2U6yKZrBKQes/
- /Rjsep2gxppbN9PF/q2m3wHVMMRpwQiT/OKXU2C4IT1bJIcg8eaYzfkjE52I3MhdVztoenVbufN
- naqzcFjBzM9icQVGB6QPfAISZEqt3phVcDXCQB9KrG1jZTAjJBcW6H6ubZF4ld2ddDkt5T1DIri
- 62kekgwUd8PIi3ZKORzuB3Hdlb3+O43wV/LQ7tbVqnDjIZ4o6qyzxdXBd5m1LE=
-X-Stat-Signature: nyhcojebrbtswuq4o9yqui1mkq3n55o3
+ a=GvQkQWPkAAAA:8 a=nMWqTqnFzTP9CSPNFE4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: j-_8UMnyrnxggoewd7hZP2Fd-kHmwmka
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B513240007
-X-HE-Tag: 1780201465-924030
-X-HE-Meta: U2FsdGVkX19yNbqJqPpHfa3hFvetl7MzjdbzSnhYtnXWba04xCU2HHr9L4JeFB10mP26BEeURBaGxptQEnBanZSWJF/48yZkWoyAq30nOPBs89WQXjw6c7VnNyAsMmGm9HpZsYuCCQ1ksxPGlNfpGXoGb5966d/Fx49SyXCEHyiKzrAnVdye2/kGc57nTKvm9I5hiKsz7NQFOCdhz4Z7rWGAROGKIqCol0mdeH2KDWJB2ieIPwnrc2AOunKw8hf1nRSgMN0xBJEcJVQpESPUmEG16njL19CN8QjMp4jbNc70Z14weqZW3igs6owQ2kLJkua6gxKifPfLau8xOMGHEF6rKqK5mD8a/JIBSHXtbheSfpP7IastZpDyioSz4YMSC+U0nlQ3Y7f9+MLA6caOVPAe4dvHdJhZ0MADQX+wuJMCqsxxSUKYRRKc+Iy7DauAq5EZQDQvub3v2YY+K58n40mXK2ZZkSoQkbNGWIzdj8QW7x2b/ad29/iYU8PV1HB2VdJs+K+Du+REXz+5lI1IGti1/wyYC2KK0iBMjhD1CVP1VnDf64ZNuOKH9eIKPmwOhElvIp61GLe08QvRDhZtyNhB10Ec29PYlgXn+TBf4wk+z2jE2v90rHLW+SUG0Mg2AD9ujW1CnaxOywOjx0xTv+LJ/5pt0nF01xI4AYXc0U7PRdT/nfFp4ppv2Vhe6Gy91Fk2yl6KW8pgAfA1t52ER5+TH2nqPXeV0ZoksP/qxtgD7LCGZlP8VAdbve8onIoXjhrPlBtQ2Pjw4tEgnt61/xBIYUf/bb67vDRjC3IONRNuYtvb3aATJiiKnN7z9EHnE2LWUe4F1EoHHzOupWEcleqAUW5JQR906IIM/P5BvzbKiUYoJNRmp4umSKg4Is69Vi3Or+tYM8tshAWz4C5u79DICu/CVrwPLwy/oBHZ+hcnuwzlfwHi6OhwY19ZMfdMqoFXzVIRjXgeXLSBReR
- 3i5AsPMg
- GETeWha3wVQvqFltxlipISiNkKFK2G1RUIfISaWQpkgvGWLexnc3mebwnCXGM2x6JLhX/ChB2WrsdPmz4Dh2iMv7VFs28uWGXR33nhPnp3AQuSFYowr8rTUrLwTxK7z42kbrFqtrbplKHIvnzBGvPm7T/pLvqlJCgMXTV6v/tUIHTBpScwNWNhQH0eQ3q+GdsFUvxOVI32XgwHnzRyRtl6yxTFDG/slRlll6LUf19WJKOLQfMmolhyIL6aeh8yKMHJqcj9Q58wQe8wqqIQpJmL+Z7xqJ8oftM+tIyvr1UWCkpphnuwRCslD+xAPn2aqT9uRM1qLqHrfwtSsabiPZrGF9xHciAZmi0T1KWdlhstbjPNBohVQ+LHUXqzW8YryMkCC+yTfmTNK3gdqwQkMpkwxM9YpYLZWvHubTktjrtmhMOroc=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 888BE20002
+X-Stat-Signature: zm8pmz7xoz1myj9z6q8zyaqst7htssxt
+X-HE-Tag: 1780201475-894835
+X-HE-Meta: U2FsdGVkX18HVUrBPsW8fDYdmNk9qEJo+fYy8EB19EQPbApbs/eD1VGsMgJ/jil7FcqlAQIfYg/HQLAZHHuIpjhBv/4TqeiRLEsKhyxLflyNbMxjZ42WtPgMaofnI1+0wEVeHvb2kWHcXDzcdZRY+dP/smiRHOG0eS5WM1CAjnuBHJxwwrs3MqkF/nqTRJslEao57qG7DHM6XYKdgLupEvQmvs7dSRhbNot4ooXW8+vfL+Uo3aP+KNDs8x0NOaEZQPJqWuhTupqT/kmkwHkVDUd53Ic5Y3iS4cT4b1oOnqux469Xt73PRyInk27TmvjVS3wt8FSbyTcMR73tHf0fcGdmIoAm+6Wz3pJBxL/1d90nKkYWCx+8p+ABtgKOYyDqMxsjDdrKvMbf4Hp/yuPysxot3liMtdu9Kwh11ghDNbfsL3nlR24rcEekEbFxyIGCQuD/4t4uqwSlUALOlUc2zvWq6oyX4bmN6n1K5KrERZkR1E7uZJafGCa7Abs4GKLHblrYGfhianhSNgNW9oOdOgdZ2L8Q6ksYBrd/6nSWOlR99coiUB7DYfV4DJ+9dQxsjgds2DD2T1PplA9cpmK8ZpQWx1z8+PA7DdGoeHRHe4X9LRrO7H9RjVLBLSUp28DWo15PY/LVNgkd36qQYsd71dNRY5pOGx8eJMndoj5Cl06NUovhk/1LH3Rts1IMS/ExbaYstPX9opZwNjkxDD8B+f6vAcoE5iLm6SlCRe0CDnNER2Zl6ZAMXvTeXXIZ+T/y8LLsX4WMsgi7ksPJ0Lw5SvJ8wvh0r625P8L1Fpn3IY2S6tGuPM8PyzdFnwAQ73clwtXFQVJJP/3MTgQOVPu8NOPbjHO2whzMB3JiQpwQyEqmBjfPEwt6crK9/2pqz7QGB7u+7nkHAIHyFWxV1qTs8eHvob7oDafFMD1VCfs8o7jl5qIQcs/tpC/3CRX9HmeCbhsGzyRgd4coLK/r6cl
+ rKsCZcs2
+ 3CtmmPRcCg6GezQqRBZqH00Z73UbulcoKdICbH26zYAopXPFUgY9Vz7GYzbRwkuj9QwsJYmclK5lodYK6F7z2luBWGWyT1t0mMMsU7B7IJTgUSsmEBITpNV8ZQCdRxOCofkzr9XhlNTvmnlwqBhmdPmWjLpSaDAU0YkhUx5yaNTrRV44mjtzhHIM46iWAWmF/oycqVePSpZ57/7/s1/AXKOGnh+euXEu0eT0JJZNdqn1+LidGHkofG1gg7FQoAuSV2P5jvuKmzYK354T3pLjcvyqSJsYFnTXrpQN/FSJDl7w9mvP8Rb+aprIZdK2h6uhZNKpXrYECDpbmSypSi0C4oGByasmuyaF41DAqS07xtIw0lIXw7o5geEM0wd+3fzEBNg5vUBfkkupHJnMV5SdL0uuP0zUuJGpssLcUD516oT9jx40fa6EhMaFzCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,102 +121,212 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Luka Bai <lukabai@tencent.com>
 
-We added a kmem slab cached called collapse_hint_cache for
-khugepaged collapse hint, to improve the performance in allocation
-and freeing for the hint structs.
+We need to check for duplication before we add a new collapse hint,
+and we want the searching and adding to be faster. So there are
+several options for doing that:
+
+Option 1. Add a Blooming filter for the hint addresses, but that
+will make the hint hard to be deleted after handling.
+
+Option 2. Add a hashtable for each khugepaged_mm_slot. But for a
+efficient setup, the hashtable should have maybe 16 ~ 32 slots,
+which will cost 128 bytes to 256 bytes for each mm_struct. Seems a
+little wasteful.
+
+Option 3. Add an xarray for each khugepaged_mm_slot, which only
+takes 16 bytes for each mm_struct. However, each time when we try
+to add a new entry into the xarray, it may cause memory allocation.
+Collapse hint is supposed to be a best-effort machanism, introducing
+xarray seems to be a little too heavy for the calling function.
+
+Option 4. Add a global hashtable for all the memory hints, setup
+key by their address and mm_struct ptr. The global hashtable mixes
+mm_struct ptr and address as key, but the deduplication only looks
+at address for saving memory. As a result, there may be collision
+on different mms with a same address. But as we claimed above,
+collapse hint is only a best-effort thing, and the collision is
+also rare to happen because the address is always 0 for the lower
+PMD_SHIFT bits, which normally gives mm struct about 2M size to
+scatter (the key is calculated by (ptr of mm ^ pmd aligned address).
+
+By choosing option 4, since the hashtable is global, we decided to
+directly use a global lock (we directly use khugepaged_mm_lock here).
+To avoid uncessary lock spinning, we used trylock when we try to add
+a new hint, and exit when the contension happened. Still, this is
+harmless for the correctness of the machanism.
 
 Signed-off-by: Luka Bai <lukabai@tencent.com>
 ---
- mm/khugepaged.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ mm/khugepaged.c | 83 +++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 78 insertions(+), 5 deletions(-)
 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 5090ffae73f3..04cf85ea5557 100644
+index 04cf85ea5557..3f5eb8be06d1 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -98,6 +98,7 @@ static unsigned int khugepaged_max_ptes_shared __read_mostly;
- static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
- 
+@@ -100,6 +100,24 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
  static struct kmem_cache *mm_slot_cache __ro_after_init;
-+static struct kmem_cache *collapse_hint_cache __ro_after_init;
+ static struct kmem_cache *collapse_hint_cache __ro_after_init;
  
++/*
++ * Global lookup table used by khugepaged_add_collapse_hint() to deduplicate
++ * pending hints against an existing address. The key mixes mm and address
++ * but the dedup comparison only looks at @address. As a result, two
++ * different mms hinting the same address may collapse. This is rare
++ * since the aligned_addr is always 0 for the lower PMD_SHIFT bits, which
++ * normally gives mm struct about 2M size for scattering (for 4K paging).
++ * And it's also harmless if the collision happens.
++ */
++#define KHUGEPAGED_HINTS_HASH_BITS	9
++static DEFINE_HASHTABLE(khugepaged_hint_lookup, KHUGEPAGED_HINTS_HASH_BITS);
++
++static inline unsigned long khugepaged_hint_key(struct mm_struct *mm,
++						unsigned long aligned_addr)
++{
++	return (unsigned long)mm ^ aligned_addr;
++}
++
  #define KHUGEPAGED_PRIORITY_QUEUE_MAX_FAIL 10
  
-@@ -555,6 +556,13 @@ int __init khugepaged_init(void)
- 	if (!mm_slot_cache)
- 		return -ENOMEM;
+ #define KHUGEPAGED_MIN_MTHP_ORDER	2
+@@ -165,12 +183,15 @@ static struct khugepaged_scan khugepaged_scan = {
  
-+	collapse_hint_cache = KMEM_CACHE(khugepaged_collapse_hint, 0);
-+	if (!collapse_hint_cache) {
-+		kmem_cache_destroy(mm_slot_cache);
-+		mm_slot_cache = NULL;
-+		return -ENOMEM;
-+	}
+ /**
+  * struct khugepaged_collapse_hint - one collapse hint for a specific address
+- * @node:    list node on khugepaged_collapse_requests.hints
+- * @vma:     hint pointer to the target VMA
+- * @address: PMD-aligned virtual address inside @vma to attempt collapsing on
++ * @node:      list node on khugepaged_collapse_requests.hints
++ * @hash_node: hlist node on the global khugepaged_hint_lookup table, used
++ *             for deduplication.
++ * @vma:       hint pointer to the target VMA
++ * @address:   PMD-aligned virtual address inside @vma to attempt collapsing on
+  */
+ struct khugepaged_collapse_hint {
+ 	struct list_head node;
++	struct hlist_node hash_node;
+ 	struct vm_area_struct *vma;
+ 	unsigned long address;
+ };
+@@ -688,6 +709,29 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
+ 		__khugepaged_enter(vma->vm_mm);
+ }
+ 
++/*
++ * Unhash any hints still queued under @req. Caller must hold
++ * khugepaged_mm_lock so we can safely unhash each hint from the global
++ * khugepaged_hint_lookup table.
++ */
++static void khugepaged_unhash_collapse_hints(
++			  struct khugepaged_collapse_requests *req)
++{
++	struct khugepaged_collapse_hint *hint, *tmp;
 +
- 	for (i = 0; i < NR_KHUGEPAGED_PRIORITY_LEVEL; i++)
- 		INIT_LIST_HEAD(&khugepaged_priority_queue[i]);
- 
-@@ -569,6 +577,7 @@ int __init khugepaged_init(void)
- void __init khugepaged_destroy(void)
++	lockdep_assert_held(&khugepaged_mm_lock);
++
++	list_for_each_entry_safe(hint, tmp, &req->hints, node) {
++		hash_del(&hint->hash_node);
++	}
++}
++
++/*
++ * Free any hints still queued under @req. No lock need to be held. Caller
++ * must make sure the hints are already unhashed from the global
++ * khugepaged_hint_lookup table and the mm_slot is removed from the
++ * khugepaged_priority_queue[].
++ */
+ static void khugepaged_release_collapse_hints(
+ 			  struct khugepaged_collapse_requests *req)
  {
- 	kmem_cache_destroy(mm_slot_cache);
-+	kmem_cache_destroy(collapse_hint_cache);
+@@ -712,6 +756,14 @@ static void khugepaged_remove_priority_requests(struct khugepaged_mm_slot *khp_m
+ 		list_del(&khp_mm_slot->request[i].node);
  }
  
- static inline int collapse_test_exit(struct mm_struct *mm)
-@@ -686,7 +695,7 @@ static void khugepaged_release_collapse_hints(
- 
- 	list_for_each_entry_safe(hint, tmp, &req->hints, node) {
- 		list_del(&hint->node);
--		kfree(hint);
-+		kmem_cache_free(collapse_hint_cache, hint);
++static void khugepaged_unhash_all_hints(struct khugepaged_mm_slot *khp_mm_slot)
++{
++	int i;
++
++	for (i = 0; i < NR_KHUGEPAGED_PRIORITY_LEVEL; i++)
++		khugepaged_unhash_collapse_hints(&khp_mm_slot->request[i]);
++}
++
+ static void khugepaged_release_all_hints(struct khugepaged_mm_slot *khp_mm_slot)
+ {
+ 	int i;
+@@ -733,6 +785,7 @@ void __khugepaged_exit(struct mm_struct *mm)
+ 		hash_del(&slot->hash);
+ 		list_del(&slot->mm_node);
+ 		khugepaged_remove_priority_requests(khp_mm_slot);
++		khugepaged_unhash_all_hints(khp_mm_slot);
+ 		free = 1;
  	}
- }
+ 	spin_unlock(&khugepaged_mm_lock);
+@@ -1933,6 +1986,7 @@ static void collect_mm_slot(struct mm_slot *slot)
+ 		 * mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+ 		 */
  
-@@ -3013,7 +3022,7 @@ void khugepaged_add_collapse_hint(struct mm_struct *mm,
++		khugepaged_unhash_all_hints(khp_mm_slot);
+ 		/* khugepaged_mm_lock actually not necessary for the below */
+ 		khugepaged_release_all_hints(khp_mm_slot);
+ 		mm_slot_free(mm_slot_cache, khp_mm_slot);
+@@ -3001,8 +3055,9 @@ void khugepaged_add_collapse_hint(struct mm_struct *mm,
+ 				 int priority, int max_order)
+ {
+ 	struct khugepaged_mm_slot *khp_mm_slot;
+-	struct khugepaged_collapse_hint *hint;
++	struct khugepaged_collapse_hint *hint, *existing;
+ 	struct mm_slot *slot;
++	unsigned long aligned_addr, key;
+ 	int orders;
+ 
+ 	if (!mm || !vma)
+@@ -3022,12 +3077,15 @@ void khugepaged_add_collapse_hint(struct mm_struct *mm,
  	if (!mm_flags_test(MMF_VM_HUGEPAGE, mm))
  		return;
  
--	hint = kmalloc_obj(struct khugepaged_collapse_hint);
-+	hint = kmem_cache_alloc(collapse_hint_cache, GFP_KERNEL);
++	aligned_addr = address & HPAGE_PMD_MASK;
++	key = khugepaged_hint_key(mm, aligned_addr);
++
+ 	hint = kmem_cache_alloc(collapse_hint_cache, GFP_KERNEL);
  	if (!hint)
  		return;
  
-@@ -3025,14 +3034,14 @@ void khugepaged_add_collapse_hint(struct mm_struct *mm,
- 	 * just "best-effort" optimization.
- 	 */
- 	if (!spin_trylock(&khugepaged_mm_lock)) {
--		kfree(hint);
-+		kmem_cache_free(collapse_hint_cache, hint);
- 		return;
- 	}
+ 	hint->vma = vma;
+-	hint->address = address & HPAGE_PMD_MASK;
++	hint->address = aligned_addr;
  
- 	slot = mm_slot_lookup(mm_slots_hash, mm);
- 	if (!slot) {
- 		spin_unlock(&khugepaged_mm_lock);
--		kfree(hint);
-+		kmem_cache_free(collapse_hint_cache, hint);
+ 	/*
+ 	 * Just use try lock to avoid lock contention because collapse hints are
+@@ -3045,7 +3103,21 @@ void khugepaged_add_collapse_hint(struct mm_struct *mm,
  		return;
  	}
  	khp_mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
-@@ -3125,7 +3134,7 @@ static int collapse_scan_one_priority_entry(unsigned int progress_max,
- 		addr = hint->address;
- 
- 		if (unlikely(collapse_test_exit_or_disable(mm))) {
--			kfree(hint);
++
++	/*
++	 * For deduplication. The comparison only checks @address here. See comments
++	 * above khugepaged_hint_lookup definition for details.
++	 */
++	hash_for_each_possible(khugepaged_hint_lookup, existing, hash_node, key) {
++		if (existing->address == aligned_addr) {
++			spin_unlock(&khugepaged_mm_lock);
 +			kmem_cache_free(collapse_hint_cache, hint);
- 			break;
++			return;
++		}
++	}
++
+ 	list_add_tail(&hint->node, &khp_mm_slot->request[priority].hints);
++	hash_add(khugepaged_hint_lookup, &hint->hash_node, key);
+ 	spin_unlock(&khugepaged_mm_lock);
+ 
+ 	wake_up_interruptible(&khugepaged_wait);
+@@ -3124,6 +3196,7 @@ static int collapse_scan_one_priority_entry(unsigned int progress_max,
+ 						struct khugepaged_collapse_hint,
+ 						node);
+ 			list_del(&hint->node);
++			hash_del(&hint->hash_node);
  		}
+ 		spin_unlock(&khugepaged_mm_lock);
  
-@@ -3149,7 +3158,7 @@ static int collapse_scan_one_priority_entry(unsigned int progress_max,
- 		if (*result != SCAN_SUCCEED)
- 			(*fail_count)++;
- skip_hint:
--		kfree(hint);
-+		kmem_cache_free(collapse_hint_cache, hint);
- 	}
- 
- 	if (!lock_dropped)
 
 -- 
 2.52.0
