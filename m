@@ -4,83 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95AF4CD6E56
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:01:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3879CD6E56
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:12:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAB0D6B016D; Sun, 31 May 2026 15:01:18 -0400 (EDT)
+	id EDEA26B0170; Sun, 31 May 2026 15:12:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C350D6B016F; Sun, 31 May 2026 15:01:18 -0400 (EDT)
+	id EB5B06B0171; Sun, 31 May 2026 15:12:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFD286B0170; Sun, 31 May 2026 15:01:18 -0400 (EDT)
+	id DCC246B0172; Sun, 31 May 2026 15:12:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A4106B016D
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:01:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E17D1A03C0
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:01:18 +0000 (UTC)
-X-FDA: 84828633036.12.6F3723F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CBF436B0170
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:12:02 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46648C211D
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:12:02 +0000 (UTC)
+X-FDA: 84828660084.05.2B4960D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 75E1C180006
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:01:16 +0000 (UTC)
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7DDAA180071
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:12:00 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IR3X1VQ3;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HxsXn3w4;
 	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780254076;
+	s=arc-20220608; t=1780254720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fcdMJCvYcrxynpav12XOXRlTlPDIl3/7C5MgYt6/rxM=;
-	b=EE/flfEh/qQ/XS+XMnm9RZl1ZY3wpqVQcoKoMrHVo3daYjYg7BfGaOmXXAqdvOnJkg9Wd6
-	p8U2A5rzzAi5+hhN4cu9mFWQ5Qjy48y1TgFU64OEyZEfCONsI48BJtqUxbS1Kg1lqThabU
-	a1rHhET4fwtWo5Yc9Q/tKJyTbwc27Pg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780254076; a=rsa-sha256;
-	cv=none;
-	b=Pfhjygu4MbbrGPGUPDm/bFbNp8wN29jjlLfab0SNtjNeK/fWq7eZlH84YkTLUAUX7z2Mql
-	7AQc4zTFAVxjSAL+sWSlJQ2tpPPJYo1X8MgCYrWxcKi5VH73FIhWoZbYTlGmDPE07ketYd
-	P18f5QoCtoIbb1T/1qokP3P1w/uTGdw=
+	bh=4j/mmrMqN9cVeiG6v3MT7PKSh12sT3iMOb3Zkg1yWvI=;
+	b=vXs0hmvRJr/jnpKxL0Bffeh594u6ZNj5Zox7ujMwVvgaT5HeFeB6kAEbL8xsX3wLH2bxOd
+	ZqMfm/DARf/acE4DhIgUJVStHFbjX7L6+ooeewNoclE2xY//x1DiwYXzjpf1B7evWXHojZ
+	pl23BFL1KCiTvenQv8DXOb3AToNiPwM=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IR3X1VQ3;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HxsXn3w4;
 	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780254720; a=rsa-sha256;
+	cv=none;
+	b=C25v+UCCKztU2NBgkTnYUuwM0J03mf/4vYeTKyIz9PaqKaQN9FDYIKZoAUG8CEO71nc4FA
+	w/t1COZY6qLnXgeP5u5OhxJwNLr5mfLZfNMHvQzzwWB1OnNj2OBnbq05FEfEdIzJtZmo0/
+	9es5fOFa7rq6ZkfovdPF8OiW1sIdjSA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD7CD6008A;
-	Sun, 31 May 2026 19:01:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568961F00893;
-	Sun, 31 May 2026 19:01:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CEB9A60204;
+	Sun, 31 May 2026 19:11:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FE61F00893;
+	Sun, 31 May 2026 19:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780254075;
-	bh=fcdMJCvYcrxynpav12XOXRlTlPDIl3/7C5MgYt6/rxM=;
+	s=k20260515; t=1780254719;
+	bh=4j/mmrMqN9cVeiG6v3MT7PKSh12sT3iMOb3Zkg1yWvI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IR3X1VQ3sfK8nwizv/o40dv7x4UY52RwB32eTAzN6vkUjJen1CO+9kUOt76HB0+xD
-	 iykOW4+TrFC5n9TXfXZXtvSDoJ4ycLBnff42d5ofdKUqncVr1sayrtVj0RNfWKbJU2
-	 Tcbhu2r/7h/Y6zlcnS56zEIybxwmlYZXlD2hhVKlYta+WHVbTe0y4D/eZeHvVWKp00
-	 NFuTbY3VnbUD74bfNyrUJtoXbuONXsBl+I1+jvo3g0GUZcmsHQYkUePajF8NZrvxr3
-	 2nW6ksVuhtD3SjQi/lFyT0qTOGpPU82KdOPIe3G2NUq68rkk9r8Elc8gOHPPplMtq/
-	 vXK2p3JnBERXQ==
-Message-ID: <6dfa5f7c-ffbd-4605-96f2-09e365ce57dd@kernel.org>
-Date: Sun, 31 May 2026 21:01:10 +0200
+	b=HxsXn3w48nhvETfvikl1vwgfbymIGXFrRHsZTddKAZCyDvq2pmZaamPZaoMCUGJXw
+	 KkL4tM95gB98srql2xgLuVe3Yy9VrSK2K60kSZ0Ey65Qf1/7KWdOGoM+/DGWNulerX
+	 psDfrdfKwSMDYer0qdZid69g/TjAhZ3zI/gk5jR5bIJDVfOeGY5AgFOtECP3GF+lZc
+	 eqGIL98TbRgqw7Cgc9+3i7LbsyS70CXgaiC9DhF8lbn0/tI3andx0y3zK0jtR34ghq
+	 uBxKx3uNpB5BDPsXuAWlMv/TVpsoZbGkZzpfjl2JGeElVdBKisI9DGnfGxDtRXN7fU
+	 o3IsqqY0WTr5g==
+Message-ID: <a62302f8-24ea-4d21-963d-48bec766766b@kernel.org>
+Date: Sun, 31 May 2026 21:11:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-To: Pedro Falcato <pfalcato@suse.de>, Askar Safin <safinaskar@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-api@vger.kernel.org,
- netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, Miklos Szeredi
- <miklos@szeredi.hu>, patches@lists.linux.dev
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <ahv16ogY8Zx3Rtox@pedro-suse.lan>
+Subject: Re: [PATCH] fs/proc/task_mmu: do not warn on seeing non-migration pmd
+ entry
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org,
+ liam@infradead.org, ljs@kernel.org, jgg@ziepe.ca, leon@kernel.org,
+ shuah@kernel.org
+Cc: vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, balbirs@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20260529111704.1078346-1-dev.jain@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ahv16ogY8Zx3Rtox@pedro-suse.lan>
+In-Reply-To: <20260529111704.1078346-1-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: ot4wpyutejd1o7ptfk6ay1iqnzye5dci
-X-Rspamd-Queue-Id: 75E1C180006
 X-Rspam-User: 
-X-HE-Tag: 1780254076-739024
-X-HE-Meta: U2FsdGVkX1/NJrQ0HZovlw0FKSffVOBgKR7w8iEq59k2sMdqrdFxVe7E3bxofLyPxDg8BJN8sH0EYyjbNJxaykOw5aGKqZwcqYqMapX561hoHrAVhaSkH+KOW1P08iGpW2ghTkChpS9TCDRQ7kclvcpMSdwOhwvQBWrWZmdFw9Q3qlah7MQVan9j3QwzshFNklBfQldZePh3Kd7oX2lHKptfi4l6mhf/VtwDi4Ihmxy6YNnYZbdbvVAFled++TjH03lsWwLY/ZN8OINJZB0ynytGlLAU9NbULEN87ZFku0JLb5gchJqLzPD7KjzbQc3au4j8xn5XftBvvSyWuDpQbCRxZsadf0vh8hfo5DvzZ4Z3JLRCyRv8euPQ9ZdV7ikbvSSeacdoMzu1yeZLFOqS/jbPYBD5Uqh1h0skzRZ4UX1r4SPYj5X0kEuI7XGOYDq9BrSI3scn42IecP/U2QiR223iI/B1iEQtXYk9tMUgfqShuUe0RIpWSmYWWkPw8Pzm0cp+iu8FhJi3ye5JEBlXGeobhWA6FKvb7eCxM86Qoi+am89rvDZl116c93j5be85pHzoIW8NAnLDmuFquZt3MndfAZvUHYryal4QD7byXUsmdffIPebIrImrWYJE5yruAo5B0Gqf4WPhGduo63g1X/AfPF88Z2HdEkq6jLAJFf/XVziajzz0+i6ZEBlvp8v5zByzeMJ2t6zs/y9z1xSpPNLPYsHf/GrsjCPUzgEvNrfi03KQfR0d5+41MlDMt8TJ49PdI6pSgM2No/SnfJHFq9XN8LoeWCePIAHIxc3sJgj25IGPEfYPMxQ5SxTzZOIVZ88EtJ+7hJ+ctxnqmOgXWn9sCUtTYBwxnA5tLyvPxZs9vlwCPMKBu4NtvNORQ2lTB0o9lgyzHUn3x7592eWJyoGGw+O1aW2QO7cUA0QJTv1Th6F1dBnPGZCoQptpG1rd8f3xwmIT3HF5kppeYsJ
- n4dmiVFX
- UmV05Dr8rTxLh0EkpUvuEgWsDFkzlB5fdI+qRNTQ4AHMW45sv7ixg23EG6ppQI0/0DlI/TEiKR8UPPek+zHnXI6X8k5PL/4vpiJ+ujLyhI6OTz8qS8lM9H7JJyUH2+gM4HT9Cl90tLFust4q0gnxj430d7R7pULQzo6g9Tgp1dDbhTXy4yH8n+gbFVwBcpnMHdAf6NlCLtnXgHqahGtMYZiaYjLcPQ7xPZkNtjhzRf+TWOevATHIxZO+s6iKvU/SByOU8RorvaGRatUxjI6CGNLgaEkj9KZQzpF8+0bwb221AmRr7LYvNKKbv6NLrMo0efH3qKyrnFbVk18CP5bMccVnnUZRfG2f9K3f/2Lhs3/aeWLsCEcrm7QV8+kenWWNEhOfvPWTiQcb23Gw/TmqpzsH0rfzu+oQva041XYUlP5CwaT8=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7DDAA180071
+X-Stat-Signature: oob8dcm3iixuf9r1yrbtqdimjmyhcrq5
+X-HE-Tag: 1780254720-808425
+X-HE-Meta: U2FsdGVkX19U143pqNxyDANcBlRKwTPP48C/Wh1KWSms163pI9m2brDvSzvuD/Cb9CtgNFLrafEDyA7YXj5eLdBrHTb+mBHHvgmyS/N5E1VCvMJinMF7d6yoimnVkMQ0iOKqvnh8ZH66VYYeAAwNUaIKbj+4bFUYvX8YuKgERnVr4682R3JfMje+q56IriSbUu7JK86VNTUixer8NPa9/8geV4rFspWAGSWrem8CAz5x01jWCR13RQb7hC+YDNawutObV2nEm2m0P/wuv9cqIcgHrZ90gmDOw53iz/Zdzp3zee2jdiKKL1jHcCSQzAut+WW5eI21IMW1r7uU87zVcpJ3+xfVnCSXAyEj1EVg3gWrleXGqGZd+vQ6RMyy43+vb4cAccVf3wwnL/n7G0zCGkAxdFA6TwNIah46NdgECw1ian9jgTNS8enhJb+qA5Xf76DsrKOxtt41NTv/Md9m2il7vENpwewWDWCltVxihhxWxyal143O5ZoJu2GhQrzqwa9ZRnBsxbof66knZyTuXfW5Ql04r1FP7AdDj5i4Y5cVmd5wtDZ/mAsBLB8+w9pGzFCTh2VQDvRqg3wyLQkks9piNIQuHU0DHmVeR/KiNAbm/r4/15RCsbvc1tMOu0aA81abzx8p8EYrtN7DJPHJ8UhMelsjiSDQ08ZKYgxUpMFhxjU3KoZuJGJlO3ae3IghVETSaJS4T9U8beZThnDZl1FVhV3Ht7jMmG3eJTo+3glLsDAe/U047GE9QulyiJJsFjTCU3jYITACPeHq5X/sFDfyxUb5wDIcIXOPeIwG3wY6Wo1n0e81OhWFffHuy9Vinm8VGiRcqWcXKaE7vNy4+VNeLERqZqrtk6ZcP0DMCYiSzNAWTMRSGf3hgNTNWweHesJoofDUxf+Tmm6Ssm8fI54bTdWfmTGgLDna2R8ObvHXxFymFRW8FjjZwt4iy+cnD00vyroS2m/iwTZzDJG
+ T0Wow/sr
+ Ee4Tnr9Wg61GUSfUgxvpxMcqLIg4KnfBg54SG26tKNScXD93RBHijjeIkmPNj46zD/jOqyW/1B1mQd/6c4udndJnpq80RMcGGS5ScGNpvFjBWBfWSfDn4jeZ39ejWzQooUd2MBlQKYES6K4O+28u5ah6eW2CV3KFuhxTT6UVFSvIDwYqQUblXiqxA7YTCJutPU5/eG3y2TmEevEQyVuISDqzdTkIu8oZM0IZuurvz95yf2315daJk4P/xky41C9YsDYzT84JT2pLY7i22M2emLOQRZRSyc0JtbeJ3Sd1zWaPtj+FEqLuEiwIKuReBe85VnXc+BCNjYohB4IcIOafpD3FRc65U5sw1DO2e+bqpBKXCcUT85oazMhReIU8S8XEiD5vVH6Cjq+en3Tcl2xdZ4KD/0tcmbK7f762ncb1XpezTYU2mZfBrTiJjOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,42 +143,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/31/26 10:54, Pedro Falcato wrote:
-> On Sun, May 31, 2026 at 01:01:04AM +0000, Askar Safin wrote:
->> This patchset is for VFS.
->>
->> Recently we got a lot of vulnerabilities in splice/vmsplice.
->>
->> Also vmsplice already was source of vulnerabilities in the past:
->> CVE-2020-29374 (see https://lwn.net/Articles/849638/ ).
->>
->> Also vmsplice is problematic for other reasons. Here is what other
->> developers say:
->>
->> Linus Torvalds in 2023:
->>> So I'd personally be perfectly ok with just making vmsplice() be
->>> exactly the same as write, and turn all of vmsplice() into just "it's
->>> a read() if the pipe is open for read, and a write if it's open for
->>> writing".
->> https://lore.kernel.org/all/CAHk-=wgG_2cmHgZwKjydi7=iimyHyN8aessnbM9XQ9ufbaUz9g@mail.gmail.com/
->>
->> Christoph Hellwig in May 2026:
->>> vmsplice is the worst, as it is one of the few remaining places that
->>> can incorrectly dirty file backed pages without telling the file system
->>> and cause the other problems fixed by a FOLL_PIN conversion, but it is
->>> the only one where we do not have any idea yet how we could convert it
->>> to FOLL_PIN due to the unbounded pin time.
->> https://lore.kernel.org/all/agwFlBKvKytjURDO@infradead.org/
->>
->> See recent discussion here:
->> https://lore.kernel.org/all/20260516182126.530498-1-pfalcato@suse.de/T/#u
+On 5/29/26 13:17, Dev Jain wrote:
+> pagemap_pmd_range_thp() warns if a non-present PMD is not a migration
+> entry. This became false once device-private entries at the PMD level were
+> added.
 > 
-> So, you took an ongoing discussion with an ongoing RFC patchset, and you
-> decided to reimplement part of the idea on your own, as a concurrent patchset.
+> One can hit the warning by patching hmm-tests.c with the following:
 > 
-> Riiiiiight.... I don't think I have to NAK this, do I?
+> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+> index e1c8a679a4cf3..7f0a3384f3c5f 100644
+> --- a/tools/testing/selftests/mm/hmm-tests.c
+> +++ b/tools/testing/selftests/mm/hmm-tests.c
+> @@ -209,6 +209,37 @@ static int hmm_dmirror_cmd(int fd,
+>  	return 0;
+>  }
+> 
+> +static int hmm_read_self_pagemap(void *addr, unsigned long npages,
+> +				 unsigned long page_size)
+> +{
+> +	const size_t entry_size = sizeof(uint64_t);
+> +	const off_t offset = ((uintptr_t)addr / page_size) * entry_size;
+> +	uint64_t *entries;
+> +	ssize_t nread;
+> +	int fd;
+> +
+> +	entries = malloc(npages * entry_size);
+> +	if (!entries)
+> +		return -ENOMEM;
+> +
+> +	fd = open("/proc/self/pagemap", O_RDONLY);
+> +	if (fd < 0) {
+> +		free(entries);
+> +		return -errno;
+> +	}
+> +
+> +	nread = pread(fd, entries, npages * entry_size, offset);
+> +	close(fd);
+> +	free(entries);
+> +
+> +	if (nread < 0)
+> +		return -errno;
+> +	if ((size_t)nread != npages * entry_size)
+> +		return -EIO;
+> +
+> +	return 0;
+> +}
+> +
+>  static void hmm_buffer_free(struct hmm_buffer *buffer)
+>  {
+>  	if (buffer == NULL)
+> @@ -2314,6 +2345,10 @@ TEST_F(hmm, migrate_anon_huge_fault)
+>  	ASSERT_EQ(ret, 0);
+>  	ASSERT_EQ(buffer->cpages, npages);
+> 
+> +	/* Exercise pagemap on a PMD device-private entry. */
+> +	ret = hmm_read_self_pagemap(buffer->ptr, npages, self->page_size);
+> +	ASSERT_EQ(ret, 0);
+> +
+>  	/* Check what the device read. */
+>  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
+>  		ASSERT_EQ(ptr[i], i);
+> 
+> 
 
-Jup. I'll just ignore this patch set here.
+
+> Therefore, remove the stale migration-only assertion.
+> 
+> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+> Applies on mm-unstable (404fb4f38e8f).
+> 
+>  fs/proc/task_mmu.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 1e3a15bf46f4e..58938e62154d9 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -2129,7 +2129,6 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
+>  			flags |= PM_SOFT_DIRTY;
+>  		if (pmd_swp_uffd_wp(pmd))
+>  			flags |= PM_UFFD_WP;
+> -		VM_WARN_ON_ONCE(!pmd_is_migration_entry(pmd));
+>  		page = softleaf_to_page(entry);
+>  	}
+>  
+
+The whole thp_migration_supported() guard is a bit shaky, right?
+
+I guess device-private entries currently imply thp_migration_supported(), but
+that thp_migration_supported() check is really questionable and should likely
+just go away (else if -> else).
+
+Staring at pte_to_pagemap_entry(), likely we'd also want
+
+if (softleaf_has_pfn(entry))
+	page = softleaf_to_page(entry);
+
+to prepare for PMD swap entries.
+
+
+Anyhow, both are unrelated (can you send patches to clean it up?)
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
