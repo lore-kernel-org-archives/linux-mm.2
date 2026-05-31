@@ -4,93 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77926CD6E52
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 18:59:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95AF4CD6E56
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:01:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD30A6B016C; Sun, 31 May 2026 14:59:01 -0400 (EDT)
+	id CAB0D6B016D; Sun, 31 May 2026 15:01:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A83CE6B016D; Sun, 31 May 2026 14:59:01 -0400 (EDT)
+	id C350D6B016F; Sun, 31 May 2026 15:01:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 972A36B016E; Sun, 31 May 2026 14:59:01 -0400 (EDT)
+	id AFD286B0170; Sun, 31 May 2026 15:01:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 88CD06B016C
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 14:59:01 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 317311C05F0
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 18:59:01 +0000 (UTC)
-X-FDA: 84828627282.01.0D7C375
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5694A80005
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 18:58:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YNh/LumM";
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A4106B016D
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:01:18 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E17D1A03C0
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:01:18 +0000 (UTC)
+X-FDA: 84828633036.12.6F3723F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 75E1C180006
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:01:16 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IR3X1VQ3;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780253939;
+	s=arc-20220608; t=1780254076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GjVt0UsISSTwZDvffigjt8YBiFpMw+nOdlcd3vzCHGc=;
-	b=lxG3Gt+98t7AZTeGoBIIS69z8DHl0O0LsAO0BXGRjj3WcFpw6z5krwhynMzk17A5A6mmhN
-	iyiOX+vn4I1PsWfzynEGPyq1I2huv5wi35YkqNjZHcIG/X/Udhp8Ad19XBXJp2MGtMGYvk
-	Tp4WziQhnmq4a4sCBYx7YVSAAzc6kcE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YNh/LumM";
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780253939; a=rsa-sha256;
+	bh=fcdMJCvYcrxynpav12XOXRlTlPDIl3/7C5MgYt6/rxM=;
+	b=EE/flfEh/qQ/XS+XMnm9RZl1ZY3wpqVQcoKoMrHVo3daYjYg7BfGaOmXXAqdvOnJkg9Wd6
+	p8U2A5rzzAi5+hhN4cu9mFWQ5Qjy48y1TgFU64OEyZEfCONsI48BJtqUxbS1Kg1lqThabU
+	a1rHhET4fwtWo5Yc9Q/tKJyTbwc27Pg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780254076; a=rsa-sha256;
 	cv=none;
-	b=Vu2xDp7fPl34118lqlpxbs7SbGuD8Qv0FaGg5poxscmL3T1elufTJUYcdw1RMjqmKR8D85
-	RaEL/OAVIhrfT/nsF7KPx++BVZb+gHM4m0TNj/PvYe+7LQq2qk8P5z8ablOkUD+odst6vJ
-	TZxgjFihEg6ekkMaC84tk0xSzlbUY80=
+	b=Pfhjygu4MbbrGPGUPDm/bFbNp8wN29jjlLfab0SNtjNeK/fWq7eZlH84YkTLUAUX7z2Mql
+	7AQc4zTFAVxjSAL+sWSlJQ2tpPPJYo1X8MgCYrWxcKi5VH73FIhWoZbYTlGmDPE07ketYd
+	P18f5QoCtoIbb1T/1qokP3P1w/uTGdw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IR3X1VQ3;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 62899441CB;
-	Sun, 31 May 2026 18:58:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D161F00893;
-	Sun, 31 May 2026 18:58:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CD7CD6008A;
+	Sun, 31 May 2026 19:01:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568961F00893;
+	Sun, 31 May 2026 19:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780253938;
-	bh=GjVt0UsISSTwZDvffigjt8YBiFpMw+nOdlcd3vzCHGc=;
+	s=k20260515; t=1780254075;
+	bh=fcdMJCvYcrxynpav12XOXRlTlPDIl3/7C5MgYt6/rxM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YNh/LumMIZ723DQ/0VP1GsxHxDjZrdxhVNhzemW/jiRb5w5/80kYkSqAPFZGJBQEw
-	 +U2f7XtX8p48n1O6HbjMPXAfpgWnxCaoO2NbStZkaiRGY+/urn0fAUopy2gsspP47m
-	 HXcV9+JVpjHDRaGp4ZYSIZTH/8Kw0TUWjTtfNGkM0v6rUMA2eetPYF33K4zwyNwjJ3
-	 9pVf6drwd/aAxwQDBUqiMjmffm/SvVRkspQEAYPgs59JoR4gQHwPECpfA/PNSm6tHR
-	 emsS5rbPW8TwzN+gl4QTRujSNvPF7Cc3z8OFL3e2itKVZHK58fQbVAGDl9vnE0Zllw
-	 xKt9ksAra4hZQ==
-Message-ID: <1ed6751d-e286-4c6f-864a-800f8baf54c3@kernel.org>
-Date: Sun, 31 May 2026 20:58:51 +0200
+	b=IR3X1VQ3sfK8nwizv/o40dv7x4UY52RwB32eTAzN6vkUjJen1CO+9kUOt76HB0+xD
+	 iykOW4+TrFC5n9TXfXZXtvSDoJ4ycLBnff42d5ofdKUqncVr1sayrtVj0RNfWKbJU2
+	 Tcbhu2r/7h/Y6zlcnS56zEIybxwmlYZXlD2hhVKlYta+WHVbTe0y4D/eZeHvVWKp00
+	 NFuTbY3VnbUD74bfNyrUJtoXbuONXsBl+I1+jvo3g0GUZcmsHQYkUePajF8NZrvxr3
+	 2nW6ksVuhtD3SjQi/lFyT0qTOGpPU82KdOPIe3G2NUq68rkk9r8Elc8gOHPPplMtq/
+	 vXK2p3JnBERXQ==
+Message-ID: <6dfa5f7c-ffbd-4605-96f2-09e365ce57dd@kernel.org>
+Date: Sun, 31 May 2026 21:01:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] bpf: Recover arena kernel faults with scratch page
-To: Tejun Heo <tj@kernel.org>, Alexei Starovoitov <ast@kernel.org>
-Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>,
- Changwoo Min <changwoo@igalia.com>, Andrii Nakryiko <andrii@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
- bpf@vger.kernel.org, x86@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260522172219.1423324-1-tj@kernel.org>
- <20260522172219.1423324-3-tj@kernel.org>
- <7fd673df-22f3-4d70-a779-ea0b878188b3@kernel.org>
- <DIUMP21RASZI.2VNQV45RIL209@gmail.com>
- <3901fe0537edee9d7acdfd91695ead28@kernel.org>
- <CAADnVQJ+CqAszS2sSVu7gSfA_g4oaTR+SWmLNMX3_8c=OdR7NQ@mail.gmail.com>
- <ahnedQ33ZH8ogjbC@slm.duckdns.org>
- <8cc56c7a4aa29628b7d17d85be7eadb9@kernel.org>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+To: Pedro Falcato <pfalcato@suse.de>, Askar Safin <safinaskar@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-api@vger.kernel.org,
+ netdev@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+ Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Miklos Szeredi
+ <miklos@szeredi.hu>, patches@lists.linux.dev
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <ahv16ogY8Zx3Rtox@pedro-suse.lan>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <8cc56c7a4aa29628b7d17d85be7eadb9@kernel.org>
+In-Reply-To: <ahv16ogY8Zx3Rtox@pedro-suse.lan>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: z4kqdpjgchoityn6w4wr85zswtoqfmq4
-X-Rspamd-Queue-Id: 5694A80005
+X-Rspamd-Server: rspam11
+X-Stat-Signature: ot4wpyutejd1o7ptfk6ay1iqnzye5dci
+X-Rspamd-Queue-Id: 75E1C180006
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780253939-303528
-X-HE-Meta: U2FsdGVkX18z27bmmd7X7gAp4m4yuOy+umjyOpqObsF8C+UujUbYr447vJpcBtcfLVKC+gNPJcBsRjgiWRSZG33zGlXvHdeml5K8HRjoSjbHYkVcTZ5IwSRAJ4URQa+7wzIpCVMDKTgYKxfaYgOyNrEwPzb5rkpHoI+jS6oGM+lkEceSZshAK1gm9jcKQFvS4s5YwWCPLGqSckAGCiIJlWH1O26qNKNmIRuZY+7oZK2OZOj0jV2nwIxBIbnjPbwxKrEjKkNN1KxqOv67AfQu81ZOsnExH7oBJLRbF15yMp1tYu/vao4pMcH+TxXOnl1QXOfktLkmVp2yCp16SQLFPxwEMtV1bG/Ex4DJBqjN/rmPyjwzxva01+qvOnAC2D3r7Fq3SYaSTyZBDg9JgjwirDpQUmI4FYTebWHh6zDnXROknhkbwurLQi++fwTxmj/HM0BHd754yrdq6TQSPGG5+Sn+T6iP4kdaKEbCDDERzSsnQy7u9WarMpWZIQUOGKx00gXGfPlUbGxDPGnrCpyL4nq+aRRl5zGs9f/oEzQBYYNrYCaBrxyWm4sEzydC+utWnAchq2xwpbkYQr4R4hZkAxIa52LoXZnaaE9PnlFdCTzejven8nClZi6ERyIwAxP/1sRV5FrhQKemxr/T736KnlRxZ4NJXlyEsJMSlPVOjoEHhyyG3dUT8kFxW0XfSVwvHqyuoe2mc8RM48F0y7HiB72EwY9GohPR6QBY0jMompoJS298H9J0mIoWJPJmmB8Jk/cr04oq5ZpX0MGTqeQULr+n/+jonwn3pD7/G1AScjIc8TF8s4M8Xkzd+D6m3/zLz/FRG6tAjaV4esJfyyzuOTK+ZExpIIYQTXDVB+T6TaUu1LD/fJnaFuRt2jxF0ciHsbq92rx0xpzWXAHGInTvWlok7ZYdLEQwtHFr1r04NrgZ3X17FmnobyRDAsR/3BKLzWscj8Awpm1IOaO0GaZ
- ryjV3g8G
- J912Opl0PdYYMkzjQJggY6Zeg3Sf4tOPkMwXukfQwEu3LzqkzbL5WlK1pRJPzH+c/mcEX3radIx5FJabKVywq8nXsqCrz7edYD6ak0w5DdtMDdGleB095+EUaqkgPM826XpfPl1Mx/L0YUlXxh6iygxTckn4avXUEfJ7lsrIVCgRnNyeTAmhxMmYq5Q6xpiD/N357W2AGlsbcRBkcHhxZIMeaYNGO0fS5r9PCpS5311KbSCDf1ZOfEFWP/7nXPgN5mkfk
+X-HE-Tag: 1780254076-739024
+X-HE-Meta: U2FsdGVkX1/NJrQ0HZovlw0FKSffVOBgKR7w8iEq59k2sMdqrdFxVe7E3bxofLyPxDg8BJN8sH0EYyjbNJxaykOw5aGKqZwcqYqMapX561hoHrAVhaSkH+KOW1P08iGpW2ghTkChpS9TCDRQ7kclvcpMSdwOhwvQBWrWZmdFw9Q3qlah7MQVan9j3QwzshFNklBfQldZePh3Kd7oX2lHKptfi4l6mhf/VtwDi4Ihmxy6YNnYZbdbvVAFled++TjH03lsWwLY/ZN8OINJZB0ynytGlLAU9NbULEN87ZFku0JLb5gchJqLzPD7KjzbQc3au4j8xn5XftBvvSyWuDpQbCRxZsadf0vh8hfo5DvzZ4Z3JLRCyRv8euPQ9ZdV7ikbvSSeacdoMzu1yeZLFOqS/jbPYBD5Uqh1h0skzRZ4UX1r4SPYj5X0kEuI7XGOYDq9BrSI3scn42IecP/U2QiR223iI/B1iEQtXYk9tMUgfqShuUe0RIpWSmYWWkPw8Pzm0cp+iu8FhJi3ye5JEBlXGeobhWA6FKvb7eCxM86Qoi+am89rvDZl116c93j5be85pHzoIW8NAnLDmuFquZt3MndfAZvUHYryal4QD7byXUsmdffIPebIrImrWYJE5yruAo5B0Gqf4WPhGduo63g1X/AfPF88Z2HdEkq6jLAJFf/XVziajzz0+i6ZEBlvp8v5zByzeMJ2t6zs/y9z1xSpPNLPYsHf/GrsjCPUzgEvNrfi03KQfR0d5+41MlDMt8TJ49PdI6pSgM2No/SnfJHFq9XN8LoeWCePIAHIxc3sJgj25IGPEfYPMxQ5SxTzZOIVZ88EtJ+7hJ+ctxnqmOgXWn9sCUtTYBwxnA5tLyvPxZs9vlwCPMKBu4NtvNORQ2lTB0o9lgyzHUn3x7592eWJyoGGw+O1aW2QO7cUA0QJTv1Th6F1dBnPGZCoQptpG1rd8f3xwmIT3HF5kppeYsJ
+ n4dmiVFX
+ UmV05Dr8rTxLh0EkpUvuEgWsDFkzlB5fdI+qRNTQ4AHMW45sv7ixg23EG6ppQI0/0DlI/TEiKR8UPPek+zHnXI6X8k5PL/4vpiJ+ujLyhI6OTz8qS8lM9H7JJyUH2+gM4HT9Cl90tLFust4q0gnxj430d7R7pULQzo6g9Tgp1dDbhTXy4yH8n+gbFVwBcpnMHdAf6NlCLtnXgHqahGtMYZiaYjLcPQ7xPZkNtjhzRf+TWOevATHIxZO+s6iKvU/SByOU8RorvaGRatUxjI6CGNLgaEkj9KZQzpF8+0bwb221AmRr7LYvNKKbv6NLrMo0efH3qKyrnFbVk18CP5bMccVnnUZRfG2f9K3f/2Lhs3/aeWLsCEcrm7QV8+kenWWNEhOfvPWTiQcb23Gw/TmqpzsH0rfzu+oQva041XYUlP5CwaT8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,40 +145,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/31/26 19:47, Tejun Heo wrote:
-> Hello,
+On 5/31/26 10:54, Pedro Falcato wrote:
+> On Sun, May 31, 2026 at 01:01:04AM +0000, Askar Safin wrote:
+>> This patchset is for VFS.
+>>
+>> Recently we got a lot of vulnerabilities in splice/vmsplice.
+>>
+>> Also vmsplice already was source of vulnerabilities in the past:
+>> CVE-2020-29374 (see https://lwn.net/Articles/849638/ ).
+>>
+>> Also vmsplice is problematic for other reasons. Here is what other
+>> developers say:
+>>
+>> Linus Torvalds in 2023:
+>>> So I'd personally be perfectly ok with just making vmsplice() be
+>>> exactly the same as write, and turn all of vmsplice() into just "it's
+>>> a read() if the pipe is open for read, and a write if it's open for
+>>> writing".
+>> https://lore.kernel.org/all/CAHk-=wgG_2cmHgZwKjydi7=iimyHyN8aessnbM9XQ9ufbaUz9g@mail.gmail.com/
+>>
+>> Christoph Hellwig in May 2026:
+>>> vmsplice is the worst, as it is one of the few remaining places that
+>>> can incorrectly dirty file backed pages without telling the file system
+>>> and cause the other problems fixed by a FOLL_PIN conversion, but it is
+>>> the only one where we do not have any idea yet how we could convert it
+>>> to FOLL_PIN due to the unbounded pin time.
+>> https://lore.kernel.org/all/agwFlBKvKytjURDO@infradead.org/
+>>
+>> See recent discussion here:
+>> https://lore.kernel.org/all/20260516182126.530498-1-pfalcato@suse.de/T/#u
 > 
-> I posted the check removal [1], and Sashiko's review flagged a
-> break-before-make problem with it [2] that I think is real.
-
-Yeah, and as I raised previously, this is very questionable locking design :)
-
-Either everybody works with atomics or nobody.
-
+> So, you took an ongoing discussion with an ongoing RFC patchset, and you
+> decided to reimplement part of the idea on your own, as a concurrent patchset.
 > 
-> The scratch page is a present PAGE_KERNEL mapping, so having
-> apply_range_set_cb() overwrite it via set_pte_at() during
-> bpf_arena_alloc_pages() is a valid->valid PFN change. I'm not familiar with
-> arm at all. David, my understanding is that's a break-before-make violation
-> on arm64, and that on any arch the stale TLB entry keeps resolving to the
-> shared scratch page until it's flushed, so a later access can hit scratch
-> instead of the new page. Is that what you were worried about?
-> 
-> So instead of just dropping the check, the install should route through an
-> invalid entry rather than overwrite in place:
-> 
-> 	while (!ptep_try_set(pte, mk_pte(page, PAGE_KERNEL))) {
-> 		old = ptep_get(pte);
-> 		if (pte_none(old))
-> 			continue;
-> 		if (WARN_ON_ONCE(pte_page(old) != arena->scratch_page))
-> 			return -EBUSY;
-> 		ptep_get_and_clear(&init_mm, addr, pte);
-> 		broke_scratch = true;
-> 	}
+> Riiiiiight.... I don't think I have to NAK this, do I?
 
-We have to handle architectures where ptep_try_set() is not implemented (as I
-tried with my variant).
+Jup. I'll just ignore this patch set here.
 
 -- 
 Cheers,
