@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F043DCD6E4C
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 01:01:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 821F7CD6E4C
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 01:02:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C08B6B00D1; Sat, 30 May 2026 21:01:53 -0400 (EDT)
+	id DA8A26B00D2; Sat, 30 May 2026 21:02:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 197A56B00D2; Sat, 30 May 2026 21:01:53 -0400 (EDT)
+	id D7EFC6B00D4; Sat, 30 May 2026 21:02:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ADFC6B00D3; Sat, 30 May 2026 21:01:53 -0400 (EDT)
+	id C95946B00D5; Sat, 30 May 2026 21:02:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECD236B00D1
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 21:01:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE5D11403D6
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 01:01:52 +0000 (UTC)
-X-FDA: 84825912864.03.0201F39
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CFCF514000D
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 01:01:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KXJypvmU;
-	spf=pass (imf26.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id B78986B00D2
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 21:02:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 79E9B8DCB8
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 01:02:23 +0000 (UTC)
+X-FDA: 84825914166.09.5187CA0
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 956332000A
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 01:02:21 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AzIS6vI6;
+	spf=pass (imf03.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780189310;
+	s=arc-20220608; t=1780189341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=zPl6w3uFFVNTR71LIvI6Hm9g27LWiqb2gsEEN2QBH30=;
-	b=f62MY1uXYYSwW2D92KBVDJGrbUjOlDrBxSAUWeWWsWkR8K3YzjEnZq4azQLqyDKaOF10qt
-	D3bE9boe94TrbkwFg5yDJs1NAT+qHHkhBW4xT8ZvczLE3xsfzjLeLKgXI8FPABiAREY2k+
-	xaKmGbWv2v4HdWO6CneS+hlRRi0cElU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BcbBqWTkzkDxwNMdgJ7xVJp7N/TN/+GdHi920u4savY=;
+	b=mms0fpk1/HsJTu1djrQaxOhjeMPw0io1FhCrSmlW9/tHQ6vgwAgHLPFHe3u2W8jMmG70Iq
+	P9RGQwpORlMKyEtJ6+/p+PwJ0sUr6UcMoGIKeSFKGMnFCuvGPqjpmhuqkSGIeyWc3s8jfu
+	/y3/udPUVi//vSzX7q2q5J1J3mXuvbk=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KXJypvmU;
-	spf=pass (imf26.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AzIS6vI6;
+	spf=pass (imf03.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780189310; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780189341; a=rsa-sha256;
 	cv=none;
-	b=H9Qo7vS5IegZly/oS7ZmDBsjjuHbjV2yx2y+m7WSREPcmZUIW5c/ZHDoYA0JaAqm1mcAZ8
-	DNusx+FrpykbVM4DQpUmZNgDG1oamcq0qbsD1ngab4KaQJwVChh4tIwV0XmLZmjlg4mRq6
-	APysHUtAGy7FYvkWqDIeJa21fAsYSeU=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49041e84237so72990135e9.1
-        for <linux-mm@kvack.org>; Sat, 30 May 2026 18:01:50 -0700 (PDT)
+	b=A+2gZAbPuENu2WHJtJ2cASruVRFTuxpkewDnNgARnOYhn+vP3MLJGjMMGL0nCwj47zTu5d
+	IBh2zd5aFNZiSILHC+8cCAvGet11LqXnE65e+HYFqkrJZoULdEJNytbfGoVqzO+/bs9EPp
+	U0xUI8rGCm6CpiOjwJZ+dTTbSBpI1bE=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490a7876f8cso1431895e9.3
+        for <linux-mm@kvack.org>; Sat, 30 May 2026 18:02:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780189309; x=1780794109; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zPl6w3uFFVNTR71LIvI6Hm9g27LWiqb2gsEEN2QBH30=;
-        b=KXJypvmUWzuKCdwIqiJJ+GCc07+oWWjcnYW/Ut4c1R+skPSTxdHytaHi2iK25n1F4t
-         HqQ3/yZ76owgJd/vBJ4WtWRmyuuGVUsB5hqIHm6a0QzfJ8agc5VEXIc4nXk3xDsdob8Y
-         UOqsG13aAlgCZNV7rf4vNM8c52+Rw8/lXKVzd2MmPVy5U/cn1NpF15dSBgUjucx8v4uW
-         1TP/O+7i7D1DBplhu0wR0TV6KLqeu90iNQbtT2fWUpd5m8lSVcv7m86FS04/LU+KAW8Z
-         5zfvDpyKsqIX+0COX9RWsutofL03oSiKx6M5jsJAQ22v3fzFyTl2R7ARaqkrE42DACgJ
-         LzBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780189309; x=1780794109;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780189340; x=1780794140; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zPl6w3uFFVNTR71LIvI6Hm9g27LWiqb2gsEEN2QBH30=;
-        b=XHInuN/US3WpDtg12s2rrWuzXOoD7JgWl/Ey00/SH/cyMkyh7vBYbL3X5nWgmeqo0E
-         LthDZVFnVVdVceSfs/WsCGUUF/svZrQEowuSWtvgrWMXyn9Gw5YK8YMTsYfz4W7K6zls
-         8DMUVf4xMq+yjmX03q6zCyDEcdN8pRMz8dJw7MAS9CbQYh6w96S5zWigeLF/Ghs108hX
-         JYdOCNQSGVFkQ8/HSAoxyjtC5Adaeg5xkNaJQ8r45ExeRe7VTQWij8XxbGPYQNhPV4WQ
-         n11kMQbchXxJUwgov69n6VpqIPuz5RAgAB6PSDlaloX9vJ4zUjgzhIRPFcDLMDBJ1mjg
-         S6Lw==
-X-Forwarded-Encrypted: i=1; AFNElJ9e3OciGI0gFLXrtK84xxkUHfeVk7584CjJmbP9NmwhWFnK0v2JTpATOhhpRRxtRvCQUMx6+vMdmA==@kvack.org
-X-Gm-Message-State: AOJu0YzfwrqvzhLKaZpwZ+bWpCvl4F7NXt1q7LcKVtJsXz3koxkdxPf2
-	PvxelF03xO7LqSqPvv1/oj/pKy3sgeGd/jsQ+LHuknLLFoEMnkdqf+BK
-X-Gm-Gg: Acq92OEFS63Feh12UIUGb06G7SLR9nICdQYojo4FejDwHIDBzAaO8Heit3HhydYsZqW
-	Q7mXkAlcY+uQNS7hnL7+C6pjZQQLwros8bcTLHtu4fiN7Cum2cGzqslw+VJONXkPh8JFss8epi1
-	HBQFOBcl+h6Fc8aynK+Bj19yGNbhLkpYV8TUnYd/RmTj1ucbmssZhn9O2Tz8gdKN2st8IdGmrO6
-	doxeXkp20/dmwWbqPlhPHdaaMg780UCpnoTxogEZGyVmpI5muB3DHE/xvoLdTKEW/eTJUbiZlr0
-	JbDVUzz9/IEKjuK+zPmnMaKWFEp+zy9qolPdvDhIZfZ+rLRe27RKzOz5gQK/ebBoJlDPUsDIrK/
-	5kvi4ZQZ32vOxwmwV1gHKC2rPGIPcj7vf2sHwcVXM+VoKgKK+wKFsn8UdS7nwCIRyBgE9XueDG2
-	XTgxbJhvYxRbKEhy1rDmZe030qYWleviPoZaiH7NAI
-X-Received: by 2002:a05:600c:c168:b0:490:5000:917 with SMTP id 5b1f17b1804b1-490a2a02ad9mr75824695e9.1.1780189308943;
-        Sat, 30 May 2026 18:01:48 -0700 (PDT)
+        bh=BcbBqWTkzkDxwNMdgJ7xVJp7N/TN/+GdHi920u4savY=;
+        b=AzIS6vI6Z4mtCMzJuJf83S9BunbxX8sCZ0I1K5j5WBMNTpng9q1QL3gkAj52LgcD2k
+         DleR4QGpCUP+W/B7OuUont9rqCIkv5SktbBsG++CkFhwvPiJ2i303Y/AR5NTvWG+m9bB
+         NbLyda7piOXv01ew1Wm9zwJ2G1494ubac0f0JsboWtZVVCdgmJava6MtPkr0eo6A1jVV
+         dOvnHCM+qlEa6yuGA/+OfCx/9swxoKvV4rld8pH0V4IPRho7UWSjmuJ8a+GSfdZ2K7ij
+         unhDvzWvqaduGGHgsqRab632bFnLhrX6bPlHE3Uh3IIRcSnmt3hBvaslpEmrMlfxE3k5
+         iMzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780189340; x=1780794140;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BcbBqWTkzkDxwNMdgJ7xVJp7N/TN/+GdHi920u4savY=;
+        b=G3BrJ1TQnE2mnUdOAD2KGtjxVeLO+yFEgFY+AzF8qQ/x/s/064ywJxWW6FdPEjKiqZ
+         PyxffSE9daBuzuU2lgJ5R+UsXhiRuGCj72pJ9O8I7RsvV7NkWir2gSGSbF9OO0X62qSS
+         DgljkihsPVKNgQ/UH9j57AEaIgI1OUUJ113vynAIKVcpsvJCQtT2qhyMOCT9O1Djr9yK
+         n+gba+MjULhKO0b2mBpChR1wp/x2gZUMLRhvXqjyBGZ2+UJW4LJlUs/xJoP1pjpjawOs
+         PvgwQMSQE264z3QwcfX8xhH0QKBLFYBcYt/7RO2GXb8DtHqHcfoCrKn5W1G9K7U/HtkI
+         LkQw==
+X-Forwarded-Encrypted: i=1; AFNElJ8q4EIAPJShcJYi4wODXYgUh8gnD/WQivjxaf6Nqxox+apjeAZNTwsplhu1Y80lQlzjVHk31acvQg==@kvack.org
+X-Gm-Message-State: AOJu0YygNqbEo4HiLmJpsqnl5JZOPKE1XdGRjs9mhD1qpLxFdzAwhmnf
+	B+P9hCJPCMWiKnUHf+cNQ4d/SY0K30is6RDHbPOdm7aNS4gLPG0wYZt3
+X-Gm-Gg: Acq92OF2asVJ+Y3LvtBPlV6f4B4pQj8U0Z/6ss3QAxTgz25B1+dXW02vniseFc7F055
+	rfzzf+92gi8IFcRhnsECnsZrBOVFB5Lp97Iuq83FJDnr3fCBB0CHeA89fQQxtkxD/LDngTe/df0
+	aBXYMciTZPRf1JgfTuwWqjfAxjU7Ou5TO0QvZ6c3AA3bDFwZteajVpA+bHSMxCn9WLPUXWYGA1H
+	i7KibQtFfdFwhEiJ68pIsuyHtaQEKAxYPCQ0rmnC5wRM1gcY/Ai0p2twnuGW1QcJuG1NltD9Jta
+	fxHXHTr3z1hcxK6LResBvATb0dypX9KC822eLc9b1jbj+3aM5LRoeZksj01TFL4oQ9mlrl5rjo/
+	rp1KZAwmlaxw6uoWylLccpyMCRJBq+EuLx7apzEgmf6JE5tMvkKHKzvZ6SMR9oPuppTne42bUM9
+	ij84RV4xw1gz91O2o5n9PVi2DLy8xPSQ==
+X-Received: by 2002:a05:600d:8648:20b0:490:9d5c:a3e0 with SMTP id 5b1f17b1804b1-490a29215ebmr71216825e9.9.1780189339981;
+        Sat, 30 May 2026 18:02:19 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4909cab0e79sm261799535e9.13.2026.05.30.18.01.46
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4909c103908sm45297445e9.22.2026.05.30.18.02.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 May 2026 18:01:48 -0700 (PDT)
+        Sat, 30 May 2026 18:02:19 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
 To: linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
@@ -108,20 +109,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Pedro Falcato <pfalcato@suse.de>,
 	Miklos Szeredi <miklos@szeredi.hu>,
 	patches@lists.linux.dev
-Subject: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-Date: Sun, 31 May 2026 01:01:04 +0000
-Message-ID: <20260531010107.1953702-1-safinaskar@gmail.com>
+Subject: [PATCH 1/3] tee: fs/splice.c: remove unused parameter "flags" from "link_pipe"
+Date: Sun, 31 May 2026 01:01:05 +0000
+Message-ID: <20260531010107.1953702-2-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260531010107.1953702-1-safinaskar@gmail.com>
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CFCF514000D
-X-Stat-Signature: 8mfhihtr4ycku6fknwyjth66cp7j9jrw
-X-HE-Tag: 1780189310-85010
-X-HE-Meta: U2FsdGVkX1+MHB+mYiKVas3Uik4reAH1iK2Iu0tOluHz7QaJ8vHDQMMZKnL41uPdwNVYvwtcMFwNAEScKIZ65v/99L5zsrBWp43RbNYaD15TG++Tb8NQqAyHfN/BtfErakWSWek++JGl1LUCnwpi6zBMEgNeaaogYteIzm/JlLOIeqsq1p/4QP9G3v8HWSbidaXswdI0yw9nazySjKuNHmcAHWIW20fH69PeeyA6hJBLAuHHGGwsyPknltwuWz1v3CKjUHzvK8oL+xmt8hg5Ld2O+mK56+YBpFAaa9TKgC5srWRW+a+sHqhc/vpAojq7xuBSpBKk5bkhH5qgtdA8QoBOUvop/xqxY4EUsJOY7p7w3efdcF3mjAKU1H1Shfz3m2T/c/tU1sK46oAYp3hWNHjNjVsWj0PwPLXQOAujP/LS7prdHqJ2ee438Gdu7Pv8YIBYdAFCjYIOmz7tamun1uR+NgrEGoBGFHkT07gYCl6+1XBZNNlp42UC940sd5Pg5S5s9xbk+8hjWk/Jx40h5A95/7cjik3Ug0mpoq6j+UGlRC0qsuTglhda85VXySZ5hrJyEAki9d1B6kH8j//MvHvm9hfcJmwLt3LVUrdyot2kD3BLoGtvyc7yTwBMq7FDcAELRfwkLGCxSTSspOoyL2LHd/UjHy4RH5IgPR5zS++o9m9DvOnWgIEh3AOB0iW7KRar4pE8yp2wsljy5/rARUQVJdx2Ox1fLesoMLYaeoYLTBu702l4OgAyY2V8uDBbl0TSkyqV0jcL9tHfAF+crK/gj/gMunqsC5xwqQN94ynU5viPixZ5lJzFhrs+h3JbfxRbUpuLwqX999LHCSzQAry4enYDWifoHNYLKGtCirO32uEDoBO+HLEHyLRkQVsSWDS6RBUbuewQR39PWAAKAZv+LMO6+hi80bGJKhlX94q78mkXjA+V3/cZhoAuo9+nydvmjqX5Jtp4v00Ogws
- zvtVjDCM
- DgQ+b1iQvSbWen79G2uqsDJbGj5XzxBw+z39Kn9aiYi8p+raGKRzRaJwFiTkrb5NAdgJKw1QlmHZlb0wIX1okNUv1VYoP56QOEj057dW3Z5LMrM1RphhZL5Kn8aNhHpEpIDcX95/bwqNQWsmDAr3CAXz1R8BwaoySKHks700Nj6xzq/RH4WL9Q+xMvxCwGmP394Yo1SOCDjyZ5kA79aziTu/4e22rLQFBdQoSQq3UaOXqHJSAH/alJdPaY/e0RoqsoRwrc5wB72l6NLOfCG/NpBQqV/Q4SFsjnhjiZORFqmvpha/aRdTgUJ1oEMzMOmvpzwLO1NUS7EJkBUTP8Mnm21zcoEpcK9fe0un3gJb7GW6H7BeJossD1tu+wVWhzB3iCXl6LKULXN3fzdbYdfHVP2NgjB5MaOzpebhcI+V7o0E55Rmti/7qaP4woOaCe28FCcXsHyS/toj08IpKqEKeaiqnrcX4Xk5E4SeylHrUF5n7rZX0t5p2mt1nO0R6jCRvADLZobtmjcVHbQtMH1iQiUyoQg==
+X-Rspamd-Queue-Id: 956332000A
+X-Stat-Signature: g84kqqtm1coob5rc3tktbmo8kkjddi1k
+X-HE-Tag: 1780189341-19472
+X-HE-Meta: U2FsdGVkX1/vXN28x9UR8AuyYVmzXcg55YeN/tlGEhgF2QKTfX2nZi13KgGK1OX5u+shYKNBbsE0nZaOaIcRY6Apn4eCcZEeEICdtc9lnk4ZTC0tf/Ua9qkeuKgCpCfE+0wCVvco+27rvNDfp7N6mHjIJrqZcomYE5b/nQxFVEY6sklWtcHUOqIrsk1cGXz2VzDRzYGGtUX3ZI1zWXOTcHFAZAEHN+qcIC/pqc0HLE2r+6Yv5b8ntR587MRF+XOZfrNYIE4Taf+DiLsBQmMlpee9nC/St5234oy+R2t69QPoAB5KZxm89zDoISmoNUHFBmwp8yZFzSRON0HzOu4/MpVreQBJIzcpV++aKr1vTmHTqI1UwKAiGlS50z4fkjFfmyBvgc8GnOivpp3+1y/4RPpyh91JHQ1ZFZU3Ec5s92e0O1lUGtf4B6q+G2sNXAwzr1mmafyFeObwe966IXCk+KFl+2+uUADDNx/EFnAe647X8NdW48Sv5ndEY5D6nr64uSF4fPh2YxbNZfIf6YuiDgHekc6mtWHUMF5nEeY2qWEyeSIz6rXFVEkdgpOvYc4LQlkb8/W1x8lq/JVvzMWr6jWPsZGvgm/r5txUGRc6NLyMq/Xy+ybR/Ou/MZrMpq8b3l1JEIzFHIp82Q0AKlhx17LhiioJ9OLpXI01pIT9xr0HYHzAf7jaUUwQDFnFV8wvOBu/5zQ22sSvJGHNRZ3YoTuiDqh8Ri7S0yDQ6TkGRHc5AFDDag4Sp04b+1qPA9xbAFVaedjCrmaqhVVl8LTaqTuHBx3y3Xn321l/lD09T6F8r0cqWZJHPF9pU/z/4k0oRRhisoxcPzBYiilEGUZbWlKOzQuJ4w8LG5LB9PVQ8LO0TNL74Wqg3WQ6FLYTR8AvdCHjxKPIsyGScZVREMH8Og+O3p38mS5gwBBl54goY6eaSyBbhFPnaAnWFpvL100VaqYv4QV1fbLiUxZ8J+h
+ /Ot3SrH2
+ iPZak+OYubPaNoIncsqt83NfuxO0YE6H1ViS6FhHDvmmkfUFFjrTPBSvnbvr7G+NJflyfwGERMsdGrSMAOVM6LmHOLT+YAMCRIH1O/qZtdOGDF3W3oYSIHbUUN8OhtmWmWN3uaeWxeV5vQgjEmOJHod10bOIaToio7cFO5G7Y2E2+CSZ81psGp4yNWRg3IcMYr/qgywiuX3y2xsFLD3iVXYPx1XoxkjGHms7GPVRS9/cH8MWXgpKXub2YIhAjJGshgZBKQ0+N60E45Vf6zL1mHytJ6A7ACPLoQ2LthBgg1aNmnLncMvYoJJQRTKZeKA5gv8ipIoqsZs3KjaMi8q0Cm8Ufz1VqOBj+l7aiIfM+LQ5Xa25USw5GZZ+YuGSw7s/QHicS+jpDwbvmlJ0n/vuPTimz1IGTJh9EVb6bNwijSXinVlBASt5HubnnCbDmQiuw/lRFP2Itot1p4okPhYU/w6U36Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,68 +132,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patchset is for VFS.
+Remove unused parameter "flags" from "link_pipe".
 
-Recently we got a lot of vulnerabilities in splice/vmsplice.
+Signed-off-by: Askar Safin <safinaskar@gmail.com>
+---
+ fs/splice.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Also vmsplice already was source of vulnerabilities in the past:
-CVE-2020-29374 (see https://lwn.net/Articles/849638/ ).
-
-Also vmsplice is problematic for other reasons. Here is what other
-developers say:
-
-Linus Torvalds in 2023:
-> So I'd personally be perfectly ok with just making vmsplice() be
-> exactly the same as write, and turn all of vmsplice() into just "it's
-> a read() if the pipe is open for read, and a write if it's open for
-> writing".
-https://lore.kernel.org/all/CAHk-=wgG_2cmHgZwKjydi7=iimyHyN8aessnbM9XQ9ufbaUz9g@mail.gmail.com/
-
-Christoph Hellwig in May 2026:
-> vmsplice is the worst, as it is one of the few remaining places that
-> can incorrectly dirty file backed pages without telling the file system
-> and cause the other problems fixed by a FOLL_PIN conversion, but it is
-> the only one where we do not have any idea yet how we could convert it
-> to FOLL_PIN due to the unbounded pin time.
-https://lore.kernel.org/all/agwFlBKvKytjURDO@infradead.org/
-
-See recent discussion here:
-https://lore.kernel.org/all/20260516182126.530498-1-pfalcato@suse.de/T/#u
-
-For all these reasons I propose to make vmsplice a simple wrapper for
-preadv2/pwritev2.
-
-vmsplice(fd, vec, vlen, vmsplice_flags) will
-be equivalent to preadv2(fd, vec, vlen, -1, rw_flags) if you have
-readable pipe and to pwritev2(fd, vec, vlen, -1, rw_flags) if you have
-writable pipe.
-
-SPLICE_F_NONBLOCK is translated to RWF_NOWAIT, all other SPLICE_F_*
-flags are ignored.
-
-There is a small change to handling of NONBLOCK-related flags,
-see commit messages for details.
-
-I tested this patch in Qemu.
-
-This patchset was written by me, not by LLMs.
-
-Askar Safin (3):
-  tee: fs/splice.c: remove unused parameter "flags" from "link_pipe"
-  vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-  splice: remove PIPE_BUF_FLAG_GIFT
-
- fs/fuse/dev.c             |   1 -
- fs/read_write.c           |  23 +++++
- fs/splice.c               | 202 +-------------------------------------
- include/linux/pipe_fs_i.h |   1 -
- include/linux/skbuff.h    |   4 +-
- include/linux/splice.h    |   2 +-
- include/linux/syscalls.h  |   4 +-
- 7 files changed, 33 insertions(+), 204 deletions(-)
-
-
-base-commit: e7ae89a0c97ce2b68b0983cd01eda67cf373517d (7.1-rc5)
+diff --git a/fs/splice.c b/fs/splice.c
+index 9d8f63e2fd1a..59adbc2fa4d6 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -1849,7 +1849,7 @@ static int splice_pipe_to_pipe(struct pipe_inode_info *ipipe,
+  */
+ static ssize_t link_pipe(struct pipe_inode_info *ipipe,
+ 			 struct pipe_inode_info *opipe,
+-			 size_t len, unsigned int flags)
++			 size_t len)
+ {
+ 	struct pipe_buffer *ibuf, *obuf;
+ 	unsigned int i_head, o_head;
+@@ -1962,7 +1962,7 @@ ssize_t do_tee(struct file *in, struct file *out, size_t len,
+ 		if (!ret) {
+ 			ret = opipe_prep(opipe, flags);
+ 			if (!ret)
+-				ret = link_pipe(ipipe, opipe, len, flags);
++				ret = link_pipe(ipipe, opipe, len);
+ 		}
+ 	}
+ 
 -- 
 2.47.3
 
