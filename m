@@ -4,100 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103D6CD6E57
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 21:38:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31005CD6E57
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 22:07:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 072A56B018A; Sun, 31 May 2026 17:38:19 -0400 (EDT)
+	id 5A6626B018C; Sun, 31 May 2026 18:07:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3E696B018B; Sun, 31 May 2026 17:38:18 -0400 (EDT)
+	id 5574D6B018D; Sun, 31 May 2026 18:07:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2E346B018C; Sun, 31 May 2026 17:38:18 -0400 (EDT)
+	id 446226B018E; Sun, 31 May 2026 18:07:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CCD166B018A
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:38:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2E0CE1205D4
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:38:18 +0000 (UTC)
-X-FDA: 84829028676.17.D95B624
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 50BDD180002
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:38:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ujsb38R3;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DEB06B018C
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 18:07:03 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B054CC2116
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 22:07:02 +0000 (UTC)
+X-FDA: 84829101084.27.518F774
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C3EAC20004
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 22:07:00 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8eVXc85;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780263496;
+	s=arc-20220608; t=1780265220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3ChlNi3gY4pmClyTFzjJW4JTye0c8PTWwo1dt2DbBgA=;
-	b=sApw1eTVSvXQUZZv0NEYrRQMGnwjUqMZxzDuEZzBx6OhWcr2Q6f0Rv0tfOV+Ywp2/pLyab
-	MFNx9hAcWtiYk6w7dzbouc/mDR0Zf1ZitTY4YoXBhHERM+Oate4t89B9b60QtiKjtW/bd5
-	gICoWbzIc43h+SnjA+j1J5/FTQVSNJY=
+	bh=bWpbo+onXY2RgAbHff+MdZFIr7ggk0Ugp4qR+DwwCn4=;
+	b=BckXdhup+lm1W/O4DwOZjOgLeqlGpLv9U7j697LBcViz1TXzVEUnMC2ULm7OXuykyzSjtM
+	JbPtZbPRKYoTmDa+YYSnxcMbCos0OSMqV8gqvfa5oP6NxPVoArPOtNkpwW+pG7JG4S+qaY
+	Bxz/1OzfRbd5rDEvwUO7LSQvkvlL8sY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ujsb38R3;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8eVXc85;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780263496; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780265220; a=rsa-sha256;
 	cv=none;
-	b=LKBL7fGYVyd8BYm7S/WdQ1zl5baXjhbxPVO19IVh3FQQT5ZFXbtum02nfJGAXLzsU2tayA
-	DcgBUSgK5Dsuq8ZkDbXWuQpTe/xBHnM8XEOg2GcRSQeGe3kZXxjlM04l6Xmq00J9+u0rsi
-	cdWwm8K8NjK5QwS9QMF8gEmJR6d4tz4=
+	b=pssB55r+gGgmAXj6FSbwUpmtTOY9RN8tJK+SU+j0GD5xE5enCsho0spDTDm3O4eke+vmsS
+	DbJbgE/LMkyo2lpWPQJJu65R3Xv6si42etzyXJOKKd9QN1ea4yQyqq202YKQjfLOlm1Gqv
+	Ci7FzfA/T/FZ4fexjVaAFNqFE9nZxEc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A91BF601FE
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:38:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFC31F0089A
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:38:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BA22A443B9
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 22:06:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C901F0089A
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 22:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780263495;
-	bh=3ChlNi3gY4pmClyTFzjJW4JTye0c8PTWwo1dt2DbBgA=;
+	s=k20260515; t=1780265219;
+	bh=bWpbo+onXY2RgAbHff+MdZFIr7ggk0Ugp4qR+DwwCn4=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Ujsb38R3V4L+gQguxzwB8Xb+Q2WVperpa4SQqvZHHDKn6GCqR51/eYLNiz7UoTaUE
-	 cb7cK6dY8Opj2E5hWjo66rJS1KuH3scYI8FLzLA0bANRhyLLwai95gckI3xhizj6Oh
-	 4KV9+I7Y00c8yeGbcxFjbcy9Rs2K/csucO0eD7aVmQrf2skHut/6Fpwb7QJp0pg5V6
-	 a+WT5HinCfwb4RQvZUsxtjLEBNMnCveigF5G0aUtSbdNsB87fXEhSccqdC6xf88cIC
-	 C8gqSQZ8eH7ZIFTyClyDxJI/9K7KM2xzfKX6730jJXzzGLKziWv2QgFFq7SXSH3hjt
-	 edhpaguCEJTpg==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-91550eced6bso96719985a.1
-        for <linux-mm@kvack.org>; Sun, 31 May 2026 14:38:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+Fo9QX/Ih8ntKmN+Nk5IRE4jg6In1iEnWrxUdp1R76fWfEouGa5yXLw0H4IMv+klq01flx8T3BxA==@kvack.org
-X-Gm-Message-State: AOJu0YyAxDocKeT5Mo8XC3fN/ZCXiaB4uD1ak5z+o0nNOGS/86AsRR25
-	lxFfWcE3Wocy1RkJry9qDCBihUnLK8CUnOpKzyma8uTfQIQ2Cbo4RvRPBZYt5ibjrdxsLoZ/k4K
-	+ZG9t1iK22+LWiwdp185en5wpy64qIWk=
-X-Received: by 2002:a05:620a:448d:b0:914:dbb1:1487 with SMTP id
- af79cd13be357-9153da3f0f6mr1264775885a.53.1780263494750; Sun, 31 May 2026
- 14:38:14 -0700 (PDT)
+	b=i8eVXc85ceWfNmuk4SDTvQXBiNlT+tnPJDME3bVQkeMcKD4f6u9QbAVQqf81uI4wV
+	 itcDVRFMkTIxOzFvlwLvAqwU/0BIVlaVe3yxVCPY2o2XgIMx/mUacMpMeMhNHSB0jv
+	 qpB/Zy5ozD/ADizmHvaZYO3o3DG8SmEjFF30DxFJ6XaNDZj7Muj3Xei3waHSXgKKkP
+	 v2i8vev8Xd8tyBW47lw35kpbv4v4f+Juwx6X0X1ZRFoKjB0wQ0EJFK07UFb76reMAT
+	 +Eud+j+iuwh5g5DyQKpJB3j4y5OX1/UtrvFDy7HdcUsEfxj4i9zP94ZD9T8Q4iXJUj
+	 MhWXGUU3VIQoA==
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-91550eceb4cso76971585a.1
+        for <linux-mm@kvack.org>; Sun, 31 May 2026 15:06:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+BprQl5kBQMzT9vd+oE0A21gr9DPKlDC8jyUV+sueayJpvdZcp0VCLJ9lw4KaO0Rw5wUDY7jY5SQ==@kvack.org
+X-Gm-Message-State: AOJu0YzA4c/xmZMIw7a43x8Pv/8fGOaWhN8H1bRFiJp7lQkdq+V/O5g/
+	UpQGgXWJePBvo5PpsgSG9wEhjfIVxRooHNISNDe984pNFzQXU5y++tBG8kr4gDk4J+T2RuD+920
+	XvOPb/X7HVaGcia7BaQ0eN2u0TTKxiLE=
+X-Received: by 2002:a05:620a:6088:b0:914:babf:9f3e with SMTP id
+ af79cd13be357-9153d987c78mr1328136185a.25.1780265219063; Sun, 31 May 2026
+ 15:06:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260531-zram-fix-partial-io-config-check-on-akpm-v1-1-eb085d98faea@gmail.com>
-In-Reply-To: <20260531-zram-fix-partial-io-config-check-on-akpm-v1-1-eb085d98faea@gmail.com>
+References: <20260531-ch-swap-series-plus-folio-lru-cleanup-v2-0-1b9a4ac255b4@gmail.com>
+ <20260531-ch-swap-series-plus-folio-lru-cleanup-v2-1-1b9a4ac255b4@gmail.com>
+In-Reply-To: <20260531-ch-swap-series-plus-folio-lru-cleanup-v2-1-1b9a4ac255b4@gmail.com>
 From: Barry Song <baohua@kernel.org>
-Date: Mon, 1 Jun 2026 05:38:03 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wB5XyUrPpg1O-pkySxo91RsHxaaUkR+Kt+heP4_OeeqA@mail.gmail.com>
-X-Gm-Features: AVHnY4L6_UdjcCk4-_UTU0q2GUVmZ6B69Ux11hFD72dT9usvr_K3TiSBY_9PUJM
-Message-ID: <CAGsJ_4wB5XyUrPpg1O-pkySxo91RsHxaaUkR+Kt+heP4_OeeqA@mail.gmail.com>
-Subject: Re: [PATCH] zram: fix partial I/O config check
+Date: Mon, 1 Jun 2026 06:06:48 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y8UWWwCSZ86rQnW9wgPMRg2Eo2e+6jw3kWPVZf7zgx7w@mail.gmail.com>
+X-Gm-Features: AVHnY4IcwrH9q5MqvQZpnGTumTTfEh7-vuq772K7moKOUadkNNIf4GwtrTpBG-8
+Message-ID: <CAGsJ_4y8UWWwCSZ86rQnW9wgPMRg2Eo2e+6jw3kWPVZf7zgx7w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] mm/swap: colocate page-cluster sysctl with swap readahead
 To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Jens Axboe <axboe@kernel.dk>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <baoquan.he@linux.dev>, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org, 
-	Christoph Hellwig <hch@lst.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: f1ncmw5mbrs6cniff6zyykawdnabg4y3
+X-Rspamd-Queue-Id: C3EAC20004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 50BDD180002
-X-Stat-Signature: baiuw973m3d7w1t5gafdce8z641smcs9
-X-HE-Tag: 1780263496-464262
-X-HE-Meta: U2FsdGVkX18OzRryzAJ1wk+YRGrAFHjnYebh/KCR0MWBKzp2K+cR1EfGLRSRF463YAO/AgRvjtwe4vCcutgMsojfZE0aVwnQMF3vcsYIm0oPLJt7xUtq3OSXMdCHr4F94hRI9gDgSjyJ/YFUHgoc1Cj/LH8adAV1/DuQsFVwuWLTCeUtMP9qeHlC0WWG5pT3iAfFwF7a8NlrUSs0QOcgM8dEDzIj+LlzjzCa5bOz1fmeENMVCXmf0sVVl38HlOQ7xKw5R8Ex1cb5n1T3HLhsLy5ZipvBosZ7UmsLOPHyVzw/s8X+JhZ8uySaqxT0GSp+822Kt4lwOxtrvsxDgfXg0vy5nmXSXk4Op5c+BovTXfnA8n4cq7rCeO3LkLKlbmohb+3sJywLhq2vxFY/2nqPiDZxnswkRxr3l7TCnMhYb7idP++b1lWTdOvP2QZ9oZtjMz7waprgtxqgLPB79fR3gem3biELbrIu304txXapYO+Kt1Naj4ortpPFI39ldGED2b4P+RTIlwNY+Wk28RKRYwvnfiBNodGmTJQOo+u4OI0Tz7LEYcZYBJ4Fe/HLej3zbMLfZ5EwPihaRqFX12jgg643EZhCiT/l5MXUYgyZtWaGUKV3hprAGrs4pa7ibnLzdFfhWyMFbPe/OVNwF7BmNkPpwt0EaXdO7RDK/RH+5gmE6IAuakzA3KWZVThX3LES6b2J5otMsKSntR0XPwuHz3f0G//kH7LEaSbvjQWHP32aLvKYxzi7kVZFxuLhEhXj5UoYNw6qzNT39512VB2Z9hkazBH1N5w7szGO8OI12x80QxaPXAUAWkFkBaEGa5SPASCAINcULJj2qcSQE8ODxKHH6DF7CtP43f5KYg4qGOkFiaf/W+Yj7fnNNH48yLElzPvkCE7Z4l+7sASKAkRS1UK0XYnH3NKzxHrUxgqwRgwb5lAPlySkhN14PReXJ1AzFR175qno9jskeFACneI
- kiFTa1UX
- 3Pxy+vajYeIzJAZJpTq+Jb+2dd3MbPlYhkMcxjp8vENJFSoKBnm6fcdH5qkt/rE7DDJnszl7YJC6U2JAhcgIk4iWhTbahzdgU42BWc4GRaD+D9sr/T4AIX84xD349ERwm+CVkMIS2fyUtLWr/bF1OzAN+8/zTy/3Y3ZDvPTiMzWOX+3mjIEdtvBMK2UI/LTpbb8MZQp0YjBBuAwuPzOeQmpG3Jed9wJTBKfGrOZ008Z1TKu18DR1V1w2Tb9nY/PYUELhgwwTRA6AlVOWpvRQ1/OyGiIoEaE8nPQS3voX0MFJZ9/fWumdtrKJqZj32wj3L67itw3xAyC9Y4i0q6nvvOAIixw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780265220-13568
+X-HE-Meta: U2FsdGVkX1+wWvdy6wBF/UI74mVJOEjXibhhP3HysYmZsFp2f+oecQT1YxCw1CZy80OwWTYMg/nL6HyhmbSzH/xBGSeneLM1UvXdxyU2OdCPcY1pOpvomfIZIPArqjSBzzprQtlbT8tm9xNfyz/r6sIjyzyi0yXaYxInJA4aixGhnniVhWK/jB1gW2Srgwp/s1fUFnk8XUgXU3aTjeca0tcbgyWpKrKcUL0NHHtPoI3/GIzhOWDTtahri425wL+RNZbJVrZ6zxBd9269GdvsOxNC39hmjWjPZNY0/97hJjKKA9k6bvl3KFRCVPwl49afeKz2lGN3cBExRgXJ9es01AIfKWfUk8QgnZnTLOyd/I1LZuAyU4zq1E9/iTHFI1Dr0WKc3w8FKC/TBhd96XElAtztRz4M1lDeYuU1g8pUHSemyexeXk69SQclJnxc/YIJc0pi2HqgRRcXuehYiEEbEY+FpJcPu8+bnXSGAfl+PR7c0wLrOpGIQRBt2/fY6eUZWhZ7Tzfr9euFmgZWf0CbKuN4EUvPTsCKM/6DeLcNRmu3PYgCjQ8BAIMKyzyeUI40OPFmIrw3Tw3KRBhZs1D4ZfELDC1vKXMiysYYGeBkYWpCg9iix3pS4TZJz3fT+mSZ0qsQftfr+IHVVfMeG9EKKdqJGEjv46/CURsBDN5RiafNATQvM5y4xEebX3PFVd/HkPGYULz3mCLidpg4mLzyy7AQz71fJZ/8OlF9LPAxPt0tiXuAUWd9DUIgqPnYj3C6tDZ0SojP2yTSTgO6VOuPGwt4HPy41wK0cakDzPcpQ0zUVhF/i6bhLtM3I4rc9BKprPjaz2ylx0cOzhl0Y6dxcMlaEGrhOBs8U8RfjNgEnRIrL28+1KrDAvmSOIAEq3iHejWOiMYLCBnGZleTAAFFoAA7q27GwquSB8kv+R2k5REQNPk41aDWTK1Ce13pC/Y2Cuo+YOB3QHwIx+jpNQF
+ FyPN5sA2
+ 0OxDWPNALlWoHskB+brg00/Haw2+w4vRitVraUVtnE63qdEfQg7Dol8A0+3S3TZLd8icskoMLS4sXcVRx9btZYRZQ0sT+QBTlUk3peTeQ8m0HLsyy5irnAohv1sj8x9Ru8+gXCiSwWVd0nCxRsGFEIbsM9Vgkj4X5Ba1ts7d+J4qg2kcv4iU+Sd3gtD502etQFe2ydrnhZB1JHcwSst0Wqam6svKxoPLL6LPnoaFy/dELh7W+C6qgAl5CBbhCCfjoxf86icEBnEenQgGrAV+oNLRY2dDZJQ6GQe3mJqAoPeN62tgGy2ttdkYjb13muGfKqdzvdHuYpjSdisI2vpjJAkv2Zg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,58 +112,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 31, 2026 at 8:35=E2=80=AFPM Jianyue Wu <wujianyue000@gmail.com>=
+On Sun, May 31, 2026 at 5:50=E2=80=AFPM Jianyue Wu <wujianyue000@gmail.com>=
  wrote:
 >
-> IS_ENABLED() expects a CONFIG_* symbol. Use the real Kconfig symbol so
-> this warning reflects whether synchronous partial I/O is built in.
+> page_cluster and the vm.page-cluster sysctl are only used by swap-in
+> readahead in swap_state.c. Move them out of swap.c together with
+> swap_readahead_setup(), and make page_cluster static to that file.
+>
+> Rename swap_setup() while moving it as well. The helper is internal to
+> MM and now only sets up swap readahead defaults and its sysctl hook, so
+> the more specific name matches its reduced scope.
 >
 > Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
 > ---
-> zram: fix partial I/O config check
-> ---
->  drivers/block/zram/zram_drv.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  include/linux/swap.h |  2 +-
+>  mm/swap.c            | 36 ------------------------------------
+>  mm/swap.h            |  2 --
+>  mm/swap_state.c      | 37 +++++++++++++++++++++++++++++++++++++
+>  mm/vmscan.c          |  2 +-
+>  5 files changed, 39 insertions(+), 40 deletions(-)
 >
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
-c
-> index 6e1330ce4bc1..72f89fd5572e 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -1510,7 +1510,7 @@ static int read_from_bdev(struct zram *zram, struct=
- page *page, u32 index,
->  {
->         atomic64_inc(&zram->stats.bd_reads);
->         if (!parent) {
-> -               if (WARN_ON_ONCE(!IS_ENABLED(ZRAM_PARTIAL_IO)))
-> +               if (WARN_ON_ONCE(!IS_ENABLED(CONFIG_ZRAM_PARTIAL_IO)))
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 636d94108166..c36f72877e8b 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -345,7 +345,7 @@ extern void lru_add_drain_cpu_zone(struct zone *zone)=
+;
+>  extern void lru_add_drain_all(void);
+>  void folio_deactivate(struct folio *folio);
+>  void folio_mark_lazyfree(struct folio *folio);
+> -extern void swap_setup(void);
+> +extern void swap_readahead_setup(void);
 
-However, I don't see ZRAM_PARTIAL_IO defined as a Kconfig option.
-
-#if PAGE_SIZE !=3D 4096
-static inline bool is_partial_io(struct bio_vec *bvec)
-{
-        return bvec->bv_len !=3D PAGE_SIZE;
-}
-#define ZRAM_PARTIAL_IO         1
-#else
-static inline bool is_partial_io(struct bio_vec *bvec)
-{
-        return false;
-}
-#endif
-
-
->                         return -EIO;
->                 return read_from_bdev_sync(zram, page, index, blk_idx);
->         }
->
-> ---
-> base-commit: 404fb4f38e8f38469dfff4df0205c9d18eeb1f57
-> change-id: 20260531-zram-fix-partial-io-config-check-on-akpm-c62b972416f8
->
-> Best regards,
-> --
-> Jianyue Wu <wujianyue000@gmail.com>
->
+Can we move this to mm/swap.h?
 
