@@ -4,108 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F3ABCD6E52
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 12:21:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32D06CD5BD1
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 12:32:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA9206B0131; Sun, 31 May 2026 08:21:18 -0400 (EDT)
+	id 7509E6B0133; Sun, 31 May 2026 08:32:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5A8E6B0132; Sun, 31 May 2026 08:21:18 -0400 (EDT)
+	id 7286F6B0134; Sun, 31 May 2026 08:32:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C486D6B0133; Sun, 31 May 2026 08:21:18 -0400 (EDT)
+	id 666006B0135; Sun, 31 May 2026 08:32:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AE83C6B0131
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 08:21:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A8891403D5
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:21:18 +0000 (UTC)
-X-FDA: 84827625036.19.3BB41DD
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6266F18000B
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:21:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=VGFk4qUo;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf06.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.87 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
+	by kanga.kvack.org (Postfix) with ESMTP id 522B06B0133
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 08:32:30 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E453A14041F
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:32:29 +0000 (UTC)
+X-FDA: 84827653218.10.0297936
+Received: from out203-205-221-233.mail.qq.com (out203-205-221-233.mail.qq.com [203.205.221.233])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 433894000D
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:32:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=kftf0BIl;
+	spf=pass (imf01.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.233 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780230076;
+	s=arc-20220608; t=1780230747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C0U5WRb9wpBn+CSXUdJxa1a1P5zPqfLCisGYgFPCnlM=;
-	b=FbA3es83Dxg5TBqk37OC6LEVOCgMhVYUgHdfDIWfdu5QXC/l+otqvZAWxZv3oWw4NjLSjK
-	npqlwnofQDRKt7ya/MCVIrTHmy5a5oveFImedtCKk3MF7/MHXUkFFYc3pysjEZk4rX4REh
-	GXBnWrQoc/oW5o1PcOt36F68iJ4yucc=
+	bh=K/IQEuJKp1VJoy4udOyAYdmQ9yI1MCUv8iwbFRHaF/w=;
+	b=IbmX5xgpLK89u7ssThrlCTJffwhQdgWtIazLqs6H2j/V6yQlIylTuh9dSjVMyrdUitHI9x
+	rT+SA/qYmLdftO53HPIm72u9H5pkT7sGO3X1jT7RMSQMSd+Up8aySXZ0zWm289QpmRJMUu
+	yC9bsIY2RlLpLuTiBE4c88olUU4sJLU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=VGFk4qUo;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf06.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.87 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780230076; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=kftf0BIl;
+	spf=pass (imf01.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.233 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780230747; a=rsa-sha256;
 	cv=none;
-	b=JBeS/eNlV1erEeik6S11zp4H9STSE9fKlO3zrC6prhnr4i+lH7Bf1qweOOAYeRUmmHEWzh
-	ysQou+qynBpSW3tV4amBFlIZFsnv/32wDAeK5YuswGGUAI7Pxf7/qDIaKaaGykkAz89HFo
-	gWAe1eh9v1McvUwwyGxH/IgrLIAZ3ic=
+	b=MybzQE1Lik4qpv/SQOQJAwnZJWgPlUwcbGVXlZ7z/+RD8XkZvjNYXpja1+6HAWN0xNepYC
+	RiHMBCxKbisKvyr/xDXluWl/lf3cDAvZPXjZ4AZ5Qa0lqfK8KnzEt74PLQKBLwnv+9CPI6
+	rFGLVRYP0tAyOyWdcimUvL7GFTf7e6o=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1780230068; bh=C0U5WRb9wpBn+CSXUdJxa1a1P5zPqfLCisGYgFPCnlM=;
+	t=1780230743; bh=K/IQEuJKp1VJoy4udOyAYdmQ9yI1MCUv8iwbFRHaF/w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VGFk4qUoLfJSR+8u2Xow8L1Y50We4oTefReTGDFUkh5mL4rybk3PY0xm9HD4EHph/
-	 ceI/02lJfgx95eNePOB2SRb+eCjmthrxKm6eLwf5E7id4BRPslRdrUKFutwArfdi12
-	 cXln+EanqmaBcllk0VccIrMJviGPhcvcxV2aIOlk=
+	b=kftf0BIlJOXU74s4m6Rfgownd3BoHPEeSUPOXkIE7C78ZT+ixejWWpuYNasZhJBvv
+	 UtMefi1uccD7M8i6pfNnmRCDdJMkCYn6ZDAFyRmhszQA8A1PtyxoxMHBWfyEME50YU
+	 SMDmYHip9ZxNCaXd3uyFsxctn5U6mZKT2B2e9rtM=
 Received: from [10.24.9.42] ([123.112.11.230])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id 544834C5; Sun, 31 May 2026 20:21:04 +0800
-X-QQ-mid: xmsmtpt1780230064tpwcseaav
-Message-ID: <tencent_FBB491DE9B018B3FAE9C670AC590F9050F07@qq.com>
-X-QQ-XMAILINFO: OEUhVsHQax4MPQUHt4FdO9CA+DSZ3ixpq4zBcMj9ulacz0ZBFYPTCZlSe1aHG7
-	 +371qSgm3Bzm+1WrhgZ7teEciKXSS7MuQmFLPBpulm1ilAR51bE0ia0xsGZdh+Of+kRswSudNd2g
-	 OVb1EBgyr8xGerRPvU2kJo412nzWNZLpZKCYoYKXqoWh6wvuc/ca5haT0wNClpnDiX838clJcE1X
-	 Y6XqsWGLn6+o4dU7VV5lsB2gOwb5eRGuRsMZzJ71ueViKTJ4RV1IahgPwYHPk6mjJZkPymLgsgb7
-	 J+JrqYM/Sb3rLpeninwzWfAs1Iboi+xQccino6slp1uv5BTL4Obb7fAt5YPmcol4lcS2VR6g0Q+9
-	 BcybfBRT8ds8T5lOc5rZmySfJxWNZ2vTJhSCFrnkZ69bfU6/NV39nMQwM+OjlZT4i6hDM/SeIA0Z
-	 8zRQob2POetYUX8rIj90K70pYasoW3AkOOF5y+akwV25fBDUYdwItEBgg7JACTyX3s8uKb8BRZq9
-	 gzTVLVHz76JqRP1wlIRBLNq7Oohfi5hyhhH0ubZMLahfrRfqJfd4+NQfOPlzViLCEoYagIfupD3s
-	 6fvwzKxuTXSfcQeqowXUVMjmORQvZu8xPdvuEWm0DWDCoA3xV5C9v0Ij8xha7Z876zQ+0voY/xSv
-	 43wjTaX9QR51AqshI/Vj7x4VHefgiHspWhNNh1SP4VXD+VFrw5FYJken6SPM1Z4enmHpAyCK+Axs
-	 ZGKFfn9b2P4+IsS72pKqC13oGN5g6Xa7ASiYte3QvkFYH8fkh7wG/eLxdby5qP59LktmpVhVdRay
-	 ObNLlqtvB13ALdygzxY2p4umol48PK5Hdy5s3g1y1VTpRvuiWYjDAzmLK3KY57hIc4jFNsG5XmlG
-	 1bN1NOscZ14R0wo0mt3IBEojXoxs0ir9NH3qpIb6YB4A6ee0ekqiiJZkBNuMU8nUddLl23Q9a5zJ
-	 xDqXb6bAe/7s4rvyxCR4ypaqV0qZS6ERnH7Y0qi9gESjYg0bvSVHE/rcNFIwuiptqna3UokJVN9D
-	 H3+pzw9V45UaVeX7QbWUL/f8ZKw1EGs6+0UismZjP4FJUN4vTkHvkNL2R05M0=
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-OQ-MSGID: <13b1e03e-a5b8-4b91-ab09-74f273fe9fcb@qq.com>
-Date: Sun, 31 May 2026 20:21:04 +0800
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id 81406E17; Sun, 31 May 2026 20:32:20 +0800
+X-QQ-mid: xmsmtpt1780230740tnz4j5psh
+Message-ID: <tencent_5D829B5E0B0E2EE9E703C5BAF9210FC71107@qq.com>
+X-QQ-XMAILINFO: MpYZqmNm/7vMIRPcSJYS9hiFZYUADiR5EYlaoZ1a5F9FpE3aEtCjwILTebpTgx
+	 m0lgVEFF38sLsaT+yIBZ9NdVeNb6kboHgTsMn0Ne/41wot7N69LdHhxJt7KqRciskmoSNEwwm/35
+	 EuKhAOkqBAJLEOhhKsbk4PrAjgWnxEnDE/UJbWcqXNdt2r5ColifSlvqEHzoJ2pUxQgSIOlVPiS9
+	 b8I3Xlp7QzK1QboGHHHGrPL56yDbouGJEDh8eIn5Texl73wzUSLf0rOajeboX/dm0tpLzC3qhXts
+	 42iBE5GDiYMJW1a8CcTTkK+y8Qfmn5Dybj+RKlUZf2IZ9g/wUlBlBoEB/vimcBpyEOcpG9ESdDIf
+	 ha/ulXdPQiL9DshvMFfPzkinOCxcmVz2dJL1pdkoCJgMojdTrJ6AH4+rANyiPN92G5oRNCsCXUDP
+	 2FypvGcz4CKASuv0Yx6/sL0lw+ZsGE6fnz35xjwkrPcZAJwwijtupa9dFOtwcaNndy+Hh5kn3Sgn
+	 KZPkpAvJuEu1BiKfGou2oRB0jgHLE4P/OacvwZhxlO4ZkA2wL/EVJ8aF9Ikf2HSU4wIs9vqpb/LY
+	 3l6yVaZsE5Xv69MUi/V35C4n91MDnYfldMUhtqnfOshD2tiyUowjaedy8RaMfbnSpfsW2TNFe1AR
+	 HTf7yIHtGV7JJxW+UxwqjFbIR+i+bGpfoVW/r1n/jL7ykyhElMZem1U0hRP7aFaBUGHNYjbY3j94
+	 7r4Dko43tQVwZTFumK4vuk0EfRV7VLeJWzzgYp2s44Rtzz5mtc4gMHKgbx+wfoqcT+ctvQohNiYq
+	 eF4bukIIPqcW9uwXtoZUNJEp9j4ha476RjiKQCUBP4/Co1cSD77skwPXAE0FabimMdLz/Z6LKV4C
+	 j5hgfz266huOfWJrBAE9TEWcH+qpPVwwGA/uW5C9AQfF+TdkD+KFr0pY2vZ+60BcOJusq1JI1A9U
+	 ofEO0+t1QWIQRHrcQ2NUbLu+IxvMEKscgcnFtqe3BDFChEBwMVsi5WzfmKxfQAAojiKWbO4gmMPb
+	 8KeCenDVVFgR29nPcLxNT0ohaehScugj7SIx6UlAM3ilMISz2jjADPFrR4ViteBZ4o12J9WUKCoV
+	 kEhpluSKFT84+H1P6NSNABgmc1HA==
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-OQ-MSGID: <abbc260f-1fc4-4469-95e0-bc9d8c2ed2b0@qq.com>
+Date: Sun, 31 May 2026 20:32:19 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 4/9] mm: admit large swapin by backend range in
- swapin_sync()
-To: Kairui Song <ryncsn@gmail.com>
+Subject: Re: [RFC PATCH v2 0/9] mm: support zswap-backed large folio swapin
+To: Nhat Pham <nphamcs@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Alexandre Ghiti <alexghiti@meta.com>, Usama Arif <usamaarif642@gmail.com>,
- Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+ Alexandre Ghiti <alexghiti@meta.com>, Kairui Song <kasong@tencent.com>,
+ Usama Arif <usamaarif642@gmail.com>, Chris Li <chrisl@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
  David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
  Roman Gushchin <roman.gushchin@linux.dev>,
  Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
  cgroups@vger.kernel.org
 References: <tencent_98CD9F78E48D08DC005A6471A13CFF28B60A@qq.com>
- <tencent_EB78848E34DC7858C873193D67286ECD4B0A@qq.com>
- <CAMgjq7AA_1esgtA8VyxaBLWBBRM12bCBpxO2Jch5OESBZSg--A@mail.gmail.com>
+ <CAKEwX=PdQb2nDbFaZYuRa9_mYrMCnMEJHpxxABebKkVz+OgDHg@mail.gmail.com>
 From: Fujunjie <fujunjie1@qq.com>
-In-Reply-To: <CAMgjq7AA_1esgtA8VyxaBLWBBRM12bCBpxO2Jch5OESBZSg--A@mail.gmail.com>
+In-Reply-To: <CAKEwX=PdQb2nDbFaZYuRa9_mYrMCnMEJHpxxABebKkVz+OgDHg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6266F18000B
-X-Stat-Signature: uxfodojkqphbr7dn6p15juggeqs93s18
+X-Rspamd-Server: rspam12
+X-Stat-Signature: c6hyhip7azusgpbj6auatjn34pzqkcge
 X-Rspam-User: 
-X-HE-Tag: 1780230073-580642
-X-HE-Meta: U2FsdGVkX1+kEhpHYjha4sxeX8adtSUtp0GKc8fi8armlTQkNy7iXXmwVnTobV1+t8HWb1+Hfnc6RI8bpkmodfyBD40ZEbMvg2T2JO7/akUhXgrefowWlsrj3sRZXLaD0lp/1XyeKrn3qkI5f3k8zh8CevllpHWEnIPiXuON39bUuQH850oox0M3lBv+SOu5IFf2OoYWWb8JrGUBqV40jsBXqVFAKkdYMzxTs3rLhGDGYjFTiZLpp/FWui9GDoSNmLq0+EASGmC7oazqa6zYuKbdSRV0akLWFlHA0YlE0ErrUPYNeIbrXSYDSXU4djtfoIpYEiZUtcH+Qg0v5zGrMGVvetyfgpoh/ITiG6yqne4GZKdaofsRcjU80WzwSmNaatooaLIo6fZOssz6jenteA7ztG3gNwx2izwRBeeL1Kz8HWUnktK1a20TwJg9HbVs+n9w/LYdBgToXvUpGLiIMl6VoUfg/CjiVLr1ilJXUvvJz2ay+PCbhK5TXJHDWI3BM/voV1lTy4+b0zwtKeqwuYKu6+HweQ09U15m6IuqD9FsUIcGN0CtFEy33EDXYUj3l54Jj2mN9VBr5RkKXtWb/gRQeDu5vfo7axmMcl1Pvyxet8Y/urM7AMP4KgyOoZQQkGIg67y695g/m7OcnrwV94BU68SVzsCrwz9EAvVBiSjRrBijQUUF0HWN4tSO7xxiB3grPnbO5gje+TrnScZizouqWASjsr1bBt31EuYPQXusOBQB5Wmfkr7rRNh8RbCgQS0e6JJZ+5rDNJiu4e2ivvWEHpe5OlVMu3qdaW1s51U0blF/GzAz+5jLYmxiK5EJvsnuV7LhjjOg2X/wtQJ+l+5QKMs0qMQ7ZAPr79ICDOMtgvhx/rKOaGOSU0AE0ncxVJ7994K+BR8WSTp16tqq149s9zGEhIiixDcfgDN8qZmenZ7+MpVFWVBBTSTOcH3AHWIVWFkGUiO2C3R04St
- IWNUL5FM
- TnlglT/nzcRsxWuFpVbuza2TSN0HbYo+EX6l7FqKPi1pzQArsb6OWA5aU8FJcZAZeXB0nUjpXMdw5l3pZiV6p2eMRGxRR8lewYv4HGt39VgmmHHetPXO2a2e03uH0Os65ZNN2GwbfnPK7QCBujFDVKaQXNJCz3P6epkuKvw1m7KZXxr7lmXH3nwAHg+NUW7GdiUxtJHZu2QPbtl4QMUkHSGft5NbTfBt0edIEUvWbw7zDY2Aqbe6XifgbRe+8/wezVHjS45TiebHB4B8PqY+ck/eYwCRhu+8YCikfFaXUgbVV7+/5Qp7npPLDST3p0d5L65sr+GDlycheWZBoJt3Mp5ljKtrQm2Ul5DI6U4ZzaR+gk0VfHobgNKyI2Po8nWSmBQPwg3PC739AmqFl9Fh7uY0RhSQzLonp0f9Q3zF0RxIhb7MYeIbJRWyww6BVC6qGZUL8
+X-Rspamd-Queue-Id: 433894000D
+X-HE-Tag: 1780230745-651058
+X-HE-Meta: U2FsdGVkX1+mFjq3E1eX6jyrnkm1Rg7yAi911Vwlx5+sxdYER69Ob+KNXh3GwsdM8Gd6Acf6lMVJDYrVtC4zDbeqtuVNhCK69NmBt4kANyv1HvR1yDOFyvUkWNMgtU6SZQ8tPzigSerWqT7A490uBYz06hYfMn8bx+MAZ5/dzU+UqOcaKSElFEuq3o8PGxGd/uJV80uxoQgNO75CbmwggN/3elb2qQTXqd6ips1g+zf5/WAeB4Osirb9s6ZPujSnCvUnXSpCA8uUB7/O62Mhx7v7MK9nB4tfXVmv7LxK57XPVjDtx905H3X3QGHizxzs8fAfY2dZcRf4zuQ+XwDfi/lIerd2lqDp4Uw5oHsQYzJ9xx2wtTp1laRZHEuJ67k40YFoGzFW7MboPqabtZGtflOjFhxfrb93N0Sa0hZv7+/TMJptpAQSMaKa55R7JwnkWy25Gt/uwAlg7nvMQ1EIwLQZC2/lreSoGJuJa2SBaeZTHwCrMIfENMAtbuvyOv83w9aUQZBVDga5Dai5ztcdRdw147Q/Db6AQGdR1yuZCEnVve0LfdmlTOii6oSyA2UbeFGV/P9u1wZkmJ9vIWHlNRhoRtGzHbR8uzrYwuktt0Bc1v3rYehhPjwhJhqqoZa1WYO5F8kxe9DvpXKXabW13P9teo+PMtteuCJFf1TPY3hZrwM4DfEX/QSjoOkb5GNoRNvZYmGTJfdAA94BTb/q6cCJMb2g68732XOY9+OdYdQyS7eIyxN44UJ3DlCkcogIqwoH5RmScywJrKw/A7Sek5cNdIlFYpMj2yfTgJ4QroxsnJS4IDbJJY82gti7xsJI72/otxaF5IUbEY4GynjVmLxocTs+QFbWU64MN3PY/5zykQicI+DASxBuGZ7W4vvgPaf4JyQSnhw3+Z4JMlravSqiEfUrpXIU+ZC50Lo6AjcwHEyDHxhv9dwYslzQwx+5zyjFWVxjuZ8dVCoKHnY
+ BsIXc914
+ KhC64nUiYzo6MJqSf8R025JBG38paQX7Qn0a0Isj301QUxNAvJq1mzvIW+HSwBzlPo/bhd8pztJW46avSRx/LXEJmeREhgOtEUkEMyvDCU4RhyN1hz9kwQ2IPd9R0vP/MxQCohZIzVztmKPaa5uH9OIMCpPTVnZSNmUPpHdd0nLyQbeyZez/wnjJiOFWZUBfNqBlGk8HSVfbkO6wF+EDrZHpS4jTzEDL3zvrHOgnIQKS0CK+/X4oU6oYirFsJfngszx84qsGiy2gcrGl0mdqGE/KrlHE50uet0ZtgI8zi0Q23SVLdwVz+qiv95bVN6h8TN/xoAEoJjKzi6Q8wBGTLz3hGlC6ltJaTx6iIV69n8EeiK3D5wBxPK0AIIrJ88D7kpMrq+5M5oOEW42hcT7MPDP39udTTt8zyN+97ObD+BP7msiDdBiGTz5db7ZrJA2y9UFwPZYdgKxotT2Ry6xujX/lHTupc0VTrZsAcJLElXFCtkr7B6/z51g6yKJJ/tyJbqsqI6BoFgz234u94BjDry7u4Lw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,365 +114,227 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 5/29/2026 10:43 PM, Kairui Song wrote:
-> On Fri, May 29, 2026 at 8:26 PM fujunjie <fujunjie1@qq.com> wrote:
+On 5/30/2026 2:06 AM, Nhat Pham wrote:
+> On Fri, May 29, 2026 at 5:17 AM fujunjie <fujunjie1@qq.com> wrote:
 >>
->> A large swapin can only read one folio when the whole range has compatible
->> backing. Mixed zswap/disk ranges must not reach large-folio IO, and zswap
->> range probes are only snapshots.
+>> Hi,
 >>
->> Filter the orders passed to swap_cache_alloc_folio() in swapin_sync().
->> Uniform zeromap ranges and all-disk ranges keep the existing large swapin
->> path. Fully zswap-backed ranges may be tried. Mixed zswap/disk ranges fall
->> back before allocation.
+>> This RFC explores large-folio swapin for ranges that are still fully backed
+>> by zswap.
 >>
->> After a large swapcache folio is installed, recheck the zswap range and
->> drop the fresh folio if it became mixed. Also consume -EAGAIN from
->> swap_read_folio() the same way. Both cases retry order-0, where each slot
->> can resolve its current backend independently.
+>> Large swapin is currently disabled once zswap is in the picture. Anonymous
+>> faults stop considering large orders after zswap has ever been enabled,
+>> shmem does the same, and zswap_load() refuses large swapcache folios. That
+>> keeps mixed zswap/disk cases safe, but it also loses the dense case where
+>> every slot in an aligned 64K range is still resident in zswap.
 >>
->> Signed-off-by: fujunjie <fujunjie1@qq.com>
->> ---
->>  mm/memcontrol-v1.c |   8 ++-
->>  mm/memory.c        |  31 ++++++++-
->>  mm/swap_state.c    | 169 ++++++++++++++++++++++++++++++++++++++++++---
->>  3 files changed, 194 insertions(+), 14 deletions(-)
+>> The series keeps the policy in common swapin code:
 >>
->> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
->> index 765069211567..5b11b8055c66 100644
->> --- a/mm/memcontrol-v1.c
->> +++ b/mm/memcontrol-v1.c
->> @@ -682,8 +682,8 @@ void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
->>   * memcg1_swapin - uncharge swap slot on swapin
->>   * @folio: folio being swapped in
->>   *
->> - * Call this function after successfully adding the charged
->> - * folio to swapcache.
->> + * Call this after the charged folio has been added to swapcache and the caller
->> + * is no longer going to drop it back to swapped-out state.
->>   *
->>   * Context: The folio has to be in swap cache and locked.
->>   */
->> @@ -721,7 +721,9 @@ void memcg1_swapin(struct folio *folio)
->>         id = __swap_cgroup_clear(ci, swp_cluster_offset(folio->swap),
->>                                  nr_pages);
->>         swap_cluster_unlock(ci);
->> -       mem_cgroup_uncharge_swap(id, nr_pages);
->> +
->> +       if (id)
->> +               mem_cgroup_uncharge_swap(id, nr_pages);
->>  }
->>  #endif
+>>   - zswap reports backend facts and provides the large-folio load helper.
+>>   - swapin_sync() filters candidate orders by backend range.
+>>   - all-disk and zeromap ranges keep the existing Kairui large-swapin path.
+>>   - mixed zswap/disk ranges stay order-0.
+>>   - all-zswap ranges may use a 64K folio after locality admission.
+>>   - anon provides locality evidence from VMA hints and PTE young density.
+>>   - shmem starts with explicit VMA-hint evidence only.
+>>   - swap readahead uses its existing VMA/cluster window as locality
+>>     evidence; it does not also run the anon PTE-young rule.
 >>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 5a365492a9a2..d73a19692dea 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -4538,6 +4538,24 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
->>                 folio_ref_count(folio) == (extra_refs + folio_nr_pages(folio));
->>  }
+>> The backend range probe is only a snapshot. If the backend changes after a
+>> fresh large swapcache folio is allocated, the common path drops that folio
+>> and falls back to order-0. zswap_load() can also return -EAGAIN for the
+>> same retry path. If a late fault retry keeps the large folio in swapcache
+>> instead of deleting it, the cgroup v1 memsw swap owner is committed before
+>> returning.
 >>
->> +static void memcg1_swapin_retry_folio(struct folio *folio,
->> +                                     struct vm_fault *vmf)
->> +{
->> +       if (!folio_test_large(folio) || !folio_test_swapcache(folio))
->> +               return;
->> +
->> +       if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT) {
->> +               if (!folio_trylock(folio))
->> +                       return;
->> +       } else {
->> +               folio_lock(folio);
->> +       }
->> +
->> +       if (folio_test_large(folio) && folio_test_swapcache(folio))
->> +               memcg1_swapin(folio);
->> +       folio_unlock(folio);
->> +}
->> +
->>  static vm_fault_t pte_marker_clear(struct vm_fault *vmf)
->>  {
->>         vmf->pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
->> @@ -4857,8 +4875,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>> This is mTHP/large-folio swapin. The mappings installed by do_swap_page()
+>> are still PTE mappings, not PMD mappings. The expected win is fewer faults,
+>> batched PTE/rmap work, and preserving the large folio across zswapin
+>> instead of rebuilding the working set as order-0 pages.
 >>
->>         swapcache = folio;
->>         ret |= folio_lock_or_retry(folio, vmf);
->> -       if (ret & VM_FAULT_RETRY)
->> +       if (ret & VM_FAULT_RETRY) {
->> +               memcg1_swapin_retry_folio(folio, vmf);
->>                 goto out_release;
->> +       }
+>> Prior art: Usama Arif posted a related RFC on 2024-10-18:
 >>
->>         page = folio_file_page(folio, swp_offset(entry));
->>         /*
->> @@ -5067,6 +5087,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>         if (unlikely(folio != swapcache)) {
->>                 folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
->>                 folio_add_lru_vma(folio, vma);
->> +               if (folio_test_large(swapcache))
->> +                       memcg1_swapin(swapcache);
->>                 folio_put_swap(swapcache, NULL);
->>         } else if (!folio_test_anon(folio)) {
->>                 /*
->> @@ -5076,6 +5098,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>                 VM_WARN_ON_ONCE_FOLIO(folio_nr_pages(folio) != nr_pages, folio);
->>                 VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
->>                 folio_add_new_anon_rmap(folio, vma, address, rmap_flags);
->> +               if (folio_test_large(folio))
->> +                       memcg1_swapin(folio);
->>                 folio_put_swap(folio, NULL);
->>         } else {
->>                 VM_WARN_ON_ONCE(nr_pages != 1 && nr_pages != folio_nr_pages(folio));
->> @@ -5132,8 +5156,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>         if (vmf->pte)
->>                 pte_unmap_unlock(vmf->pte, vmf->ptl);
->>  out_page:
->> -       if (folio_test_swapcache(folio))
->> +       if (folio_test_swapcache(folio)) {
->> +               if (folio_test_large(folio))
->> +                       memcg1_swapin(folio);
->>                 folio_free_swap(folio);
->> +       }
->>         folio_unlock(folio);
->>  out_release:
->>         folio_put(folio);
->> diff --git a/mm/swap_state.c b/mm/swap_state.c
->> index d37097913b30..f03ad4832f16 100644
->> --- a/mm/swap_state.c
->> +++ b/mm/swap_state.c
->> @@ -21,6 +21,7 @@
->>  #include <linux/migrate.h>
->>  #include <linux/vmalloc.h>
->>  #include <linux/huge_mm.h>
->> +#include <linux/zswap.h>
->>  #include <linux/shmem_fs.h>
->>  #include "internal.h"
->>  #include "swap_table.h"
->> @@ -403,7 +404,8 @@ void __swap_cache_replace_folio(struct swap_cluster_info *ci,
->>  static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
->>                                         swp_entry_t targ_entry, gfp_t gfp,
->>                                         unsigned int order, struct vm_fault *vmf,
->> -                                       struct mempolicy *mpol, pgoff_t ilx)
->> +                                       struct mempolicy *mpol, pgoff_t ilx,
->> +                                       bool defer_memcg1_swapin)
+>>   mm: zswap: add support for zswapin of large folios
+>>   https://lore.kernel.org/linux-mm/20241018105026.2521366-1-usamaarif642@gmail.com/
+>>
+>> This RFC keeps the same broad goal, but moves admission into common swapin
+>> code. zswap does not decide the policy. Mixed zswap/disk ranges are
+>> rejected before large IO, and the first cap is 64K.
+>>
+>> This is a rewrite of the RFC posted on 2026-05-08:
+>>
+>>   [RFC PATCH 0/5] mm: support zswap-backed anonymous large folio swapin
+>>   https://lore.kernel.org/linux-mm/tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com/
+>>
+>> The v1 series was anonymous-only and kept too much of the policy near the
+>> anon fault and zswap paths. This version is rebuilt on top of Kairui Song's
+>> common swapin infrastructure. It keeps admission in common swapin code,
+>> rejects mixed zswap/disk large ranges, and adds separate locality producers
+>> for anon, shmem and swap readahead.
+>>
+>> Performance and behavior
+>> ========================
+>>
+>> The A/B tables are 10-run measurements. Elapsed values are seconds,
+>> shown as mean +/- sample standard deviation. "phase" or "refault" is the
+>> measured refault subphase. "zswpin" counts zswap loads. "pswpin" counts
+>> swap-ins from the real swap device; pswpin=0 means the refaults were served
+>> by zswap even when a disk swap device was configured. "RFC 64K" is the mean
+>> number of successful 64K swapins.
+>>
+>> The numbers below show where the large path is used and where it is
+>> rejected.
+>>
+>> zram-backed zswap microbench, 64K mTHP, 8G guest:
+>>
+>> +-----------------+----------------+----------------+--------+--------+--------+----------+
+>> | workload        | base elapsed   | RFC elapsed    | delta  | phase  | zswpin | RFC 64K  |
+>> +-----------------+----------------+----------------+--------+--------+--------+----------+
+>> | usama_1g        | 11.260+/-0.235 | 10.301+/-0.140 | -8.5%  | -22.2% | 1.000x | 16381.1  |
+>> | nohint_seq64    |  4.398+/-0.085 |  4.025+/-0.022 | -8.5%  | -21.1% | 1.000x |  6221.1  |
+>> | seqhint_seq64   |  4.283+/-0.060 |  3.948+/-0.062 | -7.8%  | -20.6% | 1.000x |  6223.5  |
+>> | stride64_sparse |  3.095+/-0.051 |  3.086+/-0.025 | -0.3%  |  +5.8% | 1.002x |     1.0  |
+>> | random64_sparse |  3.095+/-0.046 |  3.076+/-0.016 | -0.6%  |  +0.7% | 1.001x |     0.0  |
+>> | random64_full   |  4.423+/-0.067 |  4.405+/-0.018 | -0.4%  |  +0.1% | 1.000x |     0.0  |
+>> +-----------------+----------------+----------------+--------+--------+--------+----------+
+>>
+>> The usama_1g row follows the shape of the 2024 RFC benchmark: allocate 1G,
+>> fill it with compressible per-page data, reclaim it through memory.reclaim,
+>> then time the full integrity-check refault. The seq64 rows use a 512M
+>> target and 768M of pressure. "sparse" touches one 4K page per 64K region, while
+>> "full" touches every 4K page. "seqhint" uses MADV_SEQUENTIAL; "nohint" does
+>> not.
+>>
+>> Virtio-block swap device present, zswap enabled:
+>>
+>> +-----------------+---------------+---------------+--------+---------+--------+--------+---------+
+>> | workload        | base elapsed  | RFC elapsed   | delta  | refault | pswpin | zswpin | RFC 64K |
+>> +-----------------+---------------+---------------+--------+---------+--------+--------+---------+
+>> | seq64           | 4.399+/-0.100 | 4.279+/-0.216 | -2.7%  | -10.5%  | 0      | 1.000x | 3110.7  |
+>> | stride64_sparse | 3.103+/-0.047 | 3.119+/-0.086 | +0.5%  |  +6.2%  | 0      | 0.999x |    0.0  |
+>> | random64_sparse | 3.142+/-0.112 | 3.097+/-0.030 | -1.4%  |  -2.2%  | 0      | 0.999x |    0.1  |
+>> | random64_full   | 4.473+/-0.147 | 4.445+/-0.088 | -0.6%  |  +0.9%  | 0      | 1.000x |    0.4  |
+>> +-----------------+---------------+---------------+--------+---------+--------+--------+---------+
+>>
+>> This run uses a real block swap device, but the refaulted data stayed in
+>> zswap. It covers the all-zswap hit path with disk swap configured, not disk
+>> read IO.
+>>
+>> Virtio-block pressure/mixed run, zswap max_pool_percent=1,
+>> low-compressibility full fill:
+>>
+>> +-------------------------------+---------------+---------------+--------+---------+----------------+------------+---------+----------+
+>> | workload                      | base elapsed  | RFC elapsed   | delta  | refault | pswpin base/RFC | RFC zswpin | RFC 64K | fallback |
+>> +-------------------------------+---------------+---------------+--------+---------+----------------+------------+---------+----------+
+>> | seq64_full_pressure           | 5.908+/-0.195 | 5.790+/-0.235 | -2.0%  |  +3.0%  | 90258/99038    | 20327      |   0.0   | 3730     |
+>> | random64_sparse_full_pressure | 5.104+/-0.069 | 5.068+/-0.090 | -0.7%  |  -9.1%  |  6201/6196     |  1297      |   0.0   |    0     |
+>> +-------------------------------+---------------+---------------+--------+---------+----------------+------------+---------+----------+
+>>
+>> This run reaches the disk-backed path: pswpin is non-zero in both base and
+>> RFC. It is mainly fallback coverage. The RFC does not install 64K folios
+>> for these disk/mixed-heavy ranges.
 > 
-> Hi Fujunjie,
+> Ok this results above look good. Basically, if we don't have spatial
+> locality in access patterns, we don't do THP zswapin. Nice.
 > 
-> Thanks for the update, but this whole defer_memcg1_swapin thing is so
-> ugly I don't think this is the right way at all.
+>>
+>> Policy matrix, virtio-block swap device present:
+>>
+>> +------------------------------+----+------+--------+--------+-------+----------+
+>> | case                         | pc | hint | pswpin | zswpin | zswpwb| 64K in   |
+>> +------------------------------+----+------+--------+--------+-------+----------+
+>> | pc0_seq                      | 0  | none | 0      | 99559  | 0     | 0        |
+>> | pc3_seq                      | 3  | none | 0      | 99498  | 0     | 0        |
+>> | pc4_seq                      | 4  | none | 0      | 99512  | 0     | 3109     |
+>> | pc5_seq                      | 5  | none | 0      | 99657  | 0     | 3113     |
+>> | hint_none_random_sparse      | 5  | none | 0      |  6265  | 0     | 0        |
+>> | hint_random_seq              | 5  | rand | 0      | 99488  | 0     | 0        |
+>> | mixed_seq_full               | 5  | none | 97725  | 20147  | 84    | 569      |
+>> | mixed_random_sparse_full     | 5  | none |  6230  |  1302  | 0     | 0        |
+>> +------------------------------+----+------+--------+--------+-------+----------+
+>>
+>> The pc rows show the readahead-window gate. The hint_random_seq row shows
+>> the explicit random hint veto. The mixed rows use a small zswap pool to
+>> force disk/zswap split backing; most mixed ranges are rejected, while any
+>> remaining 64K successes were all-zswap at the time of the fault.
+>>
+>> Kbuild pressure, zram swap, 384M memcg:
+>>
+>> +----------------------+----------+----------+--------+--------+----------+
+>> | setup                | base     | RFC      | delta  | zswpin | RFC 64K  |
+>> +----------------------+----------+----------+--------+--------+----------+
+>> | zram swap, 384M memcg| 2060.323 | 2047.516 | -0.6%  | 0.991x | 2797     |
+>> +----------------------+----------+----------+--------+--------+----------+
+>>
+>> This is a single-run zram pressure smoke. It did not show Kbuild
+>> regression, and the RFC run installed 64K zswap-backed folios. The result
+>> should not be read as a tuned-performance claim.
+>>
+>> Kbuild pressure, virtio-block swap device, 512M memcg:
+>>
+>> +-------------------------+----------+----------+--------+--------+----------+
+>> | setup                   | base     | RFC      | delta  | pswpin | RFC 64K  |
+>> +-------------------------+----------+----------+--------+--------+----------+
+>> | disk swap, 512M memcg   | 1420.671 | 1409.263 | -0.8%  | 0      | 7497     |
+>> +-------------------------+----------+----------+--------+--------+----------+
+>>
+>> This is a single-run pressure smoke. The disk-swap Kbuild run also stayed
+>> on the all-zswap hit path, so it is pressure coverage with a disk swap device
+>> present rather than proof of disk-read large swapin.
 > 
-> If you really need this, maybe you can always defer the memcg1
-> uncharge, I don't see why we need to treat large folio differently.
-> This charge doesn't effect the memory pressure, the reason we uncharge
-> memcg1's swap counter is to avoid long pinning swap cache holding the
-> swap cache of a cgroup so the cgroup will no longer be able to swap
-> out more folios. Deferring it won't hurt.
+> Why a single-run?
 
-Yes, I think you are right.
+I did run Kbuild a few times while debugging the series and did not see a
+significant difference either way. Because of that I only kept one fresh run
+with the final tree before sending the RFC, so this should be read only as a
+smoke test, not as performance evidence.
 
-I added defer_memcg1_swapin because I was still treating the freshly
-allocated large swapcache folio as something that might be dropped after it
-was installed, so I tried to avoid clearing the cgroup v1 swap owner too
-early.
-
-Nhat Pham also pointed out that this is probably the wrong model. Once the whole
-range is covered by the large swapcache folio, zswap writeback should not be
-able to turn one subslot into disk-backed state, since it has to allocate an
-order-0 swapcache folio first and that should fail.
-
-So the deferred memcg1 handling is likely self-inflicted complexity. I'll
-drop this flag and rework the mixed-backend check so we fail the current
-order before we need this late abort path. If any memcg1 timing issue remains
-after that, I'll try to handle it with a uniform rule rather than a
-large-folio-specific flag.
-> 
->>  {
->>         int err;
->>         swp_entry_t entry;
->> @@ -466,7 +468,8 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
->>         }
->>
->>         /* memsw uncharges swap when folio is added to swap cache */
->> -       memcg1_swapin(folio);
->> +       if (!defer_memcg1_swapin || !order)
->> +               memcg1_swapin(folio);
->>         if (shadow)
->>                 workingset_refault(folio, shadow);
->>
->> @@ -495,9 +498,12 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
->>   * Return: Returns the folio if allocation succeeded and folio is in the swap
->>   * cache. Returns error code if failed due to race, OOM or invalid arguments.
->>   */
->> -struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
->> -                                    unsigned long orders, struct vm_fault *vmf,
->> -                                    struct mempolicy *mpol, pgoff_t ilx)
->> +static struct folio *__swap_cache_alloc_folio(swp_entry_t targ_entry,
->> +                                             gfp_t gfp, unsigned long orders,
->> +                                             struct vm_fault *vmf,
->> +                                             struct mempolicy *mpol,
->> +                                             pgoff_t ilx,
->> +                                             bool defer_memcg1_swapin)
->>  {
->>         int order, err;
->>         struct folio *ret;
->> @@ -512,7 +518,8 @@ struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
->>
->>         do {
->>                 ret = __swap_cache_alloc(ci, targ_entry, gfp, order,
->> -                                        vmf, mpol, ilx);
->> +                                        vmf, mpol, ilx,
->> +                                        defer_memcg1_swapin);
->>                 if (!IS_ERR(ret))
->>                         break;
->>                 err = PTR_ERR(ret);
->> @@ -525,6 +532,124 @@ struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
->>         return ret;
->>  }
->>
->> +struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
->> +                                    unsigned long orders, struct vm_fault *vmf,
->> +                                    struct mempolicy *mpol, pgoff_t ilx)
->> +{
->> +       return __swap_cache_alloc_folio(targ_entry, gfp, orders, vmf,
->> +                                       mpol, ilx, false);
->> +}
->> +
->> +static struct folio *swap_cache_alloc_speculative_folio(swp_entry_t targ_entry,
->> +                                                       gfp_t gfp,
->> +                                                       unsigned long orders,
->> +                                                       struct vm_fault *vmf,
->> +                                                       struct mempolicy *mpol,
->> +                                                       pgoff_t ilx)
->> +{
->> +       /*
->> +        * Speculative large swapin may drop this fresh swapcache folio and
->> +        * retry order-0 after backend or page-table revalidation. Keep the
->> +        * cgroup v1 memsw swap owner until the caller commits the folio.
->> +        */
->> +       return __swap_cache_alloc_folio(targ_entry, gfp, orders, vmf,
->> +                                       mpol, ilx, true);
->> +}
->> +
->> +static bool swapin_zeromap_same(swp_entry_t entry, unsigned int nr_pages)
->> +{
->> +       unsigned int ci_start = swp_cluster_offset(entry);
->> +       struct swap_cluster_info *ci = __swap_entry_to_cluster(entry);
->> +       bool is_zero;
->> +       unsigned int i;
->> +
->> +       if (ci_start + nr_pages > SWAPFILE_CLUSTER) {
->> +               VM_WARN_ON_ONCE(1);
->> +               return false;
->> +       }
->> +
->> +       rcu_read_lock();
->> +       if (!rcu_dereference(ci->table)) {
->> +               rcu_read_unlock();
->> +               return true;
->> +       }
->> +
->> +       is_zero = __swap_table_test_zero(ci, ci_start);
->> +       for (i = 1; i < nr_pages; i++) {
->> +               if (is_zero != __swap_table_test_zero(ci, ci_start + i)) {
->> +                       rcu_read_unlock();
->> +                       return false;
->> +               }
->> +       }
->> +       rcu_read_unlock();
->> +
->> +       return true;
->> +}
->> +
->> +static unsigned long swapin_admit_orders(swp_entry_t entry,
->> +                                        unsigned long orders)
-> 
-> And this swapin_admit_orders chunk doesn't look good either...、
-
-Yes, this helper is doing too much.
-I wanted to keep mixed zswap/disk ranges away from large-folio IO, but this
-ended up mixing policy with range feasibility checks.
+For the next version I will rerun Kbuild properly with multiple fresh
+iterations and report it, so it can be used as a more reliable
+performance comparison instead of just smoke coverage.
 
 > 
->> +{
->> +       unsigned long candidates = orders & ~BIT(0);
->> +       unsigned long admitted = orders & BIT(0);
->> +       int order;
->> +
->> +       if (!candidates)
->> +               return orders;
->> +
->> +       while (candidates) {
->> +               enum zswap_range_state state;
->> +               unsigned int nr_pages;
->> +               swp_entry_t range_entry;
->> +               bool admit = false;
->> +
->> +               order = fls_long(candidates) - 1;
->> +               if (order > MAX_PAGE_ORDER) {
->> +                       candidates &= ~BIT(order);
->> +                       continue;
->> +               }
->> +
->> +               nr_pages = 1U << order;
->> +               range_entry = swp_entry(swp_type(entry),
->> +                                       round_down(swp_offset(entry), nr_pages));
->> +               if (!swapin_zeromap_same(range_entry, nr_pages))
->> +                       goto next;
+>>
+>> Shmem smoke, tmpfs huge=always, 64K shmem mTHP:
+>>
+>> +----------------------------+---------------+---------+-------------+----------+
+>> | case                       | refault hint  | touched | 64K shmem   | 64K in   |
+>> +----------------------------+---------------+---------+-------------+----------+
+>> | nohint_seq                 | none          | 65536   | 4096        | 0        |
+>> | seq_refault_hint           | sequential    | 65536   | 4096        | 4096     |
+>> | random_refault_hint_sparse | random        |  4096   | 4096        | 0        |
+>> +----------------------------+---------------+---------+-------------+----------+
+>>
+>> That matches the current shmem producer: explicit sequential refault hints
+>> allow large zswap swapin; no hint and random hints do not.
+>>
+>> What this RFC does not establish
+>> ================================
+>>
+>> The 64K cap is deliberate, but it is not tuned. The anon PTE-young rule is
+>> only anon evidence. Shmem has the framework and explicit VMA hints in this
+>> RFC, not a page-cache locality producer. For larger orders, the anon
+>> producer should probably use bounded sampling instead of walking every PTE
+>> in a 1M or larger candidate range. The mixed-backend tests cover fallback
+>> behavior, but this series does not add mixed zswap/disk large IO.
 > 
-> I think you don't need to test zeromap at all? __swap_cache_alloc
-> handles that already.
+> The mixed IO can be deferred, but I think we should figure out a rule
+> to extend this hint to arbitrarily sized ranges, and preferrably shmem
+> too.
 
-I am sorry for missed that this is already covered by __swap_cache_add_check().
-I'll drop the explicit zeromap scan in v3 version.
+That makes sense.
 
-> 
->> +
->> +               state = zswap_probe_range(range_entry, nr_pages);
-> 
-> If you just move the zswap_probe_range into __swap_cache_alloc and do
-> fallback there (or maybe you can shrink the order faster), then this
-> two new helpers are all redundant.
-> 
->> +               switch (state) {
->> +               case ZSWAP_RANGE_MIXED:
->> +                       break;
->> +               case ZSWAP_RANGE_ALL_ZSWAP:
->> +               case ZSWAP_RANGE_NEVER_ENABLED:
->> +               case ZSWAP_RANGE_NO_ZSWAP:
->> +                       admit = true;
->> +                       break;
->> +               }
->> +
->> +next:
->> +               if (admit)
->> +                       admitted |= BIT(order);
->> +               else
->> +                       count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
->> +               candidates &= ~BIT(order);
->> +       }
->> +
->> +       return admitted ? admitted : BIT(0);
->> +}
->> +
->> +static bool zswap_needs_order0_retry(struct folio *folio)
->> +{
->> +       if (!folio_test_large(folio))
->> +               return false;
->> +
->> +       /*
->> +        * Admission sees only an advisory zswap snapshot. Recheck after the
->> +        * large swapcache folio is installed; if the range became mixed, drop
->> +        * the fresh folio before IO and let order-0 handle each slot.
->> +        */
->> +       return zswap_probe_range(folio->swap, folio_nr_pages(folio)) ==
->> +              ZSWAP_RANGE_MIXED;
->> +}
->> +
-> 
-> Again, I think you can just probe the suitable size in
-> __swap_cache_alloc directly, that way, we avoid the diverge of sync /
-> non-sync device, and avoid the whole chunk making the code much
-> simplier too, just like what we are alreadying doing for zero map in
-> __swap_cache_alloc, or am I over simpliying it?Thanks for your review! I will try it.
+The current 64K cap was intentionally conservative, but the locality rule is
+too tied to that size. For v3 I will look at making the admission rule
+order-independent, probably with bounded sampling rather than walking every
+PTE for larger ranges.
+
+For shmem, this RFC only uses explicit VMA hints, so it does not yet have a
+real page-cache locality producer. I will think through how to add a shmem
+producer with similar semantics, so the rule is not anon-only.
+
+Thanks,
+Fujunjie
+
 
 
