@@ -4,91 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E08A4CD6E52
-	for <linux-mm@archiver.kernel.org>; Sat, 30 May 2026 22:43:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FEB0CD4F54
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 00:12:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44C176B00C8; Sat, 30 May 2026 18:43:46 -0400 (EDT)
+	id E20FC6B00CB; Sat, 30 May 2026 20:12:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 387C16B00CA; Sat, 30 May 2026 18:43:46 -0400 (EDT)
+	id DD1D76B00CC; Sat, 30 May 2026 20:12:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B3816B00CB; Sat, 30 May 2026 18:43:46 -0400 (EDT)
+	id D0DA76B00CD; Sat, 30 May 2026 20:12:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B68B6B00C8
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 18:43:46 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C20B114029A
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 22:43:45 +0000 (UTC)
-X-FDA: 84825564810.20.B8718C0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EE8F5140005
-	for <linux-mm@kvack.org>; Sat, 30 May 2026 22:43:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HUVdjpm5;
-	spf=pass (imf09.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780181024; a=rsa-sha256;
-	cv=none;
-	b=fKGmT4bmIlXC588f8mcaTRWAhEU3VHJ+yqbhPeA+YFqfpjLDD38hbJL9SO9s8J24YQ+AK4
-	ty0OTbjy16QaKoV2jqmf3RYejo2RsbJ6tDzTx6uLimjEO1teMutT/Aoqpc9TV2otHTc5RN
-	COpc7vfzEjE+B39MX6fObQbvnzu5b8U=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HUVdjpm5;
-	spf=pass (imf09.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C25196B00CB
+	for <linux-mm@kvack.org>; Sat, 30 May 2026 20:12:12 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5EB2E161B86
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 00:12:12 +0000 (UTC)
+X-FDA: 84825787704.03.61B29FB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C630A4000B
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 00:12:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fHOhsAuR;
+	spf=pass (imf04.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780181024;
+	s=arc-20220608; t=1780186330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=AqHHEDBCPx6eeTdQuLTbUwe3Ba19PriW4VAa7ABkIPE=;
-	b=H4QRaE63/8pE/BmBR/4lsKbfxh6zSml1NJ4e8dxFa4eNdpqx/WRHfpJzz5iRhyrdP1vTRP
-	uGsGchmaVAvzI+IE/F0elldYTxustZb0jcxPZq4ZMOhPpb1r2FwXaQW4mkU9wvTYhmVjxr
-	HuWRLZ/C/+tTmEzv0LAJzptS1NYpvoY=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OYvRVj4ATb1VjPqyrKnbeBCWG0iaq3Bc8et+a/muwak=;
+	b=fCEQuyNadwsh/K0eGIgT3aoV+6toX/uwHFbp5E3wm1BZOADVuqwUV/e7IJeto+I/TC7VD4
+	UqSjlxcoLzUjYQXdBQ6UN5vKgRP0BDH0UyV2VYELhzu4zGsh3MwhA+6SLIPeK90RgaQqDt
+	/odzjCU19P/RaIU+Qo9ajbZBjkuWtX0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fHOhsAuR;
+	spf=pass (imf04.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780186330; a=rsa-sha256;
+	cv=none;
+	b=thi6yPS+iCNhPWK/UJX/BYvs6ufSFiH6O116VFa5Re+a/gyycZXtYDTFy0u+OMBFwShB/E
+	80W7Kg4jBFhVnhrs2rjPDhycKZy4tK6Nqf30HC72XYJW07RF+NJmkm+G9e7c9jMKMNVvi+
+	oGQVggcWJ+2JbhLYvKBigBSvW0jO3xU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 475804419B;
-	Sat, 30 May 2026 22:43:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AEF1F00893;
-	Sat, 30 May 2026 22:43:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0FFDB6001A;
+	Sun, 31 May 2026 00:12:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C321F00893;
+	Sun, 31 May 2026 00:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780181023;
-	bh=AqHHEDBCPx6eeTdQuLTbUwe3Ba19PriW4VAa7ABkIPE=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=HUVdjpm55vVXCd/rXrwyIjaRGzI/fs2NJX0EBQ6KrxBOOuvU6xnttiGhlUzfLbCXd
-	 5P1LCXQH84oX1vvDDO27joomvFYSw8kj7jpAuZxWwlCvZ7WEf3DnmvQAWKGn9VrEDz
-	 JpHeZRtDluioBAlJ06fdEtZSdjJkYED9uPjWXinXSlCvOIonez1GpaBvVFJarWq7Mj
-	 BfW5wXs7pI7DnKmuHrzCoayfxEOE/i4/qPQPlmnx7a2mwwBmOEKlDpL8ta609wtPG6
-	 4T/gtosrA9PX4gervwVl8jpkRy6ODC9KCHAIUjC7Jz+xDgon3BpCHf5L/u04D/WHBB
-	 1PegnMM4Kecuw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9393739302C0;
-	Sat, 30 May 2026 22:43:47 +0000 (UTC)
-Subject: Re: [GIT PULL] liveupdate: kho: two regression fixes
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260530171420.1430298-1-rppt@kernel.org>
-References: <20260530171420.1430298-1-rppt@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20260530171420.1430298-1-rppt@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/liveupdate-fixes-2026-05-30
-X-PR-Tracked-Commit-Id: 8fd2f26fa2a33cfe8ac043f976137ecf5b567f03
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 9d87d0fc8c8e0a2a2b5026a169db2f270b4828c1
-Message-Id: <178018102619.2731103.8401182140479584451.pr-tracker-bot@kernel.org>
-Date: Sat, 30 May 2026 22:43:46 +0000
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, George Guo <guodongtai@kylinos.cn>, Kexin Liu <liukexin@kylinos.cn>, Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+	s=k20260515; t=1780186329;
+	bh=OYvRVj4ATb1VjPqyrKnbeBCWG0iaq3Bc8et+a/muwak=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fHOhsAuR4ScpU7RKty78SP/q0nx98PvpFWPIMukzAHEP+/dxNLJI95BYxZOkZRH8b
+	 0vvtGETBPj6snAsl5sZla2ANtjpOu4hsZ5T9xZfqKEMyFTJ+hOr94AJt2anvzGK+2I
+	 UUkR+VjHrS2bRTK7MRYAYRcbwjVawM7kdJGKgjfyVuHrHvzAsPTa4LYjInu5Z7qURl
+	 uNsap2grrmNTO60WkFlgwkIZCj4q1gkDfjY+QhvWLXJjz4UkmrfX7fYLTkcA4ucLZJ
+	 K8wxewMF4nOOu52EePN9R+PXM0YUBOJ2WgVAEF3VTJ1jlevVgFJhgTDaF6fDHUvvrK
+	 pcE0/tyMGqKtg==
+Date: Sun, 31 May 2026 00:12:07 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Bart Van Assche <bvanassche@acm.org>, Theodore Tso <tytso@mit.edu>,
+	linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-f2fs-devel@lists.sourceforge.net, linux-mm@kvack.org,
+	Akilesh Kailash <akailash@google.com>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
+ remembering inode number
+Message-ID: <aht812OhSPFqIBPK@google.com>
+References: <ag_OVwPF49LSZ7rz@google.com>
+ <20260522141115.GA8258@macsyma-wired.lan>
+ <ahCNmWbcd_2lAJyk@google.com>
+ <20260522224108.GA18663@macsyma-wired.lan>
+ <ahTzHyHBL8t0iNBR@google.com>
+ <ybmbjekuvzmaw4hmlxd7nxs546dqtwmxqxwyali74d6m3u7tat@b4q3japqnhrl>
+ <f4e521ac-2381-49ca-8dcc-3cb3cf3ffaea@acm.org>
+ <ahaPDHiXcJoVShPv@infradead.org>
+ <ahcU5xbVy7xjps02@google.com>
+ <ahkl52N3RDcusCNd@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahkl52N3RDcusCNd@infradead.org>
+X-Stat-Signature: ijqb9ekimyqhyu9xzip86cz8bbp11czq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EE8F5140005
-X-Rspamd-Server: rspam03
-X-Stat-Signature: xs9abqq4xzafqbfgfhh5eakcbsdpku6m
-X-HE-Tag: 1780181023-907555
-X-HE-Meta: U2FsdGVkX1/mIJlmIawayU+X9B14jXEyYUeyMuHdh1PpWryMghUQY4UbImlydaqhAG9Y8N9WDO6cwn5zSeWzPGjZBgO5nu2gr3Xqy1ij6i4vjBysJZ2QK0fThEr3KUMQZ/BOdgbSmVm+XbyRtKRcUen4A0EDicO4AQ/+oht22HTLMzKyZxRG8V1Yxjj+MbLQVtsOlki5lEVXoNGaJm4hDAgv9daUaI8czomhqhEerpM1Sy6iV4Z5eIBNOIoD/HK6cN9p5bb2vwnjYKB+9jlyEGOoPN+bz6GVd4++mS/y/McJdw2LEr5VGcg0TGFgFs3LTx99bnp5Yk27Dx0Xc7qYGqn2aiBc8+7zVG0SqIU1+Z+AWJUTDsLo4Mj7TD7Mf7gc/VROd7CDbNR48HsJbnN+qvfCZm362N+SpTWlg5R00lY12UcGzeCfLTWNEdyZ5Rnzva+IncLuPj9lzvv3TACGYEZunxBZVpjDG+BDYdUzEbr2lzF1vzipkzznSPX+TsP3DWqDJUMvSJiD3o50M4VAWiyJsw7eIceglAmBW92xvEa6rmeft5AtWwLu4//vvYCJoGkL5dUnXrZYx3NbbW+sh/twmXJG/Nj0KEjMxzb1SPIUMAWijgyPB6Ag24kkQAFQnp964Hv9IJySUxhVpTHFDqs8R2XzlVnEhHbdiOxtyUa5jhEzhk2pi12H3dz09xNzfwBuixZU7nFP/4FwLvNwbsJ0DkAV1WgXOrhJVnM9Ow9okumhjtAHnvr5ejgsfe0vuKGIiTQz4rTIsfkkAVglbcc7c8zqg2R90S9a9sW2Q+gIYqFO+7vks5WPw5e8AsYe1LQqYW6X5BWwKSULy1JD3F8gO7QDK7icioTTCIypDR1yVAZhtvwnKPOb9E2BYByPWU15cxRzk1BlR0rhhkvxHHX6ztrCmNBDAJbM3CoRj2LTRyAolNhd+3B959pQuAMFGLa7azUISX6wMJnl+3k
- dJeL+zGO
- yhDUTjRhAKg8DKl25kvk8tWebH4im8pqYhM0C6k1TMBa3wKKrXswYBWU01RuPdfEB2B+mlTX8Bmv3NozbhmWU8Fr9cDR+iuhdPBmw88+mHVQcV5vrLhDE8g7McWXd5hHkJVAPNNefiqXZL6aWh89f6TEln+3jpL6urzZC97E/GfC1jGwrmrgWnoEKStcuObcqg15g9JKUQfA/PQzu36UCDZtk3EDTToQctDrYSQwd3l37rcf96EBS5+7OvVeKlk4qT4FhvFDNLzhJjAypuV5XuKYehW25AR/QBDncuJi1sNCDvK73t5SJ+21afFuJnVVR66uA+ZcQocW7KKNtK4mdJTiKGrmUwvw5TaMZK72a98aZkBSPIXG/hbCOeVm0XV8fDr0wEWX8APvKUVM=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C630A4000B
+X-HE-Tag: 1780186330-582224
+X-HE-Meta: U2FsdGVkX19cb9smYEOB6xXDc3x2mAhrZlG7o2OnaPYSRzYOKiSUxIyXMLDSEWAAyvQZeWb4yz7InDRipooXXcAHNK/i3/z3lzZv/5uzwVdN81cEGxU6pVpT+X2zhmdAGTQErDQGPhqNiQOy2bDCTGYyCrqd3clq1RyLOihfARR54ivAUINqoyueStX3set81/XKn6p75DqjZTJIOStJKsZFecTrA4bJwKs2/Z5EqMw4gF1EmX3RcKqpel8DwiYyENqH3x4XI2opBkRhUwMeUqAsJqEtpQrhuTqbAdrfCmGs0h7z/1mE/1DtH/mhwOGrSSU3+mih6dPQ0xI1gKThw2x4x1reqf4Dy+lXlSyrCr3o//ULmgrqyxFSnjs5QeqtlMO4HMHzRvWcE7cRpWh0RduoRNqlDKIxxPil37sSzrWgNQFgw7boSdo8X9y+nAN3ZZbrXJMIv3FrAHU1LIRjHD2HMJBDWgp0e4eSx+nuQ1hTnvquEu7NPjiM4Hug3d8nmg433lznLsvk1CtbTyJMtdMgY6ME/xsNvGHybWOuGmJg5JYTC/TYT12RM1Hbq6b9tVZezyB3P1TToutG1l5E78FPI/AOGrxfMe/wJq9ZuzJlZuGqN6yuDSGHeniJ3FbbPLXyUTBNYeYUcSD5/lnLozzL38t3ZHmQhI8o/AN89jbTwv4WYqzBMoXyMGfmkFMMcPrvGtnwmB6SBU+UrhLZXdby+ZtWQsjfn/An8+IwMmihtb284pRRpifvX9/2vluj5Qb8K2tian/OAAV+3Bv2vYxljXSRiMxbau6SKsqy8lTG7TMxurHwd9Wt+Pkf4seLScB4GWkKNliieVbYvbugl/KBx7Z6a03e23fry2aotWO28BTxwKn2NVMn2i6dHfhB1FS/C5CbaI1WQiAmDQfUio/VRnTcZfGjmnWmP/bILb7Flul+43z8NSNPeVCMplNBXTjm+XY0QaImNb+Qm2P
+ k6DGcCwv
+ qv4Xa3Kkgykl/bnqvfJ25LCgxhWuFO55CqPcWAYVG2Vwb9d2+f+bE3NMepIRyZ00mllD1xpaEbpoNFLqaZHtNPa3vfmAT8LJ1pnyL0YPAB2JTsIP7z05CtrIP2SPEiCKEEoGerR23c6z8RaR6FcshkK1pRDFNS5KMZdQ7QoxkaiZOuELFmjwX0yRi2AZBn7G38Q47v5JaXF6WOLGWKzHhKNn2TgbupSEMh5Q5g4PobVJ1DyQ4CWP7Uhcb40uTCdkNeMWfMYsHpsQ4GmyjRS0OLDY/cQFGMLa5Bmji
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,16 +105,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Sat, 30 May 2026 20:14:20 +0300:
+On 05/28, Christoph Hellwig wrote:
+> On Wed, May 27, 2026 at 03:59:35PM +0000, Jaegeuk Kim wrote:
+> > F2FS merges bios before submit_bio, regardless of small or large folios,
+> > since the block addresses are consecutive. So, I think IO subsystem was
+> > working in full speed.
+> 
+> As does every other remotely modern file system.  But that merging is
+> surprisingly expensive, which is why using folios gets really major
+> performance improvements.
+> 
+> For one doing these checks to merge touch quite a few cache lines.
+> Second, devices are often a lot more efficient if they see fewer SGL
+> entries.  I.e. having a 1MB bio a single SGL tends to work better than
+> having 256 of them.
+> The same is true in the kernel code itself, both in the submission path
+> (dma mapping and co), and even more so in the page cache handling
+> both before submitting and in the completion path.
+> 
+> See Bart's patch about how long the walk of the bio_vecs in the f2fs
+> completion path can take.  We had similar issues in XFS even in the
+> workqueue completion path due to lack of rescheduling, and these simply
+> go away when you do the folio manipulation in larger chunks (LAZY_PREEMPT
+> would avoid the need to explicit rescheduling these days, but that just
+> papers over the symptoms in this case).
+> 
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/liveupdate-fixes-2026-05-30
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/9d87d0fc8c8e0a2a2b5026a169db2f270b4828c1
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+I see. That's also super helpful. Let me kick off the large folio support asap.
+Thanks.
 
