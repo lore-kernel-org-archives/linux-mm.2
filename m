@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D90A5CD5BD1
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 05:58:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC91ACD6E51
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 05:58:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FB6C6B00FA; Sun, 31 May 2026 01:58:37 -0400 (EDT)
+	id 7BB086B00FC; Sun, 31 May 2026 01:58:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 880CA6B00FC; Sun, 31 May 2026 01:58:37 -0400 (EDT)
+	id 7212D6B00FE; Sun, 31 May 2026 01:58:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 795926B00FD; Sun, 31 May 2026 01:58:37 -0400 (EDT)
+	id 54E296B00FF; Sun, 31 May 2026 01:58:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F1306B00FA
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 01:58:37 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1EA73161BA3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CEE96B00FC
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 01:58:38 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E991FA0388
 	for <linux-mm@kvack.org>; Sun, 31 May 2026 05:58:37 +0000 (UTC)
-X-FDA: 84826660674.30.3D7D0EF
+X-FDA: 84826660674.11.1BE12C9
 Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5B8321A0007
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2A1A6120003
 	for <linux-mm@kvack.org>; Sun, 31 May 2026 05:58:35 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Rhwzv9OO;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of 3Cc4baggKCGwTSKaSiKXQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--jiaqiyan.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3Cc4baggKCGwTSKaSiKXQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--jiaqiyan.bounces.google.com
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dGaKCoGi;
+	spf=pass (imf29.hostedemail.com: domain of 3Cs4baggKCG0UTLbTjLYRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jiaqiyan.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3Cs4baggKCG0UTLbTjLYRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jiaqiyan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780207115;
+	s=arc-20220608; t=1780207116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Watx4wiVZz594G8gV72LCTq/SUp1MPbV3HBGL6Hr2ho=;
-	b=8b0eZNTGs4OY4Z0lonMfb0iGh5R+3OiJ+iqahrrLTTbcpgl1M6oIkSohdabuuyicydDpHx
-	YGJNbNn1iGDlcy5jLSFpCbLR58YBogKInOMUEjoDaz347ebyg8456D7eVmApOHx4Tcg9Lb
-	gdNA0VcKvaRj9mZRPhhc77CclLB/ShM=
+	bh=WZW1Swft1eWJtZExgmIavtPOzBDQuGx01Vq9nniKO/I=;
+	b=2dQy3v60O687FpeBT2Wx7D07rNgmRkUGMgIXlDnjni7rVBxVhYUovNNyi1N13OdnpUsaFi
+	NtD1UqCO+L8JhCgUxoOweB0si7+qj+o74hJEatIX7fpRKFPPkop/LpOOqQCRDMVUWG7jNg
+	zxJIR9Acks3LoJTLUKh3hGipyO89T9o=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Rhwzv9OO;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of 3Cc4baggKCGwTSKaSiKXQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--jiaqiyan.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3Cc4baggKCGwTSKaSiKXQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--jiaqiyan.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780207115; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dGaKCoGi;
+	spf=pass (imf29.hostedemail.com: domain of 3Cs4baggKCG0UTLbTjLYRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jiaqiyan.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3Cs4baggKCG0UTLbTjLYRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jiaqiyan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780207116; a=rsa-sha256;
 	cv=none;
-	b=h4o2ZWVTl4qwUowh+DucgailjL4AkPJRFgYX440K/3hwkeihbQfScl5wUlkUTg6NCXXDlQ
-	75P7UBRy93idTCr4luV6g971yC5paWpRjvw2FkKYE2PKHCUi+u6mVgITrwftMTQ/aSSgiW
-	8spNEnDOUokGSxAel2GYpodAtu5oMNg=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf32fb7cb2so10640035ad.2
+	b=y0JGoQC+HZ/+rc82UKIdwMm0xGG1MRCvfpebfSF+nH2fshP73tEgJIf7Ru+PuvoVubDM3Z
+	fHguj9PR19RqDXmwksEC53vqFH1MO26mzneCPCL4jqupgct9e5lt1kkhXtJXrOGTR5MHq5
+	4UhRPpLbE1/Q6fZ2O+gvSq32jzxL/jg=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c0b35fa876so6520375ad.1
         for <linux-mm@kvack.org>; Sat, 30 May 2026 22:58:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780207114; x=1780811914; darn=kvack.org;
+        d=google.com; s=20251104; t=1780207115; x=1780811915; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Watx4wiVZz594G8gV72LCTq/SUp1MPbV3HBGL6Hr2ho=;
-        b=Rhwzv9OOTPtPtX7/IjHC/0R6xgJ4WCYnB4rP0VQVN404v7XN510LXiSSvd0BM+OQBz
-         czc+ZF7eJSGHe3ZIdbrRVk7rZvxp/sGt0bd8vVVi6MjRsJH0cjGo2QQ1SZIAb9V+k/sa
-         QMY5e/lYgDfpmdt8sPdyr7bayS3s6SjdBN5XqZxwctHq8OQrajRO69eDimmoF6BCv73t
-         VTcfTUfHQWkAowcSwMzpI8dCRTObUy01GYSBYXIxa6dzg3wdR7p08P6sKYGcmhdmU8uj
-         fRRp1RLCbHf4TCmy1SUIoWYWYdzetN/nkFJJwN+Mxhwofiuk4uS08YEEjiaD5uJtoc6j
-         9QJw==
+        bh=WZW1Swft1eWJtZExgmIavtPOzBDQuGx01Vq9nniKO/I=;
+        b=dGaKCoGijCs68hUVNYGT83sBS07PTNEUGBTu/ttdjTktNcVLNCZy11P4pFEqqohT+7
+         jeQKPHOBkOFpLSKIt8656xvX39AZtdtdookndxGeFPp0ymC7LJDDbqruRXje8pDK2dIe
+         F8w52hwlbh0W1VJOnKVUrX7J44L15pcrLSARaXiWzumond8GFLnPbQmnpq8jUZSAsx4Z
+         Ukn51kVjqZNkXxQ8FigNCi1uqw3U++hgpBCoDGO+1cXFSN7YGMA8aoa1lvxUn30j5Irg
+         K60AuU1fWbPSgdqLRM3SiX8qn+oAGtrZ1rFF1Z7pPD/IHBhoVJjJ/YsxEbh+6cOVqmNh
+         idaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780207114; x=1780811914;
+        d=1e100.net; s=20251104; t=1780207115; x=1780811915;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Watx4wiVZz594G8gV72LCTq/SUp1MPbV3HBGL6Hr2ho=;
-        b=g053a2AUkoE+H6QE2plRsKTZHeXrncf64d8RBAhnecLinhAhQ5vvBqetrvtwZHci8F
-         FzeO9fPVpkMXVRr3axfTcytl0WBMb+3b4nW2WcLPNbnFg5mu/9oRHxW2m8ATeJ/nMNCI
-         /II10LikI7/FgNrfVlokh3DRKc1RoWHfwdoWd/EGOffVDiEZUTO1D1fc0yiU7qQxyMfU
-         Tv2w4eGJSztdPXHL4dJm+CyRnKvr38rF7qC4K9zqIOeFZ3oGHM81lxaYZ6EZU/Piy7ty
-         Pd9eidXrQf+xMNtqQIC6RNFycow/f746KKreVpfS52SVYmdvyTpt7nJ3HZALU9HXMlSi
-         BVoQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9ygH/se7u+6oA/p8gKuGL0CH2+WL2C5oX1DVUQ14SWpFL9AfUH2+QOlYkdG2EC2LvpIrt3iOrS2w==@kvack.org
-X-Gm-Message-State: AOJu0Yxe3f+L3qGy8KRgBapeijRYDIuwrjDD5gkLxjgaKdeTuoO30laX
-	/qBZ1vfy3Ajkm3ycreZUXbjlchm5mZPljs0APyTiPhstSNJmPnXgy+4XI3AoWsutRjhRCXdWNZO
-	fusSND1o+bqZpwg==
-X-Received: from plgy12.prod.google.com ([2002:a17:903:22cc:b0:2b2:4713:9ce4])
+        bh=WZW1Swft1eWJtZExgmIavtPOzBDQuGx01Vq9nniKO/I=;
+        b=L4KcIucM3vOfNmq5zt4Mg4L2aZfreYtQywUx9spmzxty6scOL8Rp+4Mhd+3/veXZhg
+         ddFnKq+qQ/hxMO/jlstWM0QTO1VAXTxZA0nXDr50ki2MdYJz4F22ZtQotmmwADbrjvGk
+         60paazlRytnG8wKObcUq2ovn468n7ohrcFO4zZCsTb86HX6+PzAsfPlJkzWoSanmi9ta
+         XAHE2nWldS6dftJvsaB5Xtq/1biMc5YLOS4qh7F4NTTn0XCKlPBpqtv5ewd+ZXW1CfDh
+         7H5zE1u8U0+0V+pwKRxc4k9T1IvyNz+rIMp6/WM2CupBziFa3dhb7qS7ggYt00EIBVrH
+         1i8g==
+X-Forwarded-Encrypted: i=1; AFNElJ8880D2zXDl7e2anrX0yUuHoEcEmL0e9fnguaIK2O6FgKxTODHMDSgCu/ZORbsH+DyoKQKnK5PhBA==@kvack.org
+X-Gm-Message-State: AOJu0YxXsHk6DSLnTgWlv8rnKmVY2mQdjUWlmlT250gQ8k1MZR4iFHHO
+	KAcKCFpY3m+n0MoImHDkyqB2aZ2hiwXEOS5GxUWBc0j/dJjSzfa7CUlsWVYiF+jjeNME1VcU8Y0
+	OttcG+4ZnTrHGwA==
+X-Received: from plbkn8.prod.google.com ([2002:a17:903:788:b0:2bf:20bc:ee77])
  (user=jiaqiyan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ce85:b0:2bd:4d4b:9143 with SMTP id d9443c01a7336-2bf36795110mr71007705ad.8.1780207113952;
- Sat, 30 May 2026 22:58:33 -0700 (PDT)
-Date: Sun, 31 May 2026 05:58:27 +0000
+ 2002:a17:903:1c6:b0:2bd:9c0a:32c with SMTP id d9443c01a7336-2bf3683b78dmr65642835ad.19.1780207114820;
+ Sat, 30 May 2026 22:58:34 -0700 (PDT)
+Date: Sun, 31 May 2026 05:58:28 +0000
 In-Reply-To: <20260531055829.3636554-1-jiaqiyan@google.com>
 Mime-Version: 1.0
 References: <20260531055829.3636554-1-jiaqiyan@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260531055829.3636554-3-jiaqiyan@google.com>
-Subject: [PATCH v5 2/4] mm/memory-failure: set has_hwpoisoned flags on
- dissolved HugeTLB folio
+Message-ID: <20260531055829.3636554-4-jiaqiyan@google.com>
+Subject: [PATCH v5 3/4] mm/memory-failure: skip take_page_off_buddy after
+ dissolving HWPoison HugeTLB page
 From: Jiaqi Yan <jiaqiyan@google.com>
 To: ljs@kernel.org, linmiaohe@huawei.com, osalvador@kernel.org, ziy@nvidia.com, 
 	harry.yoo@oracle.com, willy@infradead.org
@@ -100,14 +100,14 @@ Cc: osalvador@suse.de, lorenzo.stoakes@oracle.com, jackmanb@google.com,
 	vbabka@suse.cz, rppt@kernel.org, shuah@kernel.org, surenb@google.com, 
 	mhocko@suse.com, boudewijn@delta-utec.com, Jiaqi Yan <jiaqiyan@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5B8321A0007
-X-Stat-Signature: g6qf4m8q6wyutzc5hmpq7cw93szjcd77
+X-Stat-Signature: bjyo8ej1pg6bckgngo7t1bmc83hmfxyh
+X-Rspamd-Queue-Id: 2A1A6120003
 X-Rspam-User: 
-X-HE-Tag: 1780207115-408717
-X-HE-Meta: U2FsdGVkX19QEZP58omxmOM+zAbv+tZj47CLC6yHVgid4NDbFeB3spD7xpusz9vh7TGj0RQlyTjYOhe6KWfKZnjKSv0FnGPeOX4YxDyv+yX8ww1h+nYWNJ6q9vY2RJ3k7zzltwVdgqso6/Eh4+uqxyS+5YYPNGfIGHtgV877CR8c0fatAYaemqdA117kVoQeul5Ut/ik4QjEeDy8DQEqLAzOTU/XhPb9bX7wsnIBzQ+Rz++mtAp0z9Jyo7vnquwlHBo2yFtMIDz01I0/wO3sndQWnESx1REWFXCGmYUIe5GXYMzj5v1ef5CxEg1ki74tYFB3R/NDs8Wv6P8tt1B6WC0WfOmEeKO7JakgfJMtr4+koQfnTn6LYr5bXN3Sz2FWUnIoPJngym5rJJvyl/3IPuWUOB0Vyl2fqZutnj0anAliFroV/xBMGCgdY4FWKNINJjwaB0Kg0fWv/72ESiWjpd599Na7bBvjTfyqxEeJjuLI6y+Q8lXLpFmHLL0SS1QyI78AbyqIKr7bqqAahQ93DI2m/oBrOIWQW1fxV6Ku7GXxuegXHCsx41LkgKEwv8OqcWFCqu+1quFq3a0SVAcgT9Ydh7U0Vni7shbUynsq6bX9+pwfFVJiN39nGHuPD23ww3xxYPPEE8lTegMboQC5QA/GOI9Lz3baNHf/Cx/tTzGLB83fzg4NthenIeM86Sr25mln4j4KFVWfRCsmaLKsB83nuHTzOGQMthZ8XvvG18/Ip7fPFz/s+RiJZJoqtikH6LIm2VAutPpNckcBaNaxIabhQ/dq9sABiP6vDj8KtYuHRNsDfYFd0l/YEJ0AljezFUP55WTj67PoIr4oPpNTnoh8dCELVl1wWwep6xpj83eded1CWpR63IP3O0nDdqEjTwAJGSs2YoBiLjhHhDmb4PJfdrvnvG2XhcxcanKf9G12o9rNZyC8bIxYefpwc8MSC8j6dJEyv8ktaF5Ya+u
- bBvAxeHC
- hkuXShDuZZVAYigoEoZyQujUJ+iAVd1k3FQ7duMLOBd+b82rH8IH4FKMKd752GltSBUenq1PcTKPXVsjdybYxQ/QzbHvKG+XkjjWbK3Gr0Z40KA0INqyYwrC5IeObdXGitCZ4tyiM4lQ7+DsNHeQppxV5DZPiokKcAJPyQxQMCkz/di0vVnskk0uWBYNXGBP2s5zoPG/VX0+D0ZluWONRq4+oP8KuHNChNNao4Iq3DF84tOzMJKNnPVcXHqanjDx2oTz9r5v7pSDchvhjwmqLkETGMeLw2mr/exaDy8sBnNNwcZca9i36ItVMaOScxGcB5K4rwZ9a4hsC23JriNKx8qysHJnfnYq5CkU3CXFEKl1WqwBW6nxnFmgal0db1tBkwI4r4FzLPwrMTyGizXhxHoclNjgToEczOTEkx53DP9XzbjZQNUWpx5+okfLYqy/WVvFuPLoqmO3plcYn7RKj9W91crZcfTFieohrM59+6dKsUEAJ2NfGWK/GPozIvXQo58AkX7/HzmPh8nN4spmcMmzxZHbgsFTsuuBUwu80FksjP9ZpQDu9YHKyP+mPjsue/UZUYy98l5S/64SrZVGoUBji8+ObkmaoB7Jfid3kdcRS90kL3zK4bOt45gEhIwv0SitBoYydjYZoW4wryRPjyOPFdmYKFmy/8RJHsK0B6QXAnUc=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780207115-795159
+X-HE-Meta: U2FsdGVkX1/iwNiX5JzHr40qL374Kfd+FoVTeEPbOFyH7vFSBGz4U3Pr7I9nPcdP4dam8C45r1XEZMAlp+q3tnVZHbR5KF/XgolzqYjZli2kVXOA75mIs3vvk568l9/JBJFYYzy7Cvv/Of8xVXJm3EK5cqvMrYt8yCzST72KCKMjbXsJMIOoWLNragXt+bc3lEGfQpfRGxTdIE6h+6KVfK+fQy1fqPoFCQjwQ+JCXgDs89zRJze+4BunDNLYsROeNPfbNiuKTvzbTFeGbSw1TOKLGO678TAPbjuptQp4+dO4MG4oTRFZ3sHvEeJs+uvLfzoTubxbpiG4xWuQM4TnGR/RWtZH3oNguoadrp53F7EEsXIp4VjjFShfHeRhRsZTjTcXOP04AxMXVtzvsgKQALDde9iAY69f5GlqqzGQQRp+HRARNChj7JXDiaLt5KlPe6gT7KjK53NN0xebIM+bxjhNRYpq1dlTjsGDq5b+FZ0mZhq8Pxllh6Oov8u2f4NkE8i/ID/Fvs1Li5R/hKNo7C4MrfATrUN5StHatY45OA6gu2/EpNZaZboYUWfYVEVlHbS+3bCeiCqrzcmiXSYAKAjTBeOieAtB7Va4Gld6Fy5rtaGubmWJgO/KLdif+4UffNC3RHAACO1mkrZr0bsfII6RL2tSzej8XQfNyz5HqBnk7w5T7etluIEdk3nCTTkTwnrQBw1HgZVB9XalhM2HaFxqhvRmcOza7F+Tj44njid+ziqAC91TEQCkCo3s2kPOWAo87O09d2hj4shBIr/3tw1ldssGBx5m5Zhj/kQKbuj14uSFrKvuwddMdV3vbBhiGOasDDJBwXGfMxtu/nxLqx3aTMZQZIMp2gZyCpPePX8pidxL7q1gmvXo+fyrNtovQ0of0eLMUGuqIdlo85/3XBVL/Zadgcz8fH/8CM7AaZ6yshZi6Ppop4muBTwLSAM9tWaKV+ojhMQtRM/7cNN
+ fzyN6fgl
+ VS7lLG2Ofo8UilXq2ZpH9qiyRCG7FkLi1WmfQp81wBxj8D9y/wxziHd6S8BBjVwMH2hWhJh2gzyNMQKkgD323RepRQccnMjL6VdaCABqvpAyTl0nJExy7hCBwpFyCpQ5h8pTLDsjRLE82wjDzwmO8cmnDO4HU0H42/r7iJfeFfEsJNXQEct0aATxiATr3MkfVkuWet1iEQNMeEMo411+A7Qh7akF7UJZe4jjjNS4IdeF9ScCQOnfMHkN9JlCe1z+PHEYAgsKV0Vp5OWokZ1/eEQfe4K7hLK4Yp00Z2awBJLHM0FNMXk/ol71PXMSCSSmPYTTs9cD+PN8P2uJZZ638WzBXkCEOvYkuvSqDy+fPbntsu5OLGw7DvyPAylaDv6P2e9tBTC4P2eHM3FVINr8+tHPpKkEeBd7SxFROQp0etUuXSDuUZih6tbaD76t5oFSvUnHFHMbYToSHjuxjDBWNTGzKp2JdXqfFEo4blQQMqDDWdZuMaTSihNGZhT0NTIzbxiZi0guufRTMSKvLqR0O8zOG7hAraPF00G8FnUwo8V70RlcppWg6C6qr0FU54QQ92tac6G69c5dxx65soh2Jq9Ug5lcjy8z2yUO0VxglvlvY2DOZBife3wXJCE+WIxoDxmuQ/o5OFnbTbG3RX7KHe0Dkix9WZOq8iXRxmvjrxiYSc30=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,45 +115,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a free HWPoison HugeTLB folio is dissolved, it becomes
-non-HugeTLB and is released to buddy allocator as a high-order
-folio.
+Now that HWPoison subpage(s) within HugeTLB page will be rejected by
+buddy allocator during dissolve_free_hugetlb_folio(), there is no
+need to drain_all_pages() and take_page_off_buddy() anymore. In fact,
+calling take_page_off_buddy() after dissolve_free_hugetlb_folio()
+succeeded returns false, making caller think __page_handle_poison()
+failed.
 
-Set has_hwpoisoned flags on the high-order folio so that buddy
-allocator can tell that it contains certain HWPoison page(s),
-and can handle it specially with free_has_hwpoisoned().
+Add __hugepage_handle_poison() and replace __page_handle_poison() at
+HugeTLB specific call sites. The being handled HugeTLB page either
+is free at the moment of try_memory_failure_hugetlb(), or becomes
+free at the moment of me_huge_page().
 
 Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
 ---
- include/linux/page-flags.h | 2 +-
- mm/memory-failure.c        | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ mm/memory-failure.c | 36 ++++++++++++++++++++++++++++++------
+ 1 file changed, 30 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 7223f6f4e2b4..223ec3b2d62f 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -893,7 +893,7 @@ static inline int PageTransCompound(const struct page *page)
- TESTPAGEFLAG_FALSE(TransCompound, transcompound)
- #endif
- 
--#if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
-+#if defined(CONFIG_MEMORY_FAILURE) && (defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLB_PAGE))
- /*
-  * PageHasHWPoisoned indicates that at least one subpage is hwpoisoned in the
-  * compound page.
 diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 51508a55c405..95979b7995c1 100644
+index 95979b7995c1..098c4407e818 100644
 --- a/mm/memory-failure.c
 +++ b/mm/memory-failure.c
-@@ -1951,6 +1951,7 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
- 	if (folio_test_hugetlb_vmemmap_optimized(folio))
- 		return;
- 	folio_clear_hwpoison(folio);
-+	folio_set_has_hwpoisoned(folio);
- 	folio_free_raw_hwp(folio, true);
- }
+@@ -163,6 +163,30 @@ static struct rb_root_cached pfn_space_itree = RB_ROOT_CACHED;
+ static DEFINE_MUTEX(pfn_space_lock);
  
+ /*
++ * Only for a HugeTLB page being handled by memory_failure(). The key
++ * difference to soft_offline() is that, no HWPoison subpage will make
++ * into buddy allocator after a successful dissolve_free_hugetlb_folio(),
++ * so take_page_off_buddy() is unnecessary.
++ */
++static int __hugepage_handle_poison(struct page *page)
++{
++	struct folio *folio = page_folio(page);
++
++	VM_WARN_ON_FOLIO(!folio_test_hwpoison(folio), folio);
++
++	/*
++	 * Can't use dissolve_free_hugetlb_folio() without a reliable
++	 * raw_hwp_list telling which subpage is HWPoison.
++	 */
++	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
++		/* raw_hwp_list becomes unreliable when kmalloc() fails. */
++		return -ENOMEM;
++
++	return dissolve_free_hugetlb_folio(folio);
++}
++
++/*
++ * Only for a free or HugeTLB page being handled by soft_offline().
+  * Return values:
+  *   1:   the page is dissolved (if needed) and taken off from buddy,
+  *   0:   the page is dissolved (if needed) and not taken off from buddy,
+@@ -1166,11 +1190,11 @@ static int me_huge_page(struct page_state *ps, struct page *p)
+ 		 * subpages.
+ 		 */
+ 		folio_put(folio);
+-		if (__page_handle_poison(p) > 0) {
++		if (__hugepage_handle_poison(p)) {
++			res = MF_FAILED;
++		} else {
+ 			page_ref_inc(p);
+ 			res = MF_RECOVERED;
+-		} else {
+-			res = MF_FAILED;
+ 		}
+ 	}
+ 
+@@ -2076,11 +2100,11 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
+ 	 */
+ 	if (res == MF_HUGETLB_FREED) {
+ 		folio_unlock(folio);
+-		if (__page_handle_poison(p) > 0) {
++		if (__hugepage_handle_poison(p)) {
++			res = MF_FAILED;
++		} else {
+ 			page_ref_inc(p);
+ 			res = MF_RECOVERED;
+-		} else {
+-			res = MF_FAILED;
+ 		}
+ 		return action_result(pfn, MF_MSG_FREE_HUGE, res);
+ 	}
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
