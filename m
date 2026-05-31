@@ -4,135 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB7A9CD6E56
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:19:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22BFECD6E52
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:25:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E75386B0172; Sun, 31 May 2026 15:19:35 -0400 (EDT)
+	id 640016B0174; Sun, 31 May 2026 15:25:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E25676B0173; Sun, 31 May 2026 15:19:35 -0400 (EDT)
+	id 617986B0175; Sun, 31 May 2026 15:25:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D14C96B0174; Sun, 31 May 2026 15:19:35 -0400 (EDT)
+	id 556B16B0176; Sun, 31 May 2026 15:25:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BCDC66B0172
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:19:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 677541A0469
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:19:35 +0000 (UTC)
-X-FDA: 84828679110.17.25E5EAD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9688A1C0003
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:19:33 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FmkniLuD;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 41DFD6B0174
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:25:02 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E59EBC2116
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:25:01 +0000 (UTC)
+X-FDA: 84828692802.10.1C2835F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1AE691C000D
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:25:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BqUnGLzc;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780255173;
+	s=arc-20220608; t=1780255500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9j7VeWQLosUvbqnA5WOjfBEafgKybim/sLzzb9SBJmM=;
-	b=nRO5X63BjNxje9c9fEF5sDhe3YWH/6qEPLDJaD0VU8ofDU1o92pA9wvr3CZfjWD5ACOHIz
-	Eau2Nl92nCtjqBZN4aCmZO/NkMcGx65QfiFp4YmjXc41SINFUCXMh0nw/VAGD9gbbrrdlo
-	L701AgkIckIG/sqD1l91ZMLN2nU1oiA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780255173; a=rsa-sha256;
-	cv=none;
-	b=W3ogwONOpMCz7mpITKsc1Opg9IVNacW1xh1SycqMzPOVAvDScv4YUBbPzpN4A49nwT6nSj
-	o3A5OIreZhxNswlq6JK85kCP38SNpBsrka/gSQVlOOEqqNypUh+slGm4rSirPHvCNMhG7i
-	8VMiGLXorsoIR0AvS12ywXLnsQS/eCo=
+	bh=Uko1Vuv+TRAWbjerQEGKNfOSzZb/odVklCx5MByR3WQ=;
+	b=fEUfknC035rR/ewEljb1dnGzR0F3Dl8nEl5Sfx4bDStNtJCL2yUjwRAt5OjcduNSLBKl8D
+	NNxhVChar9iqRhwX0eEbaAZlLS8zEekL4+FRENy0QkzdyKQb1YVKbhVslIm4xXjpI5U21p
+	VIkxQdXe4Hd1BIQYya5DLYv2ezgM/OQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FmkniLuD;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BqUnGLzc;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780255500; a=rsa-sha256;
+	cv=none;
+	b=GBlSO0o29YP7ZAtyFCIWRJJPzueDXrzESGVFgT6WbTCXL5kddabmeF82oiMtdyOTlV8EWl
+	+efcrmDF3gQH3EGeWHZHSKoUGdW2lFdcCQjP31gP3NqzhxuP6GNiMFfCZHnPeFjjl4i+vO
+	wjbISManjABsrMRNXzR1vLOgP9UpETU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A3229400CA;
-	Sun, 31 May 2026 19:19:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C45F1F00893;
-	Sun, 31 May 2026 19:19:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780255172;
-	bh=9j7VeWQLosUvbqnA5WOjfBEafgKybim/sLzzb9SBJmM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FmkniLuDgY7S7fwzGdd1AWC6ze+qaOfUDuGkIvtSK5gQn+AxlrePBX5eGwiFBl2wa
-	 SWvamc08tsydUBY4UxKJCiAO8mL0PINs01rx2Wl4IfU9+n25soygiD/L94zH5X+57d
-	 z1lPM2tU7QEjpRCGULcRrR6CfK8nT2ZKdZ2+9jTxoICEx/o15aVuES8RRI5DG0wlmm
-	 C+Nuqxx2iZslFQ5B8k4R0nhd0RoG37DWcm+bU8W+Y04bbcA2OCMjBm6hvxxKI1RKmy
-	 wQH9jfHvQVRKl2pLKgvxZdeANv1a4FeyfTMGeDnZ6KLbuENdayNm1LJzaKhmRUCZO6
-	 P0xHyzz9ZEE8w==
-Message-ID: <9271c3c0-0b04-47f8-adb2-83f5f89674ad@kernel.org>
-Date: Sun, 31 May 2026 21:19:29 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] MAINTAINERS: add ABI documents for mm
-To: SeongJae Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260530011852.90663-1-sj@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260530011852.90663-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+	by tor.source.kernel.org (Postfix) with ESMTP id 7AC90601FE;
+	Sun, 31 May 2026 19:24:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9434C1F00893;
+	Sun, 31 May 2026 19:24:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1780255499;
+	bh=Uko1Vuv+TRAWbjerQEGKNfOSzZb/odVklCx5MByR3WQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=BqUnGLzcGY9YmhTi41lBU6NbdBR4BH3icQiVpu7Cu4k8LsPyfwWTbimSnSi491BMM
+	 7gJbMySUzveXwFRISDc9OGmLtP2Pe98w/fnTvdELdKirOql5+FBFKEe1bgIk8/hkgk
+	 t3xzRG/x170r1rjn3A4sInX2dhb71mwlk+YEOK18=
+Date: Sun, 31 May 2026 12:24:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: liam@infradead.org, ljs@kernel.org, jgg@ziepe.ca, leon@kernel.org,
+ david@kernel.org, shuah@kernel.org, vbabka@kernel.org, jannh@google.com,
+ pfalcato@suse.de, balbirs@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-kselftest@vger.kernel.org, usama.arif@linux.dev,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+Subject: Re: [PATCH v2 0/2] mm/hmm: A fix and a selftest
+Message-Id: <20260531122458.864e9deac7425e1b71c14f3a@linux-foundation.org>
+In-Reply-To: <20260530085413.1270139-1-dev.jain@arm.com>
+References: <20260530085413.1270139-1-dev.jain@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: pjz7dnpmk7bjioidbm91sedgnudrdsny
-X-Rspamd-Queue-Id: 9688A1C0003
+X-Stat-Signature: mkuyjjcb1p3qxsyuj3e8m6bmoiim8ofb
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1AE691C000D
 X-Rspam-User: 
-X-HE-Tag: 1780255173-439822
-X-HE-Meta: U2FsdGVkX19ZJ2WX6fimTrwVG9eikrUqG0MeL692L9SXW4Z3Cx6FrEkCEZSv5oV4lF8lU29gnzz3eEskVK2oiumT4Olqkcqslvfl0evvv9laugmTtvQU9cJe1hv+uFYt2rVQ/J/6vZT31ODoK3khgvYT1raA/OKIeH9gkw6QyImGkXB/qbqL+Nb51W3usporFZiu1F3mFkP1AqzS4Pc3FnpsNFycVSSythO503B7BJVbpw+KX3jfJSdBs+e+IUQCHqLuL0/gRP6+vZizLnkV7SH07/kKUxXGlE1aODp0mD1ehT0RdAU8fvHu67JKTMHQ7AI+INl9HCYq3oJxCF4ogWEsoRKSlEp99ZTy2I1V0RcKozI2iAovh6i+jB9xpwZZyco7chZPcLlG/TCVasa4/Wouw68O8QD+jh7j+WL5NWO6C/vR6BAH8eOF6Qba+iupvxVoV2x0+TfmqarhtIryyCH6141nAbajxmvou63ZA0d6HUhi0eOEoyrIPBhNi5eK/uTQ/NNZkLGs83wxryRMx4tp2YCWqPjPyhVZKajiLVtvyJgMORrHc8d/YstcT8p9GE5ynCOhrOWla3ILKV0MOFSvMA57SX1qREOP5zk4PiBgvMuKBusM0l4+UU7dL65aXzbKxTXBFvtMwthFCTlFi2D1/ny4BqNjMFNkBB/0Rjb49z5XRImrVBL6WK7rVTAvnExTqTBUPwlgmBoipPugrDEh6VAUg65+TlewbHUP5LJswpv4XP8v0Y+uvhC9HqTOUbZwmO4LoHvUULytVLHRGto788UivAg6lSyMWVnHE2ayGF4j3MhNb+nhYiRlIEUG2l+mdbK7VVnEC8jwtb2gGC3j+FxKQrKw2K/6T9ISuV50kgDPaq7AvwrycVpw9a39VA+/Ev4XOVfjekIP6QFVZa+cekl3BSzcq0Bb9aNrHJdX129tsxs/LYyrpEiwcFIObcS2SOcgqyBoSOU8heQ
- MTrpQC+u
- /VnW2Mjf0cC4Qzb3nmUTvPplk5dHnJ2ScVFqcnJqkl9i6Zk51XpLv66zgBHol0zgIQbLDsvymn9TtzJm9Ck2lqtcTtfKQX2KCPsg4+gMWizR5QHdZJmVo9C3sM6SpmXM/a9JGCmfJNuNyFHorpt4/hzhMd8LBW5FeVv4CVz3I37YJzq1/gZKDaKOocdxNnvQcNAuMs5QA69Gs1bfcu0WYqg6kAxeOWPxogyF6kYPFGeNICoZ1XmOVXvErsm+A5tbUGftST4riEVuYmDwCr11YygRjahF/6WwTtWurxacgSlmpqoNyyYYaMklBsatSMht0X57he27NzuX8zaq0yKqNPphQrJ586NlLRxK6s1e5lbyywUdPyLu2JRN4WgPcH2jK56e6sUryaWlWoFDiLfRkg5JV3JiJEy+zAujwBtr15KPXeqw=
+X-HE-Tag: 1780255499-570834
+X-HE-Meta: U2FsdGVkX199RT85UtfQiHGOePrY0LDyd3oAeIa9TPbvBIXUExe+NkQD3QMq/MKTEy3O3BcIEa6nsxWYRwwcf0a92a6i4iBjQvUx90JqWO3rfC8eVLUbcC+oE9VnqJnuaUJ6AXy+e2qjh+ON3cpAVpSK1JVAAjM/YtlnpAn0QGSc3Lwtqv1mlY1tRDwT/vpA8JUS7zk9I9nEh/4IBSa4jImCdNG4T7C/RIZaSs9Q4VwHw4fueWO3TMlzdjkmodFykCBicEqCg1CCjOrsdUaUk+UmTSzaxfbOSgy+rlcAQtlf7w8VYLQQymjY7WJGQxlboLJ2oBmLL+1avTgxIZhJZLKhRHo6lX1HOLEtmPr/d2am2kOE9jnhrLTbpyFHr3AIgwJQgfsU8z8ncINfYaBLhiQDgqjUbjVOo3TCjwNw7J4gznEzReUqKHPiZxD70Fnw1xDjJ8hJ08sJQGfMnLUi0JZA0TzpjWPCwUIgmL3bXg9olEQ38xJwgRwrtKUVi7oBerLfs7t0ScpCDsV6MaGY78BjiZIXTn/Zw2ScIssAxUC32V/4EwdCwUk159o+DaZUFrOyaHzFv8Wr2Vp92QIKaBYU0TsDOoGJcIirzmpZCBtBMO85hSnXAVC5IUHWC1bY6UcKFjXejHBFq2NKobzdxWMfOkMuOpnQJFKnHITA/lUQ4gXvXCQiCcMwxHjon4Vh2kxURIMpbaDfmwRqIYErzIRh3b+LimB1QNGNrvU0vRYjUGQ3rWd2hMgirUo+EjRfmjee/WGoUBiQEij4R/BoHPRJ7sx/fHGamX8PHp3pBQTH6dAAxjkb/3kwpYlR7ApZxiN7NwV8MMfHmjnOVbeVlT/aDj+J2uuQomwVxm1yIeSQUaRlADJGKhUntyVKm8qdE+NZ6a0AuA7yU+vA4qVpiUjVkXTu16oCa6n/eaJ7neDjFlb8XKCQk7gO7vhswyAol8tF6o+IIRCbvRPljfb
+ QRXimc1G
+ RH0yFWAA4PT6+3I0NjC+dxL5oYPhrK0j4MWEUJ6CVEQpKtr/TZeYHOWw4mPv0rB3SzD6XMhwAJO/qr7x2a108IIBAHp/tudMY36DJ6kRwdMO6U/DUekQ54Kqu0lSpquIou9kGETEcsxAG/ZsmQy1Mkk9ob1zIOXF96Yvmrc/2NoVCgNyhcuOxihjb1bsXeDqM5/l93qkn7jQtAsxQyTmXCFes5n2DT0kh54+7nMufnu9yQSuk1yEr1u9IGrNmOh21tyDgOwx73AOAA/IMuzLMB5zsCcajUirw6BgwSAcLzeWwhXi1JUjqJfyaRJYaO8CxlOYztFws1iLFtD73Jg0jf798FmbVlndSk/zLvtzsQWetvWVpuqN2O/XWRQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,97 +94,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/30/26 03:18, SeongJae Park wrote:
-> A few mm subsystem entries in MAINTAINERS are missing their ABI
-> documents.  Add those.
+On Sat, 30 May 2026 08:54:10 +0000 Dev Jain <dev.jain@arm.com> wrote:
 
-Maybe spell out "testing ABI" in here + subject, because I was concerned there
-for a second :)
-
+> Patch 1 fixes a stale warning present from the time when only migration
+> softleaf entries were supported at the PMD level.
 > 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
-> 1. I found no better place for mm, mm-cma, mm-memory-tiers, and mm-numa,
->    so put those on the 'MM - MISC' section.  This is an RFC mainly
->    because I want to know if it concerns someone.
-> 
->  MAINTAINERS | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e119182a8911d..a31f6f207afd8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16854,6 +16854,7 @@ L:	linux-mm@kvack.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm-ksm
+> Patch 2 adds some code into hmm-tests.c which exercises the pagemap path
+> for PMD device-private entries.
 
-Makes sense.
+David, I'll retain your ack on patch 1.
 
->  F:	Documentation/admin-guide/mm/ksm.rst
->  F:	Documentation/mm/ksm.rst
->  F:	include/linux/ksm.h
-> @@ -16876,6 +16877,8 @@ L:	linux-mm@kvack.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
-
-Makes sense.
-
->  F:	include/linux/mempolicy.h
->  F:	include/uapi/linux/mempolicy.h
->  F:	include/linux/migrate.h
-> @@ -16918,6 +16921,10 @@ L:	linux-mm@kvack.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm
-
-Maybe that one should go to CORE? But MISC works for me as well.
-
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm-cma
-
-Given that CMA is here, sounds about right.
-
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm-memory-tiers
-
-Given that memory tiering stuff is in here, makes sense I guess.
-
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm-numa
-
-That's all about page demotion for vmscan ... but again, also belongs to memory
-tiering. So makes sense.
-
->  F:	Documentation/admin-guide/mm/
->  F:	Documentation/mm/
->  F:	include/linux/cma.h
-> @@ -17041,6 +17048,7 @@ R:	Barry Song <baohua@kernel.org>
->  R:	Youngjun Park <youngjun.park@lge.com>
->  L:	linux-mm@kvack.org
->  S:	Maintained
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm-swap
->  F:	Documentation/mm/swap-table.rst
->  F:	include/linux/swap.h
->  F:	include/linux/swapfile.h
-> @@ -17068,6 +17076,7 @@ L:	linux-mm@kvack.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm-transparent-hugepage
->  F:	Documentation/admin-guide/mm/transhuge.rst
->  F:	include/linux/huge_mm.h
->  F:	include/linux/khugepaged.h
-
-All LGTM.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
+Sashiko has a concern about the selftest:
+	https://sashiko.dev/#/patchset/20260530085413.1270139-1-dev.jain@arm.com
 
