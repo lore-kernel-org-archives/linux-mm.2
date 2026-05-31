@@ -4,80 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B28CCD6E52
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:49:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C17ECD6E52
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 20:00:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7269C6B017B; Sun, 31 May 2026 15:49:55 -0400 (EDT)
+	id 27AF46B017E; Sun, 31 May 2026 16:00:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D83A6B017D; Sun, 31 May 2026 15:49:55 -0400 (EDT)
+	id 2535C6B017F; Sun, 31 May 2026 16:00:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ED986B017E; Sun, 31 May 2026 15:49:55 -0400 (EDT)
+	id 142376B0180; Sun, 31 May 2026 16:00:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 503836B017B
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:49:55 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EC5D5120465
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:49:54 +0000 (UTC)
-X-FDA: 84828755508.03.12BE463
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4083C140005
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:49:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hi2oZ76z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 01C826B017E
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:00:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 99A661C1D6E
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 20:00:33 +0000 (UTC)
+X-FDA: 84828782346.19.1474C89
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C01D0100006
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 20:00:31 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yukqwlh4;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780257631; a=rsa-sha256;
+	cv=none;
+	b=VSIdlMDzeqhYJViG2Vh+8eg9daAKpsbQnj8g0KIcYj4trF4NJU3z+7stgBvJqEUjvPAQcn
+	0FOFJzrV1v9mR8ueq1UVZNOcMsbcnPSsLojStzRShm0c3HhsRQNS5ZrWaHUXMwkoBc+Ha2
+	IxDSK/5xpGGPxK7+Q2WE2MWLZ8EyuOE=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yukqwlh4;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780256993;
+	s=arc-20220608; t=1780257631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JzgiLAWTT+8hb3wVDklQJ1QdmY7O+bXqn2rYAgmL3Bs=;
-	b=v65FVh2mm+NPyxgPtGe0vyjeng8ScxE5Czd6ckuguNS8fRh97tVjx8p1X4iSUW4BCDg/1t
-	uhAqNUWjvJbYnIVEC0Zc5qu+/sEM80spPZhDS82NO3e88F71zFJwujvjLJGGMedQOc/M/o
-	2Mq4JY4P4nl4nG5PCcfMTEXErEkbuNs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hi2oZ76z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780256993; a=rsa-sha256;
-	cv=none;
-	b=mmJngPBhhEzHLy/taMqKahCNXpAaA4gF5Y70pLR19ytAlhQkvsnc8jGvg/CRBrNeLOwf8K
-	e6BcZ1GXab/9pPNrafle5U+EN9dwsoC0x9SS6wIb1c7V/N7TWjQn/Vyhl0C9KFF6KbbuSt
-	nh/7p1JtLPXQpLNZ+SQGH3kVsW/XRsg=
+	bh=aEPYmd3+KmSGb58hk3YvHjJwSc7TSC3VwrFHdZzW7T0=;
+	b=H5Ys6Wx6/pA4R58cdmIVUZvasLG9J8qSRa2nt3z3KB53QTwCwC6jUrGkz2Ka1K2rWtqDvk
+	Yry6YvaQm/1TE5/izhv0Ssq8AcgYE0R9xaz5Y6qEjC6rsG2pU3xKUTaKhExgVy0gIdSsZp
+	+bWt4XprxpT68X8kSPu3d44ZC+VndGg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AB72B601FE;
-	Sun, 31 May 2026 19:49:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA041F00893;
-	Sun, 31 May 2026 19:49:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BE65F438E8;
+	Sun, 31 May 2026 20:00:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E9A1F00893;
+	Sun, 31 May 2026 20:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780256992;
-	bh=JzgiLAWTT+8hb3wVDklQJ1QdmY7O+bXqn2rYAgmL3Bs=;
+	s=k20260515; t=1780257630;
+	bh=aEPYmd3+KmSGb58hk3YvHjJwSc7TSC3VwrFHdZzW7T0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Hi2oZ76zuOyqgAKzwkh+Tj3Z68AdgAhljPJbC/zVN6EeSegwC+wRGTq/dPFs911MN
-	 3lZ1kn7kKebyRLl5KKVhllKyMnsstuzyfzDXKO+WZthQ5+WQwmNjti8EPBtg5gACsx
-	 FiA6goisKZGXNovh5p6TwOGE/KjhXhhrNosF6VtrUtOzNdZnmOIjag0xdfN3EprhZG
-	 v4xyVnc3/+20U22+qr6tYZaBSfRMBc3Z6DQAAqanWmO/ReTczoOT0YAkn7slMJNgnl
-	 c9IZC0TZlaCY8l/12yoE+CSExH3sJgsfVz2YkSVugu70tHrrEDsPS90EgKSySssvlJ
-	 yYBgrcsKs1EhQ==
-Message-ID: <fa674c4c-11e7-4383-8c1e-dbe7f16575e7@kernel.org>
-Date: Sun, 31 May 2026 21:49:46 +0200
+	b=Yukqwlh43Y7HfHVE0H6+8wyDPPNZoUJNTHula00Bbpoj0kRLSjAG/1XYDnWIGXp6U
+	 lOaTpRvnhBZWAJMp1EI9OyNB0qC7O0NeaFfYpm6s6JmgiEY3kMwz9U7xhBMulSGvaG
+	 ZlB90Odwdi9AdJkXL93atrSsz2Tf/ca2W8S64HUZhYgSzB5J2xoJn821Q0dviL/ZZC
+	 SgwnPkzTZAvKUhf9QH522tIteT79/RdLSciPWYx6woLgUejtQdRwWZ/59LU/n1eQkl
+	 DK78iCc2SLAHY/hTlJUc7Zqmjv2PbNMaDIAiUPhac+XJuVZRFgCKpU0wA5+v/JBSc5
+	 9wpJFyGjEnCJg==
+Message-ID: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
+Date: Sun, 31 May 2026 22:00:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] mm/hmm: A fix and a selftest
-To: Andrew Morton <akpm@linux-foundation.org>, Dev Jain <dev.jain@arm.com>
-Cc: liam@infradead.org, ljs@kernel.org, jgg@ziepe.ca, leon@kernel.org,
- shuah@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
- balbirs@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-kselftest@vger.kernel.org, usama.arif@linux.dev,
- ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <20260530085413.1270139-1-dev.jain@arm.com>
- <20260531122458.864e9deac7425e1b71c14f3a@linux-foundation.org>
+Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+To: Lance Yang <lance.yang@linux.dev>, npache@redhat.com
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, liam@infradead.org, ljs@kernel.org,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
+ usama.arif@linux.dev
+References: <20260522150009.121603-7-npache@redhat.com>
+ <20260531093942.19644-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +139,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260531122458.864e9deac7425e1b71c14f3a@linux-foundation.org>
+In-Reply-To: <20260531093942.19644-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: gjtkg7mpuqap6wjtzarcybr7ur1mzjjr
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4083C140005
 X-Rspam-User: 
-X-HE-Tag: 1780256993-600141
-X-HE-Meta: U2FsdGVkX1+p+BZEnX+sE9qZc2XuekrY8BMG8mAmDhD+xs1w+4wfKfrS1JULgFMbN5eN2siKDxH5v6HkGT/33fY69a0O+ftmeh7Lq9K1dLwFhky6mdQ1t6anIkZD/cX8uaC98/u/vLh1oda+prgJOwe3O0NETZNIGNYQyKgeynFtn2R6L2WhQXmJnc1upGdaOqC85Olk4BzefFb9Ve20uwZ2yhNFMteGoIo+rJN++6pbot/mEIpHxksZ3CEyHWx4GI83d6EaA+V2b6iGDaNorF25NENxlD0TAgpE8ElkUB1oLp0ZqlMdy53y1M98xxtE+fP9QDrKf5wns4ccRF/6d4fGl6UZWAZxqNGYFhmey3nKy077WzuYQjOtJHQ/pJ/zcWifsUdp+zjGgPKnvJXSvakgDe5CsMFnT1ubcDcuc0qwrlkCDii8D56hW8KUbOZutdXuyl2g2fJY3Tq3v8cKC60koSXeOi4dz5FKkdvmH2RRVtVyz1g8SFmqhYXSM+b3mJHdQVnIDVr8Kar5RMAAFox3Ur0AaL1/DaYXVAQqdI0rGmFTLYS/Ehx/V0IszuBi3gIncjxJ6OvYGc57hMOJZb3K0QEUJRFJe/BkAk9AsC7MrrlIii2lLwtsjuikfpTohTQENXMQdeFgE82nwk5PY5N5O1+Q6FBPwi5S4s/UTbkA7t5Z2f5eOUHb2ydWGLfFKF5Y04ne857edNgeNuWyYqwtX4mk5tNQxyiW8nRLsuG6dcfjjAsFaBPQkv2xu5tb0hOdkFRYvMKXIKhM6Ez5eoSlrx4Zo0HqS1JNOty4ZVY6itR70Ns9/D5Y13IxA1dia04mBoCMJXRkmT0FS+zTAEOfc0GntFa2uWXANqztvlFETdIrv/4sVWBUaVazssNpbaWF1F89w5aOLXeWqyisbFCP80mephNBcgeODnl0gSO9T4GFWPrq0yf2kFeW+WQnGjvfUIxCN7xK+u+9d4l
- 7c6s9Br6
- eU/stSWcHi67lI6xT2oei0Bnvp+h+grzdDXFuzd4EyyptdKIqMXoQRFY66zHeCzL8d+AtON0jTacJ+KK+heV4CYErnzdCqJ6ZFsOiDn/Wgpv1/Pn2eJGYzCNQ8E2UhzyixpNtfGqJ0I5vZRappIpoe9TMWui2Hi0IybdHNfhHYV+X1QkccZ4+fIjDQUe77RS09achv1MtQbP4vRdUG6eIirE6xkxRuHgib+ChWOan36Gimt9WPAe6FFnDriLQ/MgIJwOhEZcYCcn32TeduR+UaGtXnzO8Oa8ynDyYiVoeJYeTHYUb5hLqRLlPS80n9F9KmB92
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C01D0100006
+X-Stat-Signature: a8jxgmuf7cksihxwe8e86944uwb9i54d
+X-HE-Tag: 1780257631-951935
+X-HE-Meta: U2FsdGVkX1+zYrpmVfGqPbA/KsjkByuIvte/5N7jedyMDAaoBVWvVzpbvuqY71QRKeNDKn15wiHEtDHz80sdLjDQhfQrolM/cHYyScZ4gjt2rDGtruFrE6usM6bgnWZhCOiqHPwAgaLRtNM7wCCNgAGONwQa56e7FZ0X/SyYRKNbkaFpdBAMUWwSLAvj6i8cUC6dsrvD4mL5GrqyE1EsRYb5L3CIIxsqACJUnZa9hKKrz6x8d+XOsAZpPg+asiM6xXIfLvEmFEyjXTILXL7ZHKgwsMlMwx5iUjjijJ2TpZA03gDhBf/cT7DbuschW6BCkTfXNFz8k9W2HYBLAq7Htlow4whvqUSCafxZcgmunuyp6Tj3peOpI3BiomFGl0OGJhGetIeGggJ+vGBaVNOVi7J/bW/VBl0/fBGU+P3/6rJUEMg2v/C3LXqIu8BfZLl/YxWDG9xvkxwoELInLgILQQ1l8SfgktBJywD8QOn/EpNPs+bcfc5KnqQDuzJWqbR/DAdOrVWuIBBFeOjAhZFoLD8YyS0suKRMv2T7QH2FQFEpnWAoSc0dN0zYMQSfUpjsgXbWAQFwEqnOpZEMzc0/n1oVhduBd4VH43/r3B+BBtdX05wy/TTGJ41qWKx081qyoa1eqqbOcx+JalrEPdkr0XifRQroK/bNT/tcmAuEeVdGujrf8e1FElxgNIX4tlIpiBNAxn8dF2r05wofL5CdSyQDx79Uavygw3Rd/066GOTS8e2BQNzpYcw1c2dVSAjE63ZHAE5VN1A/bKkdre48rG26FE5B4ZeEDJtiGvC5ClN7jijA888EpbLGk65//j8d5xXbK/ypu8UQ7Gdcz9yYHtgbAXg1ySm6P2dzTbgbcIvUi19Xr+XPIZsB3PN6gLAPUeIkCWGenQlguTDqBDk4xhssfuGKqXi3tKg3ZBpI5PGuqH4y/X+pJfe3D0WD/3RalCkOMNX9IXUUnAHkbjj
+ +KcmQU3f
+ PfkR6B3aiFHGzL1oQIKMXa9iB/YhDUfiUSSlW6pUWSwytkDMJrmA5OGvVu9Kxui02AuIpnOsLirnzWSJDFKc5FZGC7secgiLUT3tnjeje2oQtnhVV8S5PUN6XlVqkNCoB3H+NyTYGRd10JiMjQTT7XSQZpbOw7tJVdmZugN2Cperr74zRg/JVGwofyaFAUnCL1Q9/FF+rTcCxdz8+gbGpL7gA2serce3OG5siyc0bJ3t3etQzm4QCv5ty3ygYreE9hwqOz2HRh1spxBGv9RW2JXZSReNQKBM/CgWKtG5TcJnA3HyFRAJhw2QA1NuFkCpiDx9/AC7E3GNwpdRTrqg5ElrTtSZ77GW4ApZCuhPhtQMp9jqYAgO1a1G0c5vjyRSf+R/CxjUpz9ca7gFYiyWtq1pJVA3aIOPg3pPRZFqFPWAP3+OCi6OyzLYMTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,18 +157,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/31/26 21:24, Andrew Morton wrote:
-> On Sat, 30 May 2026 08:54:10 +0000 Dev Jain <dev.jain@arm.com> wrote:
+On 5/31/26 11:39, Lance Yang wrote:
 > 
->> Patch 1 fixes a stale warning present from the time when only migration
->> softleaf entries were supported at the PMD level.
+> On Fri, May 22, 2026 at 09:00:01AM -0600, Nico Pache wrote:
+>> Pass an order and offset to collapse_huge_page to support collapsing anon
+>> memory to arbitrary orders within a PMD. order indicates what mTHP size we
+>> are attempting to collapse to, and offset indicates were in the PMD to
+>> start the collapse attempt.
 >>
->> Patch 2 adds some code into hmm-tests.c which exercises the pagemap path
->> for PMD device-private entries.
+>> For non-PMD collapse we must leave the anon VMA write locked until after
+>> we collapse the mTHP-- in the PMD case all the pages are isolated, but in
+>> the mTHP case this is not true, and we must keep the lock to prevent
+>> access/changes to the page tables. This can happen if the rmap walkers hit
+>> a pmd_none while the PMD entry is currently unavailable due to being
+>> temporarily removed during the collapse phase.
+>>
+>> Acked-by: Usama Arif <usama.arif@linux.dev>
+>> Signed-off-by: Nico Pache <npache@redhat.com>
+>> ---
+>> mm/khugepaged.c | 93 +++++++++++++++++++++++++++++--------------------
+>> 1 file changed, 55 insertions(+), 38 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index fab35d318641..d64f42f66236 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -1214,34 +1214,36 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
+>>  * while allocating a THP, as that could trigger direct reclaim/compaction.
+>>  * Note that the VMA must be rechecked after grabbing the mmap_lock again.
+>>  */
+>> -static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long address,
+>> -		int referenced, int unmapped, struct collapse_control *cc)
+>> +static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long start_addr,
+>> +		int referenced, int unmapped, struct collapse_control *cc,
+>> +		unsigned int order)
+>> {
+>> +	const unsigned long pmd_addr = start_addr & HPAGE_PMD_MASK;
+>> +	const unsigned long end_addr = start_addr + (PAGE_SIZE << order);
+>> 	LIST_HEAD(compound_pagelist);
+>> 	pmd_t *pmd, _pmd;
+>> -	pte_t *pte;
+>> +	pte_t *pte = NULL;
+>> 	pgtable_t pgtable;
+>> 	struct folio *folio;
+>> 	spinlock_t *pmd_ptl, *pte_ptl;
+>> 	enum scan_result result = SCAN_FAIL;
+>> 	struct vm_area_struct *vma;
+>> 	struct mmu_notifier_range range;
+>> +	bool anon_vma_locked = false;
+>>
+>> -	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+>> -
+>> -	result = alloc_charge_folio(&folio, mm, cc, HPAGE_PMD_ORDER);
+>> +	result = alloc_charge_folio(&folio, mm, cc, order);
+>> 	if (result != SCAN_SUCCEED)
+>> 		goto out_nolock;
+>>
+>> 	mmap_read_lock(mm);
+>> -	result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
+>> -					 HPAGE_PMD_ORDER);
+>> +	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+>> +					 &vma, cc, order);
+>> 	if (result != SCAN_SUCCEED) {
+>> 		mmap_read_unlock(mm);
+>> 		goto out_nolock;
+>> 	}
+>>
+>> -	result = find_pmd_or_thp_or_none(mm, address, &pmd);
+>> +	result = find_pmd_or_thp_or_none(mm, pmd_addr, &pmd);
+>> 	if (result != SCAN_SUCCEED) {
+>> 		mmap_read_unlock(mm);
+>> 		goto out_nolock;
+>> @@ -1253,8 +1255,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>> 		 * released when it fails. So we jump out_nolock directly in
+>> 		 * that case.  Continuing to collapse causes inconsistency.
+>> 		 */
+>> -		result = __collapse_huge_page_swapin(mm, vma, address, pmd,
+>> -						     referenced, HPAGE_PMD_ORDER);
+>> +		result = __collapse_huge_page_swapin(mm, vma, start_addr, pmd,
+>> +						     referenced, order);
+>> 		if (result != SCAN_SUCCEED)
+>> 			goto out_nolock;
+>> 	}
+>> @@ -1269,20 +1271,21 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>> 	 * mmap_lock.
+>> 	 */
+>> 	mmap_write_lock(mm);
+>> -	result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
+>> -					 HPAGE_PMD_ORDER);
+>> +	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+>> +					 &vma, cc, order);
+>> 	if (result != SCAN_SUCCEED)
+>> 		goto out_up_write;
+>> 	/* check if the pmd is still valid */
+>> 	vma_start_write(vma);
+>> -	result = check_pmd_still_valid(mm, address, pmd);
+>> +	result = check_pmd_still_valid(mm, pmd_addr, pmd);
+>> 	if (result != SCAN_SUCCEED)
+>> 		goto out_up_write;
+>>
+>> 	anon_vma_lock_write(vma->anon_vma);
+>> +	anon_vma_locked = true;
+>>
+>> -	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, address,
+>> -				address + HPAGE_PMD_SIZE);
+>> +	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, start_addr,
+>> +				end_addr);
+>> 	mmu_notifier_invalidate_range_start(&range);
+>>
+>> 	pmd_ptl = pmd_lock(mm, pmd); /* probably unnecessary */
+>> @@ -1294,26 +1297,23 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>> 	 * Parallel GUP-fast is fine since GUP-fast will back off when
+>> 	 * it detects PMD is changed.
+>> 	 */
+>> -	_pmd = pmdp_collapse_flush(vma, address, pmd);
+>> +	_pmd = pmdp_collapse_flush(vma, pmd_addr, pmd);
+>> 	spin_unlock(pmd_ptl);
+>> 	mmu_notifier_invalidate_range_end(&range);
+>> 	tlb_remove_table_sync_one();
+>>
+>> -	pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
+>> +	pte = pte_offset_map_lock(mm, &_pmd, start_addr, &pte_ptl);
+>> 	if (pte) {
+>> -		result = __collapse_huge_page_isolate(vma, address, pte, cc,
+>> -						      HPAGE_PMD_ORDER,
+>> -						      &compound_pagelist);
+>> +		result = __collapse_huge_page_isolate(vma, start_addr, pte, cc,
+>> +						      order, &compound_pagelist);
+>> 		spin_unlock(pte_ptl);
+>> 	} else {
+>> 		result = SCAN_NO_PTE_TABLE;
+>> 	}
+>>
+>> 	if (unlikely(result != SCAN_SUCCEED)) {
+>> -		if (pte)
+>> -			pte_unmap(pte);
+>> 		spin_lock(pmd_ptl);
+>> -		BUG_ON(!pmd_none(*pmd));
+>> +		WARN_ON_ONCE(!pmd_none(*pmd));
+>> 		/*
+>> 		 * We can only use set_pmd_at when establishing
+>> 		 * hugepmds and never for establishing regular pmds that
+>> @@ -1321,21 +1321,24 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>> 		 */
+>> 		pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+>> 		spin_unlock(pmd_ptl);
+>> -		anon_vma_unlock_write(vma->anon_vma);
+>> 		goto out_up_write;
+>> 	}
+>>
+>> 	/*
+>> -	 * All pages are isolated and locked so anon_vma rmap
+>> -	 * can't run anymore.
+>> +	 * For PMD collapse all pages are isolated and locked so anon_vma
+>> +	 * rmap can't run anymore. For mTHP collapse the PMD entry has been
+>> +	 * removed and not all pages are isolated and locked, so we must hold
+>> +	 * the lock to prevent neighboring folios from attempting to access
+>> +	 * this PMD until its reinstalled.
+>> 	 */
+>> -	anon_vma_unlock_write(vma->anon_vma);
+>> +	if (is_pmd_order(order)) {
+>> +		anon_vma_unlock_write(vma->anon_vma);
+>> +		anon_vma_locked = false;
+>> +	}
+>>
+>> 	result = __collapse_huge_page_copy(pte, folio, pmd, _pmd,
+>> -					   vma, address, pte_ptl,
+>> -					   HPAGE_PMD_ORDER,
+>> -					   &compound_pagelist);
+>> -	pte_unmap(pte);
+>> +					   vma, start_addr, pte_ptl,
+>> +					   order, &compound_pagelist);
+>> 	if (unlikely(result != SCAN_SUCCEED))
+>> 		goto out_up_write;
+>>
+>> @@ -1345,18 +1348,32 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>> 	 * write.
+>> 	 */
+>> 	__folio_mark_uptodate(folio);
+>> -	pgtable = pmd_pgtable(_pmd);
+>> -
+>> 	spin_lock(pmd_ptl);
+>> -	BUG_ON(!pmd_none(*pmd));
+>> -	pgtable_trans_huge_deposit(mm, pmd, pgtable);
+>> -	map_anon_folio_pmd_nopf(folio, pmd, vma, address);
+>> +	WARN_ON_ONCE(!pmd_none(*pmd));
+>> +	if (is_pmd_order(order)) {
+>> +		pgtable = pmd_pgtable(_pmd);
+>> +		pgtable_trans_huge_deposit(mm, pmd, pgtable);
+>> +		map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
+>> +	} else {
+>> +		/*
+>> +		 * set_ptes is called in map_anon_folio_pte_nopf with the
+>> +		 * pmd_ptl lock still held; this is safe as the PMD is expected
+>> +		 * to be none. The pmd entry is then repopulated below.
+>> +		 */
+>> +		map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /*uffd_wp=*/ false);
 > 
-> David, I'll retain your ack on patch 1.
+> Emm ... is it safe to use map_anon_folio_pte_nopf() here?
+> 
+> At this point pmdp_collapse_flush() has cleared the PMD from the page
+> tables. The PTE table we are updating is only reachable through the saved
+> old PMD value, _pmd, until pmd_populate() below.
+> 
+> map_anon_folio_pte_nopf() does set_ptes() and then calls
+> update_mmu_cache_range(). Documentation/core-api/cachetlb.rst describes
+> that hook as:
+> 
+> "
+> 	At the end of every page fault, this routine is invoked to tell
+> 	the architecture specific code that translations now exists
+> 	in the software page tables for address space "vma->vm_mm"
+> 	at virtual address "address" for "nr" consecutive pages.
+> "
+> 
+> But that does not seem true here yet, since the PTE table is not
+> reachable from vma->vm_mm when update_mmu_cache_range() is called.
+> 
+> Should we avoid calling update_mmu_cache_range() until after the PTE
+> table is reinstalled with pmd_populate()?
 
-Thanks!
+I recall that update_mmu_cache* users mostly care about updating folios flags,
+for the folio derived from the PTE ... or flushing caches for the user address.
+
+So intuitively I would say "the architecture code doesn't care that the PMD
+table will only be visible to HW shortly after". The important thing should be
+that it will definetly happen, and that nothing else is curently there or can be
+there?
+
+
 
 -- 
 Cheers,
