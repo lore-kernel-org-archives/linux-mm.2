@@ -4,78 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11430CD6E56
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:31:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4DFDCD6E56
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 19:49:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 363A16B0177; Sun, 31 May 2026 15:31:42 -0400 (EDT)
+	id 9973C6B017A; Sun, 31 May 2026 15:49:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33A726B0179; Sun, 31 May 2026 15:31:42 -0400 (EDT)
+	id 96E5E6B017B; Sun, 31 May 2026 15:49:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 251106B017A; Sun, 31 May 2026 15:31:42 -0400 (EDT)
+	id 85DE16B017C; Sun, 31 May 2026 15:49:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1732F6B0177
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:31:42 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AAFBC1404E1
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:31:41 +0000 (UTC)
-X-FDA: 84828709602.06.71A90BA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 75A8A6B017A
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 15:49:08 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C2AB405C8
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:49:08 +0000 (UTC)
+X-FDA: 84828753576.21.BB42BE8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D059EA0006
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:31:39 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YsBb5rGZ;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 38BF614000A
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 19:49:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aF9n1T7D;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780255900;
+	s=arc-20220608; t=1780256946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eblzQlHm4oOugOyF3LKX6wnd3wUruGdjyINpmbI8UYw=;
-	b=4s+zhlm4lnH+AzSyBL+u+5EAbEcuPVU/Fuh7tbDBex93LpHMNxsgE4CsLzRR3RfChSGbZc
-	SHsfh+HhNURfA5SF6KiqgFOFVoOn5T3uTv7ltOvC9G8W7PQiKJZZWChFXlIJQSABo10l9E
-	Y7D7Eli2n7IClKtJAoPIAHF8fZIQakY=
+	bh=mK2Bhf6YoJh2Z2OyeiRaRcIGKaedQsLjME5c0Ozqbs0=;
+	b=VHZWPdMFIg/CjrHiJfoAqQ/anuGe5lAnTRoakuecwLNYVzA1TqI+9sE3/OILfEn1Sahr91
+	jXN+T4kzdlUl3ymLbQMuY6fmXmZyFvDztSBmbKdkfwuGbLjPVaOiuV1Jw6VCk8D7ySp9eL
+	/fAbOwG7MxH1PVPOQaUCjE3N047PHfc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YsBb5rGZ;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aF9n1T7D;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780255900; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780256946; a=rsa-sha256;
 	cv=none;
-	b=1ZKpaMWP+RQ+OickavGoIkX1aA+jeTRZ3L4+WqAd4Vtg/AZ3//FOYJIsjHolH46ILkeFQe
-	OigN4ZakIuOd2vtY9/o0hmmxkBSx+55Vknl553Vdwk6WloxKck6RL8loEpdLy+Jt6sShKL
-	MpbDidO8y/UquqzL0oBlxnHOUk/YOu8=
+	b=UtPvsOb0wCinqZ4Z3AxzbhTWIvprl214AhnBBQxENgCm6VVvO8jcI4vVpX6ovDtjrcfPi1
+	VCPs/Z2zYwQ7AHaKsZytxCUwAZaZ6nfQI+kWMHM8zfHECl3OoYXlxWFVs573cHgG2LQUaV
+	Yll7isxZ5WExmStaG45YX9UMhklM2cY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EE2AC40DA6;
-	Sun, 31 May 2026 19:31:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A54B1F00893;
-	Sun, 31 May 2026 19:31:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A83241569;
+	Sun, 31 May 2026 19:49:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39C31F00893;
+	Sun, 31 May 2026 19:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780255898;
-	bh=eblzQlHm4oOugOyF3LKX6wnd3wUruGdjyINpmbI8UYw=;
+	s=k20260515; t=1780256945;
+	bh=mK2Bhf6YoJh2Z2OyeiRaRcIGKaedQsLjME5c0Ozqbs0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YsBb5rGZSEEW1ukZETMd0KNSrFDySISTPqhEu/WpPUTH6ObggVr7nxGNd0Nc2ZSrG
-	 sojZNqFRtnshP9pqFaUjhmhaLHLmUmAZc7um/gDHgQtB9KuxD9hrJHRJOPBNqDsQ6K
-	 usCzE3lEjZVz4rMQeSCYzv7pwQmGx0WRPTaSAPWL7KCF4KL2vucHyzygsoeTAH4Uds
-	 cjO1aUeX1BC2aUs1uM2JZmo0+ysKbC8rbh89ly2yeTyjNSwlvT7fNLz4YAXvX5orc8
-	 0PR9VVQedT041AV4MeAY2wplG66KWfbj0xXNAXYqqYZjRG/ZmCEPzcdPg8nJ/b0EZc
-	 ZE+4g9hNkZrKQ==
-Message-ID: <122fe9c1-c953-439b-96ae-8d9a1a2e901f@kernel.org>
-Date: Sun, 31 May 2026 21:31:35 +0200
+	b=aF9n1T7DCVy1Hkc5fpzdyVCBZZhkp+kaL1rI5Ax02PcKOU7ga0DmKNtwfAjAGiEyi
+	 84PLNj2H4A12vPsVja9NqV1Ngi2fbkDIrRANB9RVOeG9yhBrMQRoIHrEpykGSN8qQN
+	 y07CpYsQGEw4US40Tg2OK7L6HVCSBswDv8zueXLMSOK7tlS6QO6fzhXHsWzYdO0z34
+	 NKVCtVmAc5mOHWoELEpZgZhVc2kT38sdXZCbVGmAdLona1awLOkcL6gdcWkbyUDLVb
+	 YMkmx7LTrTPKrXGRDhGoGuEI/czhR4WOKJvNqci5gTwhFJfJlKAk8B/NANIMtsqkAt
+	 rUG98FonuYKEQ==
+Message-ID: <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
+Date: Sun, 31 May 2026 21:49:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: add vm.rst to memory management core
-To: Brian Masney <bmasney@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
+Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
+ khugepaged: add mTHP) collapse support
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>
+Cc: Nico Pache <npache@redhat.com>, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, liam@infradead.org,
+ mhocko@suse.com, rppt@kernel.org, vbabka@suse.cz, willy@infradead.org
+References: <20260522150009.121603-1-npache@redhat.com>
+ <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
+ <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
+ <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
+ <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org> <ahVX1iq_-95vd0PN@lucifer>
+ <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260528-mm-vm-rst-maintainers-file-v1-1-306631c0a610@redhat.com>
+In-Reply-To: <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: thjqpf7ru9j7q11wkxkp766oo9nat6ch
+X-Rspamd-Queue-Id: 38BF614000A
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D059EA0006
-X-Stat-Signature: h5qb6tsdtt6m7zx7nmomzmqdedrsfyab
-X-HE-Tag: 1780255899-389617
-X-HE-Meta: U2FsdGVkX1+1jgU8OH3S9r91SaykyN7iNUSEsD9/3xAYAUQo+94ZPBuNojmbEMxZlgOIfnvQ+QdjjBqbRxMSFzbuzXEK2/7Goou1q+DnAjRKHPfAcawmUHQZrzO119xdRBENqFBtwMRxXkukn/nIDGMbAFy1J7CrqaOhWA7Nd1uZJQQ+a0z4QTSf/TW08Tfc7SDN6D+QhX5F5CMcjhNah1QX11Ol556QAPpLWg4Ex+JTcb1QfbATMvQ0bOVdUZyzXS0kU624VQKCVscHaOCOPgQz9QCAqjRhv74S7o0gXW8IGLP2GXN08x0mm5vk9YHFpQ7WkyuwtkGc7RxS+MVipXeYVLG/jttcakOMgnhYzcYb7kUk4QWKIGxb+P3FsILdnPPV3kT+f+7WW+0RFhFmV8Vhp3rfEOk7rkWUGT1YA2qvCuCX8WsEJYRQ4YALXHVWlZX3KvixyCI0m4GZPILdbG3Pk05jbl0sE8VFOXNtkr/SmjpDR65A7/l+mLQR/CFKeyw8gG+C4fr1gIUgM2mHUl2bcy13sqw/YfB6s7z03V9lnloz2GhjVQMYEYDiVcvaxinmtgumvlmrGg1DYYUd+tKEIPZ/9jvv3NAF0hjQ4AByX/2PBfEXQMOe/fhOX5XjUOZkotnNW5kGjCNxkmKuAL09Mb/F09JDcPzidA1YcTVViDhIS68dlAfQiXkucGI8w5cyoUpO7kss2S2plrODgqbmRYDmZgs4Nh/yrKGDwkr4RiaX0yLxov/R2Z0aFq34hcnM4qFkALkK8fJWY1t78joUxp0OcvHCG1zL+6yhBwf0+8/4uiYL+ZPe4dGnLi2AIOYRMAw562oe/Gk8uHygI9DneaI3UF9S1U/FgjmB/FOEVMy25q5dbmajAiPnGkyb3uLM3pPKEtn0iR0JiHfIU8G68xl9VgHDu+arIp4xL6cLjsC/hK0zRTIQPhtavNkWTmoRxXQkdNhYAxtJtWu
- zdwCZ5wO
- 6yC+Jy14ZNAOgdcxtEQrnaVZ7HYdPHD1FxJw+uBYsd/4jBYkdFZtiAVXPF6J0Iv6HOg8iUmXBN02a/wtQ0VDHY8IA+7ry9fdfiRf5ArVIy2sdSYOlBG/1vFksoY0q1fWuFVeFK+mdrvOV1pwcrNfqONWh3Q6R3ix0o87U8qN8Dk9bvrlN6O939WVzp8CQ0ZiOmq51gOAm7TyKECiuafR3ZhdLk6Oqew5OuoNvONj6QarCRwLAPQXXCdY/4LLMzcSOtCqX60vRSCQTaQJLLemAgosLlKzjr3TYrDS3sVvaIBNhf3wBMt5fxeBDWWuT3Aki8rbultXVVk6fApb/d7Mb0PX5fEPc6wUwvO9Ir1zqyb6SxlZ8Muqq/F5E/Ui4HgXP0HFaqiWRgKDBeJXDq33i0u1acojm0BPB14kkN5Mh4ymPalg=
+X-HE-Tag: 1780256946-146614
+X-HE-Meta: U2FsdGVkX19vc2GuDwIa+X04GHj0OS2QqFav1kTKFI3QMAO7kL/OQTZc4FZ8xGycDdHKUhgrJdXj57aBI45t1ume87WWe0LwwUSLoUgq/L1LEPzHC33UKpExlS9P0Wu8l06M6VH0cBj+onIND6iGGpqDItW7GM/vDv/jTzNtz7GTOUsHiLZh5KfBxv2NiD2c6fUFf9YDvJy0AGoHPv5sfFB+UQr3sEKxrPSAyd4pc5uu4+UTfTaDfhYsfA4dGu96StwPrNeV+qtgGJ3Er4y437deSmrtFoEXRd0Aii7MXrba+11BZkelya7XAGaTUWpP0E/fW9I499wNQjRiD5LaUlaIwR4kPXFWXW2F/Dsg8+BkZsd31pTN93xgEGqYyoQVMQnoxFCMyhyenzzjIUwjyxo9zxcc5Xg5gDyX/S7bUtUhagZcawBAja76ruL4al6OOObFi1RV7iRQK0WMEv+hLrHuwL2LC7WPuqGlggHDzLOdav9Ky7/8w1jiuC/n2A2mj6EWwlSkJYFfdKV+fvK9H1VmGy9TFY/NQ64m9sb0d0YwripcPKCWp98vc59zXyyROLCDTCHgMFSIdxxgEy9S6Z9PQYGVwWHtzKw61b7KgO128h1Wdw9ViDigrUh7TDZfVsfEYpx4Cwg6aPfuBoj+zdEhwFxyrUPRSqfTRLqZvIdjwI1h7pVxd2ZAfHC0b9UHJkLsg51kwEuhRRsQt62m6AvwREWZ3R3XAdgYePm6vhJk3IxgSoVeDQNIiVbXDmufIHufN2s4GBoWG7sQoKhNd4825n7HeHyW0nInXURFDZC0h7/fiYpA5+GpOcqC9onFyv+DHv9lgKA/x6oU+LiddBoSHCtMsxn+uoG7iWmchA6T3jvD3otaBGAQNsI9JIqlQVrdyhr+355tLMw3FyaAhCXSmQ0ZGJyRl3hnORGqKOdFH5ZG35RsivwwJ5ZRGbRz9f8m9NenLxVvp06AF6z
+ QHpr0nho
+ y3QH+0++zK1NwFK/xX9Ae0ba0cwu8Nu3xgp2r9HI7KqKzygO/UK9Pxj24/8azvx/xjYwmgt0NMEBmPOlN9sD4az5xbaxyKH/2t+Z6mOB/C+odkKkCSZBzhun+kH9gn6havauiGqxDrBLBOupxwMOEv56ceGRx4Q5Fyeax7K7lZCgUZUqhbv/rSeUA9QwaPiCoSRt6LeaE3WuNUruwPS2FKP7kKKODc07DH0IdbzIdp2CmfpnU9JsFQQbUwnatz+3Utmhy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,30 +145,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/28/26 15:56, Brian Masney wrote:
-> The vm.rst file is currently not listed in the MAINTAINERS file, so
-> let's go ahead and add to the MM core subsystem so that the maintainers
-> are CCed when changes to the documentation are proposed.
 > 
-> Signed-off-by: Brian Masney <bmasney@redhat.com>
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
+>> and have people
+>> base work against that?
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c99f0650b334..d8dcc4f25ccf 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16923,6 +16923,7 @@ L:	linux-mm@kvack.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +F:	Documentation/admin-guide/sysctl/vm.rst
->  F:	include/linux/folio_batch.h
->  F:	include/linux/gfp.h
->  F:	include/linux/gfp_types.h
+> This I'm not so sure how it would work. Assuming we have submaintainers with
+> their trees and branches, the final "stable branch" is merged from those.
+> But it's not a good base for work targeting the same merge window, as that
+> work would likely go to one of those submaintainer trees. But then it can't
+> be based on the result of merge of all submaintainer trees. That could only
+> work for patches targetting the next cycle (after the stable branch becomes
+> part of rc1).
+> 
+> So either patches can be based on rc1 and applied as topic branches in a
+> submaintainer tree and then merged, or if they really depend on something
+> already in a submaintainer tree, then based on the respective topic branch
+> that's part of it.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Right, most patches can be sent against the "stable branch", but cherry-picked
+on a submaintainers branch / topic tree.
+
+
+> 
+>> This would be 'source of truth' and what we eventually send to Linus.
+> 
+> Yes.
+> 
+>> In that world, the maintainers perform conflict resolution, but with git rerere
+>> we need only do this once.
+> 
+> I think the conflicts would arise from merging the submaintainers' branches
+> to the mm-next tree, and if they get updated and the merges are recreated
+> (like linux-next works) git rerere avoids resolving the same conflicts again.
+> 
+> Hm like Andrew said, this needs a diagram indeed :)
+
+It's one of the first things we'll discuss in the upcoming meetings ... I want
+to talk to some other folks (in particular, TIP and KVM) to understand how they
+are handling that.
+
+Hopefully I'll find some time after my inbox calmed down a bit ... jeez, 1500
+mails in one week if my eyes didn't betray me.
 
 -- 
 Cheers,
