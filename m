@@ -4,90 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 959FCCD5BD1
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 09:28:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B68FCD5BD1
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 09:40:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D436E6B0121; Sun, 31 May 2026 05:28:57 -0400 (EDT)
+	id 5D8796B0123; Sun, 31 May 2026 05:40:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1B1D6B0122; Sun, 31 May 2026 05:28:57 -0400 (EDT)
+	id 562886B0124; Sun, 31 May 2026 05:40:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C58AD6B0123; Sun, 31 May 2026 05:28:57 -0400 (EDT)
+	id 403C96B0125; Sun, 31 May 2026 05:40:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B2EFC6B0121
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 05:28:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 55B74120566
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 09:28:57 +0000 (UTC)
-X-FDA: 84827190714.26.E659174
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C3E361C000B
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 09:28:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rez7EVFp;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AFEF6B0123
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 05:40:03 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BE5B78DCD2
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 09:40:02 +0000 (UTC)
+X-FDA: 84827218644.07.9A6F178
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DCC992000D
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 09:40:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cBPRo2xp;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780220401; a=rsa-sha256;
+	cv=none;
+	b=Z98bQ2ZFA+ZwV3vgybBRZ0PHXc9y5ZU6yTWSXopTdQbKQlxeDBEqhaTBr1qNdZjNT4iA1S
+	a+VTPvI9v8sUMLA/RQ64hcxAuAxWIO7zr1iEnOz1Tk4aAiCp3K4s76xUMleSYFIGOJ2QKU
+	hmj321IcLFgphCwnrbiDnpqI5q/x1Qk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cBPRo2xp;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780219735;
+	s=arc-20220608; t=1780220401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sKVLCLu8XTfsvb4XdRoPm7KvsQtWzPp56I8MFy8zhao=;
-	b=pPEWci4b1rbLjbuISH5BGWjrTq9RTmaotTzv19W+1EswY7lB+ezQ2uaT2nAojeDE4WvpYS
-	khj7usjU/x6vKnMjMceoSBb/qYxXEAtp+zTdlqa0lqv9WwenJzmqSS0M7ty/PI5IChUrXn
-	X9weCsCi9yiIGWEA6C3G2i6JR+pQJGM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780219735; a=rsa-sha256;
-	cv=none;
-	b=jySeYt7VJytk314tqOTR9UvJ4tZBJrWT2Kj6KvVAeozq/AK8zeXUygs8ZOIJsHowa3VCTB
-	tqKPWhRUUGUJGBjSgovCJPiCNFYx8+HWBIRGkrbghD2jZ4dLYFU7cZSr3da+WOTLdpXsDY
-	CMooYD320GJPD+kkHppJlhQWHkAdsb8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rez7EVFp;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 40A66600AF;
-	Sun, 31 May 2026 09:28:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0A11F00893;
-	Sun, 31 May 2026 09:28:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780219735;
-	bh=sKVLCLu8XTfsvb4XdRoPm7KvsQtWzPp56I8MFy8zhao=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Rez7EVFpovoH5ATL25xVJfV9kmDIZar9McePukksCWV9f6z3A32X4rp/Miehff7Pu
-	 pSh6vOduka57MCJpt/oqUNBbev7WkZ5mUBS0z3YjxCJ+35wmJDqb3J8CGYMuup9CyX
-	 RW3OhrJVLdjgyVZqAD6WN68jTQ2yPuTvwRu3G2tA5TrCR0kPk9trY3R4kZ1Xj5jGJc
-	 Jd0iGSgxC68WFOdG3BFEzZ9IK9qw7cLjJ3CBAMzBGNbAuJ2ynJO1HTugu1aLHbuHTu
-	 HBjZu/5dhv30F1d9FKs5DpoYZRJMKkKwAAyr8947gK76H1CPrR+CsHX00AZJ1MBpbD
-	 hm+oilmW9WQTA==
-Date: Sun, 31 May 2026 12:28:47 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: George Guo <dongtai.guo@linux.dev>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Alexander Graf <graf@amazon.com>,
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, George Guo <guodongtai@kylinos.cn>
-Subject: Re:
-Message-ID: <ahv_T6WwFEysgIeg@kernel.org>
-References: <20260529143238.169169-1-dongtai.guo@linux.dev>
+	bh=CDqpOm4GUMbmXnNlKMQcoCkHdGOfT4SYZ50geLI7x88=;
+	b=b3dVSkI2nWglK9bc+xOk3rQMpiKPRoyTSt1n7pX07TUiQWuoeaN4/rotWKtBEzjS2D58ic
+	7p99K5YuQbgtbXonzMh2EGkZv8j/kcV3/1oWkL4wZo7Dmf3iYqSvygNzG7X23ZQ/m3H4p+
+	78sROq0sBRPcrdpNlxKI4l5POa0Y/Ac=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780220398;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CDqpOm4GUMbmXnNlKMQcoCkHdGOfT4SYZ50geLI7x88=;
+	b=cBPRo2xpHgEFrS06avLHNIBZGggrrVtlB5XZ+WsYxzDe2PXPZRngmY+/U1AUH7pR5wkT2Q
+	vnplr+blS3IBIuHIWL4br9MlrOAlw02LleDz+ZfMpxxHTb4BA8VqAyZsPGwW+psK0U3mb2
+	to1DOY5Cw2X6iSU8cz4Otw+jhAK5KGg=
+From: Lance Yang <lance.yang@linux.dev>
+To: npache@redhat.com
+Cc: linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	aarcange@redhat.com,
+	akpm@linux-foundation.org,
+	anshuman.khandual@arm.com,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	byungchul@sk.com,
+	catalin.marinas@arm.com,
+	cl@gentwo.org,
+	corbet@lwn.net,
+	dave.hansen@linux.intel.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	jack@suse.cz,
+	jackmanb@google.com,
+	jannh@google.com,
+	jglisse@google.com,
+	joshua.hahnjy@gmail.com,
+	kas@kernel.org,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	ljs@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	matthew.brost@intel.com,
+	mhiramat@kernel.org,
+	mhocko@suse.com,
+	peterx@redhat.com,
+	pfalcato@suse.de,
+	rakie.kim@sk.com,
+	raquini@redhat.com,
+	rdunlap@infradead.org,
+	richard.weiyang@gmail.com,
+	rientjes@google.com,
+	rostedt@goodmis.org,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shivankg@amd.com,
+	sunnanyong@huawei.com,
+	surenb@google.com,
+	thomas.hellstrom@linux.intel.com,
+	tiwai@suse.de,
+	usamaarif642@gmail.com,
+	vbabka@suse.cz,
+	vishal.moola@gmail.com,
+	wangkefeng.wang@huawei.com,
+	will@kernel.org,
+	willy@infradead.org,
+	yang@os.amperecomputing.com,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	zokeefe@google.com,
+	usama.arif@linux.dev
+Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize collapse_huge_page for mTHP collapse
+Date: Sun, 31 May 2026 17:39:42 +0800
+Message-Id: <20260531093942.19644-1-lance.yang@linux.dev>
+In-Reply-To: <20260522150009.121603-7-npache@redhat.com>
+References: <20260522150009.121603-7-npache@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260529143238.169169-1-dongtai.guo@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C3E361C000B
-X-Stat-Signature: 3w9yiuz5ubfqrx4pk33uyqd1y3nzaa9u
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1780219735-63110
-X-HE-Meta: U2FsdGVkX19X/qyh44YjXkBWYJ4qCtE8M+mF4gRxWzD3M2Pl2ybmozPOt0Ap/xep2x6/gBA4mHhHlVtjg8Y87ZVhPxOjQWl3ZRkLbnIPXcWjRy5EWIEU2WP/ySt/VXN81fbFRRwaULxS5yH7mR3fJdmpf1+u1Ddl+e91kS0Xli+w5Wlf4eGTQCHeK/HfEwqQx8zuQ3SBlqjS6IkqtaIRL3gZeL8aRp6AtJUg3w068F2UKX9afCxVbsvEN+/0J2hBbnXK8Yi6gdNQbupaSVj8neaJaBdDAcCbRAbJYX0aWPNfhgNgiu02R4mnGJsRQN49suemSeFnCvPl1G9Q2GLjARDeFMA81JybRN0cugPNhlsQ7cDApC0YnUwnWPjabYV0WkWez2nZj4RzdDNYTVnNmf19fo2agjHJH+qbWEWHxW/SyuQcs+UZcmYYlDv1qkpnx0fhM0Z4W6zIeEdncX8C+4u5cIzVCAsBvkK8L6zuRafqrLJjWE+qRnJDUWBicD3WhA9iWoYtQYHbEXiocDhD92KPrBgbrefLsMZGARP6pZs23hhnDbgxyLBsCYv47d1b2KCGLn0a2VrVUX+pQkUyTvdxBukut2TwCKFfcV9vuolXY+S5jMu4HluOSQutgkKuT+MCluoI67os6iBP5WNHgV7J3DJv8oOnUXBfW3+DtR7v6ZKZrWd1e3VdnsXwJP4tkS4LWvCPFJBa3xLiIQz2SF5TtESkxmG1zq0qyLrWtqiab1uer+orEPiHSUGsaxH6vaXcE06vjAXODW+2xJZJDPnRsGe509sNX0P4/zn2GYw+KCoC1fg4UD8ODl9cJ62Hd507Z4Qgpqs8HIjh5QzYgXW851GNTXZFpMHJackZVjyneWa05yff0mJ4c0ImltwPH5SNTDTTuRH/TiUfhuVY4wJnCA15KXI+Pzwp2izmowPJCcqHC2Qsp4TopyC9KfdUU9I9RuD7AaiCdWQIQth
- 55stBMOl
- YAxS9jCkfhrzslL0Dq7uyY5AjaIyInpt9nYXmxi1xEENpVvv2tP24CMogXh8l5FlGpfx3E00BO+qglJgbH62JQcrsi7qAIkkWmGrB3SmOA1nP/FYSMgkSwlK3DQYvK/L6iCIhzZSsIHQOAVMHznUf5e62+6vs6LoY3nIF1LYwBPbZ2eyFb7EUQ164zqYpokUtsYqUNrHC8jCTWJ19KhA1SnpXIfDQqH4iGOZ+wqzKlCO6+1yRQrMBhrktX7WjNuzaebxt
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DCC992000D
+X-Stat-Signature: 1sn8xcscc9edi5oke4s11yo3he36aabp
+X-HE-Tag: 1780220400-78973
+X-HE-Meta: U2FsdGVkX19YPebJQr6Hy+loC9GIkdvQMjwEpuKM2MMF+4SHTE0nCMrhn/tCjJlao2+Sfakei+cl4jR/nZ0GwxBLDL/bFB02FzsPvsNqmUaDs6DKZVjOsy3ktj+yCbPraL4TGGTO9rfIiB5HqnxoryGrghNRAwHWFgHmG9my+AVzJbHuc72sz98fcmW9Z46wxeMxGyJUBZn650YYwENOqQ0ZCLvdUO4d5JdEbHT/1o4IHgXyjj2kEnHB0Jiurj5T+CPfAmTZzxFkoRYvEIIsc/bkA4sZlXhd2O7JgSWpC7Cs/Rzzb6rra1BegmDkbF4aKFp8CCREJf6YBTURfmiVOdYgAl16BJfKwSFwMqXbQukbA28ug8rkXLvU8bw9rlD/dQB0jGWI0j2CFMo26ueS8V7iyZibTajs5d5leu+q4vh0qAO8prrWO1T6lfeo7H4vfSNb5fHuQPtOFSZgGSGt5nQJ2kEcoj2IuvPXUHu+s1Zza/KpjIN4hLwlsVxx5y14PJKTAvng9vmGosVy7+oV3YM7wBWBHTWuq4cZ2saNCmALKKYWUxJU5vNK6yia3+1PUELUmF/kDJwQZwpqDT6je1fnNaj48WtorKzHcG/qO9qWpbwuzTVF00kgxAxlIL2bZ7u2XPyszCUHKJwkQ5AKe7ZwyPkcRYDQbsvtMB6+nQwyndwSTK8feCebNKtKuwkaDqsKBtAzX4drA+BkygK171RVmHny+rB7hjeX5tPvSzawXvQ3ejuY7Hr5O4YcXA12ALE3XeQJ9cFcycY5t7tB0KOv1OFEAMeud5awqBy4xv0Un0T4vuGlkUO4bxbnQ/lEx5/E8uzyDezZg+Fa3LU86oq6JPQHx2j9pTvGz5mPpo6GS+XY/uoE+dGPTcL28lNH9IWOLrfRjCh76ZnLMEw05oANP589yPd4bjqfPDuTaNoMLGdUxyftyq/dqIIfZEW3y52Ra4DP0Nps37y+xi2
+ 8qQD/cbd
+ iq8jwu8+un7unz8x5q1xHsJr8kNTXW59rEgtbsovVK1cm1Uxlq9vggw5W7+theLJ5kl6aOFDo8+diqSDPOx0EFUs3eTFDXArmvEo/FtKPDcr2xD0TwlXxdiqv89EbF2E2hLHMn8i7BDjPlc1HhViGk2KFgs+lOWI1y99brKk6fwksN3eiSWnl2UlbUwsKUB6XKgfzcgYyb3tx0it/YXGkow+GwVSh1vyFXTsfMUGusVdcJtCGl/NFQBQkunaO3GCR0BDh2TOt6/Qpe8Ngk9pWRlXHaHOWZMOVJgysJDuCRZzxoKWRaNXYf5D/Npd1UwAzwNtnHr/ULb9a+fLLFMjSryIQIggje+RrZ9Isdna0fPSBsDQRG5lOBQbK8TLxZDwT/vCA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,86 +145,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
 
-On Fri, May 29, 2026 at 10:32:34PM +0800, George Guo wrote:
-> From: George Guo <guodongtai@kylinos.cn>
+On Fri, May 22, 2026 at 09:00:01AM -0600, Nico Pache wrote:
+>Pass an order and offset to collapse_huge_page to support collapsing anon
+>memory to arbitrary orders within a PMD. order indicates what mTHP size we
+>are attempting to collapse to, and offset indicates were in the PMD to
+>start the collapse attempt.
+>
+>For non-PMD collapse we must leave the anon VMA write locked until after
+>we collapse the mTHP-- in the PMD case all the pages are isolated, but in
+>the mTHP case this is not true, and we must keep the lock to prevent
+>access/changes to the page tables. This can happen if the rmap walkers hit
+>a pmd_none while the PMD entry is currently unavailable due to being
+>temporarily removed during the collapse phase.
+>
+>Acked-by: Usama Arif <usama.arif@linux.dev>
+>Signed-off-by: Nico Pache <npache@redhat.com>
+>---
+> mm/khugepaged.c | 93 +++++++++++++++++++++++++++++--------------------
+> 1 file changed, 55 insertions(+), 38 deletions(-)
+>
+>diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>index fab35d318641..d64f42f66236 100644
+>--- a/mm/khugepaged.c
+>+++ b/mm/khugepaged.c
+>@@ -1214,34 +1214,36 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
+>  * while allocating a THP, as that could trigger direct reclaim/compaction.
+>  * Note that the VMA must be rechecked after grabbing the mmap_lock again.
+>  */
+>-static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long address,
+>-		int referenced, int unmapped, struct collapse_control *cc)
+>+static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long start_addr,
+>+		int referenced, int unmapped, struct collapse_control *cc,
+>+		unsigned int order)
+> {
+>+	const unsigned long pmd_addr = start_addr & HPAGE_PMD_MASK;
+>+	const unsigned long end_addr = start_addr + (PAGE_SIZE << order);
+> 	LIST_HEAD(compound_pagelist);
+> 	pmd_t *pmd, _pmd;
+>-	pte_t *pte;
+>+	pte_t *pte = NULL;
+> 	pgtable_t pgtable;
+> 	struct folio *folio;
+> 	spinlock_t *pmd_ptl, *pte_ptl;
+> 	enum scan_result result = SCAN_FAIL;
+> 	struct vm_area_struct *vma;
+> 	struct mmu_notifier_range range;
+>+	bool anon_vma_locked = false;
 > 
-> WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
-> #26: 
-> containing only /chosen with the two KHO properties.  Since DEVICE_TREE_GUID
+>-	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+>-
+>-	result = alloc_charge_folio(&folio, mm, cc, HPAGE_PMD_ORDER);
+>+	result = alloc_charge_folio(&folio, mm, cc, order);
+> 	if (result != SCAN_SUCCEED)
+> 		goto out_nolock;
 > 
-> ERROR: Invalid commit separator - some tools may have problems applying this
-> #34: 
-> -------------------------------
+> 	mmap_read_lock(mm);
+>-	result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
+>-					 HPAGE_PMD_ORDER);
+>+	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+>+					 &vma, cc, order);
+> 	if (result != SCAN_SUCCEED) {
+> 		mmap_read_unlock(mm);
+> 		goto out_nolock;
+> 	}
 > 
-> total: 2 errors, 1 warnings, 0 lines checked
+>-	result = find_pmd_or_thp_or_none(mm, address, &pmd);
+>+	result = find_pmd_or_thp_or_none(mm, pmd_addr, &pmd);
+> 	if (result != SCAN_SUCCEED) {
+> 		mmap_read_unlock(mm);
+> 		goto out_nolock;
+>@@ -1253,8 +1255,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> 		 * released when it fails. So we jump out_nolock directly in
+> 		 * that case.  Continuing to collapse causes inconsistency.
+> 		 */
+>-		result = __collapse_huge_page_swapin(mm, vma, address, pmd,
+>-						     referenced, HPAGE_PMD_ORDER);
+>+		result = __collapse_huge_page_swapin(mm, vma, start_addr, pmd,
+>+						     referenced, order);
+> 		if (result != SCAN_SUCCEED)
+> 			goto out_nolock;
+> 	}
+>@@ -1269,20 +1271,21 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> 	 * mmap_lock.
+> 	 */
+> 	mmap_write_lock(mm);
+>-	result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
+>-					 HPAGE_PMD_ORDER);
+>+	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+>+					 &vma, cc, order);
+> 	if (result != SCAN_SUCCEED)
+> 		goto out_up_write;
+> 	/* check if the pmd is still valid */
+> 	vma_start_write(vma);
+>-	result = check_pmd_still_valid(mm, address, pmd);
+>+	result = check_pmd_still_valid(mm, pmd_addr, pmd);
+> 	if (result != SCAN_SUCCEED)
+> 		goto out_up_write;
+> 
+> 	anon_vma_lock_write(vma->anon_vma);
+>+	anon_vma_locked = true;
+> 
+>-	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, address,
+>-				address + HPAGE_PMD_SIZE);
+>+	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, start_addr,
+>+				end_addr);
+> 	mmu_notifier_invalidate_range_start(&range);
+> 
+> 	pmd_ptl = pmd_lock(mm, pmd); /* probably unnecessary */
+>@@ -1294,26 +1297,23 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> 	 * Parallel GUP-fast is fine since GUP-fast will back off when
+> 	 * it detects PMD is changed.
+> 	 */
+>-	_pmd = pmdp_collapse_flush(vma, address, pmd);
+>+	_pmd = pmdp_collapse_flush(vma, pmd_addr, pmd);
+> 	spin_unlock(pmd_ptl);
+> 	mmu_notifier_invalidate_range_end(&range);
+> 	tlb_remove_table_sync_one();
+> 
+>-	pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
+>+	pte = pte_offset_map_lock(mm, &_pmd, start_addr, &pte_ptl);
+> 	if (pte) {
+>-		result = __collapse_huge_page_isolate(vma, address, pte, cc,
+>-						      HPAGE_PMD_ORDER,
+>-						      &compound_pagelist);
+>+		result = __collapse_huge_page_isolate(vma, start_addr, pte, cc,
+>+						      order, &compound_pagelist);
+> 		spin_unlock(pte_ptl);
+> 	} else {
+> 		result = SCAN_NO_PTE_TABLE;
+> 	}
+> 
+> 	if (unlikely(result != SCAN_SUCCEED)) {
+>-		if (pte)
+>-			pte_unmap(pte);
+> 		spin_lock(pmd_ptl);
+>-		BUG_ON(!pmd_none(*pmd));
+>+		WARN_ON_ONCE(!pmd_none(*pmd));
+> 		/*
+> 		 * We can only use set_pmd_at when establishing
+> 		 * hugepmds and never for establishing regular pmds that
+>@@ -1321,21 +1321,24 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> 		 */
+> 		pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+> 		spin_unlock(pmd_ptl);
+>-		anon_vma_unlock_write(vma->anon_vma);
+> 		goto out_up_write;
+> 	}
+> 
+> 	/*
+>-	 * All pages are isolated and locked so anon_vma rmap
+>-	 * can't run anymore.
+>+	 * For PMD collapse all pages are isolated and locked so anon_vma
+>+	 * rmap can't run anymore. For mTHP collapse the PMD entry has been
+>+	 * removed and not all pages are isolated and locked, so we must hold
+>+	 * the lock to prevent neighboring folios from attempting to access
+>+	 * this PMD until its reinstalled.
+> 	 */
+>-	anon_vma_unlock_write(vma->anon_vma);
+>+	if (is_pmd_order(order)) {
+>+		anon_vma_unlock_write(vma->anon_vma);
+>+		anon_vma_locked = false;
+>+	}
+> 
+> 	result = __collapse_huge_page_copy(pte, folio, pmd, _pmd,
+>-					   vma, address, pte_ptl,
+>-					   HPAGE_PMD_ORDER,
+>-					   &compound_pagelist);
+>-	pte_unmap(pte);
+>+					   vma, start_addr, pte_ptl,
+>+					   order, &compound_pagelist);
+> 	if (unlikely(result != SCAN_SUCCEED))
+> 		goto out_up_write;
+> 
+>@@ -1345,18 +1348,32 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> 	 * write.
+> 	 */
+> 	__folio_mark_uptodate(folio);
+>-	pgtable = pmd_pgtable(_pmd);
+>-
+> 	spin_lock(pmd_ptl);
+>-	BUG_ON(!pmd_none(*pmd));
+>-	pgtable_trans_huge_deposit(mm, pmd, pgtable);
+>-	map_anon_folio_pmd_nopf(folio, pmd, vma, address);
+>+	WARN_ON_ONCE(!pmd_none(*pmd));
+>+	if (is_pmd_order(order)) {
+>+		pgtable = pmd_pgtable(_pmd);
+>+		pgtable_trans_huge_deposit(mm, pmd, pgtable);
+>+		map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
+>+	} else {
+>+		/*
+>+		 * set_ptes is called in map_anon_folio_pte_nopf with the
+>+		 * pmd_ptl lock still held; this is safe as the PMD is expected
+>+		 * to be none. The pmd entry is then repopulated below.
+>+		 */
+>+		map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /*uffd_wp=*/ false);
 
-I believe something went wrong with sending the emails :)
+Emm ... is it safe to use map_anon_folio_pte_nopf() here?
 
-Please include changes from revision to revision in the cover letter next
-time.
+At this point pmdp_collapse_flush() has cleared the PMD from the page
+tables. The PTE table we are updating is only reachable through the saved
+old PMD value, _pmd, until pmd_populate() below.
 
-You also may want to consider using b4 prep/send for sending the patches.
+map_anon_folio_pte_nopf() does set_ptes() and then calls
+update_mmu_cache_range(). Documentation/core-api/cachetlb.rst describes
+that hook as:
 
-> >
-> Date: Fri, 29 May 2026 21:54:01 +0800
-> Subject: [PATCH v2 0/4] LoongArch: add KHO support and selftests
-> 
-> This series adds Kexec Handover (KHO) support for LoongArch and extends
-> the KHO selftest infrastructure to run on LoongArch under QEMU.
-> 
-> KHO passes metadata (the KHO state FDT and scratch area addresses) to the
-> second kernel via the FDT /chosen node, using the linux,kho-fdt and
-> linux,kho-scratch properties that drivers/of/kexec.c:kho_add_chosen()
-> writes and drivers/of/fdt.c:early_init_dt_check_kho() reads.
-> 
-> Selftest support (patches 3-4):
-> 
-> Patch 3 adds loongarch.conf and extends vmtest.sh to recognise loongarch64
-> as a build target.  The LoongArch virt machine is FDT-only (no ACPI), so
-> 'earlycon' must appear on the kernel cmdline or the console UART is never
-> discovered.  PS/2 input devices are also disabled since QEMU's LoongArch
-> virt machine has no i8042 controller; the fallback port probe hits a page
-> fault and panics before reaching userspace.
+"
+	At the end of every page fault, this routine is invoked to tell
+	the architecture specific code that translations now exists
+	in the software page tables for address space "vma->vm_mm"
+	at virtual address "address" for "nr" consecutive pages.
+"
 
-Patch 3 should not introduce regressions
- 
-> Patch 4 handles QEMU not exiting after kexec on LoongArch.  QEMU provides
-> no EFI runtime services, so machine_restart() falls through to an infinite
-> idle loop.  QEMU_NEEDS_KILL=1 in loongarch.conf signals vmtest.sh to run
-> QEMU in the background, poll the serial output for the test verdict, and
-> kill QEMU once it appears, so the test completes unattended.
+But that does not seem true here yet, since the PTE table is not
+reachable from vma->vm_mm when update_mmu_cache_range() is called.
 
-And patch 4 should be folded into patch 3.
-As I said during v1 review, the whole wait and kill loop can be replaced
-with 'timeout' command which does not need to be specific for LoongArch.
-The actual timeout value might, though.
+Should we avoid calling update_mmu_cache_range() until after the PTE
+table is reinstalled with pmd_populate()?
 
-Will wait for v3 for more detailed review.
- 
-> George Guo (4):
->   LoongArch: kexec: add KHO support for FDT-based systems
->   LoongArch: kexec: add KHO support for ACPI-only systems
->   selftests/kho: add LoongArch vmtest support
->   selftests/kho: handle QEMU not exiting after kexec on LoongArch
-> 
->  arch/loongarch/Kconfig                     |   3 +
->  arch/loongarch/include/asm/kexec.h         |   7 +
->  arch/loongarch/kernel/machine_kexec.c      |  38 +++
->  arch/loongarch/kernel/machine_kexec_file.c | 256 +++++++++++++++++++++
->  arch/loongarch/kernel/setup.c              |  21 +-
->  tools/testing/selftests/kho/loongarch.conf |  13 ++
->  tools/testing/selftests/kho/vmtest.sh      |  35 ++-
->  7 files changed, 365 insertions(+), 8 deletions(-)
->  create mode 100644 tools/testing/selftests/kho/loongarch.conf
-> 
-> -- 
-> 2.25.1
-> 
-> 
+Cheers, Lance
 
--- 
-Sincerely yours,
-Mike.
+>+		smp_wmb(); /* make PTEs visible before PMD. See pmd_install() */
+>+		pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+>+	}
+> 	spin_unlock(pmd_ptl);
+> 
+> 	folio = NULL;
+> 
+> 	result = SCAN_SUCCEED;
+> out_up_write:
+>+	if (anon_vma_locked)
+>+		anon_vma_unlock_write(vma->anon_vma);
+>+	if (pte)
+>+		pte_unmap(pte);
+> 	mmap_write_unlock(mm);
+> out_nolock:
+> 	if (folio)
+>@@ -1536,7 +1553,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+> 		/* collapse_huge_page expects the lock to be dropped before calling */
+> 		mmap_read_unlock(mm);
+> 		result = collapse_huge_page(mm, start_addr, referenced,
+>-					    unmapped, cc);
+>+					    unmapped, cc, HPAGE_PMD_ORDER);
+> 		/* collapse_huge_page will return with the mmap_lock released */
+> 		*lock_dropped = true;
+> 	}
+>-- 
+>2.54.0
+>
+>
 
