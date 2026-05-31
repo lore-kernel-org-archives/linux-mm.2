@@ -4,97 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49C9ECD6E52
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 17:09:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA719CD6E52
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 17:10:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A9B26B015B; Sun, 31 May 2026 13:09:09 -0400 (EDT)
+	id 2B7AA6B015D; Sun, 31 May 2026 13:10:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 880B66B015D; Sun, 31 May 2026 13:09:09 -0400 (EDT)
+	id 28EF76B015F; Sun, 31 May 2026 13:10:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 796BD6B015E; Sun, 31 May 2026 13:09:09 -0400 (EDT)
+	id 1A4F16B0160; Sun, 31 May 2026 13:10:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 66E0A6B015B
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 13:09:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08456C207A
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:09:09 +0000 (UTC)
-X-FDA: 84828350418.23.DC85041
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6FCA51C0006
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:09:07 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VIJE5abn;
-	spf=pass (imf21.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0686B6B015D
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 13:10:22 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C441316211E
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:10:21 +0000 (UTC)
+X-FDA: 84828353442.07.7095030
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1C2391C0003
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 17:10:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eYFLCAod;
+	spf=pass (imf20.hostedemail.com: domain of cyyzero16@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=cyyzero16@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780247347;
+	s=arc-20220608; t=1780247420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SVEJL4GEwkXkrp6OsZZkCybl5z2/KKltadlzYqj29wI=;
-	b=s+nk/fYzHXP8sJQfyhC7hpUYP2TbDYoHWD6NaP808loeUF4+oW3zFFfocmG/grQ/jfthEg
-	siYY43JNiW52SngFn+ojvCO7+lNfY1T3DAw9BaJbBUHjmshzzGY5Y6OYy3L0Ky+m5EGb2G
-	F+9qKusqg2WZJl2FXNzUDrKN0uAWCz0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780247347; a=rsa-sha256;
-	cv=none;
-	b=EoBCZ0JztRE+yiIcKeIFPtJdlCjH+xt91NrqtBuRYB5W5ZIGIgJ4rSycgs9/5RZDNwjaGQ
-	ALLb3V+5Zku8kZPBaf+BwAiXfLBm6xhXd9F1xs8trKK/yJSkm6aIXX88TjQhSWQslCNlz1
-	LYLhp+4Ad62YpfET1L8CI4TpWIBl2EI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CqJpbwtossSFW5neyJ87RipB4IcgiOFbuX2fMHVoKDA=;
+	b=d6zjcocXPrYu3/Bq8qN6pFksntQZ9vasQOjdhhirDazZMpNZiY/Pv6OrFcATq8FjD7TiBK
+	GyWIpptNoV41gdnwrd74n7v3kot/kR2gkYwIlKvCGXT4eopJIqryVRAGGUmLUm80D9d9kO
+	4V8H4dQOxvSPqzP652UFbfJO3ivZvTA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VIJE5abn;
-	spf=pass (imf21.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0308D6008A;
-	Sun, 31 May 2026 17:09:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897FF1F00893;
-	Sun, 31 May 2026 17:09:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780247346;
-	bh=SVEJL4GEwkXkrp6OsZZkCybl5z2/KKltadlzYqj29wI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=VIJE5abn5CItq56HmUAdW+Knc3RYlzlx17YNtux49HXAuFoZ5mrgTdG42OZxZ20XW
-	 zfe/XXcBnZAMbDuWNIh2CNnXDOB9QtCMdDlORVJtZiOa2f7KFhI5ZsQ+QVbwgrokbi
-	 BzQdroh8CHBXMyQ3RM0lCTErePv+oXad+PA4DrKKE12M79hS8nnabqO++Ml7MRi/jk
-	 876Tt8TcYO/m5XbWAShgoX2dVkCpKp5ZTSaTG+RyLOn4z/pw5g4lqnxYSW32tuKZuN
-	 +mnja4ml2mMwSkQo9K2R6ai1tO83yq9cgZQdfdMLSgaVA/zzJIh7+CVm7vpe3MfznR
-	 Eklpd0LVEZ1Rw==
-From: Tejun Heo <tj@kernel.org>
-To: Qiliang Yuan <realwujing@gmail.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Johannes Weiner <hannes@cmpxchg.org>,
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Natalie Vock <natalie.vock@gmx.de>
-Cc: Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6] cgroup/dmem: implement dmem.high soft limit via prioritized eviction
-In-Reply-To: <20260531-feature-dmem-high-v6-1-20563ecd6dc7@gmail.com>
-References: <20260531-feature-dmem-high-v6-1-20563ecd6dc7@gmail.com>
-Message-ID: <20260531070612.GA03193@kernel.org>
-Date: Sun, 31 May 2026 07:06:12 -1000
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eYFLCAod;
+	spf=pass (imf20.hostedemail.com: domain of cyyzero16@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=cyyzero16@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780247420; a=rsa-sha256;
+	cv=none;
+	b=cqIjOwY4tyEGaPgTxXZbZrQj7Ru39qalqtMpi5bMY8VlDe2UcxBqqQ31Dymr5FW1+N1h1s
+	gd/6Na+rUa9THPLS5pWkobx+DE5V7zd1QhVw5pDf2a+mA9ktkItQfcHASDKUw+IfEhWPIE
+	TQlaNRumsfj/qL3D/NWIUxr72C55zSU=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c0c2a68d01so3692645ad.1
+        for <linux-mm@kvack.org>; Sun, 31 May 2026 10:10:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780247419; x=1780852219; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CqJpbwtossSFW5neyJ87RipB4IcgiOFbuX2fMHVoKDA=;
+        b=eYFLCAodqTA7UWLm91mJVWKi9F2wfAQ3F8tQOsHpDxrlbWgv0jLDQt41dQP/uoc401
+         mnmG/mdg8hj/3aYeiU36OLby9PmTI7ZUOyL8DnX3jN1lVSisCyp2VSaMuFNL2hfI7tzo
+         TbSUkvoQNVJs0iuTeMq5vHvjDgx6WvPsanNUtJ74sZIa99QPrykd7qfBhdIk76h3JIPq
+         4rAZIcM7AvA/SQvMrZgN/QH8yuCzfOee3OCIFyoy+KVpjdNz84zV0CbMi7s9AfLVSoeu
+         /DH6HTX4AmZHoM8i32AJpA2emy09gbiNp94nkQ7R6sNYJnNtPeTjYEtlYp2TwgAPhS6M
+         6HYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780247419; x=1780852219;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CqJpbwtossSFW5neyJ87RipB4IcgiOFbuX2fMHVoKDA=;
+        b=IrvpttvIPEIe/fEj7CSO1/UvYic+P4Cf9z5GeqUS7fB6GjqMpwf7Wziuk4ogHC0wDT
+         xWmvRtc8Xj0LbFZj9CCWFjSxRIEYfs36xEw1rd7e0tyW0w+Z7eoJ3ULHZwCOL15mqQgX
+         wkzzKRIV0smygUWaJodhSidp55dSCbMHuSpS3iujHcmfSdpgT+WAO2Vj7FrYRVmEHPg7
+         5U0OFiKQON9CdBlfMpSKwOi8Hv6DTC+r+37G7qd8m4WGKkqHb6JpGoDw543xwTaq6F2e
+         jFcKQQEM2hFQbYwNubdZ9UocL9fbvCynAcJwqomXM2vByCByUjqR3mYtEtaR1qZ29Ky5
+         B86g==
+X-Forwarded-Encrypted: i=1; AFNElJ8sA8psjOx5H06b0jbJwdpMtHt4gLzpBKRWeAiBNpkBvFnMsj4GxtjeIhU5aTJotmkDvhs9KQ8oEw==@kvack.org
+X-Gm-Message-State: AOJu0Yx4Oh5/YbMYCD3cQwewPo0rSEwHiWW/yq9td5doEd13aKCRX+pC
+	mRa6vWUrD8CN69kbNsJcctmFC28tXw94hMQPcUUgNxlfbyE1jE5g2O4y
+X-Gm-Gg: Acq92OE6kQO7+J5ap8V6ewiQmriwZI5zMwPswBhjBAV1/mUGqhCI8kQGuxKWYK3cwFg
+	u+FJ9o5o++pE9gLy38EUprfwcJwwFTYJms7jLfGZgiQnYmg3lc9uFEcmaYo6yBFoirBDEnZEFV+
+	WSxZ5Jbj7sJuqPfL1CH1wrvhE92zbdYNL99jiJCm4wO+y/iSsjxUn3ET4EoJacbtmTVl27W6EIR
+	ZezsuPBcG+kI4GldEflaxlDLRIAklwu/t6C48wHiEvZFUqpr3M/BhoQk76kfgl99S/2U2UTbCZr
+	yUrAnqZWxNv29V8OZqZcF8Eo8DNCJihgS3jkVsLuh6aqrkw+goW7gYDLFcqp1pFUFyaEZQqnG+R
+	idOy2H+J7+zEyquUkJJt8NU5Sm8ibyP/Ag55yWNPyMmYFvvjKQKuzLOglQHwbcBqwCvgZxs+pVj
+	eLQHYf7rJEd9L2A2Ob13VSrBoVhmONZ7VNOC0q9WUBN2o=
+X-Received: by 2002:a17:903:986:b0:2b4:59bf:5728 with SMTP id d9443c01a7336-2bf3682a21bmr82919535ad.25.1780247418899;
+        Sun, 31 May 2026 10:10:18 -0700 (PDT)
+Received: from ubuntu24.lan ([14.219.52.32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239e71cbsm78487495ad.15.2026.05.31.10.10.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 May 2026 10:10:18 -0700 (PDT)
+From: Yiyang Chen <cyyzero16@gmail.com>
+To: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-devel@vger.kernel.org
+Cc: Christian Brauner <brauner@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: tracepoints expose s_dev of kernel-internal superblocks -- no generic resolution interface
+Date: Mon,  1 Jun 2026 01:10:13 +0800
+Message-ID: <20260531171013.289131-1-cyyzero16@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: eucnt8obkx699nrskc7uq6eaoxm57q7t
-X-Rspamd-Queue-Id: 6FCA51C0006
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hnequ4b79udrtqfrqn8sppziwcox1a5w
+X-Rspamd-Queue-Id: 1C2391C0003
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780247347-951766
-X-HE-Meta: U2FsdGVkX19PjyFWwJ9I0lj3ukcIxxPfcEqzB1TXz+/Y8IZktvZqKaSmYVwOnyxemJLhjtIHdzWUFhRptH6I7htloKUuTm8npPLrR3ABG0uwErboMKPIcgtHKIjl06XL3QDpDvUsPwcnI/WJEYqDeNbIiU4+DpI64JE3fAWuRFFM3yVqzk8x1Y0M1MeJyNPPOkXAY4Oo46Iqe9pKblxwnPRgRrkaLI2MEL44ZgWU1PEJxxI1L4+xmGk5AUpfEVz4nu1TXCJF6mYK98b/If4OBpQXHHPi4p4SJKvC7umzd4T/WglNIUmHpW3HQHPE20iUqQiX2KdfrQs9sSUQV8U4m3slpF1mKzwF+aMdIyhxD0MnGF3INjgO6ysRrtxqm2EkmvOf0LiI2105Dc4K5FDxEQ743jYA36mEOIxB7STJmNbo0/4zh6cgRAUstYFTF2dDPRaVr+dIVQxyW6Ki89DV2Q0kg1YO/MthKXJdAwdmCSVnIYMbSszPrZdWy1yKCIZ5xrayh4rkhRu3FWzbGJiwEp1qGU/qdfJWaWTjyDU4vAjPLUaGTXxxQWR04m9ODDd0tLtnasPIoXk63CryUrAFWcKtbL+X042dfOlgCGzqkI4Uteiks0remR6q/M6g1Y3MbAnKGQQez5+d/u6SMOUBWYWw3jcpJaNGbNjU2uvPT8/Q5DjuvhU6kwi0dYkqHnK216yddTcXob11nrI6j/+AtsKR8SZfHTsLKcvbN8BidbZ9dD4NpvM/PWv4M1RrZD/YkmfG3DfKXMU5cgdtIZtwiqE5aoUD80dX8Wwk39sLjDHm6sIh2g59eFLlUu4xsURWTViG1Tait2QoShJn+QOjoIl22di/aEA8jGAcDyM1LLHvTYDf92aVctuDRdFMrMkO4EdEgexKxv0kUeHjDoqcedZf3vXuuAECLzBx1EoHPSraBiRjQeTuVga8BME9/nGRANoCaLpl54q01o5kUkf
- jSouKEv/
- iZwb9K7sJCA91IAZxitrvXyacbIVbEbncassPs139d3p91NfnBfGUW1G1cEeaD60bQTfk5MlS6QyV+RoycFZIahpUPqHxaO0nfzzVHyk8tuRVEGHrMkTiYd5VwVhLGmw6L0RMHMFu19BD/QVcRxsn5ztElFEdYXECrtUWKrJrCykibrqGlf0Qe/N4kPlIuBRXwZaaL5tkXXogk5mer9lx5J7ZoPtpwiUueCNkheuam1/yRrY6M3RNKLwepofhNRy1iaOI
+X-HE-Tag: 1780247419-389527
+X-HE-Meta: U2FsdGVkX19DplypQ0V1LKet0bVaX2JjoKh2Sl2W6ER2XCm/dWvlMzXx3YT1YO+RUcvNlLk7wsPw3vmQg2nkbK2kikBerVa5NDqKndoeusxZFkA6i1x/l2MH9NLuqGIX8u2p9mLOhvz3e03VJTsiYd+uLZR1FZ0+7cey6b9WMoWKdgdS+HimCq26N9xf4pLJVVWJ8YlOSPORslsURBI0gIQVk32hoWgce19ucbHZXFZRlmZGz03u6uYEherqVQgnVODpdSaw/t/IskoA+SAv87vFdQZtbnhuy01RDed1IKbkJRWF9uavh7miiEH/S3Emulx3a1sgADyU/J6trUx6/UypOi40WyvNpQ6YQkYX9IxnyfrnwNzh9KUweXFnAuxDZPvnSyQeimAHnDzAeKzIvTbDrLv7PTFRw0jshafPH1EAWxjpjrDJxBvMPLkvGy5wPvVOfbx3VH63PyX8lPSPj/kb3RGPWQezLQdpUVzAihImxWLAcp9SsTjvJN7XZ8KRe/ILZ+sGV+7gynVx0m1JFIPWCvSevrB21PBWStMAMtqmPe3pdeT8Q5R4FVgoNfAnBTVHwtpGO0R2fNIdrn0I+gPURv5KRw6dhnnHrJWtLgGjWF9J4OoV80ccpXcU+rjkubyqFgrXP9QnzCvEuGAlmYpKhlWmKF9FNxSpcmf8b189mo5hSgPABq7j7iasR07iiaImOnlSB6snH11/4otJbd5qZpwNphSiaQmHIWGB+l2z3V38tPYGUYJNF6Oep1MfJKhOO81qQ1axLSDsM1Fww7XypTeZN6RD9VgLfPjm2go3dvq0UpJhdHOI/dwsv+237EGlS8vcTo1+FFZxhn5rNtnXpyN+m9OLKBipJ5wXJag5kFrPN7Z0ZuP7YRly66xoQR5Hxt9v3m/8Nc4s0KIi78hrQJl7N4v9PFFNnBBwCh864J04tNBDOCLevUX4u/y9O8YAlYctK8xQBSKlWg0
+ LtQyuOlF
+ 6lRpvww3cg95lkN5nR5vtgpKj4qVBAw9zFkQ5YjD6797DnKnjoGmWqjZ1r7SAW9yD/VySMNCd0CkqcpRGS1RfMiPoH0g4OqC4yj8hXVdNniKif3yQKVdmwCzEf0c5S18LaxlELyOK6o05vjII5Oabyd6aUFuGYS+Z8qHDuFlc5NGMmXFoRpH6MjhJtnS1HeG2Z+bqcAW9WBsp88M267HpUzSqKGUpCEhTfW+wKLRZMQb16FB3s2gO/af0Ym+IsbtJnRnVD3kGBLJ1pesiaek+u7kSmtZL+GzMtj3BYHI9A59rjANok81Mk5oHNVuAF6owVFGxhDtZl4+MZ4fWVy4F81+tJyhBM6MBngiKQMq6fbFiNzSQ5rYLZ0yjnyY71EOOw/Z115PhKk04uag8d1wsTwvwSYJgJehSALRJrf3bYAsKU3BAAtcFhFJpOIhQ97IM8Dzzdt3eARifIoY59ggUJ7iq9bS/Z8DBiqf/8jWcbBRHDCg1iKsiRnJCxzDz9HUCzvb2SKh8x09VJbg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,39 +118,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi all,
 
-I don't think we want to define dmem.high (or dmem.max) in terms of a
-specific reclaim mechanic. These interface files should express a
-generic resource-distribution concept that stays valid regardless of
-how the underlying reclaim works. As written, dmem.high comes down to
-"evicted first in the high-priority eviction pass". It isn't consulted
-on charge and dmem has no proactive reclaim, so the file does nothing
-until a dmem.max hit elsewhere triggers eviction. That's an
-implementation detail, not something I'd want to commit to in the
-cgroup interface.
+While tracing page cache activity via mm_filemap_add_to_page_cache, I
+noticed s_dev values that do not appear in /proc/*/mountinfo:
 
-It also reads as a way to work around dmem's reclaim behavior rather
-than a soft limit in its own right. A dmem.max hit doesn't just fail
-today: the charge returns -EAGAIN and TTM already falls back to evicting
-buffers and retrying before the allocation fails. So the question isn't
-"max fails immediately, add reclaim via high" but which buffers reclaim
-should target and when, which is a property of the max reclaim behavior.
+  mm_filemap_add_to_page_cache: dev 0:18 ino dea89 pfn=0x13ba00 ofs=0 order=9
 
-If we work around that with a high knob whose meaning is the current
-eviction order, we bake an implementation detail into the ABI and make
-it harder to give dmem.high a proper soft-limit semantics later.
+Using a kernel module to enumerate all active superblocks, I confirmed
+this is the hugetlbfs internal mount created by hugetlbfs_init() ->
+kern_mount().  The actual s_dev value is dynamically allocated via
+get_anon_bdev() and varies across systems (0:18 on my test machine).
+Because kern_mount() attaches the mount to MNT_NS_INTERNAL, it is
+invisible to all mount namespaces.
 
-I'm not against a dmem soft limit. I'd rather improve the max reclaim
-behavior so it makes sense in general, and then define high as a concept
-on top of that, rather than the other way around.
+Each internal filesystem requires its own trick to discover the
+s_dev -> fs_type mapping:
 
-The whole max-vs-high distinction and what a soft limit should mean has
-had a lot of thought put into it on the memcg side, so adding the memcg
-folks for their input.
+  - shmem:      create a memfd, call fstatfs() -> TMPFS_MAGIC
+  - bdev:       open a block device, call fstatfs()
+  - hugetlbfs: memfd_create(MFD_HUGETLB) creates a file
+    on the internal mount itself, so fstat() gives s_dev and
+    fstatfs() returns HUGETLBFS_MAGIC
+
+None of these are a general, authoritative interface -- each requires
+filesystem-specific knowledge of which object to create and which
+syscall to call.
+
+The question is: should there be a single stable interface that exposes
+the s_dev -> fs_type mapping for all active superblocks, including
+internal ones? Here are some options:
+
+  - Add fs_type to the affected tracepoints.
+  - Provide a generic interface (BPF iterator, /proc, /sys) that
+    exposes s_dev + fs_type for all active superblocks including
+    internal ones.
+
+
+Reproduce steps:
+
+s_dev is dynamically allocated via get_anon_bdev(), values vary.
+
+--- test_hugetlb_sdev.c ---
+#include <sys/mman.h>
+#include <string.h>
+int main(void) {
+    void *p = mmap(NULL, 2<<20, PROT_READ|PROT_WRITE,
+                   MAP_SHARED|MAP_ANONYMOUS|MAP_HUGETLB, -1, 0);
+    if (p == MAP_FAILED) return 1;
+    memset(p, 0, 2<<20);
+    munmap(p, 2<<20);
+    return 0;
+}
+
+  gcc -o test_hugetlb_sdev test_hugetlb_sdev.c
+  # precondition:
+  cat /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages   # must be > 0
+
+--- trace script (run with sudo) ---
+  TP=/sys/kernel/tracing
+  DEVS=$(awk '{print $3}' /proc/self/mountinfo | sort -u)
+
+  echo 1 > $TP/events/filemap/mm_filemap_add_to_page_cache/enable
+  echo 1 > $TP/events/hugetlbfs/hugetlbfs_alloc_inode/enable
+  echo > $TP/trace
+
+  ./test_hugetlb_sdev
+  sleep 1
+
+  echo "=== s_dev from tracepoint, NOT in mountinfo ==="
+  # filemap uses "dev X:Y", hugetlbfs uses "dev X,Y"
+  grep -v '^#' $TP/trace | grep -oP 'dev[= ]\K\d+[:,]\d+' | tr ',' ':' | sort -u \
+      | while read d; do echo "$DEVS" | grep -qx "$d" || echo "  $d"; done
+
+  echo 0 > $TP/events/filemap/enable
+  echo 0 > $TP/events/hugetlbfs/enable
+  echo > $TP/trace
+
+
+You will see hugetlbfs s_dev which is not present in any mountinfo.
+
 
 Thanks.
-
---
-tejun
 
