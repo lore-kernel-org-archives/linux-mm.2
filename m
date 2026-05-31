@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 007C1CD6E57
-	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 16:36:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D803CD6E52
+	for <linux-mm@archiver.kernel.org>; Sun, 31 May 2026 16:39:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1991F6B0150; Sun, 31 May 2026 12:36:18 -0400 (EDT)
+	id C24F26B0152; Sun, 31 May 2026 12:39:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 171116B0152; Sun, 31 May 2026 12:36:18 -0400 (EDT)
+	id BD6546B0154; Sun, 31 May 2026 12:39:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AE736B0153; Sun, 31 May 2026 12:36:18 -0400 (EDT)
+	id AEB616B0155; Sun, 31 May 2026 12:39:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F209D6B0150
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:36:17 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B746A8ED2B
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:36:17 +0000 (UTC)
-X-FDA: 84828267594.27.9BF1DD3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A083F6B0152
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 12:39:06 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 482DFA044E
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:39:06 +0000 (UTC)
+X-FDA: 84828274692.29.6CF74FC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2CCCA1C0009
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:36:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jEbwjG3Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id BA51F40010
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 16:39:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hJq04HL3;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780245376;
+	s=arc-20220608; t=1780245544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SDD6tD/6kl7HLKjD6lcvgrwFf3qY0h09b+OnpA83jp0=;
-	b=OlBtcgRzMKqfgKGY+jtxEoNUBMoWac2tvrh9DsgNKSAFZSQUwZMzgQQiPaxVJlOOwfTuTo
-	gShQ1lK9i1sfiSUZl2XfBoMZ5bMZES/oZcO7K4tQrEZZftgSIl633MZb10JvKYUK8Iqyan
-	2qqQabT2CE1kbsAipA8MXzNWhPn2A8M=
+	bh=XObA2UMxNmwwA42Wy22KZAaxCp9zZ0vzc8OHq2Dq5MA=;
+	b=CK1SFbAm7ll+6r/AErhztnpBzKi6gPOx23fDFGe3AQ/R+rTpBFg7qkJSvIehHsceCYDmJJ
+	+2d21WDWJeGl3jK43Y8clnxIs+H4DK6/AeejwUxeWscHI+jbLMxGuJ/xHK1RV6FCAEF4Lx
+	eGMACA6MKKo4+Wi666RmOc2yN+j8OKM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jEbwjG3Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780245376; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hJq04HL3;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780245544; a=rsa-sha256;
 	cv=none;
-	b=DL1HuJ3VwHMHJLUqLbMXM7Y6tJX+KS0wxVfwv0LCALjvzvRw3MO6dqa7mU2eXYUrVU+tvs
-	LFFVce5hkEOwxalsPBSJVCh7wATShWysvsqHsLilz+WBJgQSr0KFdiHSCGoNi8gesJoMW1
-	sB/KESZJY8XRDR7NsCoa0zq5bx96lWA=
+	b=A/bYbvE4+O2Zvyzp1oFa22QnanCE7dJLzSt2Y6vZXP3yB9/LsHg7FD2mvtJXOe0mYAnbKb
+	H6IXD6GnaeyAzlDic1gIeIotYpxIebBix/WAdzm9tjT8CQpjRjMKQthn//kFQbUO4qYqMR
+	Uid14ZphOlDwA2a9FGSHJYkGv2VduXg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7915C6008A;
-	Sun, 31 May 2026 16:36:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D40F1F00893;
-	Sun, 31 May 2026 16:36:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3511E6008A;
+	Sun, 31 May 2026 16:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925311F00893;
+	Sun, 31 May 2026 16:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780245375;
-	bh=SDD6tD/6kl7HLKjD6lcvgrwFf3qY0h09b+OnpA83jp0=;
+	s=k20260515; t=1780245543;
+	bh=XObA2UMxNmwwA42Wy22KZAaxCp9zZ0vzc8OHq2Dq5MA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jEbwjG3YtCqiGX66HJp9b9X1dSeLuVMEnPhmiHWOPmET15hr3rreAYsinTBYl+VWO
-	 udjp+Rraex35LS3OSuE1jQNLQkp5DFni2CmwrMp1iwOBaQIO2XGR5Sfp8C6x5fbYp8
-	 3/0ZBvI9XhdsnYkTtXS6QYEM8wmbau+tyuVf6kgi4nExomjUqXUbKkbbAn1t0YMiws
-	 TtPTUi1+emVG5BtjWXC4xxGXVQEHlnrCUEE3YqnoxwgvYPrSjj/Xex9mLvRWyTlOUo
-	 kfSOt/EA/PJWA9CwwrflSahxgiK4O93B55nwHZJXkg4cYCwvBvR7DWkNOXSw/YqpaB
-	 ipOBmL+Vmthdw==
+	b=hJq04HL3vQiJINojn4UPi/GlrwiB6abd4pbsMxQMxO5wA7sovcbyUeYJvjZMRgPou
+	 zObxP9gbaguD0LJwY8/jhJLdNezfFUGyglsFPZOt9I3jnz8SWuMIKzkLJaL39oDCTB
+	 KjDwvOKNPde8l1o2eKI5r6ZMT49MCKr9JbHAx1kb6+Jf+tCWs4fnlW6/F58B9f+BJW
+	 J4U5Vf6X2Shn/UU0f4MdjzvyChTN1vYh3pVaXHP4iLrXeBFCQUDOQxTTo9Q5/5ere7
+	 oeAvHmL++h2mOylMCufG6+vQhwD7IxUV7Cw1Kqq5Te5Amo2beV0oMMtUDHSHHg/1nf
+	 LPpexWTcuEHjg==
 From: SeongJae Park <sj@kernel.org>
 To: Kunwu Chan <kunwu.chan@linux.dev>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -73,24 +73,23 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	Kunwu Chan <kunwu.chan@gmail.com>,
 	Wang Lian <lianux.mm@gmail.com>,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Cheng Nie <niecheng1@uniontech.com>
-Subject: Re: [PATCH 2/5] selftests/damon: fix memcg filter path handling
-Date: Sun, 31 May 2026 09:36:06 -0700
-Message-ID: <20260531163607.99063-1-sj@kernel.org>
+	Kunwu Chan <chentao@kylinos.cn>
+Subject: Re: [PATCH 3/5] selftests/damon/damos_tried_regions: fix expectation output and join TypeError
+Date: Sun, 31 May 2026 09:39:00 -0700
+Message-ID: <20260531163900.99184-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260531091724.84381-2-kunwu.chan@linux.dev>
+In-Reply-To: <20260531091724.84381-3-kunwu.chan@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kcckrxxicxitee6q83knrf8nkebnpq33
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2CCCA1C0009
+X-Stat-Signature: b8pcm3c17yed7eautkfo1bwb6t95dxpf
+X-Rspamd-Queue-Id: BA51F40010
 X-Rspam-User: 
-X-HE-Tag: 1780245376-586866
-X-HE-Meta: U2FsdGVkX1/HPXUhxI6bpLDhLpWoJoUIqVeQt3CkkuW5tv26K54OeraZRQIqO+foBCk8Db0OQN4yw7pHWs8BeXLPIh2Fr8QVC2w1A3Uf5Kr4bG4PBougXefPlc9US08m9j1snKhYC/XAbtVJLrqfAj3Q8LEDFz13DQ8BDL2pJZS3LWzWmLRhtT97j7VkVbuEu2CCW9J1eGljnzyK9OcrjjMDeHD1rlo+6QFIh6lOzTJMPAoRU3Exxw8cQKgnrwWBYt7TUlFrttVjwpqmXQ36CF7a7P9wyc9/0MRey1KtX1A+4a0KdSE0DzFceLW6cYqfqILVJOCy/5E07lPk/V6r6nVJ71mXYbeL1BVbMm2epocjzl08+N7Uim+3hJkARI0FJg0PMmkCBrB+ZhjlqSENpU4gS6rFhNISFPBjZ4qPkEeurYljScdmSeN/Khc4+pGTrrjJf4C9UITuhU+hEAxhynq8NH0EgCKh4emHGiQ4mIxxC6z+HY2b3xQ9J2lJp0aiJSI4ordQtzsYgghrzYDTbznEpczXgFmb+CTJRzfKSw2G0rG+RhjPxW1yBzGhROgfZLH5NqVw6IAixWB5X6tW9U737x82Ryoe5Yx8MJt/HpumM29RaUg+yrbwHDsbCa/UGQgHstUE7HOvOo/XnQ/33BLMwTjiX0ZnO65QQsnPstuCavZ47yxjnV/uOjUmB/VsaU6bAx5Ml+wXWh849Bi76RDfgCmkdESSq94iWeTftTepjnG+3n5q2VUvUWQZW+Y+c42QY+btdvYYKOISEIzriKFY4mogxinN/7l6eF9RJlbQK/0OrrxIp7xOh8O+pUFI33bYcpUE54nzdzaZIjyIUCZ4/ls19LPaYrV50GIZALFG1ZOaQG8ijyU6Sdgp5HQDE4kVZvrNdRxuv6T8VC46V4TQarW6/LqBjwwbGHWcEVFdBeNskLJrdZPgBTzPhIqfyHM58TnFjZRcSylsKRD
- U+kWbnCl
- wIaxX5QddRiAq7kIY1V56tW4401T5t0K3owC4EHUFO17cxmbPoYvAAnXO/GZ2sQmBWmM2niPTj9x6Czlf1nv3Um1hFNln/6u7Ulk0qVLdJZfwEBrH88TE4nQnLw2B4sbfcCqs96uMPEx6NeKlmA393S+WqgdK5AcIV11XJtPU2P+Hy0uMD89WnqMGcKWuh4aUWE6QcAe54LR85e4XF13b3cb5MHn6PSfR1HWMszOwufiSugHEiyTN1RKMBvCsOavk0Y7UKBDlmsu2ww2Tt9xbwh/PhuITzEg8yFr5YuaiJZVNlGo5q8T5R7MLNIQdVrrksOhN/fVEd3MGxbY=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780245544-309049
+X-HE-Meta: U2FsdGVkX18FQMWmQlcCf7K54IFO6EbALEC2C9bvmshmq3MnKTmZ0UzXKWUlb/MtIHRsh5JWWAh0Ij8hmSqQwUI7hEwJn8yA6sVQKmGUd8HeP1gdNUCuEq4+vI4p0665KVH+gFS5MgDiQfMwqlApVVPU2Y3Ph67mZedcKqsMk/Ryc3vgBOy+J0zOOhBilxIPq9P03sD65c1/h9Oy/J3nkyuQv60W1we5RKLCTYv50zy1/+2Ryzl4HqyT6CmwwYp4VvVxH/CtD2ilrnF6VtUGHQI7EJ3dl7brBhRfyzG+9KULRrXnPDlyWADozzSQ/iMysFOFqjv7+GqRUNTm1tZMw9hMmMN6cPpkmC1eAz6oDsok+nZ35yVOukD7ZhC5R5h24mDl8J0pf8gEjj0H3+gw6XMZc8HKh8nS4pZydywGK3BHRcMovx8sviSsmy3pMw1GoQbz/HD96ZS/+mMZ5SNzuXhRbEwT7dHoUKB9mXN+XO8BWsdOvyOzhFVCMY1tbItyr2Kjf4U+YQ+3FAcd1qzS93qL3//Qh+WokMp+yJ8JXqW1O49bgmWlKGlPQCXhhtqXy22w74AjVyYIKRtdHba9es+iYRBHwTdBUq9v0btuW2lg1z/mCDfYq2sWZ3+T8IgX+5hvq1K1NHiFUZSEg9JE3uUCcj+vKuIeGTZqZ6KE9ORh3CvrZqbJvIe8fs753th4dRdwgn2E6r1zWT5yOba0pOjn9bPhxzgi5ol6HHoXUpnWBWAjWZOr1Tw+as4GaPA/xUWYQysNs4L/QoVDsFr0tB+j8encYDc+UJqjvT8JaTHy+0Q+T/bGZG22OcseM4V3PWDmoyt+JLtiSb01rI+oufPdjU86ZAI34756tlXoQmDcwyfZqkpEQO3A3AvbBlJaTYV3O6vUZLjvKTn6JA6neXueu/aBjG40R0U1MYnDCb8JgGmSIvPwfMEUc+X9LDmj0DwaY4QdHydlOj3WYf1
+ kwknMQQD
+ M4KCuhL9nuy4b581LlRySRP2DTETuQQmIynAmwJBPTG+JLxNdekjJTNK0ixi8AeWGF6TLYsAty2MaHykK9tNcWAzq6PCDVhb21ym5/rhY5axI0a6bq608YO09GalnAUnFPqOeKwrpTypCW7SrzYXlasS0XRqTviqfsF0FvHtvzSTgy7vWcCV/jd2zb57ceCiVpo1q98AjtT4ejnvrjpjlk2gMMbdFsMKzefV8E+0NtElGWXcC9dFBfXYOIxzInumm55BYpSGbmLJR7W1jXIi7QVG/zyKmYA/7Q/zCkPohsZOC1Cin8huDNyYDeUQThuGqDHvsmKUHEsvzC/xcBEBgofJiXhGI4EhglQGEHsgd3ArG9w3VAyBTCN6JD6JTKmEOAKoypwE9xW9OYmQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,27 +97,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Conventionally, this mail should be sent as a direct reply to the coverletter.
-But somehow this was sent as a reply to the first patch of the series.  Please
-send all patches of a series as a direct reply to the coverletter from the next
-time.
-
-On Sun, 31 May 2026 17:17:21 +0800 Kunwu Chan <kunwu.chan@linux.dev> wrote:
+On Sun, 31 May 2026 17:17:22 +0800 Kunwu Chan <kunwu.chan@linux.dev> wrote:
 
 > From: Kunwu Chan <kunwu.chan@gmail.com>
 > 
-> A trailing comma in the memcg_path assignment makes
-> memcg_path a single-element tuple instead of a string.
+> The expectation print has wrong operator precedence: '%' binds
+> before the conditional expression, so the else branch prints
+> 'not met' without the prefix 'expectation (>= 14) is'.  Add
+> parentheses to fix it.
 > 
-> As a result, an invalid value is written to sysfs and memcg
-> filter configuration fails.
+> Also, '\n'.join() on the list of ints raises TypeError;
+> convert to str in the list comprehension.
+
+Nice findings and fixes, thank you!
+
 > 
-> Remove the comma.
+> Co-developed-by: Wang Lian <lianux.mm@gmail.com>
+> Signed-off-by: Wang Lian <lianux.mm@gmail.com>
+> Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
 
-Good findinng!  But, Cheng sent [1] a same patch earlier.  I believe Cheng is
-working on revisioning it.  I think we should give Cheng more time for that.
+checkpatch.pl may warn here like below, and it should be fixed.
 
-[1] https://lore.kernel.org/20260529145248.84593-1-sj@kernel.org
+WARNING: From:/Signed-off-by: email address mismatch: 'From: Kunwu Chan <kunwu.chan@gmail.com>' != 'Signed-off-by: Kunwu Chan <chentao@kylinos.cn>'
+
+Other than that,
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
 Thanks,
