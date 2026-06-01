@@ -4,84 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F9FCD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:57:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 680A3CD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:57:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 820BC6B0306; Mon,  1 Jun 2026 05:57:40 -0400 (EDT)
+	id D03066B0307; Mon,  1 Jun 2026 05:57:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D1CB6B0307; Mon,  1 Jun 2026 05:57:40 -0400 (EDT)
+	id C8D416B0309; Mon,  1 Jun 2026 05:57:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E7616B0308; Mon,  1 Jun 2026 05:57:40 -0400 (EDT)
+	id B7B7D6B030A; Mon,  1 Jun 2026 05:57:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AAFB6B0306
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:57:40 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 046E6A05FA
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:57:39 +0000 (UTC)
-X-FDA: 84830891880.11.0F495BA
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7A0D6100006
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:57:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V58lmzgU;
-	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A0D186B0307
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:57:45 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4BFE71C1B36
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:57:45 +0000 (UTC)
+X-FDA: 84830892090.08.A6267CA
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7BFF2A0006
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:57:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YTb5fAnX;
+	spf=pass (imf25.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780307858;
+	s=arc-20220608; t=1780307863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=TUs+rCabK0QoZm/U6SN1B2Cuc1KTvjDd/Qyt/e5rZGA=;
-	b=xqHfNR/esuNfZfI0hhAMTNrL/ieftrFIVFmnvfDoO3Cl8Yn5iAeB9uXjd4HpGIsxSF1MbQ
-	dIjk5R985wunXMYLy9rn3P/06NW38lmC/rpJHBfOABptDiiACoW25MSyRrh/BgDP/E7sAE
-	a2BNM3Vd9LaGbrSPajPrOZ47wFyHdoU=
+	bh=VeYhkIkkPdmPxP0oRNh636yFz6Mw8IPmOd/UUON7A0w=;
+	b=Nyf2PzTDLqeemin957CdtkyHlIwIkuHdo1r4pDPmDkJ9HzCCZpzLd4MxPzVCrBnBKwFDfy
+	YoI1stE+bVvmhVluRnQVjsn1Xg7RexZx/NxE1sL02tHvgzNAiMs1cjcR4SjzqlnsiBD7B2
+	cNxNqzeEN4tzjmwS0m591p5zQFxZxfo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V58lmzgU;
-	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780307858; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YTb5fAnX;
+	spf=pass (imf25.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780307863; a=rsa-sha256;
 	cv=none;
-	b=5lCeXmkeZH93sH6ItKJdzWUV8hIfkVT8Q7wCk9dX7yxo/ViTRJnXdcdyX2Unn1Dc/o6Gtf
-	/faIarb56E78nMW61lnmpWgMPGkEsk6hUGsSEcIlaakJhBRd+nnne+SZSwdeBHqqt4/RCa
-	/0wNoZOV/2odiXrEjSBo53LySBMnIcI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780307857;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TUs+rCabK0QoZm/U6SN1B2Cuc1KTvjDd/Qyt/e5rZGA=;
-	b=V58lmzgUtTBFOyaGfXipiyAVr59RZsUVgNNYJp3bqPPUEfN38LqAfFHR1rVyJwTfT0BFt5
-	EXAv48XYm/bcAE/JRs6DWVxFoJZ5tlLtq5kPu6taQih7tDCMfkUbZtBJztmhwMzbAWIgxF
-	IClN6JgqNK0bguRSkvlcnY7ObYmb9vg=
-From: Hao Li <hao.li@linux.dev>
-To: vbabka@kernel.org,
-	harry@kernel.org,
-	akpm@linux-foundation.org
-Cc: cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
+	b=jDjWeBwUUFKJzhxG0MwkTGwDxoXqzcKjGGT3xLXOshFVNC+a+KycEcnxnbYHwr4TRBPjHh
+	1oVy3lNdXEohKFevbtnTJBPkUssaXpeBInhW79PusdCraeJErsNKz91WxE7ZvNejutfoJP
+	20i0vEZth5Yt+oiCOoweOFOpdgDLfVI=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490a78fbd7bso1521705e9.2
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 02:57:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780307862; x=1780912662; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VeYhkIkkPdmPxP0oRNh636yFz6Mw8IPmOd/UUON7A0w=;
+        b=YTb5fAnXhQ52IAINeVS7NYC4zCB0Afnz9gkTN+RRm4O0E4luG6WuBFX+kb9wbfo1Hj
+         LJpZUNe5F1l7JhtjKJy5oXX1EJZ+eeYkLXEYvKirUxGQpvXbntqzGF9pafm7HoNlJtT2
+         t9AW1RrEBnkNiUo35wLtxHgwtKkkeCv/UNySWhSPF+fZ4r4+Yme17gapwih8UzI5clO6
+         O4AkvQax0c9Nlj2ahgxgONRd8IuDe8PznyQ9DNfCeE9/VCGyDvbQypfwHBWRadrtjYGP
+         Vbj/tg0i6oqB1s/H857vJT0tFFd+uHrd9LEfXD/KxJtYTR1t2IXk4F08D/2Y3Rf2Otvh
+         IDHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780307862; x=1780912662;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VeYhkIkkPdmPxP0oRNh636yFz6Mw8IPmOd/UUON7A0w=;
+        b=YqBp6FGSgnKUJv5OEgkd5gHcdf6LgNOWCPtpL20FLgNAlM7lK0nQ2NiduUKv8TVPTY
+         f1ZVkungVt0H+21jjFVKv/hTKKwM5CWfYQKLkpaqOjjDkls9uxKV5b7KhNmbfZJHGJ8v
+         l/ys2M5cNEFbwZUBcCudmYrF4stVsF3WUrrF1BULv927VnyUZ24jn/Ym34traNVi2xVD
+         EnablAsclUL4BzxMXhiBoaAccPGAI1AfMaqWBf0/+KWDmb+/Z7IDSfeigmcNJ5wWdMOk
+         1UvRxZOKwSaICUHd6VL9pb2aUq8V9OOR/bAcTmv4b03OdPLd9/ES8SA7L4JapCf3z26K
+         P3GA==
+X-Forwarded-Encrypted: i=1; AFNElJ8OHlCxKFr8GTMZrhkQE2NNky+kJluqFuExzZcZl3jRY3MZ/FmCj6mxtwbTK/8MisK0SwaLLXjLlg==@kvack.org
+X-Gm-Message-State: AOJu0YxvgQ4aLx2OVOCxPvXWhHOvmOdsGQcnFedkYfOdz2LaaAjpf+C+
+	+wZpHACAy7YRqudofMlTKdiB1Ry/6nHCqPQDkKXfJC3aG3l78Q7frJaa
+X-Gm-Gg: Acq92OH93A6fJ/nQt1hT1o+QcwXSirXfXxfLNGIIVWP4ztCyveXfekEq+dAWBhTQ5m4
+	2LXQG8Ks5VD4LN52SC9fzW14n9rKVNsTRj5BYk96m7PRX17l0+D/VkHU9/XWZ3BFy0PwN89h1/4
+	NzxdGZSfsYW/9W5dpdzFxCTTm9pbzRzjte4t3Ry2lD1qVBhehS763mlAa6Mfr/fpJXLi5R+GjvA
+	8ImyFLmdfhGqmXsDhCYL+7vGYnRgVUN1Aud0g/zdfLMROcRk1NfoC2fFNh3h0psu8GTGCnqZEGo
+	6C3yZ/I/cDq+kScV2xOYmEonx+vvIHOd7EJFhUtkMyFJc5spavvcq125Mhhi82/z7VOha1Na9P0
+	K95D4AeiYPi0IX5vnHBk0q6oGEgv2ZARL256+2douuwXTK5LoDn6rmFpSyB2Q9jfSfxBa4Wq7Lc
+	zuc7jBtbPpGJf/sGH0KT2VLmU2XCzg2PU26mAF+djyuTOOKM/LP+dk/lFWofNMBaTLa5AqhiDkC
+	sw1176IO+UkDDw2wgAIpCjoEIWqfFa5uTySCZT43Ip5umIodUtphOdwJ/+mqb/phRsSej+vTw==
+X-Received: by 2002:a7b:cbc4:0:b0:490:a2f4:c499 with SMTP id 5b1f17b1804b1-490a2f4c5f7mr49990015e9.6.1780307861689;
+        Mon, 01 Jun 2026 02:57:41 -0700 (PDT)
+Received: from fedora ([149.3.87.76])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34a03f8sm25589419f8f.7.2026.06.01.02.57.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 02:57:41 -0700 (PDT)
+From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Hao Li <hao.li@linux.dev>
-Subject: [PATCH v2] mm/slub: allocate sheaves on local memory nodes
-Date: Mon,  1 Jun 2026 17:56:21 +0800
-Message-ID: <20260601095706.106551-1-hao.li@linux.dev>
+	stable@vger.kernel.org,
+	Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+Subject: [PATCH] mm/compaction: guard move_freelist_head() against invalid freepage
+Date: Mon,  1 Jun 2026 17:39:42 +0400
+Message-ID: <20260601133941.111989-2-giorgitchankvetadze1997@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: mtjg1pzp6dp163bmaoysh6yihpbebyti
-X-Rspamd-Queue-Id: 7A0D6100006
-X-Rspamd-Server: rspam07
+X-Stat-Signature: sj11o3c7t97ig9pmpqc6sj47xutnm8wi
+X-Rspamd-Queue-Id: 7BFF2A0006
 X-Rspam-User: 
-X-HE-Tag: 1780307858-702558
-X-HE-Meta: U2FsdGVkX19ssCO6G0EPOAUkqQCRyJfSJt17Qghx0WOy0U6KkkfQTOn4kHKvmFtlUnFL2klqi4+dOk3h49KSSkUfEWTW/9tASALr7JCGxPIz+r6IAU7ChtgyBRG8QNHywt86K1JZeMrPPA6PrVSNOqFxxI3Z5/McWj6gcBf5GsEQkP9NDnWkmlJ+KCSGXv7ZM7Gj4ob3KAv/r9JDwp4Bl8kPXfwTiRpGl0V0ilXLA4hP8rqUY6KH9QZhYoLZCy8rKsda2iZdOccW+dfrr5eT/7Atd/C3K1DRY3N6eJ8nFrGrpUwfYEqlXRlBu+TDMjvPK3qOnbnRm/Xj6KXOT1AScZ0MCtPPC7zqa3dRQDAAcwLGejDDN0EUndpkNs4BV3daUORU0PIaZy9sDaY4DdRr7+B0QECjbj85WLsOj+UkM+mwffHxQTcVXBI2aIa0PgXOm4rb5nvE4xeZ5Y7Je9X3X+YYAueU5m2TiRypxYNy/KynDX1iQg2JqU2gq2WOfxo1G7ca7DnwLqApbgYR4+gEJmTWLyd1wvPyxJJ2ZzLWt9/ngNNKK9mDqgWq01VrUp/KyFERtRg0HSoosS/GtV+e91o5lz8Y0sVwIvlw9AgJK+A1OWTFO9j8aZ+An3vpMH3KRJFvxNgIVi3DVXG13ppaI80F9XPQIYojPUkE5hnWHypF5sP5uKD01ib1eb9AwELXuAf4mXjKLpGqtJT1smtnRDOkiool/iDBxb7GiPVxBJkRrhiMQGnseNcIg0x0eL1Vseyvm9ZLzxAvljOiBt8prkzUikBsXqlPot1DX9sIAqHObFl4TMfCGoe/fSE41w52SbIr927WrxXSRXyUDV/Ae6F+Myg+w/OuRHyBlJ8k5uH12tasTW9Vpm2Hq3aKGd9UKga3D4hcV3oSPE6knU1JtIUyHS95N99q8FH2c28FdtL3Ow3x2XXblJ0gu0lZeZfn3jQ0XE2HfpC+a5lcVwN
- sLD/zMgT
- XLV/MVrVeG55lHj9uYYbPthfpfsBrjPVfLpne78K/z5svEFVkMqIyjzMVQw1mtUZw7sBnldqnefn0QT+oeVL2r585/dRogw4pd+Bvximfcxf9hHy9E035aeuecbPkKA/5opMYy+mRAi+MytRGlfJunjJwIMMGguwLxhvpB6FAvVnLW5abLclJLh2ocxzIqlhD2jZ3rAzyJAW02VTaYFzIgW5THakaLe7QZS3p
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780307863-184592
+X-HE-Meta: U2FsdGVkX18vwt+9rGRk5zOiiPhM8kgiDjptKyDX523L31pzFt+pvKZPKSlPsXj9OV8NMTmovB0uuB4CVZ1M7MB0Nn/mHAXYV2bZ9tSprgcMdcJg3VSvmInHX+tueU9bVAiRb+0qSp0jEfhJRsrv5m/norjHVsSJDbOGKYBzsPSwb5qLAVFEKtb2VpdDAJn3zcXhYZGCE9OnKXEJTC2oV8rGzFQy4o1COVl7WxbfqM+10iYB0ObumQ/3drn5skPuvtYhQfhc0iXfRJvB5A8gKKP4UoEp1+poRvIXerIGAHXuXrkLZQbJp7ub05xjmztLAT22wq3S1G0YueS/mnjP8AcpDCxibtAgxE9+t7qP9s5acUs8oco5NYDY5Uyp0U465sgx+YmLZo55R0IftqdJGYGWPqoS7AeVJOtkYMgUWe+busr6f9mW4tFqQffLPV/6i4X9Vbqa5Sct0XzObpRS4/eUDMwRtfbPM+/XnN4A7jiENtDOdCANm97fRhtaQt7GOs7FeYNrKQZZ6StdWo6pVxYZeBE3T3FsfxnGqz8cCYbdNb5xkjnRL7q+OVITxcJV0gU5fbUHOzYfwYV4WCBsAizdVfzkBV7yRPyEtOnPYcReRnLA9DHvWDOCPA5z1P7uinpesiZaJdWowmjwIYVQ3e56Ptv9HkGLH1WXBXHgoZ13O8Hjp5tzE9BD87kqE/E8Kd1TVaSLArCiUmP+zharfYopqrBeSfuHD2x42LWedOuJ+K8j0blZ/Ze6/7bWwVTK8/VoCApj+FKgHwuoy0lgI0dvldwhTZqJMdQ6cJEQFnH6S7tAx+iBYWXUjMRfrjq6crKD/4SH2san2+7iozQ2G23UmMb4RQYJ5k1O0ksv3IN9nHm9DsVhiJf0d4daC2dnRfvbGFZViUJGPfLfV5u3ZUwqywvkRtoFNknVU6M6PiUF0QufjWPfzNpeo3YDT2aScZtgO8Ij1q4G7+Ly+/W
+ ueqQeYWB
+ shEZx/5HRnDB9qFjOwfzU9D3kRwDUbvxpc/5AexlqEJ52AmXCKEaGeDe5pPzjcUsrhn/w0zopQqZAxvih9tEIGKFBo9ZjBkCMdvc6a0LjH5S72gV4D9Hv8B0lbC+SlSzSntlIhIHMkTWim+mvu8/zY2WPLnFHdPfsEhadGRIaHkZej7pKTYSzcx0hM+CjKjZXgGrKXnHErIlyuAOgSvkof/BTjtbzmFOB5Cs4yU7VRNglKO8VG85kG4TCWGlpGM5jC1bzUNEmoqZ7jCBHuO4ZcXuXezLU3HfX8LFuKTE4r7AisbGodOHjt7svTR/a/elO4SX+sZsB8vGMogvgpspBFlSpY4hinia/nTd3cN5v+KZzpYMymM3/F0NMsy/23YLFpiPra61R0ZUMYJIJ8unNGxdoqDFmLURNrkNmGFZzSsPv1U0CZ0YtNTVOXz8+FACKiLTD3TTTwNQZfJwLmF1mlr2Rb1hNFFM/kl/Z/M2gPeCJFm2nLZxCe2R4bMRyfJdJlUT75dG1iD72+L8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,120 +123,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sheaf structs are exchanged through node-local barns. Since barn structs
-are already allocated from their local NUMA node, this patch aims to
-allocate sheaf structs from their local memory nodes as well.
+In fast_isolate_freepages(), freepage is declared uninitialized and
+is only assigned a valid page pointer if list_for_each_entry_reverse
+exits via break. If the loop runs to completion (all pages in the
+freelist have pfn < min_pfn), freepage holds the list head sentinel
+and high_pfn remains zero, so the high_pfn fallback does not update
+it either.
 
-To achieve this, the obvious choice would be using cpu_to_mem().
-However, init_percpu_sheaves() and bootstrap_cache_sheaves() iterate
-through possible CPUs, whereas cpu_to_mem() is only initialized for
-online CPUs. Therefore, we cannot use cpu_to_mem() and instead need to
-use local_memory_node(cpu_to_node(cpu)), similar to what
-__build_all_zonelists() does.
+The subsequent unconditional call to move_freelist_head(freelist,
+freepage) then passes the sentinel as a page pointer, which is
+invalid.
 
-The primary goal of this patch is to improve NUMA node locality.
-Although the actual performance impact is minor, it still yields a ~1%
-improvement on a 192-core, 8-NUMA-node system when testing with the
-will-it-scale mmap test case.
+Guard move_freelist_head() inside the existing 'if (page)' block
+where freepage is guaranteed to refer to a real page.
 
-Signed-off-by: Hao Li <hao.li@linux.dev>
+This issue was identified via Coccinelle (use_after_iter.cocci).
+
+Fixes: 5a811889de10 ("mm, compaction: use free lists to quickly locate a migration target")
+Cc: stable@vger.kernel.org
+Signed-off-by: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
 ---
-Changes in v2:
-- Make init_percpu_sheaves() use a NUMA-aware sheaf struct allocation too.
-  (Thanks Harry)
-- Rebase on latest code.
+ mm/compaction.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-v1: https://lore.kernel.org/linux-mm/20260525082312.16012-1-hao.li@linux.dev/
-
----
- mm/slub.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index cbf6636a3dad..7d36e09ae216 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2757,7 +2757,7 @@ static inline void *setup_object(struct kmem_cache *s, void *object)
- }
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 8f664fb09f24..320c082420fd 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -1611,11 +1611,10 @@ static void fast_isolate_freepages(struct compact_control *cc)
+ 			freepage = page;
+ 		}
  
- static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
--					      unsigned int capacity)
-+					      unsigned int capacity, int node)
- {
- 	struct slab_sheaf *sheaf;
- 	size_t sheaf_size;
-@@ -2771,7 +2771,7 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
- 		gfp |= __GFP_NO_OBJ_EXT;
- 
- 	sheaf_size = struct_size(sheaf, objects, capacity);
--	sheaf = kzalloc(sheaf_size, gfp);
-+	sheaf = kzalloc_node(sheaf_size, gfp, node);
- 
- 	if (unlikely(!sheaf))
- 		return NULL;
-@@ -2791,7 +2791,7 @@ static inline struct slab_sheaf *alloc_empty_sheaf(struct kmem_cache *s,
- 
- 	gfp &= ~OBJCGS_CLEAR_MASK;
- 
--	return __alloc_empty_sheaf(s, gfp, s->sheaf_capacity);
-+	return __alloc_empty_sheaf(s, gfp, s->sheaf_capacity, numa_mem_id());
- }
- 
- static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
-@@ -5014,7 +5014,7 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
- 
- 	if (unlikely(size > s->sheaf_capacity)) {
- 
--		sheaf = __alloc_empty_sheaf(s, gfp, size);
-+		sheaf = __alloc_empty_sheaf(s, gfp, size, numa_mem_id());
- 		if (!sheaf)
- 			return NULL;
- 
-@@ -7575,6 +7575,7 @@ static int init_percpu_sheaves(struct kmem_cache *s)
- 
- 	for_each_possible_cpu(cpu) {
- 		struct slub_percpu_sheaves *pcs;
-+		int mem_node;
- 
- 		pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 
-@@ -7598,10 +7599,13 @@ static int init_percpu_sheaves(struct kmem_cache *s)
- 		 * For kmalloc caches it's used temporarily during the initial
- 		 * bootstrap.
- 		 */
--		if (!s->sheaf_capacity)
-+		if (!s->sheaf_capacity) {
- 			pcs->main = &bootstrap_sheaf;
--		else
--			pcs->main = alloc_empty_sheaf(s, GFP_KERNEL);
-+		} else {
-+			mem_node = local_memory_node(cpu_to_node(cpu));
-+			pcs->main = __alloc_empty_sheaf(s, GFP_KERNEL,
-+					s->sheaf_capacity, mem_node);
-+		}
- 
- 		if (!pcs->main)
- 			return -ENOMEM;
-@@ -8465,10 +8469,17 @@ static void __init bootstrap_cache_sheaves(struct kmem_cache *s)
- 
- 	for_each_possible_cpu(cpu) {
- 		struct slub_percpu_sheaves *pcs;
-+		int mem_node;
- 
- 		pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 
--		pcs->main = __alloc_empty_sheaf(s, GFP_KERNEL, capacity);
-+		/*
-+		 * Cannot use cpu_to_mem() here because it's only initialized
-+		 * for online CPUs at this point (see __build_all_zonelists),
-+		 * while we need to allocate sheaves for all possible CPUs.
-+		 */
-+		mem_node = local_memory_node(cpu_to_node(cpu));
-+		pcs->main = __alloc_empty_sheaf(s, GFP_KERNEL, capacity, mem_node);
- 
- 		if (!pcs->main) {
- 			failed = true;
+-		/* Reorder to so a future search skips recent pages */
+-		move_freelist_head(freelist, freepage);
+-
+-		/* Isolate the page if available */
+ 		if (page) {
++			/* Reorder so a future search skips recent pages */
++			move_freelist_head(freelist, freepage);
++			/* Isolate the page if available */
+ 			if (__isolate_free_page(page, order)) {
+ 				set_page_private(page, order);
+ 				nr_isolated = 1 << order;
 -- 
-2.54.0
+2.52.0
 
 
