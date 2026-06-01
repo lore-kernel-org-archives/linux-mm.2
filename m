@@ -4,118 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9764CCD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:11:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98D68CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:12:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B00C6B0410; Mon,  1 Jun 2026 11:11:58 -0400 (EDT)
+	id 088A46B0412; Mon,  1 Jun 2026 11:12:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0396D6B0412; Mon,  1 Jun 2026 11:11:57 -0400 (EDT)
+	id 0393D6B0414; Mon,  1 Jun 2026 11:12:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E43FD6B0413; Mon,  1 Jun 2026 11:11:57 -0400 (EDT)
+	id E6A3D6B0415; Mon,  1 Jun 2026 11:12:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CC4586B0410
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:11:57 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D5781C0C61
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:11:57 +0000 (UTC)
-X-FDA: 84831683874.11.F74E6E7
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A52DE40012
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:11:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cp2+7nab;
-	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CEFB86B0412
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:12:05 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 949011C19CC
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:12:05 +0000 (UTC)
+X-FDA: 84831684210.02.06D800D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D8A831C0014
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:12:03 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OzDbYQWz;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780326715;
+	s=arc-20220608; t=1780326723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IzS+u3VEJaiahfu1nIf+q6huqq6AwnkcqZDyeqXemp8=;
-	b=4HIc8JPISc9Ma1NPgqQG783q5vXg11oFecGKvaMUoXDjTM31yOyi5K+4wWhA4lrtOL3iI/
-	0k2hrQYMx+UKzCUDXs4AMxcERqSrkUNuoW29QiH/A3xPB6xMIPWv9neSjnCFgU9V5KLehG
-	vaC68b1KQ2b38OqSQcOWRitGkTx6Rh4=
+	bh=DRoPZwyQICk/LDd1Td1WsJ3uMEx71Y/sQrykw2cENrI=;
+	b=1i4Kbytkm7eqCKJlDUw4MYgjXlgtxScZOwCbEwZS79dI7IjwzAdWUWiChwS2sfr7kAyVGe
+	O+V5HGDd1W7QOeAKD+x0ljZAbWkojRgFC7DNIDifn4+WhuAAhTHe7jttc0fG8AGS7HDyg6
+	Pyk/t1uBTW8HVU1GHh1QLfbkCapTWkQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cp2+7nab;
-	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OzDbYQWz;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780326715;
-	b=SGqll+g0GTIkYeKqHowsRgMtitOPfKasVS3Ujh3mMkKA1p8vesT4Ervl457JTJbq0GgZot
-	oy2B4tY+mlWeLTgBdTc4HDTqo+jwZs6PuXfcgub+ltayejs69VCS8DdqqY107p5RfZ+P0T
-	p4xkq+2UirDeDzUl3vk55/0sWAoqoBg=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4904c1ce4c1so114707185e9.3
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 08:11:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780326714; x=1780931514; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IzS+u3VEJaiahfu1nIf+q6huqq6AwnkcqZDyeqXemp8=;
-        b=Cp2+7nabWWhGi8RgZNvHbGz88GEgi92LtIckh54H9+GNE4b+AOd7GMseIQ7aJb63uu
-         ifDGV3Oie1JGKEaN0uKWY5K0dvX1jCjM05VfBXgdjHE0By34OEQDf7hrK/2ED6/LEys3
-         CvVCtBhd3zh0XyMtZLDBhMGNXtCMepG4g87d1br/LyO2N++QfPH/ccKygd3NHCzBpenY
-         B5aaRL0IMVOc1K5xgTad1jo3m8iMwERrXLBsG7RPLxlSblYbB3R/t7mY+VDmzBn2a3D6
-         kSlyCtO6L9C5NROGaU6G5qkTGmoqY1I6DBKWsXFa7B0QDw7vqv62CUUYkqWRRXLE5PoD
-         7tiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780326714; x=1780931514;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IzS+u3VEJaiahfu1nIf+q6huqq6AwnkcqZDyeqXemp8=;
-        b=km5AACZLORjnjJK9Wk8wn7YKfzT1eDZdYObeMoEimpjgxXnrQn4KcrfFgb8jNn6U1W
-         CY6bUVSMxG4kg8JSl23ZKukNS3F2OaUoJ7dIdX9wAZzjxJIjdfza9oa37J8jtcpwB+Yz
-         0eujjP0wlm6+94JvERbPdima+LrEZCFskKaH0Oo1rdfrQhh3J0aFwUw0LWrW7mh+p+8M
-         si3Iy67ugEarCIb6WrKUANoXsUoeX/IGHZpg4jfvqioclKECg8mLBUoxyWzzr49VFq5c
-         UhoeZLyPreDZvtyDypUHE30Px0GI3LuSdvspyTNb9ZbRtBB8hIBIcAp5gBJnIxac+u9v
-         dWHg==
-X-Forwarded-Encrypted: i=1; AFNElJ91F2Lx0NYTc0DXUeE5mAnRSOaMmsRvODUDVNOeI06vHf6cPEl/Zjberbr4g2SLe3utjEHopH63DQ==@kvack.org
-X-Gm-Message-State: AOJu0YzJr9dTaEdFYEoYdAZ/JsjzbG/OGNx2t4keFPTKuh3BrAzRcOtf
-	GihhkQIGrBbEEnlgC3cqhKyuRmTXLGtaYvugJUehE4cJnbnzz0v/PkWx
-X-Gm-Gg: Acq92OGK1Wxa11+Lzze1nwldUlHPN51IXAngCMqULmDeONngdPiFG+wvincif5l936G
-	FVwfIHK/XjPSKOtFGcyo+Ceb/4oqGNucDAL4/oycyfIMF5VAui5y5c/GxELAFgid8LtPzepOg13
-	mZN8n7y2Ytk22WNIj+Rpwd7liUIDvirtQfBTWDoL0czKemC3+rhcDh/CUIt9YxCvxaV3HZsyDC5
-	uo6Y6BNTEwopPkwoo6bm66xVCCJZ68v4Z9UgSA+/aRR16Tj3Wec4YvbpF0DV23TdI1Yhn6D627V
-	lCASD28xEEb8lefjimH+5rNqmQcqRube5512ficMkRH4ZiSOmGaGcnnIAqB47k8qg7KBFoG0AMd
-	FnQldbef1IugU4LqsMbTtqzbLB+Q7EJZ9q2dbQN1VZo/9lxjBjvVZ1sungE83JNcDVDkcz68fI+
-	h49+5ACY1RMfhjtm9xVZRBoI89xzjJeC+AlB7XaAeayzxZ9XGa2+mKb/zgmHaDfMeBpsj7wWJXx
-	dCHTirRQA==
-X-Received: by 2002:a05:600c:c11c:b0:490:4663:691b with SMTP id 5b1f17b1804b1-490a2923a3bmr173930475e9.7.1780326714079;
-        Mon, 01 Jun 2026 08:11:54 -0700 (PDT)
-Received: from f (cst-prg-92-135.cust.vodafone.cz. [46.135.92.135])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909d6eb3adsm256613955e9.11.2026.06.01.08.11.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 08:11:53 -0700 (PDT)
-Date: Mon, 1 Jun 2026 17:11:46 +0200
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Chi Zhiling <chizhiling@163.com>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chi Zhiling <chizhiling@kylinos.cn>
-Subject: Re: [PATCH v2 3/5] mm/shmem: introduce copy_zero_to_iter() for large
- zeroing
-Message-ID: <dvvtrfpacxxuagpexdjni6gpuqbqu6xl2regliuz2zyv6koaok@d6wi2wk64cor>
-References: <20260601055704.167436-1-chizhiling@163.com>
- <20260601055704.167436-4-chizhiling@163.com>
- <ah2HfH3jJZDiNAQc@casper.infradead.org>
- <rvvwfa4dp2wovn4vlglajxwpumiudvcgbnrj6fwh4dxtxemawh@rbav4cliyraj>
+	t=1780326723;
+	b=aqXYNRAuYA2iiqfLhwtnefqNuqujNvvQCtOrSo64FU61GsVPfItA6UkhpY0hUEhB/zkzgP
+	QbqOPKbLUU8u4+7gRAcUKw0dLag/ExDXsuTmKK1/RWISdITxqCjwKqh7hyuKKDKGQCmkyp
+	fB4SdH7twre3WTAclxwHBYyrlVrcEGs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6441F601E2;
+	Mon,  1 Jun 2026 15:12:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A3E1F00893;
+	Mon,  1 Jun 2026 15:12:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780326723;
+	bh=DRoPZwyQICk/LDd1Td1WsJ3uMEx71Y/sQrykw2cENrI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OzDbYQWzocNFjL9zUrxf1aln6K1zX4tUkMX/diKlSdNKSoiBv2KAuS0HxrTcHeHfD
+	 fqOs/leANIX/SRSGHVXnLpia+QQyf+UvRsnXZqPj8A4WB+p6Fl4bAK7p9zhUm44QQo
+	 gn/KKsQbH7iZW8MkQBcxFi2wKtCB7vWT4MwD+WRlSG/NmVrJEl79E5fpRR5SmuZEB1
+	 8zauIWVPZgHWtmdPkkd4QV7ohtP8gqRA0unspxBaBTslTuwKwL7/kKsf8FasBs90mt
+	 3jpkLBN1Vn1K36vIIp8L7ot/bEkV67lAifY4s0dUl3n7kzKRThG4YJKjk5GIZJJT7l
+	 KRain784Sqk8w==
+Message-ID: <470096e6-f1c7-4b42-a9a8-113f091c63dc@kernel.org>
+Date: Mon, 1 Jun 2026 17:11:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <rvvwfa4dp2wovn4vlglajxwpumiudvcgbnrj6fwh4dxtxemawh@rbav4cliyraj>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A52DE40012
-X-Stat-Signature: di6xm9qc9qgzu795nt9f6pete6yiqqc4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: mm: clarify that user_reserve_kbytes has no effect
+ when overcommit_memory is set to 0 or 1
+To: Brian Masney <bmasney@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Matthew Storr <mstorr@redhat.com>
+References: <20260528-mm-clarify-docs-v1-1-aa88e83b4bfd@redhat.com>
+ <ahhK2nEo-HPgodNF@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ahhK2nEo-HPgodNF@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D8A831C0014
+X-Stat-Signature: autmtjynmz4r5mc55195pa6y73zn6ebq
 X-Rspam-User: 
-X-HE-Tag: 1780326715-50927
-X-HE-Meta: U2FsdGVkX1+r9C0j14E5CUgyzkewmN8YaVQsj61qvdD8GpFp2+bhmWVaNdyvyQNlwTBFuWSVxoa7F4gS3VXQXYPpIV5R4qiYL4BdV3UMqPDYmaN/67x67MA9SD5R1L8i8WMnHID8ySMXuw/rjMzrUO8qiaZCflyscXhArtITBidEeW5iDGOiWZDgMg7BY3gyagEFATamTw561bTA+r38TSVgmBpb4GpQ7/rPjm/QpgWr+4uU+ea4CWOS2xG1xZcv5ccPGNrRDonNrRtYyDBFtm1HKcFc7PttzNAwTYQAjWcTqZgqWar1z6IDtGjhZnRliXIJzg96zeb30w2ZaJeKepRJMjesBDDHnovpYjEkplENxdG7mS0pkzUjHCQWkNm046oum6yYkRXVVSi5HSQ566BdANLqkhoGPnR32O0LRi4lvdsTnP9L4yFpNiwhAhzoKY48mU5nWpvUPWYqgI5txSOZApeF6y5gPICkuQBtP+MH0smphtzfB/Q2Jqz3ccLHxzur/LZQRKRgt9b2YAwXHHrVBwd3WuhCUYuLWNAOVxp2llDyDXb0XPEhtVETZTbVt5k9fBBO8ySP9cWhCp1pFArSrr8fFUfOlwAzsO3BEVTcaWUgjsBrZV2XCxPiPbT+wuBmE2aTgudqg+W6jxErMWRP0llLZsf54SUHsyR7zSVee5L4U58QASY/vb14ItBq6xr/yl/rKz0LWyij1RowaL8nSgZf7/+cmb7rc9V4Undf/B30bijDuAAh0swEnfggMmFAjquELlAr5ZJpW92paUS3MVrF8kgndOxNpYE+brMNlzzSqp+a+dYSSocRYnOw2xG5GKcGmF2SmcZIzU80o0LOggqaW73sDUBXsOv1EPcjZn1fGzJI1g7sq75YY3uWK1nwH6Yd4ze8juGagMbgulskC4rWFrzh7kwgXeJ2YBUNu5wCilGv4VhtYsPDiX++6JoeebxsGbqDcJainjT
- YBoJTJCT
- btSCfrY3au8Wy8l64i4atBnvpD+jIHx5qgbsoxVfju+0kTGJUQIP9cbsfiAehm/VrvqltVg2zgdogQNRxSf5GESXm2EM+HHwh2TyDH8MGWkt7a+34Ve54SVZ0gtLvPHIjOj6maqW0EHQQpeP4TVlDAEQybZxIMHdP4ONHzBF9mqjYujksRE/7emPnvvcJhEqXwNWJkGl+/lusjjfVqqh2TJBZFaiQU0QfSzlPkeL3MeH/JVqd43So4NEg0skQFnKkg5ba724huITYFVpMsiSih/AXRMaURSbvk+kGsnY7ShOFyZHsL0UFlYf6eEGOflngMHujz3dxpdk/rpPPIzGL2lE9SV7RHXHh2siMeExy22prKnnAZzMAFZhZV7cfj6NdL/yR4MswMk163m7THGF/eKSnYNO4h7OQEbvniMvzPOzfYzgl+rSh8fE9nCDA0feunCM8YioCHflbBmgmIPBlmR/ma9ieriBppB04
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780326723-923245
+X-HE-Meta: U2FsdGVkX19XsPTS2ZoZwuXiOAmalU2tqFtBmyWqOvB/WJ6uRe6oNu/Q/kPlE83ek8cEHh7yqKf0phyjXQjVilbkm2A0/PHqIeLgmFDukTGt5NU1wXJ1G25PFn7EMtLOfXfeN+hU5mZe3wfg97rIr6Raif02tiGKvSSUf0Kyr4PHhTRZpnxTkx3zVvX396+lukiuUm8JyjTIB/6XxLUszWaq0eeMRvQtPRdp2gZ3WZJxX/HpzJppo5D2z6OXzA1ho4Ix0dtuP99BqCTvoXlnkvrOaXOxNCLYPsaHBcEdR4tymMLf+Gwxv2yoSSzk0BwvM3vuGCB4N51yd1ovnUAFR+6Zr2xvzU0ClzkUrCcr+Ar067nT7BZ2BD0RYAjghX1+gYfMQvk62nHbtHstvUWsXs2Ui+elC2KZJt3CelDd/BfqSj1n2Pwg1UGCJ2E4jzXPd2oL5MacnT7fRdiwfPBt0Pq8CoP3J8tVE6xecvIaF15P8syniA+TSRoWl9QxaZjUpYZ7B3viSuyBnl9GtC6Tq1HEMzV098QlsrXQvr3BIT5lmtAz8ugzRbRNQ4zPismWWc/feYPNhfjbufUHilTErnbErtn43lI2EO/XMBx+5lrkwwmlaYhfAH83IaopM6aSErdNdxn6KWhy9ncSV5izzBjjfZ7k8RwKUWx+k9WRtKMJ4Tp2cPxaszvr2srVel91l55unEfEc7n1zSP9cOy+OYTPGNVYLPzKaYyrQ0Oe5JyFVtzUVqEyWUu+kbpctH8UmMjHknx+4+ec7Dr+dxhmStePLZdNH82qfxzejZgPXMV+wX0wmLP8G6xD/FDFA8bH7IFUATrrglXiMDwShjq6QW1Bu31fqevR6vT8z/ODvpyFH8mrS88Js9NvZbJLzpidC2eufRNvpZI0E+IZm90GRuO1Lk/SVAVtrvUIYAEaSBXbYJ5vZpcUOsG4rpRvl8HPFw0EU89sCkwWqyjf2vq
+ DMjWs8rI
+ D6tFD0aJLx6bHh2IEVFrvk7tODj2aSD5nFFLLXBcQQcTnhhZQb/vuT+cacT8OIUhkM4aBX01EsWcWjBvbvUUbHsxwfefsw29aamXSlLbObMc00gH126tNcom8NbhFjqT4/WunW3Bqic9wDFCb5N1JDPwJ3r3gKpXLWMAVY4hC8oGNbrkCfYkwLla+yfT1AYXjoYC+QOwaSXoP4XtDtcXMxv+YugKspM39QaCVwTsrKNEVJ4FtkGDRivZDjAnCqbDq6q76Dx7T2Xxf98WM2FFG4gr7+QktkZb6WSp/y1FX+DLYFKPqghK17Xf9B2F+bGZqW2Dsd2o/AQ7RVHb0h8/wvE17RsyTJhgmUQvcutKFPgzvNI8RcX+og3oYT3WXkyTjifMY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,71 +142,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 05:02:01PM +0200, Mateusz Guzik wrote:
-> On Mon, Jun 01, 2026 at 02:22:04PM +0100, Matthew Wilcox wrote:
-> > On Mon, Jun 01, 2026 at 01:57:02PM +0800, Chi Zhiling wrote:
-> > > Currently, holes larger than PAGE_SIZE cannot be handled because
-> > > ZERO_PAGE is limited to a single page. Add copy_zero_to_iter() as a
-> > > wrapper to support copying larger zero ranges to the iterator.
-> > 
-> > I think Hugh put this optimisation in the wrong place, and you're
-> > perpetuating that ;-)
-> > 
-> > So perhaps we can start by moving this optimisation to lib/iov_iter.c?
-> > And then you can redo your optimisation on top of that.
-> > 
-> > diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-> > index 243662af1af7..06c54d719fcd 100644
-> > --- a/lib/iov_iter.c
-> > +++ b/lib/iov_iter.c
-> > @@ -451,7 +451,23 @@ static __always_inline
-> >  size_t zero_to_user_iter(void __user *iter_to, size_t progress,
-> >  			 size_t len, void *priv, void *priv2)
-> >  {
-> > -	return clear_user(iter_to, len);
-> > +	/*
-> > +	 * it is noticeably faster to copy the zero page instead of
-> > +	 * calling clear_user().  Shame.
-> > +	 */
-> 
-> 
-> This is a rather suspicious claim. If clear_user is indeed so terrible
-> that it is faster to copy, the routine needs to get unfucked instead of
-> the problem being worked around.
-> 
-> I can't speak for arm64 or other non-amd64 archs, maybe these are
-> horrendeously broken.
-> 
-> On amd64 some archeology shows the following:
-> 1. 0db7058e8e23e6bb ("x86/clear_user: Make it faster")
-> 
-> 2022 vintage, replaces thoroughly terrible 8-byte per-iteration write
-> with rep stos usage
-> 
-> 2. 8c9b6a88b7e2f33c ("x86: improve on the non-rep 'clear_user' function")
-> 
-> inlines rep stosb at the callsite if the CPU has FSRS, otherwise
-> fallsback to a new routine which does 64-byte writes per loop iteration.
-> 
-> FSRS is reasonably popular by now and chances are decent the test jig
-> used by Chi has it.
-> 
-> For a size like 4096 bytes, the 64-byte loop will be slower than rep
-> movsb and even rep stosq. This needs to be patched and maybe I'll get
-> around to doing the needful(tm) in few days (it's not hard to write, but
-> some care with testing is needed).
-> 
-> I could not be bothered to check how the workaround showed up, but it
-> definitely needs to be removed as opposed to being perpetuated.
+On 5/28/26 16:02, Brian Masney wrote:
+> On Thu, May 28, 2026 at 09:45:10AM -0400, Brian Masney wrote:
+>> Looking at __vm_enough_memory() in mm/util.c, user_reserve_kbytes has no
+>> effect when overcommit_memory is set to 0 or 1. The documentation for
+>> overcommit_memory already references user_reserve_kbytes when the flag
+>> is set to 2.
+>>
+>> Let's go ahead and add a clarification to user_reserve_kbytes in vm.rst
+>> that it has no effect when overcommit_memory is set to 0 or 1.
+>>
+>> Signed-off-by: Brian Masney <bmasney@redhat.com>
+>> ---
+>>  Documentation/admin-guide/sysctl/vm.rst | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+>> index 97e12359775c..b9b0c218bfb4 100644
+>> --- a/Documentation/admin-guide/sysctl/vm.rst
+>> +++ b/Documentation/admin-guide/sysctl/vm.rst
+>> @@ -1034,6 +1034,8 @@ min(3% of current process size, user_reserve_kbytes) of free memory.
+>>  This is intended to prevent a user from starting a single memory hogging
+>>  process, such that they cannot recover (kill the hog).
+>>  
+>> +This setting has no effect when overcommit_memory is set to 0 or 1.
 
-Maybe I was not clear enough, so here it is stated differently:
+Kind-of implied by "When overcommit_memory is set to 2," ... but this makes it
+clearer.
 
-The routine was incredibly bad on amd64 prior to 2022, I presume the
-claim of bad performance predates the fixup. The current implementation
-for FSRS_enabled CPUs is fine and I guarantee it wont be slower than
-copying. For CPUs without FSRS the fallback is slower than it needs to
-be for sizes like 4096 bytes, that I'm going to fix soon(tm).
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-No matter what, there is no justification for issuing a copy from zero
-page just to avoid zeroing in place.
+-- 
+Cheers,
+
+David
 
