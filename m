@@ -4,109 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 519EECD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:37:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5F59CD6E4C
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:43:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5A856B029F; Mon,  1 Jun 2026 03:37:10 -0400 (EDT)
+	id 09F1D6B02A2; Mon,  1 Jun 2026 03:43:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0B966B02A1; Mon,  1 Jun 2026 03:37:10 -0400 (EDT)
+	id 0501B6B02A3; Mon,  1 Jun 2026 03:43:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FB026B02A2; Mon,  1 Jun 2026 03:37:10 -0400 (EDT)
+	id EA8176B02A4; Mon,  1 Jun 2026 03:42:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B8596B029F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:37:10 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 32D7540530
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:37:10 +0000 (UTC)
-X-FDA: 84830537820.06.43601CF
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6659F4000B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:37:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=P7Ebjget;
-	spf=pass (imf12.hostedemail.com: domain of niecheng1@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780299428; a=rsa-sha256;
-	cv=none;
-	b=T+mPYknVEFDVIOz3Vvq35vhQ+zPVVeQu5vhijcyvD7D24RvPYGBNzkA/+9xVwofDI0Gqrf
-	gp7on7Ko93Vb6vOnwV/VoHLH2x+mB00DE2CNrEidHhgTF2OUsUigTmqgqdzaV/2/JclcPV
-	K40M4Sx/wkulHjpYjNutKG3GWlLZL1U=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=P7Ebjget;
-	spf=pass (imf12.hostedemail.com: domain of niecheng1@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+	by kanga.kvack.org (Postfix) with ESMTP id DA4B86B02A2
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:42:59 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 897211A04EE
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:42:59 +0000 (UTC)
+X-FDA: 84830552478.15.61F1AAD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id EB6FDC0007
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:42:57 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RJ1pWFC1;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780299428;
+	s=arc-20220608; t=1780299777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=uH0zhOPDX9cTobLGcddQPX+eW4noEIYY0qYKS33IGqI=;
-	b=uLB5u9Cp3ztmccUOfEW3i558kFDLl3xjkWKdpm9Oa8sDpg+Xts6aRDEZ8Na8zmXGHgcFSc
-	o2LyPLZOfs6753aepCqrO7ScP7ypgf1q3ZLdnzs8geI+Ndg1cbsOTYqhk69O3R/V/VMll5
-	fWH9zq1eyq8K3bojyEjbtiJhrwHziHM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1780299406;
-	bh=uH0zhOPDX9cTobLGcddQPX+eW4noEIYY0qYKS33IGqI=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=P7EbjgetcYJ8lxf8/rwelB6wbQ7f49xIa/gLuKtCyE8CLoy+zFe0+asCxuwsj5mq1
-	 rQsprf5gMLNjcAI9jJj8MSXwxW46YZGVBp6xU/U6DTIluZ0vQHbmZR0YS9vmDbdpFr
-	 d4xf2rsEp3KE6NrAYF8xHHE7eZD3kmY4oajgrFAM=
-X-QQ-mid: esmtpgz10t1780299400t9453c59d
-X-QQ-Originating-IP: KmpJ7xKXL7U5Srup1auzkXsFPcKbcVshfHQAinW5GIc=
-Received: from PEN1097 ( [124.126.19.250])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 01 Jun 2026 15:36:38 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 4375497483461457750
-EX-QQ-RecipientCnt: 7
-From: Cheng Nie <niecheng1@uniontech.com>
-To: sj@kernel.org
-Cc: shuah@kernel.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	niecheng1@uniontech.com
-Subject: [PATCH v3 0/2] selftests/damon: fix memcg_path staging handling
-Date: Mon,  1 Jun 2026 15:36:35 +0800
-Message-ID: <D4787203018006D6+20260601073635.200015-1-niecheng1@uniontech.com>
-X-Mailer: git-send-email 2.51.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=G6E/427vKjNMrNFnfzJ5w/oioAQsHShjLOWHUrX6Zb8=;
+	b=kV1B4S5z8AayBzZQ4agIC4NeU5JM8zkvJ0DH+Cm0brhZIuXl7FD/Wp2To/iZ4pt+C4JCpF
+	13AGqbDHaMLr9TyGMwYLTv8Qle63fDHR2LVcCP4RJckpV2f/KgyfkN9GNDXFJwHXwsEQcr
+	YEVM3SdLvXw88hRoboqRf3Y7i2rpXR0=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RJ1pWFC1;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780299777; a=rsa-sha256;
+	cv=none;
+	b=Tl+yWIqMxG7eZw3r4VfKUWgmvKSW+7PENdw0T8x0wuxYYgUHyBgo6ob9VpUvMixKrICUKA
+	09egKYyEnSAtAVTtux7wGe7lZWKNTy2NiqyHEvEvxpsmS7BbMBObA4L2DNWjIqWHnioAA3
+	XQ4QGhxrow7SIyA+pPr6DRzf94JADlU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 62EE660018;
+	Mon,  1 Jun 2026 07:42:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342CD1F00893;
+	Mon,  1 Jun 2026 07:42:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780299777;
+	bh=G6E/427vKjNMrNFnfzJ5w/oioAQsHShjLOWHUrX6Zb8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RJ1pWFC19TPXp/omPArHxv5x2qOq16KOXdKlqOHHweNUSE0B0kXCuHNmYIa29VeAv
+	 x1xukkrYT0vEFqTjKybI9CMv+G5k3YQfnYB7JlHdtGpKnzVF72J3cklM5PUgBuWYPT
+	 Zb85JfREbCwhnT+mX5TVtU5r6x789OLRNYsvMsTkvBSMq9BEmXMyFMwfSMfWkTM+YD
+	 zJfWmnK/xP4OSww3ENvvdeuDgg8mYVJjxGxRuRKS8rHEcyubNuUc6uwlcM8SfIhTRP
+	 fN0lzfo7D0m4HnqdibY2CcGk5s9ocXceGp/B64TNx44+GE5hErGZbYDwEUb79kCi5M
+	 xO2iV1myeeJyw==
+Date: Mon, 1 Jun 2026 08:42:48 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org, 
+	peterx@redhat.com, david@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
+Message-ID: <ah03yn_FLO_ca6eE@lucifer>
+References: <20260526130509.2748441-1-kirill@shutemov.name>
+ <20260526130509.2748441-5-kirill@shutemov.name>
+ <ahmQvfNk7S4F0LBj@lucifer>
+ <ahsVyQZ5UXhJLct2@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: M8JnMGwRo1mQwuulEozvWLQ23ukuXx8pXrx1GlqIhTuKO2PJ/0OePTpa
-	nUwUHBsPCF6JglQ/2d1Eoxu7YKsFfyVyjloUPNG2Id/AUmS81SuM7ylXZJPcr6/ICkcswDx
-	CLLf4gDq0AjA+sNt4orqd227+n5nfp5Pq+A13qFb1LsMreR5U0ZLL+hwENDGPp2MhzfbdO2
-	4XUn0UoIWGyYcxVII3q6TU8dPbtFTZZL3e0FPWNMBQS1RcHeBPRWInnIUX5DfSG4F0ycTIJ
-	YGk1gWttLzoEmacZm6DQOnL4/j5C2EXIQLQGm8TszHjYnbTQFpYcWK5ZuMzJyyl2XDGO5Kq
-	+zNf1lw03awTAJaCH42U9m3/75ECztK4ytE1gQilaERYDeW2yW864ynjCBaSjKKR/RgKbJW
-	a6k6VzbC313tksA8iEfCHU3C0Syv+VHl1JNP/DScygidXlP3D89nu0qknpFAv1SONxwNFNV
-	fGfOrB2Yv1vY0/ueABRE1PxwP+Mm2xFt2g6QW/ZAP6/wpFXPodB/aoOyJkhRytWYzpd8KC8
-	SgkJvKnZI5yPYHeUNB7PBkrP+zgv4K2x+4iv4Ikyk6zxz9BF0Jq7ZNXv2OZabJsddXFqoLq
-	nLppWhCxCz1a8dSMqm9YDuznWzjX0VusnufChaTtiNqINd0zJ8N4U6tL7PGT8ZHhxcPEuwW
-	k+0Vh5lReggJbqc2Ly5YqlAN9Y6n2/2XCF+0ZRXE1fPGyqEOvpaUxVrdgKlMU/Qh3PzWmNS
-	AUEo+oh03MOrPJqGyYaTgcqEcEvw2qDJvgDxVoY8VMOMxMxCbIoEjcnGOIKl6zGdvZPG2dl
-	oxfBqsbF5QngFidyG2utNKhAVW+PQzMemo/7HGg59olQhoRl1/AHPg71tjlQof1OoQ5XTBQ
-	NU5hC/oBVaEIWvhXcLVCux8m0Jyo1/EFEk4peKLERcTuHo8LrvDsVo7ckb6B1K/aIMo28Xn
-	0EjlsSY9Zvtaa5OaB2lOa1ekku5hKIE/ITcDb3Tx+UeRYKBR7GffKbhnzYCFEEgWUQHjT95
-	4TsoPPOIqR8B4wZXFvlYDhc0Z/AnDje89sZ7o/MX7BoCz4EtsOgnmuVFonjBkmTQOZ7lmCZ
-	A==
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahsVyQZ5UXhJLct2@kernel.org>
+X-Stat-Signature: weekjtiz6j1setyjjyuz5bk61yardkru
+X-Rspamd-Queue-Id: EB6FDC0007
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6659F4000B
-X-Stat-Signature: wrsf5rou6fd1ifnpqjhy856mf6gr4s3t
-X-HE-Tag: 1780299425-943318
-X-HE-Meta: U2FsdGVkX1+zjr8Q26Y0PztztrQFA8+R/2exd/h/eAK9xL4+wI8Uf1OnBkm1mPv0XcLenZt8r0h80gYx4TgVtFSUgUXBTuq9yhE1pz/38sZ4WYNoChjoQUtIjoyI8WiZZycgOY8JnuVZkdl3KcakjU89VfAdx6UoIXxsTCst8FmZnimfBY1RCr8fmLUunm4HU8/ifxW91DjQC6TH4tgARldxsbqssBvOk3/Io48Cj2HUwh/4rS3uyY7vgS2KG1LCtIgyROckMZyNnXg0RkYQTHWbQhC02u1iW1n8iHnYnTGlZnmRBv0xUMsCI4WKnbskniiYLdkkajD0XtqJ2RVCQ7W7svSs5x0OdfoxXgQDfWvYW6ZJN62SDA/2/to/bG74Q6/tkT5yymS3+IAAiUTggo2ZYxLQyS4SF1FtHH/dykDBzEo8ENvFsJItMRb+e+drKzbRcyuR0tJifNVd1HvjKn0AZQkjM4cPF7fi2VpL5+rudq+ilYKNco0nNbGoKI36WLuv2R1uJntV+vPGSEbOkmE3b9JQB6bZQOUFmLLbNK6mTCN9yFlz1bWK6Bkxj2FB6osXIUWhXiM63qZGS0FGDI8aB7lRzqoTAlbcjEoyIKy+wqQFhWXDnbZ4KAeaBAvY9SoSc/IyCcp+w+8pDVVrx2ydOwCFMVHzVCMS+Nupb7GR2pqXL6Iv2v0K1vLrWq6S01fMErRWWDDdDdNHNX3NIWfDKVPkXTRwLE0Ax4mwFYLAgqTiQfK6llAUiOJKhFVJvNyx+keH2T5Ts5C6kh+IAXaS6/AM5fQGlaQcyiX5in19mw1H7R8UKmuQibK1gRJbKZJCE7iW/lahRYTnCOu6Nm00Ii+YzRaYdV+mdhDadCuob2FfJtI3UJvp4TozflWdbfISi+Wu0zYcLUPgwJTN5m4PZZuPignbh2kN2CUAXhEEPM0qkKNnFXRnGWnqIoPquU3chZMcfiyKkvpqY5L
- J54+Z3tf
- BUK9jvAfzrBg6Iopfr2C047u2SHn5bv0X+pLsY8r0YmbI3bLH8sC+poeK8Cy6Zc1CXqjcm302N10hCxi383bX6U72+SZhHg9QnU4oXwv1aW2KKrdbp0la4DOQU6pmHDzwyikf/T3ZyFn554zPABVUOznjzj78eRbJmuBpVOLlE0koaOOABSeaIYi/1oIF3okar5Ng01HPeOgZnlsuhrMmEujFGYSLPLcXzmRIZZ7lJIjZz/F5uFXZn9L3X1gHm1Y8bxKQNdHC88bvRAX0MPhyaR5tBu0ntM7DySKOGbXlIYvcVu1/9OrEsq/BzIT3AEBH0GHS0JEKWem8+bT+uqMvspWMkSG2QdREAGmLWN8Tcw53Br8=
+X-HE-Tag: 1780299777-182719
+X-HE-Meta: U2FsdGVkX18HMeefGDbTZOvcRXrt7rMVLGxj3+EXwP/KP4c4JQlwI7YeL/ofGb8mFCsEmt75T1ifC63QYVdQ5k+azEP7E9Tkz3b5TkxTHbDJ0fpA702A2r+iIRgpdvIK54EjJkOpCwIYs3G11WH3EgD5Ka4sBH/04Viy82tzvXpx6oAr3lFvYUpo7R4g19yv0mrCR+fTmNnfgid/xYGi2IyJMQ11kCocb4cRKb8PvVx0GynW0v4mvBslGVxPkEds1nAkOvgwSsljk4kHkVGnQsCwptz09j8KvN2P4GeLPva39F/KAL/bFPqtAQaNGC5HVUclW8uDAewH2IkR8gCuHRHhC5pCcxT6FpDsxD3OTOxqHCQul1yS0JRRQqHI77N/IFCDuQSlE4/BcvPEM/ET+W7l8G0BE0MNZRRJYrpMqKnRWp1JVI6RBHwKHANhKs+ih7TxKmA9UwTqA8/28sXf2I0assFHWccEM3Pmk2YTVwmpePTSABq9kc985VOcN+laR0rXK9ffJ/b3hQer5fw10LgkQdMZkCji1zE9txwk0v793GNgFVejd9lg3G+n+uvRojpxxCEo8GWOK7zb0V+ewzRkwbY55Fbu5e/Lu+vjvsd9Yl68Lyk31o0w70r5y4kW4sldDuMVR4ej5llg39XDvY/hSEceUsavu/gWoM9Vrhi/Y9egGpVCg3nmIGeZE4vZUO6wKB4F4/kzEI9XAtXCcmyWZN2oLv8bhlzUR6wL2Odzw1bj4o6cnwoWwfaGfK1WU00OsWN/O1+zpOXMRjD6oDDMm8zt4W05MOfuwTIzTuE3DCzFJs1DR49PO6uuHS7uphiuTwsFijq9VMbt+WoYHmsrGKNtLnAds9zpzYCYPIw/os6BFeISVFl3jPQRDwY3WZwo4e4i4+NRwu4wn1kr6/D3OsJ4Fps/75zx/0vb8ehYxyengmk9qWBvg0dz0rDGglkAk64qUY9GOVftJVl
+ /oU8FFI1
+ 6uugXEYn0nPc45uDNtDF4GTgw59BI9RaKiRYiAONxb6qIVukLwMReY4iFmEv0woNuEps0PzSDklvBIX8DpH2ThoCQHE1CS7b0LChgmKV3y9tQwr2rN2g5Yr15OBE2uTjUKT0LlW2yHboL4CPxDFPGVyJHQNlBmFZdmcgJLzpkqGFtMho6CJcyGfZOZfZKWBbp2noJggtX35vlTyOrtKYlYEM3u56ZjIkCm28s6hBfmfmNMQBiy6zRbDd7syiSlO4ZyFnXbp68NqW0FyMA1nmvUil27sZ52mS38xbwzet78MH4f6vb3pfniXbnGJp9TakPn6Qz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,21 +99,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Changes from v2:
-- updated memcg_path staging test to configure the memcg filter before
-  start()
-- removed commit() from the staging test
-- ignored start() failure and checked memcg_path readback only
-- adjusted the failure messages to follow the requested style
+On Sat, May 30, 2026 at 07:52:25PM +0300, Mike Rapoport wrote:
+> On Fri, May 29, 2026 at 03:00:14PM +0100, Lorenzo Stoakes wrote:
+> > On Tue, May 26, 2026 at 02:04:52PM +0100, Kiryl Shutsemau wrote:
+> > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > >
+> > > vma_flags_t is one unsigned long on 32-bit -- NUM_VMA_FLAG_BITS ==
+> > > BITS_PER_LONG by design, so VM_xxx-declared bits sit in the first
+> > > word and hit the single-long fast path. But the bit enum declares
+> > > some bits unconditionally above BITS_PER_LONG (VMA_UFFD_MINOR_BIT
+> > > == 41 today, with VM_UFFD_MINOR == VM_NONE on 32-bit so no VMA
+> > > actually carries the bit).
+> >
+> > Yeah ugh.
+> >
+> > > Passing such a bit to mk_vma_flags() goes through __set_bit(41,
+> > > &one_long) and writes one word past the end. The compiler folds
+> > > the OOB store with wraparound (1UL << (41 % 32) == bit 9) into
+> > > the first word. Bit 9 is already in __VMA_UFFD_FLAGS so the mask
+> > > happens to come out right today, but any high-numbered bit whose
+> >
+> > That is... helpful :) but not great that this is the situation, an
+> > oversight, clearly! How I hate 32-bit kernels :)
+> >
+> > > mod-BITS_PER_LONG position is otherwise unused would silently OR
+> > > an extra bit into the mask.
+> > >
+> > > Add VMA_NO_BIT and have DECLARE_VMA_BIT() resolve any bitnum out
+> > > of range to it. vma_flags_set_flag() drops negative bit values.
+> > > The ternary collapses at compile time, the runtime check folds
+> > > away when the bit is in range, and the common path is unchanged.
+> >
+> > Hmm are you sure it does?
+> >
+> > A key design goal was that mk_vma_flags() generates compile-time constants
+> > the same as if the bitmap were constructed independently.
+> >
+> > This surely must generate code? Or at least runs a significant risk of it?
+>
+> ...
+>
+> > A simple solution that doesn't require change to the core is to just uglify
+> > userfaultfd_k.h a bit with:
+> >
+> > #ifdef HAVE_ARCH_USERFAULTFD_MINOR
+> > #define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT, \
+> > 				      VMA_UFFD_MINOR_BIT)
+> > #else
+> > #define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT)
+> > #endif
+> >
+> > But of course that becomes much more horrible with your changes...
+> >
+> > Another alternative, which I used for VMA_DROPPABLE is to add something
+> > like this in mm.h:
+> >
+> > #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+> > #define VM_UFFD_MINOR	INIT_VM_FLAG(UFFD_MINOR)
+> > +define VMA_UFFD_MINOR	mk_vma_flags(VMA_UFFD_MINOR_BIT)
+> > #else
+> > #define VM_UFFD_MINOR	VM_NONE
+> > +define VMA_UFFD_MINOR	EMPTY_VMA_FLAGS
+> > #endif
+>
+> I have a PoC of yet another alternative:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=uffd/vm-flags
+>
+> The idea there is to keep a single VMA flag, VMA_UFFD_BIT/VM_UFFD and move
+> all the rest into what's now struct vm_userfaultfd_ctx.
 
-Cheng Nie (2):
-  selftests/damon/_damon_sysfs.py: fix memcg_path assignment
-  selftests/damon/sysfs.py: validate memcg_path staging readback
+*Gives Mike a big kiss*
 
- tools/testing/selftests/damon/_damon_sysfs.py |  2 +-
- tools/testing/selftests/damon/sysfs.py        | 34 +++++++++++++++++++
- 2 files changed, 35 insertions(+), 1 deletion(-)
+YES PLEASE!
 
--- 
-2.51.0
+>
+> --
+> Sincerely yours,
+> Mike.
+
+Thanks, Lorenzo
 
