@@ -4,108 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C2FCCD6E4C
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 08:37:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A64BACD6E4C
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 08:37:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A411F6B02C9; Mon,  1 Jun 2026 04:37:10 -0400 (EDT)
+	id 18E086B02CB; Mon,  1 Jun 2026 04:37:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F2016B02CB; Mon,  1 Jun 2026 04:37:10 -0400 (EDT)
+	id 165BF6B02CD; Mon,  1 Jun 2026 04:37:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9079A6B02CC; Mon,  1 Jun 2026 04:37:10 -0400 (EDT)
+	id 0A2D26B02CE; Mon,  1 Jun 2026 04:37:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E8D36B02C9
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:37:10 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D7E5C221D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:37:10 +0000 (UTC)
-X-FDA: 84830689020.01.D166B78
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 825B01A000B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:37:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mJvCT03g;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ECF346B02CB
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:37:17 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A188A1622A5
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:37:17 +0000 (UTC)
+X-FDA: 84830689314.08.242D91F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 724FD4000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:37:15 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=PZxls1oX;
+	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780303028;
+	s=arc-20220608; t=1780303036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w1cAnVe0vgR161tCTvMa190G3YVoUsIA3Fi5oEWLr4Q=;
-	b=rAzu7TiJlWzFSXfQ8x+ceXFPgGOD2DlIDSC1dyf2zMFF5kMVDQpxEaVyZ+l36L+GNrnSYh
-	IJpYjgu62QLS6HZR4NmSTMbt4sX86fj4BlJ5R7Lh/p7zYqWlV/Yq5LBGwuVLuszzRPRJzZ
-	78+m5utqRSRg/oPPEo9/c1A/3TKdhmc=
+	bh=VvDYhItoRkSY+VDYaOrv7BbQfnd5C296YbD9BNrMnV8=;
+	b=1TE+ryWZCw87X+9Mk4phVbBD6C6V+pE4y23KJIKZpPWyXOZdOO5TTd8yKHU6nGyrHidGiz
+	14nAs3s2MuRqbt6L/hnPC8c/vlX7t9AY0UW/sKxDxS7XWrtR7gj28tFPMWUnd4sxNq6+xX
+	FLC12pI1c5c/LT6aBmEFrGELkoOwINg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mJvCT03g;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780303028; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=PZxls1oX;
+	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780303036; a=rsa-sha256;
 	cv=none;
-	b=nEDftlb4FVhblqyq1F6h/OUCVXy1lbX1kroRBeH/7EnZChpXdLNJV8Ilo3ucpYS8u/ORa0
-	TlMA8hxaNMXuY97XOAYUCDnveEFDYuLkHPPzW0mJ3xsqtgVQ++gospAlC+G/XtAxL6CArZ
-	XpVgIpVVpAx6TWr6SJlmQ1jwJEy7vn0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780303024;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w1cAnVe0vgR161tCTvMa190G3YVoUsIA3Fi5oEWLr4Q=;
-	b=mJvCT03gZw/QyQXXfMaQSG0rfbdxV7lvTw8dOCiC8I2+Vc8xHutXhZ6lgQj40Am+N2vkpu
-	d5p0utl7Wis48n4hwB0IfxxY0StkNOEwRg7hExKJh99TXsKpRhh3IcyeYGYWkZq58QedRG
-	VlqnyqZSrPMfb0daeTXDM4LvlMqyxeE=
-From: Lance Yang <lance.yang@linux.dev>
-To: hannes@cmpxchg.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	shakeel.butt@linux.dev,
-	mhocko@kernel.org,
-	david@fromorbit.com,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	qi.zheng@linux.dev,
-	yosry.ahmed@linux.dev,
-	ziy@nvidia.com,
-	liam@infradead.org,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	vbabka@kernel.org,
-	ryncsn@gmail.com,
-	zaslonko@linux.ibm.com,
-	gor@linux.ibm.com,
-	baolin.wang@linux.alibaba.com,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/9] mm: switch THP shrinker to list_lru
-Date: Mon,  1 Jun 2026 16:36:52 +0800
-Message-Id: <20260601083652.59539-1-lance.yang@linux.dev>
-In-Reply-To: <20260527204757.2544958-1-hannes@cmpxchg.org>
-References: <20260527204757.2544958-1-hannes@cmpxchg.org>
+	b=RkQrzb5k6P56jvbYKG8+VoyWjqlbQzLTm6B/A75/SkgvJr1FcmXRf/GoZxR9MEbFKwV369
+	f8c3a4w4DRjI0SJ9Hywf+EcBOMgj0gmHjOKpojJvj1X0gICc+ywNUbVzrfDlRrhDu1O592
+	p4dhXAEpU+AbAW+uADHPWjsrTE8VcKg=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E6BEF1E8D;
+	Mon,  1 Jun 2026 01:37:07 -0700 (PDT)
+Received: from [10.57.94.8] (unknown [10.57.94.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 367EE3F93E;
+	Mon,  1 Jun 2026 01:37:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780303032; bh=KhZVl+Vwqx0OaCH6S7jXIByk6u8k8lh7Uhiuy+3SVi0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PZxls1oXIsr6hApf9XohwV3WTI1Qo/Er1dviSU6itCMJmAKDxMZHODtjuGAfErgJl
+	 6867qR2HsryNZcylx+G0a/AX10BCLvlvPK4pBvuCBYe/sz6hhDG0C2A1TIs2eBczWC
+	 E1gn7G1PE54lFFInYxUKOqbSvwpx/gKLHzFd0Yb4=
+Message-ID: <69488547-cf2a-4aa0-bca7-0cb65aa01914@arm.com>
+Date: Mon, 1 Jun 2026 10:37:03 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 09/15] arm64: Move fixmap and kasan page tables to end
+ of kernel image
+To: Ard Biesheuvel <ardb@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>,
+ Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
+ linux-mm@kvack.org, linux-hardening@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
+References: <20260526175846.2694125-17-ardb+git@google.com>
+ <20260526175846.2694125-26-ardb+git@google.com>
+ <2a6f9f05-ac57-4ef8-9328-74cc8ccfea16@arm.com>
+ <96a8b6b9-71f2-4550-bbbb-fbfa146f4e6a@app.fastmail.com>
+ <b76b327f-612e-494f-b8d3-44108aa73d2a@arm.com>
+ <feab72b8-2961-4145-ac5c-80e820bf1ce9@app.fastmail.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <feab72b8-2961-4145-ac5c-80e820bf1ce9@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: xpi8f1xnbxm9ufnmwf5nijwytq7cba7m
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 825B01A000B
+X-Stat-Signature: 9joobajwjgidbfdgz9ruf45oryat6q4u
+X-Rspamd-Queue-Id: 724FD4000D
 X-Rspam-User: 
-X-HE-Tag: 1780303026-69350
-X-HE-Meta: U2FsdGVkX187yeE7C6uBV/g5eDycSs88EXnmE8oku6hU70bWWouuIeTTFDuMGttqCrtw4iy6PBX5QXrCJnDZAoVD3AHDnysTYvU+QoJRP1Wm6sydyapiXl2pCP2hs5sVLNNY/mVJI/IcV0GUryKJ4ynxosrZlSOzZGQ7YPcoyFdM4q4uGw5g5y0O/cSRltzous3qDr2sYQNGetZemYJc9KVwG/5fl2ytDY2LxNyDtCahODMltoWSds5qKWjSCifcn1yvHd7u9Hb4pf4GYkD5g8Z2b/od/HNZbgfloAQao5oFQdxJEVK2FwEVVaxqNuT2VjIa9Fem8MjPw4/9sZLvrM8xGyy5FESD/0HqwbiDeKIOxJE66gATZFTOnydXMDYDY/PR8tel3IMo6tRh3hAKHtVSHaVUcnws/CeLiLUANqiwDcTI8Qwd45cQM222pqAKU4EaOJ3F8nVwxrrpyuvHXlJtQifDpPArn3Sy7xQFl/EYPzOvAckTpS1dHa1WwJPuVcIODyk+o233LHlh4sqd4EeEmUw32iQ3qT3JoKz6SSjKZp5M5JyjsDNfwbTya0Jt5gpU0C7EVohiH2Oxwfanu5W4f3Hm6+DhHEEk5S7sjJ0JO0JZT2+sHpGLfhUI8QLE3JcD37S6TeSu/zq2xPCUMSyiMDTHT80MJLyCFE2BqKwz6XvpDTdKk7gGekUGbGns/uKad8siAssCG/wUlS6zuRaFp8hoq8hif7+vU9ZttI0lMjxOLcFtd9Zm0dG+ONWTRmyOTt+3wyShhaP9ghiEWKV9dpzYoDz+4JUNyzKfWudkqfypDpXOaKwVI9Li0Am/4DCwUV/EIfiystllKqKhUjzFIPGEvYmsTD6tt+9zmuE2xRFTlNOKi9VKAMmsJku1wchR1ZgA1Squ+F8h7XtoEmu7QKO+xrwUB6UcOXXHBXYuGtjmMpXC8KUTSDm56VS03i1eQWTXhKiD1ZsljBt
- wIBNGE63
- YgtcVWVhyzKeFGRb2GzkxmOu/ma6rChjOuSgcXBHUopCwUAU9LboXIg8NJQLubUsdi/ybF8FWG1K0pflRZPrNOqy+Ah4Hhe4vqKhkX+oMtnxD1XxxwuU3VvAUNss5aXtxbq6PPogPX9CacuiH8RovrVqxg4vf3fs8Z9oAPFt8oONaVBrmUgwT45Hegayit+B0jhUA75oalaedwurFsunyy17w4hbcitPi6q1Ox9VAcz/OhDF1rH11O/izpNoofrJRxYZx
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780303035-803115
+X-HE-Meta: U2FsdGVkX1/X/Aq1gdC/S6DczcEaOZTV9BPX/2TiOENcq+6qkVbGOoae1iCKc7nVVUdApgG65FV086SNtK3gYS+b3JdtrO8mURSZoM14MUS2FvZGOeb9DfrfEUeYcvnADb+kML+Hvy7/7c+d0qkPvMX59+dKEvc0NNIle7BoBh+z2WdlFxh9eVQDh4E/k/rZjMdHC9HuBbqPod9+VG6cJh/xdNlt0lvn/CzcKFHkCREnlbn47u9qXidsY4gJZxZM0zivOe7QH051WCTDLEx7zpaT0qVqEpsUwZmP7yZI1BDjSsMafFmHam9OvL3bP7soIAkMb1LoCBGPulvdoNlHtWF4s1WYE7K1350lzQvVTx88ZD+qZPkzVfzddM7ZVdUamsgfWPd6MSOG+w/SQ0kTeGTzrhUd02dv2CmPN7T/Bi4QrleJKlugrEI5zGq1nKXoUAVwwuxvMUW/+uRXCDSy5R8HJm/e2rj6Ovn54p2ieXPNhICL2Caqb469MaM+m10oupIb1bTDiL7wYZ9sx1s3KlFX7lZoPx2xNW4l4My5oAFJWxW5FxbUiA86doiIP8NWaavkaPcLjoarSSTF8wkey4snqx9xru1qFGgrCkLjHZp0eTjKeRwsu/aeiXIkeiL4Pxl98LnBnOP9BlxyWFS3ONndrvWi+rcE9nuZ2oJM5pxuhK0E0Wiz4iHvj2lrXzMSx0jwmoZIAyC4mMwY4+fNZdKoPgdQk6RWZ4uwu7VzvzZqGAg8KhZvNeeOBqA/AiXvsLGrG283DAMlX0kgDnyNSU0+XYTZFecl5CjqXgYeZcjwmFjVY41P0o8e71O8TKNiBWvur4i9OUuegWffN1zHUhvqHNydTsssrtnXFXxpLtjsShR92aa+LuFZnM5wCPdm8ZMFtvS22zsFEbXj54JGjmGV7rCXJzPcxiFoq/xLsHe4xYgGDJVbjWTMc4TTunU0rFxbaqRKHBxZNrhBtoU
+ n1BtuQ9K
+ P9OFRT17NDBnpzvzR27Y77pLnzyrNewMDmrduF8fRlHbZ/yw8A6s8VYAgVtfez/3bKH4B2PCKdKmPon0Xt4t2qNpok1TfT9wpWJzfwoMzZJ73HFSa1+k2MsctTvS3DnZ52sxLt17X5J1PTguZKZNXPvk53tsgGJez4txBKmonN3PZ8vrUpgVgZyY7kbxPeVKxH5+z+Hk64JJtkGEmU0wF672AmNAD/+OxDbFthqOFZPVoq4hZy9vzOaKNIB/ijWZIVmymjqkxF3jl6hn3LJP97QL0hORwpkNzQSArJHdp+FaOdS04wphT+jtC4jHZyVuOloI62wQ9pcBq7WE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,156 +105,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Johannes,
+On 29/05/2026 16:47, Ard Biesheuvel wrote:
+>>>>> +	/* fixmap BSS starts here - preceding data/BSS is omitted from the linear map */
+>>>>> +	.pgdir.bss (NOLOAD) : ALIGN(PAGE_SIZE) {
+>>>> Do we actually need the NOLOAD type here?
+>>> Yes, otherwise it is emitted as PROGBITS, resulting in all of BSS to be
+>>> emitted into Image.
+>> That's rather strange, aren't the .pgdir.bss input sections already
+>> NOBITS since __pgtbl_bss is only used on default-initialised globals?
+> Not sure why, but the section was PROGBITS not NOBITS before I added the (NOLOAD)
 
-On Wed, May 27, 2026 at 04:45:07PM -0400, Johannes Weiner wrote:
->This is version 5 of switching the THP shrinker to list_lru.
->
->Core of the new version is the list_lru/set_shrinker_bit fix up front,
->which minimally affects later patches; and a rebase onto the latest
->mm-unstable - replaced alloc_swap_folio() with __swap_cache_alloc().
->
->The changes seemed small enough that *I chose to keep the review tags
->from v4*. Please shout if you object to this!
->
->Changes in v5:
->- patch 1 is a new fix for a very old, pre-existing set_shrinker_bit()
->  problem in list_lru, where the bit can be set on a dying child memcg
->  instead of the ancestor that actually received the item. Pointed out
->  by Usama Arif and Sashiko; fix it first to make it minimally
->  backportable and so the conversion is safe.
->- patches 6 and 9 adapt to that fix's new memcg-by-reference
->  lock_list_lru_of_memcg() signature
->- collapse_huge_page(): propagate folio_memcg_alloc_deferred() failure
->  as SCAN_ALLOC_HUGE_PAGE_FAIL instead of leaking SCAN_SUCCEED and
->  falsely reporting a successful MADV_COLLAPSE (Usama Arif, Sashiko)
->- deferred_split_isolate(): fix a UAF by reading folio state before
->  list_lru_isolate(); once removed, a racing folio_put() frees the
->  folio via the lockless list_empty() check while we still touch its
->  flags and stats (Sashiko)
->- rebased to mm-unstable of 2026-05-27, which simplifies the flatten
->  prep patch (now anon-only, as alloc_swap_folio() was folded into the
->  new __swap_cache_alloc()) and moves the swap-side
->  folio_memcg_alloc_deferred() hook into __swap_cache_alloc(). Kairui,
->  I would appreciate an eyeball on that.
->
->Changes in v4:
->- guard folio_memcg_alloc_deferred() with mem_cgroup_disabled() to fix
->  NULL deref in __memcg_list_lru_alloc() when booting with
->  cgroup_disable=memory (e.g., kdump capture kernel) -- reported and
->  tested by Mikhail Zaslonko on s390 and x86
->- flatten if (folio) branches in alloc_swap_folio() and alloc_anon_folio()
->  in a prep patch so the list_lru allocation additions are a clean minimal
->  diff (Lorenzo)
->- folio_memcg_alloc_deferred() moved out of alloc_charge_folio() into the
->  anon-only collapse_huge_page() path; collapse_file() shares that helper
->  but its pages don't go on the THP shrinker queue (David)
->- guard folio_memcg_alloc_deferred() with order > 1; mTHPs below order-2
->  can't be queued on the deferred split list (David)
->- make deferred_split_lru static, hide behind folio_memcg_alloc_deferred()
->  wrapper with GFP_KERNEL (Lorenzo)
->- rename l -> lru throughout huge_memory.c (Lorenzo)
->- kdoc for folio_memcg_list_lru_alloc() (Lorenzo)
->- list_lru_lock_irq()/unlock_irq()/add_irq() irq-disabling variants;
->  use list_lru_add_irq() in deferred_split_scan() (Lorenzo)
->- reorder shrinker_free() before list_lru_destroy() (Lorenzo)
->
->Changes in v3:
->- dedicated lockdep_key for irqsafe deferred_split_lru.lock (syzbot)
->- conditional list_lru ops in __folio_freeze_and_split_unmapped() (syzbot)
->- annotate runs of inscrutable false, NULL, false function arguments (David)
->- rename to folio_memcg_list_lru_alloc() (David)
->
->Changes in v2:
->- explicit rcu_read_lock() in __folio_freeze_and_split_unmapped() (Usama)
->- split out list_lru prep bits (Dave)
->
->The open-coded deferred split queue has issues. It's not NUMA-aware
->(when cgroup is enabled), and it's more complicated in the callsites
->interacting with it. Switching to list_lru fixes the NUMA problem and
->streamlines things. It also simplifies planned shrinker work.
->
->Patch 1 fixes a pre-existing list_lru bug where the shrinker bit is
->set on the caller's memcg rather than the ancestor whose sublist the
->item actually lands on after a walk-up. Standalone, backportable; the
->rest of the series depends on it.
->
->Patches 2-5 are cleanups and small refactors in list_lru code. They're
->basically independent, but make the THP shrinker conversion easier.
->
->Patch 6 extends the list_lru API to allow the caller to control the
->locking scope. The THP shrinker has private state it needs to keep
->synchronized with the LRU state.
->
->Patch 7 extends the list_lru API with a convenience helper to do
->list_lru head allocation (memcg_list_lru_alloc) when coming from a
->folio. Anon THPs are instantiated in several places, and with the
->folio reparenting patches pending, folio_memcg() access is now a more
->delicate dance. This avoids having to replicate that dance everywhere.
->
->Patch 8 flattens the alloc_anon_folio() retry loop so the next patch's
->list_lru hook lands as a clean addition rather than nested deep inside
->an if (folio) block.
->
->Patch 9 finally switches the deferred_split_queue to list_lru.
+I've had a closer look into this. Similar sections in other
+architectures are all named .bss..<something>. If I rename this section
+to .bss..pgdir, then indeed the compiler does emit an object file with
+that section marked NOBITS:
 
-As the changelog above says, the old queue is per-memcg only, rather
-than per-memcg-per-node. So reclaim on one node can still walk the whole
-memcg queue and split underused THPs from other nodes in the same memcg.
+$ readelf -e out/arch/arm64/mm/fixmap.o | grep bss
+  [ 4] .bss              NOBITS          0000000000000000 0002ac 000000
+00  WA  0   0  1
+  [18] .bss..pgdir       NOBITS          0000000000000000 000750 005000
+00  WA  0   0 4096
 
-But I think the new one can lose reclaim in the cgroup.memory=nokmem
-case ...
+And then the linker does the right thing without having to use NOLOAD.
 
-With nokmem, the deferred shrinker can still run from memcg reclaim,
-because it is SHRINKER_NONSLAB. But the list_lru is no longer per-memcg:
+I was concerned that .bss..pgdir might get caught by BSS_SECTION(), but
+it seems that the double dots are meant to prevent exactly that.
 
-__list_lru_init() clears memcg_aware,
-
-	if (mem_cgroup_kmem_disabled())
-		memcg_aware = false;
-
-so list_lru_from_memcg_idx() falls back to the shared node list:
-
-static inline struct list_lru_one *
-list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-{
-	if (list_lru_memcg_aware(lru) && idx >= 0) {
-[...]
-	}
-	return &lru->node[nid].lru;
-}
-
-That makes the shrinker bit unreliable. __list_lru_add() still sets the
-bit on the memcg passed in, but only when the list goes from empty to
-non-empty:
-
-bool __list_lru_add(struct list_lru *lru, struct list_lru_one *l,
-		    struct list_head *item, int nid,
-		    struct mem_cgroup *memcg)
-{
-	if (list_empty(item)) {
-[...]
-		if (!l->nr_items++)
-			set_shrinker_bit(memcg, nid, lru_shrinker_id(lru));
-[...]
-		return true;
-	}
-	return false;
-}
-
-If memcg A adds the first folio, A gets the bit. If memcg B later adds a
-folio to the same shared list, B does not get a bit, because the list
-was already non-empty.
-
-So in the A-first/B-later case, reclaim from B may not call the deferred
-shrinker at all. The shared list is scanned from memcg reclaim only if
-reclaim runs from the memcg that has the bit, such as A here, or from
-global reclaim :)
-
-Anyway, only after the shared list is emptied does the next memcg to add
-a folio get to be the one with the bit, IIUC :)
-
-Hopefully I didn't miss somthing important ...
-
-Cheers, Lance
+- Kevin
 
