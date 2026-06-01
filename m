@@ -4,96 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6D1CCD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:38:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 836E8CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:38:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 284D16B0425; Mon,  1 Jun 2026 11:38:03 -0400 (EDT)
+	id EBA966B0427; Mon,  1 Jun 2026 11:38:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25CFA6B0427; Mon,  1 Jun 2026 11:38:03 -0400 (EDT)
+	id E6B616B0429; Mon,  1 Jun 2026 11:38:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 199A76B0428; Mon,  1 Jun 2026 11:38:03 -0400 (EDT)
+	id DA9176B042A; Mon,  1 Jun 2026 11:38:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0932B6B0425
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:38:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B6DF01406B7
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:38:02 +0000 (UTC)
-X-FDA: 84831749604.12.1D46772
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id EDF9D1C0009
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:38:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LEl4kY3z;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C8C486B0427
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:38:43 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7214012023D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:38:43 +0000 (UTC)
+X-FDA: 84831751326.19.49ADBA1
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7E1D12000C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:38:41 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KHtpwLhT;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780328281;
+	s=arc-20220608; t=1780328321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WRsJ96HteFVHVry45xwwgZ/lAOnTgbYBsNn63u9HIEw=;
-	b=j6a7Q7N1DDllFKXjLUmQD6kQAI0SjP7wAhGNdKzWVWvIUQc6LsjPv1XkPJuR20p7Yvni6G
-	w4UIKsmyOdsWHjk3QiX2lZBRh4su1abJF1739PJ/DBK2MSmDBnjfHHSWrt84zxXJOyIagT
-	ivdl01wN+WlmhSY0FUZvJpLlE8VQrVs=
+	bh=2z6l1eP+ZdCcfkpO0TKMaBFbF5X2F+vxzdUXR8PskAc=;
+	b=iSorzsIO2WH2vMNxxJ3xi757kqJP8rGz5N2K+UWapp7YYdPEcGTQJJQYqzXLmwdVqUGeVg
+	m21Ac5/WvGEDnQ324AkdV1E5yKaXnHcz31iw0Xa0pwL54pKiOBfIfCVF0pkiuK41AYDz+k
+	SRucqvn+Y1oT4NPJ017tHbMt9h252JM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780328281;
-	b=gFAjOpjDhtAlfuyv/Gkh7ZGcJUs5MfudBGHyPW2kg+7pl/AKEs6s3XeZSqXZ98wbEjdbmL
-	0xjI49ZD0vdUyOGYZfUaZMJ6dIH8DYXUaQGI964lzmQkp5K8vnaAr1q9bMYdqtvdsMXtj7
-	zBAc1n2hfRZwZdDWqqwR/3K14O58II4=
+	t=1780328321;
+	b=cz7NHWPIQQccaQHBolxny2xRlIgVNf8oLTBXRbmD61mD6aT37k+hQ6JwcLlhvVWeEDakB7
+	GC//4lxtSkig/i3Hmwldi5NCzAj/NBfHlFglgnEMAzXW8fTHN6zkl2+XUWlCoHlFzFw2HI
+	6MDNFWugAdnG1f9i0+tCzNt7Dea8M40=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LEl4kY3z;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 68A4F601E2;
-	Mon,  1 Jun 2026 15:38:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697161F0089A;
-	Mon,  1 Jun 2026 15:37:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780328280;
-	bh=WRsJ96HteFVHVry45xwwgZ/lAOnTgbYBsNn63u9HIEw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LEl4kY3zYbJFSv7Qgi/YIRKtgs1BCTTZ986d1mK9N/YRzKMNjZJeO1u0oM8JaWlWd
-	 2QCMcLEUQH0K8nEaoJmpF7VrOrQKZtAsnMkGpz+VEk2eMjfJj3LDV2vL4NQBst3aWu
-	 MTcEtZroOVGgXBaDr38ZPbPg/0iqotbCYlZfD6w+KrVPacRb3o0NvD1SOsVHkdVRda
-	 F5EgyzOEyLc6KxTHXn/U44tcP5bgAh0MVfo83Fomt30CZeolUU0x25z0Z0o0AnFWfy
-	 GvClDQMfk4FJoxkxhESkkirswFzGhsR/z3eHhZf3TbMRcF+b3PeUnv/ao4A0aecMrV
-	 4iEdU+R1PGwpQ==
-Date: Mon, 1 Jun 2026 16:37:54 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Nico Pache <npache@redhat.com>, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
-	vbabka@suse.cz, willy@infradead.org
-Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
- khugepaged: add mTHP) collapse support
-Message-ID: <ah2fG9fSqbocqUlE@lucifer>
-References: <20260522150009.121603-1-npache@redhat.com>
- <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
- <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
- <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
- <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org>
- <ahVX1iq_-95vd0PN@lucifer>
- <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KHtpwLhT;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Mon, 1 Jun 2026 08:38:28 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780328317;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2z6l1eP+ZdCcfkpO0TKMaBFbF5X2F+vxzdUXR8PskAc=;
+	b=KHtpwLhTvVrqtHqDyiaV9jYA6yFgTEe8LfzAu3vB+kBo3qWS47wIzxAITvaeLCYDxh18aZ
+	vUX4AMePlF0+sHW5KZYD41NSW3FAnYcGJkL/OOj2zn3tW5vHVa9vH+TRqUFzpj+ZnE7KSz
+	4WrRn2cKiwrT3Ajkn8/cUzIFn5QU/xE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Dave Chinner <david@fromorbit.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Kairui Song <kasong@tencent.com>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Chris Mason <clm@fb.com>
+Subject: Re: [PATCH] mm/list_lru: drain before clearing xarray entry on
+ reparent
+Message-ID: <ah2VXGfGZOOdjhs3@linux.dev>
+References: <20260601063408.2879011-1-shakeel.butt@linux.dev>
+ <79CD986A-2130-4FB8-804F-A543AF22342B@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
+In-Reply-To: <79CD986A-2130-4FB8-804F-A543AF22342B@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 7E1D12000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EDF9D1C0009
-X-Stat-Signature: 7peqd6cef5yxwudayut54u7jyg3dubb6
-X-HE-Tag: 1780328280-70319
-X-HE-Meta: U2FsdGVkX1/sRurEAm9iTi6OJGF8DYHCb1mX6gm4iqrEjutm3Giv8FQEEge+ZS9y6FJ+7162Jh3X2VxE+reuugNx9j2jMyGJve1hm2xBm8vQC2lzktZRh3BPzcPyCeWMLx6M5zHRUSGykatOHF1X2+YmAepMkMpnWWY7E19SmLzpuef4aimqbRLjUbXlAFV0tIWsrzN5rtVJO+b/D+dZcQPph95PuvINONCZofWoFHVFyx4un3Sf9Ed3TBepqHD4naGIAzSNIjC2ZE6afNMSjMfpb/PXVQDYuxzJn6FtTmBoyO6ZHsONC4DZ+iCaiGd4jg14dxCztPZDdzlpWklh+KTjPTA3O59Y+IzfC6HYlVCBYfidDqXUj8KGNxavsZnUGGU4ARdQkbrUL05s3H7qoyJwawWRJfodp4qKSmdb+fsWGOHBJEJ290bdPofFqArzvjsSWTOQeUhRcgKG8TmnZ5MH40FbHPOer4xwp0U9pJeXZYmbu2lZ3z/Dw8wpiTFMhYAN3ixZKK1sC0OVA5sePRt4CcqF2CfB0YIPRiVN+fxj8ivgBA9bL8xinxfuY5sqsNtuArrZznSCU+cLmzxPvVidxLQUKdYuwWYt6LGshcbtEup+YhikUdH0rkqeQbdNVZmUYrsM29HJRsTxg05f7TptE3/O/xGtYNZYc7UfvpxOe0UX9S2pWQ5bHZWq6Y/hDeej3W9o81zlmIadVLO/7OzvPn1Odw013Sa/PzSveW6goc+ADZW/nJecBO99cblGdXgfYsAU/L315HhHe9X2itaxG5heePD17m4NSw6yR7d1ZgMSL1x9AnSO+9jZOMceXcFYNwlgdPzIaF6Axb9bU/vWDopdoUsqX+ML9YSdPOFN2ah7jFWN5sBxPi+/GNaVd0I/gkTgAXIibcReMXkY1X9vj7/CgXWRZstLi+/1GfS+V+qXQy6BTRMZcX+etD0o7Sf5MLZiHlDqD/IhQNE
- 44J2bNa6
- VLLwNe5DVc0tZ9uUu4O+8/m4HxkFzCSDwAU8w0J59Uj0IJrDm+3sZK+K40J1nFD52egHJDbXh0WKhLl+4lXmmqCaQV+Ag2op1zP8OJq6/fX/Hu2q+ElFKLlYdRpQM5iHr8uxlVSuK7QbprA5PiC1o+8+qaEMmcrMSLnjOwcKbiBGFXcKWA3xFnzfDr5Wz7z2AQIZhaGkV6+UQtWO6C/lEelz++zzG1pAaQO0xMNljyKn7vtxq350e3xB4DGfFAa5ok3mc565u46tav8mv+TFLWemg7XIOelfs3JLoldrv5K4wodQ=
+X-Stat-Signature: buqqxn3wxe1sa1u3ph65ho43wc1e9ttt
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780328321-208816
+X-HE-Meta: U2FsdGVkX1/17AKtspeeWdLYyBN3gFybED+g4MntBQp9lA5XUFxkZtx7owQw3CdMuvtf/8FUkIinD84d/Ez5NyvQxSx+nyZh8NyvrWImTkn5NE7HFwUqW48k8QvCVXVMp+4a5HFJNNU9C2z7IoDRdTkg7paT2ZrkTcwnbl7URlEw23dX+ilnXReS9FY59eu2zoHqoodu8zFC1Rlmc/9l83IP/IpiewetWfa1KbsL5dXRsU0+yDZI37JZzPF3PVdvz0waJ/YIrDKWEtg3uXbasjPT6yaE/QEgaiUdhkIhozv+nmEaz6M7fJ88BWvRBG6LvjdmPP+v1h3Q/kyUmC5wtAwkQOGRFdMd6Y1aQMPUrAcUn5xa9WYjc7UtMMWJe2Ws0ScNLjkpLLaQTa6vNNw4Dv1PxndrF+VrGfRyJnhjqUYns0macNxxskdggTxEuixlsYzZqrnhBTNOn3nBj+VmVKVXWheChOOouvxDfvZ1DkcZw5JC6h8NZhAjmbsjnueFj9yRMAtetKti/lxfcwnJ9ejb8ZvhPHEbuvBF1E4WrwkT+Vj7j/ehtgESJubhonwHORJejqATcDc9Wjijs2NNUmbcQrIIJRsH9DYyJBIUGRD6388l35CSSttoST2yC6Khu0h50rLhROkZF94qQ9zJAikImWfCggsNaB2hXCv4liiLfj8Fs87olPXtillMJBKeqSF0Na1oktm8mcQ8tR49LOLdapxhM9ZsrgA1g3WfaypLo4GdzRdnE/Wsr3hgb4UP6tvbIL8FlNny4IHvPtYZ89jdb54i2VU6e3iQiDE9Xdh929DdeYIQYt2xShycBZM+prOjWnDvaT2HAxqsiQlks4XDmWOZ8A9Nraa/MRf+kKYlNV1fpm0uhNIhcHpTyk+bLDxIFRzunesQHr5LQMxDr1cK9CbS805rTfvIA90HI7CV4HBxaN1DrQQrIWe2NX2A/RkZhEVfgt83Ragezh5
+ 12JSHkBJ
+ eg5B/TNh0rvX7K2reyxCId8bPPgCIkr/Z7BYKaGfGYqS+td/z30TcsIVs7+yaBEfqZhMWSE8T82e9bVl0xJ2rZJhG0GsIVq/QNvnNy4NKx8ypK0S2vLJaOaVJG2f0/zRkWJ2rdXB0VsA4ToTPUSusx5HO7fbZdZD7HEqgCbZb7VC01e9ygNCId2KIiVQCXQcbYrOd9Ume2h2zJP+UOUCOUNE9fBge5p5B5CLskAGWxrBGOTVXXGACZdB1iS2h3Z8kSEzTbZKVcPLNLxz0vSFkxusMr0X2plCoNwWV8p9qdY0lh9/s4TBQI/0pCzBVuC3W8+zAmq7eFScIO5/IIsCZNLAEmg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,120 +91,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[sorry busy with many things so took a while to get back to this]
+Hi Muchun, thanks for taking a look.
 
-On Tue, May 26, 2026 at 10:42:51PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 5/26/26 10:33, Lorenzo Stoakes wrote:
-> > [trimmed cc list to avoid noise, apologies if I excluded anybody who is
-> > interested in this!]
-> >
-> > On Fri, May 22, 2026 at 11:13:42PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 5/22/26 18:11, Nico Pache wrote:
-> >> > On Fri, May 22, 2026 at 9:13 AM Vlastimil Babka (SUSE)
-> >> > <vbabka@kernel.org> wrote:
-> >> >>
-> >> >> On 5/22/26 17:07, Nico Pache wrote:
-> >> >>>
-> >> >>> Whoops I manually changed the coverletter subject to reflect that this
-> >> >>> in on mm-hotfixes-unstable but never updated the others...
-> >> >>
-> >> >> But why? That branch is for hotfixes that would go to the current 7.1-rcX
-> >> >> series. mm-unstable would be the correct one for this, AFAICT.
-> >> >
-> >> > Sorry this was a misunderstanding. The goal here was to base this off
-> >> > the closest base commit behind where my v17 already lies in the tree.
-> >>
-> >> Ah, I guess this is a problem of "v17 is already in mm-unstable, so against what
-> >> to base v18".
-> >>
-> >> Yeah, we touched on that problem in the LSF/MM process discussion ...
-> >
-> > I may be misremembering but... :) [correct me if wrong]:
-> >
-> > Wasn't the general conclusion that we maintain a stable branch (Linus's tree +
-> > stuff that's been reviewed and is locked in for next release),
->
-> This I think basically yes.
+On Mon, Jun 01, 2026 at 05:54:01PM +0800, Muchun Song wrote:
+> 
+> 
+> > On Jun 1, 2026, at 14:34, Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> > 
+> > memcg_reparent_list_lrus() clears the dying memcg's xarray entry with
+> > xas_store(&xas, NULL) before reparenting its per-node lists into the
+> > parent. This opens a window where a concurrent list_lru_del() arriving
+> > for the dying memcg sees xa_load() == NULL, walks to the parent in
+> > lock_list_lru_of_memcg(), takes the parent's per-node lock, and calls
+> > list_del_init() on an item still physically linked on the dying
+> > memcg's list.
+> > 
+> > If another in-flight thread holds the dying memcg's per-node lock at
+> > the same moment (another list_lru_del, or a list_lru_walk_one running
+> > an isolate callback), both threads modify ->next/->prev pointers on the
+> > same physical list under different locks. Adjacent items can corrupt
+> > each other's links.
+> > 
+> > Fix it by reversing the order: reparent each per-node list and mark the
+> > child's list lru dead and then clear the xarray entry. Any concurrent
+> > list_lru op that finds the still-set xarray entry either takes the dying
+> > memcg's per-node lock (synchronizing with the drain) or sees LONG_MIN
+> > and walks to the parent, where the items now live.
+> > 
+> > Fixes: fb56fdf8b9a2 ("mm/list_lru: split the lock to per-cgroup scope")
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Reported-by: Chris Mason <clm@fb.com>
+> > ---
+> > mm/list_lru.c | 20 +++++++++-----------
+> > 1 file changed, 9 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/mm/list_lru.c b/mm/list_lru.c
+> > index dd29bcf8eb5f..ae55a52307db 100644
+> > --- a/mm/list_lru.c
+> > +++ b/mm/list_lru.c
+> > @@ -473,26 +473,24 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
+> > 	mutex_lock(&list_lrus_mutex);
+> > 	list_for_each_entry(lru, &memcg_list_lrus, list) {
+> > 		struct list_lru_memcg *mlru;
+> > - 		XA_STATE(xas, &lru->xa, memcg->kmemcg_id);
+> > 
+> > - 		/*
+> > -		 * Lock the Xarray to ensure no on going list_lru_memcg
+> > -		 * allocation and further allocation will see css_is_dying().
+> > -		 */
+> > - 		xas_lock_irq(&xas);
+> > - 		mlru = xas_store(&xas, NULL);
+> > - 		xas_unlock_irq(&xas);
+> > + 		mlru = xa_load(&lru->xa, memcg->kmemcg_id);
+> > 		if (!mlru)
+> > 			continue;
+> 
+> Is it possible that concurrent threads running memcg_list_lru_alloc() could
+> allocate a new mlru after this check passes? This could happen because the
+> threads haven't noticed css_is_dying() yet. We would consequently miss the
+> reparent operation for this list. So xas_lock_irq is necessary to serialize
+> CSS_DYING setting here. Right?
 
-I think it's _vital_ to have this one source of truth, and for that to be what
-goes to linux-next, then eventually Linus.
+Good question and it seems like Sashiko [1] raised a similar concern. However
+please note that memcg_list_lru_alloc() uses CSS_DYING when it allocate a new
+mlru but memcg_reparent_list_lrus() is called from offlice_css() callback and
+the given css should already have CSS_DYING before calling offline_css(). There
+is a rcu grace period between setting CSS_DYING and calling offline_css().
 
-I think sending stuff that's still unstable to linux-next, while it gets early
-testing, is more problematic than helpful overall.
+[1] https://sashiko.dev/#/patchset/20260601063408.2879011-1-shakeel.butt%40linux.dev
 
-And us improving testing in mm-new can mean we get some meaningful testing
-involved (AI review bots helping also).
+> 
+> Thanks.
+> Muchun
+> 
+> > 
+> > 		/*
+> > -		 * With Xarray value set to NULL, holding the lru lock below
+> > -		 * prevents list_lru_{add,del,isolate} from touching the lru,
+> > -		 * safe to reparent.
+> > +		 * Reparent each per-node list and mark the child dead
+> > +		 * (LONG_MIN) before clearing xarray entry otherwisw a
+> > +		 * concurrent list_lru_del() may corrupt the list if it arrives
+> > +		 * after xarray clear but before reparenting as
+> > +		 * lock_list_lru_of_memcg will acquire parent's lock while the
+> > +		 * item is still on child's list.
+> > 		 */
+> > 		for_each_node(i)
+> > 			memcg_reparent_list_lru_one(lru, i, &mlru->node[i], parent);
+> > 
+> > + 		xa_erase(&lru->xa, memcg->kmemcg_id);
 
-(Also Linus said linux-next doesn't get tested all that much anyway :P)
+This one is more tricky. Sashiko said:
 
->
-> > and have people
-> > base work against that?
->
-> This I'm not so sure how it would work. Assuming we have submaintainers with
-> their trees and branches, the final "stable branch" is merged from those.
+" Is it safe to use xa_erase() here instead of xa_erase_irq()?
 
-I feel like it could get hairy pretty quick, but I guess the key thing here is -
-maintainers resolve merge conflicts.
+The list_lru xarray is initialized with XA_FLAGS_LOCK_IRQ, and elements are
+added holding the lock via xas_lock_irqsave(), which establishes an IRQ-safe
+lock class.
 
-As long as we have a specific _solid_ basis for work.
+Since xa_erase() internally calls spin_lock() without disabling local
+interrupts, an interrupt firing while the lock is held could attempt to
+re-acquire the same lock in __memcg_list_lru_alloc(), leading to a deadlock.
 
-I think actually this speaks to it being sensible for each submaintainer with a
-separate tree to maintain their own repos rather than branches.
+This could also trigger a lockdep warning for an inconsistent lock state. "
 
-We need to determine what this baseline would be for each tree though.
+Initially I though this is a false positive as I couldn't find irq callers for
+kmem_cache_alloc_lru() but then claude came up with more concrete scenario which
+is below:
 
-So perhaps each submaintainer tree has for-mm-next that's the stable branch from
-mm-next + any stabliised local changes.
+"""
+For the shadow_nodes lru this lock is also acquired nested under the page
+cache i_pages lock, which is irq-safe.  Adding a folio holds i_pages and
+then allocates an xarray node through the shadow_nodes lru:
 
-And each week this gets merged to mm-next, and everybody resets to mm-next
-stable branch?
+__filemap_add_folio()
+  mapping_set_update(&xas, mapping)     // xas->xa_lru = &shadow_nodes
+  xas_lock_irq(&xas)                    // holds mapping->i_pages
+  xas_store() -> xas_alloc()
+    kmem_cache_alloc_lru(radix_tree_node_cachep, xas->xa_lru, gfp)
+      memcg_list_lru_alloc(memcg, &shadow_nodes, gfp)
+        xas_lock_irqsave(&shadow_nodes->xa)   // shadow_nodes->xa under i_pages
 
-> But it's not a good base for work targeting the same merge window, as that
-> work would likely go to one of those submaintainer trees. But then it can't
-> be based on the result of merge of all submaintainer trees. That could only
-> work for patches targetting the next cycle (after the stable branch becomes
-> part of rc1).
->
-> So either patches can be based on rc1 and applied as topic branches in a
-> submaintainer tree and then merged, or if they really depend on something
-> already in a submaintainer tree, then based on the respective topic branch
-> that's part of it.
+and i_pages is taken from writeback completion in irq context:
 
-OK so topic branches = series people have submitted?
+__folio_end_writeback()
+        xa_lock_irqsave(&mapping->i_pages, flags);
 
-I did wonder if we could somehow maintain the separate versions too so we could
-diff between them easily also...
+So with xa_erase() taking shadow_nodes->xa with irqs enabled:
 
-And yeah it makes sense, if your series TRULY has a dependency on another, to
-base that on the topic branch.
+CPU0 memcg_reparent_list_lrus()    CPU1 __filemap_add_folio()
+  xa_erase(&shadow_nodes->xa)
+    xa_lock(&shadow_nodes->xa)
+                                   xas_lock_irq(&i_pages)  // holds i_pages
+                                   ... memcg_list_lru_alloc()
+                                     xas_lock_irqsave(&shadow_nodes->xa) // waits
+  <io completion irq on CPU0>
+  __folio_end_writeback()
+    xa_lock_irqsave(&i_pages)  // waits
 
->
-> > This would be 'source of truth' and what we eventually send to Linus.
->
-> Yes.
->
-> > In that world, the maintainers perform conflict resolution, but with git rerere
-> > we need only do this once.
->
-> I think the conflicts would arise from merging the submaintainers' branches
-> to the mm-next tree, and if they get updated and the merges are recreated
-> (like linux-next works) git rerere avoids resolving the same conflicts again.
+Can this deadlock, and should this be xa_erase_irq() to keep the irq-safe
+acquisition that the removed xas_lock_irq() had?
+"""
 
-Yes they could arise there, and if we use the model mentioned above with each
-submaintainer tree having its own for-mm-next branch, then when that gets reset
-to mm-next it could cause conflicts for topic branches etc.
+This seems more plausible and I think simply using xa_erase_irq() is more safe.
 
-But then that would not be a repeatable resolution I suppose.
-
-But would updates really be a thing though in general? If it's for-mm-next
-[submaintainer tree] -> mm-stable [mm-next] each time, then there cannot be
-further updates as those are the finalised commits right?
-
->
-> Hm like Andrew said, this needs a diagram indeed :)
-
-Yes, am happy to draw/document something when we finalise things.
-
-Cheers, Lorenzo
+I will send a v2 with this change.
 
