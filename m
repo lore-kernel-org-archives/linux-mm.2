@@ -4,110 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38063CD6E4C
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 06:56:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74467CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:00:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 896626B0291; Mon,  1 Jun 2026 02:56:01 -0400 (EDT)
+	id 8EAE06B0293; Mon,  1 Jun 2026 03:00:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86D366B0293; Mon,  1 Jun 2026 02:56:01 -0400 (EDT)
+	id 89C796B0295; Mon,  1 Jun 2026 03:00:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7836E6B0294; Mon,  1 Jun 2026 02:56:01 -0400 (EDT)
+	id 763676B0296; Mon,  1 Jun 2026 03:00:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 697B66B0291
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:56:01 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 40E21140567
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:56:01 +0000 (UTC)
-X-FDA: 84830434122.08.0B120E4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 46215140009
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:55:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=l2XcYZnB;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780296959; a=rsa-sha256;
-	cv=none;
-	b=wZoeHil9JodhroLFfDBvcFP28Mmg03bCGQWTzL8SmxeUY5F/8xeevY2xpwbtfARblOIWGm
-	yLoaMvIxFjp3u0vyEqXcsS+0fXn3bDG16oOP5FhAbwNea1IV3SKdMeb5gy60HvcnXHl/jX
-	9NGha8ukoyFsTIn55cWCRZiNaCqFoRQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=l2XcYZnB;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 629BB6B0293
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:00:15 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E478612052C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:00:14 +0000 (UTC)
+X-FDA: 84830444748.10.00BF4FF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1AC3A40009
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:00:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PhLYx2Wu;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780296959;
+	s=arc-20220608; t=1780297213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wk+nsIKgyjH4f8EhJCPQpsqqzMyFKl93mEZrNp5rlbU=;
-	b=s/43ZRDCyL9fbWAVqQwgYzuYWyL1XOrmQZMREU67pGjfeQ7sHiD8kHBy+ZsuDl2qZiiYlD
-	nVfkQ2Lo6CL5toRR6yJ4Naq914atx5Ah3cYAFY4n+DQ6qkPxSvL8UFRsS+30XeiofxVr7G
-	PNmcvF7c5AxXm4W0Zxb6SAe3o6pFZ7A=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 286A8267F;
-	Sun, 31 May 2026 23:55:53 -0700 (PDT)
-Received: from [10.164.148.35] (MacBook-Pro.blr.arm.com [10.164.148.35])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC3C33F905;
-	Sun, 31 May 2026 23:55:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780296958; bh=P4ci7939oAoSFX3QZMcR+g9OzCdRhMWsgsON9iJyDxY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l2XcYZnBFq46QasN5IndOOMdI3pzz+fV5RWUDhOxVW+rQDMeCXIqTS+7r8segYuJW
-	 Xghmnvke/cDzfY9U1/KdC1zwyc3pK96gURH8EJf03SAAs84PvL1aZlWNR8oq58Rhsz
-	 VmZRPn1pITg0z0mXpWYMu0RlNiY8/t5hC/Nueiww=
-Message-ID: <167e9c40-bae2-46a2-bef2-e0240fe0ef35@arm.com>
-Date: Mon, 1 Jun 2026 12:25:31 +0530
+	bh=sG16cqjI7FhoaRWQp7sfIsmBPD55jpILyYPNhzH0HJM=;
+	b=33DsegoTtbd4Lw8xuB9iOs5cKwCqSsLY8nktBA1k4DYAFiKcI6wrDqu/0zAThYh34Ngr6g
+	gXM8to69K5MnMQ+0Suhep0KDnqaQZKKdwkITWdyuuOF7YeWEm5lsIJJ7L8HjM0mUkSQBvG
+	M3xeVs88T42Gq43YeeHUCnWbZ5igenk=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PhLYx2Wu;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780297213; a=rsa-sha256;
+	cv=none;
+	b=YRreFcY7aeqUS0IWxSw8AgXsVXqVftDYGFykFxr/tNoyqCRgH0on3ZzAkiSyhyutxsX/Km
+	8Gf14K6lmojUXXbcB9C3h/ROhGQlWj+JJXNh1ogb0kjCmKS5Sit4ShznjKdRH95l7AeZzV
+	d60qsHSSjsi6xyY1zGQK0XqjMeDJuTQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 47A3E42B92;
+	Mon,  1 Jun 2026 07:00:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12161F00893;
+	Mon,  1 Jun 2026 07:00:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780297212;
+	bh=sG16cqjI7FhoaRWQp7sfIsmBPD55jpILyYPNhzH0HJM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PhLYx2Wu8AgTfIz+jj0OOGnKXyOUYFMO3olfikldAJMNFROAGoFnSULgR+6dK0TU7
+	 viL3jQ7WOK2r7TEvDxUsJaz7URycqhGazOzUqppWDH13wwUjO/llcMYRMbXOsRR+mf
+	 ZwtYjWfIJWhx4t1ci56omI7yOOP3g39irVqlNA+ZDkrsqdeZQmCnMHVj03vx+eVVBZ
+	 lEy/HQoSI2vKDGlObWJaPri3DRUxUTiHZaPykrpML67YpTk7622Dmvloewu9DQIfEI
+	 tKqvElZXCO+sU2Xt1dEAGvcoruBnDPNRwhJZR0r2i1t/cUhLtOHLn2pP68JB87oBFs
+	 yLl3d/zUPTkCw==
+Date: Mon, 1 Jun 2026 10:00:05 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	David Matlack <dmatlack@google.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>,
+	"open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 0/3] kho: Add support for kunit mocking KHO restore API
+Message-ID: <ah0t9Ss_S-5iOM59@kernel.org>
+References: <20260521193202.746810-1-skhawaja@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 05/37] mm: hugetlb: remove dead alloc_hugetlb_folio
- stub
-To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- virtualization@lists.linux.dev, linux-mm@kvack.org,
- Andrea Arcangeli <aarcange@redhat.com>
-References: <cover.1780067977.git.mst@redhat.com>
- <8e2d9431b0e324100d550c765024c883560a4367.1780067977.git.mst@redhat.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <8e2d9431b0e324100d550c765024c883560a4367.1780067977.git.mst@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260521193202.746810-1-skhawaja@google.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 46215140009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: g51ufqi5jqfoikfb6rf7uiz8o6mjcsfa
-X-HE-Tag: 1780296959-217262
-X-HE-Meta: U2FsdGVkX18ubmoJrn3uS21ZNPhoxjvG6/oUUJ4JpDH6sMw8KWNauzi2xtUfTi8urLp2E/foY94/JexsY3TB+QLvvyj6nX7wV5mBlHUQu3nksC94FYYHo2hxqcGM0UJMgntpdUQSnGn3UuCD+rcDy7Qv+OSX4vot/fLgdHK088AFHceIPZIJEQHWuY77WIKh0EZKyXfpDImFXpFsOw+w6PVAGk/AufPHLJhV4FhU6iBhFKViL2ntSNEwc7OI/FYg69pduMtEL8Mj/MgY14+ABTQFdYB+nYCfYW7Kl0QFmVqJPDnLzPYCTwHUIylkqVavToHJElnTs1vGBXcv2F9Ro8NZhUb4ZyjYUZzT/bSdNjL603ptEQwOzFK0HCMozmH/HAg9UIU8eeE22eAYDf884uHf+22VRnQ6pVK3M1fx82YZVAZ3IT9z6bpFkUhs9www6N/UySpskq0xnzABUs7oAXmNNzHz6sPyXa93y46vhHzU3zWrnEinu0xDcs/kjTw7AuTBNCqM2jKWafJF894Hf9UBZLSuL2LEt/e/ErPWOR+2/AGFyFymelYO5UPxj7SpkKmtYzz0mRoi7qID5vKtBhumnWCYVV0r6HH7zouPIIjusueUSrq+D14WIP4Hmvhfg1W6qj4YyDTFwcSjhAluAYnFW5IvGT5upP1+PCF8MiS2FDu7Vcvz7lUXZIbhqsppS8VvHRcVzqMmQsP/AQq5PbYHZ3aexNyi/GQbP2ugIhcdW+VBYGX/mW5XfqRpdWRwJanGQVQ68spgBBz5gJ1NEiAqh4FtbL8WcnzLbCfMkH7xpt1lUjYvrrytBGZje8PYrv09wNsSlzcyi+gjnvVsPcgcmgeZ0/HSf6LLqga/naDOmaCaWgE7YO5QyIozvP6TRVPF6bmBmnFKBago0Bod3CbrMfBcq90qhSpu2trpQyYI/9sOAhUL2ITw53K4pQuCeZTSTJOEYmbxRZjeKsH
- BXMqE3S7
- EC3zhQ2nnzbzGLsqJUyHjlo4d/OLm8gKldIBMwyXHMdWEXrF5RUcaS9lrryvwA7F1nOjKgmYsik0VhhqH0RJ4pQSr1yqi2bXuHDBbDor1xUh7KbMRH60QZqkeLPDhBQXhuupJhmUvM2NefWgApkjg+xNB+r4NCB1nOGqBQGdGnnFJC2EB1jTnG1yb4+m/eNIYScZADDMSuiN0+kKoAnpss2vJkAdjaKcVLRMrLSShWKDZEuiHvMOKE3yjAorWz7G+zPXa3vNWULGxFjyW05B1GeBmqb8BQkAJVLO4sqDBMELtaJ/oqaLZluYuIZVxGexGJlHh6B+gsLCQwHtDeJpxQ1lPlsdYeBPswg10q1uKVzJM+w7IkecEeCo8AFFvwT47DcIuOW1WG5e4TAfF2yXBidLfrbndc54Sl+Wua252KnCgT/y7Ns1QIsffFloUfkOBRftq9xOsa7kpQghG9d/Hc+x797zMM3rjLoZQoRj1echPTjI=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1AC3A40009
+X-Stat-Signature: yerbgqdich84kh5ibs8atx7pacccmnd5
+X-HE-Tag: 1780297212-196009
+X-HE-Meta: U2FsdGVkX1+ftMawbNOqQXSMKkrR9w5YMPYHIO4y4pshf6Hn6bMSK/NEFu3beLf4KB/ImC+L+0pvPIqCLyArqcd7bTkrfdkj6a7VRWS1J/d/527kSPcQPZwzy8rwZywEk3XjUv4ynm/zVySZ6I9YQ2x/WqPhJZYM2wAoilz1Xk7gTCrqPQmoZy5I4bRnljurRBDLpOhGwK/u25QacOPWpZQQ4sIg2o8wBe5ZgGHlgWwk1zgvo6E/j8DTRpeGVloObtFgPUGQwkeWB9A7akex6nrLjQr382Y803HUQmBqeEnMcPcMzXKy4vpVUK5MBDQsIBFmiDI/579ZCICJdRHbrWnTUhq4Oc1k7mJ/dPZarLs0aSKQckK/mQZz3VNF1n2/7RVPSOLfF7DafYlfvu6x/6V0jxyt+MPpLI/GmAqGL6MZh/ayqF9r/8pd8Pg4XgeNGJXkswhcHcjq3OwnApYGDCpL3g1sb60Zd3Rg6zdmtZBEXVilXbrev0vBYyv0nCzKSRew9BGlg4k8VYi9NFo/T9Tb+0vnp2Jw4xacfzNHERxtTW5Q9JGB+/zWfcAhncf7jqDBn7TK4qCTPMtqGxdHgf4sJ1YNleC48zFK8pjtjzMnjNUM7a07Le+liqiiujlBCoYpp0TDNHHHORXQO1g/FOFVruBNV4Fpo1RnjPRK8flEPh2bkR70tfZNVyEkycH2jFKl5lbu5N95g+dSfEfd5fEmX8BOEYkFr2UqvGjJ11jq6rBVfLVydRcp8p0YJcXMvTpxQo42zsssjGTuY8bkKt4jy5DlCrQu99bH679x27hAUNsZHyQJa1WKRH9z6jXYM86Cz3veFn6qOKj4e9wH/ad1shRqMBeuwRJB+tRs/YgP5ZGYjViOn8xINvB+oeDZcjcyb0N0g4nU7w0NzcND48BC2lMxmXmWI65xfF3NedDOOcwGW2EllNFOlQf3A+I2WN9W8P+HwYDx4zyHB/X
+ J3pEGwOX
+ 0fAcaCbLfNxcV+mzJH0yTSFDKmAj6OtFJ4u8/CI86YjlxkR3o6TbAcpZlr3NcJPC38Rtg6ApQO/uLTAw+Suq4k/VGnzvq3xPXh5EbFHL4WYCMH6BWImy6wBCA/7NvsnFuCYdBdzRwBKoR5COdhEZtBm3uq99M7Z2Q8X+ttNnnHsgciDojSqyD27uRPnstjtJZZYOI7us0h3s7vKII4uUMW3eq6koe+BcopkD0XNdSykE9Hn9npTC7OZu3wmT8KU9/raOD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,52 +95,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Samiullah,
 
-
-On 29/05/26 8:52 pm, Michael S. Tsirkin wrote:
-> Remove the !CONFIG_HUGETLB_PAGE stub for alloc_hugetlb_folio().
+On Thu, May 21, 2026 at 07:31:59PM +0000, Samiullah Khawaja wrote:
+> To write kunit tests for preservation and restoration of liveupdate
+> state in various subsystems without triggering the actual kexec, the KHO
+> restore API needs to be mocked by the test writer. The mocking is done
+> to allow testing of the individual components or functions in isolation.
 > 
-> The stub is dead code: all callers are in mm/hugetlb.c
-> (CONFIG_HUGETLB_PAGE) or fs/hugetlbfs/inode.c (CONFIG_HUGETLBFS),
-> and CONFIG_HUGETLB_PAGE is def_bool HUGETLBFS with nothing
-> selecting it independently.
+> The patch series adds the following to support kunit testing when using the KHO
+> API:
 > 
-> The stub is also broken: it returns NULL, but all callers check
-> IS_ERR(folio), so a NULL return would not be caught and would
-> crash on the subsequent folio dereference.
+> - Add static stub hooks to mock the KHO restore API so the restore path
+>   can be tested without triggering kexec.
+> - Add helper function that can be used by the test writer to check if
+>   memory is preserved in KHO tree.
 > 
-> Remove it now since follow-up patches change the signature of
-> alloc_hugetlb_folio and would otherwise need to update the
-> broken stub too.
+> Finally, it adds a KUnit test for the KHO API that verifies the allocation of
+> preserved memory, and the preservation/restoration of pages and folios.
+
+I looked at the tests for preservation and apparently they don't add
+coverage beyond the existing KHO selftest. How hard and/or intrusive would
+be adding tests for example for error paths?
+
+Do you have an example of a kunit test for another subsystem that would
+benefit from mocking of KHO APIs?
+ 
+> KHO Kunit test run:
 > 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-> Assisted-by: Claude:claude-opus-4-6
-> ---
-
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-
->  include/linux/hugetlb.h | 7 -------
->  1 file changed, 7 deletions(-)
+>  KTAP version 1
+>  1..1
+>      KTAP version 1
+>      # Subtest: kho_test
+>      # module: kexec_handover_test
+>      1..3
+>      ok 1 kho_test_alloc_preserve
+>      ok 2 kho_test_preserve_pages
+>      ok 3 kho_test_preserve_folio
+>  # kho_test: pass:3 fail:0 skip:0 total:3
+>  # Totals: pass:3 fail:0 skip:0 total:3
+>  ok 1 kho_test
 > 
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 93418625d3c5..f016bc2e8936 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -1129,13 +1129,6 @@ static inline void wait_for_freed_hugetlb_folios(void)
->  {
->  }
->  
-> -static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
-> -					   unsigned long addr,
-> -					   bool cow_from_owner)
-> -{
-> -	return NULL;
-> -}
-> -
->  static inline struct folio *
->  alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
->  			    nodemask_t *nmask, gfp_t gfp_mask)
+> v2:
+>  - Move kunit header includes above linux header includes.
+>  - Use the __kho_preserve_pages_order() to get the order of preserved
+>    pages instead of open order calculation math.
+> 
+> Samiullah Khawaja (3):
+>   kho: Add kunit static stubs
+>   kho: Add helper function to check if pages are preserved
+>   kho: Add kunit test to verify preserve/restore pages and folio
+> 
+>  include/linux/kexec_handover.h          |   5 +
+>  kernel/liveupdate/Kconfig               |  10 ++
+>  kernel/liveupdate/Makefile              |   1 +
+>  kernel/liveupdate/kexec_handover.c      |  63 +++++++++++-
+>  kernel/liveupdate/kexec_handover_test.c | 131 ++++++++++++++++++++++++
+>  5 files changed, 209 insertions(+), 1 deletion(-)
+>  create mode 100644 kernel/liveupdate/kexec_handover_test.c
+> 
+> 
+> base-commit: ec4084bc445027a52f600e30a976928be1ba1950
+> -- 
+> 2.54.0.746.g67dd491aae-goog
+> 
 
+-- 
+Sincerely yours,
+Mike.
 
