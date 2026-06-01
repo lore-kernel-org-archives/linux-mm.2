@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 772C7CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:23:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1992ACD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:23:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EF986B0375; Mon,  1 Jun 2026 08:23:18 -0400 (EDT)
+	id 7C4C96B0377; Mon,  1 Jun 2026 08:23:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BEE66B0377; Mon,  1 Jun 2026 08:23:18 -0400 (EDT)
+	id 79C8E6B0379; Mon,  1 Jun 2026 08:23:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AE8A6B0378; Mon,  1 Jun 2026 08:23:18 -0400 (EDT)
+	id 6B96F6B037A; Mon,  1 Jun 2026 08:23:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A46D6B0375
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:23:18 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 26740C23AC
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:23:18 +0000 (UTC)
-X-FDA: 84831258876.11.E831A92
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C4A36B0377
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:23:36 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 256C51C0AE6
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:23:36 +0000 (UTC)
+X-FDA: 84831259632.01.C39F26D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4613F80002
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:23:16 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J6Qh0QtI;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 58B87180014
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:23:34 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d+eMkbxi;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780316596;
+	s=arc-20220608; t=1780316614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nJCaoM91VpKZfWQWP/5PUdBhVElKt1iDyT7TnkO/j00=;
-	b=T1ds4AmXtSxyYOiLaMNUhFd8+zNzVepje2zR9kV8K94ZVzOkkSxS5JAJ2p9k6P3eAyhSvw
-	qoTrgi/lKrYJ+Sd5/nGIIgEbDin8i6e31387BUAGhLdQbeysIec3CgirPhV7hVejNjn1Cs
-	XW/54812kBuRkn3mSw7vEJXxmHb51gk=
+	bh=2jL9F3lhDa+fKvFgKIGzLd1nrDxZ1QfJTb/ldHq2VUY=;
+	b=yTH5FO64oD9aCGKRoA6W1FhgDW/ehxeZ21dOY+kJK7650p/AL0IORzjnLYgCo+e7lnh6xs
+	l5clYK0Mi96kSaoqQkHf1o+O+UCVGVkVDjiQ4m7ShMwxD3deNsSti4Q2vNLnBW8PKa1akC
+	3zGmmqpAocZruqJorvBn+ujbFGIChXM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J6Qh0QtI;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d+eMkbxi;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780316596; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780316614; a=rsa-sha256;
 	cv=none;
-	b=XC7AaZ7B8jEufWLTtWarSofRC1iLzozYe3Gws56eWtNsj1OjeWbqTkqxYrft61qTz7xkLf
-	S6V9L7dqwCIuBL4jM2E8kyF0JZ/k5UYDKDfDxaqpOiSD48VIrg7cJv1mJP2PPUNa1AhE0s
-	4s5P1MIb/SV8mDz4cXTrfTA1F/qNYxQ=
+	b=OHrfnA888+nD8CHTn6o6iOahS6ZJpqBjk2bRBbdp0btLzO95NdCr/ZWbeSmIyizIbyVW2N
+	048jsIS/mFahpE5eD6Twz/LgFiLlV7t00ZvvOVxzfJdCIAA+I2RRpDndocsscu06VtUv18
+	mTwRF+Y+XnjA555WlczWvctai8PicPE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 831F440B63;
-	Mon,  1 Jun 2026 12:23:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FAC1F00893;
-	Mon,  1 Jun 2026 12:23:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A7EE840732;
+	Mon,  1 Jun 2026 12:23:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36061F00898;
+	Mon,  1 Jun 2026 12:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780316595;
-	bh=nJCaoM91VpKZfWQWP/5PUdBhVElKt1iDyT7TnkO/j00=;
+	s=k20260515; t=1780316613;
+	bh=2jL9F3lhDa+fKvFgKIGzLd1nrDxZ1QfJTb/ldHq2VUY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=J6Qh0QtILNf67i7Bca2/p59Xf4vTiAbfvsb2nezebefYadRAp0p9yWFug/E12s1jD
-	 RQvXWD4MSepeDA9QX0uC2wG4HjENaCS8GNifYaTqB/bY2KdWthhslFdCnMWk29pUCC
-	 R2vdEDETX2GkLw5N7k5vZNZgflMkksMyLL8nKCJ/NYml9hBve0TEEPXWkRMTCYKgMj
-	 ssQLCkU/O8+jBOXJu57NfQ2Mkr2UG00LCi304riFqeGL54E02Y/p4omgSdNe167K5t
-	 ZLrz/YoHBzIslYWCLKvZm6gUWzbNW2QfPhsgg1CKk89OYjLHIlyFF5tBV4MJlshJhM
-	 ezMshiJz2UAMQ==
-Message-ID: <c9783e61-cbc0-449a-9a0b-db40fb335e99@kernel.org>
-Date: Mon, 1 Jun 2026 14:23:08 +0200
+	b=d+eMkbxiEzNQVN3beMSGIxtTo/UBQjNwIb0lTvrLMpXxhwlmOdQP+/MUDVWLqaZ7b
+	 jZHZeBlkXMSGV+Y0K+J9yo0l0nLfknUtjh7yDEt+OCTHeIWOTb8Q83PG2hyAPwjZN0
+	 Qu0818JbsOuhfgLEpwAmPevpFkSFqsZ1uPrvkWgertlNVlh38Ine7hDv/3m+OVV7M7
+	 Ov4iEl6zMTBGlddA5gMxDK/kA4Kol1XeirMPSCP0V/F4ajKZpMSgM6WWU1Try/0ViS
+	 Svdtf2/4gYRCFE+oFNXU/ofIDkG/z4bw+VQqaRuBsvfoxOJopm2UsDtI7k0Xzy+liO
+	 fGXvRG/MqfyBQ==
+Message-ID: <87985f48-2668-4fd0-aae9-3754d2f6bd93@kernel.org>
+Date: Mon, 1 Jun 2026 14:23:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] arm64/mm: drop vmemmap_pmd helpers and use generic
+Subject: Re: [PATCH v3 3/5] riscv/mm: drop vmemmap_pmd helpers and use generic
  code
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -85,7 +85,7 @@ Cc: Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
 References: <20260601084845.3792171-1-songmuchun@bytedance.com>
- <20260601084845.3792171-3-songmuchun@bytedance.com>
+ <20260601084845.3792171-4-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260601084845.3792171-3-songmuchun@bytedance.com>
+In-Reply-To: <20260601084845.3792171-4-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
-X-Stat-Signature: a6bjw6u8b713cdsy9f1zhgykgj9txjwg
+X-Stat-Signature: urstzgtuaie6zaoygcqgaq8xqn58dyuw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4613F80002
-X-HE-Tag: 1780316596-563006
-X-HE-Meta: U2FsdGVkX18kSNemU5ywBqHofo6X+ZaUQsyQyvF2Mq8QHZRt95UaNvHIT3lPPSWNLSdmMH5iC8VB5BkcWzIET+qldKQLETBo/4AQRFt8kdVxB1SroPUoY9wGmpVay5squjN7VLyzNmgu7Nk6+j3iD7Ezi2bjdUPRJW05i2rYDkhWFjxhOuDINEBetG0W5utJ/4HmI++FFdKk4V7p0p0Z1l6ErPj2DsJE2v7/PF7MsL8cT2RF/LR85/Tc3VHuXb753klxKnnB04E4g15zZCGw6/Ko0ZwLlfqEDnmO3JDwk/ZZb3j/AL4Hhpuv0iX/e4yRHIa1z88HZcXND3xUjYjjeHdI1yyMRbxHfgb2+88wMXlBI8oTK5xxytWgjSG4A6TKijzW81ZZ/fk4Kz28pkP1rbXtwvwwmIoCd8iDbf9R3/2KkirB+oX7Tu57Cwe2/eiW4GxdnK6aGdk+QQhwIeVqnlMXXVOaFgNise3x9NZWqlYunsO9mzInOQDjz9oyv+tcSPZAHMuIISb218awh/QOnSLVaJY1Z4vR2VwdZhtrrOoK8HbGXMUKHGK5hyTV/X8LPKjdDep/PRSKIoSc91nFbUvdXADL8pEubgTUzb7UCAIFaHXFQTynikK3g+XrfUSNzJsEjAF+uKDWsapdH/4d7pS/4TULOZWHzpQms2Cj/6BJZX4HctpJxnr/axNIUlvDWnFVn/+HNfhdYB8UMGT+skwC0DPOuLfIMy2hyU946uM+6EKsPSLjWYUi6U9KgBt9JE3wLBPhzIBSS0z5dOXEUH0RUvww/VHf9J0UFX/3Gs1It2eHZfF18Xp/YOhhOAqSVh967icVFDHzq8X1N1KqxhMzFN+2aa5e6RgF57o5Mnn6SdjvYmXhRCuuZHNZ3LeXrSo9LqmedVsvvx4mpmnX5dWDLrK8GxZS3z6gz50DLXyZTyxRKK6wXVWupZrC8uBtgYgYxq2McztrzIlqUAU
- F8c96o8u
- ddFZ6KJJffSx4+jxWEPyyXQ5H309ycev5fJojXxKTsPTPyvPttHA73uVOdiWoQATZf71akiH8qzAAA0fDbn1s2UMRR9pTAFk/n9lG/pFxcio4ZusobxeVw8Is+pUStsUMJaPlX9LdTK8qAi8WEYzYFCahcrLjXmixqhzRCHdWKDD4jHmtzAppAbj3Je1UKaPOQ9B7Wbablg0s1Yvha7q/FpGDeifniBNyDVl50WGnHRjQ1j25DjsdeTp9xxKv62fTP2kVEh09Z/J5jgyk7rFoqhnNtTqd66HmKIhD//fRkDDXV2MMB01J9vAFASTCVQ4Ta18x1kowiOPXQZTALZDKc+ynT7gj4aJ9DlaMTbmh9qeRpDvt0NaQ49XnvNChXRP/GcEPPhC7vZJF+EyTP0EnZO1N91FNTn/nBT8JBXOZ9DSYIOznd/fO8TaGE0+dQSjTBk4j2TUdqYdb4ysGPrYGb/wR/8GuGTD49cepL+rgDBcDoqWAnWDNiqlFYg==
+X-Rspamd-Queue-Id: 58B87180014
+X-HE-Tag: 1780316614-881184
+X-HE-Meta: U2FsdGVkX1/xYpUhFfuNseoFIKU7cY8vZ2JWphE5EqAsxRqE227d05G+MBfryATtkvw5fDozLki1ovP9seeF89XG7Fvdou0ANY1pjqXh6bBKvLEl3xFcWYfEQzD3VAXFbthNXlp2lBR5gbHJbOVa6G3L7x9nplkMDdVS9cMKcT9hG2c5AmvaVQF30hz6YXi8FbbYEYOkm+4H09XZD5UE69Ax/VDj3MLZJpckw++erjOM6BgxvqVC2HBxysAGjfJZaN+0F4ykFjhWCq5HCUgtbkTNKEYWfwUxq2eTekSTZEsLwlGx1RBm2wUg7dmxNo8IrUksjYr/OxYfLwpC6L1ftbAiM31RxmvfvlsHEGy96luOeQOlqdDC4cLXm/KF6HTgFv/oqoHfM1INQxic87tAe4i3OxOHnJ7qsz+X88mptxfpZl+GUu1+TVDSSZwXAqVPpDwanAantt9qmK/A4hVacSIKijlDK1p8p8dSeKX8Did+MmnqgdZN6nC0WvZtmFC9CNKusTALT/D23lB5yVwK2cM/jpIwfxw66vGRvNIA4/gIdz4dLY4XFj5UCdHTVC5gOWGjmH5rGrYXEyyf3nPxCppH0CIvBU0FCyhDOAnqUQkFOb9c/80lq/9092HhazA6yzXF2QLo0AVdPf1BIVnrZTc0OYFePVpZ9NrhxUBfwRKvRuKHJi56nm57O/D5ZXnBrgSgMZbQChxCpVfkCGw0JUxyaN1XYXCuHhR+MHcfVm2N9OlhbejywhwW2uc6N9s/9lpn8aIpDJlGCwEntQx/VQc8IQIw57/w8/EBiqf7dBT+pMK7yNAr09ovhKqxbNmRHbR/0x5CitLusnHdXf75rRM2MkcxnQbNlSnZid1y+ACJwjH2g/YUjmK0kDw7H3CcuyGwD7l6OYaXJls7L06bA4sAz5FAXpq89/8Jb0s4YNNEaex0ofrQ68bsgyGIFCK2PthktHIcaWX/cmq9jjn
+ oUqhKKtT
+ VvgfhVP6am7wQP6oOCXUWqdhIhFtkT8TC+6ZwOr7figt4ogNXA1kWGBi3bVHTSnMdjSScqvSOuxtu+SxTdqxIroldOMofo9lVlsrFnxGPjgRQIKEHpErOwK4tZ9m9rpTsDuVGpq9Sy4SO3ViF0VVQ1+kRL4Ll/JLZTL0owlzKsqvuYz5qkfPEG/oKR3T1Ukic8nCQs7/TityhqeOSLpU7FG2UwJfKEazvgVKS8igZewmcd9eMC97NhY+MG9F32jMcGdTl6BuZxejrVC/G7uouPtra7p7n424ykQmxEg/ptZ+qLgk1IwlLrm3Vs8HEdbyavL3BZbDQbxSebgCyei7nht7od2JmCMxzPUzNMUxD4Xm5w3pVf8bKe6iFixsOuWVfeqlVFWEPbqkDGwwk69f9fU1TX5ZscO6OCfIsq0eAaWGo3L02LWg3wFRzRBuHou/5mCaoIV3cL8WLJLX8gJvbKwT4STUYfLJlo0N6Za6l4TS1YtGSh/v7/vBsew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,10 +151,9 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/1/26 10:48, Muchun Song wrote:
-> The generic implementations now suffice; remove the arm64 copies.
+> The generic implementations now suffice; remove the riscv copies.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Will Deacon <will@kernel.org>
 > ---
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
