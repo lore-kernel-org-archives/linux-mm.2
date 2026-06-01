@@ -4,105 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FEC7CD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 01:55:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D34CCD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 02:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 947AF6B00A6; Sun, 31 May 2026 21:55:26 -0400 (EDT)
+	id 427D46B01AE; Sun, 31 May 2026 22:05:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FB606B00D0; Sun, 31 May 2026 21:55:26 -0400 (EDT)
+	id 3FEFF6B01B1; Sun, 31 May 2026 22:05:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80D946B00EB; Sun, 31 May 2026 21:55:26 -0400 (EDT)
+	id 33BB06B01B3; Sun, 31 May 2026 22:05:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 70E5E6B00A6
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:55:26 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F6CF1405AB
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:55:26 +0000 (UTC)
-X-FDA: 84829676652.13.1DA8EDC
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AF854A000B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:55:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GnCTJd3B;
-	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 207E66B01AE
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 22:05:53 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ADDFB161AFA
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:05:52 +0000 (UTC)
+X-FDA: 84829702944.24.D51A5E3
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 61EF6100015
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:05:50 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780278924;
+	s=arc-20220608; t=1780279551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uQCbMRkdqdDT9GLUSMLXaeh0gg478vZBNxmXwoTOz6U=;
-	b=jkYX6BKFPlkcXQSaC0/BiC48cOkb/Em2u52EOq91aTbb5Sqq0X7r7CsvQj9mF+/JtIrFth
-	WRe7jJLEftJW0q5qH43AXgeOWRFHBnLVjVRROTtGp29MalBl5noPmwk/h6xoMQVnZoWeCS
-	xRlewPz7+VE/aVYm9sEvDMLNklpg7kE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GnCTJd3B;
-	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780278924; a=rsa-sha256;
-	cv=none;
-	b=ojREjzRbpBU0KqJ4wDyM2FbroBQWjca5vuHyW+Pmw7kn2b/fyUdsYknGA4w+VmR4qY859o
-	yYAK8gzAsEhp8FxtEXCg0SdMxs0xOTscdpKIYetSflpd8+569hDdUUQ7YhzkwASXVGrpLV
-	E14y6iao7E/rIOiJBgXbTtlfjY08smw=
-Message-ID: <bb855309-422b-418d-ae34-54969e01375f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780278918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uQCbMRkdqdDT9GLUSMLXaeh0gg478vZBNxmXwoTOz6U=;
-	b=GnCTJd3BSfUClP+EsrGgz2anJizI1lNps8XDR/4ezY3+8U5Tb14abeAfZv2bzXchAihLYN
-	fo8bwJf0yz6X2MYCySFso5RSnCLFQzVrw/qGsL4jzIsdFzY9+5xj6RAlNCwd23SGSJ8xRa
-	aMauQxDjTgID35xkiQSfsyXbn9R29L4=
-Date: Mon, 1 Jun 2026 09:53:28 +0800
+	bh=YjDjRGifazkvdwEMorM/IZ02COF75GoHpMw+XN0HLv4=;
+	b=14q8YywXQziUc1j4FDqyMqqcMrkQPlFZVAiwDK4dExh07AhiEZfCF5sP9yisstklpCpWBl
+	kBCo0RT1vyPcCvEIGs1w0RuRm9BQy17UTZ07kmgNRX4wIXXP5bZceAd3ryDynT2udYhL0O
+	h8nFQyfzPiD8VaKKBOuqWxnpisMgltw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780279551; a=rsa-sha256;
+	cv=none;
+	b=InKICGtWyj6L185TrzyLjqjDN+LOmrweMs1zNjh84sXa8Wbxnfp/0DemKlnHdcdtxqo217
+	06SYVrSIzcC/2oiNvKtJAfRIlw+Vv3I72MdoZTAACl+o2RuIlCucPbKZMHD7lmFdAXmaqa
+	BE6XrGPU3GcuSgXUUMTH2J9smBsC3IM=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 1 Jun 2026 11:05:45 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Mon, 1 Jun 2026 11:05:43 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org
+Subject: Re: [RFC PATCH 0/2] mm: swap: allow per-device skipping of
+ zero-filled page check
+Message-ID: <ahzo96kXBoDv/WFo@yjaykim-PowerEdge-T330>
+References: <20260518073455.2495934-1-youngjun.park@lge.com>
+ <ahxeXOlodtwjpVcH@KASONG-MC4>
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-unstable v18 12/14] mm/khugepaged: avoid unnecessary
- mTHP collapse attempts
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>, npache@redhat.com
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
- akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
- hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
- jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, liam@infradead.org, ljs@kernel.org,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
- usama.arif@linux.dev
-References: <20260522150009.121603-13-npache@redhat.com>
- <20260531073102.20318-1-lance.yang@linux.dev>
- <65e201dd-10d6-43f6-8758-0fc313158fe7@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <65e201dd-10d6-43f6-8758-0fc313158fe7@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: b7fr7n9hsem4r54fyog99krzo79r3pgy
-X-Rspamd-Queue-Id: AF854A000B
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahxeXOlodtwjpVcH@KASONG-MC4>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: fkwd179wyogzo8t3c7n7sbzk864kzs3t
 X-Rspam-User: 
-X-HE-Tag: 1780278922-401771
-X-HE-Meta: U2FsdGVkX191qWN3qkqwpz6E9KIpVa2bYGfbpn9h3L3DLuoC2lhkDOSzYpxRU7qY8PB0UMQdwLgiwHd/8hluNysU7SW9THf8V7OHepR6mqV3bfN6ex4nMeT3Pgp/6tFcHrJUwbg74+aDG0KRcAW7VflhHsmKkbr2cFL3H5quVSERBiInUVVlSZuHR/oKjmC/XGEqA1C3BbLo8CZEIjRjJ+18vg7lpyisq80cu59otbdf4XRasnk+1P0h8bxSwBiJPREXWRkkoIvks3sVHjDO7L62RYSALzEJlwM3dMBqYfOLr0s+izpCUhDcsVYCxcIxiK+yvALZGfAqaQKm8cFBO7VOtdadOhFPJBdwET7Nc6N1Os6OrjxCeI69r1gI2ik/o7NilFt/Q+kt9l2oWW9c7Q5zNAvVlK8YSyCL55Xh6loLA+uPrLBcLluF+82PDpKYq/jv1ccJbQA/aiRB5mj8AaRx/3JLI1rEDWza+QIMkzRPZsL7aB7JQOm2nuf0WSIvWxgZHbLTQdkxt2neK58gMVkww4jiKG4kYlZj3y1C+a3q8L/vKryrKARqcGApD4snWZ2qsh69JITLesqg1vP5oDrUFs9y6Y7gK3WGu/BzV1AWCmDHqwfg0Hid8etwB8BGzwxgXxlGsHdmFzxsYrkaiZA3+UhPfqeRrDOf4LZGzgUrCpdCzERSjE847iXFjw1calAmeu3tkiWffA1wPczyQ/z6mRGdyYrBCatadcnVSkShU5bN6lNhim7iNEcxhpVEBpv8HWW4dpF0ZAPN3tqMXaraTaNd+N0ZfNj3ERPgWcG0bwLHuWGb+qkgK5zDqtOY/oigXpYd8gdfgYQgVpjrjmGydGgETzZYptBG3KnMDFexPkNuKsznGEjoYuIXeGz+9rG1hq8xZvNpzE46dO+QTUdb+DT094WjMYtOUymz4nyZizYwHAhgSPRy/+NLW2maHKTGTBOtr0Fiyng4hMJ
- d874ReWM
- dXkj3vYgKaOUIKzlcNstvjcjV/LnCHcoCU/pe3S82nNuevRdLl+0CbY/OGU/AKzW5Lmpb8IAl/8IkNvNeMlewBe7H0AEIN1F7UIko2dlJRUEuUFbI8F8b4h8utazAwbswIuu3QoOmHOEBpYuhFxqmerxjVXXXFrVhv/9Bzr5wNCL7zm/vd3YSlH4h1ZbZEGv1a//tSv/2FHz9uLWm4OGIdB9O3Mqu7ZxJ7INNEp31Wbw0dQllyMuc/80jskc3iug12CHAAydat2p2Tf+jrPNR59KSqgqbxujmD7fW
+X-Rspamd-Queue-Id: 61EF6100015
+X-HE-Tag: 1780279550-772938
+X-HE-Meta: U2FsdGVkX1/hk7y/phr+9elAXje+x3iXXe05EylrUfpuHVfVlseGubpAqya7chBJCI7wTOKCIrc6ICb2bHn8nQSrCxuOuHZb8dZhUIEdcaFuPPhw4xfjqlQUmlyqCPkqqyAlymV58UhqX2QS624AzfYf/9FU5hOaWHCLcSLC8TYpVFII+3TEkr6KLT4BGAbzk90ld1msz9IVtQY0tNtQAmgS1blPQo38wotkHJjjtxk65FK6z+cxuxhHSepn0L7HDZ/YtPdi/PT2qxVr7tIMn9ozTIzN7ydpCviwYZdZPX7whZ6xZ3cjl4Ff4fzQqxuWl9c8uGG1pIxuS+QzuYAwuy6xaxmFo0HY8BiUy1pK3QdJKdsSqfmS+85+g2sCXGGwXfcA3RmTOapxwCc+3mpQM+cFlJ72HlcvMfdZM61jlAz+kcqzuiMhlrJeuZ+eB4LtVQqQ8eCT5QLBS08lnSXNYzOSA+GRD5UuuLHvkhzGReIwgldKPSPYkgMk8A0VoQ6+9MlIzOAizgHWNrnm6lDxO6015L8Tzql8LQxLe+wRCCBApVpdD9m9Q9dPT1/8gHhyTmkdO2uaSYjZt61sJ7CO2sOK0y6YDY5HnLpUvAlQ/EHTTOkV4e3pYU7bg/psljCViT5WR8q6sHCcsQ5EpCJkNS1NAeXG6lJAgd4U06kSBwMgFybKVse8zEYDbRCKPBQvW++KEnzefHf5qmBJNZJ3VmrvnEfbvZ9c5QaIGlQFNlmj4qSYaPiSiZ8cxM3qHQa4+AeF+2bnoKNvJHPpMmSN3p1RxQ4GjWOykp9B/dtdFQBLHr5re+Ky/rjb7cS5cCVIY1d2knvPQa4eDAj/HNSH7LvJugxOcwrhRZ4AZwrx/ZHUyajyFTm0p0ochYn+Qwqt2Ca9DXz27xHPKq9gO+wG+xaRf2QPy8VMGbx/1rLS/BeoVe6zOQPBkSPvolqd7SIZhZTvM1dsLE/PJ95FKJY
+ iJ2Fbk09
+ j1IDVY826ZVqcITRNRdpJPLJci1ZnoW+6V7fjjfg6zwHpWxZ0VHDM13i6UphgNvVEv8Kj7M80Ly6CcsRUL1Mc9LQkRiTp8hm80jC7sGbDEYh4EV3GCMHxEmkKQ73JocQ41WcIv3k5SfawOrFeyCazfgYuAV6Z1l7LYTf0I979/3PEElL8BtIM9DID+g/u001KJQx0ebFxuGvqD0gBPZ17FTOX4YApbYzJdZ4T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,61 +82,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/6/1 04:02, David Hildenbrand (Arm) wrote:
-> On 5/31/26 09:31, Lance Yang wrote:
->>
->> On Fri, May 22, 2026 at 09:00:07AM -0600, Nico Pache wrote:
->>> There are cases where, if an attempted collapse fails, all subsequent
->>> orders are guaranteed to also fail. Avoid these collapse attempts by
->>> bailing out early.
->>>
->>> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
->>> Acked-by: Usama Arif <usama.arif@linux.dev>
->>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->>> Signed-off-by: Nico Pache <npache@redhat.com>
->>> ---
->>> mm/khugepaged.c | 24 +++++++++++++++++++++++-
->>> 1 file changed, 23 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>> index d3d7db8be26c..15b7298bc225 100644
->>> --- a/mm/khugepaged.c
->>> +++ b/mm/khugepaged.c
->>> @@ -1535,9 +1535,31 @@ static int mthp_collapse(struct mm_struct *mm, struct vm_area_struct *vma,
->>> 			collapse_address = address + offset * PAGE_SIZE;
->>> 			ret = collapse_huge_page(mm, collapse_address, referenced,
->>> 						 unmapped, cc, order);
->>> -			if (ret == SCAN_SUCCEED) {
->>> +
->>> +			switch (ret) {
->>> +			/* Cases where we continue to next collapse candidate */
->>> +			case SCAN_SUCCEED:
->>> 				collapsed += nr_ptes;
->>> +				fallthrough;
->>> +			case SCAN_PTE_MAPPED_HUGEPAGE:
->>> 				continue;
->>> +			/* Cases where lower orders might still succeed */
->>> +			case SCAN_LACK_REFERENCED_PAGE:
->>> +			case SCAN_EXCEED_NONE_PTE:
->>> +			case SCAN_EXCEED_SWAP_PTE:
->>> +			case SCAN_EXCEED_SHARED_PTE:
->>> +			case SCAN_PAGE_LOCK:
->>> +			case SCAN_PAGE_COUNT:
->>> +			case SCAN_PAGE_NULL:
->>> +			case SCAN_DEL_PAGE_LRU:
->>> +			case SCAN_PTE_NON_PRESENT:
->>> +			case SCAN_PTE_UFFD_WP:
->>> +			case SCAN_ALLOC_HUGE_PAGE_FAIL:
->>
->> Nit: shouldn't SCAN_CGROUP_CHARGE_FAIL go with SCAN_ALLOC_HUGE_PAGE_FAIL
->> here?
->>
->> If charging the current order fails, a smaller order might still fit :)
+On Mon, Jun 01, 2026 at 02:48:44AM +0800, Kairui Song wrote:
+> On Mon, May 18, 2026 at 04:34:53PM +0800, Youngjun Park wrote:
+> > Currently, the swap layer checks whether a page is entirely zero-filled
+> > before writing it out to the swap device. However, some swap backends,
+> > such as zram and our custom swap device, already perform their own
+> > same-filled page checking internally. This results in redundant CPU operations 
+> > checking same page pattern.
+> > 
+> > This patchset introduces a new swapon flag, SWAP_FLAG_SKIP_ZERO_CHECK,
+> > to eliminate this redundancy. I introduce this as a per-device flag
+> > rather than a global setting because traditional swap devices still
+> > benefit from the swap layer's zero page check to avoid unnecessary I/O.
+> > By using this flag, userspace can selectively disable the zero check
+> > only for specific backends.
+> > 
+> > Furthermore, on certain architectures where the zero map is managed via
+> > a separate bitmap, skipping this check allows bypassing
+> > the bitmap allocation entirely (saving memory).
+> > 
+> > This modification is based on the previous discussion with Nhat Pham [1].
+> > Additionally, this patchset is built on top of Kairui Song's recent
+> > patchset regarding swap table and zeromap modifications [2].
+> > 
+> > Tested simply with zram on QEMU to verify zero-filled page handling.
+> > 
+> > References:
+> > [1] https://lore.kernel.org/linux-mm/acQvNRLpHwnHt7i+@yjaykim-PowerEdge-T330/
+> > [2] https://lore.kernel.org/linux-mm/20260517-swap-table-p4-v5-0-88ae43e064c7@tencent.com/T/#t
+> > 
+> > Youngjun Park (2):
+> >   mm: swap: add SWAP_FLAG_SKIP_ZERO_CHECK to skip zero-filled page check
+> >   mm: swap: do not allocate zero_bitmap if zero check is skipped
+> > 
+> >  include/linux/swap.h |  4 +++-
+> >  mm/page_io.c         |  7 ++++++-
+> >  mm/swap.h            | 12 ++++++++++++
+> >  mm/swapfile.c        | 14 ++++++++++----
+> >  4 files changed, 31 insertions(+), 6 deletions(-)
+> > 
+> > -- 
+> > 2.34.1
+> > 
 > 
-> I think the reasoning was here, that if we are already that close to our mem
-> limit, we should just give up instead of trying to squeeze it in .. :)
+> Hi YoungJun,
 
-Fair point. Just a nit, nevermind :)
+Hello Kairui,
+
+> I think this idea might be useful, some workloads with very few zero
+> folios doesn't benefit from this zero folio detection and it's more of a
+> burden than gain:
+> 
+> For example, one test result with MySQL:
+> 
+> pswpin      129323368
+> pswpout     131460192
+> swpin_zero       4641
+> swpout_zero    248210
+> 
+> Less than 0.3% percent of the pages are zero, and almost none of the
+> zero pages are swapped back.
+
+That is good point.
+So, There are three type of wordloads. 
+
+1. Zero filled (current kernel targeted case)
+2. Zero filled + Filled with other value (our targeted case)
+3. None
+
+The third case one also benifit from this kind of approach.
+
+> I think the zero page detection is actually better combined with
+> compression, e.g. ZRAM & ZSWAP which will always have to touch the
+> content of the page. But some devices may be able to just accept
+> the folio as it is and CPU may not want or need to read the content
+> again before pass the folio to the device, that may save some CPU
+> time I think?
+> How we can make this zero check as an interface is arguable though.
+> 
+> So I think the user might not be limited to ZRAM.
+
+So, In my opinion, 
+This same filled data might be controlled in some proper way.
+(like this patch, CONFIG_*,  etc...)
+
+I will think about it more.
+
+Thanks 
+Youngjun Park
 
