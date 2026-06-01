@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 068D2CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:16:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E326CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:17:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DFFB6B0453; Mon,  1 Jun 2026 12:16:47 -0400 (EDT)
+	id D22A56B0455; Mon,  1 Jun 2026 12:17:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 690666B0455; Mon,  1 Jun 2026 12:16:47 -0400 (EDT)
+	id CFA8F6B0457; Mon,  1 Jun 2026 12:17:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CDBD6B0456; Mon,  1 Jun 2026 12:16:47 -0400 (EDT)
+	id C37CB6B0458; Mon,  1 Jun 2026 12:17:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C38C6B0453
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:16:47 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0D69C140758
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:16:47 +0000 (UTC)
-X-FDA: 84831847254.16.9F383E1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5777280010
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:16:45 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SC2lQoFO;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780330605;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2bpASveTKRhnnK7RqHQ/gb28QgUflHaWAOnJOmldcic=;
-	b=p/+tjzUkyM/2O9bS9hSf8X8qb75/Eevr8Uu3+YQvzCjtDTHLVosrKV2RNFKnLhs1c9ARQB
-	uk0ixbION4m+4RmTtsDqvY4KoDsAiiFXVsupEgxQMvgEMbh1AC7A7XKwGcpMFUwTYRjafh
-	iNRrKIk4Pr0uEptoLzqtZSu1Ibl7Bm8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SC2lQoFO;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B4B216B0455
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:17:43 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56650C24C0
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:17:43 +0000 (UTC)
+X-FDA: 84831849606.14.37B4D8E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B2D4440006
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:17:41 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BifbDx5D;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780330605;
-	b=LQSYHqF3SiKJGtmMydDJ0oUsWe533Z1aEpqqsIBXXhoKAxJ/h2q/QTMMivGQ8MCBJ/YJX+
-	WCF9vxZ8Ume9MFPDlZ9uTC4l6um0/qsnAncQVEeNlK010eQS5NdwXCWjTfCPeYdD5E32sg
-	bT0WElkA3T2rS7zgnpoGNK9OtgmGJw0=
+	t=1780330661;
+	b=zNQmPxb+bW3+vPrPDV9+R9/ETcHY3MZIVBZG8tXz68rUcPn6t04aBdSQNblwU3dL1cLfs3
+	rYHKDUBnL5nqxtNfgaweo7vdiY+Oty/LmKbPNXWcUFWLCvjQ73cExcPQAYvRFKXNHrTF2z
+	PjSh7r966ITUYitcH2UmQ+V4U8CBoK8=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BifbDx5D;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780330661;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rNLnkxLxw0b3sBZzOdV8X6NVlh7ujukPI0iIaNRmGIs=;
+	b=zT/Hoym3isBz1XCNfcDzbaCj0zGJ6UcxV9YeylwPplRFfsz9mbQnYHXr6KGQk76oQzwjOK
+	46l5NvKTmfkhwkGISGvK29uKF8cGKduJ9F9E2Ls+rSY+F+1cqP4UG/LeZBZMEmvQ6iuNwO
+	9/nEW+uoFgxOPpFSZseUQP4A1yG9XNk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EE1C5601E7;
-	Mon,  1 Jun 2026 16:16:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ECF1F00893;
-	Mon,  1 Jun 2026 16:16:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A7A18416F1;
+	Mon,  1 Jun 2026 16:17:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E1C1F00893;
+	Mon,  1 Jun 2026 16:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780330604;
-	bh=2bpASveTKRhnnK7RqHQ/gb28QgUflHaWAOnJOmldcic=;
+	s=k20260515; t=1780330660;
+	bh=rNLnkxLxw0b3sBZzOdV8X6NVlh7ujukPI0iIaNRmGIs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SC2lQoFOOIhfLyd8tXQdxDdmqlHh9UsZzkKnvBXZS7YH1EDA3xXwa0KDVHF+d8axL
-	 M5OfrFlp/JDROL+rcPjrEQfZNvvu2lJCW4q4otdgrG5bSTil3DuJHrrXiZ6jMSqh6F
-	 xiM7NvDLMyrWbZjwVrzJHvPYzokqTNRWMq9ZiRTCoyvNfPIGyxNXa8S5LV0bqwbNX3
-	 0UbA0pJw8sUDVj/FpSxjv8EzfPaQBHDnkbeWB2cAypMoH0ecPMwpwP3KS/YcKN7/DD
-	 W+sun6C4ZP+KZgsptnq+BlE4ePLceTcwCoPYnW0thVe15UfLkVST4AEGucAmLSqgJQ
-	 DzaspGX/nifJA==
-Date: Mon, 1 Jun 2026 18:16:37 +0200
+	b=BifbDx5D653jXTMEUYB65fYghTtrNqepjSBzEEPnsZHuvMiKkUOlVvAuDnhiuDt+S
+	 304eftkIVK3rIX5PhVwBL44KNhsA9dJwCSyTFzVTvI30ARJthbxHrK6U7NK9+WK5GY
+	 TC9AesLZFTlE3g6mll/KzrdOMnxuE7tBLKicmwOzeWy73MC+/4AL/ZfXfEjcqljG9V
+	 pBY6dZiayBvckutKYiFU/gdYkCs+GfJfmG1ifRYuW+2TFchPjF+q+XEM/3y/pdWpRJ
+	 eCatAhyfCn+EEyD2fqdkmd2KXIZ26Uz9dsqb3EYg5nVWNFlArRGKYC3M0cqkoD14cB
+	 9u/DYe8gzQbPg==
+Date: Mon, 1 Jun 2026 18:17:34 +0200
 From: Christian Brauner <brauner@kernel.org>
-To: Askar Safin <safinaskar@gmail.com>
-Cc: Pedro Falcato <pfalcato@suse.de>, linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, 
-	David Howells <dhowells@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	Andy Lutomirski <luto@amacapital.net>, Askar Safin <safinaskar@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-api@vger.kernel.org, netdev@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
 Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
  preadv2/pwritev2
-Message-ID: <20260601-geldentwertung-aufdecken-aussehen-1502bfad440d@brauner>
+Message-ID: <20260601-aufweichen-dissens-ausrechnen-0d9b84728113@brauner>
 References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <ahv16ogY8Zx3Rtox@pedro-suse.lan>
- <CAPnZJGD5QR5jrNMAem7FjMRTtw+Ue+jm7Dc2Kp8Lcjj+9TDw_Q@mail.gmail.com>
+ <CALCETrW__=8mSusayfXG7UFCfue5BGbx+vqESj1d9wqOfX4s8w@mail.gmail.com>
+ <ah2nBAdsE5vVJ2PL@casper.infradead.org>
+ <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPnZJGD5QR5jrNMAem7FjMRTtw+Ue+jm7Dc2Kp8Lcjj+9TDw_Q@mail.gmail.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5777280010
-X-Stat-Signature: wiw7d31p7udxd38nn9d9m81qk9yidhj9
+In-Reply-To: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
+X-Rspamd-Queue-Id: B2D4440006
+X-Stat-Signature: ukzunga7g48yg4y6i5f5w6eiik4mqtej
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780330605-737985
-X-HE-Meta: U2FsdGVkX18gee5ovev9lnoTFwPJvN7YmLU/9mUhflLqWrZkF2KvLO6/J8nF0WPN94/zdQciw8qw2ZHU9WYY4hXe84NrsMv1WGKWQaU9oNpc02yDkvYaH/53p9t5XrDlR1NSbfDSLAQ1qjJCdAaonGYiXUu6+numbGKn6KwcFNXQqDdoYqJ8rz3GVBml3HCaFdb895XDlTbHlPCuBB2cOxeSpxXJ3gyxypOsobt7YMfVb8ri3dPw/BUiWxYcHZjEmVWAduOjIG10VRLyvBDr+99LNGlkXnfXw6ExLdB+2u3ezs46voX85FLW2Xpa8qlK/lTa3ZR7IVS7SPZtEfvd3UmSWpJRh0CEwQp0Rnk4vCKoWxxj5/wPK+RaOGWom83GuqWT/v6l7DKI6NZiLEIpFTH5fZX44Q9PT8tiOPFcRs6FjNE+ABcBh5u1YjWBMJIo59VSF2WoxkexXsZtpxT/Zl1xCVBu0e95JO41Q48VP84SmeBs2krFo2rk0lKeQsRypoqwEm7D8f2r+vnqSAAMB2eI+eXx/ui2QSuMVS0+jSRKRMEmfwuDzsdAoB02DNbViO5168du5wYicJHTLRHYUfy4h5ZS9gG1Ts1TAfIsusPRHJdjvvwb87/LWr357ha11j5p38G3BaRzvrBvM0klnzkB+3Lo6lWXdYd8vXNfzqBC69BHrJZQMu1F+VsE55UzXl4sRWEN7H0FUwmO55jDZ65A0deO/zdyv21unUWfX7qB7hZZZU3YnDjUFlVD/YWMa+CmGW57Nj/Z38Lb2zIPbSdLhCIWz4iMjPXTOPYsc4cUVYeOApL+Fx/uX2GnLfvv7ewYGRutzWB89iVpF2MvVj4q+RriNaS/l8w/bBdxztwLyd9Bq+n1VoxdiMPqGNFHTztWyDsTEPlWZXzGP60Xr+3ffqqCzWqDYMYLrdWlAGzW8Ht2UdvpxUAiUtmPEjGR0pXSExnlS4TDxdzwE3A
- blnDwPKj
- 0UJw5HI6tdVoC1gAq58jkeQPE1IEXwdfoH630l0OpS7S4QvvJ5iWFbWOxqCcS1nzgbtAdbBAOmugmK7YW2QZkkM/HChmgr6zYd+5ijbvVXHGnTuYmMALAPcA5jJKc8Yu9WXEZvH5SFFpJ0fuATFplEVgwV5N/+GKJ2unrhLSaPSkqzUXBWsU3hb03N1C3YZAp870e4wbNrGbYT6aqDRj7AlXnxSBNYi5/vtsfnH3dZOhfVt2g1TiRE01PxFRcBYXMnz/sC2JYQoRMJbXolYDFQfgdhAu2kbDmrDVSUjMgOMnFlW6vDacpq5wAOTva1EcGXlB1Hx2Mu9kKWdw=
+X-HE-Tag: 1780330661-269053
+X-HE-Meta: U2FsdGVkX1/aA3HuGVuTjGuJui5QVH5GbETDg2BZGYy+iMbqO35vS+9VPs8EIp+0EQ9xfaUoCLt+cEpuEirDqEZrLG8kkiGhLyvPQ91attHEde48XsLyROQsx8osZI06v1S3T5zaK1pIZGp/uirgxFKYUao0X9oGb27hQ5mrrhrp9+pP5wby9U0ujbADZZ0PV/qYvjB1LO0chJUIKyMPD6vulIo42jQV3RXzGqOF/+Fxe810Zwd11VAItSpUW9vfADa3GjzSwlxlta36abzyaHnO10ODJekw2AOF6sm7Circz8veXtwAgIwDW3cp0Gfe4n7tjBmGiI5cCaBIItMpgHPeWsv5ebylukLcxqDNwh/TCj/euw3oL5F5RQlPredxr+pyZpKuFyFPQJ09sch9oxT60CrEj8VIw0Z0ZSyqrzxrx+ccVVQw7abXkJSdv23OfZ8NVdfhQZrTiGhXxhlg9RN10cEC4np/IgcBkiHaWIg1STaqnZfU5kBLAC/ZdNts6311FC75umBaLAyQtlDlwG/FKmeVY3ow/mG65CHQoRn3dFLGKWQE3tM50XdUYpVv4zTU2T8FqT9iVZsWEbc5DDUXIumdqEnWFzUov5EFtV8q5hlW9+WxI64ULr7qAkdTJsoOPW11zcLr/Zs0pR6rT4YKFh26sIKNPgXSejj6y2iDF1gbzopeA4SSibg2SlAXqC/aT9/mUNQ/GK9J8SIrXxNxa1qXBPhCnBh/SLg+sCp8HiLvo/aE+YvUn5qmeGzLMbytT/kikBNPmL6UdXUHos71XY1gl+KkqNsrSyICIZXQTqol41BY1xGkvf6cx2qb4wh3Kn20pbsH0nYwQGLDrs609YmrmjEHBLzAJoz5sagdkxzs5fuyL2O0IqoFYI2Ox7feS31FKJLFFbYyy+/aCFqTZTzBHwCcTlOPprERXGvDO7JLRZRBGdoCVn1Wa7x/MRLxUEXwika3lc2p48M
+ eNJFN0hw
+ 7pvxbnc/bOIszwKdHCl9JH+KsE6S98iQ77/u0GxG0U484Cj7kPM9howvN5l1ikDt59wEHJxDuGHa/aLXbM3CRYtJFYeYeQqtJzDzOK1Z+fJyCcceXI7iKwGBQ4VHLCpm+ZaZFzZ7W15yOaa+t58tnfLssMAo1pCvxJqB+jioeOF538gBn9vA2c0zwDBMnAfFWfKu8IhqghQCFDNeUIFYNeB63LIXlBDqR/z+mAJFoYYdh3XqBwd1czVFzb/ZILi6gmIEIJaQB1GizitzVubQWsPIjyoNTP/zZFbbIsCJxawUWGK0T0L8U7GqrGKWDFaVolDxLy1gsGlEvcyfLqpuSOsq1qDpWUveqQjMaMgfdy1QUOBc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,32 +100,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 12:21:06AM +0300, Askar Safin wrote:
-> On Sun, May 31, 2026 at 11:54 AM Pedro Falcato <pfalcato@suse.de> wrote:
-> > So, you took an ongoing discussion with an ongoing RFC patchset, and you
-> > decided to reimplement part of the idea on your own, as a concurrent patchset.
+On Mon, Jun 01, 2026 at 08:50:00AM -0700, Linus Torvalds wrote:
+> On Mon, 1 Jun 2026 at 08:36, Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > Can we review this series properly?
 > 
-> Yes. But I propose an alternative solution to this problem.
+> Well, since it pretty much is what I suggested a few years ago, I
+> certainly won't NAK it.
+> 
+> And the patches looked very straightforward to me. Just the final
+> diffstat is worth quoting again because that certainly doesn't look
+> problematic:
+> 
+>   7 files changed, 33 insertions(+), 204 deletions(-)
+> 
+> and it removes that GIFT flag that was truly disgusting.
+> 
+> So I'm certainly ok with it from a "looking at the patch" standpoint.
+> I didn't _test_ it. I don't have any workload that might remotely
+> care.
+> 
+> I did a quick scan on debian code search for vmsplice, and after ten
+> pages of entries that weren't actually *using* it but had lists of
+> system calls, I grew bored. So there are likely users, but I don't
+> know what they are and how much they care. It *might* be a big
+> performance issue somewhere. Unlikely, but...
 
-So I think this is a case where no explicit rules have been broken. But
-if you know that someone has been posting patches and is working on a
-problem just racing them to get your own stuff merged is very likely to
-unnecessarily ruffle feathers. So sync with the person next time.
-
-The discussion wasn't at an impasse and Pedro is expected to follow-up.
-It's not very nice to just have someone else's work be for naught.
-
-> Brauner said in discussion for your patchset:
-> "So I'm not very likely to pick this up as is".
-> So, I decided to submit another solution.
-
-This lacks quite some context... I said "in its current form" and the a
-long discussion ensued.
-
-> If my patchset is applied, then I will try to deal
-> with splice-pagecache-to-pipe somehow,
-> probably by removing it, too. :) I decided first
-
-So ok, but this is literally what Pedro is working on. This just wastes
-people's time.
+As usual I would argue to accept it and revert in case we get actual
+regression reports...
 
