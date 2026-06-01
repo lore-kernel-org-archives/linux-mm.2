@@ -4,128 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CDD4CD6E57
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:01:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BCD8CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:03:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D2FB6B03FD; Mon,  1 Jun 2026 11:01:05 -0400 (EDT)
+	id 0A2606B03FF; Mon,  1 Jun 2026 11:03:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A9D86B03FF; Mon,  1 Jun 2026 11:01:05 -0400 (EDT)
+	id 079E86B0401; Mon,  1 Jun 2026 11:03:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 299876B0400; Mon,  1 Jun 2026 11:01:05 -0400 (EDT)
+	id ED2926B0402; Mon,  1 Jun 2026 11:03:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 10C376B03FD
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:01:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD046A03B8
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:01:04 +0000 (UTC)
-X-FDA: 84831656448.11.4EB7660
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9FE534001E
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:01:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=IceOY7uP;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DD52E6B03FF
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:03:28 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A5BC8C0586
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:03:28 +0000 (UTC)
+X-FDA: 84831662496.28.A524AD5
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A3EE44000C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:03:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=K2XSA5gR;
+	spf=pass (imf11.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780326062;
+	s=arc-20220608; t=1780326206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YjouT4r9OqoZMrQ0tTNPIpsZn3OGl8wc9VmtokceP+I=;
-	b=h+HdNM3n2YxhtpymP2gAI5CKGOgWMdsD2boaFldisl+DS1lIw0RXKTXLzj6oAGfFXYv30S
-	2YcWWbjMSsgK/pNPxiLAnbeAFi0WcK7GqsRUS6TiMd4upudgNR6Nx36XNDjUN4HyZbl4b9
-	1ijG/geOnKkNDvTaLGYXrXtrgfK1j+4=
+	bh=jOPuvve0GGHfgoNvEY/UT1iUdehbmxAd3MGizN3iksE=;
+	b=Nt/Uci3eXXmhOrLdS+3riNu15Sx9lte7iEsI7qfRJpg4dpnNE0pZNQySexWZCXmafij/LC
+	p2aiCBTkCERk0hTt91gG77AQq6UrVahjWbyUs3nxFtBbQOyULcNKLsvYiq0ezOBeMwhg6W
+	vM3HGh4Q+t+C/kLbUP4+sTRh4by5Xr8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780326062;
-	b=fPF7nqgNaL7/44E85NpmyygAZ9ovar++qZUO1AimzwxxoDMpIzvXuGYtCk67anWdZ14kNP
-	T5VPG2+JGA2lWNukTcvV9JtQZrqv7c5r/jq1s33xo9sT0U/WK3aNV7JQ+DAM3sHdq3ld0h
-	or+3RDtBSqbrsVtlRaLExddilEFeTL8=
+	t=1780326206;
+	b=xEDST9ktujkbwfhm8Vn4Un6Vm1qSw9kzQ/OcYCG6iB5atMoZFe6kkRgi858dOdJ/wu5ENL
+	4VsXERtAJ6xebijmI5Cs/CCkjW/0Qplve5Z4XVesiokwTkPCRHMwtP9QNmu7X4Oou8ehFN
+	bEDGB7q9XPur6lDNvpnd5WP6LSAP/nk=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=IceOY7uP;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-7e1916922b9so17561107b3.1
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 08:01:02 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=K2XSA5gR;
+	spf=pass (imf11.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490426d72f7so89684065e9.3
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 08:03:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780326061; x=1780930861; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780326205; x=1780931005; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YjouT4r9OqoZMrQ0tTNPIpsZn3OGl8wc9VmtokceP+I=;
-        b=IceOY7uPbszYc+6VE1f8ppWprRyLHCOut4UbeB9WR/72G5gM2x1nZIcCLTnfkQN1PY
-         uTD5f61TbPoC6ZC15RT57KThORoZnLIfZZjh9tYrFRR5qV51rP1KWxjYiDGxIJWT59Up
-         8n6ocyvYjTcRZwGxRsnYhrhmSRdLlnDh0SFGYuUTaDZ5W6u7ama71jce+Ns8PK//puxe
-         u86gxl6alUh9G23T/+u2+1+PBMafo/68nfC1wS1j/rRWBsOGa60GxKIs4l51f+iZawjl
-         iJJ0uw0Q/sgxFHN7v5eyj9FOzu9kvjdgKwD8pNhVeUEGS048jgQYUVLRh612O1uIwSZA
-         BO/A==
+        bh=jOPuvve0GGHfgoNvEY/UT1iUdehbmxAd3MGizN3iksE=;
+        b=K2XSA5gRuNAkAR4PuCL599Hl+346H1q4zoCuNk434ginFjWTyiA9SFGX0w79ikCDT8
+         UZIzx3vX0bI7li2LWPfFUmOgKX9wQrjTlxyMANEhSK7OMAjKX3TUSXZbnVBpCc/+16RO
+         9ziSer1ihakMR8xfMjVqcaRV1i4Z03eIFANssG+xLXrgiIHoiaM6AZZ9lOXrdpXESLiD
+         D8pUuD+7Ec8iOf7+5uysEwf/tuQoJlk/vlW6F61nLi/mTgov/gg5EYdUvepSD0pBuc+S
+         RB2i8AC+5MZZMj/sbDwd1TwntKNADT0MdcIyv6X/mKOVBfG+/kgUSZlK4VSrBQeE1NwY
+         B3tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780326061; x=1780930861;
+        d=1e100.net; s=20251104; t=1780326205; x=1780931005;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YjouT4r9OqoZMrQ0tTNPIpsZn3OGl8wc9VmtokceP+I=;
-        b=coSADIC06kRsShvL6B4yb5fuvOw5tifuSnyVXMUr51ZsR/Lad/5jUh6fEOk2qAqptJ
-         QyoJ8p+oASjuEytK2wBvqW7EZBKq7A9OMn9Cc7WRlzcYufjiiqPno46NumqpY93fXQQb
-         X8OURXRIQJwH4YNsF/XN5RpzDhALAxUUUzn7F3pcFhtEG+LIzdJAlkfJQ63oOl4WyZoc
-         RLSr0aTnyaFcMpSKKiNgUp2cz3Jdff5XfROmezTGBDTnR4xgJreJ4xL4fxOCck69p+gL
-         TjP91CN/NwKrrFG9kJ5HO2DNrNBGCbZAENuF2ufca82Uh7qw1FEIIopYJD8QxX2NuEMY
-         LA2A==
-X-Forwarded-Encrypted: i=1; AFNElJ87Bn4sDxr1X0PTMaa80uKvyP+gGvsfO4AtBUk7V0NvSTBd1w3pjCj915w0Ld157euSZa2tEhRXGw==@kvack.org
-X-Gm-Message-State: AOJu0YzO6odbreqWq+1fxdRmu0JSoefAH0Xvcgph+nwQYsmk9oxOjPwj
-	PyZimlr8O8MX9KDT2uwOP3YuZBhKLQcptHgCAdzNzgMiGD/OrVmbNdaWOtc7Cdqv3kU=
-X-Gm-Gg: Acq92OEJFCr+RSp7FrK9H4tNGllztEyXnp8Q+mtWuCYX9Yu1jcDQ9cw/68I3X6hgXgf
-	a7wXaPfUP5l7OtRXbMzs/bfQNEZbLnFnHkmF9DyKPhaR45c4KYz2+5QE9RNXGwft3vPplSSvZ9w
-	VygkFgyqY5Ll858HsqHpLaH0y8NWwJ98cCdfujkCQPbCF3WI7O4NJME/KcRcg/WVNFGUbsrq+b9
-	d83JsEe9OBa2hnxBa980h3OBYfK9mpljCLlDpUdKt+7VVG0a1/NycUSsC4nsziKRoIk2ZLQQZ3h
-	XMuzbBF4kKOLcqGK56oXQ/M9WLZGrhRY7hY2nwyHAyn2CP2h1h/HMf9aINBNEiZPIAULklwySnK
-	4Iak8N7kly7500ZUjVAycwMhQpW2GQ1X21ciRmE/BtLx5tNYGq7vP5LZUosIDEybCmafSvF+V+q
-	hmLbKGMud5WrNwa/pnp8eMNI9a02G8zjnF7Qbp2RhqzZtFGCB7Y0CeyVOyNDqI1E9SQAIpRgrVG
-	TYsUa4YvUzQEf+Blg6358SZX9nosBIxRBMOvApw8o+NuC1xtBug6w==
-X-Received: by 2002:a05:690c:88b:b0:7a2:3d38:337c with SMTP id 00721157ae682-7e05d5e4ec2mr97204177b3.32.1780326061363;
-        Mon, 01 Jun 2026 08:01:01 -0700 (PDT)
-Received: from google.com (138.200.150.34.bc.googleusercontent.com. [34.150.200.138])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7e175de02fdsm41868227b3.7.2026.06.01.08.00.59
+        bh=jOPuvve0GGHfgoNvEY/UT1iUdehbmxAd3MGizN3iksE=;
+        b=nxTagbzw/IIQYExSSFC0ZBK3TayI8c9+++vml0Cqs9UN2xekefQ0d1lWOod10iAAuY
+         Db8qPqKtKEC6kKLdoQelCrjngaEWcZf8CfAMAZdjrl292u34nuXbHhi/TPwtKkBFJRq6
+         Hi0aBEgc6lRl89Ij3VgUSL2FHl8DwRV6rNcA02XXC2tggjfL2EgnEBn436IJ98Noo+tG
+         WJUZ64p8H1RlxhCGg9qy7t6bFW5fRCzlAXHSnpodmeScv7xAJuykveZunLLE/exE4/6k
+         W1oYmfNy+qmb/gr93e38hOm4WXATwqi8wfpPZwQHBzAnJrfUukaYB6GFAsklEC+a3kEQ
+         fNGw==
+X-Forwarded-Encrypted: i=1; AFNElJ84yEZQy3K91um42yXty064OTJJ50yRcQ6fQa1r0Q4Zximf0PnOGZha8ANCa/xVdHFZke/+uQyi3A==@kvack.org
+X-Gm-Message-State: AOJu0Yw0JxHblwVLhNKjDVjL2Xh4aSMjLS7LP6qv7x2dbCagFgppyc+b
+	cyGf1Mn3D6TSsSeDcV0JhNkLMZTtgMQ1rkFqljN+H4bSPVdAS4TOuC3g
+X-Gm-Gg: Acq92OHVquUqJexFRh+YEOIibwOf+B6J4dlJit7zxoJEUBT4jvrP4zyZ81ykGe6pvyD
+	xhjBClrhPZcil5p8gSejG8riv8ZAUoER2F8EAlxDoT49PNL02/I/3pxA6zoV64cF9/0BaZHWMXS
+	BCW7oMcYccssUrxIsEOorJ6H/OcLws0i3O+3C93FBMnp5837BuZYfn8d9LKjzk6BcHm8OwklWDc
+	Ga4KIAD9hxaqKDcz/rsvgHoq6xjk1rTayrwgIq4Ln8CAU1ydThrB5fzpdT0q+nTPvKM2Lty6CAV
+	9et0uiufdwVRGemx4GXgFAfXCJYWa8/ezjpR6nsy+fVesfMz3nYpYBxx6ZlrVkwUvIsuUB84p5Q
+	2iOH1+vK+a5smRJalMzLyyCPE4+jCU3AOwOetgQ080mbJIPCBGNiyVge/+kX+dLQTrMJ1ZoN2jp
+	zQD00wTFpMDArNb6ZSOG2EPkpCkOP1Tz1JfywJjBlsXvCx/q6G5Qj0OcvWBcGp0+ct5kTQl7Pur
+	ZRJ7TQ7sQ==
+X-Received: by 2002:a05:600c:8b30:b0:490:adb6:7957 with SMTP id 5b1f17b1804b1-490adb67fafmr48270735e9.33.1780326204677;
+        Mon, 01 Jun 2026 08:03:24 -0700 (PDT)
+Received: from f (cst-prg-92-135.cust.vodafone.cz. [46.135.92.135])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c127befsm80837185e9.31.2026.06.01.08.03.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 08:01:00 -0700 (PDT)
-Date: Mon, 1 Jun 2026 11:00:59 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Jork Loeser <jloeser@linux.microsoft.com>, 
-	linux-hyperv@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, Jason Miu <jasonmiu@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Baoquan He <bhe@redhat.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <kees@kernel.org>, 
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>, Justinien Bouron <jbouron@amazon.com>, 
-	Sourabh Jain <sourabhjain@linux.ibm.com>, Pingfan Liu <piliu@redhat.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Mario Limonciello <mario.limonciello@amd.com>, 
-	linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [RFC PATCH 00/20] mshv: enable kexec with Hyper-V donated pages
- and partitions
-Message-ID: <ah2eBxaBnVs_1j5n@google.com>
-References: <20260528004204.1484584-1-jloeser@linux.microsoft.com>
- <ahxrc4pTvVU20RTX@kernel.org>
+        Mon, 01 Jun 2026 08:03:23 -0700 (PDT)
+Date: Mon, 1 Jun 2026 17:02:01 +0200
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Chi Zhiling <chizhiling@163.com>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chi Zhiling <chizhiling@kylinos.cn>
+Subject: Re: [PATCH v2 3/5] mm/shmem: introduce copy_zero_to_iter() for large
+ zeroing
+Message-ID: <rvvwfa4dp2wovn4vlglajxwpumiudvcgbnrj6fwh4dxtxemawh@rbav4cliyraj>
+References: <20260601055704.167436-1-chizhiling@163.com>
+ <20260601055704.167436-4-chizhiling@163.com>
+ <ah2HfH3jJZDiNAQc@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ahxrc4pTvVU20RTX@kernel.org>
+In-Reply-To: <ah2HfH3jJZDiNAQc@casper.infradead.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9FE534001E
-X-Stat-Signature: dedkt7i3omqmg545o6665993r7749h4z
-X-HE-Tag: 1780326062-544372
-X-HE-Meta: U2FsdGVkX1+hhHXYtsiEfTzrezwbMrdGRtK9Pe6SL73g7DCT9Hq4lzRIQ8+GsnYt7PWFjFyf6aIIEWtqhmYd0/UorGdqWf5I4W6bWKbk8faCfZYZGq7LjQbyPx21C3WVDoyNBj+Z/uaD847HCK32AiACNh5C4lku+hgOZUO+N2zMmEhLsb14amVkIxx8e5LRlTtY6hV7AN6GCzwEOu/ENmwDjNiGTpmnotWtstKP6BqbOjUOvkwmo5fvrqA+vj7APfZOGd1ZgT+uxMF/a01jHDA4EsUF/f6d01wmZT1pg1R+RV92a/+pzCYh5DLQ/3a3SbPHOomAAmJJ/evlw6Q67K0pdPV85v48YeVaDwqftJjgMml7z8my/XFdq4SFXIBsfe9gCa2hRsFwQbo0PbO1Dto/1F6fMdOzqY3+E23k1khEigRKRQQdrlDDOgQZ8wnJjvl+hQeMK5GGHClJWx+nI2HHo9filIafuX5Ig37wtzhxo/lMxFOSW2tuPAV86dLUO37sQ7Jt5p6wxgxoJqH0jgcgvbb3+fG15KFkE6WIaQYmlgQn2RoxLOidI5F7bsOezboPxbp+ndOspBFwCKTNV1Z/F8GdAn5xO27O6riN/MHu1FewN3kHY15PFREXle+2/MzBWzeCxONLQu3pLNZ5IzeMoerot/fyOrpKZeqvbN+77yyJaBTav+MEb0KynpyErovfB7MD5S5adc5s1XohlxZOMgXQC3NeHZdchvobxRf7Hmrs3iMzbZ5OEHL2Av17OycCsd/zRFN/25T4c7aDo4YSGq7fhpk6X3eqwCGqm4vvgNKxNrYBF5Mg6MAf343pUZ3vlG6Zhgavd2HIotI4sc3TX/aqqE5eGlwzLzw16MdM6zVJzRyQk5fcXwkrR/eOdniA9nGOVS5m1+YdyjlvFlQrvH+QpalFh9kPT+QPm/ZF4/XMJsCIEVpWctxhvL7vbJy6rpitBfJF+DWuBV5
- jDwgvxnY
- 16U1JH4LfWcz2Frca110gynIWY67TynVrpiXZfntsNaoq74au7odZwnQHuZLx6225pqapxAAbajpG27ipnQkRoAgLvyS8dDjAST3tcTqSyVL2S1fytEqts8U9eOoVMXH55yL1i75fk0momXUo1QbS+xahNck7f3EiSg72AJV8rQKK/zHmwvEHG6iryXkT4E8huMqaaAPFxln+U9knsI7IAX6jo690QIq94dJXrbqdUSoQWFXrhelM9R8DgHCohlW1uwMaKbDBmMjHqt+dG/ZirwWQr72e6PuJfQ7kh4T8+xhgkhMMgjIRQOGpb+kC02JJ729jLz+ZoJn0Fh2jiH76Se29l4XLzXOVHi1m+mfHbEV+O6NgR3P1gDlb+w==
+X-Rspamd-Queue-Id: A3EE44000C
+X-Stat-Signature: osa4si599xt1idim3s4gepmffoggekqk
+X-HE-Tag: 1780326206-483185
+X-HE-Meta: U2FsdGVkX18i/EiP+6oGREYSkmc/q2DgTHrUvIMyfuOpSy4JqMP2a87pLMWj3Zh/xh0eVPpRLVNdPIqocIJTdo1F/KRkosBxnaGELmh23JF2hMpSk13mky90B9gLdzhclodrErvdTC75YdojYQC/G5YR4kbZRZ0BwRHpotA8lttBgCb1lzBzcSpCNEmqJ9IDINL0Je6RfBDNDOmaooUA3eIJwRQbzclHM9iUZQBozR5UM6Yj+4/e0yupo9Cwa1V0eYgr1pYVNpjpTw70F0ufO4qKNNRy0Riy0JoUNBAzj9DN0ORqCRyDnpcx3ZfEx0SmlwxVh0eLQi7XFQy4igj/Wf/Lc7MYIExDOB4zNtfHfpMGHNU3NLU3M2QQ7b2ZsAKcGzptavQ4dLRmwqjJ8uvjmSuOas22nRLrmnqPePvdfQmq6kDKnDGjsYAJzlxitnsIToScu/pxNIlvqIa3v1LR9FEn+rp2eboYfrqmAVJYfRlg/f/kCdbZpFnjLUitkdh71qTFC6ESfyJVpfpQ7xWz5YmucPzKpJnOB6Tewrq6B8ZK4EkLPQ2f+3q5xm1sZ2KCH+GbJ2r9xLMIJ52wyspWmtw+8aKuiEcYzOd7ldOcyLs8Hmod2YevkkTRhkCVyNTphPf+V2qVpV+yzQOEoPb+2e5XnheZ2gSPsHbLZKxzCHXlCWuHEpsjFik1WH7Xs6RsqFBCEZY5C0B7/Y+S8ccN4Ygz55+cUyDGFcWkRYpKjX2b8Zk4+y/gHLow+34XeR2zunK02May3ZyrumYRx7ol5Un8xDIMJU8c9eL+J4jIUtpNgIrpLvDIkNa7/qARLal99LYa8qLGllL3aX+Zg70fr2djmSZZexTtHsdNjJfgax7uQkgq+SuJ7CDErSFXB0MMRnd3w1a9m6yPujoVbFhIAg5irTYnc+qMOivLzX5O+/xG1vzaU2IElF5SaB4WBTQ7mP8DWZ/cQTT+CUP9JAF
+ V59GPdYo
+ cbr3+ZsR62FJrOZghJ6wJXHPDBaWbGD3hd76Gxt4s4XamEtBaREVHnxDipw+EpSGxPJuJQwcCYnWC0iLQ10XXD4WKkipjAVuD1DFyPplz15TdVrZh0fw9OQ38tQ+8N8Dixd/gqhC3S1VnMKUWnnPJf1aTVcFBkwO4UxFreZjR0Y5CA9BUfn411MVHqPuPcozw2eBy+0B5mnguum/v/6/fdwd7U+rnEPRZ8RPxjwu/ERhAfGU/arvA00fkupP20QFhybKtD0Sdh+vMtoVNSm0lUPHvILAJAeqBrEKMLS0D9ddsC4qRCWUJT6xs19bIGP8nGKKSLdcX5KiabrL5qcj2EfSUce440i2DrhcgcOlfPHCxtJFTLVE66vDLftxW3Hf7VMQ7g5GYJGhaakG+2gGn8NWlYhm7tlCUc3UWvL4toXdU/Ntv9y5zyCo5qaRB4ftcCaNm/fnITWye16wE10AGkz07wGChGl038BMv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,92 +122,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05-31 20:10, Mike Rapoport wrote:
-> Hi Jork,
+On Mon, Jun 01, 2026 at 02:22:04PM +0100, Matthew Wilcox wrote:
+> On Mon, Jun 01, 2026 at 01:57:02PM +0800, Chi Zhiling wrote:
+> > Currently, holes larger than PAGE_SIZE cannot be handled because
+> > ZERO_PAGE is limited to a single page. Add copy_zero_to_iter() as a
+> > wrapper to support copying larger zero ranges to the iterator.
 > 
-> Only had time to skim through the patches.
-> I have a couple of high level questions for now.
+> I think Hugh put this optimisation in the wrong place, and you're
+> perpetuating that ;-)
 > 
-> On Wed, May 27, 2026 at 05:41:42PM -0700, Jork Loeser wrote:
-> > When Linux runs as an L1 Virtual Host (L1VH) under Hyper-V, the MSHV
-> > root partition driver deposits pages to the hypervisor and creates
-> > partitions for guest VMs. Prior patches enabled kexec for L1VH, but
-> > only when no partitions had been created and no memory had been donated.
-> > 
-> > This series lifts that limitation. It uses KHO (Kexec Handover) to:
-> > 
-> >  - Track all pages deposited to the hypervisor in a KHO radix tree
-> >    and preserve them across kexec so the new kernel knows which pages
-> >    are owned by the hypervisor.
-> > 
-> >  - Freeze running partitions before kexec, record their IDs in the
-> >    KHO FDT, and vacuum (tear down + reclaim memory) stale partitions
-> >    after kexec.
-> > 
-> >  - In case of a crash, exclude hypervisor-owned pages from crash
-> >    dump collection by passing the radix tree root PA via Hyper-V
-> >    crash MSR P2 to the crash kernel.
-> > 
-> > Dependency on Pratyush's KHO series
-> > ===================================
-> > 
-> > Patches 1-12 are cherry-picked from Pratyush Yadav's v1 series
-> > "kho: make boot time huge page allocation work nicely with KHO" [1],
-> > which is still under discussion. This series uses functionality from
-> > those patches -- specifically the meta-data page enumeration via table
-> > callbacks and the restructured radix tree API. It also extends the
-> > KHO radix tree with:
-> > 
-> >  - A freeze mechanism to lock the tree before serializing for kexec
-> >    (patch 13).
+> So perhaps we can start by moving this optimisation to lib/iov_iter.c?
+> And then you can redo your optimisation on top of that.
 > 
-> There were a lot of effort to make KHO stateless and drop the requirement
-> for finalization/freeze.
+> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+> index 243662af1af7..06c54d719fcd 100644
+> --- a/lib/iov_iter.c
+> +++ b/lib/iov_iter.c
+> @@ -451,7 +451,23 @@ static __always_inline
+>  size_t zero_to_user_iter(void __user *iter_to, size_t progress,
+>  			 size_t len, void *priv, void *priv2)
+>  {
+> -	return clear_user(iter_to, len);
+> +	/*
+> +	 * it is noticeably faster to copy the zero page instead of
+> +	 * calling clear_user().  Shame.
+> +	 */
 
-Yes, using KHO directly here is incorrect. The state machine is provided 
-by LUO, so we should use LUO here. MSHV should provide a file that 
-userspace adds to LUO, and all state machine management would be the 
-same as for all other clients participating in LU.
 
-> 
-> Why is this necessary to add a freeze mechanism to kho_radix_tree?
-> If it's a hard requirement of mshv maybe the freeze part should be handled
-> there?
-j  
-> >  - A crash-kernel-safe variant that memremaps radix nodes for use
-> >    outside the direct map (patch 14).
-> > 
-> > Patch overview
-> > ==============
-> > 
-> > Patches 1-12:  KHO radix tree and memblock changes (from [1])
-> > Patch 13:      Radix tree freeze and del_key() error reporting
-> 
-> del_key() error reporting sounds like something we'd want to avoid.
-> del_key() is called on "freeing" path and during error handling, it would
-> be hard if at all possible to deal with errors from del_key().
-> 
-> > Patch 14:      Crash-kernel-safe radix tree presence check
-> > Patch 15:      Page tracker using KHO radix tree for deposited pages
-> > Patch 16:      Debugfs interface for page tracker
-> > Patches 17-18: Crash MSR reshuffling + crash dump page exclusion
-> > Patch 19:      Export kexec_in_progress for modules
-> 
-> Isn't there another way to differentiate kexec reboot?
-> 
-> > Patch 20:      Freeze and vacuum partitions across kexec
-> > 
-> > Feedback
-> > ========
-> > 
-> > This is an RFC. I am looking for feedback on the overall approach as
-> > well as the KHO changes (patches 13-14).
-> > 
-> > [1] https://lore.kernel.org/linux-mm/20260429133928.850721-1-pratyush@kernel.org/
-> > 
-> > Based-on: linux-next/master (next-20260527)
-> 
-> -- 
-> Sincerely yours,
-> Mike.
+This is a rather suspicious claim. If clear_user is indeed so terrible
+that it is faster to copy, the routine needs to get unfucked instead of
+the problem being worked around.
+
+I can't speak for arm64 or other non-amd64 archs, maybe these are
+horrendeously broken.
+
+On amd64 some archeology shows the following:
+1. 0db7058e8e23e6bb ("x86/clear_user: Make it faster")
+
+2022 vintage, replaces thoroughly terrible 8-byte per-iteration write
+with rep stos usage
+
+2. 8c9b6a88b7e2f33c ("x86: improve on the non-rep 'clear_user' function")
+
+inlines rep stosb at the callsite if the CPU has FSRS, otherwise
+fallsback to a new routine which does 64-byte writes per loop iteration.
+
+FSRS is reasonably popular by now and chances are decent the test jig
+used by Chi has it.
+
+For a size like 4096 bytes, the 64-byte loop will be slower than rep
+movsb and even rep stosq. This needs to be patched and maybe I'll get
+around to doing the needful(tm) in few days (it's not hard to write, but
+some care with testing is needed).
+
+I could not be bothered to check how the workaround showed up, but it
+definitely needs to be removed as opposed to being perpetuated.
 
