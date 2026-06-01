@@ -4,90 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D37A2CD6E4C
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 03:39:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68574CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 03:42:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E24BF6B020E; Sun, 31 May 2026 23:39:00 -0400 (EDT)
+	id A326D6B0213; Sun, 31 May 2026 23:42:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD5CF6B020F; Sun, 31 May 2026 23:39:00 -0400 (EDT)
+	id 9E3826B0246; Sun, 31 May 2026 23:42:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEB976B0213; Sun, 31 May 2026 23:39:00 -0400 (EDT)
+	id 8F88D6B0248; Sun, 31 May 2026 23:42:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BEC6E6B020E
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 23:39:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 527548E839
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:39:00 +0000 (UTC)
-X-FDA: 84829937640.05.826F158
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B30A71A0004
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:38:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=abmMi7kD;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780285138; a=rsa-sha256;
-	cv=none;
-	b=AWENqejJNNCgi0xwyq/27iyZwLYPfsxGvY+Ll13VNtT1IQ9PltZ+ZPWmgcBD5Lz0/fjQSx
-	9xDLVRu4shua/4Uvl4xSdJk6/owrpVTYLiSyvCIsU+1Gl4VFuywfV9Q+lryuF8Fx9TowOz
-	/e+106+4YiWjsp/Je0mXpjhVLzxiAu0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=abmMi7kD;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EB746B0213
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 23:42:38 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 26D8F161D55
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:42:38 +0000 (UTC)
+X-FDA: 84829946796.17.B89C8D7
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 984D120002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:42:35 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780285138;
+	s=arc-20220608; t=1780285356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O6ttP73ev96TdFerBTl0monlsGmeiqwaQhiYaXkxoCs=;
-	b=lgvYf82Lay228a1xTfB1gLRoCVWryekeAXhayd18T23dWdkPsnbFWUSJk7SxuJilq74YFw
-	lPXOm9W5yDxTlRdzxycWQ/0qTSeR+L54JG5Ha1FAO5ftgxxDNDnVg/8OJYrwsytbIyc6BR
-	nxLmQ8TTITADdjH62rxi9xhFo0TweRg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0FAEA6022E;
-	Mon,  1 Jun 2026 03:38:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E5D1F00893;
-	Mon,  1 Jun 2026 03:38:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780285137;
-	bh=O6ttP73ev96TdFerBTl0monlsGmeiqwaQhiYaXkxoCs=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To;
-	b=abmMi7kDRBUcPK25SIbXrrcboQhEijQhzClkdz/m1wMDgFUpnvJd/GAj4m0SHsgKS
-	 Ye4yk4L4cwCwouAX85hzGIliWsVcNUMOYfX6LczUOF54OL7L7Q3HUgFyb5iOiHZ9Sf
-	 i/vLZ73s7DfrGpyBvck3KacB+zX0LE0ZSyGxEAowDzqkc0amaq4pkpuP55fPCM8zN7
-	 R0AovCIeCKZ/KECXEFNNc+AicsDvEJLY68COE/dFn1ZdnLCDUg0VYTYSO0FgPQ07Yu
-	 cuuXpWihejYnTTRamokRcgqdWepc/0Sw5lVqc5D/dt8njv0y6G5BucvYR1Ildm7a9B
-	 dKPwMmiglR1IQ==
-Message-ID: <5ed81b4a-1d18-4535-a18c-1bb31969ae78@kernel.org>
-Date: Mon, 1 Jun 2026 12:38:48 +0900
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7uTILC6Kk59jBl93WZuBOrFk4uaabwDPnRmdkxjeJwY=;
+	b=4niOwuvrjz9/pw2OhJYGOG7B5+WhvFfYwG1SOj/W0hlKMb3YEZVq2PeYZsl0iZLJPqgH4A
+	MhXCd5caIi3NQwZ49/KcBVKDNw/g+MaXRFJbhyerxSZVUgEPPJx4n6cD5O4uHyA7291xBn
+	e8BNbOMkJjkJDe2udX2OLWqNufTELbE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780285356; a=rsa-sha256;
+	cv=none;
+	b=QipH5oCC6XU3VEGKQ64nvZXhBZt2Ccd45GYtyJRYfB5b8QznMZpX4M4zTsvS2mTanJtm60
+	cQsOh8ZwB98QdIJQ5YwIgJwsOoJVEhvETwM44k/LX1QteV8AAFG0Y6ASK769hCcUkTyq4Q
+	sjjZjC5pgOZxrtyMr6yyjbpfbSTy0jc=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 1 Jun 2026 12:42:32 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Mon, 1 Jun 2026 12:42:31 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com,
+	baoquan.he@linux.dev, baohua@kernel.org, gunho.lee@lge.com,
+	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com,
+	baver.bae@lge.com, matia.kim@lge.com
+Subject: Re: [PATCH v7 0/4] mm: swap: introduce swap tier infrastructure
+Message-ID: <ahz/p7oE6vDvKnPx@yjaykim-PowerEdge-T330>
+References: <20260527062247.3440692-1-youngjun.park@lge.com>
+ <CAKEwX=PkiWdgNtoHberaXafQDoDngw5kycfaXeU22MnrXBoAXQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Harry Yoo <harry@kernel.org>
-Subject: Re: [PATCH v3 1/2] mm/slub: introduce helpers for node partial slab
- state
-To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org, akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260529035120.81304-1-hao.li@linux.dev>
- <20260529035120.81304-2-hao.li@linux.dev>
-Content-Language: en-US
-In-Reply-To: <20260529035120.81304-2-hao.li@linux.dev>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------CNKNMZfV8LoY1cMCfGx7hFIY"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKEwX=PkiWdgNtoHberaXafQDoDngw5kycfaXeU22MnrXBoAXQ@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B30A71A0004
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 6nq9g9z4cz4fuwt5c7nq5f7kewh9ijqm
-X-HE-Tag: 1780285138-868855
-X-HE-Meta: U2FsdGVkX1+uFzKp6lHeT5CDbVu3dTkOkVuEsc4k/OLaiupPEFFMGz20PYKnHRb/HoDYOnLTJH2G14lwdIDyKpBy98u0QviNlqY+ZyJ3wnoW9MIovc7vrxmTfxz4VYFLNWXX22IZYMCGSMAdscbrq5SByiSxOH+m9WJclk0msJPIwQBDEuKgUrAw03LRR8b8VaB2EeMc6uVKdlSPDLMVphDicoLVKFSCLviitEnh0MZvcGXukBvSL2zQcjNSLLTpeXaxQsMsf2Tcz2sKTC4z3os8J2jTLkUw3guHcZpxMdL5xy61uYNLADfDhjM66CVBjOQt5zy541S8qRE6m0BmCq+9tYr+XCeK9TabK4ijJEYjU7NjAY+sv4/q3OvPYcUKNA7qfj/oKCKkzvV27eztZAtE6Qr+nW6UrmsPfpn5HG8eVIFgspF3x8dNnMPU1yG1+bFM7QqX/lb8Wy94DjQlCHy+xAGyluHcrkauILsiRNRv7EXuhpTBbGmmPCQOuHUegUO3VMI4o10ndq3/ukUgreiy3rcR5mu1qOx9k0GTjgY0DjtGTviBHrkR555QBydsLkN0Ag6egprTfPJSvOKcWGEnNiuorSLCgOm16T9uedue/POS6D5qj5KzE/c3oxjMdn9EuYXBNG/me4KPsL5w19nnYfoRbhfRPgBmpDwgI+oL6jphSle2xNuQsyP5zXdXRgZsrHBPC+I+tj5GbT/7bMuWzywtvohDf+g9xY0k7cNCMDnjj5IBZ9mVRHI73B07Y4pNaDI3fzf1lEy20YUXh5xEoeTiZ0klECsYCw/5zvVMXrhrniA5E42NeK/oAtWKe3F8smip77lOrZLEYG0gu4R87b/zShsyZzluM1UTQVwYzZO/1VkmX+e5rMz+Ecl8QsVBf1oSZfebrMwggZfZoIPaCFnsnZfZ+l+KgEDegQ9hDiB8UKPblCtrqpg+gjdK4YY98PzOcU1rsE5xNZn
- iX70OVir
- Nm2/Q/k680PkxPj2LWMMq+yY7+gb/xVWJAtJp+X93Y44LqMLSydOn6wEiJJruo/HOiwBf0aT6oAJCsg1Ngy/4SJJCyj6+mMbgsCFsSipSQ1mP4wZ1tnA8AgsQuEBX2Nn/zHs1zq5QudMetV/Q+iu9uTYHfbBbqe0oRpNKsq9/ziN60ZfAQhYo7ezgh3DyClCwi+a7FPg9XRkdExllx11ccRamVqVIpbp8Sxp7eORPad0NcQ43HrAKVHAUY/At8bX5UEnrNtpt/5SFQa8mjkTI4/JXPhDVwVP07RLvdsvqBtrsrfVX0ywzJrAev1/Y1yh1QrMrGiSSmvIGf3QqYZBTAgFab3wceo6plZBcFSOQmXB/hiINjPPeB9Wq4kStEmPNLDRjY2DrrQdRsF5InTIKfiehkXRg2Xh1jDhxpjPj6WK3a1uexdjtEnnEEzU6fHqvKxWMkumV4BYpjZzw2szTVLNMEQMjWZ6vCgui
+X-Rspamd-Queue-Id: 984D120002
+X-Stat-Signature: tp6ynyn4mp1rqjoc7zrrrx4sksk1yycd
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1780285355-868763
+X-HE-Meta: U2FsdGVkX1+eRoNetcTIBhpOXVxOX6ParKiRQadsHy/FwcalD5001g3HnnbiOTiXOGrSbX1j0hfeiJb8iaKPsRekLBYkSUViTjVvS5P0Nitx4dLeanFxgAMp1poE7FHTdxI4XPWFBDlAqj1rXSZusp2YPeaMY/HUdErZHzcMN0d1RJ3yF2Fza+twRyM8J5/2MYY/PvDnBIeE0uE37m5vNAeIvrk00FooNgnmO3jQlZEs1McRdURjZ1eE5eVnk6Ee40mj62SJPsR1HozIIqpmVbHfLEFiiIcLiTgeSxn91CXTGKKY5D6TP2yfR6qNB3vQc3JiXC1JBNL2V45FRG28JiO9nxMH7vS37vUZqnt3+iUzaJkr1N9CIxskkXZOOCj7dBqdZFyxlsz8rWOzAcs5ywA0i2tNxSUtoNOgK8prdcE93U6Cm0/J2oAn+SgYON1wLSQByHm3Af7oU9/tqMMrAWAzku/HiPtxihl4MEvN8WnqDQt6nsyKOr9JTaoZE3GwAUH5j/RZOoynkm74rNhK3WD7aKOwsdocaYQj9Fgwd1o+jtbnR3YfYBQyR3RBdgclkkqBlEbpC8q1oJpsm34YYGJOSYrUoL3jhNtY2v7qNB4VtxIWSYXaY9xU1IFVKpFoGRf4azfNWwcPipcNjIKM588XVwYK3zEdQiyMNwv4YhHD4R0XcfGpTkFui2roSOMeI4CfJktq6NKxiiJkMM0lzemFS36mOc2NOgLaWgjnazZAuY50WxjdJf7Unm4roVxOfkko+V2iTlMQocwVqsB+xBHhdCVScY0nLukygkMD/gkFXs3PfAIk3m+DwduVCG7mvnE6UqghCFMcjJZyE4k3P5Hvm52WEwGRC/lxzIr0aEipF4NB5ylVfNI+sZuiqt4xubfMQya6PD/ZHBjrrjO52HzkJpfjRPD5teAL2bb7x2pKZb9zpMYcckiKrg9eEkEj9VMs1lFwB+z09OKMFs+
+ uKHpT3i+
+ Uq53OxOteQFyJND/CaZfFm5/AzM/kyqWhfTwJzFPZ5eN71piPUiiN4i4X/Gy8+JSDrZUdfhHHRD1r4IsmjLDsa3PTfQK9T9QTwXdiHbMh+yH8mddbTedcquiXgo/2PAKRvRoIrneVgKZ8kNIPOVP9HmLjRakVOLpPLFp17s6SYVjLSum0DlOLENQGAS7uEsrLTFzWUXYgL0xa5Q/k+ucj7/5BhNi6a0XpYOznEGxmniTPMvYOoZgwNKP4SdMO8JxssUtjMKncspI0bBx/YgsDLzc4aPZVWxa5V7XLondZDso0wJvwysMs/bYSDsEHUiVkU2bTx/HseidAF98=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,63 +88,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------CNKNMZfV8LoY1cMCfGx7hFIY
-Content-Type: multipart/mixed; boundary="------------DqDzYDgKdkP7Ff00j7RvjNtI";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org, akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Message-ID: <5ed81b4a-1d18-4535-a18c-1bb31969ae78@kernel.org>
-Subject: Re: [PATCH v3 1/2] mm/slub: introduce helpers for node partial slab
- state
-References: <20260529035120.81304-1-hao.li@linux.dev>
- <20260529035120.81304-2-hao.li@linux.dev>
-In-Reply-To: <20260529035120.81304-2-hao.li@linux.dev>
+On Sat, May 30, 2026 at 11:02:03AM -0700, Nhat Pham wrote:
+> On Tue, May 26, 2026 at 11:23 PM Youngjun Park <youngjun.park@lge.com> wrote:
+> >
+> > This is v7 of the swap tier series addressing review feedback.
+> > The cover letter has been simplified.
+> >
+> > I revisited the design (see Design Rationale). Since our use case
+> > fits best with a memcg-based model, the implementation remains
+> > within memcg and preserves its resource accounting semantics.
+> >
+> > Alternatives considered:
+> >
+> > 1. A separate sysfs interface under swap. (Workable. But, it would still
+> >    need to reference memcg paths, and fully decoupling it would add
+> >    swap-layer logic to manage memcgs, making it secondary option.)
+> >
+> > 2. Making the feature non-default.
+> >
+> > Other interfaces were also reviewed. Aside from sysfs and BPF,
+> > the options involve trade-offs and are largely design choices.
+> > BPF was excluded due to possible disablement on our embedded
+> > platform, though future extension remains possible.
+> >
+> > Overview
+> > ========
+> >
+> > Swap Tiers group swap devices into performance classes (e.g. NVMe,
+> > HDD, Network) and allow per-memcg selection of which tiers to use.
+> > This mechanism was suggested by Chris Li.
+> >
+> > Design Rationale
+> > ================
+> >
+> > Swap tier selection is attached to memcg. A child cgroup may select a
+> > subset of the parent's allowed tiers.
+> >
+> > This
+> > - Preserves cgroup inheritance semantics (boundary at parent,
+> >   refinement at child).
+> > - Reuses memcg, which already groups processes and enforces
+> >   hierarchical memory limits.
+> > - Aligns with existing memcg swap controls (e.g. swap.max, zswap.writeback)
+> > - Avoids introducing a parallel swap control hierarchy.
+> >
+> > Placing tier control outside memcg (e.g., via BPF, syscalls, or
+> > madvise) would allow swap preference to diverge from the memcg
+> > hierarchy. Integrating it into memcg keeps the swap policy
+> > consistent with existing memory ownership semantics. There are
+> > also real use cases built around memcg.
+> >
+> > In the future, this can be extended to other interfaces to cover
+> > additional use cases.
+> >
+> > I believe a memcg-based swap control is a good starting point
+> > before such extensions.
+> >
+> > Use Cases
+> > =========
+> >
+> > #1: Latency separation (our primary deployment scenario)
+> >   [ / ]
+> >      |
+> >      +-- latency-sensitive workload  (fast tier)
+> >      +-- background workload         (slow tier)
+> >
+> > The parent defines the memory boundary.
+> > Each workload selects a swap tier via memory.swap.tiers according to
+> > latency requirements.
+> >
+> > This prevents latency-sensitive workloads from being swapped to
+> > slow devices used by background workloads.
+> >
+> > #2: Per-VM swap selection (Chris Li's deployment scenario)
+> >   [ / ]
+> >      |
+> >      +-- [ Job on VM ]              (tiers: zswap, SSD)
+> >             |
+> >             +-- [ VMM guest memory ]  (tiers: SSD)
+> >
+> > The parent (job) has access to both zswap and SSD tiers.
+> > The child (VMM guest memory) selects SSD as its swap tier via
+> > memory.swap.tiers. In this deployment, swap device selection
+> > happens at the child level from the parent's available set.
+> >
+> > #3: Tier isolation for reduced contention (hypothetical)
+> >   [ / ]                    (tiers: A, B)
+> >      |
+> >      +-- workload X        (tiers: A)
+> >      +-- workload Y        (tiers: B)
+> >
+> > Each child uses a different tier. Since swap paths are separated
+> > per tier, synchronization overhead between the two workloads is
+> > reduced.
+> >
+> > Future extension
+> > ================
+> >
+> > #1: Intra-tier distribution policy:
+> >   Currently, swap devices with the same priority are allocated in a
+> >   round-robin fashion. Per-tier policy files under
+> >   /sys/kernel/mm/swap/tiers/ can control how devices within a tier
+> >   are selected (e.g. round-robin, weighted).
+> >
+> > #2: Inter-tier promotion and demotion:
+> >   Promotion and demotion apply between tiers, not within a single
+> >   tier. The current interface defines only tier assignment; it does
+> >   not yet define when or how pages move between tiers. Two triggering
+> >   models are possible:
+> >
+> >   (a) User-triggered: userspace explicitly initiates migration between
+> >       tiers (e.g. via a new interface or existing move_pages semantics).
+> >   (b) Kernel-triggered: the kernel moves pages between tiers at
+> >       appropriate points such as reclaim or refault.
+> >
+> > #3: Per-VMA, per-process swap and BPF:
+> >   Not just for memcg based swap, possible to extend Per-VMA or per-process swap.
+> >   Or we can use it as BPF program.
+> >
+> > Experimentation
+> > ===============
+> >
+> > Tested on our internal platform using NBD as a separate swap tier.
+> > Our first production's simple usecase.
+> >
+> > Without tiers:
+> > - No selective control over flash wear
+> > - Cannot selectively assign NBD to specific applications
+> >
+> > Cold launch improvement (preloaded vs. baseline):
+> > - App A: 13.17s -> 4.18s (68%)
+> > - App B: 5.60s -> 1.12s (80%)
+> > - App C: 10.25s -> 2.00s (80%)
+> >
+> > Performance impact with no tiers configured:
+> > <1% regression in kernel build and vm-scalability benchmarks
+> >
+> 
+> Bit late to the party - working on my review backlog right now :)
+> 
+> I see some parallels with this and memory tiering work being done. One
+> future line of work could be considering how to ensure fairness when
+> multiple cgroups share same tiers:
+> 
+> https://lwn.net/Articles/1073400/
 
---------------DqDzYDgKdkP7Ff00j7RvjNtI
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Hi Nhat,
 
+Thanks for bringing this up. I took a quick look at the link, and I agree
+with your point. We could probably use a similar proposed mechanism (e.g., setting
+min/max limits per tier) to handle promotion and demotion in the future.
 
+This also suggests that keeping the swap tier limits inside the memcg
+interface is a reasonable approach. It aligns well with such future work.
+If it were implemented in other layers (e.g., prctl, sysfs, or BPF), we
+would likely have to revisit its integration with memcg someday anyway.
 
-On 5/29/26 12:50 PM, Hao Li wrote:
-> Wrap partial slab count inc/dec and flag set/clear into
-> helper functions to reduce code duplication.
->=20
-> Note that __add_partial() is called locklessly in
-> early_kmem_cache_node_alloc(), but since there is no such use case for
-> removal, __remove_partial() does not exist.
+> and occupy all the space in the faster tier(s), pushing the other
+> colocated tenants to the slower tier(s). We might need to figure out a
+> way to ensure fairness here (while letting cgroups occupy fast swap
+> backends opportunistically if there is no resources scarcity).
 
-nit: __remove_partial() -> clear_partial_node_state()
-oh wait, it does exist. Let's drop this paragraph?
+Agreed. Ensuring fairness will be essential when we eventually expand
+the promotion and demotion mechanisms across swap tiers.
 
-Otherwise LGTM!
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-> Suggested-by: Harry Yoo <harry@kernel.org>
-> Signed-off-by: Hao Li <hao.li@linux.dev>
-
---=20
-Cheers,
-Harry / Hyeonggon
-
-
---------------DqDzYDgKdkP7Ff00j7RvjNtI--
-
---------------CNKNMZfV8LoY1cMCfGx7hFIY
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCahz+yAAKCRCGXBN6rc5S
-1pjNAP9n82v/7/klMOjhHsDAacPpcFHOqe15jjq50z+NEDhARgEA66WxRiZc9HpP
-Y00zZLC7w/aGLnZX/qdu9sNShy3XJww=
-=8rT6
------END PGP SIGNATURE-----
-
---------------CNKNMZfV8LoY1cMCfGx7hFIY--
+Thanks,
+Youngjun
 
