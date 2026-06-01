@@ -4,89 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E605CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:08:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C477CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:09:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B804D6B0407; Mon,  1 Jun 2026 11:08:56 -0400 (EDT)
+	id 874686B0409; Mon,  1 Jun 2026 11:09:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B58376B0409; Mon,  1 Jun 2026 11:08:56 -0400 (EDT)
+	id 7FE3A6B040B; Mon,  1 Jun 2026 11:09:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6E6B6B040A; Mon,  1 Jun 2026 11:08:56 -0400 (EDT)
+	id 6EDBE6B040C; Mon,  1 Jun 2026 11:09:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 98D516B0407
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:08:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 43D74162716
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:08:56 +0000 (UTC)
-X-FDA: 84831676272.23.B3F8A32
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D36A6B0409
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:09:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 08A25140635
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:09:54 +0000 (UTC)
+X-FDA: 84831678708.29.DAFBDEF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6F82D180002
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:08:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aeuZZPxx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1AB311C000E
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:09:51 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j63IPH5W;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780326534;
+	s=arc-20220608; t=1780326592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v5Qn5lpRNTlWfCeo9CMrm9V3sYGYVnchDqXtweZThaQ=;
-	b=Lkb+X56+xVo2syYVdzXhD31SOYQtSCJXtjiT/LMMsVzeWTr4RK56eSQrJPN7BUWH99cYBZ
-	jscN9/ZrhdXkfXmk+gfFlW43lI0dJbtxGDePBBAlWcWzJA/ATGEPBDfekrMSFCDMv+Q/U8
-	MOaPzYu5x80Nz6qzDdrI+eJArdKW8Ys=
+	bh=SposVQLGMQ3g7KzUAjhtvHRJnzNQ9+QLm8OIeq0t7dQ=;
+	b=ZM3f4qFBkAVL5dS2IfRL2qKjXZI2LwFcCpmcDEFmfxP0S3X8RZNKVN9AhtQQ9SN+7jWLJ4
+	NV8rang193iDwDJanJefMeXhpPRrTqOQ9pXUZrSuFv+PNRFXcp0RckKEs1vCyhW8p+eiWN
+	SdOJMNQ8iVuChKA7s4mVxrZHxf2lJAk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aeuZZPxx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780326534;
-	b=wjzpemobwTQq2C0EZNlLNVBvgbs7JyGiSEU/GseOqHyNa2gliIxyb659arOVNEszxn1SqX
-	gNjNYoAxcIEn40fwgAOJxMGlpKSq/TSDfV+6iJj1mzZqaM4I/kW9ff+JOsQ5zlyg1pzSeH
-	IyNjglLQk7/4SwskL+eszDCanzakeP0=
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j63IPH5W;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780326592; a=rsa-sha256;
+	cv=none;
+	b=wv7L2ap98yiLDp37gS7oV4HPAt4ThaV45HwDU0AztxSOUg5yHmmAOqeYrYHa8nW5n/x/zH
+	3hig7dd2lmLAipdXJrklnjqoX9/4PL4IBVXfe0Sx1QwwU6zIID6vyis1td1NM2EKZUFA8I
+	/FrDwPbhJCbnOwdNHtHaOLc9cypVW6w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D27442A90;
-	Mon,  1 Jun 2026 15:08:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDDD1F00893;
-	Mon,  1 Jun 2026 15:08:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 451EE405E5;
+	Mon,  1 Jun 2026 15:09:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFA51F00893;
+	Mon,  1 Jun 2026 15:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780326533;
-	bh=v5Qn5lpRNTlWfCeo9CMrm9V3sYGYVnchDqXtweZThaQ=;
+	s=k20260515; t=1780326591;
+	bh=SposVQLGMQ3g7KzUAjhtvHRJnzNQ9+QLm8OIeq0t7dQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aeuZZPxxFURTYiKzhL/I4zvy4RbPa78mKb81D82gqDtTLqUoqXZNkOJyrFkDKpfwg
-	 AMi3fdav/TAlTdFMzd7i0+J6Q7tgA9JjaWBVOjCSK0kpiFkvsbYv4qOv/+uPTKlwcK
-	 3+xlyZz8netMGLxF6OMKeJ1szM/cyW2rsgCA0uRxOzIIM/Jka2AjLDWHrWFL3byHBM
-	 w50tHeJqGSx951jvjZDv73SoajIw4pEVyqmHvhrUyrqycZSY57FoZ26thYw20UP2WR
-	 /1SqxTKrcaZGDKFn6ERHO+TsIBdzHVU5OMsq0rzYSPu5oe3h36uJtyEOH+R1WByf0S
-	 3eGsvj+jm0+RA==
-Message-ID: <99add59e-2f4a-437d-b2bf-301c446c3892@kernel.org>
-Date: Mon, 1 Jun 2026 17:08:46 +0200
+	b=j63IPH5W6isuJl5Sv8a6btnJONu83KwfUpY9mdaENr9hHPZiHaIUogJyj4mgGyvD9
+	 YIx7biR867n999sBxLIyeZtZczVwtoIyaIuvsMJNorqaQXrGyWYsLtEx/rHbrXkzNl
+	 8+VU5bhHxvr3SocNwyI0uyt0ZhP36xDBfnSDgCn7wBmhG5mVIggYRmHHAMJVRzMcuM
+	 qf2KEGIiwU/eBKCj/MPsH8ZQQcw1I7BiMIELSCm5PcUqnU2A75BsJBuBbBmvDFl/VV
+	 DzWDsdLXrNWtj2ioeKU1c+Sckl4U8KELVku4lBdMPfRmZAOdRy8/fE0pPUOv2SSRTk
+	 gldrLVbnV3kCA==
+Message-ID: <e0a80cc9-03b3-40b4-a6e8-ac0fa00b7aad@kernel.org>
+Date: Mon, 1 Jun 2026 17:09:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] x86/xen: Get rid of Xen private lazy MMU mode
- tracking
+Subject: Re: [PATCH 3/5] mm: Refactor lazy_mmu_mode_pause() and
+ lazy_mmu_mode_resume()
 To: Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
- virtualization@lists.linux.dev
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
 References: <20260526150514.129330-1-jgross@suse.com>
+ <20260526150514.129330-4-jgross@suse.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260526150514.129330-1-jgross@suse.com>
+In-Reply-To: <20260526150514.129330-4-jgross@suse.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6F82D180002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 3ynswfs17ypmk9wn4rtz5s3rez8d1acb
 X-Rspam-User: 
-X-Stat-Signature: hitgknxumokx7o6xcw9ucyj395zpgiqm
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780326534-173736
-X-HE-Meta: U2FsdGVkX1+M17O3UCJ/kSObh+GScLLiDIKUb91swex//dYLI5DmOg3kNwlZKzPopUskZq9Z9Mzb7lBnK1D1+yYECZqw/snfCs5/UWSU59VDgz4vfWLc+S/UslmTz3z52sjGbgnDoyE52WOCbIRGW4Bwt4AYeWUZWkhWlkhT9eZW81M9/LjmOxiV8CR2YoC4eEQNhgxL43hM6qNNYNTZd4COZ5Y2rpzMPJ8djtbjPU0tO2PTc2eglSmDFugqH607ZmbsogXFjj2xfqPtvaqOpdn8Hi4aDaZCMy1edyCCaFfgUWVK0SLZZ3gWmJ5rzahmRfQ+tsxRZFsknWMEYJeRVP7/ldKbBcfQ1bvcKrx314aUrcPtjYVWpbbaVLne8Yu64TyIaO68Ue1G12pK40vwEW/oyGrQ1gVXSbKJMVy3qTWrApoHDrVzZmhGuWQd+j+3RupLl/lJY+Nmlk4Qg4aaH14tq5ah5L14tltwrpgjsSjblg+vPwtDxjx40rfurpkVMfgGWW+rfbJSCQniVWcvYmUTgydxJUYP6r8xywFbpLTB57KC72JPUrg2VzhmednOL8SMDT7ccvVGiD9B53PwTDPZld1qetQ3f5oUZu4wr4WhL9SYAdgiBuScXKsviWfcDG6frGcQsSzyDRhWlikMim33cmj1tMGb7UNZIGW03mGYgSpgI255uVGb7AstUMoAUAE5U+8wA9jGnOsWwfNnZKhcm5DZtgZ/r86/PXjtdgalFHzBeqgtdmRNjQ2+E3bjU/TZjpdw5jrrniy3cFyVOck7HFWIqThmTfN/Z3X67s7JifiQmRyhlYUbJyB9gu5jp53gkZViPdLjjIU/2CHAx3MP9vnpT1CM/Zf3sVaqnDBAPvjDsyYCbPlT+1X65tI7Sh7/bfL5KiwHH8ZfrduvpLA+++PpE2jdDwIALDOFYmI0fc+icoMAR0LGeSrFhuCMCBOAtpZDSRE3ApckPD3
- Q7ePACUP
- +Utsg4lMV/iaMis/ASS92cnNhSCeR8wh5JL/JxCxgbk7PWEJlM5MBIaW5olWH7EH5sJWXRCx3Sb06XsR+hwrvdwEVMHqzkKqwXV4P3lmKDqX1UjwovUJdBdTH4Db9UntdU6+Jynp9x+TUW65tvijbRjvyvGW6mobaikdWCh/tJpmg2QHiaTe2XpHDV2YZsdA/45zmbq/Uy0JTg4rQ+NmkkyfeUSpwuBmMu+0w
+X-Rspamd-Queue-Id: 1AB311C000E
+X-HE-Tag: 1780326591-61089
+X-HE-Meta: U2FsdGVkX19sMTkerXPbvjlf/8EM88NqLGQhpHZumkqMwHHrrJxZnFld6VZxi+0kZ5R/PWNN1X/qCX3DFfT4332z4k3D9uU8pLDU2qNF/3Lb268CH+TVLOzJSZjyurRd3yQS3pF7dV+ETJZ0XTksphG9SfXKxir6AQ8pYWIgpzF5FkJWka9lqwy5WwrWwG3cqQ2d+d1s7WzvfNhry+k+5ZR02AbajUrU6+X4XCCoVK3hBKq/dQcMuae1ceCqOu4WnfemYiI8uc5WlogAg6yTf0UqnJaWVhqi9LyO7QF6W2jwMm2Kai9IM9Tibi54DnNt1vS1fLCzhsCsBox5sArU84i7ueYb2hlIEd7oePtMZKH3DDc8VMD8ZSZtM+sAtNvpWgbZOE/a770USFzegNQOWo4ACoBRcypEh1sYEW1KJLCfwjIAO/qwaVm6sv2YI8p3Zff/2rOnk5/AD6GFsS9PKBY9+jBNudZQUnzBgPOHTDB5yoneVXywdSVUM+bPLbsCGDRL1EcWDVgM6QU07zt2PcH0GAy7qS1iJpjJBZrHN4d+qc+VtTNVTdRcAFGj1hyyIU1LGohVdjGk6DFq0QoEuYBXfLOAXQJ9m43hQNCc4MoTynzh9Wnp28bicVtvL8zMeEmEHNFmn7RwzCNaAkoV7bpNEcDmzcl+FJGvMQehPUSzwz0S4rIsrYsuWsyeuWpAycE/eD8YNT6qjoQUXQusxK3w3jzj9IN+9tdRoiLWBp2TAYAE9j34e55UZl7Wahq4sKECrlyUugq5Q5pV/iXKfU0s3GeFjmbJ7P+5Ry60PxCzBnWlEH4UaSVwaNaJeDUfNXHhk8DYSAaTsmJLW+OHmI24cYG0vs3pFeSr5hOj7Eu2palz3je/LgQ2wrSi+A/4HCHpWFGpTYfpMdsML8G3mVjzSasK1scMLfj85ZN/gtNlbKX5m3y+mFRmgYWTb04uxA9doNlyO7SyOcZmq3B
+ pH2k+hLA
+ H29aGa8LYw1NY2aBYTDvZdC/a+fyDn0pATqbPs+0jS9V4PDND1TudvNb0oJl6V8F4Mp/58mbbduirhdnfvpMqlXr9G7t1sRHAz0Llb3aNIMEh7vCfIm2QSj+IIol2tIttoMAAjUpN5igMtSZezoXg2/P476H90kywZW5yX76KaUhJPzvuPAk88sNFBNgfHY2G4CgFosIGwMqSZGfrLYPx1T73z5N53Ld5Eq0C7Op5ny/ps55ul0ZLJC9NkF5D/DhlnOkp6L3ucsUvitclFsQSfQC0gcUE4s1fBJhN4xjM9WuUzZQ3MfnJkDrPXKuHZlLEOWyulX/J1eAJakKp2JtTa99AQTuG7Z/qxgadpnmgkS1Df6JVyICaxLUNswmL9hUrxk9RLpE621D+h68QxySRrE2chskMCY3fSDVwmk+8Hjd7cy70V7xZdfIoKaCLrmnmX2XPic0gJPwM8twNDdEfSQiQ9uFT6aZTusnW2rUtK96ffAM+gH3+d8fTQJusSfD1tBka
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,12 +143,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 5/26/26 17:05, Juergen Gross wrote:
-> With generic lazy MMU mode tracking being available, there is no real
-> need for having Xen PV specific code to track lazy MMU mode, too.
+> In order to allow pausing and resuming MMU lazy mode for other tasks
+> than current, refactor lazy_mmu_mode_pause() and
+> lazy_mmu_mode_resume().
 > 
-> This makes it possible to drop two paravirt hooks.
+> This will be needed when dropping the Xen PV private lazy MMU
+> bookkeeping.
+> 
+> Signed-off-by: Juergen Gross <jgross@suse.com>
+> ---
 
-Nice!
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
