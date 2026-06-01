@@ -4,75 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F803CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:51:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5470CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:53:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E23736B03E9; Mon,  1 Jun 2026 10:50:59 -0400 (EDT)
+	id 3EE796B03EB; Mon,  1 Jun 2026 10:53:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFB566B03EB; Mon,  1 Jun 2026 10:50:59 -0400 (EDT)
+	id 39F386B03ED; Mon,  1 Jun 2026 10:53:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5F4A6B03EC; Mon,  1 Jun 2026 10:50:59 -0400 (EDT)
+	id 28E4C6B03EE; Mon,  1 Jun 2026 10:53:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C72A96B03E9
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:50:59 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6BD7891186
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:50:59 +0000 (UTC)
-X-FDA: 84831631038.19.0229BCD
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 847DB10001A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:50:57 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf14.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1630A6B03EB
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:53:22 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B51B540206
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:53:21 +0000 (UTC)
+X-FDA: 84831637002.04.A537C38
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E65F040014
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:53:19 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AcDv7JBX;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780325457;
+	s=arc-20220608; t=1780325600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VHTi48tvZ+Tv5IhlWLI+j7INX8ZYSxvWSbK1pi7H3Tk=;
-	b=14KnK70ttfxj2gFFYHJYhdc9Ek7vg4pXBK9HLuScjS3aWIUv10r3fSZl4fEoNsMa4k9AuR
-	n3luwhWDBRGl/1e2BC6IHQDlxVzQB4scxf52mvw6reoOCccD8tgf6rXIm76GVWILdzgebB
-	/a4twtP5C7eT+VQvKP9+1pykFBREEXo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xiQUMkR7UOdZhhl/sVNZBEvY/qGg1U4+w0VidMXvdpE=;
+	b=su9azNhL19N/PwXGwsJ08AhON1aXh1gSORlKASI8K1Vhx2Hm/O4k09D59Emk5OSfWTdb5t
+	bgj3UmpEhagvOxO6iXWJBSZF4NI2FWEuU0rhSB+yhk9ohketRHB5agoTrVMrY12L5TRP3h
+	2HweY+rBEh7CLOaOt7XzB4CtEC8D1/I=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf14.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780325457; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AcDv7JBX;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780325600; a=rsa-sha256;
 	cv=none;
-	b=5LYlJ2+8TnyWUr3p85ITgskMWymOhsB456BPWMRZqtmHoOygRIGiS1FSWpDWNW59gTm8+s
-	UPBDT0dljVGZHwm/qPdBg7Xyb2N+3CJRh2ZANK5xMXBFGU0Ww64iuSPu0aeeLUSztQXW3b
-	pNtindd5dV7pHsfeZCEcUK1zTuU1l6s=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 9ED1768BEB; Mon,  1 Jun 2026 16:50:53 +0200 (CEST)
-Date: Mon, 1 Jun 2026 16:50:53 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Christoph Hellwig <hch@lst.de>, akpm@linux-foundation.org,
-	chrisl@kernel.org, usama.arif@linux.dev, kasong@tencent.com,
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com,
-	linux-mm@kvack.org
-Subject: Re: better block swap batching and a different take on swap_ops v2
-Message-ID: <20260601145053.GA5268@lst.de>
-References: <20260601113449.3464734-1-hch@lst.de> <ah2JOjCiDqXvPci_@MiWiFi-R3L-srv>
+	b=hEiCcEXp4QY3KsltGwNYTLjEqzGUQI59UviYttN/FDg9XJDxeZBVQpb79cMQaj61ButgqJ
+	y+GHTzynr3VF18tQCJbTqJ86bkFd1CzNwdNzkRipvXD6X1v9mLzifV6KjDDO09fpF5WOuG
+	9jKPhvmWYhOFfCVyzDrZ6npUS4eLiVM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 16C524427F;
+	Mon,  1 Jun 2026 14:53:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8751F00893;
+	Mon,  1 Jun 2026 14:53:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780325599;
+	bh=xiQUMkR7UOdZhhl/sVNZBEvY/qGg1U4+w0VidMXvdpE=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=AcDv7JBXv1WuUyybHXbNhCxJc3oOpdXhk7ixtIqrNz429V0cBKGsHpoNWlfy4KzNV
+	 nz8uVF2PWvWVekKVwtrkdawEeGIq7I45cAyHLWU5Ar18hskeNTHkZniqkGyz3lCz3K
+	 C5w697+eSrqpqovKTdEYhxc2J5Rp+eir44635M31NU8/7+pHWMyROGdifDECzq0vER
+	 VUeMbXWYK2FMmSOT3l3h4Ufkj8AmUpvB7jSh7t0fjCSmfFKHDzOFTvCIEADY+VeMiz
+	 OZU4kURbqF9inCO8x4Cd5dc8gU3ou4/UcaTPeo0RhhK3KribGsy3gSYF6MfQqSe3lA
+	 HM+9ctma9YcUw==
+Message-ID: <264ec41c-dd1f-4957-9032-943fe719dffe@kernel.org>
+Date: Mon, 1 Jun 2026 23:53:11 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah2JOjCiDqXvPci_@MiWiFi-R3L-srv>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Stat-Signature: zrkwfbsrfr4rqur9b1rhwxzo6zr79tj7
-X-Rspamd-Queue-Id: 847DB10001A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 bpf-next 3/4] bpf,slab: Add slub-backed allocator for
+ bpf_arena
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, memxor@gmail.com,
+ eddyz87@gmail.com, vbabka@suse.cz, harry.yoo@oracle.com, david@kernel.org,
+ tj@kernel.org, roman.gushchin@linux.dev, peterz@infradead.org,
+ linux-mm@kvack.org, Hao Li <hao.li@linux.dev>
+References: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
+ <20260530011345.99342-4-alexei.starovoitov@gmail.com>
+ <ca1bb6bf-f25e-44ba-87c5-e23e4939dbd5@kernel.org>
+ <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
+Content-Language: en-US
+In-Reply-To: <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------FIHDtU9jdxgAacPQ0ZAKZUFE"
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780325457-378974
-X-HE-Meta: U2FsdGVkX1/OvaEqn726Co1m2Mo/VdpEqgh65Bj5UkGqtb3VDVVsbkrRqR0n4Z7M2AD34gP+qipZGdrGUGUdHiEVm2oRv7H0Fu4rtdfQHk7fPm9NyhfSBk1BuI6StsxUUtvoEecYMM+Cvk5MmIv5JyzA0KHZAb8cLltiJkDpxzsnaEG/o+W+0Ac0EeL9opN6GFV/YuKUSJ+akQr8IO+LoNSjSY+KTe1g2ur/KLbDi3ZTFoOgIpDUlCVmRcsOmBWQ47Akmd8xuL+xwabIwcBfbWH8x4iNeI+4jnwl9C2jcFPH2mqyXaTAdhRcRolAbgBzNfRuXFNoZCUzBIXAMbCSPMhCnAj36zCWD2pqGoBUF1JJXQRIuNKg4ZdR6Xx0tfewdIBIIMtFPJgXfiyd4CL583z049Dy8+7kVrXPzRxlKO73jPEGTFSC9FZd0q0pZdSB0CpFh8Ob6OjmvP18XMOUcCn8jcBJdjZ/6Dk3qQlieKYgizKYmp2uwpL0Hjub9NvcggblcWzIrTna/MoKv0XxMg6ah+UaRNsMLk+shhPfXUHzaX94hz7dC0Y5KC/Y4hz2KTj0e1aJ5DduhT4hqDNmWI0Te8w7nqGzYfa3gcQZKpLWJP3xFHbSbjnNitVubyHz94W2ZvV2/plWsQrJL+FQyN3HDfL8vgxnmPeLu3N8UGMcd4Nq7tMzMd9CruIKgKo5Ux85qqVI/m2aW+fh7HTKt480e9vSMFEIHwdTl+bhjItbtE7e48k6WZ7UY7L+Er6E0YqQTgKHhzXsZDwPpdsg3fEWnQh8GImeavc6PJzv2aWvDvWQUUA6Ff7jgW4iEk8nK/HWWXe5lTQ34KqhAtXYJhsTnl7UbGXQWk9uCyhdi5U33LPjeynHi9zcEgpNJ5UPLBcVXbmuJI2nFvtWdjkfxJdAiKpsq9tmWuqzVtut17WI/7utuoaB+yyHkmx2l/3bvl8qJARs04ODZYJfV6k
- XWuihL2D
- sl61G59WsWAqSeiVUOIWQu4WA28qoB/SWYYQGxc5ko3BjdcrRmPOHsfewVa0FoMuN3kMYUZRJN3VoRaRWgDW3fnrtVAfsANJ1IlgqIQrlnKMrzTWuM5+J0eIJ8UYT7az/qV1zB/8hd+QFR972O1JRgnBqBVXx4qWvQdKb2K4p8KUouIWq97+WTV7ZUILFfyQOl1OOorJ5LPACvGZnV2jT4lK1jQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E65F040014
+X-Stat-Signature: zon9gihgfdcatp5jwb13gq3k6joc4hww
+X-HE-Tag: 1780325599-677769
+X-HE-Meta: U2FsdGVkX18h+9nu/FRtqV0Q9/ogieTDrcxvmISk9xQXWYU+YVEUunFNd9sHCVGp0F9/JNumH7PynyX7Z9Q7OKf4eg9WIv+ZPEqtEaR5vL9Vl9xmEJANGMWjXTCLlwmMk5WpWMZNkqWE244/n1upwKiZH0T0nSx/CG1qo1igQ0jeViS0uPPvGgM0x3cjbqBkp+VQFxUAxZcYZa3wmifHp/r2pnnBpFlurc+kxo4KLl3XYxIqit9l2nSWXZvx8I5vGDA+4cmecQ3NClvMLPXD0QT6X4SBw17zkejJJ2VeOq2+nrjlPGTSufF6HsVZMIvoqYHh01YKHuBWiUR0BErD6umrNjl7ApVyBbbmK1IVuuyADFgYSvwcyYnwoRLjABOdz0WTg9BKptm79WdWfXzVPfqTaxJuPxMgLsHDBJS3xGuX/Mp1rTSwhm0MijhI2v7BTpZAYN5R9rUsXNbcZrFukIKlmSYPu/2qZTFPI81yP66XkTNx0GgeA/ZEss+DTfg4QfGld+rX+fvY+RcKUv0Ll/zF1DlNbfYOzK2HLhkbRH7yiQwY2MLTwQcXfuO+W8VdPHGSWpbMJf7FkMNCT/4rPqxLkGEU1ssvJBsTjmv13hJp+9GXYCtRm5iU9PRUGqEYiBK+f72DjJlEa4ymN6+QG2VgP3P5zLV6cPJ2qEBM4qcz4QC+tuHL5JyWKww9HVqs8dvL3BNMiHwkWSwDYgLpbRB5LnZ30FLe6ScXMGoQedDCJlHA6BL0p0JoHZS9M2DRORey9bxyMIC5hSPfKapWoP7fNV9gBBnRhJMO6Vs9bdLSU1+97bWFUuK83Q5iUJzZBNBHJNnqLKW70jtecRjGtcOqn1xNTIn3DQINyrqNQjedA0++uuQHZ0LtCY+2kenT8yg4vx8yeWIJ5dCJM6mvAuKLVbCKc6TZwQz9ZrJCuSRhFD3WKrWs8xUaWRrUjc2nTreG7VIYacfxSOP0+60
+ xeB+jAed
+ MzndUPfmms1FEppIpS1PsAVjqszPPV1f92WGK499/KtH263L0OFHF4U38dbPwSF9AGGhPkCS1Z2CPhxE/ak9888zU5wWWDIo69dBnLN6fLiN/UQF/x1qHjlrHNI2aVWuE+pTy3REGgN+1QT2LvQXBB6xkuPnyU/HfaO36MWsO7YvWFTSXJH6YQBgtG8n6E0nmMpQNX5mP056CBmCbr1jgGJ7s5vqILwfoYyPtTiLaYsnCOcMSco/ygdsnh0tk61nMNpq0HUH6Q/s8J8A5FappB43J6ZqwJ7iWE7EWO4rR4qPBFA6PkUTjNvSifwCaeZeJmpG1/EZq5uzqsbQGIVdE+xWQ6PCwlfTDpBFj6m7I6e5qeyX/EpVTdhuQ8x7I28DLNcxv3Ba7jSxQOCQearv0hXXlAcLqC2rVho653nHyFuzSMlCv+o7PrMf5p/BSFf48hwOHZUAQ7SroWAzyqPRCMa9m0OvVVuIP8MrsWYEjv1SlCeUP/FqLgq3fgE6yjUnHoAJfuIkLVlrBWouSMt3OJMCVWLDsYXYVrrsd0k1bzfVwMitcqGPJ5GQ04YPnOMKR9c5nyjCPL3tqCXNkXFvi3cXGPR1LdD1fl4JP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -80,28 +100,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 09:29:30PM +0800, Baoquan He wrote:
-> > this series makes use of the swap_iocb for block as well so that it
-> > doesn't do inefficient single-bio I/O, and then rebases the swap_ops
-> > from Baoquan on top of the now very different method structure.
-> 
-> What tree is this series based on? I tried the latest mainline,
-> linux-next main branch and Andrew's mm-unstable, all failed. 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------FIHDtU9jdxgAacPQ0ZAKZUFE
+Content-Type: multipart/mixed; boundary="------------RIxoiKPUGgqRDcEnXTMRgjKn";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, memxor@gmail.com,
+ eddyz87@gmail.com, vbabka@suse.cz, harry.yoo@oracle.com, david@kernel.org,
+ tj@kernel.org, roman.gushchin@linux.dev, peterz@infradead.org,
+ linux-mm@kvack.org, Hao Li <hao.li@linux.dev>
+Message-ID: <264ec41c-dd1f-4957-9032-943fe719dffe@kernel.org>
+Subject: Re: [PATCH v2 bpf-next 3/4] bpf,slab: Add slub-backed allocator for
+ bpf_arena
+References: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
+ <20260530011345.99342-4-alexei.starovoitov@gmail.com>
+ <ca1bb6bf-f25e-44ba-87c5-e23e4939dbd5@kernel.org>
+ <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
+In-Reply-To: <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
 
-The base is:
+--------------RIxoiKPUGgqRDcEnXTMRgjKn
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-commit e1af79f3291a268adf4e149e1faba3052743e898 (akpm/mm-unstable)
-Author: Joshua Hahn <joshua.hahnjy@gmail.com>
-Date:   Fri May 29 13:27:54 2026 -0700
+On 6/1/26 11:36 PM, Harry Yoo wrote:
+> On 6/1/26 11:06 PM, Vlastimil Babka (SUSE) wrote:
+>> On 5/30/26 03:13, Alexei Starovoitov wrote:
+>> I'm far from sure the masking is enough to contain all the bad things =
+that
+>> can happen as a result of a corrupted freelist. Even the hardened vers=
+ion
+>> wouldn't help much I think, if a malicious program can both read and w=
+rite,
+>> it doesn't have to know the secret seed to craft valid freepointers.
+>=20
+> I hope "a malicious program" doesn't have CAP_BPF, or am I being too
+> hopeful?
 
-    mm/nodemask: correctly describe nodemask operation return types
+AND (hopefully) distros that care about security don't allow
+unprivileged BPF programs these days?
+
+--=20
+Cheers,
+Harry / Hyeonggon
 
 
-> And by the way, usually we add version number in each patch's subject as
-> "[PATCH v2] xxx ".
+--------------RIxoiKPUGgqRDcEnXTMRgjKn--
 
-That does sometimes happen but is rather unusual if you take a quick
-look over lkml.  It also isn't the default for any normal patch
-sending tool.
+--------------FIHDtU9jdxgAacPQ0ZAKZUFE
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCah2c1wAKCRCGXBN6rc5S
+1uRYAQD4ZwK7PnE6cNfZQnbEzHAyAQZF0oKc/wLME8pIDNGGRAD/alPo/FTKCWSR
+ThPaEsBmdazfnhU2b/OP6afE0MHz0QU=
+=Re/5
+-----END PGP SIGNATURE-----
+
+--------------FIHDtU9jdxgAacPQ0ZAKZUFE--
 
