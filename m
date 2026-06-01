@@ -4,129 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90BD9CD6E4C
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 08:39:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF9ECD6E4C
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 08:45:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2A336B02CF; Mon,  1 Jun 2026 04:39:42 -0400 (EDT)
+	id CBEB66B02D2; Mon,  1 Jun 2026 04:45:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDB3C6B02D1; Mon,  1 Jun 2026 04:39:42 -0400 (EDT)
+	id C6EC76B02D3; Mon,  1 Jun 2026 04:45:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9DD6B02D2; Mon,  1 Jun 2026 04:39:42 -0400 (EDT)
+	id B5D946B02D4; Mon,  1 Jun 2026 04:45:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC4E76B02CF
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:39:42 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 31767140601
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:39:42 +0000 (UTC)
-X-FDA: 84830695404.15.A7557BD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 30A4F1C0006
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:39:40 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BIajcTU1;
-	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780303180; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id A1F3F6B02D2
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:45:14 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E64B140608
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:45:14 +0000 (UTC)
+X-FDA: 84830709348.17.2076CF4
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9DA052000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:45:12 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLZ7xn9h;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780303512; a=rsa-sha256;
 	cv=none;
-	b=agNg7ZgdbeeJxaNo1JB8KZW0s+gEq+ukYAzCKG/sKroNiTmvo9ZtoffzvHlDDw3lONK6Nb
-	l2XFTLItbjQUoHwI3Ny4agW6w7XZqFOekSxIXBjntrzya/Mg47AtUT92u78u3ExJrNtsXq
-	xAT3kmLiguh28f0ziA4WGHGZtvi+aGs=
+	b=expJok8S3Oz9QX4JdK0E67pLAjtHCo4/2XyEqIcFiIj7Ts1nwMJesXqIYaMJ53hhjLWejs
+	wsN2D0VrWf3xqbHwchxWyhg8p5AWDv7y9d8FKgvxfWWVQfVMYRJ0NjnFF/7GWoefuJNqZF
+	druJsSrvoJOitTuYjMZ60IP92miRxZo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BIajcTU1;
-	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLZ7xn9h;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780303180;
+	s=arc-20220608; t=1780303512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mHwvm0ceQ16bc0KPGoKmLlizlFpB9HdRz+GeUdDPkMs=;
-	b=hPNwIKGtKOgV8zl7KXVWBACy3XCki1no+iAHEbuua23qtucHMbnEW65hOwckMqmIWr8gmz
-	XG+klBHZpuCfPyytJoMaNpNEUfS0WV9MTdp1h6rKQzQvelXb0/oDh6Elm5r8mr5uxBJEQc
-	Ylfc08Q54+w+EGs+FV4UOYRRqcNZAwM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 54B3440433;
-	Mon,  1 Jun 2026 08:39:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323671F00898;
-	Mon,  1 Jun 2026 08:39:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780303179;
-	bh=mHwvm0ceQ16bc0KPGoKmLlizlFpB9HdRz+GeUdDPkMs=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=BIajcTU16E6+znd1woyWqwS+BBAXycYib81QTECMvG/hOX7aZ/uAFzUwcG45xTfmE
-	 tf9W8LCSvBW58JUM8ZTWSrrXbLk0LG/A9CbVmZDLsUnNcIKGjoSFHcopw37zuAQt6y
-	 RIY9JP+XwgZ5srpA1V/U8jYqz9skUUFQEayYx+3cQ8cSBbgYMpZL7YB6RZ+WvHuKNl
-	 xobhQrpcyjJAAEcf6rM17filotw9MPbTMYAvB8r+SlaKWN902CDEBOWqHYS62X36aE
-	 PcZxo0yOoyvxuNXSnl1mzVQ0fQljIeH4pq619zUO14fnF4R5pDVaQp4lvtAdeXReT0
-	 dQ8dGv2+1ro4g==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 50A6FF4007F;
-	Mon,  1 Jun 2026 04:39:37 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-01.internal (MEProxy); Mon, 01 Jun 2026 04:39:37 -0400
-X-ME-Sender: <xms:SUUdatExvFUiJvS4G-rzO5_b5_EVmBhCXGARrlUlPj68OMh2yNTgcw>
-    <xme:SUUdatLPHZy6k7_jINeuCht2x1mIk3Xr7QLvpOruxv1mcZD7GTPOuGWVZwlv6UYag
-    OjFQQepcx8WzwRHCk-aGrvn_hm4_qXnHUJ8uPUX6RNK62HXeHqgHAQ>
-X-ME-Proxy-Cause: dmFkZTFDC9Qzla6YzRXCvg4qTqKRR/eKrKImym43jg5ea5Q5vrrQ+EjGg3N8fUKPpOxQR7
-    TVq7XrIvj0z7DAz3z9X/juKhZVusgVnRCAtCCeFytlNFAPMtvvDQ4+dCYC6Q160toXzz4S
-    XcVkttubPD2UxW685/k+uwu828S96nFll5al0jdDPfemCpkea8rdrbikQF2sFrnI6Lx04Q
-    ONcYXSZ7HopdtHuW9piPefNoaIy7sVQliTdskqwc8awOiZFnU9Huwjva5c/7y1USlJ5DUY
-    k6FOaBFlQ2WNslwPaZEZYp/rw/tHbsVDON310YOAcdFHjy7Nk82hy9tZEWwE6x8YVDQlsz
-    Er9z8/znGDaObvUGVeBIVOThm1t//PeZFcWtIXC0I8cmehM+jGn2DjoVIYSv9Bmez6tW/2
-    lKEfzUiJm3ZQGRDPcgLG+ZMhTLydaOy+jpqN+Hnf2ZdB/T1FYFwgfkHnjgZvpC5CuiX6I2
-    pIW+EqzFuec7aoIebcI5qyLXKhUbZEinA2uMEBOaMiyZVdD8y+gienLjiqOTf5L1gLH7gf
-    t0NN2Fa2xUvmh4ar3+IiUQfv23rHvlzmcKEdNU4pTV3DTTP+Q8FlIOlCllFOZLg9GdTvDV
-    f3mzdtyp9oqq0X+BVt1UaL10E9dRrpHGrvPsGXG9iqiktxH1IMmSepCxh98A
-X-ME-Proxy: <xmx:SUUdaksQVW8_jeB3xtl55BBVE34hsX-8-aoaNg-2HQRD8qka9ZCW2g>
-    <xmx:SUUdaojoWqOJ6zjg3Jg09dGqN7viRHsj2OkvQbp3YK0wAlvQJAV0nQ>
-    <xmx:SUUdandTyZF7vDk-2CIxFnV8hVemnNQPBzQP3G9OX0GQCEEev5E94w>
-    <xmx:SUUdatkneOE7eIzV7ZeRu8vDWuDJM4tccORPy20Qvw2xd6aPNz7ZQA>
-    <xmx:SUUdahr7u1yNhqmOzp1lyByGwuiaShMyl1FtwhEyBnqzzuX7kRi1Uf9R>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1EE0A182007A; Mon,  1 Jun 2026 04:39:37 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=KOza5WLjJJP8CiSXeBVxPUywkC8JLKE6qF7U7SNImWM=;
+	b=i13ORQbfAfutsGdhlbeN9q0mj8L0fFpdQJz3UFJM8VvoFJwwIwU/wWd1iArM3VhTWqRI2o
+	mNnIRb6GCWTDCqC6+X8h5VvYLccMQwB3hs5NCjnm+mTh1mSQMScL1JnO/TWwjykf47MVjy
+	Zze23QR4ap+TtB8QhVAa1HVv7cHAzGE=
+Message-ID: <32751424-8ad3-4fd2-9f07-8a4f5a98d632@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780303510;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KOza5WLjJJP8CiSXeBVxPUywkC8JLKE6qF7U7SNImWM=;
+	b=ZLZ7xn9hizllj61bp6haxPz5lrd2xU6GM6bDFO7OqfBI8FyYU42nZlvDfUN0Z5UMU7aoPF
+	43AKsI66i32+vOBgOtACggTlFYEWqqH+kqMMNwAHNssdinbwxhK69jz7fMZGpnr4PB5lUn
+	G1D4AFqa1xpKp9BarKxWXLQdyayfjMk=
+Date: Mon, 1 Jun 2026 16:44:44 +0800
 MIME-Version: 1.0
-Date: Mon, 01 Jun 2026 10:39:16 +0200
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Kevin Brodsky" <kevin.brodsky@arm.com>,
- "Ard Biesheuvel" <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Mark Rutland" <mark.rutland@arm.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Anshuman Khandual" <anshuman.khandual@arm.com>,
- "Liz Prucka" <lizprucka@google.com>, "Seth Jenkins" <sethjenkins@google.com>,
- "Kees Cook" <kees@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "David Hildenbrand" <david@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Jann Horn" <jannh@google.com>,
- linux-mm@kvack.org, linux-hardening@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-Message-Id: <a371089f-0d01-45d6-84bc-1fe0d78ebd85@app.fastmail.com>
-In-Reply-To: <69488547-cf2a-4aa0-bca7-0cb65aa01914@arm.com>
-References: <20260526175846.2694125-17-ardb+git@google.com>
- <20260526175846.2694125-26-ardb+git@google.com>
- <2a6f9f05-ac57-4ef8-9328-74cc8ccfea16@arm.com>
- <96a8b6b9-71f2-4550-bbbb-fbfa146f4e6a@app.fastmail.com>
- <b76b327f-612e-494f-b8d3-44108aa73d2a@arm.com>
- <feab72b8-2961-4145-ac5c-80e820bf1ce9@app.fastmail.com>
- <69488547-cf2a-4aa0-bca7-0cb65aa01914@arm.com>
-Subject: Re: [PATCH v6 09/15] arm64: Move fixmap and kasan page tables to end of kernel
- image
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: npache@redhat.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, liam@infradead.org, ljs@kernel.org,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
+ usama.arif@linux.dev
+References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
+ <20260601032804.96122-1-lance.yang@linux.dev>
+ <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
+ <fb8f24b1-ce8e-4f06-bbd8-f148a9bcaeee@linux.dev>
+ <1c99294c-9ebe-4856-bfde-09801701d75c@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <1c99294c-9ebe-4856-bfde-09801701d75c@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 30A4F1C0006
+X-Rspamd-Queue-Id: 9DA052000D
 X-Rspamd-Server: rspam03
-X-Stat-Signature: on5mwsmi41qugsx16k4eqdsqetsagxcg
-X-HE-Tag: 1780303180-884049
-X-HE-Meta: U2FsdGVkX1/CQn6fTUBYAD96mcSeVqUz2Ge7eoaK2p9hcMtTQjP7fumsmoPhdDYheem6j5anOQ3vFOwMwsP21DqUuWCKKiQBaehHDomBBcyKoFlIxNisJJUPqYAgX2sDogXowsUtGjIr9j16uyMEQTa6jhuHLlwJcw9RjG8voewm0MGdIL5P3fAFn84LyZAqlL2t4C8H2DoTfX5lo2KYgDPkRNZ/4CKPi2cSL1IhOiCkyaAYLP0fTGKBBtpyFxQL2phpi38wjS3EEC4Asjom+Fqy6xw6sXJCo5Dlfnp7QcxwrMvJx4Gdt4xrjz3oKbyVjHYZ0Md2vqNNewwi5wJbeVHvMGg7ZXAVDFo6jes9J7FxohKh/vbFbP6XJjsCirJ1M+HYuW0d9mV+GWgJmCxd3rOhsJ1l4zBQYvBG7Ob9ZXPjwHHyOn0HA2fqzk8mtpqxpnpdyZhG8JiNsgLBlOgB/flATlkWv7RObKW47+NweA+dN5lJu/QRKfRSfLo/fomcg9lRBUL2f/Q1lcyL2jZrilzaDNKeYtUkqGAiH4Op+AoZ6Mu9Y/47JlusRmksKrSbDLevIFWXjoo0cv86XE7qI18QygqBVUnEbQl8Vo8sN2nPCgV4rnbyAMPofhD6UTRpIQBOnR9BS23GtUySEgg/oYNBwCmTWe06ZbG50dMUpng9PLr0au+2XM10H0QglvDXUv3GiXRJyoZN+3XLiI797xftH0yrQInKwAjprHWLuNtwUMjQ45Vs0CJsIO9Eg0z1ftHK0Qs5e+tE9k9sdxmmhVAGSIa6IeTmWgIaFTk3YRWU/yeRcm75jGxStl9NJPdG5VchnqYwot0enOVIVpyOnqi/qgw4wQ2jSrZNgkshSgRqoCOBttC/5PmWc11DkdXgKI1VxZiU976NriROSu7qfz+h7uwZgw3WUCudc1V5fCYtN8P5e7MvZ2Gb663S6cy9EwSEDU7nXV5ICdtMCVG
- 5tGuq7fX
- ebilR1G9nsG87xKun1yGp9VNSOFzSyxiBT1vKpKt6xoqFflBbMh1UILvKsT0eHlmGb6xYpdcG6PywVOpiBLPNbIbU0Bkzk8DAhJ50k0orp2bCrneMfDEgHu42yj2aJMsXfN9IzQufScf0jz80MdhZP3OhR6Nr5dkfkOOcUcqn8qCf4afDzv7+B5G0RnTm73+8uU3I0aIz8T2HtVOL766qJhrrcYv/ysAgZILRIfSn9JP7mng6EaOufUE1voLkW1fGSd0453yvMmwzfb9SKUjVW9a6o8cgut6zBooMoQUb+oI9v4i9JZaUMM88WFIR3H+5KF77
+X-Stat-Signature: gxdgufmaz3e3f7us3scpspqetckjdq7o
+X-HE-Tag: 1780303512-925195
+X-HE-Meta: U2FsdGVkX1+GQMCwag3SxFdw7zHPWR/QaEh1Ko/XXl+Iz6UjR8Lyn9wnqD/Wh+sWRFbai6y8NgsitkK6VhLGeuX2f6TZCZdcdM08GJfiioNkwdbySxZGw8z0348TzMvj8qTiybvtUStYrkEenBIfLSrcA+RDIdB0vUh+FaBuSpgVW2vWHi6ebmCFYzgW9DF7cCo1X0PHowVErwqsmcKFN9NXciGu43o+hPYb/1TizHRNS2IrO3yt5FdffqDsHNHBehHQD4T+a7SxJj5f/ab74fdL3uy0NQ5OWHwbQ33Oo+QMlndgNfTn8mH8AxfIGtGzh776/vEvQQ+eeq66jn2xprOj5uxQ4AxmUZFyRHpVXSAIfYgPfwg17/gvwGDzLTulWdRX2Vbbz3sB0pnTBFwxxPr5Mt9a8iwuE3ulmvD4a4MtnINYwTZpbsr/Gg/2RdW4xnu27LwHafgOXnl5IvVdEqfACfBwaNuehvSDFXwlz7uIVamtPvPSwiEzHHWhFQ6zapOHZvgXVOvtPFEor9znUwrrVemAWtdvBRhDO37+fYKvFnV+J6+4r5p1PTg+9UNOmx9s41/XrtxSGs3fY/xaEexvJiyq+CdR9oQSHkqJrIfAAt5Zn59xeOf0yig7/oxHgMOO184/AmHTcU6SSRah4o0dmZdm8ar8pGgYmxUM8dSx83vRB7t/gjVDpIkt5hMsVWhwXbKHFeqHM/mZuTFZ4+B70zRi5hW+b/pKf59XwU10IykMnnIPym66oi/aXq5h6WOg+K09VgpBxLtjYCr2VbW7yHeIiVEDlnDNnW6+7ex4t6IlGUFYc656r1fwn6EWXb+MKj8JcH2mh1pEKPPGkD7eQSsabk5OSicipU1BpW0FMh00TMt7FJbMPi1PjDYr/Ap+3HrJEASQjHhGVr7+SckDvGE3O21Cq53M7N4IbsVCh66hw8gavjMQtrnvU7fOan7NLfFWRmgaVIZ1p8y
+ jyw02Z4Q
+ s9KFh/U8akLHN7oaX3lSdP/LCt1LDN9xLrauGG23CJh4B2dhE+iui7kfIIu3ngtoRTl8kO7sIa9V6PMYamJmMLmmrvVBVlOnsxpMkwGFz8fEttd4hZuFSSeXrxF78TcRcArCTk+zXdNtz/lmohT/d0K7gtgKhDCt+WR40FWT0pjGhkZS5C3kc/XlMkESFPcfOu2QVjXrYAkApSKNxlwXlmug19a9JP5PBX6nfuHnYMQm7diHFQGa90DpIzhA86A8A17miNLkbCfssgS7Rj8PROE7AuaxJI9tv9k8otY9237V4yTYfJ/Inw0gk0bXiDoWr4ULl6H+stz/n+TjbIqhhrifQCpHG1B2C8Not
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,40 +114,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Mon, 1 Jun 2026, at 10:37, Kevin Brodsky wrote:
-> On 29/05/2026 16:47, Ard Biesheuvel wrote:
->>>>>> +	/* fixmap BSS starts here - preceding data/BSS is omitted from =
-the linear map */
->>>>>> +	.pgdir.bss (NOLOAD) : ALIGN(PAGE_SIZE) {
->>>>> Do we actually need the NOLOAD type here?
->>>> Yes, otherwise it is emitted as PROGBITS, resulting in all of BSS t=
-o be
->>>> emitted into Image.
->>> That's rather strange, aren't the .pgdir.bss input sections already
->>> NOBITS since __pgtbl_bss is only used on default-initialised globals?
->> Not sure why, but the section was PROGBITS not NOBITS before I added =
-the (NOLOAD)
->
-> I've had a closer look into this. Similar sections in other
-> architectures are all named .bss..<something>. If I rename this section
-> to .bss..pgdir, then indeed the compiler does emit an object file with
-> that section marked NOBITS:
->
-> $ readelf -e out/arch/arm64/mm/fixmap.o | grep bss
-> =C2=A0 [ 4] .bss=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 NOBIT=
-S=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 0000000000000000 0002ac 000000
-> 00=C2=A0 WA=C2=A0 0=C2=A0 =C2=A00=C2=A0 1
-> =C2=A0 [18] .bss..pgdir=C2=A0 =C2=A0 =C2=A0 =C2=A0NOBITS=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 0000000000000000 000750 005000
-> 00=C2=A0 WA=C2=A0 0=C2=A0 =C2=A00 4096
->
-> And then the linker does the right thing without having to use NOLOAD.
->
-> I was concerned that .bss..pgdir might get caught by BSS_SECTION(), but
-> it seems that the double dots are meant to prevent exactly that.
->
 
-Thanks for this. As Sashiko appears to be making me do a v8 anyway, I'll
-rename the section to .bss..pgdir too.
+On 2026/6/1 16:15, David Hildenbrand (Arm) wrote:
+> On 6/1/26 09:49, Lance Yang wrote:
+>>
+>>
+>> On 2026/6/1 14:54, David Hildenbrand (Arm) wrote:
+>>> On 6/1/26 05:28, Lance Yang wrote:
+>>>>
+>>>>
+>>>> Ah, fair point.
+>>>>
+>>>> I was mostly worried about arch hooks that walk vma->vm_mm again, rather
+>>>> than only using the pte pointer passed in. For example, mips does:
+>>>
+>>> Right, a re-walk would be the real problem.
+>>>
+>>>>
+>>>>     update_mmu_cache_range()
+>>>>       -> __update_tlb()
+>>>>         -> pgd_offset(vma->vm_mm, address)
+>>>>         -> pte_offset_map(...)
+>>>>
+>>>> and __update_tlb() has this assumption:
+>>>>
+>>>>          /*
+>>>>           * update_mmu_cache() is called between pte_offset_map_lock()
+>>>>           * and pte_unmap_unlock(), so we can assume that ptep is not
+>>>>           * NULL here: and what should be done below if it were NULL?
+>>>>           */
+>>>>
+>>>> So if khugepaged happens to run with current->active_mm == vma->vm_mm
+>>>> here, could __update_tlb() hit the none PMD, get NULL from
+>>>> pte_offset_map(), and then dereference it?
+>>>
+>>> Likely yes -- that MIPS code is horrible. And the comment in MIPS code
+>>> even spells that out. :(
+>>>
+>>> Do you know about other code like that, or is MIPS the only one doing a
+>>> re-walk and crossing fingers?
+>>
+>> I had Codex do the boring grep-work through the arch update_mmu_cache*
+>> code :D
+>>
+>> MIPS doesn't seem to be the only code doing a re-walk, but it is the
+>> only one I found that appears to assume the PMD/PTE walk cannot fail,
+>> without checking whether the PMD is none ...
+> 
+> Okay, but likely the other code that tries to handle it is also problematic.
+> 
+> Best to make sure the page table is already installed when updating the entries.
+
+Neat, makes sense to me :D
+
+That way the page talbe is back in place before any arch hook gets to 
+look at it :)
 
 
