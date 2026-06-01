@@ -4,114 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58832CD6E4C
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 08:26:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FA73CD6E60
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 08:26:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BE936B02BD; Mon,  1 Jun 2026 04:26:20 -0400 (EDT)
+	id A7E666B02BF; Mon,  1 Jun 2026 04:26:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76F3B6B02BF; Mon,  1 Jun 2026 04:26:20 -0400 (EDT)
+	id A2F756B02C1; Mon,  1 Jun 2026 04:26:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 685B56B02C0; Mon,  1 Jun 2026 04:26:20 -0400 (EDT)
+	id 96CA26B02C2; Mon,  1 Jun 2026 04:26:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 599C56B02BD
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:26:20 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D812F402FD
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:26:19 +0000 (UTC)
-X-FDA: 84830661678.03.EEBD2B4
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1D4E620002
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:26:17 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=O+PulnvL;
-	spf=pass (imf31.hostedemail.com: domain of jianhuizzzzz@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=jianhuizzzzz@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780302378; a=rsa-sha256;
-	cv=none;
-	b=4LLHY9XSS+4xkzyMjp9hUdinpY6BWxztJ5FRp4BvXsneTce1YqwoEsiz5mCu5PigtlYD1S
-	G/DuEMmWXeqjjmC89AQvwLSB4k76dIOaeazxPNyITD1wO3KzcFXJvw1OIl0U71+4ra0G8t
-	VKD7PEWn+l2CU0PqrKhi71SNzrHuqwg=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=O+PulnvL;
-	spf=pass (imf31.hostedemail.com: domain of jianhuizzzzz@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=jianhuizzzzz@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 89E4E6B02BF
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:26:47 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2EAF7C214D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:26:47 +0000 (UTC)
+X-FDA: 84830662854.18.6D1E976
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9A101C000A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:26:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780302378;
+	s=arc-20220608; t=1780302405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=gMscR4W75exckednokoUCQabBPtmF32JAczc6W4udsk=;
-	b=OCQXWkW3cKOiLfQsl/U+784Eh9opHjK5Gje6VuaGihv8CT/MQL6NCBMqM9GdIQteMaQuUq
-	7adJzI2LO2YSqYtTH8jRfcQMDazZrVdIE/wyLf0xcVnALE9EfUDC09IzG3o8rDR/ZZwr3E
-	ONncJzm7u0Gi6RxMs77e5Tj7Yt4qIu4=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-842288702fbso578813b3a.1
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 01:26:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780302377; x=1780907177; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gMscR4W75exckednokoUCQabBPtmF32JAczc6W4udsk=;
-        b=O+PulnvLrGCWwLL2LvRU85udeIay2ZDMnU+d7OtLAYCH1daShozxjfeGJ5yMVGM0Ay
-         hQIWUOEQwryQhFzglOVexXmgKxi6IEReHhoDvnikIYrDY4dOp4XTy9uFLhgMm9Lccbmy
-         vzeRENhckELGUpptm7Cwg6Nsu3RJ2ijz/ZXvZcPQrFA3WLtbSJwb3MpVyJt8lHcRAlFs
-         3WLtaINd4co4B6F7bcnhI79fHKk/Agb0CYwLtzOHlKOep/g7B4TvNomHZNBmg1EPRsTd
-         zWIgv4PRdVpWagN0F+tw0cRP9em6cJKMH2Q5BGWpCSUxarx9mWdRnBp9AXVhqs3Hkq0u
-         uuMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780302377; x=1780907177;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gMscR4W75exckednokoUCQabBPtmF32JAczc6W4udsk=;
-        b=bWRGNvyLB+XSe5Qo5mZfxVnqrF6Y71PgniPkt8lhY6QOs4p6hGvssdEyR+VzfKu2Pa
-         uyVnt21+uXF7QuumkueFpTX2yOGvxyb7ajJABR19q8LqX6vxbFwxLswva5PuqTe/YGba
-         N/VcZyp0082uXXey+r0aBwGN+Zjt9/vJE1s4MifpeiYmE6E2jOgWOnWuul31D2MY6YoF
-         w3NFbynBGV+jyggwqGZW+EJqGMpbMn7XGQ05/oVNdazS5+i27Ni3HhdAtwDRcb3mdz9Z
-         I+Jn8imYkT/+s4oIGTgpXVjhLdQUD85CK2DDWsIhlDIjPMT21ECGcRlqSeZ3mxruj6qE
-         I/iw==
-X-Forwarded-Encrypted: i=1; AFNElJ+i5ILJI+ZguqzONaUHPYBweDlW83gk+31vGpgHwOGIPG+velfwl6T/U3fJ9RJqOg31CjWQsP6RZg==@kvack.org
-X-Gm-Message-State: AOJu0YwpktpbO3ISy0V3bosyGHpjq6Po6cR7kc8uJaW0Sc/jd5KP5btF
-	lOqxhiPtONZT1YfMu6ss+o9woqYfZc8x/vakBVOoVgsHHkt0eLDn74Wd
-X-Gm-Gg: Acq92OGIwoCEu20P1jk2C74xsVTbVEnNzkqYvRsA7ME0Zz/70Ao216InQbO5aEonXNs
-	kReVLIaaqssRUp8veNU4io/QKnqR2NwzCq+j9Ki1zw3AioKYZVDSaVcl6bmc95aML0LXBYALVG6
-	C6xCc3eoZhCYiid+HrjBrWL27yy+Al7MLyipXxDIXD/OyWyeUqEirp4lOIp34vxxNGjne91NhFe
-	ob6iQaArS2aReZuf/EXixpNWr2Nbj0iMQLN14EqFIzGSFCMUD/MdadyZFukneblHZgY0JKgRFIc
-	La2/l60bhjEG+8C3JTlJWY8Ce82hLiriw5xPF+yOjBWnpAkVbSpCcmWIpuZhjOTER10uXVvmfKj
-	lmZQMSCvR01Ko/LoMdDmnEVBl7oWPlJNpc8NTuVp+GUcZfDXqYN804R8ZhCUJgEnE2E9QPAvdoR
-	/idqrjqKKy8954Sx6m/07h4jvZ0RG6poFwduxYKKfjPpYkZIuLJSsShWNjJA==
-X-Received: by 2002:a05:6a00:2987:b0:82f:4191:da10 with SMTP id d2e1a72fcca58-84225385e77mr8973517b3a.6.1780302376382;
-        Mon, 01 Jun 2026 01:26:16 -0700 (PDT)
-Received: from zjh-os.zhaoxin.com ([104.249.174.136])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214d018fcsm9030049b3a.60.2026.06.01.01.26.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 01:26:16 -0700 (PDT)
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	linux-mm@kvack.org
-Cc: peterx@redhat.com,
-	linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com,
-	Jianhui Zhou <jianhuizzzzz@gmail.com>
-Subject: [PATCH] mm/userfaultfd: clear uffd-wp PTE state when re-registering without WP
-Date: Mon,  1 Jun 2026 16:26:09 +0800
-Message-ID: <20260601082609.170076-1-jianhuizzzzz@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FzJV5bP0FBFUhYMhPqUiIUxss0AqI7oZALNqmVWrGcA=;
+	b=DVOKa66NB8BZJHTJ1TBpA23ASQJkNQmrktXdCfh5CCJe5ww0QjUvP+GXvBErc0C2zMIRCC
+	upYGFbrNspHNIbX3dqi1PA3TJ9FA/cE5eprOeqQ9VJOrHukNKo3snTTnxX3QPvUUsdK6Aa
+	IT2ZR+prWrux8Hm6R4S3mcmQS7W1bL8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780302405; a=rsa-sha256;
+	cv=none;
+	b=iNyHFciu9xjDOv8/+B2hOw48tr0bI91QZo/9682gSmVMAkyZa77WDk5CrzLOcxf4F7cdC+
+	UartFJ2HNEPTokVzW6QNbayVerLzyKkIpV6n37/0r80WRoSf0cYGeLk69YfttoQlfh9n/N
+	o1rbh8dAoUri7Xmuo/SYdCsK+sIBTwk=
+Received: from [10.213.19.193] (unknown [36.110.52.2])
+	by APP-01 (Coremail) with SMTP id qwCowAB3F9A5Qh1qWQpVAA--.175S2;
+	Mon, 01 Jun 2026 16:26:34 +0800 (CST)
+Message-ID: <48855978-6834-4427-ae55-e05650b1ea89@iscas.ac.cn>
+Date: Mon, 1 Jun 2026 16:26:33 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] riscv: mm: Call mark_new_valid_map() after hotplugging
+ vmemmap
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260525-mark-after-vmemmap-populate-v1-1-e698d859ba16@iscas.ac.cn>
+ <ah0xLeD1_6oRKDkx@kernel.org>
+Content-Language: en-US
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <ah0xLeD1_6oRKDkx@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:qwCowAB3F9A5Qh1qWQpVAA--.175S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZr4DKF4kJF4DWw1DGFyUJrb_yoW5Gr4DpF
+	W29a1fKF4UJr1xuws7u3WIqr4Fk3ZYvr18G3WrK34rZry5uFy29wnYkF4Ygry7Gr97Ga40
+	yFn0kas8G34DAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvmb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
+	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
+	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4UJVWxJr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7
+	MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+	67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+	x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
+	UI43ZEXa7IU5-jjPUUUUU==
+X-Originating-IP: [36.110.52.2]
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+X-Stat-Signature: wjguxpg6yhk6nnszwtduezf3e4xz1ege
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9A101C000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D4E620002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 7budtwcwwbbdwezttd4wu5rykhxe5ui7
-X-HE-Tag: 1780302377-574562
-X-HE-Meta: U2FsdGVkX188wlqF9IclAyjrc1IduDUvWZ9dHuqYK0sJ1elyb6vgE4NVWUH1OaYrmXkXuk0Z2u7zFc8w/RMLdgTnDLt1lLLFJNXbCFO5D6CrhZt3765RxWPnlUl8ckBLR8SzhJAfb6QsnFyOkmjdhiWvvIingE6KeaeWXjUOXAhq0WSwzCsNSLXaVHzQ1UC41u0w3VSTU52z3hxsVK5bOPRXakaIX5A6v4XlzcHj4abalHGGRoHq/ea/N2UYJstSWaro3XSjlQyXPnjKXzgr6ywLEdOFoun8DRBRZVO7qwGkwN6eQHBJR7Fjq4/drhx5qQcJ9s7GR9QdqH/apeDGFrCxzw5cCNbM57Efjloskys4WkJZBXq7No1fsoRl1esFKoLs4+Fyp+Fz7jxDM4JhYVGBgQ2SVJRPjnfgupColRyIkeA96e0q4gMV3RmfOC4gcTQK89BJ1OghbU8iAEj7DfPsI5N8rTlvZWo+dTSsYAFU5H4JlkQ+X7Ne2kcPG+pJ4cRVtwrX7DKQ2UAbR6DNH/qQUtIBenmuqJ3WRiBZ9HdRd2KPjWsRVDpQrqz0f5FZ27s/pdzD4IvbtEx1DOMp8KHAa1RLgA5Gzwe+bgTGeUtKKz0NadvySnk92ZrqF5NbqnWpTXkup5wFjLJUlPnJNR0ovQXZwhUAmmPBAbwaL5CuH3EMNbTvKP8/vZA13/DwfGtLheYYhaPSyiK1Pmqq15xwgMsFZPcM0fHCJ4V3JJln8W6GgGRAVhhRQXAgNEVEcdkRHCBjkoFLc7X+2JGhdnyAWyNDcPVCZcGLN52mB55j+Bx6RuJk/kdnGkbWhrdLdCaJKz5rHj8Gqb0ENq7xlSiCB5z+qpMwnTeoSfB1BQJjslS9n5cIGZ2ntgKvd/2cyzLfCLEpZKBYxQTl7d9KuHAxeZtP/my0cGE5xvPUwFrHfiCVNWt+CxFyH8/QmaWh7d79BZUMTyT+Vy91bG+
- U3JMwI/L
- 18v6oxlaBwFZIY7kMGbrxMKUYjYxb5pJkcTmPGgdY+PhebmxuvCosq+2tyvCqk0OIbJ/amFM/9JRQ4RG0rZXEatvbs+HkLyq7gupqICbDVsMD1waXY1FRTZa6UkGncQB2dQsaq1imb5KHaNljvb3tL1+Qe7lQVamHB//Dniiu4q9pIGqUe6QCPCPGNIinCczqk7B3FZE1dapPNSxJZ/GyCT1+gIRk6txFwsJfcvGwQ7oW3jj///nG8ziTEpCD9fJIZXSqwUrrCUjxuKJ2RKjU5+mGjQLlZB4Da9BqhqsDq9ErQq0Y6xmqnS64EhQTnTnvraE17ToHFAzh2TjdW0iReW7KXYtqlJsWu/JUgUBjkCnV9K3MJ8QJHnV0Ao9AQw7pIZnf/oBfpxJVwN2A1DqI5ZJsgUffhGd9OtAWAEICL66i/nMAUT/h7C5gLLHmlUIyE721NyEBX5Fs8VOJ0mOzWipjlteu/5YBh3HzXUqMLHasTBJacQO+bKr3x7zjhY3EwuiaUxyN5NAY8WEWR3vp9flcSdVxu+t8MXedUUHUHD9q0W5s1mw1WqKkl2Rhmhm49SSDdXZFWd0WiY3UyKs6QLafl6Ajr4h3sFB0PGX3P7u94Un2adx05vBCLzf5Vl/MSZnGN6ura8zT+5kGJrHNCT4UMEarTFSqMiu24wqE889FwOOO1zPYYdW8Z48QsrKo5bVPwsBHwK1uG/N1PQNNQ6pTOGCAmp3b7xsffk1IopZc6sg=
+X-HE-Tag: 1780302403-318242
+X-HE-Meta: U2FsdGVkX1/I0M+lwxCICMo2fxYEBxHTRDO+rL3FQDPm3lwZGG5jex4lnDqAVrtRVmxawhXAnqIs9KnFL9J6XyFtgOOaqtsUE1vpGJe9Xq8ROLE8L5QzkdFB2HBcu4yveFg+5LET9SPqLii918O1MaD18DPQ0b5N98ukZEuK7JTdaYuRBRr0XB0UVHjaAkNt9n+pmu0gqDPZZQrnSierB9z986haQa+baHTKyjGEv9lHNHEEXPmzpV3u4I26iO3OCwixSxOjSCXg4hxrNOb/3sdiKRyPmzdumwmV5NK3emXJpVFsuSCpC9rhRgWQDt2k8VW3U1aMECb4WJA8cOcri0sealdvX/736L15FhlyWyBI9tGiYDwU87i0Mgi7BnFCcD29TRM9KD2ngqtGwslUH99uUh65z4NNsjkrNohJlmMFt4+WUTvCTqE+jbi+Hj4gkbhh8KoyGiKGAIDwtLy8bhbO+gBPq0io2P00Zai/yWuXHHthnfpKIcbPm0NF8QlYZ+woS76lu8ersd3RKYHsrqVmoKpm1hWh2eY50A5gZmmSky7Ti66xBC8ydMUBbUS04HUZsZ2R5NVJqatoX/g+zRn/3nZMjeRcskG76ykFWCLbunEljanzMKirO+UyQW3z/TZKOqaJ1tjvNoDkNRyFvaPLmBnvYZDSjvoBPxIKJLE4A4VuX0xmV4nyUugKln6t1pysNFSK6P9NhckhsMPxec7I5cnE1oc3/1krjzBVcZgv4/1YcgRtDJgvIKfL0NVrAXe319IugecCQbRxfZs+ya7/SrzTrx4pzrrxUQr1ayR12IGkDPM99BY3CJ2c6j34+ciOm/rf9T6EQQvVKBybQzKYIQJFaYCjyot/PIU5FZPaY1zgVLYlEIl3Ohy+GuDcWMPNuGGJlTw/DdHPbGQ/N8eI7+Hfs2qIfF31P5dWFAftjpjvEnfPrPlLPXYnHpQWdBWxwfKKJRGRRBTla3b
+ WN9Fgiti
+ pz3J9XY4M5Sw0k4jw2ryJeRxDOQVVgGpk+YUiwVUkM7ZpqaEJGVAiJIjiTJbIIq2iuSuGSbyKl3v/ja19xYt4uOOmqUX9dV1kY5L2GVcynD3HD6cspSvCu6yCsZtlafrMSekHyQu38PXP2XTRwCgX6t0NgMq160TPdusKGtzUJ3aIit8Nn71ihiCNqbsOTY62JAl+N64o/wO21O0oiR51yuMfH6KoQrihtsN5C3i8fCmr8ki4Cqk6Gwk+wXrbjIqh4nOgQCNwSvungog1UWEjJSAL9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,66 +105,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-UFFDIO_REGISTER can be issued on a range that is already registered in
-the same userfaultfd context, replacing the VMA's userfaultfd tracking
-mode.  For example, a range can be registered with
-UFFDIO_REGISTER_MODE_WP and later re-registered with
-UFFDIO_REGISTER_MODE_MISSING.
+Hi Mike,
 
-When the second registration removes VM_UFFD_WP, the VMA flags are
-updated but existing uffd-wp state in page-table entries is left behind.
-That stale state can survive in swap PTEs.  On swapin, do_swap_page()
-restores _PAGE_UFFD_WP from the swap PTE and can then install a writable
-PTE, triggering page_table_check:
+Thanks for your review.
 
-  pte_uffd_wp(pte) && pte_write(pte)
+On 6/1/26 15:13, Mike Rapoport wrote:
+> Hi,
+>
+> On Mon, May 25, 2026 at 12:23:29PM +0800, Vivian Wang wrote:
+>> section_activate() creates new mappings in the vmemmap range without
+>> flushing TLB, which may cause faults on some RISC-V implementations that
+>> cache non-present PTEs and crashes.
+>>
+>> This seems to be most easily reproduced with DEBUG_VM=y and
+>> PAGE_POISONING=y, which causes these newly mapped struct pages to be
+>> poisoned i.e. written to immediately after mapping.
+>>
+>> Add a hook vmemmap_populate_finalize() in __populate_section_memmap(),
+>> and implement it as calling mark_new_valid_map() on RISC-V, which
+>> arranges for the exception handler to deal with these faults if they
+>> happen.
+>>
+>> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+>> ---
+>> I'm not sure if this is the right place to add this hook. I didn't add
+>> it to vmemmap_populate because it doesn't seem to be called in all
+>> cases. Please advise.
+> Indeed it looks like we'd need a new hook to let architectures run
+> post-populate actions.
+>
+> The explanation that says why a new hook is needed should be a part of the
+> changelog.
+>  
 
-Handle removal of WP mode through UFFDIO_REGISTER the same way as
-UFFDIO_UNREGISTER: resolve the per-PTE uffd-wp state before dropping
-VM_UFFD_WP from the VMA.
+I will reorganize this in v2.
 
-Also make the same-context fast path require an exact UFFD mode match.
-The old subset check treats MISSING|WP -> MISSING as a no-op, even though
-WP mode is being removed.
+>> Depends on my earlier kfence fixes for mark_new_valid_map() [1].
+>>
+>> Found while testing AMD_HSA/ZONE_DEVICE on SpacemiT K3. Using
+>> ZONE_DEVICE requires another fix [2].
+>>
+>> [1]: https://lore.kernel.org/linux-riscv/20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn
+>> [2]: https://lore.kernel.org/linux-riscv/20260309-riscv-sparsemem-vmemmap-limits-v1-2-f40efe18e3cd@iscas.ac.cn
+>> ---
+>>  arch/riscv/mm/init.c | 6 ++++++
+>>  include/linux/mm.h   | 1 +
+>>  mm/sparse-vmemmap.c  | 6 ++++++
+>>  3 files changed, 13 insertions(+)
 
-Fixes: f45ec5ff16a7 ("userfaultfd: wp: support swap and page migration")
-Reported-by: syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=18d274a59b87cf80e86d
-Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
----
- mm/userfaultfd.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+[...]
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 180bad42fc79..dc0b3eba768b 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -2153,13 +2153,21 @@ int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 		 * userfaultfd and with the right tracking mode too.
- 		 */
- 		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
--		    vma_test_all_mask(vma, vma_flags))
-+		    (vma->vm_flags & __VM_UFFD_FLAGS) == vm_flags)
- 			goto skip;
- 
- 		if (vma->vm_start > start)
- 			start = vma->vm_start;
- 		vma_end = min(end, vma->vm_end);
- 
-+		/*
-+		 * Re-registering into the same userfaultfd can remove WP mode.
-+		 * Clear any per-PTE uffd-wp state before dropping VM_UFFD_WP,
-+		 * matching the UFFDIO_UNREGISTER cleanup semantics.
-+		 */
-+		if (userfaultfd_wp(vma) && !(vm_flags & VM_UFFD_WP))
-+			uffd_wp_range(vma, start, vma_end - start, false);
-+
- 		new_vma_flags = vma->flags;
- 		vma_flags_clear_mask(&new_vma_flags, __VMA_UFFD_FLAGS);
- 		vma_flags_set_mask(&new_vma_flags, vma_flags);
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 6eadb9d116e4..2b860d2b1703 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -544,6 +544,10 @@ static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>>  
+>>  #endif
+>>  
+>> +void __weak __meminit vmemmap_populate_finalize(void)
+>> +{
+>> +}
+>> +
+> The existing hooks in sparse-vmemmap use #ifdef <hook> rather than __weak
+> functions. Take a look at vmemmap_can_optimize() and
+> vmemmap_populate_compound_pages().
+>
+> Let's keep it consistent.
 
-base-commit: e43ffb69e0438cddd72aaa30898b4dc446f664f8
--- 
-2.43.0
+I wasn't sure since it seems that both styles exist in this file.
+
+I will change it to #ifdef in v2, as that seems to be preferable.
+
+Vivian "dramforever" Wang
+
+> [...]
 
 
