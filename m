@@ -4,88 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51213CD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 11:16:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF3A0CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 11:16:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B585E6B032D; Mon,  1 Jun 2026 07:16:56 -0400 (EDT)
+	id 42CDF6B032F; Mon,  1 Jun 2026 07:16:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B30166B032F; Mon,  1 Jun 2026 07:16:56 -0400 (EDT)
+	id 3DE5F6B0331; Mon,  1 Jun 2026 07:16:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6D676B0330; Mon,  1 Jun 2026 07:16:56 -0400 (EDT)
+	id 31A216B0332; Mon,  1 Jun 2026 07:16:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9937D6B032D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:16:56 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FE9F1C189B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:16:56 +0000 (UTC)
-X-FDA: 84831091632.13.0B0222F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A1096B032F
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:16:59 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A3B891A05DC
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:16:58 +0000 (UTC)
+X-FDA: 84831091716.28.0D9BA7F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CBCFA20002
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:16:54 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Se3REjaw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0FF78C0011
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:16:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G8uki+OG;
+	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780312614;
+	s=arc-20220608; t=1780312617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OtwzM/l8y3UephO/mtNnc8CEWonyb3evNARkeGrVMCs=;
-	b=ht+gOnPwQ+lWEpnN014JlrIYaXmwwIj1MJwir1Nt1e/nlPRRlP5C0j2f/6zgazx6IJswKQ
-	eTxcyytQ2oC2KDMtgbYbYXqK9gKTSUV3Dz3+I+GmZGMBgMyeXaOUFKb8LySTksND930eq3
-	VtFzJQNB2Jyw/aghp3ZlcR/Pmc8iHvo=
+	bh=CRHoP5VdkIAyG5qDOl9IysDCvNb5MiyLvpUd9S+gzQM=;
+	b=gAnQBWQbyjWJZEPI/dgmXCh+g4NzrtRvAoZU6PMxh/nr7JVp7TSMkcWDvUZaz1qT7eBoby
+	GFNopNgPL4KlVoRZw9elc9aK/HFOdchJ//joLsJW7satlPkJ4pLMDu8RIcjtFFQDbZSBBx
+	LK02RLVP+rCIIW+5h1bdzEoTFIrs1LI=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Se3REjaw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780312614; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G8uki+OG;
+	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780312617; a=rsa-sha256;
 	cv=none;
-	b=2CHQ+XgWP4Pvqvs3yhn6bSJ33beKm2r3WEI4w378wk55cSm6toSvlGfEkIyzDV1LlXaOuF
-	n6Q9U8IoZNIakOrjwvhEUQfmQIdEAs8/7abTtpaTBdJlKaUa2iZfC59IEWJbxWoIKTMOMF
-	ykt4XqrezWEOSeWfvqpje7pBByl6s9s=
+	b=fboEq0CJ37ZYqMRLsNi+oV39VsbEkoY6TtKGHvubiRF0SSAt/MzzRTvu0/Y6D8GJ4c7xmu
+	cNZp4IQX3rL/fujPxfjhBAtACZlkmhpR6xAN3LbZTUO1WCvvPsTNTfo6PE8rp8NvWgvSEH
+	lO4j49rP2XYqqQyQ781JyOcXjtOmig8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4170760018;
-	Mon,  1 Jun 2026 11:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F591F00893;
+	by tor.source.kernel.org (Postfix) with ESMTP id 99AA860098;
+	Mon,  1 Jun 2026 11:16:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86091F00898;
 	Mon,  1 Jun 2026 11:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780312614;
-	bh=OtwzM/l8y3UephO/mtNnc8CEWonyb3evNARkeGrVMCs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Se3REjaweR5q16QrSE2fTtEGtglkxumlmBsNUto7ugARGSpIeLcTdnFECTgZJGi5A
-	 CScWKZseeSUrnqU2m8oToEDiJ1+ZULTViTTSBhnBgsUnPuuKosIeKUixojsliB8S9M
-	 MMb0GEPOeJvW93sWkXrGegmBptY2n0LjOfqYyI7/xmARljawSAiPmemLLnY8aq6x2F
-	 l25YhkU6fSYGA88eAmuWBWF4weNtf2j1c57dr1Ta548XhtCcx5mp5lUZeFXAopvXBq
-	 moJjS4Ub02pEBKrJhkRWvlACBErJ8R8/Ekmq05DomL8VuPMrZDT9qNXSL5NNb1Ncbi
-	 4GWMqppsEeBzA==
-Date: Mon, 1 Jun 2026 12:16:49 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] mm_access: simplify the security checks
-Message-ID: <ah1pqCoH6guhnj8X@lucifer>
-References: <ahrsfJE3NkKjShEX@redhat.com>
- <ahrvv-XGt8SiZUvW@redhat.com>
+	s=k20260515; t=1780312616;
+	bh=CRHoP5VdkIAyG5qDOl9IysDCvNb5MiyLvpUd9S+gzQM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=G8uki+OG4nJXKcRZtOFdjfuVaje7IhPsSBlyQxDVK6rQ2U2XfNst+LmO0FDBhPdXO
+	 S09iAU4U8VXKGMxtoIGANyksSGGohF++3CaROL4ZLv35QNRbjgTN7rdFwI2udY/yGB
+	 MlSzA2LgcqfOXO8ZeuobJNEqbV3AjxWUeDbFUynLg9wmnrD1qtE7iJ+3sCn7vj5gWn
+	 k+/0phmTAOUi1PJrkemVvfv1wuJkLg3+nfOLY1HRONfiINTWcn/IB4to5JOUD+BLda
+	 6KSEpSUYUbufzVG9aM3tzf6WzRvhetNrL3fEil0hi7jD6r5dRl7YswnbbOgM8JSKFJ
+	 X9/wW7jFtnY7g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
+ Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
+ <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 04/79] block: rust: fix generation of bindings to
+ `BLK_STS_.*`
+In-Reply-To: <CAH5fLgi+K_5So-kLwyZGhaagEx-rRXPmk=zCOTqG3yh=bSe9Ww@mail.gmail.com>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-4-de9a7af4b469@kernel.org>
+ <abfNByL15D4s69Al@google.com>
+ <CAH5fLgi+K_5So-kLwyZGhaagEx-rRXPmk=zCOTqG3yh=bSe9Ww@mail.gmail.com>
+Date: Mon, 01 Jun 2026 13:16:35 +0200
+Message-ID: <875x427bos.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahrvv-XGt8SiZUvW@redhat.com>
-X-Stat-Signature: qwwhzbwyiy1wce36bfb1og3p1rfqrhpc
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CBCFA20002
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4fs1swcyktqywgmrun7btaezjw33zs6n
+X-Rspamd-Queue-Id: 0FF78C0011
 X-Rspam-User: 
-X-HE-Tag: 1780312614-572904
-X-HE-Meta: U2FsdGVkX189yLrWMv+Gp/d0ewwnLnVGI7j5Sa+rLMSAkAPhk9PZecuXQtHI5OCjRkFRzBwIeNYVSVgv7FCeqsZA3vrNP+aSFz8rewHSHcYnLbbqowTA94QeRRVN6LBU10tCe3IkPI5nL6fI+b/MuRCyABqqYDevMsbZGJ+OtNxqYgwXYeYCja2OaJDkOBEzpc27ff7tdH2eS/Ri/AewyS1+P+X0t2gurPkGrgc4wx72TMt8sVSuo8cWBO86h+pnaspqjQciRbli+Ec/wgSfuT7mGwGLSH0GLnw9yjBuhzOIdxe59Uz7XShNtTrbvT7e7SZ9OKUk/OfE6yTzxK+LCHsz0uvA/cc19KyYTnXwT3dawGGBG+1ySWmSM1d0FMea6sgX+9/YKHCcpIMf1ghhJsT9u4vK68yGiyutSR6r7bfdRwoozNUQVc+mkkclMyumzoJONTc/f047aPAoLlW+dmLRpPnJPufkxTVtsvgy6HgFN3JsDTFxcRPMsQdSL145ZmiQsC9kvqdypglMo+97X3WLp4Oy/9wGbdZlFbvJmzSXUqzTBQSCpeB9vuf3fnIjRoTU293TqCYL/cj6PWWB6eZ+y+Yq8RrkgygFTeWU+zJqx/pzKx/IBKNVlVxTaeohT484cP/+TQFGMKpm2yoUQdeFyAnurIcgpeNpYs3EsHFEMUdc2NNEFqlFSeA/5a2bdR9NPStzD+THexuoxY5sgisg15emNfpiqHWSIIqBZmfhXFDBkGH/euI4v9FoQ/f671i7N3XR4FAVvDl193JUQL3SOQmgpUpXr8AZyZvOikI6X9JrlcSg6CuiL+1qMaWWZc1UDnmOXFU5jydS5RjMHoWwzcoLgD5dLEamHXsZK9qjX+HKg2ieH1c/paJnBWtHeTip5Yia0ylqqlnrOSrjS+FwuVSa4gni5yLzE+yBhBVB9t+88CF3rIwJJ+MO4zsPExZza0arnvRxFnxHW23
- byXdZiPK
- eG62ra1B3B+ftVsEXtfIwSz0no9vvkoR1zvC+UG3nqe+lkRckkMYO15V4UJRSIs9TGLNapsVHVWUfQbxaB46fd//Rkr99jjEk3dyvGhEw+iOT4hzmv5XrzSHeNWYCb/PLYvIQhEsfz8E8jbEiQsKH/hvFYJAsFKrbtdkLeR9elS/Q6aJBAIu9VJRt/4ZJmaX7E/Sxm+HsYeJs7ctRDqP0ioySnyGWFrIgRR4dGjXyeyVMYlTa+fx2vUDgo8Kp0fSrEX+6jkiyXIjoVPtbhLspoESo7uMteFFq/pqKCpEue2d3AUM=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780312616-319662
+X-HE-Meta: U2FsdGVkX1853U/qimZqaoOBNeXWeZm5oVADytZZ8UHZRoeAMV1NqumnKUq2NbESknpn5o4WfwdltHlY36StR98MgK2e3UHqIz26mQ8dk/1AeNGsG9SVeE4MnMFVdzkGcbWdwMRJHBR4xyMGlSV4uX4eqL8HJN2t2I0KQEGXJn+o6u3YiTZsspAfHrVa2BI2klqRPXcrCeTHOZaERFinFupksVY6Hw9So+4GZ2gk8Weyk3uZiPH9e/dXQChzNsD4KwDY9GK5wL3TzFBcTbxDC1J0/N0tQKxnBwSx1KIJyLY0QFHlqBFXHMIQQeNGSgbnsTx4v02pwRB7lG3m/y15sIClSXuWgfuzaDprxYkXSuHwBEWul9gsRiPnlBRl+vO5rA/CIqPMrWRyYkc1oiJXWN/iIQ98xkkabKdk+n+a/7rRzIrWVtVG0hqK20NeRMvWzxUgh62JIKUaqeMB8paWdTPydsoayE0K6B/yph0YKbKJzLElSJeffCwVAjDfedeiM26hWtqpeRYTZzFgEqO0Vk+Oo9E91B91rYQwiknz+kdNMJmkAvqZA71aqZkv9bR7364hfWHCEyHIgBluvYPIYTzLp9Le367Waht5Z0RbzAoVN00YWKrURL2plEfV5zvs6EGqwGVlMO6XlVCcllPwYqf8D+eclx9IpwnoBfafB3AQCKcZjCEUtFH8Cu7iABW8Vf5AqR3O/mx/g56JfZgQxhqBUqK1z93z6hcaP1p9eEmiPDM+1LhfcVjtMT1wiXVTRYPkZgpA3CK4nTFlTggZY62wbK+nJMutHDc6D+UsCZA3SLAHPlIBHsGGUDkghzxhYmvAe8/20joAGSzgGg8Wviyw+oIXVPY88PqA14lZv/u1j5HNnk/7FD4wwwAaXFYPqy1Hom/I2++VOrd5cSkv+bSBTa7nqESKZ8ry/vHRyMCvXeDaSupiKLKb8ZlkEHpqteQQrIaXOvi8CKAwh8P
+ lC2+/SmR
+ 9BojFDIhJDmMznPWyimk8bf3qXrXeuyzYW7P7Ea9dLuC4JqWcuwU3sISV1F5Sqmsk0QOv6U+jWBmh7jrG2K8y5xfWpCu6vZMMd9VL5TQgNAXq7QoFQrQQfCUR4puOqRwSQQI1lV8GZMOH50cjy9DXZT3NrTRP7kw8wPvV1veUIaKkrL1YC++PY3+AcSLjmhWrQ3ZkSlaYJqPdJ/sLgINGX1exDi7LPGgfDSc2sWNpibmcKSQ8GcYppRXf1IYE4T2O4+9JomFQ8UUL+jeY2XvZ9IRcANBEXg8ikr0KWIQu6JEX1p1n7E64AQLrZs3RT4Zc8Mttj7OX7mnM7F40xh9Ky3H7cmblBQeu8y6iTzkvHCIPWY6bik9vYOh+EMA/GgUAyrEmKsCJvrXRQAB5evNtzSIwCiJEp7KeoyaO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,26 +105,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 30, 2026 at 04:10:07PM +0200, Oleg Nesterov wrote:
-> On 05/30, Oleg Nesterov wrote:
-> >
-> > 2. With the change above may_access_mm() doesn't need the "mm" argument,
-> >    so we do not need to call get_task_mm() beforehand, we can call it
-> >    only if may_access_mm() suceeds.
-> >
-> > 2. With the change above, may_access_mm() doesn't need the "mm" argument,
-> >    so we do not need to call get_task_mm() beforehand. We can call it
-> >    only if may_access_mm() succeeds.
->
-> OOPS. Somehow I wrote the same twice. Will fix the changelog and send V2
-> in reply to this patch...
+Alice Ryhl <aliceryhl@google.com> writes:
 
-Sorry, pedantic side-note here but - in general in mm we prefer you don't send
-new revision in-reply-to the prior one, as it makes them easier to miss! :)
-
+> On Mon, Mar 16, 2026 at 10:27=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+>>
+>> On Mon, Feb 16, 2026 at 12:34:51AM +0100, Andreas Hindborg wrote:
+>> > Bindgen generates constants for CPP integer literals as u32. The
+>> > `blk_status_t` type is defined as `u8` but the variants of the type are
+>> > defined as integer literals via CPP macros. Thus the defined variants =
+of
+>> > the type are not of the same type as the type itself.
+>> >
+>> > Prevent bindgen from emitting generated bindings for the `BLK_STS_.*`
+>> > defines and instead define constants manually in `bindings_helper.h`
+>> >
+>> > Also remove casts that are no longer necessary.
+>> >
+>> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>
+>> It'd be ideal to change the C header to use an enum, but that may not
+>> work as I'm not sure you can specify the integer width you want for an
+>> enum.
+>>
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 >
-> Oleg.
+> Honestly, it might be better just to declare a Rust module somewhere
+> with each constant redeclared:
 >
+> const BLK_STS_FOO: blk_status_t =3D bindings::BLK_STS_FOO as blk_status_t;
 
-Cheers, Lorenzo
+As it turns out, `bindgen` only emits a binding for `BLK_STS_OK`. It
+cannot parse the rest, because they are declared as `((__force
+blk_status_t)<N>)`. So in order to avoid special casing the `BLK_STS_OK`
+constant, I think we should just keep the patch as is. I don't think we
+will gain much from re-declaring all these in a local module.
+
+I will update the comment on the `blocklist-item`:
+
++# Bindgen cannot extract values from the `((__force blk_status_t)N)`
++# CPP-macro form used by most of these and emits the few it can extract
++# as `u32`. Block them entirely; the `RUST_CONST_HELPER_BLK_STS_*`
++# definitions in `bindings_helper.h` expose them as `blk_status_t`.
+
+
+Best regards,
+Andreas Hindborg
+
+
 
