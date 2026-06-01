@@ -4,154 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 982FBCD6E57
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A1DCD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:00:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C17B6B0443; Mon,  1 Jun 2026 11:58:50 -0400 (EDT)
+	id E19916B0445; Mon,  1 Jun 2026 12:00:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 081346B0445; Mon,  1 Jun 2026 11:58:50 -0400 (EDT)
+	id DF0566B0447; Mon,  1 Jun 2026 12:00:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB2876B0446; Mon,  1 Jun 2026 11:58:49 -0400 (EDT)
+	id D05E26B0448; Mon,  1 Jun 2026 12:00:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DB33A6B0443
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:58:49 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94BBEA0711
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:58:49 +0000 (UTC)
-X-FDA: 84831801978.06.253A63B
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 57BB3100013
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:58:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=q2QdkTfq;
-	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C2C826B0445
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:00:08 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F7ED1A070B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:00:08 +0000 (UTC)
+X-FDA: 84831805296.28.0E0C770
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A1A9040006
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:00:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j2p0Z7im;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780329527;
+	s=arc-20220608; t=1780329606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KVDcpE8o3uuZ0QtgmIrSs5gbQcnW7ufMsS7wcVBG0y0=;
-	b=RKyicT+cyJiYRs0VQ/YDGgd2ehpd95oyKIOh3O0GNmBO0n95Q6SK7O5azFjqJRQaHRuzBW
-	IwhC5Bne34HoJWodvefHmxW1T3jXcwz20iixbhnFsw/Ps8z8hU3xabEzbUGEHECBqMBtkz
-	L9Bv/FQs+3ROguQwlOl4PemfN8EiCY0=
+	bh=qat6JWdcNSPHllaQ3+tJkXA9J08r8Vi0aHl23QrxgQE=;
+	b=yr6BpFN54/qYfPvAmQhYZbj4d9/V155y2eczibX/Y3mwGoeoXoNjNeCULVIv0wj3dqaSI9
+	ZsfQwjbEbadxMbNgW0XuvqPVLGvX5XJQAb1e2gE4niBP2KwezVQ1wjwXQUEIE1klLUmfz/
+	3bBBUNcm4fJbnkpo5/8OeKTJgq6+OVo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=q2QdkTfq;
-	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j2p0Z7im;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780329527;
-	b=r/lTzzFjUYmhzwqfgjPIgNg6G6CyMjvgGvzfdEVMQVj6uYvnjjC839wQszZCp8vHml8eEJ
-	B4hZZGjAhGkzeqYglx8z+ExmYndypHFThCjho8i/MYFaDe8t2oweGp6wTIKykk263KOf82
-	e+4w24Ywzgf5yxeBQYa/f50vUYrk/E4=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 651FjTT21175050;
-	Mon, 1 Jun 2026 15:58:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=KVDcpE8o3uuZ0QtgmIrSs5gbQcnW7u
-	fMsS7wcVBG0y0=; b=q2QdkTfqZHAjJj6NGKVw3J67mUzCoAuC+MTAV8GC3/zaW9
-	XtLE487z/NKZ5qKkyDwv/S+6iMMlw3V6LRpHuLxSFLtIp6BQl3jJvIFpXtKP80+Q
-	cLSwCTjO92d+3x1Qk+5xIAALBeY++i85qezZua8O+5XpRiS0M68ocS40QVLS8PO8
-	E/By7XAg35tBjAmihLn2f4jbL8zn3E3/Br3GnKBevJtGaQ7cYYwYTIxnvgIgnLfX
-	8eXASZjqtx2pEYKqSazX2A6CopNEMhVPguYg3JQSunWtGFSrvvo4vawgTdUrS0oB
-	oDKTVD/tdAuasZ4Ln5rLPbPZHZoEtzGHhUQ+yoWQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqht172a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jun 2026 15:58:13 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 651FsA8U031542;
-	Mon, 1 Jun 2026 15:58:12 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egakvq0j1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jun 2026 15:58:12 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 651FwAUK17236468
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 1 Jun 2026 15:58:10 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DEA1C20043;
-	Mon,  1 Jun 2026 15:58:09 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 338FC20040;
-	Mon,  1 Jun 2026 15:58:09 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  1 Jun 2026 15:58:09 +0000 (GMT)
-Date: Mon, 1 Jun 2026 17:58:08 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
-        anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
-        baolin.wang@linux.alibaba.com, byungchul@sk.com,
-        catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
-        dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
-        gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz,
-        jackmanb@google.com, jannh@google.com, jglisse@google.com,
-        joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
-        liam@infradead.org, ljs@kernel.org, mathieu.desnoyers@efficios.com,
-        matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
-        peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com,
-        raquini@redhat.com, rdunlap@infradead.org, richard.weiyang@gmail.com,
-        rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org,
-        ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com,
-        surenb@google.com, thomas.hellstrom@linux.intel.com, tiwai@suse.de,
-        usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com,
-        wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org,
-        yang@os.amperecomputing.com, ying.huang@linux.alibaba.com,
-        ziy@nvidia.com, zokeefe@google.com, linux-s390@vger.kernel.org,
-        linux-next@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes-unstable v18 00/14] khugepaged: add mTHP
- collapse support
-Message-ID: <20260601155808.2755103A59-agordeev@linux.ibm.com>
-References: <20260522150009.121603-1-npache@redhat.com>
- <20260522134724.f4f11941a85ef18b307d16ae@linux-foundation.org>
+	t=1780329606;
+	b=Tlll6HuFwJE+j6BZkxniJyO0a3Apy3TXsUZ2hPS5GNHnrRwxBPzeIiBEfWfrstIs10gAI0
+	NdAuVj8DsrttNpTdnIQVMuqHgvSQl/L2AZfSPjEcdKQJoXrOB71dd/OuVYNfj1Gox7Tqwh
+	rpXvewSNDzCWWJ7l2gj8ksvuvbZHCYg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 14136601E5;
+	Mon,  1 Jun 2026 16:00:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCB01F00893;
+	Mon,  1 Jun 2026 16:00:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780329605;
+	bh=qat6JWdcNSPHllaQ3+tJkXA9J08r8Vi0aHl23QrxgQE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=j2p0Z7imKkOx58SPCs+B0b+lPNx8j+8mItLEBK0ZZJVQMzsF6MpcAfjdtrUMCn+tl
+	 IXUp+JiYAwJcxDjo0JxFUg3rHc9shz6F9AHFyJvjsx6rlMe3mkfQoCw6B9erOZX8vI
+	 hlAPlQUaGmZcUPSWNQQorXbHanYHUcHyRsroaQiX8BhKmyCAR54+HjI+3UDk67WMoC
+	 6CdxAolg4NqZv7u2tsA7esv4eAeiiZU/Pdc+b/oTKGW+t4H91tqiW11UnKAFdINvUq
+	 bhZj3TPvSioqeBqp7ISxkOzloL25CTdqAiBAf4aHFuhdco7os8BVx1zNB6hcEo1sM6
+	 al/EgJpQZdUuw==
+Message-ID: <949cd60d-fed6-44f9-bdf2-59533ab61836@kernel.org>
+Date: Mon, 1 Jun 2026 18:00:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260522134724.f4f11941a85ef18b307d16ae@linux-foundation.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: zz9MilW9xXFOzhEU9qIKtRU9aLy1QnrY
-X-Authority-Analysis: v=2.4 cv=fv/sol4f c=1 sm=1 tr=0 ts=6a1dac15 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=20KFwNOVAAAA:8
- a=0zv6X75myPOFEK8-PwYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAxMDE1NiBTYWx0ZWRfX0G2anm6Vr3Tg
- FnBeiiLFKss3NmUYJabVHvzgxZlzFUdopz3CFGWsaz16v+NfjFYyWWKVWUuMIyS6wbMHdySM0XS
- EpkQ/E6SDF5X76V99R0yTVd4ya1k/DnsWBJox4kZ7TKLs2QUetkDWYIMSZuERfq7NXaE4qk9nQE
- or/Hban403oWACFu2jc/NQi3wc9do598+g+RKZ+rhV2Duo95+NDsKaFiW8yZTcSaK0ugDiP45kT
- LZlIf3NvUpqmzCLTufeT39myliAQCworD4TMiHEIKVECPljCJHj1PdjN17v9TWNIH0Q5h8IOlRG
- 38KQXn4H+2ZU0VZCzLpquosBR2Yu5u5cPNF3dxyUJM+BN0L7Axd+ZGAHiFa2MWh32V24sIfCtTd
- Cdmj/gWHyJ4QLHlcUNUZIqcuhL5weJfO0VzwIlnPq4O04fEoWX7ne7/v9PaTXYPEbKHs/5Xw+It
- xkJMdfgX4+6Oo5kFlBw==
-X-Proofpoint-ORIG-GUID: Gis_J_AWXVxuOO3_TimOrEpJ2AcZY6SH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-01_04,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011
- impostorscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606010156
-X-Rspamd-Queue-Id: 57BB3100013
-X-Stat-Signature: y54rgz7734fgwa3hact89ybapbbwkqah
+User-Agent: Mozilla Thunderbird
+Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
+ khugepaged: add mTHP) collapse support
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Nico Pache <npache@redhat.com>, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, liam@infradead.org,
+ mhocko@suse.com, rppt@kernel.org, vbabka@suse.cz, willy@infradead.org
+References: <20260522150009.121603-1-npache@redhat.com>
+ <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
+ <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
+ <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
+ <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org> <ahVX1iq_-95vd0PN@lucifer>
+ <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org> <ah2fG9fSqbocqUlE@lucifer>
+ <f7737b9c-42ba-46d1-b69e-53ac2bda59a6@kernel.org> <ah2pbAnz1pwNcW-U@lucifer>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ah2pbAnz1pwNcW-U@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A1A9040006
+X-Stat-Signature: mmdo9gw5887kyypjqskueb1wxm4e6ph1
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1780329527-553205
-X-HE-Meta: U2FsdGVkX19648PsuhQBY/YoA6qZq7Pm0vU2ZzcsXI3B4bKTGQdu+s9U1IjsTbmpuaPRBTylLS85FSc3gNxjM73eEKtq1YDRx4mDnhpxkdA/q3jndx999YHRcIxWBOwoENyjr8DZaiHqUg11bWHu3sjs+wBPfOCSIj6Bu7/qCKINiIVJsew5wP+AzUufTefRIY1ItmRLIMoLxm7jWr202IPvC9L5wqetYBv5u1Q7NJnShfNpI3KdEGIwYg60huKdJAOz8YJhbX/a8qZCLifJ3YXi9tW8SuGp//n4BN3+kmdb1DpssJblCkpjIKafNbaIH2m3u5nv8smI4A19WKb4tv+ftxSGZDwfLryXoHidxQWcpG1iefULQ1vbfDUhkXGMefQPIdxYnWVEueFamSBSbRiAIc1SSYbDG0ZrrfwgAUVI6hlMHuRawwsXkJPwg4EjXtBYL0M59I5zYKQQk6xfSMiLPKL2GvmOS9TxrVvertDNArd+UwlSPvY/frLlMkjPr46bAVA439cK1+JDjqNbkHttQP1wsd12Rs+4qG+xAZvJBbUCaIKRUUVhbesl4hMoqvUZ+RDseTJXQ9dQUzNek3NSc1vljFZs98Ys7GsHOhrFShpLv3NRTVs9A2QJFrXn8MpBMRIaCmA6wu2hzdr6oOay/vO6D/5CU9MMuai50MCa6R7hsOIbmtsRt3+RPIRMAo/BlGl8dIbC4paEaoORhFC0gntn2yiAu1WT0MeyxYzx+UCzJFyv5x8knJeUAP605tCXhx1wO/4eP9dMBubLPi52GT5BZkY9u5Wqb7ERwkGc1kck6lSAICDKdnma6uHvsK8DtcaVhL/6IYeFglfBD/vPf2ziPvG92PetV3ThAWFzUKk6GwbeW8FAXx3wAsKYREiS9Ot38X3BpDh9UWkZrEan/0X04UlUA17jwjPX8Qu4ze70pYKlCaVQUsKkiAwKcdcrW8dr7FFSvSsOUu9
- HisfWePp
- 4Xj/8QhenfLUKqpK0rqLf+oO1GBW8wR52cbX/PQXG+JVct19X1F8vxyAHFgY+MuDG1hBVkjWdtK4JoUg2lcneijGHFEDZ/9zmeq78g+7W/6L6XThW8XrUJoTAs868Q4ykP1oJz3BSnnZ/gVYh1LjtIIPUBzG268q+A5ecDtcAaGl5yqB7cQ1sE/74NAqTprOtIIp+n7U2Zds6lK6ihMRblPRQf85kUxPdMmytVjV0I3kgrGytKOGkpL18YLQpwLUDFppgaPCqURSOXJLTsQnWnGp2EhfwWAzufWBXLKoPDetnWNDsxPdjiGl37UFV/b6tILvh
+X-HE-Tag: 1780329606-429793
+X-HE-Meta: U2FsdGVkX1/hLIK3vIJcniR8w0P7fvijqwVGnmiy+DDAzGGP8yK4qs3JcERetlbEEkgGC6/Z674R+EO/3aGcnc66s417WRbFRqCNvw1BM+R2Lhbe2JVkQM5b4szpC/d9iqM//ud7renGQMm7fvzLSWGYhlub8aQggN5WmYue6e/OefKDEOq6E6+pvfJ09vMT5+IB+TySWqm4FoRoeCxPz+GVnKdGY9b8d+zeJZFb71ChQq8xl84tkeWFQgtDDjBYIlMVVUbM3UCC4WkWbK2SnD/rqqGpdaNry1D/TwttY2YQ6twGjJPaDm+z86e7ENQGmOihLtwTSJsljjLu28HbqJ1VHYEL+G7jnkyj3cFX4JD7fItonBwyuldVggDjOrhbAV025a2x7pXwhb7QODsAMppQWghYMaCZmCtP91EIx8c9pt+GhrW5VQ+vYhewsYzqmKteL4BBhw3m15xVmXyj35bu3n3OmYNFA2C3qV7IS2tiARjr11H45fG4dJedkyGFh2b0pU8staUX+CRRzsSu6ZL1fsXW3jLop1VFjLijjViW3NxAjEJoVSUiEc4aqTIlsmtDMeHcQ0aL6BChLEA1mEWyk4D4qwWFoMV0R0UOPH738+0xQ+MJiuXl+RiF+z0duL617eRUo4VIlbA1YpdSbQRV5DGg2jcW42wTzvtp2B5VUoWdS8795dM9dk8wcl9rjTijHmIV1flHOIZFMBOlOaGQBOidEXKJn/mYzpxq9FCGD09AefTRSZA4YRJS9D7HUjlgaMzJkJKCP1BE2av677SuBrKUP5uCo+1aDzFXvP7gWNvDMZnkSBWGvgw2c7WG4dfrebWqCjQsPJ+BUT2Xmvu1ILuBFqFL2xPfGJDthy1TmHM3eX5gT8QOBhkD1SwIMngSgAhrt8plxL8/o8oAcI6fUKM0SxV2v9DcLAA4BpOz0J0atYGs4DYlhbdCa9hBgEVCWJeTPTY1VIeV8s/
+ 71gE1ADj
+ EF3o60pNiPX5CgDNghcLwQGVZXI8N4dAGu0nArM41MOioPRS2dCCdvBI44+R54GmqbbPbgJ8TKX1OeRvdZ2dCbZMV3pKgUin635MW1aid8MBdcDwBIHR6Wg41FRhzIrv1hw/FxsHUpYhuabg4OcAaSteoHzjkh7Wn9PNm7qtsoBeUxsFfVRLMVNEUJkxVaWvx7ZbyLjKPF4h9WnQHwuuw+1QXM9BQJ9O/pxu9dm49eOyX6EhZzftr3ap9MftAuFhQB4du
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,44 +146,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 01:47:24PM -0700, Andrew Morton wrote:
-
-Hi Andrew et al,
-
-> On Fri, 22 May 2026 08:59:55 -0600 Nico Pache <npache@redhat.com> wrote:
+On 6/1/26 17:47, Lorenzo Stoakes wrote:
+> On Mon, Jun 01, 2026 at 05:43:11PM +0200, David Hildenbrand (Arm) wrote:
+>>>
+>>> I feel like it could get hairy pretty quick, but I guess the key thing here is -
+>>> maintainers resolve merge conflicts.
+>>>
+>>> As long as we have a specific _solid_ basis for work.
+>>>
+>>> I think actually this speaks to it being sensible for each submaintainer with a
+>>> separate tree to maintain their own repos rather than branches.
+>>>
+>>> We need to determine what this baseline would be for each tree though.
+>>>
+>>> So perhaps each submaintainer tree has for-mm-next that's the stable branch from
+>>> mm-next + any stabliised local changes.
+>>>
+>>> And each week this gets merged to mm-next, and everybody resets to mm-next
+>>> stable branch?
+>>
+>> I think it gets way more complicated than that once we involve hotfix branches,
+>> and dependencies between hotfixes, topic branches and all of that. And in
+>> particular, if we have to drop a topic branch in some circumstances.
+>>
+>> My first step will be to understand "how would it look like without
+>> submaintainers" when only having topic branches.
+>>
+>> Then, add a complexity level on top with subcomonent maintainers :)
+>>
+>> I'll probably schedule a session in 2 weeks.
+>>
+>> Whom to invite?
 > 
-> > The following series provides khugepaged with the capability to collapse
-> > anonymous memory regions to mTHPs.
+> I guess can look at the list of current, active, involved submaintainers?
 > 
-> Thanks, I've update mm.git's mm-unstable branch to this version.
-> 
-> It sounds like I might be dropping it soon, haven't started looking at
-> that yet.  But let's at least eyeball the latest version at this time.
-> 
-> Sashiko was able to apply this, so the base-it-on-hotfixes thing worked
-> well, thanks.  The AI checking made a few allegations:
+> Can also send a general mail to linux-mm about it too?
 
-This series appears to cause hangs on s390 in linux-next.
-The issue is not easily reproducible, so it is not yet confirmed.
-Any ideas for a reliable reproducer that exercises the code path below?
+Yes, let me do that.
 
-    [ 2749.385719] sysrq: Show Blocked State
-    [ 2749.385730] task:khugepaged      state:D stack:0     pid:209   tgid:209   ppid:2      task_flags:0x200040 flags:0x00000000
-    [ 2749.385735] Call Trace:
-    [ 2749.385736]  [<0000017f63c8b226>] __schedule+0x316/0x890
-    [ 2749.385740]  [<0000017f63c8b7dc>] schedule+0x3c/0xc0
-    [ 2749.385743]  [<0000017f63c8b888>] schedule_preempt_disabled+0x28/0x40
-    [ 2749.385746]  [<0000017f63c902ea>] rwsem_down_write_slowpath+0x2fa/0x8b0
-    [ 2749.385749]  [<0000017f63c90910>] down_write+0x70/0x80
-    [ 2749.385752]  [<0000017f6313407a>] collapse_huge_page+0x2ea/0x9e0
-    [ 2749.385755]  [<0000017f6313491e>] mthp_collapse+0x1ae/0x1f0
-    [ 2749.385757]  [<0000017f63134fda>] collapse_scan_pmd+0x67a/0x8f0
-    [ 2749.385760]  [<0000017f6313751a>] collapse_single_pmd+0x15a/0x260
-    [ 2749.385762]  [<0000017f6313792c>] collapse_scan_mm_slot.constprop.0+0x30c/0x470
-    [ 2749.385765]  [<0000017f63137cb6>] khugepaged+0x226/0x240
-    [ 2749.385768]  [<0000017f62db3128>] kthread+0x148/0x170
-    [ 2749.385770]  [<0000017f62d2c238>] __ret_from_fork+0x48/0x220
-    [ 2749.385772]  [<0000017f63c95d0a>] ret_from_fork+0xa/0x30
+-- 
+Cheers,
 
-Thanks!
+David
 
