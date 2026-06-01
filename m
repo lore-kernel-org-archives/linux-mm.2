@@ -4,138 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDC10CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:21:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52647CD6E57
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:22:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 056BD6B0457; Mon,  1 Jun 2026 12:21:21 -0400 (EDT)
+	id B2DAD6B0421; Mon,  1 Jun 2026 12:22:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F22336B0459; Mon,  1 Jun 2026 12:21:20 -0400 (EDT)
+	id ADE4E6B045B; Mon,  1 Jun 2026 12:22:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEABF6B045A; Mon,  1 Jun 2026 12:21:20 -0400 (EDT)
+	id 9A6736B045C; Mon,  1 Jun 2026 12:22:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CDE536B0457
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:21:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 643DA1C1A4D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:21:20 +0000 (UTC)
-X-FDA: 84831858720.01.595E531
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 909D180005
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:21:18 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kKxrUQgd;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8501C6B0421
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:22:11 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 531041C1AD5
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:22:11 +0000 (UTC)
+X-FDA: 84831860862.15.5E5A213
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CF19B18000A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:22:08 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="DPm/IEwl";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T3+UC3Ca;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="DPm/IEwl";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T3+UC3Ca;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780330878;
+	s=arc-20220608; t=1780330929;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UoJTMcm6ZaNDfWUE5LlijECfpdOWKQWYDYlCnlwE1HI=;
-	b=wjpYUhkdiSAem2AC6GfaFiXVNapxnnTDa4ePySs2OZ3sxC7K9nvKpAh7hvo3JEoQQFUX/X
-	/yKXoqKUGNiqtvpIxCYwlRMSNmqqCOq+cJQ0naTbbSshzcc/N+lTbgz5ov8F1YNbpwuhYr
-	CCGfYKY6Cn/Vany+i5t2bqPafQrNA4A=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kKxrUQgd;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=gZ72TgsJrRv/vGY/p+18ZB9GO9DQ5TW6tac2G606Edg=;
+	b=wxKElSK3c5V29VQsTvVMCZgTLBrjbcT03U6OHFM2XMSjmR9KuJBTXQCsd0kLVk/9i7ewzB
+	9pcy2uZs/5vR+zxZbnU0oZ7UAo7YL95S6gtzwqLbSHb56wUzbGjjxxL2kCfsG/9Euh0Og+
+	aYWw7DHRn56z8I6kA++BBlZarqtGilM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780330878;
-	b=E9og7f04X6ZYsrNqvakieki0M/hJ9f842+s188Wd4vm7Ip4RC6VCNSmQISfq8+ouy4jYLf
-	hKAW+kJQvJfahwqBuC78sApjDSuih3viI6SI1ZnOI1M3iBz4/uS5w4GiH8eJqV3Yv+zvet
-	cQZLik7KwmYV9paDwYR11nkT1XGIi+M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD45F404B0;
-	Mon,  1 Jun 2026 16:21:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14591F00893;
-	Mon,  1 Jun 2026 16:21:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780330877;
-	bh=UoJTMcm6ZaNDfWUE5LlijECfpdOWKQWYDYlCnlwE1HI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kKxrUQgdbCyqXXD74CHwzYgpuVJrv4CK0/FjjDUYIIGwJRF+Iy6ZZZThDs7Tce/13
-	 JH77VQPXaQ1C1ujjS5cYSM9D8Qf46gH/6/fHprkFELNguGv9ULTnoj2AI59TCTLTKZ
-	 gPWwN3GuXjZpfA1sxGC7Yj2GRhiStF+4FAlrp/qgtQDaR02JEejxQ7VsEdsqbrf7NE
-	 9o58Yc91zhvfusXivt3JV3YoAelAb/81xp+Q5gule+z2OcqSP7yoK1HOKHhwUrXNYd
-	 iB7IisbYoQIHDy97FmDBZGLRz8jvfjilHAGpiTFSuJ092/14ALiaTNFbxP4MHb1inK
-	 Ef+7+RTm5IKDw==
-Message-ID: <4bfe16a2-3bb9-44e2-8b3b-8c77857a4944@kernel.org>
-Date: Mon, 1 Jun 2026 18:21:12 +0200
+	t=1780330929;
+	b=uRJUpeUQhg7dXHLOj9mGFNhle90i2oJQky5ubAT2DiG2wUsAVEvypG0NZxSBKgkJaccMjb
+	huLDZ9m3l6+uUVe2cUhwrd/tJd8lVGjt3LTw8mV6M8vtveNMdwCuU85LlFagKDwa/XFbwv
+	/dyVANWCPhvUtju1CyCSJhLBg6l7wkg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="DPm/IEwl";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T3+UC3Ca;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="DPm/IEwl";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T3+UC3Ca;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6CD78686BF;
+	Mon,  1 Jun 2026 16:22:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1780330927; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gZ72TgsJrRv/vGY/p+18ZB9GO9DQ5TW6tac2G606Edg=;
+	b=DPm/IEwlGpkf8NfyX+80UyDZbZ2hucyaoC16feayRVX7XSuuWtIqBDRm5Om34HWmnazyZl
+	L6rMA++cI7goHDO5iLaBApGIYXhSv/ssJyTq4x+YJNT4h2mOqQJCmlyFNHIKaytsmbGj3I
+	VQ7lqCXTOTJXHiq+kNAOMZFCjg2ixe0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1780330927;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gZ72TgsJrRv/vGY/p+18ZB9GO9DQ5TW6tac2G606Edg=;
+	b=T3+UC3CaTyEWfE5yipWF50DW+yQJdmohfKIaRY+q46sfLFXgCL8qJj6KcxxWxbv6JL7o2B
+	IyCdMbhbiL1n1cBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1780330927; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gZ72TgsJrRv/vGY/p+18ZB9GO9DQ5TW6tac2G606Edg=;
+	b=DPm/IEwlGpkf8NfyX+80UyDZbZ2hucyaoC16feayRVX7XSuuWtIqBDRm5Om34HWmnazyZl
+	L6rMA++cI7goHDO5iLaBApGIYXhSv/ssJyTq4x+YJNT4h2mOqQJCmlyFNHIKaytsmbGj3I
+	VQ7lqCXTOTJXHiq+kNAOMZFCjg2ixe0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1780330927;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gZ72TgsJrRv/vGY/p+18ZB9GO9DQ5TW6tac2G606Edg=;
+	b=T3+UC3CaTyEWfE5yipWF50DW+yQJdmohfKIaRY+q46sfLFXgCL8qJj6KcxxWxbv6JL7o2B
+	IyCdMbhbiL1n1cBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A802779A7;
+	Mon,  1 Jun 2026 16:22:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id hFxsFa+xHWqYdQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 01 Jun 2026 16:22:07 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id F171AA0EC0; Mon, 01 Jun 2026 18:22:02 +0200 (CEST)
+Date: Mon, 1 Jun 2026 18:22:02 +0200
+From: Jan Kara <jack@suse.cz>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org, pfalcato@suse.de, 
+	r@hev.cc, jack@suse.cz, Andrew Donnellan <andrew+kernel@donnellan.id.au>, 
+	apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	brauner@kernel.org, catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org, 
+	kevin.brodsky@arm.com, lance.yang@linux.dev, "Liam R. Howlett" <liam@infradead.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ljs@kernel.org, mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com, 
+	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Al Viro <viro@zeniv.linux.org.uk>, ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, 
+	shakeel.butt@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH v7 2/2] mm: use mapping_max_folio_order() for
+ force_thp_readahead order
+Message-ID: <yoma5mzdqkkcgjnq3qawaeytjx6cjmk7etzxnmkk53mov46sub@ldzkwojakaxs>
+References: <20260601102205.3985788-1-usama.arif@linux.dev>
+ <20260601102205.3985788-3-usama.arif@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: page_isolation: Avoid hugepage scan step underflow
-To: Kaitao Cheng <kaitao.cheng@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- liushixin2@huawei.com, osalvador@suse.de, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>,
- Muchun Song <muchun.song@linux.dev>
-References: <20260519121646.40833-1-kaitao.cheng@linux.dev>
- <20260519105424.e422131a0ffb49e19ed1aebe@linux-foundation.org>
- <bd3667a2-fd81-4761-a763-f6418d9c09f9@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <bd3667a2-fd81-4761-a763-f6418d9c09f9@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 909D180005
-X-Stat-Signature: uchdh7jdcbpwskbawyaowyom94z9y4iz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260601102205.3985788-3-usama.arif@linux.dev>
+X-Rspamd-Queue-Id: CF19B18000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780330878-926040
-X-HE-Meta: U2FsdGVkX1/4Vu4zyS0Xa9DMnQDxeGNcDfCr+C8e2r68TNCiqTchF+RRxOvwnzLkPmbkzWpJAuSR+2nwBozW7kOlj4aYE2iP4DRzEvjGoFgrwV3ra1dnJZo/DR9sG5uSLAs/wbL+beuuYwXaGgP32alwCE2s6r0C5rGDnmtARNDBHRYw12lt3O6BU6TEHfUmHafDAFcyWYGtTBZlciKL2opK3MnzatEt/x02n9X9dZvA69j2i8u4lz6gzTTE9wKlB/Dk+nzMXCBqbKQNJxfXtUuYJ1kuhuoIm4NtdrLOrCykKhb1ZLgAald1GHhn0NBUyWJGTshqq8bmKD/Xay1qTjhtR1fR2Ynww3T5XNQAf2JOBWq4jgXrRmUWiCb1ksJ7gUhS+xqeuKeLVUGag3C9w9DZhv02v6h4jilcXcdRY19W+/MoBcBk5ew73VU4gT9MDEFKvx/FqhcheYZnbsLvsByChu8LzOziZWyDv64lpB4wPKQoX4ojsZHgCOgYWLHvs8ss1o1nHuJzza/Xc/r65JLmmSFuy1PM6eL3mi1G+KXTxJWPui8UWnhQSULMhf0+lkHyJPYLMNMQ1oepHyeHZAWpJFyKM1+5GmX1QTkwLkPncEJLx+m7oIfpFm03yPv8gg6JjLQXBkwO6bRN7AH1JDokgaYsabeRt+dG4gm2ztywcmyTrJJv7m3EptiGzzlSLnzvfqNLXTqXKkCvxQdRTXv8Nx2ffKeL4a2DFRS0s5FTMqNgjezRjML6PcsK+u9GOHEGF0oDt3Mwthgftb9kF/qv+sW7+iGQCyFW4D3HM1OGGbqYCKdjReK8XkOYSMovYlGu2CsmWsukKnYH52X+0FutCDLnGEHzF63RhEu7U7NBOz3QWmNmRiDSyO1OBfHP5MNhmp3fzQ4c7zSGMbzehWZrnwhHKC/WGFx/Q1OzPb0kv4iSc84YzwXmJtsOCicdpBxfM+5EuiTcBqoe4NQ
- U10/lge2
- /ene4vaPeM2UuTlALlNDDZU6ik6pPPFLN1hJ5RVPaT/xQ6jt1GHZhqprwxahO4IHISVgMWX9t3KsQfoRnFQ/Iq3dOATRFq5RSPRi649/EtGUxJCI3NfjMVMlscYdbs25UlBnzVfDCXOryhfYq4XlJ+p3M6gs9AxvSTpBYEZ7I7JIkjObJDh2BgeAfNtf8lj5pZq/M5Mcj6BhQLM5k7zEm5lUhg92SPDXzHCPmL8jJ++db+NUHN+k1rlj9vpMPqY/fNjekOntYSaMrgdkTrxilYEvK+UHHuE8SmYBXpjqgLUi66GDiRn9pKa9mZIMkBI39oopLqB48/5zeRhDyBU3SFkGEtMPOuIikbRYuzj1NHFWKEax8VpWgDyaSbUFY1Vu9G8nMNg6ZRTPeBmk=
+X-Stat-Signature: 6of5eieacn9c6k4qs4jf5k4u1gn8ipni
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780330928-291540
+X-HE-Meta: U2FsdGVkX189FxymVM8i1R/f1pOVH+pw2zX3VpDdy+uEnEPhuXbSTzoaGPndCA2v7FhSL2WImp3Czr3Qxksr3njAQTsqWD+qyzeGdSSg3/z5L1vECiGA3mmgFluVxf3deAQ3V4VRydVnd/0Q31rlDb8NlZfYS2Ud23gBZXuZo5al3F6f7FPF+OKS/3e3qdxB45m82quVEI9Vec/mbgHreTWiu/N73b2ratJQIgROJ76W18/6iuyqFa6gnjgkM3Lc2ivUXbDz3l3HSklMIU1MshaS0ovyYSNOdTQFfYm/jo1i/zjBxK7cmotCsEcPvLs9/uglaWoeAmvSepoFeal78x0YM0B0e8c4xq/7Gy5KOH+T/Rd0K7Psmoc29VhzO0c9Ao6hxGXw04zvyPYRTd1oh9VH7JTnfOUwa6B7wFQXcpFtLHmn281BVPf4h3VVkuVN6lNO9GYCQMiRbnjRsIJRjPISt2X7EiOCXgqd+SYBGG+I6AklJsvAyO4aXGP8MZqR4EW4LdP+Jg4YhsC+UnAFzwHF8+CKdsXCxb4Mqj/braIgnTkCMNs2oXZkSFX3IU1GgaqCKFDMb1BBvbrq78kisFH4nTC48FAcq1J/z8qQYrgnv+es2k57YQbUZt63DE1g4oXowpsNVeMCxk8bNH6WqD1cOpHsQUUdca4+m6rvat7ADStCWmfjXqHHWUyFkTQViWorAxwkSydGzkC4ALiauWC3R6IyZa4Z1WE51Pvg2rQETjD7TAccMkF2p1dyt0IbhQJ4DzBD3NiuGsPbrINtgBFflsGc75PjUnjcSd6/odhminBrE09pDqvdIqkHPgmk+ArZ1MK8AQQ/cU8vHOo8sSbLU+5UbxTkO7FZ5u40yJwLllpP32h9tT+w9aQb0DgCHsRnqbvDvlxx8poOYrihrNHFDPbG1omsw0rDtltQoXthiXlp6lrPoDdnEXa9U9gdW+qN3Uy5//wxtFBEo7I
+ gT32TXay
+ LNX2GZ/kpj71FnKc/4tYXcFP6fAegrf4hqO0MfMGW58B9lMTkAZQzaDPvhXCsI8HOhacNSCoqsdO57/8i0A3jyoSwCzInVHCJxb9sDjwJgJO3uZnhHccGKHNYb55E0flFfAuYv4B9LkmFMZoc2ZnhWx2lRnLujHU88cEENvzoNfUGmhJOdxue+GjwVDi3x67khfvZJHV13K7VQdXWC+oachuhhEMX5GHiUNaDpCH0CpqdT/6XxdAwoju7qtgpDv+ZVTFYo0sJUtCgoIrGU6+Cd/iEG8bfFMoBySkNOhL20RPjfHn17YKs/3fX9khRThPskcW9flOTurf2KPQ7XYat7Ed4xctEX1FggHkvdPXzavasQwuSF25nr7tw7ECcunqrN5e+O/h55AxN/DB95agQA6+gjdbAGnq5f90eCuLJWRW4TO7LjG/VhXj3GcMwBBUlB4tmWYUnvxSqu89JHJMtZAnx1yFFkuIUadrR+ISibBzQhCPllFo5G0GIKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,121 +142,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/22/26 11:35, Kaitao Cheng wrote:
-> 在 2026/5/20 01:54, Andrew Morton 写道:
->> On Tue, 19 May 2026 20:16:46 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
->>
->>> page_is_unmovable() checks HugeTLB pages without holding hugetlb_lock and
->>> without pinning the folio. This is intentional for the pageblock scanning
->>> paths, but it means the HugeTLB folio can be freed concurrently after
->>> PageHuge() or folio_test_hugetlb() succeeds.
->>
->> Thanks.  What are the userspace-visible runtime effects of this?
+On Mon 01-06-26 03:21:18, Usama Arif wrote:
+> The force_thp_readahead path in do_sync_mmap_readahead() is gated on
+> HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER and always requests
+> HPAGE_PMD_ORDER / HPAGE_PMD_NR. On configurations where HPAGE_PMD_ORDER
+> exceeds MAX_PAGECACHE_ORDER, notably arm64 with a 64K base page size,
+> VM_HUGEPAGE mappings cannot use this path and fall back to the non-forced
+> mmap readahead path even when the mapping supports useful large folios.
 > 
-> The direct user-visible effect is not memory corruption, but degraded forward
-> progress in the page isolation / contiguous allocation path.
+> Enable forced readahead for mappings that support large folios and request
+> the max folio order supported by the mapping, capped at 2M.
+> 2MB is chosen as the cap because it matches the PMD size on x86_64
+> and on arm64 with 4K base pages, so the size/memory-pressure tradeoff
+> for folios of that size is already well understood. On arm64 with 16K
+> and 64K base page sizes, 2MB is also the contiguous-PTE (contpte)
+> block size, so the resulting folios coalesce into a single TLB entry
+> and reduce TLB pressure on the readahead path. This will result
+> in 32M folios not being faulted in with 16K base page size for arm64,
+> but with contpte, the performance difference should be negligible.
 > 
-> If the race makes folio_nr_pages() return 1 while the current page is still
-> treated as a tail page of the old HugeTLB folio, the computed step can
-> underflow:
+> The final allocation order may still be clamped by page_cache_ra_order()
+> to the mapping and request geometry, but this gives VM_HUGEPAGE mappings
+> on such configurations a large-folio readahead request instead of
+> dropping back to base-page readahead.
 > 
->         step = folio_nr_pages(folio) - folio_page_idx(folio, page);
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+
+Looks good to me. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  mm/filemap.c | 30 ++++++++++++++++++++++--------
+>  1 file changed, 22 insertions(+), 8 deletions(-)
 > 
-> The caller then does:
-> 
->         start_pfn += step;
-> 
-> With unsigned arithmetic this can wrap and move start_pfn backwards, typically
-> near the beginning of the old hugepage range rather than advancing past it. In
-> many cases this only means rescanning part of the same hugepage range, so the
-> effect may be limited to extra scanning work.
-> 
-> However, it still violates the scanner's forward-progress assumption: step
-> is expected to advance start_pfn. If the same transient state is observed
-> repeatedly, the scanner can keep revisiting the same PFNs, causing excessive
-> latency and, in the worst case, an apparent stall in operations that rely on
-> page isolation or contiguous allocation.
-> 
-> 
-> Here is another point raised by AI, the old code also used folio_test_lru()
-> on a folio pointer obtained without holding a reference. If the folio is
-> freed and the old head page is reused or observed as a tail page of another
-> compound page, folio_test_lru() can reach const_folio_flags(), which asserts
-> that the passed folio is not a tail page. On DEBUG_VM kernels, that can
-> trigger a VM_BUG_ON_PGFLAGS() crash.
-> 
->>> The existing code avoids folio_hstate() and uses size_to_hstate() because
->>> the HugeTLB flag may already have been cleared. However, if
->>> size_to_hstate() returns NULL, the code still falls through and computes
->>> the scan step from folio_nr_pages(). If the folio has been freed and the
->>> head/large state has been cleared, folio_nr_pages() can return 1. When the
->>> current page is a tail page, subtracting folio_page_idx() from 1 can
->>> underflow and make the scanner skip too far.
->>>
->>> Treat a NULL hstate as unmovable so the scanner does not try to skip over
->>> an unstable HugeTLB folio. Once a valid hstate is found, derive the number
->>> of pages from the hstate instead of reading the folio size again. Also
->>> validate the page index before computing the step to avoid underflow if the
->>> page/folio relationship changed concurrently.
->>
->> This code sounds rather sketchy, and it sounds like it will remain
->> sketchy after the patch.  And AI review says "hey, this code is
->> sketchy":
->> https://sashiko.dev/#/patchset/20260519121646.40833-1-kaitao.cheng@linux.dev
-> 
-> Following David Hildenbrand's suggestion, I made some changes as shown below.
-> I'm not sure whether there are still any other issues.
-> 
-> --- a/mm/page_isolation.c
-> +++ b/mm/page_isolation.c
-> @@ -41,8 +41,14 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
->          * We need not scan over tail pages because we don't
->          * handle each tail page individually in migration.
->          */
-> -       if (PageHuge(page) || PageCompound(page)) {
-> +       if (PageCompound(page)) {
->                 struct folio *folio = page_folio(page);
-> +               unsigned long nr_pages, pfn;
-> +               unsigned int order;
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index a16b33e0fc71..9cf89efaf3f1 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3312,14 +3312,26 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+>  	struct file *fpin = NULL;
+>  	vm_flags_t vm_flags = vmf->vma->vm_flags;
+>  	bool force_thp_readahead = false;
+> +	unsigned int thp_order = 0;
+>  	unsigned short mmap_miss;
+>  
+>  	ractl._max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
+>  
+>  	/* Use the readahead code, even if readahead is disabled */
+> -	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+> -	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
+> -		force_thp_readahead = true;
+> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE)) {
+> +		/*
+> +		 * Cap max THP order at 2MB: this is the common PMD-sized
+> +		 * hugepage size, and it avoids memory pressure from very
+> +		 * large forced readahead when mapping_max_folio_order() is
+> +		 * high (for example, 128MB with 64K base pages on arm64).
+> +		 */
+> +		if (mapping_large_folio_support(mapping)) {
+> +			force_thp_readahead = true;
+> +			thp_order = min_t(unsigned int,
+> +					  mapping_max_folio_order(mapping),
+> +					  get_order(SZ_2M));
+> +		}
+> +	}
+>  
+>  	if (!force_thp_readahead) {
+>  		/*
+> @@ -3354,17 +3366,19 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+>  	}
+>  
+>  	if (force_thp_readahead) {
+> +		unsigned long folio_nr_pages = 1UL << thp_order;
 > +
-> +               order = compound_order(&folio->page);
-> +               if (order > MAX_FOLIO_ORDER)
-> +                       return true;
-
-Would we also have to care about non-order-of-2?
-
+>  		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+> -		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
+> -		ra->size = HPAGE_PMD_NR;
+> +		ractl._index &= ~(folio_nr_pages - 1);
+> +		ra->size = folio_nr_pages;
+>  		/*
+> -		 * Fetch two PMD folios, so we get the chance to actually
+> +		 * Fetch two folios so we get the chance to actually
+>  		 * readahead, unless we've been told not to.
+>  		 */
+>  		if (!(vm_flags & VM_RAND_READ))
+>  			ra->size *= 2;
+> -		ra->async_size = HPAGE_PMD_NR;
+> -		ra->order = HPAGE_PMD_ORDER;
+> +		ra->async_size = folio_nr_pages;
+> +		ra->order = thp_order;
+>  		page_cache_ra_order(&ractl, ra);
+>  		return fpin;
+>  	}
+> -- 
+> 2.52.0
 > 
->                 if (folio_test_hugetlb(folio)) {
->                         struct hstate *h;
-> @@ -54,15 +60,16 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
->                          * The huge page may be freed so can not
->                          * use folio_hstate() directly.
->                          */
-> -                       h = size_to_hstate(folio_size(folio));
-> -                       if (h && !hugepage_migration_supported(h))
-> +                       h = size_to_hstate(PAGE_SIZE << order);
-> +                       if (!h || !hugepage_migration_supported(h))
->                                 return true;
-> -
-> -               } else if (!folio_test_lru(folio)) {
-> +               } else if (!PageLRU(page)) {
-
-Hm, is that required because we could VM_BUG_ON?
-
->                         return true;
->                 }
-> 
-> -               *step = folio_nr_pages(folio) - folio_page_idx(folio, page);
-> +               nr_pages = 1UL << order;
-> +               pfn = page_to_pfn(page);
-> +               *step = (pfn | (nr_pages - 1)) + 1 - pfn;
->                 return false;
->         }
-> 
-
-
 -- 
-Cheers,
-
-David
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
