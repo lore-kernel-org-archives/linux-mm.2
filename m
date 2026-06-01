@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64D88CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:05:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94364CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:06:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1E6B6B02E8; Mon,  1 Jun 2026 05:05:44 -0400 (EDT)
+	id 05D696B02E9; Mon,  1 Jun 2026 05:06:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CFAA6B02E9; Mon,  1 Jun 2026 05:05:44 -0400 (EDT)
+	id 035116B02EB; Mon,  1 Jun 2026 05:06:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E5236B02EA; Mon,  1 Jun 2026 05:05:44 -0400 (EDT)
+	id E8CBB6B02EC; Mon,  1 Jun 2026 05:06:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DB506B02E8
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:05:44 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 488811C1DE9
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:05:44 +0000 (UTC)
-X-FDA: 84830761008.02.F2BB6EA
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 41D71C000A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:05:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=AemEIS1f;
-	spf=pass (imf10.hostedemail.com: domain of niecheng1@uniontech.com designates 18.132.163.193 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	by kanga.kvack.org (Postfix) with ESMTP id D6F7C6B02E9
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:06:56 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 846AA1C1DE7
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:06:56 +0000 (UTC)
+X-FDA: 84830764032.24.8FFF67D
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4D28A1A0005
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:06:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=kYxuEtUv;
+	spf=pass (imf19.hostedemail.com: domain of niecheng1@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780304742;
+	s=arc-20220608; t=1780304814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ea62rNturdRY4XhPqvTtukJW98iV/DZwMOLJ/F5D8vs=;
-	b=E1GfeTOa7nohb2AjwCnMQJ5/BeKzpKHLES4M6ZTUobeNf6ivbT4xBJ9Gx5lTMQLZXGVz7A
-	VfKjzvQO6Um/67REup3FMLZqb4XRkFWY58oa0nPXK2UnyNYn3tqAO+3Oeojp78b12BAKMd
-	I7Kv8HkPCnTXfm4u/Qw/3wnt/BkLLmo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780304742; a=rsa-sha256;
-	cv=none;
-	b=1cApGZ4wa7y8Y6ZMutENH0Ekv8O/rIVaT+b22V2La1z2QsSYkmhieUkEzDygS0tTMpJd67
-	mRZI5MIYF9dTyAdyvU2BrWOy2XWJzEbL9sDbWEnkNNA5/9UovAaIZ4KtWTyiXJKfoVGSFt
-	xv12UwtghsqhHHr5KNXS/Pp+aQ49cuc=
+	bh=lAHbdeOT8ZX8fshgJDDeCFa1dLV9zKerU9/NHqvyp+U=;
+	b=Zrf35aQGpCfK+hINYcSf1AcfZFfd3ewk5/UYHsvMf6EoDJdQogwdYFStK4auva5JK37pzd
+	d87ri07NrYe3QPACFAu4FWF1Q0GAA4fhbHzYZRpqNmQky9/oMOuuTg+lso+0FXggFgEZVp
+	rDwd1gz64//5yorTeVYSErPjooH3pEc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=AemEIS1f;
-	spf=pass (imf10.hostedemail.com: domain of niecheng1@uniontech.com designates 18.132.163.193 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=kYxuEtUv;
+	spf=pass (imf19.hostedemail.com: domain of niecheng1@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780304814; a=rsa-sha256;
+	cv=none;
+	b=CV7XpqK+3kerT5PWEIlAHaWE4ctsCUVI6iiqDZA9FXlfaaamiQTo6A7ZvROv16JchGCwUH
+	SGBEzPIW/Nk90/Tlak8uKepX+eMVWs7OHP2QR/XaUp5odGE7QbQ3OTkuo6ysRXZ/NaMa0N
+	pE14r5dfkPS9v3kiO1zzC1k53qy8N/s=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1780304732;
-	bh=ea62rNturdRY4XhPqvTtukJW98iV/DZwMOLJ/F5D8vs=;
+	s=onoh2408; t=1780304803;
+	bh=lAHbdeOT8ZX8fshgJDDeCFa1dLV9zKerU9/NHqvyp+U=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=AemEIS1fhNRLY0jn7BjS7V9hm6q/gb1WBHf/aYfDQS66JWDk8dYi16bhDeRgalvR8
-	 lkVvGz5xcPXqODKv5n/0RlAAAIjHbm9K3XAQ6BSqMlc1KEqctiJx1oy1B4o7ZHkpu7
-	 VvXMW4I6cYQg4rgFy6qAG3JdWRUvYbek5iTB6cX4=
-X-QQ-mid: zesmtpgz8t1780304727t4a62472c
-X-QQ-Originating-IP: 2bcxmMbH2iusCaR5Nzg0f+ovlfhyFWqjrzOOczmEX18=
-Received: from PEN1097 ( [124.126.19.250])
+	b=kYxuEtUvBR1e2XiFQumuPUQdouL/6nCc/PGwWOTCpkUwOu6CA1uV9fJKBHYI4esWi
+	 XF5wAZvksOATLNbVxOo3YVDVRBZcoK/eKJyuCCs6zPXXwlRJhPwXX79Wkl1UJXJoK2
+	 m3bimuBBgtXpzUicC/YdFojCl0tz1q4w+11d81cw=
+X-QQ-mid: zesmtpsz5t1780304798t67d8a19d
+X-QQ-Originating-IP: Er3M68l1E0Xar1zCBj8gD6rIxkoUlUhGdvpeAZizzh8=
+Received: from PEN1097 ( [1.202.39.170])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 01 Jun 2026 17:05:25 +0800 (CST)
+	id ; Mon, 01 Jun 2026 17:06:36 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 41246512580462291
+X-BIZMAIL-ID: 9912389010984352199
 EX-QQ-RecipientCnt: 7
 From: Cheng Nie <niecheng1@uniontech.com>
 To: niecheng1@uniontech.com
@@ -72,43 +72,44 @@ Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	shuah@kernel.org,
 	sj@kernel.org
-Subject: [PATCH v4 1/2] selftests/damon/_damon_sysfs.py: fix memcg_path assignment
-Date: Mon,  1 Jun 2026 17:05:19 +0800
-Message-ID: <464AE12D4BC6B6F4+20260601090519.240482-1-niecheng1@uniontech.com>
+Subject: [PATCH v4 2/2] selftests/damon/sysfs.py: validate memcg_path staging readback
+Date: Mon,  1 Jun 2026 17:06:33 +0800
+Message-ID: <D2B37130D38E09AC+20260601090634.241864-1-niecheng1@uniontech.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <7E6EAB7C1BE04DEA+20260601090119.238457-1-niecheng1@uniontech.com>
 References: <7E6EAB7C1BE04DEA+20260601090119.238457-1-niecheng1@uniontech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: OfLzXF8J7RicL/ZU5lX6H/24XsvdkJHW89YHSaoLnS0I9im0Y0dG2Z9j
-	EA4sHOksION396oefkjL7N3ihF+xbBnzd9hGoHKefggKJujqurYZvQEKibLLtt3yzvZqXJS
-	q5K8kThs6+M5G8+u2y+d8P+J3ZHc3NM8I9R0AsQlCtqDKzLXQVGDk3y0e7DuhjBFwlYmSpZ
-	FN6Fx/2HTMKaV+Cgn1zzUCDo13uKxlBM6zWeVaiIczE8i9Ynuhjl6Azb+n6tcRXMmRhtID0
-	0TrEZXZRrKlI4cWZlyM3IZmpt9+hQwbOg3C+Z8euefWAh5I+4iECq93x3iBZlPkMThcSDPb
-	Dq/qCj6UD3Y7sc3mOlSBSqMVe3tgLDdsUNsN5mXSjB8j76F/rgjLljhQSs+Lcv7qrGfJRQd
-	HsPIxMwtGfkGs+V6MnTcpsmCng2PrSKf90h0RGTIYxuSzMmlyhPKnkB357pw5YGCRgJIXi5
-	yfPerX5KzEydoboaqFt2DP/NDwgE9NYgsSwf17yHr8rXGJCNr+CLLCQjf6cCmVSiKbZjt3P
-	GGspFhhr2L4+BmV7MkeMrpZCoVH58FtWxjKwC4taAjPJJCiqe1Qi554mjQbvMkEjj/1xLgG
-	X4TdpD6+ueK4vpMAF0eiG0O5mVX7rA0HPPYUkh8z5ToO+DkfqY75KRFaRd8mIBZwcES4b9J
-	0g8tpqUxZvapoEWoteFa+myMgpB6B4ZaWFOVccOMyS/FPnMFge2IjL3uWZUZmj9Mj9dsFoK
-	0gpmyUmqwkcnu3jgU6T/zkhnkgI3nGBCGr1aFLDZlDwQVo79WG2iBkzWRQTAIb8QDDse2sC
-	x2oYO5lXQ6vowMjZFOdG9LB/g4OMIHxHA92CIzcwaNpp0u7b3pBMLIXJTBoeae8uiGZESUY
-	Z69YePUo2HduZMp5+IbDTB/3ayboLzJ+XXKm2A17v8+IdzqF+7sI/YhRzkDJwk0ppM9Gd9E
-	mN6jAaNyH0rvpnkzGxdtqr3EMYdeNc6HzU8PqYiwSfQIOQq1RXrzKxnBOay8aVaF2L4NLh8
-	LbGA4oOajEjLomJiAfdfqEfXJRa571zhzkutV42N2T6H0/fb5izQSY5aNrHUxSXN05xYvXp
-	HGuRzo67OubF4tpYPXL2OTJK1uBkAvxV2QGslHFW9NQFW0TkNgNBSVmQAgOQO1ccQ==
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: OaHhCqwLoLqrN65ABrgAEgxEzVdlUgQzzuPiHJEuDMVxZ5YDH32bvBzT
+	gUooTyDSkyOY5QNnuK258Ldce9bF3XLQUrEAaPnJjVPHERbG4HqBceqxo42FG1g3igMnTln
+	8HecTcXT8C6+pb4TkSl18GUhgKOIt5w77fooeU36eG97f2B2lyvq5giF4sTM/laTb37jSFk
+	HL2Y3z8PfeFem6XxDIAMnJ/9Pgj2n9Hnc/Bzfp15dAAo3TeJiWKQq2kxA85nqlY4c+3tghj
+	DnHQ03rXe/Gra3t3sg4YpvgI2wONychFdmDTzmMpjmGZDaXDmvieJ+OV4ZiCXu5LspMAZWw
+	R13YvlsJx2dq3MPNxVeNp8lqApWE6Ehqlnw1MwwMQzo0p0T6TMkGQeVd65bpJk98G33fO2N
+	3m8T6tIV40guDF3pNeF/8YwDmCkCAD9LHr9IIDNx5HKY6G9uucQjirZP5+BqhyxsbIij1bW
+	I0Pc4U5bA8tSdt2M+614IXbc/AWm6F8pJJdw16HV35HieFCIxK8URpRoJ99JZ9JCSf9/pYz
+	oelSCrdBkF2tZAi45csm6K7jdcSblcQowZGjD30DpptIGlF2tuFEuJHvGQZ5jBr9Sx/xpEd
+	odXWexTeqiYbsxxmwGqdQxwTt1yrUWlT66DGELYxEsIhOLMhGZVWiBhJZQtBib5WRm0K6fn
+	xMCJ/9FLlkX21SNqs65pLlaEQraiyJXxRmvcnfcB6XveeeEPfIvyXVKZO0LztYUZ3Hm5jIZ
+	qz0hrSFkmdKgf9PFSPxuC4ZMPbl6r91HF0VJES7N4oQAy3WBhotLMdtwGbZmX+e3B/ZzYUI
+	GRMOwxxhgF3gsFHlK+1E3N2huyx6PzzkkdVpOnSqEvn4re4yMR8nDzAd7HjBvK1Ash4fXk4
+	rN0f9SYtMhvAEtOp6hlrxvRMUv4U4yyg5q3/iLiIot68n6DpSQNeA2yCXkEbpWg9HyQdI31
+	UV8+RH3fYpZ6j5p0JEUdrIEHwSMhKyWo8W6aG9yMG2foi2lMj0YA403jv4O9VSxgmlHSm2F
+	/tYiyy199NmMigA31s7XgzXFQP9yxNacUQWmAhZKEuSR3Pvv2ISBjvHzvjsakuDJ+xnYzcJ
+	JQg6eLYm9fAjDC1n36mvHd4pabvs6WKcUGsKLHUAi2crAR8o286KINxWxPutMhbhx/9hPaZ
+	7hzWJE5P62+sZNtgF6KwJI5uSGYV5wwaIRu9
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
 X-QQ-RECHKSPAM: 0
+X-Stat-Signature: y78yzd1citag15dj3nrrg4bt3sxbpbae
+X-Rspamd-Queue-Id: 4D28A1A0005
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 41D71C000A
-X-Stat-Signature: ginyzx9efrnu7aew8tojx4g51bhrhxk5
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1780304740-397295
-X-HE-Meta: U2FsdGVkX18f2x9pNUGu6X+0n0AzVHJRBhw7E5DPFolaYxpyXAzNd9mhBc77N/Qbh9yPqukSXMdN/U+1V9sZyC4bh68OO5UYMBfw/0HDyDgDC8sEnCuDZnxvhkxf/NY2eex6WUKpiGJF/z1IbiW1VaRMGk1Uh6wGBK1fGRm6hp4UgxhQ1xSBlqoSTuBAKAlZA3wI72zQEe3HY/PvylyO8auZXlA1oiNi7mG+3UN4U3OzjxClhkOCEJOtgGU4nmQKaTeR7aa0+oScLh1NTwBAJVZAebCsUKiTVMacGqziEBssUlY5z5dNBp0DPYwM47/OHSJEJEF5SR4nzrZ61MKGTgXatQ9G3tL/Kw1fF96olr2dS+MBbzMdJ3JymFJKH89tqoQdJ7ducHwi6PGfxAAMlJ1XRNZYddpe8Mj4xbGSqtiFv8BKzkb4je2k0pvLfIdN8XYYdVVaIKIY1AEy4kZi2IkStRYsseqCTCkkOb61RMxtd7BCqavLg3iCv7baW11EojCVEw1HYY3YMlTOB0IgjHiBdxpjD2Cp21N3i7+/w7gVEfwnnF0SpLrrsxEJ8yZPgCZy6hshwaXjBk5QmyppLNUfaY9uSN4dD0WbsuS1FFfaKBdZEffRLxwy5UwXtUgFE+aZ/PaI3QJIlYQhYEYw9oT/pDISKQBEnSP8ugj9P6HsUp4bz4zwVwG0Zxjb00rETPoRf4npgIcPAv/JRtJflR4HhseKBlPOtct313sIeLDh7K9E2VvE7yX5aFjZLLCEZEMR+WqZqh3XGPESNNFvDoz0v5WuHYR4nLokPvVPk1MBkVkGCnHXb4ioQG0Ph+oOugF7uKo8zxOlnI4nmzZd5KQ2XRQRDikVphf6cpT77LGdRiaMnohtc4WbImWGBOQqyX/gz8RN/0dvH6XEhPd/TXhQzREmyj5V07YDjPA5X95udNlLmTMl5RQk8HzAEVA+BOf8+S98WJiiSufjA8Z
- SXkZHPVP
- tSUBj77TuX6hyVwhyrACKg9QMC/4da/kDPSj4ASBcYjR1rFu5ftUXcUFolLS7gTNOckfhVgcHdHufu3I69PpMw53bqwTUcW+X8zidtw2MWmfbuO9GBeCrMoE1cahKeCI5kdo2Xg2/gCLg9omSOxcM02lOQY7L1gLITWnIh15Q9wYdwa75g4aYAQJ24BHKrKIOd3Spny84ZN7CgPUDc00MHXEcnxk7HvcyCotGu+2zzkg5WHDppVFiEKctujVQ5raHotS673X9nlNaC7QCRZ5TOAZBqhfA8DrCPw8npNpwmSZzm8vYmYJatmLo3RA9X4ScW5lFxV1rQ85ZFDOenbJVd5BTi+JHky23kPn2PWFGYyhUWtHaJqmtl+pli7wzgXRGki8fvwZxIxSWQuGDtVYL906BHYTi4WDbi3AIZDrQy0GfuK8=
+X-HE-Tag: 1780304812-96861
+X-HE-Meta: U2FsdGVkX19CVlzlWpy/UxjeS7H9uM464r3UxyDVK1277ROtnM7dBlfFotONotTsRop3Rwr6UT4DhWKXex0GW1ORQuzI43Su7+aLWUdwoQC/nhjyslUsqeonMPwfxX9il9tgERnTR4XwuVdF5mu5HYaF5BuCXqa0rpg2MG3TXa+JA5YeUxkftTc2eY4D9rOnOZ0TDbppOlDTfF+yGA+VP5pIsV5yneyJhP/UoKSmloo6JygOSESwZqc+RwW34J0YL4VTIJazm41XSta45S5gOn9cp67oSsrcDjwT8peimfZ6bAkzkfsG89zdMudrDe2hNJoUE7bgdRCZf6cyfGlv06cD2unWfONBkXI22I2bFrUKVJcgqwg8hSEfbIrkkn3lzWsMiWZpCoLdbVpXVB+cvX7mCUjXGH48UHULDBL4MSpYJKsGMT9L41hSJiTA1FIqCgFDNyA19yn1ymbyJT7QzBRsvXrZZEo7ZkdE+CdCk+eSxkMkaCbs8/0Z++ROQ8r7ZXg5Qt9oFWS4CCQq8xM/Ht8tuDaiH2z5DlJyYkxjbpUQyCmr61FxVxXDZOKtPi2PIzAKHIpJV7wnvBkhFtA3zN+0tVKogXuqYakqJw/o4mE7UwN85Me0eyfGmDEHwGnSpBwiGX3uPwTukpfNHda/IVozFbsSCnXWc6VysH6bZguhfYftSXXfzV5NmLk6QAnJGf1CBcNYyg+QtfSCeOFIydvxwd0d64rBbfQUF5gcAZb1fBu+ddZUDt6E7rEMMzql0H527JfMm42X6Nl+jImQdUdDFkUlH4b+zpJc6sAXBmvXa0i4hMYzH4Bwk0BFhLcb86Ukd7FGu0usNmlta9AI4Hw7U2vND2QxXoyYJC+v5w4JJ5HB3Y/pdhMvbddazpQy3MkY8fQRPn1KkLpWdFcAZkceWrYE5SwuEriKWgcP2S8V68CyXVWPgf2BJ3UGJ1Zb81uThZ0JNpjwcLDOWjZ
+ 4BhAF1Dh
+ D5dz5y2ileR3qmLZCbtmkGK4goUQwdVrxf07ZDAdz9WQoy8gHMXHD7PDUJaqT6M5IIJVQOvBtqjohl2oADIruHR686RzNxidHHH3Z42atHZ2ASDHIyeGBDCiEB2QzMOGMC3zoibzKb+LqdHFC1FS8hupywtcRbtVEC07cP0rt/FjuXAb0a6lYrgYcDbfdAE70xDcXdgU0Wo2DTtRElUFOzpp0YyaQNWGnYXRrmBK2ncATrX8wfshtACzBvmXjktQxSG/CxI2vNMWKar0ZGETUyODhe1U0tkdM8Zi20igolMhi/anr3C+e3NFQ3x8dPsedmy1LOoFquiluEuB1P91DkqdONUYD4TtXmQarasQ5jhNioPeEr1I7RgEDWB9fUQRrtXk+uQdaot+qJGo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,32 +117,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DamosFilter stores memcg_path for sysfs staging, but the constructor
-assigns it with a trailing comma and therefore turns it into a tuple.
-
-Fix the assignment so memcg_path is stored as the intended string.
-This makes memcg filter staging and follow-up validation use the
-written path correctly.
+Add a dedicated test at the end of main() that stages memcg_path via
+sysfs and verifies its readback.  Configure the memcg filter before
+start(), do not call commit(), and ignore start() failures so the test
+does not depend on CONFIG_MEMCG or cgroup layout.  Call stop() for
+cleanup without checking its return value.
 
 Signed-off-by: Cheng Nie <niecheng1@uniontech.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/_damon_sysfs.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/damon/sysfs.py | 31 ++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
-index 8b12cc048440..43075892215e 100644
---- a/tools/testing/selftests/damon/_damon_sysfs.py
-+++ b/tools/testing/selftests/damon/_damon_sysfs.py
-@@ -271,7 +271,7 @@ class DamosFilter:
-         self.type_ = type_
-         self.matching = matching
-         self.allow = allow
--        self.memcg_path = memcg_path,
-+        self.memcg_path = memcg_path
-         self.addr_start = addr_start
-         self.addr_end = addr_end
-         self.target_idx = target_idx
+diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+index aa03a1187489..35be32cf49ac 100755
+--- a/tools/testing/selftests/damon/sysfs.py
++++ b/tools/testing/selftests/damon/sysfs.py
+@@ -250,6 +250,35 @@ def assert_ctxs_committed(kdamonds):
+             if ctx in ctxs_paused_for_dump:
+                 ctx.pause = False
+ 
++def test_memcg_filter_memcg_path_staging():
++    global kdamonds
++    memcg_filter = _damon_sysfs.DamosFilter(
++            type_='memcg', matching=True, allow=True, memcg_path='/')
++    kdamonds = _damon_sysfs.Kdamonds(
++            [_damon_sysfs.Kdamond(
++                contexts=[_damon_sysfs.DamonCtx(
++                    targets=[_damon_sysfs.DamonTarget(pid=-1)],
++                    schemes=[_damon_sysfs.Damos(
++                        ops_filters=[memcg_filter])],
++                    )])])
++    kdamonds.start()
++
++    shown, rd_err = _damon_sysfs.read_file(
++            os.path.join(memcg_filter.sysfs_dir(), 'memcg_path'))
++    if rd_err is not None:
++        print('memcg_path staging: sysfs read (%s)' % rd_err)
++        kdamonds.stop()
++        exit(1)
++    if shown.rstrip('\n') != memcg_filter.memcg_path:
++        print('memcg_path staging: memcg_path readback '
++              '(shown=%s, expected=%s)' %
++              (shown.rstrip('\n'), memcg_filter.memcg_path))
++        kdamonds.stop()
++        exit(1)
++
++    kdamonds.stop()
++    kdamonds = None
++
+ def main():
+     global kdamonds
+     kdamonds = _damon_sysfs.Kdamonds(
+@@ -356,5 +385,7 @@ def main():
+     assert_ctxs_committed(kdamonds)
+     kdamonds.stop()
+ 
++    test_memcg_filter_memcg_path_staging()
++
+ if __name__ == '__main__':
+     main()
 -- 
 2.51.0
 
