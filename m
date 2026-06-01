@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2628FCD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 02:09:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FF26CD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 02:11:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6281F6B01B3; Sun, 31 May 2026 22:09:45 -0400 (EDT)
+	id DA67B6B01F0; Sun, 31 May 2026 22:11:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D90B6B01F0; Sun, 31 May 2026 22:09:45 -0400 (EDT)
+	id D7E446B01F2; Sun, 31 May 2026 22:11:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EE896B01F1; Sun, 31 May 2026 22:09:45 -0400 (EDT)
+	id CBB086B01F3; Sun, 31 May 2026 22:11:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CA026B01B3
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 22:09:45 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CFC371C08B2
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:09:44 +0000 (UTC)
-X-FDA: 84829712688.07.7B01422
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 09F1320002
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:09:42 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z5vH0pPX;
-	spf=pass (imf13.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BA81B6B01F0
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 22:11:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C3C9C1D8F
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:11:54 +0000 (UTC)
+X-FDA: 84829718148.29.45A58AF
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 89F27100010
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:11:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bJgPJaPR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780279783;
+	s=arc-20220608; t=1780279912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iDDfOFWy/TEWE9TK1LtUw0BuKs5gwFlMEYe/+sdHufE=;
-	b=CxgMRkd3o5dLhed1vzZSFjZXbV1WV+gLFyQlRF0wHLZDMcZx9qbzpWJWp+GzgVtYWOgNd2
-	aAcrCXGQyGpcLMW/5w+AN1whyD3VqYYKUbdkbXiYzFcJOE+07NP74Nz2XWHYFQ//xorjaL
-	RTVSnianhu8dUO+rocpdT8faDENVdOQ=
+	bh=yA/QFrCtPoX5wPIQZTccJ9pEjaemUdXNIzLEOb9zuBk=;
+	b=zgIaW75MpzHrRNgNiJH6wYyhJv0gLfuoo1ko+ktyvh27YmfDo4ItGEiOOmnhcRg7Ll065h
+	AkysDC5gwlX9+H1Q26eHfOLS2V6/JeIEGNkqSAv1g7i4cu4v3c1StdTpj3VULO2mTORZ1/
+	FJBhOLZJIqTM3QrHPkst5klwtsxmSEI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z5vH0pPX;
-	spf=pass (imf13.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780279783; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bJgPJaPR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780279912; a=rsa-sha256;
 	cv=none;
-	b=D9im26ie0hxh5q8CzvPgekJvGJhGZpNK8fJ0vEfqf2BNXezVRA010u/AGytFlmZxF+CCsk
-	ArDfow+NYXUlfC20OdJycsxezkrR7YxI9fCAZUWO7O8M1ewmAGF4odi/Zf7uOavrVBo43t
-	u6v6HLVap8EXvRyLnbfwvNqOiQ3SBac=
+	b=2s/lH/35cGFbxi2sdiZZBx81iPmHNhmJvUJ1iTSoJbK2BMUtGO19eX/4PSfWNaPesgnq/o
+	lJw9OXj64DcPgpotY51KGjIyYClFrq4YPI5vWJIZILleJJU/jiFkvW+texet7Yb557uFZq
+	JiFShYR+4b8Uq0YU6ZkxstNnOQf0KPM=
 MIME-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780279779;
+	t=1780279910;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iDDfOFWy/TEWE9TK1LtUw0BuKs5gwFlMEYe/+sdHufE=;
-	b=Z5vH0pPXLNpa0KFp9XL3PskVWUujMvCVP+qR6Dg5C6yYUAlM7lZAlnt8kPUAS41+c8vxuZ
-	uRTIXsBiHU9oCpqYcF9ADzh0GXsF5YFt6qG9f/ltRhuK+HifqeTGKWWtCeh4LNnJg6ozlE
-	pvOnmYr/SnamjcAvKZ/4FzeeTVN1cYI=
-Date: Mon, 01 Jun 2026 02:09:37 +0000
+	bh=yA/QFrCtPoX5wPIQZTccJ9pEjaemUdXNIzLEOb9zuBk=;
+	b=bJgPJaPRzvdonnMsZ4dpFUWP9OLxY+c8G+lanO2reQL+tLTEmhRxizTgnW6WnfqjghcwTp
+	8M0xmyVSfdACXogiyGGfbhUHphhbpsJX/hlBgDr7tob/B99FQ2oIjWrf1hZQ3kPWEAkn+I
+	T8geubSrHZAE/8vN+xvMLhJLHYOoXKg=
+Date: Mon, 01 Jun 2026 02:11:44 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Kunwu Chan" <kunwu.chan@linux.dev>
-Message-ID: <1d19bb24fe6c1f6935ef078f7d7461e73590f21c@linux.dev>
+Message-ID: <2b9ae12de845ad1c7070c797ed1214602e548db9@linux.dev>
 TLS-Required: No
-Subject: Re: [PATCH] mm/damon: fix stale TLB young-state handling on arm64
+Subject: Re: [PATCH 1/5] selftests/damon: prevent cross-context state
+ pollution in DamonCtx
 To: "SeongJae Park" <sj@kernel.org>
-Cc: "SeongJae Park" <sj@kernel.org>, "Kunwu Chan" <chentao@kylinos.cn>, "Wang
- Lian" <lianux.mm@gmail.com>, akpm@linux-foundation.org,
- damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260531162457.98724-1-sj@kernel.org>
-References: <20260531162457.98724-1-sj@kernel.org>
+Cc: "SeongJae Park" <sj@kernel.org>, shuah@kernel.org, damon@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, "Kunwu Chan" <kunwu.chan@gmail.com>, "Wang Lian"
+ <lianux.mm@gmail.com>, "Kunwu Chan" <chentao@kylinos.cn>
+In-Reply-To: <20260531163050.98908-1-sj@kernel.org>
+References: <20260531163050.98908-1-sj@kernel.org>
 X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ayarsr8pagu4bhwp3qsqyf8j865y46j4
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 89F27100010
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 09F1320002
-X-Stat-Signature: hx4udj5o6qbwcga4b4g1rfbtznduks89
-X-HE-Tag: 1780279782-519294
-X-HE-Meta: U2FsdGVkX19w6RSXZCs0Yz1GNO8T+avRdjPvP+Vb3y/hQ0wWjjjavv4MCpcqqWiZED8Z8CpFBur4d7ZzhIdFlCRWwTPWfhlYlKNG5sMvVJEN1mXbflCVcz9LRDp7XSLlxNN467ayRq23a4rQqn5vj0UUBdHCQMWoe5M1rSqPJoqmEv1OWr+BjjuaJf+pFcsWPmjyg5KHCMoEqZ0j9jH8w35HychrWAC1B0v1VzXAy0r0eoNENx2iu33tbv4w7WRvxXZ17CFOmnD9nVVUzuhjaR9eVawJI5Ig+96isv86xb2+aHlFDgxSl2znQeadsMVVJW/pKmPjzynOAkFMsmoo1UgWFf26+vyKsAoAC8OEGQCe1HNiBr9Ib7li1+b6HlGjbHozzb1+RU7qxB4me7L3WTSXuY0vcahqSEHGk3fh9Zz5fya3HaGoM+1RIghy3/7BN8kzSR0WHN5KZu/HvU2hZkkvi/rZcqpLlxlPW8iQlY0tcwXaxX+DRhahc/64NWu8Wiyr8FWCoX0Vrrp5IWGiy5SfKwwAS2JSmV4PzN6W9Vm+YBhwtgUyAc40NC3qI2B0vaFtwkfOj7C1OL9h1z5aJ6ypNY4uWikvnTfHgn3N+/NcBeQlAeyk6BmeFUNONOVfDPyWn+Pp0A+fG7VE9pPYzy/ZMQpIXh21HeaZWP1wNGh/omjPOm6tXD5fyuwIyaWKnro72vaa+IhgH4YNIQ/2MzDO9Wrci5aF9EKcyOUoHU0MUcvTXdAvTv4vyUXkLZ4nFzK/2HqzRQigpuvZ0Pmo1W0NQLWv6dRq7njSnknhCzPQ7Q+yyovFXmf/kiHklGKXV2j35T41RGUtvKB47wxJIyEn//Plfp4n5NHchhqvqQWMjjtV+q1EkVP5wYH3FDIhpwa6J1RmlpscoKYK3Gx/imuya/D9doVfMcQ+jaGV00hxZaZzH05OK+g+w19NMXUdKmt70fzHUceV/PmJzx7
- Iq1H4YPH
- TIoBhqPecPWtPQNgHhlHe5tdBcSkvBsVJQnOKm9PfGr/R2iP+vg/qSPCKxaZFoGwlJZsEl2/2p2K8b+zE6nr78R6qnBGhYOHTVIwI3lCvaN8mEH147lt4LFo7G41ZuUJ2usKQluOex8P73IHv/UJR7l1PAnxdyHWXi+I5/6u4LMEfvx4dVnln6jtYq0jfTZ7vQzJVjSX8hItsax6CK4OAbu5k2L7r9b7RlJ4X/9Mlf5XKJ3z7ukMcYOFvKIfDKawxPmHYAur50AbQxlSbdPKAbbCfzvHIX7n3lni1oiP0QN/200Rn40yHUXwHYgHx1bmvLfLQaAdW+m4cmN48QoWq1pnTLQ==
+X-HE-Tag: 1780279912-715073
+X-HE-Meta: U2FsdGVkX18WD84td618gzbEr9DFaYg5ht02nMTFDN5hXq3zIr1rJtCOfELbWwwEviZGB7zcLZ1t81mHuiWbC9mQS91v6IUaizHws+NxE/fbWjuoPCkooRneIn942QJ4v1VjAbQXNPMl+Tfu6rSCFqg6idyfhv6PQc9o96K6t2z8/6qdznRi6Cqd/0UyRN275b2CrIlHslwXhltc3PbWYBW+wAtjAH6HYt6yv/Kuhmy2B83Mi5C++kR8iduR44v4jZBgn70OWck4DWrylVXfw0DrUyUj0qraQnERIsO87JRRknwSJZTFkohj+BvrSaHSckRg83kedDgVC23DFWRdeHR8y4cdDlQgZSpE/RpFBynfWLZ6XJ3CToWfS+gvMsI7liYj/zyuXasHCNRv7kEHw4TVp00qg6KkivfwrKqrIZ4fXDmdXIXWG+ZzLOfwUywxSI7Ao7o3mJ/k3G/rfKozcd3iCo0RANdAzjHa6BKf8eAQ0GhbNPxMk5z5MEDs7442+15LVDQP0+E0HPDwwoTwHdHzVeQdmj8xRjiICOeXDWsxHaJnVSUfPH5wiGqJMTozSZXu0PNxTlbzdzqDSABHvTzGR2WjZ823UsZuQDrjRZ3Ez7gY9pfYGMXfBV8JzhBvYMcQ6Fib6kDK79N/ik+xY974ybcucRC8w8LsCBKXU9twDj3TI6k7gvKON+yXfz4hYv8wOMNKuYb3vp1Wi0t+kJOY4gbgA+6hfWsHp15Ld4ygrC/RYSvMm7qnc/KCSsHKZyTxbiwcYWG26QfKP9nJwwKmSgHulRgQB9nsrIZhxx218RPAkmLV1VquATSvYx1Z5Dccr0X5YZ93kxLqYUHdqUn/yGSIgk+D/Rd63meLDnwPPkvyQOXq9jo4s7nueoxSfofZ9FKHqDLwlzxRF7o7sRLhPGjje9akYbxngunqvcNmi8FXOrn/O9g/Zw9Qu3ZpUMRL+bHkMrToLl7d79a
+ 86WSjO+j
+ v/Su24So+D9Pxtuz+GjkJDDTnlIZ6P4pgkVd64HKRAaYMynpX7vMV8SgwmKfIvPIYykjEGKc8Q0JyaJtnJaitHtvjepVh6aJs7FkZ/jyyZjAePOqj6hMm20AJVETGr19f9Uo/6FOljn8Zx17imIi4HFshM5gPUyqbklGoqqo+OtaHQdI+yR8oQTlo25yzn4ZS9W8/sBFsiIb3iZ1Hc5G1i/eyuf7+/VcMtaSlGx+xI60mxeNCvZVBjZtcJlNEYqC+qSHcoiLqJBgnVcdCpJ096MBYEW52oVXhXCjN+361kA+ifeKiT18Q6o2iQoVmM1ikbS/hCRZCpwblaT7mlbCrqTy4XrktMCxh6ia5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,42 +92,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-June 1, 2026 at 12:24 AM, "SeongJae Park" <sj@kernel.org mailto:sj@kernel=
+June 1, 2026 at 12:30 AM, "SeongJae Park" <sj@kernel.org mailto:sj@kernel=
 .org?to=3D%22SeongJae%20Park%22%20%3Csj%40kernel.org%3E > wrote:
 
 
 >=20
->=20On Sun, 31 May 2026 12:16:49 +0000 "Kunwu Chan" <kunwu.chan@linux.dev=
-> wrote:
->=20
->=20[...]
+>=20On Sun, 31 May 2026 17:17:20 +0800 Kunwu Chan <kunwu.chan@linux.dev> =
+wrote:
 >=20
 >=20>=20
->=20> We think that makes sense. Explaining the rationale for not flushin=
-g TLB,
-> >  the limitations this can introduce for tests, and recommendations fo=
-r
-> >  choosing reliable test working set sizes would be helpful.
-> >=20
->=20Thank you for kindly accepting my suggestion.
->=20
-Thanks,=20SJ.
-
-> >=20
->=20> If we later find cases where the documented recommendations are sti=
-ll
-> >  insufficient, we can revisit more intrusive approaches.
+>=20> From: Kunwu Chan <kunwu.chan@gmail.com>
 > >=20=20
->=20>  I'd be happy to help with the documentation work if needed. Please=
- let
-> >  me know if you'd like me to prepare a draft patch.
+>=20>  DamonCtx.__init__() uses mutable default values for
+> >  monitoring_attrs, targets, and schemes. In Python these are
+> >  evaluated once at function definition time, so multiple
+> >  DamonCtx instances can unintentionally share the same lists
+> >  and DamonAttrs instance.
+> >=20=20
+>=20>  Replace the mutable defaults with None sentinels and
+> >  initialize the objects when needed.
 > >=20
->=20Yes, please feel free to send a patch! :)
+>=20Nice change, thank you!
+>
+Thanks, SJ.
+=20
+>=20>=20
+>=20> Co-developed-by: Wang Lian <lianux.mm@gmail.com>
+> >  Signed-off-by: Wang Lian <lianux.mm@gmail.com>
+> >  Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+> >=20
+>=20checkpatch.pl complains as below:
 >=20
-Will=20send it once I have something ready.
+>=20WARNING: From:/Signed-off-by: email address mismatch: 'From: Kunwu Ch=
+an <kunwu.chan@gmail.com>' !=3D 'Signed-off-by: Kunwu Chan <chentao@kylin=
+os.cn>'
+>=20
+>=20Other than that,
+>=20
+>=20Reviewed-by: SeongJae Park <sj@kernel.org>
+>=20
 
-Thanks, Kunwu
-> Thanks,
+I'll=20fix the email mismatch and send a v2 to make the addresses consist=
+ent.
+
+I'll also add your Reviewed-by tag.
+
+Thanks,=20
+Kunwu
+
+>=20Thanks,
 > SJ
 >=20
 >=20[...]
