@@ -4,78 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 394E7CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 13:22:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7910ACD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 13:24:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B8BE6B039D; Mon,  1 Jun 2026 09:22:25 -0400 (EDT)
+	id C17A26B039A; Mon,  1 Jun 2026 09:24:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8901E6B039F; Mon,  1 Jun 2026 09:22:25 -0400 (EDT)
+	id BEF1C6B03A1; Mon,  1 Jun 2026 09:24:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A6306B03A0; Mon,  1 Jun 2026 09:22:25 -0400 (EDT)
+	id B05016B03A2; Mon,  1 Jun 2026 09:24:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 697836B039D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:22:25 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D84B1A06BA
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 13:22:25 +0000 (UTC)
-X-FDA: 84831407850.11.7045CCA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 879BA180004
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 13:22:23 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LU6AW3wK;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A22756B039A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:24:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27E8FC242E
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 13:24:22 +0000 (UTC)
+X-FDA: 84831412764.22.693BC6F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4ED0D1C0010
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 13:24:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aHTWbVtK;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780320143;
+	s=arc-20220608; t=1780320260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WDT+8+ETf4Oj92XwVc++A5fr+CCglKoLUu0D8KimQ84=;
-	b=P8HUWT0X91klSQWslMqWn/SWly39vWEGiraUx9TXIEx/Kz49Gm5CAXOtKHZRDvIG1aUCmh
-	GvFL8s3kLxEXJzOBma6jQ/iHIxTJc+0gjJrkSC8j6JW8pDQntf0m6D2RDnA+PnEyQzM5iC
-	hlH1VZ6kSlQX9gtfAUKPyWuBKJFZy4Y=
+	bh=4xj0Qmb3PGvR9vYXLCTRMNng9IbwfFzut9XpsoiGbGg=;
+	b=FNIl0BP1Ah3p1K7vpTtl4R6i7qmoeeIL8MDTbNwnumrJazkwrtqfBHl9fG9MwDpvF+VV3O
+	BwIOIi06wCYSKKbTYuDMKORxrgc/rg7IvhVgISrNVHJeXBUbksYSU4RcZO+zQWcxQqnX9t
+	ZsLt75YXdXh35k4Eda9r/ONgXWlLs80=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LU6AW3wK;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aHTWbVtK;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780320143; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780320260; a=rsa-sha256;
 	cv=none;
-	b=fQ9JsbSew6Wzgiey84T6MGJsO9W5dfKEpQTw8RXhzWF1DbEKfCk5K3LORI0X2YC/NxuF0F
-	c7YlYexP1JturaxxK+bjcN1drVhGEWYthNmXQz8rrOybxTpwuSdTAthlnaE/mvYJl5ur8W
-	wa/dKJHgoLf5qXbyiSG8E1q9CdpNJTs=
+	b=i3qcy7fbRAeH4EYb4mvMN9BBTeP5H59pyTMYqUSyhzW5okJCIfdfwZKJwKbnpwXZI/0m1D
+	i/t52xSa0O4PbNg36S9JoRhJg8MyJGotV8kBJqrBFqSqamVgaXhEc67h1X7jj4zeuHtv6F
+	jIdqV+OMyhh0168ElBZtiLuUPNBl1sE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E9BE760126;
-	Mon,  1 Jun 2026 13:22:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBE31F00893;
-	Mon,  1 Jun 2026 13:22:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5168D44059;
+	Mon,  1 Jun 2026 13:24:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B419F1F00893;
+	Mon,  1 Jun 2026 13:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780320142;
-	bh=WDT+8+ETf4Oj92XwVc++A5fr+CCglKoLUu0D8KimQ84=;
+	s=k20260515; t=1780320259;
+	bh=4xj0Qmb3PGvR9vYXLCTRMNng9IbwfFzut9XpsoiGbGg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LU6AW3wKuu8SCk7DkUOYOGjAikqXBQEAcRgbGOhMTZuzzL/jEjz6W1NAmcd6J71nD
-	 f1J9yPoVcNbopDcXDC/tRcytt3DWozJFC9hp37ufoeat0oPOYbTnmMQuustGcQE3Jl
-	 PQ4S5jvRVPvXPa5T686eyp57lLX/9XOLhfmd+hvxtNThxOlIsz+ycJGq9VmnAeVdCa
-	 p53tUKhy7GipyNvMCP3/OESrPe2OjXaHKvEbJoFGg0onrA/I81UnFMddcqeSHXxXdK
-	 IWJiln4pvPHWl61ksfS3UuHn5NoD/Fb5Hyo1PX5J8sBDZjYxsOycLs822PbzqdfcIb
-	 8USWAXGFgogGg==
-Message-ID: <e3d023f1-ab6e-4424-b304-55f1294480c3@kernel.org>
-Date: Mon, 1 Jun 2026 15:22:15 +0200
+	b=aHTWbVtKn7f+LNNNpRHoDFO9RRSGdRMNh+r/lcwYlL4Kpb96gJTSUYUalNPuCsI83
+	 Xnddj/uOXCZ7MmgKTAa5furNrlqlZIsJBIaqJp64H1FKDFpBGnc86eNbGnHk/kMtUb
+	 aLxbEunIY1/JuAIvCeJ4iYSUnYlJ2d3GcUYBNh7lfvgUHc5JyunfmPzbpru9L1Tg7D
+	 DCtaTk3iZ7N51uQrnxKjPJuEWtcWV8BKb2JzGRGRT29OMVksUbgemQidyKWGcmlXDG
+	 L9j4zrUaeYrIrIr8eS2RkkZtpF0OUUxDZyQIfz3ar4tAM0QRy/3jh+C+g69I4GqTc3
+	 JybqLRPxBDJhg==
+Message-ID: <f6816b64-14b9-44d0-ad27-323629a0117e@kernel.org>
+Date: Mon, 1 Jun 2026 15:24:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/6] mm/memory-failure: surface unhandlable kernel
- pages as -ENOTRECOVERABLE
-To: Miaohe Lin <linmiaohe@huawei.com>, Breno Leitao <leitao@debian.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kernel-team@meta.com,
- Lance Yang <lance.yang@linux.dev>, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+Subject: Re: [PATCH v8 3/6] mm/memory-failure: report MF_MSG_KERNEL for
+ unrecoverable kernel pages
+To: Breno Leitao <leitao@debian.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
@@ -83,9 +79,11 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
  "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
 References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
- <20260527-ecc_panic-v8-2-9ea0cfa16bb0@debian.org>
- <19f968f5-1289-f573-4406-e5c91dcd8923@huawei.com>
+ <20260527-ecc_panic-v8-3-9ea0cfa16bb0@debian.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <19f968f5-1289-f573-4406-e5c91dcd8923@huawei.com>
+In-Reply-To: <20260527-ecc_panic-v8-3-9ea0cfa16bb0@debian.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: euz3ou8qja534ztw5uicaa8j3wnz81ky
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 879BA180004
-X-Stat-Signature: b97woccrrho9ykp1ujkf5tz3azpw5czn
-X-HE-Tag: 1780320143-528793
-X-HE-Meta: U2FsdGVkX1+IBl5hK0M7/QD1cJKMFg3Oep0bb4JVuks4J2aLYf2iD3sixSGvot6D3c4PGiwEKfOkEK8zFYnCFDIrQCfx7ktu9Jfkp3Imq+RzQf+BD973AUjCMxLcodQeXxoHfHfwf9im2ShDRtmhJtTMB6HqjlIQ7hMb6vH5RBMBhp+Lf5130423Gf34L4QFMB2DlX1JocTC2ZkvTwZKmPr6P9rAtgIQEEHoOowD1J1qFqOVKEJy8SOSQme9bX7+yednVt1ZwxDhXf6oECZfP3pyXtdLfsssF3QvP2VVgPkmzC8vg4/Yh2fVSu4G2uNOFJz/Um9Z9EmwmAPj0kBDO4qoSUjhXGrkQWz4BhjMQGplVAcJx47fjW6s5blMuA0Rp3FyGctsAjhtRlyrfd1S1vi+Ub/Mo6NTBl2TZZ/SvDW5ZPsfJM2mC7w47S9JAvLTMnXW6b7Ks+dmm4+GMtmO7RPnQxFIaeZBlcUzJ3L5oVRNrqDC1tispse38+pzU1s5pcHmAFaHA1+8YZK9cJio6SbLFOf3tGt/FCQu6ioQZKxJh+6gvvOKldZ++pqFA/w18TelJLKegichjmqr3dWBx4lzzOXb26CUVgXnsOHkb7q3b9auZ7WPpYBuvhwAf5SAHChx4l/IbNhPKe8XujAcij/iZ4ApSdPtOXU9MxilXRoX85hsTP1RFZOmCyADeXW7WcrUN2B5kIKx4qv9U4FelE5aQ7qzDnAe14GX3tQHJRx3GGNfBtpCBnJYV6kHw2P1N+Sfuv+S2FzJyHPW9TAYlZRUQLR8X4R1R1v5K0Ng+t8Jy/rrcztEZ/QKbr23CrNHl+8UWcAdrj1zZUO4fumNHJxQLugjSXGkaSHFD0zFpWGm8BPBMQSgeOVIhEAb8GZQfy3WeJk0gGSt9eLCAdq5BYQvEBmuEospUoRpdvQ773+hBEUp/oOvd9QIQb4Kq2f3/KsEcQbK0e1YmxX98xE
- D7sNoFA0
- HLtqqH0r00pE9xYhLfxmkWjMSlFBXg+2Rr6kckQhQ/pu7E1OGH1djl0skHmCrPHUxzo5LIpbBiid6XofZh2euRYktsDTT0uVBulBojayECwsVNBV3spSfNox1XjX2BaEzniuIvhlm7S3PPkbd135vXLVHF54CbAnL5qS1gqEkchd4yVF3dmiwzySyx7i8kNoOZtl7cftV2w/imbvbvVXZePaGvMGHBwzeqtQjUIw9owlVp6Tg7QCVSX2CmmVgq5HWxJg0tsvjk+UIvcPy4zD+VfPVRV1jve4RiydZvaIlPamF6f6Pnfuq5vgf/VnAqepGEzGwWFMQOyOw94rcNjqwtTDOi6l+DTKxw6a8+4bJapsBVXbtEZpi+PvHVw==
+X-Rspamd-Queue-Id: 4ED0D1C0010
+X-HE-Tag: 1780320260-725305
+X-HE-Meta: U2FsdGVkX1/S3h5Oa4KTccsx1lEAfqcmweZJndJxL5Jhjunyp1RANOTOKuik7JuK37wix8IYl/tYaxEhiZ6/RZaVevkWFeV0fmR6ZIjSeY58x+Y4+Mdmurm+ZYt7SHcdLYA+srkXRHHkJT1of5pGGUfl6dw4VePcEwHtyn/BVFRkucWWeExYkG5PM450cx599VTbtf18wBeKc9bt25sGD1gEkWHRIu9Tp16mG6XxtWT1sdst8do6B0kM6epa8nUVlfJYp4jTM1clHxpa0BdyMj2af0v9FoxS/TmRrZK7qwNxFO4DEmslDYmkUf3r/PpgCQQ4F1AfQk5pNjTu1ENrxARb64tz1XcyEI0VFN9jFCZAwejn/hm4iv7wfFWu41Z8EybVPlzWqVnKl2vNdyzx2sG9YSl1C6mDNrWsyPB0SONGgiwJJ4rbZei8JdP0iPMKnrayVA9mGmViGDF2IEjmw/ttpbczCG8bSxUpD37uybkbMrWsjiWwulkD4Mvs2wpOF2joqnknDBv/pPB7rKiOSriKssAbPTotEZMEbEyHsjeafaY21G2e/YDOzNz/TmDLAAHLeKKbg1NMyUzzkROxKXEP69YB6jPM5ViaKilFag8epTe0s8+ny9HmTBskkYP04dzoodr6RFdtf2kBSlr8Iox15n+o12r6tvvQQ47OIbEZnIPVtgl8u9KqMOhYyllYTUgWl8D4H31lZgySUHzw8HpypQlDysXwTqeOPinFuYdc9wPqzpEAqXTscRMV/h3hjdLNkAZKX7eAbOJQWnsith9re9VV1l+dv27xlvF880WGGuRs3b6BhEFLfaVXMUZ+DbYQPqDWKB/wxwB6pQhwZ04Lw31iTXnisEQ8owWV4xcyrwgTo9/mHLp42lpJotZzmhNebkDXhISVwgmWur9IMCf1DfYEiLzvX/2IobOPMfUPXHkyAxAjFowj404Dgg+gHrXaCzCMNzA7m0p5Om4
+ +43ee3nT
+ 7Vjj6Tu64OTaXLOxBNNCm7KFauOdVWU9TQcS6+7BYkW7uixLUS4WTrHbz5mpVnQD4aHpfvTwF3Amf9ou7ly74ZLhn11WxT5N1AVfOHXXg0uieqNq9d3LNRhUoQrNWhg5zuzJq7ZHtiFT+lLBUvqUKabQ0DICXJOC3TjygK8Tueth+GL0W2cFILWvxbtTMFdcxw5C0uFw4736dGFmSHYCM0Rep8NlGdANZ1hE0p0o9oK3HO92v53ea7bVvLCe1y+9U77oq5nf7cRjie4tF37gDzpxABLuNkNLCrI6EDwI7EjNxSjsM6f+b3JmVkbbR4Dw/2g3ZU/m7RVEu6U4HUH3f6QUX1XxCCkF4uGRwOWkZhGqpQ+gi0z28Nfn3tLhdhQGkiE/a3zQdvxau0TlD93AyEYB/k6OV2VqIUWzIECm61E5nFCI8IqGOiUhRWK6UwUpwfHWXaO2yOAFCjUEhnpKspM12Y8wbS5L/iqKcuNzgxrDvThAzQNQr8cCgsSSVRgCcnmiqV1vzzqCWIcuOVyqqTDvnpSQfK2KN4CF7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,112 +148,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/1/26 14:28, Miaohe Lin wrote:
-> On 2026/5/27 22:06, Breno Leitao wrote:
->> get_any_page() collapses every HWPoisonHandlable() rejection into a
->> single -EIO via the __get_hwpoison_page() -> -EBUSY -> shake_page()
->> -> retry path.  That is correct for the transient case (a userspace
->> folio briefly off LRU during migration or compaction, which a later
->> shake can drag back), but wrong for stable kernel-owned pages: slab,
->> page-table, large-kmalloc and PG_reserved pages will never become
->> HWPoisonHandlable(), so the retry loop is wasted work and the final
->> -EIO loses the "this is structurally unrecoverable" information.
->> memory_failure() then maps -EIO into MF_MSG_GET_HWPOISON, which the
->> panic-on-unrecoverable sysctl deliberately does not act on.
->>
->> Introduce HWPoisonKernelOwned(), a small predicate that positively
->> identifies pages the hwpoison handler cannot recover from:
->>
->>   HWPoisonKernelOwned(p, flags) :=
->>       !(MF_SOFT_OFFLINE && page_has_movable_ops(p)) &&
->>       (PageReserved(p) || PageSlab(p) ||
->>        PageTable(p)    || PageLargeKmalloc(p))
->>
->> The MF_SOFT_OFFLINE / page_has_movable_ops() opt-out mirrors the
->> same exception in HWPoisonHandlable(): soft-offline is allowed to
->> migrate movable_ops pages even though they are not on the LRU, and
->> we must not pre-empt that with an unrecoverable verdict.
->>
->> The list is intentionally not exhaustive.  vmalloc and kernel-stack
->> pages, for example, do not carry a page_type bit and would need a
->> different oracle; they keep going through the existing retry path
->> unchanged.  This is the smallest set we can identify with certainty
->> by page type.
->>
->> Wire the helper into the top of get_any_page() to short-circuit
->> those pages before the retry loop runs.  On a hit, drop the caller's
->> MF_COUNT_INCREASED reference (if any) and return -ENOTRECOVERABLE
->> straight away.  Pages outside the helper's positive list still take
->> the existing retry path and return -EIO, leaving operator-visible
->> behaviour for those cases unchanged.
->>
->> Extend the unhandlable-page pr_err() to fire for either errno and
->> update the get_hwpoison_page() kerneldoc to document the new return.
->>
->> memory_failure() still folds every negative return into
->> MF_MSG_GET_HWPOISON via its existing "else if (res < 0)" branch, so
->> this patch on its own only changes the errno that soft_offline_page()
->> can propagate to its callers.  A follow-up wires -ENOTRECOVERABLE
->> through memory_failure() and reports MF_MSG_KERNEL for the
->> unrecoverable cases, which is what the
->> panic_on_unrecoverable_memory_failure sysctl observes.
+On 5/27/26 16:06, Breno Leitao wrote:
+> The previous patch teaches get_any_page() to return -ENOTRECOVERABLE
+> for stable unhandlable kernel pages (PG_reserved, slab, page tables,
+> large-kmalloc).  memory_failure() still folds every negative return
+> into MF_MSG_GET_HWPOISON, so callers that want to react to the
+> unrecoverable cases (a panic option, smarter logging) cannot tell
+> them apart from transient page-allocator races.
 > 
-> Thanks for your patch.
+> Turn the post-call branch into a switch over the get_hwpoison_page()
+> return code: map -ENOTRECOVERABLE to MF_MSG_KERNEL and any other
+> negative return to MF_MSG_GET_HWPOISON.  case 0 keeps the existing
+> free-buddy / kernel-high-order handling and case 1 falls through to
+> the rest of memory_failure() unchanged.
 > 
->>
->> Suggested-by: David Hildenbrand <david@kernel.org>
->> Suggested-by: Lance Yang <lance.yang@linux.dev>
->> Signed-off-by: Breno Leitao <leitao@debian.org>
->> ---
->>  mm/memory-failure.c | 42 ++++++++++++++++++++++++++++++++++++++++--
->>  1 file changed, 40 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->> index f4d3e6e20e13..8f63bdfeff8f 100644
->> --- a/mm/memory-failure.c
->> +++ b/mm/memory-failure.c
->> @@ -1325,6 +1325,28 @@ static inline bool HWPoisonHandlable(struct page *page, unsigned long flags)
->>  	return PageLRU(page) || is_free_buddy_page(page);
->>  }
->>  
->> +/*
->> + * Positive identification of pages the hwpoison handler cannot recover.
->> + * These page types are owned by kernel internals (no userspace mapping
->> + * to unmap, no file mapping to invalidate, no migration target), so the
->> + * shake_page() / retry loop in get_any_page() can never turn them into
->> + * something HWPoisonHandlable() will accept.  Short-circuit them to
->> + * -ENOTRECOVERABLE so callers can panic on operator request instead of
->> + * spinning through retries that exit as a transient-looking -EIO.
->> + *
->> + * The MF_SOFT_OFFLINE / page_has_movable_ops() opt-out mirrors
->> + * HWPoisonHandlable(): soft-offline is allowed to migrate movable_ops
->> + * pages even though they are not on the LRU.
->> + */
->> +static inline bool HWPoisonKernelOwned(struct page *page, unsigned long flags)
->> +{
->> +	if ((flags & MF_SOFT_OFFLINE) && page_has_movable_ops(page))
->> +		return false;
->> +
->> +	return PageReserved(page) || PageSlab(page) ||
+> The MF_MSG_KERNEL label and tracepoint string are kept as
+> "reserved kernel page" to avoid breaking userspace tools that match
+> on those literals; the enum value still adequately tags the failure
+> even though it now also covers slab, page tables and large-kmalloc
+> pages.
 > 
-> Once shake_page finds a lightweight range-based way to shrink slab, slab pages could be freed
-> into buddy and above PageSlab test should be removed then. Maybe add a TODO or XXX here?
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  mm/memory-failure.c | 17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
 > 
->> +	       PageTable(page) || PageLargeKmalloc(page);
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 8f63bdfeff8f..14c0a958638c 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2426,7 +2426,8 @@ int memory_failure(unsigned long pfn, int flags)
+>  	 * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
+>  	 */
+>  	res = get_hwpoison_page(p, flags);
+> -	if (!res) {
+> +	switch (res) {
+> +	case 0:
+>  		if (is_free_buddy_page(p)) {
+>  			if (take_page_off_buddy(p)) {
+>  				page_ref_inc(p);
+> @@ -2445,7 +2446,19 @@ int memory_failure(unsigned long pfn, int flags)
+>  			res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
+>  		}
+>  		goto unlock_mutex;
+> -	} else if (res < 0) {
+> +	case 1:
+> +		/* Got a refcount on a handlable page. */
+> +		break;
+> +	case -ENOTRECOVERABLE:
+> +		/*
+> +		 * Stable unhandlable kernel-owned page (PG_reserved,
+> +		 * slab, page tables, large-kmalloc).
+> +		 * No recovery possible.
+> +		 */
+> +		res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
+> +		goto unlock_mutex;
+> +	default:
+> +		/* Transient lifecycle race with the page allocator. */
+>  		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+>  		goto unlock_mutex;
+>  	}
 > 
-> I'm not sure but is it safe or a common way to test PageReserved, PageSlab,
-> PageTable and PageLargeKmalloc without extra page refcnt?
 
-Checking typed pages in a racy fashion is fine (PageSlab, PageTable,
-PageLargeKmalloc).
-Checking PageReserved in a racy fashion is fine as well. TESTPAGEFLAG() will
-allow checking it on compound pages.
-
-For PageLargeKmalloc, we would want to check the head page, though. The page
-type is only stored for the head page.
-
-So maybe we want to lookup the compound head (if any) and perform the type
-checks against that?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
