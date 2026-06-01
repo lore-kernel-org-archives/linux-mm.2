@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA79CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 06:20:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E78ACD6E5E
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 06:20:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94B776B027C; Mon,  1 Jun 2026 02:20:31 -0400 (EDT)
+	id A0E9E6B027D; Mon,  1 Jun 2026 02:20:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 922336B027D; Mon,  1 Jun 2026 02:20:31 -0400 (EDT)
+	id 9E5FE6B027F; Mon,  1 Jun 2026 02:20:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85F6F6B027E; Mon,  1 Jun 2026 02:20:31 -0400 (EDT)
+	id 8D4406B0281; Mon,  1 Jun 2026 02:20:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 785206B027C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:20:31 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 581C8140567
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:20:30 +0000 (UTC)
-X-FDA: 84830344620.19.54E480A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AD0E6B027F
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:20:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2B78140530
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:20:33 +0000 (UTC)
+X-FDA: 84830344746.02.1E7D116
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2C3061A000D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:20:26 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5C8A414000F
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:20:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780294828;
+	s=arc-20220608; t=1780294831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=Cc8PayjFYXrES4VvrLBjQbjTBioUYTqUhibROs1czcQ=;
-	b=U+3VvSaoRKHpnwI2/woCrdKPrYMRGz8V3k6OyS79R/Mx12bbrXQmszfzOBUBSMR9H94xph
-	rYkqyHd9vwnkDWzp0bjtI3mcrT6G+NlSghV1d4VOEhIopDPIUS5ZxcR6Vm4lljRjO1Tb2J
-	nONsoWQagSSh8FJ2+5ocJwH+pWmVY/M=
+	 in-reply-to:in-reply-to:references:references;
+	bh=3+qm3+y370v2qLPqkf+P1X+Xlx3CM6WbxehwtZiYejM=;
+	b=WJIhiNAsBc6o999sorKQ0rVTuk62K9YZBqXoCBk6Dto2Si6x6nbocTLT6Jq58CE93iDOj2
+	O13MmFHnVJfaZb2upJneXPRh5iaOXJbKTImTZg+04dNYEyeHkR/x4lyPyKWvnXs8tt98Wp
+	nrWnHmsrfcVStAkz58UPghqMqNOrzQ0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
+	imf09.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780294828; a=rsa-sha256;
+	spf=pass (imf09.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780294831; a=rsa-sha256;
 	cv=none;
-	b=WVgv5tfwJOw17cHtZju4BcToWi+12J/1C7o69cf9n5vtoO8Lztbf1O7M/f+cTNbODLUktr
-	yN8p3XtK5ruB30TC+GMeF42NcK9gUHVFxLwGrTKII+ML395eRRHqe2F6K2zWU89L9PKnxN
-	93qdK4b5k99Vhr7MMs49+S+DUnNGSXw=
-X-UUID: f5ce4aa65d8111f1aa26b74ffac11d73-20260601
+	b=Szm/yNFUjceehQ//2koDs9lCf7+zi40xLmdK1efUTKhuqb1KuhsZQsqGyAZ/R8zrXHEX0/
+	zH0Edq5ySbGI0OGh923+/Cr+BJC3WiPHDSjKL60HrbEqwQnrFjLBHtnNaF98zNAX6CpUKk
+	tunzeXX4t/oa7iVMsxuTSGvI0kJoV+Q=
+X-UUID: f8ec852c5d8111f1aa26b74ffac11d73-20260601
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
 	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
@@ -54,29 +55,29 @@ X-CTIC-Tags:
 	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
 	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
 	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
-	GTI_C_BU, AMN_T1, AMN_GOOD, ABX_MISS_RDNS
+	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:c09750be-4d5d-47d0-ab43-158f09b2c832,IP:10,
+X-CID-O-INFO: VERSION:1.3.12,REQID:4ac39ce9-9063-431b-8cb9-a0aef2fc2f10,IP:10,
 	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:-15
-X-CID-INFO: VERSION:1.3.12,REQID:c09750be-4d5d-47d0-ab43-158f09b2c832,IP:10,UR
+X-CID-INFO: VERSION:1.3.12,REQID:4ac39ce9-9063-431b-8cb9-a0aef2fc2f10,IP:10,UR
 	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
 	:release,TS:-15
-X-CID-META: VersionHash:e7bac3a,CLOUDID:b95280df6f48efbbcc9c4b1867cf65a9,BulkI
-	D:260601142020HHSVIJTN,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
-	850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,File:nil,RT:nil,B
-	ulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR
-	:0,BRE:0,ARC:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:85d5c2747113625e6214af885297130d,BulkI
+	D:260601142023NJWCVZKM,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
+	2|127|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:ni
+	l,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,
+	BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f5ce4aa65d8111f1aa26b74ffac11d73-20260601
+X-UUID: f8ec852c5d8111f1aa26b74ffac11d73-20260601
 X-User: lihongfu@kylinos.cn
 Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
 	(envelope-from <lihongfu@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1611578840; Mon, 01 Jun 2026 14:20:18 +0800
+	with ESMTP id 268857944; Mon, 01 Jun 2026 14:20:23 +0800
 From: Hongfu Li <lihongfu@kylinos.cn>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -91,20 +92,22 @@ Cc: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH v5 0/4] selftests/mm: refactor pkey helpers and fix mmap error handling
-Date: Mon,  1 Jun 2026 14:19:49 +0800
-Message-Id: <20260601061953.696844-1-lihongfu@kylinos.cn>
+Subject: [PATCH v5 2/4] selftests/mm: unify pkey sighandler selftest assertions and tracing
+Date: Mon,  1 Jun 2026 14:19:51 +0800
+Message-Id: <20260601061953.696844-3-lihongfu@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260601061953.696844-1-lihongfu@kylinos.cn>
+References: <20260601061953.696844-1-lihongfu@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9hmp5romrfapqk4f3ex9itipt5apmyw9
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5C8A414000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2C3061A000D
-X-Stat-Signature: x7tb5hnm1kqh3rzyt4y4e5wdtaw37a14
-X-HE-Tag: 1780294826-508513
-X-HE-Meta: U2FsdGVkX19nBb+AS3g8GlV08Vcr3Oqi+ysQLiyzur9mCJk98HQxIxdPzGCekfo3g/CuWmpbf2yi5OKbjXMxdmfwPEY6+ZhqT4ejQuby415sofFVaXVAOdV6p9kVz7Ha/LfuVenpRK7pbOPNz6FXhOaj93jCkfRb1l6hQOIueaCfD40UUK8UiMvjpooUQzba28jXo6tWqvpjo5HeiwcFDjQBV22EmhT7llp+MGYRv/6gD8FDb8koxAYGdbnyZlUaIjXxXZjwSbarc0YcOxm/mdk+7BadJg5oe/rIlKylVfd8IfHYSP9iKCISYSElmx54Bu/BT61bBAwjSOp18QyJ/mX8JFNIstzQEiOLwOG6wQ4NTMnoUtNHh4BxLapnvnTHqB1+nk2+kNKsc/s2X5eub53F5Iq+4pYp9GUCaKvFQx3n64a7OjcX+JzCYqEu3DQ3La71F5OOOaXR1XAGcLtEHEvzo6DLgC4/+dYa8y+kS7D5jKqVs2KE7WsghEjNh1vnHYIynAMaJN8lixvBGc/1Uo5l+2VtAzDcB2c0U9QetYhO0N8x4trLcVlMiImhRuKtD+o0LGNNZH+y4IZNjDaK1XXDtf4sVxajB5NI8S6N6QOkaGMeU4X1Z/p6Y+bNj3BzHahxZU++bN9s5Yq+eX2d0y2BaGNPK62DMRaLaCqkR2k/47L/cb4LLVnC2L9K0d3bfU96V91rrZX6Ak6bG6EC7T+9GM6WkgSEmNgHyHZK2bud9m7pfqWzW3esTCnOeCMyK3w104cDai23gSe0DbMhGldI3sL8SgXJaDSnpjmiGB1pSTi9pJmcx19jTOIjPFOJJwuLDoIgXmIENzp+28V38PCdq47tHOYxCqA8Ki1pI2mW8LkXbjgRoPoEXAGzizb/R2vSnTmpRywQHY9G+qWVAc6NWn+hwXRJAUsaWhKOq8b7NA92N1IXVMYT++9innIeR01HwpZLWVaWEi+4l5A
- tY5kJP+8
- DqxCymjec+O1r1Y1aDTWYPNfk7g==
+X-HE-Tag: 1780294829-481081
+X-HE-Meta: U2FsdGVkX1/C81zo7CrTLnYYa6RsJ1jNrgq3hm/ZfGnXxbH0Y6aqM5MM2AOSsFuIP0LLqEcV1dUrEZYIKdL3XHJaNIjxzz/cUjW/b7zFSzoR/m4i1k3Gz5qbTPkAc10d4Oy9qR56V3IXTOzwePBTy1nD7P+FCVgS2yvd9VApWXk0zCjVtfCWaSQ4V7WKjdZPvygM+3lqjqE9tEIvVdw2aw74eUjqbtIplngsVHDCyrbbm4VgmTyiV4zNBNsFaIKYgchIqRJaZIGo/Ucu1Hm8DfG1kvp12T7LdJWZG89gvxXwYpiBBsHm6iBNXFHSjIJBVucHYQU5sFxaGxDDPP8+Mqm7tYdAuDZdPWPmZEriyQEPuSujm/ScdfxQJCGWOPUtt9Cl0AGY2yzwkwJlNz0UvoCK7/MB/eHsMS6DClZ3nVvCIn4LOJhmvKK5/sTyyFZSCLoHb4TA5PWvW8QpsI42s0C9sU8/uHRmpIIWD+VPKomdf7qmi4XlB7cjpzRn0KqTj/FOVvMjMlLh1rJbQdFMmxoLphEY0Ao68SeiM4KTAOh3rZqyMIJIr5HI5/Wy4jQR1pKOS0EvbnsSItiN6SaF/JzOBL0CmmGoN3dWqOI9+Q8rukS3Lb02nkJYVhfbj/yrPdY4hXzx+sATpGw9LlHYlWkI1sNUUzLG13Zq6oLQedI8qAEhaNegK4AKWYSpb82mBvSefqly/L46DuHXG0319RNf0ruoJoU5oE/qb2hAl3G02WzeXjbrJpc8PUZdJpLpp9jv5evvxLIGAViY1rUlcUse4Zpfx4A2c9ZBLcbGgpo5V4WdIMotLNSrum/1fdLrCJtt47Q7krfsmkqA8bCrAIaH1gsPPTWss+aKhobxKlIaiCfknmLnNDU6+I6EXtdu6RWyFNV8rppDkygvh3XchdvR32wg+8Nbu5P1ph/ZrpleOhf9N6ds9XPBspl5EU2bU1WDnzYtJyLF8BnpOQr
+ mHNy9+o3
+ 44wrr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,46 +115,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The main changes in this series are to refactor shared tracing and assertion
-helpers into a common file, unify both pkey selftests on pkey_assert() and 
-per-test tracing for consistent diagnostics, and add missing mmap() return 
-checks with MAP_FAILED used throughout for readability and consistency.
+Add per-test tracing to the pkey signal-handler selftest and use
+pkey_assert() for error handling. Each test enables tracing at start
+and disables it at end; on failure, pkey_assert() calls abort_hooks()
+to turn tracing off so ftrace is not left enabled.
 
-Hongfu Li (4):
-  selftests/mm: move pkey selftest helpers to pkey_util.c
-  selftests/mm: unify pkey sighandler selftest assertions and tracing
-  selftests/mm: use pkey_assert on clone_raw failure in pkey test
-  selftests/mm: add missing mmap() return checks in pkey tests
-
- tools/testing/selftests/mm/pkey-helpers.h     |  4 +-
- tools/testing/selftests/mm/pkey-powerpc.h     |  2 +-
- .../selftests/mm/pkey_sighandler_tests.c      | 69 +++++++-------
- tools/testing/selftests/mm/pkey_util.c        | 86 +++++++++++++++++
- tools/testing/selftests/mm/protection_keys.c  | 95 ++-----------------
- 5 files changed, 131 insertions(+), 125 deletions(-)
-
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 ---
-v5:
-- Use ret instead of child_pid to hold the return value of clone_raw().
-- Make tracing_on(), tracing_off() non-static.
-  Remove cat_into_file() declaration from pkey-helpers.h.
-v4:
-- Base changes on top of the latest mm-unstable branch.
-- Split the first patch into three:
-  patch 1: move pkey selftest helpers to shared code;
-  patch 2: unify sighandler selftest assertions and per-test tracing;
-  patch 3: use pkey_assert() on clone_raw() failure.
-- Use ksft_exit_fail_perror() in main() for mmap() failure.
-v3:
-- Use pkey_assert() for remaining sigaction() and clone_raw() error
-  checks for consistency.
-v2:
-- Update commit message
-- Move shared tracing and assertion helpers to a common file,
-  replace assert() with pkey_assert() in sighandler tests
-- Drop assert() from main() in protection_keys.c and add a proper error
-  message instead.
-- Link to v1: https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+ .../selftests/mm/pkey_sighandler_tests.c      | 63 +++++++++----------
+ 1 file changed, 30 insertions(+), 33 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+index 302fef54049c..4438d8fb8ef8 100644
+--- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
++++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+@@ -19,7 +19,6 @@
+ #include <stdint.h>
+ #include <stdbool.h>
+ #include <signal.h>
+-#include <assert.h>
+ #include <stdlib.h>
+ #include <sys/mman.h>
+ #include <sys/types.h>
+@@ -36,6 +35,10 @@ static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+ static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+ static siginfo_t siginfo = {0};
+ 
++int iteration_nr = 1;
++int test_nr;
++int dprint_in_signal;
++
+ /*
+  * We need to use inline assembly instead of glibc's syscall because glibc's
+  * syscall will attempt to access the PLT in order to call a library function
+@@ -207,15 +210,14 @@ static void test_sigsegv_handler_with_pkey0_disabled(void)
+ 	struct sigaction sa;
+ 	pthread_attr_t attr;
+ 	pthread_t thr;
++	int ret;
+ 
+ 	sa.sa_flags = SA_SIGINFO;
+ 
+ 	sa.sa_sigaction = sigsegv_handler;
+ 	sigemptyset(&sa.sa_mask);
+-	if (sigaction(SIGSEGV, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGSEGV, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	memset(&siginfo, 0, sizeof(siginfo));
+ 
+@@ -247,15 +249,14 @@ static void test_sigsegv_handler_cannot_access_stack(void)
+ 	struct sigaction sa;
+ 	pthread_attr_t attr;
+ 	pthread_t thr;
++	int ret;
+ 
+ 	sa.sa_flags = SA_SIGINFO;
+ 
+ 	sa.sa_sigaction = sigsegv_handler;
+ 	sigemptyset(&sa.sa_mask);
+-	if (sigaction(SIGSEGV, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGSEGV, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	memset(&siginfo, 0, sizeof(siginfo));
+ 
+@@ -288,21 +289,20 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
+ 	int parent_pid = 0;
+ 	int child_pid = 0;
+ 	u64 pkey_reg;
++	long ret;
+ 
+ 	sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
+ 
+ 	sa.sa_sigaction = sigsegv_handler;
+ 
+ 	sigemptyset(&sa.sa_mask);
+-	if (sigaction(SIGSEGV, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGSEGV, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	stack = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
+ 		     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 
+-	assert(stack != MAP_FAILED);
++	pkey_assert(stack != MAP_FAILED);
+ 
+ 	/* Allow access to MPK 0 and MPK 1 */
+ 	pkey_reg = pkey_reg_restrictive_default();
+@@ -323,7 +323,7 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
+ 	memset(&siginfo, 0, sizeof(siginfo));
+ 
+ 	/* Use clone to avoid newer glibcs using rseq on new threads */
+-	long ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
++	ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
+ 			     CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
+ 			     CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
+ 			     CLONE_DETACHED,
+@@ -358,6 +358,7 @@ static void test_pkru_preserved_after_sigusr1(void)
+ {
+ 	struct sigaction sa;
+ 	u64 pkey_reg;
++	int ret;
+ 
+ 	/* Allow access to MPK 0 and an arbitrary set of keys */
+ 	pkey_reg = pkey_reg_restrictive_default();
+@@ -369,10 +370,8 @@ static void test_pkru_preserved_after_sigusr1(void)
+ 
+ 	sa.sa_sigaction = sigusr1_handler;
+ 	sigemptyset(&sa.sa_mask);
+-	if (sigaction(SIGUSR1, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGUSR1, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	memset(&siginfo, 0, sizeof(siginfo));
+ 
+@@ -444,6 +443,7 @@ static void test_pkru_sigreturn(void)
+ 	int parent_pid = 0;
+ 	int child_pid = 0;
+ 	u64 pkey_reg;
++	long ret;
+ 
+ 	sa.sa_handler = SIG_DFL;
+ 	sa.sa_flags = 0;
+@@ -453,24 +453,20 @@ static void test_pkru_sigreturn(void)
+ 	 * For this testcase, we do not want to handle SIGSEGV. Reset handler
+ 	 * to default so that the application can crash if it receives SIGSEGV.
+ 	 */
+-	if (sigaction(SIGSEGV, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGSEGV, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
+ 	sa.sa_sigaction = sigusr2_handler;
+ 	sigemptyset(&sa.sa_mask);
+ 
+-	if (sigaction(SIGUSR2, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGUSR2, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	stack = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
+ 		     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 
+-	assert(stack != MAP_FAILED);
++	pkey_assert(stack != MAP_FAILED);
+ 
+ 	/*
+ 	 * Allow access to MPK 0 and MPK 2. The child thread (to be created
+@@ -494,7 +490,7 @@ static void test_pkru_sigreturn(void)
+ 	sigstack.ss_size = STACK_SIZE;
+ 
+ 	/* Use clone to avoid newer glibcs using rseq on new threads */
+-	long ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
++	ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
+ 			     CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
+ 			     CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
+ 			     CLONE_DETACHED,
+@@ -530,16 +526,17 @@ static void (*pkey_tests[])(void) = {
+ 
+ int main(int argc, char *argv[])
+ {
+-	int i;
+-
+ 	ksft_print_header();
+ 	ksft_set_plan(ARRAY_SIZE(pkey_tests));
+ 
+ 	if (!is_pkeys_supported())
+ 		ksft_exit_skip("pkeys not supported\n");
+ 
+-	for (i = 0; i < ARRAY_SIZE(pkey_tests); i++)
+-		(*pkey_tests[i])();
++	for (test_nr = 0; test_nr < ARRAY_SIZE(pkey_tests); test_nr++) {
++		tracing_on();
++		(*pkey_tests[test_nr])();
++		tracing_off();
++	}
+ 
+ 	ksft_finished();
+ 	return 0;
 -- 
 2.50.1
 
