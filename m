@@ -4,112 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDD9FCD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:11:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9764CCD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:11:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CDA16B040F; Mon,  1 Jun 2026 11:11:23 -0400 (EDT)
+	id 0B00C6B0410; Mon,  1 Jun 2026 11:11:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4839A6B0410; Mon,  1 Jun 2026 11:11:23 -0400 (EDT)
+	id 0396D6B0412; Mon,  1 Jun 2026 11:11:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 346316B0411; Mon,  1 Jun 2026 11:11:23 -0400 (EDT)
+	id E43FD6B0413; Mon,  1 Jun 2026 11:11:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CAB86B040F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:11:23 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C5A04162700
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:11:22 +0000 (UTC)
-X-FDA: 84831682404.18.DEBE2CF
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B62DBA0016
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:11:20 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=NBTsJu8l;
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	spf=pass (imf25.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780326680;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CC4586B0410
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:11:57 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D5781C0C61
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:11:57 +0000 (UTC)
+X-FDA: 84831683874.11.F74E6E7
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A52DE40012
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:11:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cp2+7nab;
+	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780326715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rF1YbX1GbK0HCKyViNv7n8/nM8s/F+cSVonTVlOHUow=;
-	b=KC1iI1ysl43qQ/tb3F/TpKmSQCMoJCEblpSazrgMt6Ub36sBbPdhJPhKS5i6AdcYWM3nvY
-	02r1uxTJjpY7/frLadyhG/+WmFFt20TtDzRfOsc+MqN9N1J+9fSYUhjnD3/PCmcw8CgbVe
-	8laJ3RD2lSbUpkoI/8yudPLVAt0YyHQ=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=NBTsJu8l;
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	spf=pass (imf25.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780326680;
-	b=gunxXu/vZvDteqY51XHp97xdcOrofWiA7vf7aXggf++kkach97aZG3B5I9jrLakpvjdwNQ
-	8Vh8MzPJdDmCcADMuGgAn9Sg5vjXkU1cw9ec2CxgUfYxs7O1H8pXx/YsfhWhXIbQH9iOgr
-	S8UsNPISYg2pBaXqe3HHcVL0nZtt3lc=
-ARC-Seal: i=1; a=rsa-sha256; t=1780326667; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=L8ITIHHb4gzEAhuB0YAEMjbYObr2ley+TReqTgwYv34mCJNdyoGhDI4zS0AQ7hXLP7xOiJahoycGB9smVOFA0Gusy6DuPRgJR62lvDQoDDCnSvfm8FU6I/bRIFcK7YUGwu732cdTSoSW398dsLlKVuAnZ6qR2yifg5jjNCQRadc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1780326667; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=rF1YbX1GbK0HCKyViNv7n8/nM8s/F+cSVonTVlOHUow=; 
-	b=n1rf2uwrq2SJzBx+Xw53/2evzOB2Ia3o2rzx/5ptuR+kDUsxe9Uodkmd1pkK1ixXAd1BgtKKJPkmOB7pLPKZTkb2n7TY3U/hADyLZpQiPPIiSv4mo5PGTIySaBXkOD1eMNclw3CLjRo4a22iYYE2WQbv2yMrEV675Vk3E2ZTPbs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1780326667;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=rF1YbX1GbK0HCKyViNv7n8/nM8s/F+cSVonTVlOHUow=;
-	b=NBTsJu8lDNTq/agD0USlvYHq4KyXMkb+qmgaxQPE4y1cNSY3Sf5G+9qNXKIzXlhq
-	NzhZN0ebVwruHOz4D+avF8xaaXGmFbEZ9bLW4Zj0fqILR/j4irWgoKGb5gpKoam7oWW
-	Zgn6uCt6lyXhECZjY2yFhsU8aNnsqNPZQyfqEdVY=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1780326663456505.7763831684913; Mon, 1 Jun 2026 08:11:03 -0700 (PDT)
-Date: Mon, 01 Jun 2026 23:11:03 +0800
-From: Li Chen <me@linux.beauty>
-To: "Mateusz Guzik" <mjguzik@gmail.com>
-Cc: "Christian Brauner" <brauner@kernel.org>, "Kees Cook" <kees@kernel.org>,
-	"Alexander Viro" <viro@zeniv.linux.org.uk>,
-	"linux-fsdevel" <linux-fsdevel@vger.kernel.org>,
-	"linux-api" <linux-api@vger.kernel.org>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>,
-	"linux-mm" <linux-mm@kvack.org>,
-	"linux-arch" <linux-arch@vger.kernel.org>,
-	"linux-doc" <linux-doc@vger.kernel.org>,
-	"linux-kselftest" <linux-kselftest@vger.kernel.org>,
-	"x86" <x86@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>,
-	"Andy Lutomirski" <luto@kernel.org>,
-	"Thomas Gleixner" <tglx@kernel.org>,
-	"Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
-	"Dave Hansen" <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, "Jan Kara" <jack@suse.cz>,
-	"Jonathan Corbet" <corbet@lwn.net>,
-	"Shuah Khan" <skhan@linuxfoundation.org>
-Message-ID: <19e83bd050e.1f0e5b93379754.3822464952169533411@linux.beauty>
-In-Reply-To: <vealb52tv5suireenkke4lul2l3wbnaul2rp3ea545ly5wa5ty@yk3aksvp7skt>
-References: <20260528095235.2491226-1-me@linux.beauty> <vealb52tv5suireenkke4lul2l3wbnaul2rp3ea545ly5wa5ty@yk3aksvp7skt>
-Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated
- executable startup
+	bh=IzS+u3VEJaiahfu1nIf+q6huqq6AwnkcqZDyeqXemp8=;
+	b=4HIc8JPISc9Ma1NPgqQG783q5vXg11oFecGKvaMUoXDjTM31yOyi5K+4wWhA4lrtOL3iI/
+	0k2hrQYMx+UKzCUDXs4AMxcERqSrkUNuoW29QiH/A3xPB6xMIPWv9neSjnCFgU9V5KLehG
+	vaC68b1KQ2b38OqSQcOWRitGkTx6Rh4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cp2+7nab;
+	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780326715;
+	b=SGqll+g0GTIkYeKqHowsRgMtitOPfKasVS3Ujh3mMkKA1p8vesT4Ervl457JTJbq0GgZot
+	oy2B4tY+mlWeLTgBdTc4HDTqo+jwZs6PuXfcgub+ltayejs69VCS8DdqqY107p5RfZ+P0T
+	p4xkq+2UirDeDzUl3vk55/0sWAoqoBg=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4904c1ce4c1so114707185e9.3
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 08:11:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780326714; x=1780931514; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IzS+u3VEJaiahfu1nIf+q6huqq6AwnkcqZDyeqXemp8=;
+        b=Cp2+7nabWWhGi8RgZNvHbGz88GEgi92LtIckh54H9+GNE4b+AOd7GMseIQ7aJb63uu
+         ifDGV3Oie1JGKEaN0uKWY5K0dvX1jCjM05VfBXgdjHE0By34OEQDf7hrK/2ED6/LEys3
+         CvVCtBhd3zh0XyMtZLDBhMGNXtCMepG4g87d1br/LyO2N++QfPH/ccKygd3NHCzBpenY
+         B5aaRL0IMVOc1K5xgTad1jo3m8iMwERrXLBsG7RPLxlSblYbB3R/t7mY+VDmzBn2a3D6
+         kSlyCtO6L9C5NROGaU6G5qkTGmoqY1I6DBKWsXFa7B0QDw7vqv62CUUYkqWRRXLE5PoD
+         7tiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780326714; x=1780931514;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IzS+u3VEJaiahfu1nIf+q6huqq6AwnkcqZDyeqXemp8=;
+        b=km5AACZLORjnjJK9Wk8wn7YKfzT1eDZdYObeMoEimpjgxXnrQn4KcrfFgb8jNn6U1W
+         CY6bUVSMxG4kg8JSl23ZKukNS3F2OaUoJ7dIdX9wAZzjxJIjdfza9oa37J8jtcpwB+Yz
+         0eujjP0wlm6+94JvERbPdima+LrEZCFskKaH0Oo1rdfrQhh3J0aFwUw0LWrW7mh+p+8M
+         si3Iy67ugEarCIb6WrKUANoXsUoeX/IGHZpg4jfvqioclKECg8mLBUoxyWzzr49VFq5c
+         UhoeZLyPreDZvtyDypUHE30Px0GI3LuSdvspyTNb9ZbRtBB8hIBIcAp5gBJnIxac+u9v
+         dWHg==
+X-Forwarded-Encrypted: i=1; AFNElJ91F2Lx0NYTc0DXUeE5mAnRSOaMmsRvODUDVNOeI06vHf6cPEl/Zjberbr4g2SLe3utjEHopH63DQ==@kvack.org
+X-Gm-Message-State: AOJu0YzJr9dTaEdFYEoYdAZ/JsjzbG/OGNx2t4keFPTKuh3BrAzRcOtf
+	GihhkQIGrBbEEnlgC3cqhKyuRmTXLGtaYvugJUehE4cJnbnzz0v/PkWx
+X-Gm-Gg: Acq92OGK1Wxa11+Lzze1nwldUlHPN51IXAngCMqULmDeONngdPiFG+wvincif5l936G
+	FVwfIHK/XjPSKOtFGcyo+Ceb/4oqGNucDAL4/oycyfIMF5VAui5y5c/GxELAFgid8LtPzepOg13
+	mZN8n7y2Ytk22WNIj+Rpwd7liUIDvirtQfBTWDoL0czKemC3+rhcDh/CUIt9YxCvxaV3HZsyDC5
+	uo6Y6BNTEwopPkwoo6bm66xVCCJZ68v4Z9UgSA+/aRR16Tj3Wec4YvbpF0DV23TdI1Yhn6D627V
+	lCASD28xEEb8lefjimH+5rNqmQcqRube5512ficMkRH4ZiSOmGaGcnnIAqB47k8qg7KBFoG0AMd
+	FnQldbef1IugU4LqsMbTtqzbLB+Q7EJZ9q2dbQN1VZo/9lxjBjvVZ1sungE83JNcDVDkcz68fI+
+	h49+5ACY1RMfhjtm9xVZRBoI89xzjJeC+AlB7XaAeayzxZ9XGa2+mKb/zgmHaDfMeBpsj7wWJXx
+	dCHTirRQA==
+X-Received: by 2002:a05:600c:c11c:b0:490:4663:691b with SMTP id 5b1f17b1804b1-490a2923a3bmr173930475e9.7.1780326714079;
+        Mon, 01 Jun 2026 08:11:54 -0700 (PDT)
+Received: from f (cst-prg-92-135.cust.vodafone.cz. [46.135.92.135])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909d6eb3adsm256613955e9.11.2026.06.01.08.11.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 08:11:53 -0700 (PDT)
+Date: Mon, 1 Jun 2026 17:11:46 +0200
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Chi Zhiling <chizhiling@163.com>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chi Zhiling <chizhiling@kylinos.cn>
+Subject: Re: [PATCH v2 3/5] mm/shmem: introduce copy_zero_to_iter() for large
+ zeroing
+Message-ID: <dvvtrfpacxxuagpexdjni6gpuqbqu6xl2regliuz2zyv6koaok@d6wi2wk64cor>
+References: <20260601055704.167436-1-chizhiling@163.com>
+ <20260601055704.167436-4-chizhiling@163.com>
+ <ah2HfH3jJZDiNAQc@casper.infradead.org>
+ <rvvwfa4dp2wovn4vlglajxwpumiudvcgbnrj6fwh4dxtxemawh@rbav4cliyraj>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <rvvwfa4dp2wovn4vlglajxwpumiudvcgbnrj6fwh4dxtxemawh@rbav4cliyraj>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A52DE40012
+X-Stat-Signature: di6xm9qc9qgzu795nt9f6pete6yiqqc4
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B62DBA0016
-X-Stat-Signature: kiw6uuoa9dpk8f97hysga9xuoztqjrcs
-X-HE-Tag: 1780326680-95823
-X-HE-Meta: U2FsdGVkX1/Jfdal03tQsMiBoWNVk2ibW6KlZMQue19Utc6/iBJwT5v/5YfZuuAgclmSkFMYykLPyKiSPS/2yBXrbl0NkHR21dyHSVG3qq98xDSXCVSLcfudpv26uR5BAO1qEBG1SGQXcZsfZuhvkA6MVE0PCgny1K+W/Rj0GjIzEKrg5hwgcgPKC6pQL55QfhLjj6PagnkdhhE0BtkSqqpRfhPzHRMUnORccRxWtXyeJzc9YhFSJE7i44goTQilkyrTMtT+0huMvCLbaWkLTx2HqlPKgmN2wwJ9cBqvSYoN8O6lcyVAcKvJ7AWMsbuFMUSqLeG2ozoRKdFH48QgY98A4sGMIlwubVTOi8XSJHH2fU/gNBLMEphWZ74nh6gRBulgKmZVwhjXqcV2jEGp7gOIEslDPsGH1XvPH+YH4XGeirPWD5LVgdVxOYg2PaboTOBEolsRUSRRbsL8MNDqOCww0oNvLdO1Dibj+8qEoRVe7Fir9sOOLscI0RrQmffuyEms+GENmorP0fS0we5aJMiKd6BaL2PzGcm4+gaMmfKhHOij8IU2GGnX1wq3oWIoswfLEQXs8YZ0+MIeZa/yGGmmrAYQCgaHTj0hSO3ihw34/oo6Y5Mal+4LmRPUVhpwgSEtTtYGVQvXejqFPAw0Pl/iYiU+giDYGvexvjdzOWRQ3Sqx0RzFXxB/tPVfvJlvEJ6mM19NJdcQhbb2hOjlk1cGywbOYckQj+kAZKhPeRFScyAXTj4OJrc4pni0OT2H/2+J+Eo4bEH0djBDwbsegdjuMRO3sIoPp6Zja73uxFVlgVQTBVmA3OLdJuUGn+rnLRHE2ezLq6VyvvW1N+KSo17oBBEqOWMijVtWjDxdF045PM/LgqhMPQAS7scb9htsA75KXpaoadFVKZXc8gblt1RLuacuXqSJHnKj/QpqO9oDbWvD20Z87hjRymlSgFVoj3Aig2vIHhNQoKbGNzc
- GzToMHP6
- rFHNAT2/oiMTmjwkCDdAkZ8WEIWHlDIIhGsY1lPlFlobj4sbWE4mUfCGwzGq81O01TCju+KeTKwad/OR2TwqDMn7sMNYOrbZV1UVH83B64FYl54gk9VM760/DhKSy3ZOj0p4W/udDfjM9MGBLyPJYjbgZI469sDwZZMwoYcjLsEjGvFulKFMrFA8Z09NPUBstOnNfEeLSIAyc6tGl5lEjf1Ob8CD9w55sei/3hLYHalXpjJ9gN0hZhqkYIlHdiPZyeIh5m/faQk3VIY29VbxXYt0KU+58y41iRhY52wsCDPCSDvCGKKCzBsMP6DjlzA/nms1FfIAoRgpS6fKp8c9rmgKNSmdUftZarcT35ABvG4xBmAofxObvYBsVbiHPBUY2n8BSsSP1molANCLtrC7s2Yxgnok2Bs4d1PHxcylipCIDlGse5wVySnZtavaW9U/tCZUvUT0eEYmuAYx6gDi8jQedY6UIT7jAauG7kDLOXV8hcZgYQa8DZ9tEPJEuxcTbIZHLbtCwiplRw398QTSSmbRyIaN5gBITJc0O
+X-HE-Tag: 1780326715-50927
+X-HE-Meta: U2FsdGVkX1+r9C0j14E5CUgyzkewmN8YaVQsj61qvdD8GpFp2+bhmWVaNdyvyQNlwTBFuWSVxoa7F4gS3VXQXYPpIV5R4qiYL4BdV3UMqPDYmaN/67x67MA9SD5R1L8i8WMnHID8ySMXuw/rjMzrUO8qiaZCflyscXhArtITBidEeW5iDGOiWZDgMg7BY3gyagEFATamTw561bTA+r38TSVgmBpb4GpQ7/rPjm/QpgWr+4uU+ea4CWOS2xG1xZcv5ccPGNrRDonNrRtYyDBFtm1HKcFc7PttzNAwTYQAjWcTqZgqWar1z6IDtGjhZnRliXIJzg96zeb30w2ZaJeKepRJMjesBDDHnovpYjEkplENxdG7mS0pkzUjHCQWkNm046oum6yYkRXVVSi5HSQ566BdANLqkhoGPnR32O0LRi4lvdsTnP9L4yFpNiwhAhzoKY48mU5nWpvUPWYqgI5txSOZApeF6y5gPICkuQBtP+MH0smphtzfB/Q2Jqz3ccLHxzur/LZQRKRgt9b2YAwXHHrVBwd3WuhCUYuLWNAOVxp2llDyDXb0XPEhtVETZTbVt5k9fBBO8ySP9cWhCp1pFArSrr8fFUfOlwAzsO3BEVTcaWUgjsBrZV2XCxPiPbT+wuBmE2aTgudqg+W6jxErMWRP0llLZsf54SUHsyR7zSVee5L4U58QASY/vb14ItBq6xr/yl/rKz0LWyij1RowaL8nSgZf7/+cmb7rc9V4Undf/B30bijDuAAh0swEnfggMmFAjquELlAr5ZJpW92paUS3MVrF8kgndOxNpYE+brMNlzzSqp+a+dYSSocRYnOw2xG5GKcGmF2SmcZIzU80o0LOggqaW73sDUBXsOv1EPcjZn1fGzJI1g7sq75YY3uWK1nwH6Yd4ze8juGagMbgulskC4rWFrzh7kwgXeJ2YBUNu5wCilGv4VhtYsPDiX++6JoeebxsGbqDcJainjT
+ YBoJTJCT
+ btSCfrY3au8Wy8l64i4atBnvpD+jIHx5qgbsoxVfju+0kTGJUQIP9cbsfiAehm/VrvqltVg2zgdogQNRxSf5GESXm2EM+HHwh2TyDH8MGWkt7a+34Ve54SVZ0gtLvPHIjOj6maqW0EHQQpeP4TVlDAEQybZxIMHdP4ONHzBF9mqjYujksRE/7emPnvvcJhEqXwNWJkGl+/lusjjfVqqh2TJBZFaiQU0QfSzlPkeL3MeH/JVqd43So4NEg0skQFnKkg5ba724huITYFVpMsiSih/AXRMaURSbvk+kGsnY7ShOFyZHsL0UFlYf6eEGOflngMHujz3dxpdk/rpPPIzGL2lE9SV7RHXHh2siMeExy22prKnnAZzMAFZhZV7cfj6NdL/yR4MswMk163m7THGF/eKSnYNO4h7OQEbvniMvzPOzfYzgl+rSh8fE9nCDA0feunCM8YioCHflbBmgmIPBlmR/ma9ieriBppB04
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,205 +123,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mateusz,
+On Mon, Jun 01, 2026 at 05:02:01PM +0200, Mateusz Guzik wrote:
+> On Mon, Jun 01, 2026 at 02:22:04PM +0100, Matthew Wilcox wrote:
+> > On Mon, Jun 01, 2026 at 01:57:02PM +0800, Chi Zhiling wrote:
+> > > Currently, holes larger than PAGE_SIZE cannot be handled because
+> > > ZERO_PAGE is limited to a single page. Add copy_zero_to_iter() as a
+> > > wrapper to support copying larger zero ranges to the iterator.
+> > 
+> > I think Hugh put this optimisation in the wrong place, and you're
+> > perpetuating that ;-)
+> > 
+> > So perhaps we can start by moving this optimisation to lib/iov_iter.c?
+> > And then you can redo your optimisation on top of that.
+> > 
+> > diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+> > index 243662af1af7..06c54d719fcd 100644
+> > --- a/lib/iov_iter.c
+> > +++ b/lib/iov_iter.c
+> > @@ -451,7 +451,23 @@ static __always_inline
+> >  size_t zero_to_user_iter(void __user *iter_to, size_t progress,
+> >  			 size_t len, void *priv, void *priv2)
+> >  {
+> > -	return clear_user(iter_to, len);
+> > +	/*
+> > +	 * it is noticeably faster to copy the zero page instead of
+> > +	 * calling clear_user().  Shame.
+> > +	 */
+> 
+> 
+> This is a rather suspicious claim. If clear_user is indeed so terrible
+> that it is faster to copy, the routine needs to get unfucked instead of
+> the problem being worked around.
+> 
+> I can't speak for arm64 or other non-amd64 archs, maybe these are
+> horrendeously broken.
+> 
+> On amd64 some archeology shows the following:
+> 1. 0db7058e8e23e6bb ("x86/clear_user: Make it faster")
+> 
+> 2022 vintage, replaces thoroughly terrible 8-byte per-iteration write
+> with rep stos usage
+> 
+> 2. 8c9b6a88b7e2f33c ("x86: improve on the non-rep 'clear_user' function")
+> 
+> inlines rep stosb at the callsite if the CPU has FSRS, otherwise
+> fallsback to a new routine which does 64-byte writes per loop iteration.
+> 
+> FSRS is reasonably popular by now and chances are decent the test jig
+> used by Chi has it.
+> 
+> For a size like 4096 bytes, the 64-byte loop will be slower than rep
+> movsb and even rep stosq. This needs to be patched and maybe I'll get
+> around to doing the needful(tm) in few days (it's not hard to write, but
+> some care with testing is needed).
+> 
+> I could not be bothered to check how the workaround showed up, but it
+> definitely needs to be removed as opposed to being perpetuated.
 
- ---- On Thu, 28 May 2026 20:55:32 +0800  Mateusz Guzik <mjguzik@gmail.com>=
- wrote ---=20
- > On Thu, May 28, 2026 at 05:52:21PM +0800, Li Chen wrote:
- > > This RFC adds spawn_template, a userspace-controlled exec acceleration
- > > mechanism for runtimes that repeatedly start the same executable with
- > > different argv, envp, and per-spawn file descriptor setup.
- > >=20
- > > The main target is agent runtimes. Modern coding agents repeatedly sta=
-rt
- > > short-lived helper tools such as rg, git, sed, awk, python, node, and
- > > shell wrappers while they inspect and edit a workspace. Those runtimes
- > > already know which tools are hot, and they are also the right place to
- > > decide policy. The kernel does not choose names such as rg, git, or se=
-d.
- > > Userspace opts in by creating a template fd for one executable, then u=
-ses
- > > that fd for later spawns. Launchers, shells, and build systems have a
- > > similar repeated-startup shape and could use the same primitive, but t=
-he
- > > agent runtime case is the main motivation for this RFC.
- > >=20
- > [..]
- > > A typical agent runtime would keep one template per hot executable and
- > > still build argv, envp, cwd, and pipe wiring for each tool call:
- > >=20
- > >     rg_tmpl =3D spawn_template_create("/usr/bin/rg");
- > >=20
- > >     for each search request:
- > >         out_r, out_w =3D pipe_cloexec();
- > >         err_r, err_w =3D pipe_cloexec();
- > >         actions =3D [
- > >             FCHDIR(worktree_fd),
- > >             DUP2(out_w, STDOUT_FILENO),
- > >             DUP2(err_w, STDERR_FILENO),
- > >         ];
- > >         child =3D spawn_template_spawn(rg_tmpl, rg_argv, envp, actions=
-);
- > >         close(out_w);
- > >         close(err_w);
- > >         read out_r and err_r;
- > >         waitid(P_PIDFD, child.pidfd, ...);
- > >=20
- > >=20
- > [..]
- > > The cached state is intentionally small. The template fd keeps the ope=
-ned
- > > main executable file, an optional absolute path string, the creator
- > > credential pointer, and the deny-write state. The executable identity =
-key
- > > records device, inode, size, mode, owner, ctime, and mtime, and is
- > > rechecked before cached metadata is used. The ELF cache keeps only the
- > > main executable's ELF header, program header table, and program header
- > > count.
- > >=20
- > >     cached in this RFC          not cached in this RFC
- > >     ------------------          ----------------------
- > >     opened main executable      PT_INTERP metadata
- > >     executable identity key     shared-library graph
- > >     main ELF header             VMA layout metadata
- > >     main ELF program headers    cross-process metadata sharing
- > >     creator cred pointer
- > >     deny-write state
- > >=20
- > > This RFC does not cache ELF interpreter metadata, shared-library
- > > dependency state, or derived mapping-layout state. Shared-library
- > > resolution is dynamic linker policy and depends on LD_LIBRARY_PATH,
- > > RPATH, RUNPATH, /etc/ld.so.cache, mount namespaces, and secure-exec
- > > state. It also does not share cached executable metadata between templ=
-ate
- > > fds created by different processes. Each template owns its small cache=
-d
- > > metadata object in this RFC.
- > >=20
- > > Performance
- > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
- > >=20
- > [..]
- > > Workload     Calls  subprocess  spawn_template  time_s       Delta
- > > (workers)    calls  calls/s     calls/s         seconds
- > > 1x16         6144      411.04          420.32   14.95/14.62  +2.26%
- > > 2x8          6144      666.78          690.08    9.21/8.90   +3.49%
- > > 4x4          6144      955.61         1003.25    6.43/6.12   +4.99%
- > > 8x2          6144     1048.25         1069.18    5.86/5.75   +2.00%
- > >=20
- >=20
- > This problem is dear to my heart and I have been pondering it on and off
- > for some time now. The entire fork + exec idiom is terrible and needs to=
-x
- > be retired.
- >=20
- > Is this vibe-coded? I asked claude for in-kernel posix_spawn for kicks
- > some time ago and it generated remarkably similar code. But that's a
- > tangent.
+Maybe I was not clear enough, so here it is stated differently:
 
-Partly, yes. The original idea came from using agents myself and noticing
-that they spend a lot of time starting short-lived tools such as rg, sed,
-git, bash, and python. I was wondering whether repeated tool calls could
-be made cheaper.
+The routine was incredibly bad on amd64 prior to 2022, I presume the
+claim of bad performance predates the fixup. The current implementation
+for FSRS_enabled CPUs is fine and I guarantee it wont be slower than
+copying. For CPUs without FSRS the fallback is slower than it needs to
+be for sizes like 4096 bytes, that I'm going to fix soon(tm).
 
-After that I used an LLM to bounce around the smallest kernel prototype
-for the idea. I did some review, patch split, test, benchmark, leak-check w=
-ork,
-and throw away some cache codes that not actually useful.
-
- > I'm rather confused by the angle in the patchset. Most of this shaves
- > off a tiny amount of work, while retaining the primary avoidable reason
- > for bad performance: the very fact that fork is part of the picture,
- > especially the part mucking with mm. Creating a pristine process is the
- > way to go.
- >=20
- > Additionally there is a known problem where transiently copied file
- > descriptors on fork + exec cause a headache in multithreaded programs
- > doing something like this in parallel. I only did cursory reading, it
- > seems your patchset keeps the same problem in place.
- >=20
- > There are numerous impactful ways to speed up execs both in terms of
- > single-threaded cost and their multicore scalability, most of which
- > would be immediately usable by all programs without an opt-in. imo these
- > needs to be exhausted before something like a "template" can be
- > considered.
- >=20
- > Per the above, the primary win would stem from *NOT* messing with mm.
- >=20
- > As in, whatever the interface, it needs to create an "empty" target
- > process (for lack of a better term).
- >=20
- > In terms of userspace-visible APIs, a clean solution escapes me.
- >=20
- > Some time ago I proposed returning a handle which is populated over time
- > by the parnet-to-be. One of the problems with it I failed to consider at
- > the time is NUMA locality -- what if the process to be created is going
- > to run on another domain? For example, opening and installing a file for
- > its later use will result in avoidable loss of locality for some of the
- > in-kernel data. That's on top of the fd vs fork problem.
- >=20
- > From perf standpoint, the final goal of whatever mechanism should be a
- > state where the target process avoided copying any state it did not need
- > to and which allocated any memory it needed from local NUMA node
- > (whatever it may happen to be). Of course if no affinity is assigned it
- > may happen to move again and lose such locality, nothing can be done
- > about that. But pretend the process is to run in a specific node the
- > parent is NOT running in.
- >=20
- > So I think the pragmatic way forward is to implement something close to
- > posix_spawn in the kernel. It may make sense for the thing to take the
- > PATH argument for repeated exec attempts. I understand this is of no use
- > in your particular case, but it very much IS of use for most of the
- > real-world. The initial implementation might even start with doing vfork
- > just to get it off the ground.
- >=20
- > The next step would be to extend the interface with means to AVOID
- > copying any file descriptors. There could be a dedicated file action
- > which tells the kernel to avoid such copies or something like a
- > close_range file action (or close_from) -- with a range like <0, INT_MAX=
->
- > you know no fds are copied.
- >=20
- > For the NUMA angle to be sorted out, any file action which opens a file
- > or dups from the parent needs to execute in the child. And frankly
- > something would be needed to ask the scheduler where does it think the
- > child is going to run, so that the task_struct itself can also be
- > allocated with the right backing.
- >=20
- > I have not looked into what's needed to create a new process and NOT
- > mess with mm, but I don't think there are unsolvable problems there, at
- > worst some churn.
- >=20
- > There are of course other parameters which need to be sorted out, that's
- > covered by the posix_spawn thing.
- >=20
- > This e-mail is long enough, so I'm not going to go into issues
- > concerning exec itself right now.
- >=20
- > tl;dr I would suggest redoing the patchset as posix_spawn and then doing
- > the actual optimization of not cloning mm itself.
- >=20
-
-Thanks a lot for writing this up. I clearly had too narrow a view of the
-problem. I was mostly thinking about repeated executable startup, but your
-reply and Christian's and Andy's made me see that the more useful target is=
- probably
-a pidfd/pidfs-backed process builder which can sit under posix_spawn, and
-then grow into something that avoids the fork-shaped mm and fd costs. I
-learned a lot from this thread.
-
-At a high level, Windows CreateProcess/NtCreateUserProcess also looks
-closer to this direction than fork+exec: create the target process
-directly, pass explicit startup attributes and handle inheritance state,
-and avoid starting from a copy of the parent address space. That seems
-to be the same basic advantage here: build the child closer to its final
-shape instead of copying parent state and then throwing much of it away.
-
-I will study the process creation, exec, pidfd/pidfs, and posix_spawn
-codes more carefully, then try the direction you suggested
-and benchmark the mm/fd costs.
-
-Regards,
-Li=E2=80=8B
-
+No matter what, there is no justification for issuing a copy from zero
+page just to avoid zeroing in place.
 
