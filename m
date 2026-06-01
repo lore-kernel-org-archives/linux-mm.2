@@ -4,132 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89098CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 06:13:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4493ACD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 06:17:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE5626B0277; Mon,  1 Jun 2026 02:13:43 -0400 (EDT)
+	id 80EAB6B027A; Mon,  1 Jun 2026 02:17:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E965E6B0279; Mon,  1 Jun 2026 02:13:43 -0400 (EDT)
+	id 7BEB56B027B; Mon,  1 Jun 2026 02:17:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D86496B027A; Mon,  1 Jun 2026 02:13:43 -0400 (EDT)
+	id 6D4C26B027C; Mon,  1 Jun 2026 02:17:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C6C2D6B0277
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:13:43 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0C8211405C3
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:13:43 +0000 (UTC)
-X-FDA: 84830327526.23.D9A6368
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D4A3016000F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:13:40 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=sOVjxsXZ;
-	spf=pass (imf08.hostedemail.com: domain of pavrampu@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=pavrampu@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780294420; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C2186B027A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:17:48 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 060E1C1F38
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:17:48 +0000 (UTC)
+X-FDA: 84830337816.02.6D52A0C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5621220002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:17:46 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZqucSbV8;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780294666; a=rsa-sha256;
 	cv=none;
-	b=8PYe0jti3+T47kv8Y6x5SPtIiLrY6lHY/g1ikvMk+6hVJ2tbd1teZUFT0Iujm5e+kZ7wCE
-	vnmE/fztfFiwx0ZdVhkwiRKp5nUI6WzkS7d0RsLxNN20Ik1zLWT9Sl7HhnrAC10eDnADtA
-	e8OL8RvPlujbnJHZvJP/3Wy2y3zF+Wo=
+	b=RTkoh5mTR7SKgp+61P/9uB4n/K0sMWEPYbRcfKW+MrowHAKAwqJIyZ9nz4yaD2V5jZ5QIH
+	MDfjyXEcIqoEnGFtQzyf9R9ioiV7BJWh2N3d2EkHO/i2vJ4QHJ4EEoJFxffqo9hwOKojtE
+	BjLrlqwWXiWVxDAGZw9XvtGFKn6o5Pg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=sOVjxsXZ;
-	spf=pass (imf08.hostedemail.com: domain of pavrampu@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=pavrampu@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZqucSbV8;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780294420;
+	s=arc-20220608; t=1780294666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LEuzo96EvcBe1L0RHV2X4G4DgTPw2E1t0irsEQ+uWos=;
-	b=MP3/6Tp1GWQOCSCHeubPHb3vaWX/EPRuEfT8KUZxAE0YLeGEGFC0Jc3LP9UqEdIGHwRDf8
-	VJ5bHRuCPUv9XzkGrhYIt8EI5X8NtQaPQLmVNR//CrB0/twbtcGIiEu9itvuQArvF8H467
-	KYhuFTGT0bSw+BdV5Cxzq5eUW8fFli0=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64VBj1LM3166613;
-	Mon, 1 Jun 2026 06:13:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=LEuzo96EvcBe1L0RHV2X4G4DgTPw2E1t0irsEQ+uW
-	os=; b=sOVjxsXZuocv+p4kc4pW6WMbIZHxFdwQJR2UfAD1dg87iyOoF/fB7V/8e
-	VnC1DshEeAb+bzbxSWexG4dr980AbpoB+PV2x+jR8t8q6EILEw9kng9g6gybOCUe
-	p3HIpxTKfC1V478FwqF48TyNGsC5Fo2/roBk24iuI6NpnJO7c3Xp9UKeo8vHHOlu
-	xEotAfc2Vu4hDflK7BQMXfWK+nGnK398ibanwxDU28F0IW/u8STcIAaOUK5NEuPU
-	AivwG1Jg+DfNRTGGvoQJ4jtAl3YJH6PCAd5HoHI35hh0mRW2/sk4GGa9Jcbv0udv
-	7xTcmlWc1U6IpyGsWVGnzf792veAA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efpady01u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jun 2026 06:13:27 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 651698ov029749;
-	Mon, 1 Jun 2026 06:13:26 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4egcwy4cnr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jun 2026 06:13:26 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6516DOGW55574824
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 1 Jun 2026 06:13:24 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7040720043;
-	Mon,  1 Jun 2026 06:13:24 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9AE1D20040;
-	Mon,  1 Jun 2026 06:13:18 +0000 (GMT)
-Received: from li-49acbccc-2994-11b2-a85c-d51b89e344f1.ibm.com.com (unknown [9.39.21.19])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  1 Jun 2026 06:13:18 +0000 (GMT)
-From: Pavithra <pavrampu@linux.ibm.com>
-To: shuah@kernel.org, akpm@linux-foundation.org
-Cc: linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        pavrampu@linux.ibm.com, ritesh.list@gmail.com, david@kernel.org,
-        ziy@nvidia.com, mhocko@kernel.org, osalvador@suse.de,
-        lorenzo.stoakes@oracle.com, dev.jain@arm.com, Liam.Howlett@oracle.com,
-        linmiaohe@huawei.com
-Subject: [PATCH] selftests/mm/run_vmtests.sh: Fix protection_keys binary name in run_vmtests.sh
-Date: Mon,  1 Jun 2026 11:43:14 +0530
-Message-ID: <20260601061314.898388-1-pavrampu@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DOaCBJszeEJinofNr2lzj3UzRWu6io6VMPCUTe2YiMs=;
+	b=nhWIAf1G1mIwsmww9m3qrJkZWBIpqDEYwzCoEUOtPs9g1wWbfiBBH1/5l8MXx0t7vkO4hg
+	rH0NhqtgMt7tMhl2/3yroywpPHV3clBdAuEvbZuw4QnAcRPVXrGKaCV9ZA9k5PKEuY2vyK
+	DSfg1BiQOd78BlnJ7SzbHDkUhKunyo0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 730C543046;
+	Mon,  1 Jun 2026 06:17:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32B71F00893;
+	Mon,  1 Jun 2026 06:17:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780294665;
+	bh=DOaCBJszeEJinofNr2lzj3UzRWu6io6VMPCUTe2YiMs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZqucSbV8hFlVZ1MlIw7dKHjWn+WTilN3Xvl4/QRQAicoAXfqKiwJEaB0smexjQ5Na
+	 3HCDHSfMgenQ2mhbn7F6O4N7ua35jZPeeISQtY2htw8RpVwzVtCnIqIHMoUVN4liUa
+	 RkDR5eoW40yD1upA4fr3/UVYWAV7SkKbCYGiS9MYnI/QxVIUcRSfOIjWEHPZQFXdEA
+	 XEjabGKAKWK+gRWlqxuMRwO/yVoWxD8qyHBhpn5MliqsJxuREAD8/Ntde/H9CKT4Pq
+	 MrjUTxhmbCdTKMkr2447yZF22Yo9TF4Hy81fHgOnphG21+3oMIG0QyZ0tSPFwfZaty
+	 +pyJJn3exK/HQ==
+Message-ID: <0dd720f2-7732-4801-85d5-4593e90e8cde@kernel.org>
+Date: Mon, 1 Jun 2026 15:17:33 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Zt3d7d7G c=1 sm=1 tr=0 ts=6a1d2307 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=lXLsEBLhcoI0ZpkwZQYA:9
-X-Proofpoint-GUID: OJlNuBd6hlFxsohbUEUIL_9AtncMoPCx
-X-Proofpoint-ORIG-GUID: IXp5ZTHGnG6UIm2hLhoaz_lg1eQqAP9u
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAxMDA1OSBTYWx0ZWRfX9Ds9qcgBDGWA
- hRTe60PVQV517Xv9rEEGUrpEdQjlgJZyoQ4qW6i14EDul8DyLuOxpvtbzW1OtFun+aI8cFA1/eh
- 7Y/Ffovc1/qRRqByhvnOsQos503Qspo19qYBf+ifvsoCBi/M0aRzL2VLpJQi1hZt3u0v2pGFgrY
- wIdnKyLwtFUMf+eyfgxeuuMohWTLJmRkShjUQeF8vK/sXW29pkxBUcz2htTCWPY9Ke7gaLDnusX
- k2vQFF/u+4YrLHXRrIoKQRiEIkxk867bR80aat6+tE+nNz5sbb8/F9qKbVFjxQ59toYBaEYOl2s
- WWTJtQ/O0J3JMBum6PlOwBtARNeSSyGJo03Tkwe+bsRZ7lPjxjHHtZP/VWc7nVwqLqbWZqn7k9y
- yxHB67e+23uZeFcdeuZW+49C4GCzNFJB9oylsaajw+NlVId3X59It011j0geiiDm2aR0XLqFHEg
- P5yxlEhbw7/u2FlSebg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-01_01,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
- phishscore=0 spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606010059
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] mm/slub: introduce helpers for node partial slab
+ state
+To: Hao Li <hao.li@linux.dev>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260529035120.81304-1-hao.li@linux.dev>
+ <20260529035120.81304-2-hao.li@linux.dev>
+ <5ed81b4a-1d18-4535-a18c-1bb31969ae78@kernel.org> <ah0VlxGBk11LRg53@fedora>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <ah0VlxGBk11LRg53@fedora>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------54aSwY6HzRt0JvxlxSoZOFQO"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D4A3016000F
-X-Rspamd-Server: rspam03
-X-Stat-Signature: epzhtjewxcrcbtdbwb1b5yizwhmehyei
-X-HE-Tag: 1780294420-351497
-X-HE-Meta: U2FsdGVkX19GD224WIsVbuOMkn8vsxe5AoasmILzgWHiJl0517CLF7YjFExm6FmcXQUim40K5vxRpUUuYEO1yTfuPW1+mGvJykQlHaVphgDfYA6Z9CjjcM0H3SG9PtWSWE7DP9pDftUI7U1kL13zcbzGS87Kp8JG2eH+BH6uO7rVsZJZvTnChTsdblAbWb65X9fkrF4e5sFtNRwjM4BizAD5QGOH4/fZhs8wta1n/0RDOCWWGNMD6HEIZbjRrz0TCQDs9iE9d0hhMY8k4QAP+QY3JBDID+J84yxHac7ZWJhVnX71E+r6GWiKySOFLu3x+PMHRsPKbW3w1dNXr8r2tYN1MWwa8C23uVBSN/sC3YtkK4IQdS/zFz3AZGuTGUmm4Utdkg2NAJ399K5bDiw3akEp4trXoJnIDR7PLH2uVl9oyCmaFWsExZ3m3ClmxAYVEID9buQz/ytVdLjAE3gKDDlgYmGFdsyCs7zzXAYkfXvKEVGMtybPksUbF5eqO3d2H7ihP6ByhhWkhch05CXJXvpeOgfmjDGuHdLt0ees71z/9CHbcd2rxUdLzVn3cPMi3bOCjSsZAEHF/9K47D15JCPsVY0ni/AoMPVlNSi1xhVAHa84st6ShniqJ5TJ8i+1E41hZvqRmGO/2sWsaVReA8OefH9M+PDvTtipk909dFSpFCkBJ9J1W6pAs+/9wGNV1myLEDfXKi3cpthXS4yTEtrVpy8oO9FbaLgEM/WEFlGgRVI9TB33Kt+uFBeZDeTom8eVXJLKAGJAxrfPyWNlLHKFOBSyCGWdtKVBOIIkgssvnNPY/bCvDc8CqbuVCbrYmZQpuT2YjZNtAXLWI8hLIk5wU7kpzSLxRXvMCVSRqI2YdRc6VlNIKK/mJj6W2WftULrv84tscDZqBe8ezicJoG4WYIU9POAlhtwzAqiqowiLKqft1mRDbqZR79RZ3gZfPCIV9pBXSpqE2OnoayQ
- 1v91bioV
- yS5iVavlpCt9/cyPGHTrFg9bBOjR7KgIRBhHAbmc8+pB43NeMUHV5j8nsbh/jrB3jsU/j2i/rfF+LkoIAhmpa5futmjK/hm7JQDKQli61t3LazVNfx1LDapoiS3I5+YnFGrJiJ9dp2dpyNjGuHzYjlbgSJxQ/aOCrtbUGiCcCjKCz0El+FGFJGhUtIcwuZHhMQR5fvHchEqN7Pp7XzS41sJ9Y96sTYFkjYR6uyQdew2bU15VVYl8mfNGirE7TSigniUTeJzEI1h6OcSl/8A07Zj1SzP5jXeXYaXlbmU6XKsxHBai5ZFfda2/mtR4gHHK0rWeSF+QwA+3eFmCGbdVnNhLrXGb2HiJfSisDh3RpQz8zaGnt7f74Yz0qTG+1YNu7/V5xV/05+LEwMxB1Z7PfTtedFvh61gI4dRPB
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5621220002
+X-Stat-Signature: i85u593iabup633wfih9jb91h1kafr9k
+X-HE-Tag: 1780294666-430093
+X-HE-Meta: U2FsdGVkX19Vdn0pgf+VqJU1HVR4jM13xdyj0bztO5TLBT+5937n2f+f2miDtFcK9sLo+Dr9t7p7a6Of/+s7KDpVHS+u8PpUvnQeUcK3IdJu8Z9QUOA55TdcjuZLxrGCnkBMwUOqH+xZX5JRGUoCJc+GpGjq+P2HILswxoyx2PxqTTVu8ExbH3Vw1u4s4begq6wVGU8sZP+KdtAt0lH7YcdAVUAr0d9rS/Hdy96VZTgMpxi6UB/7ruCwQGVnguZql3FMY4HOoAzVgsNJC5v9aSFc3jKK6nQLJvm7TrvMZ+D175Z9Y1OgwScMUYDIPLk6z6+5hbQzzDtMKYalbGA2DOTH2YW5ftbn1vESiF+DQbTTV48f7LUWkvEEb8lHrLna+bcKtv2UqylEr/8pEOaodjYig23whMbor5/buE7cqO270paqG3E3XFUTK/Hgf7n1b3F+P8zz+paYnYMMxRXJkCoBCUJAspKi0opurtDbNtDQub5deaNg4nI9WNlNNYWJMTbbGbDaZ9QyfipAqWBmFvhAtw7xGSqTgypUOV7B60B0TUr+qxZWOBFnEe3cGk0+Uw/ItvubNXBEtwawRsLBXb06bh7AEqiFqBt43Z7XGGQO5tEXlg5QF/bf9b8e3FAp2VU94ZWcKG1WBjOm614SNfE+kCz89lowLxrw+/laRx8yX+rLNlNjtmGX/7jKbImxfyAt388ZrnMh1b0JB6LNq9xbi5ggSl+7Kw7o/6Xpr6SsdDhct5YV+xVhlZZ6JkxXi7xGo3u4yswQSMGdgqvKtx4ZCdOJND7rjjmFUkCAwGnBltWu6Vm3X80qNHhxZJLSf/PWNSX+1mQ0t8TRJC5rhRxLAfkSFBz55XYGv2xBSanEl7KANZqPWMbn2vADQUmxD22c1trOlcqrBbSCvvAYLZVklMXN1QWpV2NLO9/aIIu1jIAQDjn8gg1eNtT2aHFjtedpvnkJtnCuO2wQFlr
+ Ckkrw1iD
+ yx4Rz27RzVeAgzHSeZhqwru/TbLj/jkMf44JrRHysYJwTCYlNsYokgPWY1JeFVf8OTDCsb31SzLL/6IPiRH263b/2t5YH7mXHUsQscGHsvArCcUG9XVHrft2oOBePqgnW9+Zt8TM5bo9/MlLMR/dVQE2QE3nfYY/oE176mx9qljc8/GsLnwXNU8wpXkD9k3qMsBF1c9Jws2LOPxZmtkyZNU41/otFCt5EhJfoZxsJYJGQJB310QYEBcvaZEH5EbLuSGdu+yWn4Pjvctf9iad8aky8EQA8uRVL73ztN+3y+fgTO2Th22amabZAJL93gcBy5CostAqtIooNCikiOX3epm5QOjjmS0qbSjvpNuzb3IAcJIRUG1K2QUNWuDeAluwHOV2l+R9V2WYoDfq6qJ5hiZda9aBWexpV6iQCq20uMVQzDJmYvLm0VATU2O8xg/qjzJBKZLsKCuhFStY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,37 +97,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-we have protection_keys_32 and protection_keys_64 tests mentioned in
-run_vmtests.sh but the binary name is protection_keys with current
-kernel, adding the correct binary name.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------54aSwY6HzRt0JvxlxSoZOFQO
+Content-Type: multipart/mixed; boundary="------------10OOyuURfKZOfOnV30ucBNtn";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Hao Li <hao.li@linux.dev>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Message-ID: <0dd720f2-7732-4801-85d5-4593e90e8cde@kernel.org>
+Subject: Re: [PATCH v3 1/2] mm/slub: introduce helpers for node partial slab
+ state
+References: <20260529035120.81304-1-hao.li@linux.dev>
+ <20260529035120.81304-2-hao.li@linux.dev>
+ <5ed81b4a-1d18-4535-a18c-1bb31969ae78@kernel.org> <ah0VlxGBk11LRg53@fedora>
+In-Reply-To: <ah0VlxGBk11LRg53@fedora>
 
-Signed-off-by: Pavithra <pavrampu@linux.ibm.com>
----
- tools/testing/selftests/mm/run_vmtests.sh | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+--------------10OOyuURfKZOfOnV30ucBNtn
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 043aa3ed2596..a6b6f397d942 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -344,14 +344,9 @@ CATEGORY="ksm_numa" run_test ./ksm_tests -N -m 0
- CATEGORY="ksm" run_test ./ksm_functional_tests
- 
- # protection_keys tests
--if [ -x ./protection_keys_32 ]
-+if [ -x ./protection_keys ]
- then
--	CATEGORY="pkey" run_test ./protection_keys_32
--fi
--
--if [ -x ./protection_keys_64 ]
--then
--	CATEGORY="pkey" run_test ./protection_keys_64
-+	CATEGORY="pkey" run_test ./protection_keys
- fi
- 
- if [ -x ./soft-dirty ]
--- 
-2.54.0
 
+
+On 6/1/26 2:26 PM, Hao Li wrote:
+> On Mon, Jun 01, 2026 at 12:38:48PM +0900, Harry Yoo wrote:
+>>
+>>
+>> On 5/29/26 12:50 PM, Hao Li wrote:
+>>> Wrap partial slab count inc/dec and flag set/clear into
+>>> helper functions to reduce code duplication.
+>>>
+>>> Note that __add_partial() is called locklessly in
+>>> early_kmem_cache_node_alloc(), but since there is no such use case fo=
+r
+>>> removal, __remove_partial() does not exist.
+>>
+>> nit: __remove_partial() -> clear_partial_node_state()
+>=20
+> Ah, in this sentence, I just wanted to clarify that __remove_partial do=
+esn't
+> exist. it's not a typo :)
+>=20
+>> oh wait, it does exist. Let's drop this paragraph?
+>=20
+> This paragraph is just a quick side note to explain why __remove_partia=
+l()
+> doesn't exist. I noticed that __add_partial lacks a symmetric counterpa=
+rt,
+> which felt a bit abrupt/inconsistent, so I wanted to share some context=
+ on why
+> that is.
+
+Ah, I see. I was confused because it didn't touch those functions :)
+Thanks!
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+
+--------------10OOyuURfKZOfOnV30ucBNtn--
+
+--------------54aSwY6HzRt0JvxlxSoZOFQO
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCah0j/gAKCRCGXBN6rc5S
+1uFvAP0XfcrNFQCIz3fQt6P5mIFUpar5IMWnPdjiBh+wg9GzwQD/dJws5J1S+Hg3
+wDmGHJplNfTtjLoHpnYcWG4YYBPJzAs=
+=X0Y1
+-----END PGP SIGNATURE-----
+
+--------------54aSwY6HzRt0JvxlxSoZOFQO--
 
