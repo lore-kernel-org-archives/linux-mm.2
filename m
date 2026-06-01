@@ -4,141 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 228DBCD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:49:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40B03CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 17:04:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8714B6B0477; Mon,  1 Jun 2026 12:49:44 -0400 (EDT)
+	id 7002E6B047A; Mon,  1 Jun 2026 13:04:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 821F96B0479; Mon,  1 Jun 2026 12:49:44 -0400 (EDT)
+	id 6D7F06B047B; Mon,  1 Jun 2026 13:04:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 710F36B047A; Mon,  1 Jun 2026 12:49:44 -0400 (EDT)
+	id 5EDAC6B047C; Mon,  1 Jun 2026 13:04:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FFCB6B0477
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:49:44 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 18F781A0736
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:49:44 +0000 (UTC)
-X-FDA: 84831930288.26.0705952
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A1C0840016
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:49:41 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PbKFHBTo;
-	spf=pass (imf01.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E08D6B047A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 13:04:48 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E93889163E
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 17:04:47 +0000 (UTC)
+X-FDA: 84831968214.09.05CCFA2
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 74AEA4000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 17:04:45 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fz9TmbMf;
+	spf=pass (imf11.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780332581;
+	s=arc-20220608; t=1780333485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7594kL+OGhTh+MPEHirvt0TgqH2sgqoox1kNEtcalJk=;
-	b=AJHQruXpB5PZviS18wv5KKUN5cyG+GiJxNvp8UNFye2JTVHqWi32ClG9jbvnPPn1QnswkX
-	quT2wtINWqjANgmtatIXMaa3NXqKdBffovsFuF2OGl4XhP4cxPV7nP6Vr0MaI+gVKrhcEz
-	iF2SsTW8v8OGdzRTIaC8Aa1jdLkbAdE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780332581;
-	b=NRbjAKmnVYyDZ1jrxVpdpxZT8IgJ7y4mZa4Y7GzRZaNR6KFFX7h0IlnRcetMC6tCwNPstt
-	S6+j7ZX/QYqrB5CuUQSnSwHA/BCgYM9OkWi0i54rBNicqOE4vc6PlFVJdcExmgO7Zp3S/B
-	5Kd13Qu+el1oQWJ5byoQcWGkYkJdWLQ=
+	bh=pWY7+zLcstKVcaBHa6DF3oAjfO/xzJSbuw3Jcm1WeHw=;
+	b=OG1H/7EX/f5EAGriXV+UCDaUZ8IoAuX3Y5DNuIyLbMYdk4g1iOwynJ4z6HgYw7cCFyA7JD
+	ACP9Od8QFe49FqgL6QrcC8M1ZJ4S1YG9DL61WoiK3Lvk1qhB2DkUfjO0E4WaCUBynZVvvj
+	N3S53EcqPLuXZKegXiYrxlPTps4Rwfs=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PbKFHBTo;
-	spf=pass (imf01.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 651F1kG7392882;
-	Mon, 1 Jun 2026 16:49:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=7594kL+OGhTh+MPEHirvt0TgqH2sgq
-	oox1kNEtcalJk=; b=PbKFHBTo3ke3/6Xa7sRuxItcAhLn8btB1dORdDZEiDdR25
-	U1bR+LklCZLbQmEmSgaFXTNy3CPB0Wb2+2uIk4b4dJayZatwEhGYC3n35sB3Ub4f
-	k64KrWQQf83sQ0lYhDx5/BoHXefTgHKSQY+7RzDk/D7qTzX9+oguSa5stjaR52X9
-	6WcsVakwzdIPyzneIsxLhEc8tXpU68Ny8v5TZp4re0v0y2TqAmu0amxZP3cqpcSs
-	gJ6aD0HLQgoV8sGToSJiMF2SlXlkRnlxLSKRAfQkkXYt/D55zvebrL5nxmXL7NTx
-	wGrbPwmM2ADocm72xQixzSUB6xjjF2iF3RvyH9Sw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqm4svpx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jun 2026 16:49:30 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 651Gd8Tg018851;
-	Mon, 1 Jun 2026 16:49:29 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egakvq8f4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jun 2026 16:49:29 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 651GnRNo54264302
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 1 Jun 2026 16:49:27 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 39DA32004F;
-	Mon,  1 Jun 2026 16:49:27 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F03522004B;
-	Mon,  1 Jun 2026 16:49:20 +0000 (GMT)
-Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.223.138])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  1 Jun 2026 16:49:20 +0000 (GMT)
-Date: Mon, 1 Jun 2026 22:19:18 +0530
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: Daniel Gomez <da.gomez@kernel.org>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
-        hch@lst.de, ritesh.list@gmail.com, jack@suse.cz,
-        Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu,
-        p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        pankaj.raghav@linux.dev, Daniel Gomez <da.gomez@samsung.com>
-Subject: Re: [RFC PATCH v2 0/5] Add buffered write-through support to iomap &
- xfs
-Message-ID: <ah24DlQobLjjDTGt@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com>
- <d5d99db2-9d34-4caf-bcc8-c4a3af561901@kernel.org>
- <agQPtTx2EXHr10Nn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fz9TmbMf;
+	spf=pass (imf11.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780333485;
+	b=aBTIknKprfgU6Eg4mHRurej/uiNozsGSj4Ux6uZz9ahqgmnzjK2R1EXZiI6hOiYGmTEJSy
+	xfMWP2tp9eUVK7J5+Ia1051GC2pMi3KL/liTKJC+vXdnBOiViRoSNIX2heSZdY9AKFMhVr
+	5B6rogNjK3f6G3oniKbcOGSB9BCcZww=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780333484;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pWY7+zLcstKVcaBHa6DF3oAjfO/xzJSbuw3Jcm1WeHw=;
+	b=fz9TmbMfPXQ5O5szQljzQSp0bE3iZMtaizykRo5umLlaxHX0QdZhceE+4Hg5JqriMZ45/V
+	vit3txHnXxsHo3TRSFv26LRdASczX2AUR8LpRf9Y6pgAHcVAT4RU+Ktbu3cxC2RLbFCpxa
+	4dZJ41qMo0igQF52fG5B4BunsQAL7o4=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-MXOSwRGjPgGGmYdiRTo6RQ-1; Mon, 01 Jun 2026 13:04:43 -0400
+X-MC-Unique: MXOSwRGjPgGGmYdiRTo6RQ-1
+X-Mimecast-MFC-AGG-ID: MXOSwRGjPgGGmYdiRTo6RQ_1780333483
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-7e0533b7d8aso44780907b3.2
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 10:04:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780333483; x=1780938283;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pWY7+zLcstKVcaBHa6DF3oAjfO/xzJSbuw3Jcm1WeHw=;
+        b=PJ54Ymq/dpRCnXgmLpOeZSJmkAqMgHTYEEDR6aJRZmz4BdPhHqZGyFNCiOmWJdSKZJ
+         jOtFKO7epZ/vhENwB5xojmcikfLhB4eR7838Q+2g+/on00WHrm5FNuNDaLWIf73FHRCl
+         l7f1TXx0fSRSV5fOcNqnhXqVU1yhkt7nvajCDr19SEw8PGieufJ1t/ZP8u9jqZKtlv9D
+         hPqvocDhf7wYhG6WRCz4dbzk4AhrbOMcX9e1IvXTudxcWa0/Oy0Ixayfc+qnNNY8Sb+e
+         GwngQKM4EN+87ud1oQ2DuBh+CiCELm2welDGNqjFhTBQbPKICha1W/dCAaoZ7EMz0PB4
+         SpEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+XjvxC1KfJv0/3IKSof4iZJbZ7HEbxSxzubw30pR+fAaol+O+Ncnabl+GkF5vDbQ/A+F09Aub5zw==@kvack.org
+X-Gm-Message-State: AOJu0YxrFx+1LQNjNIl94kExQo2HiXZTPfMwpRGRKHelNqznX4KwV7mC
+	R6PGS+kMohWqTpU5VF/NgMllbpPrJ6BT6lXAMK5AwtQpay3bGZP8ggZgyc+UeHxSu7Y/75QsJo3
+	HQOErk54xT5SxU5ckUqDrDrRFnfOdGUvF/opoQFDbOCExgKFHon6hcbsn2NaFtJbfrNlyB4NDc9
+	gP+NL9TosJcR/O2bLo8zoEOLStvA8=
+X-Gm-Gg: Acq92OGnAq8wdfe34ZLghPs0gpcZ50fp+s+2AcTZyELrPUK0TFkYcS04yP4gHDFUPXf
+	tMcmN7kYxWwhbkaE5Dl05muWUPiSEbO9q3Rjwjwdr7iMQQIc5KaLq543YT6Yxx7LXbNXhojJ/R7
+	xQ1oohzSe3GX4Fhow3PcsaWjnn1TmihbWlbg2rwnQBaCM2TbMr66KGcBeTjaMVVT5j2HQSsYynj
+	27wKdjc3bjV6N2bFA==
+X-Received: by 2002:a05:690c:c50f:b0:7d3:cf30:ef91 with SMTP id 00721157ae682-7e05a1907d0mr108659937b3.19.1780333482332;
+        Mon, 01 Jun 2026 10:04:42 -0700 (PDT)
+X-Received: by 2002:a05:690c:c50f:b0:7d3:cf30:ef91 with SMTP id
+ 00721157ae682-7e05a1907d0mr108658977b3.19.1780333481712; Mon, 01 Jun 2026
+ 10:04:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agQPtTx2EXHr10Nn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: Ok8QFW2BuRj6goZD5frLwUDQe05DWurF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAxMDE2NSBTYWx0ZWRfX0xEKHeDAU35P
- c3sfgGbVw+ONfqOn0CzrqdBqm/8FdE3N4eTXJ7EJwaX2RtkK6FwKKrdSv14G9byp0o97Bl1DxDe
- 0SHMehppQyKyJlN3QWwpwr2Bl52VpLQqvw++w9/rr++sLAjlSEI2ouNNZHuhELp0jivEDpbwaGm
- KXhf8nd7ZncNuHhvOTO/6Qflcpfc7G1+gjcX0mH5SMahd9N9c81LoORzLLA9CEBx043c9OXHdFD
- 5tl8pesjDXzv4p+acROMof4WvZpqWnVGDlPjkd6OTSlw4kvsdZQefBlrl1jCqLBVm6IV/pmaTwf
- xr5ZZp0/D/VdAZ26XXUO8KKIdu9x9c5Q+nSKlphJTIpdvKgWKeyeF9hG6kPlS8V+BrvSRCwTOz3
- L1VXjilKMasIUuGsmos4EUB3uUtorsbQHEzG6/ajal0Dyu2z2gYnh5UmnAsXvnDrYj00tIclhr9
- 1jDD+yo2ohrmUUwrSjQ==
-X-Proofpoint-ORIG-GUID: cKnmLeVqMk8j6myG8yTRXGcatVyb6Hci
-X-Authority-Analysis: v=2.4 cv=Vf3H+lp9 c=1 sm=1 tr=0 ts=6a1db81b cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=NEAV23lmAAAA:8
- a=lcIDxHtVAAAA:8 a=6-Iau3dbAAAA:20 a=ERiHZSWjYGKwgxmZlbMA:9
- a=qcg49hLlgF0N60+LroqrWnV/Vu4=:19 a=CjuIK1q_8ugA:10 a=SmPfr9tXhjlp3KZZvEYH:22
- a=bA3UWDv6hWIuX7UZL3qL:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-01_04,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 adultscore=0 bulkscore=0 impostorscore=0
- phishscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1015 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606010165
-X-Rspamd-Queue-Id: A1C0840016
+References: <20260522150009.121603-1-npache@redhat.com> <20260522134724.f4f11941a85ef18b307d16ae@linux-foundation.org>
+ <20260601155808.2755103A59-agordeev@linux.ibm.com>
+In-Reply-To: <20260601155808.2755103A59-agordeev@linux.ibm.com>
+From: Nico Pache <npache@redhat.com>
+Date: Mon, 1 Jun 2026 11:05:20 -0600
+X-Gm-Features: AVHnY4LWX34RPOrSLZQKCFADp8MRh-hRHO-69bPjowu85AkTudvs-SlZUCsWfOs
+Message-ID: <CAA1CXcAd-uQD0LgUzWAAkFKt13eFfaP3TfG9KED2RzYGhHoqpg@mail.gmail.com>
+Subject: Re: [PATCH mm-hotfixes-unstable v18 00/14] khugepaged: add mTHP
+ collapse support
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
+	anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, 
+	cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, 
+	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
+	jack@suse.cz, jackmanb@google.com, jannh@google.com, jglisse@google.com, 
+	joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev, 
+	liam@infradead.org, ljs@kernel.org, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
+	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
+	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
+	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
+	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
+	zokeefe@google.com, linux-s390@vger.kernel.org, linux-next@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: vSdeidvDvnyCSs4Ua0OFxTBLZdvb3JKbRVBbzA_TIIQ_1780333483
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 74AEA4000D
+X-Stat-Signature: bwwi5zrsnsz89xo36cbpmugjik8g9upp
 X-Rspam-User: 
-X-Stat-Signature: ojdkcecxihhg67rgxbwjzo83xf47rtpm
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780332581-504124
-X-HE-Meta: U2FsdGVkX19vNvd68LaSIgxm5t9Yuy7QAE0vohZNh8ZExrHTEdE5NRHYvrYvNeQlo1t6264zMQ6WECE08WzPJR7a4tE8MiiVnEzqdsGfYrWAYH6/vH6MWUqMxvvCSySnSPQurkGj4FIRh2XuyDcn1eiDsET9Ek2uNvHz1A9apSniRk+ONRtkjx+eXW+IpS0JO4O8E9duRcbmyb7fuoAcKSuj5sx7HB46wYJwpkUPQXMLmQris7KrsK0zs8pt34xPjsT3it0zVtlA5FGBbJxD2Y/SJbR3zi9hR92J4tcu0UpTT6t1Zjo/2Cn3R3/3b4HeQEQcD66zAenZgsfmXv97VyvkvwIyM5Ts3VGBN+uSuAdw2r5INvegK5uAWc4R/QlClXlQhFzbpwcIzuXRC8wP/CwrGvr+5J9KW7HlTBaiI2NLwWMR9wfXe2wGOEiheRgT57XIOetRoSOMkNEcMYWaMwPnhpqqwLZrIhF2mENcZeB9sIUSuLX+PwQaTY0Ty2EdKFqr1NAriNpbriRjda9BB+20AWX/PvJtxMP0NP8fwugFUVOruZ8KajTocqKlW3Rz9P5aU2fr/ehLKL5/iEEz8E5uvzLzx5QOGBDsB+k3Tih9iOmny9c/RODeWziTOwUZ0FcS2PMeO3PfK4aYGvaBg4/DzNHOED6PHz7zjmEh5iPZ4bAVCy9LgmCritmRe/7yHBRc5b29RGEv3J/Wz3t5uS3EAaqUFYxdK7c3ugyrw0p08d4JhfWC6xCHjqaxLtXz83GqkeixQz/aSeA9TmJU+WhnkqdpdrO6eERZvRxE3b/AXBBko6i2wTq47FJWauYPXAa3JAXGc7gFlRorsyNVxHnwgcWwhmcfmF3CYJtUQxFLKu2Iw+CLyYhLcz+dKEIleigBQ1IaHm+oYG41VdlUEz3RGKRyzh/AWpapRQICBkgwOOzwz+WkKAtK7NE0OXP5MU322odlGoM7mJQBPbN
- fbXLw6Me
- SlFpGv/GebsJ/Lfa6Hz9AnZ+uRJwDIrZJD6b3OcFVsYpAvMflecWXUdLriJeUSAchyDwwz+9see412srm4cHlJ3+lV/tkYPTw1PJBYhrq4Evw5GLJPqFOkmGLazdps9oSNmIr8pCCE65LdHDRrWFBr2ADgabDDLrlO7is4nXsDQYRS7PJwx9uX2a5SR0Tya8iA7GaODtLg9yFDICc8fgOqdVt4LdHjTZS8lAeAl30SNt4PDbnsTQMF/oXvMAcYa2XLbwdighAPsV+aw5eo5W98DZhDmoNaew7dldsdzZSoPGoKjKdpM+d9MMyTeMLuakIffZuzPxBTKbEH9FVfxJqAvGTtirJx9dnkwIW1Oo1wluOQ0QcBMZA6JNA0Tj2AuEJtChGzDcF+XKtRkrvFySP0S9INY0Hn8WkKtbXNnSGGnMw5G/plsHUKT4JwEkuDC4iwImHRzsh9fBHktjryGDFYSvbjIlIGLo5kVO2Sa1mprGObZojy3YX6g5Vo9Uqh5X5WS6DbSRI9WLVU7QT/ob2V6VTDpIMYTF+YqkmVWks/Q1PPJ3FALFiy5fT5b0mKPxcypzZpiTn+d+5jNF75VmetkV/BA==
+X-HE-Tag: 1780333485-866638
+X-HE-Meta: U2FsdGVkX18Xq6JvgNnY1NICiYoU48bQ8g81JMTlBnBi5vF7MZWmH0IQOlz63EiBxCjVeJVmFO6S0CTpRn8DKek/DIULVXF7Qntlrwx3qIK8kO7J8ttFprSazp3qEyf6uMG5knkZy8AsUGSA6+zyvHLPVvAkmDj5Rm69hhL91FZLLxpkDo/KzRZJIKxfa8XQxsh4C6bPjGheODBBXTK7BKVd41E3sKw4s8iivyMJ+Hc7PurYffnvLYFoHMt1/az3zXqVcOX9rffmVp2Vgk8psZ7DlpZWClrVWr331G9T+007DawLEHCSZrtu6WTcG2rJGsKvS7h4n6xKeysvRPAGjhs91QWYGWt4p0Qb8mziymOiA9j94Vh/ONbPOvZ1LGNXc/x/KnPZXicxmzcND0uY9uOJtBQzA+jNEZMr9CM2gT12lp6fw8d5kPYKY8AFeLSEy9TSFWOui2RihSTLefbWcEGcTjgvwvW9gILIEioBTEXfePthYQz6B8dAvcf+1KcqF2Hp/Waj7r3nocx68WIrnt8Kn6Dtevd7HaJWbAY6iCRKYjF+c8ZagRpVmTBu/mKrBSvmH52KAAIILuB8WdxnLWBsjsPPm4IRrcVHLos5R+5XEDZpBh513QItaXDcTkSBMXMKpadtrJy3KIJkbsIsB397rkpr5FxHR+oKczK/QguwsLs26p2JIOWa32qQk1BIp13sb3/jxQV3xKsdiD7FGc7e70sRGnPIHTbQLtRn4LGGOklusa89OkDJ3H0B0wBLtR9nlyEH8tukCP1GYzkr/e9aMSD3kJ7rnDl3V8EmWkwUPhFjdNAGaMI3bM9h53gVcWKMYiD1S0rtZEMVSWDiB9deEVaYUYiulIc9nRs7f3dXMb6vDJMPgneoIRQDxQYi6+UO009+4xhXWm2Cnclfk+08VNvslnT+t6EyX9+l/2CSsmEHmu8Y1dYOJK+qeNhk0uAo0sAvZkBX8yUhiu4
+ 5qb7+bQu
+ 7wwcRc8xSmwu1cUjvzSIT6vOTR6CYc+TI1+rSj7dYLwU/Gzik5UfhzNL7nFUMnfWntXPvWF+hlVeShSKIdt4mgWOgD7LZ4SfZaBytiThZqu9GQFTOt2T/HZB0Yvy3Ox+pqZzk7NOYsKL/u0sGZTKd7e9c7aw1zFg5Fkdab4GplZml16Iw4YUK0Xs+GhHCk2m8A9Yb0L4sUN+74Kps3oNSvhiNdn2iXYoX0FhKeX/pYIGyVGrOTnSyo/O2ekJbCG03sNtXK9ThgOrqeE891gzrDakkrAiPNU2yaa3/LTVbqtxi6AaK3vCSAAauOm2BAu45cOhHYo61Ue0equSjbaKPvT3bDwXrB6Zt08kRfXamXKP2RZ43U0lLlf2DXLJUVp5X8+HpQoyrbbePBPE81LyOXrKR6R0Waja+laNbokG2MGq2OxE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,135 +144,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 11:14:21AM +0530, Ojaswin Mujoo wrote:
-> On Mon, May 04, 2026 at 09:54:49AM +0200, Daniel Gomez wrote:
-> > On 08/04/2026 20.45, Ojaswin Mujoo wrote:
-> > > Hi all,
-> > > 
-> > > This is the v2 RFC to add buffered writethrough support to iomap and
-> > > xfs. The changes made are mostly to get the writethrough implementation
-> > > more inline with how dio handles writes. 
-> > > 
-> > > 
-> > 
-> > I gave these series a run with kdevops and fstests using the following
-> > profiles: xfs-crc-logdev, xfs-crc, xfs-reflink-logdev, xfs-reflink.
-> > 
-> > Note that I applied all patches on top of v7.1-rc1 and xfstest-dev
-> > patches from Ojaswin have been rebased on latest master [1].
-> > 
-> > Link:
-> > https://github.com/dagomez137/xfstests-dev/tree/iomap-buf-writethrough2 [1].
-> > 
-> > In general, some of the results here seem flaky. But let me know what
-> > you think. I'll try to confirm the possible regressions with another
-> > full run.
-> > 
-> > 
-> > Summary per profile:
-> > 
-> > * xfs-crc-logdev: no regressions or fixes found
-> > * xfs-crc:
-> >   * generic/753 fixed. This test failed on 7.1.0-rc1 run but succeeded
-> > on 7.1.0-rc1-00005-gc6a39600d3c3.
-> > * xfs-reflink-logdev:
-> >   * generic/415 failed on 7.1.0-rc1-00005-gc6a39600d3c3. I tried to
-> > replicate the issue by just running generic/415 (not the entire test
-> > suite), and I couldn't replicate it.
-> > * xfs-reflink:
-> >   * generic/457 failed on 7.1.0-rc1-00005-gc6a39600d3c3.
-> >   * generic/561 failed on 7.1.0-rc1 but not on
-> > 7.1.0-rc1-00005-gc6a39600d3c3.
-> 
-> Hey Daniel, 
-> 
-> thanks so much for testing the patches. I'm back this week
-> from travel so still catching up to my emails. I'll go trhough thi and
-> get back to you soon.
-> 
-> Regards,
-> Ojaswin
+On Mon, Jun 1, 2026 at 9:58=E2=80=AFAM Alexander Gordeev <agordeev@linux.ib=
+m.com> wrote:
+>
+> On Fri, May 22, 2026 at 01:47:24PM -0700, Andrew Morton wrote:
+>
+> Hi Andrew et al,
+>
+> > On Fri, 22 May 2026 08:59:55 -0600 Nico Pache <npache@redhat.com> wrote=
+:
+> >
+> > > The following series provides khugepaged with the capability to colla=
+pse
+> > > anonymous memory regions to mTHPs.
+> >
+> > Thanks, I've update mm.git's mm-unstable branch to this version.
+> >
+> > It sounds like I might be dropping it soon, haven't started looking at
+> > that yet.  But let's at least eyeball the latest version at this time.
+> >
+> > Sashiko was able to apply this, so the base-it-on-hotfixes thing worked
+> > well, thanks.  The AI checking made a few allegations:
+>
+> This series appears to cause hangs on s390 in linux-next.
+> The issue is not easily reproducible, so it is not yet confirmed.
+> Any ideas for a reliable reproducer that exercises the code path below?
 
-Hi Daniel,
+Hi,
 
-So this week I spent some time looking into the failure of g/457. 
-I was able to replicate it in my setup and after analysing it, this is
-actually an issue in my xfstests patch. The issue is that to verify
-RWF_WRITETHROUGH support I do a 4kb write on the fd during the test prep
-phase. However "out-of-band" write makes the actual contents of the file
-different from what fsx expected (It reads it in before the problematic
-write), causing the test failure. 
+Thanks for the report!
 
-The below snippet fixes it:
+was this caught by syzbot? If so, can you provide a link?
 
-diff --git a/ltp/fsx.c b/ltp/fsx.c
-index 720bca83..1c76634b 100644
---- a/ltp/fsx.c
-+++ b/ltp/fsx.c
-@@ -2077,16 +2077,34 @@ test_dontcache_io(void)
-        return 1;
- }
+Also can you provide whether any of the mTHP sysfs settings were enabled?
 
-+/*
-+ * Use a temporary file to test RWF_WRITETHROUGH so as to not modify the
-+ * original. This is so that fsx expected contents and the actual contents
-+ * of the original file don't go out of sync
-+ */
- int
- test_writethrough_io(void)
- {
-        char buf[4096];
-+       char tmpname[PATH_MAX];
-+       int tmp_fd;
-        struct iovec iov = { .iov_base = buf, .iov_len = sizeof(buf) };
-        int ret, e;
+Based on the report, it looks like we are either dealing with more
+lock contention (due to holding the write lock longer). We could
+switch to a trylock but that might cause us to lose some collapse
+attempts (which will be retried later, so probably fine). I'm ok with
+that approach if it prevents these potential regressions.
 
-+       snprintf(tmpname, sizeof(tmpname), "%s.fsx.XXXXXX", fname);
-+
-+       tmp_fd = mkstemp(tmpname);
-+       if (fd < 0) {
-+               perror("test_writethrough_io: mkstemp() failed\n");
-+               exit(132);
-+       }
-+
-        memset(buf, '\0', sizeof(buf));
--       ret = pwritev2(fd, &iov, 1, 0, RWF_WRITETHROUGH);
-+       ret = pwritev2(tmp_fd, &iov, 1, 0, RWF_WRITETHROUGH);
-        e = ret < 0 ? errno : 0;
-+
-+       close(tmp_fd);
-+
-        if (e == EOPNOTSUPP) {
-                if (!quiet)
-                        fprintf(stderr,
+Cheers,
+-- Nico
 
+>
+>     [ 2749.385719] sysrq: Show Blocked State
+>     [ 2749.385730] task:khugepaged      state:D stack:0     pid:209   tgi=
+d:209   ppid:2      task_flags:0x200040 flags:0x00000000
+>     [ 2749.385735] Call Trace:
+>     [ 2749.385736]  [<0000017f63c8b226>] __schedule+0x316/0x890
+>     [ 2749.385740]  [<0000017f63c8b7dc>] schedule+0x3c/0xc0
+>     [ 2749.385743]  [<0000017f63c8b888>] schedule_preempt_disabled+0x28/0=
+x40
+>     [ 2749.385746]  [<0000017f63c902ea>] rwsem_down_write_slowpath+0x2fa/=
+0x8b0
+>     [ 2749.385749]  [<0000017f63c90910>] down_write+0x70/0x80
+>     [ 2749.385752]  [<0000017f6313407a>] collapse_huge_page+0x2ea/0x9e0
+>     [ 2749.385755]  [<0000017f6313491e>] mthp_collapse+0x1ae/0x1f0
+>     [ 2749.385757]  [<0000017f63134fda>] collapse_scan_pmd+0x67a/0x8f0
+>     [ 2749.385760]  [<0000017f6313751a>] collapse_single_pmd+0x15a/0x260
+>     [ 2749.385762]  [<0000017f6313792c>] collapse_scan_mm_slot.constprop.=
+0+0x30c/0x470
+>     [ 2749.385765]  [<0000017f63137cb6>] khugepaged+0x226/0x240
+>     [ 2749.385768]  [<0000017f62db3128>] kthread+0x148/0x170
+>     [ 2749.385770]  [<0000017f62d2c238>] __ret_from_fork+0x48/0x220
+>     [ 2749.385772]  [<0000017f63c95d0a>] ret_from_fork+0xa/0x30
+>
+> Thanks!
+>
 
-Im unable to replicate the 415 failure, but this one is strange because it
-doesn't involve any writethrough IO. In you previous runs have you seen
-this be flaky?
-
-Admittedly, I've not yet started thorough testing since this is in early
-RFC and the design is still getting finalized but I appriciate the help
-in testing this.
-
-Thanks again,
-ojaswin
-
-> 
-> > 
-> > 
-> > Here the full report list for each A/B profile test run:
-> > 
-> > 
-> > http://htmlpreview.github.io/?https://github.com/dagomez137/kdevops-results-archive-wt/blob/main/workflows/fstests/results/r0001/fstests-report-7.1.0-rc1-vs-7.1.0-rc1-00005-gc6a39600d3c3-r0001-qsu-xfs-crc-logdev.html
-> > 
-> > 
-> > http://htmlpreview.github.io/?https://github.com/dagomez137/kdevops-results-archive-wt/blob/main/workflows/fstests/results/r0001/fstests-report-7.1.0-rc1-vs-7.1.0-rc1-00005-gc6a39600d3c3-r0001-qsu-xfs-crc.html
-> > 
-> > 
-> > http://htmlpreview.github.io/?https://github.com/dagomez137/kdevops-results-archive-wt/blob/main/workflows/fstests/results/r0001/fstests-report-7.1.0-rc1-vs-7.1.0-rc1-00005-gc6a39600d3c3-r0001-qsu-xfs-reflink-logdev.html
-> > 
-> > 
-> > http://htmlpreview.github.io/?https://github.com/dagomez137/kdevops-results-archive-wt/blob/main/workflows/fstests/results/r0001/fstests-report-7.1.0-rc1-vs-7.1.0-rc1-00005-gc6a39600d3c3-r0001-qsu-xfs-reflink.html
-> > 
 
