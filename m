@@ -4,111 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B76CD6E57
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 00:54:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06C50CD6E57
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 00:59:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73DF96B019C; Sun, 31 May 2026 20:54:47 -0400 (EDT)
+	id 65A286B019E; Sun, 31 May 2026 20:59:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EE8F6B019D; Sun, 31 May 2026 20:54:47 -0400 (EDT)
+	id 60B496B019F; Sun, 31 May 2026 20:59:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DD056B019E; Sun, 31 May 2026 20:54:47 -0400 (EDT)
+	id 4FAC26B01A0; Sun, 31 May 2026 20:59:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A5FD6B019C
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 20:54:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CA8CB1A044A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:54:46 +0000 (UTC)
-X-FDA: 84829523772.19.A7C248A
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C643F120009
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:54:42 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ZdLvSXr6;
-	spf=pass (imf29.hostedemail.com: domain of niecheng1@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780275284;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FA7C6B019E
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 20:59:33 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4037A054E
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:59:32 +0000 (UTC)
+X-FDA: 84829535784.09.9A545A1
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E3FBB40008
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:59:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=asQuIviA;
+	spf=pass (imf11.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780275571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wplUvBwwSZUkE/1pF8JoDJVBT5NIk5fxpFOgyy27ARw=;
-	b=Adl9JubXNfaRDkOlEMz97ULzWwAvgugA3fXXPyHwk3bKNbolvJ+Lo2o+SuPMKCbvs6Q3MV
-	RXh6CoYogsFOw5ccZa1yv0CthZWf+0rlD1MqaWoQMzMoYgm21x7uUiITqGIfhTg2IsI21e
-	eq3jhqIjGNNM/4YFaEYh3K1s2gh4gMc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780275284; a=rsa-sha256;
-	cv=none;
-	b=b+H7JP00X8+HgiHOGZ++6NqeCq1NXhIim/Ap+3wxYkwKpGobqW+AzWoyuBYN31RcDaPX6n
-	a4xXvtgtKQo/Xclw0eXTvb3gxQVCnV+qyvebe5Hf8je0B2RIH0xJs+HzilVgc6ept6TfO0
-	eVXSE/W51GdZBIc3aJAT3mL9hDk8SLY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ZdLvSXr6;
-	spf=pass (imf29.hostedemail.com: domain of niecheng1@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1780275256;
-	bh=wplUvBwwSZUkE/1pF8JoDJVBT5NIk5fxpFOgyy27ARw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=ZdLvSXr6IN0sOxjm16/fc4DJSCHCiT69okgiqQhMfJUTxQbrF3i3et/IO36XyF6TH
-	 0ra8LkjUZnqDJSsCzy0ySqO9F7g5jKbCXIFRcBNXnwLi4gvDUDsZ1BeyjLfbkobD4y
-	 cLJnr0azS3cO1UT6o77oR2P2BTgTPR3qDgre34As=
-X-QQ-mid: zesmtpip2t1780275245t0423d3d2
-X-QQ-Originating-IP: UErp3taaIoj7K2ov1DmKucmDovlP8o3qkbRO6SlocXQ=
-Received: from PEN1097 ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 01 Jun 2026 08:54:02 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 14429530627096407333
-EX-QQ-RecipientCnt: 8
-From: Cheng Nie <niecheng1@uniontech.com>
-To: sj@kernel.org
-Cc: damon@lists.linux.dev,
-	kernel@uniontech.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	niecheng1@uniontech.com,
-	shuah@kernel.org
-Subject: Re: [PATCH v2 2/2] selftests/damon/sysfs.py: validate memcg_path staging readback
-Date: Mon,  1 Jun 2026 08:53:59 +0800
-Message-ID: <4378862A53A443AF+20260601005359.26544-1-niecheng1@uniontech.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260529150057.84753-1-sj@kernel.org>
-References: <20260529150057.84753-1-sj@kernel.org>
+	bh=vyqeB19kxUlpKMWF1rvolEO9Vi+DzTQ1zW8ewnICTgM=;
+	b=BXUj/3KpFkoGIJt0OK6A0821M6BxabQLcUtrYZkVARYVwaaDnYdr+RfyyNzW9BvfZaEL3c
+	GHawRY29kleNWcBok9eXsKUxGZR2bYYJ+Gvv2NPQMPNKRB1w0buB8mjm4dzceTsiq0QQ9H
+	hNiaPGTFeFHieKAtR7mMY2eP8WiK55M=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780275571; a=rsa-sha256;
+	cv=pass;
+	b=1LE5OMteH9XOaYXZk288pabWIIfp4R010erIqeZvTIVX89kpwSMyAS/edv/cc6HFD5gO+k
+	jNjzikszOAZj7zPVDokE/GRJsHygc2ExmebX63KujRhBjGRtOl2ke3oL39XPgBxg9ZjWX7
+	UPcZdFkq3ycGuywgaQIXT46S+vpSLQQ=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=asQuIviA;
+	spf=pass (imf11.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5aa61e3d3f3so1372625e87.0
+        for <linux-mm@kvack.org>; Sun, 31 May 2026 17:59:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780275569; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eOmlDGEfAcDNCnxAAGm0hwylsL+dXURoWaFfvVLBs3/ssa7VmexdvhyBHllDohVGuE
+         sGLTuO1s+cpJvQy6NxFsbpWkMI4iJwK4eWrfxcd4SSlpUzJAG5EaMfaNaiqcxVupn4QF
+         Ux4BcHZy9fLd4s1y0T5I+wqofbRywvYTequT3BUy+ZvuveUCL3Q6FeQh3rH6ZAEouOkd
+         aIXFNhU9k76Te7y4HHJOqQ+hoqar4H2bRuEjdBPMa8BV1EDU4qjQedDOkRGdj+HvXWlk
+         SsWLzAD1rOcmGFQBDuEHFrLSee6BVeDyTttxR/+Nxf4YqQiVl2ukbF3LxnbaZmIEUQo0
+         ykUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vyqeB19kxUlpKMWF1rvolEO9Vi+DzTQ1zW8ewnICTgM=;
+        fh=/8QbyxLbVby3P92vES+qpM0uiNrIUnrlvToR2HRzFj4=;
+        b=hm7roc0vliKhihFinlCtv3ezOTrlz5fWID64gVxSgQLbQwj4pu98jgZ69EnnExijF0
+         BT15j3cHHUG4vEUh030TO5KxWWPqalszFzdsm9iFxE+rFPfJ3wnKPsMNbLNZvD6jWVlz
+         XntijN7g8tpjUiftBe1WyhOHUxrMvBoFni/0DwlbSopR9nacGvHHzG2w7EKZs5A+FF6x
+         boDnci/QKNhMCCMQ00LiR4mNtjwRr2AbPvJ03gVu1S5u/bE9nFHx+06OJQTU09Xoryz8
+         fhha6MZudp5lTvQkWog0X9MJC2Ot8bGP0dcnhcSBIA2f+YmBCSu5HK2Qkf59Cpi1G4TJ
+         0sZg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780275569; x=1780880369; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vyqeB19kxUlpKMWF1rvolEO9Vi+DzTQ1zW8ewnICTgM=;
+        b=asQuIviAFmu4DxEQk9n1leosl5Woegi3OQR62H/22wS4Ahv3VfyI9wEN/N5BkyrVxb
+         27rb1sRs8Gd6K64jzjNjitbYs9iKDElkB5lTqlS9acu8O7rlgIVy+5ergyU3dTEs1ol9
+         x6uElWIYMZWlME0cOFrCTqG3rKzD0DzfDwuqEutT89yKY5SfqgtrPxExo7xUOvugT1Pe
+         sCfm/+v+XOtdVfBf4GK4QLxjc1RXDX3Ge8tiwrZCymHlo0RCdHHz9uzoXwpV3QrEbISY
+         wKSFlF7YlogoUm8Lqxvwy0+eLEPHb3EToMMBNyYB3rnAmfyXoJ7zeH356fLycn9zqWPx
+         DOYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780275569; x=1780880369;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vyqeB19kxUlpKMWF1rvolEO9Vi+DzTQ1zW8ewnICTgM=;
+        b=i6rvLFCaLAoLg+8ykncfEPCdVwlJ7s2/G0/+rdPnqjqlPI3Dc/Kv6BYVazIq9vOk6j
+         aWnejDBoh3PGCoZAKtCOx9cbbSpDrxrk0ezb6zmxV/U/Gl2ShxSNKxX+7KzhO6aIPAis
+         dazaCw3+M5WvxT2dBP2VpCf7vwQxkRlYKETxII99UZTVBjxoXJpHAor46ZzAp63CEgy0
+         xckaPl6t+W+WTExwhGbRi9oXCv5PlTyCg6JBGZpAIdPwqjL+KrQ7QaEqwMiiMgRi7ory
+         UNGkII25n4BV6gqysu+9PiPKaMvtKpYLRyZgYo8e6fo0QkfhVZvLVekISSyY5iX3vYDt
+         uLjw==
+X-Forwarded-Encrypted: i=1; AFNElJ8niXtwBFCbC/1TAvMpbXMZ4ThKcZ3yccXMB5o3DqF+/kP2I7UQtloQrZ99iowWWl+KnPsRCYB6jg==@kvack.org
+X-Gm-Message-State: AOJu0Yy404/2DgxBw4FhEf9CaGTYSYc5TeCmgnALhJhpqQXhzHq9rCmN
+	6/9OxWuXhnuu86j8VJH7XDQveGc2XdykNrXwDZBDDuwgHcVhEpPLX0YUrzIMmDPiCMhrGJQcQu8
+	JOzx5W8FBtW2wZpr/5V4rymfw+wGzRsE=
+X-Gm-Gg: Acq92OHHks9Z6gooPhy8hzIyrroCnBmChIaxJKSsBIy4o2V0xD8O2f/FnmyjF44Y6oV
+	RdHlWWdy9k3DY9EBo7JvxEEFTyHLj+zhs97HdHWnUBPrixIPe7tf58YraarP8ME9m9a0C2XwG9L
+	RA8GAuBidkYquVWrsHodF8G860E/yAkWWnLh0Cn3E/rlLLVzlyWvI5AtTiOB0a2Rokk3wVeh+zw
+	cRAFRHNurZhRkN8zVndKs+Ja+YrQRd/ox8cjlCm4c4+nZn/GnoGBOI5fld24qkhX/DQTVWQ5HNR
+	1+jgQxYftSYzrRFH3vcT9JFXlsbtFr0gQMiEXI1M2Evefgaub2/87P2WLw==
+X-Received: by 2002:a05:6512:4017:b0:5aa:6df7:4ea9 with SMTP id
+ 2adb3069b0e04-5aa6df74edamr161498e87.35.1780275569095; Sun, 31 May 2026
+ 17:59:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: MwJMCv7IGsyW0OMjaOMs13To4Fl6JKOmG69lSHdjIrVjZBU1BVNdCRZG
-	sv1ixIIM65x/dClUwvTMWttdwXpoollDXnXDNtePtQ+n5jBkKW5Vv/z9wPmJeiwRO78nKW1
-	MH/QPBut+g9cueTOns4G6b2S8hNXYaDlWs6HkqFBRLuOpFl7AXf93qpFe5dgsMBUb8WjWCz
-	2XjYUIk0uQow3r0a8EilOKyvMVRRT7qAFwj9ne5I5BZcuttflgifDeHcM5quBuLLFgXWQSy
-	0AecNgp4etO9fcmSujBc4K3lL8AWylvIGeM6kl30IXvL49Tu7tdmI1OU+/EFfPUzzcl4bYZ
-	hqEMjrbdJyCOnrKY4KTXgtIK+ha4acTl6CDAi0RdPImrBflCiAJaNoUDSncKJKKcW1OcH38
-	1kYWzE6L5ca3Tz74cw2cOxPSJcOKaWnw+SDC9kW192kmxKBTQQMHxQIn8OVUCIOwC66gmSm
-	Sa58QUHMXPu6weva50gf3xTAyg6k8EGBpJwx7UwgnbyGKeMgyFAY6mHZx5iM+7AG+PWLN7w
-	MQFgTjvS0R3002E285i9bvPG5t9qFfpclsrs6GtD2LbMssZrWQtL2cdKxwMn9S9jKPVOXw4
-	o/+Cop0daXds69HneOta4BDAafLpHV1lKiAE95Y0czCzWG+smyUD6+RG8jxFX5o1c4I/ZmT
-	M55JSi6t3ggZxYwHoszkZO5kom7zqOrBqHMwq6Nc3yFobJbon/FPVz4YHIVSSH3sumFVl++
-	fJppNDnZ5oL5iispPGPDmhQq/MuPdgPdl6PclEkC2BIXmRZcjwa/5ZWFUcmuxCfdBFr4CYu
-	DdpSrUdCUayxnnsBTcVQ3Cz5C5IaezzEIXciJSFzOxL7p4s0jMDXpqHvlCzccj9KkYMxgnK
-	i/94buMvUrdugPkTMU1DmEmt6yUwxW6+9nDGkbH6MtVVi6BAl/wjO0bUWCuVsB04wylcpof
-	syvVkWDgme93LUS7j4Q3XSTyfvCto2uTsH89Ul1xxgLbO1jvm+o6xijFx3FTVCbfdIUhCwI
-	t+XPKmld3FjgfF4GHl0mT6Lepg+YaFcdzLsdEZIuZfyju3+Le6MvIlYAsu9L8=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam11
-X-Stat-Signature: inz8jk5sexa86boytz7c35i4xyu1ecry
-X-Rspamd-Queue-Id: C643F120009
+References: <20260531-ch-swap-series-plus-folio-lru-cleanup-v2-0-1b9a4ac255b4@gmail.com>
+ <20260531-ch-swap-series-plus-folio-lru-cleanup-v2-1-1b9a4ac255b4@gmail.com> <CAGsJ_4y8UWWwCSZ86rQnW9wgPMRg2Eo2e+6jw3kWPVZf7zgx7w@mail.gmail.com>
+In-Reply-To: <CAGsJ_4y8UWWwCSZ86rQnW9wgPMRg2Eo2e+6jw3kWPVZf7zgx7w@mail.gmail.com>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Mon, 1 Jun 2026 08:59:15 +0800
+X-Gm-Features: AVHnY4IxMIgpMK3MIqZFSMUuxShQ1VJB3FByy8aXZtXSF0_gb7kFxn62yFJsTkE
+Message-ID: <CAJxJ_jiOXighxyE7yKw+WF1hZzp8v2zEVjUtz6mgrvT5BaenzA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] mm/swap: colocate page-cluster sysctl with swap readahead
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1780275282-577738
-X-HE-Meta: U2FsdGVkX1/Rjhrrs32DC6QDxuIRkr9SR3sKONhZZQ7AUkOu2rgurlDvJ67An+MA5QpeQQhTOX7ugU0rdy3r3gK23gNry7PeJYGgvwJKbKCgwvjkvMBR/3oBuZzm3OkdU9tfEQN76piQJT3PBkyF8IGZuvegl/2IKeEOkknfTsGnY8QUPHvFyiIor3s25UHicD/ITmttyWe/Axtbchcy0jymQzIGvJGBWN/sQaqGqhsR7yIQyVYycdBm9BRF/SMaSoIma2ICrQJFSZ4eqCdkpadF9pZgODiAtbQliyUkQjt3j5H69pvExmScKCPOm4Vv2lf2hmgnTTbemchGwgGI03jdShkMpAa6GF5b5WtIIXB/FXbh8lLMnJoMeZ6lrsh8cg/za0FgUcJtalzupvAana04rjp6Fo0SXoB7y7vuWBrTlxudPdxJz/cP3HiSQqjLXu1lMVK8qwLjV4+aSkjc5/UsFbWW8fBOA0ODRMCxxFuc+7eDVxL8IUZjjVk9GLHiglyKU0ErruiwaGwIQnIS58b7tD1TE0ZEv5JiXBrdF1aIaS+b/td0lA1ZsQvsqDc2KZGBBPAPHqhzMzhkMzXgrRk9EhxQRJnZcqP0l455hTECTswFtzHHAdB1WMFQ722Td4eSAeOmQVhqroxpgzA/+KOgGdaF/w7zTscKWdBCr4eeDmmFIPWrN9Al8i8SuvtS/9yCy2pJbR9xGC6vWMQSiR5oyVlYH4mxuNsa+UL7LY6cjAOpJYnvyyslCMybIx79R7qtGHP0v5N6DCfqengFuh6nik2RUKYw3ZWp8kxb6jVTJUW6fU20mTWgmqNfq3n7oWsOEXIsG7KEXDtGavLHhtk1ZUHtl6bdLazxoQ6XiTlmm+YEbTXNPPLSeH2/ymOJxbEMcfO+j69QEgrI1jfkRetaNoGDiGtQDX5BYjBcVaqIl7mPD51fMbSqpWsEZbPj/3d5GIQDIiTissQQtnv
- eTs8Mvxv
- M191KopdMO67smmdaasIgrryVNYrKvoaIdZC0xZxOPPi/X260VmFSsMJPIK0UTFm6DvFS4pgkQEhWRL073ro4IHClDwh8tlocG2jcG3/alyPl90cAsceIuFvWzz/V/EKtE1OKp7J60NqMxXpZzDtMJt3eaxvQli5T6fK0/sWMl8IFcawX76G6TjCJcRgrFlOc3gIQj6sKF0LZhaO9gWiRbck868BKvMRIS3t0nRGvfGL143yMiaewHWUfQAUDNEyoPRen5KbZa2StpGCbZMg58oJ56ICRT+2+efS+HTy3l/v1bb3I6o7KvrK4maGFGBXDD9er
+X-Rspamd-Queue-Id: E3FBB40008
+X-Stat-Signature: hjd35jytkck6dk6d1933awy1636y4z7i
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1780275570-680941
+X-HE-Meta: U2FsdGVkX1/RjhXK0cJHmTLHh2QeylEbC0fYzIzQnXcHLpuw50kdYX0ztMh2v7JvtKflq7kKhgmT3dLa1nF6DrlImmdsWXPMenxv7vkOJr35jn4tFQ3tXz/+cA1h3gtX/hPwFZNngmld6xJXROtjN8Gq4HUEGNvrboizQKXTxwTnDAU1j0I/i2yVdRG5KYu550BDCevxMXO4UVgzAr5VzIReWyy6IH+vfRNinhCEKcwslGda4GeUOtScsT75dfy079y1P4TbTh+YTIjzKlq+GM/kyrmIcbYiGFVum8xO9kpJYIbxEp0sj7zswCcGkJME3T2/4Su68V1k2OlYBnzCkGRnYISGXNfjKDuGZ1sSRKwOHljdxYcgclsYim+xZ8P1hI1zZ4U542TbehvciiqOncf4IqybXCK53ASikvgPhSR4T0V4636HtPxqW9lMY7HO1l2i2r1/qvoVIhI3KNqjEtxUqENrWAAaEgMmP4uCXNa0poIF7rSnylqbG6gw8UjUjdKcpZojvbmuDDidKRtzZaH/8uhtD3KrsbVA7cjrxsHfCCursfjqCL7tr0tiC4Hkq4ovGfA4hF6q1mhXGJp3hyMkABFMMJux4E6ZhRMucDoMfbQDyrbg/9GEHi5FgyCfAAIGP7cvFBaVAYs+Wv0Jt1b1Zejx6tHpPn+JpFGhKJ06CmKtvuV9stin3Ji1foIDgdlZ3SzB7W/SlqY0YjBc+lg3oqQXPny+IE/27sB24SRTUAzFUOfXHHhx2VmT2oFrmGUYsrkeRwL+13MRprAUvxWXkT0MfSgW9Lvu2AKKOls4eWLS2elgk1uE5ZCpVPB7HpkRLOCyXD3jJG2ZLOQB6w3o7qPOjNEkO9T2WsIrQQ+DNRQYC1/wo7IHblJKC4CifcwhJuR1DWAvqDwRcInSW34FgZc1kU7+p0y7RD3d0onbYV6tqgTQBhRY7sHZGW1T6VpbO3VWFLtDR5FOjuS
+ b5uIUFwr
+ dXOaU6PpSbpDvMZ2/CbDEf4l5BQ0PrWcE71H4WKqvcHBJtI2ffa9ldf+andLx+JbqyHX+e73SJSNhtzkHw8asLimS7zv3fAeB2VEQ8c0/Dcptg8e+MvLDUnpmAI4jKnFMTAkDoz7Ltpc+WfNVvwJIwiVzJe4sf2y4yU0LgHS8tJ01CVbEdbRVSyRsawkKsgSvqoAE9b4glgNHmR3lErErEcCVs8Ogu0+g2poPVsfpZEEBwAvlK3O25h86hrTqqkEKhF50p81YyN8DiZFDZjvDkD1da67P01Nh1YUewUfo310jo1/91M7HkOrEfTgtJCSDbpMRStO7QWLH53Kk1mSvrmvHbiXhDjFHo9I0ikOJGzE7NZhtu0fs2xEDLGI2GMJLHa646KmO34KEt+hiNB5jDbupEv+KargipxM9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,26 +148,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 29 May 2026 08:00:56 -0700 SeongJae Park wrote:
+On 6/1/2026 6:06 AM, Barry Song wrote:
+> On Sun, May 31, 2026 at 5:50=E2=80=AFPM Jianyue Wu <wujianyue000@gmail.co=
+m> wrote:
+>>
+>> page_cluster and the vm.page-cluster sysctl are only used by swap-in
+>> readahead in swap_state.c. Move them out of swap.c together with
+>> swap_readahead_setup(), and make page_cluster static to that file.
+>>
+>> Rename swap_setup() while moving it as well. The helper is internal to
+>> MM and now only sets up swap readahead defaults and its sysctl hook, so
+>> the more specific name matches its reduced scope.
+>>
+>> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+>> ---
+>>   include/linux/swap.h |  2 +-
+>>   mm/swap.c            | 36 ------------------------------------
+>>   mm/swap.h            |  2 --
+>>   mm/swap_state.c      | 37 +++++++++++++++++++++++++++++++++++++
+>>   mm/vmscan.c          |  2 +-
+>>   5 files changed, 39 insertions(+), 40 deletions(-)
+>>
+>> diff --git a/include/linux/swap.h b/include/linux/swap.h
+>> index 636d94108166..c36f72877e8b 100644
+>> --- a/include/linux/swap.h
+>> +++ b/include/linux/swap.h
+>> @@ -345,7 +345,7 @@ extern void lru_add_drain_cpu_zone(struct zone *zone=
+);
+>>   extern void lru_add_drain_all(void);
+>>   void folio_deactivate(struct folio *folio);
+>>   void folio_mark_lazyfree(struct folio *folio);
+>> -extern void swap_setup(void);
+>> +extern void swap_readahead_setup(void);
+>
+> Can we move this to mm/swap.h?
 
-> I'd prefer the error message to be in form of something like "'memcg_path
-> staging: kdamond start (%s)' % err" for consistency.
+Yes, that makes sense.  swap_readahead_setup() is only used inside
+mm/, and mm/vmscan.c already includes mm/swap.h, so it does not need to
+stay in include/linux/swap.h.
 
-Will do.
-
-> It seems we don't really need to do commit().  As Sashiko mentioned [1], it
-> also depends on CONFIG_MEMCG and active cgroup configuration.   It would be
-> suffice to simply 'stage'.  We don't have stage() method on Kdamonds, though.
-> What about setting all parameters including the memcg filter at the beginning,
-> do 'kdamonds.start()', but ignore the failure, and check the content of the
-> memcg_path file?
-
-Agreed, thanks for the suggestion.  I will drop commit() and configure the
-memcg filter up front, then verify memcg_path readback after staging via
-start() as you suggested.
-
-I will send a follow-up patch with these changes.
+I will move the prototype to mm/swap.h in v3.  While doing that, I will
+also add a CONFIG_SWAP=3Dn stub, because swap_state.o is only built when
+CONFIG_SWAP is enabled, while kswapd_init() is built unconditionally.
 
 Thanks,
-Cheng Nie
+Best regards,
+Jianyue
 
