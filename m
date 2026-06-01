@@ -4,96 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E7D4CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:29:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03AACCD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B68596B03CD; Mon,  1 Jun 2026 10:28:59 -0400 (EDT)
+	id 309636B03D0; Mon,  1 Jun 2026 10:32:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3F356B03CF; Mon,  1 Jun 2026 10:28:59 -0400 (EDT)
+	id 2E0E86B03D1; Mon,  1 Jun 2026 10:32:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7CBE6B03D0; Mon,  1 Jun 2026 10:28:59 -0400 (EDT)
+	id 1F7586B03D2; Mon,  1 Jun 2026 10:32:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 968E66B03CD
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:28:59 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 348D340682
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:28:59 +0000 (UTC)
-X-FDA: 84831575598.07.22F3CD5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 97F0B1C0006
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:28:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MFBQ3wnU;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780324137; a=rsa-sha256;
-	cv=none;
-	b=TGiltTeS3TMU9ofEOdkYIVnzBfG63WK4Z189m7GuQ6Lar0k3Fv2lsVc4LuSDNlbH1GTHjG
-	928b4k2NChvSLTbfy6NptztOsOz9iV+2PmEhYKEsCbSAfLBaYetq5dKzX8xtT/u8qXO/S5
-	VZlep1AWBUhhcn839mvO0dN1jyffJQo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MFBQ3wnU;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F9E96B03D0
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:32:33 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB677140727
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:32:32 +0000 (UTC)
+X-FDA: 84831584544.13.AEBFC0E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0598BC000A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:32:30 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lduKX4WA;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780324137;
+	s=arc-20220608; t=1780324351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QcytDXYzPwKDUDdHT+N4i8ojI54d4gwtkmZUP60KdkM=;
-	b=DODbf8uKlGtQkg6HNgdjWzTPbsek2ucgjhkyJTtAXSZeV+9MScWKX+w5+HEQEEcpE+eEyx
-	2tiRyHoP84g3yeiiMfnn2Q0U8DfvAvcLdPDEoizDXn5owr+ppj2usUjNbn1GfAA6pyyR1s
-	uWpTdZYl/M4GaTVCzhxVN6hwEsmj/Ms=
+	bh=wnW+JwsPZoEW9jymcriAzbpY9+T3DxT+086bhiowDn8=;
+	b=bn9wUIsB19ntTrtRe8t+cHY4bd+oulnzGnBhjzWV/qr7ANGCFz6cIRnR09pPsshH1bTwhh
+	/cq+U7bShejis1QffaM6oMuHs95QPIHXdBaIudihwZvXonjoiQJhDjDbbP/AWizb6ef6ie
+	eRE4BI+BMj/vsxh3iV/W5Ik1Ht5MUvw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lduKX4WA;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780324351; a=rsa-sha256;
+	cv=none;
+	b=G8OTdWyigV3eO+7F+8KZ1U9SdcAqnuABUR4G4P/HA5XiksEih4zrHdOAbTp0t8eh8lEAg7
+	8h/pQw+LsEi8HW9PoeHtZ1Psq/XctYOiFXu1tuqtWd+10qu6r+7Aiu66B+nhJBH8/AJpjL
+	QRKiyDlqwQ/PaaepGsgwhfVIK6qWqU4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2D9FA600AA;
-	Mon,  1 Jun 2026 14:28:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6321F00893;
-	Mon,  1 Jun 2026 14:28:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 287A04422E;
+	Mon,  1 Jun 2026 14:32:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF67D1F00893;
+	Mon,  1 Jun 2026 14:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780324136;
-	bh=QcytDXYzPwKDUDdHT+N4i8ojI54d4gwtkmZUP60KdkM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MFBQ3wnUVZEzgVXBP7n6BLHSXSE0qD9Bm7vwoXNVZtdHWBlM9NTq0i+K9RQXuhWw9
-	 mBZioXbaFvlvWuL3ExgLdSna7SwlLK2S8Qy1eI6fmf7bFYCb2kPhK2H7MGPfkRbcWk
-	 R1q8n30NM6cuQZA09wD2pSFpVduh/yZgcmHrKV7JBRTpa+YrDoE/bKJ2AOHrTpFQYT
-	 dFsQTkYS0tr4YjM0Ge0bCWiaErT/4amvCgJjqwaNBn6asSlXPArhxDM1uDzTAst/Pz
-	 u7c9uwrYL4zA9u3HHEHZGX29EjtDsaOPQmZxaR8BcGfuodvdzymTg8ObRVJENl1as/
-	 6sORXGX2T0SjA==
-Date: Mon, 1 Jun 2026 17:28:45 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, akpm@linux-foundation.org,
-	peterx@redhat.com, david@kernel.org, surenb@google.com,
-	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com,
-	corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com,
-	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com,
-	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
-	kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
-Message-ID: <ah2XHd4SQOj6iG8Y@kernel.org>
-References: <20260526130509.2748441-1-kirill@shutemov.name>
- <20260526130509.2748441-5-kirill@shutemov.name>
- <ahmQvfNk7S4F0LBj@lucifer>
- <ahsVyQZ5UXhJLct2@kernel.org>
- <ah2SL2c0nMj0KBtP@thinkstation>
+	s=k20260515; t=1780324350;
+	bh=wnW+JwsPZoEW9jymcriAzbpY9+T3DxT+086bhiowDn8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lduKX4WAFNqKtYvsGlo8Hyd5PJtGmk5207kJFlmngI1CuhMk8jRs8HLFI0NKytYAY
+	 57IXIs7qFEcl91nOAAeZdXSFBMbmpLP8rOwB5+k7r/pwSSa9/6GMy/PAvg7gxCm8vW
+	 olFHNy0OUOHmcNzXEj3INi9xi+o2i197MnQnnuR1DDkEn53yzGKptZJLmgJDNkyt4Z
+	 cE30+1YtADBLYgBFikTWYODFwQMykd+i9KGjDWdgwei34amsraFp1CgnY9bcLSSvuR
+	 C/41bNxoN231Di3cc8//1sV62OgZ7Pvy+FxSAYCall8Sjrf/AiOYrPenoi8rJVsi2n
+	 zLA+YBuQEQofQ==
+Message-ID: <fe33c767-ea11-43e2-8732-f752c9c1205c@kernel.org>
+Date: Mon, 1 Jun 2026 16:32:25 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah2SL2c0nMj0KBtP@thinkstation>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: don't allow empty relative nodemask in
+ mpol_relative_nodemask()
+To: Yury Norov <ynorov@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Farhad Alemi <farhad.alemi@berkeley.edu>,
+ Waiman Long <longman@redhat.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, cgroups@vger.kernel.org
+References: <20260528124133.c88c27b11a8ea0ef05e494f7@linux-foundation.org>
+ <20260529152616.2308736-1-joshua.hahnjy@gmail.com> <ahnRIDBk4bQ3xX2q@yury>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ahnRIDBk4bQ3xX2q@yury>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 97F0B1C0006
-X-Rspamd-Server: rspam03
-X-Stat-Signature: hepy74uddq5szu1d6xtkporqgaedzdhp
-X-HE-Tag: 1780324137-929568
-X-HE-Meta: U2FsdGVkX18sUWTIQ9Pdy8GsHXdh05yv8OFl/GGEJccFSV26jmp1sf1Ic8aIVH5l11mowFfrpm3Et6hld6PgxscXgKCsQdO/AD1jEJk7414/xt7wVRCwRaLtLVKvCMfQ7ryxfe9Tnla9WSoJPvVWobEoLG+d/VlBP4GgCLcD2tS7x6gcjHfGqCjiVshIDnab0EB0vYW2LL0pdBMVRBwg84efojnL168c9WaQTJ+lbgZOi6QDoL+SuChWDS6/e5w0miLLQRalwkWgg3sLoH9siX5YtsZeryU9pa4Btj4Wk6D1kApdxwtjbGaCv2OuP3kjTCzvCBh8MDEWE6buHqod47agRJCPqTeaUKQ5N3jMT+FzjaNBaN1P2pON+hhHC3zmkfcw3e6TJ3tYM4rKinCh1DulqM6BrsPZFmkd1M9T4KoiUcKX5303nTSqbyophrAYsQxr8fGYDkNudzoKNpR+lEC/rVmxDeUXVIYJ45th1HvR+JH/Twbs2k7VjJpT058ennFzsnrPhlJtqqG+YvBEXLQtGk1J7eFfeP3bah2zVVtZAhL2BZselRMXBbxH4CXRhiKp1ExzPaTZqOfadO7IljLEzyPJZysTsbhuNuEJ/sQTgQvDg82HmqAGWzuX5Prjtbj19+lo9cIKIi7V7lTv/W+J6qQfwFO4Kr3RG+xQEsTDOQrZgLRkQq5lJKr0b+n0PoMrZy2r/xobI6AEGRzXLaiXuNHXXknPqobB9iPQEuwc4JsEWe13+zeixPiwpXR8Zu3jouvlVREZxdq5mt1oyBnHZPe3r903D2sQb+g/hACBq5Pn0+pbpL3/FTady8ewU/3Gq+nDtx6ljSPNLwAto1t3+OuaDPpiriRk3Gz5P6AYQxgsG9reERe4PvkMaVPAKVpHUiroqheiMYzyCubDW4ZDydbEbKVtHDlCuT0pAbqyt/VYOrILIKnLtb6whYFKX7OnK6vcXv21hFM3QxH
- mwxfejNV
- EXEa13zztYH9x/6/WNMyccmBpK+aACr+s42WKIYyuKWV/GreKebd5EdPxq4gdNhnF4GuaQbu9uBpMfTu0UfinXJBSJf+nAaZKPfs1f7Dc4ZKac+YFFGKFnbRq60SHbL+8rHbLrQ5dRrDXsQhQ4WT8NqoRsofL4QLGU0gMVg1MiL9Fg1YUK/X4mg8LBRds5/hQPtozgh7Xrzvjxu9oEOsSxrftec+Hg9wcFsGya15azO+K4uiTFQBPt9VvXl32HRgToadJSLQXXOhg2K/cThf5AQvoBIrN/sBh/fT7ZLxdJ4VEGBiANKLG2G5mRXIzDH1f1/F2
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0598BC000A
+X-Stat-Signature: gkir6ydmn3jhsf5iehwbrtk1zupi5gie
+X-HE-Tag: 1780324350-986670
+X-HE-Meta: U2FsdGVkX19XAi0j+pweKlxZGquYyekYTkGmf4TRGpbtLugET9ztBNY/SxEI1kUBmsQBEEATJWSbTwBSfcgcrqGXwB/A9+uETfmowyEGWqcgQBTZl0w4sQx94Y39N6u6z4hVVcPBEFRpXh3SjIGzipL6HN2zCY+FGdgetBnm13K2s/ssnffyX3+XlrF8MBASIT90NnwR5jBkAD65iXzSU1q+ZiMSCQCqfz51wLhiKXI6NpHqkug1FKaSVDGRDTwm6gDAg7mSTzSMAlhD+a9h926k+FOSPJTTNWgZQhZWAD3tT2CEysWVEhz/iVQJ0UcafYeXBfzQYTdv3gDdtO7plSfSxUb6D1JO48pL80qYO0XimiVD1tj3MxgrSW5CoQsuXdjVIRygbA3+KH2GN6XRASlN1bgYSAud7/xiBSZCJbmtdwMhFPcdahu/hQLN08LCKMbdxZj9K2zsQIY6sOivISrYD61Be9PGMkhBcTMzMM3YFq90Uu3K1f015bwAbTBJX19GzHZDO9rPUl1duvTZCX3awE44xJaVAZLz5tI2rjkB3Iqjadr49TRSVn1j/LIQVWoo7K2CEjvM9rEKbBXW185CNxVEkqFtolZ6YYsC+Hv1RmOsFQPr9iroXlZwE89Ff60eNWF48We7XOHV2hIZ+Ua+5aJjiQSuA0t0PQN9yEoh3p+IOgg6E+qZKVk+fKGi35bOJlUQkIFnlHv3h+CQibVD1g7gZS+rqD+oT9rvmKJWxhdiryqqWQKHaEX4qSc2DiamjYVwl5rSSxFN1D6W0mUm+vThYO7lVtrKTN+o6i9ViHOK/d16wZw24kB02LLtYWVJjYw6GsvfU55reQDGVxjups8dtxBFj1L1FMBzyEEHQZzC/8jPWVGYNDs/Q7lSNeo2t0+jhdIbm3iHS6E5FCvW2VWmsf0tl+wcSREJFK7WTZnPpQuV6x5mIiS1FaO+U/Jmi5UShJ8u4Jau9kq
+ 5PENy0Sn
+ 0Mr5pCSg0POiyoxi+ewA1XfaELBeP8OCDg0+bclZf4UpgmNuEpi6SELFlNKUD19c74Ri1HJ5YXumvPHCSDwLQkX581wPnBeHy4VBnp70f+rLzpjVFbiZLVCni9xZI3TOXhZsHaPQrbk0buuGOVDUd/S9AN+RJjnPW0FHxmi+E2Y+q0LLLQhpNDwjE20fgMT+l02xrkZelZeqmiC28ke2tJsbVX0ul5YeytiY7ErNZVqej3p6VeTttfir38J7UaOr6puJ+b+y8zQmav0L1pKqoc3+goS1gqaEw0inyPscpxIi3rCOc1QnH0KoSXs5usrh3RI69dcOJF4sKlR4RChlRwKiU2C1J/OUOEzFJpsQ2S5gEqxrrpqgv6xjd+tSOBeWtXUVD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,25 +145,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 03:08:19PM +0100, Kiryl Shutsemau wrote:
-> On Sat, May 30, 2026 at 07:52:25PM +0300, Mike Rapoport wrote:
-> > I have a PoC of yet another alternative:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=uffd/vm-flags
-> > 
-> > The idea there is to keep a single VMA flag, VMA_UFFD_BIT/VM_UFFD and move
-> > all the rest into what's now struct vm_userfaultfd_ctx.
+>>
+>> Thank you for taking a shot at fixing the bug report, please let me know what
+>> you think! Have a great day : -)
 > 
-> Nice!
+> Hi Joshua.
 > 
-> I assume it can go on top what I did, right?
+> Indeed, quick and dirty shot.
+> 
+> The problem is that nodes_fold() can't work with the sz == 0. In
+> other words, folding to a 0-bit bitmap is an error. We don't check
+> that on bitmaps level because it's an internal helper, and it's a
+> caller's responsibility to validate the parameters.
+> 
+> nodes_onto(), or more specifically bitmap_onto(), is a different
+> story. In case of empty relmap, the function actually clears all the
+> bits in dst and returns.
 
-Yes, it's already on top of a previous version of RWP.
- 
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
+It's very weird that mpol_new_nodemask() (->create() callback) disallows empty
+nodemasks, but mpol_rebind_nodemask() (->rebind() callback) would allow empty
+nodemasks.
+
+I guess mpol_set_nodemask() could trigger it after doing the
+
+	nodes_and(nsc->mask1, cpuset_current_mems_allowed,
+		  node_states[N_MEMORY]);
+
+And ending with an empty &nsc->mask1.
+
+The later "mpol_ops[pol->mode].create(pol, &nsc->mask2);" would reject it, but
+the division by zero could still happen.
+
+> 
+> I see 2 options to move this forward.
+> 
+> 1. Simply disallow empty relmap in mpol_relative_nodemask(). There's
+> no valid cases for it, AFAIK, so the nodes_fold() limitation looks
+> reasonable. We can consider it as a new policy.
+> 
+> We've got 2 users for mpol_relative_nodemask(). In mpol_set_nodemask()
+> we can simply propagate the error; and in mpol_rebind_nodemask() we
+> can throw a warning and do nothing.
+
+Throwing a warning is really bad. We'd still end up with an empty nodemask?
 
 -- 
-Sincerely yours,
-Mike.
+Cheers,
+
+David
 
