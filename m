@@ -4,78 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88C3ECD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:04:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D461CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:05:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E39766B0401; Mon,  1 Jun 2026 11:04:37 -0400 (EDT)
+	id 820036B0403; Mon,  1 Jun 2026 11:05:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE9DD6B0403; Mon,  1 Jun 2026 11:04:37 -0400 (EDT)
+	id 7F7B96B0405; Mon,  1 Jun 2026 11:05:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFFBD6B0404; Mon,  1 Jun 2026 11:04:37 -0400 (EDT)
+	id 70DC56B0406; Mon,  1 Jun 2026 11:05:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF5976B0401
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:04:37 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6BEC31C0C9F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:04:37 +0000 (UTC)
-X-FDA: 84831665394.24.0331DE5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A5EEC40013
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:04:35 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FD8A6B0403
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:05:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0EADB12072B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:05:53 +0000 (UTC)
+X-FDA: 84831668586.13.D631A0B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E812E4000B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:05:50 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O4m6Qqxk;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n9zgfUpQ;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780326274;
+	s=arc-20220608; t=1780326351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eQNb61zXpFFD8XIW8mUB4tbuSQn52A/JTs9JRBZ5O14=;
-	b=1BAryAaRnfnvQduU/+vrUR2d7LteZBsYVwWF7qtjdb2a+4s5bsNtfiHeTzNjvXATeutuni
-	YLlRRiZHrT9tkbHZkgP0fJOgPoR9ims6MrqaWfanAh3NnqW4amBVqIHR9gswt8sDMXYmVB
-	y0biS//Y3fUlHKT2cHNRF0iIyBjsQQo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780326274;
-	b=sqPtB0FLT7WF8V2yagsTlfBDYckjk902Ou8OuklV/4ajJ9/R5HxBrdeLnelDrLN0QaTOBm
-	ScoU+M4bdZ8IRuNBBqOhDdBAeMoUFaeXlgjHfqb+5cXmTYf8xJYh4nqipFkq2sPoSdoap6
-	NpXj1c9RToyfozo7e+9XsNgtu9cNrRs=
+	bh=l79QFJh+1tc8WOfin3+3RXKBIcle3fpVG/8qDloYB3E=;
+	b=jYQ9xo0X0JGHDLy8XDVjczU7UG97G410ybbvnGZlA3JRsvtoupURoqAdI7t2qWnaBU1LGQ
+	dN4//6UZvOhukke8n7FuhWtz0iPZ/qPs0HC7LosGgkiP/2aQs9B6PgAkqiIOXuHT/RYQJB
+	tWYnZUjbxFaxbG6TUpZwVjvgiQ0KaUY=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O4m6Qqxk;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n9zgfUpQ;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780326351; a=rsa-sha256;
+	cv=none;
+	b=IUnyNvnsvbzIBfnei5lB7W36OUVrhejHflbgIjY0+eXeQUmWjZZ9oqL9KmACGkGI8VJ/2/
+	AO+x21LrqSfnBc8saX3aBOJiobTwYZSaJVMrF9JypGNV1MSPi7R7M6WnXPt84knZKXgCXE
+	UcQZBwWpwSj80sgNjcf+KKZ7pp7jTv4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 19986601DE;
-	Mon,  1 Jun 2026 15:04:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6763A1F00893;
-	Mon,  1 Jun 2026 15:04:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0A29843FA1;
+	Mon,  1 Jun 2026 15:05:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EFA1F00893;
+	Mon,  1 Jun 2026 15:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780326274;
-	bh=eQNb61zXpFFD8XIW8mUB4tbuSQn52A/JTs9JRBZ5O14=;
+	s=k20260515; t=1780326349;
+	bh=l79QFJh+1tc8WOfin3+3RXKBIcle3fpVG/8qDloYB3E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=O4m6QqxkfAc7sZtGUsfcPFq6rt1bPHxItmWHGnIY1kRKfohjkwgeeKEq9Z3JlZapM
-	 OP1eD7/+CX2FqcJFZtb4WXxwz8csERM73dB6r1GhFDDnGPCyiwL5jQmo1RQJdnBCeI
-	 lsve2YpejjEaunrSnCW/OE4uFfDR+FUp+Re41vcuw56utSryBKBSCZDmTSoXJMSoF9
-	 o0+9XB5neNrQFz1wfYXagNIF+iMxWE79hWNL2mTqRHfLICjdKzc7lRKd02MlWUHDdJ
-	 FPBUEvv+QBz0i+M4nOe/WTFIFKhXPN3k+rOFrqcIN4g1qfn+FiaMbMUtqe41yflnfH
-	 H490zBtefElwg==
-Message-ID: <04875b82-6671-4f43-aa59-190fd09c7108@kernel.org>
-Date: Mon, 1 Jun 2026 17:04:31 +0200
+	b=n9zgfUpQtpGFrY1KUN7yIVATJn4jFQRI7ZnP+d29X9eBrBBakEvRRxKg7Cve2XVHS
+	 vohWdWBIxOKeSXuYufrzZh1zX8FIayu+Q598rlVvm5QSnKlPWDUeB+C+8ZC16wBoW6
+	 UrgKxsXBAxkeKYR3RQ8rduOhWQf2ro2/w13Eu6dHjyWwtPmN3AeZKWhfWxTiYqp6Rb
+	 xToKV0+X6Jt4CAeQNlp4Y8u2n8CgMt4lZ4iMqVokB8pYM32r7AaZyZ6zxMtFEiRU2B
+	 wEiyOxYHfrCCUMNdKSRVR38lWPKkmsCkBu0SAkKb7x4fqKX/U8MSgyK9wdDykITbI3
+	 /BfAeoGbT+Y5w==
+Message-ID: <0bb49c47-8c41-478c-847e-b9154c75e59c@kernel.org>
+Date: Mon, 1 Jun 2026 17:05:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] userfaultfd/pagemap: pre-existing fixes
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>
-References: <20260529172331.356655-1-kas@kernel.org>
- <20260529173448.40a37785ecbecb6868fdd6a2@linux-foundation.org>
- <ah2S7MJ2VK6R-NSN@thinkstation>
+Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+To: Nico Pache <npache@redhat.com>
+Cc: Lance Yang <lance.yang@linux.dev>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, liam@infradead.org, ljs@kernel.org,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
+ usama.arif@linux.dev
+References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
+ <20260601032804.96122-1-lance.yang@linux.dev>
+ <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
+ <616de1a8-1cfd-40b8-b04f-7b324be40bfd@linux.dev>
+ <6b11bf0a-769c-4ef2-ac6f-2af38200a6bc@kernel.org>
+ <baa0a462-46e0-44ab-b583-c722ad253afe@linux.dev>
+ <06d9b665-945f-4967-9ed9-b06514478996@kernel.org>
+ <CAA1CXcAeEGOsqp-ywAQ7GMYQzXEeco-rUxUkk2hEF69HybC4=w@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +146,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ah2S7MJ2VK6R-NSN@thinkstation>
+In-Reply-To: <CAA1CXcAeEGOsqp-ywAQ7GMYQzXEeco-rUxUkk2hEF69HybC4=w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A5EEC40013
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1nbrsehr3sg3iirarwt33obhnc9epw3g
+X-Rspamd-Queue-Id: E812E4000B
 X-Rspam-User: 
-X-Stat-Signature: wr1g65yynpw83q81tb9otzyu74r3zznd
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780326275-772051
-X-HE-Meta: U2FsdGVkX1/s527bUsI37PajR04Jli+T3jFbDfmPSyvVbUM/eN/tMrvbieAkE3qAvwdHFAXGkK0xInTPPzV4JTLMk7/EBX/HC6kJO8y8JFSk4c/dDdHtcO0AuhIth3fifdbeyCoLpZ4oonnCRznfpbOeH1y55BzxyNSWKs0sawkbqBjmWKyNCHcEGQPdz3JRxm3LkGLFK9Jxn1tDPDucOGUIn6Ou1NO0/P89cbHXljqM7tvRdWBQpevuLhwQjwGXEQUA6H4KAk8NR/OTuViiN3mHCS511oBd979PPRNVkGf0q+PBMkjmBWjscGJOavCC5krIQHX7MbyJLninroRLsp1gYYZFUgApMFJVlNywDjH3HQTxmVCpZaQZL05JdPFZLCTE52+Td4IksB2jp8Y/pmfkQpQvbhx4Q822E0SqGl/the1UGUAalzruTC0Bc9gGqJwHYfEgf5c7rUhW2FqRySHqjJ7d+yisru1kz8Hi2WXHEFO/doHslCCBmsUVxR1UmvbVs/QwV83bOwa/pjWM0Uv1lDsEilDcjtg9Seasxphy8YJJ16ymmL3gMLZ1otR4Xs8Q4GRzJSYu8viN0PUNMnhcxg5zeO6+4xPmpk17NXKQQfgpiQmdV3UKNjMPTQb5Q+DLlddKaJIU3zi+rTpbg4S4BykxfNjwvTVB/Gt5I43SMgjleWbuYeTq+AQWilqrboAwwN2EeRga6HSX4s1435O4i3Y2QDCjTRWMubU2dVN33VZl1pMBKy8tzxZk+K5Zi8FMiEtkkVEoKMdHFvfVcbKWv5nTjPuvm+ejSduIMFEYhsgxA5Pihwf17U1OOmxiOpfEWi8bN5LbHyGs1SifIAFBPVGNVuk6olsJipDhT9nU2BuWIkaSVMHUCKWY7oq40Mt4t/RDIOlnTbgIOndJzAGkaRtzVrfQuHnNpwQ6hoCRZzUJWh7D3VcEjWs1dGP38Q9cc0epG9x0M7frq+4
- M7uTWHFn
- 5dhtXMtMwy1ZQYq3jfOtUKbJuQ/hEjGS4R/Mn7UcnXXDJdhqfe2LAg+2Y2j2AMGor8XSGJlvStDtOCXtPowMFPxCg1drWnpk+20p2KhFTZjfvFyoeH+laWQe90czUrXKpHiOWPbsyztwXI0yx1TWb17DzPpHfPmMkO5lB0WwgiLFfxo4Dok9zqksaj6JdGiDpBBWDlH5xrytk6ZROLHedcLOZIf0gJkcCft3O/0ONqECNaGRrShcvLJTd+yHS2Jy05QDAfzjhFsiO1MGpNygYfhIZYNJZGQNQCwKR8BlSX3WawGReftVkOIPOO1XtEGv7uFuzJQw3U5XyYYUOE6dOc2H7kw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780326350-92018
+X-HE-Meta: U2FsdGVkX19L7dySkGHABlvL6X+iQQykU5GrVYuPIENSGhqzaWdAwnUAIeehAuZ3f5xT29D4PjAr/Q4DPGG6gsBGdDA0qk/PnuoT+bN9kUkp+85BPdAHvNIL3fYY4RHQAGApYSSJLQbIu9HcIOAqmA7KbfIc5dpseDWqQFMt60woETYXXpzXE1rU37F0PBHbipygREQfiQDuDjX8QQsRvRjopvaOx4YT0a4v5oSUmtUNS/1vYJZkXmkFdhzs8wbBuVQ3ct3+h0NBm2bbsQThTjBl1ASp3WEiszuPcZiz7OI/BylTqSvo5JG2R3bLH+JlhZI+SYhr/waiPj6Iez5jn121cD05o1r7b0ltqDVvjl1dc3zzQ+xbg1jXO4J9rZqTHKeKMFJzwmYVk/0QNgLrol6mLZd+B3MWOzwq3NNiSd/b4cNlt3bLqkj4TlfzRSKt6jzzQc0++dOpjMfMoQtQcz0PDRc0JA6fPq6PK9QYF55jIGAV4T3Vz81DqEVOHVlh1lK838Y68CQEvmIq++ydKUbYG2hqXhOyj6PphOcwzotFCR98f2/lXpRbGClqW3bc/FDy24YNCOLGn+Ioe9iSBGuQs+ZS54lPNC6owTPoSKYWdPPUC6fUA7Phb5Tst/7thDrnuljlizCpKgUChT53+U+9jcH6M7fstJpuWW+Gd6KVbrNzulnUxJHjbSIzdPx7mrxN4Mbe//pVflQZXNRA+zV/KovUVrLjAHo3RAp47BYzhQgyyUjBuzhj49aEEFc6a0DV6QRHMqSJ7Gv+g7KFW6FapuJ9KGowGYQNn+UP/jyIHFE/gXzXGAw2r/LcOlyN1g1vy5f2KrkXJt0wp8ngQBFIwJTLjd6WmOgFqPemPOSPSTtdrHgEx0EIWN6S61acCgIjypQ7qs6B6+5h8LVVvkF/qStTszxlwVMdQfheydIyCdi8iNxQxroMbYDY0I3VZXF1voDR6VA/gB2I5hC
+ tjP1gxTa
+ y30iWOvY8ACi8KF8GKigGu9Pxy6llO4Bo6b67HfU2nm/zHQ6JCUD6PEh/30sPEtoTJY22AVRqTcVOmeqpW5UtFhL94SHQeD+Jm1jayfZ2CwgbTBSsF//GH53NDrfevyCmKvOdFVj2QPSpB/2bCQweDmzVLNRjP6WXu4RmCzrZdEV/EkEQv4MXxBTT7zh4RwO9LToRHDuxsnPYualEiPiQFDEjRhCVY3eUZylCb0dvyHOZ3qFTPlGzEwZx0fQL8vJ9DzEZQRNonJ7rNSQiO/lf7b3xG2aMD1wvOukYuCLc805txEQ9YM5kqghC+mk44gg1OB8y2w+XZzXKx8RlLtyxEYPDoQbsJjowOb6B4x3Xb+2YN1KGylS/Z6MWQWQtsOazqwC3pR9NeF0od4wFSg7aydtv10RcldliZ+FN0jrswL/kiU/8rLN2Ss2jtoKjb6Q1NqPpY6BEUvcT77Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,44 +164,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/1/26 16:17, Kiryl Shutsemau wrote:
-> On Fri, May 29, 2026 at 05:34:48PM -0700, Andrew Morton wrote:
->> On Fri, 29 May 2026 18:23:24 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
+On 6/1/26 17:00, Nico Pache wrote:
+> On Mon, Jun 1, 2026 at 5:14 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
 >>
->>> These are pre-existing bug fixes that were carried at the front of the
->>> userfaultfd RWP working-set-tracking series up to v5 [1]. Per review
->>> feedback that fixes should not sit in the middle of a feature series,
->>> they are split out and sent on their own; the RWP series is reposted
->>> rebased on top of this.
+>> On 6/1/26 12:47, Lance Yang wrote:
 >>>
->>> All six were flagged by the Sashiko AI review of the RWP series and
->>> carry Reported-by: Sashiko AI review <sashiko-bot@kernel.org>. They are
->>> independent of RWP, apply to mm-new directly, and carry Cc: stable@.
+>>>
+>>>
+>>> Ah, cool! __folio_mark_uptodate() already does the job :P
+>>>
+>>> So yeah, no extra smp_wmb() needed here!
 >>
->> And...  this made Sashiko point at other stuff:
->> 	https://sashiko.dev/#/patchset/20260529172331.356655-1-kas@kernel.org
->>
->> I can't figure out why four of the scans failed - "View Raw Log" comes up empty.
+>> Yeah. BTW, I think we'd need a spin_lock_nested(), so @Nico, treat my code as a
+>> draft.
 > 
-> Seems to be passed now.
+> Okay, I read the above and did some investigating.
 > 
->> It's concerning how frequently Sashiko is finding pre-existing things.  What
->> would a full scan of mm/ tell us?  Gulp.
+> I will try to implement and verify the changes you suggested :)
 > 
-> Yeah... :/
-> 
-> I will look at the new batch of pre-existing issues when I have spare
-> cycles. I am not sure I have the bandwidth to find the bottom of this
-> rabbit hole.
-> 
-> What do you want me to with the main userfaultfd patchset? Sashiko
-> failed to apply it because it is on top of the pre-existing fixes.
+> Or an even crazier idea... what if we ensure MIPS checks for PMD_none
+> before walking a PTE table?
 
-I suspect it might have a minor conflict with another incoming fix from Lorenzo
-as well.
+But how would they update the cache then correctly?
 
-Probably put it into mm-unstable early after the next release? At least I think
-it's not in mm-unstable yet and we are approaching the net release quickly ...
+I'm too non-MIPS to know the answer :)
 
 -- 
 Cheers,
