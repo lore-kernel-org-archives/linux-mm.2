@@ -4,139 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40B03CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 17:04:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 272DBCD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 17:08:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7002E6B047A; Mon,  1 Jun 2026 13:04:48 -0400 (EDT)
+	id 753DA6B047C; Mon,  1 Jun 2026 13:08:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D7F06B047B; Mon,  1 Jun 2026 13:04:48 -0400 (EDT)
+	id 704AD6B047D; Mon,  1 Jun 2026 13:08:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EDAC6B047C; Mon,  1 Jun 2026 13:04:48 -0400 (EDT)
+	id 5F3976B047E; Mon,  1 Jun 2026 13:08:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E08D6B047A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 13:04:48 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E93889163E
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 17:04:47 +0000 (UTC)
-X-FDA: 84831968214.09.05CCFA2
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 74AEA4000D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 17:04:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fz9TmbMf;
-	spf=pass (imf11.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780333485;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DCBF6B047C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 13:08:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DCA1B406FF
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 17:08:35 +0000 (UTC)
+X-FDA: 84831977790.08.8F58BA9
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CCAC620002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 17:08:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gfJJyfUb;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf13.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780333713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pWY7+zLcstKVcaBHa6DF3oAjfO/xzJSbuw3Jcm1WeHw=;
-	b=OG1H/7EX/f5EAGriXV+UCDaUZ8IoAuX3Y5DNuIyLbMYdk4g1iOwynJ4z6HgYw7cCFyA7JD
-	ACP9Od8QFe49FqgL6QrcC8M1ZJ4S1YG9DL61WoiK3Lvk1qhB2DkUfjO0E4WaCUBynZVvvj
-	N3S53EcqPLuXZKegXiYrxlPTps4Rwfs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fz9TmbMf;
-	spf=pass (imf11.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780333485;
-	b=aBTIknKprfgU6Eg4mHRurej/uiNozsGSj4Ux6uZz9ahqgmnzjK2R1EXZiI6hOiYGmTEJSy
-	xfMWP2tp9eUVK7J5+Ia1051GC2pMi3KL/liTKJC+vXdnBOiViRoSNIX2heSZdY9AKFMhVr
-	5B6rogNjK3f6G3oniKbcOGSB9BCcZww=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780333484;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pWY7+zLcstKVcaBHa6DF3oAjfO/xzJSbuw3Jcm1WeHw=;
-	b=fz9TmbMfPXQ5O5szQljzQSp0bE3iZMtaizykRo5umLlaxHX0QdZhceE+4Hg5JqriMZ45/V
-	vit3txHnXxsHo3TRSFv26LRdASczX2AUR8LpRf9Y6pgAHcVAT4RU+Ktbu3cxC2RLbFCpxa
-	4dZJ41qMo0igQF52fG5B4BunsQAL7o4=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-MXOSwRGjPgGGmYdiRTo6RQ-1; Mon, 01 Jun 2026 13:04:43 -0400
-X-MC-Unique: MXOSwRGjPgGGmYdiRTo6RQ-1
-X-Mimecast-MFC-AGG-ID: MXOSwRGjPgGGmYdiRTo6RQ_1780333483
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-7e0533b7d8aso44780907b3.2
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 10:04:43 -0700 (PDT)
+	bh=Fwo9lRnl+caU8n+bkKsCokOR7tEa4er/MbruZS778hU=;
+	b=TaxrAYk5cMAUkuCu35vussyw55H8FcJQ4xF0Br1J8oKDqaicojxFYzYrs31moCBhnbZN8m
+	HVb5fdXLRKdcVGHv0HRixU8QS/nE8h5L10iMGzFx3eykdl1+rU94SzMgj35yVqQQLoGSxw
+	bqfoV7TDV64Ht9rpcn4h4FEGFhsk54E=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gfJJyfUb;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf13.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780333713;
+	b=V492kvjv3Fei8ur1Q0BAB4WFOV1Zca9m3ALDc7HXkUE9GzCjnljE0jMTL/ZMdJoAmoNia/
+	/2fe+3IoF7EaBxQZ4Ms4tkqapoINUVYZbLJn/eX4AeJVjHP66t3r6A+8eOdurGCO1bwuXS
+	6e3PJs3zrnxIb7tB717G/rtoXKDT/9o=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-45eeea039ebso1891234f8f.1
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 10:08:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780333712; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NZHGtAaJX+EJ6Vzt12i/y+e2wt5SKWPIAu7tvyiomOGHk5ni5yiqyYgoGSpPxugoMU
+         bT8FCE4lEcEtCkdioYrDjGInN+eqCKsvTYSpMnYhzmBGbcDxd8qvP/KQr/rP4MUJSdZg
+         cyhSOvJZiw6IRNFjxWhMSOtNKgyUmnlZhUDx4wRjOtPkPNogqgYYYxbwhxxcq5FcYgJd
+         EnvUM7htJBSS5GrMwf7M9Zhff6wU/3ttDs4wx65yccEvFusM4kmFWwvaZA+fGg8JEffM
+         LsD/vag4iHF4evEJA+Nrg2ISO9HoDtnLMqYFQPvIQOsf1MAKndo2Kq3vWcaFA/McGsES
+         2IHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Fwo9lRnl+caU8n+bkKsCokOR7tEa4er/MbruZS778hU=;
+        fh=ihORIHPYRdlijs4CPUWkGjJidGg4NVQYZ7RiF83b0A8=;
+        b=cc1jcMtWLzK5cYmQvCr6BqMZQ2T0KqDPu+IE1soiSmOXIR3h9M7iMDcEi3GcN5VIaX
+         xRW8IFuxlcUYiQTFsZE7qnb4HVPoH0J4rwafsnsEQWOaLFZSL1Uu6xowJ1OZ8vk+TQCC
+         GpeQR1Kz5rWA7za6lRWkAe5vKIUm1scWBm+2JVTxirIZmwTMVcXwVB/CIViNURy1nv8e
+         BOUTQtkN2D0Lq9LvU1xP93Bcj5uO8BdgYLbfWe0zl0F2BKftUvK0nJMa2ml2bNIEwhPv
+         FOU2UI3H40iEyNIgszhTXij9fT9STNkQrUWVFUNN1KrFudLDbbrBRDNWDYOqTuqhL3up
+         mxgA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780333712; x=1780938512; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fwo9lRnl+caU8n+bkKsCokOR7tEa4er/MbruZS778hU=;
+        b=gfJJyfUbkiCgu9xIWAbytv0VMRCvH834lnWgJwGdp1lLUYEIooBjO4SABUcV16iD33
+         JXd3fxMuA/EXMzbFCh0jYI7huIamTf/0DSed3+QQTWnyCvQxp0cwGf0KrjC3tckxKDEl
+         9SYmJzn6vZeJ2ZcJCsVifOBLxuVok6NGH6QUY1vWIr99Yvmv/t/tvyT2STmWoic2z7gA
+         bTJMNhD3Q9s5A0rpADRIbC6tQNBc6pKrrc878x544GJIfag8aMT0NeCF7SO+zJp1kopv
+         TiUFUFaw30cFNGC3yIhvzWsIsNcNYG3iezKhhOhIuJznmMSgOcmG39VDa/SaR3HIm4gd
+         pF4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780333483; x=1780938283;
+        d=1e100.net; s=20251104; t=1780333712; x=1780938512;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=pWY7+zLcstKVcaBHa6DF3oAjfO/xzJSbuw3Jcm1WeHw=;
-        b=PJ54Ymq/dpRCnXgmLpOeZSJmkAqMgHTYEEDR6aJRZmz4BdPhHqZGyFNCiOmWJdSKZJ
-         jOtFKO7epZ/vhENwB5xojmcikfLhB4eR7838Q+2g+/on00WHrm5FNuNDaLWIf73FHRCl
-         l7f1TXx0fSRSV5fOcNqnhXqVU1yhkt7nvajCDr19SEw8PGieufJ1t/ZP8u9jqZKtlv9D
-         hPqvocDhf7wYhG6WRCz4dbzk4AhrbOMcX9e1IvXTudxcWa0/Oy0Ixayfc+qnNNY8Sb+e
-         GwngQKM4EN+87ud1oQ2DuBh+CiCELm2welDGNqjFhTBQbPKICha1W/dCAaoZ7EMz0PB4
-         SpEQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+XjvxC1KfJv0/3IKSof4iZJbZ7HEbxSxzubw30pR+fAaol+O+Ncnabl+GkF5vDbQ/A+F09Aub5zw==@kvack.org
-X-Gm-Message-State: AOJu0YxrFx+1LQNjNIl94kExQo2HiXZTPfMwpRGRKHelNqznX4KwV7mC
-	R6PGS+kMohWqTpU5VF/NgMllbpPrJ6BT6lXAMK5AwtQpay3bGZP8ggZgyc+UeHxSu7Y/75QsJo3
-	HQOErk54xT5SxU5ckUqDrDrRFnfOdGUvF/opoQFDbOCExgKFHon6hcbsn2NaFtJbfrNlyB4NDc9
-	gP+NL9TosJcR/O2bLo8zoEOLStvA8=
-X-Gm-Gg: Acq92OGnAq8wdfe34ZLghPs0gpcZ50fp+s+2AcTZyELrPUK0TFkYcS04yP4gHDFUPXf
-	tMcmN7kYxWwhbkaE5Dl05muWUPiSEbO9q3Rjwjwdr7iMQQIc5KaLq543YT6Yxx7LXbNXhojJ/R7
-	xQ1oohzSe3GX4Fhow3PcsaWjnn1TmihbWlbg2rwnQBaCM2TbMr66KGcBeTjaMVVT5j2HQSsYynj
-	27wKdjc3bjV6N2bFA==
-X-Received: by 2002:a05:690c:c50f:b0:7d3:cf30:ef91 with SMTP id 00721157ae682-7e05a1907d0mr108659937b3.19.1780333482332;
-        Mon, 01 Jun 2026 10:04:42 -0700 (PDT)
-X-Received: by 2002:a05:690c:c50f:b0:7d3:cf30:ef91 with SMTP id
- 00721157ae682-7e05a1907d0mr108658977b3.19.1780333481712; Mon, 01 Jun 2026
- 10:04:41 -0700 (PDT)
+        bh=Fwo9lRnl+caU8n+bkKsCokOR7tEa4er/MbruZS778hU=;
+        b=iCm0PjmpV4IPG5IOhtFor7wU5p4jzTPbt/dNL0mdQ3ZD4skZ7i7kzvl3lFk7NLWbYG
+         pC9TNvaaXOUIiwYsnASWiraNiHQfxRPlAhH0/9pGgBHh3hlzRi9gML3kUY+HpI7898dg
+         V+y+OBW94CzH9tPcfEHPFyR8Dl5TUj2GzGUk4aNaXgmaOEVpDThHC3pNT6ykEkNX3Uxs
+         SJkIBkSS/R33PXeP/AkAzrsaLWjDYL2prHixZbZ3Hfnk1yYXLAINjwKXY2n1xr/b5BCG
+         Ya6AARXtx8bXxV7sRWVfATO8dMe1aZaPUq5zrMskCsHBurI03bFAN4hhcmQZy4OGdHGG
+         Xg9g==
+X-Forwarded-Encrypted: i=1; AFNElJ8g3pl6Q4xfezKpwLRiwIMNvwXxex3OeoaxEGFYcyrczsXxaJW4HYB7r0T8ImI4qQD6KCdWaIBeBA==@kvack.org
+X-Gm-Message-State: AOJu0YwzrFiU/Tbp7vmTPt7oShwDMGnj/ZToFQee5ZJLqrVYM9XOYsKO
+	wDGxxz9w05JiVUOzcu2YUGpe3kZ9K00LJtj+zuKcEXalyhUvR5oUGWc05CGxI/2Pmj2KnQDHXrN
+	GBgomASCWbjRrt63d9rByW0m3kX3Nvmc=
+X-Gm-Gg: Acq92OFSF8emwEYoQBbTDp9TNLja8vkxqiFlCEvA2IewOY5OjWs4r7A7cCWSUd7pdoN
+	MDhthCUWTAoSZXhzYjYthcTCj+I61kLWuax3n4nnes99KohjxCgVJhQqawsk9768QT9Pu37UrMY
+	7Q1Nqf/dObMR05NMFSJV55NMElkOlnjL4wk2xgnzr4pXJOVLqytGq23gpaIw4brJn2ltSPtRCw2
+	V68JZN4O2Db1/6oc8mVF/Jq1wBL6Ibg8yrC2iZGm4CGPmPyTi7FpTxn1HDtdqPy8CFAdfKtFikC
+	XEhQaQCOgt2Gs7hPf2Kh787WQDRUe87A5CLyIvxf0dwxbpJ0SQ==
+X-Received: by 2002:a05:6000:18c6:b0:460:1301:ded1 with SMTP id
+ ffacd0b85a97d-460131122d6mr4841379f8f.6.1780333712087; Mon, 01 Jun 2026
+ 10:08:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260522150009.121603-1-npache@redhat.com> <20260522134724.f4f11941a85ef18b307d16ae@linux-foundation.org>
- <20260601155808.2755103A59-agordeev@linux.ibm.com>
-In-Reply-To: <20260601155808.2755103A59-agordeev@linux.ibm.com>
-From: Nico Pache <npache@redhat.com>
-Date: Mon, 1 Jun 2026 11:05:20 -0600
-X-Gm-Features: AVHnY4LWX34RPOrSLZQKCFADp8MRh-hRHO-69bPjowu85AkTudvs-SlZUCsWfOs
-Message-ID: <CAA1CXcAd-uQD0LgUzWAAkFKt13eFfaP3TfG9KED2RzYGhHoqpg@mail.gmail.com>
-Subject: Re: [PATCH mm-hotfixes-unstable v18 00/14] khugepaged: add mTHP
- collapse support
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
-	anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, 
-	cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, 
-	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
-	jack@suse.cz, jackmanb@google.com, jannh@google.com, jglisse@google.com, 
-	joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev, 
-	liam@infradead.org, ljs@kernel.org, mathieu.desnoyers@efficios.com, 
-	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
-	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
-	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
-	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
-	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
-	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
-	zokeefe@google.com, linux-s390@vger.kernel.org, linux-next@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vSdeidvDvnyCSs4Ua0OFxTBLZdvb3JKbRVBbzA_TIIQ_1780333483
-X-Mimecast-Originator: redhat.com
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-2-jiahao.kernel@gmail.com> <aho7nepN5jZtKmef@google.com>
+ <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com>
+In-Reply-To: <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 1 Jun 2026 10:08:20 -0700
+X-Gm-Features: AVHnY4IPBYIavrsVjRZcklh2r0yiWvzcpUqLWkliFzeatE9D_yJwDY6lgq1MVZs
+Message-ID: <CAKEwX=NoQNXOMDD0uTSOPWHQX-CMNU1dw=zEuFj=eLcS3fB-ow@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor per-memcg
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, akpm@linux-foundation.org, tj@kernel.org, 
+	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
+	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Hao Jia <jiahao1@lixiang.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 74AEA4000D
-X-Stat-Signature: bwwi5zrsnsz89xo36cbpmugjik8g9upp
+X-Rspamd-Queue-Id: CCAC620002
+X-Stat-Signature: gagxshhayrkfcds6hyiryrtpk14kcnsw
 X-Rspam-User: 
-X-HE-Tag: 1780333485-866638
-X-HE-Meta: U2FsdGVkX18Xq6JvgNnY1NICiYoU48bQ8g81JMTlBnBi5vF7MZWmH0IQOlz63EiBxCjVeJVmFO6S0CTpRn8DKek/DIULVXF7Qntlrwx3qIK8kO7J8ttFprSazp3qEyf6uMG5knkZy8AsUGSA6+zyvHLPVvAkmDj5Rm69hhL91FZLLxpkDo/KzRZJIKxfa8XQxsh4C6bPjGheODBBXTK7BKVd41E3sKw4s8iivyMJ+Hc7PurYffnvLYFoHMt1/az3zXqVcOX9rffmVp2Vgk8psZ7DlpZWClrVWr331G9T+007DawLEHCSZrtu6WTcG2rJGsKvS7h4n6xKeysvRPAGjhs91QWYGWt4p0Qb8mziymOiA9j94Vh/ONbPOvZ1LGNXc/x/KnPZXicxmzcND0uY9uOJtBQzA+jNEZMr9CM2gT12lp6fw8d5kPYKY8AFeLSEy9TSFWOui2RihSTLefbWcEGcTjgvwvW9gILIEioBTEXfePthYQz6B8dAvcf+1KcqF2Hp/Waj7r3nocx68WIrnt8Kn6Dtevd7HaJWbAY6iCRKYjF+c8ZagRpVmTBu/mKrBSvmH52KAAIILuB8WdxnLWBsjsPPm4IRrcVHLos5R+5XEDZpBh513QItaXDcTkSBMXMKpadtrJy3KIJkbsIsB397rkpr5FxHR+oKczK/QguwsLs26p2JIOWa32qQk1BIp13sb3/jxQV3xKsdiD7FGc7e70sRGnPIHTbQLtRn4LGGOklusa89OkDJ3H0B0wBLtR9nlyEH8tukCP1GYzkr/e9aMSD3kJ7rnDl3V8EmWkwUPhFjdNAGaMI3bM9h53gVcWKMYiD1S0rtZEMVSWDiB9deEVaYUYiulIc9nRs7f3dXMb6vDJMPgneoIRQDxQYi6+UO009+4xhXWm2Cnclfk+08VNvslnT+t6EyX9+l/2CSsmEHmu8Y1dYOJK+qeNhk0uAo0sAvZkBX8yUhiu4
- 5qb7+bQu
- 7wwcRc8xSmwu1cUjvzSIT6vOTR6CYc+TI1+rSj7dYLwU/Gzik5UfhzNL7nFUMnfWntXPvWF+hlVeShSKIdt4mgWOgD7LZ4SfZaBytiThZqu9GQFTOt2T/HZB0Yvy3Ox+pqZzk7NOYsKL/u0sGZTKd7e9c7aw1zFg5Fkdab4GplZml16Iw4YUK0Xs+GhHCk2m8A9Yb0L4sUN+74Kps3oNSvhiNdn2iXYoX0FhKeX/pYIGyVGrOTnSyo/O2ekJbCG03sNtXK9ThgOrqeE891gzrDakkrAiPNU2yaa3/LTVbqtxi6AaK3vCSAAauOm2BAu45cOhHYo61Ue0equSjbaKPvT3bDwXrB6Zt08kRfXamXKP2RZ43U0lLlf2DXLJUVp5X8+HpQoyrbbePBPE81LyOXrKR6R0Waja+laNbokG2MGq2OxE=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780333713-946277
+X-HE-Meta: U2FsdGVkX1/6SQe6YSo8qhXSxGYnbfUV+iIeqvYRFmX9wjNVDRZstcCYIjFEIS16XpRI+DtTguJXhWtXnGo+yqnTTciasR7m78mBxbKz+pRVrRpLnKjg0NjFN+7t+mR7xccnSbeSH6RMMz/1G4Xukq3pP21CwVjm8Ntf8ZLjjVfzVFRxD+A5hP41VgeP4BbCTDNw+vae4JUYY84rxduIOMPoAsYWcuunlZpJ3r+E4e5YiikcNCAfg0omxvZWsscIkANKwasVR5eDyCoys2xSJ8UBhzwWsiy/JQcQ//T10alF8XhYZWtHQhK+zKhl7IzQfbSs72A7DZfxhvQbFqtYcxIrwIp3q2MRfVu8nUngQzu5l2n0uncFu7DZRxN64spvaJMKTL5wCL+oacmMXgyOyMWmPTask/b+gwWiUcl/enHmllKFp11E0zUHEVZJe6fExKysl6vNqcLRd+x5cYTG9ujSQ7z/Sm2Rp9w2bEkeUWSxZYq2whyGH1H1rIxkINLSwqpXZfud95RLhqgwx2ZM55NiahflDwVmnKRyFjBcw0oCXRbHpy3Yak1OeQw083YnC1H3hPstCQ03TqHkiBjogzmHuuezswafPn6e0GQ+D+8mbetdA/axqnaq7Zi0ZYhIdClqUjihzk26z9o10DrwqW5tSOh0+yUqzwa5zGDhMPTLIGX74eI5thmi6Gcdwczw+OoBEHxDqrDF8/xImtO+YC5ybSyFJw4z2U0HTiQBzQs4GETTc4JwkyKqe3wnU/ZUiGrCQ1grpXvjSnKhijD+58LO2CmU6X6BarfdsACjoOoHNdbEHmbp00ue4mLrpgxsaX9wulTIdyfkFd4d9x3OSaXjyKPGXkKsvcp6Er2o52fJWvx1eCFWgh/UKeDt7u3lDW3i68wxuk8rHAJPsYgf55ROjoRByrjaVqpDAKSWe3oaqRdqqCjl0+m5gIMKiYnM3XqUayxNOw5vxoDW0y2
+ ZPCAjL5B
+ r0NLk0eV9tHyG6xvyDxv9ay3Rfnm/L0lhrUzpJzdHY9OZplLA1jCPHfOcSsjQ6o5hjQZcSIUB18LYyNBIyZwM2X6v4qP+/xrKZjHckcvpp7FE73TUXpo/Cz4xGDccLM2TQQsBlvbmSdpsdl8PNC8tVCmlxyryxTYgGFg4kWYkcpxFWRawkw60T2GSGVnLx7qQRXvMfQVPyiccoS/lbPaTRW3R2fqnnEE3Juv6gjeRTmh8Mwn5U6gwTq+ZGlmiaiLVeNXcEEdN7+iZNg5cssDL1UMgPAPhePD9eWcEYZ3zBpRJWMKOL62Z1igJnaKTAIeAQYLW6COK4xCFtE5Z4YoGEaQHveT76gFX2XYqoIJ221bNfgMt4MR4OkGavYGDlIZh2cDY+bgVti57DPHnH/GMSr2pK0skrNc3d5mcromRUC453A5b8eos9fVn5YoFCwgaHH1jXqTZUicLB2BVPio62qOon2L0Wlua4KSYXCS3RfY4UrkZekQbkww5Lo2qMdo8GjMAeSRxnC0bKUHuceWmDDd48XB3CcRpBMX9KMqT9XKYgGr4oZhLCUmJg0FIqv8vyqS7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,73 +144,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 1, 2026 at 9:58=E2=80=AFAM Alexander Gordeev <agordeev@linux.ib=
-m.com> wrote:
+On Mon, Jun 1, 2026 at 4:07=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> wr=
+ote:
 >
-> On Fri, May 22, 2026 at 01:47:24PM -0700, Andrew Morton wrote:
 >
-> Hi Andrew et al,
 >
-> > On Fri, 22 May 2026 08:59:55 -0600 Nico Pache <npache@redhat.com> wrote=
-:
+> On 2026/5/30 09:24, Yosry Ahmed wrote:
+> > On Tue, May 26, 2026 at 07:45:58PM +0800, Hao Jia wrote:
+> >> From: Hao Jia <jiahao1@lixiang.com>
+> >>
+> >> The zswap background writeback worker shrink_worker() uses a global
+> >> cursor zswap_next_shrink, protected by zswap_shrink_lock, to round-rob=
+in
+> >> across the online memcgs under root_mem_cgroup.
+> >>
+> >> Proactive writeback also wants a similar per-memcg cursor that is
+> >> scoped to the specified memcg, so that repeated invocations against
+> >> the same memcg make forward progress across its descendant memcgs
+> >> instead of restarting from the first child memcg each time.
 > >
-> > > The following series provides khugepaged with the capability to colla=
-pse
-> > > anonymous memory regions to mTHPs.
+> > Is this a problem in practice?
 > >
-> > Thanks, I've update mm.git's mm-unstable branch to this version.
+> > Is the concern the overhead of scanning memcgs repeatedly, or lack of
+> > fairness? I wonder if we should just do writeback in batches from all
+> > memcgs, similar to how reclaim does it, then evaluate at the end if we
+> > need to start over?
 > >
-> > It sounds like I might be dropping it soon, haven't started looking at
-> > that yet.  But let's at least eyeball the latest version at this time.
-> >
-> > Sashiko was able to apply this, so the base-it-on-hotfixes thing worked
-> > well, thanks.  The AI checking made a few allegations:
 >
-> This series appears to cause hangs on s390 in linux-next.
-> The issue is not easily reproducible, so it is not yet confirmed.
-> Any ideas for a reliable reproducer that exercises the code path below?
-
-Hi,
-
-Thanks for the report!
-
-was this caught by syzbot? If so, can you provide a link?
-
-Also can you provide whether any of the mTHP sysfs settings were enabled?
-
-Based on the report, it looks like we are either dealing with more
-lock contention (due to holding the write lock longer). We could
-switch to a trylock but that might cause us to lose some collapse
-attempts (which will be retried later, so probably fine). I'm ok with
-that approach if it prevents these potential regressions.
-
-Cheers,
--- Nico
-
+> Not using a per-cgroup cursor will cause issues for "repeated
+> small-budget calls" cases. For example, repeatedly triggering a 2MB
+> writeback might result in only writing back pages from the first few
+> child memcgs every time. In the worst-case scenario (where the writeback
+> amount is less than WB_BATCH), it might only ever write back from the
+> first child memcg.
 >
->     [ 2749.385719] sysrq: Show Blocked State
->     [ 2749.385730] task:khugepaged      state:D stack:0     pid:209   tgi=
-d:209   ppid:2      task_flags:0x200040 flags:0x00000000
->     [ 2749.385735] Call Trace:
->     [ 2749.385736]  [<0000017f63c8b226>] __schedule+0x316/0x890
->     [ 2749.385740]  [<0000017f63c8b7dc>] schedule+0x3c/0xc0
->     [ 2749.385743]  [<0000017f63c8b888>] schedule_preempt_disabled+0x28/0=
-x40
->     [ 2749.385746]  [<0000017f63c902ea>] rwsem_down_write_slowpath+0x2fa/=
-0x8b0
->     [ 2749.385749]  [<0000017f63c90910>] down_write+0x70/0x80
->     [ 2749.385752]  [<0000017f6313407a>] collapse_huge_page+0x2ea/0x9e0
->     [ 2749.385755]  [<0000017f6313491e>] mthp_collapse+0x1ae/0x1f0
->     [ 2749.385757]  [<0000017f63134fda>] collapse_scan_pmd+0x67a/0x8f0
->     [ 2749.385760]  [<0000017f6313751a>] collapse_single_pmd+0x15a/0x260
->     [ 2749.385762]  [<0000017f6313792c>] collapse_scan_mm_slot.constprop.=
-0+0x30c/0x470
->     [ 2749.385765]  [<0000017f63137cb6>] khugepaged+0x226/0x240
->     [ 2749.385768]  [<0000017f62db3128>] kthread+0x148/0x170
->     [ 2749.385770]  [<0000017f62d2c238>] __ret_from_fork+0x48/0x220
->     [ 2749.385772]  [<0000017f63c95d0a>] ret_from_fork+0xa/0x30
->
-> Thanks!
->
+> Similar to how memory reclaim uses mem_cgroup_iter() (via struct
+> mem_cgroup_reclaim_iter) and the old shrink_worker() used
+> zswap_next_shrink, we need a shared cursor here.
 
+I think each proactive reclaim invocation just walk the entire subtree
+for page reclaim right (see shrink_node_memcgs())? Would that be
+acceptable for you?
+
+I also wonder if we can at least make this structure dynamically
+allocated... In a system, you only really invoke proactive reclaim
+against a few target cgroups, no?
 
