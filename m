@@ -4,127 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11F18CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:25:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE6F2CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:27:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 762936B0469; Mon,  1 Jun 2026 12:25:34 -0400 (EDT)
+	id E43486B046B; Mon,  1 Jun 2026 12:27:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 739DA6B046B; Mon,  1 Jun 2026 12:25:34 -0400 (EDT)
+	id E1B426B046D; Mon,  1 Jun 2026 12:27:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6504F6B046C; Mon,  1 Jun 2026 12:25:34 -0400 (EDT)
+	id D58416B046E; Mon,  1 Jun 2026 12:27:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 530726B0469
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:25:34 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 20D901C1E40
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:25:34 +0000 (UTC)
-X-FDA: 84831869388.09.579DAD0
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 032602000C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:25:31 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RzPOoSO3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pPzpwVgU;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RzPOoSO3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pPzpwVgU;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C362B6B046B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:27:47 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 70C841A0714
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:27:47 +0000 (UTC)
+X-FDA: 84831874974.25.FDF9C78
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 472EE14000B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:27:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=WMJEz07D;
+	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780331132;
+	s=arc-20220608; t=1780331265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B2CzP0iLnWKcwILC9jm502jdM9oamk+/w4JeVs2q8ZI=;
-	b=gan2WyHXYGkAEi+h1VhbOSNgae0+hHKt2Lg1lrtcP3ho/E29h07VW5Gq24nzhR8oULOLwj
-	E6tW9JKpvg72tdIzUmR89DesndJDpg8wAVSaUGWcLUupV2tAaJMwOuls/bZU1USKYQZuYP
-	8yV36UCRKwk177ZW7BlZSp6xyxNbRy4=
+	bh=ZfdjQS/pFfEXuH7PG4C46cynqclz9ShkzqgbwkZu3z4=;
+	b=p2sb9TOppDf5+CJln/F22GawGz3tFCz31WqgrI6AnLdmu2Y08S1PD2knz/IDWRGMpd8G8Y
+	uMScl/fIncWBPkFgLffSYutg3/zLNI8lI2BAe0e4LmjqQiGQKnOHB3l9dpTumx4p+PudCc
+	4ojg/grn2Dh2xnf2S7iejT4LSkuRdGA=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RzPOoSO3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pPzpwVgU;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RzPOoSO3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pPzpwVgU;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=WMJEz07D;
+	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780331132;
-	b=q6KgREU5rlayv7tPljwpHn1MqnPp8HMPfDPafaFti4fkwhbqfZT1cTwpfmoTV0oM7ZUjnj
-	KF86/jeYsvDFYFvqtvJpsJ8tCdHLF0fiOMZEBXrNALJTC/l57H8K2TRxJ8xNHtFsGBo62y
-	0W+DrzNAVaTa57+7fy//XXj8KUkg0bY=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6BACF6AF4D;
-	Mon,  1 Jun 2026 16:25:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1780331130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B2CzP0iLnWKcwILC9jm502jdM9oamk+/w4JeVs2q8ZI=;
-	b=RzPOoSO3L1vuAhLOAMa3Pdxk8vKYyp0ri82h1tkkIww02gN0oXb7cM98fRag5Cc0LSyv1m
-	R1dAZ4O/C9cI6xdPNwhbG62sJMzeadPXEWGVRaBZ9no2a6K0DBCH+hN0WM9yQ4VCu+5whR
-	J9wo7NpgnRvFrxH07JM1wnd1vunZywU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1780331130;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B2CzP0iLnWKcwILC9jm502jdM9oamk+/w4JeVs2q8ZI=;
-	b=pPzpwVgUFKCC16upKhxX1Kx8vfZGoOHR8Cs0MCMiO2a0Ozsw9LB3WuN64Z/+97NNX3srEq
-	MFQ0BO3vQ5ha/aAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1780331130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B2CzP0iLnWKcwILC9jm502jdM9oamk+/w4JeVs2q8ZI=;
-	b=RzPOoSO3L1vuAhLOAMa3Pdxk8vKYyp0ri82h1tkkIww02gN0oXb7cM98fRag5Cc0LSyv1m
-	R1dAZ4O/C9cI6xdPNwhbG62sJMzeadPXEWGVRaBZ9no2a6K0DBCH+hN0WM9yQ4VCu+5whR
-	J9wo7NpgnRvFrxH07JM1wnd1vunZywU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1780331130;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B2CzP0iLnWKcwILC9jm502jdM9oamk+/w4JeVs2q8ZI=;
-	b=pPzpwVgUFKCC16upKhxX1Kx8vfZGoOHR8Cs0MCMiO2a0Ozsw9LB3WuN64Z/+97NNX3srEq
-	MFQ0BO3vQ5ha/aAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5BFAB779A7;
-	Mon,  1 Jun 2026 16:25:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BF/xFXqyHWqleAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 01 Jun 2026 16:25:30 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id CE74EA0EC0; Mon, 01 Jun 2026 18:25:25 +0200 (CEST)
-Date: Mon, 1 Jun 2026 18:25:25 +0200
-From: Jan Kara <jack@suse.cz>
-To: tanze <tanze@kylinos.cn>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, willy@infradead.org, akpm@linux-foundation.org, jack@suse.cz
-Subject: Re: [PATCH v1] mm/filemap: use folio_next_index() for start
-Message-ID: <bzmte6yvhabfy6hvv3gln35b7aujhs3kxgaeenvpctfxqisvig@falgc3o6bhvz>
-References: <20260601110425.44784-1-tanze@kylinos.cn>
+	t=1780331265;
+	b=CFJ6cNiSLzFu6Wm5iNvIM5Vc0u+IPMkAWJ7L3z/ekxX2nOos4pPD+afUfM5/lgwFb5zTQd
+	GJptJ6E7oRvrL3iQPj1CUVy9GkiyEX3v89EXtfc0S4Ci7ytv0Gql/fGCUebNGTUUwdACAs
+	bJiMeIY+6PW3qzezROyMzC0e3xhXa7o=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 724B4176A;
+	Mon,  1 Jun 2026 09:27:39 -0700 (PDT)
+Received: from [10.163.164.232] (unknown [10.163.164.232])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B684B3F632;
+	Mon,  1 Jun 2026 09:27:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780331264; bh=hJ83ANAMGKlfACSoWSYsWcwjPLWYlAw2gamYdgHqgfs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WMJEz07DJwD3lk5ISTRXSnfMF3sfA6pRzeWlr08F8XagPv97GNAxD2MAZl9OMNuRP
+	 BoT0SrgsqTTl3dWYe+5pf0unJowIew6wmKXwrQ85HegAba5PAZQGjiSzb6KPgmSicy
+	 FpnW7AIuja72LAxgvYaGRprOX1soQsCY6soI0LAY=
+Message-ID: <474a4ee5-a29b-4b8d-95c4-daaf7bf5aaf6@arm.com>
+Date: Mon, 1 Jun 2026 21:57:36 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260601110425.44784-1-tanze@kylinos.cn>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 032602000C
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: use correct flags for device
+ private PMD entry
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, SeongJae Park <sj@kernel.org>,
+ Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260601083044.57132-1-ljs@kernel.org>
+ <cd8b6bb1-5c42-47e4-8773-2c301a029372@arm.com> <ah2rKKATQwGN_PHu@lucifer>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <ah2rKKATQwGN_PHu@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 472EE14000B
+X-Stat-Signature: nsjtrw6nhaahyfm1bruqik4ogmerob8d
 X-Rspam-User: 
-X-Stat-Signature: z45ri8p7df5cngig7m5d1pw9193irzwm
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780331131-146346
-X-HE-Meta: U2FsdGVkX18b474Oh/1maC91eC0xt3enz1zfnmfTIzxqEgUkCaXSGOdpGZdaBHty8lVrtmxOAMBSmPGFrk8O383WlDNJTuEP9LCludWizr3K8rj+b4l19k6KwmtPmHxopSZ6KyfLQNsBKwRp+LGEo3iVOTcE2n8nhQawr+UJ02roupR7yZ2tV5UqkKY30zhWzuewfzb3MQKNINYW1MczLI5kI3mpu35yiL3IupE7KeChtyPpMWN0fx6pwOrSkeeFuDg/iQBk9TrwD/md7EcpO+M/ExRnehe9UDnQ4uL4KytuiCg+LqxWOdE1SSEEtnqvls02x6CZ+goKbVBMUG7z9WdXljpSbWKymJN1ZVtsGB8WRCF5vyf0gfKVl2yU1nYhqDMnR2079X3cOsyy9vnpxkbLP/cSCCu4DyjUlG1UoIrjzpvcermufgGCaj42+fdv+NK71rVEWrzYmoboz4Jen0kU2O+ymRV+Ce+BAkWn9YzFWQ1vICs08WRq0VAqjsVFe4N0zwC4eVNnQBCiBgnN/eoqTx2lo5xvNLUHgfBn041M71zS8Q4tXeanCuACWA/ZpYibghil+OWxVLTTxPPwSOVukkKyFIRMyuCHJtgz4Tk+PQbemGxtE2hDSzEysBDjs7rmlH+WpbbMYX44Bw3xWqiQyxjbMlCaVB6CfY1KoEqMYWhYtQA9vdUdD2Zhy01Gn/xemJYjERiie61n7NSNS+Z+hk/iqt2CNk9tnUWHVEyA6AjE3HNmEUUNh/jZvvckn372g+ubwpQEmMIb2a4eaaQyEZkjGHQvWUcoVCkuzf6EHUzdOyivLOQ4L+j1TbBhU4EhaTM6Pz7v3BAnaHSBhhDwFpN9lBZhl4RT7tei02HfD/TAzlW8kp0tfUDmoSrSUl9hOuKkSzPlgvXGaMQPFt06RPRZjXvnhd7c0/rtiaiNVC1e/Q6bubIJGCFt1SCMu3Nhjsk64sKpSaKbozB
- hlPZBHPO
- d7+B8Tgvb7BK0X3hVlOimXjVXRb7T7yoD4qCveqET8zRLtevFG+6xF273opTqINwgi2H9jt58m1Qqp//5vUxPYB6PZkAUhdrb5OwKUJyfC41NU5PzejAgf/L24WmuwdhMP47rGfMgiXl/hEsVm7SCI/v4L234/mSsu3m2VtEM7h1t73PBuXBuyzpn729s3j02iGYxmIsNIva6rZiaNbcyL+IYgWVAprlIeqD1EoqocR0jf/bHFTDpc8Nn4TcXM5q18w8xLhVO0d4+gjMzs4XElZ/Ugr4eNtyYYR/5zcwYXFDcsFCBp4lmJN+y9Fw3Yv8slB2Swpi/p5cdn/U6bOp2XzurGAo2+MDRumPpYgpZO//SsRu+OV+QctR3M/boywBGGfEARvl4r5DkfChNCXPWY3pvHQe3W5ErN4iCp6bRrVKsNtBJvOjgOFiGEQ==
+X-HE-Tag: 1780331265-606155
+X-HE-Meta: U2FsdGVkX1+9gmTPbxpkBkAn+PVJQRVxrvk6XkgamXRuv7czQ1Yu/8iM3Bx/ggEIoBGod6CNfSb9RDIsP6IPfb0D5VG0N8aeLQhRhZA1NswvggjVH7INp1uc6MGyrsK1IEd/Cw3upTdGCqjzo/hhfoBA/BOtI25cyw5ev0Hi6HIJU3Bb2oOzaVNFcE8+fpm9ETj7d01j6eBQJA+sKLB5fAE2vGqJVZj8v2RVdVpRXZ66l6j1XIL7ZZi61O8muWnStTduFH7Q9l1ocKsmA7UEhN1BTdKfMWAjQ4TM4JXT/Qd5Y+2pMkVRpcdF1RsDjybEFv5Zn5r/RNo2PGErrVweQ0BX2trZsgKbWKR63L+mUjPbwFs48gi2UnzVRaypeoAGACvDQPyg67UKjLyBXvQ84bToOYmFLvtp9smWdbka9T83o2eAM0ndxisvVf775r2js2wIeQhbv1ekWGx/7rhDoWPOczsdeM39thySkzhgSU9l60mjR9K/O4eT1X2Whr9GvqCCP0WnlqK0xZCzpidicgOT+Fr4QBfuqRQOtRkUeb7iALuSd82E3Fn4gMG/YryltU/IlbBp8q+wd3p3V44xV8BBq9muD4mak7BwZ9BNlxKqjffkQVQrwKiEIV0t1vLGnM4RQd7d/7jv5mMnU0Lv5Idb9bjo6/G32i9VvPkJzU7KoOnkJI4t/fpS/pngEHZIPerArV88ckyRKSCGtjp46LNEBxgKxIf9icML18D8He10KkKfClwo0ubAnUhkBjjP8s3bCoRqUoPWlV9M1oQwQuJrksjnWCh+2dd4ecayu7IDunvAv7N4jGEIdjuE7h2jcFdV7PsyZu+k83gnL3BJbwcl8pS+snNrhJbC4I7K0zaS8ZHO02nRmlKm4H9n38ufNg4gWWmXrVFOx/nzCC1f/U8NXxmhxGOHlvQc3xA44yoRC4JknJejEF7oUcQ8gUT9G9d0n+cPSsmYpxX/Nv5
+ yBmiI6JG
+ pTmafY3uE937Crwt5YnQ0pRfQk5re1YJ3Yz9zyZGbIMCT7UWAl2UwdJIecBJclXqBBIseJfXJboA1eZs30mFrA/b5jWVf6v2n98BmcaAnnIAoIJ54/k7FDOk45Ki1AtcQ6F6MQKv8mGL3ABt6BzXAfH+0MqbDUcfACe8nXuDxJgAF3v1AFttLktLherkAisMMnmaxo6GZxfEnNceTs5F1ic2EGEKjKd6BB7FmxY2SL4zJAGuDIJYcveHTJD15OnGlwwIxxiJuUeePw+FwHwZS9O+4Ew05rgr8D8FuOxgfe2NJlGqi+NTUtBhewKruVPD/zkcVV8zCZ0CKIJqVTUg3Yqj4SZrxSaj9TUGcPzaKcFYHSEs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,62 +98,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 01-06-26 19:04:23, tanze wrote:
-> Use folio_next_index() instead of open-coding
-> folio->index + folio_nr_pages(folio) when updating @start in
-> filemap_get_folios_contig(), filemap_get_folios_tag(), and
-> filemap_get_folios_dirty().
+
+
+On 01/06/26 9:31 pm, Lorenzo Stoakes wrote:
+> On Mon, Jun 01, 2026 at 09:20:51PM +0530, Dev Jain wrote:
+>> Sashiko continues to find existing problems :) What do you think:
+>>
+>> https://sashiko.dev/#/patchset/20260601083044.57132-1-ljs%40kernel.org
 > 
-> Signed-off-by: tanze <tanze@kylinos.cn>
-
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  mm/filemap.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+> Thanks for highlighting Dev and to be clear I'm not yelling at you :P I'm
+> yelling about this aspect of sashiko... :)
 > 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 4e636647100c..e233d4a003ce 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -2283,8 +2283,7 @@ unsigned filemap_get_folios_contig(struct address_space *mapping,
->  			goto put_folio;
->  
->  		if (!folio_batch_add(fbatch, folio)) {
-> -			nr = folio_nr_pages(folio);
-> -			*start = folio->index + nr;
-> +			*start = folio_next_index(folio);
->  			goto out;
->  		}
->  		xas_advance(&xas, folio_next_index(folio) - 1);
-> @@ -2344,8 +2343,7 @@ unsigned filemap_get_folios_tag(struct address_space *mapping, pgoff_t *start,
->  		if (xa_is_value(folio))
->  			continue;
->  		if (!folio_batch_add(fbatch, folio)) {
-> -			unsigned long nr = folio_nr_pages(folio);
-> -			*start = folio->index + nr;
-> +			*start = folio_next_index(folio);
->  			goto out;
->  		}
->  	}
-> @@ -2403,8 +2401,7 @@ unsigned filemap_get_folios_dirty(struct address_space *mapping, pgoff_t *start,
->  			}
->  		}
->  		if (!folio_batch_add(fbatch, folio)) {
-> -			unsigned long nr = folio_nr_pages(folio);
-> -			*start = folio->index + nr;
-> +			*start = folio_next_index(folio);
->  			goto out;
->  		}
->  	}
-> -- 
-> 2.43.0
+> So, this patch fixes a serious issue that renders THP device-private
+> completely broken in a way that can lead to memory corruption, and this
+> review comment has nothing to do with that :)
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> So TL;DR - maybe as a follow up?
+> 
+> IMO there's _no_ obligation to respond to stuff like this, in the same
+> way as somebody in a review saying 'hey here's this unrelated broken
+> thing'.
+> 
+> And this kind of thing should _never_ _ever_ block a series or patch.
+
+Yep I agree.
+
+Thanks David for bringing up the link.
+
+> 
+> (I kinda wish sashiko didn't do it, I have extremely limited time as it is,
+> it'd be better as a passive background scan of existing issues or
+> something.)
+> 
+> Cheers, Lorenzo
+
 
