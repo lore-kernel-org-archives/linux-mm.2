@@ -4,95 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E326CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:17:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDC10CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:21:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D22A56B0455; Mon,  1 Jun 2026 12:17:43 -0400 (EDT)
+	id 056BD6B0457; Mon,  1 Jun 2026 12:21:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFA8F6B0457; Mon,  1 Jun 2026 12:17:43 -0400 (EDT)
+	id F22336B0459; Mon,  1 Jun 2026 12:21:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C37CB6B0458; Mon,  1 Jun 2026 12:17:43 -0400 (EDT)
+	id DEABF6B045A; Mon,  1 Jun 2026 12:21:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B4B216B0455
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:17:43 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56650C24C0
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:17:43 +0000 (UTC)
-X-FDA: 84831849606.14.37B4D8E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CDE536B0457
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:21:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 643DA1C1A4D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:21:20 +0000 (UTC)
+X-FDA: 84831858720.01.595E531
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B2D4440006
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:17:41 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BifbDx5D;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780330661;
-	b=zNQmPxb+bW3+vPrPDV9+R9/ETcHY3MZIVBZG8tXz68rUcPn6t04aBdSQNblwU3dL1cLfs3
-	rYHKDUBnL5nqxtNfgaweo7vdiY+Oty/LmKbPNXWcUFWLCvjQ73cExcPQAYvRFKXNHrTF2z
-	PjSh7r966ITUYitcH2UmQ+V4U8CBoK8=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BifbDx5D;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 909D180005
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:21:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kKxrUQgd;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780330661;
+	s=arc-20220608; t=1780330878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rNLnkxLxw0b3sBZzOdV8X6NVlh7ujukPI0iIaNRmGIs=;
-	b=zT/Hoym3isBz1XCNfcDzbaCj0zGJ6UcxV9YeylwPplRFfsz9mbQnYHXr6KGQk76oQzwjOK
-	46l5NvKTmfkhwkGISGvK29uKF8cGKduJ9F9E2Ls+rSY+F+1cqP4UG/LeZBZMEmvQ6iuNwO
-	9/nEW+uoFgxOPpFSZseUQP4A1yG9XNk=
+	bh=UoJTMcm6ZaNDfWUE5LlijECfpdOWKQWYDYlCnlwE1HI=;
+	b=wjpYUhkdiSAem2AC6GfaFiXVNapxnnTDa4ePySs2OZ3sxC7K9nvKpAh7hvo3JEoQQFUX/X
+	/yKXoqKUGNiqtvpIxCYwlRMSNmqqCOq+cJQ0naTbbSshzcc/N+lTbgz5ov8F1YNbpwuhYr
+	CCGfYKY6Cn/Vany+i5t2bqPafQrNA4A=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kKxrUQgd;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780330878;
+	b=E9og7f04X6ZYsrNqvakieki0M/hJ9f842+s188Wd4vm7Ip4RC6VCNSmQISfq8+ouy4jYLf
+	hKAW+kJQvJfahwqBuC78sApjDSuih3viI6SI1ZnOI1M3iBz4/uS5w4GiH8eJqV3Yv+zvet
+	cQZLik7KwmYV9paDwYR11nkT1XGIi+M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7A18416F1;
-	Mon,  1 Jun 2026 16:17:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E1C1F00893;
-	Mon,  1 Jun 2026 16:17:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BD45F404B0;
+	Mon,  1 Jun 2026 16:21:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14591F00893;
+	Mon,  1 Jun 2026 16:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780330660;
-	bh=rNLnkxLxw0b3sBZzOdV8X6NVlh7ujukPI0iIaNRmGIs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BifbDx5D653jXTMEUYB65fYghTtrNqepjSBzEEPnsZHuvMiKkUOlVvAuDnhiuDt+S
-	 304eftkIVK3rIX5PhVwBL44KNhsA9dJwCSyTFzVTvI30ARJthbxHrK6U7NK9+WK5GY
-	 TC9AesLZFTlE3g6mll/KzrdOMnxuE7tBLKicmwOzeWy73MC+/4AL/ZfXfEjcqljG9V
-	 pBY6dZiayBvckutKYiFU/gdYkCs+GfJfmG1ifRYuW+2TFchPjF+q+XEM/3y/pdWpRJ
-	 eCatAhyfCn+EEyD2fqdkmd2KXIZ26Uz9dsqb3EYg5nVWNFlArRGKYC3M0cqkoD14cB
-	 9u/DYe8gzQbPg==
-Date: Mon, 1 Jun 2026 18:17:34 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Andy Lutomirski <luto@amacapital.net>, Askar Safin <safinaskar@gmail.com>, 
-	linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-api@vger.kernel.org, netdev@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, 
-	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <20260601-aufweichen-dissens-ausrechnen-0d9b84728113@brauner>
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <CALCETrW__=8mSusayfXG7UFCfue5BGbx+vqESj1d9wqOfX4s8w@mail.gmail.com>
- <ah2nBAdsE5vVJ2PL@casper.infradead.org>
- <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
+	s=k20260515; t=1780330877;
+	bh=UoJTMcm6ZaNDfWUE5LlijECfpdOWKQWYDYlCnlwE1HI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kKxrUQgdbCyqXXD74CHwzYgpuVJrv4CK0/FjjDUYIIGwJRF+Iy6ZZZThDs7Tce/13
+	 JH77VQPXaQ1C1ujjS5cYSM9D8Qf46gH/6/fHprkFELNguGv9ULTnoj2AI59TCTLTKZ
+	 gPWwN3GuXjZpfA1sxGC7Yj2GRhiStF+4FAlrp/qgtQDaR02JEejxQ7VsEdsqbrf7NE
+	 9o58Yc91zhvfusXivt3JV3YoAelAb/81xp+Q5gule+z2OcqSP7yoK1HOKHhwUrXNYd
+	 iB7IisbYoQIHDy97FmDBZGLRz8jvfjilHAGpiTFSuJ092/14ALiaTNFbxP4MHb1inK
+	 Ef+7+RTm5IKDw==
+Message-ID: <4bfe16a2-3bb9-44e2-8b3b-8c77857a4944@kernel.org>
+Date: Mon, 1 Jun 2026 18:21:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
-X-Rspamd-Queue-Id: B2D4440006
-X-Stat-Signature: ukzunga7g48yg4y6i5f5w6eiik4mqtej
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: page_isolation: Avoid hugepage scan step underflow
+To: Kaitao Cheng <kaitao.cheng@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ liushixin2@huawei.com, osalvador@suse.de, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>,
+ Muchun Song <muchun.song@linux.dev>
+References: <20260519121646.40833-1-kaitao.cheng@linux.dev>
+ <20260519105424.e422131a0ffb49e19ed1aebe@linux-foundation.org>
+ <bd3667a2-fd81-4761-a763-f6418d9c09f9@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <bd3667a2-fd81-4761-a763-f6418d9c09f9@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 909D180005
+X-Stat-Signature: uchdh7jdcbpwskbawyaowyom94z9y4iz
 X-Rspam-User: 
-X-HE-Tag: 1780330661-269053
-X-HE-Meta: U2FsdGVkX1/aA3HuGVuTjGuJui5QVH5GbETDg2BZGYy+iMbqO35vS+9VPs8EIp+0EQ9xfaUoCLt+cEpuEirDqEZrLG8kkiGhLyvPQ91attHEde48XsLyROQsx8osZI06v1S3T5zaK1pIZGp/uirgxFKYUao0X9oGb27hQ5mrrhrp9+pP5wby9U0ujbADZZ0PV/qYvjB1LO0chJUIKyMPD6vulIo42jQV3RXzGqOF/+Fxe810Zwd11VAItSpUW9vfADa3GjzSwlxlta36abzyaHnO10ODJekw2AOF6sm7Circz8veXtwAgIwDW3cp0Gfe4n7tjBmGiI5cCaBIItMpgHPeWsv5ebylukLcxqDNwh/TCj/euw3oL5F5RQlPredxr+pyZpKuFyFPQJ09sch9oxT60CrEj8VIw0Z0ZSyqrzxrx+ccVVQw7abXkJSdv23OfZ8NVdfhQZrTiGhXxhlg9RN10cEC4np/IgcBkiHaWIg1STaqnZfU5kBLAC/ZdNts6311FC75umBaLAyQtlDlwG/FKmeVY3ow/mG65CHQoRn3dFLGKWQE3tM50XdUYpVv4zTU2T8FqT9iVZsWEbc5DDUXIumdqEnWFzUov5EFtV8q5hlW9+WxI64ULr7qAkdTJsoOPW11zcLr/Zs0pR6rT4YKFh26sIKNPgXSejj6y2iDF1gbzopeA4SSibg2SlAXqC/aT9/mUNQ/GK9J8SIrXxNxa1qXBPhCnBh/SLg+sCp8HiLvo/aE+YvUn5qmeGzLMbytT/kikBNPmL6UdXUHos71XY1gl+KkqNsrSyICIZXQTqol41BY1xGkvf6cx2qb4wh3Kn20pbsH0nYwQGLDrs609YmrmjEHBLzAJoz5sagdkxzs5fuyL2O0IqoFYI2Ox7feS31FKJLFFbYyy+/aCFqTZTzBHwCcTlOPprERXGvDO7JLRZRBGdoCVn1Wa7x/MRLxUEXwika3lc2p48M
- eNJFN0hw
- 7pvxbnc/bOIszwKdHCl9JH+KsE6S98iQ77/u0GxG0U484Cj7kPM9howvN5l1ikDt59wEHJxDuGHa/aLXbM3CRYtJFYeYeQqtJzDzOK1Z+fJyCcceXI7iKwGBQ4VHLCpm+ZaZFzZ7W15yOaa+t58tnfLssMAo1pCvxJqB+jioeOF538gBn9vA2c0zwDBMnAfFWfKu8IhqghQCFDNeUIFYNeB63LIXlBDqR/z+mAJFoYYdh3XqBwd1czVFzb/ZILi6gmIEIJaQB1GizitzVubQWsPIjyoNTP/zZFbbIsCJxawUWGK0T0L8U7GqrGKWDFaVolDxLy1gsGlEvcyfLqpuSOsq1qDpWUveqQjMaMgfdy1QUOBc=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780330878-926040
+X-HE-Meta: U2FsdGVkX1/4Vu4zyS0Xa9DMnQDxeGNcDfCr+C8e2r68TNCiqTchF+RRxOvwnzLkPmbkzWpJAuSR+2nwBozW7kOlj4aYE2iP4DRzEvjGoFgrwV3ra1dnJZo/DR9sG5uSLAs/wbL+beuuYwXaGgP32alwCE2s6r0C5rGDnmtARNDBHRYw12lt3O6BU6TEHfUmHafDAFcyWYGtTBZlciKL2opK3MnzatEt/x02n9X9dZvA69j2i8u4lz6gzTTE9wKlB/Dk+nzMXCBqbKQNJxfXtUuYJ1kuhuoIm4NtdrLOrCykKhb1ZLgAald1GHhn0NBUyWJGTshqq8bmKD/Xay1qTjhtR1fR2Ynww3T5XNQAf2JOBWq4jgXrRmUWiCb1ksJ7gUhS+xqeuKeLVUGag3C9w9DZhv02v6h4jilcXcdRY19W+/MoBcBk5ew73VU4gT9MDEFKvx/FqhcheYZnbsLvsByChu8LzOziZWyDv64lpB4wPKQoX4ojsZHgCOgYWLHvs8ss1o1nHuJzza/Xc/r65JLmmSFuy1PM6eL3mi1G+KXTxJWPui8UWnhQSULMhf0+lkHyJPYLMNMQ1oepHyeHZAWpJFyKM1+5GmX1QTkwLkPncEJLx+m7oIfpFm03yPv8gg6JjLQXBkwO6bRN7AH1JDokgaYsabeRt+dG4gm2ztywcmyTrJJv7m3EptiGzzlSLnzvfqNLXTqXKkCvxQdRTXv8Nx2ffKeL4a2DFRS0s5FTMqNgjezRjML6PcsK+u9GOHEGF0oDt3Mwthgftb9kF/qv+sW7+iGQCyFW4D3HM1OGGbqYCKdjReK8XkOYSMovYlGu2CsmWsukKnYH52X+0FutCDLnGEHzF63RhEu7U7NBOz3QWmNmRiDSyO1OBfHP5MNhmp3fzQ4c7zSGMbzehWZrnwhHKC/WGFx/Q1OzPb0kv4iSc84YzwXmJtsOCicdpBxfM+5EuiTcBqoe4NQ
+ U10/lge2
+ /ene4vaPeM2UuTlALlNDDZU6ik6pPPFLN1hJ5RVPaT/xQ6jt1GHZhqprwxahO4IHISVgMWX9t3KsQfoRnFQ/Iq3dOATRFq5RSPRi649/EtGUxJCI3NfjMVMlscYdbs25UlBnzVfDCXOryhfYq4XlJ+p3M6gs9AxvSTpBYEZ7I7JIkjObJDh2BgeAfNtf8lj5pZq/M5Mcj6BhQLM5k7zEm5lUhg92SPDXzHCPmL8jJ++db+NUHN+k1rlj9vpMPqY/fNjekOntYSaMrgdkTrxilYEvK+UHHuE8SmYBXpjqgLUi66GDiRn9pKa9mZIMkBI39oopLqB48/5zeRhDyBU3SFkGEtMPOuIikbRYuzj1NHFWKEax8VpWgDyaSbUFY1Vu9G8nMNg6ZRTPeBmk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,32 +143,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 08:50:00AM -0700, Linus Torvalds wrote:
-> On Mon, 1 Jun 2026 at 08:36, Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > Can we review this series properly?
+On 5/22/26 11:35, Kaitao Cheng wrote:
+> 在 2026/5/20 01:54, Andrew Morton 写道:
+>> On Tue, 19 May 2026 20:16:46 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+>>
+>>> page_is_unmovable() checks HugeTLB pages without holding hugetlb_lock and
+>>> without pinning the folio. This is intentional for the pageblock scanning
+>>> paths, but it means the HugeTLB folio can be freed concurrently after
+>>> PageHuge() or folio_test_hugetlb() succeeds.
+>>
+>> Thanks.  What are the userspace-visible runtime effects of this?
 > 
-> Well, since it pretty much is what I suggested a few years ago, I
-> certainly won't NAK it.
+> The direct user-visible effect is not memory corruption, but degraded forward
+> progress in the page isolation / contiguous allocation path.
 > 
-> And the patches looked very straightforward to me. Just the final
-> diffstat is worth quoting again because that certainly doesn't look
-> problematic:
+> If the race makes folio_nr_pages() return 1 while the current page is still
+> treated as a tail page of the old HugeTLB folio, the computed step can
+> underflow:
 > 
->   7 files changed, 33 insertions(+), 204 deletions(-)
+>         step = folio_nr_pages(folio) - folio_page_idx(folio, page);
 > 
-> and it removes that GIFT flag that was truly disgusting.
+> The caller then does:
 > 
-> So I'm certainly ok with it from a "looking at the patch" standpoint.
-> I didn't _test_ it. I don't have any workload that might remotely
-> care.
+>         start_pfn += step;
 > 
-> I did a quick scan on debian code search for vmsplice, and after ten
-> pages of entries that weren't actually *using* it but had lists of
-> system calls, I grew bored. So there are likely users, but I don't
-> know what they are and how much they care. It *might* be a big
-> performance issue somewhere. Unlikely, but...
+> With unsigned arithmetic this can wrap and move start_pfn backwards, typically
+> near the beginning of the old hugepage range rather than advancing past it. In
+> many cases this only means rescanning part of the same hugepage range, so the
+> effect may be limited to extra scanning work.
+> 
+> However, it still violates the scanner's forward-progress assumption: step
+> is expected to advance start_pfn. If the same transient state is observed
+> repeatedly, the scanner can keep revisiting the same PFNs, causing excessive
+> latency and, in the worst case, an apparent stall in operations that rely on
+> page isolation or contiguous allocation.
+> 
+> 
+> Here is another point raised by AI, the old code also used folio_test_lru()
+> on a folio pointer obtained without holding a reference. If the folio is
+> freed and the old head page is reused or observed as a tail page of another
+> compound page, folio_test_lru() can reach const_folio_flags(), which asserts
+> that the passed folio is not a tail page. On DEBUG_VM kernels, that can
+> trigger a VM_BUG_ON_PGFLAGS() crash.
+> 
+>>> The existing code avoids folio_hstate() and uses size_to_hstate() because
+>>> the HugeTLB flag may already have been cleared. However, if
+>>> size_to_hstate() returns NULL, the code still falls through and computes
+>>> the scan step from folio_nr_pages(). If the folio has been freed and the
+>>> head/large state has been cleared, folio_nr_pages() can return 1. When the
+>>> current page is a tail page, subtracting folio_page_idx() from 1 can
+>>> underflow and make the scanner skip too far.
+>>>
+>>> Treat a NULL hstate as unmovable so the scanner does not try to skip over
+>>> an unstable HugeTLB folio. Once a valid hstate is found, derive the number
+>>> of pages from the hstate instead of reading the folio size again. Also
+>>> validate the page index before computing the step to avoid underflow if the
+>>> page/folio relationship changed concurrently.
+>>
+>> This code sounds rather sketchy, and it sounds like it will remain
+>> sketchy after the patch.  And AI review says "hey, this code is
+>> sketchy":
+>> https://sashiko.dev/#/patchset/20260519121646.40833-1-kaitao.cheng@linux.dev
+> 
+> Following David Hildenbrand's suggestion, I made some changes as shown below.
+> I'm not sure whether there are still any other issues.
+> 
+> --- a/mm/page_isolation.c
+> +++ b/mm/page_isolation.c
+> @@ -41,8 +41,14 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
+>          * We need not scan over tail pages because we don't
+>          * handle each tail page individually in migration.
+>          */
+> -       if (PageHuge(page) || PageCompound(page)) {
+> +       if (PageCompound(page)) {
+>                 struct folio *folio = page_folio(page);
+> +               unsigned long nr_pages, pfn;
+> +               unsigned int order;
+> +
+> +               order = compound_order(&folio->page);
+> +               if (order > MAX_FOLIO_ORDER)
+> +                       return true;
 
-As usual I would argue to accept it and revert in case we get actual
-regression reports...
+Would we also have to care about non-order-of-2?
+
+> 
+>                 if (folio_test_hugetlb(folio)) {
+>                         struct hstate *h;
+> @@ -54,15 +60,16 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
+>                          * The huge page may be freed so can not
+>                          * use folio_hstate() directly.
+>                          */
+> -                       h = size_to_hstate(folio_size(folio));
+> -                       if (h && !hugepage_migration_supported(h))
+> +                       h = size_to_hstate(PAGE_SIZE << order);
+> +                       if (!h || !hugepage_migration_supported(h))
+>                                 return true;
+> -
+> -               } else if (!folio_test_lru(folio)) {
+> +               } else if (!PageLRU(page)) {
+
+Hm, is that required because we could VM_BUG_ON?
+
+>                         return true;
+>                 }
+> 
+> -               *step = folio_nr_pages(folio) - folio_page_idx(folio, page);
+> +               nr_pages = 1UL << order;
+> +               pfn = page_to_pfn(page);
+> +               *step = (pfn | (nr_pages - 1)) + 1 - pfn;
+>                 return false;
+>         }
+> 
+
+
+-- 
+Cheers,
+
+David
 
