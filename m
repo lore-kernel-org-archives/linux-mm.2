@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62ED0CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 03:24:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0187CD6E4C
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 03:24:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8AAF6B0205; Sun, 31 May 2026 23:24:21 -0400 (EDT)
+	id 537656B0207; Sun, 31 May 2026 23:24:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C62236B0207; Sun, 31 May 2026 23:24:21 -0400 (EDT)
+	id 50F3D6B0209; Sun, 31 May 2026 23:24:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9F806B0208; Sun, 31 May 2026 23:24:21 -0400 (EDT)
+	id 44C126B020A; Sun, 31 May 2026 23:24:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AAA5F6B0205
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 23:24:21 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 40332C1DA9
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:24:21 +0000 (UTC)
-X-FDA: 84829900722.03.1CF8AE7
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A8DA6100009
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:24:19 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Hl2Ut3C4;
-	spf=pass (imf05.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3763B6B0207
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 23:24:32 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BF40A8EB40
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:24:31 +0000 (UTC)
+X-FDA: 84829901142.22.332D1CA
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2B8551C000B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:24:30 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H2xUahCb;
+	spf=pass (imf21.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780284259;
+	s=arc-20220608; t=1780284270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A0eHW6gzjNPUtuJqQkMXg8OwcF2zJjUTNGVxRHFSBI0=;
-	b=Dvj0MICRPhGnCUneZ8DYGjwnLJj4MbgevctxVEdRIvoc7krFV0biDCw3F0tqCffxvRRNnN
-	aAT5xl5dFImwRKrETulCirehtFjPE2O7hFtoedpD+IMr53DfAOFXu/O3Wu3Y/HfjT3TxNm
-	lfwC994aWEyZC5r9W/L/VrgAEhGG3Z4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780284259; a=rsa-sha256;
+	bh=zaY8XSpncw1tdxqTmSy3mDhJYgUUKeHixcd29qyX1Is=;
+	b=MMYcmNAgqAeG+3KP6vwlTI8edSp+lBG0r/gRA6oP2W4c2cW58iQTFZkK+5Rj4Ax9+r3O1s
+	4co5BAt9nf4hqolQ8nffy4lO2/ePS/wPgKDH+K9snGH4zmJwdGykeYlilrVRFfhr0NK3pd
+	y30YcDIgslQw4pG/jh6yTlirPAyLBFM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780284270; a=rsa-sha256;
 	cv=none;
-	b=IFrAB0pahnQIm+gVrtRkKlw2e4xoScl8ldUZeQ3zqs3OswAfrIkYECLpj9RSzZUvS6c4Hp
-	zCZhi0RrgWZfUAVydnSbJHMxuqxKK5VDLvkKbMRwSOS4dWrB7nJnh1QaebC5rZJqdvNezU
-	KJ7SNxNZKAo1rugDflQeNppQGpvCHlg=
+	b=oNrlydbyrF88sawMb+E7fEzYlRPMoM/Torbf1MJ4ZccEl/Mfqh9aTd2+jIUsi4mL5gvVwX
+	zCcvMtWorbYlCfWIos+tocBLIE6V6g9g06oisLsEhMNnfGhZxEJC9sDv5Dd4rLEAr0LPZh
+	ooitHtDYZvHfb3WdpOZowr+WGmAeWes=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Hl2Ut3C4;
-	spf=pass (imf05.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H2xUahCb;
+	spf=pass (imf21.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780284258;
+	t=1780284268;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=A0eHW6gzjNPUtuJqQkMXg8OwcF2zJjUTNGVxRHFSBI0=;
-	b=Hl2Ut3C4+vuq5qP49vk5424zEavISwmgYSN5PlBHStrCTykZ5stliQKvKHa655/N4sn9aC
-	iXrpzrqtww4g72H49h3pQON10mwAHF7AHINgPIhHYdA41MabgcfoI5jV6NbxkiwveV3qt2
-	1TfWbS6iB+tUXAwXAflfGHKM8bzYrNc=
+	bh=zaY8XSpncw1tdxqTmSy3mDhJYgUUKeHixcd29qyX1Is=;
+	b=H2xUahCbt1iXlMW5JNxoY9flDV8GU89RfU2uS/yDewhaLPy+mIOnA2jOK+bVt/MAzr8oL2
+	JAFvuW7BZach4p1MKh9jxkcZxwCvtJGylilX4bEQSd3b74tpTw0SOVC5Nox8FJzlYN2IER
+	jl16BfWBb7c9yi0NnvkjuwOBKG0G/VM=
 From: Kunwu Chan <kunwu.chan@linux.dev>
 To: sj@kernel.org,
 	shuah@kernel.org
@@ -68,22 +68,22 @@ Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	Kunwu Chan <chentao@kylinos.cn>,
 	Wang Lian <lianux.mm@gmail.com>
-Subject: [PATCH v2 1/3] selftests/damon: prevent cross-context state pollution in DamonCtx
-Date: Mon,  1 Jun 2026 11:23:12 +0800
-Message-ID: <20260601032314.424013-2-kunwu.chan@linux.dev>
+Subject: [PATCH v2 2/3] selftests/damon/damos_tried_regions: fix expectation output and join TypeError
+Date: Mon,  1 Jun 2026 11:23:13 +0800
+Message-ID: <20260601032314.424013-3-kunwu.chan@linux.dev>
 In-Reply-To: <20260601032314.424013-1-kunwu.chan@linux.dev>
 References: <20260601032314.424013-1-kunwu.chan@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A8DA6100009
-X-Stat-Signature: wiiqs8p9erx4a85jt6qk1en68m3f9m6x
+X-Rspamd-Queue-Id: 2B8551C000B
+X-Stat-Signature: jrhuooob6psf7ghhkyf8onj4jo8p9wqh
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1780284259-726362
-X-HE-Meta: U2FsdGVkX1+RjIMtkCVDQo4KAewa9hCnpVstnZYYnqAbUwD20sqBBWCyDyNpemfoS7Vu5X0DSU1DSgmga5mu6nXVEkdgP1mqIIf41irE4jWPnvvGx4kE3uii4pPdG9Ny+uKQSQdgh8IubDuZKV5s5te79lpG83GIpDK84vNsYy8t5mmUityrr+9h3vgd2xJ4kJ6QU6MsYk31WE00DfMz/93ODQodZoQA2mGonAaSZZbVHUEy8+3cWq6nr5XXJUmumjufXorppCZCogtWvwSsoDj0c1P/0lSqR2d/YfLDa1cWggnicByaqvvEpEqLy67rhtVqMfObFn7xMDzmrSpqOl0Nssgd5aey500shPkH9xfM6pyf1kUmjuazhHJHdgfvJZuFOZ2lxq8jjnOAWZdHGBIdpAmqaiEP5f1Jsobv+3tcvcNc0v6NTEgiZmVzNnPs1GKhu1kJ4uU4EyQ7DOANJowvlMbTBmTjQTnZcR6tLfrNxbd6Jbx0D+RTzUXHif+7tr78jNX9Lgs/QJDrlZCeQO2X82mHKewtU2DL9fqnCP7sa9W8uiQ5e4grw0Lpe3YY6rJx9jcBPM8QLHSue90XmaiE+NW9C5HVp6S4PAZLxi7hTa5EH/qkyhGr1pz1gJm1bbhfhYkGfon4Gz5X512kpfVrlL6ETlb07PZq/NYU/G9+dOt2OuPLEHOxpI48PUxy+mkJ3G9An0GWxD2cy2CxAXD//VrpdFz7Lw2I3Rc6jqaTcJLoSA8zwwVK8XVCTDCP0vc0fBAUC2XjLhEtl9+Q1f6EcM0N+IWT+GARZ+7pIPVYwl1zOqBvPfxbu4857loIt5aG91kmSsEq35FoABwGsAe+LZVQYyZ2i5o4BjShJVewFhuVy3MOQvSf5KTiU4kkXz4JGrANeQrkExgSyrLyKROH/hJpbo54y13az3v+QqRzZf/3d8MWEXN2Q73R/LVPzzLh6eps9ctICKO1kiV
- Sf8DgTU9
- nWxrhoppfpYIt5cdomU5h1kbK23etOrbF5P0YFZ4K+RrbPHiLEruVpjAnYUqXI1HnGXD0Gewm09DH/Xt3XgmnmZPbOuHyCu+ynUZ1Tea8M4Y5CUMJfuJ6CPiuk2RCP6HsOcZEAv+NDh85AWrITt09io/mDWYxJ0xNlVSDIdK+UONNsHHzsr1P7WZ1d6TKyDVPsW5rWwNF+L9JMy4nf4ibVVPyjmbReBHjl1I5t0JpuWbiaR5zCSMuECms608hW0701gtwUKKIz48Xa24DPxsL6mQ/vPdJ5FzA4VSq3TC2PG0JDQHiK0UYZJmLRpJ/2B1tTIBe
+X-HE-Tag: 1780284270-495041
+X-HE-Meta: U2FsdGVkX1/wZUCdqnPPH4IhXMdS64PiIdbRq3U0XYyKqZvFu2eoJPxAyMsMH/cx2OR67kWrDDcJgM3oRg0dUZAHcIWQHuvpYJViPy0KykisvGa/A2WOD4nCDeSkbAS6Ynquu/hUXhtDScVTbqeEU3rcLFZJnur/zrTVoGG52+++D2J3TzdrMtyUQlgN7MT/XY9i4IgVCQvcH9fYS0eLtcTnQjx1Cw7j+Nu7B7gk+VftzBxMqZ+NXEGyR049w5UHo1VlTTWlBmUKliLivvYOklTF9Wq1SZUoqZo0XOrx1+TefDEgTNveXpsdSmhrKhcha+ID+mhIxym5bXLw+bORB5SVlBMrwwPRRTTmIlzrlSO5tb8lIOo14fz2mgqUPTeNc/zJCIqfXHGwgQZRVbcTzFP5CIVuEUC+i668Y7fWY7SwUvSrj16++BBL4f1VZ+TK/tKwAQPh1H3BV7q/bfJnI6C6/0n1VqqgUZJj4bBDlOrnDjpX8JxrDIxu4g2XjGRg0v4Wnu/xj0LOPh/BISe0P8waJGXayptGxqoQHCCgU3zWPSBPPYvlpmkEhfhwgrD/JWc1B7tGi0P5OHHal1Us4OC8S2n3Xal5yxY51krnuHpAOoUA3xgaL5/yyD1OKLeBGaudG6l0umjO00A2RVEBrTgI92NnficIiMjYS9C4tNoA7/9WGR8c5SX9YGyIa1QIxgGyKgDntsD5oQICgkN9jctqoiX2fBOZZb73e6MY2hzgCOSG9gBOZzr73dLi/GqIHakfG78DWJZa1Nz6gYeS0Q0R5NeoD8J4vlErDrkPageQ3Vk8ZzkZYG6AZ+aB7Rlb03WAZlOJ9n/VGgkNxyTo5DQnZ4sPoCPERz3QNHd6QHdCxvj3CNogrHU5DAPZCSkbzfDjj3yQZr7LYz0WyViyniuhDGgdYMOpnhZHEifrRowjgwW4ZbSIjIJJAGHa7tbZCVl1D/YKqDhcOtgQ02O
+ 1jqqg16j
+ fH93whb+tUa4wOjBIEd3Ovnp/b+dqKREObFGEIku8vjhk7HxYSrS89+ZZ7vc1PqDYXq8URS7grfwMUthPyYjqrO2du5RQbSjvo0c0A9zT7y1gS0y+rmbXHitApt671Vsjmgl6m8HSkbhVzWPZizYaRghBvfc6Fp3DVRVG7uyR62S65nZzC82zNO16Tn+CyitIfHoXcNvgtZtdGKDuYd4mkUm9T4G6fs8s0Y5M+OxkbLlWDmfWk6rVjbxKkEYoPdby/xJUtM0Kpkr5uh3w0z0FnQPY545Mp7lLZLJ59EdK6lv1TduUojl4sVQGbZQmwnIP/KlAtF2CX5NykS8ZNx1NSEfFi0OXXp5PgyopD6sWYGlR4NQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,53 +93,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kunwu Chan <chentao@kylinos.cn>
 
-DamonCtx.__init__() uses mutable default values for
-monitoring_attrs, targets, and schemes.  In Python these are
-evaluated once at function definition time, so multiple
-DamonCtx instances can unintentionally share the same lists
-and DamonAttrs instance.
+The expectation print has wrong operator precedence: '%' binds
+before the conditional expression, so the else branch prints
+'not met' without the prefix 'expectation (>= 14) is'.  Add
+parentheses to fix it.
 
-Replace the mutable defaults with None sentinels and
-initialize the objects when needed.
+Also, '\n'.join() on the list of ints raises TypeError;
+convert to str in the list comprehension.
 
 Co-developed-by: Wang Lian <lianux.mm@gmail.com>
 Signed-off-by: Wang Lian <lianux.mm@gmail.com>
 Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
 Reviewed-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/_damon_sysfs.py | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tools/testing/selftests/damon/damos_tried_regions.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
-index 8b12cc048440..2f6f2699db25 100644
---- a/tools/testing/selftests/damon/_damon_sysfs.py
-+++ b/tools/testing/selftests/damon/_damon_sysfs.py
-@@ -624,17 +624,23 @@ class DamonCtx:
-     pause = None
-     idx = None
+diff --git a/tools/testing/selftests/damon/damos_tried_regions.py b/tools/testing/selftests/damon/damos_tried_regions.py
+index 3b347eb28bd2..d6472e6a6e08 100755
+--- a/tools/testing/selftests/damon/damos_tried_regions.py
++++ b/tools/testing/selftests/damon/damos_tried_regions.py
+@@ -55,10 +55,10 @@ def main():
+     collected_nr_regions.sort()
+     sample = collected_nr_regions[4]
+     print('50-th percentile nr_regions: %d' % sample)
+-    print('expectation (>= 14) is %s' % 'met' if sample >= 14 else 'not met')
++    print('expectation (>= 14) is %s' % ('met' if sample >= 14 else 'not met'))
+     if collected_nr_regions[4] < 14:
+         print('full nr_regions:')
+-        print('\n'.join(collected_nr_regions))
++        print('\n'.join(['%d' % x for x in collected_nr_regions]))
+         exit(1)
  
--    def __init__(self, ops='paddr', monitoring_attrs=DamonAttrs(), targets=[],
--            schemes=[], pause=False):
-+    def __init__(self, ops='paddr', monitoring_attrs=None, targets=None,
-+            schemes=None, pause=False):
-         self.ops = ops
-+        if monitoring_attrs is None:
-+            monitoring_attrs = DamonAttrs()
-         self.monitoring_attrs = monitoring_attrs
-         self.monitoring_attrs.context = self
- 
-+        if targets is None:
-+            targets = []
-         self.targets = targets
-         for idx, target in enumerate(self.targets):
-             target.idx = idx
-             target.context = self
- 
-+        if schemes is None:
-+            schemes = []
-         self.schemes = schemes
-         for idx, scheme in enumerate(self.schemes):
-             scheme.idx = idx
+ if __name__ == '__main__':
 -- 
 2.43.0
 
