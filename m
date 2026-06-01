@@ -4,77 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D34CCD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 02:05:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2628FCD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 02:09:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 427D46B01AE; Sun, 31 May 2026 22:05:53 -0400 (EDT)
+	id 6281F6B01B3; Sun, 31 May 2026 22:09:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FEFF6B01B1; Sun, 31 May 2026 22:05:53 -0400 (EDT)
+	id 5D90B6B01F0; Sun, 31 May 2026 22:09:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33BB06B01B3; Sun, 31 May 2026 22:05:53 -0400 (EDT)
+	id 4EE896B01F1; Sun, 31 May 2026 22:09:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 207E66B01AE
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 22:05:53 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ADDFB161AFA
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:05:52 +0000 (UTC)
-X-FDA: 84829702944.24.D51A5E3
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 61EF6100015
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:05:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CA026B01B3
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 22:09:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CFC371C08B2
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:09:44 +0000 (UTC)
+X-FDA: 84829712688.07.7B01422
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 09F1320002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:09:42 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z5vH0pPX;
+	spf=pass (imf13.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780279551;
+	s=arc-20220608; t=1780279783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YjDjRGifazkvdwEMorM/IZ02COF75GoHpMw+XN0HLv4=;
-	b=14q8YywXQziUc1j4FDqyMqqcMrkQPlFZVAiwDK4dExh07AhiEZfCF5sP9yisstklpCpWBl
-	kBCo0RT1vyPcCvEIGs1w0RuRm9BQy17UTZ07kmgNRX4wIXXP5bZceAd3ryDynT2udYhL0O
-	h8nFQyfzPiD8VaKKBOuqWxnpisMgltw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iDDfOFWy/TEWE9TK1LtUw0BuKs5gwFlMEYe/+sdHufE=;
+	b=CxgMRkd3o5dLhed1vzZSFjZXbV1WV+gLFyQlRF0wHLZDMcZx9qbzpWJWp+GzgVtYWOgNd2
+	aAcrCXGQyGpcLMW/5w+AN1whyD3VqYYKUbdkbXiYzFcJOE+07NP74Nz2XWHYFQ//xorjaL
+	RTVSnianhu8dUO+rocpdT8faDENVdOQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780279551; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Z5vH0pPX;
+	spf=pass (imf13.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780279783; a=rsa-sha256;
 	cv=none;
-	b=InKICGtWyj6L185TrzyLjqjDN+LOmrweMs1zNjh84sXa8Wbxnfp/0DemKlnHdcdtxqo217
-	06SYVrSIzcC/2oiNvKtJAfRIlw+Vv3I72MdoZTAACl+o2RuIlCucPbKZMHD7lmFdAXmaqa
-	BE6XrGPU3GcuSgXUUMTH2J9smBsC3IM=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 1 Jun 2026 11:05:45 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Mon, 1 Jun 2026 11:05:43 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, baohua@kernel.org
-Subject: Re: [RFC PATCH 0/2] mm: swap: allow per-device skipping of
- zero-filled page check
-Message-ID: <ahzo96kXBoDv/WFo@yjaykim-PowerEdge-T330>
-References: <20260518073455.2495934-1-youngjun.park@lge.com>
- <ahxeXOlodtwjpVcH@KASONG-MC4>
+	b=D9im26ie0hxh5q8CzvPgekJvGJhGZpNK8fJ0vEfqf2BNXezVRA010u/AGytFlmZxF+CCsk
+	ArDfow+NYXUlfC20OdJycsxezkrR7YxI9fCAZUWO7O8M1ewmAGF4odi/Zf7uOavrVBo43t
+	u6v6HLVap8EXvRyLnbfwvNqOiQ3SBac=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahxeXOlodtwjpVcH@KASONG-MC4>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: fkwd179wyogzo8t3c7n7sbzk864kzs3t
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780279779;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iDDfOFWy/TEWE9TK1LtUw0BuKs5gwFlMEYe/+sdHufE=;
+	b=Z5vH0pPXLNpa0KFp9XL3PskVWUujMvCVP+qR6Dg5C6yYUAlM7lZAlnt8kPUAS41+c8vxuZ
+	uRTIXsBiHU9oCpqYcF9ADzh0GXsF5YFt6qG9f/ltRhuK+HifqeTGKWWtCeh4LNnJg6ozlE
+	pvOnmYr/SnamjcAvKZ/4FzeeTVN1cYI=
+Date: Mon, 01 Jun 2026 02:09:37 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Kunwu Chan" <kunwu.chan@linux.dev>
+Message-ID: <1d19bb24fe6c1f6935ef078f7d7461e73590f21c@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH] mm/damon: fix stale TLB young-state handling on arm64
+To: "SeongJae Park" <sj@kernel.org>
+Cc: "SeongJae Park" <sj@kernel.org>, "Kunwu Chan" <chentao@kylinos.cn>, "Wang
+ Lian" <lianux.mm@gmail.com>, akpm@linux-foundation.org,
+ damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260531162457.98724-1-sj@kernel.org>
+References: <20260531162457.98724-1-sj@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 61EF6100015
-X-HE-Tag: 1780279550-772938
-X-HE-Meta: U2FsdGVkX1/hk7y/phr+9elAXje+x3iXXe05EylrUfpuHVfVlseGubpAqya7chBJCI7wTOKCIrc6ICb2bHn8nQSrCxuOuHZb8dZhUIEdcaFuPPhw4xfjqlQUmlyqCPkqqyAlymV58UhqX2QS624AzfYf/9FU5hOaWHCLcSLC8TYpVFII+3TEkr6KLT4BGAbzk90ld1msz9IVtQY0tNtQAmgS1blPQo38wotkHJjjtxk65FK6z+cxuxhHSepn0L7HDZ/YtPdi/PT2qxVr7tIMn9ozTIzN7ydpCviwYZdZPX7whZ6xZ3cjl4Ff4fzQqxuWl9c8uGG1pIxuS+QzuYAwuy6xaxmFo0HY8BiUy1pK3QdJKdsSqfmS+85+g2sCXGGwXfcA3RmTOapxwCc+3mpQM+cFlJ72HlcvMfdZM61jlAz+kcqzuiMhlrJeuZ+eB4LtVQqQ8eCT5QLBS08lnSXNYzOSA+GRD5UuuLHvkhzGReIwgldKPSPYkgMk8A0VoQ6+9MlIzOAizgHWNrnm6lDxO6015L8Tzql8LQxLe+wRCCBApVpdD9m9Q9dPT1/8gHhyTmkdO2uaSYjZt61sJ7CO2sOK0y6YDY5HnLpUvAlQ/EHTTOkV4e3pYU7bg/psljCViT5WR8q6sHCcsQ5EpCJkNS1NAeXG6lJAgd4U06kSBwMgFybKVse8zEYDbRCKPBQvW++KEnzefHf5qmBJNZJ3VmrvnEfbvZ9c5QaIGlQFNlmj4qSYaPiSiZ8cxM3qHQa4+AeF+2bnoKNvJHPpMmSN3p1RxQ4GjWOykp9B/dtdFQBLHr5re+Ky/rjb7cS5cCVIY1d2knvPQa4eDAj/HNSH7LvJugxOcwrhRZ4AZwrx/ZHUyajyFTm0p0ochYn+Qwqt2Ca9DXz27xHPKq9gO+wG+xaRf2QPy8VMGbx/1rLS/BeoVe6zOQPBkSPvolqd7SIZhZTvM1dsLE/PJ95FKJY
- iJ2Fbk09
- j1IDVY826ZVqcITRNRdpJPLJci1ZnoW+6V7fjjfg6zwHpWxZ0VHDM13i6UphgNvVEv8Kj7M80Ly6CcsRUL1Mc9LQkRiTp8hm80jC7sGbDEYh4EV3GCMHxEmkKQ73JocQ41WcIv3k5SfawOrFeyCazfgYuAV6Z1l7LYTf0I979/3PEElL8BtIM9DID+g/u001KJQx0ebFxuGvqD0gBPZ17FTOX4YApbYzJdZ4T
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 09F1320002
+X-Stat-Signature: hx4udj5o6qbwcga4b4g1rfbtznduks89
+X-HE-Tag: 1780279782-519294
+X-HE-Meta: U2FsdGVkX19w6RSXZCs0Yz1GNO8T+avRdjPvP+Vb3y/hQ0wWjjjavv4MCpcqqWiZED8Z8CpFBur4d7ZzhIdFlCRWwTPWfhlYlKNG5sMvVJEN1mXbflCVcz9LRDp7XSLlxNN467ayRq23a4rQqn5vj0UUBdHCQMWoe5M1rSqPJoqmEv1OWr+BjjuaJf+pFcsWPmjyg5KHCMoEqZ0j9jH8w35HychrWAC1B0v1VzXAy0r0eoNENx2iu33tbv4w7WRvxXZ17CFOmnD9nVVUzuhjaR9eVawJI5Ig+96isv86xb2+aHlFDgxSl2znQeadsMVVJW/pKmPjzynOAkFMsmoo1UgWFf26+vyKsAoAC8OEGQCe1HNiBr9Ib7li1+b6HlGjbHozzb1+RU7qxB4me7L3WTSXuY0vcahqSEHGk3fh9Zz5fya3HaGoM+1RIghy3/7BN8kzSR0WHN5KZu/HvU2hZkkvi/rZcqpLlxlPW8iQlY0tcwXaxX+DRhahc/64NWu8Wiyr8FWCoX0Vrrp5IWGiy5SfKwwAS2JSmV4PzN6W9Vm+YBhwtgUyAc40NC3qI2B0vaFtwkfOj7C1OL9h1z5aJ6ypNY4uWikvnTfHgn3N+/NcBeQlAeyk6BmeFUNONOVfDPyWn+Pp0A+fG7VE9pPYzy/ZMQpIXh21HeaZWP1wNGh/omjPOm6tXD5fyuwIyaWKnro72vaa+IhgH4YNIQ/2MzDO9Wrci5aF9EKcyOUoHU0MUcvTXdAvTv4vyUXkLZ4nFzK/2HqzRQigpuvZ0Pmo1W0NQLWv6dRq7njSnknhCzPQ7Q+yyovFXmf/kiHklGKXV2j35T41RGUtvKB47wxJIyEn//Plfp4n5NHchhqvqQWMjjtV+q1EkVP5wYH3FDIhpwa6J1RmlpscoKYK3Gx/imuya/D9doVfMcQ+jaGV00hxZaZzH05OK+g+w19NMXUdKmt70fzHUceV/PmJzx7
+ Iq1H4YPH
+ TIoBhqPecPWtPQNgHhlHe5tdBcSkvBsVJQnOKm9PfGr/R2iP+vg/qSPCKxaZFoGwlJZsEl2/2p2K8b+zE6nr78R6qnBGhYOHTVIwI3lCvaN8mEH147lt4LFo7G41ZuUJ2usKQluOex8P73IHv/UJR7l1PAnxdyHWXi+I5/6u4LMEfvx4dVnln6jtYq0jfTZ7vQzJVjSX8hItsax6CK4OAbu5k2L7r9b7RlJ4X/9Mlf5XKJ3z7ukMcYOFvKIfDKawxPmHYAur50AbQxlSbdPKAbbCfzvHIX7n3lni1oiP0QN/200Rn40yHUXwHYgHx1bmvLfLQaAdW+m4cmN48QoWq1pnTLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -82,92 +90,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 02:48:44AM +0800, Kairui Song wrote:
-> On Mon, May 18, 2026 at 04:34:53PM +0800, Youngjun Park wrote:
-> > Currently, the swap layer checks whether a page is entirely zero-filled
-> > before writing it out to the swap device. However, some swap backends,
-> > such as zram and our custom swap device, already perform their own
-> > same-filled page checking internally. This results in redundant CPU operations 
-> > checking same page pattern.
-> > 
-> > This patchset introduces a new swapon flag, SWAP_FLAG_SKIP_ZERO_CHECK,
-> > to eliminate this redundancy. I introduce this as a per-device flag
-> > rather than a global setting because traditional swap devices still
-> > benefit from the swap layer's zero page check to avoid unnecessary I/O.
-> > By using this flag, userspace can selectively disable the zero check
-> > only for specific backends.
-> > 
-> > Furthermore, on certain architectures where the zero map is managed via
-> > a separate bitmap, skipping this check allows bypassing
-> > the bitmap allocation entirely (saving memory).
-> > 
-> > This modification is based on the previous discussion with Nhat Pham [1].
-> > Additionally, this patchset is built on top of Kairui Song's recent
-> > patchset regarding swap table and zeromap modifications [2].
-> > 
-> > Tested simply with zram on QEMU to verify zero-filled page handling.
-> > 
-> > References:
-> > [1] https://lore.kernel.org/linux-mm/acQvNRLpHwnHt7i+@yjaykim-PowerEdge-T330/
-> > [2] https://lore.kernel.org/linux-mm/20260517-swap-table-p4-v5-0-88ae43e064c7@tencent.com/T/#t
-> > 
-> > Youngjun Park (2):
-> >   mm: swap: add SWAP_FLAG_SKIP_ZERO_CHECK to skip zero-filled page check
-> >   mm: swap: do not allocate zero_bitmap if zero check is skipped
-> > 
-> >  include/linux/swap.h |  4 +++-
-> >  mm/page_io.c         |  7 ++++++-
-> >  mm/swap.h            | 12 ++++++++++++
-> >  mm/swapfile.c        | 14 ++++++++++----
-> >  4 files changed, 31 insertions(+), 6 deletions(-)
-> > 
-> > -- 
-> > 2.34.1
-> > 
-> 
-> Hi YoungJun,
+June 1, 2026 at 12:24 AM, "SeongJae Park" <sj@kernel.org mailto:sj@kernel=
+.org?to=3D%22SeongJae%20Park%22%20%3Csj%40kernel.org%3E > wrote:
 
-Hello Kairui,
 
-> I think this idea might be useful, some workloads with very few zero
-> folios doesn't benefit from this zero folio detection and it's more of a
-> burden than gain:
-> 
-> For example, one test result with MySQL:
-> 
-> pswpin      129323368
-> pswpout     131460192
-> swpin_zero       4641
-> swpout_zero    248210
-> 
-> Less than 0.3% percent of the pages are zero, and almost none of the
-> zero pages are swapped back.
+>=20
+>=20On Sun, 31 May 2026 12:16:49 +0000 "Kunwu Chan" <kunwu.chan@linux.dev=
+> wrote:
+>=20
+>=20[...]
+>=20
+>=20>=20
+>=20> We think that makes sense. Explaining the rationale for not flushin=
+g TLB,
+> >  the limitations this can introduce for tests, and recommendations fo=
+r
+> >  choosing reliable test working set sizes would be helpful.
+> >=20
+>=20Thank you for kindly accepting my suggestion.
+>=20
+Thanks,=20SJ.
 
-That is good point.
-So, There are three type of wordloads. 
+> >=20
+>=20> If we later find cases where the documented recommendations are sti=
+ll
+> >  insufficient, we can revisit more intrusive approaches.
+> >=20=20
+>=20>  I'd be happy to help with the documentation work if needed. Please=
+ let
+> >  me know if you'd like me to prepare a draft patch.
+> >=20
+>=20Yes, please feel free to send a patch! :)
+>=20
+Will=20send it once I have something ready.
 
-1. Zero filled (current kernel targeted case)
-2. Zero filled + Filled with other value (our targeted case)
-3. None
-
-The third case one also benifit from this kind of approach.
-
-> I think the zero page detection is actually better combined with
-> compression, e.g. ZRAM & ZSWAP which will always have to touch the
-> content of the page. But some devices may be able to just accept
-> the folio as it is and CPU may not want or need to read the content
-> again before pass the folio to the device, that may save some CPU
-> time I think?
-> How we can make this zero check as an interface is arguable though.
-> 
-> So I think the user might not be limited to ZRAM.
-
-So, In my opinion, 
-This same filled data might be controlled in some proper way.
-(like this patch, CONFIG_*,  etc...)
-
-I will think about it more.
-
-Thanks 
-Youngjun Park
+Thanks, Kunwu
+> Thanks,
+> SJ
+>=20
+>=20[...]
+>
 
