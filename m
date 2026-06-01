@@ -4,90 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBC15CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 03:51:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69758CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 03:59:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F1526B0249; Sun, 31 May 2026 23:51:53 -0400 (EDT)
+	id A98D36B024C; Sun, 31 May 2026 23:59:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C98E6B024B; Sun, 31 May 2026 23:51:53 -0400 (EDT)
+	id A49756B024D; Sun, 31 May 2026 23:59:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 006256B024C; Sun, 31 May 2026 23:51:52 -0400 (EDT)
+	id 9385B6B024E; Sun, 31 May 2026 23:59:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E307A6B0249
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 23:51:52 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 932601C1AC5
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:51:52 +0000 (UTC)
-X-FDA: 84829970064.14.ADD0718
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F2F0540004
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:51:50 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U6dkxNLw;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780285911;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 830666B024C
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 23:59:04 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 37C021C0884
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:59:04 +0000 (UTC)
+X-FDA: 84829988208.19.FC9E78F
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 38AA82000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:59:02 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OcNdESgc;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf13.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780286342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sLmB4YlFf93jmDEEnyM+0JFZP8CSdyLVyUdrZ5eW/1M=;
-	b=3yyTpFz3DzEZQzExZRjPYucl3JZeN4ERoPdX8eMdoDEEwd6tqD+BwmU65qdF0M+mwK8QXH
-	uRMFSbyhANI0Lhjv7GUi1zk2z1wsWvrb+hZ7AkBI0wQsJPV2vvAkJ7niQRN0IQAt6Z44MX
-	tmob8iayHOTFebd/WadVec7rGK+8F1M=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U6dkxNLw;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780285911; a=rsa-sha256;
-	cv=none;
-	b=g63Cp0Gtz1RNg+yexZB8A1GUWP7d9Uwf7eCTeaw2+W+G75Z9etloRw4LGgC3+iiFHLWAjC
-	MzETP3hEX08ygLv/nF/XnlRy6pEp/FeOB3IrPzdi9YTbi+YCg3NlvXRX02PQ99aKJJ3R5V
-	Kzxk/xhI3Ydm1o2zEPri1kSxx4y4OBg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C9C160018;
-	Mon,  1 Jun 2026 03:51:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6712B1F00893;
-	Mon,  1 Jun 2026 03:51:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780285910;
-	bh=sLmB4YlFf93jmDEEnyM+0JFZP8CSdyLVyUdrZ5eW/1M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=U6dkxNLwNu0+fchGsJZOSzyeZe6uHp985VHCDSp/199wRKqvBK/t1dXV8SSpO6LEH
-	 WUWVtFposvQtXckX5XsUW1TYzTHSXGROYIT9CvlaEfiKWENY6nbZYz0ix0eyYSATzC
-	 pAPFVpsCrTAI55c78o68MMxu1XNZ5oRrM4wNO4GNZlXY5GJ16HQUgYSr256UY86Mji
-	 tOpABJfDzXaWcgv6dfjcJsPDCmVBJzm7yK0nahuVCFn9kYOy0qNR9pjQylKBbY2aoI
-	 z//xKRKZKoOYtpmtPDsVHDTA5LpxwJ1Zoh+bBFSXUsYpOZfHc6qTYS4vsYf+V0xY5Z
-	 2qbutT5UHdi8w==
-Message-ID: <fca0e08d-a00c-442c-a0d6-447bbd5a585c@kernel.org>
-Date: Mon, 1 Jun 2026 12:51:43 +0900
+	bh=jNudWB04Wpw+ZJC/nF3aN5jO9/6RuxUwPuu638+/KJo=;
+	b=F6kSrRSmTq2bw4egoymsfMxQcX2yxNa5cehAbYj09Wn3DRNcX4QNaywvVVyb5967yBDmYn
+	m6gBqCin5N9qQOPLjI6o7DPpkyUBbcUpoGni57QtvBfbHdyKfeT0966hcDcu6GAPDl3nkc
+	J0FeTszl/JEdAbbq/kfu5PZiEeb8MG4=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OcNdESgc;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf13.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1780286342; a=rsa-sha256;
+	cv=pass;
+	b=bNjPCzs+WxfZ314cQ/LkNUF1FhvrJxAodBQ3nJOhgMFJ5jJ8IU+ftL614SRw6DPngziNbJ
+	LRTTZXOA95BldPuf1O1OPzjeAvhLcuQGIxuiDOmD7FLHUPspLvqbI1khK84fqWfLpx0Kwu
+	pQQ3DWGKLWnQLflzbnuf01YiqC0VmO4=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-45eec22fab7so1806171f8f.3
+        for <linux-mm@kvack.org>; Sun, 31 May 2026 20:59:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780286341; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DfPPUSG6cAbqHHtBU+GRa2+aUJv4CcXeEi3bF+Tx6JbfusYCLnjN2xymQlFDAvRtOd
+         cBbij0DjKVhoBLe6RVD26MbTB/k5UHuPRMJ8lIKijc6hmHBkKjHEuRsrBHg1vdtgji7S
+         eorxOy6h1gpOv26cvF0RoKoFDAf5VfuAQ7Q70+mX3XZJdBvJE6nVpofHJuOQELlc0hJ0
+         T21g7B685XTKCHPN5uMFxxrXWzEvDltSr6UX2JxH/PGwpSC/iVQV3txWuTmbI5I1Oe1q
+         S1GxPwCKCYnHFotquaVDBMUK8XvgBHaijdCGvDr2jnUiHDDOuDBFInoIj+Eg6ts665Qn
+         xnxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jNudWB04Wpw+ZJC/nF3aN5jO9/6RuxUwPuu638+/KJo=;
+        fh=QvsseaeCyAaOKv5SAomz7C+VVdAB96rUl1FQXaquPGg=;
+        b=TOPn/HAsK9Z3h76dJxC/fup//awht2pIJ3LY1wDGaEKn0j9vaIWV2OdZ2NCuSipLnL
+         qKqVL/UssDBUxBcpgroF2OYpNUDqPapeaZuUmeRbv8aWjzooIVfDactbvH7P9U1+Yw03
+         9QwMw+38ihfqB+dHHwNhUC9Qom3SrU32VPoEuJbW7wye+VFRfgR6rAJR73MwevfsAOb2
+         8qqfHsN4wZDOOhCp7DYJAt5DC4YmYyj+tJq5aufH4U8fvWgsJb+IRPitN79T5QxQc7N/
+         mW7v9WaXSr2jkJ2EJWOYRdkMp3g9XaIMmsL1O1dzenUYwzN0/2UwqcmHfIencLhtJO/n
+         vOMQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780286341; x=1780891141; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jNudWB04Wpw+ZJC/nF3aN5jO9/6RuxUwPuu638+/KJo=;
+        b=OcNdESgcIJAeddsnu03mRfiNzf+qXQphliqHcDFLMsleiUz4iyBuWVIze6gbAc+FVm
+         6ooTaDkEwfqT82UAL8yW0QC5RC52ACvY2vu5NMm7SryxV6LIkylD7AzKCbvbRRGDS9dk
+         2wbFtXpAD6I8y+Pg1ppx8FVoTZRBY52XAiQE2G6M3sV2+L6TkVHv7W5l/kiKxVgJUjjo
+         roFGlvYQDu1RnmjtN3tqSnsDyGho09EHH3qbPsAH7f8Ho1CV9OQrJgDkOVeipqjUfX5X
+         QtHqln3YPTZ6jjIOaMJsGg0fKYAMoQCAWD6qQqV/9mjr+rfuh9fqfbekLyVA2zbTXu3h
+         bwwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780286341; x=1780891141;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jNudWB04Wpw+ZJC/nF3aN5jO9/6RuxUwPuu638+/KJo=;
+        b=O/zY3Jv0iFJOwDf24yJWdRqhfRyU9CKi+EWuvldiO2LZd73xYX66vTb9E0XwiXCzaG
+         vsScDxYLDL1v4S3eK4ZWvHS0jAOfdJ0H1sId6qcMum7k83aWHV0DAwGGIR3Pe1bYR8Rl
+         WtIQZeumCIp4btpENtHaWiCR4IaGO4vy+6ctA4MNKd0A7Osq4K/X5q+bMl/5XYWa7ZNm
+         PhyBA1ns7C8BVpaNaDPs+IHxMdb3QbYQQeaO2PirnzjVXZAvrig8iO47s1l7pIa/se9s
+         mZSRFDU8baM8frhHeivlfTetNiUh7nGNbu6fn0LS0jrS1tLDH5j/95PDTjU5Bn7AzbjZ
+         JuPg==
+X-Forwarded-Encrypted: i=1; AFNElJ8b5Rizr0mrkQxbkz/74UFipJk56/4FvjZunkE46/MGoLWhC9cBOFjt8P7+BqHNbKbhV71i5Eb22g==@kvack.org
+X-Gm-Message-State: AOJu0YzDzaftscFXw1YDq5ehsW6bWrwsSjNs6d7rNPIBx/Gq8IHY8DXC
+	1DCX9b4TczmcENOJSw3XviI2i/luzIvJQiQqBt4ceVt0f3XNqsLdk+4JTxHt9JvZ0Fpjf53e2D5
+	e2hOSli+4IrMFenzvppJweBvcjAr434U=
+X-Gm-Gg: Acq92OFUJObbJLixJ81UevR78jFQOWLXviOLLDa8zrdw8IoF4zOaGIKXoZyOGc0z0Sw
+	IHRargJbJ5EEUntaB+qGKCZj09NMsm2vAwcxing82Obcf1hMYQUTibEevvK7aKWXcvuSdwykeb8
+	WhVQzyv+fIYEplCAKxqREQ57acMkf/+DM5Hlxio5Sd+Ef6Ppdp//pysAlBOU5EmVv2+ib+POyZ/
+	DL4IeWSkbgrVrqLLqHmfnMDLG5evbxnaoY5qppWTyAJfP8Uo+tzPvxYSnt51BhC6YjJbx/0i6I3
+	P1RPB3RR20319tdKWhCKxvrzoIa7ossHhjzNCAuhhHEX3JpXk0MipYQvLCeH+ZPitcOpRQKXMpq
+	MPA==
+X-Received: by 2002:adf:f78d:0:b0:45e:ed7e:f8f8 with SMTP id
+ ffacd0b85a97d-45ef6b0231bmr12455650f8f.8.1780286340409; Sun, 31 May 2026
+ 20:59:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] mm/slub: detach and reattach partial slabs in
- batch
-To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org, akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260529035120.81304-1-hao.li@linux.dev>
- <20260529035120.81304-3-hao.li@linux.dev>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260529035120.81304-3-hao.li@linux.dev>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------m0RuxEGm2eLyNYdpYZza8Crz"
-X-Stat-Signature: jfrk6ugqas6pwf3r3jssbn1pysucqwfo
-X-Rspamd-Queue-Id: F2F0540004
+References: <20260601030649.2513937-1-hushijia1@uniontech.com>
+In-Reply-To: <20260601030649.2513937-1-hushijia1@uniontech.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Sun, 31 May 2026 20:58:49 -0700
+X-Gm-Features: AVHnY4K4C1soJyFxmMVHHhTiOD884427RYesf2FVX6XxkT8y6UJ_fmjeCZLuc_U
+Message-ID: <CAADnVQ+=-UM-JC4eM=vqvgK2tLt6PwmDjOcrrDG9kz8BV6n49Q@mail.gmail.com>
+Subject: Re: [PATCH] fork: Ensure copy_process() returns a valid error pointer
+ on failure
+To: Shijia Hu <hushijia1@uniontech.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, LKML <linux-kernel@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, LSM List <linux-security-module@vger.kernel.org>, 
+	bpf <bpf@vger.kernel.org>, stable <stable@vger.kernel.org>, kernel@uniontech.com, 
+	Quan Sun <2022090917019@std.uestc.edu.cn>, Yinhao Hu <dddddd@hust.edu.cn>, 
+	Kaiyan Mei <M202472210@hust.edu.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ro1osiuukgc7d74di8ohia8c6qsd13bu
+X-Rspamd-Queue-Id: 38AA82000D
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780285910-781651
-X-HE-Meta: U2FsdGVkX1+iecz0FpQUIdZLU4qcWk1K4ENZfW0oQZQZYEtKsxEfRALurDGNQpMKxopteMLW4dIJbLLcEjahzk/1ql2pMwWOBHnk2dt5onO9wxMa/T6kDuT7w3tceP9pHkfFIhZxSNLDIKzutrL7vUa/GdAx7IjHheRDWr45c02di/+Z5fD5mXqkqy1sLCeoNTm4xs+qWP4SVSps6gC/ksuhvhTVLeksAsr2bWk02XfifaFGDF1kGVrqXTnvgihWS5Yr4w8xXJNyj6eb/z4yBuuJz/mtqdJG0rXilHtc3W4xsTZYAmLHNRsiNOy2Lbub7g/60Bp7UnUs8HJvxEaB3vnnHtJy2PRfQ6ByRaNT7vFSHsMAvfIrup0ccEpTNu5BRLSUNyvavfwcZLoZJtjelIPE3GfOdyONt5NUNLwGYsO7KNzR88EcL8DQcPli1S/uJ4nN4wbRwEmV2XiXUpTXmdY7jStKCuOOfi3QkQU8v3+oRMKuutVpJclMu+JFUXYRfiFDP+Oy65XsMNTlHKuT0PPFQiJJhpHtTwSabxvTq4z8FZa7h0RCR39T9WQ6fyZ7V8CqCrX/wkMyK8wY3tVjSbot/+mD0fIWG0E2zGChwi5//k33YjGu/lcQomq5mn9fA59n3k/8ZSQ/bPbxhLqEOCfBxOH2jqLsYXTCyulwsRkE/FmnoF9thSZE1ZG1Gcy5vn2FrxNCq5I3L6G716ndFdicbaFeGc5jQLdyRvL4MWBJ7Llz/XV0tv2qPXeG1N+XTmh3o8KZCznj74dfZiB1tHxZ4oGTwX9iJrvv/H5szpXRIYPuxg3kkGIOVKfG4Nx9NtqHPONaRUx4VHyhl8WqfsktcUr7YXKofqtfMBJoHHfrU0wq37/9OT+X31AWmZJV6izBpmJXtwsIhjN0Dd5QYQpRs/+7l1/d5+L829hY+b7eepSOO+sS+GsExYPIKkNeTvxF+0bkiprhF5zksLr
- HCeRpZsd
- DygLgSb6dGGleraMLw5m7mEkhjBFSDsP+GrKmcvt/r/EHd3t/iuYI+2qWQSOFcDLpXt+u1WflCCxIjSthCwfaNCy6aEb8J0AG5l+Pqzz8Db3dDvZTGfbLlZaJ2sXU5Y+m7m11QsYNVj3wAb6fMZHCz3QD4CjOkFEh0g/6bzo3/f6RIwSnysT+7zwsr5ljG1+hZgwIZfCI3NcA6PihD06U/sJI4VznXm42/1uzyKjcMwYyBLDs15bzfsYtrMqsMcEYw3FQ248DZzvNd1m+16huhV9q8r8tcwDAcExHiYmY8pSY9LrdTUWoejanNEfC0FWJcMnBQIoq2PohN8QzUvteLxNSsMVEa02mHC9ptPVGOQKrUm2ZqvF3d9fj+0XpeFmK9Ued/2mAMuQzNphFpu9BIgJ0hYLfMgZctFACgmzqN/tSwiWCZNtRp9CrF+jA7AUCEeZAvlfdH1wiYrDch4clhVEmYrKashrBf8j/
+X-HE-Tag: 1780286342-188591
+X-HE-Meta: U2FsdGVkX1/JyUwXJbcmChSQhkSXhLbCH4LgyMiAJ+EZ5HTn2cQ9G3h2rN6sJLTRvDwy5Y4m9p6Ib94gE/MuCeSACgiXyR9dsHA+h8qf9wB6W9as1gCZV5xODUWhYYalrrvnFKpMkt32zSgimJTXgsaTUZ1WXvD19spzjMQKk0jPszNoBgrDYSs4vU5CYahCJfwmAXXjJgiKXRW2IYGLr9EfmicnHvd0nb9IARbNt3Yh24fSHo0btXPRG6mDil0siayeicCl6NnMjTJACpzqEnLTg/EwfZmOla4R+SZegkIkVQwV1JRkTIFJYIff2MkbgJx4qT4gVQc8BmoNd0rkALmULK/O9e/RZxYURnBxQZy/IEVyWLe7wRMmX6npNdjnta6XKiYGu+HQFmGNygGUyV2KWxQe9vXoSsVdJrJRkYMF3SfnogwPfYT/GVoixE2AXe5yMcQwsX9iKtGgF2I4B24EZRNtnE7i+OR9DfjrOOclXEwEK4xHlKbHFKqLHlZNDoqK9kBg4/ieXzIhuPMUrEJVuqILRKmFV87ebF5CCDu9+bMSseULxK+REAq2HOiHx9aa63amgc7Au4PyfWfXthj3In1BJL/dbCm5z4Egwj2MrN0HdavU8bhehzZMQDzBeIQvN5//3pFej0mMa4nL46FBHhTIw9VwNqwJFHGIQHnwdOGlfhWSvzkXct0yKy3XPTrMnmiRgEVulmpPHm//DEac0PKDdFtK2oQPdri0EBzWgbz4Uq7XAbpX1Iq0TxQpaZhgFzlU+DuDMV6AK5QJNfTlxsd5SMlZrFj2fAafHh/wr3AKOxAJmu4uTqz4mzzt95nXFu2CSNQH3LSoAfGKl9fB6vjFfkaGDF/R0KuaipmKRJPRUJEYxYms/8Wq1Ydu+ju5xGuNQby8AFzSgekJvNtf4kiKBa/e3CFeVgdkQGc4Cz3mTGhfnDZ9KAHMLTIcnx4/Eq8P/Fda2VthglU
+ 0FYnyUwT
+ hQlZCF8/nbreQHx4ufuuCXF9TG5Njb2EKjyOaTP/l7C/AysC9H8ymcsaov3tgcWtbjDvjpTIyOXnBXU2ViQVKArH5FCtidI+GSZNphZZaFfdKO2tJv9127wJ+/qOm9WY3qP7whSw2FmVyfaoJUP8sGYWv8MHrCpJqaj+PcuHhME4k0xhsZj0S5IJxGP0w5wJvj6wlu+KSUf02hYi9bSuuqrmiI+SteBn1N+LU7KFYj51es4t+z5HcT4eDt/5O2VE1/Feag8FMCiYdQWT6rk83jmq2ozqJlC8b7TLT2XS5H1BOx10e/yIfS9GwI7VReQfNJ8zxXJw90cR1qGFS8sRYQ3yb6cRFBErFdTbyjfBkgt4M7hBT8lbm4+/a4aOlacV9n8syFkrTQldE2fs+eY/XcaEx5isyLsnaCnb9IDja2nCK4DJ+yKxfLYMDk/YO7dz1pKNh8qV0Gp8nP1OUPE/nMej4VBPpVax/0WM6eevWmd8N2pDKnjCNnc09IxOz6TytubXDLflSzdoejQKuklB7JDrgWiJZDFlfQP/wz5/xQrU57tr/PlN4W2eMm9ubW0PP+VCec/dhn5W8iIo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,85 +146,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------m0RuxEGm2eLyNYdpYZza8Crz
-Content-Type: multipart/mixed; boundary="------------qMU0BPtEeznEhoMt3ZIa9oKo";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org, akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Message-ID: <fca0e08d-a00c-442c-a0d6-447bbd5a585c@kernel.org>
-Subject: Re: [PATCH v3 2/2] mm/slub: detach and reattach partial slabs in
- batch
-References: <20260529035120.81304-1-hao.li@linux.dev>
- <20260529035120.81304-3-hao.li@linux.dev>
-In-Reply-To: <20260529035120.81304-3-hao.li@linux.dev>
-
---------------qMU0BPtEeznEhoMt3ZIa9oKo
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-
-
-On 5/29/26 12:50 PM, Hao Li wrote:
-> get_partial_node_bulk() moves each selected slab from the node's
-> partial list to the local pc->slabs list using a remove_partial() and
-> list_add() pair. In practice, the loop often detaches several adjacent
-> slabs. Doing this individually repeatedly manipulates list pointers
-> while holding n->list_lock, which causes unnecessary churn.
->=20
-> To demonstrate this, the counts below show how often single vs. multipl=
-e
-> consecutive slabs are retrieved during a will-it-scale mmap stress test=
-:
->=20
-> consecutive_slabs_count        frequency
-> =3D 1                            277345324
-> =3D 2                            335238023
-> =3D 3                            175717884
->> =3D 4                           88862337
->=20
-> The data confirms that retrieving multiple contiguous slabs is highly
-> frequent.
->=20
-> To optimize this, track contiguous runs of matching slabs and move each=
-
-> run in a single operation using list_bulk_move_tail(). This reduces lis=
-t
-> pointer churn inside the lock critical section.
->=20
-> Apply the same optimization to __refill_objects_node() when reattaching=
-
-> leftover partial slabs back to the node's partial list.
->=20
-> The will-it-scale mmap benchmark shows a 2% ~ 5% performance improvemen=
-t
-> after applying this patch.
->=20
-> Signed-off-by: Hao Li <hao.li@linux.dev>
+On Sun, May 31, 2026 at 8:08=E2=80=AFPM Shijia Hu <hushijia1@uniontech.com>=
+ wrote:
+>
+> copy_process() returns ERR_PTR(retval) from its error path, so retval
+> must be a negative errno in the range [-MAX_ERRNO, -1]. Values outside
+> that range produce a pointer which is not caught by IS_ERR() in
+> kernel_clone().
+>
+> This can be triggered by attaching a BPF_MODIFY_RETURN program to
+> security_task_alloc() and returning an invalid value. copy_process()
+> treats the non-zero return as a failure, but ERR_PTR(1) or
+> ERR_PTR(-MAX_ERRNO - 1) does not produce an error pointer recognized by
+> IS_ERR(). kernel_clone() may then dereference the returned pointer.
+>
+> Normalize unexpected values before returning ERR_PTR() from the
+> copy_process() error path. This keeps the fix local to the fork error
+> handling contract and does not change BPF_MODIFY_RETURN verifier behavior=
+.
+>
+> Fixes: 6ba43b761c41 ("bpf: Attachment verification for BPF_MODIFY_RETURN"=
+)
+> Reported-by: Quan Sun <2022090917019@std.uestc.edu.cn>
+> Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+> Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+> Closes: https://lore.kernel.org/bpf/973a1b7b-8ee7-407a-890a-11455d9cc5bf@=
+std.uestc.edu.cn/
+> Link: https://lore.kernel.org/all/20260411163556.8567-1-yangfeng59949@163=
+.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shijia Hu <hushijia1@uniontech.com>
 > ---
+>  kernel/fork.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 8ac38beae360..40bfbdfffbdc 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -2599,6 +2599,13 @@ __latent_entropy struct task_struct *copy_process(
+>         spin_lock_irq(&current->sighand->siglock);
+>         hlist_del_init(&delayed.node);
+>         spin_unlock_irq(&current->sighand->siglock);
+> +       /*
+> +        * The error path returns ERR_PTR(retval), which requires retval =
+to be a
+> +        * negative errno in the range [-MAX_ERRNO, -1]. Normalize unexpe=
+cted
+> +        * values to avoid returning non-error pointers to callers.
+> +        */
+> +       if (unlikely(retval >=3D 0 || retval < -MAX_ERRNO))
+> +               retval =3D -EINVAL;
 
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+This was reported earlier and there is a fix in the works.
+This approach is incorrect.
+You have to fix the root cause, not the symptom.
 
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------qMU0BPtEeznEhoMt3ZIa9oKo--
-
---------------m0RuxEGm2eLyNYdpYZza8Crz
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCah0BzwAKCRCGXBN6rc5S
-1qX1AQDwvcX4DdLopuDVFfCQt2rqBy/krXFrTCgCRBFMF3z9ZAEA3npXuTwPm7Rk
-zvyVNP4WB19wUGPjjRduxsgT9hmZMQA=
-=wKA2
------END PGP SIGNATURE-----
-
---------------m0RuxEGm2eLyNYdpYZza8Crz--
+pw-bot: cr
 
