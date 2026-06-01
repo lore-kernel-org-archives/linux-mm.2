@@ -4,93 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D33ACD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:16:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CACACD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:17:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5AAB6B0298; Mon,  1 Jun 2026 03:16:56 -0400 (EDT)
+	id 97A0B6B0299; Mon,  1 Jun 2026 03:17:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0C7F6B0299; Mon,  1 Jun 2026 03:16:56 -0400 (EDT)
+	id 92A196B029B; Mon,  1 Jun 2026 03:17:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFA366B029A; Mon,  1 Jun 2026 03:16:56 -0400 (EDT)
+	id 8187A6B029C; Mon,  1 Jun 2026 03:17:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BC4906B0298
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:16:56 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 50B904053B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:16:56 +0000 (UTC)
-X-FDA: 84830486832.18.69581EC
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2258C16000F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:16:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=NrCjURBa;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf08.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=chizhiling@163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C8176B0299
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:17:20 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 105E31405E3
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:17:20 +0000 (UTC)
+X-FDA: 84830487840.17.53ECA2D
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 32633C0004
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:17:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Hc97jZvn;
+	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780298213;
+	s=arc-20220608; t=1780298238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eMVFGeQet2q9i38H6nc5ggraVuL3XTIUP1O16KEY7o0=;
-	b=wA9bVTRbMFZAyvV/cXeaZ3oVelJqJip3ITK4HEefUCwqAxLNNRGby34gapgfcfZ9gLrYqh
-	bpHLeap2VJolNcUo86ZBoWuYh5o26TnuVla8dt57BmlVoH9DSvnt89wFNrzTqruxfMquUv
-	QgwGpsPvYZ3PkMepyG64SJU3ZO2btzk=
+	bh=8ST2Tg32v5NWZL0Digt/7WzPOrgnDtd7aEPB8tVaCFQ=;
+	b=wtE+UsqZZaQtFw8db3Y6xlicex/Brn9mn7j8DficY1jkSixBadVG4PScs1c+2sc+vVOJj8
+	qIS7i+EpxW+oYX1fehFtYiE367qU9XCYCOgwqlYRm4pmxcE3JHMgZrzptptCpcaqIg1s75
+	OK6ecMqHwylFTban8Hf5gvS6IOfyD1Y=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=NrCjURBa;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf08.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=chizhiling@163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780298213; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Hc97jZvn;
+	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780298238; a=rsa-sha256;
 	cv=none;
-	b=KH3B3yTR9Wvy8J/CnXF/NSjJmUyfd37ofaDj4d7GRF7wB3zCcLIoLncIW72t1jquKxnzOD
-	gVJOFlUad0EE06K8fE1eTWTpcFlqcl8LBkon3UqH3t1xCG7An6sFi+q5xSwQnlGbB/sjUW
-	FacLUddB+QUJ6B88ZNEGd+ZwXFvZF2g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:To:
-	Content-Type; bh=eMVFGeQet2q9i38H6nc5ggraVuL3XTIUP1O16KEY7o0=;
-	b=NrCjURBabv0q9bQWSd7LBR68SUEtmSmqT8Auy7wVdxNSy0Utfnfw9ANFWepPja
-	yNFd1GkcL8+a4Fr/LS26WIX8p92ysQr1dDx9TpicPuoZC/Lvt1wCeBOuk780El7a
-	eun+91E0ynhrvh5aI5Jv+CbBOwqyPOA4MyYH9WsUmlcfk=
-Received: from [192.168.3.148] (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgBXW5KxMR1q+JGXFQ--.4S2;
-	Mon, 01 Jun 2026 15:16:07 +0800 (CST)
-Message-ID: <0c52fc64-3546-4008-af98-6d589ef00c99@163.com>
-Date: Mon, 1 Jun 2026 15:16:01 +0800
+	b=sN1BMokiHpLgJZXcn2sUh7Yi0s0zqTHHbwo9gdNVG/UFQoGHHrzU76WuUzXhyf5B7u9Hjn
+	xR/HxA6lLsePIrnfYz0dkdc6ebOt1YTv7zOTBObfMdWeSBS5GUycEIvtAYCTMoyMhMBsJG
+	aWDwYkqxb9lVUBj5T/P/GlikLdbPjMY=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=8ST2Tg32v5NWZL0Digt/7WzPOrgnDtd7aEPB8tVaCFQ=;
+	b=Hc97jZvnUog6kvHS/SX8VtoZXhoq3IxJcSa3DvnoLPRqjnFX+cqB3OR0/dYSIi/cVnzJQbcZu
+	CZugFwzI326auRogHOGW48AD5zvD4HCSYq7T+t1sC9FNA3hC3iys/yoQvOFWiLbvPFbtoPRCeK/
+	8PTo1FvjAcQ+S+KoNAuPXW0=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gTQ7Q1xsmzRhR3;
+	Mon,  1 Jun 2026 15:09:22 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9188840561;
+	Mon,  1 Jun 2026 15:17:10 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 1 Jun 2026 15:17:10 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 1 Jun 2026 15:17:08 +0800
+Subject: Re: [PATCH v9 02/37] mm: memory-failure: serialize
+ TestSetPageHWPoison with zone->lock
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: "David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang
+	<jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>, Muchun Song
+	<muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Andrew Morton
+	<akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+	<baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins
+	<hughd@google.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, Kairui Song
+	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+	<nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	<virtualization@lists.linux.dev>, <linux-mm@kvack.org>, Andrea Arcangeli
+	<aarcange@redhat.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>
+References: <cover.1780067977.git.mst@redhat.com>
+ <2c527d20c99cdfe64a77bcf8da75f742d4c6991e.1780067977.git.mst@redhat.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <9c73bc2e-20f2-c7b0-cd8c-63ea5437f2ed@huawei.com>
+Date: Mon, 1 Jun 2026 15:17:07 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] mm/shmem: optimize read with reduced xarray
- lookups and folio batching
-From: Chi Zhiling <chizhiling@163.com>
-To: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chi Zhiling <chizhiling@kylinos.cn>
-References: <20260601055704.167436-1-chizhiling@163.com>
+In-Reply-To: <2c527d20c99cdfe64a77bcf8da75f742d4c6991e.1780067977.git.mst@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-In-Reply-To: <20260601055704.167436-1-chizhiling@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:PigvCgBXW5KxMR1q+JGXFQ--.4S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw4DWrWxKF4UAryrAF17Awb_yoW5JrWxpr
-	ySgr1ftry7J3yfArn7Gw1rKFyxJrZ5tF1DWF18KFs3XF1Fyw43t3W8Gr48GrWDCa47Zw1U
-	Jry7Jwnrtr15K37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6KZAUUUUU=
-X-Originating-IP: [116.128.244.171]
-X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC2xdb+GodMbcZaAAA3v
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2258C16000F
-X-Stat-Signature: 173px4mccx7a8rdgu1ywqk6g7w76j8ah
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-HE-Tag: 1780298211-688101
-X-HE-Meta: U2FsdGVkX18+baFEk3wHCY9Q55le5rgEn+c2pZf+URXA2/1uIYppsZr9JsyvSVZsT+uyO8z4mfpPzLJPuwB9DcFQN52tJkEpzgjVb31etjv9MKQph1HLlY1+ol72ErZV5IJJ4q0obYkxMtbiDCud/zBtD0L0/gU8JhJfG0KUoRvSWY8VmGxI/9IEdUJtxfbaCMKbEnI9fuasSJVVsU1W9jRVvvnhnslvOWbYrQSg1NtYLYEMiddNzxalQUuKeJp1dP5mFltxDkq+2RvKsE5hc+2/wFbo5q7mA3CdlK863rWm4Usiv6jiYNjAXWjYi0n0Mm2nUGhTmWTXsE7xf0//l57ouFCcImS43SZx6Q6w9dGsl5+HBuv+nZMFiaOqtSvONioSuNT70RtyEOLE0p1yadQVBVWUd0MP1CsNlXmyOpJuscJDQwhV6WY6Y2cC/ulsiG71BJ7QT2kvabmWTiRwEo7nHSCh3YpIYxoEnzij/0+TX5U9K2ZY4l9/btis29HCRsrNWU74gpGacK2A2iUDHssMn4QWE/3O8Fun1FnuHh79XN+g28EaQFwszJjUK64PZ5AM/C9jw7mDUwDFnACDUU016sCBS5REt72LgYDuzBwPFc6mz+SP7wlXAlfWHsw2R1TESQuwnqTFdLYUFU62rT8oNaxGzIKMdHrjXzrzMAvwzurqc+b/0n6DdoWIcSjJH2z4PWQGrPw1yr+NC5pP0U8vPF9n6O7SEuQOtBoBfje9NF1L2zbaQniBQUhXgBrZhQqy91WAvJaIZr7AYNPlwi0gRMpq5NzLfLNbPdTrzLLDgavyD4nEfB2kw68qM05D2Tp+bFYR6R9vmRnZc0Tlc1maU8h8aMxlcWcUUlroFu4IR0d2vKVYp31O1tpgVRRX6nuMv094eQV01DTbrtVg3OPQJb+8lt+D6Hb9UO3psZZef6tmhJt7c99qGsZNj/y8/nTr4YVMngZgzo4gWU3
- jCgQM4hh
- Tljuu3oe7DV8FAz/qNUISraSfMPafUDYvy9AkanBvxtVhHxxKhi50L4oMJmsopfF+HcES1O+cArjHF+ySGiOvGbRTHNkvVAMoJ06oGOoOA5Qy4iNDJv9Lotkdr1Ld07lRHf5dywnsen6eoigAJLMlHPZEYdsJY7hVk6kiQO41SKZxW/SOw+kmzz452HdfGhozbqi2nBzhqKArowmIkuRlJuLjECbM7F0e6vw2iayp/7IwTjm7cSLA2570mqBbai391nVtm+GSWK6LCe7iHQHB0Xy4Am+e0FTfYkOIj4VD6fnHofeOrsP2VVk+iueHTaFZr2U37rSv+i8qOkaFwm6OdFR0dJCus9At8o2R8DcsDw7zf4cbx6jfkWzMQT2vL2fq3KqR
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 32633C0004
+X-Stat-Signature: qszmgytmmfqa8yifhsd7gjpffzbinyru
+X-HE-Tag: 1780298235-995081
+X-HE-Meta: U2FsdGVkX1+RXxY+OjNefCY+q2zPqCVBD19JstqVyNVXXbjbysNjsuPmw9ZgxmgbiqSbSwHa4/+azcgGPEsSG0JCecDOOo0/+SPkVl5ocknDb55Uno+4GHzQ5HgdHlGQC61/r85Db+wwX1vPklvr1dEx0YWH1m2r+0yWaXHAVF0R7R1dshCjuMyIcIxBXbDuaTvWEq4SvcbCiaWKL8vmbucHydZkmIvAw3mF62LQBdwXVrq72DYulpQ3iXiEAcKhpw+HWxnpC0N3N+JZGZ9f7GYrRnp9ITDAphD4oTx+xIgKFSyIKLv23b0C3VZehHcGj6w/Wpo63aApahMsXDir6PJ9h0KPSA3ReijiXcXaMQdrUY3Lho6sywYx63Rwk3StM88NU6FfDPW8LI8op6tNqZF1VqiUGhfsgp71x2+IDGjrN5uuRGzu4En6BOHgU2bo4t0T31dMgq2Arrd7LjmdvG1iYL00gKxmCkHVTCeQyDe+TE+7K+nhluiJ1mZ3gHRIYSwQ+MxIXSNGj/w0RV9JY8fiA+0Z6ciduGwlcxcXDF4C0LoG3IzxMy5U3y+KAzdJ+1IpNnpBXlCCyX7s2vBt+EJru5dmwmSEl3KPETLMt6YGrFKU1R1vSXaTgNVLnXFzc/PTKokhqXG6gikSkMmn2aA3ixzELHAWqxlJVRdbLXNbhzn2E1Z2FCMiVNimj9EimcchRChZkWpD/YUp1+cliri6rHNRr++rnzIv40mEHFTSga0KPvC9X46YFX5gTpPINv+San0/Gmn3J3bfFdu2j3wf8JFGmjrZmNRAeFPoNRvpjWHHyGlUlsnmk5aWOS8m+RCk0f7tIBUvC7o0ZcjIC0KexSotmZrhqKpETEp/pIuWDEwDTmxpU4squCNx/0nGQUUuVLMUxJGV5f9N5QQWxlWYTGU4ZeqLbLa55nxFv/Rsmp1jooJWcxIDgkZrPc7yA7pDfqFx/HvLB09p/mT
+ vg6mJStP
+ gOOqETN2BJdYUrAevEMtE7GcNIf/bjz0lwe2Z7NDiE5fHfZpyNwRqUI57l7jy/o8pc+HqU7SXTYKZvAzpDKtsMRIqsYJl7696Y3vg1UQdBbQKRcT2Htqk/5uD+J1OmgETueNq9w7ij150zjtCqmtQzMelkRObXgZgmESy+wS741+tQXWMnHpUB5VpHwMxW5boTmMlCe1m4aZpTZw+D45GoaHAQvCQcyWqIq6G44whaCuqdNGLboJNoYhVX+NOTyweLbifhhV+bg3v2zw1NkKwYBq84oApZBVksHfwe6CcKOVUqc813hV51g/BaosB2oxbVeqWcuw6+NMeb0J1w787rafJXsRA40qgW7YkODJtFceHf7dv6cF4uce7DpOrapYhqKjxcH8uCB0jYuQTIan6m+W5sWwyTtlK3iIE3wcLeHnDxNVKz6a2Sv90QgndXA8x3yT6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,56 +128,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/1/26 13:56, Chi Zhiling wrote:
-> Performance Results:
+On 2026/5/29 23:22, Michael S. Tsirkin wrote:
+> TestSetPageHWPoison() is called without zone->lock, so its atomic
+> update to page->flags can race with non-atomic flag operations
+> that run under zone->lock in the buddy allocator.
 > 
-> fio --ioengine=sync --rw=read --bs=$1 --size=1G --runtime=180 --time_based --group_reporting --name=seq_read_test --filename=testfile
+> In particular, __free_pages_prepare() does:
 > 
-> | THP disabled in tmpfs  | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
-> | ---------------------- | ------------ | ----------------- | ----------- |
-> | 1M + normal file       | bw=11.5GiB/s | bw=12.7GiB/s      | +10.4%      |
-> | 64k + normal file      | bw=11.0GiB/s | bw=12.3GiB/s      | +11.8%      |
-> | 4k + normal file       | bw=3826MiB/s | bw=3849MiB/s      | +0.6%       |
-> | 1M + fallocated file   | bw=23.8GiB/s | bw=28.6GiB/s      | +20.2%      |
-> | 64k + fallocated file  | bw=22.5GiB/s | bw=27.3GiB/s      | +21.3%      |
-> | 4k + fallocated file   | bw=4655MiB/s | bw=4680MiB/s      | +0.5%       |
-> | 1M + hole              | bw=24.2GiB/s | bw=28.6GiB/s      | +18.2%      |
-> | 64k + hole             | bw=22.6GiB/s | bw=27.6GiB/s      | +22.1%      |
-> | 4k + hole              | bw=4652MiB/s | bw=4489MiB/s      | -3.5%       |
+>     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
 > 
+> This non-atomic read-modify-write, while correctly excluding
+> __PG_HWPOISON from the mask, can still lose a concurrent
+> TestSetPageHWPoison if the read happens before the poison bit
+> is set and the write happens after.  Follow-up patches in this
+> series add similar non-atomic flag operations as well.
 > 
-> | THP enabled in tmpfs  | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
-> | --------------------- | ------------ | ----------------- | ----------- |
-> | 1M + normal file      | bw=13.7GiB/s | bw=13.9GiB/s      | +1.4%       |
-> | 64k + normal file     | bw=13.5GiB/s | bw=13.5GiB/s      | +0.0%       |
-> | 4k + normal file      | bw=3833MiB/s | bw=3859MiB/s      | +0.7%       |
-> | 1M + fallocated file  | bw=24.9GiB/s | bw=34.2GiB/s      | +37.3%      |
-> | 64k + fallocated file | bw=23.0GiB/s | bw=31.4GiB/s      | +36.5%      |
-> | 4k + fallocated file  | bw=4710MiB/s | bw=4655MiB/s      | -1.2%       |
-> | 1M + hole             | bw=24.3GiB/s | bw=34.5GiB/s      | +42.0%      |
-> | 64k + hole            | bw=23.5GiB/s | bw=31.1GiB/s      | +32.3%      |
-> | 4k + hole             | bw=4690MiB/s | bw=4647MiB/s      | -0.9%       |
+> Fix by acquiring zone->lock around TestSetPageHWPoison and
+> around ClearPageHWPoison in the retry path.  This
+> serializes with all buddy flag manipulation.  The cost is
+> negligible: one lock/unlock in an extremely rare path
+> (hardware memory errors).
 > 
-Apologies, due to my oversight, the tests involving hole were incorrect, 
-the holes were not successfully created in the files during testing.
+> Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
+> in this file operate on pages already removed from the buddy
+> allocator or on non-buddy pages (DAX, hugetlb), so they do not
+> need zone->lock protection.
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: Claude:claude-opus-4-6
+> ---
+>  mm/memory-failure.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index ee42d4361309..d106f2c135c7 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2348,6 +2348,8 @@ int memory_failure(unsigned long pfn, int flags)
+>  	unsigned long page_flags;
+>  	bool retry = true;
+>  	int hugetlb = 0;
+> +	struct zone *zone;
+> +	unsigned long mf_flags;
+>  
+>  	if (!sysctl_memory_failure_recovery)
+>  		panic("Memory failure on page %lx", pfn);
+> @@ -2390,7 +2392,10 @@ int memory_failure(unsigned long pfn, int flags)
+>  	if (hugetlb)
+>  		goto unlock_mutex;
+>  
+> +	zone = page_zone(p);
+> +	spin_lock_irqsave(&zone->lock, mf_flags);
 
-Below are the corrected results from a retest:
+Would it be better to add a comment here why zone->lock is needed?
 
-| THP disabled | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
-| ------------ | ------------ | ----------------- | ----------- |
-| 1M + hole    | bw=27.3GiB/s | bw=23.4GiB/s      | -14.3%      |
-| 64k + hole   | bw=27.3GiB/s | bw=23.3GiB/s      | -14.7%      |
-| 4k + hole    | bw=4825MiB/s | bw=4624MiB/s      | -4.2%       |
+>  	if (TestSetPageHWPoison(p)) {
+> +		spin_unlock_irqrestore(&zone->lock, mf_flags);
+>  		res = -EHWPOISON;
+>  		if (flags & MF_ACTION_REQUIRED)
+>  			res = kill_accessing_process(current, pfn, flags);
+> @@ -2399,6 +2404,7 @@ int memory_failure(unsigned long pfn, int flags)
+>  		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+>  		goto unlock_mutex;
+>  	}
+> +	spin_unlock_irqrestore(&zone->lock, mf_flags);
+>  
+>  	/*
+>  	 * We need/can do nothing about count=0 pages.
+> @@ -2420,7 +2426,9 @@ int memory_failure(unsigned long pfn, int flags)
+>  			} else {
+>  				/* We lost the race, try again */
+>  				if (retry) {
+> +					spin_lock_irqsave(&zone->lock, mf_flags);
+>  					ClearPageHWPoison(p);
+> +					spin_unlock_irqrestore(&zone->lock, mf_flags);
 
+Ditto.
 
-| THP enabled | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
-| ----------- | ------------ | ----------------- | ----------- |
-| 1M + hole   | bw=27.0GiB/s | bw=23.1GiB/s      | -14.4%      |
-| 64k + hole  | bw=27.5GiB/s | bw=23.3GiB/s      | -15.3%      |
-| 4k + hole   | bw=4777MiB/s | bw=4640MiB/s      | -2.9%       |
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 
-
-There is a noticeable performance drop when accessing holes, as every 
-read triggers a fallback. I will address this in the next version.
-
+Thanks.
+.
 
