@@ -4,87 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14761CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 19:26:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4833FCD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 19:55:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B23F6B04AD; Mon,  1 Jun 2026 15:26:37 -0400 (EDT)
+	id 7FACF6B04B0; Mon,  1 Jun 2026 15:55:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92DAA6B04AF; Mon,  1 Jun 2026 15:26:37 -0400 (EDT)
+	id 7ABEB6B04B1; Mon,  1 Jun 2026 15:55:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81DB16B04B0; Mon,  1 Jun 2026 15:26:37 -0400 (EDT)
+	id 6C1A16B04B2; Mon,  1 Jun 2026 15:55:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 69A5B6B04AD
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:26:37 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2139E140754
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 19:26:37 +0000 (UTC)
-X-FDA: 84832325634.08.8CD2421
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4C6AFC0014
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 19:26:35 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=RDwq7RFT;
-	spf=pass (imf10.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 58CFF6B04B0
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:55:40 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 065D4140749
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 19:55:40 +0000 (UTC)
+X-FDA: 84832398840.27.1B80EAA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 611B118000A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 19:55:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BQajPwgU;
+	spf=pass (imf06.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780341995;
+	s=arc-20220608; t=1780343738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xE7nz6y5yTk+D+hCyFyD22HvbRBiBxqKUhasX87Gfew=;
-	b=2IKicEFwYyI6GuWl7Ix8G5VFjIWank67IQnCCWJxFDwyyA4sDH0YJGK1o7BY3UjMX6vd9A
-	WQOJfmEZj9R/NI101AsbgLDOWbghr5z3Y5ZeNcUuM6EpYevmNErpeLbwwnhCytMrRzf6LB
-	PtW/okJ4GVGbwOEDyH/zK5lJrWDjJPo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780341995;
-	b=Sj7R2RLQ44ewPhiXEChOdWZU62rF3dl4pKs9CnqxmRV8qrExYVf0t5nTbfyTSqgoLmJJaW
-	FsOX2jsUHqXnH+5hcRjqYyrIeTit4yz282hHYEyu8e+vLZXxUq/teRoOwicKmZqoQ+FJxE
-	m7VXXc/IUMCjxh6zRuvQEN34wYbzHTY=
+	bh=rzAAcVnBObtsD4DzRUXCCaUoF+wigWmV5eP+yceRm6Y=;
+	b=hTkSlt8p9eU/Rh02my6Hq9JKkaFSHT7ip7z0QlABy76iV1cU09GAfEWVq6ed4MQm25iMhD
+	m7Zj2HYImiaBofB6kn+09i0WGGl+pyPHppUEvu9TUR5YbLn9mE7d15gYQ6DkuwkqV+Qd3E
+	lqPAIodnOXX9vZeA3bhVeK7YBpKwBeg=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=RDwq7RFT;
-	spf=pass (imf10.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=xE7nz6y5yTk+D+hCyFyD22HvbRBiBxqKUhasX87Gfew=; b=RDwq7RFTQuC1k+DOq8Lb69tdOd
-	It3yfTDUq6MHftcRJ0y0CM/kcAcBN1LoeyT6Fs/1d7EBEf+s40PkjQirRdP7Y0Sc4gxcx8a1a8w40
-	5Tvk0UC7s/y9b+rqwMvSqoH2Q5yBVWMPhEFFcxS9qLa42aH5KC4MD3WbujrjSpglSVAqqXCp2ovj/
-	iwviQBPhwSI98vIkze0RR4eJoSqUDTdrdtYHFgCAHzGPXkODf9wEmjCp5imlOqT/+MLoJ6QAAkMVF
-	0kpz8spr488iIT+urQWV4MCaj0xmwJ/EBQiJmQOebw8G3zLoOX6UoQfw7crEbMvzf43pV0vz5mST6
-	aengo4CA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wU8HL-00000000dEW-3wV8;
-	Mon, 01 Jun 2026 19:26:27 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Christoph Hellwig <hch@lst.de>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 1/3] ntfs: Correct use of folios in handle_bounds_compressed_page()
-Date: Mon,  1 Jun 2026 20:26:20 +0100
-Message-ID: <20260601192626.150804-2-willy@infradead.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260601192626.150804-1-willy@infradead.org>
-References: <20260601192626.150804-1-willy@infradead.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BQajPwgU;
+	spf=pass (imf06.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780343738;
+	b=CCmf/D0UbKmM5B36eIk++9Q867z99OP5+cdE1SnXwatF72G53L4/QuTZAZsdI440XaILEf
+	Tak5mCSTLxfvTqqR7EnIH6zhGv6ZeECvPosgVj1gMMwz8wdBjv7HM6RjEfligoKBZb3bJW
+	jKnz2TsuCdCThiHMz8zKrq9rSCcuOMY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C15F41742;
+	Mon,  1 Jun 2026 19:55:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF631F00893;
+	Mon,  1 Jun 2026 19:55:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780343737;
+	bh=rzAAcVnBObtsD4DzRUXCCaUoF+wigWmV5eP+yceRm6Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BQajPwgUvU6B9J4ZcgsDDOzuz5NUEl/Cdbm63kkJ0ppoFFiVpz33fqC9Y8FYW5m/v
+	 sCvvIFMmJSPZOVTLFtboEUk83KdJrNEUJcjHRKVjN4dnmtzuGuIWumxncjlnvLj98X
+	 0jY4mrC+QiTFrLox+sg2+t4sGY7v0rqV9IUDTsPQdrUwT84MHvC4nYTEDNrEya9RSo
+	 Zon9PWYBjXAG2Ho2RqQhIwfgg1R76bU7JIPRbgXbHNdUT79zoAXielIIVMN/CHDCp4
+	 GMUL7nWdvoDesnKGStsEmO+VWgqoA9uqJhT10xS1OvogwOVOvo9DFhhBo1U6FzIYCe
+	 M9+J9tkesQeMQ==
+Date: Mon, 1 Jun 2026 12:55:37 -0700
+From: Kees Cook <kees@kernel.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Li Chen <me@linux.beauty>, Alexander Viro <viro@zeniv.linux.org.uk>,
+	linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, x86@kernel.org,
+	Arnd Bergmann <arnd@arndb.de>, Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated
+ executable startup
+Message-ID: <202606011254.5FCBD65@keescook>
+References: <20260528095235.2491226-1-me@linux.beauty>
+ <20260528-madig-fachrichtung-fehlinformation-61117ba640da@brauner>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4C6AFC0014
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260528-madig-fachrichtung-fehlinformation-61117ba640da@brauner>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 611B118000A
+X-Stat-Signature: 4kj3kg17xc4o11ud7mxxw3zbet7fgjdi
 X-Rspam-User: 
-X-Stat-Signature: gmnfsjhki5df37nc59sgd391sacg3int
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780341995-706032
-X-HE-Meta: U2FsdGVkX1+3+DsP3CJZGFXACl+qT8QUhSOG0Ihen0ccXZpva+krzghdny3Bgo32dpEvi2hHVX5OCqZmv38ZeIjRgtSkY8sA+xi4BjSBhxFFKeIta15B32qZgSXiLGWF8Ii1W/k1YQdxk4FaVOrmsso9Qglm6jtfISpggvWBjJ13WKGVbqymCItgBwpzs2qhwSz/rKuoc9PzwiX+pNfs1xDZz9R74LcQS+21V2UBVXucMcpqGoPugebSTWuKnGZ0XQvbla6lNCQqM8sBjoEINgUfXuzrwzKx+RwIsea/D46roxSz1dPE1zrGgKaMYXmnpvG4hGvZTLsXoTKTESAsftpSBCV2GHJbpUxvtFJlnupnU3U+ZYAgh3mhACofFBdEg4iYLNwFA/nxSN3n4l6pxHqO/3+owI+H/uCTF1big1nZCvpbFuvJz9aRKFPbbBoy9N/von0nzIWAyOP+NUENSSXa569F4Q/O2mG4D8UVDEmOYO7CL6A+1OQF+A0o+6L12wllm8ADqxHbNq1sdwgT9wzyJ8iKOTyVh86U44TeDzv14NdneQzvbdsbtz8NXwQ16ap074WlAO2aFPYKDBzo+U6rO4fqeQ3frMfX7mWT8CpBGPbD55qP3GA5aZZa4DAs+Ez8QSg2VL6enAXe2DQ5BZ4M0Bn+Ot53hppNpDwMTfT0Pl6b3aD3cWRc2pY6eXz6ZGVi0BEYHU9HqCE33YTIQ8+2K1biaJn7VoLq1gLvrSJ6JoT1rfjlyhkprOBFeaNv+wzsl9pfALAKp29di/1yYspRlxn0bMUhg1K7/daARE4jR7crVO+022Fp8ivbymTxMBTmQsYWXxyByKzdl/UqeX4C+l0D//21njQcDCNaie7NtkSA+YWAsMJf0Q1CtsWyu2WxaziLjDz9tzinw2leAIDzKY531FUTp+RCQiflDEzQNdSmiT/N3nNrAT2iWomEN2+QZXiLUTxw2ROio16
- L6kufACy
- 2IJI3yJjfxN7gKZXd9W61Ub6um9mYjVGLZ5zqkRmqa6STm+H74FZfec+1XoCGIypiY6yogAle7C8yzRdWZgnJCRwSP+wkpFIxsYnM0MvD5n23PN3eEfmR9sklbpsiwHBhnvFamhYwg/ISZ7S55BGshJ2Ismhm480puBVb1n3P1froLscawO/N+HyNfrt7gfr72JwVO0Rr1u8nZ4qSQJSI2BHHqT7m5pnSSvhN1yGjd4XULZ318BXPV8TdHqt3U+8Rt/AdmWZpSCprD2TKeAFsj1BScYz11vZxwmgEbjIrpOsm15dSrx06goSE2m8ZHLvcxgKcDa2WNSX5oDiVSWOO3vYl+9Vt/0gB3iBnvidf89iIWCAktgKFnpojgdzo11N609gzpuH395WHVzoBR3uly0bus5pYV5Au0uIeYklFGcEnnySZWSPIW0DRDWqcWqt1ciIm
+X-HE-Tag: 1780343738-461547
+X-HE-Meta: U2FsdGVkX19a7tYpzVsyaX1LhJK7ddFCTRvB5F9vqKfGylwEkhAjtTjWXofE1L2qb/TxwZCjAFcaeHhPdgw2Q/ahvkSzu1KooE8jMCZo1EStLFfc47pgfY4f6sQnFU5OPg5WSW3lmCnhwsq/Pc1TiybyLwfIdRd66bP3Tda2sIa0oz52uXmSvM5C3iDWMxUOMUEFM/eV7aITUGtol3GNek7cjszdDtKdAQIZ59aNYmCRWKju3T0BDxd73Eu6xAx4dhbSzcMDovGk0EfQJM/opyZVSiYK7Qn/G0LuanYmSgHbCafsLLVUT8AumVwZpjukBN8s4l1cCz2bi6cFo1218avffQGgEeRzd/+6dPcLtJTpcpScnqhE/KwzUSJB3BG53P+BRFg6Li4JvRA+3vtq7DgCU2WVBj9CjJfWZKO/nQ/Muqs/Yh87uPZaoGBwZwgH2++2oSJV73S0hyz1VYchkmwtbwokj9tvbmAFnJUTl6A1poJ5Z5jL3CMPgESk3WBUr3Nf3lpO/Pcp0zw0yuq/rk+eZ5BzuHCx1NCYbx2M8qQj05nMY8gYEw1tgLw0uHmxpUPItwkwJiqUxeh45QJ3FDc4QZVyyMJOcL8eCk1w9JytYd5+VsyO/LCmg/fRKVe56drLq/PS3ZEm08vIsItnvxTwLE398+ognL0nDm6SvtJbJtdv1YF7ilbOrDtMjEiltQWPcMe3nGf7wtl82o+jKZkbjaXiG/etciCKrnwAws+mXQpkOJaHOxhLgApsq76GAsrx0edlHkeUrXiQz5iYp5/03HQ9xohIi9ox0j6rJMG5DFivYWD8NAjDy9eOjgl80txVdGCqKIZxWDNZwt6eCEgn1eHlM+QVSP5+9k8Nj9rnM4QjtIDPO8AVkf/krfztZUGScDdS7yimITpBE1WbzHhF0MttFSRIK9Z8b6OQGJwEa6eTkri8MpFOOtC7w3M3lC2pBDhDx7LklsYAs1r
+ PQu51ALV
+ EliFlcICumzDos0A7txrdFHZ+WFUH/nfdnzSAmgtfgoVKkICiBfvK6D0AOa88jkUfkqbE1fp9ygD+0zxBh1sz9Ne5wVcdOVjoQASgAe4OKNXtcv5sljuVru1aAJxTsDwOPjc/sQ6hCGLWmJl4wxv5/+narBO5Urz9NLbI0VpieclL6aKevWoQKPvynacex57xktwmscthgN5c1Kz7W41ETpzM5b8DYzPmG1YsivFz4PRfvD5oB8C63oxkqPKmS2/qNNr9xG5xkWa9fIins5ePbzVsJw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,93 +102,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Inline zero_partial_compressed_page() into its one caller, remove accesses
-to page->__folio_index, fix highmem (page_address() does not work with
-kmap_local()), switch to using zero_user_segment() which includes the
-call to flush_dcache_page().
+On Thu, May 28, 2026 at 01:02:53PM +0200, Christian Brauner wrote:
+> On Thu, May 28, 2026 at 05:52:21PM +0800, Li Chen wrote:
+> > Hi,
+> > 
+> > This is an early RFC for an idea that is probably still rough in both the
+> > UAPI and implementation details. Sorry for the rough edges; I am sending
+> > it now to check whether this direction is worth pursuing and to get
+> > feedback on the kernel/userspace boundary.
+> 
+> The idea of having a builder api for exec isn't all that crazy. But it
+> should simply be built on top of pidfds and thus pidfs itself instead.
+> It has all the basic infrastructure in place already. Any implementation
+> should also allow userspace to implement posix_spawn() on top of it.
+> 
+> fd = pidfd_open(0, PIDFD_EMPTY /* or better name */)
+> 
+> pidfd_config(fd, ...) // modeled similar to fsconfig()
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 495e90fa3348 (ntfs: update attrib operations)
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
----
- fs/ntfs/compress.c | 40 +++++++++++++++-------------------------
- 1 file changed, 15 insertions(+), 25 deletions(-)
+FWIW, I agree this should be modelled after fsconfig and built on pidfs.
+Doing so will avoid a bunch of design issues, etc.
 
-diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
-index 76bd806b41ed..143f362a42f5 100644
---- a/fs/ntfs/compress.c
-+++ b/fs/ntfs/compress.c
-@@ -96,26 +96,6 @@ void free_compression_buffers(void)
- 	mutex_unlock(&ntfs_cb_lock);
- }
- 
--/*
-- * zero_partial_compressed_page - zero out of bounds compressed page region
-- * @page: page to zero
-- * @initialized_size: initialized size of the attribute
-- */
--static void zero_partial_compressed_page(struct page *page,
--		const s64 initialized_size)
--{
--	u8 *kp = page_address(page);
--	unsigned int kp_ofs;
--
--	ntfs_debug("Zeroing page region outside initialized size.");
--	if (((s64)page->__folio_index << PAGE_SHIFT) >= initialized_size) {
--		clear_page(kp);
--		return;
--	}
--	kp_ofs = initialized_size & ~PAGE_MASK;
--	memset(kp + kp_ofs, 0, PAGE_SIZE - kp_ofs);
--}
--
- /*
-  * handle_bounds_compressed_page - test for&handle out of bounds compressed page
-  * @page: page to check and handle
-@@ -125,9 +105,21 @@ static void zero_partial_compressed_page(struct page *page,
- static inline void handle_bounds_compressed_page(struct page *page,
- 		const loff_t i_size, const s64 initialized_size)
- {
--	if ((page->__folio_index >= (initialized_size >> PAGE_SHIFT)) &&
--			(initialized_size < i_size))
--		zero_partial_compressed_page(page, initialized_size);
-+	const struct folio *folio = page_folio(page);
-+	pgoff_t page_index = page_pgoff(folio, page);
-+	size_t offset;
-+
-+	if ((page_index < (initialized_size >> PAGE_SHIFT)) ||
-+			(initialized_size >= i_size))
-+		return;
-+
-+	ntfs_debug("Zeroing page region outside initialized size.");
-+	if (((loff_t)page_index << PAGE_SHIFT) >= initialized_size)
-+		offset = 0;
-+	else
-+		offset = initialized_size & ~PAGE_MASK;
-+
-+	zero_user_segment(page, offset, PAGE_SIZE);
- }
- 
- /*
-@@ -231,7 +223,6 @@ static int ntfs_decompress(struct page *dest_pages[], int completed_pages[],
- 				 */
- 				handle_bounds_compressed_page(dp, i_size,
- 						initialized_size);
--				flush_dcache_page(dp);
- 				kunmap_local(page_address(dp));
- 				SetPageUptodate(dp);
- 				unlock_page(dp);
-@@ -767,7 +758,6 @@ int ntfs_read_compressed_block(struct folio *folio)
- 				 */
- 				handle_bounds_compressed_page(page, i_size,
- 						initialized_size);
--				flush_dcache_page(page);
- 				kunmap_local(page_address(page));
- 				SetPageUptodate(page);
- 				unlock_page(page);
+-Kees
+
 -- 
-2.47.3
-
+Kees Cook
 
