@@ -4,91 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EB7CCD6E5D
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:39:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 682ABCD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:42:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E93D86B038B; Mon,  1 Jun 2026 08:39:58 -0400 (EDT)
+	id BD9536B038D; Mon,  1 Jun 2026 08:42:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6AF86B038D; Mon,  1 Jun 2026 08:39:58 -0400 (EDT)
+	id BB0416B038F; Mon,  1 Jun 2026 08:42:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D816D6B038E; Mon,  1 Jun 2026 08:39:58 -0400 (EDT)
+	id AED966B0390; Mon,  1 Jun 2026 08:42:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C61D46B038B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:39:58 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 98BBF1A0639
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:39:58 +0000 (UTC)
-X-FDA: 84831300876.08.6C5EBAC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 033BB40008
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:39:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c7aBDC/c";
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780317597; a=rsa-sha256;
-	cv=none;
-	b=rhJ0cDRFwWEvImcbjEA7jc7XUPaL8W93sa4o9EjrLR1Sg+NeSqjg7+k6LqaCUJzOpNDvRe
-	bntUz+pUIBDn2eBEIIzeZ3l/VrgeVM+mA2C7UuC1wLg5Q+kUCELmd8cVdN7q+ZjZz98Nbx
-	ijZ+tRQMAOJ1Hn09HAaIPcLgWvXR6QY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c7aBDC/c";
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DC9B6B038D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:42:45 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4314FC22BD
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:42:45 +0000 (UTC)
+X-FDA: 84831307890.24.A033108
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2DAAE40011
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:42:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E7mtZrFp;
+	spf=pass (imf27.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780317597;
+	s=arc-20220608; t=1780317763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GMHn02Tjy2SdQBVIwA3Bmk2f/2F1IAnksPozdoamybA=;
-	b=COkk8RN823TvOm8ztUpTctOtXRAd9op9KW7BFb4uOdsErUu4PF9eH1kxbP6bzqxsAr6aNz
-	b7ZSygF144dGzE0/PfXpdm/l/j+L+0AXSAfre5amBRBBQLYwQAlmnuJXviebHjNKbQSd7e
-	5cbHXRh06VruxXRwR6OdfY2rZlRkFvc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7874660018;
-	Mon,  1 Jun 2026 12:39:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5071F00893;
-	Mon,  1 Jun 2026 12:39:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780317596;
-	bh=GMHn02Tjy2SdQBVIwA3Bmk2f/2F1IAnksPozdoamybA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=c7aBDC/c/MWTX0ZGZ6TLVaMpVltABlGICOm8LKMfQgFNhl+1IZoGLUbEydpTgi5pI
-	 HmVzxJN+Dy7AcSDN2RIfX2ahy8aM5ncR//wi1q7FZHQ18O0DsYTQtZMJuZ1qnCN9i0
-	 bZDr9KBOPViV0PTwS7B9VMqjnY96NzToK2e7R2pQlILeBqTtoSLkxsqqi4nfAxV9NZ
-	 A/sqxHNghKzXKoikgpCDiYrX4O9OpZgcPZkFL6fOFMBzd+oIj6Y1teDGq9BRz6V+5/
-	 p4J4GxI2jnDB6u1BeqZTp+zVGbXkE7DoG0kZHG1WMeeCEvmNnJuAPpATRC3MS34FHe
-	 IvGv4TMMeYKtg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
-  akpm@linux-foundation.org,  linux-mm@kvack.org,
-  skhan@linuxfoundation.org,  linux-doc@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  corbet@lwn.net,  dmatlack@google.com,
-  kexec@lists.infradead.org,  pratyush@kernel.org,  skhawaja@google.com,
-  graf@amazon.com
-Subject: Re: [PATCH v4 04/13] liveupdate: register luo_ser as KHO subtree
-In-Reply-To: <20260530221938.115978-5-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Sat, 30 May 2026 22:19:29 +0000")
-References: <20260530221938.115978-1-pasha.tatashin@soleen.com>
-	<20260530221938.115978-5-pasha.tatashin@soleen.com>
-Date: Mon, 01 Jun 2026 14:39:52 +0200
-Message-ID: <2vxzv7c2fn8n.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=6Hwq13SDbpVOpqhNfmfrEwK4V0aUm9u8GnF85w9/4CA=;
+	b=pVQ8xc+Dj5KX+tiryId569ae6MQNSWHJA9ZdsPVkIRf8gYuZd+xmlnbBqJnFUCvhJ49ay+
+	8TByhGznBQqzOdv542Hn2IKHH1sosPjvYhgBVAcrOs7K8dVsCAGG/YKsNKYSJdx2Zedwq8
+	l+w82zrdtHEPwrCH5AWPTLpUL8yf6PA=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E7mtZrFp;
+	spf=pass (imf27.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780317763; a=rsa-sha256;
+	cv=none;
+	b=sXm+/FVdUImWwCfSt+mJwlx7NeUEZQTTh71j/RtYQdECr5Ct4FLHMxJ90rdMpTTarO5YIX
+	H2QAKpd+XIWOxx3UifcQ/HVmWH5c5u/jYtFPaU2eRhLKjGioWr5i8Q7EkGQCodfZsF0eX1
+	0WSf6IMpaijArmzUsyjZsUPCgCYx0tM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780317762;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6Hwq13SDbpVOpqhNfmfrEwK4V0aUm9u8GnF85w9/4CA=;
+	b=E7mtZrFpw1z0/0FT2eQPFbUf6kwEUZCshcbR8rTFpVjjNcCRn0RDeQB9BDlnw+ww/8b6tH
+	WPKO5yg/nVfX8xXSJ0HbIm8nOWyanXDySCVDq0tInFkMtZQXnGKVu2Nyndg1gDBhhPrdtj
+	AXNx0jXp07BiUY8qKKTgXco1uUliNBM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-Bn2Cp5duPQGMUbXlL13P2Q-1; Mon,
+ 01 Jun 2026 08:42:37 -0400
+X-MC-Unique: Bn2Cp5duPQGMUbXlL13P2Q-1
+X-Mimecast-MFC-AGG-ID: Bn2Cp5duPQGMUbXlL13P2Q_1780317755
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 74EEE18002D0;
+	Mon,  1 Jun 2026 12:42:35 +0000 (UTC)
+Received: from fedora (unknown [10.44.48.10])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id D5D1A19560A2;
+	Mon,  1 Jun 2026 12:42:31 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon,  1 Jun 2026 14:42:35 +0200 (CEST)
+Date: Mon, 1 Jun 2026 14:42:30 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>,
+	Kees Cook <kees@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	"Liam R. Howlett" <liam@infradead.org>
+Subject: Re: [PATCH v2] mm_access: simplify the security checks
+Message-ID: <ah1-NmlbYsdH3hJp@redhat.com>
+References: <ahrsfJE3NkKjShEX@redhat.com>
+ <ahrwUGytgulEwujN@redhat.com>
+ <ah1qeNkatqx_N93-@lucifer>
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <ah1qeNkatqx_N93-@lucifer>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: JOqYNCn87LMWN77_b1d90NCpevXbmIShYFrUgIcQrVw_1780317755
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: hey3hjraoxoxryuj6bug8mhn63hh4rgb
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 033BB40008
-X-Stat-Signature: 9idtq3jmwht9n69rh7fn7j14gt97ta79
-X-HE-Tag: 1780317596-547346
-X-HE-Meta: U2FsdGVkX19uO+ESXgTXbncnzS9aoF+RRcnTYTJdkceVKYXrGjFwg0rEBk6UHZsard8i+0oefCT6dXHi6fhdUTtnsABjELNU6VHdI5ODBEl5wS3l4Bu4P/v//X1qU48mtPbEOt6R3yoPnbRWpj3CoJCpSRctbJRyIitjpWs1DFUDF0nd0OvX/ukrFtVe4wYd8EhMDzki/YK6sZO3V1Ec2fqElnDg8z7KavhQsND1enXCVpChn4JLcQ56TiWggdswBf23XjTbH1iHX2BB+Gx3q70ZkpzgNUDRycrcauVVoMXSkyVLv0yQ8xJ6yd/PYSHTEDG0h6wsLMKFTjRyml9vJTfoMjPeGICx4mNpn1LTnDLl0P2TPAc8JrybjYFQHZVDZAt/Phu6oSgbvtnkRfG7zNwNtvbRVDnejdsy95Vh3H5/PT1/lC3m/9LBpPcPqzjdpopMSt+zi5vzUWZgEAzi14tmqiSIKtrgwm48Y23NhxnetIXlJj9gyLG/89jg2MkhRV4sd577rWZ5WPByGTUq3PJd79cAge5Rh4yxMeL0XXBK09tPaaYe3BddL1ZypPzSblhn37QCeC68noCtlKx0TXG4q/vjkOoBtxtP2RYL6P+NpyU2WyCkgvnkl+qiSN0SiadhkujEsxhT18xcKFQYbypxDfXG6EUEV6IFM52Q8oFPlCHxFl/Up65x9Mm50UK/XQorLfUUBeA102aQDwUSQLggS7eVsFim/Y2c/ksw+r+RAxi7FsllePxVMUGDxiqJydkXl1cGaiGqK/WKSVYnYK3FE2jSRuypqS+hPncrbTOASfJZV/1yyUe2aH7vqZWfF2cyi/REIE94ca7g8hbWks5QUnLlTQGW5xhDyQrq3vN7IbhyQZ3kRJXIOWwV1Dj0VpdtpzSC1ufjXczgPY9F3xZC8TJIBLfJ1VIamURgiZcyunrxJih/0McSbuKgHAz82qxpTurXZtWnT6xrywQ
- EeYCGA9P
- vGLF1kQd4uMma4sy7/h75Qm5ljShNbxaCfu8GOWgwo8N6hAt+rReX/e/d4tBI9550bvZLwpsDbI8zq5S0mf2MlcNP0YrJJHFXUUJBBmj6ofwIXEJpWz7ynd5jay+SSlYG20uJUPvYGAd5Ma5D/PATG/M8cBPTG67PaIaX1xqXzpDecp7fltdM0RtyOgVs78imTsl3GB5kFMzI65OoZUC/RKZ+TV1oQ3z6h+N6N2md6Vn/CJryAzrAzOAg+KyY7J3nomJUoH5CdiBnGxzJnf1aD1NhRExwyiB1bqZFkh0k3ZT/qf3qgQ7vlENoE6mV98ZUC0QM
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2DAAE40011
+X-HE-Tag: 1780317762-722965
+X-HE-Meta: U2FsdGVkX1+Ehmon1KypAFfTcHxTdyZIlRta512o8+Kti6Jh2Y5nNTsnzWpK09DKG7i5lbLFyGCcIkg5rat9rO5nz4/hbOxyDjkkSlczVAbCtjLyBclLGX7jRKJXQv8qtjfVANa5KB7KkFo+XzWUP6Gtj/YCXVvbhx0JQ2yMM4bLzJePVHwqeK7VC+eleAmY0ucTWbjVGEpvkVibDZhBIpDT6YZlH7ze/iUP5zgiix8vVK/IzvIFEiZr/UOfAhNFNti8+lMgd7gCdB+Vpr7V0EOfFNt2xSldIFfcheCvnoIpEk8tj5JCsu2nkWFpEKgHMP+VGgm2/v+cufByfT0C2xDHNmHqukDPJWNeJzJtmHjw5BBTKLjst8G57Qwc9UtbWe7R3esJhH0BEDiitYGhWjfXl/LFTefBAW1zSA7TFWcaUs+THU8lnqEwx7NVCYL3vmH5E9Sj7SLtoTjP8jjX0Kkd7NE315DckO6D6D/kYoTzgTiZw27K2JQrykmHe+D8+s/N3+AUpOLe8SS2zwEPC99O+yuHCRjRTVvgPSP5YS0x0Euud64+bEvYVsNOFHlmGWXSTMFuoU6wJmSHuhUx6qCwoRoqV1mS15fs3PZ9xe8mWCZ6DIQP27gR4nPF4uA+KraDlhph8Iq64rzQPfL6Zdpt+k2jIvdrFcpxly7CoJjhfciVWxCdRRCWg8M+qSN3cgq5GkwdxJv1rVyc+5dbgA/EeYPyFOZbMC95HzFgvC6JDfsGmvnwZJgpsWg8RXV2EM1uAt2klb6rK8uKzf/Ak58VaH+xXYEYNtCIKrF2C4V6USvlYpPXVmmpGuK633ctybDHNpc1MNXbZfEv0XGz6nXq9SI8osY9YURySsty/BIR4evsr90gKmd7wwMMhUdd7iEONAD3KeGWNXfiUu6JnLlJxROwvZ/Vur1IiJhCo50RW+bduHeXantBjwEChqlIICiR/G3TtasgF2Xj+3P
+ LMtVzIyt
+ 4iEMFXNddTUXa2MlhGjoroh5l2qSSK+lbkf6bY9xLOxP43tmupFaovwDg1ZZeQFK+SNRdkZbRh0wCdJsu2Gs06xPipNLALydrOhd/iHi2z3aFzDXBYZzGLoadQAcrh1e/24pYSWmO0xnib2PxHfBVv5mwmMBA3hNthQenGwuBqp6Yj7p1sZXjDzTNo+9L+AjEIgfeIUUQjF+oVJS9ZeAF3grQ90OExQ6Bc5RDh1teInQrUcEz8oL+MeWtbM+jAEihXQy+9mZusuMoZrGkHaGs5wUi7Qq2tZSEg9NfMJt2rd+7SSCdPj7lW8zruoeQVRptvW64WWRhH+TV+kkC0n4g160j/cL+ad1Vk8tBDGH19bWOHu9wfUEZiRd9tLOv6VbiMCZDFTwFywFJYLtmAaY6uzwMqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,175 +111,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 30 2026, Pasha Tatashin wrote:
-
-> Entirely remove the LUO FDT wrapper since the FDT only carries the
-> compatible string and the pointer to the centralized struct luo_ser.
-> Instead, register the struct luo_ser via the KHO raw subtree
-> API, placing the compatibility string inside the structure itself.
+On 06/01, Lorenzo Stoakes wrote:
 >
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  include/linux/kho/abi/luo.h  | 57 +++++++++---------------
->  kernel/liveupdate/luo_core.c | 85 +++++++++++-------------------------
->  2 files changed, 46 insertions(+), 96 deletions(-)
+> +cc Liam for mm lifecycle stuff :)
 >
-> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-> index 1b2f865a771a..9a4fe491812b 100644
-> --- a/include/linux/kho/abi/luo.h
-> +++ b/include/linux/kho/abi/luo.h
-> @@ -10,11 +10,11 @@
->   *
->   * Live Update Orchestrator uses the stable Application Binary Interface
->   * defined below to pass state from a pre-update kernel to a post-update
-> - * kernel. The ABI is built upon the Kexec HandOver framework and uses a
-> - * Flattened Device Tree to describe the preserved data.
-> + * kernel. The ABI is built upon the Kexec HandOver framework and registers
-> + * the central `struct luo_ser` via the KHO raw subtree API.
->   *
-> - * This interface is a contract. Any modification to the FDT structure, node
-> - * properties, compatible strings, or the layout of the `__packed` serialization
-> + * This interface is a contract. Any modification to the structure fields,
-> + * compatible strings, or the layout of the `__packed` serialization
->   * structures defined here constitutes a breaking change. Such changes require
->   * incrementing the version number in the relevant `_COMPATIBLE` string to
->   * prevent a new kernel from misinterpreting data from an old kernel.
-> @@ -23,31 +23,15 @@
->   * however, backward/forward compatibility is only guaranteed for kernels
->   * supporting the same ABI version.
->   *
-> - * FDT Structure Overview:
-> + * KHO Structure Overview:
->   *   The entire LUO state is encapsulated within a single KHO entry named "LUO".
-> - *   This entry contains an FDT with the following layout:
-> - *
-> - *   .. code-block:: none
-> - *
-> - *     / {
-> - *         compatible = "luo-v2";
-> - *         luo-abi-header = <phys_addr_of_luo_ser>;
-> - *     };
-> - *
-> - * Main LUO Node (/):
-> - *
-> - *   - compatible: "luo-v2"
-> - *     Identifies the overall LUO ABI version.
-> - *   - luo-abi-header: u64
-> - *     The physical address of `struct luo_ser`.
-> + *   This entry contains the `struct luo_ser` structure.
->   *
->   * Serialization Structures:
-> - *   The FDT properties point to memory regions containing arrays of simple,
-> - *   `__packed` structures. These structures contain the actual preserved state.
-> - *
->   *   - struct luo_ser:
->   *     The central ABI structure that contains the overall state of the LUO.
-> - *     It includes the liveupdate-number and pointers to sessions and FLBs.
-> + *     It includes the compatibility string, the liveupdate-number, and pointers
-> + *     to sessions and FLBs.
->   *
->   *   - struct luo_session_header_ser:
->   *     Header for the session array. Contains the total page count of the
-> @@ -78,26 +62,27 @@
->  #ifndef _LINUX_KHO_ABI_LUO_H
->  #define _LINUX_KHO_ABI_LUO_H
->  
-> +#include <linux/align.h>
->  #include <uapi/linux/liveupdate.h>
->  
->  /*
-> - * The LUO FDT hooks all LUO state for sessions, fds, etc.
-> + * The LUO state is registered under this KHO entry name.
->   */
-> -#define LUO_FDT_SIZE		PAGE_SIZE
-> -#define LUO_FDT_KHO_ENTRY_NAME	"LUO"
-> -#define LUO_FDT_COMPATIBLE	"luo-v2"
-> -#define LUO_FDT_ABI_HEADER	"luo-abi-header"
-> +#define LUO_KHO_ENTRY_NAME	"LUO"
-> +#define LUO_ABI_COMPATIBLE	"luo-v3"
-> +#define LUO_ABI_COMPAT_LEN	ALIGN(sizeof(LUO_ABI_COMPATIBLE), 8)
+> The subject here seems not quite right - you're adding complexity here in that
+> now there's a racey fast path.
 
-The length of the compatible field will change depending on the length
-of the string. While that is technically fine since a new ABI version is
-allowed to change the layout, it feels odd. I think it would be better
-if we define a static size here, say 64 bytes. This way you can avoid
-all the weirdness that can happen when you move from one version to
-another.
+OK. See my reply to David. If it doesn't look like a simplification -
+lets forget this patch ;)
 
->  
->  /**
->   * struct luo_ser - Centralized LUO ABI header.
-> + * @compatible:     Compatibility string identifying the LUO ABI version.
->   * @liveupdate_num: A counter tracking the number of successful live updates.
->   * @sessions_pa:    Physical address of the first session block header.
->   * @flbs_pa:        Physical address of the FLB header.
->   *
-> - * This structure is the root of all preserved LUO state. It is pointed to by
-> - * the "luo-abi-header" property in the LUO FDT.
-> + * This structure is the root of all preserved LUO state.
->   */
->  struct luo_ser {
-> +	char compatible[LUO_ABI_COMPAT_LEN];
->  	u64 liveupdate_num;
->  	u64 sessions_pa;
->  	u64 flbs_pa;
-[...]
-> @@ -94,40 +91,29 @@ static int __init luo_early_startup(void)
->  		return 0;
->  	}
->  
-> -	/* Retrieve LUO subtree, and verify its format. */
-> -	err = kho_retrieve_subtree(LUO_FDT_KHO_ENTRY_NAME, &fdt_phys, NULL);
-> +	/* Retrieve LUO state from KHO. */
-> +	err = kho_retrieve_subtree(LUO_KHO_ENTRY_NAME, &luo_ser_phys, &len);
->  	if (err) {
->  		if (err != -ENOENT) {
-> -			pr_err("failed to retrieve FDT '%s' from KHO: %pe\n",
-> -			       LUO_FDT_KHO_ENTRY_NAME, ERR_PTR(err));
-> +			pr_err("failed to retrieve LUO state '%s' from KHO: %pe\n",
-> +			       LUO_KHO_ENTRY_NAME, ERR_PTR(err));
->  			return err;
->  		}
->  
->  		return 0;
->  	}
->  
-> -	luo_global.fdt_in = phys_to_virt(fdt_phys);
-> -	err = fdt_node_check_compatible(luo_global.fdt_in, 0,
-> -					LUO_FDT_COMPATIBLE);
-> -	if (err) {
-> -		pr_err("FDT '%s' is incompatible with '%s' [%d]\n",
-> -		       LUO_FDT_KHO_ENTRY_NAME, LUO_FDT_COMPATIBLE, err);
-> -
-> +	if (len < sizeof(*luo_ser)) {
+> One behavioural change here though is that down_read_killable() was used
+> previously, so such a situation would return -EINTR, but now would instead
+> succeed.
 
-len != sizeof(*luo_ser) here?
+I don't really follow... SIGKILL from de_thread() or anything else can
+come right after down_read_killable().
 
-> +		pr_err("LUO state is too small (%zu < %zu)\n", len, sizeof(*luo_ser));
->  		return -EINVAL;
->  	}
->  
-> -	header_size = 0;
-> -	ptr = fdt_getprop(luo_global.fdt_in, 0, LUO_FDT_ABI_HEADER, &header_size);
-> -	if (!ptr || header_size != sizeof(u64)) {
-> -		pr_err("Unable to get ABI header '%s' [%d]\n",
-> -		       LUO_FDT_ABI_HEADER, header_size);
-> -
-> +	luo_ser = phys_to_virt(luo_ser_phys);
-> +	if (strncmp(luo_ser->compatible, LUO_ABI_COMPATIBLE, LUO_ABI_COMPAT_LEN)) {
-> +		pr_err("LUO state is incompatible with '%s'\n", LUO_ABI_COMPATIBLE);
->  		return -EINVAL;
->  	}
->  
-> -	luo_ser_pa = get_unaligned((u64 *)ptr);
-> -	luo_ser = phys_to_virt(luo_ser_pa);
-> -
->  	luo_global.liveupdate_num = luo_ser->liveupdate_num;
->  	pr_info("Retrieved live update data, liveupdate number: %lld\n",
->  		luo_global.liveupdate_num);
-[...]
+> >    All we need for correctness is READ_ONCE() to ensure the compiler
+> >    won't reload task->mm. This is not enough for KCSAN, but we already
+>
+> I'm not sure 'this is not enough for KCSAN' is really reassuring :)
 
--- 
-Regards,
-Pratyush Yadav
+If I understand correctly KCSAN will complain if (say) we race with the
+exiting task which does current->mm = NULL without WRITE_ONCE in exit_mm().
+
+> It's useful to put a revision history (ideally with links to prior revisions)
+> below the --- line to explain how vN differs from v(N-1).
+
+Yes... I didn't do it this time because V2 doesn't differ from V1, I just removed
+the duplicated paragraph from the changelog.
+
+> Overall I'm not really convinced about this patch - this isn't simplifying
+> things, it's introducing subtle assumptions and I don't really see the
+> benefit?
+
+Thanks for review! lets forget this patch then.
+
+Oleg.
+
 
