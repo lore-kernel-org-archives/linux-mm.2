@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8929DCD6E4C
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 04:57:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB0BACD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 05:02:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AD8C6B0250; Mon,  1 Jun 2026 00:56:59 -0400 (EDT)
+	id F3D226B0251; Mon,  1 Jun 2026 01:02:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 437746B0251; Mon,  1 Jun 2026 00:56:59 -0400 (EDT)
+	id F14FC6B0253; Mon,  1 Jun 2026 01:02:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 300566B0252; Mon,  1 Jun 2026 00:56:59 -0400 (EDT)
+	id E51AC6B0254; Mon,  1 Jun 2026 01:02:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C0106B0250
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:56:59 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7E08BC1E45
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:56:58 +0000 (UTC)
-X-FDA: 84830134116.01.C44C416
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D29D26B0251
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:02:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4B16240514
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:02:09 +0000 (UTC)
+X-FDA: 84830147178.05.67D1810
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 567D040004
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:56:56 +0000 (UTC)
+	by imf17.hostedemail.com (Postfix) with ESMTP id 62BF440004
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:02:07 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="HaUyy/Q3";
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=MTu7+33H;
+	spf=pass (imf17.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780289816;
+	s=arc-20220608; t=1780290127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ARykLE2mE2vQ/lINLvO895ohlHNvuzpDrMJsV1OaQ6Y=;
-	b=CJdpN82sqrIPA7lUAU6M/JYDz/4xY/9B1rYY5zmhfJv/sZaRmuClSYXBtO6xvzvsp2aikU
-	JRMjBz5M6H6AqZYSIaC57F4/kcpcUfY46JZ/wgyd25NvHGPjVoWio4lXBGkwSqrehfnXAr
-	V+2OiBrGTZYd12PDujhDPqJGL++hjGQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780289816; a=rsa-sha256;
-	cv=none;
-	b=g8uuLkvugH0z9Jwv0F+Rnk6uEehVXxiHf0n6UbWx1dyAdI5NH0fre5i0eV0yeYZ3CmmmLJ
-	ZIW2YRUiEoMuqZ1W7XWyuTyqvD0DqU8dG1louFO1lNimCSFWuVQHpWwhR5IWh2aGvIEDQV
-	ZYpeZFbrpNN+Mr3L6wOAzdzQ7jxCtZs=
+	bh=gUsAVJggoi/K3HxTnoVgh3p7dIoAeKpu8pTBQY4Rgn0=;
+	b=JbHH21LBzqj3dGAac4SUqotx7ZMvpCgGdm3uZjEmL4hE2IjFXZkdqjJbO5iFDCgl+ZU2e2
+	T7WbCP3mLyvMO9FuoMUrqEeNKRsDIwykWs08OXY59qaurJo1ZfJRF2buDkJcuX756PAA1F
+	gtyXlQQGOezSJ1KAyF1p/ave5nHPtpg=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="HaUyy/Q3";
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=MTu7+33H;
+	spf=pass (imf17.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780290127; a=rsa-sha256;
+	cv=none;
+	b=veZ85sWTofIQ9MfRv3XtfvWNGelccYiTPgLmhUIJYQBF3JGCredEejesrTimqSfDkhV3q/
+	osKxe35qbJ9qTP/sz27onF95yNRhQQ+RvyUd6zwJ6W/2MaAbdfi0A2KIn0gRJie2nGdzWB
+	FK30b+ZLYXGB01UA2dtIoHraXQN/YjE=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 169751E8D;
-	Sun, 31 May 2026 21:56:50 -0700 (PDT)
-Received: from [10.164.19.28] (unknown [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BB7FB3F93E;
-	Sun, 31 May 2026 21:56:48 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52F1E1E8D;
+	Sun, 31 May 2026 22:02:01 -0700 (PDT)
+Received: from [10.164.18.45] (unknown [10.164.18.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4F0283F93E;
+	Sun, 31 May 2026 22:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780289815; bh=uh04jOx1nBkRcF0Uf+qmlp1xwS9hdzC1jSrjru2+IQE=;
+	t=1780290126; bh=eLhjNs220y5uHRNrMiXUfKBzDSiUq0OzoNZWUdU02Vw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HaUyy/Q3QQY8LFo0HHWNssQu++Ryy4dWmAHD4fasvlTInFEZouDCQj/vtZBX+P2ZC
-	 VtrFIsX83pVwwuosFxTpDu3u1Et3kGCE7TcgrBQlrgqw5orWkEXPYGukRONyM8mxS9
-	 fpXC/jZe5fUPVnPzy7oIKCbV0BibT+oV/WFEDKT4=
-Message-ID: <9d13d62f-df3d-46aa-8411-4abebb92c35e@arm.com>
-Date: Mon, 1 Jun 2026 10:26:45 +0530
+	b=MTu7+33HfwoK52MCslYpG45Jblw0DwK/LDvbi0t4eOltNGt78kgVEvlJRGfrJBx/W
+	 gREOZmYytTMWcgIDztMaljJNvbxuLR+2oyvy65dX1Exw5c7S3L22pTBevM+cEJqcTO
+	 c02jMugrIxXuWmnKfxvueYmYWbDyni8NrIDmIew0=
+Message-ID: <944a2ca8-c3de-4053-97cc-34e9b4f08b77@arm.com>
+Date: Mon, 1 Jun 2026 10:31:59 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/proc/task_mmu: do not warn on seeing non-migration pmd
- entry
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- liam@infradead.org, ljs@kernel.org, jgg@ziepe.ca, leon@kernel.org,
- shuah@kernel.org
-Cc: vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, balbirs@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260529111704.1078346-1-dev.jain@arm.com>
- <a62302f8-24ea-4d21-963d-48bec766766b@kernel.org>
+Subject: Re: [RFC V2 07/14] arm64/mm: Route all pgtable reads via pxxval_get()
+To: Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, Usama Arif <usama.arif@linux.dev>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
+ <20260513044547.4128549-8-anshuman.khandual@arm.com>
+ <c981c1ba-ab86-4865-b74b-df8d2005507b@arm.com>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <a62302f8-24ea-4d21-963d-48bec766766b@kernel.org>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <c981c1ba-ab86-4865-b74b-df8d2005507b@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: coqn45csjaphkpdkudrmzzfck3ew456w
-X-Rspamd-Queue-Id: 567D040004
 X-Rspam-User: 
-X-HE-Tag: 1780289816-361171
-X-HE-Meta: U2FsdGVkX196Gvcxt+oxyVFL+HYmdUhFPMdGXJMCacGUnD9bRPggoeXgDkVy1au8aRgQMnl1yz7VbNyPfUQarRklRbkikTJUkItFKQZL35YZo5Xt7/G52dp6jNLpP5BEr0haeElFKtYgPFes8/QbB3SzPmoF4O4g4Au4TG5Pnne71F2stzBEmyjEfYGkn6GT7QYzwsk3UsmIub4boDCkF9TLCGdASMfpf6BBKD/OrHPOQIN1LD62/ca5ZYYTgGs6Kzk8CY+U2lzOYkpD3qDVFLumjga4Otguoo2VhnJT+HaDYwM8FuN9CnLPWhoIwSKDMuNHJK11oUByffSt8YfvNx4/dc3737E4Ifn0a3GLtCXJbwn/8U2PFpi10s068IsinfceiiOKFYx3V4Y5/iBUJfGTIbfjhy8l8l3yCK5G2fqem7ZZSO1eXFgmFGjyA33rcc0+yJjOSMXO/ARQJrLp8xtapYz1JuvTD2yp8tTNi8y0Tm1+defv15nDgUpKOvXJnfrB7at4l83Z62G+T1z8cq+89V1tv/20sqW6BymtIrMjDymgPjNvCWJAXeyJad8VFGgweeqxBqqsQdNPyMZAjUYrkRMuwD19yrRpRzryjBT+qeX4tbQ9fsjKkywEhe5QfRjfxGyivDZKC84QDuB9Zr8CkrI9DZoDJTFRyiOwFAdwyh1dY76Ot+ADzNDaS6PzNQ79TuRqjcq+Nn8PGMyMYcyHCs6uBP4MThIyxsNyXFZPF7YZ/uaaqe1U52t6ywoM2r4TQdIy+awcC2t+HcQbUF92ko0oO42RYYYHyl9Wm6sD5Gp/1jpUQVFcFCLvo/Z1CloBQClM1suV5dfEWUpbWr8wrXluqjuora6go6w+wEauXD7jDEWVE8mSTTqAHEudN/QoBm6G6FkCpgygi2veaPGp2o2xyp4nIbD0ZuhoE6gpaL5uhk+puE0dSfkZVMLjXPAefUxQ5+nxcPItMIG
- FRpyK8rY
- m4JV+ZMQ41H1GUMUcuOFWJNIp4+V71ncc1U63y29XTMocLFCf5cNh8pul46xonPulRgHLSnYixUSyKOra2g/CgtSeYHwe69PY0TniP4+SqYA22J30VE5nohKy34aBPUjZmNQwc7WF0HDajIaUQcMuDLcPyV4fSWev3x24/SB4RYYZlnt9t2nGiRlGvSFXqpLywrP2FgXl6xT3VWhaXSB4T87WQp3dKITN5hb1yp/LgKvNkOSQ/zq7jHYkQ3sIkcPQz/MhTF8IQ9daCff/iyh/y7+vMRt63ZL1UhvfHt+pJFLY74kySgUAyi8Mqo3di5Rn7IrGRO2aMhN7pE61jADr9xy8s+B+t6FoNwn6cFgqsBKfKE8d6klBUMLyMXjQHpT7Jm3ydHjNOTlTsuMFSzC225EI6UO172sfKcc6
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 62BF440004
+X-Stat-Signature: kjah7rjqiyzppwnu8udtxzdwjymoh67s
+X-HE-Tag: 1780290127-628804
+X-HE-Meta: U2FsdGVkX18CUfIk+qcY+oYxhWl83WDRh+s2w9xc7x+QtyaKJeGEOanjguoGCsXXPfhRrWp4QcmmzhOwCaDQZNHZygKULpx4+Bu55x1VEAT5Au5sSNSXe5WebxdYX/SwAHVudkD+05xV40LvqI1zkBIonV7R6klai9xGRydUetiqwcT0A97TsH5ugmsOtjmI4z5crtkJ46/w/9wEzArj/8qnqyyB+MdhnwlW2Xy342zEdM6F75Pwrfx4g1WuKI/a0SAnDQOblUwIX8zGq76yAGxGV4nsS2mi/ZuyO2nn6y3PRK4xXtQmR+3iACJVIusDm1XOyASk6ML6CFyOJMU3CDpmOx4DS2ZKv/+HmrX5O3GETQZUqDLrYJjH+LagH3ToFk7kDh1jByxkxtY4b20L3lMZco19zmbFvIGo60/5Y415lYQoEpDOg97byAVsmKjUcIy1NmBZYfhBU1g5INeKPw6j28xi2H9HsYfJUCxxp0WYwqDi2eRgfm931zXTaF1oh0yZcJ8ac8Safk4+SDqNxh7iEsnXxLpZcFSbxh1XG/tbCFqVOj4sbbLRtJaHrxJY4VB7pzdAtWfiQ556+jfEaCVq9KiG42nKWuyP1vQbobVKIE72kIHgNiyEci9KMK44EOCIUD7S7uNnaP7Iu5///5X6hwWzzVwX4c/82s01q2WCPKBUXEvQDsmnCQHahLbmGU4b2L5mtkNHSbz4ELhAXpRC1FKdipPiWby31tvM/dxB0fGFKDSdpN9QRQG3Egxr/F7AQhY3DWFJ6ezazkKnMzVwfvzgzKO9h+UKPie73jrnVTD9CtTm06gyFhrImlFJF4uRppKQYB9c/pFACDg8uWWhmX2EEUlrvOyIIl+4MkJxYS9igml5f1Z3Jl9l1QQwpXJkrVQQe/XP+/4XWNytnnwM0RkoG28v+oK5b7y8Iwqn4AM2/N20sPuGKvSkZOTmX156lUp4ScL+f4iGugr
+ p6XdlqEg
+ QGjjR62Qnap5Fup2QYiVJTaNxs1Muebgg/0NjlMVfkZJ4CxSw9ej+1hhBQZ6BCARoFGNLBIg60kntWqE6fIccsLCGMD4Z3Q+KmcT8cdMSNy551neqgCSF+22Od8LXEb1sgejItzXOxbWOxbG1w0iOpre2j8jSDnk7is+C3bW/WIIX1hKFNaS51992LZoZEiAAsl81eqeTMbN49T58tRlPtYThB7K/eKRI6urcK8CUU8r0I64farsbDRlmrxrA2kmK0AyvgFjZE90aZG3130eqO7HFVxfPih57BOAPNGIQzAT6qIl3sX37tPYTJzu/Ag8GSh2sRRUHfTsB3fs9hb55C6SLdagut7wjL70Pi/es5i2TqBBtKsVTJ0olXgXngxLmXPxN7WCbvND/G8O+amK5aOnBRWEBv3oMeNQ+/Ek+5Ip/QuA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,120 +99,143 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 01/06/26 12:41 am, David Hildenbrand (Arm) wrote:
-> On 5/29/26 13:17, Dev Jain wrote:
->> pagemap_pmd_range_thp() warns if a non-present PMD is not a migration
->> entry. This became false once device-private entries at the PMD level were
->> added.
+On 27/05/26 7:41 PM, Ryan Roberts wrote:
+> On 13/05/2026 05:45, Anshuman Khandual wrote:
+>> Define arm64 platform specific implementations for new pXdp_get() helpers.
+>> These resolve into READ_ONCE(), thus ensuring required single copy atomic
+>> semantics for the page table entry reads.
 >>
->> One can hit the warning by patching hmm-tests.c with the following:
+>> In future this infrastructure can be used for D128 to maintain single copy
+>> atomicity semantics with inline asm blocks.
 >>
->> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
->> index e1c8a679a4cf3..7f0a3384f3c5f 100644
->> --- a/tools/testing/selftests/mm/hmm-tests.c
->> +++ b/tools/testing/selftests/mm/hmm-tests.c
->> @@ -209,6 +209,37 @@ static int hmm_dmirror_cmd(int fd,
->>  	return 0;
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>> Cc: Mark Rutland <mark.rutland@arm.com>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>> Changes in RFC V2:
+>>
+>> - Renamed all ptdesc_ instances as pxxval_ instead
+>> - Moved arm64 pgtable header READ_ONCE() replacements here in this patch
+>>
+>>  arch/arm64/include/asm/pgtable.h | 38 +++++++++++++++++++++++++++-----
+>>  1 file changed, 32 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>> index cefe8ab86acd..72da582e8d12 100644
+>> --- a/arch/arm64/include/asm/pgtable.h
+>> +++ b/arch/arm64/include/asm/pgtable.h
+>> @@ -84,6 +84,32 @@ static inline void arch_leave_lazy_mmu_mode(void)
+>>  	arch_flush_lazy_mmu_mode();
 >>  }
->>
->> +static int hmm_read_self_pagemap(void *addr, unsigned long npages,
->> +				 unsigned long page_size)
+>>  
+>> +#define pxxval_get(x)		READ_ONCE(x)
+> 
+> I think this would be better as an inline (or __force_inline) function, which
+> takes a pointer, and dereferences it. READ_ONCE() is special - it's modifying
+> how the dereference should be done, so it makes sense that the dereference is
+> done in the caller.
+> 
+>> +
+>> +#define pmdp_get pmdp_get
+>> +static inline pmd_t pmdp_get(pmd_t *pmdp)
 >> +{
->> +	const size_t entry_size = sizeof(uint64_t);
->> +	const off_t offset = ((uintptr_t)addr / page_size) * entry_size;
->> +	uint64_t *entries;
->> +	ssize_t nread;
->> +	int fd;
->> +
->> +	entries = malloc(npages * entry_size);
->> +	if (!entries)
->> +		return -ENOMEM;
->> +
->> +	fd = open("/proc/self/pagemap", O_RDONLY);
->> +	if (fd < 0) {
->> +		free(entries);
->> +		return -errno;
->> +	}
->> +
->> +	nread = pread(fd, entries, npages * entry_size, offset);
->> +	close(fd);
->> +	free(entries);
->> +
->> +	if (nread < 0)
->> +		return -errno;
->> +	if ((size_t)nread != npages * entry_size)
->> +		return -EIO;
->> +
->> +	return 0;
+>> +	return pxxval_get(*pmdp);
+> 
+> This is weird to read. It would be clearer as:
+> 
+> 	return pxxval_get(pmdp);
+
+But being a macro enables pxxval_get() to be used for all page table
+levels as the dereference is done in the callers. Otherwise we would
+need separate inline functions which take the corresponding pointers
+for each pgtable level. Just wondering - would that be any better ?
+
+Although pxxval_get(*pmdp) format does look bit weird to read.
+> 
+> Thanks,
+> Ryan
+> 
 >> +}
 >> +
->>  static void hmm_buffer_free(struct hmm_buffer *buffer)
->>  {
->>  	if (buffer == NULL)
->> @@ -2314,6 +2345,10 @@ TEST_F(hmm, migrate_anon_huge_fault)
->>  	ASSERT_EQ(ret, 0);
->>  	ASSERT_EQ(buffer->cpages, npages);
->>
->> +	/* Exercise pagemap on a PMD device-private entry. */
->> +	ret = hmm_read_self_pagemap(buffer->ptr, npages, self->page_size);
->> +	ASSERT_EQ(ret, 0);
+>> +#define pudp_get pudp_get
+>> +static inline pud_t pudp_get(pud_t *pudp)
+>> +{
+>> +	return pxxval_get(*pudp);
+>> +}
 >> +
->>  	/* Check what the device read. */
->>  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
->>  		ASSERT_EQ(ptr[i], i);
->>
->>
-> 
-> 
->> Therefore, remove the stale migration-only assertion.
->>
->> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->> Applies on mm-unstable (404fb4f38e8f).
->>
->>  fs/proc/task_mmu.c | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
->> index 1e3a15bf46f4e..58938e62154d9 100644
->> --- a/fs/proc/task_mmu.c
->> +++ b/fs/proc/task_mmu.c
->> @@ -2129,7 +2129,6 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
->>  			flags |= PM_SOFT_DIRTY;
->>  		if (pmd_swp_uffd_wp(pmd))
->>  			flags |= PM_UFFD_WP;
->> -		VM_WARN_ON_ONCE(!pmd_is_migration_entry(pmd));
->>  		page = softleaf_to_page(entry);
->>  	}
+>> +#define p4dp_get p4dp_get
+>> +static inline p4d_t p4dp_get(p4d_t *p4dp)
+>> +{
+>> +	return pxxval_get(*p4dp);
+>> +}
+>> +
+>> +#define pgdp_get pgdp_get
+>> +static inline pgd_t pgdp_get(pgd_t *pgdp)
+>> +{
+>> +	return pxxval_get(*pgdp);
+>> +}
+>> +
+>>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
 >>  
-> 
-> The whole thp_migration_supported() guard is a bit shaky, right?
-
-I think if you remove this, then you will trigger a WARN_ON in softleaf_to_page(),
-for the case of !CONFIG_ARCH_ENABLE_THP_MIGRATION.
-> 
-> I guess device-private entries currently imply thp_migration_supported(), but
-> that thp_migration_supported() check is really questionable and should likely
-> just go away (else if -> else).
-> 
-> Staring at pte_to_pagemap_entry(), likely we'd also want
-> 
-> if (softleaf_has_pfn(entry))
-> 	page = softleaf_to_page(entry);
-> 
-> to prepare for PMD swap entries.
-
-Correct, and this is done in
-https://lore.kernel.org/all/20260427100553.2754667-4-usama.arif@linux.dev/
-
-I think in addition to that, Usama can also remove the thp_migration_supported() check.
-> 
-> 
-> Anyhow, both are unrelated (can you send patches to clean it up?)
-> 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>> @@ -380,7 +406,7 @@ static inline void __set_pte(pte_t *ptep, pte_t pte)
+>>  
+>>  static inline pte_t __ptep_get(pte_t *ptep)
+>>  {
+>> -	return READ_ONCE(*ptep);
+>> +	return pxxval_get(*ptep);
+>>  }
+>>  
+>>  extern void __sync_icache_dcache(pte_t pteval);
+>> @@ -1011,7 +1037,7 @@ static inline phys_addr_t pud_offset_phys(p4d_t *p4dp, unsigned long addr)
+>>  {
+>>  	BUG_ON(!pgtable_l4_enabled());
+>>  
+>> -	return p4d_page_paddr(READ_ONCE(*p4dp)) + pud_index(addr) * sizeof(pud_t);
+>> +	return p4d_page_paddr(p4dp_get(p4dp)) + pud_index(addr) * sizeof(pud_t);
+>>  }
+>>  
+>>  static inline
+>> @@ -1025,7 +1051,7 @@ pud_t *pud_offset_lockless(p4d_t *p4dp, p4d_t p4d, unsigned long addr)
+>>  
+>>  static inline pud_t *pud_offset(p4d_t *p4dp, unsigned long addr)
+>>  {
+>> -	return pud_offset_lockless(p4dp, READ_ONCE(*p4dp), addr);
+>> +	return pud_offset_lockless(p4dp, p4dp_get(p4dp), addr);
+>>  }
+>>  #define pud_offset	pud_offset
+>>  
+>> @@ -1134,7 +1160,7 @@ static inline phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
+>>  {
+>>  	BUG_ON(!pgtable_l5_enabled());
+>>  
+>> -	return pgd_page_paddr(READ_ONCE(*pgdp)) + p4d_index(addr) * sizeof(p4d_t);
+>> +	return pgd_page_paddr(pgdp_get(pgdp)) + p4d_index(addr) * sizeof(p4d_t);
+>>  }
+>>  
+>>  static inline
+>> @@ -1148,7 +1174,7 @@ p4d_t *p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd, unsigned long addr)
+>>  
+>>  static inline p4d_t *p4d_offset(pgd_t *pgdp, unsigned long addr)
+>>  {
+>> -	return p4d_offset_lockless(pgdp, READ_ONCE(*pgdp), addr);
+>> +	return p4d_offset_lockless(pgdp, pgdp_get(pgdp), addr);
+>>  }
+>>  
+>>  static inline p4d_t *p4d_set_fixmap(unsigned long addr)
+>> @@ -1346,7 +1372,7 @@ static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
+>>  		unsigned long address, pmd_t *pmdp)
+>>  {
+>>  	/* Operation applies to PMD table entry only if FEAT_HAFT is enabled */
+>> -	VM_WARN_ON(pmd_table(READ_ONCE(*pmdp)) && !system_supports_haft());
+>> +	VM_WARN_ON(pmd_table(pmdp_get(pmdp)) && !system_supports_haft());
+>>  	return __ptep_test_and_clear_young(vma, address, (pte_t *)pmdp);
+>>  }
+>>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
 > 
 
 
