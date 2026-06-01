@@ -4,96 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CA3ACD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:06:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0318CD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:08:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3F306B0355; Mon,  1 Jun 2026 08:06:32 -0400 (EDT)
+	id 0F7756B0357; Mon,  1 Jun 2026 08:08:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C166B6B0357; Mon,  1 Jun 2026 08:06:32 -0400 (EDT)
+	id 0AAB06B0359; Mon,  1 Jun 2026 08:08:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2C726B0358; Mon,  1 Jun 2026 08:06:32 -0400 (EDT)
+	id EFFF96B035A; Mon,  1 Jun 2026 08:08:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A0E476B0355
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:06:32 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DE60F6B0357
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:08:20 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 68A9A16245A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:06:32 +0000 (UTC)
-X-FDA: 84831216624.25.A76E4D0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A4A1D180003
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:06:30 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FRpHjCBQ;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F5E11203C5
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:08:20 +0000 (UTC)
+X-FDA: 84831221160.25.1190F83
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AF97880003
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:08:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lpqujfv9;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780315590;
+	s=arc-20220608; t=1780315698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HkMg3NCB26gAhUUW/DuAMeOpPoMt1oN8LvktWRRL14s=;
-	b=iItzQ98Cmc4K7eytZrrRDBPS1lTyrmrCRgGmm2GTuLFDFaj+8YO7ZIHta7DO2nERWNEwAx
-	nZbYCtiW7y0WoR1ZMMrnS+BE4XdKBR1JskT2BjjuNX1gf4Q7YmcZGYxuFhRBgYEqFjWJet
-	wd2RMVaE9BU5XrE2//cQkZOT1lcIFgY=
+	bh=An/wDA8AsCdCUiXymnOuMQg1DT4aFsF1KD9SR/aaq1E=;
+	b=4yCxnc3RY05et3YFcyGE2GIhKOVyEVI+kq4fqPi+75hL+mAYfrD/ReZCc84774dLLjhe0e
+	Ff/ICVBG8psY/2WFehJQc/SG+u8LjV/bIesnJbFx2LgVssCiOltpjsiU4GIc0WVKgoIZr/
+	WPOQAVDJLpwJY15OJMbWDs+t18DZZ28=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FRpHjCBQ;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lpqujfv9;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780315590; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780315698; a=rsa-sha256;
 	cv=none;
-	b=YqU67tqFoVmFYY3hCsPLw2c+sWRSEJFP4sYeD4my6+Eakq8WyVGfdW5+d9le4sOdAzJwwL
-	tUMwmQZ7KBhNGfHPfhEzPl3lLx7T5WLlzNfz2QfeLCMKt2e9Q3hvkG0ibd/+alQbxROV2t
-	hNdKkMsQnUsVrN99daxptAyx3F6tF50=
+	b=Kw2fQ3oR0el80DVX9rgq3zYvViKk+nY7IydWXoJx+rLBnI16pI+p2XEGM86UTkdVauqPLr
+	x46uTTvmgzwGVV/WfItkJZanem0bhOkRxdQny6Ku2XFzu8w9/dr8XcOo/HArEc97sBg8ko
+	M7UA5B5YANhVpSmtOfPvfZaJEop/hl8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 26AE3601D9;
-	Mon,  1 Jun 2026 12:06:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350851F008A1;
-	Mon,  1 Jun 2026 12:06:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DF3C543879;
+	Mon,  1 Jun 2026 12:08:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B13B1F00893;
+	Mon,  1 Jun 2026 12:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780315589;
-	bh=HkMg3NCB26gAhUUW/DuAMeOpPoMt1oN8LvktWRRL14s=;
+	s=k20260515; t=1780315697;
+	bh=An/wDA8AsCdCUiXymnOuMQg1DT4aFsF1KD9SR/aaq1E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FRpHjCBQXQ5Zf6i2+7aYg5ZfVma/l81fehJ3XD4KbjXDpz4wczfktm0xO4dWonVAV
-	 WtQgLSXg5sYF3D1DrcPEmrqNgxpZ+dpU4OUxVXdztvfOP52n59M3Nj6a32q4eUzq9T
-	 JSJhvYkN7CRWeSdRVaB3AlszrzlDAGfH1qIKTlMCD9AYQTNSXcj4g4QjDV6sCZzT0j
-	 /gLx5U70OUcRfv0K0vzM3FFGVC0arv3j6BPFrSSERnMQgnLnkEnyldxeBgFxjQ7Kcp
-	 HSzoqv9sPRasdUglu+TlCu3sjV1QzU3828BqMYOXYWZgblwWfCORmbBgv+CHo4hfuu
-	 c8IilCLHYED6A==
-Message-ID: <3a5eed44-7d4b-488c-8e04-380cd115b6dc@kernel.org>
-Date: Mon, 1 Jun 2026 14:06:12 +0200
+	b=Lpqujfv9f3T9AQKyLt9RBY9mZ7AE5lBPl2h6PvVSgWXNemWyWxMfxI6Ua7Bc7Abci
+	 Pg8EkYrYz4RUDLLk29Aov3cpx9R2c1Km/diKQQy1dFv1aoshGOna3uH/GaJYlAPG4I
+	 lMaavQ+UZrTvUXkmqtpbi6Hzmm5clattk7BWGWNxglf6q/MVtSlacQMEdAsTNXQyuX
+	 iFAtRwnfnLw2HdFFHfi6nEdjvoIbuXByiXWCcRt7XxLa1Hsxv+26cE9t4WK0zK7PnC
+	 ovl6LcROI4mrYWuhrgsZnYdPTPzcenTEnYyrAd1zfjhW48civNtSvFgwVKKodnNJ7y
+	 zVy/gZeTwmC1Q==
+Message-ID: <951ee4b7-3fe6-4b41-ae5c-8babeeab38b4@kernel.org>
+Date: Mon, 1 Jun 2026 14:08:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
- collapse support
-To: Nico Pache <npache@redhat.com>, Lance Yang <lance.yang@linux.dev>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
- akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
- hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
- jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, liam@infradead.org, ljs@kernel.org,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260522150009.121603-12-npache@redhat.com>
- <20260531071845.10875-1-lance.yang@linux.dev>
- <6a9f062c-8376-4f83-90a9-8b167f925dc6@linux.dev>
- <CAA1CXcCfww9X-f2Vb=ipz8tY2nMNnMx5_58Ozz63tvZTz_wpOw@mail.gmail.com>
+Subject: Re: [PATCH] mm: delete stale comment about cachelines
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Christoph Lameter <cl@gentwo.org>, Johannes Weiner <hannes@cmpxchg.org>
+References: <20260601-zone_stat_item-comment-v1-1-f452dd91d5eb@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -140,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAA1CXcCfww9X-f2Vb=ipz8tY2nMNnMx5_58Ozz63tvZTz_wpOw@mail.gmail.com>
+In-Reply-To: <20260601-zone_stat_item-comment-v1-1-f452dd91d5eb@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: p6d6ckohy4xo34p6eumhq8fcmruksfpw
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A4A1D180003
-X-Stat-Signature: poouddmp9b6fg8dfgneseetimdi5gtsn
-X-HE-Tag: 1780315590-827922
-X-HE-Meta: U2FsdGVkX18Wf10hNqTBfrjdkC6tnmAjWlz3X/sqhaAWmkL5p+VkFigkicOPn1E1s5J5AYiGjnaiIhSqEyoTbgCLegW7LqzlIvx+z1qfk6fj1q53sqJil8LokNWgmt/+MLWcivpcxrSUMfBxSe1I+/nLmGomaClaEJUJx3SuEHdT2GV9yM30WPmj2MJudmKZuYaApw+wWpIqbtOWKJfWh4adMGa5qzCoGeFb/UGCk+6mlsdPFidfgmMIzVeDafm6hEiQsBYQegoG9TbyKZVqo0uDYJ0IVOT5iZdhrl/SEh+akLYvOEjirOMbkzFnltEWn1A9Vgaqx6Ma7RwVwxtIPbipqdoQlpQj2hwuOD28sXMbu9yZ4wptJ+ceSHOWnmTWwy3IKwEZ5Z77OnvRpAORSd0YmwLDWCpH63e+UGHq7+yRx65xHHs6ebqz7xGMzJFO/OGY3ctHzzH8/ZjE5YhM4/MrviC3F0Avop31YFZgHIFSFomG+53puyOdxvX3Pv2jItjCANAi8ylAbw5Y3CUwP+kdAiYiOpLAmeASR6imPKBR7lXop2wWN+rHtoO6JPHCU6/Mc2elRqboMrU5DNw3m9JMNkpatvFIRKM/HXQFYEy8mF7UeKjkYzGYmV3azplMu6rtvnUM8AWNbenvrr6uLsoq5obclUSwjSwLAz5yDy4PpCdajrPl3qYNkwBnKUmsT4+oFl57RBtr4mtXuw1Ax2Y++o3CNiuu6X7h9oKqMWf2axLPzEmNCSTC6go0IpzdcHUHGGBcNr8RD7oJWz5MTqeA0tQbqOB/v16cYl2+CfVpMYZ8cFNsBKb1PhsXkQ9BxymHuhv++nZtWs9oTfGeULSLK3Sq8f0OlndRaEg8W7N2YaZ4++nfk5WdEUvamoAOsiWjDqeepPq8RK+7GwFebGoKrdKBr3XFRX64u1rvgkMP9vfWWd0KzGcRgKCKxg0tejjHVTJc70hMi7aanhF
- m9kI2y4m
- 583jmIRd73IcPpsg+FoBp4I8TaK8GLMZx+bFxTFKYfQM0Ex5gg4vYfs3jKjQgX/oW4BttwJxlgACGg4aAxzkytsGQZFesVwBzVBmr1JM2jpE4aW5v+CwE3b47y+VibMOXYZh2HHe24ljsBP9WB4+D0+R6UAqRR/oimIFHajNY1dijfYo06+nIZ+C3sURkYJpUzsel8+MfSOoqxuSBb8zDcOrylhKdWLZsDgykuk9KDwbo7b6xsIL14aopKitMNV/c1NrCaIZo8gZ1y2V3NPQGa6rqK2cjbrfCNgZMzhb1WXoBWtBQjcUXb+/icg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AF97880003
+X-HE-Tag: 1780315698-557625
+X-HE-Meta: U2FsdGVkX19ltwy758O9LimOadbXNY8gMwtR9X6zfZLK1iwG+hKezXrZmXAJIIihUkursRHldnj5Cxnqk1i8yYcoodxxjoYDGg/I/nVclRLZdAUEyqS9uhQKMYvVnCTKCRAiY6vpUnXthJ+FapoKNkb/EN3wsLZPdWyKRlJd8a2FpqHZE1aJsGSWa4Z9Yh+v78WF97yRNTWHjFnAX7RxH9egO0Ikoswe5Z8ADnwCdDgH4Zqh2A2Dh9lHH7RRmMgTyISyEGih4ooDPnZD84NOeG3hGHQDhoQyfgNgyWA4hOweAzuMTKm8r7iNax/m8Cb90fEbDCpfCKXSYrNhkTAx/CPvR/dMUQCl0/lIdXDEQmNQKGf/k8NRFxt4Wanq9LAYVtK+MLMyLAyRO1hbJK5V0xSFeCI95GLnOH7O+wH4Hr+N26/yQ9l1Z770vlHQh8qlgt7HRNF3Ry3mPFPv9EvC9oT3uU09hfI7Gkj/b+EkfF7Ivxo7SQTdqGRM2vTT6jOS/XcjBoAyZVP1EKWdejbD0bWfT3E7QCbS7rVDTWMDR6RPdMDX6Hdb8cXp99+LwpTQYwphiZlVS2d1Ukgafjl0svKL+wOOow7q5+juVPluXc26+F0UAcQ3u+orjSZhjH3/FTHB0DONvj0y3OZc510JPceTUfoHaNB2DCIGibUotf1p8pSZKl3UV+TilAqhrS30zpPN8WZljHPWw9jk/ZpYi2ZXReL53KTgcKz1sTjWQiJgtHtOwOHL49iFWD7u7d6L+2b00u591inCGAYsrIhN0TL8dySJg1S8oQnDea8Kp7to0YYNU7+B84qqS4vbgpB55V8sPRbctK3OLQpMq4XjV9sA6wtKrf2oJ3+1OpelVCw+PMY6+KP3eNQLDbB0qTw27akgmCYX8Rp3Wzmu8HyESHxLi+bIKyGNHacrcKq/oxtRmhZNXYBxvuF2XqEibd6dS9twtpRE3IfZnpD5J9H
+ JarMVdp2
+ 4/s10ftm/JZVfroR/1zVrIZgzm1YqPBi5wp+CpPQ0CXnWaQYm9N6ZjGS4RDL0Xnjrx/u7Sywux0ycNqQMIjqLd6ZuoCqRbDQfAfaLPDcFJnEqUILa3sP10KZJytO26sFHvhM9s4pBYJ5iWPAP18nLeTUNSOR0QopqiciqeDNEQculz0qi2CzFmurXYfwaK6HeA2S8AuiTPcF1Rc34nfIuykhstWPat1qsw9+e7d5hNdPwvAkVcknK0K2yqH68ZdViS3Y8xADl0+EJbkB+3+z99DIlFuBiaW4H4413
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,52 +144,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/1/26 14:01, Nico Pache wrote:
-> On Sun, May 31, 2026 at 2:48 AM Lance Yang <lance.yang@linux.dev> wrote:
->>
->>
->>
->> On 2026/5/31 15:18, Lance Yang wrote:
->>>
->>> [...]
->>>
->>> Hmm ... don't we lose the allocation-failure result here?
->>>
->>> Previously collapse_scan_pmd() propagated SCAN_ALLOC_HUGE_PAGE_FAIL from
->>> collapse_huge_page(), so khugepaged would call khugepaged_alloc_sleep()
->>> in khugepaged_do_scan().
->>>
->>> Now if allocation fails and nr_collapsed stays 0, we just return
->>> SCAN_FAIL. So we won't back off via khugepaged_alloc_sleep() anymore?
->>
->> Looks like this is a more general issue with mthp_collapse() only
->> returning nr_collapsed.
->>
->> For example, SCAN_PMD_MAPPED used to be propagated too, and
->> madvise_collapse() treats that as success. With the new code, if
->> nothing was collapsed by this call, that can also become SCAN_FAIL ...
->>
->> So I think we should keep both.
-> 
-> Yeah I thought about this before, but more regarding the "incorrect"
-> propagation of errors; I didn't consider that those results were
-> actually being considered.
-> 
-> I actually had a patch to track the last_failure (with some
-> prioritization on certain results). I think that would solve this
-> issue.
-> 
-> Thanks for reminding me to improve this.
-> 
-> Depending on how the rest of the reviews go, I can either send up a
-> follow up series to do some more cleanups and improvements of the
-> current approach or we can send out a v19.
+On 6/1/26 13:40, Brendan Jackman wrote:
+> These comments have been wrong since commit a211c6550efc ("mm:
+> page_alloc: defrag_mode kswapd/kcompactd watermarks") added
+> NR_FREE_PAGES_BLOCKS. Since nobody has complained about it in the last
+> year, it seems unlikely these comments were particularly useful anyway,
+> so delete them.
 
-Let's do a v19.
+Agreed, let's just drop them.
 
-Patch #11 might need a bit of work, we can discuss offline if you want.
-
-If we could get a v19 by the end of the week, that would be nice.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
