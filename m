@@ -4,112 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4B63CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 05:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2718ECD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 05:36:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF6356B025D; Mon,  1 Jun 2026 01:32:32 -0400 (EDT)
+	id 86C476B0260; Mon,  1 Jun 2026 01:36:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7FD56B025F; Mon,  1 Jun 2026 01:32:32 -0400 (EDT)
+	id 81D426B0261; Mon,  1 Jun 2026 01:36:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D47456B0260; Mon,  1 Jun 2026 01:32:32 -0400 (EDT)
+	id 731F66B0266; Mon,  1 Jun 2026 01:36:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BEA1C6B025D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:32:32 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8B26F161B4A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:32:32 +0000 (UTC)
-X-FDA: 84830223744.28.DA11F5A
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 57D0E18000B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:32:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 600496B0260
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:36:32 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 19CA78F0AA
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:36:32 +0000 (UTC)
+X-FDA: 84830233824.21.093A918
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3B690180003
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:36:30 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn;
-	dmarc=none
+	dkim=pass header.d=arm.com header.s=foss header.b=vm2kSx94;
+	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780291950;
+	s=arc-20220608; t=1780292190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i89oVZarQ3g/a0TuHpcXUyoEZ4loKKH/VgQEjYZHb1w=;
-	b=YfIbL6NcEG/RTBDheljvH+5SssKDMjuTllJiG5IRXpFlPsTv3h+wndXOJc6sDWHawPEvgS
-	cgR8M2Edxvx9sShzNrNKHum0MJgLKqTkX1s/cn+NkFPPcS3HfgfHRNeQEHQdv8zhBwYz7W
-	xyRKhcUHYaIGG+AMExERHw0IIIUnGPk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vcWE6mDbZONHA9UBQ7OVFkxGgaAMM1rGCH/MHcIvc3U=;
+	b=yUBfc1pkP/CPEDceS+GfUUt212ye2jEt7bykPHjJ78y9qj/I8UgYW/mLIebWE+FqcEOD7w
+	PIe2eo5na257qibE882nvDOoVDSzCC/KNPQdo7Q9cNPfHvkI6qExvLbTZRC111cUH+lk62
+	bZjgWvv2oVtTDUh7Bhk6Xm39HsTXArY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780292190; a=rsa-sha256;
+	cv=none;
+	b=fJvLaXwUjjy08lgs2oLnRQ21jzdtmBS+wR7sepABIg7/iTAKIAeVteWf77/bEsBl4BkpBJ
+	N0nYOf57Y+9ysiDGQB6vDtTWtpkYCfQ7RkYIl058HHZXxAZeFoHeos5uG+Zo6GVr8jKhGw
+	hHUA2q3AgS113Ddbb3h/5+JehEj7Nqw=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780291950; a=rsa-sha256;
-	cv=none;
-	b=w08kFLfiXO9hQIvmHMbaG2Yg/x0wVwjnjoKv+6Yi1xyUvFQuP25i4tS2tV4GJRzmN9NSCr
-	rzMa5s1WLCdW0VOr/IQ7HTeyut63Chql4KqkcSrnwT9tDtqX0R9t6Y+/tSeJxolOJtZHDR
-	AXz/ueG7SDSr/FKDoO4oAFF+jGuqo0Y=
-X-UUID: 42bb7a5c5d7b11f1aa26b74ffac11d73-20260601
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
-	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:67b7feb0-d64a-495c-87ca-85a5ffcb6bb8,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.12,REQID:67b7feb0-d64a-495c-87ca-85a5ffcb6bb8,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:e7bac3a,CLOUDID:77c46c0f76eba2ad31f3af4e4c28aa77,BulkI
-	D:260531223641LAAN3BV1,BulkQuantity:1,Recheck:0,SF:17|19|64|66|78|80|81|82
-	|83|102|127|841|850|865|898,TC:nil,Content:-10|0|15|50,EDM:-3,IP:-2,URL:0,
-	File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO
-	,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 42bb7a5c5d7b11f1aa26b74ffac11d73-20260601
-X-User: lihongfu@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lihongfu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1581226732; Mon, 01 Jun 2026 13:32:20 +0800
-From: Hongfu Li <lihongfu@kylinos.cn>
-To: rppt@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	liam@infradead.org,
-	lihongfu@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH v4 3/4] selftests/mm: use pkey_assert on clone_raw failure in pkey test
-Date: Mon,  1 Jun 2026 13:32:30 +0800
-Message-Id: <20260601053230.671606-1-lihongfu@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <ahxHaQFr3Uer2GBP@kernel.org>
-References: <ahxHaQFr3Uer2GBP@kernel.org>
+	dkim=pass header.d=arm.com header.s=foss header.b=vm2kSx94;
+	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 723D11E8D;
+	Sun, 31 May 2026 22:36:24 -0700 (PDT)
+Received: from [10.164.18.45] (unknown [10.164.18.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 644843F905;
+	Sun, 31 May 2026 22:36:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780292189; bh=BXihrI+kDpZcwsjIhEFPnSR9hYiTEZguWIRQRr0syf4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vm2kSx94I5qkogPVURWrrhH7aXHNfLmUGrxjiD+wnWosJeMfjbh5y2H7ia0qhyyQG
+	 ugqsgzAcfZSIg2Dw6IILnixHWf73Cv9uOSh+8NxrMK4tlJxUtvIMoprfHWx+JwX8Fr
+	 iXiG6LVFDVIPWd/sjZBPtJitP/i+ldzWRllI02oY=
+Message-ID: <fc7e1e8b-a0fd-4d11-8056-cc9664cdf45e@arm.com>
+Date: Mon, 1 Jun 2026 11:06:22 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 8rk3di9f8aeqydeuu13p87q5itpddoha
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V2 13/14] arm64/mm: Add an abstraction level for tlbi_op
+To: Linu Cherian <linu.cherian@arm.com>, Ryan Roberts <ryan.roberts@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
+ <20260513044547.4128549-14-anshuman.khandual@arm.com>
+ <37917d56-ae26-4789-ac4c-15f8ee12398b@arm.com>
+ <ahkP7IWLX-0QCoul@a079125.arm.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <ahkP7IWLX-0QCoul@a079125.arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: qzhgny7geu3x9rnoj5o6eat3sosdze7o
+X-Rspamd-Queue-Id: 3B690180003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 57D0E18000B
-X-HE-Tag: 1780291948-309623
-X-HE-Meta: U2FsdGVkX1/iQFuJRwiwmjWyQz4qiMRTwyMc6gHstEQTi3ww/wMAacc5d7U9ct5PlqZ8WLxLLH+glRFJVkP8lOkZH+8M7QvHd58nTSv6Sc2HmdzgyfXywtv1FBNwiimjm4DWy7WhSDD0CskMu3LRmr2vE1XKv1Dnd8U3HjOmLRVOFPS81U37HpAVaP/BTdBZaCv1wraKdz/cNgEBBAZQLSpaTP1+WE3RbkLyQB4pCZGYHgzd0xDqfmm2574O4DBpl+77Q9bGj3YvLCDNewASiDZ9lfhLe3XphDxF/mflDncHJWlVoEgKtLo7l6uv4wkbKzBf5bzVOIuUp2PUsxCijxzijFDju+K+B8jZXEm26SCR/0H9H3HD+ahXTp9GfFwsOCg9qT0J/YiJUQar+iMmYhytCTlwBMLUwXLZn9yuCw/AyreMiA23S88uGYwxy4a6fzd0xa+saaQwSm/LWxz9CmXeCSzF0aYxFEpQbS0to6TUAZhhNQ0zlOhwiKVNn7GYBXffp4S39dDbqIDZ6O0ZY/uJOq+se/qGk/6QTnVL7a1y4nqwNKALOuc5ahCPNUKXgftAwaOwdq59k32xHbnEKriYD6FgzQ6LLqpyZmZSU5ttIWt+SDaY9OpdKOuDZGpoSxU6+9cZU5n+R9FuztSKeEHp3BKipr1aUa0lbhsn7rORLWxwW8tDjCIXEALAQ1JecnD/yvjeCEJvfDmHWoR0sAKsffLPG3uUuTbplkp6B6nf8dr3QiuaLuTnCJIDcXlQ5a1iR25ko/ecU3uJUmTWXJ8rhram/0IbBz5erwxvJWkPWOcw6PrxQc0i+C162WDfISHEsbYyuRmbu/O5laLKX50Rf7/l3bUesVfKILA/c+otqaWqPCVDBmP6KUka1QO1zrxqJovunyaeJqoYtx+cGdRTn4oNGCd4OK7M3vcSpYdVGmYqWLaRh0QkifSXGWkAQKXkkmx6kWxPZvascAE
- 2Bw7DJ3s
- Wto+2BkcZ3ItgRsbL83BLh322UZsAIO8BKUUggYKOcbRtYhs=
+X-HE-Tag: 1780292190-558942
+X-HE-Meta: U2FsdGVkX1/Xb4WlfjMRKaOBR75WZ1+axrbE/+ibx4n3JObCL//I1o2O1uIFirLcj8NOCvyaKHP5Hvd3Yd9lcPZWBJz1CcGcAVApb6r7pOryz+y/2nx0dJgyCnaBpM6fXZTrM1uw2EfgUbG4pOMj2n6aG9qyRH4JS+t+ta5j8YvQlmhu6UsAcmxuYXM/9EOLjbJL6EIsdOuik1VCAUcApgxUuSGNUftGYtpnBPnp2XQ80tYoFsafCisQxOB5qEN4xYH+Nfw0vKE4lobg7yYSDq+UXDDjUKbeC/3kU/wRun4mF4foKg9ApoVzbf6Shq/l8Epo/asFXoB0ztLGvRRUjGziRPpCI6Sa7WonvLYbh9oVR3DRbbfzwZmjGRuYFCyHHHKb7dKalYY34BxZWQnaJnK1NS1gFeb25IOulXryYpP8X+ItIXFogYvIhSkRzObDiTh8mF0lBmuYqWQAr49dJefr8z7fJF3QZ6SQVlijyJP7y+6MY5c8FnlYs1UevNqAyGh8nnRq1CamuozmXIA+MqjrTVMSQLOE0+3JixM+BJ1mJb9f9wsSGCnpV0mnLWGfznpyvAndbi2nSvCb3tlhRJG4BTNo4z6LscykN4X/NxjG5V+kCs0eN7bVI5h2GAMjnpxWsTs8U1m5MznoCIp7MURvliKuRNJZuAyFSXthT1aAhGVijZVCG1GRHtFUSAmodDztP+KHhM/nAIyYvXLyUnVOmwcg0oqAdTcQ8LySM43XvpJcUpD/3uXgIRfCsos3Powy2kx3iHctadqxTRYfrornx7Yqt7koevm29U73f0W6ANV7aDWuDfUxaxs3rHxqxTM2Khfwz3BkLgaQ5RImCk0KxQ/l4qSrUH34wSS+U2TOcLC2JbcuuWRFiSF5vFZ2bl8Wk1673qLKNulO1Ns3ss8p4clBKrOmCW05Qf3QtjneJPpnLgNZ1my07nd44sn9dGbhynuZimOoDS/sOYR
+ 5JYGNwaj
+ neqjZ8BRjA6cnoQ6GC8uSX5SdBXNZKplMP48MlEs3VXh96mF3lTDSp75e5S/xfnI073ZWt2KCCKpKG5yRwiku4C7hlcxMK1apPG8xOQSAe/yAL6j/w1f4iotu3OjTsBWZISBzqe7Q/FDFxb2IjtlH84lhk28gQPF25dpjvUi22tbolYzHJKKjCMlcHp3sFIqqqofu8wMHluWoXZDf0XTVhzLyLgB9Z2n7vkHQHd9IZ9ZDWxMAwNk4pj2VfUKbZC31FK0qLOQAZvaebq3Ii9/h6FKYZgLJkPr97y96T/OwvZK0DDHSSh/6Gf6gT3U3oPvNJUhu+qsQjLXOtca0RgiwNYSDhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,17 +99,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
 
-> > Use pkey_assert(0) instead of perror("clone") when clone_raw() fails.
-> > The old path only printed an error and continued; the test now exits
-> > via pkey_assert() on failure so it does not hang or proceed with an
-> > invalid child.
+
+On 29/05/26 9:32 AM, Linu Cherian wrote:
+> Hi Ryan,
 > 
-> Looks like clone() invocation changes in patch 2 belong here.
-> But is there actually a need to change ret = clone_raw() to
-> child_pid = clone_raw()?
+> On Wed, May 27, 2026 at 03:50:10PM +0100, Ryan Roberts wrote:
+>> On 13/05/2026 05:45, Anshuman Khandual wrote:
+>>> From: Linu Cherian <linu.cherian@arm.com>
+>>>
+>>> With FEAT_D128, a new instruction aka TLBIP is being introduced for the TLB
+>>> range operations which has an argument size of 128 bit.
+>>
+>> nit: TLB range operations -> TLBI-by-range operations ?
+> 
+> Ack.
+> 
+>>
+>>>
+>>> Add an abstraction level to void (*tlbi_op)(u64 arg) helpers to support the
+>>> D128 variations when applicable.
+>>>
+>>> No functional changes are introduced with this patch.
+>>>
+>>> Signed-off-by: Linu Cherian <linu.cherian@arm.com>
+>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> ---
+>>>  arch/arm64/include/asm/tlbflush.h | 70 ++++++++++++++++---------------
+>>>  1 file changed, 37 insertions(+), 33 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+>>> index c0bf5b398041..361d74ef8016 100644
+>>> --- a/arch/arm64/include/asm/tlbflush.h
+>>> +++ b/arch/arm64/include/asm/tlbflush.h
+>>> @@ -162,49 +162,53 @@ static inline void sme_dvmsync_batch(struct arch_tlbflush_unmap_batch *batch)
+>>>  
+>>>  #define TLBI_TTL_UNKNOWN	INT_MAX
+>>>  
+>>> -typedef void (*tlbi_op)(u64 arg);
+>>> +typedef u64 tlbi_args_t;
+>>
+>> nit: tlbi_args_t -> tlbi_arg_t ?
+> 
+> Ack.
 
-You're right. This variable change seems pointless, and I'll revert
-it in the next patch version.
+Accommodated both the changes.
 
