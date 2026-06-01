@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D45BFCD6E4C
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 05:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 283F1CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 05:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1C286B0269; Mon,  1 Jun 2026 01:57:50 -0400 (EDT)
+	id 622516B026B; Mon,  1 Jun 2026 01:57:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECC346B026B; Mon,  1 Jun 2026 01:57:50 -0400 (EDT)
+	id 5CB796B026F; Mon,  1 Jun 2026 01:57:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE20F6B026C; Mon,  1 Jun 2026 01:57:50 -0400 (EDT)
+	id 507D66B0271; Mon,  1 Jun 2026 01:57:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CC3E16B0269
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:57:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9897E1C1353
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:57:50 +0000 (UTC)
-X-FDA: 84830287500.25.D617D47
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1A77914000A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:57:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=HQh1rnhi;
-	spf=pass (imf26.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AE006B026F
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:57:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 08D7C1C0996
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:57:51 +0000 (UTC)
+X-FDA: 84830287542.17.442FA2E
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 91E57C000A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:57:48 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=n1GCqtM+;
+	spf=pass (imf10.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=chizhiling@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780293468;
+	s=arc-20220608; t=1780293469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hSFfhvzoChQOQgIIJG5v3NjnH7WU8ceJmhHARcctEEs=;
-	b=rUz2VsKbNreVmqWuM6rk9/d5lSLEhAH7HYDN9Tvpe3BqJ2TdqwsKXl11uDaMr/jDwWXdTh
-	Ol6x52vpDobUy2FBlc6EQXm9dqDR51CIXdXiztkjo9z52POoMcoQA85UUpvkuPcdb6UzXB
-	pdbrY4zGwi2gqIafw5XnvuyhhhNp+CQ=
+	 in-reply-to:references:dkim-signature;
+	bh=0JyrTMDTnIbsNnfvDIxSelJbEh2fWHCPQJttmJvmeJ8=;
+	b=vztvwDxpp64i0jWvpk3OHlwrvZlWAm8q586rErBUxqpWNYis8s02QNAkJu0W/8H+8qOKfn
+	EUu/nfnNZ9q4kJyfMQJGmWCtho+Q2A/5OGGXZsqNttSTP7ZNeQqPN+BxQ6xj52Eb102AqD
+	7rzd9WjvlxeyQcPGKivdFl6KeJhTEsU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=HQh1rnhi;
-	spf=pass (imf26.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=n1GCqtM+;
+	spf=pass (imf10.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=chizhiling@163.com;
 	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780293468; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780293469; a=rsa-sha256;
 	cv=none;
-	b=hDeZgpq3rxQWk8Fcr3VD3fnyuqVy91teDc2LH+aiJY7u/RGyKSTjkJaeJb/2TSLc8uT13t
-	1G4y0c+RiLk6Zq1hExv2+jN1A1k6+hyEItoZBFv6IpuAmFUsYeTgmyWzIqnPWMT+XYeZzl
-	Y+SNdj9GT+3n+XIyTzCiogRqAwoWdl8=
+	b=VKGee66v5LTWdAF44Ij99UTn26YOt62JbcyXFyd947QpJKYRujJJ8M+ahX9PyGEhrBeQQn
+	fwCN0aCLQ0EJfwzk0fkqe5x8uKAl+lq3iZ1rmTJQ0WBKO5az1UGxldh9y8dEOAFZ/qMTmI
+	I66UOjdrozIwWkN6EK/4/3g5RJZKg6A=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=hS
-	FfhvzoChQOQgIIJG5v3NjnH7WU8ceJmhHARcctEEs=; b=HQh1rnhiRosYsEScko
-	GkClTFquAuKP+Vh79FH9s2EGthCwz9V6MaOhQB2tX/5wFhrFQjJ565KBQYkPMy3a
-	+1/ckkRU5cUMXC45gK942ZQ4HdnVnAi6hpF719Fa67drlNBfIfnF/4te+WYqDEoZ
-	bY6j/Z8TL74u0/qa58UchjLI0=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=0J
+	yrTMDTnIbsNnfvDIxSelJbEh2fWHCPQJttmJvmeJ8=; b=n1GCqtM+SPutVhqGs9
+	QSVbCdEIenwGvdNvjIfuMibNyBBheCNf1CB9kzCk8tlTfsqnVB2W8ys9avUa+lZY
+	NxowsBqke8DleHKQk97LEWYdN0gI9ZqctkQjO6Spq/sqzNw0Vl61+bT4NLZSBbGM
+	2A1NfmExaubXy9x9ohk6Xc+vw=
 Received: from czl-ubuntu-pc.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3_7Q6Hx1qsb0MAw--.47504S4;
-	Mon, 01 Jun 2026 13:57:20 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3_7Q6Hx1qsb0MAw--.47504S2;
+	Mon, 01 Jun 2026 13:57:17 +0800 (CST)
 From: Chi Zhiling <chizhiling@163.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -67,29 +67,27 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Hugh Dickins <hughd@google.com>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	Chi Zhiling <chizhiling@kylinos.cn>
-Subject: [PATCH v2 2/5] mm/filemap: reduce xarray lookups in filemap_get_folios_contig()
-Date: Mon,  1 Jun 2026 13:57:01 +0800
-Message-ID: <20260601055704.167436-3-chizhiling@163.com>
+Subject: [PATCH v2 0/5] mm/shmem: optimize read with reduced xarray lookups and folio batching
+Date: Mon,  1 Jun 2026 13:56:59 +0800
+Message-ID: <20260601055704.167436-1-chizhiling@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260601055704.167436-1-chizhiling@163.com>
-References: <20260601055704.167436-1-chizhiling@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3_7Q6Hx1qsb0MAw--.47504S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur1ktw17Cw4kAF17WFy7trb_yoW8tFWfpF
-	4agas7WrWxJw13Cr1fA3WrC3WYk34vqa15GFWxGw1fZFn0yFnIkr17K3W5Jas8ZrykJF1x
-	XF48J34kWF1UJa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j24E_UUUUU=
+X-CM-TRANSID:_____wD3_7Q6Hx1qsb0MAw--.47504S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ur15AFWxWrWxWrW7JFykuFg_yoW8Kw1rpr
+	yfWr1fJryfJ34fAr93Gw4xKF1fXF95JF1UWF1ftr4fXFnYkw1Dt3WfGF48GrWUCFy7Zw1U
+	Jr17JwnF9w45t37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jFJP_UUUUU=
 X-Originating-IP: [116.128.244.171]
-X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC9wC5V2odH0BQSAAA3p
-X-Stat-Signature: mb6mj9ux41breuxn95xfh9rgibkqxzzs
-X-Rspamd-Queue-Id: 1A77914000A
-X-Rspamd-Server: rspam07
+X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC+B64VmodHz5EMAAA3q
 X-Rspam-User: 
-X-HE-Tag: 1780293466-685516
-X-HE-Meta: U2FsdGVkX19YUov14wIAcBFfbIWzLzwxl/HvhZ69v6ecxrag++zYIvIOCezDd3+CoBl9G1m+AKsC0/HaN0SHZZAOBuB4p3WZw9gYDGSqgD6E8uIXXdTCZh1nJgtT/EMLunJXcq8SOhbtS2jqETdjN2Gx0iA+JDpoxcyrFXNpm2p7cVlHFFt8qj3Gmdfe8ImYJk9bfz1WntdvNJvOmZ1zUM8Oxe/qLD/POYTfStds5rdj3rqFP1ChUXhV4rLNB2/XQ/a/n/e6c3qUu5xXoR+qmWiMTT+O5elXDCtVTCrszccUZbyHMBpurkyrBT8zUApLJWLwTVuqmWPQAwcIXoMdLRA3G4LSvt9JXuTPbsQoQ9Mx6Kbjz/GUdg6MvpfT1YSNFK9U+V6c3f8DSV6qvZJE60cPzmnnSrABP9+o+HOUDrk+tBkSLBASI+3LuuDJZlUahSivO7MQs9GyGR9rqXP2/gqjIebnJ9gTgT9gkI0Uea4hR3QZabFw2hXbmUF/VZwVzHWM1Bg3w3OUKyv+udYX96XFXLOTx4uOS5MxJhikIjcK1vUmBB/NWHnDPl6R4O/w6TEwYcwFob3oNHvk2P60MlFBpiQGlgg3blwr4/ZU9ldXMSFNwA6nrce+KvdzoyRFWDwJQb3KD6zJeHOkDfYA/3smbuR6/l/L3OO4GTCpoj7fzl1p23s3dh/GFwZs97JKidTmZfbwrGtns6n97RdQ+/KWYLyIsZMFR2ErzAO4tt0ClGMmbt9FMS0qDKd6XYu0hm1QtP5hxjzlNdqSh3xHOo/kwvOkodqxy0LvZuwal4s47bBSxjX+tzwC17IM5eHiNHOVWzEUFLgWcd893814j+wdAgllJH/761js4eE6LJpOITi+XtvhqUvNLta0wN5dVNxGygt4DEWEj0H59C3XkOI7pgTu09qE2IordpRynoXvDyp9jYxNpqefP3HuW3AalqmP5TCk2uHXU75iJ7v
- R5U0Rdtc
- zHQbvFr4hdFypH3bMNa3wmZm23fllNwFMCROotXuqE2+8/u3rLYRK6uQ98y1ehyvwfecXemzvIUgWN05MHX0Gx170F8/Opc0Nabmvd0Pb/GY5Fn/vY5gS8mMePeJK9/M9lMne7HFkWJ2OzYC3Liq+sJIPUvDVFhDKpnLPBPb1nbTDkUcDi7AMq+SidCFruom01BMmd9deEVEyUAhIyXpdOu4Jhj8j5ceulyM69IyJYJzS3E4S3uIJ8v8erY0/bcLrwgQVy0YAnMEAYkh59FWy8do45GRSd9OiolCl1ouqMAzblPUTkSCfPPT5Xl/oQugIo4nySVv9IclwOyPhTe9rfunPZbC80/Vec4kc3F0hR/ZhT8htq+CjpidwxC0LXwVNDr4k
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 91E57C000A
+X-Stat-Signature: 3b93ef9ie5gmr3fb7gzdragcnsaebnwm
+X-HE-Tag: 1780293468-854083
+X-HE-Meta: U2FsdGVkX1+BAjGaQt5Pd7JsvJG5gfI3qpHK92RIlg+H3BZMkYszlo+rwEsSBmyufUjnvqZC3w7lMG94WAWeQhNn14s9fhlaJEE+MNkPypJnE1lPeMQ3UMnIgD63MT+UkxhAkCSyEXRUmcyjGOCoQsOVPXRUNMrE9l4Ap9d0PcnWDT5owwCdR677xnRkUJ7UFBkGA23QuKUNO0XXwPILKSsBzoYzsnXvapKuZ2K9HxadCDnzcjIDvzmLsYb3x4rQ2scep2G0MVzFg+h8jIXTcCOhSA18Ph98Tp/XOTAO9n3WRCOjUavpbd90i3hv0+ae+1F7wK8T+F3Bnrh8KFbEHhMJEN1wsX7/KdphuDaEIRdQys7qVArxOElMPDvspqcqK9AmbKxSxAsJE1nRihmrbc53dF5HdT87s5+zb/LDiMLH1dQL99PqYIJo+oTrVZ9EjamvcAqxq/mroc9XtpnEC3prf43ks3YJVxCSOyTTCCAiojN+b3HH+u95pz0CK/SjVKP1+CVq1BV9p0GuuhEepj5s8suIyYgekQ/l1kn52y6TFIbdIOuolqFkIumcSY3Ha3+OckILyCcHLC7JYP46sqz/8BELbpgERd+GwUV0SW5bUqwI72e6vnyRrM1Pt4nXUYcf/eRRp1HiabTQQuU31vtruz9BNcI1s/zr3JzT1nRmAHiKDOgIFF8tWx3mGEs0t3tA6osaMiimLKCvruJhCIi5EopIXw2xZlwR/esHPtryPFUYWanMxMjqKXJ0/0CQwpwJbcfJsPHnhvaI9HVhqx4XDq/WcS1wVHhX7quX2KmlJu53xb7weo59L+6TdmVgDCfvDCzlndKSeFqlfmO4KYIvSzS9KMKUJhlwRxnmsJgaHOkesbhvZulZGMKfabAknvKT0RcUMDqKS/U9n/VjFBOxiHrHHJ995aP3SCpgwD3HpDOLcIl3aBCFbHdBxi4dqW+OjCV+i/55BOL2yHN
+ fsYAz4b6
+ isIEhnzTbUkkh1dp4c63cXX1XUIrACs8zhyref6KH6TgT1zsozBwrJebJrEvshPRPWfOHacXfz7J2H316bIJ03n1OX5drn006YY9mmwrYPkFBqEBro6nDYdQQIiXCSBaWmtmKoWUcIvMEhGiZxGmG7m0aefeD+C/Wr8EK3KGfpbk1krYJoJQSBfzku67dUoCwP7kwblWUYi46ttbCMo7G9trNbQVV9mjMaQUEQtQ3WReJk5BSED8qdErpYMMQXW3uH+V7P2lWpYvLEfWWUT0F4oIqfYji8r17lbjWCqkz4TrCgxPCccY/lwhWddanOVWx3Dud7NUC7t9h2An8V6JTbvzn7Umi/oXXjB3YwMCCKQZCEvkg0JjiRnM15OOCmB4ZCQjq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,92 +97,56 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Chi Zhiling <chizhiling@kylinos.cn>
 
-Apply the same optimization used in filemap_get_read_batch() by moving
-the boundary check from the loop condition to before xas_advance(),
-avoiding an unnecessary xarray lookup and reducing branches in the fast
-path.
+This series improves shmem read performance by implementing folio
+batching in the read path and reducing unnecessary xarray lookups.
 
-Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
----
- mm/filemap.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+Performance Results:
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index d54450e529bd..6bc717f205a7 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2258,11 +2258,13 @@ unsigned filemap_get_folios_contig(struct address_space *mapping,
- 	XA_STATE(xas, &mapping->i_pages, *start);
- 	unsigned long nr;
- 	struct folio *folio;
-+	pgoff_t next;
- 
--	rcu_read_lock();
-+	if (unlikely(*start > end))
-+		return 0;
- 
--	for (folio = xas_load(&xas); folio && xas.xa_index <= end;
--			folio = xas_next(&xas)) {
-+	rcu_read_lock();
-+	for (folio = xas_load(&xas); folio; folio = xas_next(&xas)) {
- 		if (xas_retry(&xas, folio))
- 			continue;
- 		/*
-@@ -2270,11 +2272,11 @@ unsigned filemap_get_folios_contig(struct address_space *mapping,
- 		 * No current caller is looking for DAX entries.
- 		 */
- 		if (xa_is_value(folio))
--			goto update_start;
-+			break;
- 
- 		/* If we landed in the middle of a THP, continue at its end. */
- 		if (xa_is_sibling(folio))
--			goto update_start;
-+			break;
- 
- 		if (!folio_try_get(folio))
- 			goto retry;
-@@ -2282,30 +2284,28 @@ unsigned filemap_get_folios_contig(struct address_space *mapping,
- 		if (unlikely(folio != xas_reload(&xas)))
- 			goto put_folio;
- 
--		if (!folio_batch_add(fbatch, folio)) {
--			nr = folio_nr_pages(folio);
--			*start = folio->index + nr;
--			goto out;
--		}
--		xas_advance(&xas, folio_next_index(folio) - 1);
-+		if (!folio_batch_add(fbatch, folio))
-+			break;
-+
-+		next = folio_next_index(folio);
-+		if (next > end)
-+			break;
-+		xas_advance(&xas, next - 1);
- 		continue;
-+
- put_folio:
- 		folio_put(folio);
--
- retry:
- 		xas_reset(&xas);
- 	}
-+	rcu_read_unlock();
- 
--update_start:
- 	nr = folio_batch_count(fbatch);
--
- 	if (nr) {
- 		folio = fbatch->folios[nr - 1];
- 		*start = folio_next_index(folio);
- 	}
--out:
--	rcu_read_unlock();
--	return folio_batch_count(fbatch);
-+	return nr;
- }
- EXPORT_SYMBOL(filemap_get_folios_contig);
- 
+fio --ioengine=sync --rw=read --bs=$1 --size=1G --runtime=180 --time_based --group_reporting --name=seq_read_test --filename=testfile
+
+| THP disabled in tmpfs  | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
+| ---------------------- | ------------ | ----------------- | ----------- |
+| 1M + normal file       | bw=11.5GiB/s | bw=12.7GiB/s      | +10.4%      |
+| 64k + normal file      | bw=11.0GiB/s | bw=12.3GiB/s      | +11.8%      |
+| 4k + normal file       | bw=3826MiB/s | bw=3849MiB/s      | +0.6%       |
+| 1M + fallocated file   | bw=23.8GiB/s | bw=28.6GiB/s      | +20.2%      |
+| 64k + fallocated file  | bw=22.5GiB/s | bw=27.3GiB/s      | +21.3%      |
+| 4k + fallocated file   | bw=4655MiB/s | bw=4680MiB/s      | +0.5%       |
+| 1M + hole              | bw=24.2GiB/s | bw=28.6GiB/s      | +18.2%      |
+| 64k + hole             | bw=22.6GiB/s | bw=27.6GiB/s      | +22.1%      |
+| 4k + hole              | bw=4652MiB/s | bw=4489MiB/s      | -3.5%       |
+
+
+| THP enabled in tmpfs  | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
+| --------------------- | ------------ | ----------------- | ----------- |
+| 1M + normal file      | bw=13.7GiB/s | bw=13.9GiB/s      | +1.4%       |
+| 64k + normal file     | bw=13.5GiB/s | bw=13.5GiB/s      | +0.0%       |
+| 4k + normal file      | bw=3833MiB/s | bw=3859MiB/s      | +0.7%       |
+| 1M + fallocated file  | bw=24.9GiB/s | bw=34.2GiB/s      | +37.3%      |
+| 64k + fallocated file | bw=23.0GiB/s | bw=31.4GiB/s      | +36.5%      |
+| 4k + fallocated file  | bw=4710MiB/s | bw=4655MiB/s      | -1.2%       |
+| 1M + hole             | bw=24.3GiB/s | bw=34.5GiB/s      | +42.0%      |
+| 64k + hole            | bw=23.5GiB/s | bw=31.1GiB/s      | +32.3%      |
+| 4k + hole             | bw=4690MiB/s | bw=4647MiB/s      | -0.9%       |
+
+
+v1:
+https://lore.kernel.org/linux-mm/20260520101538.58745-1-chizhiling@163.com/#t
+rfc:
+https://lore.kernel.org/linux-fsdevel/20260515094702.1092355-1-chizhiling@163.com/
+
+
+Chi Zhiling (5):
+  mm/filemap: reduce unnecessary xarray lookups when read cached pages
+  mm/filemap: reduce xarray lookups in filemap_get_folios_contig()
+  mm/shmem: introduce copy_zero_to_iter() for large zeroing
+  mm/shmem: remove page-copy fallback in shmem read path
+  mm/shmem: optimize file read with folio batching
+
+ mm/filemap.c |  46 +++++++++++--------
+ mm/shmem.c   | 126 +++++++++++++++++++++++++++++++++++----------------
+ 2 files changed, 113 insertions(+), 59 deletions(-)
+
 -- 
 2.43.0
 
