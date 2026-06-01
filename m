@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5470CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:53:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D00A5CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:55:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EE796B03EB; Mon,  1 Jun 2026 10:53:22 -0400 (EDT)
+	id 1CE576B03ED; Mon,  1 Jun 2026 10:55:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39F386B03ED; Mon,  1 Jun 2026 10:53:22 -0400 (EDT)
+	id 158056B03EF; Mon,  1 Jun 2026 10:55:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28E4C6B03EE; Mon,  1 Jun 2026 10:53:22 -0400 (EDT)
+	id 06E346B03F0; Mon,  1 Jun 2026 10:55:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1630A6B03EB
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:53:22 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B51B540206
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:53:21 +0000 (UTC)
-X-FDA: 84831637002.04.A537C38
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E67466B03ED
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:55:07 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC82B1C0C2B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:55:07 +0000 (UTC)
+X-FDA: 84831641454.26.690BB19
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E65F040014
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:53:19 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AcDv7JBX;
-	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1FB674000E
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:55:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dWA01ekr;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780325706;
+	b=gPIRmLYVSIrlROWeFns7JP/hIf1x8o7GOPA6JYHLGX7HHeEAtk4kT4wtbwkdtXGH56BzTJ
+	ftm9QB7ukPNcBU6ASnLgHyclu+jzQ5Oq2zUMfhvkx+nXtqJCPDPq7QSAmrLsnynWM/8uK1
+	dT9MUd3oE0ZMqZha2xLf1SPWSTIbwE8=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dWA01ekr;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780325600;
+	s=arc-20220608; t=1780325706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xiQUMkR7UOdZhhl/sVNZBEvY/qGg1U4+w0VidMXvdpE=;
-	b=su9azNhL19N/PwXGwsJ08AhON1aXh1gSORlKASI8K1Vhx2Hm/O4k09D59Emk5OSfWTdb5t
-	bgj3UmpEhagvOxO6iXWJBSZF4NI2FWEuU0rhSB+yhk9ohketRHB5agoTrVMrY12L5TRP3h
-	2HweY+rBEh7CLOaOt7XzB4CtEC8D1/I=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AcDv7JBX;
-	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780325600; a=rsa-sha256;
-	cv=none;
-	b=hEiCcEXp4QY3KsltGwNYTLjEqzGUQI59UviYttN/FDg9XJDxeZBVQpb79cMQaj61ButgqJ
-	y+GHTzynr3VF18tQCJbTqJ86bkFd1CzNwdNzkRipvXD6X1v9mLzifV6KjDDO09fpF5WOuG
-	9jKPhvmWYhOFfCVyzDrZ6npUS4eLiVM=
+	bh=XG5RfpJwti7dylwLwxXSrJ1QM98QSD9PaVrRVudv0Hs=;
+	b=kTUAvKHzApenGlYoJkPZpIfRkbe8yv0XJNK9RK81jcZzvhzAV7oVokljZ94LFx/qseBJyf
+	/R2okYIC1qB+EZNZG0i/IE7Lo454nHZDkEGgOiJU3pliDK81NZxSM4xBA8Zpsi0AN+KLuZ
+	x1l6Yg9BDEzq7O25cbQ5BvMf6Q7r4ZY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 16C524427F;
-	Mon,  1 Jun 2026 14:53:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8751F00893;
-	Mon,  1 Jun 2026 14:53:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 42EE242DFE;
+	Mon,  1 Jun 2026 14:55:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB751F00893;
+	Mon,  1 Jun 2026 14:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780325599;
-	bh=xiQUMkR7UOdZhhl/sVNZBEvY/qGg1U4+w0VidMXvdpE=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=AcDv7JBXv1WuUyybHXbNhCxJc3oOpdXhk7ixtIqrNz429V0cBKGsHpoNWlfy4KzNV
-	 nz8uVF2PWvWVekKVwtrkdawEeGIq7I45cAyHLWU5Ar18hskeNTHkZniqkGyz3lCz3K
-	 C5w697+eSrqpqovKTdEYhxc2J5Rp+eir44635M31NU8/7+pHWMyROGdifDECzq0vER
-	 VUeMbXWYK2FMmSOT3l3h4Ufkj8AmUpvB7jSh7t0fjCSmfFKHDzOFTvCIEADY+VeMiz
-	 OZU4kURbqF9inCO8x4Cd5dc8gU3ou4/UcaTPeo0RhhK3KribGsy3gSYF6MfQqSe3lA
-	 HM+9ctma9YcUw==
-Message-ID: <264ec41c-dd1f-4957-9032-943fe719dffe@kernel.org>
-Date: Mon, 1 Jun 2026 23:53:11 +0900
+	s=k20260515; t=1780325705;
+	bh=XG5RfpJwti7dylwLwxXSrJ1QM98QSD9PaVrRVudv0Hs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=dWA01ekriVpl9LuiMtnhLBxVRpoAQnrdChloT38CbGJDV3n46PNj9lXgod7r7P1TR
+	 vQr2c7hP3Stey87+7vLgfxaJ/wkIuejsS8ukh+QSf9PPPc2fWoZ/5ruLFKkjHjomyG
+	 7YvvnFHrNssF9j31/K3Pvfi97TIV+gUiIDHQFeprTz+DFnSDwRX06x+qPEPn1goxFW
+	 7PwV4gJLoWq86CSywNOXMq2Tf9/vgQNtlwOgFPHxOEvdTqfkZb23MwWCrC0ScUl/uL
+	 4KqIiRiTTV9t+z/dqXuehSsauPWhwHy4sLZTByGhnifdJvJ6QEsIm9FVf9zfp0LQpB
+	 I26fQQqcCx6Eg==
+From: SeongJae Park <sj@kernel.org>
+To: Cheng Nie <niecheng1@uniontech.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	shuah@kernel.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v4 0/2] selftests/damon: fix memcg_path staging handling
+Date: Mon,  1 Jun 2026 07:55:00 -0700
+Message-ID: <20260601145501.116884-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <7E6EAB7C1BE04DEA+20260601090119.238457-1-niecheng1@uniontech.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 bpf-next 3/4] bpf,slab: Add slub-backed allocator for
- bpf_arena
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
-Cc: daniel@iogearbox.net, andrii@kernel.org, memxor@gmail.com,
- eddyz87@gmail.com, vbabka@suse.cz, harry.yoo@oracle.com, david@kernel.org,
- tj@kernel.org, roman.gushchin@linux.dev, peterz@infradead.org,
- linux-mm@kvack.org, Hao Li <hao.li@linux.dev>
-References: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
- <20260530011345.99342-4-alexei.starovoitov@gmail.com>
- <ca1bb6bf-f25e-44ba-87c5-e23e4939dbd5@kernel.org>
- <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
-Content-Language: en-US
-In-Reply-To: <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------FIHDtU9jdxgAacPQ0ZAKZUFE"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1FB674000E
+X-Stat-Signature: jubxbcrsm43h9b4b8wbp5ypew9rei61t
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E65F040014
-X-Stat-Signature: zon9gihgfdcatp5jwb13gq3k6joc4hww
-X-HE-Tag: 1780325599-677769
-X-HE-Meta: U2FsdGVkX18h+9nu/FRtqV0Q9/ogieTDrcxvmISk9xQXWYU+YVEUunFNd9sHCVGp0F9/JNumH7PynyX7Z9Q7OKf4eg9WIv+ZPEqtEaR5vL9Vl9xmEJANGMWjXTCLlwmMk5WpWMZNkqWE244/n1upwKiZH0T0nSx/CG1qo1igQ0jeViS0uPPvGgM0x3cjbqBkp+VQFxUAxZcYZa3wmifHp/r2pnnBpFlurc+kxo4KLl3XYxIqit9l2nSWXZvx8I5vGDA+4cmecQ3NClvMLPXD0QT6X4SBw17zkejJJ2VeOq2+nrjlPGTSufF6HsVZMIvoqYHh01YKHuBWiUR0BErD6umrNjl7ApVyBbbmK1IVuuyADFgYSvwcyYnwoRLjABOdz0WTg9BKptm79WdWfXzVPfqTaxJuPxMgLsHDBJS3xGuX/Mp1rTSwhm0MijhI2v7BTpZAYN5R9rUsXNbcZrFukIKlmSYPu/2qZTFPI81yP66XkTNx0GgeA/ZEss+DTfg4QfGld+rX+fvY+RcKUv0Ll/zF1DlNbfYOzK2HLhkbRH7yiQwY2MLTwQcXfuO+W8VdPHGSWpbMJf7FkMNCT/4rPqxLkGEU1ssvJBsTjmv13hJp+9GXYCtRm5iU9PRUGqEYiBK+f72DjJlEa4ymN6+QG2VgP3P5zLV6cPJ2qEBM4qcz4QC+tuHL5JyWKww9HVqs8dvL3BNMiHwkWSwDYgLpbRB5LnZ30FLe6ScXMGoQedDCJlHA6BL0p0JoHZS9M2DRORey9bxyMIC5hSPfKapWoP7fNV9gBBnRhJMO6Vs9bdLSU1+97bWFUuK83Q5iUJzZBNBHJNnqLKW70jtecRjGtcOqn1xNTIn3DQINyrqNQjedA0++uuQHZ0LtCY+2kenT8yg4vx8yeWIJ5dCJM6mvAuKLVbCKc6TZwQz9ZrJCuSRhFD3WKrWs8xUaWRrUjc2nTreG7VIYacfxSOP0+60
- xeB+jAed
- MzndUPfmms1FEppIpS1PsAVjqszPPV1f92WGK499/KtH263L0OFHF4U38dbPwSF9AGGhPkCS1Z2CPhxE/ak9888zU5wWWDIo69dBnLN6fLiN/UQF/x1qHjlrHNI2aVWuE+pTy3REGgN+1QT2LvQXBB6xkuPnyU/HfaO36MWsO7YvWFTSXJH6YQBgtG8n6E0nmMpQNX5mP056CBmCbr1jgGJ7s5vqILwfoYyPtTiLaYsnCOcMSco/ygdsnh0tk61nMNpq0HUH6Q/s8J8A5FappB43J6ZqwJ7iWE7EWO4rR4qPBFA6PkUTjNvSifwCaeZeJmpG1/EZq5uzqsbQGIVdE+xWQ6PCwlfTDpBFj6m7I6e5qeyX/EpVTdhuQ8x7I28DLNcxv3Ba7jSxQOCQearv0hXXlAcLqC2rVho653nHyFuzSMlCv+o7PrMf5p/BSFf48hwOHZUAQ7SroWAzyqPRCMa9m0OvVVuIP8MrsWYEjv1SlCeUP/FqLgq3fgE6yjUnHoAJfuIkLVlrBWouSMt3OJMCVWLDsYXYVrrsd0k1bzfVwMitcqGPJ5GQ04YPnOMKR9c5nyjCPL3tqCXNkXFvi3cXGPR1LdD1fl4JP
+X-HE-Tag: 1780325705-272311
+X-HE-Meta: U2FsdGVkX18OE5F10KPZLDSK0ZgfWbwnpczsi54GQtN/KuFyHM3j/suKwLjHlWUBo+6MBFbeQfs9o6HwB3L7fv1BssEVtvIuH3Xt6zeWogWl4xeZrNU5iGc4IvYnFsbWZ2gBElxwsArp6oVKXzKBGVj77BHZUsywCQ54qq2JNggmFhQusRXbS/3jclzAh7C04jJwEv7Ng/Ny+kGaIw0kslKs9xq8sRAeJUa9JmbS868c8HbgfNqrx3NlmpmT06tusTAijUUVc4TiNt1cIhHG0PhaVg5rk4wOB1xg7h6ikw0Y3NmQL9MOHpYJRXimDZGjV1Gj5bxir2ln7nJy0jKi2p4E/oo49E4ivEiyb6R7sNQ+cF/2V2/PVkHQcoFzt1Hep3wgiIIhpCXlyrhWniiP+7HJeV5o6kbkjQZKkSXYR2vwE9+tD3LGbcS0y4+yA6tlYi7/6VyDwBKJhYDRoPI50K+fmsd3bi33oLSLKhyUczJRKy0oJvqEHy9eKhPisESS0/Fzd+GGyMVvSByGJTmcqOhguTONS0/RtAdtnB/GXGo42YkztaRcummb1oUWkbfO/qL5f3iHi9ygfpdCuW88LQbw2j93wxwmRLqiMpMxHTldsUqAaQbkyk3eO2x0D0e6wkiAJvl7pEmhBudUfI46eRqMye7d4OPAW5uWL2UzR2vfGkE4zLiFVRCKphS8Xciqp/VERRZcZ8KLdqtyjn/j8LVfRJj4saujFirklrk+lCj2TH03wjJKIZJo4aMtmS6vMlGX2UrYakJyOCLlLd7u+OMO7MXY6Cq0EVU+Xhs03l8ogoOjSMmoFqIzqXMpd9hxGKCkgxLD17kwfTyflJlQCPlNHBpe5gMxp5jKE+KYP4zuJFq8jb+BBsQob7U+h+Q2MKUXcahnH+dAsEz5+HmJGWr0nCn8RCEojr81CpJqskXuY1jegOgsdeuG7KHTFVwEXkqstVr15Y91p55BM/s
+ 5X5R0iuN
+ XlRnTHz1DhTykVaB9IwZ7dHf5LolJTWfEFLV6c9fFcF8fL9guZ/9zBDPn8d9Z+qG8L3q2t+5dDZ1gEkJvbQkC9lecGPAvmQRjl1tVfFoczwUkXthxJ5LwgSAZMEiAlQx6Z4ZFuWREc04ayIx9OTjxY6a/tMUkM1ZhA6hFok5LIVugVXbIYEGSid8pmGaDMgcy3ewMys4cT6ZVz5mcoXsOky3vM7B9ID7x2Jp/VQdwMMgwO0cKnAAICFYku8Whhqzbn3HUoI61A07uhfgGChnnxbKTxIqay2RltzXmlccbDxlvhqziEt+2qSYXoyW9pj8kc8ISH7xkGiBBgHtR8aRBek+iy57bY1UH7d1aRbjHtYAEw3RCI4mAW80wnvDmTML7F80C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,66 +95,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------FIHDtU9jdxgAacPQ0ZAKZUFE
-Content-Type: multipart/mixed; boundary="------------RIxoiKPUGgqRDcEnXTMRgjKn";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
-Cc: daniel@iogearbox.net, andrii@kernel.org, memxor@gmail.com,
- eddyz87@gmail.com, vbabka@suse.cz, harry.yoo@oracle.com, david@kernel.org,
- tj@kernel.org, roman.gushchin@linux.dev, peterz@infradead.org,
- linux-mm@kvack.org, Hao Li <hao.li@linux.dev>
-Message-ID: <264ec41c-dd1f-4957-9032-943fe719dffe@kernel.org>
-Subject: Re: [PATCH v2 bpf-next 3/4] bpf,slab: Add slub-backed allocator for
- bpf_arena
-References: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
- <20260530011345.99342-4-alexei.starovoitov@gmail.com>
- <ca1bb6bf-f25e-44ba-87c5-e23e4939dbd5@kernel.org>
- <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
-In-Reply-To: <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
+On Mon,  1 Jun 2026 17:01:19 +0800 Cheng Nie <niecheng1@uniontech.com> wrote:
 
---------------RIxoiKPUGgqRDcEnXTMRgjKn
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Having a sentence for the cover letter would be nice.  E.g.,
 
-On 6/1/26 11:36 PM, Harry Yoo wrote:
-> On 6/1/26 11:06 PM, Vlastimil Babka (SUSE) wrote:
->> On 5/30/26 03:13, Alexei Starovoitov wrote:
->> I'm far from sure the masking is enough to contain all the bad things =
-that
->> can happen as a result of a corrupted freelist. Even the hardened vers=
-ion
->> wouldn't help much I think, if a malicious program can both read and w=
-rite,
->> it doesn't have to know the secret seed to craft valid freepointers.
->=20
-> I hope "a malicious program" doesn't have CAP_BPF, or am I being too
-> hopeful?
+'''
+Fix a bug in _damon_sysfs.py for damos_filter memcg_path setup, and add a test
+case of it in sysfs.py.
+'''
 
-AND (hopefully) distros that care about security don't allow
-unprivileged BPF programs these days?
+> Changes from v3:
+> - call stop() for cleanup without checking its return value
+> 
+> Changes from v2:
+> - configure memcg filter before start(), remove commit(), ignore
+>   start() failure, verify memcg_path staging readback only
+> - use print-style error messages as suggested
+> 
+> Cheng Nie (2):
+>   selftests/damon/_damon_sysfs.py: fix memcg_path assignment
+>   selftests/damon/sysfs.py: validate memcg_path staging readback
 
---=20
-Cheers,
-Harry / Hyeonggon
+From the next time, please add links to the previous revisions [1].
+
+For other readers,
+v3: https://lore.kernel.org/E4B88E7D4879D1B1+20260601074250.203583-1-niecheng1@uniontech.com
+v2: https://lore.kernel.org/4CDA28DC581FDCF8+20260529090845.1696845-1-niecheng1@uniontech.com
+v1: https://lore.kernel.org/406BD1BA0F6AE326+20260528081039.1192194-3-niecheng1@uniontech.com
+
+I applied this series with the cover letter sentence change to damon/next [2]
+tree.  If this patch is not added to mm.git in short term (~1 week?), I will
+ask mm.git maintainer (Andrew Morton) to pick this.
+
+Andrew might want us to repost this series after next rc1, though, as we are
+apparently wanting to make mm.git more stabilized at this point.  Andrew, pleae
+let me know if so.
+
+So, no action from your side is needed for now.  If it seems I also forgot
+doing that or you cannot wait for my action, please feel free to directly ask
+that to Andrew.
+
+[1] https://docs.kernel.org/process/submitting-patches.html#commentary
+[2] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
 
---------------RIxoiKPUGgqRDcEnXTMRgjKn--
+Thanks,
+SJ
 
---------------FIHDtU9jdxgAacPQ0ZAKZUFE
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCah2c1wAKCRCGXBN6rc5S
-1uRYAQD4ZwK7PnE6cNfZQnbEzHAyAQZF0oKc/wLME8pIDNGGRAD/alPo/FTKCWSR
-ThPaEsBmdazfnhU2b/OP6afE0MHz0QU=
-=Re/5
------END PGP SIGNATURE-----
-
---------------FIHDtU9jdxgAacPQ0ZAKZUFE--
+[...]
 
