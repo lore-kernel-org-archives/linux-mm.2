@@ -4,92 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4493ACD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 06:17:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA79CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 06:20:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80EAB6B027A; Mon,  1 Jun 2026 02:17:48 -0400 (EDT)
+	id 94B776B027C; Mon,  1 Jun 2026 02:20:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BEB56B027B; Mon,  1 Jun 2026 02:17:48 -0400 (EDT)
+	id 922336B027D; Mon,  1 Jun 2026 02:20:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D4C26B027C; Mon,  1 Jun 2026 02:17:48 -0400 (EDT)
+	id 85F6F6B027E; Mon,  1 Jun 2026 02:20:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C2186B027A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:17:48 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 060E1C1F38
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:17:48 +0000 (UTC)
-X-FDA: 84830337816.02.6D52A0C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5621220002
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:17:46 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZqucSbV8;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780294666; a=rsa-sha256;
-	cv=none;
-	b=RTkoh5mTR7SKgp+61P/9uB4n/K0sMWEPYbRcfKW+MrowHAKAwqJIyZ9nz4yaD2V5jZ5QIH
-	MDfjyXEcIqoEnGFtQzyf9R9ioiV7BJWh2N3d2EkHO/i2vJ4QHJ4EEoJFxffqo9hwOKojtE
-	BjLrlqwWXiWVxDAGZw9XvtGFKn6o5Pg=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZqucSbV8;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 785206B027C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 02:20:31 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 581C8140567
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:20:30 +0000 (UTC)
+X-FDA: 84830344620.19.54E480A
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2C3061A000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:20:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780294666;
+	s=arc-20220608; t=1780294828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DOaCBJszeEJinofNr2lzj3UzRWu6io6VMPCUTe2YiMs=;
-	b=nhWIAf1G1mIwsmww9m3qrJkZWBIpqDEYwzCoEUOtPs9g1wWbfiBBH1/5l8MXx0t7vkO4hg
-	rH0NhqtgMt7tMhl2/3yroywpPHV3clBdAuEvbZuw4QnAcRPVXrGKaCV9ZA9k5PKEuY2vyK
-	DSfg1BiQOd78BlnJ7SzbHDkUhKunyo0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 730C543046;
-	Mon,  1 Jun 2026 06:17:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32B71F00893;
-	Mon,  1 Jun 2026 06:17:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780294665;
-	bh=DOaCBJszeEJinofNr2lzj3UzRWu6io6VMPCUTe2YiMs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZqucSbV8hFlVZ1MlIw7dKHjWn+WTilN3Xvl4/QRQAicoAXfqKiwJEaB0smexjQ5Na
-	 3HCDHSfMgenQ2mhbn7F6O4N7ua35jZPeeISQtY2htw8RpVwzVtCnIqIHMoUVN4liUa
-	 RkDR5eoW40yD1upA4fr3/UVYWAV7SkKbCYGiS9MYnI/QxVIUcRSfOIjWEHPZQFXdEA
-	 XEjabGKAKWK+gRWlqxuMRwO/yVoWxD8qyHBhpn5MliqsJxuREAD8/Ntde/H9CKT4Pq
-	 MrjUTxhmbCdTKMkr2447yZF22Yo9TF4Hy81fHgOnphG21+3oMIG0QyZ0tSPFwfZaty
-	 +pyJJn3exK/HQ==
-Message-ID: <0dd720f2-7732-4801-85d5-4593e90e8cde@kernel.org>
-Date: Mon, 1 Jun 2026 15:17:33 +0900
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=Cc8PayjFYXrES4VvrLBjQbjTBioUYTqUhibROs1czcQ=;
+	b=U+3VvSaoRKHpnwI2/woCrdKPrYMRGz8V3k6OyS79R/Mx12bbrXQmszfzOBUBSMR9H94xph
+	rYkqyHd9vwnkDWzp0bjtI3mcrT6G+NlSghV1d4VOEhIopDPIUS5ZxcR6Vm4lljRjO1Tb2J
+	nONsoWQagSSh8FJ2+5ocJwH+pWmVY/M=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780294828; a=rsa-sha256;
+	cv=none;
+	b=WVgv5tfwJOw17cHtZju4BcToWi+12J/1C7o69cf9n5vtoO8Lztbf1O7M/f+cTNbODLUktr
+	yN8p3XtK5ruB30TC+GMeF42NcK9gUHVFxLwGrTKII+ML395eRRHqe2F6K2zWU89L9PKnxN
+	93qdK4b5k99Vhr7MMs49+S+DUnNGSXw=
+X-UUID: f5ce4aa65d8111f1aa26b74ffac11d73-20260601
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
+	GTI_C_BU, AMN_T1, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:c09750be-4d5d-47d0-ab43-158f09b2c832,IP:10,
+	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-15
+X-CID-INFO: VERSION:1.3.12,REQID:c09750be-4d5d-47d0-ab43-158f09b2c832,IP:10,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:b95280df6f48efbbcc9c4b1867cf65a9,BulkI
+	D:260601142020HHSVIJTN,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
+	850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,File:nil,RT:nil,B
+	ulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR
+	:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: f5ce4aa65d8111f1aa26b74ffac11d73-20260601
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1611578840; Mon, 01 Jun 2026 14:20:18 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: [PATCH v5 0/4] selftests/mm: refactor pkey helpers and fix mmap error handling
+Date: Mon,  1 Jun 2026 14:19:49 +0800
+Message-Id: <20260601061953.696844-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] mm/slub: introduce helpers for node partial slab
- state
-To: Hao Li <hao.li@linux.dev>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260529035120.81304-1-hao.li@linux.dev>
- <20260529035120.81304-2-hao.li@linux.dev>
- <5ed81b4a-1d18-4535-a18c-1bb31969ae78@kernel.org> <ah0VlxGBk11LRg53@fedora>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <ah0VlxGBk11LRg53@fedora>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------54aSwY6HzRt0JvxlxSoZOFQO"
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5621220002
-X-Stat-Signature: i85u593iabup633wfih9jb91h1kafr9k
-X-HE-Tag: 1780294666-430093
-X-HE-Meta: U2FsdGVkX19Vdn0pgf+VqJU1HVR4jM13xdyj0bztO5TLBT+5937n2f+f2miDtFcK9sLo+Dr9t7p7a6Of/+s7KDpVHS+u8PpUvnQeUcK3IdJu8Z9QUOA55TdcjuZLxrGCnkBMwUOqH+xZX5JRGUoCJc+GpGjq+P2HILswxoyx2PxqTTVu8ExbH3Vw1u4s4begq6wVGU8sZP+KdtAt0lH7YcdAVUAr0d9rS/Hdy96VZTgMpxi6UB/7ruCwQGVnguZql3FMY4HOoAzVgsNJC5v9aSFc3jKK6nQLJvm7TrvMZ+D175Z9Y1OgwScMUYDIPLk6z6+5hbQzzDtMKYalbGA2DOTH2YW5ftbn1vESiF+DQbTTV48f7LUWkvEEb8lHrLna+bcKtv2UqylEr/8pEOaodjYig23whMbor5/buE7cqO270paqG3E3XFUTK/Hgf7n1b3F+P8zz+paYnYMMxRXJkCoBCUJAspKi0opurtDbNtDQub5deaNg4nI9WNlNNYWJMTbbGbDaZ9QyfipAqWBmFvhAtw7xGSqTgypUOV7B60B0TUr+qxZWOBFnEe3cGk0+Uw/ItvubNXBEtwawRsLBXb06bh7AEqiFqBt43Z7XGGQO5tEXlg5QF/bf9b8e3FAp2VU94ZWcKG1WBjOm614SNfE+kCz89lowLxrw+/laRx8yX+rLNlNjtmGX/7jKbImxfyAt388ZrnMh1b0JB6LNq9xbi5ggSl+7Kw7o/6Xpr6SsdDhct5YV+xVhlZZ6JkxXi7xGo3u4yswQSMGdgqvKtx4ZCdOJND7rjjmFUkCAwGnBltWu6Vm3X80qNHhxZJLSf/PWNSX+1mQ0t8TRJC5rhRxLAfkSFBz55XYGv2xBSanEl7KANZqPWMbn2vADQUmxD22c1trOlcqrBbSCvvAYLZVklMXN1QWpV2NLO9/aIIu1jIAQDjn8gg1eNtT2aHFjtedpvnkJtnCuO2wQFlr
- Ckkrw1iD
- yx4Rz27RzVeAgzHSeZhqwru/TbLj/jkMf44JrRHysYJwTCYlNsYokgPWY1JeFVf8OTDCsb31SzLL/6IPiRH263b/2t5YH7mXHUsQscGHsvArCcUG9XVHrft2oOBePqgnW9+Zt8TM5bo9/MlLMR/dVQE2QE3nfYY/oE176mx9qljc8/GsLnwXNU8wpXkD9k3qMsBF1c9Jws2LOPxZmtkyZNU41/otFCt5EhJfoZxsJYJGQJB310QYEBcvaZEH5EbLuSGdu+yWn4Pjvctf9iad8aky8EQA8uRVL73ztN+3y+fgTO2Th22amabZAJL93gcBy5CostAqtIooNCikiOX3epm5QOjjmS0qbSjvpNuzb3IAcJIRUG1K2QUNWuDeAluwHOV2l+R9V2WYoDfq6qJ5hiZda9aBWexpV6iQCq20uMVQzDJmYvLm0VATU2O8xg/qjzJBKZLsKCuhFStY=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2C3061A000D
+X-Stat-Signature: x7tb5hnm1kqh3rzyt4y4e5wdtaw37a14
+X-HE-Tag: 1780294826-508513
+X-HE-Meta: U2FsdGVkX19nBb+AS3g8GlV08Vcr3Oqi+ysQLiyzur9mCJk98HQxIxdPzGCekfo3g/CuWmpbf2yi5OKbjXMxdmfwPEY6+ZhqT4ejQuby415sofFVaXVAOdV6p9kVz7Ha/LfuVenpRK7pbOPNz6FXhOaj93jCkfRb1l6hQOIueaCfD40UUK8UiMvjpooUQzba28jXo6tWqvpjo5HeiwcFDjQBV22EmhT7llp+MGYRv/6gD8FDb8koxAYGdbnyZlUaIjXxXZjwSbarc0YcOxm/mdk+7BadJg5oe/rIlKylVfd8IfHYSP9iKCISYSElmx54Bu/BT61bBAwjSOp18QyJ/mX8JFNIstzQEiOLwOG6wQ4NTMnoUtNHh4BxLapnvnTHqB1+nk2+kNKsc/s2X5eub53F5Iq+4pYp9GUCaKvFQx3n64a7OjcX+JzCYqEu3DQ3La71F5OOOaXR1XAGcLtEHEvzo6DLgC4/+dYa8y+kS7D5jKqVs2KE7WsghEjNh1vnHYIynAMaJN8lixvBGc/1Uo5l+2VtAzDcB2c0U9QetYhO0N8x4trLcVlMiImhRuKtD+o0LGNNZH+y4IZNjDaK1XXDtf4sVxajB5NI8S6N6QOkaGMeU4X1Z/p6Y+bNj3BzHahxZU++bN9s5Yq+eX2d0y2BaGNPK62DMRaLaCqkR2k/47L/cb4LLVnC2L9K0d3bfU96V91rrZX6Ak6bG6EC7T+9GM6WkgSEmNgHyHZK2bud9m7pfqWzW3esTCnOeCMyK3w104cDai23gSe0DbMhGldI3sL8SgXJaDSnpjmiGB1pSTi9pJmcx19jTOIjPFOJJwuLDoIgXmIENzp+28V38PCdq47tHOYxCqA8Ki1pI2mW8LkXbjgRoPoEXAGzizb/R2vSnTmpRywQHY9G+qWVAc6NWn+hwXRJAUsaWhKOq8b7NA92N1IXVMYT++9innIeR01HwpZLWVaWEi+4l5A
+ tY5kJP+8
+ DqxCymjec+O1r1Y1aDTWYPNfk7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,80 +112,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------54aSwY6HzRt0JvxlxSoZOFQO
-Content-Type: multipart/mixed; boundary="------------10OOyuURfKZOfOnV30ucBNtn";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Hao Li <hao.li@linux.dev>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Message-ID: <0dd720f2-7732-4801-85d5-4593e90e8cde@kernel.org>
-Subject: Re: [PATCH v3 1/2] mm/slub: introduce helpers for node partial slab
- state
-References: <20260529035120.81304-1-hao.li@linux.dev>
- <20260529035120.81304-2-hao.li@linux.dev>
- <5ed81b4a-1d18-4535-a18c-1bb31969ae78@kernel.org> <ah0VlxGBk11LRg53@fedora>
-In-Reply-To: <ah0VlxGBk11LRg53@fedora>
+The main changes in this series are to refactor shared tracing and assertion
+helpers into a common file, unify both pkey selftests on pkey_assert() and 
+per-test tracing for consistent diagnostics, and add missing mmap() return 
+checks with MAP_FAILED used throughout for readability and consistency.
 
---------------10OOyuURfKZOfOnV30ucBNtn
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Hongfu Li (4):
+  selftests/mm: move pkey selftest helpers to pkey_util.c
+  selftests/mm: unify pkey sighandler selftest assertions and tracing
+  selftests/mm: use pkey_assert on clone_raw failure in pkey test
+  selftests/mm: add missing mmap() return checks in pkey tests
 
+ tools/testing/selftests/mm/pkey-helpers.h     |  4 +-
+ tools/testing/selftests/mm/pkey-powerpc.h     |  2 +-
+ .../selftests/mm/pkey_sighandler_tests.c      | 69 +++++++-------
+ tools/testing/selftests/mm/pkey_util.c        | 86 +++++++++++++++++
+ tools/testing/selftests/mm/protection_keys.c  | 95 ++-----------------
+ 5 files changed, 131 insertions(+), 125 deletions(-)
 
+---
+v5:
+- Use ret instead of child_pid to hold the return value of clone_raw().
+- Make tracing_on(), tracing_off() non-static.
+  Remove cat_into_file() declaration from pkey-helpers.h.
+v4:
+- Base changes on top of the latest mm-unstable branch.
+- Split the first patch into three:
+  patch 1: move pkey selftest helpers to shared code;
+  patch 2: unify sighandler selftest assertions and per-test tracing;
+  patch 3: use pkey_assert() on clone_raw() failure.
+- Use ksft_exit_fail_perror() in main() for mmap() failure.
+v3:
+- Use pkey_assert() for remaining sigaction() and clone_raw() error
+  checks for consistency.
+v2:
+- Update commit message
+- Move shared tracing and assertion helpers to a common file,
+  replace assert() with pkey_assert() in sighandler tests
+- Drop assert() from main() in protection_keys.c and add a proper error
+  message instead.
+- Link to v1: https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+-- 
+2.50.1
 
-On 6/1/26 2:26 PM, Hao Li wrote:
-> On Mon, Jun 01, 2026 at 12:38:48PM +0900, Harry Yoo wrote:
->>
->>
->> On 5/29/26 12:50 PM, Hao Li wrote:
->>> Wrap partial slab count inc/dec and flag set/clear into
->>> helper functions to reduce code duplication.
->>>
->>> Note that __add_partial() is called locklessly in
->>> early_kmem_cache_node_alloc(), but since there is no such use case fo=
-r
->>> removal, __remove_partial() does not exist.
->>
->> nit: __remove_partial() -> clear_partial_node_state()
->=20
-> Ah, in this sentence, I just wanted to clarify that __remove_partial do=
-esn't
-> exist. it's not a typo :)
->=20
->> oh wait, it does exist. Let's drop this paragraph?
->=20
-> This paragraph is just a quick side note to explain why __remove_partia=
-l()
-> doesn't exist. I noticed that __add_partial lacks a symmetric counterpa=
-rt,
-> which felt a bit abrupt/inconsistent, so I wanted to share some context=
- on why
-> that is.
-
-Ah, I see. I was confused because it didn't touch those functions :)
-Thanks!
-
---=20
-Cheers,
-Harry / Hyeonggon
-
-
---------------10OOyuURfKZOfOnV30ucBNtn--
-
---------------54aSwY6HzRt0JvxlxSoZOFQO
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCah0j/gAKCRCGXBN6rc5S
-1uFvAP0XfcrNFQCIz3fQt6P5mIFUpar5IMWnPdjiBh+wg9GzwQD/dJws5J1S+Hg3
-wDmGHJplNfTtjLoHpnYcWG4YYBPJzAs=
-=X0Y1
------END PGP SIGNATURE-----
-
---------------54aSwY6HzRt0JvxlxSoZOFQO--
 
