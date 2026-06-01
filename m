@@ -4,93 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE6F2CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:27:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C6E2CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:34:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E43486B046B; Mon,  1 Jun 2026 12:27:47 -0400 (EDT)
+	id 91E036B046E; Mon,  1 Jun 2026 12:34:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1B426B046D; Mon,  1 Jun 2026 12:27:47 -0400 (EDT)
+	id 8CF696B046F; Mon,  1 Jun 2026 12:34:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D58416B046E; Mon,  1 Jun 2026 12:27:47 -0400 (EDT)
+	id 7E6816B0470; Mon,  1 Jun 2026 12:34:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C362B6B046B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:27:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 70C841A0714
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:27:47 +0000 (UTC)
-X-FDA: 84831874974.25.FDF9C78
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 472EE14000B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:27:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WMJEz07D;
-	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 707EA6B046E
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:34:50 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 261C41C1A82
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:34:50 +0000 (UTC)
+X-FDA: 84831892740.30.DF3A36A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 65DD7180005
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:34:47 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=baGKUH2m;
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780331265;
+	s=arc-20220608; t=1780331688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZfdjQS/pFfEXuH7PG4C46cynqclz9ShkzqgbwkZu3z4=;
-	b=p2sb9TOppDf5+CJln/F22GawGz3tFCz31WqgrI6AnLdmu2Y08S1PD2knz/IDWRGMpd8G8Y
-	uMScl/fIncWBPkFgLffSYutg3/zLNI8lI2BAe0e4LmjqQiGQKnOHB3l9dpTumx4p+PudCc
-	4ojg/grn2Dh2xnf2S7iejT4LSkuRdGA=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=GvRWE2F6Kmj2JO/VhYzyDIuf7eJ6FjL7CjNR/ZQ+jKk=;
+	b=IOKJhjgVH6j3SN1MaJMrYa5/swziwQ2mJjWznQNwjfrhW+sy3fra3wvb+XL7AhfPySBIM9
+	1DwDizYWBauyTEyN3YoJg5L8eDaJNNYgseJIVp/1dig133brxgczohav80mSijv7lMeSVv
+	x+vQSRW4GEVarYiMoNWO9oOYCWLO1yY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WMJEz07D;
-	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=baGKUH2m;
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780331265;
-	b=CFJ6cNiSLzFu6Wm5iNvIM5Vc0u+IPMkAWJ7L3z/ekxX2nOos4pPD+afUfM5/lgwFb5zTQd
-	GJptJ6E7oRvrL3iQPj1CUVy9GkiyEX3v89EXtfc0S4Ci7ytv0Gql/fGCUebNGTUUwdACAs
-	bJiMeIY+6PW3qzezROyMzC0e3xhXa7o=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 724B4176A;
-	Mon,  1 Jun 2026 09:27:39 -0700 (PDT)
-Received: from [10.163.164.232] (unknown [10.163.164.232])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B684B3F632;
-	Mon,  1 Jun 2026 09:27:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780331264; bh=hJ83ANAMGKlfACSoWSYsWcwjPLWYlAw2gamYdgHqgfs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WMJEz07DJwD3lk5ISTRXSnfMF3sfA6pRzeWlr08F8XagPv97GNAxD2MAZl9OMNuRP
-	 BoT0SrgsqTTl3dWYe+5pf0unJowIew6wmKXwrQ85HegAba5PAZQGjiSzb6KPgmSicy
-	 FpnW7AIuja72LAxgvYaGRprOX1soQsCY6soI0LAY=
-Message-ID: <474a4ee5-a29b-4b8d-95c4-daaf7bf5aaf6@arm.com>
-Date: Mon, 1 Jun 2026 21:57:36 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: use correct flags for device
- private PMD entry
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, SeongJae Park <sj@kernel.org>,
- Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260601083044.57132-1-ljs@kernel.org>
- <cd8b6bb1-5c42-47e4-8773-2c301a029372@arm.com> <ah2rKKATQwGN_PHu@lucifer>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <ah2rKKATQwGN_PHu@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 472EE14000B
-X-Stat-Signature: nsjtrw6nhaahyfm1bruqik4ogmerob8d
+	t=1780331688;
+	b=l2s4eDs07nyMJmpA9nFGFnXXkDHajst8T1/E2YrURA7lRExp0HtTYD852Nvhc62wXz7zTs
+	dqKx1ISJV0wLIxs3/dGA0l0VI9XswL3P9O6IPskiJ52Rnvy9HjZT3FKBdjGLOFAur/vnNq
+	HiDgR7df14sx8nokzZoH0v2tATNW9yg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780331688; x=1811867688;
+  h=date:from:to:cc:subject:message-id;
+  bh=2H1DY9K3cwezU2kGbNUZ/1sCCWUbpdwrcvsfR1A4PTE=;
+  b=baGKUH2mCKjjBZ7Y5rTUo6Zj4vA0Tns6pH/3vexCh1YIMmU5F9PvT8q2
+   0rjya/wqkp8hV+j9dZKQpPzHyzcKwkOfBkYWeoUyYp1Na6D4Heu/5+dZa
+   pZEWHG8QH1pCh4y8EeE36v5JWluwFCw0b1iJFTWoxICyFbPjWTXFyU8DI
+   6jk/iNxrtdkFvAINVMRUEAvGXB4/chVfOkkjlm+AHvLO2n4W7L5bJ/b2v
+   k8oxB48LsEpk6Z/hoNelygJa0UUIGzgUOKh4y4HLX/ig77Ny8409fY4j3
+   TSRZqentD+L+HCEgfrM+sA2lY2SRVQ6u5Yp3DjS/gH4AGtdZHSKFLRdS6
+   A==;
+X-CSE-ConnectionGUID: mSSNNYmLTkW3nVQZVnU08g==
+X-CSE-MsgGUID: I9QcOY3yTAmFtTdU5BhVKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="106543562"
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
+   d="scan'208";a="106543562"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 09:34:46 -0700
+X-CSE-ConnectionGUID: pDOr7+UYSOWGM0VbsdpfOQ==
+X-CSE-MsgGUID: odw9bFdXS/GyOwGgzeuMrQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
+   d="scan'208";a="242573666"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 01 Jun 2026 09:34:43 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wU5b6-00000000AoX-21Xf;
+	Mon, 01 Jun 2026 16:34:40 +0000
+Date: Tue, 02 Jun 2026 00:34:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Thomas Ballasi <tballasi@linux.microsoft.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: mm/vmscan.c:6585:66: sparse: sparse: Using plain integer as
+ NULL pointer
+Message-ID: <202606020025.ZBQ7ncEa-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Queue-Id: 65DD7180005
+X-Stat-Signature: 71euj65zxw3z1tkrpeowhxuntmkogpcp
 X-Rspam-User: 
-X-HE-Tag: 1780331265-606155
-X-HE-Meta: U2FsdGVkX1+9gmTPbxpkBkAn+PVJQRVxrvk6XkgamXRuv7czQ1Yu/8iM3Bx/ggEIoBGod6CNfSb9RDIsP6IPfb0D5VG0N8aeLQhRhZA1NswvggjVH7INp1uc6MGyrsK1IEd/Cw3upTdGCqjzo/hhfoBA/BOtI25cyw5ev0Hi6HIJU3Bb2oOzaVNFcE8+fpm9ETj7d01j6eBQJA+sKLB5fAE2vGqJVZj8v2RVdVpRXZ66l6j1XIL7ZZi61O8muWnStTduFH7Q9l1ocKsmA7UEhN1BTdKfMWAjQ4TM4JXT/Qd5Y+2pMkVRpcdF1RsDjybEFv5Zn5r/RNo2PGErrVweQ0BX2trZsgKbWKR63L+mUjPbwFs48gi2UnzVRaypeoAGACvDQPyg67UKjLyBXvQ84bToOYmFLvtp9smWdbka9T83o2eAM0ndxisvVf775r2js2wIeQhbv1ekWGx/7rhDoWPOczsdeM39thySkzhgSU9l60mjR9K/O4eT1X2Whr9GvqCCP0WnlqK0xZCzpidicgOT+Fr4QBfuqRQOtRkUeb7iALuSd82E3Fn4gMG/YryltU/IlbBp8q+wd3p3V44xV8BBq9muD4mak7BwZ9BNlxKqjffkQVQrwKiEIV0t1vLGnM4RQd7d/7jv5mMnU0Lv5Idb9bjo6/G32i9VvPkJzU7KoOnkJI4t/fpS/pngEHZIPerArV88ckyRKSCGtjp46LNEBxgKxIf9icML18D8He10KkKfClwo0ubAnUhkBjjP8s3bCoRqUoPWlV9M1oQwQuJrksjnWCh+2dd4ecayu7IDunvAv7N4jGEIdjuE7h2jcFdV7PsyZu+k83gnL3BJbwcl8pS+snNrhJbC4I7K0zaS8ZHO02nRmlKm4H9n38ufNg4gWWmXrVFOx/nzCC1f/U8NXxmhxGOHlvQc3xA44yoRC4JknJejEF7oUcQ8gUT9G9d0n+cPSsmYpxX/Nv5
- yBmiI6JG
- pTmafY3uE937Crwt5YnQ0pRfQk5re1YJ3Yz9zyZGbIMCT7UWAl2UwdJIecBJclXqBBIseJfXJboA1eZs30mFrA/b5jWVf6v2n98BmcaAnnIAoIJ54/k7FDOk45Ki1AtcQ6F6MQKv8mGL3ABt6BzXAfH+0MqbDUcfACe8nXuDxJgAF3v1AFttLktLherkAisMMnmaxo6GZxfEnNceTs5F1ic2EGEKjKd6BB7FmxY2SL4zJAGuDIJYcveHTJD15OnGlwwIxxiJuUeePw+FwHwZS9O+4Ew05rgr8D8FuOxgfe2NJlGqi+NTUtBhewKruVPD/zkcVV8zCZ0CKIJqVTUg3Yqj4SZrxSaj9TUGcPzaKcFYHSEs=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780331687-36717
+X-HE-Meta: U2FsdGVkX19r/Rir8DU9hZfPjsV7JSdtCvU5SbKfJHd/rrKqAhaXr3p4m+TH09eumS6IOT+7Ta5kdGXEXw78qUj5+cs6dh0hJtiGyN3gim6vMDQ4+kEZOaFfKeg1mfpjxhxt6utwWH/74wGdNapAMattvMPZsm7sK+mJAMHk+XaaHuh6zLc1Mm+PYMbu8618t7q6q3Wmbrr3JYSBpw368rqhR1cQAkNelykTRlw4rmEK/Ev9vXNc0UUKO/Y3Vp9dIEVGcKS5bSOVNkeU5ZFu49VBAhRryYuecC4C82DhnjYIR+EWUJbdgNPnsNAzwDN9Uh3Alc87RiSZ3s0l/SUp5x069VnuL8IbQGqNJqFxerz0soLzUMqfTHQKJ07cYYMu0avZoP5OJ7i+DFIzsFZBRfFyumioTPvLJH+tv0w6lxJv+CZnwgQ1YPiyZ0X84v0BMU3JmrWnvAPtMhdQKBgWmcukPdhvbaYj1VXMEW1opb1WZll1DwZqBVYph4R+WDD7odrx0x0bOvr0dz/Au3mLUTwRgmG6yXiQ1addEyowDlMd5VVqqsxM07z+zERDCL/42eDo4C1V60MT9UmlZTlts5WaBzj5onJ4P3lBvs6BTGnejapIvrvzqukwlNQPasVqWi2VRh2oZAp9XLtqUIYCWoAB6WjBkOHk93rqkqVGf8Og74atYy5KfPS8VmIwchODrpevKASvkXyOzY+5YdDGmRNMg3JaZVj7Kwv3oisLrxDn65Sqqw7A1bZ0WbofqnYs7pxfqNUjIhyOiIGr+Md83JtHm2SJI2dDx9r9VyJcFWCmZNI22QA2zc0QDrSInc1hQkdSrS+Vmf+y5xsch8jDr60rVqj+z4jL98WEhUcEz68TFBrxhvDJVAUL8kIg0ezDMk4pOdp5eWYtq87b/FP2obXIlBYcbyXJ3/GSwqlW0SCWTqjrqVm9josd8kffzplVqUaXfCslEMko5ILlj8u
+ YcRMG5pJ
+ 2C+GIdvoOGOnC6XxrAx7pGiI8HUX+4dCRfRYLkZ0TyFScD+Gsts/nMyzNnbxIAPnle9rge/Kei/Y5W+/y3x5x+YwsxhOkcxhdQ1D3HHCuGpNRMAxJf9UIIeKUwihSTZJeICm6IfNS634wkVa6WptHlSJmkdjprMs83CmBCfJzHLb0/BF+4WWrwWmuo4EylM8Ocrz3gzn0995TpHeQ0JaCkB1d1RMyiXayOGdYIH0tHWR9rPeuy5o9sAg+lMjcdrkXWsCwcGkDK3J5aMmiEhksMAKX8/Sqik6pHKMh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,38 +102,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   e43ffb69e0438cddd72aaa30898b4dc446f664f8
+commit: 874a0a566ede40f3d6062cae8fe1022e616edd1a mm: vmscan: add cgroup IDs to vmscan tracepoints
+date:   8 weeks ago
+config: alpha-randconfig-r122-20260601 (https://download.01.org/0day-ci/archive/20260602/202606020025.ZBQ7ncEa-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 12.5.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260602/202606020025.ZBQ7ncEa-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: 874a0a566ede ("mm: vmscan: add cgroup IDs to vmscan tracepoints")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606020025.ZBQ7ncEa-lkp@intel.com/
 
-On 01/06/26 9:31 pm, Lorenzo Stoakes wrote:
-> On Mon, Jun 01, 2026 at 09:20:51PM +0530, Dev Jain wrote:
->> Sashiko continues to find existing problems :) What do you think:
->>
->> https://sashiko.dev/#/patchset/20260601083044.57132-1-ljs%40kernel.org
-> 
-> Thanks for highlighting Dev and to be clear I'm not yelling at you :P I'm
-> yelling about this aspect of sashiko... :)
-> 
-> So, this patch fixes a serious issue that renders THP device-private
-> completely broken in a way that can lead to memory corruption, and this
-> review comment has nothing to do with that :)
-> 
-> So TL;DR - maybe as a follow up?
-> 
-> IMO there's _no_ obligation to respond to stuff like this, in the same
-> way as somebody in a review saying 'hey here's this unrelated broken
-> thing'.
-> 
-> And this kind of thing should _never_ _ever_ block a series or patch.
+sparse warnings: (new ones prefixed by >>)
+>> mm/vmscan.c:6585:66: sparse: sparse: Using plain integer as NULL pointer
+   mm/vmscan.c:6589:58: sparse: sparse: Using plain integer as NULL pointer
 
-Yep I agree.
+vim +6585 mm/vmscan.c
 
-Thanks David for bringing up the link.
+  6551	
+  6552	unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+  6553					gfp_t gfp_mask, nodemask_t *nodemask)
+  6554	{
+  6555		unsigned long nr_reclaimed;
+  6556		struct scan_control sc = {
+  6557			.nr_to_reclaim = SWAP_CLUSTER_MAX,
+  6558			.gfp_mask = current_gfp_context(gfp_mask),
+  6559			.reclaim_idx = gfp_zone(gfp_mask),
+  6560			.order = order,
+  6561			.nodemask = nodemask,
+  6562			.priority = DEF_PRIORITY,
+  6563			.may_writepage = 1,
+  6564			.may_unmap = 1,
+  6565			.may_swap = 1,
+  6566		};
+  6567	
+  6568		/*
+  6569		 * scan_control uses s8 fields for order, priority, and reclaim_idx.
+  6570		 * Confirm they are large enough for max values.
+  6571		 */
+  6572		BUILD_BUG_ON(MAX_PAGE_ORDER >= S8_MAX);
+  6573		BUILD_BUG_ON(DEF_PRIORITY > S8_MAX);
+  6574		BUILD_BUG_ON(MAX_NR_ZONES > S8_MAX);
+  6575	
+  6576		/*
+  6577		 * Do not enter reclaim if fatal signal was delivered while throttled.
+  6578		 * 1 is returned so that the page allocator does not OOM kill at this
+  6579		 * point.
+  6580		 */
+  6581		if (throttle_direct_reclaim(sc.gfp_mask, zonelist, nodemask))
+  6582			return 1;
+  6583	
+  6584		set_task_reclaim_state(current, &sc.reclaim_state);
+> 6585		trace_mm_vmscan_direct_reclaim_begin(sc.gfp_mask, order, 0);
+  6586	
+  6587		nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
+  6588	
+  6589		trace_mm_vmscan_direct_reclaim_end(nr_reclaimed, 0);
+  6590		set_task_reclaim_state(current, NULL);
+  6591	
+  6592		return nr_reclaimed;
+  6593	}
+  6594	
 
-> 
-> (I kinda wish sashiko didn't do it, I have extremely limited time as it is,
-> it'd be better as a passive background scan of existing issues or
-> something.)
-> 
-> Cheers, Lorenzo
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
