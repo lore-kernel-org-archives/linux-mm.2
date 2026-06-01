@@ -4,149 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30D5BCD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 17:49:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F05FCD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 17:51:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8522F6B048F; Mon,  1 Jun 2026 13:49:58 -0400 (EDT)
+	id BD5E66B0491; Mon,  1 Jun 2026 13:51:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 801EB6B0491; Mon,  1 Jun 2026 13:49:58 -0400 (EDT)
+	id B866E6B0493; Mon,  1 Jun 2026 13:51:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A3336B0492; Mon,  1 Jun 2026 13:49:58 -0400 (EDT)
+	id A759A6B0494; Mon,  1 Jun 2026 13:51:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 567436B048F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 13:49:58 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2C361626D9
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 17:49:57 +0000 (UTC)
-X-FDA: 84832082034.09.55F9001
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D54A9100009
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 17:49:55 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PLyBvJkw;
+	by kanga.kvack.org (Postfix) with ESMTP id 91D336B0491
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 13:51:09 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57CCF162714
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 17:51:09 +0000 (UTC)
+X-FDA: 84832085058.07.3CDC490
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4EFC540010
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 17:51:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nGjQVpHF;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780336195;
+	s=arc-20220608; t=1780336267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pMR+vMx9phwXvzk3LCs0RnCPA1OW1RBGgb6+eYeQRiE=;
-	b=MvudjZyCGzF3nP8hoSghLHOtZhxL7x6PNvJIbrhCVmPOABd9S1gtNGvrDc8aU6I+MGCUev
-	Kv3+d5Zi0jsiXdRhqPUF+yCAWDdY/KHW546Kj1DT3Ef44V6SD8HN0SM3xrm45xUQIYXzs1
-	teit4P5OpJnwfdyEhUQpz8pFBRGGH2c=
+	bh=1oyN2GHO/W1PVNw6MHzzvIqAiryGCw8vjjyfHSwiSxY=;
+	b=xshK4DhEOBrAROJGCXMUzlJOj3f/oLg5j+DOxOE0leTOqsb25HUYg7Z9IS7U6Su38oHEK5
+	chWdELSzgVqvkmFVgKLgXfWNz4Wx1VlILxBXrCwt8pEI3m/KmHzzDGDzvlVaB5WHpmjrj9
+	9RlyrCDvN1IcI4m1QZjdTQ6ce//xot4=
 ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PLyBvJkw;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nGjQVpHF;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780336195;
-	b=jCdEeA8uNbx+xon9lINoNlgZQGC9oFfBloQpu/LbHarBo+AlIGFP0JumbAs2NNEY254g3Q
-	/f6tmhDRisqo2bjIahGkCknoMSNIf0outujRV6FZircz+lH+KChUa03yB9DEugoMKt01OT
-	g9ZJYSJsOn9qT2P2W1Ex9M6203SX7wQ=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bec49f7e35eso214505566b.2
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 10:49:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780336194; cv=none;
+	t=1780336267;
+	b=PbkkvhGJZDvwS4xDRyX5VklBAYo4EaVAmdnAJBy+IkHQwUBdgq3RMR84rB0ZdevqKV42k6
+	nHBZjDq/gdY+zATsbjfk+8ZXQ/Sanb/0cxsKa0mycyk1AbA0ZW0cBLcLsqY769Zo1l3c0o
+	Bj2s39A71qi2wngQoQx6tyGGVZa8++0=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-68acf0a15b3so6994361a12.1
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 10:51:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780336266; cv=none;
         d=google.com; s=arc-20240605;
-        b=MvXA23+CDlgCCRoueeY01rr5nPx6y8MwC0fxssu8i6XUmBuwkBVntpSo/JCqYb1cfo
-         KaOdqhWi3vvNR+cxlE+CD1B43U+dkRHOcnP/kazNItV3pPgK4rl9G1wcsWK2x3p/fS+w
-         mycQbTQnPuTYtXiqLEg03xb4ZdMKEVk+m+e4n9PMq/7CJ1dV6cbU04NJ3C8RxAz4Xl/s
-         1Iaj9KyWpbAHhCI5fzow8/gz+/GkfLKitOwtgcf9gx25hRr954ACIXKGN38/1+iNr6ub
-         qsTUkXPuu2A7Lwa3vAedL+YKhqJgNED0aXuAQOEOLEdHxQdgySG2gWEKKEQDYdQ6F4MA
-         vE8g==
+        b=X79t2TwKHfQBI5i79feKQOgU22G872ag57T4Nbkdc5oeW5gWUUhUAF4MNgrstLkx58
+         UITNeuVW6OrtyDVmlKZYMOeik0Iqe5ISIfn83zVkxmdsRCuEwVe8Kf6f7EFhMhgbf2F0
+         VaWLxgLh8iuVbonDmMfqwKbruLCL8d37ceY9Rf2DEcCMASG0dxF9xITfq3g4KEijx+g1
+         baLV0n43K7amds29YUXE9smK8VTe+8g7L8YVsa1noxhxCPLBkCzhFAIylu/1OPqqRZS9
+         eJ+PhOLAjCGIaPzb4T414Zjs/9sXUbQ+gQzqmRaaVxS9aPgizjc/j2obeX9JSt2ixDL8
+         Kh0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=pMR+vMx9phwXvzk3LCs0RnCPA1OW1RBGgb6+eYeQRiE=;
-        fh=dx9o0H64lBhZOZP9MFJquIX2gKvy1k6NL0rWXMxQqD4=;
-        b=KIc+YnJJjCdjgFUdSf0TlJQJSM+18eEm20IY7H9BbnM99lM3PeEhfX1oImZa9wug8J
-         C4qH0+x+FWnOnd4pKpGpZgmOOqHC4ZZAN8MRFnZB86c8oUFVsmdL4Q9BhEjgPtsey90V
-         wvThHXotB1OZPoQBWYF9oRsdq9+QQMkd1fdLF78CxADTOd9p3ClGsdal0/DHR7y3y1JC
-         BadilOeDvftcKO3IZ5345r6occkj2K3AkKZM0rwa2EdQOsn5fWqhMMSa2cK2I1BwnWTN
-         juy1Ko3zf5coTOAURl3W9FSyQIAEq9LHNB6fJEegF6VTIiqkybkIa56KfyG7rST2XFmH
-         E6gA==;
+        bh=1oyN2GHO/W1PVNw6MHzzvIqAiryGCw8vjjyfHSwiSxY=;
+        fh=tXTvh6XTyMwqDW+uyg2hNuHFR0rqaf4jQ7kEtBjCUUY=;
+        b=f33XKm+K1YcGkp3CVP52RevhD/TsOClAuwjheqD7gz+ar152x8ciC49jNjYf8w655g
+         pPhWuk4ER+3J4xZtDyOdDru3WKfxd78IJC1uYHrl0YmXyYrTYXBZ3sqLd1/qfURkXgdr
+         NUHuzTWI2QVQyRzzErhPk/uB0RS7gXgsuX2M2j59qwN7Cx7rtbrlHMDBG5PQcDg42DFO
+         dunKDM793gtIQQ8B24BJOMsEMXYK0H09fc56vU+JynWWgoGQTi+nEVAyLbgJuTuRFBps
+         ppAzAZgo3+EOgdjo8nmDVX949CYsGCmedB7WI4vepl1GSPhvSN5/w03gk0800Qq2cqD2
+         b2IQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780336194; x=1780940994; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780336266; x=1780941066; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pMR+vMx9phwXvzk3LCs0RnCPA1OW1RBGgb6+eYeQRiE=;
-        b=PLyBvJkwV30NSwsi2m5kbyf7qaxkBJrnKbv41rcD8ehkPFmiAAZ6DGjrrEUMpq3oHC
-         ZPjWxYBINN/dZTByGzio43Sq/xKr0a+yyKqTNL076gs8yrpT5HXLKdJeYs3rQMLbUIzT
-         /ayGA6Mg3rUF2HPq/ekqlLF+smym5tIEyj72shdQTIRk2riQjefqvHf8HE4pLV7wKpdL
-         y4LGGJtIgamn7BrTEZYKJ6RAgbEUdqrpJetsRFwpUi8dlaeyw2XhEfL0bbHlQIqiAIja
-         Qro657LnPB+l6Hgh2OU+u+8bxKKDUPKvLY1G4Mt8iu/cXjzT3hXrKf8CI+JTGdlRzkzc
-         kqtg==
+        bh=1oyN2GHO/W1PVNw6MHzzvIqAiryGCw8vjjyfHSwiSxY=;
+        b=nGjQVpHFQImMKdfrs7mnOCSJfazXPngvQCbJG+1mzUFDVTsCYXO9VAwaOBDlNtE5Bi
+         yKi1OoQbWHhWDwfMqsZEIzEFgYzr2Q8ZsEoes95c7pPm7i9KXnQdMKFca9P4cQ1+32wd
+         TOIf+jWPewzbP/2FxreqhVQXP+tUyfjgqrKtcSWwUwSKZxkjKiZaxC9fWm97m/cK2T4/
+         CWRLLvU5X0x1unXxcUzdujBYjCihvofho0hs4Lo2n97d/KrqsK5VxlOkncnUbiZAFCEU
+         JYXAVlZThTPOdYcfji7hdnXFjHdEQAhKGMbFgIgAFKWJwZosmS7zI7D2crfiqvmuMOYi
+         lOyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780336194; x=1780940994;
+        d=1e100.net; s=20251104; t=1780336266; x=1780941066;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=pMR+vMx9phwXvzk3LCs0RnCPA1OW1RBGgb6+eYeQRiE=;
-        b=nybFX9FCP8E0zKneb/cmuwwn6KkoHaJtFh+rfeshgQwIsJgXDNJFpgVULCb8PV06vV
-         Gdyz3N4VwN7ogOX0kjOb3yj9I9RQ/J6Mb3AIhJSALZspQZH8nAm/ZFuNkT+7DTrPH+Xr
-         vjawMhqXwvQEGWneuaBlaHNX1nibwXR0asFf1BVXckILr682HY9Ok9FClpSiG9XQADlX
-         kLaVpJkiulbbK5YE49C8SyabIi3IIknUSaNvLMIdgOoKpT2PyOVob3LEp27JBXv0AQq/
-         2z0vj7esDPnNB8OdxXXHizSyN9MTfWW4mXuggzRMhzP27gzwxMFzCC602806xobtB2jL
-         gWTQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8BP9CZMYeOna89Mv4dhuNhYomi54IRZXOKU0FMADxPGF6Fu2zxSzT0ddI9S4aT9lDXhf9XEioM5Q==@kvack.org
-X-Gm-Message-State: AOJu0Yzi4PFlmQmuOFJEWISoZxSKMKC4cPTLuBl/m8EwoEgHmTjTFuUB
-	tJYb3xzUanELcnjV6VdUFvuJgbEyTXWukWt2UEAQsZwHyqPolA2nlO8dwIZe2Sho26bd7urvVQG
-	ldJI2OFFfLCuW2wEb5JG/oG75ORZf/fA=
-X-Gm-Gg: Acq92OFczzlIA6cob0QxEu33XaFCCjG2lzrFdo/bL/bmXIRwn8YR5iB/4p2aI8nH9U4
-	FL4JIRzZNuA0KPYZ/JU85cJ010B5uHII/l2lcrZ8sCIDlMHel01WSPBN2+YUbIRiBhboS1I4eHw
-	2o+nxe+02xcgWUMsKZTPPxs8Pu3nBOLtpukataciTK1MNdIQdyjhs/bDuYB9KPdVg8SiAbxAJcW
-	917DAhaCdv8JI4G20yrhGC3Xhaje63mDPY4VY1WoyVvb7CAN1Hb4PW5UBkJdjuhMvYnOsW5lOVV
-	T85q7O6txCZIJurhgP5vK43BZpsBFycm1sMif43SGNQpn+wwmls=
-X-Received: by 2002:a17:906:1ba9:b0:beb:e13b:b3eb with SMTP id
- a640c23a62f3a-bebe13c09c8mr420086866b.9.1780336193926; Mon, 01 Jun 2026
- 10:49:53 -0700 (PDT)
+        bh=1oyN2GHO/W1PVNw6MHzzvIqAiryGCw8vjjyfHSwiSxY=;
+        b=NGO6EFd5Zr9f0F70V87x3TZGjj0sJPmnrzMAQI5tOh+9Z6r9Z2AfOYEj+jGs+Hwk4Q
+         uju5XCCoiTcpmTurR9+Vs4UZ/8FvEXUzEzAg9CuDinfZ3irHK9Q3RarRAONW4kpG9t5C
+         sEbzsjg9+1JVtmQITAONBCq3HrC9Q/L9499Ti0eq6A3Rf4babRRF4Vyx3Vis+DaRZWUh
+         98Upi0hJJLlJh2mu54caCcKZngfPnqonwpfvaiAKbThwMlXGn5dAr+m7V4xXyMExHl73
+         HyR6Al10RLd7PiEv8gNuaGH9JfPSx7uztLbhqoqDr07jcL9u2wHI+1QWdEB6Wkjw6a6A
+         UEEw==
+X-Forwarded-Encrypted: i=1; AFNElJ9ZHZszGJ1MttmxhmLeRkUrpHg6+L+b4mMKxDHdjG6FkGNRzcfa2PFjwA6QwpdqCBJzGawyaBJXbg==@kvack.org
+X-Gm-Message-State: AOJu0YzzIyphe4+cRUQZb3tPuFhSr1GVPKTu266IHJMVmdKhnR7vsp4H
+	grTt9gBjvLm+dFAQrB966kkOUl/Tjy6ojkFS3b6S6NKiHIA+/au0zvZAvLmdlcVRZ7D3Stf9hLl
+	AkPLpaNy3LApmgYHA04ez9LggUyPW7+Q=
+X-Gm-Gg: Acq92OEK88UvCW1ZP1amv5k6qHAka+hKFwOXZ4JL276PIg+Map29k2pJwWwgRdZ/kZO
+	g9DhcF0RXWwEtCaYm015VUUauCM1k/BwnjPKzFXAtfrW9iCa16XVgQWN2r+x1Uc2peEeyO4SoMY
+	VX/ItdffJzHTMQP02jLQYuFiWIvQ+6jOK7UJJL2dzHyWRTc6Mq8VNyEWOAM+UpXejYmW9J074LW
+	7AUXRCew4kZ164Mx/77g7n+ortJ+hR9jfsRArjp3MzJRSbQSkdTTmIRlYsWNXcwX9vvbTRRjHfA
+	GvhCES5iTrMx6D6+wlTq7FmnwdIcLaz8dxkGuUTZQPTBa7LhVqo=
+X-Received: by 2002:a17:907:3d55:b0:bcb:4046:63ee with SMTP id
+ a640c23a62f3a-beab17aaa7fmr558548966b.31.1780336265621; Mon, 01 Jun 2026
+ 10:51:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260528212955.1912856-1-nphamcs@gmail.com> <ahz_iYG4lqWL4g-J@KASONG-MC4>
- <CAKEwX=PzMwXXgq=ULAkFD9UqMz+ewLqhKt+xdGxkV7OmA2QG6w@mail.gmail.com> <CAKEwX=NNNf0KCZC0ph7VRW0gjnbXd4W5NKEaHM4XzPdN03Ek3A@mail.gmail.com>
-In-Reply-To: <CAKEwX=NNNf0KCZC0ph7VRW0gjnbXd4W5NKEaHM4XzPdN03Ek3A@mail.gmail.com>
+References: <20260601161501.1444829-1-shakeel.butt@linux.dev>
+In-Reply-To: <20260601161501.1444829-1-shakeel.butt@linux.dev>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 2 Jun 2026 01:49:16 +0800
-X-Gm-Features: AVHnY4KkMWDCgqvQ0VtgzLPCLTVcd18CUg6LbNn4WT1rDML5IaDfG1WZK2GBXNs
-Message-ID: <CAMgjq7CT0ccCnzmpRGjTGPnNEn4eK==5A-OFbr3+p465dQMH4A@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/5] mm, swap: Virtual Swap Space (Swap Table Edition)
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, apopple@nvidia.com, 
-	axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org, 
-	chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net, david@kernel.org, 
-	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
-	jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, 
-	lenb@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev, 
-	npache@redhat.com, pavel@kernel.org, peterx@redhat.com, peterz@infradead.org, 
-	pfalcato@suse.de, rafael@kernel.org, rakie.kim@sk.com, 
-	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
-	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
-	tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
-	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
-	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
-	riel@surriel.com, haowenchao22@gmail.com
+Date: Tue, 2 Jun 2026 01:50:28 +0800
+X-Gm-Features: AVHnY4IV1F6PCCbzzYjlKLYKIUjD5M0VssnH2_2WxHth41_Ifdx4MpgpS8XDWPI
+Message-ID: <CAMgjq7CQt+W5jAB1DM=nCRpLOFnCK3FkdKT6O0sznOEGpo6=Zw@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/list_lru: drain before clearing xarray entry on reparent
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Dave Chinner <david@fromorbit.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Chris Mason <clm@fb.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 9bdf9sut6x3fm79urmj145rw7w9jtixj
-X-Rspamd-Queue-Id: D54A9100009
-X-HE-Tag: 1780336195-306430
-X-HE-Meta: U2FsdGVkX1+/4Yj6DHuu9Os80m+bSCzBw7ihRZXHh+kbeDHO7cHbUFeI/gXcKE/w7JZUMW/De83LSoF5w840OqVHaNDx518owjX/TCL2weCQtiFRD9QU8Zxeb7UPmk2aSBSNQn+n6NolkuUo/k6cC7xGMebYC71bg8Z2iadVR+qrUaNLme0aBCFW1SuwyChF0x9WsBEchqEGf4e749axzefSgHbm8OBTho6yhvmf46TP8oJPMWdM+EOiJuCYvwPonzvkN5Eq+IJS6qfj1LW6YIg/SwwcaFyLgtg9GCVbebrF6ja40/ZOX1FV30KF89IVEW5e0pWJVFEstWLIMdQHdVQ+hhqspLkgeRwvp1fFqq/v7JRAwS0tlVyVSEbG+qtWtt/1tBP2f8rqexgQl5tKvzrWC7KesAv7+dt2sJFdwpQhqDbPeWjfYokQbKeAHGl7eM53xPBv8tdLW+O+4fegwHOadS/mmPHZdSD7AXPD+PtUavTc1TL9T4W7w65ARo7LkYI0Ua/ebx52r2y8A8wGIpk3sjmti00W6K0qNT3PR9anCu+ipT1vVrXjdERTORqtTiqMAZ8yMLYY26g3uNqhYnyvuOdRj0Fhshao05ceml9lZfwgf3aLyX7uKzwYImk3i8+6l5qpOO71861OImqpicx5oXAUHEcpmo2/Ndud/1wUvvMtJrPC2TbjbRQTFdGeux5IQnvTFhcD8s1y1qkfpn4ez9lu5qTytfEYaxP+v3UvrC65DgGv4iSddrAAHePWfjOj5Sef8MTIVrqUd6NnxjY2allv9WGZKtsyXnf4aEaOziy9HzrIDGCPwDnGsQm5KwK9u8q+vreiLdvHj02uRIIABCjCNxeNB4vLtsD7VmaQNG1lTnvBd0pQXjXUAeQ8CsDs6vsV1MBzxaXv5zUolvYEU1lOJFPFnQtCsxWmxfc7KsyBJmXAmURAPVPUIr3sdhGtFNYiPXxG+kBP7k2
- Ly1K4DdG
- Ke3r7Xv+8fWRN+PzLNYfY3B/kAVPdaoZYempKeucu3s/B4DR2h5JLp53rV6vfyyQQ6bRfq4dzZO/zSQjXhuKFz1aQ4BtEGWQudh2xox4Wgowds6DhBfk2i++s0wUPD/RMWxpDHGC0VlQRVBde86ffEO2B0ST3ao1XsmGFCiccYXgIKRqyufVHEq52npwpyzIqCQjC4mL8m8C3DWdSC7izJtRgULwX5E1Dqg2VZqyKrEjUpaHps635oYzhEiGUmYQu1I1bhgHrDCOWKAUGGjVSomMf1oB8FtbovrrUcNQXyWB64z3mUVEf4IHLvrZRUS3QorXqGgBL8aFmrf+QDduQ53V+R6RtVs/vzPiKJqqO5IAq3YvypFnD84ZmrQk7qf9b4ue5wSGl6c8o4MMfttYv0KCF/X+la4WD5bKjbtQi6NCJQUfRhbk4SXRLuJbBiXCGnrsTxX925ytXUiyXDRuoplYMqwxfn7fA7kzcQsLac0K+Fl7WE40knNznLpmYn88B5I/+ri5ESCWpUyVooP8ewhWc7Ho+YuoDZbCDB9VRRlijr8T30eATzQtKBd7D+rlp3CoIUpKyWTJEgUs=
+X-Stat-Signature: mob1hd4i8gwm6sex4czxc59hcxmona5o
+X-Rspamd-Queue-Id: 4EFC540010
+X-HE-Tag: 1780336267-214354
+X-HE-Meta: U2FsdGVkX1/EiOKmjDIBLzHelC4Asv5cXedcF5+Tq8Ur0Qd8OGRtM1P2hiVMsX1xkHQDeAIDFvDzZgQMoMso2hsl6/reo3L2DEW+0fzIkQS9AE83JpUlkMeXi7muopsOxXJQ7Rv8sc7MXSzZOoUy6XmaIu4o80x3cy24raAFt3sRIcQ67JuV15n1V79XB9os/rTzIO9bnSfkJjfjQoEqOgHkYbca8Y+PYItbeyHFmKHvCRLzJtvCz3eW+7laSZ90i66yik9GBFPEWyOseEY9jgaWuFAXtj1DcDLQQBjyhXvPebiBEMmw0sYqCVnIDYxCU0w+oY3oxBudQuFHh0CqRUIC91/ENhuROSvH01BljKLNnB4lT60pO31/OjN9BHrYHIGErklKv74q2IqtmSZEyzxUoSWnmQQfOtnThuhsigLEu+kdW8GGakVZVMKvG2KmjhguG23cQhFl0EJ4p6hIj38kOornNCynbrqV/bTE33pC53wQlgyt5W8rsS6dOIv3ieg1OTXRJcdEfUXO+HZ6LwWAjKt06Q6LaEDDNRAe+t39RtGM3EM2n+0Uai6+I8sl7Y3Ezv4EVBMRlv39fswXBSNbM3mO+UjxGmHhiJdwoJN678gv+2oO8MM7b9cT9hwoVP95ACxaCFWz9X7/BJnOzMDtuzQjETQFpaSdwsNhsw4y0Ajp3133oGzvCaDj9IdmP5m+KAB2oREgoam8sqBetxODQF6mncQgcuGMC4B63MCHNxtTA/wKg2rIZuyrE/MhrQHhzTDvL6PgoVVvlr/jafNOXJKi/SdNoW5Fnha046WTFLk/YgpTNxPYEBtU8KODiAdKUxeziTiJFQVsrVOKAIeSj3HBSLqkk3q4Us7PTitB80rGiN6rr4tsuTAVE67E9Mq+kw3XJAV+/t2MX4960IYxWQbADA9L2UCkAtv4H48+BZRDtjPJL+rm3R2itTfF9GEgWP+vJHalIor5svD
+ 75ULIGam
+ AmDGGhO5Zi9l9/eeHHet21UFiHV5HwlVmd5plQrTo6oBhL+zmwMrehzo3VwV1+xaiVkaKMNV89ex1wvPHAgXxLkekjDB9oQ3ji348HmGKFS25ww1uyReXLQAmMdPIBSSSA+WhQ7BXZ8accVNUxMgg0shAIC6fWP+nZKdKb6LJ5t+AI/HWQUAZgmnAngZ1Qco0NYvdm6VFNPYG9JInc9r+i5RsMX9cOYHJOtEds8B8SPOdamrrpcaz4K8hSIoVWQyJPvGOHvhK1/cc7ZiIhSQDxXVeB0RoyitddC7h5UACbjc3krzoiUevF8rgneulgfvddkXVzpwEZuUJDv8xYeYef3yVcjWPQyo6Rr0Ek9UKIVGnQ80lic4qya1vBTHrHX8JmS49iex8akCZQHVDIRVcqDNEBgFdVizGHhYq7X5NZETLnqiHW2JmzBt9cihjDDDsNg6cZjgmUN6EqfOp9lARc9r4SxNMlsikoMy8J2ZrBUjco058RdHyyRjx/h4Rd9urX4BRF0d+Veo8mLg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,59 +141,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 2, 2026 at 12:22=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
+On Tue, Jun 2, 2026 at 12:28=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
 >
-> On Mon, Jun 1, 2026 at 8:56=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrot=
-e:
-> >
-> > On Mon, Jun 1, 2026 at 12:34=E2=80=AFAM Kairui Song <ryncsn@gmail.com> =
-wrote:
-> > >
-> > > On Thu, May 28, 2026 at 02:29:24PM +0800, Nhat Pham wrote:
-> > > > III. Follow-ups:
-> > > >
-> > > > In no particular order (and most of which can be done as follow-up
-> > > > patch series rather than shoving everything in the initial landing)=
-:
-> > > >
-> > > > - More thorough stress testing is very much needed.
-> > > >
-> > > > - Performance benchmarks to make sure I don't accidentally regress
-> > > >   the vswap-less case, and that the vswap's case performance is
-> > > >   good. I suspect I will have to port a lot of the
-> > > >   optimizations I implemented in v6 over here - some of the
-> > > >   inefficiencies are inherent in any swap virtualization, and
-> > > >   would require the same fix (for e.g the MRU cluster caching
-> > > >   for faster cluster lookup - see [8] and [9]).
-> > >
-> > > This could be imporved by per-si percpu cluster. Both YoungJun's
-> > > tiering and Baoquan's previous swap ops mentioned this is needed,
-> > > and now vswap also need that. If the vswap is also a si, then it will
-> > > make use of this too.
+> memcg_reparent_list_lrus() clears the dying memcg's xarray entry with
+> xas_store(&xas, NULL) before reparenting its per-node lists into the
+> parent. This opens a window where a concurrent list_lru_del() arriving
+> for the dying memcg sees xa_load() =3D=3D NULL, walks to the parent in
+> lock_list_lru_of_memcg(), takes the parent's per-node lock, and calls
+> list_del_init() on an item still physically linked on the dying
+> memcg's list.
 >
-> Oh and the MRU cluster caching I mentioned here is not the allocation
-> caching. It's the lookup caching, basically to avoid doing the
-> xa_load() to look up clusters for consecutive swap operations on the
-> same vswap cluster (which is the common case with vswap). For v6, it
-> massively reduces this indirection lookup overhead. Performance-wise
-> it's an absolute winner, just more complexity (because I need to
-> handle reference counting carefully).
+> If another in-flight thread holds the dying memcg's per-node lock at
+> the same moment (another list_lru_del, or a list_lru_walk_one running
+> an isolate callback), both threads modify ->next/->prev pointers on the
+> same physical list under different locks. Adjacent items can corrupt
+> each other's links.
+>
+> Fix it by reversing the order: reparent each per-node list and mark the
+> child's list lru dead and then clear the xarray entry. Any concurrent
+> list_lru op that finds the still-set xarray entry either takes the dying
+> memcg's per-node lock (synchronizing with the drain) or sees LONG_MIN
+> and walks to the parent, where the items now live.
+>
+> Fixes: fb56fdf8b9a2 ("mm/list_lru: split the lock to per-cgroup scope")
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reported-by: Chris Mason <clm@fb.com>
+> Cc: stable@vger.kernel.org
+> ---
+> Changes since v1:
+> - Use xa_erase_irq() instead of xa_erase() (Sashiko & Claude).
+> - Added comment on CSS_DYING check in memcg_list_lru_alloc avoiding a new=
+ mlru
+>   allocation.
+>
+>  mm/list_lru.c | 21 ++++++++++++---------
+>  1 file changed, 12 insertions(+), 9 deletions(-)
+>
+> diff --git a/mm/list_lru.c b/mm/list_lru.c
+> index dd29bcf8eb5f..d454bce9a78e 100644
+> --- a/mm/list_lru.c
+> +++ b/mm/list_lru.c
+> @@ -473,26 +473,29 @@ void memcg_reparent_list_lrus(struct mem_cgroup *me=
+mcg, struct mem_cgroup *paren
+>         mutex_lock(&list_lrus_mutex);
+>         list_for_each_entry(lru, &memcg_list_lrus, list) {
+>                 struct list_lru_memcg *mlru;
+> -               XA_STATE(xas, &lru->xa, memcg->kmemcg_id);
+>
+>                 /*
+> -                * Lock the Xarray to ensure no on going list_lru_memcg
+> -                * allocation and further allocation will see css_is_dyin=
+g().
+> +                * css_is_dying() check in memcg_list_lru_alloc() avoids
+> +                * allocating a new mlru since CSS_DYING is already set f=
+or this
+> +                * memcg a rcu grace period ago.
+>                  */
+> -               xas_lock_irq(&xas);
+> -               mlru =3D xas_store(&xas, NULL);
+> -               xas_unlock_irq(&xas);
+> +               mlru =3D xa_load(&lru->xa, memcg->kmemcg_id);
+>                 if (!mlru)
+>                         continue;
+>
+>                 /*
+> -                * With Xarray value set to NULL, holding the lru lock be=
+low
+> -                * prevents list_lru_{add,del,isolate} from touching the =
+lru,
+> -                * safe to reparent.
+> +                * Reparent each per-node list and mark the child dead
+> +                * (LONG_MIN) before clearing xarray entry otherwise a
+> +                * concurrent list_lru_del() may corrupt the list if it a=
+rrives
+> +                * after xarray clear but before reparenting as
+> +                * lock_list_lru_of_memcg will acquire parent's lock whil=
+e the
+> +                * item is still on child's list.
+>                  */
+>                 for_each_node(i)
+>                         memcg_reparent_list_lru_one(lru, i, &mlru->node[i=
+], parent);
+>
+> +               xa_erase_irq(&lru->xa, memcg->kmemcg_id);
+> +
+>                 /*
+>                  * Here all list_lrus corresponding to the cgroup are gua=
+ranteed
+>                  * to remain empty, we can safely free this lru, any furt=
+her
+> --
+> 2.53.0-Meta
+>
+>
 
-Ah alright, that's interesting. And I think we can keep things simple
-to start, since sensitive users is stil able tol use plain device this
-way.
+Nice catch! Thanks a lot!
 
-BTW maintaining MRU is also an overhead, I'm not sure if the lookup
-pattern always follows that?
-
-> I also just realized we'll induce the indirection overhead on
-> allocation here too, even if the cached cluster still have slots for
-> allocation, because we look up the cluster (which is basically free
-> for static swap device, but not free for vswap devices). Might need to
-> take care of that to maintain vswap performance (but it will then
-> diverge from your existing code...).
-
-That part should be indeed coverable by the si->percpu cluster though, I th=
-ink.
+Reviewed-by: Kairui Song <kasong@tencent.com>
 
