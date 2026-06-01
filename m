@@ -4,112 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42152CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:08:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6C0ACD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:15:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54B706B044B; Mon,  1 Jun 2026 12:08:02 -0400 (EDT)
+	id C832F6B0450; Mon,  1 Jun 2026 12:15:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FC6D6B044D; Mon,  1 Jun 2026 12:08:02 -0400 (EDT)
+	id C5AD36B0451; Mon,  1 Jun 2026 12:15:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EB0B6B044E; Mon,  1 Jun 2026 12:08:02 -0400 (EDT)
+	id B98546B0452; Mon,  1 Jun 2026 12:15:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D0A46B044B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:08:02 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E306BC2466
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:08:01 +0000 (UTC)
-X-FDA: 84831825162.01.0042E85
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 08A3F40010
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:07:59 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KFCrv1SH;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780330080;
-	b=LCs7d/dnPkfI3M1JEwP/oQ39n5ZRKtVAE837LHR5cmUfMzZqGl4bOHkbP/8bOyDFZFNkQ1
-	n0LGTgx8jmELB8pb1STPLnf303xVTQyGjUQvsTyTjL5COV0D93vIuMF7TbqiivPujOwXHS
-	jwq7aUrN973gzwJ+ohO+sr41wt2wA/I=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KFCrv1SH;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A89476B0450
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:15:47 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 47070140702
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:15:47 +0000 (UTC)
+X-FDA: 84831844734.28.39B0635
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B28C210000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:15:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UHPu02Cw;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780330080;
+	s=arc-20220608; t=1780330545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hE1QzaSPeeuEtKpkpB1CtsBNbDEAW/Bexb+NhfT6llo=;
-	b=K6qWk06oSmXxtVq0/m39DVhRUmcsw7hAa7RnugU9Mv+rJkaj+x7g5KcOvTWNREmiDXK37l
-	RlptCAnOlAZ/VB9vzdjqFbEFKdD2BYoSkTKFToB1FBu0KxHZSljGAZEz54qp7orWGxVhnA
-	OMde6LUcly2YdYmHFR6sODzU+1VReRA=
-Message-ID: <76ff7922-bf54-472c-a628-ee191aeaf149@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780330077;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hE1QzaSPeeuEtKpkpB1CtsBNbDEAW/Bexb+NhfT6llo=;
-	b=KFCrv1SHIW6rKf6zXja1OJy3cyn2UvdGKCE3ASX3JWUedBw+K0MFreVvLWyzIJ7q05O895
-	rvnhDuiR+5P9eKG7V9B0yQvbhmbdS8hrfybIXAU8pDudK2wZzqls5tbU4qer7NuOTc/QAp
-	Jg8Y8lhEBuDUt90t+eGNkP5jGSXBzPs=
-Date: Tue, 2 Jun 2026 00:07:24 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
- collapse_huge_page for mTHP collapse
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Nico Pache <npache@redhat.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
- akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
- hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
- jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, liam@infradead.org, ljs@kernel.org,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
- usama.arif@linux.dev
-References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
- <20260601032804.96122-1-lance.yang@linux.dev>
- <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
- <616de1a8-1cfd-40b8-b04f-7b324be40bfd@linux.dev>
- <6b11bf0a-769c-4ef2-ac6f-2af38200a6bc@kernel.org>
- <baa0a462-46e0-44ab-b583-c722ad253afe@linux.dev>
- <06d9b665-945f-4967-9ed9-b06514478996@kernel.org>
- <CAA1CXcAeEGOsqp-ywAQ7GMYQzXEeco-rUxUkk2hEF69HybC4=w@mail.gmail.com>
- <0bb49c47-8c41-478c-847e-b9154c75e59c@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rQzi2gONxiIcDHLm2VrGnw9O4REpeifQom+6RrcJBmg=;
+	b=zXHsswCoYyPBjGL3Yz0Woo1tHvx/JLNTG+5WKPjiu5S2+h2LOcI/o133MyBa7oBMsuGTKI
+	IDesFboiza2KTnTKmBfyHw4HtBrmmM4mSsznhtWOaREy3RjeNKfXI5bygfbxvZqEBhNdqO
+	WPt3hqkDf7BLOzqpwIjKipHQAAZyuFk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UHPu02Cw;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780330545;
+	b=UnpjGJLp9kNMueFAINQpGW10XE3BRc8pB8t3P/A0SH2LgFQOYwDbvtWK7NtGwOqTmnzpIU
+	FXmqffksjNbPK5zjl2UsLKW0Byy+NBFNkSdXLKtxPkHFF7z83FWgw30fNqvVLAbUWtZUyp
+	k+j2Mva/19WEF9Lg+MPQLMhLQH8QrFY=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <0bb49c47-8c41-478c-847e-b9154c75e59c@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780330543;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rQzi2gONxiIcDHLm2VrGnw9O4REpeifQom+6RrcJBmg=;
+	b=UHPu02CwuMbgjZG0+HMELc4RBe5U3EZ7RKAqtpyPIJnXvVryWYBOOtyJ7bZCGkqOgMiXHC
+	xufUOXPsuX9osPAjao2KYXDh3t8t9BASS6p/vuIulI5fCZ3OLzGDdWQj/ym+QC2kyUbw8Q
+	LtEq5I5DMjlJPvNettYkKG+F0+CQDlk=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Kairui Song <kasong@tencent.com>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chris Mason <clm@fb.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm/list_lru: drain before clearing xarray entry on reparent
+Date: Mon,  1 Jun 2026 09:15:01 -0700
+Message-ID: <20260601161501.1444829-1-shakeel.butt@linux.dev>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 08A3F40010
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B28C210000D
+X-Stat-Signature: iecofu48krptobpdehz8yhduj1196wqp
 X-Rspam-User: 
-X-Stat-Signature: zktxwuc1x3kg5rq7ke8w7uw8mqozdqyb
-X-HE-Tag: 1780330079-839237
-X-HE-Meta: U2FsdGVkX18pp0NuBpZ9jImwwiF8MxilMW5zyG03GF1gM+Rmv7K/22wMT5IkKdDC/OCFsWsQ57AHQcJ0xhr78CEsFhfL+boi+LN1rKNx2o6lRq901ggU8C5eDu4JSRYjpXH4H/6HL3F0QeQ9O4AebTGfLZ7sSWv77/EQm8bwtXuGTIi5ArnujhhBTHpkF2Z3MwIEP6wozNHMZzUbbBf8KcfIBSHEZvh1maJnjJlCcZzrxn2WgOwlqWAutj7C3AMNEUlbG1E0JZic+8XvRsxqfaaF1QKUOvrg7I0xdxKiypOrWqB6+IV02sn4dvsYy2jIsEL5z7zDwAtPhl0o+05cW3SCgm3WD8rm0WlVKs0O62g/JrhxdjXlTm7c+q35M6MX2QGvQYdG2r7oAqts481O66Q3tIGPrOE0Nr0QbCR3iWTJFQpFjIV3f1OvrK9EvUxlht5yEOvpPz0MPPPyETCuehoqGSOPn/Oycc6FNS+6MLYmVb7seQq1LjpOW1oI0nejlc+rdcWB5jyWo9qreTZ/2746+pP6L9+NHjD7jVYU6X6mFBZ3lU6vbRcne5o0/rhDBLpeHsTYG4GXeO68q49FiVdC1odzGfnoZD15gDBRjAXzhCT21CXncgyXWvcIjVp/wkQ30xfZxOJxdLKezmRgct1ot5Nb4V0wtfu0pS0PcjqozFHAOWoDYfC8IO+UryebDliHTdvBzt9cLDSUb0vlnC+A8BTlWup4d3YDMDDLXffdB0MqAYfH0sjYGDrYwe28ldoWWkvkPBgBdO2NTcQ5fVf9JkN0GNrxwoRqwe46nn6sWb26bsxBEKTuHigkw+o+pIX+vUM3KD1St9V6iGuwDr6Xaqytq/bmKj9Nal8oQ4ypgiw5KSFFy1dt836ecEpH6Kd0dQpcZym086dXAu/DB3s7Pkf4lWY+f0jUWkPmHclb1/HSoF6A/l2xfGcb4FCEwsDZPtzJ+Xsv00ylKdP
- O6+Zp3Ga
- tVBLlO7joZMXYIdX1bjitSXAHrwxGSZfOiqMDI5ilOIJXj96cMFXj0+ojJ3scwazC1MuE6cMp+/i7QhvtD2sZCbvLCxNlCp7rX4xyUbaGnAwbVAIXC7cqShA+0v8OEPpPQg1lICYx0b3RqfquafBqm6bbC2xz6I0Q82vsibj2VKmtMq7pPMtTcawdeBvVu9vgP0BagaHwbMhP/B/21RbIzFd/ESdsySpGm9kuzeAEje6Mv04FSTHOyLnkL7+C5lR/36ivgfjoZzoTyV3/RDxmEjwEsyqAJTOvY/rtIrpSVOM+hksmBgkksPBT5vMdVyE4ws1DSkdJpDSulE30OZduWBrtZqxmtiEaqA4SgUlWG5p1D2r1uuOWhcfBUBrz+d7nC1nW
+X-HE-Tag: 1780330545-247376
+X-HE-Meta: U2FsdGVkX1/SY5VfsENh+G1LyBk8DJ8rQbDJZ2XhGjwLsoXILtUl60u3HmD099Z2mTmvjUUOML7J91MSC2GK0Zp9uOwb1eWzT3CheoR9+PWyeMn4qQRVeA8Rq2wIZcUBDPVVA6D7nQpzFmA8kqKIPNPo8eTOqs25r7i/vOyT6Hw0ZYO1LJ5KMiLMF1hQzZa1osFDAOH1KInWAK1fbzYlOv14amBxfPP56dTDLTSIJmPhF3L619ozXKWuIsJDiD17SE28W01Omoy3pOlmQvzE4QQ9nzNdehPOeGZgfRxec48wPlh5ibsB5kZK3WFd4t/E/FWzHuBfICu/SVD2Yb8y6h0wqQoAsdh4gkP2WN/jBRyCD/ykKiApfL2Ncywioc+M/VZE6fVEyJ6FOqvlcfv19OJq5HjlyRqrndbX+xMcM6qiJNrfNUko8OAV4DEoXxdH7ifpg8l7spvevXdThRyNFXGCki4ZxG5Ngp/vz8LL+Z416Oxsg0+M89Mn/kQdRjkO8vhprMA9IGrrdMPCAYhqZOSnoJAck1/1cI8aWnRQnqPmvhjao6qZDIiH8YTOrr5XRM51OZl0zikYpUyz3rN45a3kMuEWHag/dJ4wk7MRJSFypQTSSY8EvimNDw7rZfitQZ1Y/4jzwBSXypWXDmqZ+mt8zAVnLUWQ31wOPXFkcO/Z5gwJLQoIG++VVZXTqFDOHkrNdEX9UTD8sF/wFVM4wOv+rRf0NpQBGi9zKZ9k9JhaulOaKbxi97aSF30H5M8IMb5GucwB+UYfUujslYzdCFbaNpbOczWrFmt4YbpUxfGqz9Xqm2kmcJe8jgvIbes5+V7Umwtwm4QyQv7YI6/i5pYqF0y9a00MhB+4elxRUE39Wx5vjn9uJn8f2AomAte5iIyhiSwlLBJ4RfqwE1wpG81Lk2Bk6J0YgpUOwyoFkkcRFbWqRXprt3L5+b96VGC0QmqZic2qJY2MUWeMqD6
+ yEqzRNTz
+ kF6a5kRlfIf47wH0NwEEy6Z/JziZdJKhUI2YdjjO9WFN5V52q43rZXaBkonu5SzDZUvvmxqM5neEvRv5wRKk1uaoqmab5lVvjeIPljmeGY7w1qR1mwcdYaB3QB7asTQC9Jq2Mtj0gFA59jjSeiYsy94dhI3hVV4xdMGW/WDRu1mFIXDa+mv3Q2NM2saMv8bPvsaWnY9bimXlWKZwoC2rVcskbcvK5UqMeps1bxQVsNYOawLwTfUYf/hBqYQtWKIHpdjHbipRGDol1y4BtBUpnGgZTs9EgAnaBfDq+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,48 +93,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+memcg_reparent_list_lrus() clears the dying memcg's xarray entry with
+xas_store(&xas, NULL) before reparenting its per-node lists into the
+parent. This opens a window where a concurrent list_lru_del() arriving
+for the dying memcg sees xa_load() == NULL, walks to the parent in
+lock_list_lru_of_memcg(), takes the parent's per-node lock, and calls
+list_del_init() on an item still physically linked on the dying
+memcg's list.
 
+If another in-flight thread holds the dying memcg's per-node lock at
+the same moment (another list_lru_del, or a list_lru_walk_one running
+an isolate callback), both threads modify ->next/->prev pointers on the
+same physical list under different locks. Adjacent items can corrupt
+each other's links.
 
-On 2026/6/1 23:05, David Hildenbrand (Arm) wrote:
-> On 6/1/26 17:00, Nico Pache wrote:
->> On Mon, Jun 1, 2026 at 5:14 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
->>>
->>> On 6/1/26 12:47, Lance Yang wrote:
->>>>
->>>>
->>>>
->>>> Ah, cool! __folio_mark_uptodate() already does the job :P
->>>>
->>>> So yeah, no extra smp_wmb() needed here!
->>>
->>> Yeah. BTW, I think we'd need a spin_lock_nested(), so @Nico, treat my code as a
->>> draft.
->>
->> Okay, I read the above and did some investigating.
->>
->> I will try to implement and verify the changes you suggested :)
->>
->> Or an even crazier idea... what if we ensure MIPS checks for PMD_none
->> before walking a PTE table?
-> 
-> But how would they update the cache then correctly?
-> 
-> I'm too non-MIPS to know the answer :)
+Fix it by reversing the order: reparent each per-node list and mark the
+child's list lru dead and then clear the xarray entry. Any concurrent
+list_lru op that finds the still-set xarray entry either takes the dying
+memcg's per-node lock (synchronizing with the drain) or sees LONG_MIN
+and walks to the parent, where the items now live.
 
-Right, that's my concern as well ...
+Fixes: fb56fdf8b9a2 ("mm/list_lru: split the lock to per-cgroup scope")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reported-by: Chris Mason <clm@fb.com>
+Cc: stable@vger.kernel.org
+---
+Changes since v1:
+- Use xa_erase_irq() instead of xa_erase() (Sashiko & Claude).
+- Added comment on CSS_DYING check in memcg_list_lru_alloc avoiding a new mlru
+  allocation.
 
-If MIPS sees pmd_none(), it has no PTE table to walk, so it also has
-no way to do the cache update it wanted to do, I guess :)
+ mm/list_lru.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-But, the PTE table is not really gone there. khugepaged only cleared
-the PMD temporarily while still using the old PTE table through _pmd.
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index dd29bcf8eb5f..d454bce9a78e 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -473,26 +473,29 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
+ 	mutex_lock(&list_lrus_mutex);
+ 	list_for_each_entry(lru, &memcg_list_lrus, list) {
+ 		struct list_lru_memcg *mlru;
+-		XA_STATE(xas, &lru->xa, memcg->kmemcg_id);
+ 
+ 		/*
+-		 * Lock the Xarray to ensure no on going list_lru_memcg
+-		 * allocation and further allocation will see css_is_dying().
++		 * css_is_dying() check in memcg_list_lru_alloc() avoids
++		 * allocating a new mlru since CSS_DYING is already set for this
++		 * memcg a rcu grace period ago.
+ 		 */
+-		xas_lock_irq(&xas);
+-		mlru = xas_store(&xas, NULL);
+-		xas_unlock_irq(&xas);
++		mlru = xa_load(&lru->xa, memcg->kmemcg_id);
+ 		if (!mlru)
+ 			continue;
+ 
+ 		/*
+-		 * With Xarray value set to NULL, holding the lru lock below
+-		 * prevents list_lru_{add,del,isolate} from touching the lru,
+-		 * safe to reparent.
++		 * Reparent each per-node list and mark the child dead
++		 * (LONG_MIN) before clearing xarray entry otherwise a
++		 * concurrent list_lru_del() may corrupt the list if it arrives
++		 * after xarray clear but before reparenting as
++		 * lock_list_lru_of_memcg will acquire parent's lock while the
++		 * item is still on child's list.
+ 		 */
+ 		for_each_node(i)
+ 			memcg_reparent_list_lru_one(lru, i, &mlru->node[i], parent);
+ 
++		xa_erase_irq(&lru->xa, memcg->kmemcg_id);
++
+ 		/*
+ 		 * Here all list_lrus corresponding to the cgroup are guaranteed
+ 		 * to remain empty, we can safely free this lru, any further
+-- 
+2.53.0-Meta
 
-So I'd go with David's suggestion:
-
-"
-Best to make sure the page table is already installed when updating
-the entries.
-"
-
-Cheers, Lance
 
