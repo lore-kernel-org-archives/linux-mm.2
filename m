@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3020ECD6E60
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 10:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 853D6CD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 10:22:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FFE26B030C; Mon,  1 Jun 2026 06:22:20 -0400 (EDT)
+	id AB7A36B030D; Mon,  1 Jun 2026 06:22:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D8996B030D; Mon,  1 Jun 2026 06:22:20 -0400 (EDT)
+	id A8F6C6B030F; Mon,  1 Jun 2026 06:22:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3153A6B030E; Mon,  1 Jun 2026 06:22:20 -0400 (EDT)
+	id 9A4D66B0310; Mon,  1 Jun 2026 06:22:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 21A2A6B030C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:22:20 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CB5A91A05F9
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:22:19 +0000 (UTC)
-X-FDA: 84830953998.19.4575EE2
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 05AAE80004
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:22:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=R7fgqcQV;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 88C916B030D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:22:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 51B9A1A05E8
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:22:28 +0000 (UTC)
+X-FDA: 84830954376.06.0913C6D
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C09534000B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:22:26 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="PvRsohE/";
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780309338;
+	s=arc-20220608; t=1780309346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=M9bUPwvZD9u+pXGLJ1fAR+BJ7vzqCtQEZJfnSjvNvKg=;
-	b=jZP+j+5C3tjaewrFVTk79QnRtqwJzwApvVmoaEKOs5l8w5WqbyG1A5OKFuqqZAwpV2TH4s
-	2PTC9WJCeew2V8UVgJhA+0vT5ikMfzZlTzmjvCAiUexXsxZ329ZQlCcaT8+kRQKVWTd6o0
-	E4+iDXrAl2nB2XorDrstugma2j8cVzM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780309338; a=rsa-sha256;
-	cv=none;
-	b=VnTBCBb/Rx5HBgJhj0lyRRfl9THWSQWefX/x94RGxvGw/wF2iQJe85XI4BxwtWfHlRL0fA
-	GcLSL7Ho4deXoia0eEHkRxcAylWUBOgeTaNyx0WhECFiYg0qlbIamcfReEVzQ7YA5UeOrf
-	7GP3rPM+dJdD9Ovfw7HTtwHdCXOpgbw=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ODVkNxNqhWTJOtKAdxjrGaooJs+N26LEMo3Jm83wAZk=;
+	b=1pYn7isPq5GhXYKQap7HCAoxj/VHOWgZ/HyAng/NnADSuMbQV6sfZFwtXYUKTB9xpezyFb
+	TP9U75EdkaEaKmELwj1WS2FxQR81hUgGBQY24NN+c64Uj/PXl4XnDj3K0duGpVi/+ICRmr
+	VCagLWHvoawfGxF/OxujKOyDf29jgBg=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=R7fgqcQV;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="PvRsohE/";
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780309346; a=rsa-sha256;
+	cv=none;
+	b=cAACnLox9Bl/HTHVx+2OHNLRoU0A7qdNw87cI82/s9w+tIKZliEdxbIbOEYaOzSBUbmIQU
+	PyFf+nTiRMTC3LbxxmfQofpdbLhZTgj6wh3nahZH5gdXiH7v+vzUDo5olNRjJL+0kNbdD7
+	388qoxQBFyJ+sry01ffrpgpvOFiIx98=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780309335;
+	t=1780309345;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=M9bUPwvZD9u+pXGLJ1fAR+BJ7vzqCtQEZJfnSjvNvKg=;
-	b=R7fgqcQVY5jCgl30o6B3AMBNCnrDFm3oUwmQn/8UW8Noi8QzcZOUODBKPgofez/OUTwzR2
-	aQBDsIkuDJJYBI5h743LyGgd5oSw/LMcXItwktw5q+FUUpCn07CYGIX5sfxSuPAUpqI4rM
-	K2H1QMzqyvmkISqjU3CFTP434/VtYF8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ODVkNxNqhWTJOtKAdxjrGaooJs+N26LEMo3Jm83wAZk=;
+	b=PvRsohE/ZO3afbXRx9ClOgEAbzgQczwO49YoCB7UQqiTfEVBmtIxaF8Vwuow2kGr0loz9v
+	4wQPHODBVox1noVmxIaEZhk4PUwfCGWuvg+Uu3skr76sAsSqd72Z2jFbLzJ5KIADisNOXt
+	uXoCMcINK8Ff2a53qPVmFtSnw/S+72g=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -96,20 +97,22 @@ Cc: pfalcato@suse.de,
 	shakeel.butt@linux.dev,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v7 0/2] mm: improve large folio readahead for exec memory
-Date: Mon,  1 Jun 2026 03:21:16 -0700
-Message-ID: <20260601102205.3985788-1-usama.arif@linux.dev>
+Subject: [PATCH v7 1/2] mm: bypass mmap_miss heuristic for VM_EXEC readahead
+Date: Mon,  1 Jun 2026 03:21:17 -0700
+Message-ID: <20260601102205.3985788-2-usama.arif@linux.dev>
+In-Reply-To: <20260601102205.3985788-1-usama.arif@linux.dev>
+References: <20260601102205.3985788-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Stat-Signature: u3f6f5tpsgutqjpfdtq6n8kss83za76z
-X-Rspamd-Queue-Id: 05AAE80004
 X-Rspam-User: 
-X-HE-Tag: 1780309337-966171
-X-HE-Meta: U2FsdGVkX19nOVEr2nN6DYZ1QoShOk3HQ31JMSHjG404LFoQ9nQC/3wdvustmhjHfFRW89BIdcG9InEQlxaZlMkNrhh7fTxLc8rP5kbvKzya5/OjF/ZtDqaQs23S6nswwf/oNrTVt9S5jffXaSWT0uFlACE38rbDO8p/+6PTQ64hEhdpTr5Yg1ZIjg+QvitoOnw9m+10ObpPSNAkVHlav9QPYl2ejN6Iw94hUbNiZ5UbQYy+WpG52H846sDwN1ymfoOJF6oFytI2oWCblawkghqeMIsCBxeE/WktDiny3LCVBVnkQV1yJKRpsKZGuVSNz2UuTRcdECZK6bLtLo6w2pXX/QDWJyPzNCRLCDuqLXVaLwBgbxBx+tdw2RL1RFO9SJHj9yYlGCSw3uNAAiYn1ftkRku3cKeG8pWaNxb6oplbW5Ql2waUpaBcJyHcAJK1A2ApTpM7BDcePfe3kfYaL5h+ZXXVQVHpD/Zb00XDdrv/VXIhgo2wEh5+CIrqJR+nnipkjDHprvtYvJpQl5dnVkJwDvMV/oEWOk0DYOvasPkg8AXQuePhCAIjndf59m14056OOv6J+Jtd29atwzRNXHDIZKJ8EyxAo3K2gPWnDOUmTcJomrPML6VzSe8034Nt4AV3kVk9L6qDYUwY2s1g58kRLfos0UOB6mV/QWazeP7VrYcea+FwNc5SVuvk1aaameLDPU4F+OcL2V1W3/IIEZvnHT2izfF5XEfEmnXL8W7ogNJIbk6JNZsyGHIO2yPB0QEbukB7IHMmGH9xpoNKfNEOVJHxTDRRs69q+EU3JF0Xh4gqLK3qNRa37vbFbeKvxBxvrsoRskQLMqcQsGZ4fCecHnnjuKJgGp6TWz4XD4sXqbgkNRQXytfht7Kezg91FUdMRF0I712N7lb6SLqLYnKEarCeXdJ0MRzN3W91vcHn9XAUTf6EgUK09liivQOrsLUKB9xY3QwZ5wKdwff
- 3vp0FHr3
- uf6h6MnKrskpocAMYJPrpGWXjbYUxOJEw0NNAiOoH5TjdkaT3m7aGd6+WeWGWDaXDpSNz5o2CL5A9qe5c+xWh7PB0AD5odK7786WfMAKfio97StqifwQ7oDA6LSubtBRW1a9sxv6/mvn/GVFap+ethvT1kHMnB5qobU7cCYezj7DeIXHI30QVrxW/etBom138XJmFBCete38UK0fvTeBROi01VYeBsu14vrhclRTT0nPgvOU7R3TYdRJbnjTb5I+hKyG8Oj+t8o2w55q4B2AfyTN9WczZ45sFT0I5ezaLqFAundo0TqieuSuNLAz/Lvmainvo5xHSlZ4YPj8=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C09534000B
+X-Stat-Signature: 3s8z38cesbfokp751dgeui96quzkgfet
+X-HE-Tag: 1780309346-875795
+X-HE-Meta: U2FsdGVkX1++zPH75FuMGqfZPVHi34T4MWGdcGx+Ft/j+HaGnneMXppkyNM0LmUqCixqPiCeHESsqZ9DdB5DxKCqpEGei1w00cNHtz23VwtL91oppTYHM6W6CWTcBzFiol39B1PVNBMPWILtrr/w985sDQ6s/ZyDNaW5NF2B1Mt3Fhd45TlH2bCwxMklhUdmP6I6q6o2pWa8kc+srPE3DpUPelZwDGf2A1uNOZlsrNo43HEg2J8AfqyE7jBgWt0wfCDxOp7eWqfINojJKRNQ+faGmxN6q9HTH2oE6EoGdpc4pyXhek19Acce454UmELjZ/V5jdqFlzdo4BO9qtvBukQFzQ+l2ePTN0Dnke3g+Ei/QS5e8aw/wg2kx3MKOBeY7lzv3aFCaiJUsRJTiUYG+S0026MUkdwuCYQciLqYYP+q4Y7o7q5+M9stY6RAz1rZgqwwcJF06bhW7GM25ZbQ/5YvhJsnGJmfUSyjy71GBVwPWg11PzMRyagr5QZWZK1kjVwsiuDQejGR1579hqy8eWL3fCBtmaL22jWOhSyu3t9iymKUXhneIxoJ9Gd4tlqc2wmJNlBff1QhU80d03UjEYRJQ7KZme/lp6ceEU3udtJsCskwmqim4T+lfoUAIVh71/t5VtsEnTCBP4zscfcunTpbSY7G9RlT+MchKI0tt7HEZzdb1+IZIxMwELWcqKfyS5VYpmMu8+PTDZPEuv0zOvRkH4Gj0FjlfwUEnxKqigqiK7a5XwLboRbZ9YJiU2uRMTgts2i117CW69WKk/ih+jsuY15w3rZ0jIoWpyp85hECt7Gi0ngX/HPaZENbLIHUUJ+39YgFQmiVOwik4RELK6j94OVDc3XbA+6aX06cefe1K+tOa3iImvyg+lbTwlDgrEommi4nf1qajwt8zgkFvZQQ6D9F4+L0pnk4RPaEQe4GlRl2JcnVHGyQtxXK78aYMTUXHmq58XcaG8Nis7X
+ pSrgPIKU
+ UWjc3DRBlVBC+uBeoelSeMKpLMYllfyxFsbXatspEvbZAU6cA8U/IwKTYtbSKLaZLVd+bqmmgRl/Cg3MKzP9RAucrPd/TW40bwb6FTdXMLk6//JGD30I3eFSY4OdKIONmDGcXFwj/PvyJN8SWRi/1tt4uD1jUH6Epb2KLbR2BYi7Y5AIUusMTMN6kHOwmRC9w96bRGm9h7dX5UK7SfvB1OVs9mJAuiSAX3piXf/ESYYijEKDlSSBmpXXr1Dr4ApyiH7uX4dQdFLDfMXk/CF1Taf7fOYrK/EnqVq2pDszum7DZmuZbJvmI+0eM3P7xSmIQ/a9sAwGkCtpNXCJAxvFJlLC+Fp8ZyEfT22/7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,78 +120,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hopefully this is the last revision. The only change from the previous
-revision is that the logic for deciding THP order was simplified and
-the max is now capped to 2M. Thanks Pedro and Jan for the suggestion
-and the dicusssion!
+The mmap_miss heuristic is intended to stop speculative mmap readahead
+when a file looks like a random-access workload. That does not fit the
+VM_EXEC path very well.
 
-The benchmark results on Neoverse V2 (Grace), arm64 with 64K base pages,
-512MB executable file on ext4, averaged over 3 runs:
+VM_EXEC readahead is already constrained differently from ordinary mmap
+read-around: it is bounded by the VMA, uses exec_folio_order() to choose
+an order useful for executable mappings, and sets async_size to 0 so it
+does not create follow-on readahead. When VM_HUGEPAGE is also present,
+the larger readahead is an explicit userspace opt-in.
 
-  Phase      | Baseline     | Patched      | Improvement
-  -----------|--------------|--------------|------------------
-  Cold fault | 83.4 ms      | 41.3 ms      | 50% faster
-  Random     | 76.0 ms      | 58.3 ms      | 23% faster
+The mmap_miss counter is decremented from cache-hit paths in
+do_async_mmap_readahead() and filemap_map_pages(). Those paths are not
+always enough to balance the synchronous miss increments for executable
+mappings. In particular, when fault-around is effectively disabled, such
+as configurations where fault_around_pages is 1, filemap_map_pages() is
+not reached from the fault path. The counter can then become a stale
+throttle for VM_EXEC mappings and suppress the readahead behavior that
+the executable-specific path is trying to provide.
 
-The patches are on top of mm-unstable from 28 May
-(8a74e22643189e0ae339afc91110ddb4cab1941b) which include patch [1]
-that make mmap_miss accounting symmetric for VM_SEQ_READ which was pointed
-out by sashiko in the previous revision.
+Skip both mmap_miss increments and decrements for VM_EXEC mappings,
+matching the existing VM_SEQ_READ treatment and keeping the counter
+accounting symmetric.
 
-[1] https://lore.kernel.org/all/20260525145751.2671248-1-usama.arif@linux.dev/ 
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+ mm/filemap.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-v6 -> v7: https://lore.kernel.org/all/20260528165635.2068012-1-usama.arif@linux.dev/
-- Simplify logic and just cap the max THP order to 2M (Pedro and Jan)
-
-v5 -> v6: https://lore.kernel.org/all/20260522162422.3856502-1-usama.arif@linux.dev/
-- Based on top of patch [1] (sashiko)
-- Changes to commit message to make it more accurate for patch 1 and skip
-  mmap_miss decrement as well. (sashiko)
-- Keep old behaviour if large folio mappings is not enabled (sashiko).
-- sashiko pointed to a TOCTOU data race that was pre-existing. My patch
-  could make it worse. Dont make it worse by introducing thp_order local
-  variable.
-
-v3 -> v5: https://lore.kernel.org/all/20260402181326.3107102-1-usama.arif@linux.dev/
-- (Looks like I messed up the versioning here and went directly form
-  v3 to v5.)
-- Drop patches for elf thp unmapped area alignment and deal with them
-  separately. These patches will just bring folios smaller than PMD
-  at the same level as PMD. The 2 patches now should be much easier
-  to merge.
-- Tackle size of THP for exec pages at the same point as PMD instead
-  of tackling using exec_folio_order() (Ryan during LSFMM, Thanks!)
-
-v2 -> v3: https://lore.kernel.org/all/20260320140315.979307-1-usama.arif@linux.dev/
-- Take into account READ_ONLY_THP_FOR_FS for elf alignment by aligning
-  to HPAGE_PMD_SIZE limited to 2M (Rui)
-- Reviewed-by tags for patch 1 from Kiryl and Jan
-- Remove preferred_exec_order() (Jan)
-- Change ra->order to HPAGE_PMD_ORDER if vma_pages(vma) >= HPAGE_PMD_NR
-  otherwise use exec_folio_order() with gfp &= ~__GFP_RECLAIM for
-  do_sync_mmap_readahead().
-- Change exec_folio_order() to return 2M (cont-pte size) for 64K base
-  page size for arm64.
-- remove bprm->file NULL check (Matthew)
-- Change filp to file (Matthew)
-- Improve checking of p_vaddr and p_vaddr (Rui and Matthew)
-
-v1 -> v2: https://lore.kernel.org/all/20260310145406.3073394-1-usama.arif@linux.dev/
-- disable mmap_miss logic for VM_EXEC (Jan Kara)
-- Align in elf only when segment VA and file offset are already aligned (Rui)
-- preferred_exec_order() for VM_EXEC sync mmap_readahead which takes into
-  account zone high watermarks (as an approximation of memory pressure)
-  (David, or atleast my approach to what David suggested in [1] :))
-- Extend max alignment to mapping_max_folio_size() instead of
-  exec_folio_order()
+diff --git a/mm/filemap.c b/mm/filemap.c
+index cca20e350c95..a16b33e0fc71 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3339,7 +3339,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 		}
+ 	}
  
-Usama Arif (2):
-  mm: bypass mmap_miss heuristic for VM_EXEC readahead
-  mm: use mapping_max_folio_order() for force_thp_readahead order
-
- mm/filemap.c | 44 +++++++++++++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 15 deletions(-)
-
+-	if (!(vm_flags & VM_SEQ_READ)) {
++	if (!(vm_flags & (VM_SEQ_READ | VM_EXEC))) {
+ 		/* Avoid banging the cache line if not needed */
+ 		mmap_miss = READ_ONCE(ra->mmap_miss);
+ 		if (mmap_miss < MMAP_LOTSAMISS * 10)
+@@ -3434,12 +3434,12 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
+ 	 * times for a single folio and break the balance with mmap_miss
+ 	 * increase in do_sync_mmap_readahead().
+ 	 *
+-	 * VM_SEQ_READ mappings skip the mmap_miss increment in
++	 * VM_SEQ_READ and VM_EXEC mappings skip the mmap_miss increment in
+ 	 * do_sync_mmap_readahead(), so skip the decrement here as well to
+ 	 * keep the counter symmetric.
+ 	 */
+ 	if (likely(!folio_test_locked(folio)) &&
+-	    !(vmf->vma->vm_flags & VM_SEQ_READ)) {
++	    !(vmf->vma->vm_flags & (VM_SEQ_READ | VM_EXEC))) {
+ 		mmap_miss = READ_ONCE(ra->mmap_miss);
+ 		if (mmap_miss)
+ 			WRITE_ONCE(ra->mmap_miss, --mmap_miss);
+@@ -3941,14 +3941,14 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 		 * Don't decrease mmap_miss in this scenario to make sure
+ 		 * we can stop read-ahead.
+ 		 *
+-		 * VM_SEQ_READ mappings skip the mmap_miss increment in
+-		 * do_sync_mmap_readahead(), so skip the decrement here as
+-		 * well to keep the counter symmetric.
++		 * VM_SEQ_READ and VM_EXEC mappings skip the mmap_miss
++		 * increment in do_sync_mmap_readahead(), so skip the
++		 * decrement here as well to keep the counter symmetric.
+ 		 */
+ 		if ((map_ret & VM_FAULT_NOPAGE) &&
+ 		    !(vmf->flags & FAULT_FLAG_TRIED) &&
+ 		    !folio_test_workingset(folio) &&
+-		    !(vma->vm_flags & VM_SEQ_READ)) {
++		    !(vma->vm_flags & (VM_SEQ_READ | VM_EXEC))) {
+ 			unsigned short mmap_miss;
+ 
+ 			mmap_miss = READ_ONCE(file->f_ra.mmap_miss);
 -- 
 2.52.0
 
