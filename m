@@ -4,81 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7517FCD6E4C
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 04:00:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8929DCD6E4C
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 04:57:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD0456B024D; Mon,  1 Jun 2026 00:00:36 -0400 (EDT)
+	id 4AD8C6B0250; Mon,  1 Jun 2026 00:56:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA7606B024F; Mon,  1 Jun 2026 00:00:36 -0400 (EDT)
+	id 437746B0251; Mon,  1 Jun 2026 00:56:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE4846B0250; Mon,  1 Jun 2026 00:00:36 -0400 (EDT)
+	id 300566B0252; Mon,  1 Jun 2026 00:56:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BF9CF6B024D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:00:36 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2ACA71204C6
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:00:36 +0000 (UTC)
-X-FDA: 84829992072.23.A185944
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E9FC540010
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:00:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C0106B0250
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:56:59 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7E08BC1E45
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:56:58 +0000 (UTC)
+X-FDA: 84830134116.01.C44C416
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 567D040004
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 04:56:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="HaUyy/Q3";
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780286434;
+	s=arc-20220608; t=1780289816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Uwsf0BZgrkqXpmlkq67Gxq6zX208bf2tVwUWPjjaJGA=;
-	b=QTMlm+O98nxg4YWPgz82Q2GItGDAoDEK5o6FsQss3shCj+jfYTghPZp3mhPVe/CttrhJD4
-	Ig1O/H5DW4MmjgjOqvXgkAmAK8KW5up0qryRYznhPNKFmf9+BSWPTK32JmYsjSWWUUuM8f
-	hOO9eZ9CgX7nbHk1nBspblgmfNY1RUQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780286434; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ARykLE2mE2vQ/lINLvO895ohlHNvuzpDrMJsV1OaQ6Y=;
+	b=CJdpN82sqrIPA7lUAU6M/JYDz/4xY/9B1rYY5zmhfJv/sZaRmuClSYXBtO6xvzvsp2aikU
+	JRMjBz5M6H6AqZYSIaC57F4/kcpcUfY46JZ/wgyd25NvHGPjVoWio4lXBGkwSqrehfnXAr
+	V+2OiBrGTZYd12PDujhDPqJGL++hjGQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780289816; a=rsa-sha256;
 	cv=none;
-	b=Da2URldyK2CZupxAyMuhVrvsFX2AqRMnUZzCtbPvdHw6bIIKJZ8QizqtrZUfkTwYXoSMKY
-	2RLFbxkfUgLOiD9RHwHqos1ps44otTPRRF3n+QXLL3bIL0PXiYcvd3btVEAJjJtrE9A3UH
-	vpUDtoCplM65oht2L+K4EIecersSsAs=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 1 Jun 2026 13:00:32 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Mon, 1 Jun 2026 13:00:31 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kasong@tencent.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
-	baohua@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com,
-	hyungjun.cho@lge.com, mkoutny@suse.com, baver.bae@lge.com,
-	matia.kim@lge.com
-Subject: Re: [PATCH v7 0/4] mm: swap: introduce swap tier infrastructure
-Message-ID: <ah0D3x/586U9GKkL@yjaykim-PowerEdge-T330>
-References: <20260527062247.3440692-1-youngjun.park@lge.com>
- <20260527133651.2ce806fa542a82eca5ff66d6@linux-foundation.org>
+	b=g8uuLkvugH0z9Jwv0F+Rnk6uEehVXxiHf0n6UbWx1dyAdI5NH0fre5i0eV0yeYZ3CmmmLJ
+	ZIW2YRUiEoMuqZ1W7XWyuTyqvD0DqU8dG1louFO1lNimCSFWuVQHpWwhR5IWh2aGvIEDQV
+	ZYpeZFbrpNN+Mr3L6wOAzdzQ7jxCtZs=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="HaUyy/Q3";
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 169751E8D;
+	Sun, 31 May 2026 21:56:50 -0700 (PDT)
+Received: from [10.164.19.28] (unknown [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BB7FB3F93E;
+	Sun, 31 May 2026 21:56:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780289815; bh=uh04jOx1nBkRcF0Uf+qmlp1xwS9hdzC1jSrjru2+IQE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HaUyy/Q3QQY8LFo0HHWNssQu++Ryy4dWmAHD4fasvlTInFEZouDCQj/vtZBX+P2ZC
+	 VtrFIsX83pVwwuosFxTpDu3u1Et3kGCE7TcgrBQlrgqw5orWkEXPYGukRONyM8mxS9
+	 fpXC/jZe5fUPVnPzy7oIKCbV0BibT+oV/WFEDKT4=
+Message-ID: <9d13d62f-df3d-46aa-8411-4abebb92c35e@arm.com>
+Date: Mon, 1 Jun 2026 10:26:45 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527133651.2ce806fa542a82eca5ff66d6@linux-foundation.org>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: b9e8oo7fm9yujewkzahfq7k7f3emegjs
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs/proc/task_mmu: do not warn on seeing non-migration pmd
+ entry
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ liam@infradead.org, ljs@kernel.org, jgg@ziepe.ca, leon@kernel.org,
+ shuah@kernel.org
+Cc: vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, balbirs@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20260529111704.1078346-1-dev.jain@arm.com>
+ <a62302f8-24ea-4d21-963d-48bec766766b@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <a62302f8-24ea-4d21-963d-48bec766766b@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: coqn45csjaphkpdkudrmzzfck3ew456w
+X-Rspamd-Queue-Id: 567D040004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E9FC540010
-X-HE-Tag: 1780286433-280590
-X-HE-Meta: U2FsdGVkX1+yyHPgSjyYIgx2VrRtHY82y/SunIGLM4fr/MW/NvT2RIxZAHiUFSbST+jeu4xMlmmnHY7KVKqWt7ABw14saGVgwwD3FaiaJTfbgRyaeyUaamUYwnIpS1AFU1TrmystsYun1DOugpn/aGREMZGJjXYQ/JWZVRcGFPdAnX3PfGOcEKaCAAczNr2YF2tbhnawBKxx2dSpbVsYltVg8/H+mgg6Hfvc5z2wVjuwGEwRDl8AyoCLS5mAcEkT8H7neYp+4DQW2QqX8blQy5IR0Qr0BtrxQDpnFtyZeE6AAZfoC9wvTla4edtqUw+mlsxlQanVDacjFFoMlkY+cSYmUKg8b6UX7ac9n6wJQbW0jiavAmrAbbxFTI7bfKgdKlaO8MGMOr1BI2oaVV5Z8B9xOXs7XWoVa17FrCQ+dqmcqzXZdZAuysCEYnpu8m4Gt7yqcW+QNavD3mazmYjWa726hsdf3cm9BtxZOAWhrYh3K4NZ1wsrR0+8JL4bL8Xgd6Xzvx1fBGZDyiI9Hab9DjwW6Lauz7I75d6OupLnWqN1BN6kWWw8H/WaB9dAfDdLnNIw5bse1aIkIEckyLwddH3vtY0xjs2ocPa0kkMPv/v8idMX86y8LMD97n8CAVEGVXAFyTSPEjBqszUOS/P4Wm9Fp3hmVoEx1o/TTKqdHO6rEItjgMnF05BgxA83uRPsrOJNWJHy6HDICqjTqsBMSXvQRqB/2OmC+Zdz2M8qAg5RUmlnUnGMIFMoH/p7acPpzthOlPDIAJbVrB1qk76bAvUXiUShyxraR03MDKHzDCe90Xkb2Pps/oZOr2ZLxA0Xgr8MuZUzOJDWb2YAqP7/9ElYnNMtlV0FZDyuQ0DM/pq0YcIAWOCIH45p0nKeDptn9WtN3Ml4+IqQssGAwlcKXoCvshGWuyZrecZ42idFHVhy1vkDiLKpMHVWdoAYgDW4AJK9wOSlZ+LgNKvs55F
- rfKwHekV
- jcw4eov+d8aWXW8nCz5RkCpwHzblNj+YWok3STAcsCTXF9AZBN/h319G10blUOMbqMm3usJGXAx5743dceT6qoZn+eaTUhAbTMpnB6tEZoQbw453jAtLuKfKNU3+bAzQq6L0HQa/XtugQN1Rd7S/gWlUx21ugz2F4Yg6OAtwE4M/zwHyKJrre9NMsPVBQ46Q8XvXVtDFpFYflMnzg9ILftP50vu751IhmAB98ZRX7+xD/6KKo6dEnqR7b+mVIxQdzH8pSKNXesr3u4cY=
+X-HE-Tag: 1780289816-361171
+X-HE-Meta: U2FsdGVkX196Gvcxt+oxyVFL+HYmdUhFPMdGXJMCacGUnD9bRPggoeXgDkVy1au8aRgQMnl1yz7VbNyPfUQarRklRbkikTJUkItFKQZL35YZo5Xt7/G52dp6jNLpP5BEr0haeElFKtYgPFes8/QbB3SzPmoF4O4g4Au4TG5Pnne71F2stzBEmyjEfYGkn6GT7QYzwsk3UsmIub4boDCkF9TLCGdASMfpf6BBKD/OrHPOQIN1LD62/ca5ZYYTgGs6Kzk8CY+U2lzOYkpD3qDVFLumjga4Otguoo2VhnJT+HaDYwM8FuN9CnLPWhoIwSKDMuNHJK11oUByffSt8YfvNx4/dc3737E4Ifn0a3GLtCXJbwn/8U2PFpi10s068IsinfceiiOKFYx3V4Y5/iBUJfGTIbfjhy8l8l3yCK5G2fqem7ZZSO1eXFgmFGjyA33rcc0+yJjOSMXO/ARQJrLp8xtapYz1JuvTD2yp8tTNi8y0Tm1+defv15nDgUpKOvXJnfrB7at4l83Z62G+T1z8cq+89V1tv/20sqW6BymtIrMjDymgPjNvCWJAXeyJad8VFGgweeqxBqqsQdNPyMZAjUYrkRMuwD19yrRpRzryjBT+qeX4tbQ9fsjKkywEhe5QfRjfxGyivDZKC84QDuB9Zr8CkrI9DZoDJTFRyiOwFAdwyh1dY76Ot+ADzNDaS6PzNQ79TuRqjcq+Nn8PGMyMYcyHCs6uBP4MThIyxsNyXFZPF7YZ/uaaqe1U52t6ywoM2r4TQdIy+awcC2t+HcQbUF92ko0oO42RYYYHyl9Wm6sD5Gp/1jpUQVFcFCLvo/Z1CloBQClM1suV5dfEWUpbWr8wrXluqjuora6go6w+wEauXD7jDEWVE8mSTTqAHEudN/QoBm6G6FkCpgygi2veaPGp2o2xyp4nIbD0ZuhoE6gpaL5uhk+puE0dSfkZVMLjXPAefUxQ5+nxcPItMIG
+ FRpyK8rY
+ m4JV+ZMQ41H1GUMUcuOFWJNIp4+V71ncc1U63y29XTMocLFCf5cNh8pul46xonPulRgHLSnYixUSyKOra2g/CgtSeYHwe69PY0TniP4+SqYA22J30VE5nohKy34aBPUjZmNQwc7WF0HDajIaUQcMuDLcPyV4fSWev3x24/SB4RYYZlnt9t2nGiRlGvSFXqpLywrP2FgXl6xT3VWhaXSB4T87WQp3dKITN5hb1yp/LgKvNkOSQ/zq7jHYkQ3sIkcPQz/MhTF8IQ9daCff/iyh/y7+vMRt63ZL1UhvfHt+pJFLY74kySgUAyi8Mqo3di5Rn7IrGRO2aMhN7pE61jADr9xy8s+B+t6FoNwn6cFgqsBKfKE8d6klBUMLyMXjQHpT7Jm3ydHjNOTlTsuMFSzC225EI6UO172sfKcc6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,23 +97,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 01:36:51PM -0700, Andrew Morton wrote:
-> On Wed, 27 May 2026 15:22:43 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
+
+
+On 01/06/26 12:41 am, David Hildenbrand (Arm) wrote:
+> On 5/29/26 13:17, Dev Jain wrote:
+>> pagemap_pmd_range_thp() warns if a non-present PMD is not a migration
+>> entry. This became false once device-private entries at the PMD level were
+>> added.
+>>
+>> One can hit the warning by patching hmm-tests.c with the following:
+>>
+>> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+>> index e1c8a679a4cf3..7f0a3384f3c5f 100644
+>> --- a/tools/testing/selftests/mm/hmm-tests.c
+>> +++ b/tools/testing/selftests/mm/hmm-tests.c
+>> @@ -209,6 +209,37 @@ static int hmm_dmirror_cmd(int fd,
+>>  	return 0;
+>>  }
+>>
+>> +static int hmm_read_self_pagemap(void *addr, unsigned long npages,
+>> +				 unsigned long page_size)
+>> +{
+>> +	const size_t entry_size = sizeof(uint64_t);
+>> +	const off_t offset = ((uintptr_t)addr / page_size) * entry_size;
+>> +	uint64_t *entries;
+>> +	ssize_t nread;
+>> +	int fd;
+>> +
+>> +	entries = malloc(npages * entry_size);
+>> +	if (!entries)
+>> +		return -ENOMEM;
+>> +
+>> +	fd = open("/proc/self/pagemap", O_RDONLY);
+>> +	if (fd < 0) {
+>> +		free(entries);
+>> +		return -errno;
+>> +	}
+>> +
+>> +	nread = pread(fd, entries, npages * entry_size, offset);
+>> +	close(fd);
+>> +	free(entries);
+>> +
+>> +	if (nread < 0)
+>> +		return -errno;
+>> +	if ((size_t)nread != npages * entry_size)
+>> +		return -EIO;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>  static void hmm_buffer_free(struct hmm_buffer *buffer)
+>>  {
+>>  	if (buffer == NULL)
+>> @@ -2314,6 +2345,10 @@ TEST_F(hmm, migrate_anon_huge_fault)
+>>  	ASSERT_EQ(ret, 0);
+>>  	ASSERT_EQ(buffer->cpages, npages);
+>>
+>> +	/* Exercise pagemap on a PMD device-private entry. */
+>> +	ret = hmm_read_self_pagemap(buffer->ptr, npages, self->page_size);
+>> +	ASSERT_EQ(ret, 0);
+>> +
+>>  	/* Check what the device read. */
+>>  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
+>>  		ASSERT_EQ(ptr[i], i);
+>>
+>>
 > 
-> > This is v7 of the swap tier series addressing review feedback.
-> > The cover letter has been simplified.
 > 
-> One question from Sashiko.   Minor, but easy to address.
-> 	https://sashiko.dev/#/patchset/20260527062247.3440692-1-youngjun.park@lge.com
+>> Therefore, remove the stale migration-only assertion.
+>>
+>> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>> Applies on mm-unstable (404fb4f38e8f).
+>>
+>>  fs/proc/task_mmu.c | 1 -
+>>  1 file changed, 1 deletion(-)
+>>
+>> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+>> index 1e3a15bf46f4e..58938e62154d9 100644
+>> --- a/fs/proc/task_mmu.c
+>> +++ b/fs/proc/task_mmu.c
+>> @@ -2129,7 +2129,6 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
+>>  			flags |= PM_SOFT_DIRTY;
+>>  		if (pmd_swp_uffd_wp(pmd))
+>>  			flags |= PM_UFFD_WP;
+>> -		VM_WARN_ON_ONCE(!pmd_is_migration_entry(pmd));
+>>  		page = softleaf_to_page(entry);
+>>  	}
+>>  
+> 
+> The whole thp_migration_supported() guard is a bit shaky, right?
 
-Thanks, Andrew. That is a valid concern and definitely needs to be fixed.
-I will address it in the next version.
+I think if you remove this, then you will trigger a WARN_ON in softleaf_to_page(),
+for the case of !CONFIG_ARCH_ENABLE_THP_MIGRATION.
+> 
+> I guess device-private entries currently imply thp_migration_supported(), but
+> that thp_migration_supported() check is really questionable and should likely
+> just go away (else if -> else).
+> 
+> Staring at pte_to_pagemap_entry(), likely we'd also want
+> 
+> if (softleaf_has_pfn(entry))
+> 	page = softleaf_to_page(entry);
+> 
+> to prepare for PMD swap entries.
 
-> I'm reluctant to add a new feature patchset at this time - we have a lot
-> already and we're at -rc5.   What do others think?
+Correct, and this is done in
+https://lore.kernel.org/all/20260427100553.2754667-4-usama.arif@linux.dev/
 
-I will wait to hear others' thoughts on this.
+I think in addition to that, Usama can also remove the thp_migration_supported() check.
+> 
+> 
+> Anyhow, both are unrelated (can you send patches to clean it up?)
+> 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
 
-Thanks,
-Youngjun Park
 
