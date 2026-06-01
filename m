@@ -4,141 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3611CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:46:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6FB6CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:47:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 354C96B0437; Mon,  1 Jun 2026 11:46:38 -0400 (EDT)
+	id 15B2D6B0439; Mon,  1 Jun 2026 11:47:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DF2B6B0439; Mon,  1 Jun 2026 11:46:38 -0400 (EDT)
+	id 10C7D6B043B; Mon,  1 Jun 2026 11:47:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CE236B043A; Mon,  1 Jun 2026 11:46:38 -0400 (EDT)
+	id F3D966B043C; Mon,  1 Jun 2026 11:47:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 080236B0437
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:46:38 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E67716253F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:46:37 +0000 (UTC)
-X-FDA: 84831771234.23.7CD4705
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DF7E06B0439
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:47:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 92AD61A061D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:47:57 +0000 (UTC)
+X-FDA: 84831774594.05.3C67F63
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BC50C1C0007
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:46:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DmC1Ux43;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id EB0DD1C000C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:47:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=It9Dcf7K;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780328795;
+	s=arc-20220608; t=1780328876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+PZyLMmZBGq0lNbALF3xmrMJy0VM7McUCcXTF9FzQnQ=;
-	b=xpqNBboF8B7YksNox4izgRvQPCYEjBXOZg6S5v0dbRh1blNN80JRv9ZgYFt7DPziIMVMlh
-	awdkh/SxdyjHncCjvd3joXUPiDLl69f687E1YJyvsrp/FQFaGnKcYLmJh5vTRpe/0LAFOc
-	Xcu/X9m5TxGulcy1nI96nVoRDwtQuag=
+	bh=qha978NEHgz7xh7UWTrfd7Bjy8V76zrJKNnrotIFLtM=;
+	b=hAMK+hQLwOVolg+d5AhgSbQNZdFJCAnZmR5DgXueSmc0bWs3/NmA6k83L79tW4JNrPPM4O
+	SE84dlsPwjaui1zKhjeC1QIRPWHAjK8135itvomn1LWTUPmAXScMwv2AyUDl6rl2Y68N3t
+	axWWPWHME/8WhDKRjCmBxZDaLf2JUnw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DmC1Ux43;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=It9Dcf7K;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780328795;
-	b=GboaprgVxKhA/dJFEpMBSyFXFBXdPH+bckcldDVmu3tXT80HhNNybpMN1pcyyQxAzoZhnq
-	VtOhLP23+syL3gpG63tvz65FUdNhmV7l+WlNxPcnMJl8ea57VlE1GEYJNY602UmFCFU5Nh
-	NTDbkMQOYxu4+n6EmThRmUQvzXKlRGE=
+	t=1780328876;
+	b=anw/TkTBNG23dguRoFkU5uf6EOT+cdjrrHMqF3jH8fxxkWCXAlnF34npOPWZHTu+KJDu0j
+	ZKL6sX+QrWg29ZZtrbIYrtJEZk1fRIutDPNC25hf/vnLOf74c1nWJAuAlN7as4ezJEodYY
+	HrHONK0pp5UDcnz1F16Q9agyLconn5c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0C93844342;
-	Mon,  1 Jun 2026 15:46:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3411F00893;
-	Mon,  1 Jun 2026 15:46:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1D3CD40193;
+	Mon,  1 Jun 2026 15:47:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5549D1F00898;
+	Mon,  1 Jun 2026 15:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780328794;
-	bh=+PZyLMmZBGq0lNbALF3xmrMJy0VM7McUCcXTF9FzQnQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DmC1Ux43Yo2uzBrTN9Nkt/+7feAF97Tn2ZFy51PUjV7C5QpLrET/wsB+hl78Eoefb
-	 IvjDgSgBnUlVETwpkXRB/KsnLRXs1r4SwwZonL2+uI/XwaB5IPkZDlVZrlbGY/PsrJ
-	 krH16VbOz0ySObXNbBZiUDwgkq1kPBhZOdXCraY53mjhhiu07oWyf6vmf3IL+Kmu1v
-	 noBVrDAJZuyH8oBskjsEJ+CVSTs4a25x0Ny5lo9htJezMeezdmZ+5D94aXDrtwaXEV
-	 ZcD31tEC3pzGK+rcg6WeXsa6YZp1OJiXiCtFgvs604GFcj+FZV8Roiw8Kmy3P+HkhO
-	 qiEmRgqGLgx+g==
-Message-ID: <9979fa87-88ef-4baf-8592-502ff4888085@kernel.org>
-Date: Mon, 1 Jun 2026 17:46:27 +0200
+	s=k20260515; t=1780328875;
+	bh=qha978NEHgz7xh7UWTrfd7Bjy8V76zrJKNnrotIFLtM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=It9Dcf7Kfslfw6/YwnFy8lAUZRxSFXJnGL78NChqQb2P8uRF0c383JRl90uhrYggp
+	 cVEvILD6Y+CTt1XploB2rvs7RenBocL/CYfMzTZN47O64OmwjlOANMdlux8NksDs0o
+	 81LBkyJoZGVFlC8RXXqUoLlYwi5G/Rbf3wUPN9PexzulwcItNPYQvQFLvcCefF0Q9Q
+	 5rfMyqbYdtLJ/2CASqvNEOKpbaSnL0CkLlfItEkb2/fTxxaILP1fodCgzv0rMBfzVQ
+	 uDf0ZQXV46Co0AKyKTIHAzmVbdQPWCRFwX4UXTyRgVs0kRStdnLdCwGwlKyvpL750A
+	 /pbRJsGPAPzJQ==
+Date: Mon, 1 Jun 2026 16:47:50 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Nico Pache <npache@redhat.com>, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
+	vbabka@suse.cz, willy@infradead.org
+Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
+ khugepaged: add mTHP) collapse support
+Message-ID: <ah2pbAnz1pwNcW-U@lucifer>
+References: <20260522150009.121603-1-npache@redhat.com>
+ <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
+ <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
+ <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
+ <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org>
+ <ahVX1iq_-95vd0PN@lucifer>
+ <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
+ <ah2fG9fSqbocqUlE@lucifer>
+ <f7737b9c-42ba-46d1-b69e-53ac2bda59a6@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/3] mm: make persistent huge zero folio read-only
-To: Lance Yang <lance.yang@linux.dev>, Dave Hansen <dave.hansen@intel.com>,
- Xueyuan chen <xueyuan.chen21@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- x86@kernel.org, catalin.marinas@arm.com, will@kernel.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- akpm@linux-foundation.org, ryan.roberts@arm.com, dev.jain@arm.com,
- yang@os.amperecomputing.com, jannh@google.com, linux-mm@kvack.org
-References: <20260527035607.14919-1-xueyuan.chen21@gmail.com>
- <20260527035607.14919-2-xueyuan.chen21@gmail.com>
- <4e0696ee-895c-486d-aacc-71146f0e9047@intel.com>
- <929875a2-9e94-4dbc-9c98-b342ccc3f4e2@kernel.org>
- <bbecce76-c677-4045-b0d1-ba822b84dcf5@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <bbecce76-c677-4045-b0d1-ba822b84dcf5@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BC50C1C0007
-X-Stat-Signature: jpo3zxzg5hwmiu9337anhg8t5dskfx4d
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f7737b9c-42ba-46d1-b69e-53ac2bda59a6@kernel.org>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780328795-569183
-X-HE-Meta: U2FsdGVkX182834y66I2TJsV7J1dqgPtk+UF7AvyavwnMvpP5x7vBsBhcMHbKsGGxpi/j+dfdGVLty5hkh9k9TQ+I0KntXJrD50kqdKzihO3BSnbf336JFRXDC25gGXKrHbFQXBdlCU6zPdHXjXQ5OQ+OdHQyLAGy0fMMLL2fN36+vYGRMMHuKs8707U/boVbjUEF6pueiyDICczwyOczYULchiPlQshKqpGYOCDnfeWdemNtb/2b++DDus5wUAgAyuAGkfffHSFKlULNwv4Wzk9Y8ZDgMepdeTMVxvIsL/iG/H1ZaVQaJcwqeAPJwXseVHVAUriOSgt3ISX1tyZWSGazwR3tguUlSk0vYaChowM56uhkP5lWQDQWv1FWwgp4qxptMiWwR+hvGzhsqkuTy0ebTUDZt/tzVnISEjyO7KZsEthuUMITbCSld9e38I3qnYLXMEyS1MPONkhmq5SpwjDjlw8U0OsZOa0UgN6iIUjY8YkgcpS5VjA/znUxXZPC1/p5lFzUmPD1V0gpvsKJhumPukZF/vkLTC2i4WwfBeNtvgeDiKfQ72M0KHdAA7wdSceOsHqrkQ5/Qbv9bNUVpLrA/HYQ9C3XkUSLlG9q+51RvcV+sAvMrEc7fa3QT88RFSbIbGrak0UGC5/5CyS5Fva6295QoIoXm3PbIrTTRtgwDL7HxNFdeET+/UCMF8a9VimJATJFYCKKNSthi/FGtGBseWjV9aPbhAiebdQdI5qW2oR9fEBOslmmydoLpkD/sn5VV8VslUpnYE79Se0gqL9N8sU3R5LpTDAvbVu5+26lJjy7bpO/e8+KCOPdOmPfM8Xk6jYt/T1z2PeVdA8pQGWBFw+Wu/Rs9vtDx3yktlMVycYv16Riqzii32+s/qGSq7rYtlggE/EfwpN5F14STQyAhWFbMUSYrKyufT9kiFSoAbCSVWm+J1cF+LeEo7eXBLiXZITyuyNtZhQgC6
- GQwoixEC
- 9h46cgVVAnjosCMqTWAfvf7iTZg9aWJHuin2OqGiPVBtfl6pikxQRfkVCOJNMGiAFGkI4f/muZgT4TwuKj8oG9LY5tMZth2YztR234kJtYdVYzPj7ohWi2TOuDpy63sojzJxWpqumA/jQ1EVPwmjzXpfvqmIcjiRYWj2aux056GCnV58oIhGnnYgHouhOABEHKNx3DBSPcNxlqoClo/6YOyrHA8/jM6IM9V2bgyq7a0q/7znxtLBQM0VohV7rUAe9e43C5jfETBc1TtTKdv1DFGyN8CiQqdqnCOWTegP4CvYhcU4LjiRx79AxWFcI1UE/dDra3hsxGzAxprDBcUeyP1hHH85yTcfRES0yMXpoxotFAVw=
+X-Stat-Signature: jticxgizyp5zkh18bjm7pthwbxxqzm91
+X-Rspamd-Queue-Id: EB0DD1C000C
+X-HE-Tag: 1780328875-899047
+X-HE-Meta: U2FsdGVkX19GFwN9mM/elC1cCDuCm4w5L37cWTdy01T6bxHwQxGRyIj6VPVTekHc4cdegNRVGzm40My58weOn5iBvVJa8HBFL/mo67/qeVgxeWnf1a4f7daW1EmN7WfiIBye3ljxWmg4cr5DjIOQQqJ82ohFKMj/lKUH0V4jNtoZEVdwOdKBRwjDzfEwoI6D7M3qTouWhXJArcZYIZV7IfNYSjWXnDTjin09dXpR6Pgj5NIVlZCaGEd+FohyPU29AUlur2UK61+mJsgGA9rMvOe7fSGTnWX2pOTlkexWZXcQOZmDt/uD7sBD4Wob9ay+fwHugi5huBZ07Z65ti51QHkNrdNMzkyK+lJdw5f+BylEdIRJ+u1BsZ60SPT0RyQEsjLgSvFUliYjfeexUs2Ib9ZuCQ7heI20BddD5GObifjiPl0Z8yUlh6ki1OpmBTUUHtNucXq+quCEYNxftnlOkziA4+VArBfqbJV3B/h+e3CF7KJqd5zXiFrrzNTL2WG3xdY+yapCMLeh992cyPT5CbpS1D88yuSQsQYGcPlxJCcPOipttAVStYA5OnTjDvrNReHh06spSLfufuJHZ+cMowObc+R+m698dZvuHyY16jqjYIeexfW+Rr3qvGIk74b0QNTaVbpDjcsAswAL0qQ5UrsilraLMwBVqVIuSRQJsX8o2UoexwIC25n/FTkWQyFhIoeRZ24HIrcd3FVImmewgffY1qiowKll/avwfMwismBJ0fx3RywddKzDjCS8TiB0XbdbuFu5yvJZ00X6GuULGdkd2CR+KkvmGMRtynpwtDvKsRc9VmvhYKqCrxFEqz3XUEJnIYbiePwHVfAKlkXbJWR1EbPx7hZPjU6vy+jjLoBtBJml/CBTR4PjE4UyWmiOnJtCf/9udAUqagHyZ9OjB6MNrsO/M1XvxprNplnxux+JtIMZ1Rx/yrDrcp2hmTBwk1TuhE2owswf3CtuHil
+ TvQWt4vD
+ LadZD/sCuUsAQLX61x9rGLv0iBpcTgsBq/tbjt1vhUhMmYsZfAUX/vcmyC2EPPqw3XW3pJuSaUcJ2olleRHcw0M5SOYbc6eOURaWyv5nXGnN51tpO5k4NKM9cTyhoxj3hRd5GC1fw7nnaoKeUXz0pFRQJqgBJwo996tdqaCZeZKGpVUV9vGjfVnxS4oIp1+Ar09poTH3v2+p3nmN3j4sVUrCaIt6FkqIDLfP2Dj0LU1A9OOHExlz/2TEQy6CIIHuccBXX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,46 +101,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/1/26 17:43, Lance Yang wrote:
-> 
-> 
-> On 2026/6/1 21:49, David Hildenbrand (Arm) wrote:
->> On 5/27/26 17:55, Dave Hansen wrote:
->>> CONFIG_READONLY_HUGE_ZERO_FOLIO
->>>
->>> All of the #ifdeffery needs to die, IMNHO.
->>>
->>> This function is also a bad idea. There is nothing "huge zero" specific
->>> about it. It takes any old folio and tries to make it read only.
->>>
->>> Just make it:
->>>
->>>     bool __init arch_make_folio_readonly(struct folio *folio)
->>>
->>
->> I'm not sure whether we want a folio-based interface, though.
->>
->> This will likely be the only folio (that will actually have a "struct folio" in
->> the future) compound page we'll ever mark read-only ... whereby I'd guess we'd
->> want other non-folio pages to be read-only in the future (encryption keys etc,
->> maybe?).
->>
->> So I'd instead use a page-range based interface or sth like that.
-> 
-> Just to check, did you mean something like:
-> 
-> bool arch_make_pages_readonly(struct page *page, int nr_pages);
-> 
-> ?
-> 
-> So it can work on pages as well, not only folios :)
+On Mon, Jun 01, 2026 at 05:43:11PM +0200, David Hildenbrand (Arm) wrote:
+> >>> and have people
+> >>> base work against that?
+> >>
+> >> This I'm not so sure how it would work. Assuming we have submaintainers with
+> >> their trees and branches, the final "stable branch" is merged from those.
+> >
+> > I feel like it could get hairy pretty quick, but I guess the key thing here is -
+> > maintainers resolve merge conflicts.
+> >
+> > As long as we have a specific _solid_ basis for work.
+> >
+> > I think actually this speaks to it being sensible for each submaintainer with a
+> > separate tree to maintain their own repos rather than branches.
+> >
+> > We need to determine what this baseline would be for each tree though.
+> >
+> > So perhaps each submaintainer tree has for-mm-next that's the stable branch from
+> > mm-next + any stabliised local changes.
+> >
+> > And each week this gets merged to mm-next, and everybody resets to mm-next
+> > stable branch?
+>
+> I think it gets way more complicated than that once we involve hotfix branches,
+> and dependencies between hotfixes, topic branches and all of that. And in
+> particular, if we have to drop a topic branch in some circumstances.
+>
+> My first step will be to understand "how would it look like without
+> submaintainers" when only having topic branches.
+>
+> Then, add a complexity level on top with subcomonent maintainers :)
+>
+> I'll probably schedule a session in 2 weeks.
+>
+> Whom to invite?
 
-Yes, that would have been my first idea if we want to easily allow other reuse
-in the future. Of course, we could add a folio wrapper that will likely mostly
-be used by a single user ... :)
+I guess can look at the list of current, active, involved submaintainers?
 
--- 
-Cheers,
+Can also send a general mail to linux-mm about it too?
 
-David
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
 
