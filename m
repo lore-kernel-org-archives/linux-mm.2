@@ -4,83 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20A4BCD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 19:26:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5247CD6E61
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 19:26:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B9876B04A9; Mon,  1 Jun 2026 15:26:33 -0400 (EDT)
+	id 4E9536B04AB; Mon,  1 Jun 2026 15:26:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 843316B04AB; Mon,  1 Jun 2026 15:26:33 -0400 (EDT)
+	id 44C0B6B04AD; Mon,  1 Jun 2026 15:26:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 759716B04AC; Mon,  1 Jun 2026 15:26:33 -0400 (EDT)
+	id 389D16B04AE; Mon,  1 Jun 2026 15:26:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 628FE6B04A9
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:26:33 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 24D556B04AB
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:26:35 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 24901162720
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 19:26:33 +0000 (UTC)
-X-FDA: 84832325466.07.AF2AF9A
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD415C207F
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 19:26:34 +0000 (UTC)
+X-FDA: 84832325508.07.E1D37F7
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4C016C0002
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 19:26:30 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=W5+367Ih;
-	spf=pass (imf10.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1251B20002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 19:26:32 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DpG1jwm2;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780341991;
+	s=arc-20220608; t=1780341993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3PRjEsmgqn76Hd2Wr35ebCoWayo4PkHbW1sfCmMDIy8=;
-	b=UNNb1ypX4CG4z1c201pfu3ktDruSxahQH0C5l5rstS2GnlKZi6bxSC4uiAP1hZx8Di57xY
-	cnT3DojrGYPr9MvNCZZJUNUaUL/CoOjggUd5B7GsyiSN2MP0l9h1jkezVm0CmyCgSQwP+O
-	1j7LLwyPjN/6RFvkpXTnkJMqzGK23ic=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HuAHwFgxQTl/6u/qT6//YvieKzXrnJyvSaoUGnMavJo=;
+	b=wUTNws6SanslLnYCQRZDsNSRrC75cq0TopRt9wTJ1EbuRgZi0pXc+y1mmgbM3OFlPOb3Pn
+	PappnIvgDXR8a7ZxKQKNlU44b8yPSGvTujjr6K6XB9Kkno2QA/Zzua21jYmCpNKHO6zCTl
+	v0Uun1Q0GCGqBIVpdEq4V4wieMkhcbI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=W5+367Ih;
-	spf=pass (imf10.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DpG1jwm2;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780341991;
-	b=yE3CeG/VOsMXjQ6I2yrXuMhipnOu7zb/K2rPNHkdqhKC1xb4OV5NmC//v/vxZkSRqExMn0
-	/oLdK6nVL5XX9TRiQYnXvxw7RDJBCdrFh5wE8WSWJMKRJEQws9jVe6TKV9Uq6HFRhZJ3sr
-	7mw/Pb37CkKcOhHoxOMs2gJ7/JtVZ8A=
+	t=1780341993;
+	b=u3t6yt2oR4WfTf/QxBoIm6dxsNZznovv+Q2pJ5VuPJ4kF2FOfklj9/f6YZb/aNXUdPNDqO
+	oyEpgpjga4KXphvDputv90QF924gZVmxh4Uei4jbyzTTMQJmQpOvo76JtqXAJATD3wNofJ
+	3nTuKowsjKvyJ13ki2FR9tb3YxCD/w8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=3PRjEsmgqn76Hd2Wr35ebCoWayo4PkHbW1sfCmMDIy8=; b=W5+367IhtKRMk7vu0I4HVYNrL4
-	h0RK0yNF5w7DQIxzCKJ4gTHZD5sC2tmCEfTCxYIikZGm9+jjZ/BI3T9qoTRLUDnuSSn2xx28uzoUk
-	nOS7wb10dm43jRP07T7UsfOMmOVF6fYLlIdXp44TYXe/7qLOWHG8ohAR9LHQTEWPNBMY79DyW4VXE
-	26toNjsg/wTctKnds1uCTX9vHlufAsNGaLEcQ21OEsxiNYWdbnRv1mWG7z8qYmdXDiAKOyBiuPwQn
-	qPpRPcEcJEOLscP+UAtnPkW+GmxbUyt6DWVQiDIIuVrHUdIpzbbzaAuUM3XydHaPdsYIh/8G1hjNc
-	52CpbIeA==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=HuAHwFgxQTl/6u/qT6//YvieKzXrnJyvSaoUGnMavJo=; b=DpG1jwm2UYMqqHqXLHMEKJ5M4b
+	wwlvLajwdRr2b1i8oK2RYr6lfgH3sbxBVgHtCeGNaEenq4xz8rdDes15Tst8xrV25t+7aMHBWbxTG
+	OnvOU6c3JPKgx3fql1s3iT5wlzulqA3jM7ByKV9r7a5U6vLxhaJSZUdK013rpUBhbVJLX4hQI4kJD
+	ri0XZmBDGdHxycjTF5b7CzbASEpFOmu4KtJAQmhf3Eq1nqdw5Sw7Z5MbJZ882jEG2v6qH1jQwCAA1
+	Swd6yC7+cF+/JF/nWE1syl0Cy8cfq4FNudpg+V2Soytrvahj4IVWPdxYOlhfXW1XDKp9jLXd0OiEf
+	iHwIfF5Q==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wU8HL-00000000dEU-3LO9;
-	Mon, 01 Jun 2026 19:26:27 +0000
+	id 1wU8HM-00000000dEY-0Bv4;
+	Mon, 01 Jun 2026 19:26:28 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ye Liu <liuye@kylinos.cn>,
 	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 0/3] Remove __folio_index again
-Date: Mon,  1 Jun 2026 20:26:19 +0100
-Message-ID: <20260601192626.150804-1-willy@infradead.org>
+	linux-mm@kvack.org,
+	Christoph Hellwig <hch@lst.de>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 2/3] ntfs: Remove references to page->__folio_index
+Date: Mon,  1 Jun 2026 20:26:21 +0100
+Message-ID: <20260601192626.150804-3-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260601192626.150804-1-willy@infradead.org>
+References: <20260601192626.150804-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4C016C0002
-X-Stat-Signature: gm11y1dpirzqksgiit5wtok4axebppu8
 X-Rspam-User: 
-X-HE-Tag: 1780341990-888005
-X-HE-Meta: U2FsdGVkX1/9qjDb2hKpVO5GkWmOks9m2q2BeoGvYEsLsAHw53jtETpo954DGC+3XtId4EG2DGL1C3GpSqViRduCx5R92LisxdaoTtykxzX1GZQEdH6ShIpLP7MiA5DSHM2tqyPhJZRvT3m6Y11tfiWDOMatyurjRQKgzgJWeaC4gDzKgGQJd6E1sZidj/upI2CrE2NmcG67Xmhvy4ZXZ6g9XNWhmZHEnrPNoFtRXggj8EcrNjWnC6RdqJ1ZRmAFDYEL1/D/153Zr0ekmwQTkuatLSY2O4lRA5hk1Pnf6Nh3lbKITpbtYuSxRIC4sMb/27BxWlJ05vXM3jwS5c2a8ZBfYHABY3iUJOhBwYjeyT68oWQ2avJzSe4iwerNPyTyEOoB4qIfQ6juk4CiAzE4biyQDFZte2hH8iGRuc2tNY4YPwOp6tke8yehgk1lFm2638xR9xY99aGmYCY2Ifq2oQlguxZc2HgsIdcDrnCb6EbmgpwmE6gQT9CxjKb9hOhQrc22Qcid4AODwklfLAj0NudLWBHZ4LW639ocXlkY3jzX4SXIi3s4ZobNLWEbykFQmiSjw3g1qw2zAMFY8doh5PjXNfE5rFvhUTsYoToC+0UU4kpMBNx4Ut7qzyiY62+4WT4o7EUB2maWUpH0J0H74zr4TnclwtYvp2X/Opg5Bmd9ZW38sslh5XpIeYv39FI2eGIK3WDcL9LBROX+zHDm3zWao/3aq9/ApeeGxts+JFGyZRCJPQnyuygzSpiFvcVxgR41PPe4Pn6FIcwFIFZIKKAgLOxFgoOj63k/lrwcIVknZY42JUgmwl4KNXHZPC30fRDN+HWNXpbG7tE0gJhbMocqJACc+tbmW8dMVUqWdLW0COw0sguEgxi8S6a15E/legS9CjmOu9I9jvBXM+yzDTHuwlWAXaTHkvg7O03JRID8ByQb4utN1wd5l19D94wqsmA80mkJnGC5ygC60ND
- frXTK+xg
- MLo7MyUM9S8EM+dFgqkPvt69ktRx77o6BQ7/DcHxdPfYAsypDZqi2B0lOIEem2NAyzwvdHG7xnhhXPXwsftW9UquLHxpNxJaSDab047dqfqwnOouoBJ9J1yiYPxkBeplznx0AnWYtgoK8TjltjZjx1TSDSzbp6IqNJxM4rIwPyOLMi85aaxV6gQkxm/SETleuczjK6Xam674d72kUiOuVR3O7vpqfkJTqSOvE
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1251B20002
+X-Stat-Signature: otp3gxabbs8kog8o9wtd9k5d7tk9r8x3
+X-HE-Tag: 1780341992-623400
+X-HE-Meta: U2FsdGVkX19Zsg8zZRVP5SlHUHxA+iFxYgf2nMc/BIhU2bGBOUUVbcSJoHhVrzkYrEDWl92xw7UgR2jAYl8P1he1uBb+xiiXs3K4Q9jy+yK69jBLTf63szvYMW/aTIFRCOjTfXMi4EI6ckcRfFlNUCiboJUjRfMZrpbg7QQ9uouMixJHhnY7J4YsbClrjq8aB7w5WT0yJfC2VZgdmFgmP3F41veuW01T+VX74scj14CJkQfT87mVrQCTvUDsxlnNabdrLO19xSEKwUTT2BrlwN6Gt+Padd3onglrcYGnJ04GXMQ0XiGG99rYwm8A59u0lgFkalxh7HTY2MtbQj45mO2WuldkGoEKEN+z2kDRZ568ZnA0Tf2WCh1siN5kxc/C/amFElWFYCwpAFaJSZhxH2/HE806G+jdeofIo4CeoXwvPyzD+e1Pz+3nx2ysTg6JA5gDtOHyeXC24mMxCIfTRz4UKgD0IYSCW1TwSSGUJae1PzqF3URopbPBsix+bBwGL68OlpP2EWCaQscbT8zwS8FWuxQbNxin7Iuch+KpoJm4KQFxt+XxYMwKCWT9CPQ2cG838qQbkFc/VdA1Ev5+TfX7YCu3+2LP8WZBKcHiKy8E0eOSRQLIscHwakJraUyBt6nbwvT5A8fVcpz48JnVx2+yvmQTvy2cLRdd0Eq9P321VxsnFccTEX/qlRfKKLnXBgyP2YSDOKBrjsuXwTFYlxzmXck2cjz9jnQWPM7Lxj873tvjDoHWgqC6HpgQjImJ+vvrXxV/ykaRTqBw7xCYmNC61OAoEz6bL7N5e0JR6LISfnWNfMriOJQysvZ/nar+eyCGCE93hYywUN60fRq9BQaYT/xXHG7emHVbLV2krrUJ0+fgfCNHq+U7FTlbStEEy3FZWVjMMJvAkCUtyq5EziXSR39HxAmJvEGI1pFfEKHp0bjlpraRZXQ88bRzGP62txG8n9SLZB4zAnPoYRP
+ IXAG/rU/
+ eBRoyAJX5TP9KMtIliCj64ZgAIDEC5FpohrA7Z2i99/eoP89tgEOsuzjR6kAJAdM6wQZddOnggTAIyjV6jHGfaEbMnIHgeBc2Z1b4z1KA1L+qFjV3KQ103As2KguyQWo8MX9HCxPe1BeCzxylhWb+RYPHPxb0HV71X4oT0n8OZcJPmZynhvq9QzH9lOv50nt8RRlNPpapMgzJ26rJ/d5wGxzSF/J2ccs0IU/ckZZalVFITDi5SBD4lXGB4VfyASQwSctLdEyAMuMCIsVdSxpZus/dOvRbst+n3OODswuIdrO4LTtZP9kyJE5w6xjAApY5LBfXKNCxQCxbq1CK/RsELM1x9utyHEfEenD2FUy7GEDuXO2RPCCpwrr0CaizEQp3ywJk4h0OhsbRf4GeNfmLecnwpndunILE2Nc0sDHjOf0q8eOJYk7LedIngxEOcJ+8WIUZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,22 +92,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I renamed page->index to page->__folio_index a year ago.  That proved to
-be insufficient to prevent people from using it, so take more extreme
-measures.  This breaks tools/mm/show_page_info.py (I expect) but since I
-don't know python and have no interest in running this script myself,
-I invite the author to fix it.
+Pages don't have indexes, folios have indexes.  Correct this in
+ntfs_read_compressed_block() and also remove a use of page->mapping
+while I'm in here.  Also convert the calls to unlock_page() and
+flush_dcache_page().
 
-Matthew Wilcox (Oracle) (3):
-  ntfs: Correct use of folios in handle_bounds_compressed_page()
-  ntfs: Remove references to page->__folio_index
-  mm: Remove __folio_index
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 495e90fa3348 (ntfs: update attrib operations)
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Hyunchul Lee <hyc.lee@gmail.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+---
+ fs/ntfs/compress.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
- fs/ntfs/compress.c       | 54 +++++++++++++++++-----------------------
- include/linux/mm_types.h |  9 +++----
- mm/zpdesc.h              |  2 --
- 3 files changed, 26 insertions(+), 39 deletions(-)
-
+diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
+index 143f362a42f5..096e00b967d7 100644
+--- a/fs/ntfs/compress.c
++++ b/fs/ntfs/compress.c
+@@ -456,14 +456,14 @@ int ntfs_read_compressed_block(struct folio *folio)
+ 	struct page *page = &folio->page;
+ 	loff_t i_size;
+ 	s64 initialized_size;
+-	struct address_space *mapping = page->mapping;
++	struct address_space *mapping = folio->mapping;
+ 	struct ntfs_inode *ni = NTFS_I(mapping->host);
+ 	struct ntfs_volume *vol = ni->vol;
+ 	struct super_block *sb = vol->sb;
+ 	struct runlist_element *rl;
+ 	unsigned long flags;
+ 	u8 *cb, *cb_pos, *cb_end;
+-	unsigned long offset, index = page->__folio_index;
++	unsigned long offset, index = folio->index;
+ 	u32 cb_size = ni->itype.compressed.block_size;
+ 	u64 cb_size_mask = cb_size - 1UL;
+ 	s64 vcn;
+@@ -812,14 +812,16 @@ int ntfs_read_compressed_block(struct folio *folio)
+ 	for (cur_page = 0; cur_page < max_page; cur_page++) {
+ 		page = pages[cur_page];
+ 		if (page) {
++			struct folio *folio = page_folio(page);
++
+ 			ntfs_error(vol->sb,
+ 				"Still have pages left! Terminating them with extreme prejudice.  Inode 0x%llx, page index 0x%lx.",
+-				ni->mft_no, page->__folio_index);
+-			flush_dcache_page(page);
++				ni->mft_no, folio->index);
++			flush_dcache_folio(folio);
+ 			kunmap_local(page_address(page));
+-			unlock_page(page);
++			folio_unlock(folio);
+ 			if (cur_page != xpage)
+-				put_page(page);
++				folio_put(folio);
+ 			pages[cur_page] = NULL;
+ 		}
+ 	}
 -- 
 2.47.3
 
