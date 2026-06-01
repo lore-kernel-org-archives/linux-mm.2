@@ -4,89 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46D8DCD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 23:41:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC84CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 23:46:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C5926B04D2; Mon,  1 Jun 2026 19:41:57 -0400 (EDT)
+	id D24276B04D4; Mon,  1 Jun 2026 19:46:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7760C6B04D3; Mon,  1 Jun 2026 19:41:57 -0400 (EDT)
+	id CD5226B04D5; Mon,  1 Jun 2026 19:46:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 664D46B04D4; Mon,  1 Jun 2026 19:41:57 -0400 (EDT)
+	id BC34D6B04D6; Mon,  1 Jun 2026 19:46:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 523FA6B04D2
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 19:41:57 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D2A5616203B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 23:41:56 +0000 (UTC)
-X-FDA: 84832969032.04.D131848
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 446B4C000A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 23:41:55 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QhdoyoH3;
-	spf=pass (imf10.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780357315;
-	b=vzbCcEiEDjZHbZgSObfNXaDc7wxf9NogkGEYE6k8OllGRLRHwg06w6JY08twJ/61kYU+O4
-	H7R2fkj98HkskRh5Zn7u3pGxvUxUKLyordbBZ9httRc/098N3CYE416tRI4ShnC24JaK+I
-	CI4J6nQIaKMmt5d7IqcOJrrnHcjeLJk=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QhdoyoH3;
-	spf=pass (imf10.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780357315;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ABA266B04D4
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 19:46:41 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 70DF6C28B4
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 23:46:40 +0000 (UTC)
+X-FDA: 84832980960.16.C64D083
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6C4904000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 23:46:38 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jKftIS8H;
+	spf=pass (imf04.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780357598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yYaho2fb17roRNJm7Je2htGhE4T/MRbsXbRiy/FR468=;
-	b=4qx+nSf+4yaZq7Peax15AiI5KQqX2pm3ZANSItb2tAsKK7nI/HcPFBISAHGCZ+Ae56DLUe
-	UoA+LBnI9ry94AgyDsTdbUzvuGItmYdnh/FWO7GGqMEENEW+waFBQfWBvGopDRsVXAwgJ8
-	eZaEwy3pNh/l0/guHuK20KGCcieEgtM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C778F6001A;
-	Mon,  1 Jun 2026 23:41:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78FC1F00893;
-	Mon,  1 Jun 2026 23:41:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780357314;
-	bh=yYaho2fb17roRNJm7Je2htGhE4T/MRbsXbRiy/FR468=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QhdoyoH3RRdxvXvdMwJXNfBwch/1VO+tU3436/qxDSZeS3qlbqgqt3U8HRJynY7wY
-	 Fm5JBzwClUSZ6fS8GUFi03hMPXxocHIX+H7aBdSKYi67KiSV0nc9X4VWV0Uevo7ty7
-	 gi2VIrKYsl55P3Q6tF1ZbZmT62axIMYI+v/M8NsofBiMoQj/4lfP//SwyVNy8yyTjt
-	 +fSuALHTMAfwROn3wsWl6O2J8CHrgZwxEIzEmfAJHUc7bzGgMbgLc29Dd1HDW93pDh
-	 1FjP/Vaw/A95b0WeKx2G+O/Z66EE9WnqUhmLFFnFL00620S6jQI95ufOQrPMHJpGQ5
-	 XhEGPdsq6N7tw==
-Date: Tue, 2 Jun 2026 01:41:48 +0200
-From: Alejandro Colomar <alx@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Hugh Dickins <hughd@google.com>, linux-man@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] man/man2const/F_{ADD,GET}_SEALS.2const: document
- F_SEAL_EXEC
-Message-ID: <ah4YmXpL6rxHlo4r@devuan>
-References: <20260529140557.1624507-1-pratyush@kernel.org>
+	bh=GSxTrEFli14IFnuXwIWqxaVISQfFKZYf3xGmPjyUCFI=;
+	b=upXpjAizlpRl1dL4qt1eEHERlvRKafJrmGeeYAj8loSIK73e/zIoHvgyxvNHu34manlUrY
+	gcFIIZe2FPmofo3warEcmnvEtcJ0Pe7eC3lFD3kBqNIMB4K/IqG3eofmwM9G0pljeMJaeO
+	5RpBzdZUaMQDWSzhDfpOgcorMl2FNqQ=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780357598;
+	b=cwhAyjPj5mnegL99lcv/EAOPlvOxsTAMzHIYxZpzQqCf4tvgH2ptF7ruAf6VniHw1Rh5Rd
+	WQEDOZgpQJeOnG5vTpyz442D2RpwLSYHzGlUSA4XHoeWtwAArHL8QDzLFgRL/33tTe8Q60
+	y5YJexiPc43vWfCdjTtlFqc0Le3i5a8=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jKftIS8H;
+	spf=pass (imf04.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5aa5f06b16cso2580581e87.1
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 16:46:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780357596; cv=none;
+        d=google.com; s=arc-20240605;
+        b=WEW/+bmZ+8h7vDZeCj2v7lpDk5GtoBLsq+cEy8DWPQkLEMS4I/19hIxP1UmbtDLGmZ
+         b0iBJ+tx1SwcdV6dsTSr1bQAsCGdq+UfzNPBz+5k/MYJq3eKwcoicURpbfP1c4LNMalX
+         cxQgrLmT/F8AbtZGVcEWAjrAobZTTjl3LjWfiQ1ZB6bemhBNlo73S3Svw83woWqCO/CV
+         Egn2fhs0c8b9Pe1NVTFKuW+eOFLRDsqWqWjr+2eRE5++2KG6PZ1Z0T2x9LLL85xHDXrO
+         HPRvHB7w+MKU+Jh+CPBW4mphsQPZaWd8ISn2k9wpq/Huivve3sjE8Okb4kjhp7M3HIq3
+         /MiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GSxTrEFli14IFnuXwIWqxaVISQfFKZYf3xGmPjyUCFI=;
+        fh=XgQvbpCCGoaxpTfaxTKIq9JYVFsHx/b0jyyOzHRtVzQ=;
+        b=aA91o/xDixcYuErq4evrraS8dtNerMeI1G2yLEsXOIjPEUn/T7B/5aOIz9yIboz3qu
+         Hf3ZFyQTh+jNLz51NIL5panj74S2hdKh2dIaIxkUIOXRe2PTeqKaEIseCz9pC0uHyLwt
+         6Pe4P9zNjJBLvIF7UZBAUkYxU2XexNtJxUh6rLoGeNTHiZfIafQiCvu22BsgfV4Va6RB
+         NUWTMSF3Qm1K4YBGmtXG6eX32HH5F4iajlCPufNrP7Cf/2EuedmSG/hj0WbcBiLxwWS3
+         S09ckCwjzp45Ex7kdCKECoo+I2z376MrVOCTkVu70dL+Rj7tzLsZeYKE+pkW5yKIpNwB
+         cPRw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780357596; x=1780962396; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GSxTrEFli14IFnuXwIWqxaVISQfFKZYf3xGmPjyUCFI=;
+        b=jKftIS8HYsBVKAxIeInJ0LKUeUHJvOATvBoZTGkBGqfCWaNj2M3deG49SMfsnos2wK
+         qh6/briZTTdR028Z8f+6UZP738P7/rOVeuArSdoH0i7rxzqy7MY76mbNzxUyDQnphROf
+         vcGzVEedxisNPk48f/jLg691Frx8Rm91oc9tu5CBx5Brax6Outv72Wc+FPLv+oXvJA3p
+         T5L1Ii35HBGcVhBy/h/cWevJF4zq0UcuE7UK9v/IGCkHcv61bhLCBvXy6bIeRBV7HSDG
+         uwOxoNDDaU59ZaB96arEpxQS+egaRzpxjNGB/u1bIXFoop8n9uZ8bblP+cksVboLHQPZ
+         vJeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780357596; x=1780962396;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GSxTrEFli14IFnuXwIWqxaVISQfFKZYf3xGmPjyUCFI=;
+        b=Gy2XVWC/NjwtHUVkqqMzEext0POseaY7Xn+CcPwdfO2+wcPsZUkSWm5YV2tXkus4zw
+         n1tW0MPYki8zC0/sVOwV82dNSFM6DZZj6eeCXthiDvC2zOZRjAV1Ge266Dr0WirtL8rF
+         o+zlCpgT2rpVV0XQWYLzh9L5KyBK93js4YESLZXbxP/f/VtP+TtW5bJVNaZh7pFa/Zuj
+         BMVn+e6Kthno23Jx2eXGuom9fARNDyR83gXBBFkLxcabDwyvYGAB3oD0lRizvRRrK+as
+         Ms0aeW5uKGu1rAkPLteIKAcc8G1FsDpIJh3Ck242HsMCDAvQgB+snjndAJSNISVlrSCA
+         DvrA==
+X-Forwarded-Encrypted: i=1; AFNElJ83ntfLulx3XDcIFz+8wVrTHvM820qul+UBlBmdtt/XhbVXSy4zWnFgZOcG0pO5hMQ0AJR3QiZLEQ==@kvack.org
+X-Gm-Message-State: AOJu0YxTLU04N/j7aOjj/RGcZvaoDI9ZzmkGi1Zt1Ltjt26bhQxNCom0
+	udEgLKLl87BptkXpoAc4aV52UlTzU5YP3nCeg60O9IZo27ZbwcPItNoSLAyh/F8L3VUgaGdmbVF
+	qaDdDHl17lV54mjmB4c98CwubGYW3Ezs=
+X-Gm-Gg: Acq92OEb6cDsYnSFQr59e2p+Td94sOq/qGvwRbRQ6k3Ne6oT3W5J/gbYqA0gAg9qmpa
+	QhebdlTGBO59Ex5EaAuy3ti3g4tHkFS7MpiP+G4mzVm1nIk1Tj9P/RqcNJ836L5ZfQpc7Xjx++c
+	l97qy13xUUcUuoV3kv0AI5mqYIronEjgDNTjDcDKM5qR9fFp0bPOBnImMUTAfaMbDNUTt4eNPrV
+	81xFMMaPgtqn9bG8cf/i4wEVvetSaAZYFuK40IaLhE7BDn+x2sZkZrad69fvcy7InPavyiQbNUN
+	TbzOrQnv6xY5pDFjNDnOeyZhFyiqfmdtCeZLZ6EqGcy+0+SKnR1CDpcp1dM=
+X-Received: by 2002:a05:6512:3d8c:b0:5aa:6dff:cf0d with SMTP id
+ 2adb3069b0e04-5aa6dffd1bcmr1992876e87.28.1780357596215; Mon, 01 Jun 2026
+ 16:46:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="bj4mrrqlkuc6upa5"
-Content-Disposition: inline
-In-Reply-To: <20260529140557.1624507-1-pratyush@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 446B4C000A
+References: <20260531-ch-swap-series-plus-folio-lru-cleanup-v2-0-1b9a4ac255b4@gmail.com>
+ <20260531-ch-swap-series-plus-folio-lru-cleanup-v2-3-1b9a4ac255b4@gmail.com> <23e80c27-320a-4ea7-8c8c-025e06f2161a@kernel.org>
+In-Reply-To: <23e80c27-320a-4ea7-8c8c-025e06f2161a@kernel.org>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Tue, 2 Jun 2026 07:46:25 +0800
+X-Gm-Features: AVHnY4LB-QEy0b7hfO5XR3oAibVxe1KwI82Pe0U7wfquoH_iZn_JtJDtiKosl5U
+Message-ID: <CAJxJ_jh6ZoiQ1+1s8BAw8DoXP40XrFPCW4=ZHWAYHg6eMOxL3w@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] mm: move reclaim-internal declarations out of swap.h
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: m7mh85k9euprj4nro8imex4qogdrauzs
-X-HE-Tag: 1780357315-642483
-X-HE-Meta: U2FsdGVkX1+t4cZa9k3I7/pBs7CcIKfPKAc/ItM35St3aZ5omJyjDAo5Y6DH0nzBGUafqkfpj7foSqomHlvXj4mPdf2AQFAKEU68LfuzSqoTzKk0R3CWWipuzrt4nePWwmFJZxQDyiA/ljgebAAqvPw8v5URm3a7RXPRzgPNwmASFtqPyhM0T4MK8CmCQ57zd2Cp9MXn/hDBz/LE4iN8HzcZye5RwRLdJeLOS9FynCbjsEy5aIkEZ8Op8BidRZTFUVYNP2z/jZzmaurNkCn/Hr7oOUMOVuDB/nkNMG9DPMYm03DsWZAKRoJc5IvWT+xuSp8uAhn4H29bb+1swmK5OzoDMiK+yNIM1r0uq6Id3dMJQoRY8a43RLWqQxDD+WeycFL7heIPbNhjAju2SIRnxEdJycXnJmED4BujBZJ1x+ZsZAa/rWaggNCn1d51JQWXVUDu0oBsdkVv4xe0oXNMNrvTDpthA0YWO+W0AW9IL6NI5n2qba7S+RETrGmmrnAnNfFTj50zFAp7Ktrt2mNK4DyKNPDWZe0dWXqVpbUOFmyrBL3p10G8MRouGQTEVaZ474IXMoPzCSa5k/tSEg3qbV2vIQQx/jfoZsf/+bfqv7H2DMZNOfdYNi5O/c3V3RwoKAxICLWxgLcY+IjqiaCnlBP+cj5Sf3ct0byJrlUs1uprvQl+E8p/kkYo3mPSZFrtkA+wzcx7iqGGUV10Fg2IhfHB+hwf1Cp715dCPzPK7KL/SeacY8a32Yattu+coUZugsq7ndhD9Xtze0r4RQ/vK/RjSawR1GPXiiMQGTYSKFx1O2ZK7HbemRXtYrkPi1ctbZN4doK2OCdZyDIEs2w++iCMkUYaX+LHeKCOI1JiAGzRaUCjYsulNXgE1rCYkgTk0zjSvOVkBUy5yDkr+EeKaTfIPgu95IbREjaMQMYt9xaiSXqBPB9r1esblaLfQ5qUVuFSabW2xZZ2e9CLdkI
- d0kS78vP
- LQW3RbpdzHbfw7uwGe4tt8in4fd5lnqcx2oUwi9s+V9GRAL5L/aaXlJ2czGbsFpJVZduu97+MEu8gDbh8McoQs6MYKY1W84ROuV2X6HEOUvPh49v76imQ61bWWV03QsN4k+32jM3y4H9VqqXd9PyNj3e6Lane2jhvPxSmx2K1wXsqAd/DT1Aji23sstdd59RCcun1X0yJrzKjjdawfcnaZktMDCBsLCQev1b/3vzQSozUkt4otCaC1M1gPIgN7wB22LYMUt/6iSygQiLclUYQub0T3NTR2iLa4A6alLr+dhrXcuoEYNw0NrtF6uaZva6uYmwZ5fomOwpOcYcHiwaX8W0F31QjwhL59VVxY+5UlaPTDhALvahe5121hQBGTg8iE4HOqOCwNC66tItbGX4D8iebxybdbJ8k4eRL5CN1YUJNHSm2oitcIucKAO6sryYDLFdBXMKBlh8DBLP7WcBJ3/9ZDQZd8MV0AbuH
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6C4904000D
+X-Stat-Signature: pqzox5uoba5ookzukygceic3ofkzzd4w
+X-HE-Tag: 1780357598-217109
+X-HE-Meta: U2FsdGVkX1/8nxacEn6UtYdjoIIjalWI9jrjAesx6unYbVHI4MmhJI0I8lb8K7zJX13Xf+DNiWwURg0bAw7JkTQwtkwwUFd2G2wg/ddZiobyZDXKvkj/YHbL8mzmnsCPxzCEbPUbpK/4lFw1Jq/hLmk+BWjMBxO+3k9QUfuwNjyEszwNUe9IEn60oeEnbxkB3x91EYdS054v4xPYeGEdnMYf7j3TYqI8vnNJvB4VUlQOblJ5TEbV7Lt6OENN3p749kftrx5CtjKlgfn/OXASIoPjD21zaMlBjhOGfYm6gLORP14stkS2tmCLtf4uqWZo0KvQkKemLBJhvK+GTVH5zbxeXz4g4VjT5gtoqxlmycHlhgNpcQrnmkB2AqdYVqQ1ayAurzNob5YhpNLe4o/JjQ2X4B6l+XcAeWFdHD8YpIJQo6ZpdIHILquUEqfFd1lQuQXtOA/0cT9UFCxHfoWLkDH0DB/vZx+G2JSVP7Jy0M/PslFoaEJ/FU2ETVASqbL2zMcj3K592DARPL3CrsuRILf3BH9Vykhngt4Quh8/NrRgObz6CixEnLBP3z20duGjzIlMslJ7CpRlU1rEMoflMwYjXUYttmWQNvY2UiKwIMe5JOhiMLPfSA7C2dVDZU8SAYOzOzn9C/aok/L3c5dPclzkJD9L3bj/PdzDln312MMFYLs7x3UYecOhX7L0uczLj+X1G+QlBqla05j0pU2AIX6vVfbd5+62lty5eT8fkc0CX8uPp/SP7BG095dm03qeUG9L3xesJKU7CzOJENOwQI8xf+LJr40v+7C+6CNkWgekOeoBSKUJrmrfIpn59dmvGaBxnCuOL/tajKm5WfTf72S3Asgir5WBBzijne48WckYPCu/eW/CPnrEjEt+7pOLoyPVVMGtfotojXYhiFHjPhhmTjuDQxc/Wm7ehxtF9RSoGOeCNrs9zAnRwcCMafNo7sZo36Rk6dzD2eV+fgk
+ Dnhw/OGB
+ Fcj2VYVa64ErevgOcY9PRSAL6hVchTONYJGqbCCKUmDXt8ly61lS2AHUyUg5Ds12XZCkAM7JMO/dbneIn1PV+TWJqIYHjPeSVMRROFCk1CU0sZhO2MXshzT5ux2etZbmRYwRz6M8OFAqi+SpPWN/e8v/jMMiVCP58TSlWmK3F4O0VEjhG1f5AKOVGKSucuRdlMFDAStVTbIPwysDKQ5l0Fw651FITnQgb5Oikky5NZI6AmeljxSk26JYZVyDBAOKqIJX59R4ksxkopyW0zq+EFQsNsrzjH7C280iV+W077hCMnoxnMrjWWC0MqBQNM14hvp0jMD7ltO6KHxdv+NvLSu0s1SI+MCRYNaKUGqSAJjym3yEIX7KPQzybJiWQIZuXw+Q2rJwOsVKd2q8T+t8vLoRVjzX2X7xQGMpyc/awDM80MzZBCDt33xgELZcS2aLudEMWGIyXsM3PZgc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,154 +148,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Jun 1, 2026 at 10:57=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> Skimming over this, what a confusing function name (having free_pages() e=
+tc in
+> mind). In particular, that it's interesting in a single high-order page j=
+udging
+> from the interface?
+>
+> I wonder if making it clearer that this is a direct reclaim interface wou=
+ld
+> improve the situation.
+>
+> "direct_reclaim_...()"
+>
+> Similar for try_to_free_mem_cgroup_pages -- which actually consumes nr_pa=
+ges.
+>
+> Just a random thought ...
+>
+> Moving a lot of stuff out of swap.h sounds like a good idea. I do wonder =
+if
+> mm/internal.h should be split up as well (to minimize future conflicts).
+>
+> --
+> Cheers,
+>
+> David
 
---bj4mrrqlkuc6upa5
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Jeff Xu <jeffxu@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Hugh Dickins <hughd@google.com>, linux-man@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] man/man2const/F_{ADD,GET}_SEALS.2const: document
- F_SEAL_EXEC
-Message-ID: <ah4YmXpL6rxHlo4r@devuan>
-References: <20260529140557.1624507-1-pratyush@kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20260529140557.1624507-1-pratyush@kernel.org>
+Hi David,
 
-Hi Pratyush,
+Thanks for the review.
 
-On 2026-05-29T16:05:55+0200, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->=20
-> F_SEAL_EXEC was added in Linux v6.3. It blocks changing of the exec bits
-> once added. Document it.
->=20
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> ---
->=20
-> Notes:
->     I discovered this was missing when working on [0]. I had to look at t=
-he
->     code to figure out how it was supposed to behave.
->    =20
->     Changes in v2:
->     - Re-write the documentation by hand.
->    =20
->     [0] https://lore.kernel.org/linux-mm/20260505133922.797635-1-pratyush=
-@kernel.org/
+Good catch on MAINTAINERS =E2=80=94 I missed that in v2. I've updated it lo=
+cally:
+- MGLRU: F: mm/swap.c -> F: mm/folio_lru.c
+- SWAP: drop the stale F: mm/swap.c entry (swap code is already
+  covered by swap_state.c, page_io.c, swapfile.c, etc.)
+- Docs: update the remaining mm/swap.c references in
+  Documentation/admin-guide/sysctl/vm.rst and
+  Documentation/core-api/mm-api.rst
+I'll include those in v3.
 
-Thanks!  I've applied the patch, with a few minor tweaks:
+On try_to_free_pages() / try_to_free_mem_cgroup_pages() naming:
+agree the names are misleading next to free_pages() -- they trigger
+reclaim, not free owned pages. The order argument reflects the
+allocation request that triggered direct reclaim, not "free one
+high-order page".
 
-	diff --git i/man/man2const/F_GET_SEALS.2const w/man/man2const/F_GET_SEALS.=
-2const
-	index f41e1748acd0..686a92fddefe 100644
-	--- i/man/man2const/F_GET_SEALS.2const
-	+++ w/man/man2const/F_GET_SEALS.2const
-	@@ -178,13 +178,15 @@ .SH DESCRIPTION
-	 while sharing that buffer on a "read-only" basis with other processes.
-	 .TP
-	 .BR F_SEAL_EXEC " (since Linux 6.3)"
-	-If this seal is set, the execute mode bits of the file cannot be modified.
-	+If this seal is set,
-	+the execute mode bits of the file cannot be modified.
-	 Attempting to change the execute mode bits via
-	 .BR fchmod (2)
-	 or similar will fail with
-	 .BR EPERM .
-	-This results in a memfd that is either permanently executable or
-	-permanently un-executable.
-	+This results in a memfd that is
-	+either permanently executable
-	+or permanently not executable.
-	 .IP
-	 Adding this seal implicitly adds
-	 .BR F_SEAL_GROW ,
-	@@ -193,7 +195,8 @@ .SH DESCRIPTION
-	 and
-	 .BR F_SEAL_FUTURE_WRITE .
-	 This ensures that the executable code is not writeable.
-	-All the pre-requisites to add the implied seals must be met to successful=
-ly add
-	+All the pre-requisites to add the implied seals must be met
-	+to successfully add
-	 .BR F_SEAL_EXEC .
-	 .SH RETURN VALUE
-	 .TP
+I had a quick look: try_to_free_pages() is only called from
+__perform_reclaim() in page_alloc.c (plus a comment in fuse/file.c),
+so renaming that entry point would be a small follow-up -- something
+like direct_reclaim_pages() for the page-alloc path. I'll keep the
+existing names in v3 to avoid expanding scope; try_to_free_mem_cgroup_pages=
+()
+has more call sites and I'd treat them separately.
 
-
-Have a lovely night!
-Alex
-
->=20
->  man/man2const/F_GET_SEALS.2const | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
->=20
-> diff --git a/man/man2const/F_GET_SEALS.2const b/man/man2const/F_GET_SEALS=
-=2E2const
-> index 175025c10..f41e1748a 100644
-> --- a/man/man2const/F_GET_SEALS.2const
-> +++ b/man/man2const/F_GET_SEALS.2const
-> @@ -176,6 +176,25 @@ will fail with
->  Using this seal,
->  one process can create a memory buffer that it can continue to modify
->  while sharing that buffer on a "read-only" basis with other processes.
-> +.TP
-> +.BR F_SEAL_EXEC " (since Linux 6.3)"
-> +If this seal is set, the execute mode bits of the file cannot be modifie=
-d.
-> +Attempting to change the execute mode bits via
-> +.BR fchmod (2)
-> +or similar will fail with
-> +.BR EPERM .
-> +This results in a memfd that is either permanently executable or
-> +permanently un-executable.
-> +.IP
-> +Adding this seal implicitly adds
-> +.BR F_SEAL_GROW ,
-> +.BR F_SEAL_SHRINK ,
-> +.BR F_SEAL_WRITE ,
-> +and
-> +.BR F_SEAL_FUTURE_WRITE .
-> +This ensures that the executable code is not writeable.
-> +All the pre-requisites to add the implied seals must be met to successfu=
-lly add
-> +.BR F_SEAL_EXEC .
->  .SH RETURN VALUE
->  .TP
->  .B F_GET_SEALS
->=20
-> base-commit: 9db8ca91f920b9aba40ed68de6b8da0ca9dbefaa
-> --=20
-> 2.54.0.1013.g208068f2d8-goog
->=20
->=20
-
---=20
-<https://www.alejandro-colomar.es>
-
---bj4mrrqlkuc6upa5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmoeGLwACgkQ64mZXMKQ
-wqlumw//R7PxIUzCmHCHyJWiab8qt4v7Y9PBVejZoH7w7WSFvfQ4jOBXwNgQ6/4l
-mY4p04QrV07jGNbiEENcyOIpjVPCp/ziub5Wg8IK86jmhq+P1KGpTIEtJTNa83oO
-zegeo0R469vpW2ABOOZX0L0z+NnPmQD9TwIqTNEs9QV5V0BaJY/vwFpLm1bw3hRW
-Hm1QTUUk0WCP0gZQ7oHvK4U3gTff2pEfxpTPGhxQ0vSBs+c1xx0C4GE+DWb2MD2E
-G5fkdVfV1ggx6xZ1z0mRBQKN0u8d745nXIOwCoA3bMBx1BL4vpxnm0610tslc0jB
-6MYRIw5U6UnzqLVCBa+I3v2gCFVFj7yO6HJWZ8n0aEMJq1E0WK2nOmFNedWqi7wS
-EUo0F29Eg4Gl3TVAFt8P5WdMh/czz3D1vG32B6kClEQLQ8fFyzeYd3jZZ0v7eJz5
-MR0nSjaDOflJme8cLe2GEr1D0SwROc95bVv5ezUqzFhTIdyeCfzR4BsPJNQXm7Zb
-WLQoy4b8IsqAU+VP486ZyLDv8/vjcGDWi/anW3ZawIPZvLopKVVmVXSNwe6heMAI
-CKuQVgxq06Gfy8qJhBIISqjYZwISPJaGD3+nxx1VQbOVUzSicK7hSSZkmAOwfH77
-y7ZFpXGudIHOPWjvh09z5/y7JBCo1k+9h/3f/CngXuweHounNHk=
-=7Zav
------END PGP SIGNATURE-----
-
---bj4mrrqlkuc6upa5--
+Thanks,
+Jianyue
 
