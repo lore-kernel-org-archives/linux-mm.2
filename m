@@ -4,90 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD8D6CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:28:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E7D4CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:29:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28DFA6B03CB; Mon,  1 Jun 2026 10:28:16 -0400 (EDT)
+	id B68596B03CD; Mon,  1 Jun 2026 10:28:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23EA46B03CD; Mon,  1 Jun 2026 10:28:16 -0400 (EDT)
+	id B3F356B03CF; Mon,  1 Jun 2026 10:28:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 153F76B03CE; Mon,  1 Jun 2026 10:28:16 -0400 (EDT)
+	id A7CBE6B03D0; Mon,  1 Jun 2026 10:28:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 04C066B03CB
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:28:16 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B7C8D90EAF
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:28:15 +0000 (UTC)
-X-FDA: 84831573750.27.D2AFA32
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 968E66B03CD
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:28:59 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 348D340682
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:28:59 +0000 (UTC)
+X-FDA: 84831575598.07.22F3CD5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2A25020011
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:28:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mlOKopaJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 97F0B1C0006
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:28:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MFBQ3wnU;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780324137; a=rsa-sha256;
+	cv=none;
+	b=TGiltTeS3TMU9ofEOdkYIVnzBfG63WK4Z189m7GuQ6Lar0k3Fv2lsVc4LuSDNlbH1GTHjG
+	928b4k2NChvSLTbfy6NptztOsOz9iV+2PmEhYKEsCbSAfLBaYetq5dKzX8xtT/u8qXO/S5
+	VZlep1AWBUhhcn839mvO0dN1jyffJQo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MFBQ3wnU;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780324094;
+	s=arc-20220608; t=1780324137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3OLRhnatnK7tdv0pe9AybKgTFqBAbVUiK1/01rd5ffk=;
-	b=L7BG5k85pU+Yn4pv2v9qx+32WVgXIyIq+yVGI9hNOmcNIb+G2bEG3k5UDMolEluryi7Fh1
-	QEBsa93ajbijUFLbYcgucnn4jcHFDerTkn7VMLDbL7jTrmtvr2kaxdEAkvKakzI+0znD+x
-	k5QDNHGcFWyax21jacWKF9GpN2D/wgE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mlOKopaJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780324094; a=rsa-sha256;
-	cv=none;
-	b=IjcXCycg9+XvZ2hkzn2L99/AQed16koZLSNbm+WT4DsveC8XZvRHlkiRBW4S3aAEdO2tBm
-	DAu4YNstLiY/qg0uUopasssXfjYxvDDPSZZqe4mMTfbWIlm9AjAABBG4JkSJRTpUEavHFu
-	h9qxcogjUBopH9OjU4Opm1SY3mrhYN4=
+	bh=QcytDXYzPwKDUDdHT+N4i8ojI54d4gwtkmZUP60KdkM=;
+	b=DODbf8uKlGtQkg6HNgdjWzTPbsek2ucgjhkyJTtAXSZeV+9MScWKX+w5+HEQEEcpE+eEyx
+	2tiRyHoP84g3yeiiMfnn2Q0U8DfvAvcLdPDEoizDXn5owr+ppj2usUjNbn1GfAA6pyyR1s
+	uWpTdZYl/M4GaTVCzhxVN6hwEsmj/Ms=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B40D1601E0;
-	Mon,  1 Jun 2026 14:28:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14C31F00893;
-	Mon,  1 Jun 2026 14:28:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2D9FA600AA;
+	Mon,  1 Jun 2026 14:28:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6321F00893;
+	Mon,  1 Jun 2026 14:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780324093;
-	bh=3OLRhnatnK7tdv0pe9AybKgTFqBAbVUiK1/01rd5ffk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mlOKopaJwZrsEmH007+4VQ5cd0S0KeDv82LVgOMZQVobyb8WDoFT15krOPiRD0FG2
-	 dbpUWcP6Hwa/kT+rY2HzXjDMC7XwDWi3vdIge2IonOiDJT3yrIs56TquV1QmqrjWYw
-	 F/DaM9/UfP3f+/HVoQApbVZKHopIBhfQux6o+1qDz+rbLjh8he1iDp2QA/7ZqoXx1p
-	 Msb/8/+Wwkr87ynTGDyZn71BY5aq0mhWVs/kSeSLD1d5yZS7z6rKWDljdsE54Q2Ywt
-	 lEf/HuusMPdgh9Aqp5AMTU3VKLR60fPuNaumCPqx+jukcLLKcFnl1WNXHTFFD4WRck
-	 japyYGDDlZUOw==
-From: SeongJae Park <sj@kernel.org>
-To: Kunwu Chan <kunwu.chan@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	shuah@kernel.org,
-	damon@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Kunwu Chan <chentao@kylinos.cn>
-Subject: Re: [PATCH v2 0/3] selftests/damon: misc fixes for test bugs
-Date: Mon,  1 Jun 2026 07:28:01 -0700
-Message-ID: <20260601142802.111592-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260601032314.424013-1-kunwu.chan@linux.dev>
-References: 
+	s=k20260515; t=1780324136;
+	bh=QcytDXYzPwKDUDdHT+N4i8ojI54d4gwtkmZUP60KdkM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MFBQ3wnUVZEzgVXBP7n6BLHSXSE0qD9Bm7vwoXNVZtdHWBlM9NTq0i+K9RQXuhWw9
+	 mBZioXbaFvlvWuL3ExgLdSna7SwlLK2S8Qy1eI6fmf7bFYCb2kPhK2H7MGPfkRbcWk
+	 R1q8n30NM6cuQZA09wD2pSFpVduh/yZgcmHrKV7JBRTpa+YrDoE/bKJ2AOHrTpFQYT
+	 dFsQTkYS0tr4YjM0Ge0bCWiaErT/4amvCgJjqwaNBn6asSlXPArhxDM1uDzTAst/Pz
+	 u7c9uwrYL4zA9u3HHEHZGX29EjtDsaOPQmZxaR8BcGfuodvdzymTg8ObRVJENl1as/
+	 6sORXGX2T0SjA==
+Date: Mon, 1 Jun 2026 17:28:45 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, akpm@linux-foundation.org,
+	peterx@redhat.com, david@kernel.org, surenb@google.com,
+	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com,
+	corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com,
+	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com,
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+	kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
+Message-ID: <ah2XHd4SQOj6iG8Y@kernel.org>
+References: <20260526130509.2748441-1-kirill@shutemov.name>
+ <20260526130509.2748441-5-kirill@shutemov.name>
+ <ahmQvfNk7S4F0LBj@lucifer>
+ <ahsVyQZ5UXhJLct2@kernel.org>
+ <ah2SL2c0nMj0KBtP@thinkstation>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2A25020011
-X-Stat-Signature: nmcqhxj1kdf3dajbubiy74nj5xmwr1md
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ah2SL2c0nMj0KBtP@thinkstation>
 X-Rspam-User: 
-X-HE-Tag: 1780324094-4391
-X-HE-Meta: U2FsdGVkX1/LW3j77pDeLR3oAtrH+KPQ/L4aQb8cIbabrFmnRK/L2rrOffM1pbwxcJR0sQuQtzdptXlHjTcbOWMTFpmWWpo+UtWzKk9hvaFTutbjtGcvrPaUUFJZ+bplRbKM4PN+zUVMD/XtVaPwoalrpIIDL56SlNh7+8IeqIwXaGaIGAIX+i7MEi7j+rZ1cpYSNOrwFVtWY3H+XpXhDHC3HZJU2IEgwPPeMaZkFPlP8o7cnUkBtyYArcW/XKMKda3mFqQuutDOO+vfYrZcxa5hvNA3skRb+HUm9rqFvjWmVc645PZvWI+n/qHS0i/9AoE4GPZ8AcKv0AEn8ThrRyJ7EefW1qLz5675ApmAltKFRpEjmJb9lFjn2m6F24FGHXeNxQT4L6epBHmdtuHzw34FOA6VrPLz0Ef/fPNa1o+KywvfcWWx/T62/eThO9stlX+ie5yy0UVPYBhen1mvW6tMarpxRJuIzNLpa8vTfdeecEIEo9eIzQou+vyM9DFJrGisc1dIN2TpILAcZ6LVhH77pPQoIgq3oBotpLwn1MaOCTG8ck/GQ6J1YrjZLLVz5fx54GuuvBR0BnfJ52RmWDwclHX/Fd62Ypr6Vc+q/1k9gtOZ2jFQnIqTwNU0uvuEBF7beTmlRSxPm2e7mns+sMkhvr+ok7OuVqgEBPRKuk7sNsmjTW9In3IaBbgrF84DR26Kn5sMRLVrt1fkSq4rQvoIQGOs4Ls9q6hJKmebuBkVCN9xOnOO6tZV5luKoaz/WSKk9sKpBfiOOH6ik0DyaDOPPEeyuJJ1/p2CPrDhCNa+gA00ukUsr0WVSbf7tF6LVqg6uNh5uGZWpdVlMgcFjt4c31Cti7flvpmyL56l5Yp4XUsHT2RtQiloMvjbA2AnUYrCqh7MxN7y0Y2h01gUGMEcZMZeJdb5CyUGLl+qz+qzWJcBijicCxqQ0pRDGNieR3utvIuha9ftvkNBGWt
- YruqdLQI
- 4gSd24ybVY+jGSUBxmBRzN+o1GIgopWfJM+9yGose6XewJ+lwu+ZE5hQWOtx59e8Wx/f9fpKAS/fEL8I9rZTBxp9KfIxBWA2zRT8ASeJj9YN0TXwY75pBOlHPvHZuSUUuLJMyMwgQBr62l/wo0PWl+VEq7WlREMOmGm3aDBZeyDPr+5mTzG/wJm502rjWhzM30CYdFOqGekh7b7wf5gJa54pJ32owoywSPELw7nwAsZX3ShPezVA+4NS7fM9wWlKvimqT
+X-Rspamd-Queue-Id: 97F0B1C0006
+X-Rspamd-Server: rspam03
+X-Stat-Signature: hepy74uddq5szu1d6xtkporqgaedzdhp
+X-HE-Tag: 1780324137-929568
+X-HE-Meta: U2FsdGVkX18sUWTIQ9Pdy8GsHXdh05yv8OFl/GGEJccFSV26jmp1sf1Ic8aIVH5l11mowFfrpm3Et6hld6PgxscXgKCsQdO/AD1jEJk7414/xt7wVRCwRaLtLVKvCMfQ7ryxfe9Tnla9WSoJPvVWobEoLG+d/VlBP4GgCLcD2tS7x6gcjHfGqCjiVshIDnab0EB0vYW2LL0pdBMVRBwg84efojnL168c9WaQTJ+lbgZOi6QDoL+SuChWDS6/e5w0miLLQRalwkWgg3sLoH9siX5YtsZeryU9pa4Btj4Wk6D1kApdxwtjbGaCv2OuP3kjTCzvCBh8MDEWE6buHqod47agRJCPqTeaUKQ5N3jMT+FzjaNBaN1P2pON+hhHC3zmkfcw3e6TJ3tYM4rKinCh1DulqM6BrsPZFmkd1M9T4KoiUcKX5303nTSqbyophrAYsQxr8fGYDkNudzoKNpR+lEC/rVmxDeUXVIYJ45th1HvR+JH/Twbs2k7VjJpT058ennFzsnrPhlJtqqG+YvBEXLQtGk1J7eFfeP3bah2zVVtZAhL2BZselRMXBbxH4CXRhiKp1ExzPaTZqOfadO7IljLEzyPJZysTsbhuNuEJ/sQTgQvDg82HmqAGWzuX5Prjtbj19+lo9cIKIi7V7lTv/W+J6qQfwFO4Kr3RG+xQEsTDOQrZgLRkQq5lJKr0b+n0PoMrZy2r/xobI6AEGRzXLaiXuNHXXknPqobB9iPQEuwc4JsEWe13+zeixPiwpXR8Zu3jouvlVREZxdq5mt1oyBnHZPe3r903D2sQb+g/hACBq5Pn0+pbpL3/FTady8ewU/3Gq+nDtx6ljSPNLwAto1t3+OuaDPpiriRk3Gz5P6AYQxgsG9reERe4PvkMaVPAKVpHUiroqheiMYzyCubDW4ZDydbEbKVtHDlCuT0pAbqyt/VYOrILIKnLtb6whYFKX7OnK6vcXv21hFM3QxH
+ mwxfejNV
+ EXEa13zztYH9x/6/WNMyccmBpK+aACr+s42WKIYyuKWV/GreKebd5EdPxq4gdNhnF4GuaQbu9uBpMfTu0UfinXJBSJf+nAaZKPfs1f7Dc4ZKac+YFFGKFnbRq60SHbL+8rHbLrQ5dRrDXsQhQ4WT8NqoRsofL4QLGU0gMVg1MiL9Fg1YUK/X4mg8LBRds5/hQPtozgh7Xrzvjxu9oEOsSxrftec+Hg9wcFsGya15azO+K4uiTFQBPt9VvXl32HRgToadJSLQXXOhg2K/cThf5AQvoBIrN/sBh/fT7ZLxdJ4VEGBiANKLG2G5mRXIzDH1f1/F2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,44 +101,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  1 Jun 2026 11:23:11 +0800 Kunwu Chan <kunwu.chan@linux.dev> wrote:
-
-> From: Kunwu Chan <chentao@kylinos.cn>
+On Mon, Jun 01, 2026 at 03:08:19PM +0100, Kiryl Shutsemau wrote:
+> On Sat, May 30, 2026 at 07:52:25PM +0300, Mike Rapoport wrote:
+> > I have a PoC of yet another alternative:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=uffd/vm-flags
+> > 
+> > The idea there is to keep a single VMA flag, VMA_UFFD_BIT/VM_UFFD and move
+> > all the rest into what's now struct vm_userfaultfd_ctx.
 > 
-> This series fixes several bugs in the DAMON selftests.  Most are
-> trivial but cause tests to silently pass when they shouldn't, or
-> fail prematurely on slow machines.
+> Nice!
 > 
-> Patch 1 fixes mutable default arguments in DamonCtx.__init__()
-> that cause state to leak between test instances.
-> 
-> Patch 2 fixes wrong operator precedence and join TypeError in
-> damos_tried_regions.py.
-> 
-> Patch 3 fixes several wrong strings that produce dead elif
-> branches, skipped file existence checks, and broken dict key
-> lookups.
-> 
-> Based on next-20260529.
-> base-commit: 7da7f07112610a520567421dd2ffcb51beaefbcc
-> ---
-> Changes in v2:
-> - Fix From:/Signed-off-by mismatch.
-> - Add Reviewed-by tags from SeongJae Park.
-> - Drop the duplicate memcg_path fix.
-> - Drop the empty aggregation-cycle retry fix pending root-cause
->   investigation.
-> - No code change
+> I assume it can go on top what I did, right?
 
-From the next time, please add links to previous versions [1].  For other
-readers, the v1 of this series is available on the mailing list [2].
+Yes, it's already on top of a previous version of RWP.
+ 
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
-[1] https://docs.kernel.org/process/submitting-patches.html#commentary
-[2] https://lore.kernel.org/20260531085633.48626-1-kunwu.chan@linux.dev
-
-
-Thanks,
-SJ
-
-[....]
+-- 
+Sincerely yours,
+Mike.
 
