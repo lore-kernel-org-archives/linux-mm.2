@@ -4,115 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47F4CCD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 01:47:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B481CD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 01:52:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC2736B01A5; Sun, 31 May 2026 21:47:48 -0400 (EDT)
+	id 573356B01A7; Sun, 31 May 2026 21:52:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A99E96B01A7; Sun, 31 May 2026 21:47:48 -0400 (EDT)
+	id 522F66B01A9; Sun, 31 May 2026 21:52:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 988C86B01A8; Sun, 31 May 2026 21:47:48 -0400 (EDT)
+	id 439886B01AA; Sun, 31 May 2026 21:52:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 86BC66B01A5
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:47:48 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 17363A0465
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:47:48 +0000 (UTC)
-X-FDA: 84829657416.08.791D735
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E4C22140009
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:47:45 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b=uqBDCFGb;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of axboe@kernel.dk designates 209.85.160.46 as permitted sender) smtp.mailfrom=axboe@kernel.dk
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 317056B01A7
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 21:52:30 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF5FC8E79D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:52:29 +0000 (UTC)
+X-FDA: 84829669218.24.740ADD6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 17B53C0002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 01:52:27 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KYRH/paM";
+	spf=pass (imf28.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780278466;
+	s=arc-20220608; t=1780278748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tB5EL8Rhi9qKT2QoOgXudFsNdbKOqjFRFUpfHfwDsc0=;
-	b=6Nv4Hjgps4la6tHb0vdo7pE6j0FqfvIGwkEV99nUa3o9/6YjbZjjjd/pN7Q3OZr/HU2VtJ
-	mnkVnO9vi6Oi1wahtHSZMw77iV5nedEnp5g/s9DAxvpWZy+s5wrZScihZZCOac34kUzdde
-	J3txqWE0MTfAQK6DGXIQIVnqhDGyDVE=
+	bh=vZcu83wQUzh29/MUzPMLQS8Iv0nVsOwsxAWqxDDGj50=;
+	b=dtXz5AxNqEvwuuFNEiL4ayz7xGGwrx6qU0rEgnhW88Iwzg832xTeqziuhtg0iJvwqDIRHB
+	KsaixCw0QGCmTinXrzgB8r1NzZJu9sq3hC9dhx6Jal1t/RuNLBvM4YwnsUjwR8HcbiMnnE
+	FqcTl1gckKe1PubgBldFBdVwm0MsQYk=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b=uqBDCFGb;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of axboe@kernel.dk designates 209.85.160.46 as permitted sender) smtp.mailfrom=axboe@kernel.dk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780278466; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KYRH/paM";
+	spf=pass (imf28.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780278748; a=rsa-sha256;
 	cv=none;
-	b=ZP2wPV5Oqv7ZUl97BFc2CQihlfNazaZxcWBs0JKGIfLUXXYnXlYZVB0Zom4w8rtdEqC9t2
-	v0M1gfKAh1UtNFMpLoPIrZgNoI3UW8G2aD+45u9fXR8vpy8/ulDtz/52GDvlN7UAG0RYgG
-	tspZxReIomGInXJP0U4qGM/l4UUpfII=
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-43bf5f4ee8dso2694827fac.3
-        for <linux-mm@kvack.org>; Sun, 31 May 2026 18:47:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1780278465; x=1780883265; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tB5EL8Rhi9qKT2QoOgXudFsNdbKOqjFRFUpfHfwDsc0=;
-        b=uqBDCFGbBfQhYzJ1B5dMpVl9/frn5ETjgBMGS3J9WgVHM1+a5Vbll230asfppxGc1j
-         ykKvURQMx0y5WQP0EByHpOFoPsvJwX/nSa9Q/sqK8isRoHtSCUX0MuWh7BSDWSiOqw36
-         SvPg+Ya13D82T11EDKRG0I0/oNSuFk4piXufd1NV/czMhvjezo2pBEGrrU7PqgP1MBWz
-         wCHP5RpGGwAfHnfqySoq1j9bjY3+O1GhM701GLIeg03hvhdFwTXc1pPBp7gcehOyLpUx
-         nPxqIeDamitmuV2E0Qm8ufEzz+Fv3Rka7yMDiB230dHZ9KOxIqRw4UyEin5p6LFnAX1z
-         9DdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780278465; x=1780883265;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tB5EL8Rhi9qKT2QoOgXudFsNdbKOqjFRFUpfHfwDsc0=;
-        b=p7Ls/iFM+lyg7DEsbXE1Y5Hy+FaWR8sA4jcemKOmR1SKmjzHr0DY57Y6muGCLzObXv
-         6ds83CWHKQWRKyCxAzB0X5UhoCXtFkp95pCfljDRLvUJcWkOb3EIm6v3pzgaLcdnO55Q
-         Oq6E71OIWsIBAfQPOPGvM8EvnCG13rA0iih5WnJbJRxk+32v9WmCjcIoPZp7WSwxAISj
-         bVFIuEIYjuSYKxbhcSoR6lkGE2YSQWmaIcb8UV6RsFdge1ARS+N15umEYeFt1TZZxzYD
-         lKomoAsMqTXWQAs+gveQhIYHakSQJ8DPMJfUgKp6WdAtvbRPcy9o0p571wULXrK0yQNJ
-         hFlA==
-X-Forwarded-Encrypted: i=1; AFNElJ/9bIinvTkP8DQaQLdq+mhkwB6n+uujRlMQ5dkj2/rmZiMPMia03HI8K+tGXkgubA47ZZbzJsrWLw==@kvack.org
-X-Gm-Message-State: AOJu0YzeiI0bNl3jUs72M4tO4Rcot0sM3hOOPE1xr9jVsL0CsnbaOsin
-	RAcfh0+YfHe2mjsLQCXL8F7vUvOHJqhrlElsBk4SSqXs8X9mvYjWbNPMYdzwm0VzeXg=
-X-Gm-Gg: Acq92OEVmf5jgn3WO4v6S2yFIfReCbrGiZEuw53AybuG9zOgOpYxoK/h4DNGDmphspM
-	y2OxySXmv7WLJTLBNhGVAVVtme2EfY2TmJ8h2oYjIeFNv+OI4AQ6S8SQx/kRfT08HfgIOMIav8O
-	X7Q1nwH+F5ZmEA9T/EJgTrcX5rEzNKUCeJ3oyeLQpkFxC0NhUizT0raR3Zqlbkg1R2CtfPvtstD
-	msZmm9e0DfVQhzHdWtIbCf4YdbzkIKjS/ejgNMQcQ57uDA5JY2hL4mQmAKEliOgO+IowZW3H8sQ
-	KlQQQvPUcqTX2wYoaPZqd1P1mJLu/k8kVrEYyzgtptGH/Vz/L6EluM5jC7UWO/g0b8BI1JQ0hX4
-	Y+dMSTuwnQQaXnVHSF/1cZKRq3ZbPOHpPqhMb1xxonF+ab3lmLlUbp7eLKkjZsDlDUn6Fp90UFB
-	7fPZ1Zwjcm0bIJuWIhV6xzyonzyQ6fI78xNCRjrThWU4UvP0QwSsYX1X3g
-X-Received: by 2002:a05:6808:1514:b0:467:70c:a7d1 with SMTP id 5614622812f47-485fb43370fmr4269971b6e.27.1780278464735;
-        Sun, 31 May 2026 18:47:44 -0700 (PDT)
-Received: from [127.0.0.1] ([99.196.133.55])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-48605f6a38esm3494847b6e.2.2026.05.31.18.47.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 May 2026 18:47:43 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
- io-uring@vger.kernel.org, linux-mm@kvack.org, 
- Leon Romanovsky <leon@kernel.org>, Christoph Hellwig <hch@infradead.org>
-In-Reply-To: <20260528175905.1102280-1-willy@infradead.org>
-References: <20260528175905.1102280-1-willy@infradead.org>
-Subject: Re: [PATCH v2 0/2] Add bvec_folio and its kernel-doc
-Message-Id: <178027845531.370486.4907470779948430731.b4-ty@b4>
-Date: Sun, 31 May 2026 19:47:35 -0600
+	b=uc9lpEkUzHMVQIhN/AaljkEKmumzT63vs3YOGI2A1jpjO+06iRSUj3jGdLgnai81qlpzmW
+	Rnqaa6yRnCwIzMcnNXUByad0DJkcO/pdnFSk8aqU24k4aNNFOqJUNnPdn3VJXiMTrCjbqC
+	4GEpRygn7y9uEb8YJXYZnuH3GOmTFwA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 074F7402EA;
+	Mon,  1 Jun 2026 01:52:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8DC1F00893;
+	Mon,  1 Jun 2026 01:52:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780278746;
+	bh=vZcu83wQUzh29/MUzPMLQS8Iv0nVsOwsxAWqxDDGj50=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KYRH/paMfV8BeCgbYfsHMCWqDOtr++JkRKX25dlTAVmIboEGh885kBK9CuL9tV7tr
+	 8pqNVZlKj2Z5eqkBjCOdCp0sLKsojv97UUmTic4Gw9ws96ZOStR0P5qLHeNR5VBGoj
+	 3LqQJbi8ZclVXzUncbIJ1wqdlIzloAzt9PJuFY5D6+UiIWk8GmIvoBVVeICbzTfjsC
+	 Pd4h54Ftu3TrtIx88YUPUiS7ncpHA0KUeMphtpkxg9lh+Ru7ktMSIfDkYD33de5fyM
+	 gU8LQy89ioRQGwY5FsyGgbwGBRpqJv7qJ25cTr4qdLpzf66OxtRMqTcc+ABTwEWkQp
+	 AbzOUsuArFnkA==
+Date: Mon, 1 Jun 2026 01:52:24 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Barry Song <baohua@kernel.org>
+Cc: Theodore Tso <tytso@mit.edu>, Bart Van Assche <bvanassche@acm.org>,
+	linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Akilesh Kailash <akailash@google.com>,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
+ remembering inode number
+Message-ID: <ahzl2GM1OGsBz9mV@google.com>
+References: <ahCNmWbcd_2lAJyk@google.com>
+ <20260522224108.GA18663@macsyma-wired.lan>
+ <ahTzHyHBL8t0iNBR@google.com>
+ <ybmbjekuvzmaw4hmlxd7nxs546dqtwmxqxwyali74d6m3u7tat@b4q3japqnhrl>
+ <f4e521ac-2381-49ca-8dcc-3cb3cf3ffaea@acm.org>
+ <ahaPDHiXcJoVShPv@infradead.org>
+ <ahcU5xbVy7xjps02@google.com>
+ <ahkl52N3RDcusCNd@infradead.org>
+ <aht812OhSPFqIBPK@google.com>
+ <CAGsJ_4yJihngSY0GNcc+MwPHJjpF1qCnS8-UE1GwYoNDtEm9mQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E4C22140009
-X-Stat-Signature: aw11rbqbmrtj7aim1ddspwsrikrdfji4
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4yJihngSY0GNcc+MwPHJjpF1qCnS8-UE1GwYoNDtEm9mQ@mail.gmail.com>
+X-Stat-Signature: cnthnoeit4uz9zd653p3xix8iszshaw8
+X-Rspamd-Queue-Id: 17B53C0002
 X-Rspam-User: 
-X-HE-Tag: 1780278465-49373
-X-HE-Meta: U2FsdGVkX1+EFzRXS5gVBoGtnOW8/lrzlndJIvcP2P/XOmuRGI48T825wT43XKucMYBHgHz4RQ95uNY1Vrd3274k7i03EH26nYI3MeoEXq0FRHwx3/N5wmh8XntIEMVYLnTvfRoqRc5D8tpubTHwypQ70aqPXLv+us0c21JlNPMXo57G+K6E7+bk/NhGSPYWA+PTGdgTruxWu3OXtpvez5vVsDRU15+HXeFBvGFyfmeLC2KoARfnlYcP3sF5TS8Zjk/5cir0yCsFIXhfMawfNw21WhCZbNNj8NnlWHc0WSid6HeoD0DpxWAGArUxnyi+NhA6udde3ArJYyt/jyzDFq6N08BPm8hgzcBqD6wWyGnVEFqjwJ8R/Gz1T5yNHHkofsU2M6mjgfBDY4lKAqJXEEN7OcfLtUOW8ui+Ru75bOm6G4L4wBGxqq+9lh29ySBkQsfehhkJ6zQCkq+mhP1mHV7l6fZavibDJICtXOzvGGdQfKwfMN5zIFSzxf3u0rByXC6VX/+Y6wahS/lREjtciB3ZVHyqgs0TZPXGVi5MZr9W8D2GudP5OQPS6Tn5JBh1TogJQUWvIgG2QMXYFedNtY3fD3hiRHIJGxO/zygJvwelUUcM/YnDfRg42XmfhEV767hP2VG2fczNlOgZB1bHfq1t9sjc21qaaBA12RDbbMB7VGLlkMeJ+0mQzicHNGuKxBP5oi7hIrL3R0URm8XxqXqcI2fe6NMWcJehBz+ZkNZ3yhlT6ucCxVFpFCiwoYVsG9rYfsY2dmxRvqIo862is295Ybj0Lx+UMPU0QbmvKixQ9ny8tPfMvDWOI+TKMWe6RSvsdqdfl9Iw2rkVXnZAyEI3D+m/7vFhoJsduQw6dFFfmOxrqbHC2C7xSne2kwH7TqtfdENztlfQ9mVu0yahwW5l4zSLq97ysNKbMLw7fTC04qacNP2gPfjUeoTwk3ivAwOm8uN2vd9rHz5YwkZ
- sifmznl9
- liFZOGu//CyUwPcp18g0/Mplmc/FFcsrEjVNSwTHPyrWWaw3t9ewikGCJhvNfDvVtvuF6L9/zyifYP/+X3m5rL6frKj8Ma92Ri6LL1BUha7pf7dvpqEdDEwro9FhrJkyoQ4sTpOTzYRkm0eR0Tizf9O0HjWJYmBguarCgdLJVPzbeZbj5pbbqEkMPZ4DPOEDosN+frL0zPHvHQb300WnXCQY9rli95QncCq4sXZAnMgsqBklaaev7ilKfRWrTV8SLzna82moiDqUi7TjdzHCpndgrgiyMzktfKhAULGkbRmGPOeo2sl4OnmOVSixoZduJUMZJRWG4wo/fbPfMVQT9LfuusUtpMlKcQEkxkZ/T7zVcF8QZmTIeu4L0eaprokF1MBZW44MzWTuiD1BGl/shtmjdcdJI4AJtGkYFX5qHSpJKYmFE4OQJXhXQXcVCJvHT8gu3CPlG+kNt1s/gSJ6QgLgT1kjeSTxxVhd7Aldvf0HfvRQeObP56LAbJA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780278747-509625
+X-HE-Meta: U2FsdGVkX1+AXzfTommatJ87DdYFF8kkpjqIjRRXw+KcwxxkAn9hzefcdU9Uk0Xpx0MGp741oSL0BOgCB4VnGLSNCwmYPULuiVUU+wiFUd+x94ZcXX/+l17/Ah9truIKG1hFuZzdC9iOjR1VUzfXMTHe4tF6+1tEphTn32wVdqhRrmZS9jjD4rCvY4vmZvJDPAcQVMExNjmyA0a/WwJU1Tf60VYar1mdPF8I4bg7MYCKkQIzYoWGr7Jpyx9Q/BfBV3tU1JRBPRs6e7mImP6xhNeB2Jj+lVK606nw0fGCnkslpsfL0nDjDIM1m6uhQJ9toNTGNv52J81R1Hx2iEsWZFOudNdOQCRMQN9AeUSC57h+XxBQel+4piu+O/PMUrrF33al5duRaN5vuk18OI49FajnGjfP7FWdtt/pyPIMVTfavww7LRflu3P/9h9JTnxc5zKh964W4N2ZP5H20sRheWofr75g5swZU7bpYO1ySvqwW5gBlXuhJsSSbh+mFvHMn4OnKmzDQgtfCTUSn8wg88juxLdMyU3ID6p2IeHGNWY20mn+U3oNfwdZJs7H25Ptyl0Oz0PjrMnuBCFIK4EUWRAr81Jp5LpmK8LH5k9crzIZ9ohW7taENYn/bi6qTE/fuCRMxiDCMH6Gh6b8e6xhYj9bRTA+aPkD3JOg8NhoWDGfXeLLmWQ8cvR6VRp79ZUIp97iz/oomYGvqTzXyMVxmN9IA3qOXNGT1B98PVlZIEu1d01hCpxczDtrR6vdm5KGHPZtmaEWJXCzjlLMwXlMNHfNJHGj8zcHdkcDKXd+y+cY+OmrZ+qCk1u0Q2V+ZUdcHeK+hg/UWolLCM3+MsZWo3gbR6XicLqVRPOT737/J/uTVkzMUg+IlQcOZ6iEVBgjZDCLWuOWxwsSs8x7mWyy/z+Kn1VUR5kYsEegAxEMwGN9Ta3gR3tigHEeObXP3ZKv8eaYnCzbupiFQ+B9QrM
+ Jw4WzUPe
+ GO43fK/3dW69/bG0iA2Rz5HX7ANGz6+FDOtTlE/gd9QQdDT/rpMRxtQRGph/czyQ7EqI2Uiwl45Z6LkqklLe5WRmcs6lh14ePeB5MsEJLZHxfgHT4BJW1dcqVKj8UUMReGp/UVVKOcHLYQjiW1P8BKIw36qgTeCxC6TtW6K3msI9lv060sr6tjGohqdhvo1AQhy2JtRCQkADpRZIeEuIhYrd7sfupilYz0oQ7k18IwYq/IXRl2/fGuicYqtZoESf+y9HUiQC7bZbta64zB8d1bDZlL58FFZHWLvKjkY4goi3rjHjzRCNrRq8Osa/DMXVHXZ/5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,28 +108,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Thu, 28 May 2026 18:59:02 +0100, Matthew Wilcox (Oracle) wrote:
-> Add the convenience helper bvec_folio() to avoid references to bv_page.
-> Convert a few of the obvious users.
+On 05/31, Barry Song via Linux-f2fs-devel wrote:
+> On Sun, May 31, 2026 at 8:12 AM Jaegeuk Kim <jaegeuk@kernel.org> wrote:
+> >
+> > On 05/28, Christoph Hellwig wrote:
+> > > On Wed, May 27, 2026 at 03:59:35PM +0000, Jaegeuk Kim wrote:
+> > > > F2FS merges bios before submit_bio, regardless of small or large folios,
+> > > > since the block addresses are consecutive. So, I think IO subsystem was
+> > > > working in full speed.
+> > >
+> > > As does every other remotely modern file system.  But that merging is
+> > > surprisingly expensive, which is why using folios gets really major
+> > > performance improvements.
+> > >
+> > > For one doing these checks to merge touch quite a few cache lines.
+> > > Second, devices are often a lot more efficient if they see fewer SGL
+> > > entries.  I.e. having a 1MB bio a single SGL tends to work better than
+> > > having 256 of them.
+> > > The same is true in the kernel code itself, both in the submission path
+> > > (dma mapping and co), and even more so in the page cache handling
+> > > both before submitting and in the completion path.
+> > >
+> > > See Bart's patch about how long the walk of the bio_vecs in the f2fs
+> > > completion path can take.  We had similar issues in XFS even in the
+> > > workqueue completion path due to lack of rescheduling, and these simply
+> > > go away when you do the folio manipulation in larger chunks (LAZY_PREEMPT
+> > > would avoid the need to explicit rescheduling these days, but that just
+> > > papers over the symptoms in this case).
+> > >
+> >
+> > I see. That's also super helpful. Let me kick off the large folio support asap.
+> > Thanks.
 > 
-> v2:
->  - Tweak the kernel-doc (Christoph)
->  - Add the bvec kerneldoc to the documentation build
+> Hi Jaegeuk,
+
+Hi Barry,
+
 > 
-> [...]
+> Nanzhe has put significant effort into this work at Xiaomi over
+> the past several months. Large folios can now be supported on
+> non-immutable files.
+> 
+> He has conducted extensive testing on the Pixel 6 and fixed a
+> number of hangs discovered during development. He is still
+> benchmarking performance, but the implementation appears to be
+> reasonably stable at this point. We can run Android Monkey for
+> many hours without observing any hangs.
+> 
+> If you would like to see an RFC, I can ask Nanzhe to send one
+> as soon as possible after some cleanup and polishing.
 
-Applied, thanks!
+Yeah, I was about to reach out to you. Let's do some discussion
+offline.
 
-[1/2] block: Add bvec_folio()
-      (no commit info)
-[2/2] block: Include bvec.h kernel-doc in the htmldocs
-      (no commit info)
+Thanks,
 
-Best regards,
--- 
-Jens Axboe
-
-
-
+> 
+> Best regards,
+> Barry
+> 
+> 
+> _______________________________________________
+> Linux-f2fs-devel mailing list
+> Linux-f2fs-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
 
