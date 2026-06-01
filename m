@@ -4,106 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B689CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:08:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED19ACD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:14:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F0556B02EB; Mon,  1 Jun 2026 05:08:42 -0400 (EDT)
+	id 0DD2C6B02ED; Mon,  1 Jun 2026 05:14:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C6EE6B02ED; Mon,  1 Jun 2026 05:08:42 -0400 (EDT)
+	id 08E706B02EF; Mon,  1 Jun 2026 05:14:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DCF76B02EE; Mon,  1 Jun 2026 05:08:42 -0400 (EDT)
+	id EE62F6B02F0; Mon,  1 Jun 2026 05:14:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BF6E6B02EB
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:08:42 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E8EB88FD8F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:08:41 +0000 (UTC)
-X-FDA: 84830768442.13.D56FFEE
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id ED124180003
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:08:39 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KxtyW1yS;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DE3E76B02ED
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:14:40 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 856431A05D3
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:14:40 +0000 (UTC)
+X-FDA: 84830783520.28.78AAEBF
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9E9F240009
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:14:38 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NJ8wPokP;
+	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780305278; a=rsa-sha256;
+	cv=none;
+	b=jJjfT01+JVF4h0Xxm7AL4XCyJUnKnBCkZa1Vh5shgfDyZenVyckHV+k1YCYuCHHjJQmbN5
+	s95T5UIi5Xxdq3Q1nopoVzv82P5/3ZLVvCQSL0c1D6H1mferhQctRUEdw9Dj2BzMKjSiyP
+	R0T8mBwh7KLSixaq7DR/0JTAvMy0NdA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NJ8wPokP;
+	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780304920;
+	s=arc-20220608; t=1780305278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VK++rQga/i6Qi+LoraofDjTFK/zBvGqjLp0spI1XrxM=;
-	b=ON/f4o1yTlJwfR5a5fJxIhjG/okX4+Uq9pAQLOFnReYsxS/8aMRQ+ff+1dcoU8KvwhRByB
-	KLqlClmw5ikAUvoATh+iTBJJ/XusiRYDLAjbCYDc4ON9wrnhKVvwgxGhUENpvdAt3DeR3g
-	l5o7RkdaDiW70pEile8pO3aOqJjyxN4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KxtyW1yS;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780304920; a=rsa-sha256;
-	cv=none;
-	b=1CwjQwzkqTPvC53mZyyCuwfdXV/FltL5sDeiOMnFgVYAjr/OAiD91gVohGdU4TlEAbz+tE
-	Im8uMRletMzy3SJa2NJS9Px5+kZXuvnTEEARfYG9IPFlx+joEA6n8oy6TLOEwjc56KYMZV
-	uNWrkUOwJCQhwzqsXV77LRInD80VdrU=
-Message-ID: <616de1a8-1cfd-40b8-b04f-7b324be40bfd@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780304917;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VK++rQga/i6Qi+LoraofDjTFK/zBvGqjLp0spI1XrxM=;
-	b=KxtyW1yS8Bmvb5wfbc9LV85WFpETDo57OXPUYHvytoo6p29K7gINb2qVNlWklQtImBbsCy
-	BZSH9y6GovK0MeDLyz+cyKp1wb+IItvlaXIN9a9BkWzX99qxM2xoSFd0wS3MFukyIO5Zaf
-	MJkTSeNaWw9rlrbF0NUQyagIy3Fpuq8=
-Date: Mon, 1 Jun 2026 17:08:11 +0800
+	bh=OEazZgXX6yfrNi9YyR3tNhoYlfRoEfti9CQyvf+Sf3I=;
+	b=fXbCmuAZdkW39Muc6cGkcfqYt1Ds7KTC2ZK+qyDaRSNC3LBX/OurtihfzxnsgwTYWjZprh
+	SX2G7EnZEM4VaWA5vWC+lEJwHIF3M6Vgm6pnCFgBfZP8p6ko/4K+sdpXLdYSQ/vHhy2Ba2
+	WZ2a90K0coBS9iSyhXtvbT+NBKhfws8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 469EA1FCD;
+	Mon,  1 Jun 2026 02:14:32 -0700 (PDT)
+Received: from [10.164.19.28] (unknown [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E9CC13F905;
+	Mon,  1 Jun 2026 02:14:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780305277; bh=h838crh2cFkXrbwjE1UKSICfRuEgy6SwChiZVz3UvrI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NJ8wPokPqFJEjcJHWuI8Z9iNFV6h7LrUyx5sTA83Y42dAgIBjNpOx+u3wuWvef+Go
+	 u951O7Qq51z3n+IinzUAgyxUDkGVGxdfL8DQthXmjCFxcQMzkIrJlmMcouvOZto6Em
+	 Btelm0kthvpRg58KLSUeGmJwfZeXZTOGf0Tg/TrM=
+Message-ID: <9d861614-2c84-4390-a34f-af7bb42aad1b@arm.com>
+Date: Mon, 1 Jun 2026 14:44:27 +0530
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
- collapse_huge_page for mTHP collapse
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] selftests/mm/hmm-tests: test pagemap reads of PMD
+ device-private entries
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Balbir Singh <balbirs@nvidia.com>, akpm@linux-foundation.org,
+ liam@infradead.org, jgg@ziepe.ca, leon@kernel.org, david@kernel.org,
+ shuah@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, linux-kselftest@vger.kernel.org, usama.arif@linux.dev,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260530085413.1270139-1-dev.jain@arm.com>
+ <20260530085413.1270139-3-dev.jain@arm.com>
+ <9d8bffb5-bb07-4cde-8a20-8b9b9996f8cf@nvidia.com>
+ <7750de96-44c6-47b0-b0a9-dd948fca2e90@arm.com> <ah1EI_JfZYop7VF8@lucifer>
 Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: npache@redhat.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
- akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
- hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
- jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, liam@infradead.org, ljs@kernel.org,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
- usama.arif@linux.dev
-References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
- <20260601032804.96122-1-lance.yang@linux.dev>
- <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <ah1EI_JfZYop7VF8@lucifer>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ED124180003
-X-Stat-Signature: cdm3hur9zdoxtaasn71b9ssne47mf8fh
-X-HE-Tag: 1780304919-561598
-X-HE-Meta: U2FsdGVkX1+aylUdoLR76bIlmbMy4eEwZiQ53Y2lUx1HQ8eReo7fE3ibML+KfIgDYg3DJxo1H5sfHKX3bS+0kBj4HQeEKc2vNy+/Cp4zPyzDbj2JnSldNwPig60QGIdM9cpbeowztYRjv/f56HCoShPzj9ymwNayeO6npIRxMpfvBILH2KjFClcrjK/dxNts3XVFPj08vNnHscrIV2QT35sUQ4bW0m7G4uIYfOELN5WMh1WEQ8RWdM+vUTMXjkuKV5yr8oa9Wsy/Ea+lJyHd+55U0q85VMILhIM4OKJ6Bj3JilRADcFFoeikSS46vqpTTS5W3Sab4wg0sApSmLMvx5uxN91Q89gLmU5lGaorTQ2xzf+QqMNCYPbBH5UHjvKbeHTRVgi+FWris8u4vppHH9Tbt86o/R3JBvddTnsBRTbssHLxBuE5aS+soAnDFiPJggrYyzJ8QFpH9DPuXZFJxWgTrHLJLwtVOT6st03exzAWnJSpuaAP7eOLE+BCPbCLkWTIXQxjjVJ94SaWLNZ+cx5C4mlv0qkpYlbP/r4bp+wY8/qTdRfKjqRmhIb5RQtaYNNoWjatC591XdWrtNtek19GVO0hAM9dbaeUx2HoosZjQrighAYpN2+u/S3+Nh1zdfhzV+6QvOFPmMDCSgTtRvHfYxWis94pURm97hk3fOU/s3iwQ/JpbFfiTSb9yw4Z9gCgfiYrRO5eAa+lQRO2zN4gCiiG4cbENv1RpD6LGOjK0s6LGy8ZeMfhdeYOjWvocySCsIHDjTguGaFiOvdQKVihaRo87sVJIfFTmHNnJwlJWQUW5jEZumxxen0uLsR2iMWHW0LJ0Eud8YYPEyiVmM9/agZRI0B1Jyd8YwYH4xV3+whk1QICncOAsvnl8q/9RTjAD5MCISGOtCrQWkvtL68DOHLEtYmwctj6khXQ1DH/R4MDEGfgBjXPMG/+cAXNa7urU+U7NdsXmSMfJjh
- 5cCsvlOs
- chrFNkag5P3NE1+3tmYl45OzW9WlyE83XXHX8LTV2X4TZ5jIG7QTZiHgn5QZlnjz9yvDs0bLb/iuQyiXls6eSM4tDql18VZ4HMPyUURROO/PARnC6cYHbwgI6wDTtxjcpjnUSNAC42e/fGLmz87tHEzi39t/pqOxCTF0pgBM/TVCuD2qfIautcC0jaFgpOL3W69Ao42n1Mp1EdQacBOWtDXWgq0Y02GmP+/vj1YIAZw0JbKH0YkjD7uJlE3BgkL+P4fmAK55Ix7qwOMTtnVh0oz8MImom+6u+Gozlki2IR5HWp6lng4lGPVFmPS2te+OW8jujk9oJFJs+jog=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9E9F240009
+X-Stat-Signature: f85zy4cx7xtsdjri54eta4axnazygs8y
+X-HE-Tag: 1780305278-143812
+X-HE-Meta: U2FsdGVkX1/bbC6mVBsV1qKPp4fIgIlGEigTgHmtKnTQChPJ0CooJrL8SVG33vg96TtwviC3q/vAguqDwd+JKzes3dmHRR2eSs99sDQ5Q0XE4K/us2ti3YnY1+e9qq5/dntnn0+iQOLdP52do6J66eyRF0R4vS0wVftQHQls/8vBtQLkzlO76BlAk6Va5vIaDjlYu4OrMhfVOxj4ziNVW/F+5ntLw0YaXqPQwZ9cDAflq8pGGYfirj29iUyLvi4mZqf5UmxWZ0uU39tUR5tGVceABZjYvegD8w4W4tbS7UJXkf6+WpCaLcUBOugkgx6jzqV6j1iDzFpE+pTW97ZgV6X4IFZ635Bi9BzAYFGgjwIu3B+HVPeKXozVXzPamHBOPNUwzC1M6kCDr/5vLfSncFdEY8xpvkHMccTMifwY8Gg3OY0zE2BY2DsqhATMh2J+XuZVa6/bRTsdTt6gjegoCH4iOjulL8OpjWeQNIekI6SZrv5h6h26KM7ORsDq98lhD4S0qIfml2mvb/hCwBK7mlHm3ui7kF73xOWBf5c2l51xP9rLnxAbgnXqSCWI03Q5UVfMQQv+hiP6/bYDRZSezXt21k5Hev6eMZRjZsxlBZPZrkjy7M+9clCXU7Ze8r/UlfVxRq/Zm0O5sXSXJVXA/vOIEFeUTzto+X9rXVExksYiRGPTfDGiLmOz6fXQsCbOnUJ0n2zljocawu5vXFQS30cmbKyfrjNmKy9BduVVVwiiFBhmGrlumncfJmGAbEFfBp83h/KbgL4LZJjUGxStU7HTOPkTnTNcptBUWjy2gnapuw/DqY6KdwnFhod6hjDNHI85ccDzCRgSG7EDEgu/1AfMTN5oD3dO4kghKeSxwE8LBHZLuhfhUDIgPGx2yEo7PmA0grVbEb+5LKbmXI8K8kjkL0qVz6cJxth3UrN1fy6756y0SdNlEwNzJJ9kZGlnGuwEnSSEbo6iL/HoIA9
+ xTpG8SQu
+ +M57sUXs7RVqZR+oPLxnJBRW/Tc7eH5CeR6sZvj05UoYAU7cdjUSOowQ/+SjF+dIQ7w/fLWTu4yTNZwteSSUihNEPpgZeNgrVRcX/ZLZaWZW+9TOinimME2ErHB3TUQ6fdyn8Xa+7vbP5DoVme88U0zmQ9F3CHapujK5qYQt3ZiaWCTjW+WVvmJL4IE03Y9vII1Rk11OKeF3+br4W877jy9AOo4vUCs11UL6Ny6HNHTnSaCI8le+lHdpz5fidYi0hcbFBVvzu3oEIt7va65W/B+uiPkiuCmH4bgDhmY40I3YQpr8Lh2NtxGNkNLfa2G20tHkv2MNTwmSqQ3s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,134 +101,108 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/6/1 14:54, David Hildenbrand (Arm) wrote:
-> On 6/1/26 05:28, Lance Yang wrote:
+On 01/06/26 2:05 pm, Lorenzo Stoakes wrote:
+> On Mon, Jun 01, 2026 at 10:40:48AM +0530, Dev Jain wrote:
 >>
->> On Sun, May 31, 2026 at 10:00:17PM +0200, David Hildenbrand (Arm) wrote:
->>> On 5/31/26 11:39, Lance Yang wrote:
+>>
+>> On 01/06/26 5:39 am, Balbir Singh wrote:
+>>> On 5/30/26 18:54, Dev Jain wrote:
+>>>> To cover pagemap paths scanning PMD entries, add assertions to check
+>>>> whether a device-private PMD entry has the correct pagemap information -
+>>>> the PM_SWAP bit must be on in the pagemap entry. Before that, we must
+>>>> assert through HMM_DMIRROR_SNAPSHOT snapshot that the leaf entry is
+>>>> at PMD level and not PTE level.
 >>>>
+>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>>> ---
+>>>>  tools/testing/selftests/mm/hmm-tests.c | 29 ++++++++++++++++++++++++++
+>>>>  1 file changed, 29 insertions(+)
 >>>>
->>>> Emm ... is it safe to use map_anon_folio_pte_nopf() here?
+>>>> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+>>>> index e1c8a679a4cf3..d09d4a9081de1 100644
+>>>> --- a/tools/testing/selftests/mm/hmm-tests.c
+>>>> +++ b/tools/testing/selftests/mm/hmm-tests.c
+>>>> @@ -2276,8 +2276,11 @@ TEST_F(hmm, migrate_anon_huge_fault)
+>>>>  	unsigned long npages;
+>>>>  	unsigned long size;
+>>>>  	unsigned long i;
+>>>> +	unsigned char *m;
+>>>> +	uint64_t entry;
+>>>>  	void *old_ptr;
+>>>>  	void *map;
+>>>> +	int pagemap_fd;
+>>>>  	int *ptr;
+>>>>  	int ret;
 >>>>
->>>> At this point pmdp_collapse_flush() has cleared the PMD from the page
->>>> tables. The PTE table we are updating is only reachable through the saved
->>>> old PMD value, _pmd, until pmd_populate() below.
+>>>> @@ -2318,6 +2321,32 @@ TEST_F(hmm, migrate_anon_huge_fault)
+>>>>  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
+>>>>  		ASSERT_EQ(ptr[i], i);
 >>>>
->>>> map_anon_folio_pte_nopf() does set_ptes() and then calls
->>>> update_mmu_cache_range(). Documentation/core-api/cachetlb.rst describes
->>>> that hook as:
->>>>
->>>> "
->>>> 	At the end of every page fault, this routine is invoked to tell
->>>> 	the architecture specific code that translations now exists
->>>> 	in the software page tables for address space "vma->vm_mm"
->>>> 	at virtual address "address" for "nr" consecutive pages.
->>>> "
->>>>
->>>> But that does not seem true here yet, since the PTE table is not
->>>> reachable from vma->vm_mm when update_mmu_cache_range() is called.
->>>>
->>>> Should we avoid calling update_mmu_cache_range() until after the PTE
->>>> table is reinstalled with pmd_populate()?
+>>>> +	if (!hmm_is_coherent_type(variant->device_number)) {
+>>>> +		ret = hmm_dmirror_cmd(self->fd, HMM_DMIRROR_SNAPSHOT,
+>>>> +				      buffer, npages);
+>>>> +		ASSERT_EQ(ret, 0);
+>>>> +		ASSERT_EQ(buffer->cpages, npages);
+>>>> +
+>>>> +		m = buffer->mirror;
+>>>> +		for (i = 0; i < npages; ++i)
+>>>> +			ASSERT_EQ(m[i], HMM_DMIRROR_PROT_DEV_PRIVATE_LOCAL |
+>>>> +					HMM_DMIRROR_PROT_WRITE |
+>>>> +					HMM_DMIRROR_PROT_PMD);
 >>>
->>> I recall that update_mmu_cache* users mostly care about updating folios flags,
->>> for the folio derived from the PTE ... or flushing caches for the user address.
+>>> madvise(..., MADV_HUGEPAGE) is not sufficient to guarantee that the allocation
+>>> was indeed converted to THP. Might be worth using the kpageflags interface (but that
+>>> requires elevated privileges) and then KPF_THP? Otherwise the HMM_DMIRROR_PROT_PMD
+>>> can be a miss from time to time. One other option is not to assert, but to check
+>>> and inform?
+>>
+>> I'll then use the existing check_huge_anon() to assert that a PMD THP got allocated.
+> 
+> Would MADV_COLLAPSE work here?
+
+So MADV_COLLAPSE requires at least one page to be faulted in (or precisely,
+HPAGE_PMD_NR - khugepaged_max_ptes_none). So I rejected that, but now I
+noticed that we are initializing the buffer first.
+
+So yes I will use this, thanks.
+
+> 
+>>
 >>>
->>> So intuitively I would say "the architecture code doesn't care that the PMD
->>> table will only be visible to HW shortly after". The important thing should be
->>> that it will definetly happen, and that nothing else is curently there or can be
->>> there?
+>>>> +
+>>>> +		pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+>>>> +		ASSERT_GE(pagemap_fd, 0);
+>>>> +
+>>>> +		for (i = 0; i < npages; ++i) {
+>>>> +			entry = pagemap_get_entry(pagemap_fd,
+>>>> +					(char *)buffer->ptr + i * self->page_size);
+>>>> +
+>>>
+>>> If this is a THP entry, do we have valid pagemap entries for offset of i * page_size?
 >>
->> Ah, fair point.
+>> Yep we do, see the populate_pagemap label in pagemap_pmd_range_thp.
 >>
->> I was mostly worried about arch hooks that walk vma->vm_mm again, rather
->> than only using the pte pointer passed in. For example, mips does:
-> 
-> Right, a re-walk would be the real problem.
-> 
+>>>
+>>>> +			ASSERT_NE(entry & PM_SWAP, 0);
+>>>> +			ASSERT_EQ(entry & PM_PRESENT, 0);
+>>>
+>>> Nit: You can use PAGEMAP_PRESENT()
 >>
->>    update_mmu_cache_range()
->>      -> __update_tlb()
->>        -> pgd_offset(vma->vm_mm, address)
->>        -> pte_offset_map(...)
+>> Okay.
 >>
->> and __update_tlb() has this assumption:
+>>>
+>>>> +		}
+>>>> +
+>>>> +		close(pagemap_fd);
+>>>> +	}
+>>>> +
+>>>>  	/* Fault pages back to system memory and check them. */
+>>>>  	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
+>>>>  		ASSERT_EQ(ptr[i], i);
+>>>
+>>> Balbir Singh
 >>
->> 		/*
->> 		 * update_mmu_cache() is called between pte_offset_map_lock()
->> 		 * and pte_unmap_unlock(), so we can assume that ptep is not
->> 		 * NULL here: and what should be done below if it were NULL?
->> 		 */
->>
->> So if khugepaged happens to run with current->active_mm == vma->vm_mm
->> here, could __update_tlb() hit the none PMD, get NULL from
->> pte_offset_map(), and then dereference it?
 > 
-> Likely yes -- that MIPS code is horrible. And the comment in MIPS code
-> even spells that out. :(
-> 
-> Do you know about other code like that, or is MIPS the only one doing a
-> re-walk and crossing fingers?
-> 
->>
->> Just wanted to raise it since some arch code may still have assumptions
->> like this, and the always-enable-mTHP work is getting closer ...
-> 
-> Right. I assume set_pte_at() couldn't trigger something similar (re-walk) in arch code,
-> because we simply provide the ptep. update_mmu_cache_range() only consumes the pte.
-> 
->>
->> Probably very very very hard to hit, though :)
-> 
-> Delaying update_mmu_cache_range() is nasty, as we'd have to make sure that
-> nobody can interfere in the meantime ... and the PMD lock will not be sufficient.
-> 
-> Maybe we could reinstall the page table with the cleared (none) entries while
-> still holding the PTL?
-> 
-> Thinking out loud:
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 5ba298d420b7..e39b750b1e6f 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1413,13 +1413,17 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
->                  map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
->          } else {
->                  /*
-> -                * set_ptes is called in map_anon_folio_pte_nopf with the
-> -                * pmd_ptl lock still held; this is safe as the PMD is expected
-> -                * to be none. The pmd entry is then repopulated below.
-> +                * Re-insert the page table with the cleared entries, but
-> +                * hold the PTL, such that no one can mess with the re-installed
-> +                * page table until we updated the temporarily-cleared entries
-> +                * through map_anon_folio_pte_nopf().
->                   */
-> -               map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /*uffd_wp=*/ false);
-> -               smp_wmb(); /* make PTEs visible before PMD. See pmd_install() */
-
-One small thing, I think we should probably keep the smp_wmb(), and just
-move it before the earlier pmd_populate().
-
-IIUC, the ordering we want is still:
-
-   clear old PTEs
-   smp_wmb()
-   pmd_populate()
-
-so another CPU cannot walk through the re-installed PMD and still observe
-the old PTEs, right?
-
-> +               if (pte_ptl != pmd_ptl)
-> +                       spin_lock(pte_ptl);
->                  pmd_populate(mm, pmd, pmd_pgtable(_pmd));
-> +               map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /*uffd_wp=*/ false);
-> +               if (pte_ptl != pmd_ptl)
-> +                       spin_unlock(pte_ptl);
->          }
->          spin_unlock(pmd_ptl);
->   
-
-Cheers, Lance
+> Cheers, Lorenzo
 
 
