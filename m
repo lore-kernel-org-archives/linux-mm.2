@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8903CD6E4C
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:14:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D33ACD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:16:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 359EA6B0296; Mon,  1 Jun 2026 03:14:02 -0400 (EDT)
+	id E5AAB6B0298; Mon,  1 Jun 2026 03:16:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30B5F6B0297; Mon,  1 Jun 2026 03:14:02 -0400 (EDT)
+	id E0C7F6B0299; Mon,  1 Jun 2026 03:16:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 220396B0298; Mon,  1 Jun 2026 03:14:02 -0400 (EDT)
+	id CFA366B029A; Mon,  1 Jun 2026 03:16:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 155C16B0296
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:14:02 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3D4FE16226A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:14:01 +0000 (UTC)
-X-FDA: 84830479482.13.34C909D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 86E47C000E
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:13:59 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GikPScST;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC4906B0298
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:16:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 50B904053B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:16:56 +0000 (UTC)
+X-FDA: 84830486832.18.69581EC
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2258C16000F
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:16:51 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=NrCjURBa;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf08.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=chizhiling@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780298039;
+	s=arc-20220608; t=1780298213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uJvEmv+W0qDNB0rejgQapdJuH96Fa9lGuF//EYZmLLc=;
-	b=BvTD5IyU22Yv1CQT1NxZ65bNNEB2CaM6undeQzGd3Fd5a20+uzxCq2pN/7+GvZGIg+nmtG
-	kTK78Pzr32vG5IL/oRxpvYbGDwHR8BD6ExLDOnR3DBUKK2mlJcIIjc4RpMjG7gVLfjDxmS
-	CG9lZu3bjbioxtkhlqJntWvvrt0uj7k=
+	bh=eMVFGeQet2q9i38H6nc5ggraVuL3XTIUP1O16KEY7o0=;
+	b=wA9bVTRbMFZAyvV/cXeaZ3oVelJqJip3ITK4HEefUCwqAxLNNRGby34gapgfcfZ9gLrYqh
+	bpHLeap2VJolNcUo86ZBoWuYh5o26TnuVla8dt57BmlVoH9DSvnt89wFNrzTqruxfMquUv
+	QgwGpsPvYZ3PkMepyG64SJU3ZO2btzk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GikPScST;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780298039; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=NrCjURBa;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf08.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=chizhiling@163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780298213; a=rsa-sha256;
 	cv=none;
-	b=7/Dwoz9oiLrbQhWEJkYGKv1hl5GBaI/vZ1vKsWLfEF8AXfSDdbjZJ6ySKg/yIF9b8m45Vs
-	gKaFzw5H3hbPv47rfVI66Po0iRBbn3TXiQ7FtjMNBy8rYJnucc9JSeBYQ7coXHQEWWypMd
-	Qe2lHmqhcG0RnmPB7BRTsTtiaVL48D4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED67E601E5;
-	Mon,  1 Jun 2026 07:13:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EDD1F00898;
-	Mon,  1 Jun 2026 07:13:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780298038;
-	bh=uJvEmv+W0qDNB0rejgQapdJuH96Fa9lGuF//EYZmLLc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GikPScST/JdGxywFRDULWNH7RT2OD7214GAe1g7QCDbKOyunBXFEScW2eXeSdFBPX
-	 1nmcWK2mHQDwPeaDPZXRm/6Bvs/9e5PY0+uhi6uaM8IM3pMX3wxGR1mqYzxqKy9xXN
-	 ae/gKZTG6FKLOXf0W8IqggTU5Qm1U2lkWpnzmJcCIPd/8GPvwIjoIPiMTQYXz9zgM3
-	 OkrKoMuqeZLFrg+CgQybiH1dWrvfv/PMV20Px6ijnfJ2omnTN7SO/hCx0nccWkLV7p
-	 Jf6WK823XOMgBj7INRW39n3G9pazy3NTIE1Ix6CtCLZRH0GMC/mD4oQdQtJZKDtell
-	 zPk8/h+cl6k2Q==
-Date: Mon, 1 Jun 2026 10:13:49 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Vivian Wang <wangruikang@iscas.ac.cn>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] riscv: mm: Call mark_new_valid_map() after hotplugging
- vmemmap
-Message-ID: <ah0xLeD1_6oRKDkx@kernel.org>
-References: <20260525-mark-after-vmemmap-populate-v1-1-e698d859ba16@iscas.ac.cn>
+	b=KH3B3yTR9Wvy8J/CnXF/NSjJmUyfd37ofaDj4d7GRF7wB3zCcLIoLncIW72t1jquKxnzOD
+	gVJOFlUad0EE06K8fE1eTWTpcFlqcl8LBkon3UqH3t1xCG7An6sFi+q5xSwQnlGbB/sjUW
+	FacLUddB+QUJ6B88ZNEGd+ZwXFvZF2g=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:To:
+	Content-Type; bh=eMVFGeQet2q9i38H6nc5ggraVuL3XTIUP1O16KEY7o0=;
+	b=NrCjURBabv0q9bQWSd7LBR68SUEtmSmqT8Auy7wVdxNSy0Utfnfw9ANFWepPja
+	yNFd1GkcL8+a4Fr/LS26WIX8p92ysQr1dDx9TpicPuoZC/Lvt1wCeBOuk780El7a
+	eun+91E0ynhrvh5aI5Jv+CbBOwqyPOA4MyYH9WsUmlcfk=
+Received: from [192.168.3.148] (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgBXW5KxMR1q+JGXFQ--.4S2;
+	Mon, 01 Jun 2026 15:16:07 +0800 (CST)
+Message-ID: <0c52fc64-3546-4008-af98-6d589ef00c99@163.com>
+Date: Mon, 1 Jun 2026 15:16:01 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260525-mark-after-vmemmap-populate-v1-1-e698d859ba16@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] mm/shmem: optimize read with reduced xarray
+ lookups and folio batching
+From: Chi Zhiling <chizhiling@163.com>
+To: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Chi Zhiling <chizhiling@kylinos.cn>
+References: <20260601055704.167436-1-chizhiling@163.com>
+Content-Language: en-US
+In-Reply-To: <20260601055704.167436-1-chizhiling@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:PigvCgBXW5KxMR1q+JGXFQ--.4S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw4DWrWxKF4UAryrAF17Awb_yoW5JrWxpr
+	ySgr1ftry7J3yfArn7Gw1rKFyxJrZ5tF1DWF18KFs3XF1Fyw43t3W8Gr48GrWDCa47Zw1U
+	Jry7Jwnrtr15K37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6KZAUUUUU=
+X-Originating-IP: [116.128.244.171]
+X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC2xdb+GodMbcZaAAA3v
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 86E47C000E
-X-Stat-Signature: to8uwx5pa4af8asyoksr6zcb87c5d1f9
+X-Rspamd-Queue-Id: 2258C16000F
+X-Stat-Signature: 173px4mccx7a8rdgu1ywqk6g7w76j8ah
 X-Rspam-User: 
-X-HE-Tag: 1780298039-990960
-X-HE-Meta: U2FsdGVkX18s1jE53cW5IjHajfSQQZhFh1yXt8cCW9DcsxGvdILgxrqnKkl7uXsr4a/Uij2+/kuBXgCwgXtzEpjpRV4yxQPygJsLDz8TgJhBnMA4J0BdbaDLCF/P3XFlI+TFoqMAZy3bvnB58rk24ZpbNvQK5bE4M6nZ970vKOK3WJrRBZHNt7xIK5PG+1NEdF0hknStwHpM+u+5daFyKc+wr6A+EaMykRB8yIkxAGl7k92QY4rd7mEfmy5D0qpZicNhW/BZljp4QcS7UiPIZYMvwuWcjcHrYphHlqGWgRxRs4obAN96lOuA5IfsJlmtpZlqxlBoByHsLddnnIDrLG1FGo2rfIp2I8iVwqouupKNEhYcAXRnMNw53rW/JTLJUZB1fExByGexigtJYxhLdtJJcigOANZhcaA81Vof6A+lfIyCN7Qdyr0UUFPBjiPOZsZNQQqTvgGJc1nQFDkQOKcWbvyEe3ItAEEMLkyfbC6GKahIbN//jQlfkqdBYDCwMZT9AghCg1XGkzLYd+jgKS2VVgwBfm+MrzGjDj3yoyEWvRkQbD93Nfb4ddqotpdNdGtEYc8ZhX2mzgbJuZ0pCrNeeEqGDYfOr+W5IYbnJKwvIGgjAtJdydH2V+ELTU+kkTqWx5OORTRNW7GO2WLh1cHvAUuH9QuRXU7kbSbN5vdxOJwqvyG95Saet9bzp7iS5JBJxKAHJHw/GzxO2bFxv0jSlEQSC3Nc0ctbHyXusvmu/iA0zw/Lxv0STIVLpMdbp5xc9Cj3WJ+Ri3AJ/+c0MLvFMqqVMtmYdEz+/5Rt8OSXphM/6osZarmOLLBA5q5OnF5zBL0JBKGQ503z3OvDsYr/AfZb4PCg5hE5SB99nHR+ROErnbbrQCEzzIAmVAhoNd1DcHcRkF9Y88iJ/GIbslMlUtas+D4yvHPX4mh/KH5kw5aBvrEb2rb51a8OLRytwpYAzyVVvyx7ivGv0wh
- ngeVicfJ
- 77GY8K8VN1HAk84orv0COHoQdwowXlUjOQSfmz6vTUgzx4vMEja/dHZC+frzx46RqhoJ5NYDs0Ogjun2HOMgV8ZjnFr8TL7D7wKLGTwfBzxhBuDwiezTI7yH9BkB1GGfxhIoaJb0p/qUKkTiIyveVnxT9SlMDqHjm4WCvAVLcCBw30PDCdz2vW0XHsZ+jRENl0uGNpG8bADaodKlVpRQvxpG7TzbtYG5LxRsAGfX2Wlb9GiPr5FYsAwNcWTFybBd2bBOjCyOwn58p5lQ8ki2O1SghxoZxK6TiFmtT5gXRdHWqy+LFGWqYFqfwud07r7qG0RfWd6++GSDavCcbrv9D4+7xP6BaBbVIAAuY3282n35pStk=
+X-HE-Tag: 1780298211-688101
+X-HE-Meta: U2FsdGVkX18+baFEk3wHCY9Q55le5rgEn+c2pZf+URXA2/1uIYppsZr9JsyvSVZsT+uyO8z4mfpPzLJPuwB9DcFQN52tJkEpzgjVb31etjv9MKQph1HLlY1+ol72ErZV5IJJ4q0obYkxMtbiDCud/zBtD0L0/gU8JhJfG0KUoRvSWY8VmGxI/9IEdUJtxfbaCMKbEnI9fuasSJVVsU1W9jRVvvnhnslvOWbYrQSg1NtYLYEMiddNzxalQUuKeJp1dP5mFltxDkq+2RvKsE5hc+2/wFbo5q7mA3CdlK863rWm4Usiv6jiYNjAXWjYi0n0Mm2nUGhTmWTXsE7xf0//l57ouFCcImS43SZx6Q6w9dGsl5+HBuv+nZMFiaOqtSvONioSuNT70RtyEOLE0p1yadQVBVWUd0MP1CsNlXmyOpJuscJDQwhV6WY6Y2cC/ulsiG71BJ7QT2kvabmWTiRwEo7nHSCh3YpIYxoEnzij/0+TX5U9K2ZY4l9/btis29HCRsrNWU74gpGacK2A2iUDHssMn4QWE/3O8Fun1FnuHh79XN+g28EaQFwszJjUK64PZ5AM/C9jw7mDUwDFnACDUU016sCBS5REt72LgYDuzBwPFc6mz+SP7wlXAlfWHsw2R1TESQuwnqTFdLYUFU62rT8oNaxGzIKMdHrjXzrzMAvwzurqc+b/0n6DdoWIcSjJH2z4PWQGrPw1yr+NC5pP0U8vPF9n6O7SEuQOtBoBfje9NF1L2zbaQniBQUhXgBrZhQqy91WAvJaIZr7AYNPlwi0gRMpq5NzLfLNbPdTrzLLDgavyD4nEfB2kw68qM05D2Tp+bFYR6R9vmRnZc0Tlc1maU8h8aMxlcWcUUlroFu4IR0d2vKVYp31O1tpgVRRX6nuMv094eQV01DTbrtVg3OPQJb+8lt+D6Hb9UO3psZZef6tmhJt7c99qGsZNj/y8/nTr4YVMngZgzo4gWU3
+ jCgQM4hh
+ Tljuu3oe7DV8FAz/qNUISraSfMPafUDYvy9AkanBvxtVhHxxKhi50L4oMJmsopfF+HcES1O+cArjHF+ySGiOvGbRTHNkvVAMoJ06oGOoOA5Qy4iNDJv9Lotkdr1Ld07lRHf5dywnsen6eoigAJLMlHPZEYdsJY7hVk6kiQO41SKZxW/SOw+kmzz452HdfGhozbqi2nBzhqKArowmIkuRlJuLjECbM7F0e6vw2iayp/7IwTjm7cSLA2570mqBbai391nVtm+GSWK6LCe7iHQHB0Xy4Am+e0FTfYkOIj4VD6fnHofeOrsP2VVk+iueHTaFZr2U37rSv+i8qOkaFwm6OdFR0dJCus9At8o2R8DcsDw7zf4cbx6jfkWzMQT2vL2fq3KqR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,124 +98,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On 6/1/26 13:56, Chi Zhiling wrote:
+> Performance Results:
+> 
+> fio --ioengine=sync --rw=read --bs=$1 --size=1G --runtime=180 --time_based --group_reporting --name=seq_read_test --filename=testfile
+> 
+> | THP disabled in tmpfs  | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
+> | ---------------------- | ------------ | ----------------- | ----------- |
+> | 1M + normal file       | bw=11.5GiB/s | bw=12.7GiB/s      | +10.4%      |
+> | 64k + normal file      | bw=11.0GiB/s | bw=12.3GiB/s      | +11.8%      |
+> | 4k + normal file       | bw=3826MiB/s | bw=3849MiB/s      | +0.6%       |
+> | 1M + fallocated file   | bw=23.8GiB/s | bw=28.6GiB/s      | +20.2%      |
+> | 64k + fallocated file  | bw=22.5GiB/s | bw=27.3GiB/s      | +21.3%      |
+> | 4k + fallocated file   | bw=4655MiB/s | bw=4680MiB/s      | +0.5%       |
+> | 1M + hole              | bw=24.2GiB/s | bw=28.6GiB/s      | +18.2%      |
+> | 64k + hole             | bw=22.6GiB/s | bw=27.6GiB/s      | +22.1%      |
+> | 4k + hole              | bw=4652MiB/s | bw=4489MiB/s      | -3.5%       |
+> 
+> 
+> | THP enabled in tmpfs  | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
+> | --------------------- | ------------ | ----------------- | ----------- |
+> | 1M + normal file      | bw=13.7GiB/s | bw=13.9GiB/s      | +1.4%       |
+> | 64k + normal file     | bw=13.5GiB/s | bw=13.5GiB/s      | +0.0%       |
+> | 4k + normal file      | bw=3833MiB/s | bw=3859MiB/s      | +0.7%       |
+> | 1M + fallocated file  | bw=24.9GiB/s | bw=34.2GiB/s      | +37.3%      |
+> | 64k + fallocated file | bw=23.0GiB/s | bw=31.4GiB/s      | +36.5%      |
+> | 4k + fallocated file  | bw=4710MiB/s | bw=4655MiB/s      | -1.2%       |
+> | 1M + hole             | bw=24.3GiB/s | bw=34.5GiB/s      | +42.0%      |
+> | 64k + hole            | bw=23.5GiB/s | bw=31.1GiB/s      | +32.3%      |
+> | 4k + hole             | bw=4690MiB/s | bw=4647MiB/s      | -0.9%       |
+> 
+Apologies, due to my oversight, the tests involving hole were incorrect, 
+the holes were not successfully created in the files during testing.
 
-On Mon, May 25, 2026 at 12:23:29PM +0800, Vivian Wang wrote:
-> section_activate() creates new mappings in the vmemmap range without
-> flushing TLB, which may cause faults on some RISC-V implementations that
-> cache non-present PTEs and crashes.
-> 
-> This seems to be most easily reproduced with DEBUG_VM=y and
-> PAGE_POISONING=y, which causes these newly mapped struct pages to be
-> poisoned i.e. written to immediately after mapping.
-> 
-> Add a hook vmemmap_populate_finalize() in __populate_section_memmap(),
-> and implement it as calling mark_new_valid_map() on RISC-V, which
-> arranges for the exception handler to deal with these faults if they
-> happen.
-> 
-> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
-> ---
-> I'm not sure if this is the right place to add this hook. I didn't add
-> it to vmemmap_populate because it doesn't seem to be called in all
-> cases. Please advise.
+Below are the corrected results from a retest:
 
-Indeed it looks like we'd need a new hook to let architectures run
-post-populate actions.
+| THP disabled | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
+| ------------ | ------------ | ----------------- | ----------- |
+| 1M + hole    | bw=27.3GiB/s | bw=23.4GiB/s      | -14.3%      |
+| 64k + hole   | bw=27.3GiB/s | bw=23.3GiB/s      | -14.7%      |
+| 4k + hole    | bw=4825MiB/s | bw=4624MiB/s      | -4.2%       |
 
-The explanation that says why a new hook is needed should be a part of the
-changelog.
- 
-> Depends on my earlier kfence fixes for mark_new_valid_map() [1].
-> 
-> Found while testing AMD_HSA/ZONE_DEVICE on SpacemiT K3. Using
-> ZONE_DEVICE requires another fix [2].
-> 
-> [1]: https://lore.kernel.org/linux-riscv/20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn
-> [2]: https://lore.kernel.org/linux-riscv/20260309-riscv-sparsemem-vmemmap-limits-v1-2-f40efe18e3cd@iscas.ac.cn
-> ---
->  arch/riscv/mm/init.c | 6 ++++++
->  include/linux/mm.h   | 1 +
->  mm/sparse-vmemmap.c  | 6 ++++++
->  3 files changed, 13 insertions(+)
-> 
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index 706f43523935..cf9ae4099f82 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -1360,6 +1360,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->  	 */
->  	return vmemmap_populate_hugepages(start, end, node, altmap);
->  }
-> +
-> +void __meminit vmemmap_populate_finalize(void)
-> +{
-> +	/* Avoid faults on cached non-present TLB entries. */
-> +	mark_new_valid_map();
-> +}
->  #endif
->  
->  #if defined(CONFIG_MMU) && defined(CONFIG_64BIT)
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0b776907152e..65deccbd7e31 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4882,6 +4882,7 @@ int vmemmap_populate_hugepages(unsigned long start, unsigned long end,
->  			       int node, struct vmem_altmap *altmap);
->  int vmemmap_populate(unsigned long start, unsigned long end, int node,
->  		struct vmem_altmap *altmap);
-> +void vmemmap_populate_finalize(void);
->  int vmemmap_populate_hvo(unsigned long start, unsigned long end,
->  			 unsigned int order, struct zone *zone,
->  			 unsigned long headsize);
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 6eadb9d116e4..2b860d2b1703 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -544,6 +544,10 @@ static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
->  
->  #endif
->  
-> +void __weak __meminit vmemmap_populate_finalize(void)
-> +{
-> +}
-> +
 
-The existing hooks in sparse-vmemmap use #ifdef <hook> rather than __weak
-functions. Take a look at vmemmap_can_optimize() and
-vmemmap_populate_compound_pages().
+| THP enabled | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
+| ----------- | ------------ | ----------------- | ----------- |
+| 1M + hole   | bw=27.0GiB/s | bw=23.1GiB/s      | -14.4%      |
+| 64k + hole  | bw=27.5GiB/s | bw=23.3GiB/s      | -15.3%      |
+| 4k + hole   | bw=4777MiB/s | bw=4640MiB/s      | -2.9%       |
 
-Let's keep it consistent.
 
->  struct page * __meminit __populate_section_memmap(unsigned long pfn,
->  		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
->  		struct dev_pagemap *pgmap)
-> @@ -561,6 +565,8 @@ struct page * __meminit __populate_section_memmap(unsigned long pfn,
->  	else
->  		r = vmemmap_populate(start, end, nid, altmap);
->  
-> +	vmemmap_populate_finalize();
-> +
->  	if (r < 0)
->  		return NULL;
->  
-> 
-> ---
-> base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
-> change-id: 20260525-mark-after-vmemmap-populate-68bd790839c9
-> prerequisite-message-id: <20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn>
-> prerequisite-patch-id: fdc42f2647e21d111f44a6532887a6705cd470a9
-> prerequisite-patch-id: 096fa339c84c36643ae4311fd8362dc63e23d950
-> prerequisite-patch-id: 305c876a5f4a23a840a8142aea79b796ed297545
-> prerequisite-patch-id: d78cb55d6a616b1170f06a401c8fd44acd11e5d5
-> prerequisite-patch-id: b02b4a76e94f3e2821291d4c23b46f6e5ecf5203
-> 
-> Best regards,
-> --  
-> Vivian Wang <wangruikang@iscas.ac.cn>
-> 
+There is a noticeable performance drop when accessing holes, as every 
+read triggers a fallback. I will address this in the next version.
 
--- 
-Sincerely yours,
-Mike.
 
