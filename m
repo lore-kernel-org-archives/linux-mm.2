@@ -4,123 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CD6BCD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:50:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59EF1CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:51:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 861296B0391; Mon,  1 Jun 2026 08:50:36 -0400 (EDT)
+	id B702C6B0393; Mon,  1 Jun 2026 08:51:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EBCC6B0393; Mon,  1 Jun 2026 08:50:36 -0400 (EDT)
+	id AFA2E6B0395; Mon,  1 Jun 2026 08:51:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B37C6B0394; Mon,  1 Jun 2026 08:50:36 -0400 (EDT)
+	id 9E9326B0396; Mon,  1 Jun 2026 08:51:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 563CE6B0391
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:50:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 04D841C0565
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:50:35 +0000 (UTC)
-X-FDA: 84831327672.09.54D1F69
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 10A3218000C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:50:33 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vYXGUk8C;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jnHbUAkR;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XAlpxXBo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="YqcZM/CO";
-	spf=pass (imf24.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 8A0676B0393
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:51:27 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 515D4140663
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:51:27 +0000 (UTC)
+X-FDA: 84831329814.11.8176102
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DA1FD140017
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:51:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="T/rnueMQ";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf09.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780318234;
+	s=arc-20220608; t=1780318285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=e5FMNbqVpITkHP0wn7Xclb3vHyL4/l08M2os5uv+gd8=;
-	b=zQxsxTbzPoVkNVd7Kdzf0rOQc2NJ7GnPivkD+pe8v/uibFgCQZAioG7gMOrdwwBax5CXh2
-	j7L1jUv6rnmzdBG8bOfyp6iPKx9b8U6luA89N6bGX3gE5fCiB7y6Pn8tcv/e1dyVzo8Jea
-	y3jCfA71PtwFKcIzFoRaNXJt6Wylm0M=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TEhv83iWRMPpEwpywpQrzBRVTeVJZLFdszoXaX6/TKo=;
+	b=Xv34LXjyREzAkcxKlX5l6cvE+g8ulvXEcM9LZsrq9mkipFlolFC2z87ONBclnrjGCAjj3y
+	exJ8MNJxpdAVN3bUPwI0j+vmM4yXBaD3nIUdzzV8YmpBM0opmt2Rdgo0XXLDJ1l03M9WVQ
+	zztqQi96/DJZG4mabUWzMbLITIYpp0s=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vYXGUk8C;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jnHbUAkR;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XAlpxXBo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="YqcZM/CO";
-	spf=pass (imf24.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780318234; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="T/rnueMQ";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf09.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780318285; a=rsa-sha256;
 	cv=none;
-	b=H6WclTLvShZIYBFf1Xfuy6uTykbZuxCRSW/W7g6nEQynRvBsSVZR1kD05zxONAwMyECwnD
-	w+6L8ly/KTcnKRkZHejbq6rXNiSJs7k5tmR34MEuqLZ1Jo7uF1d9zQrci3kouI0mDHfzJs
-	7eESSD1rcWDz/nnw5Gtt0jmfqMkPn0E=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id AAF26686B1;
-	Mon,  1 Jun 2026 12:50:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780318232; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=e5FMNbqVpITkHP0wn7Xclb3vHyL4/l08M2os5uv+gd8=;
-	b=vYXGUk8C+Iew5cCqDmE8CZcsAReILvnZHcIv8MeWkN6s1AnnN9SnVqUr0uqLcE2RHOZqlm
-	nkXKRjM4GM4IU3borFXUZCJpuNaluso59v6J92UEMM1+yrmhn7MUbUQUwjSj9uV6VbAkLY
-	2Kkd9eCpqMHu6v7pXp0xGrqr23VenSA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780318232;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=e5FMNbqVpITkHP0wn7Xclb3vHyL4/l08M2os5uv+gd8=;
-	b=jnHbUAkRSQd8iUAx18BxKKfl8y//DatwU107mliT5s190/iPAAztYrSZBjDqUzm5kJ3sqH
-	McpyTfnJ8B7qblAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780318230; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=e5FMNbqVpITkHP0wn7Xclb3vHyL4/l08M2os5uv+gd8=;
-	b=XAlpxXBowJUpgxboL7j0s79yYqNtz93wZjEgSrhc+H9G0YMAOysXpfgo8TNpnJwq5Bz/EH
-	8YSlB6SVXr+6Mgfs/WL+UMq4r4Bigm9pazMtdFmv5EVHb7JV+uBWTS+scx9Gr9aP/Ebkv6
-	2iMe493CNoIW5s7K8d0KqNpuFPUHQyE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780318230;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=e5FMNbqVpITkHP0wn7Xclb3vHyL4/l08M2os5uv+gd8=;
-	b=YqcZM/COK2hWcyWoMvKhM1WgY+MnEzlUha0YC98i5/ej53M7s7AvGEbcg8revWZoJKg8M6
-	81sCXGFgYV7LbEBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5686E779A7;
-	Mon,  1 Jun 2026 12:50:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sAb/EhaAHWq5HAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 01 Jun 2026 12:50:30 +0000
-From: Oscar Salvador <osalvador@suse.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Karsten Desler <kdesler@soohrt.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Oscar Salvador <osalvador@suse.de>
-Subject: [PATCH] arch,x86: Skip setting align_offset for hugetlb mappings
-Date: Mon,  1 Jun 2026 14:50:15 +0200
-Message-ID: <20260601125015.216110-1-osalvador@suse.de>
-X-Mailer: git-send-email 2.54.0
+	b=4/NnHosq2OV68B95aD0xpk4zaIG4jZLspRvRh79KMyr4HuhgX7cOXcJ5DeslKX7gQp/rdi
+	ZRBh6cou1qTexDzVNmVAUQaArqO5qPUVDG5CcKwBfa40T1blmbzywHkMaOiBbAjbEiFX0w
+	XdFNJaKMnrXKXRdj9urbQrbo1O10V4w=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=TEhv83iWRMPpEwpywpQrzBRVTeVJZLFdszoXaX6/TKo=; b=T/rnueMQa5GcXTkGnfK2SYkp6F
+	eRWDyHxOMTbt5VXCpubYEBzzMT2cPaFNj1Ps9BJyOgJMlrGqGDDKTBHQwM+pxwEiOXkMzs/wclx4/
+	zuWtcBvOIlKAbggC5VgYjL2wRAtQm9+ACNVagcsedWpyYsOiCtlv4y1QGeEhK4xtHwJkOAXGD2b0H
+	ePR95Tv+sIvfzzphjL66dyAcHuSPpCg13U2L/LT9yX9xcho+9ee91Tp5QqzrIGSwmcV6ryBpb+fsW
+	HHssm50k7Xcdsfns4/qBLIkKcZKaS4GhUV6f9NMF1ionY+EYV9rb06CIG5DlS2nD9vMMzc3kSPSAp
+	5BEUUHXg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wU26v-000000006aT-0kzb;
+	Mon, 01 Jun 2026 12:51:17 +0000
+Date: Mon, 1 Jun 2026 13:51:17 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Chi Zhiling <chizhiling@163.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chi Zhiling <chizhiling@kylinos.cn>
+Subject: Re: [PATCH v2 1/5] mm/filemap: reduce unnecessary xarray lookups
+ when read cached pages
+Message-ID: <ah2ARWo_EiVOaWDI@casper.infradead.org>
+References: <20260601055704.167436-1-chizhiling@163.com>
+ <20260601055704.167436-2-chizhiling@163.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Stat-Signature: jokm759gp4rcockm57dqtiro8j8xqe9b
-X-Rspamd-Queue-Id: 10A3218000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260601055704.167436-2-chizhiling@163.com>
+X-Stat-Signature: 6q5qe9ciocmqa1c7yja84ktamuonxz8t
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DA1FD140017
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780318233-355386
-X-HE-Meta: U2FsdGVkX1/6+Pg9EkgvO0b6wVQ0sqZlf54KK8j5HGiVHHXgnTQwj3pu0jTl/HjDZZE01iD/NTV+0rYoyQ2GzruRVrybW50/3io5yZLmgkd6hK26FuOgAO2KeLiIumgeONMBYxYMmoKDO0MnoifkUCUC5hFCKMwIypSjrF+e6PK4U3PfMUhbpkSyhD9Zl72krrlh4YveI7jz16JV+LxKEaAQ6hPyrS4bdZj3zFJ4Y6fUPh7FtYFVtmE7bEtvAlE68waRFwVYZPxY4/u4GPbd+PMDc8t6XEoqOcit9Nl0CWTD51YIDRBGmIII5JLjbKNGy34HxHWFUI23CtoOBTEjfFeNNY/RW0Ymh8BgZCbHnMx+/xjNToTN6potrMjl3WEIioSEZn+L/V1Txt4LuOxfxj1MWHTuWI7BKXBE2ivdoVXH4eSXihAfcKz1hDO+KdsvK6LEWXoFySIB2sdAKakaU1TKABb91RE4CAZjEObs/4axvjP7MsF712z/SWHtYYmwyvvXTAGYh04NrtwyZflju+tnM05qm4WWzANn26XuiXnmYXtiBfJsOtsfGBsHvC7YVhyGqn6qkuN9GR1UwZ2GgaE4vETnoCsBEO6sFuL7CQ6uFmHreShEPOFCheGQ4jABqT/KL0qKpnK53P8avbeawkkKy7UToYCir4tQ2yuRP2Puu5LfkrxErAicjgXmBUwelnbqh0rp70Z3uxgCnK0u9lzb9FIx81IB6LpCCS7709QhP6y0VlARtKN3+hgJhIu9pUpkAqQw6UC7gWd3LkxkwpaTRWT4C2X38QtLo6c1E4KN/+HRSkd2rslQPwfwSlklaiKGDz7xndypmdOg3eatu8duwpccGNtw9IdjI0zHn4ZU3Ce6EX1JllWy8UVV0MwkiohATtS8MBd6AGAA5iuB+n9bMz09/UFsqSTxb8ZnhGE0dmx9N348wgGXjNpyoNkIQXW+zJ+4YRdscw+T9SE
- PODnWbK4
- UlNPSD3zls5A07OM80r0hzDJYSfvwYYQMc1r9KwvyYTw3iyN8VFnfmqVsSQGu289HczSW+1crNli2gUVrhTZ9aSTFnNhL0R3uZ809l7M/ZNpkPX3FwXQe7ls/WJaFL3VpiPhOfJ5yqU66TOGAp+YdCyiowa0Zm1xZvXHkqMglAcqeKogWLOx+6wox8NX75KLygjCs+pRBLEt3g7t+UoJrCrCZPN7lNMPNZQaOYvuSEQZcV7kmMgkY10Pdi0VdO3hcDIGv3M6hnJRWGpWsrSZ3qXwZCZEJjqS2bC2zO3S+6zENdYPeA1AP3cSHlmallMNfmNRpQQVnRQzWN2w3MMEZnZ3sxKKf935IJg1dgi+31yvkzr2XzBn/wM91Dtu/meApzIai
+X-HE-Tag: 1780318284-459467
+X-HE-Meta: U2FsdGVkX18wX6YjAoUY5XnBgZ++J1Mqr4/e3ueBHsfsAr3+qFRsViV1Qx4+usiN2EoIkLtgCiA2LrLzE4Kf5v2Umon06xRsDWNN3kjLQ7rbV4sJ9yTentgdIYif+vGqLFHLQzcSm4HgC8kLN7cXU8nz656gkak0PT+80lWYNkKDbfi9w91gljWsQVD+btdkrdQmSj7q7J6WkZWNTFPC/S/GN1BPwt3yIqB20O24W13PspJfgxPswWN1ZyKSc/M/MPWfaQeeScOKRNnNtlPAhSTY7vuF0Jpo8xVPLeBLMC7mJCa9mI4Iuj9Ha3h8VWiBV3ndXW465nPF4o6OG/qcC5WaVhnJMPR8CLmTN13RYCUiWp/m8zz8buquFFD72EeT2I+7L1b+y0a0AWTWruguPeDz4JRHYJzv2YinrgHqbMjWRE0oEjLL8ufhD5jAPMhylnC87ElAA5YWQLwQYSZ+RmFHFF+AH6+LnTML9maRbnYDfKOfju++oGqVa4wU7WzriY1+fZ6VkfgNNMOvuxB8jf6e7E1hCZ3t6MpboYofudJTntC29IvU9/WRkEdzfmUrMD9oL7emrONWG3ty5NMOL0FfomdZZRf4wAfiOrKIBz2c+NrJXrqt54EceAPOoUpiBkou4DvNCPr88feqwTEm+xv4e0aZkd07R+7zhkpefTWmuEMsZomI4cgTZGIgrOjlLUWW2k180zNTLROUB3iFEa8YjhQVgS33rTguO5yFPXbsLLDudjjhUpl6Z0g280GHAC9bzukDyicg7G/IoDXop/M5vWs/LL+s94UAD+IVUILt2RtM6FFVKr7TxOawxvP4IMdphGPCoMXuTZjo89j787jutoV/59yuTf7Zqt2C16MeFpMVa7bGZEoM3VQTPVS5Rc+aBuIMM8nYBakFkyGYJ/+hP3FWAr6a61NNJ5NCYfmPlrWoduYuuU1o0GEwxCP+34QWceFUVSTiyzjFSyv
+ UXEuuRuH
+ U1zhz11Ul9v5gSZjKoWsxCQfEnrM6GPj6kwllKI3oowAqhfGr6DiYXgR1uQThjAk4rxAlNncMT7R8PpU3QE/BkQTXtqG8S/MF0Q8vzxtM4TEUkD9cai9OPohrCMTH1XV/L7t89RT4E1IxXSyeMP1kzswmAfxsABrSckS4L8wd0mz/8IRt/quj/JLcCDJJ1/IqmLThjQaSFRCHckr3IcxQpPnepKXczyLQUNBR+G7hSmx2r/LHUx60KJjdAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,69 +94,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On x86, arch_get_unmapped_area{_topdown} set align_offset in order to avoid
-cache aliasing on I$ on AMD family 15h when 'align_va_addr' is enabled.
-Prior to commit 7bd3f1e1a9ae ("mm: make hugetlb mappings go through mm_get_unmapped_area_vmflags"),
-we did not have to worry about that because hugetlb specific code did not set
-align_offset, but above commit got rid of hugetlb specific code and started to route
-hugetlb mappings through the generic interface.
-Doing that has the effect of handling non-aligned hugetlb mappings to userspace,
-which is plain wrong.
+On Mon, Jun 01, 2026 at 01:57:00PM +0800, Chi Zhiling wrote:
+> From: Chi Zhiling <chizhiling@kylinos.cn>
+> 
+> When reading small amounts of data from the page cache, only a single
+> folio is typically returned from filemap_read_get_batch(). In this case,
+> calling xas_advance() or xas_next() after adding the folio to the batch
+> is unnecessary and only introduces extra branches.
 
-So, skip setting align_offset if we are dealing with a hugetlb mapping.
+I don't think xas_advance() is all that expensive.  The expensive part
+is going to be calling xas_next() and realising that the folio now lies
+beyond the required range.  I think you'll get just as much benefit from
+doing this:
 
-Fixes: 7bd3f1e1a9ae ("mm: make hugetlb mappings go through mm_get_unmapped_area_vmflags")
-Reported-by: Karsten Desler <kdesler@soohrt.org>
-Closes: https://lore.kernel.org/linux-mm/20260527143643.GO31091@soohrt.org/
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
----
-So, let me say two things:
-1) Karsten tested below patch and reported it was working fine for him.
-   Did not stamp his Tested-by though, because it was not explicitly provided.
-2) This is a hack, I know, and I should probably be flagellated for this but
-   since this is a regression, I went for the quick/easy-to-apply fix, so it can
-   be easily backported.
-   Having said that, I already made my mind to fix this in a better way, which would
-   involve getting rid of hugetlb-specific code and do the masking off as we do for
-   THP, but for that I need to refactor the code and that would not be so easy
-   to backported. Just so you understand the reasoning behind.
----
- arch/x86/kernel/sys_x86_64.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/sys_x86_64.c b/arch/x86/kernel/sys_x86_64.c
-index 776ae6fa7f2d..60f876dce8e5 100644
---- a/arch/x86/kernel/sys_x86_64.c
-+++ b/arch/x86/kernel/sys_x86_64.c
-@@ -157,7 +157,12 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len,
- 	}
- 	if (filp) {
- 		info.align_mask = get_align_mask(filp);
--		info.align_offset += get_align_bits();
-+		/*
-+		 * Hugepages must remain hugepage-aligned, so skip adding an offset
-+		 * in case we enabled 'align_va_addr'.
-+		 */
-+		if (!is_file_hugepages(filp))
-+			info.align_offset += get_align_bits();
- 	}
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 4e636647100c..578b03bd5514 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2459,11 +2459,14 @@ static void filemap_get_read_batch(struct address_space *mapping,
+ 	XA_STATE(xas, &mapping->i_pages, index);
+ 	struct folio *folio;
  
- 	return vm_unmapped_area(&info);
-@@ -222,7 +227,12 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr0,
- 
- 	if (filp) {
- 		info.align_mask = get_align_mask(filp);
--		info.align_offset += get_align_bits();
-+		/*
-+		 * Hugepages must remain hugepage-aligned, so skip adding an offset
-+		 * in case we enabled 'align_va_addr'.
-+		 */
-+		if (!is_file_hugepages(filp))
-+			info.align_offset += get_align_bits();
- 	}
- 	addr = vm_unmapped_area(&info);
- 	if (!(addr & ~PAGE_MASK))
--- 
-2.35.3
-
++	if (index > max)
++		return;
++
+ 	rcu_read_lock();
+ 	for (folio = xas_load(&xas); folio; folio = xas_next(&xas)) {
+ 		if (xas_retry(&xas, folio))
+ 			continue;
+-		if (xas.xa_index > max || xa_is_value(folio))
++		if (xa_is_value(folio))
+ 			break;
+ 		if (xa_is_sibling(folio))
+ 			break;
+@@ -2480,6 +2483,8 @@ static void filemap_get_read_batch(struct address_space *mapping,
+ 		if (folio_test_readahead(folio))
+ 			break;
+ 		xas_advance(&xas, folio_next_index(folio) - 1);
++		if (xas.index >= max)
++			break;
+ 		continue;
+ put_folio:
+ 		folio_put(folio);
+> 
 
