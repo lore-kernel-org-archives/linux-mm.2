@@ -4,116 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50900CD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:29:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE4DDCD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:36:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C0066B02F1; Mon,  1 Jun 2026 05:29:55 -0400 (EDT)
+	id A4BE86B02F4; Mon,  1 Jun 2026 05:36:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 697436B02F3; Mon,  1 Jun 2026 05:29:55 -0400 (EDT)
+	id 9FD1F6B02F5; Mon,  1 Jun 2026 05:36:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D4DE6B02F4; Mon,  1 Jun 2026 05:29:55 -0400 (EDT)
+	id 913776B02F6; Mon,  1 Jun 2026 05:36:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7966B02F1
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:29:55 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EDAA18FF2B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:29:54 +0000 (UTC)
-X-FDA: 84830821908.20.8251164
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 082834000C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:29:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VY3EtNd5;
-	spf=pass (imf17.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 823FB6B02F4
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:36:41 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28B09120614
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:36:41 +0000 (UTC)
+X-FDA: 84830839002.01.216ACA0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 81D9F140005
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:36:39 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UY86iIMc;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780306193;
+	s=arc-20220608; t=1780306599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ETFMAyiIE0AHSaaYgHZJw7aw3AWJKkeGkWZaKEdTd7o=;
-	b=O8fWcK5TxY+W+zGhXz5TFLhlxUP6pbRxMEFsSnVtf+jaBaABImqmYFFEOjC4m6AuPnZsOf
-	uw/ZKWXaCPgISN976xcOgwT2Bg+X1yVwwmvtmMuXBIbAGVyOJaFiG4w6kzGerZdVDvxDUX
-	14ctU+G++MOYmJhIWO1QBrhZQO9CpK8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780306193; a=rsa-sha256;
-	cv=none;
-	b=hmafJkiT65Z72rivdq9dbrn11R0eZUg0dW0/E3Cda102fKFluyohueCc4yvt3mSeG5lRDc
-	oNhQfGDHN2YEBVvqxZYL+M+VcR0jxjOchx7Qktk+9RwMR1JtzBg5ZtGrzYg0jrz9vAnE3f
-	pcgH5LWzX/RByw9x0TnFRVeYivjH/e4=
+	bh=Q964EmR1sb0D+k4HDOGBDHSQElTuA68Eo3PT6Fx+5JM=;
+	b=50LCqNMFA5L4PQNCZcQdnPEEnxqnchQXBudyQmgOK+BypMRowIzxvX8p/uaiqBpe92Ci16
+	kuRyJzOzbdXUCngIfRXiWt6vrV20KZCotnFmf2qwi11qauZ+gVT9krOlkBUMLyRtEnttn5
+	5w7rj41WL6KXntvI/khcihauS4I50To=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VY3EtNd5;
-	spf=pass (imf17.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5aa68cd8dd3so998125e87.0
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 02:29:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780306191; x=1780910991; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ETFMAyiIE0AHSaaYgHZJw7aw3AWJKkeGkWZaKEdTd7o=;
-        b=VY3EtNd5bQ5HkhiaFtnvwsaBC2xhSE6SUQrevfdjHvtLcBem/CcxA2+5oglG00cID2
-         cNmYeKBA6aYU06I6qk6FO4sPMtTmqBS3dngZSDiyAUdHfIsZ/hjMMyLFK8TydeDIZXi8
-         vackj63O0eorle+lhlgX3xoJnw39mqeOqxGcrxkcE24Aw+iQ1Y9Ngkx+A7BFrqCXeKEC
-         VpUKdImXqJNlB4Gwxs+fa22BQfqSsKNLyq0ooD0JDeWFFGVtT/oqmEkOvJTtoJATRm7+
-         8TiRhXxGoB8PnkSlE48xvZnawcxNY+WwPyzacHDG5jGNVlBiIU52TWwmRcv27Dz+UqAZ
-         JbTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780306191; x=1780910991;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ETFMAyiIE0AHSaaYgHZJw7aw3AWJKkeGkWZaKEdTd7o=;
-        b=EXnN0z5daTU2MW/EXKyTEq3f7dWhupIyKBHGPTQebSsAwSSPapyh+w1ZJPqBQOftvq
-         yd5pI6LzJ7IKaifo+qBeeVKXVVDycn69JfXEuBp5vsgrhe+dTfKjbLWp8XL2XGdlrbCl
-         NOzf94nNrSMYH40s4WeY3bRgDyBVAAbvx/dH7Nyhte6HNuJ/OGBbqX61buqq+QxFTxXy
-         ZUpos2WxBbZODSqiSyyT/BGb7936SGrQLewgm1nMtRQmHhR6T2DwLX1YAZXC8qhz2pqS
-         6I4y+i5vL/iGljva8ePbdNSn6TsAOQvADEXU4apHh101fMgAQT6Pr8DemNg/9ARGCFsn
-         jw5A==
-X-Forwarded-Encrypted: i=1; AFNElJ9gSd/1YZVjOKJVSQOfDK8cssJn+r5oOaue2IEfwOzhjXxJKKkIJrvBkGdrralzINgTStstrgRZGw==@kvack.org
-X-Gm-Message-State: AOJu0YwAam0NdhvRqDmWaJTyqQRRjfFBhEcmZ9bDpKgQ29o/ejnN/Nw4
-	X0zJxB0V1VD/zXGm0LOIXDZu6umrb7lrsLleFx5X4bLPdi43kAr4uzpH
-X-Gm-Gg: Acq92OEI2dCHo5C0bpTH0hVFGczG0v7NvUFGOQhP9ERFBDGPqOYEuw3YYVEgxGZxCo2
-	+6SB0QO32rSlcI1r9yFVBSFG+c73VzYvRkro28/lXVTv8tzLua5Ysb+hVln2zgX7clH/rxJsHRc
-	ZqRkwtpdbKLsEdQ6JXeBR7I7x7RXpxtSS44atHAhf+MXRY9WSe1L+rTxCpH2CSeyJMKECvZaKv3
-	y782XskpumolNcSl/7znV+J7WTO+5afH9NOGVHY35HLd0k4TW8xnAOHr7p/NqostlVLItgPz84D
-	H654sXNEUXXVhJfPbiVYzyKdFtZFkMIFtBTmIE/15NnrZl+aVbImyWbSYy9Iip9abGQ0HvKl1AO
-	0j3p/vpJJmYDBRVPD+U7t7Go4GbtIfLvPYcZg9ByS9lNj+a0GhLl2/LqZUD8JJlC2NsOumzPDb7
-	WynxH2iwf7LA==
-X-Received: by 2002:a05:6512:694:b0:5aa:4ca4:d396 with SMTP id 2adb3069b0e04-5aa607a86cbmr2408627e87.11.1780306190698;
-        Mon, 01 Jun 2026 02:29:50 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aa5b793b9bsm1976158e87.71.2026.06.01.02.29.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 02:29:50 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 1 Jun 2026 11:29:48 +0200
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH] vmalloc: Fix NULL pointer dereference in
- is_vm_area_hugepages()
-Message-ID: <ah1RDKIJThquEF8a@milan>
-References: <20260529014130.671291-1-hui.zhu@linux.dev>
- <cb2b4151-e096-4de5-a064-ee3bfa8cdc2c@arm.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UY86iIMc;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780306599; a=rsa-sha256;
+	cv=none;
+	b=z9kTDZVdM5HK1DaI+f9jJSTL0QrdVUfTItaI3nsE2Ukh+FAZCDualCVLNAOsf5Yx2J0y1Q
+	VfsDDJbkMwJUNZZjbjU05UGZiS5J0bL+uVz0TJUB5nHiH40yUPqAfeZeF00qx9y2YlF2E5
+	15l92/u8oKu5bGTWODu6RyIGHRxr804=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 89F9D43718;
+	Mon,  1 Jun 2026 09:36:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF18F1F00893;
+	Mon,  1 Jun 2026 09:36:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780306598;
+	bh=Q964EmR1sb0D+k4HDOGBDHSQElTuA68Eo3PT6Fx+5JM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UY86iIMcGikyN9u59oMpD3SPoWCDezq083xPacS+VXEBGVM0Lf5REGc9Geud0VJMd
+	 wz5dPm+uXnDuXxLBZCE0sM5/ks5eENPD8c0ki6Ad0H1BjivPl3la7dVLMD28shem8B
+	 9YyqNliA6iyYU3qZQsPzqxosOKnQuKz37S1O24AHoy8rl2UKjdLWMC8LlI6RiAnkmy
+	 nMmpe3XTaxZ0ql3iyP+uJIqh8J/aWVdijHVSnn9tMTcMeseOc9cYfvoxbusgwfN5TT
+	 FHSpcMGeULWL/66IrJQHtK4bgI9OOAKqSECrKDsm+XCANmsF35O697XETEu6ZhRhAt
+	 TTzrHtzvna0Yg==
+Date: Mon, 1 Jun 2026 10:36:33 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: "Oscar Salvador (SUSE)" <osalvador@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Oscar Salvador <osalvador@suse.de>, 
+	Wei Yang <richard.weiyang@gmail.com>, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_vma_mapped_walk: Use ptep_get_lockless() for
+ lockless access
+Message-ID: <ah1SmDJFAcGdBVvU@lucifer>
+References: <20260528075507.1821939-1-agordeev@linux.ibm.com>
+ <ahglqif-I4TjFK9X@lucifer>
+ <ahhNq0pFKvSKZQbR@localhost.localdomain>
+ <07baafe4-7d1c-42b0-9103-3e5666770061-agordeev@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cb2b4151-e096-4de5-a064-ee3bfa8cdc2c@arm.com>
+In-Reply-To: <07baafe4-7d1c-42b0-9103-3e5666770061-agordeev@linux.ibm.com>
+X-Stat-Signature: 9xuwkrj78o8ytsa71bjccjxfnwet4zzu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 082834000C
-X-Stat-Signature: 8r4by4wmispyedqu66yhd7ogpu687ujh
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1780306192-78737
-X-HE-Meta: U2FsdGVkX1/nno35zmSSkkg+MLY2XJFzhGTTQy1bm1ruXefGBl8CE19WVqBBluSyvRrbSHExIYGwXiFWp8VQ2x0AB9LIUI+8Q3tZhOsMtzBIKmLsob9oij5Tuw04Q6nQqbMLxOcyym3VtVF7yK+WY8snscez7e0PRyt0E0n5f4skmxMNrhqhYjjOoUTALUhkiWv92G0HLwOVlkis3ciYcs4zNA+2wkZZT5t8GcbKDjvDTz5OZd/wWjW3lj0NzOZxdGkoI94xzUKUnEm/yMq5oFguLFrtFSswYg4GpViSnUY+y9P2cEgw9act0yShKCjqai0r84WXg4gMN+VyUjcCJ85/Uj4u6qFqt1r1vJFu46TaOos7bTFLX9VJLdQqkVoI9bRUWYKs6R9LvqMSSV3X9QOQBA9t8hn2EEOa+x1/dYkd8E/g0UnSMKR2JuQ7TyOeIfI+cJYN2Vdm3BnsO7luqeAl+fS0/32S0ESExZ1tR1DX2kzK0RKD95DP8t6dobbNfMRPRNRHNdVdoWl0KxgkPAXbBWRkpBNnvaA4GtdQbJ45eMavWWY49R1j4NsrX16Kzk+ttCX3gvTcWo7h0dEYr8AQqSJHjSNwjXv7GQupEbohRA5VTjf/yD9r2G6Y2wUj/n8vsUaeQ8FdNSQb0q2CdbpT8T1jelFwqbHonAnDmB1KfTqGNIruXuDJ6c8aZA53FJbIlWrR4OEVHK0I6eVr4/msGuxEHTcvcKrKQBWrM+FnEBJIuiwAvzT03pnEo18PFWZXm9m4gxZT0/QEE7UyzeHvVK/tuN37/G4VhPpzh1IIpqj5ofroYfmCZ8IOobfI3ZA77aT4qZXl8P2KQN/OPOOUuWG7y1Q/MQxE5h3QV0063fma2RZabocev8wZLh2UKw8BmX1g52sWX1vxAeZidyi5BsanvB+nhHIqKVwUImcLYWUoUwVfb0ViUPhsfbZQWMNctMcrm1JtrQ7t28e
- 22aullY3
- y9QLSFr3uHry99BM28Ke03JC6q3yOCP96QECR1i4FWPDKipkHq1Um5jBS2D8gAe7UJ2x/dlB61liHmQ8MY5rpKfjzw0rpY2r6TxXsVkKcmKw/nbFEptu+FFQiMT02qs8xdteR00vDsGk1DfHF4FDzLhwANmbTjX0BJcVClV5eLT1q4xaeieEbMwmxPmrILOjh9c0SlNse9WpTtz+/jRck/UZY0vP6vl0t41tK3wjCQ4mLFlBOArVbEV2bzlD9DtmAiGt3meHHMNYU7RW7V9IiKhVzbeYlw1492FUm8s4GPdlirxicXPGhkgXXTl2lVZtx9QJf77AtDnP1C7UYvzjnKvqAOU3Er6OM3CQPJD4wSBmc1RAgrmazjAKWxZ7/KqzXcqkV7dDGkpoTwveAS27fwYoY2zn81aRqekVFcqN1qNvnBdNY6x9z1YDLqLt55f5lskMW/toB0Eu9oI4BGo2PwKAFo6mJpKflh0fRhKNrgO/JrmPJt0jEwV2RyVNqrxnFCtb9ZnM3mZvKZ8uENq3kZeubTGxG0F65VNowh0NRX96VTSPMGtTobHb+nhTKQguNEOXdc0TWUOEf3fTgLxge8//mXQ==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 81D9F140005
+X-HE-Tag: 1780306599-178765
+X-HE-Meta: U2FsdGVkX19UsDMO5T9cppuHZ5A+IeG/clJLa/ZABpc3KYtsmgNzk5zuyJsMaflsRl5SVoGkDol6Gq4n/yGyEsLDXBjmxb0J5R8nQIPXO6/fmGs6gvNoADYBKMpzGUR25fFJEB5JuiN3Elp1Isnh/FNBg0R7A6/CKSy2v+0Zs+dz9nFpXWT2/1mD0B2Jwj4KEFbUNfrUDYK2M/NZa1EIUfz//fMPuG7zm4DZGNwGOIbRovTUL+Ge0/V6Z4EywY8CKAIs3Q/KfWllgoB9eVH8oH2Vu/TG0urwklk6a9EBmTDvOvOCfwLu17Z3CSA/OE6i426X4UQJGH9ZiUU7MzseMhazjMmn9E1WmYR7wzQIwhT2CY4qQUMUgFJnBLKS2IFaOUp3NbGDwSIuktlc/d08neq+d8Ib49OrxUWBn+XLWpRTpXrt4k8+pg6vNJLTZrvR91HOkVP++vW1mA2tXfl6YjjulUf3g9AQESGOg6/L1L8IeGEQfyJYhD0In1GH3btPqWOq+y2c+4CW7LxZQauZoFfIrVA/PBRuQsRQylUl3mlGJUpW1MuCcMVcWeeJoAoDb/KAkqP9wKoiCLN8lsoJmZD7mGPtvLJ42PX/W66UraqcMYYqZTUyG4njf/QYu1oqQR6zahpuNq4BDeiaJ7meW04zApi7j1aszkoyfSV/ZgYDeMYD7Jl0uHTP+3UeTiUp/wAjgm1zskRymbdM1ietONd4uQ65Lchj6XxmWv2LiQaDJYicrtsVpCzIqGosyCGBnTJI1xWO8nXNJDzYwOtoQhk2oTqjNil8dKeIBMupLAtBrRNhVLQyEQzsU0NObnS2atzAp6Fi3rTW13Vy9dR4KbcK1QfgEAyPlHBT5f4vVef4zEgkMmy2J5c8u/K9J6N+q9aRXufWwUDLY65OhWapLIz/Bp4w+ZUvGPLzrymMFiJ/lf9h2UGFeZCHNrBzlMPyfKlV9kino/39IDaB4oF
+ UHRlIJD+
+ +FjVrTW/CdqWSOHO2xZO1u/BiuJc2meAuypRaRGui1iKcmsezIz1tEUDgU2i1Y9RHjBPSlWQvH1kQA0C9lc+GQ/qeH7vKM/6eY4zy3x5gk9v26eS2Stki3dd5kWN4y1LoH5MIHLTQDfQm3XgfUWMxwHA/qgA8bdY2RrV933KAfex5rsfWaVtZDO63DYOK242ptf4tHx7SGbkxJM5HMiNbNg5m5RXl+1naF/Bw+36wvNSCsQ/iCnhxvjJwdlIvOTn9if/+n5BMOcpkGdJYFtnriKeR/ZxQUjSYvZ6GHAUQRF6Zn/s/RsbLs8ljtKXFfh43SMKVT34ZUBrLKO9QBYaxeXQT99H5AZrWguH3Efgv8Jif2eVYP3dr0h44Kw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,26 +97,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 10:24:12AM +0530, Dev Jain wrote:
-> 
-> 
-> On 29/05/26 7:11 am, Hui Zhu wrote:
-> > From: Hui Zhu <zhuhui@kylinos.cn>
-> > 
-> > find_vm_area() can return NULL if the given address is not a valid
-> > vmalloc area. Check the return value before dereferencing it to avoid
-> > a kernel crash.
-> > 
-> > Fixes: 121e6f3258fe ("mm/vmalloc: hugepage vmalloc mappings")
-> > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> > ---
-> 
-> I think this makes sense from API PoV.
-> 
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+On Thu, May 28, 2026 at 04:30:36PM +0200, Alexander Gordeev wrote:
+> On Thu, May 28, 2026 at 04:14:03PM +0200, Oscar Salvador (SUSE) wrote:
+> > On Thu, May 28, 2026 at 12:24:35PM +0100, Lorenzo Stoakes wrote:
+> > > On Thu, May 28, 2026 at 09:55:07AM +0200, Alexander Gordeev wrote:
+> > > > Switch from ptep_get() to ptep_get_lockless() accessor for
+> > > > PTE reads when no lock is taken.
+> > >
+> > > This is an insufficient commit message that's just saying what you're doing,
+> > > which isn't very useful.
+> > >
+> > > Please explain why you're doing this and what the benefit is please.
+> >
+> > Maybe something like
+> >
+> > "When not holding the lock, there is a chance that the pte gets modified
+> >  under our feet, so we need to use the lockless API to make sure that
+> >  the entries remain consistent during the read."
+>
+> I would gladly use this, if it makes sense for everyone.
+>
+> @Lorenzo?
 
---
-Uladzislau Rezki
+Sounds good to me! Thanks
+
+>
+> > Only arm64 makes use of it though, due to the contpte stuff and being
+> > unable to do it atomically.
+>
+> Thanks!
+>
+> > --
+> > Oscar Salvador
+> > SUSE Labs
+
+Cheers, Lorenzo
 
