@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55FBBCD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:19:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD304CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:25:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85B266B041B; Mon,  1 Jun 2026 11:19:10 -0400 (EDT)
+	id D6E416B041D; Mon,  1 Jun 2026 11:25:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 832E86B041D; Mon,  1 Jun 2026 11:19:10 -0400 (EDT)
+	id D1FB16B041F; Mon,  1 Jun 2026 11:25:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 748B76B041E; Mon,  1 Jun 2026 11:19:10 -0400 (EDT)
+	id C0F3D6B0420; Mon,  1 Jun 2026 11:25:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 62CFB6B041B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:19:10 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08E57C24AB
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:19:10 +0000 (UTC)
-X-FDA: 84831702060.23.0732623
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B24B56B041D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:25:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 596CE1626D9
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:25:54 +0000 (UTC)
+X-FDA: 84831719028.12.AAAAB07
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2171840003
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:19:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ThWjfRA+;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6EE6412000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:25:52 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Evw7um1L;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780327148;
-	b=ONzdkE7tdJ3M9W+keNYhNAMjK6P1IhmUkIqwaQlvdC392ptbKJPgevA+D+1eM1i8sAgDVJ
-	2XZOtc49mQXnXWUohPOOhJKxVGt6nouT9gE/7Q1PWIbNAZJv5V9vqQwZ5h6VLzfnkPgAFB
-	US37qh7inGFxIMfSVR8WgX868H8AJHo=
+	t=1780327552;
+	b=jV9D14B5XBJs3jGAwsSEFw9R/0EHhuwRoRp8+StvUL0+sq8bLvlyxUbEHqG9a9DbFDt42W
+	WtADeln+Gia/NAg1Cjg8fs6ufEzoKrSLfqZ/eE+OpyaI69NtB3+rx1xToAsU1PeXbRwl00
+	Jg2Lbdbx8E23tvgubeQKK7tTdwMQ9tQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ThWjfRA+;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Evw7um1L;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780327148;
+	s=arc-20220608; t=1780327552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ye6crJnvDz9Pa0ZBPPt97HRJ+37E49toOuGpZ0Pauqw=;
-	b=19Ro7httL4sxWakE89EZrY323kOwh3cCHT4lbboyPQK2mcGSc0e3ONBbehAInARoUaP/JU
-	vP6LGCGE5HW7Plc5DI1egkmYHPVM29tEKZX8Y/p+t68m6qW027JIcdS0iW1E15OGFzEh3K
-	ZQ1uBfG06rTDezi+XX3wM+CxSafm3dc=
+	bh=5wt1AxhWkdz5vT4IX+aS+7S39jLcDgUB3QRpVfwNb0U=;
+	b=fk+0y5NyIjaN7fDHjbSI85jk4bOFFrYBclicVbMq0fhPd2s4FMnBS4K8yIGOCpTuRpVImN
+	vNv2/xN7ELNHb344614w4DLCTbd+ewtf5x4UBd/EzAgm4GCUZkbxhgEzzkDefmbPQp3aan
+	obp1tyxUKrXhMUOXe/1OpanAm0WgcXM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4AEB544045;
-	Mon,  1 Jun 2026 15:19:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499A61F00A06;
-	Mon,  1 Jun 2026 15:19:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B32942B70;
+	Mon,  1 Jun 2026 15:25:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E841F00893;
+	Mon,  1 Jun 2026 15:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780327147;
-	bh=ye6crJnvDz9Pa0ZBPPt97HRJ+37E49toOuGpZ0Pauqw=;
+	s=k20260515; t=1780327551;
+	bh=5wt1AxhWkdz5vT4IX+aS+7S39jLcDgUB3QRpVfwNb0U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ThWjfRA+TwaKPKAReyDmwfGI8QADj2wddX0kufFqiiXcLVXA1UmWUq+hdLeqXtQlS
-	 Z3pv6s34ETDXbWE/JuSu6g+P7VY2705oMY2OXOzqgQ8BwcTTnXkQhlLuW6GhnwfuDl
-	 tAuSrw5WiJe/+UO5ur7+CM/DrUl5KJhrbVpk35lwcZQBgTWLmbA3Jo7vPxZP6mOLrm
-	 WXC0EGitoQ4L5kEEJGKLEnQpejQDbSbEOxxdhv3GyRQWLenlbRinD1U6d8QBh+zhzC
-	 QIO+eZ7DHGd2+Xx5MHwMHu4peq77aE80bMj2L36jcKyC4OfPidwk+G3YhulYiDZgN+
-	 T8QwqkFKJoHMg==
-Message-ID: <b3c8d59f-c1ac-405e-84f8-79ac626379ec@kernel.org>
-Date: Mon, 1 Jun 2026 17:19:02 +0200
+	b=Evw7um1L70qffU6mAIbK7qY2EAwv6itIIW7jvKm7LzRoN8ezL4Cls8zqSGfGFkaDw
+	 NGBS2bv03RJwJw6Hz7zmIpO758fpzurp1JEG/mIBf4AVRyapHhG8QeX7vWsOBNb1yt
+	 Sw1LRIzzn6KdAXWwug/OdfFMjcyn3cc0wTGAhDzIWyAaORBpGgZ6KLHVGCa/5kuj2e
+	 M1fzD+mw2heTkG6gCKTMj3ZlFxXSID+loWxeGaWXUwZI0RhtFn3ZUY+dSd55tP+tZI
+	 TtVnrplbUyLwlMKGqfGQD7g79zVTQpR1PdoHdXvDubNUR9kAB74ViLv5Q/iLG5MoTt
+	 bTRFlb7e3JDBQ==
+Message-ID: <88aa89e7-aa7e-4abf-babb-a2855bcb3fee@kernel.org>
+Date: Mon, 1 Jun 2026 17:25:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm/vma: remove mmap_action->success_hook
+Subject: Re: [PATCH v2 3/3] mm/vma: eliminate mmap_action->error_hook,
+ introduce error_filter
 To: Lorenzo Stoakes <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -79,7 +80,7 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
  Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <cover.1779462249.git.ljs@kernel.org>
- <2521c19866f3f10f9085d094cc4f06769042be71.1779462249.git.ljs@kernel.org>
+ <e770b28427937057fa953ac380a134b24acd8bb4.1779462249.git.ljs@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <2521c19866f3f10f9085d094cc4f06769042be71.1779462249.git.ljs@kernel.org>
+In-Reply-To: <e770b28427937057fa953ac380a134b24acd8bb4.1779462249.git.ljs@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2171840003
-X-Stat-Signature: ztadpndz9fgst1saa38u6bbusw69r3eg
+X-Rspamd-Queue-Id: 6EE6412000D
+X-Stat-Signature: qtzmdkqn6unxzkzoooee7aikzmtcpqyo
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780327147-338741
-X-HE-Meta: U2FsdGVkX18+4snwtBJBI4Io5qTZ69rKa8nEka7a4tQ809GinDstVlSioM1V52TLOzV/TAUvg08ES1s6+p2buL7h6s5K3SzxZQLWm4d+ctN/Sz9smg8qKamtEu8MzrbrO7l484dFQEmZrIOG02oW0NGs7oUrIzuF+fBJGZ4T/wrHVIPUWyiAdKBsUYofoqkndD7bpboJrcv3fn11ko/BYKsOk1VyA0nrtVaJtqFNuBCBDhuR3Np0aqgKmcey+4IoFSBgaseG53rQmUXEX0FssAW+UFGcPC33UDSFyjpikcLfCkK7l0yG0znoSWkpXgxnvNr0D8DznB3Ur/WWBY79csBXMnTjOKIjzyv9J4yvjNR7Z60lefJJhkkVd8sR+nct0Q7DNc99cHF8ovJv0Cdv2Ugx7T5IZYzloRuRlk9ioPvG80aMe6W0Ac4WjxC2iv49bsghUYX7j6reB0dXu4jpFZUHDM3IGy65FP2QK0tD0bOPKjmoW6zAEiMdY26SlfbQgMLfbZMRPsKQc0vluX04YqrxYDCQnKuedSclPCQl77xOI7EJRVtG1ghWeYvjtKMEt7liJvT41CPvxags1hxwpeayqaRpPMJVEqyajUR+BqwpBeZSmE1qRPu73UA/mGZEu44IyL+j1BrLIBENRIqeE5ghx0troGww5T8Wdx47wSGOvnYH6ImUKXohGv7e8A8piiL0gog6nk5uRCRST+9Jz08Iutw5kySn8M8RmodvrhZM1j581R/WaKdNukPjfUID6KZp74gxyM66DOOHcb4Q8X0SmZvF1UpSIzWOtCgcBDq+1+MwwyZQp1OYG+BlhCPzsdsYQpBx80nQ07yCoza4cZTP/f3sweuYbVQB9dWZeVgm79Ymya9h3S/pMgZIasTytW8TGEG1za4T9sj1uYl3gDn15U2CHdBeRdktf2sJU5ENO1qY/pGCrlgpVDVi6dekxxhvAyYfIiAQegAfrcY
- 9+v8Gc5e
- 8NNKpUQ+w1zqMS4szk1vMWAKwE/c/iZR8DyDAZBvtSVAlAjT+9o8wm4G23yj/WZz36yWBzWIiTy6e/muxhbRKjAKRv6vjxkWnkQIOhDySOYOouk/SR3ESowwz1gF25Cgt3gG/0Yh4xskMOSNIUeC4oqzGxklpTKM4mV2W3au9hRd3GmHOMrUEvu6XbStDCdxGoj0FfDMmWbMMZ8dt15z84ymJnnBnUKtZFvi8Fqry+20zYjcbjd/0sUltXlqGcpCVfYvHad06pRK3fLVlSkwR+kOwQ8l4usEWSYYk8zCFGTj4kP4iSmt44fSETMKVNZu8n6ANxNo67dAmnXZDXoEa8mPfQ+1npycVImJ2
+X-HE-Tag: 1780327552-543984
+X-HE-Meta: U2FsdGVkX18h6bSRoRL4iuPSJMgn3HBImXxq84DbGfRhtu3pPG1UrmADQpCxLGrj1hegg5BfuNxlt1RazGPJNJF5C4dR3Nok6KAEV5uPWLe+AeCUvTSU6TdXDGupZz9h2M+7cvcuk22Nq4j6ZiYNier4RMHsawOg2ZdOOfqP1GD58vyVqjvobfO9RuSbACl7QJibSRiqnHeiGIyazOZSFwRX1aV/RByNemjUfoEWB/iIcuGhrmQXEfXMRlpJF3PlN30H08GhEd3lTx9fKSRvAkfFPb8LqcgNkLVCcQ8+OWsl4Gi99Smaw46MTqcB0aTdmygWBckmCi8h3TeMhoiQ36qhh2b3c24ZX4aRuTAwOAksHPk/ZcyxpRTVevZqJaF+Zz1MdUnIHCUM8Wbz2dcghI4p87GZ3uso1gwK8j51Gwkv/PdV9SZ/ycFA5WjQ+hW3JnE9hwujKqzezQzoNswnRob8Wo1OFuwTPzEI79YlcFidA7ckhYsnwbbEuaODRfrWUeE5RoQc85evBKvPjbY0fsW8fAxWxuTqyn4Dutk8+dBGX6OXrnLsOdzcmkXDBxE66TaAuwifa/7rE+F4yBjgJOr3Od1X1ObnPxPXOWWNqBs7JjvenbJz35xuqTVaF4CFvSlQVoAY/YIxa5oM/J1DAQYB4DXebJ2VRn2Iw5e2IC5URQrWFomVv/qphgZewLrYFJ6PGuYfrItPXRx7F/sFISr6JvBMgjIYY3nZDpooWhlbOjY+56KiFNAXsHj+mGmzBeU9ftaPEBlHljsVuiuzIFxNfkaGtV/zJlHXc1bGfdbYA4+L1fQVCnu7nlV7AW0s73TSLidZQUv/0ApKhxSFIYJHiYe5NsAxlGQ02A7fFSnt9fkD95A+6dRdI5pUyCgLx8XA9GQG2b6VgpynRrE0okJvm5r00frjUK5JXLg4fdAaKCESpsg0c7RhhrdbbhhEeV5zhGhEfHsrOE6gLOA
+ WlR3JdTF
+ ieFk9VjN2dXTzTe5qRVcfSm5Vej1tDsWUGf5IPg3v8HIcvAyLaYD43fL62Uo5msydd5FEHr7a/x/UKADzvFCYCmbqT7FvC1ZrcHTGSPvAMK5Y0/TuGhpkZ4mLAecsMObTI2iMUpQ3xxR7oL5KWa1qhQlI74e8ZdverPaKJBD+FOPmFs91y1cmnEQ8TIP7ZyPoKYeX+OTy4uznuqQ40WwegZG2jvNBxJtAN65UkLWL9f7QBT4Dpd3foMksZtJDSa5gIZWGaTbgI7VtJFYiSWBK46HK2BZCupsWDIxE76HYfTALz2VOKOecAryUL/ICPdTNcH/DsojcAN9SNTY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,15 +146,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 5/22/26 18:00, Lorenzo Stoakes wrote:
-> This hook was introduced to work around code that seemed to absolutely
-> require access to a VMA pointer upon mmap().
+> Rather than providing a hook, simplify things by providing the ability to
+> filter errors. This allows us to more carefully validate the value provided
+> and thus ensure only a valid error code is specified, and simplifies the
+> interface.
 > 
-> However, providing this hook leaves a backdoor to drivers getting access to
-> the very thing mmap_prepare eliminates - a pointer to the VMA.
+> This way, we eliminate all hooks but mmap_prepare and allow only mmap
+> actions to be specified (which core mm controls).
+> 
+> This significantly improves robustness and eliminates any unnecessary code
+> duplication in driver mmap hooks.
+> 
+> We also update the /dev/mem logic (the only user) to use
+> mmap_action->error_filter instead.
+> 
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
+>  drivers/char/mem.c              |  8 +-------
+>  include/linux/mm_types.h        |  9 +++------
+>  mm/util.c                       | 29 +++++++++++++++++++++--------
+>  tools/testing/vma/include/dup.h |  9 +++------
+>  4 files changed, 28 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+> index a4297eb39887..11639d988e47 100644
+> --- a/drivers/char/mem.c
+> +++ b/drivers/char/mem.c
+> @@ -322,11 +322,6 @@ static const struct vm_operations_struct mmap_mem_ops = {
+>  #endif
+>  };
+>  
+> -static int mmap_filter_error(int err)
+> -{
+> -	return -EAGAIN;
+> -}
+> -
+>  static int mmap_mem_prepare(struct vm_area_desc *desc)
+>  {
+>  	struct file *file = desc->file;
+> @@ -362,8 +357,7 @@ static int mmap_mem_prepare(struct vm_area_desc *desc)
+>  
+>  	/* Remap-pfn-range will mark the range with the I/O flag. */
+>  	mmap_action_remap_full(desc, desc->pgoff);
+> -	/* We filter remap errors to -EAGAIN. */
+> -	desc->action.error_hook = mmap_filter_error;
+> +	desc->action.error_filter = -EAGAIN;
+>  
+>  	return 0;
+>  }
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 945c0a5386d6..8d1fb85e7684 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -844,13 +844,10 @@ struct mmap_action {
+>  	enum mmap_action_type type;
+>  
+>  	/*
+> -	 * If specified, this hook is invoked when an error occurred when
+> -	 * attempting the selected action.
+> -	 *
+> -	 * The hook can return an error code in order to filter the error, but
+> -	 * it is not valid to clear the error here.
+> +	 * If non-zero, filter errors that arise from mmap actions such that we
+> +	 * return error_filter instead. Only valid error codes may be specified.
 
-Good!
+Is that really a filter or rather an "error conversion" / "error override".
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+"Filter" to my German brain implies that we would ... filter selected error
+codes, not convert them to something else?
+
+>  	 */
+> -	int (*error_hook)(int err);
+> +	int error_filter;
+>  
+>  	/*
+>  	 * This should be set in rare instances where the operation required
+> diff --git a/mm/util.c b/mm/util.c
+> index 4e172990afcd..9b4e5432d45a 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1414,16 +1414,22 @@ static int mmap_action_finish(struct vm_area_struct *vma,
+>  	 */
+>  	len = vma_pages(vma) << PAGE_SHIFT;
+>  	do_munmap(current->mm, vma->vm_start, len, NULL);
+> -	if (action->error_hook) {
+> -		/* We may want to filter the error. */
+> -		err = action->error_hook(err);
+> -		/* The caller should not clear the error. */
+> -		VM_WARN_ON_ONCE(!err);
+> -	}
+> -	return err;
+> +
+> +	return action->error_filter ?: err;
+>  }
+
+Out of interest, why does dev/mem require this monstrosity?
+
+If it's really a dev/mem specialty, you could just make it less generic and call
+the property
+
+"bool eagain_on_error;"
+
+because surely, we don't want any more such monstrosity?
 
 -- 
 Cheers,
