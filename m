@@ -4,93 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77ED7CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:37:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE9FCCD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:39:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCFF86B02F5; Mon,  1 Jun 2026 05:37:40 -0400 (EDT)
+	id 4D22A6B02F7; Mon,  1 Jun 2026 05:39:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D597D6B02F7; Mon,  1 Jun 2026 05:37:40 -0400 (EDT)
+	id 482AB6B02F9; Mon,  1 Jun 2026 05:39:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C48B96B02F8; Mon,  1 Jun 2026 05:37:40 -0400 (EDT)
+	id 3719D6B02FA; Mon,  1 Jun 2026 05:39:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ACD516B02F5
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:37:40 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A4E4161CF0
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:37:40 +0000 (UTC)
-X-FDA: 84830841480.16.49A163E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B257E4000C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:37:38 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c1PJZNWT;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 230846B02F7
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:39:01 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A7AABA0602
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:39:00 +0000 (UTC)
+X-FDA: 84830844840.28.D562646
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2EAAB40009
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:38:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lx0BZmPM;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780306658;
+	s=arc-20220608; t=1780306739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AzbXwY67i7orrJSYLIcDP2MIfpMzq9fPfuSJU14oS7I=;
-	b=iK8Gw0EJMBDv1bQb2Sf1etENONPK0gAUJ97Iy7CbcHL7plZ0hCrwVF0J0jpufsuSshHGqK
-	ao25y+AXmDq62TQBq0r8KogZAtfng/+aVuk+KlBc7RlrBt9d78OAc1qglEQKbRCokI60ql
-	hVX2H68sCH3Wh/sQcQ91cGak9e91krQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c1PJZNWT;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780306658; a=rsa-sha256;
+	bh=zBoSL+QUM0yb8Hay76O4WbAqQRjHRHgW5j8JQ2SSVCI=;
+	b=rumNqYrhEJGABrBjARSEUwRiB1A2luYRvBSR96XmicvW9dUY8QvmIjr0kqnRsMVfqM9i+Z
+	w8cj8tzXf7QvbNKNUPI7iWlXHSVCFNnAqkc8SXVAXCzjVn+X6vf9h1rO+oReV+ZfDHcQdK
+	BgLY1CfUlEWBkD+7G2DEVX8n2tiTGh8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780306739; a=rsa-sha256;
 	cv=none;
-	b=5C67E0LTbtc5fdC5Zg1zXcab59YcpexUzHJz4FD6RTN3QeHZL9VA8TUxcW6hF85+Qcmiov
-	KSYNMdnQJjD8dZmjecx+wOifgBzGNoSJK6Qa2UaKdxRGP0Bhcd3kz9i2YXmhJctKwHJSo9
-	L94wooOYL5q0lPBeMUmVg4EtoV37QDI=
+	b=hKQXF0S/hHb0bsWGpzpEoj0tUx88ltK8Xh07BUTUaCIpDpo0fyVtn0hWBIQD+57Gnl1xr4
+	7IlWS3xNDzLUUdgAb8OBNRrjGdtD4uTWXk3dGz9kmznBXEYdy7o9PNWoygJvZtg/QWiB6o
+	F2xj7hgUJgsustym4vNhHhPCUaqeWgQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lx0BZmPM;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 12D5944519;
-	Mon,  1 Jun 2026 09:37:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2F01F00893;
-	Mon,  1 Jun 2026 09:37:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9CE4560018;
+	Mon,  1 Jun 2026 09:38:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C416E1F00893;
+	Mon,  1 Jun 2026 09:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780306658;
-	bh=AzbXwY67i7orrJSYLIcDP2MIfpMzq9fPfuSJU14oS7I=;
+	s=k20260515; t=1780306738;
+	bh=zBoSL+QUM0yb8Hay76O4WbAqQRjHRHgW5j8JQ2SSVCI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=c1PJZNWT6Jhrtsti0/iLRUjmX2p41TJJfRVGF/3HNXBQB7PyKa2x9bRmyaeFYhkph
-	 S/XYHC6xhKx56Ya51Xak5ZkdEYl7w6jJ5CHtlZipgiVBNEdAMNHH/iRIH0rE/rdUWu
-	 0NcYKv9W6ljVMkX338Av9+n5cEDMlkvl9EyHcrfG4IQCWXZKImq9ht9DNl8Bv5zvtM
-	 ATehWylJaNN+9d/XXQwwW29cYaUrS+pOaBG4dYswLQ5k9wG0aOJ57MhEFaYf6nU2l8
-	 SGi6xk/XJwSfllo85W6VmcGnxePA0rHGqKLm46uy+j9fAJrU+3ZTv7yeI+eHKuE7At
-	 N4eY0MFKY1p+w==
-Date: Mon, 1 Jun 2026 10:37:30 +0100
+	b=lx0BZmPMaaJDO54lffyRhqGv+qC80Py2n7iX3siqylQfGg6qXxtsuXNpFZh27o+c6
+	 Q0dAgq1Pj16AdjPnBxfBUfR9QhnHxi9G3Tg1vpimU6edULnrLRp3fHgCTDZiPH1bNc
+	 W1NO0Lp1iok3LyywCKM/0Ai1BtoiZ+SHXWqgot9z4wd2F3ngWjgNI9fxPlsH+IdR5R
+	 pqf/g0MmFV1XrdxKGO5ggoJiIaly2dCRbdzAqZ4LViRRfqteLflVL2jAdTTyxP8vQw
+	 1jB/TU81yiWFRXT4fUxg30rpnhIPgj0TbPVpHePGctIh8Lui51hePhk6Mo5LkZ3KAo
+	 yI+aO+odjPYdw==
+Date: Mon, 1 Jun 2026 10:38:53 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
-	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
-	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
-Message-ID: <ah1Sxn5VHLF6jlcU@lucifer>
-References: <20260526130509.2748441-1-kirill@shutemov.name>
- <20260526130509.2748441-5-kirill@shutemov.name>
- <ahmQvfNk7S4F0LBj@lucifer>
- <ahmoH9v6_DA2i_zn@thinkstation>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: SeongJae Park <sj@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH] MAINTAINERS: add ABI documents for mm
+Message-ID: <ah1TEcshd2wTroXb@lucifer>
+References: <20260530011852.90663-1-sj@kernel.org>
+ <9271c3c0-0b04-47f8-adb2-83f5f89674ad@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ahmoH9v6_DA2i_zn@thinkstation>
-X-Stat-Signature: b8y4o4cc73oh7jwmjfr9neqyhpjt7mqt
-X-Rspamd-Queue-Id: B257E4000C
-X-Rspamd-Server: rspam07
+In-Reply-To: <9271c3c0-0b04-47f8-adb2-83f5f89674ad@kernel.org>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: kmihuedkejzwzqbnsh8zqkg93eepg365
+X-Rspamd-Queue-Id: 2EAAB40009
 X-Rspam-User: 
-X-HE-Tag: 1780306658-978077
-X-HE-Meta: U2FsdGVkX1/l3hfgDxEw61nTVza9JZ6gzEhA1/WHoPsSi1gpBV07YC9jD3JfOrvp2tyOqP711OBHZBQcN6qI6pEnehI2n7rSrHMZZlfQD6knIGO7WKcIETJ3GxQEzZqhb1tKLdv2TyN49hapDv0QjSsdfm3mT7lwBt5yYB5a6n33qnuxdQpAgZUxcyXOlH7SFM9+rnLB8LfwDVbhOkCTg8eAnaGvDRqlHlCGSDDeGGQ8+yb4nG5bfI4RcxHdOwrQI4Ir/kdpPe239ij3LzyF68VLScdK5WO2ofh1pBVmfjI+XAuHPfWC9+6VhbDIxj4qclcafKtH0/waqMdTUS6rxN7gEov6t91pTfVDVAmKZYG7nL3wbLNaUJHFEKcmAmRLGcZ8eD1zTOr3XUx2hlVmModhZNjhjmIO2+QH/4Cgy1AOhOKQKiqnvNJUkEz5hYKgwJ5fFt6yimPUNE0AulgNcu/X3DNRcgzKV9njkm2oIGYRpZUKInxLhHgvSkcoCaDMS6t3rLVxIX1FJa+4SdV9WqsWEgU3px5QaAKnaoDEk+V+UwaV5dlKS99ZKvrwU4QBDA3vXmdthKyJa7u0mDeMUDuc+vsRTmMNLQl+ZAHnr98ot+/KJj6WW+iN9mcWAYFKMDSNaxnAvOMY8QCuZHpb9WTo/kr2Ev3hAxMXNi8zi0A+zYRiPU0D2uRuC7RwCGuNs1aeI5dvnjH6M9PzJKWABwsD1GMfFpkxxJkA794u9J0SSQvN020MhsltpaJwYiKf18U5wEjlrm+ivKLHkgAQm6EWx6xk2EJBSDCTYxKnkWeot4kJMSB949D46U0ogwNV/llc9Es6TtHtmkrfoYnTaHglc6oPUYtS/DCpqbf/Law2pnQO/eGFmksr9loK5i7cc5UqieZOCXFNI8YsSApO11vBQ1E+2B8la0Zbpats7Hx8dwYsHLgLNIbfUEB/mKdWTqJKdtBpWb3gGGtCZNO
- MesiO8OD
- 2h7vtiIWInofvYkbAZ0ndR5QRtqFQvSHlrzv0wvUFoGxMRJQ6sPPPpL5NA9pUD6HKF12SjxkIGmgPpeIroho2nkGpG0yhmDk3fzFBEG2KO77mQ9UOj0WyM+NgzoQKr/HsqhSFP1oySAZCTw6WMiB0zVxv1zUWPIruEPpawFa7WZRNhQvJQdO53PrNtu+j9fLLyFNz0mOYznuV6/bqwOHFg2/PrhSEgufFCMduVu9wBWl8zassa2HGNmVode6qObUNfza++eI9exoSV9Qm+J7zxmwNFy9FLbFHjP67G6T2pcI/2N4=
+X-HE-Tag: 1780306739-304032
+X-HE-Meta: U2FsdGVkX1/rM6wu/+5eX22gQdkQWOqhe7EGBAkn57fNiHzQJwpCem3zwxn/GzfHEaS46oHoeEpBluB1Wm54qoD9YaTIeOAvdXyyP8hTf7ibbxyVbqv8XR1g3YG6B/9Pfe4MR+wsGAcWR8pXm3LhSHYggRFmDEoCULpTpb2IpPe1ZWLK4XoD/acSPGK8UOegNSX6Gme2byRq7elMjixH0KzQzMjkZsgduWh1WdpROhDImR4ooQTF643yVXliZ8krTmpKfSnWSr0c+ym9pVjmrVU45tzJkUol6RUsyEn93VZiNA68GsjY9P//FpgstH0DOZbpfU48sMe9+Xu2Qs0mSf83B5FOB4z2Fy9gOCuh56JQdbiJ47Qeq07LPplwqH3sk+hjVCHTSbbob9zq6mhTIaAirzCI9b11259N9+7zXGqNtPVy67fudjjFa0S2HcOtkjOLZzY3hRowZ4cwD33jre6hvL7vcQssXfA64W65lCeQtX4zNZH95NsbnDUNRziUB8qD41wJEI4FawKkcuupkiWH/vdRRotcHnR1ej2XDo8zY1B+AFbgcKmsIfwedMjDzlGPe9wQkjkdhfBpIfSRGfM1Hqk9xK93Q1NAY9oJHFcCc+m22p9wJdL6gSpboP/vXSFmKTOiK1cshDElwHCbBJ+xzua9dupigKzeCFWzAnjOodgT4CIQmX3L8B+zqisG/ECvgbb1wYYoFOJ3aWcjSgBcm0A6gQkL5zSqKWETN2EF/zIkndKdZ/hhKzeL1WLRVT1tLkLJW5YfejLCj8r4lycVfEEiELnOfY5tutbIQ4tjRtDPHCQU/lRRQipOlmzZ/dRdng/HdRc6TQKPeBSHJWxwxJjSa7FrV26K5Y3pH8WbeSTuTigCpgo5Mq7tDbH88R+MJnSO3MusBxbOKtLComGUkZC9/fAhobK56xeIG6SPYw5nnzdMLx+4UHufjaPSYRNVejkMkUKK18xy/Vs
+ 35Khk+yq
+ wJlkMoeI4Cxl9csVD95Lpr4QwJjfyaJBZMBO4JIDP3yE1bV6ZwSgpLmuhqwa2/EH8NFvo+Ok59jcLkVzYrlVLxr6CW85gd3QFkmGn/NnU+iXUMB+yQjbcar1qiPW1Y5H0h5KmTvKCdY/dP/qrT2ktUvazEcRhz+fyZEvAn/mLDMZim+PEcbHEzMkOH7mBj/z5GqhHTiyXUyI8hkOXdQ21I+gLo5PPIL6Vd6MblsIvXU8AvusU4L46lF3RVhsHF82xaNNs4tDzx7YRxaGXfcpz24KW8ckygu5DbJ9gGIzEjb/XMbfRiS94RFUBRwnvsu8crZtq8s3yW4typB3RSJdHcN0jEFDo52ZiBcu0rmWGYccUgWXn9Hro//GDkdeXmnM66k2SlW3CpQezpjmHBzCR/eQuFghUg0ZqjZmR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,42 +93,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 05:09:56PM +0100, Kiryl Shutsemau wrote:
-> On Fri, May 29, 2026 at 03:00:14PM +0100, Lorenzo Stoakes wrote:
-> > > Add VMA_NO_BIT and have DECLARE_VMA_BIT() resolve any bitnum out
-> > > of range to it. vma_flags_set_flag() drops negative bit values.
-> > > The ternary collapses at compile time, the runtime check folds
-> > > away when the bit is in range, and the common path is unchanged.
+On Sun, May 31, 2026 at 09:19:29PM +0200, David Hildenbrand (Arm) wrote:
+> On 5/30/26 03:18, SeongJae Park wrote:
+> > A few mm subsystem entries in MAINTAINERS are missing their ABI
+> > documents.  Add those.
+>
+> Maybe spell out "testing ABI" in here + subject, because I was concerned there
+> for a second :)
+>
 > >
-> > Hmm are you sure it does?
+> > Signed-off-by: SeongJae Park <sj@kernel.org>
+> > ---
+> > 1. I found no better place for mm, mm-cma, mm-memory-tiers, and mm-numa,
+> >    so put those on the 'MM - MISC' section.  This is an RFC mainly
+> >    because I want to know if it concerns someone.
+> >
+> >  MAINTAINERS | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index e119182a8911d..a31f6f207afd8 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -16854,6 +16854,7 @@ L:	linux-mm@kvack.org
+> >  S:	Maintained
+> >  W:	http://www.linux-mm.org
+> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > +F:	Documentation/ABI/testing/sysfs-kernel-mm-ksm
 >
-> You were right - I measured it (gcc 15.2, clang 21.1.8, -O2). The
-> DECLARE_VMA_BIT() ternary is fine, but the "if (bit < 0)" guard does not
-> reliably fold: with it, clang stops folding __VMA_UFFD_FLAGS to a constant
-> and gcc keeps a rolled loop; without it, both fold.
+> Makes sense.
 >
-> So I've dropped VMA_NO_BIT and gone with your config-gated-mask approach
-> instead: mk_vma_flags_from_masks() plus VMA_UFFD_{MISSING,WP,MINOR,RWP}
-> masks that collapse to EMPTY_VMA_FLAGS when unavailable, so no out-of-range
-> bit ever reaches mk_vma_flags(). __VMA_UFFD_FLAGS now folds to a single
-> constant on both compilers, 32- and 64-bit. Added your Suggested-by.
+> >  F:	Documentation/admin-guide/mm/ksm.rst
+> >  F:	Documentation/mm/ksm.rst
+> >  F:	include/linux/ksm.h
+> > @@ -16876,6 +16877,8 @@ L:	linux-mm@kvack.org
+> >  S:	Maintained
+> >  W:	http://www.linux-mm.org
+> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > +F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy
+> > +F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
 >
-> I also took your "use the new API" hint and added a prep patch converting
-> the existing userfaultfd_*() helpers to vma_test_any_mask() (Suggested-by
-> you as well). One deviation: vma_test(vma, VMA_UFFD_RWP_BIT) is itself an
-> out-of-bounds *read* on 32-bit (test_bit(43, &one_long)), so the helpers
-> use vma_test_any_mask() with the masks rather than the bit.
+> Makes sense.
 >
-> > Either way, I think we should break out any fix like this from the series.
+> >  F:	include/linux/mempolicy.h
+> >  F:	include/uapi/linux/mempolicy.h
+> >  F:	include/linux/migrate.h
+> > @@ -16918,6 +16921,10 @@ L:	linux-mm@kvack.org
+> >  S:	Maintained
+> >  W:	http://www.linux-mm.org
+> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > +F:	Documentation/ABI/testing/sysfs-kernel-mm
 >
-> Agreed - the OOB fix and the other pre-existing fixes will go as a separate
-> series with the RWP work rebased on top.
+> Maybe that one should go to CORE? But MISC works for me as well.
+>
+> > +F:	Documentation/ABI/testing/sysfs-kernel-mm-cma
+>
+> Given that CMA is here, sounds about right.
+>
+> > +F:	Documentation/ABI/testing/sysfs-kernel-mm-memory-tiers
+>
+> Given that memory tiering stuff is in here, makes sense I guess.
+>
+> > +F:	Documentation/ABI/testing/sysfs-kernel-mm-numa
+>
+> That's all about page demotion for vmscan ... but again, also belongs to memory
+> tiering. So makes sense.
+>
+> >  F:	Documentation/admin-guide/mm/
+> >  F:	Documentation/mm/
+> >  F:	include/linux/cma.h
+> > @@ -17041,6 +17048,7 @@ R:	Barry Song <baohua@kernel.org>
+> >  R:	Youngjun Park <youngjun.park@lge.com>
+> >  L:	linux-mm@kvack.org
+> >  S:	Maintained
+> > +F:	Documentation/ABI/testing/sysfs-kernel-mm-swap
+> >  F:	Documentation/mm/swap-table.rst
+> >  F:	include/linux/swap.h
+> >  F:	include/linux/swapfile.h
+> > @@ -17068,6 +17076,7 @@ L:	linux-mm@kvack.org
+> >  S:	Maintained
+> >  W:	http://www.linux-mm.org
+> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > +F:	Documentation/ABI/testing/sysfs-kernel-mm-transparent-hugepage
+> >  F:	Documentation/admin-guide/mm/transhuge.rst
+> >  F:	include/linux/huge_mm.h
+> >  F:	include/linux/khugepaged.h
+>
+> All LGTM.
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Ack on all and thanks! :)
+Also LGTM from my side - thanks for doing this SJ! :) So:
+
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
 >
 > --
->   Kiryl Shutsemau / Kirill A. Shutemov
+> Cheers,
+>
+> David
 
 Cheers, Lorenzo
 
