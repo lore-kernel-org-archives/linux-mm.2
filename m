@@ -4,102 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61BDBCD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:35:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB548CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:36:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 644B36B03D2; Mon,  1 Jun 2026 10:35:53 -0400 (EDT)
+	id 1FF596B03D3; Mon,  1 Jun 2026 10:36:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F3C06B03D3; Mon,  1 Jun 2026 10:35:53 -0400 (EDT)
+	id 1AFD16B03D5; Mon,  1 Jun 2026 10:36:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E20F6B03D4; Mon,  1 Jun 2026 10:35:53 -0400 (EDT)
+	id 09F4B6B03D6; Mon,  1 Jun 2026 10:36:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 386356B03D2
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:35:53 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E98046B03D3
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:36:54 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D55251C09F2
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:35:52 +0000 (UTC)
-X-FDA: 84831592944.12.C8D5BFA
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 964DE406A9
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:36:54 +0000 (UTC)
+X-FDA: 84831595548.12.97CDCD6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1EFD018000E
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:35:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZYC69qu/";
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id D22CA14000A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:36:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eCK4GrMp;
+	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780324551;
+	s=arc-20220608; t=1780324612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tYOOpvy9IkMZmwJi6amy7zUop+0VBeSC22/cOh/2QJw=;
-	b=l8BMPSI+5iSPRmzXhma+4HdwseYDRA/U8Rcy05TguRWu409nZvz4V6y2pDX0itDR5ILxYT
-	oHDqdr/SRagre6wWEyisRYx8eY2dPCOL5XaqQl9hpbPyaaP2bGknGZBEHlhhU3b/Oythqh
-	nA2DScJVr+kr5mwevrO8MTisUfeePFc=
+	bh=zRKpWRkZ4ryEYnP0BvmhMwCXktSUqM4/n/CosorTgos=;
+	b=JRmzQvBhGhf2SdR6EAz3/8f4y/yysaHRhZFh/ZnLjN0KFRcJOhk+1bAMNbNNUpTsoNMd7l
+	e0JNjzoNaH9si/A+SurpdfO5KFDELxvMTT6rrQqnAcv9jZJhy6gxXdtk2bHSQBIi6nHEu5
+	7Ue1w6ngA3z0xT2vmTm1PlegktkzSEo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZYC69qu/";
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eCK4GrMp;
+	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780324551; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780324612; a=rsa-sha256;
 	cv=none;
-	b=MXiotk5sYI4Kyj9uWibKN3UtJdaktonYxnfZpmJBKIDSHnMLBN1x0SRyadNvQ2/XYTKihD
-	/Imu6WmoDyp0fQwHL1aFrbk3Rn5mw8IxemTH+hecIpmYH7TBikYPomxEYRsPUJ9uFLbCJx
-	8jBX/EKZtKunClHmnDq0F4Xl+aYQoiE=
+	b=EejTEFcLopi2LXeqxe1R+chUiPrRp1TqmJugC9Fd8ieRimYRFo24OWHpO2GEL9ErzL5wwj
+	ybgPE/5BfOaU9HYU4Hz/n3r8ZhGw+/l8ppxUUcEsqg2Vku8WvEBEkYxZwi3V1jNgeYxvsv
+	cp9fZIE0B4W4vHymZib1eo1E1LbIGgs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3DEC242D73;
-	Mon,  1 Jun 2026 14:35:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E93B1F00893;
-	Mon,  1 Jun 2026 14:35:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1529D43765;
+	Mon,  1 Jun 2026 14:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57D21F00893;
+	Mon,  1 Jun 2026 14:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780324550;
-	bh=tYOOpvy9IkMZmwJi6amy7zUop+0VBeSC22/cOh/2QJw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZYC69qu/CF9Gne0HL5HBrmA8/pzxabQLTF+YrpZEVBUNIzPQ1W/hUAkrxAMdOvJ5u
-	 nERvqAIkhWNvzPn7WmgBDQStrasNyXBPZuCje2J4ksp3Y3rjjHV2nyEe5tLrnF8pGe
-	 E3v7Ezg1LNwZ5hmDVltmBNckcIAVQTQyiZy7TI0VESefwi/orLXZoXtWnl4qdWLwqd
-	 W2yLpGG9p47NxTV7MMalaw+DLrMRiBDZnRbqDyGjGeOL6ST5M7AWoAuCkxGhOf7wTA
-	 UyrJ6zw4DT6Q8SBcCTwkE2xtbQpk+Q3Zju/GbdPrgYB/nGfnBbtNE/DccLJP4smclf
-	 vzd6q1MNqigtQ==
-Date: Mon, 1 Jun 2026 15:35:35 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	aarcange@redhat.com, akpm@linux-foundation.org, anshuman.khandual@arm.com, 
-	apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
-	dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, 
-	hughd@google.com, jack@suse.cz, jackmanb@google.com, jannh@google.com, 
-	jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev, 
-	liam@infradead.org, mathieu.desnoyers@efficios.com, matthew.brost@intel.com, 
-	mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, 
-	rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org, 
-	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
-	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
-	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
-	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v18 10/14] mm/khugepaged: introduce
- collapse_allowable_orders helper function
-Message-ID: <ah2UhZb9EYgYxj1F@lucifer>
-References: <20260522150009.121603-1-npache@redhat.com>
- <20260522150009.121603-11-npache@redhat.com>
- <b7ddff01-9adf-4ff7-84a6-021087936c34@kernel.org>
+	s=k20260515; t=1780324612;
+	bh=zRKpWRkZ4ryEYnP0BvmhMwCXktSUqM4/n/CosorTgos=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To;
+	b=eCK4GrMpxysTYwY8EZJPpFuHiu6VI7DBD6K8Ki/npJnVOVcQyYNc8CspSCpdBTNwj
+	 E4tajNF8aT6REAYDpHRIYfSQwP3xp6Yk02g8sTnsWdevTyV/qYfUnbmKW4MFPbi4P8
+	 FGaYSB4UU6JqunyueTw62Uo5hVVSLr35lE+cB2lCBRMzeBQQaqKgOCQOAqdMcKNbY+
+	 Tu+5fT2iB4Fa9Md11n7OTlnOK9DKLUuRiY7Aw8JBkscNLQEnjYJQsOi90s0ZqFmXY1
+	 rOkV5utFG9Cwi3X0t3yk9ATrXANpSERrXu7/CMYNMOHLG+MEe1751D5DsTzFSPsCWT
+	 tCgc2S9wLCspg==
+Message-ID: <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
+Date: Mon, 1 Jun 2026 23:36:42 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b7ddff01-9adf-4ff7-84a6-021087936c34@kernel.org>
-X-Stat-Signature: 8bwsukpmbhhafymdf3jxfxbnf15oxo9b
+User-Agent: Mozilla Thunderbird
+From: Harry Yoo <harry@kernel.org>
+Subject: Re: [PATCH v2 bpf-next 3/4] bpf,slab: Add slub-backed allocator for
+ bpf_arena
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, memxor@gmail.com,
+ eddyz87@gmail.com, vbabka@suse.cz, harry.yoo@oracle.com, david@kernel.org,
+ tj@kernel.org, roman.gushchin@linux.dev, peterz@infradead.org,
+ linux-mm@kvack.org, Hao Li <hao.li@linux.dev>
+References: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
+ <20260530011345.99342-4-alexei.starovoitov@gmail.com>
+ <ca1bb6bf-f25e-44ba-87c5-e23e4939dbd5@kernel.org>
+Content-Language: en-US
+In-Reply-To: <ca1bb6bf-f25e-44ba-87c5-e23e4939dbd5@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------diUOyBzkGLryZKA9cu0CPqC5"
+X-Rspamd-Server: rspam12
+X-Stat-Signature: g5rcbnjc73m9ieun3hujfn9rcex9zmts
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1EFD018000E
-X-HE-Tag: 1780324550-710176
-X-HE-Meta: U2FsdGVkX18JqxONCza+1zbTqQdizyVjxzCAKCRQhG2JohAMIIa7RddOCzaAxkM8zRdPa8ZblGiY2vVEQifcqkm8pDCXxVfTI4aGq0QBEk5uH0Pnm05Qlqa1SX/XVocymVwuCT1HkxNb+F4G1ITLT3aRrEN1nfW6hXTq5dIpTyVSceiGUIU0WoA5evjgJXNc7Mir2gpcImNlJdTEnvL9fYrneKh/+l9ncUD2wKwKVG8QW4xf02Hn86cb1vesB8fz1m1ExuWHHxjbLY3NSgfRrhuVq1+sqP5QQ9tdNxDU10fNpS9s4K+fltlHhhAYzWjGgCVbXoRsv3xX/6PlyPOUQZ2JgmKaZScjFsdnaHXhLDqX/4I+SDV5fRQAuAhEzfHEolNJomzLW4pE1oKCKh0vGgEXiUmCHcMOaHvuW0p5YMlbgjxog0ctNQjjc7+pqXw2bVO2uZsn0u6LKQCAdciPolFidj0N5bpkgWKJnCghEDIIYTu84kMtVojjCXTXxeaaVZ4P1D0Hs8FsPE7VtSF7PcsEJKzPC/RYHuIL0Kk44SOEtuHVDeLqVm11xPBMFADxZxNUIUqM3kE+IJaiE471vJO3oGXIja1b3nTApZZkI2B6FYnCvG6dYzacWwHuxQRZGrzAb8DiJSdSN/qw1BSQED2KEIeKg/JK7HzkbA3UhmGZB2+fFt+p5pQfq+czvhmTQz7fmWrDxYa93SfLwlRAlWykgL0Db+KdxQMzJPE/XzUDvVASC5+HEiKnDRbn9G2VPalQT7C399vF5GQBckhzC8laQ38eDUldxNaybbwlDaH0aMhtuoT5zeUwuKKz9xlZItYq0yirmO5fIDHrVjKprvaTEfIQIzQidZKKS/LGIVh2bbXkWldzqpWyQ40kR3Rtmu/5AtW2/Nej64AYm4OCBic7Ynqn7G99fVq7tyC5ibtpNaG6CR/8W8nJzSqDLGjBVw3geyZ/66eNhEQNy9h
- XisETy4n
- lP0kVT7SSnyPGr5ARcOlI6chW+gFgtYXfSB72JfT0M/DWQ5B2OKU2ZZgnpXFAqFfNaDgzaQpk2NGbKBsrvz5zok2+c0nATCk1kj/d9mJU6SlgqYyLDzUAWAqWrsb9OQLPyr04nE9y5Ygva/UgBILxeC2MmLD+ROsWkx7fzUrJVW6hrZuDehnBfyU4TFr+vrmN2Thy+sAoaEOnkCUMGi8W7/6A9gmMSytwu9kCSKoSy/J1YBgkBYy6xSIUgusyYyVldV3djRv18DkWTG7yBbBtsdx0TgqmQDvNzExebvDoSlQQLa4bvtv58VOoZbo/O/epg/+jgoV+pwB3MgxltuMM/oGCSFsz7YpcZvJDbHIemyu/C1XKBbSBklRWc9XBh41ma+Dv8DQltxtEVZKdbdBq2KdJnm+l0Dktq9uOI987E8D4Lg+IpgRzB++AyM4sKJLhMy6t
+X-Rspamd-Queue-Id: D22CA14000A
+X-HE-Tag: 1780324612-393934
+X-HE-Meta: U2FsdGVkX18DlZTTh/TKFMtEqnXEVzOHnSKNckJjJu6ZQRpK5U4A8eTAwZudb+4hqb1LB8li57/8FZmRNleB2LF/m0q5x1pctZR8axwZdigNqNdM5ctr7usbg+WE/TR9QmU6nKrue1s5blPC2HRzZoUaAKkIQBv/E/tFTgTURvtjFBRZi5OMW7cnTlusUvNRAyBVC0qy7NcHptY6yu1shb6YHRV82WiNw3Oglt5EFayAv157MKg9PoerT3jXEyaMQwZP1Ds7y21vtdA85l85v1nALUO4hNaBldS62hUILNp4ADCEnKA3Z2Piz96NWBKziF+MtA7eKFctkrB4f+WNNqq+zN+vZpD2mXDCMKqy6NNgez6asqoATx5mboG4hNr+mbkYXzezEmDySms/JRtIAN6dL2WaOkvPRtxDTQO8aa+dTlXdPCTdd4MfrpcsnnWnrxYhFYVkwbkWYaJQuxdMMLX3+DUhXPx41cWxlNi/1YuDwUKjMEJK5EicJ/yYP9F+Cg7tD5ZSqBhDde7RjgqwsGZMrndGpft9J/SFuXBpEMrQFIY9Fk0me/3VqIg9Gu3UFoFnztPkWpzlHfeNefaOLUkQO9ny4FsSsxLcBxH31iycs2J9RroNY2v12Tv+HZYSfg94K7m3zro4y7MmMS1TSLOPv4fSPb/0R4cUifA6H2ng4avV5ZwU4T7qJ5fudPNJ5qLmN12w+TNWkPZ6H/k8BS94+IuCSW7KuxGDOA2bebOWbKAWeMB3GmxpLla7dhfj2iKfYDJfASWx1U2Hgmq3RoDoy4qCXDPBqiRLJBsHJMOgsBo3fgsmXO8FDELzFOatXzQzh6lMdKZJlesXllD8Y1L3JIOpWWB1/FKTuDEfG6IxDgaf7b0fWi+pKHu67Y4OjVrM+KBbnde6dHZ6mJmUSM6Ya4f0zdno79MudALRwXrFgtNw0pq2oZu9YtJNYcj+yHXEp6j3aVY1c6FGRt5
+ dEQl+Iaj
+ 6qpVL8flx7tmdmpieM2ZHFcacTwfccaaoZJp0d8JeHI8V4QGp3IreO4s//etY67sTYEtzKmW/16UZZUbS7rEGBtHpAQj5lkYpmn0/N/bUerIJMwEeYdldilzZ7+qlvONMEEKJ04nGPTvFfZZ4vJLI2SOUkudCBvTN+MLklO8nKouKepQjx+57IqJpcyUGvcrgr7552j0t6mMRNYUUtRc3cv2nb1RQpIP4YZaAHa9whBFgZ7UAD5mtufSGmbBwUxl5Q2Ol2jlSwpKlLt40jemhMORPZUFzNmuynoDPPYmUDmh9G5ZbeNUNaQ4qteDBfpbpjAQofEZV38y62prLbTW1xx+H4e03chOE20ly1t9gEWPJgSTvRXAWBmXV05Uw4dPzWE/yaj5Bck783q+eisZW2jgEYWBf5sEQcOgPNRIUjWxR+YWjFmBhTVg5sGk4cN+MCV/8pqf/IDF+i3W+w5WcEE6uIvIPWIcUUtU1+G3bZV4BtU20bWlTQh6cqgzl2sUoZKm1Zj3FJINEFB5M4Q8QTGz70XtHh9/wH5FWeOLFHP6yLhJOkBZts9Aig3NycVMaGG8u+BfKmFfSQYOWof1amTkqNmDPXdZCUgctGSoJCmechi6UtlT/gDY0EaY04y3EwJnMqwgRmHlFs2VmpvJ0ZOPBZTBZkp4K3iUdhp2swnnENB7ifL39pHFU2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,135 +99,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 31, 2026 at 10:18:16PM +0200, David Hildenbrand (Arm) wrote:
-> On 5/22/26 17:00, Nico Pache wrote:
-> > Add collapse_allowable_orders() to generalize THP order eligibility. The
-> > function determines which THP orders are permitted based on collapse
-> > context (khugepaged vs madv_collapse).
-> >
-> > This consolidates collapse configuration logic and provides a clean
-> > interface for future mTHP collapse support where the orders may be
-> > different.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------diUOyBzkGLryZKA9cu0CPqC5
+Content-Type: multipart/mixed; boundary="------------a3oHRHPtqA3xITJLmDGgU0kC";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, memxor@gmail.com,
+ eddyz87@gmail.com, vbabka@suse.cz, harry.yoo@oracle.com, david@kernel.org,
+ tj@kernel.org, roman.gushchin@linux.dev, peterz@infradead.org,
+ linux-mm@kvack.org, Hao Li <hao.li@linux.dev>
+Message-ID: <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
+Subject: Re: [PATCH v2 bpf-next 3/4] bpf,slab: Add slub-backed allocator for
+ bpf_arena
+References: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
+ <20260530011345.99342-4-alexei.starovoitov@gmail.com>
+ <ca1bb6bf-f25e-44ba-87c5-e23e4939dbd5@kernel.org>
+In-Reply-To: <ca1bb6bf-f25e-44ba-87c5-e23e4939dbd5@kernel.org>
+
+--------------a3oHRHPtqA3xITJLmDGgU0kC
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+
+
+On 6/1/26 11:06 PM, Vlastimil Babka (SUSE) wrote:
+> On 5/30/26 03:13, Alexei Starovoitov wrote:
+>> slub side:
+>>
+>>   - get_freepointer() clamps the decoded pointer to the same slab
+>>     page via (object & ~slab_mask) | (decoded & slab_mask), NULL
+>>     preserved. Worst case under BPF corruption: chain aliases within
+>>     one arena page.
 >
-> It would have been good to describe here that, for now, it only ever returns
-> PMDs, and that it will be extended next.
->
-> Logically, this patch belongs to #12, not #11 ... so seeing it before #11 was a bit
->
-> ... and there, it is clear that we don't even want to know the orders?
->
-> So can we just call this function
->
-> "collapse_possible" and make it return a boolean?
+> Can't say I'm happy about this part. We potentially let BPF programs co=
+rrupt
+> the metadata and hope we catch any issue that would become fatal?
 
-Yeah agreed.
+I wonder if it would be better to perform cheap sanity checks to
+discover obvious memory corruptions (which would be beneficial for
+others too).
 
-But I also don't love the naming, we now have thp_vma_allowable_orders(),
-__thp_vma_allowable_orders(), and then collapse_allowable_orders() and we also
-have 3 different ways of collapsing, one of which we call MADV_... COLLAPSE,
-and the other khugepaged + fault-in too for laughs.
+It can't still detect very subtle memory corruptions though...
 
-It's like a big circle of confusion.
+> And IIRC from the LSF/MM discussion it's not just cases where the verif=
+ier
+> would hypotethically have a bug, as the potentially UAF accesses are no=
+t
+> validated by the verifier at all, hence the different address space and=
 
-And of course we call THP collapse 'collapse' in general, so :)
+> 32bit arena size trick, right?
 
-Anyway I'm fine with collapse_possible() so we can move on and then maybe
-cleanup later.
+That's my understanding too.
 
-Also - if I look at khugepaged.c I see thp_vma_allowable_orders() still used in
-hugepage_vma_revalidate().
+> I'm far from sure the masking is enough to contain all the bad things t=
+hat
+> can happen as a result of a corrupted freelist. Even the hardened versi=
+on
+> wouldn't help much I think, if a malicious program can both read and wr=
+ite,
+> it doesn't have to know the secret seed to craft valid freepointers.
 
-Wouldn't it be better then to do the abstraction once mTHP order checking is
-properly introduced and change this also and have _every_ order check be
-consistent in khugepaged.c?
+I hope "a malicious program" doesn't have CAP_BPF, or am I being too
+hopeful?
 
->
-> >
-> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Signed-off-by: Nico Pache <npache@redhat.com>
-> > ---
-> >  mm/khugepaged.c | 15 ++++++++++++---
-> >  1 file changed, 12 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index 4534025bc81d..64ceebc9d8a7 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -552,12 +552,21 @@ void __khugepaged_enter(struct mm_struct *mm)
-> >  		wake_up_interruptible(&khugepaged_wait);
-> >  }
-> >
-> > +/* Check what orders are allowed based on the vma and collapse type */
+> The "freelist is outside of the arena" approach we discussed made more =
+sense
+> to me, even if there's memory overhead. I don't think it has to be 16 b=
+ytes
+> per object, could be just 8.
 
-I'd expand this comment to explain that it's explicitly for accounting for
-whether mTHP is used, but that also argues for this to be moved to a later
-commit as David says.
+--=20
+Cheers,
+Harry / Hyeonggon
 
-Otherwise the comment is useless.
 
-> > +static unsigned long collapse_allowable_orders(struct vm_area_struct *vma,
-> > +		vm_flags_t vm_flags, enum tva_type tva_flags)
-> > +{
-> > +	unsigned long orders = BIT(HPAGE_PMD_ORDER);
+--------------a3oHRHPtqA3xITJLmDGgU0kC--
 
-Could be a const also.
+--------------diUOyBzkGLryZKA9cu0CPqC5
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-> > +
-> > +	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
-> > +}
-> > +
-> >  void khugepaged_enter_vma(struct vm_area_struct *vma,
-> >  			  vm_flags_t vm_flags)
-> >  {
-> >  	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
-> >  	    hugepage_pmd_enabled()) {
-> > -		if (thp_vma_allowable_order(vma, vm_flags, TVA_KHUGEPAGED, PMD_ORDER))
-> > +		if (collapse_allowable_orders(vma, vm_flags, TVA_KHUGEPAGED))
+-----BEGIN PGP SIGNATURE-----
 
-I hate that we separate out the VMA flags like this just for this case, but
-that's something for a follow up probably from me as part of a VMA flags
-conversion series...
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCah2Y+gAKCRCGXBN6rc5S
+1rTRAPwO738syvKPEULll5+d2OMQJ04suk9k5ggwZJAtm191IgD+In4NjXn/rkxr
+Y2mrVQOjT3d7N9BKDBsUydTmYc1hNAU=
+=FNwU
+-----END PGP SIGNATURE-----
 
-> >  			__khugepaged_enter(vma->vm_mm);
-> >  	}
-> >  }
-> > @@ -2680,7 +2689,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
-> >  			cc->progress++;
-> >  			break;
-> >  		}
-> > -		if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
-> > +		if (!collapse_allowable_orders(vma, vma->vm_flags, TVA_KHUGEPAGED)) {
-> >  			cc->progress++;
-> >  			continue;
-> >  		}
-> > @@ -2989,7 +2998,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
-> >  	BUG_ON(vma->vm_start > start);
-> >  	BUG_ON(vma->vm_end < end);
-> >
-> > -	if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
-> > +	if (!collapse_allowable_orders(vma, vma->vm_flags, TVA_FORCED_COLLAPSE))
-> >  		return -EINVAL;
-> >
-> >  	cc = kmalloc_obj(*cc);
->
-> Having a simple
->
-> static bool collapse_possible(...)
-> {
-> 	return collapse_allowable_orders(...)
-> }
->
-> Would make the above slightly more readable.
-
-Yup.
-
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
+--------------diUOyBzkGLryZKA9cu0CPqC5--
 
