@@ -4,97 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C6E2CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:34:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14FA3CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:42:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91E036B046E; Mon,  1 Jun 2026 12:34:50 -0400 (EDT)
+	id 3D2776B0470; Mon,  1 Jun 2026 12:42:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CF696B046F; Mon,  1 Jun 2026 12:34:50 -0400 (EDT)
+	id 3AA886B0471; Mon,  1 Jun 2026 12:42:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E6816B0470; Mon,  1 Jun 2026 12:34:50 -0400 (EDT)
+	id 2C01A6B0472; Mon,  1 Jun 2026 12:42:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 707EA6B046E
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:34:50 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 261C41C1A82
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:34:50 +0000 (UTC)
-X-FDA: 84831892740.30.DF3A36A
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 65DD7180005
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:34:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=baGKUH2m;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AD4C6B0470
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:42:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 957F11406B3
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:42:17 +0000 (UTC)
+X-FDA: 84831911514.25.D7F0248
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D6F8020002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:42:15 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dN2iZrqR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780331688;
+	s=arc-20220608; t=1780332135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=GvRWE2F6Kmj2JO/VhYzyDIuf7eJ6FjL7CjNR/ZQ+jKk=;
-	b=IOKJhjgVH6j3SN1MaJMrYa5/swziwQ2mJjWznQNwjfrhW+sy3fra3wvb+XL7AhfPySBIM9
-	1DwDizYWBauyTEyN3YoJg5L8eDaJNNYgseJIVp/1dig133brxgczohav80mSijv7lMeSVv
-	x+vQSRW4GEVarYiMoNWO9oOYCWLO1yY=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=teSdp9I1t1pRWNp/a7/eGoyDMHv3wjAOGwFHd06Ja2A=;
+	b=q7gVM/NSsotFZj7QJ/5i6p4ggmjcb/PrjYrRcwKRw6b6No9W0HpmFSmAdi9kfFdlkAktfq
+	WMwDSQaqy7zBEDzxmA1LqnG8UVdcSv8eo9wYGIe70CgebKUNuen7L4+hrBbGYsyz5cuan4
+	WjQAl/JAtACKjn/P/EpLOyyjtvstpcY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=baGKUH2m;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dN2iZrqR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780331688;
-	b=l2s4eDs07nyMJmpA9nFGFnXXkDHajst8T1/E2YrURA7lRExp0HtTYD852Nvhc62wXz7zTs
-	dqKx1ISJV0wLIxs3/dGA0l0VI9XswL3P9O6IPskiJ52Rnvy9HjZT3FKBdjGLOFAur/vnNq
-	HiDgR7df14sx8nokzZoH0v2tATNW9yg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780331688; x=1811867688;
-  h=date:from:to:cc:subject:message-id;
-  bh=2H1DY9K3cwezU2kGbNUZ/1sCCWUbpdwrcvsfR1A4PTE=;
-  b=baGKUH2mCKjjBZ7Y5rTUo6Zj4vA0Tns6pH/3vexCh1YIMmU5F9PvT8q2
-   0rjya/wqkp8hV+j9dZKQpPzHyzcKwkOfBkYWeoUyYp1Na6D4Heu/5+dZa
-   pZEWHG8QH1pCh4y8EeE36v5JWluwFCw0b1iJFTWoxICyFbPjWTXFyU8DI
-   6jk/iNxrtdkFvAINVMRUEAvGXB4/chVfOkkjlm+AHvLO2n4W7L5bJ/b2v
-   k8oxB48LsEpk6Z/hoNelygJa0UUIGzgUOKh4y4HLX/ig77Ny8409fY4j3
-   TSRZqentD+L+HCEgfrM+sA2lY2SRVQ6u5Yp3DjS/gH4AGtdZHSKFLRdS6
-   A==;
-X-CSE-ConnectionGUID: mSSNNYmLTkW3nVQZVnU08g==
-X-CSE-MsgGUID: I9QcOY3yTAmFtTdU5BhVKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="106543562"
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
-   d="scan'208";a="106543562"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 09:34:46 -0700
-X-CSE-ConnectionGUID: pDOr7+UYSOWGM0VbsdpfOQ==
-X-CSE-MsgGUID: odw9bFdXS/GyOwGgzeuMrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
-   d="scan'208";a="242573666"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 01 Jun 2026 09:34:43 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wU5b6-00000000AoX-21Xf;
-	Mon, 01 Jun 2026 16:34:40 +0000
-Date: Tue, 02 Jun 2026 00:34:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Thomas Ballasi <tballasi@linux.microsoft.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: mm/vmscan.c:6585:66: sparse: sparse: Using plain integer as
- NULL pointer
-Message-ID: <202606020025.ZBQ7ncEa-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: 65DD7180005
-X-Stat-Signature: 71euj65zxw3z1tkrpeowhxuntmkogpcp
+	t=1780332135;
+	b=G4A/zxttYGAOwRRZeO8b5N3oEHXIIUHgLKLAe7ih1CMXDk2aEYKKaaudPjUvwAkPRKn9wx
+	F2Ls73uGe8YjUAf1mQT0Alx4N+78GgQN12oizseny7Bo6+Su+Xek7ZoF57skbs/OsY+M0k
+	5U9C0LB5xYM9w2RaDmTiiClnA6ceMpI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0DE94434F8;
+	Mon,  1 Jun 2026 16:42:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA65A1F00893;
+	Mon,  1 Jun 2026 16:42:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780332134;
+	bh=teSdp9I1t1pRWNp/a7/eGoyDMHv3wjAOGwFHd06Ja2A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=dN2iZrqRzXR4+E4RaAy6YxsO9Bh+RosZzGkVQQ5KpR8qZlhxfn7UjHG+ybsrgORsN
+	 b/LzrLkcE/p4whNsHJV1MbXOOZ/zkgf8WdoYGwawV8FSAwR6H8gBoacmdsOzR8os6G
+	 oDH1IUaauW6QHuorSlKqhMjG2U5jxKn4MhGBWT6SBY61/cMFinnp7GrWrrB0O8ZXm0
+	 Oj2B/kkHRo4IU/gYxVb0nJPCq3V2F5/Ycp0+POLjcf0bLac7tYCKFXZKrMknrJT+gY
+	 E9/TdDDEMRJogiYq811jJR+JlPnFcJLEMKZpjCDGUO55Y5XeBfXqJSK+BqfAYAHAiP
+	 Dc2Lva0V1oi0g==
+From: Christian Brauner <brauner@kernel.org>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-api@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@infradead.org>,
+	David Howells <dhowells@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	patches@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+Date: Mon,  1 Jun 2026 18:23:24 +0200
+Message-ID: <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260531010107.1953702-1-safinaskar@gmail.com>
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1316; i=brauner@kernel.org; h=from:subject:message-id; bh=BgJ9kx1/tXUuldxL8l+n8NO5M2/EWoe/peBIxTf96cA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTJbovatvNLlrOz2euq5KJVS68r/ax6FG7+bO79T8tOz 5zmb8r6q6OUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiVTGMDC9rZr+8fVpQ+U58 ybRti67u4dKZrbrFpkqzdgmD/nptkwhGhssXZ37z/VPKklHqHGjgG1snrZHsoFtm95j5gujhq9w LeAE=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780331687-36717
-X-HE-Meta: U2FsdGVkX19r/Rir8DU9hZfPjsV7JSdtCvU5SbKfJHd/rrKqAhaXr3p4m+TH09eumS6IOT+7Ta5kdGXEXw78qUj5+cs6dh0hJtiGyN3gim6vMDQ4+kEZOaFfKeg1mfpjxhxt6utwWH/74wGdNapAMattvMPZsm7sK+mJAMHk+XaaHuh6zLc1Mm+PYMbu8618t7q6q3Wmbrr3JYSBpw368rqhR1cQAkNelykTRlw4rmEK/Ev9vXNc0UUKO/Y3Vp9dIEVGcKS5bSOVNkeU5ZFu49VBAhRryYuecC4C82DhnjYIR+EWUJbdgNPnsNAzwDN9Uh3Alc87RiSZ3s0l/SUp5x069VnuL8IbQGqNJqFxerz0soLzUMqfTHQKJ07cYYMu0avZoP5OJ7i+DFIzsFZBRfFyumioTPvLJH+tv0w6lxJv+CZnwgQ1YPiyZ0X84v0BMU3JmrWnvAPtMhdQKBgWmcukPdhvbaYj1VXMEW1opb1WZll1DwZqBVYph4R+WDD7odrx0x0bOvr0dz/Au3mLUTwRgmG6yXiQ1addEyowDlMd5VVqqsxM07z+zERDCL/42eDo4C1V60MT9UmlZTlts5WaBzj5onJ4P3lBvs6BTGnejapIvrvzqukwlNQPasVqWi2VRh2oZAp9XLtqUIYCWoAB6WjBkOHk93rqkqVGf8Og74atYy5KfPS8VmIwchODrpevKASvkXyOzY+5YdDGmRNMg3JaZVj7Kwv3oisLrxDn65Sqqw7A1bZ0WbofqnYs7pxfqNUjIhyOiIGr+Md83JtHm2SJI2dDx9r9VyJcFWCmZNI22QA2zc0QDrSInc1hQkdSrS+Vmf+y5xsch8jDr60rVqj+z4jL98WEhUcEz68TFBrxhvDJVAUL8kIg0ezDMk4pOdp5eWYtq87b/FP2obXIlBYcbyXJ3/GSwqlW0SCWTqjrqVm9josd8kffzplVqUaXfCslEMko5ILlj8u
- YcRMG5pJ
- 2C+GIdvoOGOnC6XxrAx7pGiI8HUX+4dCRfRYLkZ0TyFScD+Gsts/nMyzNnbxIAPnle9rge/Kei/Y5W+/y3x5x+YwsxhOkcxhdQ1D3HHCuGpNRMAxJf9UIIeKUwihSTZJeICm6IfNS634wkVa6WptHlSJmkdjprMs83CmBCfJzHLb0/BF+4WWrwWmuo4EylM8Ocrz3gzn0995TpHeQ0JaCkB1d1RMyiXayOGdYIH0tHWR9rPeuy5o9sAg+lMjcdrkXWsCwcGkDK3J5aMmiEhksMAKX8/Sqik6pHKMh
+X-Stat-Signature: b84ds6k36yehq7y9e7zu1zpiw8pcfot7
+X-Rspamd-Queue-Id: D6F8020002
+X-HE-Tag: 1780332135-599776
+X-HE-Meta: U2FsdGVkX1+n7p9mbTvtJltVgAhqooZr9IHIg4/uBftUhYPQ+sXc5sKCLU/zvleufNj0vRN3iAgq0v/YtqqX9xNSXx4CzGjPAae1uUqAqYdiX7b45o7A2ZmLDfZM7QESnUeFeKkUUK4WljCzj/MZY6aQ/Y30CnaKdaWmSEGfldVtAHS+pfc6tRdHHDxESdxrdCqxvE6KjOWz1VEucPaA8x8odJvyExx7sWQy0lg3ZbtPQQofIO8Cp4zvy+QZYj7kov3Ar/Gx0mqALhhyU8wKF7VjLnk3iBiwmDl12sHwDGidUKB3Vz+9t+TaG4rql49DZFYRBAKD2QYF6gXV28sDr1HVCBRpulL2NXbR5Nqii9WEesnsv3maswEwbCkwQZh5c3H4UoV8ufSC2w0KGgTKXksuTLmANbQv/773d3ZDHXwKyjBxqkh2nqJRinBOL96eAXLEGcqPSe0zWS0MR5MZd+sj9TrnyKH1PqoFppVU7XIQZDW7qDAnTmEv4KU5S5G6uTajspKBHXu05urReVDJQp3b9I/MRleKwQK4ve4mHcAkMQKcxebVvpoGiB/9AQq4odnjPNcGnbA9d1uxaogkCtWEKgrWiV80XdlDUb19JEixMk81BI8THT1JbLh8bt4EwR4uKrbr2IEjNl2/4V1vjzBOzI4J5w2LI8bVnQE9cmA91WHeSaxfSODxzKSx1olhMGbp+5ifuM+t5uJBfDSJnta/ewCY3fVDf5/oohDzUKZdYgJ+H6gK/8mKRZ5gmTwBuUrwCrG7rSjEzhenwyK2na7EEMhpgdC82/NNtLauC+TQpdmp2SgSmt8hy7Lkgqa6xL/F1dSDMNs5ChG3M91r4vSwmYXZ5s7P7N8hr0MNaIZai2fiBAoQdVmmGnjcerYzk/RkO6soeikyB6Z7SDQBSYsUe253b04ShhnRW0ctu/SrF2dOYCk2AEi8H63qsWoula4yMOB8arpKPMXjqkN
+ ZEGtFfLV
+ XahD2skTHUoc+iUoMAmU2wT1YTTv6V8Yx8689Vvm5iWg/bwZB0dpWMOMuHndcRDvRFDkDx7GdjGNWlX2mlvdaCb6vJ0wRUwuIem/7KxLZlh00HZsIIsbKZ5v8u2N9RHYEBKKW3SsUagVIkgSPvsYM6L9LvzQnMgr5KIiBqe4Bpg8pvvStej7DU9CrSKFI2AF6ZV3JvAlTKMDnt7ZdFGR8eyeZJpMyniG1EwpyjLrB0QQ8HCWeBbEVZ+4Zbv+Ifu/Qxc5BriwqffeXY74k2d2RuiSkbyVaZmGKI+ZtEu+BSUZOylN1sLk0J1WiUVilmHLeYdyLwEV7C0MypWJ3+UGMckrqeami9WvQIt46
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,73 +110,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   e43ffb69e0438cddd72aaa30898b4dc446f664f8
-commit: 874a0a566ede40f3d6062cae8fe1022e616edd1a mm: vmscan: add cgroup IDs to vmscan tracepoints
-date:   8 weeks ago
-config: alpha-randconfig-r122-20260601 (https://download.01.org/0day-ci/archive/20260602/202606020025.ZBQ7ncEa-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 12.5.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260602/202606020025.ZBQ7ncEa-lkp@intel.com/reproduce)
+On Sun, 31 May 2026 01:01:04 +0000, Askar Safin wrote:
+> This patchset is for VFS.
+> 
+> Recently we got a lot of vulnerabilities in splice/vmsplice.
+> 
+> Also vmsplice already was source of vulnerabilities in the past:
+> CVE-2020-29374 (see https://lwn.net/Articles/849638/ ).
+> 
+> [...]
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Fixes: 874a0a566ede ("mm: vmscan: add cgroup IDs to vmscan tracepoints")
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606020025.ZBQ7ncEa-lkp@intel.com/
+Applied to the vfs-7.2.vmsplice branch of the vfs/vfs.git tree.
+Patches in the vfs-7.2.vmsplice branch should appear in linux-next soon.
 
-sparse warnings: (new ones prefixed by >>)
->> mm/vmscan.c:6585:66: sparse: sparse: Using plain integer as NULL pointer
-   mm/vmscan.c:6589:58: sparse: sparse: Using plain integer as NULL pointer
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-vim +6585 mm/vmscan.c
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-  6551	
-  6552	unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
-  6553					gfp_t gfp_mask, nodemask_t *nodemask)
-  6554	{
-  6555		unsigned long nr_reclaimed;
-  6556		struct scan_control sc = {
-  6557			.nr_to_reclaim = SWAP_CLUSTER_MAX,
-  6558			.gfp_mask = current_gfp_context(gfp_mask),
-  6559			.reclaim_idx = gfp_zone(gfp_mask),
-  6560			.order = order,
-  6561			.nodemask = nodemask,
-  6562			.priority = DEF_PRIORITY,
-  6563			.may_writepage = 1,
-  6564			.may_unmap = 1,
-  6565			.may_swap = 1,
-  6566		};
-  6567	
-  6568		/*
-  6569		 * scan_control uses s8 fields for order, priority, and reclaim_idx.
-  6570		 * Confirm they are large enough for max values.
-  6571		 */
-  6572		BUILD_BUG_ON(MAX_PAGE_ORDER >= S8_MAX);
-  6573		BUILD_BUG_ON(DEF_PRIORITY > S8_MAX);
-  6574		BUILD_BUG_ON(MAX_NR_ZONES > S8_MAX);
-  6575	
-  6576		/*
-  6577		 * Do not enter reclaim if fatal signal was delivered while throttled.
-  6578		 * 1 is returned so that the page allocator does not OOM kill at this
-  6579		 * point.
-  6580		 */
-  6581		if (throttle_direct_reclaim(sc.gfp_mask, zonelist, nodemask))
-  6582			return 1;
-  6583	
-  6584		set_task_reclaim_state(current, &sc.reclaim_state);
-> 6585		trace_mm_vmscan_direct_reclaim_begin(sc.gfp_mask, order, 0);
-  6586	
-  6587		nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
-  6588	
-  6589		trace_mm_vmscan_direct_reclaim_end(nr_reclaimed, 0);
-  6590		set_task_reclaim_state(current, NULL);
-  6591	
-  6592		return nr_reclaimed;
-  6593	}
-  6594	
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.2.vmsplice
+
+[1/3] tee: fs/splice.c: remove unused parameter "flags" from "link_pipe"
+      https://git.kernel.org/vfs/vfs/c/a9f7db50ed2f
+[2/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+      https://git.kernel.org/vfs/vfs/c/e2c0b2368081
+[3/3] splice: remove PIPE_BUF_FLAG_GIFT
+      https://git.kernel.org/vfs/vfs/c/7d75aa8edfce
 
