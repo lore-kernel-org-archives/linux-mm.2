@@ -4,101 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FEEDCD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 20:15:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEB7CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 20:15:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CAA26B04BA; Mon,  1 Jun 2026 16:15:28 -0400 (EDT)
+	id 7CBC96B04BB; Mon,  1 Jun 2026 16:15:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77B626B04BB; Mon,  1 Jun 2026 16:15:28 -0400 (EDT)
+	id 7A2C56B04BD; Mon,  1 Jun 2026 16:15:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 691376B04BC; Mon,  1 Jun 2026 16:15:28 -0400 (EDT)
+	id 6DFE06B04BE; Mon,  1 Jun 2026 16:15:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 569BC6B04BA
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:15:28 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F29349184C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:15:27 +0000 (UTC)
-X-FDA: 84832448694.03.A241C98
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 46F4AC000F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:15:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=N4fFVqdp;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com;
-	spf=pass (imf28.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D6EC6B04BB
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:15:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 163491614F4
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:15:37 +0000 (UTC)
+X-FDA: 84832449114.16.340FE1E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 781B21C0002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:15:35 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JuZ8bT9d;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780344926;
+	s=arc-20220608; t=1780344935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i8NBTcO9HEOzTK8eQah5j9/dFbH36DIcHsxmT2YF1Qc=;
-	b=qZu+C7GVNl3baGprenNFSfpMPNo5EYKtHTpcyFM7lfGEeSLz6/efN13TtCmI4uzS1QaDoh
-	Vz+sSgzFTtWkNd54tGZ33qlwr07rGsWyntJxs8PgGxSpVSbtkrSn1tTCGpI8M16hQyfrPA
-	8ua1ai1lKnc8ZJEsZcCi7qx+dzqEWhQ=
+	bh=syeJCfN05uDjUd4svPq4RNjDQXcDyKa61aaj7lQd5U4=;
+	b=hx1SeDf8npyktdyWmJOPIZOCKRdQhOZyaN35qlrBBcCO08grbRaSaMTzURBRfJwNDwHaOI
+	k3bFkTrdY9aWM5sqHYmxTztnyjrQoPv5//9DU0kTUFZQkQnK+oxCvdP3yr7T/df8lVlXYf
+	fb7AEPkXk25BtNby+qcH05OBqeTXCDc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=N4fFVqdp;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com;
-	spf=pass (imf28.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JuZ8bT9d;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780344926;
-	b=uD19VyrI6msrX9SzrFRf6hqyPS3EBbjO9FxYHdh9GPKSUq/i3L6Uy7qnPYQUQF+sPlV4fV
-	wmjQh6OPy5JqdnEfzvo4UaP1ahFUuc5c4F8myNZc0fN6C9hF2Xx1AL+vvTXOFbqhUokVL3
-	ewGedP28lvdvIXnwKB0Z9+Gxpxpo7nA=
-Received: by linux.microsoft.com (Postfix, from userid 1241)
-	id C8C6B20B7167; Mon,  1 Jun 2026 13:15:11 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C8C6B20B7167
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1780344911;
-	bh=i8NBTcO9HEOzTK8eQah5j9/dFbH36DIcHsxmT2YF1Qc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=N4fFVqdpnNKdfAbjqncbFZwC2cL0SqneHkeBwmGFomr8pp0NRNUByLEUbqgl8CJ8N
-	 vY6qbZwhRR9MwgL5+zUBwQimuhzzrZM/WE/HOOB8z/Dme678HYaDRiKwCDmVLKYqQV
-	 OjG4scG03Yvz67ic0ko8L1MxjUf3zZKekJ1EavqM=
-Received: from localhost (localhost [127.0.0.1])
-	by linux.microsoft.com (Postfix) with ESMTP id C62FA307029C;
-	Mon,  1 Jun 2026 13:15:11 -0700 (PDT)
-Date: Mon, 1 Jun 2026 13:15:11 -0700 (PDT)
-From: Jork Loeser <jloeser@linux.microsoft.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-cc: Mike Rapoport <rppt@kernel.org>, linux-hyperv@vger.kernel.org, 
-    linux-mm@kvack.org, kexec@lists.infradead.org, 
-    "K. Y. Srinivasan" <kys@microsoft.com>, 
-    Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-    Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-    Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-    Jason Miu <jasonmiu@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-    David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-    Oscar Salvador <osalvador@suse.de>, Baoquan He <bhe@redhat.com>, 
-    Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-    Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-    "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <kees@kernel.org>, 
-    Ran Xiaokai <ran.xiaokai@zte.com.cn>, 
-    Justinien Bouron <jbouron@amazon.com>, 
-    Sourabh Jain <sourabhjain@linux.ibm.com>, Pingfan Liu <piliu@redhat.com>, 
-    "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-    Mario Limonciello <mario.limonciello@amd.com>, 
-    linux-arm-kernel@lists.infradead.org, x86@kernel.org, 
-    linux-kernel@vger.kernel.org, Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [RFC PATCH 00/20] mshv: enable kexec with Hyper-V donated pages
- and partitions
-In-Reply-To: <ah2eBxaBnVs_1j5n@google.com>
-Message-ID: <4172d271-21b4-346-924e-406baef179a1@linux.microsoft.com>
-References: <20260528004204.1484584-1-jloeser@linux.microsoft.com> <ahxrc4pTvVU20RTX@kernel.org> <ah2eBxaBnVs_1j5n@google.com>
+	t=1780344935;
+	b=5htq9j0fpuB1u13+NW1hMYLV9JcqU+k0NI2OyPKm10jpsMyZQehLo5Bs+8iTZJuy/BTotc
+	1607Jpc4xwkkaChlObajNQ6xJm7WkqEA21rUOFwCuQeRgj9wnMJNhdy38ibXYEMFZSpKLi
+	sYNi1KFbpXLy10wMApTd5rh3EghjBRg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B55E643588;
+	Mon,  1 Jun 2026 20:15:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A761F0089A;
+	Mon,  1 Jun 2026 20:15:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780344934;
+	bh=syeJCfN05uDjUd4svPq4RNjDQXcDyKa61aaj7lQd5U4=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=JuZ8bT9dSGV4klPf9XsbtbDDHSt7f4OvQDGLa29dKTvxYBAVCMhiPPsZ8B0deX9nE
+	 slfEcP1rtXhoFaa6OcBHWn+Y4+FyCVuhgYcgYn5EWc2aFOOTL1LRqvtTJEe6+/3O44
+	 2JJmRLVlOthnh0F8g0Gc1mgHJjuVQunCxqYaKbmde+DdLEffE96ADOa2SA54rNjGjv
+	 4nXV6yxRWCTFs8LfQGE9sWIcKtyGzzRvvlzXd8FTHPcFGL732wtYT4rFxzHvlgsyje
+	 L7Vd8y+HRceRgaTuZIRRQt5Gknk+HehCaEofmiJ/ckJj553zEBe+lqbMLnn69hFImc
+	 I/e/577Zby1Qg==
+Content-Type: multipart/mixed; boundary="===============8340823664292074246=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <f45f02410d23c99d14f3577da9b27a327816b5a0904bdeefc8e229eac760d1cf@mail.kernel.org>
+In-Reply-To: <20260601183728.1800490-1-tj@kernel.org>
+References: <20260601183728.1800490-1-tj@kernel.org>
+Subject: Re: [PATCH bpf-next] bpf: Replace scratch PTE atomically when allocating arena pages
+From: bot+bpf-ci@kernel.org
+To: tj@kernel.org,void@manifault.com,arighi@nvidia.com,changwoo@igalia.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@linux.dev,memxor@gmail.com
+Cc: peterz@infradead.org,catalin.marinas@arm.com,will@kernel.org,tglx@kernel.org,mingo@redhat.com,bp@alien8.de,dave.hansen@linux.intel.com,akpm@linux-foundation.org,david@kernel.org,rppt@kernel.org,emil@etsalapatis.com,sched-ext@lists.linux.dev,bpf@vger.kernel.org,x86@kernel.org,linux-arm-kernel@lists.infradead.org,linux-mm@kvack.org,linux-kernel@vger.kernel.org,tj@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Mon,  1 Jun 2026 20:15:34 +0000 (UTC)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 781B21C0002
+X-Stat-Signature: x6dzb9phrtg4qaa1s8q4jzxjourhmka7
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 46F4AC000F
-X-Stat-Signature: haxw6xisdezz7u4m94tf7i8c4dat96q5
-X-HE-Tag: 1780344926-417729
-X-HE-Meta: U2FsdGVkX1+5kOgQ6Q2e+3QK9vZRkCdG89Lp6fBAqf5oI+zFKw5eeSiYcqK7a+ThgM+dDuBi6JZgiEQdWLnr7lLQBGb0lqbLhXaL/hVTbIuATmxlteYoytgwR9ReItaHUPLfXTu9tCj9rfXJn/mEoOJ8HmR/M2lPHDkdmWnI0uA+t4Oyfi2pgD1hf8+QDWr9sYF3Ql72bIqu5oBoSBOoZVHU7iMvpCzSRlqBlDN1+S6TopIpWEG9CK7vaCDGz1X9x/eGSOgVlleVoWg10A+97LSmcMnf7zYm9yShDbo+XqROTzt5rKWcxqk1kQwo4AZKpdpmxKzHIeS75j/3Vuss+wwEiK4frF8nVoMrx26KBT+ty3n6ACcf+NCwFHZjKfnteHfnH/ilmeRhf6hd+QbYN/qvcO1yUhp6WDhYNcZqIywngtvL+wfQnvYLBkqq6ukb1hKfNPAKuP9zl3/JjJb0kqYph3c64MAqE/lKNYGT/OeS11gaMma0LzgnK7HjN6b7EDtWxcRj/3aCAkhZxLg1akMzsDSmNlHUWsgcs/7wZwFVUaYb1ERkByqh043qAcYof5LYEz5ESfodK2oBlAHX0rq0yA7RKnp67vSBkgEJfEX8kGoWqkSnFk2U3+cDfQyPCJ068q3xQlFEQi8/dCLZ9VJj3t/rvh2ivl4GWTjebeNlUY9ZnqqU92eT+I/gUmfrrfbs+xYm/nT8N4CNhAykrnsFlzt19Hw9/IoOpd6ne6C86Dp19cKIlDUE58QxYd6XTpb7UAy0K3kTYlM/NhEV4oWLw1p92RaHdRc/TpvFqpG36/HU9Y9sdKhi3s+EHjQRgMe5ImYCV4Klyk1zeTz9K3qCsQ92n/jhogzzZlkpFqobfCXito/WNc07cXFe9i4rRP1yUci2nWle4FXR0SR0YrGzYux7mSluHxVmljdT+dC941qGP76ZiTSWPcPBJCz6YAB1dl0KnEQT+d/2HuE
- I6upsPmX
- SV5qiEs/ewzcIk7QG85thhBJpxhUjkdh0Oto/2o1HgE1u4XtMIZPpht/26l+yOcFxlpZKN/PKvwtgCxcPH4TXI3gtglSzT7RSys6qNfaUsbcbVI6D+bX+Wr7SkKvWC05n0LiQvj2I3pfXJROhtzWg3+V2N48wSF6fcGtENHMcOv+OAcYKnmUmMlc54hudfb17gB7afJhzXJ8wAtOciczjLqTN1ykRSFhafEFaWzr6fR+3NPKkLSFoUdTs8Q==
+X-HE-Tag: 1780344935-901070
+X-HE-Meta: U2FsdGVkX19c28kxBunN5rR9Av1rb4O9jK+fIo/T6RrjKnaZPGuMr3Bxei4a6CDOZlSGGvtauNHxtEmZ/jEmOnxUthTAQJJF1FicKp/jb+BAVEJcOc9QfO52JxxsaGznDb36BZYl3UBYiZ+WzWF3KGArkf2v/X4ktkf6u8fJkPgy3/HDP3AGE473o53OSnW81wGSI6Ewv4TaWHnjsBUGRTR4AWh0R84V5q3QFa29owfUla4j+lqKx5k/Lkp+fu7L4TmiST13ml0N2IgM//wzUZfTYh6uMWaW3WLFELBa86dpqaZ5il8viFSp0HyLm4tE8j4LDWuTjoHcStmBfOi8X66Ti1aygJ+acy6TScwKKrXz+WhSVpHvOmcS6X0eCz94k57G4VMbkXqcNWvR6eXyjiD0sdHOdCI2vJ/VbXEQ3t4B8M9SJrkazsR5g4lmwynerJNUJS1GG8jDHpB8t8IlVU+bYfDYFgUaLJeQbMjFd7hSXvz2tZcTtfIN+8AJqunvu0e+zZpxngsKSlOJIXa0epGu0YsG1HaIj0QBzdmhKoGB7OcA8H6QxKfvzi0bhJTQJeWzdV3kcRuyRlgwinSd0KkXaDgdBDR19DzV1O/FtuDkSyGukL7zU1928DrSoEDjmfG7GJnSSahjjTwy2ZovawgZ5vSwLz89p5po7Zq1unA2ObxZsZBph6epBe8KyLdesR+5f3AJEJXqMlsoyqt1Lj7EkFRmIywz6ThizfPvQsj5kfl1ItZkJaWwohbttRrr/gK9+UZFXXOmh8bnK+EnyrZDENAZ6Pkc5G3jIAEj6FwD/fDT9D90wql7T8fO43UGNRj6mwKOAmVuwVRAUndGebOioSf88eS/x/TA1M6MqHuYYRj7XHjCz+Z2g2i33M1REYexbbxqUQ4g1u24jGPG44szN/81jpxnjL2mwKEZD6S6cDUE5zFgBXhF1s2YK3+XwbZIhNLDJtATZxJ1ISA
+ glK0uf6e
+ DWjOStswNr9DHEp3O2f17GEHVZR+lnGW/aJtRp1GDOUy1J4Nhc8xbv5kUD+moEDWIx9vBPaQPobJKreq903JAt/PguGy7MDTVtnhGtzyigz1cL+ybMeZb1OXpelYRaLz6BmWDOi65X4+pI3a0mVVZpWzBdqsX7IovlN4IRCKuew7O1UjuNoer5GACXKhcpjNvLbBaZsVqcbBHJ8m5dYOQ0ohakyWDuIOO1Q9g+xOz9LShd+Vf/Ew1hzfEIxl4P1mHMf07u5v6NMgvTJPi42DJdefeUZ2FKGTvW5zyk4EJkaMYgUl0qwdTLmotdva8TrJ0v/1ZScVF1L9XW2xrS+xF0CNkUY0K4TDyJ+pQkJao+mCKzQYUBneaPj4qvKYOIWAQUOAXo5TNByCuflqaM5U7UV3aywCCnED6qN/b5CDkubbNjtw+SDcRKdrhsMFWKx68lYOq/c0QvJBoTVU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,37 +88,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+--===============8340823664292074246==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-
-On Mon, 1 Jun 2026, Pasha Tatashin wrote:
-
-> On 05-31 20:10, Mike Rapoport wrote:
-
->>>  - A freeze mechanism to lock the tree before serializing for kexec
->>>    (patch 13).
->>
->> There were a lot of effort to make KHO stateless and drop the requirement
->> for finalization/freeze.
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index b5739bb99fc1..4c6c4081ef71 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1061,6 +1061,24 @@ static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
+>  }
+>  #endif
 >
-> Yes, using KHO directly here is incorrect. The state machine is provided
-> by LUO, so we should use LUO here. MSHV should provide a file that
-> userspace adds to LUO, and all state machine management would be the
-> same as for all other clients participating in LU.
+> +#ifndef flush_tlb_before_set
+> +/**
+> + * flush_tlb_before_set - invalidate a kernel PTE's TLB before re-setting it
+> + * @addr: kernel virtual address whose PTE was just cleared
+> + *
+> + * Some architectures (e.g. arm64) do not allow a live page-table entry to be
+> + * repointed at a different page in one step. The old entry must first be made
+> + * invalid and its translation flushed from every TLB, and only then may the new
+> + * entry be written.
+> + *
+> + * This is only for the lockless atomic kernel-PTE installers (ptep_try_set()).
+> + * It must be callable with interrupts disabled.
+> + */
+> +static inline void flush_tlb_before_set(unsigned long addr)
+> +{
+> +}
+> +#endif
 
-The thing is, there is no file handle to rely on. Even once partitions are 
-all removed, Hyper-V might hang onto pages (and won't return them even if 
-asked). However, these pages very much must be excluded from Linux 
-post-kexec, or the system will crash. We cannot rely on UM to ensure 
-integrity of memory management.
+A subsystem pattern flags the empty generic stub as potentially
+concerning, so I wanted to ask about the TLB behaviour on arches that
+define ptep_try_set() but use this no-op flush_tlb_before_set().
 
-Contrast that to standard LUO use: If you drop individual file handles, or 
-even skip the LUO phase entirely, the worst that will happen is that the 
-objects will be gone post-kexec. The MM itself will still be consistent. 
-For MSHV & page donation, this is different.
+> diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+> index 1727503b25d8..b6ac5a91a296 100644
+> --- a/kernel/bpf/arena.c
+> +++ b/kernel/bpf/arena.c
 
-(And yes, partition preservation will very much tie into LUO)
+[ ... ]
 
-Best,
-Jork
+> @@ -154,19 +155,44 @@ static int apply_range_set_cb(pte_t *pte, unsigned long addr, void *data)
+>  {
+>  	struct apply_range_data *d = data;
+>  	struct page *page;
+> +	pte_t pteval;
+>
+>  	if (!data)
+>  		return 0;
+> -	/* sanity check */
+> -	if (unlikely(!pte_none(ptep_get(pte))))
+> -		return -EBUSY;
+>
+>  	page = d->pages[d->i];
+>  	/* paranoia, similar to vmap_pages_pte_range() */
+>  	if (WARN_ON_ONCE(!pfn_valid(page_to_pfn(page))))
+>  		return -EINVAL;
+>
+> -	set_pte_at(&init_mm, addr, pte, mk_pte(page, PAGE_KERNEL));
+> +	pteval = mk_pte(page, PAGE_KERNEL);
+> +#ifdef ptep_try_set
+> +	/*
+> +	 * Kernel-fault recovery may have installed the scratch page here, and
+> +	 * some architectures (arm64) prohibit valid->valid PTE transitions.
+> +	 * Install atomically into a none slot. If scratch is present, clear it
+> +	 * and flush_tlb_before_set() (break-before-make) before retrying.
+> +	 */
+> +	while (!ptep_try_set(pte, pteval)) {
+> +		pte_t old = ptep_get(pte);
+> +
+> +		if (pte_none(old))
+> +			continue;
+> +		if (WARN_ON_ONCE(pte_page(old) != d->scratch_page))
+> +			return -EBUSY;
+> +		ptep_get_and_clear(&init_mm, addr, pte);
+> +		flush_tlb_before_set(addr);
 
+On x86, ptep_try_set() is defined, so this branch is taken, and
+bpf_arena_handle_page_fault() is wired into the x86 fault path, so the
+scratch page can really be installed here.
+
+x86 does not override flush_tlb_before_set(), so it resolves to the empty
+generic stub above. The scratch slot is then changed scratch_page ->
+none -> real_page with no TLB invalidation:
+
+	ptep_get_and_clear(&init_mm, addr, pte);
+	flush_tlb_before_set(addr);   /* no-op on x86 */
+	... ptep_try_set(pte, pteval);
+
+I could not find a flush of the kernel range on the allocation path.
+arena_alloc_pages() only calls flush_vmap_cache() (flush_cache_vmap(),
+a no-op on x86) and never flush_tlb_kernel_range(), whereas
+arena_free_pages() does call flush_tlb_kernel_range() before the range is
+reused.
+
+The CPU that took the original kernel fault restarts the faulting
+instruction and accesses kaddr through the scratch page, populating its
+TLB with kaddr -> scratch_page. After the real page is installed without
+a flush, can that stale kaddr -> scratch_page translation persist, so
+that later kernel-side accesses at kaddr reach the shared per-arena
+scratch page instead of the freshly allocated page?
+
+The arm64 path looks fine here, since flush_tlb_before_set() expands to
+flush_tlb_kernel_range() and performs the break-before-make invalidate.
+
+The commit message says:
+
+> The new flush_tlb_before_set() is a no-op except on arches like arm64
+> that need the break-before-make TLB invalidate.
+
+so x86 is intended to need no flush after this scratch -> real transition.
+Is there an x86-specific reason the stale scratch translation cannot be
+observed, or should the allocation path flush the TLB for the affected
+range on these arches too?
+
+> +	}
+> +#else
+> +	/*
+> +	 * Without ptep_try_set() there is no atomic installer, but such arches
+> +	 * also do not wire up bpf_arena_handle_page_fault(), so no scratch page
+> +	 * is ever installed and the slot is always none here.
+> +	 */
+> +	if (unlikely(!pte_none(ptep_get(pte))))
+> +		return -EBUSY;
+> +	set_pte_at(&init_mm, addr, pte, pteval);
+> +#endif
+>  	d->i++;
+>  	return 0;
+>  }
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26775626381
+--===============8340823664292074246==--
 
