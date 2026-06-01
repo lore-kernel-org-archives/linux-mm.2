@@ -4,112 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C069CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:49:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31815CD6E4C
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:51:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3F556B02AB; Mon,  1 Jun 2026 03:49:49 -0400 (EDT)
+	id 9AD286B02AD; Mon,  1 Jun 2026 03:51:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEF4E6B02AD; Mon,  1 Jun 2026 03:49:49 -0400 (EDT)
+	id 984836B02AF; Mon,  1 Jun 2026 03:51:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2C3C6B02AE; Mon,  1 Jun 2026 03:49:49 -0400 (EDT)
+	id 8C1476B02B0; Mon,  1 Jun 2026 03:51:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C3E5E6B02AB
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:49:49 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 749F21A05A7
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:49:49 +0000 (UTC)
-X-FDA: 84830569698.21.7CA9318
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B645E140010
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:49:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=S8YTF3Y2;
-	spf=pass (imf26.hostedemail.com: domain of niecheng1@uniontech.com designates 18.194.254.142 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CD7F6B02AD
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:51:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A8FB1C0A0E
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:51:30 +0000 (UTC)
+X-FDA: 84830573940.11.7EC1F8A
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3EE7AC000C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:51:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I6w2WUk6;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780300187;
+	s=arc-20220608; t=1780300288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iKyEwkDOqalQswQ1rmvg6AgbJ6uvYlJ03lXFXs4SB1M=;
-	b=FkNUw8MzMahp1NPdodQTV74nOwh3nsxeImgYAqmd7TxPbgfSjqbtNsBiT8TzztBwmts5Vh
-	BwMmlKd+cWmsw8BWbwhx2OXaWXYh9WaMsfM3vHDmlh9YqYANO06QzxnEySJOy8hZa0//+G
-	DFhrRpJHFzDURe2z1a08iJiXNvRk11c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780300187; a=rsa-sha256;
-	cv=none;
-	b=ryJRq5iArSWY0oH2VuOr5Y5haXEdwJuoxFqQN3X8i8OE0k04OcAl59AVOkTgpHXOBOptVI
-	IRAfSNO543KEgoVRa85W3UVZ5qnIYjn7RCEHQkevMZbzGJIp2RzHs1YVEoZKhdZJXuEsJB
-	pm1S9t5XAWmGiXQQbzZrPYkkcYj1PnI=
+	bh=xdixgpShH7hYpW9sMn1MMnWna0aWkb3QEt/4zti9SVk=;
+	b=A/94D+tCi45w3HIMX5xxAEZ5W4RpZllmGdZ9NFQsQjp9WFglXKQjQ7pV90PPdceTBrHWvs
+	/7DZbD9n0gnsuyjMV6e3vtFVygeTwoGwB/cQ0J0wI4CLoD4X3cZd+kU372JdQ6Sr5eFwqk
+	9VhnzA4ydHCq+fr7TYM32huAJyHDtqk=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=S8YTF3Y2;
-	spf=pass (imf26.hostedemail.com: domain of niecheng1@uniontech.com designates 18.194.254.142 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1780300172;
-	bh=iKyEwkDOqalQswQ1rmvg6AgbJ6uvYlJ03lXFXs4SB1M=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=S8YTF3Y2PivDAnKJlAYUN+ipvO7KPsXbLF83dHr9A2Y6jSuVnr89CiAG78TSxiE5r
-	 7s0ZtHs9GiV/9MSP+BX6gEbzCzWp2qiKkuOQFPxR/6PdqznXneuS0SLhY8EIqt51Gh
-	 EV10apff4ivtgiFEsEp+MS1IORMf7TzWFJ7rZY3k=
-X-QQ-mid: zesmtpsz8t1780300166t38979b5a
-X-QQ-Originating-IP: JqpDz2mPNA+ZctIp3x7l0Rxyq9TU/u1A+AoOY1r1WpE=
-Received: from PEN1097 ( [1.202.39.170])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 01 Jun 2026 15:49:24 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9316155705307074460
-EX-QQ-RecipientCnt: 7
-From: Cheng Nie <niecheng1@uniontech.com>
-To: niecheng1@uniontech.com
-Cc: damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	shuah@kernel.org,
-	sj@kernel.org
-Subject: [PATCH v3 2/2] selftests/damon/sysfs.py: validate memcg_path staging readback
-Date: Mon,  1 Jun 2026 15:49:22 +0800
-Message-ID: <9FAF3DC4DEDDA72F+20260601074922.209222-1-niecheng1@uniontech.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <D4787203018006D6+20260601073635.200015-1-niecheng1@uniontech.com>
-References: <D4787203018006D6+20260601073635.200015-1-niecheng1@uniontech.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I6w2WUk6;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780300288; a=rsa-sha256;
+	cv=none;
+	b=7pU0ZSrDQTcJdxCdxr9/blS+IJdlUVAvIWbGJGFhv+4RRd9jd8CSpI8tAPPxgFnUhZYHPQ
+	7N44Fz7epGV8PAReh9N3nYBZ4ngXQ/cilCDoPsaK4xaD0vMn2Z/rMxjpnHriJs/6AIQ+kB
+	2Jd1osa8QBLI6Ykw21ecoyWcHAxAadQ=
+Message-ID: <fb8f24b1-ce8e-4f06-bbd8-f148a9bcaeee@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780300283;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xdixgpShH7hYpW9sMn1MMnWna0aWkb3QEt/4zti9SVk=;
+	b=I6w2WUk6rUegOHmHPsCN+sU/WijwIVnKCXVcyzIteQdgNXRTPeOOhpcSHT3+10mY+wLtzg
+	IAi0m7kp4H10MnJHt9y8RR7DiqInQQLPDeCRMbGQDyzwk3oSoJRXK+GNveolJHCSPX5qIP
+	4XbQrnx3pi0RV1OcITXmtcmXWh9Ez1M=
+Date: Mon, 1 Jun 2026 15:49:42 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: M/5qe47GLMYOBizVx65eWdFouzicF4e+xCRO1KzC2oEf7Lw0p0hXIXkr
-	p0uhtN/YY8D4m1g+cHhHTdBJjF0h52DtlovCrFPmrSzMavIoHge4Ik3SWtxJrTQ16DPAl2t
-	kth3MK+ZuS/CSrzlTw76awjLUBvujLUWsQ2OGWMkjzSuWRxeOm5HF5jX2Fes2vHcUIpnwPg
-	gwm8Qo6lAcbHach7rDWoIcjgrWvkMsPEpbUw0A49JRUAF8RSRS6ujKycgjuYSTG5/xTn7tr
-	NNrVo1gJTRrvrSd8aj0Y/91sSEJ//Mer2bqUfBnIA57oGIMiwgUJJpUTyBkhGDFgCDss1AF
-	TieRCsbwM3EForRowVGRvLtS6nM/zyWOcIdDXU/eQYnNVp2aJGNsQWfREUk3eoBLmSLzSI/
-	a2FygrRXXmUqHATw8cQgXj8BqnC+dx656NMSkblwXXU9sLUHgIWmboNz3NwdgxxBuWNe78y
-	VNTijUojZyBimbJXj2ZGPAr8VerBBsBVH9kupTs4Uuc0ooquhGfqhSHUUGk1g8qboZIbcDq
-	MbLu7rkRzdoz8vkp0YI7IFfU1EsADRj7pPJrZu1xPP4U01mKGZSdQgdJpIp8Pz6D7X35rTK
-	SFsuD+h+aEAnF3t6VVhmQUImE8p9ZtIDlt+JKN2hEPvIUak3jlznaxVsjp4JnrTe6ZciIsk
-	oZ+dClC9lPhTmGvfll2BMZToz4TLyNL9dNAxD2pBTQOnGzB50ReCF+9IvfApP8/bmbRi0A5
-	RuaVb54KgZrRcRXFvTtOKBx+3AnsaGNdsWJtCMc/JLeL0Uy3gjSq6lPo03X1S6O2iU1lrJM
-	wNav9Q641HP84YCvvNpsLgYaRvHcBj5loZNHs12Mhjz7RGhrzfmZTdeaoP00qtUv5Gy6JL4
-	2TDuRuhECi1SvQ7HXdvRZmpjFfEG1PfDtZGB4aonj0S3sUhl8WgRZGrYRUBkANiqzgUVOU0
-	Gfe2yo7W2zv8hv8iH/rKAoQRfNg4q2yTEGzzpTzvSYSsdszs8osewkw1ViwS0QdUIxTqZBp
-	lL5xz+X3O6987R3iW7xoc917x9p1g6oQMyaCQzRG3Gk7o0i6Y8DuZ72+Unr1VHWVz3W0v0G
-	+7vz369VwLvq045jp1wvElUCS5sIDQyhYJiF78a/t0MwBSsMoxXv22cch6SbooCEVt2Igk4
-	Dlh2rY33GYDnIA5zSVgfe/uB2A==
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 74x9z5kji9z8imzqyn89mohk4qa6ykjm
-X-Rspamd-Queue-Id: B645E140010
+Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: npache@redhat.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, liam@infradead.org, ljs@kernel.org,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
+ usama.arif@linux.dev
+References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
+ <20260601032804.96122-1-lance.yang@linux.dev>
+ <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 781fqhw9tetx69869d84hqzr7ofm45qz
 X-Rspam-User: 
-X-HE-Tag: 1780300186-270421
-X-HE-Meta: U2FsdGVkX18vog84qk3ZrtV5GtqiHAASojcXB2amX+4UqpHIiLAms0UdaRU9IE+J4taTy8ozND6XQaX3MsyD5JwHcLn7jU14bq6GSJt4lNrpnbYrX25iZw1YYvCFuvAO6lYrb5EWargj4CUKqUXZ1ep0NvFF5PpAKq/iRMezKfvl7BCxZeohqtsK1WGC/2HB98C/aW1flCxYOiHS9NbYvvDViFKWrbHzKSRLh26qGwFYJNlLnVtFkFi9S9ldBnD2FdEZyec7Uu7Df6h5c0IhdnhAAbJ+ylpc8YZ6XMbywv++2PS/aK5l1hyrgYK+8e8+9gQQoqsRyjxaV5zRgS/hkzIHcgeJ/qanpty9xKWw7Hm3tEkFpzt0K9CVFVsyJHWHj4wqF/ELFOGeCizpGB3uAShJeQ4gEDkJy+68ffURhBmJD8Pu6s8RX5VvtW0D7PxBVzxu3K2QUQjbMnGtKbOqsLCuV0QRpwiLT+U4VvMxHbgEq8RWC6rzSyl0+7wOvvSx3DY59sC7fEtn4QoXc9x5oGGnGheY5DZM3ff8rvFu+PHn0sGR2o/kL3++nmTPycYoWld3D+x9/SbVUbDp/qpfWRAIgpi5KrUnso3kbEKpJmnQhZehpb8YED/kBqQIHW5Fukewniwr3SgBesTkSVzreZazGU88XxiKorY72C2hLVhRXryahhp91b9i2LfYGNvJhynT+R1s/p7ECSebeytkxb6XLicSq1OS0xrX0YfABbE2CBZiqbZ0bKZR5IXhO1vcrJdxe2d5ekuRa58bq+GMhNpHt2Nt11vhKWn4fMipMq+ASf/B7IhEE5DeBWL1nja98jD08RbsHrDiptXV3pqMRjwsMBVaCa0lyVrrg4Enuo9zA3S613X0wD1BXhks62lYH79tkOLwX3OKsorDTt4ZWErqR5Al3buPvJm+zENDkv/sS4mmiPM3aoGeoH+12hwGEd8w/cMsmc3X4VzET7Q
- i++/uzIG
- LvvhF/VDddKho4ljMMq5FT/FkIjLntNQ7BRTPmwldB8EiQXBF1KXz+4K3H0bEkixcz27jHFU7WlRAaGECp61PR/1+WhnN/BwGdeMe4yaQQQMS0l1YTVXBIs+FXCtwXJUfeotM5cWeZnrYKRsWXvTGM7PW9Y8v/C+0QAULzTgBO7h15YpByP8vz9gPNAhdPpCD/x2XMFBcga5CVzgm62FrJfHKCJF16PZKhWd52uh6VtxlzWf+8BFTKmoyDjgWzCt7aCc2wYZ+IAnpxaXlGEmveAvjNrAV5+U2VDZWRK+vlomWeepang3EBqhzMErYro/w/WqMzozU5WqLkrFkMCsaorJOsx2F94OWOtyz3G36fwBOYI076eqmqtTAy/vqKYpPBh7BPRhnp1ekD/0=
+X-Rspamd-Queue-Id: 3EE7AC000C
+X-HE-Tag: 1780300288-850681
+X-HE-Meta: U2FsdGVkX19fziGuTCMXgW6e1uinxcockh6mx7AHCtgVs3NNyvbHwECCNmSaBOXFNrdQbrXmzmBHb94WhFmXagIoz+hf7yh76svsW7jAaIpWHsty37hip4yNC5bB68iNitaU1Qrs+fAnGIBOqwIaohbDmqaIkl8gZjeqW4EnKgkWkDJy+bN1vfLxuDdA6nlkL3O6OEImfvOwaGt85cRVpuScF5d4GpUqtVNTUc40gINGyBfh9yQET9vpEjkBlfW934JVt751y2ooP+Ctf7FIjS/L3JQ0Zu2mvjxL5wS19GUajoAYe84XnPqO5IqHEqO9LdxLT4cz2BOrNZWoR1I3wdfPcemsJE9/Bw3z4wDpHTZjFxjsmXhN1yZH6dQWeIplx1BStoZPY4jPNMiDXTCX2dx56xXAhBWevWgdaxHW3ht+/qu8auzfTS1WdDTDnEJQimrfrMRHf4IQgEAtzZy79NE9FrxMPstKCQEpJvjmPD7xBri8wLE986I+ZZ9uAa9gdOs2yZfZWFNdxv389g1/cOPpWlmhgGk2CBQiEFJodT2U/fkkb5Cu2aO0ueu2wq/gF/tPQhTLQyJegmMGvWGTgW82I54fPUPqV0ogzqEJ0MnS33HCHMTy6WLa5OkVNElQRJlxM2MzejbAa5V5azLIo8fYZaZF9th48OWmYzqsiat1GqMUUsgV3Fv60nflMgPrTf9wfPJNnGMPrNLM1BTKbI52l4OxVADgQeR0OTGhYdps8vBZnf73i4CIf6gEuVY9buohiuQi3jSYWc5BpkmTi7xAyISe9B4NcTM1ctUmK6ilijyZwf7dEsv4aCYxzCSliugg88YQSg7aH6KsObu9FNUNzO5rLV9nA1dyBj19lbZAiwi/zz9SbnNAv8xhiDsBYAmUJqvbCI1aHCudkbUjIYM9fPRy6odGUhusGIweQxk6e7xX4DTjgn3IfkCg+AYdfFMaQSm3of2R6RShyhn
+ a8uCYGnS
+ vO54n5VtJsu5T1LslqcKp99Nu8Gspate+uKVBwFhMX04TJWTAc8ScDcoY7AMECPRKsPJHG7cs/LpqIxubRTdz4u+HP8NPeKqinzAY7OafThXJnXl90K5ok+5FumTxoVeuICuPjPF0YU8sWR3ylqGJvLTHoHFt12Ye79jF49csMPc8RCmrzfdrbrbeFX8jsXDUn5CCgrp7xRyMq5wIIo71PDyiTs7KJlcfL0pr5lkq4Uel1BN2jDzN/a2X5oXmVB0kVfr99fmnjJ14p0a//iO5r9GD1n8E0OdHaE6ugF/Mhom6XB0+i1O0MWTke++usKUTHtVxgRuIcYpu3TRxI3REZJblvWI3jj0H2lwcKv564lNoXs39qU8xgowOCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,68 +111,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a dedicated test at the end of main() that writes memcg_path to
-sysfs and checks the readback path.  Configure the memcg filter before
-start(), verify staging readback without commit(), and ignore start()
-failures so the test does not depend on CONFIG_MEMCG or cgroup layout.
 
-Signed-off-by: Cheng Nie <niecheng1@uniontech.com>
----
- tools/testing/selftests/damon/sysfs.py | 34 ++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index aa03a1187489..7a17ab88361b 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -250,6 +250,38 @@ def assert_ctxs_committed(kdamonds):
-             if ctx in ctxs_paused_for_dump:
-                 ctx.pause = False
- 
-+def test_memcg_filter_memcg_path_staging():
-+    global kdamonds
-+    memcg_filter = _damon_sysfs.DamosFilter(
-+            type_='memcg', matching=True, allow=True, memcg_path='/')
-+    kdamonds = _damon_sysfs.Kdamonds(
-+            [_damon_sysfs.Kdamond(
-+                contexts=[_damon_sysfs.DamonCtx(
-+                    targets=[_damon_sysfs.DamonTarget(pid=-1)],
-+                    schemes=[_damon_sysfs.Damos(
-+                        ops_filters=[memcg_filter])],
-+                    )])])
-+    kdamonds.start()
-+
-+    shown, rd_err = _damon_sysfs.read_file(
-+            os.path.join(memcg_filter.sysfs_dir(), 'memcg_path'))
-+    if rd_err is not None:
-+        print('memcg_path staging: sysfs read (%s)' % rd_err)
-+        kdamonds.stop()
-+        exit(1)
-+    if shown.rstrip('\n') != memcg_filter.memcg_path:
-+        print('memcg_path staging: memcg_path readback '
-+              '(shown=%s, expected=%s)' %
-+              (shown.rstrip('\n'), memcg_filter.memcg_path))
-+        kdamonds.stop()
-+        exit(1)
-+
-+    err = kdamonds.stop()
-+    if err is not None:
-+        print('memcg_path staging: kdamond stop (%s)' % err)
-+        exit(1)
-+    kdamonds = None
-+
- def main():
-     global kdamonds
-     kdamonds = _damon_sysfs.Kdamonds(
-@@ -356,5 +388,7 @@ def main():
-     assert_ctxs_committed(kdamonds)
-     kdamonds.stop()
- 
-+    test_memcg_filter_memcg_path_staging()
-+
- if __name__ == '__main__':
-     main()
--- 
-2.51.0
+On 2026/6/1 14:54, David Hildenbrand (Arm) wrote:
+> On 6/1/26 05:28, Lance Yang wrote:
+>>
+>> On Sun, May 31, 2026 at 10:00:17PM +0200, David Hildenbrand (Arm) wrote:
+>>> On 5/31/26 11:39, Lance Yang wrote:
+>>>>
+>>>>
+>>>> Emm ... is it safe to use map_anon_folio_pte_nopf() here?
+>>>>
+>>>> At this point pmdp_collapse_flush() has cleared the PMD from the page
+>>>> tables. The PTE table we are updating is only reachable through the saved
+>>>> old PMD value, _pmd, until pmd_populate() below.
+>>>>
+>>>> map_anon_folio_pte_nopf() does set_ptes() and then calls
+>>>> update_mmu_cache_range(). Documentation/core-api/cachetlb.rst describes
+>>>> that hook as:
+>>>>
+>>>> "
+>>>> 	At the end of every page fault, this routine is invoked to tell
+>>>> 	the architecture specific code that translations now exists
+>>>> 	in the software page tables for address space "vma->vm_mm"
+>>>> 	at virtual address "address" for "nr" consecutive pages.
+>>>> "
+>>>>
+>>>> But that does not seem true here yet, since the PTE table is not
+>>>> reachable from vma->vm_mm when update_mmu_cache_range() is called.
+>>>>
+>>>> Should we avoid calling update_mmu_cache_range() until after the PTE
+>>>> table is reinstalled with pmd_populate()?
+>>>
+>>> I recall that update_mmu_cache* users mostly care about updating folios flags,
+>>> for the folio derived from the PTE ... or flushing caches for the user address.
+>>>
+>>> So intuitively I would say "the architecture code doesn't care that the PMD
+>>> table will only be visible to HW shortly after". The important thing should be
+>>> that it will definetly happen, and that nothing else is curently there or can be
+>>> there?
+>>
+>> Ah, fair point.
+>>
+>> I was mostly worried about arch hooks that walk vma->vm_mm again, rather
+>> than only using the pte pointer passed in. For example, mips does:
+> 
+> Right, a re-walk would be the real problem.
+> 
+>>
+>>    update_mmu_cache_range()
+>>      -> __update_tlb()
+>>        -> pgd_offset(vma->vm_mm, address)
+>>        -> pte_offset_map(...)
+>>
+>> and __update_tlb() has this assumption:
+>>
+>> 		/*
+>> 		 * update_mmu_cache() is called between pte_offset_map_lock()
+>> 		 * and pte_unmap_unlock(), so we can assume that ptep is not
+>> 		 * NULL here: and what should be done below if it were NULL?
+>> 		 */
+>>
+>> So if khugepaged happens to run with current->active_mm == vma->vm_mm
+>> here, could __update_tlb() hit the none PMD, get NULL from
+>> pte_offset_map(), and then dereference it?
+> 
+> Likely yes -- that MIPS code is horrible. And the comment in MIPS code
+> even spells that out. :(
+> 
+> Do you know about other code like that, or is MIPS the only one doing a
+> re-walk and crossing fingers?
+
+I had Codex do the boring grep-work through the arch update_mmu_cache*
+code :D
+
+MIPS doesn't seem to be the only code doing a re-walk, but it is the
+only one I found that appears to assume the PMD/PTE walk cannot fail,
+without checking whether the PMD is none ...
+
+Cheers, Lance
+
+>>
+>> Just wanted to raise it since some arch code may still have assumptions
+>> like this, and the always-enable-mTHP work is getting closer ...
+> 
+> Right. I assume set_pte_at() couldn't trigger something similar (re-walk) in arch code,
+> because we simply provide the ptep. update_mmu_cache_range() only consumes the pte.
+> 
+>>
+>> Probably very very very hard to hit, though :)
+> 
+> Delaying update_mmu_cache_range() is nasty, as we'd have to make sure that
+> nobody can interfere in the meantime ... and the PMD lock will not be sufficient.
+> 
+> Maybe we could reinstall the page table with the cleared (none) entries while
+> still holding the PTL?
+> 
+> Thinking out loud:
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 5ba298d420b7..e39b750b1e6f 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1413,13 +1413,17 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+>                  map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
+>          } else {
+>                  /*
+> -                * set_ptes is called in map_anon_folio_pte_nopf with the
+> -                * pmd_ptl lock still held; this is safe as the PMD is expected
+> -                * to be none. The pmd entry is then repopulated below.
+> +                * Re-insert the page table with the cleared entries, but
+> +                * hold the PTL, such that no one can mess with the re-installed
+> +                * page table until we updated the temporarily-cleared entries
+> +                * through map_anon_folio_pte_nopf().
+>                   */
+> -               map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /*uffd_wp=*/ false);
+> -               smp_wmb(); /* make PTEs visible before PMD. See pmd_install() */
+> +               if (pte_ptl != pmd_ptl)
+> +                       spin_lock(pte_ptl);
+>                  pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+> +               map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /*uffd_wp=*/ false);
+> +               if (pte_ptl != pmd_ptl)
+> +                       spin_unlock(pte_ptl);
+>          }
+>          spin_unlock(pmd_ptl);
+>   
+> 
+> 
 
 
