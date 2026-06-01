@@ -4,96 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6FB6CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:47:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23A5FCD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:50:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15B2D6B0439; Mon,  1 Jun 2026 11:47:58 -0400 (EDT)
+	id 5F2EE6B043B; Mon,  1 Jun 2026 11:50:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10C7D6B043B; Mon,  1 Jun 2026 11:47:58 -0400 (EDT)
+	id 5A3F66B043D; Mon,  1 Jun 2026 11:50:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3D966B043C; Mon,  1 Jun 2026 11:47:57 -0400 (EDT)
+	id 4932A6B043E; Mon,  1 Jun 2026 11:50:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DF7E06B0439
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:47:57 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 92AD61A061D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:47:57 +0000 (UTC)
-X-FDA: 84831774594.05.3C67F63
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EB0DD1C000C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:47:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=It9Dcf7K;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 337626B043B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:50:23 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D33B78ABF9
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:50:22 +0000 (UTC)
+X-FDA: 84831780684.30.0FC0586
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 988401C000B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:50:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=VaxTE2p0;
+	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.42 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780329020;
+	b=75XMoakJvgH4Kr2mxSisy//z5pt0FXHY/9NTn78ttKmW8ZGE05+ZF4yf0TQ7sVQPMdQqNt
+	SZ4DZnXi5WBuIgYCZBDyV8ZUWKwhdQXMM4QdYnErKdssnHw9LM9vPty6ht34wCkKcURBHI
+	8VBqr04K63hDWSmtoImKwonqYVDcxi8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=VaxTE2p0;
+	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.42 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780328876;
+	s=arc-20220608; t=1780329020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qha978NEHgz7xh7UWTrfd7Bjy8V76zrJKNnrotIFLtM=;
-	b=hAMK+hQLwOVolg+d5AhgSbQNZdFJCAnZmR5DgXueSmc0bWs3/NmA6k83L79tW4JNrPPM4O
-	SE84dlsPwjaui1zKhjeC1QIRPWHAjK8135itvomn1LWTUPmAXScMwv2AyUDl6rl2Y68N3t
-	axWWPWHME/8WhDKRjCmBxZDaLf2JUnw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=It9Dcf7K;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780328876;
-	b=anw/TkTBNG23dguRoFkU5uf6EOT+cdjrrHMqF3jH8fxxkWCXAlnF34npOPWZHTu+KJDu0j
-	ZKL6sX+QrWg29ZZtrbIYrtJEZk1fRIutDPNC25hf/vnLOf74c1nWJAuAlN7as4ezJEodYY
-	HrHONK0pp5UDcnz1F16Q9agyLconn5c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1D3CD40193;
-	Mon,  1 Jun 2026 15:47:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5549D1F00898;
-	Mon,  1 Jun 2026 15:47:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780328875;
-	bh=qha978NEHgz7xh7UWTrfd7Bjy8V76zrJKNnrotIFLtM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=It9Dcf7Kfslfw6/YwnFy8lAUZRxSFXJnGL78NChqQb2P8uRF0c383JRl90uhrYggp
-	 cVEvILD6Y+CTt1XploB2rvs7RenBocL/CYfMzTZN47O64OmwjlOANMdlux8NksDs0o
-	 81LBkyJoZGVFlC8RXXqUoLlYwi5G/Rbf3wUPN9PexzulwcItNPYQvQFLvcCefF0Q9Q
-	 5rfMyqbYdtLJ/2CASqvNEOKpbaSnL0CkLlfItEkb2/fTxxaILP1fodCgzv0rMBfzVQ
-	 uDf0ZQXV46Co0AKyKTIHAzmVbdQPWCRFwX4UXTyRgVs0kRStdnLdCwGwlKyvpL750A
-	 /pbRJsGPAPzJQ==
-Date: Mon, 1 Jun 2026 16:47:50 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Nico Pache <npache@redhat.com>, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
-	vbabka@suse.cz, willy@infradead.org
-Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
- khugepaged: add mTHP) collapse support
-Message-ID: <ah2pbAnz1pwNcW-U@lucifer>
-References: <20260522150009.121603-1-npache@redhat.com>
- <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
- <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
- <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
- <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org>
- <ahVX1iq_-95vd0PN@lucifer>
- <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
- <ah2fG9fSqbocqUlE@lucifer>
- <f7737b9c-42ba-46d1-b69e-53ac2bda59a6@kernel.org>
+	bh=pJkQdYMeeClMSzcCqfeyFg/QAKx7SzNPdhAZ0oh+sp4=;
+	b=17/H+CYtlXj6PTblhsBR293HIzyRAFsH9rLulRz+Ok/V5WLWRIbQiwYUc6sQH63Ax0gwcQ
+	AuNYUGSrKQel+m1CKi95Tn0KPzqnAxBjiBqWmQfn1zYV8rXbYun71Vgkt19Nb/9kdhpQNz
+	Vldirr0zc7jK2rwpMwYNyTWAl/EQqpc=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bed4cc46252so178056766b.3
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 08:50:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1780329019; x=1780933819; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pJkQdYMeeClMSzcCqfeyFg/QAKx7SzNPdhAZ0oh+sp4=;
+        b=VaxTE2p0kpOkvJcplMronR84FMvPFEIeqK3Xfh2O0CXNK0p9MwRuMyFZUsYpENaJX6
+         HxZFT5E71PMLrlAhlfDAOwd+WYSnXev6Funnl/lpbPeviFJnztXqZWu8JUTMGefjfbtc
+         7TIDi4au+EtliFb6BWQW5FF+BHFOLlHXUb9+M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780329019; x=1780933819;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pJkQdYMeeClMSzcCqfeyFg/QAKx7SzNPdhAZ0oh+sp4=;
+        b=aXe6wUDYcIOuocabBQAdhsWd9r5HFBUjbF/yyBIJqm2wELPpkvqm3I7An3teq06BNu
+         r0WrBCcvHOfzM2ZUTvL/VzDbGgFmEG6h6GllMMZQOKcB0roZY5BhomMa55QmLk8n5UyH
+         No9VgZi/lwU8UAuMpt1jG+xDXfj7RxE7zhjmKfkJXURw6bQ+M4wtuS6+PdXBP5+Eurl6
+         kQkWYp3UfdPxem6jJSVxsOQYGto+CS+fx/52MUt5/X2FkdNv1EC8nlaiZbs9I4AL2WEC
+         ospNvG1VUTEz9kxkVbHbuOZXtJj0PWayfc2zH6W3soOAnrsfSDYZdt+0bPFYsE7ES25P
+         npEw==
+X-Forwarded-Encrypted: i=1; AFNElJ9B0YKBdLAOvVCf6ynz4W8cQRYMoM/8lVH+Xc+bZEIDda2jMaJ/qxA/TprphFtTR3fqFlc7L2vAGw==@kvack.org
+X-Gm-Message-State: AOJu0YxHJLD3lJn/4JijmahhtGrm6a5RPB8i1pE6jGI/ttR2bnp4ndE2
+	jvk3OwNnHqCcI2MmnL+MlrSY7O4u4QQnsY9iHdIzRW28D1butyoItuO94UGUad3hXmuTTGWCKL4
+	0E9DmJ0g=
+X-Gm-Gg: Acq92OGHOtuLIcrnTGUDYAw3wJatuHV8xgqJvlyRa4tI1NzbQFmPnOTWLuZ30QOqbXf
+	xepIcOMvyPa1AsCCkzBHt1DoTh4XBk6HiNaQlFojav1wCo3nqghtq3eCgn4e2GngDAP4NfrLUxV
+	IGO1Neo8cX/ZRfxtXfE1QdokK77c4ZiJVm9B3epnsGfg/Hpmz2IMYq+7YPe2X6WHGbDvsjCrMjh
+	C92iF6Y8E2K+QjYxS4o03aAF0C18eZDmOUzmuLVECRlcGCfdSESMuQr7UB4PTxJWvUDpp8lfPTJ
+	1blF+kWBQyE08uUS5OhKvnhhFiz99h8rDgOX/KbBOQJef/uzdnTOLL7njncGz4T0p/ZUcQehDAG
+	OCCxkBI5W0p+d0w4BmoInC4AUAOdpXEVwxcOXSZ9lnzCTbsgvEoeJUs5MN9Ozbwn3QW4O5zuyAG
+	DwoS51/FiAYhZYRQu7eVzRt6iMAkVFR0/0k/JmKKQLlkB3DKqgGHAxP9oPq2ro4+KbbdjxJf/yI
+	XtltqQXAtY=
+X-Received: by 2002:a17:907:7f8f:b0:bed:6e53:bb16 with SMTP id a640c23a62f3a-bed6e53c9e9mr330322166b.43.1780329018907;
+        Mon, 01 Jun 2026 08:50:18 -0700 (PDT)
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-be9d2de536dsm350242666b.15.2026.06.01.08.50.17
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jun 2026 08:50:17 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-68c19f1f3ceso4804561a12.2
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 08:50:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ98LBA4EwoDJFq4SqyKzGivLEdQ8+kly3uqlpCzGCn54igS2dslL+jotsr42UaZoTiUrkf6Oxx1kw==@kvack.org
+X-Received: by 2002:a17:906:2929:b0:bec:203f:7466 with SMTP id
+ a640c23a62f3a-bec203f7742mr316403166b.8.1780329017245; Mon, 01 Jun 2026
+ 08:50:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f7737b9c-42ba-46d1-b69e-53ac2bda59a6@kernel.org>
-X-Rspamd-Server: rspam07
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <CALCETrW__=8mSusayfXG7UFCfue5BGbx+vqESj1d9wqOfX4s8w@mail.gmail.com> <ah2nBAdsE5vVJ2PL@casper.infradead.org>
+In-Reply-To: <ah2nBAdsE5vVJ2PL@casper.infradead.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 1 Jun 2026 08:50:00 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
+X-Gm-Features: AVHnY4JDfRzuLw7CK_4gSBHmXbq5FWvfpfspaVnl7J1jkuJC1SncFOzqHbctZiE
+Message-ID: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andy Lutomirski <luto@amacapital.net>, Askar Safin <safinaskar@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
+	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 988401C000B
+X-Stat-Signature: nxzjxckeiu4fjcosbppqgd8p8tn5e68d
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: jticxgizyp5zkh18bjm7pthwbxxqzm91
-X-Rspamd-Queue-Id: EB0DD1C000C
-X-HE-Tag: 1780328875-899047
-X-HE-Meta: U2FsdGVkX19GFwN9mM/elC1cCDuCm4w5L37cWTdy01T6bxHwQxGRyIj6VPVTekHc4cdegNRVGzm40My58weOn5iBvVJa8HBFL/mo67/qeVgxeWnf1a4f7daW1EmN7WfiIBye3ljxWmg4cr5DjIOQQqJ82ohFKMj/lKUH0V4jNtoZEVdwOdKBRwjDzfEwoI6D7M3qTouWhXJArcZYIZV7IfNYSjWXnDTjin09dXpR6Pgj5NIVlZCaGEd+FohyPU29AUlur2UK61+mJsgGA9rMvOe7fSGTnWX2pOTlkexWZXcQOZmDt/uD7sBD4Wob9ay+fwHugi5huBZ07Z65ti51QHkNrdNMzkyK+lJdw5f+BylEdIRJ+u1BsZ60SPT0RyQEsjLgSvFUliYjfeexUs2Ib9ZuCQ7heI20BddD5GObifjiPl0Z8yUlh6ki1OpmBTUUHtNucXq+quCEYNxftnlOkziA4+VArBfqbJV3B/h+e3CF7KJqd5zXiFrrzNTL2WG3xdY+yapCMLeh992cyPT5CbpS1D88yuSQsQYGcPlxJCcPOipttAVStYA5OnTjDvrNReHh06spSLfufuJHZ+cMowObc+R+m698dZvuHyY16jqjYIeexfW+Rr3qvGIk74b0QNTaVbpDjcsAswAL0qQ5UrsilraLMwBVqVIuSRQJsX8o2UoexwIC25n/FTkWQyFhIoeRZ24HIrcd3FVImmewgffY1qiowKll/avwfMwismBJ0fx3RywddKzDjCS8TiB0XbdbuFu5yvJZ00X6GuULGdkd2CR+KkvmGMRtynpwtDvKsRc9VmvhYKqCrxFEqz3XUEJnIYbiePwHVfAKlkXbJWR1EbPx7hZPjU6vy+jjLoBtBJml/CBTR4PjE4UyWmiOnJtCf/9udAUqagHyZ9OjB6MNrsO/M1XvxprNplnxux+JtIMZ1Rx/yrDrcp2hmTBwk1TuhE2owswf3CtuHil
- TvQWt4vD
- LadZD/sCuUsAQLX61x9rGLv0iBpcTgsBq/tbjt1vhUhMmYsZfAUX/vcmyC2EPPqw3XW3pJuSaUcJ2olleRHcw0M5SOYbc6eOURaWyv5nXGnN51tpO5k4NKM9cTyhoxj3hRd5GC1fw7nnaoKeUXz0pFRQJqgBJwo996tdqaCZeZKGpVUV9vGjfVnxS4oIp1+Ar09poTH3v2+p3nmN3j4sVUrCaIt6FkqIDLfP2Dj0LU1A9OOHExlz/2TEQy6CIIHuccBXX
+X-HE-Tag: 1780329020-659457
+X-HE-Meta: U2FsdGVkX19HaUgTwGG8TrSMiD46zT01BdggwRTkJxcOXn8rD0kh1WPTDSBrExDHl83KAoBx+H4dMmk+qxjzF01nenSWZheBDKfvK48hJp3O3SybMSIlJ2LcACEzP4FaRLVMrt9iRVPaw5PjoqLOkKCt1SHWrADOIpexsmt9f46o5Gd01HrO4+P2b3KjTzkWBh7NAOcLoKr2GmcqvlryDPEFwwdarkYGM3fzj+6ZLQ6nO8NG11DC4fKKiQmWrGBPYkxJeWUCVIWi/HmwV6Njus5DEtvSFYnR1MpLxkfmbKsk4DWlSH3/ZXVEEWxK3bMVUh0zGtLzQgsi03Yf6eZdSUlLu7uoMfxt9lEkfxP81+jmdULYK6ts3XI7AGC7JIMmZSZ8t7pHgXxw76TXtiaRlhHe0VJ7y6h6qWwDY6ia8qLmlJS1yw0+Gj18UXQ/BE8hEm6YKg8hCPYKhjJnSGgxTBNfr5ZUccqi+2Yr8DuaT/hnNmqyEIiLwt1yNRW08zt9NNfQwKYOd4y0LCpLAeQ7mxZzIMlLrUp1YHF/ElFDqQVCwdOPECJPMSJZqKJ+tsEHhzJD+GLOC4/XkJJUObm0i5nj+9qqbkz9EiqRPbAS+KOl+1Q700MsUhOfUWZaarTEYijpdpqTJG2NJPOpt9COs3swB5bDXm75LL039O/QrtLAqK4GbToiWohYeYtwpBXYDtxYla4hcCfPv30qlBJrkEkYOjl6mqxozUG99b3Qr0a42N9m10NRgx5KFjcFh3jgIcWCjI6T+zBC0VHsFqVJ9ikGnFsI3ii4tSLeNNSgdqc+ERk05EpZMqDdjg/fsID1M5VAdp64HWjvx/lfDwJg2fqezL/gbLgFvSxXorKc4KaB9E7H54gNapnaXNSUtyFIPMrS1YUz8H4hTfj8XL6ZEOJq/Mhux7+QOjTKUxGpgPC1VF9rHEag2PV4pLKiZYmSEWWFdYlJTvcBIirNywN
+ Ljd6Z3sy
+ zXZhx4BfSNAe2Q1hE0QxL4oT4aGK8ocFRK3hZuMIhysqqj+kEwMGOfT8AOWKabW1/s9jyhHxd0SMkO9awMugwQ0tvRL21MDoX9NiaidJIApRTc9rE+iwbvS3attcpfPtHFwlp3PHYKwliR0nWK43g/B7fUpSoiSo6aEMQzMSJr+bCDA9HXKmlNxwz5niKySJ9E40Xv2F5gqh6kVdBkceOWAtQ9oC98Z7xakA9Op+MigR5INtOhQ+iCPXabXtiCWcrcMiJ5U1Bz/eSCRlvQ//NZUJhz4XioGunFJOQT6/6WhmfI4I/IXiZ4a8EWppzxowgaH88V1E6jFEqYm8owmPXun/01TDo9cNhMUr1ENTKeunDuA2/6H09pC7MSEdNp1BFOSOnmLy0djrr29xAxzmZlfTatjFeW5CpgOM/buerJe+95PtYIDRG8UGEDIHnVIz4noMLnYYgXZzjKHRFtiy8zr/pmaV4eKJXa9/yxSK9+nMdepT/4byC+5SSzdw5MTG9a0OUZV6nBDISunNaSbKfGYDytBsXSa7rWw9fisLEA3ZbGOsZOgHIpgB5uALTiSn8YVqsgJmErJV+F7O7LtMQ5nbpcWvFWDfKgbxKfzxG2ou8G8dpn8wfovn7ZkhHFDnKopCKPL7KJObRI44Abz+ORLMmCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,51 +129,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 05:43:11PM +0200, David Hildenbrand (Arm) wrote:
-> >>> and have people
-> >>> base work against that?
-> >>
-> >> This I'm not so sure how it would work. Assuming we have submaintainers with
-> >> their trees and branches, the final "stable branch" is merged from those.
-> >
-> > I feel like it could get hairy pretty quick, but I guess the key thing here is -
-> > maintainers resolve merge conflicts.
-> >
-> > As long as we have a specific _solid_ basis for work.
-> >
-> > I think actually this speaks to it being sensible for each submaintainer with a
-> > separate tree to maintain their own repos rather than branches.
-> >
-> > We need to determine what this baseline would be for each tree though.
-> >
-> > So perhaps each submaintainer tree has for-mm-next that's the stable branch from
-> > mm-next + any stabliised local changes.
-> >
-> > And each week this gets merged to mm-next, and everybody resets to mm-next
-> > stable branch?
+On Mon, 1 Jun 2026 at 08:36, Matthew Wilcox <willy@infradead.org> wrote:
 >
-> I think it gets way more complicated than that once we involve hotfix branches,
-> and dependencies between hotfixes, topic branches and all of that. And in
-> particular, if we have to drop a topic branch in some circumstances.
->
-> My first step will be to understand "how would it look like without
-> submaintainers" when only having topic branches.
->
-> Then, add a complexity level on top with subcomonent maintainers :)
->
-> I'll probably schedule a session in 2 weeks.
->
-> Whom to invite?
+> Can we review this series properly?
 
-I guess can look at the list of current, active, involved submaintainers?
+Well, since it pretty much is what I suggested a few years ago, I
+certainly won't NAK it.
 
-Can also send a general mail to linux-mm about it too?
+And the patches looked very straightforward to me. Just the final
+diffstat is worth quoting again because that certainly doesn't look
+problematic:
 
->
-> --
-> Cheers,
->
-> David
+  7 files changed, 33 insertions(+), 204 deletions(-)
 
-Cheers, Lorenzo
+and it removes that GIFT flag that was truly disgusting.
+
+So I'm certainly ok with it from a "looking at the patch" standpoint.
+I didn't _test_ it. I don't have any workload that might remotely
+care.
+
+I did a quick scan on debian code search for vmsplice, and after ten
+pages of entries that weren't actually *using* it but had lists of
+system calls, I grew bored. So there are likely users, but I don't
+know what they are and how much they care. It *might* be a big
+performance issue somewhere. Unlikely, but...
+
+         Linus
 
