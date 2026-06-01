@@ -4,86 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 836E8CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:38:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46341CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:40:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBA966B0427; Mon,  1 Jun 2026 11:38:43 -0400 (EDT)
+	id A512E6B0429; Mon,  1 Jun 2026 11:40:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6B616B0429; Mon,  1 Jun 2026 11:38:43 -0400 (EDT)
+	id A01456B042B; Mon,  1 Jun 2026 11:40:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA9176B042A; Mon,  1 Jun 2026 11:38:43 -0400 (EDT)
+	id 8F10D6B042C; Mon,  1 Jun 2026 11:40:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C8C486B0427
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:38:43 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7214012023D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:38:43 +0000 (UTC)
-X-FDA: 84831751326.19.49ADBA1
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7E1D12000C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:38:41 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KHtpwLhT;
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780328321;
+	by kanga.kvack.org (Postfix) with ESMTP id 7D9626B0429
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:40:44 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 41F6612064E
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:40:44 +0000 (UTC)
+X-FDA: 84831756408.24.97E0270
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 02832100009
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:40:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AuT2zfDz;
+	spf=pass (imf14.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780328442;
+	b=1GVBz79a8ScSUU6QgpNZUOPf8dZzrQ9YfUFjbEGSL61zanX+ZaoJRu6pMdkaPkIdmVJM/I
+	VSF3SDUKliyVoA/XC1fyXrBWaNyV7Jl5q88ytdRMTH0OOLILtNKbUonl5u2cUPF2dMVCNk
+	lKMHCQOlMiNSJ9EP5S9tDStG6Qmlq5U=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AuT2zfDz;
+	spf=pass (imf14.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780328442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2z6l1eP+ZdCcfkpO0TKMaBFbF5X2F+vxzdUXR8PskAc=;
-	b=iSorzsIO2WH2vMNxxJ3xi757kqJP8rGz5N2K+UWapp7YYdPEcGTQJJQYqzXLmwdVqUGeVg
-	m21Ac5/WvGEDnQ324AkdV1E5yKaXnHcz31iw0Xa0pwL54pKiOBfIfCVF0pkiuK41AYDz+k
-	SRucqvn+Y1oT4NPJ017tHbMt9h252JM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780328321;
-	b=cz7NHWPIQQccaQHBolxny2xRlIgVNf8oLTBXRbmD61mD6aT37k+hQ6JwcLlhvVWeEDakB7
-	GC//4lxtSkig/i3Hmwldi5NCzAj/NBfHlFglgnEMAzXW8fTHN6zkl2+XUWlCoHlFzFw2HI
-	6MDNFWugAdnG1f9i0+tCzNt7Dea8M40=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KHtpwLhT;
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Mon, 1 Jun 2026 08:38:28 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780328317;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2z6l1eP+ZdCcfkpO0TKMaBFbF5X2F+vxzdUXR8PskAc=;
-	b=KHtpwLhTvVrqtHqDyiaV9jYA6yFgTEe8LfzAu3vB+kBo3qWS47wIzxAITvaeLCYDxh18aZ
-	vUX4AMePlF0+sHW5KZYD41NSW3FAnYcGJkL/OOj2zn3tW5vHVa9vH+TRqUFzpj+ZnE7KSz
-	4WrRn2cKiwrT3Ajkn8/cUzIFn5QU/xE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Dave Chinner <david@fromorbit.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Kairui Song <kasong@tencent.com>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <clm@fb.com>
-Subject: Re: [PATCH] mm/list_lru: drain before clearing xarray entry on
- reparent
-Message-ID: <ah2VXGfGZOOdjhs3@linux.dev>
-References: <20260601063408.2879011-1-shakeel.butt@linux.dev>
- <79CD986A-2130-4FB8-804F-A543AF22342B@linux.dev>
+	bh=yGitNDR3suWUnLziWsrEM4RRTJi0DQuBElG4O41DuOM=;
+	b=7zWnYf8JwB9GMrk/UNKE5esy9eqO4CXtRCLo1aUahj5+RgBf++UO3qS/c1L9q8xSnUXfqe
+	NZlgiajU+X+/nTX/2+Ndyn+xXJmlL6zlWX2DkZeg5/K2GXosd24QwfH/0Af336CTEsl9dI
+	AQaxzAp7hBgPCBO2uB0/IR3MUrY/tjA=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-687ed9aabb3so6356147a12.1
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 08:40:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780328440; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fyy+TRV7hE2CwerjHQotpmFtiLwcoyZ5O3w49lH3ApfTZLseFjZmhFGKMA6g8cgFBk
+         Stp+3yiabY9wPIY55eYJ/lYjqiwpiGRSVk4rJN2lm103RRoiVvEYluQMFVVM859vIjwH
+         Q5f8BuyeVz05BPB1SksJXnJQS58epH+jnCt3Vg7ARBLuMjCRv1dB3/I6hGajdXNmYRpe
+         deFMvTbtIHzonPI4j3jVl2caikrd9J1ctFoFMl6l/1UaIobNoND+h50cSQSQzSv+cDJp
+         H72T6YSbaS8Aod5YFcnfcUePACNljdFlrsV3tPWIeiXrZ3eOCIFD+bFIqeOFdMgLjmFq
+         KXIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yGitNDR3suWUnLziWsrEM4RRTJi0DQuBElG4O41DuOM=;
+        fh=u5HHfJB5IP9mAKrEGEK0yNhhJbmTXSPLiKWetAcAOrY=;
+        b=XhrRjLoSAyWNyCaGuH4+6VMuicpWb7VQ7H8fXTWyh48vx2+8lResr+NQXdejFCID0o
+         /5EGOFwNGZwHkBR9t7JLcIW369sJy+Mms880cMZSrkmWEv1CFRs6X9Eg3Sf9fK7pA/dl
+         R5Pgr0kdS/WPp9xcbrUVrhch6B3dlwCVOVB+3rdvNEGYx0gJc3u6hGeIkS+LsE4GF4LW
+         D5Mxkc5r/3iziRnYM6dnOvTyawV89f4LqLLS3G9HzwR/moCvMu0wJ7kxAxIkFFGQqU7t
+         pk64yZ2BhPzZmvpAgxyMYhQOVp58gMN7yh2CfqWtCs7OpVumETgJSe1lF/B9J1g3OBZU
+         nHRQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780328440; x=1780933240; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yGitNDR3suWUnLziWsrEM4RRTJi0DQuBElG4O41DuOM=;
+        b=AuT2zfDzfiOOzI5iigs/GJgGJos++m45Nk3U8kLnuHPhT6Cb2F9SBTi64QId5wxd/J
+         0HVLijNN58ZeUsW7cXC3wLgcPGTRXL494Eybd7NBT3F7Hh/ipe6ZoNSPh/yH4igU0LZm
+         O4t7z8QAeuSPpv6TceE3C8PhLGwOL+hVo6Y2MBsJv2qEGihLGFgTD/jVDyvMplvKT9Q0
+         bBwvuzDTvIPVYjs4fbYoWDHErjVYenTIFMAauQS5sBw3T9RXjsu3knOL3CDzm2XZxit0
+         iHHjUMfhMzSBKBWhU37ebh1ZKF8GPvVFKSgd44y8rpTy285VZJ07akuT3Gk283sMo6aX
+         jwzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780328440; x=1780933240;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yGitNDR3suWUnLziWsrEM4RRTJi0DQuBElG4O41DuOM=;
+        b=bYKuTylsZl3yqkn4xj9LZwdDfx8UDgElvyGwiWogcnXMUIIUXgsb5o6xP7cR91FWSG
+         No0vf9gppq26MoboXlUQjRy0wq0YUgpYeh9RyWavev+gfig80GZEWTxS3tETsBJsy7Rd
+         XLE2331Jmatg69ePkaUx3wpJp0XlwZdkRXYlHQn3P48/DDzlPC3ka4rdJYRP1+6BCcth
+         4qWaQg5vENswfuyYCiE7JI5cz/PUrKiEBR6WLyfFstlD7G3Y5wZ43Naf4myWrtstv9ga
+         Ljxd+gFgUNzEZIwiKWjCZfUBV+k1UbjZoA1t3ooNTgVv56cq/8m+nQEDLX1mSU2fjKUn
+         JwBg==
+X-Forwarded-Encrypted: i=1; AFNElJ9tlCbYnB0PdYpeQkxq72vAFUXQbTipkdKJpp2761HkcDyKvW2a6O3EAdpYOO8+7fnX3pwnFrrbyg==@kvack.org
+X-Gm-Message-State: AOJu0YyWCcE4kVaK4oNxiwGHpJglASTvb1prGOiDnHU0v8iXLz3aXp+i
+	xbL9P/5Ut4OcCGmDIWvDLEKgzIQQBVIz/l6ej3vP6qyPChmFExYyvnWVQXP1F7fcz9vb8zF0tRN
+	ZctNaV7fcc8IlVhVP5hSDNRgXqNkiP6Q=
+X-Gm-Gg: Acq92OHuD15PvKbfzLRh6l9PKU9i3LdfTbfdTZU6IC9bB0fGyvQrJ+7Ma9H57Wtwmfm
+	n8VQGPNmlE/vUEIAnw23zZ77F3jing5T8SCwA+NQAlZqrCwfssGV1AGUP80B0YOuzYvwIPYAs+r
+	K+/cB+EajyjO/aBOqxUJInZKP7ILWpi8tTNhKeSwJoFTzVViLgPOXSGg7ra5lKeRHnsD5SJ5QNU
+	5yVZj/ZuOvgbZZGiLpq7ncJFInOgcgSyAa2gPfYnXaOhBkCnLOgB2lkL4z839yWxXyjDbRfSF7e
+	ghEQphTjlb2FH70LDfEjOnxLVnWYQEUiBxTtlBukpNtK0FgqUw==
+X-Received: by 2002:a05:6402:321a:b0:67d:6c95:9c8e with SMTP id
+ 4fb4d7f45d1cf-68c8a27c185mr6210712a12.14.1780328440036; Mon, 01 Jun 2026
+ 08:40:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <79CD986A-2130-4FB8-804F-A543AF22342B@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 7E1D12000C
+References: <20260601055704.167436-1-chizhiling@163.com> <20260601055704.167436-4-chizhiling@163.com>
+ <ah2HfH3jJZDiNAQc@casper.infradead.org> <rvvwfa4dp2wovn4vlglajxwpumiudvcgbnrj6fwh4dxtxemawh@rbav4cliyraj>
+ <ah2hszECv05z_Dt7@casper.infradead.org>
+In-Reply-To: <ah2hszECv05z_Dt7@casper.infradead.org>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Mon, 1 Jun 2026 17:40:28 +0200
+X-Gm-Features: AVHnY4IAVx_z6D9Ie4Ky2gR3nWAWMzRl5n77v-Nt4Fr4Nr63r96xqtPbPHht5aY
+Message-ID: <CAGudoHFcWFcrJ=Q8XhxzmnYhorka8jXJXMX5RthsAz1Kd_jthA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] mm/shmem: introduce copy_zero_to_iter() for large zeroing
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Chi Zhiling <chizhiling@163.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chi Zhiling <chizhiling@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 02832100009
+X-Stat-Signature: htazuy6jq8gx5kpu8eyimfuf895npuqr
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: buqqxn3wxe1sa1u3ph65ho43wc1e9ttt
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780328321-208816
-X-HE-Meta: U2FsdGVkX1/17AKtspeeWdLYyBN3gFybED+g4MntBQp9lA5XUFxkZtx7owQw3CdMuvtf/8FUkIinD84d/Ez5NyvQxSx+nyZh8NyvrWImTkn5NE7HFwUqW48k8QvCVXVMp+4a5HFJNNU9C2z7IoDRdTkg7paT2ZrkTcwnbl7URlEw23dX+ilnXReS9FY59eu2zoHqoodu8zFC1Rlmc/9l83IP/IpiewetWfa1KbsL5dXRsU0+yDZI37JZzPF3PVdvz0waJ/YIrDKWEtg3uXbasjPT6yaE/QEgaiUdhkIhozv+nmEaz6M7fJ88BWvRBG6LvjdmPP+v1h3Q/kyUmC5wtAwkQOGRFdMd6Y1aQMPUrAcUn5xa9WYjc7UtMMWJe2Ws0ScNLjkpLLaQTa6vNNw4Dv1PxndrF+VrGfRyJnhjqUYns0macNxxskdggTxEuixlsYzZqrnhBTNOn3nBj+VmVKVXWheChOOouvxDfvZ1DkcZw5JC6h8NZhAjmbsjnueFj9yRMAtetKti/lxfcwnJ9ejb8ZvhPHEbuvBF1E4WrwkT+Vj7j/ehtgESJubhonwHORJejqATcDc9Wjijs2NNUmbcQrIIJRsH9DYyJBIUGRD6388l35CSSttoST2yC6Khu0h50rLhROkZF94qQ9zJAikImWfCggsNaB2hXCv4liiLfj8Fs87olPXtillMJBKeqSF0Na1oktm8mcQ8tR49LOLdapxhM9ZsrgA1g3WfaypLo4GdzRdnE/Wsr3hgb4UP6tvbIL8FlNny4IHvPtYZ89jdb54i2VU6e3iQiDE9Xdh929DdeYIQYt2xShycBZM+prOjWnDvaT2HAxqsiQlks4XDmWOZ8A9Nraa/MRf+kKYlNV1fpm0uhNIhcHpTyk+bLDxIFRzunesQHr5LQMxDr1cK9CbS805rTfvIA90HI7CV4HBxaN1DrQQrIWe2NX2A/RkZhEVfgt83Ragezh5
- 12JSHkBJ
- eg5B/TNh0rvX7K2reyxCId8bPPgCIkr/Z7BYKaGfGYqS+td/z30TcsIVs7+yaBEfqZhMWSE8T82e9bVl0xJ2rZJhG0GsIVq/QNvnNy4NKx8ypK0S2vLJaOaVJG2f0/zRkWJ2rdXB0VsA4ToTPUSusx5HO7fbZdZD7HEqgCbZb7VC01e9ygNCId2KIiVQCXQcbYrOd9Ume2h2zJP+UOUCOUNE9fBge5p5B5CLskAGWxrBGOTVXXGACZdB1iS2h3Z8kSEzTbZKVcPLNLxz0vSFkxusMr0X2plCoNwWV8p9qdY0lh9/s4TBQI/0pCzBVuC3W8+zAmq7eFScIO5/IIsCZNLAEmg==
+X-HE-Tag: 1780328441-588417
+X-HE-Meta: U2FsdGVkX18XzkPUJi6v8SyAuo8JEdStGnPNDsi4lEPgCiP5ymlk+jqIue3WmprxULgcPb037PFQH9vfMzyaFQlXg3l6h+dHqJushaIKC3QDmEdtBUS8J8CUq3NBaZP5pc9XNh8rOeLMIYLion+4ifUnBiVPWHmo+gCzN7rkccFxPt5QgZv5fne8+WF+SpJ4eGbY/3kTcB/5B+en4ZFR0HdtUIsVvHdXs0kvcirRBhM5Oo7hy9SbjL19mdqJUjdb/rnG9aCG+fBigq9iZHYDxIBnmTfwazBG1Vo5pPKHj9McJ0mw9r4Q4O2AUwvERy+Cdo+pzc20AiXcqPo5XFFI5zG59fpXAGZ8o3jlg6MZ3THvnGTzV/BTphZITpwjdNNWI0XkjiTKKX2RTL7bC26nrUX0ROzjsh3EplsSdfJbbQQtPwc+lQAnUrHfbcD0Gq3i4bJ8UUH84fxoMrzSKl62pW+Yrpwrb8hAIonUrqUBU/ks8S0wmp3UDSDv93hc3MzelISbEElOCq3Ze7LXctLQ0r2OKnUXZMcUMG+6Kkjb/O2eyrTU0U/4yOYVU+KHkZKy6dkTDdwyHsHDdqZsp1gjmZonvCcJTTZuly9UQN3guIXRlCIAU+mInBF/YgkA3dJgwtOaxNPaEk1ZVLaTpncHNIG7S51XRR4+vW7Sp5lng6HT909lYbtDzJGfZTc8im+7r5qEbRv2oEYJQCFh2tKQiWOUfWLWbf0mA0lXSUJSmObzSAsRqwv0UVIZDCd5W3JwxBN3gDHZmq6CvyRk6IOceEkE4LkXHKZ7lAeUx5rFxZWqTDpaxul+M8A95BNFCqdy7UKiTz5lDaJOfxMohHVWd/XJrNN4Y+ej3FvZfiGXbSo/WekqBoabytX0z8Ogor9Kru89NJMRm3pmfQbEViVrFH/bRbwKon6qXAC8rTHK6U4wYXb7OKQdbG5hZ/wuZRWxcnaPt07uNkiZKjMmq/V
+ DfjX0p4w
+ JvXZp+7S9CSHvFKS3DDZKKzc12iIDf8xcdUBZ3CyJTEo04frkAVofQZuMLnk/l2Wjrt7Nfwoza0OmuAoSP/2GKbfJ2jIAc8JRQk74x6sbG0OyKh/vKJEnd67J95p2dsh8vC52lQ69tlZFYL55FCKzcON9mxGTz2SU51yA3arYMY/1bThRILkjFrntn8wXilGPg3dOa6t/eeYBg3qJgB3DnzMbczF0XXS/nIawfYeP13WrmbpSxtH3rLOrjyovDvlEyxPEZOTNvuogJBZjjdlhr4EmOGUjzaDxBlkjTtA2sbikmry45jPN+W1rg6oDZ28xe70LNLN4yKZRA3TEkkRiW6secaNR1RxB5TMbPxy/s5YCQVNw5RYlDWmHppMhkqeGuERMdGWPf2pjoRM48PdDILeBDmEqQREVuehLyJwYTBVubg8MFgLu29xIpct3xLnRI/nBhnOzfm4stIgvESGXFlmYZswx/zYbT1+rYJQRFb7vmyJl8kKTehOrGVhgybGCuBHN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,149 +142,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Muchun, thanks for taking a look.
+On Mon, Jun 1, 2026 at 5:14=E2=80=AFPM Matthew Wilcox <willy@infradead.org>=
+ wrote:
+>
+> On Mon, Jun 01, 2026 at 05:02:01PM +0200, Mateusz Guzik wrote:
+> > On Mon, Jun 01, 2026 at 02:22:04PM +0100, Matthew Wilcox wrote:
+> > On amd64 some archeology shows the following:
+> > 1. 0db7058e8e23e6bb ("x86/clear_user: Make it faster")
+> >
+> > 2022 vintage, replaces thoroughly terrible 8-byte per-iteration write
+> > with rep stos usage
+>
+> That's a good candidate for fixing this problem.  56a8c8eb1eaf is from
+> March 2022 and mentions the slowness of clear_user() on x86.  So a
+> commit from May 2022 might have fixed the problem without anyone going
+> back to measure and remove the workaround.
+>
 
-On Mon, Jun 01, 2026 at 05:54:01PM +0800, Muchun Song wrote:
-> 
-> 
-> > On Jun 1, 2026, at 14:34, Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> > 
-> > memcg_reparent_list_lrus() clears the dying memcg's xarray entry with
-> > xas_store(&xas, NULL) before reparenting its per-node lists into the
-> > parent. This opens a window where a concurrent list_lru_del() arriving
-> > for the dying memcg sees xa_load() == NULL, walks to the parent in
-> > lock_list_lru_of_memcg(), takes the parent's per-node lock, and calls
-> > list_del_init() on an item still physically linked on the dying
-> > memcg's list.
-> > 
-> > If another in-flight thread holds the dying memcg's per-node lock at
-> > the same moment (another list_lru_del, or a list_lru_walk_one running
-> > an isolate callback), both threads modify ->next/->prev pointers on the
-> > same physical list under different locks. Adjacent items can corrupt
-> > each other's links.
-> > 
-> > Fix it by reversing the order: reparent each per-node list and mark the
-> > child's list lru dead and then clear the xarray entry. Any concurrent
-> > list_lru op that finds the still-set xarray entry either takes the dying
-> > memcg's per-node lock (synchronizing with the drain) or sees LONG_MIN
-> > and walks to the parent, where the items now live.
-> > 
-> > Fixes: fb56fdf8b9a2 ("mm/list_lru: split the lock to per-cgroup scope")
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > Reported-by: Chris Mason <clm@fb.com>
-> > ---
-> > mm/list_lru.c | 20 +++++++++-----------
-> > 1 file changed, 9 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/mm/list_lru.c b/mm/list_lru.c
-> > index dd29bcf8eb5f..ae55a52307db 100644
-> > --- a/mm/list_lru.c
-> > +++ b/mm/list_lru.c
-> > @@ -473,26 +473,24 @@ void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *paren
-> > 	mutex_lock(&list_lrus_mutex);
-> > 	list_for_each_entry(lru, &memcg_list_lrus, list) {
-> > 		struct list_lru_memcg *mlru;
-> > - 		XA_STATE(xas, &lru->xa, memcg->kmemcg_id);
-> > 
-> > - 		/*
-> > -		 * Lock the Xarray to ensure no on going list_lru_memcg
-> > -		 * allocation and further allocation will see css_is_dying().
-> > -		 */
-> > - 		xas_lock_irq(&xas);
-> > - 		mlru = xas_store(&xas, NULL);
-> > - 		xas_unlock_irq(&xas);
-> > + 		mlru = xa_load(&lru->xa, memcg->kmemcg_id);
-> > 		if (!mlru)
-> > 			continue;
-> 
-> Is it possible that concurrent threads running memcg_list_lru_alloc() could
-> allocate a new mlru after this check passes? This could happen because the
-> threads haven't noticed css_is_dying() yet. We would consequently miss the
-> reparent operation for this list. So xas_lock_irq is necessary to serialize
-> CSS_DYING setting here. Right?
+Ok in that case that's basically settled I think.
 
-Good question and it seems like Sashiko [1] raised a similar concern. However
-please note that memcg_list_lru_alloc() uses CSS_DYING when it allocate a new
-mlru but memcg_reparent_list_lrus() is called from offlice_css() callback and
-the given css should already have CSS_DYING before calling offline_css(). There
-is a rcu grace period between setting CSS_DYING and calling offline_css().
+> I'd be delighted if somebody tested just this patch.  I'm not really set
+> up for performance testing here.
+>
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 3b5dc21b323c..112cae9f9e4f 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -3427,19 +3427,7 @@ static ssize_t shmem_file_read_iter(struct kiocb *=
+iocb, struct iov_iter *to)
+>                         else
+>                                 ret =3D copy_page_to_iter(page, offset, n=
+r, to);
+>                         folio_put(folio);
+> -               } else if (user_backed_iter(to)) {
+> -                       /*
+> -                        * Copy to user tends to be so well optimized, bu=
+t
+> -                        * clear_user() not so much, that it is noticeabl=
+y
+> -                        * faster to copy the zero page instead of cleari=
+ng.
+> -                        */
+> -                       ret =3D copy_page_to_iter(ZERO_PAGE(0), offset, n=
+r, to);
+>                 } else {
+> -                       /*
+> -                        * But submitting the same page twice in a row to
+> -                        * splice() - or others? - can result in confusio=
+n:
+> -                        * so don't attempt that optimization on pipes et=
+c.
+> -                        */
+>                         ret =3D iov_iter_zero(nr, to);
+>                 }
+>
 
-[1] https://sashiko.dev/#/patchset/20260601063408.2879011-1-shakeel.butt%40linux.dev
+I'm not in position to test myself at the moment. But should someone
+be interested and try this on amd64, either make sure you have FSRS or
+in the worst case apply this hack which forces rep stosb:
 
-> 
-> Thanks.
-> Muchun
-> 
-> > 
-> > 		/*
-> > -		 * With Xarray value set to NULL, holding the lru lock below
-> > -		 * prevents list_lru_{add,del,isolate} from touching the lru,
-> > -		 * safe to reparent.
-> > +		 * Reparent each per-node list and mark the child dead
-> > +		 * (LONG_MIN) before clearing xarray entry otherwisw a
-> > +		 * concurrent list_lru_del() may corrupt the list if it arrives
-> > +		 * after xarray clear but before reparenting as
-> > +		 * lock_list_lru_of_memcg will acquire parent's lock while the
-> > +		 * item is still on child's list.
-> > 		 */
-> > 		for_each_node(i)
-> > 			memcg_reparent_list_lru_one(lru, i, &mlru->node[i], parent);
-> > 
-> > + 		xa_erase(&lru->xa, memcg->kmemcg_id);
+diff --git a/arch/x86/include/asm/uaccess_64.h
+b/arch/x86/include/asm/uaccess_64.h
+index 20de34cc9aa6..552d1b883579 100644
+--- a/arch/x86/include/asm/uaccess_64.h
++++ b/arch/x86/include/asm/uaccess_64.h
+@@ -189,8 +189,7 @@ static __always_inline __must_check unsigned long
+__clear_user(void __user *addr
+         */
+        asm volatile(
+                "1:\n\t"
+-               ALTERNATIVE("rep stosb",
+-                           "call rep_stos_alternative",
+ALT_NOT(X86_FEATURE_FSRS))
++               "rep stosb\n"
+                "2:\n"
+               _ASM_EXTABLE_UA(1b, 2b)
+               : "+c" (size), "+D" (addr), ASM_CALL_CONSTRAINT
 
-This one is more tricky. Sashiko said:
-
-" Is it safe to use xa_erase() here instead of xa_erase_irq()?
-
-The list_lru xarray is initialized with XA_FLAGS_LOCK_IRQ, and elements are
-added holding the lock via xas_lock_irqsave(), which establishes an IRQ-safe
-lock class.
-
-Since xa_erase() internally calls spin_lock() without disabling local
-interrupts, an interrupt firing while the lock is held could attempt to
-re-acquire the same lock in __memcg_list_lru_alloc(), leading to a deadlock.
-
-This could also trigger a lockdep warning for an inconsistent lock state. "
-
-Initially I though this is a false positive as I couldn't find irq callers for
-kmem_cache_alloc_lru() but then claude came up with more concrete scenario which
-is below:
-
-"""
-For the shadow_nodes lru this lock is also acquired nested under the page
-cache i_pages lock, which is irq-safe.  Adding a folio holds i_pages and
-then allocates an xarray node through the shadow_nodes lru:
-
-__filemap_add_folio()
-  mapping_set_update(&xas, mapping)     // xas->xa_lru = &shadow_nodes
-  xas_lock_irq(&xas)                    // holds mapping->i_pages
-  xas_store() -> xas_alloc()
-    kmem_cache_alloc_lru(radix_tree_node_cachep, xas->xa_lru, gfp)
-      memcg_list_lru_alloc(memcg, &shadow_nodes, gfp)
-        xas_lock_irqsave(&shadow_nodes->xa)   // shadow_nodes->xa under i_pages
-
-and i_pages is taken from writeback completion in irq context:
-
-__folio_end_writeback()
-        xa_lock_irqsave(&mapping->i_pages, flags);
-
-So with xa_erase() taking shadow_nodes->xa with irqs enabled:
-
-CPU0 memcg_reparent_list_lrus()    CPU1 __filemap_add_folio()
-  xa_erase(&shadow_nodes->xa)
-    xa_lock(&shadow_nodes->xa)
-                                   xas_lock_irq(&i_pages)  // holds i_pages
-                                   ... memcg_list_lru_alloc()
-                                     xas_lock_irqsave(&shadow_nodes->xa) // waits
-  <io completion irq on CPU0>
-  __folio_end_writeback()
-    xa_lock_irqsave(&i_pages)  // waits
-
-Can this deadlock, and should this be xa_erase_irq() to keep the irq-safe
-acquisition that the removed xas_lock_irq() had?
-"""
-
-This seems more plausible and I think simply using xa_erase_irq() is more safe.
-
-I will send a v2 with this change.
+It is always fine to use it from correctness pov. It would cause a
+slowdown for any size on old yellers predating Sandy Bridge (that's 14
+years now I think?) or for small sizes on CPUs without FSRS. Given
+something like 4K I/O that's not a concern.
 
