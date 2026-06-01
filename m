@@ -4,102 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D461CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:05:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B615CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:07:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 820036B0403; Mon,  1 Jun 2026 11:05:53 -0400 (EDT)
+	id 710546B0405; Mon,  1 Jun 2026 11:07:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F7B96B0405; Mon,  1 Jun 2026 11:05:53 -0400 (EDT)
+	id 6E8C36B0407; Mon,  1 Jun 2026 11:07:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70DC56B0406; Mon,  1 Jun 2026 11:05:53 -0400 (EDT)
+	id 5FF0B6B0408; Mon,  1 Jun 2026 11:07:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FD8A6B0403
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:05:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0EADB12072B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:05:53 +0000 (UTC)
-X-FDA: 84831668586.13.D631A0B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E812E4000B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:05:50 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n9zgfUpQ;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F3806B0405
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:07:12 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 21F221626B4
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:07:12 +0000 (UTC)
+X-FDA: 84831671904.28.26F9BA3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 67F572000B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:07:10 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GLLNx4tr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780326351;
+	s=arc-20220608; t=1780326430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l79QFJh+1tc8WOfin3+3RXKBIcle3fpVG/8qDloYB3E=;
-	b=jYQ9xo0X0JGHDLy8XDVjczU7UG97G410ybbvnGZlA3JRsvtoupURoqAdI7t2qWnaBU1LGQ
-	dN4//6UZvOhukke8n7FuhWtz0iPZ/qPs0HC7LosGgkiP/2aQs9B6PgAkqiIOXuHT/RYQJB
-	tWYnZUjbxFaxbG6TUpZwVjvgiQ0KaUY=
+	bh=4fyrYnBMknGZNZvrg4Jkv5tJrVT1PYSgZLWdGZo8E8E=;
+	b=33XfjmdUlWEunV8JA0cEbjW6hxCeEd67nBWlpw+3SRW52c3vhuvg2I1+ycPwm55sytbnxN
+	nTJ1Ln6xuW8WoOdJ2ce4iWasS5a5zzPRcC5j1IjYbofUeAm2bUu8HMWuV92+6i2HE5tUkS
+	cCLVPwjKmdbNyXSk9/Mga3uTVIgg6Yk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n9zgfUpQ;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780326351; a=rsa-sha256;
-	cv=none;
-	b=IUnyNvnsvbzIBfnei5lB7W36OUVrhejHflbgIjY0+eXeQUmWjZZ9oqL9KmACGkGI8VJ/2/
-	AO+x21LrqSfnBc8saX3aBOJiobTwYZSaJVMrF9JypGNV1MSPi7R7M6WnXPt84knZKXgCXE
-	UcQZBwWpwSj80sgNjcf+KKZ7pp7jTv4=
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GLLNx4tr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780326430;
+	b=AdEiVe9vHCFxWOnCq5fazUM4Bzp86atWD3DEtsdJwkY3IEJNKB+wDfempBx+8zsxkyKnRP
+	llAlVVG4EHgv3A952wOpMFs4TpcGvFoTiLTvg12DxhUVp+HNjuXHLg5VDNBHogfbH2PevT
+	U48AiKXw9qjl9VT5+vcYfMuQK4vwOA0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A29843FA1;
-	Mon,  1 Jun 2026 15:05:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EFA1F00893;
-	Mon,  1 Jun 2026 15:05:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D6847601DE;
+	Mon,  1 Jun 2026 15:07:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF021F00893;
+	Mon,  1 Jun 2026 15:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780326349;
-	bh=l79QFJh+1tc8WOfin3+3RXKBIcle3fpVG/8qDloYB3E=;
+	s=k20260515; t=1780326429;
+	bh=4fyrYnBMknGZNZvrg4Jkv5tJrVT1PYSgZLWdGZo8E8E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=n9zgfUpQtpGFrY1KUN7yIVATJn4jFQRI7ZnP+d29X9eBrBBakEvRRxKg7Cve2XVHS
-	 vohWdWBIxOKeSXuYufrzZh1zX8FIayu+Q598rlVvm5QSnKlPWDUeB+C+8ZC16wBoW6
-	 UrgKxsXBAxkeKYR3RQ8rduOhWQf2ro2/w13Eu6dHjyWwtPmN3AeZKWhfWxTiYqp6Rb
-	 xToKV0+X6Jt4CAeQNlp4Y8u2n8CgMt4lZ4iMqVokB8pYM32r7AaZyZ6zxMtFEiRU2B
-	 wEiyOxYHfrCCUMNdKSRVR38lWPKkmsCkBu0SAkKb7x4fqKX/U8MSgyK9wdDykITbI3
-	 /BfAeoGbT+Y5w==
-Message-ID: <0bb49c47-8c41-478c-847e-b9154c75e59c@kernel.org>
-Date: Mon, 1 Jun 2026 17:05:36 +0200
+	b=GLLNx4trRl8BW+neKsDlqwr/7K2a3JfqfT6qqpsrw1JKVrCNklaDyGpn7PxankWcl
+	 Tj/rbcPSGdZ3/KPlAGxFQ6phAPnKDg2d+bPMLZ0PlNE9QNt0CmLF10qmYB8QRdbnb0
+	 dVxfgKuk4/RJ/o4UKn3lLc9Z40JPYh2tlQamcXwmUECXMii0YysZI23JCj0+4LcckI
+	 h5u9qOpub1iAhZwqu1LwY6Py7f7OO3/ON1Mnw5AB8Ur6Xk4LnPRAYneclKkRJ56NsF
+	 kp5DRs8ABecaCkS9FS9LxKykevvXjqJTcsabvyc6hZAgyWwHotAXomHwYlCbNoLmuh
+	 q1MWATAN5LXww==
+Message-ID: <52287c46-aba8-4247-9939-4994bd57c4bd@kernel.org>
+Date: Mon, 1 Jun 2026 17:07:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
- collapse_huge_page for mTHP collapse
-To: Nico Pache <npache@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
- akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
- hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
- jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, liam@infradead.org, ljs@kernel.org,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
- usama.arif@linux.dev
-References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
- <20260601032804.96122-1-lance.yang@linux.dev>
- <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
- <616de1a8-1cfd-40b8-b04f-7b324be40bfd@linux.dev>
- <6b11bf0a-769c-4ef2-ac6f-2af38200a6bc@kernel.org>
- <baa0a462-46e0-44ab-b583-c722ad253afe@linux.dev>
- <06d9b665-945f-4967-9ed9-b06514478996@kernel.org>
- <CAA1CXcAeEGOsqp-ywAQ7GMYQzXEeco-rUxUkk2hEF69HybC4=w@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] [arch?] BUG: sleeping function called from invalid
+ context in __tlb_batch_free_encoded_pages
+To: Will Deacon <will@kernel.org>,
+ syzbot <syzbot+a169a27b0538ba43e5d3@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, aneesh.kumar@kernel.org,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, npiggin@gmail.com, peterz@infradead.org,
+ syzkaller-bugs@googlegroups.com, qi.zheng@linux.dev
+References: <69f302ff.170a0220.3c4978.0016.GAE@google.com>
+ <ahbd7_KaUn45GK3v@willie-the-truck>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -146,17 +124,19 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAA1CXcAeEGOsqp-ywAQ7GMYQzXEeco-rUxUkk2hEF69HybC4=w@mail.gmail.com>
+In-Reply-To: <ahbd7_KaUn45GK3v@willie-the-truck>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1nbrsehr3sg3iirarwt33obhnc9epw3g
-X-Rspamd-Queue-Id: E812E4000B
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 67F572000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780326350-92018
-X-HE-Meta: U2FsdGVkX19L7dySkGHABlvL6X+iQQykU5GrVYuPIENSGhqzaWdAwnUAIeehAuZ3f5xT29D4PjAr/Q4DPGG6gsBGdDA0qk/PnuoT+bN9kUkp+85BPdAHvNIL3fYY4RHQAGApYSSJLQbIu9HcIOAqmA7KbfIc5dpseDWqQFMt60woETYXXpzXE1rU37F0PBHbipygREQfiQDuDjX8QQsRvRjopvaOx4YT0a4v5oSUmtUNS/1vYJZkXmkFdhzs8wbBuVQ3ct3+h0NBm2bbsQThTjBl1ASp3WEiszuPcZiz7OI/BylTqSvo5JG2R3bLH+JlhZI+SYhr/waiPj6Iez5jn121cD05o1r7b0ltqDVvjl1dc3zzQ+xbg1jXO4J9rZqTHKeKMFJzwmYVk/0QNgLrol6mLZd+B3MWOzwq3NNiSd/b4cNlt3bLqkj4TlfzRSKt6jzzQc0++dOpjMfMoQtQcz0PDRc0JA6fPq6PK9QYF55jIGAV4T3Vz81DqEVOHVlh1lK838Y68CQEvmIq++ydKUbYG2hqXhOyj6PphOcwzotFCR98f2/lXpRbGClqW3bc/FDy24YNCOLGn+Ioe9iSBGuQs+ZS54lPNC6owTPoSKYWdPPUC6fUA7Phb5Tst/7thDrnuljlizCpKgUChT53+U+9jcH6M7fstJpuWW+Gd6KVbrNzulnUxJHjbSIzdPx7mrxN4Mbe//pVflQZXNRA+zV/KovUVrLjAHo3RAp47BYzhQgyyUjBuzhj49aEEFc6a0DV6QRHMqSJ7Gv+g7KFW6FapuJ9KGowGYQNn+UP/jyIHFE/gXzXGAw2r/LcOlyN1g1vy5f2KrkXJt0wp8ngQBFIwJTLjd6WmOgFqPemPOSPSTtdrHgEx0EIWN6S61acCgIjypQ7qs6B6+5h8LVVvkF/qStTszxlwVMdQfheydIyCdi8iNxQxroMbYDY0I3VZXF1voDR6VA/gB2I5hC
- tjP1gxTa
- y30iWOvY8ACi8KF8GKigGu9Pxy6llO4Bo6b67HfU2nm/zHQ6JCUD6PEh/30sPEtoTJY22AVRqTcVOmeqpW5UtFhL94SHQeD+Jm1jayfZ2CwgbTBSsF//GH53NDrfevyCmKvOdFVj2QPSpB/2bCQweDmzVLNRjP6WXu4RmCzrZdEV/EkEQv4MXxBTT7zh4RwO9LToRHDuxsnPYualEiPiQFDEjRhCVY3eUZylCb0dvyHOZ3qFTPlGzEwZx0fQL8vJ9DzEZQRNonJ7rNSQiO/lf7b3xG2aMD1wvOukYuCLc805txEQ9YM5kqghC+mk44gg1OB8y2w+XZzXKx8RlLtyxEYPDoQbsJjowOb6B4x3Xb+2YN1KGylS/Z6MWQWQtsOazqwC3pR9NeF0od4wFSg7aydtv10RcldliZ+FN0jrswL/kiU/8rLN2Ss2jtoKjb6Q1NqPpY6BEUvcT77Y=
+X-Stat-Signature: npeac7466hmbjdzpc48mmxa53oxnhdir
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780326430-358103
+X-HE-Meta: U2FsdGVkX18oVKKidp5tUa98/etunyQn1Svkm8fvRvQt9mcNrYC1rs6KZC36qXk+ya4pxNaSmQJ+du1QC/d9cQ89JPhl4RrOVAmPUPQixs4spsicU38WBEc97XJW7j8crA5gbb7ev8g44xwmvwMWpSJ32nPhRzOWgiOSjmYbMhqw6yf0RB5pJSC8EXoE8PS9hMwDM1DgBRPVLyABi4rjF6tkpND6t5YtAgK5V1TsUa42V7qP1CXFF0+99BE9HGNgzXfZIn3S24fZsrllICIf7cow0kQwXOFVGYtB+lKE/kaa452Iv48OzqPSpIEMC60GZ3QQJlWiwwyFaRmtSFMZsw2pM21Hl4iWZhOU1xVx9NQ030Enosm31wimEJahX+5gLVdrIA02XD/13wUbny5kf1xHytQcmFaaI6TlllBKBtsANQK8AYjn7Str9xGD4ILwK3n5SGE04isVlYl6JHOBlcDzx2KAF8/MLT/m60xtfki5wpTiTbTeKZSN5vc7aNSyJdEuFha43rd+tlQ04DBnWvqslQxm5ChFbD/s/o4cjV2hxXN0bKoiIw7FQgHVkh4oECAnN5L3l3nZtN4Q5RE1Cn/0fplEtRgKpyyLAI2zOXRHLJu03T3K0Zr9eHgxEumTITGLy+cz+rpTYvWnARtas6jJYmh2XipLJgMVCfv8OPt58ArA8Isv79U37CitrWl4xmGkRv46uTmBU+JHBPfkhv5xSzQiJwspNGj7w9UjTUzpCiHAXSS6nOftOfqseizjCAsiCk2eDjyYxwVAyH8shbWOac+vXK6Nvv4Kpm2XKm4NNTN7JZpn6x0puGvR5nW6xb52kGkwjIkVSjuTh9obyt52//UH6uMtEUb5+F/6QfaYYN6X9UpNhbEt0PeZdPuyTMJv6szsyQyx6ZDyUGB9PQ7VStJDtFnRI5RZ9B/pV6qsNOGt0CNYCL7Rce09GJRgld49d+DluHOvz091VLR
+ nNGCcnkl
+ siBiLRqkb4s/IPj+IDZdXd72QMyIWJwI43Hs+UL0WxKDYM40Hz7/LBygmVz31HoYQI1k4s0ljrMr+M57koGT3adwZjsWSIE4teEa/R6ijJiM5M5NqxvPhixBG1t8IWEiK4/Lw6UvGWehQgUo8z9Rb7iHPCSIlnMTO2Ldm9zWX4fCDut7b5DgUSFdTvTJK0Kc/eKo61PrbSU+TClwqoz8tDRGnFK2aHP/j+c7zx2tV/PUTNN/a/5is0KTlwij5mvp/hseHnFfOSYrBFTFE6abe+EWkO++/Gia6R6i5Kc/X5dLk7IICWQcRtYEAd3MsuF/RNC6TD1f6dsvCosd3eYO8JFcwAIf/dHekmTUcarjbigcZ06RxN0dBfDmTPy3PH0GdO/B68NrHcEBF38wQ3TBK1NFVnb2svS3JpNt+ijpqN7o42SpjJATdurUM2sPngwNu5O0MafwLS19/efNXtHlU90Vv2NuRV4k/D/w8s1Oj63uXwQWLblCozwJkVyz7Z6Jb8eWYxls/uoSc9ZkDg3Bt0Upb1dQlNNwJToStHGD9sTIf1BtIIznDWfidxembgSdZ6n+NW1sSfV3y12T3PPaPZW3KrdokuhoMJUjhMuyX0ShL9gbu3/BDl4JNOG6jnlBS2PSwzQO8TSNN2wa2qIerkrCi5mqNPe1LHnopZp3CD8EQVQkbbgGUs/lBh9K1TUtOsww5omapETLUBD7TPldG8vaIrkfKUir+1ZeMa82sztPIG1Eit5d6p270KB5PWK+a4YySwxxvZpotAHxFiWqVtEDkOXEcCBZd1PWAZDNXXCRESBxe1itbD8yMKeakrnyVwwjaE0DZy5HGtw157ZaBH6KhopdmEBL5LMRZlJ2rrg1WTCIRXriyWcZUSa4m0I0FJPr1uGLOZ+yTHFJTWYkR45Jn8WcmF1nzWmIbTHctcIBmDiY6Mg2izyAYFDT2qkx689dM/1Wqfcw6qg3tHrqGY8cJ4SgG
+ UAwcDWNs
+ 51m/+ssHZCE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,30 +144,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/1/26 17:00, Nico Pache wrote:
-> On Mon, Jun 1, 2026 at 5:14 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
+On 5/27/26 14:05, Will Deacon wrote:
+> I finally got a chance to look at this one...
+> 
+> On Thu, Apr 30, 2026 at 12:21:35AM -0700, syzbot wrote:
+>> syzbot found the following issue on:
 >>
->> On 6/1/26 12:47, Lance Yang wrote:
->>>
->>>
->>>
->>> Ah, cool! __folio_mark_uptodate() already does the job :P
->>>
->>> So yeah, no extra smp_wmb() needed here!
+>> HEAD commit:    dca922e019dd Merge tag 'xsa48x-7.1-tag' of git://git.kerne..
+>> git tree:       upstream
+>> console output: https://syzkaller.appspot.com/x/log.txt?x=11cd6b6c580000
+>> kernel config:  https://syzkaller.appspot.com/x/.config?x=59da38148f3a3d24
+>> dashboard link: https://syzkaller.appspot.com/bug?extid=a169a27b0538ba43e5d3
+>> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
 >>
->> Yeah. BTW, I think we'd need a spin_lock_nested(), so @Nico, treat my code as a
->> draft.
+>> Unfortunately, I don't have any reproducer for this issue yet.
+>>
+>> Downloadable assets:
+>> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-dca922e0.raw.xz
+>> vmlinux: https://storage.googleapis.com/syzbot-assets/7b447b1b93a9/vmlinux-dca922e0.xz
+>> kernel image: https://storage.googleapis.com/syzbot-assets/af7830f5dabf/bzImage-dca922e0.xz
+>>
+>> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+>> Reported-by: syzbot+a169a27b0538ba43e5d3@syzkaller.appspotmail.com
+>>
+>> BUG: sleeping function called from invalid context at mm/mmu_gather.c:142
+>> in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 5677, name: rm
+>> preempt_count: 0, expected: 0
+>> RCU nest depth: 1, expected: 0
+>> 2 locks held by rm/5677:
+>>  #0: ffff888022c20338 (&mm->mmap_lock){++++}-{4:4}, at: mmap_write_lock include/linux/mmap_lock.h:536 [inline]
+>>  #0: ffff888022c20338 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x22c/0xa10 mm/mmap.c:1308
+>>  #1: ffffffff8e7e54e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 include/linux/rcupdate.h:300
+>> CPU: 1 UID: 0 PID: 5677 Comm: rm Not tainted syzkaller #0 PREEMPT(full) 
+>> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+>> Call Trace:
+>>  <TASK>
+>>  __dump_stack lib/dump_stack.c:94 [inline]
+>>  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+>>  __might_resched.cold+0x1ec/0x232 kernel/sched/core.c:9162
+>>  __tlb_batch_free_encoded_pages+0x11e/0x280 mm/mmu_gather.c:142
+>>  tlb_batch_pages_flush mm/mmu_gather.c:151 [inline]
 > 
-> Okay, I read the above and did some investigating.
+> ... so we're getting deep in the gather code tearing down an mm, where
+> we free the unmapped pages but we're somehow inside an RCU read-side
+> critical section.
 > 
-> I will try to implement and verify the changes you suggested :)
-> 
-> Or an even crazier idea... what if we ensure MIPS checks for PMD_none
-> before walking a PTE table?
+> The last report on the sysbot dashboard is from 30th April, which
+> coincides with 99ebc509eef5 ("mm: memcontrol: fix rcu unbalance in
+> get_non_dying_memcg_end()") landing upstream. Unfortunately, there's no
+> reproducer available to test that concretely but it looks like we can
+> end up in there via the page freeing path. So hopefully this is fixed.
 
-But how would they update the cache then correctly?
-
-I'm too non-MIPS to know the answer :)
+Yes, sounds reasonable.
 
 -- 
 Cheers,
