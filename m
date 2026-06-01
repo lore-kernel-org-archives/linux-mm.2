@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED19ACD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:14:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87436CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:28:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DD2C6B02ED; Mon,  1 Jun 2026 05:14:41 -0400 (EDT)
+	id 9F32B6B02F0; Mon,  1 Jun 2026 05:28:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08E706B02EF; Mon,  1 Jun 2026 05:14:41 -0400 (EDT)
+	id 9A3AF6B02F1; Mon,  1 Jun 2026 05:28:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE62F6B02F0; Mon,  1 Jun 2026 05:14:40 -0400 (EDT)
+	id 8B9936B02F2; Mon,  1 Jun 2026 05:28:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DE3E76B02ED
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:14:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 856431A05D3
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:14:40 +0000 (UTC)
-X-FDA: 84830783520.28.78AAEBF
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9E9F240009
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:14:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NJ8wPokP;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780305278; a=rsa-sha256;
-	cv=none;
-	b=jJjfT01+JVF4h0Xxm7AL4XCyJUnKnBCkZa1Vh5shgfDyZenVyckHV+k1YCYuCHHjJQmbN5
-	s95T5UIi5Xxdq3Q1nopoVzv82P5/3ZLVvCQSL0c1D6H1mferhQctRUEdw9Dj2BzMKjSiyP
-	R0T8mBwh7KLSixaq7DR/0JTAvMy0NdA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NJ8wPokP;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 77A496B02F0
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:28:52 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21E8C12056D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:28:52 +0000 (UTC)
+X-FDA: 84830819304.30.747D051
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 695514000A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:28:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G1yanIRS;
+	spf=pass (imf27.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780305278;
+	s=arc-20220608; t=1780306130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OEazZgXX6yfrNi9YyR3tNhoYlfRoEfti9CQyvf+Sf3I=;
-	b=fXbCmuAZdkW39Muc6cGkcfqYt1Ds7KTC2ZK+qyDaRSNC3LBX/OurtihfzxnsgwTYWjZprh
-	SX2G7EnZEM4VaWA5vWC+lEJwHIF3M6Vgm6pnCFgBfZP8p6ko/4K+sdpXLdYSQ/vHhy2Ba2
-	WZ2a90K0coBS9iSyhXtvbT+NBKhfws8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 469EA1FCD;
-	Mon,  1 Jun 2026 02:14:32 -0700 (PDT)
-Received: from [10.164.19.28] (unknown [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E9CC13F905;
-	Mon,  1 Jun 2026 02:14:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780305277; bh=h838crh2cFkXrbwjE1UKSICfRuEgy6SwChiZVz3UvrI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NJ8wPokPqFJEjcJHWuI8Z9iNFV6h7LrUyx5sTA83Y42dAgIBjNpOx+u3wuWvef+Go
-	 u951O7Qq51z3n+IinzUAgyxUDkGVGxdfL8DQthXmjCFxcQMzkIrJlmMcouvOZto6Em
-	 Btelm0kthvpRg58KLSUeGmJwfZeXZTOGf0Tg/TrM=
-Message-ID: <9d861614-2c84-4390-a34f-af7bb42aad1b@arm.com>
-Date: Mon, 1 Jun 2026 14:44:27 +0530
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=g29uDzwGW0NTcSuFfWko8xrjZg7XxEg7NOcp6XGp35E=;
+	b=EhTLIwByX5Nt6919KqDKCeD2RQpDImEkvGATh7tuhUCxL7qBCTecBzdGviDJSNgl+OMcKI
+	6ICadniGHyIcoTj7q1TPvsf5B55lG/HjtKY6lihh7Bi47p8qQc+VaK9G1HYs7DBzD22AsU
+	IVUe9kEK/r78itVRD5YNjOvdq1O7E4s=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G1yanIRS;
+	spf=pass (imf27.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780306130; a=rsa-sha256;
+	cv=none;
+	b=v0R6zDHK8pqjcRbFocjq7AeuzQqwox04otYBlLyyGkpT7Hk0wShmqCRvYa18Pf+TrT7nyv
+	GejVO9ly6w2ZUJAIiQTQ1/vXVvQMQYEVJ8Hrt3f0VWQ9n5F6TOCIHJn9O95EL1xt71BggD
+	8vTInSURpzRHmbRH1wHNUNikIsS2NuM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780306128;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=g29uDzwGW0NTcSuFfWko8xrjZg7XxEg7NOcp6XGp35E=;
+	b=G1yanIRS6yXPZoIwX1L76zEI/J+Uwmu2iCm4414ti+w1YVL+TEmhRDZxnTfDwVpz4RQ1Ks
+	RgQds/2HYs8jVcZzx93YbUarTOCWkNz5RANvpCjGdcmpwLQstUfaAmlYGrb2E27rjO/Dna
+	OiiPa7ufzdr9fGuygNemUGjCcQ/nspc=
+From: George Guo <dongtai.guo@linux.dev>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: George Guo <guodongtai@kylinos.cn>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Alexander Graf <graf@amazon.com>,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v3 0/3] LoongArch: add KHO support and selftests
+Date: Mon,  1 Jun 2026 17:28:20 +0800
+Message-Id: <20260601092823.110362-1-dongtai.guo@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] selftests/mm/hmm-tests: test pagemap reads of PMD
- device-private entries
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Balbir Singh <balbirs@nvidia.com>, akpm@linux-foundation.org,
- liam@infradead.org, jgg@ziepe.ca, leon@kernel.org, david@kernel.org,
- shuah@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-kselftest@vger.kernel.org, usama.arif@linux.dev,
- ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <20260530085413.1270139-1-dev.jain@arm.com>
- <20260530085413.1270139-3-dev.jain@arm.com>
- <9d8bffb5-bb07-4cde-8a20-8b9b9996f8cf@nvidia.com>
- <7750de96-44c6-47b0-b0a9-dd948fca2e90@arm.com> <ah1EI_JfZYop7VF8@lucifer>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <ah1EI_JfZYop7VF8@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: z556zjitgxcytaw6sro9rscannq4akyn
+X-Rspamd-Queue-Id: 695514000A
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9E9F240009
-X-Stat-Signature: f85zy4cx7xtsdjri54eta4axnazygs8y
-X-HE-Tag: 1780305278-143812
-X-HE-Meta: U2FsdGVkX1/bbC6mVBsV1qKPp4fIgIlGEigTgHmtKnTQChPJ0CooJrL8SVG33vg96TtwviC3q/vAguqDwd+JKzes3dmHRR2eSs99sDQ5Q0XE4K/us2ti3YnY1+e9qq5/dntnn0+iQOLdP52do6J66eyRF0R4vS0wVftQHQls/8vBtQLkzlO76BlAk6Va5vIaDjlYu4OrMhfVOxj4ziNVW/F+5ntLw0YaXqPQwZ9cDAflq8pGGYfirj29iUyLvi4mZqf5UmxWZ0uU39tUR5tGVceABZjYvegD8w4W4tbS7UJXkf6+WpCaLcUBOugkgx6jzqV6j1iDzFpE+pTW97ZgV6X4IFZ635Bi9BzAYFGgjwIu3B+HVPeKXozVXzPamHBOPNUwzC1M6kCDr/5vLfSncFdEY8xpvkHMccTMifwY8Gg3OY0zE2BY2DsqhATMh2J+XuZVa6/bRTsdTt6gjegoCH4iOjulL8OpjWeQNIekI6SZrv5h6h26KM7ORsDq98lhD4S0qIfml2mvb/hCwBK7mlHm3ui7kF73xOWBf5c2l51xP9rLnxAbgnXqSCWI03Q5UVfMQQv+hiP6/bYDRZSezXt21k5Hev6eMZRjZsxlBZPZrkjy7M+9clCXU7Ze8r/UlfVxRq/Zm0O5sXSXJVXA/vOIEFeUTzto+X9rXVExksYiRGPTfDGiLmOz6fXQsCbOnUJ0n2zljocawu5vXFQS30cmbKyfrjNmKy9BduVVVwiiFBhmGrlumncfJmGAbEFfBp83h/KbgL4LZJjUGxStU7HTOPkTnTNcptBUWjy2gnapuw/DqY6KdwnFhod6hjDNHI85ccDzCRgSG7EDEgu/1AfMTN5oD3dO4kghKeSxwE8LBHZLuhfhUDIgPGx2yEo7PmA0grVbEb+5LKbmXI8K8kjkL0qVz6cJxth3UrN1fy6756y0SdNlEwNzJJ9kZGlnGuwEnSSEbo6iL/HoIA9
- xTpG8SQu
- +M57sUXs7RVqZR+oPLxnJBRW/Tc7eH5CeR6sZvj05UoYAU7cdjUSOowQ/+SjF+dIQ7w/fLWTu4yTNZwteSSUihNEPpgZeNgrVRcX/ZLZaWZW+9TOinimME2ErHB3TUQ6fdyn8Xa+7vbP5DoVme88U0zmQ9F3CHapujK5qYQt3ZiaWCTjW+WVvmJL4IE03Y9vII1Rk11OKeF3+br4W877jy9AOo4vUCs11UL6Ny6HNHTnSaCI8le+lHdpz5fidYi0hcbFBVvzu3oEIt7va65W/B+uiPkiuCmH4bgDhmY40I3YQpr8Lh2NtxGNkNLfa2G20tHkv2MNTwmSqQ3s=
+X-HE-Tag: 1780306130-448475
+X-HE-Meta: U2FsdGVkX1+I4eJMv78ZdLtVqxctOWeS7h4iSuxOFGFJlIJsB8CjCl+qWyHYGBP0vB7sWUgeP9loWBidX5gmCHa4QCiJc5Wm3b3nGrWlDSsmGVhdlEsKuj5ycNaIAu6RRhFG5LRB7//LhMESNIzk2CDruVjW1Qphpen60/kDgI5MViQQTrSjCjf4QvglOFj8nkS+9BZ3JMfiJKHrOUeIKrs57KUOpE2RklWXZK0bxHflzCjnGr7TGrJfvp9Z3wLjoIkRAI8HQrC99ooHDm4dU0lOaNMrUlS8ey2esTmqEP8vSYf6X+LwCRiavTjyZzvE+e+8smtM/xOTAdwRFPujkFTvwZvYWIDmR8thY76CIUfPl9faU//EstPaNnpL2lrUSKCyJet5bNE0tzz4ZQKc/xXtP3IXaJildIdBTSvFxTjTGi10ywpE9yQYlOMUn9+w9n0D8j+b/yRVczsY9720S+eR7bf8QdNNhujz/w8x1iGhC4Dh2/y0GreysMrsqYnrQJj7xvW3M+7RIIwnyNg2MVhz3PCu0mFdPSOoUxX9RBbm/T5WDMmROED+GWnp9j34UiLpKoFpbSiRJuKKN2qMpcdiCxHSCnOU5O5+FmFGkD0+UB3vd+u2rGIrwoURf1AbdT5Ie/JkqYpJHQQ7bSW4ePjI7ZH56r7PUSlHFnxLodRVGqLWvZySR2QvmRfYW3ZZnUo8Bjjdoc+fY4v9tWGR/HhGVOYoCLLBbyrOnkHi0A6KeNgDRBApUWpO/80NwAPAbMunp3i2QcvaJZeOZvRYrQ1vEPaNNkz0eUwkNbJedD8ZGM5GbGkMNjlO6xw2NhUimn0qpXtI1VhBEKJ3+ht/HhskahfE4GAuvLHXfzWNDLIkP4Zm86CZyx/j4jNV4jMYjNZEsbu31hxXQxbcR02iBQLkizHc9XncaCX3co8Y/NlN0ntuxge5rdy4YDYYdiQKWWlJjsHKx0lQ629vFRi
+ uEZsaa4e
+ 7dM6/u18LAtgVOXBIVHMsG2Ktt2l/4zbmRWokjBuADXLMj/qDm/mNtkCC/HeQspTlnI0NPxqBy/mdhuo2UOWJMCzmUZdFsYTdzww5PyZ0rO9PBdY2BUHiwZ0FJ6O4z9OTXPmJ4T3ts7jCVpxiaqePR+Hvjc5dl9mqDE7ZZdOm9B1I3pvdRDDKauanEm1bdDKE3Sq48oOXQt1n2d5oac5Mzi+qcWNuqSYUivDv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,110 +93,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: George Guo <guodongtai@kylinos.cn>
 
+This series adds Kexec Handover (KHO) support for LoongArch and extends
+the KHO selftest infrastructure to run on LoongArch under QEMU.
 
-On 01/06/26 2:05 pm, Lorenzo Stoakes wrote:
-> On Mon, Jun 01, 2026 at 10:40:48AM +0530, Dev Jain wrote:
->>
->>
->> On 01/06/26 5:39 am, Balbir Singh wrote:
->>> On 5/30/26 18:54, Dev Jain wrote:
->>>> To cover pagemap paths scanning PMD entries, add assertions to check
->>>> whether a device-private PMD entry has the correct pagemap information -
->>>> the PM_SWAP bit must be on in the pagemap entry. Before that, we must
->>>> assert through HMM_DMIRROR_SNAPSHOT snapshot that the leaf entry is
->>>> at PMD level and not PTE level.
->>>>
->>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>> ---
->>>>  tools/testing/selftests/mm/hmm-tests.c | 29 ++++++++++++++++++++++++++
->>>>  1 file changed, 29 insertions(+)
->>>>
->>>> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
->>>> index e1c8a679a4cf3..d09d4a9081de1 100644
->>>> --- a/tools/testing/selftests/mm/hmm-tests.c
->>>> +++ b/tools/testing/selftests/mm/hmm-tests.c
->>>> @@ -2276,8 +2276,11 @@ TEST_F(hmm, migrate_anon_huge_fault)
->>>>  	unsigned long npages;
->>>>  	unsigned long size;
->>>>  	unsigned long i;
->>>> +	unsigned char *m;
->>>> +	uint64_t entry;
->>>>  	void *old_ptr;
->>>>  	void *map;
->>>> +	int pagemap_fd;
->>>>  	int *ptr;
->>>>  	int ret;
->>>>
->>>> @@ -2318,6 +2321,32 @@ TEST_F(hmm, migrate_anon_huge_fault)
->>>>  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
->>>>  		ASSERT_EQ(ptr[i], i);
->>>>
->>>> +	if (!hmm_is_coherent_type(variant->device_number)) {
->>>> +		ret = hmm_dmirror_cmd(self->fd, HMM_DMIRROR_SNAPSHOT,
->>>> +				      buffer, npages);
->>>> +		ASSERT_EQ(ret, 0);
->>>> +		ASSERT_EQ(buffer->cpages, npages);
->>>> +
->>>> +		m = buffer->mirror;
->>>> +		for (i = 0; i < npages; ++i)
->>>> +			ASSERT_EQ(m[i], HMM_DMIRROR_PROT_DEV_PRIVATE_LOCAL |
->>>> +					HMM_DMIRROR_PROT_WRITE |
->>>> +					HMM_DMIRROR_PROT_PMD);
->>>
->>> madvise(..., MADV_HUGEPAGE) is not sufficient to guarantee that the allocation
->>> was indeed converted to THP. Might be worth using the kpageflags interface (but that
->>> requires elevated privileges) and then KPF_THP? Otherwise the HMM_DMIRROR_PROT_PMD
->>> can be a miss from time to time. One other option is not to assert, but to check
->>> and inform?
->>
->> I'll then use the existing check_huge_anon() to assert that a PMD THP got allocated.
-> 
-> Would MADV_COLLAPSE work here?
+KHO passes metadata (the KHO state FDT and scratch area addresses) to the
+second kernel via the FDT /chosen node, using the linux,kho-fdt and
+linux,kho-scratch properties that drivers/of/kexec.c:kho_add_chosen()
+writes and drivers/of/fdt.c:early_init_dt_check_kho() reads.
 
-So MADV_COLLAPSE requires at least one page to be faulted in (or precisely,
-HPAGE_PMD_NR - khugepaged_max_ptes_none). So I rejected that, but now I
-noticed that we are initializing the buffer first.
+KHO support (patches 1-2):
 
-So yes I will use this, thanks.
+Patch 1 adds KHO support for FDT-based systems (initial_boot_params !=
+NULL, e.g. QEMU virt without OVMF).  kho_load_fdt() copies the running
+kernel's FDT, appends linux,kho-fdt and linux,kho-scratch to /chosen,
+and loads the result as a kexec segment.  machine_kexec() updates the
+DEVICE_TREE_GUID entry in the EFI config table to point to this segment
+so the second kernel's fdt_setup() can find and parse it.
 
-> 
->>
->>>
->>>> +
->>>> +		pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
->>>> +		ASSERT_GE(pagemap_fd, 0);
->>>> +
->>>> +		for (i = 0; i < npages; ++i) {
->>>> +			entry = pagemap_get_entry(pagemap_fd,
->>>> +					(char *)buffer->ptr + i * self->page_size);
->>>> +
->>>
->>> If this is a THP entry, do we have valid pagemap entries for offset of i * page_size?
->>
->> Yep we do, see the populate_pagemap label in pagemap_pmd_range_thp.
->>
->>>
->>>> +			ASSERT_NE(entry & PM_SWAP, 0);
->>>> +			ASSERT_EQ(entry & PM_PRESENT, 0);
->>>
->>> Nit: You can use PAGEMAP_PRESENT()
->>
->> Okay.
->>
->>>
->>>> +		}
->>>> +
->>>> +		close(pagemap_fd);
->>>> +	}
->>>> +
->>>>  	/* Fault pages back to system memory and check them. */
->>>>  	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
->>>>  		ASSERT_EQ(ptr[i], i);
->>>
->>> Balbir Singh
->>
-> 
-> Cheers, Lorenzo
+Patch 2 adds KHO support for ACPI-only systems (initial_boot_params ==
+NULL, e.g. LoongArch servers with UEFI or QEMU with OVMF).  Because no
+system FDT is available, kho_load_fdt() builds a minimal FDT from
+scratch containing only /chosen with the two KHO properties.  Since
+DEVICE_TREE_GUID is absent from the EFI config table on ACPI-only
+systems, a new extended config table is built with the entry appended
+and loaded as a kexec segment; machine_kexec() switches st->tables to
+point to it before jumping.  The second kernel's fdt_setup() calls
+efi_fdt_pointer() to detect the KHO FDT and passes it to
+early_init_dt_check_kho().
+
+Selftest support (patch 3):
+
+Patch 3 adds loongarch.conf and extends vmtest.sh to recognise loongarch64
+as a build target.  The LoongArch virt machine is FDT-only (no ACPI), so
+'earlycon' must appear on the kernel cmdline or the console UART is never
+discovered.  PS/2 input devices are disabled since QEMU's LoongArch virt
+machine has no i8042 controller; the fallback port probe hits a page fault
+and panics before reaching userspace.  QEMU provides no EFI runtime
+services on LoongArch, so machine_restart() falls through to an infinite
+idle loop after kexec; QEMU_TIMEOUT=120 in loongarch.conf lets timeout(1)
+terminate QEMU once the time limit is reached.
+
+Changes in v3:
+- Merge selftest patches 3 and 4 from v2 into a single patch
+- Replace QEMU_NEEDS_KILL/background kill loop with QEMU_TIMEOUT/timeout(1);
+  the timeout value is set per-arch in the conf file.
+
+George Guo (3):
+  LoongArch: kexec: add KHO support for FDT-based systems
+  LoongArch: kexec: add KHO support for ACPI-only systems
+  selftests/kho: add LoongArch vmtest support
+
+ arch/loongarch/Kconfig                     |   3 +
+ arch/loongarch/include/asm/kexec.h         |   7 +
+ arch/loongarch/kernel/machine_kexec.c      |  38 +++
+ arch/loongarch/kernel/machine_kexec_file.c | 256 +++++++++++++++++++++
+ arch/loongarch/kernel/setup.c              |  21 +-
+ tools/testing/selftests/kho/loongarch.conf |  13 ++
+ tools/testing/selftests/kho/vmtest.sh      |  23 +-
+ 7 files changed, 353 insertions(+), 8 deletions(-)
+ create mode 100644 tools/testing/selftests/kho/loongarch.conf
+
+--
+2.25.1
 
 
