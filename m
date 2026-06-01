@@ -4,92 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F7F5CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:44:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB263CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:45:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66DCA6B0471; Mon,  1 Jun 2026 12:44:23 -0400 (EDT)
+	id 3141D6B0473; Mon,  1 Jun 2026 12:45:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 645B36B0473; Mon,  1 Jun 2026 12:44:23 -0400 (EDT)
+	id 2EBB36B0475; Mon,  1 Jun 2026 12:45:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 582D76B0474; Mon,  1 Jun 2026 12:44:23 -0400 (EDT)
+	id 200D96B0476; Mon,  1 Jun 2026 12:45:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4471A6B0471
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:44:23 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DE1EBC2204
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:44:22 +0000 (UTC)
-X-FDA: 84831916764.25.6213E2D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E231E140019
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:44:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=c5fqtT1+;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780332261;
-	b=Ll41bkJUbVAJI6BQtcEb2T8n7GqbYapkyAhmI2kc6KDvk5OwOhpUWVjOWoJYJfp/VvZtj2
-	SpJbUemEEg3u7qSZB9aGOGXSlCybUVneO9Uu9v1l4lhUhTw6V2cecLZcOglwkbLtw4ZdMf
-	kVWgytaud+NA2FzrAXFYt/qj1PLP1hw=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=c5fqtT1+;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780332261;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F9C66B0473
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:45:15 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C49071406AC
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:45:14 +0000 (UTC)
+X-FDA: 84831918948.21.CFBC237
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B610020034
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:45:12 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DIWDkLN6;
+	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780332312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mvGbKlPMaorfIqYSu0NPB9TBFD9dBTpPD8uoSrJ/uf8=;
-	b=uIwMNbQKQe7Z/mE68FLuW2UYyE1EmmHfn6udJqfHGYTD+nCx236LBTsynicNUuaK7bSC0M
-	Z/T6BRKTMxTjZCO3ocf0d9wEpEebWku5/n2iGQx2CeRsSHgfxHKeVIvWwhbpMW6m1Nj6uF
-	0l+2vYfAgPAoBRM93LNtr3I6dI1tGNg=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 21D5B1BCA;
-	Mon,  1 Jun 2026 09:44:15 -0700 (PDT)
-Received: from [10.163.164.232] (unknown [10.163.164.232])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1342F3F632;
-	Mon,  1 Jun 2026 09:44:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780332260; bh=FE7vc9MqdE4fmTSoMt5zTtbVqHqtOgtF0vKRn9+wXLc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c5fqtT1+8I8LBLc1bebUxeZUc8VM+5CZobMAANsXoY1Fnzsd568LQELV3S4BAnsaI
-	 ZwDK1K1OHtmJPu74ydcV7hNbqZiiZIQsI6lOooKpFBOaBIOEeUdtmBdzFZRpgqzrXT
-	 rtdXOKfQ3j16dGPpa6iE3oZMUeSn8HQXxdEl3EaQ=
-Message-ID: <73762983-d48d-486f-ad5f-78015e6f95ee@arm.com>
-Date: Mon, 1 Jun 2026 22:14:11 +0530
+	bh=SuechEhgIbIp9Ei8g9Ubfks3HTEaKTHpGRK7meqRSP8=;
+	b=pDtCQx3BiP1Q9TIguD3gufiPqML0YZyJdvQdNhiiT5tk6wQmzouQaFxYVbh1HH1H6I5MnR
+	NDq+xNDijHvBtX736HXTXQvIlwN+OlT2fZw5XelG1F/KQcrKZ7DFNUpUxXYZ5C6edyCeyj
+	GkpvF95nj3YAmH6OAilstkEn2AEjq6M=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780332312;
+	b=UXX5HW0LPjExFUd40M+BKFQlIlwoHY52X7DvCMgngziywDVuAL6Du3YGKphgi4FtYf0Jh1
+	9uPHzmqer7TbIN/eNygsnkerX71BC06WMqergO7P93ZNUWcqm33oau0+0LD+qORuNalj31
+	G2BC7C3GkDpw6mPNPNTIsZLchrI3YgI=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DIWDkLN6;
+	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-45ef1198766so1814198f8f.0
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 09:45:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780332311; cv=none;
+        d=google.com; s=arc-20240605;
+        b=i+E0I2Y5dOVK0+XmB6YQBeaONbfqd4vmU4hAC8RCjIib7AFcbOF7aG/OVsyvDaC7Q4
+         wYObsj+ZOK4wcN8GLHSfhWbno1o2F3t//PZ8buqRxGzqjp0O5vTk6YQawYKWU4wjagBV
+         U4/zzWLMe6JvzMwqmCxAmL/ld6xrIpNhRHQX8zTab1jJwG/MqI9D3n/kFaCeYbG5wzYo
+         aVtd4v2jbjWn09Nk6oi2VSkLeweV4/iRBD9hP7Ebd6g93t5vaG/3XQ0hAJlQanOrP+0X
+         xxr7kK9I9G+FK34c3amjONnef4hDu75PO2Mbx2NgSll4ptQrMmOydhQiDqrAfMgb4jXW
+         QdCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SuechEhgIbIp9Ei8g9Ubfks3HTEaKTHpGRK7meqRSP8=;
+        fh=kcSdwdmlHiy94jibuOtJUmW7XE3+EE3SfZPUH+Wc1hk=;
+        b=EWJffO/FVyEJuSmbuZBtNwo7zrmem6FgRH8+PyusdJuZB5iAFdgilIPvMDZZ0Sxg63
+         50+BMo2yqZRL+oXNZxcIxXjW058M0ct1XFlwKdAew1DYZZjfiaPq1f0amtwDQVrrZL5g
+         7mQOScRTviegARuyoKeowngKdTYewkYgtZe8CF+1jKyWMUQUkgPDr9cExEO09IeOpu0m
+         KLtmZ+3cOvVklgD7y1UOIuKBFknpQMylCdyEF0P+dRsS2JkoskZyLiZuYbOKBUmmg2te
+         wLEayLP7EM8M8Zj1Z/eR5yttRbwmcX2HpV8ZD8rsBuvIT2fdtW3I2Zpqh+btv+5OmwrC
+         +aNA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780332311; x=1780937111; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SuechEhgIbIp9Ei8g9Ubfks3HTEaKTHpGRK7meqRSP8=;
+        b=DIWDkLN6JnIUR70O7U5U/4rMHviO8HUVvZ5yngMR9EEB0cbTvEsFwMdUH/tNB31pA6
+         CRRHQikqVYNSX9nPLAXAU0SBLLiP2Uih38KZFKso9nVS6pPY5guwM8NAOr4LJ/MWYCci
+         PSadJp8rtNJHTY4UKedJBruRHCiiKscVkujVtaqLra94zAVvcIlvneqZcLLp+f0nCgxq
+         VOlneNpYFN7q1yviMPP5GnOYeOQhNQ9UgK/Eo87HtNrutxTYqHHVPjBisvorUqj5EN+I
+         nQ0fvDb1SvSOr1wT2PwIl0A4zHvwA0mcMR7qEBYT2wIgSGcfa+d46DcZ/tF8M2+jA4Bl
+         xrag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780332311; x=1780937111;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SuechEhgIbIp9Ei8g9Ubfks3HTEaKTHpGRK7meqRSP8=;
+        b=ov7XUyASGosKj/wIyJ9ze1aAMbYtZPKSDD5yzB2GkeR68QYAYy5HyZEagPf+Di2GTM
+         pxpAKeiufT5FY83oHj0RgPUw/TW6kc8Zf6Kayp2UliLIAL6QkWP6oXyqWwW9xVNU4cb9
+         zQA6xCfNHOxAmFSolQl78ALLf3q+U3bTRPaA/V3/x5MdboZDHEl5jy32aShPJatah3g4
+         3TYjpDsM4e0gLYScSVgh5uzM8iAUhKrDtBv+MAJ0Nk0+34KTpOeJ1izMD1KI7wLLNWCG
+         jbczISJNaSn8oItFDKRkc4opkJg0ex/NXzuJ6P14vDQtfpYfC0JIUuRO1G2d0vXwYBYx
+         3SWw==
+X-Forwarded-Encrypted: i=1; AFNElJ8bz+2L2oYQlMB5Hp6Yhr8MHZIjNzZUkHQ+NlhbCVW7d3bSWcNxB/dSNSjeE2rMsTLKn68cCn8Ddw==@kvack.org
+X-Gm-Message-State: AOJu0Yyn5lQY7OkBqZ8nIH/KgKKgYxXKqWxyCTzXdWtYugGPqYP+gOBm
+	e0aKl2JWoemY7ipuxFCNMORSiGkLQcdzyt3Jyq12nNKNz3E4odvk/EQB2q6qdIQZU8Ot7jpnXBP
+	imLwkm2LZ0ABXc3FW1zzqzKORspGfVaM=
+X-Gm-Gg: Acq92OGfAbQh15z1YofzXBsYvljWnPS+rYlBc4v2hhtgJ8H03APD4FVbeeTmSjmsQoA
+	zZoKXd6BFrnrfU7d0jTL5hdJPKKw/3RTFVlI0tRBSdjwHk0MMX8bzLiLvMJ7a9NTG2OGwu+WBYf
+	n8bknSIKHfiml26Zf/VVB1nxtAxdgije+jzNkJ5MRyUirdbW3oD9HsZp8wbqkQQovimu5r0ayKl
+	ghVhm55j5lJdEdlkKL1rsDDWso7GsWWorKkXckDnAdn62ewkBUrCvw2xcjW2uejvIX5/z+IQ9s8
+	xAXzRSggoHO0YdfJ70QLN5hS7/oOh67e2VEmM56PEn+s1yGQ0w==
+X-Received: by 2002:a05:6000:1611:b0:45e:8526:7dcb with SMTP id
+ ffacd0b85a97d-46018cde5c3mr378861f8f.7.1780332311119; Mon, 01 Jun 2026
+ 09:45:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: use correct flags for device
- private PMD entry
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, SeongJae Park <sj@kernel.org>,
- Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260601083044.57132-1-ljs@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260601083044.57132-1-ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E231E140019
-X-Stat-Signature: izwutktkbansks3c6hbyibdywgjf4pff
-X-Rspamd-Server: rspam03
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-2-jiahao.kernel@gmail.com> <aho7nepN5jZtKmef@google.com>
+ <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com>
+In-Reply-To: <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 1 Jun 2026 09:44:58 -0700
+X-Gm-Features: AVHnY4LT_5ehEfmIR9cnGphIbcSEKQX4RD4VzS-3orz-D5X1L6ZBlUnrbx8nVYA
+Message-ID: <CAKEwX=M5KiWc8ZZTEXCXtxeBrQho3Gs-JnKmBB=YNUkp=WXaKA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor per-memcg
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, akpm@linux-foundation.org, tj@kernel.org, 
+	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
+	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Hao Jia <jiahao1@lixiang.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1780332260-830070
-X-HE-Meta: U2FsdGVkX1/VzmxXY7W9SCFonEJGUJ1VewxHNxayC2ZjcYqt9luZY61hLZRniXI3K90J1Zjg+uYJ9GTS7whTFyN/TNOftlSOOUX3bvSVNLEonW+W4nLGwMr45QQLhbAJsx0izPYj1yperYFalC+eHKXbf4eyAUeR9uvbFA1RH2ahBqfvzODBsEb4cTY5+aZSPIY5yxbVcDn3xmDrStmeW0bzb46cANzCRQzJb+CZiEecCLw42bW6zVoq9qMCfNBbwnIP4lSLzv2Tflup7SE/b34E44mJjBNeVCDXqw3KJDkjJaCWd5jDlYy/WG8xLK4wo+XnJzNcQ0OVK0tJVvVf0LbLr0B5DzRjnjmBr3Bv2yr09mIpnts73PLXJaZCB8CRRS0XbeDdxZYg+ftN5+VA0oHt4KCkyx2KXPz567mqSk3OqG9deWJFIOaZhsOyD6e/ICoUUecPEgfyOnqu/fGILlFT6XGWwb7sMCUHmQ+UbTypxugxVklkzfSrSoyyupXdjk6VYXgtGJ64+goRDPFziz1zTx7i5rPu6PycMwCW51I9eTfcYhkEByWn0oXveSrxIT/5hY3iM3dIURDK2cFyn8988g6t6w2lOzfj4jY5VfyrYQ2AK/5WIEUPMYlusP0X8mArB7uLRjd1SpFhNU8Kr7AvnQmtVpDDQ4h360IaDwq1rTiuLQ1HG/WhzU/Ksk2GBTUKQncQxHdXKLj7sWnKrk7bKZU5MKLTFwhr5p2w72cS6+3yJIuYXRXNjZaLHsY5xQwBarUg8DG94I70S4sLzi+H6caCy3hg5kEAfUspvuGW+xmcnpdD/XEoXLT8AIByFvAQMo4HP46esrCXvh+LeCiVssgr2ktKSlOgTBgb2AwIhBt6vseimsRNsph1xeEBY1I6jc2jgidcfJ3I8MP4tKtkWmlikWqBjd5cLilBHkR+GGv2j5fs6dro2jbeEojW6FC7ifIzn/5/S5hu37i
- 0Z1mx2TZ
- SgwrC6JWtz0dPAgqkv+oOnIXi2mjv+zb2WH5vqmpttqrz7NM82eCnCt66sMoW7ltxJMkovLNx/DfhewqZQLAbRHI+JqPnMG0nYXEyEKr0c6BSIrtK/BjiZryJTVxE8FxU1R9SNP4wJ8CT6GDogzqNTd5og9owk/ADOpwB4obwWQ39tH9Liesj5VtlEuV6jv10ZSxKEZJ417G+0x26DlIWroxFwsKb9MfVMWJfwuQaSRH87S5KVfZPTbqz7kQO1Gq32aZQDaeMLQOmFhe3VHM7H/mgMW6nmbzWGlI+DdOPpHjCjA/gKls8Y8uNHyTJe3MEVRGeEB5P7YFRs9Il3xRXqqqzegECQLE57VDJ9LOAgmXmLD4=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B610020034
+X-Stat-Signature: mfmzm5m7djcha55tqr7ymbh9u879i84e
+X-HE-Tag: 1780332312-477432
+X-HE-Meta: U2FsdGVkX1+CXR280jZ3bDHFuCAOM8/sOVW1usYWPTl6fhn4I4aZDLhjNB3E7K6GNZhBOpGCHLQU9ylPMdcVGpXes5PodNUWnpE1dzMa+NNssgye7q6rMpQaZwcrZdDatjZPAX3nggWamU0kTrpN7mZUSWnrb3asL22rplnVtPmSAkZQ/EatjCXauYkgCQ9feyxRHKw8q7M/Dlqkas9+8556xaEqGSq+TQESK1WsvozLzqup48LAEQKuZwgxLpgh5D8knB+LNCU4k7gd8fuxwFlgj+SJ91oDV4ublP12S0esaILlpGUKCzmnEHhdb8oaRzF+wRt8KpDwps6P61+5L8MQFzcH5nR7u2Y5KcfYBZlsmA/w/h/+2ZltUAC43vosjg2pB93M/dgKHie/XvmmDX4ZwDHuVMA+OwVs79GQOCzA0XWKsk9y8RFPhjWe8CneAhUdkA4g1KzcoF+ui1OuTCj1Quh2gDN/y9/Rez479pLwzj5Pr+xRvCgpGR4bwor0awHg1KkM4lFv0mgKIHO5VT9wnkVwKHM6kKJ3/66q1Y1MHXJLJbClRsCDUgAQ8ct80HMYw1JQg1xBoMdcJ952y5Z12urC1I78bNPZIEcBociXaJAepxGIIsbeWuNrY1S2LA5mJ28lzHlxowIYveff9x/v/TQXQyZ4X80BsOoxW6qCY5sSa7ay/c4izXU4HtQCAp+dalo+ECCgND/XixygYcMz2GKOjEWyVgrU+AmB3JvLNQpDjZjTeQcJEHqKCaOTIMFOuR7U06DGxrsEb+bVPvdNfiruTNz2sAK39zV52lcd+WjHK1XpEMSfF6iupkIriHY2J9slvG+bQOm4/+cMMWIpvYKJaQxTeO4djL+eqFrKQH5atbI2ibg10HIKjLZVaf7OsVknt99HGdOpWw/RPD5zk1jTg4uwZDqXSetllBLwQd0fkNoxok2tx+kXFj/h49jPVeYGW2RGZPhgLJP
+ x9UWelaU
+ ZbtsNYoffXrlKR2B9cTZ4O8zPa9hrtHap7TCh9phSM2fLqCM3Bj02GiowDdUX4g2aH42E/6WIy5Gg5d1anKtN2IeMueDLU8r+qW0ZNrBMXmG7nZll/8efyeL4kTiS7+d3p6e8UiVrRVlW8tf0mQ+btKvjd2EFr75/Etzdw22/wiNPRN8CwVB5wL4uNbB8dcrVUGGS5Hc2ub/AbrKs+bOd/xoeOKbuPP8EebRPBBP6mOLs6hS/wT/pDid7E7ocgUcHrAnJ2f2CFUXyGhX2C42KSSDp7GDxOUTXEiAlYWdjNYSNE5GIyGAMomrPGq4SJxOR76B09+xEMIpaBHQzUlD6tQbBXFvF4rMlrddBBZJQejzrZoMsj+cQgVSmyBLU+xpccZF8sb8rI0MspN7BDYKKupW63f0R+BAxg6lb/AK87osoOBwXbMDqIi55hdCoS95usVoBr5MHNwDl0qst/0Vh+ST88Pa1wMvYsuG5CYppV737GrPrAW8T30uuxQLBTGOBpQfYu0uv0hmFj6JYwbuVNg51lpG/Uh2l6u60zVwJnlXmocHgH4SR2ynvxPBu2KSpen3pMTQJ9c7SiZDAZKV5Mq1Vg9ABEXRurbU3w2ob3EPv0UQK59buROrAViBj41e8Q8gQF4uucf5qJ1veOK6ZXvXLDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,171 +144,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Jun 1, 2026 at 4:07=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> wr=
+ote:
+>
+>
+>
+> On 2026/5/30 09:24, Yosry Ahmed wrote:
+> > On Tue, May 26, 2026 at 07:45:58PM +0800, Hao Jia wrote:
+> >> From: Hao Jia <jiahao1@lixiang.com>
+> >>
+> >> The zswap background writeback worker shrink_worker() uses a global
+> >> cursor zswap_next_shrink, protected by zswap_shrink_lock, to round-rob=
+in
+> >> across the online memcgs under root_mem_cgroup.
+> >>
+> >> Proactive writeback also wants a similar per-memcg cursor that is
+> >> scoped to the specified memcg, so that repeated invocations against
+> >> the same memcg make forward progress across its descendant memcgs
+> >> instead of restarting from the first child memcg each time.
+> >
+> > Is this a problem in practice?
+> >
+> > Is the concern the overhead of scanning memcgs repeatedly, or lack of
+> > fairness? I wonder if we should just do writeback in batches from all
+> > memcgs, similar to how reclaim does it, then evaluate at the end if we
+> > need to start over?
+> >
+>
+> Not using a per-cgroup cursor will cause issues for "repeated
+> small-budget calls" cases. For example, repeatedly triggering a 2MB
+> writeback might result in only writing back pages from the first few
+> child memcgs every time. In the worst-case scenario (where the writeback
+> amount is less than WB_BATCH), it might only ever write back from the
+> first child memcg.
+>
+> Similar to how memory reclaim uses mem_cgroup_iter() (via struct
+> mem_cgroup_reclaim_iter) and the old shrink_worker() used
+> zswap_next_shrink, we need a shared cursor here.
+>
+>
+> >>
+> >> Naturally, group the cursor and its protecting spinlock into a
+> >> zswap_wb_iter struct, and make it a member of struct mem_cgroup to
+> >> realize per-memcg cursor management. Accordingly, shrink_worker() now
+> >> uses the lock and cursor in root_mem_cgroup->zswap_wb_iter.
+> >
+> > If we really need to have per-memcg cursors (I am not a big fan), I
+> > think we can minimize the overhead by making the cursor updates use
+> > atomic cmpxchg instead of having a per-memcg lock.
+> >
+>
+> Because mem_cgroup_iter() always calls css_put(&prev->css), we cannot
+> simply update zswap_wb_iter.pos via cmpxchg() after calling it. Doing so
+> could lead to a double css_put() issue on prev->css.
+>
+> Therefore, if we switch to the cmpxchg() approach, we wouldn't be able
+> to reuse the existing mem_cgroup_iter() logic. We would have to write a
+> new function similar to cgroup_iter(), and its implementation might end
+> up looking a bit obscure/complex.
+>
+> Currently, this lock is only used in shrink_memcg(), proactive
+> writeback, and mem_cgroup_css_offline(). Note that shrink_memcg() only
+> acquires the lock of the root cgroup, and mem_cgroup_css_offline() is
+> unlikely to be a hot path.
+>
+> So, should we keep the spin_lock or go with the cmpxchg() approach?
+> Yosry and Nhat, what are your thoughts on this?
 
+TBH, I think the spinlock is simpler at this point if we need to do
+all of this explanation to justify correctness of cmpxchg :)
 
-On 01/06/26 2:00 pm, Lorenzo Stoakes wrote:
-> Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> device-private entries") updated set_pmd_migration_entry() to use
-> pmdp_huge_get_and_clear() in the softleaf case, but made no further
-> adjustments to the function itself.
-> 
-> Therefore this function continues to incorrectly use pmd_write(),
-> pmd_soft_dirty() and pmd_uffd_wp() to determine whether the installed
-> migration entry should be marked writable, softdirty or uffd-wp
-> respectively.
-> 
-> Whilst all are incorrect, the most problematic of these is pmd_write(), as
-> this can lead to corrupted rmap state.
-> 
-> On x86-64 _PAGE_SWP_SOFT_DIRTY is aliased to _PAGE_RW. So calling
-> pmd_write() on a softleaf will return the softdirty state encoded in the
-> entry, assuming CONFIG_MEM_SOFT_DIRTY was enabled.
-> 
-> This was observed when running the hmm.hmm_device_private.anon_write_child
-> selftest:
-> 
-> 1. The test faults in a range then migrates it such that a device-private
->    THP range is established.
-> 
-> 2. The parent then migrates it to a device-private writable PMD entry whose
->    folio is entirely AnonExclusive with entire_mapcount=1, softdirty set
->    (accidentally correct write state).
-> 
-> 3. The parent forks and the PMD entries are set to device-private read only
->    entries, entire_mapcount=2, softdirty still set.
-> 
-> 4. [BUG] The child writes to the range then migrates to RAM - intending to
->    install non-writable migration entries - but replacing parent and child
->    PMD mappings with WRITABLE entries due to misinterpreting the softdirty
->    bit.
-> 
-> 5. In remove_migration_pmd(), if !softleaf_is_migration_read(entry) we
->    set the RMAP_EXCLUSIVE flag when calling folio_add_anon_rmap_pmd() for
->    both parent and child, which are therefore AnonExclusive.
-> 
-> 6. [SPLAT] Child sets migrated folio entire_mapcount=1, parent sets
->    entire_mapcount=2 and we end up with an AnonExclusive folio with
->    entire_mapcount=2! Assert fires in __folio_add_anon_rmap():
-> 
-> 		VM_WARN_ON_FOLIO(folio_test_large(folio) &&
-> 				 folio_entire_mapcount(folio) > 1 &&
-> 				 PageAnonExclusive(cur_page), folio)
-> 
-> This patch fixes the issue by correctly referencing the softleaf entry
-> fields for writable, softdirty and uffd-wp in set_pmd_migration_entry().
-> 
-> It also only updates A/D flags if the entry is present as these are
-> otherwise not meaningful for a softleaf entry.
-> 
-> This patch also flips the if (!present) { ... } else { ... } logic in
-> set_pmd_migration_entry() so it is easier to understand, and adds some
-> comments to make things clearer.
-> 
-> I was able to bisect this to commit 775465fd26a3 ("lib/test_hmm: add zone
-> device private THP test infrastructure") which first exposes this bug as it
-> was the commit that permitted test_hmm to generate the test.
-> 
-> However commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> device-private entries") is the commit that actually enabled this
-> behaviour.
-> 
-> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
-
-Had a look again and can't find anything so:
-
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-
->  mm/huge_memory.c | 45 +++++++++++++++++++++++++++++++++------------
->  1 file changed, 33 insertions(+), 12 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index bf9b480bb3b0..79463c709c98 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4982,7 +4982,7 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
->  	struct vm_area_struct *vma = pvmw->vma;
->  	struct mm_struct *mm = vma->vm_mm;
->  	unsigned long address = pvmw->address;
-> -	bool anon_exclusive;
-> +	bool anon_exclusive, present, writable, softdirty, uffd_wp;
->  	pmd_t pmdval;
->  	swp_entry_t entry;
->  	pmd_t pmdswp;
-> @@ -4990,12 +4990,26 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
->  	if (!(pvmw->pmd && !pvmw->pte))
->  		return 0;
-> 
-> -	flush_cache_range(vma, address, address + HPAGE_PMD_SIZE);
-> -	if (unlikely(!pmd_present(*pvmw->pmd)))
-> -		pmdval = pmdp_huge_get_and_clear(vma->vm_mm, address, pvmw->pmd);
-> -	else
-> +	present = pmd_present(*pvmw->pmd);
-> +	if (likely(present)) {
-> +		flush_cache_range(vma, address, address + HPAGE_PMD_SIZE);
-> +
->  		pmdval = pmdp_invalidate(vma, address, pvmw->pmd);
-> 
-> +		writable = pmd_write(pmdval);
-> +		softdirty = pmd_soft_dirty(pmdval);
-> +		uffd_wp = pmd_uffd_wp(pmdval);
-> +	} else {
-> +		softleaf_t old_entry;
-> +
-> +		pmdval = pmdp_huge_get_and_clear(vma->vm_mm, address, pvmw->pmd);
-> +		old_entry = softleaf_from_pmd(pmdval);
-> +
-> +		writable = softleaf_is_device_private_write(old_entry);
-> +		softdirty = pmd_swp_soft_dirty(pmdval);
-> +		uffd_wp = pmd_swp_uffd_wp(pmdval);
-> +	}
-> +
->  	/* See folio_try_share_anon_rmap_pmd(): invalidate PMD first. */
->  	anon_exclusive = folio_test_anon(folio) && PageAnonExclusive(page);
->  	if (anon_exclusive && folio_try_share_anon_rmap_pmd(folio, page)) {
-> @@ -5003,24 +5017,31 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
->  		return -EBUSY;
->  	}
-> 
-> -	if (pmd_dirty(pmdval))
-> -		folio_mark_dirty(folio);
-> -	if (pmd_write(pmdval))
-> +	/* Determine type of migration entry. */
-> +	if (writable)
->  		entry = make_writable_migration_entry(page_to_pfn(page));
->  	else if (anon_exclusive)
->  		entry = make_readable_exclusive_migration_entry(page_to_pfn(page));
->  	else
->  		entry = make_readable_migration_entry(page_to_pfn(page));
-> -	if (pmd_young(pmdval))
-> +
-> +	/* Set A/D bits as necessary. */
-> +	if (present && pmd_young(pmdval))
->  		entry = make_migration_entry_young(entry);
-> -	if (pmd_dirty(pmdval))
-> +	if (present && pmd_dirty(pmdval)) {
-> +		folio_mark_dirty(folio);
->  		entry = make_migration_entry_dirty(entry);
-> +	}
-> +
-> +	/* Set PMD. */
->  	pmdswp = swp_entry_to_pmd(entry);
-> -	if (pmd_soft_dirty(pmdval))
-> +	if (softdirty)
->  		pmdswp = pmd_swp_mksoft_dirty(pmdswp);
-> -	if (pmd_uffd_wp(pmdval))
-> +	if (uffd_wp)
->  		pmdswp = pmd_swp_mkuffd_wp(pmdswp);
->  	set_pmd_at(mm, address, pvmw->pmd, pmdswp);
-> +
-> +	/* Migration entry installed: cleanup rmap, folio. */
->  	folio_remove_rmap_pmd(folio, page, vma);
->  	folio_put(folio);
->  	trace_set_migration_pmd(address, pmd_val(pmdswp));
-> --
-> 2.54.0
-
+That said, if memcg folks feel like an extra spinlock per cgroup is a
+bit much, we can go with the cmpxchg() approach. Please include a FAT
+comment explains the compxchg() approach's nuance in the code though.
+Speaking from experience, I will forget why it is correct 2 months
+after the patch lands :)
 
