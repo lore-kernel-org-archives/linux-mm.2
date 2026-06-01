@@ -4,101 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEE00CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:07:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FBE0CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:08:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 099D36B0182; Mon,  1 Jun 2026 10:07:47 -0400 (EDT)
+	id C5A156B03B9; Mon,  1 Jun 2026 10:08:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 023316B017C; Mon,  1 Jun 2026 10:07:46 -0400 (EDT)
+	id C0B736B03BD; Mon,  1 Jun 2026 10:08:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E563F6B0127; Mon,  1 Jun 2026 10:07:46 -0400 (EDT)
+	id B20CC6B03BE; Mon,  1 Jun 2026 10:08:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D29F36B03B9
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:07:46 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9ADECC25E4
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:07:46 +0000 (UTC)
-X-FDA: 84831522132.15.56BE970
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0250514000F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:07:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fwZuGsqW;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A20536B03B9
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:08:32 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 434A21625DD
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:08:32 +0000 (UTC)
+X-FDA: 84831524064.04.32C6FCE
+Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1EB2220003
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:08:29 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="f 50Wdhm";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=CvRImn96;
+	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780322865;
+	s=arc-20220608; t=1780322910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xV5oIFC9FNSfUrc/Tw1WKRTCW2A5//7Qu9iRmyYgTvM=;
-	b=e+dQqRV38J6sUgmY3CjbdNJkMuRdP8tCOoEeWILdJrYetoLZvAFYIkQ2fpUjjjdSflJds7
-	ClQPGQVIldvWZMtpsLDIvB/VzUUJlCKNzPtnkf99oBaFP4d4mFF2uvmjDfnGzzJ9mmV2si
-	/O64ozos1k/yy3XHaF9rfYKXcXa3oFM=
+	bh=6HDDCmBpB46gXJk6VrxDM/1W+kwWfioTlj1zjppZnik=;
+	b=avzbd8kqur3CCKP4y+ruiKWOhzrp19lRCLpGinrbqxpFzkTPRRkkaU9tR4n1nLwjm96hN1
+	AOKYLir490zdLvHwT4j1Pt0L6p6nklDjMHGYBfaYozoRtomvLpUrLfyRJEBfFDy0wAYpnv
+	wGPbtrxkG7NmEumZQVkLDVf7wDIixgY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fwZuGsqW;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780322865; a=rsa-sha256;
+	imf31.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="f 50Wdhm";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=CvRImn96;
+	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780322910; a=rsa-sha256;
 	cv=none;
-	b=dlKdAmf2IbXBaRcxRjOqm61yDaxhVFGLyVdzWG9bG8u5iH0F5QF/+w6PjeE/kNJwOFDE9U
-	VWSKFLxd7okP1EFl0/t1eU4yXc9MKmnIc6DTrcCUUco+cikJknNiHwMxsFdq8mlKc3SFld
-	jk1/D1hIvxxDqwziSqd0GsHqeDpPMMw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5EA64600AA;
-	Mon,  1 Jun 2026 14:07:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939081F00893;
-	Mon,  1 Jun 2026 14:07:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780322864;
-	bh=xV5oIFC9FNSfUrc/Tw1WKRTCW2A5//7Qu9iRmyYgTvM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fwZuGsqWBa6HD8SGBpxDRBSQcOHZrYGDQmAKJ4dA6W4CsME7Y3sOPejh2PD2bdYMB
-	 Np2hqbz4QLVteWzCVcczlkJCyPaSOcJHMz03gaaBqG439JZ9sT3M0wFAtyyu0O5EfF
-	 MLww95kfytpWxPtUuFxvIOuBnyW0scY4lVMM3eqokX6tBRhFVyHB2WCjVLx6R1w49n
-	 aB4NJH7P/LughfryadrV63GoqDoh96o9LsOLVn1TNLwouHtVilsjDf8EmZEMD5Nh9D
-	 P0855nIPngyprB/6KkMmz58FaNV738ca80fE0H0uXDgO90P7jMtyeml8HzRijMkkhi
-	 QtXHYjI5Fuxqg==
-Date: Mon, 1 Jun 2026 15:07:29 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
-	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com, 
-	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, 
-	jackmanb@google.com, jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, 
-	kas@kernel.org, lance.yang@linux.dev, liam@infradead.org, 
-	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
-	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
-	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
-	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
-	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
-	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v18 05/14] mm/khugepaged: require
- collapse_huge_page to enter/exit with the lock dropped
-Message-ID: <ah2Ro54tMDMsPevk@lucifer>
-References: <20260522150009.121603-1-npache@redhat.com>
- <20260522150009.121603-6-npache@redhat.com>
+	b=jqnYTa0alkxwFDVHqXFjjJnmZ5L1HplN2SPw6mut9zudiA+tqr0hO8ZTFFM7J4cWt4rxJI
+	WSNFa4qB2okkV34TX+BS6fX4GY4OYLheenyFwh+CXcAdl+jUWGFpM+2nYZtRnYa5eaG4QP
+	KaL85nYE6LG07/YtJbzdQYSUctXfNnI=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 6159D138036F;
+	Mon,  1 Jun 2026 10:08:29 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 01 Jun 2026 10:08:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1780322909; x=
+	1780330109; bh=6HDDCmBpB46gXJk6VrxDM/1W+kwWfioTlj1zjppZnik=; b=f
+	50WdhmnpWrbof2mJ2n/2UVxDplIY7apqkAwaX3Q51n+2ecxAgDySUL5IDRrXlOJ+
+	XbRK6eVw0o6T8SoGqO55t61lq8X0rJ8yqMg0Oj0/YTe4zDAhaRY0YTcDGO3gHmFh
+	czlzNLS8l8aezOYXLkChuAzc9LgIqSoe9726YTGhhj9ITtx0nr0SXGb1w8039vFd
+	KnkhoHTbarirYSdeTwHsKVo/wPbXA1z6sVEAyiP5d7lOwt9pzekFWAxtWY+euBqW
+	/NpmyrU8tvyZ7Z1ezTjAcQUfL7mQN/DsKgAwVgHE5uXB18aP584jg1vXhYMv9ml+
+	mO/orrjuFL5JKZP0sg+/w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1780322909; x=1780330109; bh=6HDDCmBpB46gXJk6VrxDM/1W+kwWfioTlj1
+	zjppZnik=; b=CvRImn96/UrYQ85ylvZ+0YQu1dYcYhQrJ/EWqM44Rh9tjjq5Fwt
+	gzbD9Tb5uAfRfjNQgH/bl9tUdCMF1C9CMXBoxgGtlWFCoGNwFS0kHTHpc20Xkg89
+	UvzAp1IZCK33naObZ3XBHlRiIKw4gwE0dcYOa/rb+b7g2Tb8qoL3JHTEB5GT5J+z
+	qNe3zHcvfBQ+CEs3UTNzCp0OtIu+PSY8iGaIMCl5OeQ3q3YphRddj5dh8Snop3Df
+	76p14boGljDfykuPIiIkGYOQU88+iTlDSudW6zwA6Mzqj5Qj6UOT6O+yiMMCAfXj
+	eGIFbPZsfPnfC4KyqVS6qYPKCRdUbhy24Pg==
+X-ME-Sender: <xms:XJIdau2xNcew9NuQylE1EIgpeCCBoXgEIiNeyCvfv3YVoQsMtPd0Kw>
+    <xme:XJIdapc4kaGaDMTxpX3X_zoIxOSPfYSVC60hylGhnwS-lA32IZI0ScXXKwz4yKcut
+    i_8brCswi5BjvknID5IOPoUTtUYbILWoLsXXpyCTec49HVfMYGCxg>
+X-ME-Received: <xmr:XJIdahIIGAJBaKj_iMiMWKvfNDVSRON2K1MTGdr5WQkvP7b7PX2fIIsvKSIvKg>
+X-ME-Proxy-Cause: dmFkZTGG+BPfjueacM86TULJZov8aM9JltReYywddMsHkqeW/iXnPY1AlEvzFqfAb+8UuU
+    kNZHKVUMC+w9mwOzblnHRrtqxDaCmrUv/w7iNRp49/rvhBpC6pp2Swn/kZehABqD2cas8k
+    c7UzhEknhBUQfFoiS8CgQAYkLul89H8iAHdZwrIlcSNrtueukIU4xMTcEr3noYPBWYPZ8z
+    FCDhZwW33wsmILwqnP7FOfhpiydyfG9hXHD9CoZmhGqLrO/ZbcH2ceeBPWg6GWHjlZNaqR
+    8anKZkuTcuSdvA3dV3YHI+bnCc3KKaMj5+rUrICdWNQjrGH5IxkwUmhQSTbe1ETCoSh9k7
+    4ZswLeUvtjDvkt6SjVF9kYNeKgo8aFf6uELdJS1viU1f0BPI4tnaINv0np9GS7PRcPA5G9
+    bUkGBC0T3ZTuE4a6BfYMiEwk2LaO2YDWmnRqoePtX60Swro9wEwSIPr/b8cZF6zA5i/vrv
+    lrwPbjGWbwr5itaeEWnKSSXSrUtpMEtegzzTZkEEkPw6OqaW0oLCTgZqfpBPi3HnoRo1kX
+    JbKctXg5jHu40wteAc43cnOuKAeNDk8JoIlk6NJptZmMCCWlBrv8shWoiPjVfLEENw/5G0
+    OPU/Ws4E79PtJv3m0XGXAB1jkEkO2lr3PBmZrz3LPLjCRRe+xEWl36bYb3rg
+X-ME-Proxy: <xmx:XJIdakal8p8R3wKv36P5NSisGj24SHLqTswt3mM6zbz94vDWNziDJw>
+    <xmx:XZIdaubBXAFmCZRBzTWPlVl0h_jFWbBAuv-VeiR3TSqUfPoqAcnROQ>
+    <xmx:XZIdavESF8h6R9fgi4zd8woXO5T7hTOwp3PBvHm7IL3ja1NE16Nhnw>
+    <xmx:XZIdahB-ks8xcu_DK9fRzojzqK_O165xdaQHcEtMz6sZVebn1u_Ucg>
+    <xmx:XZIdaiiQqxWjmz2-jomWktoe-Ad9M2KvZNTEjuPzcrurOEvoP6zwpDcI>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Jun 2026 10:08:27 -0400 (EDT)
+Date: Mon, 1 Jun 2026 15:08:19 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, akpm@linux-foundation.org, 
+	peterx@redhat.com, david@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
+Message-ID: <ah2SL2c0nMj0KBtP@thinkstation>
+References: <20260526130509.2748441-1-kirill@shutemov.name>
+ <20260526130509.2748441-5-kirill@shutemov.name>
+ <ahmQvfNk7S4F0LBj@lucifer>
+ <ahsVyQZ5UXhJLct2@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260522150009.121603-6-npache@redhat.com>
-X-Stat-Signature: qa6crqf1r64rf99rbp1b5cqcofrz1s1q
-X-Rspamd-Queue-Id: 0250514000F
+In-Reply-To: <ahsVyQZ5UXhJLct2@kernel.org>
+X-Stat-Signature: pghi8jh98cgdrguzrwdid1og6ti5rty5
+X-Rspamd-Queue-Id: 1EB2220003
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1780322864-545933
-X-HE-Meta: U2FsdGVkX1+7950W1bYf4t3yOcWSNqqV5dI1QV7agqXmQOMqTzJXMwaLiOALb/e6p56NBQW/wjR0sGB4CeMu0ZWNMrppXsZTupkyG8f3P0GC8TPc6louhFYbmTp4Jvi6EZdZS8Bgk/HlKTf5befjiUgwJ5axKRgq9ifn7f8OBP04EYwgWjxGwanm1I52GVWtk3Sf7j7FhjlgSfcrhxapoFiC1TyzbcR2KM0JjHCdR29AQdrEDIUXiBp9RfaqLF5gHUUGknPEDbEQGUyaTJlc1wB1j7AUIbvpmccHrHaelYpXvxziJpla1qJjULw7/V8gIfyhn9K4vmcO2F6F2IoG2G/5BMx9iGBcl429T+AXjweBNYRRFryD2QMSBXH5xGMo5+r90kdd8wsUGXUeeUQBpWY+9PTosmHJW38K7kYkVhH1XO7SHNupuF1hkaDUBvGzobvA9o/yRs0b4TF4J3T7wU7MGBYSj1KsXAj867u36BL7IQYYrLiFS/uzxBPDoN8BZ2Ly+Trtvr3WrXroiSp+RjNzml24xuclB3J6k718nOhnnPCrZOgfm1Cn5AUFk1GfB7RsfsfF2hse9IoyKJ4+DzblPJDQ/NF5J6gwtbCV+HsnXwm4KHAz3RUwW7kEcwbfh+j48/qJ7+/ujCmJkrtULddX509zGKyhiRkQMPUNGsr0L3Lls3VU8KG13djTCHbFIxm2esikwIdDOcMWGfakchKpuWfB1jTij7M6ITGt16cP/9SGw4xXTD31rvar88vOEauTtKxH1QZIGsWhPLPABj3M+eD7HVNQp+yVT+yWcwrjnyE1F1VzoB269u+OEEroNt3RfxJ3BGXbMWL2hmF6sVZuoJuFllpVIc0oy1nm/D+0vrdqJ4vI+jjOhkNf/PpvKn1zdBh+OMsewNrqT/9qO2Vc2PJjEeqVCwM4BXpsIFN8vgrgqHCYv9oU4L6EpONS9HkWa3wN+SN8jqAq3kH
- JtxieEH7
- SKVlELk5QW6V6QuiEv8k1YO3+xuUJlzkwvQK42/RjHklHfeQA5LYZ+C5QJyAwGULfBK5RGN6FunvwbJcmbW1BgkJG4FX/RnLoCmfjyRySXw7EmiZQQzGJ6Zct6Zugm2YhhTzOel/EThLq1D9rjiyBd7x5aI6gVPOKZwgiOMCCzPl6PzgzL+d/2kDYF6QBVGyYyLAY9jkIpWL1Fqo9Jo3oru9yQyVmoOS/37+QHraLnyglR7maj2TSzt+noSJ3p1p4MqIFpnyLsfeHYmNJH/E+Onc69DjSYnQuY8ylJXnBlXm2rWWx8EOGRGYG0U1ChRolxS32UlV6JBT4z+MzChPTkaIsKVTur9P6T9XzWWv/VAzvJtiXxpA5q74QEz0Humyji0PTtezSobE6l1u1NbY2u2FBYKBf8dZYvfg7
+X-HE-Tag: 1780322909-990909
+X-HE-Meta: U2FsdGVkX1/GYsrXkb0cR5SFR2RPL+a9T04WoAxzE6IxNmvkV4SpIZra+1K7vjzqmkf7vopaoazHAdg2GuzXoDbG2V6R52Bx+MQqb8G5m1y9qapz4bPWyEQy3Yqt1TuXZxg5kiGKE3IiujRAw5vXh670pHmPvacaTnYXxdoGMKVpx/noe6rgQ6ceDISBNt315yUdTH6hEIz9gjlKQYIWfcQgecc7Vu+AHunf4pScw+fwDUxp0TnO37/uXNWtF2eNRntQIYiNqyAnG4Q0HQD1EOnG3xqpnauH5UmiVc4Fwu/WY+Nh/iA0OC4dUBlGV7HZuJwh7hwigXAvGtRPld6ajjuOSGkb8FoHWY/fLd1uG+zi57tEjts0tQtYbM7wYjtZoY3RIdyzhYI/MBxzFSjz0KBFGBPBSsPi61efywbtily3PUE8UKJTu1Rr5r6BILixnJMCv75PH0tqsAEccgeaoFwESt53x+1HzdgIgI577803a/mrN11zfe5+UqPI9vOOrkkVdYYkDWIzjNEvZBICUkzNFasOv/T4T+yAfC/+xVrX1lyi+FoyQ/8SBJ67QXuAxlGCdiIuvhGqhyUI7Jl4ijllixKFD+4R6pDs1UCBPOUhbabLKu0CzmQkCW4/RR2RGRZ6WIl/AvwWqjRPLNE4dxSYD2S0eY18UQUMcF0Fg5oc+Y/zh9zsocM9YIR598+cK35zvWyp4SrhPCmAU/CB7tbWsr0NvX+kqVLcLHxY+oNWnnYdK+BwedfEOcdNZgvHAddwmzoyrCgwxkfOrifVUg8wcvkL3dCudRPFqTfNonoqxrf9GpOWIfSohrrxoBx0LMDs5VlPCv6y8YDYeXle/Bjqsq+G0HlJOIH2ZGhrU5yQZ8zlcaVsHZtLKSYrOeMeJzPwxA73Tt0yBFauem1UcJ1dyJl9w+qyuTHW3L2sxWi3k+yEFULKh5s79t8nlPFHn9VKq1KlKT2X/Y5gz3a
+ nmmRS6xT
+ pJ+wOmDUCAc4s6nqw0sftvI8bYwvTim0Q4LVXzinOcB/413ym3P6bE0UN0ptmYgA1BMnCF4Hb9wCsf2KpKWIhNo3ptKvHF4+Tb9HLxSOkc7tmpr6nGbEMmq83K262sLBzUPsQ/TPLw3PGxEBO21BRMoBipCkri38j61+L6tivLVw+NY+4QUfwRrokchMlyaX+5O2cE2ghzcfWWqDDEKbu7FP301QeL84ABHwZJffUkNk7noIreO9xMKhuu0CUJ2wTjKUt3gcm98acrN2rH6OWnCiSaVTPsnIx28Wh4h95JRuLlgFCAdlr+w11ZmvqEaZF/cIaB4X6QVt1NOTclUELemUl1Tz7di00x75FmcGi6DDWjZXKXVThLC7HAcBcVp0GctGW49as7PxGRV9iDW7cvMiTaZZvsNacgqfiqyi+jcEHnQiysXijBHNavKsmDidYbEABL8IHL0+lUdGo/HKnitu4meRM1b+ZaKN4B+8S3E860lGxGwMgBO+q2gnEyVReVrSb2fazrQzFM/E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,78 +135,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 09:00:00AM -0600, Nico Pache wrote:
-> Currently the collapse_huge_page function requires the mmap_read_lock to
-> enter with it held, and exit with it dropped. This function moves the
-> unlock into its parent caller, and changes this semantic to requiring it
-> to enter/exit with it always unlocked.
->
-> In future patches, we need this expectation, as for in mTHP collapse, we
-> may have already have dropped the lock, and do not want to conditionally
-> check for this by passing through the lock_dropped variable.
->
-> No functional change is expected as one of the first things the
-> collapse_huge_page function does is drop this lock before allocating the
-> hugepage.
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Nico Pache <npache@redhat.com>
+On Sat, May 30, 2026 at 07:52:25PM +0300, Mike Rapoport wrote:
+> I have a PoC of yet another alternative:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=uffd/vm-flags
+> 
+> The idea there is to keep a single VMA flag, VMA_UFFD_BIT/VM_UFFD and move
+> all the rest into what's now struct vm_userfaultfd_ctx.
 
-One small nit below, otherwise LGTM, so:
+Nice!
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+I assume it can go on top what I did, right?
 
-> ---
->  mm/khugepaged.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index e98ba5b15163..fab35d318641 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1208,6 +1208,12 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
->  	return SCAN_SUCCEED;
->  }
->
-> +/*
-> + * collapse_huge_page expects the mmap_lock to be unlocked before entering and
-> + * will always return with the lock unlocked, to avoid holding the mmap_lock
-> + * while allocating a THP, as that could trigger direct reclaim/compaction.
-> + * Note that the VMA must be rechecked after grabbing the mmap_lock again.
-> + */
->  static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long address,
->  		int referenced, int unmapped, struct collapse_control *cc)
->  {
-> @@ -1223,14 +1229,6 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
->
->  	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
->
-> -	/*
-> -	 * Before allocating the hugepage, release the mmap_lock read lock.
-> -	 * The allocation can take potentially a long time if it involves
-> -	 * sync compaction, and we do not need to hold the mmap_lock during
-> -	 * that. We will recheck the vma after taking it again in write mode.
-> -	 */
-> -	mmap_read_unlock(mm);
-> -
-
-NIT: Maybe worth an mmap_assert_locked()?
-
->  	result = alloc_charge_folio(&folio, mm, cc, HPAGE_PMD_ORDER);
->  	if (result != SCAN_SUCCEED)
->  		goto out_nolock;
-> @@ -1535,6 +1533,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->  out_unmap:
->  	pte_unmap_unlock(pte, ptl);
->  	if (result == SCAN_SUCCEED) {
-> +		/* collapse_huge_page expects the lock to be dropped before calling */
-> +		mmap_read_unlock(mm);
->  		result = collapse_huge_page(mm, start_addr, referenced,
->  					    unmapped, cc);
->  		/* collapse_huge_page will return with the mmap_lock released */
-> --
-> 2.54.0
->
-
-Cheers, Lorenzo
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
