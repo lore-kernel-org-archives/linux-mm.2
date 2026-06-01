@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63DC7CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:08:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D920CD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:09:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C903F6B0359; Mon,  1 Jun 2026 08:08:52 -0400 (EDT)
+	id E3F526B035B; Mon,  1 Jun 2026 08:09:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C68A86B035B; Mon,  1 Jun 2026 08:08:52 -0400 (EDT)
+	id E16976B035D; Mon,  1 Jun 2026 08:09:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7E746B035C; Mon,  1 Jun 2026 08:08:52 -0400 (EDT)
+	id D53576B035E; Mon,  1 Jun 2026 08:09:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A77FE6B0359
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:08:52 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4BB539079A
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:08:52 +0000 (UTC)
-X-FDA: 84831222504.10.0CE3930
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B16B980008
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:08:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=etuz+XML;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C53946B035B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:09:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8055B1C0B3E
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:09:21 +0000 (UTC)
+X-FDA: 84831223722.19.E5CCECB
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1BF5EC000E
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:09:17 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ktvkqc9S;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780315730;
+	s=arc-20220608; t=1780315759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kLN2nxCenCFriMHbgZyJm69uVh8thx2Q/wX1arVTgj4=;
-	b=ysxfayQVzwAoN5251yVOuJ9i9lsnzbq4A8ZuyrPev8g8NSThn7doB0jZhXOLx5rogAzP7w
-	6+kl3yL4NMFcuLgr9zS/tZVx5HOn6noPhYmA1g5WSDmJg8/KGDFPNvaAP0aEiKWo6Ytsgp
-	I3YV5rebD+hj5/dcd+cB9TcAuEumX9M=
+	bh=WfB0ZqR87Vb3EIeBR7rBV20qtEzbHkO/sIK+WTO1F1c=;
+	b=LC+viMpVpzoeFnZ4+g1AWxmOjfkBM8f/hBczQX0lJpOnSUYo1T9qSj2gVpdxwF3tbA/2Pz
+	9lfEyZ+0n0+k/qLdSrdXzq0n+99itmrXQQKGsBAcAdgj0bSXdNpf5Y38cGlHDowhaDIBXR
+	oIT8vsaETZGz+wMjeul/O0u0ZzP+3n8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=etuz+XML;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780315730; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ktvkqc9S;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780315759; a=rsa-sha256;
 	cv=none;
-	b=gqNO3TYND4Bm3hqQR2vJ7+IPTELtNHfDH/ZzuEeCw8bIHY5Z9QycnqhF7ST4DCrlzP4YvH
-	QfqpsxVCE1GHiVMVBDSMvdmI2C87zgPndHFrS3IrUOohYUgB2HxIVApqBAKwHZv51YmW4/
-	zKjhB9zsFcvzO6cY1XipHKVeOvPiOaI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0D6A4435C0;
-	Mon,  1 Jun 2026 12:08:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D831F00893;
-	Mon,  1 Jun 2026 12:08:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780315729;
-	bh=kLN2nxCenCFriMHbgZyJm69uVh8thx2Q/wX1arVTgj4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=etuz+XML6WCHoCiD6XZWDdtBmSvYoflYOOwpy3l0IcSrWBqMMsconlpV2HkKJ2/Du
-	 v+/3YyNCA2PIRV+OGXcws3jTDOkhMyoDKYW0nRNyv8RYufZEpwplNpN9lXifvBMOkK
-	 SkOldw71OnXelPchHVQWVcYH/O4Tqt58tPSpPDQ5dgH4cFocz1Dqtdk13+O8UHszdD
-	 QW1BRMUl1adBZ1kzAH3ZySXT4BfdxDLXpooMf/zqabNi14LAptzE3wcy6PH7aSE+VE
-	 NhxpmTPXnNe7o09HePI0qteYo5tk5km3nviSGcTJic/L5YV4nrgZ/70+oxWwPalpRt
-	 zSZTfOrsAB+Fg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
-  akpm@linux-foundation.org,  linux-mm@kvack.org,
-  skhan@linuxfoundation.org,  linux-doc@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  corbet@lwn.net,  dmatlack@google.com,
-  kexec@lists.infradead.org,  pratyush@kernel.org,  skhawaja@google.com,
-  graf@amazon.com
-Subject: Re: [PATCH v4 01/13] liveupdate: change file_set->count type to u64
- for type safety
-In-Reply-To: <20260530221938.115978-2-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Sat, 30 May 2026 22:19:26 +0000")
-References: <20260530221938.115978-1-pasha.tatashin@soleen.com>
-	<20260530221938.115978-2-pasha.tatashin@soleen.com>
-Date: Mon, 01 Jun 2026 14:08:46 +0200
-Message-ID: <2vxz8q8yh38x.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=oifjt0MWxqIjgi9R7gN/dSn644zppXssFyvNOiUfSEhFzc/W9WaDx4cM3zLeczlqhFd3h6
+	rirnUqemjGCA+GS+iGHDycJNRIqHiIEHsF3ZPHg0xKe8r5SV3Kh9Ws2Mx78/+Nn/w5svoZ
+	HYFAs0KAGsIhLbS6j7HiyP12f5yT2Io=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1780315753; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=WfB0ZqR87Vb3EIeBR7rBV20qtEzbHkO/sIK+WTO1F1c=;
+	b=Ktvkqc9SCgNrFJNPLRSMRyIDPRVOCI9iwONxZkZyWk5MogF8zId/+zB3EiuV15kF5auUCfVTaxU1tISP1jHYNQ8Gyp1qR6Q/Le1kbkQ4j5GOSwwQXJK+BoFRaMks48wlZgHkBY+toCcuQ0FyP2cx3ssH3bzijEjQbzGHWiRwOsU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X4.VMA8_1780315750;
+Received: from 30.166.19.62(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4.VMA8_1780315750 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 01 Jun 2026 20:09:11 +0800
+Message-ID: <bbf10c67-435a-4a32-97d4-a90fed2fecf8@linux.alibaba.com>
+Date: Mon, 1 Jun 2026 20:09:10 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: qqcyq878kmzpasf3bjnadgbrfy7piajk
-X-Rspamd-Queue-Id: B16B980008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 07/14] mm: shmem: allow THP support determination at
+ folio allocation time
+To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, david@kernel.org, ziy@nvidia.com, lance.yang@linux.dev
+Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, ira.weiny@intel.com, hughd@google.com,
+ dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
+ ljs@kernel.org
+References: <cover.1780066530.git.luizcap@redhat.com>
+ <144e7639734a501340bffe5652f8ce32b3657e23.1780066530.git.luizcap@redhat.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <144e7639734a501340bffe5652f8ce32b3657e23.1780066530.git.luizcap@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1BF5EC000E
+X-Stat-Signature: p9cdxgo8fbny8pskm4koei4u8owui8y8
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780315730-606069
-X-HE-Meta: U2FsdGVkX1+4QaC5RNDif8Tb73RyRdyYM3/oj8nvBXffT3bD5T02IF44/o1dbyOFe5PQdxeSukMX1tJRwihf2yc/3tAK++AREde/Yo7WOfgKRhNrWfDQluUh0Rd7DXd1wTu+ul5nrhP2Fd2jrCobHcfhvSl/kkAazK1ne3/xYeEnS9S8mii81c1eT0ZYW3Ehq/rnC2sxLhDypMdnK+QO4Xktf/1vXNE8hR4jOKxRXKbgfgdhDmGhvATOiKTT431oISRkWZGPlFn9VYTUFnlMEsU7UgMWB6b1X19yJLZ2IJJf7Kc/YgQjAwDz/ut4yCAHFDw4LDswXbbHsWT0A03DqlfoIitOuLMNenx9F5d9zRNf6Ls9esL0S6EbIz8Bt7vSGowuThIR+ty+k7e1glD6AvYxW7RbAmbEqdwV1CHNIxPweT03Qt9Od7DvLRjTxk1oz0aOYQXxBwa1bEFkhwVcp5Gvas3SnqmMooNxXe7h57UJKNmwyFEOgALs96Uz+n4J2GEMlfHXColIWihRPAvHikYwTtmH7IHQHJNihW1a+lXawcaiAM0dHP311szJYFQGU8IIIOPH/PYTfo8lCu83YdDOsVxPT+qz/ycNzbZNHw89wLJoTAjHpJB//AVm0rrid63i3NPWRaGNkrcdwPwVj5+ntUWVc7G7RbvXzoVFICA6qC8tgt5HuWatohzGJTM6AtrdWoz5LEcih4i17DJu0Wg0w6zwTIvOFdjJAtqVndMn+Kh8lKY2PwnJaJpC7w+vGNssjZICnYypQM6gOhfN5c8J/dfZAHTfVsvWAtzrCuF1W2mmnyRIERsMBGSz2mmaupoOXKWOxXLrPOyh9btzL5sJMNuqGJAWQrX6gQzA2XdWyCRCJYUEyNwuW4FJ08UgQyKBILgCfjMfHwNrQj7ZMRz9iVHNH98m0CRBcfD+6SwcELvjkC4C64vuH4XJlE2aLCV+0w+K37XcCQAO21+
- oZJSAUN+
- OMEgsMjomqOoDOIoJ20amfN9ioaR11ZERhNDPM00Qr3T/0gMlsr8C09DgU9WoadYU++eSSMMqEOB4yYrXChO25KCRuyGDEtJonqmJZIQqz5/6Rq1T7ENc2mJHkiDobnjSyfcIO4ztvsvJR21+Q8k+Z0klw4VKnsDqcBQeto39f/FciF2vTTThGFuoiMy7PoOoaxSqDFILGyLukVELdSa9F8ORtV+0wyXGVN9TF3XPMMUmkt5XaCkV+F2wcRMMNxuuXhwoxc/cBRG/KvfGuRbFYGSdatTASTQ/MRe4N/0HI+4oZek=
+X-HE-Tag: 1780315757-982532
+X-HE-Meta: U2FsdGVkX19MvShi56Hpc8tez4ns93aZgs/l345VQFhKsgXE9pEAWxntX5xeu38ib+IPH4D/3/OEShJnTzlqnhZXPyTiDBBgCr9BJFi6A1n3Kjpxxr8AxI4iMBjklCdsYhR55BrRrE6dc+ZuOrZE/Y6xF0A4swrvpgYhDoP4EmQH6ga3WYgsV02muSrzmThZO2j3/FZ1EutDWhh9BJXq08sPZ0Ua2aj37RoSJq4BphlQy9Q5YlLoStb8nDa2CqtDY0ifKnCKnOKotHMbVp4+loBibkq17tHDR7Q6vu7L+t7Cl6NaC6QVlRQjCDiMS0ZeOz4C55b8juUJgjG+ajerQHsR2k55KwXaWgc8eRO78oXHs+skfK6s7k4Ii/vRsJXQ6qOzRfiohBJ8UgAYYvNUkMmcrconOEdticORS2ad8RfXSnnwYjDmHFbH1QQLnNUAnG5p9F/a1yR/PbQnB743Vr4uFDz1VylBDvWOqiT3tve2+AnIAfzySx73BpmysrPZunS5v2qYxyA9DOcRBkUipkFjaoVQX8op7VR0zoZHvlm5kMHnJrYCDOeWAUGKEvupG25iJEg5mb/7vyl1FjbmnaoO8rSjmUIQUqKdkQsW7IWPYiHsnuwajIWy1rNPsmViOC6FHqpiH/5ylb0ncNpw5HbJfQx1jC6IrhT4RrVaBgn1w/VUJjQ7BjD2u6qNL0+buN+ykKXPxiyaTlMsKAkJcKkNxn/H0JfIySAx/JM4qpH/uLmHjp0q+33GFwjyy8JPX7xmU0dSYpwli9EhVGShAxkzT/C+yxJE+NfaZozPFwPkNmesTiR8nNGX4qG9kmqF4Wx9FbHFGDbBtWldjBkD8+0VDJHYhvEfUKv0bt1di1vcneE0xT3ZGkaU+VxVcP3F8UmBf+bo53eb9qvNTllev6crWRqGLFOELjQr9aaqshK/FZZNxe8fZcI+KXJvVDqlQNSB/iI0no6i8E8BSQA
+ QyqhLNPN
+ wZg689TMoV3ztdsIyavpCaAZjfmPKLWLPiiwhADmJlUildHWAWc1+nJodMWXBA46DCVW4MPGPju6c5l3T4HWAnlBFfH3CnNzVOnYjn86myjv3Excy3ziAQC+QjY9Zg48QfQZBPVUZwA9mkjD5vKlf0MsFa2aIafwZsB5D82ONNCzwgV2C7BimDkhaGcsAdUa6wKAkeVS6z8o83yq6GA2eOREKIoA2d/VRfamr8CIqTpRVXUPSagab/XoJoEMRfLSEFOet51I6pDG8qqTsMQbwYDKrn4xpjdlzdgExyCrpnY28kweWf/5GW6CFvvMjkHav63fkY8rVuouA9eShxysRBItmDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,19 +94,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 30 2026, Pasha Tatashin wrote:
 
-> This improves type safety and aligns the in-memory file_set->count with
-> the serialized count type. It avoids potential truncation or sign
-> conversion mismatch issues.
->
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+On 5/29/26 10:55 PM, Luiz Capitulino wrote:
+> In order to enable THP support in shmem today, besides the user
+> configuration required, the CPU must support PMD-sized pages. This
+> is the case because of the following has_transparent_hugepage()
+> usage:
+> 
+> - shmem_parse_one() and shmem_parse_huge(): Check if THP is built-in and
+>    if the CPU supports PMD-sized pages
+> 
+> - shmem_init(): Since the CONFIG_TRANSPARENT_HUGEPAGE guard is outside
+>    the code block calling has_transparent_hugepage(), the
+>    has_transparent_hugepage() call is exclusively checking if the CPU
+>    supports PMD-sized pages
+> 
+> While it's necessary to check if CONFIG_TRANSPARENT_HUGEPAGE is enabled
+> in all cases, shmem can determine THP size support at folio allocation
+> time. Therefore, drop the has_transparent_hugepage() usage listed above
+> while keeping the CONFIG_TRANSPARENT_HUGEPAGE checks.
+> 
+> Additionally, we need to check if PMD size order is supported in
+> shmem_getattr(). Use pgtable_has_pmd_leaves() for that.
+> 
+> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+> ---
+>   mm/shmem.c | 9 +++++----
+>   1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 88bc0c292f1a..108dc969b92a 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -689,7 +689,7 @@ static int shmem_parse_huge(const char *str)
+>   	else
+>   		return -EINVAL;
+>   
+> -	if (!has_transparent_hugepage() &&
+> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+>   	    huge != SHMEM_HUGE_NEVER && huge != SHMEM_HUGE_DENY)
+>   		return -EINVAL;
+>   
+> @@ -1303,6 +1303,8 @@ static int shmem_getattr(struct mnt_idmap *idmap,
+>   	generic_fillattr(idmap, request_mask, inode, stat);
+>   
+>   	orders = shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0);
+> +	if (!pgtable_has_pmd_leaves())
+> +		orders &= ~BIT(PMD_ORDER);
 
-[...]
-
--- 
-Regards,
-Pratyush Yadav
+Ah, you did in this patch, but this change should belong in patch 14?
 
