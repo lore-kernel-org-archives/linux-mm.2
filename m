@@ -4,100 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF3A0CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 11:16:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1577CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 11:20:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42CDF6B032F; Mon,  1 Jun 2026 07:16:59 -0400 (EDT)
+	id E1CA26B0332; Mon,  1 Jun 2026 07:20:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DE5F6B0331; Mon,  1 Jun 2026 07:16:59 -0400 (EDT)
+	id DF46B6B0333; Mon,  1 Jun 2026 07:20:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31A216B0332; Mon,  1 Jun 2026 07:16:59 -0400 (EDT)
+	id D31806B0334; Mon,  1 Jun 2026 07:20:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A1096B032F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:16:59 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A3B891A05DC
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:16:58 +0000 (UTC)
-X-FDA: 84831091716.28.0D9BA7F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0FF78C0011
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:16:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G8uki+OG;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C4EF06B0332
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:20:14 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7779F1C0710
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:20:14 +0000 (UTC)
+X-FDA: 84831099948.30.388E898
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 26E55A0013
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:20:10 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LVbC7ehc;
+	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780312617;
+	s=arc-20220608; t=1780312812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CRHoP5VdkIAyG5qDOl9IysDCvNb5MiyLvpUd9S+gzQM=;
-	b=gAnQBWQbyjWJZEPI/dgmXCh+g4NzrtRvAoZU6PMxh/nr7JVp7TSMkcWDvUZaz1qT7eBoby
-	GFNopNgPL4KlVoRZw9elc9aK/HFOdchJ//joLsJW7satlPkJ4pLMDu8RIcjtFFQDbZSBBx
-	LK02RLVP+rCIIW+5h1bdzEoTFIrs1LI=
+	bh=IRfMuzG3yKuY5rg+diXsrslBNyfmmtnGq7jInIoNeyM=;
+	b=1MH+7tqD3umM2QixOxU59XH06aob4NJXjfDf2CljO66lK/h3cj7iIj0NtKRZGRqfKL9y0R
+	k199KSeVwpunK0Eo3beYOrNCWHP/dk1ZBUJWN/L+QMJ16wUYuIj2qCpLGtbSP7EiW6axfw
+	lfLtBy0+ver/WTqcUSC2Y0ArvLhzAN4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G8uki+OG;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780312617; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LVbC7ehc;
+	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780312812; a=rsa-sha256;
 	cv=none;
-	b=fboEq0CJ37ZYqMRLsNi+oV39VsbEkoY6TtKGHvubiRF0SSAt/MzzRTvu0/Y6D8GJ4c7xmu
-	cNZp4IQX3rL/fujPxfjhBAtACZlkmhpR6xAN3LbZTUO1WCvvPsTNTfo6PE8rp8NvWgvSEH
-	lO4j49rP2XYqqQyQ781JyOcXjtOmig8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 99AA860098;
-	Mon,  1 Jun 2026 11:16:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86091F00898;
-	Mon,  1 Jun 2026 11:16:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780312616;
-	bh=CRHoP5VdkIAyG5qDOl9IysDCvNb5MiyLvpUd9S+gzQM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=G8uki+OG4nJXKcRZtOFdjfuVaje7IhPsSBlyQxDVK6rQ2U2XfNst+LmO0FDBhPdXO
-	 S09iAU4U8VXKGMxtoIGANyksSGGohF++3CaROL4ZLv35QNRbjgTN7rdFwI2udY/yGB
-	 MlSzA2LgcqfOXO8ZeuobJNEqbV3AjxWUeDbFUynLg9wmnrD1qtE7iJ+3sCn7vj5gWn
-	 k+/0phmTAOUi1PJrkemVvfv1wuJkLg3+nfOLY1HRONfiINTWcn/IB4to5JOUD+BLda
-	 6KSEpSUYUbufzVG9aM3tzf6WzRvhetNrL3fEil0hi7jD6r5dRl7YswnbbOgM8JSKFJ
-	 X9/wW7jFtnY7g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
- Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 04/79] block: rust: fix generation of bindings to
- `BLK_STS_.*`
-In-Reply-To: <CAH5fLgi+K_5So-kLwyZGhaagEx-rRXPmk=zCOTqG3yh=bSe9Ww@mail.gmail.com>
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-4-de9a7af4b469@kernel.org>
- <abfNByL15D4s69Al@google.com>
- <CAH5fLgi+K_5So-kLwyZGhaagEx-rRXPmk=zCOTqG3yh=bSe9Ww@mail.gmail.com>
-Date: Mon, 01 Jun 2026 13:16:35 +0200
-Message-ID: <875x427bos.fsf@kernel.org>
+	b=IF/3zE/v8RU6ewyBU49CR8WeOlAOwGWSz+HE9M7n2AJkPkLw6fHiv7mLaN7NvQZso29jTt
+	4jCTokDfITXAhQNM86DX9ER6QG6KoEt2eYV5gblfQ3gnhCAPI2aJQMX3N3nd0caJ+PDY8f
+	s5MAC9llXi6klorXILNq1seHerEXUZg=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1780312808; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=IRfMuzG3yKuY5rg+diXsrslBNyfmmtnGq7jInIoNeyM=;
+	b=LVbC7ehcJXQ6ysDHd3coxDI6Zuf/YpKmoevswZXiQV3OPfelaDsCFSPaszbz8HWVGLAxwhw6vOlDjpnbAkycQNifLs0I6uoK+9tgysNF7zYa19omplB/Z0zy99wG220ip4fFlkLMu0IXfFZvTO9dWt7Fcko2uS2FWyf1Z9omXag=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R681e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X4-llN8_1780312805;
+Received: from 30.166.19.62(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4-llN8_1780312805 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 01 Jun 2026 19:20:05 +0800
+Message-ID: <72817e0c-37d3-4a63-a6d3-1744370c896d@linux.alibaba.com>
+Date: Mon, 1 Jun 2026 19:20:04 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4fs1swcyktqywgmrun7btaezjw33zs6n
-X-Rspamd-Queue-Id: 0FF78C0011
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 5/5] mm/shmem: optimize file read with folio batching
+To: Chi Zhiling <chizhiling@163.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Cc: Hugh Dickins <hughd@google.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Chi Zhiling <chizhiling@kylinos.cn>
+References: <20260520101538.58745-1-chizhiling@163.com>
+ <20260520101538.58745-6-chizhiling@163.com>
+ <1d8c7c24-b273-4826-9a9e-37fdb0767f2f@linux.alibaba.com>
+ <1fd099de-97d9-4a54-a97f-062fbae1d88e@163.com>
+ <6881f92c-972a-4b7a-b3c0-93a91ff38b88@linux.alibaba.com>
+ <5f1a3e69-c090-42ac-913e-1e8ce2702e9a@163.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <5f1a3e69-c090-42ac-913e-1e8ce2702e9a@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1780312616-319662
-X-HE-Meta: U2FsdGVkX1853U/qimZqaoOBNeXWeZm5oVADytZZ8UHZRoeAMV1NqumnKUq2NbESknpn5o4WfwdltHlY36StR98MgK2e3UHqIz26mQ8dk/1AeNGsG9SVeE4MnMFVdzkGcbWdwMRJHBR4xyMGlSV4uX4eqL8HJN2t2I0KQEGXJn+o6u3YiTZsspAfHrVa2BI2klqRPXcrCeTHOZaERFinFupksVY6Hw9So+4GZ2gk8Weyk3uZiPH9e/dXQChzNsD4KwDY9GK5wL3TzFBcTbxDC1J0/N0tQKxnBwSx1KIJyLY0QFHlqBFXHMIQQeNGSgbnsTx4v02pwRB7lG3m/y15sIClSXuWgfuzaDprxYkXSuHwBEWul9gsRiPnlBRl+vO5rA/CIqPMrWRyYkc1oiJXWN/iIQ98xkkabKdk+n+a/7rRzIrWVtVG0hqK20NeRMvWzxUgh62JIKUaqeMB8paWdTPydsoayE0K6B/yph0YKbKJzLElSJeffCwVAjDfedeiM26hWtqpeRYTZzFgEqO0Vk+Oo9E91B91rYQwiknz+kdNMJmkAvqZA71aqZkv9bR7364hfWHCEyHIgBluvYPIYTzLp9Le367Waht5Z0RbzAoVN00YWKrURL2plEfV5zvs6EGqwGVlMO6XlVCcllPwYqf8D+eclx9IpwnoBfafB3AQCKcZjCEUtFH8Cu7iABW8Vf5AqR3O/mx/g56JfZgQxhqBUqK1z93z6hcaP1p9eEmiPDM+1LhfcVjtMT1wiXVTRYPkZgpA3CK4nTFlTggZY62wbK+nJMutHDc6D+UsCZA3SLAHPlIBHsGGUDkghzxhYmvAe8/20joAGSzgGg8Wviyw+oIXVPY88PqA14lZv/u1j5HNnk/7FD4wwwAaXFYPqy1Hom/I2++VOrd5cSkv+bSBTa7nqESKZ8ry/vHRyMCvXeDaSupiKLKb8ZlkEHpqteQQrIaXOvi8CKAwh8P
- lC2+/SmR
- 9BojFDIhJDmMznPWyimk8bf3qXrXeuyzYW7P7Ea9dLuC4JqWcuwU3sISV1F5Sqmsk0QOv6U+jWBmh7jrG2K8y5xfWpCu6vZMMd9VL5TQgNAXq7QoFQrQQfCUR4puOqRwSQQI1lV8GZMOH50cjy9DXZT3NrTRP7kw8wPvV1veUIaKkrL1YC++PY3+AcSLjmhWrQ3ZkSlaYJqPdJ/sLgINGX1exDi7LPGgfDSc2sWNpibmcKSQ8GcYppRXf1IYE4T2O4+9JomFQ8UUL+jeY2XvZ9IRcANBEXg8ikr0KWIQu6JEX1p1n7E64AQLrZs3RT4Zc8Mttj7OX7mnM7F40xh9Ky3H7cmblBQeu8y6iTzkvHCIPWY6bik9vYOh+EMA/GgUAyrEmKsCJvrXRQAB5evNtzSIwCiJEp7KeoyaO
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 26E55A0013
+X-Stat-Signature: q6wmwtribsax5iqcdktwz8zqhtbbkjtu
+X-HE-Tag: 1780312810-306853
+X-HE-Meta: U2FsdGVkX1/olpi3Z8ayVZ3wqbP7lUedLEL2cT9Iu410uE23nWIdQLUCyIgjNcbSY6V/ULw/N6pH+tpgg1yG3mBWkHzQh2tyVOMq2wuEBRaJ4i8AW1zlccDbXoMFj8j7nHpFpjcIPK5rQd5L75csTK3cKul1sS0F8O+RddZr0w9bQW3Aq5riP/pT7091HgSj5LuuMO3FkTfot0K7Id5rdTSLijb8mHJx0HOUxlRNLLcHPFN15g5H3dQypdnMM3x+POB6VBvayszu0WTCAD0d3qwz0cWx6qSZeQ/0uB1sep5IYfEkZL2UhQLkpPKtTt06XJVkp0cNVKGBefzLueVmOnxtm1QFa0BmlTSfEyaVRa3imXco8Z9rl9pnq5xIv4Wi6VYIYaYlWNdO8GE00H3TZV22aqZSa0vTFhSiN1ZeDmOpztTyy/BMO1xkixJKhPulr54PV5zI0r7IGrmxSd8zW5O8Egr4DyU1lLs0U3jhmuUF9Tz3uDSl7tM71+GkFihhhPMeZqLvJmtsmBTdJfOgJQb6Hi7tqOaixLuueoFpaBp70roIJUT7zpd6+nFLG6XfzyQfhS5GUzWn2i13xfwLHRYuCM4RYVAOPRo3O3lrx5xMcOLi8XBZtvhIKvSydpXpAFXu8sm4u5dG1jQDAnJtfBBaHc31JxSd9/qqLhbyneKc3KGtRqwZjuhXjFzJpf09CZELCubz2ZxntksYU2ed9vSZ5QdhCDKxQXB51ZD0IoUh86/rmjxS+R0dpltWTri4FY0djcgj5ZOsmFKcXYM/2/C7cUDIABC/9iiNFWcdk2/CuSsgF5q7pbLUAqfyYTmCZw2ALivA3pIdB1GR++cvy375H3eBOm3tbudUW4v8S3itlF+1h2nac8uTqryBy//2OlOCGmA0pR1+BX/gls8ox43C3Qv8s13BVfpSco14wXLQZ21J/pr2xSAKD8ogna9pCisQJpuSNsu94Jqk6az
+ 5hns+U0P
+ fIN9NoTvtuTtF7kFUgg/zY3ZTjRWAiKsiXAASzhlQVlQo9h3EdyHfdspZrs4McZYM1AlZMWOiQssGxtY+QewN/tUno3cuWJkYP5a5YGEw7NGrLY6onUuODfnXOp3K+CcjH4V+3qBp9yPcfSwzTuMivdPp6GweupTSVKP723xiYHg0wise18SHSkV4T9od6DCqwMwHZmjXn375j7Yqesn3soo4L4wIgifIkJfnW5q0Ovo3ajvr9yUMRR2oeoqRffD0I7MfMO5f5U/jBKJ0PpjvCztHFeqY5kt87j+sza6PWk2VcT2N/ld3Z8Gx7reFBXyV3fjnnB4pgmGHx2adxf2ALoTV8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,52 +98,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Alice Ryhl <aliceryhl@google.com> writes:
 
-> On Mon, Mar 16, 2026 at 10:27=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
+
+On 5/26/26 3:12 PM, Chi Zhiling wrote:
+> On 5/26/26 11:11 AM, Baolin Wang wrote:
 >>
->> On Mon, Feb 16, 2026 at 12:34:51AM +0100, Andreas Hindborg wrote:
->> > Bindgen generates constants for CPP integer literals as u32. The
->> > `blk_status_t` type is defined as `u8` but the variants of the type are
->> > defined as integer literals via CPP macros. Thus the defined variants =
-of
->> > the type are not of the same type as the type itself.
->> >
->> > Prevent bindgen from emitting generated bindings for the `BLK_STS_.*`
->> > defines and instead define constants manually in `bindings_helper.h`
->> >
->> > Also remove casts that are no longer necessary.
->> >
->> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 >>
->> It'd be ideal to change the C header to use an enum, but that may not
->> work as I'm not sure you can specify the integer width you want for an
->> enum.
+>> On 5/25/26 5:47 PM, Chi Zhiling wrote:
+>>> On 5/25/26 4:37 PM, Baolin Wang wrote:
+>>>>
+>>>>
+>>>> On 5/20/26 6:15 PM, Chi Zhiling wrote:
+>>>>> From: Chi Zhiling <chizhiling@kylinos.cn>
+>>>>>
+>>>>> Optimize shmem file read by using filemap_get_folios_contig() to
+>>>>> batch fetch contiguous folios from the page cache, reducing the
+>>>>> overhead of repeated shmem_get_folio() calls.
+>>>>>
+>>>>> When the folio batch is exhausted, attempt to refill it with
+>>>>> filemap_get_folios_contig(). If no folios are found (hole or swapped
+>>>>> out pages), fall back to shmem_get_folio() to handle these cases
+>>>>> individually.
+>>>>>
+>>>>> Additionally:
+>>>>> - Defer folio_put() until the batch is exhausted or on exit
+>>>>> - Add folio_test_uptodate() check before copying to ensure data
+>>>>>    validity
+>>>>>
+>>>>> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+>>>>> ---
+>>>>>   mm/shmem.c | 50 ++++++++++++++++++++++++++++++++++++--------------
+>>>>>   1 file changed, 36 insertions(+), 14 deletions(-)
+>>>>>
+>>>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>>>> index 96ea5a4c0aff..e0eacc23cccd 100644
+>>>>> --- a/mm/shmem.c
+>>>>> +++ b/mm/shmem.c
+>>>>> @@ -3355,11 +3355,14 @@ static ssize_t shmem_file_read_iter(struct 
+>>>>> kiocb *iocb, struct iov_iter *to)
+>>>>>       struct file *file = iocb->ki_filp;
+>>>>>       struct inode *inode = file_inode(file);
+>>>>>       struct address_space *mapping = inode->i_mapping;
+>>>>> +    struct folio_batch fbatch;
+>>>>>       pgoff_t index;
+>>>>>       unsigned long offset;
+>>>>>       int error = 0;
+>>>>>       ssize_t retval = 0;
+>>>>> +    folio_batch_init(&fbatch);
+>>>>> +
+>>>>>       for (;;) {
+>>>>>           struct folio *folio = NULL;
+>>>>>           struct page *page = NULL;
+>>>>> @@ -3372,18 +3375,38 @@ static ssize_t shmem_file_read_iter(struct 
+>>>>> kiocb *iocb, struct iov_iter *to)
+>>>>>               break;
+>>>>>           index = iocb->ki_pos >> PAGE_SHIFT;
+>>>>> -        error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
+>>>>> -        if (error) {
+>>>>> -            if (error == -EINVAL)
+>>>>> -                error = 0;
+>>>>> -            break;
+>>>>> +fetch:
+>>>>> +        folio = folio_batch_next(&fbatch);
+>>>>> +        if (!folio) {
+>>>>> +            pgoff_t start = index;
+>>>>> +            pgoff_t end = (iocb->ki_pos + to->count - 1) >> 
+>>>>> PAGE_SHIFT;
+>>>>> +
+>>>>> +            if (folio_batch_count(&fbatch)) {
+>>>>> +                for (int i = 0; i < folio_batch_count(&fbatch); i++)
+>>>>> +                    folio_put(fbatch.folios[i]);
+>>>>> +                folio_batch_reinit(&fbatch);
+>>>>> +            }
+>>>>> +
+>>>>> +            filemap_get_folios_contig(inode->i_mapping, &start, 
+>>>>> end, &fbatch);
+>>>>> +            if (folio_batch_count(&fbatch))
+>>>>> +                goto fetch;
+>>>>> +
+>>>>> +            error = shmem_get_folio(inode, index, 0, &folio, 
+>>>>> SGP_READ);
+>>>>> +            if (unlikely(error)) {
+>>>>> +                if (error == -EINVAL)
+>>>>> +                    error = 0;
+>>>>> +                break;
+>>>>> +            }
+>>>>> +            if (folio) {
+>>>>> +                folio_unlock(folio);
+>>>>> +                folio_batch_add(&fbatch, folio);
+>>>>> +                fbatch.i++;
+>>>>> +            }
+>>>>>           }
+>>>>> -        if (folio) {
+>>>>> -            folio_unlock(folio);
+>>>>> +        if (folio) {
+>>>>>               page = folio_file_page(folio, index);
+>>>>>               if (PageHWPoison(page)) {
+>>>>> -                folio_put(folio);
+>>>>>                   error = -EIO;
+>>>>>                   break;
+>>>>>               }
+>>>>
+>>>> I haven't tested it yet, but I'm sure this will break the 
+>>>> fallback_page_copy mode.
+>>>>
+>>>> You're fetching from the batch at folio granularity here, but in 
+>>>> fallback_page_copy mode, we still copy the data at page granularity.
+>>>
+>>> Yes, that's a bug, Sashika has already reported it. I’ll fix it in 
+>>> the next version.
 >>
->> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->
-> Honestly, it might be better just to declare a Rust module somewhere
-> with each constant redeclared:
->
-> const BLK_STS_FOO: blk_status_t =3D bindings::BLK_STS_FOO as blk_status_t;
+>> Good.
+>>
+>>> Sashika also reported another potential issue below, but I think that 
+>>> is a misunderstanding, because a folio fetched from the swap cache is 
+>>> already marked Uptodate before being added to the page cache. What do 
+>>> you think?
+>>
+>> I'm not concerned about swap-in folios, since we already ensure the 
+>> folio is uptodate when swapping out.
+>>
+>> What I'm worried about is that this change moves the 
+>> folio_test_uptodate() check outside of the folio lock, which could 
+>> introduce some race? Of course, with the original logic, the folio 
+>> state could also transition from !uptodate to uptodate after the folio
+>> is unlocked (I need more thought).
+>>
+>> Another race condition that needs to be addressed is, when getting the 
+>> folio locklessly via filemap_get_folios_contig(), there could be a 
+>> concurrent race with swap-out (because you removed the folio->mapping 
+>> check under folio lock). This could result in reading zero data when 
+>> it shouldn't (the folio actually needs to be swapped in).
+> 
+> Sorry, I don't fully understand what you mean. It seems that swap-out 
+> does not clear the uptodate flag, and the folio cannot be freed during 
+> the read operation because its reference count is held. So a swapped-out 
+> folio should not be mistaken for a zero-filled folio. Right?
 
-As it turns out, `bindgen` only emits a binding for `BLK_STS_OK`. It
-cannot parse the rest, because they are declared as `((__force
-blk_status_t)<N>)`. So in order to avoid special casing the `BLK_STS_OK`
-constant, I think we should just keep the patch as is. I don't think we
-will gain much from re-declaring all these in a local module.
-
-I will update the comment on the `blocklist-item`:
-
-+# Bindgen cannot extract values from the `((__force blk_status_t)N)`
-+# CPP-macro form used by most of these and emits the few it can extract
-+# as `u32`. Block them entirely; the `RUST_CONST_HELPER_BLK_STS_*`
-+# definitions in `bindings_helper.h` expose them as `blk_status_t`.
-
-
-Best regards,
-Andreas Hindborg
-
-
+Sorry for the late reply. Ah, I missed the held refcnt, and now sounds 
+reasonable.
 
