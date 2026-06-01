@@ -4,83 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEB7CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 20:15:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7201ECD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 20:18:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CBC96B04BB; Mon,  1 Jun 2026 16:15:37 -0400 (EDT)
+	id B79A66B04BE; Mon,  1 Jun 2026 16:18:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A2C56B04BD; Mon,  1 Jun 2026 16:15:37 -0400 (EDT)
+	id B50986B04BF; Mon,  1 Jun 2026 16:18:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DFE06B04BE; Mon,  1 Jun 2026 16:15:37 -0400 (EDT)
+	id A40906B04C0; Mon,  1 Jun 2026 16:18:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D6EC6B04BB
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:15:37 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 163491614F4
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:15:37 +0000 (UTC)
-X-FDA: 84832449114.16.340FE1E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 781B21C0002
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:15:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JuZ8bT9d;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F8B26B04BE
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:18:35 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1BFC61207B4
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:18:35 +0000 (UTC)
+X-FDA: 84832456590.06.0DA49EE
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf31.hostedemail.com (Postfix) with ESMTP id DD5E72000B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:18:31 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dMWy6v9H;
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780344935;
+	s=arc-20220608; t=1780345113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=syeJCfN05uDjUd4svPq4RNjDQXcDyKa61aaj7lQd5U4=;
-	b=hx1SeDf8npyktdyWmJOPIZOCKRdQhOZyaN35qlrBBcCO08grbRaSaMTzURBRfJwNDwHaOI
-	k3bFkTrdY9aWM5sqHYmxTztnyjrQoPv5//9DU0kTUFZQkQnK+oxCvdP3yr7T/df8lVlXYf
-	fb7AEPkXk25BtNby+qcH05OBqeTXCDc=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fvdhCaoizL5hWe603qycHmjXKI9IYx2Z/RtGzdEweaY=;
+	b=aUg99TkXNJ4NS4OCYQ6TS+2AzQEa1d5swCBX4lgsWHkuAwE7FsU8uuw1OyQg+keuOQrD18
+	iTQM5h2eUcDk8kNHaM0HALVPtbSgJmceN2WAevtiMAMiJisGDHRlKSic1GF753oE/SYhgt
+	uZgVn/R0DhF/6noNlKTT+xt5G9EXcLI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JuZ8bT9d;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dMWy6v9H;
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780344935;
-	b=5htq9j0fpuB1u13+NW1hMYLV9JcqU+k0NI2OyPKm10jpsMyZQehLo5Bs+8iTZJuy/BTotc
-	1607Jpc4xwkkaChlObajNQ6xJm7WkqEA21rUOFwCuQeRgj9wnMJNhdy38ibXYEMFZSpKLi
-	sYNi1KFbpXLy10wMApTd5rh3EghjBRg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B55E643588;
-	Mon,  1 Jun 2026 20:15:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A761F0089A;
-	Mon,  1 Jun 2026 20:15:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780344934;
-	bh=syeJCfN05uDjUd4svPq4RNjDQXcDyKa61aaj7lQd5U4=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=JuZ8bT9dSGV4klPf9XsbtbDDHSt7f4OvQDGLa29dKTvxYBAVCMhiPPsZ8B0deX9nE
-	 slfEcP1rtXhoFaa6OcBHWn+Y4+FyCVuhgYcgYn5EWc2aFOOTL1LRqvtTJEe6+/3O44
-	 2JJmRLVlOthnh0F8g0Gc1mgHJjuVQunCxqYaKbmde+DdLEffE96ADOa2SA54rNjGjv
-	 4nXV6yxRWCTFs8LfQGE9sWIcKtyGzzRvvlzXd8FTHPcFGL732wtYT4rFxzHvlgsyje
-	 L7Vd8y+HRceRgaTuZIRRQt5Gknk+HehCaEofmiJ/ckJj553zEBe+lqbMLnn69hFImc
-	 I/e/577Zby1Qg==
-Content-Type: multipart/mixed; boundary="===============8340823664292074246=="
+	t=1780345113;
+	b=w8hzMne3A3bYgeQK7uCI0fZbZwY0H4yBBq2vNhggweXBESJwyhWfNZSB9GoNpgOIbrIHk4
+	xQcbL6cFZTVAVubJDPHoBu2OlGDj40R7YZlytT5T+o7+xUDhcvq5TxrGHnH0V8MGg5aJ9j
+	NHF6OfaLvJcsikMQ+QMK1fjEyi9h8Cg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780345112; x=1811881112;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=XT3mFTv/03DzlACFSY9c/9jd3+SMzGNPzBbhDEIv5Ek=;
+  b=dMWy6v9H1210Y/AJJ1HLYWg1OF7nfjPAK50PAOXEXskNBr2Z9cMjLXwS
+   x42GVDXY2L9w0pnP0EqgAf+xp7hbYW9xaHNIyKH11/KZ5UsEVMvxelvyk
+   meg5OKu+/z0+QniMkBAvsUoThbhIAZ65zsio1DMC81kVGosAvhfLUp1jY
+   abRzrtz94OubvFn1JkZdEYXB984HcBQwhvZcdIB2rwqjpyA+cyLwTQ2Eh
+   2KCxBMtaTuKCgMjnMh0WIHQPiAKWqem6gy64CWohLSa5o1gZL3qK/wm1k
+   P2E2qxy+hzduWA/EdJgrTlOVZTu6fGl87Thb235BCH1bNqC5Oabg1gLIU
+   g==;
+X-CSE-ConnectionGUID: tZY99iMrRXiiZaT5SJXNNw==
+X-CSE-MsgGUID: UgMmXWWtTiuqQCeDQzTVrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="68651173"
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
+   d="scan'208";a="68651173"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 13:18:30 -0700
+X-CSE-ConnectionGUID: aCJ1GA0ORj+jX/gcQlM3RQ==
+X-CSE-MsgGUID: v9Rdk4oKTDKhf+NoUwZhag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
+   d="scan'208";a="248603907"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 01 Jun 2026 13:18:27 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wU95c-00000000B3W-1VFW;
+	Mon, 01 Jun 2026 20:18:24 +0000
+Date: Tue, 02 Jun 2026 04:17:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ =?utf-8?Q?"Bj=C3=B6rn?= =?utf-8?Q?_T=C3=B6pel"?= <bjorn@rivosinc.com>,
+ Jason Gunthorpe <jgg@nvidia.com>
+Subject: fs/dax.c:728:39: sparse: sparse: incorrect type in argument
+ 1 (different base types)
+Message-ID: <202606020427.izbA3vh3-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 MIME-Version: 1.0
-Message-Id: <f45f02410d23c99d14f3577da9b27a327816b5a0904bdeefc8e229eac760d1cf@mail.kernel.org>
-In-Reply-To: <20260601183728.1800490-1-tj@kernel.org>
-References: <20260601183728.1800490-1-tj@kernel.org>
-Subject: Re: [PATCH bpf-next] bpf: Replace scratch PTE atomically when allocating arena pages
-From: bot+bpf-ci@kernel.org
-To: tj@kernel.org,void@manifault.com,arighi@nvidia.com,changwoo@igalia.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@linux.dev,memxor@gmail.com
-Cc: peterz@infradead.org,catalin.marinas@arm.com,will@kernel.org,tglx@kernel.org,mingo@redhat.com,bp@alien8.de,dave.hansen@linux.intel.com,akpm@linux-foundation.org,david@kernel.org,rppt@kernel.org,emil@etsalapatis.com,sched-ext@lists.linux.dev,bpf@vger.kernel.org,x86@kernel.org,linux-arm-kernel@lists.infradead.org,linux-mm@kvack.org,linux-kernel@vger.kernel.org,tj@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Mon,  1 Jun 2026 20:15:34 +0000 (UTC)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 781B21C0002
-X-Stat-Signature: x6dzb9phrtg4qaa1s8q4jzxjourhmka7
+Content-Type: text/plain; charset=us-ascii
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: DD5E72000B
+X-Stat-Signature: 3n1dd8zicmmmrs595fdkhtj9zi33u5c8
 X-Rspam-User: 
-X-HE-Tag: 1780344935-901070
-X-HE-Meta: U2FsdGVkX19c28kxBunN5rR9Av1rb4O9jK+fIo/T6RrjKnaZPGuMr3Bxei4a6CDOZlSGGvtauNHxtEmZ/jEmOnxUthTAQJJF1FicKp/jb+BAVEJcOc9QfO52JxxsaGznDb36BZYl3UBYiZ+WzWF3KGArkf2v/X4ktkf6u8fJkPgy3/HDP3AGE473o53OSnW81wGSI6Ewv4TaWHnjsBUGRTR4AWh0R84V5q3QFa29owfUla4j+lqKx5k/Lkp+fu7L4TmiST13ml0N2IgM//wzUZfTYh6uMWaW3WLFELBa86dpqaZ5il8viFSp0HyLm4tE8j4LDWuTjoHcStmBfOi8X66Ti1aygJ+acy6TScwKKrXz+WhSVpHvOmcS6X0eCz94k57G4VMbkXqcNWvR6eXyjiD0sdHOdCI2vJ/VbXEQ3t4B8M9SJrkazsR5g4lmwynerJNUJS1GG8jDHpB8t8IlVU+bYfDYFgUaLJeQbMjFd7hSXvz2tZcTtfIN+8AJqunvu0e+zZpxngsKSlOJIXa0epGu0YsG1HaIj0QBzdmhKoGB7OcA8H6QxKfvzi0bhJTQJeWzdV3kcRuyRlgwinSd0KkXaDgdBDR19DzV1O/FtuDkSyGukL7zU1928DrSoEDjmfG7GJnSSahjjTwy2ZovawgZ5vSwLz89p5po7Zq1unA2ObxZsZBph6epBe8KyLdesR+5f3AJEJXqMlsoyqt1Lj7EkFRmIywz6ThizfPvQsj5kfl1ItZkJaWwohbttRrr/gK9+UZFXXOmh8bnK+EnyrZDENAZ6Pkc5G3jIAEj6FwD/fDT9D90wql7T8fO43UGNRj6mwKOAmVuwVRAUndGebOioSf88eS/x/TA1M6MqHuYYRj7XHjCz+Z2g2i33M1REYexbbxqUQ4g1u24jGPG44szN/81jpxnjL2mwKEZD6S6cDUE5zFgBXhF1s2YK3+XwbZIhNLDJtATZxJ1ISA
- glK0uf6e
- DWjOStswNr9DHEp3O2f17GEHVZR+lnGW/aJtRp1GDOUy1J4Nhc8xbv5kUD+moEDWIx9vBPaQPobJKreq903JAt/PguGy7MDTVtnhGtzyigz1cL+ybMeZb1OXpelYRaLz6BmWDOi65X4+pI3a0mVVZpWzBdqsX7IovlN4IRCKuew7O1UjuNoer5GACXKhcpjNvLbBaZsVqcbBHJ8m5dYOQ0ohakyWDuIOO1Q9g+xOz9LShd+Vf/Ew1hzfEIxl4P1mHMf07u5v6NMgvTJPi42DJdefeUZ2FKGTvW5zyk4EJkaMYgUl0qwdTLmotdva8TrJ0v/1ZScVF1L9XW2xrS+xF0CNkUY0K4TDyJ+pQkJao+mCKzQYUBneaPj4qvKYOIWAQUOAXo5TNByCuflqaM5U7UV3aywCCnED6qN/b5CDkubbNjtw+SDcRKdrhsMFWKx68lYOq/c0QvJBoTVU=
+X-HE-Tag: 1780345111-923152
+X-HE-Meta: U2FsdGVkX192Sta4FTLYSQUcmu3++5fqByA9MUF6/ytVyQRYLY/Nel2Xl94Nb8lGxCS5gtG6eJTQ4osM4UdKbkX4JGhh3led6/k4N4aSFFQaPTmdLGRdKq98mK9xBAUi+MsxwWydr3CBRisFD/Dgl/pasRXGC/Ex0BK+WT+DobPI7zPLHyRsQswmWB8Zd1NFuOiZxrSZvXQvUw94N0Xj7K9mOBxxT5OuneVklpW/J7OC2f9jWrkOimwpC6/QEvCRekas/E8nanxqYcgumfvDH3dtfPTwlQxPfPc47H938l4etN6isNhSrKozZl3KmvbNyBC+Bibu4PqieqXSOsyeW6aQ0rt3QHrPItEAwUvGMzEFXCWuFPl+MB8Iy+WmQH3zAMhq9j6DxoIcKG0duWcIzMU0tSTngUFb7Gaoqd+XbHrhl8SDIIhRXxiaOC6dqcaNZB7XjcEcrWjyLUqA6cIR2DjF2ZHV3b8684NeVLrwBZKDh8n0tgPGKcj9BIIbNFIA/Os+TbQtEE9lN6KimdhovJiSZgVk4sufADZhVgJkgNgg8b6lJPWVQPeWQRV02Hm8Kdr+M34LD820vbnW8ALcFtsZvxMANFuqCmcYqhMLv4ZtLL9DBcU3TyFWUYL1+fb9JzzUyWceYJLZNqxaOUo1Xnip9ez/b0skbCmgW6w1kZnLnvCCXTTRRAzQw/ib47mUL8AOG7aLZ2E2E9Yh6lrZsXHRxX+gM1neNbiQcsRfypMQSVLWCYCX3eBLOSOpPMxmX/zbbfQ7HsJFuntin8Hayf5Tswd/d+A102d2WsWKDSIN4LqwCxSnn327s1aIiS9+oluFF4nQv1sS433MW5OS50Q9VJGAFOhBYzUq/nVa/bTccjcpPErrBXwy2JQo+r7YKT6QuuM49dm2Oi6C4VZacRIK7Qehp8bUke0xGBSCHIWlSGsW5/mQN97ViIDCYlZNcyeYrtXJL7qKM9AbjNQ
+ eeDhlj5B
+ 0gVpM+4SEWjrPxIC6xWWrkm7TXI2mAnSIEtuQaFT0tmZe3nGs2gpyr1H9LOTo/Grjnr+IV/vCrgpy09+SIGCPfmZYYwabApQK8zkXXZ6UoszTGlzMKSVOYoi/127wc/mxu+YqTwWzIMCjR2Ku7Dgv5L39zfzXKqlKNuSj6v2cpWEIIkAXJcpwvPFFmxKkPqSLwfjaWvCmkUMgm845pXlL4K41t/Az2oqd0RB/vD5WfLswMcVVwgfZoht+5diEzyLZy3DH0lM/AHEt9EZ0LFSptcYm+wQr0qjt8+/Q40iVR4i5xFlOYuaxxXmxkF1y5xwh1R4Bx0CEwuWyMu7y1Z8c8cAlhGMOxRyItDvHaFY8VomlUnqFNPsGyihhZWoEufGiKlmJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,142 +106,274 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============8340823664292074246==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   e43ffb69e0438cddd72aaa30898b4dc446f664f8
+commit: d438d273417055241ebaaf1ba3be23459fc27cba mm: remove devmap related functions and page table bits
+date:   11 months ago
+config: s390-randconfig-r112-20260601 (https://download.01.org/0day-ci/archive/20260602/202606020427.izbA3vh3-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 10.5.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260602/202606020427.izbA3vh3-lkp@intel.com/reproduce)
 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index b5739bb99fc1..4c6c4081ef71 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1061,6 +1061,24 @@ static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
->  }
->  #endif
->
-> +#ifndef flush_tlb_before_set
-> +/**
-> + * flush_tlb_before_set - invalidate a kernel PTE's TLB before re-setting it
-> + * @addr: kernel virtual address whose PTE was just cleared
-> + *
-> + * Some architectures (e.g. arm64) do not allow a live page-table entry to be
-> + * repointed at a different page in one step. The old entry must first be made
-> + * invalid and its translation flushed from every TLB, and only then may the new
-> + * entry be written.
-> + *
-> + * This is only for the lockless atomic kernel-PTE installers (ptep_try_set()).
-> + * It must be callable with interrupts disabled.
-> + */
-> +static inline void flush_tlb_before_set(unsigned long addr)
-> +{
-> +}
-> +#endif
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: d438d2734170 ("mm: remove devmap related functions and page table bits")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606020427.izbA3vh3-lkp@intel.com/
 
-A subsystem pattern flags the empty generic stub as potentially
-concerning, so I wanted to ask about the TLB behaviour on arches that
-define ptep_try_set() but use this no-op flush_tlb_before_set().
+sparse warnings: (new ones prefixed by >>)
+   fs/dax.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/fs_dax.h):
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+>> fs/dax.c:728:39: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
+   fs/dax.c:728:39: sparse:     expected unsigned long v
+   fs/dax.c:728:39: sparse:     got restricted vm_fault_t
+   fs/dax.c:730:39: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
+   fs/dax.c:730:39: sparse:     expected unsigned long v
+   fs/dax.c:730:39: sparse:     got restricted vm_fault_t
+   fs/dax.c:734:31: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
+   fs/dax.c:734:31: sparse:     expected unsigned long v
+   fs/dax.c:734:31: sparse:     got restricted vm_fault_t
+   fs/dax.c:1370:41: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:1370:41: sparse:     expected int result
+   fs/dax.c:1370:41: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+>> fs/dax.c:1878:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted vm_fault_t @@
+   fs/dax.c:1878:21: sparse:     expected int ret
+   fs/dax.c:1878:21: sparse:     got restricted vm_fault_t
+   fs/dax.c:1881:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted vm_fault_t @@
+   fs/dax.c:1881:21: sparse:     expected int ret
+   fs/dax.c:1881:21: sparse:     got restricted vm_fault_t
+>> fs/dax.c:1884:16: sparse: sparse: incorrect type in return expression (different base types) @@     expected restricted vm_fault_t @@     got int ret @@
+   fs/dax.c:1884:16: sparse:     expected restricted vm_fault_t
+   fs/dax.c:1884:16: sparse:     got int ret
+>> fs/dax.c:1902:46: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [usertype] ret @@
+   fs/dax.c:1902:46: sparse:     expected int result
+   fs/dax.c:1902:46: sparse:     got restricted vm_fault_t [usertype] ret
+>> fs/dax.c:1918:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted vm_fault_t [assigned] [usertype] ret @@     got unsigned long @@
+   fs/dax.c:1918:21: sparse:     expected restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:1918:21: sparse:     got unsigned long
+   fs/dax.c:1961:51: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:1961:51: sparse:     expected int result
+   fs/dax.c:1961:51: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:2041:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted vm_fault_t [assigned] [usertype] ret @@     got unsigned long @@
+   fs/dax.c:2041:21: sparse:     expected restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:2041:21: sparse:     got unsigned long
+   fs/dax.c:2076:62: sparse: sparse: incorrect type in argument 4 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:2076:62: sparse:     expected int result
+   fs/dax.c:2076:62: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:2138:55: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t @@
+   fs/dax.c:2138:55: sparse:     expected int result
+   fs/dax.c:2138:55: sparse:     got restricted vm_fault_t
+   fs/dax.c:2156:58: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:2156:58: sparse:     expected int result
+   fs/dax.c:2156:58: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:279:13: sparse: sparse: context imbalance in 'wait_entry_unlocked' - unexpected unlock
+   fs/dax.c:509:49: sparse: sparse: context imbalance in 'dax_lock_folio' - different lock contexts for basic block
+   fs/dax.c:576:17: sparse: sparse: context imbalance in 'dax_lock_mapping_entry' - different lock contexts for basic block
+   fs/dax.c:1142:9: sparse: sparse: context imbalance in 'dax_writeback_one' - unexpected unlock
 
-> diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-> index 1727503b25d8..b6ac5a91a296 100644
-> --- a/kernel/bpf/arena.c
-> +++ b/kernel/bpf/arena.c
+vim +728 fs/dax.c
 
-[ ... ]
+2f437effc689ef9 Shiyang Ruan            2022-06-03  621  
+ac401cc782429cc Jan Kara                2016-05-12  622  /*
+a77d19f46a37c0f Matthew Wilcox          2018-03-27  623   * Find page cache entry at given index. If it is a DAX entry, return it
+a77d19f46a37c0f Matthew Wilcox          2018-03-27  624   * with the entry locked. If the page cache doesn't contain an entry at
+a77d19f46a37c0f Matthew Wilcox          2018-03-27  625   * that index, add a locked empty entry.
+ac401cc782429cc Jan Kara                2016-05-12  626   *
+3159f943aafdbac Matthew Wilcox          2017-11-03  627   * When requesting an entry with size DAX_PMD, grab_mapping_entry() will
+b15cd800682fcaf Matthew Wilcox          2018-03-29  628   * either return that locked entry or will return VM_FAULT_FALLBACK.
+b15cd800682fcaf Matthew Wilcox          2018-03-29  629   * This will happen if there are any PTE entries within the PMD range
+b15cd800682fcaf Matthew Wilcox          2018-03-29  630   * that we are requesting.
+642261ac995e01d Ross Zwisler            2016-11-08  631   *
+b15cd800682fcaf Matthew Wilcox          2018-03-29  632   * We always favor PTE entries over PMD entries. There isn't a flow where we
+b15cd800682fcaf Matthew Wilcox          2018-03-29  633   * evict PTE entries in order to 'upgrade' them to a PMD entry.  A PMD
+b15cd800682fcaf Matthew Wilcox          2018-03-29  634   * insertion will fail if it finds any PTE entries already in the tree, and a
+b15cd800682fcaf Matthew Wilcox          2018-03-29  635   * PTE insertion will cause an existing PMD entry to be unmapped and
+b15cd800682fcaf Matthew Wilcox          2018-03-29  636   * downgraded to PTE entries.  This happens for both PMD zero pages as
+b15cd800682fcaf Matthew Wilcox          2018-03-29  637   * well as PMD empty entries.
+642261ac995e01d Ross Zwisler            2016-11-08  638   *
+b15cd800682fcaf Matthew Wilcox          2018-03-29  639   * The exception to this downgrade path is for PMD entries that have
+b15cd800682fcaf Matthew Wilcox          2018-03-29  640   * real storage backing them.  We will leave these real PMD entries in
+b15cd800682fcaf Matthew Wilcox          2018-03-29  641   * the tree, and PTE writes will simply dirty the entire PMD entry.
+642261ac995e01d Ross Zwisler            2016-11-08  642   *
+ac401cc782429cc Jan Kara                2016-05-12  643   * Note: Unlike filemap_fault() we don't honor FAULT_FLAG_RETRY flags. For
+ac401cc782429cc Jan Kara                2016-05-12  644   * persistent memory the benefit is doubtful. We can add that later if we can
+ac401cc782429cc Jan Kara                2016-05-12  645   * show it helps.
+b15cd800682fcaf Matthew Wilcox          2018-03-29  646   *
+b15cd800682fcaf Matthew Wilcox          2018-03-29  647   * On error, this function does not return an ERR_PTR.  Instead it returns
+b15cd800682fcaf Matthew Wilcox          2018-03-29  648   * a VM_FAULT code, encoded as an xarray internal entry.  The ERR_PTR values
+b15cd800682fcaf Matthew Wilcox          2018-03-29  649   * overlap with xarray value entries.
+ac401cc782429cc Jan Kara                2016-05-12  650   */
+b15cd800682fcaf Matthew Wilcox          2018-03-29  651  static void *grab_mapping_entry(struct xa_state *xas,
+23c84eb7837514e Matthew Wilcox (Oracle  2019-07-03  652) 		struct address_space *mapping, unsigned int order)
+ac401cc782429cc Jan Kara                2016-05-12  653  {
+b15cd800682fcaf Matthew Wilcox          2018-03-29  654  	unsigned long index = xas->xa_index;
+1a14e3779dd58c1 Jan Kara                2021-06-28  655  	bool pmd_downgrade;	/* splitting PMD entry into PTE entries? */
+b15cd800682fcaf Matthew Wilcox          2018-03-29  656  	void *entry;
+ac401cc782429cc Jan Kara                2016-05-12  657  
+b15cd800682fcaf Matthew Wilcox          2018-03-29  658  retry:
+1a14e3779dd58c1 Jan Kara                2021-06-28  659  	pmd_downgrade = false;
+b15cd800682fcaf Matthew Wilcox          2018-03-29  660  	xas_lock_irq(xas);
+6be3e21d25ca2db Alistair Popple         2025-02-28  661  	entry = get_next_unlocked_entry(xas, order);
+642261ac995e01d Ross Zwisler            2016-11-08  662  
+b15cd800682fcaf Matthew Wilcox          2018-03-29  663  	if (entry) {
+23c84eb7837514e Matthew Wilcox (Oracle  2019-07-03  664) 		if (dax_is_conflict(entry))
+23c84eb7837514e Matthew Wilcox (Oracle  2019-07-03  665) 			goto fallback;
+0e40de0338d005f Matthew Wilcox          2018-11-16  666  		if (!xa_is_value(entry)) {
+49688e654e48ae1 Hao Li                  2020-07-29  667  			xas_set_err(xas, -EIO);
+91d25ba8a6b0d81 Ross Zwisler            2017-09-06  668  			goto out_unlock;
+91d25ba8a6b0d81 Ross Zwisler            2017-09-06  669  		}
+91d25ba8a6b0d81 Ross Zwisler            2017-09-06  670  
+23c84eb7837514e Matthew Wilcox (Oracle  2019-07-03  671) 		if (order == 0) {
+91d25ba8a6b0d81 Ross Zwisler            2017-09-06  672  			if (dax_is_pmd_entry(entry) &&
+642261ac995e01d Ross Zwisler            2016-11-08  673  			    (dax_is_zero_entry(entry) ||
+642261ac995e01d Ross Zwisler            2016-11-08  674  			     dax_is_empty_entry(entry))) {
+642261ac995e01d Ross Zwisler            2016-11-08  675  				pmd_downgrade = true;
+642261ac995e01d Ross Zwisler            2016-11-08  676  			}
+642261ac995e01d Ross Zwisler            2016-11-08  677  		}
+642261ac995e01d Ross Zwisler            2016-11-08  678  	}
+642261ac995e01d Ross Zwisler            2016-11-08  679  
+642261ac995e01d Ross Zwisler            2016-11-08  680  	if (pmd_downgrade) {
+642261ac995e01d Ross Zwisler            2016-11-08  681  		/*
+642261ac995e01d Ross Zwisler            2016-11-08  682  		 * Make sure 'entry' remains valid while we drop
+b93b016313b3ba8 Matthew Wilcox          2018-04-10  683  		 * the i_pages lock.
+642261ac995e01d Ross Zwisler            2016-11-08  684  		 */
+b15cd800682fcaf Matthew Wilcox          2018-03-29  685  		dax_lock_entry(xas, entry);
+642261ac995e01d Ross Zwisler            2016-11-08  686  
+642261ac995e01d Ross Zwisler            2016-11-08  687  		/*
+642261ac995e01d Ross Zwisler            2016-11-08  688  		 * Besides huge zero pages the only other thing that gets
+642261ac995e01d Ross Zwisler            2016-11-08  689  		 * downgraded are empty entries which don't need to be
+642261ac995e01d Ross Zwisler            2016-11-08  690  		 * unmapped.
+642261ac995e01d Ross Zwisler            2016-11-08  691  		 */
+b15cd800682fcaf Matthew Wilcox          2018-03-29  692  		if (dax_is_zero_entry(entry)) {
+b15cd800682fcaf Matthew Wilcox          2018-03-29  693  			xas_unlock_irq(xas);
+b15cd800682fcaf Matthew Wilcox          2018-03-29  694  			unmap_mapping_pages(mapping,
+b15cd800682fcaf Matthew Wilcox          2018-03-29  695  					xas->xa_index & ~PG_PMD_COLOUR,
+977fbdcd5986c9f Matthew Wilcox          2018-01-31  696  					PG_PMD_NR, false);
+b15cd800682fcaf Matthew Wilcox          2018-03-29  697  			xas_reset(xas);
+b15cd800682fcaf Matthew Wilcox          2018-03-29  698  			xas_lock_irq(xas);
+e11f8b7b6c4ea13 Ross Zwisler            2017-04-07  699  		}
+e11f8b7b6c4ea13 Ross Zwisler            2017-04-07  700  
+d2c997c0f14535e Dan Williams            2017-12-22  701  		dax_disassociate_entry(entry, mapping, false);
+b15cd800682fcaf Matthew Wilcox          2018-03-29  702  		xas_store(xas, NULL);	/* undo the PMD join */
+698ab77aebffe08 Vivek Goyal             2021-04-28  703  		dax_wake_entry(xas, entry, WAKE_ALL);
+7f0e07fb0289519 Matthew Wilcox (Oracle  2021-05-04  704) 		mapping->nrpages -= PG_PMD_NR;
+b15cd800682fcaf Matthew Wilcox          2018-03-29  705  		entry = NULL;
+b15cd800682fcaf Matthew Wilcox          2018-03-29  706  		xas_set(xas, index);
+642261ac995e01d Ross Zwisler            2016-11-08  707  	}
+642261ac995e01d Ross Zwisler            2016-11-08  708  
+b15cd800682fcaf Matthew Wilcox          2018-03-29  709  	if (entry) {
+b15cd800682fcaf Matthew Wilcox          2018-03-29  710  		dax_lock_entry(xas, entry);
+b15cd800682fcaf Matthew Wilcox          2018-03-29  711  	} else {
+23c84eb7837514e Matthew Wilcox (Oracle  2019-07-03  712) 		unsigned long flags = DAX_EMPTY;
+23c84eb7837514e Matthew Wilcox (Oracle  2019-07-03  713) 
+23c84eb7837514e Matthew Wilcox (Oracle  2019-07-03  714) 		if (order > 0)
+23c84eb7837514e Matthew Wilcox (Oracle  2019-07-03  715) 			flags |= DAX_PMD;
+23c84eb7837514e Matthew Wilcox (Oracle  2019-07-03  716) 		entry = dax_make_entry(pfn_to_pfn_t(0), flags);
+b15cd800682fcaf Matthew Wilcox          2018-03-29  717  		dax_lock_entry(xas, entry);
+b15cd800682fcaf Matthew Wilcox          2018-03-29  718  		if (xas_error(xas))
+b15cd800682fcaf Matthew Wilcox          2018-03-29  719  			goto out_unlock;
+7f0e07fb0289519 Matthew Wilcox (Oracle  2021-05-04  720) 		mapping->nrpages += 1UL << order;
+ac401cc782429cc Jan Kara                2016-05-12  721  	}
+b15cd800682fcaf Matthew Wilcox          2018-03-29  722  
+642261ac995e01d Ross Zwisler            2016-11-08  723  out_unlock:
+b15cd800682fcaf Matthew Wilcox          2018-03-29  724  	xas_unlock_irq(xas);
+b15cd800682fcaf Matthew Wilcox          2018-03-29  725  	if (xas_nomem(xas, mapping_gfp_mask(mapping) & ~__GFP_HIGHMEM))
+b15cd800682fcaf Matthew Wilcox          2018-03-29  726  		goto retry;
+b15cd800682fcaf Matthew Wilcox          2018-03-29  727  	if (xas->xa_node == XA_ERROR(-ENOMEM))
+b15cd800682fcaf Matthew Wilcox          2018-03-29 @728  		return xa_mk_internal(VM_FAULT_OOM);
+b15cd800682fcaf Matthew Wilcox          2018-03-29  729  	if (xas_error(xas))
+b15cd800682fcaf Matthew Wilcox          2018-03-29  730  		return xa_mk_internal(VM_FAULT_SIGBUS);
+e3ad61c64abceeb Ross Zwisler            2016-11-08  731  	return entry;
+b15cd800682fcaf Matthew Wilcox          2018-03-29  732  fallback:
+b15cd800682fcaf Matthew Wilcox          2018-03-29  733  	xas_unlock_irq(xas);
+b15cd800682fcaf Matthew Wilcox          2018-03-29  734  	return xa_mk_internal(VM_FAULT_FALLBACK);
+ac401cc782429cc Jan Kara                2016-05-12  735  }
+ac401cc782429cc Jan Kara                2016-05-12  736  
 
-> @@ -154,19 +155,44 @@ static int apply_range_set_cb(pte_t *pte, unsigned long addr, void *data)
->  {
->  	struct apply_range_data *d = data;
->  	struct page *page;
-> +	pte_t pteval;
->
->  	if (!data)
->  		return 0;
-> -	/* sanity check */
-> -	if (unlikely(!pte_none(ptep_get(pte))))
-> -		return -EBUSY;
->
->  	page = d->pages[d->i];
->  	/* paranoia, similar to vmap_pages_pte_range() */
->  	if (WARN_ON_ONCE(!pfn_valid(page_to_pfn(page))))
->  		return -EINVAL;
->
-> -	set_pte_at(&init_mm, addr, pte, mk_pte(page, PAGE_KERNEL));
-> +	pteval = mk_pte(page, PAGE_KERNEL);
-> +#ifdef ptep_try_set
-> +	/*
-> +	 * Kernel-fault recovery may have installed the scratch page here, and
-> +	 * some architectures (arm64) prohibit valid->valid PTE transitions.
-> +	 * Install atomically into a none slot. If scratch is present, clear it
-> +	 * and flush_tlb_before_set() (break-before-make) before retrying.
-> +	 */
-> +	while (!ptep_try_set(pte, pteval)) {
-> +		pte_t old = ptep_get(pte);
-> +
-> +		if (pte_none(old))
-> +			continue;
-> +		if (WARN_ON_ONCE(pte_page(old) != d->scratch_page))
-> +			return -EBUSY;
-> +		ptep_get_and_clear(&init_mm, addr, pte);
-> +		flush_tlb_before_set(addr);
+:::::: The code at line 728 was first introduced by commit
+:::::: b15cd800682fcaf27048b05e42f5c208e4c756c0 dax: Convert page fault handlers to XArray
 
-On x86, ptep_try_set() is defined, so this branch is taken, and
-bpf_arena_handle_page_fault() is wired into the x86 fault path, so the
-scratch page can really be installed here.
+:::::: TO: Matthew Wilcox <willy@infradead.org>
+:::::: CC: Matthew Wilcox <willy@infradead.org>
 
-x86 does not override flush_tlb_before_set(), so it resolves to the empty
-generic stub above. The scratch slot is then changed scratch_page ->
-none -> real_page with no TLB invalidation:
-
-	ptep_get_and_clear(&init_mm, addr, pte);
-	flush_tlb_before_set(addr);   /* no-op on x86 */
-	... ptep_try_set(pte, pteval);
-
-I could not find a flush of the kernel range on the allocation path.
-arena_alloc_pages() only calls flush_vmap_cache() (flush_cache_vmap(),
-a no-op on x86) and never flush_tlb_kernel_range(), whereas
-arena_free_pages() does call flush_tlb_kernel_range() before the range is
-reused.
-
-The CPU that took the original kernel fault restarts the faulting
-instruction and accesses kaddr through the scratch page, populating its
-TLB with kaddr -> scratch_page. After the real page is installed without
-a flush, can that stale kaddr -> scratch_page translation persist, so
-that later kernel-side accesses at kaddr reach the shared per-arena
-scratch page instead of the freshly allocated page?
-
-The arm64 path looks fine here, since flush_tlb_before_set() expands to
-flush_tlb_kernel_range() and performs the break-before-make invalidate.
-
-The commit message says:
-
-> The new flush_tlb_before_set() is a no-op except on arches like arm64
-> that need the break-before-make TLB invalidate.
-
-so x86 is intended to need no flush after this scratch -> real transition.
-Is there an x86-specific reason the stale scratch translation cannot be
-observed, or should the allocation path flush the TLB for the affected
-range on these arches too?
-
-> +	}
-> +#else
-> +	/*
-> +	 * Without ptep_try_set() there is no atomic installer, but such arches
-> +	 * also do not wire up bpf_arena_handle_page_fault(), so no scratch page
-> +	 * is ever installed and the slot is always none here.
-> +	 */
-> +	if (unlikely(!pte_none(ptep_get(pte))))
-> +		return -EBUSY;
-> +	set_pte_at(&init_mm, addr, pte, pteval);
-> +#endif
->  	d->i++;
->  	return 0;
->  }
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26775626381
---===============8340823664292074246==--
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
