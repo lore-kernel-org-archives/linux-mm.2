@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E00A1CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:02:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EC36CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 16:03:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D10D6B0447; Mon,  1 Jun 2026 12:02:06 -0400 (EDT)
+	id E1E2F6B0449; Mon,  1 Jun 2026 12:03:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A8BB6B0449; Mon,  1 Jun 2026 12:02:06 -0400 (EDT)
+	id DF5826B044B; Mon,  1 Jun 2026 12:03:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E5C46B044A; Mon,  1 Jun 2026 12:02:06 -0400 (EDT)
+	id D325C6B044C; Mon,  1 Jun 2026 12:03:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 118F96B0447
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:02:06 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A468D91441
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:02:05 +0000 (UTC)
-X-FDA: 84831810210.30.775E450
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C81776B0449
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:03:08 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37ECFC245A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:03:08 +0000 (UTC)
+X-FDA: 84831812856.26.582C425
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D2DEC100003
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:02:03 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KSPJowpG;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780329723;
-	b=W8BVJmtBKo1n30fxr8AhiHTD3Yx45+m3dJX5A3NSHhc5JlqWkP0AWzBcJa1QuFGdvZURXQ
-	WHEY624FNyzUXc/9TT3YdLzSGYHKxLD67+eAp54eIURBSLL67pptMA2uXEjbEAe15ZVNU3
-	rtCFh4eijNBOPbaTSAkHOLIaudtpQ4Y=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KSPJowpG;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 933034000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:03:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VC3x6fPF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780329723;
+	s=arc-20220608; t=1780329786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uYb9Mgzy8PSXvySU0VfN77Z6O1JKO18qgUu7id2miaY=;
-	b=kMvkLe6DfQ5I0kmWzlHaFZcZfOg88Jwajcws32hISbrgWKaFQOmRRu0N/whEOaDAOAgkKi
-	rp3uSBDS2DlpphBO6TI6fS+xXlBmdIhCJq0vrTNCGVb9rFTXmyh2fi0jvDvQb2oNX//oQW
-	ebivqdbErFzN0nMih40CFLew5OlADzc=
+	bh=pHMSgSf2znVrwXRiWGWSRWdLj0MFPQf1FtqfyRnjDN0=;
+	b=DFRlsdzSf4gVU2rHfvF/7GnOFgv8KFwbs8e/eEgqFYcLbuhw8+Opzf/ACoYJmyH5aT2diw
+	+0N3WmPEGJT6sIF89WHKx3mQGYbtYderRozVEKc8cgaaLYxrtOWQJJy6Zx3tvcM4k7lsyB
+	ut9xaAeRjnHGZ/E3IH0oXVvq38pvL2w=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VC3x6fPF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780329786;
+	b=53DPpyrPuxJGN8BS5q97E7cj6hm2oH3Ot3WLN9gQCKCtuOz0o/TE7hZi5wbHQ+JpEJY5UI
+	lVo0rq5lZ+FjdCUAgwkxgJAFXEEa7xb+gWUviS4ZE7aHBmde/DmvchkB5gEFUztuvNwQiA
+	T1R9V2rdM2gywNnQrHLZjh1eelUGF1k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE8D542B20;
-	Mon,  1 Jun 2026 16:02:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DCD1F00893;
-	Mon,  1 Jun 2026 16:01:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CB00A43EC7;
+	Mon,  1 Jun 2026 16:03:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB651F00893;
+	Mon,  1 Jun 2026 16:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780329722;
-	bh=uYb9Mgzy8PSXvySU0VfN77Z6O1JKO18qgUu7id2miaY=;
+	s=k20260515; t=1780329785;
+	bh=pHMSgSf2znVrwXRiWGWSRWdLj0MFPQf1FtqfyRnjDN0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KSPJowpGOXItRHd2Yy7nW7/sB6nhrfd6QeMJ582YP/svwRsgDyWqGIV5W6A+mXbrW
-	 i/XpgadnobUyE/M29xCMT68bm6QhUkvn0P2oynxzZreOYpzE0i5fuhHSbSuMh7ZfdF
-	 DhwBLpU9Hd2wJWLWKXdxzrKHN/LIVVxhjT+0avUvJ8ik74th08G8oJYt389/70m70E
-	 meeSyFaNu8uYElINmMMzKeZC7nSMtuiEILoFsdVTe9N7HX9oPhqsQL7u7uvpsAW0tM
-	 kfCcc5eNSycbKzVpjY/KDVV+ZGykpdvW+Yq0js0J5A302QKYrrfR9n17HY6b5G7zLW
-	 rbNh9JuJ6R+hw==
-Date: Mon, 1 Jun 2026 17:01:57 +0100
+	b=VC3x6fPFvWYvO9xnXUOpzln36PbDa6T/tfMgfMtX8Uc+esP2g4EmculOj1imcM8CB
+	 v8FwD5Nor/dCN13aP/dkTvK90MPkaf2P1m1X6G0OCQzik3ulVF6PrF7JIJLMb9oaI9
+	 UnGQyk+rzNiVk25kO8chc3RVB2dQfBFIr9gTBSyrk+eniu8cmtfPhfXkcobEf27rOX
+	 zM6UB5YM2KcxUBPCxQA3kDGViQodZYzBIiIEXvDzzwmZetyZqZtbSy3YG/4bHQdves
+	 IWGX/pmXMM9Z3aXSAwv/otN1iU81fOcBulxnuv9FsqsyDC7jvmPTbdsb3qCvl0/i/d
+	 PnHpdBXb+TM2g==
+Date: Mon, 1 Jun 2026 17:03:00 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, SeongJae Park <sj@kernel.org>, 
-	Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, SeongJae Park <sj@kernel.org>, Balbir Singh <balbirs@nvidia.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Wei Yang <richard.weiyang@gmail.com>
 Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: use correct flags for device
  private PMD entry
-Message-ID: <ah2rKKATQwGN_PHu@lucifer>
+Message-ID: <ah2tA4M6UWZanW2J@lucifer>
 References: <20260601083044.57132-1-ljs@kernel.org>
  <cd8b6bb1-5c42-47e4-8773-2c301a029372@arm.com>
+ <d30e0d87-69f6-48d4-b3fd-6e6b87678f91@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cd8b6bb1-5c42-47e4-8773-2c301a029372@arm.com>
-X-Rspamd-Queue-Id: D2DEC100003
-X-Stat-Signature: p4d48bk5dyxw7auegdbn95t88jm3zy4x
-X-Rspamd-Server: rspam03
+In-Reply-To: <d30e0d87-69f6-48d4-b3fd-6e6b87678f91@kernel.org>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780329723-319166
-X-HE-Meta: U2FsdGVkX18P3YXNM+1smEzlLK5E1sxn1e1GDkRbBSKSZGyxfWCH9QehJJQg/9b4QFEPBYp1Z/gUuBsy7hTWg03JvNYL8LhHeNK+lbdpBi3LrbGok7ZqD2BqtgeicoZFQ2inA8YuDBvXG0oPtkUTYKXoeHCmDLLLIu3a8duWt6+r2olMyYuI0Bpxh07FGDCFEAW6kdkZBeugxCzr76f96cpkFrMznsg0a4b1Xwg5j17nEImh68vcI7mNn/BMwgXe5SFvRf5zP8WRzBS4pwRyZ043kA3PyNMDmMdR43tmfkTj/h3yWdyWO398bJLYx7CkIRXGoR54rWS/AYwiRn49FJmoQiOWfsOgjl7tzDBtNj1YfQvLwT021S2SwXWd+ntVM6dfJH30KzRtihb0h9O7gEjGUTIqjsVpjC2FIFRLGY5IW4p9fl+SxET/l0LVCtn4FyiLZFmpSSgF5pUdgtjMCTAr8T88PbVtlFxQOd31cI6uxwV5kTmyHMv23jVyfZVVOjhGrXMv29acpyUl2wkXsJJWxuPBF939SrcS7aOnbR9NAVfdc6uqzHQqFA6IawkVgiBWNJCzLUoXuRaWJQ6NAliBy1cuetdmWTdD+sJ+CzeLuasnv3JQ3cgZNy0OusEO5qOxOxrY7ocHyPwGt0kcaJv3ScJl7oP2SL5yvNMNeBXNI/dztwDJ1sXA2pG3XmHwWFbjXBiBAeRUOZfUpuL3/Bem2wDJfK9XIsTUCBOIlFYXCjfvoT+/LurNw2tj4ygAieoUx6d+pkYwpA0p/W1aeCf/SPA+RASgzMwHZHOlIhw/pWiKU2CGQE8La+yGwdVSxTHOCwQZVkGlt0D3y44as2TScl/WIkj8DwrP9xL2HonROs4MGObXRef6gmRoPQ2BAvSuf4vuJ/d488Bp+mvAWo9dCTZ4SXkz8OsGDaNIJWLIRqSUUMGHrxH6KKcSt4ygno2ZBSkDFiLOV64/VwF
- hPv9v2vJ
- 3lGfTExPvFypSMx7BJP4qIFm3GpOyTgWXdICjveK2SKtSQV9RpuHfWLMQO7UaTvE+d7WfT8EW1CVXxYawLJ+gL/4MhHkpTAhTJ2Uj1RABsn837H6jMBpaErxDCLuTuM7v7TSttlTORL8ZBJDpMKuNoz5N/I7EAcNhziA3DkiNwS0FGLQiIejPExdl5UFFDCl1gSOyvcU7jxrDjVzfrEipQd9KTNrBNxNyStS74URpRMsWmV5rHwrgQnAote10GWpSOvWsdjyMGQf1l8KgsS83WI+LPjcq20OvBZyUF3x5CG+qLY73WmnhnO5Cr7vyyO/KQ+zZGfXG+r58CIVNcj7Oo1wrCAv5O7IoK7WYYnP9NUDaule9FDCbgNvHWvLUQmIvb/5a
+X-Stat-Signature: jpw9s3upyjddnzkbsrqewu5zkdp5qd3i
+X-Rspamd-Queue-Id: 933034000D
+X-HE-Tag: 1780329786-629202
+X-HE-Meta: U2FsdGVkX1+XiCRoh1W3cDhIraqI3T4H1Oi9LO2dgmmRPZUO2wVAXINERkkW0LLz5T8k85h53xKY3qMhcGPG7yk/1A2OYk3U2RFWejm4eK5zI3aCyjuhk1+u//tvNhz27oJkHR0D2aSw16zC/5lpgaKgynu3Y12KCN4TUsjkkLywlAC/lpCQjLrUAf0z5SXWPpoL1wUu39KQG+wRwSUFVisQ/roO/YIz1DG/rt7m+f7OQa9twlfOZ5AmP7I4fz1dw4O0QlP3wxAxdw8PrbZAK4iH7PJCo8IAd9yMhxsRpQ1lC+RSYzl7xMpPidnqN96dMiI+Zi1yDKfCOM5YHfixQ3jPU+sdRGfyef1ccM6rRjDmVqejwzV4hHg/jhPpxPlalN14YFQ9cO7OKiv4Wcy4FoiawzCpvVHTz34hRo306m8oAPrpGJYTgnXGNiUZ4uq9IOraXMWlSY6VqE1crgPaK0/BkzHoKMJr06YWhMOHvIzLmtuPvBeNGuwtGEjogj817zuzUVnVI74E4HYoe6RlQbYc3OYWTODvkP1h7Q8up3goWYkmQWetPeUDGe2s4/dM39xxiPAkGmDmaTrBdYnel3HYs2DUZ2wjZPp9rJXQSfaFUsOcPAyyboryOaS+2u4Utym1VWWm2mbiZ38ZOe1i2YjZ1bSQNX6mHGMca1IZEy28/5ETrp48zJreoUVjJ99f0jc8C/bHpDmbFGH2mOzNoLR3NOvKp4fLAYjyIKshfIbMlmQ1weOgVAY8kjerTMNmWuLad/vz9mKo+ppArhIbKNQ9FT6PSdN3tM9ENRhKNrURyN6ZTwvfg29VfXkasoEn1EYfW8HDDYqgcHhayKIetbQjGlOEv5unbmXBK9fNDzS+K7/RBB0r+RCIa5jlGz0cOGWYJhtbMDSS4n6mI2dwLxeFhSojUbuFrGwccV2FXE8c0ZBt8Sbn4sbWBpXRu2vULhCpG543k8+JhYMsgvj
+ eVX7MABo
+ 0xpmZjuf8ZZRCQ3X3PqvJ5UxXlLwJe7BrdGkobZxX0y3cL8myLCVd9hs1uD4c6fhN2BluOmckpBu62a0fas/ns4qAtIgFR3rxWkQxWC6ln/IYSjvrUqFRmg6llv5PbkfM0INTU9GdL1LIypq38I13tzwu2xjcZIDfOcaA8JRKUSg5Bn6gcZZteIyqgCwdhEC9mgRUzCwaA3W5nRcNalWhWcHiOmJh/pQ6G3ynI2ZuDwcViw821PQkpCH6KIXUtsNtfkY0799lmtOHLuVXT+XX3tHqmrB0mOOL/XgveDwuZBsRv9dGVV9hkA1BrcknvwLEvXEtCEa3DQGISY6fNfSJ4KxIGs8NmaafN+kPYQm6BycgLTFsk9H2HxK8try6mO9gVyYakyCcVwDEBUwYxBBWMYdxGbpOcItP2fveF3wL/SsFh1ShAJTy0FLia54zksqZ/7Wf7SyoXoaHgzRuZw+MDA5tQ8q5wB+/1MWR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,29 +98,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 09:20:51PM +0530, Dev Jain wrote:
-> Sashiko continues to find existing problems :) What do you think:
+On Mon, Jun 01, 2026 at 05:56:45PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/1/26 17:50, Dev Jain wrote:
+> > Sashiko continues to find existing problems :) What do you think:
+> >
+> > https://sashiko.dev/#/patchset/20260601083044.57132-1-ljs%40kernel.org
 >
-> https://sashiko.dev/#/patchset/20260601083044.57132-1-ljs%40kernel.org
+> IIRC, Wei is already working on fixing what it reports here regarding
+> try_to_migrate_one(). So it's old news.
+>
+> https://lore.kernel.org/r/20260508013728.21285-1-richard.weiyang@gmail.com
 
-Thanks for highlighting Dev and to be clear I'm not yelling at you :P I'm
-yelling about this aspect of sashiko... :)
+Thanks, wasn't aware!
 
-So, this patch fixes a serious issue that renders THP device-private
-completely broken in a way that can lead to memory corruption, and this
-review comment has nothing to do with that :)
+But it's also irrelevant, 'existing broken thing' has ZERO to do with a patch
+addressing something else.
 
-So TL;DR - maybe as a follow up?
+I kinda wish Sashiko didn't do it.
 
-IMO there's _no_ obligation to respond to stuff like this, in the same
-way as somebody in a review saying 'hey here's this unrelated broken
-thing'.
-
-And this kind of thing should _never_ _ever_ block a series or patch.
-
-(I kinda wish sashiko didn't do it, I have extremely limited time as it is,
-it'd be better as a passive background scan of existing issues or
-something.)
+>
+> --
+> Cheers,
+>
+> David
 
 Cheers, Lorenzo
 
