@@ -4,156 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28FCDCD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 20:24:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C3CCD6E60
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 20:25:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5687C6B04C0; Mon,  1 Jun 2026 16:24:58 -0400 (EDT)
+	id 36D5A6B04C1; Mon,  1 Jun 2026 16:25:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 540256B04C1; Mon,  1 Jun 2026 16:24:58 -0400 (EDT)
+	id 349DF6B04C3; Mon,  1 Jun 2026 16:25:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 456166B04C2; Mon,  1 Jun 2026 16:24:58 -0400 (EDT)
+	id 25A306B04C4; Mon,  1 Jun 2026 16:25:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3878C6B04C0
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:24:58 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E6D3C1A072D
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:24:57 +0000 (UTC)
-X-FDA: 84832472634.20.47BFEC8
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E5B1C120009
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:24:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="JD/rgItE";
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 17C946B04C1
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 16:25:21 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BF47A1C0D0F
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:25:20 +0000 (UTC)
+X-FDA: 84832473600.10.5B22C78
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 44C3A4000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:25:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jHA8eCOc;
+	spf=pass (imf07.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780345495;
+	s=arc-20220608; t=1780345518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6/5W0G6Gs1Q9GB3IxcldPERQvThA7tz7U249bqa4a9U=;
-	b=Wvyhev63nnWSgjiT0jIslbva6tDiPQtgpegkq2qOJ5Xg8F0qNpVHQ3Hon0eC/0JfGs1atz
-	ElgR3L5m+lUtKx3JMzg1meS0/SzhdKEAsbH+s6kpiRWS7GIIX7BFnyUbxHLaT19kVANPFD
-	V8k7uMpmbuqSH5K5CCNvQXIpSCN++80=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780345495;
-	b=7WO058Gh5PvEONP2hppM7/g/tbQaAl57fs7yQNQDE79exLmww1RlZrBUyvxFEZgWtFBzh/
-	Y0gjxq0GC5cjdbh+KaFrBVtYjQHLNwkXK1OzuzOpr2wafZtsa6PpZAV4Tx1V94yfAklwYu
-	nCu3/xSrn8h5ta8a/qXPrfhCI+zVbDM=
+	bh=1gaJx6/Kjwz/xj8GFMUKhScvJlSSTXn1h6XS/yJcB9o=;
+	b=aA7dvomoyK7cIycaDTpUfI9D8IJY7ubuIIPLZd+hZ2ngHZIcCK7mFtZSXzjgEOtZcp1DQW
+	vCyKGHFcSQuJUND/Xdg+kPzUbBNzFkmKRqmPZKxQ+pvR9moZ3ZzPeAgVHgdLcyrBEkjj7C
+	jgjka54Egai+a82WrPaw07Tu2j/a640=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="JD/rgItE";
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6/5W0G6Gs1Q9GB3IxcldPERQvThA7tz7U249bqa4a9U=; b=JD/rgItEItTF3waKZU0fyhZfOO
-	p6KhOF2dIKsWbBlXDH6Szda6v6pwxYE0KSLQ6p9Jvu4aC0kMd1Jp91bHbXXGW1JY4kLAuzDZFSXs9
-	P7bQk5/xrqJRa6GrGWdxnMhnM9cOr/Mh7DhOreUlDgBnF2TcRdtGfQbRd9WsBVDwHFqfKKNmW2p+o
-	Eq81r5ZCto6v0j62Ti/4LX0nmYsBAqhcbZ6JenvK3VL8pcuJJabuzAf2wJL1ohACsCSDs/sp5+nbD
-	m2tuZulS6JhmLQAZ2oWemvoJrOfuaHp1Sctzmp2YTWfFeramTBO8sylg/IQVtL1hc2i3NQH4Kt9qQ
-	+ovW+CfA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wU9Av-00000000iHG-2DOC;
-	Mon, 01 Jun 2026 20:23:53 +0000
-Date: Mon, 1 Jun 2026 21:23:53 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>, stable@vger.kernel.org,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>,
-	Gabriel Somlo <somlo@cmu.edu>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-	linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net, qemu-devel@nongnu.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 01/11] params: bound array element output to the caller's
- page buffer
-Message-ID: <ah3qWZ4cqhrbHZcl@casper.infradead.org>
-References: <20260521133315.work.845-kees@kernel.org>
- <20260521133326.2465264-1-kees@kernel.org>
- <20260521174631.71a06440@pumpkin>
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jHA8eCOc;
+	spf=pass (imf07.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780345518;
+	b=rPubn1NYHGzRcZAcF3nYNZfJDUeatJqIGCa7jn4MtPUgHbmA5djPqKJyc1LcQHWhpvbfBS
+	D8IwSvYCwggRjbipuoNpY5Co0owAbGcuiThatth6bVnEpLrDOFUv6Gt0cfnmu6kDb1Ed43
+	AqvosZ6orIkGpelKxE4Ulf/bc2p+jas=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780345517; x=1811881517;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1gaJx6/Kjwz/xj8GFMUKhScvJlSSTXn1h6XS/yJcB9o=;
+  b=jHA8eCOcrcMRdjjvHrTv9fbxYDAeB/PhQBtYzTaaiUXSjthR2tnhL7HD
+   tVcEvwbZiS6s3ep8EtbXsMzc60o1ui+OE7LUeN9CsFoUY3d0G0LCn5JzI
+   KxyI9tbZmx9BQ1XTTTLlaPcQuEdIKi9fvzinIuobrYQZ9QS6BqQhGt6Hr
+   xCMVD0MXICCAzYRaqkdNDuDeh40VgJ04mQOOyDULte2e+lNizvO8Y+3n3
+   TfgLBj1mQtrBaxf+z8YOv5uyJtjR6XlseF/hScMNFQ2j60VSFGHHqZv7M
+   HdVf8WPNKsiOHewDUATFGD/pc5Lai+qgfd/aDx3PvsvEsi/ETeneZKarG
+   w==;
+X-CSE-ConnectionGUID: 3npbsiA7Q26ye0a0xSwUgg==
+X-CSE-MsgGUID: jKiOAtTKRdCdTQjhWBPnig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="85002828"
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
+   d="scan'208";a="85002828"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 13:25:15 -0700
+X-CSE-ConnectionGUID: hQ2f19pNTPm8IvPDw4EXnQ==
+X-CSE-MsgGUID: ma2HkNjqSdCRWye5Mr8ahQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
+   d="scan'208";a="243519500"
+Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.108.20]) ([10.125.108.20])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 13:25:14 -0700
+Message-ID: <53b599ef-0f16-44d9-bfda-a5a751649193@intel.com>
+Date: Mon, 1 Jun 2026 13:25:12 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521174631.71a06440@pumpkin>
-X-Rspamd-Queue-Id: E5B1C120009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arch,x86: Skip setting align_offset for hugetlb mappings
+To: Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov
+ <bp@alien8.de>, Karsten Desler <kdesler@soohrt.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260601125015.216110-1-osalvador@suse.de>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260601125015.216110-1-osalvador@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 44C3A4000D
+X-Stat-Signature: wqsqen38w3nboi81fg97xrhktztnowwr
 X-Rspam-User: 
-X-Stat-Signature: oifah6z97grkk3up6k8799jx5kf4bzf8
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780345495-7262
-X-HE-Meta: U2FsdGVkX18WwQTGoug+JaMx7sWWdJVs5vCceg+xlspJVMoVKBYeD+sdeqb9MwjBEhOzXlnpjfn9csqtmGA8B6AXhEmTm8xPdKTxKahtyDtXyxq8dkBzENDwAz5S5TRudtWp76XKvtxa97A7C1PrnagxT+iiAW7C8lXa0nBCrTZ5NA3RpZMA44IYYKN76WMQsQsnbs8D8/jBlM35Wg4uY7LRG6dtTE/RRTXvlhR7hTRPki1Nkfyj7HdQNtvwkNRAvpnKjGvH6ExSFxZTKQ3vdv5evi+jbwAFPvmtlAOJ1stblny0lqnI4dzYSyahKsWSiGjV/wAJDll/qjE5FSrp2IBTGnEY28xdKLXaUV3yptAo+YQpewrVdc33uFryIGWDIs6O0xVL5Y5ygwmn6/qH6SdFk0BS0tTwik9q/QTlCQnkV81ZHsozuec8YpRR7VwpPiKoAhYrVOu+/Bt3hKlSycwZnKm0IoVPHhz0WFqqVrsgvllpIbjcdUgjI0wx/v395hbOBI4ZiCZzg18+5Z4j/NB5Jxd+I2vmYLnDP8mr0vx+IYv+kvQBoVhPXhu7SPsmObogDO5kJWnA2fMe/w7O+uXmxF/qmV/+/ROKAdCEuQ0X3M+GMn68ROYmhDSHGpSWxumk/8EqfglU7WtIiziFn2sKwt9o1+MTRwE9bHCkAV6pxII27WGdv6WMIgxfEYj9QsAseQX6DYqhcvezHvc/vjb+KxSV5LyjNDXLh27XMS5YrYDL0zPKd2mHt/DokOD5AREEhNJdnC5Wci8pMgS6xe9yJlftPc4xiqU8w3Xh2P7CrPwN9HJfvohgdD0iY/dDSYjDZW53OJltqDaABZP8hIPusl9aMcuTPB9/3tgQ51POu0IdbXLJ0dx1CazhN3mI/jmlHxoUHmKOQrGi4Qr4ZT3vM6cRvfnz0wTfKTuMZL0vYHuaHiAu4ZRIETeTmrkwAhoPBYK+3m6XJ6dUqrV
- bUIiZhA2
- Yk58jBX6+Ke1ZCZCo/t3qW60akYn9n9TfaM67KceItPJVp9HoHXAUR89ACN1507O2QMBwIVxIIEogX0iGobFvFVoyYFZF3rhfwaZ63UkhNUTGcoulFYMbsxO/pBQyw5cb/+DhwuFExV+T62+oz1aTLb66Cpmi4TgnRJ1pLTCKEdC9Ikgh6OS9chx3ODYmHx5aUYZxh+dUxqAuJgVrCC2Oz0+GItzonUJXrpr/GMDd60Hpal8AgqEFKe1XQay7azBuvoXWPPk8ygaORWhj+vR0H6UKYfa/nqVa5A421++WHvz9AyYlKioY5xhxJonsO1YMVqWV7rDabL5QrHQ8eRoCYj/DQa7N30APlPu1+eTwJ5uaBi6Byl3UMoTqIg==
+X-HE-Tag: 1780345516-934797
+X-HE-Meta: U2FsdGVkX19EcLapPsyNclu3BuNbqP5QOF1fAtssyOrgUTXFAGQ/4FUDsWL8sR0JpFTr4cO0Jh3R9RMxcKyqobGnBoOiG1VSy5My2qiw+sFJe6QKC8iJhhhk4XEPWR7yatyX7aGQpkQarUf15IJBQfklLeeChJlc5Xp4gifu+MUnVG/wHpZRhQ+L6m05yVw3+0ri2qS/aFMidEfNjphHjjpU7TjJFEXLAgNbmVY9U4t4zRobitge/4p43F8RrQrYekT/VcCx0OJS/6WoG3doh0dwmQ4Y6sq0lC/96X5OA8Af8kgMw949X1dSUEgF1/XnjtWrsmh20A4433054brlSkgqhBX50Mho4aimHjBZsXDdKof86Py16j5NDhJMlnriDJeElkYR254ujgiwLTgJ6cAOx5WKnfyLjVaxqWCFgzG5BUo+LVU77elOwVeYhiWYaNMQF1A6oY7smuiu83RHIpkbjD2EYhXRaUJ+e9navk7Tnyeuh7GsNEhaakR3+MUd+Pt9es8mQMudHyyNr3lPVDw1wls+QQouRYLbfjsk/QhZjoE3hkRSU5DUGmkGjKluqfyJmS4C95n4fT2iOTc7E1heHawLay8ctb1k4PaqRVYZq4H+lXMXWw52MoUGYVENfP53OKmOK0sPiEbWXhONFaai/TqrSUHc74sY3bPQsxSVCBqMMKmZcVeip80XGBwy5vLkYHLFDJ1OtYFic0Wi7rTHERFTKn95rxP3vzXxk/u1efFhNDDouGADUZFjfEvkf85jJpmP+KKzF3PuZY07EP438VLvYNjnTJX0mF/AIcxmJ4Tb9n5UOgFECN7BE/a/Eg43jK84ybCeYunhesbE0lYfvwrhkpTsbT8lFlXp0BzpbsF1aLWaJXtRzQDBJ4R/PdJJbo9Zb4WxBd59IvRlRbluHFVJTyMOgSTWsdLylU3XwILFnmGWgSRGqhHejsWDmrnDRYqQ/K7pJBxvrev
+ PtAs1Q+H
+ dTnjMV6+bHlRZMen/r3sFHmLISEnLI9kklTpgX7n0q0fQBO2vttPowSr7isEHG9qx5NQzP8BNx5sv3vtpLKLnE/mh10KO6Q90RQ1XN9GPIjzU8hR1R2C4qsYncS9xqn1I+GZq+pumeoPHXzc6gxVAgVt5ANa0aOGvc1Sb6+oG1sgkGoh010iflRO67SXiEdR9kYSAh02KL4Jrz+GQVAT4GZn7MjogUHDACTO7f8JrbvhZclOGaIb3OkfBeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,17 +150,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 05:46:31PM +0100, David Laight wrote:
-> On Thu, 21 May 2026 06:33:14 -0700
-> Kees Cook <kees@kernel.org> wrote:
-> > Collect each element into a temporary PAGE_SIZE buffer first and then
-> > copy only the remaining space into the caller's page buffer.
-> 
-> Should this be using a 4k buffer on all architectures?
-> Initially perhaps just using a different name for the constant until
-> all the associated PAGE_SIZE limits have been removed.
+On 6/1/26 05:50, Oscar Salvador wrote:
+> On x86, arch_get_unmapped_area{_topdown} set align_offset in order to avoid
+> cache aliasing on I$ on AMD family 15h when 'align_va_addr' is enabled.
 
-If we're acually going to think about this, even 4KiB is too big.
-An 80x25 terminal is 2000 bytes (assuming no utf8), so 4KiB is two
-entire screenfuls.  Limiting to 2048 would seem reasonable to me.
+I'm sorry, but this is a big NAK from the x86 side, without at _least_ a
+substantially improved changelog and evidence that x86 is both the only
+place to reasonably fix this _and_ evidence that no other arch is affected.
+
+Why?
+
+x86 is not the only architecture that uses .align_offset.
+
+The bug was introduced in a generic, non-x86 commit (7bd3f1e1a9ae)
+
+The real fix is almost surely in arch-generic code.
+
+So my fear is that we'll apply the x86 thing. Four other architectures
+will come along and have to add their own fixes. Then (if we're lucky)
+someone will stick around and fix it properly, than all the
+architectures will have to remove their hacks.
+
+Worst-case, we end up with a latent bug, just without any testing
+coverage because x86 testing is the most broad.
+
+Oscar, even if the real fix involves a couple of patches, can we please
+see that, first? Then, we can go back and make an informed decision
+about hacks versus proper fixes.
+
+Second, if there's a hack to be had, it should probably be to back out
+the AMD optimization. That's absolutely an x86-only thing.
+
+Third, I have zero issues with distros adding and carrying the x86
+align_offset hack. That's what kernel distros are *for*.
 
