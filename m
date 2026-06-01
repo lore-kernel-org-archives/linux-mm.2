@@ -4,137 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46341CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:40:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09473CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 15:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A512E6B0429; Mon,  1 Jun 2026 11:40:44 -0400 (EDT)
+	id 71E436B042B; Mon,  1 Jun 2026 11:41:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A01456B042B; Mon,  1 Jun 2026 11:40:44 -0400 (EDT)
+	id 6F61C6B042D; Mon,  1 Jun 2026 11:41:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F10D6B042C; Mon,  1 Jun 2026 11:40:44 -0400 (EDT)
+	id 633626B042E; Mon,  1 Jun 2026 11:41:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D9626B0429
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:40:44 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 41F6612064E
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:40:44 +0000 (UTC)
-X-FDA: 84831756408.24.97E0270
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 02832100009
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:40:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AuT2zfDz;
-	spf=pass (imf14.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780328442;
-	b=1GVBz79a8ScSUU6QgpNZUOPf8dZzrQ9YfUFjbEGSL61zanX+ZaoJRu6pMdkaPkIdmVJM/I
-	VSF3SDUKliyVoA/XC1fyXrBWaNyV7Jl5q88ytdRMTH0OOLILtNKbUonl5u2cUPF2dMVCNk
-	lKMHCQOlMiNSJ9EP5S9tDStG6Qmlq5U=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AuT2zfDz;
-	spf=pass (imf14.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780328442;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 532496B042B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:41:19 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 043801A01BA
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:41:18 +0000 (UTC)
+X-FDA: 84831757878.23.B9E4C9F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4406A20008
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 15:41:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TIHofZok;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780328477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yGitNDR3suWUnLziWsrEM4RRTJi0DQuBElG4O41DuOM=;
-	b=7zWnYf8JwB9GMrk/UNKE5esy9eqO4CXtRCLo1aUahj5+RgBf++UO3qS/c1L9q8xSnUXfqe
-	NZlgiajU+X+/nTX/2+Ndyn+xXJmlL6zlWX2DkZeg5/K2GXosd24QwfH/0Af336CTEsl9dI
-	AQaxzAp7hBgPCBO2uB0/IR3MUrY/tjA=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-687ed9aabb3so6356147a12.1
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 08:40:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780328440; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fyy+TRV7hE2CwerjHQotpmFtiLwcoyZ5O3w49lH3ApfTZLseFjZmhFGKMA6g8cgFBk
-         Stp+3yiabY9wPIY55eYJ/lYjqiwpiGRSVk4rJN2lm103RRoiVvEYluQMFVVM859vIjwH
-         Q5f8BuyeVz05BPB1SksJXnJQS58epH+jnCt3Vg7ARBLuMjCRv1dB3/I6hGajdXNmYRpe
-         deFMvTbtIHzonPI4j3jVl2caikrd9J1ctFoFMl6l/1UaIobNoND+h50cSQSQzSv+cDJp
-         H72T6YSbaS8Aod5YFcnfcUePACNljdFlrsV3tPWIeiXrZ3eOCIFD+bFIqeOFdMgLjmFq
-         KXIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yGitNDR3suWUnLziWsrEM4RRTJi0DQuBElG4O41DuOM=;
-        fh=u5HHfJB5IP9mAKrEGEK0yNhhJbmTXSPLiKWetAcAOrY=;
-        b=XhrRjLoSAyWNyCaGuH4+6VMuicpWb7VQ7H8fXTWyh48vx2+8lResr+NQXdejFCID0o
-         /5EGOFwNGZwHkBR9t7JLcIW369sJy+Mms880cMZSrkmWEv1CFRs6X9Eg3Sf9fK7pA/dl
-         R5Pgr0kdS/WPp9xcbrUVrhch6B3dlwCVOVB+3rdvNEGYx0gJc3u6hGeIkS+LsE4GF4LW
-         D5Mxkc5r/3iziRnYM6dnOvTyawV89f4LqLLS3G9HzwR/moCvMu0wJ7kxAxIkFFGQqU7t
-         pk64yZ2BhPzZmvpAgxyMYhQOVp58gMN7yh2CfqWtCs7OpVumETgJSe1lF/B9J1g3OBZU
-         nHRQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780328440; x=1780933240; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yGitNDR3suWUnLziWsrEM4RRTJi0DQuBElG4O41DuOM=;
-        b=AuT2zfDzfiOOzI5iigs/GJgGJos++m45Nk3U8kLnuHPhT6Cb2F9SBTi64QId5wxd/J
-         0HVLijNN58ZeUsW7cXC3wLgcPGTRXL494Eybd7NBT3F7Hh/ipe6ZoNSPh/yH4igU0LZm
-         O4t7z8QAeuSPpv6TceE3C8PhLGwOL+hVo6Y2MBsJv2qEGihLGFgTD/jVDyvMplvKT9Q0
-         bBwvuzDTvIPVYjs4fbYoWDHErjVYenTIFMAauQS5sBw3T9RXjsu3knOL3CDzm2XZxit0
-         iHHjUMfhMzSBKBWhU37ebh1ZKF8GPvVFKSgd44y8rpTy285VZJ07akuT3Gk283sMo6aX
-         jwzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780328440; x=1780933240;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yGitNDR3suWUnLziWsrEM4RRTJi0DQuBElG4O41DuOM=;
-        b=bYKuTylsZl3yqkn4xj9LZwdDfx8UDgElvyGwiWogcnXMUIIUXgsb5o6xP7cR91FWSG
-         No0vf9gppq26MoboXlUQjRy0wq0YUgpYeh9RyWavev+gfig80GZEWTxS3tETsBJsy7Rd
-         XLE2331Jmatg69ePkaUx3wpJp0XlwZdkRXYlHQn3P48/DDzlPC3ka4rdJYRP1+6BCcth
-         4qWaQg5vENswfuyYCiE7JI5cz/PUrKiEBR6WLyfFstlD7G3Y5wZ43Naf4myWrtstv9ga
-         Ljxd+gFgUNzEZIwiKWjCZfUBV+k1UbjZoA1t3ooNTgVv56cq/8m+nQEDLX1mSU2fjKUn
-         JwBg==
-X-Forwarded-Encrypted: i=1; AFNElJ9tlCbYnB0PdYpeQkxq72vAFUXQbTipkdKJpp2761HkcDyKvW2a6O3EAdpYOO8+7fnX3pwnFrrbyg==@kvack.org
-X-Gm-Message-State: AOJu0YyWCcE4kVaK4oNxiwGHpJglASTvb1prGOiDnHU0v8iXLz3aXp+i
-	xbL9P/5Ut4OcCGmDIWvDLEKgzIQQBVIz/l6ej3vP6qyPChmFExYyvnWVQXP1F7fcz9vb8zF0tRN
-	ZctNaV7fcc8IlVhVP5hSDNRgXqNkiP6Q=
-X-Gm-Gg: Acq92OHuD15PvKbfzLRh6l9PKU9i3LdfTbfdTZU6IC9bB0fGyvQrJ+7Ma9H57Wtwmfm
-	n8VQGPNmlE/vUEIAnw23zZ77F3jing5T8SCwA+NQAlZqrCwfssGV1AGUP80B0YOuzYvwIPYAs+r
-	K+/cB+EajyjO/aBOqxUJInZKP7ILWpi8tTNhKeSwJoFTzVViLgPOXSGg7ra5lKeRHnsD5SJ5QNU
-	5yVZj/ZuOvgbZZGiLpq7ncJFInOgcgSyAa2gPfYnXaOhBkCnLOgB2lkL4z839yWxXyjDbRfSF7e
-	ghEQphTjlb2FH70LDfEjOnxLVnWYQEUiBxTtlBukpNtK0FgqUw==
-X-Received: by 2002:a05:6402:321a:b0:67d:6c95:9c8e with SMTP id
- 4fb4d7f45d1cf-68c8a27c185mr6210712a12.14.1780328440036; Mon, 01 Jun 2026
- 08:40:40 -0700 (PDT)
+	bh=CXGE/ImL3LG9ug1N+zBj+qfgDjTtJ0SFhuDhOcVyA3g=;
+	b=1IsQcC4F+SI/84u22A0p/MJ83WUO+RyaUDJLiQXncaEivYqJa593nGg+rY7fpFHyvfYKjy
+	RMrOI3y4y7w8YKglpTPz1gscSGWBYgkauqq2VZSIHpNZBBQlbUDag/NaDbwybBJe5kV1Tt
+	BSQoKDhbGl+M1hD2DOaQK9u1bWkR4jg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TIHofZok;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780328477;
+	b=aCRo7itrEQDJYHFcPyg9GK84zrzIvOGt6MsmiiGOXUNq2iQkrer94xnyjU6EdsnYY/HdHN
+	HUbx3UeNd4j7Y7iCupRlCtDDDDrc4EFw0+YtBbBf34Dd6vLH5ktaCMMBGl9gjLikvCUXIZ
+	2+veUVRdn3HgWEjNxN0fmlWIGua6Lqg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 34CAF40635;
+	Mon,  1 Jun 2026 15:41:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE711F00899;
+	Mon,  1 Jun 2026 15:41:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780328476;
+	bh=CXGE/ImL3LG9ug1N+zBj+qfgDjTtJ0SFhuDhOcVyA3g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TIHofZokpd2Slil/bA0ZEHOxLelS6irz+s7ICShUyFLNrc678BtfBukvOF2CdXkpi
+	 +fg8LqZO3Il9ZcVizYaC8fTHj7MtmUGkYBv1MEQBkqQfoxReiRfZd9yl1PLJl1Z0Yn
+	 ySf/IO+xYYd0dv5WyuUll8uodZgb6NQAodyH7k0N1H62KQRKBwgyqk70J1ipj3IMqi
+	 gejDaaCW5w3w3f8xhjISs7rGliGApuZtCe7u7Xq4QH2tqx6e5CgFKHFCpRktAdJeqi
+	 CK/ES3fOC14daidB/O6GQoJibMBtEL6YICr/1Lr+fKoOLrvSjIRUS174/i0LZRUCbt
+	 Xq9ClzbOm3Y1w==
+Date: Mon, 1 Jun 2026 16:41:10 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Nico Pache <npache@redhat.com>, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
+	vbabka@suse.cz, willy@infradead.org
+Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
+ khugepaged: add mTHP) collapse support
+Message-ID: <ah2ndruO3RQGtePP@lucifer>
+References: <20260522150009.121603-1-npache@redhat.com>
+ <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
+ <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
+ <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
+ <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org>
+ <ahVX1iq_-95vd0PN@lucifer>
+ <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
+ <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
 MIME-Version: 1.0
-References: <20260601055704.167436-1-chizhiling@163.com> <20260601055704.167436-4-chizhiling@163.com>
- <ah2HfH3jJZDiNAQc@casper.infradead.org> <rvvwfa4dp2wovn4vlglajxwpumiudvcgbnrj6fwh4dxtxemawh@rbav4cliyraj>
- <ah2hszECv05z_Dt7@casper.infradead.org>
-In-Reply-To: <ah2hszECv05z_Dt7@casper.infradead.org>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Mon, 1 Jun 2026 17:40:28 +0200
-X-Gm-Features: AVHnY4IAVx_z6D9Ie4Ky2gR3nWAWMzRl5n77v-Nt4Fr4Nr63r96xqtPbPHht5aY
-Message-ID: <CAGudoHFcWFcrJ=Q8XhxzmnYhorka8jXJXMX5RthsAz1Kd_jthA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] mm/shmem: introduce copy_zero_to_iter() for large zeroing
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Chi Zhiling <chizhiling@163.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chi Zhiling <chizhiling@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 02832100009
-X-Stat-Signature: htazuy6jq8gx5kpu8eyimfuf895npuqr
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1780328441-588417
-X-HE-Meta: U2FsdGVkX18XzkPUJi6v8SyAuo8JEdStGnPNDsi4lEPgCiP5ymlk+jqIue3WmprxULgcPb037PFQH9vfMzyaFQlXg3l6h+dHqJushaIKC3QDmEdtBUS8J8CUq3NBaZP5pc9XNh8rOeLMIYLion+4ifUnBiVPWHmo+gCzN7rkccFxPt5QgZv5fne8+WF+SpJ4eGbY/3kTcB/5B+en4ZFR0HdtUIsVvHdXs0kvcirRBhM5Oo7hy9SbjL19mdqJUjdb/rnG9aCG+fBigq9iZHYDxIBnmTfwazBG1Vo5pPKHj9McJ0mw9r4Q4O2AUwvERy+Cdo+pzc20AiXcqPo5XFFI5zG59fpXAGZ8o3jlg6MZ3THvnGTzV/BTphZITpwjdNNWI0XkjiTKKX2RTL7bC26nrUX0ROzjsh3EplsSdfJbbQQtPwc+lQAnUrHfbcD0Gq3i4bJ8UUH84fxoMrzSKl62pW+Yrpwrb8hAIonUrqUBU/ks8S0wmp3UDSDv93hc3MzelISbEElOCq3Ze7LXctLQ0r2OKnUXZMcUMG+6Kkjb/O2eyrTU0U/4yOYVU+KHkZKy6dkTDdwyHsHDdqZsp1gjmZonvCcJTTZuly9UQN3guIXRlCIAU+mInBF/YgkA3dJgwtOaxNPaEk1ZVLaTpncHNIG7S51XRR4+vW7Sp5lng6HT909lYbtDzJGfZTc8im+7r5qEbRv2oEYJQCFh2tKQiWOUfWLWbf0mA0lXSUJSmObzSAsRqwv0UVIZDCd5W3JwxBN3gDHZmq6CvyRk6IOceEkE4LkXHKZ7lAeUx5rFxZWqTDpaxul+M8A95BNFCqdy7UKiTz5lDaJOfxMohHVWd/XJrNN4Y+ej3FvZfiGXbSo/WekqBoabytX0z8Ogor9Kru89NJMRm3pmfQbEViVrFH/bRbwKon6qXAC8rTHK6U4wYXb7OKQdbG5hZ/wuZRWxcnaPt07uNkiZKjMmq/V
- DfjX0p4w
- JvXZp+7S9CSHvFKS3DDZKKzc12iIDf8xcdUBZ3CyJTEo04frkAVofQZuMLnk/l2Wjrt7Nfwoza0OmuAoSP/2GKbfJ2jIAc8JRQk74x6sbG0OyKh/vKJEnd67J95p2dsh8vC52lQ69tlZFYL55FCKzcON9mxGTz2SU51yA3arYMY/1bThRILkjFrntn8wXilGPg3dOa6t/eeYBg3qJgB3DnzMbczF0XXS/nIawfYeP13WrmbpSxtH3rLOrjyovDvlEyxPEZOTNvuogJBZjjdlhr4EmOGUjzaDxBlkjTtA2sbikmry45jPN+W1rg6oDZ28xe70LNLN4yKZRA3TEkkRiW6secaNR1RxB5TMbPxy/s5YCQVNw5RYlDWmHppMhkqeGuERMdGWPf2pjoRM48PdDILeBDmEqQREVuehLyJwYTBVubg8MFgLu29xIpct3xLnRI/nBhnOzfm4stIgvESGXFlmYZswx/zYbT1+rYJQRFb7vmyJl8kKTehOrGVhgybGCuBHN
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4406A20008
+X-Stat-Signature: 4ej5e34sfuwkma88tfos8rhiicsrs6ix
+X-HE-Tag: 1780328477-267040
+X-HE-Meta: U2FsdGVkX18kTsKXGeaPNL0Qrx/Di6ufMGSa0DbrMhQEFEMH435Q/UcdBSdN4roseWYKNS6pVAiZdrYGxrk88wPqMCxmPTtJdBB16Yy99uvjAt1NvJovN64h2RHGTRe6aa5Yks/ijVMz2jf2sR0QIOVubV9no+wdbudJ9AMDa2MtoYgDuYvpUosZ8XapKNuANEiANGPCsu030M+zxurVuakRyobp8AvNGrjH1AeDSq1GXBXi5JDwzNqs44aEaTAtIQZzZh5xg7CHRaTLCQJHRTS8ivrkNK9RcWWpqGZXKfBkUnzXqKZRZLccOLJxAcCHEytCPBdVGBBdrpWafhN8i+eNHvL0/1Gzy7bA6g+v0hAXp+9fRI4l6tBmeq1Bkt6uu6pciFxIJruFrUNdV/4VD9Rc09TBe44pO7Fp35P+cY6LwpbiFpG3gW5Dpw5Cn7uSNn6qmQlmPPnW87Yrqabn5AJkcd4RlhKtbo8Y8QoGS6A9e7SWGJk8KPhh/MaaeCbmiGDfMWkTQrR2iUre4yaXkW1aS/RYJs8+pjLqXUjhYJ+6WVs7YaFwkqdmrxDzdd6MH5+AZHwzAb5lM3at60iWJlkrmsue5315w1kQ6j15p8nTsFN6+jKKFPBpZ9+4L6vytHacIRNfU4mjpOGXraUr9qmRQP1VfJ2OBSqXy6P4k31alPKTPFFQZf+sAOe83Jpr9ocA9tBSCKcYVEc5L+ZtxJqFsENxNJpKTpYxPj8Zcow9YsG84rxiBU2/T1Xqgp5dQED0s3CzAroU6+H73e398TU8gOOGrIZ/ApVyUvOikVWaEd+1C65O3t85GV4EiBijCTZFdnS8EQMXXz3u74g+W8e1mu+4WMnquI5kXrIqka9K9JDnsKX2xxR/6a9T+2o18PgnLYkexiXmMgzvS7BgBevClCWHHrOlhHeQtCtIu4fn320GuS5coyY+8/Jb/E+fa7D9H6j9TRjJ6+NE7S6
+ p8PrOtgD
+ 3j2R4G9IHKpaokUDV15sreDaiUwNWrce7XX3lqFLz06Ez5ybJlD9Sb+inaWLDCdQ7aT0lPaH/mbzetvA7Z/4Jzz2Ho3ZvIxUGf+psIIaLzECLa//etFSJdQ/GqFEIevVx+Cb1H8ot28zlh0Dk1SjViqs+3lksuKtbUsxqS1fdnBCBWKfy+i6+C7gjeMwQHlVOj/jTN01MjyiO1RCdwJ3BUhVz9TC+225/O1I01QPRyjwuigfyMnC3hP6dq445vxF6ZY+5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,85 +100,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 1, 2026 at 5:14=E2=80=AFPM Matthew Wilcox <willy@infradead.org>=
- wrote:
->
-> On Mon, Jun 01, 2026 at 05:02:01PM +0200, Mateusz Guzik wrote:
-> > On Mon, Jun 01, 2026 at 02:22:04PM +0100, Matthew Wilcox wrote:
-> > On amd64 some archeology shows the following:
-> > 1. 0db7058e8e23e6bb ("x86/clear_user: Make it faster")
+On Sun, May 31, 2026 at 09:49:02PM +0200, David Hildenbrand (Arm) wrote:
 > >
-> > 2022 vintage, replaces thoroughly terrible 8-byte per-iteration write
-> > with rep stos usage
+> >> and have people
+> >> base work against that?
+> >
+> > This I'm not so sure how it would work. Assuming we have submaintainers with
+> > their trees and branches, the final "stable branch" is merged from those.
+> > But it's not a good base for work targeting the same merge window, as that
+> > work would likely go to one of those submaintainer trees. But then it can't
+> > be based on the result of merge of all submaintainer trees. That could only
+> > work for patches targetting the next cycle (after the stable branch becomes
+> > part of rc1).
+> >
+> > So either patches can be based on rc1 and applied as topic branches in a
+> > submaintainer tree and then merged, or if they really depend on something
+> > already in a submaintainer tree, then based on the respective topic branch
+> > that's part of it.
 >
-> That's a good candidate for fixing this problem.  56a8c8eb1eaf is from
-> March 2022 and mentions the slowness of clear_user() on x86.  So a
-> commit from May 2022 might have fixed the problem without anyone going
-> back to measure and remove the workaround.
+> Right, most patches can be sent against the "stable branch", but cherry-picked
+> on a submaintainers branch / topic tree.
+
+I think life will be easier with submaintainer separate trees for this honestly
+:) or it could become a horrible mess in one tree I think.
+
+I think the simplest is what I suggested in reply to Vlasta, where each
+submaintainer tree has their own set of changes against mm-next/mm-stable and
+then we merge each week.
+
+But am open to learning about what other subsystems in the kernel do...
+
 >
-
-Ok in that case that's basically settled I think.
-
-> I'd be delighted if somebody tested just this patch.  I'm not really set
-> up for performance testing here.
 >
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 3b5dc21b323c..112cae9f9e4f 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -3427,19 +3427,7 @@ static ssize_t shmem_file_read_iter(struct kiocb *=
-iocb, struct iov_iter *to)
->                         else
->                                 ret =3D copy_page_to_iter(page, offset, n=
-r, to);
->                         folio_put(folio);
-> -               } else if (user_backed_iter(to)) {
-> -                       /*
-> -                        * Copy to user tends to be so well optimized, bu=
-t
-> -                        * clear_user() not so much, that it is noticeabl=
-y
-> -                        * faster to copy the zero page instead of cleari=
-ng.
-> -                        */
-> -                       ret =3D copy_page_to_iter(ZERO_PAGE(0), offset, n=
-r, to);
->                 } else {
-> -                       /*
-> -                        * But submitting the same page twice in a row to
-> -                        * splice() - or others? - can result in confusio=
-n:
-> -                        * so don't attempt that optimization on pipes et=
-c.
-> -                        */
->                         ret =3D iov_iter_zero(nr, to);
->                 }
+> >
+> >> This would be 'source of truth' and what we eventually send to Linus.
+> >
+> > Yes.
+> >
+> >> In that world, the maintainers perform conflict resolution, but with git rerere
+> >> we need only do this once.
+> >
+> > I think the conflicts would arise from merging the submaintainers' branches
+> > to the mm-next tree, and if they get updated and the merges are recreated
+> > (like linux-next works) git rerere avoids resolving the same conflicts again.
+> >
+> > Hm like Andrew said, this needs a diagram indeed :)
 >
+> It's one of the first things we'll discuss in the upcoming meetings ... I want
+> to talk to some other folks (in particular, TIP and KVM) to understand how they
+> are handling that.
 
-I'm not in position to test myself at the moment. But should someone
-be interested and try this on amd64, either make sure you have FSRS or
-in the worst case apply this hack which forces rep stosb:
+Yes let's definitely see what works for others and use that to figure things
+out.
 
-diff --git a/arch/x86/include/asm/uaccess_64.h
-b/arch/x86/include/asm/uaccess_64.h
-index 20de34cc9aa6..552d1b883579 100644
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -189,8 +189,7 @@ static __always_inline __must_check unsigned long
-__clear_user(void __user *addr
-         */
-        asm volatile(
-                "1:\n\t"
--               ALTERNATIVE("rep stosb",
--                           "call rep_stos_alternative",
-ALT_NOT(X86_FEATURE_FSRS))
-+               "rep stosb\n"
-                "2:\n"
-               _ASM_EXTABLE_UA(1b, 2b)
-               : "+c" (size), "+D" (addr), ASM_CALL_CONSTRAINT
+>
+> Hopefully I'll find some time after my inbox calmed down a bit ... jeez, 1500
+> mails in one week if my eyes didn't betray me.
 
-It is always fine to use it from correctness pov. It would cause a
-slowdown for any size on old yellers predating Sandy Bridge (that's 14
-years now I think?) or for small sizes on CPUs without FSRS. Given
-something like 4K I/O that's not a concern.
+Yeah, it's crazy again lately...
+
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
 
