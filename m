@@ -4,91 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02BEFCD6E57
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 00:44:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B76CD6E57
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 00:54:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B74B66B019A; Sun, 31 May 2026 20:44:44 -0400 (EDT)
+	id 73DF96B019C; Sun, 31 May 2026 20:54:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B25616B019B; Sun, 31 May 2026 20:44:44 -0400 (EDT)
+	id 6EE8F6B019D; Sun, 31 May 2026 20:54:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3B796B019C; Sun, 31 May 2026 20:44:44 -0400 (EDT)
+	id 5DD056B019E; Sun, 31 May 2026 20:54:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 93A906B019A
-	for <linux-mm@kvack.org>; Sun, 31 May 2026 20:44:44 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27A7E12034B
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:44:44 +0000 (UTC)
-X-FDA: 84829498488.08.6341314
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 34D2680005
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:44:42 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AyH87CHF;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A5FD6B019C
+	for <linux-mm@kvack.org>; Sun, 31 May 2026 20:54:47 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CA8CB1A044A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:54:46 +0000 (UTC)
+X-FDA: 84829523772.19.A7C248A
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C643F120009
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 00:54:42 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ZdLvSXr6;
+	spf=pass (imf29.hostedemail.com: domain of niecheng1@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780274682;
+	s=arc-20220608; t=1780275284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vl0+i9lBVVrChfNcXDU3z/ylyAnTJmpZS1smzdIiy48=;
-	b=VmDSm43BBa7K2HmCfo02dsKpagII2eGM/8kKsJ2FUSSL08m8qCoUiNcgKKclEoB7fKdnFH
-	+w1AwBQTySwY7flzeBQnCnDMVKKwn8IFIPjRdQ2ikbkBvB5FVfhowLqv8j2PmF0x4Z+BS2
-	L912aygb4PqKVB7a5DDqnd8G19bI+3c=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AyH87CHF;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780274682; a=rsa-sha256;
+	bh=wplUvBwwSZUkE/1pF8JoDJVBT5NIk5fxpFOgyy27ARw=;
+	b=Adl9JubXNfaRDkOlEMz97ULzWwAvgugA3fXXPyHwk3bKNbolvJ+Lo2o+SuPMKCbvs6Q3MV
+	RXh6CoYogsFOw5ccZa1yv0CthZWf+0rlD1MqaWoQMzMoYgm21x7uUiITqGIfhTg2IsI21e
+	eq3jhqIjGNNM/4YFaEYh3K1s2gh4gMc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780275284; a=rsa-sha256;
 	cv=none;
-	b=I2Ky+lsKrw0d8BrKDXZumgvkPVJmXLsCrsDvbQ4T1tbofJtMSvXxM7K01hWOZA+3mA3rVn
-	QEky5nmqrkwp0bOzgfNSzNinAbtBb6MnbO5MRnCFZL72zhnBQ5tm74befiewsXys6vgMfy
-	2K+LaKrqpAdyI0mFmR5OcdUdI7d5yGg=
-Date: Mon, 1 Jun 2026 08:44:24 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780274678;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vl0+i9lBVVrChfNcXDU3z/ylyAnTJmpZS1smzdIiy48=;
-	b=AyH87CHFsWkATRHkmQkgeLR4UJ+4tVYLBNSr1cxz3MHymtYfbr0UGdeQLEuYU7yxAiA3/v
-	pAnKJ4aSEVeUhCsQbrBbG7C0dpND4Z81NiS6UeDDDx25j2hg+h9/T3XSS3zMznwEPPiMnM
-	w0AxCaVty8nmj913IxznD/pKablp9qI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: Barry Song <baohua@kernel.org>, Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jens Axboe <axboe@kernel.dk>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] zram: fix partial I/O config check
-Message-ID: <ahzV6P4n2SICvh4R@MiWiFi-R3L-srv>
-References: <20260531-zram-fix-partial-io-config-check-on-akpm-v1-1-eb085d98faea@gmail.com>
- <CAGsJ_4wB5XyUrPpg1O-pkySxo91RsHxaaUkR+Kt+heP4_OeeqA@mail.gmail.com>
- <CAJxJ_jgk8o12OYAi68JznpwKYTUJOUizp2PAZvNz2VdVGJWstw@mail.gmail.com>
+	b=b+H7JP00X8+HgiHOGZ++6NqeCq1NXhIim/Ap+3wxYkwKpGobqW+AzWoyuBYN31RcDaPX6n
+	a4xXvtgtKQo/Xclw0eXTvb3gxQVCnV+qyvebe5Hf8je0B2RIH0xJs+HzilVgc6ept6TfO0
+	eVXSE/W51GdZBIc3aJAT3mL9hDk8SLY=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ZdLvSXr6;
+	spf=pass (imf29.hostedemail.com: domain of niecheng1@uniontech.com designates 54.207.22.56 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1780275256;
+	bh=wplUvBwwSZUkE/1pF8JoDJVBT5NIk5fxpFOgyy27ARw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=ZdLvSXr6IN0sOxjm16/fc4DJSCHCiT69okgiqQhMfJUTxQbrF3i3et/IO36XyF6TH
+	 0ra8LkjUZnqDJSsCzy0ySqO9F7g5jKbCXIFRcBNXnwLi4gvDUDsZ1BeyjLfbkobD4y
+	 cLJnr0azS3cO1UT6o77oR2P2BTgTPR3qDgre34As=
+X-QQ-mid: zesmtpip2t1780275245t0423d3d2
+X-QQ-Originating-IP: UErp3taaIoj7K2ov1DmKucmDovlP8o3qkbRO6SlocXQ=
+Received: from PEN1097 ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 01 Jun 2026 08:54:02 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 14429530627096407333
+EX-QQ-RecipientCnt: 8
+From: Cheng Nie <niecheng1@uniontech.com>
+To: sj@kernel.org
+Cc: damon@lists.linux.dev,
+	kernel@uniontech.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	niecheng1@uniontech.com,
+	shuah@kernel.org
+Subject: Re: [PATCH v2 2/2] selftests/damon/sysfs.py: validate memcg_path staging readback
+Date: Mon,  1 Jun 2026 08:53:59 +0800
+Message-ID: <4378862A53A443AF+20260601005359.26544-1-niecheng1@uniontech.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260529150057.84753-1-sj@kernel.org>
+References: <20260529150057.84753-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJxJ_jgk8o12OYAi68JznpwKYTUJOUizp2PAZvNz2VdVGJWstw@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: wdidebqd9tbq6zmh55iwerdhpn6pmmtk
-X-Rspamd-Queue-Id: 34D2680005
-X-Rspamd-Server: rspam07
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: MwJMCv7IGsyW0OMjaOMs13To4Fl6JKOmG69lSHdjIrVjZBU1BVNdCRZG
+	sv1ixIIM65x/dClUwvTMWttdwXpoollDXnXDNtePtQ+n5jBkKW5Vv/z9wPmJeiwRO78nKW1
+	MH/QPBut+g9cueTOns4G6b2S8hNXYaDlWs6HkqFBRLuOpFl7AXf93qpFe5dgsMBUb8WjWCz
+	2XjYUIk0uQow3r0a8EilOKyvMVRRT7qAFwj9ne5I5BZcuttflgifDeHcM5quBuLLFgXWQSy
+	0AecNgp4etO9fcmSujBc4K3lL8AWylvIGeM6kl30IXvL49Tu7tdmI1OU+/EFfPUzzcl4bYZ
+	hqEMjrbdJyCOnrKY4KTXgtIK+ha4acTl6CDAi0RdPImrBflCiAJaNoUDSncKJKKcW1OcH38
+	1kYWzE6L5ca3Tz74cw2cOxPSJcOKaWnw+SDC9kW192kmxKBTQQMHxQIn8OVUCIOwC66gmSm
+	Sa58QUHMXPu6weva50gf3xTAyg6k8EGBpJwx7UwgnbyGKeMgyFAY6mHZx5iM+7AG+PWLN7w
+	MQFgTjvS0R3002E285i9bvPG5t9qFfpclsrs6GtD2LbMssZrWQtL2cdKxwMn9S9jKPVOXw4
+	o/+Cop0daXds69HneOta4BDAafLpHV1lKiAE95Y0czCzWG+smyUD6+RG8jxFX5o1c4I/ZmT
+	M55JSi6t3ggZxYwHoszkZO5kom7zqOrBqHMwq6Nc3yFobJbon/FPVz4YHIVSSH3sumFVl++
+	fJppNDnZ5oL5iispPGPDmhQq/MuPdgPdl6PclEkC2BIXmRZcjwa/5ZWFUcmuxCfdBFr4CYu
+	DdpSrUdCUayxnnsBTcVQ3Cz5C5IaezzEIXciJSFzOxL7p4s0jMDXpqHvlCzccj9KkYMxgnK
+	i/94buMvUrdugPkTMU1DmEmt6yUwxW6+9nDGkbH6MtVVi6BAl/wjO0bUWCuVsB04wylcpof
+	syvVkWDgme93LUS7j4Q3XSTyfvCto2uTsH89Ul1xxgLbO1jvm+o6xijFx3FTVCbfdIUhCwI
+	t+XPKmld3FjgfF4GHl0mT6Lepg+YaFcdzLsdEZIuZfyju3+Le6MvIlYAsu9L8=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Server: rspam11
+X-Stat-Signature: inz8jk5sexa86boytz7c35i4xyu1ecry
+X-Rspamd-Queue-Id: C643F120009
 X-Rspam-User: 
-X-HE-Tag: 1780274682-115243
-X-HE-Meta: U2FsdGVkX1/0Z+F8vFfNA2v8/+AhSeisZV3S3xXDfPef9kOdCJWvI4zgR4eoaFU33sY3/OLJ3HnOCboF0VeYaF8jJpLYiSVuY5exlpQeqruJt2RS7EI7gLk+T8ssY+mKgkFersswUEtJ/vZ7H9uNlD+CYyZboQajLwKEro18jiU36qwNlmV//3e+4e0BFi97cGNEZrO3tz+Dkh9gKrlS2T13YsvtQ10PGcKX/ShLV4NCzeWTtdpCFBPa1t1JYrgEttEvtjsQeYxZiHAxK8NZTBmjEwnpZsxvr7QDVvcL9yPveji0sk/Jhtsya3tT1fQj2ao5btQBSBw0ogrOfHDotah++Bj018Fy8vz9Bh4v7jw/kxdVCfFOZAHh/UFWqMrUXepWJE2Lw5Qs7yFvccfp+VrD37Faw1FCava9ySKhrW/Rz4+9FuT/jxr8BaQOmj8VGpmxBHnTBN7aNy7NIXq/g7DIf40V9NOXQatYxnFeY3rABCMo+Sw7qVuvrD8M1Tc4o2LW0Q0A72jzcBYEeQQFZFDB2dCOpWSaFraZpVkMRysM9KHUq65cNosOjDYhHPEDLIRbOgUdKDRn85sPe9NU8ba9RU5oBcJ9wyMaiT7JuyeBD43GDs5VjYXIhReQDs2MXZXMUNiGOIEJT3ALReb+R2nkrDGZ92X9y3q1y+mnTlTkI/6AAoB7BQGNQzlfm38WsA8bBdoWWLYjppH+3gT6pgNj6QKk2SMddrintU0gF73tVYlj7PmdtW9RXCSyt4ZKedakilCHslotErgczoCFUgMVzZ/x7v7tod7JPwEh+Eg5PkKegm2ZdO/+zCMw5PE6L++RvjKDf4SaOGChpxrYHlp13yg7ICXeH3utg2GOn+LujtqsYDuMIvS8M3sWsJaC7Y048NLIiGn+My6tMEfCJYAZhUZyYRalutB2dDrHbC2l8i3T5bDr9MbqWsRbkIjxEp5VU+d5J0X2ITLiznb
- mW8qTxHZ
- fOM5l8JAXwLmhXVtCNosFG2y7z3Y5U1hjugpVlKglcPFVLzwhh9FQ9oxI+RM3JoE/MwVWOPS9hI5UxI5XNLxNg4kbtAh7kTr46yAy8chNWF8cTdFyZK84VebEL1lkfCG5wHbuvrf88vysskIfl1OSXEWN9XUvfM8EnWsCZNPKtfbdBLMekBfZqpQhAnqBKe0KHgpGQqb2genK+Qo6b+Icrj2fnGZnraZhx9Vh2PUrga7N5ZXyrNddw0eCYTiwpvDoSJiFSDvjwVe9di5QnJjssohZuQmMJmsgW5B17tyDfoKKGQI=
+X-HE-Tag: 1780275282-577738
+X-HE-Meta: U2FsdGVkX1/Rjhrrs32DC6QDxuIRkr9SR3sKONhZZQ7AUkOu2rgurlDvJ67An+MA5QpeQQhTOX7ugU0rdy3r3gK23gNry7PeJYGgvwJKbKCgwvjkvMBR/3oBuZzm3OkdU9tfEQN76piQJT3PBkyF8IGZuvegl/2IKeEOkknfTsGnY8QUPHvFyiIor3s25UHicD/ITmttyWe/Axtbchcy0jymQzIGvJGBWN/sQaqGqhsR7yIQyVYycdBm9BRF/SMaSoIma2ICrQJFSZ4eqCdkpadF9pZgODiAtbQliyUkQjt3j5H69pvExmScKCPOm4Vv2lf2hmgnTTbemchGwgGI03jdShkMpAa6GF5b5WtIIXB/FXbh8lLMnJoMeZ6lrsh8cg/za0FgUcJtalzupvAana04rjp6Fo0SXoB7y7vuWBrTlxudPdxJz/cP3HiSQqjLXu1lMVK8qwLjV4+aSkjc5/UsFbWW8fBOA0ODRMCxxFuc+7eDVxL8IUZjjVk9GLHiglyKU0ErruiwaGwIQnIS58b7tD1TE0ZEv5JiXBrdF1aIaS+b/td0lA1ZsQvsqDc2KZGBBPAPHqhzMzhkMzXgrRk9EhxQRJnZcqP0l455hTECTswFtzHHAdB1WMFQ722Td4eSAeOmQVhqroxpgzA/+KOgGdaF/w7zTscKWdBCr4eeDmmFIPWrN9Al8i8SuvtS/9yCy2pJbR9xGC6vWMQSiR5oyVlYH4mxuNsa+UL7LY6cjAOpJYnvyyslCMybIx79R7qtGHP0v5N6DCfqengFuh6nik2RUKYw3ZWp8kxb6jVTJUW6fU20mTWgmqNfq3n7oWsOEXIsG7KEXDtGavLHhtk1ZUHtl6bdLazxoQ6XiTlmm+YEbTXNPPLSeH2/ymOJxbEMcfO+j69QEgrI1jfkRetaNoGDiGtQDX5BYjBcVaqIl7mPD51fMbSqpWsEZbPj/3d5GIQDIiTissQQtnv
+ eTs8Mvxv
+ M191KopdMO67smmdaasIgrryVNYrKvoaIdZC0xZxOPPi/X260VmFSsMJPIK0UTFm6DvFS4pgkQEhWRL073ro4IHClDwh8tlocG2jcG3/alyPl90cAsceIuFvWzz/V/EKtE1OKp7J60NqMxXpZzDtMJt3eaxvQli5T6fK0/sWMl8IFcawX76G6TjCJcRgrFlOc3gIQj6sKF0LZhaO9gWiRbck868BKvMRIS3t0nRGvfGL143yMiaewHWUfQAUDNEyoPRen5KbZa2StpGCbZMg58oJ56ICRT+2+efS+HTy3l/v1bb3I6o7KvrK4maGFGBXDD9er
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,47 +116,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06/01/26 at 08:25am, Jianyue Wu wrote:
-> On Mon, Jun 1, 2026 at 5:38 AM Barry Song <baohua@kernel.org> wrote:
-> > > diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> > > index 6e1330ce4bc1..72f89fd5572e 100644
-> > > --- a/drivers/block/zram/zram_drv.c
-> > > +++ b/drivers/block/zram/zram_drv.c
-> > > @@ -1510,7 +1510,7 @@ static int read_from_bdev(struct zram *zram, struct page *page, u32 index,
-> > >  {
-> > >         atomic64_inc(&zram->stats.bd_reads);
-> > >         if (!parent) {
-> > > -               if (WARN_ON_ONCE(!IS_ENABLED(ZRAM_PARTIAL_IO)))
-> > > +               if (WARN_ON_ONCE(!IS_ENABLED(CONFIG_ZRAM_PARTIAL_IO)))
-> >
-> > However, I don't see ZRAM_PARTIAL_IO defined as a Kconfig option.
-> 
-> You are right. ZRAM_PARTIAL_IO is a local source-level define, not a
-> Kconfig symbol.
+On Fri, 29 May 2026 08:00:56 -0700 SeongJae Park wrote:
 
+> I'd prefer the error message to be in form of something like "'memcg_path
+> staging: kdamond start (%s)' % err" for consistency.
 
-How about removing ZRAM_PARTIAL_IO and use PAGE_SIZE to check?
+Will do.
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 07111455eecf..ca0c29482283 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -221,7 +221,6 @@ static inline bool is_partial_io(struct bio_vec *bvec)
- {
- 	return bvec->bv_len != PAGE_SIZE;
- }
--#define ZRAM_PARTIAL_IO		1
- #else
- static inline bool is_partial_io(struct bio_vec *bvec)
- {
-@@ -1507,7 +1506,7 @@ static int read_from_bdev(struct zram *zram, struct page *page, u32 index,
- {
- 	atomic64_inc(&zram->stats.bd_reads);
- 	if (!parent) {
--		if (WARN_ON_ONCE(!IS_ENABLED(ZRAM_PARTIAL_IO)))
-+		if (WARN_ON_ONCE(PAGE_SIZE == 4096))
- 			return -EIO;
- 		return read_from_bdev_sync(zram, page, index, blk_idx);
- 	}
+> It seems we don't really need to do commit().  As Sashiko mentioned [1], it
+> also depends on CONFIG_MEMCG and active cgroup configuration.   It would be
+> suffice to simply 'stage'.  We don't have stage() method on Kdamonds, though.
+> What about setting all parameters including the memcg filter at the beginning,
+> do 'kdamonds.start()', but ignore the failure, and check the content of the
+> memcg_path file?
 
+Agreed, thanks for the suggestion.  I will drop commit() and configure the
+memcg filter up front, then verify memcg_path readback after staging via
+start() as you suggested.
+
+I will send a follow-up patch with these changes.
+
+Thanks,
+Cheng Nie
 
