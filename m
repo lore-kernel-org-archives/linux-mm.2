@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10224CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:23:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 772C7CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:23:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 701776B0373; Mon,  1 Jun 2026 08:23:03 -0400 (EDT)
+	id 9EF986B0375; Mon,  1 Jun 2026 08:23:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D8616B0375; Mon,  1 Jun 2026 08:23:03 -0400 (EDT)
+	id 9BEE66B0377; Mon,  1 Jun 2026 08:23:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EEF36B0376; Mon,  1 Jun 2026 08:23:03 -0400 (EDT)
+	id 8AE8A6B0378; Mon,  1 Jun 2026 08:23:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CF636B0373
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:23:03 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E55BB120682
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:23:02 +0000 (UTC)
-X-FDA: 84831258204.14.63FBBC4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A46D6B0375
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:23:18 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 26740C23AC
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:23:18 +0000 (UTC)
+X-FDA: 84831258876.11.E831A92
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 200C540005
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:23:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HZ3/nOyb";
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780316581; a=rsa-sha256;
-	cv=none;
-	b=U0doBNNysmC1oY2OraepAaV4keNoy/0MAPeX7bxhSUfwOoTNPMJQMSt33knUV37uzdzSwh
-	D5qMujiD0thar6anvLxRtD2gp+D0uj7f40n71240l0QccpvM8murmIzQ23b1ckASnjqK5B
-	lfNZEOeKS56dIFUoiFWuSeuHaitOwL4=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HZ3/nOyb";
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4613F80002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:23:16 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J6Qh0QtI;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780316581;
+	s=arc-20220608; t=1780316596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2HJYM3dNzF5LORInRRkOcTckUxVkdRL/1E6g7brQZRI=;
-	b=JxGCUkl6I1NYEhb5RAB0/zZMGwLKRag0p+l1EHvrvy3zMIwVNBBpt8h1hvHnFJD3u+iid9
-	9H0ekjxLU4wBM5bWjKBaSmsE47H2fBuTVzgRbgrTT7nXhL3j0ImaK00XwcSX47fzedBKQN
-	tLHphC8hPK9U17+ndvcpue2GoA6bROc=
+	bh=nJCaoM91VpKZfWQWP/5PUdBhVElKt1iDyT7TnkO/j00=;
+	b=T1ds4AmXtSxyYOiLaMNUhFd8+zNzVepje2zR9kV8K94ZVzOkkSxS5JAJ2p9k6P3eAyhSvw
+	qoTrgi/lKrYJ+Sd5/nGIIgEbDin8i6e31387BUAGhLdQbeysIec3CgirPhV7hVejNjn1Cs
+	XW/54812kBuRkn3mSw7vEJXxmHb51gk=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J6Qh0QtI;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780316596; a=rsa-sha256;
+	cv=none;
+	b=XC7AaZ7B8jEufWLTtWarSofRC1iLzozYe3Gws56eWtNsj1OjeWbqTkqxYrft61qTz7xkLf
+	S6V9L7dqwCIuBL4jM2E8kyF0JZ/k5UYDKDfDxaqpOiSD48VIrg7cJv1mJP2PPUNa1AhE0s
+	4s5P1MIb/SV8mDz4cXTrfTA1F/qNYxQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 22FDD43730;
-	Mon,  1 Jun 2026 12:23:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0ED1F00898;
-	Mon,  1 Jun 2026 12:22:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 831F440B63;
+	Mon,  1 Jun 2026 12:23:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FAC1F00893;
+	Mon,  1 Jun 2026 12:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780316580;
-	bh=2HJYM3dNzF5LORInRRkOcTckUxVkdRL/1E6g7brQZRI=;
+	s=k20260515; t=1780316595;
+	bh=nJCaoM91VpKZfWQWP/5PUdBhVElKt1iDyT7TnkO/j00=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HZ3/nOybNpQqn0VWCdJ2o/JEoKM5S5V32oi7n7pgsEbQHunMGrVGX/HLFHrTnWLHp
-	 TH9t7N53LRFcLDUhY1wmjXCVr8VKlLfC8xgVuIgm1WZFJaBNVv1/BcyuAT4tV4dBut
-	 d98zL8IwhBmWtTeTTBtXvqk9h+9KCqHW2PSEibV5EYrzX4NiM5zFe/etvUptu1g+G6
-	 ZoDvZDh01VdKnmb62ATtqUPMivusVohx2G34SOXtciUYaYP1iwy21J8kTDyUMaVahX
-	 i2ra0fXDTeknDXQ2P+LrkhpdhouEW/Bg2iz3DC7RdrI/LHEcSiyBw2ju1w08pXaLDy
-	 4BVj1LSte2+dA==
-Message-ID: <db8d440d-c8a1-4f77-b5d9-00bab8737f12@kernel.org>
-Date: Mon, 1 Jun 2026 14:22:52 +0200
+	b=J6Qh0QtILNf67i7Bca2/p59Xf4vTiAbfvsb2nezebefYadRAp0p9yWFug/E12s1jD
+	 RQvXWD4MSepeDA9QX0uC2wG4HjENaCS8GNifYaTqB/bY2KdWthhslFdCnMWk29pUCC
+	 R2vdEDETX2GkLw5N7k5vZNZgflMkksMyLL8nKCJ/NYml9hBve0TEEPXWkRMTCYKgMj
+	 ssQLCkU/O8+jBOXJu57NfQ2Mkr2UG00LCi304riFqeGL54E02Y/p4omgSdNe167K5t
+	 ZLrz/YoHBzIslYWCLKvZm6gUWzbNW2QfPhsgg1CKk89OYjLHIlyFF5tBV4MJlshJhM
+	 ezMshiJz2UAMQ==
+Message-ID: <c9783e61-cbc0-449a-9a0b-db40fb335e99@kernel.org>
+Date: Mon, 1 Jun 2026 14:23:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] mm/sparse-vmemmap: provide generic
- vmemmap_set_pmd() and vmemmap_check_pmd()
+Subject: Re: [PATCH v3 2/5] arm64/mm: drop vmemmap_pmd helpers and use generic
+ code
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -85,7 +85,7 @@ Cc: Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
 References: <20260601084845.3792171-1-songmuchun@bytedance.com>
- <20260601084845.3792171-2-songmuchun@bytedance.com>
+ <20260601084845.3792171-3-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260601084845.3792171-2-songmuchun@bytedance.com>
+In-Reply-To: <20260601084845.3792171-3-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: a6bjw6u8b713cdsy9f1zhgykgj9txjwg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 200C540005
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ghbb6tosjykwm3crurj4xwajfhwseg7a
-X-HE-Tag: 1780316580-925860
-X-HE-Meta: U2FsdGVkX1/B8YbeQrS09RLugvAjQqBDA1zIpb58oteSMb+KZvDu1j5NWGHjGM2GjVOB2b9+P2t3+JEie3XPbEntj0QKJWcvZ2WJpzprIU2AcLlgp1Aek01gK+5OCH92KKx8N7wlubXOEO4HSGLfgevqI4fC5eTOJeTn7rveBywat6Pweu0C4SfNhn49n3iErOn4ZSaAkQarlS1MztpVDMm9o8pN9RVcPkEWm7mmE1q1jJmrjUB73NkwXWKldazSTkIx++GHcGA0mIAFdpmWw5N0zsJ40psm0hVfG3ZXZUN2T4UVI05KUHN8zBZdy+/TpFk6vO5t0ca9NEcyNLl1YtBxBXfRSuiVDKvh4wcyzlWyRmpfxaFJmYUmuFiPinR7ZYH2HedV79eIeOmIDuDKoG+TPrfsSL6K+4jpbcot7+8s75/EQly4rf6WyVqzYNS3yw8+uMgCvMiSVANZllvcpR/YDKOfhuH4g5PJOK3QylfecKB50o2hZ1B4/08u2/CO3pRcbISE+luRVqwg9IVqZ0g1w7T53sJ419S6Y+VCl9IvC3oIgjuy64+0Q980thv8uh2xcx6qxv8yOJgqDeyyMMXoQzBA4MltCeZaq1oZ1ifnpVisNHkrwnM528Z4swcTJJZRxqkag9yTh05RGyLATeQyq3Rgcm/7xnpsD4O2bL4kWHG0wbOD8xr+ssoqWZiAytgMcfqn/RgrlHx5rd41lT7NAb/r563lrjDD4OyTETdrrdyXUi+GwNro894zeiRvMtuS261xhd6749Zh8TyAvPsvfiw0+Y4VEIiTP2BffAfhwwHcWvsO5+k3uiNyD+jWIhI/isre1sJMmP5e5QazpF6lJLXBLbc3gx5pK3awfvY/Zuf2YhQYt7ks/+dNzrUETP5+yKhIDPjlJowUNmNmGAvvUwD9Iz6nTSNVD6lrrA9fZV8Y/1HkqGM1h4WXjTVMpjrIUp2vCTlWhBLpjhY
- jrku+59a
- ELL1Rv0d5n+L99+S7fcZlo0Qiwc/WT9D4k0iesO+aeQsQdlKBSezZgf5Pd4CgpEOeXF/DkR3ygZwo0ygppB1KYoRGUWTlpIVoX2n0Mm0poKmuSy1nepL7bMKqb4EPM+y3ylE3GQAVgDPvMVMiMt3v4hthY/T4/idiipkyVhxlrQ7rCk93jfmOkwWJAowd8gVSD7pmlLzII7bDPJ72zUX7ttpbQ2ctShrj8PAA5NPFwDB+iknt/juxYp8HC4E04yRmiSjtYCdcs7kyNCwRHABzO3h6QiexOgg5yS74LnNV0sUgkKnkLg/tZZ4RGa+N+GzbOExhd85oHZV7NBInjlAB0WA96vBYJY18Gxi2
+X-Rspamd-Queue-Id: 4613F80002
+X-HE-Tag: 1780316596-563006
+X-HE-Meta: U2FsdGVkX18kSNemU5ywBqHofo6X+ZaUQsyQyvF2Mq8QHZRt95UaNvHIT3lPPSWNLSdmMH5iC8VB5BkcWzIET+qldKQLETBo/4AQRFt8kdVxB1SroPUoY9wGmpVay5squjN7VLyzNmgu7Nk6+j3iD7Ezi2bjdUPRJW05i2rYDkhWFjxhOuDINEBetG0W5utJ/4HmI++FFdKk4V7p0p0Z1l6ErPj2DsJE2v7/PF7MsL8cT2RF/LR85/Tc3VHuXb753klxKnnB04E4g15zZCGw6/Ko0ZwLlfqEDnmO3JDwk/ZZb3j/AL4Hhpuv0iX/e4yRHIa1z88HZcXND3xUjYjjeHdI1yyMRbxHfgb2+88wMXlBI8oTK5xxytWgjSG4A6TKijzW81ZZ/fk4Kz28pkP1rbXtwvwwmIoCd8iDbf9R3/2KkirB+oX7Tu57Cwe2/eiW4GxdnK6aGdk+QQhwIeVqnlMXXVOaFgNise3x9NZWqlYunsO9mzInOQDjz9oyv+tcSPZAHMuIISb218awh/QOnSLVaJY1Z4vR2VwdZhtrrOoK8HbGXMUKHGK5hyTV/X8LPKjdDep/PRSKIoSc91nFbUvdXADL8pEubgTUzb7UCAIFaHXFQTynikK3g+XrfUSNzJsEjAF+uKDWsapdH/4d7pS/4TULOZWHzpQms2Cj/6BJZX4HctpJxnr/axNIUlvDWnFVn/+HNfhdYB8UMGT+skwC0DPOuLfIMy2hyU946uM+6EKsPSLjWYUi6U9KgBt9JE3wLBPhzIBSS0z5dOXEUH0RUvww/VHf9J0UFX/3Gs1It2eHZfF18Xp/YOhhOAqSVh967icVFDHzq8X1N1KqxhMzFN+2aa5e6RgF57o5Mnn6SdjvYmXhRCuuZHNZ3LeXrSo9LqmedVsvvx4mpmnX5dWDLrK8GxZS3z6gz50DLXyZTyxRKK6wXVWupZrC8uBtgYgYxq2McztrzIlqUAU
+ F8c96o8u
+ ddFZ6KJJffSx4+jxWEPyyXQ5H309ycev5fJojXxKTsPTPyvPttHA73uVOdiWoQATZf71akiH8qzAAA0fDbn1s2UMRR9pTAFk/n9lG/pFxcio4ZusobxeVw8Is+pUStsUMJaPlX9LdTK8qAi8WEYzYFCahcrLjXmixqhzRCHdWKDD4jHmtzAppAbj3Je1UKaPOQ9B7Wbablg0s1Yvha7q/FpGDeifniBNyDVl50WGnHRjQ1j25DjsdeTp9xxKv62fTP2kVEh09Z/J5jgyk7rFoqhnNtTqd66HmKIhD//fRkDDXV2MMB01J9vAFASTCVQ4Ta18x1kowiOPXQZTALZDKc+ynT7gj4aJ9DlaMTbmh9qeRpDvt0NaQ49XnvNChXRP/GcEPPhC7vZJF+EyTP0EnZO1N91FNTn/nBT8JBXOZ9DSYIOznd/fO8TaGE0+dQSjTBk4j2TUdqYdb4ysGPrYGb/wR/8GuGTD49cepL+rgDBcDoqWAnWDNiqlFYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,42 +151,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/1/26 10:48, Muchun Song wrote:
-> The two weak functions are currently no-ops on every architecture,
-> forcing each platform that needs them to duplicate the same handful
-> of lines.  Provide a generic implementation:
-> 
-> - vmemmap_set_pmd() simply sets a huge PMD with PAGE_KERNEL protection.
-> 
-> - vmemmap_check_pmd() verifies that the PMD is present and leaf,
->   then calls the existing vmemmap_verify() helper.
-> 
-> Architectures that need special handling can continue to override the
-> weak symbols; everyone else gets the standard version for free.
+> The generic implementations now suffice; remove the arm64 copies.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Will Deacon <will@kernel.org>
 > ---
-> v2->v3:
-> - Replace BUG_ON() with WARN_ON_ONCE() in vmemmap_set_pmd()
-> ---
->  mm/sparse-vmemmap.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 112ccf9c71ca..99e2be39671b 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -386,12 +386,17 @@ int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
->  void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
->  				      unsigned long addr, unsigned long next)
->  {
-> +	WARN_ON_ONCE(!pmd_set_huge(pmd, virt_to_phys(p), PAGE_KERNEL));
 
-
-Not sure if a VM_WARN_ON_ONCE() would be appropriate. (then, we have to move the
-pmd_set_huge() out of the statement).
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
