@@ -4,158 +4,200 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C6E7CD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:06:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81BADCD6E5D
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:06:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7367D6B0351; Mon,  1 Jun 2026 08:06:16 -0400 (EDT)
+	id E61246B0353; Mon,  1 Jun 2026 08:06:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70DA06B0353; Mon,  1 Jun 2026 08:06:16 -0400 (EDT)
+	id E11E26B0355; Mon,  1 Jun 2026 08:06:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FCA56B0354; Mon,  1 Jun 2026 08:06:16 -0400 (EDT)
+	id CDA3E6B0356; Mon,  1 Jun 2026 08:06:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C3C26B0351
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:06:16 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12133120672
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:06:16 +0000 (UTC)
-X-FDA: 84831215952.07.82CC4BB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C22F140003
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:06:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="UO/TTvwX";
-	spf=pass (imf11.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780315573;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BD7C06B0353
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:06:18 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7ED5D4064F
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:06:18 +0000 (UTC)
+X-FDA: 84831216036.23.37B3850
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010021.outbound.protection.outlook.com [52.101.69.21])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4CABD2000D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:06:14 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b="W/h2Zymk";
+	dkim=pass header.d=arm.com header.s=selector1 header.b="W/h2Zymk";
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf31.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.69.21 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1780315574; a=rsa-sha256;
+	cv=pass;
+	b=Pc6oKjMqd0siHFUTG1bfn6EKnJD0nlEvq+prM7Jt6E2dMApVaB9LN/5t1hXglv5t03Wsdy
+	Qr3/VO/z/mjdczFomRa1CbjBY2qatl1huYS+1FPECzlWS0v8TsmTBcqbdZ0pG3BDrktVjC
+	nSf3IVfPhf4+fF3y5pKTjD73hEw3hUg=
+ARC-Authentication-Results: i=3;
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b="W/h2Zymk";
+	dkim=pass header.d=arm.com header.s=selector1 header.b="W/h2Zymk";
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf31.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.69.21 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780315574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6CzF1sm1t6LcN5j1kxM/c5/Y63P6D9+npzxAyQXHUEE=;
-	b=uwV8GZ9VnayRhRK+GkYHpCrToBu1J3T3T7J9Piq3cJiuJ2917Ieguuoga+2ToStzh49GWQ
-	0vr1QRhWPsjIK94Hm3UzaXJfinNS4wXodOp8CtStZ00UssVvYIgMFExw42Lyj/c2Ih20/a
-	+JP5VuPD/WBB67njSoPurMLpTJwVA2U=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="UO/TTvwX";
-	spf=pass (imf11.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780315573; a=rsa-sha256;
-	cv=none;
-	b=yXo/Aqc596qUBp+pNo+I24zEYd22mvbZbIS0u5k8oa7tMusOM+HHovpZZvy5Dclt5GcPDF
-	02IrTxSagq4LL9E0bptGxxPrPpcO9oGykIv4p77SHFGsrXIh48rjVMcBTCNKATi/RPEKyr
-	W4pfkTvSUu8NQRLa8usqYHTVw9VGSI4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780315573;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6CzF1sm1t6LcN5j1kxM/c5/Y63P6D9+npzxAyQXHUEE=;
-	b=UO/TTvwXc5QCbWWMavBXaCUNKM1oLrOzjPrpwrb66ZHCOL5wC5ehMwGZ+maS396XQPikFW
-	VHpoT771EHKjd/S01raDqvIF4EBHGbB9mmkMuL5WFCWSgmF4oxA6CKAoyRn9JbBXYa9Hry
-	PDwRJclQclvux4ryNjjBidEpQssFKYU=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-dWjdTGIlNq2YkY56o3LJxg-1; Mon, 01 Jun 2026 08:06:12 -0400
-X-MC-Unique: dWjdTGIlNq2YkY56o3LJxg-1
-X-Mimecast-MFC-AGG-ID: dWjdTGIlNq2YkY56o3LJxg_1780315571
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-bec3fcb280eso110579966b.0
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 05:06:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780315571; x=1780920371;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6CzF1sm1t6LcN5j1kxM/c5/Y63P6D9+npzxAyQXHUEE=;
-        b=MfZGnAKSvE0hrgEQ9tTm39zJVXDYQetuuE9ekyOTyTRno1Jsq1h+W41etGgMo17yyw
-         fXbU+IfYhC92SqBkr0c7ssHpBFgefGmHI9vjlVGfI1MHFpUEMJvm/85jxvy3zWeV17+F
-         40AQoSGx7SZo1JRXloMB9aoC1wrY3119PFUS/AJ4juiT8QYHNu5Wg+aFHk+HwkQldzKU
-         Kb6KMbp+xL/dBDKf3XxRei1ZEsmPvuscMxvryg4HubMz37rnwN48o5hW9ZGjyoVGWl0p
-         06A2dK/jny4mI79WoAU/2tnULg2cK0D+XyDwbDfPfngnapAtoDwyyyuGlZWshu/d6tzi
-         YrLg==
-X-Forwarded-Encrypted: i=1; AFNElJ+IjibwmdJ13K2T+Fr3CHsqnOMRQjeRhXZF4cQD+xatlYaK3KIZEzdfRswDtrhKjaUK+OHGcCxTNA==@kvack.org
-X-Gm-Message-State: AOJu0YwgTihQOynPLlA7SmfmzeZmXmVpbGfpC9vBC7RDP/KkR1Y3Ovdw
-	xAuT+2Bsvqd5yojgQThO7vWQSv0FN9RiGsDi4iyjTzy3nXcR5sPw+lwZqzYD653cYjXGoesr/vP
-	iYy+b5JzBVIXK3UdgXzIPp/DbyCwcKg4idpaALfh/nVd2sd0w451f
-X-Gm-Gg: Acq92OELG0icTyyqe0l1eXVmhWC2isQDybQskU7gfQeFHtGMoiPfBo0odJo4lOeyzQO
-	pvkl6aoTMOgdOVOf8L2WUTp8vMd5xQY8xrQMJY1l4lc6dvv7WQ5GqbFL5BqAsar1IOI6OSZ9MG5
-	iUa1ZI31k1XLrvgtLrg9wlftL9AoNa4T+RpsWuaYgBwDH50ANldml/gD9cToPGn+qpTJZt150uc
-	qVXfrrtnfYjhkAM1WXJshbozFYo7Rx3OAsSL67Vw8jV0pEUrkz9I4JRfAl1Ho62Inh/VwxAkKPI
-	N1klYkLppCeAfQPGLaXt/ud+Ll3e6XaPzeKKwU5gwaGM63wG5JshzPNebkunk9hbpRz6A39yeoq
-	lfgFkc1eV/rVKBvYIq+h+kyPywHFdSFjPokE5X+EJkwDJsmzz/YUh/g==
-X-Received: by 2002:a17:907:3e0a:b0:bcb:66df:819a with SMTP id a640c23a62f3a-beab1e809cdmr565360366b.40.1780315570156;
-        Mon, 01 Jun 2026 05:06:10 -0700 (PDT)
-X-Received: by 2002:a17:907:3e0a:b0:bcb:66df:819a with SMTP id a640c23a62f3a-beab1e809cdmr565353666b.40.1780315569312;
-        Mon, 01 Jun 2026 05:06:09 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-25-45.inter.net.il. [80.230.25.45])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-be9d32d37b2sm328665566b.24.2026.06.01.05.06.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 05:06:08 -0700 (PDT)
-Date: Mon, 1 Jun 2026 08:06:02 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>
-Subject: Re: [PATCH v9 07/37] mm: thread user_addr through page allocator for
- cache-friendly zeroing
-Message-ID: <20260601075807-mutt-send-email-mst@kernel.org>
-References: <cover.1780067977.git.mst@redhat.com>
- <a526a713dbba63c7a69df37b67ed1590f77fefd3.1780067977.git.mst@redhat.com>
+	bh=YAwtx8iXkBZ35HE+VZNm/0vvO4oCQSSXH+5v98gjC3E=;
+	b=XJV6ethcg4Ss99kR8s0cmHYnL+cKSl9Yv8APiCO1eBvlYWLjgeHGvqAg/efjzDWlMJULse
+	iTvYEZjfuUNF83J4Zhne40TdECIiyszO04QKcUjAZlgbqm9yC6Q5v1ngDwZwODLUvTqfk4
+	lorrVwz+FVQE0WSse0f5uUFHvgeOfuw=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=C81Gy5DQKLpSpVpDVIrwqYGiOlDbFZ6kUNC17MJjMd9ErYfQhYyjZxvlBwD47eFUEg7hOn77C+o8Xma7kJQVOSUxk8bVgudMd8rGVBADP8Gyka8YGLpytx2IewMAp+O/wWNgz1czKlKBOXJ+m0qngenMwJIs2bGAiHzDxFp/LEkmZ3qRpG3R3cRoRMich9xAvQxgN0eosMbebsfGwwJdJNVURw8LPfzcpLf6pQnx2S2FXrb6bLlgxSkPkLWUjAGMukU9OxvIij90yUP2oBKOelkcvu6/FAfQgjOV3r5qXA5WH9D8y28Q+Hhs2ME/2OXJ9mt7SswsvnYQpYSM4g0ZhQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YAwtx8iXkBZ35HE+VZNm/0vvO4oCQSSXH+5v98gjC3E=;
+ b=lVDr+D5ppyKgAJsZOSzIVLU1E6yoy17Ed6eQleU1NtHlX4E8WfPja2xtviyArMn0o+pNJISaLx7aOZZEVK4jfnlLdcFpbfUHKs+uGiTaIWp9zlcnq5SomaxdbT0oqJPB3tuheGqYHkdfPmovKzUvEefXwLGwyznrCXCpavkcXP0oeQNQ448XUdOI9mNttzTXaz3LHNjiy7yUAorA8L0Sq/MjB+VoHczFu4Eu+AE8tTDTzMbbTglCWEmy9+RCDcPceZUbd+e80rnweqJ/wecjnblCfSJfRx/el/nPI37Zg++4pSTXCWus9aUvAZ3jKYITDtPF0nMIIUUCXnYilZzbUA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=nvidia.com smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YAwtx8iXkBZ35HE+VZNm/0vvO4oCQSSXH+5v98gjC3E=;
+ b=W/h2ZymkgTVFi/r7dSxhibzOg+RVUQuPHBPwmr+v07gJzynNAzhnV6/KrdHXqnGVHvJMOLsLPoyg7XkZyuJ9lKpQXU4AIguc6vAMdo6253t6PSpnHK+2kCEncFVfQCJLM8RenPyvJhgNkVw5Kg/PIc4V83gBV7vWPj+SzTlUP9E=
+Received: from AS4P192CA0031.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:658::24)
+ by AS2PR08MB9739.eurprd08.prod.outlook.com (2603:10a6:20b:605::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
+ 12:06:07 +0000
+Received: from AM3PEPF0000A79A.eurprd04.prod.outlook.com
+ (2603:10a6:20b:658:cafe::15) by AS4P192CA0031.outlook.office365.com
+ (2603:10a6:20b:658::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.16 via Frontend Transport; Mon, 1
+ Jun 2026 12:06:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AM3PEPF0000A79A.mail.protection.outlook.com (10.167.16.105) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.5 via
+ Frontend Transport; Mon, 1 Jun 2026 12:06:06 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VZrcX3xbUjMD/On4sElS7rfjpLgiAlMJ0YD5IRe+zRvQxIk0VoGG4LGvQJEiHlmwFx8fGkBEIBGt4bZhACaokOveW9Z1m/XtUPOpU/vCovwQqkb5bbmqvowr63l/FxeBQ3erGs5sgsNccjQT7AoPHWbx6I9zf938/G24G3WIj8uYNG7jbXX6Acl2dE0/VGAE32q4xIJMPmha9zubmoP9ifR4MT4Ff89K6PEcg7XEeiAP9AjXkiDacnGStkM3vQEJ3445BRNTfY83AJ7aOtQMQaPQo+7H+mQomSfh65R2GoKWrY1+CFvDCEBxMMoA9VMVnzinorPyblVl9CJ4/314qQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YAwtx8iXkBZ35HE+VZNm/0vvO4oCQSSXH+5v98gjC3E=;
+ b=wt1RiEtoUx4e1+zavwHmqNKFVbKu0gobFq2IQvCYY5XiIaMz+yFXByQ6vpNFeCqKudsMnzEEflUEikuxq7h4CKEWxLn29/BwXojwrjSD/PELTDl5nJjG+eZrb6PqNflknNyYlULT4GL0LI1shu/fgXu2h1fdEo6c6p812Ggd1pictq3IwtaOBSAmjNvW4yLOQY/A+LLTan5wNi/UjpS0/EMAUB4z+etwOSciPIYcsDfpS53951PHWO9/VNrpBvQK38siWfESP3PuGAmINhKL3Cd29UHLcbc42x/Zl3vjhOFQOYV4oPSOHi2MWggpQkqPexzljB6OPztPATSj6gEevg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YAwtx8iXkBZ35HE+VZNm/0vvO4oCQSSXH+5v98gjC3E=;
+ b=W/h2ZymkgTVFi/r7dSxhibzOg+RVUQuPHBPwmr+v07gJzynNAzhnV6/KrdHXqnGVHvJMOLsLPoyg7XkZyuJ9lKpQXU4AIguc6vAMdo6253t6PSpnHK+2kCEncFVfQCJLM8RenPyvJhgNkVw5Kg/PIc4V83gBV7vWPj+SzTlUP9E=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
+ by PR3PR08MB5644.eurprd08.prod.outlook.com (2603:10a6:102:86::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
+ 12:05:04 +0000
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047%5]) with mapi id 15.21.0071.014; Mon, 1 Jun 2026
+ 12:05:04 +0000
+Message-ID: <b2265aeb-fbde-45d4-aa4b-fc08dc4fdd28@arm.com>
+Date: Mon, 1 Jun 2026 17:34:55 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/5] selftests/mm: separate GUP microbenchmarking from
+ functional testing
+To: John Hubbard <jhubbard@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>,
+ Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260527142432.230127-1-sarthak.sharma@arm.com>
+ <20260527114752.cf4dd3e1bda93fb8ebab5a76@linux-foundation.org>
+ <3b4176f4-e099-490c-a5e2-6a36d00b1207@arm.com>
+ <13b63b4f-6a4b-4433-93e8-78035ab62b83@nvidia.com>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+Content-Language: en-US
+In-Reply-To: <13b63b4f-6a4b-4433-93e8-78035ab62b83@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0009.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:176::13) To DU0PR08MB9203.eurprd08.prod.outlook.com
+ (2603:10a6:10:417::12)
 MIME-Version: 1.0
-In-Reply-To: <a526a713dbba63c7a69df37b67ed1590f77fefd3.1780067977.git.mst@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vn4wV2FN8MEb2cfxq9lSZZB_P00nAsy_6PQi-DXcuwQ_1780315571
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-MS-TrafficTypeDiagnostic:
+	DU0PR08MB9203:EE_|PR3PR08MB5644:EE_|AM3PEPF0000A79A:EE_|AS2PR08MB9739:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95c0a2c7-256c-4498-de9d-08debfd6295b
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|7416014|376014|366016|1800799024|22082099003|18002099003|56012099006|4143699003|5023799004|11063799006;
+X-Microsoft-Antispam-Message-Info-Original:
+ 0/UCGDkV18pw1rqlCv8/v3c395BjlZi1XIiaKBCfN66Ra7MGSp6D6Q8PsII135EQTkPhTf+mUe31ui+vzK/wX350Wf1VUuG3RdjaoiKdL9T+5Pp7UifYPvKYm7voVLLoZvElkflff6Dnb4fn0Oo06DsjO6tvD9b++Axa2JzcqjDXsCtR5SRgEUUMaVNd05NIcv0zK+AvJz+E7FUG9itLk6WHEb8swToNZWAQ/v9XELV702ykHdRILAFHWFhHU2/DufFwIe+3KnWZhN6WX+uIxx3Tts8fgmAFC4mDcpW69dQtMfGZjG8SiXVWFgf6EUwyWg9DQgy51PwhdxDhXNXjHEQPfejtAMHTRPr/5yeheCG9MKd9Kk/0c1qHDUttMr3w0ZWtjSMmRd0pQ+Rvj1fu+d8ct9VGa7R/z/dYajx7WWXWk07H4/7gFL6dLy8S0JECThwxnhC8eRTr9VD2THaM61hbV1LL8erXzELuNEnXD/WFGiVqvXOoNXSgSQDYn7I9oMFvmKenwI8LEYsq8aJPBROiV3iYtu1ZCvmCFHUSfUfnOlrXXwhgh7qEBzidYgyFMJ0tIXPBPIASAC98hqXDS8XO5mgCWbTtf7uasCZ8aenXmSbdWolhkQ/TY5QCRYcWxZO/Y0+rdlltIoBMsICoA9aka+XCraKF0c5Tj9tCwb8IA+B7E8k4PxYkrDrYJEKLXVpRgIv3EcTnOZiPU/ydUQ==
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(22082099003)(18002099003)(56012099006)(4143699003)(5023799004)(11063799006);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ oUqGST2JVM/UdGTwr2bnCrwo36HB+Hi3jdVCjcMYGHlGzQ13yS1vMWwGSXIS0E1zKz9maokA28ZOG0GaHIoI95Ahh1EkklHzPHcnv6lkFXydU4roonAB97MumFy+5HBKKamnKp5KTgiHWvyRL+AOsr1YKwrc1DErWK9slGTPOBeixZppFt9D5YeGLHyYJWuXcLGlPptyDQOW6vYBdxuEEhURWxwuRWOJ3DMJaBJmYshfYQR87NjZ+jg3nLPTtdumn5jncVUyfVq1rCy2Uobhm2oyA3BAz8BhulmYGUmXVUk15rM8Atsn//m4lHqQo6NuxqU/EHYqjCRXqaNOexKkfA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR08MB5644
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM3PEPF0000A79A.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	c65a5cba-439f-4549-e91d-08debfd6039f
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|14060799003|7416014|376014|1800799024|35042699022|36860700016|82310400026|18002099003|22082099003|56012099006|4143699003|11063799006|5023799004;
+X-Microsoft-Antispam-Message-Info:
+	WzRgc7lnt7gKXubh0BrABrW05+1l/GyzL50WrBfRLErWYYTDsMUtUGFY23Jqj8m2WmHSSzx84ufh4sThG5b+Vka8qYU4RwcL/tRUtTRjCMhkhML+L6OQ0GmNUJz7/I613dHTpmyfzxXolqKvdpt+8l4fNZGOE7EWgt38Qus0uigvtpaK/9UlmidETZIR8G6C4TTPbZcTVVfdAWovVlthqBLrg5cgs2MajIGCgSi0mewOdLrmxtKJnYnak10Xl4VH4Otj7hkJlM37Q762yVzxZey8DbRqyuG/g/rH4u7KaXF75Lk3DU/7l56ViQHkkkJ19ocJCZs2kce8op9rRCW6CBRizH4tR2/f9BuI1w/gY5RKVO4CupHX9cUyupnggz73Y+9aFUAj15eFJ5zhbSxygiAU3VW+GhTUxln9Tl1i7o4ZOitfXnqMoDRSXpfTd1blsLwb03ypegN4EP1kMw2ZPeqC14nREXquTczkAH1Ej87Vs+5/EfR4CJrESdstvRNKwEBqKmgVOG9SdE+GrSaFaxQLADG5mHzfFMQPCdsHxMDwDqNpNpymh7W7JbYsSRS1khc4T36gN/sctjXx9/yaKEmvMpz74aMQgO2I8YpYX4oojrCJZrgTgBcam/r5260O6aPv0gKT+m+TV88UCovi2UOke8oBV6oxGiWEzyd+1xKjptg/xzSERKUm7RYmBflJ0BdWr240+Fz9Lo5ADsvmrg0S86Su4YiQ6nT1P7EKhZg=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(7416014)(376014)(1800799024)(35042699022)(36860700016)(82310400026)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	EKTCTmWJHEvcXecrMO1hKdVaYxRttGGs9BP3642dDeaMnWb4fsE6eI+4s9oeJG0H6CmdR+tFFFW2J48mIm4Hwisela8+EsC/jhJYK255VZA0JORRFNbMU5M+yWKiUHSHaolsHAhvhvNboUmiXSJTwO9IRBmldvAz8j1aCyFuN8OD46huxM0xTkUSUX8TrUYLbFY1BvPGAJsKz1RBmL69gQe1aAyOEwWprOnQn1ThkBw/IRC8Di7R84rSgu0G1/6psJwjEMMZMy3gjcoZ0t/G+ljYNdQyhksbDBeoYQpPBWPGnaME6s6Nw5NJL/BagC8CarElzbMokkb0UYvO8JHeN9xcauZMDKpgURkwlnr+huSyoIoyEr17YgUDnUEDuTQ6OIYJKX7aoST2Qwf8O3ExSdN8wc4Wtx5GZxdIZn3KhhWwL5xgtoCuOQ4l/J2fKbs0
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 12:06:06.9443
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95c0a2c7-256c-4498-de9d-08debfd6295b
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF0000A79A.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB9739
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C22F140003
-X-Stat-Signature: pgmsjf8reg3upfbt5dfamjf699bbmbzn
-X-HE-Tag: 1780315573-966052
-X-HE-Meta: U2FsdGVkX1+4uSNZd99NxArpBN3s3qkVFBwozS066BgMk8jywmoqWdPfaO702DTFHai3U5X/QXYy46wRpPR9prSUPj47OgReZ5AUH59m+yzt+9k0cu6yYm/wLhaP467vNMO4QiFlMntATGNu1BTlYFBVO/GMmm5BuFxFPXZDYm205d2hE93XQRkBulfuGBPbRfm5InLKFBEKgaq7dL4c7Lkol0LBet75HvvOF+4dlk3ybMFx0wANOUKJk/HzPsARgnrcp+h2HxU+L6K7WJprOJ6nkPEPAk50d8VTcSIf6tWupwA1d/n+7bPU0XbTKzPMCQsJrASeod3rxOsbYQyv786KXVViISsBOV473Fg3i+WsW1LIYP50aJPZth6ovPLrCaug2KTaeluWSQSj8bx0y6lvfCHc6H8kkfJSinL6nd8EAXOeJss0HcubXJLP8XyOQBxEAqqhD2WcoENq8rPoYw3NRSoawIVAI7EdfaTl1Ghcb77Wr/w2hL/LW8krzzY1yj3aX5f3Ekdoo/m/dgWbg2/EldVNlV3dW4hfxXZPb5ipGwiWaTdI+HkYJm+rMhsCl27WTHF7m+SvNVNe0aVq3e/a82vnzP4lWmCbaJJcG3+BNGYmSzoPM0FUXdn1Op7SdwITMUnFeHr/3kD8yhgOjeJdtF5/eLXgdHBRsUBLIAYqks0Sx1M6e5OrrYCA4rfMLIzuiuVl8YUSeCskA5r7aXa4kYUsbRGOoIPVesObYsybNBZ+05i7W/AmPc9fNk4Iq0raponETe4491Ql2dXeNuRdJxq4tstQiAJWYZ4pRmFMi820rIDO7IbBOjRwhyc4rYk3J0HuoR1UbavP35+X3ue0P8vSIPVs6MwtVTLnPCjiixHTwqXUqM/RQK19KgVU1aGItIZAf3FPcw9UUawtKz+pDyC5J+y6BQUNV57RrwQVHZBLFHPoEfXcNU6xe672oWTybFkqizq7P7skHb+
- dt2X/bEd
- mWWBo5nZ8aUc8DACr57BC0QEjc/F5qF6z68rv1E3C0V7cXdtu07MZ1pkgDlE4iJkQCluZAavTpBs28n4WGEoxqIihzYDFADDFzKMIcgbDjhMqx8MPXYLzx+kLzfh96dQtVva2boR6tME/d1Af1s26+juKc337EIJmEXHVdoRKx8ALvaBmVwst/UL2wroEN9LljHUJ5m7uM0VmLskr0hw1cB9oiQsaTclfMtzimfs7Kr5iBmHZFkwbtlhHRRZvXDgZYF2Xj+5XgIkgtPnO9X6zLiUQDTOTrTwOhsisJENTcyrcEFq8Z8u+2eTEGNEo8t7PxrEhfTUq94wlNh7dB60xwWKE6pvp0kvOQz8xml18U1G18WpSxQOzJr9fpVJUedQopcN7OHztJ1LA7Bfudzr3eG+J50T9yAapxe2/efYwUeO6qR9OYwei9xMVbferKo1cC5Gr5gtajbfZwpxa0HybCSCL5W+8cR9cIyxQ8jX2mT4oZm6slKnyh2Hcvw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4CABD2000D
+X-Stat-Signature: 954oph1fywqken8izmy1wbis7n5geo9x
+X-HE-Tag: 1780315574-882255
+X-HE-Meta: U2FsdGVkX1/PUG7CG3F+vrb3yztatpsmznD/9xHE20MsDauHsaqzu+g1QQ8Y3FSKgy+ZqGZNcAAM4DSXeGyL0bjlJypVeAsbTBEu+aADD5qDHIm/6HWFGZHl2uoIyJ0OHSDJLcD1mhrFX3P1E9zWe4fAHnzb/n92q8hiy9Tp5FQ+wQgqqmdOWV3pmIwZzCsTsvcGIVWXuVAuI91fynG8N8pu7cFYe8SG70Pt0F34dcO7yvnzrrL08xQs7nfY850+vgIq6CsRgcA7Q4lixztcUBKKAtK3Euu29tg7rQwjovV+Ben7kSEnxu9EYhhWyVNqT71H7S4apdYvsR4K3G5nlMfr70jW9iw074a5kRK98Z+muF/zPRT8xQyr1kMcqbkji/8s+nZNAQ5TTg8r8pCZZXxQZ1xxGKNZ+AV/1iA8quQeHOAQQhflk5mcFnCruoXRddjEpyZowMJAqs21z2XCozZhWrRb32DZ14DH61TYZuqcFv1x9K+RzWTQ2x6Gple30cjc8Z4nqJoPZJ7CYBiVWaVxypMpTz0rQVavnupdWFjmpxBDwhV678pbidSBJESxZ9A6Y8oqhnThfuLM3SsxQ8AEJ/NYG+Ywfp2cgVZ2OD09nr9U86z9kEaIgtjQggPTW1o5oFMxJa1FbT9jBJXe0dPD6LFlP0F9N7wOoBYdjR3ouw734FEx5wI32gJCSuLN0XIPazByfSWH39By/nAthMZ2q6wm7pBuyJ2DafaaagCDQZlI2mERAUsonkri3CmWIuhIzQPHh8wl6JSfo1w8QREKV8FiZ4J5P8gbwPf7IP9IqOXzu6ow5QJkKXvDKZbQOQLU87SVutA3m6lstc7ApiaxSMt5maPVflLfmO027AYjB9TKlk9eeQp0aj6gOEedYmNX0FLVdTREGWPNoPOgrNCoqOqVBb6+P3NIr8Ps2ki5s4ChGq0tFnjsJXw2iAZlYLfFhx8Swk+05/gVQcs
+ DEmuWDf7
+ +obLOGmvEu+i04JG8xQdgDoS4AdvSFgB/BwtR+nNOa+O1Vlpy3C8MkITVrTxzkbEaHNr/fHtyjDlkx9TH34iuWLwiUGZXKpDfWXPlyh4wNrh+CLZ5HanhHthrTFTtaZcfSEpt75CWKzuWEBvVmXh6eJ3mqxLXObr/y7Duh+WFaiv9UaKNlSbcHX1spZpN5jZmccgJEXLfDp1tgY8IvBEvjS5FgqhwwvT9kT4o3jkSvDOuzWFPpRq2zrt+2ZCdSMTGeBGMPsgWexVj/lxjzrZeGaovM2bSkEW/OAXNCRG4gj6pAvRuAkQMM8G7rmdJFPU1yNccAZs13jETiLo2N0cYGzjBtPaldBPXAXBVb7Bg07mDJzV1gcHSP1T5FQ3QrpQu6vtRdTdZvxLcpJh2B1ZYxVvSm5MwIzklAmGll+MbQoLrBfZRPB9SFakOkUJ3l4qm2DoMVsmnTbDF0UQ99yoVVV3nUWny8a1FiIAoM/E+Sei/MLALoEAtoBE0D+is0IZ3E4UxS5ve4Ehb6DG8aMwrMTTBBprGxsq6XnSE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,591 +205,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 11:22:42AM -0400, Michael S. Tsirkin wrote:
-> Thread a user virtual address from vma_alloc_folio() down through
-> the page allocator to post_alloc_hook(). This is plumbing
-> preparation for a subsequent patch that will use user_addr to
-> call folio_zero_user() for cache-friendly zeroing of user pages.
+Hi John!
+
+On 5/30/26 1:04 AM, John Hubbard wrote:
+> On 5/28/26 10:57 PM, Sarthak Sharma wrote:
+>> On 5/28/26 12:17 AM, Andrew Morton wrote:
+>>> On Wed, 27 May 2026 19:54:27 +0530 Sarthak Sharma <sarthak.sharma@arm.com> wrote:
+> ...
+>> Thanks! I went through Sashiko's review.
+>>
+>> Both the points are valid but look very minor to me: one is a temporary
+>> x86 build issue fixed by the next patch and the other is stricter
 > 
-> The user_addr is stored in struct alloc_context and flows through:
->   vma_alloc_folio -> folio_alloc_mpol -> __alloc_pages_mpol ->
->   __alloc_frozen_pages -> get_page_from_freelist -> prep_new_page ->
->   post_alloc_hook
+> This is the sort of claim that an AI will make, in kernel code: "it's
+> just a temporary build issue". I've seen this happen during sessions
+> when I'm interrogating an AI about something.
 > 
-> USER_ADDR_NONE ((unsigned long)-1) is used for non-user
-> allocations, since address 0 is a valid userspace mapping.
+> Don't be misled by AI's evaluations, as unless it is guided very
+> firmly (sashiko for example has fairly firm guidance, although still
+> a work in progress) it will provide routinely terrible advice about
+> how to deal with the kernel.
 > 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
-> Assisted-by: cursor-agent:GPT-5.4-xhigh
-> ---
->  include/linux/gfp.h |  2 +-
->  mm/compaction.c     |  5 ++---
->  mm/hugetlb.c        | 36 ++++++++++++++++++++----------------
->  mm/internal.h       | 22 +++++++++++++++++++---
->  mm/mempolicy.c      | 44 ++++++++++++++++++++++++++++++++------------
->  mm/mmap.c           |  6 ++++++
->  mm/page_alloc.c     | 44 +++++++++++++++++++++++++++++---------------
->  mm/slub.c           |  4 ++--
->  8 files changed, 111 insertions(+), 52 deletions(-)
+> I'm sure we have something in the "how to contribute" docs that
+> explain that patchsets must be bisectable and that there are no
+> "minor" build "issues"!
 > 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 7ccbda35b9ad..ee35c5367abc 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -337,7 +337,7 @@ static inline struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order)
->  static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
->  		struct mempolicy *mpol, pgoff_t ilx, int nid)
->  {
-> -	return folio_alloc_noprof(gfp, order);
-> +	return __folio_alloc_noprof(gfp, order, numa_node_id(), NULL);
->  }
->  #endif
->  
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index 3648ce22c807..72684fe81e83 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -82,7 +82,7 @@ static inline bool is_via_compact_memory(int order) { return false; }
->  
->  static struct page *mark_allocated_noprof(struct page *page, unsigned int order, gfp_t gfp_flags)
->  {
-> -	post_alloc_hook(page, order, __GFP_MOVABLE);
-> +	post_alloc_hook(page, order, __GFP_MOVABLE, USER_ADDR_NONE);
->  	set_page_refcounted(page);
->  	return page;
->  }
-> @@ -1849,8 +1849,7 @@ static struct folio *compaction_alloc_noprof(struct folio *src, unsigned long da
->  		set_page_private(&freepage[size], start_order);
->  	}
->  	dst = (struct folio *)freepage;
-> -
-> -	post_alloc_hook(&dst->page, order, __GFP_MOVABLE);
-> +	post_alloc_hook(&dst->page, order, __GFP_MOVABLE, USER_ADDR_NONE);
->  	set_page_refcounted(&dst->page);
->  	if (order)
->  		prep_compound_page(&dst->page, order);
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index f24bf49be047..a999f3ead852 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1806,7 +1806,8 @@ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio)
->  }
->  
->  static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
-> -		int nid, nodemask_t *nmask, nodemask_t *node_alloc_noretry)
-> +		int nid, nodemask_t *nmask, nodemask_t *node_alloc_noretry,
-> +		unsigned long addr)
->  {
->  	struct folio *folio;
->  	bool alloc_try_hard = true;
-> @@ -1823,7 +1824,7 @@ static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
->  	if (alloc_try_hard)
->  		gfp_mask |= __GFP_RETRY_MAYFAIL;
->  
-> -	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask);
-> +	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask, addr);
->  
->  	/*
->  	 * If we did not specify __GFP_RETRY_MAYFAIL, but still got a
-> @@ -1852,7 +1853,7 @@ static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
->  
->  static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
->  		gfp_t gfp_mask, int nid, nodemask_t *nmask,
-> -		nodemask_t *node_alloc_noretry)
-> +		nodemask_t *node_alloc_noretry, unsigned long addr)
->  {
->  	struct folio *folio;
->  	int order = huge_page_order(h);
-> @@ -1864,7 +1865,7 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
->  		folio = alloc_gigantic_frozen_folio(order, gfp_mask, nid, nmask);
->  	else
->  		folio = alloc_buddy_frozen_folio(order, gfp_mask, nid, nmask,
-> -						 node_alloc_noretry);
-> +						 node_alloc_noretry, addr);
->  	if (folio)
->  		init_new_hugetlb_folio(folio);
->  	return folio;
-> @@ -1878,11 +1879,12 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
->   * pages is zero, and the accounting must be done in the caller.
->   */
->  static struct folio *alloc_fresh_hugetlb_folio(struct hstate *h,
-> -		gfp_t gfp_mask, int nid, nodemask_t *nmask)
-> +		gfp_t gfp_mask, int nid, nodemask_t *nmask,
-> +		unsigned long addr)
->  {
->  	struct folio *folio;
->  
-> -	folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, NULL);
-> +	folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, NULL, addr);
->  	if (folio)
->  		hugetlb_vmemmap_optimize_folio(h, folio);
->  	return folio;
-> @@ -1922,7 +1924,7 @@ static struct folio *alloc_pool_huge_folio(struct hstate *h,
->  		struct folio *folio;
->  
->  		folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, node,
-> -					nodes_allowed, node_alloc_noretry);
-> +					nodes_allowed, node_alloc_noretry, USER_ADDR_NONE);
->  		if (folio)
->  			return folio;
->  	}
-> @@ -2091,7 +2093,8 @@ int dissolve_free_hugetlb_folios(unsigned long start_pfn, unsigned long end_pfn)
->   * Allocates a fresh surplus page from the page allocator.
->   */
->  static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
-> -				gfp_t gfp_mask,	int nid, nodemask_t *nmask)
-> +				gfp_t gfp_mask,	int nid, nodemask_t *nmask,
-> +				unsigned long addr)
->  {
->  	struct folio *folio = NULL;
->  
-> @@ -2103,7 +2106,7 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
->  		goto out_unlock;
->  	spin_unlock_irq(&hugetlb_lock);
->  
-> -	folio = alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask);
-> +	folio = alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, addr);
->  	if (!folio)
->  		return NULL;
->  
-> @@ -2146,7 +2149,7 @@ static struct folio *alloc_migrate_hugetlb_folio(struct hstate *h, gfp_t gfp_mas
->  	if (hstate_is_gigantic(h))
->  		return NULL;
->  
-> -	folio = alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask);
-> +	folio = alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, USER_ADDR_NONE);
->  	if (!folio)
->  		return NULL;
->  
-> @@ -2182,14 +2185,14 @@ struct folio *alloc_buddy_hugetlb_folio_with_mpol(struct hstate *h,
->  	if (mpol_is_preferred_many(mpol)) {
->  		gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
->  
-> -		folio = alloc_surplus_hugetlb_folio(h, gfp, nid, nodemask);
-> +		folio = alloc_surplus_hugetlb_folio(h, gfp, nid, nodemask, addr);
->  
->  		/* Fallback to all nodes if page==NULL */
->  		nodemask = NULL;
->  	}
->  
->  	if (!folio)
-> -		folio = alloc_surplus_hugetlb_folio(h, gfp_mask, nid, nodemask);
-> +		folio = alloc_surplus_hugetlb_folio(h, gfp_mask, nid, nodemask, addr);
->  	mpol_cond_put(mpol);
->  	return folio;
->  }
-> @@ -2296,7 +2299,8 @@ static int gather_surplus_pages(struct hstate *h, long delta)
->  		 * down the road to pick the current node if that is the case.
->  		 */
->  		folio = alloc_surplus_hugetlb_folio(h, htlb_alloc_mask(h),
-> -						    NUMA_NO_NODE, &alloc_nodemask);
-> +						    NUMA_NO_NODE, &alloc_nodemask,
-> +						    USER_ADDR_NONE);
->  		if (!folio) {
->  			alloc_ok = false;
->  			break;
-> @@ -2702,7 +2706,7 @@ static int alloc_and_dissolve_hugetlb_folio(struct folio *old_folio,
->  			spin_unlock_irq(&hugetlb_lock);
->  			gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
->  			new_folio = alloc_fresh_hugetlb_folio(h, gfp_mask,
-> -							      nid, NULL);
-> +							      nid, NULL, USER_ADDR_NONE);
->  			if (!new_folio)
->  				return -ENOMEM;
->  			goto retry;
-> @@ -3400,13 +3404,13 @@ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
->  			gfp_t gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
->  
->  			folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
-> -					&node_states[N_MEMORY], NULL);
-> +					&node_states[N_MEMORY], NULL, USER_ADDR_NONE);
->  			if (!folio && !list_empty(&folio_list) &&
->  			    hugetlb_vmemmap_optimizable_size(h)) {
->  				prep_and_add_allocated_folios(h, &folio_list);
->  				INIT_LIST_HEAD(&folio_list);
->  				folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
-> -						&node_states[N_MEMORY], NULL);
-> +						&node_states[N_MEMORY], NULL, USER_ADDR_NONE);
->  			}
->  			if (!folio)
->  				break;
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 5a2ddcf68e0b..389098200aa6 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -662,6 +662,16 @@ void calculate_min_free_kbytes(void);
->  int __meminit init_per_zone_wmark_min(void);
->  void page_alloc_sysctl_init(void);
->  
-> +/*
-> + * Sentinel for user_addr: indicates a non-user allocation.
-> + * Cannot use 0 because address 0 is a valid userspace mapping.
-> + * (unsigned long)-1 is safe because:
-> + * 1. vm_end = addr + len <= TASK_SIZE, and vm_end is exclusive,
-> + *    so -1 is never inside any VMA.
-> + * 2. It will only be compared to page-aligned addresses.
-> + */
-> +#define USER_ADDR_NONE	((unsigned long)-1)
-> +
->  /*
->   * Structure for holding the mostly immutable allocation parameters passed
->   * between functions involved in allocations, including the alloc_pages*
-> @@ -693,6 +703,7 @@ struct alloc_context {
->  	 */
->  	enum zone_type highest_zoneidx;
->  	bool spread_dirty_pages;
-> +	unsigned long user_addr;
->  };
->  
->  /*
-> @@ -916,24 +927,29 @@ static inline void init_compound_tail(struct page *tail,
->  	prep_compound_tail(tail, head, order);
->  }
->  
-> -void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags);
-> +void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags,
-> +		     unsigned long user_addr);
->  extern bool free_pages_prepare(struct page *page, unsigned int order);
->  
->  extern int user_min_free_kbytes;
->  
->  struct page *__alloc_frozen_pages_noprof(gfp_t, unsigned int order, int nid,
-> -		nodemask_t *);
-> +		nodemask_t *, unsigned long user_addr);
->  #define __alloc_frozen_pages(...) \
->  	alloc_hooks(__alloc_frozen_pages_noprof(__VA_ARGS__))
->  void free_frozen_pages(struct page *page, unsigned int order);
-> +void free_frozen_pages_zeroed(struct page *page, unsigned int order);
-
-
-sashiko pointed this one out:
-https://sashiko.dev/#/patchset/cover.1780067977.git.mst%40redhat.com?part=7
-
-this landed here by mistake during one of the rebases, harmless but
-ideally belongs in patch 33.  Will move if there's v10.
-
-it's other findings on this patch seem like false positives.
-
->  void free_unref_folios(struct folio_batch *fbatch);
->  
->  #ifdef CONFIG_NUMA
->  struct page *alloc_frozen_pages_noprof(gfp_t, unsigned int order);
-> +struct folio *folio_alloc_mpol_user_noprof(gfp_t gfp, unsigned int order,
-> +		struct mempolicy *pol, pgoff_t ilx, int nid,
-> +		unsigned long user_addr);
->  #else
->  static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order)
->  {
-> -	return __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL);
-> +	return __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL, USER_ADDR_NONE);
->  }
->  #endif
->  
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index a1707ad498a8..f573ff32e94d 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2413,7 +2413,8 @@ bool mempolicy_in_oom_domain(struct task_struct *tsk,
->  }
->  
->  static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
-> -						int nid, nodemask_t *nodemask)
-> +						int nid, nodemask_t *nodemask,
-> +						unsigned long user_addr)
->  {
->  	struct page *page;
->  	gfp_t preferred_gfp;
-> @@ -2426,25 +2427,29 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
->  	 */
->  	preferred_gfp = gfp | __GFP_NOWARN;
->  	preferred_gfp &= ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
-> -	page = __alloc_frozen_pages_noprof(preferred_gfp, order, nid, nodemask);
-> +	page = __alloc_frozen_pages_noprof(preferred_gfp, order, nid,
-> +					   nodemask, user_addr);
->  	if (!page)
-> -		page = __alloc_frozen_pages_noprof(gfp, order, nid, NULL);
-> +		page = __alloc_frozen_pages_noprof(gfp, order, nid, NULL,
-> +						   user_addr);
->  
->  	return page;
->  }
->  
->  /**
-> - * alloc_pages_mpol - Allocate pages according to NUMA mempolicy.
-> + * __alloc_pages_mpol - Allocate pages according to NUMA mempolicy.
->   * @gfp: GFP flags.
->   * @order: Order of the page allocation.
->   * @pol: Pointer to the NUMA mempolicy.
->   * @ilx: Index for interleave mempolicy (also distinguishes alloc_pages()).
->   * @nid: Preferred node (usually numa_node_id() but @mpol may override it).
-> + * @user_addr: User fault address for cache-friendly zeroing, or USER_ADDR_NONE.
->   *
->   * Return: The page on success or NULL if allocation fails.
->   */
-> -static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
-> -		struct mempolicy *pol, pgoff_t ilx, int nid)
-> +static struct page *__alloc_pages_mpol(gfp_t gfp, unsigned int order,
-> +		struct mempolicy *pol, pgoff_t ilx, int nid,
-> +		unsigned long user_addr)
->  {
->  	nodemask_t *nodemask;
->  	struct page *page;
-> @@ -2452,7 +2457,8 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  	nodemask = policy_nodemask(gfp, pol, ilx, &nid);
->  
->  	if (pol->mode == MPOL_PREFERRED_MANY)
-> -		return alloc_pages_preferred_many(gfp, order, nid, nodemask);
-> +		return alloc_pages_preferred_many(gfp, order, nid, nodemask,
-> +						 user_addr);
->  
->  	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
->  	    /* filter "hugepage" allocation, unless from alloc_pages() */
-> @@ -2476,7 +2482,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  			 */
->  			page = __alloc_frozen_pages_noprof(
->  				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
-> -				nid, NULL);
-> +				nid, NULL, user_addr);
->  			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
->  				return page;
->  			/*
-> @@ -2488,7 +2494,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  		}
->  	}
->  
-> -	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask);
-> +	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask, user_addr);
->  
->  	if (unlikely(pol->mode == MPOL_INTERLEAVE ||
->  		     pol->mode == MPOL_WEIGHTED_INTERLEAVE) && page) {
-> @@ -2504,11 +2510,18 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  	return page;
->  }
->  
-> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> +static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  		struct mempolicy *pol, pgoff_t ilx, int nid)
->  {
-> -	struct page *page = alloc_pages_mpol(gfp | __GFP_COMP, order, pol,
-> -			ilx, nid);
-> +	return __alloc_pages_mpol(gfp, order, pol, ilx, nid, USER_ADDR_NONE);
-> +}
-> +
-> +struct folio *folio_alloc_mpol_user_noprof(gfp_t gfp, unsigned int order,
-> +		struct mempolicy *pol, pgoff_t ilx, int nid,
-> +		unsigned long user_addr)
-> +{
-> +	struct page *page = __alloc_pages_mpol(gfp | __GFP_COMP, order, pol,
-> +			ilx, nid, user_addr);
->  	if (!page)
->  		return NULL;
->  
-> @@ -2516,6 +2529,13 @@ struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
->  	return page_rmappable_folio(page);
->  }
->  
-> +struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> +		struct mempolicy *pol, pgoff_t ilx, int nid)
-> +{
-> +	return folio_alloc_mpol_user_noprof(gfp, order, pol, ilx, nid,
-> +					    USER_ADDR_NONE);
-> +}
-> +
->  struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned order)
->  {
->  	struct mempolicy *pol = &default_policy;
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 5754d1c36462..73413cebc418 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -855,6 +855,12 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
->  	if (IS_ERR_VALUE(addr))
->  		return addr;
->  
-> +	/*
-> +	 * The check below ensures vm_end = addr + len <= TASK_SIZE.
-> +	 * Since (unsigned long)-1 (USER_ADDR_NONE) >= TASK_SIZE and
-> +	 * vm_end is exclusive, USER_ADDR_NONE is thus never a valid
-> +	 * userspace address.
-> +	 */
->  	if (addr > TASK_SIZE - len)
->  		return -ENOMEM;
->  	if (offset_in_page(addr))
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 0c4f4c678233..b96c9892f6c6 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1819,7 +1819,7 @@ static inline bool should_skip_init(gfp_t flags)
->  }
->  
->  inline void post_alloc_hook(struct page *page, unsigned int order,
-> -				gfp_t gfp_flags)
-> +				gfp_t gfp_flags, unsigned long user_addr)
->  {
->  	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
->  			!should_skip_init(gfp_flags);
-> @@ -1874,9 +1874,10 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
->  }
->  
->  static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
-> -							unsigned int alloc_flags)
-> +							unsigned int alloc_flags,
-> +							unsigned long user_addr)
->  {
-> -	post_alloc_hook(page, order, gfp_flags);
-> +	post_alloc_hook(page, order, gfp_flags, user_addr);
->  
->  	if (order && (gfp_flags & __GFP_COMP))
->  		prep_compound_page(page, order);
-> @@ -3958,7 +3959,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->  		page = rmqueue(zonelist_zone(ac->preferred_zoneref), zone, order,
->  				gfp_mask, alloc_flags, ac->migratetype);
->  		if (page) {
-> -			prep_new_page(page, order, gfp_mask, alloc_flags);
-> +			prep_new_page(page, order, gfp_mask, alloc_flags,
-> +				      ac->user_addr);
->  
->  			return page;
->  		} else {
-> @@ -4186,7 +4188,8 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
->  
->  	/* Prep a captured page if available */
->  	if (page)
-> -		prep_new_page(page, order, gfp_mask, alloc_flags);
-> +		prep_new_page(page, order, gfp_mask, alloc_flags,
-> +			      ac->user_addr);
->  
->  	/* Try get a page from the freelist if available */
->  	if (!page)
-> @@ -5063,7 +5066,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  	struct zoneref *z;
->  	struct per_cpu_pages *pcp;
->  	struct list_head *pcp_list;
-> -	struct alloc_context ac;
-> +	struct alloc_context ac = { .user_addr = USER_ADDR_NONE };
->  	gfp_t alloc_gfp;
->  	unsigned int alloc_flags = ALLOC_WMARK_LOW;
->  	int nr_populated = 0, nr_account = 0;
-> @@ -5178,7 +5181,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  		}
->  		nr_account++;
->  
-> -		prep_new_page(page, 0, gfp, 0);
-> +		prep_new_page(page, 0, gfp, 0, USER_ADDR_NONE);
->  		set_page_refcounted(page);
->  		page_array[nr_populated++] = page;
->  	}
-> @@ -5203,12 +5206,13 @@ EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
->   * This is the 'heart' of the zoned buddy allocator.
->   */
->  struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
-> -		int preferred_nid, nodemask_t *nodemask)
-> +		int preferred_nid, nodemask_t *nodemask,
-> +		unsigned long user_addr)
->  {
->  	struct page *page;
->  	unsigned int alloc_flags = ALLOC_WMARK_LOW;
->  	gfp_t alloc_gfp; /* The gfp_t that was actually used for allocation */
-> -	struct alloc_context ac = { };
-> +	struct alloc_context ac = { .user_addr = user_addr };
->  
->  	/*
->  	 * There are several places where we assume that the order value is sane
-> @@ -5269,10 +5273,12 @@ EXPORT_SYMBOL(__alloc_frozen_pages_noprof);
->  
->  struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order,
->  		int preferred_nid, nodemask_t *nodemask)
-> +
->  {
->  	struct page *page;
->  
-> -	page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, nodemask);
-> +	page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid,
-> +					   nodemask, USER_ADDR_NONE);
->  	if (page)
->  		set_page_refcounted(page);
->  	return page;
-> @@ -5315,7 +5321,8 @@ struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
->  		gfp |= __GFP_NOWARN;
->  
->  	pol = get_vma_policy(vma, addr, order, &ilx);
-> -	folio = folio_alloc_mpol_noprof(gfp, order, pol, ilx, numa_node_id());
-> +	folio = folio_alloc_mpol_user_noprof(gfp, order, pol, ilx,
-> +					     numa_node_id(), addr);
->  	mpol_cond_put(pol);
->  	return folio;
->  }
-> @@ -5323,10 +5330,17 @@ struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
->  struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
->  		struct vm_area_struct *vma, unsigned long addr)
->  {
-> +	struct page *page;
-> +
->  	if (vma->vm_flags & VM_DROPPABLE)
->  		gfp |= __GFP_NOWARN;
->  
-> -	return folio_alloc_noprof(gfp, order);
-> +	page = __alloc_frozen_pages_noprof(gfp | __GFP_COMP, order,
-> +					   numa_node_id(), NULL, addr);
-> +	if (!page)
-> +		return NULL;
-> +	set_page_refcounted(page);
-> +	return page_rmappable_folio(page);
->  }
->  #endif
->  EXPORT_SYMBOL(vma_alloc_folio_noprof);
-> @@ -6907,7 +6921,7 @@ static void split_free_frozen_pages(struct list_head *list, gfp_t gfp_mask)
->  		list_for_each_entry_safe(page, next, &list[order], lru) {
->  			int i;
->  
-> -			post_alloc_hook(page, order, gfp_mask);
-> +			post_alloc_hook(page, order, gfp_mask, USER_ADDR_NONE);
->  			if (!order)
->  				continue;
->  
-> @@ -7113,7 +7127,7 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
->  		struct page *head = pfn_to_page(start);
->  
->  		check_new_pages(head, order);
-> -		prep_new_page(head, order, gfp_mask, 0);
-> +		prep_new_page(head, order, gfp_mask, 0, USER_ADDR_NONE);
->  	} else {
->  		ret = -EINVAL;
->  		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
-> @@ -7778,7 +7792,7 @@ struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned
->  	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_ZERO | __GFP_NOMEMALLOC | __GFP_COMP
->  			| gfp_flags;
->  	unsigned int alloc_flags = ALLOC_TRYLOCK;
-> -	struct alloc_context ac = { };
-> +	struct alloc_context ac = { .user_addr = USER_ADDR_NONE };
->  	struct page *page;
->  
->  	VM_WARN_ON_ONCE(gfp_flags & ~__GFP_ACCOUNT);
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 0baa906f39ab..74dd2d96941b 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -3275,7 +3275,7 @@ static inline struct slab *alloc_slab_page(gfp_t flags, int node,
->  	else if (node == NUMA_NO_NODE)
->  		page = alloc_frozen_pages(flags, order);
->  	else
-> -		page = __alloc_frozen_pages(flags, order, node, NULL);
-> +		page = __alloc_frozen_pages(flags, order, node, NULL, USER_ADDR_NONE);
->  
->  	if (!page)
->  		return NULL;
-> @@ -5235,7 +5235,7 @@ static void *___kmalloc_large_node(size_t size, gfp_t flags, int node)
->  	if (node == NUMA_NO_NODE)
->  		page = alloc_frozen_pages_noprof(flags, order);
->  	else
-> -		page = __alloc_frozen_pages_noprof(flags, order, node, NULL);
-> +		page = __alloc_frozen_pages_noprof(flags, order, node, NULL, USER_ADDR_NONE);
->  
->  	if (page) {
->  		ptr = page_address(page);
-> -- 
-> MST
+> I'd request that you study those docs and the surrounding ones,
+> it won't take long and it will help immunize you against the
+> various AI suggestions that seem to be unavoidable problems in
+> 2026.
 > 
+> thanks,
 
+Thanks for the guidance. You're right, I shouldn't have called it a
+minor issue just because it was fixed in the next patch.
+
+I have sent a fixup that moves the Makefile hunk from patch 3 to patch
+2, so every patch is buildable on its own. If I need to send a v5 after
+reviewer feedback, I'll fold this fixup into patch 2 directly.
 
