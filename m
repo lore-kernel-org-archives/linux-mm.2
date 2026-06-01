@@ -4,92 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80D15CD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 11:06:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A39CD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 11:08:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7D726B0323; Mon,  1 Jun 2026 07:06:36 -0400 (EDT)
+	id 6DD9D6B0325; Mon,  1 Jun 2026 07:08:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2DE06B0325; Mon,  1 Jun 2026 07:06:36 -0400 (EDT)
+	id 68F356B0327; Mon,  1 Jun 2026 07:08:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1CA36B0326; Mon,  1 Jun 2026 07:06:36 -0400 (EDT)
+	id 57E096B0328; Mon,  1 Jun 2026 07:08:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BCBFC6B0323
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:06:36 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 928511C1BD9
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:06:36 +0000 (UTC)
-X-FDA: 84831065592.06.CCEA520
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C1EC2A0010
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:06:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=l6m577Xd;
-	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 43D936B0325
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:08:02 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 141494062C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:08:01 +0000 (UTC)
+X-FDA: 84831069162.11.63CB2C7
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 18599140005
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:07:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sIfC5YAh;
+	spf=pass (imf09.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780311994;
+	s=arc-20220608; t=1780312079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0QmX1T5Z1Z1Mon9lysEvu1tgyuq7ma2gqfZkpuoX2E4=;
-	b=EYId1Y4+qrqA2Ux0HpGeya8RhTHfeXq/M+Qmr9KUqslsh2X7+gDkcFsstVbrWJuuOTDVze
-	BIPiH5+kwsj35X+momq2JRN5HdZzAm1Zv78qdhAif0l++tT7n2CQMTn3wKfN25Jwg3FC25
-	H4wCB8tqIdvRS8PCSkaQRVBDyFdM9ro=
+	bh=4tMRr0555UkSJVpwevwwfR/bu9FaT1rWJqjveLdcveY=;
+	b=gfMh4GKa2Q/TE0kaG46K+sPlXjWXObr5PY1fMaq7SWK84hCI+n2QoFolOBhoM/8gnqvs1g
+	qPtjbff24sucKu4JZymenfzsZobJA4A1OB1/XHamd5qB32+kEKAXoojPJTks2KeTM5Fizv
+	KvGXQhszRLEzYFeFTrftjS1fWkV0AxM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=l6m577Xd;
-	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780311994; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sIfC5YAh;
+	spf=pass (imf09.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780312079; a=rsa-sha256;
 	cv=none;
-	b=U+x7p0NSLeDDKEb2EPngOJvNJtHdJI6hzX4ti1/q+tVfhdIU3O3sCxATmDwu8nizMLOR+c
-	P5qlew2RPVxWIccPRdQr2dj+k5yHVXR112QML+BHnHE6/+yX6OYYUfupKp98bLtsxXDK0b
-	AvSk8pKuoGFE8cXFCayQeLlqfHv8m9E=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 064561E7D;
-	Mon,  1 Jun 2026 04:06:29 -0700 (PDT)
-Received: from [10.164.19.28] (unknown [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E1123F632;
-	Mon,  1 Jun 2026 04:06:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780311993; bh=rIPCRJlF3C5CGybciFVEHG8kM8P9Y/ochm5Nk/iXQLA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l6m577XdcFp83GD11AjZtBk9/x8HVwX6Ol04tR2Bdgz1+7hCiLXGiRbqT8axEXbFf
-	 kE9xwaZFqE+GQKddJq6yGwpqqS2+dXTVbFKMhcxwC5PZRCgArJ1h64IlrNE8PUE91X
-	 p06wQOo7mkNU7qeLlwGG1tCmc9n7PCivgQLkKbA0=
-Message-ID: <2000d7c9-3188-4539-ba9e-654d6460e21d@arm.com>
-Date: Mon, 1 Jun 2026 16:36:26 +0530
+	b=k81Xf4jzV8+/PQYKb2dDoCI2NPCRfnYdwpNnaTJ3/TfxEwoUIbnTn2/JtQyF+f0LWB+o04
+	rcw120o1vakHNX2Mv+g+YYF/KJ8p9E5KyhQNCryej01LaxP7DxBcbhD7YMmgPVNWdPDGo6
+	289yXDSvnbI2AAYp2UbQNQX7e9VTbDs=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8421f0e9c5bso828805b3a.3
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 04:07:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780312078; x=1780916878; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4tMRr0555UkSJVpwevwwfR/bu9FaT1rWJqjveLdcveY=;
+        b=sIfC5YAhTeA6T68hMGdR5H3aK88EZxanayQeLdGJRe0KOIX0wCoV0eWnydPuXMrRhQ
+         eEEyOEftpUvHyQc4rohkayBGNk7R8XZyqYgIHcbLXddK6uIWyFzmtN0q0Flrp8Lct4me
+         IG5LaBBT9xjyYXzHZwqm3WEatVYEWhTnqIPCYkSS6p1/ZjnVljysrLdAoZNe6Q857J5r
+         4NTvd7bduFp/EY43n8rCn49JJUq7H36l0rcBgLVV0JO4nrQMJOCfbh+h38W4NbECc1qb
+         pFKVBNaOrzZ5vW1WjNAGoM8hQVW7A3A/jxZ1thC9Aeqb98Cy0vHqdIbdkQgObX3RJCNE
+         dh3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780312078; x=1780916878;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4tMRr0555UkSJVpwevwwfR/bu9FaT1rWJqjveLdcveY=;
+        b=P9wc6Ts9is2uf1DTcTmPyZYBXuinJ+Kyt18wPF+XrJvCYFyDQryJ2oh34G4H1AQ4vO
+         T2asiImxVHFftiEsfZ8p7DW3hn2q6VCAM7fsns8T9p8oUq3tQKUXybNZMxRgJFrNeIp2
+         qYdxjs9svz3LchSPsgE4iVhrqr9bejb5lRSsjvw9ZajUMudIBqO1xUegiRmun9uWdpQV
+         2SvhoNuKjIXxotjREXO8MMJ5OUMSxbKE4QDXRDdn8wnzsB3KLI5YOcqSIkEhUt4DhQxS
+         2d02LFULqkxWWP2mAotjrAhBmWzT+1AX58VvHBSGpvlRD7Me7o9sBovsLOYLzCGTUpeC
+         B1Kw==
+X-Forwarded-Encrypted: i=1; AFNElJ9+p7glA7QquMh9THBC90K51eJzbmcarUb3zhQs4bbY4ztBZAQzox4sT3OqW91/bxHzOKNeVaqMQQ==@kvack.org
+X-Gm-Message-State: AOJu0YwiBS/NoNGqnMpwnXNUjOMYrwB3c4yg2y2FjaZDGxxBp2VyggwR
+	QwrMmWaGTazIZk3AoiC718mLU1wWyX3gQj6iT5oDNhsXoLUUxnpCYqbF
+X-Gm-Gg: Acq92OFXkOHI38fk7iCKY2V075N+NrHa3sLHqkDdPvl/D27YpOhK5cB0ZVkZqHrrBdz
+	booWUUVb4OiOtG7+BTOt8dIdzlrYVkaGIF49c1WCtFFXSxZqIxpKUIMjw+heSWgaq8kgrUs/KOq
+	sE/2TSez1NshrSllQxrJ80GNWnxqGG/70h/ccFzsHzx7fsybOONyKTiGd3GfAKMKUZdJHGmu4z9
+	t1qdqONRYvzSEDpT2zc9Bow5EFGD052224fAssw+7bmjywdo4ZB1kAzXQKFHyXS6huaSIJ5eQlt
+	Sb2Tb0hD4w59huhcQKZI7G2Z3eAcYMzbqm2xBPCScOWrlt6g7Be3fMiCYGdrejkq/bSqXm7MoXq
+	QPr0gbj5oo4K75Aba32IsgGXxssaHwoak9MPh9iQC27c/0lTICWZcQmals4jPvGHDWfutl9n3S+
+	arc/g4IqsaibHiCElyA8X5JS9vstxx7OD5yeMrki/at4Njz/v+tn8bXrZz2UCPe14M
+X-Received: by 2002:a05:6a00:190f:b0:842:4612:55f4 with SMTP id d2e1a72fcca58-84246127062mr5297173b3a.31.1780312077721;
+        Mon, 01 Jun 2026 04:07:57 -0700 (PDT)
+Received: from [10.125.192.75] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214ce9cebsm9839131b3a.52.2026.06.01.04.07.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jun 2026 04:07:56 -0700 (PDT)
+Message-ID: <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com>
+Date: Mon, 1 Jun 2026 19:07:45 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 13/14] arm64/mm: Add an abstraction level for tlbi_op
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Linu Cherian <linu.cherian@arm.com>, Usama Arif <usama.arif@linux.dev>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
- <20260513044547.4128549-14-anshuman.khandual@arm.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260513044547.4128549-14-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor
+ per-memcg
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
+ shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
+ nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
+ roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Hao Jia <jiahao1@lixiang.com>
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-2-jiahao.kernel@gmail.com>
+ <aho7nepN5jZtKmef@google.com>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <aho7nepN5jZtKmef@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5rr3zjdymz3izymsr5rqyiriwwnqicfy
-X-Rspamd-Queue-Id: C1EC2A0010
+X-Stat-Signature: scegk7mz6k6yughpq4t1fnoayo97rowc
+X-Rspamd-Queue-Id: 18599140005
 X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780311994-741318
-X-HE-Meta: U2FsdGVkX1/EcNxrvMxyRJ2w612LtQonqBIklR13/OmMwsplx4S3pFpVl6hUh9V3vQU9rKAPhyFryMysUIiqzI4pl9TLHXH9vwT094JtZTsl+R8jm4V/DcDI5TDkaefbkMd6k1Zup05rTfbwrA+i8g5VnaAtduqo4KQ3/+jVRBBBazTLgFucrQqjNgHwUhf7BFeSjvX9Nw2ZtRgyzGBRdAp/mRchENPQ8W1DySzYCNaFgd2q7jkohCevy4a1T4xnGV844JyYp5iuVRDLbufLV4eCImZorg8BxHZe5Ukd2sAatUjMOPAGuk7gkV3XB4Ay+8ul8t9s8oW+HxXsmW5VsYb8Qx4OhmOg2T+TJohfjbJEL/rolb4lNT2pvNRm55NWHCCMtdfE1Je/oiy2X0YXZ4QIJVNN2XbQQ1t1F2ab0WBY3fo+FdeFD0O7mEzv8m3hvFe5vzxksjNjGgXE5FWl6NU1oJ9CBsuUZfhHmkRLjI0TAbNKpOJUMl4kRYjwkbvS6TXtTMmDB27IrKmgR4SXoOKn1p96w9maxPd9IsAcYVhk1bMYW5XX77m+MmEqeW1NnB/T16wT4J2MjAaR5trwTTx/Xnk3QT6dU6VrWygwW3aVsNq280NqYUGvoCL3mM9RoiX7SPpa+DetcMDeGYT/KxV7MV3ujM0/uN7YsknNueml8DrLvgVphigQdK/wGkPoGVK16UAKxQK1sD/WAmB+v/csEZrIaWdHxaLaMSiBJ2fJ5VDtxZsutJ/Z3M7O7dyCAAjXrKWZx4qjBaLTduyO1EwBCxTUv1Zgam1KBXi8u1VCLBXIPKQzny6BgPO/wjmcMdlKyxBiwIXV01AXESc8qt/B+tX7WkiQ3qKhSsxTu2qFn4HEF6Fwfl8T6MnZtucbxFLJITBRM56g8LafIT71SR/D+kSW67y6WCNoav6zl0+fMLU64io3lUvemcPwk97XCAwMmgKwS7AZgJ8VBRE
- Nh3ublky
- QPVnIsj2LcI/E8BLFyeQ3RFLtSF2rj9GiLTA5F8XzdeJGu2eZnpyGQ7aU+hQPqS0J4WWEAG43J9JoNiMqj7JrGi+HE/sgib1j2alhHyK6hIZm8/cvA/mpeHQAJI7ZQdg5ZJTAZcZevMXgRfLJgPgbdeL2XoifSA6cVjeif5LrofhfVZ5TdFTR2oKSRDfoYdGGWc9E9Z6mfeYdRFqb1VbrO0uAjNqG1EoXWIVHny6A5/iQwCNzlOYKZBmEEA2baSBp+fJI56t2oJjsPoaosGNrrvaDHv0pvx9k6DZ1KazKBEAn9GlPN/JCqXEZmaz3BJFCy5IASqFmJKnR5Ww6YtRUogzjkA==
+X-HE-Tag: 1780312078-659152
+X-HE-Meta: U2FsdGVkX18dC648eatR92bZHhdKFEPrypAsXBwYIE5IfSeea3c8B0KZE5doTeXdJe7TqVFyUAaUUAf8ZA0mpP25eToLoa1fG0XLiZgRxjHrmjA5XOORnZiZa0rtemeO1oyVzmw2uuepIdMRx6NSdss9LlR+wsTnPDe1pksPF5g7iMW3RJs+JVClGiGqLvldbnocy9jEngzQctEGm9ab6k1Ut7RpHrxKcSZhm8PKwWJitC481kpqMZtBOL3HzsUW0/xucVIdC3m5lArND0R5AkF/IOiPomxLsvU6sFEgeGQua2jcNn6cUH/WLIm88IkmKzhg//OVccNvgw7sp2pbTFyDa6tUzWdMqaNK+Rczn5aifIk9sXORb7F3WrBrD+u3PZcICC0PdEutgf62Ufsjs8Ov5n5p6xuDv2R9A05T9P7h3Eu7dMGhZooIBZW5k6Nyv1y6pRG9G8NYt/HGwAai/F+tgViAXCKrLDrN6IbwRnb72jpQhoSQP9u1aDovBokyC0K9mh/xto632YOeH3BCo8bKuwn+L6fFlM4CwK4RkDKfyxtiJ+PnqVwQLXCGYHNIBTWa7R1w7bfA15/YgAdB+Ow4yhxjLlAT8PXKJTfoekK/b0OJC+5jLlIpSPCtL9c384H0fh4OI9GHRmOpdms4XD1ux3V7nb7kkF7a3XyDsq1UPPYWjfjR4T0tgG7UwVja3zdBfVLtc9GTOE4GxN62P3wR0XrXSk43JSF1Hr4KpsNgt0tlfIY2XYi7OgicoiD1RQc9a7A0HEjnBC8r8oSfy4VWa546b256Bi0iFG/J8bFgzfhakmFMmTTNpnzPSB5MhwXWSM1h8zHEm+Kf8SewgSWSDJtD+jg3iRL2SA19SNJ532MmjbWRCZMoyQlH1MnlpkdyOHGr/yIlT2Jg2g8s+1hgCtKg6GFHD8nN1W4a6QjwRdtwdjZ5ebybveKghOxmKSoXOnhz6v6BjtuDv/Y
+ SelRufZg
+ MArXvSBYiUi5FwSn+X9VTKSoGPkhug3JyAHCIDr4WYijAAUXAlYC88t0JE1u1d0ezAMREBtsgl+h9hu1mNa+CX5J6nLyEncad+kr/c8dqcYrfxlyrFU9rUXCLQescpDvDGVGrx6M0GjicfZAvwNbt3L2Ub8vLsu4XExKJJUlbvKNzbe796OBX8tJez/CqfnZLeX5ABt5eAS3us8CDJFhLxyhwQrNheXt3uavUON50fFXI8LbPTomdOCDdIqyXMgnHZgjj6kX5RmvVZ2Zj4eLJIJXZ+R5DlA+niuWlsanQ5LRBs7Bdxk+FNMskZL2bxOeJH3lV4hLpcouFBmuPt84Yiqf8tqkQiu1xoy9y6jl7cos65ShApwueJYSzRzXsjx3RBx6Mw5ngIZrd1a01rhVFwPIL6rzYL+8+NGsWKL4WYvVej6UKtUszLMy8Ri3Rv04cKYCoA6NHfqozRoHua518rgcJPZ6r4/Nkga55DpgveheKpiQirdK4cl64RQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,149 +129,87 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 13/05/26 10:15 am, Anshuman Khandual wrote:
-> From: Linu Cherian <linu.cherian@arm.com>
+On 2026/5/30 09:24, Yosry Ahmed wrote:
+> On Tue, May 26, 2026 at 07:45:58PM +0800, Hao Jia wrote:
+>> From: Hao Jia <jiahao1@lixiang.com>
+>>
+>> The zswap background writeback worker shrink_worker() uses a global
+>> cursor zswap_next_shrink, protected by zswap_shrink_lock, to round-robin
+>> across the online memcgs under root_mem_cgroup.
+>>
+>> Proactive writeback also wants a similar per-memcg cursor that is
+>> scoped to the specified memcg, so that repeated invocations against
+>> the same memcg make forward progress across its descendant memcgs
+>> instead of restarting from the first child memcg each time.
 > 
-> With FEAT_D128, a new instruction aka TLBIP is being introduced for the TLB
-> range operations which has an argument size of 128 bit.
+> Is this a problem in practice?
 > 
-> Add an abstraction level to void (*tlbi_op)(u64 arg) helpers to support the
-> D128 variations when applicable.
-> 
-> No functional changes are introduced with this patch.
-> 
-> Signed-off-by: Linu Cherian <linu.cherian@arm.com>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/arm64/include/asm/tlbflush.h | 70 ++++++++++++++++---------------
->  1 file changed, 37 insertions(+), 33 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-> index c0bf5b398041..361d74ef8016 100644
-> --- a/arch/arm64/include/asm/tlbflush.h
-> +++ b/arch/arm64/include/asm/tlbflush.h
-> @@ -162,49 +162,53 @@ static inline void sme_dvmsync_batch(struct arch_tlbflush_unmap_batch *batch)
->  
->  #define TLBI_TTL_UNKNOWN	INT_MAX
->  
-> -typedef void (*tlbi_op)(u64 arg);
-> +typedef u64 tlbi_args_t;
-> +#define __tlbi_wrapper(op, arg)		__tlbi(op, arg)
-> +#define __tlbi_user_wrapper(op, arg)	__tlbi_user(op, arg)
+> Is the concern the overhead of scanning memcgs repeatedly, or lack of
+> fairness? I wonder if we should just do writeback in batches from all
+> memcgs, similar to how reclaim does it, then evaluate at the end if we
+> need to start over?
+>
 
-The suffix "wrapper" sounds weird. How about "emit"?
+Not using a per-cgroup cursor will cause issues for "repeated 
+small-budget calls" cases. For example, repeatedly triggering a 2MB 
+writeback might result in only writing back pages from the first few 
+child memcgs every time. In the worst-case scenario (where the writeback 
+amount is less than WB_BATCH), it might only ever write back from the 
+first child memcg.
 
->  
-> -static __always_inline void vae1is(u64 arg)
-> +typedef void (*tlbi_op)(tlbi_args_t arg);
-> +
-> +static __always_inline void vae1is(tlbi_args_t arg)
->  {
-> -	__tlbi(vae1is, arg);
-> -	__tlbi_user(vae1is, arg);
-> +	__tlbi_wrapper(vae1is, arg);
-> +	__tlbi_user_wrapper(vae1is, arg);
->  }
->  
-> -static __always_inline void vae2is(u64 arg)
-> +static __always_inline void vae2is(tlbi_args_t arg)
->  {
-> -	__tlbi(vae2is, arg);
-> +	__tlbi_wrapper(vae2is, arg);
->  }
->  
-> -static __always_inline void vale1(u64 arg)
-> +static __always_inline void vale1(tlbi_args_t arg)
->  {
-> -	__tlbi(vale1, arg);
-> -	__tlbi_user(vale1, arg);
-> +	__tlbi_wrapper(vale1, arg);
-> +	__tlbi_user_wrapper(vale1, arg);
->  }
->  
-> -static __always_inline void vale1is(u64 arg)
-> +static __always_inline void vale1is(tlbi_args_t arg)
->  {
-> -	__tlbi(vale1is, arg);
-> -	__tlbi_user(vale1is, arg);
-> +	__tlbi_wrapper(vale1is, arg);
-> +	__tlbi_user_wrapper(vale1is, arg);
->  }
->  
-> -static __always_inline void vale2is(u64 arg)
-> +static __always_inline void vale2is(tlbi_args_t arg)
->  {
-> -	__tlbi(vale2is, arg);
-> +	__tlbi_wrapper(vale2is, arg);
->  }
->  
-> -static __always_inline void vaale1is(u64 arg)
-> +static __always_inline void vaale1is(tlbi_args_t arg)
->  {
-> -	__tlbi(vaale1is, arg);
-> +	__tlbi_wrapper(vaale1is, arg);
->  }
->  
-> -static __always_inline void ipas2e1(u64 arg)
-> +static __always_inline void ipas2e1(tlbi_args_t arg)
->  {
-> -	__tlbi(ipas2e1, arg);
-> +	__tlbi_wrapper(ipas2e1, arg);
->  }
->  
-> -static __always_inline void ipas2e1is(u64 arg)
-> +static __always_inline void ipas2e1is(tlbi_args_t arg)
->  {
-> -	__tlbi(ipas2e1is, arg);
-> +	__tlbi_wrapper(ipas2e1is, arg);
->  }
->  
->  static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level,
-> @@ -475,32 +479,32 @@ static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
->   *    operations can only span an even number of pages. We save this for last to
->   *    ensure 64KB start alignment is maintained for the LPA2 case.
->   */
-> -static __always_inline void rvae1is(u64 arg)
-> +static __always_inline void rvae1is(tlbi_args_t arg)
->  {
-> -	__tlbi(rvae1is, arg);
-> -	__tlbi_user(rvae1is, arg);
-> +	__tlbi_wrapper(rvae1is, arg);
-> +	__tlbi_user_wrapper(rvae1is, arg);
->  }
->  
-> -static __always_inline void rvale1(u64 arg)
-> +static __always_inline void rvale1(tlbi_args_t arg)
->  {
-> -	__tlbi(rvale1, arg);
-> -	__tlbi_user(rvale1, arg);
-> +	__tlbi_wrapper(rvale1, arg);
-> +	__tlbi_user_wrapper(rvale1, arg);
->  }
->  
-> -static __always_inline void rvale1is(u64 arg)
-> +static __always_inline void rvale1is(tlbi_args_t arg)
->  {
-> -	__tlbi(rvale1is, arg);
-> -	__tlbi_user(rvale1is, arg);
-> +	__tlbi_wrapper(rvale1is, arg);
-> +	__tlbi_user_wrapper(rvale1is, arg);
->  }
->  
-> -static __always_inline void rvaale1is(u64 arg)
-> +static __always_inline void rvaale1is(tlbi_args_t arg)
->  {
-> -	__tlbi(rvaale1is, arg);
-> +	__tlbi_wrapper(rvaale1is, arg);
->  }
->  
-> -static __always_inline void ripas2e1is(u64 arg)
-> +static __always_inline void ripas2e1is(tlbi_args_t arg)
->  {
-> -	__tlbi(ripas2e1is, arg);
-> +	__tlbi_wrapper(ripas2e1is, arg);
->  }
->  
->  static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
+Similar to how memory reclaim uses mem_cgroup_iter() (via struct 
+mem_cgroup_reclaim_iter) and the old shrink_worker() used 
+zswap_next_shrink, we need a shared cursor here.
+
+
+>>
+>> Naturally, group the cursor and its protecting spinlock into a
+>> zswap_wb_iter struct, and make it a member of struct mem_cgroup to
+>> realize per-memcg cursor management. Accordingly, shrink_worker() now
+>> uses the lock and cursor in root_mem_cgroup->zswap_wb_iter.
+> 
+> If we really need to have per-memcg cursors (I am not a big fan), I
+> think we can minimize the overhead by making the cursor updates use
+> atomic cmpxchg instead of having a per-memcg lock.
+> 
+
+Because mem_cgroup_iter() always calls css_put(&prev->css), we cannot 
+simply update zswap_wb_iter.pos via cmpxchg() after calling it. Doing so 
+could lead to a double css_put() issue on prev->css.
+
+Therefore, if we switch to the cmpxchg() approach, we wouldn't be able 
+to reuse the existing mem_cgroup_iter() logic. We would have to write a 
+new function similar to cgroup_iter(), and its implementation might end 
+up looking a bit obscure/complex.
+
+Currently, this lock is only used in shrink_memcg(), proactive 
+writeback, and mem_cgroup_css_offline(). Note that shrink_memcg() only 
+acquires the lock of the root cgroup, and mem_cgroup_css_offline() is 
+unlikely to be a hot path.
+
+So, should we keep the spin_lock or go with the cmpxchg() approach?
+Yosry and Nhat, what are your thoughts on this?
+
+
+
+>>
+>> Because the cursor is now per-memcg, the offline cleanup must visit
+>> every ancestor that could be holding a reference to the dying memcg.
+>> Factor out __zswap_memcg_offline_cleanup() and walk from dead_memcg up
+>> to the root.
+> 
+> Another reason why I don't like per-memcg cursors. There is too much
+> complexity and I wonder if it's warranted. If we stick with per-memcg
+> cursors please do the refactoring in separate patches to make the
+> patches easier to review.
+
+
+Sorry about that. I will try to keep each patch as simple as possible in 
+the next version.
+
+
+Thanks,
+Hao
+
 
 
