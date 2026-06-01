@@ -4,92 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D664CD6E57
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:17:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB3E6CD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 14:17:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 674E36B03C1; Mon,  1 Jun 2026 10:17:26 -0400 (EDT)
+	id 627496B03C3; Mon,  1 Jun 2026 10:17:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64CA66B03C3; Mon,  1 Jun 2026 10:17:26 -0400 (EDT)
+	id 600376B03C5; Mon,  1 Jun 2026 10:17:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 562B46B03C4; Mon,  1 Jun 2026 10:17:26 -0400 (EDT)
+	id 53BCF6B03C6; Mon,  1 Jun 2026 10:17:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 455D56B03C1
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:17:26 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E59111A0685
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:17:25 +0000 (UTC)
-X-FDA: 84831546450.25.225C2C4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 459136B03C3
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:17:36 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD1D7140722
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:17:35 +0000 (UTC)
+X-FDA: 84831546870.01.DDFCD29
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2A91D1C001E
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:17:24 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bCsLsbpF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id D676B40008
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 14:17:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IXhmkp7m;
+	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780323444;
+	s=arc-20220608; t=1780323453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2hF44QBQfUGRJ9iAPSXn6oHYpoPJZaLfD83FbTWLpNs=;
-	b=kemnQ/xcOwgOlxLdV4FHKG0VkpJ+bbMri4WabTmiGEPEag88lenKjPxo0fv+57M6T/6C+M
-	TsYxxEmnVt2kusITM1CRj87jNG7bnG4bcm5iDUReqkO9Rr70LJMNTyO/7v/qjgbUNnLuQJ
-	cAX9bldRpEY/F3rnaIxpKGg5BYyswXs=
+	bh=xMHohn8ib+nTT0MSQlhmtBxUWKbPZdtUePwCdFaiEsw=;
+	b=BfOZ6WKo8TeFUUQE8hjq9ykhIGdlu1Ow8WYPUzXiufe180WstTiaeOgoj0yPSGKHL6fd4k
+	gy/3juqKiw15CMs687K6rFLf8fR1CsGiXH9H75WNzbqE8qepvJX3LDBFu2KZuwy96Srpmx
+	3AIXdZKSD4cdWxH3t0w9cVwciqYsb1A=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bCsLsbpF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780323444; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IXhmkp7m;
+	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780323453; a=rsa-sha256;
 	cv=none;
-	b=NWdE9u707RnSR8aIUubRg0bxqSYbTA/8dQ1gErOAVwq2wYrnqGchVSrAQ+650WVx74thWI
-	fnHxkWkvMAXCgBQsSAHzxBmnroxQBkeGYQN8YMQiUEZqygwdfK+qzaBTY/TMADSqjPEhBc
-	TP8bZ4Dfn8aUG6ZIeeZIbfj6PsIht7g=
+	b=G+ucj9HHSMKhyPmQF0rm5N7yeAiQWHNiv0J1FEvCGonCjcFBaEqbvidoXEEWvNUd2BscmO
+	s3VznjBLyia98KRjrh9iwRRUVluc3gxsx7ZWtDAP5wUs6oqyrTJL0wpjVNXP5rlTcAMavD
+	D3LSRH4TDZKtP5Niljwz6T7CbSdaST4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A0BB66014C;
-	Mon,  1 Jun 2026 14:17:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34081F00893;
-	Mon,  1 Jun 2026 14:17:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7675F601D9;
+	Mon,  1 Jun 2026 14:17:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41BC1F00898;
+	Mon,  1 Jun 2026 14:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780323443;
-	bh=2hF44QBQfUGRJ9iAPSXn6oHYpoPJZaLfD83FbTWLpNs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=bCsLsbpFf1I2jIhql6W7+uBxnx3jEUKFN5cFzZWZo6CIsF+hI2WutwsDUEbUPviJJ
-	 oRV9Ueh2aOziXxB+xBQbTl8qQi1ygOSeQJn8sPgZBnp/q98drLJgRrzSjs2sZjUbKp
-	 dWl9vlcRbvItA9+hdOCEXt95ytfWSdkos5XeWE20pDKnlXw1iL3XPENRPNKj8d95g2
-	 Y0z9UgPbkn92Elp9yfffpJnylqQ19mbq3+h1N9eeOxp0e8itjuXTZ0bk+knwrzEVe2
-	 Vq7KfwOqmH1gpKR3r4zRdBtwkSC7N1g01XBW3ixKM6x/rKTI0vf6+uV3xT26yDU7C0
-	 SXGetPm8P9v/A==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
-  akpm@linux-foundation.org,  linux-mm@kvack.org,
-  skhan@linuxfoundation.org,  linux-doc@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  corbet@lwn.net,  dmatlack@google.com,
-  kexec@lists.infradead.org,  pratyush@kernel.org,  skhawaja@google.com,
-  graf@amazon.com
-Subject: Re: [PATCH v4 11/13] selftests/liveupdate: Test session and file
- limit removal
-In-Reply-To: <20260530221938.115978-12-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Sat, 30 May 2026 22:19:36 +0000")
-References: <20260530221938.115978-1-pasha.tatashin@soleen.com>
-	<20260530221938.115978-12-pasha.tatashin@soleen.com>
-Date: Mon, 01 Jun 2026 16:17:19 +0200
-Message-ID: <2vxz7boifiq8.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1780323453;
+	bh=xMHohn8ib+nTT0MSQlhmtBxUWKbPZdtUePwCdFaiEsw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IXhmkp7mBhjIym69+Gd+c3c9qim3s2Ac8Y50DlNa1quvP/JTINsdzGvxgqJK5UW1B
+	 kuJk5vPd2lnzQZjfqDAcoEdLGXwBeq7pfpJ00ZWaz2NH8hDhG5tJeVJvDsXlWvEaCQ
+	 UU2jShEOH9WuGO58I0CVUfHJFVSRbtP89RlnmEIJ7LeHra37iBu9uS2pg1lCur8yUn
+	 M1e+icRKBBaBO6CyWXkBBp8XHb4lYPoSJEOoW/EUrQaWuhmkt0qHoC6YuNqlDgzffF
+	 IspfXiI79vc9MszQuu7DwZPioR4Hju54V0SX3NXDqslCCkjId4N5tGYJ+tXfJrkb4w
+	 lpweXzLLsEesA==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2EB1AF4006A;
+	Mon,  1 Jun 2026 10:17:32 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 01 Jun 2026 10:17:32 -0400
+X-ME-Sender: <xms:fJQdarRmLao3cuH4oAxgdbYlbbkHp0V6yMXuxLK6B6-KAq8ij8RlMA>
+    <xme:fJQdauWvODjUidPW1BDS6DQzrUeS-knE6hW7l0SIQRS7wCitv4NmbhxZKB7VxbHp1
+    FvezvFbZ4yHzimsH5QRQdUFp93ycEwr6zma4eo5lGd_dqEvf2xnkA>
+X-ME-Received: <xmr:fJQdagE50eEj_E5caFAvkJM-Vvv0u3E1tLzWVNhSGtk2xaF1YoT_b-fL784VHg>
+X-ME-Proxy-Cause: dmFkZTE6mAFYKimHixwxhoERaI7ppCWM6z9OXgM0GSKfL73ERbp4dYaq+CUDt86WyAgf9u
+    FXiiryEE7YGZSfeiy69NuQe92wj7dAL3e4YHB0O0VoR9GLr7XTofPaL4fb3PcaTHqYbkvK
+    993FsjYOn+v+t7bGnVOUsoP2sAfNw3WSHvXxQQoJBS6c5T7DnB/DcKIrG6OLWdQuki+L03
+    rpBbjpy2NkcKfDWET/gNj/8OvusXYleGvHaZmmOfAm7BCWCIObpKPPcka8daFiAEk6TzuT
+    26QU/fhH6pJVERpzk+O6wnrICszLI6fhL/gfL5oFSgyKIa+xVC2YWRHEH5SYsiWTP3uhpH
+    6SNwEGiAEX23J6Ou1RQ2Gs7awP+etlPITl/0cRiwXxjSV2ONsY40ddFdQvxvZXfqEBplC8
+    s/gSM1XPerws/L35jlISY/cyvQhjkQK8dTgKCrSMqw7d5A7+UgI4X9Kv5beV2bSqF10yDg
+    OkRZA+PaVN5pTFI7xK3SLnMfUSEgiELsiXpKxIFXmqFNsE1EZRQUhfc9BQPTqK2JcNxKS6
+    XYP4JIkEIM88aQaNBBNw3Y7ASFAuc5KeppVleLWrBYBlz607H51BjOC1IuLiGkVvzPjB+w
+    Ht1jfTHy4SMPRMwsX6xxhbKH54oNeGGvh5bjUBDDBjj92oL35gZ4KNLefsCg
+X-ME-Proxy: <xmx:fJQdahf9NrUuiwYn5UbzeWeGpcYG3cyZTydlPebjHO-qilGvHeJYjA>
+    <xmx:fJQdapp6mZwDfV3wmKjXnomANsEzMnVycIHJ7KM8YmtfY9zgxT_Gmg>
+    <xmx:fJQdaiAO4nXvcVyiu-RIG7JVUNWBzkM8FPnTf8b3S_XsD_cy7wzbXQ>
+    <xmx:fJQdaiflYIz2YHEDFGrCP9BXJKmsQ5Rf7HgL5uGeHwPj9W59Vb35aA>
+    <xmx:fJQdais7hEqnVxq1sT0BstTVLKplrzTkV1lZjrXbv3u4V5PAZmbrj0DG>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Jun 2026 10:17:31 -0400 (EDT)
+Date: Mon, 1 Jun 2026 15:17:30 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH 0/6] userfaultfd/pagemap: pre-existing fixes
+Message-ID: <ah2S7MJ2VK6R-NSN@thinkstation>
+References: <20260529172331.356655-1-kas@kernel.org>
+ <20260529173448.40a37785ecbecb6868fdd6a2@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: nega9hrtko1f9w8zejx64f4swrh9qz5a
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2A91D1C001E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260529173448.40a37785ecbecb6868fdd6a2@linux-foundation.org>
+X-Stat-Signature: j1nmifxe6kfk5imforxti431x5gjrek3
 X-Rspam-User: 
-X-HE-Tag: 1780323443-568382
-X-HE-Meta: U2FsdGVkX1+oToM37T69NjoUhIyl1N8zsmEUj87gu4FT99NwETAQnxCLeOpZPtlCMoKvSvf0GfDuPKNqGf7Rt2rbDuQsAkobUDvaGFe2eJ0VDh2vxBGIKeUckMplvFOYvOkQYTXtSf5Vv+nxETzoy+flbMuKwCKWFSJ3NT4fYctmBv0d4/xd9dbwaSNVwg7daM8WzgoCnpiL+BX+0kyhHD3meb/Z89/oebVdfvQBnbSnV8tqgrB6aT4pXygPI+t9UagR6W8VH+Lxcn5u4yxKdykfabkeFWyH6fxiKmB3EBqRsCuDLFOiP6bde4moUsUL7/vf0CUCQc7yAuLSol2YkNLfdMnKvINzq5jkTN/XqUek+BSYQvI52FH4isvzAGam1Fh6ObGcArruLA+6xaBG8BWCd/p/tlAakXuK+sYQxpbXdjVPoN6DkW3uoBLZiYg6QLCVODyRDUpX/Ey/z9upv7tKylGYq+4LrUpSAn/iZqgGG7nB79a68nb+7cKjRDOuaDFdmOXWxVs1ARbtXNVTNVcwZViARO4wSBYEUnuNY4wv+DFMzFlVNJwGcRs4TX+mB3NupjaTYO23lXMcVdU81nKrcHhDdD3lR7lQvLE1lojz5+yIQ2z6eYWykej5rE/dPKFC40PGAFDkZGhcR7kNf9T1OuFm7hibNB7roe13qd/OVqDdMdpQ7I7HH7GmsPkcp6AIXZslph5i8eZKyf94WCIkTJlLGRpA+FFuFKXlNSL+xELyIlV4bfgVErK8SlNnP8B2PjRl+RScdBEjTrybWWVwuAHu7qkKxac0l9CefPgX4/49g5xPSCEmlcWzm6bK34u9RGl0aSvs5amXiSrhRjUdK+m9+DaJLrXlkuzaidN+SKic9mz4VtnH7JcaU4z9XbCtm8hJJ7xNTP0ndlwUkMMwpgBurSC3I0wi296LdbStLCP+ELnWwfZZ3IDZbFuwq+1CwRIdCIYoQ80s4SZ
- vnTdM/4b
- BF0E1Yo2fMAkaD/awo2ZYiIpfdm/HGiz1dOJg3tM4OYYYxcATewn1nmu7JEYrtaSa4WU15m+DSsB7dWdk+FLDjU0tTSceCSyCDjJu9gbhmCSV68N30uXm+opbML4KZqLUmRpb/+GIIRXzfSdmTpqBJnJTtZBpl10KEUKXxn1rT+e2tAa3hjgtEv0GLVGocZb8AbWuxNWWYZpcavkVZjADbwi6vy1qQfRyuWWgivaOem3hk/UzGUOmqISHdHUhjmcOQ5Kl
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D676B40008
+X-HE-Tag: 1780323453-100446
+X-HE-Meta: U2FsdGVkX1+LIQe+u1U5x4/hAv+9JQYeYo4dxNg9e3wwBym81PhKRoBOHthHGXJ5C6JsjjU3sv3RyAMjjXHBjgwQSx5mSI7TXGiC8b7g0VODJOqZG3UF5cqLZ/fFOb2bB2yYUwVUHReOGZKQNtJGIk6bxPvNJVK6O5hRTSvcBcukd0WP98vg3GmfmPELTHCV9H+bryB9T52T3NLJX+JIVrgJN7ObZHvUvJmtbuG7HP+pwqZCaqEEJ1D1MUveAIMQISu53pmzNyU4fix1gwzd/vCLu/nX1zC5rFK971XWGEFrkJVseS/sj8pqQ/Ub1zqpx0wg+tqajNnrcak/IgfTGF4A6zdP++tnXbZeanI15XrTfgi7RKbsXB1z5u3gtywdtToNEf02Um6X3tQ1JOmT8RxTUPxCkdWsG56XgyFtHKwBVcEP68tLJ07ct+7Tb/+CDB8gEVCiSCi6uOuHgs49gkGbtaGQfzQOMvN/O+V5JbV8Yxx8yRHVumUK+TU7MwzusJnwFyD0rvSpcDZ7t80vygrLOyvHFhf8uBfpgCEJd86VHTn8bI19FDQeFKfNCYlgjp9jvFtxBlwSefLpF9nBAnYUMwtHjhwGb8tvLJUMR3aAEOx9YOfVECSG1Zsaz/aXW0CaXWhDi88m7BoyiASSTIxDt4OMT9462S731rXrQyBmrtor+tfCv7GKEiWEW6n7+x3C0c0K7NitXCpO3vvRVrgJ/wtp+ucMKw+tnNm43dyQxD5tm9DEnsheMGWFWnikF4p2Udws13XfYS/vtNUqmeK/qs8hbbAkj4p5pawSQh04uNpX3giMG+IrDYRvX5PZaMnHB5p3HTQN5jdcvLCtsgUKlMGMwft4BVTc54P4k1i4Z+wz5JXdPkAxosKH6QGYc4AhogdTXTKxe6Ynmsc6EY0C6tKufl4JXqpcWxsWDYEl/rEncYYSA0Gzik0/l+dxTfzQ4jN7KsxI8mkFndH
+ 9BFV9TBh
+ JHK9fPPsnTTscgaz7NKWZLzXPhCSn1ysGfbqtvJZKY0JDFpw+ApUAEzsfEj/wqRsaIgKMFUlzcIxbNz+B5gpqVvx+28p8Tg6Zh4KKnWZpor0FM2mnnUcWyX20+iNfFpsxbDrIkPQYFzaD6EGL3/VFpBAqI2wX5KjfdYQL2KzqMFOC5Ghty0dKbMVzgkPCfaPQEsWjQ/y5/70JXSs+bAiUsp97UWsa6tFvz9mVmY8YiRKEr3n9lGdQa4Z3hvjiEw0c1XkFpIptEke+13ZqyjqaQHuG2edtcJSStqrrAQJBRe+Hghyl/CDLOukauVz3T24Tcq61Jp2y4w2vvAbBdsTwqdQSJLfRn1gX6+I+MQprEIr4O0U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,174 +119,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 30 2026, Pasha Tatashin wrote:
+On Fri, May 29, 2026 at 05:34:48PM -0700, Andrew Morton wrote:
+> On Fri, 29 May 2026 18:23:24 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
+> 
+> > These are pre-existing bug fixes that were carried at the front of the
+> > userfaultfd RWP working-set-tracking series up to v5 [1]. Per review
+> > feedback that fixes should not sit in the middle of a feature series,
+> > they are split out and sent on their own; the RWP series is reposted
+> > rebased on top of this.
+> > 
+> > All six were flagged by the Sashiko AI review of the RWP series and
+> > carry Reported-by: Sashiko AI review <sashiko-bot@kernel.org>. They are
+> > independent of RWP, apply to mm-new directly, and carry Cc: stable@.
+> 
+> And...  this made Sashiko point at other stuff:
+> 	https://sashiko.dev/#/patchset/20260529172331.356655-1-kas@kernel.org
+> 
+> I can't figure out why four of the scans failed - "View Raw Log" comes up empty.
 
-> With the removal of static limits on the number of sessions and files per
-> session, the orchestrator now uses dynamic allocation.
->
-> Add new test cases to verify that the system can handle a large number of
-> sessions and files. These tests ensure that the dynamic block allocation
-> and reuse logic for session metadata and outgoing files work correctly
-> beyond the previous static limits.
->
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Seems to be passed now.
 
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> It's concerning how frequently Sashiko is finding pre-existing things.  What
+> would a full scan of mm/ tell us?  Gulp.
 
-> ---
->  .../testing/selftests/liveupdate/liveupdate.c | 75 +++++++++++++++++++
->  .../selftests/liveupdate/luo_test_utils.c     | 24 ++++++
->  .../selftests/liveupdate/luo_test_utils.h     |  2 +
->  3 files changed, 101 insertions(+)
->
-> diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
-> index c7d94b9181e1..502fb3567e38 100644
-> --- a/tools/testing/selftests/liveupdate/liveupdate.c
-> +++ b/tools/testing/selftests/liveupdate/liveupdate.c
-> @@ -26,6 +26,7 @@
->  
->  #include <linux/liveupdate.h>
->  
-> +#include "luo_test_utils.h"
->  #include "../kselftest.h"
->  #include "../kselftest_harness.h"
->  
-> @@ -499,4 +500,78 @@ TEST_F(liveupdate_device, get_session_name_max_length)
->  	ASSERT_EQ(close(session_fd), 0);
->  }
->  
-> +/*
-> + * Test Case: Manage Many Sessions
-> + *
-> + * Verifies that a large number of sessions can be created and then
-> + * destroyed during normal system operation. This specifically tests the
-> + * dynamic block allocation and reuse logic for session metadata management
-> + * without preserving any files.
-> + */
-> +TEST_F(liveupdate_device, preserve_many_sessions)
-> +{
-> +#define MANY_SESSIONS 2000
-> +	int session_fds[MANY_SESSIONS];
-> +	int ret, i;
-> +
-> +	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
-> +	if (self->fd1 < 0 && errno == ENOENT)
-> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-> +	ASSERT_GE(self->fd1, 0);
-> +
-> +	ret = luo_ensure_nofile_limit(MANY_SESSIONS);
-> +	if (ret == -EPERM)
-> +		SKIP(return, "Insufficient privileges to set RLIMIT_NOFILE");
-> +	ASSERT_EQ(ret, 0);
-> +
-> +	for (i = 0; i < MANY_SESSIONS; i++) {
-> +		char name[64];
-> +
-> +		snprintf(name, sizeof(name), "many-session-%d", i);
-> +		session_fds[i] = create_session(self->fd1, name);
-> +		ASSERT_GE(session_fds[i], 0);
-> +	}
-> +
-> +	for (i = 0; i < MANY_SESSIONS; i++)
-> +		ASSERT_EQ(close(session_fds[i]), 0);
-> +}
-> +
-> +/*
-> + * Test Case: Preserve Many Files
-> + *
-> + * Verifies that a large number of files can be preserved in a single session
-> + * and then destroyed during normal system operation. This tests the dynamic
-> + * block allocation and management for outgoing files.
-> + */
-> +TEST_F(liveupdate_device, preserve_many_files)
-> +{
-> +#define MANY_FILES 500
-> +	int mem_fds[MANY_FILES];
-> +	int session_fd, ret, i;
-> +
-> +	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
-> +	if (self->fd1 < 0 && errno == ENOENT)
-> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-> +	ASSERT_GE(self->fd1, 0);
-> +
-> +	session_fd = create_session(self->fd1, "many-files-test");
-> +	ASSERT_GE(session_fd, 0);
-> +
-> +	ret = luo_ensure_nofile_limit(MANY_FILES + 10);
-> +	if (ret == -EPERM)
-> +		SKIP(return, "Insufficient privileges to set RLIMIT_NOFILE");
-> +	ASSERT_EQ(ret, 0);
-> +
-> +	for (i = 0; i < MANY_FILES; i++) {
-> +		mem_fds[i] = memfd_create("test-memfd", 0);
-> +		ASSERT_GE(mem_fds[i], 0);
-> +		ASSERT_EQ(preserve_fd(session_fd, mem_fds[i], i), 0);
-> +	}
-> +
-> +	for (i = 0; i < MANY_FILES; i++)
-> +		ASSERT_EQ(close(mem_fds[i]), 0);
-> +
-> +	ASSERT_EQ(close(session_fd), 0);
-> +}
-> +
->  TEST_HARNESS_MAIN
-> diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.c b/tools/testing/selftests/liveupdate/luo_test_utils.c
-> index 3c8721c505df..333a3530051b 100644
-> --- a/tools/testing/selftests/liveupdate/luo_test_utils.c
-> +++ b/tools/testing/selftests/liveupdate/luo_test_utils.c
-> @@ -17,6 +17,7 @@
->  #include <sys/syscall.h>
->  #include <sys/mman.h>
->  #include <sys/types.h>
-> +#include <sys/resource.h>
->  #include <sys/stat.h>
->  #include <errno.h>
->  #include <stdarg.h>
-> @@ -28,6 +29,29 @@ int luo_open_device(void)
->  	return open(LUO_DEVICE, O_RDWR);
->  }
->  
-> +int luo_ensure_nofile_limit(long min_limit)
-> +{
-> +	struct rlimit hl;
-> +
-> +	/* Allow to extra files to be used by test itself */
-> +	min_limit += 32;
-> +
-> +	if (getrlimit(RLIMIT_NOFILE, &hl) < 0)
-> +		return -errno;
-> +
-> +	if (hl.rlim_cur >= min_limit)
-> +		return 0;
-> +
-> +	hl.rlim_cur = min_limit;
-> +	if (hl.rlim_cur > hl.rlim_max)
-> +		hl.rlim_max = hl.rlim_cur;
-> +
-> +	if (setrlimit(RLIMIT_NOFILE, &hl) < 0)
-> +		return -errno;
-> +
-> +	return 0;
-> +}
-> +
->  int luo_create_session(int luo_fd, const char *name)
->  {
->  	struct liveupdate_ioctl_create_session arg = { .size = sizeof(arg) };
-> diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.h b/tools/testing/selftests/liveupdate/luo_test_utils.h
-> index 90099bf49577..6a0d85386613 100644
-> --- a/tools/testing/selftests/liveupdate/luo_test_utils.h
-> +++ b/tools/testing/selftests/liveupdate/luo_test_utils.h
-> @@ -26,6 +26,8 @@ int luo_create_session(int luo_fd, const char *name);
->  int luo_retrieve_session(int luo_fd, const char *name);
->  int luo_session_finish(int session_fd);
->  
-> +int luo_ensure_nofile_limit(long min_limit);
-> +
->  int create_and_preserve_memfd(int session_fd, int token, const char *data);
->  int restore_and_verify_memfd(int session_fd, int token, const char *expected_data);
+Yeah... :/
+
+I will look at the new batch of pre-existing issues when I have spare
+cycles. I am not sure I have the bandwidth to find the bottom of this
+rabbit hole.
+
+What do you want me to with the main userfaultfd patchset? Sashiko
+failed to apply it because it is on top of the pre-existing fixes.
 
 -- 
-Regards,
-Pratyush Yadav
+  Kiryl Shutsemau / Kirill A. Shutemov
 
