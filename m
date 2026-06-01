@@ -4,95 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB87ACD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 10:43:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21BA7CD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 10:48:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E8C66B0319; Mon,  1 Jun 2026 06:43:43 -0400 (EDT)
+	id 5D5EC6B031C; Mon,  1 Jun 2026 06:48:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C0996B031B; Mon,  1 Jun 2026 06:43:43 -0400 (EDT)
+	id 55FDF6B031D; Mon,  1 Jun 2026 06:48:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FCF26B031C; Mon,  1 Jun 2026 06:43:43 -0400 (EDT)
+	id 427D26B031E; Mon,  1 Jun 2026 06:48:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E4BA6B0319
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:43:43 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AFCE99019F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:43:42 +0000 (UTC)
-X-FDA: 84831007884.02.6AC7486
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D9CF31C000F
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:43:40 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ATGD2KEF;
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780310621; a=rsa-sha256;
-	cv=none;
-	b=xh5hpD3dcl2LAvKWDZ2jgyMR/MmsdzbDrludz61Gg0cRkhMjzJ3MKCXoMF2lj49ihbIQuJ
-	E3ubf7gyF3bhAj7pecIx9fnAI6rn8RWKjKCCZZmTFwVfPLuM1HXyBg7lKxSLOS9BBjnQQz
-	hI9S7E+mas2WzCp+Erx+gUiCoEmOHfo=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ATGD2KEF;
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2DEDD6B031C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:48:24 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CDACF1C0A8B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:48:23 +0000 (UTC)
+X-FDA: 84831019686.04.3BE4D81
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf31.hostedemail.com (Postfix) with ESMTP id DB0C620002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:48:21 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=neaGU8o1;
+	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780310621;
+	s=arc-20220608; t=1780310902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BdxzfLXr6/G/k/tGtVLcYYbC4QvrQHAxO2smMCOSTy4=;
-	b=DsyT983MMpoK2ve2+10w5rU73sdYIEb4oNltnIYcF2B9MD9G2sU7h8AaNZ+cAX/MGROii7
-	Y9p0IBh4daz4dGbeADFE5ldMFouAzmY9P+vkkK73dQ3a0llFiPSxWDG+9yArWdqrj9zLru
-	iXmXXH7UN+G67wdxRGluOFGnR1lZaRg=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EB1D41516;
-	Mon,  1 Jun 2026 03:43:34 -0700 (PDT)
-Received: from [10.57.94.8] (unknown [10.57.94.8])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 38E4D3F905;
-	Mon,  1 Jun 2026 03:43:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780310619; bh=C3+Nupy9epvTU9YJN+UUOeTEoo2XErmrS9cELXLEaTU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ATGD2KEFk9zH6A/3/wbmsLo8Bk16zruKAja2MWpstRHrcKrUHTc7cCqmaTsy1kze4
-	 vG+kAYpgRYGrfxsVM+k07lFcID8aETdcpIWAaY6POEOlyHhT7SAbyCaNPXgf688bb2
-	 NWAccF9tR54IJl/TxpZC5Vs/Yx5VmFz06QrmL7VQ=
-Message-ID: <e9187fdb-b4dc-4b82-8783-fe1eb221d885@arm.com>
-Date: Mon, 1 Jun 2026 12:43:29 +0200
+	bh=CpP3p+OZ5kTTKtnC7lknJ8SUiTBUDhdsLvtMvZmEm/4=;
+	b=rpTTHs6FAMCf9p/fNLt5cd4LZheePensF90ciFx1Ti1Yut5UR6PZmZf/+bMM83yHlmnQWK
+	qIhyAErQh1VFkfT8BXBs7x5HKcBjwZvz3IRC0yqapxZfsBrs8JoXlo0FTEUiTRL/Sylbh2
+	yud97GVd+MQxim8KlT7r2U3hZPdlQT4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=neaGU8o1;
+	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780310902; a=rsa-sha256;
+	cv=none;
+	b=adjU9pYVEliN1LLM6tku18KTnWjZ1pbb58g6GYrRhIvzI4ogjfBs/PJ1SDeEDwpKDbBeTM
+	JTgaulO4I/Cw1oELBfjFJesplkDSL+DU8cShk2pX+UTQuees4hdMrVyCfseQh5eJhmPN4J
+	oBdhGiIZZQEAt58dW5GG/Ht3SvXciBs=
+Message-ID: <baa0a462-46e0-44ab-b583-c722ad253afe@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780310899;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CpP3p+OZ5kTTKtnC7lknJ8SUiTBUDhdsLvtMvZmEm/4=;
+	b=neaGU8o1iE3/4nTUTm1ddWoYsE2dfW3eX7wU62CONcntJ79HSV+NHfJSc9y6ThIun4wasJ
+	BP4QDwazz2Xy7sFW7AuQhOUSjEUvavOzPE0+8qTglgU72VGjV5ffSvP3JWtwytKfZnfQwP
+	88YxT/UrKu+ag27omxnIeveYLz889ok=
+Date: Mon, 1 Jun 2026 18:47:46 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 15/15] arm64: mm: Unmap kernel data/bss entirely from
- the linear map
-To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
- mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>,
- Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, linux-hardening@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-References: <20260529150150.1670604-17-ardb+git@google.com>
- <20260529150150.1670604-32-ardb+git@google.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260529150150.1670604-32-ardb+git@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: npache@redhat.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, liam@infradead.org, ljs@kernel.org,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
+ usama.arif@linux.dev
+References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
+ <20260601032804.96122-1-lance.yang@linux.dev>
+ <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
+ <616de1a8-1cfd-40b8-b04f-7b324be40bfd@linux.dev>
+ <6b11bf0a-769c-4ef2-ac6f-2af38200a6bc@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <6b11bf0a-769c-4ef2-ac6f-2af38200a6bc@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ifqdiig1sww1udwdbim3ukrefdi95ref
+X-Rspamd-Queue-Id: DB0C620002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D9CF31C000F
-X-Stat-Signature: nzdj17zfbyn5rkcmkqpcqb6au6z7q77o
-X-HE-Tag: 1780310620-192111
-X-HE-Meta: U2FsdGVkX18K/MkrD9KEaDkaLl+xcLyj74Bu5rz0pSffM+4+bjadiE28RqU6s+DOQGpfMpm4oCLsU/4A9cvcuPiF6MgzJWI6cwql/6qoJmp4xwzLiINUq+FiRcVKEseNljlXUHcJHMRAJGW5xsv8Cfl1H73h5ZUW8hrHTiO2/vEp3EAD6aYST6bRHm1K1KOpk7uXbfY/EoGSnC1vO4/3cnLqq1O/HFjtO6uIxEkWiET3HhM6g8WGSoKyGUdt/xiR53ay2s+fh1RypYpWdOHdyagyedGuwp8ExYrKZJW06chss6d/iYkCX1YmHxmIeEA67/hNz1Tcs9uJekaAjkJbWrZLG3F9nWscW+LI3y8pYMJ01uFUORKyrnw2jEgUNPyRCZLdefkWQqnAGm77EZFDD5HVDFAgFqxSP86T5UOcsHIxDcNEYOuWfDxyw6Yr2EP1FB8sXCiLdMY4fZtrZIZNx3RJyXgW2IYE9TEekEhxQKhjLrmLdevNaGFF2VxttR98cIjhIu2YKJyBNdNV61vAdpWkSnfF+auTVet8LzNEb+DGJJA3I43lUXYkKDG/VmJ+g+6OPOmppmesrXjoyJ5pDL/c67xNGJHoNb2vAYKc5qGTUhB5BiFidnPk7WJp8cLL4UXeqlnuIzbL0vDYt1E2TP7QwUWvyGBaNQZwmYGZvjImkg/soZxNaemI+9fuzQhwJa7xvfXA1PUOJipwctz0OmP1j04jPQhQSVy6VY0dA075fEHkz7DxisVHApJGt27J7VPxDrDRS+2fijXyK23rr0aypVvcgWudpHxAUt30jUnRejD1G99ausKQ2/AAbGbncT1vBD3pMHvG3ky3UzEqsLVxH6W5Hkovj+tH6oMiJtXsbLd15jBN/hmiJqkrN8k2iQOZeRXibPSLH28+fHCSRonP/wz8dx+RRMO4jhlw3gSDeG0Sj9pyoVeey30Pc4+UAO5ZGF119PxlIoZ9xIZ
- 5wt2zdSL
- iFB+g/MibeL4M3Uq8s3FbaW46Uiirg0otqS1HTfwXVRRna9hRbTjod8JdXssSr9JxJmKWgMSEGkn8liSBs40q2Pk/5dCNA7lh3pHnPRCfvQGw/YRv0pnVk9zNkndkJV+VCkNBG0ndHTJJampnvUhHIso6h40IGi9o3Ti60BUrf8UaCnzD7otUPsTOu7R1t/qgGFj++Mqv8npiLvgBAUM+ovROuVaZpMOIRmDCt1U51Lg+24u0xUT4EuCE0PuHpS3eMlBMe59UMKq6yab5QgPBC50MfL8cebQC8dDYiKoMvf9rFaQgOxW66pNjAKtQKHVQ85LkaCXv1cEF6puNKd+3mVWbf68irDeNJ1ocLCjkR6IwFRuqbrpXrJJZc6pwGajYHe0dJuJRfepjx70=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1780310901-295199
+X-HE-Meta: U2FsdGVkX1+7Qg7odMi38O3XTmYJaslP7DF8+mOrwwltPebgl4YkgtOi8ZBH9ljg2I7IYvSf1icsRlno+QAwynDF5qpdYhMc1PCoofY5sW6y9yEnErpDHE8V8AnknXGXs/GOSNax/9EcbjrqNf9ZjcPsXPgzOujaP5lawRmTifsVLXOB+Sx6NuiWvpi0uEBIpIBJv/Hug+p+fBOcBw85rUDYpcdvkb71u8riyRiuxzuiCfRUcZYjsHzkKw3zYfSQzJBnLmCSFoYe5i1QOq8NGX2+Fcxc6eofsKiT7FixwAUKIs5/2Q+iaEw3RvQmTsMMYZw9+lfzxPLgDvfxk1NW9zgArCOjAJBKj6pzFqeS+2WdfitI2dKQZrc2OxmIHL6M+8idM282ZRKSYDQFY6aWEDgpgmhTEvd8wCBiQxamGdyejbAXBOjazXjoQa3I+f2aZo+vFGZ68BSKC9j2sBG6VxjPveZVYEHgnhB9Ku1lbuSeqVgbWpAD2Ffp5NmBXSp6rEHDRNwN5X6xVVbM2TOnMoDqrK/rXIK5RtDhJ8wmRlP8IQuAOjHeToh7bPU2wVn+98btQ1mQ5PL2tKbpXL072StvD6j6MP828NoXJJZoQoU2mZ7oe5+4TJ+d5CauDoh7AzH3+F+r4/hpmO6V+UEocFtpT7LTEObpvateRR4emD5mby13LKhWov60Pce7XDp+6owoA7mZ/dhZssYxTqWLC7F+4sma3xoaLyKvVQqGbjCdfGTNlcxN60r4DmF+RR6aKmm1vaRRcdw+PkSGGrXBnJc7rlFuP/N4JAB503twCrReYlon2ho/lx7opVbhBK4TCegKY2Xtdx4T3i5hmEwV3E/ejIU9zembsyPxEHH4nzaBdIzMJ805y9guTF6n9LPnzkOrqsFtcSCz28Fhq2ve3+9G56buczO2yT2+cR8z/8UunY89d59Y7KQeFOllBtZhNZLwlVjhST+veBJ97jj
+ 2/Ev7B5b
+ FWumortAJ5t1YoTizFqbTy6Rsvy6mhH90EydY87L6iRazcMtMUKtY4EeRqGEUl/ZkaB03SHpQhlteZ3ldifPYI9jLggUXEZ9HrrtiBFnP4y38UKaRDJD6vFqA82knMj8UphT/1OgqiTpt11CHcvPV4sXr9W6gtZLVLEn8SN385RDblZUebDkSq+BI/1ufHHd+ne8O/9896n/HpI0iZCF9/YR5446ju8ATkYUPiRpdVedn1ewU2x/yRRg2Xzr7XwzuUP+B3pJU0mDL/biY2nKjDs26YEF9Yz/VwxiOk9PH8xl4AqBw2xbLPmV3MhFD1WzQeSmepXPEQeaZ3fOFsqCb0TZjjA9UGrQNsq9OMKC3JQzZDPjjP2v7vPr6FY8nCrMoJd9X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,119 +113,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29/05/2026 17:02, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
->
-> The linear aliases of the kernel text and rodata are also mapped
-> read-only in the linear map. Given that the contents of these regions
-> are mostly identical to the version in the loadable image, mapping them
-> read-only and leaving their contents visible is a reasonable hardening
-> measure.
->
-> Data and bss, however, are now also mapped read-only but the contents of
-> these regions are more likely to contain data that we'd rather not leak.
-> So let's unmap these entirely in the linear map when the kernel is
-> running normally.
->
-> When going into hibernation or waking up from it, these regions need to
-> be mapped, so map the region initially, and toggle the valid bit so
-> map/unmap the region as needed.
 
-s/so map/to map/? Also not sure what "initially" is referring to here.
 
-Otherwise:
+On 2026/6/1 18:23, David Hildenbrand (Arm) wrote:
+> On 6/1/26 11:08, Lance Yang wrote:
+>>
+>>
+>> On 2026/6/1 14:54, David Hildenbrand (Arm) wrote:
+>>> On 6/1/26 05:28, Lance Yang wrote:
+>>>>
+>>>>
+>>>> Ah, fair point.
+>>>>
+>>>> I was mostly worried about arch hooks that walk vma->vm_mm again, rather
+>>>> than only using the pte pointer passed in. For example, mips does:
+>>>
+>>> Right, a re-walk would be the real problem.
+>>>
+>>>>
+>>>>     update_mmu_cache_range()
+>>>>       -> __update_tlb()
+>>>>         -> pgd_offset(vma->vm_mm, address)
+>>>>         -> pte_offset_map(...)
+>>>>
+>>>> and __update_tlb() has this assumption:
+>>>>
+>>>>          /*
+>>>>           * update_mmu_cache() is called between pte_offset_map_lock()
+>>>>           * and pte_unmap_unlock(), so we can assume that ptep is not
+>>>>           * NULL here: and what should be done below if it were NULL?
+>>>>           */
+>>>>
+>>>> So if khugepaged happens to run with current->active_mm == vma->vm_mm
+>>>> here, could __update_tlb() hit the none PMD, get NULL from
+>>>> pte_offset_map(), and then dereference it?
+>>>
+>>> Likely yes -- that MIPS code is horrible. And the comment in MIPS code
+>>> even spells that out. :(
+>>>
+>>> Do you know about other code like that, or is MIPS the only one doing a
+>>> re-walk and crossing fingers?
+>>>
+>>>>
+>>>> Just wanted to raise it since some arch code may still have assumptions
+>>>> like this, and the always-enable-mTHP work is getting closer ...
+>>>
+>>> Right. I assume set_pte_at() couldn't trigger something similar (re-walk) in
+>>> arch code,
+>>> because we simply provide the ptep. update_mmu_cache_range() only consumes the
+>>> pte.
+>>>
+>>>>
+>>>> Probably very very very hard to hit, though :)
+>>>
+>>> Delaying update_mmu_cache_range() is nasty, as we'd have to make sure that
+>>> nobody can interfere in the meantime ... and the PMD lock will not be sufficient.
+>>>
+>>> Maybe we could reinstall the page table with the cleared (none) entries while
+>>> still holding the PTL?
+>>>
+>>> Thinking out loud:
+>>>
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index 5ba298d420b7..e39b750b1e6f 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -1413,13 +1413,17 @@ static enum scan_result collapse_huge_page(struct
+>>> mm_struct *mm, unsigned long s
+>>>                   map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
+>>>           } else {
+>>>                   /*
+>>> -                * set_ptes is called in map_anon_folio_pte_nopf with the
+>>> -                * pmd_ptl lock still held; this is safe as the PMD is expected
+>>> -                * to be none. The pmd entry is then repopulated below.
+>>> +                * Re-insert the page table with the cleared entries, but
+>>> +                * hold the PTL, such that no one can mess with the re-installed
+>>> +                * page table until we updated the temporarily-cleared entries
+>>> +                * through map_anon_folio_pte_nopf().
+>>>                    */
+>>> -               map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /
+>>> *uffd_wp=*/ false);
+>>> -               smp_wmb(); /* make PTEs visible before PMD. See pmd_install() */
+>>
+>> One small thing, I think we should probably keep the smp_wmb(), and just
+>> move it before the earlier pmd_populate().
+>>
+>> IIUC, the ordering we want is still:
+>>
+>>    clear old PTEs
+>>    smp_wmb()
+>>    pmd_populate()
+>>
+>> so another CPU cannot walk through the re-installed PMD and still observe
+>> the old PTEs, right?
+> 
+> There is a smp_wmb() in __folio_mark_uptodate(), that should be sufficient?
 
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Ah, cool! __folio_mark_uptodate() already does the job :P
 
-I don't know much about hibernation though, would be good for someone
-knowledgeable to have a look.
+So yeah, no extra smp_wmb() needed here!
 
-- Kevin
+Cheers, Lance
 
-> Doing so is required because pages covering the kernel image are marked
-> as PageReserved, and therefore disregarded for snapshotting by the
-> hibernate logic unless they are mapped.
->
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/arm64/mm/mmu.c | 45 ++++++++++++++++++--
->  1 file changed, 41 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 7b18dc2f1721..07a6fa210171 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -24,6 +24,7 @@
->  #include <linux/mm.h>
->  #include <linux/vmalloc.h>
->  #include <linux/set_memory.h>
-> +#include <linux/suspend.h>
->  #include <linux/kfence.h>
->  #include <linux/pkeys.h>
->  #include <linux/mm_inline.h>
-> @@ -1056,6 +1057,29 @@ static void __init __map_memblock(phys_addr_t start, phys_addr_t end,
->  				 end - start, prot, early_pgtable_alloc, flags);
->  }
->  
-> +static void mark_linear_data_alias_valid(bool valid)
-> +{
-> +	set_memory_valid((unsigned long)lm_alias(__init_end),
-> +			 (unsigned long)(__bss_stop - __init_end) / PAGE_SIZE,
-> +			 valid);
-> +}
-> +
-> +static int arm64_hibernate_pm_notify(struct notifier_block *nb,
-> +				     unsigned long mode, void *unused)
-> +{
-> +	switch (mode) {
-> +	default:
-> +		break;
-> +	case PM_POST_HIBERNATION:
-> +		mark_linear_data_alias_valid(false);
-> +		break;
-> +	case PM_HIBERNATION_PREPARE:
-> +		mark_linear_data_alias_valid(true);
-> +		break;
-> +	}
-> +	return 0;
-> +}
-> +
->  void __init mark_linear_text_alias_ro(void)
->  {
->  	/*
-> @@ -1064,6 +1088,21 @@ void __init mark_linear_text_alias_ro(void)
->  	update_mapping_prot(__pa_symbol(_text), (unsigned long)lm_alias(_text),
->  			    (unsigned long)__init_begin - (unsigned long)_text,
->  			    PAGE_KERNEL_RO);
-> +
-> +	/*
-> +	 * Register a PM notifier to remap the linear alias of data/bss as
-> +	 * valid read-only before hibernation. This is needed because the
-> +	 * snapshot logic disregards PageReserved pages (such as the ones
-> +	 * covering the kernel image) unless they are mapped in the linear
-> +	 * map.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_HIBERNATION)) {
-> +		static struct notifier_block nb = {
-> +			.notifier_call = arm64_hibernate_pm_notify
-> +		};
-> +
-> +		register_pm_notifier(&nb);
-> +	}
->  }
->  
->  #ifdef CONFIG_KFENCE
-> @@ -1193,10 +1232,8 @@ static void __init map_mem(void)
->  			       flags);
->  	}
->  
-> -	/* Map the kernel data/bss read-only in the linear map */
-> -	__map_memblock(init_end, kernel_end, PAGE_KERNEL_RO, flags);
-> -	flush_tlb_kernel_range((unsigned long)lm_alias(__init_end),
-> -			       (unsigned long)lm_alias(__bss_stop));
-> +	/* Map the kernel data/bss as invalid in the linear map */
-> +	mark_linear_data_alias_valid(false);
->  }
->  
->  void mark_rodata_ro(void)
 
