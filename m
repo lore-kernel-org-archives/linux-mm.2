@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE4DDCD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:36:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77ED7CD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 09:37:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4BE86B02F4; Mon,  1 Jun 2026 05:36:41 -0400 (EDT)
+	id DCFF86B02F5; Mon,  1 Jun 2026 05:37:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FD1F6B02F5; Mon,  1 Jun 2026 05:36:41 -0400 (EDT)
+	id D597D6B02F7; Mon,  1 Jun 2026 05:37:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 913776B02F6; Mon,  1 Jun 2026 05:36:41 -0400 (EDT)
+	id C48B96B02F8; Mon,  1 Jun 2026 05:37:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 823FB6B02F4
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:36:41 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28B09120614
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:36:41 +0000 (UTC)
-X-FDA: 84830839002.01.216ACA0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ACD516B02F5
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 05:37:40 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A4E4161CF0
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:37:40 +0000 (UTC)
+X-FDA: 84830841480.16.49A163E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 81D9F140005
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:36:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UY86iIMc;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id B257E4000C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 09:37:38 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c1PJZNWT;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780306599;
+	s=arc-20220608; t=1780306658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q964EmR1sb0D+k4HDOGBDHSQElTuA68Eo3PT6Fx+5JM=;
-	b=50LCqNMFA5L4PQNCZcQdnPEEnxqnchQXBudyQmgOK+BypMRowIzxvX8p/uaiqBpe92Ci16
-	kuRyJzOzbdXUCngIfRXiWt6vrV20KZCotnFmf2qwi11qauZ+gVT9krOlkBUMLyRtEnttn5
-	5w7rj41WL6KXntvI/khcihauS4I50To=
+	bh=AzbXwY67i7orrJSYLIcDP2MIfpMzq9fPfuSJU14oS7I=;
+	b=iK8Gw0EJMBDv1bQb2Sf1etENONPK0gAUJ97Iy7CbcHL7plZ0hCrwVF0J0jpufsuSshHGqK
+	ao25y+AXmDq62TQBq0r8KogZAtfng/+aVuk+KlBc7RlrBt9d78OAc1qglEQKbRCokI60ql
+	hVX2H68sCH3Wh/sQcQ91cGak9e91krQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UY86iIMc;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c1PJZNWT;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780306599; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780306658; a=rsa-sha256;
 	cv=none;
-	b=z9kTDZVdM5HK1DaI+f9jJSTL0QrdVUfTItaI3nsE2Ukh+FAZCDualCVLNAOsf5Yx2J0y1Q
-	VfsDDJbkMwJUNZZjbjU05UGZiS5J0bL+uVz0TJUB5nHiH40yUPqAfeZeF00qx9y2YlF2E5
-	15l92/u8oKu5bGTWODu6RyIGHRxr804=
+	b=5C67E0LTbtc5fdC5Zg1zXcab59YcpexUzHJz4FD6RTN3QeHZL9VA8TUxcW6hF85+Qcmiov
+	KSYNMdnQJjD8dZmjecx+wOifgBzGNoSJK6Qa2UaKdxRGP0Bhcd3kz9i2YXmhJctKwHJSo9
+	L94wooOYL5q0lPBeMUmVg4EtoV37QDI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 89F9D43718;
-	Mon,  1 Jun 2026 09:36:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF18F1F00893;
-	Mon,  1 Jun 2026 09:36:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 12D5944519;
+	Mon,  1 Jun 2026 09:37:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2F01F00893;
+	Mon,  1 Jun 2026 09:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780306598;
-	bh=Q964EmR1sb0D+k4HDOGBDHSQElTuA68Eo3PT6Fx+5JM=;
+	s=k20260515; t=1780306658;
+	bh=AzbXwY67i7orrJSYLIcDP2MIfpMzq9fPfuSJU14oS7I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UY86iIMcGikyN9u59oMpD3SPoWCDezq083xPacS+VXEBGVM0Lf5REGc9Geud0VJMd
-	 wz5dPm+uXnDuXxLBZCE0sM5/ks5eENPD8c0ki6Ad0H1BjivPl3la7dVLMD28shem8B
-	 9YyqNliA6iyYU3qZQsPzqxosOKnQuKz37S1O24AHoy8rl2UKjdLWMC8LlI6RiAnkmy
-	 nMmpe3XTaxZ0ql3iyP+uJIqh8J/aWVdijHVSnn9tMTcMeseOc9cYfvoxbusgwfN5TT
-	 FHSpcMGeULWL/66IrJQHtK4bgI9OOAKqSECrKDsm+XCANmsF35O697XETEu6ZhRhAt
-	 TTzrHtzvna0Yg==
-Date: Mon, 1 Jun 2026 10:36:33 +0100
+	b=c1PJZNWT6Jhrtsti0/iLRUjmX2p41TJJfRVGF/3HNXBQB7PyKa2x9bRmyaeFYhkph
+	 S/XYHC6xhKx56Ya51Xak5ZkdEYl7w6jJ5CHtlZipgiVBNEdAMNHH/iRIH0rE/rdUWu
+	 0NcYKv9W6ljVMkX338Av9+n5cEDMlkvl9EyHcrfG4IQCWXZKImq9ht9DNl8Bv5zvtM
+	 ATehWylJaNN+9d/XXQwwW29cYaUrS+pOaBG4dYswLQ5k9wG0aOJ57MhEFaYf6nU2l8
+	 SGi6xk/XJwSfllo85W6VmcGnxePA0rHGqKLm46uy+j9fAJrU+3ZTv7yeI+eHKuE7At
+	 N4eY0MFKY1p+w==
+Date: Mon, 1 Jun 2026 10:37:30 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: "Oscar Salvador (SUSE)" <osalvador@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Anshuman Khandual <anshuman.khandual@arm.com>, Oscar Salvador <osalvador@suse.de>, 
-	Wei Yang <richard.weiyang@gmail.com>, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/page_vma_mapped_walk: Use ptep_get_lockless() for
- lockless access
-Message-ID: <ah1SmDJFAcGdBVvU@lucifer>
-References: <20260528075507.1821939-1-agordeev@linux.ibm.com>
- <ahglqif-I4TjFK9X@lucifer>
- <ahhNq0pFKvSKZQbR@localhost.localdomain>
- <07baafe4-7d1c-42b0-9103-3e5666770061-agordeev@linux.ibm.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
+	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
+	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
+	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
+Message-ID: <ah1Sxn5VHLF6jlcU@lucifer>
+References: <20260526130509.2748441-1-kirill@shutemov.name>
+ <20260526130509.2748441-5-kirill@shutemov.name>
+ <ahmQvfNk7S4F0LBj@lucifer>
+ <ahmoH9v6_DA2i_zn@thinkstation>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <07baafe4-7d1c-42b0-9103-3e5666770061-agordeev@linux.ibm.com>
-X-Stat-Signature: 9xuwkrj78o8ytsa71bjccjxfnwet4zzu
+In-Reply-To: <ahmoH9v6_DA2i_zn@thinkstation>
+X-Stat-Signature: b8y4o4cc73oh7jwmjfr9neqyhpjt7mqt
+X-Rspamd-Queue-Id: B257E4000C
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 81D9F140005
-X-HE-Tag: 1780306599-178765
-X-HE-Meta: U2FsdGVkX19UsDMO5T9cppuHZ5A+IeG/clJLa/ZABpc3KYtsmgNzk5zuyJsMaflsRl5SVoGkDol6Gq4n/yGyEsLDXBjmxb0J5R8nQIPXO6/fmGs6gvNoADYBKMpzGUR25fFJEB5JuiN3Elp1Isnh/FNBg0R7A6/CKSy2v+0Zs+dz9nFpXWT2/1mD0B2Jwj4KEFbUNfrUDYK2M/NZa1EIUfz//fMPuG7zm4DZGNwGOIbRovTUL+Ge0/V6Z4EywY8CKAIs3Q/KfWllgoB9eVH8oH2Vu/TG0urwklk6a9EBmTDvOvOCfwLu17Z3CSA/OE6i426X4UQJGH9ZiUU7MzseMhazjMmn9E1WmYR7wzQIwhT2CY4qQUMUgFJnBLKS2IFaOUp3NbGDwSIuktlc/d08neq+d8Ib49OrxUWBn+XLWpRTpXrt4k8+pg6vNJLTZrvR91HOkVP++vW1mA2tXfl6YjjulUf3g9AQESGOg6/L1L8IeGEQfyJYhD0In1GH3btPqWOq+y2c+4CW7LxZQauZoFfIrVA/PBRuQsRQylUl3mlGJUpW1MuCcMVcWeeJoAoDb/KAkqP9wKoiCLN8lsoJmZD7mGPtvLJ42PX/W66UraqcMYYqZTUyG4njf/QYu1oqQR6zahpuNq4BDeiaJ7meW04zApi7j1aszkoyfSV/ZgYDeMYD7Jl0uHTP+3UeTiUp/wAjgm1zskRymbdM1ietONd4uQ65Lchj6XxmWv2LiQaDJYicrtsVpCzIqGosyCGBnTJI1xWO8nXNJDzYwOtoQhk2oTqjNil8dKeIBMupLAtBrRNhVLQyEQzsU0NObnS2atzAp6Fi3rTW13Vy9dR4KbcK1QfgEAyPlHBT5f4vVef4zEgkMmy2J5c8u/K9J6N+q9aRXufWwUDLY65OhWapLIz/Bp4w+ZUvGPLzrymMFiJ/lf9h2UGFeZCHNrBzlMPyfKlV9kino/39IDaB4oF
- UHRlIJD+
- +FjVrTW/CdqWSOHO2xZO1u/BiuJc2meAuypRaRGui1iKcmsezIz1tEUDgU2i1Y9RHjBPSlWQvH1kQA0C9lc+GQ/qeH7vKM/6eY4zy3x5gk9v26eS2Stki3dd5kWN4y1LoH5MIHLTQDfQm3XgfUWMxwHA/qgA8bdY2RrV933KAfex5rsfWaVtZDO63DYOK242ptf4tHx7SGbkxJM5HMiNbNg5m5RXl+1naF/Bw+36wvNSCsQ/iCnhxvjJwdlIvOTn9if/+n5BMOcpkGdJYFtnriKeR/ZxQUjSYvZ6GHAUQRF6Zn/s/RsbLs8ljtKXFfh43SMKVT34ZUBrLKO9QBYaxeXQT99H5AZrWguH3Efgv8Jif2eVYP3dr0h44Kw==
+X-HE-Tag: 1780306658-978077
+X-HE-Meta: U2FsdGVkX1/l3hfgDxEw61nTVza9JZ6gzEhA1/WHoPsSi1gpBV07YC9jD3JfOrvp2tyOqP711OBHZBQcN6qI6pEnehI2n7rSrHMZZlfQD6knIGO7WKcIETJ3GxQEzZqhb1tKLdv2TyN49hapDv0QjSsdfm3mT7lwBt5yYB5a6n33qnuxdQpAgZUxcyXOlH7SFM9+rnLB8LfwDVbhOkCTg8eAnaGvDRqlHlCGSDDeGGQ8+yb4nG5bfI4RcxHdOwrQI4Ir/kdpPe239ij3LzyF68VLScdK5WO2ofh1pBVmfjI+XAuHPfWC9+6VhbDIxj4qclcafKtH0/waqMdTUS6rxN7gEov6t91pTfVDVAmKZYG7nL3wbLNaUJHFEKcmAmRLGcZ8eD1zTOr3XUx2hlVmModhZNjhjmIO2+QH/4Cgy1AOhOKQKiqnvNJUkEz5hYKgwJ5fFt6yimPUNE0AulgNcu/X3DNRcgzKV9njkm2oIGYRpZUKInxLhHgvSkcoCaDMS6t3rLVxIX1FJa+4SdV9WqsWEgU3px5QaAKnaoDEk+V+UwaV5dlKS99ZKvrwU4QBDA3vXmdthKyJa7u0mDeMUDuc+vsRTmMNLQl+ZAHnr98ot+/KJj6WW+iN9mcWAYFKMDSNaxnAvOMY8QCuZHpb9WTo/kr2Ev3hAxMXNi8zi0A+zYRiPU0D2uRuC7RwCGuNs1aeI5dvnjH6M9PzJKWABwsD1GMfFpkxxJkA794u9J0SSQvN020MhsltpaJwYiKf18U5wEjlrm+ivKLHkgAQm6EWx6xk2EJBSDCTYxKnkWeot4kJMSB949D46U0ogwNV/llc9Es6TtHtmkrfoYnTaHglc6oPUYtS/DCpqbf/Law2pnQO/eGFmksr9loK5i7cc5UqieZOCXFNI8YsSApO11vBQ1E+2B8la0Zbpats7Hx8dwYsHLgLNIbfUEB/mKdWTqJKdtBpWb3gGGtCZNO
+ MesiO8OD
+ 2h7vtiIWInofvYkbAZ0ndR5QRtqFQvSHlrzv0wvUFoGxMRJQ6sPPPpL5NA9pUD6HKF12SjxkIGmgPpeIroho2nkGpG0yhmDk3fzFBEG2KO77mQ9UOj0WyM+NgzoQKr/HsqhSFP1oySAZCTw6WMiB0zVxv1zUWPIruEPpawFa7WZRNhQvJQdO53PrNtu+j9fLLyFNz0mOYznuV6/bqwOHFg2/PrhSEgufFCMduVu9wBWl8zassa2HGNmVode6qObUNfza++eI9exoSV9Qm+J7zxmwNFy9FLbFHjP67G6T2pcI/2N4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,39 +98,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 04:30:36PM +0200, Alexander Gordeev wrote:
-> On Thu, May 28, 2026 at 04:14:03PM +0200, Oscar Salvador (SUSE) wrote:
-> > On Thu, May 28, 2026 at 12:24:35PM +0100, Lorenzo Stoakes wrote:
-> > > On Thu, May 28, 2026 at 09:55:07AM +0200, Alexander Gordeev wrote:
-> > > > Switch from ptep_get() to ptep_get_lockless() accessor for
-> > > > PTE reads when no lock is taken.
-> > >
-> > > This is an insufficient commit message that's just saying what you're doing,
-> > > which isn't very useful.
-> > >
-> > > Please explain why you're doing this and what the benefit is please.
+On Fri, May 29, 2026 at 05:09:56PM +0100, Kiryl Shutsemau wrote:
+> On Fri, May 29, 2026 at 03:00:14PM +0100, Lorenzo Stoakes wrote:
+> > > Add VMA_NO_BIT and have DECLARE_VMA_BIT() resolve any bitnum out
+> > > of range to it. vma_flags_set_flag() drops negative bit values.
+> > > The ternary collapses at compile time, the runtime check folds
+> > > away when the bit is in range, and the common path is unchanged.
 > >
-> > Maybe something like
-> >
-> > "When not holding the lock, there is a chance that the pte gets modified
-> >  under our feet, so we need to use the lockless API to make sure that
-> >  the entries remain consistent during the read."
+> > Hmm are you sure it does?
 >
-> I would gladly use this, if it makes sense for everyone.
+> You were right - I measured it (gcc 15.2, clang 21.1.8, -O2). The
+> DECLARE_VMA_BIT() ternary is fine, but the "if (bit < 0)" guard does not
+> reliably fold: with it, clang stops folding __VMA_UFFD_FLAGS to a constant
+> and gcc keeps a rolled loop; without it, both fold.
 >
-> @Lorenzo?
+> So I've dropped VMA_NO_BIT and gone with your config-gated-mask approach
+> instead: mk_vma_flags_from_masks() plus VMA_UFFD_{MISSING,WP,MINOR,RWP}
+> masks that collapse to EMPTY_VMA_FLAGS when unavailable, so no out-of-range
+> bit ever reaches mk_vma_flags(). __VMA_UFFD_FLAGS now folds to a single
+> constant on both compilers, 32- and 64-bit. Added your Suggested-by.
+>
+> I also took your "use the new API" hint and added a prep patch converting
+> the existing userfaultfd_*() helpers to vma_test_any_mask() (Suggested-by
+> you as well). One deviation: vma_test(vma, VMA_UFFD_RWP_BIT) is itself an
+> out-of-bounds *read* on 32-bit (test_bit(43, &one_long)), so the helpers
+> use vma_test_any_mask() with the masks rather than the bit.
+>
+> > Either way, I think we should break out any fix like this from the series.
+>
+> Agreed - the OOB fix and the other pre-existing fixes will go as a separate
+> series with the RWP work rebased on top.
 
-Sounds good to me! Thanks
+Ack on all and thanks! :)
 
 >
-> > Only arm64 makes use of it though, due to the contpte stuff and being
-> > unable to do it atomically.
->
-> Thanks!
->
-> > --
-> > Oscar Salvador
-> > SUSE Labs
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
 Cheers, Lorenzo
 
