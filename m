@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACC28CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:43:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB2ACCD6E4C
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 07:44:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C39B96B0092; Mon,  1 Jun 2026 03:43:30 -0400 (EDT)
+	id 2EBDE6B02A6; Mon,  1 Jun 2026 03:44:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C10866B0098; Mon,  1 Jun 2026 03:43:30 -0400 (EDT)
+	id 2C4C76B02A7; Mon,  1 Jun 2026 03:44:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B26D16B009B; Mon,  1 Jun 2026 03:43:30 -0400 (EDT)
+	id 2004D6B02A8; Mon,  1 Jun 2026 03:44:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A1C796B0092
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:43:30 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4D94E1405D8
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:43:30 +0000 (UTC)
-X-FDA: 84830553780.26.162245C
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 46E27C0005
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:43:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="nUjIU/Bu";
-	spf=pass (imf28.hostedemail.com: domain of niecheng1@uniontech.com designates 54.204.34.129 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 0FB956B02A6
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 03:44:34 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CB74B1C0A15
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:44:33 +0000 (UTC)
+X-FDA: 84830556426.10.7D8E538
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D098EC0007
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:44:30 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=lKGH9+qz;
+	spf=pass (imf22.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780299808;
+	s=arc-20220608; t=1780299871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pwZkHXqKqxkxLcfcppEkvJjtNsDiBPN5huDHZl9Eqqc=;
-	b=KmaFtRCBXoW/VrQC6nTZ11hG2NVuumeXb5zKS4Q71oh2Fn0jMk/9RHBHm4AUWGlWrrYOzL
-	ocSqgq9AUnJwltUgOVSBAwrmOeU+56J2oE86fDjRcmTKjZseNllvHPChbj+75OEMAKfVPM
-	oyWIMMHraGRBOV0Y4CsbUzcvQWa01v4=
+	bh=ea62rNturdRY4XhPqvTtukJW98iV/DZwMOLJ/F5D8vs=;
+	b=czGjfC7xHhYNzAHOMDYS2jz5BCREHA7ttWuIse4n6sIPDBEVlCjfpFronhzyN/HBa2L798
+	V+wIpDbz3OtrgbQxJlExOQIFrwcyTebu3T6QBo/d4RsVSl6HBY8LGtuiJhM+FLlF9AoEr5
+	g4LDWcod8BJAsmdgSgufGcJ2/MUPjDU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="nUjIU/Bu";
-	spf=pass (imf28.hostedemail.com: domain of niecheng1@uniontech.com designates 54.204.34.129 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=lKGH9+qz;
+	spf=pass (imf22.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780299808; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780299871; a=rsa-sha256;
 	cv=none;
-	b=dTx0e/nRnSM184VkP5eTOrjRM7kmBRXaT4Ka3Hbaf7CFiN+9fEwOA4fSBjxDmNTfhlmD2R
-	IxVF+YaPsIAkmyygCQebsVfEcxbf1l5F4uDjMgUoJezWGMk5dNCl7xvOqLsu4QVFRLu9d2
-	cVc5dQ0opRphLcaeCppsP54O9XVMV6E=
+	b=vZpXZZYMp/46ZyLQmP4sQFwCLr7EbTOG2k5lifVXCWyjJbBvL37bhohJm+bDJ126QeV4Vf
+	wEc4/CHBIJTDfhy7jvc9lVdpoiZ87fGvE5Zgw36ZGuB9t7SRSeghwzgfqx69VtQqTWqQkD
+	5JCpZaIP6RKeoBOs8LPVicdYO0hD88E=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1780299789;
-	bh=pwZkHXqKqxkxLcfcppEkvJjtNsDiBPN5huDHZl9Eqqc=;
+	s=onoh2408; t=1780299863;
+	bh=ea62rNturdRY4XhPqvTtukJW98iV/DZwMOLJ/F5D8vs=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=nUjIU/BukiOGcfae12Pr28aUl+p7bkLozg4sxgd4o8ZJiKyDFujVZ9Zbcst6Rbiqd
-	 ojTzr09SCiQ+fQxkV8GgnmD3zAABG2cYWj0j0rotDcLRB1BxTq6867r73Y6JbbzEH1
-	 wQhQEpeH68mdJ8fidJc/4E7ZiJkCmAiRYNPyL2fs=
-X-QQ-mid: zesmtpsz8t1780299777te9dd8a35
-X-QQ-Originating-IP: sj9qZnDxjOiHmc+F6pDsHm4ywVs4+jfPh2wpfeznSRs=
-Received: from PEN1097 ( [1.202.39.170])
+	b=lKGH9+qzxR6BqKgQYyWPDZB4GRKf6naO2Xjo6aYm6KoVPkdOX6us8OO4Wc4JQG4bS
+	 C+kcmUgGen8IUJqh9HYhIA8vxBqPYcYy1a3EVUr6IhUHG6UxCufBpxwIGNDdjw4xYf
+	 S88yQsJGo7/3I1r5zDT1O4xr7Hcfn7DB3ZsCiTT0=
+X-QQ-mid: esmtpsz17t1780299852t8a43b288
+X-QQ-Originating-IP: gmM8c5FYkGEW54XQ/Bl+R6t4J3ntVyb/FQs1oeeHjCM=
+Received: from PEN1097 ( [124.126.19.250])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 01 Jun 2026 15:42:55 +0800 (CST)
+	id ; Mon, 01 Jun 2026 15:44:10 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 12067453659540289926
+X-BIZMAIL-ID: 15633326993219006780
 EX-QQ-RecipientCnt: 8
 From: Cheng Nie <niecheng1@uniontech.com>
 To: sj@kernel.org
@@ -74,41 +74,42 @@ Cc: shuah@kernel.org,
 	kernel@uniontech.com,
 	niecheng1@uniontech.com
 Subject: [PATCH v3 1/2] selftests/damon/_damon_sysfs.py: fix memcg_path assignment
-Date: Mon,  1 Jun 2026 15:42:49 +0800
-Message-ID: <E4B88E7D4879D1B1+20260601074250.203583-1-niecheng1@uniontech.com>
+Date: Mon,  1 Jun 2026 15:44:08 +0800
+Message-ID: <A374E0020B17741D+20260601074408.204630-1-niecheng1@uniontech.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260601073635.200015-1-niecheng1@uniontech.com>
 References: <20260601073635.200015-1-niecheng1@uniontech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NfCiKUdyqwvYVH7Nc7tPkOYzQ0ufTexoNNJxrhOV6EJBqROmP0f/esBV
-	cnU3lvM4a0LZW4zMD3rZ5hClxBlyP7/RlocgN8MaMriPHpp+mkxgx1NSXDPxFX7rXxmwnFU
-	X/CIl/Me+0njusvVMgeko0kI73Wh2L5NrcRCisNDJ2SHH8uMinXsN8VgPakUDUzTjblnHPe
-	tt4RSH/aScOrPl+21R95uhh9H53W9En0DRr9VM5yy1zgXm1DhRyLHLp8Fb8o241t49bfN0A
-	mu6DE/sTxJ8RLJODwQY1Q9Ok5Q8vUGaJvr3zZ96xRpjnGKhw2aMapxk/nvu4w9thY6L+/j8
-	SxQ0YCCPzIFRpdUxUlQkjxKKIDaCuVHf28rN1st6OO/rd7RN0/mjjp+2pYaeP2v3qr7l9jL
-	NSyT3ATCGm4wyR7pIjvJgQtck2Q0+ElMtUJsfztZ2OPqz1UmasZSTauzU1tj1ULap31lVmv
-	FpiCr8bJuaJqQDoppqEx5DgUfwqKbVMmsyEtisCa5QThxbvmi7gktdT8DdQlZeg1xYL+lWg
-	FreBEiw/UlOVIuiUHXYikF6VjbxSbzV1MdntIu8I5k6GNrWIxmiPdpFD//qhx55RKyZth1L
-	Xb0YMpFy/e9Mzc8YUws9NaxcP99yKKNqziJ64YUPGuPL9FSeAR9PAOGwyP8WeZXM7CqGY4H
-	Z3w5vky9JDtPXrmsaBhFHCxoecpJiRDtBnX2/+f5fRmfOm03vz4Z+D/QbeLyhh8vkRB+68v
-	u6+0VeOplNEit0VuWgyRDMbMZtZEdhGcuND1bIvqpL4KH9sWHEUb6/TKkVkhHnfB9DI2CCi
-	7k/J03vYOulxKZa2KFZm6FQuvcuumAhjcK0+//a4Sbjl1AMsR2a4YtbWF8uUU2udOfAMdzF
-	Ga+ghoPwcindFrw8lAaa6AVFvXOefrcFVd2dhXXfmo3Fi2MU5f197KmwGgsZPGkenefm50U
-	U+It/df0E++OIer2ttaRZFzDFrDJDpmU4peboFv1cpy142VCxzNdhIGrPIWdaGd+7QRCPIO
-	ja8PPlCVF2UMrmPTkp+QtYpe7Dh4w78xxPYpejWEDAuvdJCXzNSGn0Ze+o3js=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: Mm+Qeo/nLo9OU8/4JY1J+7N5evmzSZiP2QGUVLCfuh4NOXSf6GjmJgLF
+	uBLwcTkgYOxfDrve6GETFU0p9l83bNhFhMfW0esFm9hkMYxVgR6lsi0TxRUNMaCPMNztHEq
+	Y9lQ5DUsf2ijhkQ4ICkC7wavBbJ15DqtWQz5wXAYdGi6dOgoDl3naPar6+w+s17N4X+P8/R
+	Dt0QLi8pKO2kYAbMx404rLVf+vL1i9y3OoEqiI20xSu0x0+qUmg/yPXv2kvUeVcN5lzCX/e
+	jsYKaU0cNVCelK12dbWr5nGuHOz/JZqJCkFKAW4tVsqfFGtx5jlnMpbesngY2UeXvrd0NIK
+	U3g74JFiVGPCDjkVTWMjv9375wPQWmNZaV7mBNdAnxkTWHO6DJbQ6N6r8NRvl0JmRwD1IrS
+	TpPFk8OHyXaBgb1kk8cMmrq2Z1DgWkawQug+2+lHoe+wguN6QPu+mBg9wHzR51sPd54nBNq
+	va+6E4laXJ9MrRsYsP6XZ/X+c5+k1hmgSGHT0wEH7Nvlj3b6Gspn3m6Z702GJruh/qkNQ1R
+	gsGTj7rRQyq+OlSCqZ2T04fZePejja+CTmK+uPFtbEov300t3k0F5Odag7QEkHop9sn+OiO
+	sMXj52GAHseF2q350mEz0t+dWuJmJrIRYHnIBh8Tf+lXtu3Nrtcv4EsgxS6ohsq9p9aENBx
+	3oomWF6VzUEzSVWdzyReYzydHidvtn2CjhGEbIk4LhPtCw0YD+Fti6mIAgzDF7yXqD2Jm0I
+	EWe9DHOmWlDPmlAC9jjbA0twbPAy7fpVatNTNQuaA73pWi7RVdV/1q1qNYUCLTVmPWAE7ok
+	DZowA6La1LmCY6aWifD2vmgQOEEuJj003m1OB9umAowcp77kmjWPYgblYwLua6o1x2DPysn
+	4t95klUzxJOr98oXWCi5xI4gjFLo0ETwt9CcHw5d+Kua1p8nw5Mu/sIT793SSivXXO7p73J
+	9K0oQFoOPPapRoNukZ+EpRm4Qaoi890ZsznNOWnbDIng8m0XAshaQExXnEoNEZOPK8ljYKb
+	Sr6xe6YjpyoOpepkRnr1JPtKet0f0EMu6jKRAOCvYUahBGYABnSaFZTFk4B55IXt3LsDXDu
+	JaP0sY19GaK1iE8RZw4iCtK9jKi/koSu88zbCBwS+TUqAaPXEjiLmY=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
 X-QQ-RECHKSPAM: 0
-X-Stat-Signature: 3ygxcdt8eei6nqte867sfgaky81n7nsn
-X-Rspamd-Queue-Id: 46E27C0005
+X-Stat-Signature: 8ge7suu1fxmno9hfnxrjq6giassibf85
+X-Rspamd-Queue-Id: D098EC0007
 X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780299806-860207
-X-HE-Meta: U2FsdGVkX1+ByIZGe8pY65JKfKZA495u+GWqWTRclu53GgAYlJPJqG5w5GVA03IyOYsJy9+kLMHbdLKCGV2n01RQmzcB26oX41HCXWziW5V3NrK+/ot/vjLKjwuH5B1cjf4bF3hM0x221Og8TI03C4ZS/Y+jQQSIw5jsCTjRg0rp9AZGTgXshANcMqQlCzJhNP0yn5dr7XgA55WULz1eSk3QB7cw5UeXuMSDI24+O8ZYZPpQv69swBjM6+V2faFRm7bEiHc0+UkFSJbyvjTDnb/gBp8+oMJJiOUHXtfouqXAJkHly6169E449axXkTn4mU2yg2uO7CnQOVSqcUEBI6OSSsRQS6n12hASXz5XynhGZ9eAkCBC9gi2bTl38B8AkI+MmDUjd6o+b3IGvJTZ+u8899qbwbLn0foq0uT1KawV43taRKaiGAoM5fEw5+GjJ+YN6hijP4wTqqMp9FtRIOrklmSutHBq3ciaiw+6bIfyPNeQVfKcd6GzybEB0nRS2MlHzgjobACIKZwUVRrbQ27CleYMAfeThzgN0vxqzIQ32i7kGJlk/79fZ3uP5ulqoRyDzX7IcIvVwzeG46hVEXN2R2E+Ur24VPgXcSQVEN4tlGbf/IVSfngtVvonNYKMA8r/RX/kC9C48PM9QmDz7Lxt3NTG3dBpus6HkbFTrucLNOofvKkQ2LMnwFIZqGK7jzL7ihYooLqs76AaR4DOpddU5MIfs391vXo/UEyNA8cOYDMHHjRIFPqwnMOE5/4XOCeow+ruxms2mKaUz7pQOu1XXN5mbC/uvQW15zqdYv30g/ajfLqALRqLutyY6ZdkogBOwJsK+i/uE34oQk18RKpiJxwijFteZw54oMC0weSo4sl4oOsJvhN8jlGKtJq7s2z9LezrRqJcqwoZF6REIALjBbAR5u7Tk1hB6ZybagAZ/Xk23YzUVnqy23g8xd8gpYjdoraldHCguMgMiFO
- Ca4wIIKD
- xIagv31VtHItUlVW3o/vjNC0sws/4b//7PExJ+hafUJRoAs9DaXMy0eTUZRD5u5YH9Dngx6PwnAn/JS83uHnxRuNiBzOPwtvdRGS45WBTWx8epH/VGWT+h8VLmG5wSYXA9ZmJ3cWspUb6XB8QLhRVIYNispDfMBhn2NoBBjuOhCFbGwAbdbEM1ohbsta/ndc0ObzYc05ChrtbIWC2cgzqWblK/1WBOuPxyKUN0kBFh0NrRSZvlr0g9JQQlFp3JvDT+MzIKKYER+XsazluafUwe/hn+Uj8A6nBBsgGFsAUYp5my2bw0jUpJ2S+OiEIE5Ef8dsCauAEkxaG0nIJpGE7052X/+8xDOcI6WNQkUWCUV8RId4Dza3o+wsSLEasiC0D31jdmAGs0uIDk48=
+X-HE-Tag: 1780299870-335095
+X-HE-Meta: U2FsdGVkX18gt+pIOCciImiUMt4mztuz/svWuoDZCc+ie8bIb9rWBuG4A2dliMlYXk5MJaJuAPHjOHNf/stKTJ/VGO4GsH0Qw1lyL2BF6cJG2AjpiDgV5aG5godeYmhFLjtFTYYIbgNNWe4A5WI6gnJAB7AXZSO5dlhH9Ny3n0ZkkJ7mhK/Z7SrxSyc440/vEScFMwC+hijjDFFrfVjEBqQTYZB7tU0xsdDUIDRNgZ/DIZtLn46L3CNxT3VAVVTNo3cljLbJ2DszFfOraNKKo2nihJgK1eZ/FtT7V19C7ySV8BvLnoyyEFcee8hcf2loSDbVSdV5YTJHCoLfpZO/qFhJQcJq/85rMbnK2p+33fGcB0KZ9nyBoXdxC5CdduLbQhJwpn1Upj+mcKqr5PR9Y1aH0jgcHT89IUVKpEHsNtHUI/3QyGZ8UIOnIGZR7H6sj5joz4BOzRsR8fQQ8lpLdJP1u1l3fWPtMjzC9FRTIs6u9yl3+30s5MtjjryPB1y6FrRqQX8t9lMTdJXYl4DEhNdBaoTSqTO1IK6Fv7p1l+YqG5+HoBiL8e4xN+egZh5onNfrTTOsdvNNmzxjtplN0Oz+IN5Y7PBlvrqyrnjYJ0NiPgws7ZsvoDCWHXNhox3yKWuEan2UklSsJvP0LTcKLMl9W/Yj1MBCvzeQPx6h+ydeaWJ4uU7f84ezKv9mekYgXpuo9WiEwlwiVZOa9zHvniy3YD3S5x3pkpNoUnDWwrzJHiVVE3A6E+LTahghTOp0kJCtKczlpOaxJcbb9/krAbW9XnyC879z7BStNsq5uy7+N+nWdImRI/KwOGZnV5DqPFWIORJFz5gvjo1Q3rqO3tJCxMaBqAG1kJVfPBzFiKybzpPncK9S7Gk0WQ9eIJjxnAx6Z6ooB2BR9ES9+NyLkIpuiTpOdIbVaozjHswm9NNfEagCSc9KhKDzZL15wQYZeJuv3VUxpPOBkZkwDUj
+ AgVZxzaa
+ 2vB2ZJo2N0x1jZoHcXy/FGL4W5x1gwRT0kDs2gvbyHVrHqC2cOOi01BqQYY2eGGOV+ZbDqqjhdBWKA7TRXresReeHbpMj+VvSIqAYpCWfX2A7TwQLU/Pve3Y8P5wDiz3HwiIjCyImH5g4MfgCq25A3nP21uzUcbmc31aXbgwwup85x8kD0jd55lBuQFmVxP9bjqbAID1k9C65EBRyd580ps03mI6JnLK1tnnid+PG+MPMLSicJ0hx4ArLTn6NgkDAqBGA6gOKN1ns3RebVRm33kJFwJk7Dgv5HxJbz+JAzLCHeh78fpy4sB46b7/oFyGvPUwnAZio6ONvCLT5YYpAvQSSjrCnGLXOiJS5zRjEjlWJHlbzM0vIFDUl/4Kpy0gmTTFC5dppG4bV7r+qP8W3r61By8aaVFDbyY7ICE7c4ym1mLI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,6 +125,7 @@ This makes memcg filter staging and follow-up validation use the
 written path correctly.
 
 Signed-off-by: Cheng Nie <niecheng1@uniontech.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 ---
  tools/testing/selftests/damon/_damon_sysfs.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
