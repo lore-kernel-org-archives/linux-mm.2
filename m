@@ -4,122 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A39CD6E56
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 11:08:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A723CD6E56
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 11:09:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DD9D6B0325; Mon,  1 Jun 2026 07:08:02 -0400 (EDT)
+	id AD9816B0327; Mon,  1 Jun 2026 07:09:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68F356B0327; Mon,  1 Jun 2026 07:08:02 -0400 (EDT)
+	id A89466B0329; Mon,  1 Jun 2026 07:09:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57E096B0328; Mon,  1 Jun 2026 07:08:02 -0400 (EDT)
+	id 99FD06B032A; Mon,  1 Jun 2026 07:09:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 43D936B0325
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:08:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 141494062C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:08:01 +0000 (UTC)
-X-FDA: 84831069162.11.63CB2C7
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 18599140005
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:07:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sIfC5YAh;
-	spf=pass (imf09.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 870C66B0327
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:09:53 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 543891A0604
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:09:53 +0000 (UTC)
+X-FDA: 84831073866.16.17CE966
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 73C6A4000A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:09:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fwuYrdm1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780312079;
+	s=arc-20220608; t=1780312191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4tMRr0555UkSJVpwevwwfR/bu9FaT1rWJqjveLdcveY=;
-	b=gfMh4GKa2Q/TE0kaG46K+sPlXjWXObr5PY1fMaq7SWK84hCI+n2QoFolOBhoM/8gnqvs1g
-	qPtjbff24sucKu4JZymenfzsZobJA4A1OB1/XHamd5qB32+kEKAXoojPJTks2KeTM5Fizv
-	KvGXQhszRLEzYFeFTrftjS1fWkV0AxM=
+	bh=TTr4tQwBByNMsxp8D3ocf5yh1cG3xPQPohe/Uv/Q2R4=;
+	b=Ks60WDmVarUJeKuhtqaDf6h3KLNEszj6wl8qACIXzXrQBA7fCB8i8YxKZCXd5lY+r+B6nu
+	LwUnGyVNRlVnUbqG5M7T9FplVepp1WUGl7h2MduVv6hK9Q3W1B+v+HiFK7Tlsjs11l3gNl
+	WGlkcBPfILiiNsyvTF6sjCuOS8yAXe8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sIfC5YAh;
-	spf=pass (imf09.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780312079; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fwuYrdm1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780312191; a=rsa-sha256;
 	cv=none;
-	b=k81Xf4jzV8+/PQYKb2dDoCI2NPCRfnYdwpNnaTJ3/TfxEwoUIbnTn2/JtQyF+f0LWB+o04
-	rcw120o1vakHNX2Mv+g+YYF/KJ8p9E5KyhQNCryej01LaxP7DxBcbhD7YMmgPVNWdPDGo6
-	289yXDSvnbI2AAYp2UbQNQX7e9VTbDs=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8421f0e9c5bso828805b3a.3
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 04:07:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780312078; x=1780916878; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4tMRr0555UkSJVpwevwwfR/bu9FaT1rWJqjveLdcveY=;
-        b=sIfC5YAhTeA6T68hMGdR5H3aK88EZxanayQeLdGJRe0KOIX0wCoV0eWnydPuXMrRhQ
-         eEEyOEftpUvHyQc4rohkayBGNk7R8XZyqYgIHcbLXddK6uIWyFzmtN0q0Flrp8Lct4me
-         IG5LaBBT9xjyYXzHZwqm3WEatVYEWhTnqIPCYkSS6p1/ZjnVljysrLdAoZNe6Q857J5r
-         4NTvd7bduFp/EY43n8rCn49JJUq7H36l0rcBgLVV0JO4nrQMJOCfbh+h38W4NbECc1qb
-         pFKVBNaOrzZ5vW1WjNAGoM8hQVW7A3A/jxZ1thC9Aeqb98Cy0vHqdIbdkQgObX3RJCNE
-         dh3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780312078; x=1780916878;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4tMRr0555UkSJVpwevwwfR/bu9FaT1rWJqjveLdcveY=;
-        b=P9wc6Ts9is2uf1DTcTmPyZYBXuinJ+Kyt18wPF+XrJvCYFyDQryJ2oh34G4H1AQ4vO
-         T2asiImxVHFftiEsfZ8p7DW3hn2q6VCAM7fsns8T9p8oUq3tQKUXybNZMxRgJFrNeIp2
-         qYdxjs9svz3LchSPsgE4iVhrqr9bejb5lRSsjvw9ZajUMudIBqO1xUegiRmun9uWdpQV
-         2SvhoNuKjIXxotjREXO8MMJ5OUMSxbKE4QDXRDdn8wnzsB3KLI5YOcqSIkEhUt4DhQxS
-         2d02LFULqkxWWP2mAotjrAhBmWzT+1AX58VvHBSGpvlRD7Me7o9sBovsLOYLzCGTUpeC
-         B1Kw==
-X-Forwarded-Encrypted: i=1; AFNElJ9+p7glA7QquMh9THBC90K51eJzbmcarUb3zhQs4bbY4ztBZAQzox4sT3OqW91/bxHzOKNeVaqMQQ==@kvack.org
-X-Gm-Message-State: AOJu0YwiBS/NoNGqnMpwnXNUjOMYrwB3c4yg2y2FjaZDGxxBp2VyggwR
-	QwrMmWaGTazIZk3AoiC718mLU1wWyX3gQj6iT5oDNhsXoLUUxnpCYqbF
-X-Gm-Gg: Acq92OFXkOHI38fk7iCKY2V075N+NrHa3sLHqkDdPvl/D27YpOhK5cB0ZVkZqHrrBdz
-	booWUUVb4OiOtG7+BTOt8dIdzlrYVkaGIF49c1WCtFFXSxZqIxpKUIMjw+heSWgaq8kgrUs/KOq
-	sE/2TSez1NshrSllQxrJ80GNWnxqGG/70h/ccFzsHzx7fsybOONyKTiGd3GfAKMKUZdJHGmu4z9
-	t1qdqONRYvzSEDpT2zc9Bow5EFGD052224fAssw+7bmjywdo4ZB1kAzXQKFHyXS6huaSIJ5eQlt
-	Sb2Tb0hD4w59huhcQKZI7G2Z3eAcYMzbqm2xBPCScOWrlt6g7Be3fMiCYGdrejkq/bSqXm7MoXq
-	QPr0gbj5oo4K75Aba32IsgGXxssaHwoak9MPh9iQC27c/0lTICWZcQmals4jPvGHDWfutl9n3S+
-	arc/g4IqsaibHiCElyA8X5JS9vstxx7OD5yeMrki/at4Njz/v+tn8bXrZz2UCPe14M
-X-Received: by 2002:a05:6a00:190f:b0:842:4612:55f4 with SMTP id d2e1a72fcca58-84246127062mr5297173b3a.31.1780312077721;
-        Mon, 01 Jun 2026 04:07:57 -0700 (PDT)
-Received: from [10.125.192.75] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214ce9cebsm9839131b3a.52.2026.06.01.04.07.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Jun 2026 04:07:56 -0700 (PDT)
-Message-ID: <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com>
-Date: Mon, 1 Jun 2026 19:07:45 +0800
+	b=vTTWK+bdv5McCW+i3/OqrG0gqqk2W5wdIoi//ldZA1G+keyEjmwa5CLKi3i9Dn8+qW0uU9
+	kVGmh5EkWy6KOhNyzsLo44+t94r8R6C0nZMl40pCtdoyvyJ7slje+/hP7jcWVJOPhro9G0
+	epNDIfb46/5PtnQBYzr2Wm4kknuLfCQ=
+Message-ID: <c9cf7afb-1c92-4915-b311-305c7ac48739@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780312189;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TTr4tQwBByNMsxp8D3ocf5yh1cG3xPQPohe/Uv/Q2R4=;
+	b=fwuYrdm12vhes1RUcQfe5De52w6tNFQ4WjqITT2oAJkvclwo0eQiv9oCvrJTOzfOdF8EjN
+	pUt+rMTOaFp6fdp8WsZ2kzw7Yw6so77nPChFnq5PyPwRn8wgss95ANbm+qnIdMMjsuLu27
+	ToMkL/pgiC9lFr1RSqNcPITzxAXrMA8=
+Date: Mon, 1 Jun 2026 19:09:34 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor
- per-memcg
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
- shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
- nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
- roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Hao Jia <jiahao1@lixiang.com>
-References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
- <20260526114601.67041-2-jiahao.kernel@gmail.com>
- <aho7nepN5jZtKmef@google.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <aho7nepN5jZtKmef@google.com>
+Subject: Re: [PATCH v5 9/9] mm: switch deferred split shrinker to list_lru
+Content-Language: en-US
+To: hannes@cmpxchg.org
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ shakeel.butt@linux.dev, mhocko@kernel.org, david@fromorbit.com,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, qi.zheng@linux.dev,
+ yosry.ahmed@linux.dev, ziy@nvidia.com, liam@infradead.org,
+ usama.arif@linux.dev, kas@kernel.org, vbabka@kernel.org, ryncsn@gmail.com,
+ zaslonko@linux.ibm.com, gor@linux.ibm.com, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, dev.jain@arm.com, npache@redhat.com,
+ ryan.roberts@arm.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260527204757.2544958-10-hannes@cmpxchg.org>
+ <20260601103947.63923-1-lance.yang@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260601103947.63923-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: scegk7mz6k6yughpq4t1fnoayo97rowc
-X-Rspamd-Queue-Id: 18599140005
-X-Rspamd-Server: rspam07
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 9yi3mtjmshkzjmnsorp8raz1ntjzod3c
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 73C6A4000A
 X-Rspam-User: 
-X-HE-Tag: 1780312078-659152
-X-HE-Meta: U2FsdGVkX18dC648eatR92bZHhdKFEPrypAsXBwYIE5IfSeea3c8B0KZE5doTeXdJe7TqVFyUAaUUAf8ZA0mpP25eToLoa1fG0XLiZgRxjHrmjA5XOORnZiZa0rtemeO1oyVzmw2uuepIdMRx6NSdss9LlR+wsTnPDe1pksPF5g7iMW3RJs+JVClGiGqLvldbnocy9jEngzQctEGm9ab6k1Ut7RpHrxKcSZhm8PKwWJitC481kpqMZtBOL3HzsUW0/xucVIdC3m5lArND0R5AkF/IOiPomxLsvU6sFEgeGQua2jcNn6cUH/WLIm88IkmKzhg//OVccNvgw7sp2pbTFyDa6tUzWdMqaNK+Rczn5aifIk9sXORb7F3WrBrD+u3PZcICC0PdEutgf62Ufsjs8Ov5n5p6xuDv2R9A05T9P7h3Eu7dMGhZooIBZW5k6Nyv1y6pRG9G8NYt/HGwAai/F+tgViAXCKrLDrN6IbwRnb72jpQhoSQP9u1aDovBokyC0K9mh/xto632YOeH3BCo8bKuwn+L6fFlM4CwK4RkDKfyxtiJ+PnqVwQLXCGYHNIBTWa7R1w7bfA15/YgAdB+Ow4yhxjLlAT8PXKJTfoekK/b0OJC+5jLlIpSPCtL9c384H0fh4OI9GHRmOpdms4XD1ux3V7nb7kkF7a3XyDsq1UPPYWjfjR4T0tgG7UwVja3zdBfVLtc9GTOE4GxN62P3wR0XrXSk43JSF1Hr4KpsNgt0tlfIY2XYi7OgicoiD1RQc9a7A0HEjnBC8r8oSfy4VWa546b256Bi0iFG/J8bFgzfhakmFMmTTNpnzPSB5MhwXWSM1h8zHEm+Kf8SewgSWSDJtD+jg3iRL2SA19SNJ532MmjbWRCZMoyQlH1MnlpkdyOHGr/yIlT2Jg2g8s+1hgCtKg6GFHD8nN1W4a6QjwRdtwdjZ5ebybveKghOxmKSoXOnhz6v6BjtuDv/Y
- SelRufZg
- MArXvSBYiUi5FwSn+X9VTKSoGPkhug3JyAHCIDr4WYijAAUXAlYC88t0JE1u1d0ezAMREBtsgl+h9hu1mNa+CX5J6nLyEncad+kr/c8dqcYrfxlyrFU9rUXCLQescpDvDGVGrx6M0GjicfZAvwNbt3L2Ub8vLsu4XExKJJUlbvKNzbe796OBX8tJez/CqfnZLeX5ABt5eAS3us8CDJFhLxyhwQrNheXt3uavUON50fFXI8LbPTomdOCDdIqyXMgnHZgjj6kX5RmvVZ2Zj4eLJIJXZ+R5DlA+niuWlsanQ5LRBs7Bdxk+FNMskZL2bxOeJH3lV4hLpcouFBmuPt84Yiqf8tqkQiu1xoy9y6jl7cos65ShApwueJYSzRzXsjx3RBx6Mw5ngIZrd1a01rhVFwPIL6rzYL+8+NGsWKL4WYvVej6UKtUszLMy8Ri3Rv04cKYCoA6NHfqozRoHua518rgcJPZ6r4/Nkga55DpgveheKpiQirdK4cl64RQ==
+X-HE-Tag: 1780312191-125926
+X-HE-Meta: U2FsdGVkX18cpzxmWxm7vuRxd4WJ+pFyFRNaQKlPYRKCt/5PWbb/gREfKwKXnZDN4kIHO7sR9WNHeWh73/cT3UNIecu96JkuIuqfzwrUo/JAyzKU3h1hmSdDU01ygI3x04kSVAE4p+cJuJAc+S7sQSMMKjV8i8QD675XwlEoAUZwQru0qwuwm5XorOS4KD7AFKoH3WUsCImUDds9vNYKcgBfgT1viyzd60ygRJXCSyrASbC4rm7Gl46SvbkBQNmd+TCiZb2H5hhBUYBjnsnYvpQ7/fqfRlUF0jA24l6cIFLh3tSb5NWpEOXoF0t9UKGjY4pajmixe6BI/9MpnzUgqFxUW3XjqCbxY52AtY/hhFBr+wEdCrI6az8vu36oNGZaYMBIZKwQOVaYj9zCGjAzqaa5utoNjLAYEuV/gLlCXTgFRbVc6pTYx45SFVFvg/kpPVriEyxpyth0tUcDqiwayRuGzNVkG3MzCGqKASjEGUxB1gqw18/cBq6uwoF9cG3a8MbrKEpk05pqGni9J/bie5Um5TK+PONy+5TqMJ3yOgx9M+qzls7Q+VfexwLL2zgwmWY5YNvGfukrQi+VwaE/MzSUhFadjXT2u/gTLx/3jgAramarQKdWgtjbUAC5EOAxq6k/+fFgq9pI7daGKX/nFZPQU7nvdIXFWFcaQf+vq8CqQp2WpCHgOZH0GNzwIUuiu5JtZ205utoNGS+kAAsj3M5VZnftbJobhR53bKcVpte4+ZlnSPEusEgJQNuSWhNISaSRbb0a9cvtuhZXGX+CdpI69Ji8Gw7jxkxYLScZNmneUjPSjfU1VwMgvpMBwi3yfw3zGsZa3bsk2MZzE3Jy/toB1hPwEgpYi57YMWJATGTV9xHkNHonJU4QvLUVvtFBUxu0B5k8N2ka4QH8/red4zwvOVE7I5YBw3c5R2NYzrgKVN1J7Y0q6PHHidHds9myIJhtLZPZgyTHKNm/cGX
+ T6Em730c
+ AhgRkcwIqzPMR8S7qy/NNvz0PBYdkAK3NV6BdBXnMgWDeRT8wj4bBEwWT+/b2qjpLTgW1fBU/VpYt9UJqcAQjvZl7vinGbVPH/ij/gXbM2W/fS6UHbfVs6JdmRSYhKLZh8t8tavBMTBnflJS7kvxgQ7dRZqjO2HIi1mNKuX8fnKGP62s+CMaeOAV53C1vSaCIQ4GUaBOJ3+qdWzzZDUw3coq57rWke7Fc6jiqRf4koSLJEOFVN3VR9B3U6mwdhlRjIATNko5tFzfRKBSNffjHSoWdvnRT+c68UTXu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,87 +99,36 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/5/30 09:24, Yosry Ahmed wrote:
-> On Tue, May 26, 2026 at 07:45:58PM +0800, Hao Jia wrote:
->> From: Hao Jia <jiahao1@lixiang.com>
->>
->> The zswap background writeback worker shrink_worker() uses a global
->> cursor zswap_next_shrink, protected by zswap_shrink_lock, to round-robin
->> across the online memcgs under root_mem_cgroup.
->>
->> Proactive writeback also wants a similar per-memcg cursor that is
->> scoped to the specified memcg, so that repeated invocations against
->> the same memcg make forward progress across its descendant memcgs
->> instead of restarting from the first child memcg each time.
+On 2026/6/1 18:39, Lance Yang wrote:
 > 
-> Is this a problem in practice?
+> On Wed, May 27, 2026 at 04:45:16PM -0400, Johannes Weiner wrote:
+> [...]
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index 135f5c0f57bd..f22e61d8c8de 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -5222,6 +5222,10 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
+>> 			folio_put(folio);
+>> 			goto next;
+>> 		}
+>> +		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
+>> +			folio_put(folio);
 > 
-> Is the concern the overhead of scanning memcgs repeatedly, or lack of
-> fairness? I wonder if we should just do writeback in batches from all
-> memcgs, similar to how reclaim does it, then evaluate at the end if we
-> need to start over?
->
-
-Not using a per-cgroup cursor will cause issues for "repeated 
-small-budget calls" cases. For example, repeatedly triggering a 2MB 
-writeback might result in only writing back pages from the first few 
-child memcgs every time. In the worst-case scenario (where the writeback 
-amount is less than WB_BATCH), it might only ever write back from the 
-first child memcg.
-
-Similar to how memory reclaim uses mem_cgroup_iter() (via struct 
-mem_cgroup_reclaim_iter) and the old shrink_worker() used 
-zswap_next_shrink, we need a shared cursor here.
-
-
->>
->> Naturally, group the cursor and its protecting spinlock into a
->> zswap_wb_iter struct, and make it a member of struct mem_cgroup to
->> realize per-memcg cursor management. Accordingly, shrink_worker() now
->> uses the lock and cursor in root_mem_cgroup->zswap_wb_iter.
+> Missing a MTHP_STAT_ANON_FAULT_FALLBACK bump here?
 > 
-> If we really need to have per-memcg cursors (I am not a big fan), I
-> think we can minimize the overhead by making the cursor updates use
-> atomic cmpxchg instead of having a per-memcg lock.
+> Since we jump straight to fallback and end up at order-0 :)
+
+Sorry for the noise, I missed the earlier discussion. Never mind this 
+one, please.
+
 > 
-
-Because mem_cgroup_iter() always calls css_put(&prev->css), we cannot 
-simply update zswap_wb_iter.pos via cmpxchg() after calling it. Doing so 
-could lead to a double css_put() issue on prev->css.
-
-Therefore, if we switch to the cmpxchg() approach, we wouldn't be able 
-to reuse the existing mem_cgroup_iter() logic. We would have to write a 
-new function similar to cgroup_iter(), and its implementation might end 
-up looking a bit obscure/complex.
-
-Currently, this lock is only used in shrink_memcg(), proactive 
-writeback, and mem_cgroup_css_offline(). Note that shrink_memcg() only 
-acquires the lock of the root cgroup, and mem_cgroup_css_offline() is 
-unlikely to be a hot path.
-
-So, should we keep the spin_lock or go with the cmpxchg() approach?
-Yosry and Nhat, what are your thoughts on this?
-
-
-
->>
->> Because the cursor is now per-memcg, the offline cleanup must visit
->> every ancestor that could be holding a reference to the dying memcg.
->> Factor out __zswap_memcg_offline_cleanup() and walk from dead_memcg up
->> to the root.
+>> +			goto fallback;
+>> +		}
+>> 		folio_throttle_swaprate(folio, gfp);
+>> 		/*
+>> 		 * When a folio is not zeroed during allocation
+> [...]
 > 
-> Another reason why I don't like per-memcg cursors. There is too much
-> complexity and I wonder if it's warranted. If we stick with per-memcg
-> cursors please do the refactoring in separate patches to make the
-> patches easier to review.
-
-
-Sorry about that. I will try to keep each patch as simple as possible in 
-the next version.
-
-
-Thanks,
-Hao
-
+> Cheers, Lance
 
 
