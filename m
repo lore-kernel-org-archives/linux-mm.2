@@ -4,105 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63B3DCD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:32:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8430ACD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 12:35:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 846D86B0382; Mon,  1 Jun 2026 08:32:04 -0400 (EDT)
+	id E656B6B0384; Mon,  1 Jun 2026 08:35:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F7026B0383; Mon,  1 Jun 2026 08:32:04 -0400 (EDT)
+	id E177F6B0385; Mon,  1 Jun 2026 08:35:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 733E66B0384; Mon,  1 Jun 2026 08:32:04 -0400 (EDT)
+	id D06B56B0386; Mon,  1 Jun 2026 08:35:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 642586B0382
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:32:04 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 019D990739
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:32:03 +0000 (UTC)
-X-FDA: 84831280968.08.9DDF7FE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CC3F3C0012
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:32:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PO2s5Upn;
-	spf=pass (imf10.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC0F56B0384
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 08:35:25 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 656C91A064B
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:35:25 +0000 (UTC)
+X-FDA: 84831289410.29.BE3AB06
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BF93F1A000A
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 12:35:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LeJxeT58;
+	spf=pass (imf19.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780317323; a=rsa-sha256;
+	cv=none;
+	b=X431fMn+zCNyW6yKNphV631FFutey2WOZfS3IulFzmzy+iYZAQ4sStgiF0tA5Y9cuhiK84
+	C6XsDT82N2ondsN48YEtdZLmi5sdeQ4oT/glujsbNios779Wml/F0MAEfXcp3mBiATgizb
+	Pu7TPsZ/Hn7Kp67EYoZiSBGD6QCoBzU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LeJxeT58;
+	spf=pass (imf19.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780317122;
+	s=arc-20220608; t=1780317323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+D4PHK+G0v+lkjMJEe4hiF/O0fl6XamxHZ2AeM2qWhQ=;
-	b=EJC0fvpSIRJh1XoCjl5XrBA1f6EUB67u0JqVFNoP9gXvdeFihzvAFh5mXwAUGYG5ijO71C
-	4aeL7H4Z1N/IBg6+zYwOlunp7C1wJ6WAionwJ5RlyoQs29HmDGJh7FqLeltcIQ/mhRxQhm
-	lWkOHO+zuimSDtGde8A/4mFp9o/5Fl4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PO2s5Upn;
-	spf=pass (imf10.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780317122; a=rsa-sha256;
-	cv=none;
-	b=bPA9ZIusaPT6SCsj1upNevFCcYu+llvGz2JApkwII+IUKDg756WIVOVHfDKf074GjzllLW
-	X4mwxLxdMwXzK4r0bTEUIPN1qQUHiofdqY6mJ6Gi4fbH37SXMn8u/xL7+7PxMeTIFxOJ0r
-	b+duFIxASLgTc1jttXyNAGioguGJiis=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780317121;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+D4PHK+G0v+lkjMJEe4hiF/O0fl6XamxHZ2AeM2qWhQ=;
-	b=PO2s5Upn5JF7opl1MQpU8eRQs5ZMZTGE08X4v5OSOLEecLQYOt6iJAoGBNDjn/V9S4+pNa
-	gNvMx+e4ZRLrlUJMu+u3BPBHp8tqF6F5S3YuOgXICqjDcs1G4vQk3Odk/ybukV79CmyT0e
-	hrNc/R6Qg8KDv5mJxPN0+INu5SVTX+M=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-135-mRYfuuFhM2i8ajN0B6e56Q-1; Mon,
- 01 Jun 2026 08:31:55 -0400
-X-MC-Unique: mRYfuuFhM2i8ajN0B6e56Q-1
-X-Mimecast-MFC-AGG-ID: mRYfuuFhM2i8ajN0B6e56Q_1780317114
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CC7D51956060;
-	Mon,  1 Jun 2026 12:31:53 +0000 (UTC)
-Received: from fedora (unknown [10.44.48.10])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id A342B1800577;
-	Mon,  1 Jun 2026 12:31:50 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon,  1 Jun 2026 14:31:53 +0200 (CEST)
-Date: Mon, 1 Jun 2026 14:31:49 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm_access: simplify the security checks
-Message-ID: <ah17tTbarD2dKVWE@redhat.com>
-References: <ahrsfJE3NkKjShEX@redhat.com>
- <ahrwUGytgulEwujN@redhat.com>
- <a8846033-094d-4e1c-bfba-f7f543944709@kernel.org>
+	bh=4D8mKmK+s+4sL4bhA99fPLjzqV9Yidvpyfe324Qy2BE=;
+	b=DEO8dUSkHZee+A10zLWWOBJ0j1Ns9sSNj7HfqY1y9asH+LDkR6jjGoWB0kw8KLSkU2gZJr
+	ArTR07OvqY7Pwry/iGbjGC+sobgZ3MCPs2FIYsaP8OZMalxnFfwkkSlHWDBglzuD+HKCp6
+	NbAPoxT1pRu/cz5qpvg16l7TSF0Lceo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D308840E2F;
+	Mon,  1 Jun 2026 12:35:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B771F00898;
+	Mon,  1 Jun 2026 12:35:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780317322;
+	bh=4D8mKmK+s+4sL4bhA99fPLjzqV9Yidvpyfe324Qy2BE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LeJxeT58apk3aiYwTcDP8ZuwOqZlxtg6xsRxAvAegwmbFCDWBr1iXRhj/SzfUMjtg
+	 ctd1IuB9RXeyJf73H5q5jKeChTLAWYcR+1nbgKUR4qKmsdz81nh3zUoFDzYbS2ERXF
+	 Y3hdyA82gVLA+0qtbBuD6/x2Rds6PCzBM4hgiJpPdmalG12vhHakoRTCQDN2nAjOW0
+	 0NhnDNlQdED8swk7O1onCeGs2OQ1ePSxqpK8cEUmqZ96lA55xvPKzhRTt83806PL5b
+	 Y3RTz2PHWzhSlpIYI8NjtPR4c1MnsuNAg64LpWlb/TYnFk8mhgdoa1+lY6ZFc8dT/H
+	 d8hAdyuD2phxQ==
+Date: Mon, 1 Jun 2026 13:35:16 +0100
+From: Will Deacon <will@kernel.org>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>, iommu@lists.linux.dev,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Pranjal Shrivastava <praan@google.com>,
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [RFC PATCH 3/4] dma-direct: Add API to preserve/restore
+ allocations
+Message-ID: <ah18hDhjSLxIvb-Y@willie-the-truck>
+References: <20260505002737.2213734-1-skhawaja@google.com>
+ <20260505002737.2213734-4-skhawaja@google.com>
 MIME-Version: 1.0
-In-Reply-To: <a8846033-094d-4e1c-bfba-f7f543944709@kernel.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: xjtQhgAW2GIJIT7s-KKFIJaTZNzMFxitXUjWunfZedk_1780317114
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20260505002737.2213734-4-skhawaja@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CC3F3C0012
-X-Stat-Signature: u3euogk9wmn57wzkw9f1i5wx88wonqos
-X-HE-Tag: 1780317121-685734
-X-HE-Meta: U2FsdGVkX19rgRWo4cGkoTKZAgUz3MYZL7CjeKH0Wo4mjbAV6Zchntr8T5Sh5JAiQ7tzIJRXJY/8R7PJGRvbtnOasGH3NdMOITs5BdQHqzdXHCK3hg219wtxL2SalbTC/1J+hGCs7f2WZPawBwpzTu57REefrVRuZBwm6kjdrahNPqGbqEhcgZo5UonbNeSmT9151T6XsTzokzzmx9hJ8egL3HTqmsnTAaAuDROzHvUHQeATJWmYxDZfWdHHrbcnljbOC6WePAbRbuaJwR+GSh2qVYykIxK+RrWroQn1uG3YwJFwudR+o4O7eBkUIMoLoAes0LNloC7LtmUJgqTebEI1YXyUGHC/WkQBw0L5EzhJ21Od4PclYwb7zzQMCM8YhQVLxjkLuPbuOjbMz6Otvqgloo9hMLTz6pRjkKRgL4hT466FrXqnwUVHUDVYVqhn8iZ2IkQj2V6e3swl06xz2e8OzITxxTKko/eMWmgmzV18MxAzvC0jecAKGhMSgvmkMMO5bHSzTH7b40wN0od+ZkFi3ZUQUtAgrSmKZg2L7Zcn/XTgfH4eD8l8DGcAQLvlisvGmFsWkckQ5v3Z58kqAX4G5mRRVJV0KbNJ0VxA3D5sTUWs2ErFhfansuI6HJCST5l6AZ1WmuIP1cbdI24jh/R6zHfAdJV1wQHL9n9bWxF/QrpyxFVZoLZx44K33RkH2SaPWKQlNQT63SKYw+DEf/1buQpCn4NXgrcZyqA4oN+iSBsu4FYRnZ6gsA4X4YDeLQ8eZXAJqirH0mnGDHVtCqoxh21R3bAbRzCBWrEIUkQPGJyjPVvj4tfblwkkDv92FuDu2y5sr+e+U3FRmLGkIZQ+p6qS2qFqZLUy3iSkveOKJ75FMbLSsp9tV3pLJ+DGDXrewmUgZ0m+pXdCCQyZN8wgybIGC4ymb2n0LjCt06gQjeCUJ7s/FxrQOTNW29YZhOFpCxzKiGW2oARCZ6p
- 5HSZN1pj
- YlMpj39JLSxvEux5ruvWvXGO678yPA2j5YtmU6EwZE0Jf227UZVBZveqNvF82Dvc8K2YvTkPma89EIjbF8ektp0K9n5ve8SjX+w2+v8tiE9yuowNjtZNT7iTtzKIy5CK9HEkSWWit5J+sbr2CyOeslVb7aIsu72mcAOvUkFbDUd1NUVVWGd++movcBqBNM2TVGCn0bzgVIahMBIkJPLcZ/gRssqjCBVd2VOCHW47rE9hPelVJuvxRce1Y7bMtVeQkk7kmmoJVE4LJGe9MN9/Veu7vOWY5rszfGHywPuZ9qFmj1MVWvQJM3XstOcqoccalhVqn3B998EzgA0kx32g3jkM6KYiOtTGV11J/pL3F/s/z/l83gXOO99O+GrgMMD+nKll+SxlZK3nsUEU=
+X-Rspamd-Queue-Id: BF93F1A000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: zwtd3w5m3pbrqg9qrpiqu3s63jkqxzi3
+X-HE-Tag: 1780317323-59184
+X-HE-Meta: U2FsdGVkX18a84DNnybeIqzUcHMKzduz3QivZXqGlJ05AV0YE2TjcQQF3u04p7sDwXGFP3jMKIfM0WfnYAQdrP30ELQ3EMZgxoos0gQVXsLMmd/oZLtYXsQeQnSs3Ufwc5udBB0oeWwamKfZf56qO7wOV5H4dQzX+ed6Ihdld4EYcw+bPMe3M5xb1ql3l+0a4kywIvihVtaiY0s1xjqmLAMRDyRBwb1LDKFXmXuMV7yIY+xD8bvCia8E1MqtuGF96B3/grlISzHzW9yFkVtDdzTLT7nttWkgX2HuqfUZfGapVejpqmM5Yk/P5IKV10c2g+43jyLeQdy21pS03AEw30KvFvqa+9SlzdqDnOyuQsDFMUsgrr9n1brLujK6f5p8A52rQ2N2F4zELZrCN2ghnsWI+Hayf+J8yoquVFJgj0cYGCy2EP858iLHB9ONFwcty0hfjw8S3e7C0vBSl1GxparJSfsMGvW0qC0LJTR+Dzw71ZjGzU2eeUlGXFembeljR3MO+RRNJY/Bn0xKHcuSi0mGqEb6pUT4JgmtNsUlX0DUoXIOYhMNIP0GbgnMrvLnyltrFHIdwdRlfZRje7gDpi+5W2R/In16tzjQBvq0IrfApff23G47e7owSskDLzVe5cesSrF4Eu7CMvLd8TMzQWHVkm9GErtfA/AAcVg6Y+/SMzsCVkfTFimLx1uRM05MTRQDVVPEvE2SQj7V3IDFkDfrB1rxmQA/NNGNzUeYK5WMQ25o/7W5YpgFntvNQwmtkwfV3i9NqUjqdjtSp9Io3NMtFmG/xZPaWic0SByZvh1JEbjXeaK+rUjuc3LoLWGjhXF2oUEYrNxVPWCk8a3XHC3t8AMmW3EmQ/Oc0+EZUWRNqsXGB43MId4vq9jUdKAIRu0TFop5/QhcokbDnUjGIKxAFXKXMcXCFy9kqyjFJU1HVL+FUYVgkKVq0RoSiRZTbiKzgJHTQQoJnNKMnn3
+ 67i0/oVu
+ lr9z2F9gpHkrXBF1xEoB0nrO4BE8ragXKtOxKafoYZI6GrA1zY54HQy1memw+QnPTUTyLaovB7Ez40fnevEArwta1PS8l/LT5w8b/qYzLS3wZc+AnH7N2Fv745uhT9r/Yzbhf+NjaOmScmS551RtbCcrL9CtOpwFlGqP5cMItkAEIFofIHmDYW/6uDSBZ/oRz2Z4rQV7h4MkVomO5X47EbgnCh3VlpoX755CcE1JE8h1cQ4trtBU/4IThc1pcntHKYmq+pyeTsLLmJE7Kx7WPq6OnvC066R62j+y5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,24 +103,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06/01, David Hildenbrand (Arm) wrote:
->
-> On 5/30/26 16:12, Oleg Nesterov wrote:
->
-> I am not sure I spot the "simplification" here?
+On Tue, May 05, 2026 at 12:27:36AM +0000, Samiullah Khawaja wrote:
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index ec887f443741..c2b98f91900a 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -6,6 +6,8 @@
+>   */
+>  #include <linux/memblock.h> /* for max_pfn */
+>  #include <linux/export.h>
+> +#include <linux/kexec_handover.h>
+> +#include <linux/kho/abi/dma_alloc.h>
+>  #include <linux/mm.h>
+>  #include <linux/dma-map-ops.h>
+>  #include <linux/scatterlist.h>
+> @@ -307,6 +309,167 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>  	return NULL;
+>  }
+>  
+> +#ifdef CONFIG_DMA_LIVEUPDATE
+> +int dma_direct_preserve_allocation(struct device *dev, void *cpu_addr,
+> +				   size_t size, dma_addr_t dma_handle,
+> +				   unsigned long attrs, u64 *state)
+> +{
+> +	struct dma_alloc_ser *ser;
+> +	int ret;
+> +
+> +	if (!kho_is_enabled())
+> +		return -EOPNOTSUPP;
+> +
+> +	if (IS_ENABLED(CONFIG_DMA_CMA))
+> +		return -EOPNOTSUPP;
 
-Ah, then lets forget this patch ;)
+Hmm, it seems a bit overkill to do this just because CMA is compiled
+in, especially as it's user-selectable in kconfig.
 
-Cleanups are always subjective, if maintainer doesn't agree - forget it.
+Maybe you need to iterate over the CMA areas using cma_for_each_area(),
+similarly to how you do with the pools?
 
-> Looks more like an optimization that makes the code slightly more complicated.
-
-I don't think that !task->mm or current->mm == task->mm is the common case.
-Just the code looks more clear to me if it takes exec_update_lock only when
-necessary.
-
-But see above, please forget.
-
-Oleg.
-
+Will
 
