@@ -4,92 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19838CD6E55
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 10:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3225BCD6E55
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Jun 2026 11:04:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B54A6B031E; Mon,  1 Jun 2026 06:52:34 -0400 (EDT)
+	id 6FFD16B031F; Mon,  1 Jun 2026 07:04:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 789566B031F; Mon,  1 Jun 2026 06:52:34 -0400 (EDT)
+	id 6B13B6B0321; Mon,  1 Jun 2026 07:04:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69FEA6B0320; Mon,  1 Jun 2026 06:52:34 -0400 (EDT)
+	id 59F396B0322; Mon,  1 Jun 2026 07:04:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 55D806B031E
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 06:52:34 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AE076B031F
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 07:04:46 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D9AB5161D75
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:52:33 +0000 (UTC)
-X-FDA: 84831030186.05.089C6F8
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 14784100003
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 10:52:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PXvzdFZr;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CCCF3C231D
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:04:45 +0000 (UTC)
+X-FDA: 84831060930.05.3B348F5
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 91597140002
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 11:04:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LXEOxaSb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KRYnmXEa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LXEOxaSb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KRYnmXEa;
+	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780311152;
+	s=arc-20220608; t=1780311883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ddZ4Cxr/JHWef23HUq6enll8EtpPZioHbQeLyG5b3yM=;
-	b=NPxOP2QUldGB8sjZGWyosMNwq0a6YwpjG5h3892cCMMBojdRTTABAwOumNa+Db+26xhDGu
-	Gc7IXLwMNVJ1Ppn9MjwYV011CVJEifgkRQTVEoqbX2bVrSNG2GQ7XlAmLdc2EZyElhkO8b
-	MnsxHjjUQ6ZuiXkRTp3uiRVqU6STNXc=
+	bh=/n4fpvnBSWWnsnWWCDEjQv7Yr/I/XwUqGPjAJT9jyMo=;
+	b=53qPzPRi9Q3zWhStcQDOr5711Ck0FEdQjdII+hZVNUXllCCA0rbZqlJs9Tn2JSbElyJDQh
+	K4qqutW4HqZqFgo2JwbmNZW0TqmXwCyW+5Jco10apQiAydbBW4vcHIKgpQiHaDZt12OigS
+	gWpKEmbGJtyleCp7J41RZNp0BwaKggs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PXvzdFZr;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of linu.cherian@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=linu.cherian@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780311152; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LXEOxaSb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KRYnmXEa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LXEOxaSb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KRYnmXEa;
+	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780311883; a=rsa-sha256;
 	cv=none;
-	b=GiWRWA+3wZdCWKENXp4tTamRLvQzvcCvt/51jPjHiNyBWFDyrWN+d5XDyTsf+gIqUG+Iw4
-	lryklJ9gXgkHRW9JAdQoMnoPNevyCUNEHFVvKpKaiBbtwYw/FpRqqMxQpKKp6ew3HSfmFz
-	2FOdkKUJJ95pjfVL7V45C32t3x8aXRc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 36253176B;
-	Mon,  1 Jun 2026 03:52:26 -0700 (PDT)
-Received: from localhost (a079125.arm.com [10.164.21.37])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 37CCE3F905;
-	Mon,  1 Jun 2026 03:52:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780311151; bh=UjrGkaDhseC03+f0B0Jhh2lPATfx6lpV4JnTinESzMo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PXvzdFZrnKS59D70C3+d7nG3vdUdOGRub0Xj/YxDb49qUPEhSNidUEZYOiKWOn6pm
-	 czPqruORnbkzukaW834oroIc9Q3fUTmIwApu21iNdWe5UE7kLigPaupx8w7RWyZk5o
-	 o/P4J/QDwR5LhDNtVXVItlJM4u78s/yZiZDOMtCw=
-Date: Mon, 1 Jun 2026 16:22:26 +0530
-From: Linu Cherian <linu.cherian@arm.com>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Usama Arif <usama.arif@linux.dev>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC V2 14/14] arm64/mm: Add initial support for FEAT_D128 page
- tables
-Message-ID: <ah1kanXHdkcUUn5Y@a079125.arm.com>
-References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
- <20260513044547.4128549-15-anshuman.khandual@arm.com>
- <6330f618-c3e1-4e44-9b3c-6607bae1ae5e@arm.com>
+	b=SVV17cB0QAzzG+kY4LTcsniU0/w6daRyi/+RCyq90cdTLfzYca94Z090/uiryeh2Aitb9T
+	UaN1/gK/16jXfTbpl+O40utl7jl/cyCffHiK9SP+qQc5Cz5b3tFYCKKvFHdvasLPs8i2YA
+	Ii0Nfiit9itPG0v5OchLURac3TuYZp0=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F1FB1681A6;
+	Mon,  1 Jun 2026 11:04:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1780311882; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/n4fpvnBSWWnsnWWCDEjQv7Yr/I/XwUqGPjAJT9jyMo=;
+	b=LXEOxaSbI+NBmFKfZguWmTxXfz5E7pjVwYiI+nHBrJuNPFrbh/gZhTOFHgErALoTsbxfan
+	/JtKhJo3EkisnubQL2wEqKva41gkDMNZecSMWetU//grgSTtrfG67NhAz1giOhYMD8Ty0x
+	nadhjNnu/U7ZynUFxmHtIphmjZ6WClA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1780311882;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/n4fpvnBSWWnsnWWCDEjQv7Yr/I/XwUqGPjAJT9jyMo=;
+	b=KRYnmXEaOwqCV9fB4sAMZPqyevBEhi4n6AXZ2Evc70QirbXEh4gMiJdHdu4HBJedov/uyT
+	jKNXT6uKjSONM7AQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1780311882; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/n4fpvnBSWWnsnWWCDEjQv7Yr/I/XwUqGPjAJT9jyMo=;
+	b=LXEOxaSbI+NBmFKfZguWmTxXfz5E7pjVwYiI+nHBrJuNPFrbh/gZhTOFHgErALoTsbxfan
+	/JtKhJo3EkisnubQL2wEqKva41gkDMNZecSMWetU//grgSTtrfG67NhAz1giOhYMD8Ty0x
+	nadhjNnu/U7ZynUFxmHtIphmjZ6WClA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1780311882;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/n4fpvnBSWWnsnWWCDEjQv7Yr/I/XwUqGPjAJT9jyMo=;
+	b=KRYnmXEaOwqCV9fB4sAMZPqyevBEhi4n6AXZ2Evc70QirbXEh4gMiJdHdu4HBJedov/uyT
+	jKNXT6uKjSONM7AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E42E6779A7;
+	Mon,  1 Jun 2026 11:04:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7L+zN0lnHWojMQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 01 Jun 2026 11:04:41 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 8C7ACA0EBE; Mon, 01 Jun 2026 13:04:41 +0200 (CEST)
+Date: Mon, 1 Jun 2026 13:04:41 +0200
+From: Jan Kara <jack@suse.cz>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, 
+	Carlos Maiolino <cem@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>
+Subject: Re: [PATCH v6 1/4] block: add task-context bio completion
+ infrastructure
+Message-ID: <cuyklvhnt37xwk3jlr2iyyxxkzvt4bsf5iqv2gag4ixdicnbk2@rfqgjlclwesz>
+References: <20260514-blk-dontcache-v6-0-782e2fa7477b@columbia.edu>
+ <20260514-blk-dontcache-v6-1-782e2fa7477b@columbia.edu>
+ <agq2KRd8RkP1TAf5@infradead.org>
+ <ea1fa305-3ba2-4cfd-b7cb-86875032a300@columbia.edu>
+ <ahPbaSEoNA755Nt3@infradead.org>
+ <f1b8eeb6-2397-4f48-a21a-a023eb0c80ab@columbia.edu>
+ <rkb5oei6cx2erbyininczz6ukbnquqheexhu7tznn5rslkkdn7@b4kpdyhdwdb6>
+ <ahbq0RdUyLIPiItB@infradead.org>
+ <80cb53f3-e7e5-4f96-bacc-f9fb7661d976@columbia.edu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <6330f618-c3e1-4e44-9b3c-6607bae1ae5e@arm.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 14784100003
-X-Stat-Signature: 4fmpyts5adaugefhzmy5fbdrbrwyq3on
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <80cb53f3-e7e5-4f96-bacc-f9fb7661d976@columbia.edu>
+X-Stat-Signature: o1eiqi4oww91zkc9w636ijug47c35u8y
+X-Rspamd-Queue-Id: 91597140002
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780311151-943632
-X-HE-Meta: U2FsdGVkX1/G0NW6fvIPTOleNPL4UMOlZJ9aeFpG9hQQA2crh3eFFlbE3virHGxHtxoJLIYYXCtiXuzpD1GIXRdTSjIX2/n1X0bOl13SZm08hCxJ6iQXdAUM8aD9GDFM+m+1uo15Bu2vil0rO/2yx+tKHNPUrUcHzK8tF5zCJhiF/NxNE7IF5pJvxTRlFiqOT+wQ7kPtVG3YfaGFoqF0Y6HRAG0fHJtJ1xI/EA1tACtHlwPHEv1z45wYTEp9Fyw09/40xwjq9Yv/ue96QCUo2DvPqO9y0z2UIfa35D1CSJJo+S/rFt4xV0wetqXiN0KtFnfllV+xLF1mPpXmn1sRIfuKLhaQr5QStBSuTyw9LoW2rGcSQ5oBiYfbsRRGIXSoMe1q5F4yAmhaTNMytciiWyma082UOwxlPzlZEnJUYSQCm/qjCMMeS6T44YBUehNKgGQ+k8PpI0y/Qg7ZwzQgf95Lq1kqCuvBanIo7pHN0O9e0OjHq2xt0zOma/kLwbbcDsiHe5kAJe0PRu70jGKtRqOtez6jQGeCqAMscgX5rroVMYYWvl6GF1Fd2jDyJaEswnISBBjp5xhyJaF9B/Rpq9u81N1Nu1h4HxsQoT5n6CnBI0xv4X76WVDeE5meouLJ+MhwdgR0muHw/Y1N+ML2eqopezx7mLmow5oqtmgYP/Bejig07Fp1sfakldt+OK5xTqWsR9ePnfuEwKjvRHKnQ04mqRv6gwRNXnaMfCbI/r+uM2SpTFFDISc0+I4fA07tQbmRhjF3K8hgvwQCAwlFbUosClZNBF1bX+wDs18PHCz6b5mHHZCzSJDpnC8BfeIHZ23WnEMxlYI9ETJa1uj9w+DMgsZ8gGA5MBX0R/itXFUPGdnC+hvmSfgBXgRY8d/ypFGVLj7JtX2GEiMDybK3vkG3buZkQ8A7/hoGPRMu8fQv9Hj5A+d3doyipOX7sNpBJwdN8klIRMxVT8P6Alm
- NQHjwGEz
- xDC5fCZS+l/W/B++YYhm7kiZf3+PGz/Zi1vIOV61hVn80bJO6+mvA+sUVQFHpXwtvR6TCiF1zV9llo7/mbzATC224sZc/gJwSq2zxwPvIxlURsL3eqEK21QSyu6y7zviB1AXM/l6OsnMCyl2+XXAGX0DYgqQStVWR6lruKx0CeYeoAF957WBTGthvBqABtRxbLnomy0J1XVoPW2aFjBpyEi5bmukTa7T2W0CQGHxKnerhfUDOzYPdcldVrcT7ZvtI3A0l/bvCPpqRy8STrdlOElcAVdTvmM3sFAvZf3T/WFdUR6eIL3nIET7WgWK7RuZ2jHBB+mT1/z1QQDJotbycyNjjRqe6jQ71GV4LAG/zzvL4NeoPf2Gbp0reqkdwaz99VMziUIWCLX61Z6LKfsNtWtEXhNthmQKsjOXr9AXBxS68RC8muKJw1j77lzEe/W227bQioU2aNTrKBN7J2zLixXMSbw==
+X-HE-Tag: 1780311883-658568
+X-HE-Meta: U2FsdGVkX1+50sXbbvfI/6lIBqmHjMhvp9AwjFzdI8yXY8KcSfA3X0uQxNrE1l3ax0sZzrZGYWSVG5esdb2mPgIH4CLf8mHvc9F/UtRpVFBWebXD1BBlsXErBcEJF81fMcQaio7LhdwEDzEJtmP7odyt2o3psRnM3RMyRX6JlnFlpRDpp6AGsQlDyoEsUyXXKe1FyZH4RPr5luCurMsyjLnhiiqjH3NTW5oN2K2ZnjdfkS9qDkcs6FL7zUqRnhGaEHJSMW71hJt7ERP9vKWJ5Wjz7AemLZMHLU/wAOe8G8H+LTj5Sc2lA/EfWAEzno83/rFso05vBAhog032OKqNuAzAGK0a+wDSY9IYezRTdXzNQpNFdeneiWEDeCaw+BfLQ9WExwRMFnvDHfG62PkKIcUHoeEeV+6K5j/iATBCWe1FckaNKvEBDiprly7OWiQGFHM8TE+wSJ0tsLgs68/J1rxB7OKLF+JZxaG4FeYaC5ZmPbbtk+qFRdNG8SWfrSBbVftLpqT//uniYxrmO9NPCPQ2fWAnnbs0sEtpOD76Cm5hkIURAw01WIz374l99XKbUYA7whfCgzejORgAxQQlo1Mc99DyYRcCjDb57jJOzaRmEB7XCvWtuuQU5o1kMH3cmkAacaYHZnpMXwKMFuKCMF6O3thuzgQP4G7xKp8hK5pj2Xm56JYEFexG5qrORIgWwq7uxq8U/B7SRwNdx6bBf11WBc+rohI9IQuxA/72ZWf6bf5t8DCdlorFVaFhtz90EgDnbtqFx7M3KPI5a+TsJ6YfuU4ZIOkXGrLqFU2Rtu6775jrj6h9WNRVgFQqZ9Q3kO0Yo71rp495nDqmReowLeEUQAXozfbcKVtWRJt8+WB4pf0dY2uHuBaKVRzGMZ2yGMh2VXCs4VOE9MlfSu3+uzLtdoLwML7K6zED1GrRdTjQ01ZzcI6dAEMzcSFKM3K/z1rnqjoMMMbJ87lDLyD
+ 9/bB/+Qh
+ aOVyc6xrg52I1+ZLZd99WAd+hKnM71jawLFaUPvWOEHBQOQo9D3lE7F2/4RuFTurbgBBi2HF22mnygT7L9iWZVVUcgx++HDBXwIYQEu9rh3ediIfhhqnxcotCQXDGaAWb/3uuquev/Maqck1KpBpAQ3m3u8G44qFxSfO7IhtSUnYRLoIr18VVZoTqFATI2TsMjnCuTJnKf9oIxqr2j2sa32gku2Np2AQi9qAMYMN+ersUNE1+iWaAk3YSSJ34AwJ3InUDyyEZUXhLRwG/aAFaazpoMNKYHshjdLFx3SblCd4wVkJnuelmv26i8GBwcHkbKikdszbzs9OHl6L8JLi1xqiLYQHIfXiBBe3lCBS/NoAJkgI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,250 +151,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ryan,
-
-On Wed, May 27, 2026 at 03:54:03PM +0100, Ryan Roberts wrote:
-> On 13/05/2026 05:45, Anshuman Khandual wrote:
-> > Add build time support for FEAT_D128 page tables with a new Kconfig option
-> > i.e CONFIG_ARM64_D128. When selected, PTE types become 128 bits wide and
-> > PTE bits are mapped to their new locations. Besides the basic page table
-> > geometry is also updated since each table page now holds half the number
-> > of entries (aka PTRS_PER_PXX) as it did previously.
+On Fri 29-05-26 16:46:15, Tal Zussman wrote:
+> On 5/27/26 9:00 AM, Christoph Hellwig wrote:
+> > On Wed, May 27, 2026 at 11:42:28AM +0200, Jan Kara wrote:
+> >> > I ran some experiments with fio on both XFS and a raw block device. Five
+> >> > iterations each for 60s. Results below.
+> >> > 
+> >> > TLDR: Removing the delay doesn't significantly decrease user-visible
+> >> > latency or otherwise improve performance, but does significantly reduce
+> >> > throughput and increase context switches in some workloads (e.g. C).
+> >> > I think it makes sense to leave the delay as-is. Thoughts?
+> >> 
+> >> Thanks for the test! One question below:
 > > 
-> > Since FEAT_D128 exclusively supports the permission indirection style for
-> > page table entry permission management, given kernel compiled for FEAT_D128
-> > requires both FEAT_S1PIE and FEAT_D128. If these architecture features are
-> > not present at boot, the kernel panics just like it does when there is a
-> > granule size mismatch.
+> > Thanks from me as well!
 > > 
-> > TTBR0/1_EL1 and PAR_EL1 registers become 128 bit wide when D128 is enabled,
-> > thus requiring MSRR/MRRS instructions for their updates. Because PA_BITS is
-> > still capped at 52 bits, MRS/MSR instructions are currently sufficient for
-> > the register accesses that basically operate on the lower 64 bits. Although
-> > entire 128 bits for these registers get cleared during boot via MSRR.
+> >> 
+> >> > Results:
+> >> > 
+> >> > Workloads (all `uncached=1`):
+> >> >   A: rw=write     bs=128k iodepth=1   ioengine=pvsync2     # XFS
+> >> >   B: rw=write     bs=128k iodepth=128 ioengine=io_uring    # XFS
+> >> >   C: rw=randwrite bs=4k   iodepth=32  ioengine=io_uring    # XFS
+> >> >   D: rw=rw 50/50  bs=64k  iodepth=32  ioengine=io_uring    # XFS
+> >> >   E: rw=write     bs=128k iodepth=128 ioengine=io_uring    # raw /dev/nvmeXn1
+> >> >   F: rw=write     bs=128k iodepth=128 numjobs=4
+> >> >      + vm.dirty_bytes=64MB, vm.dirty_background_bytes=32MB # XFS
+> >> > 
+> >> > Mean ± stddev across 5 iterations:
+> >> > 
+> >> >     metric                     delay=1           delay=0     delta
+> >> >     --------------------------------------------------------------
+> >> > 
+> >> >   A seq 128k qd1
+> >> >     BW (MB/s)                4333 ± 27         4374 ± 34     +0.9%
+> >> >     p99   (us)              36.2 ± 0.8        35.8 ± 0.4     -1.1%
+> >> >     p999  (us)               3260 ± 75         3228 ± 29     -1.0%
+> >> >     ctx-switches          184 k ± 59 k     3.68 M ± 65 k    +1903%
+> >> >     cs / io                0.09 ± 0.03       1.86 ± 0.03    +1888%
+> >> >     avg bios/run            80.4 ± 0.6         1.1 ± 0.0    -98.7%
+> >> 
+> >> So 1 jiffie delay is (with default HZ=1000) 1ms. That means for this load
+> >> the completion latency should be at least 1000us but your results show p99
+> >> latency of 36. What am I missing?
 > > 
-> > Add support for TLBIP instruction for TLB flush macros with level hint and
-> > address range operations. Although existing TLBI based TLB flush would have
-> > been sufficient given PA_BITS is still capped at 52, but then it would have
-> > lacked both level hint and range support.
+> > Yes, this looks a bit odd.  Unless there's multiple threads submitting
+> > and somehow the completions get batched this should complete one
+> > bio at a time and be the worst case for the delay scheme.
+> 
+> Sorry, I should've clarified - the latency here is the userspace-visible
+> I/O completion latency (i.e. fio's clat value).
+> 
+> I ran again and traced to get the actual time from __bio_complete_in_task()
+> to calling ->bi_end_io(). The results match the 1 jiffie delay now:
+> 
+>   metric                  delay=1  delay=0
+> 
+>   A seq 128k qd1
+>     fio clat p99             38us     36us
+>     bio cb p50             1.23ms    2.5us
+>     bio cb p99             4.13ms   1.44ms
+>     bio cb p999            5.01ms   2.63ms
+
+So I'm clearly missing something fundamental as I don't see how can fio
+reported IO completion time be lower than the end_io callback latency...
+Ahh, it is the strange meaning of clat in fio in combination with sync
+engine where clat means: "how long after the syscall has returned the data
+is ready". Which for sync engine is immediately so the clat number is
+meaningless. I think reporting 'lat' numbers from fio would make more
+sense but whatever.
+
+The bio cb latency indeed looks like what I'd roughly expect now. And
+notice how the median latency of IO completion is 1.23ms in delay=1 case
+and your throughput isn't abbysmal only because writes end up accumulating
+in the page cache and writeback infrastructure ends up submitting a lot of
+writeback IOs in parallel (you have ~80 bios to complete per run which
+amortizes the latency to decent level).
+
+However if you'd have IO that were to use BIO_COMPLETE_IN_TASK
+infrastructure which doesn't have so many IOs in flight (like direct IO
+with lower queue depth which has to do extent conversion on completion),
+you would very much see the latency hit on your throughput as well. In the
+extreme case of qd=1 direct IO you'd reduce the throughput to ~4MB/s.
+
+Now I'm not saying the delay is bad - it is a tradeoff with clear wins in
+CPU overhead your benchmarks are showing. I just wanted to point out
+there's also the cost side which your benchmarks don't show very clearly.
+So we might need to keep some stats showing how many IO completions we are
+offloading per second on each CPU and switch to delaying the work only once
+it crosses a threshold like 1000000/HZ per second or so (so we at most
+double the IO latency by delaying the end_io callback).
+
+								Honza
+
+>   B seq 128k qd128
+>     fio clat p99           8.74ms   8.85ms
+>     bio cb p50             1.27ms    3.1us
+>     bio cb p99             4.05ms   2.27ms
+>     bio cb p999            4.91ms   2.77ms
+> 
+>   C rand 4k qd32
+>     fio clat p99           8.16ms   8.11ms
+>     bio cb p50             1.09ms   97.7us
+>     bio cb p99             3.73ms   2.06ms
+>     bio cb p999           11.87ms   3.79ms
+> 
+>   D mixed 64k qd32
+>     fio clat p99            981us   1.03ms
+>     bio cb p50             1.14ms   39.5us
+>     bio cb p99             2.83ms    275us
+>     bio cb p999            3.06ms    595us
+> 
+>   E raw 128k qd128
+>     fio clat p99          26.97ms  27.34ms
+>     bio cb p50             1.58ms   41.5us
+>     bio cb p99             2.98ms    325us
+>     bio cb p999            3.02ms    575us
+> 
+>   F mem-pressure
+>     fio clat p99          29.75ms  30.43ms
+>     bio cb p50             1.32ms    2.5us
+>     bio cb p99             3.73ms   2.48ms
+>     bio cb p999            4.62ms   2.83ms
+> 
+> Note that in the above, the C degradation didn't reproduce as much. The
+> bandwidth does go down from 64.5 MB/s with delay=1 to 54.9 MB/s with delay=0,
+> but it's a much smaller drop. I ran it several more times and ran into the
+> degradation ~20% of the time. The lack of batching means the completion
+> kworker fires for nearly every bio, leading to heavier preemption when a
+> writer is placed on a CPU that receives many completion IRQs. The degradation
+> seems to occur when the writers are migrated less often, leading to more
+> preemption. But I haven't dug into why the scheduler chooses to migrate more
+> in some runs vs. others. However, when pinning to 16 cores, the difference
+> between delay=0 and delay=1 goes away.
+> 
+> C specifically also seems to get worse because we're doing random writes to a
+> sparse file, so each bio goes through the IOMAP_IOEND_UNWRITTEN path and the
+> completion path is heavier, leading to more CPU stealing from the writing
+> threads compared to the other workloads.
+> 
+> >> >   C rand 4k qd32
+> >> >     BW (MB/s)               66.2 ± 0.8        44.6 ± 7.4    -32.7%
+> >> >     p99   (us)              8002 ± 174      17990 ± 6800   +124.8%
+> >> >     p999  (us)             11390 ± 554     31890 ± 11076   +180.0%
+> >> >     ctx-switches         3.67 M ± 45 k    3.59 M ± 106 k     -2.2%
+> >> >     cs / io                3.78 ± 0.04       5.62 ± 0.83    +48.7%
+> >> >     avg bios/run            32.3 ± 1.0         3.1 ± 0.3    -90.5%
+> >> 
+> >> I'm somewhat surprised how larger is the completion latency is here without
+> >> the delay. Is that due to a contention on local lock between the IO completion
+> >> interrupt and the worker? Or why is the completion latency so big here when
+> >> the case B with more IOs in flight, less bios per run, still had significantly
+> >> lower latency in the delay=0 case?
 > > 
-> > This enables support for all granule size, VA_BITS and PA_BITS combination.
-> > 
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: Will Deacon <will@kernel.org>
-> > Cc: Ryan Roberts <ryan.roberts@arm.com>
-> > Cc: Mark Rutland <mark.rutland@arm.com>
-> > Cc: linux-arm-kernel@lists.infradead.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Signed-off-by: Linu Cherian <linu.cherian@arm.com> (TLBIP instructions)
-> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> > ---
-> > Changes in RFC V2:
-> > 
-> > - Updated ARM64_CONT_[PTE|PMD]_SHIFT both for 16K and 64K base pages
-> > - Adopted TLBIP implementation to recent TLB flush changes
-> > - Renamed __PRIpte as __PRIpxx per David
-> > - Renamed all ptdesc_ instances as pxxval_ instead
-> > 
-> >  arch/arm64/Kconfig                     |  51 ++++++++-
-> >  arch/arm64/Makefile                    |   4 +
-> >  arch/arm64/include/asm/assembler.h     |   4 +-
-> >  arch/arm64/include/asm/el2_setup.h     |   9 ++
-> >  arch/arm64/include/asm/pgtable-hwdef.h | 137 +++++++++++++++++++++++++
-> >  arch/arm64/include/asm/pgtable-prot.h  |  18 +++-
-> >  arch/arm64/include/asm/pgtable-types.h |   9 ++
-> >  arch/arm64/include/asm/pgtable.h       |  56 +++++++++-
-> >  arch/arm64/include/asm/smp.h           |   1 +
-> >  arch/arm64/include/asm/tlbflush.h      |  68 ++++++++++--
-> >  arch/arm64/kernel/head.S               |  12 +++
-> >  arch/arm64/mm/proc.S                   |  25 ++++-
-> >  12 files changed, 374 insertions(+), 20 deletions(-)
+> > Note that in the past we had major problems with workqueue scheduling
+> > latency.  At some point these got mitigated a lot, but if they are back
+> > for this workload that might be one reason.
 > > 
 > 
-> [...]
-> 
-> Some comments on tlbflush.h only:
-> 
-> > diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-> > index 361d74ef8016..7831759b98e1 100644
-> > --- a/arch/arm64/include/asm/tlbflush.h
-> > +++ b/arch/arm64/include/asm/tlbflush.h
-> > @@ -41,6 +41,25 @@
-> >  
-> >  #define __tlbi(op, ...)		__TLBI_N(op, ##__VA_ARGS__, 1, 0)
-> >  
-> > +#ifdef CONFIG_ARM64_D128
-> > +#define __tlbip(op, arg) do {		\
-> > +	asm (ARM64_ASM_PREAMBLE		\
-> > +	".arch_extension d128\n\t"	\
-> > +	"tlbip " #op ", %0, %H0\n"	\
-> > +	: : "r" (arg.full));		\
-> > +} while (0)
-> > +
-> > +#define __tlbip_user(op, arg) do {		\
-> > +	if (arm64_kernel_unmapped_at_el0()) {	\
-> > +		arg.low |= USER_ASID_FLAG;	\
-> > +		__tlbip(op, (arg));		\
-> > +	}					\
-> > +} while (0)
-> > +
-> > +#endif
-> > +
-> > +#define TLBI_ASID_MASK		GENMASK_ULL(63, 48)
-> > +
-> >  #define __tlbi_user(op, arg) do {						\
-> >  	if (arm64_kernel_unmapped_at_el0())					\
-> >  		__tlbi(op, (arg) | USER_ASID_FLAG);				\
-> > @@ -162,9 +181,15 @@ static inline void sme_dvmsync_batch(struct arch_tlbflush_unmap_batch *batch)
-> >  
-> >  #define TLBI_TTL_UNKNOWN	INT_MAX
-> >  
-> > +#ifdef CONFIG_ARM64_D128
-> > +typedef union __u128_halves tlbi_args_t;
-> 
-> I wonder if you could just define this as u128? That would make things a bit
-> neater I think? - You should be able to do normal bit twiddling I think?
-
-Having it as two 64 bit halves would make it easier to make use of
-the bit field macros FIELD_XXX (which supports only the 64 bit)
-
-> 
-> > +#define __tlbi_wrapper(op, arg)		__tlbip(op, arg)
-> > +#define __tlbi_user_wrapper(op, arg)	__tlbip_user(op, arg)
-> > +#else
-> >  typedef u64 tlbi_args_t;
-> >  #define __tlbi_wrapper(op, arg)		__tlbi(op, arg)
-> >  #define __tlbi_user_wrapper(op, arg)	__tlbi_user(op, arg)
-> > +#endif
-> >  
-> >  typedef void (*tlbi_op)(tlbi_args_t arg);
-> >  
-> > @@ -211,17 +236,28 @@ static __always_inline void ipas2e1is(tlbi_args_t arg)
-> >  	__tlbi_wrapper(ipas2e1is, arg);
-> >  }
-> >  
-> > -static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level,
-> > -					      u16 asid)
-> > +static __always_inline void __tlbi_update_level(u32 level, u64 *arg)
-> >  {
-> > -	u64 arg = __TLBI_VADDR(addr, asid);
-> > -
-> >  	if (alternative_has_cap_unlikely(ARM64_HAS_ARMv8_4_TTL) && level <= 3) {
-> >  		u64 ttl = level | (get_trans_granule() << 2);
-> >  
-> > -		FIELD_MODIFY(TLBI_TTL_MASK, &arg, ttl);
-> > +		FIELD_MODIFY(TLBI_TTL_MASK, arg, ttl);
-> >  	}
-> > +}
-> > +
-> > +static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level, u16 asid)
-> > +{
-> > +#ifdef CONFIG_ARM64_D128
-> > +	union __u128_halves arg;
-> > +
-> > +	arg.low = FIELD_PREP(TLBI_ASID_MASK, asid);
-> > +	__tlbi_update_level(level, &arg.low);
-> > +	arg.high = addr >> 12;
-> > +#else
-> > +	u64 arg = __TLBI_VADDR(addr, asid);
-> >  
-> > +	__tlbi_update_level(level, &arg);
-> > +#endif
-> >  	op(arg);
-> >  }
-> 
-> It would be a neater change if you could get away with something like this. If
-> you typedef tlbi_arg_t as u128, will FIELD_MODIFY() work? Not sure...
-
-FIELD_MODIFY expects the arguments to be of 64 bit.
-Atleast the bit shifting depends on ULL,
-	#define __bf_shf(x) (__builtin_ffsll(x) - 1)
-Guess, this might work for modification in the lower 64 bit
-but not for the higher 64 bit.
-IMHO, it doesnt looks okay to use it unless the FIELD_XXX
-macros support 128 bit arguments with higher 64 bit field
-modification. 
-
-> 
-> 
-> static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level,
-> 					      u16 asid)
-> {
-> 	tlbi_arg_t arg;
-> 
-> #ifdef CONFIG_ARM64_D128
-> 	arg = FIELD_PREP(TLBI_ASID_MASK, asid);
-
-Essentially, here we have to make an assumption that FIELD_PREP
-is always for the lower 64 bit, which is not evident from the code.
-Would that be okay ? 
-
-> 	arg |= (addr >> 12) << 64;
-> #else
-> 	arg = __TLBI_VADDR(addr, asid);
-> #endif
-> 
-> 	if (alternative_has_cap_unlikely(ARM64_HAS_ARMv8_4_TTL) && level <= 3) {
-> 		u64 ttl = level | (get_trans_granule() << 2);
-> 
-> 		FIELD_MODIFY(TLBI_TTL_MASK, &arg, ttl);
-
-
-
-> 	}
-> 
-> 	op(arg);
-> }
-> 
-> 
-> >  
-> > @@ -507,19 +543,33 @@ static __always_inline void ripas2e1is(tlbi_args_t arg)
-> >  	__tlbi_wrapper(ripas2e1is, arg);
-> >  }
-> >  
-> > -static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
-> > -					 u16 asid, int scale, int num,
-> > -					 u32 level, bool lpa2)
-> > +static __always_inline u64 __tlbi_range_args_encode_comm(u16 asid, int scale, int num, u32 level)
-> >  {
-> >  	u64 arg = 0;
-> >  
-> > -	arg |= FIELD_PREP(TLBIR_BADDR_MASK, addr >> (lpa2 ? 16 : PAGE_SHIFT));
-> >  	arg |= FIELD_PREP(TLBIR_TTL_MASK, level > 3 ? 0 : level);
-> >  	arg |= FIELD_PREP(TLBIR_NUM_MASK, num);
-> >  	arg |= FIELD_PREP(TLBIR_SCALE_MASK, scale);
-> >  	arg |= FIELD_PREP(TLBIR_TG_MASK, get_trans_granule());
-> >  	arg |= FIELD_PREP(TLBIR_ASID_MASK, asid);
-> >  
-> > +	return arg;
-> > +}
-> > +
-> > +static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
-> > +					 u16 asid, int scale, int num,
-> > +					 u32 level, bool lpa2)
-> > +{
-> > +#ifdef CONFIG_ARM64_D128
-> > +	union __u128_halves arg;
-> > +
-> > +	arg.low = __tlbi_range_args_encode_comm(asid, scale, num, level);
-> > +	arg.high = addr >> 12;
-> > +#else
-> > +	u64 arg = __tlbi_range_args_encode_comm(asid, scale, num, level);
-> > +
-> > +	arg |= FIELD_PREP(TLBIR_BADDR_MASK, addr >> (lpa2 ? 16 : PAGE_SHIFT));
-> > +#endif
-> >  	op(arg);
-> >  }
-> 
-> And you could do the same thing here, keeping a single function with only a
-> minimal diff.
-
-Similar to above, the concern here is whether to use 64 bit and 128 bit arguments
-seamlessly with FIELD_PREP macros with the assumptions that the field
-range being limited to 64 bit.
-
-
---
-Thanks,
-Linu Cherian.
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
