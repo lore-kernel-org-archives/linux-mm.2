@@ -4,94 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4255ACD6E56
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 02:45:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5CD8CD6E56
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 02:47:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A125E6B04AF; Mon,  1 Jun 2026 22:45:24 -0400 (EDT)
+	id 46F436B04B4; Mon,  1 Jun 2026 22:47:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C2E76B04B4; Mon,  1 Jun 2026 22:45:24 -0400 (EDT)
+	id 446716B04BC; Mon,  1 Jun 2026 22:47:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D8096B04B8; Mon,  1 Jun 2026 22:45:24 -0400 (EDT)
+	id 35C356B04BD; Mon,  1 Jun 2026 22:47:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D4506B04AF
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 22:45:24 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C765C28B1
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:45:24 +0000 (UTC)
-X-FDA: 84833431368.16.45969A5
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 53D1440008
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:45:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=FbloPyae;
-	spf=pass (imf04.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 242EA6B04B4
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 22:47:07 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC8F31C0DD8
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:47:06 +0000 (UTC)
+X-FDA: 84833435652.24.DD5DEB6
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E5F7740008
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:47:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LkPFv9Yx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780368322;
+	s=arc-20220608; t=1780368425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4l3sxPyNqy0QPpGCpRZyDuuve5DBS6sEz0m5Ij5f8yo=;
-	b=CptuNADwlvJvJkFjGWabagf0dIKlwY0b0BGglKvBe9X2C8xHegcR44bGFrHwLIjD0RoT/7
-	e/W2/L2qC36U7UMnXa8/snhR4bbTt/4/4MnOFemb1225xYLn4AF4Zq1Od+rlfDVVN25o4H
-	O2lCP4Mp3iTgDdjUKY1TDKxwfvEPIRU=
+	bh=DzEYFBO0HPhxlPtDd2N2r80uc2UpuMcmthR9XLKa9lY=;
+	b=0hnvntFo27USBIYv3JkRImhatAvvFjlI8X7rOvivfMTaq/tEe6MkE73C+ZVuCIyuF+uF6Q
+	kekiKljk4qOSCCt0WJGYjJRXXxrqL19f9ZR7XZykTqiUSscPQ25CVqIDjDim2BJVEOpAWh
+	cEaMy2G0QfTzlp2XOQV54/Yh57xioBE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=FbloPyae;
-	spf=pass (imf04.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LkPFv9Yx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780368322;
-	b=RHY2ZZ94aB2/ZVA2Z1kEMYzIAJPneg+5TaqMhbO+2wIRQCThwFu2XeOn4rL9QOQcAt8R03
-	dozNObToH3tOS+3xPpYqOVvcMHwbg7fX9a+qpH46V6JSOP7dKzT3rhIRBe4W5KKqKV3xZ0
-	Ehvi5rkYrjDw0myHR+1zcLLIjQYsmkU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=4l3sxPyNqy0QPpGCpRZyDuuve5DBS6sEz0m5Ij5f8yo=;
-	b=FbloPyaeuuIf5ZJsXIXWGwWb2a0IrsO3Zo4jtoxeHrdijrXA1yIS3pLxP6akBO
-	2JL6u8BoG5VDVwNeF0fZrCh/27sIiudeLkN7WX/wPMmN9tE+Ek/xTlHDj1LcOZcl
-	2KLZopY/c3ANFqutM1TxbuC7wN2JitJBvInYD4dJ0xsEw=
-Received: from [10.42.20.201] (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3v6uqQx5qSumtAw--.4601S2;
-	Tue, 02 Jun 2026 10:45:00 +0800 (CST)
-Message-ID: <e9ceb5fb-f052-4433-8124-2625bfc393a0@163.com>
-Date: Tue, 2 Jun 2026 10:44:58 +0800
+	t=1780368425;
+	b=w0uhHqYbNSXHka8PZQxvK9XJh8ki+bVrhns4WIGlNbKAmqr1rhZUZRpmm29iXamqzqgRZm
+	pVAJzjPXl5Z1zH/N1hgWvmVX9/qFoEk+AljNuB1cMAoT6kc1RZoTzjsIaoYOn/GyiIsNzq
+	0SliutZbKcEvAaKDNPheAh0RS4eku9o=
+Message-ID: <2e9175ab-f9be-44c6-bf1a-a82aeed18f98@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780368422;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DzEYFBO0HPhxlPtDd2N2r80uc2UpuMcmthR9XLKa9lY=;
+	b=LkPFv9YxAbgRgjzFP5BMJD5UzFP+Pyiqo/D36+oL993VEh6AhN+ezGxDUcCS9s1mF8idFo
+	bKX0IsY3IN9aHJ9n2qaT7GDgfkgtCEo4nxE73t6M0xRyIHtFkbgoKVcmNlAMsIba1f1TGR
+	1etFxbBwPJy0kyfvqYoI+XbTR08elbs=
+Date: Tue, 2 Jun 2026 10:46:35 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] mm/shmem: optimize read with reduced xarray
- lookups and folio batching
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chi Zhiling <chizhiling@kylinos.cn>
-References: <20260601055704.167436-1-chizhiling@163.com>
- <20260601174349.e521b96acac805ac3d9bfbbb@linux-foundation.org>
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
 Content-Language: en-US
-From: Chi Zhiling <chizhiling@163.com>
-In-Reply-To: <20260601174349.e521b96acac805ac3d9bfbbb@linux-foundation.org>
+To: Barry Song <baohua@kernel.org>, wangtao <tao.wangtao@honor.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "will@kernel.org" <will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "david@kernel.org" <david@kernel.org>,
+ "willy@infradead.org" <willy@infradead.org>, "sj@kernel.org"
+ <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>,
+ "luizcap@redhat.com" <luizcap@redhat.com>,
+ "zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>,
+ "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "liam@infradead.org" <liam@infradead.org>,
+ "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
+ <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+ "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz" <jack@suse.cz>,
+ "riel@surriel.com" <riel@surriel.com>, "harry@kernel.org"
+ <harry@kernel.org>, "jannh@google.com" <jannh@google.com>,
+ "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+ "peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
+ "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+ "npache@redhat.com" <npache@redhat.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "dev.jain@arm.com" <dev.jain@arm.com>,
+ "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
+ "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+ "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
+ "matthew.brost@intel.com" <matthew.brost@intel.com>,
+ "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>,
+ "rakie.kim@sk.com" <rakie.kim@sk.com>, "byungchul@sk.com"
+ <byungchul@sk.com>, "gourry@gourry.net" <gourry@gourry.net>,
+ "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+ "apopple@nvidia.com" <apopple@nvidia.com>,
+ "pfalcato@suse.de" <pfalcato@suse.de>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "damon@lists.linux.dev" <damon@lists.linux.dev>,
+ "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>,
+ "ryncsn@gmail.com" <ryncsn@gmail.com>,
+ "jparsana@google.com" <jparsana@google.com>,
+ "dvander@google.com" <dvander@google.com>, zhangji <zhangji1@honor.com>,
+ wangzicheng <wangzicheng@honor.com>
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
+ <ahcANgFDFwfC0v1q@lucifer> <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
+ <ahf2mJg9OOWvu0jA@lucifer>
+ <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
+ <99dfc4a50f3643a6bef6deaeccfcf115@honor.com> <ahlzj--3Gm5pD9ge@lucifer>
+ <a90bcb0fa3a044588350e92a78258a09@honor.com>
+ <CAGsJ_4wFr89M2i8pth79swv3==i8SGSMWrbr+Yp2umwFTuCShg@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <CAGsJ_4wFr89M2i8pth79swv3==i8SGSMWrbr+Yp2umwFTuCShg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wD3v6uqQx5qSumtAw--.4601S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAF4DCF15tFyDtr1fAF4ktFb_yoW5GFWkpr
-	yfWF1ftrW3J3yfAr92kw18KF1xtr95JF1UXFn5trZ7XF1FywnIg3WfGr48GrZrCFyDuw1U
-	XFyUJ3s2yr45t37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6E_iUUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC9wweu2oeQ6wMHQAA3U
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 53D1440008
-X-Stat-Signature: ioj97mwm5t8jtq8dax5sbu3cy8bgz483
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: E5F7740008
 X-Rspam-User: 
-X-HE-Tag: 1780368320-548599
-X-HE-Meta: U2FsdGVkX1+gMKQ90465RQvhcluPiONzALLhVO7z0CY0QM18XEdCOiye75IlQUbmF1L3fR+GOvOtnsHxM+9NhW+aIrykF7/cWIv3bVxAs19Y7M9sYYLwB4/lzbskZ0mJMKIs9sSfafvIwJMdW6rzJQXIOv1q1dfvlPkCd1BHijSDIU2cD1uY1Z9+q8TJtdTkbaupUnpEsH5XawKNOcLdRrnMjYkIB6RBDt8VxbY/P40yFtkzNmskO5v56QIPp9tTu67BV5LbDCWoNPajiLjwEdbI8cLXlfgmT1AnQAz/YPGF0Ez/BdnSMSMY6D9oJwrqGA9Fa+hhc6iECCsQuVTy1JrYRt4863r7e+uSs7UfKk3oYrozeCr3sQ59xQ6i3LahS9ApGRp1QIhwM8OOe6qfeeMTCSL/q0Ug9/aWTAvA6c7ADUPJVFzFLRKWT15WPzLQn1+NHiiVZ6xdlV+yaW1Lse87U7bsqRFjAlNaSQu4baBiDjFPOZwNfKZAc3rNInJ2V5B+whkvQZM5AQ5LywfJrCyjNm/cK4lioXOoJlfVBgWXCwJ6zWNhB07+3t5xBWcuPWha9uQDyDDkuV5H2Pg2SBVwPopbkaXXAi8ww0SXgvSXVpR+xEJiUg1JQLmenwb+KhbbcbFcb5d8fuKDpkMBjPaHP7xCAorFPLixqDByTSPh4cPp9HTCXRxcUQ/AiH0n4a8hwsAx8F9gc0pqtRSZ8UMCQxkkvZuFbPptV2tPgpm+bS/FNkGuAQQLXIe8p6AztofczgglqXNh2SQu+WKtqVZqlxhKQP+Tc17Qa44Ub0BNR2bEHjtD4RHQxaaSmT3Gh2nOOSbjcCRFm6/J4FCnfBcIBtOo48zdZNu1xkQBaPlz73HW4CV5L5PoX9w2Z0WgW0NaNvqfGpTZ/Z5aML3ePj2LryAWTq5ZT3P2Pt3vOhxRUSb3dXAH3YNgVBjebvuFLHhhQ7qqhsvfUDy4VKt
- Y6B8MBGh
- LliExZjQh0JJf7E8j9b/3G9TbM8i61gGYWJcIaAgTpnujuU2Qy7+zuNGAJO9hOyNCNuUY0UAWSoor2YWQgxIgI5foLy7eySmN8SL3b+58Z1xHAJUehq6hKxjhIWTsaN+FZ4uvXlDpLIVezM8KN6ol0pH5c1SHuRZSsP/dKK6vhfpPVRDXE4BJxQF274dP17+4tJohJOAtrkp7x3EH+lGUcpk3i/5fgMS5unTIvyGzciyCheI8O6dPKsJRwtqwCARYilbuCroZXKS3UeAtYVEcx7oEcGYG3E7sxU/fZgmx4t+azzf82t4E1MAREBzdGoM+bka3B75WqymnpzdRmJtHwGFAfJcEC36jz2hXWuF3UsUSVRuCVWyWOjOEV8HSHHXBjJtAzdHYSwHRpbLvC1Ff+fCBu8LJvKSmUI4DVyLMoEBQuTFUMT0yeiXfjAE9e/0VvPosHnvNBZBLhbEiRDTCfSQZBg==
+X-Stat-Signature: uuq6gh3jtkay7j6c8a98ua1ecbbu889r
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780368424-36462
+X-HE-Meta: U2FsdGVkX1+Zs9gami5YbgdDSfBCTmBuKT9P/KVB0I23qrOX1ta0yShGbrjUReurOvr0Qwj17cAIBLnYBIp2L6CvwKqJLIKL3ldKeYOpiXUXihC1LWnomH2aED3rs+g/WKffUkBOZcjhNK38H/JItUxul1i5jIVWu7pcUSshMnsVEtJUlG8WZUprhzg0L0HYdiBFckFaWcG1k+gzgdMG4GFFZ+hig5haXNgkxpkQ9xpyXFeJayTO3u+88JJ8XfOWSK6RUoGgTDcF1yGdkkLGwQLBXFZ75BrMuqVqM+6FPDN08piaPKEwsoUXqpviEzw6srI4NJvriOpxqsnsnBdJPz7j/06TeJsncwL4Ro2NUABvLexHUvaupjF4dv+sP+LVI9vuiqplkVv3tnh4gytAepM00soE0FKk2Y+nc/CGHiiIUPCRbQu2MxQkYdebO+3fx6XeqA2fPX461fmI+hsH/qGBFmwOkLtmGteyd2J5wl5YOPC43UKqOLoApdeYHIMmuVR9KM0G+Rg5WcWNw03/FVapEmuP/Y33Eif8rkj5R6gndzXYDFCOQzjcICxpZkVon3bCkmI5urcaeXhc/o7453Fl0ow5w62LOyphgDUQumWolVMWiEZ4FFp1n48uFTSdmcISzHyZlMz6HzVNwo44SLLTb8rOGeZmtwSwlX5qwl609GwRDEh14BW9l5CapuaFZL3Kqgzsik7coePdYZPcZ7KTt2m6WTnThKgB0ifQuHCQe7Yc1VCYdARO9kj7jSO41a5L2t7pTcishjUrIAe2Hkhgy1K1vwW7ELggqMxozJR892xK15ZmkJY99CGtyGW7lUvpMG1zFJw3dfOb6vZKfZINWvdIrYP//s0WXV8P83Z91H8OkzQCSy3A+l8N+mMEb2k7POifHLOC86EvE/CVwTQgfANYdg0sg1Pw3JAPo/JFRoxUqftAGBomTBH1bZHdWeLXjhaS9tfk4r3oSKB
+ thsqsamW
+ VmsvCt3xaPpFtZp26I5xsywNxe/fixfWhhFB6GdvXzey3+TmcqLW5KD0FtqVU8SNoHKy9NRxK+UDqCz/AN8+vn4WLGOBoFUX8+gJPMMK+5toZaH7ZoLpzEnU6VWryTBetO7dowIt8TubGMIz2Ta+qwYh1qSoXRO+gxxv1bYWrKLLLBS3B6HArqZxiIgpoUriHkfQ1I6nsEhpTRsITAGzOm3dEzkezVx5DbpAqN3y2s0GPkQRnh3wDwjzA1XCMaZfNsEde9ab9SCV1Fqg2MrccufEW9OyVuryjLdj2jmZwbwgGzWVgzih4VtXOMHodWstrbd1olPRUhfsk8Tnp5IM5OX9C5SoZxTuKcGoL5ozAwrJi7abVrJWQxmXGbocPfj86IOBq8FVpOZnDDzvGf75tYuBqVGGm/y72SUOqCxat1gnm6DmjJQ4N4tYYJMpHW84XOci9YyPayIwRnNjiShEhXgZntarnJHzsdbyNytEWsn5elyWmqIsaAQ2q8fXEcPZwR9k+R5CSOK45F5g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,69 +140,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/2/26 08:43, Andrew Morton wrote:
-> On Mon,  1 Jun 2026 13:56:59 +0800 Chi Zhiling <chizhiling@163.com> wrote:
-> 
->> From: Chi Zhiling <chizhiling@kylinos.cn>
+
+
+On 2026/6/2 10:15, Barry Song wrote:
+> On Mon, Jun 1, 2026 at 9:46 AM wangtao <tao.wangtao@honor.com> wrote:
+> [...]
 >>
->> This series improves shmem read performance by implementing folio
->> batching in the read path and reducing unnecessary xarray lookups.
+>> You said discussion was welcome, yet when someone offered even a
+>> small comment, you refused to continue the discussion.
 >>
->> Performance Results:
+>> If I had known you would be this inconsistent, I would not have
+>> replied to you in the first place.
 >>
->> fio --ioengine=sync --rw=read --bs=$1 --size=1G --runtime=180 --time_based --group_reporting --name=seq_read_test --filename=testfile
->>
->> | THP disabled in tmpfs  | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
->> | ---------------------- | ------------ | ----------------- | ----------- |
->> | 1M + normal file       | bw=11.5GiB/s | bw=12.7GiB/s      | +10.4%      |
->> | 64k + normal file      | bw=11.0GiB/s | bw=12.3GiB/s      | +11.8%      |
->> | 4k + normal file       | bw=3826MiB/s | bw=3849MiB/s      | +0.6%       |
->> | 1M + fallocated file   | bw=23.8GiB/s | bw=28.6GiB/s      | +20.2%      |
->> | 64k + fallocated file  | bw=22.5GiB/s | bw=27.3GiB/s      | +21.3%      |
->> | 4k + fallocated file   | bw=4655MiB/s | bw=4680MiB/s      | +0.5%       |
->> | 1M + hole              | bw=24.2GiB/s | bw=28.6GiB/s      | +18.2%      |
->> | 64k + hole             | bw=22.6GiB/s | bw=27.6GiB/s      | +22.1%      |
->> | 4k + hole              | bw=4652MiB/s | bw=4489MiB/s      | -3.5%       |
->>
->>
->> | THP enabled in tmpfs  | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
->> | --------------------- | ------------ | ----------------- | ----------- |
->> | 1M + normal file      | bw=13.7GiB/s | bw=13.9GiB/s      | +1.4%       |
->> | 64k + normal file     | bw=13.5GiB/s | bw=13.5GiB/s      | +0.0%       |
->> | 4k + normal file      | bw=3833MiB/s | bw=3859MiB/s      | +0.7%       |
->> | 1M + fallocated file  | bw=24.9GiB/s | bw=34.2GiB/s      | +37.3%      |
->> | 64k + fallocated file | bw=23.0GiB/s | bw=31.4GiB/s      | +36.5%      |
->> | 4k + fallocated file  | bw=4710MiB/s | bw=4655MiB/s      | -1.2%       |
->> | 1M + hole             | bw=24.3GiB/s | bw=34.5GiB/s      | +42.0%      |
->> | 64k + hole            | bw=23.5GiB/s | bw=31.1GiB/s      | +32.3%      |
->> | 4k + hole             | bw=4690MiB/s | bw=4647MiB/s      | -0.9%       |
+>> This will be my last reply to you. I will not respond again.
 >>
 > 
-> That looks nice.
+> Hi Tao,
 > 
-> Microbenchmarks are useful, but are you able to help us understand how
-> much benefit our users might see in real-world workloads?
-
-Hi, Andrew
-
-I don't have real-world performance data yet. I'm working on this simply 
-because the patch shows decent gains in microbenchmarks. Even with THP 
-enabled, it can still reduce some unnecessary overhead.
-
+> Please don't walk away from the linux-mm community. I read your
+> patchset and found it quite valuable. It not only reduces memory
+> overhead, but also eliminates rmap costs for exclusive folios.
 > 
-> I'll take no action at this time - it's late in the cycle and reviewers
-> have yet to participate.
-
-Yes, it's unlikely to land in 7.2, and I still need to resolve some 
-performance regressions.
-
+> Since I'm not very confident discussing technical topics in English,
+> I wrote a blog post in Chinese about your patchset:
 > 
-> AI review flagged a few possible issues, so please take a look:
-> 	https://sashiko.dev/#/patchset/20260601055704.167436-1-chizhiling@163.com
+> https://mp.weixin.qq.com/s/k00tzhTl8HbL3k4G6ev4SA
+> 
+> I have to admit that I found the implementation quite complex and
+> in need of significant improvement. However, I think the underlying
+> idea is very interesting and worth exploring further.
+> 
+> I'm looking forward to seeing a v2 RFC with a cleaner and simpler
+> implementation while preserving the core concept.
+> 
+> Regardless of whether it ultimately gets merged, I hope the discussion
+> can continue.
 
-Okay, I will take a close look.
+Same here :)
 
+Tao, please don't let this thread get you down. No first RFC is
+perfect, and the idea still looks worth discussing :)
 
-Thanks!
+Thanks for working on this!
+
+Cheers, Lance
 
 
