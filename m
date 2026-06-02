@@ -4,94 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45726CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:16:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ACA7CD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:23:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABB266B00D3; Tue,  2 Jun 2026 06:16:23 -0400 (EDT)
+	id 7E0A16B00D5; Tue,  2 Jun 2026 06:23:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A92A06B00D9; Tue,  2 Jun 2026 06:16:23 -0400 (EDT)
+	id 7B8C76B00D8; Tue,  2 Jun 2026 06:23:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D0956B00D5; Tue,  2 Jun 2026 06:16:23 -0400 (EDT)
+	id 6CDCD6B040C; Tue,  2 Jun 2026 06:23:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C0C76B040E
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:16:23 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B5FC6B00D5
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:23:29 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F823406C9
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:16:23 +0000 (UTC)
-X-FDA: 84834567846.07.252B0AF
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 37EF540013
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:16:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vcKrEmxT;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0B08FC22FD
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:23:29 +0000 (UTC)
+X-FDA: 84834585738.07.F532C1B
+Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1F7F816000D
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:23:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=xmission.com header.s=xmission header.b=PT1nwI4K;
+	dmarc=pass (policy=none) header.from=xmission.com;
+	spf=pass (imf08.hostedemail.com: domain of ebiederm@xmission.com designates 166.70.13.232 as permitted sender) smtp.mailfrom=ebiederm@xmission.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780395381;
+	s=arc-20220608; t=1780395806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lipZXDwGQU+TSrswN3nmwaJ59DceeyAWCn8ljNjUXwE=;
-	b=49m2EDYhrGMizbBgqSY8/7LDW9cx8zS3ylJTdPUq0LNngSSmGO1r7CkqXOXxFCv77dGHP/
-	31g075GqPvxkQC1xmkOpPhkZsd+bcIOoal9cBBTBi2KzXzM6Lbsk203AQqpI4Rhwmoqg9Q
-	sOLLrBUzRXSZOoILyswU7SpAwsOGVwY=
+	bh=xOUWvgApIKw+92KT8RxRFcojdVTgW69lyiDjHGwti4Q=;
+	b=jnTB4R3hyP5Nq2Lezh+aT6+xIE0JlSm68aHi1JEh4q6MCDIm2Gla5n1X/gg16H1IiIfeeN
+	olpeYCBJGeQqMnfbsN8sntXL+ME9ISlcKTr36JgusfNTMGgo9YjWNTleqx6uSTqoYA3Mae
+	yDCoGbyAiMhORHSVGzaiotKuvIeYz2I=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vcKrEmxT;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=xmission.com header.s=xmission header.b=PT1nwI4K;
+	dmarc=pass (policy=none) header.from=xmission.com;
+	spf=pass (imf08.hostedemail.com: domain of ebiederm@xmission.com designates 166.70.13.232 as permitted sender) smtp.mailfrom=ebiederm@xmission.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780395381;
-	b=qhnqtrPiRmY+UbcDSHzWJZzSMeEJ+zyVikL8kFUk4alzhXO9rOKHv0jqmsGDmOBxU6SDP8
-	5XBKf6xg+P7BaghZ3x/XH9gqKN4NjeUfyKrQapOR19IvHuaVzum3aqNy4Zfjr3eUfcHlNu
-	hNpMSYHRkvqVWRsmFfcI3F5moTL/WQ4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0ECA42364;
-	Tue,  2 Jun 2026 03:16:15 -0700 (PDT)
-Received: from [10.164.19.28] (unknown [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C08B3F632;
-	Tue,  2 Jun 2026 03:16:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780395380; bh=Yq7QU8MantCBpgdcupePeTD2JsMq1DglepMcByDaSWQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vcKrEmxTE6UJVDi+9H+gc5sLUbgzmFlxuTO2mLG3hSvLZvl2SDdESLW1opU9QrusJ
-	 SLtJ3H9CeI0Mnq6IYB1hvhmo7p4237sWvJgidL5ePIxqEiL8SETNmCGq4nBBTVWaJa
-	 PtHtbgvO70A/9AQ3Le4QSeS6ZlH22hNoPVye1Qak=
-Message-ID: <7faa8ce6-a2dd-4e6e-a47a-2a6aaf7cf136@arm.com>
-Date: Tue, 2 Jun 2026 15:46:08 +0530
+	t=1780395806;
+	b=YObwR6VrcR7kXgs/PqayD7XqFpHiFSorvZbpOgaU2+3yxXtJJsUvShM1F99vH7QpXgmW4M
+	mFYh/Xo27dxUI7eHQNIb4bLo9VkMlY+s1DGz6yV63nWFsdCxiUBdCXCuCnHOMZpBdti+gS
+	uw4Uk35VoT/jxJY3qR4S3tMTtbKqZjM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/simple; d=xmission.com;
+	 s=xmission; h=Subject:Content-Type:MIME-Version:Message-ID:Date:References:
+	In-Reply-To:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=vvILlsXaVQShutp1p5WceQi2Eaf3pB4ovG/S15HHsU4=; b=PT1nwI4K/LueK0DDSNL+s4C13J
+	wCISW9cQ6Rku1p5e71v6LNcH9E8BpNOErgTq20OxsIi/JohdQWrgMebuwQrMKgen7pJXROs+AsRqv
+	q/PDtUrCrIsMZAHrVRiLpwUsOkpysGxuDIlQz4e1uDX5u9eweqgYZDbb9a8545EZNJqI=;
+Received: from in01.mta.xmission.com ([166.70.13.51]:57296)
+	by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1wUMHI-00EQUk-Sf; Tue, 02 Jun 2026 04:23:20 -0600
+Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:37600 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1wUMHF-002RRp-JI; Tue, 02 Jun 2026 04:23:20 -0600
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Andreas Schwab <schwab@linux-m68k.org>
+Cc: Deepak Gupta <debug@rivosinc.com>,  Deepak Gupta via B4 Relay
+ <devnull+debug.rivosinc.com@kernel.org>,  Thomas Gleixner
+ <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov
+ <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>,
+  x86@kernel.org,  "H. Peter Anvin" <hpa@zytor.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+  Vlastimil Babka <vbabka@suse.cz>,  Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>,  Paul Walmsley <paul.walmsley@sifive.com>,
+  Palmer Dabbelt <palmer@dabbelt.com>,  Albert Ou <aou@eecs.berkeley.edu>,
+  Conor Dooley <conor@kernel.org>,  Rob Herring <robh@kernel.org>,
+  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,
+  Christian Brauner <brauner@kernel.org>,  Peter Zijlstra
+ <peterz@infradead.org>,  Oleg Nesterov <oleg@redhat.com>,  Kees Cook
+ <kees@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Shuah Khan
+ <shuah@kernel.org>,  Jann Horn <jannh@google.com>,  Conor Dooley
+ <conor+dt@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
+ <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Andreas
+ Hindborg <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,
+  Trevor Gross <tmgross@umich.edu>,  Benno Lossin <lossin@kernel.org>,
+  linux-kernel@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
+  devicetree@vger.kernel.org,  linux-arch@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  alistair.francis@wdc.com,  richard.henderson@linaro.org,
+  jim.shu@sifive.com,  andybnac@gmail.com,  kito.cheng@sifive.com,
+  charlie@rivosinc.com,  atishp@rivosinc.com,  evan@rivosinc.com,
+  cleger@rivosinc.com,  alexghiti@rivosinc.com,  samitolvanen@google.com,
+  broonie@kernel.org,  rick.p.edgecombe@intel.com,
+  rust-for-linux@vger.kernel.org,  Zong Li <zong.li@sifive.com>
+In-Reply-To: <87wlwif04z.fsf@igel.home> (Andreas Schwab's message of "Mon, 01
+	Jun 2026 22:58:52 +0200")
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+	<20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
+	<87jyslndo4.fsf@igel.home>
+	<CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
+	<875x44o9hj.fsf@igel.home>
+	<CAKC1njSn_rtCj8ii876PNQTk0nsCTfWsb4DzdymufHVthh1Rkg@mail.gmail.com>
+	<871peqgp9v.fsf@igel.home>
+	<CAKC1njR+dTdvp+BmLGPtgd8dufiUwBtkQ9a-qinELT_Fmi13sQ@mail.gmail.com>
+	<87wlwif04z.fsf@igel.home>
+Date: Tue, 02 Jun 2026 05:23:10 -0500
+Message-ID: <87tsrli6lt.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/14] docs: tmpfs: remove implementation detail
- reference
-To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, david@kernel.org, baolin.wang@linux.alibaba.com,
- ziy@nvidia.com, lance.yang@linux.dev
-Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, ira.weiny@intel.com, hughd@google.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
- ljs@kernel.org
-References: <cover.1780066530.git.luizcap@redhat.com>
- <426d01d487656dc97b6ae00717de32efb232a04d.1780066530.git.luizcap@redhat.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <426d01d487656dc97b6ae00717de32efb232a04d.1780066530.git.luizcap@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 37EF540013
-X-Stat-Signature: 7yt9dw4pff31hqoqy87tofdooaxubijj
+Content-Type: text/plain
+X-XM-SPF: eid=1wUMHF-002RRp-JI;;;mid=<87tsrli6lt.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX19J6tpF2AGRJ9xglxGPNzSSZeVg13KZsgY=
+Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ
+ | VM_WRITE
+X-SA-Exim-Connect-IP: 166.70.13.51
+X-SA-Exim-Rcpt-To: too long (recipient list exceeded maximum allowed size of 512 bytes)
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-SA-Exim-Scanned: No (on out02.mta.xmission.com); SAEximRunCond expanded to false
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780395380-53321
-X-HE-Meta: U2FsdGVkX1+8HU341h5rHB/FAPA4UkKKONKvomECBidc9vJwBD+SYXJhTaksSWU2llrkTjC90t98rVFUf6OJdElPwOevJmMDHAfrICg3bYA9B3YTRTC/FIYmuUEJVZFbHr1oNQjzXwYvNMnCrOCgzcamrNUpo5L/TkKWyjM6evHH96StIbnzjSqko7T2U3cnzd7aN/502sAgQbOkOOgdB+gGYvt8sbpTjW5Lq0Z9w4FDXLzyoV77xNjnvyYQo043XX0OIdiiLXMh79VVm5NMCK2VOTFdmf0o+Vvc+YJnLNcFNBVkAjB499QLpZx0AglPrh5g5IkkiWRuG/Zg92XYnLs8tnMl91Tt8SxAhBvdA83I3y7AEr8K3KFmb9SjaypmN42qstGBRgLXiEJ39beW+fWeEozwX9jMOi5bEAbpeLSfXeFStBc61iHsWhbYd3mwr/7OHyHdZAw7D+yjFWVYA2Bmgg4g7PrdqQLDwZqffZZCMFAa4nBulFT6YG+Nn6ZOd0VrZ8chl2/vHRO3mZknG6kgLxLuJWKpIqGOAH0CSYimuYdupm6hY+zwAtw6Mue5Nt9EjYk8RsyyrWCUftEq4mEbzsvsbwFUVQEqw1u59Ixhnuv9aCrh0vAYDfw7vZUqg3r0JICBPLbOkYZp+jATIAk9vPTL3WDWEi4JLExeyQFTQFwhzZbkXMEnTZ/4wTZolqZWRVjmscms+BWn3QB7jF2rdyguQnhT4q+fNXMA3LVnHxFPX7q4/RhSUXZ25QP49ut/pgtm6lN+tFZ/3cpzaeYNMWlKd+qJ5d/u6QEFIMYVQPzP8VqqYP9JM849JC1bgdsk+DVedGqi2Q1a4tiN1yr5SKLRwgJoOZXNzeItg4j72fa4d7zwSN1bCrvJ7Pmr6Bk0zevsqqvTOoDlc/ia93vNnU73olrdVvej25mc6eU54Qx0c/TglV9WzucvQJu/WoH3TXbhvk8ODkhpfAX
- W514/Fzp
- Q5BnxtCvxmPRBPtNATJmJYTv4+pDdMBbViOJs8tICoBzhWGzkswwDpsI1i2E6Gm0u7825YznSEJCycoLfmbeANH0fS0aRir1JqWrPNBAaBmbw8AFUHaw0txVAeTfwLOjh7njcmVmS+/gdWO53mK7i5PrU2heu6RdYSfKOkS+I6Zsdr7E9moHm7l/SETA+lEMSeV3WqbLRl5hfs4K3ujBV9/zfpo/eBIA4TWy/5Um5sIbYv5tAkM7WWmLRumVwyH6dx28hGWWAOVsYFSUqbdpKncneZcUY6jHwPbAjejqLkGtt+qIu90Jz3GMRHt3dkRPiU3iHANXd2JPEpzmOMCTqwb3MZ6TVCJhlAEDfYT15m3SV7uBja9EKpTqyxntFf5eQcQsC
+X-Stat-Signature: 3y8qw78cnf1mst1e8bz8ou3ue5ahjyds
+X-Rspamd-Queue-Id: 1F7F816000D
+X-HE-Tag: 1780395805-229902
+X-HE-Meta: U2FsdGVkX197wBLerMrXM21/D9nk50GVZAIeVKap+wVaJhXg/tFF59B2q2HAO+/tSkQtqZa3Mb9vTLWE2ZI012wyGizQHCbYDT9xvchsUgb5bbcgdkVvc8Z+uNJHedQZzQ06Ji4c0915fYmzh21RR3cDD6WgckoO9t1uVk09xkodEp2/eAmc/GvJnjYhMph1kdw0pH6oT9eixf7UA9o7VRTUjDe+o++1PtPuv80bBZnI10dgvre/CRdQDt7bI636ddhbd5gh+kbt0KgJBx0+xG6ze4u/htK13mDwJfTr9wXyZcSkAwjpp3mEQd1nJi91xqY2uti1mjr+MgEElju4uXWShRl7bB91hjAfa4MlspkZ9S0fRZ4bkYNTYMGLz6HMU+otZsW+pUrPotlWg1o9tnqpB4FJsnaj/QRDEncoCzwQb7D/jyCb9EoEf1XNlwRKur5jVgi9Tnh5PUvBhCLrJ830jasBX26kevJ8wf+Q1OB6bIfxeiEgzILpsRHD/3SSza4sH/pmmKI33IbSQB6bSCh/oDLGbVNCUhmanJq5Drjqm2CH3/jq9fp7wSZ6DFyjR76/Rj3J6e57UK8Japfo3VCe4wLLHAC3Ydn0ILeKW0GIjkfKZyNpAk2Cgp6K++ZxMcddSyXPj/XOFrPSGCiAjY+usMo/V2Jzp6CLbV9y4Kj9L03bzod5yLYRaUJqboYMbEFf9wUNA56k3FReyaYUKnhzuhZaYqffUW5Cz2Egjy5kMEFEcnJXPNuLWfKmN1ds6RgBJ1sEs2cN61FU3M7BTW5uqLdfLJkineDH8WEkx8sUP0YLAncrBBrOVNi1rUExsXEqmaJ2JVhcqoIIB2sUiOX0DR5kgqT1MA34/V2yy7Diy2r5rwfJYV+jLG2pFRmB/wb3Sce6O5AHtx2qL0vFsS4Nifvl0PcsMGe6FcBaJNIOKWdU5//YlLAWgt8wHK1Jk5WN8stUqvGwuc31/pb
+ kMdgzcej
+ g3iBX/Wc2uWNq/4I0qibdpeVndlQYfTKkTuA60qkGVCfaAF/oq6Vbf2MBIpg/G+G7qFaA4lBWyBGpsVUIJTx6XWUj8bhE2zW9ECIKvahwANuIBfKeKphoAP4jjSMk/Uv+Qx/rZppq276d+el5O20Oo+qWAMqfzuXDj2V7+wGfDU3nb+igClNPIxjD+WUCTI/dJAumOmGrhggasnZdKk40EwO8V8ZaZA0wTKGvH/kdUNlXexFJgWiVvFmov/Z6s3lwHq+fMnUAacHLa5EDukB6siON38IMIwqD2ObLIaEV4YH1Y7Exgwk572nXuSyr+LGUvA2y7ECQxYAqSVAlRGEuTPm/XmWCsgqpmVI/Dk4sSFBBzf/jm22RO40kfDinmlNH4Yyg+G8H/xe+gigdCt0eQrVb8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,41 +139,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Andreas Schwab <schwab@linux-m68k.org> writes:
 
+> On Jun 01 2026, Deepak Gupta wrote:
+>
+>> riscv uses `VM_SHADOW_STACK`. It's just very simple to use `protection_map`
+>> with just `VM_WRITE`. On RISC-V, `-W-` is a shadow stack mapping. It's not same
+>> on x86 or arm64. So `protection_map[VM_WRITE]` simply picks shadow stack
+>> encoding. We just ensure that PROT_WRITE is converted to
+>> "VM_READ | VM_WRITE" at vma level.
+>
+> That does not explain _why_ you need to make that user visible change,
+> when others can get away without it.
 
-On 29/05/26 8:25 pm, Luiz Capitulino wrote:
-> The tmpfs.rst doc references the has_transparent_hugepage() helper, which
-> is an implementation detail in the kernel and not relevant for users
-> wishing to properly configure THP support for tmpfs. Remove it.
-> 
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-> ---
+Especially since as I recall the decision was made was that the user
+visible protection bits would match the mmap call.  If there is some
+combination an architecture does not support that would simply not be
+reflected in hardware until some future version of the hardware gets
+around to supporting it.
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+This is what happened with executable page permissions on x86 for
+example.  It used to be that it was not possible to deny execute
+permission on a readable page.  Later that proved sufficiently valuable
+that support for denying execute permission was added to the hardware.
 
+That all happened quite transparently to userspace, that wasn't trying
+to assuming PROT_READ implied PROT_EXEC.
 
->  Documentation/filesystems/tmpfs.rst | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/filesystems/tmpfs.rst b/Documentation/filesystems/tmpfs.rst
-> index d677e0428c3f..46fc986c3388 100644
-> --- a/Documentation/filesystems/tmpfs.rst
-> +++ b/Documentation/filesystems/tmpfs.rst
-> @@ -109,9 +109,8 @@ noswap  Disables swap. Remounts must respect the original settings.
->  ======  ===========================================================
->  
->  tmpfs also supports Transparent Huge Pages which requires a kernel
-> -configured with CONFIG_TRANSPARENT_HUGEPAGE and with huge supported for
-> -your system (has_transparent_hugepage(), which is architecture specific).
-> -The mount options for this are:
-> +configured with CONFIG_TRANSPARENT_HUGEPAGE and with huge pages
-> +supported for your system. The mount options for this are:
->  
->  ================ ==============================================================
->  huge=never       Do not allocate huge pages.  This is the default.
+So I am at a complete loss why someone would choose to break userspace
+by confusing hardware limitations with what userspace asks for in mmap.
+
+Eric
 
 
