@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 419E3CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 04:45:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEF12CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 04:47:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8578C6B0489; Tue,  2 Jun 2026 00:45:44 -0400 (EDT)
+	id 2DB2B6B048B; Tue,  2 Jun 2026 00:47:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82ED86B048B; Tue,  2 Jun 2026 00:45:44 -0400 (EDT)
+	id 2B2516B0490; Tue,  2 Jun 2026 00:47:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76C026B0490; Tue,  2 Jun 2026 00:45:44 -0400 (EDT)
+	id 1EF7B6B0493; Tue,  2 Jun 2026 00:47:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 659796B0489
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 00:45:44 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F02A0C296D
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:45:43 +0000 (UTC)
-X-FDA: 84833734566.23.1DDB20F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D1646B048B
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 00:47:09 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B35CA1C1EDD
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:47:08 +0000 (UTC)
+X-FDA: 84833738136.12.524727E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 68ED2C0004
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:45:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m+z0zlI4;
-	spf=pass (imf22.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3015A16000C
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:47:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YVUczLjs;
+	spf=pass (imf08.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780375627;
+	b=Jqwgpk31QpGTEVlcLkZ5qym6EPd07EALWMzhGu9UKEtByoqZ/wVu3xxdAHvsKMV1xBzzir
+	J2KHsSNCvGCAmGc8quHskikwGyEpwpcxnU9msyZ87xmomV0LOA88ZtK3SWalbNS1+R626H
+	hcXUDQjCGENTrDvB7Zled45GzDQ7jLY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YVUczLjs;
+	spf=pass (imf08.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780375542;
+	s=arc-20220608; t=1780375627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RI1EMaQf2aC+jwKCogVgIAXfxFKnj7BpW+hiYAKrFZ8=;
-	b=Ay3SIlXrXCpB2joM7nkXhxiDNldFrq72qfSsEdCjmmmpBVNeTgv+OAWtWmbQUTkrNC0wyI
-	ep/VRjivv5ovZYaO/RsHaG8GD+TWdB21WNgpGyWRmgDF13glSxvmt+TFpPX/zXcOp7cEx8
-	prJaWqofRfS20ntxdmK09bgZtghUBgg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m+z0zlI4;
-	spf=pass (imf22.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780375542;
-	b=7LuYYmjfecnElC0eue/epUo2LzYsMp3iH1aQSGfYD9AJiij7hM7chm953b4OZlFbX9PW8V
-	xQ03cIv7viwPJcI8ZjqDY44EYlkjhzAKdibs7PoqvrVzieyqTk3vbFLWSryYwZEGfBSv49
-	ObanmXDMFF7A67YXXQxa9ZVkEhuIg74=
+	bh=w2vFw2b6Dq4kXYpDSqPPl/I2tXbfPjM4tacHe5F7/ME=;
+	b=OozZP/SfpoW0IDrDNYVde6Z3DkqVL01ewTnP2JsEAwuGtdz6OVBMPXRSL5DWe5wHnAwAZ3
+	6tPAFoJbU8QPgTyq3Q+OQELTFkGQJgF3V5RoBI5OcLYHuin65pnS0RnEJdC5/FCyYxNpEt
+	gylqwO6AuYaoOyEkSPfnaqloKQImfAM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DC563600AA;
-	Tue,  2 Jun 2026 04:45:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FB71F00893;
-	Tue,  2 Jun 2026 04:45:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A79176001A;
+	Tue,  2 Jun 2026 04:47:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867101F00893;
+	Tue,  2 Jun 2026 04:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780375541;
-	bh=RI1EMaQf2aC+jwKCogVgIAXfxFKnj7BpW+hiYAKrFZ8=;
+	s=k20260515; t=1780375626;
+	bh=w2vFw2b6Dq4kXYpDSqPPl/I2tXbfPjM4tacHe5F7/ME=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m+z0zlI4cyMGOnMErPfrIMqf0iWtdk7EX1MfOrHUoTqiO7tPcBlCZpccxp8Un4k54
-	 d2qBnpIBm2HfPas5jkKo+5CiqJTc0hHlU6AGKeMoGVU1Q7onXg6zaSw4wfyk+8qynC
-	 fOpFEFW8m8wmylq4C3Q2V2uuIW7bdmjx3cp2g6nLNRMD5/JGUisgSZxJcEUNv0i5ei
-	 bBOxMYGMiY2f/W7BXDrfjO7bVl/eWwFhDqSgdpRZjbfGCWHOr6ep2sW/mNsYJZ+kRn
-	 AAgXzr10EYrOk7kJVfNJWscoQxhNKbyolztYkQYSqJyOsapQn/9pfNt4IyVsGxoWUr
-	 ABHGwIkedbhLg==
-Date: Tue, 2 Jun 2026 06:45:32 +0200
+	b=YVUczLjsw80yEWH3gu3NkaGjxurIFsxviLifgTASl5KmyxzFoZ9D6BRbFnC647FHj
+	 lx/XsyIDDrgeNc880H1ZCzZ6k2GAkGqLt2HPVSKtCr9mjn6m2DCwScX7GkN79pS6Kb
+	 Ybu4ua2edqgSU8v2FiaC7J5DsTHfum101oh9NnXGGFgdKNTpHz803fqOarf2Aq/REj
+	 rrFf4M6W83xFQsgAsvLEXmOIlSUp/imXkfYWMxxsDexeQ3reNFAuz1/La1vSHOW9B9
+	 ecfNlu1N+o672xehcI60o8JlzLchfcXr0Hdq8pu+MVpFykxKhmlLGaQmBsGApTcQm1
+	 IWYYOlv9b/uSQ==
+Date: Tue, 2 Jun 2026 06:46:55 +0200
 From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -84,23 +84,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v3 4/5] loongarch/mm: drop vmemmap_check_pmd helper and
- use generic code
-Message-ID: <ah5f7NlrmO0bw-pX@localhost.localdomain>
+Subject: Re: [PATCH v3 5/5] sparc/mm: drop vmemmap_check_pmd helper and use
+ generic code
+Message-ID: <ah5gPx1TuEH1wFzC@localhost.localdomain>
 References: <20260601084845.3792171-1-songmuchun@bytedance.com>
- <20260601084845.3792171-5-songmuchun@bytedance.com>
+ <20260601084845.3792171-6-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260601084845.3792171-5-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 68ED2C0004
-X-Stat-Signature: jmqimg6p8ktip8m5w4dsh1bbo85rtz9s
+In-Reply-To: <20260601084845.3792171-6-songmuchun@bytedance.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3015A16000C
 X-Rspam-User: 
-X-HE-Tag: 1780375542-500550
-X-HE-Meta: U2FsdGVkX196Nuxr74pp0mP+4J0kGxDGF60567zZ2hbXKdha2arvfAXNyOpR/b1NZ66fAYxnkBpTRymgGh1GybThAsYXW2AksfUtTqGzqc0D8B4LGjl1RjSDWdC/+/5jW4neIXQXHNEfCKCGyv09s3jIL9RbXylPP3S8wmS85uu3pMkYDL+QC/fWuRQFAkPtf0VMjyLa+ZCUFpezg+VwUmtOZH8OKw19u+ZeRZPcOBesR5z/Y0es/fzkxjjjaHsYPYzpJzAUWurZr26kj4tepy8WXuSy3RexSeklJ4mEP4bv0A/dbTHmGkPE+G7gKyj5tT7tBQ7tds7jxaH6HTJXiaim+Q4cNRO5iqvW1tcKphXyzJifP/w8Wwj9LtVzr3fQp6R2b7CYTMFvTu0GsYMk+kKKxzIwYHdoH1drmkkbaLXdhJI7+6yMJ456yjpnvuxjwjdklgntky2UYVMCNsPujhoMaWKyTxeaLtSi3sZbsPp29Yt/k42iAiA/QKv1xZflL2PxTJDk7k0YFWi4nRx05X1Qj6RliRF1A9ydCF1OlLZzDAbQkS+qkqcgLQ4MvqJ6tNoHZPUvBvxEOsuc5VdlvZwLLeUwTaDkUqznHYezYQlsB/OBsgcX9arHfyx0YLDvwH1/q567NDnZBlpAw6FmpOXpiartlpyXKMK6aiyv2wtnAQHe6O+yKnzg1bWqu0EOO+yM/kedUdd5yls2swB0ZWP76smBtFIVMMrRxbSESLoiHH2BTKVwCYYxf7GOHcMQ/f513q9Dhluk3QIsuxlLv7SLqDkKwFK65xnBiDkQEJEdGkGQG22USZyQVNNcucK8m9Hmun6AalnXu69nl6Bw+vaqnIcZIx4V2/ydNJOwZwLiwOGLlCt1+HTR8ZOj2eIvngOhIBPkglDuYIWAlYSI6pSHE7IKccrmVRacWS6xWiptCcyQ2sJtoq6T41F3iEUrEdjp20FPHiE9B/zV7Ij
- AljcgD8a
- H6UG9sDGnByeGdelhpbblzlVPR3pf9PYxRmSWQ3OvFcZ4GwPfW2Hn8G7FSkql4WHBsWCj2/y5f92MqTL7mFm8KbyCP5LBhmqf6s917FLYkC0wbcIGAwXV3S6Vkm4m99XQaRbUGtmfnfKwPVJMiBNXWtoyrtuitCX6H1FSi2FIq7NZnm65o4tOBxXpN0GQtTcLqg/YRx8cOTNf9rBy3aSuOmWVoQwmeHJLi9E+HAL5Mdm/EADqznUjYEEZF/8ch3FzRawlLrSTiIdE8bprxJyi6Cag84lSvAe4eGTlOQ16tDoFn3lNRNwKPkpqJtO2m7eXvypDdBQQ3JZlsHs=
+X-Stat-Signature: xa5fjpmnqdjwpry69wwb8ntj1sgi4hwz
+X-HE-Tag: 1780375627-593951
+X-HE-Meta: U2FsdGVkX18oIWrAp1U9X8pAw+RSb19kouoNYPfBMYzYRM2NtEE+EvTDDIQg2wGlRSWbrUACUfug3vvU5sRgfPxA64+pqJS9ky9OEud73+RaHekIeeG20Ru1TbiBlQ3Ux8U+cy9RrotWhd5J8g3CfgV3FBFQWH1PQEUqveNtoiWOC8DBHyHsmb255YZPcWo7JNx8CueS8ok0ORQSn6jBAfRvAwvZ+gkpn6SIhjAfaNSZyYL8XjyStp4m7rSg0jnQ4czbiEwcwmzOYKj+xLlrDPxzZ4tKfF0xzpJTw/tDc2kb9qrDE6ZfVyL/JE0VinvnOQP8iJZl8Q0O1cnLHQxNZYNCIuUVdsv18bxzHWM/E+I1wpKVqypZZrfvnnSs5z4E1PQV9Ylw8ufHcobeG3ba0CkJmVi6suznFjeAYeiXW0DaWg8wv2RbVjbQlydoxRu+wdwhyUzxmTd1jyXXDnHatu51BlQfKkoJVi6xbJoVx8p6PEZxw8rHUx0kownt9GtDj33ZNUWRjvWJurofQcB0GqlN6DYyJeqbZZDkfpN2Gavkt97IOkREhRsFV76vTzRxLaNgNpMDC0XmXdfylf2GXgGjPS+K2pMTWl66grR7cvDG4zt0ypX0ie+nTYRYP7qJjWwfu21wLq79q47PI6UDiSJMOBVHWwphDP0bqfxrd1ieyPzWirGmkDVae381d8+enCYCdJaMjHYE12ndfKxtkPwfyxcuOsiQR4YtgvZ1Vo4rhU29dgWyZOtu39l8wZXOF4OGfrUonGBMCf1e7vGFgwbUUZjjgKpmpu3+efsTET+Jj2MMShto1cf7gSeWw9dRMOa35G+O3BF5G+Qp16cibDeUJCWf0qMoXlFwTM52KwM0oGcIWfuO6DCB+rJ/ZqXaQ/AwtFT1xj3mgNJ3YWVdiJ8bN3wDrPMvQRq/NUyrSa+/jfW7zN+W3ORmcV72PoBUPnlqW6mr5ZDxOgqedNd
+ dy2n0/vZ
+ O5kQDPt0LmixP3OLxe8GqYbtD9n90vsQMp5LFtu2xcC9mNFfFu8lczRy8WTl4lYchVCRGYwOLoBgLpEEiU9vAyh3b0pD0hBo1zNAB5EhoiuQp8+21Ly5KhqdNhMxoOu9ena7Y8B5Kk9rjjK7X3Zi0KNzjHu75z1c2tEjB1KfwErfLmkFfYOuDUOTxmdmwFi2pLREhoDcWlkIdUN5+aN5BrCExlIQTzIp1ULhfipaMqTDIe6P2Ioyqnjz6ZpymHSEVTX5jsfXtzeCmBB/N0MHU+Fp4tn7rCz+0gb6WCTFS88c6vMf6SmtblpieNOGW19/Pndj3hQ1RehFxcNk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,8 +108,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 04:48:43PM +0800, Muchun Song wrote:
-> The generic implementations now suffice; remove the loongarch copies.
+On Mon, Jun 01, 2026 at 04:48:44PM +0800, Muchun Song wrote:
+> The generic implementations now suffice; remove the sparc copies.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
