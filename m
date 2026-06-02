@@ -4,109 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8086FCD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:01:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8364BCD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:05:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9FC56B03F8; Tue,  2 Jun 2026 03:01:37 -0400 (EDT)
+	id C5C726B03F0; Tue,  2 Jun 2026 03:05:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E50D76B03FA; Tue,  2 Jun 2026 03:01:37 -0400 (EDT)
+	id C33BB6B03F2; Tue,  2 Jun 2026 03:05:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D15DF6B03FC; Tue,  2 Jun 2026 03:01:37 -0400 (EDT)
+	id B49BC6B03FE; Tue,  2 Jun 2026 03:05:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BA3A66B03F8
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:01:37 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7891EA084C
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:01:37 +0000 (UTC)
-X-FDA: 84834077034.24.F408BD0
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 86FDF140014
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:01:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A2DA46B03F0
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:05:44 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6A8C1162BEA
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:05:44 +0000 (UTC)
+X-FDA: 84834087408.03.A5EC7FB
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 353122000A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:05:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Bs1n6fFK;
+	spf=pass (imf03.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780383695;
+	s=arc-20220608; t=1780383942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DzbZzD9oCLKf5GbzegnkWwqpf7SuSbgzkcn3V+LZI0M=;
-	b=t+4kIH0TOUfIIS+XB1F7suWL8UOK47plDDhn9nC+x+q1s60Ts/jmkoh3yKRt3JniSiy4Bz
-	87smWONscPf6oB9NgG/hbLGN5STMt4y/7yNE/afLf4xrvByf71gGySJ0Kdnlf5PSreQ7wV
-	rNVXg7wNoP3QohZu+pPhalXRgT0z3ao=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ywNJBGpmmj9NFHoVdWRVSdCZGNodVCyyTVIIC+PjNKE=;
+	b=UGRum0SHT81hubcLDjw0jAyRD5hlLJuLBEyDalG89wlJw1ojBUNPgwDJ/Qbv95q2TXMxMv
+	jLcwVZEypA8u88cXksCu8Z0xEQXyqhMGmxlO1NyvqTryq3QWgk25oQcDJoBPyf2Bqq2Ve3
+	OolixSV/beDQujrgpx63xXJPhnZ55aM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780383695;
-	b=T/zUN0fRFRT10tFzf9uIQcjp6okwvZBWA1UTACcckaqmdARKJWlQTs8yvvnvq4Dq+zX/vR
-	xt76EvalDGQXYpUzLQoGVmJdpGRTJp0+QcghrGP4+cvxzBTrvZeKeGW4+wKa88+DOBMh5t
-	atUbD0ZAT3m8lOzofZ3YemTvadT+fQM=
-X-UUID: e02bbc7c5e5011f1aa26b74ffac11d73-20260602
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:549077d5-bd28-41a8-9020-6dc2e5d020eb,IP:10,
-	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:5
-X-CID-INFO: VERSION:1.3.12,REQID:549077d5-bd28-41a8-9020-6dc2e5d020eb,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:5
-X-CID-META: VersionHash:e7bac3a,CLOUDID:ad801bb9f6dbb48635de2fd65192f5b9,BulkI
-	D:260602150130PCANUYKE,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
-	2|127|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:ni
-	l,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,
-	BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: e02bbc7c5e5011f1aa26b74ffac11d73-20260602
-X-User: lihongfu@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lihongfu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 776362238; Tue, 02 Jun 2026 15:01:27 +0800
-From: Hongfu Li <lihongfu@kylinos.cn>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH v6 5/5] selftests/mm: add missing pthread_create() return checks in pkey tests
-Date: Tue,  2 Jun 2026 15:01:19 +0800
-Message-Id: <20260602070119.1452308-6-lihongfu@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260602070119.1452308-1-lihongfu@kylinos.cn>
-References: <20260602070119.1452308-1-lihongfu@kylinos.cn>
+	t=1780383942;
+	b=Gv4VY4BvbWB+5UZhsHQRw4N7U9tMYClj6ke71ffUYkY9Ylv3PoddZrqqcWXONec7UpIJA9
+	CuIOsygcabk+qkXGkOMdND3fX+TxEURUbKRG7ejAoF64E+anUioLqSeijxkEw+kc/uOEXm
+	EL7sWFbGOLxlNlsSCyppBVaBLtzzcnQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Bs1n6fFK;
+	spf=pass (imf03.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ywNJBGpmmj9NFHoVdWRVSdCZGNodVCyyTVIIC+PjNKE=;
+	b=Bs1n6fFKha43sqYhA2tcjSKsQDx7BaUGA6NUMdju6QLI/zIcoj6MivYNkd4KB5UzwgTwlRGRz
+	DBaCYzG3lmH9nMWSDaCaN/QE0DF2txBBIS+FXHu0AyqAciCTvM6wFX81QkZB7TvYIsS+e91oBXo
+	OMxjbX/ncrB1e4iZFAn9le4=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4gV1q845Hhz1T4fx;
+	Tue,  2 Jun 2026 14:57:24 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1C5BA4056D;
+	Tue,  2 Jun 2026 15:05:34 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 2 Jun 2026 15:05:33 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 2 Jun 2026 15:05:32 +0800
+Subject: Re: [PATCH v8 4/6] mm/memory-failure: add panic option for
+ unrecoverable pages
+To: Breno Leitao <leitao@debian.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <kernel-team@meta.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, "Masami
+ Hiramatsu" <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>
+References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
+ <20260527-ecc_panic-v8-4-9ea0cfa16bb0@debian.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <4d7b720a-7975-8a4d-a00e-e888d63812a0@huawei.com>
+Date: Tue, 2 Jun 2026 15:05:32 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 86FDF140014
-X-Stat-Signature: ywsbwm75fc6z43dhowno8qpzt4ic6w7x
+In-Reply-To: <20260527-ecc_panic-v8-4-9ea0cfa16bb0@debian.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780383694-184938
-X-HE-Meta: U2FsdGVkX18p7ZGXE/2YTW4XDO2470eL65ot6EGt5qLoLK2rI8iwNTaUJieECGVqmZ39SR/UsZ3e0SFH5jmY6uBBF4oUxI0qKyvFkq7M6Sc+DlzTF4TX9QK6yGFlBcqz1Ixw0nanSCEXbaaNSRtHYk2exBXF9HbJl1mDWODZHqduEZ/J+qw9Sy+b2cDZX7styCJrnx+1Vp3soZlY8RFQSGuMeoBhbwDBygjVXTX0VIwUBtwOHPo4LKIn1rarhit//xqjQ1lh0XJC3IQQH2RKxxHISRFvAy3u4v702VrIn5+EehKsvhxV1QladI8VRnynL24Sysu0fy5sxOWN0rsucPcT+tJz7KfUxbP/y9cBFgI4aLPJ4yEnpsLJvUHN1o0RdqLhvQMgqeKEyxfKZ2t5wP+ybSna9wA8jQsS9zyr6qf3YB9BoqCuHBYe8XmUqaOH1gyS4NX2jpwYge1801viplbCIUySgPuzxZVx31J390uTC7fKzGVdre+5UEWKEGJWr2vcAbQ6BpkoG2vf2nvdJyrX1YL5gB+1wKlzV+2w6SD2MyXEFEQEfKUtcnNGjFyACweZnAdWXSJc+SLgJyP3DWSXbJAkL4jVSOdxhsnjAz2KFwz+wpMtGXyjFXV9F6mLEYc2w5LVHPM/zBmy1SXkMnUZMo6/0oD+b+5AiGHO2P1lvSFoj/2RvIWw1SfsM76LO4dSZ/olTZdWyuIxaSXwBTMagnTcCE+IQv49JscTbcJ/wggcCEXBYHmu9qcjSGYIuQN8KpPnX9C0VTVZrRkz/RTRO3Vp/XWUsCEBX2mLI6ZD224YAy/jEdXYjw7wHV7iKP/FoSTD/ZIIZdjyoO1JJZ0rtqE5XpyTs987xgbTakaepirvuWNhTS591KIRSC3sigMhn7u1d4fLzzcLzJMcer5lDg/Sg++DZUKFA39dhwF6p8gM2TQx7lr4gk/k/00BJujhRqUeHLT+N5vdDYY
- GPuWdgIM
- rLHQXRBkjS3glZEH+KYac7xQIrHX1/U+/FRc4C2VqResZ6N5Se1IafFzKMw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 353122000A
+X-Stat-Signature: y58mb6hsj81fiafkhzh5kwc1uan1uoud
+X-HE-Tag: 1780383939-309533
+X-HE-Meta: U2FsdGVkX19CYZQz15i+yN0CRC3l5X2EMkKssxBqZaTsZ9pc+dkGr5hssQLNOYS1pnyAtNvt+mfP95E+MvGThc9WcO7uhAnu1vQTcYi3FttFBe78x4nT53NPCdesimiyx9VvmTcvqhoUW73/+v2y6JV4rFUnDUIVrniKHqAJ2eJ50srwpDo2QSpT8ZSycg3eoN5uLKmP/qwnr3io/DNql5K+h4LM46Pfuvf6x7KasiweJOuErjpzVq1sToKPt5L+xzjD4AdgHmuTmDRx1m7Rkah05G4NJgblWb9Q0bTGH9NDttG1yVd6FK/8BUaapcf1qyxAwRpTJ9JLi59beY+eVBQZttVq12QnEPPu0zrWkxK0NFcyJ/8VOHVGZd2uyWRrT4v7dOUvNi2mDblOHvN/HMOnUDndSbThlJ6Kq6zNh15aZMJaY2f7pUMRan0mxZmzf00lCvL4d4gTnfWbnFavvUJ7sXoAISvAhUOIB6E43VqUA1OEqzjlnH6LNwZTnxLyT6pjq2/owzZNEs1h/DzbsNp4bHT6YS6D1lmia04ivokCZYtPJJTrhtWBTkmW13IkraklOVVtHlhYQUnSSj0g/4j3S7xp7vKTIOtJofwdjZtLsZT6QQVqt/2rqCeqlxEYFxcm4C8ZvxhkeTKwe/1kDvJmH2GONENVEljZtKbZ/HlM86RJO0QonDk+QUTJz0ImIGCIEkZuW7hqyV4N7s1BY17M1xU8NXfvdNup8q7o1EmuT6aaPcIgHzns3aTmlxOEBrjvAT1UIPc8OfLetfrNrHnYUtarFZrxRmN2Rmm5/1golUQyklRy3fOBQsoWwcJTa6GDOJKiRjzIDls6ilf4AfPizdVUeSx51/L5QjjbE7zxyj+cNM/t9yclCWdbtjntlrix2cNIHPOJo6qkFpFhBAReyiOfRiNqDSuLGiU0kWyaVazVqmGhQjZiRQapP0WCLDIhTAJsguFHikW8KmW
+ LLqUxwkz
+ fhy8GkR4tx/R3yCSb6MhXvbWjklNsGnfifeg3y4JCVggVugattFvj/74aFCU58vDV768T99G28ij187Ia/+KCVpX8dyRDSlWt17QxS5zBtPE73k0CAcvtXp9yr/mcAf1Tf60k8Tqja82T7vrkXDMMuD9p0vAJbAUdhee7/RYtlCfo9aht/3LLx7uZi1ZIHyFbK8zfv6Hvi+bfGcR9/jf3WwNXPviics4dwyBz1utwXtqpju2mw+ZTm6l0gVuVskHWdBEN3s8nZnavUgSmChNQxGuwprx3MImFfcrKTuoC7ty1EK6cui370ejcbwBaMNTPNR7KxnXgV8ki5VBrr8m1JkotC4F88IxZUOpCX8WPG/28fi7PSTaqnWPCFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,39 +114,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add missing pthread_create() return checks in pkey sighandler tests
-to avoid hanging in pthread_cond_wait() when thread creation fails.
+On 2026/5/27 22:06, Breno Leitao wrote:
+> Add a sysctl panic_on_unrecoverable_memory_failure (disabled by
+> default) that triggers a kernel panic when memory_failure()
+> encounters pages that cannot be recovered.  This provides a clean
+> crash with useful debug information rather than allowing silent
+> data corruption or a delayed crash at an unrelated code path.
+> 
+> Panic eligibility is intentionally narrow: only MF_MSG_KERNEL with
+> result == MF_IGNORED panics.  After the previous patch, MF_MSG_KERNEL
+> covers PG_reserved pages and the kernel-owned pages promoted from
+> get_hwpoison_page() via -ENOTRECOVERABLE (slab, page tables,
+> large-kmalloc).
+> 
+> All other action types are excluded:
+> 
+> - MF_MSG_GET_HWPOISON and MF_MSG_KERNEL_HIGH_ORDER can be reached by
+>   transient refcount races with the page allocator (an in-flight buddy
+>   allocation has refcount 0 and is no longer on the buddy free list,
+>   briefly), and panicking on them would risk killing the box for what
+>   is actually a recoverable userspace page.
+> 
+> - MF_MSG_UNKNOWN means identify_page_state() could not classify the
+>   page; that is precisely the wrong basis for a panic decision.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  mm/memory-failure.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 14c0a958638c..dcd53dbc6aec 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -74,6 +74,8 @@ static int sysctl_memory_failure_recovery __read_mostly = 1;
+>  
+>  static int sysctl_enable_soft_offline __read_mostly = 1;
+>  
+> +static int sysctl_panic_on_unrecoverable_mf __read_mostly;
+> +
+>  atomic_long_t num_poisoned_pages __read_mostly = ATOMIC_LONG_INIT(0);
+>  
+>  static bool hw_memory_failure __read_mostly = false;
+> @@ -155,6 +157,15 @@ static const struct ctl_table memory_failure_table[] = {
+>  		.proc_handler	= proc_dointvec_minmax,
+>  		.extra1		= SYSCTL_ZERO,
+>  		.extra2		= SYSCTL_ONE,
+> +	},
+> +	{
+> +		.procname	= "panic_on_unrecoverable_memory_failure",
+> +		.data		= &sysctl_panic_on_unrecoverable_mf,
+> +		.maxlen		= sizeof(sysctl_panic_on_unrecoverable_mf),
+> +		.mode		= 0644,
+> +		.proc_handler	= proc_dointvec_minmax,
+> +		.extra1		= SYSCTL_ZERO,
+> +		.extra2		= SYSCTL_ONE,
+>  	}
+>  };
+>  
+> @@ -1255,6 +1266,15 @@ static void update_per_node_mf_stats(unsigned long pfn,
+>  	++mf_stats->total;
+>  }
+>  
+> +static bool panic_on_unrecoverable_mf(enum mf_action_page_type type,
+> +				      enum mf_result result)
+> +{
+> +	if (!sysctl_panic_on_unrecoverable_mf || result != MF_IGNORED)
+> +		return false;
+> +
+> +	return type == MF_MSG_KERNEL;
 
-Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
----
- tools/testing/selftests/mm/pkey_sighandler_tests.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Would it be more straightforward to write as something like:
 
-diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-index d185d3da26cf..f30c9965a561 100644
---- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
-+++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-@@ -224,7 +224,8 @@ static void test_sigsegv_handler_with_pkey0_disabled(void)
- 	pthread_attr_init(&attr);
- 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
- 
--	pthread_create(&thr, &attr, thread_segv_with_pkey0_disabled, NULL);
-+	ret = pthread_create(&thr, &attr, thread_segv_with_pkey0_disabled, NULL);
-+	pkey_assert(ret == 0);
- 
- 	pthread_mutex_lock(&mutex);
- 	while (siginfo.si_signo == 0)
-@@ -263,7 +264,8 @@ static void test_sigsegv_handler_cannot_access_stack(void)
- 	pthread_attr_init(&attr);
- 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
- 
--	pthread_create(&thr, &attr, thread_segv_pkuerr_stack, NULL);
-+	ret = pthread_create(&thr, &attr, thread_segv_pkuerr_stack, NULL);
-+	pkey_assert(ret == 0);
- 
- 	pthread_mutex_lock(&mutex);
- 	while (siginfo.si_signo == 0)
--- 
-2.25.1
+if (!sysctl_panic_on_unrecoverable_mf)
+	return false;
 
+return (type == MF_MSG_KERNEL && result == MF_IGNORED);
+
+Thanks.
+.
 
