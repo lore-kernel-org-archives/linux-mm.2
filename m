@@ -4,124 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2958CCD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 11:32:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E504CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 11:33:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EE006B03CE; Tue,  2 Jun 2026 07:32:51 -0400 (EDT)
+	id 75F766B03D5; Tue,  2 Jun 2026 07:33:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C6616B03D5; Tue,  2 Jun 2026 07:32:51 -0400 (EDT)
+	id 737AF6B03DA; Tue,  2 Jun 2026 07:33:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DBB56B03D8; Tue,  2 Jun 2026 07:32:51 -0400 (EDT)
+	id 675356B03DC; Tue,  2 Jun 2026 07:33:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D2AD6B03CE
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:32:51 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED6A01408DA
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:32:50 +0000 (UTC)
-X-FDA: 84834760500.17.544969E
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0C1BE4000F
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:32:48 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=llXoF477;
-	spf=pass (imf27.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 55A016B03D5
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:33:05 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB9941208FA
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:33:04 +0000 (UTC)
+X-FDA: 84834761088.15.4F7F28C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id DCFAE2000C
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:33:02 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G+oxHKPO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of devnull+giorgitchankvetadze1997.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+giorgitchankvetadze1997.gmail.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780399969;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1780399982;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gWu0sre5Jwby9OB3KDM9noNXPSopPTpmyBRZ89OmKZ8=;
-	b=VErVjmzn2wX3v+xWgXq21CGj/cQllsyUDIRkdLovoCVtNrBV+tF+nD8wbcOz49gO/0ZO5F
-	9Ouu0V47PfWoVk1bVzePXQJKkRYXD7ZthEUZugp5KVGv8bWehb3eVDlIfDCSUbe1IQIAcq
-	4x+fxCWlEEvJJ0DUYTAjs+sl6WDGVOQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780399969;
-	b=DUkvFBes+K1+HzaLE0mRUvabWekkoyMs/A9ERdR/NrwR1jGNJWEfBmzpuRcIilGThL9gtz
-	q1cIiMy+UEmETTTo/ZGLe40+f9clwSUkzahtERZ0SZzeqARmzLS3XamSDkRvIWNaULzU0S
-	70t5HIVUpsn/WehJYwZI2iUQn3gBZWg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=oIHE8G9xS3k7NqawNRJAvGgH5ArThZfFUa6EHvmBop4=;
+	b=FhWlb98SRAcfQ+0xdbZp+nEl488XK48BQu/IbkGs456v1TKsYX1yOYFTFE/AahFUdTXB+z
+	2EoWH20GhhFB4Q7qC3yL/WvjX8mgaRvbVmGBfh0Dc2rpjUESOUzWPQvhWJUYfhFRdGmjyI
+	GtO3eSx0fURGZSdn8gV5FTv4TneAf+o=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=llXoF477;
-	spf=pass (imf27.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-841882f8f4bso3918527b3a.0
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 04:32:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780399968; x=1781004768; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gWu0sre5Jwby9OB3KDM9noNXPSopPTpmyBRZ89OmKZ8=;
-        b=llXoF477E4gr+RNJyVwrXEOtx4kddzTuu9aYTaTIRx2gKyktE9M8BdbMZ/2Uz7mQXY
-         48W3/5zT7i/N8xrxAAXEo5LzhrTb6dIpoe9EN4KQ8rQyKgbdFwDGoP3FZm4gb1E34UR3
-         DMIkoTWykhJI9hv5rYdEciU5dGQWNoQTlaLNY54UHE+JAmFN5NxY1cen7trdmjqTuJpy
-         IjLjE6r8kVp2oydI6GjqPCqw2KtgYyJzTjOogseDriGMetIXWBepsLv1oRTOBSC+SRWQ
-         uWCis6/DVOFKabJizau7GaYKGlLuuy9HlVltjCGqIGumHVWIKNnOLFtts7g3u4iZQ6CD
-         UMrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780399968; x=1781004768;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gWu0sre5Jwby9OB3KDM9noNXPSopPTpmyBRZ89OmKZ8=;
-        b=C+MAuzHPZqjkefaOy/PyM4F13aV9SiXANaafggimoqB5Azjdo2n465J/u8SGuwV9ov
-         A7NTbThlg29tC/AyBLbbsCQNDkWN7ixFeoNfuZufxSrSOrW14xuTMFT3OV/3i4+F3zy1
-         F6yBQm30UiDaG7cqdq+9r7FelqxvsEfCtHMllw1QWBxBn/FOY8ZK8OgpV+wzqiVYxu1q
-         Fr4o3dGcyNqT4XB9hFLn2gTMw4dYihIvc9f+pkK5JzfydNxL8EWMKT3Bx2mPSiame1vQ
-         zQrz74MdypaiCpN53iJAcM/erdmjnGoOulAtXCPqaU1MOqr0Wspsc4/P1D8VvEc5Y5P+
-         oepA==
-X-Forwarded-Encrypted: i=1; AFNElJ+J2+tG/vyPyBFPQrV1ouVV2FTEO9jOIIgQnQFeKAaDsYCawgJAZzmBeflFi2dET4+rpw2iVwHzBw==@kvack.org
-X-Gm-Message-State: AOJu0YxHRUbh0NxrEJTDAzdoOqlP155tmGVTjcMDnJv4Ku2FghQyNe0k
-	ZFMkErinLYvV+g2KtcHYGfY2tCY22YftvQKzPOylwQZrHyqax6zmDDmT
-X-Gm-Gg: Acq92OFwxJuwNegRZmLiz3X6dd7dEPM6xp4BuH1Bi+5GFbu/79umTfGiQeaziPr38ct
-	tnA91ESCCnzLGllzcc2D6H4OUPsz1KjwLfj90BDcSXps8gnoebxPbQk/Hpap3OmX975bjO9/wnW
-	KGMYFLP+flyqSPDXYwELW9+XtwXA3PFlrB+Eh7FDm3YiSPmH0jd0mMCDB2KhnwHEjnbMnUBggsZ
-	Y3hCW3ObyWG/J7fzxHOuQyWl8ICAEdpKvE+A3MpVwDRv/Du3WIlnth38Z1AXyW7O/3uXk2u1Zne
-	xFRFuhTkNmp2XzKkvMLomVR1t1aUChB82WSOvuOaIUsSG9Sh7m+c3GOnsNa1hQacxSMKkFRqg/D
-	HVZCtprJxIsRm5klRjWYZdSXoWbY5QcRI72muYTVmSCEKeAPZk1TTILhhMCb27oA3cUaBwP2xq3
-	lT/HNGQDbPMklWr18NjFtF3+krh8CON3ItI9mJXjkNy605Yc4L8tBp8Q==
-X-Received: by 2002:a05:6a00:2389:b0:842:37d3:de21 with SMTP id d2e1a72fcca58-84237d3de5amr11841016b3a.40.1780399967742;
-        Tue, 02 Jun 2026 04:32:47 -0700 (PDT)
-Received: from [10.125.192.75] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8423dc9f361sm8310801b3a.24.2026.06.02.04.32.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jun 2026 04:32:47 -0700 (PDT)
-Message-ID: <22473c1e-8448-fc18-e454-7bfb38e89561@gmail.com>
-Date: Tue, 2 Jun 2026 19:32:35 +0800
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G+oxHKPO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of devnull+giorgitchankvetadze1997.gmail.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+giorgitchankvetadze1997.gmail.com@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780399982;
+	b=DoQ3ooMGBx+69UnjgykabpHGKfpn8YVGj27oHtFS89pQVCt+cF8dWy22Rj1uGs/XdCMzWH
+	jCUuXY425mWL16FAvB0RNry6PF2Ugsstx6kKxCGyhNxdnkO3aPA1JVhQMCp72mPXavg3Xr
+	p8qvwx3hN+bqIoB/CakQjSbZTspmPVg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 23A2141B42;
+	Tue,  2 Jun 2026 11:33:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EDC4BC2BCC7;
+	Tue,  2 Jun 2026 11:33:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1780399982;
+	bh=pd8JOVOEz4rV8NNE4PybzDB11MHSxrwTkh2Jz1uKvD4=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=G+oxHKPO1Ta5pQhT6k4krHVW+9Z9XQcIXlEkazUwa4gXIZ5dcBVGhVxANafzANVfZ
+	 beEW1vKPsf+L39Z+cPFMRyhUr65k/31QRAZz7zxwP5wHAwegc2CTYUPHBD0ke5qSWs
+	 RVVe2Dn340xCncvUQKHmWOh6CUKuJ+v48Tp3ePL5Ccak1PA2/kbr3HFY4YlQmpeoGe
+	 LOm2DjIvpQ2lnN/EAS9Wmd3tOkXhg/ClUnYimbvTlSs1wZCiMI1v2MFh0zVJLyGbJ1
+	 nu+gdFmTdntlvD5oS1uHIyLVB2SzJqpxi8nRACjWz6HTPKBNvjN4WhdUgsg40rpVRL
+	 g5gKSyd8sm3Fw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D750ECD6E5D;
+	Tue,  2 Jun 2026 11:33:01 +0000 (UTC)
+From: Giorgi Tchankvetadze via B4 Relay <devnull+giorgitchankvetadze1997.gmail.com@kernel.org>
+Date: Tue, 02 Jun 2026 15:32:45 +0400
+Subject: [PATCH v2] mm: mm_init: use div64_ul() instead of do_div()
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor
- per-memcg
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, akpm@linux-foundation.org, tj@kernel.org,
- hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org,
- mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
- roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Hao Jia <jiahao1@lixiang.com>
-References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
- <20260526114601.67041-2-jiahao.kernel@gmail.com>
- <aho7nepN5jZtKmef@google.com>
- <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com>
- <CAKEwX=NoQNXOMDD0uTSOPWHQX-CMNU1dw=zEuFj=eLcS3fB-ow@mail.gmail.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAKEwX=NoQNXOMDD0uTSOPWHQX-CMNU1dw=zEuFj=eLcS3fB-ow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260602-mm-div64-cleanup-v1-1-bf5d67d89d93@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAMAzAviI9W6hFd/Ar4mG4qgU3x4ZDEP/u8
+ BhC8kCWpJJhbB5IUjTrGSp0bQPLbsMmqK4yMLEhQ4zeo9NielwOseGKOJB11dLKzkLNYpJV738
+ 5QWGY3/cD8nlNO2YAAAA=
+X-Change-ID: 20260602-mm-div64-cleanup-50ad2020f2da
+To: Mike Rapoport <rppt@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780399980; l=1366;
+ i=giorgitchankvetadze1997@gmail.com; s=20260602;
+ h=from:subject:message-id;
+ bh=J2B8gGLDwptZpFtucevPEHSpg8qUokxrjp8b+S4c/dY=;
+ b=IHwk3v2WYj8xDPtjn66FVDPMkmX2ieJh93XUEOtNj8TQxXIWSL2vr6Zkn7vrk4523G/Hpp2WF
+ FwFTOOWtAp3CXDFOFZchH3Tof7Jyj1gdbiBJe9KWcPfbUA9GJuHOlOL
+X-Developer-Key: i=giorgitchankvetadze1997@gmail.com; a=ed25519;
+ pk=D0cYZsZ7i5cTf2kRt6N7un+iLfmUPM7OwMURPmVnmEI=
+X-Endpoint-Received: by B4 Relay for
+ giorgitchankvetadze1997@gmail.com/20260602 with auth_id=804
+X-Original-From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+Reply-To: giorgitchankvetadze1997@gmail.com
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DCFAE2000C
+X-Stat-Signature: z7bodahgkpkdjmny4p3esthbmsuyqce5
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0C1BE4000F
-X-Stat-Signature: gygqir9x8qwirdtt3bt3pnx8uw53fnys
-X-HE-Tag: 1780399968-325531
-X-HE-Meta: U2FsdGVkX1+DmMEXkK2pzke0YHDmkUW+s+CMR44UKfXaZt/VxdYIhZkF8nBPRlJPVuAapY5hWPgVjB6SnRrV8VVxr1rVY7yWB0NdtUaTZNm2rcnE+Km0ESD/gCgv/hcKMFrqf24J7q0xsQaaevKgEEKTzYwMry8JtnxzHlpWz+P6DhARpxwWWHXoHaA4P/tANDvMBtYX7mILVeyyYfn/ZKzt2rGPlogk5uJQLoHDqG+k1bBdgmtRFdQ4P3MRJOFviLPR+rKFug0wVNcufrbg4QAwDQbV4pc8krh+YdkTCETROul064oItICGEtEeBdayXBIxseHwXfQnVyJrNNxe1y0cqItDvWwj0u5ZyUwv1RdpBMw8NjVs2seu2a+M8k/v+f94nZTHCFtFs3tcWUP9s6tSA9hQXOaMF6a9w39S1nOF0gnzDf2jX8hAhJGgPCsjY8+u1TYCXdTQ5ATs4WLXbCFa+6qxIy+ihhqMrgyw24xy/6OHkdzVJfp/amUJALInMPW3DVUEcc/wyb4/Xx9UXOE4oUNjg/1ertK0HcMRBqWSqnPhh/ryFn0SWA2iJe+YNRg3qXkX8r9jy7Z1mevjULgInQ0bZv+aXo/WiQuiVs7FxzgGCvxDsqwL1cusUp+YSxaUoFCt5r9U/R+haYTg3QbILGkbZRY6VGB6+XREiVT211ozSg+1Ier2mTFuwjN7UjLwF2jMb0GMDP9C7t1RIAuq72PYGjpZFjTKRj/ycIfqc60CQBCQuvx6Y2qzGkZHzq4HYH9oCMxZ0+jlk8dNhv8q8EUkeEWnQTp0jyOTHQ+wuekGePO4YDkDIA9n43EdlMQso02muOCenkCfZnXzpn5PU0YpH/HzeDZbBbti95RncLns9E6Pk2tpL/QKUb1+otursSuDTIJgFuNItC51ePPnNIG1wxtvqc2ystHPYIBBZZoYPPca5IJI2vrShdCSTaNR3kMH63PfxVrfUKp
- T0RZPe+p
- l4JnfLWI9fsxOCQsL5NbAu1kteUYk5cWIXQUXBFSyRLFaZh+2BlCmyhXCYftNxFvFMQnChU1ra4FBVWjqFIDViqzp6woovkWkKG2LodUNCBm8HeYslMCT/Fca4TrsHG5VmKQlRBHT7WurXHGlG5UW2aIpmievPj7Ht2GxeDoztxexAO4tAtJG51EULhhIVkz9YZTUJQxxdLhPJ4fzlRvdMNkRzonfHpMRLFhav2KtvGWsBAdqOPhKvr+zQKQQt2KB+cfvff12a2fInemws/UlybMhNKElqbcBVlUhWRFe2gtHGNhhqcQJAhRyVuaYC7BThmlZ2Hw27OjT6B8B8ZazlvK1pfTYjqTuIlbbqog8MFsrPYw1w6dENRLFkA3pW613npAh2p2pHNpDOjyuRn5oluwa5xPk2bkINWoBVB5HTwlUlZ2OPxPwe2FuW4BXFjYykeILRuGu4syUgY/H2tuJCHOX2TTPgqRRDcifz1icq6LHuGui0Pbzvlt2eNLB0b+8htxQfYz7Wnh9ojuIS78V3kI23aBn/vfhCoos5Pm6AQJCKC/nkSJAfsWc5QLzks8mpGivroUVGGaCvT2QXWh39mhCxLnICCpAqA4m3tBgRJYF5Ijj6A33oXm/j2DVh/rCX2I+lgmyt+Kmvu0aNth5I2olMI5GqZJIpwo0DOEN4jqTbwY=
+X-HE-Tag: 1780399982-206619
+X-HE-Meta: U2FsdGVkX19PEjlC4+y5wD0huNmwMLXxttVhrTxAbbA5nYn6Q+PlRzf0jrIYmVbjZFNR00yubw5D+KZlL/+nmK/y4oPihxaPxr8y8gRO0CpMl3dYl+NFK4g7LAdY1WQn7656oW9+0nMkqVSPZMHnToiV/K00oi523sCYu4X5glxO8GyRCopGmXbGEIgMfqtnbcBvknPqcoCRf8vEGdsZgEJdU6Qw7WKfAOkATDs+sRemS6Puw1OJAHCijOSgnlf0JCTjxqFjFJNPZ0Ke6hZLquVNldk2FxQ9M6nOBu1NexyUr+2EholZ9hTQgRjcXEkuTe2Ww/iRj+fBL2HXNf8bYSCSMLo9JLNXXYmTu77BUABoXRsuc8UpLlLpslXb/NhTE3IeSgwjb92vLFPyTQmaPOo+8LXUV2ndYHpcZ6KHGItL/GMtDXLi9/kmVZkl2lN+wc9G3kzGhY02OPwomHoHxY1ME0VzTUuaCjAy0SYTfg/PjaMmvTzr1gGiSoPub1Ln5DOK0OSrzKg7ehjJfuW34++YSrknonClfT8E1tqr1H9aI8XuA3Rd9gKwLWRV5H1ET7rk6Dfrn/D1a2FhOrMdJcnTVEO/f4kIq67bJwVn3keuAbW9STF8pppfmwbn/MAGM3BB3qT7PsZnai7Tbip+S41OqCEXul8HZ5qoerssTZKXRrAHWHUif9G/WwqdD9qGaxKU/cCTM1x6PJtIvj/q/yXebRvQV+0xhemhHI7LQn8OiDjYywZpAG8Cmlfs7RiPR4QogDINvycprOGhdbtvvaiC4ff3jBc6R9BtKzHr2ojuVIOlDKatnfKaD8Uz1+QB6wMn6qBcZYtjak/SsAYf+Vd5eh6EEZ0+PF74vmKThpw/07VtRs8yT3z1+FlfXIqZthvVe6Rf4ZTfWPuC9ZBurKXL4rWdJJ46AJPUAH24CHt7Fd7U4pa3txAPTmToIX0FkXygvzzbfTqvObl9NWA
+ 9pJ3NaTa
+ ohRz3zC2G5IStHJ+aOXui6PlGozpv71YDb4dnp1dLoKsxyNCcju5D9h27GhrrRmx340bGbUd9EKHlw8mYOnADv+kfmzLMOUNUecN18LiokgGRHv2VlNQjn27X8Zewvot3IAFunN+TSpUCDkQ2NaEbsiITS0ZnaM9c19jcnj/rFLXOrYSgjYZAKfyurwMj8P8xg+BJsPdrF3nh5viJhQVrYvOf4V3poe2u4DCPwUKuMe5C3r+XN93A4Nrvd/5/ivFNNVugHI5cmhiH3k/4OyazaIbwQUtpAI+T0QP0RlXDej2cBt4Qz4GydfuimY3AlHcHkJdvOaHsy4iyiWjj7RZ4ue8kv2RH+YwpstNXpi+jE8HwXW7QbvVg7KYeU5wDvywmj9ckMof1DmdgXjW+HACoM8R52Yk281WA1Pc/rknlVJmd/KsQMV2wmhIQpH3Lzbgv30EwdKDOlooBrgsPqVmfi9jh3Gz2Y1R4ozKNFioikQ0w4XKtbiFjhK3ks2u7W+RiWFKdmcyvXDjM0L5yTyB8LCIP4U8u++3Xdt7GKst0TDS53iHi+woj8zAMHA4/pKSdz6N5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,95 +109,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+
+Fixes Coccinelle/coccicheck warning reported by do_div.cocci.
+
+Compared to do_div(), div64_ul() does not implicitly cast the divisor and
+does not unnecessarily calculate the remainder.
+
+There are no functional changes. The benefit is purely a semantic cleanup
+that better communicates the intent of the division and resolves the
+static analysis warning.
+
+Signed-off-by: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+---
+v2:
+- Add changelog text explaining that the change is a semantic cleanup
+  with no functional impact, as requested by Mike Rapoport.
+---
+ mm/mm_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index f9f8e1af921cda91d812cffdad2f1a0698cfd6ac..4e0909a721d227b097653ed6aaa019960a7c3383 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2412,7 +2412,7 @@ void *__init alloc_large_system_hash(const char *tablename,
+ 	/* limit allocation size to 1/16 total memory by default */
+ 	if (max == 0) {
+ 		max = ((unsigned long long)nr_all_pages << PAGE_SHIFT) >> 4;
+-		do_div(max, bucketsize);
++		max = div64_ul(max, bucketsize);
+ 	}
+ 	max = min(max, 0x80000000ULL);
+ 
+
+---
+base-commit: 6f3ed7fec72fc8979b2a8c7219c0a9fcfc8d07b5
+change-id: 20260602-mm-div64-cleanup-50ad2020f2da
+
+Best regards,
+-- 
+Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
 
 
-On 2026/6/2 01:08, Nhat Pham wrote:
-> On Mon, Jun 1, 2026 at 4:07 AM Hao Jia <jiahao.kernel@gmail.com> wrote:
->>
->>
->>
->> On 2026/5/30 09:24, Yosry Ahmed wrote:
->>> On Tue, May 26, 2026 at 07:45:58PM +0800, Hao Jia wrote:
->>>> From: Hao Jia <jiahao1@lixiang.com>
->>>>
->>>> The zswap background writeback worker shrink_worker() uses a global
->>>> cursor zswap_next_shrink, protected by zswap_shrink_lock, to round-robin
->>>> across the online memcgs under root_mem_cgroup.
->>>>
->>>> Proactive writeback also wants a similar per-memcg cursor that is
->>>> scoped to the specified memcg, so that repeated invocations against
->>>> the same memcg make forward progress across its descendant memcgs
->>>> instead of restarting from the first child memcg each time.
->>>
->>> Is this a problem in practice?
->>>
->>> Is the concern the overhead of scanning memcgs repeatedly, or lack of
->>> fairness? I wonder if we should just do writeback in batches from all
->>> memcgs, similar to how reclaim does it, then evaluate at the end if we
->>> need to start over?
->>>
->>
->> Not using a per-cgroup cursor will cause issues for "repeated
->> small-budget calls" cases. For example, repeatedly triggering a 2MB
->> writeback might result in only writing back pages from the first few
->> child memcgs every time. In the worst-case scenario (where the writeback
->> amount is less than WB_BATCH), it might only ever write back from the
->> first child memcg.
->>
->> Similar to how memory reclaim uses mem_cgroup_iter() (via struct
->> mem_cgroup_reclaim_iter) and the old shrink_worker() used
->> zswap_next_shrink, we need a shared cursor here.
-> 
-> I think each proactive reclaim invocation just walk the entire subtree
-> for page reclaim right (see shrink_node_memcgs())? Would that be
-> acceptable for you?
-
-Our current approach is very similar to how proactive memory reclaim 
-works in shrink_node_memcgs().
-shrink_node_memcgs() first calls memcg = mem_cgroup_iter(target_memcg, 
-NULL, partial);. By doing this, it uses 
-target_memcg->nodeinfo[nid]->iter->position to retrieve the child memcg 
-where the last reclaim left off, and then resumes the iteration.
-
-The catch is that zswap can't just reuse 
-memcg->nodeinfo[nid]->iter->position, as that would mess up the cursor 
-used by the memory reclaim.
-
-
-> 
-> I also wonder if we can at least make this structure dynamically
-> allocated... In a system, you only really invoke proactive reclaim
-> against a few target cgroups, no?
-
-It is possible to allocate it dynamically, but I am concerned that it 
-might introduce a slight performance overhead. We would need to add a 
-**check** like if (READ_ONCE(memcg->zswap_wb_iter)) every time 
-zswap_mem_cgroup_iter() is called. Furthermore, to handle concurrent 
-allocations, we might also need to introduce cmpxchg() to resolve race 
-conditions.
-
-The additional code would look something like this:
-
-static struct zswap_wb_iter *get_zswap_wb_iter(struct mem_cgroup *memcg)
-{
-     struct zswap_wb_iter *iter, *new_iter;
-
-     iter = READ_ONCE(memcg->zswap_wb_iter);
-     if (likely(iter))
-         return iter;
-
-     new_iter = kzalloc(sizeof(*new_iter), GFP_KERNEL);
-     if (!new_iter)
-         return NULL;
-     spin_lock_init(&new_iter->lock);
-
-     if (cmpxchg(&memcg->zswap_wb_iter, NULL, new_iter) != NULL) {
-         /* Lost the race, someone else installed first. */
-         kfree(new_iter);
-     }
-     return READ_ONCE(memcg->zswap_wb_iter);
-}
-
-Thanks,
-Hao
 
