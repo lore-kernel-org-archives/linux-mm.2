@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2132CCD6E55
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 01:01:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AAD1CD6E55
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 01:01:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88CB06B04E7; Mon,  1 Jun 2026 21:01:36 -0400 (EDT)
+	id F1E3B6B04E9; Mon,  1 Jun 2026 21:01:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83DB86B04E9; Mon,  1 Jun 2026 21:01:36 -0400 (EDT)
+	id EF4B56B04EB; Mon,  1 Jun 2026 21:01:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 753976B04EA; Mon,  1 Jun 2026 21:01:36 -0400 (EDT)
+	id E0A846B04EC; Mon,  1 Jun 2026 21:01:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 603296B04E7
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 21:01:36 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C2A091D51
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 01:01:36 +0000 (UTC)
-X-FDA: 84833169792.11.FB4E866
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf15.hostedemail.com (Postfix) with ESMTP id ED79FA0013
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 01:01:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pBipOFoE;
-	spf=pass (imf15.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D0F926B04E9
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 21:01:42 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 99BC21C1091
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 01:01:42 +0000 (UTC)
+X-FDA: 84833170044.25.A7717B3
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A44DD40004
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 01:01:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Os/egDcH";
+	spf=pass (imf17.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780362100;
+	b=VJfiLtgyzVivofkUWMSM2njPET3rZXx++MydxA7Rc3afkCmr5Kln6wT5xaBe16iQDIToPR
+	Ibb9T8HGT4Vvm+L1T+OXpF46iO99igyHozR0qUhpVmlZBKdogGEglnfQ2Nti6NJFCwCi3x
+	CBExG7H44tziYK1skvfc1j/J8sFlSis=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Os/egDcH";
+	spf=pass (imf17.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780362094;
+	s=arc-20220608; t=1780362100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wGPIJKEwlEpJKHH4SLNL7cs1Yqvspn4Cra5AaU0HUME=;
-	b=S8njgNOsciBVY3NrXmACrjrrOXe+c1H3QynpHKHTCtKjX+hFPWfUpL7DAPdMpkqge96+ar
-	IzcSnwMEB7YGtuHt+sYz1v0JdF83wGa0OTVuT/8ZlINuDadwJmDrGRetVDsLhjQLdShPSs
-	lYGmz+cSZGSS7bRz3nJitPksi9OJotY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780362094;
-	b=MOuBBVM+m1D+03G67ODAG2JI6w92E6GZtsshDgVzs8e1kotH2Qy0ZTkpQZj5sSJmjUELF/
-	QwEcaxrhpgem0q9F33TkBx2ouHh+1JbuoT8bIeE5ItGC5lstLAoyXPw72YTSl5qgobIL4z
-	YccI0PZvrJy3BrgYwAOGJ2cNVYnutMI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pBipOFoE;
-	spf=pass (imf15.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c0bd02d97eso23154675ad.2
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 18:01:33 -0700 (PDT)
+	bh=AW3A/Ls+0h2KLVTTYuDIxmHt+2dRNezfr2XaBLaOlas=;
+	b=23EHOsaaFx8rnTcypYdcyOS6UdoMHGL/NgMfIa/7plAm5uBsNhwmX66kQ+eouefqEZQIxq
+	RQ1QNB8PHhPqa3hRKed6x0oXB2MYnO+wgFbgps0oVL9IpDOF65oPOyf5bK2RpdArx8b1cn
+	H2ph7XWTsZxKFf/P+lvmJxM8bkxVvYo=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2c0bd02d97eso23155945ad.2
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 18:01:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780362093; x=1780966893; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780362099; x=1780966899; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=wGPIJKEwlEpJKHH4SLNL7cs1Yqvspn4Cra5AaU0HUME=;
-        b=pBipOFoE9w/Kl6DimWaNkstroYQ2i1rh0s68z847dMEOAyWrbIEL9donBj+45kN0Jy
-         cyDkvbwZDDeJzfe/0cDdw16iWHpcxQMeFn6caYsbXiiDdTZRnBEDdJA+MX+Gdc/Hj9DU
-         8DcoY3MiP1Yl0rvdnm0f5uVBAxNWdIhlKzsYPkNwkBtpSfzXUUWJ7K/k+0UgjCy4Em3+
-         HJWEq626Tv8ZPx2fudQ3oSQs/qW+byU0enfpccdMYvTLsemWBJCajawNqRzkQIhNH1KV
-         xVQi2yNYl1M1KdhSvLOfS+o6k/C2S6njv7DPi23f6yoHezSSl7VdUO/e1qU9aEu2fDvJ
-         SNuw==
+        bh=AW3A/Ls+0h2KLVTTYuDIxmHt+2dRNezfr2XaBLaOlas=;
+        b=Os/egDcHjXhcgbe1ZUZnqXfBVm+ZP0ZqKXpd/v9aLWm0QaZ3+kX8U1CoheQi9PIzrs
+         YTJbhbJ0gx+WcYFy50mNbH4vLIMfUWdhxv0NeVMfXaeGRaIK657llWEJS7LuOObYIiTX
+         4BJlJl8iAQyPhwXQMNJkWgPaOf1japhbF8D6N/MGcHYNOhKziRrZOJ2DAPNemH2ef5ki
+         as20n+pk1U4i8KY+j4KdVabz+mHkIF6JTljMW002unmHOmVkrPw5+GYm2CBnZ4SNJort
+         72UfQNJwZDVhcfx5KneMGVIeDQLlCKWIIFqmIBWG1Bz9r5Pscd+o99UvxA9bweTxjFEY
+         FYvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780362093; x=1780966893;
+        d=1e100.net; s=20251104; t=1780362099; x=1780966899;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=wGPIJKEwlEpJKHH4SLNL7cs1Yqvspn4Cra5AaU0HUME=;
-        b=BRXWY1AV0ZS7wPot2S09AJ/FjUNJgZ1auD6NYolX46v8QO507eNnMgQ50UWx/pCq5t
-         T317Ngugr2MXqcEDg5aYCw5EkR0nKlTlzlRhxEnWygbg73yfGzyDoYrtCm0Q0iHezSMZ
-         NdJcVi9bovEG/92fBhYUR+nyfEvfUrIf2SqtYe92eaLU4gq9ZKEwL+7BURuzC0SH/pGk
-         jyrHIe7lvOYJG6aP9WubURYT7b4SiD46wXou+WbZWQwXyKwPuzoJnXz90XYaGjr+YUa8
-         4HiNhMMGZpe2AYx5/MMKKYy30zFlxJ0AVpcYmkCx7EboxrCCpc3yCyCIQNY2APD7Ifw4
-         7MCA==
-X-Gm-Message-State: AOJu0YzsmnXfcNQyWtzTft0k47ufDvA2PPqumgDclVbf9l2nIz9V3Eu6
-	vwVHLe7JiCr7KKNsFOsEXhfkU7Ki6+w6dYyB6mheY1H8GWkPKEyU0p83
-X-Gm-Gg: Acq92OGoLq7f1poxc+MpbUKGlppJpx3bpcuEscyPBwyLerZUrQVMTIHt9IYbH2nRzH0
-	F5gQlDV5gAilVBh/PO/K9A2B9pE/1FnjOQo6jtfXYjsp3PGKlW6hdrqXQbsX2CoTazqSoEubXmf
-	1ShYR7GpMmWUUKRBcL/FpQjrlbzwmfB5KgXpva+d1QWCA5VfNof1cRPXefNSpFtdms+n3lShqr/
-	qTLphxtJJM1+pdPUfOkqXe0WFAyGQDMm14d99V7lyfS0hzOoxaUnhUqUy9s7kw3hSF8h0lmCIVf
-	tOX0K2RYQRCCeJogDnA+lU0Z2Xow4cirHjRufKqxi4r1HukyRAhdHfjTujtn2LzjLVyco4jBOwV
-	XNS8bfgctCOwi4b9OyINfwWOYKIGlLILG+Rcf+LRSNT2giYIf/rqE2i9mSxXR1vVFwAdxHIgpDe
-	ycTSOKZGtWWz/vD9NHt9jhriQlkgfxbbMGZC5AF3wCJlGMs2FGk5Ma2IoJnz42N88G5JUxTkKn8
-	zBWaRmKp0LJu4wrLjR6aJJnwNrTJeTz
-X-Received: by 2002:a17:903:234c:b0:2c0:abd3:32fc with SMTP id d9443c01a7336-2c0abd339bcmr122968685ad.34.1780362092572;
-        Mon, 01 Jun 2026 18:01:32 -0700 (PDT)
+        bh=AW3A/Ls+0h2KLVTTYuDIxmHt+2dRNezfr2XaBLaOlas=;
+        b=NqvPhmny7HaRLyDgHZSf7sMbwz5arVDmFTvkNQgzd+aNdNr3G9Lb4IGqxbsxKj8YBF
+         B1cIslw/bGaBgk/s3mg0TE6GNHASn5kaEk/pVaoBgAX/+AACCANj/BoGqxf2c5Dp45+O
+         TPTmd9WLVa4dBLBK+O1hdE9ihoYjN4yLbNoncretGbhPrsc3UD3PqdXX6UUBi12TkbK2
+         j8ZE2Js+G4tTBFFmG+cCrJ2whcy2QdvKDLVLdXix3siE3QU7DvqpXh9KB5KflUKQb+dg
+         amPa3GhKupYveOMmAEjzMxLrdnFMiT+5J1KYkVymsGqzx8OOq2/cbWYq7aaqGPzDNSuQ
+         5egw==
+X-Gm-Message-State: AOJu0Yxuh/mfL2i9pI5jcHLvudDfBIF1nGjcfL2e8pBOZlFMo3eSsziv
+	83uH6gWBhNdRubK25sj1kKtZGZ8EUMGjwi27r+i2JhDxF5pEdpHL1iki
+X-Gm-Gg: Acq92OHZTUH2I8+B6On7rAHFIuDEgiBxTDnxFYhbJeFpaxc+BzQlYFn7du2wG2rf8vj
+	dYVID6BGnSXBxHc9ahkLFAX/F/OO391Am3saa0wlk2tb5cfW7f3+5ixVC6cRpns6KoF2H2YG1Vd
+	H9Y7xLD8marabnfE2DfwYwjjQJepPWUZ7RX/Ug+bR9B4RbrkFEsBx88zqnT8R/ht9kMiTD5fwTj
+	8VRbncPO+ZJl9P/inMBm0CL8qwYueJRyySIcNNLb6U3dTVg0b0ewgs97hD/eaKbF5aFraoiRSTS
+	5ItCU7HFyxdOcEB/VHXBgqzPUY7ihhBQijRCNEIvxuzbUu+oHWRZNlYy0c/xI4TDDk0w0Aa0+8E
+	9spN+AB1+aCXirr+aUC15eXxoUEz6pP+ph8Bpc1IM/93+dSJy4V1NC+9AN4dq4ApBex/c/o8LHb
+	gKZWT+ApFBae7zxZnM2uVK4reMK4T09mgco07NMIDA7KAVHfoHUp+9iSNX8YDJVXcMGdTcxtUyH
+	OjMuc1pgHqUR8i+q9zLbg==
+X-Received: by 2002:a17:902:ecca:b0:2bc:f1ef:2e65 with SMTP id d9443c01a7336-2bf367dbbc6mr158885955ad.17.1780362099480;
+        Mon, 01 Jun 2026 18:01:39 -0700 (PDT)
 Received: from NV-J4GCB44.localdomain (nat-hk.nvidia.com. [203.18.50.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239fd85dsm111693355ad.25.2026.06.01.18.01.25
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239fd85dsm111693355ad.25.2026.06.01.18.01.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 18:01:32 -0700 (PDT)
+        Mon, 01 Jun 2026 18:01:38 -0700 (PDT)
 From: Jianyue Wu <wujianyue000@gmail.com>
-Date: Tue, 02 Jun 2026 09:01:15 +0800
-Subject: [PATCH v3 1/3] mm/swap: colocate page-cluster sysctl with swap
- readahead
+Date: Tue, 02 Jun 2026 09:01:16 +0800
+Subject: [PATCH v3 2/3] mm: move folio LRU code out of swap
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-1-5bbb567f8c99@gmail.com>
+Message-Id: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-2-5bbb567f8c99@gmail.com>
 References: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-0-5bbb567f8c99@gmail.com>
 In-Reply-To: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-0-5bbb567f8c99@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
@@ -117,23 +116,23 @@ To: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Jianyue Wu <wujianyue000@gmail.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openssh-sha256; t=1780362076; l=5610;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1780362076; l=3325;
  i=wujianyue000@gmail.com; s=id_ed25519; h=from:subject:message-id;
- bh=U//WgOrwvoq/HPdRnaVsUGDxXeZw9r2BdejpXkkxLy8=;
+ bh=irV6tT2VkmAHwvkYIbqPFAWrBGcSQqdUJIymy1EVHjA=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgW51Zh3v9nG0Wlld2Ti8ylp1TnO7yB
  H+z9CbXty/WEAQAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QGjiGdfDmt3WVhe35BVC83RzIiuXHwIOkCCP/23I7fR1WOnmaBSSeLPMcQ7kpBgUQbNl1iu8/jP
- lHda0dYyPIQk=
+ QK6wYNFc1kVFT8CN61Kwgpv/dbQuBJVp1aAvggsrFzWp3+LeCCovaR2gFPQrXpcS+mR85xiVhNn
+ oSy79euxduAo=
 X-Developer-Key: i=wujianyue000@gmail.com; a=openssh;
  fpr=SHA256:gVWBPJbHGWlCIw+V8F63Ff0k21S7AB5+rZt8+huemvg
+X-Rspamd-Queue-Id: A44DD40004
+X-Stat-Signature: ww11dhq8hwyke97r67o9d9fyjnqossen
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ED79FA0013
-X-Stat-Signature: sxicrgahr9cm653zh9tybjw5gsgketo4
-X-HE-Tag: 1780362093-299019
-X-HE-Meta: U2FsdGVkX18Vh9OdI9/4RIbGcEct9+lZSpHzylARIe2qqA2E+M2pP/KRtc6zI7OuSaFzQkG27mEtk3WUKOQG31G+3hNpgb9f07yJj7fNFyX287R1V29zzGtelAzPotKVvZLdI/AVIaUWJ94wOx8oDDoyym1yoLLDQRl1oCkIDxuyOtg8cpz5pshbs+bKNtUMsochHYeB2rCKc4zCz5h2IBvpy1dogmXyf3nKeAdJrwWntHeJD3pVYvsIXez3ZIk6CObolXnNuOAx25uvC4RZ4qUtHnGmep8IvsvlVEya+QCwcwo8YIqwV4em4GGCFeypeKrXDoSbaRhjxwp4IjSH3E6o3LWif25AQi8ZK50D2ut85wRYVkm7+ymmZADDx2N91znocTUQLbIiG4b4nTrcxlB8ob7n+mmTaAyKFCy3VJ8JjgfoAqxqGkXP4vVfV6jzJhp0uZ5LwnFZGAaloacnzlf7ohvMEG2q80Fc2pEZ0jkbBUfUVsfN2ZxF9ccobarX34bVy7xj+YceYg7TarYbQ+HLewzjCpIk23+F7qYJUZt878dR27bT9bFcZvfwinPh+RMuWddu0wrdBXbXLXPfEnq8oNF9+usFu6JfpUG7XfZCld3YoWj2DJcr+R7F4wbXXaGutia13P4vMrqaakPK0pE9c5gzVciNHvEdfQmO0DZiRm0WNECQ93HX714gHaP9NLjqI4RrtK3abEJxRst7DEGSTjeQXk7OPaiO57jtISPjPhOVBUDsYjjmiJZi9cCYoKxxZUkuVjjPXKi54ubN73OWfznONDamESMoeE6iptD3rpZfvTNeS7EPO07zPoXdwzdyNFWOWS7xJuh4W2eNzgNjP0DlyNH/RZnAccGTf1VYMYf7Mdkm06lZeTkwddnt181pnXgU9fotGCwn7L9n3W0nK0jvPCDFijWjD3sMz7xzMRk0mJ+uu2mt9M7xB/OU/3XVthKIa2F+dlV6km/
- xKXHOWT6
- SiJT8SzBgL8nzeCPElOGYYtIMBtxm2Cqys8ktefDQKKPAOmQRcl8S5QKkwNdWOZN/roiZvTDgcUTTDPWOYNk+C+ryfSN6SftXJ+v28Yx2fn30SRNP9/vApi/MRBwuuP82L8DbPPIEC8qZ2yHUpiZ1R4/ObAapFCutT8cBFBkMrO7vvDsxJWq+XOJrlcqeKp0qnaU1s7lgXpMbRODWb9lWB7VP0AA7vFlp13I1u0J70nL+XgVaE668tHj/y2oH3yV+2dkiWl5t3rlAA+CwUbi7/+T07X4N7HYg2MK86PGxT1AuC62Lx9o+KMythAIY+rEvfgigTzSZBuCiJ6XuFKDujEHbIRnB556rKQD4m4Hii5S2vukLphpm77lJeOVTlVaOVUInUYbFOLt2y+X9VBqTeYD6HmvZB6k91tlmptxCHvy3xPMkZN0bcjclSNhStys18VV5Ag6EwZ+Kse8zalqrPr9NhzQkY8oaqBRQeGmIhOb/BrSzIUiL2G9Hgomt0zvmScmmXcLUAnKKRWwelP/E3krqIg==
+X-HE-Tag: 1780362100-118633
+X-HE-Meta: U2FsdGVkX19903YUzt3JshyywV9+PR52NkQiwz4QuP7S7PbSppzmlo44HGZhTlEh06RkueUlSlO/UXeyTME+CBnmkiV2d/gQdrgWEGMndxT0U/4TyeJALFu0KC1dXbyhK9Yt1mEsN70v2a2q6Q5WHTrJh06s7doKfYnhc3v9DepjPk2/VDjbRHVcEOQOmEV+5vB/LPbpG1yGWWaj/I0PU39pRHoy836x5vwefmQF2RXYQkKK0j/i/i1XSwxsxP9rJV2gqSDyGDhABY/S7vFFfybeTNaLmaFwIxqiya6IHc15ZX5iq5KfNwnuyO2HqecDmldxWtir2Bv2E2qUPHDXPMopftatoL6WNu7S4Kg0esauI7tEHdf3FINZIuf3tkQTgGRu8NkBFIClzm8MmIvUcXScnaI7BaM2VURiXF5QaMemv2C42QH7mgLZm94PePYD08w/jguKo7s9+QBXul9c1NA32ODJq23OSG4C+4aDHUhawmBn9EbNLgdAu74HKHBzcXao6Q1WEoFyXd6DkM6PvEcRu1zijoIOYvxMAke1H26ofRNuX9rJqhNe8O2n0CXU24EfTxhuLjeMvXlv1w95k7Ao2TSzWN91SCErBPosdtKWWuqsgFILov1ln+MDYbR2+R/v8Q6vsAj9PbdxAo3KC+Lz+PmvgTTBOpbyEywQ7GHmV9psf9TgjgnPakFgPg4PIoI18mWEwzXvsY2sX2Q1nIW2yf8//slVZ8CDQGiC6eifSCxiQoh2mOO6BdWca8X/HyOkahkRBZrZT+lnZGk7KfNKJ84aRTMzqf8y6qtFAYhnUQhIjpXp6IGaGK0BixSvOScwyrAsndY/ivI7DxBvmqhfewTuN/4VkmuFnqL25/hON3HE91to5B1Jf1GzddnBf1K/9ELYxH+NtKWfw2Aw8AYY2pH6CEPVfaYSzBS3zze9MYTBfbAREGCEFM02YQzlHG2ccK9awdqw8SbbE7a
+ VvtOeSta
+ Ah7n5JumTbAjgaMwlBU3NpgMkx/cRtkCByUt9cO+FEHC3u1pGkrSRkAzLty/QKwSNxs/vOkdGuiLxcJtHP0c9sypMz13np1VhZfwZZTT4EVRD7uMny9Kc4/XVkRZ+V1YJVp9VfVT9OIMmzidX+hd7Ss2K0qs2LvcB0z5wuOHCGwF6+N4ARleWByV/B7lTJhooyXJgb5I0+eMhaD46uQDKs58nnV0Pqf83zUIrBEDzaY8xLLhRK0erobei4n1ZwaEkLYPHpEYMug8iB4Eyc8OwjNOA6wPM6OCKAkO7g8rhSqz6EFpjbyqLnpXnlSYBm3Sofp4nwRZjeF3tE9HYyrKhLv2lSYIy7AH+JEJY0oDSbzPWZV6v9U00SKKCXREYd4IXteUGd2a40BQJr9M9IRynmeK+s6NBo0Hwt+l6DWBXUMHMgdvTUsxBmv5iHByQz9EiMJB5MyhaLgOuTvl0MGEhfpRyeyMqw0+uTP+PBRLIOWnCvuym7dqf/239kA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,193 +140,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-page_cluster and the vm.page-cluster sysctl are only used by swap-in
-readahead in swap_state.c. Move them out of swap.c together with
-swap_readahead_setup(), and make page_cluster static to that file.
+Rename mm/swap.c to mm/folio_lru.c so the filename better matches
+the code's main responsibility.
 
-Rename swap_setup() while moving it as well. The helper is internal to
-MM and now only sets up swap readahead defaults and its sysctl hook, so
-the more specific name matches its reduced scope.
+This keeps the implementation split from swap-specific code without
+changing the published LRU helper interfaces.
+
+Update MAINTAINERS and the remaining mm/swap.c documentation references
+after the rename.
 
 Suggested-by: Baoquan He <bhe@redhat.com>
-Suggested-by: Barry Song <baohua@kernel.org>
+Suggested-by: David Hildenbrand <david@kernel.org>
 Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
 ---
- include/linux/swap.h |  1 -
- mm/swap.c            | 36 ------------------------------------
- mm/swap.h            |  8 ++++++--
- mm/swap_state.c      | 37 +++++++++++++++++++++++++++++++++++++
- mm/vmscan.c          |  2 +-
- 5 files changed, 44 insertions(+), 40 deletions(-)
+ Documentation/admin-guide/sysctl/vm.rst | 2 +-
+ Documentation/core-api/mm-api.rst       | 2 +-
+ MAINTAINERS                             | 3 +--
+ mm/Makefile                             | 2 +-
+ mm/{swap.c => folio_lru.c}              | 2 +-
+ 5 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 636d94108166..5bd6f1d5984a 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -345,7 +345,6 @@ extern void lru_add_drain_cpu_zone(struct zone *zone);
- extern void lru_add_drain_all(void);
- void folio_deactivate(struct folio *folio);
- void folio_mark_lazyfree(struct folio *folio);
--extern void swap_setup(void);
+diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+index 97e12359775c..31d135e107cb 100644
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -20,7 +20,7 @@ of the virtual memory (VM) subsystem of the Linux kernel and
+ the writeout of dirty data to disk.
  
- /* linux/mm/vmscan.c */
- extern unsigned long zone_reclaimable_pages(struct zone *zone);
-diff --git a/mm/swap.c b/mm/swap.c
-index 588f50d8f1a8..e4b3dadaa6dc 100644
+ Default values and initialization routines for most of these
+-files can be found in mm/swap.c.
++files can be found in mm/swap_state.c.
+ 
+ Currently, these files are in /proc/sys/vm:
+ 
+diff --git a/Documentation/core-api/mm-api.rst b/Documentation/core-api/mm-api.rst
+index aabdd3cba58e..d6d189b9a996 100644
+--- a/Documentation/core-api/mm-api.rst
++++ b/Documentation/core-api/mm-api.rst
+@@ -117,7 +117,7 @@ More Memory Management Functions
+ .. #kernel-doc:: mm/hmm.c (build warnings)
+ .. kernel-doc:: mm/memremap.c
+ .. kernel-doc:: mm/hugetlb.c
+-.. kernel-doc:: mm/swap.c
++.. kernel-doc:: mm/folio_lru.c
+ .. kernel-doc:: mm/memcontrol.c
+ .. #kernel-doc:: mm/memory-tiers.c (build warnings)
+ .. kernel-doc:: mm/shmem.c
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e3ee97f5474e..6bd39e0afceb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16900,7 +16900,7 @@ F:	Documentation/admin-guide/mm/multigen_lru.rst
+ F:	Documentation/mm/multigen_lru.rst
+ F:	include/linux/mm_inline.h
+ F:	include/linux/mmzone.h
+-F:	mm/swap.c
++F:	mm/folio_lru.c
+ F:	mm/vmscan.c
+ F:	mm/workingset.c
+ 
+@@ -17045,7 +17045,6 @@ F:	include/linux/swap.h
+ F:	include/linux/swapfile.h
+ F:	include/linux/swapops.h
+ F:	mm/page_io.c
+-F:	mm/swap.c
+ F:	mm/swap.h
+ F:	mm/swap_table.h
+ F:	mm/swap_state.c
+diff --git a/mm/Makefile b/mm/Makefile
+index eff9f9e7e061..5f712f9bbe73 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -50,7 +50,7 @@ endif
+ 
+ obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
+ 			   maccess.o page-writeback.o folio-compat.o \
+-			   readahead.o swap.o truncate.o vmscan.o shrinker.o \
++			   readahead.o folio_lru.o truncate.o vmscan.o shrinker.o \
+ 			   shmem.o util.o mmzone.o vmstat.o backing-dev.o \
+ 			   mm_init.o percpu.o slab_common.o \
+ 			   compaction.o show_mem.o \
+diff --git a/mm/swap.c b/mm/folio_lru.c
+similarity index 99%
+rename from mm/swap.c
+rename to mm/folio_lru.c
+index e4b3dadaa6dc..7dab6a544d94 100644
 --- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -43,10 +43,6 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/pagemap.h>
- 
--/* How many pages do we try to swap or page in/out together? As a power of 2 */
--int page_cluster;
--static const int page_cluster_max = 31;
--
- struct cpu_fbatches {
- 	/*
- 	 * The following folio batches are grouped together because they are protected
-@@ -1171,35 +1167,3 @@ void lru_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int
- 		lruvec_reparent_lru(child_lruvec, parent_lruvec, lru, nid);
- }
- #endif
--
--static const struct ctl_table swap_sysctl_table[] = {
--	{
--		.procname	= "page-cluster",
--		.data		= &page_cluster,
--		.maxlen		= sizeof(int),
--		.mode		= 0644,
--		.proc_handler	= proc_dointvec_minmax,
--		.extra1		= SYSCTL_ZERO,
--		.extra2		= (void *)&page_cluster_max,
--	}
--};
--
--/*
-- * Perform any setup for the swap system
-- */
--void __init swap_setup(void)
--{
--	unsigned long megs = PAGES_TO_MB(totalram_pages());
--
--	/* Use a smaller cluster for small-memory machines */
--	if (megs < 16)
--		page_cluster = 2;
--	else
--		page_cluster = 3;
--	/*
--	 * Right now other parts of the system means that we
--	 * _really_ don't want to cluster much more
--	 */
--
--	register_sysctl_init("vm", swap_sysctl_table);
--}
-diff --git a/mm/swap.h b/mm/swap.h
-index 8742b82cd0db..f860f8c669e8 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -9,8 +9,6 @@ struct mempolicy;
- struct swap_iocb;
- struct swap_memcg_table;
- 
--extern int page_cluster;
--
- #if defined(MAX_POSSIBLE_PHYSMEM_BITS)
- #define SWAP_CACHE_PFN_BITS (MAX_POSSIBLE_PHYSMEM_BITS - PAGE_SHIFT)
- #elif defined(MAX_PHYSMEM_BITS)
-@@ -96,6 +94,8 @@ struct swap_ops {
- };
- 
- #ifdef CONFIG_SWAP
-+void swap_readahead_setup(void);
-+
- #include <linux/swapops.h> /* for swp_offset */
- #include <linux/blk_types.h> /* for bio_end_io_t */
- 
-@@ -345,6 +345,10 @@ static inline unsigned int folio_swap_flags(struct folio *folio)
- }
- 
- #else /* CONFIG_SWAP */
-+static inline void swap_readahead_setup(void)
-+{
-+}
-+
- static inline struct swap_cluster_info *swap_cluster_lock(
- 	struct swap_info_struct *si, pgoff_t offset, bool irq)
- {
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index b9613026950e..e8f1fb37a6cf 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -22,10 +22,15 @@
- #include <linux/vmalloc.h>
- #include <linux/huge_mm.h>
- #include <linux/shmem_fs.h>
-+#include <linux/sysctl.h>
- #include "internal.h"
- #include "swap_table.h"
- #include "swap.h"
- 
-+/* How many pages do we try to swap or page in/out together? As a power of 2 */
-+static int page_cluster;
-+static const int page_cluster_max = 31;
-+
++++ b/mm/folio_lru.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  /*
-  * swapper_space is a fiction, retained to simplify the path through
-  * vmscan's shrink_folio_list.
-@@ -986,6 +991,38 @@ struct folio *swapin_readahead(swp_entry_t entry, gfp_t gfp_mask,
- 	return folio;
- }
- 
-+static const struct ctl_table swap_sysctl_table[] = {
-+	{
-+		.procname	= "page-cluster",
-+		.data		= &page_cluster,
-+		.maxlen		= sizeof(int),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= (void *)&page_cluster_max,
-+	}
-+};
-+
-+/**
-+ * swap_readahead_setup - defaults and sysctl for swap cache readahead clustering
-+ */
-+void __init swap_readahead_setup(void)
-+{
-+	unsigned long megs = PAGES_TO_MB(totalram_pages());
-+
-+	/* Use a smaller cluster for small-memory machines */
-+	if (megs < 16)
-+		page_cluster = 2;
-+	else
-+		page_cluster = 3;
-+	/*
-+	 * Right now other parts of the system means that we
-+	 * _really_ don't want to cluster much more
-+	 */
-+
-+	register_sysctl_init("vm", swap_sysctl_table);
-+}
-+
- #ifdef CONFIG_SYSFS
- static ssize_t vma_ra_enabled_show(struct kobject *kobj,
- 				     struct kobj_attribute *attr, char *buf)
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 2d44ebfebdea..e34f1565f42f 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7651,7 +7651,7 @@ static int __init kswapd_init(void)
- {
- 	int nid;
- 
--	swap_setup();
-+	swap_readahead_setup();
- 	for_each_node_state(nid, N_MEMORY)
-  		kswapd_run(nid);
- 	register_sysctl_init("vm", vmscan_sysctl_table);
+- *  linux/mm/swap.c
++ *  linux/mm/folio_lru.c
+  *
+  *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds
+  */
 
 -- 
 2.43.0
