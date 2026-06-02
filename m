@@ -4,170 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC9FCD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 13:05:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D673CD6E60
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 13:08:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB8DB6B03BB; Tue,  2 Jun 2026 09:04:59 -0400 (EDT)
+	id 9E8D76B03BA; Tue,  2 Jun 2026 09:08:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B90146B03BC; Tue,  2 Jun 2026 09:04:59 -0400 (EDT)
+	id 99ECA6B03BC; Tue,  2 Jun 2026 09:08:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA5DA6B03BD; Tue,  2 Jun 2026 09:04:59 -0400 (EDT)
+	id 8882B6B03BD; Tue,  2 Jun 2026 09:08:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D6AE6B03BB
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:04:59 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 519AE1C0FBF
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:04:59 +0000 (UTC)
-X-FDA: 84834992718.30.02E91A6
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4BA2080019
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:04:57 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WJsb6lQD;
-	spf=pass (imf02.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 74CF06B03BA
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:08:07 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 11EC34085C
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:08:07 +0000 (UTC)
+X-FDA: 84835000614.01.5BA4B0D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 327F3140003
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:08:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YjD8qWvl;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780405497;
+	s=arc-20220608; t=1780405685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H/8nMdqnIqVIuE86ZCCEmz0EQ1iXOszPXfKX9VZoGH4=;
-	b=QP4PWok5b27Ru+QbTgQsSzjK64kDooE9zCb2JS7UXYAvdhL1AXGn3QXvIZyt08C0lJ9PQw
-	BFFwBr5HrfxkKAaQekpvLk0z3rj1qwLt8qspaqe4bx5j4j7UXRq/C74xNVlhMbL6HxdC+5
-	F07BKjE5jg6yvdSxNOHqpVqQxlqqTUo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780405497;
-	b=KBFxJlhcOEsRxc2NfkrH/yzbUypfylRu7Dq3dDijGA+kHovXNamFMp6dBxhA4K3tLFWNds
-	bnKLFol7+CO834hBwDS/5jfAH6ixk+iwBwK5xfjKo+SCUnKZ9yp4E2fg/uaFSEDszhHAq/
-	qYE53k61cJ+b3RpMgqfOzkpbbPSBym0=
+	bh=7gdrxNrVLvwfZgr57YR0p9t9xmjz+xT3wRBbVrlHhXY=;
+	b=SjJv0v/SbkD+KoOJBRosa2ymsSttnkL0BHU3snBfbvg+50N88d3Z/XmMJY5ZrRc7ySjR6z
+	oDGMLBYA1lC1Tm8mT7lbwfsDK9Pfdx9Dau/CHh9cn8msYXXEwMawUbQ3BU27E34DLae482
+	VtlEOMHTepFas4Jqbpfy1J1vpEAq6UQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WJsb6lQD;
-	spf=pass (imf02.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4906238c62eso93031365e9.3
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 06:04:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780405496; x=1781010296; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H/8nMdqnIqVIuE86ZCCEmz0EQ1iXOszPXfKX9VZoGH4=;
-        b=WJsb6lQDnHNKjbfPZ7Gt2D8NeefYSBiNTfdj4T3ExagTULzVm74FsHRJGaR/50aYjh
-         EF4p+GeJ43LnE9iVS32RITYHvj+qzzXafO4TaO921shXnnN2BX9gy09GXYAL1NJ+ZAxG
-         5wejeU4++bw0rweJVduNuluw2ALqSum6OXfvYZOGeVwS3iP5VEs5G7ZYtzKPofFiywuQ
-         9QVWIcF9HGlH5DQmTLij/RS7cMJyVFjUjnxxfolXV12dY95blvPyLvRWjBFW3FwVbiRV
-         wiV4VbeTqmXAq48I5uf5tftBTUOF78nNfeGQHV9sEtadtTWS1FAHu/ZdqZguq7Y0TpUT
-         QG1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780405496; x=1781010296;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=H/8nMdqnIqVIuE86ZCCEmz0EQ1iXOszPXfKX9VZoGH4=;
-        b=B86evE02Ed1j006o+7d6OY5og1ntF6KA93rvIA7P9+CRktiv1Izp0vSYuK6iWLBXm3
-         YmNmxfgBdGregH5wY/ekHhVy3+kJCPM3SbM3S9gTKciZXns/ChfV6FmFRWerEkyLy+2I
-         AweIY4XmCE9m5wxeOGS9048BO+xNs+a2jE+GwZHfdwdIoTIM736nUUBGnXzWeivGVGj7
-         trJFOq+EgNCrC2q9PHM7WnAW+sW0ltxx9SEmwAwfgtr95uPPaU4oiCyZD/LYfvva2QAq
-         C4ZrKbAF0T9qST7HIXR12Nr4uO2uv8hUGg6SLI5eszCMRAdYYjaaZh3OyhrWEXqKnoMJ
-         HPLA==
-X-Forwarded-Encrypted: i=1; AFNElJ/wLt4DuM2oo3k5MLqrKisbQC8kSKtvwdlqJqj6UpEHSevS+oAlBX0jmw9lV+OQErQamiR/cfRDJg==@kvack.org
-X-Gm-Message-State: AOJu0YxdD7AfWcxFO4fq/LPXqXy6DGMpnTQXw7J6JAauFIcPrRpubXec
-	o2TC8chLpydl3P28wGZalW9tN9xZ+5Ay/aRhQgXRu3JZXPvKzfzK2Njb
-X-Gm-Gg: Acq92OFoYC3ck8pnO6B6K0CIRpGo56yFJ9SLFn9TBwc9kHUl5vu8bQvu7y6o7RHp0Wi
-	ITJijQSTlvIXcIBCj+wJn1m96TUw7Xc3Zhzs4nDszb61YnjnORklvL9xtGfusp1HbLf2NXUKk5o
-	CD+Tf9HMO53l4ElfXXOCwTXGfTSwJUjEQruU2zmeGRAXd8Sw2AkDmpY0eWw3kzycjsjjfiuHfpH
-	3zisPfnHviCAH8LZBhgcJqh5GiYreI/6d5w4xEjPcYb6zS8YerKOZht3qO47f2AmbQ0yj0at5R5
-	jWN6Mjosf3ibeK0fgeGTZtEfQ+n6QRileXQ3eg3LBMYWuJGMsYlmsd5IUtXEiX4JPBbZ19u2/l4
-	9d6udfG27KrOKyYHM7419wTy94BcJoyAokNU05oB6wPo4SvRB0FvRu9k2mA+NjcFUM7eA8T2oTS
-	DNA+pcsHiTfnhEhULc9kI2FTsbzkcEwxK/ehtpuhq8fF41MmsBN44XSzzVt5loYL5H/2XSRQYSs
-	pLPpwAY3A==
-X-Received: by 2002:a05:600c:8105:b0:490:b072:1be6 with SMTP id 5b1f17b1804b1-490b0721e0amr76565325e9.25.1780405495119;
-        Tue, 02 Jun 2026 06:04:55 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34b834esm33184301f8f.11.2026.06.02.06.04.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 06:04:54 -0700 (PDT)
-Date: Tue, 2 Jun 2026 14:04:51 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Pengpeng Hou <pengpeng@iscas.ac.cn>, stable@vger.kernel.org, Petr Pavlu
- <petr.pavlu@suse.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>, Gabriel Somlo
- <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>, Jani Nikula
- <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
- <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Bjorn
- Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>, "James E.J.
- Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
- <jirislaby@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, Jason Wang
- <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Jason Baron
- <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, Tiwei Bie
- <tiwei.btw@antgroup.com>, Benjamin Berg <benjamin.berg@intel.com>, Ilpo
- =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, "David E. Box"
- <david.e.box@linux.intel.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>, Frank Li
- <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
- <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, Alexander
- Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry
- Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- John Johansen <john.johansen@canonical.com>, Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
- <serge@hallyn.com>, Georgia Garcia <georgia.garcia@canonical.com>,
- kvm@vger.kernel.org, dmaengine@vger.kernel.org,
- linux-modules@vger.kernel.org, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-um@lists.infradead.org,
- linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
- linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org,
- linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, netdev@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 01/11] params: bound array element output to the
- caller's page buffer
-Message-ID: <20260602140451.2e3e6622@pumpkin>
-In-Reply-To: <ah699hwLxIIOZ0-7@ashevche-desk.local>
-References: <20260521133315.work.845-kees@kernel.org>
-	<20260521133326.2465264-1-kees@kernel.org>
-	<ah699hwLxIIOZ0-7@ashevche-desk.local>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YjD8qWvl;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780405685;
+	b=zhjrLO+MPNhxxcDs0rUG79YR7Dr31z/WOaUm+yd2bBJh8Yla7D886SLbwIZjza0SRsM5AX
+	7EtA8IwndDnwUrWwOnDTU3iGvhO3eq++R+jlsDryrgGdkT8wcpJZlzLhDv70NH+ihI64JJ
+	n5E5r25SgN18hrpZz4+a+xjVxlzo3uw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 67E4F438CE;
+	Tue,  2 Jun 2026 13:08:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305981F00893;
+	Tue,  2 Jun 2026 13:08:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780405684;
+	bh=7gdrxNrVLvwfZgr57YR0p9t9xmjz+xT3wRBbVrlHhXY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=YjD8qWvlk/+0QU52fW24gxJKnVOPSh0k2RXfhE48vNcIA9k++3mfDd64kSZho3Ey4
+	 Um2JUR/Fbh6sLYZfpAI9ZoQ4aSGeN70ARBhB1/lmAEm+v0qANoXrtrWtMqiflrzbq8
+	 vaPknQr5KMEkE9ZXQipUs5zJTRF0tSEoWRnAbPh2RYPpTy/AGEr1H4qAEeSYygZ/XP
+	 yMn2buf+ZEaztue+Aqx1ZA8DllKtJMcnlj7Gcb7XO5AH0C2BkGNFjgVb81nGXq63uU
+	 +HIawJK7SRk+DzXdwDYPT42SqeEeRFU3Zp9x2M8D0bc9uz0+Lh7DT7h5efHuV3kNbK
+	 ZrOGLEkXJe2Kg==
+Message-ID: <589d3c4b-77af-40a3-8506-5b00a5194aff@kernel.org>
+Date: Tue, 2 Jun 2026 15:08:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
+ khugepaged: add mTHP) collapse support
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>
+Cc: Nico Pache <npache@redhat.com>, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, liam@infradead.org,
+ mhocko@suse.com, rppt@kernel.org, vbabka@suse.cz, willy@infradead.org
+References: <20260522150009.121603-1-npache@redhat.com>
+ <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
+ <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
+ <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
+ <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org> <ahVX1iq_-95vd0PN@lucifer>
+ <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
+ <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org> <ah2ndruO3RQGtePP@lucifer>
+ <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org> <ah2uDhs3a0bFcRNG@lucifer>
+ <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
+ <bfaa33d4-d156-4b11-8735-57a5d1b65ece@kernel.org>
+ <a09bb52c-2e28-49f7-a32b-e2743abff756@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <a09bb52c-2e28-49f7-a32b-e2743abff756@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4BA2080019
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 327F3140003
+X-Stat-Signature: mb4tutosmihc3g41qan7jp36b4759o1u
 X-Rspam-User: 
-X-Stat-Signature: zbgjp1t5cs8yq1uowt9pohq9wdwcya11
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780405497-967417
-X-HE-Meta: U2FsdGVkX1+2oDyLfL1EF463Itznrhn/j5Eh72AjAqQaD3A9RiOcGy6Yv8GOLV/lhxEyGIE5UFq2L1RKgxvDh0F2fyzmD3rp5hQPDAsZpJk7Tvjionvm8Z48J+t6TFY4YtjjcaI9Ivd0VQMEWCtIqdVZARHxgSTlFgqbAzpNZO0ZVhowSPrlGIatKt4x7KpwdAT2rIZKUzA/r5ycNn6fgI9FGHD3ZxN0sAjnLl7lb6pNSpwC2xzxa2vT/r4kuXzXvHbnTbbFmJSFN+mjvTRKVnL0kAz0OzAYCu5NciAEOPHfbBazrLeQ18CLkfB1WexIN93/NI5ZPp4+g2+UJ1i8nwCEWD3v4EjMA9fhPjKpNK7yQRIqLbB7IeD+1KQgEtNfP9EL2AQ9fHP49z1YIRuwvHQdCOttX3Q85piqaxOspBhz4nYfIQ0wVGFfRJDE4Elr0OaoypDSQ2NyBQ4dMaWoeKnWhcjVLcIHbnUVL6EfJNmW8kD1PJGrlDEW0OM8bAyz90gCV0Xfo3OE7eLRyE7FIvMiL2aQ9yzzEMI2WgkT7brdqjEuD20h1NeiIZnt8GPzQO2U0nZc+9j2Ijfkw/WqHXDq+BRisnjXShcKIOwouXskXKNnUlNmnkENFeYMdahBH4zBMmaX2Ulv8drebjpCLccW0+X4AI16GEl3oJ3CIGfoyFHLMOBig0R3XPYmbmfp45Hd6DIUTpL7Vv0cdqajy4GpEECHb0s3eFIkeI3jUTEv++8tL/Q2xNJiXY5CDW2R1KLP5fuiGDGKA8kLQclq2lCxHiN3M0w2KlkMyfvhGKP28jNYpzNJ1dV6OQ0w+1pQa2PcVWxIMXmHwlJFK6U9cJsud6Z9gCHcscnYj+ngHPauJ/ObQlLBiiRl7j0X5RS10d7jem0z3xx2BxzZgq/QSKNRZTTQFfrGxDswhG5HUN3U+lCgO645XeFzk19gJd6TgidhIi1fzOePhVhe37u
- wWw/UUEc
- 76vjxBndWRh0BYPG464m5C9VMXFAPFaFNw/TzUih4TYi4aitudFZGS2no8rcknKSgFBQ3lKy+2bNMjPhm+HggeRFDOqiM6N2QV/tcUClKPW68G31DPFPxDMyczp698cC+PNWHewdSQYWl/I8gKrRqR/bG1IvFB2qoPFcdoLJbBWim7hbsdf8eHUxk0kgdxsztLVTE6hHKgOs3ZZBAaxwffMBozOIbRwEF6bvPNi3L6TstOlrYAdxtYO3iKJHS6cwi/6M9X4l/gyD2x9yIbmZrJ0mMOTaGpzjb2OabhkXs7YDoTwJqxmAuXfI5LGtV+EObhfvbc16giAhM4zX73NvXcpoBmWoJNPQDX1WuavapmYe3c+QdmQBLLxdBewK0OgdBVKZtB9quYX0nsGVo3GZlQFDkcKJ500/TLsBEzt8cZlsUOqIXhzEDJGbj77C6KMDYvIN4fKxlMNHUoee4RuBvaMfAwuVi9PBhB81fjMgSc0DpOaqlw7ZqO/noMQ==
+X-HE-Tag: 1780405685-684545
+X-HE-Meta: U2FsdGVkX18Ji5pYtWdrPwyGh2NtgEr3F7H0ogzjuHYxMe8oidCMyrAnaP4x7G4UiMbFnn0aBc4pzpwzEHTuKvvzku9i6zqfTSuppAQKAKgNs1UX8HkgXvYBWn9vM0WXnWouIJE7TnQw8EB39CLJK6ycI250KzQfbGA4aEBPdewtdIkwZfi/YX4zCggQxB9h+JHag1Oev1bAjIfqktIKL7zo+qYfqe56bdFalre8UBo7Gj9v6Uze7VOHbTJGuNQG20KtpZq2ZsX1HrvFWbZy88M8a7Uamfl1gEdDDIoDqZdmXor4UvPIMHiKIOUpuejruwOsgJNbU41H/qcQb8cO2cQiK7etDRPmqUIIWci744sJmYqvFtTkLeRy3PlR4euBM7LZ/3LLtTITn9t/N/OeoMTAC9CeDCdh5J4NAPRiVbw31hEFy/Luw+YM5XiKSvaLi8zJKZHTrrpQlh0NyPRMet2obuBG5wwDz4czkKznbxo6pUoDBbow+NmbgxH7HE+X5ZN4D1QcVUzY8Q7+Ks7dbA5l1m8+AALBytUEkBfzgVKkwXMW2LF9h0MPxG5tJxJCmnTGl89VnWFq7YyKZaOOl+OQyyirEnOP2EKXyUEFfcgVjHYfO4po/RBXuCcE7voZCSMWlp5FJKI7IO4SFq9bQsM4/EYTfs5ENgi742DlcqxltJd1uD74AnBf032v6lFxteLaZnYNsQ7BqCDHp74z0UKqvWp628nwYn8BPcT56p94bNMcTsYdlpd0ZQe1VJhIyiKDquWZBGEkvSVuwcgFb/Mhp7waMNC+DixZk1qNsctHv6r4lit1Hpzy5rxQ3dhdRyACRIUMfGEBCjEMyzsF7VUGxUNXPDS5pUSAZlHENHgGJ727nkFtxyJD5Bj/09gkUGqCGO1gi5Uw1imklNjHTHYUvoOw724lkXKlq5+rub3oTvoEA11c/5UG03wpNrU0CijF0P0LmLKBiqlniPp
+ ApojgtdA
+ hUqg6BRTBUduzAkmaRKkhC8zige4Hfifg9aTN0gDaiUwpNzjc50rz0Gb55leybRz6UIPOFScPDyGlQNhhxLLSp4+vl2I+YXcDe0KHaZYaZdMTBw807X0TcdfyRSL4PFpby9zGqAGf8vcEWbYg4uxa2lnA4IuHQCeEOGYWhbuym247JbKclWQAQkpVESop0BhbtqbtF2o71vYR1wS5kVoObbzzTVyGsITBStROLexqNabK2Os644MFAj0CoYDxhKUa1bNX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,78 +145,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2 Jun 2026 14:26:46 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On 6/2/26 14:58, David Hildenbrand (Arm) wrote:
+> On 6/2/26 14:47, Vlastimil Babka (SUSE) wrote:
+>> On 6/2/26 13:20, David Hildenbrand (Arm) wrote:
+>>> On 6/1/26 18:16, Lorenzo Stoakes wrote:
+>>>>
+>>>> Err what? The 'random' tree is the MAINTAINERS entry you are targeting, it's
+>>>> based on the mm-next stable branch and only diverges in the work that's been
+>>>> done specific to the subtree, what's crazy exactly?
+>>>
+>>> We'll still have plenty of patch sets that touch files cross trees.
+>>>
+>>> I don't see the problem of sending stuff against the integration tree from where
+>>> it can just be cleanly picked up by sub-maintainers (after all, that's where all
+>>> the subtrees were integrated against)? Or what exactly is the problem with that?
+>> 
+>> The problem is that the patches would not be applied on top of the
+>> integration tree, so it doesn't make sense to base them on it in the first
+>> place. Unless they target the next cycle, where the integration tree would
+>> first become part of rc1, which would be the new base for all the
+>> submaintainer trees.
+> Why does that matter?
 
-> On Thu, May 21, 2026 at 06:33:14AM -0700, Kees Cook wrote:
-> > 
-> > param_array_get() appends each element's string representation into the
-> > shared sysfs page buffer by passing buffer + off to the element getter.
-> > 
-> > That works for getters that only write a small bounded string, but
-> > param_get_charp() and similar helpers format against PAGE_SIZE from the
-> > pointer they receive. Once off is non-zero, an element getter can
-> > therefore write past the end of the original sysfs page buffer.
-> > 
-> > Collect each element into a temporary PAGE_SIZE buffer first and then
-> > copy only the remaining space into the caller's page buffer.  
-> 
-> ...
-> 
-> > +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);  
-> 
-> get_free_page() (or how it is called)?
+Well, as longs as there are no conflicts, it probably doesn't.
 
-The kmalloc() should be faster and I think has to be aligned.
-There is another patch set to replace get_free_pages() with kmalloc().
+> For example, the slab-next tree gets merged into the mm-next tree. Submitter
+> will send against mm-next.
+> 
+> The slab maintainer will cherry-pick the patches on top of slab-next. From where
+> they end up in mm-next.
 
-Although all these 'show' functions should really head to using a safer
-interface.
-Although, at the moment, it is really difficult to find the ones that
-are guaranteed to be passed a page aligned buffer.
+Note slab-next itself might be a collection of topic branches and it might
+be more flexible to create another topic branch (based on rc1) and merge it,
+than apply stuff on top of a product of merging.
 
--- David
+(I think extreme case if vfs where almost everything is topic branch and
+even the PRs to Linus are many separate branches?)
 
-> 
-> > +	if (!elem_buf)
-> > +		return -ENOMEM;
-> > +
-> >  	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
-> > -		/* Replace \n with comma */
-> > -		if (i)
-> > -			buffer[off - 1] = ',';
-> >  		p.arg = arr->elem + arr->elemsize * i;
-> >  		check_kparam_locked(p.mod);
-> > -		ret = arr->ops->get(buffer + off, &p);
-> > +		ret = arr->ops->get(elem_buf, &p);
-> >  		if (ret < 0)
-> > -			return ret;
-> > +			goto out;
-> > +		ret = min(ret, (int)(PAGE_SIZE - 1 - off));  
-> 
-> It's usually discouraged to use castings in min/max/clamp. Can we make ret long
-> or do something different here?
-> 
-> > +		if (!ret)
-> > +			break;  
-> 
-> > +		/* Replace the previous element's trailing newline with a comma. */
-> > +		if (i)
-> > +			buffer[off - 1] = ',';  
-> 
-> Can't we do this after with help of strreplace()?
-> 
-> > +		memcpy(buffer + off, elem_buf, ret);
-> >  		off += ret;
-> > +		if (off == PAGE_SIZE - 1)
-> > +			break;
-> >  	}
-> >  	buffer[off] = '\0';
-> > -	return off;
-> > +	ret = off;
-> > +out:
-> > +	kfree(elem_buf);
-> > +	return ret;  
+> In the rare event of conflicts, the base-commit ID is there and known. If it's
+> too much of a mess, we could ask to resend against the slab-next tree.
+
+Alright, I guess some conflicts might be harder to resolve when based on
+mm-next and then tried to rebase on slab-next only. And others harder to
+resolve when based on rc1 and then integrated to slab-next.
+
+> Again, TIP allows that. For example, I never based any x86/mm patch on x86/mm
+> and ... was fine? :)
 > 
 
 
