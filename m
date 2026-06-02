@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F0EACD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:12:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AD3CCD6E61
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:12:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7812B6B00D0; Tue,  2 Jun 2026 06:12:14 -0400 (EDT)
+	id B03046B00D4; Tue,  2 Jun 2026 06:12:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 731926B00D3; Tue,  2 Jun 2026 06:12:14 -0400 (EDT)
+	id A65186B00D5; Tue,  2 Jun 2026 06:12:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 620876B00D4; Tue,  2 Jun 2026 06:12:14 -0400 (EDT)
+	id 955336B00D7; Tue,  2 Jun 2026 06:12:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DB316B00D0
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:12:14 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C20BC2B2A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:12:14 +0000 (UTC)
-X-FDA: 84834557388.27.A7366BC
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3969918000A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:12:12 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=gEmvRfC5;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf06.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8034C6B00D4
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:12:19 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46CD8C2AD4
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:12:19 +0000 (UTC)
+X-FDA: 84834557598.06.F46EB84
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 77A8CA000E
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:12:17 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=X+XgbQ5Y;
+	spf=pass (imf15.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780395132;
+	s=arc-20220608; t=1780395137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E/u6lKC7hQ/GhzoNdcnEA7gND1myfeYXkd1NgoaUr0Y=;
-	b=r2ru+oNqjXpWsiMckgU2rZwj9mwiaps9imO7Buk7RFeVv7HDcMt9Jin/2Ju1yOaupt2Qty
-	3HR582yPul96/gEZswkwBnWXG61R3yPN8vE8YuPRuYszKeTdvccK4JwIIijDyh/Cn516Ol
-	BqJx9xCOjYV/jEoWOaCdobkGovZ/GdU=
+	bh=oJaZoYtZ6J61gHq76uPvOqmXDVgTt0Xo6SthcejktT8=;
+	b=5kog4HNZ51x72ecKlmVMIY2hmRKncY1vo0wCNDX8ljAoFo83XzMkOBgqfdVfxc7JGnyrzh
+	hRnbi9kY8E8oWSwRf5WuzH/n5NkkjmNpUnfaB7zfxovoL9wSuYGVjpBCvskxs1hY/aEK0x
+	HuaAhYZh3p7GI1eLpEciOMyUxCwnu4Y=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=gEmvRfC5;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf06.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=X+XgbQ5Y;
+	spf=pass (imf15.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780395132;
-	b=qwnGYMgiyl5BiqWpSx595clvg/h8BZeuDaO6lZ729Had4nYasUtc3A9R/ET9BOKfSI7m3p
-	wFdEIp3hH/EV1xkEO4zM60ZGUmKiW4G+tf7B5zis0hlkDU8wN8672eSHDJw1wjy33PXCZA
-	Wcni/wv1VGHMbpqAhp31aL/y6DwuWr8=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84237c55ef9so1009578b3a.0
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 03:12:11 -0700 (PDT)
+	t=1780395137;
+	b=UeA8NUTGWyUVYU4uU9bkH+HAkiq2a8QijAjVNKmqgdts9fP3e53hKFZFDeS7YM033nTMLK
+	F9EzyTyC+kHvaX89XsoSm0QfJWR9RV23uYTRrHC36LO1gYQbr67nCnRNhi/1eKxJwpG+T2
+	q/NCVRK6FFzu9IYDBiKgseU3T6I38TE=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8423f626a65so895556b3a.2
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 03:12:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1780395131; x=1780999931; darn=kvack.org;
+        d=bytedance.com; s=google; t=1780395136; x=1780999936; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E/u6lKC7hQ/GhzoNdcnEA7gND1myfeYXkd1NgoaUr0Y=;
-        b=gEmvRfC5TLcUXJvKtmCJg1hIvJqBUQgaDy70jak01hiIzMZriUmw4XfUxGaRM7aS1o
-         4nfvrCw9I1PjvFxUnqlU/kcdSCf2jo6nMftdujhMdOz5F8JoIToTB4heSkg+F67wAnrB
-         VXFm35CxSEil6VsaS34TqNrNTB/rngUyGU7wGTLXJdpBE1p3iMUX0ilsCem+kKoWMQUb
-         oxKf9ffEWdZrX4rbGRf4M+EL9d+TB5P8GqJ2pljDv8wHDIpclH2QAkHZETt4SLE9EXWZ
-         ThyIIZ964YAM/MKrmBvIwIMwGH9+y+hABx8XROBhNd37BoqirHelZGNNSe2wkdzwCCmV
-         8w9Q==
+        bh=oJaZoYtZ6J61gHq76uPvOqmXDVgTt0Xo6SthcejktT8=;
+        b=X+XgbQ5YfFoeBg5ZexExFgbQSKebvGlhnIbN69MSCqy6HqsfGEQLiCyxMSSz2xFRNh
+         EkEFCRSi7fuWm/R19ExUnoAf3R1IwOk/tqdjLVjWOOuZoq1nJsg4YZdd5jwb2PbWWObH
+         SHRA/sTiy6TBQi61jQBh9f01eqhqIu8ois+jpEHrncfxsYcQKK5NUM54w97H8i+l3+9h
+         /fLqbB0E4znCq5O6ym5hdf5BarISIWEun7wd5NAvWZfJOHdZUE7kWE+PgwtDeGcBkzbp
+         bfVXKHsmwDDi6pjBaaU/ucpwxwOuaI4XllFTylhjQ16l/SYZvqnIzKJNXpcOrNDSlRQ2
+         Qb9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780395131; x=1780999931;
+        d=1e100.net; s=20251104; t=1780395136; x=1780999936;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=E/u6lKC7hQ/GhzoNdcnEA7gND1myfeYXkd1NgoaUr0Y=;
-        b=Olxq0kyL14BrL2yV258sK8+79hl/mOYCUqos/9B7ECJD4DQUxMGEd8B6uJu7vRR0wU
-         UzTRcOCiNq7tKLbUes2X0i11uWYEquPGSFza6V6tntRQwg0m8FxAR/5WNy4PmHqe08Au
-         YN9K6JItCywkVnEHP4cKRLFpc1NEpERrMTO4IBTnwDbjmECpYiEAGNtgXGtqMVnF6NGx
-         uVn79nISXhXSWlyuAWbUyjR8CxyfD8x8UYOGn4roHfKw9vL6gvnkKxViFWGdYooADiBj
-         9sjP/A9AoownarCffCvOzGyo5XgZM03iAywijBRcWgRxmFono47A/f46nVOKCSDDDZM8
-         N1XA==
-X-Forwarded-Encrypted: i=1; AFNElJ9VJQEtCDDqwIwi1R6/dm92MK13I1iTyt28nTY+0x/dRcDzyfIXOTn+WuYgBKb8wpZgc8d0GgPKbQ==@kvack.org
-X-Gm-Message-State: AOJu0YwxC43exsfopcTmncRJfP0vbKbPmoLEl47cdIo1trKQp0LDMDww
-	6m0jgOX4fKOQlu1e+rnHvG8GHRonsUuURO840p9QEub+wB9Fgzs5WJcaEGRURmzm6go=
-X-Gm-Gg: Acq92OFo3SwKcv+cyzLK6EohzAGd5PekVxUCRAu3BH/VPSdZNnEu65VdPfk3fA1KB7K
-	frNipvVX/QjhVBrh27XwsI48fKsE+uLYmGawKHbA/WVwjVbszKMfMo/38AogVev7TGLEtYt1ciE
-	Kl17RDOU0YEaWLiI1jYOqSnuAJqid3qlJL4INuRycm47MwISPSzB3WInj3mV0XP8pFO4ZZWK7wX
-	N4a66JUwCy/izSAHuGm4wrJO5z5Hqgkxc4wtr9lJRW4vOlUueBpOf5msrDGiaEF9Ahhzn5LUc65
-	texbixA3LXWAyNf+OGTRwXPD7So2/LFOagMgYYnsFVPTzZI/ctjM9LdptkLveogjCyatop7dIKr
-	dJfP0HUizgJON9yQlyC2HqKdOS3jyZGtZE8AnQwFWl+6rDN4BnjhVQe/r1RPvEDvHjtWLdU5Lb4
-	aZTOXo3JClkF6yjDbn521zl71AMBrznd2ESnKu/UXoA64dS2d668rX5j0=
-X-Received: by 2002:a05:6a00:2da7:b0:842:7a78:8f14 with SMTP id d2e1a72fcca58-8427a789a5cmr998275b3a.6.1780395130964;
-        Tue, 02 Jun 2026 03:12:10 -0700 (PDT)
+        bh=oJaZoYtZ6J61gHq76uPvOqmXDVgTt0Xo6SthcejktT8=;
+        b=Lu9djnRDEss76SJnCEYj7bfIrBkXl9NgPbCeOaUxaAYYb5vL4tzFUa8+6Ce0w5WFQH
+         KPMbvsF6pl6vsZP/8WZ2tYTPnjLaMWlJ4HUiWAlP9KmR6ngNHfissawD7zqhdMTZSNfj
+         BL6z2sa3J1QfWA78niIjOV3oQxBhgcHR9mwpx7194qgGoj0bh4lFJ7fjKDCM0gljAyjV
+         +rLm2xvQsCONK7i2guJKy6ES+ZNxJJcOYtHNBMCx6ZqP9d5TwMEe2cSsSXhbVx2U+O0y
+         zIiYyqonHQrtiTEFjmJJaffkh+pevfIZEsSBFmtFYBPwG3w6RZqnYCQBhaNlq0NetfsY
+         rKIQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/YYP6vptHsp6kOAjVxkfb7ZX7fhJXPtBb4R3/b9wXiROeUhGPO1mvl3WB79reO9phfwUyuc3WdLQ==@kvack.org
+X-Gm-Message-State: AOJu0YxYcJUs6LFBqqQ84T+PV6XVAfjpnzqI5LcZoVOrsUgazejbHh8+
+	qmldxNKuwg1JoS1QhVZpBGHZW3RwU5H7qBHEbtdUcVI9ujeVdfR5XcHtUZ53fCZAilM=
+X-Gm-Gg: Acq92OEr4UfblA2DM05eERYzMAHHas/DI6Tvu8jXvykqXJbteRkZiepqMQnL1ylpDUK
+	ChfK8OkrMTsalFRl843CP1SxzGqq4kHHyj9twjXO3KpCiNQkLY4uFL4jbCxCu+vLOShBgDXAZNW
+	uCnGYVYMQ81OCfOPpaMWgj30dx+996Z/z/fOJmq1w0uEFK0WtjzXs2UCg9biAreI7igx6qi+39U
+	RZe6UI+miK7kTw4Os1suhr84p6QWyu74Zz61xJWZHgBUpkDr/nlK+m+zXuXq9YmBF4dZ05zWW9I
+	NxoxjNW74EO7lhvdarCTiby8ye+Qmp4RjEM126Mu7H0N7NDEjZM/XB1Ns+5ae/DEEamiRnZvd3n
+	jpDcUZwrRsenQthOlnY3d6L45++7RvdbxZlmrPFyJMSbwCEIR+silaYbg53UAq0YPshyfzRl53n
+	tMAJZ6pGbC7d8ZFs1HQibMpi7tGsg1/85lrkT9JwNXl6B5NpXLHOJWI04=
+X-Received: by 2002:a05:6a00:b806:b0:842:655d:1232 with SMTP id d2e1a72fcca58-842655d14a9mr4627780b3a.0.1780395136206;
+        Tue, 02 Jun 2026 03:12:16 -0700 (PDT)
 Received: from n232-176-004.byted.org ([36.110.163.102])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214d018fcsm12015507b3a.60.2026.06.02.03.12.05
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214d018fcsm12015507b3a.60.2026.06.02.03.12.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 03:12:10 -0700 (PDT)
+        Tue, 02 Jun 2026 03:12:15 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@kernel.org>,
@@ -110,22 +110,22 @@ Cc: Muchun Song <muchun.song@linux.dev>,
 	linuxppc-dev@lists.ozlabs.org,
 	Mike Kravetz <mike.kravetz@oracle.com>,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v3 14/19] mm/hugetlb: Free cross-zone bootmem gigantic pages after allocation
-Date: Tue,  2 Jun 2026 18:10:34 +0800
-Message-ID: <20260602101039.1867613-15-songmuchun@bytedance.com>
+Subject: [PATCH v3 15/19] mm/hugetlb_vmemmap: Move bootmem HVO setup to early init
+Date: Tue,  2 Jun 2026 18:10:35 +0800
+Message-ID: <20260602101039.1867613-16-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260602101039.1867613-1-songmuchun@bytedance.com>
 References: <20260602101039.1867613-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 77A8CA000E
+X-Stat-Signature: tqmgyfez3uoptnfwsirp7ect1b3gegks
 X-Rspam-User: 
-X-Stat-Signature: a8a5ajbmsahizq8ir4ix6f16hffhryzd
-X-Rspamd-Queue-Id: 3969918000A
-X-HE-Tag: 1780395132-985814
-X-HE-Meta: U2FsdGVkX18Z9J5rXp3Kfse2yNkdCqiUX8rUecT9NQDRz9BypZZkAtFKYbbBX7xsDwQ1Z9/i7i4wbkMs63lNCPbfM7iXWgSIbERsJS8XF/Mu6UCd9VJEA/Jwlpjk/et7Nlq3ofYOMRSO4DCCGwRUVJMVNJZ/s46wGxoHYsE848lVzUc/J84gqQ2r417pIStPn1ULq+76CEVL9h6qNiT5XlKi/JVVBii04e+2UUcgLPlzRpKthf1HEZbxK4WIITsiDCF2IphYTCOweRwDATK7i8LYmuhcNGj1cjW/X0dnik/zILuzv6R8zJJEyBH01Jv8sNoV8ssnFydjscnaAhIgC/PCbU/QUmFFS9QjjmecJ5eTlAWJS719MHDtkRBVuta3WXBhrTj7lASS3h0ECDjvN0xsF+FIQBwrGopkI/WK6cmWosaf2YVYEyCh7ZJUAbXxLRxC5nRsdWiQAlALG2nfFoKFwGz2mhEGsL+/vB08OsysL40zCfy+aMdiHnGErEl9DoxC4VDDlmYgJKkgeEOj4XZ4ECxiZS8ae0XD1+S6EXZOPH7+FwRZYrcqzcejR7pSBC1HH+AS9XrQM/XqCHjLpxP/02CayOYW+Bly0A1ER58yMceKStAL/g4dkBTvILnn6dm06NTRfoQKEIjhWhsDTc6gcwl7ocinVfWVXUKnas0M+RR4mwDUdERzicSEfzMhdCr9Y3E7ab3SaaN67OXS4JKyPJfsfpmfblSZSfFkmE9I8smKrvblKwGM+l1L5T68rE5+btDLV3qo2A/xAY1X4umZdumI3VR80d8WHhXvno5M3fNLH9ue7Jiymy2AuMMjCXYStVGQz7IDThZWyMMnhnsTjscIOs4iNw1+Gr7Czfji5WZXE1k3GAw9DVyDhSitrHXGj5zYMHy8uHZfaJFyrOkEhA0xNCCNfVPqxwyzO4tegPrbRC+t8Li5XOzUF+C+1JAppp54L+bd36GdLrP
- Z4NbQbnX
- /qrgNuN63cixcV1G07aaHP42Npxd9jT8SFqLUgLMFzLfYjlhqBr+QlstAieRBbybKUFv7VsfQSba6rBhNB7+u94Lw/F5v3IDLdsQ6YZ/lyZYbY9HR7/DZSyMed25i19mdn8QzE6uNPHi8wTSD8TUw8xK69FOEU09jVbqmWrRnop5uGE4raZAjcOA1+LAX3dA/PSVK0pLbIasQZA5ZTR6O3tH3R/yqb+LMi2f6BYAbpHNELQGctIEcnk04+1neuI4/T4x10iEk1DxYbsiHGSV8MWjwbmrBNDSZrFE+s8kkOhhNUS4+QVCGvhAxLhrvR8tYcq4IFqapU4PSvMAY8Lk9HGAvrqBKvdu6ToNB2MP72SD3bDFK3F1pSjEEg56vRAShw3AywqUIwFX1GMEwwZ9+eMIQdLFNkJ+UkassRr8BoQYNkANUsY17gitCNH+HI2/uD+MMwOObFb7ZlaBtTiIhiN0Zc0k9ilACemMl
+X-HE-Tag: 1780395137-174407
+X-HE-Meta: U2FsdGVkX19OlMAqnnKMYaavyDazAer3vGOurUDcbWSLb2TYUm0s2TxpxFentWAqFDpzHCY85Q3i70Lk4D+8PflwartIzq0OIuPhyk8Qn9/H4QBs2R37nX18asz/Ex8ehg8QTTGHZH1Yp05mf8WEV4c9W6jDUVc7zEfwFMRo0TPwZazXhblem4X/ABAucE7v+Wr+tBNYXjTs7s9bT5ETTnBQ32klOyIYHol7QSfJE3hi3jFqptsdbakGY5m+Poc2LItC0N5i7kB9tPk5hva5yZVqbu9NPThTM1CksvcwUDN38RiiVG/3xPmxPyvwjGeFn751T+C7cR2qfBbLjL3J5FZXujmjO+q9VLfaVK53dwxlDIH0LbhWLRHHNR8/CDA2rOI+56VfdIVm6X5Wr6+pzoMVZlZoFaSwb+yZJccPLX1jwoEEppmSQh7by8cvwUVhqbC9TdOfNnGOqb7qdyF4ijZZW6+kciArLPK4/VOqZ07RywaiiV2CEXb1lo6KApj6DaMe4IYcmxPoa17vBSdeiP9zkPv/uRm0J6YbRdHj9o7sEYwdiQc9wrRhmGevBNPK9ZkLRTMkRkFHEKwNWUBEqfwqlJA7PsijJYpYgGAiXZkl501rJmbcHkPCk/lKJPNjCweugL0lKmEEcGCcl2x6tE/eFYA7xOor7d8QfgzAOOh3u8lI/POw0JfN9ptemWOBz19bSKH9flDkM8Dxwt8g9Ht1HkCBc+qoxD6VfB8/CewzNds/g9fvQ/LWyqDmumSxpcqJdwZcjFk/sFF9OpFdmpH+eB63gjnnftM/8qCEtnLFuftEnkQMiLhZjJMY0SRQtZKEDlsn4DOx0TJlN1MgWxyK/3xWfBB0W6DD0nAUivlW4HhwAoJnE/CEaE5GfQlyH0kYkYXyr6cpgd8At1NbTVu5U/qtDxRHrgUDecCua+MsV1R0m6X4oh3pqr3H6rnnb0zhIWY+C6RnApDKMRp
+ RKa1frW6
+ l9hn12AdeF0xDgLqDUTwtbvZomrzFpOaAO/NNat3ssQZbuZtQhxcQH+Ick3Y0Mtobn6Rg+AMtDj45LkCMW2hLqR5iUql4Sp+w0Pe5bX8K9qOw03XrhTmGkIwm1SQ2Th//qkcPpgY2HK1lUB/OLIAo+GYAoi7BA6RwZqO1wrIzWiCjjmCBeJBjSZe3n5QCdIadYbyed9bPmDjLKfdPrvi3eWm24/zULK+6F+RCvXMYouXJRKVblpqqWSgWMsaJDj9vzpaEA6o9K/+R6Hun51QxXjcVCjUjF8Ujb0qrUF9igMB5MoxyJa8GL9pv0U4OzNULrj+YcuUet0oldCwt3rrMP6y9nyHqL+16/pbHEVk30IY4clqfjZvIYX84Aviti2MKoa9tz4dkLJV5vIfYlfS2wJ93E+IY+bTJtgcYWf7fnGcdrESnQ5jCTZZ2EXz1US/sX1e5X0aJnTL8wBs4fR2UsEWHjnOJHxyBwgHWJPrAOVFA5K8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,156 +133,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that hugetlb reservation runs after zone initialization, bootmem
-gigantic page allocation can detect pages that span multiple zones.
+Bootmem HugeTLB pages currently defer HVO setup to
+hugetlb_vmemmap_init_late(), because the optimization needs zone
+information.
 
-Keep those cross-zone pages separate during allocation and free them
-after allocation completes, so later hugetlb initialization only sees
-zone-valid gigantic pages.
+Now that zone initialization is available earlier, the bootmem HVO setup
+can be done directly from hugetlb_vmemmap_init_early(). This lets
+gigantic HugeTLB pages apply HVO as soon as they are allocated.
 
-This chooses to free cross-zone gigantic pages directly instead of
-retrying allocation. In practice, such cross-zone cases are expected to
-be very rare, so adding retry logic does not seem justified at this
-point. Keeping the handling simple also preserves the previous behavior.
-If similar real-world reports show up later, retry support can be
-reconsidered then.
+Bootmem gigantic pages that span multiple zones are now filtered out
+when they are allocated, so the remaining bootmem gigantic pages seen by
+later hugetlb initialization are already zone-valid. As a result,
+hugetlb_vmemmap_init_late() no longer needs to handle bootmem HVO setup.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
- mm/hugetlb.c | 75 ++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 64 insertions(+), 11 deletions(-)
+ mm/hugetlb_vmemmap.c | 67 +++++++++-----------------------------------
+ 1 file changed, 13 insertions(+), 54 deletions(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 5e557c05d80a..218fb1ca45f4 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3060,12 +3060,15 @@ void *__init __alloc_bootmem_huge_page(struct hstate *h, int nid)
- 
- static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
- {
-+	unsigned long pfn;
-+	unsigned int nid_request = nid;
- 	struct huge_bootmem_page *m = arch_alloc_bootmem_huge_page(h, nid);
- 
- 	if (!m)
- 		return false;
- 
--	nid = early_pfn_to_nid(PHYS_PFN(__pa(m)));
-+	pfn = PHYS_PFN(__pa(m));
-+	nid = early_pfn_to_nid(pfn);
- 	/*
- 	 * Use the beginning of the huge page to store the huge_bootmem_page
- 	 * struct (until gather_bootmem puts them into the mem_map).
-@@ -3073,22 +3076,38 @@ static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
- 	 * Put them into a private list first because mem_map is not up yet.
- 	 */
- 	INIT_LIST_HEAD(&m->list);
--	list_add(&m->list, &huge_boot_pages[nid]);
- 	m->hstate = h;
- 	if (!hugetlb_early_cma(h)) {
- 		m->cma = NULL;
- 		m->flags = 0;
- 	}
- 
--	/*
--	 * Only initialize the head struct page in memmap_init_reserved_pages,
--	 * rest of the struct pages will be initialized by the HugeTLB
--	 * subsystem itself.
--	 * The head struct page is used to get folio information by the HugeTLB
--	 * subsystem like zone id and node id.
--	 */
--	memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
--		huge_page_size(h) - PAGE_SIZE);
-+	/* CMA pages: zone-crossing is validated in hugetlb_cma_reserve(). */
-+	if (!hugetlb_early_cma(h) &&
-+	    pfn_range_intersects_zones(nid, pfn, pages_per_huge_page(h))) {
-+		/*
-+		 * If the allocated page is on a different node than requested
-+		 * (e.g., on PowerPC LPARs), put it on the requested node's list,
-+		 * because hugetlb_free_cross_zone_pages() only frees cross-zone
-+		 * pages belonging to the requested node.
-+		 */
-+		if (WARN_ON_ONCE(nid_request != NUMA_NO_NODE && nid != nid_request))
-+			list_add(&m->list, &huge_boot_pages[nid_request]);
-+		else
-+			list_add(&m->list, &huge_boot_pages[nid]);
-+	} else {
-+		list_add_tail(&m->list, &huge_boot_pages[nid]);
-+		m->flags |= HUGE_BOOTMEM_ZONES_VALID;
-+		/*
-+		 * Only initialize the head struct page in memmap_init_reserved_pages,
-+		 * rest of the struct pages will be initialized by the HugeTLB
-+		 * subsystem itself.
-+		 * The head struct page is used to get folio information by the HugeTLB
-+		 * subsystem like zone id and node id.
-+		 */
-+		memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
-+				huge_page_size(h) - PAGE_SIZE);
-+	}
- 
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index ea6af85bfec1..464578ee246e 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -745,6 +745,8 @@ static bool vmemmap_should_optimize_bootmem_page(struct huge_bootmem_page *m)
  	return true;
  }
-@@ -3373,6 +3392,34 @@ void __init hugetlb_bootmem_struct_page_init(void)
- 	padata_do_multithreaded(&job);
- }
  
-+static unsigned long __init hugetlb_free_cross_zone_pages(struct hstate *h, int nid)
-+{
-+	unsigned long freed = 0;
-+	struct huge_bootmem_page *m, *tmp;
++static struct zone *pfn_to_zone(unsigned nid, unsigned long pfn);
 +
-+	if (!hstate_is_gigantic(h))
-+		return freed;
-+
-+	list_for_each_entry_safe(m, tmp, &huge_boot_pages[nid], list) {
-+		if (m->flags & HUGE_BOOTMEM_ZONES_VALID)
-+			break;
-+
-+		list_del(&m->list);
-+		memblock_free(m, huge_page_size(h));
-+		freed++;
-+	}
-+
-+	if (freed) {
-+		char buf[32];
-+
-+		string_get_size(huge_page_size(h), 1, STRING_UNITS_2, buf, sizeof(buf));
-+		pr_warn("HugeTLB: freed %lu cross-zone hugepages of size %s on node %d.\n",
-+			freed, buf, nid);
-+	}
-+
-+	return freed;
-+}
-+
- static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
+ /*
+  * Initialize memmap section for a gigantic page, HVO-style.
+  */
+@@ -752,6 +754,7 @@ void __init hugetlb_vmemmap_init_early(int nid)
  {
- 	unsigned long i;
-@@ -3403,6 +3450,8 @@ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
- 		cond_resched();
- 	}
+ 	unsigned long psize, paddr, section_size;
+ 	unsigned long ns, i, pnum, pfn, nr_pages;
++	unsigned long start, end;
+ 	struct huge_bootmem_page *m = NULL;
+ 	void *map;
  
-+	i -= hugetlb_free_cross_zone_pages(h, nid);
+@@ -761,6 +764,8 @@ void __init hugetlb_vmemmap_init_early(int nid)
+ 	section_size = (1UL << PA_SECTION_SHIFT);
+ 
+ 	list_for_each_entry(m, &huge_boot_pages[nid], list) {
++		struct zone *zone;
 +
- 	if (!list_empty(&folio_list))
- 		prep_and_add_allocated_folios(h, &folio_list);
+ 		if (!vmemmap_should_optimize_bootmem_page(m))
+ 			continue;
  
-@@ -3476,6 +3525,7 @@ static void __init hugetlb_pages_alloc_boot_node(unsigned long start, unsigned l
+@@ -769,6 +774,14 @@ void __init hugetlb_vmemmap_init_early(int nid)
+ 		paddr = virt_to_phys(m);
+ 		pfn = PHYS_PFN(paddr);
+ 		map = pfn_to_page(pfn);
++		start = (unsigned long)map;
++		end = start + hugetlb_vmemmap_size(m->hstate);
++		zone = pfn_to_zone(nid, pfn);
++
++		if (vmemmap_populate_hvo(start, end, huge_page_order(m->hstate),
++					 zone, HUGETLB_VMEMMAP_RESERVE_SIZE))
++			panic("Failed to allocate memmap for HugeTLB page\n");
++		memmap_boot_pages_add(DIV_ROUND_UP(HUGETLB_VMEMMAP_RESERVE_SIZE, PAGE_SIZE));
  
- static unsigned long __init hugetlb_gigantic_pages_alloc_boot(struct hstate *h)
+ 		pnum = pfn_to_section_nr(pfn);
+ 		ns = psize / section_size;
+@@ -800,60 +813,6 @@ static struct zone *pfn_to_zone(unsigned nid, unsigned long pfn)
+ 
+ void __init hugetlb_vmemmap_init_late(int nid)
  {
-+	int nid;
- 	unsigned long i;
- 
- 	for (i = 0; i < h->max_huge_pages; ++i) {
-@@ -3484,6 +3534,9 @@ static unsigned long __init hugetlb_gigantic_pages_alloc_boot(struct hstate *h)
- 		cond_resched();
- 	}
- 
-+	for_each_node(nid)
-+		i -= hugetlb_free_cross_zone_pages(h, nid);
-+
- 	return i;
+-	struct huge_bootmem_page *m, *tm;
+-	unsigned long phys, nr_pages, start, end;
+-	unsigned long pfn, nr_mmap;
+-	struct zone *zone = NULL;
+-	struct hstate *h;
+-	void *map;
+-
+-	if (!READ_ONCE(vmemmap_optimize_enabled))
+-		return;
+-
+-	list_for_each_entry_safe(m, tm, &huge_boot_pages[nid], list) {
+-		if (!(m->flags & HUGE_BOOTMEM_HVO))
+-			continue;
+-
+-		phys = virt_to_phys(m);
+-		h = m->hstate;
+-		pfn = PHYS_PFN(phys);
+-		nr_pages = pages_per_huge_page(h);
+-		map = pfn_to_page(pfn);
+-		start = (unsigned long)map;
+-		end = start + nr_pages * sizeof(struct page);
+-
+-		if (!hugetlb_bootmem_page_zones_valid(nid, m)) {
+-			/*
+-			 * Oops, the hugetlb page spans multiple zones.
+-			 * Remove it from the list, and populate it normally.
+-			 */
+-			list_del(&m->list);
+-
+-			vmemmap_populate(start, end, nid, NULL);
+-			nr_mmap = end - start;
+-			memmap_boot_pages_add(DIV_ROUND_UP(nr_mmap, PAGE_SIZE));
+-
+-			memblock_phys_free(phys, huge_page_size(h));
+-			continue;
+-		}
+-
+-		if (!zone || !zone_spans_pfn(zone, pfn))
+-			zone = pfn_to_zone(nid, pfn);
+-		if (WARN_ON_ONCE(!zone))
+-			continue;
+-
+-		if (vmemmap_populate_hvo(start, end, huge_page_order(h), zone,
+-					 HUGETLB_VMEMMAP_RESERVE_SIZE) < 0) {
+-			/* Fallback if HVO population fails */
+-			vmemmap_populate(start, end, nid, NULL);
+-			nr_mmap = end - start;
+-		} else {
+-			m->flags |= HUGE_BOOTMEM_ZONES_VALID;
+-			nr_mmap = HUGETLB_VMEMMAP_RESERVE_SIZE;
+-		}
+-
+-		memmap_boot_pages_add(DIV_ROUND_UP(nr_mmap, PAGE_SIZE));
+-	}
  }
+ #endif
  
 -- 
 2.54.0
