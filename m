@@ -4,140 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C170CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 09:16:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FCD1CD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 09:17:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CC9B6B03CC; Tue,  2 Jun 2026 05:16:10 -0400 (EDT)
+	id 61C356B03D1; Tue,  2 Jun 2026 05:17:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A4806B03D1; Tue,  2 Jun 2026 05:16:10 -0400 (EDT)
+	id 5F47D6B03D8; Tue,  2 Jun 2026 05:17:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BB636B03D6; Tue,  2 Jun 2026 05:16:10 -0400 (EDT)
+	id 530466B03DA; Tue,  2 Jun 2026 05:17:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4011F6B03CC
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 05:16:10 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3CEBC2AA4
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:16:09 +0000 (UTC)
-X-FDA: 84834416058.06.FCD8145
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 11F20C0004
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:16:07 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DjRXIcxc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 446316B03D1
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 05:17:18 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 019C1C2AD4
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:17:17 +0000 (UTC)
+X-FDA: 84834418914.02.A8B4D12
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 69FDA40016
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:17:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SKshbpqw;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780391768;
+	s=arc-20220608; t=1780391836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TdqathzvUCoj63Ds+WrLU1+w90S7y5/3QCljYMNG5cM=;
-	b=ltJhUY5a5YPwYFTQk+39cy20bXtuAqPUpun9Akuc8BkThImjm+lOnFHA9wnBll0oEHgseB
-	EZ61VLLrgityWdPwkFAYAA2E1OdzKSwAGt2zv+jzfYK6/coqikR7bP5dfnxWkqZAHz/yO9
-	pEQdWmagHudhpGHyef9mhDhVSpUxMn4=
+	bh=4QH54k1d650+63eP2vmNE9H6+JFBBePyx28YNtQ18PQ=;
+	b=5umIJJeEGVUIKNOojXym5LqGM66uxisO28lJip0iSIAo/iaPq2IrHKg2EiV0X4vfbzYmV/
+	X3Mmtc8x0ofbPejauX5R1BL1s64emdfzo0lbeMuEcnGJCMEfq+C241uFB132hbrURY8zBt
+	H+jzNeNvVYTHWMhC9ud46O3hM7++baw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DjRXIcxc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SKshbpqw;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780391768;
-	b=oLFhp2uVgcdhNarnHfXfpMBPSFa5uGu1yNIR9vIb6gf3bC7KqZiODqEZ6JJwX4gjWTuGUj
-	BtG/zSPZFhjTRDKao2b+04ZOFBqh00MKOx+J6yxYiKAop2APxzpCUmBVBR5hM7OXCEfj+m
-	NZqYEqez1vm6u/Vlfr0fN2QX17gJjKE=
+	t=1780391836;
+	b=aKvfz5yyKXhuF7bwiM/dS8d5ZVwcI4gocy3+B3c4UTcksMjCrpdi7M0/WRw287IuEqi1+L
+	thwy9LkmSv64TnnQQYKYdDrOyi/Ue/tOjdpIMdOQ+d5NcJuRe7uyfueCH+t+wZYH6Xspay
+	w9upZqqXP7V/1t3IoR+zKTu+mtjfyJU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 117FB44206;
-	Tue,  2 Jun 2026 09:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD521F00893;
-	Tue,  2 Jun 2026 09:16:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F12B160098;
+	Tue,  2 Jun 2026 09:17:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8E41F00893;
+	Tue,  2 Jun 2026 09:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780391767;
-	bh=TdqathzvUCoj63Ds+WrLU1+w90S7y5/3QCljYMNG5cM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DjRXIcxcP+jR76JxjdxZ8huD1SQIJ0vTjIyad82M3FfyqvPB0a8TJSQ8sV6t70NLh
-	 lh67qPwGhAjSBnMUezwIX9tiLdqtMQWShxnz7SJnxjFXs0Oeg23qZFv3rbOi//n/W/
-	 36+FOWTGFkGnfHrECEd+Mfrm6wtrbrOtq5S7keS012ty7ZDLWk16tXP4nSMumLotpe
-	 mtFIZm5eVA86tLXRS7jQl9ZdmvTe2CfL0VDbfv8JNJnRXBiPi2PxbzuMuXSEsjqVDT
-	 vtbWrcFMngg2Y78/TXs1gZpVeaHrAuPzZQ/yXIhTuZOGmF1AN4Y3dRkhco871KzfRZ
-	 vaY93CCEiyWsQ==
-Message-ID: <192ad271-13f0-4e8d-b5c2-feb65392bc6b@kernel.org>
-Date: Tue, 2 Jun 2026 11:16:03 +0200
+	s=k20260515; t=1780391835;
+	bh=4QH54k1d650+63eP2vmNE9H6+JFBBePyx28YNtQ18PQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SKshbpqwgnjS5QDvf7JE8XZif6Z1IeZJt+RLmWjW4UuA+vXqZhFzJzr72SlMRXhR1
+	 cn3YpG6xsh9kwJClWAFemdQRY/WdMpC5/cTqyyxH0to4SL9yQ5ueI7QBmF01WCVpBO
+	 lk3P09jR5thrhK8wdOMceEfpc4EIuyNUgvSiR0v3e39O4PTXcPR81phnDMMLZ9Z2qX
+	 mFxq4YyFz8707wmAWm0G54EJ1XYkrZO95d0m1RGA/kWcoj+RZAqWjNOHgoKrevJ8Jz
+	 KakUwBEp2EvNr8tT8qZFpquUdtc4ZlaMUPwv5W8chMG3YPImTIx6nV7ziItp5FFnRC
+	 6zhptznO7UUGg==
+Date: Tue, 2 Jun 2026 10:17:09 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, SeongJae Park <sj@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: use correct flags for device
+ private PMD entry
+Message-ID: <ah6byrDr-DPECvdf@lucifer>
+References: <20260601083044.57132-1-ljs@kernel.org>
+ <8f7744e0-5729-4862-b5b0-401c2bca4d50@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm/vma: eliminate mmap_action->error_hook,
- introduce error_filter
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <cover.1779462249.git.ljs@kernel.org>
- <e770b28427937057fa953ac380a134b24acd8bb4.1779462249.git.ljs@kernel.org>
- <88aa89e7-aa7e-4abf-babb-a2855bcb3fee@kernel.org> <ah2oasz6oz4TgEiD@lucifer>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ah2oasz6oz4TgEiD@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8f7744e0-5729-4862-b5b0-401c2bca4d50@nvidia.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 69FDA40016
+X-Stat-Signature: act4dprawfosaw7ycf7874nehpynk3f8
 X-Rspam-User: 
-X-Stat-Signature: omjrrxcehkggs7g59uu7w68fz9ehzhq3
-X-Rspamd-Queue-Id: 11F20C0004
-X-HE-Tag: 1780391767-198642
-X-HE-Meta: U2FsdGVkX1/xp0QKr9gCFvFrWSwEnzEOCEudKc8kSKk/wQt8sSimibofbZZLrSdRAVDLdthFBMfrGSBwcltQnU4nWRtLUpiMcm+a04RP0ABcGKotJSdlegwE6Kkdij5qLweASFglqcZOelfg34xFSsz0g9D4PrqkBtEMZE2jyG7W8qxy9PELOSeKWkMQV6qQp1S6qCGsBMnncCUwKWby3p1hAT1iukpgrWuyB6SM0qbFI6boOZSszPEKVHOMfdvlQ7lysPNB7esn6cOuAxdgYZb97Hy0IFjElt0LAXLMxuvd0c3r8ifQid+rD8z0TFvKIXJpw2A274x5fAcZ32y7JUzqboJ5XKq2vl8R5vC7VUb/hSDtYta2f8l5qpYTrLFSYczbh/zjrUuzFebQ47SDyh3P71914TeqcvglWEh4xQeteSqXPYG2T5Xrr7VKY2eUkX14WL7yDSMJ6bphckub9a4HqVz8kd/mrFaQYqv+zuFEKNzyYjbmlOUJLsqqHi7ZBbJzbxhzhW1T9OUemdTEnxzz1Fw3xpvLQXA4iMVuCe7R1GfkvXh7cTD9hzr1rBpf/Mof3lttxn2uJGVQdMtzWd63USZDKPS18CGMmDgHQBzIzTRSEesJ4O3yaoTaqo1x+L1EKmZtFDKKaVpw0FEqwKn8+XtKOzlOa/BfFm8fC9+RIbuGjiXFQA/j7AXKCs8EYzJaCGhcPnAk1rAgYlRZEe7siNO5CBjyeR+2CzVnQEr3/mexQUQcN6NHiees19JeL3rLMaq2LhnlmbjzrVTKZg8byP92lHsDGNR+jPbwO3gGh7Lp/F1zxxDx/whsrpjMvI+kr+lMxlnzSUJqRBPhZQh+UNhA2dDi1b4gXUNAfVf4zdXHwQLlIGpa/BR7wepb6n3bBHoCxTWcbrBw55njTHH7XfjEQmIZPt6atRZIpcKCteILIoN5wpCzN+/YRdjP4EPYZOp6E7/k4yRKutv
- WE6A4uf8
- ApZsMpoV97HRENIWdyQR7+99wfoEd+sqL0D9vMerZvVNipyZ5ICRptPNe4QX4iWmmuVImsT1R3mp1gFB1obUiiqaP2PT8Ya89fk+/wzplaljvOXA5h7ElGMG7x/UepVoIjBuBJu6VZxSTcqv8tC1DB//phXpULwhgG1fWFGBQ3dIc4v/3i1VQa4Fek2hKIu2KtxA2jM1ctpgeE9YoGehlgVRAVZif+CVQqNX/MvSWPj+eEPBRtQ7v8K3XL8exzinhqAWt2RUd48WLiTnQOyfk8bymuWYMi4HK6uQL7OJQ1hiOVpnIsrI6rlUlrg==
+X-HE-Tag: 1780391836-722025
+X-HE-Meta: U2FsdGVkX18gCKc6DaEexg1Oa2VUlDJKfs258m+JndTwapkYl/2iv/tPJIOeLQBdlZx3pk1pHhRhr3KD+3uLLHd2Qss31jiCCraPsHc3F/vlFbkMmXHbSVwpUgGR34U3k6t4IT60Pmm5mFRRCfHRoRuDxgiZXuJprgCYAGQ8DeYGyGBzBhyVYX9B22Cg0632n+ATpHNtNJbWgnScBplHn8zkg4xFpDkrAZcHT1qXYwsGzQ9O7X+vmCBAfI6OwYbXE7qW3YupuvcZQJUaN6mkhTvRovuN5vL77/F01hVeFv185Y++8lerZyuAo38fea3kifhzbQipPsIOl9p8K5s0XAdzdhbY6rzZDpD6Kin25npBSC4m4M7UXEYzbze7P8PXnBrnR9Axj990d0C39L5C6b/iHoYpjunEa/2O9ry8w/RUu9IpjzHgEybAwfx24m5Rc6pv/eOU1R0fj8+YPEBzOAcc7oG882b3oT5p/dN20CVJYN2oCechDalEKA70PrkjjKn8ugWJTrffyedQQXk5NVT0yVJWlSPRldqfFBCVC+il0EP7GHhx4wvwz6a4Ln/+rmVKt6rr2DDJ2tKQWZ4grhBNxnvjOYbvzKEAGkO7WmF/W4hyEI0xAnx0IqJdRbDtC3V0LYyXAuJ+rt6oqLHo+EOz3jUiXY1Drey4aSsUIGxYVzf/ZbBhTH9llgRdLdyRuj6RkuU0yxdR8rLvwc+0ZSXtIeQIrtMIZ61Ls8LWYVIuucMM3WEtt0Vhx1cneAvJZqVeD6iR0/R4EpSOdYLIxHoHnk8ijbMFj11SRhcHBgDzfNx7qOegIA/G0QtUhAS5sW17uiESH7E65UEB9jU+oFCkEHvXa5WuqdEauvu+Sq9pdgWKxIjL2guF4DWfd1Ctlr5pHpvz9mcTAhlGnZq6hR+0wZcbwTAjYK64IkhawQKOles6GbUl6HLcsilTbY6XtQYUCm4fhq+jn0qwU8f
+ ONhIqiNF
+ mPK5qLuGvyr+ocKLya0pWf8lytr4+h3uWNOIaPasQ7QyN8IsxVvNGYTfEib8KuvsD0rF40DFRK2P/C+3CDnnCOmhCZpy3ArGV42TejghFwfnDJASnUEVVDjz2VKur3ZXYBY9UIR8sqqh26DB5mtpJ4sXTwruhAzDiqiT4LBzBT9RPNktQQHzAzgmk/4rgMyNp3xr1npUiJJwtMm3mc/R+76kauuCnBmqG4agv0RjKUvbkGL9bEz4SNKQhIxMh2p+11dBCX/EDYw+jmbTUSeptMxvPKhp86EKJLEOfLZitOh9K1sQStadkbTCDrLweWyCYDx8Kd2aTNS7pQrgV5EP58AOS4Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,33 +96,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jun 02, 2026 at 06:30:45AM +1000, Balbir Singh wrote:
+> On 6/1/26 18:30, Lorenzo Stoakes wrote:
+> > Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
+> > device-private entries") updated set_pmd_migration_entry() to use
+> > pmdp_huge_get_and_clear() in the softleaf case, but made no further
+> > adjustments to the function itself.
+> >
+> > Therefore this function continues to incorrectly use pmd_write(),
+> > pmd_soft_dirty() and pmd_uffd_wp() to determine whether the installed
+> > migration entry should be marked writable, softdirty or uffd-wp
+> > respectively.
+> >
+> > Whilst all are incorrect, the most problematic of these is pmd_write(), as
+> > this can lead to corrupted rmap state.
+> >
+> > On x86-64 _PAGE_SWP_SOFT_DIRTY is aliased to _PAGE_RW. So calling
+> > pmd_write() on a softleaf will return the softdirty state encoded in the
+> > entry, assuming CONFIG_MEM_SOFT_DIRTY was enabled.
+> >
+> > This was observed when running the hmm.hmm_device_private.anon_write_child
+> > selftest:
+> >
+> > 1. The test faults in a range then migrates it such that a device-private
+> >    THP range is established.
+> >
+> > 2. The parent then migrates it to a device-private writable PMD entry whose
+> >    folio is entirely AnonExclusive with entire_mapcount=1, softdirty set
+> >    (accidentally correct write state).
+> >
+> > 3. The parent forks and the PMD entries are set to device-private read only
+> >    entries, entire_mapcount=2, softdirty still set.
+> >
+> > 4. [BUG] The child writes to the range then migrates to RAM - intending to
+> >    install non-writable migration entries - but replacing parent and child
+> >    PMD mappings with WRITABLE entries due to misinterpreting the softdirty
+> >    bit.
+> >
+> > 5. In remove_migration_pmd(), if !softleaf_is_migration_read(entry) we
+> >    set the RMAP_EXCLUSIVE flag when calling folio_add_anon_rmap_pmd() for
+> >    both parent and child, which are therefore AnonExclusive.
+> >
+> > 6. [SPLAT] Child sets migrated folio entire_mapcount=1, parent sets
+> >    entire_mapcount=2 and we end up with an AnonExclusive folio with
+> >    entire_mapcount=2! Assert fires in __folio_add_anon_rmap():
+> >
+> > 		VM_WARN_ON_FOLIO(folio_test_large(folio) &&
+> > 				 folio_entire_mapcount(folio) > 1 &&
+> > 				 PageAnonExclusive(cur_page), folio)
+> >
+>
+> Thanks for the explanation, I wonder why I've not run into this during
+> my testing, I do have DEBUG_VM enabled in my config. I wonder if I've
+> never had soft dirty set
 
->>>  	/*
->>> -	 * If specified, this hook is invoked when an error occurred when
->>> -	 * attempting the selected action.
->>> -	 *
->>> -	 * The hook can return an error code in order to filter the error, but
->>> -	 * it is not valid to clear the error here.
->>> +	 * If non-zero, filter errors that arise from mmap actions such that we
->>> +	 * return error_filter instead. Only valid error codes may be specified.
->>
->> Is that really a filter or rather an "error conversion" / "error override".
->>
->> "Filter" to my German brain implies that we would ... filter selected error
->> codes, not convert them to something else?
-> 
-> I thik it's what people tend to call this, it's what I've seen it called anyway!
+No worries! I happened to hit it when reviewing a patch and testing
+locally.
 
-You mean for this monstrosity or for a mechanism that translates one value to
-another one?
+Yeah I did wonder why others didn't hit it - I guess the HMM tests are is
+easily skipped if the module wasn't built for one, and perhaps either
+CONFIG_DEBUG_VM not set or CONFIG_MEM_SOFT_DIRTY?
 
-> I mean your German brain is being logical :) but by convention going with this
-> terminology.
+There also might be some other factor that my config happens to trigger
+that others do not?
 
-Sorry, but which convention?
+>
+> > This patch fixes the issue by correctly referencing the softleaf entry
+> > fields for writable, softdirty and uffd-wp in set_pmd_migration_entry().
+> >
+> > It also only updates A/D flags if the entry is present as these are
+> > otherwise not meaningful for a softleaf entry.
+> >
+> > This patch also flips the if (!present) { ... } else { ... } logic in
+> > set_pmd_migration_entry() so it is easier to understand, and adds some
+> > comments to make things clearer.
+> >
+> > I was able to bisect this to commit 775465fd26a3 ("lib/test_hmm: add zone
+> > device private THP test infrastructure") which first exposes this bug as it
+> > was the commit that permitted test_hmm to generate the test.
+> >
+> > However commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
+> > device-private entries") is the commit that actually enabled this
+> > behaviour.
+> >
+> > Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> > ---
+> >  mm/huge_memory.c | 45 +++++++++++++++++++++++++++++++++------------
+> >  1 file changed, 33 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index bf9b480bb3b0..79463c709c98 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -4982,7 +4982,7 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
+> >  	struct vm_area_struct *vma = pvmw->vma;
+> >  	struct mm_struct *mm = vma->vm_mm;
+> >  	unsigned long address = pvmw->address;
+> > -	bool anon_exclusive;
+> > +	bool anon_exclusive, present, writable, softdirty, uffd_wp;
+> >  	pmd_t pmdval;
+> >  	swp_entry_t entry;
+> >  	pmd_t pmdswp;
+> > @@ -4990,12 +4990,26 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
+> >  	if (!(pvmw->pmd && !pvmw->pte))
+> >  		return 0;
+> >
+> > -	flush_cache_range(vma, address, address + HPAGE_PMD_SIZE);
+> > -	if (unlikely(!pmd_present(*pvmw->pmd)))
+> > -		pmdval = pmdp_huge_get_and_clear(vma->vm_mm, address, pvmw->pmd);
+> > -	else
+> > +	present = pmd_present(*pvmw->pmd);
+> > +	if (likely(present)) {
+> > +		flush_cache_range(vma, address, address + HPAGE_PMD_SIZE);
+> > +
+> >  		pmdval = pmdp_invalidate(vma, address, pvmw->pmd);
+> >
+> > +		writable = pmd_write(pmdval);
+> > +		softdirty = pmd_soft_dirty(pmdval);
+> > +		uffd_wp = pmd_uffd_wp(pmdval);
+> > +	} else {
+> > +		softleaf_t old_entry;
+> > +
+> > +		pmdval = pmdp_huge_get_and_clear(vma->vm_mm, address, pvmw->pmd);
+> > +		old_entry = softleaf_from_pmd(pmdval);
+> > +
+> > +		writable = softleaf_is_device_private_write(old_entry);
+> > +		softdirty = pmd_swp_soft_dirty(pmdval);
+> > +		uffd_wp = pmd_swp_uffd_wp(pmdval);
+> > +	}
+> > +
+> >  	/* See folio_try_share_anon_rmap_pmd(): invalidate PMD first. */
+> >  	anon_exclusive = folio_test_anon(folio) && PageAnonExclusive(page);
+> >  	if (anon_exclusive && folio_try_share_anon_rmap_pmd(folio, page)) {
+> > @@ -5003,24 +5017,31 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
+> >  		return -EBUSY;
+> >  	}
+> >
+> > -	if (pmd_dirty(pmdval))
+> > -		folio_mark_dirty(folio);
+> > -	if (pmd_write(pmdval))
+> > +	/* Determine type of migration entry. */
+> > +	if (writable)
+> >  		entry = make_writable_migration_entry(page_to_pfn(page));
+> >  	else if (anon_exclusive)
+> >  		entry = make_readable_exclusive_migration_entry(page_to_pfn(page));
+> >  	else
+> >  		entry = make_readable_migration_entry(page_to_pfn(page));
+> > -	if (pmd_young(pmdval))
+> > +
+> > +	/* Set A/D bits as necessary. */
+> > +	if (present && pmd_young(pmdval))
+> >  		entry = make_migration_entry_young(entry);
+> > -	if (pmd_dirty(pmdval))
+> > +	if (present && pmd_dirty(pmdval)) {
+> > +		folio_mark_dirty(folio);
+> >  		entry = make_migration_entry_dirty(entry);
+> > +	}
+> > +
+> > +	/* Set PMD. */
+> >  	pmdswp = swp_entry_to_pmd(entry);
+> > -	if (pmd_soft_dirty(pmdval))
+> > +	if (softdirty)
+> >  		pmdswp = pmd_swp_mksoft_dirty(pmdswp);
+> > -	if (pmd_uffd_wp(pmdval))
+> > +	if (uffd_wp)
+> >  		pmdswp = pmd_swp_mkuffd_wp(pmdswp);
+> >  	set_pmd_at(mm, address, pvmw->pmd, pmdswp);
+> > +
+> > +	/* Migration entry installed: cleanup rmap, folio. */
+> >  	folio_remove_rmap_pmd(folio, page, vma);
+> >  	folio_put(folio);
+> >  	trace_set_migration_pmd(address, pmd_val(pmdswp));
+> > --
+>
+>
+> Reviewed-by: Balbir Singh <balbirs@nvidia.com>
 
--- 
-Cheers,
+Thanks!
 
-David
+>
+>
+
+Cheers, Lorenzo
 
