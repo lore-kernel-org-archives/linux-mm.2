@@ -4,120 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DE15CD6E5D
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 20:47:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E274CD6E5D
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 21:12:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 124C66B0088; Tue,  2 Jun 2026 16:47:36 -0400 (EDT)
+	id 47CCD6B0088; Tue,  2 Jun 2026 17:12:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FBCC6B008A; Tue,  2 Jun 2026 16:47:36 -0400 (EDT)
+	id 42D866B008A; Tue,  2 Jun 2026 17:12:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2D936B008C; Tue,  2 Jun 2026 16:47:35 -0400 (EDT)
+	id 31D576B008C; Tue,  2 Jun 2026 17:12:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E1E396B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 16:47:35 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5DF5CC0442
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 20:47:35 +0000 (UTC)
-X-FDA: 84836158470.06.ED1DC7D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BA18A1A0005
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 20:47:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nzt8VJlF;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 242366B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:12:55 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9FE2B8AB58
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 21:12:54 +0000 (UTC)
+X-FDA: 84836222268.17.3025956
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C02128000A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 21:12:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=S1wEzQCe;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780433253;
+	s=arc-20220608; t=1780434772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=feidG2as/XbImAclBaae090g0zSDhLsjz6jl/0A4LvM=;
-	b=XKcjt4vdSWHQEbo7r6ZC91YZwnwKd70MPVEMCbppLFLQPBng0UXJc09bWrcWKVtaOf00Fa
-	wA0r9FUzj4lo7vlR/8Z/min4dK78COuixt8XkLTHHIFwv7OmZ1FvBMX+zsemGdsHKieEsZ
-	zEK07h0caii6W3d4dPtbr9xdM/8qwJk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780433253;
-	b=qE1N4kLrs4K7IIWdGQnSpAousZymS4Te0yR/a+I/SAMgLQMwV7rre4ZQ7aZN/VA+vXTEQZ
-	svyarfpcs82RmibiQ4G1Q+JjaXETezAObXRGPBakkH3aHK7UYs4jMrllGtgkL3qJuIv2cS
-	whH3/4KBFves3hitWmWsrh4AbY809UI=
+	bh=Z9XdL0UcpSaON9fzpANOcoqtpqZ13Zvjis5WLumIDqM=;
+	b=PWdkj3Lz9aNwLmPtnoqKL9JrUoW4kPOcDQW7JP4pFvZQLUwKXy1si36ZW+m3MexhGggSwM
+	Nmvum6XuIN7hryGD2RUf8NAvVHkMxQuREt9pLUR5Egh8sDIX6Wxm/dISc84mAwDYodA/FD
+	F/Tr5Iv4cxnKLK5Mfju8pe49ymLachg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nzt8VJlF;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 28DE360098;
-	Tue,  2 Jun 2026 20:47:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56691F00893;
-	Tue,  2 Jun 2026 20:47:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780433252;
-	bh=feidG2as/XbImAclBaae090g0zSDhLsjz6jl/0A4LvM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nzt8VJlFbZ1fLWVcj2WlL05fM+BocJStfm95qE/oxhpfKoTl2aVhIhpyxmUhpn7Sh
-	 xXb1w5fL4q0FFF8tkj0FC0w+t18EK8wlWQcYTwE9iYo1FIOFqmw7nREQ+kjB1pSJMs
-	 kWUzxzF1cdXbUuAl8PM3VZ8GosZJ7hrEFmnD5AB/scpGZu5KjU+4OQXFtWiqd2Y8Me
-	 dws8W7hGRkUrW+sNeYWrqf6mUxNg9UQMRMVruAd4TJCIHU6TreYhygTZIyLW5h168K
-	 tfwaQPpZ1v0nAC3JICmLT8yrtJjFUhEsnA/MbuCM0gBWDJcmpA5TskWK78MTEqkpaE
-	 Bv4gjeOV7WVhg==
-Date: Tue, 2 Jun 2026 21:47:17 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: wangtao <tao.wangtao@honor.com>
-Cc: Barry Song <baohua@kernel.org>, 
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"david@kernel.org" <david@kernel.org>, "willy@infradead.org" <willy@infradead.org>, 
-	"sj@kernel.org" <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>, 
-	"luizcap@redhat.com" <luizcap@redhat.com>, 
-	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
-	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
-	"jack@suse.cz" <jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, 
-	"harry@kernel.org" <harry@kernel.org>, "jannh@google.com" <jannh@google.com>, 
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
-	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>, 
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
-	"lance.yang@linux.dev" <lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, 
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, 
-	"matthew.brost@intel.com" <matthew.brost@intel.com>, "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, 
-	"rakie.kim@sk.com" <rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>, 
-	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
-	"apopple@nvidia.com" <apopple@nvidia.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"ryncsn@gmail.com" <ryncsn@gmail.com>, "jparsana@google.com" <jparsana@google.com>, 
-	"dvander@google.com" <dvander@google.com>, zhangji <zhangji1@honor.com>, 
-	wangzicheng <wangzicheng@honor.com>
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Message-ID: <ah887A5VkXOcmq-g@lucifer>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <ahcANgFDFwfC0v1q@lucifer>
- <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
- <ahf2mJg9OOWvu0jA@lucifer>
- <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
- <99dfc4a50f3643a6bef6deaeccfcf115@honor.com>
- <ahlzj--3Gm5pD9ge@lucifer>
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=S1wEzQCe;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780434772;
+	b=kYOg3tNfBtXtYOuQ0bCWCvUyE46HPfB1+xa1R9jONF9Iwg9zeScwSOKfiA2X7exRxnSqwl
+	8aD6Bh5oZhIQGbipa0MvnlwKt7wh1Qo3zjENhR7BCr3/5yYZ0ggx+1I4Xw8s+CYnsKBh61
+	XMZUWjLExpPF7N1YG7aOu9KhMEaZ7ws=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490abf12f0fso65935e9.0
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 14:12:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780434771; x=1781039571; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z9XdL0UcpSaON9fzpANOcoqtpqZ13Zvjis5WLumIDqM=;
+        b=S1wEzQCemNwB24hGf7aC3e2Op+weKuM8+GZQXkOri9bJOeIK3qwa68ILIHDqXHP0fJ
+         WjWS5x4q0dOgCGhdQ11vSHJ4M9RibUEqYBLRIRRmq1Jxo0VDWFyzpcfWQXWQNzJwfyrM
+         hgDMDm4wknp0NyO2HxDs0QVuXFuox33lhyNcEc73JE+JNdL1CXyyL08Ry06M+kcMbu5o
+         47f/4nXLcQAyK6fNQnW3L9lxF6ZgQhlq/+F2mVHXj7m4E2ijVzDnsM7dM11yS9m8rbRO
+         ZvGsoiPP5Lnpz+DE45zXCvODEckXJTTN0Q6Q4lTe3PhHqnFvN32nuWMgTzvyvEUCGpB0
+         HuAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780434771; x=1781039571;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Z9XdL0UcpSaON9fzpANOcoqtpqZ13Zvjis5WLumIDqM=;
+        b=bEHhR1X9xtIC8XdE2pjIFnCBnPa0NBmFO4sk5yf8YtascpjcwWArENGuuYxy9D+y9w
+         SUZ0eaFyDhlCeLOueIgf33INuAX2c3o8kkvnR5HOB2Qy0ZcIv4Tu5ZZBqywSPq771WZT
+         YziGXlDF/WJT/+fd27vA71WGEgdsqXtO6TJ41EZReHQ6cT+1mnP1h/QbRCKgMmLm+HEi
+         eAHuG1gNKgBdgHFg1VmGOnJZM/bEevNi36x3iTQMFwct6nOf+nvOZaMTOQUb4dwvsiwY
+         hzzxA6jy7f3v03cko3wq5Hik96FAOfKLvW58Segzaq8zmHCi+ya640V4Sm3Tyg+ciBYM
+         Yc0w==
+X-Forwarded-Encrypted: i=1; AFNElJ+7m/1z+DhYgyQhiqKLS2kTfTyXb1+ioLFTwNSNRNWgOSD3PKsFwBA9Rm8N7ZI2U9o4knIdm0szkA==@kvack.org
+X-Gm-Message-State: AOJu0Yx+LeRTYG1ELlCaaqPxbu7PNBlY7uUOkaaYnuSh36UOBrQHbMTe
+	TaVE2LbE5UXRXw1vZ1Oo2yw7suzB8klJrbt6waC7lwg5cWNaqdstBkfa
+X-Gm-Gg: Acq92OEUAnXzC3LNUA0+2SjtbfkwUMkuuY7RcXR+fNH5Mv7KMpeNNltZ95p7Hd5HY44
+	q2cMzEAJuslf57Ntd9jjDQbOfkYhMyT2PnkxxVaTvATBu0JhDUGY0W3WcqrO2w9ViI3rorJUC6K
+	CwD96jQZ5ECwEawnzkWQO833zOakUzC26Hl3SGr79di/Xk/vhbGfDVCTmaciLQoVylkl1GzbHhv
+	TGqid7/VWJvR33bmjfrnYZaSOa7wReRrKXZtkuMaK5hjJw/yznSllQP0Oqz9H+2LrsGtL+4oRvI
+	mgZnBcjsK/XX0Frc90XIHztadCy7YKKSzUm9hIQoHjDdip6iyt7deshPN2DRwrr47w2FFiE8W/I
+	EsJJScJJqnem3AxAH0MBXiIUzqGJElJKWJ6oZVLXpugPwgiH7W9r2xfwY0NsdOHxuuHKmJCMVL9
+	F1WU7sb6Eoq/89ze9a7884Ai6TTNp7cQ==
+X-Received: by 2002:a05:600c:3b98:b0:490:b11e:e4be with SMTP id 5b1f17b1804b1-490b611105bmr5959595e9.3.1780434771026;
+        Tue, 02 Jun 2026 14:12:51 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-490b0e13f91sm111429715e9.3.2026.06.02.14.12.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Jun 2026 14:12:50 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: pfalcato@suse.de
+Cc: akpm@linux-foundation.org,
+	axboe@kernel.dk,
+	brauner@kernel.org,
+	david@kernel.org,
+	dhowells@redhat.com,
+	hch@infradead.org,
+	jack@suse.cz,
+	linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	miklos@szeredi.hu,
+	netdev@vger.kernel.org,
+	patches@lists.linux.dev,
+	safinaskar@gmail.com,
+	torvalds@linux-foundation.org,
+	viro@zeniv.linux.org.uk,
+	willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+Date: Wed,  3 Jun 2026 00:12:42 +0300
+Message-ID: <20260602211242.13870-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <ahv16ogY8Zx3Rtox@pedro-suse.lan>
+References: <ahv16ogY8Zx3Rtox@pedro-suse.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahlzj--3Gm5pD9ge@lucifer>
-X-Rspamd-Queue-Id: BA18A1A0005
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 6bo8mb7cn5x3gm6xu5w4wwy4rkfwfetp
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780433253-610575
-X-HE-Meta: U2FsdGVkX18RNi6FjoVsEKfx1UYnp/euuMhkzwiYpbNIDO2BxyeLc6kjF2nQYprRrpK6AfYvtvk5ZkKnGcyUYmkRI+VB8qdN6dDERY/S6gPP35y9uK5PkG5POHgG5Nka9hkG+f292TCko3dBAbgD8xF7DrXFJJ5osFNqqVyTyjRVnqhhm7ItdfhwH1Brl50YmPr5hJp5bZ/HPwoflhnNt+j1xd7KvcQJbMW/TqRTc/k+cFINjXaL4RTCv7ERB4n9jr9nmgvIm55COX0zwEcyU0aek0qcnpGnCnVxwdaOp5GlB9KGzL60cb8ij3t51DA89QFGa/8uZIhgiEenkoTCT2Sp3gOnetXmNvrS6yAl0QuZEFo7n5H/BVnPy8ngzSYfVuOzdZ1XvBmurcKU8UAGxkGSVgg4pAfwdDmgv045HRgAdXGGH6lfdym6xppyx0EgFzoSVccWKn6EHtkU6O3hKXBJ6tm9ABitEVY8desIzVesWOUC6sCm9XMvMj6J5auFNUopBkFTaCt7OGMyW66YIBMCZxaAK0sA1wck+C7SCB6iCbp1b5kOA47j6p6Zhdqmufb82PxxQb2jqQWjIjupGfXW6ZsfGZ6prwZ0QRm1kvqoSDGHJQwt3AjcCVlK44FQmtemXTMBPBkNpcvexEgO+iQLXVbz9p8FBWhUIoEs8TLkLPH1gz969hdweNLoM4wXOESm5pjEXjOZ3M0E9hTJZVrEPOCU5J1T+l6n4c6oBtuIV6OSVPCH4H56QBa1polPXCHJbBJFLw7wiL6NRvMaocdLNdwNSv/RpHo1Ouov0bu7jOYEdVstDHK4s6Z5flzfytf6VDlICCEKB5nCHgfMyCo2ZIEWeEi3wPScuhhbX3qRDTmWFEwMFx12iARL2kUfKDRDmBSFCc/7UHzZe6iLq0BD9V3foA56K+sEbXvc/Cm31eEqa4WNSAQ2hBHH23lb6dqdOepmm8a+6/PT1M1
- wQJTpzIj
- TVNSbKk3CKoRtc2d6AZlsSlB0+sZUnN21PaOWTVLm/U6aisv5mUbx6g2lxYUv5R6a1eMp972rSKnNB2VJlyCDHUx9tOxetPEey71wQOZxDKUwvaiw31f2wRTF6YUyjt3qMNkLIT+ghp9gxUeI3PtwBXiy0KR+s0h6W7zs3LaaGRTItFmPIV1Ka5cF6OoHzr1PJ2IfgM5vcuqJsVaERIPVX9NhREd9zXI2ex1c9TzosVI3FUTVT734SENFPNCZuoduMZ8g0gtQGUIqqj/kLhsoVkkiYGU/s2LEkMsRbuPBzi+LN21IhKCRklLJf2XQpB8cmCBcoiJE1HqbREraf/1u8SXMhcpgdjJbRArBtCkXALCoiV9HX2WfxlLyKFMACMadVr7hu2eYpBamkYlrxSKEEhzDjO1UmJpdC4l52TovMGaF6WoMr5L2ZLixgg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C02128000A
+X-Stat-Signature: t87tb5iqxbs1u4hdtbtpm84baizffhhd
+X-HE-Tag: 1780434772-679991
+X-HE-Meta: U2FsdGVkX1+jT0akI9j7KaWVC27HCjxQlCsCD203Qq14cRXskz64cQP9uKX/ziyBQ2Mqz8chxC8LNuWBN90R/JaTQfyP6k5yebOytS8kgLupYy9FgGJ+HSSHYXbpeoEgSwJM+QTctp8DUbE9u95clOe9s/+yrefPqbCS7Y5aQiRksAUGxiu6XJMyR0QpErgakXVomlopBuFzLR9STKGTTf32fYGs0smj47q3Co50dLadHfDDTAi3IoOgH4/q4vNrt6Abrp+kpS/NIE+9WYr7cJYkbVs1RdwHc9lFKpm/Z9p74H1jQ52VVSOTxEvp8wKBmOHz6jXxt+ykYieqGrqlVUSbJzPRbMIeniwTEn4lBolw66cNZC7LPeifCGkgNASf/kIV94bNe3K5IX0JdwdAUQsk+rZ0LT8VinZTeS7/GN+5HLo+7fn+Dpudy3YfxntgW5l8mpuSTCYm2iRYCmk4zGS9WXOwMjqNcc86WfWSbOQai6bYfA7LkQ7ILZFQFSphc6u7QhjzUOBzZx1mIVfhCZNvlcKGq4GHz1rGbxG6OVNijVPHzw4VTmuX7zoO7Tr+3Rm6z1XtbfgZA+zXjvrLqUdQmt29cUMIvihH+T6K+SN4uCFOMEqZJeyzTz+Q5OU9Rd9VQm7EKua1URJI+7u0lvSSZZ9LtvkgaEjGjsL7Ge31Luve+NPECj2o958E4NV651/3Ioy88kjvx+n8DHHV4rczucmCVDUtCYd4cpwKE3oBBQlciIycmkGq4/sVDAXMuUrxD5DSbCH4Z2dRKG1Jh0ebgt88vnb3Yf/LDAVGwO6XSJIm0MKuXzaFPnqbvrpd9rdnDFRMXc99aRNaOJIT6nLOKztm2+kiSzWAdyXjEgTQ6m6JnlKik+wQlXJfteJVrjeaJmM9JgO4ICiPI+y6RlAX7F/v9P1ywFfHwIkJcWGM1QXjSc24vjvCkAkgckr2D5nEIh8RT92/pZe7Td+
+ Whp+k2xJ
+ e+1/uIo3Y9kNFunViVQOGXXCT3ClX2nd49vxlt80GZofaqGJCEg6Nl4RXVJRpl37X5BW19PJTaC2AInfY4wogFNh57DVnGd2L7ow51hJO5H82tF9NMBVb+wZW7Rx6vOC7J1Vwc3jDlt6rDa0ScJBlMQd72DUitbuuIbRCrAwBda051TBgMcYKczPRRgEolvJ7L5TXeMRbcM70siUz4+PCPvTmPtzKxGQbIWuW5tzgdKYUcG/WvvoAM5x2/Ar6FjYd/wgqQh6RRnFdKzEtDJ7p+FsuM6rGN+2FgAsgi8A3NbyqDldL2RzXrDWjRRlvTOyoE2viFSbsSZZoMRhSvmBh0Hy9J7ulQKmLuwsmTigaJ4p/eRx8bQpO0SRWkqLiWn/fYWSBHprS3o9/y4wMExnNnVhP2VsxY0eVjN6M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,159 +133,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 01:04:08PM +0100, Lorenzo Stoakes wrote:
-> On Fri, May 29, 2026 at 09:41:20AM +0000, wangtao wrote:
-> > > Hi Tao,
-> > >
-> > > Lorenzo had a discussion about rmap in Zagreb here:
-> > > https://lore.kernel.org/linux-mm/aec533b2-37a7-4f44-a279-
-> > > c4aa604206ac@lucifer.local/
-> > >
-> > > He also shared the PoC code here:
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/ljs/linux.git/log/?h=project/
-> > > cow-context
-> > >
-> > > and the slides were shared as well. In case you can't find them on linux-mm (I
-> > > actually couldn't find them myself), I am attaching them again here -
-> > > "scalable-cow-lsf-longer-version.pdf"
-> > >
-> > > After coming back from Zagreb, I kept trying to find one or two full days to
-> > > read Lorenzo's code and slides carefully and write a blog about them.
-> > > Unfortunately, I have been completely busy with other work. Sigh... we
-> > > always seem to have too many non-upstream tasks.
-> > >
-> > > If possible, I'd really appreciate it if you could take a deep dive into it and
-> > > write a detailed blog post. I'd be very eager to read it and better understand
-> > > the overall design.
-> > > Otherwise, I'll try to find some time next week or later to go through it
-> > > myself.
-> > >
-> > Hi Barry,
-> >
-> > Thank you very much for your reply.
-> >
-> > I took an initial look at the cow-context code, and a few points
-> > might be worth noting:
-> >
-> > 1. cow_context_walk currently assumes that the rmap walk runs
-> >    under RCU protection. This may need to be adjusted early,
-> >    since paths such as try_to_unmap_one, page_vma_mkclean_one,
-> >    and try_to_migrate_one may involve task switching.
-> >
-> > 2. In cow_context_walk, traverse_contexts appears to involve
-> >    multiple nested loops. When there are many child processes
-> >    across several fork layers, it may not be as simple or
-> >    efficient as the current anon_vma approach.
-> >
-> >    It needs to traverse all child cow_ctx, and within each
-> >    cow_ctx, remaps_for_each() has two levels of iteration:
-> >    remaps_for_each_entry and remaps_for_each_entry_offset.
-> >
-> >    In other words, it first iterates over cow_ctx and then
-> >    traverses rmap_mt inside each one. The rough complexity
->
-> >    seems to be O(#proc * log(#rmap_entries_in_cow)), which
-> >    may be somewhat higher than anon_vma's
-> >    O(#vmas_in_anon_vma). However, in most cases the number
-> >    of processes is not large, so the impact may be limited.
-> >
-> > Previously, I also considered converting anon_vma's rb_tree
-> > to a mapletree. If one entry records a single VMA, the
-> > average overhead could be less than two longs per VMA.
-> >
-> > However, unlike rb_tree, mapletree does not support storing
-> > multiple elements under a single key. The key would need to
-> > look like (vma_id/mm_id + pgoff). On 32-bit platforms, since
-> > 64-bit mapletree keys are not supported yet, the remaining
-> > 12 bits are not enough for vma_id/mm_id.
-> >
-> > Because of this limitation, I later started thinking about
-> > ways to reduce anon_vma allocations instead.
-> >
-> > I will try to find some time next week to analyze the
-> > cow-context design and code more thoroughly, and then
-> > write up a summary.
->
-> Tao,
->
-> This response is so full of misunderstandings it's not really worth me
-> responding to any of it. You've even hallucinated an imaginary field which
-> is REALLY suspicious.
->
-> You've no mm expertise or history and came up with this in a few hours. I
-> asked Claude to analyse it and it puts it at 75-80% chance of being solely
-> LLM-generated from cow_context.c.
->
-> I simply don't have the time to deal with this, so unfortunately I'm going
-> to have to withdraw the suggestion of further discussion with you on this
-> topic.
->
-> I am working on the scalable CoW project and will solicit opinions of those
-> with relevant expertise.
->
-> We are not interested in your approach or analysis.
->
-> Thanks, Lorenzo
+Pedro Falcato <pfalcato@suse.de>:
+> On Sun, May 31, 2026 at 01:01:04AM +0000, Askar Safin wrote:
+> > See recent discussion here:
+> > https://lore.kernel.org/all/20260516182126.530498-1-pfalcato@suse.de/T/#u
+> 
+> So, you took an ongoing discussion with an ongoing RFC patchset, and you
+> decided to reimplement part of the idea on your own, as a concurrent patchset.
+> 
+> Riiiiiight.... I don't think I have to NAK this, do I?
 
-Apparently there's some misunderstanding about this situation here, sigh.
+Okay, possibly this was indeed inappropriate.
 
-So for avoidance of doubt - I've now spent many hours on this, and unfortunately
-(as I've already said in multiple places) this series has serious architectural
-and code flaws.
+So this time I'm asking explicitly: is it okay to post new patchset?
 
-And unfortunately, the anon_vma approach is not something we wish to extend, for
-reasons I've gone into elsewhere - but broadly because it's a broken
-abstraction, that uses lots of memory and causes lock contention.
+I want to post patchset, which will remove pagecache-to-pipe splice.
 
-The approach here has multiple technical issues, so many that getting into each
-one would require hours more of my time to analyse, maybe all week?
-
-And then if there were further replies and replies to the replies and respins...
-
-However, I also feel there's substantive, overlapping, evidence of the _logic_
-(not the text, we are FINE with using AI to assist text for non-native speakers)
-being LLM-generated.
-
-However you can never prove this for 100% certain. But you can certainly be more
-or less sure. I would never suggest this unless I was really pretty certain.
-
-I am very keen to avoid 'witch hunts', or rash accusations. This is not
-that. It's a _carefully considered_ opinion, based on evidence.
-
-But of course - I do not know for SURE. You can never know.
-
-The big problem here is asymmetry of maintainer resource. I simply _cannot_
-respond to every single issue here. And when the architecture is something we
-don't want, then it's not really necessary to.
-
-And my big deep underlying concern with all this is - people can generate a very
-significant amount of this kind of work, and we have limited reviewer time.
-
-I've already dealt with burnout recently that I'm thankfully recovering
-from. I'm not really keen to go back to that.
-
-I really truly worry that if we don't have a means by which we can quickly
-dismiss/deprioritise things when we have a _significant_ evidence of wholesale
-AI generation, then maintainer overload will increase exponentially.
-
-And that's really a serious problem.
-
-If we treat it like simply a technically incorrect solution, then it means we
-open it up to further discussion on and onx, as we're actually observing here. If
-the responses are also LLM-generated then it's even more problematic.
-
-This is why I bring it up, and proactively say it's lead to a real loss in trust
-in this case, and why, after there was a response that included a hallucinated
-field in it, I went further and said that I really don't want to have a
-discussion either.
-
-It's because of this asymmetry.
-
-And even this reply, written at 9.45pm at night, after several hours of
-discussion about this off-list, is evidence of the problem we have with this
-kind of asymmetry.
-
-It's nothing personal, it's about managing time and resources.
-
-Thanks, Lorenzo
+-- 
+Askar Safin
 
