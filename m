@@ -4,100 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E95F9CD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19902CD6E60
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:44:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B5DB6B009D; Tue,  2 Jun 2026 11:42:07 -0400 (EDT)
+	id 5A3776B0093; Tue,  2 Jun 2026 11:44:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48D376B009E; Tue,  2 Jun 2026 11:42:07 -0400 (EDT)
+	id 52D7F6B009E; Tue,  2 Jun 2026 11:44:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CA356B009F; Tue,  2 Jun 2026 11:42:07 -0400 (EDT)
+	id 41D6E6B00A1; Tue,  2 Jun 2026 11:44:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 29CC76B009D
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:42:07 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B0109409D2
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:42:06 +0000 (UTC)
-X-FDA: 84835388652.03.A18DB4D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 160F81C0017
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:42:04 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GgUThQiV;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780414925;
-	b=lzZ9a7kUH7HltMUoxB1OPd3KNLv4v+0ulNhxiaL3NbNTJDf9gqLXhHKlQi1xDABYMxqIty
-	3GiXGg3e/iQFBQGiXykaFADi8WEdnSM6achVNvMyQ3y/1G+9S35JFday7hrHEY8VCa9NjH
-	eCHt2dhIzWj83NAR86L+3Qn/jZzlcMc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GgUThQiV;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E3BD6B0093
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:44:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B831A090E
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:44:56 +0000 (UTC)
+X-FDA: 84835395792.29.A58DE67
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 255B3160012
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:44:53 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dUPN8UjC;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780414925;
+	s=arc-20220608; t=1780415094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e2iPxik+gt/K9tv+LiH1rAAW4SyqMQzYLDmc1qnwxLM=;
-	b=sOIntutMtWk4VHpK8787AFz4SDKgByY/SGzFGInP80j5l7wvIfBsgmuAI+hp+XhBMnR/GH
-	vNMY4GRNMojrlG2U8q/MoAI8FJt7pKQTl7egDwZzJHmXU7jC+ZFyerWe5bqT/vkKhdheTQ
-	YuCvs+3vaSebz0G1oCR39UEimCLt9h0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9D890601E2;
-	Tue,  2 Jun 2026 15:42:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B4A1F00893;
-	Tue,  2 Jun 2026 15:42:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780414924;
-	bh=e2iPxik+gt/K9tv+LiH1rAAW4SyqMQzYLDmc1qnwxLM=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=GgUThQiVtXfAn3sygsENtWy2bNcoEtDTKqD+k+4/dxd/WiRCuyxnl9FNmv6OIJ77y
-	 n61AQDGralQUr1hgbaUDNeTezd62bqW93pXWmQ4mzltanuxw6RYc043O9G1+XSuwmN
-	 oCrz8Fexug5hS+AzzYrnxpGJnJ1qfUUfNAqTiYpkhNSFZPwWnpVw34d6YD/b9H/iTa
-	 yCLC9pFCfN5EZo6/RN5il4tU0859XGgEkzcqcvQ7BEu1ZAYRKuWCBwGu7onNxF6Elj
-	 GGY+l0vvny2VAZOCXjjRCGM6FR/syqL2X+I30lSXL7AGM3536mCck0Rt8jP6ITh1mP
-	 hs3aSoD6zTLmw==
+	bh=f8W9tKC2C6NAekt7xw/i353pEy5xESfITkwO5U4ZKyM=;
+	b=edvhcRdEq6NgOx7UvkUH+5dBgP7NELe982j5cuX9LYE0gOkyG00fi9UuICWOaA/45nJcsY
+	uRzL85htr+xKQK/oRmla99qeU3BSFE8e7U7BE0SUI8R27IYrykyaNUXH7jwXYjdfmPmSn8
+	5bS73rWmTdYwGmpTa3xfuU3tF61Nigg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dUPN8UjC;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780415094;
+	b=RwuTSQS/UJoSMoWISJruifxb/9a7ZktMFMmXGeqfNanqS/Uhp2Kl+6roHwruYMQDnqraXW
+	KKghbDR3Kq6/mNf3E0Ot34cXouKkyCxM49ssu6yr672D6XVDE2OmoldYeBJ+SuTkhTeckB
+	xOESIwsAMJ3sc4YzcQXAQs3VNH0zwno=
+Message-ID: <185f5699-3797-4300-8c54-bb99fc2a45e0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780415088;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=f8W9tKC2C6NAekt7xw/i353pEy5xESfITkwO5U4ZKyM=;
+	b=dUPN8UjCk9D//WfVj3ZIPIfxri7y0+DyfDfey/e1A6zAzAK6UEAwk60rmDdQMBMczBTVfQ
+	eYmfVDCyFQ4DgX5Zvih0NOTAT5JeaRkrMW9fNX91jRnKuwjIyKGOWl6TgNiUuKF1OUIs5y
+	itnu61NoSa2Vsg4tbFTDOK/aUcpzzfM=
+Date: Tue, 2 Jun 2026 23:44:17 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 19/19] mm/mm_init: Fold __init_page_from_nid() into
- __init_deferred_page()
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Oscar Salvador <osalvador@suse.de>, 
- David Hildenbrand <david@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>, 
- Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, 
- linuxppc-dev@lists.ozlabs.org, Mike Kravetz <mike.kravetz@oracle.com>
-In-Reply-To: <20260602101039.1867613-20-songmuchun@bytedance.com>
-References: <20260602101039.1867613-1-songmuchun@bytedance.com>
- <20260602101039.1867613-20-songmuchun@bytedance.com>
-Date: Tue, 02 Jun 2026 18:41:34 +0300
-Message-Id: <178041489408.457517.2991925440539441241.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Rspamd-Queue-Id: 160F81C0017
-X-Stat-Signature: k77kb4j4g7ch1izwabyiu6j5pw56meof
-X-Rspamd-Server: rspam03
+Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
+ collapse support
+Content-Language: en-US
+To: Nico Pache <npache@redhat.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
+ gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz,
+ jackmanb@google.com, jannh@google.com, jglisse@google.com,
+ joshua.hahnjy@gmail.com, kas@kernel.org, liam@infradead.org, ljs@kernel.org,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+References: <20260522150009.121603-12-npache@redhat.com>
+ <20260531071845.10875-1-lance.yang@linux.dev>
+ <CAA1CXcA+oZmp=cxiC2_EBDxqGX94gAd335d9eFPNv=j_0=og7Q@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <CAA1CXcA+oZmp=cxiC2_EBDxqGX94gAd335d9eFPNv=j_0=og7Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 255B3160012
+X-Stat-Signature: dgr5s7wq6eqnbohp4igs8ams5fqgunr6
 X-Rspam-User: 
-X-HE-Tag: 1780414924-30397
-X-HE-Meta: U2FsdGVkX1+ZLMyTPr9dFiK7gkg4MYscys0y+Y9fMM5/vgcX9e3p7wUr4vsvM6HsP1JQZSs6CSXzDjZvHj3ROI1SWusf80jKfiZMIoumU7xJREdBmVMyQAy9qC0BFQnvNQuO4Qe6esiiUAjEeU4886sc9ah95IeLaI6YUvgHuPk9816AXabK3Jf4Mn5ZblKP9el7Dmm1I4aJBW8U4U4OnrygBU6U9yrvtXvzmic9br7+CJL8ZGcDTtiWCnohq/WOVAEx6jyyabr0uysKfO1WStbpbyVXKVeQflyLynbm2LRM5ucstyPfFFTeuKvkHPZrh8muU0qwZCjBAMXuDlAUBHrNbOPF9rwC9ZjpoPFtiBPTuNQW9DsciqUFPSLyvxhKOrdIYUhi5Kvo8zEuOieQJy84k4wH20tNAlprYhUixGf4+brxZ00AsdP5J7ksmsz9N83eVXRraQHcr6h4f4NeKe75Goi0pZcdtg+tVIRENrKL6bKNjjn9dnEeJrVSUl107kN2sYA856nOL2kOv9bzsbysUBZpjy8Ju7xianeA6MIzGyeRAA/zmx8nOjZQAQBwyCMWXQhOM0HAS4WyHHAFL9PXn+9fvgG2ceDUXDbk331diLwJxzxmbgSrpMiW0G9rIuiGYOyfLI9A2XCF+sGhAxQTNkx4liDp2MMOBTP6vHS9t4bgUYiZUxFpOqHTetZt4jP6NiNbpPaI7NoI/zEJdDMdcFJDQlwD0XoHlB28dhWRUj4JND4kdpa3XlR9x0MLVaShBnptQyeAdlUY5JW3GKu9tmUnSDK1IGl+MCcAfimfY7W0yEdFNZq9ArhlyQuiFlVtAXK1Bo8se0uxhFE5wiDNvz39eVxACG7s2kNci0wmSgxxd3c5wWNwrj4f0ZTsZqqKJ+3+qX+quLozuF0IitbgNAcsSrX92xMX22AmIKP7fTFj0XHcf79IbJpxrAtCD6HFkUT1LnCe9PofJbG
- Vxj9kIxw
- 0AWWSp+qTjT8IRtQjVbHeDpk1Mr/umRWmIXj9guXYDIZaRgXmt0BF0CYQxCMUZagCPivn+LkA94KYRxAOm+3RWHGVoD/HTKdqP+255hv0KoegZXY1TJ22YNp3rnGnVXb2UARAKkNA1JoY52K/iYTpIFsTq7amKa5AHostHhqZ7uTWtwaIqPENUF7MBgmdXcF0SGGy4wRywZFNGZNOnaZ0mQO3PZOOFIKBm7+aRl91bTm45dmNnZ20IrrfVTF28ae5ZvY7F1txk2pleDRlXgMOtSL4ShHz+5EkGCrINu+9BXEeFnXubHpeaKmJ5/uxj8S/G4SqtS4tJCPu6asngeG03Wp9wwHbF+Sw4p5l
+X-HE-Tag: 1780415093-839794
+X-HE-Meta: U2FsdGVkX18yPHefaIStFHq0KOcCD7chP3UNXhVUNtdJMtf4b4NTS1D/X1WfsxoGoMYBC/ovteZpDFLKhtknooO9AejcTZAASHxuDEfRblhFACz5vLYSZWO3ZGVYnZUIY1TJBG2cPPdVSNyn8gXdWSa+QRIqMfUDk5yps0VyKvpatT6ZMNDMv9kkoQGIeO9A1vgVIE+SmTQ8w2R2s/uxg0+PMf0IirhEerCWnR7Eg4XW0QiCM3m4wo9BKcKdfoTsDY6H9gBKJjGQfKB4s7XpDbd9+vmtJIYT5HoBq2wg1vDHxkZDh0qmp74MmD8z35LzJe1MK4MTpHg269kna0DT7DiYwemxHcyfPaZ3OKTqbn95+csWLC6wHILz8c9Ljaa9jxhiEq0vMuMWcuAk2rVC1wtwC/F5IGLfTgAZJY0CiI8GVgIHSJSq954YAftIXspBIIYiEy1+mdMuakSokkCGD11a8/7dgZ1YItuQiM+KDiNX4g7Zy6C6N2hqQV0bs5zClg8gCVUqySK1jKek/da+tmS1t6JEac5lzbVf6OtG7E3c9SOkwFwNdxyyyFdu08WZm7s1h601T+tmMNNRK6G/9WuPTYsrRFDJLIS10+3lHLb0TwjNmTmL5Prnp569Nh8ApBNfOcmBgaUXT+ezhJzQU2ykwOcM9ANE2imthjJsuZ73jArOIs8YdMxjsd6dlMWo4e3jco2U0XZLqrhpbmRAxHTALkPgpmcCsGcTkLFLABDatD3AL/SyHfsC7K8bNe6ijiXfvO1AUTy3D1/iQnkcTVw5jxyejFhCGjh2zcpmBSn80p5oLO00A+qWRxi+Z8BwDwisSW8N1mNtQUN3dGFLu9EtpcNYJP/2iCDQNb6lA5E4J1Jh9CWtUtHCYgAy1VSLmAi7pPMucqEYTMclU5eJq+1D6575uUqHuDcjFJB1VGd6neSEiOGai5ggnscC/8GGTBqcLLR3lTFoKADmZuy
+ NaB+axYy
+ sBkxfi+pm4nsk9PegDepgcaxfUC8LXp9vNWMPsQ7DnHQjnQsp6mA2FNEL+g+Q6ugrarkfLArdEA7b7tHkHd1TBUAo+Y1vBiluWBH5L+UJBEAFYljVFCfOuyIMNcKaCazH3EESkpvtEHJjQeW3JAsRoEj1uuxrlr4oiCeH4njpR4Gq09A+HjiEUcoz3MFUMagGg/tvNGU43GZlMO2Tvehp46hFJGjTyN43nfAYM2O1sqU7Lw417TokxaxYNm5ZgBzdkXeUv9FktSu+ITdteF0rFjuaKLDRenal86odYd4NS6qSlSnzZvoh8vDUVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,30 +109,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 02 Jun 2026 18:10:39 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 41b83dd18c01..f1bbf3b9a321 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -771,10 +746,27 @@ defer_init(int nid, unsigned long pfn, unsigned long end_pfn)
->  
->  static void __meminit __init_deferred_page(unsigned long pfn, int nid)
->  {
-> +	pg_data_t *pgdat;
-> +	int zid;
-> +
->  	if (early_page_initialised(pfn, nid))
->  		return;
->  
-> -	__init_page_from_nid(pfn, nid);
-> +	pgdat = NODE_DATA(nid);
 
-Nit: we can initialize pgdat at declaration line, other than that
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On 2026/6/2 18:58, Nico Pache wrote:
+> On Sun, May 31, 2026 at 1:19 AM Lance Yang <lance.yang@linux.dev> wrote:
+>>
+>>
+>> On Fri, May 22, 2026 at 09:00:06AM -0600, Nico Pache wrote:
+>> [...]
+>>> @@ -1587,10 +1749,11 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+>>>        if (result == SCAN_SUCCEED) {
+>>>                /* collapse_huge_page expects the lock to be dropped before calling */
+>>>                mmap_read_unlock(mm);
+>>> -              result = collapse_huge_page(mm, start_addr, referenced,
+>>> -                                          unmapped, cc, HPAGE_PMD_ORDER);
+>>> -              /* collapse_huge_page will return with the mmap_lock released */
+>>> +              nr_collapsed = mthp_collapse(mm, vma, start_addr, referenced,
+>>> +                                           unmapped, cc, enabled_orders);
+>>> +              /* mmap_lock was released above, set lock_dropped */
+>>>                *lock_dropped = true;
+>>> +              result = nr_collapsed ? SCAN_SUCCEED : SCAN_FAIL;
+>>
+>> Hmm ... don't we lose the allocation-failure result here?
+>>
+>> Previously collapse_scan_pmd() propagated SCAN_ALLOC_HUGE_PAGE_FAIL from
+>> collapse_huge_page(), so khugepaged would call khugepaged_alloc_sleep()
+>> in khugepaged_do_scan().
+>>
+>> Now if allocation fails and nr_collapsed stays 0, we just return
+>> SCAN_FAIL. So we won't back off via khugepaged_alloc_sleep() anymore?
+> 
+> Ok I did the error propagation! I think I handled both of these cases
+> you brought up pretty easily.
 
--- 
-Sincerely yours,
-Mike.
+Thanks.
 
+> However I don't know what to do in the following case: We successfully
+> collapsed some portion of the PMD, but during that process, we also
+> hit an allocation failure. Is it best to back off entirely? or can we
+> treat some forward progress as a sign we can continue trying collapses
+> without sleeping.
+> 
+> Basically, do we prioritize SCAN_ALLOC_HUGE_PAGE_FAIL or the
+> successful collapses as the returned value?
+
+Thinking out loud, forward progress should win here, the allocation
+failure only matter if we made no progress at all?
+
+> This is what I currently have:
+> done:
+>      if (collapsed)
+>          return SCAN_SUCCEED;
+>      if (alloc_failed)
+>          return SCAN_ALLOC_HUGE_PAGE_FAIL;
+
+I'd go with this ordering :)
+
+Cheers, Lance
 
