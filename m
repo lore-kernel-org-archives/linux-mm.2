@@ -4,95 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 917AECD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:47:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3A41CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D24EA6B00A3; Tue,  2 Jun 2026 08:47:25 -0400 (EDT)
+	id 44B926B00AC; Tue,  2 Jun 2026 08:47:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD5666B00AC; Tue,  2 Jun 2026 08:47:25 -0400 (EDT)
+	id 423656B00B7; Tue,  2 Jun 2026 08:47:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEB1E6B00B7; Tue,  2 Jun 2026 08:47:25 -0400 (EDT)
+	id 3606A6B00B9; Tue,  2 Jun 2026 08:47:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B0AC66B00A3
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:47:25 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 635BB1A080E
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:47:25 +0000 (UTC)
-X-FDA: 84834948450.20.FE13BD6
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7346C1C0007
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:47:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UjEO2iIk;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AE196B00AC
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:47:39 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC9C41408C5
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:47:38 +0000 (UTC)
+X-FDA: 84834948996.08.B725D56
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 237C040017
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:47:37 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgqQihj6;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780404457;
+	b=iPstkaTot3r22rOHLZQb+6Vl04PUUinP2kWTGnpS1ivTHeanJotdsCge7KQ4AriYhTQgHV
+	wsE+Lqfh3ZDKU1AAXdxsCAZCmHR5TH8T+vo8ulwniJhXuSc3QKZ+kMsDIZnR3P+3AN0Ye6
+	ZtkIAjvp891ihD2fko958WF10kJ9Bmw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgqQihj6;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780404443;
+	s=arc-20220608; t=1780404457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SUbKnFIvNRovA5Pj5Ujg3tyo5/9ilOMKehCU9gPd0Ao=;
-	b=YePWs6CIkmHxJnMRyvFMWVmA40haefLineofJZyF2T9qO2cEoxLyJ5S7TJNBkBPsRb+3E4
-	4uBTF/2YwkOQXtuWaYY/aUp64yFNUoGPu0LqzzRvjSXVJvnFMzlJc/EqzavMeqNb2a5/vZ
-	Xz2VMEZNXZWGNERDsL/ml/wauqGkgc8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UjEO2iIk;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780404443;
-	b=7nKxZp3aMBxnH3zao+pCrD7/Bd1XxFBLJC7r87IFXt8I5Xv+AzDCV6SB7rOqQqjnF4gEAS
-	TuXAQxr6YDPJUFZz4ig4hRFiZHpQwUHyVzEFfv4lqrPoA2cTNohkiKoToEq+bviohdU7vA
-	JScjFI8T5DjRlg6XZg5zMzyb1knwWXs=
-Message-ID: <63797977-1c18-4885-8099-f5c21c80da39@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780404441;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SUbKnFIvNRovA5Pj5Ujg3tyo5/9ilOMKehCU9gPd0Ao=;
-	b=UjEO2iIkbjlGz3tnv2gwQ5b2SXnDpMqU+u3ltyp3GFfD9l2CEzudVlMAKbuSaMn8jDeYtI
-	RIfEL93NgSsHKz44zWlMvUyenMydW6VrPmwfEVzW7DcUX+RTxDWPjrPcJMv28IBRd344F6
-	nZXBO62tlcISx1VF65qSFfFQLsG5wrg=
-Date: Tue, 2 Jun 2026 20:47:05 +0800
+	bh=eo5FXpDkFvf14uRPPl1kyUutcnRuZUpz7x68R5KJSPw=;
+	b=26iXIWUVSI1K/0RdYbpAIn4OctXFP32TRLuvkTMjOb6AaP0TRCF0iV6/M4L3PaLyq0uAJD
+	2ZYkfLreer/8me1XAehGsCCDT1kRzcoXB1aQHeRLPK5EJ+F9KHAhEMFwQTsKinEHCnxYE7
+	fkuHUfTiva1b1VmJ7WCzP8If/U6WIP8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A0BAF60154;
+	Tue,  2 Jun 2026 12:47:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812A81F0089E;
+	Tue,  2 Jun 2026 12:47:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780404456;
+	bh=eo5FXpDkFvf14uRPPl1kyUutcnRuZUpz7x68R5KJSPw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MgqQihj6pj7h+FldOL4xE3K+YX7gfMJMC94m7JmsVDKATOtUgOhMsUIF9XCO4gWpX
+	 lPtI5hv/Tjhnq7enqjIdrLvrNZShTow72KXqnohxh1A3oUCWTrOSrwJcHdRyzuRoFm
+	 /Gx3qwF5nTnrAKSLTYyZ6PMmuJS2drAO15CM3Wu13VHvTSCDxcQm2iiQxfnI8vMcP4
+	 /gzYEcTuplhxMjrdHVGX7VZSi5p8snBsI47hOT4M60Z8Yh8rAL8Xb6PVB5mdokBmCo
+	 hiojmidCazEdBq7xTsD9JKk/44Rh6uqRzYRsKAgVyAMD7fSLYtxfqVUsVC4y4YL1Jh
+	 9AzmZrYS+zoCQ==
+Date: Tue, 2 Jun 2026 13:47:30 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Nico Pache <npache@redhat.com>, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
+	vbabka@suse.cz, willy@infradead.org
+Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
+ khugepaged: add mTHP) collapse support
+Message-ID: <ah7QuyqNwaZWjDpk@lucifer>
+References: <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
+ <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org>
+ <ahVX1iq_-95vd0PN@lucifer>
+ <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
+ <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
+ <ah2ndruO3RQGtePP@lucifer>
+ <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org>
+ <ah2uDhs3a0bFcRNG@lucifer>
+ <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
+ <b5b1a7bf-de6a-488a-a011-673c37bd24d1@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/1] mm/thp: clear deferred split shrinker bits when
- queues drain
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- hannes@cmpxchg.org
-Cc: ljs@kernel.org, shakeel.butt@linux.dev, mhocko@kernel.org,
- david@fromorbit.com, roman.gushchin@linux.dev, muchun.song@linux.dev,
- qi.zheng@linux.dev, yosry.ahmed@linux.dev, ziy@nvidia.com,
- liam@infradead.org, usama.arif@linux.dev, kas@kernel.org, vbabka@kernel.org,
- ryncsn@gmail.com, zaslonko@linux.ibm.com, gor@linux.ibm.com,
- wangkefeng.wang@huawei.com, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, dev.jain@arm.com, npache@redhat.com,
- ryan.roberts@arm.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260602043453.67597-1-lance.yang@linux.dev>
- <1dce1561-b42a-4322-a99f-89eba1e7c227@linux.dev>
- <716c7351-2641-4317-8675-e07a16a1efe2@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <716c7351-2641-4317-8675-e07a16a1efe2@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 7346C1C0007
+In-Reply-To: <b5b1a7bf-de6a-488a-a011-673c37bd24d1@kernel.org>
+X-Rspamd-Queue-Id: 237C040017
+X-Stat-Signature: fznoabms5qnkfukdgmg77eboo85sb6oi
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: k4zcaz4nfkidcxce47ue6c18hco5eh5n
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780404443-818234
-X-HE-Meta: U2FsdGVkX1/Eqp60N6ptoo83XOkdMxPzZ1xTvy+KlwUV4p7+1JM41IvpcisrWuvbj0vgm3qjxo7mNqEyZjWmkUv3CuslvSddOpJlawdFFuTbDl1R0+YuVIWmVwnHWNH1y0GDhsFR3J34R6Fie+AUA4IUCgHrtwSJz6/3W/MdkCe0fw0/jcomtOX5s1/DkWXbRF5kHZXOavguXB4vY3LGubVsESOGbpInTc18ykEwTzrmjdznf72OTtJFaMA153jz5J9ikVz5O+ieZjsEFJm+S8X2EnvHn73bR3GqFckFLxbcFQPmF2iCP+qH7ULwjr7PwcsxcX1YyGSgNTF5DlszHx5PWoQgusQZacq+79F+Pq9K4Y4J0LEaJO6K40ClFbS7G/b/bLa9k3v0lo9IZfVmLA9FghGLtlWfHpPh6ENXLw63vzWkXRBJnecHcvFfjHJIkMN2xruIO2An0Q2CqexHM74ftsZkp64OUYVSKegrxblT2AYbbZjdCVqi57R4qX8wCMnyPLPvN1NirVWAz+/8drYJQxtPFk23+Y/mjdXEW9wyehPw4f7hjcGqPb+OfVzxFXmU6DskEIsOg/0+VbVp2r8rXKJ6eKbRXHaIvnlI3TTnTQNfyt7Kyg4gj5YvtFl6F7624i6qV8iK0H6mPUTMaYPW6zsxpZR+dUXXgLHNTD6S01+R+VlRHIC0UAhffAKIZ9pXKSMe3lzKF70zMTFdmBXODbMK/jTW7Z8v2NIuDlhOCCu9ldru8+xqt68eSPchpV9ItwgXqu4ft5MCLGchMZP2TrOWT48b2Xci4/S2Gh/EFWm/HbRWEzr9XLuomwvs3RmcwNOuIqHPILHWEioATW92tCDgozY9caIxvc9K9hjOmDnJIyDUreCXs2G/hzhnwN7IJSalpJpn+4KSEWztKCoViI6OyivBN/y/pcfSl05WZo58KPtFTu68GRmPxSHs/eBlzigRhMzLnB9frt7
- bbKQEQyW
- Hp26tIh+SVipbf8JCoAl6I4oBO3cEcrsc/ixWqr2mPmxsBDXzPW9bsCE+VbX58QGPR3xHS3Olcf5GPvd0/Pn7dDd1TSAAEASmookki/pGFvu97DnYT6TAafVJquOi/g720DayBecoAiMzn+nHLnweb5pI5P/WgV2ZfXk6MyxOvTBzpI6pRD/mTvdomtgCta9PWi6ZwlOACoTKDtM7pTPenSD7VNBusUVcP5sY2UAkAm9Cy/I=
+X-HE-Tag: 1780404457-148466
+X-HE-Meta: U2FsdGVkX19Lc8sTG9ywwX1qvFubIQm+0ztSr7qB5G3Rpq19SNZzyW5YuV8pEP32+TWAYdIG2kmPOQarxwQY/ZNaZz0yMZrMHfwrqyz7oSYi3LuE6RG5R9hRrXwapIsYLQcdG3c9IwaA2NDuK5l713ZV63M9Vc1wul52Y5z37vQKuEIrdg62GJLkcFEgMPfA/UfCNrmC1ez3UdHHUCgXVs40/Paf84OrUGttDQFXGOy1BRLF/f/xCvOm9xQ39HCfafhVz6mlgsKxuYBgdMrz+0KWGEVVxT/HcCbQ0hII6z6o5bzPcFIjxF8rGtdIf5R6q9jklRlXzr67AOXtQTSVP304SsDo5SSwNbPaUFyrp8n0Iu76Y8OZqf9sZUzb18MGptu06+zvpJWP4mvt5458WENl+JevL6socuyHIWjMBISATQ1wCQlEG5XB/w+VFLkaRDHOzM1PhwISmReLF0mOaIRCyiBak+IzcDXqM6ls/5nW8Whhy9/DlCYapTzKy3QBY1vuol85lyn3p7BJVEiD7zXymMkzodfCoPyFIK3GDI1pBH0CVF/cFW1s0RFahiIPGOkRsQeKmnulp7Fqyx8JRqkg2f+RQLAweUfc0fRBHNlDphpCP+nzB+YwzAqCbpR80Kxs00M/dVKzV3hwLWX19sfZg/mk7oN5t38sTnRqECtVAROo4cZZ8y1vVLR6yHBbh0x2eENptbC2gx2CYhApnupYxrtAaz+Tw5fppNDzjW6w0yTdpxgDmuRIOzuJNpmL55qvJfeL49w7Qb7KHlCUnkAtn6rqP0RXuyLBtnu3d5MboXvzoPcFbtw/qf1OqwLmLazocvcHrgckYqRKAL8Sd0G3FV0MivYL45N/ZgZIcegTg0zJ5Muef4+sfg+ydtdElKDLzeuLxVm/AaPzplF9srCnz88EzvqUlvZ5aoWs0y54DnokVSL3aoh7gnQU/K5Cl6zKMxDhyXVfXoST2tM
+ 8gJNdZRA
+ JHs+NLKUUomQfpdO/UnBQ2POce077X/k8EvfYC1HLkLqKN50iCV9BXAVxiPWT3AEfuaIdW+AUKnaHplUFBgTL4Py80Y5wDIFw5subpi70PFkUGhVNq7Ho3qp8RkyVNgwBQo18GzhITB1T2qnZEIrVxBfYk8G0ZS1SMXjTUj3U37U8Oj296QBgqG4QtJJM72RpkrGNQTtwlEFVsIFtJfJlvxaYHW8EAV7bRJGh1mFOhyKc9rKVDxJVUmGMjd8K0r/TuafC4jQjrvBt5ZRUK1AacV6UnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,68 +104,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jun 02, 2026 at 01:31:35PM +0200, David Hildenbrand (Arm) wrote:
+> >> learn from obviously) against how mm works in practice.
+> >>
+> >> High review load with many overlapping changes might favour a different approach
+> >> to a subsystem that looks different from that.
+> > Yeah, but as we said, we discussed, it's all rather complicated and we should
+> > move incrementally.
+> >
+>
+> Starting to read Documentation/process/maintainer-tip.rst, it's very interesting:
+>
+> “The tip tree is both a direct development tree and and an aggregation tree for
+> several sub-maintainer trees.”
+>
+> “In general, development against the head of the tip tree master branch is fine,
+> but for the subsystems which are maintained separately, have their own git tree
+> and are only aggregated into the tip tree, development should take place against
+> the relevant subsystem tree or branch.”
 
+Yeah so they have a separate tree model also, so that's an option to learn from
+as well!
 
-On 2026/6/2 20:11, David Hildenbrand (Arm) wrote:
-> On 6/2/26 06:38, Lance Yang wrote:
->> Sorry, I missed Johannes in Cc ...
->>
->> On 2026/6/2 12:34, Lance Yang wrote:
->>> From: Lance Yang <lance.yang@linux.dev>
->>>
->>> deferred_split_count() returns the raw list_lru count. When the per-memcg,
->>> per-node list is empty, that count is 0.
->>>
->>> That skips scanning, but it does not tell memcg reclaim that the shrinker
->>> is empty. shrink_slab_memcg() only clears the memcg shrinker bit when the
->>> count callback reports SHRINK_EMPTY.
-> 
-> What's the effect of that? Would we consider it a fix that we'd want to backport?
+>
+> “Bug fixes which target mainline should always be applicable against the
+> mainline kernel tree. Potential conflicts against changes which are already
+> queued in the tip tree are handled by the maintainers.”
+>
+>
+> So, yeah, let me reach out to understand what works, what doesn't work, and how
+> it works :)
 
-Just a stale memcg shrinker bit :) I'd treat this patch as a small
-cleanup.
+Yes 100% :)
 
-Once the queue is empty, count_objects() returns 0. That skips the scan,
-but shrink_slab_memcg() only clears the bit on SHRINK_EMPTY, not 0.
+>
+> --
+> Cheers,
+>
+> David
 
-So memcg reclaim can keep calling the shrinker even though there is
-nothing on that queue.
-
->>>
->>> Return SHRINK_EMPTY for an empty deferred split list, so the bit can be
->>> cleared once the queue has drained.
->>>
->>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>> ---
->>>    mm/huge_memory.c | 5 ++++-
->>>    1 file changed, 4 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index 72f6caf0fec6..62d598290c3b 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -4397,7 +4397,10 @@ void deferred_split_folio(struct folio *folio, bool
->>> partially_mapped)
->>>    static unsigned long deferred_split_count(struct shrinker *shrink,
->>>            struct shrink_control *sc)
->>>    {
->>> -    return list_lru_shrink_count(&deferred_split_lru, sc);
->>> +    unsigned long count;
->>> +
->>> +    count = list_lru_shrink_count(&deferred_split_lru, sc);
->>> +    return count ?: SHRINK_EMPTY;
->>>    }
->>>      static bool thp_underused(struct folio *folio)
->>
-> 
-> This is against Johannes' work, right?
-
-Yep, I noticed it there, but the behavior is older.
-
-> If this is a fix, likely it would be fixing 87eaceb3faa5 ("mm: thp: make
-> deferred split shrinker memcg aware"), right?
-
-No missed reclaim, just some extra reclaim work :)
-
-Cheers, Lance
+Cheers, Lorenzo
 
