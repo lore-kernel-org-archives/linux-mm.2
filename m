@@ -4,89 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F5D2CD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 16:00:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15059CD6E60
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 16:08:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AB956B0005; Tue,  2 Jun 2026 12:00:51 -0400 (EDT)
+	id 37E006B0092; Tue,  2 Jun 2026 12:08:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4823C6B008C; Tue,  2 Jun 2026 12:00:51 -0400 (EDT)
+	id 355396B0093; Tue,  2 Jun 2026 12:08:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BF5E6B0092; Tue,  2 Jun 2026 12:00:51 -0400 (EDT)
+	id 26B6F6B0095; Tue,  2 Jun 2026 12:08:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AA526B0005
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:00:51 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA449C309A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 16:00:50 +0000 (UTC)
-X-FDA: 84835435860.30.6392550
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B04BAC002A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 16:00:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=H2v1eMrR;
-	spf=none (imf10.hostedemail.com: domain of BATV+be7fc048bc4f2c536b43+8318+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+be7fc048bc4f2c536b43+8318+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 169946B0092
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:08:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B13DD93479
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 16:08:08 +0000 (UTC)
+X-FDA: 84835454256.05.6A370CD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DE2F8180015
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 16:08:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I9OEVz4r;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780416048;
+	s=arc-20220608; t=1780416487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=VvElFF068Ve7ZBeg/s+GYXAA/2OootEbAfLXW7NSBv4=;
-	b=RO8LhLrGNnV6lEYwu7zHaiaGM/vH/8FNd4qr6DdOLq4+0f749wW/EPPfZ/KEyNilYxVkkg
-	tu6DGd4nMbZZ7jxOgp4XtYQiCOXS0H4wLAfyPIdfvWkXA0LDthnt80eTH+u0LxoWDQzQpe
-	xG+kEDV5qv02gNlBZWX8p/Zb6e6eTog=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EMzfNq+ehdXO/Jw3X2hRGcEOYo6KK0VIVTw3/YK9NuA=;
+	b=i59rbvZvLGIaEmnv5SfQ4RvmnMhQ3sHudYdoyRRCo8+TD2uvmxW5PjGOYW+FK0iUrOJErJ
+	E/yI7dQmEs4SQ8baCpiBJHX8BSeVXV0B33nmkbT4Ir5CIA6me9V5Ca9Pk2prpvLoVu4VUV
+	L87mokJjPJyM3ksKbgf+3WZumdnY21I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780416048;
-	b=W6VKxRTQUGhlQJNOrbrY/N8qiJj3t7aifoJwSTqala9p11IBcoivDCw/B70xfHmIS+33Mb
-	NjkBRwBQC2YCuV00yCG7ubJaz6qN/EE/OoXFAgs/nVe/kvGSz5XgUVZ/ObShSQintBoe4J
-	sYFEH4WikryfVzGIOgMdmE/Vx6R36s0=
+	t=1780416487;
+	b=g4kQb46sOC/nJmjOJmyLEvFGMwGZtDjr6IitnQXS/IlpE80a7Efzz9vPvjfYxGXr0av+bw
+	dZa1RU/e2ZD5h2aR5m4jch2XWLs4zB5Af9yC9i+4Hwb/8WpQw5s5PONPa0KbaehxUNuLpz
+	X5JytXpijQ5Hj2GI82kga8vSNH4TIoQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=H2v1eMrR;
-	spf=none (imf10.hostedemail.com: domain of BATV+be7fc048bc4f2c536b43+8318+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+be7fc048bc4f2c536b43+8318+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=VvElFF068Ve7ZBeg/s+GYXAA/2OootEbAfLXW7NSBv4=; b=H2v1eMrR4o3a9ugvd7BrH/6Tw0
-	r3SU+To9h8oh+5o8YQTgBa/xfTMb+naqzquPhwWqqQ+yUHWCutZdKD13IoLAdVeGSGV2Br+BHSkh7
-	DaeIBed7+2oackQBAGW3aPABvIZ77cQ0rXiuqxYhWI7Nvkf9IyBrjGjmJ28klJjCLHKXsXm3NjwgM
-	h8D9klFrEkqboBdyvYkFn1tyZD1vfKpAMcl9V31O7oUm97BMDPfSZW5F6pSxFp5m8hZq6QF788sT5
-	54eqjYCTHGrzg6f8Qf2NVq4269GhUqXjRYswDyxKRavAP9GDp3AqesMArvIXm//iJWRMfs+67TuEV
-	dhB8xWOw==;
-Received: from 2a02-8389-2341-5b80-decc-1a96-daaa-a2cc.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:decc:1a96:daaa:a2cc] helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wURXn-0000000DO2R-1baf;
-	Tue, 02 Jun 2026 16:00:43 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: vbabka@kernel.org,
-	harry@kernel.org,
-	akpm@linux-foundation.org
-Cc: hao.li@linux.dev,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	linux-block@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm: simplify the mempool_alloc_bulk API
-Date: Tue,  2 Jun 2026 18:00:38 +0200
-Message-ID: <20260602160038.3976341-1-hch@lst.de>
-X-Mailer: git-send-email 2.53.0
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I9OEVz4r;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8BA8243208;
+	Tue,  2 Jun 2026 16:08:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56CE1F00893;
+	Tue,  2 Jun 2026 16:07:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780416485;
+	bh=EMzfNq+ehdXO/Jw3X2hRGcEOYo6KK0VIVTw3/YK9NuA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=I9OEVz4rylaFp3pNevk2zHSWkGG2xI2nyzD4N+VrsqzLiK1w7rxT6CEqu8obDWZrV
+	 ir563Os2LvTO+r32bkhjQy5lRULt4Un5DdFFZymuxhsfWbK+SpHm91nfvdIPDUjoDX
+	 LrVn3eYMXPMVQ4ezEpXf3grANdI58bDPZA6kzFBX2aiEPELH2AXKLEHljNlWdgTyVo
+	 0SWGPlHjjXiahVuTpvmWHoMprGDGx/DDHMqOmHQ/1AZeCrbT/i8XS+KHZYkAgaAEte
+	 R1bjzdWSobiftdLUC67botuwZLso+80sTGQkFhfiv1NgGalqM+THxadGthdkCcLHn6
+	 +Pvw+93fVg6gQ==
+Message-ID: <0867dac0-bc48-4aa9-891f-2066a3eff989@kernel.org>
+Date: Wed, 3 Jun 2026 01:07:39 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: B04BAC002A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+To: tao <tao.wangtao@honor.com>, catalin.marinas@arm.com, will@kernel.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, akpm@linux-foundation.org,
+ david@kernel.org, willy@infradead.org, sj@kernel.org, kees@kernel.org,
+ luizcap@redhat.com, zhangjiao2@cmss.chinamobile.com, kas@kernel.org,
+ ljs@kernel.org
+Cc: hpa@zytor.com, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, jack@suse.cz, riel@surriel.com,
+ jannh@google.com, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+ nao.horiguchi@gmail.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, pfalcato@suse.de,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, damon@lists.linux.dev,
+ shakeel.butt@linux.dev, ryncsn@gmail.com, 21cnbao@gmail.com,
+ jparsana@google.com, dvander@google.com, zhangji1@honor.com,
+ wangzicheng@honor.com
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260527110147.17815-1-tao.wangtao@honor.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------ey4l15FF9oEWH3xFySCAaCAx"
 X-Rspam-User: 
-X-Stat-Signature: qs3kf5fciwzxkq5w9b57ijh9644xqxcg
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780416047-982362
-X-HE-Meta: U2FsdGVkX1/6GJdSfBl1X+l3gLzTMufSUATOmTXd5LK/SIt4JdZ8E7utVm8Xt19XajRR6hrI5K1prEqCnPKC05Ek6qebdJYU7W+MSV8w0JiPwfoAjCMwvDN918W/R/eQv1FQD6tHficMFD27Qm6m8ETTU3i/62J6bVyynhv/2DRzFDV8VOkX9GtAXCHU/GB/lgKY+eYzFzc1Uj/KLIoTkmBxoi4YZ67KKSb6idK9yIcDh6uvniCTWA6aOIzyHR/waTnmMybU3Fn63f8UqSIwm7NCP8lGwbKlQstPDxXwyt0+q9B9lYdwTBDEWaTtIAK5zLf97DxXZ8Z0Nh3WDF7xZFfH1H3XWNMC1KTb6OV0nLdDuMrx82p9fEp0ZnvW23cbj1DSZHr9CKDPVSMybGozEpYx1h+tVs41od1Hjn0e33IKIUH86qfK2VhAuRg0ijbFlEau8mjuHSuZZEGSsHjZxG8Ni2kHtacztNnaMEkQ+LHRP6dHgESXcqujl5WNaiUvSz6pX0OhbQKVfWlNStjuqXA7nuGArbco9eEc5jqYVlLMZu07dzmqKXWh1S2mBBFpYT9ym+TrDvWyIYko25+rAti1DQUNjpVXGCBPtemqKIKhR/RT+697Kj0bMTPjUA3rHDBV5MeewaPcAUkU2LJcVbY+SgeKvlSXbAx+7P6bcjjGtYJ5xy43KfUUCT3vZvHnQBjvWbG65Uv+bLhYw1ClQRkTsm2PIGN5vFws52KwjY74Mayl0x/1J9xur4yy5+xUgCbXmUQ70mykNcVnhosrD3zKfqxGB3m2wjcbi9kbxLQvOulEyNbqOs6yrAvxEbGRpB4pDuGMlLvvoEnizQ/oQa8CVspD9P21ppTbXDl0YmsTDU11F6Z2WaD0mWzvg5zz/Do3ttvSeRtof7855MTJ9a0vVRohVT/UqqmQcZeExR1hX3ikSMs7h8Ggtq9WBL6huIg74Brf5bAOETZGlMl
- Zeh9B+yt
- tQ6qGPnewD0PCKZuBjvyG2xXHnAu9pTvgrwwWrrxsKvm1elAKypryo7N46MAU7T9ZNrcdQopnMRM0UASFCfSt0hGP5YprEgTuav8XhcQA29RwFd4SEGpNCSWT7jBUQjGcUw3Gh65PYbXv9d6HJ+E29ieJV2Rp8LwyXhvbv4xcscpxuJ+t9InA9ErTOk0MQd9r1qmjlBgUmw8wa6pN7zBHOt6d1i0CShh3JIHBWWpSgMNuWyY9x8eKZk5dS/ohQRxG+NGlIQVVBzShwyHP/kdRRuKZR3MYXgqrmteCNHTqT9rnjAM8+cfp5X01g89kK1iMFp/di1CEY/M4WsK2iEFlFsi02u79PjUH+P7bISXZHvs1dRJ5lQ+u/+scNBT4+rt1+/owtj4YBZsjdb+UVkL+s4/X8cCrZdND+KpT0jjFRLjXhh2cIeZMpSr8d148BQyT+GbUuOQjPTAChM+DQZYoV6kmUymnsw9taM86cX3yL2r7uL3cEIel2iLRRFmG4efJ0iJWNR6/Prt3QbhMFrZvTe1SmqAFfI4RZL/qr/T64bQAJikhitgw7S9CzugB1r9kboeEl95yNm9SMlTBZD0ZJT3TrpqOYB3wXH/eaxPPT8i2nutbJeYDYUEfSHGmwf6HYSj4
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DE2F8180015
+X-Stat-Signature: ci3szmib95oxdf6djtqb7bbutmmpfdkt
+X-HE-Tag: 1780416486-615027
+X-HE-Meta: U2FsdGVkX18ZN3GRMvFaCJenl2xdAqsk2UI7VdgdgD1rwkT6Ahrh10LlF1y8WnefJ59Y3SAIVO8Ffd6+nC0pre1IgV9JcUEPRAUxJzox1hmb4Kn/jmeR/ld01ol2+7bhQIHnG+Hj10yVsLZ3pzK67ODiNVyiW8epk+kJWBhCqo8aojXgZUJ+n9V9Ikcox+6X/PxY/kZQ0EC+OvyUOxlZ1h4Nfq4yGgq5sSJ/MbDsqWAdzvgSDbOaxpQAqz78vNlbnalfqqE8lOQtvgyxFZtoASgaS4OPMZzs7gIDr4ItfpulIysuba9Df2vQnzrKxaSZCBHl/mG+pExfYZqnYKHZbeQibsICgGThYItN6VTQhovNwHX7OZaxXr/VDULlR+1rcl3W8KxkEbcp5L5GFIJQxHRJxa5eb4bqUiH1y0Nz9gNW/eTDT4pSZzinexzRojrk+NE04SXmMZ9WQpHZQ5EljNu4PjJ7b/U9X0knxE7Opyb8NIi9Jj9K4cRvx2/hqLm7MJ5K8sXRNyvGG6B2QTUha4R0yGsJVVlJYzwnABuwp+VISfh8aX7mkpGf+Wz8Nn7SjSYUoHaLAbEjM0kpNUbpfGyw6PWkxJbgqRTgNwo8oxI5znsibS7SaLMUe/jxUTSdFLRTYgpg60LtukSIHEE0pRN9GcD+arHTfNMoNV7M6P9SWB/IqUgXdo8GhRQ6C76vPPE4Bj/tJqAoKyK1QflzsfwWDjRZE0nNEiTi9D7Ttk/c11hXZOIvtDtUNW+db+Qh9gU/iYtBYoNsb5Zj/c2si/iVuXwB2L/eqUl9OK8ab3jvOHapFcmK9nrgEMh1zl7MVe0CejpBR0yKjP/K/+uP9DGps7SGN7No+vZ9jmAUkgK5op/6mv4Uv8+KWhr9Ed6nty8tRaa9hn9vAIrY2lxNjzT4cKPGKYA4XLsxoxEpDqYKl20quBB2XBI4wd69x2TKHpi//fUx0qtPkJotmIv
+ X1fyjnuQ
+ AATppGUm37fvmtXkGGc9wg2YVXas/omiAYSWE8w5Omh1gHKs+eLrr6360RtsPgz9GVmMNjQE3kSLfVYw95HBgiGkLrrN+uHNsRn9ur6vpiD+yJuA0RhDlWTgalA8J3E97v2Al9WM88rSQfQdmgGUzMsD8W2IlHOk1hS4+/jcO3Lp0MrOqTEoWj4PN8VN3XcCyv3N6/4qAImO0YiT3r9ZRsncz0rO54axUeVe/MFRpP5QCCFps7uH+TE0AUmpUZsFPKQEh6PpvVJwBnfN7zoAkBIf9ChdfybGYG0SwRDumE5xF5d7bcFpkfbcLeNzonD/cI0dZjfgZY/4qgpP1W60blbwNpBKU2yquGVC7vufnLuD0+/ttcQWyKVKpwwemXrv7vf9WC8E2S7U08gXPXoweLo+Ef/TLnoZgzZYEiqUTDZf0KiBJkzKo72nk7GW3AwOFLNLtW/lzfi8hm5F75kvxYmiKYhQfAGJTN6o/5zL8F+dpCrfKhRXyxENfGqNx3iDwMjy2KZlgWtkIX6rqmAS7IYQ9uHTHOUmmBes6QiHy3hlXNgp7wgVEOxCmtArPmW0p23/8SYPlawyi7OkcNWKxNs10UOZ/dh2LT6QU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,129 +111,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The mempool_alloc_bulk was modelled after the alloc_pages_bulk API,
-including some misunderstanding of it.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------ey4l15FF9oEWH3xFySCAaCAx
+Content-Type: multipart/mixed; boundary="------------YusAIRMqlR7LLXeBVYeRGebJ";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: tao <tao.wangtao@honor.com>, catalin.marinas@arm.com, will@kernel.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, akpm@linux-foundation.org,
+ david@kernel.org, willy@infradead.org, sj@kernel.org, kees@kernel.org,
+ luizcap@redhat.com, zhangjiao2@cmss.chinamobile.com, kas@kernel.org,
+ ljs@kernel.org
+Cc: hpa@zytor.com, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, jack@suse.cz, riel@surriel.com,
+ jannh@google.com, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+ nao.horiguchi@gmail.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, pfalcato@suse.de,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, damon@lists.linux.dev,
+ shakeel.butt@linux.dev, ryncsn@gmail.com, 21cnbao@gmail.com,
+ jparsana@google.com, dvander@google.com, zhangji1@honor.com,
+ wangzicheng@honor.com
+Message-ID: <0867dac0-bc48-4aa9-891f-2066a3eff989@kernel.org>
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
+In-Reply-To: <20260527110147.17815-1-tao.wangtao@honor.com>
 
-Remove checking for NULL slots in the array, as alloc_pages_bulk and
-kmem_cache_alloc_bulk always fill the array from the beginning and thus
-we know the offset of the first failing allocation.  This removes support
-for working well with alloc_pages_bulk used to refill page arrays that
-might have an entry removed from in the middle, but that is only used by
-sunrpc and hopefully on it's way out.
+--------------YusAIRMqlR7LLXeBVYeRGebJ
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Also remove the allocated parameter as it is redundant because the caller
-can simply specific and offset into the entries array.
+On 5/27/26 8:01 PM, tao wrote:
+> Design overview
+> ---------------
+>=20
+> ANON_VMA_LAZY defers anon_vma allocation until it is actually needed
+> (for example during fork). VMAs that never participate in sharing can
+> avoid creating anon_vma structures entirely.
+>=20
+> Before an anon_vma exists, rmap operations rely directly on VMA
+> information, so no anon_vma locking is required. An anon_vma is created=
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- block/blk-crypto-fallback.c |  9 +++++----
- include/linux/mempool.h     |  2 +-
- mm/mempool.c                | 27 ++++++++++-----------------
- 3 files changed, 16 insertions(+), 22 deletions(-)
+> and linked only when sharing semantics are required.
 
-diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
-index 61f595410832..ab6924fba280 100644
---- a/block/blk-crypto-fallback.c
-+++ b/block/blk-crypto-fallback.c
-@@ -199,8 +199,8 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
- 	pages += nr_segs * (PAGE_PTRS_PER_BVEC - 1);
- 
- 	/*
--	 * Try a bulk allocation first.  This could leave random pages in the
--	 * array unallocated, but we'll fix that up later in mempool_alloc_bulk.
-+	 * Try a bulk allocation first.  This might not fill all allocated
-+	 * pages, but we'll fix that up later in mempool_alloc_bulk.
- 	 *
- 	 * Note: alloc_pages_bulk needs the array to be zeroed, as it assumes
- 	 * any non-zero slot already contains a valid allocation.
-@@ -208,8 +208,9 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
- 	memset(pages, 0, sizeof(struct page *) * nr_segs);
- 	nr_allocated = alloc_pages_bulk(GFP_KERNEL, nr_segs, pages);
- 	if (nr_allocated < nr_segs)
--		mempool_alloc_bulk(blk_crypto_bounce_page_pool, (void **)pages,
--				nr_segs, nr_allocated);
-+		mempool_alloc_bulk(blk_crypto_bounce_page_pool,
-+				(void **)pages + nr_allocated,
-+				nr_segs - nr_allocated);
- 	memalloc_noio_restore(memflags);
- 	*pages_ret = pages;
- 	return bio;
-diff --git a/include/linux/mempool.h b/include/linux/mempool.h
-index e8e440e04a06..a0fa6d43e0dc 100644
---- a/include/linux/mempool.h
-+++ b/include/linux/mempool.h
-@@ -66,7 +66,7 @@ void *mempool_alloc_noprof(struct mempool *pool, gfp_t gfp_mask) __malloc;
- #define mempool_alloc(...)						\
- 	alloc_hooks(mempool_alloc_noprof(__VA_ARGS__))
- int mempool_alloc_bulk_noprof(struct mempool *pool, void **elem,
--		unsigned int count, unsigned int allocated);
-+		unsigned int count);
- #define mempool_alloc_bulk(...)						\
- 	alloc_hooks(mempool_alloc_bulk_noprof(__VA_ARGS__))
- 
-diff --git a/mm/mempool.c b/mm/mempool.c
-index db23e0eef652..473a029fa31f 100644
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -419,12 +419,8 @@ static unsigned int mempool_alloc_from_pool(struct mempool *pool, void **elems,
- 	spin_lock_irqsave(&pool->lock, flags);
- 	if (unlikely(pool->curr_nr < count - allocated))
- 		goto fail;
--	for (i = 0; i < count; i++) {
--		if (!elems[i]) {
--			elems[i] = remove_element(pool);
--			allocated++;
--		}
--	}
-+	while (allocated < count)
-+		elems[allocated++] = remove_element(pool);
- 	spin_unlock_irqrestore(&pool->lock, flags);
- 
- 	/* Paired with rmb in mempool_free(), read comment there. */
-@@ -479,22 +475,21 @@ static inline gfp_t mempool_adjust_gfp(gfp_t *gfp_mask)
-  * @pool:	pointer to the memory pool
-  * @elems:	partially or fully populated elements array
-  * @count:	number of entries in @elem that need to be allocated
-- * @allocated:	number of entries in @elem already allocated
-  *
-- * Allocate elements for each slot in @elem that is non-%NULL. This is done by
-- * first calling into the alloc_fn supplied at pool initialization time, and
-- * dipping into the reserved pool when alloc_fn fails to allocate an element.
-+ * Allocate @count elements into @elems.  This is done by first calling into the
-+ * alloc_fn supplied at pool initialization time, and dipping into the reserved
-+ * pool when alloc_fn fails to allocate an element.
-  *
-  * On return all @count elements in @elems will be populated.
-  *
-  * Return: Always 0.  If it wasn't for %$#^$ alloc tags, it would return void.
-  */
- int mempool_alloc_bulk_noprof(struct mempool *pool, void **elems,
--		unsigned int count, unsigned int allocated)
-+		unsigned int count)
- {
- 	gfp_t gfp_mask = GFP_KERNEL;
- 	gfp_t gfp_temp = mempool_adjust_gfp(&gfp_mask);
--	unsigned int i = 0;
-+	unsigned int allocated = 0;
- 
- 	VM_WARN_ON_ONCE(count > pool->min_nr);
- 	might_alloc(gfp_mask);
-@@ -514,11 +509,9 @@ int mempool_alloc_bulk_noprof(struct mempool *pool, void **elems,
- 	 * Try to allocate the elements using the allocation callback first as
- 	 * that might succeed even when the caller's bulk allocation did not.
- 	 */
--	for (i = 0; i < count; i++) {
--		if (elems[i])
--			continue;
--		elems[i] = pool->alloc(gfp_temp, pool->pool_data);
--		if (unlikely(!elems[i]))
-+	while (allocated < count) {
-+		elems[allocated] = pool->alloc(gfp_temp, pool->pool_data);
-+		if (unlikely(!elems[allocated]))
- 			goto use_pool;
- 		allocated++;
- 	}
--- 
-2.53.0
+It is unfortunate that the design overview doesn't cover correctness
+aspect at all. VMAs are subject to change (even before being shared with
+other processes), and rmap needs something that doesn't go away across
+VMA merging, split, etc.
 
+I'm not sure how the idea is supposed work correctly.
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+
+--------------YusAIRMqlR7LLXeBVYeRGebJ--
+
+--------------ey4l15FF9oEWH3xFySCAaCAx
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCah7/ywAKCRCGXBN6rc5S
+1otsAP9nwP515uUxVeg/W2YVm5teA1//l+vahNQqqxIcs095VAD+Jy2ls4/NwtfN
+KAQR7h3eWnaTbpGNQamLViiFJG7giQ8=
+=rhvK
+-----END PGP SIGNATURE-----
+
+--------------ey4l15FF9oEWH3xFySCAaCAx--
 
