@@ -4,111 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33934CD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:07:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C816CD6E60
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:11:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 548FD6B03BE; Tue,  2 Jun 2026 08:07:44 -0400 (EDT)
+	id E28136B03BE; Tue,  2 Jun 2026 08:11:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F9EE6B03C0; Tue,  2 Jun 2026 08:07:44 -0400 (EDT)
+	id DD8A66B03C0; Tue,  2 Jun 2026 08:11:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40FC66B03C9; Tue,  2 Jun 2026 08:07:44 -0400 (EDT)
+	id CEF006B03C2; Tue,  2 Jun 2026 08:11:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 30F0D6B03BE
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:07:44 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C52E5C2C3A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:07:43 +0000 (UTC)
-X-FDA: 84834848406.23.20CE7A3
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BFCEEA0013
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:07:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=Zlt3oNaR;
-	spf=pass (imf15.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780402062;
-	b=4fAp4tz+O6/8UBg+oGcEGI15Z8ORE1DU+niBBs7QJP1n0H4ainH/+IhXQxIlGhHtx5onIV
-	DcorEOWfSZCfAKiLH6E8Cz+5vIebIu+b65Wa3x3mQusIxik3PjMGcnpOZgKzzLC5hpl7FL
-	dcE3FbpQDgc4+L1UO5Sk1dKMoshkVSs=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=Zlt3oNaR;
-	spf=pass (imf15.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780402062;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BFD7E6B03BE
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:11:26 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CBC2120932
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:11:26 +0000 (UTC)
+X-FDA: 84834857772.08.1AF4FC5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9923340009
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:11:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEIm92HT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780402284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vk7eeniepcURlDwWgLQyxmjRbTq5rFiyu0fmscCWkm4=;
-	b=7tYQv0IUZYlJYwEd0oSHH4iu4TAlCKBB0XPYmv66fEFo54T3oDGEZB3VDWLiYuyvpKZbcL
-	cRCe4gquqfejzT6Ucs+G7jQ2X65WSHxDv/RmnXHkUrBmQxyZC9ThHhdy8Pu3mGTHE7erms
-	sGoMxWhPrfR1h59rqfBaUJ8K4DENLRA=
-ARC-Seal: i=1; a=rsa-sha256; t=1780402044; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Ax36rWt1feL9QcFuFow0giDSRLuo68Ed+YUirk9L9RDYy5YcpVDvlnz+YDM5f92MgRMhVhOZQkyjDM0qb5fYftyvNVrXDy9dsNcd1+FHcDQOlBHVDmDO4OESlg4SXVguCtxbwSftXL5Ac06bmTfEN4u4M41hclFenHdAukEWlbM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1780402044; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Vk7eeniepcURlDwWgLQyxmjRbTq5rFiyu0fmscCWkm4=; 
-	b=hZcMijGfu7IeE4PygN1oZx6i45maA3Xjumto6BEFB8C9KC9Z0lClj24hK8CCx9dLqvYDZBCo6nc7+Dn1eRzMXA5yP7NylmEIJe61ow9kicins43ih4aBFbnp/fH5uoQK/8TgKgwwCij+W4H+Ip6ptlZ+PqR+GboIvnh1b2YoTik=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1780402044;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=Vk7eeniepcURlDwWgLQyxmjRbTq5rFiyu0fmscCWkm4=;
-	b=Zlt3oNaRQWUMWb62kC/65uEnsBoYbSOLSdu5qIGlqqsOfY0rg6uaPABoEEcjQH2L
-	MWZPJhxzl72HDznRw3AT+bR9LlTFss5C5Kz76bRbZcRLMZ5rwmRuJ7d2zZX5bmT3UDU
-	yQ42a4N+U3udh0jbwnmUpHnDrihBmpCWTDZ8yaBE=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1780402040732884.3207521738933; Tue, 2 Jun 2026 05:07:20 -0700 (PDT)
-Date: Tue, 02 Jun 2026 20:07:20 +0800
-From: Li Chen <me@linux.beauty>
-To: "Andy Lutomirski" <luto@kernel.org>
-Cc: "Christian Brauner" <brauner@kernel.org>, "Kees Cook" <kees@kernel.org>,
-	"Alexander Viro" <viro@zeniv.linux.org.uk>,
-	"linux-fsdevel" <linux-fsdevel@vger.kernel.org>,
-	"linux-api" <linux-api@vger.kernel.org>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>,
-	"linux-mm" <linux-mm@kvack.org>,
-	"linux-arch" <linux-arch@vger.kernel.org>,
-	"linux-doc" <linux-doc@vger.kernel.org>,
-	"linux-kselftest" <linux-kselftest@vger.kernel.org>,
-	"x86" <x86@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>,
-	"Thomas Gleixner" <tglx@kernel.org>,
-	"Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
-	"Dave Hansen" <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, "Jan Kara" <jack@suse.cz>,
-	"Jonathan Corbet" <corbet@lwn.net>,
-	"Shuah Khan" <skhan@linuxfoundation.org>
-Message-ID: <19e883b2f84.6134d346323880.1325813164715871999@linux.beauty>
-In-Reply-To: <CALCETrXqWcqn_79sMKnkyKOSAjg4AmcSHsuyH83oW8zJFoV6Dw@mail.gmail.com>
-References: <20260528095235.2491226-1-me@linux.beauty> <CALCETrXqWcqn_79sMKnkyKOSAjg4AmcSHsuyH83oW8zJFoV6Dw@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated
- executable startup
+	bh=DQxf22WiuMhWZeadAm3Nzhuu9AKEU1pYXtTdOyKS3Iw=;
+	b=AGZ9l2zCIAQhVFfspDiZ7n5Lf0jkPejvPjodRHLGXxoQLzd7pEX2T+xlHYp2sQsuhm1Tzk
+	bC2Aiba1qwSKN5Tx3WkPPo4ixw0uTwFCv5NOI+6eidbn0dYhbWFb4xVP3yg/LXxqEcLNda
+	Kjmgx63BJlBTBO8icjPZ1+uyFTkkUds=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEIm92HT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780402284;
+	b=WmxEdHmcVwpi74SrmlrtRMKPeWmsjGOkZKoDAa5cnokh8XL511XofRDT/tT5R2xNey+eJJ
+	IaAawYcqsRwgKomLDwEv9tzTMEwFCVhTFvKvjuujs/7k7rOBs+SSaLyNCVTjnLSwvAQGYd
+	EWtZTlOkI2DvAS4klppLMdqpNv+o4pk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D0C4B6014C;
+	Tue,  2 Jun 2026 12:11:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3823A1F00893;
+	Tue,  2 Jun 2026 12:11:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780402283;
+	bh=DQxf22WiuMhWZeadAm3Nzhuu9AKEU1pYXtTdOyKS3Iw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QEIm92HTankRnWAoOl3s0CVEUmiBcSwE+/rA1U8WIrhMSiJa7A9uYtSOOyQAxllAH
+	 23/lI509xvayAf1RjWg9a9ANlH/YK3W07wl/JbQSHydjl4VbQ/HtPks+hfQrHcil/c
+	 l9vbYojjqtvD52h48V3D10AuKdx+O0PJx8plH3XSkRUxxPQ8B0q0Ut4H49rBKcfE5U
+	 GMvMyMDsSBvfTdglAESpRIp0W8hwci1y99wuEWIBbVLOm8prwITIDgmnw9sVxkuW3n
+	 ilrWuLXZMOWI6GyVaBEai63svLfEXVbSWeGMd6CX5R+Uvy1cCQuSoRU9yE0Eq5x7zR
+	 k35q+gYWDsBGQ==
+Message-ID: <716c7351-2641-4317-8675-e07a16a1efe2@kernel.org>
+Date: Tue, 2 Jun 2026 14:11:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
-X-Rspamd-Queue-Id: BFCEEA0013
-X-Stat-Signature: ebc64wmefkwzzghuzsgiyr3zx8h6sz7t
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm/thp: clear deferred split shrinker bits when
+ queues drain
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
+ hannes@cmpxchg.org
+Cc: ljs@kernel.org, shakeel.butt@linux.dev, mhocko@kernel.org,
+ david@fromorbit.com, roman.gushchin@linux.dev, muchun.song@linux.dev,
+ qi.zheng@linux.dev, yosry.ahmed@linux.dev, ziy@nvidia.com,
+ liam@infradead.org, usama.arif@linux.dev, kas@kernel.org, vbabka@kernel.org,
+ ryncsn@gmail.com, zaslonko@linux.ibm.com, gor@linux.ibm.com,
+ wangkefeng.wang@huawei.com, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, dev.jain@arm.com, npache@redhat.com,
+ ryan.roberts@arm.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260602043453.67597-1-lance.yang@linux.dev>
+ <1dce1561-b42a-4322-a99f-89eba1e7c227@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <1dce1561-b42a-4322-a99f-89eba1e7c227@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1780402061-568802
-X-HE-Meta: U2FsdGVkX1/OZprJxK9vPxzNrh4XzRyeMqPaYifKto1+pV325KLc1k2T7rTNII2LE+2QXAYXUg45KVRGDfhN211zFwZva4w1saGvUGMkaQYDf1LpGZmYODtJb3CODpMLfoLJgRqygZeggV0MBFhg4jU0EAvWnmmxH9l4r1aU4kO1icz6ifcuuXeUeLQIcWxCapr5krwqx890GpAgFzoeiX6czUItGfQmDlp6lB5r/krC0IrsdszEJSKf8n3OUOv5gYFjK8wtb+3ky4HnmZCnM1jt2ZPksn4xQ+l3rggHHJ4yg+l6i4KVnNhtNTys5z5FyBVPBF1m8Fjz2ri0x5GoOU2iQuJ8/4UKRf01Fkut0YN58rODcLyaBwBvLIMzWNaLeQaV3UxYdb1RtYfk/y4AxYyHbuQ3r4+P2n6u5RkTGJe6RjCcb5ENv5FYx3N1O4kss3FdzHwXfLEB4WCxTUD8C3UC5engP0c1x6gkx0Krp7xU3hKDQk/84wVQeYjeyfIob5rjKAa765xviQw+syurCo7P0HTYL2rCr0zD5BQqs0x1/fhj/yD9sRR0iTiHz4R0xR8nUvpngGyMRN7KRE7wjmtl035CDGju75tpTNeHrG+d17NqKsU0qujOHMzNr5ctTW1x2ck1xuDmLIPOO/rDD0uuIw3MNfyBihPpxdPR8eJ6fDmVxgYqa1BPe+ZVU6BtsMK+0oWTiJngcWN4wWlUElgmfRrFlNmYI+kqn4lU/3XcPazGzXMp+CbM7VGH1IVbOmUqGOslsg79d5bVJAS4UgMZI0LQ69xp+dOv3eQOpJ2KuT2F1n0slCUE/W7AEGkcPJ1XzWIEGxFcPzYRArDnN8Beyhi4d9jCljLD8FRsAGNdqGHVeeMeKjwYJQj8RIxWdRlN9oX6uZ39wvOgNpAtS6XBvIOS1D64KROGLdkyekSonaF0Gf9WhF5lDAZNTQyFg4vxfT62kEFQPIQIy85
- JPyWsGxK
- Sw9FOB3zw0573dOgX1wl+fyTMWCHtKj0BgpUPMS47Gk/8+sC768eDk1CiOOLeXfJkhRDSEyOv/oa+PsQbIeeIRn4oLE0vThgycKMITgbi5QIifhmBy+t/HSS9tvv/xKwf7rF+30KCTzjzkg4NjUIuxXeHSH/PgNIr4GMZZ9++UJsnUMKJaDhJlxmrxU9ExM+/MLbjpzvi1IbAcswB304aOC49zxwqoRv/tT/yHZuDIPrg3oFEdnaXE9LAt9jgotcb7R418y3owTw+IFCJGtQm8z/L3cvvKaDXEscvPfbpxQ58fCY01mIxIw+w3kLYFbAi5IrUWU8JBnszwpdvsLvevNQ18TdjnAwi5J4WNNLWwazIEx/YVUGltmaNh+A9g23UVRtaqaUlic3JKAy3dp8nGfQjSbakJhztt/9QtOwQpFIbMJJ+g4ym8XMGQG8JUTZzN/wDsIzCBzslmsrX0rICYzl0m+mQ87k0W3DIuzhOVwgbh9gF6Yb8wdl5r7UuXTaSUSva
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9923340009
+X-Stat-Signature: 9zh69uxk6j649p9nzzm68rpx9r6tmidj
+X-HE-Tag: 1780402284-993244
+X-HE-Meta: U2FsdGVkX19JzRTdz7J3Q+AwaO/P9mFvVdV/YqYUR8lBEMpNPWX6UyjZIyj8WaFJysbbbrzGme1x6aiWIwB5PBxMDVb637LdkKRPnuzXtpAqyDJd3jmNisJkrwCrFrBcInUUPzvABTzONw7u4Yim6xHrU/QHnOPIJ813qdCQ9aaEH7vZALQgyp0HbELdK7azzAxQPxewo9tYlxSLhMgD13B+gPXvS2SpocigvvPPYo1nOwRAsAOSRlSOcg3A79G/wrPTyh1Q0jvAJgNXyvpFzRkJtWSV3W75ei0CpviHbzd0tjRvXPwXIROST13gYGnJy3cicqrVznjeqpboIX8uSrckA4wCV6w71eRmAPeRkKaQNtqDjvucPMA4xG/vtYsz80jBsgjmjRV4kAeoegYZZwpq+vcxw4LwKXQWjpLLn5QuVHRnx0Ka+mPEfIgBk80w9cxjQUvsVTTT6AxxG/AOgrRA0RGiL1VBSNUKJa6w8q4lC/SahAyK9Vzk93l6gtm1+VriUaj44RaftkOqKR5ecUcbAHm24jbGHCH0eMYSgoC1Odeo7EKUog5v3wEsnGEA+8G+M6KbPc3o2Pzb6xmGdgTNGFLwaptyfVo9K8jLTt9z4naR8IG4CrbzmBhFyZOGp4Ns5w+N0RwwLQsLWbXLKb4N72ydSmeGDtx02XmlUWW+dO/DlYzOdqPyFyJP0iS1nMbl4+qSLYoZB5ArlZDIUvpPWHlPpV0+qSU8LYjjmG/QCpru72ZkeBsNHR5Rzym7D6Y/AKw1fUwTNtLWB2xZ5d+QrBFSk9dhB4dQd+8dRt3f9BApk+JIBOZu5f5cuy8o3BEvUXhjsfKwABXblxUAA44AfsB/hRGmAPQsW8Cbn07gVNeEbhO7fKw0FjGRcUKt7R8E+mTJYibF5yo35zgV1IuxPGL6JsJUV3wQHMjo3zk4kUox1mJF72UUF7TZ6bBWA+oQwIBQzkqOZaUkwmn
+ tLGuftUM
+ JudaWUk+yO9Zje22ndz8ZhnrIsdFCy0hdy+pBM94M0M0DMWHT9UTZyIf+jEPYdqSdJcT0P38NYo0YOjVVd9mTuv+Wo1TIpuVyWIUeZdgYmsG3LwVd3vWL2dM/whERX/wc3WDH5Bmlc8fVg2BuRlish3fW+lPyRzSxmBwrg/VX7//S0QHtMI84B5ptVRi5p/xZmG07/2hKafojlJj3vJD+4CULBWUWiSSMh3JW5e0o8xW3VxibxTA99BU3EpvpeYkuG8g6tWlBXuGef1ZQ2MpNTUYPgaMvbeaYW4Bn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,54 +147,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andy,
+On 6/2/26 06:38, Lance Yang wrote:
+> Sorry, I missed Johannes in Cc ...
+> 
+> On 2026/6/2 12:34, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> deferred_split_count() returns the raw list_lru count. When the per-memcg,
+>> per-node list is empty, that count is 0.
+>>
+>> That skips scanning, but it does not tell memcg reclaim that the shrinker
+>> is empty. shrink_slab_memcg() only clears the memcg shrinker bit when the
+>> count callback reports SHRINK_EMPTY.
 
- ---- On Fri, 29 May 2026 02:27:00 +0800  Andy Lutomirski <luto@kernel.org>=
- wrote ---=20
- > On Thu, May 28, 2026 at 2:55=E2=80=AFAM Li Chen <me@linux.beauty> wrote:
- > >
- >=20
- > >
- > > The template pins the executable and denies writes to that file while =
-the
- > > template fd is alive,
- >=20
- > Please don't.  *Maybe* detect when it gets modified and clear your cache=
-.
- >=20
- > Or develop a generic way to open a new fd that's an immutable view
- > into an existing file such that the fd retains its contents even if
- > the file changes.  (Think a reflink that's not persistent and has no
- > name -- you'll need some way to avoid resource exhaustion.)
+What's the effect of that? Would we consider it a fix that we'd want to backport?
 
- I agree that deny-write is not a good long-term invalidation model. I had
- considered clear-cache-on-modify, but kept this RFC smaller.
+>>
+>> Return SHRINK_EMPTY for an empty deferred split list, so the bit can be
+>> cleared once the queue has drained.
+>>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>>   mm/huge_memory.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 72f6caf0fec6..62d598290c3b 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -4397,7 +4397,10 @@ void deferred_split_folio(struct folio *folio, bool
+>> partially_mapped)
+>>   static unsigned long deferred_split_count(struct shrinker *shrink,
+>>           struct shrink_control *sc)
+>>   {
+>> -    return list_lru_shrink_count(&deferred_split_lru, sc);
+>> +    unsigned long count;
+>> +
+>> +    count = list_lru_shrink_count(&deferred_split_lru, sc);
+>> +    return count ?: SHRINK_EMPTY;
+>>   }
+>>     static bool thp_underused(struct folio *folio)
+> 
 
- > >
- > > Workload     Calls  subprocess  spawn_template  time_s       Delta
- > > (workers)    calls  calls/s     calls/s         seconds
- > > 1x16         6144      411.04          420.32   14.95/14.62  +2.26%
- > > 2x8          6144      666.78          690.08    9.21/8.90   +3.49%
- > > 4x4          6144      955.61         1003.25    6.43/6.12   +4.99%
- > > 8x2          6144     1048.25         1069.18    5.86/5.75   +2.00%
- >=20
- > This is a lot of complexity in the kernel for a teeny tiny gain.
- >=20
- > I'm with Christian -- a better spawn API would be great (and much
- > faster than fork/vfork + exec), but that's a different patch.
-=20
- Thanks, I agree. A pidfd/pidfs spawn builder looks like the much better AP=
-I shape.
+This is against Johannes' work, right?
 
- The cover letter numbers were from a mixed agent-tool workload. For very s=
-hort
- single-tool runs I saw larger wins, about +14% for printf-style work.
- I should have called that out separately.
+If this is a fix, likely it would be fixing 87eaceb3faa5 ("mm: thp: make
+deferred split shrinker memcg aware"), right?
 
- I will work toward a pidfd_config-style builder next.
+-- 
+Cheers,
 
-Regards,
-
-Li=E2=80=8B
-
+David
 
