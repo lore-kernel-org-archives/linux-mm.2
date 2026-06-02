@@ -4,151 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBEA8CD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:28:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67C3DCD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:29:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8E7D6B0005; Tue,  2 Jun 2026 11:28:25 -0400 (EDT)
+	id CE2976B0088; Tue,  2 Jun 2026 11:29:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3F5B6B0088; Tue,  2 Jun 2026 11:28:25 -0400 (EDT)
+	id C935E6B008C; Tue,  2 Jun 2026 11:29:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D06DF6B008C; Tue,  2 Jun 2026 11:28:25 -0400 (EDT)
+	id B81FD6B0092; Tue,  2 Jun 2026 11:29:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B8A936B0005
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:28:25 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F4A01A095C
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:28:25 +0000 (UTC)
-X-FDA: 84835354170.01.41AD359
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2F8D240012
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:28:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CZd1HqFP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780414103;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A82216B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:29:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A27C93010
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:29:33 +0000 (UTC)
+X-FDA: 84835357026.11.B2C9B3D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EBC6CC000A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:29:30 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="C2/XgSLv";
+	spf=pass (imf10.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780414171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KioD6muOq73KOuZgXUdfc8mghtZCf5WX4ci2/jt07rE=;
-	b=XosKu5JjXpl1CsX3crgXGxTHdY5gknm/fbQIREfKloGP+0frnPgTez5B8qkRq8Abep2VaP
-	tB3Bi+maJw9OpIVIveNRD+++P2pOwtCO3mOjh/xXFn3Un/svOfjiKpk7rYFSkv4ZixCmvR
-	NocwiFSY8fIvP3OiEsAx+eN740/jrjQ=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CZd1HqFP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780414103;
-	b=1+Xpmn2nDOcwwyD1lAsUEqBQ3IFI/WLpiMzk/9tdCCYhqc4gqOJFBjhw57F3kb0jdmb8yY
-	DJPVFY/1rVwhE6AXRlyHUoFrZ8lDQ7loJ1ZjYE7uObxnvcD8aZqvHUo+uQBLyUWJw/EBlw
-	0ASgLscSEJ0WiAmso2n404ArCAcoa8Y=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-45eec22fab7so2920690f8f.3
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 08:28:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780414101; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PFX3A29HrUB5Qxk4cOQ012WI61OsaGh2oBl6gcwcrp6Kax76dRXCSoTnluMip7qutW
-         6KxwhlbCGQOlwwXJezVmiuUkdJ5fFNpHdQEhQ5i9wpqKTVvNR7luEgWW29RMFGp0ab7R
-         fQn2CojKx0eb1so5v6Kuqfid5JSqZMW7q6VZ4vNfmfbpJBsRGu628QvoUHYj0II9Uqmh
-         EnYzybusVIOpGICH4rj19ZjmAo1GZgbHuYtLUli2I2Zit4xgQ6LQuE2fcp7Td/gdOZmJ
-         Mv9Ro1PdujnaKLcWD5vt+A55YJ3gWUP71LI6pXCoLtop1YJ29rwlZ/Inhb/sxEGpVeQ9
-         bTWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KioD6muOq73KOuZgXUdfc8mghtZCf5WX4ci2/jt07rE=;
-        fh=rCu2fdRPKDR+Zz0RbckTbejujg31mTiP0URfWc/BQxc=;
-        b=lHjCihSwSK8qIdH7AQt1h6QPDkrRcqQ1KjAsG+5ZaeULQFmnJPtAQnDTSTVdoetO8r
-         7ekyeJLXeYfsWus4byw0PttzrT0QoJAf3AF/GD6rWij2ccilXQrvgQblAQh5qp3FZdQa
-         bLePpMOAwP86z7hHXlO0paE++K+AhkmCmsT+pqzLe3TR50f7VvLS4Pb5RCeRmT41cbgu
-         7K4g1m2eNACS+aCtO2aDz7GjrIKKvLlXhRsSXmhrFsPbQMR+M+HHjdraaZ+v8RY/Jqfd
-         EYAYR0xrAQOxl3WOiZGboRhMiKNIZ9c5t8SPLLulq8POK6fLXQaBJ/PLZy3gzRS6VHHD
-         I6Ng==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780414101; x=1781018901; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KioD6muOq73KOuZgXUdfc8mghtZCf5WX4ci2/jt07rE=;
-        b=CZd1HqFP/r8BfOLnw4mkM99+oHo/BII/DwIW4tnMVEjE8wef58Ozu4YJJe9hmXhGpu
-         oimYC0E2e876uJy9LnBXqDzqybop/7RSxrqzz85jyEx87iDqk/1Eyzbfb3aDMP/MsEFJ
-         RvpjOwyIdF5XbLxkEv+eTwwRKTqLXdOJXc4r+c4muz5ODFqB5zSoEfpD8/e+nXqsWVtE
-         hXcTN5zO6kNvJ2wuP15RsmAt88Q5h9e2T3fWkif8I0NwVV0OcOHXGnFRI6h47foGdQj6
-         qIlkMRQQYykLcESbmRS+K8aQAoPg+kRFcM7RSF/jasZcUpk9l6cIVBa9Sjtsv/KywV6K
-         JbrQ==
+	bh=zoHOGHc6Dr79Ii3CKFCTRjW9SLXuC6GuIiX+icbDNi0=;
+	b=OCZVY8I46eL8C5v0DALocsMAL0mIodq/IOK+xMNoAE/XHPT6Jz8CXNT0ehxZfGh+WMOCd+
+	xIj4MUvYdjhrFiztfWza0qb402Wk0IScraKqbbTTAmVUvWCHfYv21KC0REGbX/aByBCJ92
+	Hwtn+phXHVXb2zq4+MHG44R7HDLQQlM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780414171;
+	b=guFM/I1/bofZfuxiuaBQqPghnEmL9kPADtpvqXIUNApa7tOKyijIRC9m/BVMG4+ecAx3HE
+	948upPLZnz7eP5CArNCimzV91bcibY35w4ERzfUO2cLFWkAMGkvZ5C9lZGN9+Swkaodjth
+	FvVUDG8rxEnF9jc09SEgYZjviMrxQbY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="C2/XgSLv";
+	spf=pass (imf10.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780414170;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zoHOGHc6Dr79Ii3CKFCTRjW9SLXuC6GuIiX+icbDNi0=;
+	b=C2/XgSLvJOJqQFRiOdtokB5IQpWKjGYJdhZQ4A+l+ccu5enm9xcZjwRF+6jppu+xZDWDHx
+	0u2l48aeaYEC28ebDUOFtzQNRPu+Frdu/OkjVTO0dcTR9lqYim5E2m03I6DNO8llXJ6bF3
+	K/VLvuSOrjVJpvXm73bkkDZH2k2ZbTI=
+Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
+ [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-426-u5_qcTJTPjqwVYLB_Cc6bw-1; Tue, 02 Jun 2026 11:29:28 -0400
+X-MC-Unique: u5_qcTJTPjqwVYLB_Cc6bw-1
+X-Mimecast-MFC-AGG-ID: u5_qcTJTPjqwVYLB_Cc6bw_1780414167
+Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-66044a47d6fso8005728d50.2
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 08:29:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780414101; x=1781018901;
+        d=1e100.net; s=20251104; t=1780414167; x=1781018967;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KioD6muOq73KOuZgXUdfc8mghtZCf5WX4ci2/jt07rE=;
-        b=CQXQxigCQCMfHNT/59P4mHojEMvOir52RsHs8eoXipPcTStOyxgncboEjNEHWkra4y
-         sfkEZuG9JoPKg8f8zLVdqugJyEkTUlkUOQinQ6KEwHqKsMhHixH0qTzw/bhZgu6UbWK/
-         90Tb7dHPAVwNlYetpj+YkJR9mY3yTWqvsnARnowoMaKSKWBazKMg7/tVb6S0bCcU0KjG
-         QUPRzJmioCapajVpFIF/s/9wdMH0nsPalkF8hyYeEcGFRd9C8xjjzfUhggNpaGTLl/ur
-         zXC/k7gcEKfS9qsTidXKQLPstTd4Io9VFqBLShCDy4nc3z1LRU17R00dJZQDIWMNbRdj
-         kDSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9PSz5pgL6Sf7snDg30mWagS6MjiDNqt763AVeZRzz6SxwZ3wUkeSqc5jl2j0TwE8LuPYSv/LVlXw==@kvack.org
-X-Gm-Message-State: AOJu0Yy5ICVQYiwfOXQEfeJyWREILoNImbvJmkURxPd54duPZDHb30Fv
-	m2cIoJP+gwwYqwfwt0vsstltYJuh2HKSirt5B8cEPrxsQebGLx9dlBjdNrWSqv/hTeZw0gNytaq
-	9usTPalNR73iYcfCyrBtZLSb8WAHkgTg=
-X-Gm-Gg: Acq92OEsNUPFTWR9G8o7o+jfrWDcI2O5334ggSOH8gWYHDaaN/hCGzKHac80tHcfAfN
-	Yewbpcrr04/I9Mfn9TUAbYmWg5+EPFKOlWNlAbCu48hE5f6oPKmEptJWKwrlbOcLWe8FSDEVq0E
-	gxnedSr5u7+zcpAi/1g46vFB91NSlDOBIK2BJ89639mDjlAJxaeu71Km0VbshnjVXapnlmwdUkg
-	LaqdIdpLJtgD3ILS5T+c2/1LbRwcfpeOdKTfJcV8NwZ7BBVRDt3fVANdXaDT0FiMM+aYmCnbVdt
-	rCWQq3Z+X6v301yQ24VZHxAb3z3CfW+LdqiykGzqVPEYyBkppQ==
-X-Received: by 2002:a5d:5401:0:b0:45e:d6b2:e6a5 with SMTP id
- ffacd0b85a97d-45ef6b83764mr21337268f8f.34.1780414101045; Tue, 02 Jun 2026
- 08:28:21 -0700 (PDT)
+        bh=zoHOGHc6Dr79Ii3CKFCTRjW9SLXuC6GuIiX+icbDNi0=;
+        b=h7KXTA4RetP+SlE7YqgrclpJBecERrfOuET5TMv24eTdlb7ST+lwcY0cGpikM7jV9k
+         NRniQp3jeS2g1uPQn5p8Ri0nDuGW4YYW04D555nYPp7ZLqqvMisZcLOWHVxZpMAu8vt/
+         6aasJalP2xa/q4l5fGWjWXxdunOkKZzueai43LGibTxPAiV3qK8ws/fcxr5xLs3P6Y+3
+         LsVj93BtDGsAMTodSCCT3GBx4WKoGIZDIKtn7JHA4agRJw1HgV7wHMF2RtKXGq00S+Zj
+         CxebqTXT0CHI91Yz+JtENiV643kknaFq1FujCqsfVA2Dile3njds7Ifwfvj2BVsPNvpe
+         lDPg==
+X-Forwarded-Encrypted: i=1; AFNElJ98PGTP++B2/XyTpSSmvRBllk5o+0rAdqFKCvQrpXfAi3kzcWTPRFoo8niQQMjuM35HQGf/PLeQRw==@kvack.org
+X-Gm-Message-State: AOJu0YwECl3RDEBj54vQRaO6fFurV8Dxyp0U3fi+m6eMzqz2wX9/jdyc
+	0JFdc9WBt23PT7QW6qnMLtMXx4PWGm5R28oYLHiBbE/kaVkfCfN22Z1Jxj6XL/tz8B28NnKzdBH
+	hx2z8aExpMlahVOpvzm4qncDDQvRzxFIlfWuxejtEWOlG+kAxcZAgNYN2cFgxMmZ/WUu61CiYV2
+	nWNhfneqJwauBm1EOfopHdpFbK/xs=
+X-Gm-Gg: Acq92OGmizg9OTAf+uE9G71K2TrxYImZybWWCRDKgc4DpfQTYd8E2IRGiVlH5/xgnzi
+	UyWBy5/ioeZLboIZVObi+iILCgj75YG94ENpg/VAnFvqknQwjUTAnIOnJgHcV7ARIE9ky0yh6Xq
+	bQ7lwXKo2EkxdL7iT1AgkUpd2+ejaa3/RiQn2tagoW4H7YBRhQsBQM6ip8IV5co1suiVlXoWiCv
+	QffWulCeg4AVKEO5g==
+X-Received: by 2002:a05:690e:4395:b0:651:bf58:446b with SMTP id 956f58d0204a3-660d5e4dcfamr221840d50.10.1780414167103;
+        Tue, 02 Jun 2026 08:29:27 -0700 (PDT)
+X-Received: by 2002:a05:690e:4395:b0:651:bf58:446b with SMTP id
+ 956f58d0204a3-660d5e4dcfamr221781d50.10.1780414166617; Tue, 02 Jun 2026
+ 08:29:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260528212955.1912856-1-nphamcs@gmail.com> <ahz_iYG4lqWL4g-J@KASONG-MC4>
- <CAKEwX=PzMwXXgq=ULAkFD9UqMz+ewLqhKt+xdGxkV7OmA2QG6w@mail.gmail.com>
- <CAMgjq7BhOn48xEyC=2j837R7qddfjeBVHMiRqdx8no4ZEBpBLg@mail.gmail.com>
- <CAKEwX=PmwzaJhfjBrho3+kQ8HXFUC0WiegQrsguBc-_pmn5bSA@mail.gmail.com> <CAMgjq7D4XsAD4NGDL7FC2kaYAQAP8PDJdn4bpzGZwXYtjEpJ6w@mail.gmail.com>
-In-Reply-To: <CAMgjq7D4XsAD4NGDL7FC2kaYAQAP8PDJdn4bpzGZwXYtjEpJ6w@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 2 Jun 2026 08:28:09 -0700
-X-Gm-Features: AVHnY4IWURpsnvI312VbRdsgEkqVndHtTZWSNA7JxRNHqCQ-2eUuyz0lSoO1lo4
-Message-ID: <CAKEwX=OZL+ykwTjZJzUDAEnTOO6B0mibc6dxiYtmnoLReB7TYA@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/5] mm, swap: Virtual Swap Space (Swap Table Edition)
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, apopple@nvidia.com, 
-	axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org, 
-	chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net, david@kernel.org, 
-	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
-	jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, 
-	lenb@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev, 
-	npache@redhat.com, pavel@kernel.org, peterx@redhat.com, peterz@infradead.org, 
-	pfalcato@suse.de, rafael@kernel.org, rakie.kim@sk.com, 
-	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
-	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
-	tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
-	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
-	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
-	riel@surriel.com, haowenchao22@gmail.com
+References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
+ <20260601032804.96122-1-lance.yang@linux.dev> <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
+ <616de1a8-1cfd-40b8-b04f-7b324be40bfd@linux.dev> <6b11bf0a-769c-4ef2-ac6f-2af38200a6bc@kernel.org>
+ <baa0a462-46e0-44ab-b583-c722ad253afe@linux.dev>
+In-Reply-To: <baa0a462-46e0-44ab-b583-c722ad253afe@linux.dev>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 2 Jun 2026 09:30:06 -0600
+X-Gm-Features: AVHnY4Kv1G0ugXWOd835wx5jHS-wLy0DPKwsrrM_yqPdHcBhPWzJa9aKptOmpM8
+Message-ID: <CAA1CXcD7peS3WHueVgAWhhRrjBO_1b19+Xc0CfZBSO8OwJJKQw@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+To: Lance Yang <lance.yang@linux.dev>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com, 
+	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
+	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
+	liam@infradead.org, ljs@kernel.org, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
+	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
+	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
+	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
+	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
+	zokeefe@google.com, usama.arif@linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 6u4UKnPyiJI8bCfIfGOcBGFicIN-RRj5ThnphIpTuJY_1780414167
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2F8D240012
-X-Stat-Signature: hdr7a781dmbmq11cf5ucgai4pbfasbjo
 X-Rspam-User: 
-X-HE-Tag: 1780414102-433505
-X-HE-Meta: U2FsdGVkX19LQsxwI6jbHHG6WhOEOAusPwOy35BHqL541mT5tyErjwSvHcMk2SW58OXsMeItcMQ9ycZKZjyDbcouIQUxozzTGuf/wy74HrrC/QJfP5x4fLFsDNY2ttQTysPzZNLGjK0pFfleUBecqYrbB20xiOc6TyvRFetMktXFmEeB1qV96q5qj/NZt16+iA7KepzrzeTE81St45CF9sw6e9ocBMQFW3AW+GP7QiqqMmwEP6v99REAkQ45jwBJ/RddZ7LA5Msr7JCtR5a3F15qBYERwCt9l/xKZ1/h8zyX998byzVePJJTxE5GGfPv56/5DejXTS4k7jQmMg7OTWznTusQzzqeNPZfooVBdLWoUPvv9MUvm550Ris0LcJysdk7mVNjLz/K4pb8jB76Ad2+bZhgZ/knUxCLQeRoubYsW+5/PSqAzjPCyroJEP+BVQ4YHsZv0MNkJTmDzwX7ST/lEVE1w8SyKQd3Me+bI4fwbj53iHTJ3qFz3u8mwOlrjk04cyxmOi5jr8flyI8CjWfDYY/dflAP+FWPcrJZiqhttX8dUWVTMGwtGu2Mxrfut9VghYEmY78DpkIHynfTDkHzPqe2UgwzzCj7WuaQBq8E1b8RR4fMg69/wHEQdL+X70FNy75pqT3mMGEFXKENo8X1fiSMKNqUmHrpsajlq7HPAdaMnEHl3kkXb3hfZppvLgUDMph78obnn+a7ZZt7989I7y4o/eDukASqU+yYRilm6Wj/31mBaIM1ROCA6TO5u3FvKxf0KUuKWp5V7Dpe5sZgYfMpmZCleUWEzvC/1bAMP2v/dj3YBs6D9zSXWXHKPLZSip/E28V6xQ9blqjd2cqhAJLGdR3W2kUXRVwuohNpnJ22BkpJZKeWv5bESwAiowlWRPgDF4du9t1eDhG2gRDvVIFZ28EhRT2imluZE58Rziyi9f0TVhME1FqkegfxTR/Nf/u14rIaHLkNVEI
- mn2mwmOG
- GsD97aQSsPPuFbdtD+vwldOVcJf4hSVEt8NAAbPhDb2UH492u7E1O3XKtecP9dXWh5PXnztgeOEFJAMDvLyC10YABUlEofHK/+h/OuwGW8YYTlzIS/+WjTqRhsTdX8gTtM9bHocvrQW9vPbgmn2DAIyqitZ4kHRXC3g1T7utLGsIiplO63lb/L9TSTl7iGohKF2WHPaDXrkNRONwPAeTUz9Tx5aShD7tV9U2mZngaHydYGeSyhtwET+uHNpVs2qadUR5q1a2l91RGq3h/iZdyKN4dBLTGXb++3znR+vWqaUS1jq9/9hkEE7RsGcORHrd5SRhuNw1DiJMPBCZGMpRmY08Bl13313csWnCAlOjoKVmwo6rEN8tjE0n/I8Q3nzcjRgGPqSmN3cixu3HZcEHJBgYBnbEcx6VXFVrbU9cCBCARenIPPzChjXaBBrW+69yKO0/Gj33ga3vZg6ru8PlhWX55DLb7Krn34724X+JSCoux7aiQCkgIGW0q3fex/Ddx2+Onfmddz2tJsseFRiv2g49JQmVIQeD84Brsh9ww3ufPIOs=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EBC6CC000A
+X-Stat-Signature: agzmbs9dqggwag9aop89utjcdx4mnwtc
+X-HE-Tag: 1780414170-394201
+X-HE-Meta: U2FsdGVkX1/BIKJBkmehX1pqYlsdHSczNal8AgTbOsP6rirWjXQj1MeW7CzlcgqgBkroiu8+rxMz3b5PGkprDUTMpUIaU/OoQ1UMZhCrG8yCT9/hxSRv7qImSn/6PyLUviUir2SjUtWkddQobuYd9a3TaIrQcJks9+9sqlV6UrX0TYOzaevO1Ndcaf++ILh+tlKx7hUh0qkSDjTBgUg64VbzicRBUaEW9nkClJ0CoS7tJ5RpzcOrlWW42CxfEVa4S+8RGmL9hhge1mqmWYeObmV+PqC+DcMHm5BksGN19i2Dgg5Pl2RLNfiymDAWLUtEOFzWtXHVT7YC74AfpOcTMXBXSj1D7/AmENqOM/sOsTWseYy0Sch8NHZrfaWz3k9i3ZM4GZu3kmZOtlYYiSMMLc3wwPAezRSDYRoGrcmY605zoi2MLS+PmW8Of/IWYVI/g737nz/6HPQuDaIkpQWirfq5NK2IsXjyRok1/Q9lzGHoDD65wt4y6w0rh2xD176B3dmxX/EXnaSxq4ZTr9HvJriO3RRuslSi1aANS2pJEtyUDi0NevOK0CAdBgXmdvOfGzXykMygJAuPfmT0/g7OImgWxusPCQzHesDNvTCLKRMvvCu7gZkcwd60WUPPbnA268TNRYVB4oc2EY3wlR8XJ2tDlmNlpf+dBd6hTNSTLCzwmDUpsTRzBMpjHIO6PN6cpHZ5H1fIITXllTndHX2Kk7J9m9fBgkfS8zdxezlKJL4/8GWtuA6lMj9ZVOa2nNdoJLOaemRGVogGxZ12r2phMltdNEmy8PLzbwXrrIZebLsRpcSEL8X68hWTutOAfD8U7DPncGm/hRFsy9rkaLxFJa3dRfkryeRXDOuIdPtiIw04nhjfS+tF+sxsNk0EVz7T1CMz3bIN34N7Xsp+XxmS6LKX2q9T70DJKk6ruO6Q2tclXIo3ZO0i3mTnFSl4p7Aoz3nyFxSuQrfMeULgJ9a
+ 9E7WxsPT
+ VsFKcQ5ebQtirGflvx6RROhiocbXOzRUeX5UZgqMqNM9BJfUARWfe4x/C7now9RHk3V7hHph0iiK/9gLxCeOSC0D0iF5+QoCQgRF9Be147+32Tr7HroZBmrRURY1NjN/Jc9ktXbLGcEKT4rdW8quxL/bNjz3xqtzgUSQm6Y0vWY21jkc14E0yZRMgLCwuDJSOnETlQ/1LUT10B/U63fM6CQJDecVl39OzLij75T5jWpdeCO1LMoJgfp9gf3u1vG68ktFn6TmMBW+X+PBBFPUDJuqiMXXWVsMinMSNIxPr0EVIsQz9qgQ2qow524MJbKJAj9AjkU/c5O+zpRj2uuoaZXGnQza0X8FZHPTrMg/ktGRNrCmfjer3TnAqDw2zXxxnNH6QDfPWVyrJIGCu/uVwJ+743XimWmTXqZHFggEez/Lr0dY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,206 +145,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 1, 2026 at 8:25=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
-:
+On Mon, Jun 1, 2026 at 4:48=E2=80=AFAM Lance Yang <lance.yang@linux.dev> wr=
+ote:
 >
-> On Tue, Jun 2, 2026 at 2:06=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrot=
-e:
-> >
-> > On Mon, Jun 1, 2026 at 10:45=E2=80=AFAM Kairui Song <ryncsn@gmail.com> =
-wrote:
-> > >
-> > > On Mon, Jun 1, 2026 at 11:57=E2=80=AFPM Nhat Pham <nphamcs@gmail.com>=
- wrote:
-> > > >
-> > > > Are you suggesting we merge the virtual table with main swap table?
-> > > >
-> > > > Man, I'd love to do this. There is a problem though - we have a cas=
+>
+>
+> On 2026/6/1 18:23, David Hildenbrand (Arm) wrote:
+> > On 6/1/26 11:08, Lance Yang wrote:
+> >>
+> >>
+> >> On 2026/6/1 14:54, David Hildenbrand (Arm) wrote:
+> >>> On 6/1/26 05:28, Lance Yang wrote:
+> >>>>
+> >>>>
+> >>>> Ah, fair point.
+> >>>>
+> >>>> I was mostly worried about arch hooks that walk vma->vm_mm again, ra=
+ther
+> >>>> than only using the pte pointer passed in. For example, mips does:
+> >>>
+> >>> Right, a re-walk would be the real problem.
+> >>>
+> >>>>
+> >>>>     update_mmu_cache_range()
+> >>>>       -> __update_tlb()
+> >>>>         -> pgd_offset(vma->vm_mm, address)
+> >>>>         -> pte_offset_map(...)
+> >>>>
+> >>>> and __update_tlb() has this assumption:
+> >>>>
+> >>>>          /*
+> >>>>           * update_mmu_cache() is called between pte_offset_map_lock=
+()
+> >>>>           * and pte_unmap_unlock(), so we can assume that ptep is no=
+t
+> >>>>           * NULL here: and what should be done below if it were NULL=
+?
+> >>>>           */
+> >>>>
+> >>>> So if khugepaged happens to run with current->active_mm =3D=3D vma->=
+vm_mm
+> >>>> here, could __update_tlb() hit the none PMD, get NULL from
+> >>>> pte_offset_map(), and then dereference it?
+> >>>
+> >>> Likely yes -- that MIPS code is horrible. And the comment in MIPS cod=
 e
-> > > > where we occupy both backing physical swap AND swap cache. Do you
-> > > > think we can fit both the physical swap slot handle and the swap ca=
-che
-> > > > PFN into the same slot in virtual table? Maybe with some expanding.=
-..?
-> > >
-> > > I don't really get why we would need to do that? If you put the PFN
-> > > info in the virtual / upper layer, then the count info, locking, and
-> > > all swap IO synchronization (via folio lock), dup (current protected
-> > > by ci lock / folio lock), and allocation (folio_alloc_swap), are all
-> > > handled in this layer.
-> > >
-> > > The physical / lower layer will just hold a reverse entry on
-> > > folio_realloc_swap, or no entry at all (no physical layer used, zswap=
-,
-> > > or after swap allocation but before IO) right?
-> > >
-> > > Looking up the actual folio from the physical layer will be a bit
-> > > slower since it needs to resolve the reverse entry, but the only plac=
-e
-> > > we need to do that is things like migrate, compaction (none of them
-> > > exist yet) which seems totally fine?
+> >>> even spells that out. :(
+> >>>
+> >>> Do you know about other code like that, or is MIPS the only one doing=
+ a
+> >>> re-walk and crossing fingers?
+> >>>
+> >>>>
+> >>>> Just wanted to raise it since some arch code may still have assumpti=
+ons
+> >>>> like this, and the always-enable-mTHP work is getting closer ...
+> >>>
+> >>> Right. I assume set_pte_at() couldn't trigger something similar (re-w=
+alk) in
+> >>> arch code,
+> >>> because we simply provide the ptep. update_mmu_cache_range() only con=
+sumes the
+> >>> pte.
+> >>>
+> >>>>
+> >>>> Probably very very very hard to hit, though :)
+> >>>
+> >>> Delaying update_mmu_cache_range() is nasty, as we'd have to make sure=
+ that
+> >>> nobody can interfere in the meantime ... and the PMD lock will not be=
+ sufficient.
+> >>>
+> >>> Maybe we could reinstall the page table with the cleared (none) entri=
+es while
+> >>> still holding the PTL?
+> >>>
+> >>> Thinking out loud:
+> >>>
+> >>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >>> index 5ba298d420b7..e39b750b1e6f 100644
+> >>> --- a/mm/khugepaged.c
+> >>> +++ b/mm/khugepaged.c
+> >>> @@ -1413,13 +1413,17 @@ static enum scan_result collapse_huge_page(st=
+ruct
+> >>> mm_struct *mm, unsigned long s
+> >>>                   map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
+> >>>           } else {
+> >>>                   /*
+> >>> -                * set_ptes is called in map_anon_folio_pte_nopf with=
+ the
+> >>> -                * pmd_ptl lock still held; this is safe as the PMD i=
+s expected
+> >>> -                * to be none. The pmd entry is then repopulated belo=
+w.
+> >>> +                * Re-insert the page table with the cleared entries,=
+ but
+> >>> +                * hold the PTL, such that no one can mess with the r=
+e-installed
+> >>> +                * page table until we updated the temporarily-cleare=
+d entries
+> >>> +                * through map_anon_folio_pte_nopf().
+> >>>                    */
+> >>> -               map_anon_folio_pte_nopf(folio, pte, vma, start_addr, =
+/
+> >>> *uffd_wp=3D*/ false);
+> >>> -               smp_wmb(); /* make PTEs visible before PMD. See pmd_i=
+nstall() */
+> >>
+> >> One small thing, I think we should probably keep the smp_wmb(), and ju=
+st
+> >> move it before the earlier pmd_populate().
+> >>
+> >> IIUC, the ordering we want is still:
+> >>
+> >>    clear old PTEs
+> >>    smp_wmb()
+> >>    pmd_populate()
+> >>
+> >> so another CPU cannot walk through the re-installed PMD and still obse=
+rve
+> >> the old PTEs, right?
 > >
-> > All of this is correct, but consider swaping in a vswap entry backed
-> > by pswap. There are cases where you still want to maintain the pswap
-> > slots around backing vswap entry, while having the swap cache folio as
-> > well.
-> >
-> > For e.g, at swap in time, we add the folio into the swap cache. First
-> > of all, we need to hold on to the physical swap slot for IO step. But
-> > even after IO succeeds, there are cases where you would still like to
-> > keep physical swap slots around (for e.g, to avoid swapping out again
-> > if the folio is only speculatively fetched).
+> > There is a smp_wmb() in __folio_mark_uptodate(), that should be suffici=
+ent?
 >
-> A reverse entry is enough to hold the physical swap, just like how the
-> current hibernation works with a fake shadow, you don't need a PFN
-> just for holding that.
+> Ah, cool! __folio_mark_uptodate() already does the job :P
 >
-> >
-> > So you have to make sure we have space for both the physical swap
-> > slot, and the swap cache folio's PFN at the same time for each vswap
-> > entry. So we still need the vtable extension (well maybe the other
-> > approach I mentioned could work, but I'm not 100% sure).
->
-> Right, vtable extension is fine, there is no redundant data. I just
-> mean you don't need to set the PFN twice (for vswap & pswap). So
-> simply reusing the PFN format in the vswap layer and solving
-> everything there should be enough.
+> So yeah, no extra smp_wmb() needed here!
 
-Ah yeah, then I might have misunderstood you here. I thought you were
-proposing a way to remove vtable :)
+are we sure? that folio_mark_uptodate is done before the PTEs are
+reinstalled. Then we reinstall the PMD right after. Currently
+separated by the smp_wmb().
 
-"don't need to set the PFN twice" completely agree. I'm pretty sure I
-did not here, but do let me know if I accidentally set it twice. I'm
-be sure to check this myself for the next version.
+I was copying this from other THP code that performs similar PTE/PMD juggli=
+ng.
+
+I can remove it, but I'd rather air on the side of caution with this.
 
 >
-> > > Thanks. Not too complicated, actually our internal kernel
-> > > implementation still using si->percpu cluster, and use a counter for
-> > > the rotation and each order have a counter :P, it's a bit ugly but
-> > > works fine. It still serves pretty well just like the global percpu
-> > > cluster, YoungJun's previous per ci percpu cluster also still provide=
-s
-> > > the fast path, many ways to do that.
-> >
-> > Sounds like something that should be upstreamed? ;)
+> Cheers, Lance
 >
-> I'd love to :), there is a lot of work going on as you can see and
-> people seem to have many different proposals about this so I didn't
-> prioritize it. I'll try as things settle down.
 
-Yeah understandable. It's a very volatile codebase, with a lot of
-folks trying to improve different aspects.
-
-Hopefully we're close to a unified design :)
-
-I'll keep my dedicated vswap per-cpu alloc caching for now, but I'll
-get rid of it whenever the per-CPU per-si cache is ready.
-
->
-> > > > >
-> > > > > For patch 2, a few routines like vswap_can_swapin_thp seems not
-> > > > > needed or should be moved to __swap_cache_alloc? VSWAP_FOLIO is
-> > > > > same as swap cache folio check, which is already covered. Same fo=
-r
-> > > > > zero checking, and VSWAP_NONE which is same as swap count check
-> > > > > I think. That way we not only save a lot of code, we also no
-> > > > > longer need to treat vswap specially.
-> > > >
-> > > > Unfortunately, I think a lot of this complexity is still needed. Vs=
-wap
-> > > > adds a new layer, which means new complications :)
-> > > >
-> > > > For instance, I think you still need vswap_can_swapin_thp. It
-> > > > basically enforces that the backend must be something
-> > > > swap_read_folio() can handle. That means:
-> > > >
-> > > > 1. No zswap.
-> > > >
-> > > > 2. No mixed backend.
-> > >
-> > > If mixed backend means phys vs zero vs zswap, then we already have
-> > > part of that covered with the current swap cache except for the phys
-> > > part (zswap part seems very doable with fujunjie's work).
-> > > swap_cache_alloc_folio will ensure there is no mixed zerobit, it can
-> > > be easily extended to ensure there is no mixed zswap as well
-> > > (according to what I've learned from fujunjie's code). Similar logic
-> > > for phys detection I think.
-> >
-> > Yeah it's basically generalizing that check, and handle the case where
-> > we can have indirection.
-> >
-> > I mean I can open-code it, but it has to be there :) And I figure it
-> > might be useful to check this opportunistically (at swap_pte_batch,
-> > even if it's not guaranteed to be correct down the line) before we
-> > even attempt to allocate a large folio etc. to avoid large folio
-> > allocation.
->
-> Right, but swap_cache_alloc_folio with orders=3D<large order> won't
-> attempt a large allocation if the batch check fails, so that's fine.
->
-> > > > Basically:
-> > > >
-> > > > 1. For vswap entry, not backed by phys swap: record swap memcg, hol=
-d
-> > > > reference to pin the memcg, but not charging towards swap.current.
-> > >
-> > > Maybe you don't need to record memcg here since folio->memcg already
-> > > have that info?
-> > >
-> > > I previously had a patch:
-> > > https://lore.kernel.org/linux-mm/20260220-swap-table-p4-v1-7-104795d1=
-9815@tencent.com/
-> > >
-> > > The defers the recording of memcg, the behavior is almost identical t=
-o
-> > > before, but charging & recording should be cleaner and you don't need
-> > > to record memcg at allocation time hence maybe reduce the possibility
-> > > of pinning a memcg. I didn't include that in P4 just to reduce LOC,
-> > > maybe can be resent or included.
-> >
-> > That works-ish when the folio is sitll in swap cache, but say if it's
-> > vswap backed by zswap (and the swap cache folio has been reclaimed),
-> > you need a place to store the memcg, no?
->
-> "Backed by zswap" means the actual swapout already happened, which is
-> the case where we always have to record the memcg info because the
-> folio is gone, seems still fit in the model.
-
-Hmmm I might have misunderstood you in my last response here.
-
-So what you are doing in that patch:
-
-1. Charge towards folio->memcg when we allocate swap slots, but do not
-record or take reference yet.
-
-2. Once we reclaimed the folio after swap out, then we record and
-acquire reference to pin.
-
-You know what - this would simplify my usecase. For vswap entries not
-backing by pswap, it *basically* just means I skip step 1 for vswap
-backend. Step 2 is shared for all cases. Donezo.
-
-You're right. This is simpler :) Let me brew on it a bit longer in
-case there might be something we're missing. but it does seem like
-this will reduce complexity (and with the added benefits of me not
-having to come up with names for helpers).
-
->
-> > Just seems cleaner to centralize this info at vswap layer when it is
-> > presented, for now anyway, rather than juggling this on a per-backend
-> > basis.
->
-> Zswap charge could be merged with vswap I think but pswap we just
-> discussed that we might want to charge it differently? And actually
-> vswap charge is still quite different from zswap charge if you want to
-> make vswap infinitely large? I think we can figure out this part as we
-> progress; it's not a major problem at this point.
-
-That was because I misunderstood your suggestions. My bad :)
-
-Anyway, please keep the suggestions and recommendations coming :) I'm
-playing with some of your suggestions right now, and waiting for other
-folks' inputs as well. Will send out the next version at some point.
-If there is no fundamental design flaws, I will un-RFC once I've
-addressed all the main issues.
 
