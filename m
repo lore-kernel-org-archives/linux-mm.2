@@ -4,82 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D1FCCD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 18:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81799CD6E5D
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 19:05:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 587A56B0088; Tue,  2 Jun 2026 14:56:44 -0400 (EDT)
+	id 9659E6B0088; Tue,  2 Jun 2026 15:05:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5386D6B008A; Tue,  2 Jun 2026 14:56:44 -0400 (EDT)
+	id 916796B008A; Tue,  2 Jun 2026 15:05:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 426F46B008C; Tue,  2 Jun 2026 14:56:44 -0400 (EDT)
+	id 80AAE6B008C; Tue,  2 Jun 2026 15:05:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 336F66B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:56:44 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CCEBA1409C7
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:56:43 +0000 (UTC)
-X-FDA: 84835879086.21.EC530F8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 13FED100003
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:56:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q4lP3MaD;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 6DC816B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:05:27 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0869C8D7DF
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 19:05:27 +0000 (UTC)
+X-FDA: 84835901094.02.AA8981C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3AEF61C000A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 19:05:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0mNp4fi;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780426602;
+	s=arc-20220608; t=1780427125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9cejjzLubS+fRPmCUkiWzNoFa5RRSek41ZLe2/1/OLc=;
-	b=aNdTnbk4SGvWDuxkWyNT8OuEhHub5oOwrbg7laYkAUE1sjZ9uhJilctXZS2DF/PjYPWSjK
-	NP20DpsT3JYiBh8fkyKGm26NA0L7dYhagNoutMUQu8gzBhOfTIvCSFPZAsKRk3bITlUTZy
-	odgxYLiOWafLFQM0A1hdlnr3XmSSYEc=
+	bh=f4ZyRdhtCO1dv7T3Lj/KxS0Pm19iL4/0dY7jaN49Kns=;
+	b=V3zTLQNJUsTf4xIjQTJ4UxQPdJwrs/F0NF418HnFMZrjEx+mzM/5jyUczp47T6H1HqKDws
+	t7t6ne1u8r4+blqITkzTKu/BCE5UwaL0SLkRH4gZZsxjFQvUWlUbSojNucwQ0GcGdise5t
+	JzG9YaQPIUTZVDOW1CrzeP5ESxLSwYY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q4lP3MaD;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0mNp4fi;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780426602;
-	b=hRmDnJyE47RG2iLtPSrT27VmAbALWNjSLXI2TWwyY87mu0ZYC1wdOWUFt9hGQhkr9/pzUy
-	2N1H9UD+iG7KBDmasX2FXmn7K+6eYCBfbaqnm6Akk8y6S8dEUdBo+upzpZtT62Xrndx20u
-	XkQaSmE5o+Thcykd6lG3Zx8T7o6YEAQ=
+	t=1780427125;
+	b=4hvkK0t39o3f9vn+UASZfmVaMCsIB02E7J13jM1M30oqItPmm+6d/CDZrj539QiG0sH4D3
+	cx4S6tBve7bRLdC+pP6OHsqyqVtg9IVclBsPvMmy2/FJtgp26fKiISZ4DLXpiWuAmMWsf9
+	J/erRihHSubs2dJlmNL4EJbl6xiQjRY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6D50460098;
-	Tue,  2 Jun 2026 18:56:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0482D1F00893;
-	Tue,  2 Jun 2026 18:56:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3957A437AA;
+	Tue,  2 Jun 2026 19:05:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07161F00893;
+	Tue,  2 Jun 2026 19:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780426601;
-	bh=9cejjzLubS+fRPmCUkiWzNoFa5RRSek41ZLe2/1/OLc=;
+	s=k20260515; t=1780427124;
+	bh=f4ZyRdhtCO1dv7T3Lj/KxS0Pm19iL4/0dY7jaN49Kns=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Q4lP3MaDlvX0mnm+6mrSmEmXPxxkFpEi2fB2vW5lkMSVz8Zrz8VGVqJVy6GgIp8So
-	 QTnAE+C2nMV/0l1b+EWq+n1Edjt8lSCKs+BX20RARRcDfsFiA7rtVuQf/GX5UcCj0N
-	 LbeR04Kk04HGzVKm18l3h7lfWbZhGJX0HaVBN1EWZGjEICPefs7tqkToLgz3RX8KjG
-	 UIxMjrZQ8al+nyS8CNGDAgWHwWgPJTajRwOVp1BqzT8r2bUBaJ/lUJ3B9r2fzGmWCD
-	 dju8sklgpO+9GPZ8StjqxbHDED3XQT4zA21G+enU5n+Kv6Ek9rfSFWuQavH4e6n4MA
-	 N45+fzAEm+o2A==
-Message-ID: <b03c0d32-07e6-4148-bebd-50784aa3cbb1@kernel.org>
-Date: Tue, 2 Jun 2026 20:56:36 +0200
+	b=I0mNp4fipHMFLsjeiHarIAc/AwZDY9TKHt5YzeQ0/nt867h0ePIjiGzboazBeD7E/
+	 qf3KhcpySwgWtRMQNm5/JpW03pqS6I+yw+4ZiNSlB2tv1R4Ah6SIhNWfWudHg5Fpwo
+	 mLJpvrfaDRa+5Obu3VMjc2xdccC3NcKIRkV2x4Yz3S3ZzOakmyhrqVeobC2Cx1C6l+
+	 6e1zs74Jdov87CNBJlD5NVUBetgD9peYD7SvmH7NEZC7FjaDhNxjCRE76Ru85t7FZd
+	 FTcNqVIh2orMCl4iF75xI6ioixzwDNuOfKsDa6RIhPOA56Cf7MeW0O2gxEBuHWjbCq
+	 +hwjmm5JiVU+A==
+Message-ID: <7d199cfd-cf45-4545-b9fd-19b9dbee4b6e@kernel.org>
+Date: Tue, 2 Jun 2026 21:05:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] mm: page_isolation: avoid unsafe folio reads while
  scanning compound pages
-To: Zi Yan <ziy@nvidia.com>, Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+To: Kaitao Cheng <kaitao.cheng@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
  Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Liu Shixin <liushixin2@huawei.com>,
- Oscar Salvador <osalvador@suse.de>, muchun.song@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: Liu Shixin <liushixin2@huawei.com>, Oscar Salvador <osalvador@suse.de>,
+ muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Kaitao Cheng <chengkaitao@kylinos.cn>
 References: <20260602130755.38794-1-kaitao.cheng@linux.dev>
- <34F0943E-4ACD-4655-B9B8-41F658FCDB7E@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <34F0943E-4ACD-4655-B9B8-41F658FCDB7E@nvidia.com>
+In-Reply-To: <20260602130755.38794-1-kaitao.cheng@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 13FED100003
-X-Stat-Signature: zt1bemad18jboxu7jzo5oacs6h8i8tpa
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3AEF61C000A
+X-Stat-Signature: t1zpaze9feozymuehma8ftgxrjeuefek
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780426601-799437
-X-HE-Meta: U2FsdGVkX1/p8Mhy7fW4fuWEFjk91BkOK48rVV6U+qeuDvJeOjkq5M4iazSFll8c0bdJt0VTDrl+NRhh5SCjlmd9moLWWoZIVEhv5T897zwxwn2o+Co+VoAFOnW4fmVPLs4KAT3PfcScAT+QFO9b4wjTxtzP7uu1vuqWlmC3ggJKSBGYYh+LwUAWr/ksE/rEhau+FWLKbeQBGxca4ZARAnUMJh468qz6FoYveYRASN+zVYoGs0Kt0YXIOJBptZh9EEArzVXvr/2Jq4IORHwEvo9FRKQM+OwVKuzweReEQE/6GMGO0PqO1P5zLmmzmUcgWvl1EbfBByJ1jMQcJZiuuKmMSnABaiACCnsEonJ8BQTjk8+1lzC1Avn1bADgaUmiVQFVX/YkEzM38wCh+joVgrEhrhOksimtu3gk+xg6zQxAC0altUpSkJGDft6N8GLItr0pM85cZVx6RAl9vyklMfW0nUaNm5YF40SJH8HOOEUJgWI1CgnQ/QD6Rg8eUh9EbjdtrkBjlDmOnFxMLiLiWSFb4IugiIUsdBO/yknfChqpFUtgWEeh7Y65W7E7NNom6FrvXnMZpslVdj0r/uuANZoKypjo8P9Y9dGQ588CWQKqLeVr8TBx29l6hRaXDwG/gNt5h58g9Lzxdtt+zSCshLODnSRn3s+RIu83lnQbzbFh3sWftp0WyZwpZudtduqVmhLXWdlKubLSS2Y9+ksSxjVwMejIxCES0jgCOmXVsVrgFS9K0WAhVcYxPD4Vrcu3PCedH+dzEf1vhLiZDoCxEEqpV4jewIRqptfy1hsVsB1fmGGcPNjzFfT0auhM13m4b/3UqCxqtUiiF11HY938/YR8/kH0kXDOkNjvvjJjDffW+G8xl2mVoulOy4EJcMfWW50+Xilpy3nEgihnDCfEqtPquSe0/Xa5susVIuAsF8BU1WBoGFGNMnmXDjBaD9yZf1dTi7IkmCMeHPlk8uF
- fNMN37h7
- iUcECd9t7PcsEdZ1qR73/pCiASdfFzdO8gPz6sJBqmq4iw11DA/1vQskyO3Vc/ErBGCUDGQ8EAW/A1Oq4A5DrXqpb2j9/2xzLcFW86He2l9f/+J4MeoB55i1+4xQYjmMjMBVSrvd7ogrk2PDzalM8a+InAsYVSfXYavJK0EEG1l+5jrohYf7kIElBGKO/ODPK7zgAFwJ9v/IeqxvPT+n0f/lIVpxuU8VQH4ELDj9NgnMdxUQvvd+cKXNr2fxpXLdGJQd/dP3pMjB8glkzLtUBuq7eS41qbwjVLJHhRjOvCRW/wXYmPr2rsTebUZJ+PykAIYOltnrRhTxEMao=
+X-HE-Tag: 1780427125-63687
+X-HE-Meta: U2FsdGVkX19dZPptD1p0UJahypWsI4yqdQ/WDHj2g6vLYYveSZOZFHyBS9CpIEH/+pW1TW+ljX0/AgVN66KNOszzKpeQjy0rqsW622CVhRFOIxh6pAsoaWz/mP+behG6rM73qKXfeX1WyoTtreb2cr448F9QrCspQPoIs/Wqf+iQYXIhrv/myvw/3e+nQjllLk4t77Bvc8A+6oWixWnpqDw1OhJFmti5ZwAt4MopRP9QLMc/2n1kz7Qdau3gh3TYDSRMki5I1hPB8uGuPIyzeog4picrYVRqsefnZQaMFz8/HaGL75/ARCcLfpEH5jd8Uf54Ivkrobr07kNOZ6PyDAXanqT08/sl1Mac1lqVq1lcNqypfIk76rG7J2PtIxyLfHSjWUhWtIOdG+6NB3KdezW1zGJUpABx8fVulGm24aOaQm5M2L5JMoiLZW43ceiUhi5tztvhE6Lwf0yOSc4cENxGarxOINhoMWi4ZMF0jrOZmQk6TW1ZOAEoaM9dU0+bMnBnrZX7Jc2mr/Fqu8x/VdEgUwjuspESv03mtKdaw268UMjO1yg/ULCbfENEJlTaB7N7XEnp1wt5TpD9f+KFeL3L8J2+McxqDqV9lT73/hwE7412cfvHKN9pI8aFYW6N2KBYrA2vyIOAhTjx/7KTowKqFF5a4SDGLUQOFRn0NY7/57SZ0RMDoUlyZ0nV/QlrtKbspbzKUCVo7adKnlT8ETJ3OHc4kiaOrcg1JYhfjxVoKmRkLBMWi6PGJ7EqZY0dTjaSReIx7EASFKeeihlcRoAAhjhQb0lAj6LQLxxRk2m7bqJreSlf22pwH5HAZSXqcvUtjzZgRKbcOpQWBsHW8XeGsP46m4nksmA5xQOEveGucU1pDmwpza9DI8L7Q3dVSm9zNj946tDzfnO9dsxlBk0uxTRJ9d4P5/WYwDR1pstsNlMPtDTfD2KF672F3IykATKx2s3klC7+6SO8AWH
+ yXhRvwt0
+ 9/EZvHX+3/VidpgJUwbz+u164CoIDKXUow4SzlOeVDohCj8k22FeEEG7MB38jJgrk6RElC3GrMwf8giMK2+F2Y8UsQm+ObgDNECnOwIeeKezoyF+cwlolyg3ZQp8EI5nfNX/OPaHY/gvowooXIARPZe/fpQD+c3kvb2k/MlVmsBpv6/KJP+2qKxD7Ysj8zE16sgpgIUsjIPtlhG3+DTr0tVEnH/4rSLZPqn9u+zbsgINeGU2QHotEh39IR32FApLY3qGpjRPUDaBLN9x6C97qDwO37vTyB1MEKczyLpnOx3fYyj33YxjlbS9dFUDmC2XhgIhSO/JLdKrhcr4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,110 +143,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/2/26 17:02, Zi Yan wrote:
-> On 2 Jun 2026, at 9:07, Kaitao Cheng wrote:
+On 6/2/26 15:07, Kaitao Cheng wrote:
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
 > 
->> From: Kaitao Cheng <chengkaitao@kylinos.cn>
->>
->> page_is_unmovable() can inspect compound pages without holding a folio
->> reference or any lock. The folio can therefore be freed, split or reused
->> while the scanner is still looking at it.
->>
->> The existing HugeTLB handling already avoids folio_hstate() for this
->> reason, but it still derives the hstate from folio_size() and later
->> derives the scan step from folio_nr_pages() and folio_page_idx().
->> These helpers rely on the folio still being a valid folio head. If
->> the folio changed concurrently, the scanner can read inconsistent folio
->> metadata and compute a wrong step. In the worst case, folio_nr_pages()
->> can return 1 for what used to be a tail page and the subtraction from
->> folio_page_idx() can underflow.
->>
->> There is a similar issue for non-Hugetlb compound pages: folio_test_lru()
->> expects a valid folio. If the previously observed head page has been
->> reused as a tail page of another compound page, the folio flag checks
->> can trigger VM_BUG_ON_PGFLAGS().
->>
->> Read the compound order once with compound_order(), reject obviously
->> bogus orders, and derive the hstate and scan step from that order
->> instead of querying folio size information again. Also use PageLRU(page),
->> which is safe for the page being scanned, instead of folio_test_lru()
->> on a potentially stale folio pointer.
->>
->> Treat an unknown HugeTLB hstate as unmovable so the scanner does not try
->> to skip over an unstable HugeTLB folio.
->>
->> Fixes: a0a9f2180b90 ("mm: page_isolation: avoid calling folio_hstate() without hugetlb_lock")
->> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
->> ---
->> Changes in v2:
->> - Avoid unsafe folio metadata reads in the unlocked scanner by deriving
->>   the hstate and scan step from compound_order(). (David Hildenbrand,
->>   Andrew Morton)
->> - Treat invalid compound orders or unknown HugeTLB hstates as unmovable.
->> - Use PageLRU(page) instead of folio_test_lru(folio) to avoid folio flag
->>   checks on a stale folio pointer. ()
->> - Update the commit log (David Hildenbrand)
->>
->> Link to v1:
->> https://lore.kernel.org/all/20260519121646.40833-1-kaitao.cheng@linux.dev/
->>
->> ---
->>  mm/page_isolation.c | 19 +++++++++++++------
->>  1 file changed, 13 insertions(+), 6 deletions(-)
->>
->> diff --git a/mm/page_isolation.c b/mm/page_isolation.c
->> index 7a9d631945a3..32ce8a7d9df3 100644
->> --- a/mm/page_isolation.c
->> +++ b/mm/page_isolation.c
->> @@ -41,8 +41,14 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
->>  	 * We need not scan over tail pages because we don't
->>  	 * handle each tail page individually in migration.
->>  	 */
->> -	if (PageHuge(page) || PageCompound(page)) {
->> +	if (PageCompound(page)) {
->>  		struct folio *folio = page_folio(page);
->> +		unsigned long nr_pages, pfn;
->> +		unsigned int order;
->> +
->> +		order = compound_order(&folio->page);
->> +		if (order > MAX_FOLIO_ORDER)
->> +			return true;
->>
->>  		if (folio_test_hugetlb(folio)) {
->>  			struct hstate *h;
->> @@ -54,15 +60,16 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
->>  			 * The huge page may be freed so can not
->>  			 * use folio_hstate() directly.
->>  			 */
->> -			h = size_to_hstate(folio_size(folio));
->> -			if (h && !hugepage_migration_supported(h))
->> +			h = size_to_hstate(PAGE_SIZE << order);
->> +			if (!h || !hugepage_migration_supported(h))
->>  				return true;
->> -
->> -		} else if (!folio_test_lru(folio)) {
->> +		} else if (!PageLRU(page)) {
->>  			return true;
->>  		}
->>
->> -		*step = folio_nr_pages(folio) - folio_page_idx(folio, page);
->> +		nr_pages = 1UL << order;
->> +		pfn = page_to_pfn(page);
->> +		*step = (pfn | (nr_pages - 1)) + 1 - pfn;
->>  		return false;
->>  	}
+> page_is_unmovable() can inspect compound pages without holding a folio
+> reference or any lock. The folio can therefore be freed, split or reused
+> while the scanner is still looking at it.
 > 
-> LGTM. Thanks.
+> The existing HugeTLB handling already avoids folio_hstate() for this
+> reason, but it still derives the hstate from folio_size() and later
+> derives the scan step from folio_nr_pages() and folio_page_idx().
+> These helpers rely on the folio still being a valid folio head. If
+> the folio changed concurrently, the scanner can read inconsistent folio
+> metadata and compute a wrong step. In the worst case, folio_nr_pages()
+> can return 1 for what used to be a tail page and the subtraction from
+> folio_page_idx() can underflow.
 > 
-> Just a comment, order can be dropped and use
-> nr_pages = compound_nr(&folio->page) instead:
-> 1. order > MAX_FOLIO_ORDER -> nr_pages > MAX_FOLIO_NR_PAGES
-> 2. PAGE_SIZE << order -> PAGE_SIZE * nr_pages.
-> But it is not worth a new version.
+> There is a similar issue for non-Hugetlb compound pages: folio_test_lru()
+> expects a valid folio. If the previously observed head page has been
+> reused as a tail page of another compound page, the folio flag checks
+> can trigger VM_BUG_ON_PGFLAGS().
+> 
+> Read the compound order once with compound_order(), reject obviously
+> bogus orders, and derive the hstate and scan step from that order
+> instead of querying folio size information again. Also use PageLRU(page),
+> which is safe for the page being scanned, instead of folio_test_lru()
+> on a potentially stale folio pointer.
+> 
+> Treat an unknown HugeTLB hstate as unmovable so the scanner does not try
+> to skip over an unstable HugeTLB folio.
+> 
+> Fixes: a0a9f2180b90 ("mm: page_isolation: avoid calling folio_hstate() without hugetlb_lock")
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> ---
+> Changes in v2:
+> - Avoid unsafe folio metadata reads in the unlocked scanner by deriving
+>   the hstate and scan step from compound_order(). (David Hildenbrand,
+>   Andrew Morton)
+> - Treat invalid compound orders or unknown HugeTLB hstates as unmovable.
+> - Use PageLRU(page) instead of folio_test_lru(folio) to avoid folio flag
+>   checks on a stale folio pointer. ()
+> - Update the commit log (David Hildenbrand)
+> 
+> Link to v1:
+> https://lore.kernel.org/all/20260519121646.40833-1-kaitao.cheng@linux.dev/
+> 
+> ---
+>  mm/page_isolation.c | 19 +++++++++++++------
+>  1 file changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+> index 7a9d631945a3..32ce8a7d9df3 100644
+> --- a/mm/page_isolation.c
+> +++ b/mm/page_isolation.c
+> @@ -41,8 +41,14 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
+>  	 * We need not scan over tail pages because we don't
+>  	 * handle each tail page individually in migration.
+>  	 */
+> -	if (PageHuge(page) || PageCompound(page)) {
+> +	if (PageCompound(page)) {
 
-If we use compound_nr, we have to check for power-of-2, like
-scan_movable_pages(),  as folio_large_nr_pages() might use the per-computed
-value (which might read garbage).
+Nit: you're not spelling that change out in the patch description, but it's alright.
+
+>  		struct folio *folio = page_folio(page);
+> +		unsigned long nr_pages, pfn;
+> +		unsigned int order;
+> +
+> +		order = compound_order(&folio->page);
+> +		if (order > MAX_FOLIO_ORDER)
+> +			return true;
+>  
+>  		if (folio_test_hugetlb(folio)) {
+>  			struct hstate *h;
+> @@ -54,15 +60,16 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
+>  			 * The huge page may be freed so can not
+>  			 * use folio_hstate() directly.
+>  			 */
+> -			h = size_to_hstate(folio_size(folio));
+> -			if (h && !hugepage_migration_supported(h))
+> +			h = size_to_hstate(PAGE_SIZE << order);
+> +			if (!h || !hugepage_migration_supported(h))
+
+This change might have been better in a separate patch, but it should also be
+alright (and never really trigger, ever ...).
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
