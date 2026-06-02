@@ -4,142 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2464C5DF71
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 08:57:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A1BCC5DF71
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 08:58:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 452BB6B03D8; Tue,  2 Jun 2026 04:57:56 -0400 (EDT)
+	id C416B6B03DE; Tue,  2 Jun 2026 04:58:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 429A96B03DC; Tue,  2 Jun 2026 04:57:56 -0400 (EDT)
+	id C18D96B03E2; Tue,  2 Jun 2026 04:58:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 318636B03DE; Tue,  2 Jun 2026 04:57:56 -0400 (EDT)
+	id B2EBD6B03E6; Tue,  2 Jun 2026 04:58:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 205586B03D8
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:57:56 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D937492422
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:57:55 +0000 (UTC)
-X-FDA: 84834370110.14.D4E4F4C
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E83C510000F
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:57:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=utdJPp7u;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780390674;
+	by kanga.kvack.org (Postfix) with ESMTP id A537B6B03DE
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:58:08 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6559E1408A4
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:58:08 +0000 (UTC)
+X-FDA: 84834370656.06.E19F945
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6DA3614000F
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:58:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QmgtSSFM;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf26.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780390686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/m/AOq0MzWCa7qNuImbU6Sf3NfKogr80Anbl3dKp5VQ=;
-	b=NZ8Z8/v6WBK380F8OEJ/WrB/ug58yapYK5TbUf3lxmdiSEJX4GjXWq0670Dl6RgogwmuyQ
-	PSmw4HRZ1rNSJdPO5Ggj12lRJfTzVn9tcjy0parnjBjmtJyjE9VHr01c5NXbHVC2W2BM47
-	bAdoF5Ka2UgvT7Pgq2c8aOyaxyj5DQM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=utdJPp7u;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780390674;
-	b=kWU7TsZqxP3vxS1pEkH/U1xXGLle7y5sZ096+b4BkvZU06+AdVFcw8gjZbgbm//Fvw70V0
-	2/wg7vLS6JJzDzBR+04khLmL0ZsKhnWYhwxK7TwYhlFdcdrpsg2cKEXNbY4zuul5lFHYvU
-	ZW5xdHMxyK5ZYwEstLxGOWM0dF99heA=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490ae94a89eso12005265e9.1
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 01:57:53 -0700 (PDT)
+	bh=S1oIF7XavksgqfJwObOatvwzU0WAoielu1phntwFc58=;
+	b=a/F+wi3L+AXFMFrsoQrnXSFNCKkHnc86ZUE3HnxJZQkl9gCtYRVwdj4jtbnfhCKQrsphh5
+	6YS9mypNv1xGpI9Lih/e6Ji+us5VjSZfmUuOK1zoannJvJYR4yWRbrIlhPujPFCXC1ugBX
+	1YibZldYtmjbgA0fvQmGsFx8XF246os=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QmgtSSFM;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf26.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780390686;
+	b=4TZFqZM8E4xCxN33TkHfQn9DmTX/uecSVTtIYU5qKcKvuaucVQBgdn4TcL1xnRYID/OG9T
+	mcLX+cYoAUKnpyuS2SaeLtLyy0Yds0y44OOcGenqah71Z7oDSxmom2SqCHt/cxQBCYkbnR
+	+4Hj2FK7l2foLLNZtv9GpeM9DPxTETk=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-45eea68dd6fso2609636f8f.2
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 01:58:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780390685; cv=none;
+        d=google.com; s=arc-20240605;
+        b=WuYRr+g59V4mRdGGghZjXNj+451Yx0EVe2nc2n9erYxz0faeptaen8DjPQliEwBrRy
+         r+ZI6MMWza1TO2MyIuMshE1ilidyTfSjPf4Vb1D52FkqEshtTT1VnoftxE0ZqWFWYLlU
+         XADE8bbuqZw2Rj98+BO24O8cVfF1dKHdFjfud8SALAgtKQzxoY+xHgX3aaYDRJLiGKxz
+         Hpf4zzm5k/zDTdEQ+9MKyNXT9KnkvemBQyJVjuAfgzVOaPGR9Z60QL2vyTU2+hNtAtej
+         w+q5D8g3hGgCxNdmqnr1DMRYJ1WK8n0ULr+VFns9TQp5cyWisBMZfCGIr3ZicLthnP7R
+         6maA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=S1oIF7XavksgqfJwObOatvwzU0WAoielu1phntwFc58=;
+        fh=C8b6lZPtrB2LD7MBO+6F3n+PqcmJOfb95NDq1lhAU2o=;
+        b=Xj518vZZlteztrE1cGYEVybYsY5SlI4bttH/wBGY1v+4uhw+4+5dAZVwuJvxAiiw5R
+         3rsWNziyHfc7eUMSFrMjAF43puml5no5qsgeupqLyaHYwvjE8fnlLdf5tsKuELhDFlfz
+         7z9Rr3YTqin8sbO/TmKFVhLvJJz8L/eNQG9jOG8ymyJ6rNU/wzBDMlrSsj7wKEF1SyFd
+         uGSaZWMWe4FpcArWrAK4iGX3xrFxpHZ+xe53MpC1xRnCsr5L5HuuDOZ0F61YSt6oPlvP
+         343+cILeSHjv/6swaRCnolVWqH+iT/p6HOkEBTNo5PiYQ9E2Njw19eXpCFzKICpf563/
+         yyIw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1780390672; x=1780995472; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/m/AOq0MzWCa7qNuImbU6Sf3NfKogr80Anbl3dKp5VQ=;
-        b=utdJPp7u8DvEte8FroKDakJm5Qk/ORPVKs42t31FpKPpshBYISoFa/lF6JOkmJ2OS7
-         AfqmtQE+6aUp7A7oXggOqk0N168H1kW37Odo1YotREenCXU16O2NRzz6BVfY4lMGEze3
-         3cGC329syE+luTzuecz6/FwoGlZBGsQS1mFVpdZwviSwNe6qRAyZGpsIZeV1MtKxQ1fv
-         dXwoTU61cR9fAmkJfbZ4xnn99LrmMkk42JWFZwQ4ndIq4FnlobVhbhXNHEFnQfxMS42Q
-         +4KwRmqmLyNWEZzbj+oM9ELT2G5zTfV6QpHyI69lUSy+NHHAJ3AZc6R82VBwLJZxepaw
-         cj8w==
+        d=gmail.com; s=20251104; t=1780390685; x=1780995485; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=S1oIF7XavksgqfJwObOatvwzU0WAoielu1phntwFc58=;
+        b=QmgtSSFMyL6aDyGfN6EfsH8VIhMh3tbklSXglkTBscgAJothviE7EwJpOcP5an9Ele
+         GFDhWnTeXskpy8fNVyQXH2VIBB2DogTQEw2wbuderfYpSY4/2MVQMIgy4FxJEMySVIBp
+         vhKZ89ta6Ot0Tq5yiSAX/g5s2G21g9ISW+Zbry7/v2RvZB1LVjedGiBHVEInSGGPLuSw
+         Ea4wydJ1sNtKBXzXpWo0bSZcQJ2pQF7sV8jbjWbGkRAh32F5Djw/Y76ycxNbvD6BmyUG
+         Y+TEu2+Z93lLSZbiwAnMl0BU/WaHU40wIeNWVoRRg1w02hL8l6y6dGYP+TSQclL6wm2L
+         H36Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780390672; x=1780995472;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/m/AOq0MzWCa7qNuImbU6Sf3NfKogr80Anbl3dKp5VQ=;
-        b=MrIxTZTXF/Jj0S1PJhxk5eX96p/IWYeRLjAFaRlz8zqDTqHlbuFxQqmPz9ATeykS0O
-         8M5isRInEMNyOEs/vXzI66kHeuacnfJwNrWPEpmM1GT1boI7JgGAwSWch8xWr1+tlAbY
-         Qsqc17dHKEvy1YGIDF5lEu+Uo9l2a9zQn5ykfAxvHOhq7+tdMDta72pflt6vw/zd2Pjx
-         nakYEewx7bE7z7EK/qOohXbvRF9mZsJTRvnFsy6SH3NQagPYvdfKpreYNbZaQX9ziAWr
-         YoZ/JnVlKHCETmrOYjoWkhdxLLDVgpvK1TlhdQtMgoSuoDKL5lwRfgvnoLe1gr99MJtz
-         gbYQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+VBZRZC9Y8+Pjm22MNuVa39r1GhnAabQE1SzlqHXHzIE/4m63HhFhs20PcPY3H5R1r3scfSyVGhw==@kvack.org
-X-Gm-Message-State: AOJu0YwpiUnH+cQTXf2TlvZwxu9wac/HEQ+Kn4Nw+GEDArhZ98ZkSock
-	DwoYHF/RMGqGZxv3ldC/Wk3ir9fb8hdp6A+5dGsfaGXxpFaJuuCTcIvPYHgcSExIllL/kWvgYOo
-	whzarQQJG1Q==
-X-Gm-Gg: Acq92OEtSaWm+7odW5udxZ+BljM+B7W4FTbM4hNXw6Ls5EMoUxqBQenOduoNdZEdJ8m
-	KkwiF8supDgux9IKYachpg7NTbiRCk4UgTqkiAMW8DUklo8H3z7KAYfLNsPo6DYb/5WxH+5+Mrc
-	io6PzounK3dsk7bDVjIbAVqAfeWXxzD4h2nDgwxhcUiivVFIk60g30HoqnOPAeijsYEASfFRDz1
-	j+qTCpNre3ufpE+6cIfrMVqP8lEm9JrPBg6bXnSAhjVfKGvYpjAseR6cgnrbSlnzdP2MLWF5rja
-	kjVYzCSsncziGZxslirTq6NlSMETtMjQMHfg0opDkNpGPYiZB+iaTK46UvEyUCn3zgFZ776Sd2C
-	9mhRXGuXWZR5Bb/kMIgBh1ghn+UrxCTh2CEA3TATHPk/9T3qK0LGZP5t5C7ao5SqImSJL7obEZj
-	k1+PNJle33tBk8vEpSi04owty62ZtnUZWhSrO05MsKKw==
-X-Received: by 2002:a05:600c:a009:b0:490:ad8e:11bc with SMTP id 5b1f17b1804b1-490ad8e1279mr109459155e9.31.1780390672385;
-        Tue, 02 Jun 2026 01:57:52 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::6:6dc9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef354c682sm30647541f8f.23.2026.06.02.01.57.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 01:57:51 -0700 (PDT)
-Date: Tue, 2 Jun 2026 09:57:48 +0100
-From: Gregory Price <gourry@gourry.net>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	damon@lists.linux.dev, kernel-team@meta.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
-	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
-	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-Message-ID: <ah6bDNxlB1zBUnzN@gourry-fedora-PF4VCD3F>
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <ag6XyvxR-NU5rGn-@parvat>
- <ahOqzpzAua96HVkn@gourry-fedora-PF4VCD3F>
- <ah47NNhuiClgGCdn@parvat>
+        d=1e100.net; s=20251104; t=1780390685; x=1780995485;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S1oIF7XavksgqfJwObOatvwzU0WAoielu1phntwFc58=;
+        b=TeFuDNAESrMmCH9xI9ApTejn6g1GDoNhXFuT9gOWuygXviTmiRfC43jqn6qArwi7G3
+         zxKYIx5fu861lmNB7jFYCkSEcoyAh4l0MBOfJaW5XMzep3hRhUZybv3GtJTu0Tve03p+
+         THjr6HSUk+6W8oyoN+6HZuUccyMXea18LHJqH2bUoom16CNpJzBZcMOVLA1t8aihf7IB
+         qoFsM+jeOZ4eh9CroEvfzTdsbQhV0SQdGl96To/FPDbiiVv4n6KUDzAimqqamBFIQDeZ
+         Ttc9LHMC9brcJNc5Wcyq7QJor7tn0RlueMoIlSJKdvgohQj6QsHELrmEBjFcS7pzC+jw
+         TXwg==
+X-Gm-Message-State: AOJu0Yy1OOXSiBgB3wsbCZUk8/9K72oRPXvdG2kX0tRX+aSXdPhgVdHx
+	Y3088gLT0Bio3mbAZKZSrrQz5D+jlKjhsKwDFN3pQ3rwLJ2dVkZe3WOVUYQwDdXZwRodF/z5p2V
+	gjYgSuGPpUAcbyMl/J9cnvdB6AhmNtAPJ8ypt
+X-Gm-Gg: Acq92OHzlgBHdVbjcV2FtdjU8/AENIfqKXwRgAaku86UwM/mdoxAEcI5Q0960we8/KL
+	zph+2j1bc1EIZ/wEzthICkVUdTltO5YPZWtrto+thmr3fNcvyWvxqXwuSOugxj0aN4Zl+FIev4v
+	A2SyDG4x/jf/TIfiJj+HXB4YW7S0QNl1GQIj4zkR/pUdnXSdceJOb2v+ojXGiCjJl1CpDRlOI3v
+	y7sDr8xytwzJlQFQ4lvq2mai+FIsBBg09mDhlpTYfqq3dniBks07C/JSQlT280v/G0IQ8QqiUEx
+	Q2NAuZwc9QJi/nwXY5M=
+X-Received: by 2002:a05:6000:4b19:b0:45f:f142:d55a with SMTP id
+ ffacd0b85a97d-45ff142d6bamr20280733f8f.14.1780390684617; Tue, 02 Jun 2026
+ 01:58:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah47NNhuiClgGCdn@parvat>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E83C510000F
-X-Stat-Signature: 9fc5iaz9wzonzg6yia6gonrg64qxcg1m
+References: <20260522053146.83209-1-jiangwenxiaomi@gmail.com>
+ <20260522053146.83209-7-jiangwenxiaomi@gmail.com> <3f55655c-b50b-45fa-9314-23e35d04ae7e@arm.com>
+In-Reply-To: <3f55655c-b50b-45fa-9314-23e35d04ae7e@arm.com>
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+Date: Tue, 2 Jun 2026 16:57:52 +0800
+X-Gm-Features: AVHnY4IW685izywGKg4IIg8w_aDLTDby4_6g3UPUknnDrjCf3XAzk_RAN4y6TTI
+Message-ID: <CAHKocdH-CgkFTbcowvs0gEgWrzu_9=928yFJH-dQWQxny2au7w@mail.gmail.com>
+Subject: Re: [PATCH v3 6/6] mm/vmalloc: align vm_area so vmap() can batch mappings
+To: Dev Jain <dev.jain@arm.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
+	urezki@gmail.com, baohua@kernel.org, Xueyuan.chen21@gmail.com, 
+	rppt@kernel.org, david@kernel.org, ryan.roberts@arm.com, 
+	anshuman.khandual@arm.com, ajd@linux.ibm.com, linux-kernel@vger.kernel.org, 
+	jiangwen6@xiaomi.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 6DA3614000F
+X-Stat-Signature: h1nqz9n5ywxy49js8zgaxy9ttykac7an
 X-Rspam-User: 
-X-HE-Tag: 1780390673-490534
-X-HE-Meta: U2FsdGVkX18CDBTq2isI++hEhUFunthXFxRJAuqVmKK5dHCVa98aorLghYcnc68hUaQPdcbAImcP+VbebGpB4b5OIy3AQdAu6DzjYkK8qOtUtZojNULJx88vBqEomVMzPmiCvTKr5o5YknWiduyHwBkwlgTc3f5APv5I49rj01DYCxb/CcGAITLDQHKYk/F3bE1LJj1Wyg1kRJhc4CLNw3evpnyEAM+UD36AFWbzeFchI3RUUdehcsxiKOIyB01LIfLq8FFhE2q4HDxwx5Etp3QVzVtu0T3Ez+auohWyk5reM+zjuFZvxwheWSU/ecpKLGMKFlpPBUtjcNR2YLp+O0YBkbDFqcrAO0WLcrgupT6kSigq6oB9gsGUKxSmMWZKSLAwjd6pBh3m7CMVqFaSIojdpA8mL9TnkeZV43RhFxvP4NYhiNrFcHPejuroobtDYy5jVEI3tiioTLJSPYKHwaOq6X7/5Jup62V2NiPORxpWg9MQbgjOz8hl6G7KvylOx3BfMEMAFoDLyRPOe2rLcnRsyMuogfGWSU5wiu3eR1c+hM4zzM3CIQCiNnSJjoKqkOo0mvNXcY1/cSzPJq4Rco3NSHP0/rnwjLd8X8fGrPRN/Trz0ii+xgfs+RL9j4fH12mtSaMp3MCDfJJ+O5WR39DbIowYsbIapNacMlZDrs2UdL6hYLaMeTqFwMLCHaum4A96vBK3tGBhy9gZV+bk16g4IrBj8dZT+espOFd8OFnLdoP/yLUE7lNKthdmFdH4s6Fy6hfT7TsCGnYFKLZub8fB8q3jrLNb9e3KvGTcLSLwEHLf254tkxgOQ7NvFrAQATlOTYI6Y3GkhOgZ7a9PRv5FnPY9Qn2AW3nfinCrzg/kvBjKM7iWUAkCQXwqtJXC+vH38Uc9eNzz0jPCDmQ7tyKKdh6aJCW1VBF0IF4013/fwC1QMCFTcvgv9UysfnkmYK8S2sYdeGsTbHduVIh
- FzJdaLHI
- bXSlvMaZ3Bq0ZL9VtX24MX1m79J3hgSCuKzdQ4Meyym3S10AQ++UqUCEp3uUnnKoCFhjbhwMEokQbpK6SRfKXc5JoloJaKZpsGIF8vOUqZYr/YdzX2Tph8Y36h5YM3pRFcQbeRuolpx7n9U295O5l8d9UL0+u5Y/WsDZzsH7TMc4mKICEdFRPaoIDL1anatmmUMGvNgNPylkAqAuHivIMTDhLmKYMWo01G6G9dImdY94v1IozqXsvrX9cCNiNvhd4TOPQm5MkqIWT+PbGgpUsyMvpFGhB6Y5aB4+qcVEsAdAoa3hkmtq7FIZUNwX747hlWiAyOyWNj0Y6d4CjX84YdNJryiV+A+aL0lLpSRDJH2CIHL3P9wNUb3Oyd+mLivXZrUKQ1n2Hskg6DC0TNST33Gq6UQq7FMEpWmvg6WlWxWTGsd/tDjh4psH/LYYnALCP3q/g
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780390686-613126
+X-HE-Meta: U2FsdGVkX18PyuImWusVDgOfYW1UmstCdS/+mHvh6MtcRuO1VkF3G6aYsCOqltLd0ibqPQRHGDtdoJe2lFKNoJe4g8bqb0tAieNG1VjVS56zL9AAwiSJx9dubaPE7xS+P6Eb8qae073FV87Q1rO5I3R4sWRKz322CKpxHadetCXl+o7Ehs/hyTJ7FvqybcVmGGEb823mffKXbg2m98JubqeIKTL8rZ0f4RzVUuW2DlcqvZ+mLDRviLX4ILh0/VdoF9zLODvxD7a+pufxJh2SUrzRYnNxKXc0Xl6iC+2a/j7CCGoVXBGaNd/9txAiZPY3kLXiz1uc0Tk70EQgZaJQnkQf0FcGiSZfcT9gg+HsNJxYCOtxojMUk6I2FydhgBXZCy5oB/FaoX79qArV/6YZQMojSDsPaEHZ9dhfHa79QRw1SLSriMmAWzsE41nzx+99YjCdY8TIvDiPHXG3vLURQk+N9Vv0L0bUtqBzWjj34WuIM2wrjcoIr8W1EzvkCIPmXlEg0sf4qok3wRiElS51BjBBTU+GLGgwNwPB2LS3zw5J/aZoVw3QtYUBzKk532bLuLElaSyYmGiGE2ZtximlMxrG1DwJ43yoJxkbAFCMqasYiW8GyHipySuEgpgXmoDiEJY8/5sRX5Hiy1VW7jq54WbbPUIyHbqJHgWnS0xGmVlL5RZK9aO3ni38d7FQz0QXxpTAyicymeQsueO5htcohUCIRcpNpl7JX+soSDL0vB01pGbafjr8vdOQlRdU1qnzcIkB/zr38us/dF0NDUr/uaz2bjaEG0ojyq+ZvC2Usa98hKxEy8LdSEquAu4ogFrtzB1WA4NuvOL/sPZOQDot1tGxZCoOzDgh0LuV16HTHkK/s0xbWhf3hTX+MsO9u34Cl6yj/H+UBTYGkqKYvQyUMZKDxszTbZgjk/JvMa7DgJJraKxAhSFTAjO6LvCQPx9MtvH4Ds0TQYqY3CFaySn
+ lVhZUVr2
+ lJzBnr1hsKbPPaqdpjQ2LLYScYX+QnVKU48z9CMWNmQQNfG/OpaxBLSjiL4lWjHSXL31mZLKtOOXPIz6yzgaCbDAmAzRb4Z1vEI5wfLFURvO4dAKVwmNGEpk9oNLlaY6v5N6CzSl/GZIM77oUjM98JkFtBGUYMzJQJP1SZWSIYL4xJizd38VJyQrBsgFIsgLHOD+hqp4d3iMkP0YMrKUa9aAURItSc3dmHGRQpMl1ZfW6/rsL5ZpvFhQ7yoC/NpCQILSRnzGSi+Sab56cdw8RGi7W3aOgOM4cGwisAh8ZKfJxQSR4cXYb0jM88p5JyRsFEBGicQvjEUmC8cA5RT9EyLs32qFZme82lwSD1ksmvHw4eO+LIb3RWcxguCMHijU8YBnB49FNkMBxsoZ1CWjfajStLae1bb/BGNP2aGv9Uoif4fssRWkAnMVaITtmX4WLE5aGZ+E9PWkx0/84OX2TlFO/Llpxcy7kFtcrUMizXuS0Hp2f/TCTTEqjI60REYaK56oeqkhAUGnqXFLfqsi1XZvMHhX9/4Ze3tGk1KFjmHTSI6+X39PhWKqWBgA5s90rTK5vru/UpaEufSqEIwmPgu4bwbr95u7rDAzvvH4vUBuo3shBLVvsop2DYEzGTekXwGTxZTFRic+l9u4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,79 +139,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 12:16:50PM +1000, Balbir Singh wrote:
-> On Sun, May 24, 2026 at 09:50:06PM -0400, Gregory Price wrote:
-> > 
-> > I'm debating on whether to include OPS_MEMPOLICY in the initial version
-> > if only because it's not intuitive how it interacts with pagecache. That
-> > needs more time to bake.
+On Wed, 27 May 2026 at 14:25, Dev Jain <dev.jain@arm.com> wrote:
+>
+>
+>
+> On 22/05/26 11:01 am, Wen Jiang wrote:
+> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 > >
-> 
-> It makes sense to look at it and then decide if it makes sense.
+> > Try to align the vmap virtual address to PMD_SHIFT or a
+> > larger PTE mapping size hinted by the architecture, so
+> > contiguous pages can be batch-mapped when setting PMD or
+> > PTE entries.
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+>
+>
+> Hmm okay I would have preferred to squash this in the previous, but
+> the correctness of previous patch does not rely on this, so it's fine.
+>
+> > ---
+> >  mm/vmalloc.c | 33 ++++++++++++++++++++++++++++++++-
+> >  1 file changed, 32 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index 50642246f4d40..040d400928aab 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -3620,6 +3620,37 @@ static int vmap_batched(unsigned long addr, unsigned long end,
+> >       return err;
+> >  }
+> >
+>
+> This is screaming for a helper :)
+>
+> > +static struct vm_struct *get_aligned_vm_area(unsigned long size,
+> > +             unsigned long flags, const void *caller)
+>
+>
+> Call this vmap_get_aligned_vm_area, then ...
+>
 >
 
-I am thinking i will ship without any OPS flags at all for now and the
-have the introduction of ops as a separate series.
+Will rename  get_aligned_vm_area to vmap_get_aligned_vm_area.
 
-> > alloc_pages_node() is the kernel interface
-> 
-> I was think we wouldn't need explicit flags and that allocations would
-> happen from user space using __GFP_THISNODE to the node or via a nodemask
-> based on nodes of interest. Is there a reason to add this flag, a system
-> might have more than one source of N_MEMORY_PRIVATE?
-> 
+> > +{
+> > +     struct vm_struct *vm_area;
+> > +     unsigned int shift;
+> > +
+> > +     /* Try PMD alignment for large sizes */
+> > +     if (size >= PMD_SIZE) {
+> > +             vm_area = __get_vm_area_node(size, PMD_SIZE, PAGE_SHIFT, flags,
+> > +                             VMALLOC_START, VMALLOC_END,
+> > +                             NUMA_NO_NODE, GFP_KERNEL, caller);
+>
+> Add a wrapper over this called __get_vm_area_node_aligned_caller, which can
+> call __get_vm_area_node() with all other arguments fixed, except "align".
+>
 
-There's a few things to unpack here.  I discussed this many times on
-list and at LSF, but to reiterate.
+Will add a __get_vm_area_node_aligned_caller. Will send in v4.
 
-1) __GFP_THISNODE is insufficient to enforce isolation and otherwise
-   not particularly useful.  Additionally, from userland, it's not
-   something you can actually set.
-
-   for node in possible_nodes:
-       alloc_pages_node(private_node, __GFP_THISNODE)
-
-   In fact it's the opposite semantic of what we want.
-   THISNODE says: "Do not fallback back to OTHER nodes".
-
-   The semantic we want is "Do not allow allocations from private
-   nodes UNLESS we specifically request" (__GFP_PRIVATE).
-
-   __GFP_THISNODE does not actually buy you anything here, AND it's
-   worse, in the scenario where a private node makes its way into the
-   preferred slot (via possible_nodes or some other nodemask), the
-   allocator cannot fall back to a node it can access.
-
-   __GFP_THISNODE cannot be overloaded to do anything useful here.
-
-2) We're trying not to expose *ANY* userland APIs for this, at all.
-
-   The ultimate goal here should be one of two things:
-
-   1) fd = open(/dev/xxx, ...);
-      mem = mmap(fd, ...);
-      mem[0] = 0xDEADBEEF; /* Fault device page into page table */
-
-      In this case, the driver is responsible for doing the
-      alloc_pages_node() call.
-
-   or
-
-   2) mem = mmap(NULL, ..., ANON);
-      mbind(mem, ..., private_node);
-      mem[0] = 0xDEADBEEF; /* Fault device page into page table */
-
-      in this case mempolicy.c is responsible for doing the
-      alloc_pages_node() call via the _mpol() alloc variants.
-
-Addition OPT flags (reclaim, compaction, whatever), would
-(optionally) allow mm/ to operate on the device memory with, for
-example, mmu_notifier callbacks to tell the device to invalidate
-whatever it's caching about that page.
-
-This would all be relatively transparent the userland, all userland
-"knows" is that it's getting memory from a device (/dev/xxx) or a
-node it's otherwise aware of hosting device memory somehow.
-
-~Gregory
+Thanks,
+Wen
+> > +             if (vm_area)
+> > +                     return vm_area;
+> > +     }
+> > +
+> > +     /* Try CONT_PTE alignment */
+> > +     shift = arch_vmap_pte_supported_shift(size);
+> > +     if (shift > PAGE_SHIFT) {
+> > +             vm_area = __get_vm_area_node(size, 1UL << shift, PAGE_SHIFT, flags,
+> > +                             VMALLOC_START, VMALLOC_END,
+> > +                             NUMA_NO_NODE, GFP_KERNEL, caller);
+> > +             if (vm_area)
+> > +                     return vm_area;
+> > +     }
+> > +
+> > +     /* Fall back to page alignment */
+> > +     return __get_vm_area_node(size, PAGE_SIZE, PAGE_SHIFT, flags,
+> > +                     VMALLOC_START, VMALLOC_END,
+> > +                     NUMA_NO_NODE, GFP_KERNEL, caller);
+> > +}
+> > +
+> >  /**
+> >   * vmap - map an array of pages into virtually contiguous space
+> >   * @pages: array of page pointers
+> > @@ -3658,7 +3689,7 @@ void *vmap(struct page **pages, unsigned int count,
+> >               return NULL;
+> >
+> >       size = (unsigned long)count << PAGE_SHIFT;
+> > -     area = get_vm_area_caller(size, flags, __builtin_return_address(0));
+> > +     area = get_aligned_vm_area(size, flags, __builtin_return_address(0));
+> >       if (!area)
+> >               return NULL;
+> >
+>
 
