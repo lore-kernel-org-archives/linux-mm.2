@@ -4,133 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5C06CD6E5D
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 22:18:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B005CD6E5D
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 22:24:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE4E56B0092; Tue,  2 Jun 2026 18:18:54 -0400 (EDT)
+	id 8DF596B008A; Tue,  2 Jun 2026 18:24:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBBBE6B0095; Tue,  2 Jun 2026 18:18:54 -0400 (EDT)
+	id 8B6E76B0092; Tue,  2 Jun 2026 18:24:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD20A6B0096; Tue,  2 Jun 2026 18:18:54 -0400 (EDT)
+	id 7F3956B0093; Tue,  2 Jun 2026 18:24:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E7A96B0092
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:18:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 45A221C0823
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:18:54 +0000 (UTC)
-X-FDA: 84836388588.04.8B26695
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 624CC4000C
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:18:52 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cFe2Dl9j;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 728506B008A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:24:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D83D1A0150
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:24:05 +0000 (UTC)
+X-FDA: 84836401650.14.BEB9D69
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5B50314000A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:24:03 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PqJ9cSII;
+	spf=pass (imf23.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780438732;
+	s=arc-20220608; t=1780439043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3cw0K4qIf6+fPTBj4/hLwQ9yPr+Jm8wfwQ5XwEakJxQ=;
-	b=IDsvozcmYe4d6YZYXM4f/5TqmPk2FNBXpCd+ZWhDTAZLPzNqeYisy8ir9dYoNWL+vof+um
-	PSxwiug9iWr9rS1m6cKugVDfmfDTWMrvx5Rni91vHBkbhHgmwyCxpx8djtM5FdPUMUItI8
-	vHC23/MVyyafeszoJlrvJYWSI+ssNfA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cFe2Dl9j;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+	 in-reply-to:references:dkim-signature;
+	bh=muTnxhGqlYOE/TlItGjvUxPhQ3HFtb72AnUGbvWcFwM=;
+	b=mzZlWfcvsudExQP4aQUngLGC8IefNHQ5ItMn01KaajqKAz+dzovQqMey2R4sWwvln4/6Lx
+	XV4BaEH5vMfUQN+chCSG9Y4/qaEkHSrxDh97rDdWNdOXh9juN8jvQR8ZLaNP0uo/RifZa8
+	x/jTv2f9GufQK5iDHrEtFvynd6LSQK8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780438732;
-	b=6GIlJ85G8N37odeByeO49ca0J6MaVsyuh7awTh3j/gI2ecNf+SFv9hz+BtGmY0o94EhH0G
-	X+S9mEJUWqu9hb5NZ+LZ/QG839fogpLVwF0FGIXW9u/SJBBCH9ZmUeE0jPz2Nxa3tySzyt
-	nT6UcwysJKm/aGxekvKh+7fdmDZ8NNk=
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-45ef41adbc1so3214422f8f.0
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 15:18:52 -0700 (PDT)
+	t=1780439043;
+	b=Zdvgv/DXIlKN8ezMGhF0rj0njYLLQF5PHdl82TRivdF1KYrc64E6DtYqLe8JLlMFpP6tUt
+	9Bg2sKVHMbUpnF7JkIkKoMlZjI3uKFyFkyS7TxbLO9FDTKM/KR44JSDscHNHLxdhO+CcOA
+	lRkR4GX1MDUghgYLGb288qYiDwVKJPM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PqJ9cSII;
+	spf=pass (imf23.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490b64c8311so1480955e9.3
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 15:24:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780438731; x=1781043531; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3cw0K4qIf6+fPTBj4/hLwQ9yPr+Jm8wfwQ5XwEakJxQ=;
-        b=cFe2Dl9jJ/iDe8Nzn7A2gDJIfPwLT4j1wStbZkRLhPCtJxY51HSja5PPwb1wa/1KEp
-         e3nRhkSzd8DGmhBLcAvz9DUwpDfaV4l2Nj2u8SjFcIr+EUR+2yg5tW01iLmvb9PZuPxy
-         XHbM7abxIVvU7vyf7DpGoHtb79wVptwdhpqL5cF+tQUI/AnRVKrnzLduQwZ39lhK/w/7
-         rI/stpzPfMXCwxBW/VMCuTJ+cNt7tPbiwwMdN4Puvl3I/MOXu5KXcaR0uE8tBtw1KPp3
-         U2hrEyiCuAV7olRYA6NS1q1hYLw0lbIVH8VV8kxS4Ir4rzH++TSW7f28vT2Yen3aCf41
-         tmxQ==
+        d=gmail.com; s=20251104; t=1780439042; x=1781043842; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=muTnxhGqlYOE/TlItGjvUxPhQ3HFtb72AnUGbvWcFwM=;
+        b=PqJ9cSIIUkjcjsP/SOssQ+fZn+jm0iH4iH+G+DNr/A4cLAKk6q4iZP/ZoI4VOTV5k5
+         vOY3/hyoiG8t4gKc+aEkyTvKO07+VYCL9PSdPJAteQF4PgOgupYMrJOat5uRsEfCp+z9
+         pMM0F4YLbszekDc7T906KDkUkjJEougrFC0cONWiN//N4235PgfIEXuHkOZcW30ublJZ
+         r8YN7gFgcKwS9NMVDLFvEP0Z2xYL2KbEW1i8MxoKnJ/+SOrSMZZC9YS0IpcsW7uDFsgf
+         l56BvEBPzIwwWcpykPaUkRvPMwscHRf/swe7iMrtUQBMfxplwz4YF436lN60YukLE1D9
+         vJOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780438731; x=1781043531;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3cw0K4qIf6+fPTBj4/hLwQ9yPr+Jm8wfwQ5XwEakJxQ=;
-        b=RrlFCeT00rcLQp7SQ7jUH/tybekYb7OB3Z5WM4SxrcPqcQ6hM3NDSvn0o6/V0i7Fu0
-         /z1xX5Khi9PLItBu+8x5N0e/Os5Rp+POo9PaC5gjYzcfkKBEXp8jeMVpvnwL/p5RGDmW
-         SmOLT1NTN1pYRnqaNb5Sl119yCHPnQvm8tmX2pdl4nrK9mI1W7QUGeOAIk5blD8VcJq7
-         R4xqRyITwlrcZrc9v8Bea7azBg2G2a96LtqMxajA3Vai0FGsuCTK7wkhuSb9oVfkFYIe
-         O0RvCnnxwSupFeEP+1T1U5lSOgv+PbCgSAiFR87CW8QbnNjcPImZxV1Dut0g9rIDG/NG
-         z4sg==
-X-Forwarded-Encrypted: i=1; AFNElJ9NHZsnKklYy44dPqlN+iRhMXB9WhBjnqEa8rab460R0MpiuurQhXeQkKjOuHGlVHqry0epb9CEwA==@kvack.org
-X-Gm-Message-State: AOJu0Yy84jVsa7IdbTHGciF/awlQ4/qD1u4Dg6Qbg6pF0hbbF8kPKmEg
-	9dCj93NJzONEhEh2x8NgHCUnrnxJqxzV5BMycx/ts8HbencPJYw4/XGE
-X-Gm-Gg: Acq92OGrwk5bYfWdIgSq+js/G5ndDfS8VlFjbp9bQ29QhGFh/6lz8b8tlz2ZLSMCHxR
-	g28WblGqYKCQm+huupYLfoWyVz4YIF3y5ofL6mF5+HlA3kTFF7pGsvjaVMbTnRQhzE8kGxAPouf
-	NktyqkdMlCUIjIVWQUCkty5HRW8JHL+fRvOoZLE55Nlp75cEBVv4Xi4So2g2ybqEy3El37VLXye
-	3l5MwDx7D30UFodnsuj0s5xldr7jhOyF+fz6MVd5XYATJvoocUmpk7pVnLCUPzkXP3tSU2Qzrgf
-	QnBCYhCuff1Tk4dOYngd3Fk6PkS5kmrHdVWxHYpG/WZmIewCdVzK8SAddnY2aM32dvAXQGpbAz9
-	hJDEtN4mqQSyCwVNbvBmHxi8d6sbiGk1u+XMA1Bm3F1oi1xwOSmZZ4SSlonBncRmZIAPrgfalsj
-	5CrvlIOXAYCoi4VPR3JH8GFwi00Zaw0MoTD4pt26aE
-X-Received: by 2002:a05:600c:4fc8:b0:490:5057:f5f7 with SMTP id 5b1f17b1804b1-490b5e8cd0cmr10087195e9.11.1780438730762;
-        Tue, 02 Jun 2026 15:18:50 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4601f2dcae2sm2882120f8f.6.2026.06.02.15.18.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jun 2026 15:18:50 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: kas@kernel.org
-Cc: Liam.Howlett@oracle.com,
-	aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	david@kernel.org,
-	jthoughton@google.com,
-	kernel-team@meta.com,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
+        d=1e100.net; s=20251104; t=1780439042; x=1781043842;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=muTnxhGqlYOE/TlItGjvUxPhQ3HFtb72AnUGbvWcFwM=;
+        b=PY9ahMPvNE8PyLtJydED8h6LIZpe28JrU8gv4d9ZuKIuxZJxv0Ox7zfq31o3spccB3
+         C8SSzPZUU4OocxceG+ZP2++BWQqxrlaXuQRQIs7H35npPvfpAeZ5238Aycxz4PMBSvsl
+         kr6XNl44qefMYA0RawXAweX889PNSkI4DheKqCjuskZ8+UXX8ZL6IJah2J4U2mnrAqW3
+         2F2DxIXsjtbDHhQyxNaaHmEeb00zg9j1zFO3sr/cmQxmwbn+iurYsqKN7y7zG7kVuf0U
+         gxwG/rK9ZSO0l1+JmB5qN70nXXhAIfGyaxhw58de/Bsjm0pkEyNF/R1Hsjt6qGwkDgRm
+         kdtQ==
+X-Gm-Message-State: AOJu0Yyv8EKIuV3FIL0Npw3SILXHYwwBrg4f/iQOM2U0wCvXOP3MLjib
+	RXkw+8L5jvjTU/meKDG/8Xe3H0YdYJWzTqhIqML/UQU6mfKIF6obcHeg
+X-Gm-Gg: Acq92OETHtBQ5eEqLVsZXOlBDLc7/q2CesERyMx2h+ZOzzJzGakhjYt5Fzn3/QFwL7f
+	UR386GjFjN5cLJBMV6BwvVNSaNlSw1LGdSOxdYxN6cYjZhuQMTyvuMs6bgFF9YxJ2clEtlYg8gM
+	PpTw4v/MPK4mIJENtA1CoNXkDMidAxoDqqYdAnSXp9nKVGOOg59cj0u+259HlMJdvHgspu6SY//
+	e4soZHC0hZXqBhQge6t1jlSmedf1B8FhfDG0b6rXsZ1MWzNTw6Sboo9SLiXepm+EIDeOw7uaRMn
+	fuhBYlXK4aYwL69FYhaiFsGOGZuxSWj69l/GZchc4v+EZH4JXsmYzeab6kMWnHbWt7iaVAmrHFn
+	hMWfZOvDaO+pxoy7bkVH55lJLdb1vOIT585kDASlU3qwzYDnI1Vr6iEvnf+i2TgbVJlYMI/8AXy
+	Hbw+RUcITbXEFBh4NME23YE+wGzZUGNQ6IOOgcuNfWzHazDQTTxLsLGOsRAEWbIdyLZbWSIUGWO
+	dALNJOk3wLXvfBibC5cig==
+X-Received: by 2002:a05:600c:3e0c:b0:48f:e1ac:c94f with SMTP id 5b1f17b1804b1-490b5ea86d9mr9922945e9.10.1780439041650;
+        Tue, 02 Jun 2026 15:24:01 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b60f6d5asm10362265e9.0.2026.06.02.15.24.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 15:24:01 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	pbonzini@redhat.com,
-	peterx@redhat.com,
-	rppt@kernel.org,
-	seanjc@google.com,
-	sj@kernel.org,
-	skhan@linuxfoundation.org,
-	surenb@google.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	ziy@nvidia.com
-Subject: Re: [PATCH v6 14/15] selftests/mm: add userfaultfd RWP tests
-Date: Wed,  3 Jun 2026 01:18:31 +0300
-Message-ID: <20260602221831.77366-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260529172716.357179-15-kas@kernel.org>
-References: <20260529172716.357179-15-kas@kernel.org>
+	David Carlier <devnexen@gmail.com>,
+	syzbot+deedf22929084640666f@syzkaller.appspotmail.com,
+	stable@vger.kernel.org,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>
+Subject: [PATCH] mm, swap: free the cluster extend table on teardown
+Date: Tue,  2 Jun 2026 23:23:57 +0100
+Message-ID: <20260602222358.49061-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 624CC4000C
 X-Rspam-User: 
-X-Stat-Signature: q4g6pykmsh44dt8pe81gt44y4uuhg5gr
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780438732-250867
-X-HE-Meta: U2FsdGVkX18vXI56diqz3JkiOS1wCeKism5nnCsOVhf+oNhAfKs2k08OeXQzgHdoxrdSXVABOL2+Jv367vJZmIh3mGqGMEqVh+xAy+v9wbu92wNS0i7aI9N4F//rMFhxoDKKvZ0Zg3P1dcOmIhNEMY/1ojHtzRO2HtaKvlA199d6NHI3eZnW0uo0NoWKum7Jij149UXmUffXIuiknmsLV8ZOQR9XI/eRUplWsNcfBrTIgnfY9qEpEKIFxm1iXgQp7aVHam2vln4ExIWuve5TxAM6Y0PR0/NQboqOerTxVs7AoSt0J874Bsz3NO76BS22nZvYC6OGcqeMxs0sl1v6NoodmFqQul4sG/1PeW8RG5fmhyDK5s+a+Q+W7fazA6LJTzSFjaul/WlUGwKV5tyobR8r220c9Ze2v40xCH90okHjC61fOr1fuMG/573yGOa05ilG6OfD0ujJLB+4ZQTia1P0q6CEwfOfbXtpa6itk9degG1seNuut6kS0R7v7RQJgqCMnDaWDqvLZIPa0lpmuJEuLfqOdXjrxtWcfQT/NOvFq3lrcgmEat4vtTG3PrFkGvGQkZZrtuMz1S/d34zIYtbihMg1+wviFa9T7W8xxJaiP0HEhPNresfiKVqRJuvWxRgKbxSOU25NcvjPu1HhnbU4x8InaM19hUxux60qFwl14nG3+uEQd08iRRQ2VcLsHkzi0xyPS1igs7DlSUc/s8nQPf9MvSeOaf5eQvbOnQR4xOZvXgiKExATzwPeAOedYnEpvJgrYU8PlWGzgWU/l9wou6mdUDU9AAXkXy+OTfgFbs+Ze6pJhWiCXgMkh9zT68jDsPpyAF2MzXfdawznVFiGvkP5NYiBOui3IH9dEZBujhAoEH4GJYjnKNAYpytyiJTZbRBe3XI80PM6698BQ3j5HqHhX8lEYnCzOkSuI64gKpRFv8GNebKY5r8pjWzYnDohO/SY76z0zLVYu0g
- RLqSXGkm
- 0540zOUYlaukPwgGFCBqlaTHPjkEsAw4kGKaNBgi/G+Jvh+S3iDSFTh7ruqxPOYmDbqJpMToMw+1JbvkkIdRBv9V/UNnGTNU6y+HS8//XjamCHSswYTS1jQeA3b7v/vOPI24uJM2Vtl24Ioa02/EFVdiQdCxV8qKi8Ry/EwSG99+4GBzpmYQJOMQZ5NQ/PIVWmuTBHloK9hDVIbOGZd9RlcWQEXJ1OQ57zqkjoFBaIx9sp791+2t8yc1hcyWEKC4ro1mdgO532Q/eTRpeLhsl5FAUtGRrQfpMxdEz+7XZegV2cQtvSV8BFIlR1PUdObJVn+NEYky9pCi4TsJkKsRCC4wMjxxNb+GoR7ryK/2nmaquLnai/EvWryzIksyd9AMckw5YsXpkMD2DvSiDb8o096LplabBJfcDRbeh
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5B50314000A
+X-Stat-Signature: k9htpn8wkrtxq8t5fjkh3b7jq1hujgzm
+X-HE-Tag: 1780439043-813099
+X-HE-Meta: U2FsdGVkX1/0d2/7EIS6zgYAb8HPugJU2HpvG5Z88wbHc2ajtLgJcvWXJkud6a3GhPkoLUKGzZYJTxtnkm6wj8PJ4eiqPOuaR0ouNxhKjS+iuMB6QUp96bfWDj+fzLoBgFv3/IoNt+Hi81FylyxGi8hfCe3fvjCWLJ1RMKs6dUkW1bNgj1dFOY5eIYOjKXx8p86mKAs571AhcZmr9E/xKyCjpyIZondc0yWmblzXUNZ3MT+lQgmm/WFJpbq0qMbwenM7SipttmMhCD+YX/DGCyjoQI+gk0snge8uAdGfQ8U0HWfw/ZBQwqDRkyVma9NKeGPs01AQj+pT5wEd4NVqoHM9q1yjG8aBRJyPWA46CaJsh1+zQc/5ulrptDP0737DOVHQzsG8LCChniMVitR46/6tIA+VW/QplS9CbWdIiDyvnpQuPrBsOpwJmHWEzjs7AvHj4oKDp1QNW04IS0t9mGZ1Q51UElixmBY/+QB18HMru8Np6Qjq6YC0CPff5fVnfOtzqWY2clbwopHa4+KmIxIfEPTaDCamxabLpcTVRMeQcr6dA9LPvY0NLVyqHiXmWmlKvt3gymLf7ZhdR6cIjNjeL5WqKPDKijGelChU2ek4e7oOraxdpKr/DDQ3RiaEhmOLaqPOHuYUsGwgTcLp+E9vYex9HKrh84Rka69ZW6QPkAn3Bw9p51gYMwvNZaI3jqizStPldXX3wvJsi0CPJDRQIMOjdQQlq0GQaKuIIkXoWubELE7LBzInouAMClKU9VhwHM+V7riAdidwgiItLv5Fo6rrSCVaGMhOtrd0fOiL6D330qysxG5DoG+4lLu6bCC1y5v3t45pev3nAkbuI3b6dnwIfQoPoLzTlZY21gRofyiFD8AVXZQ+NHK4uZaeGDeojfDITotrDdZq3QuKMTmB58CyTq1/UXgbY5utjTRcorwVj8YFZI1x45MdxPV4jFLWbq5LhGQFE0K4/dd
+ /d3DTO0B
+ z1OR4afFBVRq3OvD7a7D8yZy72hUirhaN0eyBfPd/XSDQk22YiXBTVgWuW7nXEkFoLSzZf+cxm7yuZsU6uv6e7B7cwF2rGk1S6hMf1/qB7Z4wJ3YZr6ZKl2IGf6BIxj7cI49peKzVJi3PlGwzpUbLWc3M9nK3rIy7rq6jex/MI5x8eljwmltnCZXkwpj9+daUwgnEb6Biumif7Jc6IC73b6zb3ZlVQAgMn/pOZ98a493XwEq2BhIQSHIo6CsXDz5wMy9BfXEAQgf9LdPSAxBBWq/JWxjce/fJs5WRJJPy28rfMWaoGiaZc118D7926WPZbfZOP84zPTvqZ4NPzSy7TypbJg52qIo6XpTZw/z/7q9yqZ2X/LBNfs0ewc9Cqqs9KvJFqkMGuSKKxZ9/bPW9089DP9vAhF35W+w258V20padF0N54tlR+a38JeNmuEOnatPK2gJuqMNiG403++f7nowzRFT20C2gJU/KwBHWcNRfzWni28Nx68ZGSBAUxHVtCQqyglbS2xjN0AgRnlkbrCkMsVVyLXsqyeOfVv6PDA3uFFhie0HI26CJo4fFKxbgxzOqM1Ltpvs5KaRshHEpJRVXw4rt5E8iqCDLyUI+Wc+0+/p25WIyJ8E2C0xZkLDO0f+EMWad1f+jjJ2RDeRA7z/+7D5TB3jkKN+UWojnOkf0wmURAATnfxn+qbPls6eQ/LrtmiVHMEuDykVIVX+X/GlMt0gQW4QyrF3/ujZs4B61lUadCZtyFEYTCJwkaEPf8A9K6RkmH609pR4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,23 +124,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Kiryl Shutsemau (Meta)" <kas@kernel.org>:
-> +/*
-> + * Test that GUP resolves through protnone PTEs (async mode).
-> + * vmsplice() into a pipe pins user pages via get_user_pages_fast() --
-> + * unlike write(), which goes through copy_from_user() and ordinary
-> + * hardware page faults -- so it exercises gup_can_follow_protnone() on
-> + * the RW-protected PTE. In async mode the kernel auto-restores
-> + * permissions and GUP returns the page.
-> + */
+swap_cluster_free_table() frees every per-cluster side table but
+ci->extend_table. That table is only released by
+swap_extend_table_try_free(), which the teardown path never calls, so a
+cluster can be freed with an extend table still attached.
 
-Note that I recently submitted a patch, which makes vmsplice equivalent to
-preadv2/pwritev2, and it was accepted to next.
+It can also linger while the cluster is live. swap_dup_entries_cluster()
+drops the lock to allocate an extend table when a slot reaches
+SWP_TB_COUNT_MAX - 1, then retries. If the count dropped in the meantime,
+the retry takes the normal path and leaves the table behind, all entries
+zero; only the failure path frees it.
 
-For now it is just an experiment, it is possible it will be reverted.
+Since a swap_cluster_info is reused in place and swap_extend_table_alloc()
+skips allocation when ci->extend_table is set, the next user of the
+cluster inherits the stale table and its leftover counts, corrupting the
+swap count of any slot that overflows. CONFIG_DEBUG_VM catches the
+dangling table in swap_cluster_assert_empty(); otherwise it is silent.
 
-https://lore.kernel.org/all/20260601-aufweichen-dissens-ausrechnen-0d9b84728113@brauner/
+Free it in swap_cluster_free_table(), and also on the
+swap_dup_entries_cluster() success path to match the failure path.
 
+Reported-by: syzbot+deedf22929084640666f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=deedf22929084640666f
+Fixes: 0d6af9bcf383 ("mm, swap: use the swap table to track the swap count")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+ mm/swapfile.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 615d90867111..a69a26aec4c0 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -432,6 +432,9 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
+ 	ci->zero_bitmap = NULL;
+ #endif
+ 
++	kfree(ci->extend_table);
++	ci->extend_table = NULL;
++
+ 	table = (struct swap_table *)rcu_access_pointer(ci->table);
+ 	if (!table)
+ 		return;
+@@ -1711,6 +1714,7 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
+ 			goto failed;
+ 		}
+ 	} while (++ci_off < ci_end);
++	swap_extend_table_try_free(ci);
+ 	swap_cluster_unlock(ci);
+ 	return 0;
+ failed:
 -- 
-Askar Safin
+2.53.0
+
 
