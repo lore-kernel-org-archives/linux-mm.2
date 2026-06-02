@@ -4,84 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80D74CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 05:54:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F00BC5DF71
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 06:18:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86EA46B0432; Tue,  2 Jun 2026 01:54:21 -0400 (EDT)
+	id CD8896B00A0; Tue,  2 Jun 2026 02:18:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81F896B0434; Tue,  2 Jun 2026 01:54:21 -0400 (EDT)
+	id C88ED6B00A3; Tue,  2 Jun 2026 02:18:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7351F6B0436; Tue,  2 Jun 2026 01:54:21 -0400 (EDT)
+	id B9E386B00A4; Tue,  2 Jun 2026 02:18:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 603F76B0432
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 01:54:21 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EB8C7A081B
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 05:54:20 +0000 (UTC)
-X-FDA: 84833907480.30.B10BD7C
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 39C7AA0002
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 05:54:15 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Jx3CGoHw;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A8F1E6B00A0
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:18:17 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4230491F35
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:18:17 +0000 (UTC)
+X-FDA: 84833967834.01.AD9C973
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0DBF1180005
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:18:13 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=nUL0AUC2;
+	spf=pass (imf24.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780379659;
+	s=arc-20220608; t=1780381095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ANoWApNy7HClVP2oRbGsYE3SlFLFzfccZW33ESPs2Qg=;
-	b=ablEvL/xWXqFKOqf4+HH8rFvn3OApf0nA2PnfB8pZUw6fQliwcfCjCbXsE6VkB/FRIKxHq
-	29d/KK8qa3Z7qUbVTNJAx+DIA1QHwDwoZYOoO63/TvRxFCy+Bp0yw1aAp/wtlNj1g32jYo
-	ruSmmdnhEQfzmwmb2iEl+ZrXWsg9YkM=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Jx3CGoHw;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	bh=6w4mGCqzHENp4jk9gAMrbzBGsGOC3Xwp2PsWkL6dAbU=;
+	b=X3R/xj9FoTw03WfH6/Gyqf5zTljlNu3yHkBLEedToZlT70Xm64dSqkC8EGlCq715/Eg3y2
+	ohmp4/1oFIFi0pusn00sC8gIt8T27C/5SlivhGEUc52vow62ohsHpK7FWeUd4iDLnXIRYd
+	5OQh6fGbP9IyQmcPWX5Xv7CSVV1uLb8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780379659;
-	b=P8pHGeprANJkJbb+673Zkb41IZb6kYz7FLRUfHsz9WqOWATO+EXBf0pVBqJD/m0PmKQ4dT
-	XxZWYw4zYejJOXjpVQBtMlExtQZaz21iraiRdD8W/8faE03hopZ6lJim7+KynUWmmcuLw5
-	YcMXorMXrg8IJbdsghvEgXtGZtzccF8=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1780379651; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ANoWApNy7HClVP2oRbGsYE3SlFLFzfccZW33ESPs2Qg=;
-	b=Jx3CGoHwpSMHaahKM6tkVunijmDTSKRQZ/NxzBH7NU+KYFqM6NAkwZl1FAlNfbpQ4tV3F8SL0msSD1VFrBsnqh2eOu5+1skRP4nUEzzYAZ4KY6TBF3rVChym4U72QA1f7Ry/ndyQnP1DQsnGfa9xkC/PuxlVfF5iG+yHB1DDHpA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X43HI8B_1780379649;
-Received: from 30.166.17.138(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X43HI8B_1780379649 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 02 Jun 2026 13:54:10 +0800
-Message-ID: <6af198e3-89aa-4d31-b596-3a1b623513fa@linux.alibaba.com>
-Date: Tue, 2 Jun 2026 13:54:09 +0800
+	t=1780381095;
+	b=nkJkPADXiid+6CmKN/iyk0atOEZNZRNGVvvE/yUb88DL/JW5TJ7s4+GwHZfh0hiNpLfZVT
+	m+cWznkEiM2elO4lR9uyL8epmQVqiwQ7s6CzMNDASYlMelaRhtrImWIofRfW2/9PitZcID
+	VyVMFyFZeKsTa9U3yD9DNe78dVUeulc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=nUL0AUC2;
+	spf=pass (imf24.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=6w4mGCqzHENp4jk9gAMrbzBGsGOC3Xwp2PsWkL6dAbU=;
+	b=nUL0AUC2+jQxRt/bvguX2SP9uUUfQzw6gpNHzKGGXGbVfkM/f+M4OUSAy6RBIG
+	9ncdXe7dHndpRiLUHY7PPRmK5dzfO6U3UUgApeJTOvumOU4+TmFXLI+NFDgXMmUA
+	NgP+u0w46AKgIDsZhbFX1ef7uWkMcTLJlOAC4IG/YgNss=
+Received: from [10.42.20.201] (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3nwKBdR5qZ6nqAw--.5050S2;
+	Tue, 02 Jun 2026 14:17:37 +0800 (CST)
+Message-ID: <59de56ad-585e-43da-a6c9-7107c6433bdd@163.com>
+Date: Tue, 2 Jun 2026 14:17:37 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] mm/shmem: optimize file read with folio batching
-To: Chi Zhiling <chizhiling@163.com>, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] mm/shmem: remove page-copy fallback in shmem read
+ path
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
  Chi Zhiling <chizhiling@kylinos.cn>
 References: <20260601055704.167436-1-chizhiling@163.com>
- <20260601055704.167436-6-chizhiling@163.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260601055704.167436-6-chizhiling@163.com>
+ <20260601055704.167436-5-chizhiling@163.com>
+ <06a4c4a0-fc3c-488e-9015-04f0532650f2@linux.alibaba.com>
+Content-Language: en-US
+From: Chi Zhiling <chizhiling@163.com>
+In-Reply-To: <06a4c4a0-fc3c-488e-9015-04f0532650f2@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 39C7AA0002
-X-Stat-Signature: scifb1h7acaib7o6m3gru57bxit4rtue
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3nwKBdR5qZ6nqAw--.5050S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAr1xtw4kCw1xuw47ur4Durg_yoWrZr1Upr
+	WfKanIyF48Jay7Cr13XF4DZryrt3s3JFW8JayfG3WfJ3ZFyF95KFWUt3409FW3A347A3WI
+	gw4qkr9rua1Ut3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U5kuxUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC+AGfPWoedYHd1AAA3S
+X-Rspamd-Queue-Id: 0DBF1180005
 X-Rspam-User: 
-X-HE-Tag: 1780379655-197358
-X-HE-Meta: U2FsdGVkX1+KDPFAi3uT6TjbhdT1Qu7yOSWqBAhdyLrIE96cYuD5JJu/e7DdIhmXCJDoWMp55rooYKNigHKuvnSSS7baORU6TeTM7+0f3fDr6XSPJSVMyHhGTa5xpO8xAmUagVIVtjtjznhrq2k9T7KcUmuWOTHcjyOefwod1aOtqwsk28rdOOWmzal2G3If8pGh4+N4CtYf5PqkjZz6RklAawvgrjoPbbzHTZKjDRvN+YXd8WbxwzYWZkfXr7bZKMvfBlo6iN8PSk45/zfWUSmT91N4wpmmKhEEke4F3rT7WExjnd2z1M42mu+uBKdz7veCKoxJsMy+0PPMb3nUwZd54NspqQ/l8BQK8WdNx9J+a2eLTwKxohp5PUC09l+QW6tXuaR2dets/Vva69EaN3Tmt9tkDBMIVPLFSYJ4MT7EhQUF3P/N5Wqkq4chP/vC5gSbfSku/5sBRKHUDUPxwBitFS2R2gr3NwvjBqrOP1oVam7NZimZvquE4ByGoJxn4xcRsQU2ulrq++D/CPq1cgoGQWJ0BQ/QImbvWCOdWoV5xWBR74pF7cbQYBtbwc/MB1VdNZgDH/paF+i5q9PqLRqVDCh0fW3BuVuIq0faeqA3r0qYFXFmhWpVsXjlLGStNvxn6aRSUfQo6gngbRWFzD83uctSHbKdKal7jnL0/ByD5QDNuCZvLmDQ4FcMLnGtIp77uyjJI7c3tFkhMLbq/uWkfcWiy8ThEjNslAa1cjQzUoleFyrG1abnL+NLH5hX9W0wCX2aAQinfRUPMyJzM0rpsgC6s1gtvgZIbL/tzy9iRAidQS6UKdxPmE3qk6yQczkLxirJjgjUwVleQ0l8eAcRNwIkx7LQ0duScWYJEZQUoI9yWoY7q+KhUGxwQOASawoay7TT9wQqfH0V8dIARMl8zJ2G/b2QOAfRzCY88yAVvjUwfK5AxVgEuT1vfor++jxT4nwHVv3cmihvLbU
- 2m+HMuU+
- +2Bek/O9Knh/exrO6r+xY+qy6liJkdnw4xnoyHQtRfH+pL7OES1Td3dFPDOA4nQVhzwzH0e9ryGXP3w+yXfwxM1jjBuhPJJCZTztcIzFnusi7sWGhLx3qjXdSXEc4JcLh0q92IZnJ1Mg1w6mobjgdgcaGM7NQ68Lk+LNEDLHvyFgof5F8Oz5uK1lkO4LHF8xQqrbRVnR3Slrx/8EjcTy84f39kF5mnsFWLyWXj9yeLVBSeJwlvhS7lIV6QWvj4/XveI27wdMjp6ZlSAp3tUj48yRc7aKMceBi4bk5IFaGmQCbMEZssG5SGr5Nrg==
+X-Stat-Signature: i4i1p8rdo1gy9efm1xt554kjtic7mjk4
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780381093-961544
+X-HE-Meta: U2FsdGVkX18Tc+etEE30+0Mhtecxrxymj7+44fBonoxqyJkIBVZ6RZQe8I7aiZNrWwK7xPI0wbgknLi20JXA3vEa7irzVfr/ELXzKq5pttiV/Wmob6WqcTAQk2ip3twJqvaXoSoGMx2nMQo5n4tkzLmF0rK70+2yD2ejqN7AYHj4q+kDpwL7vUz10B6b1yh3reQZf0PgvO4+IhQVWyfb6VtNFAZbXci4c4n0gtZB8AL4rmX48JQyigcal4G/1rFkym6jetv/2IFL7Wx41dc/STiIQxuVgG2x2abb94ONOUr3HOJR1k4ohWCueVS6nS95ow1Y+ofTFkkxxP5X9vaMTv1/WUWHrwbePchqXkOnOsX9w3nd1ZBVP6u1A4cenC2pIw79CyAlmWfOp0HxCOUeKGe2NzSdseYJBlV1cYyjECXyyy9LEbxFy+iD3f5KQpOpW9OGWStgElWnCTAox3Gj2h+8T5wj1eG2RJLBaEEuFqdpVhE8R/TDOQeBUewtlC5qpQu3PNEU9Dg1rk1VCQrPAhlLgTzZu/8jK+27ZyEO3IUHzEa1p5xlbSOs4ribXuN1sn564bc5snorx4G4O7D6bljN7Ipv4hcME5ASYLrFl9rZ5DCS4LJFLzUZJIiIC/1I2bC8mGeGrpSu65leS/0FAtLBevT9nrHO0Y4c3uLBwHQHtRRs9rkFi6QhGkAKnvEdG+6YmcTxtOGrzfPdt26bhFmnGyQyO3WADoMKMdN4Q9fyJ6dbQCrVdzIaXpv7zdvfNCbLjyhqA1w/WlSal2S1vvD56DxVTzgGQL3o8iFCLRqSYEzXJ2RaK2jAGbWyF4mHUtJ3L+unn2BlK452PCg1znZWFLs6mI5WJVDwrDHHY1goS7Y9s8Nyria4rSRTe0rclYkA+sibzhYqf8vCnG3hleGMiCfwGUU47JJEuTfsz3BCF2v/YDeN5vmkDm12PgQtD27FLRRkCeMeo8mWUpY
+ 5IlIiY3Q
+ r8d8w3mdN7codpdLBFB2alXO/Cky1cp2d4p3qkZHzb6ZQTjPberEnrbQlEIOsJl3iJLe5ECbgIOXzV4B9AfA6pY4O/R4qE3mt3ApwwdDeeF+AIiwjS4zNraGpaF8SFLsaER6qck9n5s0XpGQtj3A/Vo/Vi6z9XdaYY3h94Nz0cI3CwvM5JhZgZoW8j8X78Ti8s3JaCOfEl0FJcCtcUuD8vR0xak1j4eEy6A9LPt1quKRsV4NjUCK90iSKD7MshoCzctUbQdsL1xNTheh5l7Pn7npE1BkgjV5VEs47d3pcqJ1ph7q7o3Pmg96ztFYO+TfiYHoZkkwiv817jF24h1uKaBa79pgMNBXQOxAF0otmph3QFwieTZXSiD/nWmXe54yj+s65D5sWwK7uh+sW3wpDncVqJipvO0pgticJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,153 +100,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 6/1/26 1:57 PM, Chi Zhiling wrote:
-> From: Chi Zhiling <chizhiling@kylinos.cn>
+On 6/2/26 13:39, Baolin Wang wrote:
 > 
-> Optimize shmem file read by using filemap_get_folios_contig() to batch
-> fetch contiguous folios from the page cache, reducing the overhead of
-> repeated shmem_get_folio() calls.
 > 
-> This patch checks the uptodate flag without holding the folio lock, so
-> it may observe a non-uptodate state on a locked folio that is still
-> being initialized. This is safe because only zero-filled data can be
-> copied to the user buffer in that scenario.
+> On 6/1/26 1:57 PM, Chi Zhiling wrote:
+>> From: Chi Zhiling <chizhiling@kylinos.cn>
+>>
+>> This is perp patch for folio batch support which removing the fallback
+>> to page-copy mode from shmem reads.
+>>
+>> The existing hwpoison fallback would require fetching the same folio
+>> multiple times to read its each pages, which complicates the
+>> batching model. Instead, move hwpoison handling into
+>> copy_each_pages_to_iter(), allowing the error path to be centralized.
+>>
+>> This simplifies the shmem fast read path and avoids special-case
+>> handling that conflicts with folio batching support.
+>>
+>> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+>> ---
+>>   mm/shmem.c | 63 +++++++++++++++++++++++++++++-------------------------
+>>   1 file changed, 34 insertions(+), 29 deletions(-)
+>>
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index b08118fbd275..cac355685e49 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -3353,6 +3353,30 @@ static size_t copy_zero_to_iter(size_t bytes, 
+>> struct iov_iter *i)
+>>       return written;
+>>   }
+>> +static size_t copy_pages_to_iter(struct folio *folio, size_t offset,
+>> +        size_t bytes, struct iov_iter *i, int *error)
+>> +{
+>> +    struct page *page;
+>> +    unsigned long off, nr, ret, written = 0;
+>> +
+>> +    do {
+>> +        page = folio_page(folio, offset >> PAGE_SHIFT);
+>> +        if (PageHWPoison(page)) {
+>> +            *error = -EIO;
+>> +            break;
+>> +        }
+>> +
+>> +        off = offset_in_page(offset);
+>> +        nr = min(PAGE_SIZE - off, bytes - written);
+>> +
+>> +        ret = copy_page_to_iter(page, off, nr, i);
+>> +        offset += ret;
+>> +        written += ret;
+>> +    } while (written < bytes && ret == nr);
+>> +
+>> +    return written;
+>> +}
+>> +
+>>   static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct 
+>> iov_iter *to)
+>>   {
+>>       struct file *file = iocb->ki_filp;
+>> @@ -3365,10 +3389,8 @@ static ssize_t shmem_file_read_iter(struct 
+>> kiocb *iocb, struct iov_iter *to)
+>>       for (;;) {
+>>           struct folio *folio = NULL;
+>> -        struct page *page = NULL;
+>>           unsigned long nr, ret;
+>>           loff_t end_offset, i_size = i_size_read(inode);
+>> -        bool fallback_page_copy = false;
+>>           size_t fsize;
+>>           if (unlikely(iocb->ki_pos >= i_size))
+>> @@ -3376,25 +3398,13 @@ static ssize_t shmem_file_read_iter(struct 
+>> kiocb *iocb, struct iov_iter *to)
+>>           index = iocb->ki_pos >> PAGE_SHIFT;
+>>           error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
+>> +        if (folio)
+>> +            folio_unlock(folio);
+>>           if (error) {
+>>               if (error == -EINVAL)
+>>                   error = 0;
+>>               break;
+>>           }
+>> -        if (folio) {
+>> -            folio_unlock(folio);
+>> -
+>> -            page = folio_file_page(folio, index);
+>> -            if (PageHWPoison(page)) {
+>> -                folio_put(folio);
+>> -                error = -EIO;
+>> -                break;
+>> -            }
+>> -
+>> -            if (folio_test_large(folio) &&
+>> -                folio_test_has_hwpoisoned(folio))
+>> -                fallback_page_copy = true;
+>> -        }
+>>           /*
+>>            * We must evaluate after, since reads (unlike writes)
+>> @@ -3406,12 +3416,9 @@ static ssize_t shmem_file_read_iter(struct 
+>> kiocb *iocb, struct iov_iter *to)
+>>                   folio_put(folio);
+>>               break;
+>>           }
+>> -        end_offset = min_t(loff_t, i_size, iocb->ki_pos + to->count);
+>> -        if (folio && likely(!fallback_page_copy))
+>> -            fsize = folio_size(folio);
+>> -        else
+>> -            fsize = PAGE_SIZE;
+>> +        fsize = folio ? folio_size(folio) : PAGE_SIZE;
+>>           offset = iocb->ki_pos & (fsize - 1);
+>> +        end_offset = min_t(loff_t, i_size, iocb->ki_pos + to->count);
 > 
-> A non-uptodate folio in the swap cache cannot be added to the shmem page
-> cache. This creates a semantic conflict, as shmem zeroes the folio out,
-> but the swap cache would fill it by reading from the swap backing store.
+> Do not add this unnecessary change.
+
+Okay,
+
 > 
-> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
-> ---
->   mm/shmem.c | 57 ++++++++++++++++++++++++++++++++++++++++--------------
->   1 file changed, 42 insertions(+), 15 deletions(-)
+>>           nr = min_t(loff_t, end_offset - iocb->ki_pos, fsize - offset);
+>>           if (folio) {
+>> @@ -3420,12 +3427,8 @@ static ssize_t shmem_file_read_iter(struct 
+>> kiocb *iocb, struct iov_iter *to)
+>>                * virtual addresses, take care about potential aliasing
+>>                * before reading the page on the kernel side.
+>>                */
+>> -            if (mapping_writably_mapped(mapping)) {
+>> -                if (likely(!fallback_page_copy))
+>> -                    flush_dcache_folio(folio);
+>> -                else
+>> -                    flush_dcache_page(page);
+>> -            }
+>> +            if (mapping_writably_mapped(mapping))
+>> +                flush_dcache_folio(folio);
 > 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index cac355685e49..61937582f08c 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -891,6 +891,14 @@ int shmem_add_to_page_cache(struct folio *folio,
->   	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
->   	VM_BUG_ON_FOLIO(!folio_test_swapbacked(folio), folio);
->   
-> +	/*
-> +	 * Don't add a non-uptodate folio that is in swap cache to page
-> +	 * cache, since shmem will zero it instead of reading from swap
-> +	 * backing.
-> +	 */
-> +	VM_BUG_ON_FOLIO(folio_test_swapcache(folio) &&
-> +			!folio_test_uptodate(folio), folio);
+> I'm not sure this is safe for all architectures (it's safe for arm64 
+> since no actual data cache flush happens here), but for architectures 
+> that do perform an actual data cache flush, if the page has already been 
+> hwpoisoned, flushing the cache could trigger a RAS error?
+> 
+> I think you should move this into copy_pages_to_iter() for hwpoisoned 
+> folios.
 
-It's impossible for a folio to be in both the swap cache and the shmem 
-page cache. We can drop this.
-
->   	folio_ref_add(folio, nr);
->   	folio->mapping = mapping;
->   	folio->index = index;
-> @@ -3382,11 +3390,13 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
->   	struct file *file = iocb->ki_filp;
->   	struct inode *inode = file_inode(file);
->   	struct address_space *mapping = inode->i_mapping;
-> -	pgoff_t index;
-> +	struct folio_batch fbatch;
->   	unsigned long offset;
->   	int error = 0;
->   	ssize_t retval = 0;
->   
-> +	folio_batch_init(&fbatch);
-> +
->   	for (;;) {
->   		struct folio *folio = NULL;
->   		unsigned long nr, ret;
-> @@ -3395,15 +3405,33 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
->   
->   		if (unlikely(iocb->ki_pos >= i_size))
->   			break;
-> +fetch:
-> +		folio = folio_batch_next(&fbatch);
-> +		if (!folio) {
-> +			pgoff_t start = iocb->ki_pos >> PAGE_SHIFT;
-> +			pgoff_t end = (iocb->ki_pos + to->count - 1) >> PAGE_SHIFT;
-
-You should consider the inode size when calculating the 'end'. You can 
-reuse the 'end_offset':
-
-end_offset = min_t(loff_t, i_size, iocb->ki_pos + to->count);
-
-then pass 'end_offset - 1' to filemap_get_folios_contig().
-
-> +
-> +			if (folio_batch_count(&fbatch)) {
-> +				for (int i = 0; i < folio_batch_count(&fbatch); i++)
-> +					folio_put(fbatch.folios[i]);
-> +				folio_batch_reinit(&fbatch);
-> +			}
->   
-> -		index = iocb->ki_pos >> PAGE_SHIFT;
-> -		error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
-> -		if (folio)
-> -			folio_unlock(folio);
-> -		if (error) {
-> -			if (error == -EINVAL)
-> -				error = 0;
-> -			break;
-> +			filemap_get_folios_contig(inode->i_mapping, &start, end, &fbatch);
-> +			if (folio_batch_count(&fbatch))
-> +				goto fetch;
-> +
-> +			error = shmem_get_folio(inode, start, 0, &folio, SGP_READ);
-> +			if (unlikely(error)) {
-> +				if (error == -EINVAL)
-> +					error = 0;
-> +				break;
-> +			}
-> +			if (folio) {
-> +				folio_unlock(folio);
-> +				folio_batch_add(&fbatch, folio);
-> +				fbatch.i++;
-> +			}
->   		}
->   
->   		/*
-> @@ -3411,17 +3439,15 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
->   		 * are called without i_rwsem protection against truncate
->   		 */
->   		i_size = i_size_read(inode);
-> -		if (unlikely(iocb->ki_pos >= i_size)) {
-> -			if (folio)
-> -				folio_put(folio);
-> +		if (unlikely(iocb->ki_pos >= i_size))
->   			break;
-> -		}
-> +
->   		fsize = folio ? folio_size(folio) : PAGE_SIZE;
->   		offset = iocb->ki_pos & (fsize - 1);
->   		end_offset = min_t(loff_t, i_size, iocb->ki_pos + to->count);
->   		nr = min_t(loff_t, end_offset - iocb->ki_pos, fsize - offset);
->   
-> -		if (folio) {
-> +		if (folio && folio_test_uptodate(folio)) {
->   			/*
->   			 * If users can be writing to this page using arbitrary
->   			 * virtual addresses, take care about potential aliasing
-> @@ -3443,7 +3469,6 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
->   				ret = copy_folio_to_iter(folio, offset, nr, to);
->   			else
->   				ret = copy_pages_to_iter(folio, offset, nr, to, &error);
-> -			folio_put(folio);
->   		} else if (user_backed_iter(to)) {
->   			/*
->   			 * Copy to user tends to be so well optimized, but
-> @@ -3474,6 +3499,8 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
->   		cond_resched();
->   	}
->   
-> +	for (int i = 0; i < folio_batch_count(&fbatch); i++)
-> +		folio_put(fbatch.folios[i]);
->   	file_accessed(file);
->   	return retval ? retval : error;
->   }
+Okay, will fix it, thanks!
 
 
