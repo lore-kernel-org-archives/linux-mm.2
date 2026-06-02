@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C816CD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:11:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B1C6CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:16:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E28136B03BE; Tue,  2 Jun 2026 08:11:26 -0400 (EDT)
+	id 381686B00AC; Tue,  2 Jun 2026 08:16:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD8A66B03C0; Tue,  2 Jun 2026 08:11:26 -0400 (EDT)
+	id 30B636B00B7; Tue,  2 Jun 2026 08:16:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEF006B03C2; Tue,  2 Jun 2026 08:11:26 -0400 (EDT)
+	id 1F9B06B00B9; Tue,  2 Jun 2026 08:16:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BFD7E6B03BE
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:11:26 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CBC2120932
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:11:26 +0000 (UTC)
-X-FDA: 84834857772.08.1AF4FC5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9923340009
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:11:24 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E8EF6B00AC
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:16:35 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE423162DC2
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:16:34 +0000 (UTC)
+X-FDA: 84834870708.03.B342D5B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D920440007
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:16:32 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEIm92HT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T6Q8OGLJ;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780402284;
+	s=arc-20220608; t=1780402593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DQxf22WiuMhWZeadAm3Nzhuu9AKEU1pYXtTdOyKS3Iw=;
-	b=AGZ9l2zCIAQhVFfspDiZ7n5Lf0jkPejvPjodRHLGXxoQLzd7pEX2T+xlHYp2sQsuhm1Tzk
-	bC2Aiba1qwSKN5Tx3WkPPo4ixw0uTwFCv5NOI+6eidbn0dYhbWFb4xVP3yg/LXxqEcLNda
-	Kjmgx63BJlBTBO8icjPZ1+uyFTkkUds=
+	bh=nU3IjfXdIovExzPjno2c3jXqAj97rnGnfd44sZSmwoU=;
+	b=sbRx4AJIFHLOcQ26w1Bt7xbYw781QN1uR4zjIjvEBauu70egYhk9K43ZS4QvPXB6xms4+D
+	32O/ieJwOqdf3KKnTWE4RcIwXfjSaVtvhV+qNjKdsfSfUI1rJSc4ZaxrV2pgM4Sj41zRVj
+	vws2pshrIDiEJuf7HZDq+8jGSvjdtJw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780402593;
+	b=uo9RHrrGs1N5FUQT8eEh5kJsNlITQEscFgmjluy2qpvzf49cyhHB89ktm14ZFrz3J9CnP0
+	f+vZKOcrR8vc9qG0XORZCKfXxQhsJVYZDvJ94Ib5yQpgp4lSs6Cjir5njQvQVKL8ccxpPP
+	9p8bzIw1oyusMHKqA6QKnYeWF6uXbLE=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEIm92HT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780402284;
-	b=WmxEdHmcVwpi74SrmlrtRMKPeWmsjGOkZKoDAa5cnokh8XL511XofRDT/tT5R2xNey+eJJ
-	IaAawYcqsRwgKomLDwEv9tzTMEwFCVhTFvKvjuujs/7k7rOBs+SSaLyNCVTjnLSwvAQGYd
-	EWtZTlOkI2DvAS4klppLMdqpNv+o4pk=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T6Q8OGLJ;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D0C4B6014C;
-	Tue,  2 Jun 2026 12:11:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3823A1F00893;
-	Tue,  2 Jun 2026 12:11:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0513044140;
+	Tue,  2 Jun 2026 12:16:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3531F00893;
+	Tue,  2 Jun 2026 12:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780402283;
-	bh=DQxf22WiuMhWZeadAm3Nzhuu9AKEU1pYXtTdOyKS3Iw=;
+	s=k20260515; t=1780402591;
+	bh=nU3IjfXdIovExzPjno2c3jXqAj97rnGnfd44sZSmwoU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QEIm92HTankRnWAoOl3s0CVEUmiBcSwE+/rA1U8WIrhMSiJa7A9uYtSOOyQAxllAH
-	 23/lI509xvayAf1RjWg9a9ANlH/YK3W07wl/JbQSHydjl4VbQ/HtPks+hfQrHcil/c
-	 l9vbYojjqtvD52h48V3D10AuKdx+O0PJx8plH3XSkRUxxPQ8B0q0Ut4H49rBKcfE5U
-	 GMvMyMDsSBvfTdglAESpRIp0W8hwci1y99wuEWIBbVLOm8prwITIDgmnw9sVxkuW3n
-	 ilrWuLXZMOWI6GyVaBEai63svLfEXVbSWeGMd6CX5R+Uvy1cCQuSoRU9yE0Eq5x7zR
-	 k35q+gYWDsBGQ==
-Message-ID: <716c7351-2641-4317-8675-e07a16a1efe2@kernel.org>
-Date: Tue, 2 Jun 2026 14:11:16 +0200
+	b=T6Q8OGLJMsphvZpFzjxvAbcv42tNz0RFmBmsyukWQ1tMJ9bLk7eTfQcKNcoROU6c1
+	 nBnqo9X+GvZXtmKutQSPel0oXgRyErxcWL7GKkMk3saatNFMsaHYyDx9gjh0Hbc9Wa
+	 FuAuNeMF8UyU4KHGRvAzSxIL6qqi+xQR8I7zbgWu4DTzC6JQFRatt2bhYPUJBeDWW/
+	 6S25EVnqtl2UuxLXyeJpJaucicQDX5ASvjmo+c9Qd1TbFghS2CBb3F4edD6Kpgtpi0
+	 FQ5tt0j0C5QdzuQ/7Mr/XD1sRb969LFBSgIvkID46T7I3a5NJ0nvtt1Iz8zHumlHDX
+	 YywiLmya3Kstw==
+Message-ID: <26da0ab0-b495-43a2-bdbc-4e52599037a8@kernel.org>
+Date: Tue, 2 Jun 2026 14:16:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/thp: clear deferred split shrinker bits when
- queues drain
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
- hannes@cmpxchg.org
-Cc: ljs@kernel.org, shakeel.butt@linux.dev, mhocko@kernel.org,
- david@fromorbit.com, roman.gushchin@linux.dev, muchun.song@linux.dev,
- qi.zheng@linux.dev, yosry.ahmed@linux.dev, ziy@nvidia.com,
- liam@infradead.org, usama.arif@linux.dev, kas@kernel.org, vbabka@kernel.org,
- ryncsn@gmail.com, zaslonko@linux.ibm.com, gor@linux.ibm.com,
- wangkefeng.wang@huawei.com, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, dev.jain@arm.com, npache@redhat.com,
- ryan.roberts@arm.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260602043453.67597-1-lance.yang@linux.dev>
- <1dce1561-b42a-4322-a99f-89eba1e7c227@linux.dev>
+Subject: Re: [PATCH v5 1/2] mm/process_vm_access: pidfd and nowait support for
+ process_vm_readv/writev
+To: Alban Crequy <alban.crequy@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Christian Brauner <brauner@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Alban Crequy <albancrequy@microsoft.com>,
+ Peter Xu <peterx@redhat.com>, Willy Tarreau <w@1wt.eu>,
+ linux-kselftest@vger.kernel.org, shuah@kernel.org,
+ Usama Arif <usama.arif@linux.dev>,
+ David Laight <david.laight.linux@gmail.com>
+References: <20260602100917.3641359-1-alban.crequy@gmail.com>
+ <20260602100917.3641359-2-alban.crequy@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <1dce1561-b42a-4322-a99f-89eba1e7c227@linux.dev>
+In-Reply-To: <20260602100917.3641359-2-alban.crequy@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D920440007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9923340009
-X-Stat-Signature: 9zh69uxk6j649p9nzzm68rpx9r6tmidj
-X-HE-Tag: 1780402284-993244
-X-HE-Meta: U2FsdGVkX19JzRTdz7J3Q+AwaO/P9mFvVdV/YqYUR8lBEMpNPWX6UyjZIyj8WaFJysbbbrzGme1x6aiWIwB5PBxMDVb637LdkKRPnuzXtpAqyDJd3jmNisJkrwCrFrBcInUUPzvABTzONw7u4Yim6xHrU/QHnOPIJ813qdCQ9aaEH7vZALQgyp0HbELdK7azzAxQPxewo9tYlxSLhMgD13B+gPXvS2SpocigvvPPYo1nOwRAsAOSRlSOcg3A79G/wrPTyh1Q0jvAJgNXyvpFzRkJtWSV3W75ei0CpviHbzd0tjRvXPwXIROST13gYGnJy3cicqrVznjeqpboIX8uSrckA4wCV6w71eRmAPeRkKaQNtqDjvucPMA4xG/vtYsz80jBsgjmjRV4kAeoegYZZwpq+vcxw4LwKXQWjpLLn5QuVHRnx0Ka+mPEfIgBk80w9cxjQUvsVTTT6AxxG/AOgrRA0RGiL1VBSNUKJa6w8q4lC/SahAyK9Vzk93l6gtm1+VriUaj44RaftkOqKR5ecUcbAHm24jbGHCH0eMYSgoC1Odeo7EKUog5v3wEsnGEA+8G+M6KbPc3o2Pzb6xmGdgTNGFLwaptyfVo9K8jLTt9z4naR8IG4CrbzmBhFyZOGp4Ns5w+N0RwwLQsLWbXLKb4N72ydSmeGDtx02XmlUWW+dO/DlYzOdqPyFyJP0iS1nMbl4+qSLYoZB5ArlZDIUvpPWHlPpV0+qSU8LYjjmG/QCpru72ZkeBsNHR5Rzym7D6Y/AKw1fUwTNtLWB2xZ5d+QrBFSk9dhB4dQd+8dRt3f9BApk+JIBOZu5f5cuy8o3BEvUXhjsfKwABXblxUAA44AfsB/hRGmAPQsW8Cbn07gVNeEbhO7fKw0FjGRcUKt7R8E+mTJYibF5yo35zgV1IuxPGL6JsJUV3wQHMjo3zk4kUox1mJF72UUF7TZ6bBWA+oQwIBQzkqOZaUkwmn
- tLGuftUM
- JudaWUk+yO9Zje22ndz8ZhnrIsdFCy0hdy+pBM94M0M0DMWHT9UTZyIf+jEPYdqSdJcT0P38NYo0YOjVVd9mTuv+Wo1TIpuVyWIUeZdgYmsG3LwVd3vWL2dM/whERX/wc3WDH5Bmlc8fVg2BuRlish3fW+lPyRzSxmBwrg/VX7//S0QHtMI84B5ptVRi5p/xZmG07/2hKafojlJj3vJD+4CULBWUWiSSMh3JW5e0o8xW3VxibxTA99BU3EpvpeYkuG8g6tWlBXuGef1ZQ2MpNTUYPgaMvbeaYW4Bn
+X-Stat-Signature: apwqmphc57ddie3xbbx1btyjd8q1m9s1
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780402592-708483
+X-HE-Meta: U2FsdGVkX1+CQtXV3APc353q4IrDkQ2mA+aetYLb2f3QLkLFIo+IyhojD7ocGVOLIjSS3QSUeWRLBP983kOkrW912sugJCOcheLYaR9dFgquCLvfpRZagDz6wIsUX62VfY3Uj7lC274SLcaceEWx2lzHLHsAe+jnsqo5pxO5U/FgFjQDcIyBflR42vEIVrmb9vM8oB4OJEjEmvCbCkPX/DfNx7dszwnAhO+4PcHVeHNUK51aVPDDsNv1MS9vvwMa8eTYPLsFKft1elv9FdO4oUNSKnMt+efpjgAXEY+uXjchlt7NaH1PrXkg5By8Q7OyKGYf0yL/tTD+A3JRmVWTU+6aPZ/D3BOhHKBZ315IFV8HkUjmKB7x5MEXPrWajRoryRiNbmlOb04DsOxhRxhJmmwGGH78wdGLgyyHfvGKZ1wwLZOZwfHFcYxk4L4HORZKiLHKDqt/nNSfcrZa3R7cGso7Qnu5F+3HuQQvY/u8mPiui94opnyXFkVOE6yoXcSf9mN6FQS8EMiLY/B9Xs3he7YiUbmKAobw3r6t+3kh3ioucbDvYRrdCt59mrajqG66qElnzLC6Mwefxf2VOZ0lO9x/SQT6YcEgwsEvaDrjZpkkO00PhvLjHJPh5OR99HArMaycRvo8BeWtQfINawr8DsPc9gliZNzpvo3YlfAYUk5Ig1t5l6WBgjgZi5tPiJe1WpqHq+rZnkJYdQadcz4vd0k7KHWjcD0a7RK8vDrpqEMkd82yhG+2Q6i1CG1WyO0E+fDmK9xh2OaSBfwaTF2El0UUokILLtorlRTtm47rYrOOQOwDqKdoLWvSau59RLFnS3MbxKMbhiak3zL755DkGLOJzYBGtQNDUhA1vVSMrDBMsGJ3eLBPChkUygB6Y5X/PMeXG+7OURnouMrEgMo8A05sQsNU87SR9900spu7REUYr5yDglCpmAiHt9hwKMOmF3FSAZwauetyJpCGOxB
+ tGmHtZ0u
+ 15ja+KN7QxdhE1Osmn0yLifVf+4FwrU+MqBRRuWWTxB3PvWZeYoCzMC7QRUUjmsJ8bYsmD951F1K0pyG3+nvJduChy0d36HeRNfDQQgn6SFnWvGlWOxvJiuWhNsMMCrGYhbClyrjog8WOnCgQhRHMR76G73/WrSx3PNkA2CcKO6iA+CfWBuniDAxac3TohYOfT0dmyVg8GlIC7mKNQapS4U5uZBgnVg+I3X+7s4zPILhtPjeMAB004sCBfJTobCvifGdVkfD5wG47xWy00LuUN4glbm4QX1Ex2iiD/5N3mXzHrGdERnbxzr3vlOxu7972leQK99FUyLoWJMq3aXCh5aPcblvu12vvdANTvWzqBwGl+3hg4cZNhDRErDD48KR7RtmeqidcxRzb0kgODKZWmxGn/vCCgO7vMp1zfXoPeCinYWE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,52 +148,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/2/26 06:38, Lance Yang wrote:
-> Sorry, I missed Johannes in Cc ...
+On 6/2/26 12:09, Alban Crequy wrote:
+> From: Alban Crequy <albancrequy@microsoft.com>
 > 
-> On 2026/6/2 12:34, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> deferred_split_count() returns the raw list_lru count. When the per-memcg,
->> per-node list is empty, that count is 0.
->>
->> That skips scanning, but it does not tell memcg reclaim that the shrinker
->> is empty. shrink_slab_memcg() only clears the memcg shrinker bit when the
->> count callback reports SHRINK_EMPTY.
-
-What's the effect of that? Would we consider it a fix that we'd want to backport?
-
->>
->> Return SHRINK_EMPTY for an empty deferred split list, so the bit can be
->> cleared once the queue has drained.
->>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->>   mm/huge_memory.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 72f6caf0fec6..62d598290c3b 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -4397,7 +4397,10 @@ void deferred_split_folio(struct folio *folio, bool
->> partially_mapped)
->>   static unsigned long deferred_split_count(struct shrinker *shrink,
->>           struct shrink_control *sc)
->>   {
->> -    return list_lru_shrink_count(&deferred_split_lru, sc);
->> +    unsigned long count;
->> +
->> +    count = list_lru_shrink_count(&deferred_split_lru, sc);
->> +    return count ?: SHRINK_EMPTY;
->>   }
->>     static bool thp_underused(struct folio *folio)
+> There are two categories of users for process_vm_readv:
 > 
+> 1. Debuggers like GDB or strace.
+> 
+>    When a debugger attempts to read the target memory and triggers a
+>    page fault, the page fault needs to be resolved so that the debugger
+>    can accurately interpret the memory. A debugger is typically attached
+>    to a single process.
+> 
+> 2. Profilers like OpenTelemetry eBPF Profiler.
+> 
+>    The profiler uses a perf event to get stack traces from all
+>    processes at 20Hz (20 stack traces to resolve per second). For
+>    interpreted languages (Ruby, Python, etc.), the profiler uses
+>    process_vm_readv to get the correct symbols. In this case,
+>    performance is the most important. It is fine if some stack traces
+>    cannot be resolved as long as it is not statistically significant.
+> 
+> The current behaviour of process_vm_readv is to resolve page faults in
+> the target VM. This is as desired for debuggers, but unwelcome for
+> profilers because the page fault resolution could take a lot of time
+> depending on the backing filesystem. Additionally, since profilers
+> monitor all processes, we don't want a slow page fault resolution for
+> one target process slowing down the monitoring for all other target
+> processes.
+> 
+> This patch adds the flag PROCESS_VM_NOWAIT, so the caller can choose to
+> not block on IO if the memory access causes a page fault. When a page
+> is not resident and would require IO to fault in, the syscall returns
+> a short read (the number of bytes successfully read before the fault)
+> or -1 with errno set to EFAULT if no bytes were read.
+> 
+> Additionally, this patch adds the flag PROCESS_VM_PIDFD to refer to the
+> remote process via PID file descriptor instead of PID. Such a file
+> descriptor can be obtained with pidfd_open(2). This is useful to avoid
+> the pid number being reused. It is unlikely to happen for debuggers
+> because they can monitor the target process termination in other ways
+> (ptrace), but can be helpful in some profiling scenarios. When using
+> PROCESS_VM_PIDFD, the first argument is a pidfd instead of a pid. If
+> the pidfd is invalid, the syscall returns -1 with errno set to EBADF.
+> 
+> If a given flag is unsupported, the syscall returns the error EINVAL
+> without checking the buffers. This gives a way to userspace to detect
+> whether the current kernel supports a specific flag:
+> 
+>   process_vm_readv(pid, NULL, 1, NULL, 1, PROCESS_VM_PIDFD)
+>   -> EINVAL if the kernel does not support the flag PROCESS_VM_PIDFD
+>      (before this patch)
+>   -> EFAULT if the kernel supports the flag (after this patch)
+> 
+> Suggested man page update for process_vm_readv(2):
+> 
+>   The flags argument is the bitwise OR of zero or more of these flags:
+> 
+>   PROCESS_VM_PIDFD (since Linux 7.x)
+>       The pid argument is a PID file descriptor (see pidfd_open(2))
+>       instead of a PID number. When using this flag, the existing
+>       ESRCH error applies if the process referred to by the pidfd
+>       has exited.
+> 
+>   PROCESS_VM_NOWAIT (since Linux 7.x)
+>       Do not block on IO. If a page in the remote address space is not
+>       resident and would require disk IO to fault in, the system call
+>       returns a short read or fails with EFAULT if no bytes were read.
+> 
+>   Additional error:
+> 
+>   EBADF  pid is not a valid file descriptor (PROCESS_VM_PIDFD only).
+> 
+> Signed-off-by: Alban Crequy <albancrequy@microsoft.com>
+> ---
 
-This is against Johannes' work, right?
+Nothing jumped at me, thanks!
 
-If this is a fix, likely it would be fixing 87eaceb3faa5 ("mm: thp: make
-deferred split shrinker memcg aware"), right?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
