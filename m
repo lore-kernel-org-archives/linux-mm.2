@@ -4,128 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D578CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:12:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45726CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:16:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 893186B00E1; Tue,  2 Jun 2026 06:12:41 -0400 (EDT)
+	id ABB266B00D3; Tue,  2 Jun 2026 06:16:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 843E66B00E2; Tue,  2 Jun 2026 06:12:41 -0400 (EDT)
+	id A92A06B00D9; Tue,  2 Jun 2026 06:16:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 732126B00E4; Tue,  2 Jun 2026 06:12:41 -0400 (EDT)
+	id 9D0956B00D5; Tue,  2 Jun 2026 06:16:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F9326B00E1
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:12:41 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2AB26C2B21
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:12:41 +0000 (UTC)
-X-FDA: 84834558522.29.4337C79
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3655D4000D
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:12:39 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=BN3e7P+0;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf12.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C0C76B040E
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:16:23 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F823406C9
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:16:23 +0000 (UTC)
+X-FDA: 84834567846.07.252B0AF
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 37EF540013
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:16:20 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vcKrEmxT;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780395159;
+	s=arc-20220608; t=1780395381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J5Q2gGk4UZAL2GpP2RnQJwNvQrGN9WYj/IZDEx+Kuy0=;
-	b=j8fmetnOprfpsFm/9JEF3XIEmk7XYxQx4MQ4OBGA1EiPB0erYISQW2QYkuV4Xi+uIjyadD
-	vzjVMK7cc6Vhb4TgL7NPuJR4zkvg6mTYSJA092MWIuviFVld74C7lZq9ZGKFrjr2DpyhE3
-	yxFmnNTLgD9a5Hn8cA2urxy88Rr3xJE=
+	bh=lipZXDwGQU+TSrswN3nmwaJ59DceeyAWCn8ljNjUXwE=;
+	b=49m2EDYhrGMizbBgqSY8/7LDW9cx8zS3ylJTdPUq0LNngSSmGO1r7CkqXOXxFCv77dGHP/
+	31g075GqPvxkQC1xmkOpPhkZsd+bcIOoal9cBBTBi2KzXzM6Lbsk203AQqpI4Rhwmoqg9Q
+	sOLLrBUzRXSZOoILyswU7SpAwsOGVwY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=BN3e7P+0;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf12.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vcKrEmxT;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780395159;
-	b=CJfeLQhcDLAwyyn3DXumE/8K44mzpBMZYHVCsVOC+mj+hpgUbntvgypENTih3ZA5gsUZss
-	cvRC8Fdb8zRalaeubL89+tKeIPmNBueeilxzme3JuCp9N8vAYUGuOCYnvqlSLy5+J+AI1r
-	dHk/HlDscx5kXrbt1+Wsifrtx+K9Wb4=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-842307472d4so668629b3a.0
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 03:12:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1780395158; x=1780999958; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J5Q2gGk4UZAL2GpP2RnQJwNvQrGN9WYj/IZDEx+Kuy0=;
-        b=BN3e7P+0Xk2tfUKGYO2qyYn2ZsiEfIpCBkxWRf4uiiPq6fb8Y/M5bT/gkzgn6hLaul
-         RD6xibF+TcepETnXwObXmZSzpiFunq7kzHbD+pWjmVLsht6aHvChyPuhyBIoYNjw7gKz
-         8f6dBLA0WzKRrXWS5rP5cKNoVFKasGx7inJc2X6zNxC5PSN97vSlFgSCEp9zY7kJaXBq
-         owCy73+0IQn90Ru6EEQYPTGINtpwgJpNQDLYHehtIeWPXXKzGBv1KJ9tGMasZo6L9Wr7
-         SHXntqAQMKTIIbyC0rHBP/ibQG1uC3yQ+sipYSjt0vZzpN0kBqMDrv92I1XB0OLH2ijx
-         8jzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780395158; x=1780999958;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=J5Q2gGk4UZAL2GpP2RnQJwNvQrGN9WYj/IZDEx+Kuy0=;
-        b=kZ66S/LeIUCv/kPrbt5BowbMezUPtVXtu9U5anNlO6xKb9x1ir8wzGm0hwnc6UPRw1
-         XV7U4uoZDNRS+IsAn22gPLr9Yi+xcNXmn4Cn3OlnpZkwRL08xg3IB4CMxc59l/TZ4Ltc
-         KV5bqVHsleE8HpDKwOPriynIfZWFqshOuEOQ2aew7NucmcFDBicgM10ZLhi8nQzo7Rf3
-         wScEU2Q60BBd8uRdDn9IzfwURc3HwYNvU2Rbt99UD/FYRJMXf+63und1i1nreP0NMrLD
-         FIf4uTtXr0Odjyt9pOm/vfuT6qs5oXUWN35t6oNZvNJ0Hfp+SAH2QhLCtMBSGrCKN5SJ
-         YVLg==
-X-Forwarded-Encrypted: i=1; AFNElJ+/Hs2lqWl/zpRHDBmSQ9Vb7mo+LdfJdMun8hHViG6OUS+xRkltDZmay/S4rFJs0rsUEfNDN8PuOQ==@kvack.org
-X-Gm-Message-State: AOJu0YwR9qdUeCrCMdCRQbmIAYKvDvYPFGmY6x6ohbwH7GuB1FLmx/DQ
-	eO2reA6cUX5L+Qs++l9BgQXPdquQvRacixuFXq2fuxk8M7LRTynbdQw1oc/ptnlHaDE=
-X-Gm-Gg: Acq92OHePk5k3cua0qJHEGY3jhfTYf4f7SZqytWKinIEA+3cvUy967WfwliWSNHebOC
-	O7siSl1LMQG9Bd+WiZ0YvmuJFdSqc8u4od4wJ4me+M+vAhPevK5MimHe9s48kB6ZF3gXV25fOA6
-	erB6xBMQIPuZgp4/ihZeFDFrxJXCId2OFh9TiuNChmhsvj5Qu02vR+1641v0DGcgItI5LJhP8Jz
-	TgjoN6iUW7ixQDfF4WI+K9hbq2LwNSh9ZtIZaQyRrwVHG0ZoFWW8r/ZUQOcnOr8OZmKhAHyj4W5
-	3P9JDlDEMZM7cDvK6xa9pcS6wVrf2DfJxBDYlTzamZonKwqlztdbVlVVjEYfhOJYaQ1TP8zbJ0/
-	w6lJ+TdHZG00C9pAL0EjtEYgd+2mXPzQg7D6HiRRswjKvuEqrG35Q01buUaJSAJvba0bNCSJ/je
-	n7vRLP9/NV5EcBfyHWkgBjktKNRR+D9yjLQZ+qOu7Rm3QVwRZMApHQEOU=
-X-Received: by 2002:a05:6a00:8d96:b0:835:366f:5da2 with SMTP id d2e1a72fcca58-842254980a1mr14651687b3a.37.1780395158008;
-        Tue, 02 Jun 2026 03:12:38 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.102])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214d018fcsm12015507b3a.60.2026.06.02.03.12.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 03:12:37 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v3 19/19] mm/mm_init: Fold __init_page_from_nid() into __init_deferred_page()
-Date: Tue,  2 Jun 2026 18:10:39 +0800
-Message-ID: <20260602101039.1867613-20-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260602101039.1867613-1-songmuchun@bytedance.com>
-References: <20260602101039.1867613-1-songmuchun@bytedance.com>
+	t=1780395381;
+	b=qhnqtrPiRmY+UbcDSHzWJZzSMeEJ+zyVikL8kFUk4alzhXO9rOKHv0jqmsGDmOBxU6SDP8
+	5XBKf6xg+P7BaghZ3x/XH9gqKN4NjeUfyKrQapOR19IvHuaVzum3aqNy4Zfjr3eUfcHlNu
+	hNpMSYHRkvqVWRsmFfcI3F5moTL/WQ4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0ECA42364;
+	Tue,  2 Jun 2026 03:16:15 -0700 (PDT)
+Received: from [10.164.19.28] (unknown [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C08B3F632;
+	Tue,  2 Jun 2026 03:16:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780395380; bh=Yq7QU8MantCBpgdcupePeTD2JsMq1DglepMcByDaSWQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vcKrEmxTE6UJVDi+9H+gc5sLUbgzmFlxuTO2mLG3hSvLZvl2SDdESLW1opU9QrusJ
+	 SLtJ3H9CeI0Mnq6IYB1hvhmo7p4237sWvJgidL5ePIxqEiL8SETNmCGq4nBBTVWaJa
+	 PtHtbgvO70A/9AQ3Le4QSeS6ZlH22hNoPVye1Qak=
+Message-ID: <7faa8ce6-a2dd-4e6e-a47a-2a6aaf7cf136@arm.com>
+Date: Tue, 2 Jun 2026 15:46:08 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/14] docs: tmpfs: remove implementation detail
+ reference
+To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, david@kernel.org, baolin.wang@linux.alibaba.com,
+ ziy@nvidia.com, lance.yang@linux.dev
+Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, ira.weiny@intel.com, hughd@google.com,
+ dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
+ ljs@kernel.org
+References: <cover.1780066530.git.luizcap@redhat.com>
+ <426d01d487656dc97b6ae00717de32efb232a04d.1780066530.git.luizcap@redhat.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <426d01d487656dc97b6ae00717de32efb232a04d.1780066530.git.luizcap@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 37EF540013
+X-Stat-Signature: 7yt9dw4pff31hqoqy87tofdooaxubijj
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3655D4000D
-X-Stat-Signature: qw9mdzxdbt3xe5stbi1tuz3q58ftoca7
-X-HE-Tag: 1780395159-331067
-X-HE-Meta: U2FsdGVkX1+6Cne4IPVsA+0+ZXDaWxCP3F5a0qrVcdK5Kj0zPU4gLbetnpb4+XdWdcxZ9KB9kn+0j2nbWIjkXiEgVHgFa8xC8APVQb7+eObHG0apEHO1oMfDRgn22XU5v2aIM0th5E+osUALUWnYeMN+/oD1ZE9ufcZiIAhPsZWHZtjtjTYdD5flDOCSI6tsDe/bxshJtqym/wA5Qx79dwfAEpBdiZwYdHaEBSC9kUOLqgEG63L0YRcBcij4EgJbgT3wAr3EDh1da0ZEQd5ODePDaQbNiG8s737lJ8G3W0nXFOttdvaNqYHExTuzHNbeol7u5BVsKrdm9pGXzEqbM/HnE7mg0u8p0rqa66hZ3EdR32zhPhib8sBoSJnPvJtMAtPPXMjDw3PyBUL/Y/J87dwXWlqIhOMR772/rnCHwZooSwUdtqCu+qKM9M47dAfqNgGb8NDFLE237QvuY8Javz9UndAWgrMy0gCy2Ac1h8Hlvdfzlki/rugKgRMB0uQmQpk4z9mNPx8E59e1CdYZR3OyISKbD5sZWnt/63/ZIXw0Rp0rsXB9Pa9o07cecOJFo1Kt1RyaCdeIPhzyhP5IwXMYhcPvcPPi6eGyXG3KI6b/Zt5l6ibeU32ScpcwwxwJHeVWAwLhGBXhIqCWhV+yGfD1CE9JIV+yncrOTNzdQHDL6fK1VPf+FwIicHSpRiokgAjz/k58f8owKpnYX+9brwXlc+n7FPMuWYJEiW/nRciZf/rHRk0dg0UhECfLpMubTWE+oiv2HBpbvjQ/0c3gxHoypuaQVOdMLnomVZKJRFR+hEdvBMlp1x1USEkqmAztHMKStnA9S5eWEXnVfdhoc2rHUgtJLGWnHTywso2WMHn9tDzjeQ5AlwX0cGrIe9w5IYJSH0cLj2gDYRnHWPXfL+kMhOE59Ky2NEYe5LUFIgQ9dIstFRMtee6vhXh43l/R2bHHUSOfM5Gmx3W42xD
- kh3pvygo
- H1E7QhxTKXJq0l+s/iUUYXp5bd3rIqGlRjM8XHpQMrcj9Ugo07H9sEV4z1l4oAZFw9KKaAbvCQBk3sG9PWWucW/9hroU4rhFYOKfr2l7efIIadaFCh7K9kee+KNfoy87pYnUcE04sf5ZSXkDhFzVeg/jU2eYFLhqD2cRXTs/feaJhfSVzOV07ey0fiDxJaOUgJvQp6+goF0OHqNmFg55QH9YWpiEWCAzwcyuXSWnBV6u4M3JyuadQWVtP4cPc4qR3/ZeMMpQFx3U32wQKzpqGh4019r9LFT6RWaMDgKqJAbsCXPu4jJWBOOEjSmZ0Hqma1KuVl3iQSFFzCRVEBM/RZwVcwjWsUBBSfjq4bz7lAhBiqFzSYCTPLtsgSU3mojAACM18Ea/Z86G9kyD3xxjbrNmudOuFKjMGUOD9dIwo+AHRW+iqQTAV21MRjA==
+X-HE-Tag: 1780395380-53321
+X-HE-Meta: U2FsdGVkX1+8HU341h5rHB/FAPA4UkKKONKvomECBidc9vJwBD+SYXJhTaksSWU2llrkTjC90t98rVFUf6OJdElPwOevJmMDHAfrICg3bYA9B3YTRTC/FIYmuUEJVZFbHr1oNQjzXwYvNMnCrOCgzcamrNUpo5L/TkKWyjM6evHH96StIbnzjSqko7T2U3cnzd7aN/502sAgQbOkOOgdB+gGYvt8sbpTjW5Lq0Z9w4FDXLzyoV77xNjnvyYQo043XX0OIdiiLXMh79VVm5NMCK2VOTFdmf0o+Vvc+YJnLNcFNBVkAjB499QLpZx0AglPrh5g5IkkiWRuG/Zg92XYnLs8tnMl91Tt8SxAhBvdA83I3y7AEr8K3KFmb9SjaypmN42qstGBRgLXiEJ39beW+fWeEozwX9jMOi5bEAbpeLSfXeFStBc61iHsWhbYd3mwr/7OHyHdZAw7D+yjFWVYA2Bmgg4g7PrdqQLDwZqffZZCMFAa4nBulFT6YG+Nn6ZOd0VrZ8chl2/vHRO3mZknG6kgLxLuJWKpIqGOAH0CSYimuYdupm6hY+zwAtw6Mue5Nt9EjYk8RsyyrWCUftEq4mEbzsvsbwFUVQEqw1u59Ixhnuv9aCrh0vAYDfw7vZUqg3r0JICBPLbOkYZp+jATIAk9vPTL3WDWEi4JLExeyQFTQFwhzZbkXMEnTZ/4wTZolqZWRVjmscms+BWn3QB7jF2rdyguQnhT4q+fNXMA3LVnHxFPX7q4/RhSUXZ25QP49ut/pgtm6lN+tFZ/3cpzaeYNMWlKd+qJ5d/u6QEFIMYVQPzP8VqqYP9JM849JC1bgdsk+DVedGqi2Q1a4tiN1yr5SKLRwgJoOZXNzeItg4j72fa4d7zwSN1bCrvJ7Pmr6Bk0zevsqqvTOoDlc/ia93vNnU73olrdVvej25mc6eU54Qx0c/TglV9WzucvQJu/WoH3TXbhvk8ODkhpfAX
+ W514/Fzp
+ Q5BnxtCvxmPRBPtNATJmJYTv4+pDdMBbViOJs8tICoBzhWGzkswwDpsI1i2E6Gm0u7825YznSEJCycoLfmbeANH0fS0aRir1JqWrPNBAaBmbw8AFUHaw0txVAeTfwLOjh7njcmVmS+/gdWO53mK7i5PrU2heu6RdYSfKOkS+I6Zsdr7E9moHm7l/SETA+lEMSeV3WqbLRl5hfs4K3ujBV9/zfpo/eBIA4TWy/5Um5sIbYv5tAkM7WWmLRumVwyH6dx28hGWWAOVsYFSUqbdpKncneZcUY6jHwPbAjejqLkGtt+qIu90Jz3GMRHt3dkRPiU3iHANXd2JPEpzmOMCTqwb3MZ6TVCJhlAEDfYT15m3SV7uBja9EKpTqyxntFf5eQcQsC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,100 +99,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__init_page_from_nid() no longer has external users and is only used
-locally in mm/mm_init.c under CONFIG_DEFERRED_STRUCT_PAGE_INIT.
 
-Fold it into its sole caller __init_deferred_page() and remove the
-separate helper declaration.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
-v2->v3:
-- fold __init_page_from_nid() into __init_deferred_page() since it
-  only has a single caller (suggested by Mike Rapoport)
----
- mm/internal.h |  1 -
- mm/mm_init.c  | 44 ++++++++++++++++++--------------------------
- 2 files changed, 18 insertions(+), 27 deletions(-)
+On 29/05/26 8:25 pm, Luiz Capitulino wrote:
+> The tmpfs.rst doc references the has_transparent_hugepage() helper, which
+> is an implementation detail in the kernel and not relevant for users
+> wishing to properly configure THP support for tmpfs. Remove it.
+> 
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+> ---
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 8497673d0ac3..b33fc87e4555 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1760,7 +1760,6 @@ static inline bool pte_needs_soft_dirty_wp(struct vm_area_struct *vma, pte_t pte
- 
- void __meminit __init_single_page(struct page *page, unsigned long pfn,
- 				unsigned long zone, int nid);
--void __meminit __init_page_from_nid(unsigned long pfn, int nid);
- 
- /* shrinker related functions */
- unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 41b83dd18c01..f1bbf3b9a321 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -688,31 +688,6 @@ static __meminit void pageblock_migratetype_init_range(unsigned long pfn,
- }
- #endif
- 
--/*
-- * Initialize a reserved page unconditionally, finding its zone first.
-- */
--void __meminit __init_page_from_nid(unsigned long pfn, int nid)
--{
--	pg_data_t *pgdat;
--	int zid;
--
--	pgdat = NODE_DATA(nid);
--
--	for (zid = 0; zid < MAX_NR_ZONES; zid++) {
--		struct zone *zone = &pgdat->node_zones[zid];
--
--		if (zone_spans_pfn(zone, pfn))
--			break;
--	}
--	__init_single_page(pfn_to_page(pfn), pfn, zid, nid);
--
--	if (pageblock_aligned(pfn)) {
--		enum migratetype mt =
--			kho_scratch_migratetype(pfn, MIGRATE_MOVABLE);
--		init_pageblock_migratetype(pfn_to_page(pfn), mt, false);
--	}
--}
--
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- static inline void pgdat_set_deferred_range(pg_data_t *pgdat)
- {
-@@ -771,10 +746,27 @@ defer_init(int nid, unsigned long pfn, unsigned long end_pfn)
- 
- static void __meminit __init_deferred_page(unsigned long pfn, int nid)
- {
-+	pg_data_t *pgdat;
-+	int zid;
-+
- 	if (early_page_initialised(pfn, nid))
- 		return;
- 
--	__init_page_from_nid(pfn, nid);
-+	pgdat = NODE_DATA(nid);
-+
-+	for (zid = 0; zid < MAX_NR_ZONES; zid++) {
-+		struct zone *zone = &pgdat->node_zones[zid];
-+
-+		if (zone_spans_pfn(zone, pfn))
-+			break;
-+	}
-+	__init_single_page(pfn_to_page(pfn), pfn, zid, nid);
-+
-+	if (pageblock_aligned(pfn)) {
-+		enum migratetype mt =
-+			kho_scratch_migratetype(pfn, MIGRATE_MOVABLE);
-+		init_pageblock_migratetype(pfn_to_page(pfn), mt, false);
-+	}
- }
- #else
- static inline void pgdat_set_deferred_range(pg_data_t *pgdat) {}
--- 
-2.54.0
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+
+>  Documentation/filesystems/tmpfs.rst | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/filesystems/tmpfs.rst b/Documentation/filesystems/tmpfs.rst
+> index d677e0428c3f..46fc986c3388 100644
+> --- a/Documentation/filesystems/tmpfs.rst
+> +++ b/Documentation/filesystems/tmpfs.rst
+> @@ -109,9 +109,8 @@ noswap  Disables swap. Remounts must respect the original settings.
+>  ======  ===========================================================
+>  
+>  tmpfs also supports Transparent Huge Pages which requires a kernel
+> -configured with CONFIG_TRANSPARENT_HUGEPAGE and with huge supported for
+> -your system (has_transparent_hugepage(), which is architecture specific).
+> -The mount options for this are:
+> +configured with CONFIG_TRANSPARENT_HUGEPAGE and with huge pages
+> +supported for your system. The mount options for this are:
+>  
+>  ================ ==============================================================
+>  huge=never       Do not allocate huge pages.  This is the default.
 
 
