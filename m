@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25B65CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:59:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E4C3CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 13:01:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DFA86B00B9; Tue,  2 Jun 2026 08:59:04 -0400 (EDT)
+	id 794386B00A3; Tue,  2 Jun 2026 09:01:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B7706B00BC; Tue,  2 Jun 2026 08:59:04 -0400 (EDT)
+	id 744D86B00BD; Tue,  2 Jun 2026 09:01:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CE576B00BD; Tue,  2 Jun 2026 08:59:04 -0400 (EDT)
+	id 65AC06B00BE; Tue,  2 Jun 2026 09:01:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 504776B00B9
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:59:04 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EF6A69291C
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:59:03 +0000 (UTC)
-X-FDA: 84834977766.26.A2DBD78
+	by kanga.kvack.org (Postfix) with ESMTP id 564936B00A3
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:01:17 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F127E1C0A1B
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:01:16 +0000 (UTC)
+X-FDA: 84834983352.18.CC6C572
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 450A6C0003
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:59:02 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WtcIVtCG;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id F2C48140021
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:01:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hvLCvWqT;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780405142;
+	s=arc-20220608; t=1780405275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ILpK8yncsPXo3Zp3F8bj4Ycb8h8YzojmPtfizCHdEBo=;
-	b=sMuCw5ebmlX9ksDcPpuCdHHSV5u5atLyoB+7jlY7VfmkN6thLzB08lYbz8WW+5UR/uFhJx
-	B8IXURiNPpGJGXMEqSW4QfstMUkzcrH1K5CLntpP1MkKvy/OnPw8uPGK2ldz+qyN//Q1Jc
-	oK/gL7Wl8wRwwL4yRWQj37I+SKb0FWM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WtcIVtCG;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=NtalSOOH+yrngjx/V5C9n2EPAtgL3kfaFfzqLx5b1Jg=;
+	b=SbmSP193/hiESPhrbtwylywoXe8TJsgLjstCfGEpcETXgB3sy3HUU4HYF0QCyo2CFsMg7K
+	JJVEjvt6HMb745eeW76GY4ThLI2ahIPPH8se6Xr6zYeBXjPKVKaSIjhFp6YamIjrluZJTE
+	dZEQE9AlX+V+A3tuURLUpx3iqcSzmCQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780405142;
-	b=TCjeYdwu6FRbUxAlV3jZPtAAb1fPVL16xmoeJ4q3K14qk7M0/ibY4iVL+TenUgY1Vsr7Mc
-	V/pGHISiSmKpn4FJQtjHFrlcp43exo6qbzJmPxzNBRZ5rp19ef8OuBfbRmikGwuLyOOcQN
-	cxxP7Ni9bHKUwV0+BsLWgjwBMyF/mws=
+	t=1780405275;
+	b=IbMcvCDCL2YBBCl1yoLvYm3spLqYm1rJOz82c36sn1dhtLhbJJR+AR7huL7O2n+j+JnfxH
+	iLAnGLaDh2OCIYO1Yn9mbEB45otriayAYaMLYRZ6pmxJCYBsI/55FuytlfZ4CwORZc60Gx
+	gzqwRoHHqhbCTJH9FL6+jjVpb9YLjSA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hvLCvWqT;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B862560154;
-	Tue,  2 Jun 2026 12:59:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9FD1F00893;
-	Tue,  2 Jun 2026 12:58:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5A4EC601DE;
+	Tue,  2 Jun 2026 13:01:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC79E1F00898;
+	Tue,  2 Jun 2026 13:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780405141;
-	bh=ILpK8yncsPXo3Zp3F8bj4Ycb8h8YzojmPtfizCHdEBo=;
+	s=k20260515; t=1780405274;
+	bh=NtalSOOH+yrngjx/V5C9n2EPAtgL3kfaFfzqLx5b1Jg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WtcIVtCGHBl1NcntUgJvu6bB7mYQhrurEPWuJ5Nfm6UXAy76S61lSrtxXezQny3Ur
-	 XV70aHvWJVEY/ZhAPrzqUJOj1yJ5UhLkBN3O0/umzhVZ+VR9w+IuEFIfv/1KqkTXkV
-	 8LZ9AYzVP09P8JgODMXujSpDZ/8Pza6T3j1Vv3FyEXXAqxevWGsMrKl50yMHeTE1Mi
-	 jZSK0tL6abMUAN5fBtHb90I/qyCKgcHXjjliVVY/IShDU4w8rnSmFgo/E0x4qLLjZP
-	 sIqs9AZmmi0uBwwQqNDgLqP88XI+y+IJnK0HzpluS0JmWYq5PKCoiSCRbW/HlxIQ46
-	 0/7aCI4q8omhw==
-Message-ID: <a09bb52c-2e28-49f7-a32b-e2743abff756@kernel.org>
-Date: Tue, 2 Jun 2026 14:58:57 +0200
+	b=hvLCvWqTMfQTa1phh3iMiAlxznODUEkrvAHnbqK+0MQ4SNeQgg+7/0fIKiihANv1X
+	 zuaFeBM4F+JhSzrhXCneHB1VhWCoX2tKt/DHWZ7XtMBQ4zOyuutTO4h2yNa5HFT4om
+	 RqYuh7hES24S+2loGIDOO0P0Jrj2rlmP5cStY7zhwJR5fjxYFRPwokVqdRQjBepBiG
+	 s60iEilHzx1ZnZZuvNFeT3yvdhzHysk8zKxZOij16oIQ51XgdT+fgoux5Vafv034uc
+	 sDhZGUAUdd4fr93n6hqMY7CuOS2C/ITJuB+6YN94W84wirz+lh/PCr2rwny/u3zX08
+	 HjbB5t95k6u8w==
+Message-ID: <609eb98b-cc13-4f89-b9b8-cb93fe69a884@kernel.org>
+Date: Tue, 2 Jun 2026 15:01:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
@@ -84,7 +84,8 @@ References: <20260522150009.121603-1-npache@redhat.com>
  <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org> <ah2ndruO3RQGtePP@lucifer>
  <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org> <ah2uDhs3a0bFcRNG@lucifer>
  <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
- <bfaa33d4-d156-4b11-8735-57a5d1b65ece@kernel.org>
+ <b5b1a7bf-de6a-488a-a011-673c37bd24d1@kernel.org>
+ <07334dc3-79ba-407e-96be-21ceb2eec00a@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <bfaa33d4-d156-4b11-8735-57a5d1b65ece@kernel.org>
+In-Reply-To: <07334dc3-79ba-407e-96be-21ceb2eec00a@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 450A6C0003
-X-Stat-Signature: kt3814pb5dz1dfcf84a49fyh9my6u9a1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F2C48140021
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780405142-398207
-X-HE-Meta: U2FsdGVkX1+n0eDKTeIc0PVtuSfGJwis7EOL1oNV4MZPWd5TVlMrsaDiLFGJYGOzwh9pnq1IAcmjI4E0r1i2Cl0VayBhZMMrBKqkrZkbP8jtQviXaSOnYr4ydx/ddF2pRnv86M/6SYWgekApC6xteWqL4dtmpDVCiPdqCFE/gu5i0kMMOvKWttMRTp80ZiEVqVPV3Ji4nW/RutgpWTdn8RifPo0CP5YHSrxRiRomIOebGtWFPx2gqTPguy0IkiyI6uuLlgShSbMtUwWy0RpERHN6d5DqT3TolsIHRB5O+tEAUyqRHQS9LhQ+9hOO+yiAJR3VINFyOd4H2LsBnDTBXaob8It9iccuN1buKc9t6U78uy4hfFVrjXucb08oQh9KJJXywiNJNpOCaUEzqpiV0rpybT7ZjkSB0uE5zrcRRTLd7lf4QzknTtEYXbktGz6GQh6EcGyYS2+5pSCKP6NbCAW6djTn8Aj4eP9JDK5ADQlFBeK0w1vBJjC3wNrTXc5wwMEfudGWycmmCi5dH0RstZSduB1z/dvxG/F8FxEJT9sxOeUVnyIN94rQGhHSdQa4lfxsud4c0/Jvby8FY+gfblQVCXnCGJGafgi7CIhf1HQTyPfnh1s0yt3oXrv6xxJOBsKCfo2X/stsLLk9uUp2QZebu18xUn7+8+WYoXxTUATH9Eom5eGkGsC6KmIKVstwE3sNLICcnAuecZg+C/4gH89lmNIDW/RmORQv76o+MN4zvU3L2C5FMe3meyzqojNHmdCbS+05ZKthw3sLfhIApYQV8o6MkrKJCUqWdO0HBWpjz44MBO/AcMNPNfBw1Fi1Uxuugwq/2Yo3YonnsbVR4HoGYggIzbjToXLDKaWmd7j7SjM/OIXuA9LcsZiZyEOeqCkemjmcoHKyxOM/tcEBwTatldVLoA9KO6U1Hu8MLZ6UEJcVfXluJNtx7VD1MEJRyRjIeZatPj1HfTqaJRs
- UQ4n+0NE
- vqthwjuiTyPGo5dpNNNk0li8YG6cAJ+4ZNpOQuo8s931KAKYeCE16O2jbu4WRNFTgtNshUX8dlkW4oxMjKyMTHoK/1KT5PRT51wpzl0AwegesU7AiT3o0+iYe759EjQec4IPopy369xTWueA2A7pDsjjClqd2KlLngEEFyvs8WJClQZv5g74yqTWVu+rjip3Dy4PVVi/+BrOh9V/QNbtzcVlzIYTQN6doutks/0S7Vph1FEloSkMg+VKH27KkSeVi0cWo
+X-Stat-Signature: tpeeq9kr3doscfmz4rmzrw9o6xpmdexj
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780405274-78872
+X-HE-Meta: U2FsdGVkX1+UFpWthrlbccZxhymfEdIWltrXpA2hbqqZB4RMa/folKWsL1c/SzE7GZavou9kSQN2g/D7eWZdA+/Cbb9GTo677TFtAuqsW5cZItrsRQJaZn+ygPCVzPxOtNYcFs7B00M3i6WcgoyxHPNsnSQ9gDq9ntwx3x5zDorwThH2kblXwQBYbJLmTHcUWmpF2zbRaVmO6kh+ew7ZJ3Ofju7e5o7Q9eUcvaFUw2aIgDleWllqTWUfIrj9s21BsutODNd5CZSF/NS4DuQjhEhMql8B5a1Sfym4NVD3QnBExZmxUH4fUrKPDFvdZJdw37npXB+/ldDSOw7EVqkjWz5FxeiXHaOO+FqKYAUFtc1k+NH5/PxijNr+fNpsyMo80DfcqdAeFd/ktLpO7KHB36SnR/jLe63HknOAN8U92Kz3r39yajA8ttpOBUOYfyIqxT4rPEaHvIGI7OjQG4Vw/xICfQboHeM6Kz0TuFiRnQ/hLmdvVl484i3HKXKdFt5iddXvzBZ2re8gocneYPf1650kT+m1/zZFjxIFFwHMa+I+lsTFTToQPfcqmrBROlT7PSRwe9KZSHwvZ0dixh6BWQiG6li7RkOmFrS1tQXpPUWB+PXveNLQngjHjErZacmCMSHdy+9DCy3PQUtZdSXU1s0zJL3s1BKYw4WsIYp5IiJ+/3VbDTB3KlukALzEnuA2JCAByZc0cz2D78uxyzPB7I+PvtGto3qhkqZNhy12B29iINLTAi8oMJ+7o/y5xKJvSan/T7V5VImIBiRs3PTRZRmVMwXAC5mfRjddUfq25teMyDFGqNPclZft6N6PBcjVL9Yd025QxTpT5sIfqYjxRr/p9cmx5eMFpsNBy71EUvM0n0/y6U0PXH8GTONlNUsiNzO/gyj4hkLqDAH9eLZN1Myd3BccBHUl7mTMZwARqxGEJT02CBzrjGcXuuhSeUZC6o4Sid7MT1UYjfSVvPj
+ juh+6vsK
+ 4msnHqld4WnQ6aV1F5FqKYbJF0FwUt42zdhAAFlFDp32FLfgmXZkPpsjXBGdVAeHCqwkculhf3Msn87B0QxvUYyGmHeJfW99+ynuwegMmT5JkKhXqnsDrYzBBHIt5NQKsKryH+mSo+and2q7hUAToKLazh4rc/64q+seU0Gx8oj08j0HJjYRJiXrZ5r4/CsbeeBdjYHrNQsivI0t8bCaCPejYBrcQn9WXMnb2Rw3rHynNeIDpkratwbLyDUqvg3NrjJSPOIa5sZTnWoPaqWhywB2KxndGXJjhdnw1iIOOO8g2xM5HppwkprAE4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,38 +150,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/2/26 14:47, Vlastimil Babka (SUSE) wrote:
-> On 6/2/26 13:20, David Hildenbrand (Arm) wrote:
->> On 6/1/26 18:16, Lorenzo Stoakes wrote:
+On 6/2/26 14:55, Vlastimil Babka (SUSE) wrote:
+> On 6/2/26 13:31, David Hildenbrand (Arm) wrote:
+>>> Yeah, but as we said, we discussed, it's all rather complicated and we should
+>>> move incrementally.
 >>>
->>> Err what? The 'random' tree is the MAINTAINERS entry you are targeting, it's
->>> based on the mm-next stable branch and only diverges in the work that's been
->>> done specific to the subtree, what's crazy exactly?
 >>
->> We'll still have plenty of patch sets that touch files cross trees.
+>> Starting to read Documentation/process/maintainer-tip.rst, it's very interesting:
 >>
->> I don't see the problem of sending stuff against the integration tree from where
->> it can just be cleanly picked up by sub-maintainers (after all, that's where all
->> the subtrees were integrated against)? Or what exactly is the problem with that?
+>> “The tip tree is both a direct development tree and and an aggregation tree for
+>> several sub-maintainer trees.”
+>>
+>> “In general, development against the head of the tip tree master branch is fine,
 > 
-> The problem is that the patches would not be applied on top of the
-> integration tree, so it doesn't make sense to base them on it in the first
-> place. Unless they target the next cycle, where the integration tree would
-> first become part of rc1, which would be the new base for all the
-> submaintainer trees.
-Why does that matter?
+> I don't think we'll be able to use this part as mm-next will be only an
+> aggreggation tree and not also a direct development tree.
 
-For example, the slab-next tree gets merged into the mm-next tree. Submitter
-will send against mm-next.
+Take a look at tip.git / master:
 
-The slab maintainer will cherry-pick the patches on top of slab-next. From where
-they end up in mm-next.
+https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/
 
-In the rare event of conflicts, the base-commit ID is there and known. If it's
-too much of a mess, we could ask to resend against the slab-next tree.
+It's basically an aggregation tree.
 
-Again, TIP allows that. For example, I never based any x86/mm patch on x86/mm
-and ... was fine? :)
+But what yous end there will just apply to the relevant sub-branches where it
+can simply be cherry-picked?
 
 -- 
 Cheers,
