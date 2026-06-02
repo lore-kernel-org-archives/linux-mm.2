@@ -4,99 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3A41CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F575CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:48:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44B926B00AC; Tue,  2 Jun 2026 08:47:39 -0400 (EDT)
+	id B78066B03B2; Tue,  2 Jun 2026 08:48:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 423656B00B7; Tue,  2 Jun 2026 08:47:39 -0400 (EDT)
+	id B28CA6B03B3; Tue,  2 Jun 2026 08:48:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3606A6B00B9; Tue,  2 Jun 2026 08:47:39 -0400 (EDT)
+	id A66656B03B4; Tue,  2 Jun 2026 08:48:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AE196B00AC
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:47:39 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC9C41408C5
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:47:38 +0000 (UTC)
-X-FDA: 84834948996.08.B725D56
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 237C040017
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:47:37 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgqQihj6;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780404457;
-	b=iPstkaTot3r22rOHLZQb+6Vl04PUUinP2kWTGnpS1ivTHeanJotdsCge7KQ4AriYhTQgHV
-	wsE+Lqfh3ZDKU1AAXdxsCAZCmHR5TH8T+vo8ulwniJhXuSc3QKZ+kMsDIZnR3P+3AN0Ye6
-	ZtkIAjvp891ihD2fko958WF10kJ9Bmw=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgqQihj6;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 996B76B03B2
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:48:05 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 601A2408B6
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:48:05 +0000 (UTC)
+X-FDA: 84834950130.24.47EE284
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 91924160011
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:48:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ad+0GGTW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780404457;
+	s=arc-20220608; t=1780404483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eo5FXpDkFvf14uRPPl1kyUutcnRuZUpz7x68R5KJSPw=;
-	b=26iXIWUVSI1K/0RdYbpAIn4OctXFP32TRLuvkTMjOb6AaP0TRCF0iV6/M4L3PaLyq0uAJD
-	2ZYkfLreer/8me1XAehGsCCDT1kRzcoXB1aQHeRLPK5EJ+F9KHAhEMFwQTsKinEHCnxYE7
-	fkuHUfTiva1b1VmJ7WCzP8If/U6WIP8=
+	bh=rVzmKFXMREhqLdDCgzF/HG/O3l27gcoWsVI3aFy6nLQ=;
+	b=ps9H415Vw0V/9K09ptvObVBFsxHLL0qxSgcWSmsoDWRaStrhl9Ztmk4zhLbC4e9HR+Z6DR
+	oMK+s5j5JXpmGjqBtqUjYkzHHmvUdnqiod9ffWoeU4IO5Bf06oUcZOGe0CB8Ij02F10jtL
+	550cdisUp4AC5p0s9ncI+qIJTcSrPec=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ad+0GGTW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780404483;
+	b=3pYrrwNxpouqgcrMjtOh5o8UKchAdIg9pLQePSKl7Wv1jNFRtrp+HDAhtyTpgJzKHVpEH1
+	BLzvJJtObzGEyNneellsLd0bs1NjjYHCRa9Zq0Nu30exXUPZdUiXqvDFZTA1a6FphaEtYs
+	KE7wMnKB+l3SmSM9pW1D596pFJevZUU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A0BAF60154;
-	Tue,  2 Jun 2026 12:47:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812A81F0089E;
-	Tue,  2 Jun 2026 12:47:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CAC7244350;
+	Tue,  2 Jun 2026 12:48:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977741F00893;
+	Tue,  2 Jun 2026 12:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780404456;
-	bh=eo5FXpDkFvf14uRPPl1kyUutcnRuZUpz7x68R5KJSPw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MgqQihj6pj7h+FldOL4xE3K+YX7gfMJMC94m7JmsVDKATOtUgOhMsUIF9XCO4gWpX
-	 lPtI5hv/Tjhnq7enqjIdrLvrNZShTow72KXqnohxh1A3oUCWTrOSrwJcHdRyzuRoFm
-	 /Gx3qwF5nTnrAKSLTYyZ6PMmuJS2drAO15CM3Wu13VHvTSCDxcQm2iiQxfnI8vMcP4
-	 /gzYEcTuplhxMjrdHVGX7VZSi5p8snBsI47hOT4M60Z8Yh8rAL8Xb6PVB5mdokBmCo
-	 hiojmidCazEdBq7xTsD9JKk/44Rh6uqRzYRsKAgVyAMD7fSLYtxfqVUsVC4y4YL1Jh
-	 9AzmZrYS+zoCQ==
-Date: Tue, 2 Jun 2026 13:47:30 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Nico Pache <npache@redhat.com>, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
-	vbabka@suse.cz, willy@infradead.org
+	s=k20260515; t=1780404482;
+	bh=rVzmKFXMREhqLdDCgzF/HG/O3l27gcoWsVI3aFy6nLQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Ad+0GGTWj7Kt4Vh6j3pFaTfvZWhVgGyL6n64229bd4TndYZP1KUpBH5meMVKUNFC8
+	 Jv0oIqwjNfSqNEMGP+Hd9vVO9JM4Yjfcj2sVlYCdgnfe0rPhhgHY/nbvyRgZDBi4fD
+	 4dIkjHMNoaXxLqo3rWyatKC/r+RMGmuJmjCfkXTZHuV3Xhta2ZdW3gvXqIoU5TQq8o
+	 VV1FOCNhL4/AHGTz+8mYZSv8cP25v86sLrtmiQ95nK54t3iGTV4Y2jTZtYtc/ilbFz
+	 4Q6XLiWPd1nSiplKG++LgICLAvO4F4XKT1cuM/pDOtewZKB/VKpXgi6iLBRxzbia1P
+	 Cb3SoA9I4Z0dw==
+Message-ID: <bfaa33d4-d156-4b11-8735-57a5d1b65ece@kernel.org>
+Date: Tue, 2 Jun 2026 14:47:58 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
  khugepaged: add mTHP) collapse support
-Message-ID: <ah7QuyqNwaZWjDpk@lucifer>
-References: <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
- <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org>
- <ahVX1iq_-95vd0PN@lucifer>
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>
+Cc: Nico Pache <npache@redhat.com>, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, liam@infradead.org,
+ mhocko@suse.com, rppt@kernel.org, vbabka@suse.cz, willy@infradead.org
+References: <20260522150009.121603-1-npache@redhat.com>
+ <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
+ <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
+ <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
+ <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org> <ahVX1iq_-95vd0PN@lucifer>
  <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
- <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
- <ah2ndruO3RQGtePP@lucifer>
- <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org>
- <ah2uDhs3a0bFcRNG@lucifer>
+ <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org> <ah2ndruO3RQGtePP@lucifer>
+ <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org> <ah2uDhs3a0bFcRNG@lucifer>
  <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
- <b5b1a7bf-de6a-488a-a011-673c37bd24d1@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b5b1a7bf-de6a-488a-a011-673c37bd24d1@kernel.org>
-X-Rspamd-Queue-Id: 237C040017
-X-Stat-Signature: fznoabms5qnkfukdgmg77eboo85sb6oi
-X-Rspamd-Server: rspam03
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780404457-148466
-X-HE-Meta: U2FsdGVkX19Lc8sTG9ywwX1qvFubIQm+0ztSr7qB5G3Rpq19SNZzyW5YuV8pEP32+TWAYdIG2kmPOQarxwQY/ZNaZz0yMZrMHfwrqyz7oSYi3LuE6RG5R9hRrXwapIsYLQcdG3c9IwaA2NDuK5l713ZV63M9Vc1wul52Y5z37vQKuEIrdg62GJLkcFEgMPfA/UfCNrmC1ez3UdHHUCgXVs40/Paf84OrUGttDQFXGOy1BRLF/f/xCvOm9xQ39HCfafhVz6mlgsKxuYBgdMrz+0KWGEVVxT/HcCbQ0hII6z6o5bzPcFIjxF8rGtdIf5R6q9jklRlXzr67AOXtQTSVP304SsDo5SSwNbPaUFyrp8n0Iu76Y8OZqf9sZUzb18MGptu06+zvpJWP4mvt5458WENl+JevL6socuyHIWjMBISATQ1wCQlEG5XB/w+VFLkaRDHOzM1PhwISmReLF0mOaIRCyiBak+IzcDXqM6ls/5nW8Whhy9/DlCYapTzKy3QBY1vuol85lyn3p7BJVEiD7zXymMkzodfCoPyFIK3GDI1pBH0CVF/cFW1s0RFahiIPGOkRsQeKmnulp7Fqyx8JRqkg2f+RQLAweUfc0fRBHNlDphpCP+nzB+YwzAqCbpR80Kxs00M/dVKzV3hwLWX19sfZg/mk7oN5t38sTnRqECtVAROo4cZZ8y1vVLR6yHBbh0x2eENptbC2gx2CYhApnupYxrtAaz+Tw5fppNDzjW6w0yTdpxgDmuRIOzuJNpmL55qvJfeL49w7Qb7KHlCUnkAtn6rqP0RXuyLBtnu3d5MboXvzoPcFbtw/qf1OqwLmLazocvcHrgckYqRKAL8Sd0G3FV0MivYL45N/ZgZIcegTg0zJ5Muef4+sfg+ydtdElKDLzeuLxVm/AaPzplF9srCnz88EzvqUlvZ5aoWs0y54DnokVSL3aoh7gnQU/K5Cl6zKMxDhyXVfXoST2tM
- 8gJNdZRA
- JHs+NLKUUomQfpdO/UnBQ2POce077X/k8EvfYC1HLkLqKN50iCV9BXAVxiPWT3AEfuaIdW+AUKnaHplUFBgTL4Py80Y5wDIFw5subpi70PFkUGhVNq7Ho3qp8RkyVNgwBQo18GzhITB1T2qnZEIrVxBfYk8G0ZS1SMXjTUj3U37U8Oj296QBgqG4QtJJM72RpkrGNQTtwlEFVsIFtJfJlvxaYHW8EAV7bRJGh1mFOhyKc9rKVDxJVUmGMjd8K0r/TuafC4jQjrvBt5ZRUK1AacV6UnQ==
+X-Stat-Signature: y46pqypk9nornw7jppw8dgngquae35bp
+X-Rspamd-Queue-Id: 91924160011
+X-HE-Tag: 1780404483-800827
+X-HE-Meta: U2FsdGVkX19WXgbqE7nFpd+++lhBOHOourJRk+axZQWr0fE9Wp+cd5ldiCP4MjMqlzZ3b1+tew1tX82MlHBTZiaDz86dkuO7FzdRcK4fqMnWWj2JUnDW8I5Tsspzcbl/OwIAygaS118V+TzSpCog0EqBBQMc9qqsb3FlksDxOddAOR8kVy3HR9tTH55R5OGDJTvrC4wXwZVZySWe5+8BYRnirADcPBACAT2TxH9lZdfDFd05YHsxp6MuL5qJbUNo8jqaWmrk+16FQWHkLcut+TSMRGfeKboJacqWvOtsmgo1RmT6icwHJ2Lo3mHuoJyfdXGnjfPEIIRSWeuvvNcXFUteeN6pOfGvRgWZgC6VLcscyWHMqVXPkYoqDk7ojXMVbOyci1fIES419VlskkGypws3UVehIUV9Xg+pIKw2fkvcT/C857RBDA/yuD+Ks+6IqbE00E4mBuhsKpk4Qv2FImf0cFS2Ad35UyuRRQwJ22ZfIznoe/peA8RJWVMt1UwVJ5kCUS/6YVv7WDfynQks2V/9/dtI2ua9kGSkktwmSth7eiVxVsz9ILKYDBe+qnzESI4VnWeKfhyTvXQNDcbYfha+ygXiTI0yAIfaFVsb1xJWiHivWgV4QoxwlWZmQ9x6WufPyZ6pzm+ZdPs8Ke2AG/9YcTfn8KXYAe1AhYrWfil5oXqKD2VwKr+EV3tdj2ZSe6PqtAttdR+C/TkzFi5TgJ+o8L0lWkB8GkLKImK5z6K4MDygkUVgp6FC2W8OH9kfPhwRg59MAIa3y66gr42y7n9uo5D6SdBx1u7awjfs03mshgPqYI3e9k4kSLfXJ9ahiR+L0wrsx80aF0sBmn7DaZdRL8Pb9xKNFZdNKLxxk7pSAbwypgEKqLMP+7u+3Jq7uRUdtxITCFvRnRYvTeqwc+Ekm29FJPavMFHAZrDhpxescMBk4RNv7Qyan0dWOMbWWiMezH1CjkxH5KgWTvx
+ JynnpDV7
+ rnfo/FGdleJXbD3B6qDv6VToR9kgeL7sySGqo2lE1CoFKwdUMdX7rZxMGbI6OlZeu9IynOvz5/WUphwGVFyVkCdKfzajwr5yGTIP4EugB6oDqAbXizUApGTIQFut2yF+3EhlD6HfKp1zdZXwRu6XjkRhYbvRF4FlOVfEljm1u4Obi/QkD/kFVsJLvmmPmYri2Jrny/gWSgMpcoz24QiUEXaD0SCY5srTXb9bx5ns7Uts6Y8xWelNVhkBPPoGMYxnih+ZP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,44 +143,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 01:31:35PM +0200, David Hildenbrand (Arm) wrote:
-> >> learn from obviously) against how mm works in practice.
-> >>
-> >> High review load with many overlapping changes might favour a different approach
-> >> to a subsystem that looks different from that.
-> > Yeah, but as we said, we discussed, it's all rather complicated and we should
-> > move incrementally.
-> >
->
-> Starting to read Documentation/process/maintainer-tip.rst, it's very interesting:
->
-> “The tip tree is both a direct development tree and and an aggregation tree for
-> several sub-maintainer trees.”
->
-> “In general, development against the head of the tip tree master branch is fine,
-> but for the subsystems which are maintained separately, have their own git tree
-> and are only aggregated into the tip tree, development should take place against
-> the relevant subsystem tree or branch.”
+On 6/2/26 13:20, David Hildenbrand (Arm) wrote:
+> On 6/1/26 18:16, Lorenzo Stoakes wrote:
+>> On Mon, Jun 01, 2026 at 05:45:30PM +0200, David Hildenbrand (Arm) wrote:
+>>> On 6/1/26 17:41, Lorenzo Stoakes wrote:
+>>>>
+>>>> I think life will be easier with submaintainer separate trees for this honestly
+>>>> :) or it could become a horrible mess in one tree I think.
+>>>
+>>> Requiring contributors to submit stuff targeted at some random trees is madness :)
+>> 
+>> Err what? The 'random' tree is the MAINTAINERS entry you are targeting, it's
+>> based on the mm-next stable branch and only diverges in the work that's been
+>> done specific to the subtree, what's crazy exactly?
+> 
+> We'll still have plenty of patch sets that touch files cross trees.
+> 
+> I don't see the problem of sending stuff against the integration tree from where
+> it can just be cleanly picked up by sub-maintainers (after all, that's where all
+> the subtrees were integrated against)? Or what exactly is the problem with that?
 
-Yeah so they have a separate tree model also, so that's an option to learn from
-as well!
+The problem is that the patches would not be applied on top of the
+integration tree, so it doesn't make sense to base them on it in the first
+place. Unless they target the next cycle, where the integration tree would
+first become part of rc1, which would be the new base for all the
+submaintainer trees.
 
->
-> “Bug fixes which target mainline should always be applicable against the
-> mainline kernel tree. Potential conflicts against changes which are already
-> queued in the tip tree are handled by the maintainers.”
->
->
-> So, yeah, let me reach out to understand what works, what doesn't work, and how
-> it works :)
-
-Yes 100% :)
-
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
 
