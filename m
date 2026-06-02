@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 258D2C5DF71
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 08:13:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74F24CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 08:13:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56E4E6B03F0; Tue,  2 Jun 2026 04:13:45 -0400 (EDT)
+	id C734B6B03F1; Tue,  2 Jun 2026 04:13:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51F3C6B03F1; Tue,  2 Jun 2026 04:13:45 -0400 (EDT)
+	id C239C6B03F6; Tue,  2 Jun 2026 04:13:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 434E86B03F2; Tue,  2 Jun 2026 04:13:45 -0400 (EDT)
+	id B12846B03F7; Tue,  2 Jun 2026 04:13:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 323776B03F0
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:13:45 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 9D50E6B03F1
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:13:48 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C91971405AF
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:13:44 +0000 (UTC)
-X-FDA: 84834258768.06.8B022D0
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5FAC81405AF
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:13:48 +0000 (UTC)
+X-FDA: 84834258936.06.205FBB4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2AA6814000A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:13:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bpa1KuA5;
+	by imf14.hostedemail.com (Postfix) with ESMTP id B9BA0100009
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:13:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a5l423uq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780388023;
+	s=arc-20220608; t=1780388026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dBkjXMTmjLYTnOUwfnks3EFmZB9pPlPFfyMtmk7cI3U=;
-	b=f8MVYHUPd20TPNfiQn/NWL58sRWuxzC0yvo4/K3/bpfaTQtEeL+ikuQFmWUpLv7Ul/XVdM
-	q/5K7bTqZ425wKbA2qxPtOdy5zQaGfVZ3KWCScFiOYT64Mx6Ii7AH4pd3XXwfGMkmKWpgY
-	Hspq5qehtN+UJFJSA/7hfPD4mjQ2898=
+	bh=BW1Jb2lq0jvXU9cqHaR15Ee40aqegmEDFgHV902Wtbg=;
+	b=2mXVruf+/eFRHNzC6qP+236s8unPwv0LTfpOSZVWVVNqvAtg5lXtPYJe4IpU4g9eXB0Z9z
+	mVsAWM/1xDYHhoCAXrogX4M9V4hPoa1QNqKbmwl+PEGupmcINAEy7EelikQBQSsse4cEI4
+	RGFGMSTm1KaCfkdc+ELEwLaPS9PFL5s=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bpa1KuA5;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a5l423uq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780388023;
-	b=zDz4kOf7VOwtmqDnKLXU7V58nzsPck8ClcgYBS3ZktNzfRT7AXv/K8gzZiOHmrQHPmpq6r
-	S2G3tok/HTPgQT2k7nlcqWUYQsljCbhv3AQi0oWI4/KbKGOC9Z5EqAtCgdnRMZaf1QKVmM
-	QVwVnoxp089jXK0NnFd5iNKS00OlBbo=
+	t=1780388026;
+	b=sDc3olCw1x4899TnXWOTtAl+TZlcJW1ePgT8JkMDxJ9VT8+garbNxqViF6cdXzE/FL3I7A
+	ErdbbcbpmazFkKap2RmgcYd7sTmFuUEydCH/NgulPsxblMcBfuuKq5YWEXfOtLTF2/dPMG
+	UZ5hBFtZx0hwauGkbLPtagdNl2Sm3dg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A21016008A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 541F460142;
+	Tue,  2 Jun 2026 08:13:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34C81F00899;
 	Tue,  2 Jun 2026 08:13:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3AD1F00893;
-	Tue,  2 Jun 2026 08:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780388022;
-	bh=dBkjXMTmjLYTnOUwfnks3EFmZB9pPlPFfyMtmk7cI3U=;
+	s=k20260515; t=1780388026;
+	bh=BW1Jb2lq0jvXU9cqHaR15Ee40aqegmEDFgHV902Wtbg=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=Bpa1KuA5WsCD66AasZ0sl3TPcc1/4v3KFLp4MBWQ3V/DKp9IxKexcZETomuPehqTH
-	 oW7AjhG5pIG0+1zPLNhQr1BDSRpxy0OXJLhEu054Dk67FXWjHvCzfw+yOu7ZSXp9WJ
-	 TTMEJZlPB80bvMNID92SiC2lb+b5+MbERApA9AM+sYZsv/xvWNdPNt0RFDlZv4BH8G
-	 0lubNHY31s9XSrUDOq0nXy9XEegapfFje+0pK4oRel7PqRqFxQ640yWxWQRe5qEHCX
-	 dElzNPk+Fbugx4/pfXDfPeoWC4gg0nTxxb7+/9VvEPJNz0qQnr4IzF0xJ68T7cSaa0
-	 DoWuzoVX7NVSw==
+	b=a5l423uqgUs0EnF17yDerxYDPl7bPFNzxgCv8msMDTwa01f/VlMfU7kcbBQbByAy+
+	 ZwI32LGnWXeITmWZegZCxOgODqaUVPz/jW5kTsJQ2Mnli0wa9y01znNa3fQc6+MtMa
+	 zyfgkW4jmI8FrFU7tn7XpS0RJqn1PJwZslDYp8Y4vSxwhG6RZOdHq5U2lArsPGX5GN
+	 324Jl+5rfjq8um7r0h3M+aVRP3yd4xZMwbTIsWCuZJ6VGUmWUv4PAmIXFTK0zM/NoM
+	 s4nstGFOtfzqOBMk0+1o8FxKpOqXV6yrrJpj2Ooj63CKKnDAgMnjfOBMY28ISAEI7E
+	 JXXV591Qj/DFg==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 01/13] liveupdate: change file_set->count type to
- u64 for type safety
+Subject: Re: [PATCH v4 02/13] liveupdate: avoid mixing cleanup guards with
+ goto in luo_session_retrieve_fd
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, 
@@ -76,20 +76,20 @@ Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, corbet@lwn.net, 
  dmatlack@google.com, kexec@lists.infradead.org, pratyush@kernel.org, 
  skhawaja@google.com, graf@amazon.com
-In-Reply-To: <20260530221938.115978-2-pasha.tatashin@soleen.com>
+In-Reply-To: <20260530221938.115978-3-pasha.tatashin@soleen.com>
 References: <20260530221938.115978-1-pasha.tatashin@soleen.com>
- <20260530221938.115978-2-pasha.tatashin@soleen.com>
+ <20260530221938.115978-3-pasha.tatashin@soleen.com>
 Date: Tue, 02 Jun 2026 11:13:34 +0300
-Message-Id: <178038801483.119771.5551368813719436713.b4-review@b4>
+Message-Id: <178038801485.119771.9514973100282773342.b4-review@b4>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2AA6814000A
-X-Stat-Signature: kydm5ey95iakma5mg5ajhpj3ngibppdk
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780388023-759552
-X-HE-Meta: U2FsdGVkX198P4jKp3LSb19GWwt9NDc4q6dCR7PTOWpqCSdEFIKlgp1DRuscCtMm4OxFfADOZihDCr5BACUiyRzLvoSIKPlxv0ZKH/YfuQ7ogxw8BZr29QvNhB+EGcRlEMBRvq5G2hESGogVsV/amDUQG5fgLjBgNNnf+RKHq7d6DO/H+P9jswETS72QivVusyFJXy3KMjCusTIIuf7kPd21G4Wf0ovF7/AfE70aANA7ZzJqLaFCExYQU4P7VUgLkuEXun5cgefIEr2qQrDXmj1fZEFVVRtA7TTILd9hcVgS5cPPXwYeXvd8ZofprN/lSScpir5Vs/6njVRmtPPo8KOxY/wRUeUXauf9VgfwUXiz4tj3dy6cwksc8dt88+82sBW4QZFrJuT9dUsg3yfnpXnNf9W6J2EhZiTy2RjeaFl1KYEuj+M2INmOfwJ3en2SjQaoKKa779Tcl4rf/idkgMJYMDcUUHE/s+fxu+cK+yOhota03qa74AF0hUuz0W1UM755chGLUO7GCFpU0lsushg9/0F2c3CB/lP0vF54QfusCpf5q29uZdyMokgvGbSvSmK3S2brZh1thZL/An7ak0bk6yF82n2O+cRNSw7Hp1O5l0ERXue4U4SUh3sPNu+PdAlM6qHdbCOUAZMk+uNriq4CzHk1mFocksLFpETOXv8ATwIDnZXZatL3FhhLkZAD6jrJzG3eBvAFsp/3ddpkMgdEkcXMkFyQl5/uCYz86cqzPsNIYeIbOdMD6H1Pg2bdS3jpJl+GTJzdEmW3W33CA1Ypy795iqqqfmdf94Lapig+NLRNnvbPZ6hbl1KWLeCljLHcGJJoOtaXIdRYamr1nvtx2sI9ETa/R9VEPEtrqjMSBHTQpmPP8ON6o+Td6Xr6E+QTEk4/PfNSr3Q1S8lGBrcgeBA54Bv3olODWP+oGxv2BUUwtK+sdl1sohkpZcJm6+cKpzVMFi5AHL+FL2u
- 0sIFwFdl
- rAQQqkNAt8aCFJr0eAHAuQxcGWPK1ouGpWnZHbPWP7ryiauBgiMtKkjuJMBIsht79y14TDkZs35IzJFtVtYsuneeoaZKP8u1x47bw4376bss+4PYFueuPo5I4ZK2/LkPnkBy2bnhKQ1cahrblRnB0PlafeWCQWRGK2V36i7It7coRc5hdZJAygEITAvSnV79vZW4QFq9FvUWyy6sdPjMdaxeDihiCOw+JDHOFZOZkcvKow6f9RMGAlIIXfnGHEa7nGu3r3owQXMeFrGrJ0Xy/gp7HJhQtq3gjNXx4gZUkiQ98tbvHJoE4UkYTygspllry4x3aNlguzvaNa3+O/m47az0PyzHVlGcts852
+X-Stat-Signature: f58nocnydb7m45cmkim54gyddyib85fp
+X-Rspamd-Queue-Id: B9BA0100009
+X-HE-Tag: 1780388026-286097
+X-HE-Meta: U2FsdGVkX1+5jCbKy+nRZagD4otklY94yIfd0thN3ErdwUc7YuVxymXpO5cjGs90QRfLrL6yfM9d4fd0lBYtlfuJD12KIZoVCG5/7R9LhicdvA8AIHRL2vO/5MvH3MJgaDYB7XofWaKOLcWcbxU7jWAl8Tg+tWHA0MPT8MadZF72OuuRHzVqcfGft4+YlILTiYzlH0VkAjO2viPL2MjmWNy7Z99bI7E2jZXTAsmUPVRCLv4VNQrZp6O1xoW4ap6IpsaBbJ+TLLPqS/fdIsiEzyvkTirsSr8y9pz7NtI8r1a5SRWmblIVefsTpFPnpOMlwHtauY5K7wAh/0xFvVBb+EIXFjSwl++ywX6s4XMnAslCZfPw5+faonwzY2fQc3DAGqIFhcsAvXFb6TDHbORAdSrlW5iPbSVa5pym2d7+MiFz0K1zE6Jajzjo9gbswkAN+8Mh6UN/gbcYDkWoVcgkwrNoV5pnqyyn34ptBShqYcRLfVURT68PSG+rvQIauzI7mVSihnbiNUijkfaFMmlKB0mT5RmcIS8n8tZSJc0WmdUMng+x8JvqBnbFKfLn0xJ66eajML+ezmpv5j1pzHgo2QQTjAty9zZ3YZ3358gAexrCy9ifPBn5evxCruRH+egcPs3r7heLIzHuoTCJ5B1CsfybqCZsu4TMkOfXTVxyzXYs1/UQGSTEjKncjbyTWJJecV3jAb0BBmJEIitbGORM1bE9ZqIeIvMpBk/A7PZyKNs0m2KCB8H04C0PPmWWvygDwcDTDScdBakKUKjYdWzGId/Dq4UIG/ngAuRS8BsMr6jWiVBh51QWJno8Ao50dRqrb8mbv4Co3Pp8s9xZfYls/mzwU7tpbNbwzvoyYj5O3FKfT6QLjP9oGv19DSbx7FujNVsmf+hbL/bCh7CqhFdoh5YCqJj4ngf6n7B6AfdiBEmd8VxZU17TKMNNasNdCiQM4+yE5RXM0abQUvzTytr
+ hN/7o6qF
+ np3YoEO2VBt+BJlENNuPhBbdvqV3We7F3nui24drl59qn5ZjDZquqPNJi1iUneCH5UwnWcarcSW/5lN6go+oFVKTOSd0/fN31uNC9BKcx4aVbYEKc+4XQhkVoSxwbP3XgP7N0JHL/eV8cDxNfOv7jnJq+1xdysuZGQjbXf87eXMab2EDR0ymJsLxbeCXzQ/py85q3m1o9QgaDhnQE6sZbuCP4moWm8p99nP/ONCTp2TwSEMRjU80z6IK9RlNQDZJJEpSe0lBZN8JwzmtSHTTaIoj7J9pc8NighzLkIBrRN2l5OVL0XkbGM++238ViPz04fLlO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,12 +97,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 30 May 2026 22:19:26 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> This improves type safety and aligns the in-memory file_set->count with
-> the serialized count type. It avoids potential truncation or sign
-> conversion mismatch issues.
+On Sat, 30 May 2026 22:19:27 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+> index 146414933977..8d9201c25412 100644
+> --- a/kernel/liveupdate/luo_session.c
+> +++ b/kernel/liveupdate/luo_session.c
+> @@ -291,25 +291,24 @@ static int luo_session_retrieve_fd(struct luo_session *session,
+>  	if (argp->fd < 0)
+>  		return argp->fd;
+>  
+> -	guard(mutex)(&session->mutex);
+> -	err = luo_retrieve_file(&session->file_set, argp->token, &file);
+> -	if (err < 0)
+> -		goto  err_put_fd;
+> +	scoped_guard(mutex, &session->mutex) {
+> +		err = luo_retrieve_file(&session->file_set, argp->token, &file);
+> +		if (err < 0) {
+> +			put_unused_fd(argp->fd);
+> +			return err;
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+I don't like piling up error handling inside if (err) statements.
+
+As we only need the lock only for luo_retrieve_file() I think it's better
+drop the guard and use goto:
+
+
+	mutex_lock(&session->mutex);
+	err = luo_retrieve_file(&session->file_set, argp->token, &file);
+	mutex_unlock(&session->mutex);
+	if (err)
+		...
 
 -- 
 Sincerely yours,
