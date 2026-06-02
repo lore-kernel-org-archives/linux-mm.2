@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 822BECD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B18DCCD6E61
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:13:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53BA66B00A7; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
+	id 9A8E26B00B1; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4ED126B00A8; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
+	id 90BF66B00AF; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DB586B00AC; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
+	id 7AB3A6B00AE; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3106F6B00A7
+	by kanga.kvack.org (Postfix) with ESMTP id 6872E6B00AC
 	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F22AE162A77
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:13:33 +0000 (UTC)
-X-FDA: 84834107106.23.085A3B3
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 38F81162AFE
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:13:34 +0000 (UTC)
+X-FDA: 84834107148.03.3D747CD
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6609610000A
+	by imf12.hostedemail.com (Postfix) with ESMTP id 97AC140006
 	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:13:32 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=gGKNYGjE;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf05.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=T7xBVUUF;
+	spf=pass (imf12.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1780384412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jKADVtROf0vQ43aH1Xe6H1MxCOHUxw7qwH7HL4aVwN8=;
-	b=La7QseypGrWGUxPxUyffSKR7c97s+pWqtZQOC6ApwKBl31/vpX4iIJpx32dSp6KdMxfheL
-	CW8/cl9GmUfqIXcmK4Pb0NZVXcmmSF6j1YWUhb6dj2wi/swYkkmI/QyANA7flzzIwXa18m
-	PocOnoVq0p2CsdX6Vyh+M6uPpbjvQgQ=
+	bh=lDIPRhu4eC69IHX//CJMd4ihavt8RgvIqQIf1iXGap8=;
+	b=fcKPwkKgc/FRGqaOeZNL6CqQ2u104BhtXhFKNF+ebSM4nH83Z/0O7WcidDayt+Fw9vjZ5Q
+	XXHaFd2HiDoUBmsOYmZ8dp5BEblvwkkwKDA7+lOM9v/+QRex4LH7HNetvfduC73AGQWeeU
+	DWWK92UaEzl3Aafqvd5q0djnZcOF/jI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=gGKNYGjE;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf05.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=T7xBVUUF;
+	spf=pass (imf12.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1780384412;
-	b=He4SL6/58cgRiIfkfQw4/fytrXivz8mjtf7mOsBM46UMJ7At6195WXWwWRCcmDUGBhSh8U
-	iyj2MNlHPC9/L5TH/N6NoEY8ux/5m5EHZlucMBQEjbvmgcfPIO4fg4FElFL4zf4Nl7S7mC
-	19kpxV3rTdTuVBDqQarPyugh5VfazeI=
+	b=tOFttOiGDN5LitoDjlxauY52vsl5XrVq5RVuKRzjZh8vh0ZwRYUxkkvpfR3/z8P4HDudhV
+	tvD9uzNyvSqKYUH9HVIw8AZZVxXae3VwrQtkSGJd82tCEQqSl/htrY9Y1RzXPCG5rVDc4g
+	bRAjjsmqg3iJ/snJgm2VrZwvJX2pdCg=
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id D42B8D0F68;
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 885BBD0F64;
 	Tue, 02 Jun 2026 07:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1780384411;
-	bh=jKADVtROf0vQ43aH1Xe6H1MxCOHUxw7qwH7HL4aVwN8=;
+	s=mail; t=1780384410;
+	bh=lDIPRhu4eC69IHX//CJMd4ihavt8RgvIqQIf1iXGap8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gGKNYGjEIbcIJJ8/BH414muQKgbnvibQo1farJStD+pOyV3SS+WJ5obh8FA9JZ2Uo
-	 tTE0N0GsrgOx1gBSMKm2GP6j9ZgCzHDc2JXw8on2mXJ9Wj2cHhX49cGaqJleS2KbHE
-	 dCToWVoqbZtw1amijeqFNXMIWnAuMm9B1Q+k41oE=
+	b=T7xBVUUFAUZ1XGP2Kw6qlEA5/9HEkKGDkpi3ueWDkrUHbugbWP+f5+jASUCpDetB3
+	 4VhZqrAwpI1CpEaFkNI6YNWgQbT3VEsrLpJWa6QTYtlfzm0R7SkfeEpjPD4kl/4SeI
+	 4lhx15kW9dsRc2+66dNtTMKze+UJipjJ5sF4pcLs=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Peter Zijlstra <peterz@infradead.org>,
 	Dan Williams <djbw@kernel.org>,
@@ -76,22 +76,22 @@ Cc: nvdimm@lists.linux.dev,
 	linux-mm@kvack.org,
 	kernel-team@meta.com,
 	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH v5 3/4] cleanup: Annotate guard constructors with nonnull
-Date: Tue,  2 Jun 2026 07:12:52 +0000
-Message-ID: <85fee12eec20abfcf711443518e8f0caec982a86.1780064327.git.d@ilvokhin.com>
+Subject: [PATCH v5 2/4] genirq: Move NULL check into irqdesc_lock guard unlock expression
+Date: Tue,  2 Jun 2026 07:12:51 +0000
+Message-ID: <ab457810653e4356e29b2d74ba616478bd9328ad.1780064327.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1780064327.git.d@ilvokhin.com>
 References: <cover.1780064327.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 97AC140006
+X-Stat-Signature: zxfb4two7piutyyqmofwwspepswjmt5o
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6609610000A
-X-Stat-Signature: nh1onqcxx1qmuy5xbmd9djsxzhrdod96
-X-HE-Tag: 1780384412-549182
-X-HE-Meta: U2FsdGVkX19wfyVC1dYev2B2I/7y0Tn07ojhvYcYiVH1hPbBzEhJXAjKn//K09QRNU5RqorX6FLDOW+WS61AhikACOkvNt6ZNsO9qEa+UYlszoNzNsq7l7MKozB3hFpOV6QGkB1gW8vDXSafKBxhvz2HYisYUlXGHGmJbTYxwLtj7hWH8yonemAPVw/WwgaWZa37hvYH8NXlP51MVdK+wN0r5gpcZiIf+9jh6wlbCx/G7DhEp7kReC5kNIjq7C7LC1KCMBgAgWz1FhoNub69jUQUfKOHHj42DCXzyH7tFMtCdryu/B5ZT7K5lWQV3OGkPvuZeWzTF6G+pFexOLeSAQCq8ql7hAGhRPprVIP41GAHxeKgZVInV4/SQU5eP8OmSxt9YP5FE4NF96981+LP4oXY3OB/nPiQ4nHXq0VWgu8fk9Oj7yJxSUdhqlXlM5/iek4zy3d/glUY+n4g74zZL2b2smq6NSpwLmxRkw+X/w83sYRTrLx6C58aeF9nr8qahLv3K1AxmO8QZaRGIMxsPHuNniy/TC2dQsf2C+9M7y2VjctZoLCCYxnXYXxqEMdQ4iQ9bOEP51ah0xqx4t+M708yQDzdz9oc6/hTUFN3y5ezR2lqivADAdnvUzd9CTZlOXHOv8M2HLwvRmShZKwvf5B86TvfH7RnEyKUK0aYscTYYWy/kaCs4c2iSjMMs/Gkb0YhIEBMN5q7fRXgN2XOTk0vmV3o5oLqQNRMRvMPfi5LCY97sSFrZV9fr3afBn6t4vfLFi8sV1JRKEEF1BQZ+RuxPYo48tBY/62G0PH98lSFqNkc7jhDygRkdhi/sbbokLjlAM9rlZOTWrpe5m0Sl7ld9JEa83zQUgjtf2YSmYrd4pKaGtYfompBFCpOMpeeKOIT/RJIvMtm9XcLRxPX2Gu17MGaL2AkN/xxrA4Ybe1BDaCh4GvrrTve2UDI4IXfmcVRMn88XaEcopl3nKt
- RzFf8imn
- cbFnn5A3lZ4GiN4Gw3+5WHoBNUr7jrUx83aqYTN4nVUv8ygw7oyS4b+re9hKLhStOiqddGlNh/KRu4Mw43rtGzqXtcVyljC9KPhFnNchfqgMFCdj/TefSdttx7NaXRgxv8Qo6drCNwdlOkkHc3xtvTXgFcvBp8A39lh73o7LUf47ZkwNf1nrwvwWvvbp5YUYAIQ+qebh5yd7ePnEnt9nOWm3DXmgz1e+0WOWEtQdvAFh7fVYswsbE0EfYB3YCJpofDndAu/frQkcykEO4romPBpS8YhmmMZwcL9HrDNdjRTt0f2Vm2w91nWQPkZJh8rmQokib9Il7k80SU1NbyAxi+qUSHCE3CSOldJgojgIK6MgJeUsgpcv6wqlQsw==
+X-HE-Tag: 1780384412-103865
+X-HE-Meta: U2FsdGVkX1+cgtfWmuRpedqVuGsWXPpDh+fKWqdq4hDNYNK0jruxivFRyIoYIeybra/e/bsUXi47lBubJtCO2371NZlwaFJ/23ZjAipsiD9PARhivVxu+CLaIaEFJ7g7fVfQLqZnXxU3G5pzJ3TGKKTDa6sGlW65Tj4Oks1gdpDb7Qu9gkf5Xx9XAprJAMqib8Re4hJDGGSlLw1oMDBBnXGomlKn+NDmJI1kqW2wXF5VP/1eWGCfnlK1d9u4MwX8tT4FiT79YibrwPgu5ZvXfCs8NCUKoZIAW/ZiakmsgVMcFbPPAobeJejq9+QgaK91BmLRqvHDAxcer1Flqsz2x+UB//EqypozPiWG5ODj+pxROX5IjhibUUZicg9aEz0OGPImFpoDzjS20qZ9un3xDWr+IGEmB/Q46S7agTRJmep1LWtAUPpj/RyV6Z69+6Seq18uGI7UYViFBUFQoeFRz359LTzxuiRI4ltEcXpKHWsjo4MvEBMHY46kk1TPtepgwaNa4dPtEH1gi1vOHf8s1FZUEyu35y23jvEet71iy9lk+2TCOEOJb+43+6DLk+mDRHq93LQDtwXtCdnKzEK31v5H6zEAp/TfSmRJHXfGny84BBq0gYLC7yN5ogfvhO4WHECArG3UXUdXog/RwEe0vzjS/pZPy2BwKdaJ3qM2DozaKU9bn+AUbz/yBIz5ys79ohxgLC1wS1KqESQSwky/tumkPR4PSwnaKLRkI0kW4j7uKdqS++LGPWPMGYIZhCmE0CDqYS6gjkZ4JX1CfW9JeTHvHnN3YSBBQzFvCnMgvjKjwX05Tbo7fVK1x4k4abkrE8YrNlyimbbEtaUeMd+zlF8x2bQKMJrSYN4ISfkv0/pYcRbll4zUGXDxKR8PCaudvq/e1eCRCup5XzYF7N9dW1t4nXL+AodqQYe9IyDANnXJsB0Ospq738EyUvrKXzFxj3qNuexwhqrn+Kc7w4I
+ VtuefUN4
+ HXqDrqswtbrAyHwcBjM2c1mKjq/lDiXnXEZKTsvwQ+QoD9OJ7a4FQCXGeH/2yWw3pmjC8eZFZ6WMrgqGA6D74+6h+dDvRs9K3xBS0NvVUlN+Fil1rq6TMV2KzKhEUVqBXeOy0VZe50dNGh3dF2sj7bHY3+jc94k+y1wPNnoBq6QpU1gg/4FoSApajPTSMZpzFpCiOs8skoYz7ZbtOqRbCKP8H+zKkHNeANmVUPokQtuwhVk9VMPNIssiQzl1UHeWPZ/uIKSWjvCPuikKWkpXu/nRON3Um4qUxX4JMzGSGbuyZFCOy3RzlXrzJ8LLBDdhq71TZ94JbWVvCQkg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,72 +99,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add __nonnull_args() to unconditional guard constructors so the compiler
-warns when NULL is statically known to be passed:
+irqdesc_lock uses __DEFINE_UNLOCK_GUARD() directly with a custom
+constructor that can set .lock to NULL.
 
-- DEFINE_GUARD(): re-declare the constructor with __nonnull_args().
-- __DEFINE_LOCK_GUARD_1(): annotate the constructor directly.
+In preparation for removing the NULL check from __DEFINE_UNLOCK_GUARD(),
+move the NULL check into the irqdesc_lock unlock expression, making the
+NULL handling explicit at the call site.
 
-DEFINE_LOCK_GUARD_0() needs no annotation: its constructor takes no
-pointer arguments (.lock is hardcoded to (void *)1).
-
-Define the __nonnull_args() macro in compiler_attributes.h, following
-the existing convention for attribute wrappers. Deliberately not named
-'__nonnull', to avoid clashing with glibc's __nonnull() when kernel and
-userspace headers are combined (User Mode Linux for example).
+No functional change.
 
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 ---
-Miguel, I dropped your Acked-by due to the rename. Went with
-__nonnull_args() (over __knonnull()). Happy to restore your tag if that
-spelling works for you.
+ kernel/irq/internals.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- include/linux/cleanup.h             | 4 +++-
- include/linux/compiler_attributes.h | 9 +++++++++
- 2 files changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-index ea95ca4bc11c..4e60d519713c 100644
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -397,6 +397,7 @@ static __maybe_unused const bool class_##_name##_is_conditional = _is_cond
- 	__DEFINE_GUARD_LOCK_PTR(_name, _T)
+diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
+index 9412e57056f5..347cb333b9fe 100644
+--- a/kernel/irq/internals.h
++++ b/kernel/irq/internals.h
+@@ -171,7 +171,7 @@ void __irq_put_desc_unlock(struct irq_desc *desc, unsigned long flags, bool bus)
  
- #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
-+	static __always_inline __nonnull_args() _type class_##_name##_constructor(_type _T); \
- 	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
- 	DEFINE_CLASS_IS_GUARD(_name)
+ __DEFINE_CLASS_IS_CONDITIONAL(irqdesc_lock, true);
+ __DEFINE_UNLOCK_GUARD(irqdesc_lock, struct irq_desc,
+-		      __irq_put_desc_unlock(_T->lock, _T->flags, _T->bus),
++		      if (_T->lock) __irq_put_desc_unlock(_T->lock, _T->flags, _T->bus),
+ 		      unsigned long flags; bool bus);
  
-@@ -497,7 +498,8 @@ static __always_inline void class_##_name##_destructor(class_##_name##_t *_T) \
- __DEFINE_GUARD_LOCK_PTR(_name, &_T->lock)
- 
- #define __DEFINE_LOCK_GUARD_1(_name, _type, ...)			\
--static __always_inline class_##_name##_t class_##_name##_constructor(_type *l) \
-+static __always_inline __nonnull_args()					\
-+class_##_name##_t class_##_name##_constructor(_type *l)			\
- 	__no_context_analysis						\
- {									\
- 	class_##_name##_t _t = { .lock = l }, *_T = &_t;		\
-diff --git a/include/linux/compiler_attributes.h b/include/linux/compiler_attributes.h
-index c16d4199bf92..cffe09387ea6 100644
---- a/include/linux/compiler_attributes.h
-+++ b/include/linux/compiler_attributes.h
-@@ -230,6 +230,15 @@
-  */
- #define   noinline                      __attribute__((__noinline__))
- 
-+/*
-+ * Note: deliberately not named '__nonnull', to avoid clashing with glibc's
-+ * __nonnull() when kernel and userspace headers are combined.
-+ *
-+ *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Attributes.html#index-nonnull
-+ * clang: https://clang.llvm.org/docs/AttributeReference.html#nonnull
-+ */
-+#define __nonnull_args(x...)		__attribute__((__nonnull__(x)))
-+
- /*
-  * Optional: only supported since gcc >= 8
-  * Optional: not supported by clang
+ static inline class_irqdesc_lock_t class_irqdesc_lock_constructor(unsigned int irq, bool bus,
 -- 
 2.53.0-Meta
 
