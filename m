@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A101CD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 14:14:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28069CD5BD1
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 14:23:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 177FD6B00AC; Tue,  2 Jun 2026 10:14:02 -0400 (EDT)
+	id 384016B0005; Tue,  2 Jun 2026 10:23:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 129816B00B2; Tue,  2 Jun 2026 10:14:02 -0400 (EDT)
+	id 35C206B0088; Tue,  2 Jun 2026 10:23:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03EEB6B00B7; Tue,  2 Jun 2026 10:14:01 -0400 (EDT)
+	id 271D96B008A; Tue,  2 Jun 2026 10:23:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EAFBB6B00AC
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:14:01 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81E4612093F
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:14:01 +0000 (UTC)
-X-FDA: 84835166682.24.375C56B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D07A0100003
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:13:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Rv/vc6Rq";
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 188D56B0005
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:23:37 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 774F71C105D
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:23:36 +0000 (UTC)
+X-FDA: 84835190832.14.D4729BE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DA9091C0006
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:23:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SpA95589;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780409639;
+	s=arc-20220608; t=1780410214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Da0hGHRQ+u6EMu8JOWarmoA+lAxekjyOANZmQgjUI8=;
-	b=emNrIL+5G3QJor/42qdiy+1fBnJnNfH8Xs9VHy7+ytEKoWT7BZix2N0RfxL3D8yO3Tlt1L
-	xENc8Iu/15NXcmP6KOvjrmyFfQ2NvoO5SFGp7Pl1YtbSv1SgF9KhwVACbqfpYqYQrN4+ID
-	YZOsZ5fVQWU9wqzbTbNinzGwyYqDmbY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780409639;
-	b=xDwBqftyGNwnZHJ7UvZy1UvuuvNnQUpBgsMBKvReZ1mNB3Y0ltV2FoTnCoMmfcMzgzhdAh
-	7wI+xrjb5kewO9uTgePtGwoeCLzNs0oHSZF3B2bjhV0qu32spydOD0Xjsx40sxBqUAPbis
-	8Rep6Zm6drcOGWuW+mvjN7AeYFe7eqg=
+	bh=eGMvFUKf+E59w4JOYmw7LcNq+OCPKabJzFFOMVmOnEE=;
+	b=FTlCiAsFvXK/RVG468QM/NqxyzYoY70/CuULWjM9CxFpglqCy/qiMG7GoyzJ52P+FBT84a
+	aqX5HtwpROdmICUN4L/XGYnqOIrWvxirV8cbsh0SORLAsYVjd6QxWRyOU2HWWSZovrIgZs
+	HHyZ8JW1zvBdcWPCFAEtKTtd2Z6iMEE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Rv/vc6Rq";
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SpA95589;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780410214;
+	b=Y8ywAWrRfbnGU2dGNjeeRFCAWKLcqsycGPs9I87ni57i1PJZFGW2L+SsK3l3AVFG0dXyjt
+	zlcyA/sc30ZIhQN0fe3r5nI+9VckD2zs4h8TLttQCKCKoTMxi2xzbDCV2IbFbZebiQ4CFB
+	J8gWRzd+QAicpzrDex/+veyex2oH/3U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A8E9540AD5;
-	Tue,  2 Jun 2026 14:13:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DBA1F00893;
-	Tue,  2 Jun 2026 14:13:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 419AC6001A;
+	Tue,  2 Jun 2026 14:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45EE1F00893;
+	Tue,  2 Jun 2026 14:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780409638;
-	bh=1Da0hGHRQ+u6EMu8JOWarmoA+lAxekjyOANZmQgjUI8=;
+	s=k20260515; t=1780410214;
+	bh=eGMvFUKf+E59w4JOYmw7LcNq+OCPKabJzFFOMVmOnEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rv/vc6Rq3YhE6Vacsb3plHHgWxNahSbe1mNpDtLyb9Uio74S65fjQxTJgNxUExRkv
-	 DB6lL/S/394EBIVzKoOBtNMHw3o0gzMpdFJ7jGNznmhAaJKU3LMdDHcrWqodrt3/DK
-	 nhKCESyl4IrdiepEdcK/glKszRYQDCcIs/7RTxVu8UZDQOQT8Ydir99zx/UGjNrNOv
-	 GrAP5v5AN73YYhp5+oGM3Br73FerFxPt7/5H/MufCscbE3XYgCyVeXFsdNX516iJe7
-	 NkcAF+VjtFjOMibA3owVxDTdEdCDY2Zi9goO1V2u3ffBaq/Xos2lmucHn0a1Fz8RlQ
-	 nw4cru+UUv9Eg==
+	b=SpA95589+ipumw5VHySo2fV4s8ZGh2wyUm2FULSPRJFNwz4u0hcrvDEH4WGqDogAu
+	 ZSmUAgpUAjM/OMMURAfRGz7VDedxD5mlpJkOYxXcmSc1zGo+NMrh2xjYzIJ7zSZ0Vj
+	 yeSA2pJ6xSmNU+CtzNPxETytqaQhVGZIcdmCq/OmYNF2FbdOBF3Cm6YBfxtbhcf02R
+	 pZ8E7TlCb0PwBAyyjV+e7jSyONZp6Nb6tpSv/9x5OVeywzfEKHbxNGsH1AwyWGTCEn
+	 WP9iyHsBZoruVX5HTd0O9Yk7ULJKa/tkgVVzB9rOKKL7V9qJ/EGTRwakhcDg+bSmbK
+	 DAPRADr+8ZKmw==
 From: SeongJae Park <sj@kernel.org>
 To: Ruslan Valiyev <linuxoid@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] selftests/damon/_damon_sysfs: support kdamond refresh_ms
-Date: Tue,  2 Jun 2026 07:13:49 -0700
-Message-ID: <20260602141350.101848-1-sj@kernel.org>
+Subject: Re: [PATCH 2/2] selftests/damon/sysfs_refresh: test kdamond refresh_ms
+Date: Tue,  2 Jun 2026 07:23:23 -0700
+Message-ID: <20260602142324.102073-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260602131217.2210912-2-linuxoid@gmail.com>
+In-Reply-To: <20260602131217.2210912-3-linuxoid@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D07A0100003
+X-Rspamd-Queue-Id: DA9091C0006
 X-Rspam-User: 
-X-Stat-Signature: 9nc8tharakxsjqtan8dbtc7pxk9ewsme
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780409639-113294
-X-HE-Meta: U2FsdGVkX1+2cvQP8D8MOOANbYbN34M6ChQiWwyZMvI06TWNxAruBPUle6qRUxXMxAfXkK7736jthTYBqa9kFF6f0iuGFt01J+2vMRcntSEg76l2GQx6WNrJM2I0eYvxeDYucD4chGkh+meIEq5uuz8/fHypNnHaAXMDP74L3xhkHL+DEZHxZSG+jQ2xnu0a1lOh5lhkWsk2imF6h4AqwQSFZnJSSInh57/T70Oq5AEfcZodu0gP+5CCy39JBkDsZZcuXBFZG8vQm9iloGWkZ3sBgsdOuHCZbqUQ4j2WFGabKHA7AGzO1ApGMj6btFDfQmRDClUe2BZC0/Xv20OjQ2iOkMPeGpjdbZbaqBzG77mPXSM0dx1MR1Ri48bQxB3zHmbDuE0R+oBCennX4y7gh+43spWwYKow8xUB2Xgs0V8gJyhaLyoV7HgiY4SeELt38TUsCYVlpe8V2X6Iwh80v0HrHPPkGH/n+68thLScAREbUKq5K1r+3rm/8ZRL2kPoxho49BykvkFUfzLckyUmPC7ptFQ0C2rm53RGF5wMBCSmUtYMKc02LLPysCaVkUZh684MNi+B2GL9EmLGpDf3/l3/yVgqf+XI9dexe5jq+dMFIXHRbYh8CFjQG3RORHaD2JTI0+T72u+eVgWvCei0r+OV78S3I5IjPyMB74iE0Lo8/dKNNonJcz2KAxwTPTct3kBs9YJFaXp3YelZsr4KnDJBfIUcjrcjB5KaisHx5fVQBJMMetHvRkhBMWLAcx4weQhRcOg+E9zkid2qQpYc21+c34zSdAOcnCqj0Csouqex75XljLPoour5BH538z30JC+dugxRwZlxKIsvo5ahNcl1Ruqqhs6nCS6gyGjsbZgtpoFqwintOXPdpUOft/am3bDR7Xa+o7crHYqpwDRqUg6hNM3WP57KKM2lZamEbjUcce2g0Szi0EfFRQJkjcSGhdlo6dJ1Lnecofwstk6
- 4m2w/oLF
- Xjl3okg7q6tdGl7lY2Z1NhqCYKAay7/saxwwQXb4f+p3PQkZEJ8qnQtvnaJZ/LH3fSGRvijyx527Srk+O/zt0mddSOxdhTGS4/B3YaRWt6BKEeUUczdJpiZM9HYW6HS9qmdoKbLZXyWsSpYPp1TV4ym7BoLELI0abVJkRVGFUXy++8QldXqdAZZRLu88WW4lCi9qogQNR655K+LX5CPXmARrdKsBI+cXD1ivb62vm9XRk3p3H/c9ZQbWTeWaftfVbSw0DTqeAMHB8S6pN0AlTPXjgtea4KbS3Wue0qEkgtHNG/uY=
+X-Stat-Signature: 99bgb6mm5hg6bmitwgiuuxfrbqwounwh
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780410214-817383
+X-HE-Meta: U2FsdGVkX1//Jb+tQw+hH+eraD0ltrWf+imSJOYSIaJq4tmpPRpnSb33dR33hOmRC4F7E3deC6+zFRoA6kR/SRcXs/u9w7ceQ6IgIBX7svEPIZlESRUKXE9aouRt26BqXfwJD3qZ0ZPKOFTvrf11idsSzon2pv88Ao/7xIexqoE7KxIQS4j71SNBeR6jpcsITkcoyqcxtZuJvfEBqe6nDA8QYNo9Ps8HV3JNvpgZSAU76pjPXjYbHIihtCd6Wdh8Tv24Gp9dhFQCoJ/ZBKWFIYAHyWSRueFCVKPiI3QCX6lS0v7NDKMBgxDaUJVhzfYfCrJQPbkkg7rDTk2in73s3dK/b6qA0SijxWjRg78dO4IRmcKlIBBjLVYC94YJdiGIghy3uYC0daGmCZbGQ78lW+lQFktFJaBcvk4LOigPv7i67JO0yzGHLtxJ8y4PK+TX+Nf7MvS8hwXdCBK/T2UkmSYSeH1dw6yypCk84FcslwNLMI2KkeJK2QXa08OU1f08ljB3AYxfBQDGErlgUgoiHRAPwHx5tHOX9GQ/H2IISfi0+jpm1KGBESCopd6sC+EW6xw3Nq3HWTjClyW7SYxVVxKRqMik7WfLY3KzmQYbb49Q38/sqj66oRWTcc5bAXWj+doiYx68ob4qqY0S5H/c8DtrOVWvMfpPVisQLEO21Kfcp/P+dZ2Slu7xPwV+RqKBLREGwVuDwUKAWDVqHxpu76gJKY5eHERMLeGTwqvlYuugZkd6NocmopkNeeO2EtZfHsEpIHqLGKv6zU+bN0pK0O26JgiQNhCHXikDVY7FNwL9v9VvDfrUewhcpgmEZ24hfymq0o9D/YQkFWDzmXX+12JPk8NpCF+DjAff01U/I4UHJKB2N9O/tandXTj790xpeAo1bu0wH09VzZ7uPR+4tXA+tNkn0vFsg7XJHsS+pf58k4llfbRvLwNOgPw6a2vHyPvn6WpMDpp0OdhvWBd
+ UsMyKGkA
+ g3zeCcerEyv8SU9NW0JVfro8U0qFgu5lprhqKhosrLqYRvVhEhFkGBKdfb8cCnisBGr/kY+yUQ745EA49zebA/1LblKoVRIqmgwJvk/z03VCZX0cbBD/XqhiUWUtv1FFbM33/YwK0I+rlq4RVeSUbMNkmIIWAGyB+TIM7IeWk2gKD4zKdEJ2KMXM0kK9J6fitROC1wuarQfwllxqFXpxp390dV5+sJFeWkWpd2SlQtukNUx1Gi0Pxzv5w1gCcjilfX8g8pArmVWENZUDjvIO6Y+qiMX2L7ilf/tGOjcfN0wUzvJL/cOXpvOz1j40eFBVe/1e4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,19 +94,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  2 Jun 2026 15:12:16 +0200 Ruslan Valiyev <linuxoid@gmail.com> wrote:
+On Tue,  2 Jun 2026 15:12:17 +0200 Ruslan Valiyev <linuxoid@gmail.com> wrote:
 
-> The Kdamond class has no way to set the kdamond-level 'refresh_ms' sysfs
-> file, which makes DAMON periodically update the read-only sysfs files
-> (DAMOS stats, tuned monitoring intervals and the kdamond pid) on its own.
+> Writing a non-zero value to a kdamond's 'refresh_ms' sysfs file should
+> make DAMON periodically update the read-only sysfs files on its own,
+> without the user writing update keywords such as 'update_schemes_stats'
+> to the 'state' file.  This behavior has no test coverage.
 > 
-> Add a 'refresh_ms' parameter to Kdamond.  When it is set (including to
-> zero, to disable the periodic update), write it before turning the
-> kdamond on, so tests can exercise the auto-update behavior.  Leaving it
-> unset keeps the previous behavior of not touching the file, so callers
-> running against kernels without the feature are unaffected.
+> Add a test that starts a kdamond with refresh_ms set and a 'stat' scheme
+> whose default access pattern matches every monitored region, then polls
+> the scheme's 'nr_tried' stats file directly, without requesting an
+> update.  The value can become non-zero only via the periodic refresh, so
+> the test confirms refresh_ms works; with refresh_ms disabled the stat
+> stays zero and the test fails.
 
-Nice addition of the feature, thank you!
+Thank you for adding this nice test!
 
 > 
 > Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
