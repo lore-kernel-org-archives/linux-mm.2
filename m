@@ -4,91 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35AAFCD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:26:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A051CD5BD1
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:31:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A5326B008C; Tue,  2 Jun 2026 13:26:56 -0400 (EDT)
+	id D9A746B0088; Tue,  2 Jun 2026 13:31:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 555596B0092; Tue,  2 Jun 2026 13:26:56 -0400 (EDT)
+	id D24DD6B008A; Tue,  2 Jun 2026 13:31:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 493016B0093; Tue,  2 Jun 2026 13:26:56 -0400 (EDT)
+	id BEC656B0092; Tue,  2 Jun 2026 13:31:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3742E6B008C
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:26:56 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F07CD1C1C9F
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:26:55 +0000 (UTC)
-X-FDA: 84835652790.05.6ADBBBC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AAA916B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:31:52 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5B44A1A090E
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:31:52 +0000 (UTC)
+X-FDA: 84835665264.28.5749632
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 42B7D120008
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:26:54 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQoZygeA;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8394D40016
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:31:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G3o6lrkA;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780421214;
+	s=arc-20220608; t=1780421510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J1xSzs0yfom2BvFAzfRHJ/gg+qIG4fJVebZ4d/4+CrI=;
-	b=pppiQ3bJ4sS2UmQ4Rd7eqOpEn2okgmBkiy7kXGXg4uvIHghRrv7NheU0JTdp52SUQeP2Wr
-	2oz9PqAXo5Ut4alBLFeMp6XyUJlMeLSQ5wAG/qMQJqIneE4svsDBdUvjkqvkPSAeSNsl2p
-	2ERmAqCu2CbWGiWHhvAf6MGRmfjBmTk=
+	bh=L7YoU2thqOqR9q4NL8fspTtdh+TCHHvtfVavmrm+Sho=;
+	b=50AzZxKhO0o1PVEhJwL6qcva01niqQo8AB0MKq0h/RKRBmdiMC9Ds+lMRR/gUKHSWMdfoc
+	XnhUlblLy5TGmymI4Zd4KaaJg4S1XhRWG3vHU+tZFllw8M3QmngdvU7jrfPY2jzPa0E5Nd
+	0t3LVVDgxGDBCUef0pxLtZjmHz3j8AU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQoZygeA;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G3o6lrkA;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780421214;
-	b=QmwTZwPeNP8B6PZh642bDiTX+shjhL2YRi00S+kXjhgGTAxNApXrZZPj5iDEzFABcJkjR4
-	8rQFYccLjEe5TmfMHBagaH3NPEINzs6sPcK2Uk4D7CH/JuCBxgDIXiUUFRda1J3qDhwauN
-	3yVrc05Tu4CsqpJVP6wyqS5ejwgWFRU=
+	t=1780421510;
+	b=jN91ou8rdIKhouq7j3opaXS2t6McwsEPHT9H6dHeQl1esgFJ3pphaMKbusKfa5NZg4EhaL
+	wp+xi7wWxUIpDajET2TZFCrbct5SShvxnmFsw3j+6DFYqWXY1CJd/fKTduf6Hj6zc5fgGi
+	wOQGmeB16hymzHeYMU7T2dpROS0WdIE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 588B3433A4;
-	Tue,  2 Jun 2026 17:26:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089E51F00893;
-	Tue,  2 Jun 2026 17:26:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B2096432C2;
+	Tue,  2 Jun 2026 17:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF911F00893;
+	Tue,  2 Jun 2026 17:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780421213;
-	bh=J1xSzs0yfom2BvFAzfRHJ/gg+qIG4fJVebZ4d/4+CrI=;
+	s=k20260515; t=1780421509;
+	bh=L7YoU2thqOqR9q4NL8fspTtdh+TCHHvtfVavmrm+Sho=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LQoZygeAKaOcrmNpUPIdb41xUyr98Ikld1wVHD529rM41xxur/djs8xTQ7xY1XUuC
-	 GQoZPkBrSUPk7NAd4oomb3DuYXyx4PCDU2bpfGckfNxm6MAk6m1bcP0FfJcgBe+yMN
-	 5s8NbV8+7tJJnbUtZH5ATphrwIlIt7izN41ik+wDzllCh2b4tbG2C/v/c5HGZiclBV
-	 R6CM/K2fpgJuhcy9ybFoL6LgGDRbXYLv89C461AbIhAPrqZ5KgRJ/IAYWCGXCeJ3ye
-	 pUBsUZfN0q8i8Z9gUC+1d8gB9RXchbUfJAjukQpWQDpheIheinAEpkHou+zsJAc13k
-	 Y47G/jqdjdcnA==
-Date: Tue, 2 Jun 2026 18:26:46 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, SeongJae Park <sj@kernel.org>, Balbir Singh <balbirs@nvidia.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: use correct flags for device
- private PMD entry
-Message-ID: <ah8KjaYmAIqR8s5k@lucifer>
-References: <20260601083044.57132-1-ljs@kernel.org>
- <263FB5F0-AA3C-4885-86E2-9EDB030A0CDF@nvidia.com>
+	b=G3o6lrkAn+/fVkI251MMo8MMjUTiQr9KTPberfX7b0Br8mtHbr0hsxJghBWOYpxzB
+	 +7GjrVCZv0SN0cykNtvyMpbnaAILWKNHk2DmSA6MtVG1l00+baBmKtU0X7vcNN68M2
+	 tBEjhf0fORijaqupTeEtKY65t8CQHCCXR+h7H4wTOzxMosTVCU7tThyRLGzcgzriBq
+	 iFm90dyyU8L+45ZZi7rnQHAWcju9B/roRv1S8QDc5wUX0GBziulSNKBR0RAp/JGfyO
+	 +aMG6Vrfgvq/RmZyobjirgFQoieySCu6LwVWFjei/uzYpyGVInOU8lpArnAJJBeN5C
+	 Ls64ou6GY7GeQ==
+Date: Tue, 2 Jun 2026 20:31:42 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Nico Pache <npache@redhat.com>,
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, liam@infradead.org, mhocko@suse.com,
+	vbabka@suse.cz, willy@infradead.org
+Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
+ khugepaged: add mTHP) collapse support
+Message-ID: <ah8Tflgn50DTMvwl@kernel.org>
+References: <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org>
+ <ahVX1iq_-95vd0PN@lucifer>
+ <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
+ <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
+ <ah2ndruO3RQGtePP@lucifer>
+ <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org>
+ <ah2uDhs3a0bFcRNG@lucifer>
+ <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
+ <b5b1a7bf-de6a-488a-a011-673c37bd24d1@kernel.org>
+ <07334dc3-79ba-407e-96be-21ceb2eec00a@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <263FB5F0-AA3C-4885-86E2-9EDB030A0CDF@nvidia.com>
-X-Rspamd-Queue-Id: 42B7D120008
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <07334dc3-79ba-407e-96be-21ceb2eec00a@kernel.org>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: hsg1mtw584dwczf4ipsszp1ni75gbh1j
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780421214-496322
-X-HE-Meta: U2FsdGVkX19nEmanvgb5gDI5VK6EKgxl1hOb1fgEvMwrsjYK9hCihUYyNPCK5W0WuCy3nfmtBkSCD+nTsKE5OdmW0l4/qJI1eBlL+8BRSwvgNRsv/vllTMdLHGLgUov0PIHihMRRFSOixVEdTDfl/CsvJN/GKgU7Xp/NgrJN4WVLrjFIa5bP7Rjl2d/kp+LRfm7gWd5J2WlGMzVEiV6IJnYzmRWUkSzO4gTnuGyhjJyLoFG6dKaNdgeOkNHSbFgyAmLSsTTfbpKsusmm5ilSGy8QfBnPM7M+s/bsfdxvOaZAooc0P3MjbkNUx0OTia4W7jI+d94R1ca+m7cmjdYnph9s3hkNz/JcZ46GtqM6Lh0cJjSPLJdKRWZ0YKDDePOoi6LAZ+1/xdDkiuTA3drR5BV+g7L7gCbX34r+EkYJwtgf1RPLS78+Sg29BTGdzXsEbHMOM4iatTKzM+scpp3msb/kjijirDEDJ0ruALVHNuXUP5XQwN8tAsrXo+u+ueZyljcqPRZG5Ly5azeX66RIrN0TDaLDq7hDvzff8KNGLvSK2DUYJA6VIfaU9+sqh+UleS8jynMN4S+K3EsMgK53eijvEUVzJPkDcCD1VdIECBLLZmnkDcWYFVFeUE4GHGQAJ0780BEfBP77a/QNceDa3WJflycMz2jiVmXhgVMega1ndFnw16fc0/vHQYBSwQt6IRflW+Dr+P9b8HuZWuSI1nHMZTPEWCU3AM4Boi4yVUxEYIE3d89rT9MpS8+4pvKPGrIU9wln/h0rud48akN6Y7OTj4PVUNHpeMweabIuMc1xVZ0qrtrLN+ik6c8DvRBSjtvZ7kCzaikPccUW1TqNwB693B/12uf7n46YQSDv0qyAVz3PjLCdE9dKdHgI7ckkacSu8cjIpY7dQ8a1DiW2hZ6a5zuUlxSipkaSjITk4Qk8fPtlsSeA2mQFga3rPQzSL5am5pr532So8jQGz7w
- P46k090d
- 5H6AwrUZtLA8gs5FleljfKjxpyUaqrdDlb+D1mqg+kZ7R0dveAQO75wof79bPkq8iPJEpTst0jdrdPZz8ARRsqwXQSDVl7kR5csH0FnXbM0kEB77HlqsChAXj+qCLmYRGEgQOCT3XMxUCVzLTfc3yN0dmiLvH3B/oMgu/P8x/4l4Kwoe/4TRqKaVg7s5QbJXd0oJSWmBTXQAwCEFtM04dd4eLzQSkLV31/121BdK+n+72omjJu1v4cTYelZl6IhX4qA0V9TjN/xln9CorRelrcgCFQX7CnmBXaH38Vn8fBKbn+tsZNA/Wd5qulvkZSxcXX3+qYPGM+s03rvY8WS9hTe7ahZrFuNT6QKJa
+X-Stat-Signature: xcsn8xwjeb8cyzckbscbodu7gigsjwac
+X-Rspamd-Queue-Id: 8394D40016
+X-HE-Tag: 1780421510-873742
+X-HE-Meta: U2FsdGVkX19pj5SCdKaoJHbzPBLxd6KdDGL5VleJsvSDRn/JnmrrJudWORCLFsVuEc15/4TRQCYhvAt/8bDeCW3hcGpTbpzT49agTXYe/REaxUp1EzNcwcyW9T3pnEiwRKAF6Wkm2qJZ622he1ZnlLQu0o9UpQK5GUkIVzE5w8d8Vrlc55tnQAsbjYiIMrCi6CWtOoMpkIZUeJza9deQQdfsslcBNaaE0tOdsE8e4SGRU8WwpG07ledWRIcrKXeGuVXouv2SIyDBol+ka7tlzCqB/vvM8iWTdc7xkqrbuGTXouIT7+OsWHgWeD+YR3L39z2eHjMiJ0eiHIB6zkas9+/SQc706FM0V+Tl3GdgQHbXLdY8WuNC+z2KlwBV7GAF64IR2ljzF7FNjhHBZ089HtK7XQUzrwEVXmKFIIExOKRgsUZO8rinZtq7Os9pAfXxhTtY6NWZX3PBTUbL6BZw1hM9owfw9j0g9g4xt6d2OjpUtqAHEo2IqO1OUxlC1qAjkiL+VMpFrzsIpgA6cDYRf+nedxHeknuOD8AlYbZCjyKRa8wr50EJaVI/okqjYNzoGAV70x8oagJvnDwuZ6F/kX1LXLl3CWjvRgeFOLptmu1sQ1nYD4xISSNgo11yN+k4fv+sgNquiezjLOwivkTuPmSzg77LSnfvJS+yDv9edsVxOlYR2xpQQRrWnBMlVXTUSbzepungE6Lcp5BN5N7VlSq4yO1gIPMNBWQNXypAqWx9WozM+diOZIoFZjYlHp1GCku/ShZvcr5viP1YqtVw1AcaC60ldLjhBPq3fD3yZdkvuySPD8FqwQnMC4TlMmhlFdWebqM41vwB+ivuJtlEFhEvjFvaTQ7WDe8KabC47lDK8xnbGhCqDAdSKzgbC64DOzQ1RBblOMhqxJ+iW4NGTSJ9meX0UIob0kPLKIRMuO6ckmqaHX/H8IJRn7x/voPEGaQZVA/ERvEeEcQYqYe
+ wK6PplwT
+ CLSZ3KJPefwzan6c+9MCuSWJ0ZcIypZZ6tTMaPW0LTh3Mw1BZDg5tLkIryJuVtNfF5p2QbRtXZ03Ggkv/HzF1MM1hDfseqbZx3SPpD49Q9ll7TeOKtWjjMxNCba9UY444yyKv/fH3/ERuKFmNRj0F9MqnhMUR/iZI6kqJ/hrElPzFHuODow60i7ql9loWL1hfFTlolSWWweWf4NBXa+e3YyZSDwt+Sg5Zm7XWbKjhhQnLv9U/gUiNiRg6BHzcpBQUHP8Mp6tn10QbmXdADsT8dAnFDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,153 +105,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 10:40:16AM -0400, Zi Yan wrote:
-> On 1 Jun 2026, at 4:30, Lorenzo Stoakes wrote:
->
-> > Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> > device-private entries") updated set_pmd_migration_entry() to use
-> > pmdp_huge_get_and_clear() in the softleaf case, but made no further
-> > adjustments to the function itself.
-> >
-> > Therefore this function continues to incorrectly use pmd_write(),
-> > pmd_soft_dirty() and pmd_uffd_wp() to determine whether the installed
-> > migration entry should be marked writable, softdirty or uffd-wp
-> > respectively.
-> >
-> > Whilst all are incorrect, the most problematic of these is pmd_write(), as
-> > this can lead to corrupted rmap state.
-> >
-> > On x86-64 _PAGE_SWP_SOFT_DIRTY is aliased to _PAGE_RW. So calling
-> > pmd_write() on a softleaf will return the softdirty state encoded in the
-> > entry, assuming CONFIG_MEM_SOFT_DIRTY was enabled.
-> >
-> > This was observed when running the hmm.hmm_device_private.anon_write_child
-> > selftest:
-> >
-> > 1. The test faults in a range then migrates it such that a device-private
-> >    THP range is established.
-> >
-> > 2. The parent then migrates it to a device-private writable PMD entry whose
-> >    folio is entirely AnonExclusive with entire_mapcount=1, softdirty set
-> >    (accidentally correct write state).
-> >
-> > 3. The parent forks and the PMD entries are set to device-private read only
-> >    entries, entire_mapcount=2, softdirty still set.
-> >
-> > 4. [BUG] The child writes to the range then migrates to RAM - intending to
-> >    install non-writable migration entries - but replacing parent and child
-> >    PMD mappings with WRITABLE entries due to misinterpreting the softdirty
-> >    bit.
-> >
-> > 5. In remove_migration_pmd(), if !softleaf_is_migration_read(entry) we
-> >    set the RMAP_EXCLUSIVE flag when calling folio_add_anon_rmap_pmd() for
-> >    both parent and child, which are therefore AnonExclusive.
-> >
-> > 6. [SPLAT] Child sets migrated folio entire_mapcount=1, parent sets
-> >    entire_mapcount=2 and we end up with an AnonExclusive folio with
-> >    entire_mapcount=2! Assert fires in __folio_add_anon_rmap():
-> >
-> > 		VM_WARN_ON_FOLIO(folio_test_large(folio) &&
-> > 				 folio_entire_mapcount(folio) > 1 &&
-> > 				 PageAnonExclusive(cur_page), folio)
-> >
-> > This patch fixes the issue by correctly referencing the softleaf entry
-> > fields for writable, softdirty and uffd-wp in set_pmd_migration_entry().
-> >
-> > It also only updates A/D flags if the entry is present as these are
-> > otherwise not meaningful for a softleaf entry.
-> >
-> > This patch also flips the if (!present) { ... } else { ... } logic in
-> > set_pmd_migration_entry() so it is easier to understand, and adds some
-> > comments to make things clearer.
-> >
-> > I was able to bisect this to commit 775465fd26a3 ("lib/test_hmm: add zone
-> > device private THP test infrastructure") which first exposes this bug as it
-> > was the commit that permitted test_hmm to generate the test.
-> >
-> > However commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> > device-private entries") is the commit that actually enabled this
-> > behaviour.
->
-> Thanks for the detailed explanation.
-> >
-> > Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
-> >  mm/huge_memory.c | 45 +++++++++++++++++++++++++++++++++------------
-> >  1 file changed, 33 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index bf9b480bb3b0..79463c709c98 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -4982,7 +4982,7 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
-> >  	struct vm_area_struct *vma = pvmw->vma;
-> >  	struct mm_struct *mm = vma->vm_mm;
-> >  	unsigned long address = pvmw->address;
-> > -	bool anon_exclusive;
-> > +	bool anon_exclusive, present, writable, softdirty, uffd_wp;
-> >  	pmd_t pmdval;
-> >  	swp_entry_t entry;
-> >  	pmd_t pmdswp;
-> > @@ -4990,12 +4990,26 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
-> >  	if (!(pvmw->pmd && !pvmw->pte))
-> >  		return 0;
-> >
-> > -	flush_cache_range(vma, address, address + HPAGE_PMD_SIZE);
-> > -	if (unlikely(!pmd_present(*pvmw->pmd)))
-> > -		pmdval = pmdp_huge_get_and_clear(vma->vm_mm, address, pvmw->pmd);
-> > -	else
-> > +	present = pmd_present(*pvmw->pmd);
-> > +	if (likely(present)) {
-> > +		flush_cache_range(vma, address, address + HPAGE_PMD_SIZE);
-> > +
-> >  		pmdval = pmdp_invalidate(vma, address, pvmw->pmd);
-> >
-> > +		writable = pmd_write(pmdval);
-> > +		softdirty = pmd_soft_dirty(pmdval);
-> > +		uffd_wp = pmd_uffd_wp(pmdval);
-> > +	} else {
-> > +		softleaf_t old_entry;
-> > +
-> > +		pmdval = pmdp_huge_get_and_clear(vma->vm_mm, address, pvmw->pmd);
-> > +		old_entry = softleaf_from_pmd(pmdval);
-> > +
-> > +		writable = softleaf_is_device_private_write(old_entry);
->
-> Just to make sure I get it. This means the only possible writable
-> non present/softleaf entry is device private writable. There is
-> writable migration entry, but since we are setting a migration entry
-> here, that should not be possible.
+On Tue, Jun 02, 2026 at 02:55:30PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 6/2/26 13:31, David Hildenbrand (Arm) wrote:
+> >>> learn from obviously) against how mm works in practice.
+> >>>
+> >>> High review load with many overlapping changes might favour a different approach
+> >>> to a subsystem that looks different from that.
+> >> Yeah, but as we said, we discussed, it's all rather complicated and we should
+> >> move incrementally.
+> >> 
+> > 
+> > Starting to read Documentation/process/maintainer-tip.rst, it's very interesting:
+> > 
+> > “The tip tree is both a direct development tree and and an aggregation tree for
+> > several sub-maintainer trees.”
+> > 
+> > “In general, development against the head of the tip tree master branch is fine,
+> 
+> I don't think we'll be able to use this part as mm-next will be only an
+> aggreggation tree and not also a direct development tree.
+> 
+> > but for the subsystems which are maintained separately, have their own git tree
+> > and are only aggregated into the tip tree, development should take place against
+> > the relevant subsystem tree or branch.”
+> 
+> So it would have to be this.
+> As it might be hard for contributors to pick the right one (as Lorenzo
+> pointed out), we might in general suggest they try developing against rc1
+> first (which is the common base of all subsystem trees), then either it
+> applies to one of the subsystem trees as-is, or it applies as a topic branch
+> (which starts also on the rc1 base) with reasonable conflict resolution
+> during merge, or we tell them which exising subtree/branch to rebase on.
 
-Yes :)
+Unless we carry semi-baked work through merge window *, at rc1 all trees
+anyway restart the cycle.
 
-This is doing the same as try_to_migrate_one(), e.g.:
+So basing new work on rc1 is very reasonable choice. Once that work is
+merged it will be merged to a particular sub-tree. Even patchsets that
+touch files across the trees still will be merged to a single sub-tree.
+And once a patches is merged it's clear what should be the base for the
+work that builds on top of that patchest.
 
-		if (folio_test_hugetlb(folio)) {
-			...
-		} else if (likely(pte_present(pteval))) {
-			...
-		} else {
-			const softleaf_t entry = softleaf_from_pte(pteval);
+Obviously there would be conflicts when sub-trees are merged into the
+integration tree, but that's maintainers responsibility to resolve them
+IMHO.
 
-			pte_clear(mm, address, pvmw.pte);
+* Supposing we keep the model of early merging for testing [Lorenzo, don't
+yell at me ;-)] I think it's reasonable enough to drop everything that's
+not going upstream at, say, rc6 and ask contributors to rinse and repeat
+after rc1.
 
-			writable = softleaf_is_device_private_write(entry);
-		}
+> > “Bug fixes which target mainline should always be applicable against the
+> > mainline kernel tree. Potential conflicts against changes which are already
+> > queued in the tip tree are handled by the maintainers.”
+> 
+> Ack.
 
->
-> The patch LGTM. Thanks.
->
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
++1
 
-Thanks!
-
->
->
-> Best Regards,
-> Yan, Zi
-
-Cheers, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
