@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06236C5DF71
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:41:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DC0AC5DF71
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:41:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2302F6B00F2; Tue,  2 Jun 2026 03:41:04 -0400 (EDT)
+	id D54A26B0400; Tue,  2 Jun 2026 03:41:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E1186B0401; Tue,  2 Jun 2026 03:41:04 -0400 (EDT)
+	id D06506B0401; Tue,  2 Jun 2026 03:41:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F7696B0402; Tue,  2 Jun 2026 03:41:04 -0400 (EDT)
+	id C1BDC6B0405; Tue,  2 Jun 2026 03:41:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 236D66B00F2
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:41:00 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B38781A03D3
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:40:59 +0000 (UTC)
-X-FDA: 84834176238.12.26A9673
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D3C0340016
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:40:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mt4n/cit";
-	spf=pass (imf01.hostedemail.com: domain of linkinjeon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC4D36B0400
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:41:31 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7119A162BD8
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:41:31 +0000 (UTC)
+X-FDA: 84834177582.09.1BE08DA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7AEE014000E
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:41:29 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FhM0a85p;
+	spf=pass (imf26.hostedemail.com: domain of linkinjeon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780386057;
+	s=arc-20220608; t=1780386089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fYditk54Uku6bdeB4OKiDApuAv/ey2NvuAnoxzRJ+ac=;
-	b=pewfPo5TZixDqwcXjCFwxVs8k4xthScE6uzbSvh5byyakceWhVKDI93Ihu7mcNerg/huHf
-	08yrQhJAutzPMgtM+YWPYuNKoyz0C03Oz6SA4oKZoH9MXxDEdGkeTUDqOrBwG3kW/x0R2i
-	NJMcgDTyaU3NhFboEom+8gGKwr4bULw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780386057;
-	b=JEeJZqHfyFqaHeAac0Oksyad1FFg3RDBD43G/J//+lel2tuxJkSn7ynKKmet5LyDs2zfLb
-	7gAfm+obVzsNLH3+k/YoRORKGvDAixnRgNf65hhUguGeZPx0XifO7nV9lDAfbQXHz/w7ZZ
-	EuEG/c1sBxSwi/2pTzrUj4NHjrlOlos=
+	bh=hA0FiCS9ooS+oM4XlD7bN1EhAH0gqUkn755Mz94STBs=;
+	b=65apLaFPcs8276bkFqLKgtEQCrzW6W8r11GyC+jmN7thKSQR1zjNgd2iFxbTdsN8cFRJma
+	7bPQjSK/LcNuGOYGOe0FXnebctwz6b8Hge0MV70CBiJeJoZbdwfMPtLCCv1uxdkKl+pu55
+	pgVEkUaMokhNPDb6wNcyFusBJQ0yXiw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mt4n/cit";
-	spf=pass (imf01.hostedemail.com: domain of linkinjeon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FhM0a85p;
+	spf=pass (imf26.hostedemail.com: domain of linkinjeon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780386089;
+	b=um9i/AZZJMm+KyyY/c0O5prLwaX0mDs8Yhsh0rFxTsUVs/h7VUPmrwD6HSAivg1g5Hq6vK
+	DdQSYcqfKYjtKOZYMGX5b6wSuvOBKMjXK85JVVaoliBwfcPsuGiTAkABJaY15aF/GU+EtF
+	rnJaVqE2r4Rm0ZcPHP4gLnXlNKJrzMo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 327D060123
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08DE1F0089B
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:40:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 98AAC4350C
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:41:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DEF31F0089A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780386056;
-	bh=fYditk54Uku6bdeB4OKiDApuAv/ey2NvuAnoxzRJ+ac=;
+	s=k20260515; t=1780386088;
+	bh=hA0FiCS9ooS+oM4XlD7bN1EhAH0gqUkn755Mz94STBs=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Mt4n/cit0YTDOaHACOBbRmk0o34BjkWEM0CpWHEnL5PN43aCqwnmPlXvXFc0CU3rI
-	 DsatfwC7+MfTYLARIcU537LstG7YH7keRHnF5aK+ANfAjqOC1r9JktihAggX8knOWE
-	 wAiiHsgL0ZYd6SnRs4m6MWCoeprT9rHX1Yg5xGShRipGcuRKH41VL0R9WZp5DkS+6P
-	 VzfJ9ruUe8ii//OL5HmIzKI6OleTYYloRY2HBNm2HheUZrYE4WQKmtPMpOx8SBOXdu
-	 mythy3QXxECtzyQ7zTzds5ZOscPUdkajWGi+hIUVHm4sNFDK/1VCyD5z17s/MeNRjc
-	 asLwezpzafofw==
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-687e7edaafeso18394754a12.1
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 00:40:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8g+gKuSTJ+1zdN3JtQAGhT8FmadriUR2Jrd0MNOzpHhKazCBM28SbAp3IIapz9X9lS6gvaxciRNg==@kvack.org
-X-Gm-Message-State: AOJu0Ywl4TzAhyQT7OlcSndgISREu6G/me6VQG18ZKf7SHM0SiKqoejU
-	5j0+O3zJ4+AlDCErgjYGTLlEHEd7dDasQjSkToHSe77VqU8dSEySl8Mb0zjZJ2AGygTIOZRMCND
-	z6CsOQKXKQyREbHiQadmXHw48iSXxnDw=
-X-Received: by 2002:a17:906:fe01:b0:bdd:52ef:73e3 with SMTP id
- a640c23a62f3a-beab13c0e42mr869047966b.12.1780386055618; Tue, 02 Jun 2026
- 00:40:55 -0700 (PDT)
+	b=FhM0a85p+gIXj9KgvgpHkigcX58gKxbBzJMNnNCfCHyVa8r4n8IbngY9gj2EcaJWB
+	 EwervNfguOaq2ZXJ6BXlkuG53PVexOPEZKw8cE3s2Vn1WDPPfr22bIJi6Bf6jVi7H6
+	 9+i4DIrgwhexV60cWsUuwwQmTwnIO1d284klt0LQOLw4tn2JdtBJDoCiF7Z4iUyjj6
+	 cVbXtklweXQ4CGKgDgIKJzTuJ82jJk6T/86qh+a+x1WLGR0nJyJdPcUZxZ43VTUDPu
+	 6t9vShdEkGcnQGnvGvLn+5SdwE+jeAh7cDRrq/706N74uDex3yNz8oyfLH7WOOWb5M
+	 o416Kd3C1WwHw==
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-68d2342c5e6so3220266a12.3
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 00:41:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+E9v2qt+C9CteZAa7/h786s5e0vjo/DTyAY8tNoyysEKcwN0AhRuNLT3gN7ZNAvbhJNt+bCJEo0g==@kvack.org
+X-Gm-Message-State: AOJu0Yyyh5fLCLBQm9IDRZsuNd7iAxK8Gd6UKfWSIN/BJP3sZtcWaOXl
+	tC2jeSlSsVhVwY/zAeSwCl5kvWen9Sk2+g2TQU55w87sJEX0tXc/zd0BYAJFbKVSU5CVc6rrH6A
+	BZc4QCMpAUWeO77U20u0wO8f78MxuHDY=
+X-Received: by 2002:a05:6402:a50e:b0:66f:9f63:e537 with SMTP id
+ 4fb4d7f45d1cf-68c8cd220e3mr4074950a12.19.1780386087215; Tue, 02 Jun 2026
+ 00:41:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260601192626.150804-1-willy@infradead.org> <20260601192626.150804-2-willy@infradead.org>
-In-Reply-To: <20260601192626.150804-2-willy@infradead.org>
+References: <20260601192626.150804-1-willy@infradead.org> <20260601192626.150804-3-willy@infradead.org>
+In-Reply-To: <20260601192626.150804-3-willy@infradead.org>
 From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Tue, 2 Jun 2026 16:40:43 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd8S6MCddYeebRajNEBrPDwLNC09=uWP5XmUaE15Gu+JZQ@mail.gmail.com>
-X-Gm-Features: AVHnY4Kodk94p-MYFF8ymWKX7Seg-p_3ldHd0r1g_9SuP85Dgp63IRhmvVe9TNg
-Message-ID: <CAKYAXd8S6MCddYeebRajNEBrPDwLNC09=uWP5XmUaE15Gu+JZQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ntfs: Correct use of folios in handle_bounds_compressed_page()
+Date: Tue, 2 Jun 2026 16:41:15 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd_8sUxdRT82pGmu2xo9=wt2ub_Jd_9ecFgOmQhj2Od1KQ@mail.gmail.com>
+X-Gm-Features: AVHnY4Lgnr6ZT-SFXiJYLCzGrX6QCpf3_RA7vIZl8mbRng2W9bM_b_JQnJeb2YY
+Message-ID: <CAKYAXd_8sUxdRT82pGmu2xo9=wt2ub_Jd_9ecFgOmQhj2Od1KQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ntfs: Remove references to page->__folio_index
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
 	linux-mm@kvack.org, Christoph Hellwig <hch@lst.de>, Hyunchul Lee <hyc.lee@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D3C0340016
+X-Rspamd-Queue-Id: 7AEE014000E
+X-Stat-Signature: bmkq9mwqurrtfwg85d1sfi548ozk3yey
 X-Rspam-User: 
-X-Stat-Signature: 1dsyomf3sypfpxoq89rm7g86hqgjig57
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780386057-157512
-X-HE-Meta: U2FsdGVkX18UNZ780Um/3EJP6tSOY25jGxX0mGYTGYSomAs7w/hLCD3xMIb8PTv8DHEmwuurMiSA7IPC+IuME3m8hglIpYneyzRdrWNrBGqTzO1706UpaRHPAQRydUJwV7hJCZzhrsNrrc7JE3qs55BzLtgBmRG1JbKEx5CSftIhyUNHxxKRrUc/mlK/8bQqo8g8vBknOCbvcw+SuQ25pApzGkDeQ7VQjDEZFQjmpXMJIqq/fx48WWpczASfYTZawt20YiyuatSpU4P6ogjjntz3ZW5jFClB0dHAoalMHhjT9oOdloiVezim8FdbJcWby/w4vTE+l460Alnkd3rwz9hAl9P4Od6UVeIMLgvLLA+5Uzp2D3uC4go0PIMMNpTCe/yE3aqCmQrkTOyKdD+t++k6XA5CuBfvPhUDntytONvwaydlKilDuUTjNWd0KnoBTQ3PfAU1MPsrEW6SjOUv6N5qekECr6nzCH2cpUoZ1ln0D7aznIUO85RZo9S9jyjOVQ+d+WcS+7Q40TUpoQOc+ifZzfNsTJkt1HuxSD8DtRCwjRfj5/sC4fJyKoP5tF3O4ZsaqidyTHXFB+TWUPTn05U78Ezj4dkECvsPv2NJC0h8Wi7DKZtX2YNz0m1JxsLGRYLsG7REb1GU9c5yN7ehZTax84eD5fFTSQnT16VBtxw4dPO9u63bL91AluBNbxEMH/JEKCUSoQL7yintzpQfKzUcGe6WhuLheJv4Gwd9gncW7JKzPDC5fNkL8NtSI0lJ4feln0ZasCp+mCJQXQLcXnoscg7lvf0uexsRMz6A20xnqYhPIfcnPcO79VknEtE5M2Q8uHpQPE1kV+dhWTlIcC+sW2sq4LybBpKr7jnQQl4leDSIJmQRMVfxUXYUdzWj1Ruq7vYZQncjSvxPU5TJ21Y2YRDIh+paGZWsqe/2IcgEF5gR5AUW3KWRWfWW/MMOzadLHpimjWM2SgWq2jH
- WKguwNtM
- xmfTx5+lAUqQHUOFAUAx8y7DrI/CgPM5JfE+m9sInRdVFhiQESqddg5tSYeYhTalKKr/OLvtNVolYchFqkkBxLg543ZqXaDM3tX+FqbJAXZIaO7YeLv02Q8ABkTdi9BISDTm9TP7FaxBI+gj5AnHfjvoZfGoMHPax8yLcOOCRuzc6CrO7dUTfDF3+Y1tjF0Y8/zsVCQtO15hQCg3lgTluaxNoGVg81HFM4mvd2nkMpPRGw6a1I1NYVpKVOQxh7cyMj8bYxIJDNTdyQB7oE2hc+MNeam47mwbscmDYbTi6bPrfZSXFdchxEHf9Aio1JXhOd5zOhtOem3+1dSMjjoZBSd/7EOfZXrZnvXsNJAfo7qnLxaLXPdaqyO2FZqVGjCuRedttLCGTcTvOOEwi02UjU5j2w3Letc+UUy8cNjaqSrquhRTC+c2BbbPwD4WERlbOW21bK5Agfd8bgLDtjOn6F2CTxIbraqqyOtIWPg4UmUCPYCG/K8+iUfRaTVk4OHm/O2Ha
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780386089-746647
+X-HE-Meta: U2FsdGVkX1/kjUMcQ3PfiJci8LmBU+xD0BrbfZ8ilkLz346QVV7tDgXTDKMoAK38suDW3ygext9ATJn7ORg3sFIg3p2LIMiGkCjWWkaP35lw2jWh+FuOYrDaE/TaeExj7b7X5mUp4ltNRbn+m3HO3tkFmmnzB9nEqd4B07+EpD7OeETIZRlmWG43mtZHh9dP2q6obOcVpCLdDRUo5Ez2hmdZsoE/1i14ON/OCSH7I41+w46Q7rUqw2qv3yYKOgkNNxW7PLEAo8hm4AjuPJaQX2sbXyDP4MFeMnyvzNeycrvvBHiVFEcnVsfzl4JeS0Nwtmfq1A6IYjtn3pc8Uy/iFYPMYqdorMHLjP9nR3JzjmvOVnpM7mEPiZ+lMWhtTe5yLAt6Zq1QNvf4eHHna2ow/H9O4ong9kROuo658JZxSI9MBoVpjOuIqgbcfGFu5PTs+t0Ji6mbVcGIB2UCvEP0UJ/18j1Se0675laGrvLV8o/M5xvVDJ5GG69hHs00JXFB+QQlVAOli/7wo3slssL43xWcAx9BgME7gzVp7Oix+psRIg4ODFYb9p1v62sDiXvrwCEdaRyjg9mEKrK4nam3NuTuzHU4NF6etk8vJaJh8YKye02o3TnKgl6nyX3RYxsxMXg0JdlmYU5S46FUnjXEt3VtAbyaM6gM3BI+a3SGtkmzcqaHdvufYdXeB2+4x5FJSodW364WCoMW4dYd9/9yyh90i5pJ3GGS+21wZA0VKaSZTQWAnJAAko1XI93Njs2dIpuhF5+3tDmVlkc2ro0A343KCSg/UW/s1zZpIkIV5uto09uU4hSMl3mpH7EtlvIkelsDz6BkYWr0j86OwPIeKQ3fD7iahg8OZ9OjSxYv9mZKP6dB2cSOitvUaXQvAMzAHGy7DuLRAh7YYiC8rOMzm6YpSUnc4pJOzCrVD732t3QARMIxNt88SxE2dCgsjvJKANnxM+oQGiXvP3TqnQm
+ h6AzSFnD
+ 4dpqRcjnx5Kbe7I+EcR/g+vMOFMMEM2gonUNrZ66GCrpqx+dj2SRCg3P9yWRwSKa8K5ED0WNWX7X3UHoPVwHbNlCulCkxJM4tVWSBi93SilDcNqi2V9YGSADwJ2tkNR+qPGeUJBM5paZ856CVGPGyhT2CbsUj3XCw1ofnzfh1tjn0Je8DM9V5ynxU8sW6K4dGeDze2pSNaflJ57Ev+1+fW+5jPFpXvKpgSndF6S6GhGsxoJxRlsrHfRdotBPO6VJHJSdwyrfHZdkMgFhmPyCg9KAQp4Knzd062n9FlB9SJSJ/LLzQuL9hONL6jlgAy0qcfdLzDydTcAXg+T9pCDfPCoyI5ZKjgz7KYjqrq40Y4nFSpiX/MrrJ8vPnLbFijgef6wc43B1Q3csm30sXo4hucYoaPrce/VoizaVqUxz+F1UNdFlJ/zg6wmLztwVpEcQdODEJKOG6dlCCaW3rO1nU8W7WhmHwByMqoRL66mMpiF8vS4RMaFHysrLRorweTfVXW6OO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,11 +105,10 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Tue, Jun 2, 2026 at 4:26=E2=80=AFAM Matthew Wilcox (Oracle)
 <willy@infradead.org> wrote:
 >
-> Inline zero_partial_compressed_page() into its one caller, remove accesse=
-s
-> to page->__folio_index, fix highmem (page_address() does not work with
-> kmap_local()), switch to using zero_user_segment() which includes the
-> call to flush_dcache_page().
+> Pages don't have indexes, folios have indexes.  Correct this in
+> ntfs_read_compressed_block() and also remove a use of page->mapping
+> while I'm in here.  Also convert the calls to unlock_page() and
+> flush_dcache_page().
 >
 > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 > Fixes: 495e90fa3348 (ntfs: update attrib operations)
