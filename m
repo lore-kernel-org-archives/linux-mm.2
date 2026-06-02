@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33815CD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:41:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 987AFCD6E64
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:41:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 997476B0093; Tue,  2 Jun 2026 11:41:49 -0400 (EDT)
+	id 0E5426B0095; Tue,  2 Jun 2026 11:41:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96ED06B0095; Tue,  2 Jun 2026 11:41:49 -0400 (EDT)
+	id 0BC7F6B0096; Tue,  2 Jun 2026 11:41:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85DEB6B0096; Tue,  2 Jun 2026 11:41:49 -0400 (EDT)
+	id F3C896B0098; Tue,  2 Jun 2026 11:41:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 767956B0093
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:41:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1AAE51630C5
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:41:49 +0000 (UTC)
-X-FDA: 84835387938.09.43E3DE0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E75DB6B0095
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:41:53 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 91DA51409DA
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:41:53 +0000 (UTC)
+X-FDA: 84835388106.15.72D5C3E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4E92014000E
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:41:47 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jUrX/DoB";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id CB7CD1C0010
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:41:51 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Dq/fgWqG";
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780414911;
+	b=0AUK+MyQ+n4eJwqpiGlO95OgX5O/Kfdyh3275lN+1mhHYCLz/eFyLM0v81Z8rL3qOaR+9W
+	5KPpHw/Yeo/TUHDB05wz0fRBICmBd9/Hkt4vgTOtmUGFz8dNi3r59QdKUsYa0mhg50Exv3
+	WhEIUBHcuisJ6NNTCOW6k6c2qn4bNyI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Dq/fgWqG";
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780414907;
+	s=arc-20220608; t=1780414911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u6hjEXFIodlvX2INCmoabWYeGG2q40wKJYAYdqxhbNA=;
-	b=a3BaHhaRAdr96xbACcpbJH0dyUDmcsek8pNuNEez+BsQsCj8bsKxeeS8YGrOhUe0VuHwJI
-	3QZIB/QrvhVVl5Wc59rawaBkwQ13wVgmGJ4sG7tG4/neyyyvgW0G0/OGrYKJhbQ5XwwJTm
-	e+E5K9+imRyAPEHguHC3YJYI+T8pw48=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jUrX/DoB";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780414907;
-	b=NtaO0Jm6QLe1DbWdFalOqkrOsrocvd4z3JXYsOfuEVBGtjFrWYUlbGTAmEYMH2QJcOJI5y
-	dk5yha10/vW0Dvb6eEubLQmyyPti54idOPtk4JC7wjcbuJMo6/QBuu8vjFhWr7kRw7SFDy
-	edv7mDCkv0anxgrsIH9rbPbx5qwBFKI=
+	bh=zQZZGZ6EMTnUv6b/A0cJocwVFTUpYX1eLweF/8Sul1Y=;
+	b=62NXjgOUyGSXr+GtDOMDoshxoM5+HEW0RsoX+ZJBnyLUB98SA0WZ5ZwOYepmG1cwooNusw
+	vVE2pVxjYGtMzi6ZQ4ZgugskOR+OLc5IYUdT6FPyo3MCyYQ1WnRqexIzW62Uc1y9LOnGV2
+	Gw0NBLfwJNqXPGCxIBHuXEs8rCSKjvg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 80E8440AE3;
+	by sea.source.kernel.org (Postfix) with ESMTP id 02FED40627;
+	Tue,  2 Jun 2026 15:41:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD131F00899;
 	Tue,  2 Jun 2026 15:41:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667801F00898;
-	Tue,  2 Jun 2026 15:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780414906;
-	bh=u6hjEXFIodlvX2INCmoabWYeGG2q40wKJYAYdqxhbNA=;
+	s=k20260515; t=1780414910;
+	bh=zQZZGZ6EMTnUv6b/A0cJocwVFTUpYX1eLweF/8Sul1Y=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=jUrX/DoBXHWclZVWAjvP+7tw19ddYYGmISVNtUcGMhSSciNu0hP/H0gsSUgwMVCSC
-	 sye1q47DoDLLvQurDGUIXS7wwoz3YAHHPnKvg//QjAeqCyIPPgU9vUg9gQiXULfGEa
-	 5AUzO9PrWIuaO0TTP3sPFHnbpyOtxwFYWzrr6EW9jdCu7EzsD5KwjgG0W0msDQxux1
-	 7+/4XIJxatx2EXFdz50enwda8JbX/5MjhP02qWQA4ED2/8lTLhD4oAftbOp+eBn0QE
-	 gVRNgLQpMTvVG9YrJA/v4eZdv7bdDFfDQBS+6AAcUnP/2eXLJ+YE5odpAPO6DyVE2K
-	 yqhqhcg2mQhpg==
+	b=Dq/fgWqGarmZFFHRBdUyYH3SxTuACE5PWIOGXebWLtT+Jz3aNaHvvhPQNEzTtnZJv
+	 YrZsqEb75xpMlIzGphpk7jNqD4E9qqNpKg1Z3UmvtmoG03S2x0sU6Iz5XoSYHb+LLS
+	 eJf4R7DRfm1x5KdKR9k7pR+nuGxrAcNh17oF29hvI1BTUyL3TDXk3neZ+W39hxQcMy
+	 ZtKdKMaxoKjJsiWyVhCuvc+A3zLMciVDFXKQ5ZUAip9ohOeIRSyQRqIAHpaKhkRnDU
+	 BgMmV5JJ5eWXsRdDQrMe+lkcjxzMNP/G3U/1sV9IVcJvnP/vmp7GEpoNyxqmBN71B8
+	 LcV0HPDXsFjHw==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 15/19] mm/hugetlb_vmemmap: Move bootmem HVO setup to
- early init
+Subject: Re: [PATCH v3 16/19] mm/hugetlb: Remove obsolete bootmem
+ cross-zone checks
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Oscar Salvador <osalvador@suse.de>, 
@@ -84,20 +84,20 @@ Cc: Oscar Salvador <osalvador@suse.de>,
  "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
  "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, 
  linuxppc-dev@lists.ozlabs.org, Mike Kravetz <mike.kravetz@oracle.com>
-In-Reply-To: <20260602101039.1867613-16-songmuchun@bytedance.com>
+In-Reply-To: <20260602101039.1867613-17-songmuchun@bytedance.com>
 References: <20260602101039.1867613-1-songmuchun@bytedance.com>
- <20260602101039.1867613-16-songmuchun@bytedance.com>
+ <20260602101039.1867613-17-songmuchun@bytedance.com>
 Date: Tue, 02 Jun 2026 18:41:33 +0300
-Message-Id: <178041489396.457517.6730523256790632908.b4-review@b4>
+Message-Id: <178041489398.457517.8355446246116786091.b4-review@b4>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4E92014000E
-X-Stat-Signature: fdrdhuo9zsg8ii1ydbm7ktjy3zmrakwf
+X-Rspamd-Queue-Id: CB7CD1C0010
+X-Stat-Signature: ia4zaue5j6oyw9ekwg6hck6wxbjxhmr6
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780414907-704895
-X-HE-Meta: U2FsdGVkX19AaLuczZQ3atUtXFpvUd9g3yAYEg3Cb54tx7frG500pEpzrbOHOQI1N7X5XEXLI8BlokMPRYCV6Ep63Zw3/9BxNx9arBkMY2vcB5+setywTan4LpKw3/ETtOBtnPpe11vGpCp8jAfyH2LQbyu3/8KiwGBMgg2SNBBfbHHN3EFpuG0O4I6uJJRIbVqodN5bsIoQMCNlSQcyCwwoIG6pa9wOTsNzloiNd8PwxqFKWwU8QHjK9oU/rsk0RsFZSzmKgUm4+vVk2/1/2JmeWZlpGTx/Dg90FfLYe+C4kMbRh9NedhmRtom7xszWh8P10UM5nVDQbnLToM5V90Lg/0I+z32Z2d7RIugf94i1dVfrTRISZbBKTcbqv3S6hO3iLPu9GRec+n2+azxN9KyO0SdvF8eU6mWODrchX4P5ipT7waS+jxyAVgkHSqjlp2vbWQy72o6g4yUXpTZotytB67eoa5awaznHGFKy9AWo/24dnWDZU5BUqKf8DjrEOILgb+thn76QTI+uCMvYnt/EPDEMkt38ms8T+FcIKwde+uxYMijB4RIGK7lsYzS3BkUTx+47Kkkx/US9h+/tCUYqjXLLCC0f2NEqk12yoH/lIj8FnsZQzN2IfJNi875gyaM5kE0XNoNnUL5LIDOSnaAbYhzF7aHdbP0ANUQ3XGl8fKhX8enrnJo61o0Sa8Vhehe87wBzq4NQ/p7JLGyHbCXx1Jax/jf62xSd4GxIwfxCAmIFXfpX8OIAtJ0I30kbsxLIlvt6ySmfMWpBNwLvw3cNrdJu6U20AneKK/ogS2xmmHdoN4eEAwTp5SZ3ET4k92Xkkg2i3O4SpUykXoODw6cphAqEevoJcyJEbc8ihD39loPyQbiy1rce0d0YNVknXPB+2Ym9DwWm5Vn3f7LaHJqJvKpktxEr+SRIHfUs9mFOtCT+8L0+fOiT4ueXxj+QqFCT81L01QR01zdHPQW
- nCxWK7cg
- LbVx3TYIgxvDLHLJo6dnfbDNtc6BiFaDalwylBbj4zn8Ilv/oIM7K0Y4E29u9iw4A+IFZhLcWrwA8KfUJfFOyA6LDQfDsPNLD5oSIJzUMTg8FjB75qYDDBxy72Hl5XxEI2CZsiBgL8GGxmX9LnlooH/q3hs6Xmv/OIbULxC/VuzITdTq3OsHMIn3Qu6fRhjgU+v8MmZM6zNAOWixVNHwGgZSWFC+bFKEstkS5oDyRXkC7UeDWLJAlDt4cOtwXMcQKoES8u+gzZgDOLhboTQaL+XsyNI9EaUJ3TIwPn0993pvgRhpuYf0ckLHb4wr/kgu9rLIH6vkFUdbebXyi14LDc+3fsru00m/Eaenr75pe+Mzcr4DfvXA/8Qd8xNVYTOiBjqXp
+X-HE-Tag: 1780414911-521680
+X-HE-Meta: U2FsdGVkX1/38fXhuOSDRbcDIRfqxIK6SZUfbah7AbnvrJMFd+ggHiNe/ANPkMHLsPTrM4wWSSjh0AfvBm6Mplly5qZRkvhJ8bt6UUQpTRTTSX1HrmOzNl6SreRCbICgEkRDrmkYMnnBhALn9INAhpIW65+VKZJRqv98YwS/ljpzG+rLaSUS0+q2+r90YYhVhL6v1A2Fl2NrmLiledsVcXPD382DnE0Vdz6tYmaorJ9wCXC+kXsOLwqDR3LSpSnxeIy68UOS/iEacXmCfNgKbKnL+YLp78kCIqV8Zmr57UzHNtM5GadZkyXN62EtYouqcxxTx9RXmKWNNwP2ykj/lyzUpvJWGj4obnz4ZIeeAjDQXsjQF/c4XOKhGIV9l5TYMhEvW4PTVpenI01Z2eERAHCyNbFXo4kmzQsMPZRDWwSYWaXsHEXGfwwrMfd0M95fqzHA19SSjmAXfUBPiHCTDcmb28QXIvf+YCanDwZH4ip8zCRDx47dRuOytt3knSWM30qLZk/Xyuo93PFXWM5rG89czaaHwY5fPdYc2avAkqAUYwCfyjoknWoTxSBbTvFcv2i3q86+vlL/BioWZ2nKq0ErFU+pd0VP6l4dFPI0so0aZHABaTz29ukRWJbniM22eZUILV0cBUOkRfHHyOeb33JtnGIoD2Pfy2wctWzVAX8f9EkhPviFyIVlAKmI9EmWr8Gx7KueZ3bBksY/Dmz6bViZdC1VSUjcpZ54SAYbH2Zzh8DWF79vJUi31lromf+kBTj3RVjCQKHeTuCieJdGQEoc2K7+k55KGrO1jqlKXuWs/uOfoYmhr4emiJdkE8ENXzsnQLjy3jLW/BnjHW+aXgAEXBmDJcrTj6UXpBmiUFCfSDx2ncWvdiLQKPgtIMFkHZVJOwipbbCkKww+gU5k17U8t+dCOiR+UWzAK39LgoYGb4SI3J10zRCXtxVfh/fDnGn3vjsUpuvX6aowmLJ
+ q+uiDCl6
+ 1doy5Gul8ACA8P9Fd99Dq0dQfhzBSQkrt4X5POcMcVlqlnny4rLNYZ+d3A0ZaU8EAabCCxslwwBDgDh3AjBhEy/+TP+pflq2LtrbUtnooP7YLaZhk0zFaB10S2KP9u/LiA8sEsGrmTdBvgbru9sGKHnnRGuNxVVpN0yCKX3/rF8rea+tmmd9BmrnUFKVQ5+FngyqSx84hpk0Nl4FWbNqcfxtSJzijZoflzi8PzFZqKhvAEPhPBpO7W4bUAUecNkEQCGQP4SvkE6LiL9Pp88s8akdC0+KO+m/k6s54b47wyRRTmiFZXubrwj4uxQhrqkUBx36Qe1fgpG7x2pvhMylgoeN5Mw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,22 +105,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 02 Jun 2026 18:10:35 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index ea6af85bfec1..464578ee246e 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -745,6 +745,8 @@ static bool vmemmap_should_optimize_bootmem_page(struct huge_bootmem_page *m)
->  	return true;
->  }
->  
-> +static struct zone *pfn_to_zone(unsigned nid, unsigned long pfn);
-> +
-
-Can we please move the entire function rather than add a forward
-declaration?
-
-Other than that
+On Tue, 02 Jun 2026 18:10:36 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
+> Bootmem gigantic HugeTLB pages used to be validated again during
+> gather_bootmem_prealloc_node() and any cross-zone pages were discarded
+> there.
+> 
+> That validation is no longer needed. Cross-zone bootmem gigantic pages
+> are now detected during allocation and freed before they reach the later
+> bootmem gathering path, so the remaining pages are already zone-valid.
+> 
+> [...]
 
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
