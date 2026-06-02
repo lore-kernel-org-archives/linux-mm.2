@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10251C5DF71
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 06:22:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5B6CCD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 06:32:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58ABF6B009E; Tue,  2 Jun 2026 02:22:10 -0400 (EDT)
+	id 2180C6B0406; Tue,  2 Jun 2026 02:32:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53B606B00A0; Tue,  2 Jun 2026 02:22:10 -0400 (EDT)
+	id 1C9A96B0408; Tue,  2 Jun 2026 02:32:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 478276B00A3; Tue,  2 Jun 2026 02:22:10 -0400 (EDT)
+	id 0DEA16B040A; Tue,  2 Jun 2026 02:32:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A49E6B009E
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:22:10 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ED18E920C6
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:22:09 +0000 (UTC)
-X-FDA: 84833977578.28.468D2F1
-Received: from outbound.baidu.com (mx13.baidu.com [220.181.3.100])
-	by imf10.hostedemail.com (Postfix) with SMTP id 3AB43C0011
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:22:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=temperror ("DNS error when getting key") header.d=baidu.com header.s=selector1 header.b="S4lB/Enr";
-	spf=pass (imf10.hostedemail.com: domain of "prvs=md1607C3BC26=lirongqing@baidu.com" designates 220.181.3.100 as permitted sender) smtp.mailfrom="prvs=md1607C3BC26=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F115E6B0406
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:32:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 727BE1C2159
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:32:29 +0000 (UTC)
+X-FDA: 84834003618.13.A4557F7
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 72724100012
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:32:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n+NdQY2K;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780381328;
+	s=arc-20220608; t=1780381947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=DaOgBQX2Bprj5SEr7V1aHONGUCzeW+2n3CTATOhVeeA=;
-	b=tqtslADrCBNyZUAsW/Qtn7hFtXU2eW5aYM59CB5k0rhHRzx4nYKMpjAZulCU/ohfLcBPRF
-	IpB3NCvkFxulpvJY3cRguWBqN2F53v8KCntnZB1V7qCKVO9+V8INuGBBTTfOizL4NSrWuJ
-	elLcY0rZXsbBbHFAweRi1Biw61q60Uo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=C/Wy1IaJuFs/X0HLx0N3cZ8cEkjx/rrhoBDMvbNGsvI=;
+	b=jA1r5PV6iT9OQtQFjuciT1GH6GeYawK/meHHsm4rJg6MyMGtuKSaPGA9ZuHmwfw45jsbHv
+	Hyvmcr9fhUAxuQc5q1JdjkOEP6IJdRwhH5w4pXAi8gRcBYFSLTze0YXxui/F0RR0y7ViBO
+	vWnPtv29zwimRdi9jX0fAnR/mDVGbfw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=temperror ("DNS error when getting key") header.d=baidu.com header.s=selector1 header.b="S4lB/Enr";
-	spf=pass (imf10.hostedemail.com: domain of "prvs=md1607C3BC26=lirongqing@baidu.com" designates 220.181.3.100 as permitted sender) smtp.mailfrom="prvs=md1607C3BC26=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n+NdQY2K;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780381328;
-	b=AFeo7fHTRYZgWB4vVejC8v7Rj6MqygvuUKusnWi6Y4S9VzVwIjWZWZBHqdt/WaMF8YNSe3
-	SQXoatSZ5PForiso0Rfza285PeNgTEdPcGNJxtCzKf+xgNvIu5VCejx+TtJDQ20HnhnOdi
-	u1XqVD+z0DT2hmMencD7/qa+jvCi2SA=
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph
- Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
-	<roman.gushchin@linux.dev>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-CC: Li RongQing <lirongqing@baidu.com>, Matthew Wilcox <willy@infradead.org>,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH][v2] mm/mempool: Untangle CONFIG_SLUB_DEBUG_ON abuse and switch to static key
-Date: Tue, 2 Jun 2026 02:21:42 -0400
-Message-ID: <20260602062142.1790-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	t=1780381947;
+	b=zh6H4VjKDISko3vpKruPgE1vR/oFg5mlpE6gSnOkOx8D8tU/w5zIXRNnOx4cgSc3qLfNTf
+	T1hEuns5tzgABuTxIDtaTdGiCyArGtvXxKPmc3T6Oyj3Bljv9CXsG3t8wxbQZCsNx3FrLG
+	TyALLpcQ4cHVNycmYjozfW8wMiyQOaI=
+Message-ID: <cf069cf0-1bfd-43e6-b7d7-8ff3278c79ac@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780381945;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C/Wy1IaJuFs/X0HLx0N3cZ8cEkjx/rrhoBDMvbNGsvI=;
+	b=n+NdQY2KQ2wCk4EXY3Jjd3A9TjbnlM8MS4gVU6aQxCfZ+0CKTK+/y2/6+wl8ayOUd/gQcK
+	ayf9t5X+d3I4u+SQtW6B6jm9ggSaBvBDGwgNLLz0+RWoYhGH0OY/uakHguv3SnzxK24Tk8
+	Bqzuk7SiuR8Mlz2r/uF1M/MaPHOaGG0=
+Date: Tue, 2 Jun 2026 14:32:15 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.31.63.8]
-X-ClientProxiedBy: bjkjy-exc2.internal.baidu.com (172.31.50.46) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1780381317;
-	bh=DaOgBQX2Bprj5SEr7V1aHONGUCzeW+2n3CTATOhVeeA=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=S4lB/Enr29lMpr6+7E1SC+oWMbBuGHJFn5nGYXF+lbosR+VhpVm9c6btNo2de7RVN
-	 wFjsWCFas+atqBD40tqAZjj+S7AkW2nyoa/kPdJpzGnfiYP1Vdd9uiXqXzkD6XeCQT
-	 PFLyeYTWcinTK34Q9svaJH+hPW8ZSaF7q+A8tsXTaUpjr8xGAG3IvVsYjev8Y5GaVx
-	 co3l6zsTqn/yrN1eY+dZEsahjpD0EhYLxpbJmqRzj3Hgx01NJpin6LXYJq+2JlOPvX
-	 fKH8LZWGWwBi6jVj4e4ba6JAdDu0+A18QLmrVQ3c40h8ZplU6ockO3Jj262OhkXurL
-	 UsS87trX+cenA==
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3AB43C0011
-X-Stat-Signature: ajb7qu15e6ukyas1j9yeufjr3shcgqfp
+Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: use correct flags for device
+ private PMD entry
+Content-Language: en-US
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, SeongJae Park <sj@kernel.org>,
+ Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260601083044.57132-1-ljs@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260601083044.57132-1-ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 72724100012
+X-Stat-Signature: 7dif5uwr4mdcfkp6bjc6pr737imkk46y
 X-Rspam-User: 
-X-HE-Tag: 1780381321-925382
-X-HE-Meta: U2FsdGVkX1/udDAcMtLCUruRariLkwDEALz72GYjfIC2UzXkCLDfyzP5l9nIrfzW/F1TufSN8exwHrt1JIInDUqZT6OA1e3HYLZuLLcR4cDedpHjIsOauZuP8PsS85FcCtESSRrx/eqpMB/M9VM9DM3KD+xzbXZ9V7MSADTHJEFkvGYXyznU4PS/uqDZVva7vsJo0S5sWzjInolxrsZdjpTjSzPEig7S/DT+OESWspq7ZiDtO4g6MKGw0akAZ+VsDI+izfdffQlp9sZkBLtSk3cKyR5GmeqU8WUr+F8avS9C8qSGTe2SjIIxBBWUjD/sisGKsBI6RCRN5Wan7hivhmJwY8GrvERMEUbsVfUYtYm8QJuwyF4K4GYitzJU4JJteLoI1BQ9yAz5999+/3qqgDnMK+ae0Uc3l81hJnolSgmPzuKp24heux14TC/Fph0AYpT/vVmv3k/B1o+hNVDoV0bJM1IlD6kuy3b79u8xVZNHoF7xk5fZR7Njrf+jTHvvWRR9r0h/FaMMIgkm+bpuywleGgk30XNb8xEZH/mJ01GSQjno5QZZrpZtEy7gGvESW/G8G6OEiAphXOBWWaF5KP7VRMY3y8Upf9wm1e0FK9dtR/9SwFjh/cUctFPFK7AIcunyh3MOBCIbFlRfO2NlTjdtdDbLfU4OfvbIbf4SNmAFR7UvPDeN8XZDW0TrW1UmGNxv0i3C5SSCcbkTH4sbSU9AWr6Is973CQRZm8I/+rismzD6Qb2rL1LfT0YYjh7OwrWbPHzlyuiFpd14eq4sF9XXYS7TGcpj60sTRQnZRLUZKvpR45IgwXt+c6WnG4kC7jwMwnrPVjbPac9eRrw4CFhsgp2BQYkvEZDM5LMs4gCGANwjX7uhNoHV5jeEfXmHAgDd+FWpZoLoybmz4XFbtDZM4S9t6h4a7vONZKXkge/GlBfqjUTJiAlqaZt9G3IhQkLB306ATdQHg9ZQOaD
- pvhdNPK3
- 8bqGgt48TUMMWWg5sjMINBgf1GvogN4aNBqHc3r/qKIiFF6kvTD53LtlQsP10NLWkRxK8QEvJMEGdicmbDBBNeWC21i45PdDQ0nuTfQMTfvS1peZ6h4hKwQlAKy0jCikfyqve0riEvk4TJngTEHwKhGz/GWZyueva3WVIjIKaN1LPIHAY/q8nXydNrXKtO7V5l+LY9/4hOjxN52UaNLgix/RrZOWDRgx/9F6kGnqxaj4TKUI6iQVBa+WCL2YovFYVnxFqje5PL2knWTTTmVLo6jBLlGR1ThclpR4MWZNSQoyvGOWYAt6OJ4LVyXjZrFJooFC4r6YHGV2HCOvLLPGMfVOnReqxWQrit36Cd1s45p+1XDSb4nUKY/6m4oghcJNz3XAZN99oK96o9+ZdZkR6VtuWHOlq15ijriUCrRi6NKBvQQ1UxLRxQ5XXvXTVL1X+zgoDCBTNOeBP6Tk5R4mpJzB2SwEkzFnPqLFNA5WO8mYPfX44OxKSowbHk3XDAepW0GblLSgOcT6+/wDQQ1bZ2XZhkDyp3wP7KsEI58vcY1DZ6oiNXNm5oVfSKJ7jVDQ61R/38eBsA/k7KE8ZSThwgrMa6dycLolNwCitQ8+86npQ1KM1ctKJmEkg3GY5qvBHKieGD61kI9kPunT59PvWWrzg4bdSNexjwa43
+X-HE-Tag: 1780381947-888747
+X-HE-Meta: U2FsdGVkX18th3pSYILxVGVf//tPJxgZhwo+TcvOvVrsLvqV3UtEBeHhRHJfV0xsd60rNEzkvuWvZI1+X5jh1LXvBWjLRZrC8M9OnftuW5575lWEoAMKfM4QH9QZvk406WQStf6Rj9eAVqvKzfwdbCejUStr7qBoZzfW8PiZ8g7+1E06bk1hL63ZJ3LidJDNeZmBuGlXzFfCIJtov44Qs2t2Ic9fNLO7+xZ8pzf8Omher6SERwKEncZ6MwSD6hCp1mgqBAZR4CxVdLDes6+P45xsL2H1yIqxOnBCKKVVckRnZziaBGfiQFdTvkYeGiX+jFzVGDo79KKUrojKwLtULgf+GrKv77dKTJXhi3YLzcIw0AYNgqn6/jUxN26ghN3NbC9eT9hqLJIu6eaiUpWu1gisiLI7DAs0qkfbvCe53uKIGhY7t4Q9M49uBwB59kqRnQX1wzVvMydp2Z5vrkxFe70blhSclFlAngZoB+afkuE+CRjCBPxqu5flenRZVHiiDZ0mtP95iEeg91HcZoza1y2VEe2l9RoXnXZs8N9DJkTMuk/g7HrQ9yic3d6/GWM185Jy7IygT9kG8gV7zogIgQHAw5ugmYHNdNZ2X9dCjaiBn4Pxyzx9JalFV5FHcWLXolFn+vRGUf3Mao7pm/IMKEOtCeOMJAZRa/u2UajlPEbvXJz4F4YETBisaktOhdi615yOcosVhMkq7ngBU4JhKcJr3pV0q4sXo18BYR1S5gbbbKfuRHexU1UbPLIeVA5JzO6Hd42FIJZfGnSlt82hsLwgxlhT/WEOW7O0hdlsXrvVhdnWD2S3pzl+0zBRO9uJ+aEwU/JKC9qn++kYODmiV6N9M+J5DgYAVEvKurXZOIBlNF4AtibGlvKdJry2OE8uCjTb7yBOH6NipDX0s597O8VjF4ADz/UfgzEcfTmH0p4kOnR/GVEg9E/R8sRqiO+iQAGNKDdUB+vrkW1a5aG
+ +kQAN8tL
+ aoIylmFMLBiC2dhCosoyjsqDwA9+b5txyUU0bsqlJjlihA16d1tHuQLAw27a1gpWryrbEAPp/AnE2JrNhy7H1AI9Rax7eLe4crJ4pTeqlD+emcP4yDIwcbz1HnBxJ7PAbejfYy72Pon280bh29buFYfHyRBuhsn+UXRUyHOC9rJA2CO2VJLYJugixIGBKH//0isaN7V5ub2MaV375VYSvkKCkySfFRuZi9NJPiebfiJQmmZpnBK26sW2m2H5AeWN1M/6ZRCZMr1K68v5wS0y+Ar3W4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,133 +96,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Li RongQing <lirongqing@baidu.com>
 
-The mempool subsystem historically wrapped its debugging logic inside an
-merely defines compile-time defaults for SLUB and caused two flaws:
 
-1. On production kernels where CONFIG_SLUB_DEBUG=y but
-   CONFIG_SLUB_DEBUG_ON=n, mempool debugging was completely compiled out
-   at compile time.
-2. On kernels with CONFIG_SLUB_DEBUG_ON=y, mempool debugging stayed active
-   even if a user explicitly disabled slub debugging at boot time.
+On 2026/6/1 16:30, Lorenzo Stoakes wrote:
+> Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
+> device-private entries") updated set_pmd_migration_entry() to use
+> pmdp_huge_get_and_clear() in the softleaf case, but made no further
+> adjustments to the function itself.
+> 
+> Therefore this function continues to incorrectly use pmd_write(),
+> pmd_soft_dirty() and pmd_uffd_wp() to determine whether the installed
+> migration entry should be marked writable, softdirty or uffd-wp
+> respectively.
+> 
+> Whilst all are incorrect, the most problematic of these is pmd_write(), as
+> this can lead to corrupted rmap state.
+> 
+> On x86-64 _PAGE_SWP_SOFT_DIRTY is aliased to _PAGE_RW. So calling
+> pmd_write() on a softleaf will return the softdirty state encoded in the
+> entry, assuming CONFIG_MEM_SOFT_DIRTY was enabled.
+> 
+> This was observed when running the hmm.hmm_device_private.anon_write_child
+> selftest:
+> 
+> 1. The test faults in a range then migrates it such that a device-private
+>     THP range is established.
+> 
+> 2. The parent then migrates it to a device-private writable PMD entry whose
+>     folio is entirely AnonExclusive with entire_mapcount=1, softdirty set
+>     (accidentally correct write state).
+> 
+> 3. The parent forks and the PMD entries are set to device-private read only
+>     entries, entire_mapcount=2, softdirty still set.
+> 
+> 4. [BUG] The child writes to the range then migrates to RAM - intending to
+>     install non-writable migration entries - but replacing parent and child
+>     PMD mappings with WRITABLE entries due to misinterpreting the softdirty
+>     bit.
+> 
+> 5. In remove_migration_pmd(), if !softleaf_is_migration_read(entry) we
+>     set the RMAP_EXCLUSIVE flag when calling folio_add_anon_rmap_pmd() for
+>     both parent and child, which are therefore AnonExclusive.
+> 
+> 6. [SPLAT] Child sets migrated folio entire_mapcount=1, parent sets
+>     entire_mapcount=2 and we end up with an AnonExclusive folio with
+>     entire_mapcount=2! Assert fires in __folio_add_anon_rmap():
+> 
+> 		VM_WARN_ON_FOLIO(folio_test_large(folio) &&
+> 				 folio_entire_mapcount(folio) > 1 &&
+> 				 PageAnonExclusive(cur_page), folio)
+> 
+> This patch fixes the issue by correctly referencing the softleaf entry
+> fields for writable, softdirty and uffd-wp in set_pmd_migration_entry().
+> 
+> It also only updates A/D flags if the entry is present as these are
+> otherwise not meaningful for a softleaf entry.
+> 
+> This patch also flips the if (!present) { ... } else { ... } logic in
+> set_pmd_migration_entry() so it is easier to understand, and adds some
+> comments to make things clearer.
+> 
+> I was able to bisect this to commit 775465fd26a3 ("lib/test_hmm: add zone
+> device private THP test infrastructure") which first exposes this bug as it
+> was the commit that permitted test_hmm to generate the test.
+> 
+> However commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
+> device-private entries") is the commit that actually enabled this
+> behaviour.
+> 
+> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
 
-Clean up this mess by removing the #ifdef and switching to a runtime static
-key (mempool_debug_enabled), allowing mempool debugging to be toggled
-cleanly via its own boot parameter.
+Cool, lesson learned! Feel free to add:
 
-Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>
-Cc: Christoph Lameter <cl@gentwo.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Usama Arif <usama.arif@linux.dev>
----
-Diff with v1:
-	Rewrite commit message, change early_param to __setup
-
- Documentation/admin-guide/kernel-parameters.txt |  5 ++++
- mm/mempool.c                                    | 32 ++++++++++++++++++-------
- 2 files changed, 28 insertions(+), 9 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 642659b..89b5994 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3980,6 +3980,11 @@ Kernel parameters
- 			Note that even when enabled, there are a few cases where
- 			the feature is not effective.
- 
-+	mempool_debug	[MM]
-+			Enable mempool debugging. This enables element
-+			poison checking when freeing elements back to the
-+			pool. Useful for debugging mempool corruption.
-+
- 	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable memtest
- 			Format: <integer>
- 			default : 0 <disable>
-diff --git a/mm/mempool.c b/mm/mempool.c
-index db23e0e..71e4b54 100644
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -16,11 +16,28 @@
- #include <linux/export.h>
- #include <linux/mempool.h>
- #include <linux/writeback.h>
-+#include <linux/static_key.h>
-+#include <linux/init.h>
- #include "slab.h"
- 
- static DECLARE_FAULT_ATTR(fail_mempool_alloc);
- static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
- 
-+/*
-+ * Debugging support for mempool using static key.
-+ *
-+ * This allows enabling mempool debug at boot time via:
-+ *   mempool_debug
-+ */
-+static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
-+
-+static int __init mempool_debug_setup(char *str)
-+{
-+	static_branch_enable(&mempool_debug_enabled);
-+	return 1;
-+}
-+__setup("mempool_debug", mempool_debug_setup);
-+
- static int __init mempool_faul_inject_init(void)
- {
- 	int error;
-@@ -37,7 +54,6 @@ static int __init mempool_faul_inject_init(void)
- }
- late_initcall(mempool_faul_inject_init);
- 
--#ifdef CONFIG_SLUB_DEBUG_ON
- static void poison_error(struct mempool *pool, void *element, size_t size,
- 			 size_t byte)
- {
-@@ -73,6 +89,9 @@ static void __check_element(struct mempool *pool, void *element, size_t size)
- 
- static void check_element(struct mempool *pool, void *element)
- {
-+	if (!static_branch_unlikely(&mempool_debug_enabled))
-+		return;
-+
- 	/* Skip checking: KASAN might save its metadata in the element. */
- 	if (kasan_enabled())
- 		return;
-@@ -112,6 +131,9 @@ static void __poison_element(void *element, size_t size)
- 
- static void poison_element(struct mempool *pool, void *element)
- {
-+	if (!static_branch_unlikely(&mempool_debug_enabled))
-+		return;
-+
- 	/* Skip poisoning: KASAN might save its metadata in the element. */
- 	if (kasan_enabled())
- 		return;
-@@ -140,14 +162,6 @@ static void poison_element(struct mempool *pool, void *element)
- #endif
- 	}
- }
--#else /* CONFIG_SLUB_DEBUG_ON */
--static inline void check_element(struct mempool *pool, void *element)
--{
--}
--static inline void poison_element(struct mempool *pool, void *element)
--{
--}
--#endif /* CONFIG_SLUB_DEBUG_ON */
- 
- static __always_inline bool kasan_poison_element(struct mempool *pool,
- 		void *element)
--- 
-2.9.4
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
