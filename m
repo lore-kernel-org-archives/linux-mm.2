@@ -4,159 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7A61CD5BD1
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5785CD5BD1
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:46:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEAD26B0088; Tue,  2 Jun 2026 13:46:25 -0400 (EDT)
+	id DFCB36B008A; Tue,  2 Jun 2026 13:46:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA17B6B008A; Tue,  2 Jun 2026 13:46:25 -0400 (EDT)
+	id DD4346B008C; Tue,  2 Jun 2026 13:46:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8A8F6B008C; Tue,  2 Jun 2026 13:46:25 -0400 (EDT)
+	id CC3346B0092; Tue,  2 Jun 2026 13:46:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AB0D86B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:46:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52AACC3192
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:46:25 +0000 (UTC)
-X-FDA: 84835701930.27.082034B
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013050.outbound.protection.outlook.com [40.107.201.50])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 86172A001B
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:46:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lOiFT4Iq;
-	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.50 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780422382;
-	b=lQYBjQzPOvVYSU8UcyJs3S1r3lOprFQdOZt0PF1TLebTR3Evpp18Z29g+mCHzjKCNe+ti5
-	Q25KhD1MtCBlnbWL3fziBS7cn7nAJ5k9Mv6sW+1rIkLIWVBnqoQ56BYMkCVE9eNHa3Q33b
-	xc7vrq8gYYDqgQkodNurvJuoZzTmtcM=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lOiFT4Iq;
-	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.50 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780422382;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C11F76B008A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:46:41 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 63F35140A40
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:46:41 +0000 (UTC)
+X-FDA: 84835702602.14.AE21C80
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5705F1C000F
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:46:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nK22Too0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="BzM/vvSp";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=k1DfIejH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ilnX90mN;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780422399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ESlPa9Ug0A6mTG8AVoUqSglzO81tywO0nYb5bjQSE4w=;
-	b=4UfCWBHSZ6iocwlkJjGfByZO6bm8Rfa1iLgQT0d0MBUWRUq+jtho5aHlX1GhCLrRTeWmG6
-	RPO3L8cfrYse0GxWc5YIU4gv8UZ3EOTV2yaZamum1pzVaCyjrt37l3hqe0fyg0P0ostpdz
-	EbgYppwSgzfCj5AOOzw8H8oTF6x5WCk=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O03p0nJ2LMY231U7XFkXI3cgsViGCbzfInLMAnbHn6Tr21PqnJ+pq7ECGAdUCWFlHHn+75PwRzh0kYykRNO8ucYjthtR9mDdeCq0uPoU3KSyrehcjWvaqKSPd2Y5wrRqOPayVQgLQmGx7MWjGSpjojAZyKtz8Bjq1yOCafFxgdYan/KuliBDCar0rsZHFniBCArH5LHC50a09lUFVvr4CDQekY91kJQVJKWNPjuVjj6VEfyPmYe7xbHPHjeZfEvmlCPBine8rNeJ0NUaYoE/9Ps/LvAY+hA8Z0/FQINr/tp2ENrEkzG5ROyjaBohKANr04VTZ8NpD/lsJclfGplZTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ESlPa9Ug0A6mTG8AVoUqSglzO81tywO0nYb5bjQSE4w=;
- b=DecM30I9T3v2E5moGWCpA53c6HbcMkoL96UtV9gI8oOJzVcFsY5/dFJXD3g4RGAjRqufA2iZnfLJSbwzBLvy/ssgv/OjJ8c+6o4P2wuLiiPKS84tvS9KK3HPa85jJzb//aAVu2l1jFyj/hfYvmVSMZUjDdvrB/z2elqOSltDv98dVwzhagvA82rvCh/o4G/87jEpHSuwASx5PYKa7xYrTmMP8+gswyVh0cuC9EaS7TK9USyr0BF1YpK2JXPAxxKLOQAeFy1bRO/criyTgOfh33SfxlOEZI1Rq4JZYkSxJtNoyY/tSzZjJ9bfWZ+fHOacF1H477ZZlpjMp+Gby3CRYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ESlPa9Ug0A6mTG8AVoUqSglzO81tywO0nYb5bjQSE4w=;
- b=lOiFT4Iqwm6X3xfYa5S5vq8GWHNVKxDszayd3+DKmzif83DMc7tsiqY7Hty6+pOIQJL/iZ/Vpxkhb/cAHGh86ty6EEsgSzdR+O6k5cMUBY+3VrprQHDYRzy0qr7ffuSC86+Eq+BvfEhUKXLYNsWp8tc8jQP4u2enXxSHwAWu2au1/u90EevjTP1RJOWw4FERql+KBQd2jAtxIijmDybameIiFpXPLzp3V8mS9qPsP2nji3cRic+nlWdvOPo+U8ummECFoLeqLZ6rv0uX3015KmCS0j29VT7hAVfmep7AJhdWA9VAWe6kLEoocCCS7RqIWDObE61KewSEcG+549VIAQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS0PR12MB6440.namprd12.prod.outlook.com (2603:10b6:8:c8::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.7; Tue, 2 Jun 2026 17:46:10 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0071.014; Tue, 2 Jun 2026
- 17:46:09 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kaitao Cheng <kaitao.cheng@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Liu Shixin <liushixin2@huawei.com>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH v2] mm: page_isolation: avoid unsafe folio reads while
- scanning compound pages
-Date: Tue, 02 Jun 2026 13:46:06 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <07E96104-E481-43E4-9ECC-5247A6CF4EE2@nvidia.com>
-In-Reply-To: <20260602101147.2892436f68fd383723c39855@linux-foundation.org>
-References: <20260602130755.38794-1-kaitao.cheng@linux.dev>
- <34F0943E-4ACD-4655-B9B8-41F658FCDB7E@nvidia.com>
- <20260602101147.2892436f68fd383723c39855@linux-foundation.org>
-Content-Type: text/plain
-X-ClientProxiedBy: BLAP220CA0016.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:32c::21) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=AuMw0XP6ELPe+cm6ErdVU/bLeUkouF/KNF0MaMkAslk=;
+	b=DfT7HbsV+KUaTU11F+eFmlNMKuQz+T5RFo0wzUYfsqzZwo0R0cJG0bxIWOF7cYNRXFpHKM
+	uDGaCnJbKdm5hsv0THa2pXAzrlxRALpczFFG7N6hENp6JoAPiUWZGFX7s5Re7EFWObtPG0
+	QK1IPPmULi7ORMP72HryfoGXBn5ells=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nK22Too0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="BzM/vvSp";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=k1DfIejH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ilnX90mN;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780422399;
+	b=lFIB8mGU2wvy/PAc2VFpvKJrbX2rNXsVdca6gkuFcE4F/2oZu6dQCaPkJOSznXey/rkTV3
+	PPxuC1sElYCItgTxyH6DNv4Wfl7Q6oh95xu1EIwk9jLNpLh0eAiMNSuJX55hgl1ayBSFPr
+	EZGKQo6dHjn/cBG+yBVlutT1a60UP38=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EC1C66B23F;
+	Tue,  2 Jun 2026 17:46:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780422398; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuMw0XP6ELPe+cm6ErdVU/bLeUkouF/KNF0MaMkAslk=;
+	b=nK22Too0AOrBD1x0yqMvCNHtXGpYGbXIQIh+9JuUbolbu13rClZ7cEQwCVBEpCxAkz2+lR
+	k4xJpxwuKski9CsGzogPozU0Fisoo8I7swxmWrj/TH9ywRAzy1VqTzhEkbivRWptnob7Qd
+	50Bew2HN5IOFfjFmh+m2e2yGhmOFj3g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780422398;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuMw0XP6ELPe+cm6ErdVU/bLeUkouF/KNF0MaMkAslk=;
+	b=BzM/vvSp8Wf+nGps5rztT0j5NRDpOX38AkDy6Sp3Zw5XOy1fO3Q84wm7WW2uhp9lEYqFKJ
+	SLqNDJisMJ7wdJAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780422397; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuMw0XP6ELPe+cm6ErdVU/bLeUkouF/KNF0MaMkAslk=;
+	b=k1DfIejHfWIM44A9nh6+tWNpezMinj8qDvSYvYf5YznRvrhQowYoRTECcUp5tJEJJnbdwl
+	J/Q1ECVuYdqwqEzdI7HfuOmr12HLti8Qq3Y+q3QNck8POi3mmK1sWBVM04B12afvzmrppV
+	7NEuoUfOeSnKqbL4oXabunIqOFzlksM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780422397;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuMw0XP6ELPe+cm6ErdVU/bLeUkouF/KNF0MaMkAslk=;
+	b=ilnX90mNyOgzvxbmB+RGPk4idEuuUy+9VUNbLgKyXZ6tuGm0J27Xbi0tNjRfS6TVhIVsdK
+	N2jYntLd7bomCuCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A3AFC779A7;
+	Tue,  2 Jun 2026 17:46:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id /eemI/sWH2oCNAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 02 Jun 2026 17:46:35 +0000
+Date: Tue, 2 Jun 2026 18:46:33 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: willy@infradead.org, jack@suse.cz, 
+	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org, 
+	r@hev.cc, Andrew Donnellan <andrew+kernel@donnellan.id.au>, 
+	apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	brauner@kernel.org, catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org, 
+	kevin.brodsky@arm.com, lance.yang@linux.dev, "Liam R. Howlett" <liam@infradead.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ljs@kernel.org, mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com, 
+	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Al Viro <viro@zeniv.linux.org.uk>, wilts.infradead.org@pedro-suse.lan, ziy@nvidia.com, 
+	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH v6 2/2] mm: use mapping_max_folio_order() for
+ force_thp_readahead order
+Message-ID: <ah8UmnLyUOKflNz3@pedro-suse>
+References: <20260528165635.2068012-1-usama.arif@linux.dev>
+ <20260528165635.2068012-3-usama.arif@linux.dev>
+ <ahlh2vdHEGo6ZSot@pedro-suse.lan>
+ <cc9a1cf7-7b96-439a-b0be-ecdcf27b5da5@linux.dev>
+ <ahmSolHvUChl-3vM@pedro-suse.lan>
+ <185f1caf-b33d-4467-beb5-51bd8520ac78@linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB6440:EE_
-X-MS-Office365-Filtering-Correlation-Id: 563b1ec4-83eb-4888-28f9-08dec0ced4b7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|22082099003|18002099003|11063799006|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	9mHeqzrewPZURknD0z6DiEIQ5ZY4o/DwnkaCZhxFPy/SkVfROFiLR+8fVBUyfhOM2ubTwKyR9PwTYBQ96v4KteSkdE4USVlKv0sDp02EX/tdrc06Y+9R+lLGdf7/QzZ5LgY9FQ4z/Pf5kpoxCuZwdIYyEa1douVQlQ78m/6Dsk9eEo2jfUKwSCKguu2P8F4H0uL0Q0UqlKWBWogHI1b0dZrETVO8UN7NB1LEunCDTZP480NilEFw4WeO4HGuf6olG+V3aZY3g/MoRRmT5I6dgzateJGBY3a/LHPtUerd0ZuTRhirdpsO0lhuPvjwh9PKFLYtyasDLpL4A1NeIos+hXhHuPLmTEulAQVaggSKdtgdxGvVO9lAG9NsI9w5RbfCyzdkEoH7Bnlg4K7vABRe9TPWvwrfJGZsVeJJsP880UDRIe9YIL2OEyT4s517s5uybA75OQTrZDUgvPKiMccC/gOkZ3PBIDcR3xs91q9xWgleral8ZNQVY5hxeuPTrUjoNV5WP2EfOWSYXKRs7YijqfQE5y2NGTp/oXiME4T48jusFAiP1DdVXNQBm3u1BIKCqyJIRwEOnT7KOTG184rcC5RWSKUgzHA5A7BhimLpxiDC3LDoSu0dmJ87GLQiw7HNL8QSbRZWgUql4ldNVHq/nCUW4DWIlVgicCVC+I1Gvk8JSVk/h4/va8FpDnBcyNMV
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bKYV1/hTNjisSa+K7YxrZYSYe3BRt8T4hri74hTbgraJnf1SFzDwUhBvyRtU?=
- =?us-ascii?Q?/mBWmKkayF4J4bPNmuNa+MN8nk/XpG/oFhjPOy3HM/GiPTeeEYdLbFt9tmc2?=
- =?us-ascii?Q?o5z7k+9CSrezJHpjXVQAPLCtrXVY6HjAJZOB6RL9uQYygSHt/wIVGhS9NLey?=
- =?us-ascii?Q?gUxu1cpkN2THHrdU12BS+xclF/AGITgO0R4K89Ax65J+JGI80VFFYeXRbk/G?=
- =?us-ascii?Q?kCC9b6FZu/QUJ9xFrMb73LOHMID9lp6MXVSwTW6+h2HuTWR4RHYlILtzzwFQ?=
- =?us-ascii?Q?64mQMqbxEjYkDDUtcmoLqe740KUXc2D4/IvBYrNvDH1tshYiR4To5sH5tsOm?=
- =?us-ascii?Q?xnldSpH9qCxYyN3xyYbx6NjlZYct/E4ygdgzyA1hRSB00LXw/pyqq/oq9rGp?=
- =?us-ascii?Q?DviUmypDdkLtOHqGPVjrMp7qoDUtklf4BMi6lh7MeBUOnYvcorjsm8m2HJrQ?=
- =?us-ascii?Q?TngZggJa4AKq/Cw8a5HTsfSHxxkBdepx+R0zQ0miEeahTIpqzqSp9mdo3062?=
- =?us-ascii?Q?AamACxGV00yDZSPoZbxFs+j9dXcYhPIRM24i8k2cgwFGH2d5h55VuyXxny3D?=
- =?us-ascii?Q?oTt9EgxaDI1jiMYMFTItGHLbGp+s10F3dTcYpZoHLkNA5mcqNBXSljCe9oNw?=
- =?us-ascii?Q?nAwTWmRo0Nhobntb7HfkG9R20zoDcnODaIG7nQJD/LHui8LYxD/jE1E/y7Wk?=
- =?us-ascii?Q?XFsrLFzrfPIej65FRSrjFELXCEjRehu3ornvla51+p//QXiBNBBuP3dngwN+?=
- =?us-ascii?Q?6Q4ccp1bvv5RgcpFGDWhkwuQD9LefgO3ixlUO0biWFdnkSSy1vdMNO42B0wY?=
- =?us-ascii?Q?70gvHXvYRYnPqhBfn4c4ySZRRj/8Kdgy2/15h3DSCIeZd89pD9vmsMqZHwUF?=
- =?us-ascii?Q?xYWPn2c2qR9q1p0yAZO6R+Pt+u+7Rhsde0AVV0Jb3PrwqTcrSFdx1qKam060?=
- =?us-ascii?Q?IvTC21As5PnPerYVAuJSHU/q+91EmIXe9ct1R6Yrg015/1xdb9m5F8wR65RN?=
- =?us-ascii?Q?D3qP1MXu1s80Q/wGaI3+SdZNn6HhgmCpKn1zSrSSsEKizxD3VS7vNCaH+zHh?=
- =?us-ascii?Q?Cm4oVn/G3iLOOcXy7mmtMbJwSFurz47hDROtdOdwDqNBoMuMhALeQ238MUnB?=
- =?us-ascii?Q?XibJWPZEKGG4BRnaeZGS43RNGbD4JYHbWm5HOLS5YW4bOPP/4yg3y51w+74p?=
- =?us-ascii?Q?mHL/vREg40TOkBdxoBYSvg4n+gpep6WIalYxSKUxYkGwhQin3T60l/6GisrP?=
- =?us-ascii?Q?qDQSuwQv0xI5I4MGkf9fcwxj6qYfIw5RJNibZN9JUrj0wyKeM7B1hlDGP06d?=
- =?us-ascii?Q?4rYEDB1grbCnHAYQLlEO5Npl0YGtnGytwYTu1EQxvXM5Zjpd7fv15IXPbvJ0?=
- =?us-ascii?Q?5CcEGEPGVcpXCpxExIzpvMdNNEx4JX1WmFwmFTJkJnQMMm6nUk81GhF5vTPS?=
- =?us-ascii?Q?ZcF6lINL1e3F/3RtGcXdqqkyXs1ATxKiJB3tniriFXMCrUpGqnLtfc3eMTpg?=
- =?us-ascii?Q?Li//qmiMm6101lsa9Ony0PInYZAJ/zArutuaa54gzxHGQltpV2zWTZXHFxRv?=
- =?us-ascii?Q?pFlJ5MGk6dl/qkZUqmIPdS/AJN5yHDVmhe3Mq0kc3jxTT2V9YtH3USGLnypO?=
- =?us-ascii?Q?Tlt8DiqWAAFqtE0Xe2N0GAXDnhlTFs03061gzlEe+ucg3sDjTxGPoJRQT5CL?=
- =?us-ascii?Q?pVXqoUYNc5wmVc4NEBzLvz0B+pYlF+3BX5xaTqok7DRUhXdk?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 563b1ec4-83eb-4888-28f9-08dec0ced4b7
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 17:46:09.9206
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: loptiCmDbQgb0Xjh5RKQ8rRTAsxzAIeFxSZWyzOWsZZfz7IQ0zA9yYHO6BuQWrll
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6440
-X-Rspamd-Queue-Id: 86172A001B
-X-Stat-Signature: ebbbu6xjofcf6djp59hgccxeyx4o6fzh
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <185f1caf-b33d-4467-beb5-51bd8520ac78@linux.dev>
+X-Rspamd-Queue-Id: 5705F1C000F
 X-Rspam-User: 
-X-HE-Tag: 1780422382-480318
-X-HE-Meta: U2FsdGVkX196+o/bWAXI9DVDX3ZsEqlGTpvIXi2ZrlJ4RjZAOE/LOC1QK+tJ4Jmpq4xjMBBUlJFchFr8wvVPD14htpZXwbWUt3x0Lg4co10seWvhdVTb6cYHQ5jG2N5HCngOB1AXmnJ6P6V2kabtFaOWCp/cbBQ57izXaRoEKQ4IBvZ8yivX0XVmH8JbaAdMuUsybF1MeIYPsZTHlnM+/DtlekIj0yxER22ERzZVK41IP74kZWPtGF4zrdFQPeM2Z3h/PIBOhA3Bvumqul3fDJh9OPgTLhOlih4pg56sZPiM+gbmpnVmpTozRtfn6V5B7eNaWHaJhOOlv0zST6KM+wGGtnwjKcqEfizRdaAi00TRrSGi/PXSu2oidqt1tEt7CYwXDAcsOG4GF1UuvY2ghyhb5dD55FFPHGnwAO6kced1R75p6vUAzRSt+5I6otQRft+KbAfraQKXRgzkI50NhvgqikcHe697j/N8vdsG8bNHOuc1B+JKbAm0QjYVeOaZXEMo7eUmxc7UBXYj6FYqU1Yvwl5a+mgIACRpqyf3g1EzTuulEok3/s4ptcW2UTBzwtoL01w2TIgs0KkP0hP6b9gjzAnsXmmKrueGvH70qCk4+Za3g2xwmwZGcoweKC2aSJn5Fii9x4G5dijdFk6K/C203kXoBXzTeQPNOucS3GeLwQzu/B4sA2fDsIsw2BrVIu6gAJgxktaEuzFelRNvq0TYVfAYd+bhW3ru//x/4cKO3k8W8gj9JRRyQZpSG5kKbGsHqu2sF+0lgZA6FoGqu/2qKP2DT/5uOsR9+mcDHMTq2Vu/mm0RckbFyJMLV8ynaJt93PtGHLxx1msKbDQvwPvtjTBFXpJaM00nJgZGSDy6Ay9wXV47M6HhOKE0EoBJGcC2/dafEbGfHLF8qlO+ppKMY2b3wc1zl5oMuWzsEulQZMyY5AC+8A05c16BCx+ufbMxbA2fNfCB1WiiGoz
- ibI6bzyM
- D65BszfNkeRVPYKN2f5K3/xafth+KT2G45EXVys77qrC2GiJhdVOT8ln8eckyRPdNyb1pFnon2SPyMudFoHKt8BQ5lW+IUXDN3BcAy2zdiEutq2D76xdGWW7/V8YZY7jbO84Wo7+a1ZdwY3Bi9kcHigww8gmLBidlx2WC8TUJToIDNmyZjIIXnD9irLzSftCMQ52ZvUCRgh8DoxZD8HVlHUKxdGRiccyzt/ebQtbTTCgV0Yb0rvbAxcgvZcIut32oNGJgLJhiI5rcabimAj8WwtstoUbj5WsZtiMfq8mjhUHONf1UOYa7JmJ8cBZznGQ/2Q8saTJ/3S3YefSiMru9bTESGFPanD4L/rv7XgmHTT0dgEicWkHz0Kw1LJYNcYXofc42aTZmPTJpTXfVSQX2/YOCzBS7SK1XbX4OhCesqTFrMRiZt/nKj0ihK0QfKZ8F7CCw+t/RSiTjBisEYAPCgo5B4CAPLIqzfIkKrtNpZl1l2fr9X9JFL89jDw==
+X-Stat-Signature: zahoymqmngcydk4yti7grdpm55tbz9th
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780422399-787595
+X-HE-Meta: U2FsdGVkX18GGCzP7iSMDv00eZo2yWCmRs/VpzA/xADSlpxjiT2Gbga0aiPAKp0Lsvb3rVKg7JbTSHYqLANjS+IIlPYdXdfV7CL0fzT5wqEBJcTlEpsElSwpgjjWCvEYUQaHts0LIUTNg8ZiZO4uMvWyxriB1mGrJE6hCN8sMvNN3dyaFiSe4eG54UxZwfBMgFy7P15vgyOg0gsWowd22xny4rI/a0Ly7PINxC8+o1LVzuUrlvYsfp+6Jt7lpmTMp2KJdcYWGEbP4dk6/AiVsBx0V1axZXZENt0FdVHRxIcB82LkzY0cCNufb+R6cLppk3mp1cDAoGdWMy/RemdFeqpYQbdBfHW4+1iqSqT5OYe+yrxvTw4+MxInAPk/FxyUE18436bPAZzCb+XxdababETst64UTANYDUe7o5Qu4quMzJbsqG4njsXEmuOAQgouKqu5R8lMOXb4N2zVpKtZf4QoWPCZ5ZrbMw0ITTyneX9hKL8gDkA/h+ooogX9v2gzLjZAq61aGxCtrCwr2Tyn9h0JZyy40EF+AvNsQVyHnNmGmTRM/vuCiQpyiNd5NhbVh37BkMWxnRL89MrXOZkLawhNOjBTacNR+v7s27+TImCMUaouShcvjpyuRtZ6yKko8z9ouzX24BxbEXlBjSiT3Fzvu2NLzI4Xdc9IGv2XX85IP3Pmvm0mTsePCwa2DXdOe7pin5ngwYdBsVpsNUBc1leqEp1QnsZeA7rS7jS8b2Hf4ZXhIej/NPGaeCa+YsHNgHjvDmAQwddX8rsUJ8PpvNLIYdJWcSTMwpPxCr6Nblo86jKzY1Aj4F5Aj5ifUj2Rsn01kHDpoQR2NSjJYQbaMteQ5OujvjWyvl6go7EQI3Uo0iGbgNjyQ4Zb6AaqnPphlWVBy9eCExlMOsU6QzSYpLFUbF/VOLDKoBi+66DCKrrO3fcHZ05Q2hw28RzhoDVPH8H0kr4Lfx0Vvi9fo25
+ zblG+QvR
+ fasObylNvcGpgLpenZKxnIAjDCpvu8mxbirwsLkBOQY0SveabteVwtaOSBq/6Or973mpEpv+Z0JGZmnjN1WWwEvQPjwo0WnSsxbjiHGZXWzRkUxNg272MEft3RRQXs5Vw1MOObKGigpQPiJJt9lsoOBiF0mH/anvvn7KT4UA5S0yv9qxjAuCuQtgB7yer1GQrjQxqZLZOYCgkgpl12aE6a1+BPaebK5xAcvYyg7qLu2K/3agbK9DCxLFY/+Luavm/yp7WOEf7+dGJmTKgK9pdV9qWE+IhPcNeC3Qiu/E0lOvG7NmKcQRJ4x2ZnlgrJQE3JzOqjrADy0ss/4h5dYBuK2SfQos8pwtcVybfn10x1fhD3Qwrq7k7VY/q6ZtknQr0LPWeE5xrSpxmVntit0VQGUdtbRXZjTdyiKO35ADnru26nZG0cZrHLIoXtc94Nfc5ObfmtWsiniqjxbKHYlejqW3xLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,43 +144,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2 Jun 2026, at 13:11, Andrew Morton wrote:
+On Fri, May 29, 2026 at 03:11:54PM +0100, Usama Arif wrote:
+> 
+> 
+> On 29/05/2026 14:40, Pedro Falcato wrote:
+> > On Fri, May 29, 2026 at 01:19:03PM +0100, Usama Arif wrote:
+> >>
+> >>
+> >> On 29/05/2026 11:01, Pedro Falcato wrote:
+> >>> On Thu, May 28, 2026 at 09:55:20AM -0700, Usama Arif wrote:
+> >>>> The force_thp_readahead path in do_sync_mmap_readahead() is gated on
+> >>>> HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER and always requests
+> >>>> HPAGE_PMD_ORDER / HPAGE_PMD_NR. On configurations where HPAGE_PMD_ORDER
+> >>>> exceeds MAX_PAGECACHE_ORDER, notably arm64 with a 64K base page size,
+> >>>> VM_HUGEPAGE mappings cannot use this path and fall back to the non-forced
+> >>>> mmap readahead path even when the mapping supports useful large folios.
+> >>>>
+> >>>> Keep the existing PMD-sized behavior when HPAGE_PMD_ORDER fits in the
+> >>>> page cache. When it does not, enable forced readahead for mappings that
+> >>>> support large folios and request an order capped by both
+> >>>> mapping_max_folio_order(mapping) and 2MB.
+> >>>>
+> >>>> 2MB is chosen as the cap because it matches the PMD size on x86_64
+> >>>> and on arm64 with 4K or 16K base pages, so the size/memory-pressure
+> >>>
+> >>> 16K base page size's PMDs should be 32M, no? Am I misunderstanding what
+> >>> you mean here?
+> >>>
+> >>
+> >> Yes, should have just said 4K. Messed up when rewriting the commit
+> >> message. Andrew Thanks for merging in mm-new, would it be possible
+> >> to remove "or 16K" from the commit message. I can send a new revision
+> >> as well if that is easier and preferred.
+> >>
+> >>>> tradeoff for folios of that size is already well understood. On arm64
+> >>>> with a 64K base page size, 2MB is also the contiguous-PTE (contpte)
+> >>>> block size, so the resulting folios coalesce into a single TLB entry
+> >>>> and reduce TLB pressure on the readahead path.
+> >>>>
+> >>>> The final allocation order may still be clamped by page_cache_ra_order()
+> >>>> to the mapping and request geometry, but this gives VM_HUGEPAGE mappings
+> >>>> on such configurations a large-folio readahead request instead of
+> >>>> dropping back to base-page readahead.
+> >>>>
+> >>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> >>>> ---
+> >>>>  mm/filemap.c | 27 +++++++++++++++++++--------
+> >>>>  1 file changed, 19 insertions(+), 8 deletions(-)
+> >>>>
+> >>>> diff --git a/mm/filemap.c b/mm/filemap.c
+> >>>> index a16b33e0fc71..bfb891d9da1f 100644
+> >>>> --- a/mm/filemap.c
+> >>>> +++ b/mm/filemap.c
+> >>>> @@ -3312,14 +3312,23 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+> >>>>  	struct file *fpin = NULL;
+> >>>>  	vm_flags_t vm_flags = vmf->vma->vm_flags;
+> >>>>  	bool force_thp_readahead = false;
+> >>>> +	unsigned int thp_order = 0;
+> >>>>  	unsigned short mmap_miss;
+> >>>>  
+> >>>>  	ractl._max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
+> >>>>  
+> >>>>  	/* Use the readahead code, even if readahead is disabled */
+> >>>> -	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+> >>>> -	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
+> >>>> -		force_thp_readahead = true;
+> >>>> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE)) {
+> >>>> +		if (HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER) {
+> >>>> +			force_thp_readahead = true;
+> >>>> +			thp_order = HPAGE_PMD_ORDER;
+> >>>> +		} else if (mapping_large_folio_support(mapping)) {
+> >>>> +			force_thp_readahead = true;
+> >>>> +			thp_order = min_t(unsigned int,
+> >>>> +					  mapping_max_folio_order(mapping),
+> >>>> +					  get_order(SZ_2M));
+> >>>
+> >>> This looks somewhat arbitrary to me (as does the old logic). It seems more
+> >>> natural (correct?) to do this:
+> >>>
+> >>> 	if (THP_ENABLED && (vm_flags & VM_HUGEPAGE)) {
+> >>> 		if (mapping_large_folio_support(mapping)) {
+> >>> 			force_thp_readahead = true;
+> >>> 			/*
+> >>> 			 * Cap THP readahead to either the max folio order the
+> >>> 			 * mapping supports, or the max order the page cache
+> >>> 			 * supports (useless to try more), or the hugepage PMD
+> >>> 			 * order (CPU can't benefit from larger).
+> >>> 			 */
+> >>> 			thp_order = min3(mapping_max_folio_order(mapping),
+> >>> 					MAX_PAGECACHE_ORDER, HPAGE_PMD_ORDER);
+> >>> 		}
+> >>> 	}
+> >>>
+> >>
+> >> So this can result in extreme memory pressure. For example, on 64K base page size,
+> >> with HPAGE_PMD_ORDER = 13 (512M) and MAX_PAGECACHE_ORDER = 11 (128M), this will evaluate
+> >> THP order to 128M. I think Jan mentioned in previous versions that there are already
+> >> reports of high memory pressure due to large file folios, and we are seeing this
+> >> in our fleet as well with xfs.
+> >>
+> >> I chose 2M cap as that is what most (not all) architectures which currently support this
+> >> hugepage code flow are currently used to, and on archs + base page size combination which
+> >> just evaluate this code to base page, for example 64K base page size, it will provide a
+> >> performance uplift without causing excessive memory pressure.
+> > 
+> > For what it's worth, memory pressure is still a problem even on 2MB folios. But
+> > yes, I understand.
+> > 
+> > For what it's worth, I don't think it's such a big issue in this case - you're
+> > asking for THPs, and you're getting them - though maybe not efficiently because
+> > these aren't at the PMD level. But this is also true for e.g x86 where an
+> > an order-3 folio or order-7 folio are completely useless for the hardware, since
+> > there is no mTHP to speak of (and, with that, you also lose PG_active and
+> > PG_reference precision as you only keep one of each for each folio, amongst
+> > other tradeoffs).
+> > 
+> 
+> So there is hardware TLB coalescing on almost every new AMD CPU, I believe it is
+> at 32kB, and we would benefit from that. On top of that, we would reduce pagefaults.
 
-> On Tue, 02 Jun 2026 11:02:41 -0400 Zi Yan <ziy@nvidia.com> wrote:
->
->>> -		*step = folio_nr_pages(folio) - folio_page_idx(folio, page);
->>> +		nr_pages = 1UL << order;
->>> +		pfn = page_to_pfn(page);
->>> +		*step = (pfn | (nr_pages - 1)) + 1 - pfn;
->>>  		return false;
->>>  	}
->>
->> LGTM. Thanks.
->>
->> Just a comment, order can be dropped and use
->> nr_pages = compound_nr(&folio->page) instead:
->> 1. order > MAX_FOLIO_ORDER -> nr_pages > MAX_FOLIO_NR_PAGES
->> 2. PAGE_SIZE << order -> PAGE_SIZE * nr_pages.
->> But it is not worth a new version.
->>
->> Reviewed-by: Zi Yan <ziy@nvidia.com>
->
-> Thanks, I queued this.
->
-> What are we to make of Sashiko's question?
-> https://sashiko.dev/#/patchset/20260602130755.38794-1-kaitao.cheng@linux.dev
+(just addressing this, because everything else was addressed in some other ways
+and I'm just going through my email backlog; my apologies for the delay)
 
-Sashiko asked if compound_order() returns bogus order and the code
-can skip checking unmovable pages and return false negative (the
-range has unmovable pages but returning false), leading to offline
-in-use memory.
+AMD's TLB coalescing feature requires (as far as I know) A and D bits to match
+for every PTE in the cluster. Which means you need to effectively touch every
+page in that 32KB cluster (that was then later reduced to 16KB in zen3 if I'm
+not mistaken). And as soon as you write to one of them, the D bit gets set and
+the TLB entry needs to be torn down. So it's usefulness is unfortunately
+limited.
 
-Answer is no. 1. order > MAX_FOLIO_ORDER restricts the number of
-skipped pages; 2. the actual users of page_is_unmovable(), alloc_contig_range()
-or hot offline, will perform page migration and unmovable pages
-will fail the migration and prevent these users from doing
-anything.
+But yes, we do reduce page faults. Though I have to wonder how much that matters
+in a world where we have fault-around.
 
-Best Regards,
-Yan, Zi
+-- 
+Pedro
 
