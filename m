@@ -4,134 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A1BCC5DF71
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 08:58:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5B13C5DF71
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 09:03:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C416B6B03DE; Tue,  2 Jun 2026 04:58:08 -0400 (EDT)
+	id D33496B03D4; Tue,  2 Jun 2026 05:03:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C18D96B03E2; Tue,  2 Jun 2026 04:58:08 -0400 (EDT)
+	id D0AFC6B03D5; Tue,  2 Jun 2026 05:03:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2EBD6B03E6; Tue,  2 Jun 2026 04:58:08 -0400 (EDT)
+	id BF9F36B03D6; Tue,  2 Jun 2026 05:03:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A537B6B03DE
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:58:08 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6559E1408A4
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:58:08 +0000 (UTC)
-X-FDA: 84834370656.06.E19F945
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6DA3614000F
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:58:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QmgtSSFM;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf26.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780390686;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AF9DA6B03D4
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 05:03:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 74D5E1625AA
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:03:42 +0000 (UTC)
+X-FDA: 84834384684.03.90826DB
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4620080018
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:03:40 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xdvy9e0W;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780391020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S1oIF7XavksgqfJwObOatvwzU0WAoielu1phntwFc58=;
-	b=a/F+wi3L+AXFMFrsoQrnXSFNCKkHnc86ZUE3HnxJZQkl9gCtYRVwdj4jtbnfhCKQrsphh5
-	6YS9mypNv1xGpI9Lih/e6Ji+us5VjSZfmUuOK1zoannJvJYR4yWRbrIlhPujPFCXC1ugBX
-	1YibZldYtmjbgA0fvQmGsFx8XF246os=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QmgtSSFM;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf26.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780390686;
-	b=4TZFqZM8E4xCxN33TkHfQn9DmTX/uecSVTtIYU5qKcKvuaucVQBgdn4TcL1xnRYID/OG9T
-	mcLX+cYoAUKnpyuS2SaeLtLyy0Yds0y44OOcGenqah71Z7oDSxmom2SqCHt/cxQBCYkbnR
-	+4Hj2FK7l2foLLNZtv9GpeM9DPxTETk=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-45eea68dd6fso2609636f8f.2
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 01:58:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780390685; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WuYRr+g59V4mRdGGghZjXNj+451Yx0EVe2nc2n9erYxz0faeptaen8DjPQliEwBrRy
-         r+ZI6MMWza1TO2MyIuMshE1ilidyTfSjPf4Vb1D52FkqEshtTT1VnoftxE0ZqWFWYLlU
-         XADE8bbuqZw2Rj98+BO24O8cVfF1dKHdFjfud8SALAgtKQzxoY+xHgX3aaYDRJLiGKxz
-         Hpf4zzm5k/zDTdEQ+9MKyNXT9KnkvemBQyJVjuAfgzVOaPGR9Z60QL2vyTU2+hNtAtej
-         w+q5D8g3hGgCxNdmqnr1DMRYJ1WK8n0ULr+VFns9TQp5cyWisBMZfCGIr3ZicLthnP7R
-         6maA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=S1oIF7XavksgqfJwObOatvwzU0WAoielu1phntwFc58=;
-        fh=C8b6lZPtrB2LD7MBO+6F3n+PqcmJOfb95NDq1lhAU2o=;
-        b=Xj518vZZlteztrE1cGYEVybYsY5SlI4bttH/wBGY1v+4uhw+4+5dAZVwuJvxAiiw5R
-         3rsWNziyHfc7eUMSFrMjAF43puml5no5qsgeupqLyaHYwvjE8fnlLdf5tsKuELhDFlfz
-         7z9Rr3YTqin8sbO/TmKFVhLvJJz8L/eNQG9jOG8ymyJ6rNU/wzBDMlrSsj7wKEF1SyFd
-         uGSaZWMWe4FpcArWrAK4iGX3xrFxpHZ+xe53MpC1xRnCsr5L5HuuDOZ0F61YSt6oPlvP
-         343+cILeSHjv/6swaRCnolVWqH+iT/p6HOkEBTNo5PiYQ9E2Njw19eXpCFzKICpf563/
-         yyIw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780390685; x=1780995485; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=S1oIF7XavksgqfJwObOatvwzU0WAoielu1phntwFc58=;
-        b=QmgtSSFMyL6aDyGfN6EfsH8VIhMh3tbklSXglkTBscgAJothviE7EwJpOcP5an9Ele
-         GFDhWnTeXskpy8fNVyQXH2VIBB2DogTQEw2wbuderfYpSY4/2MVQMIgy4FxJEMySVIBp
-         vhKZ89ta6Ot0Tq5yiSAX/g5s2G21g9ISW+Zbry7/v2RvZB1LVjedGiBHVEInSGGPLuSw
-         Ea4wydJ1sNtKBXzXpWo0bSZcQJ2pQF7sV8jbjWbGkRAh32F5Djw/Y76ycxNbvD6BmyUG
-         Y+TEu2+Z93lLSZbiwAnMl0BU/WaHU40wIeNWVoRRg1w02hL8l6y6dGYP+TSQclL6wm2L
-         H36Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780390685; x=1780995485;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S1oIF7XavksgqfJwObOatvwzU0WAoielu1phntwFc58=;
-        b=TeFuDNAESrMmCH9xI9ApTejn6g1GDoNhXFuT9gOWuygXviTmiRfC43jqn6qArwi7G3
-         zxKYIx5fu861lmNB7jFYCkSEcoyAh4l0MBOfJaW5XMzep3hRhUZybv3GtJTu0Tve03p+
-         THjr6HSUk+6W8oyoN+6HZuUccyMXea18LHJqH2bUoom16CNpJzBZcMOVLA1t8aihf7IB
-         qoFsM+jeOZ4eh9CroEvfzTdsbQhV0SQdGl96To/FPDbiiVv4n6KUDzAimqqamBFIQDeZ
-         Ttc9LHMC9brcJNc5Wcyq7QJor7tn0RlueMoIlSJKdvgohQj6QsHELrmEBjFcS7pzC+jw
-         TXwg==
-X-Gm-Message-State: AOJu0Yy1OOXSiBgB3wsbCZUk8/9K72oRPXvdG2kX0tRX+aSXdPhgVdHx
-	Y3088gLT0Bio3mbAZKZSrrQz5D+jlKjhsKwDFN3pQ3rwLJ2dVkZe3WOVUYQwDdXZwRodF/z5p2V
-	gjYgSuGPpUAcbyMl/J9cnvdB6AhmNtAPJ8ypt
-X-Gm-Gg: Acq92OHzlgBHdVbjcV2FtdjU8/AENIfqKXwRgAaku86UwM/mdoxAEcI5Q0960we8/KL
-	zph+2j1bc1EIZ/wEzthICkVUdTltO5YPZWtrto+thmr3fNcvyWvxqXwuSOugxj0aN4Zl+FIev4v
-	A2SyDG4x/jf/TIfiJj+HXB4YW7S0QNl1GQIj4zkR/pUdnXSdceJOb2v+ojXGiCjJl1CpDRlOI3v
-	y7sDr8xytwzJlQFQ4lvq2mai+FIsBBg09mDhlpTYfqq3dniBks07C/JSQlT280v/G0IQ8QqiUEx
-	Q2NAuZwc9QJi/nwXY5M=
-X-Received: by 2002:a05:6000:4b19:b0:45f:f142:d55a with SMTP id
- ffacd0b85a97d-45ff142d6bamr20280733f8f.14.1780390684617; Tue, 02 Jun 2026
- 01:58:04 -0700 (PDT)
+	bh=NXyzRZVLtth6eJqeam2mOJJ1lBVnO87YQ9jJaMF5Gt8=;
+	b=xfO6BL7vg2cuAmCsKvZAuyQc4UQEwjeS049YlWH6NkdC980PANUl3SrlsdPLT6MOIo1T3N
+	2o/bk1yyOGClWo5fMxK+sGR3riZr0pajGLEwjVYDtAEhOQlxLZR/ZsqTfcJebUvEMuf+ME
+	PFai6LxbvbZRaXbRoaVbnIEjmCg51r0=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xdvy9e0W;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780391020;
+	b=JbeHdUSb8WTPljxQdLJqthQhYu5PnUhH/hcmoyvsLhFRV2RWzGPImRLlrfigccnam94BpV
+	SX2fpnPewpjvEPRhpYHNNE2gO6EZXRKn+kZQnlj/y+1aLNUKQZcpIQ+XnTh/NP8F7k/+rJ
+	tkg3VAoUZxpWW87wFrUq1vBU7BgoI4M=
+Message-ID: <32e86da0-b38f-4714-b84f-91cc41e5c20d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780391018;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NXyzRZVLtth6eJqeam2mOJJ1lBVnO87YQ9jJaMF5Gt8=;
+	b=Xdvy9e0WbldQmpEggRQT4eZw0u5/KfL1gvwDHQu2zxGk/JLgABk1cLkNZgjy3iGrWkRUw4
+	T88Q/zHBA3xFJka1nntTDeEvYZwtkdkYLQdflZivo7zaKE2wylnx4HU32HKy1YP/Y57736
+	Np5XI+lXYwS1mhPOjlwUiJFana/HDzs=
+Date: Tue, 2 Jun 2026 17:02:41 +0800
 MIME-Version: 1.0
-References: <20260522053146.83209-1-jiangwenxiaomi@gmail.com>
- <20260522053146.83209-7-jiangwenxiaomi@gmail.com> <3f55655c-b50b-45fa-9314-23e35d04ae7e@arm.com>
-In-Reply-To: <3f55655c-b50b-45fa-9314-23e35d04ae7e@arm.com>
-From: Wen Jiang <jiangwenxiaomi@gmail.com>
-Date: Tue, 2 Jun 2026 16:57:52 +0800
-X-Gm-Features: AVHnY4IW685izywGKg4IIg8w_aDLTDby4_6g3UPUknnDrjCf3XAzk_RAN4y6TTI
-Message-ID: <CAHKocdH-CgkFTbcowvs0gEgWrzu_9=928yFJH-dQWQxny2au7w@mail.gmail.com>
-Subject: Re: [PATCH v3 6/6] mm/vmalloc: align vm_area so vmap() can batch mappings
-To: Dev Jain <dev.jain@arm.com>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
-	urezki@gmail.com, baohua@kernel.org, Xueyuan.chen21@gmail.com, 
-	rppt@kernel.org, david@kernel.org, ryan.roberts@arm.com, 
-	anshuman.khandual@arm.com, ajd@linux.ibm.com, linux-kernel@vger.kernel.org, 
-	jiangwen6@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 6DA3614000F
-X-Stat-Signature: h1nqz9n5ywxy49js8zgaxy9ttykac7an
+Subject: Re: [PATCH 1/2] mm/percpu: Preserve NOFS/NOIO scope during chunk
+ create and populate
+To: Michal Hocko <mhocko@suse.com>, "Vlastimil Babka (SUSE)"
+ <vbabka@kernel.org>
+Cc: Dennis Zhou <dennis@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ akpm@linux-foundation.org, tj@kernel.org, cl@gentwo.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, muchun.song@linux.dev,
+ Kaitao Cheng <chengkaitao@kylinos.cn>
+References: <20260528132917.81123-1-kaitao.cheng@linux.dev>
+ <20260528132917.81123-2-kaitao.cheng@linux.dev>
+ <ahlameE6FBEZj_gt@pedro-suse.lan> <ahld5va1b9w8j659@pedro-suse.lan>
+ <5a4aa532-77a0-436a-8f5e-1bbcf2db6bbb@linux.dev>
+ <ahrm4x2ubbjs4An1@palisades.local>
+ <e315d2a9-5069-4a8d-a0b5-7c0033ee46ba@linux.dev> <ah2pD468y1LCIe3G@tiehlicka>
+ <7e913ba8-fa91-4916-a871-66de7c80cd29@linux.dev>
+ <536ea40b-8501-4a81-84c7-de5f12f4eaf3@kernel.org>
+ <ah6OsuRRVLRBp3NV@tiehlicka>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <ah6OsuRRVLRBp3NV@tiehlicka>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780390686-613126
-X-HE-Meta: U2FsdGVkX18PyuImWusVDgOfYW1UmstCdS/+mHvh6MtcRuO1VkF3G6aYsCOqltLd0ibqPQRHGDtdoJe2lFKNoJe4g8bqb0tAieNG1VjVS56zL9AAwiSJx9dubaPE7xS+P6Eb8qae073FV87Q1rO5I3R4sWRKz322CKpxHadetCXl+o7Ehs/hyTJ7FvqybcVmGGEb823mffKXbg2m98JubqeIKTL8rZ0f4RzVUuW2DlcqvZ+mLDRviLX4ILh0/VdoF9zLODvxD7a+pufxJh2SUrzRYnNxKXc0Xl6iC+2a/j7CCGoVXBGaNd/9txAiZPY3kLXiz1uc0Tk70EQgZaJQnkQf0FcGiSZfcT9gg+HsNJxYCOtxojMUk6I2FydhgBXZCy5oB/FaoX79qArV/6YZQMojSDsPaEHZ9dhfHa79QRw1SLSriMmAWzsE41nzx+99YjCdY8TIvDiPHXG3vLURQk+N9Vv0L0bUtqBzWjj34WuIM2wrjcoIr8W1EzvkCIPmXlEg0sf4qok3wRiElS51BjBBTU+GLGgwNwPB2LS3zw5J/aZoVw3QtYUBzKk532bLuLElaSyYmGiGE2ZtximlMxrG1DwJ43yoJxkbAFCMqasYiW8GyHipySuEgpgXmoDiEJY8/5sRX5Hiy1VW7jq54WbbPUIyHbqJHgWnS0xGmVlL5RZK9aO3ni38d7FQz0QXxpTAyicymeQsueO5htcohUCIRcpNpl7JX+soSDL0vB01pGbafjr8vdOQlRdU1qnzcIkB/zr38us/dF0NDUr/uaz2bjaEG0ojyq+ZvC2Usa98hKxEy8LdSEquAu4ogFrtzB1WA4NuvOL/sPZOQDot1tGxZCoOzDgh0LuV16HTHkK/s0xbWhf3hTX+MsO9u34Cl6yj/H+UBTYGkqKYvQyUMZKDxszTbZgjk/JvMa7DgJJraKxAhSFTAjO6LvCQPx9MtvH4Ds0TQYqY3CFaySn
- lVhZUVr2
- lJzBnr1hsKbPPaqdpjQ2LLYScYX+QnVKU48z9CMWNmQQNfG/OpaxBLSjiL4lWjHSXL31mZLKtOOXPIz6yzgaCbDAmAzRb4Z1vEI5wfLFURvO4dAKVwmNGEpk9oNLlaY6v5N6CzSl/GZIM77oUjM98JkFtBGUYMzJQJP1SZWSIYL4xJizd38VJyQrBsgFIsgLHOD+hqp4d3iMkP0YMrKUa9aAURItSc3dmHGRQpMl1ZfW6/rsL5ZpvFhQ7yoC/NpCQILSRnzGSi+Sab56cdw8RGi7W3aOgOM4cGwisAh8ZKfJxQSR4cXYb0jM88p5JyRsFEBGicQvjEUmC8cA5RT9EyLs32qFZme82lwSD1ksmvHw4eO+LIb3RWcxguCMHijU8YBnB49FNkMBxsoZ1CWjfajStLae1bb/BGNP2aGv9Uoif4fssRWkAnMVaITtmX4WLE5aGZ+E9PWkx0/84OX2TlFO/Llpxcy7kFtcrUMizXuS0Hp2f/TCTTEqjI60REYaK56oeqkhAUGnqXFLfqsi1XZvMHhX9/4Ze3tGk1KFjmHTSI6+X39PhWKqWBgA5s90rTK5vru/UpaEufSqEIwmPgu4bwbr95u7rDAzvvH4vUBuo3shBLVvsop2DYEzGTekXwGTxZTFRic+l9u4=
+X-Stat-Signature: h3yjgr8kg11k1y3uxbfwpr33j3rn9pmw
+X-Rspamd-Queue-Id: 4620080018
+X-HE-Tag: 1780391020-212444
+X-HE-Meta: U2FsdGVkX1+I0i1nsnpZN/0IfryDm6xQxaYplOk6Z6pULbOtyk5bXYXZN4krxsaeGxFTGsA/Cbq+fPMWcckYp7tb6VL4dviT5t72D/9Byax0v/deaMerT1nSR33SM1SytRcsVQcGQ0CC3yJQjtw26pB0+U1vPWxV2mUbvjxYv7GeiZg1evXlbTcqTfBtppimCLlQ5oy8bSS2m5Ka5IyTwUfqosbnTJd1JJ8UC0GIqLBy24Rq0qdfBYRILy3eUl0zRqM9+vLvg9hIKk+0URFGOnXZmUEhgcTut2a8h0zSXiWgDrHVex4XS8SGT9Fw6cYEyFb1tNb00wWhDpxESBnyHdoju00ZA/MgOvTe+XWGmtbTu7FnF/YYp/crJrhFHAQzb7qAB83inlbsjRg08I7U0schEXdJqNIu0jtou+ypZWQfnViRdWpdBu+ZtLEKEDcZlHGIUz/ABG7CgwF2c8sAVJmaE+/ZP5JT/TeahakS5+YwhoWoJldkI14bcJU8Rto0+BvJ2hPfI/QgSyuWVDp2IhzshSSFZ2Ao4aPnl2PawkWL/SAz5aXM+DurIBkk1yPqzuWofs4+jaSzKdiuEcOoRnYp+47QMz8MJ9Eauv33ABf5zQGbptFe9rO4HPQxv+ajRuB7IJL90PKNBxH8UF52fkY3dm0pvbPOIfNIxW1EfTuuHPKRwinxVQG8Ibe5LskCTlv3Mft7K36znZrBGwgT4kL62ikv1TJc5KdzHOrZQ3LXOliIKd4Hr6bWu536OMjp0jRYXuOqJ7vmPgkSBSJuBzL+JrJ7QkfsGBbZnUyg327tz89d1U7P0OQuQWwABPjjLmPMtoIvjO7vk79CQ+9i7eXuXfPBY+T1TA1zIRy1Pn0n3m+211+ZRrFKRp/5wy8tVBkpfweXXEDtXeugIREEjO9cEFABohhMyw1EbF7sz9PrQVXA0fyRLygZjZWPaDmsOJOH5MJtN859e6U0Dca
+ jdAwxG/O
+ TCDRneI2bIZpPuGFL4+KvPbGg0lmTl/JkFwfpvsR6Q2x+SotHZXwPAx5FpfhMbTNyGV9UPZMBQpecasZJ7m5SRpqyMEdctas6q2YDHhcbVcx9udbSoQH2KrH60DPwp2NihOaq0b4ESnLiAIctAfCDhBwV+phF+WNXoGoBqDhZKjyzB5Yih0N40JZVNj5sBaxG1fI8WNfOGDKNWvwv6pD4fQkPi6OUMaoATuDVShJ47ZxSh+xe8TfDYzaTRutdBVvfnhFlbz196/Fh0Uc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,100 +100,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 27 May 2026 at 14:25, Dev Jain <dev.jain@arm.com> wrote:
->
->
->
-> On 22/05/26 11:01 am, Wen Jiang wrote:
-> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-> >
-> > Try to align the vmap virtual address to PMD_SHIFT or a
-> > larger PTE mapping size hinted by the architecture, so
-> > contiguous pages can be batch-mapped when setting PMD or
-> > PTE entries.
-> >
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
->
->
-> Hmm okay I would have preferred to squash this in the previous, but
-> the correctness of previous patch does not rely on this, so it's fine.
->
-> > ---
-> >  mm/vmalloc.c | 33 ++++++++++++++++++++++++++++++++-
-> >  1 file changed, 32 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 50642246f4d40..040d400928aab 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -3620,6 +3620,37 @@ static int vmap_batched(unsigned long addr, unsigned long end,
-> >       return err;
-> >  }
-> >
->
-> This is screaming for a helper :)
->
-> > +static struct vm_struct *get_aligned_vm_area(unsigned long size,
-> > +             unsigned long flags, const void *caller)
->
->
-> Call this vmap_get_aligned_vm_area, then ...
->
->
+在 2026/6/2 16:05, Michal Hocko 写道:
+> On Tue 02-06-26 09:16:24, Vlastimil Babka (SUSE) wrote:
+>> On 6/2/26 05:03, Kaitao Cheng wrote:
+>>>
+>>>
+>>> 在 2026/6/1 23:45, Michal Hocko 写道:
+>>>> On Mon 01-06-26 10:27:53, Kaitao Cheng wrote:
+>>>>> However, if we revert 9a5b183941b, it seems that all of these issues would
+>>>>> be resolved. The only downside is that the failure rate of pcpu_alloc_noprof()
+>>>>> allocations may increase, which might be acceptable.
+>>>>
+>>>> That has practical impact on some versions of iscsid which do not have
+>>>> PR_SET_IO_FLUSHER. And maybe some more so I would rather not revert
+>>>> based on a theoretical concerns which I believe is the case here. 
+>>>>
+>>>
+>>> Based on the previous discussion, I think we have a way to address most
+>>> of the concurrency issues around percpu allocation.
+>>>
+>>> However, there still seems to be one remaining case that I do not yet
+>>> have a good way to solve. For example:
+>>>
+>>> Thread A calls pcpu_alloc_noprof() with GFP_KERNEL and takes
+>>> pcpu_alloc_mutex. Since the internal allocation is not constrained by
+>>> NOFS, it may enter FS reclaim while still holding pcpu_alloc_mutex,
+>>> creating a dependency like:
+>>>
+>>> pcpu_alloc_mutex -> fs_reclaim -> FS lock
+>>> At the same time, Thread B may already hold an FS lock and then call
+>>> pcpu_alloc_noprof() with GFP_NOFS. It will try to acquire
+>>> pcpu_alloc_mutex and block, creating the reverse dependency:
+>>>
+>>> FS lock -> pcpu_alloc_mutex
+>>> This can still form a potential deadlock cycle.
+>>>
+>>> Does anyone have a good suggestion for how to handle this remaining case?
+>>> Or should we simply treat all GFP_KERNEL/GFP_NOFS allocation behavior in
+>>> pcpu_alloc_noprof() as GFP_NOIO?
+>>>
+>>> If there is no clear solution for now, would it be acceptable to first
+>>> fix some of the issues introduced by commit 9a5b183941b, and leave this
+>>> remaining case as a pre-existing historical issue to be handled separately
+>>> later?
+>>
+>> We don't need to solve any issues that are only theoretical and based on
+>> scenarios that nobody sane should be doing, i.e. Pedro already pointed out
+>> "As in no reclaim path should be insane^W daring enough to do pcpu allocations?"
+> 
+> Yes, but you do not need to do a pcp allocation from the reclaim path to
+> hit the deadlock. All you need is a NOFS pcp allocation - e.g. one done
+> from NOFS scope. Then you have fs lock <-> pcpu_alloc_mutex dependency
+> and a potential deadlock. It is hard to know whether we have any of
+> those in the kernel but I know for a fact (9a5b183941b) that there are
+> scoped NOIO allocations so I wouldn't be suprised if the same was the
+> case for NOFS. Not only that having NOIO is a weaker reclaim context.
 
-Will rename  get_aligned_vm_area to vmap_get_aligned_vm_area.
+Besides the case mentioned by Michal Hocko, in my previous email I listed
+a scenario where blkg_conf_prep races with blkcg_deactivate_policy. This
+is also something that can actually happen in the existing code, and we
+have discussed some possible solutions.
 
-> > +{
-> > +     struct vm_struct *vm_area;
-> > +     unsigned int shift;
-> > +
-> > +     /* Try PMD alignment for large sizes */
-> > +     if (size >= PMD_SIZE) {
-> > +             vm_area = __get_vm_area_node(size, PMD_SIZE, PAGE_SHIFT, flags,
-> > +                             VMALLOC_START, VMALLOC_END,
-> > +                             NUMA_NO_NODE, GFP_KERNEL, caller);
->
-> Add a wrapper over this called __get_vm_area_node_aligned_caller, which can
-> call __get_vm_area_node() with all other arguments fixed, except "align".
->
+The concurrent situation Pedro pointed out, "As in no reclaim path should
+be insane^W daring enough to do pcpu allocations?", does exist at the
+theoretical level. However, some other issues do genuinely exist. The
+reason they have not been observed so far may be that the reproduction
+probability is very low, or that they have already happened but no one
+has reported them to the community.
 
-Will add a __get_vm_area_node_aligned_caller. Will send in v4.
+>> Elsewhere Pedro said "The proper way of fixing this would probably be to
+>> release pcpu_alloc_mutex (or not have it in the first place!) while you're
+>> allocating memory."
+> 
+> I do agree with this. Back then when I was dealing with the NOIO issue
+> I've tried to look at the lock and drop it but it was not really
+> straightforward. Maybe my lack of close understanding of the pcp
+> allocator was an obstacle there. So if there is a path forward like that
+> then it would certainly be the best.
 
-Thanks,
-Wen
-> > +             if (vm_area)
-> > +                     return vm_area;
-> > +     }
-> > +
-> > +     /* Try CONT_PTE alignment */
-> > +     shift = arch_vmap_pte_supported_shift(size);
-> > +     if (shift > PAGE_SHIFT) {
-> > +             vm_area = __get_vm_area_node(size, 1UL << shift, PAGE_SHIFT, flags,
-> > +                             VMALLOC_START, VMALLOC_END,
-> > +                             NUMA_NO_NODE, GFP_KERNEL, caller);
-> > +             if (vm_area)
-> > +                     return vm_area;
-> > +     }
-> > +
-> > +     /* Fall back to page alignment */
-> > +     return __get_vm_area_node(size, PAGE_SIZE, PAGE_SHIFT, flags,
-> > +                     VMALLOC_START, VMALLOC_END,
-> > +                     NUMA_NO_NODE, GFP_KERNEL, caller);
-> > +}
-> > +
-> >  /**
-> >   * vmap - map an array of pages into virtually contiguous space
-> >   * @pages: array of page pointers
-> > @@ -3658,7 +3689,7 @@ void *vmap(struct page **pages, unsigned int count,
-> >               return NULL;
-> >
-> >       size = (unsigned long)count << PAGE_SHIFT;
-> > -     area = get_vm_area_caller(size, flags, __builtin_return_address(0));
-> > +     area = get_aligned_vm_area(size, flags, __builtin_return_address(0));
-> >       if (!area)
-> >               return NULL;
-> >
->
+That is indeed the optimal solution, but after thinking about it briefly,
+this optimization may not be easy to implement, or it may require a large
+amount of changes. I would really appreciate hearing any concrete suggestions
+people may have on how to optimize pcpu_alloc_mutex. Otherwise, this issue
+will remain blocked here.
+
+-- 
+Thanks
+Kaitao Cheng
+
 
