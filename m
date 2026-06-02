@@ -4,94 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55BB5CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 06:59:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E145CCD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:01:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 798856B03F0; Tue,  2 Jun 2026 02:59:40 -0400 (EDT)
+	id 3F20F6B03F1; Tue,  2 Jun 2026 03:01:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 721AC6B03F1; Tue,  2 Jun 2026 02:59:40 -0400 (EDT)
+	id 3C8B86B03F4; Tue,  2 Jun 2026 03:01:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E9AA6B03F2; Tue,  2 Jun 2026 02:59:40 -0400 (EDT)
+	id 2B7E46B03F6; Tue,  2 Jun 2026 03:01:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 490E06B03F0
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:59:40 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DF961A07F7
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:59:39 +0000 (UTC)
-X-FDA: 84834072078.18.C66B9B7
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 87ACB80004
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:59:33 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=nczK3mTa;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf02.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chizhiling@163.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B8476B03F1
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:01:18 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2E42C2A6A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:01:17 +0000 (UTC)
+X-FDA: 84834076194.08.8560842
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 91BCCA0013
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:01:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	spf=pass (imf15.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780383675;
+	b=M6Uu/IIcqjyiuzUwkqi2I7Sl6FAvzwagn+WOvkpPfj00os2Lt9KK+pslRBEuaH/AmjN7z/
+	d+7G36SY0xbAm16wyjtFtElxEZKrmYDxZAaxjmKkP6PB42rNmX881XgSuzkOpSDqUFe9AM
+	/IfwA4qjOQdSHBU3jt/u98ANNnCZf40=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780383577;
+	s=arc-20220608; t=1780383675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h0u09G9M4d/dWKQPXhmcyWzvXnBXZljiiy494JC/FcQ=;
-	b=DpYyOG+Ch95ymBP1jLiZxLkoRfK4twBeBpeeXkW0/h351yf5kSkF4Po0c8EcGO3S+dAZrv
-	IYC8oN76yd/pgvFv6FNmzaL2xn//7DMFun3JzvVtaqI4JMCyt0Ezai7RPGC/lXKTuNfiAf
-	mksZnOoElXaWIGLK1QB5owWztmY2Bzs=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=nczK3mTa;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf02.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chizhiling@163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780383577;
-	b=nZK6yUQDzSf9jPg38dL0Ls70q2eTCchZAT21vOnnAviuSev4VNRZH0Byg1oAe995FIhT4p
-	0TAR2JSzwc85QYpbrX30+fSG+NcDOIKkMZ+aZ1ZH3Fp1iqinwVPaBgWJbXseUP3x2ShvsX
-	SKzQb/mOEC1lukRd66a6enVxoDAsQcw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=h0u09G9M4d/dWKQPXhmcyWzvXnBXZljiiy494JC/FcQ=;
-	b=nczK3mTa7ql9aFEaXej07Y0POKIGZCW19mqmaNQngoUQZ4aHOI/QwTTjy9LSa7
-	p4s1YdH5crmEFeOd1wyB3pZwN2hc0O/YKQw3fKltJEgCt7a8N+P//WVCDwEBvJBd
-	Teq/xkUIoUPbv9nPb7Wui4eUBpr9G9iEjyigLyy3bEZ3U=
-Received: from [10.42.20.201] (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBHTRcnfx5qW37VAw--.8462S2;
-	Tue, 02 Jun 2026 14:58:48 +0800 (CST)
-Message-ID: <2261be54-da57-4395-a001-327e53c3c849@163.com>
-Date: Tue, 2 Jun 2026 14:58:47 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=QOW7BCSKRWihD0AKRJEcHHviTuNsTYtH4RDaagxdffI=;
+	b=HBRUcN1rEuwPsJ1DiBnthNarljaJrCtxchETtAoGbOEoNpdeyBwjV9aBEfblV7ta2/dAJr
+	8RZ5AbO9W6s27QJOP73VkPz5+5Ru9lDUYEl/TPxk39+UPRg+BnwqjOSQ/SsL/EhkAT/5Bu
+	sgML2CYu3S2l3kXE5axspDXOVVBw6/8=
+X-UUID: d315fed05e5011f1aa26b74ffac11d73-20260602
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_C_CI
+	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:9b1c382d-5a1c-4f86-921f-fc3431045e2f,IP:10,
+	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-15
+X-CID-INFO: VERSION:1.3.12,REQID:9b1c382d-5a1c-4f86-921f-fc3431045e2f,IP:10,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:e74fea4a7d163456aec5f6898ad0b348,BulkI
+	D:260602150106ZA49CJN9,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
+	136|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,File:nil,RT:n
+	il,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0
+	,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: d315fed05e5011f1aa26b74ffac11d73-20260602
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 826920972; Tue, 02 Jun 2026 15:01:05 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: [PATCH v6 0/5] selftests/mm: refactor pkey helpers and fix mmap error handling
+Date: Tue,  2 Jun 2026 15:01:14 +0800
+Message-Id: <20260602070119.1452308-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] mm/shmem: optimize file read with folio batching
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
- Chi Zhiling <chizhiling@kylinos.cn>
-References: <20260601055704.167436-1-chizhiling@163.com>
- <20260601055704.167436-6-chizhiling@163.com>
- <6af198e3-89aa-4d31-b596-3a1b623513fa@linux.alibaba.com>
-Content-Language: en-US
-From: Chi Zhiling <chizhiling@163.com>
-In-Reply-To: <6af198e3-89aa-4d31-b596-3a1b623513fa@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHTRcnfx5qW37VAw--.8462S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Xry8Cw47Wr1fArWUuF4DArb_yoW7Cr1kpF
-	W3K3ZIkrZ7Jay7ur1fXF1kZ3WrK395tFW5Jay3G3W3A3Z8Ja95KF47Kw1Y9FW5ArZrC3WI
-	qw109ryDu3WjqrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UeCJQUUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC9wkMqWoefynQAwAA3q
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 91BCCA0013
+X-Stat-Signature: smjxp4sqxs1fr9otkzftowxr9k4namtp
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: ze6biid3dk9561ite7n1mwfjwibry1oi
-X-Rspamd-Queue-Id: 87ACB80004
-X-HE-Tag: 1780383573-753162
-X-HE-Meta: U2FsdGVkX18/z+oyp0cdzjB/laJi3ZebWOslg9siZx4xnlBHU97pR9zYG2EmkPQlrH1WMWwvHgnoc03e7dnh4jofHD9OJAzfenKfsJgFva9Uvep6hQnIMzpu0bh1ZIv7uyZf/No2Ci0UhnVVrS4xwL1G0lNOy0GwAucj2nqzDgM8sp6i3iIXPMHM8a5+8CZUF2vSqOg+dxsEWDw+rnSlWmyFF5Q+Fdo1mjVct7VAcqi1f9cyrdImC2SUXvxS9THXdA4qguRMIgeVaiLXvFXVBb6qiz+ijyE6x/WwsMkG5lVIsx5Iw5AiYirMW1PfwxjafMrpsqNvW+rWdWjmUzDjqpmtaIP7IBC0ZIelp22K4w3R54mnogc644xi15yc5uXfeER4KmFnwcejDUeqR3bjDvCtNU4dAamp58VzAqdAVGr4ETmwQN2COyTOVqJvadSdMNWd72mmDeyXgi2nlq+3CW2GPQtR31qHnifdySh5V6gdu1BoITz60Il/0cxNiYI6xz0Uv+ZFHNlK+dPinUh8C5mXpaxPJhhhq/cAppk5DMtjpUxMV/fMy95Iqu8JbpE9wBvQD8ep94kWaT9gU+klUme88iwtergRz1UZkv/5KdvjynCfppw/vLMjrou433C/gcMMQA3wUQi/eNrPUsVLuvu2bg1Y/MfhJZTwuNP6V2280p8i3QgLLc1tDj1ayDNEjPb6cD8YRMooJqcyoEo61rXPYVjUOovC8oYhyAL+Gu6+FHxs8lhOg4BqeVURjPaCmR9Bo+YWiHsDqkzSXyRHBVDx5vnpCtvHkz5vdVglIcm+KUNoetwjgix7nQmnjVtRvDSPzyNIxKIplfxx4Tyy3PKKAowsMVGZQV9O8oTlKl3+rQYetPQuam3PaiROzMb/+nxnmua5SnQHanHxFfwiSnSRY46J5wGipzZUsKLb0OZHxi3JsZMZTjjhwZMGoP0bjj4wNKo3zZRAkrEuEdS
- SmToEr3q
- QSxP5E7VmpF99ZX7pB7tpB5jdbJoP438bJXAVYTxe7kQ1vJBWkwuAE5TArFEC33to5Rlo1UrE2DaVuMxntzF7HvgPvtVI+r6FARkeLe1jAShqrGxsvbQ9qw3fE3uTFibx03wTF5/tKoMHScYkNv792OZYryjUG8RgbbeY2z/t40qoVqr/yGiemDjj28gugoB7BUi8S4h/ul/sSUcjbZ6s/3CwOwW5gMkGxkC35xIg9XE2W9l/ldzVOIXgufMq4N7069NJhtWLzSIE9ufW4WE7zo0uCcVj4GoLR0RGNxwDG00o6n/LqqHA/iDSHIYxoFduow57liFOjV94QkwkuWMSqIg8EHLYVNuysH7QoRMLnjd9CtBfWwJ4QOIR7YZ9qf5JPkkMHQ+r7XbWFU+3i8oAs7R7W64xWBI+V+8b
+X-HE-Tag: 1780383673-867121
+X-HE-Meta: U2FsdGVkX182ETB0UUBtksYgoo9ntxkp65PMsXWjspZgbFte6eeceCKPyatqut0PGSp3LmSqoLRNYlXSiiCm4GFeTleJ0dl5D7x9k9voczOYJutE0XeruLcvqCRvIUksEvJLsykO3oR5vtw6yBPJvjn7b/KNOiPrMIzzdLftnNvly1kHEvbtDfyV5Ws6T1qBo7GfErV+2sZVe6oP/6OmYbLGrnnTlQr2gFBIiPUGZM0YR/lq0wcMvrW0Wb602TEjhA6pSngB3r3ATnXNzcdZgDbyMT1d/CTlIK9jlN3JdYTpJ+GqhBZgm9xtn4ztUzujNbu2oV9LLdm0MQ4JrXWsqke2hXrhC+dmrnavCnZHaXg+O9OIiiQbCK2U+3l4dQh66FUBDzngA8IapuEWU58SFb7IHByKFc2HnHqyZ3V/f2R99PCryRBPRzGoAwhmRvvpEo1OhtW//qJk5TPL6ue1mUKVSKoPq+7eY//gwfl03rPwixGEXPG0NrnUprEbNQts39+KoPjHCkAcb2Flykaxdrbe+Gbcg4T9OjtZPta/ji8u1hhtmYcPvA3qDXbdtkMUWjAj3FAWLXXOZV1eu4qkOMqL8CcMUUx1NBQEIoUbVw82N7hOE+jrotDIBPDy7h6GyR0KBYBEhz8em/yDC2dqwUtj3D+mZlqfXDUTseabDf7+4Juk0MaT2XgLmO9UbQFYaWJhXaRWrKwBeihap1Yfgz0OkJcHB+wChL35t0A2gnt7BWeAb7pv7P4SbeAAT9DLpO7VrULhvGqX1QLsmr1beKqH1L6Nfocdh+lHkDtDdzybArf6Qa4bioLSTwKfpOO4riPVv5AfDRC026kKfcpEOKzptm+nRL2km1DNJ5jWghZQJDOLwuaJ69tqeh/pMCF7SJ7CTXsnOH+aHvK52TSbPsv+SFoHzQhUjXnPH4Sv5eh0c70S9RDzp5OgoVviNZ9ybuiEGxYOCpBhfMTVoff
+ 80djPq/D
+ TyfDMfzoLa9sNEhmx6UAzR1sPqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,165 +112,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/2/26 13:54, Baolin Wang wrote:
-> On 6/1/26 1:57 PM, Chi Zhiling wrote:
->> From: Chi Zhiling <chizhiling@kylinos.cn>
->>
->> Optimize shmem file read by using filemap_get_folios_contig() to batch
->> fetch contiguous folios from the page cache, reducing the overhead of
->> repeated shmem_get_folio() calls.
->>
->> This patch checks the uptodate flag without holding the folio lock, so
->> it may observe a non-uptodate state on a locked folio that is still
->> being initialized. This is safe because only zero-filled data can be
->> copied to the user buffer in that scenario.
->>
->> A non-uptodate folio in the swap cache cannot be added to the shmem page
->> cache. This creates a semantic conflict, as shmem zeroes the folio out,
->> but the swap cache would fill it by reading from the swap backing store.
->>
->> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
->> ---
->>   mm/shmem.c | 57 ++++++++++++++++++++++++++++++++++++++++--------------
->>   1 file changed, 42 insertions(+), 15 deletions(-)
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index cac355685e49..61937582f08c 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -891,6 +891,14 @@ int shmem_add_to_page_cache(struct folio *folio,
->>       VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
->>       VM_BUG_ON_FOLIO(!folio_test_swapbacked(folio), folio);
->> +    /*
->> +     * Don't add a non-uptodate folio that is in swap cache to page
->> +     * cache, since shmem will zero it instead of reading from swap
->> +     * backing.
->> +     */
->> +    VM_BUG_ON_FOLIO(folio_test_swapcache(folio) &&
->> +            !folio_test_uptodate(folio), folio);
-> 
-> It's impossible for a folio to be in both the swap cache and the shmem 
-> page cache. We can drop this.
+The main changes in this series are to refactor shared tracing and assertion
+helpers into a common file, unify both pkey selftests on pkey_assert() and 
+per-test tracing for consistent diagnostics, and add missing mmap() return 
+checks with MAP_FAILED used throughout for readability and consistency.
 
-Okay, I just want to set a reminder for others.
+Hongfu Li (5):
+  selftests/mm: move pkey selftest helpers to pkey_util.c
+  selftests/mm: unify pkey sighandler selftest assertions and tracing
+  selftests/mm: use pkey_assert on clone_raw failure in pkey test
+  selftests/mm: add missing mmap() return checks in pkey tests
+  selftests/mm: add missing pthread_create() return checks in pkey tests
 
-> 
->>       folio_ref_add(folio, nr);
->>       folio->mapping = mapping;
->>       folio->index = index;
->> @@ -3382,11 +3390,13 @@ static ssize_t shmem_file_read_iter(struct 
->> kiocb *iocb, struct iov_iter *to)
->>       struct file *file = iocb->ki_filp;
->>       struct inode *inode = file_inode(file);
->>       struct address_space *mapping = inode->i_mapping;
->> -    pgoff_t index;
->> +    struct folio_batch fbatch;
->>       unsigned long offset;
->>       int error = 0;
->>       ssize_t retval = 0;
->> +    folio_batch_init(&fbatch);
->> +
->>       for (;;) {
->>           struct folio *folio = NULL;
->>           unsigned long nr, ret;
->> @@ -3395,15 +3405,33 @@ static ssize_t shmem_file_read_iter(struct 
->> kiocb *iocb, struct iov_iter *to)
->>           if (unlikely(iocb->ki_pos >= i_size))
->>               break;
->> +fetch:
->> +        folio = folio_batch_next(&fbatch);
->> +        if (!folio) {
->> +            pgoff_t start = iocb->ki_pos >> PAGE_SHIFT;
->> +            pgoff_t end = (iocb->ki_pos + to->count - 1) >> PAGE_SHIFT;
-> 
-> You should consider the inode size when calculating the 'end'. You can 
-> reuse the 'end_offset':
-> 
-> end_offset = min_t(loff_t, i_size, iocb->ki_pos + to->count);
-> 
-> then pass 'end_offset - 1' to filemap_get_folios_contig().
+ tools/testing/selftests/mm/pkey-helpers.h     |  4 +-
+ tools/testing/selftests/mm/pkey-powerpc.h     |  2 +-
+ .../selftests/mm/pkey_sighandler_tests.c      | 81 ++++++++--------
+ tools/testing/selftests/mm/pkey_util.c        | 86 +++++++++++++++++
+ tools/testing/selftests/mm/protection_keys.c  | 95 ++-----------------
+ 5 files changed, 141 insertions(+), 127 deletions(-)
 
-Okay, I will.
-
-And I'm considering whether to reintroduce shmem_get_read_batch as a 
-replacement for filemap_get_folios_contig.
-
-The main reason is to be able to quickly skip over holes, so that we 
-don't fall back when encountering holes during reads, thereby addressing 
-the performance regression when reading holes.
-
-> 
->> +
->> +            if (folio_batch_count(&fbatch)) {
->> +                for (int i = 0; i < folio_batch_count(&fbatch); i++)
->> +                    folio_put(fbatch.folios[i]);
->> +                folio_batch_reinit(&fbatch);
->> +            }
->> -        index = iocb->ki_pos >> PAGE_SHIFT;
->> -        error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
->> -        if (folio)
->> -            folio_unlock(folio);
->> -        if (error) {
->> -            if (error == -EINVAL)
->> -                error = 0;
->> -            break;
->> +            filemap_get_folios_contig(inode->i_mapping, &start, end, 
->> &fbatch);
->> +            if (folio_batch_count(&fbatch))
->> +                goto fetch;
->> +
->> +            error = shmem_get_folio(inode, start, 0, &folio, SGP_READ);
->> +            if (unlikely(error)) {
->> +                if (error == -EINVAL)
->> +                    error = 0;
->> +                break;
->> +            }
->> +            if (folio) {
->> +                folio_unlock(folio);
->> +                folio_batch_add(&fbatch, folio);
->> +                fbatch.i++;
->> +            }
->>           }
->>           /*
->> @@ -3411,17 +3439,15 @@ static ssize_t shmem_file_read_iter(struct 
->> kiocb *iocb, struct iov_iter *to)
->>            * are called without i_rwsem protection against truncate
->>            */
->>           i_size = i_size_read(inode);
->> -        if (unlikely(iocb->ki_pos >= i_size)) {
->> -            if (folio)
->> -                folio_put(folio);
->> +        if (unlikely(iocb->ki_pos >= i_size))
->>               break;
->> -        }
->> +
->>           fsize = folio ? folio_size(folio) : PAGE_SIZE;
->>           offset = iocb->ki_pos & (fsize - 1);
->>           end_offset = min_t(loff_t, i_size, iocb->ki_pos + to->count);
->>           nr = min_t(loff_t, end_offset - iocb->ki_pos, fsize - offset);
->> -        if (folio) {
->> +        if (folio && folio_test_uptodate(folio)) {
->>               /*
->>                * If users can be writing to this page using arbitrary
->>                * virtual addresses, take care about potential aliasing
->> @@ -3443,7 +3469,6 @@ static ssize_t shmem_file_read_iter(struct kiocb 
->> *iocb, struct iov_iter *to)
->>                   ret = copy_folio_to_iter(folio, offset, nr, to);
->>               else
->>                   ret = copy_pages_to_iter(folio, offset, nr, to, 
->> &error);
->> -            folio_put(folio);
->>           } else if (user_backed_iter(to)) {
->>               /*
->>                * Copy to user tends to be so well optimized, but
->> @@ -3474,6 +3499,8 @@ static ssize_t shmem_file_read_iter(struct kiocb 
->> *iocb, struct iov_iter *to)
->>           cond_resched();
->>       }
->> +    for (int i = 0; i < folio_batch_count(&fbatch); i++)
->> +        folio_put(fbatch.folios[i]);
->>       file_accessed(file);
->>       return retval ? retval : error;
->>   }
+---
+v6:
+- Add missing pthread_create() return checks (new patch 5/5).
+- In patch 2/5, call tracing_off() at the start of test_pkru_sigreturn
+  before the SIGSEGV handler is reset to SIG_DFL, to avoid leaving ftrace
+  enabled on crash.
+v5:
+- Use ret instead of child_pid to hold the return value of clone_raw().
+- Make tracing_on(), tracing_off() non-static.
+  Remove cat_into_file() declaration from pkey-helpers.h.
+v4:
+- Base changes on top of the latest mm-unstable branch.
+- Split the first patch into three:
+  patch 1: move pkey selftest helpers to shared code;
+  patch 2: unify sighandler selftest assertions and per-test tracing;
+  patch 3: use pkey_assert() on clone_raw() failure.
+- Use ksft_exit_fail_perror() in main() for mmap() failure.
+v3:
+- Use pkey_assert() for remaining sigaction() and clone_raw() error
+  checks for consistency.
+v2:
+- Update commit message
+- Move shared tracing and assertion helpers to a common file,
+  replace assert() with pkey_assert() in sighandler tests
+- Drop assert() from main() in protection_keys.c and add a proper error
+  message instead.
+- Link to v1: https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+-- 
+2.25.1
 
 
