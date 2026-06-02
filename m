@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D8C8CD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:08:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A193DCD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:13:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5DA06B00A4; Tue,  2 Jun 2026 03:08:50 -0400 (EDT)
+	id D9BFC6B00A0; Tue,  2 Jun 2026 03:13:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E35876B03F0; Tue,  2 Jun 2026 03:08:50 -0400 (EDT)
+	id D29396B00A3; Tue,  2 Jun 2026 03:13:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D713C6B0401; Tue,  2 Jun 2026 03:08:50 -0400 (EDT)
+	id C67716B00A8; Tue,  2 Jun 2026 03:13:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C67226B00A4
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:08:50 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7424E40802
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:08:50 +0000 (UTC)
-X-FDA: 84834095220.12.7BAA30B
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AEE804000A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:08:48 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bhtBWrQZ;
-	spf=pass (imf27.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B30DD6B00A0
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:13:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60A54162AFE
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:13:33 +0000 (UTC)
+X-FDA: 84834107106.19.7521F05
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A441A1C0013
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:13:31 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=U9TXoKy8;
+	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780384128;
+	s=arc-20220608; t=1780384411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4HbIQSY6RnBYFiruuHeLXge2JJ67C2QiNkYzOnkIakk=;
-	b=I8fc7phmmDqTaZZsw47yI36ynyuVcNt1gEYtyb5qU23VsLmXQVrxWn7HNazuh7QJhFI1hh
-	gM6D1IMElIp6v0Ss3KlVsQMbWwJVRI8ot5s/UQl0fGJFgfL8Nm/eX8yl4Lh8OPAFhKHTTv
-	mxSXFmW+KgICmMoPRVSDMflEyjQk2S8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0qtKkckt9JyUfNuorH5TPUvvCM0+T6UIOHmjMyEJuIc=;
+	b=jtXIHb2n3vgWMogiDngvPq4Az3I8/AHC+dW8X0QMv4Bt/k2lP3tf/UJTF4Ctr/SZ2Hdwh+
+	SdIzoQ4PrXFwN0Z5aWQycMAxSv4Ny486qFX8jWh2gwTAzzoZSR7URzfbS+m6U+4o0mifrK
+	uBQxBbO6DRTOhE/niNfIkAKgPHh6FEc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780384128;
-	b=hFddVHA6nIaoJJKTnTl3FLiKOV5oY1neYOOrERznOuYO5FTGw+2f8Mm94QBmiJ/KBYe/z/
-	JDaxGaucKLjuxNnskoOhQcYQX+hzf3KfwtLW0KBGJ5zWkieSL7YmRaByzaerDpZD0Pt0Ac
-	y5cv/U7FPr5uYYdIAr3h1czjMnZ8k80=
+	t=1780384411;
+	b=8Qps9WEQ1jHVh1OZDEkHRPivBVO+1r+D4knCu6SMiEXUZC/BGHLeUEYaxQ0YE3bN825oGm
+	PfOFfvj/sWJWkq4krxBU9ETbjfFqbVBcAIFRz7+pOivSVPtJNwFEHyUXLv4JTpmu5jpmKG
+	hB5QLo1af++nTgmdMfLn7ngq2n8/9Fw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bhtBWrQZ;
-	spf=pass (imf27.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <88aa1f75-1cdd-499e-b352-0cd6c7f0d079@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780384125;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4HbIQSY6RnBYFiruuHeLXge2JJ67C2QiNkYzOnkIakk=;
-	b=bhtBWrQZwWULm5HT+cPCDnDuqhKrKp+OYj3fIfs5b78EoFIrrSCgJvsE13F7DKrZ2AM5FG
-	G/puPKiinamGDx8ZovmwsYYtApjsaRPqrFu1hoJZ0l6hcVjwwv1gerLs1tuKZQTFQ+rZS1
-	uMVrbj9VFb9eyr31f9e+P3nvilUf988=
-Date: Tue, 2 Jun 2026 15:08:00 +0800
+	imf21.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=U9TXoKy8;
+	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id E7874D0F5F;
+	Tue, 02 Jun 2026 07:13:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1780384410;
+	bh=0qtKkckt9JyUfNuorH5TPUvvCM0+T6UIOHmjMyEJuIc=;
+	h=From:To:Cc:Subject:Date;
+	b=U9TXoKy8bydOm/pB7jK9QzuMctLVKJB4ktSSjzPQi+i+j8sTGV0drs4RBpxeE2Sjo
+	 RoMD99yfnZ2kPt9WKe2MfIzhrBeyINbBpFfp6qhjNpRIkmuR2E1R2YBLinHLChGmtf
+	 8daVng1/FTEMqeLDiy1XWycaTB5WQpoaEhRAqq1o=
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Dan Williams <djbw@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Marco Elver <elver@google.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com,
+	Dmitry Ilvokhin <d@ilvokhin.com>
+Subject: [PATCH v5 0/4] cleanup: Remove NULL check from unconditional guards
+Date: Tue,  2 Jun 2026 07:12:49 +0000
+Message-ID: <cover.1780064327.git.d@ilvokhin.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm: page_isolation: Avoid hugepage scan step underflow
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- liushixin2@huawei.com, osalvador@suse.de, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>,
- Muchun Song <muchun.song@linux.dev>
-References: <20260519121646.40833-1-kaitao.cheng@linux.dev>
- <20260519105424.e422131a0ffb49e19ed1aebe@linux-foundation.org>
- <bd3667a2-fd81-4761-a763-f6418d9c09f9@linux.dev>
- <4bfe16a2-3bb9-44e2-8b3b-8c77857a4944@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-In-Reply-To: <4bfe16a2-3bb9-44e2-8b3b-8c77857a4944@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AEE804000A
-X-Stat-Signature: wcn8f1hqn6t8t31g7zpmkywwn55r6rd3
-X-HE-Tag: 1780384128-250679
-X-HE-Meta: U2FsdGVkX1976CNUnPLe7Xhcp6NABRHw/159hrvEfNfLCFkf6Ke4HyDTqFjo+b1tpqJ+NWNRKaRU+BjAkNXuSOEf5FYf7t11rIJnmLoi5S8nkjZHHWwUaPnYZWFihxNh6FX3+JFCiRnDjlJ7H1xjD9npqrsyod8qwTYdoW25P2IDRp+vnB3c9TwM+MxSKPcSDqEmHiKoT3PHdILv8mv8OFxbCyjuFkc7pj0s+nxgeg2uBcM9Ri7uJw5dBKEG6+ExQr4MB38rIqA/uqOaZauA0+Z4hT77x7cHdMm4bzVI7AMQC/MHweQ2dCKBhM6EDHkdPHJngcI/up2l4Qapl17tqjXHbYBP27bwZAGCGOH95qLQ5GbPTzIYs7ZQuTOEFxsvhlWICXy3y3G61xNjh//Z4igJhxRNAx9z58rbatzsj0p7oDPxEVCTzF/98VwNJz5g2kwTHnIuCcS4xOp6i5gxg7TqSjmtzfo8JR0BMYFpbp4PNt6GRSQlgcGkBWkAluhK5nEuSeqS/tD78rJKU2TuYuhdqFckRtVYOBzPf0R1gr9jrjDQenZtBeMzdVNoS6h7tVfVN88JlUaw4BpSBxNZypW1yuaFWAVhsfdGAOMTWk3NdGGXcA0b3mi9bBS8SqjWmCClzkLDzf2bEFydDXMYHZlL/7fupvk7lid3ox2TQozJbU+sDDRf1VsA27Iavq9o9t1LYDQ1dqASVjNxD4Vsxu+ql3N8YzXm9X5mkW09uW+axAYPHy1e73NEgT1+edUghw4eyrqhxQ0DFQ3s8Js6BEmRGC90Yxw8++tzmiX4gOXzEf/WLIfgAA3Bt2kl7xm2u6ztZShUCcWR/nD+uBTdoyPG+3bTeocS1JfJiEN+t7Ncj1eLyvSd+opTykVHykK2B3vTT6dfCcKPUTJVQP8vGk/P3BderbXICS4LgVZxcUnUCdXM+hA5AWcl7x7lP9EN+oGuAuezkbN8MclXGoL
- pfPLB1zz
- TXTq4xqiYULvzVLKiTNAuXNXwgAgQp9NceqPtKDiDtf89xzejEmEVPV5qp9uP2jV/IG/kuIFikytmAYJ+HWVjPeyg/PSVUWbJsJtJ17+3KTZN1Ceh0/ebxOJ07anWs1k415HapHHSBnmHqcK6kka4cxrdo2hQ0+k++g248K27LRciJZzquiOp7xK+XDEQfATox6FsyTlAF+C5BM/TzmcZZDFB+7Y8/oBpe/+k8JjAFnoSUCM+7X45zLxOiydVpAMAPlw8vfGGbcASPfyyuJm0Pzs1uObaQAND7LFKBHbmSRtlSmmTh2+v0GnQxJaAk6nMX4wisTRwrjywI+1cznQMVwTybA==
+X-Rspamd-Queue-Id: A441A1C0013
+X-Stat-Signature: ke1tgprq31aaajmy583s3rt6pu1niq8a
+X-HE-Tag: 1780384411-901571
+X-HE-Meta: U2FsdGVkX18D1Nb0epXp0ZhXrfHz2UxjdDk2Nhlvbqs+gYJpSGyjwW80dc4YjgIoctuvJ/9QaNJLGASLifMlRUbHrYeYqUrZRiz8oj8L2Vo9egK4iJO/Dzbq71qY0FZ14MoKn0ZaJiC1zTpcyAd0ocAORxwR0ZD3gbtaJFYjkYXKhO+QyF2IdaVD/ys0fIL84H7Sg7naaoqHJVh+NoVCqe3mXu4HGevdFwpIa6tV6kzhc4WrTU29wyWksWhmZgXzelfpL+eLt0kZIcSis5Qwdi6OaGpU53miwmihF5IxihQvPgh+MGBY+TSkyy6DH+jAUmgRE6Mgv8L1fhK637gsewfHyc43v38AChe/XkGdYIa/9F8zU3hLTXkrXYriU8ZGZjDI/PfQZdSFhd+spOX663ZnidNLBsi1ckkGI2z8wOppRIVwJUjpS6zLwUzwF3zlGf9ZN/bwLnNWiqiRCh6SVCYWjmeCMSnfsxdDdofA0cNQaWhbJ/royY0ycNGF2ADb9d7o489MqDWBAyoneQCZuYeC3yprTf/DuxRKU/qMb1HJLxUvlQRM4KMLXMjw7F20YZ4nxvvLpFuE+h1Mc8U/tNxmD9ywz9pu2izu3xxQx/vYbfZN4qtNcDCSB9ASaBoJCrK5w8dLwtIFusY7l7ykdv909sNyzkwGZlYRLs97SnPi70fW7mRVPmc7lKr1gTnM7T/rHdlam+PK8WrbkF/qNpwX8NSGyOmj/O98/ZUJH5F5yN92L1ZHxQl5cAGLwk7kEL4E6tFE4gdgHTwZ4pmrG2A2wGsPXVYvGnOnZjYVN5+E/LD6Gv6h4m1Uxk1oYaQBiFZk6L5TKBUQ1Jie4lVneQ9p1WLcllnH1NcLp0qvQ5ldhyICsCuHd+uu35tgePCAABNqgqTsJBVu5hab8itBi4IGpbhFPWx3Xt+O5U0LwOS+kI/KgnMeDXsW0t4kQRVnrbys0n+pzDauwmKylnq
+ dpkAfo7o
+ d4Xfd8f53B+J0hEn5r7XARkC4EUoQwXsUWZkQqJlJx+DY40LoSfmaCvMFyGW5jCOaS1DxSKEzTWPXitUjxynDS5kg80R/wmvj+KOYdq4+yvay+wKxiXUo2uGFM6EDlNjaUgXJ2mIAITg6+jFara/9Uvh89LtfiumQ612dFd8DDTmArYu1nf+36tdA65PSQBoSHIVLDBkITYc/zYSnrEbdYfXDK8DA/AruVPzbH8TrN7PI9jEGCnnjBhUuOfSv3MedkhqXVAP1eNi16gg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,136 +97,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 2026/6/2 00:21, David Hildenbrand (Arm) 写道:
-> On 5/22/26 11:35, Kaitao Cheng wrote:
->> 在 2026/5/20 01:54, Andrew Morton 写道:
->>> On Tue, 19 May 2026 20:16:46 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
->>>
->>>> page_is_unmovable() checks HugeTLB pages without holding hugetlb_lock and
->>>> without pinning the folio. This is intentional for the pageblock scanning
->>>> paths, but it means the HugeTLB folio can be freed concurrently after
->>>> PageHuge() or folio_test_hugetlb() succeeds.
->>>
->>> Thanks.  What are the userspace-visible runtime effects of this?
->>
->> The direct user-visible effect is not memory corruption, but degraded forward
->> progress in the page isolation / contiguous allocation path.
->>
->> If the race makes folio_nr_pages() return 1 while the current page is still
->> treated as a tail page of the old HugeTLB folio, the computed step can
->> underflow:
->>
->>         step = folio_nr_pages(folio) - folio_page_idx(folio, page);
->>
->> The caller then does:
->>
->>         start_pfn += step;
->>
->> With unsigned arithmetic this can wrap and move start_pfn backwards, typically
->> near the beginning of the old hugepage range rather than advancing past it. In
->> many cases this only means rescanning part of the same hugepage range, so the
->> effect may be limited to extra scanning work.
->>
->> However, it still violates the scanner's forward-progress assumption: step
->> is expected to advance start_pfn. If the same transient state is observed
->> repeatedly, the scanner can keep revisiting the same PFNs, causing excessive
->> latency and, in the worst case, an apparent stall in operations that rely on
->> page isolation or contiguous allocation.
->>
->>
->> Here is another point raised by AI, the old code also used folio_test_lru()
->> on a folio pointer obtained without holding a reference. If the folio is
->> freed and the old head page is reused or observed as a tail page of another
->> compound page, folio_test_lru() can reach const_folio_flags(), which asserts
->> that the passed folio is not a tail page. On DEBUG_VM kernels, that can
->> trigger a VM_BUG_ON_PGFLAGS() crash.
->>
->>>> The existing code avoids folio_hstate() and uses size_to_hstate() because
->>>> the HugeTLB flag may already have been cleared. However, if
->>>> size_to_hstate() returns NULL, the code still falls through and computes
->>>> the scan step from folio_nr_pages(). If the folio has been freed and the
->>>> head/large state has been cleared, folio_nr_pages() can return 1. When the
->>>> current page is a tail page, subtracting folio_page_idx() from 1 can
->>>> underflow and make the scanner skip too far.
->>>>
->>>> Treat a NULL hstate as unmovable so the scanner does not try to skip over
->>>> an unstable HugeTLB folio. Once a valid hstate is found, derive the number
->>>> of pages from the hstate instead of reading the folio size again. Also
->>>> validate the page index before computing the step to avoid underflow if the
->>>> page/folio relationship changed concurrently.
->>>
->>> This code sounds rather sketchy, and it sounds like it will remain
->>> sketchy after the patch.  And AI review says "hey, this code is
->>> sketchy":
->>> https://sashiko.dev/#/patchset/20260519121646.40833-1-kaitao.cheng@linux.dev
->>
->> Following David Hildenbrand's suggestion, I made some changes as shown below.
->> I'm not sure whether there are still any other issues.
->>
->> --- a/mm/page_isolation.c
->> +++ b/mm/page_isolation.c
->> @@ -41,8 +41,14 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
->>          * We need not scan over tail pages because we don't
->>          * handle each tail page individually in migration.
->>          */
->> -       if (PageHuge(page) || PageCompound(page)) {
->> +       if (PageCompound(page)) {
->>                 struct folio *folio = page_folio(page);
->> +               unsigned long nr_pages, pfn;
->> +               unsigned int order;
->> +
->> +               order = compound_order(&folio->page);
->> +               if (order > MAX_FOLIO_ORDER)
->> +                       return true;
-> 
-> Would we also have to care about non-order-of-2?
+Unconditional guard destructors have dead NULL checks. The lock operation in
+the constructor would crash before the destructor ever runs with NULL.
 
-There should not be any non-order-of-2 compound pages here. Neither the
-buddy allocator's allocation model nor the folio_size() / size_to_hstate()
-implementation supports non-order-of-two compound pages.
- 
->>
->>                 if (folio_test_hugetlb(folio)) {
->>                         struct hstate *h;
->> @@ -54,15 +60,16 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
->>                          * The huge page may be freed so can not
->>                          * use folio_hstate() directly.
->>                          */
->> -                       h = size_to_hstate(folio_size(folio));
->> -                       if (h && !hugepage_migration_supported(h))
->> +                       h = size_to_hstate(PAGE_SIZE << order);
->> +                       if (!h || !hugepage_migration_supported(h))
->>                                 return true;
->> -
->> -               } else if (!folio_test_lru(folio)) {
->> +               } else if (!PageLRU(page)) {
-> 
-> Hm, is that required because we could VM_BUG_ON?
+- Patches 1-2 prepare guards that legitimately handle NULL.
+- Patch 3 adds __nonnull_args() to guard constructors for compile-time
+  enforcement.
+- Patch 4 removes the dead checks.
 
-Yes, that is one of the reasons for the change.
+As compiled by GCC-11 with defconfig on top of the locking/core:
 
-page_is_unmovable() does not hold a reference on the folio, and the folio
-can be freed and reused concurrently while this scanner is running. In that
-case, the previously obtained folio pointer may no longer refer to a valid
-folio head. If the original head page is reused as a tail page of another
-compound page, folio_test_lru(folio) can hit the folio flag checks and
-potentially trigger a VM_BUG_ON_PGFLAGS().
+    Total: Before=23889980, After=23834334, chg -0.23%
 
->>                         return true;
->>                 }
->>
->> -               *step = folio_nr_pages(folio) - folio_page_idx(folio, page);
->> +               nr_pages = 1UL << order;
->> +               pfn = page_to_pfn(page);
->> +               *step = (pfn | (nr_pages - 1)) + 1 - pfn;
->>                 return false;
->>         }
->>
-> 
-> 
+Changes in v5:
+
+- Renamed __nonnull() attribute to __nonnull_args() to fix User Mode Linux
+  build failures (kernel test robot).
+- Dropped Acked-by tag from Miguel, since I renamed the attribute.
+
+Changes in v4:
+
+- Re-worded commit message paragraph about nonnull "compiler-enforced
+  verification" (Miguel Ojeda).
+- Fixed GCC documentation link for nonnull() attribute (Miguel Ojeda).
+- Placed nonnull() before nonstring() in
+  include/linux/compiler_attributes.h (Miguel Ojeda).
+- Picked up tags, where appropriate.
+
+Changes in v3:
+
+- Audited usages of DEFINE_GUARD(), __DEFINE_UNLOCK_GUARD() and
+  DEFINE_LOCK_GUARD_1() to make sure NULL check removal will work correctly
+  (Peter Zijlstra).
+- Moved NULL check into irqdesc_lock unlock expression (Peter Zijlstra).
+- Added compiler-enforced nonnull() check for guard constructors.
+- Converted nvdimm_bus guard to class.
+
+Changes in v2:
+
+- Expand commit message with detailed reasoning, why the proposed
+  change is correct.
+- Rebase on top of locking/core.
+
+v4: https://lore.kernel.org/all/cover.1779286416.git.d@ilvokhin.com/
+v3: https://lore.kernel.org/all/cover.1779116497.git.d@ilvokhin.com/
+v2: https://lore.kernel.org/all/20260512071510.92451-1-d@ilvokhin.com/
+v1: https://lore.kernel.org/all/20260427165037.205337-1-d@ilvokhin.com/
+
+See also [1] for relevant discussion.
+
+[1]: https://lore.kernel.org/all/afCS4d4YccQFtvpi@shell.ilvokhin.com/
+
+Dmitry Ilvokhin (4):
+  nvdimm: Convert nvdimm_bus guard to class
+  genirq: Move NULL check into irqdesc_lock guard unlock expression
+  cleanup: Annotate guard constructors with nonnull
+  cleanup: Remove NULL check from unconditional guards
+
+ drivers/nvdimm/nd.h                 | 7 +++++--
+ include/linux/cleanup.h             | 8 +++++---
+ include/linux/compiler_attributes.h | 9 +++++++++
+ kernel/irq/internals.h              | 2 +-
+ 4 files changed, 20 insertions(+), 6 deletions(-)
 
 -- 
-Thanks
-Kaitao Cheng
+2.53.0-Meta
 
 
