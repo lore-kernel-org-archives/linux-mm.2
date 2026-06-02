@@ -4,115 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF2EECD6E64
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBEA8CD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:28:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A22E6B0005; Tue,  2 Jun 2026 11:20:29 -0400 (EDT)
+	id E8E7D6B0005; Tue,  2 Jun 2026 11:28:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0533B6B0088; Tue,  2 Jun 2026 11:20:28 -0400 (EDT)
+	id E3F5B6B0088; Tue,  2 Jun 2026 11:28:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED2E56B008C; Tue,  2 Jun 2026 11:20:28 -0400 (EDT)
+	id D06DF6B008C; Tue,  2 Jun 2026 11:28:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DDB076B0005
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:20:28 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B79F409A2
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:20:28 +0000 (UTC)
-X-FDA: 84835334136.10.8D7EC58
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8576C2000F
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:20:26 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ir9K3+11;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780413626;
-	b=cuUKUwDOmf5hG0KgK0XexRVFnSh0p/T3jZIrRnud2EJn8mvVFVt8/odP5/KV1ldsrm9vtR
-	TIXcBykKJtyk58g9mTHsyCvdHr7lGGshgAWABTzGeBZINk470xBGBmOYQdssVogwTuAe1u
-	Hx37/WtsQqZql+eMhhPQI8LSPkFoNmw=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ir9K3+11;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780413626;
+	by kanga.kvack.org (Postfix) with ESMTP id B8A936B0005
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:28:25 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F4A01A095C
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:28:25 +0000 (UTC)
+X-FDA: 84835354170.01.41AD359
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2F8D240012
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:28:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CZd1HqFP;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780414103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ioWIH2vIGho0+8O2jaAg9vyx3qwy9l2LVl4YVTBtgfM=;
-	b=SknELtR48J2DuhOmhppl1vwNXR2GSkvD8fbnCA2TL/aFa+Jecg4GlPXIKDq/l45eF20ykW
-	KBXoYTsBHzOWArQfH2WDMN9XTOIJKnqUgr8775mDp9f25YWKa4ryTfSULxuFmHqsf2LLzD
-	Jc7qrCXUvfOZ9F4EWyqNuezYGIbdjg0=
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-69d7aa0ac14so6920963eaf.3
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 08:20:26 -0700 (PDT)
+	bh=KioD6muOq73KOuZgXUdfc8mghtZCf5WX4ci2/jt07rE=;
+	b=XosKu5JjXpl1CsX3crgXGxTHdY5gknm/fbQIREfKloGP+0frnPgTez5B8qkRq8Abep2VaP
+	tB3Bi+maJw9OpIVIveNRD+++P2pOwtCO3mOjh/xXFn3Un/svOfjiKpk7rYFSkv4ZixCmvR
+	NocwiFSY8fIvP3OiEsAx+eN740/jrjQ=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CZd1HqFP;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780414103;
+	b=1+Xpmn2nDOcwwyD1lAsUEqBQ3IFI/WLpiMzk/9tdCCYhqc4gqOJFBjhw57F3kb0jdmb8yY
+	DJPVFY/1rVwhE6AXRlyHUoFrZ8lDQ7loJ1ZjYE7uObxnvcD8aZqvHUo+uQBLyUWJw/EBlw
+	0ASgLscSEJ0WiAmso2n404ArCAcoa8Y=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-45eec22fab7so2920690f8f.3
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 08:28:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780414101; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PFX3A29HrUB5Qxk4cOQ012WI61OsaGh2oBl6gcwcrp6Kax76dRXCSoTnluMip7qutW
+         6KxwhlbCGQOlwwXJezVmiuUkdJ5fFNpHdQEhQ5i9wpqKTVvNR7luEgWW29RMFGp0ab7R
+         fQn2CojKx0eb1so5v6Kuqfid5JSqZMW7q6VZ4vNfmfbpJBsRGu628QvoUHYj0II9Uqmh
+         EnYzybusVIOpGICH4rj19ZjmAo1GZgbHuYtLUli2I2Zit4xgQ6LQuE2fcp7Td/gdOZmJ
+         Mv9Ro1PdujnaKLcWD5vt+A55YJ3gWUP71LI6pXCoLtop1YJ29rwlZ/Inhb/sxEGpVeQ9
+         bTWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KioD6muOq73KOuZgXUdfc8mghtZCf5WX4ci2/jt07rE=;
+        fh=rCu2fdRPKDR+Zz0RbckTbejujg31mTiP0URfWc/BQxc=;
+        b=lHjCihSwSK8qIdH7AQt1h6QPDkrRcqQ1KjAsG+5ZaeULQFmnJPtAQnDTSTVdoetO8r
+         7ekyeJLXeYfsWus4byw0PttzrT0QoJAf3AF/GD6rWij2ccilXQrvgQblAQh5qp3FZdQa
+         bLePpMOAwP86z7hHXlO0paE++K+AhkmCmsT+pqzLe3TR50f7VvLS4Pb5RCeRmT41cbgu
+         7K4g1m2eNACS+aCtO2aDz7GjrIKKvLlXhRsSXmhrFsPbQMR+M+HHjdraaZ+v8RY/Jqfd
+         EYAYR0xrAQOxl3WOiZGboRhMiKNIZ9c5t8SPLLulq8POK6fLXQaBJ/PLZy3gzRS6VHHD
+         I6Ng==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780413625; x=1781018425; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780414101; x=1781018901; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ioWIH2vIGho0+8O2jaAg9vyx3qwy9l2LVl4YVTBtgfM=;
-        b=Ir9K3+11Fq3VSCJlN0fAqxf/YEjyeqnqa5YyrmpE1m0L6fIf7sQeXSLLwRUbniTyx6
-         jRJAxs9/8S8j60Ug8tQzHwcH1CdGREsctfcz9Bgc3WkgHRgXkZOBASV4nOzV3Lvlx5CC
-         Ibtlblb3TNPPGfuMlcnG7NJDUK1cZJwkDFaCiXNd6nm4jDeTrUS5Y3k+qo85fn/oL0jn
-         LIybd/sz6VuEc1Q63yonhtubIZDp30c/q38mfNBCecf+LaFMkEUZkBtdrqeiLnDKNKGl
-         yB3kyA7TmK/cj/ydqCq+RSIA4MV8tINw8KF0ItXM03STFX06wFHIXhQzZcu5U7qnKQIh
-         nIoA==
+        bh=KioD6muOq73KOuZgXUdfc8mghtZCf5WX4ci2/jt07rE=;
+        b=CZd1HqFP/r8BfOLnw4mkM99+oHo/BII/DwIW4tnMVEjE8wef58Ozu4YJJe9hmXhGpu
+         oimYC0E2e876uJy9LnBXqDzqybop/7RSxrqzz85jyEx87iDqk/1Eyzbfb3aDMP/MsEFJ
+         RvpjOwyIdF5XbLxkEv+eTwwRKTqLXdOJXc4r+c4muz5ODFqB5zSoEfpD8/e+nXqsWVtE
+         hXcTN5zO6kNvJ2wuP15RsmAt88Q5h9e2T3fWkif8I0NwVV0OcOHXGnFRI6h47foGdQj6
+         qIlkMRQQYykLcESbmRS+K8aQAoPg+kRFcM7RSF/jasZcUpk9l6cIVBa9Sjtsv/KywV6K
+         JbrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780413625; x=1781018425;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1780414101; x=1781018901;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ioWIH2vIGho0+8O2jaAg9vyx3qwy9l2LVl4YVTBtgfM=;
-        b=O5W0aRkQvv1GJVufzH/sFds+foUFGsQXA4WAqWkOLU6baaukdnUxQBr3TbZWsOrUMH
-         OpPo3FJVaBD/1zY9XzeJbs/QR0/9bgfU+teRTqtbSRnAW+tLpoWxL1qW6L9zQQHrD1sm
-         IsojRnpy3rKHcKhYr7o5CWX0ZTNk3xO/W8WA+n3UAA7E+v1ywWz5ds3L5sJLzX8hUqme
-         Ku9HLQgwcRzex8SOlh1mxDjT6Ekojb7vCp5zXklAwocT4XSblQJnVVni6lcqhwFpVqL+
-         r8RB7O0UqPvFL80GKFrPltFqGuZiWfWRZK6sz4U20Yfm10T0/tpWTcB6WwspFxD/8+wQ
-         wzBA==
-X-Forwarded-Encrypted: i=1; AFNElJ/U4dzDbcbZiVXcookw/Qa+nrmxXSUoGCsIdLbWUy6l1SzYGhGpUVce6r0KbrG/6Xz03nbcwbD6gA==@kvack.org
-X-Gm-Message-State: AOJu0YzqSGb0ySuEw1RxCvGa1lTxCiUxY/Mi4/ZYcauZVRL0xjlKDUzS
-	B/kVkfeA4EVGGbY00gPSUEKFWtfpqOLMB3PNCPx2aFKaXCc3j0ARk9iw
-X-Gm-Gg: Acq92OHbViilw6xkfyvkwOMD9q6Bejr1PPCRQNUozrimGFx8EbaEC6CBX2P1VwZw8Qw
-	FgnuR04FWdtV/mFMQzRxTXU2woHq4xNqNow3CRaJlUod17UdYrW6dgye4EWcmk4cQlxBcNFcfyw
-	RR2yN8+DHRKQixpoHY+T+zFnjXtmnhx9x/uWc5uHEhIFE2NBcMTXy0EDn7tTyNK9xWP5DP6Ru/h
-	bOkQVY2Rs7ziH5nYRLd3imbsGEGS0wLAd7DP76kPvJ6TPTqNQ5TGMGtiKIAf1lzRqDzwfeGVWnV
-	VkLzdedNXWP72l0IUH+aDGC3mzhUL86HvFZus6kDnEqvWNrjpaTboMc2n/5s/53PcSX1N+oiOQ7
-	qNhHX6sApimaq1C54Vg4Vxk62vmDsewEZi0YZm0xgmVEb5ZpvDS+1jZ2H8qGA5MH5z60INKwWPM
-	BqWbWsElhkhDieW1DXKDnM8TAtOT2l//LBBQz/qyIAkwu5kt0C8k+bfroL58qfcq9r
-X-Received: by 2002:a05:6820:1886:b0:69d:8d74:d7ed with SMTP id 006d021491bc7-69e46ac571bmr19177eaf.26.1780413625357;
-        Tue, 02 Jun 2026 08:20:25 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:73::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-69e46267666sm95902eaf.7.2026.06.02.08.20.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 08:20:24 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Charles Haithcock <chaithco@redhat.com>
-Cc: muchun.song@linux.dev,
-	osalvador@suse.de,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Respect mempolicy when calculating surplus huge pages.
-Date: Tue,  2 Jun 2026 08:20:21 -0700
-Message-ID: <20260602152022.2673803-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260527224848.1753560-1-chaithco@redhat.com>
-References: 
+        bh=KioD6muOq73KOuZgXUdfc8mghtZCf5WX4ci2/jt07rE=;
+        b=CQXQxigCQCMfHNT/59P4mHojEMvOir52RsHs8eoXipPcTStOyxgncboEjNEHWkra4y
+         sfkEZuG9JoPKg8f8zLVdqugJyEkTUlkUOQinQ6KEwHqKsMhHixH0qTzw/bhZgu6UbWK/
+         90Tb7dHPAVwNlYetpj+YkJR9mY3yTWqvsnARnowoMaKSKWBazKMg7/tVb6S0bCcU0KjG
+         QUPRzJmioCapajVpFIF/s/9wdMH0nsPalkF8hyYeEcGFRd9C8xjjzfUhggNpaGTLl/ur
+         zXC/k7gcEKfS9qsTidXKQLPstTd4Io9VFqBLShCDy4nc3z1LRU17R00dJZQDIWMNbRdj
+         kDSQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9PSz5pgL6Sf7snDg30mWagS6MjiDNqt763AVeZRzz6SxwZ3wUkeSqc5jl2j0TwE8LuPYSv/LVlXw==@kvack.org
+X-Gm-Message-State: AOJu0Yy5ICVQYiwfOXQEfeJyWREILoNImbvJmkURxPd54duPZDHb30Fv
+	m2cIoJP+gwwYqwfwt0vsstltYJuh2HKSirt5B8cEPrxsQebGLx9dlBjdNrWSqv/hTeZw0gNytaq
+	9usTPalNR73iYcfCyrBtZLSb8WAHkgTg=
+X-Gm-Gg: Acq92OEsNUPFTWR9G8o7o+jfrWDcI2O5334ggSOH8gWYHDaaN/hCGzKHac80tHcfAfN
+	Yewbpcrr04/I9Mfn9TUAbYmWg5+EPFKOlWNlAbCu48hE5f6oPKmEptJWKwrlbOcLWe8FSDEVq0E
+	gxnedSr5u7+zcpAi/1g46vFB91NSlDOBIK2BJ89639mDjlAJxaeu71Km0VbshnjVXapnlmwdUkg
+	LaqdIdpLJtgD3ILS5T+c2/1LbRwcfpeOdKTfJcV8NwZ7BBVRDt3fVANdXaDT0FiMM+aYmCnbVdt
+	rCWQq3Z+X6v301yQ24VZHxAb3z3CfW+LdqiykGzqVPEYyBkppQ==
+X-Received: by 2002:a5d:5401:0:b0:45e:d6b2:e6a5 with SMTP id
+ ffacd0b85a97d-45ef6b83764mr21337268f8f.34.1780414101045; Tue, 02 Jun 2026
+ 08:28:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8576C2000F
+References: <20260528212955.1912856-1-nphamcs@gmail.com> <ahz_iYG4lqWL4g-J@KASONG-MC4>
+ <CAKEwX=PzMwXXgq=ULAkFD9UqMz+ewLqhKt+xdGxkV7OmA2QG6w@mail.gmail.com>
+ <CAMgjq7BhOn48xEyC=2j837R7qddfjeBVHMiRqdx8no4ZEBpBLg@mail.gmail.com>
+ <CAKEwX=PmwzaJhfjBrho3+kQ8HXFUC0WiegQrsguBc-_pmn5bSA@mail.gmail.com> <CAMgjq7D4XsAD4NGDL7FC2kaYAQAP8PDJdn4bpzGZwXYtjEpJ6w@mail.gmail.com>
+In-Reply-To: <CAMgjq7D4XsAD4NGDL7FC2kaYAQAP8PDJdn4bpzGZwXYtjEpJ6w@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 2 Jun 2026 08:28:09 -0700
+X-Gm-Features: AVHnY4IWURpsnvI312VbRdsgEkqVndHtTZWSNA7JxRNHqCQ-2eUuyz0lSoO1lo4
+Message-ID: <CAKEwX=OZL+ykwTjZJzUDAEnTOO6B0mibc6dxiYtmnoLReB7TYA@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/5] mm, swap: Virtual Swap Space (Swap Table Edition)
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, apopple@nvidia.com, 
+	axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org, 
+	chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net, david@kernel.org, 
+	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
+	jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, 
+	lenb@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev, 
+	npache@redhat.com, pavel@kernel.org, peterx@redhat.com, peterz@infradead.org, 
+	pfalcato@suse.de, rafael@kernel.org, rakie.kim@sk.com, 
+	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
+	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
+	tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
+	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
+	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
+	riel@surriel.com, haowenchao22@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2F8D240012
+X-Stat-Signature: hdr7a781dmbmq11cf5ucgai4pbfasbjo
 X-Rspam-User: 
-X-Stat-Signature: rzcz7uids5p6pgj9wii18wme5ryrkch6
-X-HE-Tag: 1780413626-437541
-X-HE-Meta: U2FsdGVkX1+hZzfdd0SRotpl61KexUnYaubuL6mGU2XTPXNIawKrymNxE62Rh9Vp4rqyn2FzCSp6AWEGM/kfijxiyl5fr+kwxH3to/ovegje7EIsU9wfck4pxP9zAx9EBk9EJi9Tm5fzEkX0Li8JLUrXNxz9UhLYshUup4jG3Nt8/EAnOoQ/D1yt9UH8fjVmcDF0Zf1GgtPCSTWtRuJo6/9JuBi9ghIy/6GUm9MZOYeUD9s0aqhncaGaPLCTmQdZEQrqalCPzxYZ/3DMb7WK5EsQnJ6RTz4lFc56pnjtChjF5vGc+4dgQnGipt+cGQHghOx0JWhxr1afEHM24pFl36zo87s8H4jAwTdyOJFvGTlqSvnAXS5gpO/FTZ0CSrYf2032ntxVwnDkgDEwA8CaTbh4fY8gYFO9Vih6tgfjqd9Ak1fXUjs02k/tqzpUkdci0WlxFvkjgK3VvjDw/RRiR38LfRHpfIfM7G6CI6T5RrfCWuNUUDnUlf5mtbozxcNe+45VnnJ/1iUH5NJrLxiiDb9M0NoCeNVO2/uTWQw5MCCIFT+5yKdSkDXT2ckWrOzQbBSRzvKMUXs2tQP1csapRwPVAxnB8IkFMahAC5mkvqEVM7tejccErIGHPzYbvv2o75x4xXNlebhU4hMsq4lIQEy6/v8WlHZsFW+lZOm2OogtPU5U+HKh0xTV6MJweK1HFwRNmHlQwwQZ5W/FKsuriQg0lkZo0jQhDg0c2NjrccrcJo68lWImyc12hEyyp2umLw6mHjWJo74Ogb75TjcUaXVgf08JwolHEi5SrB8gjwLIVg647n3O1b5vk+dYAzbUD6Zji7heRAZZhymodb/ecv/FAK55dIF+vFf9na39OcgzogQPjcQC/QzKkKgMghyEa0aURa9g7k6sAUWIfVkfznit0Yzl+MyLDn3OnEsYM5Qcbm/jPBwcYMR0vAWd+vVe1VfI/mtVQjRhfdR+T9Q
- ui/Kndf8
- MJJmK5PRNiRcLHrJ5eZWWMUrBxoHqRJdaHwYMASsrvC7O1f/VqST/PY2BdFguch0thv1YRdxELxwVEDd4TqSZktinZkAjwDME1Ss5mc+DGZnhEU4loPTdgpR/Y1hwH7tCNOZ8h7l4REgiyQ7SCQaS/Qkgy5kLGJxSZJW1HSnowqUxcH0vEaxvt8BFg4OOwVk7fo1V/XjU9fosZy03LWzFlZ7I0ZCmbXeP8Y+5ZmmWuLPWDczjvQKUbxhDzOxTXkF6b72lXDSJCBNYJu7qlD8LMiIcQDw4yRP/e/A27yNpLG5Eav2/OLQDIQlg19YIc0yVpvp4XtE1O/codfhVfPbwzyR76fNACCJVt+jEg/HiTpMXrLtb4+OM/pBpMcNA0yWYCqOU1rfZ/anoNcMXG29uiL9OocfG/Dh0TVJAyc3Nq7S6KcVqWrAN6Vz62OF1XMAId39mazNSAUDfdxL3++pt0bwdo7YwwKVEPThBbI4AMqe7qFfmRfuARqnLHNK06G6VWOFKNwyKpQvkjf+OE/VMzhLxfkSbpp/OBFCA
+X-HE-Tag: 1780414102-433505
+X-HE-Meta: U2FsdGVkX19LQsxwI6jbHHG6WhOEOAusPwOy35BHqL541mT5tyErjwSvHcMk2SW58OXsMeItcMQ9ycZKZjyDbcouIQUxozzTGuf/wy74HrrC/QJfP5x4fLFsDNY2ttQTysPzZNLGjK0pFfleUBecqYrbB20xiOc6TyvRFetMktXFmEeB1qV96q5qj/NZt16+iA7KepzrzeTE81St45CF9sw6e9ocBMQFW3AW+GP7QiqqMmwEP6v99REAkQ45jwBJ/RddZ7LA5Msr7JCtR5a3F15qBYERwCt9l/xKZ1/h8zyX998byzVePJJTxE5GGfPv56/5DejXTS4k7jQmMg7OTWznTusQzzqeNPZfooVBdLWoUPvv9MUvm550Ris0LcJysdk7mVNjLz/K4pb8jB76Ad2+bZhgZ/knUxCLQeRoubYsW+5/PSqAzjPCyroJEP+BVQ4YHsZv0MNkJTmDzwX7ST/lEVE1w8SyKQd3Me+bI4fwbj53iHTJ3qFz3u8mwOlrjk04cyxmOi5jr8flyI8CjWfDYY/dflAP+FWPcrJZiqhttX8dUWVTMGwtGu2Mxrfut9VghYEmY78DpkIHynfTDkHzPqe2UgwzzCj7WuaQBq8E1b8RR4fMg69/wHEQdL+X70FNy75pqT3mMGEFXKENo8X1fiSMKNqUmHrpsajlq7HPAdaMnEHl3kkXb3hfZppvLgUDMph78obnn+a7ZZt7989I7y4o/eDukASqU+yYRilm6Wj/31mBaIM1ROCA6TO5u3FvKxf0KUuKWp5V7Dpe5sZgYfMpmZCleUWEzvC/1bAMP2v/dj3YBs6D9zSXWXHKPLZSip/E28V6xQ9blqjd2cqhAJLGdR3W2kUXRVwuohNpnJ22BkpJZKeWv5bESwAiowlWRPgDF4du9t1eDhG2gRDvVIFZ28EhRT2imluZE58Rziyi9f0TVhME1FqkegfxTR/Nf/u14rIaHLkNVEI
+ mn2mwmOG
+ GsD97aQSsPPuFbdtD+vwldOVcJf4hSVEt8NAAbPhDb2UH492u7E1O3XKtecP9dXWh5PXnztgeOEFJAMDvLyC10YABUlEofHK/+h/OuwGW8YYTlzIS/+WjTqRhsTdX8gTtM9bHocvrQW9vPbgmn2DAIyqitZ4kHRXC3g1T7utLGsIiplO63lb/L9TSTl7iGohKF2WHPaDXrkNRONwPAeTUz9Tx5aShD7tV9U2mZngaHydYGeSyhtwET+uHNpVs2qadUR5q1a2l91RGq3h/iZdyKN4dBLTGXb++3znR+vWqaUS1jq9/9hkEE7RsGcORHrd5SRhuNw1DiJMPBCZGMpRmY08Bl13313csWnCAlOjoKVmwo6rEN8tjE0n/I8Q3nzcjRgGPqSmN3cixu3HZcEHJBgYBnbEcx6VXFVrbU9cCBCARenIPPzChjXaBBrW+69yKO0/Gj33ga3vZg6ru8PlhWX55DLb7Krn34724X+JSCoux7aiQCkgIGW0q3fex/Ddx2+Onfmddz2tJsseFRiv2g49JQmVIQeD84Brsh9ww3ufPIOs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,82 +156,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 27 May 2026 16:48:46 -0600 Charles Haithcock <chaithco@redhat.com> wrote:
+On Mon, Jun 1, 2026 at 8:25=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
+:
+>
+> On Tue, Jun 2, 2026 at 2:06=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrot=
+e:
+> >
+> > On Mon, Jun 1, 2026 at 10:45=E2=80=AFAM Kairui Song <ryncsn@gmail.com> =
+wrote:
+> > >
+> > > On Mon, Jun 1, 2026 at 11:57=E2=80=AFPM Nhat Pham <nphamcs@gmail.com>=
+ wrote:
+> > > >
+> > > > Are you suggesting we merge the virtual table with main swap table?
+> > > >
+> > > > Man, I'd love to do this. There is a problem though - we have a cas=
+e
+> > > > where we occupy both backing physical swap AND swap cache. Do you
+> > > > think we can fit both the physical swap slot handle and the swap ca=
+che
+> > > > PFN into the same slot in virtual table? Maybe with some expanding.=
+..?
+> > >
+> > > I don't really get why we would need to do that? If you put the PFN
+> > > info in the virtual / upper layer, then the count info, locking, and
+> > > all swap IO synchronization (via folio lock), dup (current protected
+> > > by ci lock / folio lock), and allocation (folio_alloc_swap), are all
+> > > handled in this layer.
+> > >
+> > > The physical / lower layer will just hold a reverse entry on
+> > > folio_realloc_swap, or no entry at all (no physical layer used, zswap=
+,
+> > > or after swap allocation but before IO) right?
+> > >
+> > > Looking up the actual folio from the physical layer will be a bit
+> > > slower since it needs to resolve the reverse entry, but the only plac=
+e
+> > > we need to do that is things like migrate, compaction (none of them
+> > > exist yet) which seems totally fine?
+> >
+> > All of this is correct, but consider swaping in a vswap entry backed
+> > by pswap. There are cases where you still want to maintain the pswap
+> > slots around backing vswap entry, while having the swap cache folio as
+> > well.
+> >
+> > For e.g, at swap in time, we add the folio into the swap cache. First
+> > of all, we need to hold on to the physical swap slot for IO step. But
+> > even after IO succeeds, there are cases where you would still like to
+> > keep physical swap slots around (for e.g, to avoid swapping out again
+> > if the folio is only speculatively fetched).
+>
+> A reverse entry is enough to hold the physical swap, just like how the
+> current hibernation works with a fake shadow, you don't need a PFN
+> just for holding that.
+>
+> >
+> > So you have to make sure we have space for both the physical swap
+> > slot, and the swap cache folio's PFN at the same time for each vswap
+> > entry. So we still need the vtable extension (well maybe the other
+> > approach I mentioned could work, but I'm not 100% sure).
+>
+> Right, vtable extension is fine, there is no redundant data. I just
+> mean you don't need to set the PFN twice (for vswap & pswap). So
+> simply reusing the PFN format in the vswap layer and solving
+> everything there should be enough.
 
-> Presently, when calculating how many huge pages are needed when
-> reserving surplus huge pages, the global count of free huge pages
-> are used. When reserving with a mempolicy, the global count of free huge
-> pages is used even if some/all of those free huge pages are on numa
-> nodes outside of the mempolicy. Fix it so free huge pages only on nodes
-> within the mempolicy are considered.
+Ah yeah, then I might have misunderstood you here. I thought you were
+proposing a way to remove vtable :)
 
-Hello Charles, thank you for the patch!
+"don't need to set the PFN twice" completely agree. I'm pretty sure I
+did not here, but do let me know if I accidentally set it twice. I'm
+be sure to check this myself for the next version.
 
-I just wanted to add that it seems like this is a known issue. From the
-comment in hugetlb_acct_memory (the only caller of gather_surplus_pages)
-we have the following comment block:
+>
+> > > Thanks. Not too complicated, actually our internal kernel
+> > > implementation still using si->percpu cluster, and use a counter for
+> > > the rotation and each order have a counter :P, it's a bit ugly but
+> > > works fine. It still serves pretty well just like the global percpu
+> > > cluster, YoungJun's previous per ci percpu cluster also still provide=
+s
+> > > the fast path, many ways to do that.
+> >
+> > Sounds like something that should be upstreamed? ;)
+>
+> I'd love to :), there is a lot of work going on as you can see and
+> people seem to have many different proposals about this so I didn't
+> prioritize it. I'll try as things settle down.
 
-        /*
-         * When cpuset is configured, it breaks the strict hugetlb page
-         * reservation as the accounting is done on a global variable. Such
-         * reservation is completely rubbish in the presence of cpuset because
-         * the reservation is not checked against page availability for the
-         * current cpuset. Application can still potentially OOM'ed by kernel
-         * with lack of free htlb page in cpuset that the task is in.
-         * Attempt to enforce strict accounting with cpuset is almost
-         * impossible (or too ugly) because cpuset is too fluid that
-         * task or memory node can be dynamically moved between cpusets.
-         *
-         * The change of semantics for shared hugetlb mapping with cpuset is
-         * undesirable. However, in order to preserve some of the semantics,
-         * we fall back to check against current free page availability as
-         * a best attempt and hopefully to minimize the impact of changing
-         * semantics that cpuset has.
-         *
-         * Apart from cpuset, we also have memory policy mechanism that
-         * also determines from which node the kernel will allocate memory
-         * in a NUMA system. So similar to cpuset, we also should consider
-         * the memory policy of the current task. Similar to the description
-         * above.
+Yeah understandable. It's a very volatile codebase, with a lot of
+folks trying to improve different aspects.
 
-So it would appear that getting an exact number of pages to allocate,
-and ensure that there are no changes with the reservation or which nodes
-those reservations actually go to is a lot more difficult. But I think
-we can do a bit better.
+Hopefully we're close to a unified design :)
 
-FWIW, I think over-allocating is actually not fatal (although overallocating
-by a lot is obviously not desirable) since we free all the unused hugetlb
-pages at the end of gather_surplus_pages. I wonder if an approach like this
-could work:
+I'll keep my dedicated vswap per-cpu alloc caching for now, but I'll
+get rid of it whenever the per-CPU per-si cache is ready.
 
-@@ -2260,7 +2277,8 @@ static int gather_surplus_pages(struct hstate *h, long delta)
-                alloc_nodemask = cpuset_current_mems_allowed;
+>
+> > > > >
+> > > > > For patch 2, a few routines like vswap_can_swapin_thp seems not
+> > > > > needed or should be moved to __swap_cache_alloc? VSWAP_FOLIO is
+> > > > > same as swap cache folio check, which is already covered. Same fo=
+r
+> > > > > zero checking, and VSWAP_NONE which is same as swap count check
+> > > > > I think. That way we not only save a lot of code, we also no
+> > > > > longer need to treat vswap specially.
+> > > >
+> > > > Unfortunately, I think a lot of this complexity is still needed. Vs=
+wap
+> > > > adds a new layer, which means new complications :)
+> > > >
+> > > > For instance, I think you still need vswap_can_swapin_thp. It
+> > > > basically enforces that the backend must be something
+> > > > swap_read_folio() can handle. That means:
+> > > >
+> > > > 1. No zswap.
+> > > >
+> > > > 2. No mixed backend.
+> > >
+> > > If mixed backend means phys vs zero vs zswap, then we already have
+> > > part of that covered with the current swap cache except for the phys
+> > > part (zswap part seems very doable with fujunjie's work).
+> > > swap_cache_alloc_folio will ensure there is no mixed zerobit, it can
+> > > be easily extended to ensure there is no mixed zswap as well
+> > > (according to what I've learned from fujunjie's code). Similar logic
+> > > for phys detection I think.
+> >
+> > Yeah it's basically generalizing that check, and handle the case where
+> > we can have indirection.
+> >
+> > I mean I can open-code it, but it has to be there :) And I figure it
+> > might be useful to check this opportunistically (at swap_pte_batch,
+> > even if it's not guaranteed to be correct down the line) before we
+> > even attempt to allocate a large folio etc. to avoid large folio
+> > allocation.
+>
+> Right, but swap_cache_alloc_folio with orders=3D<large order> won't
+> attempt a large allocation if the batch check fails, so that's fine.
+>
+> > > > Basically:
+> > > >
+> > > > 1. For vswap entry, not backed by phys swap: record swap memcg, hol=
+d
+> > > > reference to pin the memcg, but not charging towards swap.current.
+> > >
+> > > Maybe you don't need to record memcg here since folio->memcg already
+> > > have that info?
+> > >
+> > > I previously had a patch:
+> > > https://lore.kernel.org/linux-mm/20260220-swap-table-p4-v1-7-104795d1=
+9815@tencent.com/
+> > >
+> > > The defers the recording of memcg, the behavior is almost identical t=
+o
+> > > before, but charging & recording should be cleaner and you don't need
+> > > to record memcg at allocation time hence maybe reduce the possibility
+> > > of pinning a memcg. I didn't include that in P4 just to reduce LOC,
+> > > maybe can be resent or included.
+> >
+> > That works-ish when the folio is sitll in swap cache, but say if it's
+> > vswap backed by zswap (and the swap cache folio has been reclaimed),
+> > you need a place to store the memcg, no?
+>
+> "Backed by zswap" means the actual swapout already happened, which is
+> the case where we always have to record the memcg info because the
+> folio is gone, seems still fit in the model.
 
-        lockdep_assert_held(&hugetlb_lock);
--       needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
-+       needed = max(delta - allowed_mems_nr(h),
-+                    (h->resv_huge_pages + delta) - h->free_huge_pages);
-        if (needed <= 0) {
-                h->resv_huge_pages += delta;
-                return 0;
-@@ -2294,8 +2312,8 @@ static int gather_surplus_pages(struct hstate *h, long delta)
-         * because either resv_huge_pages or free_huge_pages may have changed.
-         */
-        spin_lock_irq(&hugetlb_lock);
--       needed = (h->resv_huge_pages + delta) -
--                       (h->free_huge_pages + allocated);
-+       needed = max((h->resv_huge_pages + delta) - h->free_huge_pages,
-+                    delta - allowed_mems_nr(h)) - allocated;
-        if (needed > 0) {
-                if (alloc_ok)
-                        goto retry;
+Hmmm I might have misunderstood you in my last response here.
 
-So we compare the mempolicy-perspective "needed" and compare it to the
-global "needed" and take whatever. Since we are taking a max it should
-only ever make it more likely to actually succeed with the mempolicy-bound
-hugetlb page usage, even though we still can't make guarantees since
-a free page on our node may be taken by a different reservation later.
+So what you are doing in that patch:
 
-Let me know what you think. Thanks again!
-Joshua
+1. Charge towards folio->memcg when we allocate swap slots, but do not
+record or take reference yet.
+
+2. Once we reclaimed the folio after swap out, then we record and
+acquire reference to pin.
+
+You know what - this would simplify my usecase. For vswap entries not
+backing by pswap, it *basically* just means I skip step 1 for vswap
+backend. Step 2 is shared for all cases. Donezo.
+
+You're right. This is simpler :) Let me brew on it a bit longer in
+case there might be something we're missing. but it does seem like
+this will reduce complexity (and with the added benefits of me not
+having to come up with names for helpers).
+
+>
+> > Just seems cleaner to centralize this info at vswap layer when it is
+> > presented, for now anyway, rather than juggling this on a per-backend
+> > basis.
+>
+> Zswap charge could be merged with vswap I think but pswap we just
+> discussed that we might want to charge it differently? And actually
+> vswap charge is still quite different from zswap charge if you want to
+> make vswap infinitely large? I think we can figure out this part as we
+> progress; it's not a major problem at this point.
+
+That was because I misunderstood your suggestions. My bad :)
+
+Anyway, please keep the suggestions and recommendations coming :) I'm
+playing with some of your suggestions right now, and waiting for other
+folks' inputs as well. Will send out the next version at some point.
+If there is no fundamental design flaws, I will un-RFC once I've
+addressed all the main issues.
 
