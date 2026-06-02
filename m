@@ -4,88 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 934C0CD6E55
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 00:43:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B861CD6E55
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 00:50:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2CCB6B028F; Mon,  1 Jun 2026 20:43:53 -0400 (EDT)
+	id 8F1E26B04E2; Mon,  1 Jun 2026 20:50:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDFDA6B04E1; Mon,  1 Jun 2026 20:43:53 -0400 (EDT)
+	id 8A7DC6B04E3; Mon,  1 Jun 2026 20:50:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA5426B04E2; Mon,  1 Jun 2026 20:43:53 -0400 (EDT)
+	id 790E26B04E4; Mon,  1 Jun 2026 20:50:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A5D646B04E0
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:43:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 43EA814080B
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 00:43:53 +0000 (UTC)
-X-FDA: 84833125146.13.0E42D75
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6CC191A0003
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 00:43:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="bFcb+93/";
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BB5A6B04E2
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 20:50:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EDEC3A07D0
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 00:50:45 +0000 (UTC)
+X-FDA: 84833142450.01.6FACF63
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 51CCCC0002
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 00:50:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=J0jvQxyU;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780361031;
+	s=arc-20220608; t=1780361444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rh2n9Gu0rmNTDcj9emYz6ha4zA22fi+waHRK2Lt+xYA=;
-	b=gK9xbHkLEZwxNRuKIfaJXRZMim2XunKPQS+UfoSSNAXRimtdB8Wn5+MQ8oI7Db4G+b7o/j
-	6HZk4BwGQgwk4qjPsh8NnBnxCdvch3RMqf9F1hWX5fCX5rU1DKQhfbwHF9ZkqlPGp5B2eC
-	JwzcI82u6W3gtVLMudsdLqv7WpN4Ilw=
+	bh=RmCDHQKxGmU0NXkOYJU/o1U/xmaSHU/e02onfhGC6hw=;
+	b=H0k9iJwUeWtpGngbuZ8LfMJ6HdemnmpyMytsJMhAWSCmgWIuHcLVzcvq9Csdfh2EaTOlD0
+	5XN1PB0+l+Rt9CjndkhToG8cvxi4+opCnGaDhAzSyNu9C2EW2EdeFYCzAf4dVbdzwYwc5e
+	ulSGg93YG6IdgK7HkwY0WlL4JK3bIjY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780361031;
-	b=Ga8SmHtLZ27Y9F4tzT1BawuKlruMAmfm6ka7NhbO2wSOkIIsLQV/x4lToVU0EFH2Q00Aaw
-	Jb/qXBWv//2ycuNBzDl7ZMrI2BFb3G/EGNg5qIn8ZI3rNG2BAD7CeuGU7Tq2eoqF1ARXVZ
-	s5md2cCVpp9MFHAAz9bfp5mTIzoSVvA=
+	t=1780361444;
+	b=ntyNYqG+/dUyuo8dt7FvvcDlWSpl7hBIn6UxoA/P7BzIR2dusdcMPO33p3mteBgCS5sJDc
+	meMdkKKtCcIA/SHf1B3/jKQo1f42fQ+ZIlyToBXh2hE97l6FKCVU3NhrSW28HC5JE/WOdi
+	nSG96pmMpRavFfDw7M++JfsLnSJeazg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="bFcb+93/";
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=J0jvQxyU;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8B7FC43405;
-	Tue,  2 Jun 2026 00:43:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA561F00893;
-	Tue,  2 Jun 2026 00:43:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id ADA8F6001A;
+	Tue,  2 Jun 2026 00:50:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C80C1F00893;
+	Tue,  2 Jun 2026 00:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780361030;
-	bh=Rh2n9Gu0rmNTDcj9emYz6ha4zA22fi+waHRK2Lt+xYA=;
+	d=linux-foundation.org; s=korg; t=1780361443;
+	bh=RmCDHQKxGmU0NXkOYJU/o1U/xmaSHU/e02onfhGC6hw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bFcb+93/9S95ynXbVnpuZtZBYT+X51bssv+rLmgGtRgV8B/W56LyHj9DX1uQVcj4i
-	 Pd6p0tFzPEmJGOLkLwCU38i7iM7tieX6PLvShLWnLmzImiLUxjSOP+AuXGeNX+RDxQ
-	 9ziqdplU8XWD78fouW0PPprxDLqIHU3nxGZ3Rhqw=
-Date: Mon, 1 Jun 2026 17:43:49 -0700
+	b=J0jvQxyUfDbgy8KBUh51Eoa4t4LKTT618EtplWjVH0iJBGkxHNpre1o4dUGVHSRYZ
+	 CrTYRzlqBMYT5EKyNl3BwL2qve5jb/cnRH/D4RnLUPrXHijDk14/PTvXhHGqjmGEpd
+	 nyuzpDwWARFe81Wl4qTEPwOeoCmx6cknORySJwK8=
+Date: Mon, 1 Jun 2026 17:50:42 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Chi Zhiling <chizhiling@163.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Jan Kara <jack@suse.cz>, Hugh Dickins
- <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Chi
- Zhiling <chizhiling@kylinos.cn>
-Subject: Re: [PATCH v2 0/5] mm/shmem: optimize read with reduced xarray
- lookups and folio batching
-Message-Id: <20260601174349.e521b96acac805ac3d9bfbbb@linux-foundation.org>
-In-Reply-To: <20260601055704.167436-1-chizhiling@163.com>
-References: <20260601055704.167436-1-chizhiling@163.com>
+To: kernel test robot <lkp@intel.com>
+Cc: Qiang Liu <liuqiang@kylinos.cn>, oe-kbuild-all@lists.linux.dev, David
+ Hildenbrand <david@kernel.org>, Linux Memory Management List
+ <linux-mm@kvack.org>, mm-commits@vger.kernel.org
+Subject: Re: [akpm-mm:mm-new 386/420] lib/test_hmm.c:1170:21: sparse:
+ sparse: incorrect type in assignment (different base types)
+Message-Id: <20260601175042.97c9e6372cb3e9f23f4a0f62@linux-foundation.org>
+In-Reply-To: <202606011329.zWs2BKy4-lkp@intel.com>
+References: <202606011329.zWs2BKy4-lkp@intel.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6CC191A0003
 X-Rspam-User: 
-X-Stat-Signature: u8n84utjzoj3byphiia8ktz1s8hcnpk5
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780361031-246752
-X-HE-Meta: U2FsdGVkX192vUKHW5uv9qPElqfrlf1gRtmdKrw7e9icYGHXyAYx8cbOgpLdOk9d1I65TEmL5OVlJVkEcj41o4WPmy+lFm4lUebdTwxdBYCTtdIfN1a9DyppggsDYBz3aXS2bsA14bOX35jLAWJ3ESv4jAtT5reoABqmVbE+vIwkZC6iZmNcD6FtJK6WhNmv5A28hGCV3R0VRgdshgQp6rfGREmW1hK4BSdniI309F7D1p/PGqHBdGxvh+b3i/sp+cn86f+KNAxIdwFo4FSgsFPRbwXx3VsYtdNiYH0dcBok+WxF8SszRattNY5TNbsOo6sPFq6UAUqHcB7QjVAkdl++6xpr90dRAFnofv8BaJ9hNDgZkk0FAi0KVdDrX7rh6mqZPUJNVFvEwYtY1cttSb0H1/9wneNDrRJNoOBWxxT0dLn2cxKTTGLMH9jeU/Ee+xwhXdHXL7bRCtC4hc2mzlvQNqijI5/yS2x2exEGMqkonJsmg1IAH+BPdW9lPZEeTSKTZxg9CQbBF78q1N/c4ieYVNFbyzCVby3QumPn4Mz7fxSQ965pNGQ/iwwPByC6PSon5HBCaznu6AJu6eBnZpJTTz3U8Fjtkd0Ns/00YwI/cTLBaEDb2a3xQEvce0CTP5GZeFolXS93IsvSvnwSaCiJACcxpIcDogYjFnHEeDGFYEyJr/8URqzeHba+LUiP+TFYvWJxwlvD2UoNIVobHmoOzwL35c3Ljln+tGoFKAFlOiM+V/Dxvj3MyKr+vF3A5anSlm18/VjXJAYbbHRPBnSsaAAVxihr2Zmp3Pp9ZRpCygbxD7My3y218O2xF7/McN4fbhLYWpMRMQ7y4+6ZD/SuUakhOI1B28q6z8LSfWx9IQIsLL6SdeGh1SSmsYEnyTCjHaxvv4dyzw2Bb9na9elNzorL/8cfcWtmsxG1kxnTX2tsDJjhPSM1zKYoWDAuWkCoSg6Awx7JpFcSPWn
- MwlE7o7C
- xIUJABMZdDr3b09c1zL0GZPv4RMYIX8nwVR9gGdUA5YZ5CkBy525kDsKuCyDAYbAfAIPWyYCp1PXf1xc70gtBsIzU8ojQNpGihc9r/dMKsL9hKWo4gC/P/mMDauhrS3+RnPQG+J2eo9IxsoUYpjiXJsx0cMEZQaKwMTfmU+3jb46KPOodH+dsGB2DBKg35hQ0WTEmWmC83P17d5kPZ5zlslU6hZeonV4258A1mfEUavxDrhXF0866BmgTE0QqJCBK5tJ5nx6ZKTLw/6w9GLv7dGdRSrAxMjyPKmDd0WESWGYDMqIln6bVneB2HQsJIiX3BizoI8H+K638nKg=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 51CCCC0002
+X-Stat-Signature: xk93kakwwzsbhy43w4twjpnmef48pfhw
+X-HE-Tag: 1780361444-132326
+X-HE-Meta: U2FsdGVkX18jF0znTiRCu1y9PwsWJRAZKS9EremO/xk4d2HMz8Ip1sZUDhiHukZYsPe7+ovTfpp+o3T+7CeLp1zwwDcdTUOZZOSUFmHF1NBHG1fF7f5v7rHP/zaZgNtvhnYySdvt1ORyTn0BCQYLp95ic3HJ2SazBmKfAL5pd45h51ZMC7nZi/HuvcoPmQE2y3+lvoX6MsmF9FnVw0C1WSTtXm9qVI/fep/dxUMM+cBrJqPALRI0lEBmjX1lBAj0tgEuDLQ1cIDntl8HxS7T0ciBbnkM/h23Ff2vuYsz/uMWkxuAlCvMf+TkTe1YyZdRW7w4CXV9QnG0IQV2zk9fZpEGensF5E+5dyh+sCB+DczpGH9B3MQRR71uQ8v/puha8oftPvQ3+SJF1siYRkfKNe9l38PLn6r7Y37HMVoTy0dYYeJ1ee9SN64xPE+ZioU1Hv5fWpz7BHSC0j+QdBLOA7v8YZfVtHv3bEbEK09kGNTt2aXUTnpVfYNsmDfdRSRD5LSe18WJ8bPRaiB6wgyJxnHm9tMvxczS1dUxJzjGtcUFn53Zm1UoQLh46mHFoCc7/e8YuUA3qWR/T1OTZTQLXGKC6CesP6/ez/cSXwFg1TzOQdKdCyb1QTEPAxG47GiY4XHHTFNvwk48ep2ZwDD0wMRvufSUTIO48jCdZiRQgi6oPJ0PzjoZyxKzz6j75iTPVBD8BJFi/VJeg1DU7Czzr6Ca8StrxBmTW/35Pe3CxtFaz7kEnfSNP6vYhT5wMm+lDn24Ai3reOXeFwKgAGZUI+vVGr+hOlF0JpAMQN0QUM+vIheXFy/4V8hjeyYvLTE9Lp4A65xxlm6zYj2WgvJ72r1P+m6YsfN/J6w2Wtpq0ucsliP0tdgUAUbJH/S9wCTSXxPLLnQcl+XKjckz623V+w8GPwRfFudMXGYI33/qOQlu1KoWDjT2OiES/uxHMZ/1CucAMGxMMmZa30Npjt5
+ ik+3m0Dz
+ 02HqoE4oxBTbuPh+xSdqwhx7eaiXB9IMBB8k7QoJ6PR6eBqyNiTBhUKiLTNkblgWM2X57pz/UoIE3QQLsGnZJ5n0uNA1L4YIa6bXKASU+eKfe3vdO6b1K5BmZ457+My5CKhH2xB141CFGD6qRIH+dxwnsFbc8cGRyckGq5ATfnK4wrlYzfikAWZlui9YjqMeNxwTEA3erZjFbcdJTZutZYebOYt17CTNJOxF0lNZuXsFmvmvAtFB6amYZ/4gksyP85wUaiUxp1Bj0dIxC82Luyft7ZYKoA/xju89dO6jMGwuRjoUGvW6eYC8NMccK6LbonJsnrW7zYsatz/gmsMAcjEhw0PPTG3c3lrxexZZTcskwyoGG+mI6pQx9Ht1ENJ5va989X+YOQ4lu6dWV0sIWGBO331zNJOsAfaF9zzC1ClF7CLE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,51 +91,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  1 Jun 2026 13:56:59 +0800 Chi Zhiling <chizhiling@163.com> wrote:
+On Mon, 01 Jun 2026 13:13:42 +0800 kernel test robot <lkp@intel.com> wrote:
 
-> From: Chi Zhiling <chizhiling@kylinos.cn>
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+> head:   d97bc98dadda29f23540b8490592962ebcf545ff
+> commit: d4ab4875497b1659c6c56dd9faefcb4a41c566e4 [386/420] lib/test_hmm: check alloc_page_vma() return value and handle OOM
+> config: s390-randconfig-r111-20260601 (https://download.01.org/0day-ci/archive/20260601/202606011329.zWs2BKy4-lkp@intel.com/config)
+> compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9409c07de6378507397ecdb6f05f628f58110112)
+> sparse: v0.6.5-rc1
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260601/202606011329.zWs2BKy4-lkp@intel.com/reproduce)
 > 
-> This series improves shmem read performance by implementing folio
-> batching in the read path and reducing unnecessary xarray lookups.
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202606011329.zWs2BKy4-lkp@intel.com/
 > 
-> Performance Results:
-> 
-> fio --ioengine=sync --rw=read --bs=$1 --size=1G --runtime=180 --time_based --group_reporting --name=seq_read_test --filename=testfile
-> 
-> | THP disabled in tmpfs  | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
-> | ---------------------- | ------------ | ----------------- | ----------- |
-> | 1M + normal file       | bw=11.5GiB/s | bw=12.7GiB/s      | +10.4%      |
-> | 64k + normal file      | bw=11.0GiB/s | bw=12.3GiB/s      | +11.8%      |
-> | 4k + normal file       | bw=3826MiB/s | bw=3849MiB/s      | +0.6%       |
-> | 1M + fallocated file   | bw=23.8GiB/s | bw=28.6GiB/s      | +20.2%      |
-> | 64k + fallocated file  | bw=22.5GiB/s | bw=27.3GiB/s      | +21.3%      |
-> | 4k + fallocated file   | bw=4655MiB/s | bw=4680MiB/s      | +0.5%       |
-> | 1M + hole              | bw=24.2GiB/s | bw=28.6GiB/s      | +18.2%      |
-> | 64k + hole             | bw=22.6GiB/s | bw=27.6GiB/s      | +22.1%      |
-> | 4k + hole              | bw=4652MiB/s | bw=4489MiB/s      | -3.5%       |
-> 
-> 
-> | THP enabled in tmpfs  | v7.1-rc5     | v7.1-rc5 + fbatch | Improvement |
-> | --------------------- | ------------ | ----------------- | ----------- |
-> | 1M + normal file      | bw=13.7GiB/s | bw=13.9GiB/s      | +1.4%       |
-> | 64k + normal file     | bw=13.5GiB/s | bw=13.5GiB/s      | +0.0%       |
-> | 4k + normal file      | bw=3833MiB/s | bw=3859MiB/s      | +0.7%       |
-> | 1M + fallocated file  | bw=24.9GiB/s | bw=34.2GiB/s      | +37.3%      |
-> | 64k + fallocated file | bw=23.0GiB/s | bw=31.4GiB/s      | +36.5%      |
-> | 4k + fallocated file  | bw=4710MiB/s | bw=4655MiB/s      | -1.2%       |
-> | 1M + hole             | bw=24.3GiB/s | bw=34.5GiB/s      | +42.0%      |
-> | 64k + hole            | bw=23.5GiB/s | bw=31.1GiB/s      | +32.3%      |
-> | 4k + hole             | bw=4690MiB/s | bw=4647MiB/s      | -0.9%       |
-> 
+> sparse warnings: (new ones prefixed by >>)
+> >> lib/test_hmm.c:1170:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected int [assigned] ret @@     got restricted vm_fault_t @@
 
-That looks nice.
+yup, the code is confused.
 
-Microbenchmarks are useful, but are you able to help us understand how
-much benefit our users might see in real-world workloads?
+>   1165			ret = migrate_vma_setup(&args);
+>   1166			if (ret)
+>   1167				goto out;
+>   1168	
+>   1169			pr_debug("Migrating from device mem to sys mem\n");
+> > 1170			ret = dmirror_devmem_fault_alloc_and_copy(&args, dmirror);
+>   1171			if (ret) {
+>   1172				migrate_vma_finalize(&args);
+>   1173				goto out;
+>   1174			}
 
-I'll take no action at this time - it's late in the cycle and reviewers
-have yet to participate.
+How does this look?
 
-AI review flagged a few possible issues, so please take a look:
-	https://sashiko.dev/#/patchset/20260601055704.167436-1-chizhiling@163.com
+--- a/lib/test_hmm.c~lib-test_hmm-check-alloc_page_vma-return-value-and-handle-oom-fix
++++ a/lib/test_hmm.c
+@@ -1167,9 +1167,9 @@ static int dmirror_migrate_to_system(str
+ 			goto out;
+ 
+ 		pr_debug("Migrating from device mem to sys mem\n");
+-		ret = dmirror_devmem_fault_alloc_and_copy(&args, dmirror);
+-		if (ret) {
++		if (dmirror_devmem_fault_alloc_and_copy(&args, dmirror)) {
+ 			migrate_vma_finalize(&args);
++			ret = -ENOMEM;
+ 			goto out;
+ 		}
+ 
+_
+
 
