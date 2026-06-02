@@ -4,102 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52AE5CD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:58:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F5D2CD6E60
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 16:00:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B85986B0088; Tue,  2 Jun 2026 11:58:11 -0400 (EDT)
+	id 4AB956B0005; Tue,  2 Jun 2026 12:00:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B34C46B008C; Tue,  2 Jun 2026 11:58:11 -0400 (EDT)
+	id 4823C6B008C; Tue,  2 Jun 2026 12:00:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4AE66B0092; Tue,  2 Jun 2026 11:58:11 -0400 (EDT)
+	id 3BF5E6B0092; Tue,  2 Jun 2026 12:00:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 95B9E6B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:58:11 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 460FF1A094F
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:58:11 +0000 (UTC)
-X-FDA: 84835429182.08.FDDD917
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 55C8D4000D
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:58:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fvKvJXdp;
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AA526B0005
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:00:51 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA449C309A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 16:00:50 +0000 (UTC)
+X-FDA: 84835435860.30.6392550
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B04BAC002A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 16:00:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=H2v1eMrR;
+	spf=none (imf10.hostedemail.com: domain of BATV+be7fc048bc4f2c536b43+8318+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+be7fc048bc4f2c536b43+8318+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780415889;
+	s=arc-20220608; t=1780416048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rx+0pE4L3Y8nALJvhY8y9z/1V3Frljdp5XhJ/FJ5LMk=;
-	b=XpN0IA6/rVfDtL+oJZbwKGvRHtaNva7bWvt/om7MZs5AyPPNQNK8ECCXRt+PiBAmz0qCBF
-	Qp2irR8/0X5VAyp1iWDI29c0CNAlGWbXyZ1f0RrnBigUmrLqc8rRDNE0bAuiik+1u965jM
-	0+UUDNBVFixzGt5oFMgryjG1L/kQJ/8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=VvElFF068Ve7ZBeg/s+GYXAA/2OootEbAfLXW7NSBv4=;
+	b=RO8LhLrGNnV6lEYwu7zHaiaGM/vH/8FNd4qr6DdOLq4+0f749wW/EPPfZ/KEyNilYxVkkg
+	tu6DGd4nMbZZ7jxOgp4XtYQiCOXS0H4wLAfyPIdfvWkXA0LDthnt80eTH+u0LxoWDQzQpe
+	xG+kEDV5qv02gNlBZWX8p/Zb6e6eTog=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780415889;
-	b=xSyM6sJVDJyN+Mn//WRJfkRk15inY15Ul0bspOR3LMMAQRiga4jsJMyuH435J+o3bMyn9n
-	N/1/2jXAfjb6Doxk19VWqktyYIOcnFoeiTZFJ4a/BKQ7ug0GPm/VDUu2SnrPwYsKfKTW3t
-	q95C8Tv67cqynCAhTWn8J66VfzdhtUM=
+	t=1780416048;
+	b=W6VKxRTQUGhlQJNOrbrY/N8qiJj3t7aifoJwSTqala9p11IBcoivDCw/B70xfHmIS+33Mb
+	NjkBRwBQC2YCuV00yCG7ubJaz6qN/EE/OoXFAgs/nVe/kvGSz5XgUVZ/ObShSQintBoe4J
+	sYFEH4WikryfVzGIOgMdmE/Vx6R36s0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fvKvJXdp;
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=H2v1eMrR;
+	spf=none (imf10.hostedemail.com: domain of BATV+be7fc048bc4f2c536b43+8318+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+be7fc048bc4f2c536b43+8318+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rx+0pE4L3Y8nALJvhY8y9z/1V3Frljdp5XhJ/FJ5LMk=; b=fvKvJXdp5ZKXNTcHlJD+b/mN5+
-	/VukpZDAGqEmxhOYCWsu9X3IR4/SiAXCO0U/fXNRA8mimHrGkxEwvUvKruPPVvVGtP0F2KWeZHkkN
-	Tt2L/cYxzF3toCUrpvHgNRtqGPoZg8o2CkVj44ZJcSYN9nGadiJVsFu68R7qIoHznr5Wp18V71JjE
-	m5SVebyLMuifZCJwQS+rDhpBa0MxB67yxgJwQoOEkKqqvq+AEw/BYqHDGILpP0GMoC8azOeIFB2gX
-	IjI4Y2YHLz3qMlcSdQ33u8nGbImpQEveVMwNtRI5xaCPAY/0IxGcDVI2wQgyySfOtIbECItfKr+Ej
-	uV4mo4lg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wURUp-00000002Dze-0XIU;
-	Tue, 02 Jun 2026 15:57:39 +0000
-Date: Tue, 2 Jun 2026 16:57:39 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Jianyue Wu <wujianyue000@gmail.com>, Tal Zussman <tz2294@columbia.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] mm: move folio LRU code out of swap
-Message-ID: <ah79c9IIuXt51ybs@casper.infradead.org>
-References: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-0-5bbb567f8c99@gmail.com>
- <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-2-5bbb567f8c99@gmail.com>
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=VvElFF068Ve7ZBeg/s+GYXAA/2OootEbAfLXW7NSBv4=; b=H2v1eMrR4o3a9ugvd7BrH/6Tw0
+	r3SU+To9h8oh+5o8YQTgBa/xfTMb+naqzquPhwWqqQ+yUHWCutZdKD13IoLAdVeGSGV2Br+BHSkh7
+	DaeIBed7+2oackQBAGW3aPABvIZ77cQ0rXiuqxYhWI7Nvkf9IyBrjGjmJ28klJjCLHKXsXm3NjwgM
+	h8D9klFrEkqboBdyvYkFn1tyZD1vfKpAMcl9V31O7oUm97BMDPfSZW5F6pSxFp5m8hZq6QF788sT5
+	54eqjYCTHGrzg6f8Qf2NVq4269GhUqXjRYswDyxKRavAP9GDp3AqesMArvIXm//iJWRMfs+67TuEV
+	dhB8xWOw==;
+Received: from 2a02-8389-2341-5b80-decc-1a96-daaa-a2cc.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:decc:1a96:daaa:a2cc] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wURXn-0000000DO2R-1baf;
+	Tue, 02 Jun 2026 16:00:43 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: vbabka@kernel.org,
+	harry@kernel.org,
+	akpm@linux-foundation.org
+Cc: hao.li@linux.dev,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm: simplify the mempool_alloc_bulk API
+Date: Tue,  2 Jun 2026 18:00:38 +0200
+Message-ID: <20260602160038.3976341-1-hch@lst.de>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-2-5bbb567f8c99@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: B04BAC002A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 55C8D4000D
-X-Stat-Signature: dq68mxsxmr4j8zhcp1mt6fuigqw36zqq
-X-HE-Tag: 1780415888-351150
-X-HE-Meta: U2FsdGVkX1+iwWKUjhwecvUYOo3gcTqwBa71W37LISRaIj9Ijk4yFkGyDfltaZ9LtpUOIEwJ1Dv5pU2wxk2Xc59ASNQqD33rWOrTfaBjZo7ZKlxC66AMonSeLMXfVUKWVW7DWRNLlm7xGvD3DIydTBsUlo4dhHqyFx+7xNUHiWhuGEVkmJMvbH+s1pA8GjyYPcH5RaqWUUED18H2iSjkW7iOJpua+6VlOglFrxtIvahyHFEiMaXlOM7b3eiJJGDmVrW5xf3qEL/LQdo/2b2XPTx7fF9QdAO+JXJ1C5G+F7g3GDko6x8YtFLermOPyJFFviKZekOJa5A9pHwNZ77hoPvEeWuTRnS3x4xzYlfsn/IQaZ0LnnSkAF5Bh88CI+z0uAYaWvRd8V3Tb5pa7GP77DH8RgKH+zM/RLwGb+JQZ+0rJ6gDro97eNSw+hKNzTEjzu6FKxT8PMsYd4hVqjEOUVmz9YMfobcOAzHf35UVB9qSsvf0vlPsAkkkRPaZ4uhtqBPDvtFtamDF+AdF7rBz6qG84SDRJTktbSlCIteJDuC8UBF9z/GjUEwhpexFnzhfXQZycbMGNKqgq4Tifm+j8C2JhcfYPkE4aLXZ2TEfFhowKbUeFjvnp8jix7lNtADoav4ZmFvxpDtl0xXX6ykFPECqgxPnKvmFVHVsb/5r4aP5wbBRaNt/7SwyrQJxUeGhIvn7I5DJPgRw1FdzVBZ8mA/+FhT4M+rdUenioMjnE2C1RCD+XYxWm8E/l89Kmq1kdN5oFznsXQXR94/uxarioJt3Cv5pJdhoybhkMC0rG4sQmvUYSMVM2V5Nv+st1sT+5XDaSraH/8hZgfrwoiXd870Nvo6g/mnUQsjIV1OynDNBqrG9J+kkYXLJW/DfZxP/l8u1bmHnPeLl+ACG+lM5PTNrFK/QjS5BVNdN23h+zsHdmAZepf7yKXAntRJn6lS81X84BWkwX2gVepBDMeT
- UmVVhKlX
- meiYDM+8BRK9+ZXi1Nz7K/xl9hlkfykAx1Pem5QzzyzcbzeE2mNFgmu/xXfoPC9O7U8qe7Q2nE+lXwr4Ev7TmQdBAPKIbGhKMeGgLanKTo9rOpJGZNGiEG9XS64QM1/tn4+NpiuqBkDXj6ivWbzroKWRurVrtLErG887FkI20ciS0PKp2VRY+VSsKPEGcGGFae3zEfDxYeLjWB6mHJiSyRqQVmYW/BI4pf8zk1VSrBIRC0KXojOOzLu75LlOdhGZCHZMV6b5pDDJSk0F+qXyb7y3YWac37klzoUo70tP2t1MhA44=
+X-Stat-Signature: qs3kf5fciwzxkq5w9b57ijh9644xqxcg
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780416047-982362
+X-HE-Meta: U2FsdGVkX1/6GJdSfBl1X+l3gLzTMufSUATOmTXd5LK/SIt4JdZ8E7utVm8Xt19XajRR6hrI5K1prEqCnPKC05Ek6qebdJYU7W+MSV8w0JiPwfoAjCMwvDN918W/R/eQv1FQD6tHficMFD27Qm6m8ETTU3i/62J6bVyynhv/2DRzFDV8VOkX9GtAXCHU/GB/lgKY+eYzFzc1Uj/KLIoTkmBxoi4YZ67KKSb6idK9yIcDh6uvniCTWA6aOIzyHR/waTnmMybU3Fn63f8UqSIwm7NCP8lGwbKlQstPDxXwyt0+q9B9lYdwTBDEWaTtIAK5zLf97DxXZ8Z0Nh3WDF7xZFfH1H3XWNMC1KTb6OV0nLdDuMrx82p9fEp0ZnvW23cbj1DSZHr9CKDPVSMybGozEpYx1h+tVs41od1Hjn0e33IKIUH86qfK2VhAuRg0ijbFlEau8mjuHSuZZEGSsHjZxG8Ni2kHtacztNnaMEkQ+LHRP6dHgESXcqujl5WNaiUvSz6pX0OhbQKVfWlNStjuqXA7nuGArbco9eEc5jqYVlLMZu07dzmqKXWh1S2mBBFpYT9ym+TrDvWyIYko25+rAti1DQUNjpVXGCBPtemqKIKhR/RT+697Kj0bMTPjUA3rHDBV5MeewaPcAUkU2LJcVbY+SgeKvlSXbAx+7P6bcjjGtYJ5xy43KfUUCT3vZvHnQBjvWbG65Uv+bLhYw1ClQRkTsm2PIGN5vFws52KwjY74Mayl0x/1J9xur4yy5+xUgCbXmUQ70mykNcVnhosrD3zKfqxGB3m2wjcbi9kbxLQvOulEyNbqOs6yrAvxEbGRpB4pDuGMlLvvoEnizQ/oQa8CVspD9P21ppTbXDl0YmsTDU11F6Z2WaD0mWzvg5zz/Do3ttvSeRtof7855MTJ9a0vVRohVT/UqqmQcZeExR1hX3ikSMs7h8Ggtq9WBL6huIg74Brf5bAOETZGlMl
+ Zeh9B+yt
+ tQ6qGPnewD0PCKZuBjvyG2xXHnAu9pTvgrwwWrrxsKvm1elAKypryo7N46MAU7T9ZNrcdQopnMRM0UASFCfSt0hGP5YprEgTuav8XhcQA29RwFd4SEGpNCSWT7jBUQjGcUw3Gh65PYbXv9d6HJ+E29ieJV2Rp8LwyXhvbv4xcscpxuJ+t9InA9ErTOk0MQd9r1qmjlBgUmw8wa6pN7zBHOt6d1i0CShh3JIHBWWpSgMNuWyY9x8eKZk5dS/ohQRxG+NGlIQVVBzShwyHP/kdRRuKZR3MYXgqrmteCNHTqT9rnjAM8+cfp5X01g89kK1iMFp/di1CEY/M4WsK2iEFlFsi02u79PjUH+P7bISXZHvs1dRJ5lQ+u/+scNBT4+rt1+/owtj4YBZsjdb+UVkL+s4/X8cCrZdND+KpT0jjFRLjXhh2cIeZMpSr8d148BQyT+GbUuOQjPTAChM+DQZYoV6kmUymnsw9taM86cX3yL2r7uL3cEIel2iLRRFmG4efJ0iJWNR6/Prt3QbhMFrZvTe1SmqAFfI4RZL/qr/T64bQAJikhitgw7S9CzugB1r9kboeEl95yNm9SMlTBZD0ZJT3TrpqOYB3wXH/eaxPPT8i2nutbJeYDYUEfSHGmwf6HYSj4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,21 +94,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 09:01:16AM +0800, Jianyue Wu wrote:
-> Rename mm/swap.c to mm/folio_lru.c so the filename better matches
-> the code's main responsibility.
-> 
-> This keeps the implementation split from swap-specific code without
-> changing the published LRU helper interfaces.
+The mempool_alloc_bulk was modelled after the alloc_pages_bulk API,
+including some misunderstanding of it.
 
-At the same time, we have Tal trying to split folio_wait.c out
-of filemap.c.  https://lore.kernel.org/linux-mm/20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu/
+Remove checking for NULL slots in the array, as alloc_pages_bulk and
+kmem_cache_alloc_bulk always fill the array from the beginning and thus
+we know the offset of the first failing allocation.  This removes support
+for working well with alloc_pages_bulk used to refill page arrays that
+might have an entry removed from in the middle, but that is only used by
+sunrpc and hopefully on it's way out.
 
-I wonder if instead of folio_lru.c and folio_wait.c, we shouldn't simply
-have folio.c.  Tal has 700 lines in his diffstat, you'll have about 1100
-lines, so that's about 1800 llines which seems like a good size.
-There's some functions from mm/util.c that would fit nicely too --
-folio_mapping(), folio_anon_vma(), folio_copy(), flush_dcache_folio()
+Also remove the allocated parameter as it is redundant because the caller
+can simply specific and offset into the entries array.
 
-Other people have thoughts?
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ block/blk-crypto-fallback.c |  9 +++++----
+ include/linux/mempool.h     |  2 +-
+ mm/mempool.c                | 27 ++++++++++-----------------
+ 3 files changed, 16 insertions(+), 22 deletions(-)
+
+diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
+index 61f595410832..ab6924fba280 100644
+--- a/block/blk-crypto-fallback.c
++++ b/block/blk-crypto-fallback.c
+@@ -199,8 +199,8 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
+ 	pages += nr_segs * (PAGE_PTRS_PER_BVEC - 1);
+ 
+ 	/*
+-	 * Try a bulk allocation first.  This could leave random pages in the
+-	 * array unallocated, but we'll fix that up later in mempool_alloc_bulk.
++	 * Try a bulk allocation first.  This might not fill all allocated
++	 * pages, but we'll fix that up later in mempool_alloc_bulk.
+ 	 *
+ 	 * Note: alloc_pages_bulk needs the array to be zeroed, as it assumes
+ 	 * any non-zero slot already contains a valid allocation.
+@@ -208,8 +208,9 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
+ 	memset(pages, 0, sizeof(struct page *) * nr_segs);
+ 	nr_allocated = alloc_pages_bulk(GFP_KERNEL, nr_segs, pages);
+ 	if (nr_allocated < nr_segs)
+-		mempool_alloc_bulk(blk_crypto_bounce_page_pool, (void **)pages,
+-				nr_segs, nr_allocated);
++		mempool_alloc_bulk(blk_crypto_bounce_page_pool,
++				(void **)pages + nr_allocated,
++				nr_segs - nr_allocated);
+ 	memalloc_noio_restore(memflags);
+ 	*pages_ret = pages;
+ 	return bio;
+diff --git a/include/linux/mempool.h b/include/linux/mempool.h
+index e8e440e04a06..a0fa6d43e0dc 100644
+--- a/include/linux/mempool.h
++++ b/include/linux/mempool.h
+@@ -66,7 +66,7 @@ void *mempool_alloc_noprof(struct mempool *pool, gfp_t gfp_mask) __malloc;
+ #define mempool_alloc(...)						\
+ 	alloc_hooks(mempool_alloc_noprof(__VA_ARGS__))
+ int mempool_alloc_bulk_noprof(struct mempool *pool, void **elem,
+-		unsigned int count, unsigned int allocated);
++		unsigned int count);
+ #define mempool_alloc_bulk(...)						\
+ 	alloc_hooks(mempool_alloc_bulk_noprof(__VA_ARGS__))
+ 
+diff --git a/mm/mempool.c b/mm/mempool.c
+index db23e0eef652..473a029fa31f 100644
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -419,12 +419,8 @@ static unsigned int mempool_alloc_from_pool(struct mempool *pool, void **elems,
+ 	spin_lock_irqsave(&pool->lock, flags);
+ 	if (unlikely(pool->curr_nr < count - allocated))
+ 		goto fail;
+-	for (i = 0; i < count; i++) {
+-		if (!elems[i]) {
+-			elems[i] = remove_element(pool);
+-			allocated++;
+-		}
+-	}
++	while (allocated < count)
++		elems[allocated++] = remove_element(pool);
+ 	spin_unlock_irqrestore(&pool->lock, flags);
+ 
+ 	/* Paired with rmb in mempool_free(), read comment there. */
+@@ -479,22 +475,21 @@ static inline gfp_t mempool_adjust_gfp(gfp_t *gfp_mask)
+  * @pool:	pointer to the memory pool
+  * @elems:	partially or fully populated elements array
+  * @count:	number of entries in @elem that need to be allocated
+- * @allocated:	number of entries in @elem already allocated
+  *
+- * Allocate elements for each slot in @elem that is non-%NULL. This is done by
+- * first calling into the alloc_fn supplied at pool initialization time, and
+- * dipping into the reserved pool when alloc_fn fails to allocate an element.
++ * Allocate @count elements into @elems.  This is done by first calling into the
++ * alloc_fn supplied at pool initialization time, and dipping into the reserved
++ * pool when alloc_fn fails to allocate an element.
+  *
+  * On return all @count elements in @elems will be populated.
+  *
+  * Return: Always 0.  If it wasn't for %$#^$ alloc tags, it would return void.
+  */
+ int mempool_alloc_bulk_noprof(struct mempool *pool, void **elems,
+-		unsigned int count, unsigned int allocated)
++		unsigned int count)
+ {
+ 	gfp_t gfp_mask = GFP_KERNEL;
+ 	gfp_t gfp_temp = mempool_adjust_gfp(&gfp_mask);
+-	unsigned int i = 0;
++	unsigned int allocated = 0;
+ 
+ 	VM_WARN_ON_ONCE(count > pool->min_nr);
+ 	might_alloc(gfp_mask);
+@@ -514,11 +509,9 @@ int mempool_alloc_bulk_noprof(struct mempool *pool, void **elems,
+ 	 * Try to allocate the elements using the allocation callback first as
+ 	 * that might succeed even when the caller's bulk allocation did not.
+ 	 */
+-	for (i = 0; i < count; i++) {
+-		if (elems[i])
+-			continue;
+-		elems[i] = pool->alloc(gfp_temp, pool->pool_data);
+-		if (unlikely(!elems[i]))
++	while (allocated < count) {
++		elems[allocated] = pool->alloc(gfp_temp, pool->pool_data);
++		if (unlikely(!elems[allocated]))
+ 			goto use_pool;
+ 		allocated++;
+ 	}
+-- 
+2.53.0
+
 
