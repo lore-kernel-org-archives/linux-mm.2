@@ -4,70 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87325CD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:42:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E95F9CD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 15:42:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC7AC6B0099; Tue,  2 Jun 2026 11:42:02 -0400 (EDT)
+	id 4B5DB6B009D; Tue,  2 Jun 2026 11:42:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9FA76B009B; Tue,  2 Jun 2026 11:42:02 -0400 (EDT)
+	id 48D376B009E; Tue,  2 Jun 2026 11:42:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDCCF6B009D; Tue,  2 Jun 2026 11:42:02 -0400 (EDT)
+	id 3CA356B009F; Tue,  2 Jun 2026 11:42:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D23A46B0099
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:42:02 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5F5571209BE
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:42:02 +0000 (UTC)
-X-FDA: 84835388484.20.6A98A13
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 29CC76B009D
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:42:07 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B0109409D2
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:42:06 +0000 (UTC)
+X-FDA: 84835388652.03.A18DB4D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 938E2A001A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:42:00 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U5nLAucj;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 160F81C0017
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:42:04 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GgUThQiV;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780414925;
+	b=lzZ9a7kUH7HltMUoxB1OPd3KNLv4v+0ulNhxiaL3NbNTJDf9gqLXhHKlQi1xDABYMxqIty
+	3GiXGg3e/iQFBQGiXykaFADi8WEdnSM6achVNvMyQ3y/1G+9S35JFday7hrHEY8VCa9NjH
+	eCHt2dhIzWj83NAR86L+3Qn/jZzlcMc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GgUThQiV;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780414920;
+	s=arc-20220608; t=1780414925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vjyqcof3ur0VsBuQ27nsiijAuIUGnyHJR2TBn7uQ1bA=;
-	b=6flve0JsgE4YKxA1kDoJCDwV5G3VHvGbQ394CTlVfpFTB0+1Lrcovp7TcA1UbhMAkoOvdN
-	gHnI3hdWW4e58tJQ0z5hFYnDqpibEPxrfj0teqCejg7E/CQC8WdioCwh/c6cjXkpHlcpGh
-	EWi2HFi4KOJcaaNSzyYW0gUjamwcx0Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780414920;
-	b=fQwH0Mf0yDrJz68saqLVQ1EPrHOBqG3Md5Vxl/Yvqssw2F8j+o5iSmnIZ7Xy3XwCFvAoxy
-	NLbmxmQjM30TpQhnm5xcgfsjC7JqJcXaRfLVtOKqeHNnqxxlGmZPp2PQFIYTJ3P49OC+Ox
-	9iEEqI1W9qk+TPrPtETjQas3owQ0XOE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U5nLAucj;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=e2iPxik+gt/K9tv+LiH1rAAW4SyqMQzYLDmc1qnwxLM=;
+	b=sOIntutMtWk4VHpK8787AFz4SDKgByY/SGzFGInP80j5l7wvIfBsgmuAI+hp+XhBMnR/GH
+	vNMY4GRNMojrlG2U8q/MoAI8FJt7pKQTl7egDwZzJHmXU7jC+ZFyerWe5bqT/vkKhdheTQ
+	YuCvs+3vaSebz0G1oCR39UEimCLt9h0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 269CD601EE;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D890601E2;
+	Tue,  2 Jun 2026 15:42:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B4A1F00893;
 	Tue,  2 Jun 2026 15:42:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A3E1F00898;
-	Tue,  2 Jun 2026 15:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780414919;
-	bh=Vjyqcof3ur0VsBuQ27nsiijAuIUGnyHJR2TBn7uQ1bA=;
+	s=k20260515; t=1780414924;
+	bh=e2iPxik+gt/K9tv+LiH1rAAW4SyqMQzYLDmc1qnwxLM=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=U5nLAucjBQDIwq7yJtoAo3oZmrJdkEqlXpFMLCL0wCgSNs56Q1QG8UQ2nIM4l71kh
-	 Fea2t+TqzlJ90MjzHpqV9BMz8BgdQna2uruvigNJp70yVRAfr6LJbthE5RxUeVcD0/
-	 LOES8GA3Aj6LYog7tXS+tu1fMxb4SznjqNZjkQAxS4BhwdEZbpgGFeepkOv6SxLxXK
-	 GW2Qp26bTTYyKVDktap1k545sMZyoRjtoeLq0jZOcf4Bl8Ju5HWmwLOl6zemPklVON
-	 OoIaFKEJHR6a9dx/8booAcrG4au9Cjgih+fkkVA/wBJvrA58JX72Jj0RffeydvtvSV
-	 tfnhUtwxe2qjQ==
+	b=GgUThQiVtXfAn3sygsENtWy2bNcoEtDTKqD+k+4/dxd/WiRCuyxnl9FNmv6OIJ77y
+	 n61AQDGralQUr1hgbaUDNeTezd62bqW93pXWmQ4mzltanuxw6RYc043O9G1+XSuwmN
+	 oCrz8Fexug5hS+AzzYrnxpGJnJ1qfUUfNAqTiYpkhNSFZPwWnpVw34d6YD/b9H/iTa
+	 yCLC9pFCfN5EZo6/RN5il4tU0859XGgEkzcqcvQ7BEu1ZAYRKuWCBwGu7onNxF6Elj
+	 GGY+l0vvny2VAZOCXjjRCGM6FR/syqL2X+I30lSXL7AGM3536mCck0Rt8jP6ITh1mP
+	 hs3aSoD6zTLmw==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 18/19] mm/hugetlb: Remove unused bootmem cma field
+Subject: Re: [PATCH v3 19/19] mm/mm_init: Fold __init_page_from_nid() into
+ __init_deferred_page()
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Oscar Salvador <osalvador@suse.de>, 
@@ -83,20 +84,20 @@ Cc: Oscar Salvador <osalvador@suse.de>,
  "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
  "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, 
  linuxppc-dev@lists.ozlabs.org, Mike Kravetz <mike.kravetz@oracle.com>
-In-Reply-To: <20260602101039.1867613-19-songmuchun@bytedance.com>
+In-Reply-To: <20260602101039.1867613-20-songmuchun@bytedance.com>
 References: <20260602101039.1867613-1-songmuchun@bytedance.com>
- <20260602101039.1867613-19-songmuchun@bytedance.com>
+ <20260602101039.1867613-20-songmuchun@bytedance.com>
 Date: Tue, 02 Jun 2026 18:41:34 +0300
-Message-Id: <178041489401.457517.7510742037477989122.b4-review@b4>
+Message-Id: <178041489408.457517.2991925440539441241.b4-review@b4>
 X-Mailer: b4 0.15.2
+X-Rspamd-Queue-Id: 160F81C0017
+X-Stat-Signature: k77kb4j4g7ch1izwabyiu6j5pw56meof
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 938E2A001A
-X-Stat-Signature: sq1mtn8bwxewj71uhxp1gp18n5cpmi9q
-X-HE-Tag: 1780414920-494755
-X-HE-Meta: U2FsdGVkX1/VjXFsPkxHbW+b7lOyUGfDF7bzVqO3ud8nunO/RbBzEeWGXDV3FcqmQIVqQTdjUFpX8QPXn8KxNSZJAw/rOVRWbwZJ8JGBXiziWGXHt59LP7FQlDnrNCaSR2yAlgUU65tchAsify9By4Zs9AD/g15Zq/xoYM4h1Cd5AHf65m9MBOFkRg9Gpm0pwWlJCcv7GdOe7fmzoPEFrZo1oTq+Kpksc7IeQhsal7LzqzEzR3nte5xrg2x5UnM0HC/TjjjQbnRlqjhe8e7AI/8wMZuBfIRaVzlj9dq9wQXRdDw2H0q8Tv0kzJOGcJVWym0GoxdkwBV4g1qzD6KtaWBh+jm54ZJeZsmA6F6+MB/XLOK9r39Sn6+Iq7NKnvraLwdr3/IsziGu3lwvdk4jtpzPVyArRUqHuYXbCHp5ancxD4SZ9zMuI3p+cGhG7/NntX3954JyZvbL/S4xoXooMj06yBapswSCfyo0IDK825K/TnaFsv24ifudoBGbcpLlR+iTwR6dJ9ExDJTaZQl2weH4UwCEOEAqlQfvz64yJErEohFnP1pQltBg+U1fmihxK2Z3zPDV0C5Z+isWH2pR74xaTDizHKnjRiNCXd0+vyDMU/E1nJ8iAkhwX1WLMOpdp3/oDvncIw6rOZT4li5Az43HbAMfaJ+05D6t+FRLoz6GClru5rQF6192KINLZsHY55JqxcQh8nh+2ytSV3lofg6A69+gcIQ6M1AV1ZWaoiG4pTf6Bbyk36V+JVX/FF1oTbr0knMtyDh1bJBrgnfYvRuKWkfpYV3EcyJNYQ5L/vEQJqmawQ8/g6x+C0qfUPt+rxFdALIi6893ONJA026aHQnXxlQ94m85a8PevGxZF1UVbtE3aXi2EvQy4s9QO5pLeOXBvyAoA9V8zFZROXhoGTsCsgev6BgjrmFTFdAA55zpbqmYEC9UCOlJ2J235ba3ivmMC4ZyI90hX/qLqIO
- I1sCW+oK
- G4qngrwvupVWLLV5FGpMmE7nVlVXFzexPddp0SpKA8l9C4xlHqbTG+juS2hqZpphvF0T9/jQFDfPLVCPmXbvIF/HEoA8nxfrwHBPRpFubawaNtkv72eie6agi4plDX8/qpp4iS9mXG/hKnZZaKBrl8jsVxxMlXRHofvgOLPgAJifB4vRXFEZvOaCZn216qv8DtOimlm8sRw3BtVg3e+I7JBges8PZ1O3qryTkrc6hTPHdditVNZt8mgE87F5W0Milci2eWAG66p2f1Cfa+Tm5t/XISsSO3dRf2MW7hmVDEUVJmus/9hQAqIJx33XhKLLUjjws
+X-HE-Tag: 1780414924-30397
+X-HE-Meta: U2FsdGVkX1+ZLMyTPr9dFiK7gkg4MYscys0y+Y9fMM5/vgcX9e3p7wUr4vsvM6HsP1JQZSs6CSXzDjZvHj3ROI1SWusf80jKfiZMIoumU7xJREdBmVMyQAy9qC0BFQnvNQuO4Qe6esiiUAjEeU4886sc9ah95IeLaI6YUvgHuPk9816AXabK3Jf4Mn5ZblKP9el7Dmm1I4aJBW8U4U4OnrygBU6U9yrvtXvzmic9br7+CJL8ZGcDTtiWCnohq/WOVAEx6jyyabr0uysKfO1WStbpbyVXKVeQflyLynbm2LRM5ucstyPfFFTeuKvkHPZrh8muU0qwZCjBAMXuDlAUBHrNbOPF9rwC9ZjpoPFtiBPTuNQW9DsciqUFPSLyvxhKOrdIYUhi5Kvo8zEuOieQJy84k4wH20tNAlprYhUixGf4+brxZ00AsdP5J7ksmsz9N83eVXRraQHcr6h4f4NeKe75Goi0pZcdtg+tVIRENrKL6bKNjjn9dnEeJrVSUl107kN2sYA856nOL2kOv9bzsbysUBZpjy8Ju7xianeA6MIzGyeRAA/zmx8nOjZQAQBwyCMWXQhOM0HAS4WyHHAFL9PXn+9fvgG2ceDUXDbk331diLwJxzxmbgSrpMiW0G9rIuiGYOyfLI9A2XCF+sGhAxQTNkx4liDp2MMOBTP6vHS9t4bgUYiZUxFpOqHTetZt4jP6NiNbpPaI7NoI/zEJdDMdcFJDQlwD0XoHlB28dhWRUj4JND4kdpa3XlR9x0MLVaShBnptQyeAdlUY5JW3GKu9tmUnSDK1IGl+MCcAfimfY7W0yEdFNZq9ArhlyQuiFlVtAXK1Bo8se0uxhFE5wiDNvz39eVxACG7s2kNci0wmSgxxd3c5wWNwrj4f0ZTsZqqKJ+3+qX+quLozuF0IitbgNAcsSrX92xMX22AmIKP7fTFj0XHcf79IbJpxrAtCD6HFkUT1LnCe9PofJbG
+ Vxj9kIxw
+ 0AWWSp+qTjT8IRtQjVbHeDpk1Mr/umRWmIXj9guXYDIZaRgXmt0BF0CYQxCMUZagCPivn+LkA94KYRxAOm+3RWHGVoD/HTKdqP+255hv0KoegZXY1TJ22YNp3rnGnVXb2UARAKkNA1JoY52K/iYTpIFsTq7amKa5AHostHhqZ7uTWtwaIqPENUF7MBgmdXcF0SGGy4wRywZFNGZNOnaZ0mQO3PZOOFIKBm7+aRl91bTm45dmNnZ20IrrfVTF28ae5ZvY7F1txk2pleDRlXgMOtSL4ShHz+5EkGCrINu+9BXEeFnXubHpeaKmJ5/uxj8S/G4SqtS4tJCPu6asngeG03Wp9wwHbF+Sw4p5l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,16 +105,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 02 Jun 2026 18:10:38 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> struct huge_bootmem_page no longer needs to keep the CMA pointer. The
-> bootmem path only needs to remember whether a huge page came from CMA,
-> which is already encoded in the flags field.
-> 
-> Set HUGE_BOOTMEM_CMA when the page is allocated and drop the unused cma
-> field together with the redundant assignments.
+On Tue, 02 Jun 2026 18:10:39 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 41b83dd18c01..f1bbf3b9a321 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -771,10 +746,27 @@ defer_init(int nid, unsigned long pfn, unsigned long end_pfn)
+>  
+>  static void __meminit __init_deferred_page(unsigned long pfn, int nid)
+>  {
+> +	pg_data_t *pgdat;
+> +	int zid;
+> +
+>  	if (early_page_initialised(pfn, nid))
+>  		return;
+>  
+> -	__init_page_from_nid(pfn, nid);
+> +	pgdat = NODE_DATA(nid);
 
-It looks like the commit does more refactoring, please mention it in the
-changelog.
+Nit: we can initialize pgdat at declaration line, other than that
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 -- 
 Sincerely yours,
