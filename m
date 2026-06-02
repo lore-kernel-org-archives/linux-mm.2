@@ -4,83 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11D10CD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 09:30:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAE12CD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 09:41:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78FC16B03C9; Tue,  2 Jun 2026 05:30:54 -0400 (EDT)
+	id 2495D6B00A3; Tue,  2 Jun 2026 05:41:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 766FA6B03CA; Tue,  2 Jun 2026 05:30:54 -0400 (EDT)
+	id 2219E6B00AC; Tue,  2 Jun 2026 05:41:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67D166B03CC; Tue,  2 Jun 2026 05:30:54 -0400 (EDT)
+	id 137C36B00AE; Tue,  2 Jun 2026 05:41:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5759C6B03C9
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 05:30:54 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1ADBF1A0823
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:30:54 +0000 (UTC)
-X-FDA: 84834453228.26.1DAFDE3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 51A7C80008
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:30:52 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cc4WT3Dq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 011BF6B00A3
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 05:41:58 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BACAC2ABB
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:41:58 +0000 (UTC)
+X-FDA: 84834481116.01.F868F95
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id CE6C940010
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:41:56 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NB4tv7lD;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780393316;
+	b=OUYKa136yYa6fzuqlGv6leJalS38Sj1pthTiQx+T4Wstj7XL3tusNI1yJIuKgO7P+DV5BX
+	rvkkPOngALFZuOAHUWOZNQiFoPAHH/Py4/uCBxkjcafV8GWeUUL3xLlCQEIgphCwSgpJdy
+	xarsCwrpz/BjurJjialuMeNO5Abvvjg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NB4tv7lD;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780392652;
+	s=arc-20220608; t=1780393316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RhX66fkdtzWkODIz9nI8l9eW5veNrNS+XM6ojvk1z5Q=;
-	b=PPrqN65wCfPmdPlQzi2/aiIkKSO4aS88LcZrppogwYnCQ2VNbH6hQV2gusgjS+PDqhoD5d
-	aJ+HBnoSTrOpu4Gmhpq7In9+RZ3PyxK3qfyRXUhjtLENECXruhs8ILVUAm/2J3941aOL68
-	oH/vARatQDpxfRnohslnTmQYWpqoMqU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cc4WT3Dq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780392652;
-	b=avBHwObF2U1hUM+bLJF+LZHqGLvmfFnoJKfUZRfEDzYb4z6IB8b3/3hl3sjwW42FOyZVMV
-	4cMOnIt0uHfES5B0ONAaH3gK9dOV/KIDElfNaLn735RJR7+4D0WOy58iBbCsQViLo/hUC3
-	O/uZJWbzA9fruIhaFzuS2GhoSDEl4Hk=
+	bh=vT4GhybZ63q/C77icFjfDw2+SgkthJIdZFmZoFl7XsQ=;
+	b=vZIzVudhgelFcq7QikIa6Q1f9U63ylPfiZhOvXwxO7Vn+Mv2PqhWcnhQ7UsTKuzBY/5YHO
+	c0dGqKR7zUpBfasw3VygXQ+3Q1WpLmzzV50uWBa1K5I06+n2/LIadxrN6DD+zPhOZpMJoy
+	JNwon+sCSy3uqRZhLD+lVUNmJNxK+eQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 57ECC42A05;
-	Tue,  2 Jun 2026 09:30:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E621F00893;
-	Tue,  2 Jun 2026 09:30:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 317C36001A;
+	Tue,  2 Jun 2026 09:41:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727E01F00893;
+	Tue,  2 Jun 2026 09:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780392651;
-	bh=RhX66fkdtzWkODIz9nI8l9eW5veNrNS+XM6ojvk1z5Q=;
+	s=k20260515; t=1780393315;
+	bh=vT4GhybZ63q/C77icFjfDw2+SgkthJIdZFmZoFl7XsQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Cc4WT3Dq2NWosuhrUMUzUiXO+MBDXbLJeBWfS44QcT6hNBAqlNBQ53D/0pBWUbdPK
-	 maaSukjU3EiZDDqMHGn394m+2Amx56dgaDHmDNYMT9osAtFCvRsgJvBEM5TvTA2bKG
-	 jfgiOuLdK2d8PK+iI+lAjraUFb09GyVb0XBQj10CCiMW0zDhtNzYg62h34KPrxx8T7
-	 yDs9krGOYgE8MIdjMLI200MM2R+XVmu/telXZZrWbvOsiECfUj0nkgGC/fs5lNu2AY
-	 cMasxdWResCX8YUZ1F3BW3DJfBzB5iiloyTY9JXRNFy7yJprbmv0+HR10V4w5USh15
-	 XuDWhFOBDalVQ==
-Message-ID: <6dd5f74f-b454-46a0-b2f7-ba906792f5ba@kernel.org>
-Date: Tue, 2 Jun 2026 11:30:47 +0200
+	b=NB4tv7lD0sn2xWMbkfISkEKc9+jTV/l+aDD2meGk9UhivS0/j4YBKNhZDevi7M0Hq
+	 qnao6MXfp6z9UH1rB+ftvHDJtJJ2KhlbvD64xsvjyeSeRvoLWGGiAonzpitEYoJjZH
+	 NPU4azq1xakAFt8Io5EAj7o1BEiJRy2iNquMic1cAgj/CgQyTBj5ffPr37OxMGy8cv
+	 7nLLRmwioFPYLpV8oPN6pYDl7a7SmRyzXZz2f3MdMT7qBcsh8oF1nmqr0t6guwiK55
+	 O8pEYPH4wDyKPzpRcgHHm/LE4HY8cavsevtuqm/AjlJZuMzeld5kaVBY9Uo6buYPmq
+	 cNS2kxQTNcTTA==
+Message-ID: <21732071-14a1-486a-951c-34de97b7c757@kernel.org>
+Date: Tue, 2 Jun 2026 11:41:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: page_isolation: Avoid hugepage scan step underflow
-To: Kaitao Cheng <kaitao.cheng@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- liushixin2@huawei.com, osalvador@suse.de, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>,
- Muchun Song <muchun.song@linux.dev>
-References: <20260519121646.40833-1-kaitao.cheng@linux.dev>
- <20260519105424.e422131a0ffb49e19ed1aebe@linux-foundation.org>
- <bd3667a2-fd81-4761-a763-f6418d9c09f9@linux.dev>
- <4bfe16a2-3bb9-44e2-8b3b-8c77857a4944@kernel.org>
- <88aa1f75-1cdd-499e-b352-0cd6c7f0d079@linux.dev>
+Subject: Re: [PATCH v8 2/6] mm/memory-failure: surface unhandlable kernel
+ pages as -ENOTRECOVERABLE
+To: Miaohe Lin <linmiaohe@huawei.com>, Breno Leitao <leitao@debian.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com,
+ Lance Yang <lance.yang@linux.dev>, Andrew Morton
+ <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>
+References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
+ <20260527-ecc_panic-v8-2-9ea0cfa16bb0@debian.org>
+ <19f968f5-1289-f573-4406-e5c91dcd8923@huawei.com>
+ <e3d023f1-ab6e-4424-b304-55f1294480c3@kernel.org>
+ <33ef8821-c809-b7d1-ea77-6e8a07a6e784@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <88aa1f75-1cdd-499e-b352-0cd6c7f0d079@linux.dev>
+In-Reply-To: <33ef8821-c809-b7d1-ea77-6e8a07a6e784@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 51A7C80008
-X-Stat-Signature: zes8fpfdx3o8mfrbkpa6rs3jgdf7npe4
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CE6C940010
+X-Stat-Signature: 388qbmuja5nownhoxpf836jtkxkhpaym
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780392652-314854
-X-HE-Meta: U2FsdGVkX1/MOxpXtJIT3BHxlgjy7dj6OE0sEyvQ+mHYdFWu80efCmEMivCggxvAw7tjNruqk2qreO6A1G/i1oiz0H7JyKFyGLosXL7A+5h6F5LtELkkHxWr6CStxT9mPXp4RUdmCIWMcjVV0dw42f9PEYyKCuoQgfrpRp85x7uT50xyALxyEiwKkXwbMjz4ochp4zis/9GlTVJbolLCwIR9uRmXQ+hAlh106rqBO8RmAFUGLVMhxy6/8f4t2j5xCaLGd6TVgPPjpKihbmaY6fW20+ikIqV1RN+kVm2/rR4B4OwW2QWEoJ0Zk7Dj0k56Ay/3Qw9HZHFCUyilfeFhIwqiWioyueHbGHLxr/SeUR4hFVDZtWnjYPZ7jj1XmdYaDdaF4clLzsI7AOm+n5jUCed3pjmKnUhEj2DwY128+OWm0Y0diBiToCgoRIwXYZrRvnPdJLdj/MptC/zexzBfG1BXhB1TSD94vgi66ly3g9quWyLZr9H7cADpxjt0HyVXh0ub9eLWVVpIUQD/QLKDw0NoYeVXOX7TuczAsCJxk2s2ezACPaefiBJryFwz9WDAStTiTJZ8MyIMwHPHwefBl+3AowrvbiGBDX5EArYkdmBEC14Tge+mVehibuXZrFPB8Hf9c4htBZUNMhlH6wUc9En4XFBd8p5JLs0pUqEInU08dTmJDNdLV226OdDfOrB/Rh/fdfCkjUUHL4jILiX1fsvlfLDLdXftdXXRqA7E51zpDEZRfcpak6cGob0ycvYgQA+HVJMMhdpdpG/fE0cWv4mBIUoI0ALTx3M887mzXaO74xFGTisMpteNfHimJ5WrV9EpARkcEKoajsSAYj1zUAowYWBbj/CctgmwO4srdmM+kyDKFtPy7aKhxvVnp47DCj6UkbCI3gpjRMWkXwP9BekMYyVkfrI3JNXW9QwDi4cQ/P93AZw/tyGSG05xJi+PGFxKg3xKZcvOCjyrkCG
- c1APLDEc
- aIoXp9TLdqAFrmd9kXve1A05sVTIlaFcMDD0vp9qfaz39/g1JyQyou+74CyCJm0BP8NSpRZesY1WXLRwl+EZ7VlgfBIh+G+LLwz46fxluqwKeqI5ov6Yx2VjgAtkkqhuqo+iVeWT6V3wClzYu0k3s3CVxy3HhJUJ4fT04TQhPWLbU/ck4XcOPFns9jtEyrC3UhLEbmTYSp2fnkI7hyn7qX4WC2hIm9D6dqLL+iL4wiL8DsYYNVK3+9mPxdTWKno7bZQZbjI2nUYoFKjh3yvTK3E9loC2pTL1qReCIzsSEex/EYTYrBko7gxoYHQTofjkKu9FBp97/K6zWMy8=
+X-HE-Tag: 1780393316-261345
+X-HE-Meta: U2FsdGVkX1/8G9DPHT1kUiFsDt0MbRvrq6Wu6OhKbEUCvRlV+cNaYSOyutQjMuU4PfBGc5kQ9aaOdDJe+hOd01PuY3BMiGx4IVBcBCzXqpsuQq4QBLrNtDlS0R4Mdy0G4cZb99bLJrvKkwo/BIyCZM0ryGXcbuuoZ4oy3EUmd5uav6+YtRS3hE2dMqvUIB6/L81pxWHY8r2jGL0YASJqtGzkaqDmScOZSnknn9Mff3rV5af43BkdddtmTaN0p7waUiWqa0QO4Ab9lN4oM/xWPixFI0XG9Ua0FVWWyZ2HtkXRznbZAvxNkYxzzTz0k1H5T/eGPvcDs//xo8EqEK7H30CnKKqG8xZEV2xxPLQdS3ZfBhdosCClO8vKt9MFtSrnEM4cFTc+bAZX2/gNzijT8USp078RsgdB+JNH/aCRZhoJy36J+KdTs6UgkoEoFaVzbdZ4I6ZuRzve04kJ0pqp3ScrKPoJ6S7lDhf3MkOzDlu8lubyckkvTnAPdX/ByuMtH8DhVHckcKgQbatGrVSLhXecIvjlerHAojqz8mrjuPyJ6GFmB6brMc8scwc65NePFdsUFDnLf74kwinbC82EtmwaL6OjxNMfEA7k/mkb0BFzVLWiFPVHFKmTDYRS11PZBkajJFgY2dl0cDx3UmX5dHoVaH6U94CNyLcuhIDzb7FxaaDYjycsaj0SaFjufdqlM070ogGC61qjpEDZKlVK1vPxEz+7XSRTyzaAhpwXzt1Pir7jN4Yu6mYU28jqoY8z/FJqd8vg8Z90sL3HgqOserPUyjyGOW8WrvO8wMts4qGWUShZd2I80bIQwzOtXzX3U25Q02JKysPzK/ug6HJgu0ba4HkLGe1TSJGJXVpWKK2XcwNhCTBZ+I6zpRIk+D9cmZs+55wzgKeSuYfJh5GONXU0XYN7IWQjVKuqYwzAuGoGMT2sqixS2M0466ZQdeeAh1f70M5YNXXGfGKboSe
+ zSo5cDM1
+ IE2kYIGXm6du8wOGeyh7JFT1aGCplgw04CmU4r+DXM4N9dsy2XD9OCFxUFFIKFum1ZTb3dajqEw6lDlUm0NKBnzIhD+CK8lZGkuwXSQihuiyqIv1FOMkHSNWKH6v5ha0N9bbGBV1GK52jYpqmkEEB02XDkn5v+Yrf+Ojy93hSZv1821eSGJQ8Xej2oqrB77nQROSG6Yfhv5tSM+llST//mfPUFrPz0qdMCkU7YWZUCkXtV0tiRVNcBz5GKmO7yDnAfPSG0IB18qo9g5M70kXnWyAO7Mh1jy1awKuqjMUIuty6aZ6Da6KLd8EZpMhWXzboJP8wVPTL+2SKR+s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,104 +152,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/2/26 09:08, Kaitao Cheng wrote:
-> 在 2026/6/2 00:21, David Hildenbrand (Arm) 写道:
->> On 5/22/26 11:35, Kaitao Cheng wrote:
->>> 在 2026/5/20 01:54, Andrew Morton 写道:
+On 6/2/26 05:08, Miaohe Lin wrote:
+> On 2026/6/1 21:22, David Hildenbrand (Arm) wrote:
+>> On 6/1/26 14:28, Miaohe Lin wrote:
 >>>
->>> The direct user-visible effect is not memory corruption, but degraded forward
->>> progress in the page isolation / contiguous allocation path.
->>>
->>> If the race makes folio_nr_pages() return 1 while the current page is still
->>> treated as a tail page of the old HugeTLB folio, the computed step can
->>> underflow:
->>>
->>>         step = folio_nr_pages(folio) - folio_page_idx(folio, page);
->>>
->>> The caller then does:
->>>
->>>         start_pfn += step;
->>>
->>> With unsigned arithmetic this can wrap and move start_pfn backwards, typically
->>> near the beginning of the old hugepage range rather than advancing past it. In
->>> many cases this only means rescanning part of the same hugepage range, so the
->>> effect may be limited to extra scanning work.
->>>
->>> However, it still violates the scanner's forward-progress assumption: step
->>> is expected to advance start_pfn. If the same transient state is observed
->>> repeatedly, the scanner can keep revisiting the same PFNs, causing excessive
->>> latency and, in the worst case, an apparent stall in operations that rely on
->>> page isolation or contiguous allocation.
+>>> Thanks for your patch.
 >>>
 >>>
->>> Here is another point raised by AI, the old code also used folio_test_lru()
->>> on a folio pointer obtained without holding a reference. If the folio is
->>> freed and the old head page is reused or observed as a tail page of another
->>> compound page, folio_test_lru() can reach const_folio_flags(), which asserts
->>> that the passed folio is not a tail page. On DEBUG_VM kernels, that can
->>> trigger a VM_BUG_ON_PGFLAGS() crash.
+>>> Once shake_page finds a lightweight range-based way to shrink slab, slab pages could be freed
+>>> into buddy and above PageSlab test should be removed then. Maybe add a TODO or XXX here?
 >>>
 >>>
->>> Following David Hildenbrand's suggestion, I made some changes as shown below.
->>> I'm not sure whether there are still any other issues.
->>>
->>> --- a/mm/page_isolation.c
->>> +++ b/mm/page_isolation.c
->>> @@ -41,8 +41,14 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
->>>          * We need not scan over tail pages because we don't
->>>          * handle each tail page individually in migration.
->>>          */
->>> -       if (PageHuge(page) || PageCompound(page)) {
->>> +       if (PageCompound(page)) {
->>>                 struct folio *folio = page_folio(page);
->>> +               unsigned long nr_pages, pfn;
->>> +               unsigned int order;
->>> +
->>> +               order = compound_order(&folio->page);
->>> +               if (order > MAX_FOLIO_ORDER)
->>> +                       return true;
+>>> I'm not sure but is it safe or a common way to test PageReserved, PageSlab,
+>>> PageTable and PageLargeKmalloc without extra page refcnt?
 >>
->> Would we also have to care about non-order-of-2?
+>> Checking typed pages in a racy fashion is fine (PageSlab, PageTable,
+>> PageLargeKmalloc).
 > 
-> There should not be any non-order-of-2 compound pages here. Neither the
-> buddy allocator's allocation model nor the folio_size() / size_to_hstate()
-> implementation supports non-order-of-two compound pages.
-
-Ah, sorry, in scan_movable_pages() we use folio_nr_pages(), and that can give
-you on races a non-order-of-2.
-
-So yeah, clearly not required here.
-
->  
->>>
->>>                 if (folio_test_hugetlb(folio)) {
->>>                         struct hstate *h;
->>> @@ -54,15 +60,16 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
->>>                          * The huge page may be freed so can not
->>>                          * use folio_hstate() directly.
->>>                          */
->>> -                       h = size_to_hstate(folio_size(folio));
->>> -                       if (h && !hugepage_migration_supported(h))
->>> +                       h = size_to_hstate(PAGE_SIZE << order);
->>> +                       if (!h || !hugepage_migration_supported(h))
->>>                                 return true;
->>> -
->>> -               } else if (!folio_test_lru(folio)) {
->>> +               } else if (!PageLRU(page)) {
+> Got it. Thanks.
+> 
+>> Checking PageReserved in a racy fashion is fine as well. TESTPAGEFLAG() will
+>> allow checking it on compound pages.
+> 
+> It seems PageReserved is not intended to be set on compound pages. I see there are PF_NO_COMPOUND
+> in its definition: PAGEFLAG(Reserved, reserved, PF_NO_COMPOUND).
+> 
 >>
->> Hm, is that required because we could VM_BUG_ON?
+>> For PageLargeKmalloc, we would want to check the head page, though. The page
+>> type is only stored for the head page.
 > 
-> Yes, that is one of the reasons for the change.
+> Maybe we should check the head page for PageSlab and PageTable too? alloc_slab_page only
+> set PageSlab on the head page and __pagetable_ctor uses __folio_set_pgtable to set PageTable
+> on folio.
 > 
-> page_is_unmovable() does not hold a reference on the folio, and the folio
-> can be freed and reused concurrently while this scanner is running. In that
-> case, the previously obtained folio pointer may no longer refer to a valid
-> folio head. If the original head page is reused as a tail page of another
-> compound page, folio_test_lru(folio) can hit the folio flag checks and
-> potentially trigger a VM_BUG_ON_PGFLAGS().
+>>
+>> So maybe we want to lookup the compound head (if any) and perform the type
+>> checks against that?
+> 
+> Maybe we should or we might miss some pages that could have been handled. And
+> if compound head is required, should we hold an extra page refcnt to guard against
+> possible folio split race?
 
-Okay, spell that out in the patch description.
+Races are fine. We might miss some pages, but that can happen on races either way.
 
+
+I'd just do something like
+
+if (PageReserved(page))
+	return true;
+
+head = compound_head(page);
+return PageSlab(head) || ...;
+	
 
 -- 
 Cheers,
