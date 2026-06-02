@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B18DCCD6E61
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:13:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0915ECD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 07:13:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A8E26B00B1; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
+	id C1A446B00A8; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90BF66B00AF; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
+	id BCB516B00AE; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AB3A6B00AE; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
+	id 9A78E6B00AC; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6872E6B00AC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 82B0D6B00A8
 	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:13:34 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 38F81162AFE
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F3521C0E27
 	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:13:34 +0000 (UTC)
-X-FDA: 84834107148.03.3D747CD
+X-FDA: 84834107148.02.79D2AB1
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 97AC140006
+	by imf19.hostedemail.com (Postfix) with ESMTP id 959A31A0004
 	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:13:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=T7xBVUUF;
-	spf=pass (imf12.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=O5PmzJPQ;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf19.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1780384412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lDIPRhu4eC69IHX//CJMd4ihavt8RgvIqQIf1iXGap8=;
-	b=fcKPwkKgc/FRGqaOeZNL6CqQ2u104BhtXhFKNF+ebSM4nH83Z/0O7WcidDayt+Fw9vjZ5Q
-	XXHaFd2HiDoUBmsOYmZ8dp5BEblvwkkwKDA7+lOM9v/+QRex4LH7HNetvfduC73AGQWeeU
-	DWWK92UaEzl3Aafqvd5q0djnZcOF/jI=
+	bh=wLXXDlJ/Kxp3Cp2KJoa7FnY+i+nRO7rY9YwMwddxJq8=;
+	b=to385fd6QMO8qd3dJabAHWZuvzpw85bNagdetjdP4r4kZQg88vYT43jq6fzphuBgGoN/hE
+	KAe4PRrkRZHQq6SVgamuTlvLvcBIhZ4VxiJNFfPSyPA5+jsYz+IWv61MxYmIW/vlB0vbzY
+	RhBVjUTJ+aQe7L40RzDYUtnhO+5C8F0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=T7xBVUUF;
-	spf=pass (imf12.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=O5PmzJPQ;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf19.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1780384412;
-	b=tOFttOiGDN5LitoDjlxauY52vsl5XrVq5RVuKRzjZh8vh0ZwRYUxkkvpfR3/z8P4HDudhV
-	tvD9uzNyvSqKYUH9HVIw8AZZVxXae3VwrQtkSGJd82tCEQqSl/htrY9Y1RzXPCG5rVDc4g
-	bRAjjsmqg3iJ/snJgm2VrZwvJX2pdCg=
+	b=FcES4wxU9JiGa3W/nWhU7p1OHmHTZjOlMqOxD45VQ9N/MzHsqUp0/LwLuBjI7HCP1QWP2P
+	CuPIsCSyu3YBc/LIBzBV/8NNMQXeEb/BaS5A9HnGv6J5L8oBpIO6v+zjiP2TETen5ijYpU
+	snZSR6zWYcDm70QbwfZemvi9LmOAXvw=
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 885BBD0F64;
-	Tue, 02 Jun 2026 07:13:30 +0000 (UTC)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 29631D0F6C;
+	Tue, 02 Jun 2026 07:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1780384410;
-	bh=lDIPRhu4eC69IHX//CJMd4ihavt8RgvIqQIf1iXGap8=;
+	s=mail; t=1780384411;
+	bh=wLXXDlJ/Kxp3Cp2KJoa7FnY+i+nRO7rY9YwMwddxJq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T7xBVUUFAUZ1XGP2Kw6qlEA5/9HEkKGDkpi3ueWDkrUHbugbWP+f5+jASUCpDetB3
-	 4VhZqrAwpI1CpEaFkNI6YNWgQbT3VEsrLpJWa6QTYtlfzm0R7SkfeEpjPD4kl/4SeI
-	 4lhx15kW9dsRc2+66dNtTMKze+UJipjJ5sF4pcLs=
+	b=O5PmzJPQQm9wQcEZ2Jqis/QLMEQOkkjveUjH0SpE2xGnFIA/WeL8h25Z6fWKhp+Uo
+	 SR2OjmkoIyffFaGReFL1Wzn2jWkgJFvTSJDAcAqfaJ3dOiTOWfKaGcGO+lbK1zDFJR
+	 EqvxDWzR2ygXNycgzNDV3NlplOHbGlc+D0dg6iTs=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Peter Zijlstra <peterz@infradead.org>,
 	Dan Williams <djbw@kernel.org>,
@@ -76,22 +76,22 @@ Cc: nvdimm@lists.linux.dev,
 	linux-mm@kvack.org,
 	kernel-team@meta.com,
 	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH v5 2/4] genirq: Move NULL check into irqdesc_lock guard unlock expression
-Date: Tue,  2 Jun 2026 07:12:51 +0000
-Message-ID: <ab457810653e4356e29b2d74ba616478bd9328ad.1780064327.git.d@ilvokhin.com>
+Subject: [PATCH v5 4/4] cleanup: Remove NULL check from unconditional guards
+Date: Tue,  2 Jun 2026 07:12:53 +0000
+Message-ID: <0503a089389b2270c478a873e095cf0a4ff26d24.1780064327.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1780064327.git.d@ilvokhin.com>
 References: <cover.1780064327.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 97AC140006
-X-Stat-Signature: zxfb4two7piutyyqmofwwspepswjmt5o
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780384412-103865
-X-HE-Meta: U2FsdGVkX1+cgtfWmuRpedqVuGsWXPpDh+fKWqdq4hDNYNK0jruxivFRyIoYIeybra/e/bsUXi47lBubJtCO2371NZlwaFJ/23ZjAipsiD9PARhivVxu+CLaIaEFJ7g7fVfQLqZnXxU3G5pzJ3TGKKTDa6sGlW65Tj4Oks1gdpDb7Qu9gkf5Xx9XAprJAMqib8Re4hJDGGSlLw1oMDBBnXGomlKn+NDmJI1kqW2wXF5VP/1eWGCfnlK1d9u4MwX8tT4FiT79YibrwPgu5ZvXfCs8NCUKoZIAW/ZiakmsgVMcFbPPAobeJejq9+QgaK91BmLRqvHDAxcer1Flqsz2x+UB//EqypozPiWG5ODj+pxROX5IjhibUUZicg9aEz0OGPImFpoDzjS20qZ9un3xDWr+IGEmB/Q46S7agTRJmep1LWtAUPpj/RyV6Z69+6Seq18uGI7UYViFBUFQoeFRz359LTzxuiRI4ltEcXpKHWsjo4MvEBMHY46kk1TPtepgwaNa4dPtEH1gi1vOHf8s1FZUEyu35y23jvEet71iy9lk+2TCOEOJb+43+6DLk+mDRHq93LQDtwXtCdnKzEK31v5H6zEAp/TfSmRJHXfGny84BBq0gYLC7yN5ogfvhO4WHECArG3UXUdXog/RwEe0vzjS/pZPy2BwKdaJ3qM2DozaKU9bn+AUbz/yBIz5ys79ohxgLC1wS1KqESQSwky/tumkPR4PSwnaKLRkI0kW4j7uKdqS++LGPWPMGYIZhCmE0CDqYS6gjkZ4JX1CfW9JeTHvHnN3YSBBQzFvCnMgvjKjwX05Tbo7fVK1x4k4abkrE8YrNlyimbbEtaUeMd+zlF8x2bQKMJrSYN4ISfkv0/pYcRbll4zUGXDxKR8PCaudvq/e1eCRCup5XzYF7N9dW1t4nXL+AodqQYe9IyDANnXJsB0Ospq738EyUvrKXzFxj3qNuexwhqrn+Kc7w4I
- VtuefUN4
- HXqDrqswtbrAyHwcBjM2c1mKjq/lDiXnXEZKTsvwQ+QoD9OJ7a4FQCXGeH/2yWw3pmjC8eZFZ6WMrgqGA6D74+6h+dDvRs9K3xBS0NvVUlN+Fil1rq6TMV2KzKhEUVqBXeOy0VZe50dNGh3dF2sj7bHY3+jc94k+y1wPNnoBq6QpU1gg/4FoSApajPTSMZpzFpCiOs8skoYz7ZbtOqRbCKP8H+zKkHNeANmVUPokQtuwhVk9VMPNIssiQzl1UHeWPZ/uIKSWjvCPuikKWkpXu/nRON3Um4qUxX4JMzGSGbuyZFCOy3RzlXrzJ8LLBDdhq71TZ94JbWVvCQkg=
+X-Stat-Signature: aya9638bw6endh3wzgfzwrkfubjzd99m
+X-Rspamd-Queue-Id: 959A31A0004
+X-HE-Tag: 1780384412-911510
+X-HE-Meta: U2FsdGVkX1/zJu/T/HgJIfDERn+3VbJBA9+8X1sJBGgi3OdMeJS+jfJFDal+MS1TzozwCZ3F+k++yFbXjfXMAF+122m+ojyLSKdEyKW80K65D0cKTM7JiMX6PKrixCOjonynR6mKD9c3uIqPXCgQIfNBA+zn5dfddkRUSLWG95xEUN9yV6ZwqHBUIJSFdAZ8VJR0N4463E3H4QFHwr0gSHsFQOTlxrvb+LxJgN7IpvHkUzWRO48FXgG9V9XITzUcYJ0cQfXNLxeHu3qxbkeaRv3Zi95/42BeC7APYG0KHqYj66uvon9YVxKXWMO7hiD1plpJfVJro3X3gWenfVolfr8FHzftoWl7VOK7ryjdUIpHeHZGQ+nImDR9jGy3QZ+4ZIGP86MBPTFqBpIYHU7JeqH/hCNKSdnRnltgzOiVzyGb1eiF59swy3pKF27AxGJ9eGv8e1psQ8pCGflB8CwPxXdeVhPp8Um3rlhaChPXNik0gjoqUq8XLHavIjZmka1/N1LMQ6wLCb3fUK4XJpjoqakcjyc0dh4nqGKPaJN4WNMQPNfaWtoFPe93oJxYgnvDA42vCUS1BKg6HVPZqPu1B7x9ICOGtx61zRhe+WR40AE/c5t91+KXAd1yLngcWRhPKeELhO+9ZK2qoCbUE+6EYIM6UfKd7ns6bRIDoX8zTKgfwCRM7yCJqePsKApKphzNCPhO8sSZnKufFYUnclp1jQom8EhndZNREZEyHP4VLom0MG8Huy2osH9D9RIWn9OCrLYuNvt0FcxQz+9rmsZ/6KvweQACHQAl1pIdmiV5h+y17ZYSvVN0zlG6HLyM97XppKkEM8mqukCCBO0ZAzjP+09BRFGisB1D7YSlB4Rw6jTT//PwGiQLAov/FOBxUHv8h2q9wagf6RiQXbdYhj07M4gCE+UJAMsMxSSs8hNiCR1h3uoO0NzOQdJKr+z47mWI+nsqhs0Fl+KBJxinQah
+ VXL7rz0K
+ SCpWZuqGtM66qA3qAayhS7SAnCGavX19vfb+nZ3DTnddnVmq6KNXjvhCH9Ppcm5orelKnOUNcD+CVlwM0y1bJ5tTd1eQt6b7R0igGGcawErr6oVazkjZVCYzyqI6fXf5ERFfD3ThC0O2NLJUokmjESOmC92BlerjsYRZcjgdijUzMfrMr9Sf1Kpprqn/WVJQmc261wR7aK+BRQ8y+CobSEZy5xb6pyTHBZAM4L/gFfadLRTBPHAzIDLNBYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,33 +99,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-irqdesc_lock uses __DEFINE_UNLOCK_GUARD() directly with a custom
-constructor that can set .lock to NULL.
+The unconditional guard destructors check whether the lock pointer is
+NULL before unlocking. This check is dead code because unconditional
+guards guarantee a non-NULL lock pointer at destructor time.
 
-In preparation for removing the NULL check from __DEFINE_UNLOCK_GUARD(),
-move the NULL check into the irqdesc_lock unlock expression, making the
-NULL handling explicit at the call site.
+DEFINE_GUARD() runs the lock operation unconditionally in the
+constructor. If the pointer were NULL, the lock operation (e.g.
+mutex_lock(NULL)) would crash before the constructor returns. The
+destructor never runs with a NULL pointer. All DEFINE_GUARD() users
+dereference the pointer in their lock. Verified by auditing every
+instance found by: git grep -n -A 1 'DEFINE_GUARD('. The only exception
+is xe_pm_runtime_release_only, whose constructor is a noop, but it has
+no callers.
 
-No functional change.
+__DEFINE_UNLOCK_GUARD() has only a few usages outside of
+include/linux/cleanup.h: tty_port_tty (NULL-checks in its tty_kref_put()
+call), irqdesc_lock (fixed earlier) and two guards in
+kernel/sched/sched.h (dereference the pointer unconditionally in their
+lock constructors).
+
+DEFINE_LOCK_GUARD_1() sets .lock from its argument and runs the lock
+operation in the constructor. Same reasoning applies. All
+DEFINE_LOCK_GUARD_1() users dereference the pointer in their lock. Also,
+verified by auditing every match of: git grep -n 'DEFINE_LOCK_GUARD_1('.
+
+DEFINE_LOCK_GUARD_0() hardcodes .lock = (void *)1 in the constructor,
+so it is never NULL by construction.
+
+Conditional (_try) variants: DEFINE_GUARD_COND() and
+DEFINE_LOCK_GUARD_1_COND() use EXTEND_CLASS_COND(), whose wrapper
+destructor returns early when the lock was not acquired, before reaching
+the base destructor since commit 2deccd5c862a ("cleanup: Optimize
+guards"):
+
+    if (_cond) return; class_##_name##_destructor(_T);
+
+As compiled by GCC-11 with defconfig on top of the locking/core:
+
+    Total: Before=23889980, After=23834334, chg -0.23%
 
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 ---
- kernel/irq/internals.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/cleanup.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
-index 9412e57056f5..347cb333b9fe 100644
---- a/kernel/irq/internals.h
-+++ b/kernel/irq/internals.h
-@@ -171,7 +171,7 @@ void __irq_put_desc_unlock(struct irq_desc *desc, unsigned long flags, bool bus)
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index 4e60d519713c..65416938e318 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -398,7 +398,7 @@ static __maybe_unused const bool class_##_name##_is_conditional = _is_cond
  
- __DEFINE_CLASS_IS_CONDITIONAL(irqdesc_lock, true);
- __DEFINE_UNLOCK_GUARD(irqdesc_lock, struct irq_desc,
--		      __irq_put_desc_unlock(_T->lock, _T->flags, _T->bus),
-+		      if (_T->lock) __irq_put_desc_unlock(_T->lock, _T->flags, _T->bus),
- 		      unsigned long flags; bool bus);
+ #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
+ 	static __always_inline __nonnull_args() _type class_##_name##_constructor(_type _T); \
+-	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
++	DEFINE_CLASS(_name, _type, _unlock, ({ _lock; _T; }), _type _T); \
+ 	DEFINE_CLASS_IS_GUARD(_name)
  
- static inline class_irqdesc_lock_t class_irqdesc_lock_constructor(unsigned int irq, bool bus,
+ #define DEFINE_GUARD_COND_4(_name, _ext, _lock, _cond) \
+@@ -492,7 +492,7 @@ typedef struct {							\
+ static __always_inline void class_##_name##_destructor(class_##_name##_t *_T) \
+ 	__no_context_analysis						\
+ {									\
+-	if (_T->lock) { _unlock; }					\
++	_unlock;							\
+ }									\
+ 									\
+ __DEFINE_GUARD_LOCK_PTR(_name, &_T->lock)
 -- 
 2.53.0-Meta
 
