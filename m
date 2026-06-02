@@ -4,103 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEF12CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 04:47:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D48EC5DF71
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 04:58:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DB2B6B048B; Tue,  2 Jun 2026 00:47:09 -0400 (EDT)
+	id 905AA6B009B; Tue,  2 Jun 2026 00:58:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B2516B0490; Tue,  2 Jun 2026 00:47:09 -0400 (EDT)
+	id 8B68F6B009E; Tue,  2 Jun 2026 00:58:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EF7B6B0493; Tue,  2 Jun 2026 00:47:09 -0400 (EDT)
+	id 7A5056B00A0; Tue,  2 Jun 2026 00:58:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D1646B048B
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 00:47:09 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B35CA1C1EDD
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:47:08 +0000 (UTC)
-X-FDA: 84833738136.12.524727E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3015A16000C
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:47:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YVUczLjs;
-	spf=pass (imf08.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780375627;
-	b=Jqwgpk31QpGTEVlcLkZ5qym6EPd07EALWMzhGu9UKEtByoqZ/wVu3xxdAHvsKMV1xBzzir
-	J2KHsSNCvGCAmGc8quHskikwGyEpwpcxnU9msyZ87xmomV0LOA88ZtK3SWalbNS1+R626H
-	hcXUDQjCGENTrDvB7Zled45GzDQ7jLY=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YVUczLjs;
-	spf=pass (imf08.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 65F356B009B
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 00:58:52 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EEB0E16292B
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:58:51 +0000 (UTC)
+X-FDA: 84833767662.30.033A58A
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A348DC0003
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:58:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780375627;
+	s=arc-20220608; t=1780376330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w2vFw2b6Dq4kXYpDSqPPl/I2tXbfPjM4tacHe5F7/ME=;
-	b=OozZP/SfpoW0IDrDNYVde6Z3DkqVL01ewTnP2JsEAwuGtdz6OVBMPXRSL5DWe5wHnAwAZ3
-	6tPAFoJbU8QPgTyq3Q+OQELTFkGQJgF3V5RoBI5OcLYHuin65pnS0RnEJdC5/FCyYxNpEt
-	gylqwO6AuYaoOyEkSPfnaqloKQImfAM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A79176001A;
-	Tue,  2 Jun 2026 04:47:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867101F00893;
-	Tue,  2 Jun 2026 04:46:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780375626;
-	bh=w2vFw2b6Dq4kXYpDSqPPl/I2tXbfPjM4tacHe5F7/ME=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YVUczLjsw80yEWH3gu3NkaGjxurIFsxviLifgTASl5KmyxzFoZ9D6BRbFnC647FHj
-	 lx/XsyIDDrgeNc880H1ZCzZ6k2GAkGqLt2HPVSKtCr9mjn6m2DCwScX7GkN79pS6Kb
-	 Ybu4ua2edqgSU8v2FiaC7J5DsTHfum101oh9NnXGGFgdKNTpHz803fqOarf2Aq/REj
-	 rrFf4M6W83xFQsgAsvLEXmOIlSUp/imXkfYWMxxsDexeQ3reNFAuz1/La1vSHOW9B9
-	 ecfNlu1N+o672xehcI60o8JlzLchfcXr0Hdq8pu+MVpFykxKhmlLGaQmBsGApTcQm1
-	 IWYYOlv9b/uSQ==
-Date: Tue, 2 Jun 2026 06:46:55 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <pjw@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>,
-	Albert Ou <aou@eecs.berkeley.edu>, WANG Xuerui <kernel@xen0n.name>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v3 5/5] sparc/mm: drop vmemmap_check_pmd helper and use
- generic code
-Message-ID: <ah5gPx1TuEH1wFzC@localhost.localdomain>
-References: <20260601084845.3792171-1-songmuchun@bytedance.com>
- <20260601084845.3792171-6-songmuchun@bytedance.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Nlh4k0zv0/JD8JtLvOoaFoynesvsoq0ZCrM4p5cz5U=;
+	b=3y/gJU6dDINv3W80AUM8YhLXCYkWtsCWy4A4Qhdz8ihrpgFbOlYNUsrV+pSZTe4xc3nmw1
+	dxL+bx/Y6u8SP5hcAY6NO2nteYmnXxD2vD6E2qLa4WYNhICCCSsY2Yjz0aeOkDmzwnznxw
+	XsXmA1pbq2zVxju36zakx+KaD5uIeyk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780376330;
+	b=TxpnvwPJ5yQ7lsbMdWwh/tlUSGQ3T31uOgeHDoHC/p4uCAr70WHYEDTEyqO7d4IDQrEt1p
+	h6RiiPXJ5StXEpSKoqLxZsLH6elWAALCHJxVFujsED3ey6pt2YtTaclvZyX0RO8g907rxW
+	3Jvo52T2VUu9sJInHBV98LFODVww9fY=
+X-UUID: b5d3bd5a5e3f11f1aa26b74ffac11d73-20260602
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, UD_TRUSTED, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:5042bfde-d3af-422d-b906-80343846f216,IP:20,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:20
+X-CID-INFO: VERSION:1.3.12,REQID:5042bfde-d3af-422d-b906-80343846f216,IP:20,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:20
+X-CID-META: VersionHash:e7bac3a,CLOUDID:468d7e58709b32c741750523244e7009,BulkI
+	D:260602071707M3QLEKGM,BulkQuantity:1,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|136|817|841|850|865|898,TC:nil,Content:-10|-8|-5|14|50,EDM:-3,
+	IP:-2,URL:11|94|82|1,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OS
+	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULN
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: b5d3bd5a5e3f11f1aa26b74ffac11d73-20260602
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 420245183; Tue, 02 Jun 2026 12:58:35 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: akpm@linux-foundation.org
+Cc: david@kernel.org,
+	liam@infradead.org,
+	lihongfu@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH v5 0/4] selftests/mm: refactor pkey helpers and fix mmap error handling
+Date: Tue,  2 Jun 2026 12:58:31 +0800
+Message-Id: <20260602045831.1385324-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260601161656.203154d9f53c2861f1bb2623@linux-foundation.org>
+References: <20260601161656.203154d9f53c2861f1bb2623@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260601084845.3792171-6-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3015A16000C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A348DC0003
 X-Rspam-User: 
-X-Stat-Signature: xa5fjpmnqdjwpry69wwb8ntj1sgi4hwz
-X-HE-Tag: 1780375627-593951
-X-HE-Meta: U2FsdGVkX18oIWrAp1U9X8pAw+RSb19kouoNYPfBMYzYRM2NtEE+EvTDDIQg2wGlRSWbrUACUfug3vvU5sRgfPxA64+pqJS9ky9OEud73+RaHekIeeG20Ru1TbiBlQ3Ux8U+cy9RrotWhd5J8g3CfgV3FBFQWH1PQEUqveNtoiWOC8DBHyHsmb255YZPcWo7JNx8CueS8ok0ORQSn6jBAfRvAwvZ+gkpn6SIhjAfaNSZyYL8XjyStp4m7rSg0jnQ4czbiEwcwmzOYKj+xLlrDPxzZ4tKfF0xzpJTw/tDc2kb9qrDE6ZfVyL/JE0VinvnOQP8iJZl8Q0O1cnLHQxNZYNCIuUVdsv18bxzHWM/E+I1wpKVqypZZrfvnnSs5z4E1PQV9Ylw8ufHcobeG3ba0CkJmVi6suznFjeAYeiXW0DaWg8wv2RbVjbQlydoxRu+wdwhyUzxmTd1jyXXDnHatu51BlQfKkoJVi6xbJoVx8p6PEZxw8rHUx0kownt9GtDj33ZNUWRjvWJurofQcB0GqlN6DYyJeqbZZDkfpN2Gavkt97IOkREhRsFV76vTzRxLaNgNpMDC0XmXdfylf2GXgGjPS+K2pMTWl66grR7cvDG4zt0ypX0ie+nTYRYP7qJjWwfu21wLq79q47PI6UDiSJMOBVHWwphDP0bqfxrd1ieyPzWirGmkDVae381d8+enCYCdJaMjHYE12ndfKxtkPwfyxcuOsiQR4YtgvZ1Vo4rhU29dgWyZOtu39l8wZXOF4OGfrUonGBMCf1e7vGFgwbUUZjjgKpmpu3+efsTET+Jj2MMShto1cf7gSeWw9dRMOa35G+O3BF5G+Qp16cibDeUJCWf0qMoXlFwTM52KwM0oGcIWfuO6DCB+rJ/ZqXaQ/AwtFT1xj3mgNJ3YWVdiJ8bN3wDrPMvQRq/NUyrSa+/jfW7zN+W3ORmcV72PoBUPnlqW6mr5ZDxOgqedNd
- dy2n0/vZ
- O5kQDPt0LmixP3OLxe8GqYbtD9n90vsQMp5LFtu2xcC9mNFfFu8lczRy8WTl4lYchVCRGYwOLoBgLpEEiU9vAyh3b0pD0hBo1zNAB5EhoiuQp8+21Ly5KhqdNhMxoOu9ena7Y8B5Kk9rjjK7X3Zi0KNzjHu75z1c2tEjB1KfwErfLmkFfYOuDUOTxmdmwFi2pLREhoDcWlkIdUN5+aN5BrCExlIQTzIp1ULhfipaMqTDIe6P2Ioyqnjz6ZpymHSEVTX5jsfXtzeCmBB/N0MHU+Fp4tn7rCz+0gb6WCTFS88c6vMf6SmtblpieNOGW19/Pndj3hQ1RehFxcNk=
+X-Stat-Signature: b4iwnd7bdfn75jtgqz1c6dhof4xf3p8a
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780376328-805205
+X-HE-Meta: U2FsdGVkX18BWr6pfPd2edhZ6kvSKE0erKXhEhVknKx3FaHEA9ykDFM2qLCPZJK6hMbnCSpE/TASN1YzVDuLt8RQyNpHIhQux5hzDHV6xmAqrYP/qG04t1eWGThCC9zNp/XbrkDw8iCnKhjCiQDvd5N0rhTwsx0IImP4mKwLyX8WDcFrA9dar8ZXpRJIf1YGUOhW7sZVTSgMoK3KnfVddE0UOia7FgnwWSgTQif5bGVmpwX5TZMy0QM1gsCbfr8+FOTCkPelFsVV4G6CdmkW9Ew0dTAtGmCTHDyuVxoOHAaKTyMt7F1VB+p6Qfy0E3tYvVIXsccRZ+GzJ1qy9PTbyM8m4WLtQlVXlXGrwGpViyioTJLyqc7+xEML+ROFONQqoDTRKoIgiYCp7KQZLLB0VrkvyM3gDmT1cfOxsGYKJdhJdr93JiyItDy67Ph8NcLiXfa2tG1tSFPgnENw24r2fPLd7FHfP1ZEu42ou9sCEaxcFgapMijMLJP/Mss4zXMHnndasQlGZ3z1yR7jDm4vviLmSacmNLReOxaG2jcOzQqW+Qmgn+OBNQVGt/4IfabxjwrEcdiOKorsgeAFYS+PdKIRov2yG5IYivjgZ/sd6T8hQ2+5o83Vdx5EHPiE/DebMN0i0tYx00T4+Gq3Eu68Id9AHrhJO/3OtN7549jLR9Bl4QCo2J7BUlX/XdB6V08TzGEqFd7nc+IMYSh2t5eiRtXTGSHe78wjQMffRBsSDtv3yJqHzLAaVuCJucLXcaAzkU8ghy1gZ6vfx1NhTXoX3oeS/JY3IPoSrYRe9dIcI9VZtoe94uAv8hqWz+tQyR76Jke/GwfjOURj+UH305u2YlicXSKjADSL4hcmU31+tNj89titzTSPc9LC7i4QXOy17pOZFkJk5nGYhJQjaHzGH1DU+ouhe1mqHnduro1JAoL8nWHQc63F4lEET2GrkkXBtUuG2CFSJDwtwgNAd2Q
+ S4WeHZ6k
+ A1QZzw994+D5Gwa5oajPSIPKxgumOiS3LJVE26ZXgAAAOWH0/s1hbU4JStyEOsN1K2CWW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,16 +115,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 04:48:44PM +0800, Muchun Song wrote:
-> The generic implementations now suffice; remove the sparc copies.
+> > The main changes in this series are to refactor shared tracing and assertion
+> > helpers into a common file, unify both pkey selftests on pkey_assert() and 
+> > per-test tracing for consistent diagnostics, and add missing mmap() return 
+> > checks with MAP_FAILED used throughout for readability and consistency.
 > 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Thanks.  AI review found a couple of legitimate-looking issues.  At
+> least one of these was also reported against the v2(?) series and you
+> said you'd take a look.  Were these things false positives?
+> 
+> 	https://sashiko.dev/#/patchset/20260601061953.696844-1-lihongfu@kylinos.cn
 
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Thanks for pointing these out.
+I initially suspected this one was a false positive, but upon recheck, 
+it also needs a fix. I will address both issues in the next revision.
 
- 
-
--- 
-Oscar Salvador
-SUSE Labs
+Best regards,
+Hongfu
 
