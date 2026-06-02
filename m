@@ -4,109 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA8C2CD6E56
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 03:31:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B105CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 03:51:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 093FF6B008C; Mon,  1 Jun 2026 23:31:32 -0400 (EDT)
+	id 7B6596B0499; Mon,  1 Jun 2026 23:51:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06B746B0098; Mon,  1 Jun 2026 23:31:31 -0400 (EDT)
+	id 767966B049C; Mon,  1 Jun 2026 23:51:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC3E96B009B; Mon,  1 Jun 2026 23:31:31 -0400 (EDT)
+	id 67CF66B04A1; Mon,  1 Jun 2026 23:51:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D70CA6B008C
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 23:31:31 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F5311C1FA7
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:31:31 +0000 (UTC)
-X-FDA: 84833547582.28.1BD901B
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 942D340009
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:31:28 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=rUbsWu8t;
-	spf=pass (imf11.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 54C126B0499
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 23:51:20 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA43EC2964
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:51:19 +0000 (UTC)
+X-FDA: 84833597478.30.027B9EB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5443A100006
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:51:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YxSsoNn5;
+	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780371089;
+	s=arc-20220608; t=1780372278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eKjT6Zg4boSSOeRK+U8oV+FxAjxZtDyhnFgmKfmpDas=;
-	b=5GXm/U7JAXR7eXUw3RUQnQOomAecyQfiAlLwXIxuQ3KKevRAfBgRpJVmvaHUg7S5V3Vktq
-	6zCVDawthsTF1xMy1vutFqKanZccAy+PqZUMCDgYZO/gcu68mXU4sqLSd5CklzuhTMpvAF
-	S5/qbZfcG+npQKl8VHzXcl1ch1kSd/E=
+	bh=RjMhCk/o5NC1phCHo9ITOCgxpvxbQwvB79yIHI8KxIA=;
+	b=e84o18kakBP/hBWkkTLPXIoY4xhpOBrIgz6HcKXI6dpSAZBYXeW1mmvnxiQsoaBQwpbU75
+	cJdS2Cr2k2RKt/8J3v3V8Q8O/3RUiqn8tWtub+yDyQozi+ynqW52jw+beowRgFsVJA4YnK
+	SPQduMP1cvI5YgwIWYY60/dtjlZryIw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=rUbsWu8t;
-	spf=pass (imf11.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YxSsoNn5;
+	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780371089;
-	b=CEcEY77N8zYW6y4Re6s6v+6eVg/4r0ubEKhDh7zcLzNqwfvRYPeuv6qjwxrCIktemtWs1K
-	wnRElxqDSaHgZwjYStq+i95WEXw4RtSGgxi0Ov+FzHT5tWzN0k3LEa0675qvIqKbkmT9tt
-	SZrCPf1NKFMdkeBadwKJZnJ65i5TgGM=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=eKjT6Zg4boSSOeRK+U8oV+FxAjxZtDyhnFgmKfmpDas=;
-	b=rUbsWu8t2d2azz8Ev4bysq6LLCcJ/SHmOo0GFrdvlUOILVf2ZXLEW8XEljU1G4WVXJ3vLafjF
-	YX68s2tIiko1MsBkDrbA7z1MYsikporFc7syk5ZlzwtT7H9hvc1crRbFfWDTmaDWX245QZQ/0B+
-	PCcJvZW5kHYoz43eLR/pMXQ=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gTx4H0Gt7zcb0N;
-	Tue,  2 Jun 2026 11:23:27 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1D0274056A;
-	Tue,  2 Jun 2026 11:31:24 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 2 Jun 2026 11:31:23 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 2 Jun 2026 11:31:22 +0800
-Subject: Re: [PATCH v8 3/6] mm/memory-failure: report MF_MSG_KERNEL for
- unrecoverable kernel pages
-To: Breno Leitao <leitao@debian.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <kernel-team@meta.com>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
-	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	<mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, "Masami
- Hiramatsu" <mhiramat@kernel.org>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
- Khan" <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>
-References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
- <20260527-ecc_panic-v8-3-9ea0cfa16bb0@debian.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <642852e1-933a-a6f6-b6e8-2ef3339bcd58@huawei.com>
-Date: Tue, 2 Jun 2026 11:31:22 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	t=1780372278;
+	b=CvDy2cN43b627Vy8uiP2iK2joZfxpCjWmtzhcxpfpUHBB5TPPsCFSm+agK/Dk/g5fVMqu1
+	3BmsCnr1yAFulcf+jMok0KVukAGfXYptWlbDsXlE4Pl83WuAhjpsmEspHu7h2CDeJlAt2y
+	VboqoFiM6DWBn1MNPc5WTNez9tdzF2g=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 429FD437F8;
+	Tue,  2 Jun 2026 03:51:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1C31F00893;
+	Tue,  2 Jun 2026 03:51:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780372277;
+	bh=RjMhCk/o5NC1phCHo9ITOCgxpvxbQwvB79yIHI8KxIA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YxSsoNn5YJCuKxeKl6PAX++Bg1aMM2RevmuoB3R+3Asp5hkDYkYRJMv/TpeoLf9B7
+	 Ro5GqUKqVtSJmc5PF+GpOiLc0azL+gPTApbXdxRHccH8Hr+f9xJ7//k0XcZqLOHvSi
+	 kGrbwecefO6SaCt1vbjnccI71sOts8z+Y7MsYvqGsWup39aDDNQTED3u4+lj/rv/8F
+	 syhtFXtiRdqG9CWJa2E8dieXcFf76SrQLQvLUGV2C2xznjLRecAhHWsKvgkLiwkJ25
+	 xTybY/DuKaU+pdIyACHJmrYf48SqhRY4KcLhkA2h2XeK7eAcBCWailPapF06VTCHY9
+	 SOQC8eSGQAvkQ==
+Date: Tue, 2 Jun 2026 05:51:03 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+	willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org,
+	pfalcato@suse.de, r@hev.cc, jack@suse.cz,
+	Andrew Donnellan <andrew+kernel@donnellan.id.au>,
+	apopple@nvidia.com, baohua@kernel.org,
+	baolin.wang@linux.alibaba.com, brauner@kernel.org,
+	catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
+	kevin.brodsky@arm.com, lance.yang@linux.dev,
+	"Liam R. Howlett" <liam@infradead.org>,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
+	npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
+	rppt@kernel.org, surenb@google.com, vbabka@kernel.org,
+	Al Viro <viro@zeniv.linux.org.uk>, ziy@nvidia.com,
+	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+	kernel-team@meta.com
+Subject: Re: [PATCH v7 1/2] mm: bypass mmap_miss heuristic for VM_EXEC
+ readahead
+Message-ID: <ah5TJ8tNqcztGS4F@localhost.localdomain>
+References: <20260601102205.3985788-1-usama.arif@linux.dev>
+ <20260601102205.3985788-2-usama.arif@linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20260527-ecc_panic-v8-3-9ea0cfa16bb0@debian.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 942D340009
-X-Stat-Signature: jjtd8cytom4dzpa35an1mqn9bkgk9fru
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260601102205.3985788-2-usama.arif@linux.dev>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5443A100006
+X-Stat-Signature: g1isd5b5mk8fs143q4akkj8faxfpit65
 X-Rspam-User: 
-X-HE-Tag: 1780371088-539355
-X-HE-Meta: U2FsdGVkX18Ohj/aK4eSEzXrkox5cG31AhVPNoPlUGIgjiUPyFOft/P4n/7AgHg5J1FC7O78T53vOPA0ajBUgD+QZLB8mLukNVuFgg2e4l1JnzD7vazED+K3QZvdu4X6ZPsZ99cpym2HJNNQn8hstN/RZQuOmOJar+T6WyzXN8hqV4idzmrUbHCA+dISkXrqeIVN9Wlij93A12bVyLyg1h6uiD32DO9d/sy1rRomleBWeP9B3IOk/4YlUsYqjTZieCbaVbPj4QX/h/ioxVb4vG8J2XZlDDNOiceEJaFUrW38h2dqI/XwaYoRY/Ewq3j3WgVJbHHW1+AEXS65QrwCfHXfuTz/5/n+E/hQfIUU7ymAYwB4IYbKV4m1lJ4sAmY0vTuTfvbouPSpDBXNK/VLWoCx4XG7VxBdIg53gog5fCH8Z286LGsKzKN8WSncGYOW8g7tr9ELzIjRQiXBs1BLxCauUM/wGT5QIIjTSYnspqABn/z4yBVFbOPgy1tPvYVtqd1avh6XL95rP7t8jxulzz0vOiLiWe1RNG8eT6wtFyC0vcK6BHZGev1NuemfFcvEn0MEfKdcFBRao3A3amRT7q3PhCFR6izKwcP46s3CFnF7SPXP60G1JE4Yq5Rs+dIWleM8iRLfn1Zr1Ua28Z7RrrLqHVSlbXFYVEXOEVJVdCMjOJTCLZkw9ZcGPY1W/GdMVrzLJCHCr0T6l2xEfLuDf0cHUiHftxFlV+n7BsYSUD1uMzT3hHX2eqXf6c+4MKp7+eULzjc9UIReKVWCFuZDcjDyZK9WlNylfqW2x/jeY59s5rtlK+KP1TFVdPdevU8L4JVgM+kCjt5SPLhd2LuBJZ06dtAUi/7jhKN6ObBVlluyrqq13v/KEV/z5U2GTKSfNddYdhJXQkz8nIWATdEkP1OrWf7TXMkggvpe+TyYz3r766v7bZPbd7otFS0z+7AKTHNcFNi90IbUQotwsD6
- 0xJ1ZdD5
- aSlzJo+ox28+uzDvInnUNMoeMIfa9SDy2ZuuWrs3Mao9meS2Rg8lt0gy6qX1EGzBQl2sXt10bASM+9/dwFBu9UY7LYAV93jR6CUV6n+Kx6iMgk1jLRLL/tb3Xad05t3tq21iuAuGhStpjp3noHWZOr5cCtIGuypChouM7jEQDggmUBpzXXR5f0CaALlZ2YjnNFh/ZUZ97EQ3kMBEiPhb1bNNE8BAF2r+cdGwiAetg4R8o1VcuVZII+A8frCWkA1xaK2Puv4JRs81Po/IjsN+JkWOWx/R2R/jFXS+sSAEMKkD64H5FaxeHO/b9v1E9Fbif7qfW+2cp8W6gjlphuXrkcOveXsTqK0M/akOTmG1vUfOHq5IzIDuWotZWMjLg8GhIpWS+TOcZMJEICUap1xE3GUcJ8RGOSAWffRyL8CL9lGsQU/wN61UPQhwBGwQmci4kTYW5aLHTm1BuelWMINSW+HFVMQ==
+X-HE-Tag: 1780372278-55740
+X-HE-Meta: U2FsdGVkX1+gXQZ46wBCXwMXey1Wzawjsat/fMrzDZa8KlBsC8ISuTsZ6WNqDrKcT821F2PobCigb9Wg+ueyo8Yj/OQxGeJNyiP7nIrEMHG6NOQrIsZMIzN6xZ5QCsPKGUDzyHr+x2bhd/V4IMrtwBmxX9jvRo3kkKGzAuYuyw+Tko51If6vol09REVt3pBLO4C8ItHKB0eEbzy39R7d65JDgQHM1l5Xg1FHH+ZSOWMKwElt96YeNUjcVUkOSEPzmCB26fYnZOPqR7kaawPDL4KK63z/5B9APMOjMqDTsPZtIQdWbma7DKAahmszMgOLWWpMgz5b31rZYie45t9beD9HMLX3uXgj++4Bub7geBhjYHqXOSfgWW403I/TW4vcEurIBn3ECflXxxTeiEg88cws3EuvPwxMJue9WT57JEuBXO3kTOj5zhT693hCNfw/OQ3Wqz2e2rIBnEmA8wGmAq6uXSmylgN2fZh9dGNgaYBjFj8VsoUrMfEi5ylCT5IaodgU3EMjrbCKUTHoHV9QVJofUhwBkq+tEZnOkZW2xeFoo8hEHgBsNS4Eb/ixptmGQVsStnpjKLNVmVVsozWax/D5BEsbjhoQNOAOPmL88uTqgZapagUHKQbdlCjEMlntAu+H3wYPLql86IPtdXTSAhxmkhlv7lJSIpF6oF7rSGpWTp8ZmUur4n4tK+HDHgDK3gNkLT+Gx8u6jZ8CKoTMo075wPiDranuKLhI5aIpFMPuJYhHfNpeXRZwRqTE7+IZfVwhI2vHOOxqkCEiIvVVTwAdmepfugXJhcgFUqLMfBHohOnepkWPHvI8lDzPldWYwUMGLl9UCtusIyOJWsbxqTaHWPq+BbhkIKjq2w2HE7Yqckq89JnifCk9C+AglbHlAIzzfhfUZxkMD5toWcpESMTN+rlxMMblOFLGWz81MEeqpLdAjVNTjM5ipHXVNaiB/so82JcGTbtOqgJ8CcU
+ t0EXLPtz
+ lECnsp6oCri3XuU21OjFNXm0xWJXr2xZ2BN8laWo++GyPlaHeBL4/zX237Ixopt994b/bTTvon/rmf+RFkbGQsK0MxeIUwmFGZYDQ408B2FMY/mNNE+/N9a68wtlhsS7We7GeDWv/MKRDaZop2Dqyhg5WGvizFdAh7zBx0zShElvniLn35iBWiW5N3KX01HA9bIsiDvxfyULBDtDcD4aAPTCuQrXrQcMTDVKedx083tfL9Bl9CNlrfixjtAGg/MFBg2KLCqFrmwu2faH95JbuDiSBmYEuRgA0REP3kxFheXLDy8oR0WYhAjZRFmBrn9mbwgBjwbDBiCA3ao7uPNSSaWFr6MRzyWhUd1BKtfoHETInw0f/9WSnL55YoaNfJkaP4wKB09dTLXEt3kW4Mas+61cSyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,31 +106,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/5/27 22:06, Breno Leitao wrote:
-> The previous patch teaches get_any_page() to return -ENOTRECOVERABLE
-> for stable unhandlable kernel pages (PG_reserved, slab, page tables,
-> large-kmalloc).  memory_failure() still folds every negative return
-> into MF_MSG_GET_HWPOISON, so callers that want to react to the
-> unrecoverable cases (a panic option, smarter logging) cannot tell
-> them apart from transient page-allocator races.
+On Mon, Jun 01, 2026 at 03:21:17AM -0700, Usama Arif wrote:
+> The mmap_miss heuristic is intended to stop speculative mmap readahead
+> when a file looks like a random-access workload. That does not fit the
+> VM_EXEC path very well.
 > 
-> Turn the post-call branch into a switch over the get_hwpoison_page()
-> return code: map -ENOTRECOVERABLE to MF_MSG_KERNEL and any other
-> negative return to MF_MSG_GET_HWPOISON.  case 0 keeps the existing
-> free-buddy / kernel-high-order handling and case 1 falls through to
-> the rest of memory_failure() unchanged.
+> VM_EXEC readahead is already constrained differently from ordinary mmap
+> read-around: it is bounded by the VMA, uses exec_folio_order() to choose
+> an order useful for executable mappings, and sets async_size to 0 so it
+> does not create follow-on readahead. When VM_HUGEPAGE is also present,
+> the larger readahead is an explicit userspace opt-in.
 > 
-> The MF_MSG_KERNEL label and tracepoint string are kept as
-> "reserved kernel page" to avoid breaking userspace tools that match
-> on those literals; the enum value still adequately tags the failure
-> even though it now also covers slab, page tables and large-kmalloc
-> pages.
+> The mmap_miss counter is decremented from cache-hit paths in
+> do_async_mmap_readahead() and filemap_map_pages(). Those paths are not
+> always enough to balance the synchronous miss increments for executable
+> mappings. In particular, when fault-around is effectively disabled, such
+> as configurations where fault_around_pages is 1, filemap_map_pages() is
+> not reached from the fault path. The counter can then become a stale
+> throttle for VM_EXEC mappings and suppress the readahead behavior that
+> the executable-specific path is trying to provide.
 > 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Skip both mmap_miss increments and decrements for VM_EXEC mappings,
+> matching the existing VM_SEQ_READ treatment and keeping the counter
+> accounting symmetric.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-Thanks.
-.
+
+-- 
+Oscar Salvador
+SUSE Labs
 
