@@ -4,170 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E862CD6E5D
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 11:27:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 695F0CD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 11:28:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 310DC6B03CD; Tue,  2 Jun 2026 07:27:13 -0400 (EDT)
+	id 9F0BB6B00B3; Tue,  2 Jun 2026 07:28:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29AC56B03CE; Tue,  2 Jun 2026 07:27:13 -0400 (EDT)
+	id 9A17B6B00B7; Tue,  2 Jun 2026 07:28:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 162116B03CF; Tue,  2 Jun 2026 07:27:13 -0400 (EDT)
+	id 8DE5B6B00B9; Tue,  2 Jun 2026 07:28:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 040F66B03CD
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:27:13 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 95556C2B60
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:27:12 +0000 (UTC)
-X-FDA: 84834746304.14.39D6C13
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B77D9C0003
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:27:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OpuvB+TC;
-	spf=pass (imf28.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780399630;
-	b=6K9M6iCX3QyjSf0IU724MbjIScnRAZvqmptHVlWdCbXIFbQ+PpyDvbQOs+POHeypMLbxCK
-	HGxIwf53qzKklIdFOEVrordnY9HPvsAuOy3BkDDxKyVCYf2e7zHu/Umnazii4tJpRtcR7L
-	g5APXXm2JjYqKRdlTeJFfvddMqJLPVg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OpuvB+TC;
-	spf=pass (imf28.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C7AD6B00B3
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:28:20 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14C201408E2
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:28:20 +0000 (UTC)
+X-FDA: 84834749160.19.C861E58
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8679240002
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:28:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqNsQmyI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780399630;
+	s=arc-20220608; t=1780399698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CP93nlQssNvYpFC8rnfGZuXcUdBpP5yef/5fnF6hzcI=;
-	b=PcCyeCtP06qxR0A8r+t/w+BvxQsso3OKNY26Rp2vYaexP5LmvuTiAGZgynmLKmWyktcFqg
-	y4Ty9B6E9D3J5j/tS4WkBWDom0dptFeQwRVLPok25hV3BwxblKsDPq90stJb0tRJqyP8X5
-	Lkcw8kfi0GOliEQSJHwhl93tdnecvZE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780399630; x=1811935630;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vFe0YHJbZeLES+sUauMUh5hZ46dD8ew9Ej6lDFLoT9Q=;
-  b=OpuvB+TCFOlrTj1dTsQq4IO6bT0RYvhdqKiNi7guAfItcI40qmxJuR+2
-   JxfSI7H8Vs0pb6lSzui2MNNzEWzxhK2dqWRYpbiEiVo05UowkhP/brLIc
-   ZVeqrXsY/GHqe3VM+ZWp1v4ClJFL3WOZdAoNffJszSxQymB3W2SmL0kdn
-   EoTQOQCHyRV6IH4CmL1hEzveBQPF06YlAMtiXnjfxI7VYYLoSP3+xGnlr
-   LFm/IXvUvXoEkVqVbja68afnmQGU98K68zOP52EZcPPPHvMGyw+ljzTra
-   1vViH6ezFD00NvPoMZN+e9EIaC8+Q8JOgg1j4bdpBSO6q8EyVZiF5BWXP
-   A==;
-X-CSE-ConnectionGUID: exe2E/HDSMGWalOtmiKhOQ==
-X-CSE-MsgGUID: MDo+SSU1RLq51iIrkyY4Ng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="84805000"
-X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
-   d="scan'208";a="84805000"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 04:27:08 -0700
-X-CSE-ConnectionGUID: 57WJuzJhQk+bJIT4F8AZnw==
-X-CSE-MsgGUID: InV+5AxmRSKrEz4WoNh7bQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
-   d="scan'208";a="240879149"
-Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.229])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 04:26:48 -0700
-Date: Tue, 2 Jun 2026 14:26:46 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Kees Cook <kees@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>, stable@vger.kernel.org,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>,
-	Gabriel Somlo <somlo@cmu.edu>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-	linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net, qemu-devel@nongnu.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 01/11] params: bound array element output to the caller's
- page buffer
-Message-ID: <ah699hwLxIIOZ0-7@ashevche-desk.local>
-References: <20260521133315.work.845-kees@kernel.org>
- <20260521133326.2465264-1-kees@kernel.org>
+	bh=PFBa7I002E7Bsn/QoIoCaI6J5pVRf1daPAJ7sgM4cYg=;
+	b=Ao7Iz2yT9YqXtypl4mI+xgVCO1aoC4QUg+UIPyMKPc2dpZ6Gi0JT6vfS2mYTTW0IKEiv/N
+	k4Z9mIqdif25hia5hJeY4jjCor6BapI0HfXiTAFikb3z9iIN0HfgyjZaKRMkt0Yx5yd4dD
+	3EgC/AmudQdfuyrrR9/ahsJWOrOyUG0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oqNsQmyI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780399698;
+	b=k3/0LYUM9NqtujCdnSweNIxFnqs9uqkskC/bVQMkyl3RyO6SIQDXg/a+iCWEVTHQcyVb+2
+	e0R1/qmYDX32VXPNSde74ec3gaM15wSgI8F28IB6Zs/Zpuzx7Nngmuhrv3GXjWrnS7QRbX
+	ojgJM/1wAM8AsyWc8aacoy09n0qXmuQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F101960123;
+	Tue,  2 Jun 2026 11:28:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96631F00893;
+	Tue,  2 Jun 2026 11:28:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780399697;
+	bh=PFBa7I002E7Bsn/QoIoCaI6J5pVRf1daPAJ7sgM4cYg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oqNsQmyI73NfO9W8dbNQ2uK2uFKw8EpA8DdRJqXJ8++Cves56kPyohjLfWVdk52q5
+	 7VTubZplBq6Irw0vrt/lZTDDW2htCYfYMh1S1s2wcgBaMKiQVtwUFcI5N8uffNcGy6
+	 FgvasCsMBTrfBTT/eum2q+4qPCrAsCKiqCDCGJh1gmP4Mrdz/mW16wFF5m4vi3XeOh
+	 smWA9hVsUHBp9vr0nbgwL5wZERp5qCVntKW94rV80iF3vTZQGfthCS9yRReQ5W0yxC
+	 G6RWmSW4tXYi5Dy9feBL09u+897AEjnOZTnf6Qe3BtClzv+vL7GYSd3vkBrX7sZz9Q
+	 Lw1RWwGiZr2ow==
+Date: Tue, 2 Jun 2026 12:28:12 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 3/3] mm/vma: eliminate mmap_action->error_hook,
+ introduce error_filter
+Message-ID: <ah6-Nd5d8371sPRd@lucifer>
+References: <cover.1779462249.git.ljs@kernel.org>
+ <e770b28427937057fa953ac380a134b24acd8bb4.1779462249.git.ljs@kernel.org>
+ <88aa89e7-aa7e-4abf-babb-a2855bcb3fee@kernel.org>
+ <ah2oasz6oz4TgEiD@lucifer>
+ <192ad271-13f0-4e8d-b5c2-feb65392bc6b@kernel.org>
+ <ah6qt-JQaSPwGTfi@lucifer>
+ <b8891a38-7bcd-4258-816d-d397499842e5@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260521133326.2465264-1-kees@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B77D9C0003
+In-Reply-To: <b8891a38-7bcd-4258-816d-d397499842e5@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8679240002
+X-Stat-Signature: zchxigays3ow8su5c4fk5fwafo88wtx1
 X-Rspam-User: 
-X-Stat-Signature: b4mbfhw7r9oaw87iii1hykhgyt4tk3gp
-X-HE-Tag: 1780399629-469611
-X-HE-Meta: U2FsdGVkX1/vV2sSNUqqxEPpqnJ4E7LjGO12w97fvG1clnZEvReVGt0s9Rc5HDx+Ak2M3E/MYoW1E3hRjt86SyC4nuLJjaMDGXAGh3MIUrrvVvXY+EjNL0R9rWwRY3W2B3aqhDB4kEOJD/JG2sxXRgvRlyLqcOJr2gGyDLXQbKmaDPMGGArvAyGaSRvr6FRnjr46B153itWGgmCQWNFCAocJuNSs25A4cY+MkfKILjrIA1S0+WDs+yuAaEsKQiNK4zywWc07QQkdv5um0so0rKoJO+i4W19IS1Olrm+bmDcd3a3WaRG8gKE3EY9vGHN8X7vCoNQBtyOaHZa1dZQCfbXQVD4dKngZ187sSepjfshGc7kmTeqxcsTPOhneVN0WKCkMvpxPugNeGe6K5m3gePCEsd2BXyJ9koxUQDE28c5JmlZz3RUY3Smm0VdcV61wGjilKHD6QZN4gQv40KMbb3z4SGr7Eg3N80ohuEjMn9ENA907mTMiJ9ABW0/TNXphSDvDn8H7r8Y2gcbe2qJO/UnxFUCmGjuhwE7JIbBqT/e5D7l5XXvUjrtM1n9zpsh3/NyQrdmwH+JqFvwp4Lhes0bbVQ2Jak5vICOusuTsRP9LSs2tv/xymtNnV6sQas+dKpqH/7XvMbFNPfVYs75FL0sZOLoWyemIe7MdMej4+vg15tFkIwUipmcEI0fGigKE9hrNZwQkMilBwiHaKUaf8K8NOCbtY5NBYwUQOnPneqeHwHQ/uBDvTt5QjdalGE2bxm7d8BV0p+0HB8kCCRKE+BjU1qNK2Rsw273PVb6aRGkFdE3XLwzkeiU9aizi47SPUuS3+b5qhX8nGCsMUjei0fqo66cWiBlwCkhPCGc7obS2LT7RCWrXj3WvHEfhBerM6OWRYsgInZPvzHoFYC+WqdMxH1S6AdR3ZaqjcFuSrWONmPwM149DgC66250AC/LZXzImr/7UjrxUcM1S6DQ
- 7u5Vj7YE
- hqBJ/QuoGRlLXGdrpcVU9lQSmyZwiNFTz9qyhfsNmq03Pvq21ZjlEiV+qtM+u+MIBXSt9CQWIzXxdMbilAp76yipvGtN+si0E+lnSxJiGs4U+W1aiEosI/l4zkSDGhkvvKftbJ2jC91dHHewuUEF27/ZeM/iyRi7dfJNjjaQSBoWyDAtHOVnHGp7w3prPWVuyNFx4Sj77HMNW50uHPcXi71tJ+qXAO/kCQR5dOWucPchLCGvrQnosS20stFAwEcdUx4oomPdR/cEHFCI=
+X-HE-Tag: 1780399698-181469
+X-HE-Meta: U2FsdGVkX1+uCwWtwthmUs1mvigcRW5yaL+K7w/mJhP5mRi71l35/nGSjRtxpkZ7LS6PYmk1uwprXbCqHuIAqvS/W1Rpqt7qt0rmppTxcreQa8EL1oNwv7M6OFZdHRDOx54pPMgeb6sf7wJuH4wXbGNDHWBvp7yOHIFJYHtovnme45gctdT54084DxfGSC6U1udd9U3UtuRf1WgIG5Bk89A/lNtttB2aoz/tnRRx36RiTB2JJvtqAIZON7O3mnDflSTds7PzjUAT9Le8wKtF3X8T80v17qBwPvIJWQ820zftTrx/8WgG31ibiJYu1duW5JijCD9hPPP1+MRgd9zlV2+vryFSDdaBC6pXdm0a25Nvvyq1wiyUDmIOSUq3iAsX3CLm5al+DXYj1xH1iG8lUuBR+3DWX3W/gd4OKpVy+q91wKLmXuLTRDRYVrJIrvUZ8XBzW45nfT18uzuwP/Yiqc8GDkohov0EaYEHWJuKT6aOkweYOC50zv9cp8rYeYqnSTVrfYoKJFwIZpwnVxkO+EuUen07vc9eHWvd1aNVfIAvncc28ovktwPygAyvEASIkbkJreZWcc5kDJvIdnMh56wCVjl2lSPWS5kSD5jIpHGF0AZMzzVKK86mGor7w7i6os2SOI5KJpUT2yxY4J6akLRhSlOvArFFwD95LWzTmeK3OgzefcZhFILsccMAuty30uBFRJ8TO2QabWrqpCJmtZH2crj2SWf670LNAYbcOY7hGBra82iAbVpGO98/HPPR2JDkAq7Kld/EPIqqEesxyHDLxpdUAp5jzkGz4Okq+iuoj++nRbTA8x6CNjaxeXB/yucO+GSVA/2FtNzJMuaOye697jjgQ0OQJcfYPxDGJtzcshWrCi1VfPJW2CkD0K323DSQ8ITZ2r1pksRpLGI2Kmb5muKSTLn3CZBTPfC2mdceRfzC4cRnHCZNv9jUWqtuLXuabDEN4Ln1GHs+0cm
+ 5ee5ey3p
+ CuX4BA+CXYbK0FAm88q2CBl68g89Lt9fbjw9AQUmHvg3YsNVNWL58FncxnaSc8xsFvh+uzf7Qxj3vJ1lffO9g+DdRWFPzfCHRD6B8cdy30GBHuqUbkiQr8jYGdUoajwfhkILJLi6MwWBFqI5qMqGldCq2AcXftqoMqHnj+t4lkcrnTw0gqf79Xq9Ej0fNAiAgVF4xRsEax5FuPcagZH4VkZoEEBO73og8AJSNgIkX9ct8smjUb/sUI3oKQD2Kpx63N/7I8d7Lxn5y87pOHxMmBpyvZX9bLNQgBv3djGrFGjN+oBY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,68 +101,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 06:33:14AM -0700, Kees Cook wrote:
-> 
-> param_array_get() appends each element's string representation into the
-> shared sysfs page buffer by passing buffer + off to the element getter.
-> 
-> That works for getters that only write a small bounded string, but
-> param_get_charp() and similar helpers format against PAGE_SIZE from the
-> pointer they receive. Once off is non-zero, an element getter can
-> therefore write past the end of the original sysfs page buffer.
-> 
-> Collect each element into a temporary PAGE_SIZE buffer first and then
-> copy only the remaining space into the caller's page buffer.
+On Tue, Jun 02, 2026 at 01:23:11PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/2/26 12:07, Lorenzo Stoakes wrote:
+> > On Tue, Jun 02, 2026 at 11:16:03AM +0200, David Hildenbrand (Arm) wrote:
+> >>
+> >>>
+> >>> I thik it's what people tend to call this, it's what I've seen it called anyway!
+> >>
+> >> You mean for this monstrosity or for a mechanism that translates one value to
+> >> another one?
+> >
+> > In general, but a quick search on lore suggests this might not be as common as I
+> > thought.
+> >
+> >>
+> >>> I mean your German brain is being logical :) but by convention going with this
+> >>> terminology.
+> >>
+> >> Sorry, but which convention?
+> >
+> > Of calling this error 'filtering'.
+> >
+> > I'll send a quick respin and rename this to error_override then!
+>
+> Thanks! I was primarily trying to understand what my German brain messes up :)
 
-...
+I think honestly on reflection you're right and it's unclear :P so better to use
+a more obvious term for this like override! :)
 
-> +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>
+> --
+> Cheers,
+>
+> David
 
-get_free_page() (or how it is called)?
-
-> +	if (!elem_buf)
-> +		return -ENOMEM;
-> +
->  	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
-> -		/* Replace \n with comma */
-> -		if (i)
-> -			buffer[off - 1] = ',';
->  		p.arg = arr->elem + arr->elemsize * i;
->  		check_kparam_locked(p.mod);
-> -		ret = arr->ops->get(buffer + off, &p);
-> +		ret = arr->ops->get(elem_buf, &p);
->  		if (ret < 0)
-> -			return ret;
-> +			goto out;
-> +		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
-
-It's usually discouraged to use castings in min/max/clamp. Can we make ret long
-or do something different here?
-
-> +		if (!ret)
-> +			break;
-
-> +		/* Replace the previous element's trailing newline with a comma. */
-> +		if (i)
-> +			buffer[off - 1] = ',';
-
-Can't we do this after with help of strreplace()?
-
-> +		memcpy(buffer + off, elem_buf, ret);
->  		off += ret;
-> +		if (off == PAGE_SIZE - 1)
-> +			break;
->  	}
->  	buffer[off] = '\0';
-> -	return off;
-> +	ret = off;
-> +out:
-> +	kfree(elem_buf);
-> +	return ret;
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Cheers, Lorenzo
 
