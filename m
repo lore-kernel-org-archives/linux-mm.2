@@ -4,139 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9517CD5BD1
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 13:47:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A101CD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 14:14:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FBC66B03A0; Tue,  2 Jun 2026 09:47:05 -0400 (EDT)
+	id 177FD6B00AC; Tue,  2 Jun 2026 10:14:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D44B6B03A2; Tue,  2 Jun 2026 09:47:05 -0400 (EDT)
+	id 129816B00B2; Tue,  2 Jun 2026 10:14:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2C4A6B03A4; Tue,  2 Jun 2026 09:47:04 -0400 (EDT)
+	id 03EEB6B00B7; Tue,  2 Jun 2026 10:14:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DCC116B03A0
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 09:47:04 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CC4F14093D
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:47:04 +0000 (UTC)
-X-FDA: 84835098768.07.1B1E753
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 72E4720003
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:47:02 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bDPAhczT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=S+XdiAPw;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=WsFuQ4d5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="4t//PCFP";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf31.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EAFBB6B00AC
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:14:01 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81E4612093F
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:14:01 +0000 (UTC)
+X-FDA: 84835166682.24.375C56B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D07A0100003
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:13:59 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Rv/vc6Rq";
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780408022;
+	s=arc-20220608; t=1780409639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cmVb47wh2hH8fLzFAOWLUOjb7eKLNxkG0RvgTDTKxVU=;
-	b=RKbjHtlUzAHOdFxh0isSVpi/i8aXg1/FJOw9GG580JgmnLDpkQwl4wL8VafwGDNRsFi61h
-	7H8XhjiTMiOtNMaTBYuktsEelF5rmnNrSUSaxGntdLqK/lmME9xg7kTZoYbsFwWvMNAl3K
-	ARJeOAmnnkN1CbZjEzYDXL/yjO51nGk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bDPAhczT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=S+XdiAPw;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=WsFuQ4d5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="4t//PCFP";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf31.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	bh=1Da0hGHRQ+u6EMu8JOWarmoA+lAxekjyOANZmQgjUI8=;
+	b=emNrIL+5G3QJor/42qdiy+1fBnJnNfH8Xs9VHy7+ytEKoWT7BZix2N0RfxL3D8yO3Tlt1L
+	xENc8Iu/15NXcmP6KOvjrmyFfQ2NvoO5SFGp7Pl1YtbSv1SgF9KhwVACbqfpYqYQrN4+ID
+	YZOsZ5fVQWU9wqzbTbNinzGwyYqDmbY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780408022;
-	b=vHuCI8gFhQUxWJfx+MOFL2nQMPd1Tms+YoQlLoOny8sRDBayun/gKMao51r4IfvL79npHu
-	HgM0BABtEECcU78sfIfkaoD+G3VA+ky75MwPWsig9uMftjLXZrTsfqt/C7/5kRBi2vImwO
-	/ctl4sXr/geWJJWGluImfViwrfoHdDk=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D7F2667EE6;
-	Tue,  2 Jun 2026 13:46:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780408020; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cmVb47wh2hH8fLzFAOWLUOjb7eKLNxkG0RvgTDTKxVU=;
-	b=bDPAhczT57Bx3yapCXs1A22p9HhKItXr2vadOkJeljpDRKTzh+Os0zhWtgW6cirR/XpF0i
-	BiId/NradA+gu7D3WCraIZQR1rUO7CyqdsI6UJimb90oJViOhWF9MyI077CkYnMPBr9fDO
-	NdUOyH8/JGSL8Klce9ncoS7zbVU+IiE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780408020;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cmVb47wh2hH8fLzFAOWLUOjb7eKLNxkG0RvgTDTKxVU=;
-	b=S+XdiAPw9z4xsrDNETCzQr6EXuqMMFt/EXdUhmw56nT4V/0bf1qrBmEi+Uiz+L8JhdvJUb
-	iQnaCFD1/S+DaLDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780408019; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cmVb47wh2hH8fLzFAOWLUOjb7eKLNxkG0RvgTDTKxVU=;
-	b=WsFuQ4d5+DlBtAGOsUf1HXUU9dR3jz+tHgKL7kuJ/vzTfYOpHwZ8GsrradUAfUcDJ6177p
-	0HHfSk4Rtn6QgSAshLk2fIbX6ZLCZP5sY/jUjRQWrOFFgoxX4F+u395Pu0j9objN4tPz3q
-	e/XGGB88vXqYVl4Thi4/5IxH4c+zMyI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780408019;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cmVb47wh2hH8fLzFAOWLUOjb7eKLNxkG0RvgTDTKxVU=;
-	b=4t//PCFPaT+VqzdJNYfbtazRtPQOy6lTyKr2BqnlrV6xIw2g7IxIiEd5L9lljU2TFqpxXz
-	tJbR0XtmT4/fGZBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 16270779A7;
-	Tue,  2 Jun 2026 13:46:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YJ3xAdPeHmraSwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 02 Jun 2026 13:46:59 +0000
-Date: Tue, 2 Jun 2026 14:46:57 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Dennis Zhou <dennis@kernel.org>
-Cc: Kaitao Cheng <kaitao.cheng@linux.dev>, akpm@linux-foundation.org, 
-	tj@kernel.org, cl@gentwo.org, mhocko@suse.com, vbabka@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, muchun.song@linux.dev, 
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH 1/2] mm/percpu: Preserve NOFS/NOIO scope during chunk
- create and populate
-Message-ID: <ah7eYOb5YU0Jhs-Y@pedro-suse.lan>
-References: <20260528132917.81123-1-kaitao.cheng@linux.dev>
- <20260528132917.81123-2-kaitao.cheng@linux.dev>
- <ahlameE6FBEZj_gt@pedro-suse.lan>
- <ahld5va1b9w8j659@pedro-suse.lan>
- <5a4aa532-77a0-436a-8f5e-1bbcf2db6bbb@linux.dev>
- <ahrm4x2ubbjs4An1@palisades.local>
+	t=1780409639;
+	b=xDwBqftyGNwnZHJ7UvZy1UvuuvNnQUpBgsMBKvReZ1mNB3Y0ltV2FoTnCoMmfcMzgzhdAh
+	7wI+xrjb5kewO9uTgePtGwoeCLzNs0oHSZF3B2bjhV0qu32spydOD0Xjsx40sxBqUAPbis
+	8Rep6Zm6drcOGWuW+mvjN7AeYFe7eqg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Rv/vc6Rq";
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A8E9540AD5;
+	Tue,  2 Jun 2026 14:13:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DBA1F00893;
+	Tue,  2 Jun 2026 14:13:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780409638;
+	bh=1Da0hGHRQ+u6EMu8JOWarmoA+lAxekjyOANZmQgjUI8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Rv/vc6Rq3YhE6Vacsb3plHHgWxNahSbe1mNpDtLyb9Uio74S65fjQxTJgNxUExRkv
+	 DB6lL/S/394EBIVzKoOBtNMHw3o0gzMpdFJ7jGNznmhAaJKU3LMdDHcrWqodrt3/DK
+	 nhKCESyl4IrdiepEdcK/glKszRYQDCcIs/7RTxVu8UZDQOQT8Ydir99zx/UGjNrNOv
+	 GrAP5v5AN73YYhp5+oGM3Br73FerFxPt7/5H/MufCscbE3XYgCyVeXFsdNX516iJe7
+	 NkcAF+VjtFjOMibA3owVxDTdEdCDY2Zi9goO1V2u3ffBaq/Xos2lmucHn0a1Fz8RlQ
+	 nw4cru+UUv9Eg==
+From: SeongJae Park <sj@kernel.org>
+To: Ruslan Valiyev <linuxoid@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] selftests/damon/_damon_sysfs: support kdamond refresh_ms
+Date: Tue,  2 Jun 2026 07:13:49 -0700
+Message-ID: <20260602141350.101848-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260602131217.2210912-2-linuxoid@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ahrm4x2ubbjs4An1@palisades.local>
-X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: D07A0100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 72E4720003
-X-Stat-Signature: zuxnk3wwin16mun78qscberq1zarz8c8
-X-HE-Tag: 1780408022-42309
-X-HE-Meta: U2FsdGVkX186WawbIB9n8VsATk6QEmkW0EJ8oChmv2McLk5XxLr4D4y6jEpAWxS+wX+5qnMN142H++fGXuWMb2br5B/gY793gisSltn1BO5ArAs1ESbQQkxA+wptbJoHiypRngHLZuhoPb9rWfPwZLa5VfdhVBp+8kX+RHjLobPXBo5TdEtdvu+mXpQ4c4XsYA/yPGPoJAXJoQrhp3r7gk/oCZLoNSVEdZEPDa2TUB3D6Aa/O8uun8IOHOkUf/ypbHdxmqFmYBCZCWIVpuAxe1DBc0p9ZUt7g/Z84ZdIgadUdq4pE/LcnhR2+7jZwAhrE3YNu5z0yLXx+fE5RSilxvgb6mFPHEVYueJbW5JPHJBmPWDk0Aw7gqh4qM/3vwYCqJtTITgOFrw9PDmMYnJO8t+gjHeqjG0kOdYqk1VdYMJqzPOC/4QPpbdafZNECTkThusxH8qZ1Fy4Z+cHnWmRUPKBSbWsHdfC/t0Ax2drY3gxPwW/8vza9soqLgqCDic2X/lvV7JJA4cL0D+C0RfsiGFGIO7eIJHL7D8B/tqLWscqGgRcE+P21dErqT4bcymNagUkjX0beSuBbkNalW26IZoJwKAkTSAaa/gh9NIwK/yxn3ntuc3wBorDjxmcI3pDKk1qh2wTysBPkZoL4poV/eqC/qWSWtLQ3kXCxcaIg8pzLIl85E0X0b3E/XLAd2VUupiPNL9xAwOk+9Z1klA4yJ7zCwlypDvTAvBhdW/X4PIuK+xD025ZQdsNZfUmSD+Yq5edWdrFYLldv2NYG5OsgvyHhrj5G0uLwJQ+ASitF0g7EAL6fpZn3GHIYyqmWS4dgDYS3OVMoMW/KHOpr3d9DkQWI33ctOUV/W1a0qtfODilJo0Jj1mN1h5OXqKm4LgWBi7joFx0khGQi30ufj7eHelKksbsJrSvc6k1X4+iwNJRe0s8gcDT7IZCeeXefoMpu0I4LAAnuKQLa4+pCXc
- czrpsdzz
- IF9rlJoMTAFaq3n/8QvEyPBQkg+HimOSpZISukDjsfQGZ0Udz1k16liC8UDqjXRHR1IcQDbtfDKtshpF88k1Zs6K9mZTWDuqvpoz+2Vucnch5R8gjyhWgGtSqif7FPbhQsmjqt5MmaI390vE/HNfFe2I6dbf0YH8Mu4U5MNeJKvSfYuDgYajfB7mCupQCD3JXYyei1eM7fdG7uQQuDh1Ar0KVIzXLYWwFdEnvo+4FHdtln5VVVD4AtvQYRKLszvdG4MUodbA4nZXpEOzA8deNdJwi6hVl1L8Qk0uvXhLRZ2qkuxtzJQTQ36Lhn2I6MxYGwf8X
+X-Stat-Signature: 9nc8tharakxsjqtan8dbtc7pxk9ewsme
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780409639-113294
+X-HE-Meta: U2FsdGVkX1+2cvQP8D8MOOANbYbN34M6ChQiWwyZMvI06TWNxAruBPUle6qRUxXMxAfXkK7736jthTYBqa9kFF6f0iuGFt01J+2vMRcntSEg76l2GQx6WNrJM2I0eYvxeDYucD4chGkh+meIEq5uuz8/fHypNnHaAXMDP74L3xhkHL+DEZHxZSG+jQ2xnu0a1lOh5lhkWsk2imF6h4AqwQSFZnJSSInh57/T70Oq5AEfcZodu0gP+5CCy39JBkDsZZcuXBFZG8vQm9iloGWkZ3sBgsdOuHCZbqUQ4j2WFGabKHA7AGzO1ApGMj6btFDfQmRDClUe2BZC0/Xv20OjQ2iOkMPeGpjdbZbaqBzG77mPXSM0dx1MR1Ri48bQxB3zHmbDuE0R+oBCennX4y7gh+43spWwYKow8xUB2Xgs0V8gJyhaLyoV7HgiY4SeELt38TUsCYVlpe8V2X6Iwh80v0HrHPPkGH/n+68thLScAREbUKq5K1r+3rm/8ZRL2kPoxho49BykvkFUfzLckyUmPC7ptFQ0C2rm53RGF5wMBCSmUtYMKc02LLPysCaVkUZh684MNi+B2GL9EmLGpDf3/l3/yVgqf+XI9dexe5jq+dMFIXHRbYh8CFjQG3RORHaD2JTI0+T72u+eVgWvCei0r+OV78S3I5IjPyMB74iE0Lo8/dKNNonJcz2KAxwTPTct3kBs9YJFaXp3YelZsr4KnDJBfIUcjrcjB5KaisHx5fVQBJMMetHvRkhBMWLAcx4weQhRcOg+E9zkid2qQpYc21+c34zSdAOcnCqj0Csouqex75XljLPoour5BH538z30JC+dugxRwZlxKIsvo5ahNcl1Ruqqhs6nCS6gyGjsbZgtpoFqwintOXPdpUOft/am3bDR7Xa+o7crHYqpwDRqUg6hNM3WP57KKM2lZamEbjUcce2g0Szi0EfFRQJkjcSGhdlo6dJ1Lnecofwstk6
+ 4m2w/oLF
+ Xjl3okg7q6tdGl7lY2Z1NhqCYKAay7/saxwwQXb4f+p3PQkZEJ8qnQtvnaJZ/LH3fSGRvijyx527Srk+O/zt0mddSOxdhTGS4/B3YaRWt6BKEeUUczdJpiZM9HYW6HS9qmdoKbLZXyWsSpYPp1TV4ym7BoLELI0abVJkRVGFUXy++8QldXqdAZZRLu88WW4lCi9qogQNR655K+LX5CPXmARrdKsBI+cXD1ivb62vm9XRk3p3H/c9ZQbWTeWaftfVbSw0DTqeAMHB8S6pN0AlTPXjgtea4KbS3Wue0qEkgtHNG/uY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,26 +94,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 30, 2026 at 03:32:19PM +0200, Dennis Zhou wrote:
-<snip>
-> > 
-> > I’ll try to do it.
-> > 
-> > Following your suggestion, including in [PATCH 2/2], I will also try a
-> > different approach and fix the issue by reducing the scope of the
-> > pcpu_alloc_mutex critical section.
-> > 
+On Tue,  2 Jun 2026 15:12:16 +0200 Ruslan Valiyev <linuxoid@gmail.com> wrote:
+
+> The Kdamond class has no way to set the kdamond-level 'refresh_ms' sysfs
+> file, which makes DAMON periodically update the read-only sysfs files
+> (DAMOS stats, tuned monitoring intervals and the kdamond pid) on its own.
 > 
-> No please don't. The point of the percpu mutex is to ensure that only
-> one person is ever possibly creating a new chunk. If you drop the mutex,
-> then you have to deal with concurrent callers when available percpu
-> memory is low. Percpu memory is expensive and unmovable so the cost is
-> in the control plane to avoid excess fragmentation.
+> Add a 'refresh_ms' parameter to Kdamond.  When it is set (including to
+> zero, to disable the periodic update), write it before turning the
+> kdamond on, so tests can exercise the auto-update behavior.  Leaving it
+> unset keeps the previous behavior of not touching the file, so callers
+> running against kernels without the feature are unaffected.
 
-And so is slab memory, yet this is not a problem. We shouldn't keep
-problematic locks just because they may aid fragmentation slightly.
+Nice addition of the feature, thank you!
+
+> 
+> Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
--- 
-Pedro
+Thanks,
+SJ
+
+[...]
 
