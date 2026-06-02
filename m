@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88ACECD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:06:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A5EACD6E60
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:06:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8A766B0005; Tue,  2 Jun 2026 13:06:27 -0400 (EDT)
+	id E86466B0088; Tue,  2 Jun 2026 13:06:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3B846B0088; Tue,  2 Jun 2026 13:06:27 -0400 (EDT)
+	id E5E5C6B0093; Tue,  2 Jun 2026 13:06:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B78136B0093; Tue,  2 Jun 2026 13:06:27 -0400 (EDT)
+	id D9BFC6B0095; Tue,  2 Jun 2026 13:06:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A75626B0005
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:06:27 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6FB1316317A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:06:27 +0000 (UTC)
-X-FDA: 84835601214.29.9D82139
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C7CAD6B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:06:32 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 48024C3109
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:06:32 +0000 (UTC)
+X-FDA: 84835601424.12.429ACE1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B7EC61C000E
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:06:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XeASP5J0;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9984C40010
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:06:30 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vgo5MSpd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780419985;
+	s=arc-20220608; t=1780419990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZ5K9M91kQ+AkSUeti/+IQh4gtRy8jNlzNE635XCeGU=;
-	b=BQ/+HPWnkDVWkdaFxAgbRRq4iiSa+Z9TyvhtxsyTsjCgY0Avtgx8nnwlLoKjPbnQkhd+Q8
-	FKeSrs7YkjHQvtjT3rttq48M53G9jaj9l8D+Zr2lUqfvAUOc37iWoDux7RFB/C5VrAiEWL
-	F0w6DMy2mVNwqALa26dQrxMvpd7BzSM=
+	bh=0ukUSWAZT5k7G7XbzmUvOStOIMgWiMG+ApVUWmOXYOU=;
+	b=4QZ2NsF6jU9+IfMqYKYxAJGoP8LZOhRCDz0fYLkPkR1NOQoZ96l7NyEvmTN3Oiwg3JK2fi
+	P9FrDj7xW6RMrn0ppIsT+F1apzqXTC2Z7SLrkyGsD9+PUKCz5SPm0LVkL6m506i4uDzi6g
+	Mq+v8LpzJJC7dqvnvSxumEZyobZlGYk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XeASP5J0;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vgo5MSpd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780419985;
-	b=OxgAF+ggMFD4gVLWm2Nm60t+3I4ui+ZbJLXRpMKVYPwGmjmOuNw1DBJHddgnumjDPklT/4
-	PIp7kOO3or+1Xxjrz6IG5KZMKBaoagQMiU45JXDvve6jWNM8JoJgIjMLbvM2vCyB4XlOzK
-	l3/bVPYjY71tPsJjejvdTwmgRFgd6WI=
+	t=1780419990;
+	b=3Ox0xIP1IK8BiMwCIzGI+GvcZJga6oEgxpeOBEJoH2GCrWPM4fBeUayxX0L+DvUs5TSyX8
+	Uo/lAXa85z/e6J78QXZsJHMHme9U8lClJh9OzlYZRac9d0CQFwQjeTfGwTrVWtQYDHrdJV
+	EHYpSP73UJ8XvTGnT4b9N2gH/QRXuGg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB0A443899;
-	Tue,  2 Jun 2026 17:06:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752A71F00893;
-	Tue,  2 Jun 2026 17:06:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780419984;
-	bh=LZ5K9M91kQ+AkSUeti/+IQh4gtRy8jNlzNE635XCeGU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XeASP5J0XDs1YevH+fi0aOVQ1MIU/R7ReCO3KBfrw0EjKQoWcSCuUTe+TFZd2QYJY
-	 GKn83c51+jpr5JLmvuXOmhxB2hOaB2EBU8lwH3RGLhERAO95WuVtvYA9WQiOd1312v
-	 B35AdenzRdSgQJxcy0NmgOeepVriM/v1PA8+h02Q=
-Date: Tue, 2 Jun 2026 10:06:24 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Alistair Popple
- <apopple@nvidia.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- kevin.brodsky@arm.com
-Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
- page tables
-Message-Id: <20260602100624.b458286887fe9a7c44d3bf22@linux-foundation.org>
-In-Reply-To: <ah7WsY02cNAN1LCS@willie-the-truck>
-References: <20260521032730.2104017-1-apopple@nvidia.com>
-	<20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
-	<ahACfQ6kCfONqz5h@arm.com>
-	<20260601212225.11f277a85d5ed15083b08cc2@linux-foundation.org>
-	<ah7WsY02cNAN1LCS@willie-the-truck>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B7EC61C000E
+	by sea.source.kernel.org (Postfix) with ESMTP id DE4A440245;
+	Tue,  2 Jun 2026 17:06:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DDD1F00893;
+	Tue,  2 Jun 2026 17:06:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780419989;
+	bh=0ukUSWAZT5k7G7XbzmUvOStOIMgWiMG+ApVUWmOXYOU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Vgo5MSpd5rLUICJbwSXXMHlNmtOE98kKio8rRf5wUvLCLyHS64u01h5uZF23YS35Y
+	 ul23hEGvUhCtar+qiJ8TDD0D/rb//t/aJ5trAIHCY70bhUOKdEuH+hRiD8YDcjiWZT
+	 dTHQQnx0Olyuc2ChrMBZn+VGnoUSWkc8GoSr5jw/RXHv8bo1SMy1jEUdLuU52Nibei
+	 khBSic3ISmOTQ7SYPfSHyNNnjeHN8cbs3C6YSjFY4eeCU4lWx9JihATLPpPW3ytYgL
+	 jAPs1BmEuxsiiYf8dHovSR7nOwG1R7v6QZgPCsEH6zfrWECQAgq5NchWuIbFMdEexY
+	 JhISPenXLwOVg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
+  akpm@linux-foundation.org,  linux-mm@kvack.org,
+  skhan@linuxfoundation.org,  linux-doc@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  corbet@lwn.net,  dmatlack@google.com,
+  kexec@lists.infradead.org,  pratyush@kernel.org,  skhawaja@google.com,
+  graf@amazon.com
+Subject: Re: [PATCH v5 08/13] liveupdate: defer session block allocation and
+ PA setting
+In-Reply-To: <20260602031717.197696-9-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Tue, 2 Jun 2026 03:17:12 +0000")
+References: <20260602031717.197696-1-pasha.tatashin@soleen.com>
+	<20260602031717.197696-9-pasha.tatashin@soleen.com>
+Date: Tue, 02 Jun 2026 19:06:25 +0200
+Message-ID: <2vxzv7c0dg8e.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 9984C40010
 X-Rspam-User: 
-X-Stat-Signature: ztsmyor8hd7s16xb5xytdmpca4fy74wk
+X-Stat-Signature: 4mpfigrbkz4w884c8hg5ndttbfkx9qzn
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1780419985-857949
-X-HE-Meta: U2FsdGVkX18+XjgCsWgDEENevQcEs9uZ6WBqonZv3zeGpIR65TJpKgbKx2AocVsNisLW4iJJl/4v/wRbZeEwEvOUcET4dfuV9475JDPi6B65HRPvKXWHz10ZMTz11yh/YWtp6GbTVFZj9Lm/yknzoqaj6GekX4jalS8OlIlAuIojxhq0lQgkiMrR+Z17rMgQv2OMTP6vC8GQ0bQZv3WAnlIdxLZtTEB3j9n+8YmbrlDIkKAy5qk3N/vzsqQPZ+6TrpLWUbktX8L8gwGW9m17T3/IvTTTKag/sijeyJ8QCeD/IQ+FWeWrSHU19Q170f0+KzBlfoY4NNzldyVXE4TJWI2dK9Cz1Y+5m7oZ2xwmGz7rw4VPrmjhEPFain77N/meViiu0C+92PXKN08hJzFkVV4ixa6NSooUekwcceMu2HkQducxGtFHjapmaHVaEoEjHcfheEV/rJm8tE6PwP3V+ZuoHkZBwjtWzek0unOoHAN9BHMdaQUZ05z3drLLzq4rJPTkjGxyMVV2eTMgMuq8tljRcCCpI1rfyeB+h0uzBtyi0UPTAJOzHEQodExFrrLUbXnhfOOLMaZJk48lZwBIqTApOzhBMFc66GVPkL615nH8ouURD6+FCWpbBmKMEP1u4z4UazTfsvsbKJ5bKGtE8oxjnVEmeHk8vo9mUsiXFEpx2cCuixGp7ZwZbGqcdZH2117GI3SOJc29ZOfMIqzZ9kPOVImMD+kf4D/C//K7mX0KU3AJ/3VWCBtL0EjeGc/daf2HgAGRKDWFNJCQg38hj2ABeLh+68LozdxLaXDopOg0u3oyu8vi/oCh3Q7CMGaIT5ttniKJH7O4WbWx/Uk2Bq4PRykASz+V/Fc9e2aYOrDFJJNTtgo2l2yKxqUU5c5XDsToitwXL/0zc90jBTZtyIUzObNWdnpF6YWe9BjSekjKSmusqYdIe0ud0MGsVAD5jKo/iH33kNG89Ag8BqB
- UbC8Re5r
- g85SEVb4iaP7fol52hfpLAt5EZNViOgYDGfPaMswhROciP5m5BAEDuK8AFAvkhwV1fy/SuuUiM8nrX4GUpTXVUr8sOZF/vdBCbbCNeIQMF9c+U+JW3/WSfSex7NbbBAmMt/33qvR+WpBI1uO2gsSgvqC2oaGzmwJWkBXBiZcbcFrT/Rjitt49MGM+7lriQ7kVZ1GwSuBL+CnvhG0XJFEX9YA9g28cGB5k86Q3IQ/wmgrBWdsiwHQQxwv6BuRz0C0GmoevAhM04/PSGFVshlqhRObCPZBXHfGpk+y1erHmeYsskJw=
+X-HE-Tag: 1780419990-538829
+X-HE-Meta: U2FsdGVkX1/DOyA+6tjK29BcTV7toAKrSRJJODF2BtHNHIjNKgGi7hMsMdLKn4lGo0VzDk0uulIb+9rQKPMGBLnJtlGdXYgbcMNZOUWf5jprYMd19ZHoXEjI5PWssh1pYTns3G4w0dfQiHbtIgLoSIObmi9nMWdWeCsLmVEc4+FR3+NgETVVlSCgabFtGgy/NAc1LS0QPZWP78rwO4ghBRfVVRib8uRRZCC1l1G1n/CG6f8nTdsy2XFwTz8brjapVzbHDyv/xANZ/vLgnBL9ExofiJtXANxMPlZoeX68EsyslHDwZoB6VQ1B6EhsJ12ymMsFlnS8+JaO9AED6DI+tWNPi+hxaAbP/BoK3xp9PvzFrxHI1VyNFQIBqVsdc6R66MYA+DYveKdgVM8RclpNEm0hjkOHNnqa9H0OzqIxDx/T+J1iMnzUKPj4gqFkDfG0tKTe9F/lOUNRPDeW8yxS39n74hx2G5NFdTkQCVVpWujUse4TQjF6ArIb8Tr/HzgtapWHP1MHzpwRZVK9/CkpyaADYE5WkyGf3janbsbFV+7ZbxndZ0bULTpKatQRk1P5PZrIAcxOXs0KsthsuNUvbIi3clQgQPGpQJebPW4qtVhJCE6ySXtdDwIA+cYwHQJbm4Y8pId8EivRqiN22sXWDdR8Cct92eM0BzZuNNBWXXRp/BHTX68EatMkX3LHms/ovg0LJv53XV8ebjIJSdWxj8iHngAbRs2tJY6kfHihxAAnRSgKb5OdH89zzNNH4iV9K/0y2m2Mfbz0Vj8NA7c1MlZ+wkYDzekiC/wQn9YRqBR7WJ02l0bl8YtZKQkPx6r0V56QZhie7Z+AJ1qGAPQTk53e+4WS39IHRTLxrdcU8JVK2N/a1Vs/CLzlJ2AMTSV+lp89Q4P+fdvvYqqp/FVXONKWKqNx4gZZlLIrVFeK9kqhHP/qFAFO1/x64D5VZdQYxPo9Nrc9WUyE3fGAHll
+ +tKwnRxQ
+ 5ZCgcv7dGtC/tt76v5yoJ7OlM1D5kYz2IkuqZzFQ6Af0dxLGEOWrpclKrRkU1e9chYg2+V5gnuFYaRGR+VG3cKAIq/cz+I/6aRxPfaWkEvjJeCkASwjRpcM19jhK9euF+RktGvwAdnGm0lReSwAvFVWLFPhrb8dNRb+30yIiRKTyYxMPWppTLDlORhWsRcOF7WvsxVeNx2DOzz1e9BuoAqZ+lcZIic5HG6NJMvppP4XETrlp/9VDoM6EeRnizbiNzTxJZKggvNvoTEhvkyBjpazwqvIcOgg8Ov+2d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,21 +97,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2 Jun 2026 14:12:17 +0100 Will Deacon <will@kernel.org> wrote:
+On Tue, Jun 02 2026, Pasha Tatashin wrote:
 
-> > This patch is still floating around in mm.git awaiting some
-> > finalization.  What to do?
-> 
-> >From what I can tell (assuming I've been following along correctly!):
-> 
-> 1. This patch improves the situation, so makes sense in its own right
-> 2. There is additional work to be more consistent with the constructors
->    for page-table pages, which Kevin is going to look at but is probably
->    a little more long-term.
-> 3. I'm happy to take this via arm64 but also have no issues with you taking
->    it via mm (so please shout if you want me to pick it up).
+> Currently, luo_session_setup_outgoing() allocates the session block and
+> sets its physical address in the header immediately. With upcoming
+> dynamic block-based session management, this makes the first block
+> different from the rest. Move the allocation to where it is first needed.
+>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  include/linux/kho_block.h        | 22 +++++++++++
+>  kernel/liveupdate/luo_core.c     |  4 +-
+>  kernel/liveupdate/luo_internal.h |  2 +-
+>  kernel/liveupdate/luo_session.c  | 68 ++++++++++++++++++++------------
+>  4 files changed, 67 insertions(+), 29 deletions(-)
+>
+> diff --git a/include/linux/kho_block.h b/include/linux/kho_block.h
+> index 505bf78409f2..0a8cda2cbfb5 100644
+> --- a/include/linux/kho_block.h
+> +++ b/include/linux/kho_block.h
+> @@ -70,6 +70,28 @@ int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa);
+>  void kho_block_set_destroy(struct kho_block_set *bs);
+>  void kho_block_set_clear(struct kho_block_set *bs);
+>  
+> +/**
+> + * kho_block_set_head_pa - Get the physical address of the first block header.
+> + * @bs: The block set.
+> + *
+> + * Return: The physical address of the first block header, or 0 if empty.
+> + */
+> +static inline u64 kho_block_set_head_pa(struct kho_block_set *bs)
+> +{
+> +	return bs->head_pa;
+> +}
+> +
+> +/**
+> + * kho_block_set_is_empty - Check if the block set has no allocated blocks.
+> + * @bs: The block set.
+> + *
+> + * Return: True if there are no blocks in the set, false otherwise.
+> + */
+> +static inline bool kho_block_set_is_empty(struct kho_block_set *bs)
+> +{
+> +	return list_empty(&bs->blocks);
+> +}
+> +
 
-OK, thanks, no probs, just checking.  I'll include this in the next
-hotfixes batch for Linus.
+Are these intended to be here or should they go in patch 7?
 
+>  void kho_block_it_init(struct kho_block_it *it, struct kho_block_set *bs);
+>  void *kho_block_it_reserve_entry(struct kho_block_it *it);
+>  void *kho_block_it_read_entry(struct kho_block_it *it);
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
