@@ -4,108 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADFD7CD6E55
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 01:54:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1541CCD6E55
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 02:15:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD8866B04EA; Mon,  1 Jun 2026 21:54:25 -0400 (EDT)
+	id 3CB616B04CF; Mon,  1 Jun 2026 22:15:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A87F96B04EC; Mon,  1 Jun 2026 21:54:25 -0400 (EDT)
+	id 37BC96B04D0; Mon,  1 Jun 2026 22:15:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99E426B04ED; Mon,  1 Jun 2026 21:54:25 -0400 (EDT)
+	id 297396B04D1; Mon,  1 Jun 2026 22:15:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 89E0F6B04EA
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 21:54:25 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A1FD4051F
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 01:54:25 +0000 (UTC)
-X-FDA: 84833302890.20.84B0F62
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 353761C000B
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 01:54:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DfHshTTh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 1B6626B04CF
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 22:15:36 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9D5C64051F
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:15:35 +0000 (UTC)
+X-FDA: 84833356230.28.A71279D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A89EE4000E
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:15:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GVPnVtx8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780365263;
+	s=arc-20220608; t=1780366533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3geOnjsRONWcXlSKOxzkIj5UpI9VWDpsMbZFPdUbFI8=;
-	b=dbwnG037xz7/UJRC1tpzctD2U2unjVDfQEdbja3PN7ODEmTFDrXuCexpw96RUrM6mL3tFS
-	sbxrc4qzK5bb/vhu3EkZXJh33lyorNjhX+7oESgryMx1Qp/whBBp9Ovqg74BIhRAiYJUsh
-	Ko8gcgil0qd4TZlsn6nXAsD0kPpYXoU=
+	bh=vDNolArekgRosQOyPhKqBidL7MM7+dNKWKcNGsM/o4A=;
+	b=FpQPBWdgT+/EmRdU9nhE4/phBdmfx0tNjY5BtqEta9EXNQQLPXIoKVhIJVQC+gRtuRv3Na
+	ncZgON+KCYUP5H3iGg3jG64JuwAZ8O7t5D5zxeS36aXra1wYoL1/OK9MqTQ8syZnUpNBEM
+	goQ8FtRTEi27KMSWyjIqAOs9zw46nVs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DfHshTTh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GVPnVtx8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780365263;
-	b=cN7hCpHIXXXJ/HTr5by7LcmqdoZO4KrYiuh+Goduv/OmzZV+QPE3YtN3ci88IaD4OFGUo1
-	i3jQ7hLsvEJ3wazqhpo7Hl0De3fe6WbvZrMZUh+JrfDFXEC8f+Fn4UFvdfFsbT54M0szVu
-	Nb8ZCavxU1X/7i2jGen6Zagf8qPaE9w=
-Message-ID: <153ba7fd-9121-4884-87c6-45822828545e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780365260;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3geOnjsRONWcXlSKOxzkIj5UpI9VWDpsMbZFPdUbFI8=;
-	b=DfHshTThmN0u8H6tDLsF6dGp2es2w9XzCkuhwpmX+DnkF9p6hOpD3MXx1zkoegmfX7XMO7
-	OrcB7suUBTz7SBHHCE5K5GqGxTR0Ky7NWk5qtfYe0GWjr4mrqL40CDidu9DhSzC24WHznf
-	znn7d0hq+kSM6x0MorcOOwGZzS0DGVo=
-Date: Tue, 2 Jun 2026 09:53:54 +0800
+	t=1780366533;
+	b=CMnis/dICEborx+yMcm2DW/erIzfIB5SfuSWAZjbKyMHmQXmGcnnfiWSgQKxll5kRAHXWF
+	Ama/GIBJp5tbOlQQbj2IfjhIlQGWcyiuSyibbgH+5wl8NYewP4MjAaFneBDvUBh0tAqo7U
+	IZ6VHJOdNYj+ET5DWVe+Hwi93IZk9fI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 84E99445F0
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:15:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFE21F0089D
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:15:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780366532;
+	bh=vDNolArekgRosQOyPhKqBidL7MM7+dNKWKcNGsM/o4A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=GVPnVtx88mdLm1WWoKMJNVP52OGVT6hSqHGGU/NMJ2ZYmp1lM4EhG7bBar3rDZ3Zi
+	 TcxR6ZPw9T/2gM35LpBRYKZl94OtaE0v9KeakbfZBDag3dMj+cvnK/i/UELlGHpaw4
+	 bcrE6Vk7PjxVS662uUJnk5KxxtHPd4+2betlow6/BTSvgaI9DUQu1VWM/iYhUarxJQ
+	 q6DAuG49IeAm8A3EP1ny0kmt0Tn4SFFsDNg81XUyYHbtjjYbNtlppOnjCQhMF242J8
+	 XaHZv6Zah5JHZMdfugRssA53ppN1fZHnH10PoWAJbGYnDdk3HRNj6nSsLa40P+aqKr
+	 EYJJmDXRRaasQ==
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-915336b83adso393108485a.2
+        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 19:15:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+fhyc/Ny2WixyGBkGMZFo5gajL/I1unuV1tNQ80AW6o5yZqrZeEbr29u2y+2P7bZn74aFdwQh2mA==@kvack.org
+X-Gm-Message-State: AOJu0YyPIuL0zPitoqmiHtdT8gQx9+NJBG3w/jCF6Tla6kWHS34DrqPU
+	3YG5tXH+4MVmBCE0PbedCIMCLA6bYiqNDKFxYO9B969DsEYlen5BnLTkjRY1YS/wUw5ohE3cS8O
+	UlwaZvuZMjdO94FtL4sERILveZ0R08ZI=
+X-Received: by 2002:a05:620a:46ab:b0:914:dc12:60d9 with SMTP id
+ af79cd13be357-9153da3c92amr2245294985a.46.1780366531281; Mon, 01 Jun 2026
+ 19:15:31 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-hotfixes-unstable v18 00/14] khugepaged: add mTHP
- collapse support
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
- cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
- david@kernel.org, dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org,
- hughd@google.com, jack@suse.cz, jackmanb@google.com, jannh@google.com,
- jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org,
- liam@infradead.org, mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
- linux-s390@vger.kernel.org, linux-next@vger.kernel.org
-References: <20260522150009.121603-1-npache@redhat.com>
- <20260522134724.f4f11941a85ef18b307d16ae@linux-foundation.org>
- <20260601155808.2755103A59-agordeev@linux.ibm.com> <ah2z26OzPktchVeT@lucifer>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <ah2z26OzPktchVeT@lucifer>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260527110147.17815-1-tao.wangtao@honor.com> <ahcANgFDFwfC0v1q@lucifer>
+ <b24b4a8198ba412f8b8b42c43dccd058@honor.com> <ahf2mJg9OOWvu0jA@lucifer>
+ <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
+ <99dfc4a50f3643a6bef6deaeccfcf115@honor.com> <ahlzj--3Gm5pD9ge@lucifer> <a90bcb0fa3a044588350e92a78258a09@honor.com>
+In-Reply-To: <a90bcb0fa3a044588350e92a78258a09@honor.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 2 Jun 2026 10:15:19 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wFr89M2i8pth79swv3==i8SGSMWrbr+Yp2umwFTuCShg@mail.gmail.com>
+X-Gm-Features: AVHnY4LJPt1t2ZBIxfgvbOEnyfUBTI1uXsLcte0MhxaOkYp5LfKwaoVVIHaTQkk
+Message-ID: <CAGsJ_4wFr89M2i8pth79swv3==i8SGSMWrbr+Yp2umwFTuCShg@mail.gmail.com>
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma creation
+To: wangtao <tao.wangtao@honor.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"david@kernel.org" <david@kernel.org>, "willy@infradead.org" <willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>, 
+	"kees@kernel.org" <kees@kernel.org>, "luizcap@redhat.com" <luizcap@redhat.com>, 
+	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz" <jack@suse.cz>, 
+	"riel@surriel.com" <riel@surriel.com>, "harry@kernel.org" <harry@kernel.org>, 
+	"jannh@google.com" <jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"ziy@nvidia.com" <ziy@nvidia.com>, 
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"lance.yang@linux.dev" <lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, 
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, 
+	"matthew.brost@intel.com" <matthew.brost@intel.com>, 
+	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com" <rakie.kim@sk.com>, 
+	"byungchul@sk.com" <byungchul@sk.com>, "gourry@gourry.net" <gourry@gourry.net>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>, 
+	"pfalcato@suse.de" <pfalcato@suse.de>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"ryncsn@gmail.com" <ryncsn@gmail.com>, "jparsana@google.com" <jparsana@google.com>, 
+	"dvander@google.com" <dvander@google.com>, zhangji <zhangji1@honor.com>, 
+	wangzicheng <wangzicheng@honor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 353761C000B
-X-Stat-Signature: zx156ojpunwg481t3nxbsipdfp56yhah
-X-HE-Tag: 1780365263-214410
-X-HE-Meta: U2FsdGVkX19gxPBSBSr1dS18+ELo+BkmVFzZZgF7GeteG4cNGXCxZPsoZcpu/N8YLH05iSrw7DouX60Lw3fvADHw7TVy2yE3wl8do2ShcAHJV8H5fNhVIcx4Dfrx8P6rpqyDf6lSzUZH9RLo+L1xfX70RpFEmFQlM3Ap7/lH7D8Yt/KJ9M8cvSKg94DlCrkDipdh2eBB6OtEdOuHDBZBwH9o7msO3e5S8+AVsOYbnVLdgLuH6pg5SUvEZAkv9yQ6XpQESOUgWoWgIPGvlQyyvTOyNvDviLLRxfCwfrD6nywXJ8exQwlmgQ3oudQ0sKdDxcPgLsbZnCPgLPbQoa4CKMmdi2PPcuNh96Bn6NlyghsS1D2fpSm7iiUwV0W99UVS3RuU076mLwI3yYky/ftzntrX44WnKBBQ9f6uH2JUA/iDO8ZUe30Hpe1PZCfNgVta13kyaXYDFkTtmPt7qiknpAXII4gJKzlqMBvahelxPFTrTVdQgK0yEPNFezjlcimU3jDcvxBc1zTwMNR0XeFFkJk6lp0XIokTCKpJVaKrSTehW6dBX+IRLYJb+8DubAYA7N4cQkkXUTZBbL/tzbNtYFYRt1fmtqvSNdOVt6bIExL/wI5bQpVXsbg7h/TAgpeSizAvf9yH3jcSIRepKuPJH8br7XTrE9pd1LYdCsCgggTQ/sR40wou4sawWIywVmyVtpJFQY1P7BodPpa/96gVa8AgsqPE0tCdwMUQdwC9rkdmITlQRXp3L3eBr0yjXwib/cVlXddIV08cPteBQJp++D3YaSDZYrHaDlAuElJXDd4125uvETCJQ5NotM0pwhpaBBd6RP5IwsBLRDweyXCscDMHXN/T5H7vst7eFVwvvNt24Af8jBrBy9GuXw5TzGdFJRyKpL8p63TDrnZPUylEdOu7j/wJGsKdY5SO5Fj9yOc/FZatPe7imFu5k+rmKy+NpCGSVh+w9B0fvmAUOHr
- 3BKShRM0
- cm6TrA+TuE6zLQcAmoAo23N/5Rt+JCS5ivF8ToqGlY5zgBUCyeVNtt1HNPS9kGCoBmtRtiBDhj1QfKSgpVSE+zp+c3MThx+vNCig4+ODJvIsRUk/t8j2t+FqAVQocaIdElhMgc48riWibVnxjkbKMIOx9Ad4BuLq+26tFLynsaIKao7FLuthw/9XxzPFsmD/qhWfUkZAqJ8UIoqE2M1CwEbQ96Vdo2CpHvSZ0mz0ObbIy4veNMqcEz3WOq1d/y/3YcwVY1aMzkroyT1nQ5qXk5570ZOi8beLK8dc9Rpcy9NFn+yZHlKl0JQm1nQ==
+X-Stat-Signature: x5r7jras4819o9wnrxyaqy5yxighfmdp
+X-Rspamd-Queue-Id: A89EE4000E
+X-HE-Tag: 1780366533-887745
+X-HE-Meta: U2FsdGVkX1/D2cPWUSw+1d6p99Ec8IH0vGinAT0e5qbdF0Jdm0PFC1vj/xyB9bobpX6mOu7xZgHm3Ls8ktfKEgPEf0yF5VyCWKXQeaPfgusc6OAw+hRLrPYqcdLaoWWj56hc+ZFH55S3l4aK3mI3Y4cTfsxIoX9wf1eVW7mvJttinS6uVpcbPjyls/SrsCuvQlOQFVT/wpWGNpbUi4BShqQkxU32zJQ+JIE9QBdrr8cLuNt0Y2BwVsi0LbGj3T9ymdbXk0sYaMOr3hHt498Y/3Emhu8s4B25TTAgMzG0DUIM9CeNcEpg5ELXuZMprVhPIOw6yqiymAOqXwN8fmRW785/blcuOt8Av8pVC3qNaFrSenkYj8SWrX0zswHLS5Y4L01XoSyCVoNxmyQOkemZaVM/TaWk7x7oYA6Qhu6HnHmZC3OFBP1DTEuXe8eR49ZTBxHiW8YvOJQnm2pbjV3SBzaGJ0qyE+hXhwK5JxF75JywKTFR4nZzf6h7mqnP1LXUTiLEYcsf5QEuyvXsYtEmKSJPBAHAtzfRbMwMERpliKJsDfxS8XSu2SZ3oUNlizDbJC3LnGP5g/iO2HIXAwFY8Zy6UVdZPaL0PhXOtuqPXQeDBti3FYbAa4MLJPMMPkiZpl23Rn7H73V3Oipkt8wsDu4dTemfkYVd7ek9ZgB86E9cljFz/uIyw0StwrxZPNs4ZNiINodJtrIrrExiDe6KOxOw6ng2t6/o8JcmCfInrxmWhuiHq+mX+U0axQbu2rsq9TEzcZ32fcDW39Llw9gBoK4ZlpHRd07h0PHAl8ajABk12UE+HqRC0dpKtjgJYcKFGaT7p96dvzIVh5i7fFT7v9Dr99MYL40UGaqMmq3jt+pWfEq/829W5hslTZFWhkt7EdQvLi5+JrB6Hy7yCOMmX2YLyp2artBtj4+uV/IrZxXrMt3ZhNGjdHV4NLlGfa+L/uEw6SzdkklchFJfla0
+ KoPesQED
+ vbtoHvrvSfJOVMp9vJIN6EkeCSMedLiKyZWNH38YIX0mlrHEQSWJem+H7bjqbAnM31D40MzlMg9c8kUBv+XD4Hzwf1TeGVVM3a04DlAM9X+HPHQVOhHhcGhCWF+s2AepWehLsnpsTdEiPR9EU6X26tD8tgUV59bPZXoUD6ImxgC57VzVyCFAyGBMUN142OJwIuHDNYEyAlkHBtPW790RrNpCAy8lm5cmYDjP53eSUhAQTt/EHMV7mUTg6P+A4TUAvlc62D8NjtiHchR7i4HwovdPA7ObG0G47zzP+wjzQ+fes3qrqB3+BDuwVp9vJgmIONdJ7Ch0UGEwKc6nZn/J43zozzsBkTeQms1h3WGkzMJEVg0fQm7ZHGNT4xs6naNe/y9U93f7L2d03g2FzC2KVzST0SkHeLFHjR4ZvcPHHFex6zlFm0YBqIEl8dlq/8eSM8zguUhTVZpWI9Ewl0eEliJ6Lo/rByc/4aKsdoJ5QG2Ww8F+WoCYjvLXmMFXrD2ZHUJKFHdJ9m7oHDrtNINiy1GpIpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,106 +134,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Jun 1, 2026 at 9:46=E2=80=AFAM wangtao <tao.wangtao@honor.com> wrot=
+e:
+[...]
+>
+> You said discussion was welcome, yet when someone offered even a
+> small comment, you refused to continue the discussion.
+>
+> If I had known you would be this inconsistent, I would not have
+> replied to you in the first place.
+>
+> This will be my last reply to you. I will not respond again.
+>
 
+Hi Tao,
 
-On 2026/6/2 01:08, Lorenzo Stoakes wrote:
-> On Mon, Jun 01, 2026 at 05:58:08PM +0200, Alexander Gordeev wrote:
->> On Fri, May 22, 2026 at 01:47:24PM -0700, Andrew Morton wrote:
->>
->> Hi Andrew et al,
->>
->>> On Fri, 22 May 2026 08:59:55 -0600 Nico Pache <npache@redhat.com> wrote:
->>>
->>>> The following series provides khugepaged with the capability to collapse
->>>> anonymous memory regions to mTHPs.
->>>
->>> Thanks, I've update mm.git's mm-unstable branch to this version.
->>>
->>> It sounds like I might be dropping it soon, haven't started looking at
->>> that yet.  But let's at least eyeball the latest version at this time.
->>>
->>> Sashiko was able to apply this, so the base-it-on-hotfixes thing worked
->>> well, thanks.  The AI checking made a few allegations:
->>
->> This series appears to cause hangs on s390 in linux-next.
->> The issue is not easily reproducible, so it is not yet confirmed.
->> Any ideas for a reliable reproducer that exercises the code path below?
->>
->>      [ 2749.385719] sysrq: Show Blocked State
->>      [ 2749.385730] task:khugepaged      state:D stack:0     pid:209   tgid:209   ppid:2      task_flags:0x200040 flags:0x00000000
->>      [ 2749.385735] Call Trace:
->>      [ 2749.385736]  [<0000017f63c8b226>] __schedule+0x316/0x890
->>      [ 2749.385740]  [<0000017f63c8b7dc>] schedule+0x3c/0xc0
->>      [ 2749.385743]  [<0000017f63c8b888>] schedule_preempt_disabled+0x28/0x40
->>      [ 2749.385746]  [<0000017f63c902ea>] rwsem_down_write_slowpath+0x2fa/0x8b0
->>      [ 2749.385749]  [<0000017f63c90910>] down_write+0x70/0x80
->>      [ 2749.385752]  [<0000017f6313407a>] collapse_huge_page+0x2ea/0x9e0
->>      [ 2749.385755]  [<0000017f6313491e>] mthp_collapse+0x1ae/0x1f0
->>      [ 2749.385757]  [<0000017f63134fda>] collapse_scan_pmd+0x67a/0x8f0
->>      [ 2749.385760]  [<0000017f6313751a>] collapse_single_pmd+0x15a/0x260
->>      [ 2749.385762]  [<0000017f6313792c>] collapse_scan_mm_slot.constprop.0+0x30c/0x470
->>      [ 2749.385765]  [<0000017f63137cb6>] khugepaged+0x226/0x240
->>      [ 2749.385768]  [<0000017f62db3128>] kthread+0x148/0x170
->>      [ 2749.385770]  [<0000017f62d2c238>] __ret_from_fork+0x48/0x220
->>      [ 2749.385772]  [<0000017f63c95d0a>] ret_from_fork+0xa/0x30
->>
->> Thanks!
-> 
-> Hi Alexander,
-> 
-> Thanks for the report.
-> 
-> It's a pity it's non-repro, I had Claude have a look at it and it couldn't find
-> a definite issue with the code at v18, all the locks seem balanced internally.
-> 
-> Things it highlighted FWIW:
-> 
-> - Far more mmap_write_lock()'s being taken - the stack-based approach calls
->    colapse_huge_page() multiple times per-PMD each of which entails an mmap read
->    lock/unlock and mmap write lock.
-> 
-> - anon_vma write lock held for a much longer period over partial collapse.
-> 
-> So maybe these are triggering issues rather than being the cause of them per-se?
-> 
-> If you happen to see it again could you give the output for:
-> 
-> 'echo t > /proc/sysrq-trigger' so we can track who holds the contended lock and
-> get more details on it?
-> 
-> Also the .config would be useful.
-> 
-> I'm guessing you've also not enabled mTHP in any way on the system?
-> 
-> Repro-wise you could also:
-> 
-> # echo 1 > /sys/kernel/mm/transparent_hugepage/khugepaged/scan_sleep_millisecs
-> # echo 1 > /sys/kernel/mm/transparent_hugepage/khugepaged/alloc_sleep_millisecs
-> 
-> To get khugepaged going a more aggressively:
-> 
-> $ for f in /sys/kernel/mm/transparent_hugepage/hugepages-*; do echo always | sudo tee $f/enabled; done
-> 
-> Then maybe some stress-ng like sudo stress-ng --vm 4 --vm-bytes 2G --vm-method
-> all --timeout 5m (or maybe something more refined :)?
-> 
-> Maybe some of this will help repro more reliably?
-> 
+Please don't walk away from the linux-mm community. I read your
+patchset and found it quite valuable. It not only reduces memory
+overhead, but also eliminates rmap costs for exclusive folios.
 
-Cool!
+Since I'm not very confident discussing technical topics in English,
+I wrote a blog post in Chinese about your patchset:
 
-Maybe also worth trying with CONFIG_DETECT_HUNG_TASK=y and
-CONFIG_DETECT_HUNG_TASK_BLOCKER=y.
+https://mp.weixin.qq.com/s/k00tzhTl8HbL3k4G6ev4SA
 
-# detect after 10s in D state instead of default 120s
-echo 10 > /proc/sys/kernel/hung_task_timeout_secs
+I have to admit that I found the implementation quite complex and
+in need of significant improvement. However, I think the underlying
+idea is very interesting and worth exploring further.
 
-# optional: check more often; 0 means same as timeout
-echo 0 > /proc/sys/kernel/hung_task_check_interval_secs
+I'm looking forward to seeing a v2 RFC with a cleaner and simpler
+implementation while preserving the core concept.
 
-With that enabled, the kernel should hopefully tell us which task likely
-owns the rwsem. If it is writer-owned, I would expect that to be fairly
-reliable.
+Regardless of whether it ultimately gets merged, I hope the discussion
+can continue.
 
-Cheers, Lance
+Best regards,
+Barry
 
