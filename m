@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0448CD6E5D
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 20:37:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D9E2CD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 20:37:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 189946B008C; Tue,  2 Jun 2026 16:37:11 -0400 (EDT)
+	id B4F046B008C; Tue,  2 Jun 2026 16:37:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13A276B0092; Tue,  2 Jun 2026 16:37:11 -0400 (EDT)
+	id AFF3E6B0092; Tue,  2 Jun 2026 16:37:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 078BC6B0093; Tue,  2 Jun 2026 16:37:11 -0400 (EDT)
+	id A3CA96B0093; Tue,  2 Jun 2026 16:37:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F06C46B008C
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 16:37:10 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 95CB1140128
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 20:37:10 +0000 (UTC)
-X-FDA: 84836132220.03.48F1C4F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DA4FC120003
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 20:37:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="syh/dB1E";
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 985A66B008C
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 16:37:31 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 65B051A0150
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 20:37:31 +0000 (UTC)
+X-FDA: 84836133102.05.3218C39
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BD28718000A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 20:37:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jvEOYDcA;
+	spf=pass (imf06.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780432629;
+	s=arc-20220608; t=1780432649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+i6QVlrk9KIwFEZhpsKIC890QBmDvw0SsLedgmaGYs4=;
-	b=MM6vbn9A+8OXylkV2wLh9bmIGjqR6Rhwg6FOF9uQloX9X+C1hNBZDbvs8rZ8xZMj52cF+i
-	hAgrY9d+ouy94z9kUNC52fZs40yNs4jYEQEg53O91SNSFdBnXcDPSu5HMu2T/9Q828pU3c
-	gnWSNeFp6gB/e1c2PE5aIbzeQQ78WZ8=
+	bh=pHwD0ZV1CEAMNsXx/yt+effMomSWCNvi3CFB34MYIdk=;
+	b=wsDswcpuHdlYy7Qa8wK+JUy9VBLTpqPzXfB2+ZgDrtq/7vwgJ4MF0cRtdjKCBPUlbQwmoK
+	ReUGLI7lqdkDX/C14eX4LXjEVw6zdwwkdn/C59Mk161V5eK5YXdbXQfwb47ABg74YRBJ0A
+	mhH+kFMldTktgyX2ygdmus82Ua+CpMQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780432629;
-	b=RhaTk7ZcaJbUus+pbttkVmtNYPj3G1PHa+yG5EPFiMQx6acTY6NXmfi2/m8gyctuE1MH7I
-	JpGOzM6HddSPpvkc4ghutwMO5Bw6955YOsgpzuc1bv/lL4FfUMg6Yt9PGoE4OtbzaMCagM
-	JyXl4150sLPj/fhzEoo+5FATQay9XgQ=
+	t=1780432649;
+	b=kwFQxN7kRUj5VXgp9qQDVgXvUEFndD5t8jZ2JIMODt0rQtgfvKvGghSpiqYWfx8GfVBC6X
+	CtoSF4+dOfRo9ZNYpM1IIkyWHZ3i2wDNrze9Ipc+mtkeO7wRai5E308dWhRxSaqPV2r1+x
+	nWDg/COIsMLv2SnhNqxFteBLCL/GqDE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="syh/dB1E";
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jvEOYDcA;
+	spf=pass (imf06.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0658343AAC;
-	Tue,  2 Jun 2026 20:37:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152EB1F00893;
-	Tue,  2 Jun 2026 20:37:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780432627;
-	bh=+i6QVlrk9KIwFEZhpsKIC890QBmDvw0SsLedgmaGYs4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=syh/dB1EW+9SWFgHZbUvo/EUL4RkLrCLodacuueVZmydHJsnt91C8Iw4O01J/tcJ1
-	 yp+YEy/RYVdEnLv1TC3ckLEQpOKlgNf8WjYIVSlvgaeKES+5ITABh6XGCz5sBgmo1p
-	 K7V4uTlNEL7gKItw1AKMDTl5LEmtliP6m7TSpWRg=
-Date: Tue, 2 Jun 2026 13:37:06 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: david@kernel.org, ljs@kernel.org, shakeel.butt@linux.dev,
- mhocko@kernel.org, david@fromorbit.com, roman.gushchin@linux.dev,
- muchun.song@linux.dev, qi.zheng@linux.dev, yosry.ahmed@linux.dev,
- ziy@nvidia.com, liam@infradead.org, usama.arif@linux.dev, kas@kernel.org,
- vbabka@kernel.org, ryncsn@gmail.com, zaslonko@linux.ibm.com,
- gor@linux.ibm.com, wangkefeng.wang@huawei.com,
- baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com,
- npache@redhat.com, ryan.roberts@arm.com, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Johannes Weiner
- <hannes@cmpxchg.org>
-Subject: Re: [PATCH 1/1] mm/thp: clear deferred split shrinker bits when
- queues drain
-Message-Id: <20260602133706.d737a82858d1cf89870521b1@linux-foundation.org>
-In-Reply-To: <20260602043453.67597-1-lance.yang@linux.dev>
-References: <20260602043453.67597-1-lance.yang@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DA4FC120003
+	by tor.source.kernel.org (Postfix) with ESMTP id 26A6B60123;
+	Tue,  2 Jun 2026 20:37:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0651F00898;
+	Tue,  2 Jun 2026 20:37:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780432648;
+	bh=pHwD0ZV1CEAMNsXx/yt+effMomSWCNvi3CFB34MYIdk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=jvEOYDcADvlGRRYIOLhBJ9fraq492rgPCR9NNwxrkm1WgOgwIS9DZZE6WO+OKQWOj
+	 HgTONB8mKBSHVkLVQw9p4dZD1YvkZyfE4eP2vGawFp8cTMKgGZnaXrbPNHA7iXpvKO
+	 tIi0EWxzVT/Joq8wQYV4JvHjV3SLdlVQJhH2cg6Pi/IJrwINyUyE4GZYgUjSmhYP0l
+	 IqkPj0r/ajPzK1dweOETJ2+uo+G6GSjS6FTxMiUlcm7WRQHMJqmdlQw5PJIvezNu/A
+	 QwEf1e/4pe17gdpl6AWUHoPAG2/FRk2AinFLrWnZEIWagdNAm/mc2rWPWAo2ls/ig3
+	 dsJmE1RNbNm6Q==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dan Williams <djbw@kernel.org>, Vishal Verma <vishal.l.verma@intel.com>,
+ Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, Miguel
+ Ojeda <ojeda@kernel.org>, Christian Brauner <brauner@kernel.org>, Marco
+ Elver <elver@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton
+ <akpm@linux-foundation.org>
+Cc: nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kernel-team@meta.com, Dmitry Ilvokhin <d@ilvokhin.com>
+Subject: Re: [PATCH v5 2/4] genirq: Move NULL check into irqdesc_lock guard
+ unlock expression
+In-Reply-To: <ab457810653e4356e29b2d74ba616478bd9328ad.1780064327.git.d@ilvokhin.com>
+References: <cover.1780064327.git.d@ilvokhin.com>
+ <ab457810653e4356e29b2d74ba616478bd9328ad.1780064327.git.d@ilvokhin.com>
+Date: Tue, 02 Jun 2026 22:37:26 +0200
+Message-ID: <87se747k6x.ffs@fw13>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Queue-Id: BD28718000A
 X-Rspam-User: 
-X-Stat-Signature: tptpuoii3d1nsmg8ituxrp1xg6jdsohh
+X-Stat-Signature: jg4s8ije6u3ie7s3awfpamaub6yeae61
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1780432628-867924
-X-HE-Meta: U2FsdGVkX1/Z6t3SpO8UXiF17eaZHuRBqjbT5nCGYvN5fxsz6xqbIoyaofHLyOBZ72VF1trsiBL6OTccogluyiSDDr8ZlWj4QjROYY8UHf/x7yirs6hoUfPjA0usr5GmECFl+kMclI99sRxoVe1GH3HMWZtWuSVZEeSjhvZZqGLpyVeNf/nv3Nlj6NGk/0/5CwszW0OyGeG+HV6OvxjRnMtlZCW2eNcodcl+gAKty7u+nUcpwT04Zyld9WntZPVdt/ov1ePoz8TewSiwLLXkmva0qoN3i1coLFwFq351TmnKONd/oWQbtWEqVPD0zDNv4QDJ2begYW2fgAqtKlhP02qAkk3UK9X/5b/4Mz9NL4Xdjx6+8zFfh43sS7S7OIocYC/DYOr4VolFSV8jSEz+GCyqXidtXJ3cXiG4FsjJQs9d1cKar3Fq94kFHWRgt9LKj9NDHcwW+CxFXY6U7TfNKDavyVj2wwde3oDXM+ZR30QYQzw0C21vlRfpjHpjwQOLivWgzkHlwtL8ojB8qYshPRk7JZOmIZ038rdE4QcEUngEt8NuK9ChMb9edGBnAbd9K1whTFQzyjTHosrp28qTVsdKGSDpItOtBvj8BtdO6pWg44sbMWUlwPG0Cn6jEjYwtTHUAoZ56AWSK7sA+ByEkJz/bBh+KLDeqpae5M75QJ6jcKRRk5jmhoGt1B6rSHt24iNLb380XID0GhXFG/y0VkiSWfBGGZQboBr9qDZAWfXNZVtUd4pKIJpddhVh1DslqD2i7OCKK+fpNnswAacUs2VntUbW+eLVJY6lH2LuR/VTrnZTGtXiD6+Jlg46gFtciaUUgbdQr6G6izzBe42ufgRmu2XQ/qaPv9hGVAJpa6a6w0W6f7kv3EwxJEeUkLbkTJCzYE4oy9DECntyAOMI7bzDLQQZJWUkHJ5RV/kO9x4t+XBslKWmg7ZRw9CLBpfZ+rTUoOaOr2HudPblmFs
- +eE50yRt
- 2ZaeNzTUf8vaIGc3b6jaJSEcgopWK5uWZuqUhEHvw4ha84jvfka3LWN4sy1YX3D3bJidhQC4pJBZDSPoXDF33wf5x3QHqgBP5dYcfIIE4BqXJlnphor8eBflKys2Ww6RRCwaHbNiU4Ckb+RTJJUUdyL0G/ewx9TJiXKXKnlOgHR67VJTtwk6hnVHy8NBHER0493no2lZV0Spc/BSaClr1lc8NQRFBqVWECEiZupPnMhD8Z9PRHy07RLITa53AQrrnNAou
+X-HE-Tag: 1780432649-414036
+X-HE-Meta: U2FsdGVkX18bo1Pmgmc4XvWsj5VAwEM0DjUZqO+uyT8yYU4etNOni+IIXpeK7aHdmrv8g+SkQlF0adOz5fnh+ccXIII4N+B0H4L1QEcn2WnAb3Gj876nuJO7Kxdrndmp3aNvMs7zAeLOfMh5P7hmt8AGkgNpcwwnBtLSzR7RrnvXziDzbuVW/aX+RJa7Yzvjui+/SwIA+bpnW8ZcAXTSqAhfAO1gU5RZn4oOGw8K6ZVPKBk25bDekPw9mw9DOtgaPPIhPL1eGAR+Zj4Kq9OMqOLwj84lLUvmdA3/kS3byXsr7fNIhAYtLosjjoJNEsOXD/c5LMInQECq6AU1rO8pCTVrcxWQcH82aCmfM7kEpwwFuXnuNqeT40yOIwIuprJecD2rDJ3iiyp3wHyDMqLlWW/rJgJqCPRJs8dVBxoggQP5dvtcDkzpcP/gr2kJGxRLcJs0isLtJWpJFx5mBpzcTfhce2wG2iehMOEP6OCWeiOtB4qZy6FFFFO7Re7JGJ017nKO7JnaQK0WWfSQ3MQc6NWxMZZBhceBhtSzXjmmJEhFLwhD7VJQKf6PCWWRh+V7hcxRoeBJw4od0aOycsXwPHIGUqZqIkkGs2iPmPFtiTceIV/W9AMotfofHNV9uCr11iuCLY8h51giQvRchkkGeGieYB26DqZy/OgLMmaJ9tZBGv5RuRBoUBDVzkE4jxuU/hkcpsTVAL09lICC2hWfm0YhXRalfRddmI6jLdsZKP6uj6gO9lFs3UkjfdWtgU6qwEAlLU8Tkz8vLzjX3gJBtquw9a+MQ4tscqAGTrQwH81OjIro23XZyjpBnSP8uDOnnAqSmuVaCyZL6nlZsSLLMolvgWaF8UrIyljq4/8GCLcYmIIUNLqkc1fjfb4hiaZP/qARUlgTR4b3KRbR8yP3Tv5Bpkxh6vG/ZtnNqum8QUCUdmRaD0w5gtJaci1TAhXjl58pyKVmLK405/VqDlf
+ jLX4VwSG
+ 15AldM0xEUjHqRA4jNBvOxdEMranSbcQ12dtn6KYilEUOARkM0DnsK+BOS3r5MElQTd8eyiYitYZKXnEQCsn/FrGjFvrpyOHlWpir0uhpQ8KWyXjFB4oGxLeWVmj9JwmldH6odSbGoun0zTAW2OVQv8OtB3EfWoVUcazFg1phyB+bgnBioNDmb/2PgEjexJ3JcpVTGpx+Sm8zWheghmGYYy7jBHkmJLNaJMj4ai4+BfLd4xuknZTFAoIoU5yol7n+EwMBrVq8SLOrU1gd8T9ZAfYpl3j1cVHW0bLut/DZ64jeNmd0MaCxXEzV5lhPEfnKJu+/rH3vZDg3qxw+zAg9lxCVHoNmJYgluVwwgMOMJofduix5jfLwsjlmrw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,42 +96,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  2 Jun 2026 12:34:53 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+On Tue, Jun 02 2026 at 07:12, Dmitry Ilvokhin wrote:
 
-> From: Lance Yang <lance.yang@linux.dev>
-> 
-> deferred_split_count() returns the raw list_lru count. When the per-memcg,
-> per-node list is empty, that count is 0.
-> 
-> That skips scanning, but it does not tell memcg reclaim that the shrinker
-> is empty. shrink_slab_memcg() only clears the memcg shrinker bit when the
-> count callback reports SHRINK_EMPTY.
-> 
-> Return SHRINK_EMPTY for an empty deferred split list, so the bit can be
-> cleared once the queue has drained.
-> 
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
->  mm/huge_memory.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 72f6caf0fec6..62d598290c3b 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4397,7 +4397,10 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
->  static unsigned long deferred_split_count(struct shrinker *shrink,
->  		struct shrink_control *sc)
->  {
-> -	return list_lru_shrink_count(&deferred_split_lru, sc);
-> +	unsigned long count;
-> +
-> +	count = list_lru_shrink_count(&deferred_split_lru, sc);
-> +	return count ?: SHRINK_EMPTY;
->  }
->  
->  static bool thp_underused(struct folio *folio)
+> irqdesc_lock uses __DEFINE_UNLOCK_GUARD() directly with a custom
+> constructor that can set .lock to NULL.
+>
+> In preparation for removing the NULL check from __DEFINE_UNLOCK_GUARD(),
+> move the NULL check into the irqdesc_lock unlock expression, making the
+> NULL handling explicit at the call site.
+>
+> No functional change.
+>
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 
-Should this be handled as a fix against hannes's "mm: switch deferred
-split shrinker to list_lru"?
+Acked-by: Thomas Gleixner <tglx@kernel.org>
 
