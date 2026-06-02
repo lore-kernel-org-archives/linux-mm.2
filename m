@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CBD0CD6E68
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:08:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEAC6CD6E60
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:11:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1C656B0093; Tue,  2 Jun 2026 13:08:06 -0400 (EDT)
+	id 121486B0005; Tue,  2 Jun 2026 13:11:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F3E96B0095; Tue,  2 Jun 2026 13:08:06 -0400 (EDT)
+	id 0D2126B0088; Tue,  2 Jun 2026 13:11:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 931216B0096; Tue,  2 Jun 2026 13:08:06 -0400 (EDT)
+	id EB50D6B0092; Tue,  2 Jun 2026 13:11:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 844F86B0093
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:08:06 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 560B61A09A3
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:08:05 +0000 (UTC)
-X-FDA: 84835605330.10.5414147
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9234DC0015
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:08:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NNDMgpuF;
-	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780420083;
-	b=vPnECmHG6Uf81Df8twqzSLdTGgCiX120pzJAdCP47NFHCKeT+eE+1aoAyGkmi+2LTKABht
-	Dw7OJNUF9k+qivVXnUwrJyHNVYLvNs2A7JunQAauquz8pOc3IHV/yDiNv4MB902TGvvUfd
-	pSfw1GRn7ELcAHBWDCOEPGrVNqO2nKM=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NNDMgpuF;
-	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D69BB6B0005
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:11:51 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 842C7A09C9
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:11:51 +0000 (UTC)
+X-FDA: 84835614822.03.F75BDB5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C85A440002
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:11:49 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ak3zR7eS;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780420083;
+	s=arc-20220608; t=1780420309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NmTjsdtcsEWPtZ1rK4J/ssqszpbeEyMBBb9pIGb/JA8=;
-	b=w6DGEYmoG9QU94ZtQ4vwiUSK85FjE4g8ybudgRmL/KooT2E4hpGNnU4t9nIigwt6/IT/DM
-	EWjdloQ7ECBg29HmIYJeS8S0y0rCEP0/NpN1LsRJDL4nUF7tJdm+FyMIb+QFA7v3BseHil
-	ZGY6VlG9i8a6gzBNV/PBt78v/xtS3ig=
+	bh=pcaxoqI0f7sOWzEqQgUXEtGFp48y+8Mb3okU4L2UxDA=;
+	b=tPT8Cq2xdJHvY0xruvaIMy69y9iGovRVEukEtyGT9JYms5mCbsAMQhUzDYbK8l3ykgQSan
+	gz2LQuAVFQbks9dZPqjTlhd1B05QXXKII78ijzxqB89Su/idLlUMWxQIa1H5dwKBrFxf5C
+	LGE2758wkOVzoeGkBlaEabuDhpyy+lU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ak3zR7eS;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780420309;
+	b=1FNnpfcWLSLphcXqocLV7aiH297YbuWJVh1fOAymN9hs7IEtYSFboIWURVDvD/GpuZE9bF
+	lVszsvvnoQY3y821hvJtMra/pIBZ9Y8vNwPeHumfrCFttYurIdUuqAY111BG+O7dlMge4+
+	d2z1/hhzraBHhscIGffblPXxNCfPB9o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 210E760098;
-	Tue,  2 Jun 2026 17:08:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791A11F00893;
-	Tue,  2 Jun 2026 17:08:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780420082;
-	bh=NmTjsdtcsEWPtZ1rK4J/ssqszpbeEyMBBb9pIGb/JA8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=NNDMgpuFP58qv/uVLIlfI9sarPKbDaMhNRa4+PTfF0jz2aBQ4vxq6RfKqtJMHoIhE
-	 qLChX5g0Ye1ZQtg96r/5oiv/9NKx+46rj/aVYt2qb969aBXxarsT1YEgPLk61nJ4nZ
-	 qEHsaiY1UnfX/5r+OJti+YOj2QJi8D/XaDg/tIL5Cq9ZCunJHgKp8wNDdl1MrEuo3y
-	 P92T+5NR2DwtdKI7yMSIV/efPMaBWt0vCAFbFk+TzAplxfMEZKEvM18K3jtouq5tys
-	 aoPh7teJRj4ofGeNoIeRu0iOoSAAySOpqVW7AzckZVbyPFhEIhZjFVxK3fB5XVa0Ig
-	 pAIgKoE41STXQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
-  akpm@linux-foundation.org,  linux-mm@kvack.org,
-  skhan@linuxfoundation.org,  linux-doc@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  corbet@lwn.net,  dmatlack@google.com,
-  kexec@lists.infradead.org,  pratyush@kernel.org,  skhawaja@google.com,
-  graf@amazon.com
-Subject: Re: [PATCH v5 10/13] liveupdate: Remove limit on the number of
- files per session
-In-Reply-To: <20260602031717.197696-11-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Tue, 2 Jun 2026 03:17:14 +0000")
-References: <20260602031717.197696-1-pasha.tatashin@soleen.com>
-	<20260602031717.197696-11-pasha.tatashin@soleen.com>
-Date: Tue, 02 Jun 2026 19:07:59 +0200
-Message-ID: <2vxzo6hsdg5s.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 9234DC0015
-X-Stat-Signature: 7r4zxeexay55wuboxkona5grcwd5zxxw
-X-Rspamd-Server: rspam03
+	by sea.source.kernel.org (Postfix) with ESMTP id AA62843890;
+	Tue,  2 Jun 2026 17:11:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249931F00893;
+	Tue,  2 Jun 2026 17:11:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1780420308;
+	bh=pcaxoqI0f7sOWzEqQgUXEtGFp48y+8Mb3okU4L2UxDA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Ak3zR7eSQ8XRn7FpSS1z0ceFI0BXPJvJNIfih/4tmhYRS84tWUH2ZDPkuhm5N3UX1
+	 TicFJKCCSbYQWUlNxf+NWzu+8pIc8SVWD0H1yU8ArROQ8cBdrEP2s9lh92mptyO4GB
+	 pLQ9J2DrF+KVNomVfNNciJoxnCyOPPROiZKhp5HQ=
+Date: Tue, 2 Jun 2026 10:11:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Kaitao Cheng <kaitao.cheng@linux.dev>, Vlastimil Babka
+ <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Liu Shixin <liushixin2@huawei.com>, David Hildenbrand
+ <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH v2] mm: page_isolation: avoid unsafe folio reads while
+ scanning compound pages
+Message-Id: <20260602101147.2892436f68fd383723c39855@linux-foundation.org>
+In-Reply-To: <34F0943E-4ACD-4655-B9B8-41F658FCDB7E@nvidia.com>
+References: <20260602130755.38794-1-kaitao.cheng@linux.dev>
+	<34F0943E-4ACD-4655-B9B8-41F658FCDB7E@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C85A440002
+X-Stat-Signature: t8rgxxydrbfzsf4qe6rk65shpnb6iwgp
 X-Rspam-User: 
-X-HE-Tag: 1780420083-829975
-X-HE-Meta: U2FsdGVkX1+4lJZqzKoop4cSCJAcvPARHnMrMCIQVr7cvtsoV1y4z6bl4PJorHQvcJUWAoTdlI2VRL1wcbg7RRTsR/w1Cramj2GoQEAAS1MDeeYbFCPw72bakMVShmqoUnDawIsRkJTQ1/p8w8LxJ9fzWEYu1qA1HMoiI266WluIC6Rbhyjg2u1ruWpV/CO49PfCIdQDkYHkt7z+rZqmyXF2gl/9F64VLwi+khL2tGXW05BCbefXHxUfOPf/f+SRxNBjWKsTNWAYeCQRCUWz6X0PsKR4G1df7HLsASQ7bNeXLMJm+z6wIAHU7hrVQSVV6Wplr5lZIm7ABNWTpzGM7cUu9vTrsDr1SNutbdGpIQcBCfsajY9Do2HlAgCg68LSSs4d0JdJZTeOz+0hk58qOupgG7aPUJ+B70UwarGgKsv+YcfmkyGsbemb0hs8Iby1osGC9L3CMbpOBsc25gTKEsK0sEpCYIkyhk9WuU+eAbXEniCUVvuDhHpTQPUfyB+3lMPjTHqrCgIHRlvOGlteMlzy6Dqcu/+jd1MM9Oxi5vOw0L+TJq3Mz8Q8SmCrAPvPE51yABsb8eHmoSAEGFyF4o6jCC8ugQcauFjVDUCy9Ma6eUv3gLOKCw6k1TaNtT1/SIND8l41HvCU5NRaqgXXA4TtsTckUeT6Xxakz4Pzjwc02uxgY+09fQ7B4FEkEeQY0E9B+kS1c7HwRH0mRE9sNoouDtYTBbmFRYuAprXx9ASAoGjjRyPA61oypPJD6/JqlJSkSQcODmwzwMY1mvXzYzYZva+wu3B4uLEIvqomC6uc0YfhhzEcWN7gMlFznJ2lO5cnvFQn1MHbG7UMoRHnvhe6v0vBvg/0VDQVYq/ay8k5cORVJu2eta4lR7gSoXvgiimpPkTnDlHrnEVVmQ12zOvHU0M94aOg5gVw7K08aSEIMmPcdjPexSU33pPr8HJWCydJL4rVXE5kolpu/Tb
- Ir7HPTRd
- 1m+Gs+CpIkKVvkBZJfne+y3eoKgkaf//vqvLxg2F9llFNRyyFah8FffzNS7eQUe3kR9dWjplysVzWo9DGN6hbXSnD85m1+1dtKXZj5oP5z34/CKSa5Z7jP7XkzNyrFB/KnBinlqWgDcICdZSYQiQ9zyO54JrV8UgvywRLgE58eYDq1R5335hM/CfiNBIpHRhU1Gmn9K503weMohTlGSWqv0DsFMHRxhwEImuzghOdWGVdVVuY4OMLC4n/xCWni14OclgTUji2rba1n0f8YoQRuY2BwrCtwtyRR/oz
+X-HE-Tag: 1780420309-165774
+X-HE-Meta: U2FsdGVkX18h/Vt0iEJV6RUbuBpC2vvEGMbB1YwvuEJrzon5PSRytdv/9C8IDDg0a7bOc3+ZzWs7JWMpkwAriLtJNIJAPVXDkotQx48mM104pLzz6hcFwnfPlawNHi8Dpxj32stdkM83SfHfVEi0pG9mxAtezj10+ZQ+uIziHHYBTpwuMhEsbPNBVX+k3H/wvPF+HWE/yYI/AH6nPwBJjeGKyRYgRfjEfR+v39Sqx0hlUldUMtvG7k5NEdRUhLXy1bwfZs+imhAmoXHrBUeCsLlr5Hf5G/OqETRS5JNWyZFEnNVLmA4irjFOtR58EcCH6wrGR0IaDQkZBa+C8582XxYz+/PDRz6x/JdmvyHFEVBvALd1QGJWMA/z5GhAfrw0BUlKxU+vM07x4GOhiLXSEJTcZJ4Df9z4+mgtT84L/lkYwgXRSe8LE96t2UhVDXa3OxjxB3m41bQfH0V/n7pzAHNL0PvbB5ryS6lzv5ENALKmgAV+fkuVlNN9MjICxROXVMW2UnA4Uzug5HwNNaUd42VIHmVA/zcem0JTvtfwU5aAM+Q1GoLHEJ0TWk5hDY8BBikI8rXBbtQx2Q6q9mo/Yw/zXItEHVw/AVFd98zCjkhjYV4KAxuO9aqqojlPnUNfafvy37JBAuPGy8dc9kGEt5cQz0u5SCcnlvSILBDyuyE4vsyHvPyXAQK2kLxhw5HnOmsRsuzozd6lr2tuf8VvAnhQHRaMT2V5D5S5RGa4XfbkjVQ8sd5Vw1dMUj9yNJE6oYzcWUsOdBYpXdepqlUF3d9uV+Wc3BI2A42yv1VUG94knyoNJBYKmjxIJDQMmseXdARFC6d03YLpmTjFAWfSt/hmtV8MzTnq73hzHVBoBIMSentNiQKFIlGJXZ2AgjDIOK0Bvbz9TIWGtsVPLZ/reY2B1ncmON1v3eMHZHguJEl3ajK6CQRZP5YiFaOFh0niQz6Kw5m9POpoRgV/L6K
+ YiI5cDS3
+ fdiRll11qO6V4LlfAx7iqnryOfhYJpzCbYLWos4kTBlHTRmjoIJRJ6JSo5mVQYQD70fe8wPx/qXOQFGImuoPzjrTo2xkiX84A5hCsTRuQ9kSEotNewbA+l9x/iWJ0JteoxC7e6iB1XBOvOtKblCEiGLFyGEysZpWjFuN9pcBy0SRsG22Upr8fWBthD6P11+5zu89cCFalLTosBlxBHuiYtvnVWmroVan5X9iVS/VZnfmmar/yJ8qJDCBs8IVdb/cjd3T98jna3XPwtb1EJWLONwNdGTaewy61xPKcpUuJc2EE8o+w1De63OI4l+l9XeAXAfVzPqFEjx2ziQLqk6P0At2O+3/MFOjXH0JQ3QvvbJiZLBXfPtQ0lUNeuK7HgariERyQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,20 +96,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02 2026, Pasha Tatashin wrote:
+On Tue, 02 Jun 2026 11:02:41 -0400 Zi Yan <ziy@nvidia.com> wrote:
 
-> To remove the fixed limit on the number of preserved files per session,
-> transition the file metadata serialization from a single contiguous
-> memory block to a chain of linked blocks.
->
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > -		*step = folio_nr_pages(folio) - folio_page_idx(folio, page);
+> > +		nr_pages = 1UL << order;
+> > +		pfn = page_to_pfn(page);
+> > +		*step = (pfn | (nr_pages - 1)) + 1 - pfn;
+> >  		return false;
+> >  	}
+> 
+> LGTM. Thanks.
+> 
+> Just a comment, order can be dropped and use
+> nr_pages = compound_nr(&folio->page) instead:
+> 1. order > MAX_FOLIO_ORDER -> nr_pages > MAX_FOLIO_NR_PAGES
+> 2. PAGE_SIZE << order -> PAGE_SIZE * nr_pages.
+> But it is not worth a new version.
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Thanks, I queued this.
 
-[...]
-
--- 
-Regards,
-Pratyush Yadav
+What are we to make of Sashiko's question?
+https://sashiko.dev/#/patchset/20260602130755.38794-1-kaitao.cheng@linux.dev
 
