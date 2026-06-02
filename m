@@ -4,91 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5B6CCD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 06:32:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52422C5DF71
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 06:33:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2180C6B0406; Tue,  2 Jun 2026 02:32:30 -0400 (EDT)
+	id 8822B6B0408; Tue,  2 Jun 2026 02:33:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C9A96B0408; Tue,  2 Jun 2026 02:32:30 -0400 (EDT)
+	id 858546B040A; Tue,  2 Jun 2026 02:33:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DEA16B040A; Tue,  2 Jun 2026 02:32:30 -0400 (EDT)
+	id 796A86B040C; Tue,  2 Jun 2026 02:33:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F115E6B0406
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:32:29 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 727BE1C2159
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:32:29 +0000 (UTC)
-X-FDA: 84834003618.13.A4557F7
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 72724100012
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:32:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=n+NdQY2K;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AF826B0408
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:33:00 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0113F1A07E4
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:32:59 +0000 (UTC)
+X-FDA: 84834004920.25.7CF85FB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D0B661C0007
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:32:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=W8P52rqU;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780381947;
+	s=arc-20220608; t=1780381978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C/Wy1IaJuFs/X0HLx0N3cZ8cEkjx/rrhoBDMvbNGsvI=;
-	b=jA1r5PV6iT9OQtQFjuciT1GH6GeYawK/meHHsm4rJg6MyMGtuKSaPGA9ZuHmwfw45jsbHv
-	Hyvmcr9fhUAxuQc5q1JdjkOEP6IJdRwhH5w4pXAi8gRcBYFSLTze0YXxui/F0RR0y7ViBO
-	vWnPtv29zwimRdi9jX0fAnR/mDVGbfw=
+	bh=ecOjdFR4HTpwpi2FheoaVYHEPZF1UGWfKv+9fr+XvSU=;
+	b=4lCT1fqj2vUEyxul3ZlLgqrLRP92ESX/71GSfJSRi8LKgekW7ZBLqoskijUWOvVSHTqH/E
+	VVWZ5HWN43UMjg/dQsSDUUa00E0N8INahbmo4y17hzJBVEV+kv8tTWd2BIn5BpVaHqw0tb
+	kHP9rSyjk/DnEyRh+9WtM+U6AuHpllA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=n+NdQY2K;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=W8P52rqU;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780381947;
-	b=zh6H4VjKDISko3vpKruPgE1vR/oFg5mlpE6gSnOkOx8D8tU/w5zIXRNnOx4cgSc3qLfNTf
-	T1hEuns5tzgABuTxIDtaTdGiCyArGtvXxKPmc3T6Oyj3Bljv9CXsG3t8wxbQZCsNx3FrLG
-	TyALLpcQ4cHVNycmYjozfW8wMiyQOaI=
-Message-ID: <cf069cf0-1bfd-43e6-b7d7-8ff3278c79ac@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780381945;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C/Wy1IaJuFs/X0HLx0N3cZ8cEkjx/rrhoBDMvbNGsvI=;
-	b=n+NdQY2KQ2wCk4EXY3Jjd3A9TjbnlM8MS4gVU6aQxCfZ+0CKTK+/y2/6+wl8ayOUd/gQcK
-	ayf9t5X+d3I4u+SQtW6B6jm9ggSaBvBDGwgNLLz0+RWoYhGH0OY/uakHguv3SnzxK24Tk8
-	Bqzuk7SiuR8Mlz2r/uF1M/MaPHOaGG0=
-Date: Tue, 2 Jun 2026 14:32:15 +0800
+	t=1780381978;
+	b=fjkqU+fCjf2s0txQLn2Q+6TN2UfzpOby1bbXcacsjU6bYpIajviC2h3n+a1yV723JSPjyf
+	wqiZ7nE/ldCnb/xo+kwctNzEOdDhjB5be4r0kvINvqXx8xAwY4SngbA+kOgVYz+RsMVgiN
+	iEK0HbA6IlU27iq4kPFe8jvssHnQhTM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B8C9A176C;
+	Mon,  1 Jun 2026 23:32:51 -0700 (PDT)
+Received: from [10.164.19.28] (unknown [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 342E33F632;
+	Mon,  1 Jun 2026 23:32:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780381976; bh=qz05PwTA4HuRNr4ARk6c3VjCwvFC+bW1NTje/WkmVPQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=W8P52rqULy8EgMCv3VoHG/oPcN8xzFRTm0MMO+8epoLD09z1j5dUEPlnncU3kRwVu
+	 meLb8U698TNe/FRFV0Os10F+xaUpB8p6DhZVBOSnFtbGb2r2bal+bxG9WlhJfvwd6L
+	 cPAYBN6mNWM0vhQCfBAe1vL9kyhq4pdOA/ckIRWA=
+Message-ID: <0ab810b9-8644-4562-8218-c9a1d4ddd423@arm.com>
+Date: Tue, 2 Jun 2026 12:02:47 +0530
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: use correct flags for device
- private PMD entry
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] fs/proc/task_mmu: fix make_uffd_wp_huge_pte()
+ prot-update race
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@kernel.org>, stable@vger.kernel.org,
+ Sashiko AI review <sashiko-bot@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
+ linux-fsdevel@vger.kernel.org
+References: <20260529172331.356655-1-kas@kernel.org>
+ <20260529172331.356655-2-kas@kernel.org>
 Content-Language: en-US
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, SeongJae Park <sj@kernel.org>,
- Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260601083044.57132-1-ljs@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260601083044.57132-1-ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260529172331.356655-2-kas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 72724100012
-X-Stat-Signature: 7dif5uwr4mdcfkp6bjc6pr737imkk46y
 X-Rspam-User: 
-X-HE-Tag: 1780381947-888747
-X-HE-Meta: U2FsdGVkX18th3pSYILxVGVf//tPJxgZhwo+TcvOvVrsLvqV3UtEBeHhRHJfV0xsd60rNEzkvuWvZI1+X5jh1LXvBWjLRZrC8M9OnftuW5575lWEoAMKfM4QH9QZvk406WQStf6Rj9eAVqvKzfwdbCejUStr7qBoZzfW8PiZ8g7+1E06bk1hL63ZJ3LidJDNeZmBuGlXzFfCIJtov44Qs2t2Ic9fNLO7+xZ8pzf8Omher6SERwKEncZ6MwSD6hCp1mgqBAZR4CxVdLDes6+P45xsL2H1yIqxOnBCKKVVckRnZziaBGfiQFdTvkYeGiX+jFzVGDo79KKUrojKwLtULgf+GrKv77dKTJXhi3YLzcIw0AYNgqn6/jUxN26ghN3NbC9eT9hqLJIu6eaiUpWu1gisiLI7DAs0qkfbvCe53uKIGhY7t4Q9M49uBwB59kqRnQX1wzVvMydp2Z5vrkxFe70blhSclFlAngZoB+afkuE+CRjCBPxqu5flenRZVHiiDZ0mtP95iEeg91HcZoza1y2VEe2l9RoXnXZs8N9DJkTMuk/g7HrQ9yic3d6/GWM185Jy7IygT9kG8gV7zogIgQHAw5ugmYHNdNZ2X9dCjaiBn4Pxyzx9JalFV5FHcWLXolFn+vRGUf3Mao7pm/IMKEOtCeOMJAZRa/u2UajlPEbvXJz4F4YETBisaktOhdi615yOcosVhMkq7ngBU4JhKcJr3pV0q4sXo18BYR1S5gbbbKfuRHexU1UbPLIeVA5JzO6Hd42FIJZfGnSlt82hsLwgxlhT/WEOW7O0hdlsXrvVhdnWD2S3pzl+0zBRO9uJ+aEwU/JKC9qn++kYODmiV6N9M+J5DgYAVEvKurXZOIBlNF4AtibGlvKdJry2OE8uCjTb7yBOH6NipDX0s597O8VjF4ADz/UfgzEcfTmH0p4kOnR/GVEg9E/R8sRqiO+iQAGNKDdUB+vrkW1a5aG
- +kQAN8tL
- aoIylmFMLBiC2dhCosoyjsqDwA9+b5txyUU0bsqlJjlihA16d1tHuQLAw27a1gpWryrbEAPp/AnE2JrNhy7H1AI9Rax7eLe4crJ4pTeqlD+emcP4yDIwcbz1HnBxJ7PAbejfYy72Pon280bh29buFYfHyRBuhsn+UXRUyHOC9rJA2CO2VJLYJugixIGBKH//0isaN7V5ub2MaV375VYSvkKCkySfFRuZi9NJPiebfiJQmmZpnBK26sW2m2H5AeWN1M/6ZRCZMr1K68v5wS0y+Ar3W4g==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D0B661C0007
+X-Stat-Signature: fef6oemw4at3yf1ngy9868xqaf9our3x
+X-HE-Tag: 1780381977-482219
+X-HE-Meta: U2FsdGVkX1+Ys3tIgx1n7Ubll+4mGlyn8g1Z9BRq0BoBkCgEyBqm9fmqaaL9c6kiLkUcgsE0Fycx6tuxy4d+0tQNnFe2sXBrOfl+o54k8wzdhhgGhvemn9Ql1GwPZjIRVN2DQMguq4RFCMAeFfwOnJOf0i722lQ7FddqVudzmBDPHzqaNbfdRFNnfHWj0taQBmJmW8xMnjPZPdvclbG2+ghy59QX8Jh/IV0Kw5JJ17FbODx+WgZsK6QKVhdh0AOcYQuj9IeNB+C+GX6GlAzfbcv79y9di7SR4b/dq4UoecvtColvFrF8tovqlIbiaoqvj5ifVNCItQN/SmjI9ggq1wh3Wo+TI9uoQHZBUj5YzHOVEzrvWllgARH1hAIp7nwD5PRcNLKSySgMLVT844WFrngOCzaMs+HVlFunBDte3WAfO3Iz+wXR9JLQtHA8aVxYIquHVocRVWZm+e9hRSoPXEjpXHD69Qwf22SGHphWlsOdgh6w9LTiD+wmB/ObdcIo/U8AcEmkICe/tUnLYZFNsd6HasttdZbJmcqyFMjSWu3cROyN/Yi3IJpJ1JjnPoSIbopeh71k7qvFYz22Sp+uN+TIUw9acNNbKBP03Ryqwmy02JjS7ERo3SnRQL8Dipe8/V+wnKR4WyxbD99asKBeePtTdaSMRTK+642ugG9CN0N824eQCPiezMiaWQm72Yufsf/Nw+vfej2FO5+O49QJRX6GfDpSEiGxK2lxM8f0OrnmKYQAtj4GL9txN6YK1da2oaM2bFF7sEyt/IpOemiSl/Thgbl0GSP/W1RoZGml7jpUMxCZ0ggkzUAexy9wGiGCRhSxDgFMciLt514GKuYYr9pjuGeEtq1QOAafXB6Jq0wGj5yIbZPOKt4/R/G+fqrG348SdS5ttRZjRUF+Sv3SFCrr5vRqjAU6f/Z0/XlZn7GjBUsPi/yMtIWrlkZuSkuhxJXBE7+A+suogk/msxt
+ uMMJ3td/
+ Po+Cxi4BnKhJJks1zXdBlPQ6PLnNnthMIXG6lidH3FNxPpA8b7xjLbuqSOKAJz7va1nOpVeo2LDGR7UYPGybPe60JPNDzVrsjUHWugk7UMKEtkMx6+OJiCIVRjpFs4yPiE+v5LHtiDAjOqI3DzVJ2Egk8aWrEhK7Keadm8ve9N8nfr8VrGR10KepXiCIClX3505VxcEGYWZV1Xnuz49TVgosfX8gYAXz5iFA5XPDlX8nvd4ekKvIzP8lLxGysnJ1OiOIBKgz/3M1xYspoxf/NR0F59ztkjaetB0RGaRw40xqNGl7eOpnhjZGt39o53Bx4KCyZvh8Oluvj26etC94B4OHlALUHC8aqXiw4HfYYJxBVaAw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,78 +103,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/6/1 16:30, Lorenzo Stoakes wrote:
-> Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> device-private entries") updated set_pmd_migration_entry() to use
-> pmdp_huge_get_and_clear() in the softleaf case, but made no further
-> adjustments to the function itself.
+On 29/05/26 10:53 pm, Kiryl Shutsemau (Meta) wrote:
+> make_uffd_wp_huge_pte() arms the UFFD_WP bit on a present HugeTLB PTE by
+> calling huge_ptep_modify_prot_commit() with a ptent snapshot that was
+> fetched without the corresponding huge_ptep_modify_prot_start(). The
+> start helper is what atomically clears the entry so the kernel-owned
+> snapshot stays consistent until the commit; without it, the hardware
+> may set Dirty or Accessed in the live PTE between the original read
+> and the commit, and huge_ptep_modify_prot_commit() (whose generic
+> implementation just calls set_huge_pte_at()) then writes the stale
+> snapshot back over the live hardware bits, losing the update.
 > 
-> Therefore this function continues to incorrectly use pmd_write(),
-> pmd_soft_dirty() and pmd_uffd_wp() to determine whether the installed
-> migration entry should be marked writable, softdirty or uffd-wp
-> respectively.
+> The non-hugetlb sibling make_uffd_wp_pte() does this correctly via
+> ptep_modify_prot_start() / ptep_modify_prot_commit(). Mirror that
+> pattern for the present-PTE branch. The migration case stays as-is --
+> migration entries are non-present, so there's no hardware update to
+> race against.
 > 
-> Whilst all are incorrect, the most problematic of these is pmd_write(), as
-> this can lead to corrupted rmap state.
-> 
-> On x86-64 _PAGE_SWP_SOFT_DIRTY is aliased to _PAGE_RW. So calling
-> pmd_write() on a softleaf will return the softdirty state encoded in the
-> entry, assuming CONFIG_MEM_SOFT_DIRTY was enabled.
-> 
-> This was observed when running the hmm.hmm_device_private.anon_write_child
-> selftest:
-> 
-> 1. The test faults in a range then migrates it such that a device-private
->     THP range is established.
-> 
-> 2. The parent then migrates it to a device-private writable PMD entry whose
->     folio is entirely AnonExclusive with entire_mapcount=1, softdirty set
->     (accidentally correct write state).
-> 
-> 3. The parent forks and the PMD entries are set to device-private read only
->     entries, entire_mapcount=2, softdirty still set.
-> 
-> 4. [BUG] The child writes to the range then migrates to RAM - intending to
->     install non-writable migration entries - but replacing parent and child
->     PMD mappings with WRITABLE entries due to misinterpreting the softdirty
->     bit.
-> 
-> 5. In remove_migration_pmd(), if !softleaf_is_migration_read(entry) we
->     set the RMAP_EXCLUSIVE flag when calling folio_add_anon_rmap_pmd() for
->     both parent and child, which are therefore AnonExclusive.
-> 
-> 6. [SPLAT] Child sets migrated folio entire_mapcount=1, parent sets
->     entire_mapcount=2 and we end up with an AnonExclusive folio with
->     entire_mapcount=2! Assert fires in __folio_add_anon_rmap():
-> 
-> 		VM_WARN_ON_FOLIO(folio_test_large(folio) &&
-> 				 folio_entire_mapcount(folio) > 1 &&
-> 				 PageAnonExclusive(cur_page), folio)
-> 
-> This patch fixes the issue by correctly referencing the softleaf entry
-> fields for writable, softdirty and uffd-wp in set_pmd_migration_entry().
-> 
-> It also only updates A/D flags if the entry is present as these are
-> otherwise not meaningful for a softleaf entry.
-> 
-> This patch also flips the if (!present) { ... } else { ... } logic in
-> set_pmd_migration_entry() so it is easier to understand, and adds some
-> comments to make things clearer.
-> 
-> I was able to bisect this to commit 775465fd26a3 ("lib/test_hmm: add zone
-> device private THP test infrastructure") which first exposes this bug as it
-> was the commit that permitted test_hmm to generate the test.
-> 
-> However commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> device-private entries") is the commit that actually enabled this
-> behaviour.
-> 
-> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
+> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 > ---
 
-Cool, lesson learned! Feel free to add:
+LGTM
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+
+>  fs/proc/task_mmu.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 1e3a15bf46f4..e21a38ac745b 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -2610,12 +2610,16 @@ static void make_uffd_wp_huge_pte(struct vm_area_struct *vma,
+>  	if (softleaf_is_hwpoison(entry) || softleaf_is_marker(entry))
+>  		return;
+>  
+> -	if (softleaf_is_migration(entry))
+> +	if (softleaf_is_migration(entry)) {
+>  		set_huge_pte_at(vma->vm_mm, addr, ptep,
+>  				pte_swp_mkuffd_wp(ptent), psize);
+> -	else
+> -		huge_ptep_modify_prot_commit(vma, addr, ptep, ptent,
+> -					     huge_pte_mkuffd_wp(ptent));
+> +	} else {
+> +		pte_t old_pte, new_pte;
+> +
+> +		old_pte = huge_ptep_modify_prot_start(vma, addr, ptep);
+> +		new_pte = huge_pte_mkuffd_wp(old_pte);
+> +		huge_ptep_modify_prot_commit(vma, addr, ptep, old_pte, new_pte);
+> +	}
+>  }
+>  #endif /* CONFIG_HUGETLB_PAGE */
+>  
+
 
