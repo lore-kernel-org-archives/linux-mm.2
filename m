@@ -4,140 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BDD2CD6E5D
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 19:57:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D401DCD6E5D
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 20:10:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 016286B0088; Tue,  2 Jun 2026 15:57:16 -0400 (EDT)
+	id 189316B0088; Tue,  2 Jun 2026 16:10:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F08E96B008A; Tue,  2 Jun 2026 15:57:15 -0400 (EDT)
+	id 11B8C6B008A; Tue,  2 Jun 2026 16:10:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF79D6B008C; Tue,  2 Jun 2026 15:57:15 -0400 (EDT)
+	id 028A16B008C; Tue,  2 Jun 2026 16:10:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CC4596B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 15:57:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 58A0F8466D
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 19:57:15 +0000 (UTC)
-X-FDA: 84836031630.23.EFD63B5
+	by kanga.kvack.org (Postfix) with ESMTP id E22BF6B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 16:10:53 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 86A6F88731
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 20:10:53 +0000 (UTC)
+X-FDA: 84836065986.28.A075450
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8E67D1C000D
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 19:57:13 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hOVI2Ocr;
-	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9589C80017
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 20:10:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FlQf+5kL;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780430233;
+	s=arc-20220608; t=1780431051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0vQhc1dbc5LVHsBRrn3VszFfXAXWWO1kVMy2oolTIN8=;
-	b=UhmGEpchcPNMTEzhnqp1opuU6oZZODvwaE6xHqBizWayQaoIov3JvEH1OctNcfTEC4ntDE
-	tvgaH4ykBWdWQOPWJvIH2rh1VVZ+N9VtpLxyEKVM3D1OdFkzltaorfx1OrT/GCMQm0rhsN
-	LCETOkQ5csFhfsq0vZxh6LFzsZuiSlQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780430233;
-	b=rh63fLfKZClmraW2I0QAEO0ifpctA4EdjpcM0er7cu9vNG0yQU8ZAM6JEPrs9BgfwUM3Z9
-	knETyaGYlVxaLo4VzYZIxNORO5prFSssAq4tXRX9rq8nClHWwPcA7pMGuTFd5vWGwNrd4+
-	rg2GkxorHgx6TbUGWO4UQQ4ra2PoAlA=
+	bh=NRCYIXk5xTkfp82OQZJovt45Ucm7r0SKmvk+xAm+PCY=;
+	b=r7L5jOnFi8b42hD3ORPb2PsenHvW7aqOqBmd1tSFFFDTE5bCs468Blx5UiwdqO82MVF2YY
+	yI/mi6ZRbznoV0VfG5q62rij4rCYaUEEOHyB7CQ42CCNVB5hUf1wQupM+XLk48IDgOHjP7
+	sRtCenfhzVQkziYneIcZ7SX853+er4I=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hOVI2Ocr;
-	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FlQf+5kL;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780431051;
+	b=jk24chTTcSYYubg/bCvEAEg1R3w/o2Qct+GiWoG1aCR2Vya2z2Zar/X7Afp7BBSFjtqb8y
+	PZvHpfLFR9rPXG1xvKiFUTWLNNHuGOGJxDOIVfVRP12GdIeYhsQHJZMDqwK5OdPNuc/UiN
+	0zO20fXAspZoOTHT0UmpSVlomKQ28To=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5830D4171D;
-	Tue,  2 Jun 2026 19:57:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4021F00893;
-	Tue,  2 Jun 2026 19:57:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780430232;
-	bh=0vQhc1dbc5LVHsBRrn3VszFfXAXWWO1kVMy2oolTIN8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hOVI2OcruvfTllpcq0jsW7aDFTSL3NcP0W3HNxtTvh9lZ+6HJZe87VAiGFM5ZpVgF
-	 vVs4fil66BhU4jNutDHSlKK/hFHWCZrsFTLyG5qoujYRTQSpet4Iob49+SWHx4tzvO
-	 1BBPDWzv9nT1gmYEchMPRpHeKH4BqWbg7dDXSz5rydwjOciOQpeXdcXU9qsAsmt7wx
-	 t7nN8hUMN5WzSC2Bc6L6g/Y1x/iQyePeVVe06eotXj3k58evUKF76WykeF9zbSoqxY
-	 R/wPNnx1sNH0ObNSmUYvzw4T/3fa7V0UYM7puEYChaosOovG4sx7ZUBOlAYHltuxBm
-	 st+Q1CEvD9xaQ==
-Message-ID: <1fb6a226-2899-497c-abbb-eb49c3a2f306@kernel.org>
-Date: Wed, 3 Jun 2026 04:56:56 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-To: Barry Song <baohua@kernel.org>, wangtao <tao.wangtao@honor.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "david@kernel.org" <david@kernel.org>,
- "willy@infradead.org" <willy@infradead.org>, "sj@kernel.org"
- <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>,
- "luizcap@redhat.com" <luizcap@redhat.com>,
- "zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>,
- "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "liam@infradead.org" <liam@infradead.org>,
- "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
- <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
- "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz" <jack@suse.cz>,
- "riel@surriel.com" <riel@surriel.com>, "jannh@google.com"
- <jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
- "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
- "npache@redhat.com" <npache@redhat.com>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "dev.jain@arm.com" <dev.jain@arm.com>,
- "lance.yang@linux.dev" <lance.yang@linux.dev>,
- "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
- "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
- "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
- "matthew.brost@intel.com" <matthew.brost@intel.com>,
- "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>,
- "rakie.kim@sk.com" <rakie.kim@sk.com>, "byungchul@sk.com"
- <byungchul@sk.com>, "gourry@gourry.net" <gourry@gourry.net>,
- "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
- "apopple@nvidia.com" <apopple@nvidia.com>,
- "pfalcato@suse.de" <pfalcato@suse.de>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "damon@lists.linux.dev" <damon@lists.linux.dev>,
- "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>,
- "ryncsn@gmail.com" <ryncsn@gmail.com>,
- "jparsana@google.com" <jparsana@google.com>,
- "dvander@google.com" <dvander@google.com>, zhangji <zhangji1@honor.com>,
- wangzicheng <wangzicheng@honor.com>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <ahcANgFDFwfC0v1q@lucifer> <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
- <ahf2mJg9OOWvu0jA@lucifer>
- <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
- <99dfc4a50f3643a6bef6deaeccfcf115@honor.com> <ahlzj--3Gm5pD9ge@lucifer>
- <a90bcb0fa3a044588350e92a78258a09@honor.com>
- <CAGsJ_4wFr89M2i8pth79swv3==i8SGSMWrbr+Yp2umwFTuCShg@mail.gmail.com>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <CAGsJ_4wFr89M2i8pth79swv3==i8SGSMWrbr+Yp2umwFTuCShg@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------bwW6faxu8TU10uSydRwBrOZz"
+	by sea.source.kernel.org (Postfix) with ESMTP id 8D2C843929;
+	Tue,  2 Jun 2026 20:10:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A6C1F00893;
+	Tue,  2 Jun 2026 20:10:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1780431050;
+	bh=NRCYIXk5xTkfp82OQZJovt45Ucm7r0SKmvk+xAm+PCY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=FlQf+5kLpzBZVFvOeRcxtB8F6UOvyf1jDzq9+3UuWxdF3xkWE2UAV996mFLpzOrjQ
+	 EQQCrzBuG6yPBC2nBhYYIkj54I/oym5OyAKtWYfmcRDpTd+vUBy5sFuPaCJWJiROO2
+	 4V85lGSfsE0NPzeBweamgMvxTUhJ0838w2S9ZOD8=
+Date: Tue, 2 Jun 2026 13:10:49 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn
+ <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/3] remove mmap_action success, error hooks
+Message-Id: <20260602131049.74177bbb6d85fe01ff6512ff@linux-foundation.org>
+In-Reply-To: <cover.1780397980.git.ljs@kernel.org>
+References: <cover.1780397980.git.ljs@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8E67D1C000D
-X-Stat-Signature: m7hkky7aaghok85619c4get75i1x8rxt
-X-HE-Tag: 1780430233-379534
-X-HE-Meta: U2FsdGVkX1+xOs3IgTGbdm/TBvgp/udgRbLQhM+xPwN50hVf6YDNclbRaD3J+sMKoZsDibiV43R1q8PzP2JSsUhd63zyf12xquluX53eO+aZZfesrgJHcXw/EPkSe6ECtPGnWOMe8K+UDUgJFSI/RXUMC2r9eyCmJTyLWmx+m+73RqErZtMTckaPESw9f+ueaxWjGedPu6SEx6EF9DODGNcXrCLURLD19S3qRsNJDrzQQwI98gpactkb5W5gb4SKgjHstE/gPW29DAtwVb3MHI2Mkq3pS5u8PFAa17+rnvAXWxdDMU8/zADyEazQBN/go1bUdETSm96CBv1ZZpSTqta0wi2Vug6M0ZHoRYu3pthYqLYX8WO+IW7QPPb9xFCTGXsqQsv66JHlmBOB86ji0r3jFAn/BNftAtaCmE9J1pc070pMJeAm3WyC1RcKo+mAtw6JjmHaIP3behETrlaxDMQAHtLJD3jg+YRWoI27zpnOM+QI8mCHwvrpW6w35gdfeUu+xNhNA9C0NDlv920BXoHBLEj8qjQ5tbtQ9Osi3PFG2++8OCu9yGGxcaUsiXkYoJg2DmcSm9xlc53/P1vzw1R6acHZR0yznfCgmX8JQUXtRHGc8J4y4fECvZmIhsbEkOSAB39seZ8+i/DrQmMP2tkrLRzwT7NDOCwuCdaj1nigCAso0IdwRgBYXFIhzH7JK7IgRdYLiFep3kGeO++S/cy7/gICOFcfF3KBC643o283bI9eQbkjYwixhv9DvVrti20mLctwp3u/Qqt5Cyd8Z8zTwwKgfizgTTcpSG4AxAyKiZuZ3BXGV9VJaizbVCPm0ih6EhXWXBhi80cJzor5Ny7k0iPlf2LtLWHGq7i+FWVbBJXuAELqTEUwTK7reKkXlDqYk4ERQJQWyho99mYR27c8T+k5ZGDhwIDPB9Z2vNWuzlPZfcFtvha7apq3OzDka9rEcMxOqr8h/LMriH2
- KUbzYNem
- hZ2xqY7LSs/5TpPZbp8t2sqM3SR0bcXc4lpCi+0CkCvPmOY55iDWOapUeabSz9nz8DLTBVxtots9IId1xIs0zG95oziGzJfNrSD+eK68rfHbrPQ84Qag31YfBEw4N0recJKhRtBnLbjhgXfcHtFyVoUWNaOj53n1ea4lH6z0LYm+riLyntYTfYOZ+L4JJRc52tgPO42SAUrC0xXTKe0gYbp0Jmwbg780w6DWJskA2wYrh+FIXEP7nyxHTXAUqvEuU4qLVRyMMYT+y6P6TzBIQ51uYEohl5mszz43t8ro58iVgBE39ztXbA857nKSMRnXvF3cVQsNO8ZzXgQSXw3xN2KlML/O1fAlfB5DZZjVwjcC2fz366t2JOH8pk8vZJcaCLOZoBLvRm8k0N4J8AcQbiZledQzc3namGfOzVvVM6UGfFCA/MSP+95NHfqIXUl4nFLBKw3T0Ox4z/oMGadv0h1f6OuhVSMy0Rqawk/Rgv0zJ1EbYMmq/2MwHbKd0R42Gg1JMBqnnmEHkK/eOhzUwhH5ILTaVVPxJLKQEZ62umdWWw+K7DYWuGHP6/CFVbUF5bm8o1mtLpa/NplhEXHw4GMPl9OJUccCpOcQGZsDe1oZ0Q17p11up1XO1HAzPfurnodJl/x0Hghm48N0FglpVIGDatbFCHZcOV3ck+4Ls48K5mPxkB8sqAHcz2TzbAZ+nbjGF
+X-Stat-Signature: keicusn6bmru8e4bchejtdtwurzjkcmn
+X-Rspamd-Queue-Id: 9589C80017
+X-HE-Tag: 1780431051-76541
+X-HE-Meta: U2FsdGVkX18HiKN5M0z2J9ySVYxoWAKhF6XeoZXyEHsTngngW0qRqVXhVrFNIK33TaH3FmFSuOaPd7whI+3G+1OCdHwARxXudLk0Dn93D0hJpT7v9McmzOkkIw8zYF0H+l3h9PH+AK3gxDZrcAIUMZ1X+EPkVK2muUKW7FyWnNKARbFn6/jjDYZprJnSGQ4ZPEMF5bM6rDQfnQm8x7Ig6eW4/rUvIU9MOmzrzgRRXh5W20JsZShah+Khaxzp4LRm3kieo7UA7XFSDs2aMRF229Uv8CUX1vjsYutM9GEPQfDRju3zekyzxyaTIaTUj99usEOTu78VNejO2vGdZxBBikOIvMbgdab/bev8mAGEV7DsCnLejgukVeKKsxaKGmHa6uOMKIt09kpLMTyIvEBSwHNQIViY3/Ysg4s45rzWfacrwULFaqq/+WaTedpZXBJW4miSsdFV5TH4cVW6Fe/nExI4EMSWRrpU8npTm47F74EPEeeKUym/K97DppA8Pdfa5L5Ry7ev3GYkgZ/KXFXppmfTG+d8blkTqDF6GlZiQhINEnXt6oqnMJgygQtVlkW3nxsz1faKWMWflx8kSjJc4awenBo0pN/fR7VtIue5XhHvFMyR24dVZS9MwOfD4vdccL11TsdShu2pow9ceetKaNZ0kJZgeLmUbCo8/cV0MYw5FL4bMcb1DwI52offfUwAo691+s0fBWCH+zdqNtdXfnKPRD0w/tEHmczYdaMXKHCJaA0HN8L26fHeZ7mFt0nJthG8/3SqU+/0K3AcicfDyxrNyHd+72XvZmiIeLOVivNQUWHn5tP4vkRpKOX3HadqA20ztWWZHgv0+aIgJ1E5ZFRphKJU6TNxvNJ0sAfK6p1V4X7Zt2Ug23R22p9Ug4EKcE/y/ry6geS7VeyOaPArPoBwq5RC4DR74qDpFMVeIpzGgOx+yLzwRk4HE9DG1p8IR0dyLE//y4T0OZ8wBFT
+ H6XSCkSF
+ 5zA8TPDxT7WVNC1r4Ku+rkTO+ICh+HMhX0Kxi/zipxZ8K6Y6ZGYBNj/ZErW6h+BQn7wG8b4p+yaHl2muWzG/6DmP9EBJN6rHOfVbJD06oPWM5L851ma4Zj3w1GBnLNHmFvgmRqAYTc3/61VishqU8iDVE0w2JTeFANFFK8bnQFyc3L22gjs+abESkkblVAoKCLZ0z5GMIFRB4tR0sTPLgSZT5QumMfUK02hu/W88Oc0afK06YHJJ/0tzknqP0SHCX0A2z4Q5bZCJDihcnJt8JO5aAjFMOTSwoydKuxr9LJhz3x4eyV+Qbfj4CkMS4rYOiur8g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,171 +94,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------bwW6faxu8TU10uSydRwBrOZz
-Content-Type: multipart/mixed; boundary="------------YuOxOu3OkEnuies33ChEyi0g";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Barry Song <baohua@kernel.org>, wangtao <tao.wangtao@honor.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "david@kernel.org" <david@kernel.org>,
- "willy@infradead.org" <willy@infradead.org>, "sj@kernel.org"
- <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>,
- "luizcap@redhat.com" <luizcap@redhat.com>,
- "zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>,
- "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "liam@infradead.org" <liam@infradead.org>,
- "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
- <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
- "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz" <jack@suse.cz>,
- "riel@surriel.com" <riel@surriel.com>, "jannh@google.com"
- <jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
- "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
- "npache@redhat.com" <npache@redhat.com>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "dev.jain@arm.com" <dev.jain@arm.com>,
- "lance.yang@linux.dev" <lance.yang@linux.dev>,
- "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
- "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
- "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
- "matthew.brost@intel.com" <matthew.brost@intel.com>,
- "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>,
- "rakie.kim@sk.com" <rakie.kim@sk.com>, "byungchul@sk.com"
- <byungchul@sk.com>, "gourry@gourry.net" <gourry@gourry.net>,
- "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
- "apopple@nvidia.com" <apopple@nvidia.com>,
- "pfalcato@suse.de" <pfalcato@suse.de>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "damon@lists.linux.dev" <damon@lists.linux.dev>,
- "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>,
- "ryncsn@gmail.com" <ryncsn@gmail.com>,
- "jparsana@google.com" <jparsana@google.com>,
- "dvander@google.com" <dvander@google.com>, zhangji <zhangji1@honor.com>,
- wangzicheng <wangzicheng@honor.com>
-Message-ID: <1fb6a226-2899-497c-abbb-eb49c3a2f306@kernel.org>
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <ahcANgFDFwfC0v1q@lucifer> <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
- <ahf2mJg9OOWvu0jA@lucifer>
- <CAGsJ_4zy=-m5wjm0BC-vQXMHGRkHymC-5S_L9Oi708v339vvPw@mail.gmail.com>
- <99dfc4a50f3643a6bef6deaeccfcf115@honor.com> <ahlzj--3Gm5pD9ge@lucifer>
- <a90bcb0fa3a044588350e92a78258a09@honor.com>
- <CAGsJ_4wFr89M2i8pth79swv3==i8SGSMWrbr+Yp2umwFTuCShg@mail.gmail.com>
-In-Reply-To: <CAGsJ_4wFr89M2i8pth79swv3==i8SGSMWrbr+Yp2umwFTuCShg@mail.gmail.com>
+On Tue,  2 Jun 2026 12:06:24 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
 
---------------YuOxOu3OkEnuies33ChEyi0g
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+> The mmap_action->success_hook was a strange beast added to enable code
+> which appeared to absolutely require access to a VMA pointer to work
+> correctly.
+> 
+> Primarily this was for hugetlb, however a different approach will be taken
+> there, as clearly more work is required to figure out a sensible way of
+> converting hugetlb to use mmap_prepare.
+> 
+> The other user was the memory char driver, specifically /dev/zero which has
+> the unusual property of explicitly setting file-backed VMAs anonymous.
+> 
+> Providing the success hook was always foolish, as it allowed drivers a way
+> to workaround the restriction that they should not access a pointer to a
+> not-yet-correctly-initialised VMA - which defeats the purpose of the
+> mmap_prepare work.
+> 
+> We can achieve the same thing in memory char driver without needing the
+> success hook, so this series removes that, then removes the success hook
+> altogether.
+> 
+> The error hook is also unnecessary - the motivation for this was for
+> functions which need to override the error code when performing an mmap
+> action in order to avoid breaking userspace.
+> 
+> We can achieve this by just providing a field for the error code. Doing
+> this means we don't have to worry about the hook doing anything odd.
+> 
+> We also add a check to ensure the error code is in fact valid.
+> 
+> Again the memory char driver is the only current user of this, so this
+> series updates it to use that.
+> 
+> After this change mmap_action has no custom hooks at all, which seems
+> rather more cromulent than before.
 
+Updated, thanks.
 
+> v3:
+> * Rename error_filter -> errror_override + update commit message as per
+>  David.
 
-On 6/2/26 11:15 AM, Barry Song wrote:
-> On Mon, Jun 1, 2026 at 9:46=E2=80=AFAM wangtao <tao.wangtao@honor.com> =
-wrote:
-> [...]
->>
->> You said discussion was welcome, yet when someone offered even a
->> small comment, you refused to continue the discussion.
->>
->> If I had known you would be this inconsistent, I would not have
->> replied to you in the first place.
->>
->> This will be my last reply to you. I will not respond again.
->=20
-> Hi Tao,
->=20
-> Please don't walk away from the linux-mm community. I read your
-> patchset and found it quite valuable. It not only reduces memory
-> overhead, but also eliminates rmap costs for exclusive folios.
->=20
-> Since I'm not very confident discussing technical topics in English,
-> I wrote a blog post in Chinese about your patchset:
->=20
-> https://mp.weixin.qq.com/s/k00tzhTl8HbL3k4G6ev4SA
-The cover letter and commit messages should have been elaborated to a
-much greater degree instead of making people guess the design and intent
-from the code.
+Here's how v3 altered mm.git:
 
-> I have to admit that I found the implementation quite complex and
-> in need of significant improvement.
+ drivers/char/mem.c              |    2 +-
+ include/linux/mm_types.h        |    6 +++---
+ mm/util.c                       |    6 +++---
+ tools/testing/vma/include/dup.h |    6 +++---
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
-> However, I think the underlying> idea is very interesting and worth
-exploring further.
+--- a/drivers/char/mem.c~b
++++ a/drivers/char/mem.c
+@@ -357,7 +357,7 @@ static int mmap_mem_prepare(struct vm_ar
+ 
+ 	/* Remap-pfn-range will mark the range with the I/O flag. */
+ 	mmap_action_remap_full(desc, desc->pgoff);
+-	desc->action.error_filter = -EAGAIN;
++	desc->action.error_override = -EAGAIN;
+ 
+ 	return 0;
+ }
+--- a/include/linux/mm_types.h~b
++++ a/include/linux/mm_types.h
+@@ -844,10 +844,10 @@ struct mmap_action {
+ 	enum mmap_action_type type;
+ 
+ 	/*
+-	 * If non-zero, filter errors that arise from mmap actions such that we
+-	 * return error_filter instead. Only valid error codes may be specified.
++	 * If non-zero, replace errors that arise from mmap actions with this
++	 * value instead. Only valid error codes may be specified.
+ 	 */
+-	int error_filter;
++	int error_override;
+ 
+ 	/*
+ 	 * This should be set in rare instances where the operation required
+--- a/mm/util.c~b
++++ a/mm/util.c
+@@ -1415,16 +1415,16 @@ static int mmap_action_finish(struct vm_
+ 	len = vma_pages(vma) << PAGE_SHIFT;
+ 	do_munmap(current->mm, vma->vm_start, len, NULL);
+ 
+-	return action->error_filter ?: err;
++	return action->error_override ?: err;
+ }
+ 
+ #ifdef CONFIG_MMU
+ 
+ static int check_mmap_action(struct mmap_action *action)
+ {
+-	const unsigned long filter = action->error_filter;
++	const unsigned long override = action->error_override;
+ 
+-	if (WARN_ON_ONCE(filter && !IS_ERR_VALUE(filter)))
++	if (WARN_ON_ONCE(override && !IS_ERR_VALUE(override)))
+ 		return -EINVAL;
+ 
+ 	return 0;
+--- a/tools/testing/vma/include/dup.h~b
++++ a/tools/testing/vma/include/dup.h
+@@ -483,10 +483,10 @@ struct mmap_action {
+ 	enum mmap_action_type type;
+ 
+ 	/*
+-	 * If non-zero, filter errors that arise from mmap actions such that we
+-	 * return error_filter instead. Only valid error codes may be specified.
++	 * If non-zero, replace errors that arise from mmap actions with this
++	 * value instead. Only valid error codes may be specified.
+ 	 */
+-	int error_filter;
++	int error_override;
+ 
+ 	/*
+ 	 * This should be set in rare instances where the operation required
+_
 
-No. What it is trying to achieve is ambitious, but the idea itself is
-not worth exploring further as-is unless the correctness and complexity
-concerns are addressed.
-
-> I'm looking forward to seeing a v2 RFC with a cleaner and simpler
-> implementation while preserving the core concept.
-
-I'm afraid this encouragement would mislead us in the wrong direction,
-where all of us end up wasting time.
-
-There isn't much point in posting v2 without addressing fundamental
-questions about the design.
-
-> Regardless of whether it ultimately gets merged, I hope the discussion
-> can continue.
-
-Regarding the "improving the reverse mapping subsystem" topic, a more
-constructive direction would be to carefully revisit the design
-decisions and discuss what we can do about them (that's exactly what
-Lorenzo has been doing).
-
-But that's not the first thing I would recommend to a relatively new
-contributor given that it's really complicated and even the people who
-have designed and reworked the reverse mapping subsystem over the past
-20+ years haven't come up with a fundamentally better design.
-
-Reverse mapping is a frustratingly complicated subsystem. Without
-carefully revisiting the current design, there is not much hope of
-improving things at the design level, even slightly.
-
-What I would recommend to new people instead is:
-
-1) starting by reviewing other people's work, so that you have enough
-time to learn the historical context and subtleties of the subsystem
-without making intrusive changes (which also keeps in touch with the
-community), and
-
-2) making progress on smaller tasks with less intrusive changes, to
-gradually build trust and be able to do more valuable work.
-
-Unfortunately, looking at how this thread went, I see that the author is
-now in a worse position than an entirely new contributor.
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------YuOxOu3OkEnuies33ChEyi0g--
-
---------------bwW6faxu8TU10uSydRwBrOZz
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCah81iAAKCRCGXBN6rc5S
-1jxVAQDM4pzeofE4dxdOjh77PA9/N7OslJ1TE4+pZBNAdPvx0AEAwjZ+A6hUR46O
-dTxVf76ruthYIxyJpw0aYD6Yrw472QM=
-=9zed
------END PGP SIGNATURE-----
-
---------------bwW6faxu8TU10uSydRwBrOZz--
 
