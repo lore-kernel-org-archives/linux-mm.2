@@ -4,116 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23F7BCD6E56
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 02:30:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3C6BCD6E55
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 02:38:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 651686B04B5; Mon,  1 Jun 2026 22:30:08 -0400 (EDT)
+	id 1075D6B04B9; Mon,  1 Jun 2026 22:38:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 602D76B04C3; Mon,  1 Jun 2026 22:30:08 -0400 (EDT)
+	id 094BB6B04BD; Mon,  1 Jun 2026 22:38:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 518476B04C5; Mon,  1 Jun 2026 22:30:08 -0400 (EDT)
+	id EC2656B04BF; Mon,  1 Jun 2026 22:38:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 43BC86B04B5
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 22:30:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA3F8C2853
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:30:07 +0000 (UTC)
-X-FDA: 84833392854.12.0923172
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9234AC000A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:30:05 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ibHfnmMK;
-	spf=pass (imf22.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D7E2A6B04B9
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 22:38:13 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6EA081407C9
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:38:13 +0000 (UTC)
+X-FDA: 84833413266.10.E305EC0
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 95347140009
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 02:38:11 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JGiAuZIQ;
+	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780367891;
+	b=P3I1Mgueq7/53yglM7buVILGJEu0kf1K5IUCqpE1rRkp0fx25ZqTLvTPysFN6yskiVQaN3
+	9b2QnCSzo8T9brfBH2pfqb/gXeH/FEPF4ujKaVR7xHIBv6sX5GIFJFLcbejGFIA4dixRIF
+	sN1E6f9hfSmPb8gaVG7rwY6VX2hOEIQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JGiAuZIQ;
+	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780367405;
+	s=arc-20220608; t=1780367891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EpFwM62mGltWd7B25NvF+NAcWZCXVWfkeyArxV0CLTg=;
-	b=WYDPmASGar1ZyCqhH8hX4+85bnpEy7I/loFZmkUq1zn2horxlHe5MoV3K0TkfEiWAHYy30
-	fqxwaY6cWUUqgyRK+1e2Y4F4ukCJeQAZ3Kw275XrZI5vZ/lBr7Kx3X3lfj3u6XRwAiE7Dr
-	OMSoFr3yfy/RwTjEapsBXQvLpmnQt1M=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ibHfnmMK;
-	spf=pass (imf22.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780367405;
-	b=wN9bIV0la+e5XE36vZxZiTb8+MXF0/lQWKzAWGUQAP087NiTY+KKJDTQO0POc2fF83Jj2E
-	b1sIGQh3rFL2Qm8+M45gMJfPxeH/rlux7Qkhrw726XsybQ4X/l0d1mRCP2DbaUWkaXuRrz
-	mnyNj8ifYEuQvfkjYKBH0bjZzQynR2s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780367404;
+	bh=dKmVnwBQTYER22XxHtKgTEyxPcm6+PF1gPWG/CQnepo=;
+	b=JTpekJ0wpahopuWHrA55kaQ0P1vYyeVTpXcHPvQtdR8ssmzG2REVfS/qgqfsA28BKCnaEO
+	oP6D6j3cLAMCETJlKCnWXJEbi3VQzdT0euveObukylzKfQ6BmFJ+63CgalAlP9w0fI1s0C
+	QegxS8tlhS0UT7/kNLhcPAh8NU25Ni0=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780367888;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EpFwM62mGltWd7B25NvF+NAcWZCXVWfkeyArxV0CLTg=;
-	b=ibHfnmMKbCWWbtteJI7cjbnJjONP35zSVUCYHPl9F5dcZuof4u+J1K/gILRXJRzb306gbv
-	J/w0zBWo+WJKH7d96PGb2o6sA5H1Z3Q2/yMB4muwfjVSHJB07oy6K4eNsowysqxn64kz24
-	tN2//Oephkqo5iHy7KNQgaUuBx2GK3M=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-mescK9sVOlGdcxj7rWM4cQ-1; Mon, 01 Jun 2026 22:30:03 -0400
-X-MC-Unique: mescK9sVOlGdcxj7rWM4cQ-1
-X-Mimecast-MFC-AGG-ID: mescK9sVOlGdcxj7rWM4cQ_1780367402
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-68c6649a135so2556290a12.0
-        for <linux-mm@kvack.org>; Mon, 01 Jun 2026 19:30:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780367402; x=1780972202;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EpFwM62mGltWd7B25NvF+NAcWZCXVWfkeyArxV0CLTg=;
-        b=mUcz5LLI+DAtPVkyB2Afj2Z9L1J37bXzGHAwZ3sZR3ocggGZtHDAvRL/eRvOBCJcFT
-         LSKj9gcHiFU5pEqpw0/iC61syIv7PNG03FoloWtG+s73K7v36aiOV2ED3xy6/tXDHouL
-         dErcTEazdh4l742b9h3BtUR0Qpo/4FZLnegJrxzOKZZWWAQ3rha3S51YOkI53y+B7qta
-         ce9WLqmsM29ta7Wj9yaAYpGaHSlS3/Wn73k4lh+p2XZJK3ncxNGiFAJPG+//9bsuMxyk
-         wAed3kdjBNdyw/O5OPWheGOHXdMGYS3bKtLa3qiH02B8/uwrmC9a4b7hIb/D52wFOPmU
-         6REw==
-X-Forwarded-Encrypted: i=1; AFNElJ9206XTKpejwxJHFd8kOqtQK90rQnAxzMV30x4wLUFMcduunS7oBakNVxLVJLUhBEkDRRTKjFRNsw==@kvack.org
-X-Gm-Message-State: AOJu0YwhV/SUj/JP6EmxjQaTHIZ9UNmRp9HTgwRfiZZkWZf/kooXU5GH
-	FMJfWOv7QqKyoEyT54WxlF7qaCkBtqPmK0hNjsapaq2rhhFKDv9Uy1dFIWqREfEecK4STl9hh6W
-	Aj3Z68qWauqrLP7V24GkhqV93qT4VZM6MDtWL2o1v3AwNoeSYqnBkNpbrImn91TCIATVRC8EptO
-	9LX+Pw5zd4kNxFx/XMI2qCeBXvVg4=
-X-Gm-Gg: Acq92OEv6gGTgaqWKVYn3+WsxRgda05z1QyZOaij4B3I4FxCBkd8brQXcpJQcl4MePM
-	liZn9XSXNTGQ74k2c5MEUw+kkfJ75+PjoZ5Ok8FHU/mBnF5y8sYZxRpCTpVLEfXjTdGA72nxlSb
-	zoh0u8zltmo/dAzxjcQnnswUbSt7WydGpP8kgxrnh3KehaezjzKdfxxfMHVazFDottix9Dh1ydR
-	txCHXIZ6KB2ffyh5g==
-X-Received: by 2002:aa7:cd10:0:b0:687:2181:90ab with SMTP id 4fb4d7f45d1cf-68c8c464e28mr5811230a12.14.1780367401920;
-        Mon, 01 Jun 2026 19:30:01 -0700 (PDT)
-X-Received: by 2002:aa7:cd10:0:b0:687:2181:90ab with SMTP id
- 4fb4d7f45d1cf-68c8c464e28mr5811219a12.14.1780367401553; Mon, 01 Jun 2026
- 19:30:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260527224848.1753560-1-chaithco@redhat.com> <20260529203508.a1813d90f7bfb638bfdc815a@linux-foundation.org>
-In-Reply-To: <20260529203508.a1813d90f7bfb638bfdc815a@linux-foundation.org>
-From: Charles Haithcock <chaithco@redhat.com>
-Date: Mon, 1 Jun 2026 20:29:49 -0600
-X-Gm-Features: AVHnY4IdFGieGAlEv3UARvxrkJeMu1jzyAcJEJPjv2kjcRWBPUVbmJUsicfVVVA
-Message-ID: <CAMcbwu6Yia5mjCgQbq7NM7HJ5+3T3gNKCa493H4_jO7a+MEC1g@mail.gmail.com>
-Subject: Re: [PATCH] Respect mempolicy when calculating surplus huge pages.
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: muchun.song@linux.dev, osalvador@suse.de, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 8QpaQq37i9ztHkrBKbbAztCnOvoE7ARwCRKT5rduTWo_1780367402
-X-Mimecast-Originator: redhat.com
-Content-Type: multipart/alternative; boundary="0000000000008a36c206533c1621"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9234AC000A
-X-Stat-Signature: phaamhzngxocbrgwtiawswbta5nojs4b
+	bh=dKmVnwBQTYER22XxHtKgTEyxPcm6+PF1gPWG/CQnepo=;
+	b=JGiAuZIQLye/+Tr5WQmbONLcGtvIIS11nHqAEbCgq1kKsxaQCmxnVcxjqgt2N4pMDxeD/+
+	mD0m9ZFj7qpHL0VeyNUB9MpN+KanG/aD2i184DUr7pRbGdpJzUoZjyHpNvxzqab7wstkbL
+	s+8siCc82RccvASUNGd1HBOD+46UPcQ=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v2] mm/list_lru: drain before clearing xarray entry on
+ reparent
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260601161501.1444829-1-shakeel.butt@linux.dev>
+Date: Tue, 2 Jun 2026 10:37:25 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Dave Chinner <david@fromorbit.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Kairui Song <kasong@tencent.com>,
+ Meta kernel team <kernel-team@meta.com>,
+ linux-mm@kvack.org,
+ cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Chris Mason <clm@fb.com>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8CD76642-E809-4E81-9F12-DB110A9F958D@linux.dev>
+References: <20260601161501.1444829-1-shakeel.butt@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 95347140009
+X-Stat-Signature: go1o8mjrgg6n97ky7d68hnob7m6j9qfh
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780367405-683593
-X-HE-Meta: U2FsdGVkX18A+WX3dt1914223UC8Y4gaCaUlt2JVGDUUlP9hpihn5SC2aYDxhaGNFNlfRfRCMymmZeX0dWHlPnLaeXml/cjebdNYJ+rd6Ij8yhIhp0dBoeHJzg/WVrd5aamYD5gb775ZJIm8B+4AbQKrXcIIFy/1f+TaAAYg3xzr53MZ2BI5jw1MtyeQ4AO+V/JQPMDYx5EUzeSGQgntp/8pjqkaxg3fKJXlUgkwSkWAc64nRAyCjPIOm1d88xF0hFkzjHSzYvQjCjLDEux6IMChXkYp8bpCNd1viOeIcp1TyvS0g5tFh0o21G+matnhhumG34He47DKUzRm1dpcfnfgzDYG7f/rOz/JFOsSnN14+ZowgxVoDvuJI6nrOZWshfQkm2Zor0n0VuV6V+ZkqkFqU/RKe0d9CuD0hTs187DYx4GRumWR1L778DtqvLIiaVW8+mtyaKj3yLnH2Lft+G61fkIrHvSZlxGuKW7ws5ApJ6+EM5Zpqadu8uFWNLhw860stkQ04YM5P9uvaTWQ+ZDlRmGelQrGKMl4+S9Xq4sUryprKXv+H7e+iD5mp7BFNU7Z7FwX+eGBPo4Geh135AL5HP4hbBYMe/Sk+vKRCLMOEYbp1bPj/vl0S/pnkAbbHDEj4qqHTTQGeDaurQlLWX9eoUVYn2UgSKQxRiBGl63XzF6fhL+fZXiLnmRi3MnT7zsUKOASq/5JzPn+ke9OIQvBSmKNwot8MUHELhxofpXPD3PJZtQDXvgl/JN/KVjvTF2cWl53AxeFZ8PzHOQ4fbBx3A9TybZ4gs2v9+wrEV/KBDiN/eLSSC1lbziPogIPZQN/8o2+zvUEI+rUL0gBex/BhyvxWKyCg7UGFNv84aI30lnLt9xzV+os4DVd+BPsHJsdmsw6L+kz3kf2HY0k2fczKUx7LaAm9ZnR4keKQ5eTImB9dklwrHyPbSBPRvvbJCPuh1NfRUimReeMZJn
- M588StTt
- UWmPcB6kDBUa0R1m3/ivctDzOtDGf7/q9SEo+gCa2JnOF4kOl8ShlW1Lf2ALPCHysW8SJGJhbBWuM2i8kl7bENC/PxwesQKvA2oKAbl9DY+74fpDI/nBeCrH+lkt8MM1Gf0PWD2APZK7HtsZy0TQEA26zvh/yUIE/EhQyLAlkoTj+VcO4JAwJhyPJhlc61ktXBcg0LxSfyHN2qBt6kFaCYBl7lTzN3mPfSW2HEAjeRSIDb3JSNGxFQueKwGs0xOH36Dnl5eMTxAQ57OqgPPPsFYU4E/IDt4chmOvJBIC7apHglGtrJ9DTktA6tLafcIFWA4VPAMPbNt68LPqyEwGxIPtTD3DPXkZXc/XxiTr5ViLbxgb4cNNzetOrEVr4RsAxOPcEhX2jj/RP7ajiL+qH/cYJqe9tdboyzZePIgNIKvuEhU9O8a1SX9aN0PtNclE4MvWfm6QLQys0+DSo0mhhd7SD2A==
+X-HE-Tag: 1780367891-330061
+X-HE-Meta: U2FsdGVkX1/Xkks5zpSBhM1XJSTdvrgcCzYeNpW+WB+jNf6DqEZ8bbX9RFo+yrubQpjIPmySoVDIR4lFUlL9JgXQ+QSiEwq7xBf3gNafP2o1r8cSUKkh1f6DES1KKBSnafRET7xIE1b5jIBz9mXOW9KAbQ5PEGwg8TbPt7CPfY+7y9GOYsqt4kpUrv6koooqv1PjdXNACrJljTzAYvajUy1eJA1xS2qSfbw0XCXw1oJa9TVWoqYk9SUo5OOKpJQ8XzXhtfYaXKcwjPH4sp0LFMh0WCqChW2Mcrwx36l/eYMYrn5oCzvOOHwh+64s7TJfSEELR/6cozPLwaYxb+shXNXvbYpQy1bCaIHVuKj/AT8dnM3eQaj90o0r85g8Y9wO3NggBxa9jnOejZDCq0p/MXt6NNcsEdL7n5pGcUZAA3VAtLPy2y/4JHge60I6P8N+7VQh/h6oWCzay7BGivlKik1ih7MSXYBi9TKKas1Ocs0eaI2hOOjq3biCz1Gf3ahIq7qcBYnPt/q2TUymn2CZre9PpjRU8QzJa5WwCLwfc/2sbF6doJFB7uqP7H/H3TVsIAOyFzNaEDXev4BvS6FGxNpJ0aKnbN2aXSJ89KjkMvJ06APuHgLdZuNMFPw/TqTpIUkL2TfffiJXjvz7Hi9l3++1kegYbq9YEi+gb4QO1Za+KQNPv2lL/NIpe+8ilzg7Acq1hhswqirdE6xhYp8CnVZ1d0sd9luiM20zAmMnnHgiTPE6xAsGX90hI4HzNCOxN+Bpx9YQZOHmsJfI9ZXUQvvHHo6U9uPWgTm2/efIYgnRj0gBzNjtZzwuzP5kAlhnKubzhDEmPTQw9AvKReWYEhhdZd8Beult6+Fvq68yIIgQZzShW4WyhacQbLmVGYzmHsNUIpG/mfRUOE8+ImOAziIWZ72NAucxz7JDySpaKQK3xY2iPjjPAqqPGdLlny2ucrOnPTQMX2ZlH5KCZYf
+ Pn0WJVsW
+ DKbL2HVg5XCOfRsmHF3Ki404fu4ku4NNJMR7s+L+pn8Zalnr9BlJL+SkdVp/UH6fCCmnFqm5PPTZozZK1aO7zvTR9MhJLwRu0aID9J5S0VNaK6O9YvlFgq1IuGmu677WvhH/QjmZduGphqAVSo/ToZxtOgVL+x6LmuA34045DYSkqBGxWsURCzMajreGTXz1vetuIVYzNcGcDwCXfq4sRyCkDMZXsUy3DCVrwNM6MPj6qkw0+i6Orb6P7qrMEYVVRosD/NYs6kP4vVSa64+0G5b3qQ3t3Xdg0Nn8Wd0ItWE5/RzpK9FxL0Mr73BfTIBFHWuRkum+oXjEYLD8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,32 +100,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000008a36c206533c1621
-Content-Type: text/plain; charset="UTF-8"
 
-> Thanks.   AI review asked a thing:
->
-https://sashiko.dev/#/patchset/20260527224848.1753560-1-chaithco@redhat.com
 
-Thank you! In double checking, I can confirm overallocation of surplus huge
-pages occur under specific circumstances as described. I am working on a
-second version to address this.
+> On Jun 2, 2026, at 00:15, Shakeel Butt <shakeel.butt@linux.dev> wrote:
+>=20
+> memcg_reparent_list_lrus() clears the dying memcg's xarray entry with
+> xas_store(&xas, NULL) before reparenting its per-node lists into the
+> parent. This opens a window where a concurrent list_lru_del() arriving
+> for the dying memcg sees xa_load() =3D=3D NULL, walks to the parent in
+> lock_list_lru_of_memcg(), takes the parent's per-node lock, and calls
+> list_del_init() on an item still physically linked on the dying
+> memcg's list.
+>=20
+> If another in-flight thread holds the dying memcg's per-node lock at
+> the same moment (another list_lru_del, or a list_lru_walk_one running
+> an isolate callback), both threads modify ->next/->prev pointers on =
+the
+> same physical list under different locks. Adjacent items can corrupt
+> each other's links.
+>=20
+> Fix it by reversing the order: reparent each per-node list and mark =
+the
+> child's list lru dead and then clear the xarray entry. Any concurrent
+> list_lru op that finds the still-set xarray entry either takes the =
+dying
+> memcg's per-node lock (synchronizing with the drain) or sees LONG_MIN
+> and walks to the parent, where the items now live.
+>=20
+> Fixes: fb56fdf8b9a2 ("mm/list_lru: split the lock to per-cgroup =
+scope")
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reported-by: Chris Mason <clm@fb.com>
+> Cc: stable@vger.kernel.org
+> ---
+> Changes since v1:
+> - Use xa_erase_irq() instead of xa_erase() (Sashiko & Claude).
+> - Added comment on CSS_DYING check in memcg_list_lru_alloc avoiding a =
+new mlru
+>  allocation.
+>=20
+> mm/list_lru.c | 21 ++++++++++++---------
+> 1 file changed, 12 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/mm/list_lru.c b/mm/list_lru.c
+> index dd29bcf8eb5f..d454bce9a78e 100644
+> --- a/mm/list_lru.c
+> +++ b/mm/list_lru.c
+> @@ -473,26 +473,29 @@ void memcg_reparent_list_lrus(struct mem_cgroup =
+*memcg, struct mem_cgroup *paren
+> 	mutex_lock(&list_lrus_mutex);
+> 	list_for_each_entry(lru, &memcg_list_lrus, list) {
+> 		struct list_lru_memcg *mlru;
+> - 		XA_STATE(xas, &lru->xa, memcg->kmemcg_id);
+>=20
+> 		/*
+> -		 * Lock the Xarray to ensure no on going list_lru_memcg
+> -		 * allocation and further allocation will see =
+css_is_dying().
+> +		 * css_is_dying() check in memcg_list_lru_alloc() avoids
+> +		 * allocating a new mlru since CSS_DYING is already set =
+for this
+> +		 * memcg a rcu grace period ago.
 
---0000000000008a36c206533c1621
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I see. xas_lock_irqsave() in memcg_list_lru_alloc() functions as an RCU =
+read lock.
 
-<div dir=3D"ltr"><div dir=3D"ltr">&gt; Thanks.=C2=A0 =C2=A0AI review asked =
-a thing:<br>&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<a href=3D"https://sashik=
-o.dev/#/patchset/20260527224848.1753560-1-chaithco@redhat.com" rel=3D"noref=
-errer" target=3D"_blank">https://sashiko.dev/#/patchset/20260527224848.1753=
-560-1-chaithco@redhat.com</a><div class=3D"gmail-yj6qo"></div><br class=3D"=
-gmail-Apple-interchange-newline"></div><div>Thank you! In double checking, =
-I can confirm=C2=A0overallocation of surplus huge pages occur under specifi=
-c circumstances as described. I am working on a second version to address t=
-his.</div><div dir=3D"ltr" class=3D"gmail_signature"><div dir=3D"ltr"><div =
-dir=3D"ltr"><div dir=3D"ltr"></div></div></div></div></div>
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
---0000000000008a36c206533c1621--
+Thanks.
+
+> 		 */
+> - 		xas_lock_irq(&xas);
+> - 		mlru =3D xas_store(&xas, NULL);
+> - 		xas_unlock_irq(&xas);
+> + 		mlru =3D xa_load(&lru->xa, memcg->kmemcg_id);
+> 		if (!mlru)
+> 			continue;
+>=20
+> 		/*
+> -		 * With Xarray value set to NULL, holding the lru lock =
+below
+> -		 * prevents list_lru_{add,del,isolate} from touching the =
+lru,
+> -		 * safe to reparent.
+> +		 * Reparent each per-node list and mark the child dead
+> +		 * (LONG_MIN) before clearing xarray entry otherwise a
+> +		 * concurrent list_lru_del() may corrupt the list if it =
+arrives
+> +		 * after xarray clear but before reparenting as
+> +		 * lock_list_lru_of_memcg will acquire parent's lock =
+while the
+> +		 * item is still on child's list.
+> */
+> 		for_each_node(i)
+> 			memcg_reparent_list_lru_one(lru, i, =
+&mlru->node[i], parent);
+>=20
+> + 		xa_erase_irq(&lru->xa, memcg->kmemcg_id);
+> +
+> 		/*
+> 		 * Here all list_lrus corresponding to the cgroup are =
+guaranteed
+> 		 * to remain empty, we can safely free this lru, any =
+further
+> --=20
+> 2.53.0-Meta
+>=20
 
 
