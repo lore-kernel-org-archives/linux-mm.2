@@ -4,93 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1D52CD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3F15CD5BD1
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:25:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4183E6B008A; Tue,  2 Jun 2026 13:23:11 -0400 (EDT)
+	id 3A5A46B0088; Tue,  2 Jun 2026 13:25:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C8716B008C; Tue,  2 Jun 2026 13:23:11 -0400 (EDT)
+	id 356A06B008A; Tue,  2 Jun 2026 13:25:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DF106B0092; Tue,  2 Jun 2026 13:23:11 -0400 (EDT)
+	id 245D66B008C; Tue,  2 Jun 2026 13:25:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D1836B008A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:23:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7590162F31
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:23:09 +0000 (UTC)
-X-FDA: 84835643298.09.DBC9EEA
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DC68C2000D
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:23:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p8IkT7wf;
-	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 13B936B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:25:01 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D32F41C2433
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:25:00 +0000 (UTC)
+X-FDA: 84835647960.18.5391A31
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 028E82000A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:24:58 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PyaWyU4I;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780420988;
+	s=arc-20220608; t=1780421099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LuoNOAKT3xp/Mcyg5zk9iG0boykaRa5ZJsdMV4nHiMc=;
-	b=ktRSJlvO/sfos0ucIeXCnN9fsWybWkHVQQ2+VHcNVgvhilpmVMCSE9K/3X/17K69zz6usc
-	w6dJS+E1NokkM22rqsCbeFN5xrNoquLSCCl51nVQVFbNWjXGRaJTVmkpaHjiFjakJjgcDU
-	xKM4aH6qHBIXiLygJCKL4aA8r84x/BI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dEFldrIlXTT6ZRJzVSAi41rNaq6Vrj9PVbajd9AHQbQ=;
+	b=xcKV8fE+Z9ecMANAbWKAgOuxKfWhQP2aO3/RFc2tufWKG4cUvVDKAv0njnKtu5MeC3IM+Q
+	EXV42nNFF1k6e+PfDoOVTAlmcqFUYGwcdovvRxF5kp1lNfz416vfDcGPrk5OXA3HZ/h55D
+	ec3O9cwcDMP3yhdn3+Kf8GYwgl1wdyo=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p8IkT7wf;
-	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PyaWyU4I;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780420988;
-	b=HXdNjqfcoC+R6U7OD//IbFAJb0sh9nuRiSrfX+mKPN9kj64AbttVU8nzGATfTAE4/+ZN7X
-	zDsHRRU730981lxKIuy8USGFicezqT7XGndixpSj5oLrSAV37JMHxP2YZvL4Mb0OaU7oGU
-	TsaTHo65xp2Uc0Oo2kk7sFWp1HL5oVg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780420985;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LuoNOAKT3xp/Mcyg5zk9iG0boykaRa5ZJsdMV4nHiMc=;
-	b=p8IkT7wf60XE8WKTbHBevmxzimClhYD6p5B4fw0QOtOGyK64bWuUPbRK4Eg6XWsVoqEG7I
-	n5lMoOdDR4S5f9+WFRdbAxZUNNcodgoTxJJTxa/VRi4KYaox81WY7o5bmEJQj3Y0pYDjgK
-	NhqNfISEye3bBLHg7kMXBBIQ0c6ffyc=
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	jannh@google.com,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	pfalcato@suse.de,
-	vbabka@kernel.org
-Cc: chrisl@kernel.org,
-	kasong@tencent.com,
-	baoquan.he@linux.dev,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	kas@kernel.org,
-	kernel-team@meta.com,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH] mm/mincore: handle non-swap entries before !CONFIG_SWAP guard
-Date: Tue,  2 Jun 2026 10:22:47 -0700
-Message-ID: <20260602172247.279421-1-usama.arif@linux.dev>
+	t=1780421099;
+	b=ECR8w6eOK3YnlVSTDOZXLbrMxP0JNIGYBr1pV940SybvURFJqT/p77CmiZnGdboJUvjnO5
+	CvLkNCJ+084RFm1IozzBnn0EmDym7ZI2pdVnNCfWPLvgTPbDAWoXUq0SRd2fMqxEbNfFzq
+	C+wEUaucx5zxmQq9W4Qie9/SYOoM3bM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 09B074067C;
+	Tue,  2 Jun 2026 17:24:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0541F1F00893;
+	Tue,  2 Jun 2026 17:24:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780421097;
+	bh=dEFldrIlXTT6ZRJzVSAi41rNaq6Vrj9PVbajd9AHQbQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PyaWyU4IqbC67RAPVUNDCpkfd2oo2P1fvm1v15J3wUQOYRXBo9Mc9AkCFM+y0pLbV
+	 n+GpUks0COdsZaDYGiizczPYcRvXNZmoo0JrB1GsmxNxtd7KLdVyBf1i8rt1CoQygv
+	 p2G7M/VGEKy5LdKhZCf3hZT4G3gM3ZRs3hj7nJ27Yif24FfnnTrug/X99auquwHM7E
+	 ya7KuN3x3GkhLgzllYSkaejstEnJPs8EQ+iP3Emq7Nu7JYAPIkCQijc++cmSiIdIy2
+	 IymBpJ22C8twxkjGWF1HKlmpLTVR7GEC3ZPiFX0KkSaNTsXYM59oiSJ6OtZGwmVBm8
+	 fHiZHtwGOdpVQ==
+Message-ID: <004bd67f-01c4-4723-b1e0-1723ce51ac93@kernel.org>
+Date: Tue, 2 Jun 2026 19:24:53 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next] bpf: Take mmap_lock in zap_pages()
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf <bpf@vger.kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Eduard <eddyz87@gmail.com>,
+ Tejun Heo <tj@kernel.org>, linux-mm <linux-mm@kvack.org>
+References: <20260528222014.38980-1-alexei.starovoitov@gmail.com>
+ <89920f87-3638-4182-aac8-23b06784be35@kernel.org>
+ <CAADnVQ+Pv+-Eb1qRrf3r=3WTZzip72ScwugX3iMSp0q1v+=-5A@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAADnVQ+Pv+-Eb1qRrf3r=3WTZzip72ScwugX3iMSp0q1v+=-5A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DC68C2000D
-X-Stat-Signature: ft67hiiykxrus3hd8x5wwmwgujetceq1
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780420987-197640
-X-HE-Meta: U2FsdGVkX1+B7Gr+AG4MGn0jU+9Lci541O7x1PYMFO1B0g4oKd22bRf89BE7Z3JdZhk7DbzQnHAYAhEn/5UIZitrskiEZAiw8+/cp4YIb2Z67wYlwr8u8JMxZiD37FCNZxP0raxxxF6INPI2bxXEkcY33gIypJq98sfULTu992CDNofuXrbybshJvB+lu2xpiEmP6qlQegrBjF9kuaoubZBe3oOzMtGqy/2blNOxIX3vRXvuoqet5a5l0Fb2W6X71tcLIZUfOeQWzzfDIpQTE9biDywv5QTOTyIOMjG9T+YJtAOR6PdyTz9YbqeLREXJ/EGszviACNHfLmx4DbVfdMuhwvCrJMRnNe5DrS8TCu5I8mH4wOpfq0iSTlD0hkKnP02LHrqlTDnaijo8uy7uDm0ci27sL5okTeewHr7iA9CcYNAedh4Jzn+0++5jco2ND05LFjyV1kpuYAK1UURRIDR2gz/c4tvcqu5YsxfDjf8XKgrxfH/vkjY62HrapAtZbgcFWQBj7Yniab0qw6Kv3KZ7XHw7UwnTJMWg6AA5DD0fsDQvHo8eYuS19K6IP1EQlJSH2ydK3V4iRkhU2JNm9l/v5NvObYiufworR8jK9sdtgS0y8f6bawPn26eKINKSU2HtuRMDVXxwo81Ff6Bub/+LgMysa7Rem5Grw+uLhebJW8GXwR1psjJY/f4LC4EcQYJi3a5Kf4i+VSISf00WkUmTNBsA/hhHBk2rNVLSfcfUpIbQqalsGIRIpXtNUvGKtkvJ62CuSH/HrgCiSQYUC/PCXFUZrX5q5yI++O519qdS+uK2NCGu/+oq4kcTAcbozLOpguzWc1hnUsCpSIj1GYqdT8wzphgF0lGPQZnLCakm1+D17CD4p5kFpwzlRUlOzGfiXvktl0OGbpGqt8fncbVpprH44DUxSdkkpPktklOSlz4cwOcApB1/AWA6+EZ0XUpCR2bZfVnk28qC/8q
- 3b7Syh2K
- 8PUZ8oL1o5k2k9wJSeG3t7pMfivrNvfjdWiPI8fAt1FwINNS9Ne28nb6Kgm1zO/VWfiTUOoArUrgzRNwNV6eFUGjlxo53p8tqstlFaLnyMi8z3uyn2pkmBpDB9io3GFYE0CII4eXnGuD/TGxFPYq5uS8cbusg1BSuWTUqYVkrZAvwM4HuA0xQyCCf2fKiErZ11m9d/l2HX7790XmophGyCh8AnIcVswkgxU26Y2Paxm4Nrlaaa/v3zz/5B4jFDi5qdkDKW3TEI7JBPx5vKBsvHhwbB8jF4LiCywP//nl5GRyyUWMRKP1/YH8FDg==
+X-Stat-Signature: 4yi4zjhdrq5xxb16cbbcgsg3cpxn3cyf
+X-Rspamd-Queue-Id: 028E82000A
+X-HE-Tag: 1780421098-368515
+X-HE-Meta: U2FsdGVkX18Q7OpibI+299+Z8KrvuCxptDdd8QNXGnAl2VaRCRwslzxitZv88wRGI+iPtBk5EewgHUFRLn5ldys5zISWqqKFdpsknCE474ub9YzUePW8M2CEnLUdPvhrPcSNruSNPoqNAtg/zCXu5Rv9LSp9lDKczTRS3FcorInIxXUq1jDwiUdtnK/O+SIZcBuzmisEQ4mmc5udf2XJermAEH+R4u76S69KHw7S9VwEyDZ0ouYbJnIyvQZoJ86ZOCenreQdfhi647y8dw8zsq0fB8F5VMP9TTbWz0hSSqGUYOJj/qXP+khT2eGBftRubAp8iO1CvHSKXRz9ttbynjJ6FmKfJQw1gh2fgvHBuyCVVnI8MSl5qDSahRlDeSfHqXI0S6JLVH0MaGP2RjS76amvKFVGLe3xhPQj/di2HEd7hAPPJUxPLi30N6cRRmsYsoYrIrzXSY3UXzvaXZFOG+z+ZOBlKHocWXB34IyzWQSfg/IQKiD3zd6yjMVIacY7bF5c4VTuRymCS1F4sIuwRwpXGn+07FsKkuULNseacmYaOXk8R8QgvdGBq/P2Qs5mINkSUZ1/CmXDqB4/mnTdKUvfKFIko0Kf/6AoBEcwshtUijg8I5yLpvS1Sf9j2Cj+tO4ZbWy/EcDe8ddJ3ZCYWsNjnzo6Q/q0SqgRLpYJKfglwNfUYKU5sR679GTeSHF6kbMXbsUNj1rjeaS0EprG7nBqSCkTLQqwh6VntolVay9aPxDGR/eH0P7tNv9em0eD5qxlno+8gHW5JFJzgMYtGS4okR8Z/4sReEe3j8X1wmWTlHCBJMIMVjf6T/o9KO/+5aaI+zhr5EuYHpXi49nuo8NZMZoMDLAa0TUpyZU/IktEh9+JUJkzMABQ8/TT+C3r0LwV05HeIY8t03dYkmCp7cji1YA2uijYMwAxcBtomIVqNUZkajD0nHWdEsp+EPu6GMqxFKFA0cMyCbOFpAa
+ vJ8ERv6U
+ s6zhq92QE9MEEbHbxwx5+T1ytdX/Ky5xmg55AEtmxwPOSOOxrggSu3As8BDDk9luDPwSHPskGtFoOQiSiobrkLiokxTTbVOwTy+zFwqmRl2Y0QrkxesTv+xGVViGxOos//Oth5g8AYrXicD47yGpJiFGm5Yq+k4k59TB04rU6U9mwncCEeciXNjbiF4IbWnHAAhbGalo5ZfspVYfD34rEPI18c5r8iaugJxkbT3zl6eUReZOHFa+kA5SZCFtukanB78ubYEWi4EPUYBjyn87Z3ZRG7yS1fH4dvvtdiVEm/d4K+PgZ4mjYXQ/dG24drn0ZwhgYoze2hk+J5NAEgBfcYJZOh+7RJXFllupyiamIK9PVbzfcxTehVGdIrvlEZmjhaAWc7ZCqK3JywMt5pWp/BpHYwjdGRfE9X0jgqR6FG2vFPr0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,55 +141,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mincore_swap() also fields migration/hwpoison entries (and shmem
-swapin-error entries), which can exist on !CONFIG_SWAP builds when
-CONFIG_MIGRATION or CONFIG_MEMORY_FAILURE is enabled.  The
-!IS_ENABLED(CONFIG_SWAP) guard ran before the non-swap-entry early
-return, so mincore_pte_range() can spuriously WARN and report these
-pages nonresident on !CONFIG_SWAP kernels.
+On 6/2/26 19:17, Alexei Starovoitov wrote:
+> On Mon, Jun 1, 2026 at 8:37 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>>
+>>>
+>>> -     guard(mutex)(&arena->lock);
+>>> -     /* iterate link list under lock */
+>>> -     list_for_each_entry(vml, &arena->vma_list, head)
+>>> -             zap_vma_range(vml->vma, uaddr, PAGE_SIZE * page_cnt);
+>>> +     /*
+>>> +      * Taking mmap_read_lock() under arena->lock would deadlock against
+>>> +      * arena_vm_close(), which runs with mmap_write_lock held and then
+>>> +      * acquires arena->lock. Drop arena->lock for mmap_read_lock().
+>>> +      *
+>>> +      * Use per-call my_gen, recorded in vml->zap_gen, to remember which
+>>> +      * vmls this invocation has already processed across the lock drop.
+>>> +      * Hold zap_mutex around the whole walk so concurrent zap_pages()
+>>> +      * callers cannot overwrite each other's marks on shared vmls --
+>>> +      * otherwise call B's mark would make call A skip a vml that A has
+>>> +      * not yet zapped for A's uaddr range.
+>>> +      */
+>>> +     mutex_lock(&arena->zap_mutex);
+>>> +     mutex_lock(&arena->lock);
+>>> +     my_gen = ++arena->zap_gen;
+>>
+>> I was confused by that as well, good that we can get rid of it.
+> 
+> get rid of it? As I explained to Emil, zap_gen is needed.
 
-Move the guard below the non-swap-entry check so only true swap
-entries trip the WARN, and migration/hwpoison entries take the
-existing "uptodate / non-shmem" path.
+Oh, I misunderstood your reply.
 
-Fixes: 1f2052755c15 ("mm/mincore: use a helper for checking the swap cache")
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
----
-This was discovered when working on PMD swap entry series
-(https://lore.kernel.org/all/20260602142537.198755-1-usama.arif@linux.dev/)
----
- mm/mincore.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+>>> +     for (;;) {
+>>> +             mm = NULL;
+>>> +             list_for_each_entry(vml, &arena->vma_list, head) {
+>>> +                     if (vml->zap_gen >= my_gen)
+>>> +                             continue;
+>>> +                     vml->zap_gen = my_gen;
+>>> +                     if (!mmget_not_zero(vml->vma->vm_mm))
+>>> +                             continue;
+>>
+>> Given that we still have a VMA with a valid MM pointer, I'd assume an
+>> unconditional mmget() should just be alright here.
+>>
+>> Or am I missing something?
+> 
+> exit_mmap() -> vma_close() -> arena_vm_close() will remove vml
+> after dropping mm_users to zero.
+> But parallel zap_pages could have accessed valid vma and mm pointers
+> from vml list, but vma->vm_mm->mm_users could be zero.
 
-diff --git a/mm/mincore.c b/mm/mincore.c
-index e5d13eea9234..296f2e3922b5 100644
---- a/mm/mincore.c
-+++ b/mm/mincore.c
-@@ -64,11 +64,6 @@ static unsigned char mincore_swap(swp_entry_t entry, bool shmem)
- 	struct folio *folio = NULL;
- 	unsigned char present = 0;
- 
--	if (!IS_ENABLED(CONFIG_SWAP)) {
--		WARN_ON(1);
--		return 0;
--	}
--
- 	/*
- 	 * Shmem mapping may contain swapin error entries, which are
- 	 * absent. Page table may contain migration or hwpoison
-@@ -77,6 +72,11 @@ static unsigned char mincore_swap(swp_entry_t entry, bool shmem)
- 	if (!softleaf_is_swap(entry))
- 		return !shmem;
- 
-+	if (!IS_ENABLED(CONFIG_SWAP)) {
-+		WARN_ON(1);
-+		return 0;
-+	}
-+
- 	/*
- 	 * Shmem mapping lookup is lockless, so we need to grab the swap
- 	 * device. mincore page table walk locks the PTL, and the swap
+Ah yes, the usual mmget vs. mmgrab confusion on my side.
+
+Make sense then, thanks!
+
 -- 
-2.52.0
+Cheers,
 
+David
 
