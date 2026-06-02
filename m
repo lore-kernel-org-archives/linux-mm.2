@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B005CCD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:07:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ACB7CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:07:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBF746B03AC; Tue,  2 Jun 2026 06:07:22 -0400 (EDT)
+	id A11F36B03AE; Tue,  2 Jun 2026 06:07:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B969F6B03AE; Tue,  2 Jun 2026 06:07:22 -0400 (EDT)
+	id 9E8DE6B03B1; Tue,  2 Jun 2026 06:07:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD3B36B03B0; Tue,  2 Jun 2026 06:07:22 -0400 (EDT)
+	id 926256B03B3; Tue,  2 Jun 2026 06:07:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E52C6B03AC
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:07:22 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 02B0C1A082D
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:07:21 +0000 (UTC)
-X-FDA: 84834545124.06.B75F16A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6635780017
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:07:20 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CIyTRGcy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8343B6B03AE
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:07:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2709D918E3
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:07:35 +0000 (UTC)
+X-FDA: 84834545670.20.0BAF8BE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8C96E18000B
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:07:33 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kv2fE0bp;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780394840;
+	s=arc-20220608; t=1780394853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LvrEZ1Qm2WHazRtzBNjRpgbPwHmCJyBaEkTLJd2RyNk=;
-	b=WwXQGUhM0rIO5m7wZXG7toLVPZCMc8EATsaAby+I08Rbyi37rokWgHhU7FtIir8kNi7q4/
-	dXuapm9ny2yAq/YU9NPa8trZJn2aK840yBQ5g+QlWUtb4BtDS3sWlXhnBec/GONhYeoh3q
-	R/K23ZYijJ5WcRW017g8gKgNFCzR2pc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CIyTRGcy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=FArUgwzqGxSIYq6nsRbDRcCSW+jo1FsCY7Blcc7Vo5I=;
+	b=lN6BBWM1YwtAX8h/QvrEIAuM4yXVYcRMa8vnXUYK2S/M3+S4N44MSV2arUne0B2julLAEL
+	91kBPbzHmcAsfv8ISLa1l9pnJRJqWfz+3prUaChtlm79/ocNNFwNK7qjGmxVAnajxSelfg
+	yWS/30QKHM+3aySjBruO2c8UG17SYA4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780394840;
-	b=2PKJCazsT3zwIvJx6u/RD4NFDLiv7NoHzlZfgZoy9NFBtanvTVZy+5gHiIABRgMH8SDX/7
-	tgat4DVBko3tpFBKwerIbeGGq3WdWqIZ9Om1jHy5JYgG6Kz/k5n/eexYUZVQcT5XhhUPqJ
-	ZihoXEj88CG+GA/9R/sN/zckmNxjg+A=
+	t=1780394853;
+	b=phbSd+jhWsT6Y5KhB85o/dzC8Wxk2uHulWdSEFcLYAlRRIA8O5PZaOeDh5aPlJXNPV2xY+
+	+aps66Ki1G/gAoy4wl1mqsjdu0ir98txb86FrRKaScULdUJYQTCgXwWatuTSEFPRrLmrUV
+	rFIh05zRqF9RXACWDrjlyytFik9nqxk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kv2fE0bp;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 82F1E4082E;
-	Tue,  2 Jun 2026 10:07:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9D61F00893;
-	Tue,  2 Jun 2026 10:07:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1227160126;
+	Tue,  2 Jun 2026 10:07:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B312A1F00893;
+	Tue,  2 Jun 2026 10:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780394839;
-	bh=LvrEZ1Qm2WHazRtzBNjRpgbPwHmCJyBaEkTLJd2RyNk=;
+	s=k20260515; t=1780394852;
+	bh=FArUgwzqGxSIYq6nsRbDRcCSW+jo1FsCY7Blcc7Vo5I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CIyTRGcyakzpJQ8a1U1Cwq8KCq/OgooEP9IRvPAnkF40u4bL9OK3S8KuxPkJc1no1
-	 A7IEdSBBTak6WEjQTFOYo6q6N0v7ySUSbCu/3WK/7+ur4BaJRbkT2+yPgrfdU6vhCL
-	 sUrbrmikRM/sbhk/mKVpEA3SZHSLov4e6urc/cjBB5G2tTzhAir6LxKRpOTVMerqk/
-	 LQMDf5HQkFBCRbCj6L1rcYKTm4rWXbQBzzpkNYL25u3ZIfC5BTYwqPk8M4Htux3q4f
-	 +UtbG3xuJiTYNsIdmSM0urePQhSgNR07EzTK2/0sw14vGJ8wVsjkQsYj1KD2lGsC1V
-	 Q566RBjJ35s9A==
-Date: Tue, 2 Jun 2026 11:07:13 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 3/3] mm/vma: eliminate mmap_action->error_hook,
- introduce error_filter
-Message-ID: <ah6qt-JQaSPwGTfi@lucifer>
-References: <cover.1779462249.git.ljs@kernel.org>
- <e770b28427937057fa953ac380a134b24acd8bb4.1779462249.git.ljs@kernel.org>
- <88aa89e7-aa7e-4abf-babb-a2855bcb3fee@kernel.org>
- <ah2oasz6oz4TgEiD@lucifer>
- <192ad271-13f0-4e8d-b5c2-feb65392bc6b@kernel.org>
+	b=Kv2fE0bpyQXoK2UWojz99uTNM13VMJzQY8pttiWpI5b8+40hTJICG1z6mCK4HxzOt
+	 WGAj2y5SJlJoIl+N9iHLKqVRWu9OrrHnx+/tz3FlIfzs7MJKFsAGpGxzFWxuyG8cBM
+	 WrYnPscz8yfDI3CjGm3n7wUsfcglUz6lNDXUt3emdSCW12sVz1MKY0/BHu5mWG7lyI
+	 dN+nfzkHl4QQvZFfAGkcO2JVbFceEzmni/FhHhQ1tddV0QOElD5gWZUecDoh8qPAX+
+	 6wu9anSgJc0s666UALU4wXlDajOMwgfjPzHsI45oaFeSPwD+x8KBz2GcGUJ7aJGPII
+	 gOS5yhOmWv2XA==
+Date: Tue, 2 Jun 2026 13:07:24 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
+	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
+	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
+	usama.arif@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v6 04/15] userfaultfd: test uffd VMA flags through the
+ vma_flags_t API
+Message-ID: <ah6rXJEYUsGfzPgi@kernel.org>
+References: <20260529172716.357179-1-kas@kernel.org>
+ <20260529172716.357179-5-kas@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <192ad271-13f0-4e8d-b5c2-feb65392bc6b@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6635780017
-X-Stat-Signature: memsnkptgt4kcwqe1fda75t58meqfy7f
+In-Reply-To: <20260529172716.357179-5-kas@kernel.org>
+X-Rspamd-Queue-Id: 8C96E18000B
 X-Rspam-User: 
-X-HE-Tag: 1780394840-516311
-X-HE-Meta: U2FsdGVkX1+89dlL+wx6pCjPXtBqNyI1YzW6Nt55GU0Wu/z14gVeytHxLpepCY5FPevLJBS0q78/1PW+YSZcRtreyWD94MVZR2rxWUpzCVb6L2beJ5aW60mYtaKBTaqZCHnzmq2QB7npsZETwsAElGdkat2Rv2KWuRquZbKH9PFmmCj46dTSUCNs84UdNZR47FK5nguAPp4Zft0GXwpgHspGTcV7DNt8C08DHnh3GXrrnXW4ugqW6UEoR8PiQXJ2ojU5xcVhbxrUotjpWKuizJnI658NMskkCz96QT0ZpCRsIYYB3ZVPnsDBfuqZtYPcxVfa8FhrkuzbOb+w1NEg4KEpLMKRE7AfL9hezd1TCUdkvynMgmIBgfYEX2PJwqML23RJ1aNvqFxwsFO5XzSOR6cfeZItbW6YosXCUJHvbiWxJo+peOa1hhbV7XB+1S7uokwaFHjWJel0Sp3JIQxxPcCwIn5kCNyIohTBpQMB/amkr/zTyH3+dWVn4znAViAQ1mMAp4s/74jsJzasl6oMjj8NJQeXmyzv8w4pHAvuFL4ToT3JDysaIDGULU4QMqSsQ21us68OjXJUdzPJ48jdBq/8X2+2bvJ+qK8FuLn1rj38RNO6O+RC63grWJFOf/RPFKElIKtQdyu1Y0Qv3gH8AgKDQx2JOVaXujvGXlf7MNHTxTvePsKfFAJ3bN791qpejT+fJwIA0mloBEKoNmmVpT2d75oBTI230IQHIXJSNpIrmLq2WhEJrJCL/0MPuW3ZxB/3I2wqZawoGhZGP5XPeVzFbDKMMOpfovLqfgHNRRHdojaz4BOasRnq58NhqSFuA2xh8PbJkx82Sl3Dd9d2a5TgZYXStJXURbcfCjtWPfgmajIfsY+V7u8QtrhwC/Mzi11QY6VfEf2L023JBNV6ZZXX+1cEAUj1UcKA7wH78xqlzL1U4woNf4ldHKjO8ww217ktl4luxzG4hcT09p5
- hnfQXQBD
- 3D/+jPmm16qAVeNgZ7SJJBQ9Tt/rwSWGu2JTaAMmj1vRw+r5gXQNWJDW4KKxpSBD7/4+JDQ5cOx/yfsZbrVOgIsPXnyg6fzCO8uGLiZ3meO+pii+aig/Rqd0abng7dZlTZByG0uuC+gJ3MV2Cec3zaNZc15++G++uS8KQKQrO6Ro1JF0vaOr2Hq2hvrS2iSpvxJTch+xZEpUYaV0GQEzz4pBSOksoCYZy8xDwNpdtdhpwk25qMgFK/aYRH54IMFzEhqaf/hbCo4Fm2BYnIiu6f2stSGT7GsimcxDVWnGOkt34FUg=
+X-Stat-Signature: hfywqjsy8ichirsqf3pf6wa4ue7t715b
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780394853-577911
+X-HE-Meta: U2FsdGVkX1/4egH5fOGt0EX3jusQYrwPyqWXOH8YLtJw87qp+8DvlJGuiFI19cordLGsWYrO9qD2dM4Fb+NSOe6XJEOY5DPNSDaSW/wwOR+XKHa3M7YQr/QIqWn4eXTktmGoK9AViicbVfSm1g0FaMI4uuEo7VuSXnt/6Ys0fe4jskm6mVWxzuowCeM2Nnh/2alvOCVW4At6DiFGzVKeE+UnqQ+KRP2n5U/61toruFhF7dMXl85okbAsU3d3NBFVvM5SXtDT6+3b2wHFzEYWFClr70Nb8PUgiVIdVoo/xxMy2G06qyD16yS+7UCX3nmtXIqrtUgDDG6diVeLXQskNflVumi7bbGGf9IT25agiFvDlM2KvyPZYZAwfofz6ycmHzy+o2AzmUVl1a1GTMgPP+LX1O+hCizdkDCnuldEAVVCud95fiaQTUAn6LoLVT0zy0+bgiY6lQTs7Cpe7rq3niA9STWpfHGSv0WivxSEVA3f5ikuw3xyN1LvkCEuC+FQd8Cl/Tf+Ygd5uPLKRiD4ShUJIRzLt8QOUeqRZ4x8ICRMetapLLF9AwHYvaNB1bqjfQJ1CwyPxINKBfv7GYb8bpmICRcl7Hr0XWiYEK8X5Flz31DSLjbpaJxNHKoO7VmmHqsHqtU0vJXGjRwF2C6cQtU2tlnSplmApKoBdg24TnaNAGooYCZwl9zLF04FgJzS9Q1D9WbMo0a9txUZuCZ8rP4aQHQTc1w98kYzTvrj0F/OYXqoRi7WQhljd11CuRuQ/xoFxFHFDmuat3nVz+xrLygnzqwmXrkXJQGJ8EhvPJuSU+iRUhR8c/ANf6fG4B52A/PAsqXhMjxej6eJYB40OGFZUQj7q1iQj5gi8p6JGQjcqocL4rmbvQC1ZafNquZIwRVVoAsAtAHCgR8VFM6oWj72QjVEcqsziQdeFEylpJNZiMMYnGh29wnHKTqX7sJDnWE1sacKmj+3b5JeNML
+ fEM/EDnE
+ I/dqNethZYmlsH7SP1ppxJ3UJVpvryCtWhWV6QWewpS/w8yo/Da3yRgoMTGmrx84jlNMs/XszxuPoH3Iu/8Cdc/NxB9rku8q9ET2tmPj01YfTWFScRNGsgoT9OaRs87ChsEYbCiagyFApPc2aHLtJoFnFyINT5DNGpXH6TJIjg7AAe5mKF80xoL3NWAe7+xjLhX6NW9aDO3dgCybRE59dCc3erUK6MTD+HZlxiBf2YTSxUVjbRHYg1hOL0znPyULO4JtiwM52P3CDqkzyGGu5B5EuFzTSu72yNU5E9pUH/yMeSQAZ54wfAFjUBpNA9g42rDfM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,45 +99,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 11:16:03AM +0200, David Hildenbrand (Arm) wrote:
->
-> >>>  	/*
-> >>> -	 * If specified, this hook is invoked when an error occurred when
-> >>> -	 * attempting the selected action.
-> >>> -	 *
-> >>> -	 * The hook can return an error code in order to filter the error, but
-> >>> -	 * it is not valid to clear the error here.
-> >>> +	 * If non-zero, filter errors that arise from mmap actions such that we
-> >>> +	 * return error_filter instead. Only valid error codes may be specified.
-> >>
-> >> Is that really a filter or rather an "error conversion" / "error override".
-> >>
-> >> "Filter" to my German brain implies that we would ... filter selected error
-> >> codes, not convert them to something else?
-> >
-> > I thik it's what people tend to call this, it's what I've seen it called anyway!
->
-> You mean for this monstrosity or for a mechanism that translates one value to
-> another one?
+On Fri, May 29, 2026 at 06:26:33PM +0100, Kiryl Shutsemau (Meta) wrote:
+> The uffd VMA-flag helpers read vma->vm_flags directly. Now that
+> config-gated per-mode masks exist, switch them to the vma_flags_t
+> accessor vma_test_any_mask(), which is the going-forward API and keeps a
+> single place (the VMA_UFFD_* masks) that knows which modes are available
+> on the current build.
+> 
+> No functional change: vma_flags_t is in union with vm_flags, so the same
+> bits are read, and the masks fold to the same code the open-coded
+> vm_flags tests produced -- verified identical on gcc and clang, 32- and
+> 64-bit.
+> 
+> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-8
 
-In general, but a quick search on lore suggests this might not be as common as I
-thought.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
->
-> > I mean your German brain is being logical :) but by convention going with this
-> > terminology.
->
-> Sorry, but which convention?
+> ---
+>  include/linux/userfaultfd_k.h | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index 658740df2978..c4f2cc6dfcf0 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -178,7 +178,8 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+>   */
+>  static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
+> +	return vma_test_any_mask(vma,
+> +		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
+>  }
+>  
+>  /*
+> @@ -190,22 +191,23 @@ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+>   */
+>  static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
+> +	return vma_test_any_mask(vma,
+> +		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
+>  }
+>  
+>  static inline bool userfaultfd_missing(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & VM_UFFD_MISSING;
+> +	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
+>  }
+>  
+>  static inline bool userfaultfd_wp(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & VM_UFFD_WP;
+> +	return vma_test_any_mask(vma, VMA_UFFD_WP);
+>  }
+>  
+>  static inline bool userfaultfd_minor(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & VM_UFFD_MINOR;
+> +	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
+>  }
+>  
+>  static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
+> @@ -222,7 +224,7 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+>  
+>  static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & __VM_UFFD_FLAGS;
+> +	return vma_test_any_mask(vma, __VMA_UFFD_FLAGS);
+>  }
+>  
+>  static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
+> -- 
+> 2.54.0
+> 
 
-Of calling this error 'filtering'.
-
-I'll send a quick respin and rename this to error_override then!
-
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
