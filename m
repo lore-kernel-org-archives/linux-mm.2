@@ -4,188 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77890CD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:33:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E5F3CD6E64
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 12:40:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B91B6B03B6; Tue,  2 Jun 2026 08:33:49 -0400 (EDT)
+	id 971E66B03AC; Tue,  2 Jun 2026 08:40:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 743126B03B8; Tue,  2 Jun 2026 08:33:49 -0400 (EDT)
+	id 948BA6B03B0; Tue,  2 Jun 2026 08:40:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E4216B03BA; Tue,  2 Jun 2026 08:33:49 -0400 (EDT)
+	id 85EAD6B03B1; Tue,  2 Jun 2026 08:40:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A45B6B03B6
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:33:49 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C6815408CE
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:33:48 +0000 (UTC)
-X-FDA: 84834914136.28.4A1EB4A
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D7217A0006
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:33:46 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=cyoGsgYy;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 75E1D6B03AC
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:40:16 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 220DC162DE0
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:40:16 +0000 (UTC)
+X-FDA: 84834930432.10.CB771F4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 49230A001B
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 12:40:14 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMrohNNf;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780403626;
+	s=arc-20220608; t=1780404014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3fuMy8ZTlB4sZmM4SRNfS45Rtpr0e2y/Uhs3uZMD108=;
-	b=eXgNzr2MOkfHcDSIGr4SiAjmt8mWvvwSb9yeSaAlX1YA2Fv7jPjcouRVX9T1iamKh31KD4
-	iVSE12NlVaphkb1sk9Zd6yMOLCC5ZaTPeXXYQ7cBW8TxTWOfHAa3jUMZangl2VbWXyz72q
-	4ebcJTKZ+qnntDMyL3Y88AHXqIl1894=
+	bh=rw5GGfqEX7JYH8yleWjvLQ7agemetRZbHn8SYrCvt2w=;
+	b=iv/pwqhvU0Ke5wDgtM+J/DK9tv+JkyaK9MxUGD6r0B4au8cS6ph9W0owVE4HqKYJOw4ooT
+	TQRO6mijRO9h215rZrT1JqtvN7hjut3TU4o8yZzLi/H/oTimwvReUqaNf95USrmlQXcwnv
+	E/Cuc5OGxpzoifQvCbo9/WTx3iUXCeo=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=cyoGsgYy;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMrohNNf;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780403627;
-	b=6yFiNCQXuRQzRlr21ze+3YSFKcE1rn1hBv1aURh5QMSSiUKoV2JLfPT17POF7hslAdPsPg
-	BbTAd0ut0DovySIFfjh0tmw8nEt49I/+OVgNDXW+I+ze3L/uT0DM12F2QsmM4BWwWNC/cB
-	yev3/zf20GZZaXRs5FYTmbsZlK1dimI=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5175b6c4e19so15977501cf.0
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 05:33:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780403626; x=1781008426; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3fuMy8ZTlB4sZmM4SRNfS45Rtpr0e2y/Uhs3uZMD108=;
-        b=cyoGsgYy2cPt70F3ydq+UshFeH8hNSubZMt1gLbUKFTF0o54td8n5ECxfj5vH21oHF
-         GMqGZW2GM6nRn2eHEezYj4SSIPG6mDhPbxNB+i7k+fouGGzCWafwFpgexbfEnqhsKbWL
-         l+UHZbSz37oXkDaqQDPDLFUTalcHT+2T6Rd0Jtu/lAoWItDgBT8nBxhziPzKteY2YEhS
-         5utzVoqX0wQpSuo8AwZ/8z1mMRS9NUzvQsxZGC0sh+KtdgVcCmt2QGgmGu1QEZXPBQVZ
-         1lNhlCnwTk02GHKYahmrkwRjvJUk+GK7VrSX22dW0+1mHjVHRyUCv9Tzj/UdYWlf7OyB
-         BRfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780403626; x=1781008426;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3fuMy8ZTlB4sZmM4SRNfS45Rtpr0e2y/Uhs3uZMD108=;
-        b=b6ZNohgrCd+QYJxKKDvQJEAOrGNO9OlgrOFSvAUFSInfUkPM/8pIaARgePkFOgCbTd
-         Ugp4PsHUPLBozwACJfOQRY/thkVq3zu4wq2Bez673pQgxfcMhlNNsyyR837YVzCAsZfj
-         cFtfYiuwV1v7f/wA0CCAhi3TR5+bOnJnpLoPMV/FdtJ/Kps4sFHu8RcxVMymXw5G0BD/
-         oKFCaZ7G9FTlEqOijZQYysWkqYwWMHoJ3bzH0BVZPaoG1Tek+05vhF0ery2YuM35X+tf
-         0aPguc51gbfSQLNbowolf/jxaWnhDNPMZjemK42Tx9i/4yX5245ovR7Goynq2yrfYKnQ
-         T2SQ==
-X-Forwarded-Encrypted: i=1; AFNElJ92HRAJXCwiLrNCRv6jbezb5GrcG8QBoVTeCJwo0w0uz7DZ+lZFjW/b6Ob1nTmLrWAXTmS+1FvJxA==@kvack.org
-X-Gm-Message-State: AOJu0Yza+giBI9CCYFthrLVgcRM3HyUx8LaQFnlN1M6f97ltPawDYbHx
-	trLZKPhJPNIlwtOJv/h0PxYX35l2WJSr7HZFzHs8yHJZBpv0cSS3Mp8RJqkhBs7gv9Q=
-X-Gm-Gg: Acq92OHUbcT4UtWpaY4a/5z0aEDDd81pz0vSmrFh8RA5WL7wHSGmJM8HAAl5I5x6wqu
-	wiqTOHVR843DZMVVSN1v3+Yvs/xGEjyy3RWxZHriq0B8TSQBvmSNyQHQWjxg/fwktFZAlvQtCJL
-	THS3S4WrEX9pC1inG8THkLHAgzdq8N3VXdt65ImbmoTHLuLn4Yq6hl1rqRtSBHULwsaTrLgn/+s
-	FF3OgCXyKxQxLpiVjAhTkMYWLg1xcadPiVllyJggh1tZcKFCxC0RqGtu8HUou4jHm9zjyRgqLaD
-	B3kNHdF/XotecAPy0jEbDOj6LzbILmMtfXLQ1NFAAkHbIX3Oh8vZH7C55R7CHF6d6NufmrJmM0g
-	HDE1p34py/F/1jM3nfrBPyOq96XqLvUcuL+aguurXU1jepkPjxqCiDl0t9awhWskphWtYp5x4b/
-	kjy8nULsmrkKClKn4PkFlO8kHTUnM6TtQ+IW/3NS0OLRjc8m8n6CixAsCt2phr7TMM5sjGdDsYF
-	wk6CzKjlCKQh2W+
-X-Received: by 2002:a05:622a:190a:b0:509:2527:d789 with SMTP id d75a77b69052e-5173a5c05ecmr228232631cf.6.1780403625864;
-        Tue, 02 Jun 2026 05:33:45 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51741d6a240sm78686221cf.18.2026.06.02.05.33.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 05:33:45 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wUOJU-00000003m5x-3DKO;
-	Tue, 02 Jun 2026 09:33:44 -0300
-Date: Tue, 2 Jun 2026 09:33:44 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>, stable@vger.kernel.org,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>,
-	Gabriel Somlo <somlo@cmu.edu>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-	linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net, qemu-devel@nongnu.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 01/11] params: bound array element output to the caller's
- page buffer
-Message-ID: <20260602123344.GG2487554@ziepe.ca>
-References: <20260521133315.work.845-kees@kernel.org>
- <20260521133326.2465264-1-kees@kernel.org>
- <ah699hwLxIIOZ0-7@ashevche-desk.local>
+	t=1780404014;
+	b=uRDbXGi9hZI8TTdBe2u3JI5cg7Uue1AmIabHtbr8CbYxdAWMUo8ZToSApAFyrnahiUN/bh
+	le/5QFiakcX81+hddO1VBJsP6164FP3Ym+slxUlCPjxCmQFGaGmVzFOqeNsa7VOhlWBMqd
+	LE/ILWOCPmu50rapw3b02bjVXtqz+Ww=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E49D40179;
+	Tue,  2 Jun 2026 12:40:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA011F00893;
+	Tue,  2 Jun 2026 12:40:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780404013;
+	bh=rw5GGfqEX7JYH8yleWjvLQ7agemetRZbHn8SYrCvt2w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DMrohNNfydVMhHardbyD8D5wPkMGFPrb4XsBqkoCXprVmKtN2f+xBYh2oWOjXvc1R
+	 QXg6ob5Wj2ZsD1fcVp2RbMq49B8kf3cZGbzHDAOHsVW6//8vKL0JGAnMj8JpFgl8un
+	 aIqCQCyBd9k70SSf2O7x5H7iP9e3IUGaLQkhL4dT+D5EjZoqZUWlOv4K8aR42odhu1
+	 WIs2d7/+fGCZ4HColqoYRR2nEw+gORmHuA5PXMQiKRbOqYv8k9N4fjHGdy09rUb9Wl
+	 NVNn2kSnzzzxiLHuV7nOimT8Aox3+tu7wTBYKkctyNEkRYYOTjgPsrr2LzDg3ikzrK
+	 Jk7XjrkjeSCGg==
+Date: Tue, 2 Jun 2026 13:40:07 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Nico Pache <npache@redhat.com>, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
+	vbabka@suse.cz, willy@infradead.org
+Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
+ khugepaged: add mTHP) collapse support
+Message-ID: <ah7GctQYf8EqZjIa@lucifer>
+References: <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
+ <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
+ <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org>
+ <ahVX1iq_-95vd0PN@lucifer>
+ <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
+ <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
+ <ah2ndruO3RQGtePP@lucifer>
+ <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org>
+ <ah2uDhs3a0bFcRNG@lucifer>
+ <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ah699hwLxIIOZ0-7@ashevche-desk.local>
-X-Rspamd-Server: rspam10
+In-Reply-To: <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
+X-Rspamd-Queue-Id: 49230A001B
+X-Stat-Signature: uystkoeu6wafmzoqowozbsfcxab3r38a
 X-Rspam-User: 
-X-Stat-Signature: 65tcwdfr7rtdh1xiwhqjhsj6fauqt65u
-X-Rspamd-Queue-Id: D7217A0006
-X-HE-Tag: 1780403626-176816
-X-HE-Meta: U2FsdGVkX18FFLyKgz8zq+oPp+sAOokjWXN8Qe0S6J4g9ce9zUKqz4Fvmc7eOhVl7dEv9aGAWPHL87MIl6i973Zi3/rX9XvcnCqDx2xAVjlWgMZE9F3KKN8DrFh1+eEekf3DXETGkPJ2RPVaE3YOa0ljAX/qJqh87XnbBreqp4AqGRt1wKHs/ybda+vbMg2G2E38BNAjd6TIU9d1WQXctspRml/5dP6mYqbX8vYfD2ViFC3E5ZCcuREt7tiHM+mcGyfj+EokrjSl4PvzPbpHqsbztLZtqzG2MygywC66RF1XmlcPQQ6MyrObm6CW/mwzoaBcBUajLoh3e4rGsZIV21JlWvVJGkZRrM6RxNv6nCNp+qmPmd+WTA+0xYgO7BACEqEcYzkWtEktbLaO/YCXTyWJX8dOvdFknOPE2u44ETA56MuLlrOti8r/3qWqb/6A7HBw9RRPgeJO78bQLfAtY3mIMwnukVmSKB/efUL6TPVld/Cqxvf13tMF/bZR7epcUlAW0MZMgz3N/ADX8pvbF0tTl+URa321C86h/jSM8kPBJOJfkv/ATxw6+NfXMecteFBLeWc5IPxeXJel+0/NqLHcvK8np+DLSiWYAGQhCOX+c612kSURmOszCDkeMGCRlzyIV/TqJj4FubVna4jmZRT578o18kVnuZ3Of+BsdaOlNLyHsvRnmJmt0u/rWK84Nhy9r1lAGIroyuvwT8GYpo5pug3EeqWoX59K1HWEhlRNGamvGKAM9GrJvKEK5ob0fzfS8ddFPMjTTb2Nk6nqCJIDlQJqiv4EtECjN3EFxocY0rL+eobjkrX6B6CIg6c8dFeQhINJSIYK6pfuzMSqpWz2NGjgfbvBk9VUQB+OdynmyF8qhQrCAiMcy1RX9MyZC6jn2ykIqxCJZkpEbCB/qAKG5lUP1dJBh8qHFosZw48S67HsYsgnf9qqebmZIWLHbNWZTiBqOnKOPqvvA2d
- BpwWYQ95
- yTmPLzmNyuiO0CrDmG9NnwHleW6qrjMs5brhgOUxiirYgK9pP8D9AJEFL6fpurno81HxwJ4B/c0llFmgLdpvfCMY2+A/bBZF4VhnAvuLvZnc847322CUkXoGcbmr4eSE5fo0WLmaM+fKn8vQeJoUHHfoVNtp/0muVQxkduYhAeSKO7yn/o/Pc/hasSQHo2JVld3OScQpJnHCgIXEiG2cSAVNhMuNLpdc7SNyREuAF2rGTYsCpGEFO9jA0Zj2v3v25C3yKmJMf9ZP/ZF0S1TAPCiz5dYU8YUE0u/muP2HQleon2k0fue8dLzbhow26GsjBmarS4SkyPHqAmML/v0n7WDkRXWRUkVwXA4kWZk/2vx3VJ5c=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780404014-474768
+X-HE-Meta: U2FsdGVkX1/vkuq0wuuVQwPvRRTl6KMkhe5CCQoDAdIDSyKkwaiP3LCsGwGXU4CnJJ7ucP0yQYHCmpoy4PAZvYFiK8F0PAG2lym5Lx44az9fZ7M75tyzB6uHIRmmvYuvVjFu3C7EBhz7YP4iwXdY00Zecvioj5JU+456VP3oN4e5b11TPV9lyDHDbbWvh/8mMW7HcxrQEBilXL6N/ixNd6f4SGSornMKoEewaNpA6qWp9C1RqNE3xBjts3rOsVZh9/aWg835wAEH6qfmSf6byAqBw4y0cLonvLO5ZfbIUs2fctgfkFVQuIit6zBtRhbktfr0V6yOeWjg/Od60xp0o2MinxOtdWglapWZMmnDB4y4vc5rTv6qa4+mx7HY2bCyWsaIvb+pxDf1BCcNFOQeUzeIoPQZads1QRA8kQUFu2OSsMz4smNlcTGoCUU8dRDUQRFi100tDqnLBq9XSCuTeJWOmGNmPI9IpljIHAbtp8AnhMHLove2V9bOcdRPzdhCUdKs1YlXJOafWJi3IS85+VtUkY4M08WXqqD8tZo7ngWk43Oiw5jkdVGRbfKjpSp4o8yxZoWAWugWSombxdqwJfgLJHuL8friK+CNxqb9DyrcFw6jqDu8IQghU5sJACCZTWylhtmDwMY0Uf1lYYtFUQFKTHJlZoxm+yFtg7W+SpFE461LJ8jguRHpU91ofRXNx7JcBWJCZ9SymnBeVlsf1I6Vt3StzLHLh9aXVnT0oMphiddQiYGfaLTmZa+8HXBepMY7QX1ZXK8nTgTbIY33jrgPjSFyT5SpTl38qwImbnxqWSgm3oZWFxUrzIMTDuiibqsiADi473BUCwqjqvp9SUtGGGyuGdvWKin7LFM9B1YjWlk0Sex3feIUN2ftlMLgHYaSJ6nBj3VPlj7xlIKym8hfKsctKJ6B5YEo6w1FfnoL9UBPD/6KfOmTe1FHUhLtGBrIhJY5/ZIGX9o7DEZ
+ Qru7+fGv
+ PKT6n6rihIczAf21IC56fmFDsLTXoctYdKj4JEdYIumWIaux/bQQwfBujuHeenL/EmqiyDMHQERZ70XREyWoi327KjLzA3ok3DLs+ZvoafyzuEvlFb3KAZIMFCH6yicXF2Cx7kgEjeMN2KFNZIljxpWIPTKhY/FUzsTNbAdisD9JFM5cGauvFD7OUuecC0Dn3fIACJW65O1yZ/bu4eNgDZjbp+Cbik27C49mrpPNHO5MLpXEUQj3JwFgwMXJ9IDs4tmIv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,28 +102,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 02:26:46PM +0300, Andy Shevchenko wrote:
-> On Thu, May 21, 2026 at 06:33:14AM -0700, Kees Cook wrote:
-> > 
-> > param_array_get() appends each element's string representation into the
-> > shared sysfs page buffer by passing buffer + off to the element getter.
-> > 
-> > That works for getters that only write a small bounded string, but
-> > param_get_charp() and similar helpers format against PAGE_SIZE from the
-> > pointer they receive. Once off is non-zero, an element getter can
-> > therefore write past the end of the original sysfs page buffer.
-> > 
-> > Collect each element into a temporary PAGE_SIZE buffer first and then
-> > copy only the remaining space into the caller's page buffer.
-> 
-> ...
-> 
-> > +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-> 
-> get_free_page() (or how it is called)?
+On Tue, Jun 02, 2026 at 01:20:07PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/1/26 18:16, Lorenzo Stoakes wrote:
+> > On Mon, Jun 01, 2026 at 05:45:30PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 6/1/26 17:41, Lorenzo Stoakes wrote:
+> >>>
+> >>> I think life will be easier with submaintainer separate trees for this honestly
+> >>> :) or it could become a horrible mess in one tree I think.
+> >>
+> >> Requiring contributors to submit stuff targeted at some random trees is madness :)
+> >
+> > Err what? The 'random' tree is the MAINTAINERS entry you are targeting, it's
+> > based on the mm-next stable branch and only diverges in the work that's been
+> > done specific to the subtree, what's crazy exactly?
+>
+> We'll still have plenty of patch sets that touch files cross trees.
 
-I thought modern mm guidance was to use kmalloc whenever possible and
-not use get_free_page() unless you intend to use the struct page bits?
+I'm not sure how keeping things in the same tree fixes anything though?
 
-Jason
+You are just changing the _timing_ of when the conflicts happen at the cost
+of making things way more difficult to manage IMO.
+
+I mean the reductio ad absurdum argument is why isn't all of linux in a
+single git tree? :)
+
+If what you're saying is true it should be without issue? But I think there
+would be pretty huge issues...
+
+And the disadvantage is now we have a bunch of sub-maintainers with write
+access to the key mm tree who could make mistakes and break things,
+hundreds of topic branches all bundled together, no separation between
+anything, and no sense of where anything's at.
+
+If you're saying submaintainers manage topic branches (this cycle the ONE
+tree would have ~400 topic branches right? More if we included versions?)
+and then independently merge those into the mm-stable tree I think that's
+going to be a disaster in terms of timing/conflicts/etc.
+
+And you're asking for conflict between submaintainers I think - what if one
+person merges his thing that then causes conflict for another etc. etc.
+
+With separate trees then decisions can be made by the mm core people as to
+how to integrate, rather than people unilaterally doing whatever.
+
+And if you're saying submaintainers won't do that, then essentially you're
+saying no submaintainer tree management at all :) which I think is a a bad
+idea for a subsystem as busy as mm.
+
+I think mm is too large now to have everything under one person or a few
+people.
+
+Separate trees implies division of labour, and then the integration tree
+can be more of a pure integration tree.
+
+>
+> I don't see the problem of sending stuff against the integration tree from where
+> it can just be cleanly picked up by sub-maintainers (after all, that's where all
+> the subtrees were integrated against)? Or what exactly is the problem with that?
+
+But what does 'picked up' mean? See above re: concerns.
+
+>
+> This is likely something we'll have to play with to understand what is workable
+> and what not.
+
+Actually, I think we have to decide early - because if you want
+submaintainers to test out this sub-tree or sub-branch? Or whatever thing
+it's very different asking them to:
+
+- Create a new tree and do X, Y and Z to sync up with mm-next
+
+Vs.:
+
+- Have full write access to mm-next and create branches X, Y and Z and
+  merge things
+
+>
+> >
+> > I mean, is there any meaning to separate 'trees' at all if we just have one tree
+> > with topic branches in?
+> >
+> > Or are we going to have several parallel stable branches in one tree, and a
+> > bunch of maintainers with write access stepping on each other's toes?
+>
+> All valid question to which we don't have an answer yet. :)
+
+:) I mean learning from how others do it is definitely key here.
+
+Maybe we need to grill Brauner?
+
+>
+> >
+> > That sounds a lot more crazy to me, and I just don't think it's workable.
+> >>
+> >>>
+> >>> I think the simplest is what I suggested in reply to Vlasta, where each
+> >>> submaintainer tree has their own set of changes against mm-next/mm-stable and
+> >>> then we merge each week.
+> >>
+> >> Throw in hotfixes and it already starts being crazy.
+> >
+> > Again I really don't understand this?
+> >
+> > Hotfixes are a completely separate topic for one, I'm talking about ordinary
+> > development, but surely they're simpler aren't they?
+>
+> I mean the interaction: new material that depend on hotfixes. Talking to Michal
+> and Vlastimil last week, there are some ways to make this work based on topic
+> branches (hotfixes being a topic branch IIUC), but I don't understand yet how
+> that works in detail, or how that would scale to subtrees.
+
+OK, yes we would definitely need to have the hotfixes applied effectively
+as if they were merged in Linus's tree I think underneath other things.
+
+>
+> >
+> > Everything's based on Linus's tree (so no confusion as to which tree), there
+> > shouldn't (hopefully) be a huge amount of them, and submaintainers can just
+> > potentially find a way to send them direct to mm-next anyway?
+> >
+> >>
+> >>>
+> >>> But am open to learning about what other subsystems in the kernel do...
+> >>
+> >> The TIP tree has a pretty elaborate model of dealing with topic branches, and
+> >> don't require things to be sent against specific topic branches.
+> >>
+> >> I'll try to understand that model.
+> >
+> > OK well, interested to hear about that.
+> >
+> > But also we should adapt what others do (which I think is very important to
+> > learn from obviously) against how mm works in practice.
+> >
+> > High review load with many overlapping changes might favour a different approach
+> > to a subsystem that looks different from that.
+> Yeah, but as we said, we discussed, it's all rather complicated and we should
+> move incrementally.
+
+Yup, but some things have to be decided early I think. We can roll back
+decisions, but some are more costly to roll back than others.
+
+>
+> --
+> Cheers,
+>
+> David
+
+Thanks, Lorenzo
 
