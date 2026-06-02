@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2901ACD6E60
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 18:31:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A46BCD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 18:31:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 674846B008A; Tue,  2 Jun 2026 14:31:46 -0400 (EDT)
+	id 95B536B008C; Tue,  2 Jun 2026 14:31:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6258A6B008C; Tue,  2 Jun 2026 14:31:46 -0400 (EDT)
+	id 90BBA6B0092; Tue,  2 Jun 2026 14:31:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A0216B0092; Tue,  2 Jun 2026 14:31:46 -0400 (EDT)
+	id 849606B0093; Tue,  2 Jun 2026 14:31:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D1246B008A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:31:46 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E54CFA09A7
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:31:45 +0000 (UTC)
-X-FDA: 84835816170.01.F4E1662
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DAC8D180013
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:31:43 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 746306B008C
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:31:50 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 10C19120A0A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:31:50 +0000 (UTC)
+X-FDA: 84835816380.14.2834A62
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0A3BAA0015
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:31:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780425104;
+	s=arc-20220608; t=1780425108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L02qb+fc41ni9ojRFQLpdYce6kkEH1h9fkjAxArua80=;
-	b=mQIx6WoFoFzo+0JKVrdHiZmNgH6W5IeW67Zc3rThJ3hAaHSgE+F1Q57ACxFamukkxhXRvi
-	T9YgdlUP0eNpR//5I8dI83wSieqOdhKst6p6MPbYXvSL93Jg5Fo67nsDFS2m39Y1RdvoY0
-	zCKL79xOOmqvGTKzewt3NlIyEArSdKI=
+	bh=LByzQMHWzpjqZbKGb0fLS0QtAqKmBvDgcDpwjSjyK08=;
+	b=D4nqcG8WyL4embYt3y+WRGltuaIH1aFYV1kclKVfkJ50aSl8sfUO1T7jira8+09TsYAUPJ
+	YLoutMyc7SABmWxURusMA7j2y0ht/xKeweT+iyhUXz3QPZ26snmH/LrZNcuXmAkiBvxio1
+	95lNAnlggvCvThDSTbMMVDTPzlRyAx8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
+	imf25.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780425104;
-	b=BSqfcykmPNwgKKiR+2msl6RqId/np0vbElRHWShbWcO8sl/tSmKpVqoswuBwxsPkDtt+RV
-	GC+hv5OSL2Z4Yp5n6mG511lYgUXpDh6Kse31scIIwU4noKwstdaN75Z+0+QDcLGtlcIsDd
-	9Z8mg0RE+10K84nYJDQAnA+5pFdH4Co=
+	t=1780425108;
+	b=iaNjw2hxOH+wOYAWlZV2aPPbXqunzhAGejAcRFpVMSOm91Lxp4seVYoTg0BItZCFRffo7B
+	c4RG5IAdcqeLGjRchlzNj5GbKHCirj9l4fYWe7u1UVuIIYTxQlFNf9Mc7pMNr/rH6hmWok
+	F0CMgXZqTYZilTYTGO04vAlAGT7BgQk=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id BCF2366FF6;
-	Tue,  2 Jun 2026 18:31:42 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2687A6AF1B;
+	Tue,  2 Jun 2026 18:31:44 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 72292779A7;
-	Tue,  2 Jun 2026 18:31:41 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D666B779A7;
+	Tue,  2 Jun 2026 18:31:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QFZMGI0hH2owXQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 02 Jun 2026 18:31:41 +0000
+	id 4KvUMI4hH2owXQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 02 Jun 2026 18:31:42 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: Vlastimil Babka <vbabka@kernel.org>,
 	Harry Yoo <harry@kernel.org>,
@@ -84,9 +84,9 @@ Cc: linux-hardening@vger.kernel.org,
 	Jason Xing <kerneljasonxing@gmail.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	Pedro Falcato <pfalcato@suse.de>
-Subject: [PATCH 1/2] mm/slab: add a node-track-caller variant for kmem buckets allocation
-Date: Tue,  2 Jun 2026 19:31:21 +0100
-Message-ID: <20260602183122.747759-2-pfalcato@suse.de>
+Subject: [PATCH 2/2] net: skb: isolate skb data area allocations into a separate bucket
+Date: Tue,  2 Jun 2026 19:31:22 +0100
+Message-ID: <20260602183122.747759-3-pfalcato@suse.de>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260602183122.747759-1-pfalcato@suse.de>
 References: <20260602183122.747759-1-pfalcato@suse.de>
@@ -99,14 +99,14 @@ X-Rspamd-Action: no action
 X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 76exm5s7sjkqenat8q85bdqj3qeq7txw
-X-Rspamd-Queue-Id: DAC8D180013
-X-HE-Tag: 1780425103-906325
-X-HE-Meta: U2FsdGVkX18d5jh7/YMgddz0uUmKkCXdWKsLru49tKswboQZM8GAmjWWou/rkjLU0jnfxNVlKQczJw4seBygjM9SCdzJxRwWxctXT03rb4ke+MYO/VCHcuKZaFO9YnxLUPGqzK8VXNxofTYnAg2Oma7lCbNY9MZU86T3lXAyLgFYpOc/fUCXQstUAlRObT7dEEMwlgFTIiRSd3lTzaxTnvBDEaCKpWeF9khRQf0GhP5H7daWiGmOL4wLHc4bKWhLxm1MrrFfYPI4qMT9ftPsCUwfWRI84ChWiTx/m3e6KP4iePGywu2JYp6sZ3+CFppgmK8S6r6jhzgFF59HaT7EnZMbAORVnCB6GjiQ3YQZ6lPvsU7VneiqK0uunucnXFNVM3YkFqqroovcckiP/5rVj91nvG0QR+qWqM+DPVU1TLrvqjkB05KdkNmBTFitZLAodGAQWCAFb92Ei5680AXxkkD3xdZfdYw18fVe1YWRB8JxNv3p8RkEZEWF0su2BjU6N/qmvwcUNEEwJ4kltnUE4BFZEObeWtyDkDKfLTiKRvJm5FyirevQ5Py4sgPiGwNn3pB5q6CY75/nPwAaIioZmHI138c/5z0GBSeVID0PjRqu1/H49Ik0hOA2K0nRHENuMKMwx+3Yg92y0ijCdc6hIYI/ddb3OzKmZLl8Sj/y/RX3/v4IWPeFiJDIWV3EC+0eQ6Asl/W7xx+1peL12OIAV4cRK0kjJvOkbDDhDwRhWnRViLTzvRTXrdgGXxDYa7G7/WMOVw2odW60wanJHV+wdlUH5LzyJ67XurU8Fr6+QTFk6d5YwbvpZLras0Cs6JNKAxa3F2/BVHC/qtXMfhJPYqtfZ50ltq5xu0lSSuVinfqogX9vybW+caeRAIi2JTwu7e5aEBlFahTJ+c9+y5LcNX6p5VbgkO+vJn3Cir7HQ+ui8IB/PaC29OfPus/UiXnsoW3cJObZY4NSpiv5JCd
- 36goTRRh
- vpkBZzGZePhTe0VU9m0Ar52iowxWXkyDR54egtD6/azF2XINU1pO2A7+oOHlf5SkoYqb58/l6HHGHb7012LBFM6yA/UxPHVjL9xUj9U/zm34cXNHNACzK9tsg+E9wCvUbskkprATjWyA8chp0ibpcpy2IIqIHeoNPR4j4
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0A3BAA0015
+X-Stat-Signature: 83h1uj85rnpf93619rccn36xsmokpoze
+X-HE-Tag: 1780425107-966127
+X-HE-Meta: U2FsdGVkX1+L8a5+apJ7d0B/IoMmu9tHF5EUW9trAe5IMzC5a8MQjSUVpCTPk4mg41D2/bC2vaRmLLPN8GMIfWw3bh7CB+vvaYFkLrnuVaSjFwPfXDOegXPUNNhVjNEH2ksjXkjkfZ2n23QxJfUMVAavlhm4a8NKePuUOIw8TZCLzS+QMCmNlfzn/nCbZix9YWAoO48rtYeZylM6NvqlcSq2ZuV4gc+URXZ4nFI8Y9S2fZSHGs4d2CwyICGU9JWEwsGnNiFUVmYrJgKKveOgaahMCf37+WP/FmUBW7SRKifdVNzqhMuWxnd3z+NFDbweQsO0NrEVG4GXQYA7JuabBJhmR46s2N38zqfVyAzWf2MGBtskpWEtpOPO2cXdO0GlBTcndgwHxVDRJgS+wRuHPtlLY9Ny67biXOQxhW3apki9k71gfI8zWtSuIRQ3k/6UOtTK+wYDYAmsv8z4hcG++G+yeYRaoiMDNVb6TTBFzTdBQI/s+TWU3Q/hOXbDD/hvXTFSHy9zd0GoFgNV+f4lBMQaygW3hW5YMmpZpKqzFsaovjCfyHqstaj5DbWHr8WtuYedYLsMVebz3ffdFX8YAsWathf9CxhGyauK7V8BMhVemUqUqV2npIHgjYVpPky6VWt0qoXOG81MMi6xRTJgosmoSLx8p/n8wQlwjVgHXRhpKRFCF/JojhdcPTk7MiuB4kllzPJvsIVqBJloRqT/JiDG/XFU1946ge62MTuexkwAL5Rh3r/wNDU0VGDUVquFMtqxiFeQDuETNTYdX+rAnbK6j6J52zFN9AouFVBAqBG69tybScGuiy0bqxUzQotvzK3kk++1mWG43uxHcRMIeIcndY7xiP96KlNwhce7NUG6JllRlH8DXxsBlHLXFbQdgs1C4MAAs8YzT03ySWHUPYQjypKcVhkaQT6sBqSx8KKKQ9iof+0DODHPhek9eysT2YJUgrCz0JA253wDlyB
+ DLX2cgLe
+ oHWUq0dizqX7R+KErVkU2Pt/IAclLm6F/WnKmh/nGvTV5H+oN8BgdS0vRFYgxlNgewNcUZK3DDlTpxFm04ive6/8u2JYdGwDt/fOOs+duFjsGFIJqJqQd/f7SfD8MEur09t7s/iZEQLVpXwRni7SXqqz3x2s8StmZrOVLLXhw+pL8rv5g3vv1qiii2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,32 +114,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is required by users that want to use kmem buckets, but still
-desire specifying the NUMA node.
+SKB data area allocations (as done from alloc_skb()) use kmalloc().
+These allocations can be variably sized and their contents can be more
+or less controlled from userspace, which makes them useful for attackers
+that want to overwrite a use-after-free'd object from the same kmalloc slab
+(which often just requires the sizes to roughly match into the same kmalloc
+bucket). [0] is an easy example of an exploit that uses netlink skb
+allocation to target another similarly-sized accidentally freed object.
 
+While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
+probabilistic. Use the existing kmem buckets API to further isolate these
+allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
+
+Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
 Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 ---
- include/linux/slab.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/core/skbuff.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 7b46fa499b08..685a87d8f0c5 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -1153,8 +1153,11 @@ void *kmalloc_nolock(size_t size, gfp_t gfp_flags, int node);
- #define kmem_buckets_alloc(_b, _size, _flags)	\
- 	alloc_hooks(__kmalloc_node_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, NUMA_NO_NODE))
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 44a7f8401468..1f6c6b531ece 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -594,6 +594,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
+ 	return kmalloc_node_track_caller(obj_size, flags, node);
+ }
  
--#define kmem_buckets_alloc_track_caller(_b, _size, _flags)	\
--	alloc_hooks(__kmalloc_node_track_caller_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, NUMA_NO_NODE, _RET_IP_))
-+#define kmem_buckets_alloc_node_track_caller(_b, _size, _flags, _node)	\
-+	alloc_hooks(__kmalloc_node_track_caller_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, _node, _RET_IP_))
++static kmem_buckets *skb_data_buckets __ro_after_init;
 +
-+#define kmem_buckets_alloc_track_caller(_b, _size, _flags) \
-+	kmem_buckets_alloc_node_track_caller(_b, _size, _flags, NUMA_NO_NODE)
+ /*
+  * kmalloc_reserve is a wrapper around kmalloc_node_track_caller that tells
+  * the caller if emergency pfmemalloc reserves are being used. If it is and
+@@ -632,7 +634,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
+ 	 * Try a regular allocation, when that fails and we're not entitled
+ 	 * to the reserves, fail.
+ 	 */
+-	obj = kmalloc_node_track_caller(obj_size,
++	obj = kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
+ 					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
+ 					node);
+ 	if (likely(obj))
+@@ -5213,6 +5215,7 @@ void __init skb_init(void)
+ 						0,
+ 						SKB_SMALL_HEAD_HEADROOM,
+ 						NULL);
++	skb_data_buckets = kmem_buckets_create("skb_data", SLAB_PANIC, 0, INT_MAX, NULL);
+ 	skb_extensions_init();
+ }
  
- static __always_inline __alloc_size(1) void *_kmalloc_node_noprof(size_t size, gfp_t flags, int node, kmalloc_token_t token)
- {
 -- 
 2.54.0
 
