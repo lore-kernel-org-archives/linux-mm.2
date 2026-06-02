@@ -4,134 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ACA7CD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:23:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B8AECD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:25:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E0A16B00D5; Tue,  2 Jun 2026 06:23:29 -0400 (EDT)
+	id EC1466B0402; Tue,  2 Jun 2026 06:25:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B8C76B00D8; Tue,  2 Jun 2026 06:23:29 -0400 (EDT)
+	id E98A46B0404; Tue,  2 Jun 2026 06:25:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CDCD6B040C; Tue,  2 Jun 2026 06:23:29 -0400 (EDT)
+	id DAE876B0405; Tue,  2 Jun 2026 06:25:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B5FC6B00D5
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:23:29 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0B08FC22FD
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:23:29 +0000 (UTC)
-X-FDA: 84834585738.07.F532C1B
-Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1F7F816000D
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:23:25 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=xmission.com header.s=xmission header.b=PT1nwI4K;
-	dmarc=pass (policy=none) header.from=xmission.com;
-	spf=pass (imf08.hostedemail.com: domain of ebiederm@xmission.com designates 166.70.13.232 as permitted sender) smtp.mailfrom=ebiederm@xmission.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CDA1D6B0402
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:25:35 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6F3791208E3
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:25:35 +0000 (UTC)
+X-FDA: 84834591030.04.E5EE175
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0B6014000E
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:25:32 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Qh2SJbMM;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780395806;
+	s=arc-20220608; t=1780395933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xOUWvgApIKw+92KT8RxRFcojdVTgW69lyiDjHGwti4Q=;
-	b=jnTB4R3hyP5Nq2Lezh+aT6+xIE0JlSm68aHi1JEh4q6MCDIm2Gla5n1X/gg16H1IiIfeeN
-	olpeYCBJGeQqMnfbsN8sntXL+ME9ISlcKTr36JgusfNTMGgo9YjWNTleqx6uSTqoYA3Mae
-	yDCoGbyAiMhORHSVGzaiotKuvIeYz2I=
+	bh=tz/vVgYlWzqjYdT5CgsjAyARbiWMqKQW/JOPkRDARg4=;
+	b=D7p4ZvRWjhE5hq5WanFQ/ghWA6ctEyKN3SUIdYbdbntBX8g80MgVAcWV5Ap4UR6BF7Gl6J
+	WFpRYn4kAgifzEKWP1rLQUhzShACrQZER0JLwlYzM5ch/DRSy8dlLDTPVKJivGhP+gM3tA
+	hDBca8IzvFL1kXMIIEJHXmkKkV+ReOM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=xmission.com header.s=xmission header.b=PT1nwI4K;
-	dmarc=pass (policy=none) header.from=xmission.com;
-	spf=pass (imf08.hostedemail.com: domain of ebiederm@xmission.com designates 166.70.13.232 as permitted sender) smtp.mailfrom=ebiederm@xmission.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Qh2SJbMM;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780395806;
-	b=YObwR6VrcR7kXgs/PqayD7XqFpHiFSorvZbpOgaU2+3yxXtJJsUvShM1F99vH7QpXgmW4M
-	mFYh/Xo27dxUI7eHQNIb4bLo9VkMlY+s1DGz6yV63nWFsdCxiUBdCXCuCnHOMZpBdti+gS
-	uw4Uk35VoT/jxJY3qR4S3tMTtbKqZjM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/simple; d=xmission.com;
-	 s=xmission; h=Subject:Content-Type:MIME-Version:Message-ID:Date:References:
-	In-Reply-To:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=vvILlsXaVQShutp1p5WceQi2Eaf3pB4ovG/S15HHsU4=; b=PT1nwI4K/LueK0DDSNL+s4C13J
-	wCISW9cQ6Rku1p5e71v6LNcH9E8BpNOErgTq20OxsIi/JohdQWrgMebuwQrMKgen7pJXROs+AsRqv
-	q/PDtUrCrIsMZAHrVRiLpwUsOkpysGxuDIlQz4e1uDX5u9eweqgYZDbb9a8545EZNJqI=;
-Received: from in01.mta.xmission.com ([166.70.13.51]:57296)
-	by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1wUMHI-00EQUk-Sf; Tue, 02 Jun 2026 04:23:20 -0600
-Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:37600 helo=email.froward.int.ebiederm.org.xmission.com)
-	by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1wUMHF-002RRp-JI; Tue, 02 Jun 2026 04:23:20 -0600
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: Andreas Schwab <schwab@linux-m68k.org>
-Cc: Deepak Gupta <debug@rivosinc.com>,  Deepak Gupta via B4 Relay
- <devnull+debug.rivosinc.com@kernel.org>,  Thomas Gleixner
- <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov
- <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>,
-  x86@kernel.org,  "H. Peter Anvin" <hpa@zytor.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-  Vlastimil Babka <vbabka@suse.cz>,  Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>,  Paul Walmsley <paul.walmsley@sifive.com>,
-  Palmer Dabbelt <palmer@dabbelt.com>,  Albert Ou <aou@eecs.berkeley.edu>,
-  Conor Dooley <conor@kernel.org>,  Rob Herring <robh@kernel.org>,
-  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,
-  Christian Brauner <brauner@kernel.org>,  Peter Zijlstra
- <peterz@infradead.org>,  Oleg Nesterov <oleg@redhat.com>,  Kees Cook
- <kees@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Shuah Khan
- <shuah@kernel.org>,  Jann Horn <jannh@google.com>,  Conor Dooley
- <conor+dt@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
- <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Andreas
- Hindborg <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,
-  Trevor Gross <tmgross@umich.edu>,  Benno Lossin <lossin@kernel.org>,
-  linux-kernel@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
-  devicetree@vger.kernel.org,  linux-arch@vger.kernel.org,
-  linux-doc@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  alistair.francis@wdc.com,  richard.henderson@linaro.org,
-  jim.shu@sifive.com,  andybnac@gmail.com,  kito.cheng@sifive.com,
-  charlie@rivosinc.com,  atishp@rivosinc.com,  evan@rivosinc.com,
-  cleger@rivosinc.com,  alexghiti@rivosinc.com,  samitolvanen@google.com,
-  broonie@kernel.org,  rick.p.edgecombe@intel.com,
-  rust-for-linux@vger.kernel.org,  Zong Li <zong.li@sifive.com>
-In-Reply-To: <87wlwif04z.fsf@igel.home> (Andreas Schwab's message of "Mon, 01
-	Jun 2026 22:58:52 +0200")
-References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
-	<20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
-	<87jyslndo4.fsf@igel.home>
-	<CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
-	<875x44o9hj.fsf@igel.home>
-	<CAKC1njSn_rtCj8ii876PNQTk0nsCTfWsb4DzdymufHVthh1Rkg@mail.gmail.com>
-	<871peqgp9v.fsf@igel.home>
-	<CAKC1njR+dTdvp+BmLGPtgd8dufiUwBtkQ9a-qinELT_Fmi13sQ@mail.gmail.com>
-	<87wlwif04z.fsf@igel.home>
-Date: Tue, 02 Jun 2026 05:23:10 -0500
-Message-ID: <87tsrli6lt.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	t=1780395933;
+	b=WUjF6qUuoF7XMhAkRSEq0lNEduSVAP2taHRredqULwXgX5M7wTJF8MIqQXQCSf7NGXPFLx
+	BPzhqV/L9ZsR36TynAWi8gGn4ht7ClR68B8ykmc7mHPsbAkQeRMotAFSPAYfiFKjJC4ZEp
+	rxBqRJvWofECw63ncr+c2NBVn96Kpao=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780395932;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tz/vVgYlWzqjYdT5CgsjAyARbiWMqKQW/JOPkRDARg4=;
+	b=Qh2SJbMMumu/5DJVt4QdFbyS60/DjktMyZ30i/lSOR2oRKvFTws7afyiOaZXy4Woh1b6lW
+	Q6vOhlPMkpwz7MPuu6TRO4bHdX1yd8WyHOYWp1dj3DcDQSxzCDxW+TYuFSoyqv14H/hCHI
+	Ra+SiSq9LEpzvai7KLjpucNPAuJY+WU=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-461-0Qkf5qP5NfeXBHtAU9FXCw-1; Tue, 02 Jun 2026 06:25:31 -0400
+X-MC-Unique: 0Qkf5qP5NfeXBHtAU9FXCw-1
+X-Mimecast-MFC-AGG-ID: 0Qkf5qP5NfeXBHtAU9FXCw_1780395931
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-660575c74f1so5406665d50.3
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 03:25:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780395931; x=1781000731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tz/vVgYlWzqjYdT5CgsjAyARbiWMqKQW/JOPkRDARg4=;
+        b=Ut6RIB7YLpcRhC9Sa5Ph354/HIRGYeZjiOgVoX+qskMn0YDcd8u3l+5dsZ04LtgxGD
+         niT7HeYlYcwjctbu6hj+00HYM8U8R9k3+zI+9j4JZX/hALTsLC4TPP/29RjriZGu1kpy
+         tM2HmIIOs/5dvKVeaqjD/nU5hTiCjx1MSYk/6p/YDziE88zbpPmlPuVk5nlgi8SqR6bh
+         pvXnMpy2eRkQ4DQYWyvfDKTIhr4FZ7sT+HORVpI75QoM3eXrLo+v4nwQi5jbVZ2tbqi6
+         R/cyl9pq20iWUPG4p5wBvyrZzLx8bC13shMfhZ/Xu3aFKrR5xrUxw3LJgdCrKFCOpvkm
+         SRbQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9kHP0Hsn+faYUVQxBGE72fX653MQ5JeVTjdYvXPeNcYwpUavio0BzEtrK6KRodT1di6nsSjPJiSQ==@kvack.org
+X-Gm-Message-State: AOJu0YxuPrAtKR47Ce0hTf/yCH8UD5cBG8vm51jue5E/2zW1kY1R3tPJ
+	lL1r8o7CzvGF/ceMnp1T+IEx35IR1mCunD7OEpsGo7ITJraVkoF1wnHbdMzrjDSTcMYvsyL71Va
+	G9f3/Cjd194KfFRR0/c80WZdrINbStj7lEb+AWv4cTn+z3vMhRzmYT1HATOZyVTaijy5v/QNPVy
+	/OPSJktTLR77CMZtVvV77DO0FP2hY=
+X-Gm-Gg: Acq92OHZ04x/ZzBgzc9GjPT5nCe7xYIv7Go7PyikSDgpi2YD2g7ODP2v6IcrSvOZVlC
+	zCkpX9jvRYgVAbtETsYiliDCUEc0klMQsza5m+8XitpWgz/8Zf04zQNmoMr+ixzaE37bC/kzQvQ
+	9Z4+h3aA8mKRc/F/txI7pAOWR3dJvZEq5EsnIF/rOSFYcUFTZQbXL6YGIzwPwrY4uYqcpyWLvJ3
+	KH7kjELWdZRw4uTlA==
+X-Received: by 2002:a05:690e:1595:20b0:660:5e16:f249 with SMTP id 956f58d0204a3-6605edecbf9mr9767421d50.11.1780395930768;
+        Tue, 02 Jun 2026 03:25:30 -0700 (PDT)
+X-Received: by 2002:a05:690e:1595:20b0:660:5e16:f249 with SMTP id
+ 956f58d0204a3-6605edecbf9mr9767365d50.11.1780395930340; Tue, 02 Jun 2026
+ 03:25:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1wUMHF-002RRp-JI;;;mid=<87tsrli6lt.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
-X-XM-AID: U2FsdGVkX19J6tpF2AGRJ9xglxGPNzSSZeVg13KZsgY=
-Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ
- | VM_WRITE
-X-SA-Exim-Connect-IP: 166.70.13.51
-X-SA-Exim-Rcpt-To: too long (recipient list exceeded maximum allowed size of 512 bytes)
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-SA-Exim-Scanned: No (on out02.mta.xmission.com); SAEximRunCond expanded to false
-X-Rspamd-Server: rspam07
+References: <20260522150009.121603-1-npache@redhat.com> <20260522150009.121603-6-npache@redhat.com>
+ <ah2Ro54tMDMsPevk@lucifer>
+In-Reply-To: <ah2Ro54tMDMsPevk@lucifer>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 2 Jun 2026 04:26:09 -0600
+X-Gm-Features: AVHnY4JldSmClM5zWrsLMpr94a96n3CDQXVYIR75HwJ96w-KO0z_Xu55vTpSsPY
+Message-ID: <CAA1CXcAXWWKD64YYGL2ue5iKFUiGsSq-pK2_8qvvgG6EBS079Q@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v18 05/14] mm/khugepaged: require
+ collapse_huge_page to enter/exit with the lock dropped
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com, 
+	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com, 
+	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, 
+	jackmanb@google.com, jannh@google.com, jglisse@google.com, 
+	joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev, 
+	liam@infradead.org, mathieu.desnoyers@efficios.com, matthew.brost@intel.com, 
+	mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, 
+	rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org, 
+	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org, 
+	rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
+	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
+	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
+	zokeefe@google.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: EAMsRyuFt0saF13SJqcrXBgkezmDv9A5a7-bC9lzKXE_1780395931
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 3y8qw78cnf1mst1e8bz8ou3ue5ahjyds
-X-Rspamd-Queue-Id: 1F7F816000D
-X-HE-Tag: 1780395805-229902
-X-HE-Meta: U2FsdGVkX197wBLerMrXM21/D9nk50GVZAIeVKap+wVaJhXg/tFF59B2q2HAO+/tSkQtqZa3Mb9vTLWE2ZI012wyGizQHCbYDT9xvchsUgb5bbcgdkVvc8Z+uNJHedQZzQ06Ji4c0915fYmzh21RR3cDD6WgckoO9t1uVk09xkodEp2/eAmc/GvJnjYhMph1kdw0pH6oT9eixf7UA9o7VRTUjDe+o++1PtPuv80bBZnI10dgvre/CRdQDt7bI636ddhbd5gh+kbt0KgJBx0+xG6ze4u/htK13mDwJfTr9wXyZcSkAwjpp3mEQd1nJi91xqY2uti1mjr+MgEElju4uXWShRl7bB91hjAfa4MlspkZ9S0fRZ4bkYNTYMGLz6HMU+otZsW+pUrPotlWg1o9tnqpB4FJsnaj/QRDEncoCzwQb7D/jyCb9EoEf1XNlwRKur5jVgi9Tnh5PUvBhCLrJ830jasBX26kevJ8wf+Q1OB6bIfxeiEgzILpsRHD/3SSza4sH/pmmKI33IbSQB6bSCh/oDLGbVNCUhmanJq5Drjqm2CH3/jq9fp7wSZ6DFyjR76/Rj3J6e57UK8Japfo3VCe4wLLHAC3Ydn0ILeKW0GIjkfKZyNpAk2Cgp6K++ZxMcddSyXPj/XOFrPSGCiAjY+usMo/V2Jzp6CLbV9y4Kj9L03bzod5yLYRaUJqboYMbEFf9wUNA56k3FReyaYUKnhzuhZaYqffUW5Cz2Egjy5kMEFEcnJXPNuLWfKmN1ds6RgBJ1sEs2cN61FU3M7BTW5uqLdfLJkineDH8WEkx8sUP0YLAncrBBrOVNi1rUExsXEqmaJ2JVhcqoIIB2sUiOX0DR5kgqT1MA34/V2yy7Diy2r5rwfJYV+jLG2pFRmB/wb3Sce6O5AHtx2qL0vFsS4Nifvl0PcsMGe6FcBaJNIOKWdU5//YlLAWgt8wHK1Jk5WN8stUqvGwuc31/pb
- kMdgzcej
- g3iBX/Wc2uWNq/4I0qibdpeVndlQYfTKkTuA60qkGVCfaAF/oq6Vbf2MBIpg/G+G7qFaA4lBWyBGpsVUIJTx6XWUj8bhE2zW9ECIKvahwANuIBfKeKphoAP4jjSMk/Uv+Qx/rZppq276d+el5O20Oo+qWAMqfzuXDj2V7+wGfDU3nb+igClNPIxjD+WUCTI/dJAumOmGrhggasnZdKk40EwO8V8ZaZA0wTKGvH/kdUNlXexFJgWiVvFmov/Z6s3lwHq+fMnUAacHLa5EDukB6siON38IMIwqD2ObLIaEV4YH1Y7Exgwk572nXuSyr+LGUvA2y7ECQxYAqSVAlRGEuTPm/XmWCsgqpmVI/Dk4sSFBBzf/jm22RO40kfDinmlNH4Yyg+G8H/xe+gigdCt0eQrVb8A==
+X-Stat-Signature: 6t9c6hsrhx3fth55pjjczsm8sadjpxm7
+X-Rspamd-Queue-Id: 0B6014000E
+X-HE-Tag: 1780395932-453115
+X-HE-Meta: U2FsdGVkX18BTb5vtUt/JiiyD859NiFKI0pWhUXc4jjd+o/pWyWi4bXtDBOoEE0aB0hA8a7GrNbqZOL67cFcIOTiIdJ7+Cm9y3fGzSzYkSObHiWXuJ6p9vWiNH5PMuO72ZuQclUvH6D3AYUS63Z5hgNgOLsO7H38G7WjFUPgTA5426b1kMw+9ZwmgmXk5blQVfauEgPRsB2UDHUJ7bUjux+c55N2SxAcV8ORCuVwMpmnWpsm1cLCtIDzs0kSy4Xmt3fUsuomA9LWFf6h6bGbJYqKh86My6NUH6GBQ3ldYyxuh7hQL85ltW/5xLzibsuhh+ECP4d9/Metj1CnDCI2oRNpT0yz8XHUjLVkSS+2YCGo66ONubc+Eus5uWh3ERo84Ufeu374qpJp0oDKNOeK9/HIBcnBIiXtlLMjzUTdkQvfZ7zroDcG3kij4sdSgH1Vn1qveBegc2mDUnHaKbI1VM2vqtZzpfPZeF6j/pLauESc0k7UXvOfr1fBLkxi+Ka69uG962js241oPxCD1ezr6gXE3U99/MHLYEA2RjAg6+9G3EBXzfkri5uOPnT5rQLaRnhzOyb9Iqnh/tLh2u5YwFHqmXxID2sIRtXPDYUhlfF5NNY+8FX2Emd1+2DjWQKGWvkkDqWfKDKhWMvg0D9xLMSzeAyBNwO9PBV9DBDOkL9n5jQhmmYvxj4gJDKl/UlVtSvwu9G8S0459CRHZJptzQUy4SkXOYqw8FxefCvxDG6MAR4jv97GAsUalUc/W4k6VVgbDPSnPCVqlhsm/2nOeH2OSx8dWyNdggBH+G4wE0g9JWrT16gCHhZnYNTxQd6nQPAz7bj3mx9qPTB683bkrEJLT1d6tcQfputdcUve/Mxu+lNb91c0RjZHZKQfT3dJF3uTmWIH8XPdba5hbNOdeS+M4kChroWy4Tpqu+m/cwlwkDSayp5XTzGPxR68dmFP7FoeVrBuNyt3MJ6YLAx
+ MjCLcwYC
+ qsNJvN0rTt4hnwIkJwjO4i3mcEtjJhGHeLZP9v/csVUrqqQQPBAbYXnDo+Rr2GAlrwS+wVAqJsfWnypkOhvuiYyrN8V8rJlXEb1beXgXXka9dqkUrUNy3BMbSUSxRE+Qkk8qpCD0HJaFmpfYgn9pQ4d1ls0Cg9I51By57r6tJ/kes9Vs6HULHLfoAb+x6aoJj3aeb1FP99lfXZjViLGr+aAFCzC5pwT7wW4N/NvIl4OSMIiwWwLhOI1HXPFtOs9LWyDnSfqfKmmuqkLgsjttADDbrNsR4gUOkGCOOz6m/CGbPMOP7wNEh4LLg251msPQQNDdih/L4OVwkDlgLYI6flWPgsjKM98N3zNr5NJ6pAkrrndiaoD/nXn8s9huQpFUSHfB25iuesLhTAPZXiXEAnk3dkUDu751ekmYQxuCbpdvWzJjgDT4o5ZFpwrkY81gbGwucXOEf+SiMpXjuxCpo1AP9zw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,36 +143,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Andreas Schwab <schwab@linux-m68k.org> writes:
-
-> On Jun 01 2026, Deepak Gupta wrote:
+On Mon, Jun 1, 2026 at 8:13=E2=80=AFAM Lorenzo Stoakes <ljs@kernel.org> wro=
+te:
 >
->> riscv uses `VM_SHADOW_STACK`. It's just very simple to use `protection_map`
->> with just `VM_WRITE`. On RISC-V, `-W-` is a shadow stack mapping. It's not same
->> on x86 or arm64. So `protection_map[VM_WRITE]` simply picks shadow stack
->> encoding. We just ensure that PROT_WRITE is converted to
->> "VM_READ | VM_WRITE" at vma level.
+> On Fri, May 22, 2026 at 09:00:00AM -0600, Nico Pache wrote:
+> > Currently the collapse_huge_page function requires the mmap_read_lock t=
+o
+> > enter with it held, and exit with it dropped. This function moves the
+> > unlock into its parent caller, and changes this semantic to requiring i=
+t
+> > to enter/exit with it always unlocked.
+> >
+> > In future patches, we need this expectation, as for in mTHP collapse, w=
+e
+> > may have already have dropped the lock, and do not want to conditionall=
+y
+> > check for this by passing through the lock_dropped variable.
+> >
+> > No functional change is expected as one of the first things the
+> > collapse_huge_page function does is drop this lock before allocating th=
+e
+> > hugepage.
+> >
+> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > Signed-off-by: Nico Pache <npache@redhat.com>
 >
-> That does not explain _why_ you need to make that user visible change,
-> when others can get away without it.
+> One small nit below, otherwise LGTM, so:
+>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Especially since as I recall the decision was made was that the user
-visible protection bits would match the mmap call.  If there is some
-combination an architecture does not support that would simply not be
-reflected in hardware until some future version of the hardware gets
-around to supporting it.
+Thank you for reviewing!
 
-This is what happened with executable page permissions on x86 for
-example.  It used to be that it was not possible to deny execute
-permission on a readable page.  Later that proved sufficiently valuable
-that support for denying execute permission was added to the hardware.
+>
+> > ---
+> >  mm/khugepaged.c | 16 ++++++++--------
+> >  1 file changed, 8 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index e98ba5b15163..fab35d318641 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -1208,6 +1208,12 @@ static enum scan_result alloc_charge_folio(struc=
+t folio **foliop, struct mm_stru
+> >       return SCAN_SUCCEED;
+> >  }
+> >
+> > +/*
+> > + * collapse_huge_page expects the mmap_lock to be unlocked before ente=
+ring and
+> > + * will always return with the lock unlocked, to avoid holding the mma=
+p_lock
+> > + * while allocating a THP, as that could trigger direct reclaim/compac=
+tion.
+> > + * Note that the VMA must be rechecked after grabbing the mmap_lock ag=
+ain.
+> > + */
+> >  static enum scan_result collapse_huge_page(struct mm_struct *mm, unsig=
+ned long address,
+> >               int referenced, int unmapped, struct collapse_control *cc=
+)
+> >  {
+> > @@ -1223,14 +1229,6 @@ static enum scan_result collapse_huge_page(struc=
+t mm_struct *mm, unsigned long a
+> >
+> >       VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+> >
+> > -     /*
+> > -      * Before allocating the hugepage, release the mmap_lock read loc=
+k.
+> > -      * The allocation can take potentially a long time if it involves
+> > -      * sync compaction, and we do not need to hold the mmap_lock duri=
+ng
+> > -      * that. We will recheck the vma after taking it again in write m=
+ode.
+> > -      */
+> > -     mmap_read_unlock(mm);
+> > -
+>
+> NIT: Maybe worth an mmap_assert_locked()?
 
-That all happened quite transparently to userspace, that wasn't trying
-to assuming PROT_READ implied PROT_EXEC.
+But it will already be unlocked here. The contract is that we enter
+unlocked and exit unlocked.
 
-So I am at a complete loss why someone would choose to break userspace
-by confusing hardware limitations with what userspace asks for in mmap.
+Cheers,
+-- Nico
 
-Eric
+>
+> >       result =3D alloc_charge_folio(&folio, mm, cc, HPAGE_PMD_ORDER);
+> >       if (result !=3D SCAN_SUCCEED)
+> >               goto out_nolock;
+> > @@ -1535,6 +1533,8 @@ static enum scan_result collapse_scan_pmd(struct =
+mm_struct *mm,
+> >  out_unmap:
+> >       pte_unmap_unlock(pte, ptl);
+> >       if (result =3D=3D SCAN_SUCCEED) {
+> > +             /* collapse_huge_page expects the lock to be dropped befo=
+re calling */
+> > +             mmap_read_unlock(mm);
+> >               result =3D collapse_huge_page(mm, start_addr, referenced,
+> >                                           unmapped, cc);
+> >               /* collapse_huge_page will return with the mmap_lock rele=
+ased */
+> > --
+> > 2.54.0
+> >
+>
+> Cheers, Lorenzo
+>
 
 
