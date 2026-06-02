@@ -4,87 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19E41CD6E56
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 03:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA8C2CD6E56
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 03:31:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FA7D6B04C2; Mon,  1 Jun 2026 23:30:02 -0400 (EDT)
+	id 093FF6B008C; Mon,  1 Jun 2026 23:31:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6845E6B04C5; Mon,  1 Jun 2026 23:30:02 -0400 (EDT)
+	id 06B746B0098; Mon,  1 Jun 2026 23:31:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59A596B04C6; Mon,  1 Jun 2026 23:30:02 -0400 (EDT)
+	id EC3E96B009B; Mon,  1 Jun 2026 23:31:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 451126B04C2
-	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 23:30:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E31FEC0B47
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:30:01 +0000 (UTC)
-X-FDA: 84833543802.09.F4281B7
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9829580008
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:29:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SnZv1RUr;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D70CA6B008C
+	for <linux-mm@kvack.org>; Mon,  1 Jun 2026 23:31:31 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F5311C1FA7
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:31:31 +0000 (UTC)
+X-FDA: 84833547582.28.1BD901B
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 942D340009
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 03:31:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=rUbsWu8t;
+	spf=pass (imf11.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780370999;
+	s=arc-20220608; t=1780371089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=coyOUsvaOjNin9zL0dWryXVgwBZsowpVXbprEgp4Mbw=;
-	b=00Y/HxgEGVjsNnP+JUlwj9xeY3egqwe1+bk2mwEq+c2P7wS1A+8VNcFhejte3zivzKhYJ+
-	QDkUy9Q7JJhRSGcroafaXXmVtI5XAM5TiIySgml5i9NcBfuXIKbEhPioxxFgXqN58HJ3yH
-	GpAuaNJY6LuHDlO2LjX7qCa7LVFVK44=
+	bh=eKjT6Zg4boSSOeRK+U8oV+FxAjxZtDyhnFgmKfmpDas=;
+	b=5GXm/U7JAXR7eXUw3RUQnQOomAecyQfiAlLwXIxuQ3KKevRAfBgRpJVmvaHUg7S5V3Vktq
+	6zCVDawthsTF1xMy1vutFqKanZccAy+PqZUMCDgYZO/gcu68mXU4sqLSd5CklzuhTMpvAF
+	S5/qbZfcG+npQKl8VHzXcl1ch1kSd/E=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SnZv1RUr;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=rUbsWu8t;
+	spf=pass (imf11.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780370999;
-	b=ysT+XBKLTcm4LKQ8efiMMyMKpaoaZlI0euPXGSMq4FAao//5q0+OX+BbQQQBYAw+989pw2
-	WnyODl5lEZBw4lrMu6qlvgSfjOwXlXf+elDu8y2VRlFC/tskeH+CvQ3CwkUJP+vTapfZNC
-	xujkZjrHKcHcF9ffY8tMW4U7DWQD804=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1780370995; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=coyOUsvaOjNin9zL0dWryXVgwBZsowpVXbprEgp4Mbw=;
-	b=SnZv1RUr+aHlxJTSGO2+uyE2+uI/Uuu2dwZje9h36VeWKMnXBgHEnTqnQR1zbj+wMrIXDR6xOF26jPxdmFTlJ3+aG1Er/BZq6IIrnH5H1wObE5txLh71usp8CdDtjcHTTudVFIjZk6ldljLRx2cbJvKmLngzKvINtF8dt+P0rqg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X42n0-6_1780370993;
-Received: from 30.166.17.138(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X42n0-6_1780370993 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 02 Jun 2026 11:29:54 +0800
-Message-ID: <964254f8-2b98-4540-9e00-3d07930bdb24@linux.alibaba.com>
-Date: Tue, 2 Jun 2026 11:29:53 +0800
+	t=1780371089;
+	b=CEcEY77N8zYW6y4Re6s6v+6eVg/4r0ubEKhDh7zcLzNqwfvRYPeuv6qjwxrCIktemtWs1K
+	wnRElxqDSaHgZwjYStq+i95WEXw4RtSGgxi0Ov+FzHT5tWzN0k3LEa0675qvIqKbkmT9tt
+	SZrCPf1NKFMdkeBadwKJZnJ65i5TgGM=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=eKjT6Zg4boSSOeRK+U8oV+FxAjxZtDyhnFgmKfmpDas=;
+	b=rUbsWu8t2d2azz8Ev4bysq6LLCcJ/SHmOo0GFrdvlUOILVf2ZXLEW8XEljU1G4WVXJ3vLafjF
+	YX68s2tIiko1MsBkDrbA7z1MYsikporFc7syk5ZlzwtT7H9hvc1crRbFfWDTmaDWX245QZQ/0B+
+	PCcJvZW5kHYoz43eLR/pMXQ=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gTx4H0Gt7zcb0N;
+	Tue,  2 Jun 2026 11:23:27 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1D0274056A;
+	Tue,  2 Jun 2026 11:31:24 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 2 Jun 2026 11:31:23 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 2 Jun 2026 11:31:22 +0800
+Subject: Re: [PATCH v8 3/6] mm/memory-failure: report MF_MSG_KERNEL for
+ unrecoverable kernel pages
+To: Breno Leitao <leitao@debian.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <kernel-team@meta.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, "Masami
+ Hiramatsu" <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>
+References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
+ <20260527-ecc_panic-v8-3-9ea0cfa16bb0@debian.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <642852e1-933a-a6f6-b6e8-2ef3339bcd58@huawei.com>
+Date: Tue, 2 Jun 2026 11:31:22 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: use correct flags for device
- private PMD entry
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- SeongJae Park <sj@kernel.org>, Balbir Singh <balbirs@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260601083044.57132-1-ljs@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260601083044.57132-1-ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20260527-ecc_panic-v8-3-9ea0cfa16bb0@debian.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9829580008
-X-Stat-Signature: hquco4dun9xrrjk55sbmrz97czi16zfy
+X-Rspamd-Queue-Id: 942D340009
+X-Stat-Signature: jjtd8cytom4dzpa35an1mqn9bkgk9fru
 X-Rspam-User: 
-X-HE-Tag: 1780370998-365882
-X-HE-Meta: U2FsdGVkX19fh/umubG0CG4ujkPSPoFAp/UoV0gFJ3FLINwgk36FqihH0jbm6ACqaXNb5yy3Km3JaMV4nyW6OYaBQLYyJOTWYV/+3Q4pZFUb5Wfqy+aAGupw7nzc+Q1fQvj8U1XBoNdeCFRe9a4xkJdMwCcSCuUMYQ4dkqkBkpSlJK+zghvr8N80617IJDsEiGrMRQ6e5EnV004bGREMBam4Vc+C5d3c8YOubgT+uQ5xJT9mEQ3cXAOtdsCTdaqK1ZL4WZBosCT3Dcadcv4LSTZRJqCx/MhH+9WI9x50FkPl4PRhUG/nJSI4qgYSMyOR59RdaALl4rivG29adHioIR8VmkyVVLhf1aoD9262vxflEWfO1T0s5oZCk4dbOwiyhch0W16PwSm1MDHSis8tDCRrSS7ZBBnsH1hvk9G2dTMSZH/h0k1xyyVE6Z2TF/FQRqzazh9WquHFbjZxL7rZ4KrQkdS7JZksESahHPsBXLs55owb2wiOd6s8RzPstR4VIayIi/MeGqMMKP0rfmtTQAdtmWDLllkiVxhnsKdiRmWQGZXwFJGyPYUTiEekHD5kI8wmizxWb+Icl6JivCsMpgssaZHsLoBoe9CgNaOMr33w9TjG0TYqsBAZyF1U/RvUHGb2idFtsr8ako/1sF6O4FWbFgdBKZQUoZD2ITDG6PFPUxS5TGrvgM6hzO6nbFsrEnE1uGzwhLv4SuoC0HpqvXBi3VFjJwkFqWH9dA0y0tPbrfOnOLCmmZp1tjJnmr+PQ84CfwfGZkO5gbRdzrfZBgVISoTpoSUguu5Qcr6GKlKVsJ8lxQosCG7XBg2cuNRsVNyfqxcJPcxzH6QNFgxjgppOaeWn2YxvLnF07qAhb58k6Wc7OeaCJ/mvW8v3ugPGr5U6j+0LDQQ68/cj07Qa2UaHo90qtXAIUEOuHoVgw//kDIG3zon4vlIMofkyXdSyEz73m2fnfgcG/EoDrq1
- FMWXNNyN
- znLno8HjHUOOCopITJvhggwoizn5FP78a238lmh57Xxa26l8OPRUueBi1ZLdARMC5msZdev7OGiQ+eCjpGHcYA18UWJlnRoNNvDjwIp/ovlSmkiyqGm/Oxpg7qPywgQBiyPXYEsjB0UOWBQTsUpz02Vbln+5pN9f9RZ7k7i08UHPpp2jk7Oih+q+9fE9tMDyDmm1AvYDwG4hYqy2t1TXi5Vys7vwbrOAgzc7zlFuVPrN7gSkOeRdTVid8H1+ySf6nOWeevyfFZ0ZB/7NIHgUqRt/0kqMeLHwxNVz/ECffve+gLTrPSrnhlkYchw68//upbsgVRtA/AwB1BmDtb8xAY9pQqEwSc8jOSqj4D/4pjFMpHTInJHrSZ2T5Aw==
+X-HE-Tag: 1780371088-539355
+X-HE-Meta: U2FsdGVkX18Ohj/aK4eSEzXrkox5cG31AhVPNoPlUGIgjiUPyFOft/P4n/7AgHg5J1FC7O78T53vOPA0ajBUgD+QZLB8mLukNVuFgg2e4l1JnzD7vazED+K3QZvdu4X6ZPsZ99cpym2HJNNQn8hstN/RZQuOmOJar+T6WyzXN8hqV4idzmrUbHCA+dISkXrqeIVN9Wlij93A12bVyLyg1h6uiD32DO9d/sy1rRomleBWeP9B3IOk/4YlUsYqjTZieCbaVbPj4QX/h/ioxVb4vG8J2XZlDDNOiceEJaFUrW38h2dqI/XwaYoRY/Ewq3j3WgVJbHHW1+AEXS65QrwCfHXfuTz/5/n+E/hQfIUU7ymAYwB4IYbKV4m1lJ4sAmY0vTuTfvbouPSpDBXNK/VLWoCx4XG7VxBdIg53gog5fCH8Z286LGsKzKN8WSncGYOW8g7tr9ELzIjRQiXBs1BLxCauUM/wGT5QIIjTSYnspqABn/z4yBVFbOPgy1tPvYVtqd1avh6XL95rP7t8jxulzz0vOiLiWe1RNG8eT6wtFyC0vcK6BHZGev1NuemfFcvEn0MEfKdcFBRao3A3amRT7q3PhCFR6izKwcP46s3CFnF7SPXP60G1JE4Yq5Rs+dIWleM8iRLfn1Zr1Ua28Z7RrrLqHVSlbXFYVEXOEVJVdCMjOJTCLZkw9ZcGPY1W/GdMVrzLJCHCr0T6l2xEfLuDf0cHUiHftxFlV+n7BsYSUD1uMzT3hHX2eqXf6c+4MKp7+eULzjc9UIReKVWCFuZDcjDyZK9WlNylfqW2x/jeY59s5rtlK+KP1TFVdPdevU8L4JVgM+kCjt5SPLhd2LuBJZ06dtAUi/7jhKN6ObBVlluyrqq13v/KEV/z5U2GTKSfNddYdhJXQkz8nIWATdEkP1OrWf7TXMkggvpe+TyYz3r766v7bZPbd7otFS0z+7AKTHNcFNi90IbUQotwsD6
+ 0xJ1ZdD5
+ aSlzJo+ox28+uzDvInnUNMoeMIfa9SDy2ZuuWrs3Mao9meS2Rg8lt0gy6qX1EGzBQl2sXt10bASM+9/dwFBu9UY7LYAV93jR6CUV6n+Kx6iMgk1jLRLL/tb3Xad05t3tq21iuAuGhStpjp3noHWZOr5cCtIGuypChouM7jEQDggmUBpzXXR5f0CaALlZ2YjnNFh/ZUZ97EQ3kMBEiPhb1bNNE8BAF2r+cdGwiAetg4R8o1VcuVZII+A8frCWkA1xaK2Puv4JRs81Po/IjsN+JkWOWx/R2R/jFXS+sSAEMKkD64H5FaxeHO/b9v1E9Fbif7qfW+2cp8W6gjlphuXrkcOveXsTqK0M/akOTmG1vUfOHq5IzIDuWotZWMjLg8GhIpWS+TOcZMJEICUap1xE3GUcJ8RGOSAWffRyL8CL9lGsQU/wN61UPQhwBGwQmci4kTYW5aLHTm1BuelWMINSW+HFVMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,79 +114,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026/5/27 22:06, Breno Leitao wrote:
+> The previous patch teaches get_any_page() to return -ENOTRECOVERABLE
+> for stable unhandlable kernel pages (PG_reserved, slab, page tables,
+> large-kmalloc).  memory_failure() still folds every negative return
+> into MF_MSG_GET_HWPOISON, so callers that want to react to the
+> unrecoverable cases (a panic option, smarter logging) cannot tell
+> them apart from transient page-allocator races.
+> 
+> Turn the post-call branch into a switch over the get_hwpoison_page()
+> return code: map -ENOTRECOVERABLE to MF_MSG_KERNEL and any other
+> negative return to MF_MSG_GET_HWPOISON.  case 0 keeps the existing
+> free-buddy / kernel-high-order handling and case 1 falls through to
+> the rest of memory_failure() unchanged.
+> 
+> The MF_MSG_KERNEL label and tracepoint string are kept as
+> "reserved kernel page" to avoid breaking userspace tools that match
+> on those literals; the enum value still adequately tags the failure
+> even though it now also covers slab, page tables and large-kmalloc
+> pages.
+> 
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 
-On 6/1/26 4:30 PM, Lorenzo Stoakes wrote:
-> Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> device-private entries") updated set_pmd_migration_entry() to use
-> pmdp_huge_get_and_clear() in the softleaf case, but made no further
-> adjustments to the function itself.
-> 
-> Therefore this function continues to incorrectly use pmd_write(),
-> pmd_soft_dirty() and pmd_uffd_wp() to determine whether the installed
-> migration entry should be marked writable, softdirty or uffd-wp
-> respectively.
-> 
-> Whilst all are incorrect, the most problematic of these is pmd_write(), as
-> this can lead to corrupted rmap state.
-> 
-> On x86-64 _PAGE_SWP_SOFT_DIRTY is aliased to _PAGE_RW. So calling
-> pmd_write() on a softleaf will return the softdirty state encoded in the
-> entry, assuming CONFIG_MEM_SOFT_DIRTY was enabled.
-> 
-> This was observed when running the hmm.hmm_device_private.anon_write_child
-> selftest:
-> 
-> 1. The test faults in a range then migrates it such that a device-private
->     THP range is established.
-> 
-> 2. The parent then migrates it to a device-private writable PMD entry whose
->     folio is entirely AnonExclusive with entire_mapcount=1, softdirty set
->     (accidentally correct write state).
-> 
-> 3. The parent forks and the PMD entries are set to device-private read only
->     entries, entire_mapcount=2, softdirty still set.
-> 
-> 4. [BUG] The child writes to the range then migrates to RAM - intending to
->     install non-writable migration entries - but replacing parent and child
->     PMD mappings with WRITABLE entries due to misinterpreting the softdirty
->     bit.
-> 
-> 5. In remove_migration_pmd(), if !softleaf_is_migration_read(entry) we
->     set the RMAP_EXCLUSIVE flag when calling folio_add_anon_rmap_pmd() for
->     both parent and child, which are therefore AnonExclusive.
-> 
-> 6. [SPLAT] Child sets migrated folio entire_mapcount=1, parent sets
->     entire_mapcount=2 and we end up with an AnonExclusive folio with
->     entire_mapcount=2! Assert fires in __folio_add_anon_rmap():
-> 
-> 		VM_WARN_ON_FOLIO(folio_test_large(folio) &&
-> 				 folio_entire_mapcount(folio) > 1 &&
-> 				 PageAnonExclusive(cur_page), folio)
-> 
-> This patch fixes the issue by correctly referencing the softleaf entry
-> fields for writable, softdirty and uffd-wp in set_pmd_migration_entry().
-> 
-> It also only updates A/D flags if the entry is present as these are
-> otherwise not meaningful for a softleaf entry.
-> 
-> This patch also flips the if (!present) { ... } else { ... } logic in
-> set_pmd_migration_entry() so it is easier to understand, and adds some
-> comments to make things clearer.
-> 
-> I was able to bisect this to commit 775465fd26a3 ("lib/test_hmm: add zone
-> device private THP test infrastructure") which first exposes this bug as it
-> was the commit that permitted test_hmm to generate the test.
-> 
-> However commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> device-private entries") is the commit that actually enabled this
-> behaviour.
-> 
-> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
-
-Thanks for your detailed explanation. Feel free to add:
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Thanks.
+.
 
