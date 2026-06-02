@@ -4,95 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50B99CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 11:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A498CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 11:14:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B57176B03DA; Tue,  2 Jun 2026 07:06:47 -0400 (EDT)
+	id 19D6C6B03D1; Tue,  2 Jun 2026 07:14:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B079F6B03DE; Tue,  2 Jun 2026 07:06:47 -0400 (EDT)
+	id 14EF66B03D6; Tue,  2 Jun 2026 07:14:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1C796B03E2; Tue,  2 Jun 2026 07:06:47 -0400 (EDT)
+	id 03DCB6B03D8; Tue,  2 Jun 2026 07:14:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B87E6B03DA
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:06:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AB34926CB
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:06:47 +0000 (UTC)
-X-FDA: 84834694854.25.9692CD4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 81942A0016
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:06:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f+coS9bU;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780398405;
-	b=vSTh38pAA4QqhJALfEhP64LAkXumyVwNw4nWCbNDiNidKsQQL5qCaVN6PyBQEgmxhMvw4G
-	9qqrjY9lJ6PYIKL7ZlTaEZcQ4xnxq0rEWZH9aVVEZSwILhi0sTix9C2jjMY4vuXxC/avhg
-	2e1BrDySk5vinp0w6gYP0jRujELye0Q=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f+coS9bU;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E5B716B03D1
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 07:14:14 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B3A9C2B56
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:14:14 +0000 (UTC)
+X-FDA: 84834713628.08.384DB2D
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 330DD160007
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 11:14:12 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CBGWsGjf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ejSlTx7R;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tsftKb+W;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=laW7hGPV;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780398405;
+	s=arc-20220608; t=1780398852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F0B4o40L/vdj2UPhP5HubCeeLQUl0X/X8R3+9RCeRZg=;
-	b=5TAPh0K1IKEW7FcMj0fcT6Bgcr4uJs3YsiwC1TG1xRduPDvcV/mW9ARrGXfpTKlR2SXNXt
-	JQZi44XxYc+vGL6cykDLTan0gmQigY/7TfB8Eo1qBRQ4+/zc5K7extlTb7UUnyFJtqykuU
-	pITL8u4tqNyWqJENhG7nA5ZY1XITzfU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE77341A60;
-	Tue,  2 Jun 2026 11:06:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3ED21F00893;
-	Tue,  2 Jun 2026 11:06:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780398404;
-	bh=F0B4o40L/vdj2UPhP5HubCeeLQUl0X/X8R3+9RCeRZg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f+coS9bU/z238epRHKz7qsUSfNlbI1vN65w1piUAjQpmEbE1+knhgPdMYy7EuCGUu
-	 RVI5RamVpaOq5bbv8hFl4Gnxyu0uSH2rIMp6z6/LLB9WNaftYjNaVtO06cNrXKfc+u
-	 Kyzps1uzP4+Jvo7jKrpeZVzYXAeAQ3ueR08qqHTc/Bzlwy00x0vHtK543+hwiiGtbv
-	 t7EaBmMUX+AOmFYJR6R1r0T145Q2/5bkp2lIP1imPi1IYg0CNAtd7JiIZEy1nssUbk
-	 fc5o6j3s/3OSdF1n1Zfti14oi8XVQmzhHVMlU1cwzSNRbX0M3OBenmXIrQZ0h6Jwx0
-	 RuH7ioPtk6/3A==
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 3/3] mm/vma: eliminate mmap_action->error_hook, introduce error_override
-Date: Tue,  2 Jun 2026 12:06:27 +0100
-Message-ID: <55d13f7d016b827c459946d46a56105635be111c.1780397980.git.ljs@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1780397980.git.ljs@kernel.org>
-References: <cover.1780397980.git.ljs@kernel.org>
+	bh=Mj2dTLHBTtJmxWAHjjC/JAoIXX1S+JjAURhUmTJMA5Y=;
+	b=osVA/I3rXeReAifusvuNZiE9ezAIB6egKeT3lbuI29IC3/c8Xt2wT9JgDljKu3UB5Y3/n6
+	ZaTDGP4Zg9UQdC4bPFhepYeeS1HnEmgAtr00dUiYnyyu8XYs/t855GDU1l8SnrCHqEspCK
+	GRGe+xIHO5bPA57c+n0i3MzlLiurM5I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780398852;
+	b=JJPC3nMY8uxCQ7QhlZe6g4fYoGwK69oXCa5bUjs76F+MKmcmNOZWnNjA4qyw65iB69SfjQ
+	OjbeJoWExUBgyFDv2CdkR2VnQQiJXyPP/ntDBbm74PR2S4GYqj/gCt2cZtcx7es9QhL5UH
+	WSOK6To9aQYAKO+syLu0Rrs1XOjb+sY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CBGWsGjf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ejSlTx7R;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tsftKb+W;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=laW7hGPV;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 622C26AAFE;
+	Tue,  2 Jun 2026 11:14:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1780398850; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mj2dTLHBTtJmxWAHjjC/JAoIXX1S+JjAURhUmTJMA5Y=;
+	b=CBGWsGjfnDxJIyL6p7b7wnwzwF4lPO73dMch8UF/HBIV4nI1QDhY/3h1uf/DF2EIsJXBR+
+	ytZiiL/9uB+AboDqxs6f6RTlu9G6/GOwzRVaMu9GAIUXQkn4JhN4ceSg9ni8oFUF9H6zfA
+	XcZ+6IOhaSeZmmN92rojJ8PsBGo2HQU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1780398850;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mj2dTLHBTtJmxWAHjjC/JAoIXX1S+JjAURhUmTJMA5Y=;
+	b=ejSlTx7R71Y/OQSYP6ds9AHIooLXhHxB/DxJs4KC/y/9CtuqIbOEd7dJ0xn/4AQc4wldhx
+	RD+jQ+02+N0Da5Cw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1780398849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mj2dTLHBTtJmxWAHjjC/JAoIXX1S+JjAURhUmTJMA5Y=;
+	b=tsftKb+W7mmTMWmVSkXFsfdsrkKZt6YmLILo8gYUI6/AZotLEy4LJlSHTl/MUgVcbbrp4F
+	BIhRvr8WZqo/a+t/DM1DabB01jUX/VFhxYlBhVJ2CaXDlaKso27RaYtjSsvo1hNkuPx7r9
+	zKYKCyKfDNy1AUprB8/V4u1FaYrCQ2c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1780398849;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mj2dTLHBTtJmxWAHjjC/JAoIXX1S+JjAURhUmTJMA5Y=;
+	b=laW7hGPVyumtc9e2Vxg5ohsWyBGkNz9p0RwIeUUUJmK119/NZpsydZIxRlmdo5nakYxi7T
+	i9A+c0usCfSb0PDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 563C2779A7;
+	Tue,  2 Jun 2026 11:14:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jMoGFQG7HmqmNQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 02 Jun 2026 11:14:09 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id E0B6EA0EC1; Tue, 02 Jun 2026 13:14:00 +0200 (CEST)
+Date: Tue, 2 Jun 2026 13:14:00 +0200
+From: Jan Kara <jack@suse.cz>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, jack@suse.cz, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	willy@infradead.org, david@kernel.org, hannes@cmpxchg.org, kas@kernel.org, 
+	shakeel.butt@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH] mm: make mmap_miss accounting symmetric for VM_SEQ_READ
+Message-ID: <3apovyh7kutv5qdo5yrcawqlviaeckuyqoirfk55pjwdkmyllg@ku4xvvpgub4n>
+References: <20260525145751.2671248-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 81942A0016
-X-Stat-Signature: xbd9bs7g7uy9whhsiasg89q39jrcudx5
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260525145751.2671248-1-usama.arif@linux.dev>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 330DD160007
 X-Rspam-User: 
-X-HE-Tag: 1780398405-291500
-X-HE-Meta: U2FsdGVkX19wLg9cXqt6JE51VblTX8w0n6gU9eBVVOYLxv6zFvcHxhMIAxIuISu8Y+ncE4wln8pkKCGJN98EGwM9MjBf2MdQBVtew8sH5uemUCSdKW4FAXOm5QW0xhOHPP6J9WIwcxXFxOYGB3QgTr/f+ufQs/Qi4gujTSidNSUWFr6VYxZuf7M3WzsUSB8hoajEW8PZOM9/3hLFUqygbrubP99WFg17qLiUJ0mQ+y35RJKT/02dymoLcKKLF/X0PcUb2cAS9IiucOMlabLF1A2rNYixQvzJ9358l78fAAhJhjzxpDMNbm9aSXY5dBPM+kBFNqIhssdhnq/d6jwjiEZbcAROZFvnTfHzlc6JNIben7kItHy+fIwDMGGzKAteuKPVp2ylcVWiEZRSoUc5SZswLzYHHEYMj5ZidQeHb6JuCJG9UombdnRtBxDxCUaild/yRnxd+0NCJhq0RB4fyq9mUo8nkQ4wDhcnu21eT0jlfnz6mUg+IZHWEZmVpyno8ZDkuhqOl+69Or7EBPkW/8pA6kF/HZwiOQfjLLrfK9zVf2FHJIEdVhVhyHDzgeaUXMxY3voHTAmHffUkFC26kskzIRJETozyT51Xm72LWDx9BX2PCDq5bove/OLAgqRiUNDVKhy+JkcjTJsXW/kUoYURFxvgwrOzxqggtEKEYTQpla20AlBrytbYZnfKBCQoy1/Ca2d30wM0XF4RK9WOfMCYMUIm3nJuvDigBC40v7IRBvqZ0LAJIieyde4Xty+4Z0ulmfzv2eFQDz6z2UFWT9KWVP26gDlSXgmh3VV3aZVMZQgBc4Rf5ZFC6RppNv4Y5AQcD85smHfLoqaG+cLfE3tTegDCkxMj6+fyWED7fDguQPvISogoOere1NnB/O4Qloilj/QAMmHi4jXCV4aGP39W6YwI/SkMAZEtjN4tyeWKeOUiWHCXCO9aaeV4VRoCXbM+01oS1coKgl/Lye4
- ZtVp6SdU
- H8cLgwMax7gXSRRcv4qV0lMrLP9f16qDt7bDQCsJCgXapwqtwMIeYiE8Iy0/a7nbnPC8COXLxoD47+nxgj8GEbj8nIqG0qRaYgLHYd+rwaNkz+fNeiQjcLCZcpFwZ6ZPvwIWbEBctOQ/CY8dK0K5iMe6vWEcJTTCkdxn60JRuU7akxDLz35BTvnyi+fJ7nJoBoulhQWBinw8kDShqk4j9hl579n7aVDeG/R2yTQnUfesJRRMFVENnr50Jc2qdWMyRHImLUwM/zlYjfz42RkbKyCuvGS9L088wAoeK
+X-Stat-Signature: 58oczhxgs6qejys1cp6d3x8ipwm6c1t6
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780398852-987121
+X-HE-Meta: U2FsdGVkX18QhXUTCbc3ZjuxiF76cMBgNaenbPOjBOeXw8orrj2lw50qWEwwaGVzPyjd+y/roJHCyJBghrYTQIpALWxiIiScM72DzoqS2x7tpWjhJn1TLx/vzH0RFfNkIa+zT07oH4z1KbcRyGwaWtM6eAxORdHG+PiqlDGRuQ3qHqZQyt4BnvOhMYMNt4EzjA22MUW9aIm4luJuC+E9YAPJEgG50KjA8muLwUQUxcBsgLrXAzJgxd6jSNrVMyR2IjH46qYZfgiO1WTBUbxw5w2djtEjYC1kZwOBImHNTno/DG/7USlnr4PuXAvfn9PIdY28+iKCFlk0o/OOmgXFgcSuUIhyse+ZLPgqitd+hQCjET+9SStSYar3hVOqriA4/Y905Wx/DBah9348Jz2b70mu0dyc0fWkKRm7n3DTAZ92Rg8UlR6+17iZp76WLQi7JVqrF31Lh/cCWHQgMVdhp8jSUikyGbQfo/XH0kTA5XboX5wGJd9EU1PE9eeeyGqnRMV7/7UG36jGrKePAtTGLYkAQUDH/JRNEa9/JvSURBIwUU4nd1uVfAW4DFJkAFmpQxBmIP9aN19Whamk9mtyKXsO7OXCVrFl9UdULuffyU+qomCNR5mbF0CqQWiXpwgthBGVdMLXBFeCbLuidxvPZzD5LdVjMBwYwR+Of51egQrsGs7RONxRYdIJ2qx8TeDOrYTOeHej6UnK1Xakyhno+RVuuBxDpe004km9RCB2zVpc64w73low002YFdNCWz+L/iGgJeTqzU1cl+iGICYPAzF4oJoGB1BHdSxGJMW5mk1lKL9sQiaXDHVQZxlBCidKHZEJNR2WzjbmR9hOyhbx84vjauTmfMpQD4PTJmUTA6KHGZe1lzFkqqrstTmwA28v0YHNY3MKkm5gvrQdOxT5OL0mQqEorBu4ZD/a5bC13EpccpqEEC2om9Eccz9dIbHrhjksNjcyl/FDFIqCH2C
+ teEzLVxa
+ pg0is6hVUNTi679nsbE9zCEqGfZq0BCjZZvAM4lMgGIC8B99fZXCDzvBxm0o6TsH7KMOVqG75pa1/6mRYNA7kjaOyzFVbRb9yPBH38Tk8hc7d70OmH6eJMibsDlA9x0DUvFcLngNGLq1gCH1nq6kuR+BvMPlRJP8NDAEevxtJJ8i5wk10fqIe0u1xwQOb6vcbue9vcvvXnyFqPT8DLpGqPf9to8EkrB/dT5wAG56FHYsrSXEPylpOnMLm2QUB6eZAqK7ZbFlAKdq8ATCeeA5hbYSIit1HMbmpt5Q6cfV/GGd7RZDt/EcHLHq2s76Weqo1WgNCIeMzD+LL9S+l58EiTkXgFfp1X+aLE6RbNy85ZS+gHPnW/5Sa++DDvrSNWNv6PQLH6CHNUvVEKwM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,147 +134,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Rather than providing a hook, simplify things by providing the ability to
-override mmap action errors.  This allows us to more carefully validate the
-value provided and thus ensure only a valid error code is specified, and
-simplifies the interface.
+On Mon 25-05-26 07:57:51, Usama Arif wrote:
+> do_sync_mmap_readahead() skips both the mmap_miss increment and the
+> MMAP_LOTSAMISS check for VM_SEQ_READ mappings, since sequential access
+> is non-speculative and should always read ahead. The two decrement
+> sites in do_async_mmap_readahead() and filemap_map_pages() do not
+> mirror this skip, so concurrent faults on a VM_SEQ_READ mapping can
+> still drive ra->mmap_miss down to zero through the decrement paths
+> even though nothing in the sync path ever increments it. The counter
+> itself is per-file (file->f_ra.mmap_miss), so it can be moved by any
+> VMA mapping the file, not just the one currently faulting.
+> 
+> Skip the decrement for VM_SEQ_READ in both decrement sites so the
+> counter only moves for mappings that also participate in the
+> increment side. No functional change for VM_SEQ_READ users, since the
+> increment-side gate already prevents the counter from being consulted
+> on their behalf, but it stops a VM_SEQ_READ mapping from biasing the
+> counter for other mappings of the same file.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-This way, we eliminate all hooks but mmap_prepare and allow only mmap
-actions to be specified (which core mm controls).
+Looks good. Feel free to add:
 
-This significantly improves robustness and eliminates any unnecessary code
-duplication in driver mmap hooks.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-We also update the /dev/mem logic (the only user) to use
-mmap_action->error_override instead.
+								Honza
 
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
----
- drivers/char/mem.c              |  8 +-------
- include/linux/mm_types.h        |  9 +++------
- mm/util.c                       | 29 +++++++++++++++++++++--------
- tools/testing/vma/include/dup.h |  9 +++------
- 4 files changed, 28 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-index a4297eb39887..63253d1de5d7 100644
---- a/drivers/char/mem.c
-+++ b/drivers/char/mem.c
-@@ -322,11 +322,6 @@ static const struct vm_operations_struct mmap_mem_ops = {
- #endif
- };
- 
--static int mmap_filter_error(int err)
--{
--	return -EAGAIN;
--}
--
- static int mmap_mem_prepare(struct vm_area_desc *desc)
- {
- 	struct file *file = desc->file;
-@@ -362,8 +357,7 @@ static int mmap_mem_prepare(struct vm_area_desc *desc)
- 
- 	/* Remap-pfn-range will mark the range with the I/O flag. */
- 	mmap_action_remap_full(desc, desc->pgoff);
--	/* We filter remap errors to -EAGAIN. */
--	desc->action.error_hook = mmap_filter_error;
-+	desc->action.error_override = -EAGAIN;
- 
- 	return 0;
- }
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 945c0a5386d6..5ef78617ce93 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -844,13 +844,10 @@ struct mmap_action {
- 	enum mmap_action_type type;
- 
- 	/*
--	 * If specified, this hook is invoked when an error occurred when
--	 * attempting the selected action.
--	 *
--	 * The hook can return an error code in order to filter the error, but
--	 * it is not valid to clear the error here.
-+	 * If non-zero, replace errors that arise from mmap actions with this
-+	 * value instead. Only valid error codes may be specified.
- 	 */
--	int (*error_hook)(int err);
-+	int error_override;
- 
- 	/*
- 	 * This should be set in rare instances where the operation required
-diff --git a/mm/util.c b/mm/util.c
-index 4e172990afcd..af2c2103f0d9 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1414,16 +1414,22 @@ static int mmap_action_finish(struct vm_area_struct *vma,
- 	 */
- 	len = vma_pages(vma) << PAGE_SHIFT;
- 	do_munmap(current->mm, vma->vm_start, len, NULL);
--	if (action->error_hook) {
--		/* We may want to filter the error. */
--		err = action->error_hook(err);
--		/* The caller should not clear the error. */
--		VM_WARN_ON_ONCE(!err);
--	}
--	return err;
-+
-+	return action->error_override ?: err;
- }
- 
- #ifdef CONFIG_MMU
-+
-+static int check_mmap_action(struct mmap_action *action)
-+{
-+	const unsigned long override = action->error_override;
-+
-+	if (WARN_ON_ONCE(override && !IS_ERR_VALUE(override)))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- /**
-  * mmap_action_prepare - Perform preparatory setup for an VMA descriptor
-  * action which need to be performed.
-@@ -1433,7 +1439,14 @@ static int mmap_action_finish(struct vm_area_struct *vma,
-  */
- int mmap_action_prepare(struct vm_area_desc *desc)
- {
--	switch (desc->action.type) {
-+	struct mmap_action *action = &desc->action;
-+	int err;
-+
-+	err = check_mmap_action(action);
-+	if (err)
-+		return err;
-+
-+	switch (action->type) {
- 	case MMAP_NOTHING:
- 		return 0;
- 	case MMAP_REMAP_PFN:
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index fddfd1b57c09..bf26b3f48d3a 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -483,13 +483,10 @@ struct mmap_action {
- 	enum mmap_action_type type;
- 
- 	/*
--	 * If specified, this hook is invoked when an error occurred when
--	 * attempting the selection action.
--	 *
--	 * The hook can return an error code in order to filter the error, but
--	 * it is not valid to clear the error here.
-+	 * If non-zero, replace errors that arise from mmap actions with this
-+	 * value instead. Only valid error codes may be specified.
- 	 */
--	int (*error_hook)(int err);
-+	int error_override;
- 
- 	/*
- 	 * This should be set in rare instances where the operation required
+> ---
+>  mm/filemap.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 5aaba0d3e81d..cca20e350c95 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3433,8 +3433,13 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
+>  	 * Don't touch the mmap_miss counter to avoid decreasing it multiple
+>  	 * times for a single folio and break the balance with mmap_miss
+>  	 * increase in do_sync_mmap_readahead().
+> +	 *
+> +	 * VM_SEQ_READ mappings skip the mmap_miss increment in
+> +	 * do_sync_mmap_readahead(), so skip the decrement here as well to
+> +	 * keep the counter symmetric.
+>  	 */
+> -	if (likely(!folio_test_locked(folio))) {
+> +	if (likely(!folio_test_locked(folio)) &&
+> +	    !(vmf->vma->vm_flags & VM_SEQ_READ)) {
+>  		mmap_miss = READ_ONCE(ra->mmap_miss);
+>  		if (mmap_miss)
+>  			WRITE_ONCE(ra->mmap_miss, --mmap_miss);
+> @@ -3935,10 +3940,15 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+>  		 * In such situation, read-ahead is only a waste of IO.
+>  		 * Don't decrease mmap_miss in this scenario to make sure
+>  		 * we can stop read-ahead.
+> +		 *
+> +		 * VM_SEQ_READ mappings skip the mmap_miss increment in
+> +		 * do_sync_mmap_readahead(), so skip the decrement here as
+> +		 * well to keep the counter symmetric.
+>  		 */
+>  		if ((map_ret & VM_FAULT_NOPAGE) &&
+>  		    !(vmf->flags & FAULT_FLAG_TRIED) &&
+> -		    !folio_test_workingset(folio)) {
+> +		    !folio_test_workingset(folio) &&
+> +		    !(vma->vm_flags & VM_SEQ_READ)) {
+>  			unsigned short mmap_miss;
+>  
+>  			mmap_miss = READ_ONCE(file->f_ra.mmap_miss);
+> -- 
+> 2.52.0
+> 
 -- 
-2.54.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
