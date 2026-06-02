@@ -4,100 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42961CD6E5D
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 18:31:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2901ACD6E60
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 18:31:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38E9C6B0088; Tue,  2 Jun 2026 14:31:45 -0400 (EDT)
+	id 674846B008A; Tue,  2 Jun 2026 14:31:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3668F6B008A; Tue,  2 Jun 2026 14:31:45 -0400 (EDT)
+	id 6258A6B008C; Tue,  2 Jun 2026 14:31:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27C136B008C; Tue,  2 Jun 2026 14:31:45 -0400 (EDT)
+	id 4A0216B0092; Tue,  2 Jun 2026 14:31:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 187296B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:31:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 761A11C113E
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:31:44 +0000 (UTC)
-X-FDA: 84835816128.20.3038BB6
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8F307A0016
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:31:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1FU9Fyow;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eskRAaZ2;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1FU9Fyow;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eskRAaZ2;
-	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D1246B008A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 14:31:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E54CFA09A7
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:31:45 +0000 (UTC)
+X-FDA: 84835816170.01.F4E1662
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DAC8D180013
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 18:31:43 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780425102;
+	s=arc-20220608; t=1780425104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dVvmWIQsbYCW4qeWXvktTCWvRA7yElcuono/iggMNmw=;
-	b=OYKp0dERmp06i4uePGQrWTM1OQcEa7q3Vts0uyBfNbQibMhcSMdB6SFNjSRIEXnbTFEwrH
-	4iSOlt8duowpXCc8zss5ZftIEOqL4jr1A4F3XCN7qrPMGWiQEgMs0PKxSzsGI7JpdG9+6q
-	5SP53r8bu2QmMp9Mub3KhggNW+nh8KY=
+	 in-reply-to:in-reply-to:references:references;
+	bh=L02qb+fc41ni9ojRFQLpdYce6kkEH1h9fkjAxArua80=;
+	b=mQIx6WoFoFzo+0JKVrdHiZmNgH6W5IeW67Zc3rThJ3hAaHSgE+F1Q57ACxFamukkxhXRvi
+	T9YgdlUP0eNpR//5I8dI83wSieqOdhKst6p6MPbYXvSL93Jg5Fo67nsDFS2m39Y1RdvoY0
+	zCKL79xOOmqvGTKzewt3NlIyEArSdKI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1FU9Fyow;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eskRAaZ2;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1FU9Fyow;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eskRAaZ2;
-	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf24.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780425102;
-	b=SgThUZZ+4YUGTttdMeBxjenR8k1UN7fT0WO1Bzox2XvKJWQ9csrdnV04okXDJPlqwL3yyR
-	TN4J25rY+TvP2lKvHI392azZo1CtzAUhj0/yA5bstVPiAUBTunsSw+paGT7TEi3ANow+G6
-	3yDfuyuSGsszd93mWCu/ZPvPIsp6cf8=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	t=1780425104;
+	b=BSqfcykmPNwgKKiR+2msl6RqId/np0vbElRHWShbWcO8sl/tSmKpVqoswuBwxsPkDtt+RV
+	GC+hv5OSL2Z4Yp5n6mG511lYgUXpDh6Kse31scIIwU4noKwstdaN75Z+0+QDcLGtlcIsDd
+	9Z8mg0RE+10K84nYJDQAnA+5pFdH4Co=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 58A1D6AF08;
-	Tue,  2 Jun 2026 18:31:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780425101; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=dVvmWIQsbYCW4qeWXvktTCWvRA7yElcuono/iggMNmw=;
-	b=1FU9FyowV+cggrwzjroEuXqlmkeP4q4qYMFJEDhQEOwuxe8r/DLeWnkpnt1msN5EArfHHI
-	c/cxAMoMF7s38+3qe7eJfwbips7Z8REt313jMuGHQoKMuqMfMEwZ9Wch9tKEPseTaf7/LA
-	EysgQ23J9T3HL2i22cSSCUNnFMssEJQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780425101;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=dVvmWIQsbYCW4qeWXvktTCWvRA7yElcuono/iggMNmw=;
-	b=eskRAaZ2tu02jflI/8FBuZuunrCjZGM0TAO8XhauiG5Rr5z0v2Y8tWgCNXTGpNep0Yg+Lv
-	T9ZVglW2dfgUCJCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780425101; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=dVvmWIQsbYCW4qeWXvktTCWvRA7yElcuono/iggMNmw=;
-	b=1FU9FyowV+cggrwzjroEuXqlmkeP4q4qYMFJEDhQEOwuxe8r/DLeWnkpnt1msN5EArfHHI
-	c/cxAMoMF7s38+3qe7eJfwbips7Z8REt313jMuGHQoKMuqMfMEwZ9Wch9tKEPseTaf7/LA
-	EysgQ23J9T3HL2i22cSSCUNnFMssEJQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780425101;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=dVvmWIQsbYCW4qeWXvktTCWvRA7yElcuono/iggMNmw=;
-	b=eskRAaZ2tu02jflI/8FBuZuunrCjZGM0TAO8XhauiG5Rr5z0v2Y8tWgCNXTGpNep0Yg+Lv
-	T9ZVglW2dfgUCJCg==
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BCF2366FF6;
+	Tue,  2 Jun 2026 18:31:42 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F1985779A7;
-	Tue,  2 Jun 2026 18:31:39 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 72292779A7;
+	Tue,  2 Jun 2026 18:31:41 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1X5bN4shH2owXQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 02 Jun 2026 18:31:39 +0000
+	id QFZMGI0hH2owXQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 02 Jun 2026 18:31:41 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: Vlastimil Babka <vbabka@kernel.org>,
 	Harry Yoo <harry@kernel.org>,
@@ -118,20 +84,29 @@ Cc: linux-hardening@vger.kernel.org,
 	Jason Xing <kerneljasonxing@gmail.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	Pedro Falcato <pfalcato@suse.de>
-Subject: [PATCH 0/2] net: isolate SKB data area allocations
-Date: Tue,  2 Jun 2026 19:31:20 +0100
-Message-ID: <20260602183122.747759-1-pfalcato@suse.de>
+Subject: [PATCH 1/2] mm/slab: add a node-track-caller variant for kmem buckets allocation
+Date: Tue,  2 Jun 2026 19:31:21 +0100
+Message-ID: <20260602183122.747759-2-pfalcato@suse.de>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260602183122.747759-1-pfalcato@suse.de>
+References: <20260602183122.747759-1-pfalcato@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8F307A0016
-X-Stat-Signature: 9txti3gm87zps894cid5pa14s1etx9a9
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780425102-577004
-X-HE-Meta: U2FsdGVkX193kWZXkNN+7C03NOThJBta92lZAUPZmFvTomfhkbaNc3XkytTdltyVcdjrdNYLtGFQL0ZN5xn4xwvslxCEJHuG356MFUjUt65CjolhkJI/9fj844zol6TKBdW/J7I+k5RoD88dSa5Yco36q4ijHmwKcQZQM5YyZG7Os9ZCqX9vBT4fivm6+4HfwXtygVfTrhq4D0hlRI6M65mXIyFpjc4H1V4slbr12tS6a/g+DeDS9aYOGWzYI5slL90VBnYfeDVV1WE96VA2rzTNXxrRU42IG+Xu/opz6wndBDu84/fp9i5i2MIH7QZq/a8OTpufjl144WRz14lIVV6it6XSzh5HUb+ln216WRIUhUhrNJX46m9SOAHD2e0CRrF6QQr/mbVWAYJEgNVH+Dxoxve9XWkzAnu+pKrtynw555nwik3h5XZ3TZ8eWblRxfJTuoB9+AgCaOIn3ZF5cencj7S7auSMVLd3oPvvl+7MDFTWRl1JGEeliEy5T6SwRQghaFEBM4rJfFJ9OMELRv4J8+XrqEMvSg9xJc20ZQm/66PvPtyKka+E/La8jWhxGMoeyv3bTHkzb7UJcosyQsE3ppBfDX3A6pCnlja43qqV8RswAyfBkV7WFjyED+Tq+AtU+fRg9hMEsLDCGmdp2yvTXzK09xBPaE2gaU2xOtJZSnZGCG7GIXzzd1ACLLrhhRkI1N1e9CdfEbIdn/c9gurWCIGVZhALPoldQ2TRql3/kbaBo/7ry3cJ1+mAuiCuzBfR/KyqTnQgPcTf/PQsHJwq3n7ugWxvSzaL29oZn0rJJYRWHwC3+rF8IzTf1tuBahMSaq65VwF/VQX/IAIubBCSMEx2di4agbU88Dj2PnZeYcfcGgquLXGh+EcZNrx5AtsBxPGXdJTD7kZmlJxaAAyFXYJItRHJMUybanuMVP2/fJbkoO1DPGWYvgdpx7uXYJHSJTq4NZYfs/l4hgb
- GOyhp0GQ
- 4tOAK1g3qy+51UUxFUf1yxC/Np+8y4gVZCRv8Gk0l1qHuf4cKRUp8lZnrFXZkmVGfUJEcLUA5sa+ZLaJxrNc7qp6nFOaQxNNSmTCRry7szNFt9ZGi608mRmab6T6I6C/s1wAJlqbTTl3pZgnoN825nHoD7eTan3Z8HBqL2F6gpvI1Cv2lK/jArHCe4+GV/4tzN4S0HKnk/L20/XPQtFjsnYi5bohJcAjOR4l7HZpRD1eY0G9lbwyHnTPqUP9BkF9n4tlBWXTe9v9wDNI=
+X-Stat-Signature: 76exm5s7sjkqenat8q85bdqj3qeq7txw
+X-Rspamd-Queue-Id: DAC8D180013
+X-HE-Tag: 1780425103-906325
+X-HE-Meta: U2FsdGVkX18d5jh7/YMgddz0uUmKkCXdWKsLru49tKswboQZM8GAmjWWou/rkjLU0jnfxNVlKQczJw4seBygjM9SCdzJxRwWxctXT03rb4ke+MYO/VCHcuKZaFO9YnxLUPGqzK8VXNxofTYnAg2Oma7lCbNY9MZU86T3lXAyLgFYpOc/fUCXQstUAlRObT7dEEMwlgFTIiRSd3lTzaxTnvBDEaCKpWeF9khRQf0GhP5H7daWiGmOL4wLHc4bKWhLxm1MrrFfYPI4qMT9ftPsCUwfWRI84ChWiTx/m3e6KP4iePGywu2JYp6sZ3+CFppgmK8S6r6jhzgFF59HaT7EnZMbAORVnCB6GjiQ3YQZ6lPvsU7VneiqK0uunucnXFNVM3YkFqqroovcckiP/5rVj91nvG0QR+qWqM+DPVU1TLrvqjkB05KdkNmBTFitZLAodGAQWCAFb92Ei5680AXxkkD3xdZfdYw18fVe1YWRB8JxNv3p8RkEZEWF0su2BjU6N/qmvwcUNEEwJ4kltnUE4BFZEObeWtyDkDKfLTiKRvJm5FyirevQ5Py4sgPiGwNn3pB5q6CY75/nPwAaIioZmHI138c/5z0GBSeVID0PjRqu1/H49Ik0hOA2K0nRHENuMKMwx+3Yg92y0ijCdc6hIYI/ddb3OzKmZLl8Sj/y/RX3/v4IWPeFiJDIWV3EC+0eQ6Asl/W7xx+1peL12OIAV4cRK0kjJvOkbDDhDwRhWnRViLTzvRTXrdgGXxDYa7G7/WMOVw2odW60wanJHV+wdlUH5LzyJ67XurU8Fr6+QTFk6d5YwbvpZLras0Cs6JNKAxa3F2/BVHC/qtXMfhJPYqtfZ50ltq5xu0lSSuVinfqogX9vybW+caeRAIi2JTwu7e5aEBlFahTJ+c9+y5LcNX6p5VbgkO+vJn3Cir7HQ+ui8IB/PaC29OfPus/UiXnsoW3cJObZY4NSpiv5JCd
+ 36goTRRh
+ vpkBZzGZePhTe0VU9m0Ar52iowxWXkyDR54egtD6/azF2XINU1pO2A7+oOHlf5SkoYqb58/l6HHGHb7012LBFM6yA/UxPHVjL9xUj9U/zm34cXNHNACzK9tsg+E9wCvUbskkprATjWyA8chp0ibpcpy2IIqIHeoNPR4j4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,23 +114,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a rather simple series that attempts to address a possible
-exploitation avenue - the allocation of skbs around the network stack, which
-frequently get user-controlled contents. Found while doing some amateur
-exploitation analysis for some other issue, elsewhere.
+This is required by users that want to use kmem buckets, but still
+desire specifying the NUMA node.
 
-Patch 0 is a precursor patch that adds a slab allocation helper, patch 1
-does the actual bucketing.
-I don't know what tree should pick this up, so I just based this on linux-next.
-
-Pedro Falcato (2):
-  mm/slab: add a node-track-caller variant for kmem buckets allocation
-  net: skb: isolate skb data area allocations into a separate bucket
-
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+---
  include/linux/slab.h | 7 +++++--
- net/core/skbuff.c    | 5 ++++-
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index 7b46fa499b08..685a87d8f0c5 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -1153,8 +1153,11 @@ void *kmalloc_nolock(size_t size, gfp_t gfp_flags, int node);
+ #define kmem_buckets_alloc(_b, _size, _flags)	\
+ 	alloc_hooks(__kmalloc_node_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, NUMA_NO_NODE))
+ 
+-#define kmem_buckets_alloc_track_caller(_b, _size, _flags)	\
+-	alloc_hooks(__kmalloc_node_track_caller_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, NUMA_NO_NODE, _RET_IP_))
++#define kmem_buckets_alloc_node_track_caller(_b, _size, _flags, _node)	\
++	alloc_hooks(__kmalloc_node_track_caller_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, _node, _RET_IP_))
++
++#define kmem_buckets_alloc_track_caller(_b, _size, _flags) \
++	kmem_buckets_alloc_node_track_caller(_b, _size, _flags, NUMA_NO_NODE)
+ 
+ static __always_inline __alloc_size(1) void *_kmalloc_node_noprof(size_t size, gfp_t flags, int node, kmalloc_token_t token)
+ {
 -- 
 2.54.0
 
