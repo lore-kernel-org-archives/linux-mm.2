@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F98CD6E61
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 08:13:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57BF0CD6E65
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 08:13:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 855016B03F6; Tue,  2 Jun 2026 04:13:52 -0400 (EDT)
+	id BD7C36B03F8; Tue,  2 Jun 2026 04:13:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DE036B03F8; Tue,  2 Jun 2026 04:13:52 -0400 (EDT)
+	id AEC156B0401; Tue,  2 Jun 2026 04:13:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71B7F6B03FF; Tue,  2 Jun 2026 04:13:52 -0400 (EDT)
+	id A021E6B0402; Tue,  2 Jun 2026 04:13:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DD6E6B03F6
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:13:52 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 086754080C
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:13:52 +0000 (UTC)
-X-FDA: 84834259104.06.7E89AA7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 66F0640003
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:13:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BKXzTPVe;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E9416B03F8
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:13:56 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35451A0857
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:13:56 +0000 (UTC)
+X-FDA: 84834259272.12.1DAC7CB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8439A14000A
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:13:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WfMh9fz6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780388030;
+	s=arc-20220608; t=1780388034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9masuDvZGRAE5YhO0nxFypjCa/sv5HXBG/vt0WeBSHY=;
-	b=P+sNKwskMYMvKTCGen1EdxDPfUdrx+fhnEnUsCBQbZVu6fpAL5eyzhsaGX184V+uTNMOfV
-	b5zF472dPM2aawPpov5roCCKf/PCbhwwATMkcf6XQSHYSDIqkyOlwOJhhSEZZOCXaJKsIN
-	RaoJfFjUS6SA2Ewo94jDm7QQmWwqWj0=
+	bh=8677rqzPwCK7BT2bqGJkDF7s4XcZqoB/M7pK9qZ0mPI=;
+	b=362bgp7TTjGB50TvJl1SyqrmwDn+NYDyneW/dp10VyqjnO66Lxa6tE2mmU2e9Oy6ThD1ou
+	cDBpoA/0JJVorO0vDxzhMhKdqrQVqh4sfVoSnp3xUMs1zCsnjcyW7H8NkAEJkyDXEAIg7m
+	PNcpo3O+g2KfzxdD4RiQrW9q8Hw5FSk=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BKXzTPVe;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WfMh9fz6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780388030;
-	b=KixKuPD981YTLfoTSAey9JzaQH7dgsdZYnIguItThOwvW0RueEIiiS8k/QeJ/l6aDSukKY
-	CMYTshz+0L0MxnjEgb61ih/3uy8kN/GZ1od2wWtgjuWIzIm3mKId7ragBuX8RreVRCZbyX
-	230mgiERB7TkSq7RpQv1ua19vXs5O0U=
+	t=1780388034;
+	b=lSurHeIiHFb71aaLISMaYUBHOp1ft5RsIWrIjzvhejcuWdppyioiDsPr2t8irm12kiU//3
+	L0+x+kX2oH3VH/J2WPtRPLrURh2lqYUx3IlogJqSX5btlopkjmOPs0H7qLD9YDMOBNMoqi
+	tuVV2XFkpT+MGU1SIx3qi5hZVhC9UHM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 04FD160142;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7EF6343952;
+	Tue,  2 Jun 2026 08:13:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363D11F00899;
 	Tue,  2 Jun 2026 08:13:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856151F00893;
-	Tue,  2 Jun 2026 08:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780388029;
-	bh=9masuDvZGRAE5YhO0nxFypjCa/sv5HXBG/vt0WeBSHY=;
+	s=k20260515; t=1780388033;
+	bh=8677rqzPwCK7BT2bqGJkDF7s4XcZqoB/M7pK9qZ0mPI=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=BKXzTPVeNI3EzsZztLA+Etdw4lE1OGP7XkpvZ37eeDEGaDydQwyq9IugNdZBmAYvs
-	 FnqxLdkt/2eygj2ytRe1nnhKx+iBbgy9pHJ0KDBfSNyODINtGD+F1dpz5xpaS4QY70
-	 dzhesbOX4O+UE04WBYEPnUNMMhUfwjmCBQvOBV++UUSG9fn57/q+2X1iZUv3GtfKzS
-	 Cm7GMdTCvrapPt8AGMxEExKMmU4sl/gawXrebtYxnhRpE/TeHiZ+jxfXv9ny1a3v8S
-	 6nFXBkwl0eHnofOmZYQ64h4A+zO0Mdu8DNmWNYP6M03PUMobTq2oOtcAlkY+j4vc2V
-	 If0s6C+uH6NbQ==
+	b=WfMh9fz62CnhrepjlqZLoJaI2CY23PyiNds+OHaCi+8uuAOcT1mIy0T88mUaIDRN7
+	 VEo98JrsdK7inKt4bTisyphkakz1/LUWeVEjGVxnQnzEQh30te7NE/d3u5dUKCU/Sp
+	 wPGEPy5r5+gvz8EDne4kJsLtakhboDBaUh9HH1h/fzo6YBwPyIwDq8hTnkE7Abl/rW
+	 rBRG2hDPLmDXN8AO9LsNJFSIriipy2mQ7gvrB5+sk5Ok3qhVEOZATuI9HYuHoPu0nm
+	 BX4SXyAoytHokJpp16Qsr/aKFFNQWEC6fE2YyxvOYDXV6suIcEVxlYjw3EVHnzoZj8
+	 HqwZWBRf5O/oQ==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 03/13] liveupdate: centralize state management into
- struct luo_ser
+Subject: Re: [PATCH v4 07/13] kho: add support for linked-block
+ serialization
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, 
@@ -76,20 +76,20 @@ Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, corbet@lwn.net, 
  dmatlack@google.com, kexec@lists.infradead.org, pratyush@kernel.org, 
  skhawaja@google.com, graf@amazon.com
-In-Reply-To: <20260530221938.115978-4-pasha.tatashin@soleen.com>
+In-Reply-To: <20260530221938.115978-8-pasha.tatashin@soleen.com>
 References: <20260530221938.115978-1-pasha.tatashin@soleen.com>
- <20260530221938.115978-4-pasha.tatashin@soleen.com>
+ <20260530221938.115978-8-pasha.tatashin@soleen.com>
 Date: Tue, 02 Jun 2026 11:13:34 +0300
-Message-Id: <178038801487.119771.6308607614059754603.b4-review@b4>
+Message-Id: <178038801491.119771.18384706761138506132.b4-review@b4>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 66F0640003
-X-Stat-Signature: o4f897oan9yibkj4zbbxpec99ssjxcof
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780388030-618712
-X-HE-Meta: U2FsdGVkX1/pGhesAy/K4P/guhVNVo7harMhfpLk/Pt/GDpRrM5Npi8/e5ltIuXgGUiY6WWl+GWc1EKkoT+lQAe86TeJkeX8S5/zkb36L+TmmJ3RvwfJO0TiZ4BDAFv/Pjq3Rax+09Y7OueHredjQHBVRDNjIOaSw4Pwrwvali8UKleDd5Y5Z3a7lzSHAvcEvrsBXm1m245iVfe8agd3l1l0yRzQq6WI/ZBqmW+ZeF60lpmepzmr0Lo5bjeAtQgsFb+a+yHfFD91kYvm4tQTjQzasCulLJoFlua5kJB86LVufyJU/i/3wR/QYGoZiSVicvGyy+wJhQcMu2IasISqLRr19L4+fM7CyeWQE6IfFL3nJ5mKRdG2HNp6bTOMbVn8tG8zcjyoTAiccQIQihDbFEH0FbVWGWo+49vsm0oiXTZ6p/+Esc2IQLmiudgX2l+SgT+kxT3tAo9f7pAXWSol7pu5Cp1yQ8CX9UCzH/hbw0yC9GjgbHb1wfxjWC1QMLrru1D1bvkuHYJyD+hGx6tpo6uCuizhVJq0dm0bVi7iOfbuqT9yVkvdirmzacVn2NI4xNr0pnDFdFnDaU2iYU9fabtUbuvoJPOvvP53M02EW0zXEhb8tU+GVxrGUfS3YGfJaaMpIOMneE28eAjJHrFWgqU2My5K+/zmTV+9Ch8JjwazU0h2f50yqs601YKnQ1+Pb4ZHu2bZIWAanMeByCazhpR0Kc5aJTWagSVOHgtrp/TDN8SMUTWAHp965RbpYXYjSSj2+fsdQN8uTHp3uBCpZ/kntiJoiov4Py16s8U9gy1CxmJODnJK4gYiLYH4kT76B5ZhHu+FWNJRRJdQRqfxsGhq+k+sIhlZWz576iQfszD0DjOXfpUfCUE338f3rDsuI4AC1ThiWHP+d3xazx/V3pic39QA7mIu5CQo+ASWlXlA99oF9R8kSzPtpfk49emlBS06quIOFRBNjAJ2EYM
- mG6U4gMq
- vnlkVMdKEwP+I/SucO6fDxq9TMkrTC2yRUGsGI+kh+ajynS+h24jR9E/+BfXwVGwRor8CXCHFGLIPbR4QUIsA5iM3AfN4EImUPtbZ51t99qT/DR8k9OLx2r1d6JdemKKDiH2ER+slXEPKSPFx8Qos2N6QzY3gTgx3MyHVc0Ei0nyjZyKL1jwHSCeaDoEIU7CcNVTt2TtranF2h5Tae2FlCd/p9L1cOsOkfwzgbNoPu9KAPajHKepRicCuk6W1QpcF3YhWwOqp9cix4gjGL0qnfJL1WX0kLKYUaaHR1l/S69+bu7+BwSU0y/VcNLc0Q/9tkRsB
+X-Stat-Signature: iqzej45okhmhae7sfc399ew9eoon6zdj
+X-Rspamd-Queue-Id: 8439A14000A
+X-HE-Tag: 1780388034-362034
+X-HE-Meta: U2FsdGVkX199xJTxgkJLjvkklGiPSoNFuDYaj8FuNBi4Sv3jnFaMqYMYzYpP4pR+i+xogob2VLUxKQhXR2xHywVNmkVtZfe53r10oO51m/V1s+9f/yiTa+zeRiZioix1fKe8Rf34aJXny0+o28OfigUXJ6PLNaALfk60xxCKjtfKpl0AYqwibq1Ka+v/CR3I2irkfzrgXyNI9aZ3eh3D8coB8wlJMPMiTdN0q2hsv1f4ncZ5vtoCF+PMK9jiZfjJsckutKF1R81w3PFOH6wMhHyfQLTdjH75kUONkp00bgJWJpUjTfkX6/ROGWSaDbvtulkn2hPBbDuvmnJb30AeuhBgOk/wmx0Ar9WHEHXMgx43JfywN/DdpYFDs0cT4T5pZCXuoPJ7C09Q41ZTSKpMUxq2gpKM6nuWKt/4R3Uqw7YOkXcrCynt3EU0rhZ2wCcowFLXzN9cqKfJ604b56uKvi4dLV6/xBRPEm0xbeob2l2QQ8Qz0D607NCNXkPnDcXmkjgSGA5XceTkmUz4eryp99sduqU32A5SpxtHSH6ZgyyNBzqBLOu+hcJbHIwGOQsQ9cDMt9GMvH6FGel2qlVAvurQ8o3C1/k9zSsvef0uVzSnc92KXa19BbJHTU9k8HSaZtfFe20npAX6ZJsIJaOQJuvMI0P9OoIVOh//WrUHxuPzRQc1ajMgALg+ulUbhSw8u3H/ln3sXRJAs1eYNUMnU0dZTMzNXjnYzCFTISKvSWiNDp9TlmQnbt2mKgMtI+/zAVaqZitzjcfpucCzTTU5sbBgWSVUAXm7sw2+Pttmfcr45NWWH0ic5oBzuSm1jYx5Hf8/lqhMxzAY6Bn+yxzOhnDywcd5m2JDDmLGY8u7V39+YwA9w8XwxX4iCnwE0l6wjZzfkmPOGJ09TM8KofxR50Ry7TdKLhvHYKky+xwhY8E+0p6zgHugDDV8Cco5gZmniMcOLQtpPstLNSLRroD
+ 7o99VNeV
+ GY7alTCkOI2Mv3+dDPGsitWtbi8AmGYx7y7yv1lo8pIADe1ULNLfz7lv+dh0VyJS0DWwcYPaTvKziq5ggmERrv5NiIjj3GIIDALR+iGzieNPn/K7nD++zy4mRuQl+I5WVcFIFDtGqIYe6hjk5qS9rDFE6s7Yfo4xojyhYzv6mZGevTfEoJLV5Z5IGwyjFAaV3x+hXMj3klYOHG15eHUGpiu53FD06blkaVhE4F5kpQllLgc6n6WPB7cH5LJbIknYVARzpgXXGLwezOQsClZNxhy/tJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,42 +97,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 30 May 2026 22:19:28 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-> index 8f5c5dd01cd0..c8dd30b41238 100644
-> --- a/kernel/liveupdate/luo_flb.c
-> +++ b/kernel/liveupdate/luo_flb.c
-> @@ -579,53 +565,18 @@ int __init luo_flb_setup_outgoing(void *fdt_out)
-> [ ... skip 18 lines ... ]
-> -	offset = fdt_subnode_offset(fdt_in, 0, LUO_FDT_FLB_NODE_NAME);
-> -	if (offset < 0) {
-> -		pr_err("Unable to get FLB node [%s]\n", LUO_FDT_FLB_NODE_NAME);
-> -
-> -		return -ENOENT;
-> +	if (flbs_pa) {
+On Sat, 30 May 2026 22:19:32 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+> diff --git a/include/linux/kho_block.h b/include/linux/kho_block.h
+> new file mode 100644
+> index 000000000000..5e6b87b1befa
+> --- /dev/null
+> +++ b/include/linux/kho_block.h
+> @@ -0,0 +1,79 @@
+> [ ... skip 19 lines ... ]
+> +	struct list_head list;
+> +	struct kho_block_header_ser *ser;
+> +};
+> +
+> +/**
+> + * struct kho_block_set - A set of blocks that belong to the same object.
 
-I like 
+"same object" sounds off to me. The blocks belong to the same module?
+user?
 
-	if (!flbs_pa)
-		return;
+Thoughts?
 
-more
+> + * @blocks:          The list of serialization blocks (struct kho_block).
+> + * @nblocks:         The number of allocated serialization blocks.
+> + * @head_pa:         Physical address of the first block header.
+> + * @entry_size:      The size of each entry in the blocks.
+
+I think it's "... entry in a block"
+
+> [ ... skip 42 lines ... ]
+> +
+> +void kho_block_it_init(struct kho_block_it *it, struct kho_block_set *bs);
+> +void *kho_block_it_next(struct kho_block_it *it);
+> +void *kho_block_it_read(struct kho_block_it *it);
+> +void *kho_block_it_prev(struct kho_block_it *it);
+> +void kho_block_it_finalize(struct kho_block_it *it);
+
+These operate on block sets, should be reflected in the names.
+Can be kho_blocks_ to avoid too long names.
 
 >
-> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
-> index 8d9201c25412..3b760fefa7b9 100644
-> --- a/kernel/liveupdate/luo_session.c
-> +++ b/kernel/liveupdate/luo_session.c
-> @@ -497,75 +494,34 @@ int luo_session_retrieve(const char *name, struct file **filep)
-> [ ... skip 58 lines ... ]
-> +	if (sessions_pa) {
-> +		header_ser = phys_to_virt(sessions_pa);
-> +		luo_session_global.incoming.header_ser = header_ser;
-> +		luo_session_global.incoming.ser = (void *)(header_ser + 1);
-> +		luo_session_global.incoming.active = true;
->  	}
+> diff --git a/kernel/liveupdate/kho_block.c b/kernel/liveupdate/kho_block.c
+> new file mode 100644
+> index 000000000000..a4e650af946f
+> --- /dev/null
+> +++ b/kernel/liveupdate/kho_block.c
+> @@ -0,0 +1,384 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (c) 2026, Google LLC.
+> + * Pasha Tatashin <pasha.tatashin@soleen.com>
+> + */
+> +
+> +/**
+> + * DOC: KHO Serialization Blocks
+> + *
+> + * KHO provides a mechanism to preserve stateful data across a kexec handover
+> + * by serializing it into memory blocks. This file provides the common
 
-Ditto
+"This file" does not look good in HTML docs.
+
+> [ ... skip 15 lines ... ]
+> +
+> +/*
+> + * Safeguard limit for the number of serialization blocks. This is used to
+> + * prevent infinite loops and excessive memory allocation in case of memory
+> + * corruption in the preserved state.
+> + */
+
+Can you add how much memory it is and how many entries with, say, 4 u64
+it can accommodate?
+
+> [ ... skip 13 lines ... ]
+> +{
+> +	if (unlikely(!bs->count_per_block)) {
+> +		bs->count_per_block = (KHO_BLOCK_SIZE -
+> +				       sizeof(struct kho_block_header_ser)) /
+> +				      bs->entry_size;
+> +		WARN_ON(!bs->count_per_block);
+
+Don't you want to set count_per_block in _init()?
+
+> [ ... skip 29 lines ... ]
+> +	if (!block)
+> +		return -ENOMEM;
+> +
+> +	block->ser = ser;
+> +	last = list_last_entry_or_null(&bs->blocks, struct kho_block, list);
+> +	list_add_tail(&block->list, &bs->blocks);
+
+No locks?
+
+> [ ... skip 12 lines ... ]
+> + * @bs:    The block set.
+> + * @count: The current number of entries.
+> + *
+> + * This function handles the dynamic expansion of a block set. It allocates
+> + * and links a new serialization block if the provided entry count matches
+> + * the current total capacity of the set.
+
+This is a weird semantics for a generic API. I'd expect _grow() would
+add count - current_count blocks.
+
+> [ ... skip 25 lines ... ]
+> +}
+> +
+> +/**
+> + * kho_block_shrink - Conditionally destroy the last block in a block set.
+> + * @bs:              The block set.
+> + * @count:           The current number of entries across all blocks.
+
+Maybe 
+ 	... of valid entries?
+
+> + *
+> + * This function checks if the last block in the set is redundant based on the
+> + * total entry count and the capacity of the preceding blocks. If the entry
+> + * count can be accommodated by the blocks that come before the last one, the
+> + * last block is destroyed and removed from the set.
+
+This should mention that it's the caller responsibility to ensure that
+entries are removed in the right order.
+
+> [ ... skip 49 lines ... ]
+> +
+> +		fast = phys_to_virt(fast->next);
+> +		slow = phys_to_virt(slow->next);
+> +
+> +		if (slow == fast) {
+> +			pr_err("Cyclic list detected\n");
+
+Maybe "block set is corrupted"?
+
+> +			return false;
+> +		}
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * kho_block_restore - Restore a block set from a physical address.
+> + * @bs:      The block set to restore.
+> + * @head_pa: Physical address of the first block header.
+
+I'd mention that the block set should be allocated and initialized
+
+> [ ... skip 10 lines ... ]
+> +	bs->incoming = true;
+> +	if (!head_pa)
+> +		return 0;
+> +
+> +	bs->head_pa = head_pa;
+> +	if (!kho_cyclic_blocks_check(bs)) {
+
+if (kho_block_set_cyclic()) 
+
+reads nicer IMO
+
+> [ ... skip 87 lines ... ]
+> +{
+> +	if (!it->block)
+> +		return NULL;
+> +
+> +	if (it->i == kho_block_count_per_block(it->bs)) {
+> +		it->block->ser->count = it->i;
+
+Why iterator updates ser->count?
+
+> +		if (list_is_last(&it->block->list, &it->bs->blocks))
+> +			return NULL;
+> +		it->block = list_next_entry(it->block, list);
+> +		it->i = 0;
+> +	}
+> +
+> +	return (void *)(it->block->ser + 1) + (it->i++ * it->bs->entry_size);
+
+In a month we'll need an LLM's help to understand what it does.
+
+> +}
+> +
+> +/**
+> + * kho_block_it_read - Return the next entry slot for reading.
+> + * @it: The block iterator.
+
+And what is the conceptual difference between this and _it_next()?
+
+> [ ... skip 49 lines ... ]
+> + * @it: The block iterator.
+> + */
+> +void kho_block_it_finalize(struct kho_block_it *it)
+> +{
+> +	if (it->block)
+> +		it->block->ser->count = it->i;
+
+So, it looks like the intention of _it_next is for write, and this ends a
+write iteration.
+
+I think the names should be adjusted to make it clearer.
 
 -- 
 Sincerely yours,
