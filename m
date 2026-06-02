@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC151CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:10:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28746CD6E57
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 10:10:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09F5A6B00AC; Tue,  2 Jun 2026 06:10:07 -0400 (EDT)
+	id 92AB96B00AE; Tue,  2 Jun 2026 06:10:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 076D96B00AE; Tue,  2 Jun 2026 06:10:07 -0400 (EDT)
+	id 902F36B00B3; Tue,  2 Jun 2026 06:10:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECEC36B00AF; Tue,  2 Jun 2026 06:10:06 -0400 (EDT)
+	id 81E7D6B00AE; Tue,  2 Jun 2026 06:10:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE18C6B00AC
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:10:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9EF9E8D018
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:10:06 +0000 (UTC)
-X-FDA: 84834552012.12.D13593F
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A8F8C180006
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:10:04 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZO962bTY;
-	spf=pass (imf06.hostedemail.com: domain of alban.crequy@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=alban.crequy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 711396B00AE
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 06:10:15 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 350E51A0241
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:10:15 +0000 (UTC)
+X-FDA: 84834552390.01.9603609
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2FA1F1A0003
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 10:10:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BANpJvZM;
+	spf=pass (imf19.hostedemail.com: domain of alban.crequy@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=alban.crequy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780395013;
+	b=vYHqx4TjpyfwI/y7JIiIsjAMuvrmM631uBeHGTaNC+Bg/8ePKT8x3MjqhjSoOB7GLOsMyb
+	7OEACltzWlvT+1QPr6h/w4MQdwAeYUbww+l2WQGybCS55B2OWbi7d6F8CdZKmkUyqfIzIV
+	tXvvJGh8yknaOfD+N2PvS34GeRvoN2I=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BANpJvZM;
+	spf=pass (imf19.hostedemail.com: domain of alban.crequy@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=alban.crequy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780395004;
+	s=arc-20220608; t=1780395013;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c76SrHoI5fkYZYTcaa/8RFwrM5OKoWVXsmXqH1gEQ1g=;
-	b=Rigvk+SiqBPpIKvZCNiN7iyVcHUE7jjQR9x6F4xTYS0gfIDIBryD8A8/5fq1zRPsgH7+5f
-	eX5ebSAD6KJWgytcUxCGUrNxs8LG4EHzvPpZBhI03mVs8RsHYmVF8fdGpLlkJvpMTYzRHP
-	XPsblEJ6pCg3DalAa43TiMsGE+944zs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZO962bTY;
-	spf=pass (imf06.hostedemail.com: domain of alban.crequy@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=alban.crequy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780395004;
-	b=BtPzbP96Fnui8e4+t2naALpVpmACrZWc22+/5KOAn4tDlzizZLZU3xXq2Ahqqhsl41uED7
-	x3cvGaP8fzSaxYHjq94K/+bI3Q8sV4GrZfgkZAPX0xyffQToRrsuYcr49MysB99Qp57ZOA
-	2EGl79X1HxizU7HfCYvf8KOYC6hKNI8=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-45ef4223be7so2300875f8f.2
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 03:10:04 -0700 (PDT)
+	bh=lRCUMzAHndLIoqHDBN9uRut+UxmgXFuICM92TGjeUzA=;
+	b=zUZf9LxFUo7JCUcgdtznclo4+E6s+5hJkBgKQjhquAIBUXNqJgVxWndBlvpUsgearD6m93
+	nFj3TLJtAkV01FWiiZgR1Yd8DrXd3i+ZorFanfHbnxzjkl1LuAL49dFeKfvdiK7zsJ08gX
+	R86sYBm77SIlXt7BUJDUDLXEgwE8fRE=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-46013161068so943897f8f.2
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 03:10:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780395003; x=1780999803; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780395012; x=1780999812; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=c76SrHoI5fkYZYTcaa/8RFwrM5OKoWVXsmXqH1gEQ1g=;
-        b=ZO962bTYOGRp7MtUrN0TO2+3Zin190q2DAJtWBnUK+vdcjD9HD7T48FM/gTB2558EP
-         M8qP0EXJsK6a5oX7U/iCbBTkEMC08UTozsn+EOS9au5QTFfEVXq9pul30q/5HaPSZt30
-         DwZQbboK5NwaV1+ARuvgzd9j551FKp022t7inaNYWAff1xjFtD9u3Pk5896FZLUN76gA
-         bF+/ZZ+QAWYQxoG6/NfJcj4fU7wk6Dif9Xj9I8+YHPpZULRUbqNuMMb7/w4Pu0Jpn1WJ
-         WNNpjqTYLllCfnDvW77FOSshZl6UVUa4WciduTvAwYBHuinIwzoSh78a15KwXa+CT5Sv
-         Hecg==
+        bh=lRCUMzAHndLIoqHDBN9uRut+UxmgXFuICM92TGjeUzA=;
+        b=BANpJvZMiHuuqc37jwQaf+ZKtAkbelY7BGpavmxGw3Hs87g3aeQj38g58n2i04IIRO
+         WHmYjWQpj/8fieojIiFwiiNEP9QEP6KXF5w4rZrbmMJQV/z79/ol8XlhK9eAJh2Jz7ZT
+         3OjOCq1IPuUmw/DdFC2O6uKvuxldUFJzrmGg0oIEnP78Qs71UnMGlAqOV3sl45jpoejn
+         Y4zOMfFz2VObUM+Wuz2fPmjg4HtPvQTibvZFr2HDVChfR2k2RjT1Pqhe3Qq6HT+KR6gy
+         PD9l5pWzQ8ykwXMEAHzbNLnKIrykEq05Btf4c7tPIcjbZTUlNJuFm2O8DbgdJfG0N9fC
+         SG5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780395003; x=1780999803;
+        d=1e100.net; s=20251104; t=1780395012; x=1780999812;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=c76SrHoI5fkYZYTcaa/8RFwrM5OKoWVXsmXqH1gEQ1g=;
-        b=QrQluWiHd83XovjuM0A3evG87qSZLbzxBBUVa5imnr+y0rqhVfqfpWReCGBpjDt/OE
-         7FgyNNmzwzemAnHoRTmdpb0hR5ZbOItIKLYI7vssnk52GkgV06mA2byaxddYze3VPiq1
-         sXBbJcONJL0LqCS+jifEWYlZ4pt3qzYgUrIG54+bgIsY24XeH5+9MQmrfVAHPAHbt9OG
-         HlAYQ4t1u+dAgfQW1H37PMDWyABqbopb86Zb5N8P472C5ZhFRamKrFGaaQKrwVBlA3eK
-         rxNYql1RR0u4YkEqAaneXZ/Y1g4FaFC13fOaF49bKXdn9gcSHLM5eX4Eaks3dOzIFrNi
-         CE2A==
-X-Forwarded-Encrypted: i=1; AFNElJ8Strls5N6ys7rwtnyfdiNOGZvSrmGx2Dkp/NmvUy0SV5W6ThJAhj6vHF74s/E3gGz03SvLewl77A==@kvack.org
-X-Gm-Message-State: AOJu0YyNiBIIpMlX9+iw9hHZ/pqWeGDi0E3rEovXi1cuvctgEAyI6VQu
-	K7edCgWIDGxDwURkN1a3AkrlEHyKXK5bqCekhYUglWa3tpb18RG2zmOz
-X-Gm-Gg: Acq92OFXpZLIC+9N7rtWXmkd5TXjtPE5KTRqTrxakc5fnKj6DXx+ld4QOzxfPrnpyWh
-	vcRMwMfqboD8DpTKYaCutjlO/sA5aAJJWtxKBlbik55wstPJ7l/VFapDsuLCCcpHB2mJQl3GsIz
-	PtSG2AcdXUjyGQjXjxtLYfPrRx9WVQPOnLx1KERBJkB1yOvTLFSagzR/UKsfUdQTf+wPS1J5rjn
-	eM2uSmeS2km+ilHe5iJ4FahqB+28aqaPllE5aRIA85Mgg1eWncSfeL7IB2oUqmK2lziRxLNPjxE
-	/rxtu/t9KC4uGdbi16IhGOqPlhIDQPbrNp0tNv8F4OCKi4mjm6YjN+9Q11N+EnJDvOnM2Mu6KtV
-	fDVtCt3Q+w6iKAyC3zxs5ycIgdF9+p+9F6gqiDMdPom3+EfGCsBWAF7VPnxF2onJbtM5vYoMdoT
-	OymE9dsUj7uOGnP0Hf5I87yQ24i1RGQK6Xa6Q=
-X-Received: by 2002:a05:600d:844a:10b0:48a:5565:ec3d with SMTP id 5b1f17b1804b1-490a294935bmr203469825e9.22.1780395003021;
-        Tue, 02 Jun 2026 03:10:03 -0700 (PDT)
+        bh=lRCUMzAHndLIoqHDBN9uRut+UxmgXFuICM92TGjeUzA=;
+        b=ZG1VoEoikutSXuZk+Cjntg4XAdpVm6qzfD2ZkSDDm6zfP7ViNPXIO/crYW23AK5qy9
+         BMFvzE3ThIDw2IoU5lZjn2pn+/kkLfjn9A6orqOuqMVLAV29G9dyf99tUDPIT/2fZfkq
+         vWazyBB4I02e5cCH8s/eA7w9fYBXTKAhpAvSsl5vI0rv46cNfLapluo3wZHvJl9Vi3pN
+         YgpT8fU3IK2/kYjdhF9I4YqBIGDq5zkqSq3fZxjkUpotD/g1g06x3jUID8WTRjAoP1Kx
+         J0dxmCKHzwBUFRl1lj6QL7WNhh7EPNx8MwWa5Gn7AUflVK0/O5/V5Q1EjU6EMssQs3w+
+         +bUw==
+X-Forwarded-Encrypted: i=1; AFNElJ8bKeA+GQ+5iMrO/vXCL2y7eqFh4Yei1nBatin+lMSHLLPJPbj/tAviILcBNSWz7Qzq6rj+kTQcug==@kvack.org
+X-Gm-Message-State: AOJu0Yz4qbBSEp6rRUgsKtUhmgWJqI3/rcM4ErjF+TqZpXGOSRvVCEcv
+	NU+T+Gr+v33T2EFTmg06LTjVvruhm2x0vzeQZcxfbusdtXvA8OvlMfPP
+X-Gm-Gg: Acq92OHsvNziexnuDSmkwpt+iiqt1usAKdFKweZ4/RpptGhP6wucyh1ko7GriNfgz+A
+	sZSvKbXiU3i0eKO3KV31npiZmi78FjwzKMNmhOF7ypyquq4Kr7Ls1RL88gmFiFqJ17LbKgn0esb
+	2pUSVmqnpPVeyV05Q3C/bSF37gRqYpJAFtXgqZ5MWfRTZOn54vlKawxInkKtKQnAzpECqvMmSzH
+	Fzok8eRAhSAa1yQt6yZaMhmMoV/13YPCfjGMrLeW3o4AqKG6KWqJeUygVMbqi5rD07kQM/utxiJ
+	MgN6emYFjuUyceFOC0LMVRtpZuYPd/YwMY9/ZbuNT8q8NGydpkoy1ApGNy5LtqKCC1cqITnRb3P
+	+m+BjcHBHs18BTHej0fJ11JjiuQz0Wt14dvxByipXE7k7tD8Wdjr0Iep+I+D7duVsn76v8i+C3N
+	cDbNljFEMWwp8H6wGaNnkIlE0sbOjVIb4qjgs=
+X-Received: by 2002:a5d:4684:0:b0:43d:7bc9:9b2c with SMTP id ffacd0b85a97d-45ef6b2a419mr23214449f8f.17.1780395011516;
+        Tue, 02 Jun 2026 03:10:11 -0700 (PDT)
 Received: from localhost.localdomain ([2a02:8308:b093:bb00::d167])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef354cd87sm30636722f8f.24.2026.06.02.03.10.01
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef354cd87sm30636722f8f.24.2026.06.02.03.10.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 03:10:02 -0700 (PDT)
+        Tue, 02 Jun 2026 03:10:11 -0700 (PDT)
 From: Alban Crequy <alban.crequy@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -110,22 +110,22 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	shuah@kernel.org,
 	Usama Arif <usama.arif@linux.dev>,
 	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH v5 1/2] mm/process_vm_access: pidfd and nowait support for process_vm_readv/writev
-Date: Tue,  2 Jun 2026 12:09:16 +0200
-Message-ID: <20260602100917.3641359-2-alban.crequy@gmail.com>
+Subject: [PATCH v5 2/2] selftests/mm: add tests for process_vm_readv flags
+Date: Tue,  2 Jun 2026 12:09:17 +0200
+Message-ID: <20260602100917.3641359-3-alban.crequy@gmail.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20260602100917.3641359-1-alban.crequy@gmail.com>
 References: <20260602100917.3641359-1-alban.crequy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A8F8C180006
-X-Stat-Signature: f9d65krhnsnwgbnebnpt45y5a36qmb8h
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2FA1F1A0003
 X-Rspam-User: 
-X-HE-Tag: 1780395004-464392
-X-HE-Meta: U2FsdGVkX1+E1lj0TSP6t2LoSfMKqWrVv+g/akE7Pjv4aXSKooEzyAG3pmGE9zH/O72Q6+xSTCZSTfNtK62xuET3Qt7Ae50jekIodhmsLfXTX8IPGwXsnIJhjHxpfzljXovBIWDJXJPRne1sP2C1vJMHlWpwNBrGegW3Ya8dipckCg/F71yan8AqKFVzy8KG8nBLsZVtPWqJhvB5kcYqQHbO4okzlLkR8LHDeE8GbwWUbxtflvNBnUCyVOLqgEuPQLtV8r6ZG+QKAIWGe5lkAb/0PT8xtOxopCPI3upjf3Osup4+BOUHqHWHq6dMV28sJSV3uioWaU5zDVQFp8SGryaDORmUoqj7Q08n2QTB01EIkVNAN3qtCIOtNiQjMBD+1ODNttZoecM76Olaw+9RSw5Xvv1x2lFMBxFTiFaUOP6TYrbHiDfJocB4rKDRv580tpAHpgsTmK/45jNfupTmrEro0XxE2s/xRONxaBdFlWiVdgf/SyoE310OoBJjh0ggKrKuQZAyKGzJJx+a2epcvH91W5n2WDlah9lg0Dwyo5miAXBrk8AxRjR9lmxNijp5jV/2l5nrgq46XZgNZtnOw9nDAEnz2GsRQ7z3RUkBIFPSur2KXdqdziKdHssZMV/HFVEaCdyT6V3ekmImLp/AHoTAJ7TKlh0+dJzT/uOSq2z+Qa/yVxIklp23jrUvI0KvIpVJXQUbqisS9UP1HjQLee+AgKX4kbINNCqDYIxACta8aODO7KuvJ9Ito83goQp2AFhZR57v9OaAEunogjwqgBD4Bak0t+1M/JGfmTd2WYLk6VNtsczKhMhBTOOCe4RGZPLGAGOERCfspNBU6eKqoHKhEJFMxBQlN36AeZk/N9Uk3eQFj0D9rkCmNYDKWbL6KcWp8cffnyYzrzfMkgDOqEyZfXp98+817ZuLhQ6n6/1f2hUFPP+yJobPGIWycs1Y/exCr6qjezm3AmwuOoN
- lUP/vcLc
- 54Rkz7DnpTrtJApUtOLv6/jGhcWjXhPjc3fX3HICM9ST/m5ER4NfhCWkmWwT8H8FgvN0VLwD+dNitgn0rmkJbK3rbANkOqVBJO+VZ4ydC1HsmczxLJxfLuQwiGQ5F7bUflg12877wPGDuyM4t40q48rsyA/8Y9pzPp/uxKi7ZnNXdLdjzFvjVDKaVWdfdw3PYPzpBY4R4VorY8R+vXr/tPE6Pq5ROKWElyh+xSL3vqHOvGFjuqo3oGGuhfw395PKkVR5KGffqIyW9Yy/m1noOsZzDVLRGWjYUZxVP4O+oGxv1+2hc61tTHmaV0FvGD6KMoOuSpiA1zHsugaQRb7jqSvORqFg7IDp9pAT3GBSmxT7JNW+UffmOeBGewHlpRrOlcG3j4UVZQZhnILOqyMpJUbzyECcOa9Ke0URwy3IrWD436AqZL41gTQA4ptpRu7SQtsqdkDAiga05UnLh5hR1iq3URHHwKEwZ0Yx3FKMhFQlVIvXPGwsDthoDbnxnJM70atqEiUF/eDSHRwAhEs91vknPq2LXmmstUiAKqiGseDTKndOVR1p/uTHAj5IcCFbjbQnLrT3bsgi1gK0=
+X-Stat-Signature: 4zm9ipdq53x86g57atngdq7gxnmw6rkf
+X-HE-Tag: 1780395012-428004
+X-HE-Meta: U2FsdGVkX19V+L4LG4ZOwcBRcDJTcZvQ8sPMaxC7bSV28Pjzlt7sbhewCDOMwf+rqmtK003n9qFJw+sa2JJbJ/vrOgHHWauQrFONL0uJd0i+mCyh1t5034kv72Vh/fMG3jkswIEMS64ayFzpc0MriVWmLBVd2Tg7jE4XAk47nwxPGQSOnHUS/mNKF0UWLUclOtd7xjqeYgX9UP+JkQDw3pz2pWWsUKpeexJ1jZRoZYhWePn6pd8Al1ayTR/dvvzDX7eC6mPGk1waIsCVKd/c2HX3vdAOtqJICdtqSWSMFbKokurHQBjW21eSWSxqYkw0pxSNCOxqAzp6f6NGQT6xYXm8a6rdInGZ9g2R9v6mirSe5mQ302YmNAeMdxkRaA8zOMq+WDQ6Cafk5ClTGKvQiuWtIb85asIZswWdEW3KR8g9RMOTlzFAfR6N/vCmTjwO1xI0Pgq3h9OFIgFgOFC58gldiEZBJ+rWSEOgN7gJkY16RSfBhOJ9+3EZ5ck6B9Li8+y5p9dns6pHc8gmoWNriHsFdt3cpXvkLputC2deCQtT64BK52OVQSTFjj79lBvgmik5nzcDB2jqzfLrI0cVSMQfqiLfwyCaRPbGXPbY29rZUtKCxoOd8ghEtmGprnSZjQRJicVZn4aSEe0dXswJsWmRN2L7yytE786cvXEZNzlyv4/zZk7mSnrEb7jz1Nr6/qmz+Ze/EGyIiHfJfCyGmpiS0IeH3FRNdjWP6wV1VEeQm7M71QA1hNsA+K/tITE6Qw7r4NZ8WUU52BGiVrSnBq6c5jH+l1P+SH33xeDSnokywV5bS0I1knxlhLwSsMqps8FWjMi8K5KIj0HBQOm2fvU/hwfZTF5i+3ro4LF5RiNgkif7NTtl3clEIyyRH3uMrQKOytHbvVMK7TMedTesLD7DPRw3XJRj+znXaKZTJQR7GK7cXMUdN8yVtqLkpK5rc+fTRL3B/LeR3oWWiUn
+ 7OYooUMX
+ ZvsCUKeSJ0v+bVLRjPSvWAi1kbSFrVlKSqmbkEbfZ9hWLD2HP8xt1jnsoFHegIjgbFLRWBHeVw0k9SRHface/tv38uGZLSSyPLr8LliIi/FwY8SNVj6d1TsBQ13vpUL0TWEhBy9sMoigGkPv2cEZinkT6a9Z/3Irii2bUjosNc5+tSrGi3SAQq7qL4vPHPaYm+pmUth+O5gZbGF+Df4IrQ+sUG4e6Z8FDvQshjsApg4VqWHEps+4R1AWoJnXG0+KcAYTHuUqRkt5tQktrIlFnCG2NGYuF6IkyXksaS9VKj1cMvrN//ZiMlOFVi9UchTKU1lWSKYCVpknhtR0DOZm+/SNokBRmsWSstQNa7VZ5MKlAI9UFVqI01yOeQFLygrA/NbMbSGr4q8qj4ow8Ju0je1t1g8Dt8THqZWm1Op9LC0aNIiEHOrFY5mta3XzXuDnfI6X8kPjn/tJ0dRKHutWgLf3slZ4ra41OdRN8DZh2bmvVgwwbty6L3R0k7Z4VhTg2/OVPVfw4UU1UCrWUaMxTc4m9UfwGDsnPniJT1wdQ2DRIAUICNQ6Wi4YIGmZYUYfAwHSqopdwfjzhd7Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,241 +135,728 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Alban Crequy <albancrequy@microsoft.com>
 
-There are two categories of users for process_vm_readv:
+Add selftests for the PROCESS_VM_PIDFD and PROCESS_VM_NOWAIT flags
+introduced in process_vm_readv/writev.
 
-1. Debuggers like GDB or strace.
+Tests cover:
+- basic read with no flags
+- invalid flags (EINVAL)
+- invalid address (EFAULT)
+- flag validation precedence over address validation
+- invalid pidfd (EBADF)
+- invalid pid (ESRCH)
+- PROCESS_VM_PIDFD: read via pidfd
+- PROCESS_VM_NOWAIT: read from resident memory
+- PROCESS_VM_PIDFD | PROCESS_VM_NOWAIT combined
+- userfaultfd blocking read (no flags)
+- PROCESS_VM_NOWAIT with userfaultfd (non-blocking, returns EFAULT)
+- PROCESS_VM_NOWAIT partial read with single iovec across resident
+  and non-resident pages (returns page_size bytes)
+- PROCESS_VM_NOWAIT partial read with two iovecs, first resident,
+  second non-resident (returns page_size bytes)
 
-   When a debugger attempts to read the target memory and triggers a
-   page fault, the page fault needs to be resolved so that the debugger
-   can accurately interpret the memory. A debugger is typically attached
-   to a single process.
-
-2. Profilers like OpenTelemetry eBPF Profiler.
-
-   The profiler uses a perf event to get stack traces from all
-   processes at 20Hz (20 stack traces to resolve per second). For
-   interpreted languages (Ruby, Python, etc.), the profiler uses
-   process_vm_readv to get the correct symbols. In this case,
-   performance is the most important. It is fine if some stack traces
-   cannot be resolved as long as it is not statistically significant.
-
-The current behaviour of process_vm_readv is to resolve page faults in
-the target VM. This is as desired for debuggers, but unwelcome for
-profilers because the page fault resolution could take a lot of time
-depending on the backing filesystem. Additionally, since profilers
-monitor all processes, we don't want a slow page fault resolution for
-one target process slowing down the monitoring for all other target
-processes.
-
-This patch adds the flag PROCESS_VM_NOWAIT, so the caller can choose to
-not block on IO if the memory access causes a page fault. When a page
-is not resident and would require IO to fault in, the syscall returns
-a short read (the number of bytes successfully read before the fault)
-or -1 with errno set to EFAULT if no bytes were read.
-
-Additionally, this patch adds the flag PROCESS_VM_PIDFD to refer to the
-remote process via PID file descriptor instead of PID. Such a file
-descriptor can be obtained with pidfd_open(2). This is useful to avoid
-the pid number being reused. It is unlikely to happen for debuggers
-because they can monitor the target process termination in other ways
-(ptrace), but can be helpful in some profiling scenarios. When using
-PROCESS_VM_PIDFD, the first argument is a pidfd instead of a pid. If
-the pidfd is invalid, the syscall returns -1 with errno set to EBADF.
-
-If a given flag is unsupported, the syscall returns the error EINVAL
-without checking the buffers. This gives a way to userspace to detect
-whether the current kernel supports a specific flag:
-
-  process_vm_readv(pid, NULL, 1, NULL, 1, PROCESS_VM_PIDFD)
-  -> EINVAL if the kernel does not support the flag PROCESS_VM_PIDFD
-     (before this patch)
-  -> EFAULT if the kernel supports the flag (after this patch)
-
-Suggested man page update for process_vm_readv(2):
-
-  The flags argument is the bitwise OR of zero or more of these flags:
-
-  PROCESS_VM_PIDFD (since Linux 7.x)
-      The pid argument is a PID file descriptor (see pidfd_open(2))
-      instead of a PID number. When using this flag, the existing
-      ESRCH error applies if the process referred to by the pidfd
-      has exited.
-
-  PROCESS_VM_NOWAIT (since Linux 7.x)
-      Do not block on IO. If a page in the remote address space is not
-      resident and would require disk IO to fault in, the system call
-      returns a short read or fails with EFAULT if no bytes were read.
-
-  Additional error:
-
-  EBADF  pid is not a valid file descriptor (PROCESS_VM_PIDFD only).
+Tests gracefully SKIP on kernels without PROCESS_VM_PIDFD or
+PROCESS_VM_NOWAIT support (EINVAL).
 
 Signed-off-by: Alban Crequy <albancrequy@microsoft.com>
 ---
 v5:
-- No changes in this patch.
+- Add process_vm_readv to .gitignore (Sashiko)
+- Use ~0UL instead of 255 for invalid flags tests (Sashiko)
+- Use volatile uint8_t instead of volatile uint64_t for page fault-in
+  to avoid alignment issues on strict-alignment architectures (Sashiko)
+- Use UFFDIO_UNREGISTER in uffd handler error path to safely unblock
+  the main thread without double-close (Sashiko)
 
 v4:
-- Rename process_vm.h to process_vm_access.h (David Hildenbrand)
-- Fix MAINTAINERS alphabetical sort order (David Hildenbrand)
-- Document NOWAIT return value and PIDFD EBADF error (David Hildenbrand)
-- Add suggested man page update text
-  (David Hildenbrand, Christian Brauner, Mike Rapoport)
-- Keep (1UL << N) in UAPI header (David Hildenbrand)
+- Add selftests for NOWAIT partial reads across resident and
+  non-resident pages (single iovec and two iovecs)
+- SKIP tests gracefully on kernels without flag support (Sashiko)
+- Verify content of partial reads
 
 v3:
-- Fix ERR_PTR handling for pidfd_get_task(): use IS_ERR()/PTR_ERR()
-  for the pidfd path, matching process_madvise() (Usama Arif, Sashiko)
+- Add selftest for invalid pidfd (David Hildenbrand)
+- Add selftest for invalid pid
+- SKIP on kernels without PROCESS_VM_PIDFD support
+- Remove hardcoded __NR_pidfd_open fallback, use <sys/syscall.h> (Sashiko)
+- SKIP pidfd tests on kernels without pidfd_open (ENOSYS) (Sashiko)
+- SKIP userfaultfd tests when unprivileged userfaultfd is disabled (EPERM) (Sashiko)
+- Fault in test_data before NOWAIT tests to ensure page is resident (Sashiko)
+- Add ksft_process_vm_readv.sh wrapper and run_vmtests.sh entry
 
 v2:
-- Expand commit message with use-case motivation (David Hildenbrand)
-- Use unsigned long consistently for pvm_flags parameter (David Hildenbrand)
-- Add PROCESS_VM_SUPPORTED_FLAGS kernel-internal define (David Hildenbrand)
-- Keep (1UL << N) in UAPI header: BIT() is defined in vdso/bits.h
-  which is not exported to userspace, so UAPI headers using BIT() would
-  break when included from userspace programs (David Hildenbrand)
+- New patch.
 
- MAINTAINERS                            |  1 +
- include/uapi/linux/process_vm_access.h |  9 +++++++
- mm/process_vm_access.c                 | 34 +++++++++++++++++++-------
- 3 files changed, 35 insertions(+), 9 deletions(-)
- create mode 100644 include/uapi/linux/process_vm_access.h
+ tools/testing/selftests/mm/.gitignore         |   1 +
+ tools/testing/selftests/mm/Makefile           |   2 +
+ .../selftests/mm/ksft_process_vm_readv.sh     |   4 +
+ tools/testing/selftests/mm/process_vm_readv.c | 591 ++++++++++++++++++
+ tools/testing/selftests/mm/run_vmtests.sh     |   4 +
+ 5 files changed, 602 insertions(+)
+ create mode 100755 tools/testing/selftests/mm/ksft_process_vm_readv.sh
+ create mode 100644 tools/testing/selftests/mm/process_vm_readv.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9ec290e38b44..1bfce49dd0bb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16800,6 +16800,7 @@ F:	include/linux/pgtable.h
- F:	include/linux/ptdump.h
- F:	include/linux/vmpressure.h
- F:	include/linux/vmstat.h
-+F:	include/uapi/linux/process_vm_access.h
- F:	fs/proc/meminfo.c
- F:	kernel/fork.c
- F:	mm/Kconfig
-diff --git a/include/uapi/linux/process_vm_access.h b/include/uapi/linux/process_vm_access.h
-new file mode 100644
-index 000000000000..2196c9c46351
+diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+index b0c30c5ee9e3..78525dfa5a95 100644
+--- a/tools/testing/selftests/mm/.gitignore
++++ b/tools/testing/selftests/mm/.gitignore
+@@ -23,6 +23,7 @@ transhuge-stress
+ pagemap_ioctl
+ pfnmap
+ process_madv
++process_vm_readv
+ *.tmp*
+ protection_keys
+ protection_keys_32
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index cd24596cdd27..feb3a0b9a57e 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -106,6 +106,7 @@ TEST_GEN_FILES += guard-regions
+ TEST_GEN_FILES += merge
+ TEST_GEN_FILES += rmap
+ TEST_GEN_FILES += folio_split_race_test
++TEST_GEN_FILES += process_vm_readv
+ 
+ ifneq ($(ARCH),arm64)
+ TEST_GEN_FILES += soft-dirty
+@@ -167,6 +168,7 @@ TEST_PROGS += ksft_pfnmap.sh
+ TEST_PROGS += ksft_pkey.sh
+ TEST_PROGS += ksft_process_madv.sh
+ TEST_PROGS += ksft_process_mrelease.sh
++TEST_PROGS += ksft_process_vm_readv.sh
+ TEST_PROGS += ksft_rmap.sh
+ TEST_PROGS += ksft_soft_dirty.sh
+ TEST_PROGS += ksft_thp.sh
+diff --git a/tools/testing/selftests/mm/ksft_process_vm_readv.sh b/tools/testing/selftests/mm/ksft_process_vm_readv.sh
+new file mode 100755
+index 000000000000..09d0fcc9a35d
 --- /dev/null
-+++ b/include/uapi/linux/process_vm_access.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#ifndef _UAPI_LINUX_PROCESS_VM_ACCESS_H
-+#define _UAPI_LINUX_PROCESS_VM_ACCESS_H
++++ b/tools/testing/selftests/mm/ksft_process_vm_readv.sh
+@@ -0,0 +1,4 @@
++#!/bin/sh -e
++# SPDX-License-Identifier: GPL-2.0
 +
-+/* Flags for process_vm_readv/process_vm_writev */
-+#define PROCESS_VM_PIDFD        (1UL << 0)
-+#define PROCESS_VM_NOWAIT       (1UL << 1)
++./run_vmtests.sh -t process_vm_readv
+diff --git a/tools/testing/selftests/mm/process_vm_readv.c b/tools/testing/selftests/mm/process_vm_readv.c
+new file mode 100644
+index 000000000000..34aa44c5eb67
+--- /dev/null
++++ b/tools/testing/selftests/mm/process_vm_readv.c
+@@ -0,0 +1,591 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <poll.h>
++#include <pthread.h>
++#include <signal.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include <sys/syscall.h>
++#include <sys/uio.h>
++#include <sys/wait.h>
++#include <unistd.h>
++#include <linux/userfaultfd.h>
 +
-+#endif /* _UAPI_LINUX_PROCESS_VM_ACCESS_H */
-diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
-index 656d3e88755b..31004dd3c9e3 100644
---- a/mm/process_vm_access.c
-+++ b/mm/process_vm_access.c
-@@ -14,6 +14,9 @@
- #include <linux/ptrace.h>
- #include <linux/slab.h>
- #include <linux/syscalls.h>
-+#include <linux/process_vm_access.h>
++#include "kselftest_harness.h"
 +
-+#define PROCESS_VM_SUPPORTED_FLAGS (PROCESS_VM_PIDFD | PROCESS_VM_NOWAIT)
++#ifndef PROCESS_VM_PIDFD
++#define PROCESS_VM_PIDFD	(1UL << 0)
++#endif
++
++#ifndef PROCESS_VM_NOWAIT
++#define PROCESS_VM_NOWAIT	(1UL << 1)
++#endif
++
++static int sys_pidfd_open(pid_t pid, unsigned int flags)
++{
++	return syscall(__NR_pidfd_open, pid, flags);
++}
++
++static const uint8_t test_data[] = { 0x01, 0x02, 0x03, 0x04,
++				     0x05, 0x06, 0x07, 0x08 };
++#define POISON_BYTE 0xCC
++
++/*
++ * Test: basic process_vm_readv with no flags
++ */
++TEST(read_basic)
++{
++	uint8_t buf[sizeof(test_data)];
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov = {
++		.iov_base = (void *)test_data,
++		.iov_len = sizeof(test_data)
++	};
++	ssize_t n;
++
++	memset(buf, POISON_BYTE, sizeof(buf));
++	n = process_vm_readv(getpid(), &local_iov, 1, &remote_iov, 1, 0);
++	ASSERT_EQ(sizeof(test_data), n);
++	ASSERT_EQ(0, memcmp(buf, test_data, sizeof(test_data)));
++}
++
++/*
++ * Test: invalid flags should return EINVAL
++ */
++TEST(read_invalid_flags)
++{
++	uint8_t buf[8] = { 0 };
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov = {
++		.iov_base = (void *)test_data,
++		.iov_len = sizeof(test_data)
++	};
++	ssize_t n;
++
++	n = process_vm_readv(getpid(), &local_iov, 1, &remote_iov, 1, ~0UL);
++	ASSERT_EQ(-1, n);
++	ASSERT_EQ(EINVAL, errno);
++}
++
++/*
++ * Test: invalid address should return EFAULT
++ */
++TEST(read_invalid_address)
++{
++	uint8_t buf[8] = { 0 };
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov = { .iov_base = NULL, .iov_len = 8 };
++	ssize_t n;
++
++	n = process_vm_readv(getpid(), &local_iov, 1, &remote_iov, 1, 0);
++	ASSERT_EQ(-1, n);
++	ASSERT_EQ(EFAULT, errno);
++}
++
++/*
++ * Test: invalid address with invalid flags should return EINVAL
++ * (flag check happens before address validation)
++ */
++TEST(read_invalid_address_invalid_flags)
++{
++	uint8_t buf[8] = { 0 };
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov = { .iov_base = NULL, .iov_len = 8 };
++	ssize_t n;
++
++	n = process_vm_readv(getpid(), &local_iov, 1, &remote_iov, 1, ~0UL);
++	ASSERT_EQ(-1, n);
++	ASSERT_EQ(EINVAL, errno);
++}
++
++/*
++ * Test: invalid address with all valid flags should return EFAULT
++ * (flags are valid so we get past the flag check to the address check)
++ */
++TEST(read_invalid_address_all_valid_flags)
++{
++	int pidfd;
++	struct iovec local_iov = { .iov_base = NULL, .iov_len = 8 };
++	struct iovec remote_iov = { .iov_base = NULL, .iov_len = 8 };
++	ssize_t n;
++
++	pidfd = sys_pidfd_open(getpid(), 0);
++	if (pidfd < 0 && errno == ENOSYS)
++		SKIP(return, "pidfd_open not supported");
++	ASSERT_GE(pidfd, 0);
++
++	n = process_vm_readv(pidfd, &local_iov, 1, &remote_iov, 1,
++			     PROCESS_VM_PIDFD | PROCESS_VM_NOWAIT);
++	ASSERT_EQ(-1, n);
++	if (errno == EINVAL)
++		SKIP(return,
++		     "PROCESS_VM_PIDFD or PROCESS_VM_NOWAIT not supported");
++	ASSERT_EQ(EFAULT, errno);
++
++	close(pidfd);
++}
++
++/*
++ * Test: read with an invalid pidfd should return an error, not crash
++ */
++TEST(read_invalid_pidfd)
++{
++	uint8_t buf[sizeof(test_data)] = { 0 };
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov = {
++		.iov_base = (void *)test_data,
++		.iov_len = sizeof(test_data)
++	};
++	ssize_t n;
++
++	/* fd 9999 is almost certainly not a valid pidfd */
++	n = process_vm_readv(9999, &local_iov, 1, &remote_iov, 1,
++			     PROCESS_VM_PIDFD);
++	ASSERT_EQ(-1, n);
++	if (errno == EINVAL)
++		SKIP(return, "PROCESS_VM_PIDFD not supported");
++	ASSERT_EQ(EBADF, errno);
++}
++
++/*
++ * Test: read with an invalid pid should return ESRCH
++ */
++TEST(read_invalid_pid)
++{
++	uint8_t buf[sizeof(test_data)] = { 0 };
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov = {
++		.iov_base = (void *)test_data,
++		.iov_len = sizeof(test_data)
++	};
++	ssize_t n;
++
++	/* pid 999999 is almost certainly not a valid process */
++	n = process_vm_readv(999999, &local_iov, 1, &remote_iov, 1, 0);
++	ASSERT_EQ(-1, n);
++	ASSERT_EQ(ESRCH, errno);
++}
++
++/*
++ * Test: read with PIDFD flag
++ */
++TEST(read_pidfd)
++{
++	uint8_t buf[sizeof(test_data)];
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov = {
++		.iov_base = (void *)test_data,
++		.iov_len = sizeof(test_data)
++	};
++	ssize_t n;
++	int pidfd;
++
++	memset(buf, POISON_BYTE, sizeof(buf));
++	pidfd = sys_pidfd_open(getpid(), 0);
++	if (pidfd < 0 && errno == ENOSYS)
++		SKIP(return, "pidfd_open not supported");
++	ASSERT_GE(pidfd, 0);
++
++	n = process_vm_readv(pidfd, &local_iov, 1, &remote_iov, 1,
++			     PROCESS_VM_PIDFD);
++	if (n == -1 && errno == EINVAL)
++		SKIP(return, "PROCESS_VM_PIDFD not supported");
++	ASSERT_EQ(sizeof(test_data), n);
++	ASSERT_EQ(0, memcmp(buf, test_data, sizeof(test_data)));
++
++	close(pidfd);
++}
++
++/*
++ * Test: read with NOWAIT from resident memory (should succeed)
++ */
++TEST(read_nowait_resident)
++{
++	uint8_t buf[sizeof(test_data)];
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov = {
++		.iov_base = (void *)test_data,
++		.iov_len = sizeof(test_data)
++	};
++	ssize_t n;
++
++	*(volatile uint8_t *)test_data; /* fault in page for NOWAIT */
++	memset(buf, POISON_BYTE, sizeof(buf));
++	n = process_vm_readv(getpid(), &local_iov, 1, &remote_iov, 1,
++			     PROCESS_VM_NOWAIT);
++	if (n == -1 && errno == EINVAL)
++		SKIP(return, "PROCESS_VM_NOWAIT not supported");
++	ASSERT_EQ(sizeof(test_data), n);
++	ASSERT_EQ(0, memcmp(buf, test_data, sizeof(test_data)));
++}
++
++/*
++ * Test: read with PIDFD + NOWAIT from resident memory
++ */
++TEST(read_pidfd_nowait_resident)
++{
++	uint8_t buf[sizeof(test_data)];
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov = {
++		.iov_base = (void *)test_data,
++		.iov_len = sizeof(test_data)
++	};
++	ssize_t n;
++	int pidfd;
++
++	*(volatile uint8_t *)test_data; /* fault in page for NOWAIT */
++	memset(buf, POISON_BYTE, sizeof(buf));
++	pidfd = sys_pidfd_open(getpid(), 0);
++	if (pidfd < 0 && errno == ENOSYS)
++		SKIP(return, "pidfd_open not supported");
++	ASSERT_GE(pidfd, 0);
++
++	n = process_vm_readv(pidfd, &local_iov, 1, &remote_iov, 1,
++			     PROCESS_VM_PIDFD | PROCESS_VM_NOWAIT);
++	if (n == -1 && errno == EINVAL)
++		SKIP(return, "PROCESS_VM_PIDFD or PROCESS_VM_NOWAIT not supported");
++	ASSERT_EQ(sizeof(test_data), n);
++	ASSERT_EQ(0, memcmp(buf, test_data, sizeof(test_data)));
++
++	close(pidfd);
++}
++
++/*
++ * Userfaultfd helpers for NOWAIT tests
++ */
++static int setup_userfaultfd(void)
++{
++	struct uffdio_api api = { .api = UFFD_API };
++	int uffd;
++
++	uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
++	if (uffd < 0)
++		return -errno;
++
++	if (ioctl(uffd, UFFDIO_API, &api)) {
++		close(uffd);
++		return -errno;
++	}
++
++	return uffd;
++}
++
++static void *register_uffd_region(int uffd, size_t size)
++{
++	struct uffdio_register reg;
++	void *mem;
++
++	mem = mmap(NULL, size, PROT_READ | PROT_WRITE,
++		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (mem == MAP_FAILED)
++		return NULL;
++
++	reg.range.start = (unsigned long)mem;
++	reg.range.len = size;
++	reg.mode = UFFDIO_REGISTER_MODE_MISSING;
++	if (ioctl(uffd, UFFDIO_REGISTER, &reg)) {
++		munmap(mem, size);
++		return NULL;
++	}
++
++	return mem;
++}
++
++struct uffd_handler_args {
++	int uffd;
++	const void *content;
++	size_t content_len;
++	void *mem;
++	size_t mem_len;
++};
++
++static void *uffd_handler_thread(void *arg)
++{
++	struct uffd_handler_args *ha = arg;
++	struct uffd_msg msg;
++	struct uffdio_copy uffd_copy;
++	struct pollfd pfd = {
++		.fd = ha->uffd,
++		.events = POLLIN
++	};
++	void *page;
++	long page_size = sysconf(_SC_PAGESIZE);
++	int ret;
++
++	page = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
++		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (page == MAP_FAILED)
++		return (void *)(long)-ENOMEM;
++
++	memcpy(page, ha->content, ha->content_len);
++
++	ret = poll(&pfd, 1, 5000);
++	if (ret <= 0)
++		goto err;
++
++	if (read(ha->uffd, &msg, sizeof(msg)) != sizeof(msg))
++		goto err;
++
++	if (msg.event != UFFD_EVENT_PAGEFAULT)
++		goto err;
++
++	uffd_copy.dst = msg.arg.pagefault.address & ~(page_size - 1);
++	uffd_copy.src = (unsigned long)page;
++	uffd_copy.len = page_size;
++	uffd_copy.mode = 0;
++	ioctl(ha->uffd, UFFDIO_COPY, &uffd_copy);
++
++	munmap(page, page_size);
++	return NULL;
++
++err:
++	/*
++	 * Unregister the uffd region to unblock the main thread if it
++	 * is waiting for page fault resolution.
++	 */
++	{
++		struct uffdio_range range = {
++			.start = (unsigned long)ha->mem,
++			.len = ha->mem_len,
++		};
++		ioctl(ha->uffd, UFFDIO_UNREGISTER, &range);
++	}
++	munmap(page, page_size);
++	return (void *)(long)-EIO;
++}
++
++/*
++ * Test: read from userfaultfd-registered memory (no flags, should block
++ * until page fault is resolved by handler thread)
++ */
++TEST(read_userfaultfd_blocking)
++{
++	int uffd;
++	void *mem;
++	long page_size = sysconf(_SC_PAGESIZE);
++	uint8_t buf[sizeof(test_data)];
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov;
++	struct uffd_handler_args ha;
++	pthread_t handler;
++	ssize_t n;
++
++	memset(buf, POISON_BYTE, sizeof(buf));
++
++	uffd = setup_userfaultfd();
++	if (uffd == -EPERM)
++		SKIP(return, "userfaultfd requires privileges (vm.unprivileged_userfaultfd=0)");
++	if (uffd == -ENOSYS)
++		SKIP(return, "userfaultfd not supported");
++	ASSERT_GE(uffd, 0);
++
++	mem = register_uffd_region(uffd, page_size);
++	ASSERT_NE(NULL, mem);
++
++	ha.uffd = uffd;
++	ha.content = test_data;
++	ha.content_len = sizeof(test_data);
++	ha.mem = mem;
++	ha.mem_len = page_size;
++	ASSERT_EQ(0, pthread_create(&handler, NULL, uffd_handler_thread, &ha));
++
++	remote_iov.iov_base = mem;
++	remote_iov.iov_len = sizeof(test_data);
++	n = process_vm_readv(getpid(), &local_iov, 1, &remote_iov, 1, 0);
++	ASSERT_EQ(sizeof(test_data), n);
++	ASSERT_EQ(0, memcmp(buf, test_data, sizeof(test_data)));
++
++	pthread_join(handler, NULL);
++	munmap(mem, page_size);
++	close(uffd);
++}
++
++/*
++ * Test: read with NOWAIT from userfaultfd-registered memory that has
++ * not been faulted in yet. Should return EFAULT (not block).
++ */
++TEST(read_nowait_userfaultfd)
++{
++	int uffd;
++	void *mem;
++	long page_size = sysconf(_SC_PAGESIZE);
++	uint8_t buf[sizeof(test_data)] = { 0 };
++	struct iovec local_iov = { .iov_base = buf, .iov_len = sizeof(buf) };
++	struct iovec remote_iov;
++	ssize_t n;
++
++	uffd = setup_userfaultfd();
++	if (uffd == -EPERM)
++		SKIP(return, "userfaultfd requires privileges (vm.unprivileged_userfaultfd=0)");
++	if (uffd == -ENOSYS)
++		SKIP(return, "userfaultfd not supported");
++	ASSERT_GE(uffd, 0);
++
++	mem = register_uffd_region(uffd, page_size);
++	ASSERT_NE(NULL, mem);
++
++	/* Ensure the page is not present */
++	madvise(mem, page_size, MADV_DONTNEED);
++
++	remote_iov.iov_base = mem;
++	remote_iov.iov_len = sizeof(test_data);
++	n = process_vm_readv(getpid(), &local_iov, 1, &remote_iov, 1,
++			     PROCESS_VM_NOWAIT);
++	if (n == -1 && errno == EINVAL)
++		SKIP(return, "PROCESS_VM_NOWAIT not supported");
++	ASSERT_EQ(-1, n);
++	ASSERT_EQ(EFAULT, errno);
++
++	munmap(mem, page_size);
++	close(uffd);
++}
++
++/*
++ * Test: NOWAIT read across two pages with a single iovec, where the
++ * first page is resident and the second is not. Tests whether a
++ * partial read within a single iovec element is possible.
++ */
++TEST(read_nowait_partial_single_iovec)
++{
++	int uffd;
++	void *mem;
++	long page_size = sysconf(_SC_PAGESIZE);
++	uint8_t *buf;
++	struct iovec local_iov;
++	struct iovec remote_iov;
++	struct uffdio_copy uffd_copy;
++	ssize_t n;
++	void *src_page;
++
++	uffd = setup_userfaultfd();
++	if (uffd == -EPERM)
++		SKIP(return, "userfaultfd requires privileges (vm.unprivileged_userfaultfd=0)");
++	if (uffd == -ENOSYS)
++		SKIP(return, "userfaultfd not supported");
++	ASSERT_GE(uffd, 0);
++
++	/* Allocate 2 pages and register with userfaultfd */
++	mem = register_uffd_region(uffd, 2 * page_size);
++	ASSERT_NE(NULL, mem);
++
++	/* Resolve page 1 via UFFDIO_COPY, leave page 2 missing */
++	src_page = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
++			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	ASSERT_NE(MAP_FAILED, src_page);
++	memset(src_page, 0xAA, page_size);
++
++	uffd_copy.dst = (unsigned long)mem;
++	uffd_copy.src = (unsigned long)src_page;
++	uffd_copy.len = page_size;
++	uffd_copy.mode = 0;
++	ASSERT_EQ(0, ioctl(uffd, UFFDIO_COPY, &uffd_copy));
++	munmap(src_page, page_size);
++
++	/* Read across both pages with a single iovec */
++	buf = malloc(2 * page_size);
++	ASSERT_NE(NULL, buf);
++	memset(buf, POISON_BYTE, 2 * page_size);
++
++	local_iov.iov_base = buf;
++	local_iov.iov_len = 2 * page_size;
++	remote_iov.iov_base = mem;
++	remote_iov.iov_len = 2 * page_size;
++
++	n = process_vm_readv(getpid(), &local_iov, 1, &remote_iov, 1,
++			     PROCESS_VM_NOWAIT);
++	if (n == -1 && errno == EINVAL)
++		SKIP(return, "PROCESS_VM_NOWAIT not supported");
++	ASSERT_EQ(page_size, n);
++
++	/* Verify the first page was read correctly */
++	for (int i = 0; i < page_size; i++)
++		ASSERT_EQ(0xAA, buf[i]);
++
++	free(buf);
++	munmap(mem, 2 * page_size);
++	close(uffd);
++}
++
++/*
++ * Test: NOWAIT read across two pages with two iovecs (one per page),
++ * where the first page is resident and the second is not. Tests
++ * whether the syscall returns bytes from the first iovec.
++ */
++TEST(read_nowait_partial_two_iovecs)
++{
++	int uffd;
++	void *mem;
++	long page_size = sysconf(_SC_PAGESIZE);
++	uint8_t *buf1, *buf2;
++	struct iovec local_iov[2];
++	struct iovec remote_iov[2];
++	struct uffdio_copy uffd_copy;
++	ssize_t n;
++	void *src_page;
++
++	uffd = setup_userfaultfd();
++	if (uffd == -EPERM)
++		SKIP(return, "userfaultfd requires privileges (vm.unprivileged_userfaultfd=0)");
++	if (uffd == -ENOSYS)
++		SKIP(return, "userfaultfd not supported");
++	ASSERT_GE(uffd, 0);
++
++	/* Allocate 2 pages and register with userfaultfd */
++	mem = register_uffd_region(uffd, 2 * page_size);
++	ASSERT_NE(NULL, mem);
++
++	/* Resolve page 1 via UFFDIO_COPY, leave page 2 missing */
++	src_page = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
++			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	ASSERT_NE(MAP_FAILED, src_page);
++	memset(src_page, 0xBB, page_size);
++
++	uffd_copy.dst = (unsigned long)mem;
++	uffd_copy.src = (unsigned long)src_page;
++	uffd_copy.len = page_size;
++	uffd_copy.mode = 0;
++	ASSERT_EQ(0, ioctl(uffd, UFFDIO_COPY, &uffd_copy));
++	munmap(src_page, page_size);
++
++	/* Two iovecs: one for each page */
++	buf1 = malloc(page_size);
++	buf2 = malloc(page_size);
++	ASSERT_NE(NULL, buf1);
++	ASSERT_NE(NULL, buf2);
++	memset(buf1, POISON_BYTE, page_size);
++	memset(buf2, POISON_BYTE, page_size);
++
++	local_iov[0].iov_base = buf1;
++	local_iov[0].iov_len = page_size;
++	local_iov[1].iov_base = buf2;
++	local_iov[1].iov_len = page_size;
++
++	remote_iov[0].iov_base = mem;
++	remote_iov[0].iov_len = page_size;
++	remote_iov[1].iov_base = (char *)mem + page_size;
++	remote_iov[1].iov_len = page_size;
++
++	n = process_vm_readv(getpid(), local_iov, 2, remote_iov, 2,
++			     PROCESS_VM_NOWAIT);
++	if (n == -1 && errno == EINVAL)
++		SKIP(return, "PROCESS_VM_NOWAIT not supported");
++	ASSERT_EQ(page_size, n);
++
++	/* Verify the first page was read correctly */
++	for (int i = 0; i < page_size; i++)
++		ASSERT_EQ(0xBB, buf1[i]);
++
++	free(buf1);
++	free(buf2);
++	munmap(mem, 2 * page_size);
++	close(uffd);
++}
++
++TEST_HARNESS_MAIN
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index c17b133a81d2..f7b55dea8d68 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -91,6 +91,8 @@ separated by spaces:
+ 	test VMA merge cases behave as expected
+ - rmap
+ 	test rmap behaves as expected
++- process_vm_readv
++	test process_vm_readv flags (pidfd, nowait)
+ - memory-failure
+ 	test memory-failure behaves as expected
  
- /**
-  * process_vm_rw_pages - read/write pages from task specified
-@@ -68,6 +71,7 @@ static int process_vm_rw_pages(struct page **pages,
-  * @mm: mm for task
-  * @task: task to read/write from
-  * @vm_write: 0 means copy from, 1 means copy to
-+ * @pvm_flags: PROCESS_VM_* flags
-  * Returns 0 on success or on failure error code
-  */
- static int process_vm_rw_single_vec(unsigned long addr,
-@@ -76,7 +80,8 @@ static int process_vm_rw_single_vec(unsigned long addr,
- 				    struct page **process_pages,
- 				    struct mm_struct *mm,
- 				    struct task_struct *task,
--				    int vm_write)
-+				    int vm_write,
-+				    unsigned long pvm_flags)
- {
- 	unsigned long pa = addr & PAGE_MASK;
- 	unsigned long start_offset = addr - pa;
-@@ -91,6 +96,8 @@ static int process_vm_rw_single_vec(unsigned long addr,
+@@ -531,6 +533,8 @@ CATEGORY="page_frag" run_test ./test_page_frag.sh nonaligned
  
- 	if (vm_write)
- 		flags |= FOLL_WRITE;
-+	if (pvm_flags & PROCESS_VM_NOWAIT)
-+		flags |= FOLL_NOWAIT;
+ CATEGORY="rmap" run_test ./rmap
  
- 	while (!rc && nr_pages && iov_iter_count(iter)) {
- 		int pinned_pages = min_t(unsigned long, nr_pages, PVM_MAX_USER_PAGES);
-@@ -141,7 +148,7 @@ static int process_vm_rw_single_vec(unsigned long addr,
-  * @iter: where to copy to/from locally
-  * @rvec: iovec array specifying where to copy to/from in the other process
-  * @riovcnt: size of rvec array
-- * @flags: currently unused
-+ * @flags: process_vm_readv/writev flags
-  * @vm_write: 0 if reading from other process, 1 if writing to other process
-  *
-  * Returns the number of bytes read/written or error code. May
-@@ -163,6 +170,7 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
- 	unsigned long nr_pages_iov;
- 	ssize_t iov_len;
- 	size_t total_len = iov_iter_count(iter);
-+	unsigned int f_flags;
- 
- 	/*
- 	 * Work out how many pages of struct pages we're going to need
-@@ -194,10 +202,18 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
- 	}
- 
- 	/* Get process information */
--	task = find_get_task_by_vpid(pid);
--	if (!task) {
--		rc = -ESRCH;
--		goto free_proc_pages;
-+	if (flags & PROCESS_VM_PIDFD) {
-+		task = pidfd_get_task(pid, &f_flags);
-+		if (IS_ERR(task)) {
-+			rc = PTR_ERR(task);
-+			goto free_proc_pages;
-+		}
-+	} else {
-+		task = find_get_task_by_vpid(pid);
-+		if (!task) {
-+			rc = -ESRCH;
-+			goto free_proc_pages;
-+		}
- 	}
- 
- 	mm = mm_access(task, PTRACE_MODE_ATTACH_REALCREDS);
-@@ -215,7 +231,7 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
- 	for (i = 0; i < riovcnt && iov_iter_count(iter) && !rc; i++)
- 		rc = process_vm_rw_single_vec(
- 			(unsigned long)rvec[i].iov_base, rvec[i].iov_len,
--			iter, process_pages, mm, task, vm_write);
-+			iter, process_pages, mm, task, vm_write, flags);
- 
- 	/* copied = space before - space after */
- 	total_len -= iov_iter_count(iter);
-@@ -244,7 +260,7 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
-  * @liovcnt: size of lvec array
-  * @rvec: iovec array specifying where to copy to/from in the other process
-  * @riovcnt: size of rvec array
-- * @flags: currently unused
-+ * @flags: process_vm_readv/writev flags
-  * @vm_write: 0 if reading from other process, 1 if writing to other process
-  *
-  * Returns the number of bytes read/written or error code. May
-@@ -266,7 +282,7 @@ static ssize_t process_vm_rw(pid_t pid,
- 	ssize_t rc;
- 	int dir = vm_write ? ITER_SOURCE : ITER_DEST;
- 
--	if (flags != 0)
-+	if (flags & ~PROCESS_VM_SUPPORTED_FLAGS)
- 		return -EINVAL;
- 
- 	/* Check iovecs */
++CATEGORY="process_vm_readv" run_test ./process_vm_readv
++
+ # Try to load hwpoison_inject if not present.
+ HWPOISON_DIR=/sys/kernel/debug/hwpoison/
+ if [ ! -d "$HWPOISON_DIR" ]; then
 -- 
 2.45.0
 
