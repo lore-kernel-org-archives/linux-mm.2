@@ -4,141 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8883CD5BD1
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:35:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7A61CD5BD1
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 17:46:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 143FF6B0088; Tue,  2 Jun 2026 13:35:58 -0400 (EDT)
+	id CEAD26B0088; Tue,  2 Jun 2026 13:46:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CE756B008A; Tue,  2 Jun 2026 13:35:58 -0400 (EDT)
+	id CA17B6B008A; Tue,  2 Jun 2026 13:46:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFE5D6B008C; Tue,  2 Jun 2026 13:35:57 -0400 (EDT)
+	id B8A8F6B008C; Tue,  2 Jun 2026 13:46:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DEA996B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:35:57 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9E0071A08BC
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:35:57 +0000 (UTC)
-X-FDA: 84835675554.29.6F1EA8D
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5E91B180006
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:35:55 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oJcmiZ+I;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jhN2GYkS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CjoN6ud0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=d+8GAyg8;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780421755;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AB0D86B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 13:46:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52AACC3192
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:46:25 +0000 (UTC)
+X-FDA: 84835701930.27.082034B
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013050.outbound.protection.outlook.com [40.107.201.50])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 86172A001B
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 17:46:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lOiFT4Iq;
+	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.50 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780422382;
+	b=lQYBjQzPOvVYSU8UcyJs3S1r3lOprFQdOZt0PF1TLebTR3Evpp18Z29g+mCHzjKCNe+ti5
+	Q25KhD1MtCBlnbWL3fziBS7cn7nAJ5k9Mv6sW+1rIkLIWVBnqoQ56BYMkCVE9eNHa3Q33b
+	xc7vrq8gYYDqgQkodNurvJuoZzTmtcM=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lOiFT4Iq;
+	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.50 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780422382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PzdYszYKaK4b4vH0SnQI6TUiWFf8bFm1Ogb1TfiqgZs=;
-	b=MATEB2MYEjdBEFgad/9uKkXFD/z7hAp96ZASg5V9dPGi4rakSyX+RCjjOB9uWELoYcbPrp
-	QBUm0+Y13mlfs6UT+ffshI4OA4NkWl9d+OlW3kVpf1r9rugJvx3oErXd/JcYBnL7EeGX9Y
-	Wy+xUb3icZrZtptRAu8KbGgYaS5147I=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oJcmiZ+I;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jhN2GYkS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CjoN6ud0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=d+8GAyg8;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780421755;
-	b=ELqmhlpelbWyNjIF5BCH2VAxgrOCBifdvSnHK+oZuUGtfyGSCSHpw8vJhgdYcAOJJsqv5m
-	I7jsCNfxcy1sVM8x/r+K81nGTWzwnF2aO9Y7eGJDYSj7Fh1poQ/EkPLOMCQPM5bGL4mdvC
-	QZ8Q3eXlB3mDUBjw6GLt7RR6p+NLfqo=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C33E275BE7;
-	Tue,  2 Jun 2026 17:35:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780421753; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PzdYszYKaK4b4vH0SnQI6TUiWFf8bFm1Ogb1TfiqgZs=;
-	b=oJcmiZ+IRDb0Vl8+5HTv2yX/FDF9rGccWP37o6YhmvUhiE2iOxo3tg5UegmyBF2vhhgR4b
-	Bn0yWmBg2jeI/af12tSnXAWoTv6YHiNlxM75JHnWcI0qPQ6m/dQe/olnfe5LbEpVl48w1F
-	Zn5QLciVSgcBoN4ANRIvAu6btk/OF6I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780421753;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PzdYszYKaK4b4vH0SnQI6TUiWFf8bFm1Ogb1TfiqgZs=;
-	b=jhN2GYkSZ6ZmL7SlhUTGxGK8CGKvahfHmS6TdWBw2sjqUP11uu8YbNTC0yD4ZwQRc7jxoy
-	7y47Oyq0haBSpRCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780421752; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PzdYszYKaK4b4vH0SnQI6TUiWFf8bFm1Ogb1TfiqgZs=;
-	b=CjoN6ud0xM6zZLHHr+iDUEJvlRR5Tcqe7CvaIG+t31o4cy6J/x5ZZFE/0EuCt9l70ftEzF
-	4L2SgHs9MheGVMjLGRN+ReW6rIzJF3ziG39/Txnz/q21ehkbfyJulncwGEdvfmSZt2Eu6v
-	YN3wdIaK7Ymkb7hLrFH7QvFmi3zUJcM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780421752;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PzdYszYKaK4b4vH0SnQI6TUiWFf8bFm1Ogb1TfiqgZs=;
-	b=d+8GAyg8Gv/8dblHxs6OE+NHkcm59mYKFHrOEl4A53724DsuXV2AEYoC1YVWXKOJkRxAv6
-	CItYWAayJ3znFBBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5D53F779A7;
-	Tue,  2 Jun 2026 17:35:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TNkpE3YUH2oqKgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 02 Jun 2026 17:35:50 +0000
-Date: Tue, 2 Jun 2026 18:35:48 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Jan Kara <jack@suse.cz>
-Cc: Usama Arif <usama.arif@linux.dev>, willy@infradead.org, 
-	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org, 
-	r@hev.cc, Andrew Donnellan <andrew+kernel@donnellan.id.au>, 
-	apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	brauner@kernel.org, catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org, 
-	kevin.brodsky@arm.com, lance.yang@linux.dev, "Liam R. Howlett" <liam@infradead.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ljs@kernel.org, mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com, 
-	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Al Viro <viro@zeniv.linux.org.uk>, wilts.infradead.org@pedro-suse.lan, ziy@nvidia.com, 
-	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v6 2/2] mm: use mapping_max_folio_order() for
- force_thp_readahead order
-Message-ID: <ah8Qcxuugn5tTilK@pedro-suse>
-References: <20260528165635.2068012-1-usama.arif@linux.dev>
- <20260528165635.2068012-3-usama.arif@linux.dev>
- <ahlh2vdHEGo6ZSot@pedro-suse.lan>
- <cc9a1cf7-7b96-439a-b0be-ecdcf27b5da5@linux.dev>
- <ahmSolHvUChl-3vM@pedro-suse.lan>
- <185f1caf-b33d-4467-beb5-51bd8520ac78@linux.dev>
- <u52xvwk2fjjk2izdb4wvuqq2zhc5neb4q6usimcxejluuyngxw@d64sc6rvojyp>
+	bh=ESlPa9Ug0A6mTG8AVoUqSglzO81tywO0nYb5bjQSE4w=;
+	b=4UfCWBHSZ6iocwlkJjGfByZO6bm8Rfa1iLgQT0d0MBUWRUq+jtho5aHlX1GhCLrRTeWmG6
+	RPO3L8cfrYse0GxWc5YIU4gv8UZ3EOTV2yaZamum1pzVaCyjrt37l3hqe0fyg0P0ostpdz
+	EbgYppwSgzfCj5AOOzw8H8oTF6x5WCk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O03p0nJ2LMY231U7XFkXI3cgsViGCbzfInLMAnbHn6Tr21PqnJ+pq7ECGAdUCWFlHHn+75PwRzh0kYykRNO8ucYjthtR9mDdeCq0uPoU3KSyrehcjWvaqKSPd2Y5wrRqOPayVQgLQmGx7MWjGSpjojAZyKtz8Bjq1yOCafFxgdYan/KuliBDCar0rsZHFniBCArH5LHC50a09lUFVvr4CDQekY91kJQVJKWNPjuVjj6VEfyPmYe7xbHPHjeZfEvmlCPBine8rNeJ0NUaYoE/9Ps/LvAY+hA8Z0/FQINr/tp2ENrEkzG5ROyjaBohKANr04VTZ8NpD/lsJclfGplZTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ESlPa9Ug0A6mTG8AVoUqSglzO81tywO0nYb5bjQSE4w=;
+ b=DecM30I9T3v2E5moGWCpA53c6HbcMkoL96UtV9gI8oOJzVcFsY5/dFJXD3g4RGAjRqufA2iZnfLJSbwzBLvy/ssgv/OjJ8c+6o4P2wuLiiPKS84tvS9KK3HPa85jJzb//aAVu2l1jFyj/hfYvmVSMZUjDdvrB/z2elqOSltDv98dVwzhagvA82rvCh/o4G/87jEpHSuwASx5PYKa7xYrTmMP8+gswyVh0cuC9EaS7TK9USyr0BF1YpK2JXPAxxKLOQAeFy1bRO/criyTgOfh33SfxlOEZI1Rq4JZYkSxJtNoyY/tSzZjJ9bfWZ+fHOacF1H477ZZlpjMp+Gby3CRYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ESlPa9Ug0A6mTG8AVoUqSglzO81tywO0nYb5bjQSE4w=;
+ b=lOiFT4Iqwm6X3xfYa5S5vq8GWHNVKxDszayd3+DKmzif83DMc7tsiqY7Hty6+pOIQJL/iZ/Vpxkhb/cAHGh86ty6EEsgSzdR+O6k5cMUBY+3VrprQHDYRzy0qr7ffuSC86+Eq+BvfEhUKXLYNsWp8tc8jQP4u2enXxSHwAWu2au1/u90EevjTP1RJOWw4FERql+KBQd2jAtxIijmDybameIiFpXPLzp3V8mS9qPsP2nji3cRic+nlWdvOPo+U8ummECFoLeqLZ6rv0uX3015KmCS0j29VT7hAVfmep7AJhdWA9VAWe6kLEoocCCS7RqIWDObE61KewSEcG+549VIAQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS0PR12MB6440.namprd12.prod.outlook.com (2603:10b6:8:c8::18) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.92.7; Tue, 2 Jun 2026 17:46:10 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0071.014; Tue, 2 Jun 2026
+ 17:46:09 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kaitao Cheng <kaitao.cheng@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Liu Shixin <liushixin2@huawei.com>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH v2] mm: page_isolation: avoid unsafe folio reads while
+ scanning compound pages
+Date: Tue, 02 Jun 2026 13:46:06 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <07E96104-E481-43E4-9ECC-5247A6CF4EE2@nvidia.com>
+In-Reply-To: <20260602101147.2892436f68fd383723c39855@linux-foundation.org>
+References: <20260602130755.38794-1-kaitao.cheng@linux.dev>
+ <34F0943E-4ACD-4655-B9B8-41F658FCDB7E@nvidia.com>
+ <20260602101147.2892436f68fd383723c39855@linux-foundation.org>
+Content-Type: text/plain
+X-ClientProxiedBy: BLAP220CA0016.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:208:32c::21) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <u52xvwk2fjjk2izdb4wvuqq2zhc5neb4q6usimcxejluuyngxw@d64sc6rvojyp>
-X-Rspamd-Action: no action
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB6440:EE_
+X-MS-Office365-Filtering-Correlation-Id: 563b1ec4-83eb-4888-28f9-08dec0ced4b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|22082099003|18002099003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	9mHeqzrewPZURknD0z6DiEIQ5ZY4o/DwnkaCZhxFPy/SkVfROFiLR+8fVBUyfhOM2ubTwKyR9PwTYBQ96v4KteSkdE4USVlKv0sDp02EX/tdrc06Y+9R+lLGdf7/QzZ5LgY9FQ4z/Pf5kpoxCuZwdIYyEa1douVQlQ78m/6Dsk9eEo2jfUKwSCKguu2P8F4H0uL0Q0UqlKWBWogHI1b0dZrETVO8UN7NB1LEunCDTZP480NilEFw4WeO4HGuf6olG+V3aZY3g/MoRRmT5I6dgzateJGBY3a/LHPtUerd0ZuTRhirdpsO0lhuPvjwh9PKFLYtyasDLpL4A1NeIos+hXhHuPLmTEulAQVaggSKdtgdxGvVO9lAG9NsI9w5RbfCyzdkEoH7Bnlg4K7vABRe9TPWvwrfJGZsVeJJsP880UDRIe9YIL2OEyT4s517s5uybA75OQTrZDUgvPKiMccC/gOkZ3PBIDcR3xs91q9xWgleral8ZNQVY5hxeuPTrUjoNV5WP2EfOWSYXKRs7YijqfQE5y2NGTp/oXiME4T48jusFAiP1DdVXNQBm3u1BIKCqyJIRwEOnT7KOTG184rcC5RWSKUgzHA5A7BhimLpxiDC3LDoSu0dmJ87GLQiw7HNL8QSbRZWgUql4ldNVHq/nCUW4DWIlVgicCVC+I1Gvk8JSVk/h4/va8FpDnBcyNMV
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bKYV1/hTNjisSa+K7YxrZYSYe3BRt8T4hri74hTbgraJnf1SFzDwUhBvyRtU?=
+ =?us-ascii?Q?/mBWmKkayF4J4bPNmuNa+MN8nk/XpG/oFhjPOy3HM/GiPTeeEYdLbFt9tmc2?=
+ =?us-ascii?Q?o5z7k+9CSrezJHpjXVQAPLCtrXVY6HjAJZOB6RL9uQYygSHt/wIVGhS9NLey?=
+ =?us-ascii?Q?gUxu1cpkN2THHrdU12BS+xclF/AGITgO0R4K89Ax65J+JGI80VFFYeXRbk/G?=
+ =?us-ascii?Q?kCC9b6FZu/QUJ9xFrMb73LOHMID9lp6MXVSwTW6+h2HuTWR4RHYlILtzzwFQ?=
+ =?us-ascii?Q?64mQMqbxEjYkDDUtcmoLqe740KUXc2D4/IvBYrNvDH1tshYiR4To5sH5tsOm?=
+ =?us-ascii?Q?xnldSpH9qCxYyN3xyYbx6NjlZYct/E4ygdgzyA1hRSB00LXw/pyqq/oq9rGp?=
+ =?us-ascii?Q?DviUmypDdkLtOHqGPVjrMp7qoDUtklf4BMi6lh7MeBUOnYvcorjsm8m2HJrQ?=
+ =?us-ascii?Q?TngZggJa4AKq/Cw8a5HTsfSHxxkBdepx+R0zQ0miEeahTIpqzqSp9mdo3062?=
+ =?us-ascii?Q?AamACxGV00yDZSPoZbxFs+j9dXcYhPIRM24i8k2cgwFGH2d5h55VuyXxny3D?=
+ =?us-ascii?Q?oTt9EgxaDI1jiMYMFTItGHLbGp+s10F3dTcYpZoHLkNA5mcqNBXSljCe9oNw?=
+ =?us-ascii?Q?nAwTWmRo0Nhobntb7HfkG9R20zoDcnODaIG7nQJD/LHui8LYxD/jE1E/y7Wk?=
+ =?us-ascii?Q?XFsrLFzrfPIej65FRSrjFELXCEjRehu3ornvla51+p//QXiBNBBuP3dngwN+?=
+ =?us-ascii?Q?6Q4ccp1bvv5RgcpFGDWhkwuQD9LefgO3ixlUO0biWFdnkSSy1vdMNO42B0wY?=
+ =?us-ascii?Q?70gvHXvYRYnPqhBfn4c4ySZRRj/8Kdgy2/15h3DSCIeZd89pD9vmsMqZHwUF?=
+ =?us-ascii?Q?xYWPn2c2qR9q1p0yAZO6R+Pt+u+7Rhsde0AVV0Jb3PrwqTcrSFdx1qKam060?=
+ =?us-ascii?Q?IvTC21As5PnPerYVAuJSHU/q+91EmIXe9ct1R6Yrg015/1xdb9m5F8wR65RN?=
+ =?us-ascii?Q?D3qP1MXu1s80Q/wGaI3+SdZNn6HhgmCpKn1zSrSSsEKizxD3VS7vNCaH+zHh?=
+ =?us-ascii?Q?Cm4oVn/G3iLOOcXy7mmtMbJwSFurz47hDROtdOdwDqNBoMuMhALeQ238MUnB?=
+ =?us-ascii?Q?XibJWPZEKGG4BRnaeZGS43RNGbD4JYHbWm5HOLS5YW4bOPP/4yg3y51w+74p?=
+ =?us-ascii?Q?mHL/vREg40TOkBdxoBYSvg4n+gpep6WIalYxSKUxYkGwhQin3T60l/6GisrP?=
+ =?us-ascii?Q?qDQSuwQv0xI5I4MGkf9fcwxj6qYfIw5RJNibZN9JUrj0wyKeM7B1hlDGP06d?=
+ =?us-ascii?Q?4rYEDB1grbCnHAYQLlEO5Npl0YGtnGytwYTu1EQxvXM5Zjpd7fv15IXPbvJ0?=
+ =?us-ascii?Q?5CcEGEPGVcpXCpxExIzpvMdNNEx4JX1WmFwmFTJkJnQMMm6nUk81GhF5vTPS?=
+ =?us-ascii?Q?ZcF6lINL1e3F/3RtGcXdqqkyXs1ATxKiJB3tniriFXMCrUpGqnLtfc3eMTpg?=
+ =?us-ascii?Q?Li//qmiMm6101lsa9Ony0PInYZAJ/zArutuaa54gzxHGQltpV2zWTZXHFxRv?=
+ =?us-ascii?Q?pFlJ5MGk6dl/qkZUqmIPdS/AJN5yHDVmhe3Mq0kc3jxTT2V9YtH3USGLnypO?=
+ =?us-ascii?Q?Tlt8DiqWAAFqtE0Xe2N0GAXDnhlTFs03061gzlEe+ucg3sDjTxGPoJRQT5CL?=
+ =?us-ascii?Q?pVXqoUYNc5wmVc4NEBzLvz0B+pYlF+3BX5xaTqok7DRUhXdk?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 563b1ec4-83eb-4888-28f9-08dec0ced4b7
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 17:46:09.9206
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: loptiCmDbQgb0Xjh5RKQ8rRTAsxzAIeFxSZWyzOWsZZfz7IQ0zA9yYHO6BuQWrll
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6440
+X-Rspamd-Queue-Id: 86172A001B
+X-Stat-Signature: ebbbu6xjofcf6djp59hgccxeyx4o6fzh
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5E91B180006
-X-Stat-Signature: 97wbkezmot31si5fbce4mxt3k3pyxa3w
-X-HE-Tag: 1780421755-392409
-X-HE-Meta: U2FsdGVkX18ahS4PTcmK1cn2x1/FvZRFORIEREPd26WrRyRJOZDdf4wICFWZI4e3dBFVwIrJKsV/Lruiy+mQ0o+l/wJmlN42GttB923IrcXfTj3EwX1/2WnIWy1I6r6uGCDvuplrhv088FZtMyF02xuM2b1DvsRaPWIW5SebQvYkyWJ7evWACt31QuwH/CQMqRC8xfoqqwbnbAjc9OtgT1VnxtCTlOEHc4lHvpBTqs6Rx6w0dFhHLuLcVEB/+GukJrw/SmuBmQq8kiVXVrCrGp8x0dHoE9IRWRRyTibmuuEnMo5KT9qeY70uCEQUxv5TZTC6aaHwMabah8N4eN1Ub8YUMA7lyfachu/M+SX3mZqyJ5Cz41Oij5JlhgjQMfjI2lCbNvVWVOXIuYns386+Y51PWuGp7xDW9eIn8E22YQzM97PhvwciJTCuGnxIHa14T7QqtiBET6qv2371TCcczcYtJJp7fQCwkQggqvu2PsVO+NmbuhexLaJl6K9qCcxNCfZV+srMvv7gnnd2YBn6WHsBPcj34XzJatIkRtYT/ZHCT/Ag0qAyctimYe5wNvPnP4iUagKurhw3aLzDhJFeGNrRYDpQziksMABI4TYyG0TwqjUk46w2bWyI4NuFvzRyDEcVwixY4lQD0U62VihrHiC/JEDzO350/I6gpWMGn1mYOcL1wV6xMtwBzdPqnW/hQAwA5POXByOXBALN56dKBY8xPjXf0/XPx0jap41uHWWATKQJ8qvGe+df6GUg4ZEe+VCVI5CqIGzc8ey9RJ6n5hCYLmbJ4eJrdPSL2peh3pte5yCv5TsplP0jSqxOaPPNnm1IJnk0YWlNCAvDQdn4VM6OtQsU5tO2iqCAS+HJpkiEVb7TCox3oPyrRV3wrUlll0CRxE+Jfy7BjBFU9F/rqByKqAqM49fDB8ka9KzSn9JgGdeatYcaQ/TJyZbINz0P9nimEOPIKJh1eAv3JLH
- OlJMotMB
- hoj9QbpyvRr1dm8zcri7e7lteNmXwxiDs/6UgsOhmEdioKQAul1h5nurqmQFb7HAqjXTDtSeqipPoDs9C2VNTFQXdD9E0qqKJLlnZwwhxvbfDPbu7JSm1xZYTFTYP5Ye/l39vUsFi+F1du4Ml5KtybTNwirIJqc6kO05VdxVb/oMZP5HjEHHcGCIz4gu+Uu6y35OacGSCf1tcCrwunFpe9PSqMixjJfODyxdZiyR1SIHO5CBAxQr2H4huYGwEFNqAcStMz0XN5d5DSb94kTHRM6/SfbWxizcO8zWwTEhxOx9PMKdr1DjY/VZ4FdHtAhgt1qFwWS+YKCbh4qqcEGodo8TmSLkDa0MQOOEs72AfJgOx2dj40CCZdP8Qb0shPhs8EjT2xq7RZQIo3M05gwkAdxz6aYX00n4QYZgAZ8Ayb0gNyGvSQpv310pm13hGQs4iCqBua64lrxcdNDbg+5m1eajfMQ==
+X-HE-Tag: 1780422382-480318
+X-HE-Meta: U2FsdGVkX196+o/bWAXI9DVDX3ZsEqlGTpvIXi2ZrlJ4RjZAOE/LOC1QK+tJ4Jmpq4xjMBBUlJFchFr8wvVPD14htpZXwbWUt3x0Lg4co10seWvhdVTb6cYHQ5jG2N5HCngOB1AXmnJ6P6V2kabtFaOWCp/cbBQ57izXaRoEKQ4IBvZ8yivX0XVmH8JbaAdMuUsybF1MeIYPsZTHlnM+/DtlekIj0yxER22ERzZVK41IP74kZWPtGF4zrdFQPeM2Z3h/PIBOhA3Bvumqul3fDJh9OPgTLhOlih4pg56sZPiM+gbmpnVmpTozRtfn6V5B7eNaWHaJhOOlv0zST6KM+wGGtnwjKcqEfizRdaAi00TRrSGi/PXSu2oidqt1tEt7CYwXDAcsOG4GF1UuvY2ghyhb5dD55FFPHGnwAO6kced1R75p6vUAzRSt+5I6otQRft+KbAfraQKXRgzkI50NhvgqikcHe697j/N8vdsG8bNHOuc1B+JKbAm0QjYVeOaZXEMo7eUmxc7UBXYj6FYqU1Yvwl5a+mgIACRpqyf3g1EzTuulEok3/s4ptcW2UTBzwtoL01w2TIgs0KkP0hP6b9gjzAnsXmmKrueGvH70qCk4+Za3g2xwmwZGcoweKC2aSJn5Fii9x4G5dijdFk6K/C203kXoBXzTeQPNOucS3GeLwQzu/B4sA2fDsIsw2BrVIu6gAJgxktaEuzFelRNvq0TYVfAYd+bhW3ru//x/4cKO3k8W8gj9JRRyQZpSG5kKbGsHqu2sF+0lgZA6FoGqu/2qKP2DT/5uOsR9+mcDHMTq2Vu/mm0RckbFyJMLV8ynaJt93PtGHLxx1msKbDQvwPvtjTBFXpJaM00nJgZGSDy6Ay9wXV47M6HhOKE0EoBJGcC2/dafEbGfHLF8qlO+ppKMY2b3wc1zl5oMuWzsEulQZMyY5AC+8A05c16BCx+ufbMxbA2fNfCB1WiiGoz
+ ibI6bzyM
+ D65BszfNkeRVPYKN2f5K3/xafth+KT2G45EXVys77qrC2GiJhdVOT8ln8eckyRPdNyb1pFnon2SPyMudFoHKt8BQ5lW+IUXDN3BcAy2zdiEutq2D76xdGWW7/V8YZY7jbO84Wo7+a1ZdwY3Bi9kcHigww8gmLBidlx2WC8TUJToIDNmyZjIIXnD9irLzSftCMQ52ZvUCRgh8DoxZD8HVlHUKxdGRiccyzt/ebQtbTTCgV0Yb0rvbAxcgvZcIut32oNGJgLJhiI5rcabimAj8WwtstoUbj5WsZtiMfq8mjhUHONf1UOYa7JmJ8cBZznGQ/2Q8saTJ/3S3YefSiMru9bTESGFPanD4L/rv7XgmHTT0dgEicWkHz0Kw1LJYNcYXofc42aTZmPTJpTXfVSQX2/YOCzBS7SK1XbX4OhCesqTFrMRiZt/nKj0ihK0QfKZ8F7CCw+t/RSiTjBisEYAPCgo5B4CAPLIqzfIkKrtNpZl1l2fr9X9JFL89jDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,66 +164,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 30, 2026 at 05:16:29PM +0200, Jan Kara wrote:
-> On Fri 29-05-26 15:11:54, Usama Arif wrote:
-> > On 29/05/2026 14:40, Pedro Falcato wrote:
-> > > On Fri, May 29, 2026 at 01:19:03PM +0100, Usama Arif wrote:
-> > >>
-> > >> which means mapping_max_folio_order(mapping) <= MAX_PAGECACHE_ORDER <= HPAGE_PMD_ORDER is always
-> > >> true, and you dont need the min3(..) in your diff.
-> > >>
-> > >> Now the question is if then why not just do:
-> > >>
-> > >> 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE)) {
-> > >> 		if (mapping_large_folio_support(mapping)) {
-> > >> 			force_thp_readahead = true;
-> > >> 			thp_order = min_t(unsigned int,
-> > >> 					  mapping_max_folio_order(mapping),
-> > >> 					  get_order(SZ_2M));
-> > >> 		}
-> > >> 	}
-> > >>
-> > >>
-> > >> This is because this will regress the 16K ARM case where we already got 32M
-> > >> folios. Someone might upgrade the kernel and start getting 2M folios now.
-> > > 
-> > > So maybe limit to 32MB? It's still arbitrary but at least you get simpler
-> > > logic. If the architecture does not support 32MiB folios, it will clamp
-> > > the maximum folio order to HPAGE_PMD_ORDER, and you get the same result.
-> > > 
-> > > Does this sound correct?
-> > > 
-> > 
-> > Yes, so if we replace it with SZ_32M, it sounds correct. I just think
-> > the 32M size is too large. But as you pointed out, even 2M can be too large...
-> 
-> So AFAIU the practical discussion is about two options:
-> 
-> 1) limiting at 2MB with a slighly more complicated logic to keep mapping at
-> PMD order for 16k pagesize on ARM but use 2MB pages for 64k pagesize on ARM
-> 
-> or
-> 
-> 2) limit at 32MB with simple logic which results in larger (32MB) folios
-> with 16k and 64k pagesize on ARM and thus larger memory overhead.
-> 
-> I'd like to maybe offer option 3): limit at 2MB with simple logic. This
-> will reduce folio size on 16k pagesize ARM compared to 1) but do we really
-> care? I.e., is there big enough practical performance impact with conpte
-> and other tricks ARM is playing?
-> 
+On 2 Jun 2026, at 13:11, Andrew Morton wrote:
 
-arm64 16K contpte tops out at 256KB TLB entries. It's quite a lot smaller than
-a PMD entry. Also, something that was discussed at LSFMM was its effectiveness.
-Apparently, most of the gains seem to sit on actually having a larger page size
-(perhaps Dev/Ryan can comment; sadly the slides were not posted anywhere on
-the ML, so I don't have numbers).
+> On Tue, 02 Jun 2026 11:02:41 -0400 Zi Yan <ziy@nvidia.com> wrote:
+>
+>>> -		*step = folio_nr_pages(folio) - folio_page_idx(folio, page);
+>>> +		nr_pages = 1UL << order;
+>>> +		pfn = page_to_pfn(page);
+>>> +		*step = (pfn | (nr_pages - 1)) + 1 - pfn;
+>>>  		return false;
+>>>  	}
+>>
+>> LGTM. Thanks.
+>>
+>> Just a comment, order can be dropped and use
+>> nr_pages = compound_nr(&folio->page) instead:
+>> 1. order > MAX_FOLIO_ORDER -> nr_pages > MAX_FOLIO_NR_PAGES
+>> 2. PAGE_SIZE << order -> PAGE_SIZE * nr_pages.
+>> But it is not worth a new version.
+>>
+>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>
+> Thanks, I queued this.
+>
+> What are we to make of Sashiko's question?
+> https://sashiko.dev/#/patchset/20260602130755.38794-1-kaitao.cheng@linux.dev
 
-To me, the question is quite clear: do we trust users that say "please give me
-hugepages" enough to unconditionally give them hugepages? I would assume the
-answer lies somewhere between "yes" and "no", but 32MB I would say is not
-particularly excessive. 512MB is... much worse.
+Sashiko asked if compound_order() returns bogus order and the code
+can skip checking unmovable pages and return false negative (the
+range has unmovable pages but returning false), leading to offline
+in-use memory.
 
--- 
-Pedro
+Answer is no. 1. order > MAX_FOLIO_ORDER restricts the number of
+skipped pages; 2. the actual users of page_is_unmovable(), alloc_contig_range()
+or hot offline, will perform page migration and unmovable pages
+will fail the migration and prevent these users from doing
+anything.
+
+Best Regards,
+Yan, Zi
 
