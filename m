@@ -4,94 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BAD4CD6E4A
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 08:33:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 493F2CD6E4A
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 08:38:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA5A96B03E2; Tue,  2 Jun 2026 04:33:05 -0400 (EDT)
+	id 67EC86B00A3; Tue,  2 Jun 2026 04:38:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B56E36B03E6; Tue,  2 Jun 2026 04:33:05 -0400 (EDT)
+	id 62F826B00A4; Tue,  2 Jun 2026 04:38:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6D396B03E9; Tue,  2 Jun 2026 04:33:05 -0400 (EDT)
+	id 545CC6B00AC; Tue,  2 Jun 2026 04:38:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 967AC6B03E2
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:33:05 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 147671208C6
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:33:05 +0000 (UTC)
-X-FDA: 84834307530.25.A63BC64
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6859240008
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:33:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VhPA+n+i;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780389183;
-	b=Vl843Rn+vGH722gRvlJ25/3yPyFKsXh3/IhymdtXlm9+EqpKYiZnSnwziftfGBrIcHiL05
-	t3gLIJHE/2c+1A2SObBu436mQkFtqN6YPO6VMiQBZh5WiarDt3pBUglWK0qK5TxwVpQE7C
-	J47Q6Wz+WwYu8PpiFCh4CyxXuS1CtPs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VhPA+n+i;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4652A6B00A3
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 04:38:57 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E54FF1C0EDB
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:38:56 +0000 (UTC)
+X-FDA: 84834322272.07.4A243F4
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0A72F20006
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 08:38:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="KM4Ieo/O";
+	spf=pass (imf03.hostedemail.com: domain of error27@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=error27@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780389183;
+	s=arc-20220608; t=1780389535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ImCYU+TtOZg2vTfWZSd4fkm9BzeEqJiDqaIVmGVhX4=;
-	b=sw8qkPvZ1JAHV7pyoOQbISTf6NbJlk89HZdITHLp1QkDC0KYX8lxuzBbawhtgEbtIzjy4M
-	7pBgglfK/Lq7kN+sEMiO/JqwFV+8GzsaTkvLSTAHkeNoBZejK1MVMSyl9qw15XWUVT7M63
-	9C/LJtREecb380O92mUUQhe1K9QkEbA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8BD62434A8;
-	Tue,  2 Jun 2026 08:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8A61F00899;
-	Tue,  2 Jun 2026 08:32:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780389182;
-	bh=6ImCYU+TtOZg2vTfWZSd4fkm9BzeEqJiDqaIVmGVhX4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VhPA+n+iHPnrTiQhiY+2njrnPuAKPmUMA1XLzg8zXiDW8Ur1i82vNx+RfsJaHbG/V
-	 t7LbB5UhCxBdzaJgsH+Lvuq6RDqn9YeoBU8syoFnxCx8408jaBxPSYzu4Bo0magd+R
-	 qUqAb6faRwucvYUwiOcr8ToMu/106/cWUy0iiey2TdjOO8+ez1b83N0mMkwbwL6mGH
-	 odmbpkrqwFdeEaR3JsP3SgaX86XCV0HQFNbu3Ac0xCeTVpcwjH4xS+y5Oe5DYue6pW
-	 xOhvUH3gY8D7rkv/tpgMPWHflYIBNWAxY4wlaO8LVww9UXDrQLnYP/FAT47uclaej+
-	 pk4ioZzvUkOSw==
-Date: Tue, 2 Jun 2026 11:32:54 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
-	David Hildenbrand <david@kernel.org>, stable@vger.kernel.org,
-	Sashiko AI review <sashiko-bot@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>,
-	Pedro Falcato <pfalcato@suse.de>, Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH 6/6] userfaultfd: build __VMA_UFFD_FLAGS from
- config-gated masks
-Message-ID: <ah6VNjfXXx-3Nh9l@kernel.org>
-References: <20260529172331.356655-1-kas@kernel.org>
- <20260529172331.356655-7-kas@kernel.org>
+	bh=mlfk7g9yiLl9nEiaUzdoEKdI4vGE8q96ghOVqk0/wu8=;
+	b=Tiu15GATfHzuhohZFkSswrE591nKExozr614uKcZ73vu/ZRIlb2IvbIOO6dY5/v9QiPx//
+	A+PyixPcDWme2VZr/AVg9CNKi+Iqfs9A4nTgzoRp/2woRnF+5J9fzPH/D0AzYGYySGG+IM
+	mPvPmD8ElticITrLgaLCjhXvm9dnb4E=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780389535;
+	b=OlyBPlkTz4jva2Www7yN6uWtk39GWawbd1Y0Qe7mfcvHX62lNIwi0Qv+3w50Prh8d1BDuZ
+	cy6DiSQbw/QSo6llhfS2CTpmcuTD/nKgiJ/UpivHH3Z5zcp0IrD3RWJqYQA8SGbn3c9ih3
+	vU4sm+lMPct346hL52nlAbNYCJsifwc=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="KM4Ieo/O";
+	spf=pass (imf03.hostedemail.com: domain of error27@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=error27@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-68ae265815aso8673385a12.1
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 01:38:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780389533; x=1780994333; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mlfk7g9yiLl9nEiaUzdoEKdI4vGE8q96ghOVqk0/wu8=;
+        b=KM4Ieo/OKj0rgJPikdONJ2UiWKZkd9tGxMwonsj/Mg1u7ZPQVCwN4VlkAL+DgfL8F2
+         /DfmhZNjNe4rIdKYvfFHgJfGb3wC1hz/mxJMirZ+zXlCMveitb5O1lRa8fn832uOT2bM
+         CY4qeWbSnA7P++VyVVHXQMDtIJhYkM9y0vyyTW6Tl+pb8tkxU8yGdpI42JLPj47pWWng
+         quBQ5kFvpJyC5QIyJcSdxeGADf/0v00RVI+RhvP1227u3ztvdTvEB8fY61OALfyp+XWy
+         9oUlGCKa6fx/CfewtNsBDtJj36oGWX3KyU7DCYqPD6MLDOlTZNfeqfNLq0KY2vXMazOc
+         Iwig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780389533; x=1780994333;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mlfk7g9yiLl9nEiaUzdoEKdI4vGE8q96ghOVqk0/wu8=;
+        b=Q3tLx08ayTvpbmTrSO+e9u614XiMAgsW4Nptp8P4TJEZ7shsHqiL0LAvTjdHTv8lqa
+         iCs0/qF3ErLpQik1khrp2M2k80p/POWMDxpk7FwChAu8BJ7+b8LNkAEO9id3XR5DNs8T
+         S+swz050HVaL38342Cb6qMCjEAkE2UhjUwyUPEzyIjNtWSLfXw+SG4Lc6aWn/w+C7T8v
+         ckavrUS1guE9h4zqOMY4SPdYBkoYVpcal7RrAu8D9o9E4cZ+2tkYYPVQKAr4JRSdq2Ib
+         C+nO359eIjij8Jc7aMcfd1O2lWp7U2b61q4tL980EIVSJfTDW3f9CBRiWtodC4FF+mY1
+         YuHw==
+X-Gm-Message-State: AOJu0YyrLYdS9ClNlugHMId+g3OSURVcKRzalsUPvd0+3J9VET5KT7TC
+	09zHnCgae4COEcLSOa+zrgkOhk6+617rgFx8XOId/2ehjAnkSLjvOg0B
+X-Gm-Gg: Acq92OG9pV++X9u3pxRw0x1eZ+8NyYLQt467gin1DE79Fzui+hc+bhZDOpdnhOUMRFd
+	IXTTTcomMSFxrh1vJ9fHe9maiJ+cEIDqgw1cUSgTCMVQJuvT4onrtXR+oHWynpnxF6MkNSi4aPN
+	k3M+ABLOmgnZ3y12GdsYDmXaThGXVsBm4QZi4jlb8AcwuSX3RbP5sKp12PLPgtJ12xv7y8XcHBB
+	uwZBOz4sczOp8C7978yC9Ex4Pns+Qc+ZkjqaiC3Z+kDCwdkWBhz1KCsOtwL8E+sW3G/hntK0OAQ
+	o7tjrI4OJbwnpvV/QEX2V3UsINor7sXf993guxlx+T2eImn1F5itXT9drP9YNIIdjdQ8VDU2EZO
+	FSmt41O+2EON05kYTAAcTwTXR8q8NeQySx2MZ/O2C4IVSKmn3ufgFrAQWgttWPs9R74uXyZsN5v
+	9tmwoGE7hsbbHYp2Fmk70i1NPLqG4KQQ==
+X-Received: by 2002:a05:6402:321a:b0:683:75ec:c17c with SMTP id 4fb4d7f45d1cf-68c8b1eddcfmr7134682a12.10.1780389533133;
+        Tue, 02 Jun 2026 01:38:53 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68ceb7ba814sm3140582a12.13.2026.06.02.01.38.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 01:38:52 -0700 (PDT)
+Date: Tue, 2 Jun 2026 11:38:49 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: =?utf-8?B?a2Fzb25nKOWui+aBuuedvyk=?= <kasong@tencent.com>
+Cc: Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: =?utf-8?B?5Zue5aSN77yaW0ludGVybmV0XVti?=
+ =?utf-8?Q?ug_report=5D_mm=2C_swap=3A_ad?= =?utf-8?Q?d?= support for stable
+ large allocation in swap cache directly
+Message-ID: <ah6WmXpArORmRcbd@stanley.mountain>
+References: <tencent_563412614416DBC00F511C21@qq.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260529172331.356655-7-kas@kernel.org>
-X-Rspamd-Queue-Id: 6859240008
-X-Stat-Signature: r1tt6hp55cgjtpiz1pzf58mpfnydt74k
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tencent_563412614416DBC00F511C21@qq.com>
+X-Rspamd-Queue-Id: 0A72F20006
 X-Rspam-User: 
-X-HE-Tag: 1780389183-856976
-X-HE-Meta: U2FsdGVkX18K98W5FbsY21/q1+cwL+AQXDpS+P/WynPDrVCY+YPmeKWdBTJmADQJvPFjUNguLO8fgPZqVP8cWFPdJEDx8u61Xcj/QFT+q3Y3+UFdL3McA6bvr7JPedGeIBhH5lybYgHHWKGF3wOwtB3P34jzDcM207xsIxmleBh3kqNYYeysGX6bUe0DyTDswk9p7p0fn8Stw+ByvlV43fdDIXeeKAGWs307tNsUf7UdOdm9eAn8UmcrgBq+0NlWSFijTgeoo6eTEVcQxn+OlrZCJVTeCdCxnJFQH4HuzUnrIwIeD+37NFAN8BkWJG0H6ggZIjklYoN7pwWGAP9zp0rUarEYJIBox12wLTjHY7feKbPAXSVoRXUrq/hE3z0nuYw8cBXKktLx8y7prhvYDPcEZdKEAAMCKzK9x/0Gx8chnh7kUqEQfnEex/jK22Poas41oONWAWFIPsdNJHSqx0nNb/ggmXcjQEZ8bjFZJkTJXVCfbWYQ1P77PzBxwNdXgbRhE0wGBzKSEIvcCUn5mU7D/qZIpVrKrLAMtOQXNpJ7KG6g81BBuJfr6OkZJi+DCXXtpEwUPOH6PfTvo+yHhOV4M3Q+X9kMLVkPoQ/X9xOI/iIulsdXaKnBWRvUtMQL8cJUYyaHI2BJ4UKPqYD6t4GCrLd2TxOs5z83vm5wuSNrJcwUCreySLCfMTN60Y/BFGouiOt0Te+CuUHFxOX0Zcsvt0USgq3K+gVB1KRtgA0Ctnt4/XSTRxhlfqIKlABXJEJWkv/LwFmV6iI1bAqs+Juxa5E2AiN1pE36B/XXLYqCJXbdJJPHlMMzdKp446GU5myjvw8h3AIXHIRJ/ZwX8z9RAoyKwjv1HjB5VKqtY660j/HGO5rVqrOk1YV2raGEqecYgStcPR9N3hikHqWtXXVC8QmtSNQ2XAfbXG/4HBaOlVrxP7UF151KNXDFZsJOiDHpgfw3IY1P1wY9Kg+
- nIHKPF0t
- TD3vzq0ewJvgFDUZ3r2Jt1NJ+saELWkUKqZcL8mBaNiC16rOekvKoEsTnFS/1UWr1yhvSPzeHrf3pg8aJVzCi0bXeTccgDyds148SJey5is0afaZ49Ozo0sMS2Y7fjUo28m51jA5yZplZ6TPXGpljxxQwWO6PBKGdgJmwQEv2m176zTuyQzp79AXsL1HSXngRdTn/qekjKkaBlpf2TCN5tHZJkFtfZR7unXEepjqA44jZSxuncD15tzlxRH++Eun7veHYRBeovwJKeO6sUuvuU8viXdeP6wCHxzDoRRSqOf1+VK/8l5WYLnhQb6/E41Czqr9+CJZutXWIatQ=
+X-Stat-Signature: td8npk5o9ye15oy8irfifdjrs4j7qj94
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780389534-560233
+X-HE-Meta: U2FsdGVkX19amtREPcu0OIrqFmZQCE4aGxjJ75d6I60XDFaWNvDGehreeA6XGKlIVyg7JNlLxjJQQr3ge2oUDrRiPy4wdmuvQ2P4oVZhl23rvvS/mTgWjz3XMW3OqTlGRtxzsv2P3QjWZ8lwDx3I4cu0tfUa6WqbSQhqp0fMHUea8DQeKtFDGK648n7ds4L096xB0YGs8ZlCN9hQyFfpT9ZvWX2woPESXfrc4Y6xsiso7n1kPDowjL/cwESFi7e10xhtzTd1d+TXGe82KSWPF97YRNiHkleJUj/YkO6c9EHdzVQpaMxyA5QujxemMo4bhvLUyo3n0lot7wh8OtSNSlfRtaT65Gycb278Pb3WQXu9J4WqVnTZxOIynqUwCW+v/TiJuoSF+94iaiRjXW4HXqLjWAY7EWoRAISMt7MZzrPUUN5CIWDny2B+TjtDPjwRPMYUG87Qr/ICuWXg6+Wpi6lRyOV+N/DrpTX1KRas6iuSG4GJjLTq1KVfFbN6/GTtrVMk2bKo/5gwP6yxNKitH8waMmydZucft2GPqIMiblkF0+HZdjNfZluSSCh7PUlR07WR5LwfkaFRtqU3twNjVCoFS7baykMlpAJ8+LFw4jSdd0ozkwyyKBiGBkCKVwhh6kkUU+utwms3iB7koBj7qnSVqVRpJ2FyUYTorirfGLuaFXo7cOA9yTXUN3xLxHOc6iK9BuL0Kyi/vk/G8PbPBBTIytMYnT+pj+GpjKRQXqckXVwrb+4om4XqOsWUld0SEjuRMSqmqC80a93bDJLG5MN63/pIi0Ss5eVTs+HsUnNToe/77IxNhzFA9Kv8QySGTMzOJTset7Fov246Tac+9xL+1xngJUi0RjdMJllGRhHTNGwEQWG/MLDFg5E/G2rvJ29qONR13vU+sTrwrBiflIxyHq+CwSeMz/CQj6deoAaQCs9dNmYVuTdGvA/ZKDOi3/z5px+qfrXv+ghvAbC
+ 01VvvrII
+ Em9EzlcItyjg/xaqOzkcbm4in/F09df7C0Fk/B3z+np4+AvLkhLQpR6AMt/TF7R7ZStSnYBhpkS/gFLzKEDCPdp55r9fzdaA721xH3XmlxFZpfyG5VdSfV2NjucbQ9tL6+Tgrs6b9RYz0Ar3WHJrSSCHMPyoH//86Heqm5jjQ3gwdv0KsqJlGXfnSwsEezNBSF0qM4adF9D+EDvcZ2Qc1YQs8kSubRVm1yEiYze/Z2hSPMLubMIXaXzq+M+0z5j85Z9Xa3VOnIM1yNhjnvjy+agC3nJFuha0mFkib8WVvrxuWsH5V04q9ej0nmrl4nOp01IdOVcNvmf+BNOhvOj88bFiV93MMRD/ZF+YAPimUs+38q/ZweDXgdOWYZwd2pB+iLdcvCZjuTrAYyNmI1X3QzwMo4X+BBE746Wezmao6bKSFSItT/tJ6U45vCFMHtVeT2s3LYc0eRo1ZYP9FYDxb/YHxm05DEoFLUvoOvz4nDfhlGXQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,127 +119,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 29, 2026 at 06:23:30PM +0100, Kiryl Shutsemau (Meta) wrote:
-> The VMA flags bitmap is a single word today: NUM_VMA_FLAG_BITS is
-> BITS_PER_LONG, so on 32-bit vma_flags_t holds only 32 bits. (The bitmap
-> type exists so this can grow past BITS_PER_LONG later; until it does,
-> anything declared above the first word is out of range on 32-bit.) The bit
-> enum nevertheless declares some bits unconditionally above BITS_PER_LONG --
-> VMA_UFFD_MINOR_BIT is 41, with VM_UFFD_MINOR == VM_NONE on 32-bit so no VMA
-> actually carries the bit.
+On Tue, Jun 02, 2026 at 04:21:40PM +0800, kasong(宋恺睿) wrote:
+> Hello Dan
 > 
-> __VMA_UFFD_FLAGS feeds VMA_UFFD_MINOR_BIT to mk_vma_flags() unconditionally.
-> On 32-bit that becomes __set_bit(41, &one_long), a write one word past the
-> end of the single-word bitmap. The compiler folds the out-of-bounds store
-> with wraparound (1UL << (41 % 32) == bit 9) into the first word; bit 9 is
-> already in __VMA_UFFD_FLAGS so the mask happens to come out right today, but
-> it is an out-of-bounds write all the same, and any high-numbered bit whose
-> mod-BITS_PER_LONG position is otherwise unused would silently OR an extra
-> bit into the mask.
 > 
-> Rather than feed bit numbers that may not exist on the current build to
-> mk_vma_flags(), build the mask from whole per-mode masks that collapse to
-> EMPTY_VMA_FLAGS when their feature is unavailable. Add
-> mk_vma_flags_from_masks() for that, and define VMA_UFFD_MISSING / _WP /
-> _MINOR alongside the VM_UFFD_* flags, gating VMA_UFFD_MINOR on the same
-> config as VM_UFFD_MINOR (which implies 64BIT, where bit 41 fits). An
-> out-of-range bit is then never materialised, on any arch, and the in-range
-> fast path stays a compile-time constant.
+> Currently, no caller in kernel will pass NULL mpol with NULL vmf with CONFIG_NUMA. Do do_swap_page always have vmf set, and shmem always have either vmf or mpol set (unless !CONFIG_NUMA).
 > 
-> Fixes: 9ea35a25d51b ("mm: introduce VMA flags bitmap type")
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
-> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Assisted-by: Claude:claude-opus-4-8
-
-Can you ask claude to produce more concise changelogs and better split it
-to paragraphs?
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
->  include/linux/mm.h            | 39 +++++++++++++++++++++++++++++++++++
->  include/linux/userfaultfd_k.h |  4 ++--
->  2 files changed, 41 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0f2612a70fb1..485df9c2dbdd 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -496,6 +496,21 @@ enum {
->  #else
->  #define VM_UFFD_MINOR	VM_NONE
->  #endif
-> +
-> +/*
-> + * vma_flags_t masks for the userfaultfd VMA flags. VMA_UFFD_MINOR is gated on
-> + * the same config as VM_UFFD_MINOR -- which implies 64BIT, where the bit fits
-> + * -- so an out-of-range bit is never fed to mk_vma_flags() on a build whose
-> + * bitmap cannot hold it.
-> + */
-> +#define VMA_UFFD_MISSING	mk_vma_flags(VMA_UFFD_MISSING_BIT)
-> +#define VMA_UFFD_WP		mk_vma_flags(VMA_UFFD_WP_BIT)
-> +#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
-> +#define VMA_UFFD_MINOR		mk_vma_flags(VMA_UFFD_MINOR_BIT)
-> +#else
-> +#define VMA_UFFD_MINOR		EMPTY_VMA_FLAGS
-> +#endif
-> +
->  #ifdef CONFIG_64BIT
->  #define VM_ALLOW_ANY_UNCACHED	INIT_VM_FLAG(ALLOW_ANY_UNCACHED)
->  #define VM_SEALED		INIT_VM_FLAG(SEALED)
-> @@ -1238,6 +1253,30 @@ static __always_inline void vma_flags_set_mask(vma_flags_t *flags,
->  #define vma_flags_set(flags, ...) \
->  	vma_flags_set_mask(flags, mk_vma_flags(__VA_ARGS__))
->  
-> +static __always_inline vma_flags_t __mk_vma_flags_from_masks(size_t count,
-> +		const vma_flags_t *masks)
-> +{
-> +	vma_flags_t flags = EMPTY_VMA_FLAGS;
-> +	size_t i;
-> +
-> +	for (i = 0; i < count; i++)
-> +		vma_flags_set_mask(&flags, masks[i]);
-> +	return flags;
-> +}
-> +
-> +/*
-> + * Combine pre-computed vma_flags_t masks into one value, e.g.:
-> + *
-> + * vma_flags_t flags = mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR);
-> + *
-> + * Unlike mk_vma_flags(), which takes bit numbers, this takes whole masks --
-> + * each of which may be EMPTY_VMA_FLAGS when its feature is unavailable -- so a
-> + * bit that does not exist on the current build is never materialised.
-> + */
-> +#define mk_vma_flags_from_masks(...)					\
-> +	__mk_vma_flags_from_masks(COUNT_ARGS(__VA_ARGS__),		\
-> +		(const vma_flags_t []){__VA_ARGS__})
-> +
->  /* Clear all of the to-clear flags in flags, non-atomically. */
->  static __always_inline void vma_flags_clear_mask(vma_flags_t *flags,
->  		vma_flags_t to_clear)
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index 3ec8e1071673..68edac4dcd78 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
-> @@ -23,8 +23,8 @@
->  /* The set of all possible UFFD-related VM flags. */
->  #define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_WP | VM_UFFD_MINOR)
->  
-> -#define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT, \
-> -				      VMA_UFFD_MINOR_BIT)
-> +#define __VMA_UFFD_FLAGS mk_vma_flags_from_masks(VMA_UFFD_MISSING, VMA_UFFD_WP, \
-> +						 VMA_UFFD_MINOR)
->  
->  /*
->   * CAREFUL: Check include/uapi/asm-generic/fcntl.h when defining
-> -- 
-> 2.54.0
+> I used to have a WARN_ON for this but some AI reviewers complained that the WARN_ON is redundant so I removed it. I can add that back later just to be safer, I will add a Reported-by for you. Is that OK?
 > 
 
--- 
-Sincerely yours,
-Mike.
+Nah, don't worry.  If it's a non-NUMA thing then that makes sense.
+
+I was hoping we could just remove the !vmf part fo the check.
+
+regards,
+dan carpenter
+
 
