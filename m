@@ -4,96 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B20FBCD6E56
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 11:41:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37485CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 11:44:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 296A36B008A; Wed,  3 Jun 2026 07:41:53 -0400 (EDT)
+	id 99E446B0092; Wed,  3 Jun 2026 07:44:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26E736B008C; Wed,  3 Jun 2026 07:41:53 -0400 (EDT)
+	id 94F4B6B0093; Wed,  3 Jun 2026 07:44:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AB686B0092; Wed,  3 Jun 2026 07:41:53 -0400 (EDT)
+	id 83D906B0095; Wed,  3 Jun 2026 07:44:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B0CE6B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 07:41:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AD4D41C1600
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:41:52 +0000 (UTC)
-X-FDA: 84838412064.26.FE9211B
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BFE2410000C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:41:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="M4Wz5t/G";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 72D786B0092
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 07:44:01 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 390431A0340
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:44:01 +0000 (UTC)
+X-FDA: 84838417482.19.4864818
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2AE6A40008
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:43:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e9TruHKb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L+5Da9hO;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e9TruHKb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L+5Da9hO;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780486911;
+	s=arc-20220608; t=1780487039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UL4u4uRmoBKLAhYy0Fqp9Y3r55rWdaL145K+bUKWQuc=;
-	b=cWkq7DOUzDFIsNxmSc7DYB2HmYxoUzEXNjFsuSYO2fn4JGbnjfSA2aLL4XmCYGc0AiV/zQ
-	7BJ2LACgybqn/a6T9DFCrwIyNWtOzzO35YbKxGglf9lr0YFsjwi0+f/PIsiBo3+VilcIVt
-	6rz8X5/vMcie2EhS3kH0wcLDwyg+7EA=
+	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
+	b=RSK7+n2n5Tg2W8YgLctCRswHFZtJJjSlcMpOKf+q7GnAGYb0gmffeRcHhWD2JWAmtGIwYY
+	WcjwkDizz2WirmMnY57qax+CclfhwbS3A4Xr5kau8qK6BO2XXHXBgWkgrn0iu6jNfZvPWz
+	rTmbFHKo7Hizpw3IbSapN8Q/Dj1W+M0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="M4Wz5t/G";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e9TruHKb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L+5Da9hO;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e9TruHKb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L+5Da9hO;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780486911;
-	b=j0wL36zYHfsME2C+OKt8P8GYwnF+C1DQmtTrjQTNOWDReXFx0s88q4L3U6bHMu6vQY8OhC
-	9zuXKjz+t4s7fRIxlMefNChd7Jfj0P4hmN4ePu2pa8/GgnvEAcU325q2xUQNB3Yc6isbbq
-	Ir1HrYPaswRWU8P9JkgT3bbjsz/jwVE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780486908;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	t=1780487039;
+	b=w6bvvyd3UpFQaYqL4OEEkZuyJb2YbiWleB/RKk5QWzsbWdbdH7A9IzyAwRbUBsOaMTC5Df
+	HNzxogxnx+NKKK56Yxjb6QqgbTXu2ZyIwXAdj1boTLmUJXLLuxZOiXzj2+6sFaGwXyiQwX
+	xNsmFhPYWUujt6CgQwtTzGICOgO6Igs=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A8A7067559;
+	Wed,  3 Jun 2026 11:43:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780487037; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UL4u4uRmoBKLAhYy0Fqp9Y3r55rWdaL145K+bUKWQuc=;
-	b=M4Wz5t/GibhfnNJucsvpMWybJ8N37f+NtPwNfqQbWUp/F2WviagIn1AYil01IjdZrdH1qZ
-	KvJ02tTXvO8DRDlAUekPBpw55zsTAYV6lHYBRuG98UTQkk6MtthrQqBvLyNVCWplx6l9cx
-	goCRkPNpH4YfnMx953wYvBWXY59ao1U=
-From: Lance Yang <lance.yang@linux.dev>
-To: rppt@kernel.org
-Cc: lance.yang@linux.dev,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	xueyuan.chen21@gmail.com,
-	ioworker0@gmail.com
-Subject: Re: [RFC PATCH 1/2] mm/secretmem: try to restore large page mappings in direct map
-Date: Wed,  3 Jun 2026 19:41:34 +0800
-Message-Id: <20260603114134.3010-1-lance.yang@linux.dev>
-In-Reply-To: <aiAJG7gdey4oNr4a@kernel.org>
-References: <aiAJG7gdey4oNr4a@kernel.org>
+	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
+	b=e9TruHKba2Aw8j5znNs7wuEBN6ABAIt9lPHHNKWc10ifZhfTD8lU+Amkj6FyF3IwnwqsOn
+	ZJSB/bau0jk/KeED2ljIJWWGmrp4+0ZNlP/gz4LWSh0lEAZqj2+Lm+WHhG7wDQUsUCBo76
+	tZ2EMza79/ZhFb4kLqIaWpmw8RG6E6c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780487037;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
+	b=L+5Da9hOM6Rn3I3fgd338xAE9ha2lU5C4Va8OfuLmzgu2gRs0ZCE33NMTcTqxRbWVALAl9
+	NTF3zlbpIv+RVfCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780487037; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
+	b=e9TruHKba2Aw8j5znNs7wuEBN6ABAIt9lPHHNKWc10ifZhfTD8lU+Amkj6FyF3IwnwqsOn
+	ZJSB/bau0jk/KeED2ljIJWWGmrp4+0ZNlP/gz4LWSh0lEAZqj2+Lm+WHhG7wDQUsUCBo76
+	tZ2EMza79/ZhFb4kLqIaWpmw8RG6E6c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780487037;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
+	b=L+5Da9hOM6Rn3I3fgd338xAE9ha2lU5C4Va8OfuLmzgu2gRs0ZCE33NMTcTqxRbWVALAl9
+	NTF3zlbpIv+RVfCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 84DC4779A7;
+	Wed,  3 Jun 2026 11:43:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GOpGHXwTIGqNXAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 03 Jun 2026 11:43:56 +0000
+Date: Wed, 3 Jun 2026 12:43:54 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org, 
+	david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org, 
+	patches@lists.linux.dev, viro@zeniv.linux.org.uk, willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <aiAREqlHK1llOw_y@pedro-suse.lan>
+References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
+ <20260602225426.122258-1-safinaskar@gmail.com>
+ <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
+ <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
+In-Reply-To: <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: 616soyqqxz9ikmgtfwsuyemuw6b7bpxn
-X-Rspamd-Queue-Id: BFE2410000C
-X-HE-Tag: 1780486910-836686
-X-HE-Meta: U2FsdGVkX19K+7zqKe8NjyFvOXmPt4kXxEzNfmkEuma8m+iu1irHm1yRU9jtjzKE8iwXvPeHhQNq+oqwBonNqegZ/QHSQmBvNnBxlOY6iNsS0zy1QuXaxnjlo638MePcSS7QEXtD3PJfkoLvqq44qldGYvoMpu4NfL7aCglVsqxxiLjoY/KuHCItnQ6HqAhsuHI4yNnrUXEXMPOiaDM+kkcJVefW9DgrrtxEL6AoQJh10rEFRu3u6weyGKpDc6YyiyMb3pt4Ug9OPc1Ay7ObxD5oEFfnJjk7wgwXPTy2cw4Es82QRWbO1NY4CznjJ2MFapf0ymiuc91ipYZNHNmOL9s3OkEF8+qa14AAodzuDQ3LcgmBxiiVpVhiPYqhzwtWS8WqpU961uDczBBLlNOhtgQpv0Sqt4SQSNZpNXlJWOzeQHUfZlUApUC2e4TmduDBJIYIcYYHFOLd7/L285EFfI6/9wmu1QwnMGn0srLuL3/EI1BL4GXIO8G4Xf/ZYjO0RElI8JWwY2/oa5h8eRau5yx3Y3ZH/M13LAHE3NWQsWS0D+yvjfjIk9ebtMupy4grHKuJf6/9b7f+lfzrXPCwOgOG85OcFwvpm16c1yHQSY4RdOJsZE3ryA3ZxYHUy22XvgRQFlehKvRNCYbV2oq46EOkJGkrpVC2yW8gNFL4d0geUDl+LwOgDcCEjd76zz5OZoktiej9D4KHOqe9PGg5CifTYgApuCPwn1+7jODhQWi0xshWrvUW4YYm5aX+VxWVQ0q21wEEQlSfaX141J5nK/ZbDCP5d9xOSR/y0poYqGB2XhwfI1AkleIMV8HxUeiJnM7yH+u2THuvd9/pOysZj7Mk/aKgBSEasCLrCavVN/uvDfOaiPbvl4+3TPq+j2ZJMl+zlh0YWSBsRqAKidg/tLZ4GXvNbqf4HxHVyyQVx2MHVs2nPxbaw4GIlAy2QO+8H/9YIu6WYeAeWg7BWG0
- 1ki35ho1
- 55xjdbmT0ULYd4TGqP1o85bwBD2CnO/C59j+lWyGIWO/qbkhaV0HnKOmL/oo0CINcRfMxPXobnMkqW/GtuZjtdIx5X4J3oU3/qBmgaIhS/F7Y4g+eyEna+o+zv6QC5tnueOCAd0mncZCbPb4HoC3S8GquIS0oZKUfDfCseObBwYI+4Z+6y8+OvPpkAet5HuRmQFLAdSUIPMJkIiHpk8GRAY5xUNuYhNfCdNfSTJMiAZeN68iKms6+ZKd+8d1cX4KBY52fB1Kug4XsSargrTdy5EVp7Oq8qudpRqGnUD/pxeo2er+BCM4IFj0xNbRwBrkn3QjAJlv2AQ4djZc=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2AE6A40008
+X-Stat-Signature: 1eaund7ehj98gy4a67iajpryx44cc915
+X-HE-Tag: 1780487039-237292
+X-HE-Meta: U2FsdGVkX19BziMzdgd5ixpArnPaKNP3nVE4JgIwVj4vdv/Hx+rl5sSwm5wWyJnNGWjVv3TwVAxE73b/TAqlPmHg8fLq6BNAh5RXtjlTV5OqN1gwkbBMqWGI/3e2YjPVpY9aZ0wVdCiZwBQJdVNJvxKBghPuv7iGSbRG9JKYyiebSNC8h/hZtxuDzXnoiLYa5lWW7La2m8APuBGLUa0yB8cx0FS5fUpSTz21zxUshWhHKXYJ7HezbsYvwKX0Ppro6i1xGdWxsxEmLgxF5yWrlb0od81tHKjDlpqSes0e9L+MEKqG3cnNXwpEh0iKUDzSQNCKloENOL9NVZZ1hptLVNPJr5ckFZr1kOeg+Adhs1JueLzr17Lzmfa1yZIpC4nll2r5bSSOL+uvqMpEUnwbq0m8BTH6p7HY9/vI/Pben1orjnpVxo1oZ8STLMnlus4OF0ET95051ERW33HMy9M2OuXRubNPs6YfC5nytGsZw4D9Igg++1IPagxaHhkpZubZMA5VLIH4DRjG0p3E6hlcVrNRSThNBJ6j9qleYYEgdXNt2X7K3bjxIg0vteZ6WbCuy7XmUgcyq6s/r9UKgHDIyIAh0wwEinJYrrpisUnHhXUqS7aAaD3nNFJ5vXt98a4rKBIjTeyRhb0dKN4uxQV6/sES3UXQxOCNAJ788NoSB+JjsESuAUn7HXaBHYaEizIQb2kIxmH2vN6t1tXrV3uRh1AjrfFMvJ75ensvs8T0RR97ONNn+jZ1unI7usdwTuL9lBwBrrobBEQmc240vIcBLYY8HavIq3GBQNPdxQIoS6dHyL2MaZb5yGTwxXgw0UaYeCICbqa2cOxUTyO+DpcXrUOIePUd+ZfB7baiBQC5WxkBLMRXcQ5xCrjq5N82GgVZ7rjNzUz/Oi1/xivTnQZJRQWg+NRzQ9mLycFxJQZqVlGZISw2ZY75tDkyqn85cE0++9RrmlXQczpQQlA6rLS
+ mtPT+Cvm
+ ATBpeKpDxMnx1RE0EMIDbCFkfGI6jIUTI4uYus9+8DZ0yUYqEeOpZx04dEuOkwNG10veykZLJBVZXurQYfD4oHbTQa54uyEw5WNuVk/7XgesghlbS7OWSbq6UDTST0QsVQPI0BgcDaboKenKqMaytgtZoxlJLoxFgKYAHtIaeYdK/2m0G/EBQg/VcLXkkGltduOEZbzp4a3hkXvU3S9afPA/sEGHjHbJfW5Fc+LO2OkR1mViDJJJqozdKQDiUFbMwjuR08EXGOviVt8q6lYWY7vur8EALKOZfBp6rRWuu6/+kmKTb/xXBKkR3klJR60ubcuG4oxkd3h36JA2LXIMkTCFzS/iXI8HmAI7kOnjfCBBtjzt0AVLk58rquIyfy2K9J1yvmkOpFks2Z78=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,61 +143,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jun 02, 2026 at 08:51:03PM -0700, Andy Lutomirski wrote:
+> On Tue, Jun 2, 2026 at 5:12 PM Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+> >
+> > On Tue, 2 Jun 2026 at 15:54, Askar Safin <safinaskar@gmail.com> wrote:
+> > >
+> > > Pedro is talking here not about this vmsplice patch, but about
+> > > my future hypothetical patch, which will remove splice-pagecache-to-pipe.
+> >
+> > That absolutely would be my suggested next step.
+> >
+> > Something like the attached - get rid of filemap_splice_read()
+> > entirely, and just replace it with copy_splice_read().
+> 
+> Am I understanding correctly that this will completely break zerocopy
+> sendfile?  sendfile is, internally, splice-to-a-secret-per-task-pipe
+> and then splice to the socket.  How much to people care?  These days,
+> a lot of high-bandwidth network senders are sending encrypted data,
+> which is not zerocopy frompagecache.  But there are surely some users
 
-On Wed, Jun 03, 2026 at 01:59:39PM +0300, Mike Rapoport wrote:
->Hi Lance,
+You can do zerocopy from the page cache, even with TLS on top, by having
+your (fancy) NIC do TLS offloading for you. See https://people.freebsd.org/~gallatin/talks/euro2019-ktls.pdf.
+Linux works similarly. Slide 26 is particularly interesting.
+(No KTLS I assume is using simple sendmsg()'s from user memory, SW TLS
+and NIC KTLS are both sendfile(), per the slides)
 
-Hey Mike,
+TL;DR I really do think it matters.
 
->On Wed, Jun 03, 2026 at 06:46:23PM +0800, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
->> 
->> secretmem removes the pages backing secretmem mappings from the direct map.
->> 
->> Removing one base page from the direct map can split the covering large
->> mapping down to PTE mappings. Repeated splits can leave more of the direct
->> map mapped with PTEs, meaning more TLB entries for the same range and
->> potentially more TLB pressure.
->> 
->> So let's try to restore large page mappings whenever secretmem restores a
->> folio to the direct map.
->> 
->> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->>  include/linux/set_memory.h |  6 ++++++
->>  mm/secretmem.c             | 12 ++++++++++--
->>  2 files changed, 16 insertions(+), 2 deletions(-)
->> 
->> diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
->> index 3030d9245f5a..ad2fa414a22d 100644
->> --- a/include/linux/set_memory.h
->> +++ b/include/linux/set_memory.h
->> @@ -58,6 +58,12 @@ static inline bool can_set_direct_map(void)
->>  #endif
->>  #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
->>  
->> +#ifndef arch_try_collapse_direct_map
->> +static inline void arch_try_collapse_direct_map(struct page *page)
->> +{
->> +}
->> +#endif
->
->Did you explore what would it mean to hook collapse_large_pages() into
->set_direct_map_default_noflush()?
+> 
+> Now maybe someone cares about a different path?  Splice from socket to
+> pipe to file?  Splice from socket to pipe to other socket?  Does
+> anyone do any of this?  One can, of course, recv() directly to an
+> mmapped file, but then you pay for page faults, so that probably a bad
+> idea in most cases.  At least all of these cases don't have spliced
+> buffers that refer to a potentially read-only file.
+> 
+> 
+> But I'm a little concerned that zerocopy sends from files to network
+> are actually important.
+> 
+> --Andy
 
-Good point, I kept it separate on purpose :)
-
-Putting collapse into set_direct_map_default_noflush() would change the
-semantics of that helper a bit, IMHO.
-
-I would expect arch_try_collapse_direct_map() to also be useful for cases
-where a direct-map permission change could split a large maping first,
-and the user wants to try restoring the large mapping after changing it
-back. One example[1] is making a direct-map range read-only for security,
-which I am also working on :)
-
-[1] https://lore.kernel.org/linux-mm/9979fa87-88ef-4baf-8592-502ff4888085@kernel.org/
-
-Cheers, Lance
+-- 
+Pedro
 
