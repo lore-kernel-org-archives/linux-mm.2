@@ -4,102 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A96DCD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60483CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:33:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 487E76B0088; Tue,  2 Jun 2026 22:29:59 -0400 (EDT)
+	id 4177E6B0088; Tue,  2 Jun 2026 22:33:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 438C46B008A; Tue,  2 Jun 2026 22:29:59 -0400 (EDT)
+	id 3C8716B008A; Tue,  2 Jun 2026 22:33:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34F1D6B008C; Tue,  2 Jun 2026 22:29:59 -0400 (EDT)
+	id 2DDEA6B008C; Tue,  2 Jun 2026 22:33:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 271AC6B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:29:59 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC1731C0DE2
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:29:58 +0000 (UTC)
-X-FDA: 84837021276.06.8B6F991
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C05FD1C000D
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:29:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=au5eL3J7;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F8F46B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:33:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6CD3DC09E5
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:33:15 +0000 (UTC)
+X-FDA: 84837029550.07.638A0E3
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2795A80010
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:33:09 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="pwX/FwLf";
+	spf=pass (imf30.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780453797;
+	s=arc-20220608; t=1780453993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=h6ht079cAiqKQgydVIxEZzggn9DJAqZXof34oIAleAU=;
-	b=665EJc+fghPWznklYFY4xWXDwtzKFokYxsi8+fYksB9MZiHi/6v43XgxWhD5DQF9SZuuoj
-	xpHHAmQgKmxchVEXwg8WnPUhUA0ByvD/TUPQwBA9AZyrIgaxycva6fq71L9XgH14F6iwLl
-	Lfj5pUwmVatxpMS+AvcGtdQSAO77e3U=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vHfwDEtQrbN077pHZVQUB5kFtwZn5VuD4rouby1Sq5g=;
+	b=nTD37vlTogmwuHUHJ3GdvsbB5qPZEDzOmlKilypY6dksccDrnOwjeJwm6/oqhkrVeAyC4z
+	HJRBPUxi534oCniBM9mHcEeXryhbBT28u1/vIxS6UzjIfpiqVZy0Tyvwag0A3vN2IkwYd+
+	wwx5X0XPau5Bbrpu3w3phbCjkL5i9RM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=au5eL3J7;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="pwX/FwLf";
+	spf=pass (imf30.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780453797;
-	b=YhxgIKczKZznYq5AoYLH+WrIQKfW66zSQCYC7XErEV5va+zDsZAtgaXCMitZxNGbtJyCfo
-	SID+0r2uEBAVFRTrj1k3to9rlXW5VIYVb0HmztFhDSn8yViPGti34OvqkAOp0h4nB1KtC3
-	44YNXY0LRtaLdy7XOgG89M/x3iDVgeU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780453795; x=1811989795;
-  h=date:from:to:cc:subject:message-id;
-  bh=0hpiZUig1nwVDn3JUe8JPcPCOSz4i0rXxP9ntSiqqzQ=;
-  b=au5eL3J7JIdHLsxKzFzZEgUhhaEBIzJryevEH4lvNSGsvUlpf3OU4AbS
-   A/J0gCx3X4z3qpLHEyC7WrRloZ1RUewz4eI6b7I26+/UPcPiOlzFwnOaT
-   dFwnF3P8tKZxTRKD5djupXEtC8Mb+2OYfbZMYgAK4Eb3omLgP5Qz7f0QX
-   X7cl+N5rsezjhCgMCfobWwXheYU9A1VUfC2w79D30PeWWReBsDCvMSlVj
-   u9P0mJ1Z5qCxr37AbfnVIaPpkzlKVDx++9DiXpZAXu+dt0TcnVj9bFJwg
-   GCg9qmGH78It7HQEPa1mDFG6qoOzBH7xt4Nt944zJACDJfMy1XwZKdm4a
-   Q==;
-X-CSE-ConnectionGUID: n0VJuzIsR6GhakaLml7kFQ==
-X-CSE-MsgGUID: pzE78h1iTNSuuAo8FI1FEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="80281799"
-X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; 
-   d="scan'208";a="80281799"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 19:29:54 -0700
-X-CSE-ConnectionGUID: LW+6TSgwSSC01zF7ZPdyWQ==
-X-CSE-MsgGUID: LmfBN84/T2qtUe0hh1hVXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; 
-   d="scan'208";a="241597280"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 02 Jun 2026 19:29:52 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wUbMb-00000000Cpm-3I7o;
-	Wed, 03 Jun 2026 02:29:49 +0000
-Date: Wed, 03 Jun 2026 10:29:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org,
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-Subject: [akpm-mm:mm-unstable 274/423] mm/userfaultfd.c:4475:1:
- warning: alias and aliasee have different types 'long (ulong, ulong, ulong,
- ulong, ulong, ulong, ulong)' (aka 'long (unsigned long, unsigned long,
- unsigned long, unsigned long, unsigned long, unsigned long, unsigned long)')
- and 'l...
-Message-ID: <202606031038.1aPfmoCm-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C05FD1C000D
-X-Stat-Signature: kwyta1hygthyx6xgchw781e3ufwuos7g
+	t=1780453993;
+	b=Bx9ZZ9VEzNc7rY9Vsas7eGnbDmWiiuGUZunZ4yi847VWVEKoBbtrPWiCyKgB1qkrriJzxz
+	wlAgBJxydZXKv+OZzH0dMg5Ni4YDTEa3lzjmfyl7tX8GYsB45lKQVbuKhkBNos8W4uSY+k
+	IIzJBeI9P2hizQKPZ7ylSXH4ryGlPIk=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vHfwDEtQrbN077pHZVQUB5kFtwZn5VuD4rouby1Sq5g=;
+	b=pwX/FwLf0Z0XWLY+UYZMiEDu+1GHWfGUE1Huc+mqnyYOrAtgLxqd0RgdXNo+FHJh9qG5TIUMi
+	E6mb5BguU2Rz9q+HAndfUbJxHJQ7mYX7Mr1xd/82ZssGY7/3eoCkwycweLyjsXKk+0TDtst8NlQ
+	FmoI8h8zSR5GTRxLdxsJSI0=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gVWkj28JwzLlXL;
+	Wed,  3 Jun 2026 10:25:17 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id ABD1740575;
+	Wed,  3 Jun 2026 10:33:06 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 3 Jun 2026 10:33:06 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 3 Jun 2026 10:33:05 +0800
+Subject: Re: [PATCH v8 2/6] mm/memory-failure: surface unhandlable kernel
+ pages as -ENOTRECOVERABLE
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Breno Leitao
+	<leitao@debian.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <kernel-team@meta.com>, Lance Yang
+	<lance.yang@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, "Masami
+ Hiramatsu" <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>
+References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
+ <20260527-ecc_panic-v8-2-9ea0cfa16bb0@debian.org>
+ <19f968f5-1289-f573-4406-e5c91dcd8923@huawei.com>
+ <e3d023f1-ab6e-4424-b304-55f1294480c3@kernel.org>
+ <33ef8821-c809-b7d1-ea77-6e8a07a6e784@huawei.com>
+ <21732071-14a1-486a-951c-34de97b7c757@kernel.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <4b27467e-935f-5587-2f48-5a794c30a592@huawei.com>
+Date: Wed, 3 Jun 2026 10:33:04 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
+MIME-Version: 1.0
+In-Reply-To: <21732071-14a1-486a-951c-34de97b7c757@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2795A80010
+X-Stat-Signature: cf768xeymr4smjyecyf363izppb7rmxb
 X-Rspam-User: 
-X-HE-Tag: 1780453795-785733
-X-HE-Meta: U2FsdGVkX18ElqLS8Lv7D2yDk3rOUh7KKJESe2MuMXEJ6X27hXzktmeMPA6Grjnzf/0yxc/dTn1+M0JY0gnAIsHdH0RdGNYhUadFFjy8kl9Z512Cxm8rw/x/UJXrOXAW3nUsKUzPCLeSEvSG/9vCWmUDTXIVN62KqGVq03EwLGd8Kr6x6/tlcH11s/EFU7yqoOOX4Sr89FeB/6ntKBz7rPrFnZaEIONlCoguBquw4qz3OxvNL6Nw3Mp/62RZ5GW1krRqHMFp/ebnjl0/sHpuBtNNsxnqdjvu26B5OI2UWLiE0aTc7l9acqP7E/drkaezYHyykyHEnvk25W7sOusiJBpD0AGCiYfXm3stV0/xAXk5UGGpsvIacEnHP2Hwx71lA04Ciw5ZS8RlPVPPgJudnCBCyiiPPlVTZJigCaCA0buCeu7a2ZaF1CNiujstDZayea/c1XhrlKSDSyAP7Hhzzqc8jJEINCwtQpSkd1kqTfb2qAazcHqH2zqpaC5ExK5jwH6OgDTCkU3gQyuAO45TMYVxElXTZn5rbJEovItya9t0Ehv7917ZfaPok6bkr89fNkEBpjDJI3WcdAC6NtJFILfR60b8Oz/5HG1zJbvux8Cp7wXfX8LWsc9HfFOQz0kUhsZqJHgXbL7R+dyZrlilPwY+CqUmrauyjPC6Cdf5FqLNiHnS8FiNWY3xl70D1PDbXDnJAEGrGILxGQRSLDEhlOzKPG8SL/W9eAhcr1jl1W8iTvV4ANP0Em2ZxyFlUnpd4JuJWL1fNYyQLDK9chMCEvjj0Cul2el8FpKx4KRQS+0WWst8uBwLx/qndb+63WoNFfxbeoQYf4QU+0gkooYKSdPqrg363s3l2yk9X1d6x21brUTiVVpy0llu/ZsbBj9q4LpMPnUZmuqDNkQrUGRIhcC9922WCDpveA9FnCyGE+ezP04SHMnwrJTZqCqEoCU1kE+9VFyhztqv6IE2weD
- nCQ0EdMW
- jS//lZASKw4KcuvF9+asYw360TYcxUWVc4dDNu37E1PqWMZRx0CVtPui2ybKWHTfNniaRG4B5pgWDF3QtY2rw7cIXgCdmtnHafC9r2lnssfCYVE8C3XUFe7GLcUu1FM07XKZSEdWIvPCyQM3THQ2WgaDImlA6vHCzWW37ZV3IZme9JcTzIBhnt0FwycEqFl9ZxQAbHs4IzLTHGZ/IuJGEOaTwQQus1i/R9emH7qm6YkgzqdyfkHSnTBP4WdlsGFPgMXkUKQjM3kQBnENYUpa9CUISe+CfwkYzJJ88mFS2CrbS3Cs02k9lRj/BQqOf7sicFYu0
+X-HE-Tag: 1780453989-193353
+X-HE-Meta: U2FsdGVkX1/I77D6mJZjS3D0dQ5Gg4FJ4sg15EM96SDrn8bCL7Vjv+/AoNCiKskx3pzuYmUiYDwwpXJlOQ68Wd5oQ29cfW3X3a/dOcVE79RJzJUgDmRXbd0D/JgFSeJqr8wCHoAQV8K6SmXaa1ZgcHwaWvrQ9XLkfRZ03oxlO+o2IKMosLlf/HFgroq1YaFc9hTatKbZZTy53YB9tOj/F66LWuAlnD6DGGAcii1LcdA+dWfNfTodKqqp0+gZb1B2ea7DILwP1xK+fMorfmG+PGshr/5ZyWR3b/ELtrlnXA7ZHSwmhArIDQk52oVWO5lXz/AZs6LkTDWS9eoBtYGvZboeJzYJdVDWJcYIC8uL2zoU/n/GpwUGTDoGoomjeRvcIu9ZDddTVkgdAV/8F8eilEr6R3ZwWYADvANdSturY3IPFUm4Db01Du0OI3Up5dD2HSOBvpSCeJHcVz5E6fuoj+X1JgXp5jbXIMx01mtbfEDmkJomSI+0MJJgO51BRjLE6XBf5CwE2saQmOxkbhjOYvoKYdgEQREEShN9GxcFd53LE/QJZ45T/tK852htEhvjIQEslWqJKu0ZPb6HmWrqwk6vNMLM1+6GYJN4GwCrBGyBnqk6M66nHsKL6CJ9ro8GejJPUIADzMfCdInQwhJjylDdyXySmRX48WNy0ZauEiAs6lgrIrF1mIQ0DGApxkFJ7qycmY9CJ6r6FMoPz5B+jKgPXWZopjcqfTqAeIGPZHg99IvNzwwfyXjf16pLbKvNUvjyEzvjizsTyAwb0gcpXbHbCl5B48pGKNOEeqLhvgOP7vai/RnTk9+U0jPizb04zjuWwrhbxXM72tZr9uiEXRxwdf9AozDbjUz3O5mTSIFBrnqNNJxO3fM9fNjH26GXAGUweIKRq5th2Sj9Vp2Plz+Sw2NJC48w1c8fXIJc1CoO4rXxpFIi1Z5R3P3/TLApX25NvZHlMXEuu+jDFRH
+ WJ2BfGIO
+ 3MiBr/81vQDLFeIg0i93wEserooFD1GpEBzXABVgC+C+mrIwwmCzq4U3TSY3aZV6zk8kaXfheTDGZFdhIhB2XFB7yYBNDOVIhcmWsv6mbMEGYqwov/WFRy+7H/wvBaSWIqeXPEgRKUtGmeU1iN9IaarLmkBdlxrI4taxPCkUe/v+SaNCJ9vGC9Tv0wD3dbstroAefG49c7trZUfMVcbFLqC5xM931lveI5JY0KV8p18MCjsEbqroPMD/bn5pZz/U9s+BURVUO61YMT8+K+r6HQQIISzDuCqHlorc/Sf3XddD9OO0S3FX2B8kseTHLi6a67EWpnxVkzSaVEkDLNer4Flw9Egnttr/1x9Vj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,68 +119,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   6bb9014e347a15dfa837cbc52451035466d86ddf
-commit: 53313230f720eaaf9f1f6d20faafd7e01a9e09b7 [274/423] userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c
-config: riscv-randconfig-r122-20260529 (https://download.01.org/0day-ci/archive/20260603/202606031038.1aPfmoCm-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9409c07de6378507397ecdb6f05f628f58110112)
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260603/202606031038.1aPfmoCm-lkp@intel.com/reproduce)
+On 2026/6/2 17:41, David Hildenbrand (Arm) wrote:
+> On 6/2/26 05:08, Miaohe Lin wrote:
+>> On 2026/6/1 21:22, David Hildenbrand (Arm) wrote:
+>>> On 6/1/26 14:28, Miaohe Lin wrote:
+>>>>
+>>>> Thanks for your patch.
+>>>>
+>>>>
+>>>> Once shake_page finds a lightweight range-based way to shrink slab, slab pages could be freed
+>>>> into buddy and above PageSlab test should be removed then. Maybe add a TODO or XXX here?
+>>>>
+>>>>
+>>>> I'm not sure but is it safe or a common way to test PageReserved, PageSlab,
+>>>> PageTable and PageLargeKmalloc without extra page refcnt?
+>>>
+>>> Checking typed pages in a racy fashion is fine (PageSlab, PageTable,
+>>> PageLargeKmalloc).
+>>
+>> Got it. Thanks.
+>>
+>>> Checking PageReserved in a racy fashion is fine as well. TESTPAGEFLAG() will
+>>> allow checking it on compound pages.
+>>
+>> It seems PageReserved is not intended to be set on compound pages. I see there are PF_NO_COMPOUND
+>> in its definition: PAGEFLAG(Reserved, reserved, PF_NO_COMPOUND).
+>>
+>>>
+>>> For PageLargeKmalloc, we would want to check the head page, though. The page
+>>> type is only stored for the head page.
+>>
+>> Maybe we should check the head page for PageSlab and PageTable too? alloc_slab_page only
+>> set PageSlab on the head page and __pagetable_ctor uses __folio_set_pgtable to set PageTable
+>> on folio.
+>>
+>>>
+>>> So maybe we want to lookup the compound head (if any) and perform the type
+>>> checks against that?
+>>
+>> Maybe we should or we might miss some pages that could have been handled. And
+>> if compound head is required, should we hold an extra page refcnt to guard against
+>> possible folio split race?
+> 
+> Races are fine. We might miss some pages, but that can happen on races either way.
+> 
+> 
+> I'd just do something like
+> 
+> if (PageReserved(page))
+> 	return true;
+> 
+> head = compound_head(page);
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606031038.1aPfmoCm-lkp@intel.com/
+If @head is split just after compound_head. And then @head is freed into buddy and re-allocated as slab
+page while @page is still in the buddy. We would panic on this scene as @head is PageSlab. But we were
+supposed to successfully handle @page. Or am I miss something?
 
-All warnings (new ones prefixed by >>):
+Thanks.
+.
 
->> mm/userfaultfd.c:4475:1: warning: alias and aliasee have different types 'long (ulong, ulong, ulong, ulong, ulong, ulong, ulong)' (aka 'long (unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long)') and 'long (typeof (__builtin_choose_expr((__builtin_types_compatible_p(typeof ((int)0), typeof (0LL)) || __builtin_types_compatible_p(typeof ((int)0), typeof (0ULL))), 0LL, 0L)))' (aka 'long (long)') [-Wattribute-alias]
-    4475 | SYSCALL_DEFINE1(userfaultfd, int, flags)
-         | ^
-   include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
-     225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
-         |                                    ^
-   include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
-     236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
-         |         ^
-   arch/riscv/include/asm/syscall_wrapper.h:82:2: note: expanded from macro '__SYSCALL_DEFINEx'
-      82 |         __SYSCALL_SE_DEFINEx(x, sys, name, __VA_ARGS__)                         \
-         |         ^
-   arch/riscv/include/asm/syscall_wrapper.h:37:19: note: expanded from macro '__SYSCALL_SE_DEFINEx'
-      37 |                         __attribute__((alias(__stringify(___se_##prefix##name))));      \
-         |                                        ^
-   mm/userfaultfd.c:4475:1: note: aliasee is declared here
-   include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
-     225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
-         |                                    ^
-   include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
-     236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
-         |         ^
-   arch/riscv/include/asm/syscall_wrapper.h:82:2: note: expanded from macro '__SYSCALL_DEFINEx'
-      82 |         __SYSCALL_SE_DEFINEx(x, sys, name, __VA_ARGS__)                         \
-         |         ^
-   arch/riscv/include/asm/syscall_wrapper.h:41:14: note: expanded from macro '__SYSCALL_SE_DEFINEx'
-      41 |         static long ___se_##prefix##name(__MAP(x,__SC_LONG,__VA_ARGS__))
-         |                     ^
-   <scratch space>:148:1: note: expanded from here
-     148 | ___se_sys_userfaultfd
-         | ^
-   1 warning generated.
+> return PageSlab(head) || ...;
+> 	
+> 
 
-
-vim +4475 mm/userfaultfd.c
-
-  4474	
-> 4475	SYSCALL_DEFINE1(userfaultfd, int, flags)
-  4476	{
-  4477		if (!userfaultfd_syscall_allowed(flags))
-  4478			return -EPERM;
-  4479	
-  4480		return new_userfaultfd(flags);
-  4481	}
-  4482	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
