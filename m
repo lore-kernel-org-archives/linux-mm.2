@@ -4,119 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79969CD6E57
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 14:11:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45249CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 14:17:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A302D6B008A; Wed,  3 Jun 2026 10:11:36 -0400 (EDT)
+	id 1389B6B0098; Wed,  3 Jun 2026 10:17:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A07716B0092; Wed,  3 Jun 2026 10:11:36 -0400 (EDT)
+	id 0E98D6B009B; Wed,  3 Jun 2026 10:17:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 944976B0096; Wed,  3 Jun 2026 10:11:36 -0400 (EDT)
+	id F19C56B009D; Wed,  3 Jun 2026 10:17:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 85A2D6B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:11:36 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 253A414031E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:11:36 +0000 (UTC)
-X-FDA: 84838789392.17.9FBB905
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3F7FDC0009
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:11:34 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="ixhb/Ac4";
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id DC9726B0098
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:17:34 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7EB5D8D82D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:17:34 +0000 (UTC)
+X-FDA: 84838804428.24.94A8B67
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf31.hostedemail.com (Postfix) with ESMTP id A07F320011
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:17:32 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=gLhilNgA;
+	spf=pass (imf31.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780495894;
+	s=arc-20220608; t=1780496252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3JBFLHHchSf6Ugt56GZlS5cZe18tTPuP1JId2xHEinc=;
-	b=QH/nDCu2yMClpmP01Ik+Jb4H+lJPCABQNr0ctyz7yiue3NclGxZy+qdGtw2adtuAks2XO+
-	f1EA2yQK6bc2qmjJ1Tj27sClQQa3xxGvkB6Jthjynwqn7A3Q48nYSveeWq3W0UXrfBgFNf
-	cWUt4TzMATetD+BKK7N+8FCwbSKFRmY=
+	bh=SfhK82Xil3vBLBzbtyq+NFAA8bzLZV/4SRFeV2fyIBU=;
+	b=FH8VSw46kWxGZPcfhJeYpr08hl/JGuZExf/jw4YZ6I5xO0Djmo7BE2QOMPH9apja9mKF8g
+	NFjX+X4wdzhBE8Djwe1w05uxw+9CHmx1DhaMO41podwToPPU6zkU65lHS00k3nbV6ejSSh
+	xALPYu9lLh9ZCvN+rP/8XU39pyS8oBo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="ixhb/Ac4";
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=gLhilNgA;
+	spf=pass (imf31.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780495894;
-	b=FFyKK3koXADDltpLARkHHE9SSItoyka3T4V/2KLCweup3N3Dc9y6MwCt0CKvkE0NZ/oDlM
-	n2EocfHRSLXx3azZ+YDNwY72s7WdzL5vaW4EAZpuJRTgugpU1oJ9zdrpAtzYGOhS89TvUY
-	t5BIrMYQyJDve8WIrqLXxLzYv8sJF+U=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-91587626ae1so160429185a.3
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 07:11:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780495893; x=1781100693; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3JBFLHHchSf6Ugt56GZlS5cZe18tTPuP1JId2xHEinc=;
-        b=ixhb/Ac4oCVnG3eX0QnvU+pbOKIdCZRySdX7WdJmuYHUxgUGGAHeNt2JKLixghp/KS
-         hC9fEbW6aUrJZatHiGDXFJujMbEyC96wi/wErjlPsnoGdZd8acuBzRDhqU1co9Y3HpH6
-         gxq/7DYYj7IDz2VqkQZaVksz6+C+vCU6qCzohE51A5lqEeGIajnyNjBRjNabsoj2Suro
-         KTVwreUosQnQ3TGAhMhJhlfumpp9+Kc2UMi9QIp8mA4snCUjQbVTO6paVimIDiocVLRB
-         w6Fujc75JuF5Jgr746mHCIcTSaS2PamtivKZeAFc6Rqq+qfm1KqgTj4yAFhUAAnC8kde
-         ImbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780495893; x=1781100693;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3JBFLHHchSf6Ugt56GZlS5cZe18tTPuP1JId2xHEinc=;
-        b=FJPa6a88l3EWs4FOG9TSkyuzSwmfsHQrfSa2nmDxLTcEzHmZvbakS7POhfCXQWHRlN
-         cUpLzxuvE+O2DDAulp0PEYFY0cce2kXFat1HtikOE+XhHQKpBIv0yLKiAsV/m7vDbgqJ
-         c83zUEnIC0DKuI6AypJyHyc7ZBovzzJMp732/cs+ozcQZ6YHy1FdtbkTpzPM4/pTseZ3
-         UdeRWaRgpfQthtlQdEjEQLlJmvyilG53+84uLdXtItgamM8Pi1HeUPdGjxN0qQOpgRU/
-         At/tTFjVAmP9R60kJlBW2f2D1XNM8rmc3+BIOgrxVRHUdgWcY5zfpd/iuCIGoAaEtMFQ
-         DhrA==
-X-Forwarded-Encrypted: i=1; AFNElJ8KEuN+lydrkd/P8dNMGE64+nJuS4+pKeAoL0KIvNufhXnyOZ7xUZVaLQlfn8d+OFxKWOyUnlRZuA==@kvack.org
-X-Gm-Message-State: AOJu0YzdTyKiclLxTaUmpF4jeAUoCw8UeOc+nxbEDJn9oKaSlzNr+MJg
-	R8X54b7tUAVxS3brcNDDxu9f4ImFa6pWtSLT45W2SFRa+obeXcPgbrV/2qejRqttr45QDOpkFZP
-	N99Dt
-X-Gm-Gg: Acq92OFd0OkHBjHG2p0KSXQUYWVXtEgi2gccBKuawjQLojmV77N6v3/NO1cxYXyNPr4
-	GTUKmHTzO+kjz1lnQJYmoWCxsEhWtVuy4JflPiz+bAf8OqR7PSxutTT3Lx7r7a1aSWjCCYvRc2R
-	bZdBDk0j7TSvD2M25O9e0aqWmjffQkqlT/kd5pwaZA2BzqrnmIPo1+O7f0/QCfoT3zgTaKknbW6
-	iHGbi6dhSJ2O7WAlX90OkQ1toO7AQCm1nOwP6P5NE5QWxvK+OR/ziytgSFR1dDcHX4ewjpBh/tU
-	wVAL+FSh5UGiok02YyyMCFnh+D3mA5XfxsCg+yy3gPjoOa1OZW6qtAf6XuFL+wOEtncIoEh22j9
-	daCghUj1Zo7qMkcRkeQqLtC04e5DC5yGtnsq+kd4hm4pZwuAwuFZpEBnv5c6+4WVQTUA23L8I65
-	hSV7ksVeGWxCuCXJ3A9b2sCSNa6oRSfY9qH1zwKPTYLi/iFLETXnWpsKpTHw7idQ==
-X-Received: by 2002:a05:620a:4613:b0:915:4ca3:61bd with SMTP id af79cd13be357-9158a83f992mr602997485a.59.1780495893289;
-        Wed, 03 Jun 2026 07:11:33 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a402ff9sm248774285a.45.2026.06.03.07.11.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 07:11:32 -0700 (PDT)
-Date: Wed, 3 Jun 2026 14:11:31 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	corbet@lwn.net, dmatlack@google.com, kexec@lists.infradead.org, 
-	pratyush@kernel.org, skhawaja@google.com, graf@amazon.com
-Subject: Re: [PATCH v6 07/13] kho: add support for linked-block serialization
-Message-ID: <aiA1slnqPnC4_8XY@plex>
-References: <20260603032905.344462-1-pasha.tatashin@soleen.com>
- <20260603032905.344462-8-pasha.tatashin@soleen.com>
- <178046937151.468621.13398573538792303093.b4-review@b4>
- <aiANtYRRDr5iO5QR@plex>
- <aiAzT9TvGYjITiB8@kernel.org>
+	t=1780496253;
+	b=MVMH2b/t3/YN79g3M8u6Knooc+5vvfY0An5BOLSkjPx4/LZLMXC5vuHCd7nEzmshueohCp
+	CXGSQMmW6liiW8YGXyGycxbnTVqwRFzz5QyemwSclRMWN8H9SsNyhhYm1Y8MWnseMO8u9L
+	KGDeQWW9Zmlb++oJWnk42gd93crz/GY=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id A76B4D10A6;
+	Wed, 03 Jun 2026 14:17:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1780496251;
+	bh=SfhK82Xil3vBLBzbtyq+NFAA8bzLZV/4SRFeV2fyIBU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gLhilNgA/246de7OKuDBzuIzyl+ldRCWUnvUz13vpuaTrLa5lQCdfs0BRiS9CyABu
+	 A885RQ4sztnBP3xCfblx2wxbXYzH+/yU+KJrXASNY9Wy8+6TjWfuu8hmB6q0torO+N
+	 UusytLcEBa+RdN7aUdMerhdk06+/T4dloG+6ZunE=
+Date: Wed, 3 Jun 2026 14:17:27 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com, "Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH v6 5/7] locking: Add contended_release tracepoint to
+ qspinlock
+Message-ID: <aiA3dzjKVq2_cpSY@shell.ilvokhin.com>
+References: <cover.1777999826.git.d@ilvokhin.com>
+ <5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
+ <20260513193342.GB2545104@noisy.programming.kicks-ass.net>
+ <agXBb0ga_6HJrrnm@shell.ilvokhin.com>
+ <20260603120811.GW3493090@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aiAzT9TvGYjITiB8@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3F7FDC0009
-X-Stat-Signature: 5rr5kc9fnae3n6n13dhfnr6o7nraz7z3
+In-Reply-To: <20260603120811.GW3493090@noisy.programming.kicks-ass.net>
+X-Rspamd-Queue-Id: A07F320011
+X-Stat-Signature: atz688w6rdy81r4srf9aqqh18kuk68pc
 X-Rspam-User: 
-X-HE-Tag: 1780495894-212813
-X-HE-Meta: U2FsdGVkX19UWGzN5RjKX/bDttjoa194Rd/wWhXJqyAT2+XdB1nym72Dk/aHsJizbmASGuq/FxdQGojLy5Z3jRYZ5P416zwop8JzNdQUmFFO7AKx0l2ec5pMEHPTqACQuqfo74RvsTdHnHlICNXSFvuZNOgGt0jcbxsPvgkRe4E/JeD4rEJ8LP86Vx41/ct5OSRduMdrnTmYeaxQRvkPsjzQ/LoQqXU43mLvgMtuUN90R7DktJ8n0qnTTRR//ipbpWU6sXQLZOH/C52gfTr+O1gMkOuiS5S3/7Uf9ZBMg9psAc+0zH8a0gUzbeu0Et4+XAQ0XnJRYy5z+w4n+QDaeJNyk/en8vDnk++cblkLu3FEYYusfNdkLZtvY490be5fnbsTyx635ybvX1zeBwdV1AQ+fvi91rOeCi7G1yW6Q2T8FoLuXpaz8uhflho5j+Nm+nFrZDo3AAXp1zXyakXFHPWhQFFWmdzAfEfmzJiQjrgAbrFt1Hy1xhkeu+arAYWzmMXoucNZqMhh1BEAPRHZvaLIdOSgggNp4FKrgDKdCD8/bOUSmT9TaHmKkAFJsYx3JZADaW433bzAWqoSt/TVT/eI1UdfCZji7EZfTAI9hxg4Y5sumXxqtLGH//liKMOKoMV5lkE8poWqbQhsYz/GHXVSlZt+RmI1glWMK2sbpdYOnVA9BzH7P9ZAd4C57sbgOYgHryD0DgXLqFQnByKbZ6SLEvG+xUgOi1+8jTCE1rvGM4gN5qQKz0fepxOJr/viIvOlOFUpWXexsHIwGMhUPYF+IQ3bg9ZCEoYaq1Ci3/ZibRUPKHj1TwV0vkx9uJUGWgQG/T/VSqiJUzkKJC98VjCSxl5YtXtxrUmuaAWBvnQkpP4NmrbBRcM08Gq1t2bEz57ywX2c7D2DtfOUiWYsfjzqhR+mD/lkUWoimSAe4kfYyhfYQl4KZ9eJPYEjgZGBy939TWbzX19V2o8tdFp
- stTZVy/9
- mXeQ+0Pb1ePUNmBuQYNNIy5HFkF9+vhBo4Mdh8f5A5wpbbZ8/D/bRynApNDf+6izy0R4C3JEbBK+Ir7Z2+rUZBWg+BqTHCAgPCsPDk6GSjYyq7xIH3yOse89QUIKXFRjfCPkxp3+puv88f8sBB5Dr20qBVTGRflRQjx9TpjCWAdtqNjab+jHD6DE6rrHYmA7oRiX3WBT8njk6Jl21Gp8EuhQtenluJAblyJB/e56pHRo3PvcBxKt8O17hLGGB5NXhzBS0/BCcrqfBm5Bw5UjZdsK8ogEBOR5GoW6Dh18tBoCNgtqNV1v9OT96paxoRz1YtUCWefo3XR5KECp7eFB1CTB1qUtTqaHd01jGfr9s+qBH7vYcJQhffBRW3sNBMWoRAWDVWPv7KT68/STm8C3/Qc7hIHAnSn3VM1XQcnN46sALd16kQBdKkv0bXThTlcWxeaMnZdTdmvFid6E=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780496252-271958
+X-HE-Meta: U2FsdGVkX1+dGPrv+LZJyuKt05xZdOVkjNHd4W602QOUqp6HRfhIiP0ewP7EOM883fTsgvAIcZQnBqbMscNNUWXJr8l3W2Gb2oFu3Pyn4TvBn+RlwqXYo2T5ysWfLa1AiOwCVDIQJnoQlJboA+y34xH2evPKTk6IvEAM0dsU1F5fecg/wUvDmx1W6MeKXPAhlBHNngTFfzBXTe+tSzhrvimX0B+9gPXXGF3B+GRVwS5rgJy9Y/Ug6tEB+m5kHPzF3TyKrJoxFDVBFLPjXKQK0W8thIJl2ziCTkYaV8ApD+BU7yT3wkXOMU/qB6jVWl+EBT5MoxGb48u7+WKbz3K6u7vt2tg1N30ivF3fi+070OSWvhVGN3GCByYM61UDBnkxLo2/Xkr9n1q3yvt5XvlxPF2O6WNVTePl+He9BsGU5q0G7CzFB9ORyQcelXTq4vtmoC5q2JCM8gtQuZyDTALdQyDe3ZGlm/kwvwVr/xJq7K2KidK1qjlGRi+GAktikXoZd6ULFpJKhkjAnBStXlPGEc3tvgSq4i7n8YErz2fXl3miuxgS5VL0Xm6kJWxp2OHN6nweOWxgkk3N4ImmUj2cvBXu1J6cVdeBv/x2+P1HbVUskZonhpgTcO0yGVCIImTcJYSOD4EXOoeav6sfZHXN8a+2JzldHeK1flHQqmBfUJwhgqLlyc18Y0w5QzkTXdlwNoRf+BNCg5uwLJWbnKvrBMWDkBA0sdOVpuHt7pMgrixZnQOlQ/5y4xirrpoxAktnCsMPJf1q1KUHFqRXyQAUatCXxBSOM+nKcq389ZQqC6HbcixgRwgB9ErjyjAJTHv1Bw8hyOy0HAgCLlyXPj23V9duKYWZ0mGU+XlNluPZw8tkbTlfRo8AYM9YE3cc2Gfam1oU17Bq9UD+FRnXfJMS79cdJI7aFuqxo51rEEFrvLgrgg+jE7LiFTseNgZ2lCmLZ+ZreGKWWDRT478wWIy
+ UnCYOd0T
+ ruYw7ULMph96InhpfuC1MZcfNhzgtes1f8+EaaMkLE5llA3NfMPs1+xXc15utbcp4QwD/U9qLBtU6ocCZN1xMRPqkdPwDcaO9b6YK9lXgsc+KjCNZHpEpIzzisFuHSm3ZgcapMlk9NQy4ZaAcyePL7OGLheNqWwOzrteUKuNKyy/Tvd80BpJ4x7gvxieJtCc+FhnADwjs5eJ2HAnVeXK2y4mMtAvQh7AcPONv8qcJZz7EnEzyBvV23qSOYNX3B/KhyjL7wj9Ln/Thfcj0Bjo7AyJrew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,50 +108,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06-03 16:59, Mike Rapoport wrote:
-> On Wed, Jun 03, 2026 at 12:05:04PM +0000, Pasha Tatashin wrote:
-> > On 06-03 09:49, Mike Rapoport wrote:
-> > > On Wed, 03 Jun 2026 03:28:58 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> > > > diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
-> > > > new file mode 100644
-> > > > index 000000000000..8641c20b379b
-> > > > --- /dev/null
-> > > > +++ b/include/linux/kho/abi/block.h
-> > > > @@ -0,0 +1,56 @@
-> > > > [ ... skip 25 lines ... ]
-> > > > +#define _LINUX_KHO_ABI_BLOCK_H
-> > > > +
-> > > > +#include <asm/page.h>
-> > > > +#include <linux/types.h>
-> > > > +
-> > > > +#define KHO_BLOCK_ABI_COMPATIBLE	"kho-block-v1"
-> > > 
-> > > It's never used by block set and after looking at the following patches I
-> > > found that it's appended to LUO compatible string.
-> > > 
-> > > While this works for LUO, I think it should be kho_block_set_restore()
-> > > responsibility to verify the compatibility.
+On Wed, Jun 03, 2026 at 02:08:11PM +0200, Peter Zijlstra wrote:
+> On Thu, May 14, 2026 at 12:34:55PM +0000, Dmitry Ilvokhin wrote:
+> 
+> > Baseline, in best case scenario of least number of executed
+> > instructions.
 > > 
-> > It should work for any component that relies on  kho_block. My proposal 
-> > is to use this method for other common KHO data structures (e.g.,  kho 
-> > vmalloc,  kho radix, future kho xarray). There is no need for them to 
-> > carry the compatibility string in their metadata, as whoever uses them 
-> > will include their compatibility string.
+> >     3e0:  endbr64                          ; 4 bytes (always executed)
+> >     3e4:  movb $0x0,(%rdi)                 ; 3 bytes (unlock,
+> >                                            ; always executed)
+> >     3e7:  decl %gs:__preempt_count         ; 7 bytes (always executed)
+> >     3ee:  je   3f5                         ; 2 bytes (always executed)
+> >     3f0:  jmp  __x86_return_thunk          ; 5 bytes (executed if above
+> >                                            ; je is not taken)
+> >                                            ; rest is not executed
+> >     3f5:  call __SCT__preempt_schedule     ; 5 bytes
+> >     3fa:  jmp  __x86_return_thunk          ; 5 bytes
+> > 
+> > Tracepoint (again same case of least number of executed instructions).
+> > 
+> >     bc0:  endbr64                          ; 4 bytes (always executed)
+> >     bc4:  xchg %ax,%ax                     ; 2 bytes (always executed, this is an
+> >                                            ; only addition on the execution path).
+> >     bc6:  movb $0x0,(%rdi)                 ; 3 bytes (unlock, always executed)
+> >     bc9:  decl %gs:__preempt_count         ; 7 bytes (always executed)
+> >     bd0:  je   bde                         ; 2 bytes (always executed)
+> >     bd2:  jmp  __x86_return_thunk          ; 5 bytes (executed if above
+> >                                            ; je is not taken)
+> >                                            ; rest is not executed
+> >     bd7:  call queued_spin_release_traced  ; 5 bytes
+> >     bdc:  jmp  bc9                         ; 2 bytes
+> >     bde:  call __SCT__preempt_schedule     ; 5 bytes
+> >     be3:  jmp  __x86_return_thunk          ; 5 bytes
+> > 
 > 
-> So if, say, memfd_luo uses kho vmalloc, xarray and blocks it'll have five
-> compatibility strings glued together?
-
-That is correct, but it will be in only one place: the header of the 
-client's KHO subtree. Since it is dynamically sized and 8-byte aligned, 
-it should be safe to include in any struct.
-
-Pasha
-
->  
-> > For now, reviewers will have to make sure that if the ABI header content 
-> > is changed, the compatibility string is updated.
+> So I've been playing with this a bit, and it is all really sad.
 > 
-> -- 
-> Sincerely yours,
-> Mike.
+> Now, since pretty much everybody+dog will have PARAVIRT_SPINLOCK=y, the
+> 'best' solution would be changing that paravirt call with a
+> static_call(), that actually shrinks the code by 1 byte.
+> 
+> And then this tracepoint nonsense can simply use a different unlock
+> function, just like paravirt.
+> 
+> 0000 00000000000001d0 <_raw_spin_unlock>:
+> 0000  1d0:	f3 0f 1e fa          	endbr64
+> 0004  1d4:	ff 15 00 00 00 00    	call   *0x0(%rip)        # 1da <_raw_spin_unlock+0xa>	1d6: R_X86_64_PC32	pv_ops_lock+0x4
+> 000a  1da:	65 ff 0d 00 00 00 00 	decl   %gs:0x0(%rip)        # 1e1 <_raw_spin_unlock+0x11>	1dd: R_X86_64_PC32	__preempt_count-0x4
+> 0011  1e1:	74 06                	je     1e9 <_raw_spin_unlock+0x19>
+> 0013  1e3:	2e e9 00 00 00 00    	cs jmp 1e9 <_raw_spin_unlock+0x19>	1e5: R_X86_64_PLT32	__x86_return_thunk-0x4
+> 0019  1e9:	e8 00 00 00 00       	call   1ee <_raw_spin_unlock+0x1e>	1ea: R_X86_64_PLT32	__SCT__preempt_schedule-0x4
+> 001e  1ee:	2e e9 00 00 00 00    	cs jmp 1f4 <_raw_spin_unlock+0x24>	1f0: R_X86_64_PLT32	__x86_return_thunk-0x4
+> 
+> 
+> 0000 00000000000001d0 <_raw_spin_unlock>:
+> 0000  1d0:	f3 0f 1e fa          	endbr64
+> 0004  1d4:	e8 00 00 00 00       	call   1d9 <_raw_spin_unlock+0x9>	1d5: R_X86_64_PLT32	__SCT__queued_spin_unlock-0x4
+> 0009  1d9:	65 ff 0d 00 00 00 00 	decl   %gs:0x0(%rip)        # 1e0 <_raw_spin_unlock+0x10>	1dc: R_X86_64_PC32	__preempt_count-0x4
+> 0010  1e0:	74 06                	je     1e8 <_raw_spin_unlock+0x18>
+> 0012  1e2:	2e e9 00 00 00 00    	cs jmp 1e8 <_raw_spin_unlock+0x18>	1e4: R_X86_64_PLT32	__x86_return_thunk-0x4
+> 0018  1e8:	e8 00 00 00 00       	call   1ed <_raw_spin_unlock+0x1d>	1e9: R_X86_64_PLT32	__SCT__preempt_schedule-0x4
+> 001d  1ed:	2e e9 00 00 00 00    	cs jmp 1f3 <_raw_spin_unlock+0x23>	1ef: R_X86_64_PLT32	__x86_return_thunk-0x4
+> 
+> 
+> Something a little like so, which is completely untested, except to
+> build kernel/locking/spinlock.o (with clang-23).
+
+Thanks a lot for taking a look, Peter.
+
+I like the static_call idea. It's truly zero cost on x86 (and, as you
+note, even a byte smaller). The one caveat is that it relies on
+HAVE_STATIC_CALL_INLINE to stay free. 
+
+So my plan would be: static_call where HAVE_STATIC_CALL_INLINE is
+available (x86), and a static branch fallback elsewhere, gated behind a
+default-off config so it imposes nothing on arches/kernels that don't
+opt in. I'm mostly interested in x86, but would like arm64 to work too,
+which would use the fallback.
+
+Concretely:
+
+1. Split the sleepable-lock patches out and send them separately.
+   They're independent of the static call work and look far less
+   controversial.
+
+2. Convert the paravirt spinlock unlock to a static_call, as the
+   foundation for the unlock tracepoint. I'm happy to take a stab at it.
+   Let me know if you'd rather do it yourself.
+
+3. Build the unlock tracepoint on top: static_call where it's cheap,
+   config-gated static_branch fallback where it isn't.
+
+Does this plan sound reasonable to you?
+
+> 
+> Also, I think someone should go do some performance runs with
+> ARCH_INLINE_SPIN_* set for x86 just like for s390.
+
+That's a good point, I'll run benchmarks and report back with the
+results.
 
