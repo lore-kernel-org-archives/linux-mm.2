@@ -4,96 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C63DCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 10:41:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4957BCD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 10:43:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BEB96B0088; Wed,  3 Jun 2026 06:41:06 -0400 (EDT)
+	id 96CE46B008C; Wed,  3 Jun 2026 06:43:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5709D6B008A; Wed,  3 Jun 2026 06:41:06 -0400 (EDT)
+	id 9443C6B0092; Wed,  3 Jun 2026 06:43:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 485356B008C; Wed,  3 Jun 2026 06:41:06 -0400 (EDT)
+	id 85A306B0093; Wed,  3 Jun 2026 06:43:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 36E036B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:41:06 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A06D81202CC
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:41:05 +0000 (UTC)
-X-FDA: 84838258890.02.9A14139
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EC844A000D
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:41:03 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N+OYS/J/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780483264;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A8BF6B008C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:43:50 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A4F7161C36
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:43:50 +0000 (UTC)
+X-FDA: 84838265820.27.E7D42B7
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023080.outbound.protection.outlook.com [52.101.72.80])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2E702A0002
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:43:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=codasip.com header.s=selector1 header.b=aR1OV5d6;
+	dmarc=pass (policy=quarantine) header.from=codasip.com;
+	spf=pass (imf15.hostedemail.com: domain of christian.gellermann@codasip.com designates 52.101.72.80 as permitted sender) smtp.mailfrom=christian.gellermann@codasip.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780483427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s7g+YgnU5mYzWEYBRa4inLWSLO7CCiRf4ByLQT5tfZY=;
-	b=Sk7I79sPKvDCdae657G9IumGiTHqIC8ASxi6OWnlNmE8V+CHuFXgR7s+eZMny3Rv9KkpXg
-	xVxdZyMtmgBjbGRN1OCcTkcBz3J/GF7nzpj7z88p5N1kTfRJHy/gn3tabx+xu3XC25jNmq
-	1wVfqBrwKaPQCpzP1e0P1Tp/GCFTfxM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N+OYS/J/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780483264;
-	b=DYGiojyTE49jPy73a5cg4XzDd6oRsCkwBKJHnJG6ZTaw9QVd3nAX01M32fSEUhJ9hftPLL
-	wzWAiat7XaD7Fk7+4htKgRRm21PDLc/O1bCKw8otCngvbqBsvQqp43r33Yet8k5Hml5a/x
-	rCIGfwuSb2PzmFPzxMSRGPBQsMjaHGM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 23DD940ADB;
-	Wed,  3 Jun 2026 10:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFBA1F00893;
-	Wed,  3 Jun 2026 10:40:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780483263;
-	bh=s7g+YgnU5mYzWEYBRa4inLWSLO7CCiRf4ByLQT5tfZY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=N+OYS/J/t3VZ0KZzQP4YJ7w3BTT26YT5oyBCWmyE1q1r+8mnOg1ld4b6EeAhfEAQ2
-	 pKOVfEsgvxq6CHYTuRNjM/aCl1g+UUDrtSfrbHLWWldfsVfpP6duEcC+68+gwaSCaI
-	 dIWSw1rsnuiHIxJLVJjZZPYrEJEQlJ6hvQvjWb36uGwEVc2z6RbBWI9jTXnMlfQ8bX
-	 l1JIrwYR1XFBQ7LMeGvPkMcPdaloKd08pATKIFQuRV/nEBIrZzv3zOwPBZ3jcWC0uT
-	 e6ICzSlXKZIzciWouRQiDt7rn0cphZRUkkZTLc/j87zkvtA5z9+YVAO8lHYB5DuyDv
-	 mtamVBdFFBoBg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
- Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 06/79] block: rust: add `Request` private data support
-In-Reply-To: <abfXIqlT9qRhXssT@google.com>
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-6-de9a7af4b469@kernel.org>
- <abfXIqlT9qRhXssT@google.com>
-Date: Wed, 03 Jun 2026 12:40:49 +0200
-Message-ID: <87se73kitq.fsf@t14s.mail-host-address-is-not-set>
-MIME-Version: 1.0
+	bh=hU9N7RJro1EafdxIieaP5pTIaakVSS68ZAvN4R4veso=;
+	b=yH3Pp2z59cEBn6cz535Il6gPBj5JnruBhntrNxjHwXlyTNP9BVqMJZgiXHVmCGlj6zyRsS
+	DDx9BZNWI0/NnHT+q/2HY3wHZwJ2bepZjQMWKZTC1jBHqioWveOKloHjVheJJ6E20u+2nx
+	h5TVlgFSyMuf8PlNK21Cbx1CNqp+5Y8=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=codasip.com header.s=selector1 header.b=aR1OV5d6;
+	dmarc=pass (policy=quarantine) header.from=codasip.com;
+	spf=pass (imf15.hostedemail.com: domain of christian.gellermann@codasip.com designates 52.101.72.80 as permitted sender) smtp.mailfrom=christian.gellermann@codasip.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780483427;
+	b=h5nEzCJ7UtbDHcZS/39t1C4mY3wfo24WM6UbTOyVVBOOJwEclyQKTxp8z58LftlxevKu5z
+	KvkJLjX81PfgVo7s5ZrCnSfGlqQSzWGfhBIUJTGIztYRPkdB/6pPG5pQMo9QOXjeNATwih
+	PyT6RuJ936UOoHhYbVtzSTi09PHmkmY=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kDPEKztfOVMUSIRaXWYm30wn3W2GJQU4ZbeLuP4WQ39W+d7FxgMi7YrI02ERkhXE1G9+X4h5Tn9Z4/veWPHf4mlUfcTJQiX7PJUYyi4GfEWz5KiWGDKvV7juOdO11i1RqwODS+hhY+JvdnA4ZNHYx98KqUVAKa9eIFqxwx+Q4WU46I7JC6oTgQd/JPU3t3s94nR4i2v5sz6F6epCNO/EffZRP4BJBG1RZdm8z7Di0CpBm4BwQLFi7UOgEYvDRYDKav55b07FVLLLPuBK1eJdMqg5IPlNX8+Gnf5vrGQjwvn4ciAciYl6eW6HGIxs0u7RG3e7RQ3DuPFHosyUsmYCyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hU9N7RJro1EafdxIieaP5pTIaakVSS68ZAvN4R4veso=;
+ b=VEqYd/OPTF5du/WDv/NCXyFe5AS8x4NM2JHMabKzYSQvDAu5GaL/Y8jsaU6NH6ixTp2qABCo3HctKuQ6OdN8pU3BvBgL/ErOJRaNp2zn9ZUBGaZ30axR1YfGXFCf3jHTHWQYRiWgIeZMqzCSoEQABHvBadHfV/+RW71Xg9rzzvgPszQwVn1Qxs1x0FwlLOubf1hoUbuiJPuNrzlRs109Bbn+baPEpSQZmgY+HgTBvF9C1NL/9viJ8TUajSjYl3qNakdni0mE+P+H3Tnu0fOJVJFa9wit8Xxmx6PsVvDvhRgRk7CagsLNYB6EkqGpj9klQ2s8MAMhLlTn7YDe0O4HUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=codasip.com; dmarc=pass action=none header.from=codasip.com;
+ dkim=pass header.d=codasip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codasip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hU9N7RJro1EafdxIieaP5pTIaakVSS68ZAvN4R4veso=;
+ b=aR1OV5d6xnTIKclGmX1qczAa9MIy/goYktCX/tWZ6mtUbQkIXF7t+1yLmJi9ddyuASUbJCPw0ru8WDtacyqYhYewBSxhXZifeP2Zik97XJL2ww3CeQvYBl75zZqcCs9H8hvM7hL9rwbnvClmV3sNOHkZvc73skd0rdzI8ZWKFY0WR1cjOO51p2DE7anZFDmOlXH5+FwztpriEOAfMYRmuc5Ny9zCX7GLOMSkIPMWLnQ0a118Z1FVHKBloHv41Pj/E44xy4sXf86WQZ5mBGAeiCrOfo8SdAnnNzCg+jTGCxUNLCBkoPumSl/zL6nRV6tDROgHEUiVmoG16VtCcfLZ2w==
+Received: from AM7P192MB0787.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:17c::14)
+ by AM9P192MB0903.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:1cf::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
+ 10:43:42 +0000
+Received: from AM7P192MB0787.EURP192.PROD.OUTLOOK.COM
+ ([fe80::c1d1:f20d:9fb5:72d3]) by AM7P192MB0787.EURP192.PROD.OUTLOOK.COM
+ ([fe80::c1d1:f20d:9fb5:72d3%6]) with mapi id 15.21.0071.011; Wed, 3 Jun 2026
+ 10:43:42 +0000
+From: Chris Gellermann <christian.gellermann@codasip.com>
+To: akpm@linux-foundation.org
+Cc: brauner@kernel.org,
+	christian.gellermann@codasip.com,
+	david@kernel.org,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] selftests/clone3: Fix wild pointer access of getline due to missing init
+Date: Wed,  3 Jun 2026 12:43:09 +0200
+Message-ID: <20260603104310.936706-1-christian.gellermann@codasip.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260526113409.ea65314eb1da831de7c90ca6@linux-foundation.org>
+References: <20260526113409.ea65314eb1da831de7c90ca6@linux-foundation.org>
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-ClientProxiedBy: VI1PR06CA0213.eurprd06.prod.outlook.com
+ (2603:10a6:802:2c::34) To AM7P192MB0787.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:17c::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7P192MB0787:EE_|AM9P192MB0903:EE_
+X-MS-Office365-Filtering-Correlation-Id: ebac0e32-cb2d-4afc-0ede-08dec15cfaf1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|56012099006|22082099003|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	X9AmayHZdvYjQhkc9HCXfgp48h8c2w3CB2+sY4OPbBDtl/Jh3w0hh0KeuDAHOpuCC0hzF2pBLX0NFXVImd9Xl1MMGtJSj9wjVYPJ/eoMfFDOQAan0MVJnROMy58FtiTwH+XGr5z45ShQT05ruMBJc/5LQ+AKRKk7wcWukJq1ukVkT9WygMomDyG7xl0T7O2gNy7f51qeXHReupI37MSsTjUbOZXlucUtGVPe9N+JPCttQJuGJeU6jw1opy5QV/x80aRxYoBX1ABDVEixvBw0p2Yz5M+IAhapw94jBoYgppFtlTzj8MWIF4xq61yzM/GgB2fX0EYf00ghDDggBz+XqOd5Su/prlTOdYF+iIGg6JMBSpUYAx/7/pxaCNBRjQSrotELc5KyZLx+nssbN/y7Ntla6cwyslPs7WAfOLKMAR9zawgShLpXPYFaYv++uHmSsHpbqkdQAuJ1yui7s3DoTsyWrL9hWLlugm4YwlGuW2H9cPkpr4ZXaAYAR+xEzijXv2K4F6hbBDRR522kXdELx6kx2+5O5ZjerYJVsFLURibZ6QlO/KWi7TlBdb+XiM8BeSplO6me4n+vHDq9IMzyGXjp7X3WtrU4Z13PdlI0DtcfU8PTv0xgwSAtuT7mjKq38fx03maHMBqrk7FT+JnfEQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7P192MB0787.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(56012099006)(22082099003)(6133799003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?BqdFRWIGkqF5+puDZVsEgHtU33UZUnvIp/Fy2QlyGVwZZotSWb+CGioLWfig?=
+ =?us-ascii?Q?l02AO2e+sBjkQdW8h4vprf0EPwxtx7vgp2JjvVn21VI3bAOeoRGXeCSjjRxl?=
+ =?us-ascii?Q?0JDC6MEgHR1IQ/WjNJ8omAojg5bFfzK1i56Ga1biEFNLMrgLF73HOjFcUhwC?=
+ =?us-ascii?Q?KbKJo0jDzW5Otep/jeM+QGGMdf3hPMXsVR+We37wVN2Yrr+3/XZ8B3ezSj5Q?=
+ =?us-ascii?Q?sAJufWkPLJVGDaMOnYelZ/pQIidLlxUZzpxOwm33ELm+E9UAkcTIma8rZ0p0?=
+ =?us-ascii?Q?eWuuSBsJ6NQX/tazQtl3EyxUW8+sL2X7aVrzgfk/OJ+wm4fWyadHDuGCiYIq?=
+ =?us-ascii?Q?a59rUZy3vgJApo9Yo5HS/CdU77AECkROkgHVcmf6CbaiNA/ffa0eosXZ+9XT?=
+ =?us-ascii?Q?/vzq/PRI4XO/GdFXqf2gP+R8cMr2uH3Z6/REVq9pPaY7q/YK22NRCuIsTHZ4?=
+ =?us-ascii?Q?5Qqm19tidAk7n84CumCKaIRSBW6d5dGHTti4MBXNCe0MTBL5uhfc80014KJH?=
+ =?us-ascii?Q?33+kqkUhz276qjt8VVawMCmEIUn52Dpz4YlizHMeGSjEE447724odF98SZAO?=
+ =?us-ascii?Q?4YO3Jhdf5zdMtHKhHCsKIP9vrTLUn4sCK0Z9I74cpa9Taw+5EmHMSTPtboGm?=
+ =?us-ascii?Q?ImJayFU6n1tUdZ71kiMneFl3LcnZvg0VxAUWDAgaYOEooR+XyZYTD8m8Wk2l?=
+ =?us-ascii?Q?BN9WM31EBXY3a0S8BHvTqnfeuHDv3aRo4FVjz5rPpjAtQotz3evGShWKj51C?=
+ =?us-ascii?Q?WvV4DDphGgtIFUJmpLrF6v8VNa3f8aaZxmXoFZ9hMz9FNoOcGDZ3whDiIvjh?=
+ =?us-ascii?Q?+b15aQxvQ+b2cYubZbNHFrtvpr34upv5Rz4DVRNCVHlwMxKz0qwdIKxy3hVb?=
+ =?us-ascii?Q?VkThIU65KfLM+TCW3j50/jNArhoblcV+VnJyTrKvI008+b4dDQsVGa92XN49?=
+ =?us-ascii?Q?VngRqItfO1trCiaignhetPhLvzUtTvaqOuDXJLA+KFVNN041hAyEpxooBpeN?=
+ =?us-ascii?Q?etDcE3NCcCfIb07KfsyfuxjoFOObijpsgQiP2vOQPNGGTJtmiPBMVGyrjAYe?=
+ =?us-ascii?Q?gBiohHcX/HYKiGZZeeqMVKR7KPngFc8ihEgYzbbiJkZIi7DPaUIHRjlCAM1Z?=
+ =?us-ascii?Q?xa5jYyGcXv+fahF6d4aRoAV2SsiFJlfdwQGpcUQyXdOWusgRfaA4ynZp706r?=
+ =?us-ascii?Q?TjIKOL9Z6gYvZ80qVksXbQ5arK2+iVbdHme0qykB9IisktKZqGApoUl8Rn+n?=
+ =?us-ascii?Q?9y0hz/eEfIBPKWvWSVixXSAqb7AygTuscryUTYfeZfiW3R1iacVmKf/R2ybD?=
+ =?us-ascii?Q?aAZbbfdvw4A46CA/JMaVks2b10XSBzoxDC43cHz0b4zwJvnrmK4YqNKTt88W?=
+ =?us-ascii?Q?QUg4jcGibDOyLAfuF713ER30WUEijhOT+KXSQpLbmI6Dwkk0rRAwGuBX6JWf?=
+ =?us-ascii?Q?IQMyrzGWi+tejDKbChhqqBhRWNyl8bS1YlBgjZdRiCrAMa8sBeJYMm8HjfMd?=
+ =?us-ascii?Q?n9IhFFciJZpmrBAV9vsgR1xjHMIfOS0XPSORPr4gLnpuY1wS8PbsVQFzAwgm?=
+ =?us-ascii?Q?1wMD/+U2Wz0QwAdvwMGnb0wVHqQaOcYg5PTTDyHFdfga/m216qarAlyWgzvI?=
+ =?us-ascii?Q?lVTR59kdRpKUJk7WSK6iXtX9jhnAVLlcqOcmD4iIQA0G9GZs9JAVRg9uRXFu?=
+ =?us-ascii?Q?Q/vNgN9sP4OZEmFSiPEJxzGyRupoCYXLxuMW0SmVrq+jejmR0rYwnpTi0R+U?=
+ =?us-ascii?Q?3eHw3vDxt1jldAaI7u754ZIXNDjN6aVgA4iwsqSbgVxxv9j+ZUbf?=
+X-OriginatorOrg: codasip.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ebac0e32-cb2d-4afc-0ede-08dec15cfaf1
+X-MS-Exchange-CrossTenant-AuthSource: AM7P192MB0787.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 10:43:42.6799
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0d91ffef-bb81-4cbd-b9b8-552583685f20
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EnpBax25h4mBr7kwUd07a12xs7PHvthgm7iz5htUYJbtrd9FO5MqoLBR5IjpeFNK+60XgmpLFog09nbmg+UfBsbJ7xKcOW6tqX3BjiDj01iYi0OUR5bWL1b0kz1S1ckz
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB0903
+X-Rspamd-Queue-Id: 2E702A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EC844A000D
-X-Stat-Signature: prc3akkikeutjyuhdqht13dd8oksudwx
-X-HE-Tag: 1780483263-600492
-X-HE-Meta: U2FsdGVkX1/n92PHYe3EK0r33AB1DV/b41d/P4iPU2GX+vfRUMvtTl/tegUjB2a/A1iMJYaas4iPjxBHWKwUjSh0t3A5+b91aoJyAQer86l0ZO25vQe/Qz4GmZujuBJ6RqPQKTC7UUYDZZfX5r9w4aJm0wkE4/POj7zppQUGgq95KGq4U5r0RdNBLWT5thMMkuGncr/cV++Nb38c54YYSBTm5LvhF+l3vx5vvBnhipXj5MYhOTrRLwRgBDzkuipaGpYHwANweZbBmxsYZSn+rf39lU5WyQ/WVJEtTMZ31LUlWUU5i+Mpw4TZ5YoLjYepJ6UNOxuOhdfNeSykXVAM1oLa4jOXnz0S19prLk0nzSnY5BKJvNzZ5aE8oyfHfyeAGqP2mX5IRSLvGPp1ImMkQ71iOw5DlFcV5ouFeIELG2xderf5HpDwCrJu6aBiZtccNLEmVV2bAqlkXaL8p34VsQTkSQRHX8QrrtHXzRcdmDim1lvtBlngTTyrqw7pOxmbpjImBSF3iAdoQNv4+YaS7OjMHzaGCJacp3CoYnrZqtaX2p/ncmNIRlEJ/m1il2zyBXZFmRLsG29R+mD9krd02Rb1+DxjTtuui/GDWXerneV7D2nL7RtMnag46t8Aio0DMVlHbESolKFEWQroDh7aqH+nS4U9hgtv0VK+xPOC0GMKSYB7juAXDthrXzq9C6pmqgBlkd1YT/SpuV9xZMnaDsRUYFeDyogGeJD3WETmMDgHgnxmd9aev3PG6+F64Zk8NB5fCoOf5mrCgzC9GwxCzDg+HpFmzLLnuVaY7jyStuR8PRX5/m0EamqofoV3PGOKDjiSFA+C03P8yQN2HFDH+KGBfN4QT8rZyug3Vyr8E+D7s8E6pPG365sSj31lPx0n6P6qOsnFyFjELKRvheYwr4Wv0Uz4fDUFodCLhugOXP2E4teRyq8PYEo+4hby8nDCPasVoUaDuUKfTH+wfFe
- 1NqfcrV+
- /o/JHzux01NB7CXhjcDZ72xCWgfRUsL6myt9giuhnB6JFQSrf0Tj4VNbs+JSI/BNuSfRLO0wAk51Nn2WlGb+g4Ok7aKD0Y45aJvUjr+ZUw7c0eV0mKvayRzqYBMAM+5hmb1eK6IPiP9yepRZ3yoLy6i+7Yokq5z92Fs7Rj4ivALdt+kFjcPZjR+oBm8/fLuRSmpRVYyrkCKX1pL/xOJIZXMZPWedRR912hj+Ph/sRtenXyjjXgmd5TuOEmqlra1UBUytgDt45hCsQNPC60ZDSN1z39xusiHwGO9huWYvS7iEW61RWEk1CjDjpQ13SClVbwIZs/e+cu11BdcE=
+X-Stat-Signature: zxsbwyq43qso6dxbxebrh9n9xbx7c1g3
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780483427-758766
+X-HE-Meta: U2FsdGVkX1+KJBHBcBE0qp3rH4ug41/n7lGaAgqnjGJYK4RXkdf6mpFNIiav/HuaDn3kprTFIakKqxY1mZNhRrAXwpXmWCE7J29e3wrvECdWNgKDdZydChju2/k7P9yr89K1r46ZH4r/DntDfHfGOBEr6JUAyRJc3lUvhsf6AOMkXSUwC7DJ4GaVO8HaXTaakqnKNkd8cFUqxnTFf95kiE9hRlKpAVfPFay1rNHPj+NROUny0AKnbaitmr+D4xpbCI6cWllzzH7X8ydVxFrg0CQ4qFVN5JiQTc5U9Sy7o3HxZ1fYiYXDmBSN3JBh/qkCXMbarivkeBfFLQOibPRWGD6Fb/HA2rY7xdSh+A1suSEHp4uJU6Kx1f89538dlSTcOcAQ5IEI3ZdLJ38lTHe+pHb7QC9fveLmUznvL7Lhg8Gtgcu+Wu3ypIIV4BZZEfXwTcebvjHqrpoy0iNA7pGZ5pjpqO+Cx/XeBd1NEVo3iD7b3No1QtgyyQy5D+KLNoQLJcq48Rny2tBUU3VtANV/txNuFy1L1BX1K/0Krwz4JwrOw1712s3+JGnik3V7xK248bWd0klDamDU82RZNdL/ftBRF/vwKtR86p5JEWm7Fk8AQ/jLmsjOtlByFUqRjdbKOM9+kgKCLiW/IoIc2kGYMZZRXgI6b0FDr8yHjOUuLE1mlDQFMXG+gmAUw6+lx0e/pFY4yMz9V42z+Mqe7xxe0bZxWjaZVN5taMR48HeslejVLKcwIMiwNCZQ8dSrXiE7+d9X9j7XEupzm+GN8IdYINNbC4/LKYL2VoKGGzUgMjTOpt2/VyQOIC4qYX7qdQr6TsEQrWJLluseiaWx2b0IkBDaFVZzd70Ni/Bv6WDX+Dxed7qOjEnKbVjmDv1wJstqvYLsSdrGle2Kwb58LJOObO6gFUEvbI5Jo4JjHC2l+WeVsKamUmYgOEu5wa9AwS2pg53Goj68KtAHw6t/PlA
+ 65ECa0b7
+ y5ZBDLmlqkAGy/EGPaAt97/UWn50pPQykbSdz4dKKPfxaJYWTTBgGJqusWMb3i8PKSRGd3ferl9PEstup6wAYh7iOm7W4i+Uhsfn4SsbR/4BEMAxGftdOShSyx3IPVDPES+x89WxYKlEL309VVBoMWTeWn6PvisRx7LQu0F9D7twIV84R/6SmhJQcPflX/zzwo/xKyo9VgEygEnUCw3e49N/Ku8ZWy20IL0X17/M+UfgZlxEPSGnrh8tuR5bufZ98KppO1Gqk0bkA5UiZvqojz8VGXk1TEAXGmuWqHTX3iRVLwPLKkkPbVi69SikTbQB9KOInpV7I27b9VXZMdWzb72aml3/5UAqGnTfkNd+qvCfQAuRTOs1zEWeEk6uKRMukTkP7tDce0pqp/Wv2nfFLOSo/oVIhnNU9WXAbzyPjGYAbAcn1I4RaTVvi9/l+TpRSqJPEpVC4ilp8IpAO13MQfRtZ/AGpvFSAdiADQ8EE8vkW3OqIZ9vcDCA4K4s4h35TPTndl5K/Qs4Guy2u8Lq6pCFUoHtrOoRMIrMA9BeHYacO9HJa6GaQyiiXKGZwAFZBGMZz4aiLlGhzx5tJJocCJGRzGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,145 +172,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Alice Ryhl <aliceryhl@google.com> writes:
+Clone3_set_tid uses getline(&line, ...) in a loop to read the child's
+process status. The code expects that getline allocates the buffer for
+the line on the first loop iteration. According to the Open Group
+Spec[1], char *line has to be null pointer for this:
 
-> On Mon, Feb 16, 2026 at 12:34:53AM +0100, Andreas Hindborg wrote:
->> C block device drivers can attach private data to a `struct request`. This
->> data is stored next to the request structure and is part of the request
->> allocation set up during driver initialization.
->> 
->> Expose this private request data area to Rust block device drivers.
->> 
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->
-> Overall looks ok. A few nits below:
->
->> ---
->>  drivers/block/rnull/rnull.rs       |  5 +++++
->>  rust/kernel/block/mq.rs            |  6 ++++++
->>  rust/kernel/block/mq/operations.rs | 24 +++++++++++++++++++++++-
->>  rust/kernel/block/mq/request.rs    | 24 +++++++++++++++++++-----
->>  rust/kernel/block/mq/tag_set.rs    |  2 +-
->>  5 files changed, 54 insertions(+), 7 deletions(-)
->> 
->> diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
->> index 6a7f660d31998..065639fc4f941 100644
->> --- a/drivers/block/rnull/rnull.rs
->> +++ b/drivers/block/rnull/rnull.rs
->> @@ -134,6 +134,11 @@ struct QueueData {
->>  #[vtable]
->>  impl Operations for NullBlkDevice {
->>      type QueueData = KBox<QueueData>;
->> +    type RequestData = ();
->> +
->> +    fn new_request_data() -> impl PinInit<Self::RequestData> {
->> +        pin_init::zeroed::<Self::RequestData>()
->
-> Simpler to just return Ok(()) here.
+> ssize_t getline(char **restrict lineptr, ...);
+> If *lineptr is a null pointer or if the object pointed to by *lineptr
+> is of insufficient size, an object shall be allocated as if by
+malloc()
+> or the object shall be reallocated as if by realloc()[...].
 
-Not sure why I picked zeroed. Will change.
+However, char *line is only declared, leading to an undefined value
+that is potentially non-null. In an example run with Musl v1.2.6, the
+realloc call[2] of getdelim, which implements getline, triggers a
+segfault:
 
->
->> +    }
->>  
->>      #[inline(always)]
->>      fn queue_rq(queue_data: &QueueData, rq: Owned<mq::Request<Self>>, _is_last: bool) -> Result {
->> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
->> index b8ecd69abe980..a285b753ada88 100644
->> --- a/rust/kernel/block/mq.rs
->> +++ b/rust/kernel/block/mq.rs
->> @@ -69,8 +69,14 @@
->>  //!
->>  //! #[vtable]
->>  //! impl Operations for MyBlkDevice {
->> +//!     type RequestData = ();
->>  //!     type QueueData = ();
->>  //!
->> +//!     fn new_request_data(
->> +//!     ) -> impl PinInit<()> {
->> +//!         pin_init::zeroed::<()>()
->
-> Simpler to just return Ok(()) here.
+./run_kselftest.sh --test clone3:clone3_set_tid
+[ 1366.165898] kselftest: Running tests in clone3
+...
+[ 1367.799244] clone3_set_tid[811]: unhandled signal 11 code 0x1 at
+0x0000000000000000 in libc.so[68184,3fbf69f000+4c000]
+[ 1367.802808] CPU: 0 UID: 0 PID: 811 Comm: clone3_set_tid Not tainted
+..
+[ 1367.804188]  epc: 0x0000003fbf6b0184
+[ 1367.804188]  ra : 0x0000003fbf6d4664
+[ 1367.804188]  sp : 0x0000003fce5f2e40
+[ 1367.805314]  gp : 0x0000002aaab0dfb8
+[ 1367.805314]  tp : 0x0000003fbf6f14a8
+[ 1367.805314]  t0 : 0x0000003fbf63d000
+...
 
-Will change.
+Looking at the realloc implementation, Musl mallocs for a null pointer
+memory. But for a non-null pointer, it assumes it's passed a valid
+pointer to the heap and tries to access its meta-data. This leads to the
+segfault we see:
 
->
->> +//!     }
->> +//!
->>  //!     fn queue_rq(_queue_data: (), rq: Owned<Request<Self>>, _is_last: bool) -> Result {
->>  //!         rq.end_ok();
->>  //!         Ok(())
->> diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
->> index 3dea79d647ff7..cd37b939bbf30 100644
->> --- a/rust/kernel/block/mq/operations.rs
->> +++ b/rust/kernel/block/mq/operations.rs
->> @@ -13,6 +13,7 @@
->>      types::{ForeignOwnable, Owned},
->>  };
->>  use core::{marker::PhantomData, ptr::NonNull};
->> +use pin_init::PinInit;
->>  
->>  type ForeignBorrowed<'a, T> = <T as ForeignOwnable>::Borrowed<'a>;
->>  
->> @@ -28,10 +29,24 @@
->>  /// [module level documentation]: kernel::block::mq
->>  #[macros::vtable]
->>  pub trait Operations: Sized {
->> +    /// Data associated with a request. This data is located next to the request
->> +    /// structure.
->> +    ///
->> +    /// To be able to handle accessing this data from interrupt context, this
->> +    /// data must be `Sync`.
->> +    ///
->> +    /// The `RequestData` object is initialized when the requests are allocated
->> +    /// during queue initialization, and it is are dropped when the requests are
->> +    /// dropped during queue teardown.
->> +    type RequestData: Sized + Sync;
->
-> It was surprising to me that `request` is reused over many requests. I
-> think it could be a bit more obvious in the wording.
+void *realloc(void *p, size_t n)
+{
+        if (!p) return malloc(n);
+        if (size_overflows(n)) return 0;
 
-I will add a bit of info in the `Request` type docs.
+        struct meta *g = get_meta(p);
+        ...
+}
 
->
->>      /// Data associated with the `struct request_queue` that is allocated for
->>      /// the `GenDisk` associated with this `Operations` implementation.
->>      type QueueData: ForeignOwnable;
->>  
->> +    /// Called by the kernel to get an initializer for a `Pin<&mut RequestData>`.
->> +    fn new_request_data() -> impl PinInit<Self::RequestData>;
->> +
->>      /// Called by the kernel to queue a request with the driver. If `is_last` is
->>      /// `false`, the driver is allowed to defer committing the request.
->>      fn queue_rq(
->> @@ -236,6 +251,13 @@ impl<T: Operations> OperationsVTable<T> {
->>              // it is valid for writes.
->>              unsafe { RequestDataWrapper::refcount_ptr(pdu.as_ptr()).write(Refcount::new(0)) };
->>  
->> +            let initializer = T::new_request_data();
->> +
->> +            // SAFETY: `pdu` is a valid pointer as established above. We do not
->> +            // touch `pdu` if `__pinned_init` returns an error. We promise ot to
->
-> typo
->
->
->> diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
->> index c3cf56d52beec..46481754b1335 100644
->> --- a/rust/kernel/block/mq/tag_set.rs
->> +++ b/rust/kernel/block/mq/tag_set.rs
->> @@ -41,7 +41,7 @@ pub fn new(
->>          // SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
->>          // all are allowed to be 0.
->>          let tag_set: bindings::blk_mq_tag_set = unsafe { core::mem::zeroed() };
->> -        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper>()
->> +        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper<T>>()
->
-> size_of in prelude.
+Fix this by properly initializing the line pointer to NULL.
 
-Fixed.
+[1] https://pubs.opengroup.org/onlinepubs/9799919799/functions/getline.html
+[2] https://git.musl-libc.org/cgit/musl/tree/src/stdio/getdelim.c#n38
 
-Thanks,
-Andreas
+Fixes: 41585bbeeef9 ("selftests: add tests for clone3() with *set_tid")
+Cc: stable@vger.kernel.org
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Signed-off-by: Chris Gellermann <christian.gellermann@codasip.com>
+---
+ tools/testing/selftests/clone3/clone3_set_tid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/clone3/clone3_set_tid.c b/tools/testing/selftests/clone3/clone3_set_tid.c
+index 5c944aee6b41..485efa7c9eed 100644
+--- a/tools/testing/selftests/clone3/clone3_set_tid.c
++++ b/tools/testing/selftests/clone3/clone3_set_tid.c
+@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
+ {
+ 	FILE *f;
+ 	char buf;
+-	char *line;
++	char *line = NULL;
+ 	int status;
+ 	int ret = -1;
+ 	size_t len = 0;
+-- 
+2.47.3
 
 
