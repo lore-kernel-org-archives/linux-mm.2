@@ -4,124 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDF4ECD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 15:46:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFDB3CD6E60
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 15:49:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 406E96B00B8; Wed,  3 Jun 2026 11:46:41 -0400 (EDT)
+	id 2363C6B009D; Wed,  3 Jun 2026 11:49:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DE816B00BA; Wed,  3 Jun 2026 11:46:41 -0400 (EDT)
+	id 1E7566B00BA; Wed,  3 Jun 2026 11:49:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F43F6B00BB; Wed,  3 Jun 2026 11:46:41 -0400 (EDT)
+	id 123166B00BC; Wed,  3 Jun 2026 11:49:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E3AA6B00B8
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:46:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC641162617
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:46:40 +0000 (UTC)
-X-FDA: 84839028960.25.23385EB
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0A2BE40012
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:46:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=kw5AnKii;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780501599;
-	b=4DWSbU0FVspwCnHF2c5z0H07hvb9glHRelvxQtwqPHoIApWnc7Jn3JUXkgU+Z8LBRCJupI
-	TTieblBYrzztUvK0njd6WbCHqKMSK/PVWYRD4wurGabN/k1cHvgOl8WZjjr8F3MPArpZ9N
-	VOQ7fVmRowFkB5KwwbqITEO3IMYoX+k=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=kw5AnKii;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F29536B009D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:49:04 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AAEEF40443
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:49:04 +0000 (UTC)
+X-FDA: 84839035008.09.D81F018
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E82E018000A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:49:02 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U6pbP/IJ";
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780501599;
+	s=arc-20220608; t=1780501743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZ44uuKaEudMkx03Nujcoh6Uuv+6Qpcd4aVYSw8wkq4=;
-	b=005R3E3JdjDyJftT8IhlFvq2844Kox0RnDyXb6ruM4MoImUlk4iBRfBJwGCcVt8a7hq7ll
-	aMBLR/CeT6vCdEdu+wFplqSH8fWnkyZdSht/aig6rLA3mcmiZmWoWayQHX9Bk5CksTWFCb
-	hmLpKUBeyoDtrBOLuXzjaXVJ6F6naNw=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8cceaacd07bso54075676d6.3
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 08:46:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780501598; x=1781106398; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LZ44uuKaEudMkx03Nujcoh6Uuv+6Qpcd4aVYSw8wkq4=;
-        b=kw5AnKiinu9GsW9kWANYXrEHo1FbyVm9GT8LuZFxcblyJmsdH9J7w1O2rSB2WpSZgu
-         OO2YFJmJZtcYBHVrDEcGmPx0xhFw0zleCvNKI7VPbHFzs3LcnmleT+0eZy5Y987Czhiq
-         6nq5QFUVExJ6r7mKIXnqTyjKI1Q7OL9q5pe9L/npYWI1VSocyE8K2xByE2EDGBgQw1nS
-         J/6Bf/6i3eQJR7wkPUEUdFnZay6EmgSvXAdlyyQk4n7X3FRFhm/Hx7+Pn2yuzDKLyxho
-         RSWMlS81d+gDqiqfAZ9QPlxbaMhSjdoF2eebycvxQI/7VuqVuvUgKpVQOndSSu1TMMYK
-         wKmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780501598; x=1781106398;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=LZ44uuKaEudMkx03Nujcoh6Uuv+6Qpcd4aVYSw8wkq4=;
-        b=D3R4uNKEcLnB8SeqzaPsQdGdO9VMmioxpE/r3wKGSTAmk48ZaxG4YAeGQBB2uKVE5S
-         sKjbY6z9rTgo7NZyQJyTodpV+9TFqaiJ8DaVoGX7ZonCxoAgwuEJfg9AdWGg1Byqj9an
-         d/MnJUSeqgC3kFxj3f5yZbogMqmgpYmd/PARJA6XK+BpSZbHphdUtPUIDP0Ivm/cl0gf
-         hHwShgFjBqceZs9yFcqLiCtoB7SnPq9ADa/zELe3iubInqrEKll4QrRJ/bGMb46+p/Yf
-         W/lpBNaQgEjPHgCA0i9Y7wa/E8SwIMNCjJFpoyX0Wu3Vcj1tKL/ksAjBVXT9OkeqJHe3
-         vqZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8SKrCPRclzn3mtoa5InhN5clNyeIH644MTI6p9A/kJKg6xzJpUKV2By7zsGVKClvnS+lBagzJIDA==@kvack.org
-X-Gm-Message-State: AOJu0Yws6t1i+TLDgYYzgSswh2oC2s5okCXKM6Wmi2W+24e4wywpB7vW
-	E+Gjq7mDp6RNyf44y1MEd63pYBk719i53AtlcL6tmMT5O8gnyPir4odPneb49NujFVY=
-X-Gm-Gg: Acq92OH7RdD0dAYciyxasUzju+5C1pFWnTqdXS3sn7iCxTZPDVrdAf4PCqRzJzn8LRK
-	qbipqJlvEu4dE5smtl7IDNgCEUN4U7Cwwop1stFHopzRMTxB9XRt7AcqsvkPfc5fDxsjTg5iRfS
-	NpLyATk+UTOki3mHMtMauLshNHA1N6d1Q2LsXe2Iy8IhCKx87LYNh5rfDNoQ+axW7iBclnWAyuR
-	T5XnD1HCRHVAwGCfRsWy9Odt70RJjOMk8xXiyfP+5XX+otJFTdoReoxFma+RMkWuqyv/t9D+ZXj
-	G/gS9uNk6OfwgMUT+85vS1kLz2irydVRQ3zNPGWAGtM9e+DbYSWY0kUSaX/wwBbcSFVI1Sf8uiB
-	2XJwNmA2lFv+e7I0FP4jc/iT6uWnN6x6QmKwMak3FP+sP/XXyRK1p00MEHPfy+mOXwArLaom/l0
-	HsQecunbIlwFizXJxl/8HpXkygqlstC5YJl7XZ9HvASajI35+kvQoYG6gquMK+2pCU2RGQfsYu
-X-Received: by 2002:a05:6214:dce:b0:8ac:a6bd:503b with SMTP id 6a1803df08f44-8cecde9c8admr53195506d6.15.1780501598131;
-        Wed, 03 Jun 2026 08:46:38 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd277070sm22665326d6.48.2026.06.03.08.46.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 08:46:37 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: linux-kselftest@vger.kernel.org,
-	rppt@kernel.org,
-	shuah@kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	corbet@lwn.net,
-	pasha.tatashin@soleen.com,
-	dmatlack@google.com,
-	kexec@lists.infradead.org,
-	pratyush@kernel.org,
-	skhawaja@google.com,
-	graf@amazon.com
-Subject: [PATCH v7 13/13] selftests/liveupdate: Add stress-files kexec test
-Date: Wed,  3 Jun 2026 15:44:02 +0000
-Message-ID: <20260603154402.468928-14-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260603154402.468928-1-pasha.tatashin@soleen.com>
-References: <20260603154402.468928-1-pasha.tatashin@soleen.com>
+	bh=sYUk6vW20DB8I7Vftloyl0dbtzWNes19X5Rj0mk5KyQ=;
+	b=H1M7/3DyN2UnN1k7Xyev6WSVjZUBD7V/HnccQ/5VzoNxxgkPrpYFlH8vISyL8MGQyxnrPH
+	hjEX2RlRbADk9WsFNvZZHNOQzrDahrpZJMJbxJztnfNTjDB1kREnarH/PZk8uai3q31Utg
+	/4R6OSGJkBR9p99mya/3NDa/aROA4SE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780501743;
+	b=B/OF+DByvfkVaotMB5qaYk4nR4rlu1j4UdLj8pvlokDlwxu23m5QwFU82DyMyyGIj9AAWG
+	CQS+b4ZJqluC4bXPbTE5x70kdMINAgKEm3FjzSEV6g6GJJlZLxhv6+tWLEuRQLaCugWUE/
+	Of4vEFk03zExKSXIKGnMCQ7nXBmdZDs=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U6pbP/IJ";
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7731760138;
+	Wed,  3 Jun 2026 15:49:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4881F00893;
+	Wed,  3 Jun 2026 15:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780501742;
+	bh=sYUk6vW20DB8I7Vftloyl0dbtzWNes19X5Rj0mk5KyQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=U6pbP/IJZ5p1e2csLq0FLEBF3slLLyoJBCa/7Gw3ja4mHFR7RrPzQqJQ1mwDpj9r5
+	 FTzlfUp4aySgreHzJ/77ZhBvpYaBwo9PHPy5+dRrdYidEnal4iyRNiq5uWH0ZGJVFq
+	 ydnzXgYp97Tcute5q/pHMrMQR60ydBZYfxHEZKu4tAJ6Gp10+1kisPqXQ4+X3Aqw5j
+	 XfzlWU9uDsQG3fHS2em15jeQFvi5Gqck086IZXBv2De8q+PQlNyYws17YzpNY69AzO
+	 DgXQrJmMtShNbkmmRdj0E1wWLMshIeHHwE3X3I0FbauymGr84g9NfAARyM/dWRlMed
+	 txBsRqa347D3Q==
+Message-ID: <db45414a-8777-40d1-91b8-a78789ed18bd@kernel.org>
+Date: Wed, 3 Jun 2026 17:48:56 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0A2BE40012
-X-Stat-Signature: regm5yqyg5q465e1cc8tkwm6htuz1z9f
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/2] mm/secretmem: try to restore large page mappings
+ in direct map
+To: Lance Yang <lance.yang@linux.dev>, Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com, ioworker0@gmail.com
+References: <aiAJG7gdey4oNr4a@kernel.org>
+ <20260603114134.3010-1-lance.yang@linux.dev> <aiAfnw088f3ZT3va@kernel.org>
+ <3ec76ffd-2650-4302-87e1-8183029a0553@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <3ec76ffd-2650-4302-87e1-8183029a0553@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1780501598-115731
-X-HE-Meta: U2FsdGVkX1/UdU0y98JaeLCDe5IW8Ry/KUaETloJmFheC8Vi3qf1zlKXdu8JQJLFVcAxxRzGzeGEeAaApVZiEyEbmtmJ/qN0DeKq1gcsqJ1c3Jps8uXICKXXmVLEzlBIt5ax8PeHwyLVkctYW+Y0W7wP+wdTBNxujTGcWDIxYCgnblbFRJpZWoO6Qsv8pMuKaK+vLYuBRwrVre2Aap1OoabZA4AR1fYSkiq2DaDNOwsvc55XoAu4vsrEQEO4qkgq8aC+TBQaoSszbQz9iOFblDx70TePIcGXlKrRFryo/euGj1Ch3hghvVuyL3opq8vdZwpkS22eOPeeO7qQPopi2Zg6DMzH1allv/t59dFj+g1ddxv5tHBKPj0wMf+tYa/HCTqKt3unuZEO3i2VEAnkMPyAg1WXg+XZOS05hL+xwG4X5l5+TscwtZLgD4DIcjSElosnQx1BdB+Ptm2t/j/4AzAUOw9xvL8TABI9saSVgiGsvb/2fWRplzpj8lyGus+qOgf1o1UWxjnY1EF7qIGsmFybDeyqc2fDJ9CE0TVkh60Ybd+i0J8pciVYuzwb6HdLfjdt3/k2ZX+cPkxwO23Oy8iZZc0keU/xu3sW63eSE6PNcaV7BFVEV3wDxw6PFY6L1fpkntrucaxD2UlPl9WKmMOkfBmAOkYLa5zvuLcxfGYKAsODq0ufoXaNT9Mh60oXY5bMxJMjKPyLPYqMgp+b3hV71Ac9qcXzsLkiOjyTUFx1B9YHp6J5xWtDoPSNaRMNnZ26AFkzAm48ANq7ekTZOxRf6N5dnU2UqC8YuN1/EbPLaggyFAYPCL64EChg0+qmIvZJRN4WPitp1Y+eSHgDeLnjqqA7/5+Yu+gYYZtef9InDhePNTYJWnugm7Kgko/9i6J1ZKu1crKieicsAYmfo7A7fPWdbEiuQq9kf3YoKGAZkcR9CNdsGZHKmuMNkTCxq0PA6MyPf2E4fnZMGDu
- BUDjEL39
- uDfdCaeeMwM3YyYqi4W2sp1ZyFOB9KdPqX1egpUHpwy3xo1AUSPlKG9EoWWvrigI4nZRO15ZbmfuD/xCZPgLjt5tipxek+65i2Wge+fJaaOTiA48BrMWd9jILO9BgeChujUQb9BTBKutehjlpBWKlV5ZtryOOW4FBY0odcCGVcK/TOzttIHQS4VlNN9GlvAkSaNKXx7PjHLLv+dmkxHzA1h/acHgm/duqeqSmF11lGJyEhlWO8LUmv3p2BQ1uVhcCNkOUbNUEOaC5hPFr434eTDNIyhQSEtJPLUO+Rv9R7Wd4iKzit9RoYYldE6/AbP4xnYaerV6FenRoKidzcdAII4gwT3yqRAgMEE8t
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E82E018000A
+X-Stat-Signature: my8gfa7wqmp3pt4jgg4hspbofwrp71fd
+X-HE-Tag: 1780501742-338941
+X-HE-Meta: U2FsdGVkX19GKdNJFYnJ6OI05jGz20JTXcoG9fdrmMh7iE3ZUKUUe00OTYRwC9O1uiJ4WKvkbfq5OsBxFFLPgsXQW51JOWMEdfTw69tXDHAt++zIt1OVbJZWSzzSEnYt/IxvSWiKvomRtrCjqGYJauMeoRSN4XaA3iEKsuJmifcb5FOjPaGtxF0V1HlLdljr5JZ1MGQJqkwoBk/2+R0SEZRbj0+OMPpqCnMLJVAiqVBXUPaaHS8FhWCt5nR1Nya+Ra8WSqZC4R9Dy8uBs+6xCTHGj4en8b+O113ZqYdD3BxgnivYi8vC4Oyw1GXbkNEpeaTN4b3mPacTtj15tVPOcXmYtkEqCsCp3OFrASF0eYWkunhVAVgoyG0ammTMjPAT864yoEze8+v6WfcIzZGLaDoE6bnzRZ8rszlY0Au8hsdAqzop+wrpZrsCUnzrpPi6d2NFBTiro7qCi6o5SUgXR5T5nArhEnnMSVh32cX1OdLSmvRDan1/KVNgxYmGI74wWmBbG9N0rzornPISuOT9ahOJUqEUiO8rIR3ixPH0kVjvgJobO4F57fY50ObpSVi46Fkb+m6XEEklk+vNDrBZoMOW/UIN9i4HbUGvJSI0R/4d2dCp9/8FkMYUReF1MdP1WJJzohl6mu7tCp5wws0jDgvTQyh8JDRHdG7DyXoDUNtd4uoXr+9/+Fsq3Td57CIxfWNmrI0SWjsMZM/1I1SvEl1O+rtvUMZLECEhE/NQu2wCkD8VNZyi1rPgTBl+Nk9bCtmbohFoX5nqSFUinN+i3+tdPXsWk5j5mvGq+cfc6Id9UARp0E1s7K/v8M1ET/bKhA86ZM+GZfPo1WoGFtEBL3QWDiSRhyvPd7OMgOLD4XHOP0sw7BxEMld5QWDVLYkLsDi3PXy8rVZ9B/t1/CyxqSaNvgcNTFMr0uEsHoUmTUUWVQl7Dy3C5q5d7xF6Sp0yF0D60VNSiNrpCEwAZZm
+ ZqRS1c+z
+ 9a3sIJHdCTVaQZYx3qRWaOJg4+WzmIvC/Jvb0gCFDQGLVrMsAp5+7FAO/IBS6lwgyoC+YpUMdtq6EtbB2m+DWwOxR2t42DF6fCQRMOPQl2/zLS0fbm6msX9gjFro1KtaTteodDkbaTAe98eSGm8ps867bOt6Mh4uUBdXTfi17aTkPqX6dmXm05IJ/7PUFAd6zhqiJ+pXm7Fk94YT7miCa9SwS/o70qrrx6mivaGjmrXZAnCmk1+rOWxg4wZIoL1FS15LBviQuhJkZfnl4NSmzHaZ4/j0rx0Vc+WL68aOxryyCsnKQscJzj/xNH20L6485lViA/1BZy26FMjQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,134 +142,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a new luo_stress_files kexec test that verifies preserving and
-retrieving 500 files across a kexec reboot.
+On 6/3/26 15:09, Lance Yang wrote:
+> 
+> 
+> On 2026/6/3 20:35, Mike Rapoport wrote:
+>> On Wed, Jun 03, 2026 at 07:41:34PM +0800, Lance Yang wrote:
+>>>
+>>> Good point, I kept it separate on purpose :)
+>>>
+>>> Putting collapse into set_direct_map_default_noflush() would change the
+>>> semantics of that helper a bit, IMHO.
+>>
+>> For x86 default means present + rw + PSE, so yuu can look at it as actually
+>> better enforcing the semantics :)
+> 
+> Yep. One x86 detail though, default seems to miss _PAGE_GLOBAL today. Not
+> sure if that is intentional or just historical. See patch #02.
+> 
+>>> I would expect arch_try_collapse_direct_map() to also be useful for cases
+>>> where a direct-map permission change could split a large maping first,
+>>> and the user wants to try restoring the large mapping after changing it
+>>> back. One example[1] is making a direct-map range read-only for security,
+>>> which I am also working on :)
+>>
+>> I don't think users should care. The users care for particular permissions
+>> of a range in the direct map. It should be up to the architecture to select
+>> most suitable mapping size. The splits are implicit, I don't see why
+>> collapses can't be implicit as well.
+> 
+> And agreed, users should not care about the final mapping size, that is
+> up to the arch.
+> 
+> TBH, my concern is making the collapse cost implicit for every
+> set_direct_map_default_noflush() caller. I still lean toward keeping
+> it opt-in, but happy to hear what folks prefer :)
 
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
----
- tools/testing/selftests/liveupdate/Makefile   |  1 +
- .../selftests/liveupdate/luo_stress_files.c   | 97 +++++++++++++++++++
- 2 files changed, 98 insertions(+)
- create mode 100644 tools/testing/selftests/liveupdate/luo_stress_files.c
+If we could easily do that automatically, that would likely be preferable.
 
-diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
-index ed7534468386..30689d22cb02 100644
---- a/tools/testing/selftests/liveupdate/Makefile
-+++ b/tools/testing/selftests/liveupdate/Makefile
-@@ -7,6 +7,7 @@ TEST_GEN_PROGS += liveupdate
- TEST_GEN_PROGS_EXTENDED += luo_kexec_simple
- TEST_GEN_PROGS_EXTENDED += luo_multi_session
- TEST_GEN_PROGS_EXTENDED += luo_stress_sessions
-+TEST_GEN_PROGS_EXTENDED += luo_stress_files
- 
- TEST_FILES += do_kexec.sh
- 
-diff --git a/tools/testing/selftests/liveupdate/luo_stress_files.c b/tools/testing/selftests/liveupdate/luo_stress_files.c
-new file mode 100644
-index 000000000000..0cdf9cd4bac7
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/luo_stress_files.c
-@@ -0,0 +1,97 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/*
-+ * Copyright (c) 2026, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ *
-+ * Validate that LUO can handle a large number of files per session across
-+ * a kexec reboot.
-+ */
-+
-+#include <stdio.h>
-+#include <unistd.h>
-+#include "luo_test_utils.h"
-+
-+#define NUM_FILES 500
-+#define STATE_SESSION_NAME "kexec_many_files_state"
-+#define STATE_MEMFD_TOKEN 9999
-+#define TEST_SESSION_NAME "many_files_session"
-+
-+/* Stage 1: Executed before the kexec reboot. */
-+static void run_stage_1(int luo_fd)
-+{
-+	int session_fd, i;
-+
-+	ksft_print_msg("[STAGE 1] Creating state file for next stage (2)...\n");
-+	create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
-+
-+	ksft_print_msg("[STAGE 1] Creating test session '%s'...\n", TEST_SESSION_NAME);
-+	session_fd = luo_create_session(luo_fd, TEST_SESSION_NAME);
-+	if (session_fd < 0)
-+		fail_exit("luo_create_session");
-+
-+	ksft_print_msg("[STAGE 1] Preserving %d files...\n", NUM_FILES);
-+	for (i = 0; i < NUM_FILES; i++) {
-+		char data[64];
-+
-+		snprintf(data, sizeof(data), "file-data-%d", i);
-+		if (create_and_preserve_memfd(session_fd, i, data) < 0)
-+			fail_exit("create_and_preserve_memfd for index %d", i);
-+	}
-+
-+	ksft_print_msg("[STAGE 1] Successfully preserved %d files.\n", NUM_FILES);
-+
-+	close(luo_fd);
-+	daemonize_and_wait();
-+}
-+
-+/* Stage 2: Executed after the kexec reboot. */
-+static void run_stage_2(int luo_fd, int state_session_fd)
-+{
-+	int session_fd;
-+	int i, stage;
-+
-+	ksft_print_msg("[STAGE 2] Starting post-kexec verification...\n");
-+
-+	restore_and_read_stage(state_session_fd, STATE_MEMFD_TOKEN, &stage);
-+	if (stage != 2) {
-+		fail_exit("Expected stage 2, but state file contains %d",
-+			  stage);
-+	}
-+
-+	ksft_print_msg("[STAGE 2] Retrieving test session '%s'...\n", TEST_SESSION_NAME);
-+	session_fd = luo_retrieve_session(luo_fd, TEST_SESSION_NAME);
-+	if (session_fd < 0)
-+		fail_exit("luo_retrieve_session");
-+
-+	ksft_print_msg("[STAGE 2] Verifying %d files...\n", NUM_FILES);
-+	for (i = 0; i < NUM_FILES; i++) {
-+		char data[64];
-+		int fd;
-+
-+		snprintf(data, sizeof(data), "file-data-%d", i);
-+		fd = restore_and_verify_memfd(session_fd, i, data);
-+		if (fd < 0)
-+			fail_exit("restore_and_verify_memfd for index %d", i);
-+		close(fd);
-+	}
-+
-+	ksft_print_msg("[STAGE 2] Finishing test session...\n");
-+	if (luo_session_finish(session_fd) < 0)
-+		fail_exit("luo_session_finish for test session");
-+	close(session_fd);
-+
-+	ksft_print_msg("[STAGE 2] Finalizing state session...\n");
-+	if (luo_session_finish(state_session_fd) < 0)
-+		fail_exit("luo_session_finish for state session");
-+	close(state_session_fd);
-+
-+	ksft_print_msg("\n--- MANY-FILES KEXEC TEST PASSED (%d files) ---\n",
-+		       NUM_FILES);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	return luo_test(argc, argv, STATE_SESSION_NAME,
-+			run_stage_1, run_stage_2);
-+}
+Especially given that we are getting other users of direct-map removal soon that
+would face similar problems (e.g., guest_memfd).
+
+What the performance impact of trying to collapse after every directmap update?
+Imagine we have a full PMD range with directmap-removed PTEs?
+
 -- 
-2.53.0
+Cheers,
 
+David
 
