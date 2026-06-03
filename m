@@ -4,95 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5AB8CD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 13:40:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12255CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 13:42:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE16C6B0092; Wed,  3 Jun 2026 09:40:45 -0400 (EDT)
+	id 743CA6B0096; Wed,  3 Jun 2026 09:42:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6AC36B0096; Wed,  3 Jun 2026 09:40:45 -0400 (EDT)
+	id 6CDAB6B0098; Wed,  3 Jun 2026 09:42:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D32AA6B0098; Wed,  3 Jun 2026 09:40:45 -0400 (EDT)
+	id 5951A6B009B; Wed,  3 Jun 2026 09:42:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BBA8B6B0092
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:40:45 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5ACA912031B
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:40:45 +0000 (UTC)
-X-FDA: 84838711650.13.AC97954
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C1E5E1A0003
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:40:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c1ouCCeO;
+	by kanga.kvack.org (Postfix) with ESMTP id 43DE76B0096
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:42:54 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A24612034B
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:42:54 +0000 (UTC)
+X-FDA: 84838717068.04.128D1DB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6532A14000C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:42:52 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lmmDKal3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780494043;
+	s=arc-20220608; t=1780494172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KGsTHKQ9mld7YxQe3rajH7wvD+M6DWrkXFM9QhfOh6M=;
-	b=qpz1XzLed53rxkM9vUAG8MWakZIKebiyE+EYvZUmWgX4u4sPhrN/QoJ2LDCHhK/BZt6FBs
-	YZ/7T0KEi9aCkt+ajs3lxuquSwIpFJ9mSeTmVJ6Xz8s2P+ismDj6ku/ZGiHm+Lbc81xHoH
-	PPht1jDN/PLVz9v2DSxk2LrRGY8FEbc=
+	bh=c1s3wYbkURqhM7qkvJRBzhJenXV+nbjO4FcCfUvzTI0=;
+	b=H9Pz/dDjaGSJG4qUK1XEjIMkl76im3wCA5MMdL07cTKJuST9x74ILx15a0M1/opzN1RbyS
+	/Y1a8V+SABaId8xKoDBPcCK1p0aYUXVlmGe+mgoSsHKO9i1Shq8beiUuOh6NZSbpKwA+Kw
+	+3qHgmn/EW4QW3H4R444HLFQ8n5lMfQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c1ouCCeO;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lmmDKal3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780494043;
-	b=7IbUutwsX+R8Ri9YZFn/zcEBQLecgkIvP99N7eVTrlocisFn6HyGmLo7FIep1fIYSuEbTM
-	8XIdQd36rd9UoTb6EVh+fstbnAIQ+bPauQQmb6AtogHRXSh2G2Dl8sFQoAN2OlElrvynQI
-	DNBhQm5EzjVosxuecT/0ZDyUeSEtssE=
+	t=1780494172;
+	b=ibu2QpFOjH63nFn4eZUaeD0SoxA/seQsY/KSnD18Iujq5XeoQrXPDYhfrlke/U+T1hh1R7
+	amN9anIyvHbSXWjCb71MlkkUThztIBXVkAX1ZVI1lMegpPb2djnGnKuD8elTtygUTSnHUL
+	WHlF7zPo8rS2bMiuuZ+bE3Pjm/U/AMg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4316B601DD;
-	Wed,  3 Jun 2026 13:40:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4C61F00898;
-	Wed,  3 Jun 2026 13:40:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3742E4333C;
+	Wed,  3 Jun 2026 13:42:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8CD1F00898;
+	Wed,  3 Jun 2026 13:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780494043;
-	bh=KGsTHKQ9mld7YxQe3rajH7wvD+M6DWrkXFM9QhfOh6M=;
+	s=k20260515; t=1780494171;
+	bh=c1s3wYbkURqhM7qkvJRBzhJenXV+nbjO4FcCfUvzTI0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=c1ouCCeOfGsSWLGNkvvoOa5gTYM0YWhQ2YWKcMokI4OUSVIQBt0LDWDEXGXgdOBhk
-	 RcRyl93QyEJ9JLW5AoFWnCmqBcXY4cK06cakG8SwHN1xGxeQjB9bXeW0akqq75vk2P
-	 s1CIE2PyGQkPbaRlS08LsLJsqwRjPSYYv9Co1tKaf2nz1vK6+dOTW+wW6ZJys66m7i
-	 l/CfFgBOqWkhIpv51rSLKkHcHCfO99JTOGnqyq9fBQ5yu+2Nk4F/mwwgwhNKVUGHUE
-	 NbEKOEm1HAbHTIt1WY4dqDDq5U04q5ORt1Vz6IqwcdFYPqakOw4Ejt1EIbx3TDx8mS
-	 7EOkXsCAM9FvQ==
-Date: Wed, 3 Jun 2026 15:40:36 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andy Lutomirski <luto@amacapital.net>, 
-	Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org, axboe@kernel.dk, david@kernel.org, 
-	dhowells@redhat.com, hch@infradead.org, jack@suse.cz, linux-api@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	miklos@szeredi.hu, netdev@vger.kernel.org, patches@lists.linux.dev, 
-	pfalcato@suse.de, viro@zeniv.linux.org.uk, willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <20260603-raumfahrt-unmerklich-ertrugen-c4ecae70d5f9@brauner>
-References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
- <20260602225426.122258-1-safinaskar@gmail.com>
- <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
- <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
- <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com>
- <20260603-navigieren-pleite-stilvoll-60e6da66b1d4@brauner>
+	b=lmmDKal3j5juWoavef85dcQUeUs+HB448UiSj9bp43A2WeRYvNXS4A8q1QaMXMnD8
+	 03NYxRzIKwaZ8yKdBSCAsmwGbPdHk8J1XUYivek+WREcdTrAoSvxoTCT8oVg7sNjsU
+	 UxVWsTyvgB5I+zXGy7OUb8NabqNFk7oVBO0Obx9Vn21a0cSxSYWGyOFJxZffclTRPo
+	 VZHQaMX1+XFowxETj7fNtwkOg8kFtVQIqYajjaP1LqBwyqsO+uuSDiK+Gb3m6oZdDX
+	 +AHyZt1ebA7L+8PpMLdE6Wah/uvaNsH0rsTik1wm17uNxWmDRUrdh/t1JgHZpZ4nMx
+	 DfZDg3QzWzkUg==
+Date: Wed, 3 Jun 2026 09:42:49 -0400
+From: Mike Snitzer <snitzer@kernel.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jeff Layton <jlayton@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jens Axboe <axboe@kernel.dk>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v7 3/3] mm: kick writeback flusher for IOCB_DONTCACHE
+ with targeted dirty tracking
+Message-ID: <aiAvWRr_3Y07Ba0V@kernel.org>
+References: <20260511-dontcache-v7-0-2848ddce8090@kernel.org>
+ <20260511-dontcache-v7-3-2848ddce8090@kernel.org>
+ <20260511-zusieht-amputation-efe8b5058cb7@brauner>
+ <7c0880ee25b13f64f71319203fcd7105f54e5ad0.camel@kernel.org>
+ <20260511-caravan-behaupten-0402c454c22d@brauner>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260603-navigieren-pleite-stilvoll-60e6da66b1d4@brauner>
-X-Rspamd-Queue-Id: C1E5E1A0003
+In-Reply-To: <20260511-caravan-behaupten-0402c454c22d@brauner>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6532A14000C
+X-Stat-Signature: mfhtqbdum4qgh6hg4zrsqig39adkymh1
 X-Rspam-User: 
-X-Stat-Signature: eqszjutbpur9wca99u1x5b48rs74bh7i
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780494043-226670
-X-HE-Meta: U2FsdGVkX18NUQGCpqDPKj5oQ4aoHhTBwej/03oaIPXyvE6QNqbdKMvy0Zm2zsOc1h9ODTv9jfEtTTFgog2wMPVIAfC+nOYqr2ji9fpDpZcbbgoXyCMLceEXcdFJCbptLPVcLlX6Ql4IGcnXL6Wsme0MKL+2flTURkn7Cb3x8I3kzJ6xk3HaWUZyBLRZqBOkgvReeKFcM/W7Tf6LiFOs2F+RgkitjdUVLazCjKwD1Beu03z1s5q2TbOeqpGE1CqvS+40gqY36EmbgtYcc9C1X6OR03eih/AhjnZMIJbFDuIBPutGI3LEuFFGJeCJBRPEdnqVUdWRqsmZ/4ng7imOa7y7fRNbgEwVvgMYASMAss0bv4uF67K+2MOwMO/rzsGnjKdUWdqVNCn/FOI5ruYqAdnBUWtcLOtoK/R8E5kL7SDANweAzp3EACyjN1SkexGtXTsT4+IiyXlBdTzIHZFgrzh4rX/4a+7Yl3LtzNyOujtEo324de7g/z3ZZ0karwEMjIxsByuj49fwmscf5VYtqGPLoYZ9T2xgccxcuozdFSKvBWRZB4KSNXRQk5P40d6qOufYU1bID/picQQS7maFxwNrQeqASSqm1XlxGWEOjsayQIPIcf7yJgLfIBEDBjPuRORiMz3Edk2iYbN//0zZj2zwlUvrGQjpwAz9qcncNPIEMDJ9hrze9EWKRnSa2AZkveqI+ofgoVfAiuKYHA2XNh3D8kVuSEbQnqEhcAOBPbG/Yqb58Oj0N6QQtqLnJ7HZ9JFQX37ALzV53Sj0gkRBOd2DwtxaW2TBInpB9iuhv4kqnytgqj0woAOEGfMKtzfJLDFBPWiD1yjrFZeHhEeLSkf86sL1rmGN9bzC9UxnT90HbQTsypRHFX9l/N0iilhu8EcPnVNXzVmYC/TrgclirTJZj73weSAOwJVTeERQNcJReGD/8kX0Eqh+3OWXZvuwF9fQSQC0cKtdi43SFgd
- 8Xdze296
- BlB+V3eOCwOmGzANT0pNZY+WOye8uudobR7iacmtdX6vUEShbe0dGHOOXQ9bRZLR58V6wbJfDVyg89kSx8pE5vU+9AF8cUAdmntZIA3HIlwD98aDeLuKg0qTPAlE32cvs+1qyBQv1QhlyublLvzrQJdI6O9njvfTr0vJIZjuVr4xY9DKonC781phlSKuoinbAaC1AcCZzs7JUfiTZOS/sktrCvk/Z4xamrGBP7kGcOP0A3/EtzArBzb6+c8CkHVXLNfOIsy6b4FaHL7AfBm3++TYIowC6poymdilHxOLCiU3FkwBju091qon8ge6boFBhdvWbJPNZa02OwyStVrd+cHE2HfncyMDkwQiaxYi7pHJqCew=
+X-HE-Tag: 1780494172-790400
+X-HE-Meta: U2FsdGVkX1+aa3dsNWq+RoSSAxo2XPN8+DXBIawae8/wKshBHq8JRTPV9nGCkBlaDOLpkoox5R/EKujvMZForzAfWiYZ0nbnrYlbCr+QzjrmxOvOIA/mKbUsoa1UfjRaNWajPth25wnEXX3iynzvtR93Nc1MWiTqEzlDmIQRaZkZ+1sno2E09DoX+fdPdunuqY1msNQFbpvx5TGVtSIRg5Uaw8+u4MqPBgMJFXQHHARgv5xI7lzrPb+2OfsSoloscK0hYJ4iimmEsRfe/nM4S2fAOxGB5j1aa5TQ8LdlQQygZ6nW06VsU4YeLAL9MKKVXCvThNnnBii+gfInbQP9G7k9BB/cTwH7AKwVlB1G+pU9rn9aahEIdhRF6fOm8yCPNn38oQVqFoj9zPYeVL/Cz+3DrNZ0zgMy9bgKPbnVeDFyypKtyWiWUdUNtklQuuHBIcakf7CofuPruZ6D2p9Z7mmIecoTry6AQfOYHq/2wisvRYZreexLVLCGaRm1HPnK6ynekZ7OZKcHhD5hDYYYW87IDh8RC/0j4u+nyXhQsqZEO8r0y6apbFt10DeNs9UriKHCxpYjlQcVqnka32f7nIhuG9Qg/mKzCTKKU9/H9tp1YQDm4PZdDT2k+rEKpjLOmQf/TOnHAj64bQzppgywtQqUXCXC1sxN1TrcaLZ7cXWLo+DY1L8nqBZzajfm9Nwxc5vWsyaOv17qs9AUD1zGem5lrlch3WjAreJXd6n4HLiWWOWKThFfZGqcEAxW/0pWG7W4S4jeZ3C57NBWw7Yo+avDEhzQl3ItZkHb+z+tHFQBTwFEEJgoMQkiMci2DyJWpbYLIEfAROYPB/XSUx2EtVfkt9Y80ZCIr1cqiqpTXtbzghIlPbDPVIzh02XUWyov909v2CUv7OuuF+UtXcf3KpeOZ/MaVdhvF4UtRYZqPq/5HxjOK6SAt48b3Eh2aXZknVan5av9tCzFhnRrXuM
+ DVZaqW8p
+ yuBxMNjLm5S+JbVlogrAFn4ERpDAe7loZm1BKNLvPbyYn3GPLxqqmfiXK66KoGHn5EWDm+DzLv3pO9rubjI0K8/Yt2jEIKNE94uCme4SaUDNib053im99Y6HwWAAoFrqWab1WHEKRRr0FM5FhwPSlf2O9qfjHIhhaLDZvKc0MJXRt8IYaTTdXO0aV8yQH9SfNblf+bMT86H2ce1ekJcNnY0aOUlGSaSPkUQblWOf1tuBEyMR1MJweDCguw8soNIRvNbEKtUXcJ2LlyBGIYtzY6IWk0wRoknrkeF41CPPFEvieqxmssswmXiAG8F0hydejH9RbWn1YcCrvTV03TeMPPE77IyMGHBOTirRIxo8BKHro7vz9KxMlEqVm2mFldFy72VA1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,99 +108,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 03, 2026 at 08:45:18AM +0200, Christian Brauner wrote:
-> On Tue, Jun 02, 2026 at 09:20:13PM -0700, Linus Torvalds wrote:
-> > On Tue, 2 Jun 2026 at 20:51, Andy Lutomirski <luto@amacapital.net> wrote:
-> > >
-> > > Am I understanding correctly that this will completely break zerocopy
-> > > sendfile?
+On Mon, May 11, 2026 at 04:06:42PM +0200, Christian Brauner wrote:
+> On Mon, May 11, 2026 at 09:53:21AM -0400, Jeff Layton wrote:
 > > 
-> > Very much, yes.
-> > 
-> > And it's worth making it very very clear that ABSOLUTELY NONE of the
-> > recent big security bugs were in splice.
-> > 
-> > They were all in the networking and crypto code that just didn't deal
-> > with shared data correctly.
-> > 
-> > So in that sense, it's a bit sad to discuss castrating splice.
+> > That does look much cleaner. Do you want to just make that change or
+> > would you rather I resend?
 > 
-> Well, we're completely ignoring the fact that splice()'s locking and
-> interactions with pipe_lock() are complete insanity. So unless someone
-> sits down and really thinks about how to rework the locking I think
-> degrading splice() is just fine.
+> I'll just fold it. I already have 1157 mails. I don't need more. :D
 > 
-> > But it's probably still the right thing to at least try.
-> 
-> Yes.
-> 
-> > I just suspect we'll never get real answers without going the "let's
-> > just see what happens" route...
-> 
-> Yes.
 
-Reading this thread again I'm really amazed how willingly people argue
-to remain locked into a really broken API even if they're giving a risk
-but worthwhile chance to kill it for good. Anway, odd-userspace behavior
-time:
+Hey Christian,
 
-David reported vmsplice01 failing in the LTP testsuite after the change:
+Did you happen to pick this series up from Jeff?  Not seeing it in any
+of your vfs-7.2 topic branches.
 
-11297 20:41:02.548383  <LAVA_SIGNAL_STARTTC vmsplice01>
-11298 20:41:02.548518  tst_tmpdir.c:316: TINFO: Using /tmp/LTP_vmsZ13ZQj as tmpdir (tmpfs filesystem)
-11299 20:41:02.548656  tst_test.c:2047: TINFO: LTP version: 20260130
-11300 20:41:02.548793  tst_test.c:2050: TINFO: Tested kernel: 7.1.0-rc6-next-20260602 #1 SMP PREEMPT Tue Jun  2 18:13:29 UTC 2026 aarch64
-11301 20:41:02.548932  tst_kconfig.c:88: TINFO: Parsing kernel config '/proc/config.gz'
-11302 20:41:02.549069  tst_test.c:1875: TINFO: Overall timeout per run is 0h 01m 30s
-11303 20:41:02.549205  tst_test.c:1632: TINFO: tmpfs is supported by the test
-11304 20:41:02.549340  Test timeouted, sending SIGKILL!
-11305 20:41:02.549477  tst_test.c:1947: TINFO: If you are running on slow machine, try exporting LTP_TIMEOUT_MUL > 1
-11306 20:41:02.549614  tst_test.c:1949: TBROK: Test killed! (timeout?)
-11307 20:41:02.549751  
-11308 20:41:02.549887  Summary:
-11309 20:41:02.550021  passed   0
-11310 20:41:02.550155  failed   0
-11311 20:41:02.550290  broken   1
-11312 20:41:02.550450  skipped  0
-11313 20:41:02.550582  warnings 0
-11314 20:41:02.550710  
-11315 20:41:02.550838  <LAVA_SIGNAL_ENDTC vmsplice01>
+I could easily just not be looking in the correct place.
 
-So I looked at the test:
-
-	while (v.iov_len) {
-		/*
-		 * in a real app you'd be more clever with poll of course,
-		 * here we are basically just blocking on output room and
-		 * not using the free time for anything interesting.
-		 */
-		if (poll(&pfd, 1, -1) < 0)
-			tst_brk(TBROK | TERRNO, "poll() failed");
-
-		written = vmsplice(pipes[1], &v, 1, 0);
-		if (written < 0) {
-			tst_brk(TBROK | TERRNO, "vmsplice() failed");
-		} else {
-			if (written == 0) {
-				break;
-			} else {
-				v.iov_base += written;
-				v.iov_len -= written;
-			}
-		}
-
-		SAFE_SPLICE(pipes[0], NULL, fd_out, &offset, written, 0);
-		//printf("offset = %lld\n", (long long)offset);
-	}
-
-Prior to the change add_to_pipe() returns -EAGAIN the moment the pipe is
-full. So iter_to_pipe stops and returns a partial count capped at pipe
-capacity. For a 128K buffer over a 64K pipe the first call returns 64K,
-the test drains it, call 2 returns the remaining 64K. Done.
-
-After this change do_writev(... flags & SPLICE_F_NONBLOCK ? RWF_NOWAIT :
-0) then calls pipe_write which does not stop when the pipe fills. It
-blocks until the entire iovec is consumed.
-
-I kinda think we need to preserve similar semantics.
+Thanks,
+Mike
 
