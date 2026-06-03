@@ -4,94 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27692CD6E5D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC004CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:06:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40C9B6B0088; Tue,  2 Jun 2026 22:00:57 -0400 (EDT)
+	id E9C566B0088; Tue,  2 Jun 2026 22:06:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 395F26B008A; Tue,  2 Jun 2026 22:00:57 -0400 (EDT)
+	id E4C596B008A; Tue,  2 Jun 2026 22:06:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 284F06B008C; Tue,  2 Jun 2026 22:00:57 -0400 (EDT)
+	id D63146B008C; Tue,  2 Jun 2026 22:06:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 14BEA6B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:00:57 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5E81A161388
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:00:56 +0000 (UTC)
-X-FDA: 84836948112.09.167B01C
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 74F73C000A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:00:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OpV6w1zh;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id C4F846B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:06:26 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A42D1C0D87
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:06:26 +0000 (UTC)
+X-FDA: 84836961972.05.A40A055
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 54179120003
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:06:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GbGhM7hS;
+	spf=pass (imf29.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780452054;
+	s=arc-20220608; t=1780452384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LeJhAZRLWtGVTIwFCHuqUJodfl2KhzLTyWve4qcCjP0=;
-	b=2g4guG6GoCuS7U6BsMF8O+O4aGJyLgDgPMdKaw/l/9DMyGQzW5pl8oPXYA+bWbzobJ708o
-	qLUYF9fb453Xh+9Pw9fp5eSw8PQWj7ao/gq7jJe2M0kXVd8EzLPamXblbVFoXNkRMzJ/MZ
-	xx6X1qV8sSeBgindQdUTjn2eC2/WIVI=
+	bh=y94GexdbEGEmiOo9phYF+92fMWxZFTUjHe2v5T7NUxE=;
+	b=mChA+SrlEg9X5mH5oIjChXMY9DyafN+2A1VK9b72d230ejkPMnCk3oOgMHUNyifcUDcrTO
+	Igk/8yAZ/QHujGLDVUoIf5iIioQkP+c+GtrVPe/43bnGqjl10pvn0+n4xGZi57SDt9OgZr
+	iBJkH/2BujEOv4vnbxf91cG4PH0+bm0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780452054;
-	b=Y+Tz07/pYpZ8IG9kEIHZYR3Qg7/O9iNEAXbiqXwmIhLUSWF5RePzdI+2yJMDr/svg5zX4J
-	nmYcyvb6Ekq101/TlrsEghHKf4bh4IkxhktfqgzdzfL/aQYVYm38Xh5259Bnpj58NlOD4U
-	Q7qX/OQU8O++fZkXbSh++Z7XwpzObA0=
+	t=1780452384;
+	b=mjX/5HqUzFyiw03pYwwftMtvPDSliag1FdHlUkOS8b/7lkJswvbgZx/ATF+7Fueah/iVXL
+	K9wTT/KykoMeiGAUcRwz38yQlK/5yimUYm+/7K3+Q4c5y3z9b4FHRHcUnk7SndRAQcWUnz
+	IHrvTLUk1ylH+6sDEoBmFsY7nB9PuOA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OpV6w1zh;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GbGhM7hS;
+	spf=pass (imf29.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <f5061a2f-c52a-47c4-855c-82f3967833d6@linux.dev>
+MIME-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780452052;
+	t=1780452382;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LeJhAZRLWtGVTIwFCHuqUJodfl2KhzLTyWve4qcCjP0=;
-	b=OpV6w1zhJuO9Fvzn8HsG5QQIKizSG6UQlTGMYcaaGFMyxQu6EKE+D7en/a3XSllzlZr09c
-	OL45e43afq5M8uzJH+i6A6D/I/7sBvkz4DASrXvWF8YTzQPYljiqO0j2vMSg8whTUhwLAm
-	sdEXdAeJV4ySUtPk/pQSFbGcLsXdX4g=
-Date: Wed, 3 Jun 2026 10:00:33 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH 1/1] mm/thp: clear deferred split shrinker bits when
- queues drain
-Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@kernel.org, ljs@kernel.org, shakeel.butt@linux.dev,
- mhocko@kernel.org, david@fromorbit.com, roman.gushchin@linux.dev,
- muchun.song@linux.dev, qi.zheng@linux.dev, yosry.ahmed@linux.dev,
- ziy@nvidia.com, liam@infradead.org, usama.arif@linux.dev, kas@kernel.org,
- vbabka@kernel.org, ryncsn@gmail.com, zaslonko@linux.ibm.com,
- gor@linux.ibm.com, wangkefeng.wang@huawei.com,
- baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com,
- npache@redhat.com, ryan.roberts@arm.com, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Johannes Weiner <hannes@cmpxchg.org>
-References: <20260602043453.67597-1-lance.yang@linux.dev>
- <20260602133706.d737a82858d1cf89870521b1@linux-foundation.org>
+	bh=y94GexdbEGEmiOo9phYF+92fMWxZFTUjHe2v5T7NUxE=;
+	b=GbGhM7hSBid/iHO6Gf4bpN63/puUnNqFrGB8NtASBvQXxOkioDjX8ktGmJ9sT/gFJa7EYl
+	vyVBUvXko3mf+8jW5+Pcf3by8tenNdTXPKpLyUwP/vStrUvUF8xcZMfaQuP0C5HFalEcGn
+	Mj6jDaK6tCXWk2j7zBtTZZxENU2uz6g=
+Date: Wed, 03 Jun 2026 02:06:18 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260602133706.d737a82858d1cf89870521b1@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: "Kunwu Chan" <kunwu.chan@linux.dev>
+Message-ID: <452fc2b00de0b87e233c2cdcbcdd343bd840ea21@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v2 0/3] selftests/damon: misc fixes for test bugs
+To: "SeongJae Park" <sj@kernel.org>
+Cc: "SeongJae Park" <sj@kernel.org>, shuah@kernel.org, damon@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, "Kunwu Chan" <chentao@kylinos.cn>
+In-Reply-To: <20260601142802.111592-1-sj@kernel.org>
+References: <20260601142802.111592-1-sj@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 74F73C000A
+X-Rspamd-Queue-Id: 54179120003
 X-Rspam-User: 
-X-Stat-Signature: a67heqyq9o6111cydhw6em9arhbu1yh5
+X-Stat-Signature: 9uwhh8bjyex9wd8rsyr1yi81p1kx6dum
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1780452054-978612
-X-HE-Meta: U2FsdGVkX1+IscephYjXlonctaYXw6u7i8j0z0fXtlCnyZ7puRAZGxCWvNDC+ouJXqAERUuFiAMHgfJSm88D9JnKSg1EDgxwClRqTomvRGX9f+TPiZWFfEn9Wi9U6lvzR+BaO2HrSw5f6biI8l5B9qA11rQlQ1g6FdJEnzdTzW3yOoDLL/DqS38FOuhVglN4co6yGOXYWXe3DCk2A5tVaNpmN2nZBJKNBZQ78hfzIguBRIw8PR5GmALuCmkHnxkjcRdhq7qIAKrPUAeTT6aUSWiOfXZxSxWDOEgBwVUOCyOTtqUrc+6BZibW++xvAoMCLRnAnsIx2MNP/+wOEEDiOVxdTZ97EAKhjd/gfAzyaqU6y6Uo113Ep8fB27qnCFUUL86mn1pUktICxwp6oZ5PN2QvGDLoyp4jftZz/mPW4a/TKi0TY0BIzcMLY2mt7RC+sb/bC4YwN5QZatmr48bX74t4uv4eu9xSUXyeHpr5W58Fg5uk3EydhTnvyOzjev/ZZayYrOmXPNKHgQP1s0H/9lmJmrspj7Jc0oLJJBrTon0JFQ7GCD+GyhK8F4MjnJVppN68S0wifmgzbHDUryE6n1NUltRg5guchvgeK32vz7eigCzyxfozU2ryZ3AUAX+Ttxos6iWz0DC/FH6XlfnnKj6S21NTy56hOj5B5oIGaftilT0YDfRZ4/t8OZ9bschzMwa3BhuWV0zNdnIpvEi6n6eTSpcwj0MKqCqg35XGgimHMPix9D1TDJNFB94+S/gYNZDaCbDsyLxJqkEqLT5i0RQ/Vv0eLjJwIYexT+DFi/kPpF6SnC3HWMzPLhRCkFjMFdI7MwrRuFl0d1FyCX9yxYOFK6zXQAlCFwIByNDkOfwfNJ0uVFAqeIGZCAWN6/ERXT1xjvh8yeG1IQrCPj2MqqcqNBuMzTgDwxMNsNN0BoqLmIbzDcZqDX0yEaTZX8Cg0YZHOVsvYPMwQVWU5No
- nXbrhUuX
- yvfeF3quPGOpnI6/Xpyw/64PAIyWkEqvvVcOQZ7C7rHNGZdqaTaszjagDyFVgvJdQh/sVQfcEGCTEazp6LYJBlJXAs1kWzyTIWe3TCPcpg9zbbwccET95wqtpYzpO5j2yGZTkGM8gu3vXtBAbzmXXNx/SqhQ/WPVsjREaKNt0/CFfzyOg8wgALQgwWF7Arkhx4KpouOC0O0HPBl3AnSuIV9J4HlSC7EzNbPKJwsQTuzBLbmU=
+X-HE-Tag: 1780452384-392284
+X-HE-Meta: U2FsdGVkX18Kbr7t3ci/r3fTQajym/UOi8QVpuMb0eBZagNtjDA426TUHT4+hR7SV7yowHStoym7Cwys+HfFK5oDUOC6gfnQBx3YSwhyMMXmOS2Czx6UXZAURrpv0tscvnKqwe4CXzzI1fmKYn0pD23M+6ypqlfNd3dVqqaHu1r0lxE83bg8aOe9FMKOYSwyxOdSmBJf+PrJyJbwKaoLdl2k1QVYZ+rUL40TdxLvojuJy4FrzWYUx8XpSm12tHCYWEG5H5DlojBKU2EgEfRdxeexg+lUIEmFlrueJgGjXIFIlVZOZ2u7z549UFSp1elvxeya5TJtsmBbMIHB6N4CTiA9c/sxCoHJYJN9EZu3IAAhqXhA0wfsUdr3bxLxcwyZAipt+hvyk8uQ0nZWcV+mAGeDRBIhUrSuvHxpe9rNbPBJ4iXNwmnCNOGQZTXqKqYAE54AMpFteNQCr4aTvoR6dbtMiXdzHex+Ng7K86s0F+rm+XDsqT582DHUQ+h/9TRWQyNWIxfPsa4NlZV6rYQ/72IODs1bH9GZ3Lo4AL81aCbNmPdbBQbIXbBs30ShQgoxEPJ6EO8zmPOOUeAG0X6jSVMnnTRRi8Kx0lvo0OJ+7yBXZKc0f2c1xBdE5CKw8xjhxpXXYv2/d+RlGTzPZchLIaa++N4FDPEUERO4KpHC9/yj8X9OWpxhTWmkWqqEGmy3Ww6vKMsIma4QRYwG5px6aWx3p8P250fh/sC/4qQ6GK8Vg6klEtabkc0Uc+Tqiq4KLh/qEmqUDspcLkOjgzXCphl/+oYoKSV3Lb695W+/UFkErcYJCzIh6LeC2wlKz8RaREtZKH27CmofRdQG8I1EKkGwcWNQA5eBQ5yuGA+ipZoHyXfDkNvAMh+OyamZlixRrE/DQ6W1sd3PiOStQzM+c+RHYL2J+VIBydgmYpuPmzM51j76OH0XMad8SBXRNiGzV9vYTAG6UKpNWHVJoJa
+ LNDhf3Kp
+ AFlZBEDGljC0m8FkbxTP1YQL/pFCslS3J9ymz26ZJjU5c3cpEbtZqVqtZPT0bpMdgEEkQKNPMF/lJ3kTZKvUqLfSF1okNvIwcZCdWquiNE9ZDyPnOBEp512bwCr7VvCzRjKo70XPTDQNHviwTG20Ho+C+RAMENEiWhuVhCOtlO20/ZH2k3M85FRhhBVtj/Xckfy9bUwDcObdodrKh9rf98hgyTq6kYdf+Z/4ij+Ls7eApVlOZdpto2+igoCtzldWzWlqZzXL0IrTDQJbZCafLmo8yaDi3ZcOJoFzQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,56 +90,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+2026=E5=B9=B46=E6=9C=881=E6=97=A5 22:28, "SeongJae Park" <sj@kernel.org m=
+ailto:sj@kernel.org?to=3D%22SeongJae%20Park%22%20%3Csj%40kernel.org%3E > =
+=E5=86=99=E5=88=B0:
 
 
-On 2026/6/3 04:37, Andrew Morton wrote:
-> On Tue,  2 Jun 2026 12:34:53 +0800 Lance Yang <lance.yang@linux.dev> wrote:
-> 
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> deferred_split_count() returns the raw list_lru count. When the per-memcg,
->> per-node list is empty, that count is 0.
->>
->> That skips scanning, but it does not tell memcg reclaim that the shrinker
->> is empty. shrink_slab_memcg() only clears the memcg shrinker bit when the
->> count callback reports SHRINK_EMPTY.
->>
->> Return SHRINK_EMPTY for an empty deferred split list, so the bit can be
->> cleared once the queue has drained.
->>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->>   mm/huge_memory.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 72f6caf0fec6..62d598290c3b 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -4397,7 +4397,10 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
->>   static unsigned long deferred_split_count(struct shrinker *shrink,
->>   		struct shrink_control *sc)
->>   {
->> -	return list_lru_shrink_count(&deferred_split_lru, sc);
->> +	unsigned long count;
->> +
->> +	count = list_lru_shrink_count(&deferred_split_lru, sc);
->> +	return count ?: SHRINK_EMPTY;
->>   }
->>   
->>   static bool thp_underused(struct folio *folio)
-> 
-> Should this be handled as a fix against hannes's "mm: switch deferred
-> split shrinker to list_lru"?
+>=20
+>=20On Mon, 1 Jun 2026 11:23:11 +0800 Kunwu Chan <kunwu.chan@linux.dev> w=
+rote:
+>=20
+>=20>=20
+>=20> From: Kunwu Chan <chentao@kylinos.cn>
+> >=20=20
+>=20>  This series fixes several bugs in the DAMON selftests. Most are
+> >  trivial but cause tests to silently pass when they shouldn't, or
+> >  fail prematurely on slow machines.
+> >=20=20
+>=20>  Patch 1 fixes mutable default arguments in DamonCtx.__init__()
+> >  that cause state to leak between test instances.
+> >=20=20
+>=20>  Patch 2 fixes wrong operator precedence and join TypeError in
+> >  damos_tried_regions.py.
+> >=20=20
+>=20>  Patch 3 fixes several wrong strings that produce dead elif
+> >  branches, skipped file existence checks, and broken dict key
+> >  lookups.
+> >=20=20
+>=20>  Based on next-20260529.
+> >  base-commit: 7da7f07112610a520567421dd2ffcb51beaefbcc
+> >  ---
+> >  Changes in v2:
+> >  - Fix From:/Signed-off-by mismatch.
+> >  - Add Reviewed-by tags from SeongJae Park.
+> >  - Drop the duplicate memcg_path fix.
+> >  - Drop the empty aggregation-cycle retry fix pending root-cause
+> >  investigation.
+> >  - No code change
+> >=20
+>=20From the next time, please add links to previous versions [1]. For ot=
+her
+> readers, the v1 of this series is available on the mailing list [2].
+>=20
+>=20[1] https://docs.kernel.org/process/submitting-patches.html#commentar=
+y
+> [2] https://lore.kernel.org/20260531085633.48626-1-kunwu.chan@linux.dev
+>=20
+Hi=20SJ,
 
-Hmm ... I noticed this while looking at Johannes' work, but the
-behavior is older than that ...
+Noted, will add the link to previous versions next time.
+Thanks for the reminder and for providing the v1 link.
 
-We also discussed the Fixes tag earlier[1] and decided to leave it
-out. There is no missed reclaim, only some extra reclaim work :)
-
-[1] 
-https://lore.kernel.org/linux-mm/63797977-1c18-4885-8099-f5c21c80da39@linux.dev/
-
-Cheers, Lance
+Regards,
+Kunwu
+> Thanks,
+> SJ
+>=20
+>=20[....]
+>
 
