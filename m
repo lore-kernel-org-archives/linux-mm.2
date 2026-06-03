@@ -4,140 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF28CCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:16:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 461EDCD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:20:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADCD76B008A; Wed,  3 Jun 2026 08:16:18 -0400 (EDT)
+	id ABB9A6B008A; Wed,  3 Jun 2026 08:20:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A67236B008C; Wed,  3 Jun 2026 08:16:18 -0400 (EDT)
+	id A6CB36B008C; Wed,  3 Jun 2026 08:20:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92E5E6B0092; Wed,  3 Jun 2026 08:16:18 -0400 (EDT)
+	id 982416B0092; Wed,  3 Jun 2026 08:20:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EEDE6B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:16:18 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B9181C02DD
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:16:18 +0000 (UTC)
-X-FDA: 84838498836.09.B35E27D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AEAAB40014
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:16:15 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ENoDXXJy;
-	spf=pass (imf07.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 861186B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:20:14 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2F5B81C1757
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:20:14 +0000 (UTC)
+X-FDA: 84838508748.04.F1011BE
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 40152100004
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:20:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="MkxB/4IX";
+	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780488975;
+	s=arc-20220608; t=1780489212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wNEtlb9dNSrrLzMMlCD/oxjjgcgHEDwsYx0ryDudzQI=;
-	b=FeN+Dv4QAQGrP3D9nOhf4rUvamntupBeeDDNwrghrXefopNM4lgVbce0yfpghH9I1ciP+O
-	SBGbgxdZo41P1t/qQSPsn+p3kBntuo8AhQ2SqEWClLkc8/uhrYbgWJnuS1Q7Bm08r8i9sG
-	fQ41+Dlst2k5jJRNGpyXqspm0lXmsPQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ENoDXXJy;
-	spf=pass (imf07.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=JVPf2HxnOSeDo+U9qlfy4aat8ZJ692PaW/P5vPj0roc=;
+	b=0X/vmTIzH3qnZKV8NeNdL2SCO8ULagh4lt2/Z+4Q2TWS5Uinci3F64MXsEDlDjIwrnKD+J
+	Z5j5PDPVTOA1XvJ34T+Y/fTjWJzWn8HuHSWcrJFGRrHiSLVdmfEodRAPKKCUB7Lio5mbUY
+	bxVmyVfoyHaD92AOIuDQm7kXPNn4Vf0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780488975;
-	b=WHcNTtn0kVXrNiu3RLPBfKmh2rCxp78vF/plCGDafAubx89J0mcrwzECCe9MmTKnvyWhEI
-	EHIc+2MhxyD/p7S7gkPzxkOwZ/I2YiF0aEmLb+Yjo7X3Nu5DTa/m+zlaQYPnPKccyVo3QQ
-	HCvWkpsW2vsK7ft35LR+XXF3XpPNWGk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780488975;
+	t=1780489212;
+	b=MqRaa1yo3rQp3UE+cterFv6mo+QjRxjSYn0vxk61Tvz0jv66BOe7nPn+envuUHXE0Xl6nj
+	+UCdg+p2k+Be6MLYTDO38/r4wmFT+Wpj1mTW5ZpxbilUT3+kUZuZdMdvip4QGS2gL49LVA
+	xH8TG2NHLcyS6EYBWIniQZKy1SJwNZM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="MkxB/4IX";
+	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <ea70f2cd-0cca-4703-973c-6f3344ac345a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780489210;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wNEtlb9dNSrrLzMMlCD/oxjjgcgHEDwsYx0ryDudzQI=;
-	b=ENoDXXJygJMzCTYM6HIcPLyIHubSDtglALegnTLSmqCWSr24wbrg8FxVQjeNJQxiJb2+2W
-	v8qQgRMoAiD/XRGpFLeRbqH+xOAlJ/N9fAgdGkzY1l5cwIiYGIXNoJinRgzBLZXjAuU9kS
-	ixmjpWbO425DMdJElvBgU0feI7pcrT4=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-wlqaPjbmOpyGkM4vBMI2KA-1; Wed, 03 Jun 2026 08:16:12 -0400
-X-MC-Unique: wlqaPjbmOpyGkM4vBMI2KA-1
-X-Mimecast-MFC-AGG-ID: wlqaPjbmOpyGkM4vBMI2KA_1780488971
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-7dbe4c01345so7173957b3.0
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 05:16:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780488971; x=1781093771;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wNEtlb9dNSrrLzMMlCD/oxjjgcgHEDwsYx0ryDudzQI=;
-        b=BxESI+c4ZSomslxnBed/qj+20PDlyG+5h5ELUzSrJ0SRHwVnM1kaG3et7WFDFsefWb
-         8QvTgmXTiK6KdPK41YB116x8dqPYzfVRgPdqHkEWEoDavd9re8QvUf++LBU9rI2n9MN7
-         gAJOvUdmckJYBxaOuAHXAJA/RyyE8sZ8DdI/L5hpZcd2gvMBHEEQJSInZ1VkdqosRLKc
-         EawObpwAXXuNWJqZ9ByYkvYP6WeZMl2Ct/pUCfHfeehWWCKcg8TPmLorbkCTIvfjPlz4
-         ScEz1W3U5r+oQRrMU3GF0LmjopNWfS5my+G5sWTj+YWPr9+NL/5VPSAppULtP/F6bjsC
-         wUlw==
-X-Forwarded-Encrypted: i=1; AFNElJ/eHStbd8uhO9E+tskU5/1qFT6Mn5yqZA+Y+/CS7pTPs3KhWx5cIgXDzAflydzYjGNz8T6g82yEkg==@kvack.org
-X-Gm-Message-State: AOJu0YzfdEhf3y1iQHGvCCs8DZwfFN4Z/8WWy1A5QLCBOGAQX2gwxe0w
-	8fXLSmy4wb+4hHjP6FnuRW/WtL5wZlbYO/6uNQLxz6fg7+dYuEX3x7SVtOpvkPfZ/cD7Gugw+ak
-	I1t5Aas9az+NAZVDHzRRaLTbEAHxlTrR6HjgCrpbkLGHzLsg1L73J/Gs1ShM+rVtQ8C0gmixCl5
-	62gW92Qhk7AikT+Hqzbub/MTkk+KM=
-X-Gm-Gg: Acq92OGk7+i8VGniC8aa/ZzVXkx4dRLkZk89ac3lJjWQAiMC5yP3ffVWkhw1bobPSfh
-	/x0ZJ1ATmlghz8aopi4T4ky6dEQlgkrvATj5TyHqWy7mm4+lLkjTFLv2BJ1SIheW7EQHJsdHb9x
-	imTt1M3JPN6UMTWbhr8vSvaK3SsCr0wCm9XSxDytbSHshIvopHX2MOpuxHal/LzXqb7N28GUQbo
-	Sd5JNpKKjD7z3z6zg==
-X-Received: by 2002:a05:690e:440c:b0:65c:58d2:18a5 with SMTP id 956f58d0204a3-660dcbf56cfmr1408273d50.41.1780488971400;
-        Wed, 03 Jun 2026 05:16:11 -0700 (PDT)
-X-Received: by 2002:a05:690e:440c:b0:65c:58d2:18a5 with SMTP id
- 956f58d0204a3-660dcbf56cfmr1408255d50.41.1780488970976; Wed, 03 Jun 2026
- 05:16:10 -0700 (PDT)
+	bh=JVPf2HxnOSeDo+U9qlfy4aat8ZJ692PaW/P5vPj0roc=;
+	b=MkxB/4IXntiepknr2HPty4AE/U6fUgJTQXWGd/DQzxZkMcFotDK0S4I1PROFNjE83/wgaY
+	fOzGvdJSZVKI4IPaZKPvt9cMJaUNvGT/c24R8FMu0qsaXcvxvrVZs4D0ceLlN05uSOga8E
+	5eGLLSIMksIxNpQw4dGLg9m/HWOR6m0=
+Date: Wed, 3 Jun 2026 13:20:00 +0100
 MIME-Version: 1.0
-References: <20260522150009.121603-1-npache@redhat.com> <20260522150009.121603-12-npache@redhat.com>
- <b8380eb3-096a-49f1-9ace-99c1e75888b4@kernel.org> <CAA1CXcBg1su-bk3i_H+TW4-nTgvGSGqRNeC9MpQo7sGeH8ejnA@mail.gmail.com>
- <d3c2b00c-6810-434a-b837-0707b0a11611@kernel.org> <19639b08-5bf1-4974-9635-c458d512fa38@redhat.com>
- <ef5c470f-3c32-418d-9566-17ec01b691bb@kernel.org>
-In-Reply-To: <ef5c470f-3c32-418d-9566-17ec01b691bb@kernel.org>
-From: Nico Pache <npache@redhat.com>
-Date: Wed, 3 Jun 2026 06:16:52 -0600
-X-Gm-Features: AVHnY4LAQaiaHNznOXVI6g4R-yc6NKejy8321oN1JhGLTXQQA6dG-VWPanP8lA0
-Message-ID: <CAA1CXcD_Bz=Si+vP0Sg_FhAHVjbeAJ4VdvtWGM-jVYiRXFHAnw@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
- collapse support
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
-	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, 
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com, 
-	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
-	dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
-	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
-	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
-	lance.yang@linux.dev, liam@infradead.org, ljs@kernel.org, 
-	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, 
-	mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, 
-	raquini@redhat.com, rdunlap@infradead.org, richard.weiyang@gmail.com, 
-	rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
-	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, 
-	surenb@google.com, thomas.hellstrom@linux.intel.com, tiwai@suse.de, 
-	vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com, 
-	will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com, 
-	Usama Arif <usama.arif@linux.dev>, usamaarif642@gmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: IAjPT7xWgPZkL5EGK1lel_3M0f1wB6LmWzISHpQdsnQ_1780488971
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AEAAB40014
-X-Stat-Signature: kgocx7c7wjc7c1433gqbouujnte7kcmt
+Subject: Re: [PATCH] mm/mincore: handle non-swap entries before !CONFIG_SWAP
+ guard
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, jannh@google.com,
+ liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ pfalcato@suse.de, vbabka@kernel.org, chrisl@kernel.org, kasong@tencent.com,
+ baoquan.he@linux.dev, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org,
+ kernel-team@meta.com
+References: <20260602172247.279421-1-usama.arif@linux.dev>
+ <aiAY9FiHthu_CwIC@lucifer>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <aiAY9FiHthu_CwIC@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1780488975-604771
-X-HE-Meta: U2FsdGVkX18Sx3SBPV2yj2tYueVXPrxiCQhbbr/kuZkX9UCf0wPYeQdpIda1NsmSO9KSAocVPYwwTbAwsvmpk1bq37GbuwtgIxGnpz5rzuouIHuGjjSyv/4nBSQu3l+yGYm00sEgrKEfz1JtFxvhFywgyESfSEhk1xrKH0LwgCx4vbnMYANYPMY2rRDqEUqtDa6fl6Cc1rL72R/wqKtfYj4LUanyval8yDrZwnPI8v1TmX5q/MWaCv/k8sChTmNHf8NlGI5mv67D3BW70aan7XRvsmU0E0xJ79FjiewU1urHL9V1pmcGbTBpqE+BVJbcWhXz6hD+Q1eW0I1bwGHG73cyoKkpCgg6ug92IyoNZeRcHuvvEWgS1y22ZQZ2gDFAK+ZYu4CR8Dqun5nZaaKkC9L0dl9vOFHLfRKkzZqWd6qccxW70o1U8kr0m256X7QklQFZaVasRZAh2QafHzcTeE555ufUN1I1dHNfGr/Sr5SmmFXZ5HDxSgBmJl/kfp7Vc9bTygOCiDFBtZMLCDmtJatuvIwrDvw4tGTjLizwRcWN++DiOmIRxWNp69iSf2+R02OIMLfcnIqlOu2BG5HlBO4xLErEBlnqrFLc/KHDKUkG1xoAE0oCJIxYHTlHZ2FRtwSH+IHjcRelQcC6sqwNDb6gJsGKU1IMAuTIqeSYhxHTzw1ueWQswWMpJx7JbQ+9d5GZ4j8PnT+vaR9L+agbi0TL3KBQ2DYQUn4rwzdVQSvBgEo6g3v3aNo12Dy4xwYImjDhX6asOuj4stWUJo4TwFSWGfB5wnHm87z8PSkSt1Hs2Rj6LPPRQjHEGG5gHojn9DTXXDg99JnoMZNr1bTPjA1JaWQi+4jRcWpDRMmlQ3MWjiNxM+BnbeY/Dep6YrzJo6qz4f+cYqNOFf80uR24TubL4/EfOfdEElCoQynSdrEv8LaY93zu2+Lo5w9kz/rJgwU4rA7+x0pXH77N1a6
- xtudLZ9M
- GhwvHDQ4NqjEhMnlu7cjwrkUh7mXUMfyReFM0U0xOizhXL/kg69cb46enLZ4X8dm7no/XX/ArzhlYp9E4rChKxvZxMcG3H4IEqO4msLUpt7aDizJX8zI2UykTi80XBL0eqqA+65SKXCTrENKAVnAYxdVjUa9AgNc+60T3IjO/sCylrzb/gGUzhxH5ynKbDIifn38jknmukGNAnXskvQuDFB4kllULk0RYMwvADhi5q7+5WFtkQe8/kIqOnBjNMjuSFCWA9dCY7xbdTPe3XSreBj+3CBViZ9MNv5KZc+5X2yS0XAIKszfPZJFlCqdByzwXsPiSr3ooROSR3VcOXSrHi5Q4WLg1NoGmw3UkUch4sx24zZF2tzlXpCAt2A9QxsN/Ip7xwdbawmhEDzSyYH3idNr1lA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 40152100004
+X-Stat-Signature: yan38o7u3nfpkb4fk9c16gwffd3giuwi
+X-HE-Tag: 1780489212-652249
+X-HE-Meta: U2FsdGVkX1/KfmpyYHCFJTUk7KD8wla4RIgxnqyLvuN8bTIEA1zda4jf7fqVPNoyfdCkiER8deigP8NvtKNnZP/2BdfoShGtlqh3b/mTGMdLlIFpdtKBsK8GhtLbH+PEQU895Mc284BRvf1JOxofaSjHHrfxpNACwN16Iky2D5rYMrIeTev17jx2gZi5wl+8yg+ptB8oul6seKctUfrwP25jBojtv7Bqgl/GM64lTLymFdsyNTUI4Iuku0EmF8OIadqGuLdlJUcOvWpmhsDgXZz4Uhvjp7WLa9OF+le4gq4pAkQkObHj9J5kRUvjFLFAvPiBCGoFsbCdzTGo9U4t2UY6lU6jVMv7Csc0XbZVHN5Uk//p7KQA44VixpKxX6Dk+x/Wk0Q8r0fef1HOcGLHM5EpegUgwEGWCOkZbE73trevS7IRx5HRp3+3OHcjyaEfRw98/Kk4D4J/m64UzC3EqqBgct5cB+qhPk3ffjUe4J5zNkWnS5c0Sf6mnzxQbSf55SrZFvf/e5C4bDvDfXaL5gJtfCV2eqx4kYJGb3oitBDB0npGD4Ib6FV7NDMGnVtDR9+d3oj6+WompGlyt0Bxn2xvnZDDpG7vIgkfWWnRf83sBa5cAYlVI0kL+0811bVeuavppcixrwJv6XJpqf/ZqFp0+OSaNncIXdaWnfveSLa4qhbc8dwI5OE2MFS76EYmZdNwbp61Ei15+swUo82thd00w6hq+iH4nUSp/XnEac0Aq+lPVU+dhbQsfYTlKza2vwdjwdCTXClXnalwrEB2/GDu2fEkI2JhXKLhtFP9uw8eojlEkpawGTB247YaxJAgRdXzqQ/kB7G2NZvyyr4cwqXBW79EwIrAdzARC0tqM+aGkLTqbNydd57RWeu/TBwZLomgxGVUP9rMSup7jsyOKyRlzTHAC/2GFzbaTrVvIC4yhuceyl7RHatGCaolOirICiyTWaeaIFaD+Mp4hWM
+ FKpFs0rj
+ aJW0t/SZaNomda/6KXWOV0JQv0Pcq03jUGhr8T7l/L50CcvBc5R7a7XO2dGsuGBEoX4AP/ACnFRhqtZii/YxdQVtuqDsdp7cRAkworT329rxZmO9U/Ml+AGht8fI4ouqb1OczBo1Nh6ZgswNz5GWOVYZCNAMfHfn6dMCsYeBQHBSqROtNQOt1xS3TluPNLSvr0by5cmUp6YCd4yadgo41xTWMntjFX9wN6q9FWg3KJlkEGKLZ0nHy/gFnvj9eLxMg0CpOg+/AT9SEjbhuGeihkn8XJLcDhZCg8ctSuhnz2waJ9doFKeu7WJ6Ze7nujoPDWPnO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,47 +95,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 3, 2026 at 4:01=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
->
->
-> >  next_order:
-> > -             if ((BIT(order) - 1) & enabled_orders) {
-> > -                     const u8 next_order =3D order - 1;
-> > -                     const u16 mid_offset =3D offset + (nr_ptes / 2);
-> > -
-> > -                     collapse_mthp_stack_push(cc, &stack_size, mid_off=
-set,
-> > -                                              next_order);
-> > -                     collapse_mthp_stack_push(cc, &stack_size, offset,
-> > -                                              next_order);
-> > +             if (order > KHUGEPAGED_MIN_MTHP_ORDER &&
-> > +                     (BIT(order) - 1) & enabled_orders) {
->
-> Why not a test_bit() ?
 
-The test bit is at the top of the loop. This adds a exit if the lower
-orders are all disabled or we hit the last order.
 
->
->
-> But, wouldn't you want to skip orders that are not enabled and try with t=
-he next
-> smaller one in any case before you advance the offset?
+On 03/06/2026 13:08, Lorenzo Stoakes wrote:
+> On Tue, Jun 02, 2026 at 10:22:47AM -0700, Usama Arif wrote:
+>> mincore_swap() also fields migration/hwpoison entries (and shmem
+>> swapin-error entries), which can exist on !CONFIG_SWAP builds when
+>> CONFIG_MIGRATION or CONFIG_MEMORY_FAILURE is enabled.  The
+>> !IS_ENABLED(CONFIG_SWAP) guard ran before the non-swap-entry early
+>> return, so mincore_pte_range() can spuriously WARN and report these
+>> pages nonresident on !CONFIG_SWAP kernels.
+>>
+>> Move the guard below the non-swap-entry check so only true swap
+>> entries trip the WARN, and migration/hwpoison entries take the
+>> existing "uptodate / non-shmem" path.
+>>
+>> Fixes: 1f2052755c15 ("mm/mincore: use a helper for checking the swap cache")
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> 
+> Logic LGTM so:
+> 
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> 
+> Small note below but I think not a problem.
+> 
+> Thanks, Lorenzo
+> 
+>> ---
+>> This was discovered when working on PMD swap entry series
+>> (https://lore.kernel.org/all/20260602142537.198755-1-usama.arif@linux.dev/)
+>> ---
+>>  mm/mincore.c | 10 +++++-----
+>>  1 file changed, 5 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/mm/mincore.c b/mm/mincore.c
+>> index e5d13eea9234..296f2e3922b5 100644
+>> --- a/mm/mincore.c
+>> +++ b/mm/mincore.c
+>> @@ -64,11 +64,6 @@ static unsigned char mincore_swap(swp_entry_t entry, bool shmem)
+>>  	struct folio *folio = NULL;
+>>  	unsigned char present = 0;
+>>
+>> -	if (!IS_ENABLED(CONFIG_SWAP)) {
+>> -		WARN_ON(1);
+>> -		return 0;
+>> -	}
+>> -
+>>  	/*
+>>  	 * Shmem mapping may contain swapin error entries, which are
+>>  	 * absent. Page table may contain migration or hwpoison
+>> @@ -77,6 +72,11 @@ static unsigned char mincore_swap(swp_entry_t entry, bool shmem)
+>>  	if (!softleaf_is_swap(entry))
+>>  		return !shmem;
+>>
+> 
+> I guess fine to do this after software_is_swap() because for !CONFIG_SWAP this
+> will always evaluate false?
 
-We are currently iterating through each order (not skipping them).
-There may be optimizations to avoid iterating through every order
-(like your changes suggest), but currently, every collapse, whether it
-succeeds or fails at the bottom order, must also iterate the offset.
+Yes, thats right. In softleaf_is_swap(), softleaf_type() returns SOFTLEAF_SWAP
+iff type_num < MAX_SWAPFILES. MAX_SWAPFILES is a compile-time constant independent
+of CONFIG_SWAP, so softleaf_is_swap() isn't structurally gated, but every producer
+of real swap entries lives under CONFIG_SWAP.
+With !CONFIG_SWAP none of those run, so softleaf_is_swap() is always false.
 
-lmk if that makes sense!
--- Nico
-
->
-> --
-> Cheers,
->
-> David
->
+> 
+> Not a big deal therefore I think.
+> 
+>> +	if (!IS_ENABLED(CONFIG_SWAP)) {
+>> +		WARN_ON(1);
+>> +		return 0;
+>> +	}
+>> +
+>>  	/*
+>>  	 * Shmem mapping lookup is lockless, so we need to grab the swap
+>>  	 * device. mincore page table walk locks the PTL, and the swap
+>> --
+>> 2.52.0
+>>
 
 
