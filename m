@@ -4,135 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DACCCD6E57
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Jun 2026 23:41:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB523CD6E5D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 00:06:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 400296B0088; Tue,  2 Jun 2026 19:41:13 -0400 (EDT)
+	id 9F12A6B0088; Tue,  2 Jun 2026 20:06:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D7BD6B008A; Tue,  2 Jun 2026 19:41:13 -0400 (EDT)
+	id 9A1E06B008A; Tue,  2 Jun 2026 20:06:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C6F26B008C; Tue,  2 Jun 2026 19:41:13 -0400 (EDT)
+	id 890946B008C; Tue,  2 Jun 2026 20:06:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1913E6B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 19:41:13 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ACA1FC0680
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 23:41:12 +0000 (UTC)
-X-FDA: 84836595984.30.33AB61F
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B26CC20004
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 23:41:10 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KOiKLCF7;
-	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780443670;
-	b=dUDmyADVzYrvcc48Z/kqvA+81pEh1sUjIwlrI6oNfu0ccBZS/4Ihetl6cnZAkKq7UZaKOJ
-	1hbdpJn2DhRG/yod4aW88NMpmUvLbawG0YVJCzUrGMH3Kaqu15mqBH1eVT3GFLw6U0SPgG
-	BIU+cgPBsPLGCELPZlH1JZzwktvQl9Y=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KOiKLCF7;
-	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780443670;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 75F9C6B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 20:06:00 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F3041A013B
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 00:06:00 +0000 (UTC)
+X-FDA: 84836658480.10.DC0562C
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B79F04009D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 00:05:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=SEGEQaBu;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.49 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780445158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QujtcZN6XIzjTF/pw3EqcgAhHTYMwUTz8Hlbxyn4zvw=;
-	b=e3bqG1LU+7oXnNBu7Pa1T1IlPzt2Thq1MF3UQ1HV4h14b8UEpjzSl94HOYOEXo0z+tQQwL
-	GSAg1zDLarC5iDY53V6TAm3k6zw5qiM1Fjx+jlnRIxMxdYvjIEnQvJDTjUymyxcg03tEaV
-	8KbDggloolpjvwFtOXn1VvlxT3nkFBs=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50e61648f10so1391cf.1
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 16:41:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780443670; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BBqa96Y0xligKfQttlm4RIkSv6GU57yOVkJbZ2KMU99l/XdiwI2zk/qfcsQjm21EmK
-         QeFjh2YMyAoMPt/673zjyT365t05r2A7I2r6/sxXS5aWGInKaKBoGHM6JIguxz8UzC4M
-         Jjp8Q9VjZEwLwCVTbf2m/jcjUYsyOfJNmRGrL+vdkWHFAIw2e7+FVxlGg9EbcJBfml3Z
-         +9/R2XJH4Ex+jO1BefHTFtE2s+7GRC/TwiNMwbfGkiBzcSSh6PGIkX5W5BnRSQBvNVU3
-         rgjUjGI6KhMG9yajeEO0V/rr9KbZcq3rfBO+c11aS1qdCQgIwGGQ6p97Kvmv097pMXxN
-         H95w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QujtcZN6XIzjTF/pw3EqcgAhHTYMwUTz8Hlbxyn4zvw=;
-        fh=/3StEHXAjq2guTVMU3JRALYX1xqRfOPAQ/rQRE53JXM=;
-        b=hjz5pEK2MvNCZcq932FjpB0AfXWWWxIySkEkLiiOkZMYtAOgVawl2QxzSnFdVpIRUG
-         KyNwMQ/SKvXPGxU/mQ8FJwxoFMI1E6FkgPzHbRaLxYK/d0rfrrYCtzoazIdHEEI7t3ga
-         KzLNqCz4w9d1Dl+0rCw4feyosjRzx7+7ySKbi0w8lEzaXsgVbuvVzCGD20CfucldZSIM
-         ZKlXSu9sWxy+bKapTjjYhGvnDEioTGTH7tllJHkAsUvliuH/CqGwOrxaUQxzdjcBKzUd
-         zQSQOuYrL0OIsr26WPfFeVCmQiyWNBXTbzqJJGTIwLGJZUbX3UD9mmX9HXkP/YoA7iDi
-         ijAg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=Uhlop0/MnmfXE7Dlf1lR89HcxXec+B+6kNW04Br1VHs=;
+	b=q+AP3Z6+PaeN2iUPxDHhJ7GvYC+Xv8xzP90QvRwSlZjD9aZFmkzrqv+r0W0n28HQNMlVW0
+	YB/JAKKbroAQo1YoY5zhhojcuIaUH2PmYoQB6x7UgisBvXMC/qSeghTh3k8+009I4VQNQf
+	Vl2LhtGTs5qizp37pwgISHRDlevUA5c=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=SEGEQaBu;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.49 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780445158;
+	b=0rjIbbHY4hyDin/leNj98YQhR0QGaW4z3pgjGAJwDtsvbfYIaP00X2C7iCgGutEDotUZ6z
+	jHIHTuET6W0t0DpKsBDQD6HeI9cdSqdd8mF92AsIHN7c1F5bPdld3MyknOs+7CqqUMUz/z
+	FcV/nL01NU2nvi2qJbWoXKUxOzmi3MY=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-68cc6c7df99so5532893a12.1
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 17:05:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780443670; x=1781048470; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QujtcZN6XIzjTF/pw3EqcgAhHTYMwUTz8Hlbxyn4zvw=;
-        b=KOiKLCF7fBWzFmi6IXG4GX3GwfwDOwg/HsY/PhjIAq7sqnN4R19ww4gwdeWLNjjZUh
-         /RXiwPsc988+10izbOuDhsQvqccB2JQF59TMQu+rrXbo+IcnMIbcZ4pPG48t2u8XGHy4
-         f3e0cDpZZpFabwTAjM4qMj/qtXmDwmSRI5+EwkzXMt76+slqE4GvVJlmJWV5xiJRTMbO
-         6yiJCAut4a5l2r/YWXntyYJ/M+tcRLoBlnVkdWmYBfr1yq61DeSUfMEeBxvog1uQW0sL
-         nCX4gnFen0Os1C6sOPTnM9Bs0gUeZ/715hVdok57azM3MipksmXREEpKN3OAZws7vp90
-         GDXg==
+        d=linux-foundation.org; s=google; t=1780445156; x=1781049956; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uhlop0/MnmfXE7Dlf1lR89HcxXec+B+6kNW04Br1VHs=;
+        b=SEGEQaBupNKtZsxQfrKQHGfPv/HaSxIX/dX3R5gWmXMIk/KOoTbcEv1nY9bx6gmX16
+         xswInKlYbZeVeDqSoStyUYPxrFvhbOSRAE/kOL7uk3eca77TCCavnw+8O8LDnm/xhEvl
+         HE2RWvGLNBwv/BYiqNd3eUeXZczkvGsoMRjMg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780443670; x=1781048470;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QujtcZN6XIzjTF/pw3EqcgAhHTYMwUTz8Hlbxyn4zvw=;
-        b=SYLO7jyd/QL9RlRf+I2Ux8qCZIj2+WhbnMJmkDDGibVreq7VG+d4tS98eUkolXIHbJ
-         95p5LxbIkDLLrA1gPz+rzGgCxLvdUPQRjvD8gLb7gpB9mXsNAlrzC5Rpfd4DHccvrPYm
-         etoCsnvMuk9CK0nh+YdtLaARF6X+CWp1KKNh1XU2EVIEh0EvGDn6w+ovdZx0KKaWhVyn
-         DoXmYwCyBNGB/Rqzu/Ck40In/EbcuYbjmv7VmPeDObM1WWPoNHpYVEP5oSnux/2WJbYC
-         OxeTboffg7lN2kInn+qF7epR6Ne/XsPPmtJqdPYwe4BI07L8Qppq9Y6SE+R6kiup/LrA
-         RNkw==
-X-Forwarded-Encrypted: i=1; AFNElJ8OTEhIB2K6Jlb7vhldzTw7+yA4v30ln7goRDOvqJEuMk6yI8NMpLHeVcqYUR2q1WfclvWcBJkLIw==@kvack.org
-X-Gm-Message-State: AOJu0Yz7+IUTm3qrWrPpldhY90hMgzxcLl6WQpfcpH6PlNbXc1+mo769
-	5cHlrnSYPx6e3ddEmApvLQ8TNdku8dcGev2HXfg5Os7XTL5k1aJuuO84+MyPOBDtMutRpU7DYmG
-	PcoGn4OuJMBfGkrFmr6o9igyRTGYz9nJ0xVpsZ59mEYMIkddjWaeG8Jx1
-X-Gm-Gg: Acq92OGo1P+Xsg+zixPVDogPiJb/TObuHmld+16yN5YqI68g01p2+psWUk1++BD5IOg
-	bPMEDntIRtWcMhsPMJLOQAyOyf5MKr3kObxSpaGI/0d7O0DDo+nRGcZJoqltPjtABVnYjVhiKhZ
-	4dh0kx/w+jkHWTSYhRCVHN/hWzaihUOtx/Q5lvvCnh/mTR56ckX+6Z3EEGLtWdAzex2tphMB0mg
-	XotM2mzyTQ7D74ncfT1dVie+R0Y3jdz7HVtdAhiXzR1kSzEJLXlFUMhrF7z/GJ6e4DIVBt9Prph
-	OeRTswavjdjjjQt7
-X-Received: by 2002:ac8:614b:0:10b0:517:5c70:46bd with SMTP id
- d75a77b69052e-5177bbe4291mr484851cf.11.1780443669151; Tue, 02 Jun 2026
- 16:41:09 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780445156; x=1781049956;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Uhlop0/MnmfXE7Dlf1lR89HcxXec+B+6kNW04Br1VHs=;
+        b=VIbh22y/09URmWRgB4XOul4U4VpHY502m0z4+UurKHxOXkF6xEmRCJYm7e+Sw2OTzW
+         13mDZXj8Wd6qgSqJhMNYzzjs37UtqCT9KabgiQ4H4IK2XheYOQcocEou257sfkDI8QvU
+         Wa8bF0ucNgLxq6Sh8p9qTl78OX6LbV46ufFWRbNbsJ8+eDdcUiphzmBaLR8jg+FqCHpF
+         06fYmhxGo2vVoRwkghwd8K5zsJAjpGpZIjFTx9INnfWePBHw7T/Tm8HbvsQA3scaWdZ0
+         BetCeLnYUO88CcK3u1UwHjy4uXgRDDruCo/QgK1T0dnXkuAwxh0f/+r7XqED2arLtVtd
+         TMNg==
+X-Forwarded-Encrypted: i=1; AFNElJ9KcvXJe0+rIhHy2tAXpQ5CR/GOSRmJ4k7PZDWYn916dPVxhiiNidybyRhpZR5TN8lEKeOuuOnPUA==@kvack.org
+X-Gm-Message-State: AOJu0YybGYt5ap6gLPBcYUij5sUiwGYMxdhxD4QkG1nqTrGEHMYrrXLg
+	7pU39/1+DI77Vc/RKaQOlGsYrgiAikxqquaxJuafON5WRsawjsueXp74gejdrurPJpBlPo3Zhaf
+	TW2Jpp65N5w==
+X-Gm-Gg: Acq92OHJbLqQbWsTs3VVECGwR8dEIRg9jUJjVzMnPibt+zdAXPS4CkAR4Zlk+SZRZRW
+	JJ51UX6K+N8NupeDMjLlFDThAbUf/F6OgjmgSc76+0OAJ8Ju0kuXEuPqr7Kfc8DsLKsSBuBb9tZ
+	FuaQmVsjRotFms7FcrRq4XjZ8na3cv4F97NSsmhTMqiUpxDymxuJm46dqMTeo/aIZF/5foq8KEe
+	L36fkSvBs0qTtFA20Hcm97fFS9udTD/vyLEMKuXrLKZwbBU4MkvjuhkepsQGxX34tka7SASZTD0
+	jU2acCu6lvs1OilqMNTTn71R88SgGoddn/iqICa/I8WgA0JBXb4aauGZ/6o8GSS2WH8NQgatmXz
+	GNKiMs1WO229i9NlFbD6lUgm+iJ0+R1gcwkwd3H8+vKO87i7PWcq0uG59JLnh18EwwBD0S8NwYe
+	//rSF3wY2zxZdqUvBZ67gag/i7ThHEN8HVOPz0qs1QvwqEVBsQgkPRphcSJAu7NG4gPX5Ox2Vih
+	y1UznhfU48=
+X-Received: by 2002:a05:6402:e8b:b0:68d:abcf:9593 with SMTP id 4fb4d7f45d1cf-68e711f67a7mr323932a12.17.1780445155875;
+        Tue, 02 Jun 2026 17:05:55 -0700 (PDT)
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com. [209.85.208.49])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68e64e2c810sm307531a12.9.2026.06.02.17.05.52
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Jun 2026 17:05:53 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6877c719cb0so19378352a12.2
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 17:05:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ93hI1vVlZIVsi3yuTM6WKEQ2nSmzP4wS9KuYpZrHd4pdTrn931U4C73OzvhioMS1/YEaLb3HulNg==@kvack.org
+X-Received: by 2002:a05:6402:35c6:b0:68a:88cd:eb22 with SMTP id
+ 4fb4d7f45d1cf-68e7234cd5dmr395619a12.26.1780445152593; Tue, 02 Jun 2026
+ 17:05:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260506022256.32664-1-hao.ge@linux.dev> <20260508171251.9bfb5e833859090d4480e222@linux-foundation.org>
- <20260526190015.d4edd406962fcc3a1ee4cb53@linux-foundation.org> <0e835109-9068-464f-88e2-c1847cd34c71@linux.dev>
-In-Reply-To: <0e835109-9068-464f-88e2-c1847cd34c71@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 2 Jun 2026 16:40:57 -0700
-X-Gm-Features: AVHnY4KwuF0fKuj6PNzWIM231tWFnMinIrtMREFqJzCAkWp9C5d0oVRyp8q3I8E
-Message-ID: <CAJuCfpHi3tvMtYoww548scLJtJQ4EHJKOPDF6-5NJLNUZbV13A@mail.gmail.com>
-Subject: Re: [PATCH v5] mm/alloc_tag: replace fixed-size early PFN array with
- dynamic linked list
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B26CC20004
+References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
+ <20260602225426.122258-1-safinaskar@gmail.com>
+In-Reply-To: <20260602225426.122258-1-safinaskar@gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 2 Jun 2026 17:05:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
+X-Gm-Features: AVHnY4KhSkOXTYB4An-26_x6g7ojLidq6qbSrnhDMjw99TKXXT8zagQRgBRpkhk
+Message-ID: <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+To: Askar Safin <safinaskar@gmail.com>
+Cc: akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org, 
+	david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
+	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de, 
+	viro@zeniv.linux.org.uk, willy@infradead.org
+Content-Type: multipart/mixed; boundary="000000000000dd10b506534e3005"
 X-Rspam-User: 
-X-Stat-Signature: w4hexda53w7ectfrjy5pdmeod6n91fny
-X-HE-Tag: 1780443670-734560
-X-HE-Meta: U2FsdGVkX1++PPfARXBCBzcskcN5HcriuDGM6IQsYhQ6+VNekef9yHGxZvIO+1LNQH2zGeKKN5uKt8twxMEkRv86uFl9ZzlEAp72C6/WL6YTwMC6P8ljxg6ZXs2bYWT0XgCN04oqeFcc/VSZwF6g/P8OJSwZknTtdxXOPRGZ4ye0zfVLqv1sD7/dyEmQd24coxGEg5OM/tXPxDISP4aogZ0JykAqFLI42YuGHq+bIYACjvXMOwlVAoBFhOcs4MkTtZMw48vL5yjMWqX3kph+dazm9M5sI7qYd+Tx15JPkHTKdYgvVvxxFtLSvCxv9VAp2UQgUVyjKOXMrAgaWBCZIRp4/tj8Fo+uiz8rA2LF5tbKmpyNUcBdWPguZqkETY9jgkGEK+71znV172N6I7aqCbeCBUsjXIAJRWcrM+7II/DA3noa0P26Yxmv056BdLyMXxxTq1nlHwLWjb8rsWwdS9CC2EDV+X2jcyCZVepwqzhYEO7d51t1FTN6aOsMmWF79byPgl14HDotS5Myqoxz7NZjh17R+hjL/kQ+DC04QLMKQuwWm/MJ5qi36LWzU+JOLOS9lmV+KRROxzWM9xW6+vA5Rv6jYYNK+e9++5t44ZkvP8RlHqKoigzQlseveoykCk90iAsbJ5sijEYyUGBnTosg7CvRMZsXsrESCcOn6rtMcDmQGWlPC52cvvbA+8BibOLRumebj7DrVVVj8WglySNY3RH31uQini7jFdvZzTX2TaOZVC8zr/oadEKOCUq6lc9r/8UKoaToyhjtJSxDdKrRkrjQbqppgwpsiK+bCHUEVnKjQe8MPcnntrleUT55Q7ha/xcNFv1DiutdKq/SuseC8ciZKr/wIZjua6fXn+dux4149GjULH49dJMHwk8aNpxcxT6Z08tlH4P6hTzy9qMR14yYtN+DEz7SXDdnFUMfsumPXVLdgA8r3fGCeshUtfGljnXgWqybMBQwA8n
- giKwOPXu
- uGys8zwRHKfn0JVPti9HY2GkrlOM0ssagi7yv8XmibB19MT6u9ZsaI77ilXEvWtYO5XbZ4dTyzg83VxTI72/ip/BvSP3ZqsHcDJLyLNSmdOjMosjIpKAYxrziZSqyFzYDqq/U3Nldg6kJFMwCewaT83mx6lopUA8NUv+CD6zeMxZ0De166BdvjYhY1tbQt2+bDUia64SsO2S64+JCCzn9tl/+XwjqRdq8jNpuqq69/CUgri4jLWQvuRGCJYuyYdUFEJULCusfQgZliNYaTbkO4IK/Z9dZGOjUXmzb5cwnoJAPmg7i4fCohKAUaAQokYAdTuAtdRi9I4PDeXHZB5h40CBuR3BRvtuIuTE2Z5JjOKEfPRcfTYuAf2rWeeRJO0SKJ/Gb+ZlJbvSxdYkmoWhSbc5DsDOae7QMANWVMuCQ3yK00KGtVTGiRDwBhGkZdAC77xFDef5tqFk13AKOLNFDqbmI5vZaKC0wOUBK6CnR661Gw+9rjHgk61uKEP8NP6+f/NtQoTGQeyhL4Ie8aDCYo6bC1xwz/tYnH4yK4r6yVlOfxw603qjMKdKtnmMoVpqfnAksDYW5JmwUXjlj4IEPqilDPA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B79F04009D
+X-Stat-Signature: k4op66ewjwdoubnjds1dzfpezkfwabb1
+X-HE-Tag: 1780445157-819768
+X-HE-Meta: U2FsdGVkX1/g2ztCXjbEbZIu5eYrJuMYInpUebKUg6zhvNXWzPyrzG0eqlPu2sbEGkpvaV6WfQkTloCcpiATSTXaEKtiVK0qi4VQH1j8H4GNTv0lsaBBPWpf76bbaiwWz8zNfbcE+VYkVfY4hL3nEGSGJ0FUGKqOwOgK0qXj+7TFtgeYxneT/D3nSTqLNIA7KtgSnTUres/ShFZZZjg0g3JQkEV6tXFFjG6DyVnraebQlkU/ZNOuK5RenW4NfSs4kIMZ9L99FAbL1HvmPJKldabwWTSFl4WI3l4ngUSLxYtdT4H5s4GS/BvBoj9Y/RmfXSoTzT5aueG5LtQeIiv76R6URXqWspS2W1GnUgJZynB6Kh5IUinVyv+bb918GWq4iQ12uKZqHtLBYFImgrWQIIhEF24M31AIwuerLNjaZBE+nS6pawk43cYozSjdWPcjfAH8D5XfjxkLVJjkwFYpPGfdJ2FJeLAa0MFzis0gXvKcKpUX7deY4TOipqMH2CvaoK+WzfJUk1YstuOxtDIEwumfxo7QkAe1TbCRU5uVFsQ3xrDB7SNFGvnf68+BoLxj6IL/rTr4FboUOMfZACE5PqiUBk5fkX5mYIEfTOdpLKaZh4fCkv7hNjsEaOKpQWx+0+JSAP41wtlflgzGjwHJsabSiq2UlZohbU0+Cw0Fy4ahj+hbGZEnhgqTqh3mKHpxxkNjFU+1lUjfXkvKT5W8uVGJG4NdyqagGBBSGmK/XJNrebiEyvJJiV50wAkd0YeMbfzdD2tdge2qh1FozQoarkJ5yWIX9qnyDLyuZbc6VhnIOWcv35XmBu0xNjrmT2we/1+VT9rnuotql9mj7Y3E3M8ZQIYVbQe2PFB4dprtkvC+bCWYHb2Cwp4vglctp7ETUK0eChhRggWRWrp6I9UkGMsRzVHX7iDesldbiz9INw3maQY1APdXnzBY7PCadjPKLSvnjQqASluHG/8AZ12
+ nM8CH8sj
+ z8qMZiUNTnYiOrisHliBNHs54E5MPuShw8TPaXLVSzyzU8/a/a98ckjGdl6x9Qvwd74aJ6utZhFGwgscfHbghNQ1Up+Z3HhjlYqcAZ1wQA2hjLLim00Rqo0ncFCGQl/kEfBW++2zcCed1HuHWNoXjazeQ093ufjBf9n2tTyr8/5x2d7CYxUznHPcgvVj4XtAHuLxQbAIxxo8JxyPfqHo4cNJ4AlGXUMzJuGpGhlfURNO+fbAGQZq9QisOl6iq+Q+yjIdeJ3LQERUh6nDI4z1FL5wItFUmP38pnu91deCyUXRfTgQDyXYbK2cRWawDhhoHLKxXCJrrBRDB8BcLx+szuAFXJKcTa5IZiNx6Wirhp/8dqr9sd4fQfEUpsbO9WHvv+voyYAC7Kg7X1hjmtePt908gLqMSon0Ybikvu0ZxV0jtRBOWrIHbt3ElV+FDWZjr8vb3mR1ETYRsQOpEcYK/uCJ/cRQMnYKO6ZzTTteo4t8hS6uXSECuC/N/obIz53eJl0UfcMM4sCZFLlKUugGxnIA9YAC87/zdolbHssx8cnBMSXrdr9WJPTbvyvUxzFYe56n8MW2M5oLf4OOb8nLqGY0NtzCAesXRozjspnR+t+P1dJ0GFqn6BS3qiQA5oooeVAnTaBPsrQR2ZAa2W4y1AzWXbR+TDmXr14L+Y4TO+tkqbnWr7gLWTMoGgtsXSE+dgqLy4OR8ixGrOWslWLe3CTvZ5wAeFlfcLft+ZhWoPlNWqBcp4oERpTfOm7Eq/IJMTpKz/A1ocyjORenQGOyjPZ7AWQjljQNMib1ood2YLvszPVgH/EABZbbvAAcx2+nnSTGMAQwkI17Vg4h8WVOf71Mwpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,503 +128,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 10:22=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
->
->
-> On 2026/5/27 10:00, Andrew Morton wrote:
-> > On Fri, 8 May 2026 17:12:51 -0700 Andrew Morton <akpm@linux-foundation.=
-org> wrote:
-> >
-> >> On Wed,  6 May 2026 10:22:56 +0800 Hao Ge <hao.ge@linux.dev> wrote:
-> >>
-> >>> Pages allocated before page_ext is available have their codetag left
-> >>> uninitialized. Track these early PFNs and clear their codetag in
-> >>> clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set"
-> >>> warnings when they are freed later.
-> >>>
-> >>> Currently a fixed-size array of 8192 entries is used, with a warning =
-if
-> >>> the limit is exceeded. However, the number of early allocations depen=
-ds
-> >>> on the number of CPUs and can be larger than 8192.
-> >>>
-> >>> Replace the fixed-size array with a dynamically allocated linked list
-> >>> of pfn_pool structs. Each node is allocated via alloc_page() and mapp=
-ed
-> >>> to a pfn_pool containing a next pointer, an atomic slot counter, and =
-a
-> >>> PFN array that fills the remainder of the page.
-> >>>
-> >>> The tracking pages themselves are allocated via alloc_page(), which
-> >>> would trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() and
-> >>> recurse indefinitely. Introduce __GFP_NO_CODETAG (reuses the
-> >>> %__GFP_NO_OBJ_EXT bit) and pass gfp_flags through pgalloc_tag_add()
-> >>> so that the early path can skip recording allocations that carry this
-> >>> flag.
-> >> AI review asked a couple of things.  I have a feeling we saw at least
-> >> one of these, so probably already dealt with.
-> >>      https://sashiko.dev/#/patchset/20260506022256.32664-1-hao.ge@linu=
-x.dev
->
-> Hi Andrew
->
-> My apologies. I'm also waiting for Suren's review. He may have been tied
-> up lately
->
-> and might not have time to get to this.
+--000000000000dd10b506534e3005
+Content-Type: text/plain; charset="UTF-8"
 
-Sorry folks, I was on vacation and will be fully back to work
-tomorrow. I'll start on these reviews the first thing once I'm at my
-station.
+On Tue, 2 Jun 2026 at 15:54, Askar Safin <safinaskar@gmail.com> wrote:
+>
+> Pedro is talking here not about this vmsplice patch, but about
+> my future hypothetical patch, which will remove splice-pagecache-to-pipe.
 
+That absolutely would be my suggested next step.
 
->
->
-> Sashiko raised two issues this time. I've already responded to the first
-> one.
->
-> See the link below:
->
-> https://lore.kernel.org/all/0b9969e2-b208-46c2-a9a5-bf620239275a@linux.de=
-v/
->
-> If I haven't missed any details, it should be a false positive.
->
->
-> As for the second point, let me address it.
->
-> The early PFN tracking window is entirely within mm_core_init(),
->
-> which is called from start_kernel():
->
-> start_kernel()
->
->      mm_core_init()
->
->          memblock_free_all();
->
->          mem_init() //start early PFN tracking
->
->          kmem_cache_init()                           // SLUB bootstrap +
-> kmalloc caches
-> ...
->          page_ext_init()                                   // clears
-> alloc_tag_add_early_pfn_ptr
->
->      ...
->
->      rest_init() //spawns kernel_init thread
->
->
-> kernel_init() =E2=86=92 kernel_init_freeable()            // separate thr=
-ead, later
->
->      smp_init()                                    // secondary CPUs
-> come online here
->
-> Within the early PFN window (mem_init() to page_ext_init()):
->
->   1. We are still in start_kernel(), single CPU. The buddy allocator
->
-> was just initialized from memblock and should have plenty of free
->
-> pages, so alloc_page() would likely be satisfied from the fast
->
-> path. If so, the __GFP_NOFAIL without __GFP_DIRECT_RECLAIM
->
-> check in the slowpath would not be reached.
->
-> 2. Since only the boot CPU is running, alloc_page() targets the
->
-> boot node, which has memory. So even if __GFP_THISNODE were
->
-> inherited, it would not fail on the boot node during this window.
->
->
-> So Sashiko's analysis applies to the general case, and indeed the issues
->
-> he raised could occur there.
->
-> However, in the early boot scenario, I believe the current patch is safe,
->
-> even though it is not fully generic (after all, no one can predict
-> future use cases).
->
-> Therefore, I agree with his suggestion that using a clean mask like
-> GFP_NOWAIT | __GFP_NOWARN.
->
->
-> In any case, I will wait for your and Suren's feedback. You may have
-> different opinions on this matter.
->
->
-> Thanks
->
-> Best Regards
->
-> Hao
->
->
-> > Please?
-> >
-> > Also, this patch has no evidence of human review.
-> >
-> >
-> > From: Hao Ge <hao.ge@linux.dev>
-> > Subject: mm/alloc_tag: replace fixed-size early PFN array with dynamic =
-linked list
-> > Date: Wed, 6 May 2026 10:22:56 +0800
-> >
-> > Pages allocated before page_ext is available have their codetag left
-> > uninitialized.  Track these early PFNs and clear their codetag in
-> > clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set" warni=
-ngs
-> > when they are freed later.
-> >
-> > Currently a fixed-size array of 8192 entries is used, with a warning if
-> > the limit is exceeded.  However, the number of early allocations depend=
-s
-> > on the number of CPUs and can be larger than 8192.
-> >
-> > Replace the fixed-size array with a dynamically allocated linked list o=
-f
-> > pfn_pool structs.  Each node is allocated via alloc_page() and mapped t=
-o a
-> > pfn_pool containing a next pointer, an atomic slot counter, and a PFN
-> > array that fills the remainder of the page.
-> >
-> > The tracking pages themselves are allocated via alloc_page(), which wou=
-ld
-> > trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() and recurse
-> > indefinitely.  Introduce __GFP_NO_CODETAG (reuses the %__GFP_NO_OBJ_EXT
-> > bit) and pass gfp_flags through pgalloc_tag_add() so that the early pat=
-h
-> > can skip recording allocations that carry this flag.
-> >
-> > Link: https://lore.kernel.org/20260506022256.32664-1-hao.ge@linux.dev
-> > Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> > Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Brendan Jackman <jackmanb@google.com>
-> > Cc: Johannes Weiner <hannes@cmpxchg.org>
-> > Cc: Kent Overstreet <kent.overstreet@linux.dev>
-> > Cc: Michal Hocko <mhocko@suse.com>
-> > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > Cc: Zi Yan <ziy@nvidia.com>
-> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > ---
-> >
-> >   include/linux/alloc_tag.h |    4
-> >   lib/alloc_tag.c           |  145 +++++++++++++++++++++++-------------
-> >   mm/page_alloc.c           |   12 +-
-> >   3 files changed, 102 insertions(+), 59 deletions(-)
-> >
-> > --- a/include/linux/alloc_tag.h~mm-alloc_tag-replace-fixed-size-early-p=
-fn-array-with-dynamic-linked-list
-> > +++ a/include/linux/alloc_tag.h
-> > @@ -163,11 +163,11 @@ static inline void alloc_tag_sub_check(u
-> >   {
-> >       WARN_ONCE(ref && !ref->ct, "alloc_tag was not set\n");
-> >   }
-> > -void alloc_tag_add_early_pfn(unsigned long pfn);
-> > +void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags);
-> >   #else
-> >   static inline void alloc_tag_add_check(union codetag_ref *ref, struct=
- alloc_tag *tag) {}
-> >   static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
-> > -static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
-> > +static inline void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gf=
-p_flags) {}
-> >   #endif
-> >
-> >   /* Caller should verify both ref and tag to be valid */
-> > --- a/lib/alloc_tag.c~mm-alloc_tag-replace-fixed-size-early-pfn-array-w=
-ith-dynamic-linked-list
-> > +++ a/lib/alloc_tag.c
-> > @@ -767,60 +767,95 @@ static __init bool need_page_alloc_taggi
-> >    * their codetag uninitialized. Track these early PFNs so we can clea=
-r
-> >    * their codetag refs later to avoid warnings when they are freed.
-> >    *
-> > - * Early allocations include:
-> > - *   - Base allocations independent of CPU count
-> > - *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_ini=
-t,
-> > - *     such as trace ring buffers, scheduler per-cpu data)
-> > - *
-> > - * For simplicity, we fix the size to 8192.
-> > - * If insufficient, a warning will be triggered to alert the user.
-> > + * Each page is cast to a pfn_pool: the first few bytes hold metadata
-> > + * (next pointer and slot count), the remainder stores PFNs.
-> > + */
-> > +struct pfn_pool {
-> > +     struct pfn_pool *next;
-> > +     atomic_t count;
-> > +     unsigned long pfns[];
-> > +};
-> > +
-> > +#define PFN_POOL_SIZE                        ((PAGE_SIZE - offsetof(st=
-ruct pfn_pool, pfns)) / \
-> > +                                      sizeof(unsigned long))
-> > +
-> > +/*
-> > + * Skip early PFN recording for a page allocation.  Reuses the
-> > + * %__GFP_NO_OBJ_EXT bit.  Used by __alloc_tag_add_early_pfn() to avoi=
-d
-> > + * recursion when allocating pages for the early PFN tracking list
-> > + * itself.
-> >    *
-> > - * TODO: Replace fixed-size array with dynamic allocation using
-> > - * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
-> > + * Codetags of the pages allocated with __GFP_NO_CODETAG should be
-> > + * cleared (via clear_page_tag_ref()) before freeing the pages to prev=
-ent
-> > + * alloc_tag_sub_check() from triggering a warning.
-> >    */
-> > -#define EARLY_ALLOC_PFN_MAX          8192
-> > +#define __GFP_NO_CODETAG             __GFP_NO_OBJ_EXT
-> >
-> > -static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
-> > -static atomic_t early_pfn_count __initdata =3D ATOMIC_INIT(0);
-> > +static struct pfn_pool *current_pfn_pool __initdata;
-> >
-> > -static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
-> > +static void __init __alloc_tag_add_early_pfn(unsigned long pfn, gfp_t =
-gfp_flags)
-> >   {
-> > -     int old_idx, new_idx;
-> > +     struct pfn_pool *pool;
-> > +     int idx;
-> >
-> >       do {
-> > -             old_idx =3D atomic_read(&early_pfn_count);
-> > -             if (old_idx >=3D EARLY_ALLOC_PFN_MAX) {
-> > -                     pr_warn_once("Early page allocations before page_=
-ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
-> > -                                   EARLY_ALLOC_PFN_MAX);
-> > -                     return;
-> > +             pool =3D READ_ONCE(current_pfn_pool);
-> > +             if (!pool || atomic_read(&pool->count) >=3D PFN_POOL_SIZE=
-) {
-> > +                     gfp_t gfp =3D gfp_flags & ~(__GFP_DIRECT_RECLAIM =
-| GFP_ZONEMASK);
-> > +                     struct page *new_page =3D alloc_page(gfp | __GFP_=
-NO_CODETAG);
-> > +                     struct pfn_pool *new;
-> > +
-> > +                     if (!new_page) {
-> > +                             pr_warn_once("early PFN tracking page all=
-ocation failed\n");
-> > +                             return;
-> > +                     }
-> > +                     new =3D page_address(new_page);
-> > +                     new->next =3D pool;
-> > +                     atomic_set(&new->count, 0);
-> > +                     if (cmpxchg(&current_pfn_pool, pool, new) !=3D po=
-ol) {
-> > +                             clear_page_tag_ref(new_page);
-> > +                             __free_page(new_page);
-> > +                             continue;
-> > +                     }
-> > +                     pool =3D new;
-> >               }
-> > -             new_idx =3D old_idx + 1;
-> > -     } while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx)=
-);
-> > +             idx =3D atomic_read(&pool->count);
-> > +             if (idx >=3D PFN_POOL_SIZE)
-> > +                     continue;
-> > +             if (atomic_cmpxchg(&pool->count, idx, idx + 1) =3D=3D idx=
-)
-> > +                     break;
-> > +     } while (1);
-> >
-> > -     early_pfns[old_idx] =3D pfn;
-> > +     pool->pfns[idx] =3D pfn;
-> >   }
-> >
-> > -typedef void alloc_tag_add_func(unsigned long pfn);
-> > +typedef void alloc_tag_add_func(unsigned long pfn, gfp_t gfp_flags);
-> >   static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdat=
-a =3D
-> >       RCU_INITIALIZER(__alloc_tag_add_early_pfn);
-> >
-> > -void alloc_tag_add_early_pfn(unsigned long pfn)
-> > +void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
-> >   {
-> >       alloc_tag_add_func *alloc_tag_add;
-> >
-> >       if (static_key_enabled(&mem_profiling_compressed))
-> >               return;
-> >
-> > +     /* Skip allocations for the tracking list itself to avoid recursi=
-on. */
-> > +     if (gfp_flags & __GFP_NO_CODETAG)
-> > +             return;
-> > +
-> >       rcu_read_lock();
-> >       alloc_tag_add =3D rcu_dereference(alloc_tag_add_early_pfn_ptr);
-> >       if (alloc_tag_add)
-> > -             alloc_tag_add(pfn);
-> > +             alloc_tag_add(pfn, gfp_flags);
-> >       rcu_read_unlock();
-> >   }
-> >
-> >   static void __init clear_early_alloc_pfn_tag_refs(void)
-> >   {
-> > -     unsigned int i;
-> > +     struct pfn_pool *pool, *next;
-> > +     struct page *page;
-> > +     int i;
-> >
-> >       if (static_key_enabled(&mem_profiling_compressed))
-> >               return;
-> > @@ -829,37 +864,45 @@ static void __init clear_early_alloc_pfn
-> >       /* Make sure we are not racing with __alloc_tag_add_early_pfn() *=
-/
-> >       synchronize_rcu();
-> >
-> > -     for (i =3D 0; i < atomic_read(&early_pfn_count); i++) {
-> > -             unsigned long pfn =3D early_pfns[i];
-> > +     for (pool =3D current_pfn_pool; pool; pool =3D next) {
-> > +             int nr_pfns =3D atomic_read(&pool->count);
-> > +
-> > +             for (i =3D 0; i < nr_pfns; i++) {
-> > +                     unsigned long pfn =3D pool->pfns[i];
-> >
-> > -             if (pfn_valid(pfn)) {
-> > -                     struct page *page =3D pfn_to_page(pfn);
-> > -                     union pgtag_ref_handle handle;
-> > -                     union codetag_ref ref;
-> > -
-> > -                     if (get_page_tag_ref(page, &ref, &handle)) {
-> > -                             /*
-> > -                              * An early-allocated page could be freed=
- and reallocated
-> > -                              * after its page_ext is initialized but =
-before we clear it.
-> > -                              * In that case, it already has a valid t=
-ag set.
-> > -                              * We should not overwrite that valid tag=
- with CODETAG_EMPTY.
-> > -                              *
-> > -                              * Note: there is still a small race wind=
-ow between checking
-> > -                              * ref.ct and calling set_codetag_empty()=
-. We accept this
-> > -                              * race as it's unlikely and the extra co=
-mplexity of atomic
-> > -                              * cmpxchg is not worth it for this debug=
--only code path.
-> > -                              */
-> > -                             if (ref.ct) {
-> > +                     if (pfn_valid(pfn)) {
-> > +                             union pgtag_ref_handle handle;
-> > +                             union codetag_ref ref;
-> > +
-> > +                             if (get_page_tag_ref(pfn_to_page(pfn), &r=
-ef, &handle)) {
-> > +                                     /*
-> > +                                      * An early-allocated page could =
-be freed and reallocated
-> > +                                      * after its page_ext is initiali=
-zed but before we clear it.
-> > +                                      * In that case, it already has a=
- valid tag set.
-> > +                                      * We should not overwrite that v=
-alid tag
-> > +                                      * with CODETAG_EMPTY.
-> > +                                      *
-> > +                                      * Note: there is still a small r=
-ace window between checking
-> > +                                      * ref.ct and calling set_codetag=
-_empty(). We accept this
-> > +                                      * race as it's unlikely and the =
-extra complexity of atomic
-> > +                                      * cmpxchg is not worth it for th=
-is debug-only code path.
-> > +                                      */
-> > +                                     if (ref.ct) {
-> > +                                             put_page_tag_ref(handle);
-> > +                                             continue;
-> > +                                     }
-> > +
-> > +                                     set_codetag_empty(&ref);
-> > +                                     update_page_tag_ref(handle, &ref)=
-;
-> >                                       put_page_tag_ref(handle);
-> > -                                     continue;
-> >                               }
-> > -
-> > -                             set_codetag_empty(&ref);
-> > -                             update_page_tag_ref(handle, &ref);
-> > -                             put_page_tag_ref(handle);
-> >                       }
-> >               }
-> >
-> > +             next =3D pool->next;
-> > +             page =3D virt_to_page(pool);
-> > +             clear_page_tag_ref(page);
-> > +             __free_page(page);
-> >       }
-> >   }
-> >   #else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
-> > --- a/mm/page_alloc.c~mm-alloc_tag-replace-fixed-size-early-pfn-array-w=
-ith-dynamic-linked-list
-> > +++ a/mm/page_alloc.c
-> > @@ -1255,7 +1255,7 @@ void __clear_page_tag_ref(struct page *p
-> >   /* Should be called only if mem_alloc_profiling_enabled() */
-> >   static noinline
-> >   void __pgalloc_tag_add(struct page *page, struct task_struct *task,
-> > -                    unsigned int nr)
-> > +                    unsigned int nr, gfp_t gfp_flags)
-> >   {
-> >       union pgtag_ref_handle handle;
-> >       union codetag_ref ref;
-> > @@ -1269,17 +1269,17 @@ void __pgalloc_tag_add(struct page *page
-> >                * page_ext is not available yet, record the pfn so we ca=
-n
-> >                * clear the tag ref later when page_ext is initialized.
-> >                */
-> > -             alloc_tag_add_early_pfn(page_to_pfn(page));
-> > +             alloc_tag_add_early_pfn(page_to_pfn(page), gfp_flags);
-> >               if (task->alloc_tag)
-> >                       alloc_tag_set_inaccurate(task->alloc_tag);
-> >       }
-> >   }
-> >
-> >   static inline void pgalloc_tag_add(struct page *page, struct task_str=
-uct *task,
-> > -                                unsigned int nr)
-> > +                                unsigned int nr, gfp_t gfp_flags)
-> >   {
-> >       if (mem_alloc_profiling_enabled())
-> > -             __pgalloc_tag_add(page, task, nr);
-> > +             __pgalloc_tag_add(page, task, nr, gfp_flags);
-> >   }
-> >
-> >   /* Should be called only if mem_alloc_profiling_enabled() */
-> > @@ -1312,7 +1312,7 @@ static inline void pgalloc_tag_sub_pages
-> >   #else /* CONFIG_MEM_ALLOC_PROFILING */
-> >
-> >   static inline void pgalloc_tag_add(struct page *page, struct task_str=
-uct *task,
-> > -                                unsigned int nr) {}
-> > +                                unsigned int nr, gfp_t gfp_flags) {}
-> >   static inline void pgalloc_tag_sub(struct page *page, unsigned int nr=
-) {}
-> >   static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsig=
-ned int nr) {}
-> >
-> > @@ -1867,7 +1867,7 @@ inline void post_alloc_hook(struct page
-> >
-> >       set_page_owner(page, order, gfp_flags);
-> >       page_table_check_alloc(page, order);
-> > -     pgalloc_tag_add(page, current, 1 << order);
-> > +     pgalloc_tag_add(page, current, 1 << order, gfp_flags);
-> >   }
-> >
-> >   static void prep_new_page(struct page *page, unsigned int order, gfp_=
-t gfp_flags,
-> > _
-> >
+Something like the attached - get rid of filemap_splice_read()
+entirely, and just replace it with copy_splice_read().
+
+That also make the whole O_DIRECT and DAX special case just simply go away.
+
+This is - in case there was any question about it - ENTIRELY untested.
+
+It may not compile.
+
+And if it does compile, it may do unspeakable things to your pets.
+
+So think of this as nothing more than a "something like this". It does
+leave "splice_read" around, and it intentionally just does that
+
+   #define filemap_splice_read copy_splice_read
+
+to not have to modify all the existing users one by one.
+
+It would be interesting to hear if there are any actual real loads
+that would ever notice?
+
+                Linus
+
+--000000000000dd10b506534e3005
+Content-Type: text/x-patch; charset="US-ASCII"; name="patch.diff"
+Content-Disposition: attachment; filename="patch.diff"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mpxb1d6s0>
+X-Attachment-Id: f_mpxb1d6s0
+
+IGZzL3NwbGljZS5jICAgICAgICB8ICAgNiAtLQogaW5jbHVkZS9saW51eC9mcy5oIHwgICA0ICst
+CiBtbS9maWxlbWFwLmMgICAgICAgfCAxNDUgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCiBtbS9pbnRlcm5hbC5oICAgICAgfCAgIDYgLS0KIG1tL3NobWVt
+LmMgICAgICAgICB8IDE1OSArLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQogNSBmaWxlcyBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDMxOCBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9mcy9zcGxpY2UuYyBiL2ZzL3NwbGljZS5jCmluZGV4IDlk
+OGY2M2UyZmQxYS4uMzcxMzZiOWE2NjEyIDEwMDY0NAotLS0gYS9mcy9zcGxpY2UuYworKysgYi9m
+cy9zcGxpY2UuYwpAQCAtOTcxLDEyICs5NzEsNiBAQCBzdGF0aWMgc3NpemVfdCBkb19zcGxpY2Vf
+cmVhZChzdHJ1Y3QgZmlsZSAqaW4sIGxvZmZfdCAqcHBvcywKIAogCWlmICh1bmxpa2VseSghaW4t
+PmZfb3AtPnNwbGljZV9yZWFkKSkKIAkJcmV0dXJuIHdhcm5fdW5zdXBwb3J0ZWQoaW4sICJyZWFk
+Iik7Ci0JLyoKLQkgKiBPX0RJUkVDVCBhbmQgREFYIGRvbid0IGRlYWwgd2l0aCB0aGUgcGFnZWNh
+Y2hlLCBzbyB3ZSBhbGxvY2F0ZSBhCi0JICogYnVmZmVyLCBjb3B5IGludG8gaXQgYW5kIHNwbGlj
+ZSB0aGF0IGludG8gdGhlIHBpcGUuCi0JICovCi0JaWYgKChpbi0+Zl9mbGFncyAmIE9fRElSRUNU
+KSB8fCBJU19EQVgoaW4tPmZfbWFwcGluZy0+aG9zdCkpCi0JCXJldHVybiBjb3B5X3NwbGljZV9y
+ZWFkKGluLCBwcG9zLCBwaXBlLCBsZW4sIGZsYWdzKTsKIAlyZXR1cm4gaW4tPmZfb3AtPnNwbGlj
+ZV9yZWFkKGluLCBwcG9zLCBwaXBlLCBsZW4sIGZsYWdzKTsKIH0KIApkaWZmIC0tZ2l0IGEvaW5j
+bHVkZS9saW51eC9mcy5oIGIvaW5jbHVkZS9saW51eC9mcy5oCmluZGV4IDExNTU5YzUxM2RmYi4u
+ZTYyM2MyODA0NDY4IDEwMDY0NAotLS0gYS9pbmNsdWRlL2xpbnV4L2ZzLmgKKysrIGIvaW5jbHVk
+ZS9saW51eC9mcy5oCkBAIC0zMDcyLDkgKzMwNzIsNyBAQCBzc2l6ZV90IHZmc19pb2NiX2l0ZXJf
+d3JpdGUoc3RydWN0IGZpbGUgKmZpbGUsIHN0cnVjdCBraW9jYiAqaW9jYiwKIAkJCSAgICBzdHJ1
+Y3QgaW92X2l0ZXIgKml0ZXIpOwogCiAvKiBmcy9zcGxpY2UuYyAqLwotc3NpemVfdCBmaWxlbWFw
+X3NwbGljZV9yZWFkKHN0cnVjdCBmaWxlICppbiwgbG9mZl90ICpwcG9zLAotCQkJICAgIHN0cnVj
+dCBwaXBlX2lub2RlX2luZm8gKnBpcGUsCi0JCQkgICAgc2l6ZV90IGxlbiwgdW5zaWduZWQgaW50
+IGZsYWdzKTsKKyNkZWZpbmUgZmlsZW1hcF9zcGxpY2VfcmVhZCBjb3B5X3NwbGljZV9yZWFkCiBz
+c2l6ZV90IGNvcHlfc3BsaWNlX3JlYWQoc3RydWN0IGZpbGUgKmluLCBsb2ZmX3QgKnBwb3MsCiAJ
+CQkgc3RydWN0IHBpcGVfaW5vZGVfaW5mbyAqcGlwZSwKIAkJCSBzaXplX3QgbGVuLCB1bnNpZ25l
+ZCBpbnQgZmxhZ3MpOwpkaWZmIC0tZ2l0IGEvbW0vZmlsZW1hcC5jIGIvbW0vZmlsZW1hcC5jCmlu
+ZGV4IDRlNjM2NjQ3MTAwYy4uYzBkYmNiYjg0ZGJhIDEwMDY0NAotLS0gYS9tbS9maWxlbWFwLmMK
+KysrIGIvbW0vZmlsZW1hcC5jCkBAIC0yOTk5LDE1MSArMjk5OSw2IEBAIGdlbmVyaWNfZmlsZV9y
+ZWFkX2l0ZXIoc3RydWN0IGtpb2NiICppb2NiLCBzdHJ1Y3QgaW92X2l0ZXIgKml0ZXIpCiB9CiBF
+WFBPUlRfU1lNQk9MKGdlbmVyaWNfZmlsZV9yZWFkX2l0ZXIpOwogCi0vKgotICogU3BsaWNlIHN1
+YnBhZ2VzIGZyb20gYSBmb2xpbyBpbnRvIGEgcGlwZS4KLSAqLwotc2l6ZV90IHNwbGljZV9mb2xp
+b19pbnRvX3BpcGUoc3RydWN0IHBpcGVfaW5vZGVfaW5mbyAqcGlwZSwKLQkJCSAgICAgIHN0cnVj
+dCBmb2xpbyAqZm9saW8sIGxvZmZfdCBmcG9zLCBzaXplX3Qgc2l6ZSkKLXsKLQlzdHJ1Y3QgcGFn
+ZSAqcGFnZTsKLQlzaXplX3Qgc3BsaWNlZCA9IDAsIG9mZnNldCA9IG9mZnNldF9pbl9mb2xpbyhm
+b2xpbywgZnBvcyk7Ci0KLQlwYWdlID0gZm9saW9fcGFnZShmb2xpbywgb2Zmc2V0IC8gUEFHRV9T
+SVpFKTsKLQlzaXplID0gbWluKHNpemUsIGZvbGlvX3NpemUoZm9saW8pIC0gb2Zmc2V0KTsKLQlv
+ZmZzZXQgJT0gUEFHRV9TSVpFOwotCi0Jd2hpbGUgKHNwbGljZWQgPCBzaXplICYmICFwaXBlX2lz
+X2Z1bGwocGlwZSkpIHsKLQkJc3RydWN0IHBpcGVfYnVmZmVyICpidWYgPSBwaXBlX2hlYWRfYnVm
+KHBpcGUpOwotCQlzaXplX3QgcGFydCA9IG1pbl90KHNpemVfdCwgUEFHRV9TSVpFIC0gb2Zmc2V0
+LCBzaXplIC0gc3BsaWNlZCk7Ci0KLQkJKmJ1ZiA9IChzdHJ1Y3QgcGlwZV9idWZmZXIpIHsKLQkJ
+CS5vcHMJPSAmcGFnZV9jYWNoZV9waXBlX2J1Zl9vcHMsCi0JCQkucGFnZQk9IHBhZ2UsCi0JCQku
+b2Zmc2V0CT0gb2Zmc2V0LAotCQkJLmxlbgk9IHBhcnQsCi0JCX07Ci0JCWZvbGlvX2dldChmb2xp
+byk7Ci0JCXBpcGUtPmhlYWQrKzsKLQkJcGFnZSsrOwotCQlzcGxpY2VkICs9IHBhcnQ7Ci0JCW9m
+ZnNldCA9IDA7Ci0JfQotCi0JcmV0dXJuIHNwbGljZWQ7Ci19Ci0KLS8qKgotICogZmlsZW1hcF9z
+cGxpY2VfcmVhZCAtICBTcGxpY2UgZGF0YSBmcm9tIGEgZmlsZSdzIHBhZ2VjYWNoZSBpbnRvIGEg
+cGlwZQotICogQGluOiBUaGUgZmlsZSB0byByZWFkIGZyb20KLSAqIEBwcG9zOiBQb2ludGVyIHRv
+IHRoZSBmaWxlIHBvc2l0aW9uIHRvIHJlYWQgZnJvbQotICogQHBpcGU6IFRoZSBwaXBlIHRvIHNw
+bGljZSBpbnRvCi0gKiBAbGVuOiBUaGUgYW1vdW50IHRvIHNwbGljZQotICogQGZsYWdzOiBUaGUg
+U1BMSUNFX0ZfKiBmbGFncwotICoKLSAqIFRoaXMgZnVuY3Rpb24gZ2V0cyBmb2xpb3MgZnJvbSBh
+IGZpbGUncyBwYWdlY2FjaGUgYW5kIHNwbGljZXMgdGhlbSBpbnRvIHRoZQotICogcGlwZS4gIFJl
+YWRhaGVhZCB3aWxsIGJlIGNhbGxlZCBhcyBuZWNlc3NhcnkgdG8gZmlsbCBtb3JlIGZvbGlvcy4g
+IFRoaXMgbWF5Ci0gKiBiZSB1c2VkIGZvciBibG9ja2RldnMgYWxzby4KLSAqCi0gKiBSZXR1cm46
+IE9uIHN1Y2Nlc3MsIHRoZSBudW1iZXIgb2YgYnl0ZXMgcmVhZCB3aWxsIGJlIHJldHVybmVkIGFu
+ZCAqQHBwb3MKLSAqIHdpbGwgYmUgdXBkYXRlZCBpZiBhcHByb3ByaWF0ZTsgMCB3aWxsIGJlIHJl
+dHVybmVkIGlmIHRoZXJlIGlzIG5vIG1vcmUgZGF0YQotICogdG8gYmUgcmVhZDsgLUVBR0FJTiB3
+aWxsIGJlIHJldHVybmVkIGlmIHRoZSBwaXBlIGhhZCBubyBzcGFjZSwgYW5kIHNvbWUKLSAqIG90
+aGVyIG5lZ2F0aXZlIGVycm9yIGNvZGUgd2lsbCBiZSByZXR1cm5lZCBvbiBlcnJvci4gIEEgc2hv
+cnQgcmVhZCBtYXkgb2NjdXIKLSAqIGlmIHRoZSBwaXBlIGhhcyBpbnN1ZmZpY2llbnQgc3BhY2Us
+IHdlIHJlYWNoIHRoZSBlbmQgb2YgdGhlIGRhdGEgb3Igd2UgaGl0IGEKLSAqIGhvbGUuCi0gKi8K
+LXNzaXplX3QgZmlsZW1hcF9zcGxpY2VfcmVhZChzdHJ1Y3QgZmlsZSAqaW4sIGxvZmZfdCAqcHBv
+cywKLQkJCSAgICBzdHJ1Y3QgcGlwZV9pbm9kZV9pbmZvICpwaXBlLAotCQkJICAgIHNpemVfdCBs
+ZW4sIHVuc2lnbmVkIGludCBmbGFncykKLXsKLQlzdHJ1Y3QgZm9saW9fYmF0Y2ggZmJhdGNoOwot
+CXN0cnVjdCBraW9jYiBpb2NiOwotCXNpemVfdCB0b3RhbF9zcGxpY2VkID0gMCwgdXNlZCwgbnBh
+Z2VzOwotCWxvZmZfdCBpc2l6ZSwgZW5kX29mZnNldDsKLQlib29sIHdyaXRhYmx5X21hcHBlZDsK
+LQlpbnQgaSwgZXJyb3IgPSAwOwotCi0JaWYgKHVubGlrZWx5KCpwcG9zID49IGluLT5mX21hcHBp
+bmctPmhvc3QtPmlfc2ItPnNfbWF4Ynl0ZXMpKQotCQlyZXR1cm4gMDsKLQotCWluaXRfc3luY19r
+aW9jYigmaW9jYiwgaW4pOwotCWlvY2Iua2lfcG9zID0gKnBwb3M7Ci0KLQkvKiBXb3JrIG91dCBo
+b3cgbXVjaCBkYXRhIHdlIGNhbiBhY3R1YWxseSBhZGQgaW50byB0aGUgcGlwZSAqLwotCXVzZWQg
+PSBwaXBlX2J1Zl91c2FnZShwaXBlKTsKLQlucGFnZXMgPSBtYXhfdChzc2l6ZV90LCBwaXBlLT5t
+YXhfdXNhZ2UgLSB1c2VkLCAwKTsKLQlsZW4gPSBtaW5fdChzaXplX3QsIGxlbiwgbnBhZ2VzICog
+UEFHRV9TSVpFKTsKLQotCWZvbGlvX2JhdGNoX2luaXQoJmZiYXRjaCk7Ci0KLQlkbyB7Ci0JCWNv
+bmRfcmVzY2hlZCgpOwotCi0JCWlmICgqcHBvcyA+PSBpX3NpemVfcmVhZChpbi0+Zl9tYXBwaW5n
+LT5ob3N0KSkKLQkJCWJyZWFrOwotCi0JCWlvY2Iua2lfcG9zID0gKnBwb3M7Ci0JCWVycm9yID0g
+ZmlsZW1hcF9nZXRfcGFnZXMoJmlvY2IsIGxlbiwgJmZiYXRjaCwgdHJ1ZSk7Ci0JCWlmIChlcnJv
+ciA8IDApCi0JCQlicmVhazsKLQotCQkvKgotCQkgKiBpX3NpemUgbXVzdCBiZSBjaGVja2VkIGFm
+dGVyIHdlIGtub3cgdGhlIHBhZ2VzIGFyZSBVcHRvZGF0ZS4KLQkJICoKLQkJICogQ2hlY2tpbmcg
+aV9zaXplIGFmdGVyIHRoZSBjaGVjayBhbGxvd3MgdXMgdG8gY2FsY3VsYXRlCi0JCSAqIHRoZSBj
+b3JyZWN0IHZhbHVlIGZvciAibnIiLCB3aGljaCBtZWFucyB0aGUgemVyby1maWxsZWQKLQkJICog
+cGFydCBvZiB0aGUgcGFnZSBpcyBub3QgY29waWVkIGJhY2sgdG8gdXNlcnNwYWNlICh1bmxlc3MK
+LQkJICogYW5vdGhlciB0cnVuY2F0ZSBleHRlbmRzIHRoZSBmaWxlIC0gdGhpcyBpcyBkZXNpcmVk
+IHRob3VnaCkuCi0JCSAqLwotCQlpc2l6ZSA9IGlfc2l6ZV9yZWFkKGluLT5mX21hcHBpbmctPmhv
+c3QpOwotCQlpZiAodW5saWtlbHkoKnBwb3MgPj0gaXNpemUpKQotCQkJYnJlYWs7Ci0JCWVuZF9v
+ZmZzZXQgPSBtaW5fdChsb2ZmX3QsIGlzaXplLCAqcHBvcyArIGxlbik7Ci0KLQkJLyoKLQkJICog
+T25jZSB3ZSBzdGFydCBjb3B5aW5nIGRhdGEsIHdlIGRvbid0IHdhbnQgdG8gYmUgdG91Y2hpbmcg
+YW55Ci0JCSAqIGNhY2hlbGluZXMgdGhhdCBtaWdodCBiZSBjb250ZW5kZWQ6Ci0JCSAqLwotCQl3
+cml0YWJseV9tYXBwZWQgPSBtYXBwaW5nX3dyaXRhYmx5X21hcHBlZChpbi0+Zl9tYXBwaW5nKTsK
+LQotCQlmb3IgKGkgPSAwOyBpIDwgZm9saW9fYmF0Y2hfY291bnQoJmZiYXRjaCk7IGkrKykgewot
+CQkJc3RydWN0IGZvbGlvICpmb2xpbyA9IGZiYXRjaC5mb2xpb3NbaV07Ci0JCQlzaXplX3QgbjsK
+LQotCQkJaWYgKGZvbGlvX3Bvcyhmb2xpbykgPj0gZW5kX29mZnNldCkKLQkJCQlnb3RvIG91dDsK
+LQkJCWZvbGlvX21hcmtfYWNjZXNzZWQoZm9saW8pOwotCi0JCQkvKgotCQkJICogSWYgdXNlcnMg
+Y2FuIGJlIHdyaXRpbmcgdG8gdGhpcyBmb2xpbyB1c2luZyBhcmJpdHJhcnkKLQkJCSAqIHZpcnR1
+YWwgYWRkcmVzc2VzLCB0YWtlIGNhcmUgb2YgcG90ZW50aWFsIGFsaWFzaW5nCi0JCQkgKiBiZWZv
+cmUgcmVhZGluZyB0aGUgZm9saW8gb24gdGhlIGtlcm5lbCBzaWRlLgotCQkJICovCi0JCQlpZiAo
+d3JpdGFibHlfbWFwcGVkKQotCQkJCWZsdXNoX2RjYWNoZV9mb2xpbyhmb2xpbyk7Ci0KLQkJCW4g
+PSBtaW5fdChsb2ZmX3QsIGxlbiwgaXNpemUgLSAqcHBvcyk7Ci0JCQluID0gc3BsaWNlX2ZvbGlv
+X2ludG9fcGlwZShwaXBlLCBmb2xpbywgKnBwb3MsIG4pOwotCQkJaWYgKCFuKQotCQkJCWdvdG8g
+b3V0OwotCQkJbGVuIC09IG47Ci0JCQl0b3RhbF9zcGxpY2VkICs9IG47Ci0JCQkqcHBvcyArPSBu
+OwotCQkJaW4tPmZfcmEucHJldl9wb3MgPSAqcHBvczsKLQkJCWlmIChwaXBlX2lzX2Z1bGwocGlw
+ZSkpCi0JCQkJZ290byBvdXQ7Ci0JCX0KLQotCQlmb2xpb19iYXRjaF9yZWxlYXNlKCZmYmF0Y2gp
+OwotCX0gd2hpbGUgKGxlbik7Ci0KLW91dDoKLQlmb2xpb19iYXRjaF9yZWxlYXNlKCZmYmF0Y2gp
+OwotCWZpbGVfYWNjZXNzZWQoaW4pOwotCi0JcmV0dXJuIHRvdGFsX3NwbGljZWQgPyB0b3RhbF9z
+cGxpY2VkIDogZXJyb3I7Ci19Ci1FWFBPUlRfU1lNQk9MKGZpbGVtYXBfc3BsaWNlX3JlYWQpOwot
+CiBzdGF0aWMgaW5saW5lIGxvZmZfdCBmb2xpb19zZWVrX2hvbGVfZGF0YShzdHJ1Y3QgeGFfc3Rh
+dGUgKnhhcywKIAkJc3RydWN0IGFkZHJlc3Nfc3BhY2UgKm1hcHBpbmcsIHN0cnVjdCBmb2xpbyAq
+Zm9saW8sCiAJCWxvZmZfdCBzdGFydCwgbG9mZl90IGVuZCwgYm9vbCBzZWVrX2RhdGEpCmRpZmYg
+LS1naXQgYS9tbS9pbnRlcm5hbC5oIGIvbW0vaW50ZXJuYWwuaAppbmRleCA1YTJkZGNmNjhlMGIu
+LmMwY2EwZGY1YWM3ZSAxMDA2NDQKLS0tIGEvbW0vaW50ZXJuYWwuaAorKysgYi9tbS9pbnRlcm5h
+bC5oCkBAIC0xNTIxLDEyICsxNTIxLDYgQEAgc3RydWN0IG1pZ3JhdGlvbl90YXJnZXRfY29udHJv
+bCB7CiAJZW51bSBtaWdyYXRlX3JlYXNvbiByZWFzb247CiB9OwogCi0vKgotICogbW0vZmlsZW1h
+cC5jCi0gKi8KLXNpemVfdCBzcGxpY2VfZm9saW9faW50b19waXBlKHN0cnVjdCBwaXBlX2lub2Rl
+X2luZm8gKnBpcGUsCi0JCQkgICAgICBzdHJ1Y3QgZm9saW8gKmZvbGlvLCBsb2ZmX3QgZnBvcywg
+c2l6ZV90IHNpemUpOwotCiAvKgogICogbW0vdm1hbGxvYy5jCiAgKi8KZGlmZiAtLWdpdCBhL21t
+L3NobWVtLmMgYi9tbS9zaG1lbS5jCmluZGV4IDNiNWRjMjFiMzIzYy4uOTIxMzhiNzI3N2I1IDEw
+MDY0NAotLS0gYS9tbS9zaG1lbS5jCisrKyBiL21tL3NobWVtLmMKQEAgLTM0ODEsMTYzICszNDgx
+LDYgQEAgc3RhdGljIHNzaXplX3Qgc2htZW1fZmlsZV93cml0ZV9pdGVyKHN0cnVjdCBraW9jYiAq
+aW9jYiwgc3RydWN0IGlvdl9pdGVyICpmcm9tKQogCXJldHVybiByZXQ7CiB9CiAKLXN0YXRpYyBi
+b29sIHplcm9fcGlwZV9idWZfZ2V0KHN0cnVjdCBwaXBlX2lub2RlX2luZm8gKnBpcGUsCi0JCQkg
+ICAgICBzdHJ1Y3QgcGlwZV9idWZmZXIgKmJ1ZikKLXsKLQlyZXR1cm4gdHJ1ZTsKLX0KLQotc3Rh
+dGljIHZvaWQgemVyb19waXBlX2J1Zl9yZWxlYXNlKHN0cnVjdCBwaXBlX2lub2RlX2luZm8gKnBp
+cGUsCi0JCQkJICBzdHJ1Y3QgcGlwZV9idWZmZXIgKmJ1ZikKLXsKLX0KLQotc3RhdGljIGJvb2wg
+emVyb19waXBlX2J1Zl90cnlfc3RlYWwoc3RydWN0IHBpcGVfaW5vZGVfaW5mbyAqcGlwZSwKLQkJ
+CQkgICAgc3RydWN0IHBpcGVfYnVmZmVyICpidWYpCi17Ci0JcmV0dXJuIGZhbHNlOwotfQotCi1z
+dGF0aWMgY29uc3Qgc3RydWN0IHBpcGVfYnVmX29wZXJhdGlvbnMgemVyb19waXBlX2J1Zl9vcHMg
+PSB7Ci0JLnJlbGVhc2UJPSB6ZXJvX3BpcGVfYnVmX3JlbGVhc2UsCi0JLnRyeV9zdGVhbAk9IHpl
+cm9fcGlwZV9idWZfdHJ5X3N0ZWFsLAotCS5nZXQJCT0gemVyb19waXBlX2J1Zl9nZXQsCi19Owot
+Ci1zdGF0aWMgc2l6ZV90IHNwbGljZV96ZXJvcGFnZV9pbnRvX3BpcGUoc3RydWN0IHBpcGVfaW5v
+ZGVfaW5mbyAqcGlwZSwKLQkJCQkJbG9mZl90IGZwb3MsIHNpemVfdCBzaXplKQotewotCXNpemVf
+dCBvZmZzZXQgPSBmcG9zICYgflBBR0VfTUFTSzsKLQotCXNpemUgPSBtaW5fdChzaXplX3QsIHNp
+emUsIFBBR0VfU0laRSAtIG9mZnNldCk7Ci0KLQlpZiAoIXBpcGVfaXNfZnVsbChwaXBlKSkgewot
+CQlzdHJ1Y3QgcGlwZV9idWZmZXIgKmJ1ZiA9IHBpcGVfaGVhZF9idWYocGlwZSk7Ci0KLQkJKmJ1
+ZiA9IChzdHJ1Y3QgcGlwZV9idWZmZXIpIHsKLQkJCS5vcHMJPSAmemVyb19waXBlX2J1Zl9vcHMs
+Ci0JCQkucGFnZQk9IFpFUk9fUEFHRSgwKSwKLQkJCS5vZmZzZXQJPSBvZmZzZXQsCi0JCQkubGVu
+CT0gc2l6ZSwKLQkJfTsKLQkJcGlwZS0+aGVhZCsrOwotCX0KLQotCXJldHVybiBzaXplOwotfQot
+Ci1zdGF0aWMgc3NpemVfdCBzaG1lbV9maWxlX3NwbGljZV9yZWFkKHN0cnVjdCBmaWxlICppbiwg
+bG9mZl90ICpwcG9zLAotCQkJCSAgICAgIHN0cnVjdCBwaXBlX2lub2RlX2luZm8gKnBpcGUsCi0J
+CQkJICAgICAgc2l6ZV90IGxlbiwgdW5zaWduZWQgaW50IGZsYWdzKQotewotCXN0cnVjdCBpbm9k
+ZSAqaW5vZGUgPSBmaWxlX2lub2RlKGluKTsKLQlzdHJ1Y3QgYWRkcmVzc19zcGFjZSAqbWFwcGlu
+ZyA9IGlub2RlLT5pX21hcHBpbmc7Ci0Jc3RydWN0IGZvbGlvICpmb2xpbyA9IE5VTEw7Ci0Jc2l6
+ZV90IHRvdGFsX3NwbGljZWQgPSAwLCB1c2VkLCBucGFnZXMsIG4sIHBhcnQ7Ci0JbG9mZl90IGlz
+aXplOwotCWludCBlcnJvciA9IDA7Ci0KLQkvKiBXb3JrIG91dCBob3cgbXVjaCBkYXRhIHdlIGNh
+biBhY3R1YWxseSBhZGQgaW50byB0aGUgcGlwZSAqLwotCXVzZWQgPSBwaXBlX2J1Zl91c2FnZShw
+aXBlKTsKLQlucGFnZXMgPSBtYXhfdChzc2l6ZV90LCBwaXBlLT5tYXhfdXNhZ2UgLSB1c2VkLCAw
+KTsKLQlsZW4gPSBtaW5fdChzaXplX3QsIGxlbiwgbnBhZ2VzICogUEFHRV9TSVpFKTsKLQotCWRv
+IHsKLQkJYm9vbCBmYWxsYmFja19wYWdlX3NwbGljZSA9IGZhbHNlOwotCQlzdHJ1Y3QgcGFnZSAq
+cGFnZSA9IE5VTEw7Ci0JCXBnb2ZmX3QgaW5kZXg7Ci0JCXNpemVfdCBzaXplOwotCi0JCWlmICgq
+cHBvcyA+PSBpX3NpemVfcmVhZChpbm9kZSkpCi0JCQlicmVhazsKLQotCQlpbmRleCA9ICpwcG9z
+ID4+IFBBR0VfU0hJRlQ7Ci0JCWVycm9yID0gc2htZW1fZ2V0X2ZvbGlvKGlub2RlLCBpbmRleCwg
+MCwgJmZvbGlvLCBTR1BfUkVBRCk7Ci0JCWlmIChlcnJvcikgewotCQkJaWYgKGVycm9yID09IC1F
+SU5WQUwpCi0JCQkJZXJyb3IgPSAwOwotCQkJYnJlYWs7Ci0JCX0KLQkJaWYgKGZvbGlvKSB7Ci0J
+CQlmb2xpb191bmxvY2soZm9saW8pOwotCi0JCQlwYWdlID0gZm9saW9fZmlsZV9wYWdlKGZvbGlv
+LCBpbmRleCk7Ci0JCQlpZiAoUGFnZUhXUG9pc29uKHBhZ2UpKSB7Ci0JCQkJZXJyb3IgPSAtRUlP
+OwotCQkJCWJyZWFrOwotCQkJfQotCi0JCQlpZiAoZm9saW9fdGVzdF9sYXJnZShmb2xpbykgJiYK
+LQkJCSAgICBmb2xpb190ZXN0X2hhc19od3BvaXNvbmVkKGZvbGlvKSkKLQkJCQlmYWxsYmFja19w
+YWdlX3NwbGljZSA9IHRydWU7Ci0JCX0KLQotCQkvKgotCQkgKiBpX3NpemUgbXVzdCBiZSBjaGVj
+a2VkIGFmdGVyIHdlIGtub3cgdGhlIHBhZ2VzIGFyZSBVcHRvZGF0ZS4KLQkJICoKLQkJICogQ2hl
+Y2tpbmcgaV9zaXplIGFmdGVyIHRoZSBjaGVjayBhbGxvd3MgdXMgdG8gY2FsY3VsYXRlCi0JCSAq
+IHRoZSBjb3JyZWN0IHZhbHVlIGZvciAibnIiLCB3aGljaCBtZWFucyB0aGUgemVyby1maWxsZWQK
+LQkJICogcGFydCBvZiB0aGUgcGFnZSBpcyBub3QgY29waWVkIGJhY2sgdG8gdXNlcnNwYWNlICh1
+bmxlc3MKLQkJICogYW5vdGhlciB0cnVuY2F0ZSBleHRlbmRzIHRoZSBmaWxlIC0gdGhpcyBpcyBk
+ZXNpcmVkIHRob3VnaCkuCi0JCSAqLwotCQlpc2l6ZSA9IGlfc2l6ZV9yZWFkKGlub2RlKTsKLQkJ
+aWYgKHVubGlrZWx5KCpwcG9zID49IGlzaXplKSkKLQkJCWJyZWFrOwotCQkvKgotCQkgKiBGYWxs
+YmFjayB0byBQQUdFX1NJWkUgc3BsaWNlIGlmIHRoZSBsYXJnZSBmb2xpbyBoYXMgaHdwb2lzb25l
+ZAotCQkgKiBwYWdlcy4KLQkJICovCi0JCXNpemUgPSBsZW47Ci0JCWlmICh1bmxpa2VseShmYWxs
+YmFja19wYWdlX3NwbGljZSkpIHsKLQkJCXNpemVfdCBvZmZzZXQgPSAqcHBvcyAmIH5QQUdFX01B
+U0s7Ci0KLQkJCXNpemUgPSB1bWluKHNpemUsIFBBR0VfU0laRSAtIG9mZnNldCk7Ci0JCX0KLQkJ
+cGFydCA9IG1pbl90KGxvZmZfdCwgaXNpemUgLSAqcHBvcywgc2l6ZSk7Ci0KLQkJaWYgKGZvbGlv
+KSB7Ci0JCQkvKgotCQkJICogSWYgdXNlcnMgY2FuIGJlIHdyaXRpbmcgdG8gdGhpcyBwYWdlIHVz
+aW5nIGFyYml0cmFyeQotCQkJICogdmlydHVhbCBhZGRyZXNzZXMsIHRha2UgY2FyZSBhYm91dCBw
+b3RlbnRpYWwgYWxpYXNpbmcKLQkJCSAqIGJlZm9yZSByZWFkaW5nIHRoZSBwYWdlIG9uIHRoZSBr
+ZXJuZWwgc2lkZS4KLQkJCSAqLwotCQkJaWYgKG1hcHBpbmdfd3JpdGFibHlfbWFwcGVkKG1hcHBp
+bmcpKSB7Ci0JCQkJaWYgKGxpa2VseSghZmFsbGJhY2tfcGFnZV9zcGxpY2UpKQotCQkJCQlmbHVz
+aF9kY2FjaGVfZm9saW8oZm9saW8pOwotCQkJCWVsc2UKLQkJCQkJZmx1c2hfZGNhY2hlX3BhZ2Uo
+cGFnZSk7Ci0JCQl9Ci0JCQlmb2xpb19tYXJrX2FjY2Vzc2VkKGZvbGlvKTsKLQkJCS8qCi0JCQkg
+KiBPaywgd2UgaGF2ZSB0aGUgcGFnZSwgYW5kIGl0J3MgdXAtdG8tZGF0ZSwgc28gd2UgY2FuCi0J
+CQkgKiBub3cgc3BsaWNlIGl0IGludG8gdGhlIHBpcGUuCi0JCQkgKi8KLQkJCW4gPSBzcGxpY2Vf
+Zm9saW9faW50b19waXBlKHBpcGUsIGZvbGlvLCAqcHBvcywgcGFydCk7Ci0JCQlmb2xpb19wdXQo
+Zm9saW8pOwotCQkJZm9saW8gPSBOVUxMOwotCQl9IGVsc2UgewotCQkJbiA9IHNwbGljZV96ZXJv
+cGFnZV9pbnRvX3BpcGUocGlwZSwgKnBwb3MsIHBhcnQpOwotCQl9Ci0KLQkJaWYgKCFuKQotCQkJ
+YnJlYWs7Ci0JCWxlbiAtPSBuOwotCQl0b3RhbF9zcGxpY2VkICs9IG47Ci0JCSpwcG9zICs9IG47
+Ci0JCWluLT5mX3JhLnByZXZfcG9zID0gKnBwb3M7Ci0JCWlmIChwaXBlX2lzX2Z1bGwocGlwZSkp
+Ci0JCQlicmVhazsKLQotCQljb25kX3Jlc2NoZWQoKTsKLQl9IHdoaWxlIChsZW4pOwotCi0JaWYg
+KGZvbGlvKQotCQlmb2xpb19wdXQoZm9saW8pOwotCi0JZmlsZV9hY2Nlc3NlZChpbik7Ci0JcmV0
+dXJuIHRvdGFsX3NwbGljZWQgPyB0b3RhbF9zcGxpY2VkIDogZXJyb3I7Ci19Ci0KIHN0YXRpYyBs
+b2ZmX3Qgc2htZW1fZmlsZV9sbHNlZWsoc3RydWN0IGZpbGUgKmZpbGUsIGxvZmZfdCBvZmZzZXQs
+IGludCB3aGVuY2UpCiB7CiAJc3RydWN0IGFkZHJlc3Nfc3BhY2UgKm1hcHBpbmcgPSBmaWxlLT5m
+X21hcHBpbmc7CkBAIC01MjIzLDcgKzUwNjYsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGZpbGVf
+b3BlcmF0aW9ucyBzaG1lbV9maWxlX29wZXJhdGlvbnMgPSB7CiAJLnJlYWRfaXRlcgk9IHNobWVt
+X2ZpbGVfcmVhZF9pdGVyLAogCS53cml0ZV9pdGVyCT0gc2htZW1fZmlsZV93cml0ZV9pdGVyLAog
+CS5mc3luYwkJPSBub29wX2ZzeW5jLAotCS5zcGxpY2VfcmVhZAk9IHNobWVtX2ZpbGVfc3BsaWNl
+X3JlYWQsCisJLnNwbGljZV9yZWFkCT0gY29weV9zcGxpY2VfcmVhZCwKIAkuc3BsaWNlX3dyaXRl
+CT0gaXRlcl9maWxlX3NwbGljZV93cml0ZSwKIAkuZmFsbG9jYXRlCT0gc2htZW1fZmFsbG9jYXRl
+LAogCS5zZXRsZWFzZQk9IGdlbmVyaWNfc2V0bGVhc2UsCg==
+--000000000000dd10b506534e3005--
 
