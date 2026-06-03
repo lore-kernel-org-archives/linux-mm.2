@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8409ECD6E64
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 10:10:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DE5CD6E64
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 10:11:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B36356B0088; Wed,  3 Jun 2026 06:10:50 -0400 (EDT)
+	id D0BC46B008A; Wed,  3 Jun 2026 06:11:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABFF46B008A; Wed,  3 Jun 2026 06:10:50 -0400 (EDT)
+	id C95206B008C; Wed,  3 Jun 2026 06:11:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 987BB6B008C; Wed,  3 Jun 2026 06:10:50 -0400 (EDT)
+	id B842B6B0092; Wed,  3 Jun 2026 06:11:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 82CE16B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:10:50 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2BB3A1202C9
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:10:50 +0000 (UTC)
-X-FDA: 84838182660.18.E7813E6
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 70DBD40004
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:10:48 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=265URT4J;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=502Hgw1a;
-	spf=pass (imf27.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A8EBF6B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:11:19 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A3D21C1304
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:11:19 +0000 (UTC)
+X-FDA: 84838183878.05.72F5202
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 99BBB80003
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:11:17 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fIZnn70M;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780481448;
+	s=arc-20220608; t=1780481477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=74319bEbncavggvpWbOpjODJ6gjGjA+T1QPaKp1+0mA=;
-	b=oS1dbcNe96PUd1HxR3FIA7nSjZ51PvD62xBfZggboBfgDS2d+lB92GGW41ugG3xJoOeQ8C
-	/5j5vkn9fVNFY6fiEpgvIK3ekVBgMxY7QiXkV9dkyizluFU1ue7xJ0nByVyrd6/vVn8jRi
-	BjnqWE1ptbG8aFgGTD5QW9w+DEJQLws=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780481448;
-	b=NsCtByVALUsHj1FDwfYcGNPV8If7DUwZOsYw1Yg8zEY51ZlJdXx74nC9rxREn5lrD4LpiR
-	5sFleS0IxYrq3RJ2XbzLDkUvbRJdPMAxw7fre9hdeTEMchvGSXwk3urCf4GLW4mWJKENtg
-	MiTOyPUTT8avR8I/K0yFKOwGKYn4Nz8=
+	bh=6CrNVQ8IBF7mJpxU4e+u8veQd433I9uH8sSfHrF0nKU=;
+	b=0ba33iM1oZ63jrcn1O2jYUInC4Ooy5hBHFX6UgqZZ8ntMRTbTt03z5RkroLavBIHv2bKY+
+	75bXro1xtApKA7+IxLvF4ZX7cW5rPGax9O53ODVMz2M793v3GWum7ImrTctEuxxcNyI6lZ
+	v6uOGufqKm3c4XORnXwpNUWNMcKmAUU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=265URT4J;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=502Hgw1a;
-	spf=pass (imf27.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-Date: Wed, 3 Jun 2026 12:10:46 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1780481446;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fIZnn70M;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780481477;
+	b=QhallofHIiNY7ypZIRk1lJnkibEDj8fFk8jpUVcbCkV2y21prjQRaas6Ip+HAGINvk01kG
+	McN4TMATStYKsxEEY2YHfKs2ZW1cNKsTjGJK1orXJj/8UE3BkiyNVrYYr41GASEBLIYPs/
+	iDkk85+wF7ulsYkc3O7KdxVWYDdqkqI=
+Message-ID: <68ca2764-ca7c-482e-8e78-8c112ce01f99@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780481475;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=74319bEbncavggvpWbOpjODJ6gjGjA+T1QPaKp1+0mA=;
-	b=265URT4JkP2GyT0dpaImmm3SCJ6AJ7Py50ajDyVvP3k1TFUTrdGVHL9KoqasEyMGFoFBDX
-	he32HPTfpJr+NMxc15u2SStlFs97qNbNWH7iwgnuM7YIQ5mTcW/7gdXw0HAmx5eVWaMpRg
-	A67iYWVMT2VEMmxDY4uWf5O7kCng46ZrhXdR2i/CqcT+A6DY0uEl4qncpH+BKjxIzSCK0X
-	Fim/KhjZYbz3BjJwAkjGBDJsWUNT3WemeyZ8D0rIpCoiQCkPFOVEBuD9gF+S+7YH9asum0
-	JY/5ZuRLWYb/40bpZaTl+4SBEau1X36lvE6rTd4oMV9fJdeInkWEpOhdbbswKw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1780481446;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=74319bEbncavggvpWbOpjODJ6gjGjA+T1QPaKp1+0mA=;
-	b=502Hgw1aIpcBjHJJ5j/xo5OHDR2/A/dE+sUm0y+QLNCHR7Px8OKaUTJY7XvXzkqPUxG8J4
-	xwl6UOb2dygG2IDA==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Frederic Weisbecker <frederic@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Nam Cao <namcao@linutronix.de>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v3 0/6] vdso/datastore: Allow prefaulting by mlockall()
-Message-ID: <20260603114217-9eaaa386-a766-4336-8930-250c2ff91d19@linutronix.de>
-References: <20260518-vdso-mlockall-v3-0-bf4f2af2b41f@linutronix.de>
- <fba91f44-34c6-444b-b049-50f72e059d39@kernel.org>
+	bh=6CrNVQ8IBF7mJpxU4e+u8veQd433I9uH8sSfHrF0nKU=;
+	b=fIZnn70MFJFtSsMFPkgs+Fv+g0kizUEPLIjo6aWTQWcbFMleyzoP3NGdSMWey53IBZJ6BL
+	933IzFB1daK0zrKn/VrPYJibB0+74lHr9frtFkWnTfZbJqaEqpC41aiBvU0RwwgMbIEoS8
+	8agagZWYtGlgr4/yw+KkGXIRbqGZmkY=
+Date: Wed, 3 Jun 2026 11:10:45 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fba91f44-34c6-444b-b049-50f72e059d39@kernel.org>
+Subject: Re: [PATCH v6 2/2] mm: use mapping_max_folio_order() for
+ force_thp_readahead order
+To: Pedro Falcato <pfalcato@suse.de>, Jan Kara <jack@suse.cz>
+Cc: willy@infradead.org, Andrew Morton <akpm@linux-foundation.org>,
+ david@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org, r@hev.cc,
+ Andrew Donnellan <andrew+kernel@donnellan.id.au>, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
+ catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
+ kevin.brodsky@arm.com, lance.yang@linux.dev,
+ "Liam R. Howlett" <liam@infradead.org>,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
+ npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
+ rppt@kernel.org, surenb@google.com, vbabka@kernel.org,
+ Al Viro <viro@zeniv.linux.org.uk>, wilts.infradead.org@pedro-suse.lan,
+ ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+ kernel-team@meta.com
+References: <20260528165635.2068012-1-usama.arif@linux.dev>
+ <20260528165635.2068012-3-usama.arif@linux.dev>
+ <ahlh2vdHEGo6ZSot@pedro-suse.lan>
+ <cc9a1cf7-7b96-439a-b0be-ecdcf27b5da5@linux.dev>
+ <ahmSolHvUChl-3vM@pedro-suse.lan>
+ <185f1caf-b33d-4467-beb5-51bd8520ac78@linux.dev>
+ <u52xvwk2fjjk2izdb4wvuqq2zhc5neb4q6usimcxejluuyngxw@d64sc6rvojyp>
+ <ah8Qcxuugn5tTilK@pedro-suse>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <ah8Qcxuugn5tTilK@pedro-suse>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 99BBB80003
+X-Stat-Signature: hpdt7e3frngxks9rfiox4i4cmf6diycs
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 70DBD40004
-X-Stat-Signature: oitwo1u3rzhf7ft4gz9cbkya59eax4ey
-X-HE-Tag: 1780481448-592566
-X-HE-Meta: U2FsdGVkX1+Dda3TMJStY3xyHtcvwtFKQKYSshmMBxg8SyLOq3/LQXsrCTQK2jwpch1xqFQchuTgnukOaNnEU5RKsvVk0CBgYmU7ByEj8s0V25E0wxD4itV4EwQAqefg1QCOxJttyJ6oSDERqreubS7BPH2U8Q95rokST2PmjE87hPHWwWT4c3f4/1h9z8ppHsx/aLdc7CYU/kpE046uBynruOpDD9AAx+6AzeZumweu89vv3Y9KUoNt9K8bbRpqEqPcnO1QXSEmu+bIsALfVx3B50L/u9MbQ4WQTgjPE5u0jcE0gT8mCx5c6TrDNHLExyJSDdcGclC4NdBOwyLbbcACVT/WrFYTQaVUFtWZE82GNZlDlcUOw9REPTpGDKH7hFMFB3IdqYUQTiwtogChGN0mOlYIsfdyjne/rsDaeDYNErdSgP35z+2MH2cj4rK1MHR3fcZZ/TI78EBQeRyFzwogR6jKHt07aejIsODlruHYCdoKtqVsL5bmZ9tTB3d3I4YKCNUBgVRAWD0f84Hwl70YHYwa3/xqQmQeWZxfhncUwNtW3cdnGgqQDXir6Xjk+WLYXTsmPPokpbtTWD6mwq+3B9BtCc4RNHQcHpSXxUNqsATa3xtfe7UPDh7vS6ce71JuAVF6je5qBog7h/mNORTGBNQTukRLb3HIqMT0efplWEC2QUGRinGGMSCn+hMFL2WLdhC6kuBC2RRuFkphPrwM7FmC9/BaEpGDpSKFx/0fGJuPOs92mIjuYuBRP75XYt9oyjLcKuFwzjagoVdktXmNs2nB2FmO+uu4rpKI4Tfmpp8wIkzw2eFBbdbvw4iQkO4lKhlqV2lo2ScDvGH9bY4QEikT3S+T1+wI7Ic954zcre/70LGcMv08DwUfw4YbWrv6RMS9vLPHuB1Z41vGxKf+574ApS/Lsn9delRfkmg62znPl3ReI2BZB/KEsDID27GAHoNUVBLGXe378e8
- Dh+QFr5a
- kmuhu9J+iaCmakmsrLTiy80yMTiRrKsrcbYW7I7ITVer92tzoiqPKyxk8MT/idUmwVcYMhYwrqO3m1WNSysgLe25P2NYLJVpuyZbkKOmSR9y+vSM3m0grMiLUSY9Gc9YUSwiex83reUk4CgN65UPsWXHMBnASRH+9suFfnWMSWfmoIf58G8oCIze0cmTtO4TRXVhtW5dhTLEf83DDBW2J+tvm/0wocCX1ITHnM9NLMkHtfX7BVRNwWqyk8B+pvPMzbOnEUwumd4GK55gfu4u7xFkb0NCNdG1cb22fTzcKDpnYbXtU60Iup7Sjja1X6KRP6fPprwBJH3WbdciYT23oK9z91zl1u9mLzzsO3LP5svxq1hIE7Ymxp9JEOZKh0VH70arhUphg9KO2feEldIMXTjzmLGdvU02wUJWOa7K+9bOnsjm5Oq/+vtz1nw==
+X-HE-Tag: 1780481477-888145
+X-HE-Meta: U2FsdGVkX18fCcXNjfsunK4Euvu1WzdQW2SkJh+iMXNKtLMfuUKmqqQUlVGSI7XN9/gYpYzhQY3UZlo78SdWPCh356mWfweo4pAESx7I1SxwWLI3gBCx07uYvl9tJE91UOBs49ekFfAWMnGA0xU2DiHyOWpJ81+LfEA8nV4dRpeL1z6b9eQ1Nm1wkqfJ6UDxbxpilQJZQls+TlUo9DR9zQZIarY8h4jkonLchTFaF4BrEdQhPNVgZBCVZWDKRaaJJlagt6IlggagWS5gGlffjBAz/GOChGTjrb4HnRxAdX8FeMM86dWWHSfWkzlis+KZnuT6w5vZWknBoVKuO63+AoAuyxMkQTirXB6m7TtNl7sOyLIi3kiWsUJ6UR2jnaMm7A84hx5XUpPfJqrn6B6cT80u2/6Q7zW4snudrQa335IGjWU//dK2lCMJJc9UuLkiu7SWw6uoN6x1JMluroJuJ8s9dLilGkW+EZCX88ipzjJC+XzbmbyRfmXC/PATs0ByN4cxUtPAt/vBYtI1Ah3JtoHxEEv9HnE3/K/KlIsb3hiiSiUGsypTur7SeQWmHTEnNy7G9HHPASQSLvJFySd+k5kyC9KLoVG4ZWCP3GIPmXPDnT9hlBlEZzeplGOkuKj6ddBdi1GEg7d/fEsgz1IQS9/hzvwZHAO/l5Yp6IGWPms3BCxIhDel4Ue3e2eLCmksgTF9M1h+daxhfi2xGjdPV9ilq3oLTyM+nEjKO3GpDkSRDlaD/Bk3Xfo9XlXywosxsKhCQWniD0dSpFIcPmgv5GCgxtMxFf/ngZ3WPtXRF3IPCEwL91bb1F50/GXrhtMXnrMCh39dgXeissMf9oADXtfSf6qBZjIj1J0MWPtbPjct97VLPnDAW3NB9lwDY8iXWRtZyg4xRW0soyAKFdE3gxqeNN0+osy9ZATKtc8S4JSoNz8afXVj242DBTffTj4gmM6zFJ+mzpWJXv5g7Dc
+ As/ld9e+
+ EyxChcd2Fk/6cTEjicQRPFfldbNqnRYtDwkdQ7oqi4xhN3bRF4yr8A7O87uV7Iy95FarUhoarNzbFDy0zGuywXCdsSxJuoSJMS5ulf/UFpQFGRvcnNHJ7FM028KigoRXXkZb82ekVfpNU503d6xUpV1T4BmAgrGzcfXbFRpfGfKmjn+4IlDCQB/b49iNmMJhRpIqqN/hB9oJX5Q825fDMfNDSWJjZb6Bj7F8vmbOBHcCQOgioOLV44ZyswIC3sSoCvZlnLEZVfKrNC3TJtzllTg56d1k0g6oJIIz5/nAHY49+6PB8GbGkWByyRgEaoT4b1LE1VGtNiVQR7Gc63sJMk6jETlX0TQrsFTB0WDFfDtaRS2CvkSiDnqb48Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,59 +109,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 08:41:31PM +0200, David Hildenbrand (Arm) wrote:
-> On 5/18/26 11:49, Thomas Weißschuh wrote:
-> > While mlockall() is meant to lock page *memory*, effectively it will
-> > also create and lock the corresponding page table entries.
-> > Latency-sensitive applications expect not to experience any pagefaults
-> > after calling mlockall(). However mlockall() ignores VM_IO mappings,
-> > which is used by the generic vDSO datastore.
-> > While the fault handler itself is very fast, going through the full
-> > pagefault exception handling is much slower, on the order of 20us in a
-> > test machine.
-> > 
-> > Since the memory behind the datastore mappings is always present and
-> > accessible it is not necessary to use VM_IO for them.
+
+
+On 02/06/2026 18:35, Pedro Falcato wrote:
+> On Sat, May 30, 2026 at 05:16:29PM +0200, Jan Kara wrote:
+>> On Fri 29-05-26 15:11:54, Usama Arif wrote:
+>>> On 29/05/2026 14:40, Pedro Falcato wrote:
+>>>> On Fri, May 29, 2026 at 01:19:03PM +0100, Usama Arif wrote:
+>>>>>
+>>>>> which means mapping_max_folio_order(mapping) <= MAX_PAGECACHE_ORDER <= HPAGE_PMD_ORDER is always
+>>>>> true, and you dont need the min3(..) in your diff.
+>>>>>
+>>>>> Now the question is if then why not just do:
+>>>>>
+>>>>> 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE)) {
+>>>>> 		if (mapping_large_folio_support(mapping)) {
+>>>>> 			force_thp_readahead = true;
+>>>>> 			thp_order = min_t(unsigned int,
+>>>>> 					  mapping_max_folio_order(mapping),
+>>>>> 					  get_order(SZ_2M));
+>>>>> 		}
+>>>>> 	}
+>>>>>
+>>>>>
+>>>>> This is because this will regress the 16K ARM case where we already got 32M
+>>>>> folios. Someone might upgrade the kernel and start getting 2M folios now.
+>>>>
+>>>> So maybe limit to 32MB? It's still arbitrary but at least you get simpler
+>>>> logic. If the architecture does not support 32MiB folios, it will clamp
+>>>> the maximum folio order to HPAGE_PMD_ORDER, and you get the same result.
+>>>>
+>>>> Does this sound correct?
+>>>>
+>>>
+>>> Yes, so if we replace it with SZ_32M, it sounds correct. I just think
+>>> the 32M size is too large. But as you pointed out, even 2M can be too large...
+>>
+>> So AFAIU the practical discussion is about two options:
+>>
+>> 1) limiting at 2MB with a slighly more complicated logic to keep mapping at
+>> PMD order for 16k pagesize on ARM but use 2MB pages for 64k pagesize on ARM
+>>
+>> or
+>>
+>> 2) limit at 32MB with simple logic which results in larger (32MB) folios
+>> with 16k and 64k pagesize on ARM and thus larger memory overhead.
+>>
+>> I'd like to maybe offer option 3): limit at 2MB with simple logic. This
+>> will reduce folio size on 16k pagesize ARM compared to 1) but do we really
+>> care? I.e., is there big enough practical performance impact with conpte
+>> and other tricks ARM is playing?
+>>
 > 
-> GUP also refuses VM_IO, so this change unlocks GUP'ing these pages and using
-> them for DIRECT_IO etc.
+> arm64 16K contpte tops out at 256KB TLB entries. It's quite a lot smaller than
+> a PMD entry. Also, something that was discussed at LSFMM was its effectiveness.
+> Apparently, most of the gains seem to sit on actually having a larger page size
+> (perhaps Dev/Ryan can comment; sadly the slides were not posted anywhere on
+> the ML, so I don't have numbers).
 > 
-> Well, I assume that GUP-fast (no VMA available) would be able to GUP them
-> already. But mechanisms that don't use GUP-fast would get reliably blocked for now.
+> To me, the question is quite clear: do we trust users that say "please give me
+> hugepages" enough to unconditionally give them hugepages? I would assume the
+> answer lies somewhere between "yes" and "no", but 32MB I would say is not
+> particularly excessive. 512MB is... much worse.
+> 
 
-I am not sure about all of the side-effects of GUP.
-Userspace is allowed to read this data in any way it wants. It is *not* allowed
-to interpret it however, which is obviously not enforcable anyways.
-*All* writes from userspace need to be rejected. But those are forbidden via
-VMA flags which as far as I can see are respected by GUP.
+I think the other question also is, if the userspace asks for hugepages, is it asking
+for the biggest possible one? I think the answer is yes on 4K base page size when
+largest is 2M, but maybe not the case for 16K and 64K. 
 
-> I've been wondering for a while, whether the VM_IO for GUP is still required.
-
-If that restriction goes away, mlockall() would work automatically for the vDSO
-data pages, no?
-
-> IIRC, we want to disallow read/write access that could have side effects through
-> ptrace, including process_vm_*(). For memory-mapped I/O that might certainly the
-> case.
-
-There are no side-effects, this is just global shared memory.
-(But as mentioned before, writes can not be allowed)
-Accesses from other tasks need to be prevented, which is what
-patch 4 tries to do based on FAULT_FLAG_REMOTE.
-
-The only data in these pages which is not globally shared and accessible
-are the time namespace offsets. But /proc/$PID/timens_offsets is
-world-readable anyways.
-
-> With your change, you'd also unlock get_dump_page() on vdso pages.
-
-We use VM_DONTDUMP on the VMA, shouldn't that prevent dumping?
-Dumping these pages is not a (security) issue, just pointless.
-
-> Is that all ok and desired?
-
-It is not necessarily desired, but shouldn't hurt.
+/sys/kernel/mm/transparent_hugepage/hugepages-* is supposed to be used
+for anon only, but maybe in the future we could use that to determine the size
+of THP to give to the user for file over here? For e.g. over here we could have
+used it to determine what the biggest size is that has madvise (or always) set
+and used it over here. Its probably a much bigger discussion.
 
 
-Thomas
 
