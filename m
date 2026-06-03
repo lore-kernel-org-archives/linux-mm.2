@@ -4,100 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2951FCD6E56
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 11:22:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0328FCD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 11:22:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AE4D6B0088; Wed,  3 Jun 2026 07:22:28 -0400 (EDT)
+	id 587AD6B008C; Wed,  3 Jun 2026 07:22:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55EE26B008A; Wed,  3 Jun 2026 07:22:28 -0400 (EDT)
+	id 55FA26B0092; Wed,  3 Jun 2026 07:22:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44D416B008C; Wed,  3 Jun 2026 07:22:28 -0400 (EDT)
+	id 44F8C6B0093; Wed,  3 Jun 2026 07:22:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 304E36B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 07:22:28 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D1A8B120302
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:22:27 +0000 (UTC)
-X-FDA: 84838363134.23.BDDCAEF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 40214A000E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:22:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nOUzc5Op;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 304E86B008C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 07:22:50 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E7EAA1202F5
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:22:49 +0000 (UTC)
+X-FDA: 84838364058.05.3C92DA3
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0AF6E1C0007
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:22:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ImG96+Vu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780485746;
+	s=arc-20220608; t=1780485768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cXEjc/5hFRDYA1JmIf1Nf0sHw2o3MsqDWZosJ8VPs34=;
-	b=CUD+Ehu1qwC8XqaOvH+2wUzL8ejCXYO0c9oBDzW0Ttu32rfmElXBWJJuTSs/Mn7dSjqxZQ
-	48fIedYEeYOLI3KzK+qj3YA8woWa+FOpnTjNRCIIPJ5LqYA/rXLnNqDvnG4xw0kEx/nWhQ
-	5USbeHUpGPIszBBClZIiGL+hSfEVHP0=
+	bh=lZSbyRe0Cm9MsW0vFwS1Xzmiqu2z6riqDTx2v5DdObE=;
+	b=XNX0DwR/P+sciJhMBXS2tTRvGBrWA/Gs/ukeWE9dArTz84akAtosS4iIsAzNq4vv8KBc5g
+	Ig4EXCWr/vbtDB6HQwj0ylZ6nIeJ0cH5d1B6zPn9rm2IxpNq4Y1Ycv6F56cYMe6hyCyPMv
+	Ab0Fpy25c/ssMHJBB8oa5cYiEylBb68=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nOUzc5Op;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ImG96+Vu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780485746;
-	b=yhWaTyJjUL+cqsY7TS5LassElhhuN481fM1yQyyOW/kZksAf2+xUuC+okHI8T7lMW7PyvX
-	z4zIZNMKXt6e5in2dHY9tNzsNR0OrXgKq8IkpowL9udOOmG9Rtgv4Zomu0u3Az2dFl/sWS
-	y2ck3NYvD1WvmTYL8wC7adscYlVCBh0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9B19D60052;
-	Wed,  3 Jun 2026 11:22:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB941F00893;
-	Wed,  3 Jun 2026 11:22:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780485745;
-	bh=cXEjc/5hFRDYA1JmIf1Nf0sHw2o3MsqDWZosJ8VPs34=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nOUzc5Op+hlkXIq555+AjTA9AOIZ7Z/YhcVbMSB4YwqOyXHfvGEboKFwb1vMLFt7z
-	 rgKJtmrr9RSDpWZVJgclHeFWHWqp6QeZ+OTN48bM6NozoU4da0Hk9Gt2Y/JcudJEq2
-	 GUczLX4n71GwBEEel4mmlmoZUS9yEwOF0baAxVKlshP+xIZDOeW+gOltyQf0EeJOxa
-	 v1kSlqwBO+BJhMb/5PBSK1Cte2N6RJllzVJUPROBTzHF2O2Db4t8JgXrZllrcxfwyR
-	 iQ0iWfIYE/MAD2Xc8q8C2xQaw0gMJu5BOUJL2/LSuVWBwP1A5hpdzljfWlbC8DcGez
-	 f+NxByEYGWbkg==
-Date: Wed, 3 Jun 2026 12:22:17 +0100
-From: Will Deacon <will@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Ard Biesheuvel <ardb+git@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>, kernel-team@android.com,
-	linux-kernel@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Liz Prucka <lizprucka@google.com>,
-	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jann Horn <jannh@google.com>, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org, maz@kernel.org
-Subject: Re: [PATCH v7 00/15] arm64: Unmap linear alias of kernel data/bss
-Message-ID: <aiAOaYwPlGEG6FML@willie-the-truck>
-References: <20260529150150.1670604-17-ardb+git@google.com>
- <178041415770.4024555.11336437584927054639.b4-ty@kernel.org>
- <2c7929d4-6622-475d-af1b-bcd0cd997cd3@app.fastmail.com>
+	t=1780485768;
+	b=et/ghLzZhnIaENy7UwUz/1/MCnKS0JT0KXObgrNLY8ts5hTim4GGqTKIsdU/GGM5kM7DPS
+	e05qkRlWxxQgsrr9MvhcQlCEJIbsgLWqLDu95rCyCo4Y0nfEGLWmCOmMZ4cIXv6z1b04wP
+	KMp4mfwAtAUwHdyy/3q9eTzU/stQJYU=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-36d5fd50d20so3080653a91.1
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 04:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780485767; x=1781090567; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lZSbyRe0Cm9MsW0vFwS1Xzmiqu2z6riqDTx2v5DdObE=;
+        b=ImG96+VuNOQx7p6NKXAPpXv1yPY6YAvXG5xp/nEgr7U9Qyecq3p/XVG02kS1kobeCy
+         m7W8x+VYyBKAMPS0JfsYCLxkTCyBMAbU5pstuZqy5zgbwfUdzVG1iYMtH1drB1kK4T1E
+         w6RVxkv3a+7yTwPMXU98wADLZjU32lSO3fpSGGJRt5Dg7GDSCndzVQvf4l4OIpNTP+O7
+         1T712CiDKe/dz2oMW9+jED/Mz8Wo1On6nh/3Te1dqd8JS+A1XMYjFL2hWyPRbeqHl9cU
+         KIXCq6fCFhs3aBo8UIsZ/XzdxwLov+F/EvvM/zv0sl40c/DeeWQ0r1lKP/Gi3OkcPgTK
+         1Bsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780485767; x=1781090567;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lZSbyRe0Cm9MsW0vFwS1Xzmiqu2z6riqDTx2v5DdObE=;
+        b=j1LDYp8/cggYf38Uwkd7Rie1+k8wWqWFuGR6SF3Jvue8BG2XdslHnCDNLcnmyJPI9P
+         D7puH+wqCRZyGXXf2TFmapzKcu2w1ASDv4QusH2RMEmkgk2aM0Y41OkxkBN+WWyZ0SwG
+         isxoOE4YHDjXzMZhr0MI6LvX56n9pvV2iAt6Q71BKpcsZ6psirEGuDHsHIsKwTlpM6sP
+         qqcoOmnfsSMBMrWOZEfLgX6P4AyMA+6b0xOk+LaNIUAjuoHVEQt/Zs6EU7R6xC2vqGHu
+         8E4wmxBs0f3qc6kOPBo9Mw53TbVIyBBThPpkJGzihUk4Kol53HdsLpDrTAUkr81OtqrT
+         K4jg==
+X-Forwarded-Encrypted: i=1; AFNElJ9WhjFDD8MlG+WU5APH+X3FkZ7jARChPtB2AB+Vmo6jE2zDthLuOtWb5S/4qpVD6if4VAOEKGcaOg==@kvack.org
+X-Gm-Message-State: AOJu0Ywx1XIHWiNofHmuHMwjqxSaUJWPV6gt64u3k4suezw2WOTnWdNk
+	DIf2uSRCVJgWW1d6wJHJKmpKJN0IzPes7LPGUfnPlycORSsXPw93wN+o
+X-Gm-Gg: Acq92OEKLMFYlAhSx5glHaaW0opx3MO0u3X2beX0/6WOSyYH4+/YbLIg+nKHwO9o1Fm
+	swrUMjRJUs2CkuXmHPLONBwljUtWWkSlZodZBc4y+E7/jlgwOluno2Xz0txKB8/NBv1lchs+Jlg
+	fmcDIw6SRAO5OqgTVPa/a6qf0QI8swhuW2v4SNy7lNCbJeM817dd+lNgdvPZPXTqUxCvCfIigIx
+	tNEGTy9rxP8pfymFGNbvRxF/AEak0YVug8aCkDg+UhmgbuXkyZqS+uUtPkkcde01eNhf3u51+an
+	BpaqG1u8dXO+3yW71nwkCbN7B6b8yCdSmQlFHxcMriCMI4Nw2mVCVjT8CxJCIeAlUYxxQvooBns
+	wC6PD22mWkwL9iwkTpgQ/TbXg0eCAtPcml2VAbjTBnhOvd5ay4Er7vDXBbrLKq4FyJl6nmENtkL
+	t2Zloc1+WNf/o/pCHjqCy5zKmwW3/JaMljxcBqMPJMnxIspNO2sKO7S1zdbFu7GdVL
+X-Received: by 2002:a17:90b:4b47:b0:366:5c38:fd61 with SMTP id 98e67ed59e1d1-36e32f1676amr2884302a91.12.1780485766827;
+        Wed, 03 Jun 2026 04:22:46 -0700 (PDT)
+Received: from [10.125.192.75] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36e6b904c88sm802459a91.0.2026.06.03.04.22.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2026 04:22:46 -0700 (PDT)
+Message-ID: <6deeaea7-3cd1-4403-29fc-d2dc55c297f8@gmail.com>
+Date: Wed, 3 Jun 2026 19:22:36 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2c7929d4-6622-475d-af1b-bcd0cd997cd3@app.fastmail.com>
-X-Rspamd-Queue-Id: 40214A000E
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
+To: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
+ shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
+ chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-3-jiahao.kernel@gmail.com>
+ <CAKEwX=MQe_KFZe2vBXQYh0aa-x+E8AzNwmyjJGJk4tDoS9ML3A@mail.gmail.com>
+ <aho_VtLCmIRsNyvO@google.com>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <aho_VtLCmIRsNyvO@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0AF6E1C0007
+X-Stat-Signature: a7qo3s48yqgxgkbpc8igng3dkdei3n3n
 X-Rspam-User: 
-X-Stat-Signature: okgog3z516whrng9xawzckp3ukwnrsad
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780485746-594817
-X-HE-Meta: U2FsdGVkX189wOepUgD4GvoHJKh60V9P7ielMof+zhSImyzmbVRB1YP2dZdi8zAagqCaMLWEqBrKDDvFUpmD1dsLxNEWiqEPQQCMpBjZRlAqR5zURhDdZCE5R3DCqVtU/ewfa5vMwdq4IoDnwkzOIVmQ5W3tGFLY7nJAUeYyT6Ft3b/LSeU8owHJLlXIeNOWzZUhNNtA1Qz5w3gz/qu/XtXWw1ivXuwSJivPdtbnCKLjvpSBqVUXTdeikUCbUsCSXJlsd+dQe9AQf0cf7YXaqfaFIRdx1WEUh31dQqNnWQpN/mTcAASDJ6vp3lhRNOY97yj7dnR6M6ktUUX5aVE0LVhvjrNGFW2xCH22zjzJs714YRiHjsJ9nVdMiH7nz0JICgME8JhHqYzTrUqAZ4Mp4BBwB579z7EYZKZSLAemJVsrpIaDokWMvwOs0TBSZkO8vUQrtDg7FfOj6sm8LfFemJe7XcyZlpzkuMhvQtEsFZlyAHBxCP63+NMIB8MnAjIrxN0f6Jp6zaBP5MaVDTf3LXWMPZ7j/1Axsy4DHnDi8DEHsRxkXR1iNiK27rNEb7t+5v3yb/X4RXiJdNBIA6OjRWcOmMI9iXJrpAgsPSjPUCKMszmUGikk5AuxjxSJGbAt4o6kBWNpilP6DxiuDzPj4JI+StrtlncW9y/Jy8UEq99dXi8qwBe0ZIxh7H+MBPr8X15wDPxsD4IzPtAZH2Hv4fDQJSGlSRM5JEvct8OFqCL3aHFdSKgR8YlvclI9cZdra5tkV3qdoYq4dwSXw39n93jh6yI+qr0O2riF2+pj6qhWSHMRsznCLiI3gTzOViqRIfbJTIhB93JBdDI5oi1VTInACn160PDAhTDRuySiaj/wJoINCiKzdifkxxblBVi8Yq5aAJxl1LCu4Y1f/8DhzjNlYK8ncbSVbckQP/36KnZhLstfLcEnnwLsNP8tOQMAnL5gtmmayA7AYXcoHLi
- pXex6dYB
- rIdfl2soaxJrYmrD2CFORhWaT1SW4ZCy9HH8lfmav2BKFRG0YNa0vcx3hQL23ckma4UIb8NCii0FZYJ37svmrZQYNToK3Fh6b51XTNccwhyx/2CJe5Y62HZc2trsWW/KxBqpCL5j+ANIitKmyYajciQUE/A0c7KDahQktvPSdeZcz9rV9t1Rp51dEioGg4dYBpTPZ9disl+xTzwx9IY/2LdTKhBmra3rmBjNc/S8ukL67zu0nDitYwXlu57J1E8Hexv2sgejad6zZjZkJvgni2zQR+oriKB9X7Jz1zielA4wG4JcKZ3NivQ7pa0joUkYkMKmkE3JfipsAwSk1LHiLPlemBmGACZLUCPkI0C0XRHyF6pH63SATphisMEucO9L7mxqL8eKafjqt+WnE5jM5PYzheoNtP+oHkSJKWYLL6MpwvuqNfW+OlGZi7LujjWsP38BNHe5pQw0zS6C9swz67B/lAT4XjLd2bTHQo7btZIXP0fBSghp2cd3Cp2+IMClHblzOLFe9eHDd8pIc1jSjdxrnpEAxPe45jyqffiPzEztrvJxny0h9F0eJnA==
+X-HE-Tag: 1780485767-788755
+X-HE-Meta: U2FsdGVkX1/HQzFSoQu6Tv/nu9Iout5MnNXMKTLVM3DJY73UxY3GIJUHt7Fi01xaLmBfaaFEgUnnrr78T/SZtVxubruAE3b7ouNhhf4aQjy/dgdrb8sDf7k5SXWqrfLKQGnLiO9VJ363/Hbm/WcE0WMQQO21QDf7rMcsfhUW11LQX7wWz7xO+cERvbQrI26ySELghIyMDQnG5RnzO/QnmwFhLiDqwdWxG0xxe8vmlC1ebaGJ6Ohb60l83mdqpiiipcWMeDfgTUsUMo6nE1SC+ScWffnN/tlYGawmdXHprFp5ewpg7rY0pE46N3tOP30o1MiDI5rfxA1veoUxGRSZnRv0SFq9DZH5lM/8Fri5OwV/wFTQiTv8qi8GLk0GfRBylEI/un8wcZQeqGstBF97gc9cvcFx5lyPFRJYrd51KaIKH+C+ulmoOdXk11NWo+ARShQqcs2n9CAXphl6z50bgR/8Rd45s5KV+yzjptzLdw3QfJlIjkARpIqVXEyjW64cB0RU+yYEIzwomrQA5C0eImKvCiyiQf/kV0nQlV3pfELzAHQaXEf4vC6Z8u0JsogRzpSfPsUmy/YqDD3hh4TWxjvSWRnmzCe05+a5/Y0/DkbMWcDLbsL83WrlaoUt7osNAT+/ZCHTeTJD2Xdc8rICLrEnT9A5mZHZFX+jCyJtk01Fhk9uv4NGOMF5OuHDrZWar0eDeu5XcLVPHNp0Yn7+AvUOloe8TmjMb3uw22LP3ma91SDUfFrVxiF5Gix4xnmNGT6kTxQo+EeFtnzM5cDSX3OFkuv+7oEfdXZnQQI5UWW80dyZUmMB1SCrlb2gZgPTPxPyROYxOszJm/97X5uOVTUsnheKOH6zXv+OpW+cqCyHiCIhwJ7ejy7KqirqDHkEHXDmdIG5UIolO8zE6t1H5tBmNdHyHnow2Yl6ke19AClvqCg3I4Nq/WQTtS/N2YtNoXqCBo/NgZb9Ecczp4M
+ guiPa5M1
+ s2qKAiXL8SuvCRIODGuxrOaz1zbkLHJ4temr3kQZ0ps4TseX7PHbK2LRggBugmHOVDJA889eQ5ZE+AAO812yzXYYJIfg7fr4rJvTRPmfvFPihlRGCxEpUZnu2fxxyzfqHeQNbif8BRuMx8ytou/ugIxuyTtLLEl7lPLQK9jfpGPZIJ8zPVfo+CCHctv8d6sGLMdlzun+/+TwkYGnJEnDvvqUhp4a2QY+xBu7I5mGPCzb8fO7HAiYmqKqIM8Zpm6Wg48pIYfouY5YxNIEXmNm1B9fMyYMXa7hrYMsy7+pLY+kuCiFxq8olXtp1iX4+UkCp9EM/5A1pijvOpaHmZIlR4+kkIYUG304MccD5Hb0rXsEAka9ONjB0nbqg+iCkl19RvIhsZq6/C0DyUQr6lAN8iFmZ99pfTlok4n2rKpbGApj+l5ZjBRBJHVOr7VwnkYkONLZnpVdhisYJ8uNgxE25KOqCsLn4jDfMbad4sMJoIkIhfRj/4NduMfyeaR18dICAt3O0b4wx1tSArfGmx0mLa10rOx79p70T4rvJadA/uSMsKZU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,55 +126,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 03, 2026 at 10:57:49AM +0200, Ard Biesheuvel wrote:
-> (cc Marc)
-> 
-> On Tue, 2 Jun 2026, at 22:34, Will Deacon wrote:
-> > On Fri, 29 May 2026 17:01:51 +0200, Ard Biesheuvel wrote:
-> >> One of the reasons the lack of randomization of the linear map on arm64
-> >> is considered problematic is the fact that bootloaders adhering to the
-> >> original arm64 boot protocol (i.e., a substantial fraction of all
-> >> Android phones) may place the kernel at the base of DRAM, and therefore
-> >> at the base of the non-randomized linear map. This puts a writable alias
-> >> of the kernel's data and bss regions at a predictable location, removing
-> >> the need for an attacker to guess where KASLR mapped the kernel.
-> >> 
-> >> [...]
-> >
-> > It would've been nice to hear from the ppc folks on patch 11, but I've
-> > picked it up on the assumption that they'll love the negative diff stat.
-> > Worst case, we can drop/revert stuff if they have late objections.
-> >
-> 
-> Thanks.
-> 
-> There is a de facto ack from Michael Ellerman in the Link:, which is why
-> I included it.
-> 
-> Note that Sashiko found an issue with KVM+MTE, where a read-only mapping
-> of the zero page in the linear map may result in issues:
-> 
-> """
-> Does moving the zero page to .rodata (or unmapping/read-only mapping its
-> linear alias) expose a guest-to-host denial of service with KVM and MTE?
-> When an MTE-enabled KVM guest reads an unmapped memory address, KVM handles
-> the stage-2 fault by mapping the host's shared zero page. KVM will then
-> call sanitise_mte_tags() in arch/arm64/kvm/mmu.c.
-> Since the PG_mte_tagged flag is never set on the zero page, KVM's
-> try_page_mte_tagging() succeeds, and it calls mte_clear_page_tags().
-> This executes the STGM instruction using the zero page's linear map alias.
-> If this alias is read-only or unmapped, won't the STGM instruction trigger
-> a synchronous permission fault or translation fault in EL1, causing a host
-> kernel panic?
-> """
-> 
-> Marc seems to think it is legit, so I came up with the following (I'll send
-> it out separately with another pair of tweaks):
 
-Thanks, it also looks like we're getting some early WARN_ON()s firing in
-CI from split_kernel_leaf_mapping() after applying your changes:
 
-https://s3.amazonaws.com/arr-cki-prod-trusted-artifacts/trusted-artifacts/2571596185/test_aarch64/14662134813/artifacts/jobwatch/logs/recipes/21399931/tasks/219104268/results/1007729692/logs/journalctl.log
+On 2026/5/30 09:40, Yosry Ahmed wrote:
+> On Fri, May 29, 2026 at 12:58:09PM -0700, Nhat Pham wrote:
+>> On Tue, May 26, 2026 at 4:46 AM Hao Jia <jiahao.kernel@gmail.com> wrote:
+>>>
+>>> From: Hao Jia <jiahao1@lixiang.com>
+>>>
+>>> Zswap currently writes back pages to backing swap reactively, triggered
+>>> either by the shrinker or when the pool reaches its size limit. There is
+>>> no mechanism to control the amount of writeback for a specific memory
+>>> cgroup. However, users may want to proactively write back zswap pages,
+>>> e.g., to free up memory for other applications or to prepare for
+>>> memory-intensive workloads.
+>>>
+>>> Introduce a "zswap_writeback_only" key to the memory.reclaim cgroup
+>>> interface. When specified, this key bypasses standard memory reclaim
+>>> and exclusively performs proactive zswap writeback up to the requested
+>>> budget. If omitted, the default reclaim behavior remains unchanged.
+>>>
+>>> Example usage:
+>>>    # Write back 100MB of pages from zswap to the backing swap
+>>>    echo "100M zswap_writeback_only" > memory.reclaim
+>>
+>> Hmmm, so this 100MB is the pre-compression size? i.e if this 100 MB
+>> compresses to 25 MB, then you're only freeing 25 MB?
+>>
+>> I'm ok-ish with this, but can you document it?
+> 
+> That's a good point. I think pre-compressed size doesn't make sense to
+> be honest. We should care about how much memory we are actually trying
+> to save by doing writeback here.
+> 
+> The pre-compressed size is only useful in determining the blast radius,
+> how many actual pages are going to have slower page faults now. But
+> then, I don't think there's a reasonable way for userspace to decide
+> that.
+> 
+> I understand passing in the compressed size is tricky because we need to
+> keep track of the size of the compressed pages we end up writing back,
+> but it should be doable.
 
-Will
+Agreed. Using pre-compressed size is probably easier to implement. IIRC, 
+interfaces like ZRAM writeback_limit are also calculated using the 
+pre-compressed size.
+
+I'll clarify this in the documentation in the next version.
+
+> 
+> If we really want pre-compressed size here, then yes we need to make it
+> very clear, and I vote that we use a separate interface in this case
+> because memory.reclaim having different meanings for the amount of
+> memory written to it is extremely counter-intuitive.
+> 
+Agree. This would indeed break the semantics of memory.reclaim. I will 
+use a separate interface for proactive writeback in the next version.
+
+Thanks，
+Hao
+>>
+>> The rest seems solid to me, FWIW. I'll defer to Johannes and Yosry for
+>> opinions on zswap-only proactive reclaim.
 
