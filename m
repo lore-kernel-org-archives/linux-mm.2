@@ -4,102 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BF4FCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 10:49:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95E50CD6E56
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 10:51:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 667EE6B0096; Wed,  3 Jun 2026 06:49:33 -0400 (EDT)
+	id 051026B009B; Wed,  3 Jun 2026 06:51:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6400C6B0099; Wed,  3 Jun 2026 06:49:33 -0400 (EDT)
+	id 0288B6B009D; Wed,  3 Jun 2026 06:51:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 555A46B009B; Wed,  3 Jun 2026 06:49:33 -0400 (EDT)
+	id EA7626B009E; Wed,  3 Jun 2026 06:51:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F4886B0096
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:49:33 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CB60D8D162
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:49:32 +0000 (UTC)
-X-FDA: 84838280184.04.71B550C
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5D6B4C000E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:49:29 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ScXU1HIM;
-	spf=pass (imf22.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id D9FB76B009B
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:51:43 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AE97A1C07EB
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:51:43 +0000 (UTC)
+X-FDA: 84838285686.10.3AE1AE7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 269682000D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:51:42 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GF+TVx3G;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780483771;
+	s=arc-20220608; t=1780483902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TLYJyqwKkUcNMrBAucL8IXpz4weTpeaecT2LNBkzRw0=;
-	b=BgH0PMswijV7bZBdEgxxU5E7G93Esu4ckzvw9P3oARgmA42NrTXoZYALNAwnmB7WyUvdeA
-	do7L9cjiURZ94ORXMocNt2noVc9lmP6oFOwsQqKRYtBpMaH+ibkaPDkxHirurLN0VbquCq
-	3Na1xggbsz3Xqx/TsRWf98JtAaNlgsI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ScXU1HIM;
-	spf=pass (imf22.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=4irt7zX8prA5wvAeL79Ke1XWIsw0l/f1Lgz8zInKjmc=;
+	b=M4EKDjE0vXcO/Nh/kUCCkqDoQEz2KCdbu2y+Vhd9/mpKXC94Yi/RPS4GcPZMsxnMLZ+N19
+	ABwuSgEtZa61h8YsfJEH7sOj4WD3gusIJ2cxw2/dDDpICJ5xSyMX9RNJbX6qneL4joyjNE
+	tUG7TPqqfoEjbjIx400WU3u5PRKXrIk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780483771;
-	b=mANN7EaC1hwsc0bmLpF+bbQK0/M0bzabtu1eeqKCeCZOmSWXjWgkVJ27olIpiyK5cRQtLr
-	EUb8cD3Gp/uHT+944DkwU4t6jt5+nkldqnEPdxGA8/4CyxxXzuMztPryF9+VZ/O0iBqoCM
-	wYr+RzLh8i/AeNBVO6D7O24ZA/2US28=
-Date: Wed, 3 Jun 2026 18:49:16 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780483767;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TLYJyqwKkUcNMrBAucL8IXpz4weTpeaecT2LNBkzRw0=;
-	b=ScXU1HIMbFTBD9ftL/fmOlkwZHti+12s9b8SIKCfUCarsObADaSm9fsZXeXisHszykxXCq
-	rDMOaKp9N3rkq6mTSgDVIisL4Ua3g2Y28244JjHItJ+ocwtRaSncbBMi+X4pwi+VqTu208
-	Pe8E7+dl3acnJyXDYeWfq5zU4ka0Vy0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jianyue Wu <wujianyue000@gmail.com>, Tal Zussman <tz2294@columbia.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] mm: move folio LRU code out of swap
-Message-ID: <aiAGrJsNm_uAf1qu@MiWiFi-R3L-srv>
-References: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-0-5bbb567f8c99@gmail.com>
- <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-2-5bbb567f8c99@gmail.com>
- <ah79c9IIuXt51ybs@casper.infradead.org>
+	t=1780483902;
+	b=rCVDoK/sOQUaVdvFBC8SuUnspicoIjx5vPtFMU6Lhycy2scpfKLrdpOXUeyEhtcqIkl+cB
+	SvP+anzhXImSGNkxSjdOFafixTt21w5NHBr038+t2AhnKsklgBHgXUTd+uB7hvO7hW0k6t
+	esO0o0fNvl7WnOfiLF+xzLh+HZJZKcI=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GF+TVx3G;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4C2A540A67;
+	Wed,  3 Jun 2026 10:51:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68671F00893;
+	Wed,  3 Jun 2026 10:51:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780483901;
+	bh=4irt7zX8prA5wvAeL79Ke1XWIsw0l/f1Lgz8zInKjmc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GF+TVx3G57KdADDZA61/dqiOtUrc2bL2alcbqR3o/frTCX+ahMZCBHyukTBh+n1uT
+	 srwQfUMaia3i7df5TIZPOOrRgapj5ek9SjQVH/Cx7JwZRDno2GNrQhB8nFXfpKut42
+	 9xMIbL2n9nAbPhuvwtqo8deyov5xoXARYkwEbZNAR7yenNMKYwZqTOmpXWD10Ge+5H
+	 ZPJsv+p3Jz5feMqTWv/cfJdMunuvrQbRHezZDqhSpq7EH43klcUP+BvEf1jiHHUUsO
+	 wkLdZcbULfv1ROfg3+hwR80gLzcOdeRvw9DTVl5Xb3WoO0e3Q79UDla/F5mhC1zaIp
+	 cVIdiGFaEjjuw==
+Date: Wed, 3 Jun 2026 13:51:33 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Nico Pache <npache@redhat.com>, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	liam@infradead.org, mhocko@suse.com, vbabka@suse.cz,
+	willy@infradead.org
+Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
+ khugepaged: add mTHP) collapse support
+Message-ID: <aiAHNdrejP-iIOpm@kernel.org>
+References: <ah2ndruO3RQGtePP@lucifer>
+ <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org>
+ <ah2uDhs3a0bFcRNG@lucifer>
+ <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
+ <b5b1a7bf-de6a-488a-a011-673c37bd24d1@kernel.org>
+ <07334dc3-79ba-407e-96be-21ceb2eec00a@kernel.org>
+ <ah8Tflgn50DTMvwl@kernel.org>
+ <ah_ML-Wm3B92ZniC@lucifer>
+ <ah_oJEODZJp12oDl@kernel.org>
+ <0560f9a3-d8d2-4f9e-a7e8-9da3512ce9f0@sirena.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ah79c9IIuXt51ybs@casper.infradead.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5D6B4C000E
-X-Stat-Signature: xaopa8717wozbicpuixcq7uqxapepshn
+In-Reply-To: <0560f9a3-d8d2-4f9e-a7e8-9da3512ce9f0@sirena.org.uk>
+X-Rspamd-Queue-Id: 269682000D
 X-Rspam-User: 
-X-HE-Tag: 1780483769-526848
-X-HE-Meta: U2FsdGVkX183f4n8U8ebPJXlnDEClPMvmOgRGaq1rUcMWsko93uzu6qQOtYbuGjCdcs1yOeLz8GvU2yr129s0sAXTO3LCym8v5HbT2PD4fWHntTX6Uy3ZRPV7DdEz4yx09muTZ8eRj+ky1H2hj5OhaKGSuCCtIwhy8IKljj1lBbm7R/Yf0g1dW8BJTK1BX+xiFtk6j6a6aruh/+/QtvZ+r28dogy4a1NFlB2ihZStRvyjYuQzSOxbjwmJTJwpU0OjzqrHnmNJPWjeFVsEsLPlxZQ1p5hm+4IIWVO8niVMkPy6oIB4lWmKawbQ6BQCoEWJQ58arHAdsc1PE7v7IcZbIkDqRMgnlspr0sCOm2ApeICYgRPsRB7r2ptYj96dwHg0wS9uw3h2AtDRw1DvwKlVAqOWvy59YZqsvWEeGX7ceVkb7TM4qrrFCbW/mtV0c2pZFRxD6YgyYcyEI3eI9LX5mzJvKOT2IiVhLcpVl08J8gjFVXykfbkdECeX4xHIArNxmxTven7tVxPWM4VXyUlCKHlh5IbE7CcsIHauBrA/C+z/L5haKBnsQPt6jkm1sDeU/2lxy8a0SnhSqTFBzhw34YeEkpoAw7Mi7rfBPUCRkVhj3iVp32G6h56Vdfmm1L63FL2x9WTG50EtTW2zWgpcKEf+D3W0Y1ruD1eK+/oMzap9F7zyJxrWmfy//8kxCHbgbUN+vGcqHzGWrnYi9x6I8zCbsxB9SwDBR/UvhwMso97wcrVKt+H942cQlcQnWrWdG5yps5sYXoi1PK0/EngGMqcpgM5CffsHwRz2btVxoGXVT+JNB+Ej2HU1JWv4R8Oidf7Bzls8VVgFfAmnSH7AyrV3GYn6KgujvTwY/ipjGE9McIEXAA2csJC/ZLWdtlqLvf+KnvUaURlU4lkwhKkaD/vSNL2UDu3aJWTj/coi6bY2PhE8rBpeaYrEibowI9RlVY8HW+63Dsyi3jyRL2
- mgBg7svV
- WOUs6ubasjtIhRi2fPAWAb6gyW6PFxTnU1BJ+wF6eAXJJOBN0DMqQlYDW2YL241brTRvO6+DcpCaYUIAeT8OpkSLcvhdPKhgQa4Wy6L40l7OTWx4ZEcUb2pdLfPl9Aic68D/xdpC/ILd+2NqyJEWhVlAjErtuoiheYHIIYc0HGs9fWmPdvrYtcwVX9AGjh31oO4Z5f+plCHDPbdGIGBlPdP2jSiR+d7ERA0+mF9Px5YhqPj+lx2qWVFE1PXakV6yTsCAY1S3hieMaIbZMHsKP21SSaA==
+X-Stat-Signature: s13tke7n7s47qnyziyzw3yqw4pcd13j3
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780483902-180112
+X-HE-Meta: U2FsdGVkX19R51W8KsTWd79HljhT8ZzZ5p23goFUKH4fPdI59U3EbtukEU1fAKXJYTSH2ZW4KyG0cx3k7b80wBvJrMiXoRrmvPzgLb6HGLfAAwi4hRfMhhk1S3+FFW5ZhA/ZbRGIO0BYuvZ11A5gs9CLr3i6qzzz6Hh45foqxybBF7cwahtsmqE5VE7AbQWoQKMzYV1PPgmuXjJbuBDRaAhbRlgx931u5BpcMpvrxAANxyf1LYBLZvAMirOhU80dJ2KXRN/dAMvDtp1RcytITqJ4bZy5Iuf2wIjiK0rEMhvjQ6KJHxYQa0zm43EpnQwAK2StW10bmt49AkwEEjyGQywJfeDhZrShHcTqcT085uGuICrwHXTw9nZBL7TfLEXUBSPvKUcmwvrcQIUqWwW1KJlNB/Lrs7piUhQedtjFFyYfJUifXFVttoX4Xdz+AUO0IVO+AdL2R5fwCAJKB6BpjWZFa/A9XX6mNy42cz7uihMvQDXmoHxjyedeXwVC42etOdi6kTsHuiw/e0pmP9jm01EKFPiOBHztHyWNCRx1QFlOMzsUxx37f+2+wGl0TKlZiosi9ROp5E2lAxmGW1RNJfoGPDjTdDjZoKcvwXAR2buF3DZVjmoUGJoA3+8lbcktivRdJ4TbVhiJULmEvVIaTvlJRka/mBaQ8d8xkcILBldQlghvUrGkxBr6wdYLN5YcJe1RK4mYB5GUkxnR1dKeBwbDzEwoXky0zIfrPTbCfd1Tn0vMm9gcHkcVE2VT4wuYebbAvZ5TueQprmouv4c5qMsWGVIkzBr1Xc4bTGslh4H3JcKp560fFTyvridDwtx+9YwXUyACVpSHG3tZ8/1kvmzV7ruDPplSkEi2ttTiDmcvLJoN1+m3hFjsPSKFM0OLvX3rxzRKsBHsiJpAWL8Ui9ZumNpWi3T7iaRFzVtRTLF/kp8449Fmy+Id+mcfj7Lz7S88A1n3u2h8B2MF4Ad
+ Idq1q0rs
+ 5zYUevTxnI8YG9zmqc2SA5qX0mxLpXvvsdVehW29q3kga2mlHmHY1ZqnEt8G1cJ/hgJY6xF+ZJ4aLcrFxWUtgNFPexOVcD80KndW/YyOJKHZQq6vhPDj+dM4ZYTjl7f2MNok2Veao8mvVqXNVTER01zeHnMcVIvNvvJ2P2OnUAjqPtwV2s48sfUdBh4dBd0eEYJHfS1VqSjXiGiwHcgbh7JeZMDT2fUO0wmrnUn5oYIBtx3JKVSUk3Z0cIsN5nJZHwMbi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,30 +105,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06/02/26 at 04:57pm, Matthew Wilcox wrote:
-> On Tue, Jun 02, 2026 at 09:01:16AM +0800, Jianyue Wu wrote:
-> > Rename mm/swap.c to mm/folio_lru.c so the filename better matches
-> > the code's main responsibility.
-> > 
-> > This keeps the implementation split from swap-specific code without
-> > changing the published LRU helper interfaces.
+On Wed, Jun 03, 2026 at 10:57:11AM +0100, Mark Brown wrote:
+> On Wed, Jun 03, 2026 at 11:39:00AM +0300, Mike Rapoport wrote:
+> > On Wed, Jun 03, 2026 at 07:48:46AM +0100, Lorenzo Stoakes wrote:
 > 
-> At the same time, we have Tal trying to split folio_wait.c out
-> of filemap.c.  https://lore.kernel.org/linux-mm/20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu/
+> > > - It makes it more difficult for us to yank things
 > 
-> I wonder if instead of folio_lru.c and folio_wait.c, we shouldn't simply
-> have folio.c.  Tal has 700 lines in his diffstat, you'll have about 1100
-> lines, so that's about 1800 llines which seems like a good size.
-> There's some functions from mm/util.c that would fit nicely too --
-> folio_mapping(), folio_anon_vma(), folio_copy(), flush_dcache_folio()
+> > git rebase -i
+> 
+> Remembering to add signoffs if you're rebasing something someone else
+> committed (probably the most frequent cause of missing signoffs in
+> -next), --signoff helps there.
 
-I think folio_lru.c and folio_wait.c are better than a single folio.c.
+We learn as we go :)
 
-A single folio.c with all of them would have no clear boundary for what
-belongs there and what doesn't. For comparison, page_alloc.c isn't called
-page.c (we have files called mm/page*.c).
-
-> 
-> Other people have thoughts?
-> 
+-- 
+Sincerely yours,
+Mike.
 
