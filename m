@@ -4,116 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 337FBCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 15:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 647BACD6E57
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 15:03:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6104A6B00A0; Wed,  3 Jun 2026 11:03:01 -0400 (EDT)
+	id CEF5A6B009B; Wed,  3 Jun 2026 11:03:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E7C26B00A1; Wed,  3 Jun 2026 11:03:01 -0400 (EDT)
+	id C9F976B00A2; Wed,  3 Jun 2026 11:03:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 524BB6B00A2; Wed,  3 Jun 2026 11:03:01 -0400 (EDT)
+	id B8F336B00A3; Wed,  3 Jun 2026 11:03:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 452896B00A0
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:03:01 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F0F8C1A03F8
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:03:00 +0000 (UTC)
-X-FDA: 84838918920.02.4FDB2E7
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C21E4C001E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:02:58 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Ha9muc9Y;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf10.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A5D9D6B009B
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:03:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3D6AC1C18CF
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:03:41 +0000 (UTC)
+X-FDA: 84838920642.09.693F4F1
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 23475180011
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:03:38 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=NggKI2kn;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780498979;
+	s=arc-20220608; t=1780499019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5bxxSivwwydDh0iCuOp81j5cRKW09cu5s4VCNvENaBQ=;
-	b=BiDtM8DaMeU1IWe5IRikVVJxWSjnkKvADssjmMTLaY8bs9pZJElZMuikKWc43VMipcQB+A
-	ForWy9/YQczdu+Cw9nuqqZ16uUVleWARS0jimbINMaOTiXX3pUtuWuLCbnNG2XLLzDoiAY
-	i2JYsGnzMlfeDG9DghnYtiZZKGH/Rc4=
+	bh=GE3cxqAXSaCHVcc+WKXlgfot3UvMd9FsWD9Iu0pbg2Q=;
+	b=EfHvrwL61sdfIlkF9YBJtrdDnIli8+74b7j6cJKUN8TrGPgxfS3MWJW0UvL+mMT4heNutO
+	nvXTi5lJwhkLOENAhaazulksARLfPyjh6tBjBiHL61+qIXXY2Z7xLQm19K0LeuCPPaTWvM
+	JGKzlDILc5nLz0fYCTyXkd7EvWEwFWQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Ha9muc9Y;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf10.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=NggKI2kn;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780498979;
-	b=teGGdY91Yw09x1aq7X7YDUJCaSF1QzOeYP4UMwDHyAHEB/xB0dAPH7Y9ZMWWC5Sdep6ZdL
-	97l8RQnhsrkJ7WAblEyQ9ovX3h1H6Rl29iOXmMYgq+9KgBoyt+3HAlhYMykZxD5CVRo7TK
-	f3j0rWPUhQQbf5+lLRoAAU3rxundZ9g=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-9157f7c1c0eso198694985a.1
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 08:02:58 -0700 (PDT)
+	t=1780499019;
+	b=xxvj2OEMIMX4vhqk15YS59U9kiHmFbRrYKraQ9eY5xp9ohoR4iAcrBJRbdi5myUTJTh4Nl
+	NIdknLOI5NypE/6CaMKU4TxAkx7DDBsdUHOX1pUhcELW5r+OnADAGPtAlZv9YJ/TO1L8nr
+	b9XxbPD7NiSfcFsPsGimyHxMqwRiLHs=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5176ca6bab1so8414951cf.0
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 08:03:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1780498978; x=1781103778; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5bxxSivwwydDh0iCuOp81j5cRKW09cu5s4VCNvENaBQ=;
-        b=Ha9muc9YJGx4fU71oMm5p6i51ljIsh67JLN9CI8sAKVVbo9Hw3etjgj1tVaNrK7mNq
-         PH9X5LFQkpRgt31Sr9Za06ocuHVWJFTJw8egimw8U4NLcUbWUy6Hfc9kAiJfVgLLYZhV
-         qqzpg7UdmliEANJJfQ+OLnCmF6jj4jQiwxdTOhWURO2AOVD+pfOScpW0d/v47TCLANa6
-         fSeGFcsWZWn8Cn3pGMkDJ2MvC75HCADlSTq9ZLw0+txxT8yjqWdD+rN5jnACPYgKR8Dr
-         DQdqd05dvjdbPToHA5wYZwt6Dg28rEf3B35COs7B1WMmSBwFKilSpzTksaQUDPrDkIuK
-         Gt5w==
+        d=soleen.com; s=google; t=1780499018; x=1781103818; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GE3cxqAXSaCHVcc+WKXlgfot3UvMd9FsWD9Iu0pbg2Q=;
+        b=NggKI2knY3tC2srood4AL+IzbE7qO0ZmoRoZ/gJjQ+YyWEGAcJBwFL5gczUKJtkFxM
+         /HdQicOMB/kbdpCx6RPCyEJ8BnbxnDcyYf4K0hIWnTw/6UUbQ7d48O75q7Z7ljkwNRQj
+         A1Mk4XxbUoDlzNF9GuXdOJQHcd4VUvcmCsk4tH8T5A0VuE6MXgaeIGOxXPvEhDeqgqxI
+         GLmLOK1SqEVA0kasftWEtkxSsVW/dIzC/djOhFMamlGA0zsicTcZXeS2kNbW/rTv2I/K
+         ngSiEiadDxASgpNwBeqIQw2edhm6+pU4qhpzJWG+O3duWlvPGrRYRqG41k6PxaMMHSYk
+         yTyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780498978; x=1781103778;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5bxxSivwwydDh0iCuOp81j5cRKW09cu5s4VCNvENaBQ=;
-        b=Bro5GIq3D/ZfB9rlaCCut0SuuSsL0G7CAO1ofxMxuYDjU8syQyVshbcTzYcR8Qss8n
-         +7uAUhxXYY/57NX2MOPVeAxOUKA4sAeooP5qSNHh6QUPwO2hz8np4BqT3bd2yVMCCMT1
-         wpYZ382aZmgi8SuHv12Uvl9rPLD9ZHhGGy3jNv1bQXEPCU0aOk8/l97A2B6tzEBHgxap
-         QqIezP8VVF2C0euAD5gASelVihwLvH0L451jPGQH3zX59xiYrf93KezWSjfCgKVmzSs/
-         Hxde0P268z38rp5ip0/wZ69fv5VHu8PqLVt3Ym627jzmWl7D36NMbWNRa8931QdYjZcb
-         i6kA==
-X-Forwarded-Encrypted: i=1; AFNElJ+tblcUSQXiG/e0lEkEzOxutu8eEeHn6OSAkUGZVTa3GbgSduqvjMlbqwNeSL4Gb8XWijGUEjO46A==@kvack.org
-X-Gm-Message-State: AOJu0YxHIqReIeJgs1bZXAHlSOoT+Xo+ByKXB+LVdrDa+mOjpnTS3r0A
-	kVaQZvVGLiB4fmHDL5ckkCdfyB6YlKWTPRZPq/vOh7itHYzwoG5cdcSbUfempktfBqQ=
-X-Gm-Gg: Acq92OF29O9bguVDPUXtk42n4ypfv+HKFl8ziQwe7Ah/4g7SbTLcN0MA82OmCdVO/Hu
-	JxyoKwMZmd/TZ0oPzsxdttt72QwUE+a1A0aGkjnejr1qMP5A3avtzU+jozY0J1Q4KvkfQvC8axc
-	DB1HunL0RO2KEBV9RW9RL1oa5pP6wWG0k5c0mC+Y8u7V9yyo0N2YHL3aSRAhu3fbuJl4XD13MZF
-	exOE+oNQ0Q1nVx5XkxWsIRrzZ1zNMulYWTW0PqBbR3x6jfIGrJpwUK/UM45BEqQbdBkf8qyKtMB
-	PRXR6mMbvQF7+4geGBjgcD8vlYgDozuIpyQiLQ6MAwzRlZP+K1fLOFOXDDM2F3RtPwSinHg064p
-	yPCl0iMOA/ZCYVInD77eA26sPaQXXXAs2OKMjO1ky6yscNeZODOYUM3eg94eorNFIIratilyTTN
-	ejHuXPtl71qfu3Iyt/SFSDySiJe31VqT81
-X-Received: by 2002:a05:620a:7081:b0:914:7b4f:cf5b with SMTP id af79cd13be357-9158a6a84bdmr640924285a.16.1780498977286;
-        Wed, 03 Jun 2026 08:02:57 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a21d2c1sm280915485a.11.2026.06.03.08.02.56
+        d=1e100.net; s=20251104; t=1780499018; x=1781103818;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GE3cxqAXSaCHVcc+WKXlgfot3UvMd9FsWD9Iu0pbg2Q=;
+        b=QxKRPm6HiTINrdAGdHxkUB1oZ3aWP8bszmg6bn6KHS26qR2kznvYlizib23ox4ZKTt
+         x4AupYLxGczW6psZx8rUAIK4xEMi01Rh0IwWZYDOdpFmb+X4Kqi+6h1cleHBLO1EcVXe
+         UBbuor/CZiWX2vNppFYfvi6uH/yWHQBb1vNB094U+LHwaaYUD+ggbBkSNWnKO2n4kESQ
+         UdrzFf9AeN8HLK3RutMkIwKOuZ3S4x0W1qcVbHbOP6kGB3upnszrqPI6sJuUSyb+QbIF
+         9PiHvxgqeCvDZGg5zUdfYFiBNqYA9LyKdyw3q7XV41Kh+iYGHsPEmboAVOHM1QdS67HZ
+         6jGQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9aJw9GmxkTkZGVI7cPGPNEwFQ7Wdjsi/S4nzq5SEb6pMA3csCmzCaqg8N+jPCAZq9IrP/AE9M9EA==@kvack.org
+X-Gm-Message-State: AOJu0YxtLNbj+gfLoqI3gDxS04sP1KmlwFPXrOjTa3ts3BxTn0Fc3sLt
+	OzUXNzV+stHP3cwVY4gDejgZoRY3eslhVaKWJRlJmCHyvZliYq+wYPnOdW5eCz8YHRA=
+X-Gm-Gg: Acq92OEvgv/wf/03p0xTfwCdo7FiTnQTkaAC/gjLD5qNjH42LwAGmf8XqnlocTGKhqD
+	Yha/P5Vvkt7Q0BRVsawjtVmb3EAMZ+KHddejPhRevWkXEuOeUiSlt77LWcfERHVFjyd2+Pn2wI8
+	Z0vJ7I+UCK/QAndYi4q6M7HycW7IWK5Ar7ZWBpywyG6vKDk+IbuTWR7zvhIspPUT724q7tuh35A
+	l3iv1YJpD0J/fM0ucrCdACP8ETp1t7o7z+TwTqyKJSyvNwvZKjrurbsqB+s2jo4LuN2zZiZujLr
+	Gw4g6jJ9RA0wEQKmO4drtVGy913tcCKw979YuqefXGgzkmP6ZJqkM7xRGzEy79Bvx4a9QyS4Ru9
+	I5CyJEcNHvpIb7s1kKTxIKZg4qwO4GlWPwCBT1EKT3ghrw+oQvBRJlYaldB8WgCa78kCFdZ2M5d
+	4kOwMX/jTSALwfBHQ57TTLp4vNOqVf2fk89n6O8k3/pdWyQqQ9r3307feXrJlvPA==
+X-Received: by 2002:ac8:7e86:0:b0:516:82e2:7788 with SMTP id d75a77b69052e-51779701719mr41203361cf.1.1780499017835;
+        Wed, 03 Jun 2026 08:03:37 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775dd2e53sm25188571cf.24.2026.06.03.08.03.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 08:02:56 -0700 (PDT)
-Date: Wed, 3 Jun 2026 11:02:55 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, jannh@google.com,
-	liam@infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, ljs@kernel.org, pfalcato@suse.de,
-	vbabka@kernel.org, chrisl@kernel.org, kasong@tencent.com,
-	baoquan.he@linux.dev, youngjun.park@lge.com, riel@surriel.com,
-	shakeel.butt@linux.dev, kas@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/mincore: handle non-swap entries before !CONFIG_SWAP
- guard
-Message-ID: <aiBCH3EDpb56QlEa@cmpxchg.org>
-References: <20260602172247.279421-1-usama.arif@linux.dev>
+        Wed, 03 Jun 2026 08:03:37 -0700 (PDT)
+Date: Wed, 3 Jun 2026 15:03:36 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	corbet@lwn.net, dmatlack@google.com, kexec@lists.infradead.org, 
+	pratyush@kernel.org, skhawaja@google.com, graf@amazon.com
+Subject: Re: [PATCH v6 07/13] kho: add support for linked-block serialization
+Message-ID: <aiA_j7udFaO9TRBP@plex>
+References: <20260603032905.344462-1-pasha.tatashin@soleen.com>
+ <20260603032905.344462-8-pasha.tatashin@soleen.com>
+ <178046937151.468621.13398573538792303093.b4-review@b4>
+ <aiANtYRRDr5iO5QR@plex>
+ <aiAzT9TvGYjITiB8@kernel.org>
+ <aiA1slnqPnC4_8XY@plex>
+ <178049725439.475072.11560134126837430744.b4-reply@b4>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260602172247.279421-1-usama.arif@linux.dev>
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178049725439.475072.11560134126837430744.b4-reply@b4>
+X-Rspamd-Queue-Id: 23475180011
+X-Stat-Signature: ekam6of8zyiuhrgbzx99t7npr8gafchn
 X-Rspam-User: 
-X-Stat-Signature: srjbgxkd3kua7fgtb4483he59h6t1d55
-X-Rspamd-Queue-Id: C21E4C001E
-X-HE-Tag: 1780498978-551924
-X-HE-Meta: U2FsdGVkX18Pjx6xXCsppDEV6onqc44+lx2ZXe8aGJEQtC8NzC69kY7gXDpmXZj6vEpLEuhP+gPWq0TSVi6eR57CB4l+PpMrzWKV5q+6rEAGZdCDUU1RLKs3+KvHm4tQTVLux6lxJ6yneBsivHZVJnPOGDEpZVm02I8h32mfe90KEGT0MYiopuvFsIJitIU0Dp3mHI0moqMNPkAsZLHhYelQ1/ECaAs9H91l9k9exA5BFxym+gFkDz1muOG8NT7+90I6Rpx7f/zUShcqLBwALSy4TiaDVPogFuUmDSDsbsrv/RgJ8UjBpYbq696rBDyJjWGvZ8O0uO4E4ZlPcKHIHvLHyWSmQKHIDzSyZhIcKzhjAS6tXzlpkthkI5vC+WvA0/ZUnoRYh09S3tnOrmGjMCJoxH8nqd0vItnAFOAKCLHjol7oaXSQG8pV7Fh+gt3UjNenb25ASXLTkog4/uY14iKDI3DeFlauLy/TuV6rd/o5dBa9mfmRPM83gl7bNKB3FPDR8ma+IA5byraZdVjQIRZ+bSJ3O8gfvNT0vydCbL+TlBn1Pp1L+pfD3Y/X1v5G2YVG6TRIi4gu2EQhudBI9n8o1cUboYCOs/wqi2W45hVJKkdbfMtSJV1kfvQX/kOBfJ6jJj4IeIWyl666TBKUE+dOYaq2fFb0RVEAnnuhJcTN0zqB+gFB7ofpxD3THsDDxfpy4GL++0/Uc281UQNhbS5lDicrbgKFn6BWhuQTDqyEdqtTnTrA9AtpjHkQ8Kg7sRglQ3wMJPCxiQ6fyQNlW2Qf8rMedeZ71BbaB03VJJu7MmLnhWBVnfTfwhGKHxTNiYbSoYjssu96p7oOwhEVnZdNxnrHzJCp/D51QDOY7ennLoDHx3m8NzkV4ex0aTfDD+g7q1gRL0YM8hqURQTkS6jXVXVO7CXk1QqDNUQGkD1YZJV3x3KJANBEjm29XWBggZU5+SMDT+9/evn4HOR
- WdD/AjWB
- mfRsJwUh7D8z2h6dNS2K3XXZEBK1r5tu5IlruJzs8FKu+vu8QI3sVOcgqzcGMoKY6W6MoteBzjGY7xznxAGbLiaAETFDm6CqhHOLHGGJekJpDfAe1+JPDbhWqkdrKuH7Fg13OVlIzQIMtwEJiU3lU1aGXNGb1n+boezkFQO1joWreq1s53w0ZroK660IoqR2xbVuuXbzUKy+HP9ACZXM3CTLpU6FeUuNUo59f1QQ1IjNoV3anM9CzhVRjT7sDcXRJUJshGzwwk4CvLOCV+Fj0VzqF5uJetx+cWMlYhtlIblvDzv9kNbse9FIu2W27bByZGL6p6h39ZiyZdEMRKtmAf4ANJ93Z7LDJaoSN/D7owsRkGrl+fdY+Qf2wS354CcQ9i3/LPXOm2moFoQj7reZv18fZ5nHBC6v4uINx8jccF3T5ob4BACRY7APZCt5664+n7FJMRTsGZos700BCuB44xe6TEXvZSiPIZpXOTUSO/j9Za5/TTmq2sChlopNeopoBMDgeyfdC1irXjlbNg6PzAMDGNPQNVscwrfxZsJVIMZaHibw=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780499018-619950
+X-HE-Meta: U2FsdGVkX1/7w3fdQPETjfWM8Tk+k07uPRA3kT+Y210f7PyjFPK4qLW75S7g6J740m3KLBZrRaIJg4+LEmmwkPC30MMFzSW6W1BsrySOaf8A0S8Qp1LnYYdMbOcZYX6NGeGVlTgkxXmn5a/iCK8UZeNfhPjzNJlQvp59DWPGW3Q/MryZF7Pu5mXPkjF8H0fK4tWr+5RErVup5tn99kKpH/uvK6XrBgrGpIwtFW7k4HV8PN6rYz3tr2aiNfKOn8Zt2pYIDyc8dwSJI7HanEyNLB0UREO/jNJyjhpaZMjlfGfgg2qqp+INjMYW2tiOOGbUhIHYmody7GsVuBeVnfE0Nnrtooq1oMsb3T9af/ott/1f4toQjB9L7eqketDASGJZ6gZLhAmBaohKjI0i0Er3BXNnvqONVPalQKm1JHGsufr3UDbIr4IVVpBr+QvHwoN1ZcMfEOqxLm5dIig3Nkxb2vuJ9dOQAHlgskyvG5LQUPbDDHyzVRVtAB7qbcs+IIn/Z5Iyr4P+VOALjcRlzLt9jJOa+42cVUqX/AcYnpmPB9Ks1ScygOR4Qwuz5/qqlUbSm4GY0+xg8fiTJ6H7z3e/VuO+51Dm/AiQkHi55vAYhCMBBIm0FR4rYZwlHJHpyZAvRyGCqq76aaFPnWcVNvrRJOMf8fqWWpdR6OWfMekHaME1E4yOfxxU1Zlna+DzJKMe5X+Wh8TKOUR9caa9MlhTE0F//6aMKLiu0nDKiXB40rZWPOcN9w5wKWmqk6ya5ukJ18pqoTRPquuA5IzqoKWRZ6TQTGPirGPAXJmKSKnPRpU/LIfedb7LN+FNFGW1tOQ6jm2eZYuy6yq+Dj5HquQ5g61to3KhWzfPX3JkT/sUc3J23KUa1tA4aDBCSw6zukbiEAZwg6bnO2MOeShZZ7bnZ5424/WjMNa64aS/JGs0JyeHjWOltZavk9ACjBgqMm00Q2SOL0r1AU+m6uhgzL8
+ d3kWvTKZ
+ RoKbmBHRyMsTn68FEXYsKBqN4kdqvPNpsZN9XTfUENMthta+KyIprfw663/os5R5jU4jQPaulPZpE3oHkioqGUPq8unVASULrN8+aS6cUkOkLe1DXO4iNdbfBbZBo4C1qe5bX5OGrdCpZdvjB8wxmlmM8HVB04piNlG9n01dhlfpggxs2vtljpbv+8yc493fpfjVJMtYflcRgaJR+RlPMIQYr0NsxluwCzKzM7cCdGazy6Z36V7boCxothCOUbrQLNtoCP6tbYf2rxup3ewxwYZkO5piH8AqF0vptrWDkrNrh+hhqHJZaT0Ru76frAFPcs6hnGz9gbKCBxv11QX4Nv6eNL0DbIiTHG/unnxMXeUplr/xr6y4/jscdXfCTQERc/0SkbfK0pKPUpps=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,20 +128,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 10:22:47AM -0700, Usama Arif wrote:
-> mincore_swap() also fields migration/hwpoison entries (and shmem
-> swapin-error entries), which can exist on !CONFIG_SWAP builds when
-> CONFIG_MIGRATION or CONFIG_MEMORY_FAILURE is enabled.  The
-> !IS_ENABLED(CONFIG_SWAP) guard ran before the non-swap-entry early
-> return, so mincore_pte_range() can spuriously WARN and report these
-> pages nonresident on !CONFIG_SWAP kernels.
+On 06-03 17:34, Mike Rapoport wrote:
+> On 2026-06-03 14:11 +0000, Pasha Tatashin wrote:
+> > On 06-03 16:59, Mike Rapoport wrote:
+> > > On Wed, Jun 03, 2026 at 12:05:04PM +0000, Pasha Tatashin wrote:
+> > > > On 06-03 09:49, Mike Rapoport wrote:
+> > > > > On Wed, 03 Jun 2026 03:28:58 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+> > > > > > diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
+> > > > > > new file mode 100644
+> > > > > > index 000000000000..8641c20b379b
+> > > > > > --- /dev/null
+> > > > > > +++ b/include/linux/kho/abi/block.h
+> > > > > > @@ -0,0 +1,56 @@
+> > > > > > [ ... skip 25 lines ... ]
+> > > > > > +#define _LINUX_KHO_ABI_BLOCK_H
+> > > > > > +
+> > > > > > +#include <asm/page.h>
+> > > > > > +#include <linux/types.h>
+> > > > > > +
+> > > > > > +#define KHO_BLOCK_ABI_COMPATIBLE	"kho-block-v1"
+> > > > > 
+> > > > > It's never used by block set and after looking at the following patches I
+> > > > > found that it's appended to LUO compatible string.
+> > > > > 
+> > > > > While this works for LUO, I think it should be kho_block_set_restore()
+> > > > > responsibility to verify the compatibility.
+> > > > 
+> > > > It should work for any component that relies on  kho_block. My proposal 
+> > > > is to use this method for other common KHO data structures (e.g.,  kho 
+> > > > vmalloc,  kho radix, future kho xarray). There is no need for them to 
+> > > > carry the compatibility string in their metadata, as whoever uses them 
+> > > > will include their compatibility string.
+> > > 
+> > > So if, say, memfd_luo uses kho vmalloc, xarray and blocks it'll have five
+> > > compatibility strings glued together?
+> > 
+> > That is correct, but it will be in only one place: the header of the 
+> > client's KHO subtree. Since it is dynamically sized and 8-byte aligned, 
+> > it should be safe to include in any struct.
 > 
-> Move the guard below the non-swap-entry check so only true swap
-> entries trip the WARN, and migration/hwpoison entries take the
-> existing "uptodate / non-shmem" path.
+> This is safe, you are right.
+> But I have more usability concerns from one side and the duplication it
+> causes from the other.
 > 
-> Fixes: 1f2052755c15 ("mm/mincore: use a helper for checking the swap cache")
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> I can see the downside of putting the version information in the data
+> structure itself as it either requires a different header for the first
+> element or needlessly increases all the headers.
+> 
+> But 
+> 
+> #define LUO_ABI_COMPATIBLE     LUO_COMPAT_BASE "-" KHO_BLOCK_ABI_COMPATIBLE "-" KHO_VMALLOC_ABI_COMPATIBLE "-" KHO_RADIX_COMPATIBLE
+> 
+> is not really digestible too. And it forces KHO users to potentially
+> track KHO internal changes.
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+These are compatibilities; I think they are quite digestible, both to 
+write and also when the  LUO_ABI_COMPATIBLE  string is printed out for 
+debugging/info purposes.
+
+> We still don't promise any compatibility between different kernel
+> versions so to avoid blocking this series on the decision what is the
+> best way to convey KHO data structures compatibility I suggest to bump
+> kho ABI version in v6.2* of the patch that adds KHO blocks and postpone
+> this discussion to after rc1 when we'll have plenty of time.
+
+Let's keep this patch as is for now. We will have a broader discussion 
+when we convert other participants to this new scheme. If we decide not 
+to pursue this approach, we will change this code to use an independent 
+compatibility string. However, having this in place as a template will 
+help us convert other components correctly, ensuring proper alignment 
+and that correct string helpers like  strncmp / strscpy are used—which I 
+have already ensured is the case in LUO.
+
+> * sending a new version of a single file does same email traffic, but it
+> confuses b4 and quite possibly other tools, so I think v7 is better.
+
+Agreed, I also prefer re-sending the whole series...
+
+Pasha
+
+> > Pasha
+> > 
+> > >  
+> > > > For now, reviewers will have to make sure that if the ABI header content 
+> > > > is changed, the compatibility string is updated.
+> > > 
+> > -- 
+> > > Sincerely yours,
+> > > Mike.
+> > 
+> 
+> 
 
