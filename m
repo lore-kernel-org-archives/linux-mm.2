@@ -4,95 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40A1FCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 21:56:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 869CECD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 22:14:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03A686B00AF; Wed,  3 Jun 2026 17:56:29 -0400 (EDT)
+	id 9CAD76B00AF; Wed,  3 Jun 2026 18:14:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 011D76B00B0; Wed,  3 Jun 2026 17:56:28 -0400 (EDT)
+	id 97BC16B00B0; Wed,  3 Jun 2026 18:14:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E69C26B00B1; Wed,  3 Jun 2026 17:56:28 -0400 (EDT)
+	id 8430C6B00B1; Wed,  3 Jun 2026 18:14:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D12F06B00AF
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 17:56:28 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6FC628FB57
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 21:56:28 +0000 (UTC)
-X-FDA: 84839960856.22.670FB4E
-Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B90C24000C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 21:56:26 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf27.hostedemail.com: domain of 3CaMgagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3CaMgagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780523786;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7272B6B00AF
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:14:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4EBEA04C3
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:14:54 +0000 (UTC)
+X-FDA: 84840007308.23.EF64349
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DBF99C000A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:14:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nnVK57o1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780524892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=y1YKQ72F+SqhcZBrev9pMOW1rdhh9BcLNctDSJfFhRw=;
-	b=38vqAFOjsOjvWHXkcV6eM0Z+i7Nh2HhKDDR+m72KR5fFR2s2721hved/h2a8mdWiBrPw0c
-	cp7tlvF+rR2A901ZE5LAzttPBR1YqBY0vpM9bBRUIctFj6wbIAVclZN9TDswZ1dnqVRNk+
-	sfRghLjoGwEhXHuGv+as+013is6a3+Q=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf27.hostedemail.com: domain of 3CaMgagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.79 as permitted sender) smtp.mailfrom=3CaMgagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780523786;
-	b=AlOcnBgtl1GtvbTt3sh5eSqKXKPbrXtm2gySbQpmKqNbGmJuCon59C3ojFdjer9yj8YnRD
-	ikP+VJFUjlnDq1pxfDpAstO5DJnd8FrgqOJdc5jnblAdok15Iec/dO367CdzsVUrz5L8EN
-	4ZvkEteG1i61KEyhFxgAjDiDwnlmnT0=
-Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-69d92a86e3bso56664eaf.1
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 14:56:26 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FmzDsup0sFlBNWhGg0+0FS+tEwpLPYz+Yh+3amtQtVM=;
+	b=TmefxpGVJo77Vqg4dBYhs6aWlpYc6gncSy3/3Dy1qw9rm7K7y7j86VetZwSVquHB9h6iQq
+	rWbauHVM0Y6H1oH1+vOsDAm3eUKWNnU7qmXX7BJDtKZAwRSoQ7O6Zc8hdxe4F7edjH4wN9
+	YRupJncXW6mT02uqD+nD1Mn5FrH0FG8=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nnVK57o1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780524892;
+	b=e4+Yok8VWzupT4mV7CO13OcdZnOSx6al8nDYoQZOrU+4oWzf3cfTjM/3wPEi0Sd6jgTtDk
+	v8/IOnZgOZtiMQBlsrt9HHoXo23UOKTZGmQGy7Zo9xaHzh2QYb8+lpSZbRnTxbQ4adaDPq
+	bRaZHxxqBmtd/5WVuBaIPpFBjSkhvxg=
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-91562bf6c12so10282985a.2
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 15:14:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780524892; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cQOxONdIPTqq1bfNZE2Ea6kdhv8Pn6j5zZccwX3pyc1qkg6X4IsgokkLYARpTPKDN2
+         zsdpMkuVjp1ZuxbxuoCtD7jQet2GP9QaPaCTLfwr59FS/9lakromM+1ajPzeUcz+CM9d
+         /U5kUwRyvrxv4WYUuhseZ0tsj7GlKKeBnlXOdCgzqLx8a3eb9Zf38T/VBYtuRAkWJKZH
+         91wArTqaOquNzeZn423rzmr4wxlNZgMsB+Whf5zrV3kdkFhW8e0anIvRavQZ9y/RTCOY
+         iGjmqaX5WE90ZuIY/xWqLvbd11gatQvzc2v/3g727flj2HwnXUCu9sgtLQXufEAk0mA6
+         d3Wg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FmzDsup0sFlBNWhGg0+0FS+tEwpLPYz+Yh+3amtQtVM=;
+        fh=DotKrzN339hx4DRVY+I55+Kv4CIqrGd43PP1Hk89HF8=;
+        b=cuIzQTZnsYTLNozLzoFIOcXZsQTWvlJgQUZcGbi0gYpE0LAyugDwCF3Je6U6q4lHBF
+         9W0HDQlB5j7TIUQbbV2hwVj9hptebSsgWPbdvlR82VVbgCdl1cDGKOZG2mySSblX47cQ
+         bNW9pIpKbuMgKJOd45sUUjtwKwLesef4zmHo3irotNow0cRO6yHaNQ1SPQKNyWmjiKSO
+         GHGg/ti57wHE9EXCU7CUjNdKoTTiCy2+jylaUtAYvnWnTcUh/o8xrZ8yen/wPgnPtTCA
+         XF8SaMfZ0K6CM+rC5esVxLT7QEC5VlAnqzufMFmoUcdVNRocTO3g37SiQkUolhNZd9lR
+         enAA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780524892; x=1781129692; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FmzDsup0sFlBNWhGg0+0FS+tEwpLPYz+Yh+3amtQtVM=;
+        b=nnVK57o1kbammAKyNiOgkERErJZO0W7YslPT2nMJ93XJJD+bK11MwibZTIccGIrefk
+         7SmsM/fItHPMHiQDs6J7glu5qZJobkBC6C/sgfV7ueLqGV8LmenMQJL20Z+3/JB18bow
+         vHB6yZYUWbOuh/jI1wu7Sqt3++FEBxAJpSPsHnVYmr4sJ43vCbV7D+tb6bEMSXjrQP9b
+         HQMuEG7MAT3Zxkskk8NQagiASasLQvcBI+i8UovINhvfHrMHpVxnu99YvdCA8dtxBhpU
+         EclJZIZfgdHnqKJi6YZvW7oqUCzymo8nUivU1HZ/JX6UDYu8TVoDoDEOxMekXmA35qqc
+         ovfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780523786; x=1781128586;
-        h=content-transfer-encoding:to:from:subject:message-id:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y1YKQ72F+SqhcZBrev9pMOW1rdhh9BcLNctDSJfFhRw=;
-        b=E83U/Qk4t1CKmkypCBhvrM89TOd+0fYLj9ot2AsoxOjgkPHrN9igJN6OkQHWvf2tXA
-         3hdoGsdjlwDA5nMeCLYhOR97GEBqNlzp/DeNJAYZpImc7YDsqvIGrMJUe2beadkXt9yI
-         04S/ZWP9/knOLPXpfDQ4d2o5fC7dcBUSxh7EgHTzaMo2glmEaFS853W0xSbhQQYUqanO
-         CJ5m+dEcc6Pc12tw4yFKijnsxpv4+HCk6lP+iHPTv+10Za3WWYbfAC5MIjimCVL0ghub
-         Ari3HFlKFLhWp7EAQSCd5KOrWOPgZNCYQPJhIDRapmiTKIxNehFDmdXCJ+rA4KG75f2f
-         I2FQ==
-X-Forwarded-Encrypted: i=1; AFNElJ82BLqHttf+Id4NeUOIwHzkAqhIHCHjVx7A4Dz4e9BsWWB5lT9IgU6udaPGYZmTxnfwL1B11TF/UA==@kvack.org
-X-Gm-Message-State: AOJu0YzdVc3alXABuRabNYf9XExSNOmuE4yjJ3cRo9NcyD6VF3Gibc69
-	VEiWtecL3dZTZRpVuI7rTSmU6bN1K8mXKG9BvYb+PBLH3B5fizii5U8ZXN3txH5MoR49ZYo1IZa
-	YqZlWLrgBIcLjnd86RuOSfM3bap2spxiM2AYI5EdXOFL/ONsRUYlNeN0TrnI=
+        d=1e100.net; s=20251104; t=1780524892; x=1781129692;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FmzDsup0sFlBNWhGg0+0FS+tEwpLPYz+Yh+3amtQtVM=;
+        b=fDBQgow/JIzKhG9LVOKlHAEqDNCHBIwVLXjtM6bXJ881+pPkwCDR+I9tvaV/MyqDXf
+         6fDpeZZsCvdV2D2S32GZDyvCOy10LUrtj4cdrAYuCe2GtTS938h6yKNjQKoMtrfSeaeV
+         DtMqHRk8+aMPpnV8Nbqseg95dklbldKDi0a3OQUz0U9ECZVg/KmrlIT0i2e8kdnMAoHh
+         pF7ho6OfHrBwYu8yMvuxOWpJuZxxhcSquuy7bCsr6js4ZXfzckVVsLwgyMxtlU+YFrVo
+         ET77Gsug4Hz25zThZrHTy0u1Bzp3QpxZdvO5/pdkvrS5Ts3pgO2h4HXWrluIuVuIa2m0
+         rM6g==
+X-Forwarded-Encrypted: i=1; AFNElJ9EuyQGTCUOrWT+tVLAgQzoaEtCm0FhxaqQJL3KrX7lCvhns3Be820qsNMdhRt/Qgfx0+ikFPpRcw==@kvack.org
+X-Gm-Message-State: AOJu0YwE/RXGGiLfLzUGzch9spoRKy3pgGjjK0KW2AyxjB3kMic+mifX
+	UdJcjd9zYkSMoWj2hob8buuANferIlfgbH97ZyFsnKb2mI/kH7xITUhDNGkS6Hv9OHyyyPQvm9s
+	WDr6st95ZrdsUt1rvoTxKBz47HwKFF8s=
+X-Gm-Gg: Acq92OHIb+Nm3OFBWnz1YIlluVnFskped5HnfQtvcO18fE/+lTJfNXeg7yxfCm8JEBP
+	W39QEtvfThOQ9894WwJTjrnDtHG6S4k1QCXtZF6sCsWY+tbcgyhFcnvJY4m6eLKWgheJyOVZswK
+	2yJi+3TBsRsxpREC608V5Rn9t9X00xscHMgUrwDpV6dLysogtCjGKdUhB4ucl0V3B3hOQZVe3gV
+	QSshtEUlrxDR3DYF+x+xO6+jkXyK+D9rZLAKrY238odqf+P7/2Ort8e1uRZKllaYQYpUSsT10eG
+	z87V0Xn7yscHq2s1LGDJmdgVebo1/x2coeXzmXsiEA1iLb6F
+X-Received: by 2002:a05:620a:40c4:b0:915:9c4b:fdb4 with SMTP id
+ af79cd13be357-9159c4c0fccmr119218285a.22.1780524891016; Wed, 03 Jun 2026
+ 15:14:51 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:569a:b0:699:b198:c278 with SMTP id
- 006d021491bc7-69e47ea0885mr2419090eaf.13.1780523785708; Wed, 03 Jun 2026
- 14:56:25 -0700 (PDT)
-Date: Wed, 03 Jun 2026 14:56:25 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a20a309.85ccb786.283107.0005.GAE@google.com>
-Subject: [syzbot] [mm?] linux-next test error: kernel BUG in post_alloc_hook
-From: syzbot <syzbot+8ffca916f3fa5455f9b4@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	david@kernel.org, gourry@gourry.net, joshua.hahnjy@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-next@vger.kernel.org, 
-	matthew.brost@intel.com, rakie.kim@sk.com, sfr@canb.auug.org.au, 
-	syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com, ziy@nvidia.com
+References: <20260527110147.17815-1-tao.wangtao@honor.com> <70377626-500d-46f2-a3f5-a0d2914ce365@kernel.org>
+In-Reply-To: <70377626-500d-46f2-a3f5-a0d2914ce365@kernel.org>
+From: Barry Song <21cnbao@gmail.com>
+Date: Thu, 4 Jun 2026 06:14:39 +0800
+X-Gm-Features: AVHnY4LRywF8yijh3uWS4ASgIO-DqQ0mxyZBegdnnjWwYExKtCPyz-v6JopNV6g
+Message-ID: <CAGsJ_4zg8+pVDwtsJtxxiC1ahJ9MR56Ue8VXCt_VrQgcXES2uQ@mail.gmail.com>
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma creation
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: tao <tao.wangtao@honor.com>, catalin.marinas@arm.com, will@kernel.org, 
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	x86@kernel.org, akpm@linux-foundation.org, willy@infradead.org, sj@kernel.org, 
+	kees@kernel.org, luizcap@redhat.com, zhangjiao2@cmss.chinamobile.com, 
+	kas@kernel.org, ljs@kernel.org, hpa@zytor.com, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	jack@suse.cz, riel@surriel.com, harry@kernel.org, jannh@google.com, 
+	jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, lance.yang@linux.dev, xu.xin16@zte.com.cn, 
+	chengming.zhou@linux.dev, nao.horiguchi@gmail.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	pfalcato@suse.de, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, damon@lists.linux.dev, shakeel.butt@linux.dev, 
+	ryncsn@gmail.com, jparsana@google.com, dvander@google.com, zhangji1@honor.com, 
+	wangzicheng@honor.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B90C24000C
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DBF99C000A
+X-Stat-Signature: 7fwrw8uqmupxxmjf7tqs3xsepq1jjgkr
 X-Rspam-User: 
-X-Stat-Signature: yfis5nkyimmdams19nkaqteuxztwhqkz
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780523786-988377
-X-HE-Meta: U2FsdGVkX1+M2FJwVpoxeFmxbWx+D6I/k0UnPkxLCvDCb1gOKDhvnQtonnwg2ftaZbmFeNLV7WHSdbhBwJ2sVCMsCdIabJ9jKjJnnn7LbdGLdgdplC0DRnH74waVxoP5irou0vbc9dDYLtwHJOQUzlM3lzU3A5jsfExeTHZDmOIzezPFojIYzFb+pPAaZQljKVQJ4KtMzDTxVLtMOKy2mweNa/M/tL64AIEyad8UQahGExSPq2so6sCHeDVvZx63AzU8qRS6+P6HxSxwXxDo+1g0cACjfHeenrV2DjP6V/bCOeUF/fh6Iu5ZvZZtOBbpVEzbqztFP77+/oz5OtObhLiSIY7AgCY32ta+AZHMLMrqp9A3ARC7+AZJYwV+Vj4RhcPK6rA87gJne0yVvsn3kE6H6U3afgdfh1dShPhsv48MMB5MoU6xYFOy0pob2ZY2kmz7vU1bb7jl32LBHhZzxm7fpRRu6hCB1dkxP6ed4LrerOul4eKyPQAktkp6css0yYJQS56DxVA5g66z02UuhFVC9lGBdUEc5sT1lZdSaMSpD/rOY1lm+odqGHXIrb6rUfFjCPJn5Gkv+wFaNl2C2wkCDcW7+8pz3b4WU9NT0pHrmq2B9BGH5wQFb5hVM/4rOk3Tq+VCMPjpw7xdWHI15v2qKa6avOMmqiTfhQhFlTTNEUwchDwhtTuMac0ZKtQ3R7xrFV1v9RPCLTIKIAWukjnJNuKo9QvV58GedDmaMOys9p4ArT+WbsJw+Wob85Zy1jVUinYTkSOOy/0KWOMM3i/86d535vY7jKLZbLRVXXdiFWvmjvb3bVMoXFYyDSTnSx25Rt5JmT1lrusBN3/3EZ7wNrxSL3Szsgw1BhIGVcKTk8FQceKOIX7sXcmDmmpiSihSxHK2ETsuyUoukK6wJYRYUChv6aZFEMef/lt6Dq0PEZm5VQ41llv8i6X3eeAcTS2zyTfVgjTYBsEJ1mi
- hWJyJWkI
- 1F8HgoDeq6UfZQfJYUTynmvetKaymc8SU0JfaVWczcXRKZ7JdFqIkdmJT0CC7Np5qbjLCWyGtth66DYVnxnnNtEJVM++l5aBmt3O3SYse2R13C1pW2a4/rnseBN1Ziuuyz/nXkpg1BvKHiDN+Q3SN0LWgwBRZHIIhKu7KR+mrp48pL/pzzCMK/01xsVlH1LzP6/MgFBy01TTymPtaQVK60jaAYXmD+DBV69dlt6DQeH5E5A8HPadqFSzngQUHOHQ9BMDuNV0FUz2B7Eq0slQ3tnxqh+sISvHBwzXGdmrLNbY17e/fNNzSh+eZk64NvEbNyZRxgscQTsD4hGufK59L27/ev62Zh8kLZw3JiJtJig9zMUA5vyICnHNrpEPtFUQ6Jk/WkjwPVgSHpOs0D5sgnuOba28d9104yP57TFDy2J/wzXm5/qCP9O+iOqFu/BsgoyXX/6UlE4+WEttCSTAbrcgIO9sD23Qmw9cO1YzMb9raikTTGYfjroBusbxKEBQV/vxI1iFVi8uzGt/eE+D6t6qZchvUEUASVUz6rJAOhNc4sf/pjXWtfUZEif6CPoZYAurb40XDI/ZnymmhtZ0RBTXSwc71oGKXTKY3Yc1CVW+90B3ZBRFcam2L1yn3PJxiG03X91rBuwYQtmlGEYU0PcAAbMtaNT3C//0Ue0BNpCCMxZiucgyxILpxH0h8jrJvi+uf8t7e4JBekZ4/TW+6LzHsLcoqQsjwhh0qig+EPFRThiqpLNf5bx2juWVbYI7yF8JgTVYzzQlpnl04exV9a797gNEcdp2+KRZ7wmRy8YiG98YbciEw43M4u0xjT/oY4qZtc0VUfxf2bsV0wVVsyMWrUUstB994skvz94LV6dnV1/4vW2quX5EOTlOBQJ50QDal54XOSKr9BphYI3yJGS5ETsan3mG5BgDab6T2iOyDl4EUgLu362WiQL0wsjRGeTrp+8aFY7xhUDVUFrw0RAsKH2pf
- DqS4VBJo
- P8MtvUyCThopZlwdeao1PMw0GoQmjtXuk970KDh3og/wedIbOdEuEGxFBVoPspIbQ3sKYgcB++TdkeOrUBjmPwqoznNjCbVaElhBf17EQNxNXZHRZU1wyBKjBOJuf2/fditfHRiCF/3NCsKLFM8D8If64aDLBw5JJwhdu8EWUVpSGf/jfahCEkX/hEE0f77KfFBnxBkqM9ERnKdrmnDlySEyZQknXydx93yKK/Jufhy/wHsJqEgCJYdAl6JyjNguwl48wjJL+4gK0GtCSDb1Xtqm0LXIOIIbdR2/YgfFBuLyjeygY0wzVCmpO69y4mtbe591t/Y5BKjfg26Hb/AjR/J7FVUTWcKYCLjcRGC1QQSwZHN5jXZ6pQATs/FqDarpSiWdalgyMa8dzOaDodBvUJ51jfYfvcasjcIm3VIB+oqn7wl0Pv6qEHQGMcvn76M78/OBYlnpQ9tQIAGDdYUGsAkCXaQOfN09tRJAV3FabE09wG6Rz5lvbXPo/Sb/X2eYdfLIeKT9rxv80jVNAumeK1CHHaMCzQidsvy+cbkxkpy84NN8Txi8kresZR67bk4kBW1HjqO8PPSzDqqWakBM20Ci89v4f9ZCUPzQ+dmqJ4w=
+X-HE-Tag: 1780524892-111130
+X-HE-Meta: U2FsdGVkX18s8UfN6tEYIRaBOSEcc9zlnji3KUSLgUl5W5s4v/Q/OGk9DqpQO9JkWkKNbhEpWq5hzKHmD5OcYLRAtJjImWV3r0wK5WKsBIHnOSHymZOEBCoeaim2s5kv8OGeRVXmcRE1zvaI/XZg9Xwhep63AHXXxAPG9+zCAFYmAHWmbOxM8kZajrGNvCSgmARLe+E2wPUawhOxLsAcCn8tQsD0R36HbemzTfTMc3SoBeeUb6iD/PaFQNcQRgLJZwd455Pykho7Wsmq5aGo378K8xik9WNho+4YgiwmOfVe2B0Koqe62Rbueqryobz4qaWY5CaIoKhAJ+jhp8zxOaQQbDq2Uqre+uCancNgdNdYITyLzTfjDNk1OHWWqZ80bGoTmR+VoWwOWl264LOsvMgX7f6fInutYkubupPcItBZ+R8BxyWVc4LLk6mL/18Dv2oKhzSixUiVL8BVwezcSel1/V7sl8BI8/IUL6e7GwrqrSPd3QIp5VAQERHkzBcvC6YRNfMF/SqdjfARj/KUrvPrBQidOIMfptBGcewjvbXbwYgl7CwPrnnnA9ds/O/BBgbHh8pbNkIixC+VbAM5mDDA0BuMDe7TjnzTongmfJiIdNyMnqqZSSLcNV3KS1KX2FDaYnfqqnIXIvvbRoMRM47CU7vCfDJ0UcKUxY7QYKiSJsl3A3MXDuCyzQhG/vsniu15QJ4uqvsABPLkjQzi9SuANmXIyHr0+Q29ElQ8nz98u85q6zquhOxI0K6kJwk0cIDaLbwLCF2FVyaqsACYHTr7rbHP38/QehNAirr0tvwvooVsSI3XRBksuqUeXYikxZmN55zjaiipTvLJZS8EVPlr0nr2KoBHwGnQqFjhryNHJqwFMOrDb6grFeJJ69nLCX1hUnB4vZquHrfkeD5hfl2psQ74T5n/tt5nNaPHZg21Jw9eFAQ+PAU8+W6vyblNkdTAeTJXCFw/1Q4FXLf
+ dn9McBVa
+ IjV0lJowUu2IDzBVQsS5jEQhlYZFEMC0y/5XL1QzrIz0oG7jO10dKKFdXhyoiym/NYKuOPICJanTI0DLOFVH9/FxOlHqAPBCAySxJpwLuyKtTlJ3/PQ7c9D1EDQ88c+LF3WVTdnvEhIBWlhAR2hmQ9uONfMJLTlY4XMbQRyk+/885Mmn0f73RTNo4WFH5l+OC0C5mifYotIC2kCy8z/9rbPILLtJrQb5EtsKmF2gyrrOf0C1NoIJ3DMLnjZT+huXQjDzqvRJaPm4tFYY88zYaK8jGcFpvx7MnoB/vvHlHJs4/RhhcPF06BRlEl+apOYvaQwm2nPasc5Mqk8PvFx/2zRoTBefsEvRBbQDGwO3ckXLQYFpVbS8Ze4I/zMYt2ae9+SN3smeT1EPEl7XC49o6X4lB66FtyKQWW6ciUBaWkwzqIVsmSxWnMSQwKnA8Ziu8Zipu7rUOIpHNG5gBSp7osPpwX2Aarb8vEw9mhXIVbYuRo2X31GQ+fXZ7dDha1AS2GjOTHCSqkOEApZUlLVnr68PtZlQCJg35Psoa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,187 +154,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Thu, Jun 4, 2026 at 4:25=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
+l.org> wrote:
+[...]
+> >
+> >  arch/arm64/Kconfig         |   1 +
+> >  arch/x86/Kconfig           |   1 +
+> >  fs/proc/page.c             |   6 +-
+> >  include/linux/mm.h         |  38 ++
+> >  include/linux/mm_types.h   |   9 +-
+> >  include/linux/page-flags.h |  34 +-
+> >  include/linux/pagemap.h    |   2 +-
+> >  include/linux/rmap.h       | 165 ++++++++-
+> >  mm/Kconfig                 |  22 ++
+> >  mm/damon/ops-common.c      |   4 +-
+> >  mm/debug.c                 |   2 +-
+> >  mm/debug_vm_pgtable.c      |   2 +-
+> >  mm/gup.c                   |   6 +-
+> >  mm/huge_memory.c           |  16 +-
+> >  mm/internal.h              | 171 +++++++++
+> >  mm/khugepaged.c            |  13 +-
+> >  mm/ksm.c                   |  43 ++-
+> >  mm/memory-failure.c        |  11 +-
+> >  mm/memory.c                |  19 +-
+> >  mm/migrate.c               | 126 ++++---
+> >  mm/mmap.c                  |  15 +-
+> >  mm/mremap.c                |   4 +-
+> >  mm/page_idle.c             |   2 +-
+> >  mm/rmap.c                  | 690 ++++++++++++++++++++++++++++++++++---
+> >  mm/vma.c                   |  76 ++--
+> >  mm/vma.h                   |   4 +-
+> >  mm/vma_exec.c              |   2 +-
+> >  mm/vma_init.c              |   1 +
+> >  28 files changed, 1279 insertions(+), 206 deletions(-)
+>
+> Hi!
+>
+> When I saw the diffsat I was concerned. Going through the patches made me=
+ ...
+> more concerned :)
+>
+> This is a lot of complexity. On top of something that is already so compl=
+icated
+> that I fail to grasp most details without regularly taking a look at the =
+nice
+> figures Lorenzo created recently.
+>
+> For example, I read above "since child VMAs do not need to allocate anon_=
+vma"
+> and wondered how that could be part of something that is just done lazily=
+. Then
+> I had to learn in the patches that there is some additional "Child VMAs
+> are created as ANON_VMA_TREE_PARENT and do not allocate anon_vma" -- excu=
+se me,
+> what? :)
 
-syzbot found the following issue on:
+Yes, that part is quite complicated here. There are two cases here:
+1. A forks B, and B inherits a VMA from A. In this case,
+B's VMA gets ANON_VMA_TREE_PARENT.
 
-HEAD commit:    a225caacc365 Add linux-next specific files for 20260603
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=3D13b0de66580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3D717edf2a5f9fc39=
-0
-dashboard link: https://syzkaller.appspot.com/bug?extid=3D8ffca916f3fa5455f=
-9b4
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-=
-1~exp1~20251221153213.50), Debian LLD 21.1.8
+2. A forks B, and B later creates a new VMA via mmap().
+If a page fault occurs in this new VMA, it gets
+ANON_VMA_TREE_VMA.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/f799d07ea17d/disk-=
-a225caac.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/72d0f0ff94e6/vmlinux-=
-a225caac.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/99d4279e6fec/bzI=
-mage-a225caac.xz
+In both cases, we need to upgrade B to a regular anon_vma
+when B becomes a parent and performs a fork().
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit=
-:
-Reported-by: syzbot+8ffca916f3fa5455f9b4@syzkaller.appspotmail.com
+This may be a bit off-topic, but I'm also considering
+whether there is a chance to work with Suren to support
+case 2 via a GKI hook in the Android kernel before
+Lorenzo's work is ready.
 
-Initmem setup node 1 [mem 0x0000000140001000-0x000000023fffffff]
-On node 0, zone DMA: 1 pages in unavailable ranges
-On node 0, zone DMA: 97 pages in unavailable ranges
-On node 0, zone Normal: 3 pages in unavailable ranges
-setup_percpu: NR_CPUS:8 nr_cpumask_bits:2 nr_cpu_ids:2 nr_node_ids:2
-percpu: Embedded 71 pages/cpu s253896 r8192 d28728 u1048576
-pcpu-alloc: s253896 r8192 d28728 u1048576 alloc=3D1*2097152
-pcpu-alloc: [0] 0 1=20
-kvm-guest: PV spinlocks enabled
-PV qspinlock hash table entries: 256 (order: 0, 4096 bytes, linear)
-Kernel command line: earlyprintk=3Dserial net.ifnames=3D0 sysctl.kernel.hun=
-g_task_all_cpu_backtrace=3D1 ima_policy=3Dtcb nf-conntrack-ftp.ports=3D2000=
-0 nf-conntrack-tftp.ports=3D20000 nf-conntrack-sip.ports=3D20000 nf-conntra=
-ck-irc.ports=3D20000 nf-conntrack-sane.ports=3D20000 binder.debug_mask=3D0 =
-rcupdate.rcu_expedited=3D1 rcupdate.rcu_cpu_stall_cputime=3D1 no_hash_point=
-ers page_owner=3Don sysctl.vm.nr_hugepages=3D4 sysctl.vm.nr_overcommit_huge=
-pages=3D4 secretmem.enable=3D1 sysctl.max_rcu_stall_to_panic=3D1 msr.allow_=
-writes=3Doff coredump_filter=3D0xffff root=3D/dev/sda console=3DttyS0 vsysc=
-all=3Dnative numa=3Dfake=3D2 kvm-intel.nested=3D1 spec_store_bypass_disable=
-=3Dprctl nopcid vivid.n_devs=3D64 vivid.multiplanar=3D1,2,1,2,1,2,1,2,1,2,1=
-,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,=
-1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2 netrom.nr_ndevs=3D32 rose.rose_ndevs=3D32 s=
-mp.csd_lock_timeout=3D100000 watchdog_thresh=3D55 workqueue.watchdog_thresh=
-=3D140 sysctl.net.core.netdev_unregister_timeout_secs=3D140 dummy_hcd.num=
-=3D32 max_loop=3D32 nbds_max=3D32 \
-Kernel command line: comedi.comedi_num_legacy_minors=3D4 panic_on_warn=3D1 =
-BOOT_IMAGE=3D/boot/bzImage root=3D/dev/sda1 console=3DttyS0
-Unknown kernel command line parameters "nbds_max=3D32", will be passed to u=
-ser space.
-random: crng init done
-printk: log buffer data + meta data: 262144 + 917504 =3D 1179648 bytes
-software IO TLB: area num 2.
-Fallback order for Node 0: 0 1=20
-Fallback order for Node 1: 1 0=20
-Built 2 zonelists, mobility grouping on.  Total pages: 2097051
-Policy zone: Normal
-mem auto-init: stack:all(zero), heap alloc:on, heap free:off
-stackdepot: allocating hash table via alloc_large_system_hash
-stackdepot hash table entries: 1048576 (order: 12, 16777216 bytes, linear)
-stackdepot: allocating space for 8192 stack pools via memblock
-**********************************************************
-**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
-**                                                      **
-** This system shows unhashed kernel memory addresses   **
-** via the console, logs, and other interfaces. This    **
-** might reduce the security of your system.            **
-**                                                      **
-** If you see this message and you are not debugging    **
-** the kernel, report this immediately to your system   **
-** administrator!                                       **
-**                                                      **
-** Use hash_pointers=3Dalways to force this mode off      **
-**                                                      **
-**   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
-**********************************************************
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x13fe38
-head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0x100000000000040(head|node=3D0|zone=3D2)
-raw: 0100000000000040 dead000000000100 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-head: 0100000000000040 dead000000000100 dead000000000122 0000000000000000
-head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-head: 0100000000000002 ffffffffffffff01 00000000ffffffff 00000000ffffffff
-head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000004
-page dumped because: VM_BUG_ON_PAGE(1 && PageCompound(page))
-------------[ cut here ]------------
-kernel BUG at ./include/linux/page-flags.h:682!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted syzkaller #0 PREEMPT_{RT,(un=
-def)}=20
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Goo=
-gle 05/09/2026
-RIP: 0010:__ClearPagePrezeroed include/linux/page-flags.h:682 [inline]
-RIP: 0010:post_alloc_hook+0x287/0x310 mm/page_alloc.c:1863
-Code: ff ff 89 da be 01 00 00 00 48 c7 c7 40 50 4f 8e e8 ce 4b d4 02 e9 c5 =
-fe ff ff 4c 89 ef 48 c7 c6 40 ef 7a 8b e8 2a c6 05 ff 90 <0f> 0b 31 ed f7 4=
-4 24 04 00 01 00 00 0f 84 8e fd ff ff e9 86 fd ff
-RSP: 0000:ffffffff8e0078e0 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: 0000000000000002 RCX: ffffffff8e0fef40
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: dffffc0000000000 R11: ffffed10170c4903 R12: dffffc0000000000
-R13: ffffea0004ff8e00 R14: 1ffffd40009ff1c0 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff888125a79000(0000) knlGS:000000000000000=
-0
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff88823ffff000 CR3: 000000000e1b8000 CR4: 00000000000100b0
-Call Trace:
- <TASK>
- prep_new_page mm/page_alloc.c:1925 [inline]
- get_page_from_freelist+0x3081/0x3320 mm/page_alloc.c:4015
- __alloc_frozen_pages_noprof+0x194/0x380 mm/page_alloc.c:5376
- __alloc_pages_mpol+0xe0/0x390 mm/mempolicy.c:2495
- alloc_slab_page mm/slub.c:3287 [inline]
- allocate_slab+0x83/0x5e0 mm/slub.c:3404
- new_slab mm/slub.c:3447 [inline]
- ___slab_alloc+0x160/0x930 mm/slub.c:4485
- __slab_alloc_node mm/slub.c:4549 [inline]
- slab_alloc_node mm/slub.c:4925 [inline]
- __do_kmalloc_node mm/slub.c:5331 [inline]
- __kmalloc_noprof+0x140/0x7b0 mm/slub.c:5345
- _kmalloc_noprof include/linux/slab.h:973 [inline]
- _kzalloc_noprof include/linux/slab.h:1286 [inline]
- __alloc_empty_sheaf mm/slub.c:2774 [inline]
- alloc_empty_sheaf mm/slub.c:2794 [inline]
- init_percpu_sheaves mm/slub.c:7555 [inline]
- do_kmem_cache_create+0x8ae/0x9a0 mm/slub.c:8595
- create_boot_cache+0xbf/0x120 mm/slab_common.c:717
- create_kmalloc_cache+0x41/0xb0 mm/slab_common.c:735
- new_kmalloc_cache+0xd4/0x180 mm/slab_common.c:982
- create_kmalloc_caches+0x14/0x50 mm/slab_common.c:1005
- kmem_cache_init+0x14a/0x1e0 mm/slub.c:8496
- mm_core_init+0x7e/0xb0 mm/mm_init.c:2728
- start_kernel+0x162/0x3e0 init/main.c:1034
- x86_64_start_reservations+0x24/0x30 arch/x86/kernel/head64.c:310
- x86_64_start_kernel+0x143/0x1c0 arch/x86/kernel/head64.c:291
- common_startup_64+0x13e/0x157
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__ClearPagePrezeroed include/linux/page-flags.h:682 [inline]
-RIP: 0010:post_alloc_hook+0x287/0x310 mm/page_alloc.c:1863
-Code: ff ff 89 da be 01 00 00 00 48 c7 c7 40 50 4f 8e e8 ce 4b d4 02 e9 c5 =
-fe ff ff 4c 89 ef 48 c7 c6 40 ef 7a 8b e8 2a c6 05 ff 90 <0f> 0b 31 ed f7 4=
-4 24 04 00 01 00 00 0f 84 8e fd ff ff e9 86 fd ff
-RSP: 0000:ffffffff8e0078e0 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: 0000000000000002 RCX: ffffffff8e0fef40
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: dffffc0000000000 R11: ffffed10170c4903 R12: dffffc0000000000
-R13: ffffea0004ff8e00 R14: 1ffffd40009ff1c0 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff888125a79000(0000) knlGS:000000000000000=
-0
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff88823ffff000 CR3: 000000000e1b8000 CR4: 00000000000100b0
+Even then, the optimization would apply only to the case
+where B never forks, allowing us to skip the anon_vma
+"upgrade" entirely. That assumption holds for most
+applications, although there are a few cases where it does
+not.
 
+I'm actually hoping Android could eventually disable
+forking for UI applications altogether. From what I've
+heard, some applications use fork() primarily to evade
+LMKD (the Android low-memory killer daemon). For
+example, a child process may monitor the main process,
+and if the main process is killed, detect that event and
+request a relaunch. This is one way some applications
+attempt to keep themselves alive indefinitely.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+But even if we limit the optimization to the subset of
+case 2 where B never forks, we still need to handle
+mremap(), VMA merges, VMA splits, and similar cases.
+That starts to become quite a headache.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+So please just ignore my rambling if it turns out to be
+nonsense :-)
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+>
+> Reading about VMA refcounts made me shiver. Reading "Holding only
+> folio_lock(folio) cannot guarantee that the split
+> operation completes atomically." confused me. Learning that we have to in=
+vent
+> interesting ways to make page migration mutually exclusive to free_pgtabl=
+es()
+> concerned me. Figuring out that there are arch-specific config options an=
+d
+> runtime toggles is a clear warning sign.
+>
+> Seeing test_folio_unmapped() was funny, though (why?! :)).
+>
+> I think this patch set has a noble goal of reducing anon_vma overhead whe=
+n anon
+> pages are not shared during fork. However, using anon_vma for them actual=
+ly
+> makes the overall implementation (e.g., rmap walks, locking) more consist=
+ent and
+> simpler.
+>
+> Even if we could be convinced that most of this here is correct, how shou=
+ld we
+> reasonably maintain this increasing level of complexity here?
+>
+> I won't echo what has already been said in this thread (and I didn't mana=
+ge to
+> read all, unfortunately), but for such big and invasive work it's often b=
+est to
+> get in touch with the community earlier. Otherwise, you might end up wast=
+ing
+> your time.
+>
+> Ok, arguably, someone who writes that code learns a lot on the way. And i=
+f this
+> code really was written by one developer only, I tip my hat! I'd be curio=
+us if
+> that code already ran somewhere on some Android kernel out there?
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+I heard from Zicheng that they have been running this for
+months and it seems reasonably stable. Please correct me if
+I'm wrong, Zicheng :-). This really should have been
+discussed with the community earlier.
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+>
+> But adding more complexity on top of something that's already extremely
+> complicated to save some memory looks like the wrong direction, really.
+>
+> I was excited when Lorenzo started working on a completely new approach t=
+hat
+> would focus on improving the common cases while trying to reduce the over=
+all
+> complexity. Because I think most of us really dislike anon_vma. It's stil=
+l work
+> in progress, and I am sure there are some rough edges.
+>
+> But fundamentally, I think we want to find a new design that is just natu=
+rally
+> simpler.
+>
 
-If you want to undo deduplication, reply with:
-#syz undup
++1
+
+> Lorenzo has been hard at work exploring various design options (and I'm a=
+fraid
+> he might be one of the 3 people on this planet that understand anon_vma i=
+n full
+> detail), so I suggest we wait for a redesign proposal from him and see if=
+ that
+> is doable?
+>
+
+Thanks
+Barry
 
