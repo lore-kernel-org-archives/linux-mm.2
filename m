@@ -4,131 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 726D2CD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:59:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9819CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 03:03:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D18486B0093; Tue,  2 Jun 2026 22:59:13 -0400 (EDT)
+	id 8B2036B0088; Tue,  2 Jun 2026 23:03:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC9D36B0095; Tue,  2 Jun 2026 22:59:13 -0400 (EDT)
+	id 862786B008A; Tue,  2 Jun 2026 23:03:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB8F96B0096; Tue,  2 Jun 2026 22:59:13 -0400 (EDT)
+	id 7514B6B008C; Tue,  2 Jun 2026 23:03:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A979B6B0093
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:59:13 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7C8E91614C3
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:59:13 +0000 (UTC)
-X-FDA: 84837094986.05.B611148
-Received: from mta20.hihonor.com (mta20.honor.com [81.70.206.69])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AA9A6100009
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:59:10 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 634876B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 23:03:12 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0F56D1A0208
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:03:12 +0000 (UTC)
+X-FDA: 84837105024.01.9BE8FE5
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 254181C0007
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:03:09 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QBFB3dbi;
+	spf=pass (imf18.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780455551;
+	s=arc-20220608; t=1780455790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zgEg6ywDLqG5YZyUNd1GBcVJdYTqa4VusEFsdn3J/0Q=;
-	b=aC4Jp2fuEYucGWThS3WIx3DcIz7D/l3xVZV58OMzk/J7OuA9Rb6V77V/eYv1ljIE5qggB9
-	7LXGhRC8/OdD1WruAy4HDPhngnUCQO/arNzxjQ8/bqH4uBmnPu5K+asG05eoSOKNKCM9Kx
-	P9TV7TY9z8ru1nzDdnk4lyx7Ri9g02A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780455551;
-	b=OT4DIXxUYf0fpY8l8tdqPurg4GB7kEdF5S8wQUpI062lq6EnN5WG+P+NyTOUh3gSFv1J1f
-	p5F/X5RrPHqa+LaqpckT27amrMHuPW2aWwuI/vI06NvM7rhWaZ0xPY9PK5bp9EtXov0TWv
-	y8aZ89JboO/U8620HY5/aS6GBQT6xHQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VVn12Hvb9FGkLc5N/aP4mYm2YYdVU4vVM0uYVFz4Dq8=;
+	b=R37ukE/lsovrXjk8rSjKLO2MhNfWk3ZwK+FtyyOaOfFtLWj3sTXMnA7ZQ5XvcFr8BCrpC/
+	123T9kjprpGnYbaGUxSUCoTR+6MOxJOCrcAeQYAM8aNVFVR+ydOebheBBqe0vl3fMLA+7R
+	RMALl5N//vxx+wTnx2Wm/ttPKXTxUyk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-Received: from TW003.hihonor.com (unknown [10.77.199.161])
-	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4gVXRy6ycdzYtWwh;
-	Wed,  3 Jun 2026 10:57:34 +0800 (CST)
-Received: from TA004.hihonor.com (10.72.0.6) by TW003.hihonor.com
- (10.77.199.161) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 3 Jun
- 2026 10:59:01 +0800
-Received: from TA003.hihonor.com (10.72.0.43) by TA004.hihonor.com (10.72.0.6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Wed, 3 Jun
- 2026 10:59:04 +0800
-Received: from TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1]) by
- TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1%7]) with mapi id
- 15.02.2562.037; Wed, 3 Jun 2026 10:59:04 +0800
-From: wangtao <tao.wangtao@honor.com>
-To: Harry Yoo <harry@kernel.org>, "catalin.marinas@arm.com"
-	<catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
-	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org"
-	<david@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
-	"sj@kernel.org" <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>,
-	"luizcap@redhat.com" <luizcap@redhat.com>, "zhangjiao2@cmss.chinamobile.com"
-	<zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>,
-	"ljs@kernel.org" <ljs@kernel.org>
-CC: "hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org"
-	<liam@infradead.org>, "vbabka@kernel.org" <vbabka@kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz" <jack@suse.cz>,
-	"riel@surriel.com" <riel@surriel.com>, "jannh@google.com" <jannh@google.com>,
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
-	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-	"npache@redhat.com" <npache@redhat.com>, "ryan.roberts@arm.com"
-	<ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
-	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev"
-	<lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
-	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
-	"matthew.brost@intel.com" <matthew.brost@intel.com>,
-	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com"
-	<rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>,
-	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com"
-	<ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev"
-	<shakeel.butt@linux.dev>, "ryncsn@gmail.com" <ryncsn@gmail.com>,
-	"21cnbao@gmail.com" <21cnbao@gmail.com>, "jparsana@google.com"
-	<jparsana@google.com>, "dvander@google.com" <dvander@google.com>, zhangji
-	<zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
-Subject: RE: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Thread-Topic: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Thread-Index: AQHc7cjw5r5ki6LAJ0S2mW/rJEfblbYq8jCAgAEtZwA=
-Date: Wed, 3 Jun 2026 02:59:04 +0000
-Message-ID: <7319ad82f9ee4fc4b18b50b1842c9f99@honor.com>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <0867dac0-bc48-4aa9-891f-2066a3eff989@kernel.org>
-In-Reply-To: <0867dac0-bc48-4aa9-891f-2066a3eff989@kernel.org>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.163.18.240]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QBFB3dbi;
+	spf=pass (imf18.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780455790;
+	b=CCea4msaffTfmBriFiTNm5ji80L1HdKk1zSZpRVA8IuEV9pyZmwGLGWCAgHgqkKNvVPSqV
+	FI/x6NBXgd5NR5XY4ZCRwgOXzBCe5GaigFwswJ9eZUnBmmRPdja9FfoHqT/NwFa2ZN6Suf
+	1NpYVD3uYWuEjpWHbzl6/V2y5YVj0ko=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8422a92b6d6so103274b3a.1
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 20:03:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780455789; x=1781060589; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VVn12Hvb9FGkLc5N/aP4mYm2YYdVU4vVM0uYVFz4Dq8=;
+        b=QBFB3dbiA5XLCmfkIvXWGzCAwRh84IeDzFCejVzaKSgBs5JCPG/cfnE31BeI63ZKPW
+         q/GjDyjINCOtAFHUeltkpxEs5605r2ETayZgw3Y8pAXdEVc4T11PtwkTuN5Udf8Zre5Y
+         YwwbVhK+C2QgDoVpLrfPtg10jmeah7ITMOtn188Od8Hrrp4QIl4wqbHTaRG+zExBTPHT
+         fDMu2lJ4ycHc94f1vvW4Bh55wCUNNvK6TiOM0hrFEZGf+U7seQRJxBifjVb3UyA6KQQg
+         KRXJgt5RmrHUBUnSOAzCLMazRU8X8xRiOVqaZnBuIzWAjiG4lrXYReTcVZM8h/qtGNLL
+         nTZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780455789; x=1781060589;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VVn12Hvb9FGkLc5N/aP4mYm2YYdVU4vVM0uYVFz4Dq8=;
+        b=mTH0+JYUbxF8hzMevBU7Wp8GM3a3g9sIkABQHe27Ap0+AcpjyTxvmKPxPidOUycFYR
+         fvSZIC7cbhrXcvQai/1ZqJeOgn6V+cYX5cbKHccFlkyqzh+EgOjDJzh22RfNM3pczQs2
+         U7sIYFHsoDR1kfk5uY1Wbi0S8V89SHjHThyHKDnm65ajLdvRooX2KmKdq+tnVWklp2DV
+         hFUSWXxiAVg3Tt0EZ6FOPqpkwRwjcxap40vJZLXT+RGi7/eAS0QnbXCj9nF0TErmklbi
+         4Z7TR1e3v/OSkSuKp8bgqnEdzpvX13OJOVB6Bdy0GEA/qYZTr38TsKHgsYvVFf+tLcot
+         QhyA==
+X-Forwarded-Encrypted: i=1; AFNElJ/GEw6olBblfE4eWK/qzSiN/QIrUrY5Mg6oh3UztvitQKFSz5LpTMIQU56T7J+gAP8nq66tIya2gg==@kvack.org
+X-Gm-Message-State: AOJu0YxzbeKuwqrhSuNEqEpkkOMYy0ZjvwWhKnOhfo9Hjp7WrrDmwj/3
+	UmwXhTqTdWqF4z+iREAdFIyzZSyZhA6uzj+bCkMlILet38L3XjUg7TqD
+X-Gm-Gg: Acq92OFml2t9GIvmdkE12DMHC6NpboxUJd/9nrcu5c2P3y1+BbH4L7/+HjGYoE72Jq7
+	GIgb+R1nfAW2y81kh+ubilsZvVMhMVF2jVEZMsYwJE+6D3QwwxbSJn1fySz9sjjZZPwQ3DnWiHm
+	RrRiKpDxbXxBn6K/z2yXY2KKjDuXixNZICOE+8d8/7m/iyDD3idf6E9ihSt0lgFcayl++qCASOE
+	jvUTiD9sWOwPnKNItuqq3zBV8PxH1XjcfU0i1OZoyzZmbA0WJNE9kBckzlxetU+1lXq7L1m4YJS
+	Qlsqs3QLZVDrI/L1F1CU0mtGdctTNfXcOlFJ/U5ns8WWzmCRcM+7vW8Lyhf0GKBA7WpeZ1AL0gB
+	dvezohWvk2evh8BrIyovRu2/BeeB80qvwHzRvgu2hsgy/EzpXhFwIy48gDsR5/Ufhk2A4oWzMlT
+	wnS3VTp4yI6eigiATwhuEzG6Tz1qv1lR2rzlPJLjyP0bUSJqylfAv7vNdpjq6xeCZJ
+X-Received: by 2002:a05:6a00:f08:b0:837:f111:b70 with SMTP id d2e1a72fcca58-84285975450mr1047918b3a.4.1780455788827;
+        Tue, 02 Jun 2026 20:03:08 -0700 (PDT)
+Received: from [10.125.192.75] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8428235006dsm1357752b3a.13.2026.06.02.20.02.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Jun 2026 20:03:07 -0700 (PDT)
+Message-ID: <c7870fe2-3588-79db-cbfb-bd6a2b78f594@gmail.com>
+Date: Wed, 3 Jun 2026 11:02:54 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor
+ per-memcg
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
+ shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
+ nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
+ roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Hao Jia <jiahao1@lixiang.com>
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-2-jiahao.kernel@gmail.com>
+ <aho7nepN5jZtKmef@google.com>
+ <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com>
+ <ah4ZZGl7GYJf54Wz@google.com>
+ <ff344c9f-51da-8b3a-e7a9-c4a7f4702ef8@gmail.com>
+ <ah9i3uhh3PFiS0Uk@google.com>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <ah9i3uhh3PFiS0Uk@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 254181C0007
+X-Stat-Signature: in44eoshmkir6odamethwd9qur1q7xyh
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AA9A6100009
-X-Stat-Signature: e78w58dq3hi5houuo447u61qu1mtbzck
-X-HE-Tag: 1780455550-406556
-X-HE-Meta: U2FsdGVkX1/WH28xC2+hl5msqzI01iuukNFphrQ5IAgEHZ69gworLd/Z6eEkkYpSrM2e31hcoT23APNbRblMjcZ/Xh5y6lqsNroC3Lt/F0j+MkGJz8jzc4gPBgwDzkY2rQwUhLwkY3Us7dFOLz0mxpQCjBvvA+oMMUKw0SUrMy5kTrncorCNUo8AjoDTLaMy6OxKnsk6qPhRj2pGkhqVndRR/il5X41n2LtUctPRjKtN5dXt6VX/KlbElGw1cJwLbdxXsFdlk9i0Z5N5RBZ6TTxzig5yGXz9606zb2aIsAd3LbYt5qDF3JFHFjcKZ1WH3gena5dqHMO6KQDVeEalBUDh3TAuDKXX4SxT4DOp1Rne9vh1seB55AB9vFNT+JUgN9qvrfEaSYT2fMRP3bybdOA/ESbDAfHiPQFw8yoUm7wxB51DyCwFEsXHkhBLXhDrzK3uQUmbRp8t7PBOhKh8MxFWsDJltpGf8Kh2ODcF3r+BGkr777PT5S/0Ou2sdafciD//SefAlmT6ULCDVM0eqpL7puRmEYuPAVDNXsGX1Nx6eNncbyWxio2BsbblsMFs++DdL7opn07ULSzi30zu+HS1PlOe+E7nc/SRS3qgxbF83ytUrhl0fRqegmjb3ufhXd2GcCBe5PeI1du8s0zwNceN4PK3RjKBDmQ/yTZY7HfE5AiEGI1wIAjuFtgssey2aPt60vOYJ2EFdU/SxKQiI4wTN5K1nciLC1eQrnghqwTyv8vn5c7UhBcungoFgzLI1JYBiHU+XeC6KaGRyjOH4OhlmOJPTChrsIweE68XG21SGn6CgBXzeCPjYXLtrX3AKm3289ahHZ4bYVjEM1b38s2SSTbpLY9pA3hB+Kbj1Vdo9YC9WG0R9Z7oOmEg7XCMfqJm1sU2PYuGP6csaS8Qx+2H+kjQJYOlYoAU89m4dlAr5KIWqskRB5y5THsYqhNQ1DNjQgb4OgbWeu02Oft
- Ykf656QM
- FQzHNdb5ykSL+goEpOJ+ppA/3fnxCEyqG5g9V6K3Q5p5TkIXdawpxRksbWjbUN3UX4KOo4CRCS9UIKh319wKTHx35LqE8d1MC28OagTgnuuVO3nqKWyiS9a9UatJMgigkqy4FMX2NKCd3x+9HG5aEeE1oz2xc264FeS/R4O67f7s5RKxsuWww7uuFCdjDis7pajTm0Trm5elOZWppx6S5dmTDqGHaGx1aqQaMS3dIghgxJm9MIK/BYyfRNmmvpYAeCs/vlTFOjYqa8OTU/QYNgGj1HXOtd3EBRkHnqjV3y8Jk9iCWdXKHmzGFznA6wX6SVBFMCS56LCH9ebCHUZ0eNGjY/6AK7bpY0ZWubdry/fzQo6rCmqYl3fI0y+300qgffnoR7K/4icqsAn2dCs4zgvnLbEbaczejtwoq9bpayw9VkBo=
+X-HE-Tag: 1780455789-1110
+X-HE-Meta: U2FsdGVkX1/RWE30Rm6cjZy/eAQBE7/rmtYkZvBM83GoqzIv50T2PNQFHwZD2Aiab2tW7nbykcEuu0aFJX3WmAZX4EJXj/tpmC8HhCeRUq47uBQy4jD+jV8czSu2lF+6zP8T0l1pnhFxWc+oMjRBxv8qmhiJuNYvaF0XpOezXxcArRnqKxrxnvNhJRWYmluMbXLDIqCxztqenq1RA2P03cLGOIxHbzb9hjo3GB39D21WQXAN+43crS+BVn2YvxYPmN6fkwa8HKP//fWn8rfexvr5h/alHYEW5xsWKVOuRaABy73RRgYBSF3I/Pb73xGPzPTxO1OEjXAkzZapewAcQSUIoP/VNWkSXeGsnq2ldCDxL1GTTBErZjuNVsyuqB3Fb+2Ca1wy0TAZYPdGpH2CkQKmhWyTRt6LyyzVtFK6wELLLy1c0eC4iP2ZHt5oa6OG9swYQYWe7FkNPEX1KlqSodJ39EeS5wy13QS3ceas60u25BulDxIDGkE7IKQ+9q0N0J6e4629bVD0eZ+E3leybqSj84opyUY2dOQ7gHb/mdWlvMZxT10ugzOZyclptXiwFBiVZWS9AIR8d+ZhY+VTSTOcG/nPGnPd3Eugj2DUYz4I178/zUPxGUHKn70TtMDU3t9iVvPxt6kUFDeRY4ciVttny8AHcRoT6u2WwW9A1GCCNFvuclqxSDTumOWKjE7DuxJ9f0rh4mQuSIWicW2Ycn/EQIPlxrXK1dZO6hSWGlDulJW8q9SgzLNvuivyUbS6youHAMItUlCvKwUqOdoLbkLWTtGDVA/B5ocUsyWCg6dT483215PxkEs+0pclOcDYHQn/2vVU4VD7eGEa9Y3ocnbiO2JjGD8yHC5VEt5LkITJYntV8nrBt5IdOR3kJLa/KQUuE3qE8H8BuAi2z91rITiITXuHRpL8sUsrcCd+OiG43swVOkQXR/0tnewSuXBRKE4/LXjSz7gywcKlBp5
+ csRk0T/0
+ Z3ZkXrJsQmuvLGei+zZP6O+/7jk/MP3Tp6+6po5NODHPZF86inzcCibrWAZiz4Lt77vjxthToF/GoTG344rFF6lMx/B1Jf0/10Xs5NlSU5dZw2J6kdJpJRugqRlUlkwRrdAJAvLwZ6sYOHiK+Er+CGJKBvUMn49SuRAGdZLfitas+ffbh7SZC7nM57+/FL1TESG6KUl/R7zxD17vWVzPUwz/livAaXlK/gwMbCscBl4V+xe3DNHfj8nU7D+39aP6K/JfSG9BqdMuv/jusj4+g4Ffdbojk2InjkYycacIi0uDQvlPE+pitLGzmSRcUcbv/iig9GoD/D70JjpcB88f9J/STui9pEoZXxjD/GWhfLYKKEAdbTQQLYfjD3yeekyX0e8uj/jVjKMW05U/qA20riuK5xy5tayDldCZdLLFoLw554UOtcM/bA0dwNZ6rAEyUaXaKkAmk0+4q+JIL5xP4To8qaAtwuwNnHaDECPUb/6mPQKn+X2MgnaVh489tguilRrkq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,94 +131,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiBPbiA1LzI3LzI2IDg6MDEgUE0sIHRhbyB3cm90ZToNCj4gPiBEZXNpZ24gb3ZlcnZpZXcNCj4g
-PiAtLS0tLS0tLS0tLS0tLS0NCj4gPg0KPiA+IEFOT05fVk1BX0xBWlkgZGVmZXJzIGFub25fdm1h
-IGFsbG9jYXRpb24gdW50aWwgaXQgaXMgYWN0dWFsbHkgbmVlZGVkDQo+ID4gKGZvciBleGFtcGxl
-IGR1cmluZyBmb3JrKS4gVk1BcyB0aGF0IG5ldmVyIHBhcnRpY2lwYXRlIGluIHNoYXJpbmcgY2Fu
-DQo+ID4gYXZvaWQgY3JlYXRpbmcgYW5vbl92bWEgc3RydWN0dXJlcyBlbnRpcmVseS4NCj4gPg0K
-PiA+IEJlZm9yZSBhbiBhbm9uX3ZtYSBleGlzdHMsIHJtYXAgb3BlcmF0aW9ucyByZWx5IGRpcmVj
-dGx5IG9uIFZNQQ0KPiA+IGluZm9ybWF0aW9uLCBzbyBubyBhbm9uX3ZtYSBsb2NraW5nIGlzIHJl
-cXVpcmVkLiBBbiBhbm9uX3ZtYSBpcw0KPiA+IGNyZWF0ZWQgYW5kIGxpbmtlZCBvbmx5IHdoZW4g
-c2hhcmluZyBzZW1hbnRpY3MgYXJlIHJlcXVpcmVkLg0KPiANCj4gSXQgaXMgdW5mb3J0dW5hdGUg
-dGhhdCB0aGUgZGVzaWduIG92ZXJ2aWV3IGRvZXNuJ3QgY292ZXIgY29ycmVjdG5lc3MgYXNwZWN0
-DQo+IGF0IGFsbC4gVk1BcyBhcmUgc3ViamVjdCB0byBjaGFuZ2UgKGV2ZW4gYmVmb3JlIGJlaW5n
-IHNoYXJlZCB3aXRoIG90aGVyDQo+IHByb2Nlc3NlcyksIGFuZCBybWFwIG5lZWRzIHNvbWV0aGlu
-ZyB0aGF0IGRvZXNuJ3QgZ28gYXdheSBhY3Jvc3MgVk1BDQo+IG1lcmdpbmcsIHNwbGl0LCBldGMu
-DQo+IA0KPiBJJ20gbm90IHN1cmUgaG93IHRoZSBpZGVhIGlzIHN1cHBvc2VkIHdvcmsgY29ycmVj
-dGx5Lg0KPiANCj4gLS0NCj4gQ2hlZXJzLA0KPiBIYXJyeSAvIEh5ZW9uZ2dvbg0KDQpWTUEgb3Bl
-cmF0aW9ucyBjYW4gYmUgcm91Z2hseSBkaXZpZGVkIGludG8gdGhyZWUgY2F0ZWdvcmllcy4gVGhl
-IGhhbmRsaW5nDQpvZiBBTk9OX1ZNQV9MQVpZIGlzIGJyaWVmbHkgZGVzY3JpYmVkIGJlbG93Lg0K
-DQoxLiBmb3JrDQoNCmZvcmsgZHVwbGljYXRlcyB0aGUgcGFyZW50J3MgbW0vbW1hcC4gKGV4ZWMg
-Y3JlYXRlcyBhIG5ldyBtbS9tbWFwIGFuZCBpcw0Kbm90IGludm9sdmVkIGhlcmUuKSBUaGlzIGNh
-biBiZSB2aWV3ZWQgYXMgY29weWluZyB0aGUgVk1BcyB3aXRoIGlkZW50aWNhbA0KdmlydHVhbCBh
-ZGRyZXNzZXMgaW50byBhIG5ldyBhZGRyZXNzIHNwYWNlLg0KDQpJZiB0aGUgcGFyZW50IFZNQSAo
-cHZtYSkgaXMgQU5PTl9WTUFfTEFaWSwgaXQgaXMgZmlyc3QgdXBncmFkZWQgdG8gYQ0KcmVndWxh
-ciBhbm9uX3ZtYS4gVGhlIGNvcnJlc3BvbmRpbmcgZm9saW8tPm1hcHBpbmcgaXMgdGhlbiBmaXhl
-ZCBpbg0KdHJ5X2R1cF9hbm9uX3JtYXAoKS4NCg0KMi4gbW1hcCAvIGJyayAvIG1wcm90ZWN0IC8g
-bXVubWFwDQoNClRoZXNlIG9wZXJhdGlvbnMgY3JlYXRlLCBtb2RpZnksIG9yIHJlbW92ZSBWTUFz
-IGluIHRoZSBjdXJyZW50IG1tLiBUaGV5DQptYXkgc3BsaXQgZXhpc3RpbmcgVk1BcywgbWVyZ2Ug
-YWRqYWNlbnQgVk1Bcywgb3IgcmVtb3ZlIGEgVk1BIGZyb20gbW1fbXQuDQoNCldoZW4gYSBuZXcg
-Vk1BIGlzIGNyZWF0ZWQsIHZtX3N0YXJ0LCB2bV9lbmQgYW5kIHZtX3Bnb2ZmIGFyZSBpbml0aWFs
-aXplZA0KYW5kIHRoZSBWTUEgaXMgaW5zZXJ0ZWQgaW50byBtbV9tdC4gQWx0aG91Z2ggdGhlc2Ug
-ZmllbGRzIG1heSBsYXRlciBiZQ0KbW9kaWZpZWQsIHRoZSBmb2xsb3dpbmcgdmFsdWUgcmVtYWlu
-cyBpbnZhcmlhbnQ6DQoNCih2bV9zdGFydCAtIHZtX3Bnb2ZmICogUEFHRV9TSVpFKQ0KDQpXZSBy
-ZWZlciB0byB0aGlzIHZhbHVlIGFzOg0KDQp2bWFfbWFwcGluZ19iYXNlKHZtYSkgPSB2bWEtPnZt
-X3N0YXJ0IC0gdm1hLT52bV9wZ29mZiAqIFBBR0VfU0laRQ0KDQpUaGlzIHZhbHVlIGFsc28gcmVt
-YWlucyB1bmNoYW5nZWQgd2hlbiB0aGUgVk1BIGlzIHJlbW92ZWQgZnJvbSBtbV9tdC4NCg0KSWYg
-YSBWTUEgaXMgc3BsaXQgYW5kIHByb2R1Y2VzIG5ld192bWEsIHRoZSBmb2xsb3dpbmcgaG9sZHM6
-DQoNCnZtYV9tYXBwaW5nX2Jhc2UobmV3X3ZtYSkgPT0gdm1hX21hcHBpbmdfYmFzZSh2bWEpDQoN
-CklmIHR3byBhZGphY2VudCBWTUFzIHZtYV9hIGFuZCB2bWFfYiBhcmUgbWVyZ2VkIGludG8gdm1h
-X3gsIHRoZW46DQoNCnZtYV9tYXBwaW5nX2Jhc2Uodm1hX2EpID09IHZtYV9tYXBwaW5nX2Jhc2Uo
-dm1hX2IpID09DQp2bWFfbWFwcGluZ19iYXNlKHZtYV94KQ0KDQpBc3N1bWUgdGhlIFZNQSB3aGVy
-ZSB0aGUgZmlyc3QgcGFnZSBmYXVsdCBvY2N1cnMgaXMgY2FsbGVkIHJvb3Rfdm1hLCBhbmQNCmVu
-c3VyZSB0aGF0IGFueSBWTUEgcHJvZHVjZWQgYnkgc3BsaXQgb3IgbWVyZ2UgaG9sZHMgYSByZWZl
-cmVuY2UgdG8NCnJvb3Rfdm1hLg0KDQpEdXJpbmcgcm1hcCB3ZSBjYW4gY29tcHV0ZSB0aGUgZm9s
-aW8gYWRkcmVzcyB1c2luZyByb290X3ZtYToNCg0Kdm1hX2FkZHJlc3Modm1hLCBwZ29mZiwgMSkg
-PQ0KICAgIHZtYS0+dm1fc3RhcnQgKyAoKHBnb2ZmIC0gdm1hLT52bV9wZ29mZikgPDwgUEFHRV9T
-SElGVCkNCiAgPSB2bWFfbWFwcGluZ19iYXNlKHZtYSkgKyBwZ29mZiAqIFBBR0VfU0laRQ0KICA9
-IHZtYV9tYXBwaW5nX2Jhc2Uocm9vdF92bWEpICsgZm9saW9fcGdvZmYgKiBQQUdFX1NJWkUNCg0K
-V2UgY2FuIHRoZW4gdXNlIGZvbGlvX2FkZHIgdG8gbG9jYXRlIHRoZSBWTUEgY292ZXJpbmcgdGhp
-cyBmb2xpby4NCg0KMy4gbXJlbWFwIC8gdWZmZF9tb3ZlDQoNCklmIG9ubHkgdGhlIHNpemUgY2hh
-bmdlcyBhbmQgdGhlIHN0YXJ0IGFkZHJlc3MgcmVtYWlucyB0aGUgc2FtZSwgdGhlcmUNCmlzIG5v
-IGltcGFjdC4NCg0KSWYgdGhlIHN0YXJ0IGFkZHJlc3MgY2hhbmdlcywgdGhlIHBhZ2UgaXMgbW92
-ZWQgZnJvbSAodm1hLCBhZGRyKSB0bw0KKG5ld192bWEsIG5ld19hZGRyKS4gSW4gdGhpcyBjYXNl
-Og0KDQp2bWFfbWFwcGluZ19iYXNlKG5ld192bWEpID0NCiAgICB2bWFfbWFwcGluZ19iYXNlKHZt
-YSkgKyBuZXdfYWRkciAtIG9sZF9hZGRyDQoNCldlIGZpcnN0IHVwZ3JhZGUgdGhlIFZNQSwgYW5k
-IHRoZW4gZml4IGZvbGlvLT5tYXBwaW5nIGluIG1vdmVfcHRlcygpLg0KDQpJZiBwZXJmb3JtYW5j
-ZSBiZWNvbWVzIGEgY29uY2VybiwgQU5PTl9WTUFfTEFaWSBjYW4gYmUgZW5hYmxlZCBvbmx5IGZv
-cg0KcmVsYXRpdmVseSBzbWFsbCBWTUFzLg0KDQoNCnZtYeaTjeS9nOWPr+S7peWIhuS4ujPnsbvv
-vIzkuIvpnaLnroDljZXor7TmmI7kuItBTk9OX1ZNQV9MQVpZ55qE5aSE55CG77yaDQoNCjEuIGZv
-cmsg5LuO54i26L+b56iL5aSN5Yi2bW0vbW1hcO+8m++8iGV4ZXYg5Yib5bu65LiA5Liq5paw55qE
-bW0vbW1hcO+8jOS4jea2ieWPiinjgIINCiDov5nlj6/ku6XnkIbop6PkuLrlnKjkuIDkuKrmlrDn
-moTlnLDlnYDnqbrpl7TlpI3liLbkuIDku73nm7jlkIzlnLDlnYDnmoRWTUFzLg0KIOWmguaenHB2
-bWHmmK9BTk9OX1ZNQV9MQVpZ77yM5YWI5Y2H57qn5Li6cmVndWxhciBhbm9uX3ZtYe+8jOW5tuWc
-qHRyeV9kdXBfYW5vbl9ybWFw5Lit5Y2H57qn5L+u5q2jZm9saW8tPm1hcHBpbmcuDQogDQoyLiBt
-bWFwL2Jyay9tcHJvdGVjdC9tdW5tYXAgDQog5Yib5bu644CB5L+u5pS55oiW5Yig6Zmk5b2T5YmN
-bW3nmoRWTUHvvIzlj6/og73lkIjlubbmiJbmi4bliIblh7rmlrDnmoRWTUFz5oiW6ICF5bCGVk1B
-5LuObW1fbXTliKDpmaTjgIINCiDliJvlu7rkuIDkuKrmlrDnmoR2bWHlubborr7nva52bV9zdGFy
-dOOAgXZtX2VuZOOAgXZtX3Bnb2Zm5o+S5YWlbW1fbXTlkI7vvIzomb3nhLblkI7nu63lj6/og73k
-v67mlLnov5nkuKpWTUHnmoR2bV9zdGFydOOAgXZtX2VuZOOAgXZtX3Bnb2Zm77yM5L2G5piv5L+d
-5oyBDQogKHZtX3N0YXJ0IC0gdm1fcGdvZmYgKiBQQUdFX1NJWkUp5LiN5Y+Y77yM5oiR5Lus5Y+v
-5Lul5oqK6L+Z5Liq56ew5LmL5Li6dm1hX21hcHBpbmdfYmFzZSh2bWEpID0gdm1hLT52bV9zdGFy
-dCAtIHZtYS0+dm1fcGdvZmYgKiBQQUdFX1NJWkXjgIINCiDov5nkuKp2bWHku45tbV9tdOWIoOmZ
-pOaXtu+8jHZtYV9tYXBwaW5nX2Jhc2Uodm1hKeS5n+S/neaMgeS4jeWPmOOAgg0KIOS7jui/meS4
-qnZtYeaLhuWIhuWHuueahG5ld192bWHvvIzmnIl2bWFfbWFwcGluZ19iYXNlKG5ld192bWEpID09
-IHZtYV9tYXBwaW5nX2Jhc2Uodm1hKQ0KIOWQiOW5tuebuOmCu3ZtYV9h44CBdm1hX2LkuLp2bWFf
-eOaXtu+8jOS5n+aciXZtYV9tYXBwaW5nX2Jhc2Uodm1hX2EpID09IHZtYV9tYXBwaW5nX2Jhc2Uo
-dm1hX2IpID09IHZtYV9tYXBwaW5nX2Jhc2Uodm1hX3gpDQog5aaC5p6c5oiR5Lus56ys5LiA5qyh
-5Y+R55Sf57y66aG155qEVk1B56ew5Li6cm9vdF92bWHvvIzlubblnKhzcGxpdOaIlm1lcmdl5pe2
-6YO956Gu5L+d5L2/55So55qEdm1h5oyB5pyJcm9vdF92bWHnmoTlvJXnlKjjgIINCiDlnKhybWFw
-5pe25oiR5Lus5Y+v5Lul55Socm9vdF92bWHorqHnrpdmb2xpb+WcsOWdgO+8mg0KICAgdm1hX2Fk
-ZHJlc3Modm1hLCBwZ29mZiwgMSkgPSB2bWEtPnZtX3N0YXJ0ICsgKChwZ29mZiAtIHZtYS0+dm1f
-cGdvZmYpIDw8IFBBR0VfU0hJRlQpDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICA9IHZt
-YV9tYXBwaW5nX2Jhc2Uodm1hKSArIHBnb2ZmICogUEFHRV9TSVpFDQogICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICA9IHZtYV9tYXBwaW5nX2Jhc2Uocm9vdF92bWEpICsgZm9saW9fcGdvZmYg
-KiBQQUdFX1NJWkUNCiDnhLblkI7nlKhmb2xpb19hZGRy5p+l5om+Zm9saW/miYDlnKjnmoR2bWHj
-gIINCiAgDQozLiBtcmVtYXAvdWZmZF9tb3ZlIA0KICDlpoLmnpzlj6rmmK/kv67mlLnlpKflsI/v
-vIzotbflp4vlnLDlnYDkuI3lj5jvvIzkuI3lvbHlk43jgIINCiAg5aaC5p6c5pS55Y+Y6LW35aeL
-5Zyw5Z2A77yM5bCGcGFnZeS7jnZtYS9hZGRy56e75Yqo5YiwbmV3X3ZtYS9uZXdfYWRkcg0KICDo
-v5nml7Z2bWFfbWFwcGluZ19iYXNlKG5ld192bWEpID0gdm1hX21hcHBpbmdfYmFzZSh2bWEpICsg
-bmV3X2FkZHIgLSBvbGRfYWRkcg0KICDmiJHku6zlhYjljYfnuqd2bWHvvIzlnKhtb3ZlX3B0ZXPk
-uK3lho3kv67mraNmb2xpby0+bWFwcGluZ+OAgiAgDQogIOWmguaenOaLheW/g+aAp+iDveW9seWT
-je+8jOWPr+S7peWPquWcqOi+g+Wwj+eahHZtYeS4iuS9v+iDvUFOT05fVk1BX0xBWlnjgIINCg0K
+
+
+On 2026/6/3 07:19, Yosry Ahmed wrote:
+>>>>>> Proactive writeback also wants a similar per-memcg cursor that is
+>>>>>> scoped to the specified memcg, so that repeated invocations against
+>>>>>> the same memcg make forward progress across its descendant memcgs
+>>>>>> instead of restarting from the first child memcg each time.
+>>>>>
+>>>>> Is this a problem in practice?
+>>>>>
+>>>>> Is the concern the overhead of scanning memcgs repeatedly, or lack of
+>>>>> fairness? I wonder if we should just do writeback in batches from all
+>>>>> memcgs, similar to how reclaim does it, then evaluate at the end if we
+>>>>> need to start over?
+>>>>>
+>>>>
+>>>> Not using a per-cgroup cursor will cause issues for "repeated small-budget
+>>>> calls" cases. For example, repeatedly triggering a 2MB writeback might
+>>>> result in only writing back pages from the first few child memcgs every
+>>>> time. In the worst-case scenario (where the writeback amount is less than
+>>>> WB_BATCH), it might only ever write back from the first child memcg.
+>>>
+>>> Right, so a fairness concern?
+>>>
+>>> I wonder if we should just reclaim a batch from each memcg, then check
+>>> if we reached the goal, otherwise start over. If the batch size is small
+>>> enough that should work?
+>>
+>> Even with a small batch size, for small writeback requests triggered by
+>> user-space (e.g., 2MB, which is batch size * N), it might still repeatedly
+>> write back from only the first N child memcgs.
+> 
+> Yes, I understand, I am asking if this is a problem in practice. For
+> this to be a problem we'd need to trigger small writeback requests and
+> have many memcgs.
+> 
+>> This could cause the user-space agent to prematurely give up on zswap
+>> writeback.
+> 
+> Why? The kernel should not return before trying to writeback from all
+> memcgs. If we scan the first N child memcgs and did not writeback
+> enough, we should keep going, right?
+> 
+
+Yes, this issue is not caused by the kernel, but rather by our 
+user-space agent itself.
+
+For instance, suppose a parent memcg has two children, memcg1 and 
+memcg2, each with 200MB of zswap (100MB inactive). Triggering proactive 
+writeback on the parent memcg will exhaust memcg1's inactive zswap 
+pages. After that, even though memcg2 still has plenty of inactive zswap 
+pages, it will continue to write back memcg1's active zswap pages. 
+Writing back active zswap pages causes the user-space agent to 
+prematurely abort the writeback because it detects that certain memcg 
+metrics have exceeded predefined thresholds.
+
+Of course, real-world scenarios are much more complex, and this kind of 
+case is extremely rare in our environment.
+
+That being said, your suggestion of using the global lock for the 
+per-memcg cursors makes the writeback fairer and would resolve these 
+corner cases.
+
+>>> What if we do something like this (for the global cursor):
+>>>
+>>> 	do {
+>>> 		memcg = xchg(zswap_next_shrink, NULL);
+>>> 		memcg = mem_cgroup_iter(NULL, memcg, NULL);
+>>> 		/* If the cursor was advanced from under us, try again */
+>>> 		if (!try_cmpxchg(zswap_next_shrink, NULL, memcg))
+>>> 			continue;
+>>> 	} while (..);
+>>> 			
+>>>
+>>
+>> Regarding the code above, IIRC, both the global and per-cgroup cursors
+>> suffer from race conditions. This race can cause mem_cgroup_iter(NULL, NULL,
+>> NULL) to return the root memcg or its descendants, leading zswap to write
+>> back pages from the wrong memcg.
+> 
+> Not the wrong memcg, it will just go back to the first memcg again,
+> which should be fine as I mentioned below.
+> 
+>>
+>> Additionally, since mem_cgroup_iter() puts the prev memcg ref and gets the
+>> next memcg ref, a try_cmpxchg() failure on CPU1 might also lead to a ref
+>> leak for memcg1.
+>>
+>>
+>> 	CPU1                                       CPU2
+>> memcg1 = xchg(pos, NULL)
+>>                                 memcg2 = xchg(pos, NULL) memcg2 = NULL;
+>>
+>> memcg1 = mem_cgroup_iter()
+>>                         mem_cgroup_iter(NULL, **NULL**, NULL) error memcg
+>>                                  try_cmpxchg(pos，NULL，memcg2） succeed
+>> try_cmpxchg(pos，NULL，memcg1） **fail**
+> 
+> Yes, we can probably just take a ref on the memcg before calling
+> mem_cgroup_iter(). That being said, I think we can just keep the lock,
+> see below.
+> 
+>>
+>> I took a stab at implementing a cmpxchg()-based zswap_mem_cgroup_iter()
+>> modeled after mem_cgroup_iter(), and it actually doesn't look that complex
+>> after all :)
+> 
+> I don't think we should re-implement mem_cgroup_iter() here.
+> 
+> [..]
+>>> There is a window where a racing shrinker will see the cursor as NULL
+>>> and start over, but that should be fine. We can generalize this for the
+>>> per-memcg cursor.
+>>>
+>>> That being said..
+>>>
+>>>>
+>>>> Currently, this lock is only used in shrink_memcg(), proactive writeback,
+>>>> and mem_cgroup_css_offline(). Note that shrink_memcg() only acquires the
+>>>> lock of the root cgroup, and mem_cgroup_css_offline() is unlikely to be a
+>>>> hot path.
+>>>
+>>> ..this made me realize it's probably fine to just use a global lock for
+>>> now?
+>>>
+>>> IIUC the only additional contention to the existing lock will be from
+>>> userspace proactive writeback, and that shouldn't be a big deal
+>>> especially with the critical section being short?
+>>>
+>>
+>> In the current patch implementation, this lock protects the cgroup's own
+>> cursor variable. During each writeback, we only acquire the spin_lock of the
+>> target cgroup itself; we do not attempt to **spin on any child cgroup's lock
+>> while iterating through the descendants**.
+> 
+> Oh, I did not say anything about the current patch adding contention. I
+> am suggesting we just keep using the global lock for the per-memcg
+> cursors, if we keep them.
+> 
+> Right now, without this series, the global lock protects against
+> concurrent changes to the global cursor from concurrent shrinkers. After
+> the series, the only added contenders are userspace proactive writeback
+> threads. Unless you have 10s or 100s of those, it should be fine to keep
+> a single global lock, right?
+> 
+
+Ah yes, sorry about that, I misunderstood what you meant. Thanks a lot 
+for the suggestion and for taking the time to explain it so patiently. 
+I'll switch to using the global lock in v4 patch.
+
+
+> Yes, userspace can affect writeback efficiency, but we can split the
+> lock when it actually causes a problem.
+
+Agreed.
+
+> 
+>>
+>>
+>>>>
+>>>> So, should we keep the spin_lock or go with the cmpxchg() approach?
+>>>> Yosry and Nhat, what are your thoughts on this?
+>>>
+>>> I think we should experiment with the global lock first. See if you
+>>> observe any regressions with workloads that put a lot of pressure on the
+>>> lock (a lot of threads in reclaim doing writeback + a few userspace
+>>> threads doing proactive writeback). See if the userspace threads
+>>> actually cause a meaningful regression.
+>>
+>> Sorry, it seems there are some implementation issues with the global lock
+>> approach.
+>>
+>> In practice, our user-space agent mostly operates in the following two
+>> scenarios:
+>>   - Triggering proactive writeback on the same cgroup at different times
+>> (sequentially).
+>>   - Triggering proactive writeback on different cgroups at the same time
+>> (concurrently).
+>>
+>> In both cases, there is no lock contention. So, the current lock works
+>> perfectly fine for us.
+> 
+> Would using the existing global lock work for your use case? How many
+> different cgroups can you end up reclaiming from concurrently?
+
+
+It should work fine. We typically only have a dozen or so user-space 
+agents triggering zswap writeback, and the critical section is very 
+short anyway. I will implement this next.
+
+
+Thanks,
+Hao
+
 
