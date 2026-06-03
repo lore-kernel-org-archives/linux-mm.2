@@ -4,99 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0881DCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 16:59:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D832ECD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 17:00:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66C996B00BA; Wed,  3 Jun 2026 12:59:52 -0400 (EDT)
+	id 0C7B86B009D; Wed,  3 Jun 2026 13:00:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 643C56B00BB; Wed,  3 Jun 2026 12:59:52 -0400 (EDT)
+	id 077856B00BA; Wed,  3 Jun 2026 13:00:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5801F6B00BC; Wed,  3 Jun 2026 12:59:52 -0400 (EDT)
+	id EA8D46B00BC; Wed,  3 Jun 2026 13:00:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 457636B00BA
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:59:52 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BBDF2140345
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 16:59:51 +0000 (UTC)
-X-FDA: 84839213382.04.395EC2E
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 90FBA180004
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 16:59:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mDD68vXb;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D74DA6B009D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:00:12 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8139C162743
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 17:00:12 +0000 (UTC)
+X-FDA: 84839214264.09.288EAD6
+Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8D0B314000D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 17:00:10 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780505989;
+	s=arc-20220608; t=1780506010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=pI8bHrDXPHfs3+Igq6z2IVBGSW2GMBJXPEgrc8qFhhU=;
-	b=X7TphAbP5RDkbcvO032AgJRx8vT8eHjP/ntZ2M9LAvmP2BrpBBbP5V23M9LhAvSWHEvram
-	QTYFtPxnnAdavQ8GGqHNRmbUSEU/6iej9xlmiA+5NRkeX0FjOUhMghAny/tIwdk7YdMIOu
-	tGjSRPo3hAizW8gaCxfnyKJVGFkMqsE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mDD68vXb;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4sLBQ0qVtHGVNtBqDY0zu4lY5V/1X2mWI7hTBTS1blc=;
+	b=QjViVoNYCy7Yviyjwm7SgSU2AlVw/aVbTg/6N9DGmgwPNcAbXMWX1YKX7OvTHO7CXinrJT
+	rGupqzkKjglRRHCKcXIFx+8nhtr5v2v6FN1hivIqLJoRwV3y2gIeWp1rZmqLbfaA1t3DPY
+	PPyLIDbyBuycDro8U1lV7PiVwQgid2M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780505989;
-	b=Xlug9wupS5m6jSEU9Hi1ihNPpE21uxNlksb88RHhQH/wQbpKZqzejOiBJAgfaL5ru4lrF9
-	bMcz4L51Z0i+gca60utHhp4AYIo47uUmAib6xqZwNAM/mY5Ur4Zq0WRNMs+PkYgkHI2qlv
-	faFKIsEowXwfh5lJid/kMj2FUyUmczs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780505990; x=1812041990;
-  h=date:from:to:cc:subject:message-id;
-  bh=v386T1vsDDAAs5Ni3Z2/P9ic1iWO3kLaIa5oGNiIo20=;
-  b=mDD68vXbqE8T8l/d2UtSTCG20CFj2toCndV2m55GXJTGnVhYeDM1RsJo
-   TAhHDzal9lWSsUwfJOW+sa5TcMmJq1qrz7Kdxk2mCHmJd3atWtTnuSdcc
-   L5e770HuUKLeLfrt38OCZ0FGVV88Qem9Cq1Ckro6yLTuoiLrtZ5jWHUci
-   XujIPtKX/v61p1xslxVjxE28aTUMDsEKX7+foJJ9qlDS4x05z8TXkp3A8
-   qDNAnKXaMWNetTwYQtqycoySP/FeeoR1mEaHJac4JZqyAIZSpdi5+cS8z
-   W9hWNudv3vBF493j/x+y7rw6Q+4soWaRORggnNzuo7IZK7nQbUXTFfJBE
-   Q==;
-X-CSE-ConnectionGUID: /4VRWf5qSNKwtrRZQAUm0g==
-X-CSE-MsgGUID: UPhQgkC6TS+lYyzvzYWjhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="81450238"
-X-IronPort-AV: E=Sophos;i="6.24,185,1774335600"; 
-   d="scan'208";a="81450238"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 09:59:48 -0700
-X-CSE-ConnectionGUID: O1ru58sdTP+PktzFs6O6UA==
-X-CSE-MsgGUID: 954JLIGuQo2vqCBVXId5GA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,185,1774335600"; 
-   d="scan'208";a="239819328"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 03 Jun 2026 09:59:46 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wUowQ-00000000Dg6-46x4;
-	Wed, 03 Jun 2026 16:59:43 +0000
-Date: Thu, 04 Jun 2026 00:58:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Nathan Chancellor <nathan@kernel.org>
-Subject: [linux-next:master 9857/10263]
- include/linux/property.h:226:undefined reference to `devm_clk_hw_register'
-Message-ID: <202606040044.XTS61C9j-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam07
+	t=1780506010;
+	b=7Q7el/DMddcXhR3ffpIJ52m2o3feU4oIFBNCoUnu1HbJC2Dh5mBO5xA697Yac0EE/fDoD5
+	XyA6hYeNv7xX0E1LWCo1OOxrjMphkTUpoSB983IXpOv39IUMicD9N6gh1GGo4SIXqjQn2k
+	os7stBSPSV4JXj84DdAgdZDPNvzX9kY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	none
+Received: from omf20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D262B1C1AAD;
+	Wed,  3 Jun 2026 17:00:08 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id C376D20028;
+	Wed,  3 Jun 2026 17:00:05 +0000 (UTC)
+Date: Wed, 3 Jun 2026 13:00:06 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>, "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
+ "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>, "Luck, Tony"
+ <tony.luck@intel.com>, "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>, "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+ "xieyuanbin1@huawei.com" <xieyuanbin1@huawei.com>, "Lai, Yi1"
+ <yi1.lai@intel.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-edac@vger.kernel.org"
+ <linux-edac@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: mm/memory-failure tracepoint change breaks userspace rasdaemon
+Message-ID: <20260603130006.7d2c4a62@gandalf.local.home>
+In-Reply-To: <0c16bf3d-7c6d-4e28-b200-03b7d0ef714a@kernel.org>
+References: <CY8PR11MB7134346A3E4BB28ECA28D6E989132@CY8PR11MB7134.namprd11.prod.outlook.com>
+	<b930678d-a1ae-458c-8705-7ca9680d4cb6@kernel.org>
+	<20260603121707.7eccb9fb@gandalf.local.home>
+	<20260603161947.GBaiBUI7C8WWPwD84S@fat_crate.local>
+	<0c16bf3d-7c6d-4e28-b200-03b7d0ef714a@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19xlonrAeS5YcJm5nHtKlz55w5G3g5ZuEc=
+X-HE-Meta: U2FsdGVkX1+gk+gazx2eDsJ3XzzAwEhpCWaX29hVGZ6ozvgJF5ooRvX8OdRQrbwj3Pj+y4Kmjp63iMP+4/bN/rSH4JskNqfI8hywRJ6JCXHNTQ/ksJu53+4ulKQlhzwjnru54A4ZOjrZRjhzYf+FeYNHg9ds3CxPqCg1tqqTexOAgS0fqrCDkzWpTXr1Tdqja3dcKvR715SqbHHDJMQt6F7kHHyR0WNu+KmBpac6WbrAof85DRNVoTU+Bccrh5eR0yRVIKVTQMEZ2IiOJLNpZiVx90MfufblMJwFJboRzphURJMcKP9tWVS8G7KmdMFfHWGFktnMMEvwhnYRyyyom+X3Zp6wRb5H
+X-Rspamd-Queue-Id: 8D0B314000D
 X-Rspam-User: 
-X-Stat-Signature: z8bnhf4j8w7bdzf5g1iewo3et9tbko3s
-X-Rspamd-Queue-Id: 90FBA180004
-X-HE-Tag: 1780505989-583740
-X-HE-Meta: U2FsdGVkX1+9zZJKPMjk6NzGsTjFCryM6PIFHxPb0EyxE3tPznwfCMzJm1cGnHiEh73zjpZCpxRqwgqHxw0WYSOS7YXjmJYOyHEX+S7u4xLea9FrFA9wGZoVc0Ic5fNdATMXO1axoYX0Esoz7EgclhV+MqtKEw1F4m/dhWsmOWM17WskVsc4k2Q0991pRE+osEflK2CXK3YlGO6PZJ8GrJxTAZk5sy9siUsINzO/xSanZgK9doKIqE9kl82mUQKecJTzC5pXwEremo5cctIVhNgLIT/tWaWzGqYF+/iBKo6LD71oQdH80F993sNMLPOUa2pBM+6KmXj+REpgnaXArsCfnPFUZMDgAq5SnMatk5LNBzRLHgQGLuQqnOTWtcFT8uzjPxiJMT++qzjC7Ag9o7VbPhKH12euFXgbVgDfZTzdn6uMAybVUjeLNWT5QTfmBWP+awTZX4y0SlhgipFgCKGbHWMKw2HsxYOTlgGtp9ifETZJvh2P1wc1CYHPhikuhc91V9hy23ZoQz5hYsPmQj3fMsxG67Kkr7PL3dA7Vay7QOb5SOQBw4ZPOy68bpnuAR5L2cnb17FxdUPIoEVKYXzTj6M8MabFSY1X8mkxm4d/xi6yJV7IdMqqVrO56qaR/x5ejdJuoZ1cmzV31c6dVl6S4sckMeFiuvzf3Qvn/C2qporgynLaktk546A4eMpQfP7jze9/s3SAtwN3OoYp3d5RC2v3oAatWjp4ILfYh2XnzBJTXrGMdXljbHKF5RoBwduUvoj+2ilQQ+KHr+tHdrnzh49c/1Kf9HRLDYG25E1dP5HUd8+TjY7w96ZSgiI+/amstEyIos4jSDpBiBeEdc6pPwV3YxvJKv7uiPD+/0UcxSe9kXgOWp9tMhlE9ma1oUNyG0fi6hlpe0GhUCx1kqLdWzGbimNoEOzcy6kR+lBkpQyWmxnXsoHKJKoyvCH/IHB2aV0ln/fF4MCJDZ8
- /UM17k3Y
- 2k437P2Az4KEvMjqxndJOekDt4JHGFuL7kYq5PrXYoMsKKjUaf+FZ+wBS16+VzEVL5WHHrVBKkTibVWFh4S+rPBzGdAo3Yo2JG9L8N41EP2x4lmg4YtvwfYXClZFuqsqPyeLDg/5L/Ia614jVBJn+Hl1FlH62rb4nAxshPGCx4NE2wUnDTgZ99Og4gEjS1ZygmNV5JvVfZ5knTCxoJ/6KTobfcqKqBpOq06FuzwEh6Oy6BFRd2vc0SbhdW6NKPirgXl0fzeGe6FyQ1ckWq2gUGYyPqX5UsEH6mkvHuWgbaEziBnv3Gvjj/wyX3qI7/2BZqkPlch5AgqDJVPOSH7K0znHfeSD3ukEmWYcJ
+X-HE-Tag-Orig: 1780506005-423012
+X-Stat-Signature: 4jfbmuf17sywyyhjxdj6kkzd73mrxhir
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780506010-535524
+X-HE-Meta: U2FsdGVkX1+i+DUCOHahFgtfLg2l7PUFr8j03erIOvQTvlSA9F9u9+CtjM/r+aY3QxnkLtK7GONkwBq1LSdKavvqopuJcM+cZUBjY0Ff6JPsIJQi2stP59bxHMChPFpHIiPV8oMJcFSuGNRjRk/Eoh8YOr5s7uCjhliCtulc0wq0JCTtaxpjjo9xquANmSVaGIki1mmsevrAUTAbbZK/YGlX3+rsEARBZXsiTU5Oe7DhT8uy4q8OxnM5KL9cYnVXQvgnURh2n4dHZR4vBOzxphfhIZLLcRELHzlRE9BGtNIiJ97mFCr8UEuLFSEip6Go+7fQrOakO3+lZU1YtBrNBQxHfi+7trz+GCyAK7ZmJBwIbuKA+HB7b+rluOtdfKnaYqi6v17Zb6XKKGs6Gjg8vOEXKQROCmhqNQx8S6fWLXohEGCtLDZriFoP7AZ3zV4RSiSD7z5nw4RJDaFvQ/j6wtDknFwQoQ+iY07nsyFW1vpZ18k377ex9roUrn+eMY29ipzH/IJSgj3dnG64XnlyfbnlfhyRAgK8Rrgcv/38GYWv6VpjhYZHKWrRR8VIg5Ekl8FJw2Eb/bi3aDF+XRzSL8OrG6B4RhA66k54mmQl0swwqqtKDTYGo3bW9nxVB8ViiPwLlOQ5sZWUWYpFPlwnhR9Rg0sDJ1XHupK7bxfoKxTQ0dqfIdEfEFSPG/S/Hmc6sB3tQmdn6w1Xh8FaXBWUTEOfo2AWgdjDiKy7VIMOoeyHKD4us7AurWiwTRje/OyJVEgaQy0758j98wd5pbAH4AIjTg/HuMuSoVmnwmB0fFZZ+5E2WBWG4Y7xGFfGdUXb/1gATNXndKh8AZQanaHYCc17x7rlVOp6sCesaX5HSguXXBv9w17rvzUowVbo7jqQQOeEgjXgNEZnl8d4dog9sl0zuL7mh1hgON65OZ/wPcEu6PfBq8bN5uo6EolfXLNOMOnJIxsgkYl9tJRX6ea
+ 9bi1g+pS
+ JDGNBorG9ac5/byE/u68+DJbLtle3EFGiPBe2se8oHYN/eJrGzKUNuU26XeG5+bAqCiCrKMgOE27faFpSORF2gyS468jOfmxRQ5x0SUmuUt3pMkzKHA2yB6DhoapyUUD37rXexCZvxo5KrSUgwLH8Y0hffQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,54 +94,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Arnd,
+On Wed, 3 Jun 2026 18:26:24 +0200
+"David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
+> Yeah, I was fearing that when I read in [2]:
+> 
+> 	"It has become clear in the past that this promise extends to
+> 	 tracepoints, most notably in 2011 when a tracepoint change broke
+> 	 powertop and had to be reverted."
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   b7bee4ca5688e30ca50fbc87b1b8f7eed7006c17
-commit: 0bf6bc1fe82a9307fa772e64c3adb89e98390f72 [9857/10263] err.h: use __always_inline on all error pointer helpers
-config: sh-randconfig-001-20260603 (https://download.01.org/0day-ci/archive/20260604/202606040044.XTS61C9j-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260604/202606040044.XTS61C9j-lkp@intel.com/reproduce)
+Technically the issue is with trace events and not tracepoints. The
+difference is that a trace event is created via the TRACE_EVENT() macro
+which defines what is to be collected from the tracepoint and exposes that
+information to tracefs which applications can easily see.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606040044.XTS61C9j-lkp@intel.com/
+A tracepoint is simply the hook in the code that you can attach to. Trace
+events create a callback from that hook to extract the data from the
+tracepoint to fill in the fields.
 
-All errors (new ones prefixed by >>):
+> 
+> Which means that I now also fully understand
+> 
+> 	"Some kernel maintainers prohibit or severely restrict the addition of
+> 	 tracepoints to their subsystems out of fear that a similar thing could
+> 	 happen to them. "
+> 
+> Whatever the result of this discussion will be, I'll try to document it.
 
-   sh4-linux-ld: drivers/media/i2c/tc358746.o: in function `fwnode_handle_put':
->> include/linux/property.h:226:(.text+0x1b04): undefined reference to `devm_clk_hw_register'
->> sh4-linux-ld: include/linux/property.h:226:(.text+0x1b0c): undefined reference to `devm_of_clk_add_hw_provider'
->> sh4-linux-ld: include/linux/property.h:226:(.text+0x1b10): undefined reference to `of_clk_hw_simple_get'
+You can still create a tracepoint without creating a trace event by using
+the DECLARE_TRACE() macro. The scheduler subsystem uses that quite
+extensively. That creates a tracepoint without exposing it to tracefs. The
+runtime verifier uses these hooks to monitor the scheduler.
 
+But you can still connect to these tracepoints from tracefs via a tprobe. A
+tprobe hooks to tracepoints that you need the source code to find (just
+like a fprobe hooks to any function). Thus applications *can't* rely on
+them because there's nothing there to tell you it exists or not.
 
-vim +226 include/linux/property.h
+For example, for the given tracepoint:
 
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  215  
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  216  /**
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  217   * fwnode_handle_put - Drop reference to a device node
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  218   * @fwnode: Pointer to the device node to drop the reference to.
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  219   *
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  220   * This has to be used when terminating device_for_each_child_node() iteration
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  221   * with break or return to prevent stale device node references from being left
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  222   * behind.
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  223   */
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  224  static inline void fwnode_handle_put(struct fwnode_handle *fwnode)
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  225  {
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17 @226  	fwnode_call_void_op(fwnode, put);
-77fc5151f9c0e6 Jonathan Cameron  2024-02-17  227  }
-8a0662d9ed2968 Rafael J. Wysocki 2014-11-04  228  
+ # cd /sys/kernel/tracing
+ # echo 't:rfail memory_failure_event pfn=pfn type=type result=result' > dynamic_events
+ # cat events/tracepoints/rfail/format 
+name: rfail
+ID: 1894
+format:
+	field:unsigned short common_type;	offset:0;	size:2;	signed:0;
+	field:unsigned char common_flags;	offset:2;	size:1;	signed:0;
+	field:unsigned char common_preempt_count;	offset:3;	size:1;	signed:0;
+	field:int common_pid;	offset:4;	size:4;	signed:1;
 
-:::::: The code at line 226 was first introduced by commit
-:::::: 77fc5151f9c0e6068f1567b73d33e75a0c35333d device property: Move fwnode_handle_put() into property.h
+	field:unsigned long __probe_ip;	offset:8;	size:8;	signed:0;
+	field:u64 pfn;	offset:16;	size:8;	signed:0;
+	field:s32 type;	offset:24;	size:4;	signed:1;
+	field:s32 result;	offset:28;	size:4;	signed:1;
 
-:::::: TO: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-:::::: CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+print fmt: "(%lx) pfn=%Lu type=%d result=%d", REC->__probe_ip, REC->pfn, REC->type, REC->result
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+It requires that BTF exists and the above doesn't annotate the result as
+nicely. But you can get data directly from tracepoints this way.
+
+-- Steve
 
