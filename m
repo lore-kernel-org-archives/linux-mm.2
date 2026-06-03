@@ -4,146 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA0CFCD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 13:09:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B2B4CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 13:09:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 193536B009F; Wed,  3 Jun 2026 09:09:13 -0400 (EDT)
+	id D53956B008A; Wed,  3 Jun 2026 09:09:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 143D46B00A0; Wed,  3 Jun 2026 09:09:13 -0400 (EDT)
+	id D2AE06B00A1; Wed,  3 Jun 2026 09:09:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 059536B00A1; Wed,  3 Jun 2026 09:09:12 -0400 (EDT)
+	id C69206B00A2; Wed,  3 Jun 2026 09:09:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E5DAA6B009F
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:09:12 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E3BA1201F5
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:09:12 +0000 (UTC)
-X-FDA: 84838632144.05.F96C6AB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 977B3100016
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:09:10 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D8MaenF6;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B3F7E6B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:09:32 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 723C21C099C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:09:32 +0000 (UTC)
+X-FDA: 84838632984.09.82EEED3
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4DF271C0008
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:09:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="vm5hSF/2";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780492150;
+	s=arc-20220608; t=1780492170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1iCrnVesN90WLEg/F7QmTL80caigGa4JNAxhwpSDrHg=;
-	b=1Ac3roT5LyYiiHkkOKkLsAunv8hVua6oSjh6l28DTEUZCuAhi4jK8xRy5RFtpprwHWtcHw
-	cjY+lCzoa9REwC4EwBXoP7cr5TjqmnqdZfXPapbhEQUL3PIHW6OzVyVC4ypSuYxkjNILC7
-	nOUstmTqx+9f/qIWD1Cq9+4a8rQRgTA=
+	bh=hcqvDrGcHqEyFCLA51sUV4Sc5w37DlSQfxQWt0KZ8ZE=;
+	b=M5M+GdUYaouvGpAtSALBs6i2lN5fvAWMNi7xL40cKQZbCsWdKIiZYhFxIIala/REza2HeI
+	iG80owlWgTE6177u/yRZzL/jcogCU/lbDDNekJ8c/fywUnsP3vNds7bkKjamMHN5aH+SPc
+	Bt8ou2LzenwiDrC74lWKdd9bxrBiep4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D8MaenF6;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="vm5hSF/2";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780492150;
-	b=Is1Md9MmQoNv+Emvv6SD+V/teykuC4G/H0YOM9khz48np2kvg3aI+ZnPUR6acaEY9GmNf0
-	4+F/v+SZWMrixWNotmE/c5781GIYLkPdtabcemza1gRACyedc5JHPBGfVAd6sjFwQ4tUD+
-	Qu7JnI0tkFgxn+/8bCWslJbO7fctgw0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AFDFB40681;
-	Wed,  3 Jun 2026 13:09:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DC31F00893;
-	Wed,  3 Jun 2026 13:09:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780492149;
-	bh=1iCrnVesN90WLEg/F7QmTL80caigGa4JNAxhwpSDrHg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=D8MaenF6jTRpvWgR1BIHwbjMyumZJD4IBjMjp5MkI/92JV3hT+hKiYtSgDsvV1q9N
-	 hXiM1XVArrDY7yF57C9dA3LiWKvmLVTow9RCfNvpH5bIVTA/+6WkQxDu5fWSbcpRSf
-	 BJ/PRK2SZ8TXx+kiO6aGoUKamOhBkTtOuaG7Xt4YTBCwEZ3SglxwO3+prtnADkL7Zf
-	 Wc12Ml5766LObLu4FD8gsYzJMRt1frHvsO2iSwOvgG3bGDJMsbq+vRoBVgyNABp30k
-	 MYq4csbxm5nEOM78h9nFB+yvHuWTUJenl1Zmf+nImhjL/dgBRSb67zTUPKh7WjszhU
-	 YoFKnlRyVLK9Q==
-Message-ID: <fc0cf75c-5740-4e2e-8b21-ab59c8517ba4@kernel.org>
-Date: Wed, 3 Jun 2026 15:09:01 +0200
+	t=1780492170;
+	b=U0cb8ux82UMjJkLW1XkvEBtm+N7y2e6ePJ5WdaGykFWmBCqfXx4qxpahEEIe0B10WM0tDO
+	0bVwuXXm0/mAsn7MyRT30z0l+eDtXofUSuUSiv+4FaNR7Ol445eoKn7qZL5cxWGoqjK3yh
+	q4d3C1u0vSjH6i+h2c9JMVMoclLC6X8=
+Message-ID: <3ec76ffd-2650-4302-87e1-8183029a0553@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780492168;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hcqvDrGcHqEyFCLA51sUV4Sc5w37DlSQfxQWt0KZ8ZE=;
+	b=vm5hSF/2NMMHB/9RxcyxVabX5G0pPMxM3MBXwo2hruAmNw8p+8BB7iW6E5Lw1m/Qg3ONqK
+	LlehzhHZ+6I1+4kLx4pskZkj9vvEHjEUhmPXkg7HGt+jp0pT0Sow0iX6wGiVHqYuSzn7TX
+	YTfqFsFDUmLLFna9cX9Cx5HbP2mv6p8=
+Date: Wed, 3 Jun 2026 21:09:18 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] mm: rename swap.c to folio_lru.c
-To: Jianyue Wu <wujianyue000@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20260603-ch-swap-series-plus-folio-lru-cleanup-v4-0-ce0219e100d9@gmail.com>
- <20260603-ch-swap-series-plus-folio-lru-cleanup-v4-2-ce0219e100d9@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [RFC PATCH 1/2] mm/secretmem: try to restore large page mappings
+ in direct map
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+ hpa@zytor.com, luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com, ioworker0@gmail.com
+References: <aiAJG7gdey4oNr4a@kernel.org>
+ <20260603114134.3010-1-lance.yang@linux.dev> <aiAfnw088f3ZT3va@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260603-ch-swap-series-plus-folio-lru-cleanup-v4-2-ce0219e100d9@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <aiAfnw088f3ZT3va@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 977B3100016
-X-Stat-Signature: 6t3xoysdo4656dea1ux64u1kwbjc7zao
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4DF271C0008
+X-Stat-Signature: gz19ckcbu797y4ppieuraopjfkjxs5eb
 X-Rspam-User: 
-X-HE-Tag: 1780492150-240779
-X-HE-Meta: U2FsdGVkX1+EStCiOPpWtNb1oOW4WixapzUOxbkHbrlzRgJz5Extqr0XTxWKmEHJoIiMN48Xu1teBtjyNxWT9+J4HLNEUyiC8iuisNteABgizpK5p+LadMEdcQnLZo2wlyX+foXF4/pcgu9xZTGXk7CCvGX1uVewm2hEPmPfBExNLJ//UkHK7L4bJEaLS5/K88Hg5XP9lBkHcVR8lwhLzGn+mJoJW0LBwfjpLl2XTYXqWbHBuLJjS8taU4r95LT5ywJdvz3mflMi0H//+Znmv9CCGmxV9O8OBUVE/kma42FUScUHV68nPSp9qfDuOKc9Zi8L20UUA+tDglXtwrsFPxaGDLgk9cFE3mbpomv4byA6Ue9VuNaK3hN3udoA2b+8Je/QA61luVBLJ9SYNS2zTB+K9pWsBdPvuQTJYt/9ooycfbWAj2sNIc1KLn/SUebRjNJm4CL3pcePsQoSV6sy6aedUq/f0mywvA3Qr9t5YeoxRuWHoe25C+/632hV8YGGya0VUnfmG9Z65AWyAZqo5Dms9oVJxHEodh+zWtIWNiSSCysVqcs92miNSeRvpZaHO1N7+AsTSzuZjOZoLzpHDVdbkMmxUYyAdFUW+fSQzMGiydwnZc3ntT7QEYNcaMdHNTLWxXsEtK8AbQLtyIqa+sQMGOYA6Lc3AMPfkkqqwkCBwHg5qNSuaS41Av2EaL7nduMk1xXnAIn6ASl0Ydux7qWh9NcsVjnvfBIcRjrIBYpEbTamlX8OT6ceFyWye5dmR7FwBu83paaDbsnhbbT9MJyM5X1OOKs7eR9+0xPrqSQcgnYA0AWTTRa8IZvkln66W6TVeB5Z9irKEd4p4Qqcxotx5TNhveAowvlIQwJ0N88oazOd9aa/VOu5IFk9H4ZMpXJMktteRba8iKRxahfg7y6/anPDl+GApcuUvh619avPNnkVdQuBIhDEEFxHPntvdbL/TlCv3J3B9RGk+N5
- vnQg/3Yn
- FxdLmbEW52FEjVoBJhF2z3PXr0o0OC3Fb8QJ0DKRh6QvnZdbc+75LFIp5Y7eFPeaC9ZSJlhbbaGEKC2yGmrF8fliiYCHgDcrxEAHm+Lz1ndZSJ32jUS07YV7qKG9pfR9XsnRf3sbrrB1fknOgZvStRH8WZcGmatUmty3GL10GkbQmPezjG/fTDt5o0CSHJDRXPYiapv/OdMESeHrg7GOVYQxZf8RCKN7y8nZN7f/kU5wu6x5VQSzzqS81XDRKND26qXZPB3Ca/qEGtykOhUSnCT9Fsd4PurVdPavZ2I8c2Nt0oGbAU9O7PTXLbo+0mNyrxzXEpfeha3VqFwEnoj+mFoL7aiB4+dR7bTKQs3aWkl2obaxsg9zeXgL8VyESPkDXG6E4
+X-HE-Tag: 1780492170-571965
+X-HE-Meta: U2FsdGVkX19+enmOaZ4wwy1RqpyR6DjFhmYL9GqWeYiDR7+syxWb/2lHj1EnR2s93uwrauutctuWSD7PeXfeiNzuOJGrrNBU4ZfLvceDcKRQTqzpqr4j07TH754R56OypJBH4p6iHO/HGhPO0vWxe5dLlCTuFWykS0UJ/XmOgftGVix7mxG9IPHL5kXGK+7TBz4QWL0Sy/cGr4LvSk0N3ludcbwHNmBojUQg5g+N94GQ2ME7JXEbrlEuXFlraDlDJ4XANVi5aTsyLuvYL8nd4Tf/SH2WJ9P2cZhpceLjhfclOcGgq0swSPRSfKtZTuu2kP9PP2AXoWUCRwoN3snYc7TXiSlgz5QVrhIi0JR03QZO2Z7VxreOpPcNblJ5qE/2gV1SyANbGjTy9ffdSuvba2pNUBpB4pa6YsiP7nQBYos0ZhhCknBY37X8MoblKvQ6MF3XGfAB4nUoX5yjbuHYhd0ixD40V7FHfS8ws4PlUH8R/iEMNT+7amX8CYxOyNAKsOh6BDtyKv+r/aafyNA/XvAagCZnYJGQX/KaRJ7ND6xu1DTE+Mfv050Cye/kavE0UQiHtso432HxPpp2hwRFbGb1MFu9C6QwyKpVENvU46Z6POacFilO6izRIKCIpjAK+7TOOdadPac0C+ikknSXXkfLBVihgDVoxUrTDg5uepfrOgKiMFXgMymT77KB1Msk461gl8AT2TAqzA4915pQ0qQKkH7MresQtdMXrM5qfd5jCkzuEPKkchj/4h4PdVVLA6WpapYGb6VHouKAX5vBDsCDq1sJoDWOJGfGC23u6mshzhY8lSL4a1GqPL/604XfpfLPvZS3OBV+fQgVTGhKqSUD8Imw68/xyxDTWXSUleDn2JMFriJsdH/A/VT0y0Gwlr+mfU/VnsKORML40xBSAg379LZiut3L9cVsEnOVADqqmbCY7yGD8iUGSi94DqEJ7PkF233lQZanySEOpea
+ 6lpgmDc4
+ uaE3307Q8fX1H0bvkSn3VBZUgKrAqvEnftx7vhB5JuNFkHRuEwmUX9XwsueC5rQOMBdZ+xI5lp9E8JVWDpMrpdUB7wFarmxCmnrbzI1+viV1VQkYsVU4ZtdjcE+CycXcJRPZ3YBzT9/zVkF0vnS7SyVbFtbKY0wTJalTpQYjzJcaoCEfTg2SP82nJB+LF1VaBHB43edHGsj1ju8Ux02JY9r9ZBcSJotzbsgqsxnj0N50N5PNI+Tu4PW6zXD9/zFYFnBrGkAwddNd2vKfQPvCx9J81Ca61UdesUAimo2cklOHxjpkmhzVJpvNrVEPQzfKxQfymlmQSRfd8AWQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,28 +93,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/3/26 15:05, Jianyue Wu wrote:
-> Rename mm/swap.c to mm/folio_lru.c so the filename better matches
-> the code's main responsibility.
+
+
+On 2026/6/3 20:35, Mike Rapoport wrote:
+> On Wed, Jun 03, 2026 at 07:41:34PM +0800, Lance Yang wrote:
+>> On Wed, Jun 03, 2026 at 01:59:39PM +0300, Mike Rapoport wrote:
+>>> On Wed, Jun 03, 2026 at 06:46:23PM +0800, Lance Yang wrote:
+>>>> From: Lance Yang <lance.yang@linux.dev>
+>>>>
+>>>> secretmem removes the pages backing secretmem mappings from the direct map.
+>>>>
+>>>> Removing one base page from the direct map can split the covering large
+>>>> mapping down to PTE mappings. Repeated splits can leave more of the direct
+>>>> map mapped with PTEs, meaning more TLB entries for the same range and
+>>>> potentially more TLB pressure.
+>>>>
+>>>> So let's try to restore large page mappings whenever secretmem restores a
+>>>> folio to the direct map.
+>>>>
+>>>> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+>>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>>> ---
+>>>>   include/linux/set_memory.h |  6 ++++++
+>>>>   mm/secretmem.c             | 12 ++++++++++--
+>>>>   2 files changed, 16 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
+>>>> index 3030d9245f5a..ad2fa414a22d 100644
+>>>> --- a/include/linux/set_memory.h
+>>>> +++ b/include/linux/set_memory.h
+>>>> @@ -58,6 +58,12 @@ static inline bool can_set_direct_map(void)
+>>>>   #endif
+>>>>   #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
+>>>>   
+>>>> +#ifndef arch_try_collapse_direct_map
+>>>> +static inline void arch_try_collapse_direct_map(struct page *page)
+>>>> +{
+>>>> +}
+>>>> +#endif
+>>>
+>>> Did you explore what would it mean to hook collapse_large_pages() into
+>>> set_direct_map_default_noflush()?
+>>
+>> Good point, I kept it separate on purpose :)
+>>
+>> Putting collapse into set_direct_map_default_noflush() would change the
+>> semantics of that helper a bit, IMHO.
 > 
-> This keeps the implementation split from swap-specific code without
-> changing the published LRU helper interfaces.
+> For x86 default means present + rw + PSE, so yuu can look at it as actually
+> better enforcing the semantics :)
+
+Yep. One x86 detail though, default seems to miss _PAGE_GLOBAL today. Not
+sure if that is intentional or just historical. See patch #02.
+
+>> I would expect arch_try_collapse_direct_map() to also be useful for cases
+>> where a direct-map permission change could split a large maping first,
+>> and the user wants to try restoring the large mapping after changing it
+>> back. One example[1] is making a direct-map range read-only for security,
+>> which I am also working on :)
 > 
-> Update MAINTAINERS and the remaining mm/swap.c documentation references
-> after the rename.
+> I don't think users should care. The users care for particular permissions
+> of a range in the direct map. It should be up to the architecture to select
+> most suitable mapping size. The splits are implicit, I don't see why
+> collapses can't be implicit as well.
+
+And agreed, users should not care about the final mapping size, that is
+up to the arch.
+
+TBH, my concern is making the collapse cost implicit for every
+set_direct_map_default_noflush() caller. I still lean toward keeping
+it opt-in, but happy to hear what folks prefer :)
+
+>   
+>> [1] https://lore.kernel.org/linux-mm/9979fa87-88ef-4baf-8592-502ff4888085@kernel.org/
+>>
+>> Cheers, Lance
+>>
 > 
-> Suggested-by: Baoquan He <bhe@redhat.com>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
-> ---
-
-We can later decide to rename it to folio.c But maybe it makes sense to keep
-this LRU batching magic in its own file.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
 
