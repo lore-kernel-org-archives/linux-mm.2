@@ -4,142 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A865ECD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 11:51:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE297CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 11:53:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F5C76B008A; Wed,  3 Jun 2026 07:51:29 -0400 (EDT)
+	id 1E2346B0092; Wed,  3 Jun 2026 07:53:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CCEF6B008C; Wed,  3 Jun 2026 07:51:29 -0400 (EDT)
+	id 193446B0093; Wed,  3 Jun 2026 07:53:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFE3E6B0092; Wed,  3 Jun 2026 07:51:28 -0400 (EDT)
+	id 0D08A6B0095; Wed,  3 Jun 2026 07:53:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DE2926B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 07:51:28 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AD5DA1C144C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:51:28 +0000 (UTC)
-X-FDA: 84838436256.06.8F84B2F
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 83E882000E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:51:26 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="QbdYIxe/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z08nhYPV;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oFyz+dhj;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8+ubzr4L;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 028C66B0092
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 07:53:38 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 94A0C1C079C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:53:37 +0000 (UTC)
+X-FDA: 84838441674.01.FB48105
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6EF26A0012
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:53:35 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="X/BAccuz";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780487486;
+	s=arc-20220608; t=1780487615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uIeJZpdX8FCDjWAXiU77ogVQ0B8VkYFjD6D0OQC7A18=;
-	b=nfa6JIZxT7sl80cSUx3j24cc8xlxAjaVUJWSfQFPSVpnWepy+3BK8FKoLKQVKrg1RxcR+l
-	9qLG1Bskdg+huP1i59wBx/GJIJbSeYpMxvBcauVTvVP9fgn0F4RuW2HAhnEgOFounCiaPg
-	9aVkp/BVUQNz6meUjmvVw4oK2EjWb8k=
+	bh=oO32gU/6GqPqmsbPD/EqqtNbEEfCeRvWof7NPW20STY=;
+	b=BSyAiDenDhfXIV6c0JbVdvL5338TLZYw1P0nbcYklKGOoG8RtObj3WinWdmj8FiuHrGzsg
+	acIO0VdfKAD3f9Sm0TSf99nXb2TDrYohIbk9WV3W7tiIq/0T8RdVkbp5U5L2YbqBDiNJwZ
+	0j79rtyykUWFFL1xaBv4yJVHE6+l8Oc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="QbdYIxe/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z08nhYPV;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oFyz+dhj;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8+ubzr4L;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="X/BAccuz";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780487486;
-	b=tSbyCjmm66D0+GbLbbrKy3ua5dauBUOhEORhbX/euVmanaqoGoWhv39RcaiVE2DUmrXyst
-	xmHh137N1CUuhF2dF1vPabDmq6/fPtwFqD+GB5kHfejRuuExCSmIFyMN+HiIEBF4NW/dyg
-	leMNsHAY1HYraW767ShdZDf7PiMHSyY=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EC7C56A967;
-	Wed,  3 Jun 2026 11:51:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780487485; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	t=1780487616;
+	b=OSWwcb6+XuMOeBjHTMSm24VJWrPs+bnQwZyQn6S51i2H0IOV+XJX4QYsqUjs9nxuEmo8Ks
+	DgRz1hNTyNdA8eLFa65IiCcV3t7H+AvQ14Qerpjbvpc1w4LltRq8NNG/VS8PvjJeOs/ypM
+	9N4KsWdqIiEab7j3273GWJRQygNENyQ=
+Message-ID: <4b2ebbf7-8c5e-45ca-a17c-111f68e2324c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780487613;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uIeJZpdX8FCDjWAXiU77ogVQ0B8VkYFjD6D0OQC7A18=;
-	b=QbdYIxe/Gs/9/BoTeN7ibvY7dS8gkSD+ySmZXR3ZJiaWbT4eVFOcZf/Jj9iwSY0dtbs5fG
-	Q9m6Ep6bYwT1tl9MDgjfLwj46KNaDwmJX95T4RaOS4tZmxmTInBiiSG7+w7y25DWFf0Ah2
-	K8G40+l3/dVpOh8xBDjwoyCWP1Xusp8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780487485;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uIeJZpdX8FCDjWAXiU77ogVQ0B8VkYFjD6D0OQC7A18=;
-	b=z08nhYPV1E3pSjmY8dnj/KUsuV7AN17ldgtTRzfkW/DiBQD8dzONmIhC46Q7J8idHUlHkt
-	JUUY+3VLSPA4/mCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780487484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uIeJZpdX8FCDjWAXiU77ogVQ0B8VkYFjD6D0OQC7A18=;
-	b=oFyz+dhjaeqWT7Truzwz4h9no5m6xSisEeu7H4N6wTmSn4R3Y/OsJi0AQ1HpeF/tAKk5Ye
-	TmdCqKwT/sbDV/a5iQUF21TUBq3QdDVCh8ZKiWVwNaBniEuMghV7dLEUNde6yIFVttdnqB
-	bIaatVvaryXEIZxJ3tKzs6NR9L6I9U8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780487484;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uIeJZpdX8FCDjWAXiU77ogVQ0B8VkYFjD6D0OQC7A18=;
-	b=8+ubzr4LKhjqgIw6B8HAYIBMlI/o1uUjb6pNV7y8iq23Vl/Go3QS/QWW5T0LjX8dhS5mS2
-	+hI0sxVvmnd7LeDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D22DC779A7;
-	Wed,  3 Jun 2026 11:51:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id doglMDoVIGo+YwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 03 Jun 2026 11:51:22 +0000
-Date: Wed, 3 Jun 2026 12:51:21 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Jan Kara <jack@suse.cz>, willy@infradead.org, 
-	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org, 
-	r@hev.cc, Andrew Donnellan <andrew+kernel@donnellan.id.au>, 
-	apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	brauner@kernel.org, catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org, 
-	kevin.brodsky@arm.com, lance.yang@linux.dev, "Liam R. Howlett" <liam@infradead.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ljs@kernel.org, mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com, 
-	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Al Viro <viro@zeniv.linux.org.uk>, wilts.infradead.org@pedro-suse.lan, ziy@nvidia.com, 
-	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v6 2/2] mm: use mapping_max_folio_order() for
- force_thp_readahead order
-Message-ID: <aiAUoWiXNpUY_iIg@pedro-suse.lan>
-References: <20260528165635.2068012-1-usama.arif@linux.dev>
- <20260528165635.2068012-3-usama.arif@linux.dev>
- <ahlh2vdHEGo6ZSot@pedro-suse.lan>
- <cc9a1cf7-7b96-439a-b0be-ecdcf27b5da5@linux.dev>
- <ahmSolHvUChl-3vM@pedro-suse.lan>
- <185f1caf-b33d-4467-beb5-51bd8520ac78@linux.dev>
- <u52xvwk2fjjk2izdb4wvuqq2zhc5neb4q6usimcxejluuyngxw@d64sc6rvojyp>
- <ah8Qcxuugn5tTilK@pedro-suse>
- <68ca2764-ca7c-482e-8e78-8c112ce01f99@linux.dev>
+	bh=oO32gU/6GqPqmsbPD/EqqtNbEEfCeRvWof7NPW20STY=;
+	b=X/BAccuz5VRKWoWp8Tw5a2hyusMTKMdhoDQBENIqijF2kktRaXNzuLf0junIel8CkvdmcH
+	7CkezdTUzOvIYcG1228DGzW2sck4oSGXaI2Nlo29boIh8aW+zNXC1v/kuuOV14NgNLfCos
+	zI20XgSI/HCz3BejCUKEmsHCU+3KC+A=
+Date: Wed, 3 Jun 2026 19:53:17 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68ca2764-ca7c-482e-8e78-8c112ce01f99@linux.dev>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 83E882000E
-X-Stat-Signature: gasqszmugwqu89rric8a6dfagzdzpiyg
+Subject: Re: [PATCH v5 0/9] mm: switch THP shrinker to list_lru
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ shakeel.butt@linux.dev, mhocko@kernel.org, david@fromorbit.com,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, qi.zheng@linux.dev,
+ yosry.ahmed@linux.dev, ziy@nvidia.com, liam@infradead.org,
+ usama.arif@linux.dev, kas@kernel.org, vbabka@kernel.org, ryncsn@gmail.com,
+ zaslonko@linux.ibm.com, gor@linux.ibm.com, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, dev.jain@arm.com, npache@redhat.com,
+ ryan.roberts@arm.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <ah9PGv12mqai84ES@cmpxchg.org>
+ <20260603044426.54863-1-lance.yang@linux.dev> <aiAS7GxsffqXWILD@cmpxchg.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <aiAS7GxsffqXWILD@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 6EF26A0012
 X-Rspam-User: 
-X-HE-Tag: 1780487486-609017
-X-HE-Meta: U2FsdGVkX1/XcAMlvG9M+74CEEL2ogIZzXKG29cBAIoA+NhRfTpNOUBS3vjvX+IgXXFNTQ/iCy5qbYl6HFfg9mLhnSyNW1yAolojMTIqFGxK8YcRYxtfTVJA0mven5kC32Cbc+vvduCOj5GzLDkbvrwlLea46jqtrC9V1bacEaFO+o6bDXqdPMXVxaj8jaqZKLKbqSeCVwj7b0av+pKgP/CdI9YahvYKbrJOHvsyUJGYG2N7ut14cHtpMMRfPGmr5BQyp3iXCEhEThaG5cxuc/Dw0wQFWZvA2yCAYMA9tCplt/dHekNCLs/2Evn4hsrzq24psB5anJFFGlxTL1Icc/njZWGRyqRHI+3sMTsYhysMVCterzAyVlhlPa8k3raRtGgVi1JXaWfs6jN1+R2pH7Q2SeLto0k3h8kD8/mJiO/pZ+lzQyC3TQN5zUa74pSvsMhICbgb8Wx8vApX6klwQ//R446W5oh2Zc8SRq4jExxaFAWV1G4b8whDxAAE8u7VSwF1jb33jghTb8BZIWKRNf84JieOnOHWMiwniM1UEf8HqAUoAjI7Pzqv3FhQ2UT/twNIt6R/4yvmw/lPjv4he/SKTNquXt5eJaDkedRPuWr+AdO5DoGkXT0nhftuwi6/s4tz02pjHkkYzYKxs/IbaSlcTvis5SJLOlTSM7qcxEj6YmCO/aXIt3rq4Qjp221ZdFMaOFlmeH2edPjxcGyc5+v49GE5pBG/UI6KYaqBwcbO3AnOPpKsTE7d7W12DdJQIVFezHFdLYXBqQmwqn2PNcfO//QunrR0LymXQASOOga9TGOia0LTFqAqyFApW3LxPpi8OYMA1XZhLaXZK64kiaZanIlQ3+T0xBcS0JAop8NKXXcKOEbrYlVAhsvEVmoEIKcuBZmnZMteMOu792Sm2+/0kEGylMjx/ZKKDt9Ny7th0QSr/9CRa6PR+CaSAn8Wui9O6YK5XdJt5fGdBw8
- d86iFLB1
- BaQB1Y//jKNmv4C9H1hsEvguZPoniLo5Gl0CcMC1mdgxYUGfwYfO+KzLMUxxs9FnsNI5txklgy+ocJ9q4cmYJBMnGVsSrqeKMTZrwuDiRQ3faFJIlvPOg4SFugVVbK76XGso9Oq+M/aL5oJG/oeUDRVKFkaRv2hnvNUnRbIe37XZoJ+FFDRysOuQhRHPU7/kizeUqbQhDOxyZmLkpiuPiPmoRtLhYrQGzSPUL0oF+FySwli1GQBecSOIZbkvy3pdxweVYR2XqiuVW2icXCYXal5EhZoToESRdOudwNDEuFajD2ZUAfR8bNt+6V6EnSi8J+aWb86h52mAD2DHZydRhSeD0UZo9Ph4MWVUsEWKm6/rR8vg5gf704ftXHkX8oMyCbV44zf4ZvfHRyBi1HCBEnR3I69tC/0S/ih0eXU+NKrh1rkM=
+X-Stat-Signature: 4e7rcjpz9jyytot6778ea4n3zcxtecux
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780487615-10048
+X-HE-Meta: U2FsdGVkX19thGo4NzVzxcryXhQj/WyDOJEjUtMxCFfzCEcG9EauDmWxhp+S/jVC8ruL20FOkAjFYhKxt2lQHkKmiHwKZzGQYgVVZw9uFZFlwfbqIPm3Hw/yOAltgDh6HIPb7vmIRC+DgMfaEKkupEB0QsjpL/fbjXyQh+bb5C2UxvZ3qguPsmt0QS9zh69ssV71TIV8wkhh6zXOIpYp6vOBWjFExiH+Y/WWY5Sw8jRSiB2WFdMCfmPhzo2QwnXnxM6OT1pruXdava66HyHFGAf4tbgolPMUwR3NlYvhOzwCuGn72/axuBjnaNrhXhxUjso9qxzk+meuf88guTxROrURMnLF6w5mthPIKbhnVYP+I2Bd1QIIfKTdGUzIHzmRMRPv8Q+dvUGCcqUQXhk2ewemWR85XvawNSOpLXqJS9UbSgVa6nkFwqXQaldxFoNx4rE0RzKQM82bgkjndt8gs/f9w8eysph1ExfRfKfG/ODGizGGsKK6OCs9Ru2NLDn/RhKGPeul/99hKZIyQM/dJdsVm48k0CWQ1O2cT8jHyTAqZluILldV/r7Pa2kcQ0Z/gZx6uq9Okw2UwI/XVIvh3EBE3tqib2WMp63pwFstPBFv1xtmk7Lu6un580ASfNd+U0cCJMPSnZcZj/3U0VZD9xjjwqmFsYIj9YBTehKFPVp9oxi8oclm0Qz9XuJg9etlfVmRD5cJ2sKG17+lDU47XG+gsf8WPjncSgxRk6GzKqBbi2CnRaBA4sPmLjeyzKufnaF6FtVOAjtWj3ub/NFgFr2NUsG/nhtNzfPFlAFSqO4wVnPy0XNbYq9DMxaSlXe1GS20ctEN49F/dc3/ieBPblx1Vz5cufkrnBbluq3ipEgsqmbjdMNk3l2BbOTiIKUBouj1cCV8q1qXhcgDlCmg9saFNrB3JlbkZ7vq+MgGZqh0naHFcFT33R7OAT6KlshlM93L2cRz3Rey9HZYxeX
+ BGyN2r7I
+ doBA0k88kWpW4hfGFqLLfDBDOtDypuQC1w7srO7fHGmyE0Gsl/MtHya7+pp7XjrJyG4ZtoG8+lQK6qQxWZqiAgBK66fFQP4duj/YNUhC16UqcFp2v511Fue4gixuEZd9KVlJIGtVsmfTu97qRu4n6T4p8T6Ekes7jPTM8oUVC1tLYtgpNDFT8bBYbj2UWFAXHUYts1sOB6oCN1hACGjsJmyhebnAa41HaICID+A4C7+3f2/MLfY+gNFOrXytK/lzUOE8g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,91 +97,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 03, 2026 at 11:10:45AM +0100, Usama Arif wrote:
+
+
+On 2026/6/3 19:41, Johannes Weiner wrote:
+> On Wed, Jun 03, 2026 at 12:44:26PM +0800, Lance Yang wrote:
+>>
+>> On Tue, Jun 02, 2026 at 05:46:02PM -0400, Johannes Weiner wrote:
+>>> On Mon, Jun 01, 2026 at 04:36:52PM +0800, Lance Yang wrote:
+>>>> As the changelog above says, the old queue is per-memcg only, rather
+>>>> than per-memcg-per-node. So reclaim on one node can still walk the whole
+>>>> memcg queue and split underused THPs from other nodes in the same memcg.
+>>>>
+>>>> But I think the new one can lose reclaim in the cgroup.memory=nokmem
+>>>> case ...
+>>>>
+>>>> With nokmem, the deferred shrinker can still run from memcg reclaim,
+>>>> because it is SHRINKER_NONSLAB. But the list_lru is no longer per-memcg:
+>>>>
+>>>> __list_lru_init() clears memcg_aware,
+>>>>
+>>>> 	if (mem_cgroup_kmem_disabled())
+>>>> 		memcg_aware = false;
+>>>>
+>>>> so list_lru_from_memcg_idx() falls back to the shared node list:
+>>>>
+>>>> static inline struct list_lru_one *
+>>>> list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
+>>>> {
+>>>> 	if (list_lru_memcg_aware(lru) && idx >= 0) {
+>>>> [...]
+>>>> 	}
+>>>> 	return &lru->node[nid].lru;
+>>>> }
+>>>>
+>>>> That makes the shrinker bit unreliable. __list_lru_add() still sets the
+>>>> bit on the memcg passed in, but only when the list goes from empty to
+>>>> non-empty:
+>>>>
+>>>> bool __list_lru_add(struct list_lru *lru, struct list_lru_one *l,
+>>>> 		    struct list_head *item, int nid,
+>>>> 		    struct mem_cgroup *memcg)
+>>>> {
+>>>> 	if (list_empty(item)) {
+>>>> [...]
+>>>> 		if (!l->nr_items++)
+>>>> 			set_shrinker_bit(memcg, nid, lru_shrinker_id(lru));
+>>>> [...]
+>>>> 		return true;
+>>>> 	}
+>>>> 	return false;
+>>>> }
+>>>>
+>>>> If memcg A adds the first folio, A gets the bit. If memcg B later adds a
+>>>> folio to the same shared list, B does not get a bit, because the list
+>>>> was already non-empty.
+>>>>
+>>>> So in the A-first/B-later case, reclaim from B may not call the deferred
+>>>> shrinker at all. The shared list is scanned from memcg reclaim only if
+>>>> reclaim runs from the memcg that has the bit, such as A here, or from
+>>>> global reclaim :)
+>>>>
+>>>> Anyway, only after the shared list is emptied does the next memcg to add
+>>>> a folio get to be the one with the bit, IIUC :)
+>>>
+>>> Sorry for the delay, this took me a bit to think about. The shrinker
+>>> code is a mess.
+>>>
+>>> I read it the same way you do. And this is true for all list_lru users
+>>> when nokmem is set: we just set random nonsense shrinker bits.
+>>>
+>>> HOWEVER, the generic shrinker code fixes that up by IGNORING random
+>>> shrinker bits like this when !memcg_kmem_online(). And shrinking
+>>> correctly happens only against the shared root queue when the reclaim
+>>> iterator walks root_mem_cgroup.
+>>>
+>>> HOWEVER, the THP shrinker explicitly sets SHRINKER_NONSLAB, which in
+>>> turn overrides the previous override. So yes there is a weirdness: we
+>>> get the root cgroup invocation against the shared queue, and then one
+>>> more time triggered by that random memcg bit.
+>>>
+>>> The most direct fix is to just drop SHRINKER_NONSLAB. It declares
+>>> independence from kmem, which is no longer true.
+>>>
+>>> Cleaning up the shrinker code is left for another day.
+>>
+>> Thanks for working on this!
+>>
+>> Wondering if this fix trades one problem for another, though ...
+>>
+>> Before this series, the deferred split shrinker had a real per-memcg
+>> queue. Even with cgroup.memory=nokmem, memcg reclaim could still scan
+>> that memcg's own deferred_split_queue:
+>>
+>> memcg reclaim -> deferred split shrinker -> sc->memcg->deferred_split_queue
+>>
+>> With the fix, nokmem + w/o SHRINKER_NONSLAB falls back to a
+>> non-memcg-aware shrinker:
+>>
+>> memcg reclaim -> skip deferred split shrinker
+>>
+>> root/global reclaim -> deferred split shrinker -> shared list_lru
+>>
+>> Is that expected? There woud be no memcg-driven deferred split reclaim
+>> under nokmem, IIUC ...
 > 
+> Yes, this is all correct. list_lru is still inherently tied to the
+> kmem component of memcg (memcg_kmem_id()).
 > 
-> On 02/06/2026 18:35, Pedro Falcato wrote:
-> > On Sat, May 30, 2026 at 05:16:29PM +0200, Jan Kara wrote:
-> >> On Fri 29-05-26 15:11:54, Usama Arif wrote:
-> >>> On 29/05/2026 14:40, Pedro Falcato wrote:
-> >>>> On Fri, May 29, 2026 at 01:19:03PM +0100, Usama Arif wrote:
-> >>>>>
-> >>>>> which means mapping_max_folio_order(mapping) <= MAX_PAGECACHE_ORDER <= HPAGE_PMD_ORDER is always
-> >>>>> true, and you dont need the min3(..) in your diff.
-> >>>>>
-> >>>>> Now the question is if then why not just do:
-> >>>>>
-> >>>>> 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE)) {
-> >>>>> 		if (mapping_large_folio_support(mapping)) {
-> >>>>> 			force_thp_readahead = true;
-> >>>>> 			thp_order = min_t(unsigned int,
-> >>>>> 					  mapping_max_folio_order(mapping),
-> >>>>> 					  get_order(SZ_2M));
-> >>>>> 		}
-> >>>>> 	}
-> >>>>>
-> >>>>>
-> >>>>> This is because this will regress the 16K ARM case where we already got 32M
-> >>>>> folios. Someone might upgrade the kernel and start getting 2M folios now.
-> >>>>
-> >>>> So maybe limit to 32MB? It's still arbitrary but at least you get simpler
-> >>>> logic. If the architecture does not support 32MiB folios, it will clamp
-> >>>> the maximum folio order to HPAGE_PMD_ORDER, and you get the same result.
-> >>>>
-> >>>> Does this sound correct?
-> >>>>
-> >>>
-> >>> Yes, so if we replace it with SZ_32M, it sounds correct. I just think
-> >>> the 32M size is too large. But as you pointed out, even 2M can be too large...
-> >>
-> >> So AFAIU the practical discussion is about two options:
-> >>
-> >> 1) limiting at 2MB with a slighly more complicated logic to keep mapping at
-> >> PMD order for 16k pagesize on ARM but use 2MB pages for 64k pagesize on ARM
-> >>
-> >> or
-> >>
-> >> 2) limit at 32MB with simple logic which results in larger (32MB) folios
-> >> with 16k and 64k pagesize on ARM and thus larger memory overhead.
-> >>
-> >> I'd like to maybe offer option 3): limit at 2MB with simple logic. This
-> >> will reduce folio size on 16k pagesize ARM compared to 1) but do we really
-> >> care? I.e., is there big enough practical performance impact with conpte
-> >> and other tricks ARM is playing?
-> >>
-> > 
-> > arm64 16K contpte tops out at 256KB TLB entries. It's quite a lot smaller than
-> > a PMD entry. Also, something that was discussed at LSFMM was its effectiveness.
-> > Apparently, most of the gains seem to sit on actually having a larger page size
-> > (perhaps Dev/Ryan can comment; sadly the slides were not posted anywhere on
-> > the ML, so I don't have numbers).
-> > 
-> > To me, the question is quite clear: do we trust users that say "please give me
-> > hugepages" enough to unconditionally give them hugepages? I would assume the
-> > answer lies somewhere between "yes" and "no", but 32MB I would say is not
-> > particularly excessive. 512MB is... much worse.
-> > 
+> So without kmem, no isolation. But without kmem, no isolation *for a
+> lot of stuff*. It's a legacy knob when slab accounting was new and
+> expensive. But so many things depend on it now, disabling it just
+> punches a nassive hole into memcg functionality and isolation
+> coverage. It's not a sanctioned production use flag.
 > 
-> I think the other question also is, if the userspace asks for hugepages, is it asking
-> for the biggest possible one? I think the answer is yes on 4K base page size when
-> largest is 2M, but maybe not the case for 16K and 64K. 
+> This change is negligible from a memcg semantics POV.
 
-Yep, fully agree, the interface itself is limited. Though perhaps userspace
-itself would not know...
+Thanks for clarifying!
 
-> 
-> /sys/kernel/mm/transparent_hugepage/hugepages-* is supposed to be used
-> for anon only, but maybe in the future we could use that to determine the size
-> of THP to give to the user for file over here? For e.g. over here we could have
-> used it to determine what the biggest size is that has madvise (or always) set
-> and used it over here. Its probably a much bigger discussion.
+No strong objection from me. Just wanted to call out the nokmem
+behavior change and hear what folks think :D
 
-Hmm, I'm not a huge fan of those toggles (that not many people know how to
-toggle), maybe using those would be a mistake. Do note that shmem already has
-its own set of confusing toggles, which work similarly to these anon ones.
+>> Not sure what the right fix is, as I am not a memcg expert ...
 
-But, yes, it's a much bigger discussion :)
-
--- 
-Pedro
 
