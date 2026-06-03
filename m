@@ -4,104 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DE5CD6E64
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 10:11:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1DDCD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 10:15:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0BC46B008A; Wed,  3 Jun 2026 06:11:19 -0400 (EDT)
+	id 068B26B008A; Wed,  3 Jun 2026 06:15:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C95206B008C; Wed,  3 Jun 2026 06:11:19 -0400 (EDT)
+	id 019DD6B008C; Wed,  3 Jun 2026 06:15:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B842B6B0092; Wed,  3 Jun 2026 06:11:19 -0400 (EDT)
+	id E4A8E6B0092; Wed,  3 Jun 2026 06:15:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A8EBF6B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:11:19 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A3D21C1304
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:11:19 +0000 (UTC)
-X-FDA: 84838183878.05.72F5202
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 99BBB80003
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:11:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fIZnn70M;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D214B6B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:15:57 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B76740309
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:15:57 +0000 (UTC)
+X-FDA: 84838195554.01.757951B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id CDB1240011
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:15:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtSSZsou;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780481477;
+	s=arc-20220608; t=1780481755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6CrNVQ8IBF7mJpxU4e+u8veQd433I9uH8sSfHrF0nKU=;
-	b=0ba33iM1oZ63jrcn1O2jYUInC4Ooy5hBHFX6UgqZZ8ntMRTbTt03z5RkroLavBIHv2bKY+
-	75bXro1xtApKA7+IxLvF4ZX7cW5rPGax9O53ODVMz2M793v3GWum7ImrTctEuxxcNyI6lZ
-	v6uOGufqKm3c4XORnXwpNUWNMcKmAUU=
+	bh=/1qAgvTTvf0xlsZiADLfe2fg7WDkq6Xjj3OBNJ3gL8s=;
+	b=5AgrhyHxG1WGQkoGhtlPT2Sa2TR9+CW09Cxy+qQZVn7g1nEugNigH1KYLbyKjaxjN5/Qco
+	EuzbAoueCQgq3dSooDemQpW8CU7qpK2HNJVyf/DeL4QA2cYPwe81poWpWsUybRczRJG/C8
+	9ent+7Fettx6Kc7/g9pDEZ/5MSkXXWM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fIZnn70M;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtSSZsou;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780481477;
-	b=QhallofHIiNY7ypZIRk1lJnkibEDj8fFk8jpUVcbCkV2y21prjQRaas6Ip+HAGINvk01kG
-	McN4TMATStYKsxEEY2YHfKs2ZW1cNKsTjGJK1orXJj/8UE3BkiyNVrYYr41GASEBLIYPs/
-	iDkk85+wF7ulsYkc3O7KdxVWYDdqkqI=
-Message-ID: <68ca2764-ca7c-482e-8e78-8c112ce01f99@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780481475;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6CrNVQ8IBF7mJpxU4e+u8veQd433I9uH8sSfHrF0nKU=;
-	b=fIZnn70MFJFtSsMFPkgs+Fv+g0kizUEPLIjo6aWTQWcbFMleyzoP3NGdSMWey53IBZJ6BL
-	933IzFB1daK0zrKn/VrPYJibB0+74lHr9frtFkWnTfZbJqaEqpC41aiBvU0RwwgMbIEoS8
-	8agagZWYtGlgr4/yw+KkGXIRbqGZmkY=
-Date: Wed, 3 Jun 2026 11:10:45 +0100
+	t=1780481755;
+	b=npWT6wtLhOHEL1rf8aEG7T9Drg0bZqPFKlfUTdX62wYHH7LH8aflktVj0HNh4TK9WZ9ZEW
+	QmZ7osgjCtzcEme2k51NAag39FG3SG12teuege+CevFvUDGHShlPnyKGPWcYO6WoumdzAB
+	I8BT+Z4PyrUbrJ+BMgJRbIOpDsYObbA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DBE6743490;
+	Wed,  3 Jun 2026 10:15:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8191F00893;
+	Wed,  3 Jun 2026 10:15:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780481754;
+	bh=/1qAgvTTvf0xlsZiADLfe2fg7WDkq6Xjj3OBNJ3gL8s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=gtSSZsouD8cpySavp5/KCA2H4xsJ0k33u5QsI54YwWdTBvVrwh1EQJoZKLTUcRYDi
+	 nMKVQ25m+DVsx7fnEUljFRRXcSps9Wa9xplTuvBA5+rr1nNS3aWK8UBwzAydajFHxf
+	 HtFrhyeERBNXQ08tv3rlbDHPQ4gXWnGgHTEbcq/9rfB6r8DVzepSZohFqaZ/SNpYym
+	 4UQSfaBL0iflTvEzNtyqsATxsoImbcfFZU+5b3Nb/jW8Uhl1hxHeDtJsFffRvBG22n
+	 wQBNPD6ldeFmVIinRjFx9C81t9ZjoHXZJSwCafXds57TqF+Yf4PP/248p/pEympUZF
+	 kZ9QODUrn7mSA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
+ Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
+ <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 24/79] block: rust: add `BadBlocks` for bad block tracking
+In-Reply-To: <abfvrh0ObKhtsR8I@google.com>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-24-de9a7af4b469@kernel.org>
+ <abfvrh0ObKhtsR8I@google.com>
+Date: Wed, 03 Jun 2026 12:15:41 +0200
+Message-ID: <87wlwgj5f6.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Subject: Re: [PATCH v6 2/2] mm: use mapping_max_folio_order() for
- force_thp_readahead order
-To: Pedro Falcato <pfalcato@suse.de>, Jan Kara <jack@suse.cz>
-Cc: willy@infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- david@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org, r@hev.cc,
- Andrew Donnellan <andrew+kernel@donnellan.id.au>, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
- catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
- kevin.brodsky@arm.com, lance.yang@linux.dev,
- "Liam R. Howlett" <liam@infradead.org>,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
- npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
- rppt@kernel.org, surenb@google.com, vbabka@kernel.org,
- Al Viro <viro@zeniv.linux.org.uk>, wilts.infradead.org@pedro-suse.lan,
- ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
- kernel-team@meta.com
-References: <20260528165635.2068012-1-usama.arif@linux.dev>
- <20260528165635.2068012-3-usama.arif@linux.dev>
- <ahlh2vdHEGo6ZSot@pedro-suse.lan>
- <cc9a1cf7-7b96-439a-b0be-ecdcf27b5da5@linux.dev>
- <ahmSolHvUChl-3vM@pedro-suse.lan>
- <185f1caf-b33d-4467-beb5-51bd8520ac78@linux.dev>
- <u52xvwk2fjjk2izdb4wvuqq2zhc5neb4q6usimcxejluuyngxw@d64sc6rvojyp>
- <ah8Qcxuugn5tTilK@pedro-suse>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <ah8Qcxuugn5tTilK@pedro-suse>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 99BBB80003
-X-Stat-Signature: hpdt7e3frngxks9rfiox4i4cmf6diycs
+Content-Type: text/plain
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780481477-888145
-X-HE-Meta: U2FsdGVkX18fCcXNjfsunK4Euvu1WzdQW2SkJh+iMXNKtLMfuUKmqqQUlVGSI7XN9/gYpYzhQY3UZlo78SdWPCh356mWfweo4pAESx7I1SxwWLI3gBCx07uYvl9tJE91UOBs49ekFfAWMnGA0xU2DiHyOWpJ81+LfEA8nV4dRpeL1z6b9eQ1Nm1wkqfJ6UDxbxpilQJZQls+TlUo9DR9zQZIarY8h4jkonLchTFaF4BrEdQhPNVgZBCVZWDKRaaJJlagt6IlggagWS5gGlffjBAz/GOChGTjrb4HnRxAdX8FeMM86dWWHSfWkzlis+KZnuT6w5vZWknBoVKuO63+AoAuyxMkQTirXB6m7TtNl7sOyLIi3kiWsUJ6UR2jnaMm7A84hx5XUpPfJqrn6B6cT80u2/6Q7zW4snudrQa335IGjWU//dK2lCMJJc9UuLkiu7SWw6uoN6x1JMluroJuJ8s9dLilGkW+EZCX88ipzjJC+XzbmbyRfmXC/PATs0ByN4cxUtPAt/vBYtI1Ah3JtoHxEEv9HnE3/K/KlIsb3hiiSiUGsypTur7SeQWmHTEnNy7G9HHPASQSLvJFySd+k5kyC9KLoVG4ZWCP3GIPmXPDnT9hlBlEZzeplGOkuKj6ddBdi1GEg7d/fEsgz1IQS9/hzvwZHAO/l5Yp6IGWPms3BCxIhDel4Ue3e2eLCmksgTF9M1h+daxhfi2xGjdPV9ilq3oLTyM+nEjKO3GpDkSRDlaD/Bk3Xfo9XlXywosxsKhCQWniD0dSpFIcPmgv5GCgxtMxFf/ngZ3WPtXRF3IPCEwL91bb1F50/GXrhtMXnrMCh39dgXeissMf9oADXtfSf6qBZjIj1J0MWPtbPjct97VLPnDAW3NB9lwDY8iXWRtZyg4xRW0soyAKFdE3gxqeNN0+osy9ZATKtc8S4JSoNz8afXVj242DBTffTj4gmM6zFJ+mzpWJXv5g7Dc
- As/ld9e+
- EyxChcd2Fk/6cTEjicQRPFfldbNqnRYtDwkdQ7oqi4xhN3bRF4yr8A7O87uV7Iy95FarUhoarNzbFDy0zGuywXCdsSxJuoSJMS5ulf/UFpQFGRvcnNHJ7FM028KigoRXXkZb82ekVfpNU503d6xUpV1T4BmAgrGzcfXbFRpfGfKmjn+4IlDCQB/b49iNmMJhRpIqqN/hB9oJX5Q825fDMfNDSWJjZb6Bj7F8vmbOBHcCQOgioOLV44ZyswIC3sSoCvZlnLEZVfKrNC3TJtzllTg56d1k0g6oJIIz5/nAHY49+6PB8GbGkWByyRgEaoT4b1LE1VGtNiVQR7Gc63sJMk6jETlX0TQrsFTB0WDFfDtaRS2CvkSiDnqb48Q==
+X-Stat-Signature: p8ggfwxuq7ehgw8jwaddibu5pi97okuu
+X-Rspamd-Queue-Id: CDB1240011
+X-HE-Tag: 1780481755-404606
+X-HE-Meta: U2FsdGVkX1/l637VXhvJl2DsFQemkQj6cAYJEFqnBwSD7J6UvFUD6ohq+Jz4oedSV1HazMasQZPes+1/4l+iyXXsHw6+gMMRfWTt8yNagxIVLYwxSgKu+uMxtEgEEAFkQFJbNDw4jY04HWF3K4c9vGlnpt2ktrjbng85cNhS2cVQ1ciaE+pR0lHBH7T9+0DSc37MIvuELDTN+Ti2IBDNPIV4uj8XZCNJu/mGVYv8ktY4QBU1heA3XRWFwIN/89LEfZOr0itdpZyyfyMBYr5hpW5pVtdq4JB4wRMXJTTny2WiepuZELVEeHApJuosGXNygtaIDj8F74K5amC0cH1ZHLoJHdFFPteVYC4S93E8VIaSLGYq5ISVWHdAprp7zG5XPpb0693RIrFqf0T3xKTqZcwVw4aFjipFbKQrG6XtBP2frvtc+0XGdUA4sVkcrXj9h5X6lElNQTAnI3fZNnzsqLvQTA7/ZulyM33Iv1JGbwGYBJ8nLdFNkUuJDgpLlB8CaCPTOCMr0VWZcIhjZ5ScTY0IuqteoDAqsvw5eXtUs1Y12IZPGMtoOp2XKrtLtr1c3BRzqn/ojFF+M4YVcJYchl2AU8mWE4P1r6AZYLUjGgH0IeDcTHz4dSv+lORODEVLrsCSWf9OWX764V8FqfVIZjTn0FfSJ/ZrAWKw42+K3mhPfBGYUfPiEQMAjDK7L5OK9rCS4dAYGddcCIave3bmNLN5uTCE7pDu4klk0N0OqvdUedhp+qcZjRnuDqjpxfXf2jQaglLtYghFnqjjJeU4AqAxmZUPzz14QR7ZkBefIJb6DaC5SKtns+OOHHwCy2TPDkvscp0gKOt7R3BRZ75AFzC64zQqe9GmW4zYRppTTXgWTgL3Ny83JAQgWIvr5f3bRvkwIau2i3qlGbmibxxuj/JVoCjIb5/uZdIXEmK5nKFusZXa8adCzMO/Ja2cX1a8sr6JKCQJdQAriRrW1Q1
+ 2LqZPVTS
+ OsywN9eTM1Sy7oDw+9tgDYpP7+b7bwEZ2pFnQ99ZEhtUScrxMgGcfqyb6Txs8QrLa1BKm7BfmGd9n4DAOcnZwdzmNXQm7NA0nL7sZKGkLKRFbPZxbLEpIESjHcWhUm8ZmNdbEBQ4gfQr3H+8/D+OjskvTr/tW30455HNmZac/Gku0l5V71nPlW5TYYfOiqXLNQyCYwqcIGms7ti68PuKkUG00d6iyZhTWgql11oP/B9UsbvoJcMWgyjQPkiFG7T4QIqRUdNeTBUQMdV/ErZ8ayixQJwNgamWwz8asVxN/ZWGGXiSzrT4EYaVOJULC7wv5px3gcTsj4rNbiNKc2FQjySv1K73zsaDirKTBF0uS/69ot86rnVIXnTB31JAYTXV05S5D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,79 +101,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Alice Ryhl <aliceryhl@google.com> writes:
 
+> On Mon, Feb 16, 2026 at 12:35:11AM +0100, Andreas Hindborg wrote:
+>> Add a safe Rust wrapper around the Linux kernel's badblocks infrastructure
+>> to track and manage defective sectors on block devices. The BadBlocks type
+>> provides methods to:
+>> 
+>> - Mark sectors as bad or good (set_bad/set_good)
+>> - Check if sector ranges contain bad blocks (check)
+>> - Automatically handle memory management with PinnedDrop
+>> 
+>> The implementation includes comprehensive documentation with examples for
+>> block device drivers that need to avoid known bad sectors to maintain
+>> data integrity. Bad blocks information is used by device drivers,
+>> filesystem layers, and device management tools.
+>> 
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+>> diff --git a/rust/kernel/block/badblocks.rs b/rust/kernel/block/badblocks.rs
+>> new file mode 100644
+>> index 0000000000000..a5fe0fde2e755
+>> --- /dev/null
+>> +++ b/rust/kernel/block/badblocks.rs
+>> @@ -0,0 +1,721 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Bad blocks tracking for block devices.
+>> +//!
+>> +//! This module provides a safe Rust wrapper around the badblocks
+>> +//! infrastructure, which is used to track and manage bad sectors on block
+>> +//! devices. Bad blocks are sectors that cannot reliably store data and should
+>> +//! be avoided during I/O operations.
+>
+> Could use a srctree link to badblocks.h here.
 
-On 02/06/2026 18:35, Pedro Falcato wrote:
-> On Sat, May 30, 2026 at 05:16:29PM +0200, Jan Kara wrote:
->> On Fri 29-05-26 15:11:54, Usama Arif wrote:
->>> On 29/05/2026 14:40, Pedro Falcato wrote:
->>>> On Fri, May 29, 2026 at 01:19:03PM +0100, Usama Arif wrote:
->>>>>
->>>>> which means mapping_max_folio_order(mapping) <= MAX_PAGECACHE_ORDER <= HPAGE_PMD_ORDER is always
->>>>> true, and you dont need the min3(..) in your diff.
->>>>>
->>>>> Now the question is if then why not just do:
->>>>>
->>>>> 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE)) {
->>>>> 		if (mapping_large_folio_support(mapping)) {
->>>>> 			force_thp_readahead = true;
->>>>> 			thp_order = min_t(unsigned int,
->>>>> 					  mapping_max_folio_order(mapping),
->>>>> 					  get_order(SZ_2M));
->>>>> 		}
->>>>> 	}
->>>>>
->>>>>
->>>>> This is because this will regress the 16K ARM case where we already got 32M
->>>>> folios. Someone might upgrade the kernel and start getting 2M folios now.
->>>>
->>>> So maybe limit to 32MB? It's still arbitrary but at least you get simpler
->>>> logic. If the architecture does not support 32MiB folios, it will clamp
->>>> the maximum folio order to HPAGE_PMD_ORDER, and you get the same result.
->>>>
->>>> Does this sound correct?
->>>>
->>>
->>> Yes, so if we replace it with SZ_32M, it sounds correct. I just think
->>> the 32M size is too large. But as you pointed out, even 2M can be too large...
->>
->> So AFAIU the practical discussion is about two options:
->>
->> 1) limiting at 2MB with a slighly more complicated logic to keep mapping at
->> PMD order for 16k pagesize on ARM but use 2MB pages for 64k pagesize on ARM
->>
->> or
->>
->> 2) limit at 32MB with simple logic which results in larger (32MB) folios
->> with 16k and 64k pagesize on ARM and thus larger memory overhead.
->>
->> I'd like to maybe offer option 3): limit at 2MB with simple logic. This
->> will reduce folio size on 16k pagesize ARM compared to 1) but do we really
->> care? I.e., is there big enough practical performance impact with conpte
->> and other tricks ARM is playing?
->>
-> 
-> arm64 16K contpte tops out at 256KB TLB entries. It's quite a lot smaller than
-> a PMD entry. Also, something that was discussed at LSFMM was its effectiveness.
-> Apparently, most of the gains seem to sit on actually having a larger page size
-> (perhaps Dev/Ryan can comment; sadly the slides were not posted anywhere on
-> the ML, so I don't have numbers).
-> 
-> To me, the question is quite clear: do we trust users that say "please give me
-> hugepages" enough to unconditionally give them hugepages? I would assume the
-> answer lies somewhere between "yes" and "no", but 32MB I would say is not
-> particularly excessive. 512MB is... much worse.
-> 
+Will add.
 
-I think the other question also is, if the userspace asks for hugepages, is it asking
-for the biggest possible one? I think the answer is yes on 4K base page size when
-largest is 2M, but maybe not the case for 16K and 64K. 
+>
+>> +/// # Examples
+>> +///
+>> +/// Basic usage:
+>> +///
+>> +/// ```rust
+>> +/// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
+>> +/// # use kernel::prelude::*;
+>> +///
+>
+> Unhide the imports or remove this empty line.
 
-/sys/kernel/mm/transparent_hugepage/hugepages-* is supposed to be used
-for anon only, but maybe in the future we could use that to determine the size
-of THP to give to the user for file over here? For e.g. over here we could have
-used it to determine what the biggest size is that has madvise (or always) set
-and used it over here. Its probably a much bigger discussion.
+Ok.
 
+>
+>> +/// // Create a new bad blocks tracker
+>> +/// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
+>> +///
+>> +/// // Mark sectors 100-109 as bad (unacknowledged)
+>> +/// bad_blocks.set_bad(100..110, false)?;
+>> +///
+>> +/// // Check if sector range 95-104 contains bad blocks
+>> +/// match bad_blocks.check(95..105) {
+>> +///     BlockStatus::None => pr_info!("No bad blocks found"),
+>> +///     BlockStatus::Acknowledged(range) => pr_warn!("Acknowledged bad blocks: {:?}", range),
+>> +///     BlockStatus::Unacknowledged(range) => pr_err!("Unacknowledged bad blocks: {:?}", range),
+>> +/// }
+>> +/// # Ok::<(), kernel::error::Error>(())
+>> +/// ```
+>> +/// # Invariants
+>> +///
+>> +/// - `self.blocks` is a valid `bindings::badblocks` struct.
+>> +#[pin_data(PinnedDrop)]
+>> +pub struct BadBlocks {
+>> +    #[pin]
+>> +    blocks: Opaque<bindings::badblocks>,
+>> +}
+>> +
+>> +impl BadBlocks {
+>> +    /// Creates a new bad blocks tracker.
+>> +    ///
+>> +    /// Initializes an empty bad blocks tracker that can manage defective sectors
+>> +    /// on a block device. The tracker starts with no bad blocks recorded and
+>> +    /// allocates a single page for storing bad block entries.
+>> +    ///
+>> +    /// # Returns
+>> +    ///
+>> +    /// Returns a [`PinInit`] that can be used to initialize a [`BadBlocks`] instance.
+>> +    /// Initialization may fail with `ENOMEM` if memory allocation fails.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```rust
+>> +    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
+>> +    /// # use kernel::prelude::*;
+>> +    ///
+>
+> Ditto. (Many times throughout file.)
+>
+>> +    /// // Create and initialize a bad blocks tracker
+>> +    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
+>> +    ///
+>> +    /// // The tracker is ready to use with no bad blocks initially
+>> +    /// match bad_blocks.check(0..100) {
+>> +    ///     BlockStatus::None => pr_info!("No bad blocks found initially"),
+>> +    ///     _ => unreachable!(),
+>> +    /// }
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn new(enable: bool) -> impl PinInit<Self, Error> {
+>> +        // INVARIANT: We initialize `self.blocks` below. If initialization fails, an error is
+>> +        // returned.
+>> +        try_pin_init!(Self {
+>> +            blocks <- Opaque::try_ffi_init(|slot| {
+>> +                // SAFETY: `slot` is a valid pointer to uninitialized memory
+>> +                // allocated by the Opaque type. `badblocks_init` is safe to
+>> +                // call with uninitialized memory.
+>> +                to_result(unsafe {bindings::badblocks_init(slot, if enable {1} else {0})})
+>
+> I think you can just cast the boolean to an integer.
+
+Ok.
+
+>
+> Also, formatting here is off (but ignored by rustfmt due to macro.)
+
+Will try to fix.
+
+>
+>> +    /// Enables the bad blocks tracker if it was previously disabled.
+>> +    ///
+>> +    /// Attempts to enable bad block tracking by transitioning the tracker from
+>> +    /// a disabled state to an enabled state.
+>> +    ///
+>> +    /// # Behavior
+>> +    ///
+>> +    /// - If the tracker is disabled, it will be enabled.
+>> +    /// - If the tracker is already enabled, this operation has no effect.
+>> +    /// - The operation is atomic and thread-safe.
+>> +    ///
+>> +    /// # Usage
+>> +    ///
+>> +    /// Bad blocks trackers can be created in a disabled state and enabled later
+>> +    /// when needed. This is useful for conditional bad block tracking or for
+>> +    /// deferring activation until the device is fully initialized.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```rust
+>> +    /// # use kernel::block::badblocks::BadBlocks;
+>> +    /// # use kernel::prelude::*;
+>> +    ///
+>> +    /// // Create a disabled bad blocks tracker
+>> +    /// let bad_blocks = KBox::pin_init(BadBlocks::new(false), GFP_KERNEL)?;
+>> +    /// assert!(!bad_blocks.enabled());
+>> +    ///
+>> +    /// // Enable it when needed
+>> +    /// bad_blocks.enable();
+>> +    /// assert!(bad_blocks.enabled());
+>> +    ///
+>> +    /// // Subsequent enable calls have no effect
+>> +    /// bad_blocks.enable();
+>> +    /// assert!(bad_blocks.enabled());
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn enable(&self) {
+>> +        let _ = self.shift_ref().cmpxchg(-1, 0, ordering::Relaxed);
+>
+> Is there not a C function you can call here? It would be simpler that
+> way. Surely drivers don't do this directly.
+
+No, this is the canonical way [1].
+
+[1] https://github.com/torvalds/linux/blob/ba3e43a9e601636f5edb54e259a74f96ca3b8fd8/drivers/block/null_blk/main.c#L563
+
+>
+>> +    }
+>> +
+>> +    /// Checks whether the bad blocks tracker is currently enabled.
+>> +    ///
+>> +    /// Returns `true` if bad block tracking is active, `false` if it is disabled.
+>> +    /// When disabled, the tracker will not perform bad block checks or operations.
+>> +    ///
+>> +    /// # Returns
+>> +    ///
+>> +    /// - `true` - Bad block tracking is enabled and operational
+>> +    /// - `false` - Bad block tracking is disabled
+>
+> You explain the meaning of return values twice here. Just drop the
+> 'Returns' section.
+
+Ok.
+
+>
+>> +    /// # Thread Safety
+>> +    ///
+>> +    /// This method is thread-safe and uses atomic operations to check the
+>> +    /// tracker's state without requiring external synchronization.
+>
+> This is implicit from the signature of the function.
+
+Will remove.
+
+>
+>> +    pub fn set_good(&self, range: impl RangeBounds<u64>) -> Result {
+>> +        let range = Self::range(range);
+>> +        // SAFETY: By type invariant `self.blocks` is valid. The C function
+>> +        // `badblocks_clear` handles synchronization internally.
+>> +        unsafe {
+>> +            bindings::badblocks_clear(self.blocks.get(), range.start, range.end - range.start)
+>> +        }
+>> +        .then_some(())
+>> +        .ok_or(EINVAL)
+>
+> then_some() is quite obscure. I would recommend if/else here.
+
+Ok.
+
+Thanks,
+Andreas
 
 
