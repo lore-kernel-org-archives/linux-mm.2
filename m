@@ -4,138 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37485CD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 11:44:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E2B2CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 11:50:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99E446B0092; Wed,  3 Jun 2026 07:44:01 -0400 (EDT)
+	id 5ADF96B0088; Wed,  3 Jun 2026 07:50:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94F4B6B0093; Wed,  3 Jun 2026 07:44:01 -0400 (EDT)
+	id 55F4B6B008A; Wed,  3 Jun 2026 07:50:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83D906B0095; Wed,  3 Jun 2026 07:44:01 -0400 (EDT)
+	id 474A76B008C; Wed,  3 Jun 2026 07:50:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 72D786B0092
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 07:44:01 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 390431A0340
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:44:01 +0000 (UTC)
-X-FDA: 84838417482.19.4864818
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2AE6A40008
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:43:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e9TruHKb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L+5Da9hO;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e9TruHKb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L+5Da9hO;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 363E36B0088
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 07:50:16 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0297C1786
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:50:15 +0000 (UTC)
+X-FDA: 84838433190.11.C6BE4E6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 45CDF4000F
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:50:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mhNJgko2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780487039;
+	s=arc-20220608; t=1780487414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
-	b=RSK7+n2n5Tg2W8YgLctCRswHFZtJJjSlcMpOKf+q7GnAGYb0gmffeRcHhWD2JWAmtGIwYY
-	WcjwkDizz2WirmMnY57qax+CclfhwbS3A4Xr5kau8qK6BO2XXHXBgWkgrn0iu6jNfZvPWz
-	rTmbFHKo7Hizpw3IbSapN8Q/Dj1W+M0=
+	bh=g4Ne4AcnEVQJPDihAVbQKtYCONwWtwV6iW3rmzq4/l4=;
+	b=P9vaCaR/cgL/XK3z8kh+WJuqb3z9TZJtQXv+JZu0/7O4l2DC6c387O7ZAfshoU0M+c/Q+9
+	9kP9bnFrT/BKmbYZ8sdEMOJfmXdAywHNwbhbdq625MsoJ86pIF5kjMNbvdzmJi35/Ttz4h
+	C3VtM8WZi58IYcM7nT+sgYQEbF0sK4Y=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e9TruHKb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L+5Da9hO;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e9TruHKb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L+5Da9hO;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mhNJgko2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780487039;
-	b=w6bvvyd3UpFQaYqL4OEEkZuyJb2YbiWleB/RKk5QWzsbWdbdH7A9IzyAwRbUBsOaMTC5Df
-	HNzxogxnx+NKKK56Yxjb6QqgbTXu2ZyIwXAdj1boTLmUJXLLuxZOiXzj2+6sFaGwXyiQwX
-	xNsmFhPYWUujt6CgQwtTzGICOgO6Igs=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A8A7067559;
-	Wed,  3 Jun 2026 11:43:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780487037; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
-	b=e9TruHKba2Aw8j5znNs7wuEBN6ABAIt9lPHHNKWc10ifZhfTD8lU+Amkj6FyF3IwnwqsOn
-	ZJSB/bau0jk/KeED2ljIJWWGmrp4+0ZNlP/gz4LWSh0lEAZqj2+Lm+WHhG7wDQUsUCBo76
-	tZ2EMza79/ZhFb4kLqIaWpmw8RG6E6c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780487037;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
-	b=L+5Da9hOM6Rn3I3fgd338xAE9ha2lU5C4Va8OfuLmzgu2gRs0ZCE33NMTcTqxRbWVALAl9
-	NTF3zlbpIv+RVfCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780487037; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
-	b=e9TruHKba2Aw8j5znNs7wuEBN6ABAIt9lPHHNKWc10ifZhfTD8lU+Amkj6FyF3IwnwqsOn
-	ZJSB/bau0jk/KeED2ljIJWWGmrp4+0ZNlP/gz4LWSh0lEAZqj2+Lm+WHhG7wDQUsUCBo76
-	tZ2EMza79/ZhFb4kLqIaWpmw8RG6E6c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780487037;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
-	b=L+5Da9hOM6Rn3I3fgd338xAE9ha2lU5C4Va8OfuLmzgu2gRs0ZCE33NMTcTqxRbWVALAl9
-	NTF3zlbpIv+RVfCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 84DC4779A7;
-	Wed,  3 Jun 2026 11:43:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GOpGHXwTIGqNXAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 03 Jun 2026 11:43:56 +0000
-Date: Wed, 3 Jun 2026 12:43:54 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Andy Lutomirski <luto@amacapital.net>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org, 
-	david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org, 
-	patches@lists.linux.dev, viro@zeniv.linux.org.uk, willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <aiAREqlHK1llOw_y@pedro-suse.lan>
-References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
- <20260602225426.122258-1-safinaskar@gmail.com>
- <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
- <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
+	t=1780487414;
+	b=tVOXKjkQrN1ro1/8WCuUNQ6cf7AiHP6td3Us0JnwLip2BPtLfphiVfhcmMzG8JDSuTJFwH
+	INb6RcUQ+mEDL3I/KN38JrpNgeyzWQSYuduRe6tV0xL+3SJxAZ5QzWjG3QEZUT2vl7FUWk
+	GjUP130LoUdK5TzmkDCopVA8HYtMqfQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BAC5E6022B;
+	Wed,  3 Jun 2026 11:50:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF871F00893;
+	Wed,  3 Jun 2026 11:50:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780487413;
+	bh=g4Ne4AcnEVQJPDihAVbQKtYCONwWtwV6iW3rmzq4/l4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=mhNJgko2iFrHnbrI9QLu/kPDYQAZDmWDKHZRVl3SPfbMAk1ZB4tR5upjdM8eH8wZU
+	 caoE4IfkoWclszuykFOh61zvf/+Y7hCWEMJF10hzwrey3DSRb/i3rMFVWow8mqfC2a
+	 ULL/udCkGCSKRA1ELKoWAjlNDsyrna8gbDBhwLxvcAgrZAR4TrigM8brab6sWPw4a8
+	 m9KLsEjmeZzuSE9Pat6lW2Mow0flA/pAIhrhhDAAnG7TUUSHxJIV0x2q0UfkU1YBb9
+	 ADXYoRF1UfFbWFlPcELNtmMYBGemS7ymRWCgoMUT0U4rrpdCj+1VMJCjoEBmUdFWy2
+	 NlTHDJ8yC6HXw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
+ Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
+ <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 10/79] block: rust: add `command` getter to `Request`
+In-Reply-To: <abfbuJVbPtIEyweC@google.com>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-10-de9a7af4b469@kernel.org>
+ <abfbuJVbPtIEyweC@google.com>
+Date: Wed, 03 Jun 2026 13:50:01 +0200
+Message-ID: <87mrxbkfme.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
+Content-Type: text/plain
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2AE6A40008
-X-Stat-Signature: 1eaund7ehj98gy4a67iajpryx44cc915
-X-HE-Tag: 1780487039-237292
-X-HE-Meta: U2FsdGVkX19BziMzdgd5ixpArnPaKNP3nVE4JgIwVj4vdv/Hx+rl5sSwm5wWyJnNGWjVv3TwVAxE73b/TAqlPmHg8fLq6BNAh5RXtjlTV5OqN1gwkbBMqWGI/3e2YjPVpY9aZ0wVdCiZwBQJdVNJvxKBghPuv7iGSbRG9JKYyiebSNC8h/hZtxuDzXnoiLYa5lWW7La2m8APuBGLUa0yB8cx0FS5fUpSTz21zxUshWhHKXYJ7HezbsYvwKX0Ppro6i1xGdWxsxEmLgxF5yWrlb0od81tHKjDlpqSes0e9L+MEKqG3cnNXwpEh0iKUDzSQNCKloENOL9NVZZ1hptLVNPJr5ckFZr1kOeg+Adhs1JueLzr17Lzmfa1yZIpC4nll2r5bSSOL+uvqMpEUnwbq0m8BTH6p7HY9/vI/Pben1orjnpVxo1oZ8STLMnlus4OF0ET95051ERW33HMy9M2OuXRubNPs6YfC5nytGsZw4D9Igg++1IPagxaHhkpZubZMA5VLIH4DRjG0p3E6hlcVrNRSThNBJ6j9qleYYEgdXNt2X7K3bjxIg0vteZ6WbCuy7XmUgcyq6s/r9UKgHDIyIAh0wwEinJYrrpisUnHhXUqS7aAaD3nNFJ5vXt98a4rKBIjTeyRhb0dKN4uxQV6/sES3UXQxOCNAJ788NoSB+JjsESuAUn7HXaBHYaEizIQb2kIxmH2vN6t1tXrV3uRh1AjrfFMvJ75ensvs8T0RR97ONNn+jZ1unI7usdwTuL9lBwBrrobBEQmc240vIcBLYY8HavIq3GBQNPdxQIoS6dHyL2MaZb5yGTwxXgw0UaYeCICbqa2cOxUTyO+DpcXrUOIePUd+ZfB7baiBQC5WxkBLMRXcQ5xCrjq5N82GgVZ7rjNzUz/Oi1/xivTnQZJRQWg+NRzQ9mLycFxJQZqVlGZISw2ZY75tDkyqn85cE0++9RrmlXQczpQQlA6rLS
- mtPT+Cvm
- ATBpeKpDxMnx1RE0EMIDbCFkfGI6jIUTI4uYus9+8DZ0yUYqEeOpZx04dEuOkwNG10veykZLJBVZXurQYfD4oHbTQa54uyEw5WNuVk/7XgesghlbS7OWSbq6UDTST0QsVQPI0BgcDaboKenKqMaytgtZoxlJLoxFgKYAHtIaeYdK/2m0G/EBQg/VcLXkkGltduOEZbzp4a3hkXvU3S9afPA/sEGHjHbJfW5Fc+LO2OkR1mViDJJJqozdKQDiUFbMwjuR08EXGOviVt8q6lYWY7vur8EALKOZfBp6rRWuu6/+kmKTb/xXBKkR3klJR60ubcuG4oxkd3h36JA2LXIMkTCFzS/iXI8HmAI7kOnjfCBBtjzt0AVLk58rquIyfy2K9J1yvmkOpFks2Z78=
+X-Stat-Signature: kowsw5f9npz637n19r4yrf749fu4ptnf
+X-Rspamd-Queue-Id: 45CDF4000F
+X-HE-Tag: 1780487414-901489
+X-HE-Meta: U2FsdGVkX198i2cLe1tNYnyXc05tP6Cgri8ew6/ciQC5mOBINX60MVBlEFSW0BySCD9+YUAIkUqdRqLa0RvEtIi3nOSZI5gHEQ3K/OivGiAHebjzOvZF6khHbQKRrpFmQftitenLxgMICCMl0TscP18vzdF8dtnRF0Fs51IpHRe8PiRCykK4SurwmJPV9lZdh1Rq7O8FIYXfXRvzpRGkAtPYPId1ZtGJl+iTI6XbmJOsPsbeoOX9AcV1VInrjFRPertL500meNQUfvJndvHf9I9nC/CQnkshSdRRFJpnwP+KRLcLHFfDqcMYcqyF8mMCe95H/um12ln2XIZrFP2o3k0VvvPju3/HLFlU39zscD3BAtRD6cz48KUTtIg/w+k7NFPypOzvTevWePxxss1b8VlnLQ99AMURmml3zU44I14r2k0m+DcSfQhymVl/+Vcjt+Ne1AcoeN0UOY6kkhDStNs9WtdkHjJ5PD8STLhzE8LXqEi6+JqJN9rzyHHKBC79P45EerUEQxL47r1DGolJYjIfhme+vQh6EAd7CWwwavbUX3iDtnFhJZP94OIzT5Ou1tQEdBwu4Yv+kAmMmwKl/h09Cb55CGmZPon2IGXJ25uXfv+XnlS52eeN6ty/fH3PchocjXWUsSHlcBGzDs8Gs1pmRZcn5LL6gljbP8A8H6nmDqGT3JUbYtrhHk5bAUTvZEPm9/442VKQzGK1x2TW5RfvfZTLMx72x7JlqztDC7wdUhBgoUte3MqeHlXUjm8SrLGdc7vLMRv8LKy0O9SkEt6bNs1PphXeSAYFiw2TRD/1ZIIFwI6qlpjkipqftoVN7Cv6Ck8d+3rXvbz8X6YyehkkypumLixgo9vP6yLvx+Y4xnWZExedIE5R7t80seAXzx1wBP9Gf+WliCS0MH9zuCMe1Pj48jxhwB1hUbT6u/CH6Tz1MiNyFvPNvIuP/d8MBfnoZoly/hKN1CrKUOr
+ a+wqUowz
+ iEkIoYM+1lzNd8OiWApMO1UuTFzdDAZzPKj8Ra9WBTvs0G/oR4AQJC4hC2AICZ6v3gNrbl3uT4aC7jjeDIYI0cJavOks4kpPZ9SCfLu2Yddi/5KIibyACS01BERFncyGm1GFHeA/LG2lJCQEiMRNlgMYI4TAy0vf2xAk+PwBrWtah98IP7UyjkJL2/clvTCsOHzEaFaDGdgqlQvNP9Jf9n5b+ih76U3HkoOn7poiMFRVQ5HbL2nGP83ncxCMp8jcK6TY8PAi1fPKBEVY1Dlh6ajKVVwDDPI7cc5J6daQfX5VKFl9qLBD/+gJNJbePRT2zrryj+b6yCtReMjc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,48 +101,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 08:51:03PM -0700, Andy Lutomirski wrote:
-> On Tue, Jun 2, 2026 at 5:12 PM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > On Tue, 2 Jun 2026 at 15:54, Askar Safin <safinaskar@gmail.com> wrote:
-> > >
-> > > Pedro is talking here not about this vmsplice patch, but about
-> > > my future hypothetical patch, which will remove splice-pagecache-to-pipe.
-> >
-> > That absolutely would be my suggested next step.
-> >
-> > Something like the attached - get rid of filemap_splice_read()
-> > entirely, and just replace it with copy_splice_read().
-> 
-> Am I understanding correctly that this will completely break zerocopy
-> sendfile?  sendfile is, internally, splice-to-a-secret-per-task-pipe
-> and then splice to the socket.  How much to people care?  These days,
-> a lot of high-bandwidth network senders are sending encrypted data,
-> which is not zerocopy frompagecache.  But there are surely some users
+Alice Ryhl <aliceryhl@google.com> writes:
 
-You can do zerocopy from the page cache, even with TLS on top, by having
-your (fancy) NIC do TLS offloading for you. See https://people.freebsd.org/~gallatin/talks/euro2019-ktls.pdf.
-Linux works similarly. Slide 26 is particularly interesting.
-(No KTLS I assume is using simple sendmsg()'s from user memory, SW TLS
-and NIC KTLS are both sendfile(), per the slides)
+> On Mon, Feb 16, 2026 at 12:34:57AM +0100, Andreas Hindborg wrote:
+>> Add a method to extract the command operation code from a request. The
+>> command is obtained by masking the lower bits of `cmd_flags` as defined by
+>> `REQ_OP_BITS`. This allows Rust block drivers to determine the type of
+>> operation being requested.
+>> 
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> With the nit below fixed:
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>
+>>  rust/kernel/block/mq/request.rs | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>> 
+>> diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+>> index b49197a0c66d7..0dd329ae93dfc 100644
+>> --- a/rust/kernel/block/mq/request.rs
+>> +++ b/rust/kernel/block/mq/request.rs
+>> @@ -78,6 +78,12 @@ pub(crate) unsafe fn aref_from_raw(ptr: *mut bindings::request) -> ARef<Self> {
+>>          unsafe { ARef::from_raw(NonNull::new_unchecked(ptr.cast())) }
+>>      }
+>>  
+>> +    /// Get the command identifier for the request
+>> +    pub fn command(&self) -> u32 {
+>> +        // SAFETY: By C API contract and type invariant, `cmd_flags` is valid for read
+>> +        unsafe { (*self.0.get()).cmd_flags & ((1 << bindings::REQ_OP_BITS) - 1) }
+>
+> Nit: scope of unsafe
+>
+> 	unsafe { (*self.0.get()).cmd_flags } & ((1 << bindings::REQ_OP_BITS) - 1)
 
-TL;DR I really do think it matters.
+The `&` is parsed as reference operator with this change. But we can do
+this:
 
-> 
-> Now maybe someone cares about a different path?  Splice from socket to
-> pipe to file?  Splice from socket to pipe to other socket?  Does
-> anyone do any of this?  One can, of course, recv() directly to an
-> mmapped file, but then you pay for page faults, so that probably a bad
-> idea in most cases.  At least all of these cases don't have spliced
-> buffers that refer to a potentially read-only file.
-> 
-> 
-> But I'm a little concerned that zerocopy sends from files to network
-> are actually important.
-> 
-> --Andy
+        use core::ops::BitAnd;
+        // SAFETY: By C API contract and type invariant, `cmd_flags` is valid for read
+        unsafe { (*self.0.get()).cmd_flags }.bitand((1u32 << bindings::REQ_OP_BITS) - 1)
 
--- 
-Pedro
+Best regards,
+Andreas Hindborg
+
+
 
