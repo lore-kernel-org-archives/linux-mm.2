@@ -4,123 +4,216 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11216CD6E64
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 08:58:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A5E7CD6E64
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:00:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EDDF6B0088; Wed,  3 Jun 2026 04:58:16 -0400 (EDT)
+	id 8F6046B0088; Wed,  3 Jun 2026 05:00:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19F0C6B008A; Wed,  3 Jun 2026 04:58:16 -0400 (EDT)
+	id 87FFC6B008A; Wed,  3 Jun 2026 05:00:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B4946B008C; Wed,  3 Jun 2026 04:58:16 -0400 (EDT)
+	id 6F9386B008C; Wed,  3 Jun 2026 05:00:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F2F286B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:58:15 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 479251A02D8
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:58:15 +0000 (UTC)
-X-FDA: 84837999750.25.1B17D84
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 422D140005
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:58:13 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mnPkKyEg;
-	spf=pass (imf27.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780477093;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 551516B0088
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:00:07 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F298C1C063A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:00:06 +0000 (UTC)
+X-FDA: 84838004412.16.99E69D7
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011047.outbound.protection.outlook.com [52.101.65.47])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BD2B710000E
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:00:02 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=rev1ga8g;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=rev1ga8g;
+	spf=pass (imf05.hostedemail.com: domain of Suzuki.Poulose@arm.com designates 52.101.65.47 as permitted sender) smtp.mailfrom=Suzuki.Poulose@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780477203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HNO5aQb0rtRKtux/wu+5AcytYSH9RtOlt3U0qrUIzPI=;
-	b=cU84oWRcEZBMPb6rz1EDb8XM8K74/VfVcJ3xir3ScI5geyORb+XPlUUd1spe/dC529axeC
-	t//rUK2Al6j630L06kAeye2MNW9b9cbZzRJRnHaw+3qo+A4JxSAGAPGu+k3LbKb29opzQU
-	57Gs1Ei3768pALQ+0mnyQPpgqyArN6E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780477093;
-	b=RSonFOrDnSsnfq4gUMmrUMZSNpFPL/5ZQEu5tWGHdkPitOhVZIzSqzHP1anXeRUD9kcEbP
-	v1O6nfifgUYc2m3ajaMbrYu5BuzI699iTseNirsYqg/+VReenfcuPHH2dGRarmtpzsLOal
-	Q4Ri3jwczn9eVLSXCm+ARaMN3S3SdE4=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mnPkKyEg;
-	spf=pass (imf27.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71350434B2;
-	Wed,  3 Jun 2026 08:58:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924931F00899;
-	Wed,  3 Jun 2026 08:58:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780477092;
-	bh=HNO5aQb0rtRKtux/wu+5AcytYSH9RtOlt3U0qrUIzPI=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=mnPkKyEgBAoJhHyCjKocF+n+JqkHcWSmPH184p/CrskKjSd4JLPoFSBGrYLKU9Mar
-	 B1hI8HW9H+53ks3lghDx4U+J6rNa6f8KquouzDq0+DM7/4ZBRzC0AuXQVPvI5bKqkY
-	 NglLbcu+ZBDleA+IgNkKfEKOPcXRhxVfSNk8lTpECqvKoBh+iHSyU2ZFRwFPFE4daX
-	 kw0WCczgVzTNS8Nry/XjBs//vr21nJLOAmz9iMERtpe8gUl3WYdzTVYvcHDMtqVnlJ
-	 wu/GIoZWa0/6+fA9X2Sm0u6y0MnNMo3tVdcswt4ZtD+mHXcn/QmWy2xNCp5hUrCygR
-	 dCBoxrKjfQI+w==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9E4CDF40075;
-	Wed,  3 Jun 2026 04:58:10 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-01.internal (MEProxy); Wed, 03 Jun 2026 04:58:10 -0400
-X-ME-Sender: <xms:ouwfaqCSomCUHn2Pcxt39NzT6QrYDOwoUaHjVutpQNUu0GYFMZl_Ig>
-    <xme:ouwfavUBA_wa0-Kl0rwIin5phZ0Xk0GMcV5YCAKgwCXtZX9t6zPJc0f21igxmxdFZ
-    el9mEG9Na6KsRXZeOce-ahEOIXmRVtrBYvtLtWGWDsGbs4lRkjjK10>
-X-ME-Proxy-Cause: dmFkZTGr2weDGKBa0sUCUcj036iLL5Y1yiuWXtlNLmEI4O4KffGEG7mKCI4rtXP1Kjy/sC
-    Vn4JLRDUw3n/LlH/P7ldcJy2f2NLMW7zEwQdl58eFGDw13Gd7uBwZtBFefeubqM57vT7KW
-    gxI5DHTPlMa9V7t7GBAVKnyC4disspoUcyOJuYcuXeoXUDa8M5AS9XNNfwK+hXW4k6RRKP
-    P+HnepDfV9Ly2SCGeboQtn62xJxY4OofV3op27GBS756vLSUraZsZIubTiRwHvbO7GWFg8
-    TN89ZhNEjfm9JCDm1LdV/dDNhv9gsSNYWX/LbCMQhfYJTNEbDdYGKUoqZbehxmbuTXbkFU
-    XnaKhsn2lQq7XiJ+YTNPtHlw97iNDWbeNZirflpUY26TpW4YlC0yGx1F2Pdjov4xxyaUZd
-    nGZuSrO0ofec6SMf5X9bTikzbc7jU39nUFa8+EDOEs+sLMDgAb7Jfbkdo1r3Pi14q8HECl
-    WOyAkHMSoapVwjPlMra4gfnE/Sq1KO70VhXXH61epQ6Rh+aRLmPHQfsv+x4lMOk7iiwpsY
-    2Ln1UDislceGN/Gw4GkBXiCXnvOln8phYiq7SJoKkYgBG145jAMq3GJUgudNXhcY+kY+fP
-    qpGcyL1cKdvM1YoB3pTqsi5xKVO8SJQEPQQW/+ABFCEXztbk2H+BY/x90g+g
-X-ME-Proxy: <xmx:ouwfam3-PZsrAVqqiP-EfVs-0jTgxsPILW5ya_Lkxs4FNvUMV00I3A>
-    <xmx:ouwfaqtJQPQRdRGCSDlzv7oyJj2hWevC-qAmYiniqjt8Bubu_25WPg>
-    <xmx:ouwfai_l9FuzR3F73C0xJHJLI6BrnbgCXaJCGZTs31csy6qmGWmmEQ>
-    <xmx:ouwfauR1k_z1hiMDOUWOdTJsWToATwu--U1XlEgRSm3i3JLjPhl_jg>
-    <xmx:ouwfaoCm3jrQTsvC8JSjjw2cVnzpsLJPRFYPY4I2sfuqg_7otMeSlp9g>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 77D33182007A; Wed,  3 Jun 2026 04:58:10 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=6IicQCtcCk7kVw2DQcmAHZD9BLKGpYz2zKMJtqG+KbM=;
+	b=wllG76f2aSkmN43ko4MXT6QuaG0IIUOaOr3XBK1eCTa5QUQgVdMluc2HN7ZnYDTev2z0tc
+	VgfL4w/z+S33TL6x2n6OSwQppQfw+inLlKW+PNCKzCGt7V6ad2jSEQvIGRLmah31RH0xlg
+	h5QcnOSgwo96dVM5xk/aQkW94Br7+kM=
+ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780477203;
+	b=Xp7of7vu5PrdPN6OCRmG/TtQViuUDhr+Gq5eG5LqyNPMSZdku6rlHX/mXBwiwUWdJ6ZSDY
+	baX5Gz0anz4kUQ5o+JODu/ailkCdQc2pVjdey/GOcpxaX80+XSWd9wl6ZaL6wOs56x2JGB
+	x4HP8t/0aik5OIkpdOR3VHrCwBrzsic=
+ARC-Authentication-Results: i=3;
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=rev1ga8g;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=rev1ga8g;
+	spf=pass (imf05.hostedemail.com: domain of Suzuki.Poulose@arm.com designates 52.101.65.47 as permitted sender) smtp.mailfrom=Suzuki.Poulose@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=dXrxCYclDJHSitK8Yd1gUm03GkSB+aK8ZDfWxWYQndR/xoB1PdjQt2gaA7Z6ogQLFMSD5bkCx81QP1o0ZaYdlVYIjEVCmr9FW8g7LungKju31cSY7mNWqUylShVixABCIgLbAhcJ/mo0MtnZkb55vEiE/xKUNKg5qckW1MwSDtjwAYVtNZgTDKjmPDve8PPIDqMF9xMvE6kAuWkNTGk5+1LbsUWlwjLmv9hj1mO5O2QUdSImC7nVrbV/GEk2VL8RejIm4MX1AnSV33O4tB+xBnuwufYomyhYWAYtYagGXxUpS6esj6jO+lzaoYo3ZwhxA3oeAtyVRCdFTkv3pMeu/Q==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6IicQCtcCk7kVw2DQcmAHZD9BLKGpYz2zKMJtqG+KbM=;
+ b=siFkwuLbSUzVbFv7Dic4snJiShAimDZYNrSeSw4voJzcUOU7kAk49JQ4gSKatKdP8Xt815J/Rf2ZHjm7Hu+Qaf0wj1zjT6b7rwIdW2QHKZ6i91o+qvPbHy6moa1HNlCShnu+PNlMXO6aW9a2G3PQFxrbFR2ICvCS8kEMlPJ2btszXVV7qM3zvA44usVZZdi3o89ks5kalMAYduTINKiaP03XqPML3qX4xLc0007Tu45OKW+FpzJiRt/M7YEuSVP+teK4wjE/MM8wAGxBsTjArRWBcBfFxcjY4240IZGgkJ7tMJ8pjwMtSmUY4cVh/yUJpQYq9TWpnY5ZOT0IPLHgcA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=google.com smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6IicQCtcCk7kVw2DQcmAHZD9BLKGpYz2zKMJtqG+KbM=;
+ b=rev1ga8goaf53SlpfiGGL+9uQL1FXmNOfCd+rq7YT/oCKBsz0LsptxCYWUqdw3ydVi0zTQes0vTRkGZArhniynE23Bw/U2l/EVfEeId7BMWol9Ha654AvG4v3HsZ4IDGTCkeK7YpYrjW+6GF6yGzYNS97OpNt1j0Z88I/f/OAUo=
+Received: from DU6P191CA0037.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:53f::16)
+ by DU0PR08MB8089.eurprd08.prod.outlook.com (2603:10a6:10:3e8::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
+ 08:59:51 +0000
+Received: from DU2PEPF00028D0D.eurprd03.prod.outlook.com
+ (2603:10a6:10:53f:cafe::47) by DU6P191CA0037.outlook.office365.com
+ (2603:10a6:10:53f::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.7 via Frontend Transport; Wed, 3
+ Jun 2026 08:59:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DU2PEPF00028D0D.mail.protection.outlook.com (10.167.242.21) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.7 via
+ Frontend Transport; Wed, 3 Jun 2026 08:59:51 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MTQlsnzDlWWWmddOu3s21vWO4DeGxiLZYIgaDxAaA/tcbHSoh7lf1IrlQqbtxGuTqNPAssgBWYxFz/xRfT+ZJdjCDBFiAE/QCLp9eTuNajQg2NHl/jqnGqnb/CxT7HumB886QojPYkNz/K/rlUOJqgBmFmbT6T3/9WeCmlVZs3wvPi46dgNMh6SWnsxJMNm/fApc7rjaas5P1UzAn01VqO1ZKhP2142R8CrfZjaM//LpjV5ht2/v5wZMaLglkUmZ0qeNu4vHR3/asLjWIuT6fcB+X6gURTd5+XvWT7BQfl/+j+nytFiNzD0EMTS3Q4KM7J8C8TdA+5+SMZl2Zm0YmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6IicQCtcCk7kVw2DQcmAHZD9BLKGpYz2zKMJtqG+KbM=;
+ b=dgCuL8j9CH+kWN2XWfaWeq4MYYqgCTMq+gsb0AicfHJkkZCLU5G71wXKUVJQK0Xq6TRYWral9MEfA237C7yZHc65QIYXYlvvcssUx8rUeVlPu9tIcFgMXaprcmuZHDsDI5XUCrPYTeKuTYWBpSpMGytqbbLqpQGewugWOzjHswdwYByHQ1uKgSCZgBgT6kd6oUg1oU7FtvXuFlES0ggtLn6NnID+3EyEdz+w1oumbxZ9kHPxlqFjEbEb2MqNxItkwtcWqErM3adPDGeRXS+cx+eKvc1743t/tujCxC8hcVA8nXpLAWqgIRzvslOydzzjmE8+VEubgK2qGp3gNaPZTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6IicQCtcCk7kVw2DQcmAHZD9BLKGpYz2zKMJtqG+KbM=;
+ b=rev1ga8goaf53SlpfiGGL+9uQL1FXmNOfCd+rq7YT/oCKBsz0LsptxCYWUqdw3ydVi0zTQes0vTRkGZArhniynE23Bw/U2l/EVfEeId7BMWol9Ha654AvG4v3HsZ4IDGTCkeK7YpYrjW+6GF6yGzYNS97OpNt1j0Z88I/f/OAUo=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from PAWPR08MB10975.eurprd08.prod.outlook.com (2603:10a6:102:46e::7)
+ by AM9PR08MB6209.eurprd08.prod.outlook.com (2603:10a6:20b:283::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
+ 08:58:46 +0000
+Received: from PAWPR08MB10975.eurprd08.prod.outlook.com
+ ([fe80::3c7a:9a64:14bc:ce15]) by PAWPR08MB10975.eurprd08.prod.outlook.com
+ ([fe80::3c7a:9a64:14bc:ce15%7]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
+ 08:58:46 +0000
+Message-ID: <88cae738-18e9-4ed3-8414-506a1ad8fb18@arm.com>
+Date: Wed, 3 Jun 2026 09:58:45 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 07/42] KVM: guest_memfd: Only prepare folios for
+ private pages
+To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
+ andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com,
+ jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
+ oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
+ rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
+ steven.price@arm.com, tabba@google.com, willy@infradead.org,
+ wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
+ pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <20260522-gmem-inplace-conversion-v7-7-2f0fae496530@google.com>
+ <d01cf1ec-b85d-4af6-9810-8107c0e2a4ec@arm.com>
+ <144bbb9f-39a2-4c90-8903-51521e022da0@arm.com>
+ <CAEvNRgE1dCVAxJWd_hyFa8N=m9JLfn97ip9tAmvHxspWJ50oGg@mail.gmail.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CAEvNRgE1dCVAxJWd_hyFa8N=m9JLfn97ip9tAmvHxspWJ50oGg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO4P123CA0467.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1aa::22) To PAWPR08MB10975.eurprd08.prod.outlook.com
+ (2603:10a6:102:46e::7)
 MIME-Version: 1.0
-Date: Wed, 03 Jun 2026 10:57:49 +0200
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Will Deacon" <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
- "Ard Biesheuvel" <ardb+git@google.com>
-Cc: "Catalin Marinas" <catalin.marinas@arm.com>, kernel-team@android.com,
- linux-kernel@vger.kernel.org, "Mark Rutland" <mark.rutland@arm.com>,
- "Ryan Roberts" <ryan.roberts@arm.com>,
- "Anshuman Khandual" <anshuman.khandual@arm.com>,
- "Kevin Brodsky" <kevin.brodsky@arm.com>, "Liz Prucka" <lizprucka@google.com>,
- "Seth Jenkins" <sethjenkins@google.com>, "Kees Cook" <kees@kernel.org>,
- "Mike Rapoport" <rppt@kernel.org>, "David Hildenbrand" <david@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Jann Horn" <jannh@google.com>,
- linux-mm@kvack.org, linux-hardening@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, maz@kernel.org
-Message-Id: <2c7929d4-6622-475d-af1b-bcd0cd997cd3@app.fastmail.com>
-In-Reply-To: <178041415770.4024555.11336437584927054639.b4-ty@kernel.org>
-References: <20260529150150.1670604-17-ardb+git@google.com>
- <178041415770.4024555.11336437584927054639.b4-ty@kernel.org>
-Subject: Re: [PATCH v7 00/15] arm64: Unmap linear alias of kernel data/bss
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 422D140005
+X-MS-TrafficTypeDiagnostic:
+	PAWPR08MB10975:EE_|AM9PR08MB6209:EE_|DU2PEPF00028D0D:EE_|DU0PR08MB8089:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d700268-b808-4759-e3c1-08dec14e78c8
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|921020|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info-Original:
+ dgSqH/7TcRrHp25inGfGMCLOQFTQCcgsY/At+cVJ3S+rc3o2L7R5iFxOd91Th8MDlWIaeJamEixrf2VOdhDDET/jYdLzuM2aOZsxPyTlCt5O+4PEbvGaC39PKmdJ67eWTecCw3dFhIsscyy5atxoOpFarQVaIeVRwLkjcpe+O+/iRgJXXb5wG1Gfx4zU9ccPMjLHcpwW2jFkZ6dAetTc313+7ie/5UVRawbJFw+fLI3+dtB/RcVKDcHi4TmnDKAdSuN8qkb6ymG92J194VuIH9xPsoFNj2ddT2ufxGoxeQzDowZJQq5F42FD+1L8k9RrPjk6gVCE0eR9qPleEPuvZQW6KbcSlNexfGhaT+Dl3rxWWJ0T9vZoXBaLMw295vj5TxczISZnNq+Tb4dv/pMcvXXfcSzAjZUNTrqp8HCLfow38WhRHQiul83L0R7MquSdvexmqcSVOBKTKC6UwXCPe0bUmOLgWRG+3FWox8Ye6PQ+Ut2OSLUNYvNY7bHosB6zLoOkU6RlxGy42ogkX/uH7WN3au34lO68Yg0xRSqdtI5W7TcgCRMCQRGtbyuXLsvy0srfEyPCl6Yi4oDmz0QPV1VaK1jKTrAsBrOeoDJGGrxA84dWzRb5i+wSoYVe3JvMAI4/x2x5exLbgeVtekW+A/8Esz1ovM+00UjjD9sc5ScxC6ryB0ppnGen21gzXDuKlsmFd2ehFBIQlBIG4LuYjYaw14Pxi8XzG4n8jqF4uTI=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAWPR08MB10975.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(921020)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ Gd3Hh2Ae9/yd2amPs7sOt6Rk5pMuoIro+b9/FmtW/WBpkF9jrAEsPtCc5Xm/iWYoqB3ETElo2/1D8elcHl8oWzlUDpCeIauSFllBAN7w7j6YAmtQ1GPlfX/r15fMypQkDwV+0Ob2nraslnVmVVlEtHyWEgCFuX9bg2BwKj4aSWIwK3G+RJUWCyBuE6GsxStCo1DDhwGXuaD7mfwjF4gLrTzWFwZrrT4f88OdUYwcCxpB23mP8lXnWidmX8Y2Gmi4je4ljL3FWDLAithjQp628KR+0Whkh3alNkxBKQmH5fJt8yWBxuTNUwWTQAPPf/wu7yxULI78SAzr+4k/fZ2GvA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR08MB6209
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU2PEPF00028D0D.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	eb36bd1c-5f50-4816-ff6a-08dec14e524d
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|35042699022|36860700016|1800799024|14060799003|82310400026|7416014|376014|921020|4143699003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	xPEVART5tPqljK9TiG07pJo05hyN/la4jidp38npuFdQ3pohgTf6qlKfgjGOVecXoxl3YtmKgrBbjUbsdzC8JzzG8frWkdZv7eAQRy7aQHABp0JsZuiJf8Zaeaf+CMmntbMqx8frRBHtnngxW9Y1urlGAVOZkEGeqnX54r12hxQIV7Y5WC/2xjLEGgDjJ0Fw6iqa6wdjK3lXmUxaJeoBah8WW7MwI8ee/oExLp3azK15VeBAIGu6JpnSj1Lk1zP/+St5RvLLephOcSTy1CAxncSsLCRCr0q4faHVMOy+MkhTSXD1iC37wDJYj6gfJpGvJuOqljXYPHNl4FH9sz0wpJtis7r0kVI9moFx3vgYXTIEGU9UKkH/aOyHQdXnDbbZSx2Bau6ohqOvVdrhPaK2zQQxUZ5umyTgEJBDy4XiZ01FITZT9moTyuXokxi3D97cCLN1ghRr3BWpPbJky6a/7gXistOj9PPmfkrEFlTe2L0BZCgDF+YdzEwpqJAWAzq1QslzNf5YC7PQDPsw1Vf33VCbyitfv9dc4mYCsDNjCXr9AvITnngypAMkGj68BpkXhMx1ibJR+QcmYpoj35k7yzFhWba8eYuerhk7JO5hAE+Msy7+GyNz7OvFGMGnYiI9ySDEP3Zt6VVB5sge30KkciGHV0NCBX1S5hEP6cMxmw7RvsoAakwf1gCfIGEwA+rFQz71Hp6tWL8kvg9PMocNjh/DGjg+WMSruE5+GkI/rek8jrcwpGXyOeee1iEu0asBbf5YGnxzbN/D7aRiWvi/CA==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(36860700016)(1800799024)(14060799003)(82310400026)(7416014)(376014)(921020)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	L5K9EANu0Jy7D8re3NbJx1LUxUN0Xs33SN7LFRNVMStau4kn4fYYm2LgieMzSvFpK9F7CB9J+bC+ts/sWQ1UTMDTWsGijSbwjhU9EF0275a0JfQENDKrg/96rRuCBrh9Rn6r6lADEmJ99UcgPzqFM4EacvBfuZ0tkSmRiMVmHkRAyGWlfjsHUIblT2vOhiU3NDIGlkd/IjA+P3Ov7Bvq5B52V0k1Te/WIk88f6jclq5/JQ3wpTWns1eIeLltFpP8OZn8ZhL2ovYOX/Dn7WWUSK19d4ubySj/eCRjTTLhV2qYiQr78fqjw7kBjq1K/lq9vjPnfaW9QGC4dPwFYuFVvSU7JBnt4SjSMqp4DGgtbsf8U7Pttf1Rq7N5wE7CqkpR+ZPAy4XRPzl8xiM5zr3ZYAk7aHwBIYMSi4N+/et3mGbgBtco0EO/0CM6fJEmhjvB
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 08:59:51.0535
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d700268-b808-4759-e3c1-08dec14e78c8
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF00028D0D.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8089
 X-Rspam-User: 
-X-Stat-Signature: 4ebn4cdqbjajeoz6kxtx8sbobcecbwxx
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780477093-692785
-X-HE-Meta: U2FsdGVkX18Xo4DrN15MIFB7uOgMOrxw3xRBn/esElN1SZANc0FP6VTjJ8RCfUxAW9j6f2pj16Lhk3pyfTS56xz/B3qO2Kw6fLgz95gW/A4OyI4CmaTL0Jq/qcCc7GXqKv09SMf1EYHtnW5AOgUCoRze7PRw70/lWNo8cgLcQxCk5phZIjyQ38IvwLJqJZDpGDf10XBeFtX6fTLqbZhG5l1FBQFFnT4b3GUTi9O9OdASJuUDpz8JWNJoRIpFms2JsnZGm9eqOAcudj4MGcG1lPPHOqmAD/E0sloCl1wjmwnfGSVnaKcpDnn4TtRJ7vbgbNLzl+xg26D81TUJrNsF4y3fOQcsAlKQXK7Gbv3Ks1zHTu4U+0xMEPxjPl5VlNk7DokZOPK0qdQOaknAlIUjpyXKJqLgX9ry9cl1APCVt7RiGuqkp/yz6o9qXZt5j8SkR3uq8bIkgOa/OonpFXYP9Hz+ZyJCSq/7lWFGkxlVA2oN5ObygiXjOJ2xkNhWz6qVbIAQOnJF+DklrJB18Qv0btO/a5wLC2XXEAB2xi1mAlEPp50ChfTeU+Mg7ZOAVR2cG6pxiZVPyDESbBigzIzHwwy0Ej8oxsrAirwerjOJ6adP8elAY1X/byCx2QC6i3Ppjb6oA7SCY9lhBB3e+G0VARkTUheizDGQa/Uyto4OPnBhO6xWsl9+4kPwd/KolzVa8vQeosFrTtRG+UfINl65cTmxzHshGAz7PlmPYLEgh+vQmUf+oRdgZejemRrgP06VYX7RBij8vyX5IFpJj9BkJCzd9dQ9smLD1mYeSsyd+BYTnPpQbW+qQ/+VwrFwijr/wMWchFk0tEN5UDDpdDzk0zmftiSVob11wqASlytmndcT/i2IvfOw27+xeeDhIWw/BR8Jk8rXvnLlD13irw5/dXxN2ef8sBcFqTTdFjUPBqZe3r8boggmZldLTXfzc41AMcrBA/jfrF7cORJr+Kg
- Q1WxupWw
- 87fGwoBS5y8Q4DFmINkG3FajSbzbUd9jdbHYJU+n8zp2D6U/gjOLTKS4QuZD4PZosREopnKU9pOhWzboumhmF6xxq5jHtGS5c7l2dTpNUREMGJo16ao0o0JSZ6uNr/UZTErn5X5VwtulglsHwi/jsi5hO4prAXpUMpqZWC3TXgt8i/17uFhSZGRHKiwMviseFAiQh49yhWwxK8/woKbcafyO7p/30R7FJrFNfPsjOM69f9roDvN1xgYjAkYs2g4xZqW75bbTXB5CR09uNGVazyS1B+EmytJnNhP3JLQDEt/H1N0dY7nhd5qC9fLQot/5mUm0Z8HgmlFy7jPU=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BD2B710000E
+X-Stat-Signature: jegwxgsz4cxtikgphuwsc3pbijdjdmok
+X-HE-Tag: 1780477202-658362
+X-HE-Meta: U2FsdGVkX1+yP4pzPYMbfHxwyVSDCTiHC9wbLEDvwVEYxXjPPyLDP3E3WlHaXDpweg63Gj8mU6SCcwGninj2O9UMk0nBFn9Na1jMvw6nQDvmJyyInbS8PkQ3K0lKTcyVX5b4LpICNx85h2iaYJJkZ0mRmvfKqVwXw5eqnmJvnOb/qUq4eWaQYW12lG2bzYiFSNtdIaThfNr+pDnMf95Og5KBuQh1wSNw3InB12KXFai+IyEt/ma8o/eVFuEN7MsHKskogrf2pr140SkR5VkqiKBdhnAtJDRTe2mhthA2ifm4//24Gh8i6qCxriMZVrna9QvyCMDbRjw93zZStzkF+hO5QE+Le/2guv+LtmHyydTHQ4PMh5uBZvSsEmmpZ94S2b9rGDzChHKe+bhZ75uBmqDlHpxTrwFbMXTiXUI5Nc4exNrZHtj8X4sq/mc/OeDAXRw+PPJ9C7rpqSN+Up3TU3rJ4gvN6JEXDjoBtfJIu/Hjr68QbTd+B4mUqAbAkE8XLT5EvtvHFvPhXIDvTmBBT0VGL4BymQM/PTZm7Uigdo2Wcb10URLppw1eoGvxiXYxL9LeTO8YV7S2X6aqZMxtGYxjg5e76x0/n719YTcu6ppabOtYvcLcRLlZ5ZIpLepCaSmgUrj4wn8isjyfBtlOSB0F/zsvCya7D1Mj1EWPzJM8rzyuVCLANDfqVs+UAX7Zou9VA2T5a/ZWjfjnEuKSbbYSPCf5hZwNragKbD0V/ihLBLLLcUCZLyrjixIS2KNNyvbYw0RWZYg7bx3Zw8KNFNfeS1eyN7LsLVKIR2BgUAJnPHlL51dlZMAhXausVyxttNOiv6adCHjH8TSmpqyGvHJxu5IrrYgfkewLKGkXbb0SUCzLEtaiE+CwmDpl8iPPLC3ZEKx3RoAV69uZ+jYYPZUHFU9n6J7wEWrSuFI9EAIZ4dlJfnJypE78LccZT0uaB+gNY39SibhVastC96g
+ SkLvc6lF
+ OB5qynjKbQjckNzoQh74g5aoY7ldTfnDYRIm2uumUVdErEXJOkhYPD/MloePKKNcyroyUZLCLwp9DUiFun9fdzUFb/SyN761JVehg5W4db9dE8K/F+ize7HR5EOykfnknEdni2iP0WK8ehTPbx9i/10Hey626PUZIgWkWJddrNVHxyDgiOgMMSRoYo2nhsu0krjfWREcws9AOkzG7cGLpJ4RTnHwHbHvkZMRxEz1IrE/HchqpZtIUeJlRQcPNDwxyJDUfKAlK+/D+1rJX3BrgYvEGa7l4E7fQjdJ/Np/iAi/uNLvWcS6D1qfTwhAXx+oxWRJAx2Yv94e35T6DXj1SrwS+zFAze0uya8Cbeib7GmUNoHT5/6FM13bZO/dAPMWchbIJnMbBWiMGxG5eVGJtxmBJpnArzaxZngJl6QxoSkeVwprYGvCAqytyBUYHdJlaOVI30XojaLKXOncqKk5yt3oT+rT9pm6U2EJS3abarC1Gm3DYuB4wUKm56HGBLOupaIEalVv9/2AVFS/pAO9r9Z4QnNceXU5iEs72Tivbc/MoJdz8TGhuFJi0FvTsAF5mnLX1B0vJx8K9iDs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,79 +221,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(cc Marc)
+On 02/06/2026 23:41, Ackerley Tng wrote:
+> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+> 
+>>
+>> [...snip...]
+>>
+>>>> @@ -914,7 +916,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct
+>>>> kvm_memory_slot *slot,
+>>>>            folio_mark_uptodate(folio);
+>>>>        }
+>>>> -    r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+>>>> +    if (kvm_gmem_is_private_mem(inode, index))
+>>>
+>>> Don't we need to make sure the entire folio is private ? Not just the
+>>> page at the index ?
+>>>       if (kvm_gmem_range_is_private(, index, folio_nr_pages(folio)) ?
+> 
+> I was thinking to fix this when I do huge pages, for now guest_memfd is
+> always just PAGE_SIZE, so just looking up index is fine.
+> 
+> Is that okay?
 
-On Tue, 2 Jun 2026, at 22:34, Will Deacon wrote:
-> On Fri, 29 May 2026 17:01:51 +0200, Ard Biesheuvel wrote:
->> One of the reasons the lack of randomization of the linear map on arm64
->> is considered problematic is the fact that bootloaders adhering to the
->> original arm64 boot protocol (i.e., a substantial fraction of all
->> Android phones) may place the kernel at the base of DRAM, and therefore
->> at the base of the non-randomized linear map. This puts a writable alias
->> of the kernel's data and bss regions at a predictable location, removing
->> the need for an attacker to guess where KASLR mapped the kernel.
->> 
->> [...]
->
-> It would've been nice to hear from the ppc folks on patch 11, but I've
-> picked it up on the assumption that they'll love the negative diff stat.
-> Worst case, we can drop/revert stuff if they have late objections.
->
+Thats fine, but would be good to enforce that here, so that we don't 
+miss out when we add support for multi page folios.
 
-Thanks.
+> 
+>>
+>> Or rather, we should go through the individual pages and apply the
+>> prepare for ones that are private ?
+>>
+>> Suzuki
+>>
+> 
+> IIRC the plan was to make kvm_gmem_prepare_folio() idempotent, as in, if
+> a page is already private, just skip. Currently sev_gmem_prepare() does
+> a pr_debug(), which I guess is technically still idempotent.
+> 
+> I'm thinking that the information tha needs tracking to make
+> .gmem_prepare() idempotent should be tracked by arch code.
+> 
+> Does this work for ARM CCA?
 
-There is a de facto ack from Michael Ellerman in the Link:, which is why
-I included it.
+We don't hook into the prepare yet, but have plans to do that. We should
+be able to handle the pages that are already private. (For CCA context,
+RMI_GRANULE_DELEGATE_RANGE can skip over already REALM pages). So this
+should be fine.
 
-Note that Sashiko found an issue with KVM+MTE, where a read-only mapping
-of the zero page in the linear map may result in issues:
+My point is, in a given folio, there may be pages that are shared.
+Like you said, this could be dealt with when we support hugepages.
 
-"""
-Does moving the zero page to .rodata (or unmapping/read-only mapping its
-linear alias) expose a guest-to-host denial of service with KVM and MTE?
-When an MTE-enabled KVM guest reads an unmapped memory address, KVM handles
-the stage-2 fault by mapping the host's shared zero page. KVM will then
-call sanitise_mte_tags() in arch/arm64/kvm/mmu.c.
-Since the PG_mte_tagged flag is never set on the zero page, KVM's
-try_page_mte_tagging() succeeds, and it calls mte_clear_page_tags().
-This executes the STGM instruction using the zero page's linear map alias.
-If this alias is read-only or unmapped, won't the STGM instruction trigger
-a synchronous permission fault or translation fault in EL1, causing a host
-kernel panic?
-"""
+Suzuki
 
-Marc seems to think it is legit, so I came up with the following (I'll send
-it out separately with another pair of tweaks):
 
--------8<------------
-From: Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH] arm64: mte: Disregard the zero page explicitly for
- manipulating tags
+> 
+>>>
+>>> [...snip...]
+>>>
 
-The zero page is conceptually immutable, and will be moved into .rodata
-to prevent inadvertent corruption.
-
-Prepare the MTE code for this, by ensuring that the zero page is never
-taken into account for tag manipulation, given that those actions will
-no longer be permitted on the read-only alias of .rodata in the linear
-map.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-
-diff --git a/arch/arm64/include/asm/mte.h b/arch/arm64/include/asm/mte.h
-index 7f7b97e09996..093b34944aee 100644
---- a/arch/arm64/include/asm/mte.h
-+++ b/arch/arm64/include/asm/mte.h
-@@ -80,6 +80,11 @@ static inline bool page_mte_tagged(struct page *page)
-  */
- static inline bool try_page_mte_tagging(struct page *page)
- {
-+       extern struct page *__zero_page;
-+
-+       if (page == __zero_page)
-+               return false;
-+
-        VM_WARN_ON_ONCE(folio_test_hugetlb(page_folio(page)));
- 
-        if (!test_and_set_bit(PG_mte_lock, &page->flags.f))
 
