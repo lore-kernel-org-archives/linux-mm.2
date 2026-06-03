@@ -4,109 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25473CD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 14:27:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C64D2CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 14:34:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89A346B0096; Wed,  3 Jun 2026 10:27:13 -0400 (EDT)
+	id 12A8D6B0005; Wed,  3 Jun 2026 10:34:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8721D6B009B; Wed,  3 Jun 2026 10:27:13 -0400 (EDT)
+	id 0DC1D6B0096; Wed,  3 Jun 2026 10:34:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AEC56B009D; Wed,  3 Jun 2026 10:27:13 -0400 (EDT)
+	id F0D566B009B; Wed,  3 Jun 2026 10:34:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A3A66B0096
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:27:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 210171A0276
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:27:13 +0000 (UTC)
-X-FDA: 84838828746.17.B52937D
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 069B4C0009
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:27:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="mXm4zhu/";
-	spf=pass (imf22.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E0CC36B0005
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:34:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81BDA120399
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:34:22 +0000 (UTC)
+X-FDA: 84838846764.22.8D4564C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id CE0952000C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:34:20 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RncmSrbY;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780496831;
+	s=arc-20220608; t=1780497260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=os4aRjDnafKUzup1QuKJHbiKJ+/dQN99U138wr5Ge48=;
-	b=OROXSoUikTeVbIuk8JNGXDx/wuRDvZvJeRBWOkdh7K5C8UNW4LnwRY8Dk/3SjJ91sZgQjE
-	1CGIvGM3Z4JstGlNhOn7rhe4Gnhtz+RE2G81RG5kdeqFCWkN4l62ik+PLHXeZJ0MzpZ40M
-	7r0ogFdueqBPR7WBQd80/j7+8YegOTI=
+	bh=yu2f5FIaIpPGb9LsISKA98pvWiCaazPbEtHtZWNusVY=;
+	b=4m2inG0RaMtakz8sMNGggBf9is7Q4DPi6Q62QeArVEG6WDuFDBw3kpGD0090acE60ag1Z8
+	EUiRo/DKMq6agtCddGYmUpMVSJHrPWJ0DDANeGL2rsbly88/R/FQZQ0Rm9ciF3Yd/olVZu
+	hOg63JjUW9frO2nFP1P9tGEFxhKpVm4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780496831;
-	b=CAE9TXC89D9RoVdly8ZbwlLUET+d7G1Y50EP6yBGRC7lkp7O+raR76HS4qs5O/x2he6oBv
-	Z/Vc6gN4bRbKe12eo468Ue8OIyW32eILKAH1l4+iuoGc8gXYLblUkHR4LjsP8snmtWe7SW
-	wU0dwKqodA3jql3qyuH34m/WTubWBLM=
+	t=1780497260;
+	b=ulAv6p4VmwdkhYYU6fAw3MZzG5lslAT0n1PuBKlxoQjodfSIDdH/SZhOC9vOe9Z8IYqlv4
+	ZTF2InaMSTEBIoyoP8HssO2KVT5fvK+UKpuJcPTEHkOE4qKm+K9qELvL/eKfpY3+btP/hv
+	uKnn/brziWhKJ6QN2y+viBz6Hc3lFvk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="mXm4zhu/";
-	spf=pass (imf22.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=os4aRjDnafKUzup1QuKJHbiKJ+/dQN99U138wr5Ge48=; b=mXm4zhu/Rg+tWnyBEHPAizygP+
-	MokSQOOwsmHArQ5zsrd7YX3dwe41qJEnF1l5tg9WYaOHQgJI7SXdYYZZQyEz4Rtg697HMdeiKdyNY
-	V6QXv/NtFvmWLicZFBildOj3UogNmhtP8Ig6qT0IAl6uvnLiEBLKWu1anuSJI+qD+b8E9YGOA5KnK
-	AD/mZR5Hl1ie8T7XhS/5kg/3/z3q/me369Frj+mf4355m7BAd1/WiLPkkTV+l9MyKXB24EQCXsLht
-	mZny4wOhaOGbHX+TMYQmQ1cefA+QUrDIee5OqkmMyL0JDD02lRozDH6sryst0Ib0jaTxT1G7v7bpu
-	7mO+FzAA==;
-Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wUmYe-0000000CPBt-2ufD;
-	Wed, 03 Jun 2026 14:27:00 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 67A053007A4; Wed, 03 Jun 2026 16:26:59 +0200 (CEST)
-Date: Wed, 3 Jun 2026 16:26:59 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	kernel-team@meta.com, "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v6 5/7] locking: Add contended_release tracepoint to
- qspinlock
-Message-ID: <20260603142659.GW3102624@noisy.programming.kicks-ass.net>
-References: <cover.1777999826.git.d@ilvokhin.com>
- <5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
- <20260513193342.GB2545104@noisy.programming.kicks-ass.net>
- <agXBb0ga_6HJrrnm@shell.ilvokhin.com>
- <20260603120811.GW3493090@noisy.programming.kicks-ass.net>
- <aiA3dzjKVq2_cpSY@shell.ilvokhin.com>
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RncmSrbY;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4E54D60233;
+	Wed,  3 Jun 2026 14:34:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2ED1F00893;
+	Wed,  3 Jun 2026 14:34:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780497260;
+	bh=yu2f5FIaIpPGb9LsISKA98pvWiCaazPbEtHtZWNusVY=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=RncmSrbYsIH29DH7UOSflSaLWXVrOKpLLAkTNCb1nluOnMdGip2i37TURU6W4HJeJ
+	 TZmp9pFP/lbNDNr3NmDkkjJQARDS1Em4yc4OBjvD/HMqo5Kld1S1vJuw7KOZcI/GDd
+	 IjXr1uUeuaJ6ivMy9Kcf1kEZLJ30C1L9MYns8jf2EuhRyGX6snzePBcWJ0eCFfN0FT
+	 focV5Pz8fwOO1Xg4xet9jBisJNLqZE3MMFs794fvDkya9D/WUwSrHHZT26Bl5MLnrR
+	 fi6kk90xXakTHdzzz88I1gudGHOY/XZtbx+xIuSYhxAJQiCjkJycHRHBYMAZXRurbj
+	 7KVS/pipaYesw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiA3dzjKVq2_cpSY@shell.ilvokhin.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 07/13] kho: add support for linked-block
+ serialization
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Mike Rapoport <rppt@kernel.org>, linux-kselftest@vger.kernel.org, 
+ shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
+ skhan@linuxfoundation.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, corbet@lwn.net, dmatlack@google.com, 
+ kexec@lists.infradead.org, pratyush@kernel.org, skhawaja@google.com, 
+ graf@amazon.com
+In-Reply-To: <aiA1slnqPnC4_8XY@plex>
+References: <20260603032905.344462-1-pasha.tatashin@soleen.com>
+ <20260603032905.344462-8-pasha.tatashin@soleen.com>
+ <178046937151.468621.13398573538792303093.b4-review@b4>
+ <aiANtYRRDr5iO5QR@plex> <aiAzT9TvGYjITiB8@kernel.org>
+ <aiA1slnqPnC4_8XY@plex>
+Date: Wed, 03 Jun 2026 17:34:14 +0300
+Message-Id: <178049725439.475072.11560134126837430744.b4-reply@b4>
+X-Mailer: b4 0.15.2
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 069B4C0009
-X-Stat-Signature: qr4bghmdxjept6wbitrcswtnn3f97qqn
-X-HE-Tag: 1780496829-982535
-X-HE-Meta: U2FsdGVkX1+DdwsjMRLLiL+tCmtfsraKT7TAbn46fDhJkeuI5H655fAWvtX/MAGmxiAKH6ygzxl+VZpOLgy5tUqwe08yv28eKR5nunZBxPxzDB6alDQHc+DgpJexCCFY9J3F6rCRGLJVfu15QK/cMgUSmgMpMlLjx9gJK2tydnH4rCrjnnb9I+y6rSWzvcxTBgA2UhNUvJAUI+Sw/FRU9Rt2EVvoKGhEl5Sm4zVo8/RwyW4eY0P6lFYHMCASAd1wkQARrqMKav1hvBmCqkdAzYNxsgiDSalLS0UhW5ShNsm8VWcWUT/bFwyQR4PlpfbBnP3hGCMCbiri8surdiRx0pitJI3Ghitw7+DrEbTk2y21FZTOUoBebzToEShE6nBInkLHMxGr2Q1wC3YPZ4fffzLM2BtRyfOk3HG/9Gvo9t9Zm6c4jcVpk+CMO1WR3BUo7q9kWt8PI/F/SAmFDz5GckyJe3j0D7MooyirOGcukT6rO8sSzYhHtxkd/unaYLlFmjl2gr5/6qjUgrba37QDSGWjm9DIzZkxrh07tFm5M3TiNeLBQ4fXb4vTbc2ylBQOEvA5Ut5j4ankzHaoWcoYLle2mXxRudxdvoLC/D65lY3g7cHcMRZRGM65S++EMIRif0NfE9el8vtZk4Pk4vsy3EOiy3Et9+6R7RZA4u4QPYmo8BRsIDZX+y9LHpIcwyty20TrfYbGXeR2GGEPxO7owesLAH14uru3NZhqG87LTUodGxVG+xUpOVkVWdh/he/SS7i3Jw5xm8sU17QsVON4cb52zK7U+Sn9cGpCbqjPPiq9WHwhQ00cfHfUm9IXS1N1YKmJlm2YftbPyz2UDO1dCIiA3YH7NKpkn8SCWUvWb6dyBS94/2sMBloX44fUfGQLIUZ3AztGCPiRKNqG1oZ0XIkH5UgqggdQXjWal3/zGDhDGpFkVbnW7P6vKqueaTZ6JxQ9NU+eGN0a+pJFEXh
- stnkDe3K
- lEOyzQY5y+OYH3V65fVJQxhTpeIQH6GmCc5Ec6SEdU2T6YUjtgi32YG+Fyr362TAl658p7gJXF/SMjH+i+2Mv5Avj3YBk97In6KeCaa2OFISHihNhwqB+oQ5z0/iivj0XW5v6THnZ3EWNiZ+SYf9ZkHUDgJ/GPmzP3FjQHibNEBxnQqrl40/rEAZs11vSr+vbv2sER6OaDznOlZqGlPsbiw0QZys7AQYGOqu18OGxJidebfdrvcbFfZvShiTyR40zd+2WBr4U4/J1YtaMmLFUBLtRQ693qEQ72+aakdjEHp18gLazqTOGa917tQ==
+X-Rspamd-Queue-Id: CE0952000C
+X-Stat-Signature: nu95dnnw56z5b1rxuf3iw8hkqdgtcg56
+X-HE-Tag: 1780497260-416565
+X-HE-Meta: U2FsdGVkX1+QgucV8GzENOLGeuarGINPuxLrQsmJXIgV7dBmDDxCZJQUxSxusCpevbO/frAR4vJupTdXz0ZlaSGQ/46llPDHZVYXaYFQHsJ/W1zkva16/VMdHipzW4ENiCeFUDvEOFNFLHHuHMHMDt5pxHgyOIpvUFIsSkQvJButXRa1flAQ1spgN22VJmybb33Zuw7SbljC0UhUBBPe9Y3YpUE6Fnt1c5LcLH8G1qxtRF0v2w3ZA8gQP1kQtBtolkHw4ETpW+qXfWUC4V10d7eO5TlQ+t8wlqkxIZUfR9Ow5Np+DAD80XoKyXd6GUKcadZ022+e7GXzGIAlp6ZzVEO3YW6n6bs3Kc1AprNNez0pFw39/qakiURjHlpiy3euysRNUNkk42/G9V7eyuqtdrHo4kAF8zXDw84rGkQMlxxNeV5h7eF6Qf4runPhMhyTrRqgJ4NkI+OAVvW7ysZRV3LigXfuw/MIfIi7lfQflsh43T097YfKRqYy9FZmYE/dKMmeb3H960oO3HlFb2+xFjRM6mRWD6WvslZNV4tBEz/dGwUFq/NUMacybXYqthzsqwsB4ma+bHfEgcMhfQrfPUwmosp4X1VMmtLsSUbYkTCqgroUygneoGugIeIrbM7wXh5qiC90jqvzWqEgUqj89LCZ3Eu9X23j/ZsU2kLppkmTW1ulgBbxQi9nLEkQFQCWuZoziXyECniznvAoBUgCd1r8iGWZRTPj3tGG8NM80FLjT2VMetShE1t2NhLW9yJCBO89NQ3nYNmzSa7NU1ifW8wXBlQG5GZVX2iDUx7mmGbhhuHCyJrpH2+HdqJGaiCFsiqOQZShXaCzj02FMPpT56xk1vnpRWgiAhtmwo2jG80u/N+5w5lXQgplG1/Nb9YDIBLE9eOMB4uMGWErNQH5s6b8A8iMsMpQJQwr0J2YIGRTZEAreyFJuouXSC2/lpNRsf17h0neCcnF45uC1wu
+ cjyt7/Xu
+ LUZcpgmNd9FVs697RiALb0hbLXrSlyQD8CG8tYlZQBqNFzY/KPA8af/V4JHw9sdO9QjW7+d0hwoACK55ky3tyC69xxA72C+uUtbqrA8KTtTKmmYW+gE1fzkMtcuLceoxvbZTdaHj6tTYvtTtWXcgyllr3xmPOaAEpxpNbD2ha2xXzhyqUnH5LdKK4g4VTO9/tEPYtKHTDqrRA7JEFXm6zR8riq7tSnvQepP+N3FyHeLtrtB6m52G6dVCqm2gQl7FgVX9DN5MTxhFX9UoMhlQM2KDBXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,62 +101,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 03, 2026 at 02:17:27PM +0000, Dmitry Ilvokhin wrote:
-
-> > Something a little like so, which is completely untested, except to
-> > build kernel/locking/spinlock.o (with clang-23).
+On 2026-06-03 14:11 +0000, Pasha Tatashin wrote:
+> On 06-03 16:59, Mike Rapoport wrote:
+> > On Wed, Jun 03, 2026 at 12:05:04PM +0000, Pasha Tatashin wrote:
+> > > On 06-03 09:49, Mike Rapoport wrote:
+> > > > On Wed, 03 Jun 2026 03:28:58 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+> > > > > diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
+> > > > > new file mode 100644
+> > > > > index 000000000000..8641c20b379b
+> > > > > --- /dev/null
+> > > > > +++ b/include/linux/kho/abi/block.h
+> > > > > @@ -0,0 +1,56 @@
+> > > > > [ ... skip 25 lines ... ]
+> > > > > +#define _LINUX_KHO_ABI_BLOCK_H
+> > > > > +
+> > > > > +#include <asm/page.h>
+> > > > > +#include <linux/types.h>
+> > > > > +
+> > > > > +#define KHO_BLOCK_ABI_COMPATIBLE	"kho-block-v1"
+> > > > 
+> > > > It's never used by block set and after looking at the following patches I
+> > > > found that it's appended to LUO compatible string.
+> > > > 
+> > > > While this works for LUO, I think it should be kho_block_set_restore()
+> > > > responsibility to verify the compatibility.
+> > > 
+> > > It should work for any component that relies on  kho_block. My proposal 
+> > > is to use this method for other common KHO data structures (e.g.,  kho 
+> > > vmalloc,  kho radix, future kho xarray). There is no need for them to 
+> > > carry the compatibility string in their metadata, as whoever uses them 
+> > > will include their compatibility string.
+> > 
+> > So if, say, memfd_luo uses kho vmalloc, xarray and blocks it'll have five
+> > compatibility strings glued together?
 > 
-> Thanks a lot for taking a look, Peter.
+> That is correct, but it will be in only one place: the header of the 
+> client's KHO subtree. Since it is dynamically sized and 8-byte aligned, 
+> it should be safe to include in any struct.
+
+This is safe, you are right.
+But I have more usability concerns from one side and the duplication it
+causes from the other.
+
+I can see the downside of putting the version information in the data
+structure itself as it either requires a different header for the first
+element or needlessly increases all the headers.
+
+But 
+
+#define LUO_ABI_COMPATIBLE     LUO_COMPAT_BASE "-" KHO_BLOCK_ABI_COMPATIBLE "-" KHO_VMALLOC_ABI_COMPATIBLE "-" KHO_RADIX_COMPATIBLE
+
+is not really digestible too. And it forces KHO users to potentially
+track KHO internal changes.
+
+We still don't promise any compatibility between different kernel
+versions so to avoid blocking this series on the decision what is the
+best way to convey KHO data structures compatibility I suggest to bump
+kho ABI version in v6.2* of the patch that adds KHO blocks and postpone
+this discussion to after rc1 when we'll have plenty of time.
+
+* sending a new version of a single file does same email traffic, but it
+confuses b4 and quite possibly other tools, so I think v7 is better.
+
+> Pasha
 > 
-> I like the static_call idea. It's truly zero cost on x86 (and, as you
-> note, even a byte smaller). The one caveat is that it relies on
-> HAVE_STATIC_CALL_INLINE to stay free. 
+> >  
+> > > For now, reviewers will have to make sure that if the ABI header content 
+> > > is changed, the compatibility string is updated.
+> > 
+> -- 
+> > Sincerely yours,
+> > Mike.
 > 
-> So my plan would be: static_call where HAVE_STATIC_CALL_INLINE is
-> available (x86), and a static branch fallback elsewhere, gated behind a
-> default-off config so it imposes nothing on arches/kernels that don't
-> opt in. I'm mostly interested in x86, but would like arm64 to work too,
-> which would use the fallback.
 
-(i386 doesn't have STATIC_CALL_INLINE, but nobody cares about the
-performance on that target, so anything goes really ;-)
 
-> 
-> Concretely:
-> 
-> 1. Split the sleepable-lock patches out and send them separately.
->    They're independent of the static call work and look far less
->    controversial.
-> 
-> 2. Convert the paravirt spinlock unlock to a static_call, as the
->    foundation for the unlock tracepoint. I'm happy to take a stab at it.
->    Let me know if you'd rather do it yourself.
-
-Yeah, I think that patch as-is *should* work, but like said, I haven't
-even tried it, so it could be terribly broken :-)
-
-> 3. Build the unlock tracepoint on top: static_call where it's cheap,
->    config-gated static_branch fallback where it isn't.
-
-Right, so I think we need some sort of custom callback for tracepoint
-enable/disable. Its been a minute since I dug through the tracepoint
-code, but I don't think it provides that with a convenient wrapper, but
-it should be doable.
-
-One thing to note is that when you set the tracepoint unlock function,
-it should either tail-call into the original function, or you have to
-create two unlock_trace functions, one for native and one for paravirt
-and pick the right one.
-
-> Does this plan sound reasonable to you?
-
-Yeah, should work.
-
-> > Also, I think someone should go do some performance runs with
-> > ARCH_INLINE_SPIN_* set for x86 just like for s390.
-> 
-> That's a good point, I'll run benchmarks and report back with the
-> results.
-
-Thanks!
 
