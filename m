@@ -4,96 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7882ACD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:44:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6BA3CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:49:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA5B46B0088; Wed,  3 Jun 2026 05:44:36 -0400 (EDT)
+	id 0670C6B0088; Wed,  3 Jun 2026 05:49:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D56A26B008A; Wed,  3 Jun 2026 05:44:36 -0400 (EDT)
+	id 03DE36B008A; Wed,  3 Jun 2026 05:49:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6C9D6B008C; Wed,  3 Jun 2026 05:44:36 -0400 (EDT)
+	id EBD4D6B008C; Wed,  3 Jun 2026 05:49:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B5FB16B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:44:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5B0021402CB
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:44:36 +0000 (UTC)
-X-FDA: 84838116552.09.75F7A8E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D155A120009
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:44:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y/D6RtCN";
-	spf=pass (imf29.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780479874;
-	b=ySGjsjBWmsCohdes0YLBMgNbuJOnaBD1k4Hq07bObMD6zId6xq4fn5hQs24ehFmJZCcbpJ
-	Ly7Y7Oc2XCSrV0m3+UoZ+E8G0vTqZYm7jhyMa7/BAk8hmW+bA8rUhDpZujPAfV3Hc/XZcw
-	F5k2h/H1kpQgJ8a09O/Q6/qHiLIECYE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y/D6RtCN";
-	spf=pass (imf29.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DD3FE6B0088
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:49:06 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 815031A029D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:49:06 +0000 (UTC)
+X-FDA: 84838127892.12.D188B3F
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9325220002
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:49:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ChOW3goB;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780479874;
+	s=arc-20220608; t=1780480145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mpJeKk9lW29/IyZp1Ki8rVBSZO0YGcY1DZO51pxg2rs=;
-	b=FXc3jJVRKiFMVQmiivb5HCkk/2uDsHVmPEA9VXTKD0tFv11rQv4Ae6+QwIna2K32tBrp9v
-	HzDiWRwYI/tKRl3SIk4gRRavnhaWlweiGhUK3wv5R0dJGBGquC32RviFCM2k0JOSZF8rIQ
-	tzQMFuIBM6GUu91g9XIfQB3zalmOdWA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EB99D4061E;
-	Wed,  3 Jun 2026 09:44:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D521F00893;
-	Wed,  3 Jun 2026 09:44:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780479873;
-	bh=mpJeKk9lW29/IyZp1Ki8rVBSZO0YGcY1DZO51pxg2rs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Y/D6RtCNAjdz39r7jaLowrxfi2HQQ3KQ38le3EyL+0WtbqPeghH97gJ+CSbc9vp+R
-	 Zel4nYP/Nc0xzRLj8kVuAeXvOxrEdeCd6WLzmpCq9ZOlbhpa1AqD6Qhj5ZVMEMpizD
-	 /q2uDvTzA0sAQyrlNmNI15QT2BE1cbf0K7EonIBxe8ottQNOfMoofCDsmIn+YBNH+N
-	 narLE2TYJR35kjSqv4n7osaQrTGaOvmCwdogFbKRd/rpXldw2CsKztJEYYIvSgywi2
-	 yfS2mOEuKSIgHSUzqngSflMMXx0Fr/kcWYumsaTZvqmHCyntR0PvUKfJH8NjZdwDXz
-	 UE5BdWHxyURhg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
- Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 28/79] block: rnull: add partial I/O support for bad blocks
-In-Reply-To: <abf0FHWkQzbnOtqD@google.com>
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-28-de9a7af4b469@kernel.org>
- <abf0FHWkQzbnOtqD@google.com>
-Date: Wed, 03 Jun 2026 11:44:19 +0200
-Message-ID: <87zf1cj6vg.fsf@t14s.mail-host-address-is-not-set>
+	bh=qRZp5ZMzEDXQc8ahmmB8pD2/ZDJOPT6FNpIKLdttDE4=;
+	b=4xWnYoWGJumwuZTGaIM0Dr4YREcS3oDUvDwmo6QoLy8tKFLnWaF0kTzRn45G6eFxEHum8q
+	K1oF/h5BG942oVq7jlbr+C7dtL16cbZjzegbdZLNgoEpQqxJ3mdzxi/zrX9eGOmR7PB7FU
+	ur/efYTltzK9xQ28sJP0vG5OphN3nZQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780480145;
+	b=hM0omilAQZxvxtceObTkE2i4nlv7tAcAVpJp59u88MepHgjHQakkWlN3uYLkN61TjsvCaW
+	MqTY3eBRV4anVeFeFrRsqeh956eeKMdjsXL0SJ2g7zB7Gzhqs6FCM+vAeEn4EtF3sngxBs
+	uUW/a723osbG9nOPtSgegWKr1CqCbL4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ChOW3goB;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780480142;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qRZp5ZMzEDXQc8ahmmB8pD2/ZDJOPT6FNpIKLdttDE4=;
+	b=ChOW3goBXkRpVxbecvK/1EBRh+1WMjJKOWXpImaw1QNzQXIPKZi+e5xuEfX2hdMNydwHt8
+	iTjJKKsa2yDyk9NybQKSZVaJ9lEkENqNnZzvWcI90hXVPWcg3CbH6hzCg6UE+2Sid3Y1UV
+	5YrkF4d1B4bLPh/O3ZR4tOBq37REYAc=
+From: Usama Arif <usama.arif@linux.dev>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Christoph Hellwig <hch@lst.de>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: Re: [PATCH 1/3] ntfs: Correct use of folios in handle_bounds_compressed_page()
+Date: Wed,  3 Jun 2026 02:48:38 -0700
+Message-ID: <20260603094839.2599704-1-usama.arif@linux.dev>
+In-Reply-To: <20260601192626.150804-2-willy@infradead.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D155A120009
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 9325220002
 X-Rspam-User: 
-X-Stat-Signature: 7i11da8ordccauyssmanm3rk9c4otnsi
-X-HE-Tag: 1780479874-710233
-X-HE-Meta: U2FsdGVkX1+MH8sENLqjGEAYlRVNWAb07XJqVwCXH25nIOkSIvUm9ioEBThaaVn+rCfEkiAUmLSffTbpdimThyuWcS+vypHlN3qzhCA2hY+AlIAW01KqCgE3et+cz/j7bkn1zslPLLHHZ9WUAO8mZ0Y9WIUrJ9c2iNnL+oacn85uo7AxwLZ1hMcmCUgjnqI3QURH2LWEVnf0myK91R5bVGoJziRPQtR7LCtnOE8RrXHeJH85xmkUH4uYx5RjtcazH3kd6AJjvm555yYlRJFED0hCcbgHo2Lko7csSPF4ZQ3QXm+WoX+K6W4ahhSs+M02rMIgJz+uBNcMwgJItlN4b1MvdP/EL1D9jIikMuPGvrM6XyFjebJ93JDqaWPJhtP3wfH8ow7E4JDze9PgMw3SKasrOd80yWr+K5YDok+INBpnxPQIH5X5gfAONYgJRWaHVr6jN6D1cdUAgW8GYC6KMyszrrRNU87aWUsbr01XuIAHAS2FQKu3DPD+DaJIMxOfhm9Kp8kvFrXtEhm9EY/NAhKr6hEZJV7vm1pTINf97pWl9sBulCrWFN1YK7Ct1IosmQ3EfsmVQ5k5/2czNrNeBzg/1+crHf2M9LEjby2rnMLSyduPHQ2ShoIQHSf9gK2BlkLTMQkz3DhjqYe/CIa4H08ZCvFPgqE8SPrlgIg1oaBx12CJu8C2bFsQClqyOz/4A0MeqKhF3nWSuWa10ZSh1UnBKCvhx0M78+z85/zAFZONhEYf3CBhACqC/N0mBgQ+Ei2cL4cxg7/h2RT3qpBY4WDfijrcLCMVyBErfutRzlLdCiixnhN4CMqMYNLHBMWUIPzbK97xQXRM7OVWZU7tGTR8O4fTzKsJhqE6L1XnB91VV5oLTwXUvLHTdz37BP4gmbyAxcbKcXf4KhuLj7R9CZDk3EBBNmI8dYmwkkgAHUtHGloZm9HK8INuYj7nMUni5w5uWqaKQ6YEE+yzVAF
- rscTS3j+
- 8psdglzvORVLKy6z06VfZSyvyZyhZxaPCV3Vlak3J8WRhOxs8Q2Lz2NbIpL6b5n1XauRWd67jeGgHPwvqnpV64uiHAdYzIaHKe9JO8qxzlL2j1CY+XZyGchD/u8HyXTPrQDzOJMetJqHo3YCh4XXk81D1sLhVyAGNy21K5t4MBEmjOaSeGQxI3HadpAyx6zu9r2d+hD7jGYjx/g18SVtpZuUwEoDuvaunbFNyvk/yafatS/5pSE34W7I3YghqtO/WrXIcaJWocpxQmeak+DMft9UIy/Ypx83jtLxQiAkcEbRL2O4XpbTuLjsnXqPWZXyd8leqS83484Vx2GE=
+X-Stat-Signature: rheidnpuyf1cxabqudmahdar1ohphzid
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780480144-578811
+X-HE-Meta: U2FsdGVkX1+badO3P7PjCu+UIYqnE9mZwd73ifInEXKkPMooRhmmhn2WOdduAtcO0Lcvx3CQCzGyvyRw5Ty1yRhpq8Sm0Nidgh4/y+uqDcpaEIBgY4fCYXsoAGX2o+zeooWDOr1rPg4Hr8nXhKwbj03FRxp6iSfWMryz7bh0y7rpjsrNXGKSTrNoC9AYK4kamMrzm0CVFwTiM9yyHbhQlTlVo0hld0wSBsFI7r1BV9cIpVNmI+rVpptBBPfx6dGhoov8wGzzU40cLPGjebqI3uMoYN//TkrpY96j3XoZAOjKNi8peMKlcDSfzT2K9yOyFteGMvMOfkcMR1nAyAlR/lhOxt7L1dprPCvE/W16z1zht8gPpySJuKaNfOslK8woJ71rM3LgMLKaPAJ0vwOdhHhgDNA3UuMXJr1LmGB4KZLHsw3mq8BJl05fWGBjvPm/U+DiCABklG5hLgWzBbC7FQW5zDGW2TFQGMJmErm0qbDB7ySdZoa+C5aYzTpX1jnUq4J3RriOUxAYncJEnBIGiMaJcPR+rtCfDbLuCHr6JvAiowaTL8F2jrbCtWs2w5d8Z2h0qm53Ju0zG1mYy0DfD0hazdTsItDpz93RPUXoiEjJ4fUD5Mfex8BkQ5N7dP8Ux0wx4dQx463fSdtwsZxHQl5Iic8TKU207zosqpshaWNyZxc2RDtDLRq0yJAOLM9oHX5PW6HT9IaJFxK9gPUJlzQf7Ni1IXxsU7s1Aec3uLlrpUiLxI2wK9fVoBjBckV2aHrHaaiDOydeZKAVqw5BwBphM8q+wLnRfvTS9zTQU408Aow3JUu5fpvaYWEYaXmFFzPcFV/JUxHtA29Daf7COJbOwmD4NtCj1bZfBKgmz+n7VXsfqqZ438KT8jtZoIe5kyO+R2OgQQ3fzMHMUC0RuDyipBHCDRi3PfsFKM1pfc61TJwFcEg43xN/j5/t2+UAaEra6HHCV6ui/mAk7PV
+ 4BQpvG1+
+ Dj5r1elb0vLRL8CNC4HDUq+sS4711vMBy2Yug3yhzRBpSWsKrtBw1LCCPekDQJIAdJ0BNPtEkIjg20xaJgDyrtOQC4cW4hBQ2fy29F1TdJYFoJlQ3cWeIJemNft6pdToklaUvkoX35BM3/1zl2jUctNqLShEc9pt1QB61RIHGgRISpfin7l+LIGBcUtQzeQMBhIkKjTm7HxmK586gLGrORscSBONSu02jz7qQ+JFWq8VL3Ehwxoqe9h0qb3+heVKBdckSiNsPVFkvNymJwmEYj17IGZVrNsLB1Ijz/mC89NarypnkMRqy0ETDI5Jh0p/nSmHFRJM0oEe2FbGDcddRAkCGhP6m6tbKyccZ70xVthp8cGAWH330Jz08uuprooZw+C3ACxnbiMCnYaIE7fAXb1/9s4pnhoanFDv3dFqQz22dQMk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,34 +91,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Alice Ryhl <aliceryhl@google.com> writes:
+On Mon,  1 Jun 2026 20:26:20 +0100 "Matthew Wilcox (Oracle)" <willy@infradead.org> wrote:
 
-> On Mon, Feb 16, 2026 at 12:35:15AM +0100, Andreas Hindborg wrote:
+> Inline zero_partial_compressed_page() into its one caller, remove accesses
+> to page->__folio_index, fix highmem (page_address() does not work with
+> kmap_local()), switch to using zero_user_segment() which includes the
+> call to flush_dcache_page().
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Fixes: 495e90fa3348 (ntfs: update attrib operations)
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Hyunchul Lee <hyc.lee@gmail.com>
+> Cc: Namjae Jeon <linkinjeon@kernel.org>
+> ---
+>  fs/ntfs/compress.c | 40 +++++++++++++++-------------------------
+>  1 file changed, 15 insertions(+), 25 deletions(-)
+> 
+> diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
+> index 76bd806b41ed..143f362a42f5 100644
+> --- a/fs/ntfs/compress.c
+> +++ b/fs/ntfs/compress.c
+> @@ -96,26 +96,6 @@ void free_compression_buffers(void)
+>  	mutex_unlock(&ntfs_cb_lock);
+>  }
+>  
+> -/*
+> - * zero_partial_compressed_page - zero out of bounds compressed page region
+> - * @page: page to zero
+> - * @initialized_size: initialized size of the attribute
+> - */
+> -static void zero_partial_compressed_page(struct page *page,
+> -		const s64 initialized_size)
+> -{
+> -	u8 *kp = page_address(page);
+> -	unsigned int kp_ofs;
+> -
+> -	ntfs_debug("Zeroing page region outside initialized size.");
+> -	if (((s64)page->__folio_index << PAGE_SHIFT) >= initialized_size) {
+> -		clear_page(kp);
+> -		return;
+> -	}
+> -	kp_ofs = initialized_size & ~PAGE_MASK;
+> -	memset(kp + kp_ofs, 0, PAGE_SIZE - kp_ofs);
+> -}
+> -
+>  /*
+>   * handle_bounds_compressed_page - test for&handle out of bounds compressed page
+>   * @page: page to check and handle
+> @@ -125,9 +105,21 @@ static void zero_partial_compressed_page(struct page *page,
+>  static inline void handle_bounds_compressed_page(struct page *page,
+>  		const loff_t i_size, const s64 initialized_size)
+>  {
+> -	if ((page->__folio_index >= (initialized_size >> PAGE_SHIFT)) &&
+> -			(initialized_size < i_size))
+> -		zero_partial_compressed_page(page, initialized_size);
+> +	const struct folio *folio = page_folio(page);
+> +	pgoff_t page_index = page_pgoff(folio, page);
+> +	size_t offset;
+> +
+> +	if ((page_index < (initialized_size >> PAGE_SHIFT)) ||
+> +			(initialized_size >= i_size))
+> +		return;
+> +
+> +	ntfs_debug("Zeroing page region outside initialized size.");
+> +	if (((loff_t)page_index << PAGE_SHIFT) >= initialized_size)
+> +		offset = 0;
+> +	else
+> +		offset = initialized_size & ~PAGE_MASK;
+> +
+> +	zero_user_segment(page, offset, PAGE_SIZE);
+>  }
+>  
+>  /*
+> @@ -231,7 +223,6 @@ static int ntfs_decompress(struct page *dest_pages[], int completed_pages[],
+>  				 */
+>  				handle_bounds_compressed_page(dp, i_size,
+>  						initialized_size);
+> -				flush_dcache_page(dp);
 
-<cut>
+Hello!
 
->> +fn is_power_of_two<T>(value: T) -> bool
->> +where
->> +    T: core::ops::Sub<T, Output = T>,
->> +    T: core::ops::BitAnd<Output = T>,
->> +    T: core::cmp::PartialOrd<T>,
->> +    T: Copy,
->> +    T: From<u8>,
->> +{
->> +    (value > 0u8.into()) && (value & (value - 1u8.into())) == 0u8.into()
->> +}
->
-> This is in the standard library.
+In the old code, handle_bounds_compressed_page() returned without doing
+anything when the page was inside the initialized region, and the caller
+then issued flush_dcache_page(dp).
 
-But there is no trait for this, the method is defined for concrete
-integer types. I would still need to define a trait and macro implement
-it for all integers.
-
-We could do this in `kernel::num`?
+In the new code, when the page is in-bounds the helper returns early before
+reaching zero_user_segment(), so no dcache flush happens for the common
+case where the page actually received decompressed data. Could this leave
+userspace seeing stale dcache contents?
 
 
-Best regards,
-Andreas Hindborg
-
-
+>  				kunmap_local(page_address(dp));
+>  				SetPageUptodate(dp);
+>  				unlock_page(dp);
+> @@ -767,7 +758,6 @@ int ntfs_read_compressed_block(struct folio *folio)
+>  				 */
+>  				handle_bounds_compressed_page(page, i_size,
+>  						initialized_size);
+> -				flush_dcache_page(page);
+>  				kunmap_local(page_address(page));
+>  				SetPageUptodate(page);
+>  				unlock_page(page);
+> -- 
+> 2.47.3
+> 
+> 
 
