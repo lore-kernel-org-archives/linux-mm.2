@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E84E8CD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 20:43:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17413CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 20:48:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 414886B00AA; Wed,  3 Jun 2026 16:43:46 -0400 (EDT)
+	id 4B6976B00B1; Wed,  3 Jun 2026 16:48:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C4206B00AF; Wed,  3 Jun 2026 16:43:46 -0400 (EDT)
+	id 48E546B00B3; Wed,  3 Jun 2026 16:48:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DA386B00B0; Wed,  3 Jun 2026 16:43:46 -0400 (EDT)
+	id 3CA8F6B00B5; Wed,  3 Jun 2026 16:48:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A1FD6B00AA
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 16:43:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D2090C1A7D
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 20:43:45 +0000 (UTC)
-X-FDA: 84839777610.08.7F4EF52
+	by kanga.kvack.org (Postfix) with ESMTP id 2BDF96B00B1
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 16:48:35 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6F28C18BD
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 20:48:34 +0000 (UTC)
+X-FDA: 84839789748.11.951066D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 206174000A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 20:43:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yBdr+bJ3;
+	by imf01.hostedemail.com (Postfix) with ESMTP id BF41740014
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 20:48:32 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fYXrVgq6;
 	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780519424;
+	s=arc-20220608; t=1780519713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qXt3HlkGjPjjBzajXWzeASZrNMEoMaOOwTld8L39WrE=;
-	b=qqIIkp71WRys9aP1zBOmymyhRcPNtmf6OKWcg8RZj4Ch6mR8Y0Kl1wbzIfcgqNu0obCSlm
-	/P6aoDSGNFyNoLxvOAFvZWqGptmCFFBzBJEGKK9Rg/xzAajZAd3E4nmIy4XuTUfo/kpXjG
-	9eE8XGHqqkOKG8U1gwKdJQAkRR4X7M4=
+	bh=aWq8G2lqw2RpyQfsEvmjqd0W9Ut7hRZ/L/1V1a9YGeo=;
+	b=xJUocKtQXMFBxs6VjUHMzMJsvz/u4UPzaCak/Bf+nw5Z5x1Mw5zhuNcxbbn4ScEOFF18NR
+	tubVGB7Zi/V8BwzHgABQLXOOTFKXO6hd/oXyEyvBnifqfcgybcWtYf82utqHnJK633V3kZ
+	oizsFjSQcW+r5H6jPbCkOzrL9jsmtSM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yBdr+bJ3;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fYXrVgq6;
 	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780519424;
-	b=KSn8a7V4al3D4122JyoTrKeW0dzf6PVe3t2lZEo1nYUsQFeU7YW3BqKGgJRe+ZZU/rfCGf
-	Lnb10XtsbX5YxqG4HOgzyjFkoNAlOa9NiMzxuNQwIcswDnATdmWGBdEdNkAFISjT3WCot1
-	kjj02OEJ8nB39xJiDm3m1T5iu+m5xwY=
+	t=1780519713;
+	b=v3jQV0MwJsAgBvw2rIfWBLTBv4dUpirM3fp2A9IjhhyjkfifFwkY3s6Hh+LFWFG42QD9hM
+	Ojfye4cvSj7ybqhtHr2JXX0HPNXetS7M7hvzwGLumai4WyriRwkOyNGhUu9uTChHtjfI/O
+	T9ASn4EjxlfWE+/gcV078WaQ2T/CYLc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2DA766008A;
-	Wed,  3 Jun 2026 20:43:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671A01F00893;
-	Wed,  3 Jun 2026 20:43:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 51E7E6008A;
+	Wed,  3 Jun 2026 20:48:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCA51F00893;
+	Wed,  3 Jun 2026 20:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780519422;
-	bh=qXt3HlkGjPjjBzajXWzeASZrNMEoMaOOwTld8L39WrE=;
+	d=linux-foundation.org; s=korg; t=1780519712;
+	bh=aWq8G2lqw2RpyQfsEvmjqd0W9Ut7hRZ/L/1V1a9YGeo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=yBdr+bJ3R9u2rDk5PgtPf0n4/DWOgv2ezwhc2Eed/mQYXPKajZ84o56T7yrPi8eYJ
-	 2TOVLzPMil8VxdpdiVWZyV8fEzIsYE8RX+LkC/7urfMv9+aG76CPTgtZvy56WlL+Kh
-	 7zRz0TsvrKJCynL8t4AnIgfZUZivZFMHTgYW+mFA=
-Date: Wed, 3 Jun 2026 13:43:41 -0700
+	b=fYXrVgq6VwBui5CH3f66ph+YRAl8BrNXjRgTtjbvmyh2QsCIioaBSNTbDAAt4dWT3
+	 mKmlFk69pBVUjkA+nM94EVfEbmOkDzUep6ki+2imHJW70w1ggs8/f/s1Um+kXs48U3
+	 V87j6OBoF0TRT9IjuO5ICyN7KEXfNMjclAJy1A2Q=
+Date: Wed, 3 Jun 2026 13:48:30 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: David Carlier <devnexen@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzbot+deedf22929084640666f@syzkaller.appspotmail.com,
- stable@vger.kernel.org, Chris Li <chrisl@kernel.org>, Kairui Song
- <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song
- <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>
-Subject: Re: [PATCH] mm, swap: free the cluster extend table on teardown
-Message-Id: <20260603134341.41b8c34935efd448c3a16a1c@linux-foundation.org>
-In-Reply-To: <20260602222358.49061-1-devnexen@gmail.com>
-References: <20260602222358.49061-1-devnexen@gmail.com>
+To: Lisa Wang <wyihan@google.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan
+ <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, rientjes@google.com,
+ seanjc@google.com, ackerleytng@google.com, vannapurve@google.com,
+ michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com,
+ dave.hansen@linux.intel.com
+Subject: Re: [PATCH v4 0/7] mm: Fix MF_DELAYED handling on memory failure
+Message-Id: <20260603134830.ef8caf48aff794da581d0d02@linux-foundation.org>
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 206174000A
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 7gub6tfa1ix4mujf6bkja8im69zhzzaa
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780519423-933620
-X-HE-Meta: U2FsdGVkX1/dqBbQZ+vVYRPMegE+CaAR4bhZOpG/rkyaCWKyYDQ0Idyh8hhLUtTPA6o9OyC0uOCa9AfIS+GABkPKA3XiqlUQX58o26/1cWutu4sLRpCEk8jNUXVpxDwl2LCLHLT2wKzhrKjZWBJeaaeDT4N5HrrIA28M+Ct+4q/a1wbtLzzVuFe+DukPkW8FlYPfMU1T3bn31TrufsZ4/XO9EV74tzzeydbN39qT1eDqP0zN2bepw1Sv/u+8hh/6sgvMaVQ/JboL2/rSdIHPcz3fznpvFMjdzV2jR5v46zD3gRcpn4i0H7mP1M2fpIvFiSlE14Jxo7o8i7eV0fFf2Hkj33J/T1B0X50g5vLhKPewIu0Au02Z3Qynndzb+Sbqkm/evVDzAppAeG9U8g9pfHa8mBBR2RZ+549SKrL/5sUkVbezuNdF0SvcvwQcflehHNG1dTlmUdQLLsj51XzAz5yT9QNYHhmf9DAUxmqL4Rt4RVdnwic6Wv63N+Co46jDpuF3Q9BhmuFJRuTJKtjmX2rMfN5uPB5qtPk4iNTJht3uD/kv9iR1z9BC6QdY4edkW+MXa+Q9gnpMZDEhZagozqv3vT4qkXhQy1GmZYiwKkfmdXxiI9+yF399OjMGJFIOFd21OZujh7f3vEcnJGyC9S3p6OqaeXnUR3TFv7hkFgT5zeoHJCGsYJACh8zWtSAtRvrFAHogD0L/cnVOctq/ZW9+OSxASsL1mF/qa7fG+1YwsIxb+qCEyhrGxyF1ssKgwJ9NnUDn1v4AXWbfrMPJaeHPVuHmLOD4fpb4VwAj+h7yl1DOASWXx1Hd1dwW0MQKSOJNa+zlgYP9smGEDeY37kXvYjMHd8jittILLg0xKiymRm1txPBSQTmHU63BM8SMdr1XsV/PDnkTgMHE5aBHqQQts/0a30G236oyX37a4xcUvKx2a8eBWgpA4CAFWXsN+qycP3J+73VhpTgveQH
- ZRMgHoed
- Ycu5Y4KqF/laOL/NhTxuPspPJszFyeCwQDV2tjwFpz2aODBKudOGj7JAa8ZvFK8biruhzfUCRNUDJgAXObygRVaZwCJWAYWkcgxiWvOA9c3WkgqIh5WwQZOuLhYZlwRuUO/BVIqbkx05fXZdfRcMiVGa9MH6W4wYVwL2Hy3qHw7FWv8jAXeDrMNckaGbVATEkUH2giGPEYN7vF9QAHwroBV60pPpJbd81DJZ/kj1oyscJxk/9e8TQCC4dmagGjhDo+E9x7x4jjpaEBENtgph+mXnj3GBAtUI3qrz28YTA2stxVOxORsKHzXSoqejvcXMAtlNqZVhQZhpdXg7uqJhIvaotPmfTOW+ROrNN15PpEKJkXQzJnOZYNaEoSo2PSdFRs+c6+8nXdaSYtQyJfVL/sgaKEPOfOoABdFCrUZBMgLoBFwf4EbcQ+BmzFdhysmNdIcRC3pUGOYzuNJ0WQvkOsFfg++iI81RX5iiwxJDO0RASAukj3Ol2N9cg4ky6pdkmS9uZbIOl8CjPCioLI1+nsti/5QXjYJMWXuUyR0aCAgs4SgA0BpYjS2qyiRtV5ABRlk9keEPiAo61wjUbSHIHKXD00WGaXE638xPB
+X-Stat-Signature: z6s9h4s568tnj79cn5893wg38j941xyu
+X-Rspamd-Queue-Id: BF41740014
+X-HE-Tag: 1780519712-404608
+X-HE-Meta: U2FsdGVkX19SGlShPxy+MijpyKCRg+OqywOknFo1JnYDiLOAohotDnBI0aen4x8f1gyRaM97OIBACn6WwIj8XZzMZCOedR4X7FTNd8CJMkQEGxvlVidAkFPd+aN5lBNBPmoA/p0Icg/0YLmZmDmuKGUEL63/VBPoe7xFbd5uN+amOqdRs2Qbkk2b2HQkCMO8h67yS5niMunOJsjgqYQuJ2sSSlsCOpHJWioCUGMmkC5L2Bz6j/lqg1iMJJ6F1FvVCvhef9T+GSmR9zaH37Gl4076qaClZHiJT68OcVI7L42uEk2FIBhjSzq/XK5oKtICA6Okrim4r6oVrhI4H5yJPbl2/cmcHI8BNsJVsOgBJuY0mRf03CcoJTqZUki9B0j/u85lweuLh47D0l3d37nGqBopNPDD5sG1z266Wa0XCMCyIaMmiM5vsUar1tVqDoFiYUKcXvQgbS55W4HEln9khCxtwlZ4tYXEWTM5/UjzdCpZAPH3nUnIJX7TXZh14BjZ0U+lbQaGlmqWTxHI9siJaJWGv+3/12wxlT39e5+bQMM49hMzf3n7a5lODIkgb17tzrCnFGVNt+94yJBEcz9N/N9Sel+nZWRkiVBVOBcEpsQhMqSuYLZqZ7Gr8FgrEcdK2/1gylu/ONO0PyUe4i2mUufpkVMs36xRhakwFpie5cBhMEgIiD0aiCftYx1Fif+1HTEJgmMrKB7LoYF54oftNn0/2nenIwrZ2x2Npm7MO2vNClPNEWo6eGufCPx9PGLQcPB+CrUZm0iJwB3YE3QDX5V5Z+EFRiSJceXgBGMw5z3PyMGVunngd2CY8MisZz5ICkDjuo15lcueHJjVTlQtd2Fcn2ng5HNjDqklNB8Ug3fjDfWHoLnt255oZrOp6HZX7J0omidmAQqL1KaU4WQ1d8zkjlx/6Iw2WLfqDtXoP+D61OvpUxLABbIjqBv0CfEOFKIASOYhci2tvq4pIhC
+ keKLdkRz
+ dxmW1h0d9e+cF5AMNGHj5W84eRm0hFLnzTBuAR9Cu+TFSrUWyzpbHgVFywesmxmgfr3tB7JdV6flXKPURLdZ9z9qZNFHVCUyNaZnXjuTcApIQeVHbKexd+xNZAFjx5oCskkDa3jzzYoUTgJ5iKI6W4bK45x1FVWft2F9CaqmdlKQV3LCY9VsmzzwW8+LPUmPBfYfk1XkC+vumLP5N+6sy2ptVRiOnSg5SDXh5dnKM92Ye7lI+bXXfNjBzeQyF0uNZeAJVO1fdQoeqIy7OmkAJjFeyeHiXrFJrNwcnhZLxBecQ9DfC8i4MYbBFRyqDb+A6B2UJDzdjaSscGoVMy7pdMQA4mck2DwKfxcLlMLTRPJbUtWVpH1QZoGLyvAqukZxRNlLhsrgRwrRzfvqPvuKkl2NQIKjJbp7cDAukwX25Vf2uBAu7Nb0ihIXL6DvA4mwtC6yDUreYqysSIVYZhvU/Ml8iTABNO0jN9bdw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,61 +99,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  2 Jun 2026 23:23:57 +0100 David Carlier <devnexen@gmail.com> wrote:
+On Tue, 02 Jun 2026 21:55:40 +0000 Lisa Wang <wyihan@google.com> wrote:
 
-> swap_cluster_free_table() frees every per-cluster side table but
-> ci->extend_table. That table is only released by
-> swap_extend_table_try_free(), which the teardown path never calls, so a
-> cluster can be freed with an extend table still attached.
+> Here's a fourth revision to fix MF_DELAYED handling on memory failure.
 > 
-> It can also linger while the cluster is live. swap_dup_entries_cluster()
-> drops the lock to allocate an extend table when a slot reaches
-> SWP_TB_COUNT_MAX - 1, then retries. If the count dropped in the meantime,
-> the retry takes the normal path and leaves the table behind, all entries
-> zero; only the failure path frees it.
-> 
-> Since a swap_cluster_info is reused in place and swap_extend_table_alloc()
-> skips allocation when ci->extend_table is set, the next user of the
-> cluster inherits the stale table and its leftover counts, corrupting the
-> swap count of any slot that overflows. CONFIG_DEBUG_VM catches the
-> dangling table in swap_cluster_assert_empty(); otherwise it is silent.
-> 
-> Free it in swap_cluster_free_table(), and also on the
-> swap_dup_entries_cluster() success path to match the failure path.
+> This patch series addresses an issue in the memory failure handling path
+> where MF_DELAYED is incorrectly treated as an error. This issue was
+> discovered while testing memory failure handling for guest_memfd.
 
-This all sounds rather horrid.  We have no description of how this all
-manifests for the user, but I assume "badly"?
+Please include a description of the userspace-visible effects of the issue?
 
-> Reported-by: syzbot+deedf22929084640666f@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=deedf22929084640666f
-> Fixes: 0d6af9bcf383 ("mm, swap: use the swap table to track the swap count")
-> Cc: <stable@vger.kernel.org>
+> The proposed solution involves -
+> 1. Clarifying the definition of MF_DELAYED to mean that memory failure
+>    handling is only partially completed, and that the metadata for the
+>    memory that failed (as in struct page/folio) is still referenced.
+> 2. Updating shmem’s handling to align with the clarified definition.
+> 3. Updating how the result of .error_remove_folio() is interpreted.
 
-First merged in 7.1-rc1 so no cc:stable should be needed, if we upstream a fix
-promptly.
+Thanks.  I'll take no action at this time - it's late in the cycle and we
+lack review.
 
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -432,6 +432,9 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
->  	ci->zero_bitmap = NULL;
->  #endif
->  
-> +	kfree(ci->extend_table);
-> +	ci->extend_table = NULL;
-> +
->  	table = (struct swap_table *)rcu_access_pointer(ci->table);
->  	if (!table)
->  		return;
-> @@ -1711,6 +1714,7 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
->  			goto failed;
->  		}
->  	} while (++ci_off < ci_end);
-> +	swap_extend_table_try_free(ci);
->  	swap_cluster_unlock(ci);
->  	return 0;
->  failed:
-
-AI reviw flagged a possible issue:
-	https://sashiko.dev/#/patchset/20260602222358.49061-1-devnexen@gmail.com
-
+For some reason Sashiko wasn't able to apply this series to the various
+branches which it attempts.  Click on the "baseline" thingy at
+	https://sashiko.dev/#/patchset/20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com
+to see what it tried to apply this to.
 
