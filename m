@@ -4,117 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 846E3CD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:50:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F373CD6E5D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:53:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CB3C6B0088; Tue,  2 Jun 2026 22:50:57 -0400 (EDT)
+	id E70876B0088; Tue,  2 Jun 2026 22:53:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A29C6B008A; Tue,  2 Jun 2026 22:50:57 -0400 (EDT)
+	id E21226B008A; Tue,  2 Jun 2026 22:53:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DF226B008C; Tue,  2 Jun 2026 22:50:57 -0400 (EDT)
+	id D10216B008C; Tue,  2 Jun 2026 22:53:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EFF36B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:50:57 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D7E5E1201DA
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:50:56 +0000 (UTC)
-X-FDA: 84837074112.11.4E6A549
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 119CF20008
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:50:54 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Ui7ur6mT;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780455055;
-	b=Szjij8Ak/yaVfNo5Qx/jBT9YY9pDWNnecyPdsHMNv/sktF6u5kg3IF2wBNe8o3ErufgaR2
-	l1cehRrdXCIKbHo16xRtI/FH4a1Vm86uMMyIJLvBTdYibDIOLs92cJm4re+sGSqGWF19er
-	9YWczusTeUxMOt+9bzA4hRlXIDtVsQY=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Ui7ur6mT;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC8E06B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:53:50 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 649901C03E8
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:53:50 +0000 (UTC)
+X-FDA: 84837081420.19.57F85FE
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2A443A0011
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:53:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NxkwUBap;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780455055;
+	s=arc-20220608; t=1780455228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1IZPLWBHqvJvl4gIvSvnZxXOnDR854hRgX/CoDKx5XU=;
-	b=HvxbGs0YdDJ44F3coOVWdPZl2IwT8NfCirVOawEfwK3DmAj/eWmb9oO6fBKmSLmvaVhy3x
-	T+biiB/ZFouN3AumqCW+m8RmB7jNyloO+hd9jfZmboo7k6k0piUGExTqiOakPlN/MqiHB+
-	zC/idimRWS4U4y+oAFiOTVU43uzFcrk=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9155183b42cso30689685a.0
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 19:50:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780455054; x=1781059854; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1IZPLWBHqvJvl4gIvSvnZxXOnDR854hRgX/CoDKx5XU=;
-        b=Ui7ur6mTLMbbWYahdctFT81H99bUFcHJYl7noZIDP5Ac+Iqt4veUFsA34aGhXcLW/r
-         x9n2SqY848M0dZDsEpba9flOTsOCxYvxlUzpIhJnij9/qPHPYxQsdJ8DMVizWJFFCXnR
-         ItXsYIXV0NmUbUaiKolIMfSQgm18c8KCuuC0ywZ2QxMF9DiIsl3sbIM7NzR9LVctNwf9
-         tLwROvXPg6mQeR8AnA5GRDbrgiGmH5RGUKmjfxsX8TbNmjkwrSYzV2pVwbgDQEITsLTC
-         QRROkInyh4cCe3Qy0BGbrDKMkuq1YqabiPY1vN7RdFmoAIoQFucCX3BmLsHF46zKToER
-         F5+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780455054; x=1781059854;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1IZPLWBHqvJvl4gIvSvnZxXOnDR854hRgX/CoDKx5XU=;
-        b=NnStP6AVTXQOfWhj/xL2fFoYh8MLpKXUEu+KwHWbtXRESmvOAvw4KStx/RmOmmzvwm
-         J16NJlyGYFVJzTChc1jC8Qvtj8DwjJ/Z/iTdMNs0jahH0U0WAXZTXbwwUQ41Ausw/kr7
-         1fuqsvxkmVjq5ejKSNos+V+FGZZfov5RZYJsLepcnns2vwyoorHKZ+NdjUTneZ/jZCRM
-         vNcqlPvpwFTAXB4FYGGoqxEgNY2a2PiQLD33SpMuaVw/lF7yatP14xjfsZbpkfltlZkI
-         Yv8hirJq9kYkEyb31Qd/jK9HX299HBUmsNmvj7/FPg4ousmsTXAKoSCadpxaSHXt9Xb5
-         G5+w==
-X-Forwarded-Encrypted: i=1; AFNElJ9gEdDqas+ivtbAl8kezVQ/G9gM9lD5qaatUy8Ysj8x3aQpGM4djmpr2meTcu4r25+ZwPkA2aEcEg==@kvack.org
-X-Gm-Message-State: AOJu0YxVQIZgGIBT9RXK/jnUM6Rumg998IXjNMXYVmSK/wrTGphhqlfw
-	1BTR57K9SO0Ba1EUcr5Tt0ycXKWeVsvxY1dcaPTgsU4myqfZzcGSxsgzp06hVFY9WEU=
-X-Gm-Gg: Acq92OG2upOeJYQ8MkcTySV6tpoVUp3Cdcn4ysa6u7LT5JaJ6fQ/4uj/0Z/HP3raoDZ
-	Y/GKS0IPwiTwJKwmpg6HyZ2D4WdzduUMzqC48c2B2ntXb22/iGQeEmjU2G82ekzlMoJZ1WHhxuk
-	ievyb/wC5glqX33ND6mzx2Mm9zr2DCAaB5UnVyrjhCn10/4grLztVdljElCEx+tA7v0P2AsphJY
-	6dS3QqyO9s2fekTIq0c9whhGpGonyVZs0TnDjQ/aVZEKWHEgvRx0StC2BtyUIprvvP1WGWWYZju
-	aXlDquptaQsjZLW8iUAuit3OMN68edy9qmYQmtPuR26jnIuLhq1IZy725g57UNlf4Uhmzj9V9jS
-	09rnRqL2/TePAlfn7PtURa3jCU9proHQv/PhiBrG9uq4TweDIlMZr+pzELYEFGlJ+lA3z6ZvPlC
-	RBVRrX5n94DU4AjNGBSApvRG0KfJHjX+i4+MGeho18ClieM4tARd6nKkN+JEJrCw==
-X-Received: by 2002:a05:620a:a2c5:20b0:915:8f64:6056 with SMTP id af79cd13be357-9158f646703mr47560885a.16.1780455054088;
-        Tue, 02 Jun 2026 19:50:54 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ceccd9fc7dsm8925566d6.5.2026.06.02.19.50.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 19:50:53 -0700 (PDT)
-Date: Wed, 3 Jun 2026 02:50:52 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
+	bh=hXR0DDEnySpzbdiRagAYl7c+e0VnGF+jVNLwTxCwhtQ=;
+	b=t7+28ZeAKqgougsqPkR5CAc4NZCa7K704svMYEVt5Iwd9uqCg0S5SC4EPGHxoC0PTj64gs
+	3ATHBdemZeCKtRuUDxFJYm43QIt1OvpqAWmrJOmoI5qplF3ungYIRHbOCHH/P+sfDZ+Lzc
+	bc5hsFUAN+w0ht+boixpT+n1vRTeZ8s=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NxkwUBap;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780455228;
+	b=MhMCIH8fk48D6aha2ZYquXUqYGXLkYqZ1oIlZyBQW3Ugad4JV22WCbVIhsPsSUNxXoFWUN
+	mlSpRCs3rUjWNxcOH9JXGp66wmqeo5HvhWQ1QrFzIwT5DV6bEDr0ijQozkGUnAmZd2i+pq
+	UyOLBE0qYYAs41WlBqQPGJJ7J2HtdcQ=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780455224;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hXR0DDEnySpzbdiRagAYl7c+e0VnGF+jVNLwTxCwhtQ=;
+	b=NxkwUBapuP1ubsUtM+nqUc6e4oSWGPNe4k31tuYXqiMtmjlN0lcSrZnvD3S1gKNAmwVuGH
+	BWAVmV+hhsZHg8TnjTJTi7EcLw5Ltoqml4bZKx0imJFPYB0OSlIrf44wgUtDsgUABdYzSL
+	2dSD2TNsXlmQsElmo9BS8yvl/dij+d0=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v3 14/19] mm/hugetlb: Free cross-zone bootmem gigantic
+ pages after allocation
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <178041489395.457517.12727427621570734471.b4-review@b4>
+Date: Wed, 3 Jun 2026 10:53:04 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1ABCD934-CA2C-4541-9B76-32FAEFD398FF@linux.dev>
+References: <20260602101039.1867613-1-songmuchun@bytedance.com>
+ <20260602101039.1867613-15-songmuchun@bytedance.com>
+ <178041489395.457517.12727427621570734471.b4-review@b4>
 To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	corbet@lwn.net, dmatlack@google.com, kexec@lists.infradead.org, 
-	pratyush@kernel.org, skhawaja@google.com, graf@amazon.com
-Subject: Re: [PATCH v4 08/13] liveupdate: defer session block allocation and
- PA setting
-Message-ID: <ah-Vp6xKSPWkuCyR@plex>
-References: <20260530221938.115978-1-pasha.tatashin@soleen.com>
- <20260530221938.115978-9-pasha.tatashin@soleen.com>
- <178038801492.119771.3419366349068848854.b4-review@b4>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178038801492.119771.3419366349068848854.b4-review@b4>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 119CF20008
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: kbonmigdefr4jm4btxcb731ui199nrtg
-X-HE-Tag: 1780455054-271059
-X-HE-Meta: U2FsdGVkX18+QFP/5XOS5cahjA1+skVYWuSCMwhggZ899iVGcpRpu9YWaxPgkz8C94Lq3nl/xVUlokdOpPJOTENkjLf+f7OLY6EhdLZ4/stlsKbL0cdtG124LxPviCbJ++PHhTPWeyrIL2AIA8xXe76IHLIOkq9AiG0WeutBH5ugJGCsoFhCCEyWx9OHx6ZyJ8eQHk3/R+rMfZzbJLl00emK6WyuLHLqCXHr4pek2eTZ3lU+YpG5/cyQwvdtyK2RBvXL0ZDFkRf2KCg/Z0lQhkZ6yY5jL7vsQNZK1OxHiNuU5Hb/VQJouUrx5hQ9VLOJa5/3jsBw4ClwYn29YAjC8Mn96RAWI0SZbEoHOMCLEIMC+PTJTN/KBvS9JZoRghaZpPwrRRp3tqklg61pKSwD2CVDTe0lX5iiKEJm3QUuiSVKtpUpikXnVQGpqmNzOm/KKCi0fZwfctbhjrU4qOosnNl2dBcv0qE2aE34lmtL8FpXytacDfFSe+t89FxF5OLgThAz76Dlhe/KYku9rPxgO9PaldCSMtgwsE89Hb1LBL6W2SHF67beGhmcT67VXekzg4fPkYletiAbJCO2g7iLT7CNaCFV6hHekiyK5MyJx3+ZWkFkXCaaPfS0lXLKVTp6j6SIACP85ubIT9jexenSyztqpJLBJL4iYTKpAhdy1RfjlR1j76AigbYrDcSBcKwaqIKZJqRB+iBu9I9Y+rhtv7BPiqOA1oBZfxVDe+P/zr+OiholZsfM9GQRPdWy9hpcDFeqe2YoCcDc1F1Rzd/0dGJhv6lHtyxdpSbEgcjGp1SnKdv7KNHp8P4ebBS5JSkXe5EGRYncXPzqmmb1ocpXf8XyniezYhtV6wLaefSMOuCmWEXtbbwcmKNV8swyjLocvsVmFpEQORaU4pFubv6kcURaDoTe/YTKnGCNHI1wxbxejbmYoellC+YOxRGh2/zBpLuwMiie6e1PQNbKW6t
- vLM97Ssj
- Yk2t0QMWVPSlLwBVEBDM85mwsTOBTYvCXQV2EN3qL2j2i1uXZiO9Tgn81Oh0CVF189glWmUxYvNyatX1rLYKn3QCztWBOvhptgWL0BnZIU5m4veokMVR1P9e+6hl8iNDz8Wkp3+RS+m8MSnaFV4l7pv0ZSEKQH2xWn0pqa5rOBFzRPrdZnIE35emEIJbbTcDWdscz4zA3INP5fMdYjTnWxtZgV7ecewxXXyRINFByaEqZUwsWCIBfysgKoPQDI7NKd4FRvwMNtq/SBWZaK+k0SJJqNS9YR2eA5zj3MQiELSW0B9MZwI81vhRQOknwOgApjCc4Mwl0d8Hn8LRPi2dT0/7wW6/g4FPPyxFIgBIE4Tgly5UpRhrYGtAFCQ==
+X-Stat-Signature: 6i43stogra9ii1uekmsm4fezyetjm8nn
+X-Rspamd-Queue-Id: 2A443A0011
+X-HE-Tag: 1780455227-127708
+X-HE-Meta: U2FsdGVkX1/Ofwwm4PXOwyEGv9dyIqNXxEqCEmoj/g2DZqHtv+ARAPuRKGHlT46yTh6Ve4s5IclKt+bmXhI7wm+fGoYQZtIg3WyCjE9BcKDXpYSMaO24nMRRMx97SW5n6dc95lxWH0VNcP28o/t5fTwb69BwpbQ8ACccEU70PQzlGvAkVf5jpjokP5iOyqzvSGdN3ewvFsasLcq1gmT+RpDwGDadAICh0xwll8Hl77gXlbp7Dir9eWUeAb3PuZ7tGt1br/7VJWWw/5wzokvL32e4yHMUY1+LXNAHQJRuK5xpyU0FA4KcTbE1uyYI6IYzxEtmSvlfMrV071tbA5kRm6qz5Npw+a7/ItTkjW2DWvryeuKQf8JBeCNlp4iVJl3Od8SlXHriFxmSGSvleoNZdJ/mQND8gcywB0vpbbsHSZvxZKaPdD+6oDVSqBNfNuNYVQIwncb5hRp45xAmhK5ynUhTLWiLMXs2c9UN4O6POWTK8i2k8bkJUVoqwlUAe7BSfGA2FwxKkBh/2Lcr5KsCmQeTWD1tl8wdYGnA5eTLAwFXOAieKaBSOsQPvKi6mRpvcKglAnPpcj1SMvW1nVcOOY0MGGbWMIiRVh5LCgA0w/YLDL8tNDTCtS5RatgShCDoxmEhhYXOHIhTOpEAulnjl3nBVra5R5VTZ76U1zquRI5kqRf+w+A3UbwHisPvz/A3TczNSUHbevrrCHWcOtzp/2j/ujmBVmY6RlJaPtGoVwAP0DM2PEqeaYL3tD3rTLnW7s9qpDY2j05U2j7mn/z2jHZed+BpGfLsOk1WWD90yp/pAlUAoInSbrYz19tHO3dI0euNjPwiJHbbS8S+gY1YHPoAZfqHTDQymKkjWLVLThmfXHUX8dMn0+xJpuCTWsbxQX0DyyibgYzARzqPT+Y77GbByx03EK5paKyCjJLi/ll0rtxob41Oea28oqV61SGJSnNL/AZuU2R813OHmPv
+ IuSGk4zo
+ DsBd8JhL3VBxK8CDBZTAhj5U2Gpi8AvPuXx+PtmUcVrd2orjZntg8R4L4vjAuuxyXue/jIUgFMsCCAzLLgWqTvGLhMoAeWdSBSAZzZg5MHGEX0NmEMAZkWN1lhPJqfrusiQIhE1ZwUO0oDNv28phMT6SK8n4Y4t1p9+5X7G1zgKTbs/Yv10AiWsFKw+xicBTtovm9UPcOQyHewgHWWX8i+QrGHJUXBout3a0myG5eJ9HB5kxGE2vzqaQnyQ/q3kDPJMYbYVZHez88PevHHtdU1/91wBN2Q908x4KEzvfDCNfbfil6NZATkr1u3j/9bNMcimwpLFEYosaD0zpA6sHyhdfTQ7MrJub29HATiPRUmB6uPNg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,21 +106,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06-02 11:13, Mike Rapoport wrote:
-> On Sat, 30 May 2026 22:19:33 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> > Currently, luo_session_setup_outgoing() allocates the session block and
-> 
-> "liveupdate: defer session block allocation and PA setting"
-> 
-> PA as "Public Assistance"? ;-)
-> 
-> Let's spell it out.
 
-Done
 
-> 
-> -- 
+> On Jun 2, 2026, at 23:41, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> On Tue, 02 Jun 2026 18:10:34 +0800, Muchun Song =
+<songmuchun@bytedance.com> wrote:
+>=20
+> Hi Muchun,
+
+Hi Mike,
+
+>=20
+>>=20
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 5e557c05d80a..218fb1ca45f4 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -3073,22 +3076,38 @@ static bool __init =
+alloc_bootmem_huge_page(struct hstate *h, int nid)
+>> [ ... skip 26 lines ... ]
+>> + 	* pages belonging to the requested node.
+>> + 	*/
+>> + 	if (WARN_ON_ONCE(nid_request !=3D NUMA_NO_NODE && nid !=3D =
+nid_request))
+>> + 		list_add(&m->list, &huge_boot_pages[nid_request]);
+>> + 	else
+>> + 		list_add(&m->list, &huge_boot_pages[nid]);
+>=20
+> Can we just memblock_free() the page that intersects zones here?
+
+I had previously considered doing this, but then I realized that if we =
+free the
+allocated cross-zone memory here, memblock is very likely to select the =
+exact
+same block for the next allocation. This means we'd just end up with =
+this
+cross-zone memory again, degrading allocation efficiency. Unless there =
+is a way
+to mark the block so memblock avoids reallocating it, I ultimately chose =
+to
+defer the release to prevent this issue from happening.
+
+Thanks.
+
+>=20
+> Rather than making alloc_bootmem_huge_page() bool (sorry my bad :)) we
+> can make it return -ENOMEM when memblock_alloc() fails, 0 if the page =
+is
+> not usable and 1 (i.e. number of allocated gigantic pages) if =
+everything
+> is fine.
+>=20
+> The callers would need a bit of massage, but it still seems simpler to
+> me than adding them to the list and then walking that list.
+>=20
+> --=20
 > Sincerely yours,
 > Mike.
-> 
+>=20
+
 
