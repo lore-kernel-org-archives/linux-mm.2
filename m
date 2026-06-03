@@ -4,97 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37086CD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 06:48:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26999CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 06:49:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E1966B008C; Wed,  3 Jun 2026 02:48:55 -0400 (EDT)
+	id 8E62D6B0093; Wed,  3 Jun 2026 02:49:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7926F6B0092; Wed,  3 Jun 2026 02:48:55 -0400 (EDT)
+	id 8A5116B0095; Wed,  3 Jun 2026 02:49:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A82B6B0093; Wed,  3 Jun 2026 02:48:55 -0400 (EDT)
+	id 7E28A6B0096; Wed,  3 Jun 2026 02:49:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 593DC6B008C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:48:55 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A33A1A026B
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:48:54 +0000 (UTC)
-X-FDA: 84837673788.13.83D284D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1E02B20002
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:48:52 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QnpXFy7a;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E0936B0093
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:49:42 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06921C107C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:49:42 +0000 (UTC)
+X-FDA: 84837675804.23.D1D8B6E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 599691C0004
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:49:40 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N6Nv8rIK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780469333;
+	s=arc-20220608; t=1780469380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FhhjVRzGCjFY/Egn1KMYz0zdmpIRkyGKHL7Dp3fm2yY=;
-	b=YXQiBIVDml+UPifYFU2/aZi3I5a3iVDP3gmjf4ik5zx8WHxCRjCElY9UaIhl/p/3wU0p2y
-	RvPNpfoPsgGH/HaZSrW967MZ5TQ+1NggeKXKMR0UosP7/itfHroj7fY27vS7pLVAi6D2xk
-	SF5xSJjWiL0RLddJFKOPaMHNw2y6b3c=
+	bh=crii+t0f5mzLnKlzu0e4yXBuyqmERcK5UbHB2D3ZF4g=;
+	b=lT+O2isWFcQ8PEG4JrHHNJik4Vq9oYMMLtXU5tFlZIblHHNBMWnnjGterB9zQT86u8cOjM
+	3hArTiGB45kZFH4X7p/yjRaJaWa5Z8fjaYfRyQgoDolOVbkRYW3hZlt5+iXGaZiOVP21uY
+	+6QNNEhM6QbB0guR77m16sRsQdACpuU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QnpXFy7a;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N6Nv8rIK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780469333;
-	b=kqDlmruLV4heTdrQlNzLLeqk1Lc0bGC+o2DjYovfY1tVsWfEn/k5AUYEhxBAU0ZiwAA+2X
-	3dIxMLrsklEfA6O5b5dLyyViCrI4YYOd/jUVv7lSrVh0/zePzOcbRECYXvBd/POTjWrwfk
-	zzKSCBDO5qdMTDyqf+dzMdfhRMfARlE=
+	t=1780469380;
+	b=nylDZQmqcAGOq3no8l7jsUM2XY3fJZ3A9I2DBVKDfRhtRnfCxWctoAZfU3+ahSRgyiqSks
+	8Ajoe4tIBn3+BBbNF40R6p7VNEVskahCbpVk6HPfVGahB0U9T8UmidllLcrkB4TJzoikFr
+	ufZQEP+aPbV+/QL3fLbzNk1fodzvyqw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A53D6008A;
-	Wed,  3 Jun 2026 06:48:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F991F00893;
-	Wed,  3 Jun 2026 06:48:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 63BAC41B66;
+	Wed,  3 Jun 2026 06:49:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CC71F00893;
+	Wed,  3 Jun 2026 06:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780469332;
-	bh=FhhjVRzGCjFY/Egn1KMYz0zdmpIRkyGKHL7Dp3fm2yY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QnpXFy7aOSx4c0XwXqxUl1o0P5o3SE9r8bxWY1wRf8Zs+p/gque9RJoVdI26q9nja
-	 cuTDokjyXVrrunlcqqUNZ52+x/JuTP2/njAvYd8pXhbqxZ9jetcB9dYXxxsKoOkxUE
-	 iEkY37Rb4ALMhUvCXYJAPrWaWuwGZy2IlEsXp100tdNvMlEQgVYwQJSAWfrryznti2
-	 CHcz0XyHtDXufFQYxEcpoiLz4/700CFweiPXcTolNTc9z+qbCJmoNBlZ3WC0mW0DIJ
-	 IcoUzM9AFvCJBp1JGeGQBZyQcDkQgsKl1ZRJ673FULXczC0vHuIweUcz6BqPH0V4LU
-	 zWNVF13v0UKrQ==
-Date: Wed, 3 Jun 2026 07:48:46 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Nico Pache <npache@redhat.com>, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, liam@infradead.org, mhocko@suse.com, 
-	vbabka@suse.cz, willy@infradead.org
-Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
- khugepaged: add mTHP) collapse support
-Message-ID: <ah_ML-Wm3B92ZniC@lucifer>
-References: <ahVX1iq_-95vd0PN@lucifer>
- <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
- <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
- <ah2ndruO3RQGtePP@lucifer>
- <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org>
- <ah2uDhs3a0bFcRNG@lucifer>
- <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
- <b5b1a7bf-de6a-488a-a011-673c37bd24d1@kernel.org>
- <07334dc3-79ba-407e-96be-21ceb2eec00a@kernel.org>
- <ah8Tflgn50DTMvwl@kernel.org>
+	s=k20260515; t=1780469379;
+	bh=crii+t0f5mzLnKlzu0e4yXBuyqmERcK5UbHB2D3ZF4g=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=N6Nv8rIKWJBny+CHLiEfswo8B9CE6GjbB4f082oZIvjQ8x4U2vZ6xI4MHdiYNadWW
+	 aRJI/wiJ0z7XfcH80+ROET0WcWq8NGYl4RDxly+Pb1XHHCQiqM5qEaHxFfuRQYnfqV
+	 ki/xPPZvgT5zld1kiNumyNIi9YhUw3Lg+LEpb1RvGlu3YCPPXEtyVmtd+a/V0TiD3E
+	 Jfh0HQAtBZZMBw6fQsXQfV3NbrknaVB7bySHC9TNM6ZlwDHNQetxeSGTD8D45ewtUr
+	 vIZaa3Mb1KveYE3YbiZLbvohTU30lsNDXy2+sBISlTbxMq6UogIcfLWQcCN61tq8HA
+	 x2Lfj7vA5Kiog==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah8Tflgn50DTMvwl@kernel.org>
-X-Rspamd-Queue-Id: 1E02B20002
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 07/13] kho: add support for linked-block
+ serialization
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, 
+ akpm@linux-foundation.org, linux-mm@kvack.org, skhan@linuxfoundation.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, corbet@lwn.net, 
+ dmatlack@google.com, kexec@lists.infradead.org, pratyush@kernel.org, 
+ skhawaja@google.com, graf@amazon.com
+In-Reply-To: <20260603032905.344462-8-pasha.tatashin@soleen.com>
+References: <20260603032905.344462-1-pasha.tatashin@soleen.com>
+ <20260603032905.344462-8-pasha.tatashin@soleen.com>
+Date: Wed, 03 Jun 2026 09:49:31 +0300
+Message-Id: <178046937151.468621.13398573538792303093.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 599691C0004
+X-Stat-Signature: nwbterfns7iaofk9b7tr3wpkankkjqw1
 X-Rspam-User: 
-X-Stat-Signature: bwyu1bpg5y454gy9xuhb8xt3keus5esm
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780469332-694356
-X-HE-Meta: U2FsdGVkX18y3r19HY1y7bLKr8n9YuqXwNNLuOJNdtwRN3gaRgz6o1LZifFPuxLg5Da+slg9ic67N3xjFaJp1QNrWv6dTcH1i7xmZWsnW/826Lfc0hTk8t6GZqIGXWsVOHmRuzr/PfK/Qj/4ihvWiItDFZU9huyVKTdakXRRdxqBp4AaqM7BO/ns8Zr7/FiMOT7TQm8dqTTVz4IYf7zISScErVZKTaSqK/L1mWcZ8YPl9AQmWEaifr5SzYFf4C6kDTQr6gmNGHWVtDU7Dh8W7NXyaTO7MSQEnXv3bw0SCNiaTgLCutSCggJ0oMxrX32JFdRbf6SYoKxqQfYlgK2veXpXNfDAxk2zMea0wha76uZ0AT5xdg6esMcqX7QK7YvLJevpGpjEQVIc5wwgzsMqB/8qOWU7gzTMR91rxIjYoU7xh6VNx92RT2R1phyB3/c2a6pFEWLfqT/pv+3gnzxF7ieZitr3DGKipJ+ODiSIxxn1rC3dwLTzl5FQjRWMnhVCIWjFZAn1p5iab3ZBA4hQpjma7r0wei+UZmAEmtCwrIxww20I2qHD/bq4CruEcSVjIXZU1DXFwNGtx8SzugoefG7Xr6GnpZc8AKG0D5eVfkX0Hj5bpyINyL8aEZy0TAUpqynbx1cADZpUb3BrHhIw9uD4EfRym527wBkWZbycuqunXjDQw9BeaplFT4ET/7cbgcIf5JSFmk/1SMpxQC96SBjkgLG2UIqP44ANqLSo5oPKYxhyX5H2yVRAyb6pUID31pgponYyEJMOXiaMIg4X31dlZ59/MFtwnC1Kpku+BpDL8lTyo2cymU13igGOCsT5wqqkoXqn9FF98/8GHXuBDZ562tJLoKEFJRprwhu6gg31aY/Ut5wiYRUGzEDRQ88OzReFCGg/W42E61qNlyIcqnjZBU+2gJ0PJjM6SFt8fAOtoow6zEimCosd1mwHUuOFk8CnBUbd0MuL10Y2MPk
- OB3guXI2
- Q9YsV72Cl+Ws6qhVqLH3PG3zQC0QgyelwQ5AvRG0PbH9BuHpk3BgmYniEMJW0fFJcPOZj+zUf3vtgSlYbVPeQX3w2PVYvcQRsEy1kBa9riD7d0TDhgG/uYU+Yjz5n2keAY9pekp1ZqPELBqw/Hwi/DycbyyxZwV+sZ6/9q+Vf7R57qDjpspSm/hdK6QnmrBb9eERdViJIfYsnxCSI1CvZL+bA1w4P0SjcIdrarz0/dib6UBQAfJRJqZ40wEdArNSkN/Fx
+X-HE-Tag: 1780469380-409150
+X-HE-Meta: U2FsdGVkX19cUqkuQDBAcnHD7lYmZv45XmvAfxr7HnCk8pRnQbaeGdB5MHVphg80WUIoXuBzpIiEBnQVar32lzs8e4Iog+2uCdAKvspokJ0xgUiezK7sAv3uGxjI8yuLhKn2pg/eaDwxU0N0EH3XMLOD5IsJBKaX0aXBxQOOLVCCGwQ7sP7Xy4fsWqyg9ayAP4UjOCqEH7E6nFjTvINmdgjYhaKSPrukUr7iZPkjVn+pSbi0zWh2qKpnThpCyhEtENw3D3XnCNHrjWof4IDdyYdKO4Jyrg47GpZjPyvq9VyXIAuXnF6r6O9Vf2Gew5kbbI2VEV7YoptRG3XxRm6ZjYWDzs88+9FPTc1/2B6sUTnocm1tUBlC4uSN/CAnUWUUSIsyNMB+77xp0caPkSNB99K942kW0q/DCJDz8ogQGwP73JAvICGL4Rs8fLRYde/RVbGx40us0Om1uaW9I6Nl8JJn6sSCSwQrXZfik8L+EKPQpgzzu/Tp8iw3lyoH2/E0nib2hHB70CH1wDx/vmIwwHRwbHX7ODsN9WEjuz/FgNkniAPaLISsrYGHPZLhzudJ57TOWa2J/Bjox6hivZvQoYuHAIHw4SJZdiiWUAl9AiQRpU5dHykddLsksE5/JXNHnqGnjFeMnTsQPxNco4cNwKn7CI83KIRnSSu1tpRek9WNfVIq3JWd4+/Ip2hhDQsLWAKq2CMNhOh2UDtUYrYCsb+Aa1pEXJuQ+kdh7icvC/E99O+NyzgLxPpRNH1GIK5GPF1nu5Mn494mRPGEzWTZej+JVmmAFROx2p3GpJeviNZjqBs/uqGiz/fmoUKy3tc0wCbuwb5IPQ0EHZx6OqBUxSqR8yKVdx4NHFaAknz1PrM7OnHyCZXqnSwhGlLhxT0Vwcbt8ApOTotm78BhO+KguzhrREggBlnLH1DuP7jAnN3LDrn5Qt8okeSI9aVSWN4ytKPCDwGS6PrpTXp5bvo
+ dzMvo0Ee
+ Bphimvd5SmKsIm4IQPvOo9dx+PaxToX75CuPeN/QJ+eMVMzmksk1sVizc7LlYiTrvTOchJubTmovuM4kBDb/qemQgf3TX0VIqKCXV2MH1yTLqdWEhZiQvvbAhKSOfe9lMXCDQxzXe0555sWOCSXutE7WQq5NPa316coWp2XUn9hUi025WRVYNyb5909a/fD7OUhvpqtUmqiZI8e+UWA03xDbNiR0VKeUT6cvPz1YCYZEzEfMk8xow7nOHPUioHFbIFoiFUIK27aGQfRua1DDCzVrtOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,22 +97,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 08:31:42PM +0300, Mike Rapoport wrote:
-> * Supposing we keep the model of early merging for testing [Lorenzo, don't
-> yell at me ;-)] I think it's reasonable enough to drop everything that's
-> not going upstream at, say, rc6 and ask contributors to rinse and repeat
-> after rc1.
+On Wed, 03 Jun 2026 03:28:58 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+> diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
+> new file mode 100644
+> index 000000000000..8641c20b379b
+> --- /dev/null
+> +++ b/include/linux/kho/abi/block.h
+> @@ -0,0 +1,56 @@
+> [ ... skip 25 lines ... ]
+> +#define _LINUX_KHO_ABI_BLOCK_H
+> +
+> +#include <asm/page.h>
+> +#include <linux/types.h>
+> +
+> +#define KHO_BLOCK_ABI_COMPATIBLE	"kho-block-v1"
 
-I won't yell :) but I really don't want us to do this, and to improve our
-testing locally. Because:
+It's never used by block set and after looking at the following patches I
+found that it's appended to LUO compatible string.
 
-- We've become a bit notorious for breaking linux-next
+While this works for LUO, I think it should be kho_block_set_restore()
+responsibility to verify the compatibility.
 
-- It makes it more difficult for us to yank things
+>
+> diff --git a/kernel/liveupdate/kho_block.c b/kernel/liveupdate/kho_block.c
+> new file mode 100644
+> index 000000000000..4f147c308e6b
+> --- /dev/null
+> +++ b/kernel/liveupdate/kho_block.c
+> @@ -0,0 +1,411 @@
+> [ ... skip 121 lines ... ]
+> +/**
+> + * kho_block_set_grow - Expand the block set to accommodate the target count.
+> + * @bs:    The block set.
+> + * @count: The target number of valid entries to accommodate.
+> + *
+> + * Acts as a runtime notifier when new resources (such as files or sessions)
 
-- It blurs the line between the stable branch (which in the new model we will be
-  updating constantly rather than right at the end) and some 'unknown state' of
-  'whatever we just sent to linux-next'.
+Not sure I understand what "runtime notifier" means in this context.
 
-Cheers, Lorenzo
+> [ ... skip 11 lines ... ]
+> +
+> +	while (count > bs->nblocks * bs->count_per_block) {
+> +		int err = kho_block_set_grow_one(bs);
+> +
+> +		if (err)
+> +			return err;
+
+This leaks memory if more than one block is added.
+
+> [ ... skip 31 lines ... ]
+> + * unregistered, allowing the block set to release and unallocate redundant
+> + * preserved memory blocks. Checks if the last block in the set can be removed
+> + * because the remaining entry count is fully accommodated by the preceding blocks.
+> + *
+> + * Note: It is the caller's responsibility to ensure that entries are removed
+> + * in LIFO (last-in, first-out) order (the reverse order of their insertion).
+
+I think "in LIFO order" is sufficient :)
+
+> [ ... skip 173 lines ... ]
+> +		it->i = 0;
+> +	}
+> +
+> +	entry = kho_block_entry(it, it->i++);
+> +	it->block->ser->count = it->i;
+> +	return entry;
+
+This looks way better than the previous version :)
+Thanks!
+
+-- 
+Sincerely yours,
+Mike.
+
 
