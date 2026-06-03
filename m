@@ -4,96 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3344ACD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:43:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0731CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:44:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F92F6B008A; Wed,  3 Jun 2026 08:43:51 -0400 (EDT)
+	id 16A326B008C; Wed,  3 Jun 2026 08:44:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A9EC6B008C; Wed,  3 Jun 2026 08:43:51 -0400 (EDT)
+	id 141A16B0092; Wed,  3 Jun 2026 08:44:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C0236B0092; Wed,  3 Jun 2026 08:43:51 -0400 (EDT)
+	id 0585B6B0095; Wed,  3 Jun 2026 08:44:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E8D86B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:43:51 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1CB76140363
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:43:51 +0000 (UTC)
-X-FDA: 84838568262.21.B20E993
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 78D13140015
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:43:49 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMr2uM+H;
-	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780490629;
-	b=vw9Bzsr6u/F4lUM/BOE/RyKYjpPg6+MQoBhJ5JlhWztkWbwjeKpkcCsp9Z06GjMyeMzCNr
-	lqr+CRYlLsGg9keoLn7mStqG0A0PQjE3bMOFTntCnZ3CA6y/SpUNUey7I/Xl3c1krnBwT6
-	PS/s8RFypnS219OjIv0k0Y0AbHyKN0s=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMr2uM+H;
-	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id ED6F36B008C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:44:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B0BDF140363
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:44:06 +0000 (UTC)
+X-FDA: 84838568892.02.D87482E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0E6A5120002
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:44:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nzHlbMr9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780490629;
+	s=arc-20220608; t=1780490645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hSlKPq/EwdliQicBG142n4MIcXe9Hvj+qJ5zrzWkG8w=;
-	b=Ju0NpaeDwdVMNQVZ3c68stzInA2p2KiijV1r8xOKlSa/opAbGEXHzgo5UfImToxla1lr6U
-	6sL+BMzPSqDdwUUD52UKDVsAgIOlcCMoaNUF1g6BXKpu+eaJ9f3JnKNcAAzvTnw3humv+R
-	eV1ffgJHMiVqCCho270RPdKQzXeX9G4=
+	bh=77CURzg/jAFNtzXDpoyP4AKbJU13c4kpfI7PfLbw04M=;
+	b=tBl6EOZdcZNZgnph7LJj92vjnDaST10XXhqlcZLis4JI+ezCQyeijb1q4yLKBalXGFzQO0
+	Ws+NZqKeYvmrgw0vjye6XuCtGF2QlVMvOQHb37Yh9ieZQQaAqOyldGNe8ive1cSe2MjzZG
+	OqrCa5aaJ3HUxy5DOs8U4FJ/1Xdtu8E=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nzHlbMr9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780490645;
+	b=tLidS6vFy2nMWGj3NK8yrYg/vK/9Hxd5/mObGQRjklndx15SvzyzaFjkMogeR47Ey1wQKA
+	+r8/6mn4liTQDKC2c8NKeKNzdpFNXLNWxEPmcvj3919Lewq7flseAu/HUCkV2px9lD6/Rh
+	ouG2RnUvK52256foJ3cP+9bj8NTzoXE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F0F9E60221;
-	Wed,  3 Jun 2026 12:43:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571ED1F00893;
-	Wed,  3 Jun 2026 12:43:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 33D0740E06;
+	Wed,  3 Jun 2026 12:44:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585EB1F00893;
+	Wed,  3 Jun 2026 12:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780490628;
-	bh=hSlKPq/EwdliQicBG142n4MIcXe9Hvj+qJ5zrzWkG8w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=dMr2uM+HMXmTM8LDb3J+bX3sfxt4mX1Xkqpn7J8iBGmN+/7xnPHt2aDWxBnSpSTpp
-	 +D8heQVrPl+rEhsni0T568ZZvyGIQeapGfjTlhY6O3s+9e1tIxi9w53o/v0ic5rjKH
-	 uNNTcVOAVPfiP9krvWIXGhsFrhISzcWvijeqPpHPv1yu3VKvGeNreGNQqo/7n+/jF4
-	 Q0m71pq+Mozsv2jHy0gGQEVI2p1H+/dAQiAhDg2d2gpH1KqdULYU5r60t6lhTsDvCU
-	 lPbQ11nd76hapbeuTcRhHvRWNsW/cXbPR1P9+x/dYyHTIQILVOGRXOOBtvAchPV3gt
-	 8o9sBOG9jsE/w==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
- Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 26/79] block: rnull: add badblocks support
-In-Reply-To: <abfxSTL2qTMtpnY7@google.com>
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-26-de9a7af4b469@kernel.org>
- <abfxSTL2qTMtpnY7@google.com>
-Date: Wed, 03 Jun 2026 14:43:39 +0200
-Message-ID: <87ecinkd50.fsf@t14s.mail-host-address-is-not-set>
+	s=k20260515; t=1780490644;
+	bh=77CURzg/jAFNtzXDpoyP4AKbJU13c4kpfI7PfLbw04M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nzHlbMr9Zu7Uvk7B04WhJ0QhPOPOipiK2G9DXWdN/kL9jUYjtrFt4j4JyEEt0lfi8
+	 SM2IY/6fCLWcREl46bmA4f8munOLqLt0a7M+YHpNB9dRZ4svHQskfBJrbfaZGsQDvc
+	 c2OIjE7vNBAYPLTQsBf2e9DtCBVwd8XBvShQR5roqbtI22mTyNN0Iqyl/0lgvlEXmp
+	 HAdGkKaKwytnjhr3Wb4OS23yvjJTZK8NdvrrnYquhc0tIUaJRWK7kTEGtzwtRkY/RF
+	 hzICiQ4z0CElqqjXYONrxy8KjBVRMNyEvgkLw1IxcMw0fLkHBDCPBGbepLfYQ6QMnN
+	 vQkU+Dtf4Rrzw==
+Date: Wed, 3 Jun 2026 13:43:55 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] mm: move folio LRU code out of swap
+Message-ID: <aiAg6jkIKebAhh1V@lucifer>
+References: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-0-5bbb567f8c99@gmail.com>
+ <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-2-5bbb567f8c99@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 78D13140015
-X-Stat-Signature: hm1pfyckzkws4rk8pms5j5ukr41ytawj
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-2-5bbb567f8c99@gmail.com>
+X-Rspamd-Queue-Id: 0E6A5120002
 X-Rspam-User: 
-X-HE-Tag: 1780490629-452153
-X-HE-Meta: U2FsdGVkX1/frOfpMorKEMMJCQHA6uXZamX6YNK6ZDiGpF40u2O0HMR2ju51q2hNUBzvV6k5iJnvyDtTuBnxRKAbfZFq6jIUoiQ7KNaTWJtqCTe/4mimoCMzXLurL3nVkj69Ek0G9Q/W7nc4aGnxigCLjuH7PoDEpU4OW2QUdft9eVSmnqGlBVhEfNCdOlxLw0V+mmEB01WDO//9yLZFwr6vK+6Kh/z5J6D6MlJlG6Ke/iU2oT7iBk6DR0DHQInLxXgzzTrnlJnbzfmKEajwKjpBPjQJ0HKD8G93yIozcSJrPWhZxNYNxCUCLHhlkjuGb/uI/WmcXqws73FVz/JhyeKmf/pX64oT4zs4wxbz0hiCjz9mP17r30TfXF8OROtwOyYjJeB95KEtNLhNbwYMqSCSbqfh8vQko98SY7beDAlY773pGaDsfbSFkPu956IJuQwfiJXwmZw6HKYXQ8VCXxCX9zgzsVuDdgUzlBWm+EkK7ud7Ri9QB2mKGTn5yf35nZq9CUMayUvMD5QsRV6Ig9KzZv22pkdIL+3JultomWkJS/d5aSFlMzXrWT0Ks1OJ2y6T13kfpNflsqiROCiy5QvZK8igLNxuZmRrPFdoXOj5CbkDqvTVRN/FeiZq0kiwcVXs+lbEJqd01HQelt4MrZD0iYQNxTzQFLttDXBlVbdEWLP6xRwJirTqpkgZCGDqpaDYcbH4DDE87TRf1rNkY3JsP24NsZBHwO0P/bT2dRoTIxG8nmBRz0eqPBQ5jRXkQ3T3+lYOWQB3XR/bG2Q8FKMV0vw8y2j3beQsyKQJlB+K1b/2AKqmeK7ArNet7q5TWJ73weV528050iUzhevFn01eBPog+Mm1mzb9Q4ncFwmzp2v3EctqtdAN4E2sC//mt5YrJHtBsy5qM+ZhInfUYktrsQ1diVHKeZm9IQhTN3pqizQ+m+xacV8lYz0Ev8O6bNl2/RHi9Tz3w6cOgqE
- 1vy4pxIN
- B6Tt3xIeCO5aLr0IC+LrslqIOq4Gybhlc2MUT/tQfxsPhFBq87DED7yJIftDg0vIQPVuL4JsLatRjj9NLq6/WNz7VBLt4Z3xQK6zr9gpuV+2eZ/9wD2VaT+MjoVeFztSvzPIWKkdq6EUGBf9VAdygq/Lst7zcrP/c9i25K0RVuiOpSXNrL7RgBT7XeOpQiFcZQExh4BVlEimxUNQ/3u8f3sRKy05o9gfl487dPvLZcvvWAP1DotwIr4Ulw/bS/whVpaBfB8M16AmYXAA9JmoC71w5wOQWtVC883wjDUK2CDxfYKB/lakCWPaZ8N6Y3EwWREhuRPSscLEdwDQ=
+X-Stat-Signature: dp134k7dn69byj5ds1hsx57646oyeymu
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780490644-869899
+X-HE-Meta: U2FsdGVkX1+4qbD8gYR7zOWqFbkPBmb/WJrtiAD0K+OFgZVw6+fEjlZh5tnIY7hNIwbbYVSHwtkeZY+TS/pDzEgaJyJL97em4k/3KxsplD2Kh2qKRLfF0gjiQksASrVuuBXX4zH3ZsAE8aK7z9QMIuoYeF/ybdtzRdgcVN4V7xkxDDWxuC6eHPFpMXZDChsJCvPzQx5A+pXikC0BwJJ7DLabj0COyf6U6NE8QX69HZiP4dxpNmmJWZTUXuoJr8Q6eDVZ8ryeeASQK6MR08scTPUu/9PozfcDZiX6l4RtFSucsEhjqfxaIKyDxM6qP3jXyUk+3NsyVaacf+C29aumfeIb4cEjZqagrP8KiVKiKof5fq5VT8T24srPFm/27uUY1+d2MexbolZF1trZ/JNDTPonvbp8UoXFkfLT43h69DGOp7Sr34mw14MG+GMm4UDpeJ4ENidECi4jb3Zc8c029eyJQwYEvA7Gby75sxv/ogye8KoZ6Jv2m9JekfmpcgwWzhADeNpiwWooi14J8vlfnKq5SzjzIcVA5wIr9xIhhLa3ckRfAAKpYIG2jeELH3ug0fy2lsniTlhuymS2Lzdsx8JoeQyQn4IgDv8q0mhvI29nPGq7kRP0dOs4NAlf1PDE3JMrgcC9OYs1LL9b1UgUfoJ0lQHUDoTDjQpTm7zHV7zpisJ2nxheN6O9RfHhyWamoJlsbRI0KgdU9/ysucAGYWPUPU5177JhwSc8pKh4ZhVOWRQBOjFArdEWpHkegTsUov0I8GOHUTj9ilC5xN0KU7bYkqcgIvboFiNtBXpkiODd83ct8FfLqXPqFyAxYg6HpNkEV36se4EiUCYsuF7J5lYU/SIKIdNsKadZ+iAFFYjzTFEeAK6vYUPvnFoh5ECDbDMDUImPegiJ5tRs6wFyD+7POe01Uvt/WZYS/Qnin9f4DR5Cy1FRxgh2c1ToAqIUUE5YW5iVAzTQxhAJtbl
+ Lb45kYPm
+ BLefG+l9TJUgwl0k+v6RdP7KqqFagZNrhdNq2ag8UcpowDITSmP6aEx3BpX0/Rxb9XFcbkB9y7vmaiqB2CuUS+17QH6t8slsCanhMULhajZbzcMUHXq+XYFT+YA0G+HfSthMzexvBVMUR8KLmtUPIZY4YqG8siZG+MOC9RzqQNjFlZQlYRUUmc+GN88u9Cftpk0diBn/VDDWqIT9vlWF/eHjkZx5iZSdAYsjKYIrdbs4noBgznIkCncxOKZoLmJEQKNS4tqqiL0QHB80InJG4Bke0MQb8jpe5vNwav4yxLwNEskJ4nI+x5iS/OcBHs71a/toEsmmhiprl0YI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,81 +100,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Alice Ryhl <aliceryhl@google.com> writes:
-
-> On Mon, Feb 16, 2026 at 12:35:13AM +0100, Andreas Hindborg wrote:
->> Add badblocks support to the rnull driver with a configfs interface for
->> managing bad sectors.
->> 
->> - Configfs attribute for adding/removing bad blocks via "+start-end" and
->>   "-start-end" syntax.
->> - Request handling that checks for bad blocks and returns IO errors.
->> - Updated request completion to handle error status properly.
->> 
->> The badblocks functionality is disabled by default and is enabled when
->> first bad block is added.
->> 
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Tue, Jun 02, 2026 at 09:01:16AM +0800, Jianyue Wu wrote:
+> Rename mm/swap.c to mm/folio_lru.c so the filename better matches
+> the code's main responsibility.
 >
->> +    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
->> +        // This attribute can be set while device is powered.
->> +
->> +        for line in core::str::from_utf8(page)?.lines() {
->> +            let mut chars = line.chars();
->> +            match chars.next() {
->> +                Some(sign @ '+' | sign @ '-') => {
->> +                    if let Some((start, end)) = chars.as_str().split_once('-') {
->> +                        let start: u64 = start.parse().map_err(|_| EINVAL)?;
->> +                        let end: u64 = end.parse().map_err(|_| EINVAL)?;
->> +
->> +                        if start > end {
->> +                            return Err(EINVAL);
->> +                        }
->> +
->> +                        this.data.lock().bad_blocks.enable();
->> +
->> +                        if sign == '+' {
->> +                            this.data.lock().bad_blocks.set_bad(start..=end, true)?;
->> +                        } else {
->> +                            this.data.lock().bad_blocks.set_good(start..=end)?;
+> This keeps the implementation split from swap-specific code without
+> changing the published LRU helper interfaces.
 >
-> Taking lock twice: TOCTOU.
-
-I fixed all of these, thanks for reporting.
-
+> Update MAINTAINERS and the remaining mm/swap.c documentation references
+> after the rename.
 >
->> @@ -118,6 +125,7 @@ fn make_group(
->>                      home_node: bindings::NUMA_NO_NODE,
->>                      discard: false,
->>                      no_sched: false,
->> +                    bad_blocks: Arc::pin_init(BadBlocks::new(false), GFP_KERNEL)?,
->>                  }),
->>              }),
->>              core::iter::empty(),
+> Suggested-by: Baoquan He <bhe@redhat.com>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+
+This LGTM, swap.c is really misleading, and we can figure out the naming-is-hard
+stuff later :P
+
+So:
+
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+
+But also - do we want to rename swap.h to folio_lru.h? Actually that's less
+clear as we have actual swap stuff in there too.
+
+I do also need to do more work on the softleaf conversion for e.g. swapops.h.
+
+> ---
+>  Documentation/admin-guide/sysctl/vm.rst | 2 +-
+>  Documentation/core-api/mm-api.rst       | 2 +-
+>  MAINTAINERS                             | 3 +--
+>  mm/Makefile                             | 2 +-
+>  mm/{swap.c => folio_lru.c}              | 2 +-
+>  5 files changed, 5 insertions(+), 6 deletions(-)
 >
-> [..]
+> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+> index 97e12359775c..31d135e107cb 100644
+> --- a/Documentation/admin-guide/sysctl/vm.rst
+> +++ b/Documentation/admin-guide/sysctl/vm.rst
+> @@ -20,7 +20,7 @@ of the virtual memory (VM) subsystem of the Linux kernel and
+>  the writeout of dirty data to disk.
 >
->> @@ -155,6 +160,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
->>                      home_node: *module_parameters::home_node.value(),
->>                      discard: *module_parameters::discard.value() != 0,
->>                      no_sched: *module_parameters::no_sched.value() != 0,
->> +                    bad_blocks: Arc::pin_init(BadBlocks::new(false), GFP_KERNEL)?,
+>  Default values and initialization routines for most of these
+> -files can be found in mm/swap.c.
+> +files can be found in mm/swap_state.c.
 >
-> It seems weird to construct this Arc in two places. Is it shared or not?
-
-In the case where the device is created via configfs, the `BadBlocks`
-instance is shared. When the device is constructed via module
-parameters, the `BadBlocks` instance is not shared. In this case it is
-actually not used, as there is no way to enable the code path. But we
-need to provide an instance anyway.
-
-I did not want to use an Option, because I did not want the checks on
-access.
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+>  Currently, these files are in /proc/sys/vm:
+>
+> diff --git a/Documentation/core-api/mm-api.rst b/Documentation/core-api/mm-api.rst
+> index aabdd3cba58e..d6d189b9a996 100644
+> --- a/Documentation/core-api/mm-api.rst
+> +++ b/Documentation/core-api/mm-api.rst
+> @@ -117,7 +117,7 @@ More Memory Management Functions
+>  .. #kernel-doc:: mm/hmm.c (build warnings)
+>  .. kernel-doc:: mm/memremap.c
+>  .. kernel-doc:: mm/hugetlb.c
+> -.. kernel-doc:: mm/swap.c
+> +.. kernel-doc:: mm/folio_lru.c
+>  .. kernel-doc:: mm/memcontrol.c
+>  .. #kernel-doc:: mm/memory-tiers.c (build warnings)
+>  .. kernel-doc:: mm/shmem.c
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e3ee97f5474e..6bd39e0afceb 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16900,7 +16900,7 @@ F:	Documentation/admin-guide/mm/multigen_lru.rst
+>  F:	Documentation/mm/multigen_lru.rst
+>  F:	include/linux/mm_inline.h
+>  F:	include/linux/mmzone.h
+> -F:	mm/swap.c
+> +F:	mm/folio_lru.c
+>  F:	mm/vmscan.c
+>  F:	mm/workingset.c
+>
+> @@ -17045,7 +17045,6 @@ F:	include/linux/swap.h
+>  F:	include/linux/swapfile.h
+>  F:	include/linux/swapops.h
+>  F:	mm/page_io.c
+> -F:	mm/swap.c
+>  F:	mm/swap.h
+>  F:	mm/swap_table.h
+>  F:	mm/swap_state.c
+> diff --git a/mm/Makefile b/mm/Makefile
+> index eff9f9e7e061..5f712f9bbe73 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -50,7 +50,7 @@ endif
+>
+>  obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
+>  			   maccess.o page-writeback.o folio-compat.o \
+> -			   readahead.o swap.o truncate.o vmscan.o shrinker.o \
+> +			   readahead.o folio_lru.o truncate.o vmscan.o shrinker.o \
+>  			   shmem.o util.o mmzone.o vmstat.o backing-dev.o \
+>  			   mm_init.o percpu.o slab_common.o \
+>  			   compaction.o show_mem.o \
+> diff --git a/mm/swap.c b/mm/folio_lru.c
+> similarity index 99%
+> rename from mm/swap.c
+> rename to mm/folio_lru.c
+> index e4b3dadaa6dc..7dab6a544d94 100644
+> --- a/mm/swap.c
+> +++ b/mm/folio_lru.c
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /*
+> - *  linux/mm/swap.c
+> + *  linux/mm/folio_lru.c
+>   *
+>   *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds
+>   */
+>
+> --
+> 2.43.0
+>
 
