@@ -4,136 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEE1ECD6E5D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B675CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:57:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06A6B6B0088; Tue,  2 Jun 2026 22:56:34 -0400 (EDT)
+	id 91EC46B008C; Tue,  2 Jun 2026 22:57:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01AFA6B008A; Tue,  2 Jun 2026 22:56:33 -0400 (EDT)
+	id 8F6A36B0092; Tue,  2 Jun 2026 22:57:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4C476B008C; Tue,  2 Jun 2026 22:56:33 -0400 (EDT)
+	id 80C8C6B0093; Tue,  2 Jun 2026 22:57:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D168E6B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:56:33 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 853071A0208
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:56:33 +0000 (UTC)
-X-FDA: 84837088266.03.B89CE98
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7C28D1C000B
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:56:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BSeD8SxQ;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780455391;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F6FF6B008C
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:57:25 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1317C1C0DE4
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:57:25 +0000 (UTC)
+X-FDA: 84837090450.21.2EC95FC
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 42CD818000C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:57:23 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HRV8kLaI;
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780455443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/Rb5GuP7qCXvv6hVFVd3PQX3Qg81rzHoqmLNRToBEiE=;
-	b=ywrsSrevCC9aInXfZyaA2iTp1NV8QT4O3YpcLPuzhOr3bpzgVVCPW7hVbgeTWluCUbgwx/
-	+rN0FKA8sLb3m9cBIWYBXzyEOA+odWhsOXICZjWUUoAyPELntydIZrn+fArtta8PWrmlQ/
-	TWbPUA5749V+Ju7C4+mqi2FGQYBX4LE=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BSeD8SxQ;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780455391;
-	b=5cTviCewmaoptdyivBTcEbaphkOji8pnBBrUDNkgnK/H8238uBD4MzkTzgBAzNz9AvaDrc
-	UjczZTuDZgUdoPnPBtEqteHB3FPM97mhkrt/L91Sw7p5FJ4Jf7OVHAPyx9AiGPOKiDEnrO
-	A3ed+SaJwO0OnfIXeAFesOMJynrYtyk=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6870ad8072eso461125a12.0
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 19:56:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780455390; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WxibTdQWo+6DxfxZNpKwaB4CNNQIO9zKSnTtUO1MFkcVCC/0I0ruvGoG0x7l7cW88S
-         3YD7PopVH/BiHaGCP9K6oE/710dvTe7yewOHCfdG9s0WEDrnb6DMtTiy8QolU3K2XIPi
-         o7aH1sI2HA5VwRNCyCtuewsNdhxXQ05nUYvacKcwqtjpJmWW/PHj9raZU28k7bza69zM
-         7j2ymFBCpreuRzyu8w3FbUOF9RRIcTn9DL7YQCLMaeZhJQMO4cASxgXRTQOtVGNPp4xe
-         pp87Wbp+ULKHB6SFww3ol/UUYfHqujP2qgVhWOn5160FqSidTyQYgIs/TFE4Qn8pq7ce
-         q84g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/Rb5GuP7qCXvv6hVFVd3PQX3Qg81rzHoqmLNRToBEiE=;
-        fh=CHBn88Pv+E1zEJ6F6TFJio4FD+0v7HJrGaQook214w0=;
-        b=br+R4M9yWgb9rj14zTD9oY2lty1ek0QxUqlrX6NXtYmmQBw61Arb80ZDTEyA1WjonH
-         tn5tlb/mW+vkNeL0BFDx7yB5+tadYe7sG6ad1RamR0XJZ7zH98r/PtZTqkIopfk8UZVE
-         6+ONkA2cI0i9rPXoUt1clxBVZDqBD765mRQYB0q8kj8KpuHQimK22TeA31vrpQEICL5a
-         sCo0TT57mfbcn7Rz6yA/zswLJ/I9AmE4+CbAUJCq/hbDfdLVXUymRV+AL7ZzU8Bbshyw
-         +YGY7H2KnZvIb/KUTrO3KNaLgnDvZkJ9VWuLb13B8DJUCB/ySuuSjZrSbeQGZpmAezcY
-         yCMA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=y3awZDWC/0BEHXSInI6v/h4g63e1F9fJCkxQA7vD56Q=;
+	b=YrPfhzQJCZ8y0ugdGyk2hupQURAY3QbRaOqZ1TiJtWlPU0xY+kq8CxgUauxlRH0ilnQHFT
+	gKg5c3VgsBgbR3LNnQa0k53RXQP7zizuPpoEhORAXhRx2yImVFSkPPqgcMH1n8n15AWF+R
+	9EIR9eZsu7hbDS5qHTK+Lj9DKiv320s=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780455443;
+	b=xmIH7KUV/4bbC8iUc18Fn7HGB8bt0yxDtVX5IJI4rnslzJxHzPovkI0Kx86clI7csr3sMc
+	nVfaNSaPEGMEkPvnsiZjqqzQG75v/3GUbBDsxCzKs9oVgENAXq8uBfIOoE9gKtSTQHrweA
+	WbJPOkAZ0PWadk+pEtsqBfbyP2TJI98=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HRV8kLaI;
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-915671abd29so264474585a.0
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 19:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780455390; x=1781060190; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/Rb5GuP7qCXvv6hVFVd3PQX3Qg81rzHoqmLNRToBEiE=;
-        b=BSeD8SxQrnKPkqegVCaaFGu6qj7VT2fdHFCzy69hv2oG4Foiw0fVoVtp1em9/Do5AO
-         ifIH1y1Dppmst9djxuqO+o86bsOrVPl1Kju51kDkAfgwMtX4NI6+LG1LZxH3HGs0NMhX
-         ZUzLi+y131p1pFyCLrRKsk7zZy5WtT6qei5e7s6mPcIpIWd5NHvKX3x+rE9WzqooSeY9
-         FSWuCHm+78V7rgdSYfQwnGvgg/KYGOvFX4peTgQLbQAypWKHQ4Frx+OAysqV6vkJRc8h
-         uutld3Y+lVhnlIV6tB4oeGTk1KMooNQDqYHDHfWrqAoFygxmIpwvTJQcektlgavCY5kg
-         bOlQ==
+        d=soleen.com; s=google; t=1780455442; x=1781060242; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=y3awZDWC/0BEHXSInI6v/h4g63e1F9fJCkxQA7vD56Q=;
+        b=HRV8kLaIdz1zhXSZTQBDQ9ppvx66zzgkE/vNmdiHKMmhJDxUXTOmnRv2vRAFUu137t
+         jDfcEjnwP/ViLY20HODWbwm10fzmxstnDQqhihIaTBY/O5U5ehx9vMyqNibOlAL7insy
+         RnVMMWySPzngt1TiHlOS5YyJJe10DjDs6JiVrPar1TJJoq+YXhrK4zllDjDwsGeNjFex
+         43Bh0lgq9SOmZ6YB/bpR7TX6e+BcZZqp10q7KSRQWZHr8yoeCKxaVQfUGCbBGnoqpGH/
+         XDy1Pdf10gU7XicbeonQkBQgD/Vjy+UCPRTSMTm61CAXN0vaOeCn6DIO5ZqHOfdrFj3A
+         r3dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780455390; x=1781060190;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/Rb5GuP7qCXvv6hVFVd3PQX3Qg81rzHoqmLNRToBEiE=;
-        b=D6OgcFMtX4OXiXwNazRFMrPuvwtxVFZ7sCA9FhTyoN4XJYxa03KP5Au/FayTuRCDzK
-         YhSPAzsXRCE5jXK5x/1CAjkLJ4SnW6FEBPm7NkVYOrE02nuHHm5clfJkf7sSN1Fe2nge
-         gdWqKzCe09RMnBD+bHtWGO8VCZdBYE1c2yO6eczoWkI4zRreSTBXd/SWmWoxwDt8x8V9
-         To5cRRmnQMk9UEVb4EwhQDJBqzpHQvyrZUp3XTdvEXPQ+/dCHd1UxiPeJbVuYIkqQHhz
-         TH7XB4o05LQIyGAuhKAJbpQv22BWW7H8QU53lLg8MeMw/Lk5Jjzes1AV+D08HLXRdbK7
-         PnGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9HgtN9gT2YwfpgZ/sfQH7OyBTPVNheV+F8oCUhI5w3XesDxzmWHmKzOZGyq1D/hkSJn2IZUFvnvw==@kvack.org
-X-Gm-Message-State: AOJu0Yx0rODzfp0wg1zHWhV1wKzQPNUjriHLDlLP91J0V792A2zxqwu1
-	FswVZFggqxquidLLxocCDJZdv9zPWOkS0kKfBt7Np1w71yyK8zFuQWgEurW6sw2lUYBI9XxzP7i
-	/9vglPJD9W1Dn6YJEOPbUDR6zzsCpFQs=
-X-Gm-Gg: Acq92OGUZsi/lgtK/hfbYiT9jcmGFnVF7UvJ3S1InTjNWGQfL0Shdlq2K/+ybOsgTN3
-	9hxsK2L36WU2rkRjLQupOFj25sH44LTwbTNpzNytXoSFgU/I2553OqA9bI79RKiTfcF/5NNZRHD
-	m1RUnYiF1/LgtAomspWW7OC6bbeS4zguvvQ0+A9yH5WWdcIgdAoD13upjB1Vl17Whu7OnYHdpbp
-	JbT+hcm5DE9FnvXOd6bd2hh4hCEr888dAN4aLGxdQR4lfSc33pCB33EUQsrnMuaYU0SRN9HXM7a
-	tm20NCxmKOp2UiU/tx0UHm5BpTOyao+6BLhZN7c+PCeC5EznsQ==
-X-Received: by 2002:a05:6402:e98:b0:66f:76c8:f747 with SMTP id
- 4fb4d7f45d1cf-68e6de77840mr515951a12.6.1780455389723; Tue, 02 Jun 2026
- 19:56:29 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780455442; x=1781060242;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y3awZDWC/0BEHXSInI6v/h4g63e1F9fJCkxQA7vD56Q=;
+        b=gKfBaLKeR7M/K9GZdgqXGlAeevEquyhrBhZck8VwOGUtzCgQqakGSVZTHVtOOD2QLA
+         dMNUTyIKRyENAAzLT+x94FBArgJPZTnPdp3027j5ePADEouk4lKCGX8LDN7f+R6xhydo
+         MHMfDt3lt6YfhHE5E3XUvtMuztcoxg4+KWL0oFuyaUTjSXJgY74d4m/i1Y9M5DwTQu7D
+         z8yEETL298fy4JQdutpRda+eS7SFWcdXo9V69Sf+a1evAVgod6m2ySiELvE0nT7aLOZV
+         fga0Y9bnlrh+Wb0q6sOrS1ux6NqhtyU1YQP/peTeEEz3Irch7jqCDG/9Lm24NseIbtxQ
+         nscg==
+X-Forwarded-Encrypted: i=1; AFNElJ86SA+NSZfcbc9kOzzC9unvnmFCsDp24vabVSNCu4AlkkUCjLMufamr4PrFowMoLAC9aKnDKxhzGA==@kvack.org
+X-Gm-Message-State: AOJu0YwoyKiik11wGH4WfjKdiFLnxj5rGjQbHTYIimgdaH2DEpI3J7mI
+	tH/4xiH7t5YgCepsBMrfbgPbpF2ej5cPh/cuGn8FnSghHF4q3HGAoqDt7MuP3Hx2gHU=
+X-Gm-Gg: Acq92OERx6URFOLprFgCN+Sqxw5Ffc6KBqthmc/nSj00rm09tFpKAwsS6DhmJEL5+8k
+	j7AC1CK3pkYcfL3R8JB8rIdWnp8LQk8K7xQbuq9R+Ms3imscmcllWV27lhztQYPOMGUWj4f0PgI
+	g+1deZmuhyhxwtr64boJ5T94qgbfsg2bw+W2oL8pobbRRwCkTVumZZI/PYmJu0PEDkdI+P70YMy
+	F71pJQNyCDXQzukQcCOA+QROMrRb2pjx5xissXrUJD9S63R1TF/n69fDM+MEODke3FbV/u3dkBF
+	6FBcOlfj44CSnUWfibVo/xOjNDqEj79jsvYijLOYQFHfbckXJ6DYGfQeznYphe9f/rlssAc0whw
+	lNSC0ywg7LXsIhdaTuzWOD9Dzk/7Zhd+uX9IkV7wk/8GRh6xmjfms6XQKt5SEUvbh5MLnnHG1eR
+	GMSjIEZ1UwEP2XZOEzB7vjCgyS3+1hK44P2050QQl+7SuVTL1tQUuSXllCUxy8gg==
+X-Received: by 2002:a05:620a:3199:b0:915:86c6:8432 with SMTP id af79cd13be357-9158a6979f0mr317963585a.14.1780455442182;
+        Tue, 02 Jun 2026 19:57:22 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a37bae6sm118824085a.31.2026.06.02.19.57.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 19:57:21 -0700 (PDT)
+Date: Wed, 3 Jun 2026 02:57:19 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	corbet@lwn.net, dmatlack@google.com, kexec@lists.infradead.org, 
+	pratyush@kernel.org, skhawaja@google.com, graf@amazon.com
+Subject: Re: [PATCH v4 03/13] liveupdate: centralize state management into
+ struct luo_ser
+Message-ID: <ah-Wov2fvjYbpjHX@plex>
+References: <20260530221938.115978-1-pasha.tatashin@soleen.com>
+ <20260530221938.115978-4-pasha.tatashin@soleen.com>
+ <178038801487.119771.6308607614059754603.b4-review@b4>
 MIME-Version: 1.0
-References: <20260602172247.279421-1-usama.arif@linux.dev>
-In-Reply-To: <20260602172247.279421-1-usama.arif@linux.dev>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 3 Jun 2026 10:55:53 +0800
-X-Gm-Features: AVHnY4IxEMM5he78br7xJ7cYOqbwHi_Rp6qHpRqoT-U_qFFtGzLmEI6F0XIhOiY
-Message-ID: <CAMgjq7Dz9vV+G2vHtstdgpwg_vp-6ij3WiUESBsK1YeMhSj37w@mail.gmail.com>
-Subject: Re: [PATCH] mm/mincore: handle non-swap entries before !CONFIG_SWAP guard
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, jannh@google.com, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	pfalcato@suse.de, vbabka@kernel.org, chrisl@kernel.org, baoquan.he@linux.dev, 
-	youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
-	shakeel.butt@linux.dev, kas@kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7C28D1C000B
-X-Stat-Signature: njouyq1ue1cucow66oarcw71hcq4yx88
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178038801487.119771.6308607614059754603.b4-review@b4>
 X-Rspam-User: 
-X-HE-Tag: 1780455391-367047
-X-HE-Meta: U2FsdGVkX18BNFp5IMUtxFcKuPqxRp5D2QGn2T5ZqRYtCjW/4qVYBMxVDD13d7xbIEDjsMezY5vgFWJaxEW1TDWM4aFzPaUMq6Rdt9hAog7B3n/EJ7dvAkGutTAm38ar//cKwkudGanbSJ3g9FXaMEy9g7wlynmVRDsQ0ByTqVvgulAVtaaJ/coEkWjmx4+JcrH1BpdmGWorDbYcdydHBeVin+ejZ7HksG08yB5KAgGdhlj+GkFw18sPrUSvAZ/gxV3NHFu2lrBNBMNVmXtl5S5+nk0Id7YwjFrNCP4PwPPrZYJjxvb9hIL7fETR9DsXj9HcEzoWGT2FeWIwW7ndQdHmNnfvRrZJPwMrcmfDXoQUCbfz668xF/+gOcU2LYHOUk86tZU0yghDQYGeRaLwTPj/i6aFHhQQ+dLxtz9bPJacY4bFZkMk2bxffYvMiogN6opDFaXhznrKC41ToIGv2aVlIwzGJhGvbL6PlL6sqmiWIcWfM8pUKrGQUjTeT2tOq49+N/fNDG1mClTN5nzdDsYdMdRBkLtfipro9RQI6yhK+iVKv07KaKuYtLky9YW9TxLSZ6UQO1PVTwQGlwyl0oy4/zzzAsIrfGmfMk6Nnxu8zyn2XKN7j6TFixJ8ohrLysf7cd/mCb+R6mqshBwdvBlYWI5tHsQYGNqWzbNTkjBfZHuomiY0VIKeeeCNKCXkxWsd+6xbojS+E3yfZLuTL8TF1e+kuq5UQ8z0PHPCgaUSYUjc/qHh4iHuO2dowMHwMSAMY4XfDgU7hpmldQOoLnLoBJesy0usmlBOtxsoTgPw+wEEYZp+erd7hWYTe6RA5xqnt3tIcilWVbCotjXQqB/5u7FThTYj5/yy8TpLq3avke5ZuvuBZxYBWd1TuNUJC3/WwK9YPiMeei0AcuZ+bFHGWpZwsNlviIP8k4i4/LilnGUKEQQeYrqnX6KAzk6My+R+QJo/vEqqMOtOIHr
- Dq1mNUKm
- Gy/dBtRwO3ljck+BX3ABb/K4Lg2b3UOFivqo5wERZPvSJ4d7DHy2zc6I12NvRehyx7xMy1Ad/thw3UrsLQnGAxw38/SyrbsopOgfenKIi74SLbT0iX2BYlDmCbGiWp4TINVOpOb+AiZrt9GlMAjjh02bRYoaYzsGTo9EK7qFSLWKAS8oYstKpCtkRcJZkqG1MGJfxcAB0nMxjwQTk+dy+tcsY0CbmzQcqw4o6dwbSmX1S4+2VxXo0TefTZUKGytslr2osj3stp6LOcPIIknTtSNvAM7LZFUkVsQU6ai2jIgNzr8eEbU9o0k+eVeZVG8yPhC1NaCOFxr5GU6mCW+RC182+UvarJzhBFSG4SjRlq5BwSU6g68QCOfbW7VLN4UEqRch2xta9N2aw6JZzCtT1sdgEk0ROObtQRUOFUY0nrmxRFHI932f6t8jOrQjunHtxBlp0M28GuwHaEM51BbSmfBSAOkRSVSTv/L5o+vNPoUVVxQZVOYRjD8SpszGcp2ymZyxnt0parLM4YKBE8C6nJi++jNnaw3Z79NUc
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 42CD818000C
+X-Stat-Signature: qotez95itj5quxe6swqtbqdi1rnmcje6
+X-HE-Tag: 1780455443-408612
+X-HE-Meta: U2FsdGVkX1+EsvmVyOIwjDNPbsVuIAFoDjCZgHa5cw7mLv24K9hw4uQDXsG2hybuW/4YGqfPBBBD7U0bajtGdrHXlGtYdOVpEuUu0LDhE+qSXQxRLYX/7KrPOtzQGxSlnLzLgJ0ibJJXep4fCLJTxPdWFsQVA4p+9KH9PFoAhq0axFFuWt1jM4lGCqvQ3wYVszTPFeGjlldUa60ynYs4DHcz/nIYO5/bSkRFtUKoBHKrgirg6rZoL8SS4xi7MoRhivU/R0SSS68RbfcHfNchsX/0FAAqy2iyvXlWBtbp+Izorrn3/0TSc0vhbqfu5VbfjrcJcPlyacE7jpxXMghqeljn0dQlBMdVXyj6g2YCN+FxGNdkCLEQjX51EKKVv+iTc6KY565p5Tf2ecw5It4EiTZ+wAWyJ2/iJpksqHIThZCydDf7YpZg7ICc0XgOfaJFqtjCgxF0l8K4OMqq4L9lY+cnOX2Y9RiOp3/XFQCsrO+QYuN9LbtaA7qqL1FlM/y8Fqp2brMvlktsmX2WKBRdR5trAvJo53/GkslkTc17dgESRx+vD73/Qc0RI7vIx4YylXKI/PtvnRbcVpjRaRncREkSDyMvU+xprpNjTXd0TgA3rYsw81p4PrB/vPph7OTNBSiBwOOrmGhA2I5LdmtaRG69nbHeYQlCO/otm8VutUvYvxOcbbzs76jhqtc0rMBBqsUuyAwbZ2O1T5L6Yf+ZImDzXEATeBiTxfeI/xC4HjQlmBRgyGd8Dckad718jgkgL5F51gnGLScvOPld0FuBQJEJYUbcugy9NpnilmeX6veo5+Hi1pX2ZTTpvFzRuiOLf2eFVbKEkIebySP61Vcs+u1nsqwGC/L2GsFyerq6Fgs/dd9VtAdAGW+8SbN/2POicKvg+N1nhueEWVrjG+D6C1zHKXqLbXSvR8GVMQcVC1cyomofYp2qVGXvOUzEuDZaRHzPT5NVYPFuF1FS4bG
+ 2tTIP4aZ
+ RoZ3zsWEEyH3Js5g3JwLEp/Y0mwTe5KyKzGv039zK+IbH1ak61YrT1AcVvzclY4WL8A1kFr9IyMzK2q5NvDsh4Bj+78hE1EIkwBRKHJpkmKIDG6MfvWuTnOL6LsIsUgXaOlI9VFkRbKcg/+4thVWKHCrm78EOiW1PGj8XgaotS98OjBTygXNWYCG4I7JZdYMYAtx68mZa5BnT5ZIYITPlMP9zDUTh+FUr0fXCcPqhEsajFFUslYjY+ltgo1z++DxH6uAg3iJwVAT9HMmdL4ztOvshK7vJWhv9TYXYIpq8/1Pif83ol7Jm1OdwBwSZ8OyQJP3TvH0itkO1+MsNF+8LIlP4b6P9EXF2bw32XEm6d4q0nibrFm4+uOPAmHvItARsBz0sBjy/FX0210RxGz7LbVLjQggtJlnleIg2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,64 +122,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 3, 2026 at 1:23=E2=80=AFAM Usama Arif <usama.arif@linux.dev> wr=
-ote:
->
-> mincore_swap() also fields migration/hwpoison entries (and shmem
-> swapin-error entries), which can exist on !CONFIG_SWAP builds when
-> CONFIG_MIGRATION or CONFIG_MEMORY_FAILURE is enabled.  The
-> !IS_ENABLED(CONFIG_SWAP) guard ran before the non-swap-entry early
-> return, so mincore_pte_range() can spuriously WARN and report these
-> pages nonresident on !CONFIG_SWAP kernels.
-> Move the guard below the non-swap-entry check so only true swap
-> entries trip the WARN, and migration/hwpoison entries take the
-> existing "uptodate / non-shmem" path.
->
-> Fixes: 1f2052755c15 ("mm/mincore: use a helper for checking the swap cach=
-e")
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
-> This was discovered when working on PMD swap entry series
-> (https://lore.kernel.org/all/20260602142537.198755-1-usama.arif@linux.dev=
-/)
-> ---
->  mm/mincore.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/mm/mincore.c b/mm/mincore.c
-> index e5d13eea9234..296f2e3922b5 100644
-> --- a/mm/mincore.c
-> +++ b/mm/mincore.c
-> @@ -64,11 +64,6 @@ static unsigned char mincore_swap(swp_entry_t entry, b=
-ool shmem)
->         struct folio *folio =3D NULL;
->         unsigned char present =3D 0;
->
-> -       if (!IS_ENABLED(CONFIG_SWAP)) {
-> -               WARN_ON(1);
-> -               return 0;
-> -       }
-> -
->         /*
->          * Shmem mapping may contain swapin error entries, which are
->          * absent. Page table may contain migration or hwpoison
-> @@ -77,6 +72,11 @@ static unsigned char mincore_swap(swp_entry_t entry, b=
-ool shmem)
->         if (!softleaf_is_swap(entry))
->                 return !shmem;
->
-> +       if (!IS_ENABLED(CONFIG_SWAP)) {
-> +               WARN_ON(1);
-> +               return 0;
-> +       }
-> +
->         /*
->          * Shmem mapping lookup is lockless, so we need to grab the swap
->          * device. mincore page table walk locks the PTL, and the swap
-> --
-> 2.52.0
+On 06-02 11:13, Mike Rapoport wrote:
+> On Sat, 30 May 2026 22:19:28 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+> > diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+> > index 8f5c5dd01cd0..c8dd30b41238 100644
+> > --- a/kernel/liveupdate/luo_flb.c
+> > +++ b/kernel/liveupdate/luo_flb.c
+> > @@ -579,53 +565,18 @@ int __init luo_flb_setup_outgoing(void *fdt_out)
+> > [ ... skip 18 lines ... ]
+> > -	offset = fdt_subnode_offset(fdt_in, 0, LUO_FDT_FLB_NODE_NAME);
+> > -	if (offset < 0) {
+> > -		pr_err("Unable to get FLB node [%s]\n", LUO_FDT_FLB_NODE_NAME);
+> > -
+> > -		return -ENOENT;
+> > +	if (flbs_pa) {
+> 
+> I like 
+> 
+> 	if (!flbs_pa)
+> 		return;
+> 
+> more
 
-Looks good to me, thanks!
+Ok.
 
-Reviewed-by: Kairui Song <kasong@tencent.com>
+> 
+> >
+> > diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+> > index 8d9201c25412..3b760fefa7b9 100644
+> > --- a/kernel/liveupdate/luo_session.c
+> > +++ b/kernel/liveupdate/luo_session.c
+> > @@ -497,75 +494,34 @@ int luo_session_retrieve(const char *name, struct file **filep)
+> > [ ... skip 58 lines ... ]
+> > +	if (sessions_pa) {
+> > +		header_ser = phys_to_virt(sessions_pa);
+> > +		luo_session_global.incoming.header_ser = header_ser;
+> > +		luo_session_global.incoming.ser = (void *)(header_ser + 1);
+> > +		luo_session_global.incoming.active = true;
+> >  	}
+> 
+> Ditto
+
+This functions get's re-written with early return later in the serires.
+
+> 
+> -- 
+> Sincerely yours,
+> Mike.
+> 
 
