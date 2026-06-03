@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE76FCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 05:04:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07BF5CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 05:35:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FCB46B008C; Wed,  3 Jun 2026 01:04:40 -0400 (EDT)
+	id D8B556B0088; Wed,  3 Jun 2026 01:35:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B50D6B0092; Wed,  3 Jun 2026 01:04:40 -0400 (EDT)
+	id D69026B008A; Wed,  3 Jun 2026 01:35:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C3E26B0093; Wed,  3 Jun 2026 01:04:40 -0400 (EDT)
+	id C79256B008C; Wed,  3 Jun 2026 01:35:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C85F6B008C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 01:04:40 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99258C0DA4
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:04:39 +0000 (UTC)
-X-FDA: 84837411078.12.507E8CB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E136D14000D
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:04:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=daeM3HzH;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780463078;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+xQ2puumFJ/2qiURGzPXh82LgAz5H1aStJvJVqAWBJE=;
-	b=x+ZDfYnM7f/uw/9XVFMY0FuH45u53u40KhoB6FZdsOSw2NGa13NML4/gnM5HvbNmsc91yU
-	XWtOf80didNYP4h0tVwkl0IbyArq75GHZI7ylqnPp8fXcL+BAUGTq+BYjlQ54p9RakJ76s
-	WvPCSLZmiHWmCcBIIlyAspkVaCbfSx8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=daeM3HzH;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B74AC6B0088
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 01:35:51 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14094161800
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:35:51 +0000 (UTC)
+X-FDA: 84837489702.07.904AD30
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7E91D1A0009
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:35:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=afKyfzPw;
+	spf=pass (imf19.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780463078;
-	b=3uXqEYR3Zu1/kIMDTO6t6sZzHqjcEflt8Z0F9Yq4PuWnburim160bv8r4DPaBF4fWQBkPC
-	5qJz/ejwiEzF2P8+oLZa03z6Bsca3NPu4KWSNJ9bdYmsSYqrZSuVXPpp3g7lDbul5P2ZSm
-	kq5gIYcskJzj9tJ4zbcWpe/0QmwX8RM=
+	t=1780464949;
+	b=n3hD9KZ3kWkqb0HuYehMrgjt2//NsSbqc2rvALLpNLsQIIKjf/gHQIsZJ7S+zwcroU7E4W
+	vZAbIGMo/mNK+eYLtbYoDSIg2vbcaiZHEPMNUGUVZ0LmoUs5dVE4xZnCABAQqq3/R46Q1Y
+	mSJt7Qj2Kx+d1mnZkC5mgo6POmUAE3w=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=afKyfzPw;
+	spf=pass (imf19.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780464949;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sk+fixDbabhLM2/BdXdj31qYla4LMHhKSpCBuaGwgRU=;
+	b=xw+gvqBXzya4akJLa0sYr8BTYHVwWVWVzrSBOcb3ycRSR2djOtzEyCjTwkrrB8tjAzKn4o
+	njZYBbZ08Q/I0TK1/eTRNQ9S6ht3BgQVtieD1tMIyzlJ1e9SgD4XCpQOXwFgktbHR4N+/w
+	NNirFxMgZAJomAQwnza/GJ2xvEnI6Rw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D92C8438DD;
-	Wed,  3 Jun 2026 05:04:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756B41F00893;
-	Wed,  3 Jun 2026 05:04:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E86F260216;
+	Wed,  3 Jun 2026 05:35:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2491F00893;
+	Wed,  3 Jun 2026 05:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780463076;
-	bh=+xQ2puumFJ/2qiURGzPXh82LgAz5H1aStJvJVqAWBJE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=daeM3HzHogcgvKfFDLjYf3G1ILtAH98A4F7+Inlhar4Wicp1Pbpy4AfFwVCHwFkPj
-	 +qcf/Gbr3N4gbgDDIEpBEdkOXUwYR0sqhBicrHA252SfGIt2KGS5ypdhFz7JJTVQRg
-	 cv3AFOvaNK6vv4iJcj4GfKC3aDERXjNDDSgMUkwRosfXrO3Vy2VZEuoWaLcEEwcBvI
-	 EJ4JKmCEAzNIol3zyVHGMDiC2zNbx4henShoYE+xnDJ2g43yJRXULLeG+P74/WZIOM
-	 JU60UQBgEn8pO9ndZX3zCB7dbq91swWI6vG0b7tIBV2LbnCQcJZ3Zzkvro9row33e5
-	 N+IXQrJzXfmDg==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Cheng Nie <niecheng1@uniontech.com>,
-	shuah@kernel.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v4 0/2] selftests/damon: fix memcg_path staging handling
-Date: Tue,  2 Jun 2026 22:04:26 -0700
-Message-ID: <20260603050427.91866-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260601145501.116884-1-sj@kernel.org>
-References: 
+	s=k20260515; t=1780464948;
+	bh=sk+fixDbabhLM2/BdXdj31qYla4LMHhKSpCBuaGwgRU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=afKyfzPwMZnX8RIkQ62Ya83mT2tiXh6A2Y4ngnA3DTORF80aPWcCsA9Ow9tWFaL8P
+	 Q3SeijIk5i44X5Pb5k1chgqbdmQBVYOP3/HhrbGvZIK87zpNHToS09FwTEQEOm0L4d
+	 nEs0ObzT+Pwcm7Rms4afNdAt62/YdphsvEugwPWGcRZ7hd9WuzURbZ446f88NHkACq
+	 KE0n9i1u+Hem+mJsgbcGvS0vJ1Q2wdwpgNUHCP4ztTBnHsukGxjgKCYYzx9RI7Dn/a
+	 n4HtV2VhwPI7pkIPFGuV+xJkLZblh3NOxl5FA5LRYtRH68rxb65adzMMRE1aiklf0P
+	 dwN5Hw0jqlhDg==
+Date: Wed, 3 Jun 2026 07:35:42 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>, muchun.song@linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH v2] mm: page_isolation: avoid unsafe folio reads while
+ scanning compound pages
+Message-ID: <ah-9Lkp3JTsOZUo3@localhost.localdomain>
+References: <20260602130755.38794-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E136D14000D
-X-Stat-Signature: gcppc9jzkgr5ffsz4fjyg7rbifuo5395
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260602130755.38794-1-kaitao.cheng@linux.dev>
+X-Rspamd-Queue-Id: 7E91D1A0009
+X-Stat-Signature: yxy8rxs7wx7qpw8afs7k96jweo1uzumi
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780463077-530060
-X-HE-Meta: U2FsdGVkX18OzCWiP8iKmc69fwok/RR9cze96zJoB0s31hmcYJA3BozCqEALDCwZlt/cLGLmp+jyxcKUDv5NBmoVRF0lGLgBd9rLtulumwhCa0EQn6F1Jj6cP9+4IQR/gN1ChQkjYMsPYAkQaefWKW+MpAowB/59fcUK9+XHRlDNYAKDJHXoLo3x+/NlwHYyh3lRWRROKbPkbxY553lTjH4y4zCWqnK8K+Od4+Ijeht+pTK3/a+QGIFu9e0Z/3/0wdEF80eJZsAVroF2aLXWRkmMIQqM2oTWwQKISR70l8ZNMf3pogRYgUJK4uZRT9V7UVOAm1O5eP88kepj83WYUEH3BGeQp+L6ILjPYphtNmCWnl+RxqG+sISX9yQvqeahFXogHoSWosJ4RL9bbcFn/h9tQULLYEWrUqwU6n0K+bJvMqGfw2tKTCvVMrDg8xLKwZT4TzDXbLuBYKkKoXIby9QnCz6Qwz9tIWZxqugw+25zpKcvFKAMWKWo29LZio+rPB2VGQkvBA9JKs4//bEBcJW7sumRCP4zDt2ORT5vOTQD/Vh+53uVFbFF2WUYMmGChbKzowSH9PZrbBA66/aTW/6G+7F4DjfDzrAQ/RHDeDDDX6Irabswkz6dLR2I3JzkVGzATCN2gfA1bwLQUizBDI+d7FoeQaDXvXwZ7pg3qGWrlJSSyi3fgyixIA0JQ/zGT7OHEXuk/a/6+97jJ+lYboRUsyYizbG56oOSZ56LV84jixNJYv/kIaLWY4Og9sw0oYwnXFNUaRqnlEAWrrVSS+TU4A8Kt//OvMAFyaodPqSYsZwI/32R9SIU4l8lj2ty/zO2QtwfUhtJvC5OOah4IbRwjksa5rP1YMbljLBZyBRs04Nl1npv5yRcE/r08ftCy1RgF2N6FPKOcPLE/uHj61DPuz7+reoR8gXHgiE/UMWIfTrjWkAHzfMheRJZnndns4WnPF3OO2CmKmOpvrv
- Nc3/Pw3p
- 1+lBtQ4raLNpd7rkc7zY7wsbHX1jD2+xMXPwG+vH1T3rvTgpKPy+aFYVjxVehu6SC4dTDT9CgzZpDwxJ8tadh5l589YMJvONpb99j7/e+V9NCAmDk8YGWphr2hNQeurTRZZrW+Z50TumcxipFObrXhQoQXJPCzV9lQY4ynGbPCbL4Fo8582tn6wsL+A5TTNNVV2j7mgU1ODOLEs5bjPGzXg/l/ZLKcb/TbOxad9IqmReUzBnYCA/ZdzOF9/15vkV8miOZ9UWOV4dakRyyYnak72TLJO6sTcHNSmEpM6QbIu+tqrS/rOScRWAjkBCXKeOGdsV0MrUxJCoINC+QkcTUCMaPMw==
+X-HE-Tag: 1780464949-810312
+X-HE-Meta: U2FsdGVkX1+yiK2DOZsA20q7+V7Q7eri4fhShLBtrZNXP2dlP8qW9DptfaKHEmcKQaEri2x5PW11LfDgqHU3v6pESoGuaxFMO/Bl0GQ3Wi5b15kBVxHYMxQS+2hjt0Gksn0dNpbu+UuEkXAzWaof+OSzUnJ37gYWeqBVbLr6kij4YyxdPR9M054dxCLLNp5Vw8D1QTrhP9nVpuqWiV2aQ1052StlO284GfbjNHo9PEfhs+8XrPDgmXGjVo67DBVCcJ8+i/GoAnv+3CyuI92d6MUbxyRuFMpscrug5IHgryDeiSErfgCirt2oKQEtVX0JSJAs9AW1LfDZiLkI3Ecmy0Flu4DBQWBQ0o02nal2PMF6eWGK6RPm7oZvgNDmYaX0sOl9uuPEzdId2S0tajGvU6l0B/Ixg5v7EABDVgSh78mImfusWlwLyqczm5HdH2e3nRU+y5Uf5VQvjCV+49i9uC89ycUFaLjnIqz5538ucBDFZuaxwDZe/U8KAFKW2s5xbib7am4rFBlaASGIbhRh91X7W5x7fzC2CvPjrDH2KtLTi/OfV7t99Vh2z9XOZEM5NqYkPZD2BBT77ckk4zx1emGhlQq/CkGXer1sjggFH4pbVgPC1zJcEKa2oe0lj3SJozUTdnqD3CFGjOk8z/hxMJR/eiJanTNZS9hBQ8YxFVm3DyKRYbJ/86E8GZTV8N2OYuNWHp7CZW06gjIN+1stAkkWeIRikpUZ1UQ8kVfd0MMzKgT8d/L9aAuj3L7YyCjWFAzBf5dH6u2qjdPby6DZwjN9c50n1sq7RkccuW5H2PRo3cLpXDAeM+hmXglWplgw+lorrXngk6yrT62IBsNTAczxrgqMJHkuFVuYdcalR8JNpEz9ZYv/y5Dtbwv50swTZw9Tff2xgdAtoQz1dBDAyrVBvN4CKGxZV2AppV5lzIBs0KOMIbSM1Nq6KYFjS7OFpZowmlJN60op39fSCHF
+ Eoz1rdAY
+ 6aVTY8TE1W9mHz2zU8knwZL5Y/KwI8p6XcWcyIoJ9fL1aYueWH0Jjo3VBl1Pnfw30eHDla4+oXigvgymn65pHKMx5OadSEXmJoItxGqW2IijRdw6eAV5hrycCQoD8F3LR7XhDreUBuOsr03M9viz6jqQhHUaM+SvzD8w85jj+tsVX3mymTd8salbApmbsw9SHDt3xcLpXu621ttIlt2JPml0pNqrSv0t+hIgDww9128HvOOuRM/C3hgxA+xDS8qGfow/P31ERVc8yjtHT7Le7xD65IYStG83bi+X9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,54 +100,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  1 Jun 2026 07:55:00 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Tue, Jun 02, 2026 at 09:07:55PM +0800, Kaitao Cheng wrote:
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> 
+> page_is_unmovable() can inspect compound pages without holding a folio
+> reference or any lock. The folio can therefore be freed, split or reused
+> while the scanner is still looking at it.
+> 
+> The existing HugeTLB handling already avoids folio_hstate() for this
+> reason, but it still derives the hstate from folio_size() and later
+> derives the scan step from folio_nr_pages() and folio_page_idx().
+> These helpers rely on the folio still being a valid folio head. If
+> the folio changed concurrently, the scanner can read inconsistent folio
+> metadata and compute a wrong step. In the worst case, folio_nr_pages()
+> can return 1 for what used to be a tail page and the subtraction from
+> folio_page_idx() can underflow.
+> 
+> There is a similar issue for non-Hugetlb compound pages: folio_test_lru()
+> expects a valid folio. If the previously observed head page has been
+> reused as a tail page of another compound page, the folio flag checks
+> can trigger VM_BUG_ON_PGFLAGS().
+> 
+> Read the compound order once with compound_order(), reject obviously
+> bogus orders, and derive the hstate and scan step from that order
+> instead of querying folio size information again. Also use PageLRU(page),
+> which is safe for the page being scanned, instead of folio_test_lru()
+> on a potentially stale folio pointer.
+> 
+> Treat an unknown HugeTLB hstate as unmovable so the scanner does not try
+> to skip over an unstable HugeTLB folio.
+> 
+> Fixes: a0a9f2180b90 ("mm: page_isolation: avoid calling folio_hstate() without hugetlb_lock")
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-> On Mon,  1 Jun 2026 17:01:19 +0800 Cheng Nie <niecheng1@uniontech.com> wrote:
-> 
-> Having a sentence for the cover letter would be nice.  E.g.,
-> 
-> '''
-> Fix a bug in _damon_sysfs.py for damos_filter memcg_path setup, and add a test
-> case of it in sysfs.py.
-> '''
-> 
-> > Changes from v3:
-> > - call stop() for cleanup without checking its return value
-> > 
-> > Changes from v2:
-> > - configure memcg filter before start(), remove commit(), ignore
-> >   start() failure, verify memcg_path staging readback only
-> > - use print-style error messages as suggested
-> > 
-> > Cheng Nie (2):
-> >   selftests/damon/_damon_sysfs.py: fix memcg_path assignment
-> >   selftests/damon/sysfs.py: validate memcg_path staging readback
-> 
-> From the next time, please add links to the previous revisions [1].
-> 
-> For other readers,
-> v3: https://lore.kernel.org/E4B88E7D4879D1B1+20260601074250.203583-1-niecheng1@uniontech.com
-> v2: https://lore.kernel.org/4CDA28DC581FDCF8+20260529090845.1696845-1-niecheng1@uniontech.com
-> v1: https://lore.kernel.org/406BD1BA0F6AE326+20260528081039.1192194-3-niecheng1@uniontech.com
-> 
-> I applied this series with the cover letter sentence change to damon/next [2]
-> tree.  If this patch is not added to mm.git in short term (~1 week?), I will
-> ask mm.git maintainer (Andrew Morton) to pick this.
-> 
-> Andrew might want us to repost this series after next rc1, though, as we are
-> apparently wanting to make mm.git more stabilized at this point.  Andrew, pleae
-> let me know if so.
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-Apparently that's the case.  That is, we are now quite close to next merge
-window.  We want to focus on making mm.git more stabilized and therefore ready
-for the next merge window, rather than adding more changes that no really
-urgent.  I understand this series is not really urgent.  Hence, I will request
-adding this to mm.git after next -rc1 release.  Let me know if you think this
-is really  urgent.
+ 
 
-
-Thanks,
-SJ
-
-[...]
+-- 
+Oscar Salvador
+SUSE Labs
 
