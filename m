@@ -4,91 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5674CCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56BD3CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:41:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C5D86B0088; Wed,  3 Jun 2026 05:33:06 -0400 (EDT)
+	id 712C56B0088; Wed,  3 Jun 2026 05:41:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99CAD6B008A; Wed,  3 Jun 2026 05:33:06 -0400 (EDT)
+	id 6C3726B008A; Wed,  3 Jun 2026 05:41:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D94E6B008C; Wed,  3 Jun 2026 05:33:06 -0400 (EDT)
+	id 5B2EB6B008C; Wed,  3 Jun 2026 05:41:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8125F6B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:33:06 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 30363161AA9
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:33:06 +0000 (UTC)
-X-FDA: 84838087572.03.7778E00
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 49A746B0088
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:41:55 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2FB6401A6
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:41:54 +0000 (UTC)
+X-FDA: 84838109748.18.AB2DE71
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8292740014
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:33:03 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rx1cSpJl;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 092D014000C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:41:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RfNCbFBE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780479183;
+	s=arc-20220608; t=1780479713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R3CPe9L+Xkc56uXDetG+lvovbz0JWP1jQopKoFbSJqc=;
-	b=JaLZGwPSNKlygOMaEtDFcjSH3+j4cI1tRPX6hyZQ+qaJaf1wbc4/1ac5UwcErw+Hcplkz5
-	bF1FjgTMc/GN/Bc5YiRoOjjaAFPAW72IUl3elcTJYH6vLBWbcGb+r2yp8n8gJWMBCE49t4
-	xG4tvHDcdhvTjxPgR4uhp//muZrH+6E=
+	bh=63211LnYkiUjqO9V3W2tlS45oL0M1lm/njpjy+4Gnfg=;
+	b=MY5+pUg4c1diEP+qHOJLSIti3UOQ2xacoEIQRqsZBBHnxuwRklyEbC4kyBmkkw/t/S+qeP
+	H/U7pxeKJOGfRGnlDX9nam7hlGVesV2APH8pnNUKAckxSWGmHlHnbKwCqDK3FI9RFwLnAG
+	txUVIfqkUIcq0UabTGbOR4aJmljeXPA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rx1cSpJl;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RfNCbFBE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780479183;
-	b=RTTcwpt3Y2ZOEt8EmMGLrKhKuTqMaSk+TrGYUpeD7lmlMkf8yOmcz41f0SxOxyA5VtKIJl
-	qxisCXbIMH5wXVPJ3e/PbrUKbCxeTpBvpD9u3U+hj7+EcX2iCgViJ/w3rF97lCTvXMghUV
-	d5qLuLgjMs2s4LE0PzO4QVANSnRuGVE=
+	t=1780479713;
+	b=l7xM8HaxztfBIUk3iDwS/z7lfyfWAxfUZjIKQAVFF/bLtOEndlF75dQNctfgpxYWfLkww4
+	nIEfJZ0ni2l17uVM4y10soAN5mHSvfPpYM75DzsuE7R6CEokIpDB7dAmkXRnaH0Ld7u7oF
+	Du/yoMf29pgaetqyIt8Mlhi2/2XKM7w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE1B241AAF;
-	Wed,  3 Jun 2026 09:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FAF1F00893;
-	Wed,  3 Jun 2026 09:32:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EC955405BE;
+	Wed,  3 Jun 2026 09:41:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167E11F00893;
+	Wed,  3 Jun 2026 09:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780479182;
-	bh=R3CPe9L+Xkc56uXDetG+lvovbz0JWP1jQopKoFbSJqc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Rx1cSpJlGAM0YKvGloDx4NCqR14Zez0e6wNchackcfyp3UWVdcBZSI9zTWDzbxJ9K
-	 0bxYsTiuDHtW/iHnjIsxs7z7YmLa/cvEP67GMnbC5TqLxuuYjSd9o2npCUDV6PIt54
-	 kYFUq53Ow4olqnLx+dT8XKv53t10rlH8/YbanQ4smjEdtkzz+MkZIos8WgrWvz8Hgv
-	 GdrOWQQWdzDSFzD42zxtkp5aHFnN/hw/tz7d4s5PJ4OE4yrRKkGRclDGlKGRnYIs+2
-	 4M9Mq4C9Ui6I3VnVRfzjhRHXZlFvXiHaWX4z0hcmznIOTu5avK9NWnL1AmPAJAPNMh
-	 H47PAq9cno9jA==
-Date: Wed, 3 Jun 2026 12:32:54 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org, shuah@kernel.org,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, corbet@lwn.net, dmatlack@google.com,
-	kexec@lists.infradead.org, pratyush@kernel.org, skhawaja@google.com,
-	graf@amazon.com
-Subject: Re: [PATCH v6 04/13] liveupdate: register luo_ser as KHO subtree
-Message-ID: <ah_0xsPC_oNPewVk@kernel.org>
-References: <20260603032905.344462-1-pasha.tatashin@soleen.com>
- <20260603032905.344462-5-pasha.tatashin@soleen.com>
- <178046942429.468621.9591914636403075487.b4-review@b4>
+	s=k20260515; t=1780479711;
+	bh=63211LnYkiUjqO9V3W2tlS45oL0M1lm/njpjy+4Gnfg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RfNCbFBEaHmRyGCH6pyRnV+DY8NpzyHBZh7DwdPfYVb0Odn9BRLxYHUutQ29olLZx
+	 ZsH29A+/x+8D38wwRUoG9nWCd9lOG7fzCt+oLvlVErrZNuDAUVKWaXmjSOv//EnJkn
+	 Ez7Bdwkj6wPHURCDhzHJFUDP2hNml5b3Xc1AAw2XmHeANhkdj3G+z+pRBDkLFWJn8L
+	 D8IHRRR+RtqV5KbBC40T4//Q3q3j+FbU7iIgYqo+D8MXM/401AuXKXbmiUlebdVIP0
+	 e+QkZLbCWjwA/NJUwMWGVD4qagIZ1Ak+tw3EiYFVFyFTwRbJM0DamhrE83cPiA2mfc
+	 g0uoAGmPh7DOA==
+Message-ID: <64fff44b-27ae-4943-a199-d8764dc28f80@kernel.org>
+Date: Wed, 3 Jun 2026 11:41:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178046942429.468621.9591914636403075487.b4-review@b4>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8292740014
-X-Stat-Signature: cporwfmi5t5zmxp4nh3e3xwaiocmbzde
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: simplify the mempool_alloc_bulk API
+Content-Language: en-US
+To: Christoph Hellwig <hch@lst.de>, harry@kernel.org,
+ akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-block@vger.kernel.org, linux-mm@kvack.org
+References: <20260602160038.3976341-1-hch@lst.de>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260602160038.3976341-1-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1780479183-436120
-X-HE-Meta: U2FsdGVkX18iAGauNOkZBP8nWCo6lsO1DiDMqUGbYoeilOQQB7993WKoVHljXY7eGE8RTeorqvwLVW/gOQrJ9IIPM7Cy2H2D+XUFCP8FKkSMSdHBkiMpbFqEoTg3ozllSyS/Y2AUKN9YDZBPo5Z7xy1zsPgEIN90TP5MO50EAzAn50eHuvexUmBm2dEdmz9Zxlj3sV9Ya9VW7zRRhW89kzSeiTVlaTbxc1J5XgEVcrPgvx8zpgWffuwuWpPJLvKeIBo4jKGBBrSXVRnqUyP50QgxhD50lFg7JomixCSqLf5QiV26FqWuG2QQRdh5F/wNNNF9lVhH7mq6F2VugllVVgG5QFR5lMI7PPQ5oPoEJd5LSyhrQ/uiSr2XUkuvdmsmb6I9hC6AvBY+3Ozt2NtxU3rmFyBlKMF+LJs0M/nWAK1mCZLUYoJ/7aDbaoRhxHo0zbRngibAHKsTD76njK5eQE3Z/DlxqNdQcmL/wKTyEUu3zbTsWGp4h6cd8p+y2VD/hR6CsgM59X4cZTfYr0arSf74yOJ+/Re2hfSSONHnHtYZH5/Lo8yTXr5jlZjoXbeBeq/ppCU3i5V6FGpksZXrf4W4ge9+OqSPbjsv7wa4xGgRFnFZloTAKJa0YTNrSsYULn9IdUA+xyLnqcGq+PNbmPSjYzYWnbAwtfddH1qzRQuslg58ap922vLTr/moLTQfU8LzZMmE/NUn6lCvE7mcwqR0Vcz2QHLeXI2vSWZz9CYosA/YfEdkqBo+MXTsmxFrRQwdCNwvqtJrdybnDfqb/0HcpKkkAw7szuRXjJ7EWhArR2DstCmrE+0em7LKxT3DGUOnSsAznhIgOFcekRqqqp3oEXtfp+pUX8KpqoVCtb+/F0lpkRK9gJlJOFlaAHeHk8LfMaCA754BHeoeYvwDI0/SnRk7fZzIPzB+0wTvTDrG+7HBpExTxia/EWZ/gjSZTsIu02Q6t0Z9jBexzKN
- OWRVIC+4
- BLAeXGpPsTZsrcYVUXhbRGqHzIav05dHqT+oF8tbqce48s0nQId5nWGUIj7NsAfzZX4FKhJxGG2eUJ+0n8K1nH+PAPUIkNBvStAheezi9AqV50NMkpX8tiCTUKcYpA0V+n9rJoQEOez4iA0Nzp5uKkji/108+v3n92OY9+WErHyW9cpIy700Hwl4IaLx8hX8Are4Wl1B55TGclDZ3utj+BMwqddOug5ceY67axsM0wDyIeje2BLR8LxyGph0bsbNMSWQpNocH/FGgIEvrdOx4iuo5BMz21Oh9teDTJuUbWctQ+4Q=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 092D014000C
+X-Stat-Signature: ffxfn1btsf7fwdb84nhtgny5zmdbnjoj
+X-HE-Tag: 1780479712-413988
+X-HE-Meta: U2FsdGVkX1+D1cQ7F8qMKYpUaZ9JZYp51+eSCLfzEfLzYJfRFvMO83iEg3YtrZdfN0mTmJWjmVTKhgnKxzFtoCvh2f4TfdG4f8TJZaJYk4ur5UT0HXw5lXTvpJeJhaNWvObEWNYzCf5eFHZPMeQAm7kQCZtXew1ml+HcFqZ3yWi5s49ffYWpSwE0ZTVeD9LJZn4veWStrxxPyB58MXAQ78Dk8H8Gv0ZlwazYXh6/zVx/9V8tylUnCOSZB2Y+0TaTOr/53v3JuQmiNT5aXLgHFG0HksAKEFBOLN5lUINJ7UbKpZ93TqWig8cuX7Rb8Sq/CLzevB+n2rqI/LsKzqe9V5fTCNGuV+wReivTd+QGUrZieLKpJLiw76KHv4+457IC5eKdgTR7wuO3CCzKovh3ITOAuQfRzBFEZ8IPChHDHtkn6lX/V+uQB8mi3nLQycUlVXvk+mpyqWmLmJDkBmdE9EVFgKEO+oyDTIYp1TGmpvDec92/9wUDY2zHPY0y6mDTIlmdpQr0AcKTYEs8FbPDhmwN0BIoX57hwQ/Y+leNleZCwYv3IhI7sqvjku2AimwZ6UPZj5MLFe4e1PmRFPAXd5rjp3VXyuxWHcXQsIevatKM6xsCHTul68bsuuXNOlLAYt3LxOZUDaUeNP0jaP7rbqmQnE/zVmRWy4T3Ja/nJt/cX0AkBpDKabjS3o4p2itZ9HNDV1ljGs//heetWXz+t6EE0HC1gaHjj8TPUQkJJFX4V4aduU++SMn6rqEW5CDyv81Buw5ecFbZyW3/2hXIGNttlVvq4WFVpZ8VgJLXC6d4lrLQJN2RwHbjJzvUpcz/eTsQGN+L4OW6KBzZdlKnubTlAwjo5c3sPCOUYCK4UVLr4XXUQEEyJXd5hLU2OV20ZSa3JZUtWGvPmKQdXEXpITg0fqL1LcKQ/CL4KDJMEWr7DhIFRPyOy0UIiqLQfnZSPC29Ijrl42lSSJzCE9a
+ Z2xktg90
+ i4SZ4wnKPs9y4D4Az0WNSGJxxG9malWHhKqfV/aHq6p2YBxgNTcW3VJPKxLTS3T7gyfOJzG4ngFnbifCzLUf79cqX3dFrN70ZMvGdoY7WYFNlwZICijBpsUC664Xm31eTiPh7S7HCEeCe1zw6pXKn7beLY24fw1Xpf8YWtJT7uJAG91iGtQytYBax5pHRSDhEnwAhp8VkB88CEXQ3bEio0dcYpE92PiRBX723DY4dGGc3kNfsaoJkNGmHhGlneJSTMbbsy1cFsrVpja5jnBnKj7AftPkeam1HH/P+yMGs6N4s4bexisv34lAbGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,18 +133,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 03, 2026 at 09:50:24AM +0300, Mike Rapoport wrote:
-> # Add your code comments below. There is no need to trim or delete
-> # any existing content -- just insert your comments under the relevant
-> # lines of code. Lines starting with "> " are quoted diff context and
-> # lines starting with "| " are comments from other reviewers.
-> # The final email will be reformatted automatically to include only
-> # the sections that have your comments.
-> #
+On 6/2/26 18:00, Christoph Hellwig wrote:
+> The mempool_alloc_bulk was modelled after the alloc_pages_bulk API,
+> including some misunderstanding of it.
+> 
+> Remove checking for NULL slots in the array, as alloc_pages_bulk and
+> kmem_cache_alloc_bulk always fill the array from the beginning and thus
+> we know the offset of the first failing allocation.  This removes support
+> for working well with alloc_pages_bulk used to refill page arrays that
+> might have an entry removed from in the middle, but that is only used by
+> sunrpc and hopefully on it's way out.
 
-looks like b4 review bug or misuse from my side :)
+Importantly sunrpc doesn't use mempool_alloc_bulk() so we're not affecting
+it here.
 
--- 
-Sincerely yours,
-Mike.
+> Also remove the allocated parameter as it is redundant because the caller
+> can simply specific and offset into the entries array.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+
+Somewhat late, but small and affects only one caller. So applied to
+slab/for-7.2/alloc_bulk on top of the kmem_cache_alloc_bulk() change.
+
+> ---
+>  block/blk-crypto-fallback.c |  9 +++++----
+>  include/linux/mempool.h     |  2 +-
+>  mm/mempool.c                | 27 ++++++++++-----------------
+>  3 files changed, 16 insertions(+), 22 deletions(-)
+> 
+> diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
+> index 61f595410832..ab6924fba280 100644
+> --- a/block/blk-crypto-fallback.c
+> +++ b/block/blk-crypto-fallback.c
+> @@ -199,8 +199,8 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
+>  	pages += nr_segs * (PAGE_PTRS_PER_BVEC - 1);
+>  
+>  	/*
+> -	 * Try a bulk allocation first.  This could leave random pages in the
+> -	 * array unallocated, but we'll fix that up later in mempool_alloc_bulk.
+> +	 * Try a bulk allocation first.  This might not fill all allocated
+> +	 * pages, but we'll fix that up later in mempool_alloc_bulk.
+>  	 *
+>  	 * Note: alloc_pages_bulk needs the array to be zeroed, as it assumes
+>  	 * any non-zero slot already contains a valid allocation.
+> @@ -208,8 +208,9 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
+>  	memset(pages, 0, sizeof(struct page *) * nr_segs);
+>  	nr_allocated = alloc_pages_bulk(GFP_KERNEL, nr_segs, pages);
+>  	if (nr_allocated < nr_segs)
+> -		mempool_alloc_bulk(blk_crypto_bounce_page_pool, (void **)pages,
+> -				nr_segs, nr_allocated);
+> +		mempool_alloc_bulk(blk_crypto_bounce_page_pool,
+> +				(void **)pages + nr_allocated,
+> +				nr_segs - nr_allocated);
+>  	memalloc_noio_restore(memflags);
+>  	*pages_ret = pages;
+>  	return bio;
+> diff --git a/include/linux/mempool.h b/include/linux/mempool.h
+> index e8e440e04a06..a0fa6d43e0dc 100644
+> --- a/include/linux/mempool.h
+> +++ b/include/linux/mempool.h
+> @@ -66,7 +66,7 @@ void *mempool_alloc_noprof(struct mempool *pool, gfp_t gfp_mask) __malloc;
+>  #define mempool_alloc(...)						\
+>  	alloc_hooks(mempool_alloc_noprof(__VA_ARGS__))
+>  int mempool_alloc_bulk_noprof(struct mempool *pool, void **elem,
+> -		unsigned int count, unsigned int allocated);
+> +		unsigned int count);
+>  #define mempool_alloc_bulk(...)						\
+>  	alloc_hooks(mempool_alloc_bulk_noprof(__VA_ARGS__))
+>  
+> diff --git a/mm/mempool.c b/mm/mempool.c
+> index db23e0eef652..473a029fa31f 100644
+> --- a/mm/mempool.c
+> +++ b/mm/mempool.c
+> @@ -419,12 +419,8 @@ static unsigned int mempool_alloc_from_pool(struct mempool *pool, void **elems,
+>  	spin_lock_irqsave(&pool->lock, flags);
+>  	if (unlikely(pool->curr_nr < count - allocated))
+>  		goto fail;
+> -	for (i = 0; i < count; i++) {
+> -		if (!elems[i]) {
+> -			elems[i] = remove_element(pool);
+> -			allocated++;
+> -		}
+> -	}
+> +	while (allocated < count)
+> +		elems[allocated++] = remove_element(pool);
+>  	spin_unlock_irqrestore(&pool->lock, flags);
+>  
+>  	/* Paired with rmb in mempool_free(), read comment there. */
+> @@ -479,22 +475,21 @@ static inline gfp_t mempool_adjust_gfp(gfp_t *gfp_mask)
+>   * @pool:	pointer to the memory pool
+>   * @elems:	partially or fully populated elements array
+>   * @count:	number of entries in @elem that need to be allocated
+> - * @allocated:	number of entries in @elem already allocated
+>   *
+> - * Allocate elements for each slot in @elem that is non-%NULL. This is done by
+> - * first calling into the alloc_fn supplied at pool initialization time, and
+> - * dipping into the reserved pool when alloc_fn fails to allocate an element.
+> + * Allocate @count elements into @elems.  This is done by first calling into the
+> + * alloc_fn supplied at pool initialization time, and dipping into the reserved
+> + * pool when alloc_fn fails to allocate an element.
+>   *
+>   * On return all @count elements in @elems will be populated.
+>   *
+>   * Return: Always 0.  If it wasn't for %$#^$ alloc tags, it would return void.
+>   */
+>  int mempool_alloc_bulk_noprof(struct mempool *pool, void **elems,
+> -		unsigned int count, unsigned int allocated)
+> +		unsigned int count)
+>  {
+>  	gfp_t gfp_mask = GFP_KERNEL;
+>  	gfp_t gfp_temp = mempool_adjust_gfp(&gfp_mask);
+> -	unsigned int i = 0;
+> +	unsigned int allocated = 0;
+>  
+>  	VM_WARN_ON_ONCE(count > pool->min_nr);
+>  	might_alloc(gfp_mask);
+> @@ -514,11 +509,9 @@ int mempool_alloc_bulk_noprof(struct mempool *pool, void **elems,
+>  	 * Try to allocate the elements using the allocation callback first as
+>  	 * that might succeed even when the caller's bulk allocation did not.
+>  	 */
+> -	for (i = 0; i < count; i++) {
+> -		if (elems[i])
+> -			continue;
+> -		elems[i] = pool->alloc(gfp_temp, pool->pool_data);
+> -		if (unlikely(!elems[i]))
+> +	while (allocated < count) {
+> +		elems[allocated] = pool->alloc(gfp_temp, pool->pool_data);
+> +		if (unlikely(!elems[allocated]))
+>  			goto use_pool;
+>  		allocated++;
+>  	}
+
 
