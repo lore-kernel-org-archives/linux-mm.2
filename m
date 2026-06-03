@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51DDECD6E64
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 08:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF204CD6E64
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 08:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEFF06B008C; Wed,  3 Jun 2026 04:06:31 -0400 (EDT)
+	id 5246A6B0093; Wed,  3 Jun 2026 04:07:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA0676B0095; Wed,  3 Jun 2026 04:06:31 -0400 (EDT)
+	id 4D5296B0095; Wed,  3 Jun 2026 04:07:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DD7D6B0099; Wed,  3 Jun 2026 04:06:31 -0400 (EDT)
+	id 3C4806B0099; Wed,  3 Jun 2026 04:07:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 90C776B008C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:06:31 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 211801401B7
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:06:31 +0000 (UTC)
-X-FDA: 84837869382.25.28F690E
-Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 715341A0005
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:06:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="CkDYJ4X/";
-	spf=pass (imf19.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A61E6B0093
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:07:10 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DFEEC1201F6
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:07:09 +0000 (UTC)
+X-FDA: 84837870978.15.F9E11F6
+Received: from va-2-114.ptr.blmpb.com (va-2-114.ptr.blmpb.com [209.127.231.114])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C3EC780014
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:07:07 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=U4dMfXKX;
+	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780473989;
+	s=arc-20220608; t=1780474028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0+pxu4QONrexAlpcc34zjw3GPn7T+Jri0V38RE3OFI0=;
-	b=cOgkREG9JGb0gAz7EFk8eLvJpnUJKABPa3mCB9vlA9e9JgzO3kODsc1UuYDlGTmk6ezFTq
-	dg7kiAQYjLZwFYupx89VDNdivKO3kAsrbkenz2pOpchU3j1++6mgeP16fWRBxbuEBOsXkn
-	U8z+LK6Am4Fyi8osX1m+/RSWiTD7oOk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="CkDYJ4X/";
-	spf=pass (imf19.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	bh=QbTAW4+JtusN/1ajk2i57VFeY4ZMdb/3rGS57KirNj4=;
+	b=Oz+slKWd+I+WNNEtYAuu9iBa7y1cvGarJ1THipHamn82DcE7xYGEmH2Q5VlgxI7R2PYBl7
+	FT/Hoi1u4rFj28jok8s8IfbqDayiC7taAHwLlLdsYdzsBg0Q76p0OQ/oO00MkiuzFqAJw/
+	M0IxeY75j/hv1tccXQQDOGC5c7nAmz4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780473989;
-	b=L41esz5NCCkMrNellv1goV1fggTcqzseJ3cf7m52Ab1F4aj0vnzwUwMIRmPHDGsmDON8yA
-	gbdcaTqFnBliSFdhvnTqX1xBPF0pR8KhiIKQs57pPSWmBE8MINU+iLnPGCMoETMYTmov1m
-	xo4Gt8KID2S/mSIoL5aWKv/tLNPn1UQ=
+	t=1780474028;
+	b=1CrMkdzgG6RxPa69tmohNUGXpobKFXZsXD940DaNHInwH5jqzj8433rHvPXgbh4WEVnleU
+	ESujbukJrgb8mS+5/3WE5XDiOTWIfAD/8FuJ2wcYlbJ6MFK6zP1xS6qXNEtWud7u3gxjfj
+	h1ZZ1kpsAYehbZS7JUghCsJIGY4C25Q=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=U4dMfXKX;
+	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1780473984; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1780474023; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=0+pxu4QONrexAlpcc34zjw3GPn7T+Jri0V38RE3OFI0=;
- b=CkDYJ4X/V8qxLlchNcKL8fTOAaZ4SJAT0AeDzNjKgbuv+HwOZ6ihzOAovB0owB1QkxfNZ9
- tVTJ+gDHEMddKMXnFvr5PEdiSqviN+/Qwp92BzlD+geecV13gUF6GXs8PxomqT5Q6FmIuH
- 8lhCJBHPh8aiUP74KkseSaQNWo6YD9dSLRfcPyIA/utuGYqg289KZym8pAExSH7WA3Kpmg
- RNr28bCo97u9isEoHZKdEhQkuY5IZ0xppZ9IarAIspLg6VDJGPnSsj69S2A7zTmJ8mdkuH
- JDWLImM+rCaaHlxbRn44RN2opAML2ZrfR1DoqyebT6FMrVkZdFhNcXZo3owtlQ==
-Date: Wed,  3 Jun 2026 16:01:49 +0800
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: git-send-email 2.45.2
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: [PATCH v4 5/8] mm: extend the template fast path to zone-device compound tails
-X-Lms-Return-Path: <lba+26a1fe07e+398489+kvack.org+lizhe.67@bytedance.com>
-In-Reply-To: <20260603080152.64728-1-lizhe.67@bytedance.com>
-References: <20260603080152.64728-1-lizhe.67@bytedance.com>
+ bh=QbTAW4+JtusN/1ajk2i57VFeY4ZMdb/3rGS57KirNj4=;
+ b=U4dMfXKXNBR99SZJTA3fZeC7T+ReleTpxNpkP5iVjZwBtp1OeC6g2aTZGuDRc+eJwpED+i
+ NY6uRJ1TGh20Ek4WJOxe1ZtTdNydHqNmQ7+CcoK3Eq3zLcc4rD8MoKZoIfeF79HUymeyev
+ UQ/4IXBCLuG8l0mcM5JLX8xABZaAKFw3ZZRdrbZCGjHx0xiAmiGAeMrMdvFFYu19TVH+RS
+ xxacHLnKPIRxM6D+0iuqSgRAqq5/ccz1Twu+4Q/m95WqO4bV+DHwiLb/G63thl5jc+0J+4
+ nJkB4DiJ8wR07xqGb1Zl1lIiOrD4UoHnqIeFHvnxcqo+/gMATzvX4xToDNsBuA==
 To: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
 	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>, 
 	<kees@kernel.org>, <mingo@redhat.com>, <rppt@kernel.org>, 
 	<tglx@kernel.org>
+Date: Wed,  3 Jun 2026 16:01:50 +0800
+X-Mailer: git-send-email 2.45.2
+Content-Type: text/plain; charset=UTF-8
+References: <20260603080152.64728-1-lizhe.67@bytedance.com>
+X-Lms-Return-Path: <lba+26a1fe0a5+a1ada7+kvack.org+lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+Subject: [PATCH v4 6/8] string: introduce memcpy_streaming() helpers
+Message-Id: <20260603080152.64728-7-lizhe.67@bytedance.com>
+In-Reply-To: <20260603080152.64728-1-lizhe.67@bytedance.com>
 Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>, 
 	<lizhe.67@bytedance.com>
-Message-Id: <20260603080152.64728-6-lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
 Mime-Version: 1.0
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 715341A0005
-X-Stat-Signature: 45r8p1xo41og6pbaa4df3jhkh9bdgmae
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+X-Rspamd-Queue-Id: C3EC780014
 X-Rspam-User: 
-X-HE-Tag: 1780473989-689579
-X-HE-Meta: U2FsdGVkX1/ZxqqDLQ2qXCRmYzVCbsdit8etFpNZPRjricAE6wIcq0WJrMN59dQmgr2Tyhe7stbQYc9IK7kFUq9Azzh4mt4+t5+biobc3jvUgiQ2HPTkr+vtVtKqgmm670MMeWS6NoEHxR5GM51gOs8AdE9KCyjfIqpo/odY+QXkmA7d9/5iqstR1J3Ffkd1MgVVDU62hJGdWKbvMJKAiDo9hps3bEWlshncddujt/a7GuX8G1omGXgIeHEdqe/gJc8j0nHU4gvLfFwIttetfjszTx9DjYpOJtMS0f+9V3UCitQiom/l1o2Xc9br0G3pfp+VkmAoNvtTxrPSFA2rcRz1Wxun+NxZYCv2Smv83NLTxdvZHgvEM2mOhu7bNVkRvznJzcaWZVqjOfk4fl5ZDvj7fo+rqTv3GOmfBc5NyZtB6AgbJEj+4J9jIXDCDHXbS8G32Vc+xfvMdFGOA2BwNC8wpmNlo2ymqQ41VhT4wrsQ/qai4ZHJV2wlnTlDZidgi2PrAc3r3cjNZwgpyGduPbortWb+WpWaPDfZ1n7ok5PkgmAYQfST7mX4wUVyVn0HANZEEUyo9+BYQgv8ndz5sHYiju3tndfDUdY5bsdx59YVQWHahJhy6gfiNCfE2wFFyeGNuWTO68jWPraC68T8ijmgM2q2AcqckZZp7XejJKIxw4omYHGtXgLoy4D7N+ZVusBTL2C37446wyb/PChz8PDR3/Hy/ncIQAw3ZOSsKSZu2tVKBsMwwF4/h3OCwUAiYvfXpnNiUei+O3tr7Xdsu6WHecUkz/W5QyIgcdLgkSEiZJcXWkKFu9yprPwzKzSjEpWDI8psdPS2FK/rwgDIsjJ4sHL0b9VxYHgBliE+4ZFUo9BF9X5xbZ1A/epbxCUqXxQEa7PpBPVmicNcWST0CUBm6cP22mcosSRbOIqmUyshpc6mQDJskrKv2pWanQ2MXXC4wPQgNR0pz4MJBPi
- RxLYTNbh
- KgNoNQOmww/8gPuMwyJ9t3A1AiwU2FB7PWa3JVJBTRS8+7yLAUVu4ieSLC7TPzyZhgzV+ivbkcWxIJBWkD1hE4HPMcmH/ii76Aq36pRXd+hjwceFuoPkwhy2os08Pg+lgUWgZthhDuxHw+WpXoaQylXn9Tf1IFaFdTWC5cRq2md37ucEKR1g4zmjq6JRe3lPUiltB1SSj3QNotwmERXlapoP7rm1v0NZ0zxJdvPk04xAPzb5XRbncLQGO3YjDnOLyiyWe
+X-Stat-Signature: ib6cjenq14gg5sddybday46gcu8ym5c7
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780474027-767494
+X-HE-Meta: U2FsdGVkX1+iATjtHza6IAJIzya/kvSBFpjJZwnN7l4cJPTpQzbrN3biT8fZRtMrDQOd+HUHdQn6V/Dy1Elud6WJIXmA4KKPUXcPyr0317gnZrg0LKMHmuftieIjdEJ5tsAfDwNLkfPs6IXYsYBsZYB70Rp3zsog0iUTPCBHbMs51m94Cle3zEQjJ6DlvhmSWHUtEwyFAW3CXvkiJJ7FSpWl+MQYwPUwSIj9EmZT+MMZ6hJQMT6LmlF8nWLaTC1Srv9s7koi5M5pu6OiSxaQOfKpS+jACj3xukA4tH1yrmRJbLgEm4eKq2crQ7L/4fh+BXa/1oYZybNmpSCvPkXKTKWupBXG9qm7NuTyvXkGaRYHrqQ+kvW/MZJNtg9UtSBBu8++TQhEFVNAAPa1r9g+2KVbzhO0E91/Q/nFfDBPgSBGQ/9Re4/3Jqy8fjMKGirA/MpuF71vF9FIR1z1xHU7YFJqX0cSLCajQ8cZx4ah6VE6MAfg39YKmaql8BmPY4NZDC7MM1PjX2L1IFYgK+MgKbAT9Tl+QgGM6ZytpTBsL3QGLER8LOR/+4mIpspPc4l+0OxK0ya/TAjPuDnl3jcLDY2pjYDfLtqbkyjrDf2xHBRl+JlV03oysiWo4E32eG/RwaAxsCun3O3YEepb9JmiORE5lZElNR3xafrxSTMwkEwZGp9T+yui+sZTtlYbg18sWxRJMBc+DDbJlhU3frmu6zqAzOIBj8UYmHWJdOfjiz2qrIayl7Ns1BqSu6+b8ZVHeCcFm3rJjJJb3abMbIVbZgDv7qHmLBMym6DpYmPBSY5ai3V1XYvWRrVo/JStgUJp6us19rKtjujxJSdG0bxBYHptQ1Fj3F+KZgnDypYrkRDDuy8LjGRRRX5r1fjjaw0sU1RgRUfiYqJHeaTL28V0U15MPyc9dzHJIvpn77yUSYFX22mv0SSSC5U7NBnO+oacScs6yneNvLBaihyKB2z
+ awPA9qxx
+ 1SuRrtj5hI7TQrjgt1BZI0yl73wQXZzt2Dybs6YG/bRBK645YosAV0u30eG5zEZjhldGvOh4cYvJBZYFpF68XBtFmnP1xQ8K0KNNo3LxKVrREMR7pcwsS6vb2N7kAY8Nph1qfFkJHPuahLSqJ6w8e7ipWUupDUoMkb5j8LwOB5+kp042DO03ag+wkmFbQo9UZeNND8//HsxdoNnIAlcY60LfUQ7w6PEn9uBGw8kVl0hKSAfuwEAGxvRqaeRz2PVZ868PvTEDWxKMFSyj+WeaVUPrODPfkS+d94VvOzHUid5bnaRl+BVZtSYrqRQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,133 +93,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The template fast path from the previous patch only accelerates head
-pages. Compound tails in memmap_init_compound() still go through the
-slow path one by one.
+Introduce a generic memcpy_streaming() interface for write-once copy
+sites that can fall back to memcpy() when no architecture-specific
+optimization is available, or when an architecture-specific backend
+cannot safely handle a given transfer.
 
-Build separate head and tail templates and reuse one prepared tail
-template across the tail pages in a compound range. Head pages preserve
-the existing refcount policy, while compound tails always start with a
-refcount of 0 after prep_compound_tail().
+Add memcpy_streaming_drain() alongside it so callers can separate the
+copy primitive from any required ordering point. On x86, use
+memcpy_flushcache() and sfence only for aligned transfers that can stay
+entirely on the non-temporal store path; otherwise fall back to memcpy()
+so the generic API does not expose flushcache semantics on cached
+head/tail fragments.
 
-This extends the template-copy fast path to pfns_per_compound > 1
-without changing the existing slow path. Tail-page PFN-dependent fields
-are refreshed in the reusable tail template before each copy.
-
-Tested in a VM with a 100 GB devdax namespace (align=2097152) on Intel
-Ice Lake server. This test exercises the dax_pmem rebind path and
-measures memmap initialization latency.
-
-Test procedure:
-Unbind and rebind the dax_pmem driver 30 times, collect memmap
-initialization time from the pr_debug() output of memmap_init_zone_device().
-
-Base(v7.1-rc6):
-  First binding: 1430 ms
-  Average of subsequent rebinds: 229.12 ms
-
-With this patch and its prerequisites applied:
-  First binding: 1336 ms
-  Average of subsequent rebinds: 180.00 ms
-
-This reduces the average rebind time from 229.12 ms to 180.00 ms, or
-about 21.4%.
+Callers are responsible for invoking memcpy_streaming_drain() before
+later normal stores that must be ordered after the streaming copy.
 
 Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 ---
- mm/mm_init.c | 46 +++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 39 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/string_64.h | 32 ++++++++++++++++++++++++++++++++
+ include/linux/string.h           | 20 ++++++++++++++++++++
+ 2 files changed, 52 insertions(+)
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 56fe71e966ae..ad078ee354fb 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1083,6 +1083,16 @@ static inline void zone_device_template_page_init(struct page *template,
- 	memcpy(template, src, sizeof(*template));
- }
+diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
+index 4635616863f5..aee63108577f 100644
+--- a/arch/x86/include/asm/string_64.h
++++ b/arch/x86/include/asm/string_64.h
+@@ -4,6 +4,7 @@
  
-+static inline void zone_device_tail_page_init(struct page *page,
-+		unsigned long pfn, unsigned long zone_idx, int nid,
-+		struct dev_pagemap *pgmap, const struct page *head,
-+		unsigned int order)
+ #ifdef __KERNEL__
+ #include <linux/jump_label.h>
++#include <linux/align.h>
+ 
+ /* Written 2002 by Andi Kleen */
+ 
+@@ -100,6 +101,37 @@ static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t
+ 	}
+ 	__memcpy_flushcache(dst, src, cnt);
+ }
++
++/*
++ * Only map memcpy_streaming() to memcpy_flushcache() when the destination
++ * is already 8-byte aligned and the size can be handled without cached
++ * head/tail fragments in __memcpy_flushcache().
++ */
++static __always_inline bool memcpy_flushcache_nt_safe(const void *dst,
++						      size_t cnt)
 +{
-+	zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
-+	prep_compound_tail(page, head, order);
-+	set_page_count(page, 0);
++	unsigned long d = (unsigned long)dst;
++
++	return cnt && IS_ALIGNED(d, 8) && IS_ALIGNED(cnt, 4);
 +}
 +
- /*
-  * 'template' is a reusable page prototype rather than a strictly immutable
-  * object. Most ZONE_DEVICE fields stay constant across the pages covered by
-@@ -1134,10 +1144,12 @@ static void __ref memmap_init_compound(struct page *head,
- 				       unsigned long head_pfn,
- 				       unsigned long zone_idx, int nid,
- 				       struct dev_pagemap *pgmap,
--				       unsigned long nr_pages)
-+				       unsigned long nr_pages,
-+				       bool use_template)
- {
- 	unsigned long pfn, end_pfn = head_pfn + nr_pages;
- 	unsigned int order = pgmap->vmemmap_shift;
-+	struct page template;
++#define __HAVE_ARCH_MEMCPY_STREAMING 1
++static __always_inline void memcpy_streaming(void *dst, const void *src,
++					     size_t cnt)
++{
++	if (!cnt)
++		return;
++
++	if (memcpy_flushcache_nt_safe(dst, cnt))
++		memcpy_flushcache(dst, src, cnt);
++	else
++		memcpy(dst, src, cnt);
++}
++
++static __always_inline void memcpy_streaming_drain(void)
++{
++	asm volatile("sfence" : : : "memory");
++}
+ #endif
  
- 	/*
- 	 * We have to initialize the pages, including setting up page links.
-@@ -1146,12 +1158,31 @@ static void __ref memmap_init_compound(struct page *head,
- 	 * the pages in the same go.
- 	 */
- 	__SetPageHead(head);
--	for (pfn = head_pfn + 1; pfn < end_pfn; pfn++) {
-+
-+	pfn = head_pfn + 1;
-+	/*
-+	 * All tails of the same compound page share the state established by
-+	 * prep_compound_tail(). Reuse one tail template for the whole range and
-+	 * refresh only the PFN-dependent fields in that template before each copy.
-+	 */
-+	if (use_template) {
- 		struct page *page = pfn_to_page(pfn);
- 
--		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
--		prep_compound_tail(page, head, order);
--		set_page_count(page, 0);
-+		zone_device_tail_page_init(page, pfn, zone_idx, nid,
-+					   pgmap, head, order);
-+		zone_device_template_page_init(&template, page);
-+		pfn++;
-+	}
-+
-+	for (; pfn < end_pfn; pfn++) {
-+		struct page *page = pfn_to_page(pfn);
-+
-+		if (use_template)
-+			zone_device_page_init_from_template(page, pfn,
-+							    &template);
-+		else
-+			zone_device_tail_page_init(page, pfn, zone_idx, nid,
-+						   pgmap, head, order);
- 	}
- 	prep_compound_head(head, order);
+ #endif /* __KERNEL__ */
+diff --git a/include/linux/string.h b/include/linux/string.h
+index b850bd91b3d8..a4c2d4347f58 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -281,6 +281,26 @@ static inline void memcpy_flushcache(void *dst, const void *src, size_t cnt)
  }
-@@ -1200,7 +1231,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 		zone_device_template_page_init(&template, page);
- 		if (pfns_per_compound != 1)
- 			memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
--					     compound_nr_pages(altmap, pgmap));
-+				compound_nr_pages(altmap, pgmap), use_template);
- 		pfn += pfns_per_compound;
- 	}
+ #endif
  
-@@ -1218,7 +1249,8 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 			continue;
++#ifndef __HAVE_ARCH_MEMCPY_STREAMING
++/*
++ * memcpy_streaming() is for write-once copy sites that may use
++ * non-temporal stores on some architectures. Callers must follow it
++ * with memcpy_streaming_drain() before later normal stores that need to
++ * be ordered after the streaming copy. Implementations may fall back to
++ * memcpy() when a specialized backend cannot safely handle the given
++ * transfer, and backends that use regular cached stores can make the
++ * drain a no-op.
++ */
++static inline void memcpy_streaming(void *dst, const void *src, size_t cnt)
++{
++	memcpy(dst, src, cnt);
++}
++
++static inline void memcpy_streaming_drain(void)
++{
++}
++#endif
++
+ void *memchr_inv(const void *s, int c, size_t n);
+ char *strreplace(char *str, char old, char new);
  
- 		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
--				     compound_nr_pages(altmap, pgmap));
-+				     compound_nr_pages(altmap, pgmap),
-+				     use_template);
- 	}
- 
- 	pr_debug("%s initialised %lu pages in %ums\n", __func__,
 -- 
 2.20.1
 
