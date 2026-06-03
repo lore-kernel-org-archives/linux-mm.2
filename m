@@ -4,128 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56BD3CD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:41:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7882ACD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:44:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 712C56B0088; Wed,  3 Jun 2026 05:41:55 -0400 (EDT)
+	id DA5B46B0088; Wed,  3 Jun 2026 05:44:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C3726B008A; Wed,  3 Jun 2026 05:41:55 -0400 (EDT)
+	id D56A26B008A; Wed,  3 Jun 2026 05:44:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B2EB6B008C; Wed,  3 Jun 2026 05:41:55 -0400 (EDT)
+	id C6C9D6B008C; Wed,  3 Jun 2026 05:44:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 49A746B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:41:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2FB6401A6
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:41:54 +0000 (UTC)
-X-FDA: 84838109748.18.AB2DE71
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B5FB16B0088
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:44:36 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5B0021402CB
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:44:36 +0000 (UTC)
+X-FDA: 84838116552.09.75F7A8E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 092D014000C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:41:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RfNCbFBE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id D155A120009
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:44:34 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y/D6RtCN";
+	spf=pass (imf29.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780479874;
+	b=ySGjsjBWmsCohdes0YLBMgNbuJOnaBD1k4Hq07bObMD6zId6xq4fn5hQs24ehFmJZCcbpJ
+	Ly7Y7Oc2XCSrV0m3+UoZ+E8G0vTqZYm7jhyMa7/BAk8hmW+bA8rUhDpZujPAfV3Hc/XZcw
+	F5k2h/H1kpQgJ8a09O/Q6/qHiLIECYE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y/D6RtCN";
+	spf=pass (imf29.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780479713;
+	s=arc-20220608; t=1780479874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=63211LnYkiUjqO9V3W2tlS45oL0M1lm/njpjy+4Gnfg=;
-	b=MY5+pUg4c1diEP+qHOJLSIti3UOQ2xacoEIQRqsZBBHnxuwRklyEbC4kyBmkkw/t/S+qeP
-	H/U7pxeKJOGfRGnlDX9nam7hlGVesV2APH8pnNUKAckxSWGmHlHnbKwCqDK3FI9RFwLnAG
-	txUVIfqkUIcq0UabTGbOR4aJmljeXPA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RfNCbFBE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780479713;
-	b=l7xM8HaxztfBIUk3iDwS/z7lfyfWAxfUZjIKQAVFF/bLtOEndlF75dQNctfgpxYWfLkww4
-	nIEfJZ0ni2l17uVM4y10soAN5mHSvfPpYM75DzsuE7R6CEokIpDB7dAmkXRnaH0Ld7u7oF
-	Du/yoMf29pgaetqyIt8Mlhi2/2XKM7w=
+	bh=mpJeKk9lW29/IyZp1Ki8rVBSZO0YGcY1DZO51pxg2rs=;
+	b=FXc3jJVRKiFMVQmiivb5HCkk/2uDsHVmPEA9VXTKD0tFv11rQv4Ae6+QwIna2K32tBrp9v
+	HzDiWRwYI/tKRl3SIk4gRRavnhaWlweiGhUK3wv5R0dJGBGquC32RviFCM2k0JOSZF8rIQ
+	tzQMFuIBM6GUu91g9XIfQB3zalmOdWA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EC955405BE;
-	Wed,  3 Jun 2026 09:41:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167E11F00893;
-	Wed,  3 Jun 2026 09:41:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EB99D4061E;
+	Wed,  3 Jun 2026 09:44:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D521F00893;
+	Wed,  3 Jun 2026 09:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780479711;
-	bh=63211LnYkiUjqO9V3W2tlS45oL0M1lm/njpjy+4Gnfg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RfNCbFBEaHmRyGCH6pyRnV+DY8NpzyHBZh7DwdPfYVb0Odn9BRLxYHUutQ29olLZx
-	 ZsH29A+/x+8D38wwRUoG9nWCd9lOG7fzCt+oLvlVErrZNuDAUVKWaXmjSOv//EnJkn
-	 Ez7Bdwkj6wPHURCDhzHJFUDP2hNml5b3Xc1AAw2XmHeANhkdj3G+z+pRBDkLFWJn8L
-	 D8IHRRR+RtqV5KbBC40T4//Q3q3j+FbU7iIgYqo+D8MXM/401AuXKXbmiUlebdVIP0
-	 e+QkZLbCWjwA/NJUwMWGVD4qagIZ1Ak+tw3EiYFVFyFTwRbJM0DamhrE83cPiA2mfc
-	 g0uoAGmPh7DOA==
-Message-ID: <64fff44b-27ae-4943-a199-d8764dc28f80@kernel.org>
-Date: Wed, 3 Jun 2026 11:41:48 +0200
+	s=k20260515; t=1780479873;
+	bh=mpJeKk9lW29/IyZp1Ki8rVBSZO0YGcY1DZO51pxg2rs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Y/D6RtCNAjdz39r7jaLowrxfi2HQQ3KQ38le3EyL+0WtbqPeghH97gJ+CSbc9vp+R
+	 Zel4nYP/Nc0xzRLj8kVuAeXvOxrEdeCd6WLzmpCq9ZOlbhpa1AqD6Qhj5ZVMEMpizD
+	 /q2uDvTzA0sAQyrlNmNI15QT2BE1cbf0K7EonIBxe8ottQNOfMoofCDsmIn+YBNH+N
+	 narLE2TYJR35kjSqv4n7osaQrTGaOvmCwdogFbKRd/rpXldw2CsKztJEYYIvSgywi2
+	 yfS2mOEuKSIgHSUzqngSflMMXx0Fr/kcWYumsaTZvqmHCyntR0PvUKfJH8NjZdwDXz
+	 UE5BdWHxyURhg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
+ Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
+ <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 28/79] block: rnull: add partial I/O support for bad blocks
+In-Reply-To: <abf0FHWkQzbnOtqD@google.com>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-28-de9a7af4b469@kernel.org>
+ <abf0FHWkQzbnOtqD@google.com>
+Date: Wed, 03 Jun 2026 11:44:19 +0200
+Message-ID: <87zf1cj6vg.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: simplify the mempool_alloc_bulk API
-Content-Language: en-US
-To: Christoph Hellwig <hch@lst.de>, harry@kernel.org,
- akpm@linux-foundation.org
-Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, linux-block@vger.kernel.org, linux-mm@kvack.org
-References: <20260602160038.3976341-1-hch@lst.de>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260602160038.3976341-1-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D155A120009
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 092D014000C
-X-Stat-Signature: ffxfn1btsf7fwdb84nhtgny5zmdbnjoj
-X-HE-Tag: 1780479712-413988
-X-HE-Meta: U2FsdGVkX1+D1cQ7F8qMKYpUaZ9JZYp51+eSCLfzEfLzYJfRFvMO83iEg3YtrZdfN0mTmJWjmVTKhgnKxzFtoCvh2f4TfdG4f8TJZaJYk4ur5UT0HXw5lXTvpJeJhaNWvObEWNYzCf5eFHZPMeQAm7kQCZtXew1ml+HcFqZ3yWi5s49ffYWpSwE0ZTVeD9LJZn4veWStrxxPyB58MXAQ78Dk8H8Gv0ZlwazYXh6/zVx/9V8tylUnCOSZB2Y+0TaTOr/53v3JuQmiNT5aXLgHFG0HksAKEFBOLN5lUINJ7UbKpZ93TqWig8cuX7Rb8Sq/CLzevB+n2rqI/LsKzqe9V5fTCNGuV+wReivTd+QGUrZieLKpJLiw76KHv4+457IC5eKdgTR7wuO3CCzKovh3ITOAuQfRzBFEZ8IPChHDHtkn6lX/V+uQB8mi3nLQycUlVXvk+mpyqWmLmJDkBmdE9EVFgKEO+oyDTIYp1TGmpvDec92/9wUDY2zHPY0y6mDTIlmdpQr0AcKTYEs8FbPDhmwN0BIoX57hwQ/Y+leNleZCwYv3IhI7sqvjku2AimwZ6UPZj5MLFe4e1PmRFPAXd5rjp3VXyuxWHcXQsIevatKM6xsCHTul68bsuuXNOlLAYt3LxOZUDaUeNP0jaP7rbqmQnE/zVmRWy4T3Ja/nJt/cX0AkBpDKabjS3o4p2itZ9HNDV1ljGs//heetWXz+t6EE0HC1gaHjj8TPUQkJJFX4V4aduU++SMn6rqEW5CDyv81Buw5ecFbZyW3/2hXIGNttlVvq4WFVpZ8VgJLXC6d4lrLQJN2RwHbjJzvUpcz/eTsQGN+L4OW6KBzZdlKnubTlAwjo5c3sPCOUYCK4UVLr4XXUQEEyJXd5hLU2OV20ZSa3JZUtWGvPmKQdXEXpITg0fqL1LcKQ/CL4KDJMEWr7DhIFRPyOy0UIiqLQfnZSPC29Ijrl42lSSJzCE9a
- Z2xktg90
- i4SZ4wnKPs9y4D4Az0WNSGJxxG9malWHhKqfV/aHq6p2YBxgNTcW3VJPKxLTS3T7gyfOJzG4ngFnbifCzLUf79cqX3dFrN70ZMvGdoY7WYFNlwZICijBpsUC664Xm31eTiPh7S7HCEeCe1zw6pXKn7beLY24fw1Xpf8YWtJT7uJAG91iGtQytYBax5pHRSDhEnwAhp8VkB88CEXQ3bEio0dcYpE92PiRBX723DY4dGGc3kNfsaoJkNGmHhGlneJSTMbbsy1cFsrVpja5jnBnKj7AftPkeam1HH/P+yMGs6N4s4bexisv34lAbGg==
+X-Stat-Signature: 7i11da8ordccauyssmanm3rk9c4otnsi
+X-HE-Tag: 1780479874-710233
+X-HE-Meta: U2FsdGVkX1+MH8sENLqjGEAYlRVNWAb07XJqVwCXH25nIOkSIvUm9ioEBThaaVn+rCfEkiAUmLSffTbpdimThyuWcS+vypHlN3qzhCA2hY+AlIAW01KqCgE3et+cz/j7bkn1zslPLLHHZ9WUAO8mZ0Y9WIUrJ9c2iNnL+oacn85uo7AxwLZ1hMcmCUgjnqI3QURH2LWEVnf0myK91R5bVGoJziRPQtR7LCtnOE8RrXHeJH85xmkUH4uYx5RjtcazH3kd6AJjvm555yYlRJFED0hCcbgHo2Lko7csSPF4ZQ3QXm+WoX+K6W4ahhSs+M02rMIgJz+uBNcMwgJItlN4b1MvdP/EL1D9jIikMuPGvrM6XyFjebJ93JDqaWPJhtP3wfH8ow7E4JDze9PgMw3SKasrOd80yWr+K5YDok+INBpnxPQIH5X5gfAONYgJRWaHVr6jN6D1cdUAgW8GYC6KMyszrrRNU87aWUsbr01XuIAHAS2FQKu3DPD+DaJIMxOfhm9Kp8kvFrXtEhm9EY/NAhKr6hEZJV7vm1pTINf97pWl9sBulCrWFN1YK7Ct1IosmQ3EfsmVQ5k5/2czNrNeBzg/1+crHf2M9LEjby2rnMLSyduPHQ2ShoIQHSf9gK2BlkLTMQkz3DhjqYe/CIa4H08ZCvFPgqE8SPrlgIg1oaBx12CJu8C2bFsQClqyOz/4A0MeqKhF3nWSuWa10ZSh1UnBKCvhx0M78+z85/zAFZONhEYf3CBhACqC/N0mBgQ+Ei2cL4cxg7/h2RT3qpBY4WDfijrcLCMVyBErfutRzlLdCiixnhN4CMqMYNLHBMWUIPzbK97xQXRM7OVWZU7tGTR8O4fTzKsJhqE6L1XnB91VV5oLTwXUvLHTdz37BP4gmbyAxcbKcXf4KhuLj7R9CZDk3EBBNmI8dYmwkkgAHUtHGloZm9HK8INuYj7nMUni5w5uWqaKQ6YEE+yzVAF
+ rscTS3j+
+ 8psdglzvORVLKy6z06VfZSyvyZyhZxaPCV3Vlak3J8WRhOxs8Q2Lz2NbIpL6b5n1XauRWd67jeGgHPwvqnpV64uiHAdYzIaHKe9JO8qxzlL2j1CY+XZyGchD/u8HyXTPrQDzOJMetJqHo3YCh4XXk81D1sLhVyAGNy21K5t4MBEmjOaSeGQxI3HadpAyx6zu9r2d+hD7jGYjx/g18SVtpZuUwEoDuvaunbFNyvk/yafatS/5pSE34W7I3YghqtO/WrXIcaJWocpxQmeak+DMft9UIy/Ypx83jtLxQiAkcEbRL2O4XpbTuLjsnXqPWZXyd8leqS83484Vx2GE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,135 +101,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/2/26 18:00, Christoph Hellwig wrote:
-> The mempool_alloc_bulk was modelled after the alloc_pages_bulk API,
-> including some misunderstanding of it.
-> 
-> Remove checking for NULL slots in the array, as alloc_pages_bulk and
-> kmem_cache_alloc_bulk always fill the array from the beginning and thus
-> we know the offset of the first failing allocation.  This removes support
-> for working well with alloc_pages_bulk used to refill page arrays that
-> might have an entry removed from in the middle, but that is only used by
-> sunrpc and hopefully on it's way out.
+Alice Ryhl <aliceryhl@google.com> writes:
 
-Importantly sunrpc doesn't use mempool_alloc_bulk() so we're not affecting
-it here.
+> On Mon, Feb 16, 2026 at 12:35:15AM +0100, Andreas Hindborg wrote:
 
-> Also remove the allocated parameter as it is redundant because the caller
-> can simply specific and offset into the entries array.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+<cut>
 
-Somewhat late, but small and affects only one caller. So applied to
-slab/for-7.2/alloc_bulk on top of the kmem_cache_alloc_bulk() change.
+>> +fn is_power_of_two<T>(value: T) -> bool
+>> +where
+>> +    T: core::ops::Sub<T, Output = T>,
+>> +    T: core::ops::BitAnd<Output = T>,
+>> +    T: core::cmp::PartialOrd<T>,
+>> +    T: Copy,
+>> +    T: From<u8>,
+>> +{
+>> +    (value > 0u8.into()) && (value & (value - 1u8.into())) == 0u8.into()
+>> +}
+>
+> This is in the standard library.
 
-> ---
->  block/blk-crypto-fallback.c |  9 +++++----
->  include/linux/mempool.h     |  2 +-
->  mm/mempool.c                | 27 ++++++++++-----------------
->  3 files changed, 16 insertions(+), 22 deletions(-)
-> 
-> diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
-> index 61f595410832..ab6924fba280 100644
-> --- a/block/blk-crypto-fallback.c
-> +++ b/block/blk-crypto-fallback.c
-> @@ -199,8 +199,8 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
->  	pages += nr_segs * (PAGE_PTRS_PER_BVEC - 1);
->  
->  	/*
-> -	 * Try a bulk allocation first.  This could leave random pages in the
-> -	 * array unallocated, but we'll fix that up later in mempool_alloc_bulk.
-> +	 * Try a bulk allocation first.  This might not fill all allocated
-> +	 * pages, but we'll fix that up later in mempool_alloc_bulk.
->  	 *
->  	 * Note: alloc_pages_bulk needs the array to be zeroed, as it assumes
->  	 * any non-zero slot already contains a valid allocation.
-> @@ -208,8 +208,9 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
->  	memset(pages, 0, sizeof(struct page *) * nr_segs);
->  	nr_allocated = alloc_pages_bulk(GFP_KERNEL, nr_segs, pages);
->  	if (nr_allocated < nr_segs)
-> -		mempool_alloc_bulk(blk_crypto_bounce_page_pool, (void **)pages,
-> -				nr_segs, nr_allocated);
-> +		mempool_alloc_bulk(blk_crypto_bounce_page_pool,
-> +				(void **)pages + nr_allocated,
-> +				nr_segs - nr_allocated);
->  	memalloc_noio_restore(memflags);
->  	*pages_ret = pages;
->  	return bio;
-> diff --git a/include/linux/mempool.h b/include/linux/mempool.h
-> index e8e440e04a06..a0fa6d43e0dc 100644
-> --- a/include/linux/mempool.h
-> +++ b/include/linux/mempool.h
-> @@ -66,7 +66,7 @@ void *mempool_alloc_noprof(struct mempool *pool, gfp_t gfp_mask) __malloc;
->  #define mempool_alloc(...)						\
->  	alloc_hooks(mempool_alloc_noprof(__VA_ARGS__))
->  int mempool_alloc_bulk_noprof(struct mempool *pool, void **elem,
-> -		unsigned int count, unsigned int allocated);
-> +		unsigned int count);
->  #define mempool_alloc_bulk(...)						\
->  	alloc_hooks(mempool_alloc_bulk_noprof(__VA_ARGS__))
->  
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index db23e0eef652..473a029fa31f 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -419,12 +419,8 @@ static unsigned int mempool_alloc_from_pool(struct mempool *pool, void **elems,
->  	spin_lock_irqsave(&pool->lock, flags);
->  	if (unlikely(pool->curr_nr < count - allocated))
->  		goto fail;
-> -	for (i = 0; i < count; i++) {
-> -		if (!elems[i]) {
-> -			elems[i] = remove_element(pool);
-> -			allocated++;
-> -		}
-> -	}
-> +	while (allocated < count)
-> +		elems[allocated++] = remove_element(pool);
->  	spin_unlock_irqrestore(&pool->lock, flags);
->  
->  	/* Paired with rmb in mempool_free(), read comment there. */
-> @@ -479,22 +475,21 @@ static inline gfp_t mempool_adjust_gfp(gfp_t *gfp_mask)
->   * @pool:	pointer to the memory pool
->   * @elems:	partially or fully populated elements array
->   * @count:	number of entries in @elem that need to be allocated
-> - * @allocated:	number of entries in @elem already allocated
->   *
-> - * Allocate elements for each slot in @elem that is non-%NULL. This is done by
-> - * first calling into the alloc_fn supplied at pool initialization time, and
-> - * dipping into the reserved pool when alloc_fn fails to allocate an element.
-> + * Allocate @count elements into @elems.  This is done by first calling into the
-> + * alloc_fn supplied at pool initialization time, and dipping into the reserved
-> + * pool when alloc_fn fails to allocate an element.
->   *
->   * On return all @count elements in @elems will be populated.
->   *
->   * Return: Always 0.  If it wasn't for %$#^$ alloc tags, it would return void.
->   */
->  int mempool_alloc_bulk_noprof(struct mempool *pool, void **elems,
-> -		unsigned int count, unsigned int allocated)
-> +		unsigned int count)
->  {
->  	gfp_t gfp_mask = GFP_KERNEL;
->  	gfp_t gfp_temp = mempool_adjust_gfp(&gfp_mask);
-> -	unsigned int i = 0;
-> +	unsigned int allocated = 0;
->  
->  	VM_WARN_ON_ONCE(count > pool->min_nr);
->  	might_alloc(gfp_mask);
-> @@ -514,11 +509,9 @@ int mempool_alloc_bulk_noprof(struct mempool *pool, void **elems,
->  	 * Try to allocate the elements using the allocation callback first as
->  	 * that might succeed even when the caller's bulk allocation did not.
->  	 */
-> -	for (i = 0; i < count; i++) {
-> -		if (elems[i])
-> -			continue;
-> -		elems[i] = pool->alloc(gfp_temp, pool->pool_data);
-> -		if (unlikely(!elems[i]))
-> +	while (allocated < count) {
-> +		elems[allocated] = pool->alloc(gfp_temp, pool->pool_data);
-> +		if (unlikely(!elems[allocated]))
->  			goto use_pool;
->  		allocated++;
->  	}
+But there is no trait for this, the method is defined for concrete
+integer types. I would still need to define a trait and macro implement
+it for all integers.
+
+We could do this in `kernel::num`?
+
+
+Best regards,
+Andreas Hindborg
+
 
 
