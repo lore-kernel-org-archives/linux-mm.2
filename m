@@ -4,145 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46B56CD6E64
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD2E7CD6E64
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:21:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 986876B0088; Wed,  3 Jun 2026 05:17:53 -0400 (EDT)
+	id DA9C66B0092; Wed,  3 Jun 2026 05:21:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 937166B008A; Wed,  3 Jun 2026 05:17:53 -0400 (EDT)
+	id D5ACC6B0093; Wed,  3 Jun 2026 05:21:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FEE86B0092; Wed,  3 Jun 2026 05:17:53 -0400 (EDT)
+	id C4A7B6B0095; Wed,  3 Jun 2026 05:21:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 707CC6B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:17:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0172C1202B2
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:17:52 +0000 (UTC)
-X-FDA: 84838049226.21.B5C7EF3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B0F5A6B0092
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:21:23 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6373E1A02E4
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:21:23 +0000 (UTC)
+X-FDA: 84838058046.30.A46781E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 360531C0002
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:17:51 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NkYh6RYz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5FE89A000E
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:21:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y7ZuQvg9;
+	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780478271;
+	s=arc-20220608; t=1780478481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M0pUtaR4+MO5aeujygdu2I6w5ZAQoI82CxqwwUxfoiE=;
-	b=ap5ktOXC8YNwvxTwDHx777YCC1iPozfbjbWXbSutXYZPjiW06+Y81baimn8DRYpTr8CgY5
-	aZMVGQjKlAM6LclB8vTWt8IwMBxzBzqzMshwsQUf4U96l/hv84d+DjS4v9E0+aSvtmtJuh
-	sFTE9auMFOl9Z2c403zaGLrDW6A+H8o=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NkYh6RYz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=fgLV3qve7G1GecGSZYkHdq6Ku3vCzMZw8vqb7sfTuVg=;
+	b=4mpOQpwpTuGOni7bY7WATwpoQZjnamLyF3Ps8gkljDzkeFDzwg5LoQhrsr7B9DrIhTAO09
+	6C7AKs2FhMNS9SfcsoY+gj3e+1bXXwMv2HSroiBIEMiV+OcUhaNoa4o8pqzzWgTvTmyIJv
+	Zz75nqoga7hv2Ehf3n5ZZ/bie0monw0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780478271;
-	b=XexcM4Gd/A+X+T/KPIVyE/sucZUzlxTQpocWqYxudVGUPoI3GCBx8pZ0A1XTedV8JOF9zm
-	ejqH0H10cp6c8fb25pkrLAyLKZBJFbMrzfK3CKhQ4imG95W3NZ3HlsUJ/bx3y8nFYc7oOL
-	2lXz2iIaXF8+50J9rZEqKSOvk+LUfmM=
+	t=1780478481;
+	b=U5NjDvJlbnejpVGrk93bbfrMvgegyA9DBjlmEkSHe4RZA+66WXg9t21tCdZ6qxfIxS4h82
+	2iJp2IMH3BhwNtxzaXvC9/8+vAcQ81d2RqdrznTjQb7n4rKpdDmwIBpqlXDUi5E/1kgaKV
+	oJdwnlAYihrP3vigei7NWg0y/j0NAOA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y7ZuQvg9;
+	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4998A4099D;
-	Wed,  3 Jun 2026 09:17:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491851F00893;
-	Wed,  3 Jun 2026 09:17:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A15B244517
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:21:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FE61F00893;
+	Wed,  3 Jun 2026 09:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780478270;
-	bh=M0pUtaR4+MO5aeujygdu2I6w5ZAQoI82CxqwwUxfoiE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NkYh6RYztD/v9Cd5qUUF+73iEm/9P8Dxg515rIIt8cpNkQXn0uWsbSjzZ94uOOdJT
-	 8lr2VDF/pFtEj8vN8v2caT9WCT2G9Z4Rq6UiHuCW/5CM0K/fYFpJlmzxzzvELk0/uq
-	 BVOLqgNF9knDhwESnGP5ZFMste8UryYsCYqyJ7VFjS0OmKQkf1uy9VheypRjnl2pvZ
-	 xlHfC6AbaKXzeHOGbNyuhpkqOZUsbCol0WdydURkXHIocM5fXBl244JSyT3vk5npBp
-	 gRrddaqENxSHYNaMAO7aZvprpMklJyWR7Frr7S1uw1kJfHZkXs5zXbnpDTfZihHg04
-	 6J50JPcqEnSKA==
-Message-ID: <5e6948b3-d235-4b61-aed7-e8b4d0f5b452@kernel.org>
-Date: Wed, 3 Jun 2026 11:17:44 +0200
+	s=k20260515; t=1780478480;
+	bh=fgLV3qve7G1GecGSZYkHdq6Ku3vCzMZw8vqb7sfTuVg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Y7ZuQvg99YxIloP6JuBlb5bV2STnlPBaqT7/2KQ40onPIplPQzN+u1eNkUBKbS3mh
+	 68ZjCVbpYMx+GT/1yIJ4ZD+OE9VDDnSGY79gIly/SU9Xzmy96B0nl85Sn0XhnmBDil
+	 1P7v/fkS+PYsr1JN0IMTUKQS1caGnwmKOej9bv/Pu61IetFM3gwokV8KJuCn5TLYTI
+	 IjmkXQOkzQo1kPOnbfUW7plYs5ta0Qxz+MpAhx8VepsbpMoL7aJZ43iaV5uOR6Lv8S
+	 EY2JQwqep9ilqJlDWz2Y74z58kyv+Ei5r6gmXJVwB1kQmCZwB0K35ztJkOJ/BPBVZI
+	 HLiyrfT0TMXCg==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 93F99F40073;
+	Wed,  3 Jun 2026 05:21:19 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 03 Jun 2026 05:21:19 -0400
+X-ME-Sender: <xms:D_IfamWVoxirqa4wUoyUf_9YNIIdJUGWzX7UYNabW5tH_V2oQvC_2A>
+    <xme:D_IfakKXqfeOCg-P0ks-DD41OmvWH7GuH2WTF8ALVrVfp2549FJU1N_6H3f98UW_Z
+    8TAld7-XJftPGCnZFgE7sHBWuN_iQiGLuNUiKCaT2wFA862g16uPSw>
+X-ME-Received: <xmr:D_IfappJfcQ2bXl7jSlWIynDNOE-CU2xw2fecCe-s7e40E9LaegyvgHEBg_rLw>
+X-ME-Proxy-Cause: dmFkZTGE78CzW0IUZCJ6+NkcZ0dLIyp0qtrQ6f1qFCEwHUdT3FoVqs/RhOzjFD2CzZiP+w
+    UZcBx1AJ2T3lSILTzz0RD0vi5Ak/QTV83P71jaPaNS6inZurPhY6FhKeza8gAB/Qya5A+r
+    iyNzakbBbGTv7Cu7dnBJ8fRRLtHmhFuXpGIMvPiNzCY7V/AfgmX7+2N0e6rs2Pzx/R3T1z
+    OKf1cNIWC6iZzltCZtQ+EJEAiHFlvr/ik7QvW+hiaL9rCbtbNqSC79SurWqYwCLdroTjyM
+    zelQS92nT+OPUeuZYGOLV0sE5AMufRlRgPq5VMwZ10Ue8eCg5o6r4Afij1nX4Jn+etLQJ2
+    na6WfHQ778ybBsqNOSkFnKPD9Z4REAsQZoprAkXkvM6de27qpocSVI3uHT+iDVb1qr+bB5
+    rFa/1n2TgN3LVf1I6XzcNjCf27lJJEvSabdzejt+byNU5SSdSWQ7NsNx9BbnR2/DXBbRjb
+    xnTAiDun50qp1SBRNtBtFVQMBeELKHpH4XZ/shgpVfzVAkDz212tApkhfVyhiJAUOCJUpJ
+    m3FO0kBYOmQe012cTsmibWu3T7Ei8hfXI+QwFdpJ9F12AzVaSg/ZRoERGJeqsy6mmAhqmL
+    pro82W1EeYq94vSWZI4uuvHj7tS0CsLmCO0O5D+4XT12Znm7lNVmgaZyTFjQ
+X-ME-Proxy: <xmx:D_IfajyEb8qUL_BxBmlhtHoPVC4cV-kMLEcl6axxtIinjvKqLr9ZHQ>
+    <xmx:D_IfaltDMhvS9NM-oExsyco27eLRd7bX6rwpP1zXBn5qxKT4e3uWpQ>
+    <xmx:D_Ifak3uOBGNZ1myrrCeRZ0pRhQp8GAEp_pq9NlPKLo5BDb0LTFDHA>
+    <xmx:D_IfalDGQm1ETpzBadc3jS0rdCD7g15-OEfY3ECZ4JyyYZTAGixXuw>
+    <xmx:D_IfaqDvxxrKJFKCazDCpi4PtS6Wy3r-POVsBDO7p76wz78kIcYr3tAi>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 3 Jun 2026 05:21:18 -0400 (EDT)
+Date: Wed, 3 Jun 2026 10:21:13 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH 0/6] userfaultfd/pagemap: pre-existing fixes
+Message-ID: <ah_xuV5PUKTfT5ua@thinkstation>
+References: <20260529172331.356655-1-kas@kernel.org>
+ <20260529173448.40a37785ecbecb6868fdd6a2@linux-foundation.org>
+ <ah2S7MJ2VK6R-NSN@thinkstation>
+ <04875b82-6671-4f43-aa59-190fd09c7108@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slab: improve kmem_cache_alloc_bulk
-Content-Language: en-US
-To: rob.clark@oss.qualcomm.com
-Cc: Christoph Hellwig <hch@lst.de>, Harry Yoo <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Mark Brown <broonie@kernel.org>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Jesper Dangaard Brouer <hawk@kernel.org>, linux-arm-msm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, io-uring@vger.kernel.org,
- kasan-dev@googlegroups.com, bpf@vger.kernel.org, netdev@vger.kernel.org,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Boris Brezillon <boris.brezillon@collabora.com>
-References: <20260528093437.2519248-1-hch@lst.de>
- <20260528093437.2519248-2-hch@lst.de>
- <5f7f90d8-cb32-4ffb-8f1c-0722aafbe869@kernel.org>
- <20260529135045.GA10647@lst.de>
- <5f3ba603-a6ad-4cf2-9a54-aebc10273c59@kernel.org>
- <58cc76e7-2348-443d-a989-2a06e61178af@kernel.org>
- <20260601113831.GA25535@lst.de>
- <d7b08296-7f6e-4d89-ab3b-04e43d04929e@kernel.org>
- <CACSVV00k-fxW6+waHNqvmYcnVNDkRexoWWprFzfayZfqdyMuuA@mail.gmail.com>
- <CACSVV00dNWgpNVU5rB=Hmg+3oWF18yTyfKNr_tWesjoP1jMxwg@mail.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <CACSVV00dNWgpNVU5rB=Hmg+3oWF18yTyfKNr_tWesjoP1jMxwg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 360531C0002
-X-Stat-Signature: 9y7knzmx84piwmrngogumoob6pwcyjd4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <04875b82-6671-4f43-aa59-190fd09c7108@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1780478271-957904
-X-HE-Meta: U2FsdGVkX1/TI7OaQjc3eFY4lMw+RIlZCi1NKg0HYLZ9SUCvUsnVgBpE1EqT7y3jFelIPU0mCTvlwY0fUUdV4/OaoniXG9U0AHEFsS90daTP9Is8ZXNFXw4PRMJfkQr9/vYopVdA+LrIOhZrU149xnVYvdDdTm8Q8Cm7r/TmTVzEo2Um3XABrL91uKgnCZzXFRnCEr+AW6A7AuJ4jliRcL/eajgcDRNGEp3sBWPPxqAo7qwGw/siCe4QtlUk1/oX5nNzyOhr6aROGqBd8Fga0hZnGL9+tNbUEfriloYUJAQIDVpmTOxxbX70NHg+98PDAZdhwhxeZk3Vk3p7VYW2JlIJ23qO3JuxQxktACuMuQKK4RaNalKb4/9wJeoUqTdrMEAP9atTU8hWTaxV4HfHAGDbHXGdakO+O0lTzXeCRc9boBqp7KMlyedwl6MlqKLRsfTrmoiIXG2rfAjIWrMSyyvTazfM0kxCvAuJg7DdfW/doa8gq8h/CHLY1ZX4qGyPCXC412qOnixiCHpyptZNysLnv3VdJ9pEuLxa/zlV5sREEYH+tpg18bwwoOPFsAq2UXRb1MvGGgXafVICmmOagrRFtOdRODl1TJAjmQtde6LhP47HkxwghAgrkqM4Gtl6KLDNdxXU8VAKOAPdMZ7YzK46N04h5H+27l6IunQ19UB4x+CKbk8r5e1dY+pxlXyTNkjHE8D9Acmqe7zR+0brGjlQg8xXYXNWguOCExr7RkTws6QGSdneRziwTK23oFSmZswltgue/xrn9PuuZdRCFjO/JUI75bdhXGxV8rAhb13DZTgUNSBqW+MpFZrMXXsWM0AyXvR6SDPD1IMgReTzMRUREqVpikS8u6F4AWDhBuC1BpR4J2TOj6irykjsCFzMFLgux2V2TZjCXThqtEwQy8mTYRb8kYOG5apIBC9aE4qUOBjcLedZJgwtI+EAALyrdLzskpBnrKbq60BVqhb
- DKcG68Hs
- nTr2+Z2AXc3XYq5qTT/eOO25gCbyz0SJrL/QPAw2rFetD5js/01//7M5wDQeVXslaeodgrR/ajH7DfMoqRP4HuDVSK/KsIN1pDZ4XwW5YrAiph0kFuyiKxOzOygTAwfSdhF/84zp/4dtC61YCbXZVbBdJ/RWh2ZJqTjHmb+i+T6Rgd6jpuQRUjvuETmrBNtgqquI2fU+X7UT2T3Um9IYZ6SzYl1TJ8pCibuCiZTIt0QjGvw88MAqsbeMRT3TiLvPNVtSjMuSqEaxpsVyojZmvQUbQ+lhdUmZprsFfi9NJnLm5cFy/iiyQ5xRJxnsJpUtTo8Mu3O7FP58RVnl/gWqF896Tk57t91Sutv+QvCHMfBr/VfM5k4EqN3SiDN+rYHfAQbYk
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5FE89A000E
+X-Stat-Signature: 5m1ddbb4regnmi66b6f4ibjpbax6mr1q
+X-HE-Tag: 1780478481-599832
+X-HE-Meta: U2FsdGVkX18OmwGVHl0avQ4bD7aUz1qPG9UymA8epE+d2UtEVbs0MLJUJY8ieUExEKxR1mdxsXkGLL3uKfr2ZC4cKUagjeeY+MgppeZG6ERIY6+iQHGdiIZPvjACufezPudbYEGaSlNI9/hYEDmHDDnO8okq5D7T5lZFu2jlsSpURXOwk5HnlaseP4GoA7fWb5gs0P4OcIjZ4ixmZN42jpZj0mqb8Zq3WtF3DKGNbcNdLjQ7osMDhCiyWeTM52cYOY11ZOLhTU9c9qiqSj4oc3oDfmdz7vC+vBI6aPo4QEXNv6n9LY/0ShqO0bCrAd0RL0n9E7tSk3S0PSRIzfROB83odTWfyov8Ro5N+O0VQ7gModd2UrzTez9KDwbbdsCflajOSj22PwpG+QTb+pUN76gjPilKazMXuqfUO02It0yPAdQPSAdDyrfxBowEbNqhzrSkft2FNlxo6Y3EraUmnVE66cUhwGAd9a1pZB7A7oONwUAaFAsecOXVMfT3FXtQXbu07JqgD9acev5It0kXdM+ztgWpPSCJ3bPBRMS29It6IvhqgqMdHaxo78b5CFETQcz8u8RH+8vRzt66KSuOsH4jAXUxYxR2veBZxNp51fqNC1dLWlsUwR55lHi5b6p6AdfA7cuogcdlM9PYeo0mNbJuNlAOu573gy0Akawlz8zTuFOWYFSkLfTKV/aMvcVfe/dJ8a1j9UnHyFiQddc2mQ97k8xKMWntIdtaT+3hu7kdv0gdCozcAYOTvWFlCkiyQu4aS0psB5twQgbFqiJ5mIMmpl9+/QTU5aKlNWwlG4XuxQAPNX1x2tO9CI3aWY2tNdEXU1HTH4YfIFDDOTV3XuuTsW04FY9KTIFpfpkrKTDM3jjDFvw0HSrYFuiBDmgf8fIebEh/vlPIJ5XMzcdLkjsJsYl5HzAmQgGw5M1Vu3BWFv8BA2uO2Nw1bb48CuggwUFvWmbKc+1vJQHx4Oz
+ uY6tbh++
+ iQdOQ4pHtAkoRslrX39w7+R4kcqseX7hHA/TXag34kXyEz9VQD3c+Y1tebf3dDVimVEgKhHVHZzFVmKZlGQVze5VxqeoPXgx6fJY4w8fEPEn0vfv0D8K7xz6ZbnJw725tnQ5D8nNv5BdYC13ezuRB/SqhyIjGlexXDoizkXwxsz6MhTuiu9u2zbzWWLkVXiPCDksXkK5d2UOujM4k8ouoUtRJkv3XfNdev+oeYeUup0L2zSLPMYfPqUVRH+A0LvcSekBjkJVZAV/IMNzBOACqyHUYetX/bi+nXSuASasczqnDFkrnIc/ZMC468AL3qcrnLvOGR0QVZioZesZFxbjDKJlyBndTyqRa8EF1y9GP3fs4fjwODLtEyvFycao33Rxb4tCbafYiypJU8x4cQemUylMBVJuiSViSvlgtWOjcz0hSQqA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,83 +121,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/1/26 16:39, Rob Clark wrote:
-> On Mon, Jun 1, 2026 at 6:32 AM Rob Clark <rob.clark@oss.qualcomm.com> wrote:
->>
->> On Mon, Jun 1, 2026 at 5:50 AM Vlastimil Babka (SUSE) <vbabka@kernel.org> wrote:
->> >
->> > On 6/1/26 13:38, Christoph Hellwig wrote:
->> > > On Mon, Jun 01, 2026 at 10:16:30AM +0200, Vlastimil Babka (SUSE) wrote:
->> > >> > kmem_cache_alloc_bulk() returning 0 was considered a success in that case.
->> > >> >
->> > >> > Either fixing kmem_cache_alloc_bulk() (and the comment) or fixing the
->> > >> > user sounds fine to me.
->> > >>
->> > >> Would it be wrong if we just returned true for size of 0? Would something
->> > >> else break?
->> > >
->> > > I don't think it is wrong per se, but it feels like the wrong kind of
->> > > API.  I.e. I don't think the MSM caller actually wants this, as they'd
->> > > also do a zero-sized kvmalloc.
->> >
->> > If p->count is 0 then indeed there's a zero-sized kvmalloc so p->pages ==
->> > ZERO_SIZE_PTR but then nothing breaks because nothing tries to dereference it?
->> >
->> > msm_iommu_pagetable_prealloc_cleanup() has a "if (p->count > 0)" branch so
->> > it seems it's considered possible. But then the rest of the functions also
->> > seems working fine, i.e. kmem_cache_free_bulk() of zero size does nothing,
->> > kvfree() of ZERO_SIZE_PTR does nothing.
->> >
->> > It seems to me kmem_cache_alloc_bulk() returning true for size == 0 fits
->> > naturally in this world and is less likely to result in a gotcha?
->>
->> I think I was probably expecting kvmalloc(0) => NULL ... but it
->> happened to work out before
->>
->> Adding an "if (!p->count) return 0;" at the top of
->> msm_iommu_pagetable_prealloc_allocate() seems like the thing to do..
->> if you want, I can send that patch (but traveling this week... so
->> let's see what I can do)
+On Mon, Jun 01, 2026 at 05:04:31PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/1/26 16:17, Kiryl Shutsemau wrote:
+> > On Fri, May 29, 2026 at 05:34:48PM -0700, Andrew Morton wrote:
+> >> On Fri, 29 May 2026 18:23:24 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
+> >>
+> >>> These are pre-existing bug fixes that were carried at the front of the
+> >>> userfaultfd RWP working-set-tracking series up to v5 [1]. Per review
+> >>> feedback that fixes should not sit in the middle of a feature series,
+> >>> they are split out and sent on their own; the RWP series is reposted
+> >>> rebased on top of this.
+> >>>
+> >>> All six were flagged by the Sashiko AI review of the RWP series and
+> >>> carry Reported-by: Sashiko AI review <sashiko-bot@kernel.org>. They are
+> >>> independent of RWP, apply to mm-new directly, and carry Cc: stable@.
+> >>
+> >> And...  this made Sashiko point at other stuff:
+> >> 	https://sashiko.dev/#/patchset/20260529172331.356655-1-kas@kernel.org
+> >>
+> >> I can't figure out why four of the scans failed - "View Raw Log" comes up empty.
+> > 
+> > Seems to be passed now.
+> > 
+> >> It's concerning how frequently Sashiko is finding pre-existing things.  What
+> >> would a full scan of mm/ tell us?  Gulp.
+> > 
+> > Yeah... :/
+> > 
+> > I will look at the new batch of pre-existing issues when I have spare
+> > cycles. I am not sure I have the bandwidth to find the bottom of this
+> > rabbit hole.
+> > 
+> > What do you want me to with the main userfaultfd patchset? Sashiko
+> > failed to apply it because it is on top of the pre-existing fixes.
 > 
-> Aaaaaand.. sending patch from hotel wifi doesn't seem to be a thing
-> that works.. but I've tested the following w/ deqp-vk cts, and works
-> as expected
-
-Thanks, I will amend the commit in slab tree with this as the easiest way to
-go foward.
-Just a quick question though:
-
-> ----------------
+> I suspect it might have a minor conflict with another incoming fix from Lorenzo
+> as well.
 > 
-> diff --git a/drivers/gpu/drm/msm/msm_iommu.c b/drivers/gpu/drm/msm/msm_iommu.c
-> index 7d449e5202c5..ef744d154bbe 100644
-> --- a/drivers/gpu/drm/msm/msm_iommu.c
-> +++ b/drivers/gpu/drm/msm/msm_iommu.c
-> @@ -332,13 +332,16 @@ msm_iommu_pagetable_prealloc_allocate(struct
-> msm_mmu *mmu, struct msm_mmu_preall
->         struct kmem_cache *pt_cache = get_pt_cache(mmu);
->         int ret;
-> 
-> +       if (!p->count)
-> +               return 0;
+> Probably put it into mm-unstable early after the next release? At least I think
+> it's not in mm-unstable yet and we are approaching the net release quickly ...
 
-We know p->pages is NULL in this case, right? Because it was allocated by
-vm_bind_job_create() using kzalloc().
-And the job can't be reused with a leftover value?
-(msm_iommu_pagetable_prealloc_cleanup doesn't set p->pages to zero).
-Or should we set p->pages to NULL here.
+I guess I would need to patch man-pages that got applied. I put 7.2
+there...
 
-> +
->         p->pages = kvmalloc_objs(*p->pages, p->count);
->         if (!p->pages)
->                 return -ENOMEM;
-> 
->         ret = kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, p->count, p->pages);
->         if (ret != p->count) {
-> -               kfree(p->pages);
-> +               kvfree(p->pages);
->                 p->pages = NULL;
->                 p->count = ret;
->                 return -ENOMEM;
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
