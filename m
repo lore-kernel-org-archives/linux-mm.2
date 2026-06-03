@@ -4,124 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2683ACD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 04:26:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A271CD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 04:27:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B24E6B0088; Wed,  3 Jun 2026 00:26:55 -0400 (EDT)
+	id CAFAB6B008A; Wed,  3 Jun 2026 00:27:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1635F6B008A; Wed,  3 Jun 2026 00:26:55 -0400 (EDT)
+	id C5FEF6B008C; Wed,  3 Jun 2026 00:27:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 051D16B008C; Wed,  3 Jun 2026 00:26:54 -0400 (EDT)
+	id B76616B0092; Wed,  3 Jun 2026 00:27:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E72646B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 00:26:54 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8352E8C828
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:26:54 +0000 (UTC)
-X-FDA: 84837315948.29.A060675
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5DC49140006
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:26:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="Mg/6LVrl";
-	spf=pass (imf23.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.54 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780460812;
-	b=Va7CAWosDkxH9sp4De/mO8NCI/XTFcGij0t0iPl2iIHq1bbcqLYMTtrv2TsrW+hVMd/GWS
-	F5sHgslgRQo7gC81kNSFzWoN2QrLKavsJk5PJb2CI4DN5tKNlXmo0+qnVKGGZGBgMWQSVp
-	qkBoDolQ7yJas4UO1u0XMqTL9quwOVo=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="Mg/6LVrl";
-	spf=pass (imf23.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.54 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id A7B1C6B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 00:27:17 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 651D814021A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:27:17 +0000 (UTC)
+X-FDA: 84837316914.12.B0E946D
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 79B7EA0011
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:27:15 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oqBR8AJW;
+	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780460812;
+	s=arc-20220608; t=1780460835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3SJtr+8Mfjo1TPz3VKjCaH7CMP6KY0W4WXb69Cl5TnE=;
-	b=NTjBnqWV56P0MUdMz62UQptc9TmgfzoVTSojuTagfiV2P9qc1NXc33pW1YvlMWOeDLnjmo
-	O6SKOnJTqoZmQwWZQ/y8+r+VMBFK6uNAHX1fc6Pev1Lc2ayRY4ByWctLzEE6bPgBi9XuDr
-	O+T/agysVUyAEknTYMLlNPNeK5xxgsg=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6886be3d39bso18689176a12.3
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 21:26:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1780460811; x=1781065611; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3SJtr+8Mfjo1TPz3VKjCaH7CMP6KY0W4WXb69Cl5TnE=;
-        b=Mg/6LVrlHcxnwLshp5+m8Bepapd6+9P0Bol5VW2p3cZlt+9zGIcV8Zqaduggw25OIx
-         o0CgnCUWMstQB8hIs1PVCow8wAASySRniX4ktDJ7apJss613wNwe/OTcNjxQ4euxttwc
-         tfOHd5PPL0UKquGTVbdtI8xRpa4pz0JIg4+PA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780460811; x=1781065611;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3SJtr+8Mfjo1TPz3VKjCaH7CMP6KY0W4WXb69Cl5TnE=;
-        b=MgOyTmCfgl7JJnRoIJasCA+gu4kK6e/futzfWkqG9lpLhypSmzAbo/IRQ3DzZ+YB/7
-         oQ745jhJGJLU4HE8I2VM+L0YkD+2LCfcq8kt/p7SYsaYAi20G0Pu/sRuTeJwZutuBaph
-         C8yTNEPOxoqCZU5W/G8bOFGdicEvddAEtKnq15g0Kk1Hrb0y5YioqkL8/exBOewR8A5I
-         tusHRnxFmXjU5gYIm7Rbq1kDFlZVkwcblPArtQZmRDXLcZvcHTX0Rqx9uxDLqj1BrZrw
-         +2aCxBbBhwlg7O7bLCnfh7klTgFOxRU1xfrX/0mvxXbtyuUGHYoGb/lXzZIjv6SnQ3NZ
-         pxtg==
-X-Forwarded-Encrypted: i=1; AFNElJ949QeSD5j/YNSgn6p7+NXWweDy3uzVKOxN2xsRHR9fkaLGM7kMP8Q9xyCzrny7LyBOAR+ISUdhFg==@kvack.org
-X-Gm-Message-State: AOJu0YyBMuUMywCBozf1ca/yQxymxeutFcW+lPGBgiucGSB9540CXDHC
-	68fJneHMENX7372Klq6Cje1WAi65oapW3wiR1faiKCmRBexP+9Nk+z/tyiqiSK610KCLDETl6TM
-	wVaAK+/uejQ==
-X-Gm-Gg: Acq92OHb09oS/LcoM1/pwH+AvOJnIJOAJR25YSGCXdpDnA1eHbfmR9pj7poeX2CERQI
-	tTR38iGPzIUWnY9GnxIeC/Nq8C4xGJKHmUg/dYxWNIWTBncChNQ99Sy28eGDVPW3B68q+5fzkBg
-	hHYhQV9W/fvP5Xyda7eyQV2a6X/6PIRxGiqkZ0xIY+89VP+i9jo02kEa8zwEwgI7DQdOyLXXZp1
-	MAkGP94xBA317JXqdAyO6kiB0pSqZ4G+CDP7sCuJSjZkGji1tR00zQLyDl6PyX5YKvTslPGQiU/
-	d5isd/A0ByNEGloY2d2xV0JvkY6g8kYX+XcxRK1uvrKBIjRJ7hh35kfx/AwiXB+V4L2tuG8cxW1
-	8w2yZ6qrEr76kpOaHOB3HCyCKuQQ0I9vpR3ykeZjkf4oWgcA6a/odcEYNWaKh3SE/FWBladZvTI
-	M1Uk6Jd/hNLi7SWpCG3WzrhzwjXsYrVKSspdcQUfEffbV2UWSUc4a7161uZ/76fkCzYDxzk72FB
-	c96ZfTziNzYWbvKheSvLw==
-X-Received: by 2002:a05:6402:3212:b0:689:c099:ef99 with SMTP id 4fb4d7f45d1cf-68e725493b4mr616986a12.22.1780460810803;
-        Tue, 02 Jun 2026 21:26:50 -0700 (PDT)
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com. [209.85.128.46])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68e64e2d2bcsm429743a12.10.2026.06.02.21.26.50
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jun 2026 21:26:50 -0700 (PDT)
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490b8a97b11so1810745e9.0
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 21:26:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+bAadztjQucP80ZkvfhgD6urK77SnCMXoTRBRHnB2PMHokX6HkM2JYJVLSBjUnAnlf3In0wIe4Cg==@kvack.org
-X-Received: by 2002:a17:906:8a48:b0:bea:4a9b:27e3 with SMTP id
- a640c23a62f3a-bf0ac20eef3mr38881066b.2.1780460431308; Tue, 02 Jun 2026
- 21:20:31 -0700 (PDT)
+	bh=EHa5eVMR4HXRrhIH0Z/X3J8xy1NBtxqzlOfVAuzIev8=;
+	b=fLaOcXnGCbh9vyUfiBZAmJe3hLT6gRQiHC0ina07p3xqyzNz8O7x5i45Q/zyZZW4b4GPeH
+	mn3AC8+131EEZNX2OsnrWKjp1Xo9h6WJKQwE2/HAUZQLI/CDD2dTg3lL80WlXqe3WhPdi1
+	LFR+q6KWyPVjW1anc7E/RiyIVYODe4I=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oqBR8AJW;
+	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780460835;
+	b=vSJ7s19GcdzbXgnEe/sJj7dnlpwjyoSWhuESxBMxk3PeeYr3lpBeS3ifAbwRK+9vbU1xbP
+	d0tQtOsEz/dxrZ/JW5+l7AO8ZEW9mG2PQTYpD4390NcOBPEKujcQh5obb9jJ0guiPSkuiw
+	luC+taP4nqx3u1E21+/T2jPc1kx7wis=
+Date: Wed, 3 Jun 2026 12:26:57 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780460833;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EHa5eVMR4HXRrhIH0Z/X3J8xy1NBtxqzlOfVAuzIev8=;
+	b=oqBR8AJWKswu+TUBJI427l7tMXW46i5pJVFjhjvhm03A1vjbalG1LDflUcBusdBkf08nY6
+	AJL7vei+Q9OhyMld6u24rBVtnjyCuLKk6i5s8Q1STvlrLXOpcfJA0PwggLvGe5AjfkPw7L
+	KGZ+C6ZLKPOwXjgKjaF660P7CRHFkDI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/slub: allocate sheaves on local memory nodes
+Message-ID: <ah-naIiz09TTBpXo@fedora>
+References: <20260601095706.106551-1-hao.li@linux.dev>
+ <33506b25-ab2f-4f31-a380-7c0fe65567a3@kernel.org>
 MIME-Version: 1.0
-References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
- <20260602225426.122258-1-safinaskar@gmail.com> <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
- <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
-In-Reply-To: <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 2 Jun 2026 21:20:13 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com>
-X-Gm-Features: AVHnY4IJxv2Bq-ytG67gbyDgK2Xm9CPUNF4PNLBHu-2R4s_ONl3Jl_5fsF1zxk4
-Message-ID: <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Andy Lutomirski <luto@amacapital.net>
-Cc: Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org, axboe@kernel.dk, 
-	brauner@kernel.org, david@kernel.org, dhowells@redhat.com, hch@infradead.org, 
-	jack@suse.cz, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
-	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de, 
-	viro@zeniv.linux.org.uk, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5DC49140006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <33506b25-ab2f-4f31-a380-7c0fe65567a3@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 79B7EA0011
+X-Stat-Signature: k4fm8faxp1d6f64bdnzb94hfr399h8nz
 X-Rspam-User: 
-X-Stat-Signature: 8pnzkwydhzpqgjhucikuatrbeadffxdc
-X-HE-Tag: 1780460812-489338
-X-HE-Meta: U2FsdGVkX19ItsKdZGYLFuNwKrBAKtrea/jNX1r+tRMoEjx2DJHx1aKB5Jm9fvYX7ZyjjE/YgRUzcdMcDGAMZ0fUWANiQsPyEuNKHmpDXk4DJSvZCREPNViqxLoPIukCpGy7J39hf0ORJgMrULmFYmNxqO7loO70yXdnxHZE9Msft/6qsaaQXbLOXoiWCgoeYbHt7S3fbNL1+fu0vhMgvU7js8wnhxNakBUjxsn+7UKs6KE0NkxnGzIkP1nNFGZuO4OKUcCKCK6TwAEufBaL9XPxIh6xW35H5gAD1oQXQbKJ/oGjsIAAzKS15E58fhN9DAoHBj+WEeyTiQcrovHhytooAIbJl+14hrFguk8OGlLbuUvYEOnq8iqHd3QFXn/Lctj0wIAyhvMkXlEQ/ID/5JDDCUyWP/kx5w2hBNpW/owLIgu5lIiyDscm7mreE5lS/Pw+TJpXTzrO23WIuUcWkdZe7EI9uLOTSwerE0QW6rXzEPiAH3FV7T7naLSZJNHoQ6wZpmf7cxNKLg4FkdJw1juEq0DXKpN68X/2Yl7NpkZ4kK8kIPQzmwfn20LwD1E9HZ5w/tE5VbdRWXkFKScUgZYtF5nBHjiurq5skdu8U1UFCl2+Ykdbj2J+qqR35YpkMUu+VQOuPLJoOxxgIgAcAd7mkXteq6ubaTshY/gNC+DA0/g4A7pNHUsUnUJQXv3F326WP+3DxTImLlE05QjIeqSjfMFV+1APYNs+Z1GAzdugzggw061Px14/szcLvqswkUkD98je5WQojfU3eCe88pgfSM4mjAvCEjiU9a5cdc89xM75Jq/xhtYh4ISdu1KNoD9lgEpoowZ67pCoL0Fby7vvPwzYYIwaGcDcq0HVr2NCIJMll3eZWMaaEeNtX7/ni7UFOzPHbkki+4RUm4BpkTikdS6NCp7Rmzv2tBSJiXcGBLSPbi/HvXNH9+Uc9a46VaZ5S7+7wd5RCWnj8v6
- zaVGma2k
- f0XpCvKG0w4wc11i9kzldn+SCslE9rnZHWj73ox2WpLaodgRUhM28U7he2Gp4dPI+c/XiBngXxvg1VtIYMJhAAfsVoJ+7YT/2Wq8ERE1gZe1Al4j6fanynZ2sRDlgsaBLP+UIlhR8k06RyV/7//I2o6LjKRYmART139IDaN21y8Bv1L4Bu0s8914PouePEA/o3D7FA9VQtl1znH1Na+3dR3TyosHEpLc998GmOhKV4tKxNvn6eBdqhM0yhT3VePvrCiblyxPm78zKkVWzU8po96HOchE0cRPa5kG3F77C3qcfFrPur4jNZ5NzrVtCLrhF5bCuiMV+DYGi+fRbKu3eoV9UYtwrsR04z1sDJ0YPZybJEC9mQDd2wbiwa6JwjxWvdBHVmm85qML8k6bCDqX0ug67d7GfyUBWybyw6W8jtY+gul7BLxzMklSa3h2Fo/79Ao1J2bRSuGW3VVfpyUWuI/JZBQkBvFAqNq6As0zBti/P17gMa+BmUzpUoR7jsWYxdxgYt4A3EqsbTNyLIdDu8ni/3Fo4Kz4pGzpTKjfvZXsYj95z0udz6W5BSWvwzC8Fn8u3
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780460835-66006
+X-HE-Meta: U2FsdGVkX1+Wn0xQ+GyzaG+RflVjBAlK+2hXZnn+022eUJybCTRnUF5T5Iu+h+LPMH3dVwmVUVZLD6vWPtU6qvJSF2MZE0VCTVvhhgs1YbgYYAz/SGOX/e4iFOOc2ISs1Bz6R/Lv5QfP6Z6ug7oodN1RNAcDUzLwRvtd2WGyuhpqhxdgl4AErAEhlArIbhtj8kKNcR01QGIG4FbGhciooENGiw4QRp4+MwLZ/OGkEsXST2yClbpc1Sl1/4GJj7P/fSyhVVvcWMg4ZeAhKfmsIB29/uxyKEu5E71KOOpbaxZniaC4OKC/JAmg1Lrknmjh3/R+Mhm/nqne3Rg7J3BUsUK/jZ9YpObYniopBPL4pczC+2jNbp8BrqPIz8eXIfnXipjc7zDXpgYr/cJScyTIMu/LRDuh0KZeAAjRcjq0EmzlUgAodG5FbRJsbUl8rr+IEH4P0ib8w8KyBVOqHClH5wvhXeIpr8WQyISlVKchWdmMbZsqdROrbIBnNsuFJCXeUIZ9vPq9bWgRb3H5IK5yRxtGSk6yJJLsJJnRuRZpSwGXgfTPJYzAmlBPJth2+2/IA5TnvLUWqQu4IqGflxVT+mbzLeV8v214TqYoxAUCCaFPIX313gAl7PlOL9hFm60e7gIweYucf7YT6Yh4nImM9HVJDGpcRA9ESoozrIqD0bN0G3r4fldW4chaQfRN5kUN06eUmAiDXnH3jdEscPxgS8AfMuAlTWgxix4ou4BFI3C+87z9w2IOHrMxh324LiRsCdiqixKkjjmgNnvkHbJLyZbcxSTXWWHu7dUafvVa2UMic4WzgZ73F1OHSCtIAC498iIf77fKnRmm2TFZLQHRtI1LINFeXa/fyg+ftDHzfyI4Q+ETB5wTKJz1j/lqefD+xPKfJMVJGWRnF6L8TyMLE+ac6IAaVuPBf3jztiEjW30Iqms1U+v/RFVXboC4N/i7BU6YGDlh8qh6Ej1Js0V
+ RZAZ7kku
+ wocfW840YVkPiJ4yUEHW5cHj0VR+Q0JAK7ubRPG2+7Ryze7I+FUaAbwhLsirrIG0xdf99xqvwkWebdmCltyCHq4jmQSj0H91nf/P6Hljrgj6WgX7FcptmSyBDgTDP8z0WZFhm8FjY05BaGhbtyqgwGsYAAtJBiHT50KD6x3eZB0U9a879mJUWM1LsgRH+ZKGMrThOZrdjNxFZQm8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,49 +88,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2 Jun 2026 at 20:51, Andy Lutomirski <luto@amacapital.net> wrote:
->
-> Am I understanding correctly that this will completely break zerocopy
-> sendfile?
+On Mon, Jun 01, 2026 at 08:28:16PM +0900, Harry Yoo wrote:
+> On 6/1/26 6:56 PM, Hao Li wrote:
+> > Sheaf structs are exchanged through node-local barns. Since barn structs
+> > are already allocated from their local NUMA node, this patch aims to
+> > allocate sheaf structs from their local memory nodes as well.
+> > 
+> > To achieve this, the obvious choice would be using cpu_to_mem().
+> > However, init_percpu_sheaves() and bootstrap_cache_sheaves() iterate
+> > through possible CPUs, whereas cpu_to_mem() is only initialized for
+> > online CPUs. Therefore, we cannot use cpu_to_mem() and instead need to
+> > use local_memory_node(cpu_to_node(cpu)), similar to what
+> > __build_all_zonelists() does.
+> > 
+> > The primary goal of this patch is to improve NUMA node locality.
+> > Although the actual performance impact is minor, it still yields a ~1%
+> > improvement on a 192-core, 8-NUMA-node system when testing with the
+> > will-it-scale mmap test case.
+> 
+> Oh, nice :)
+> 
+> I have a question though...
+> 
+> I wonder if would be better to handle this by e.g.) not returning empty
+> sheaves back to barn and freeing them if the node id doesn't match and
+> it's not a memoryless node.
+> 
+> init_percpu_sheaves() and bootstrap_cache_sheaves() are not the only
+> places that can allocate sheaves from remote nodes; sheaves allocation
+> could fall back to other nodes and then SLUB could keep reusing those
+> sheaves from remote nodes even after memory is reclaimed.
 
-Very much, yes.
+This is a good catch. In addition to the fallback mechanism, task migration
+between CPUs in __pcs_replace_empty_main() and __pcs_replace_full_main() can
+also mix up sheaf structs across different barns. So yeah, changing allocation
+locality is not a silver bullet.
 
-And it's worth making it very very clear that ABSOLUTELY NONE of the
-recent big security bugs were in splice.
+> 
+> If this works well, we probably don't need to handle it in
+> init_percpu_sheaves() and bootstrap_cache_sheaves() at all as they will
+> eventually be freed, while covering the other case too?
 
-They were all in the networking and crypto code that just didn't deal
-with shared data correctly.
+freeing the empty sheaf if the NUMA node mismatches instead of putting it back
+into the barn is indeed a good idea. I like it. But unfortunately, my testing
+didn't show a clear performance improvement, though there was no noticeable
+degradation either. :-(
 
-So in that sense, it's a bit sad to discuss castrating splice.
+I also did some more testing on my patch too. Under CONFIG_PREEMPT_LAZY, the
+improvement is only about 0.5% (sometimes 1%). And when switching to
+CONFIG_PREEMPT, the patch doesn't seem to yield statistically significant
+benefits, likely because sheaves get mixed during task migration.
 
-But it's probably still the right thing to at least try.
+So, perhaps the performance gain just isn't worth the extra complexity. It's a
+bit frustrating, but maybe we should just abandon this direction and keep
+things as they are... :(
 
-I've seen very impressive benchmark numbers over the years, but
-they've often smelled more like benchmarketing than actual real work.
+Thanks for the feedback anyway!
 
-There's also a real possibility that a lot of the sendfile / splice
-advantage has little to do with zero-copy, and more to do with the
-cost of mapping and maintaining buffers in user space.
-
-If you are sending file data using plain reads and writes, it's not
-just the "copy from user space to socket data structures".
-
-There's also the cost of populating user space in the first place:
-page faults for mmap made *that* historical copy avoidance basically a
-fairy tale.
-
-And not using mmap means that you have the cost of double caching in
-the kernel _and_ user space etc.
-
-So sendfile() as a concept (whether you use combinations of splice()
-system calls or the sendfile system call itsefl) isn't necessarily
-only about the zero-copy, it's really also about avoiding the user
-space memory management.
-
-But yes, there's a very real question of performance.
-
-I just suspect we'll never get real answers without going the "let's
-just see what happens" route...
-
-                Linus
+-- 
+Thanks,
+Hao
 
