@@ -4,95 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0731CD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:44:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BE81CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:47:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16A326B008C; Wed,  3 Jun 2026 08:44:07 -0400 (EDT)
+	id AC1456B0092; Wed,  3 Jun 2026 08:47:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 141A16B0092; Wed,  3 Jun 2026 08:44:07 -0400 (EDT)
+	id A6EB36B0095; Wed,  3 Jun 2026 08:47:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0585B6B0095; Wed,  3 Jun 2026 08:44:07 -0400 (EDT)
+	id 9848C6B0096; Wed,  3 Jun 2026 08:47:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED6F36B008C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:44:06 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B0BDF140363
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:44:06 +0000 (UTC)
-X-FDA: 84838568892.02.D87482E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0E6A5120002
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:44:04 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nzHlbMr9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B7F66B0092
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:47:16 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 03F521A037D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:47:15 +0000 (UTC)
+X-FDA: 84838576872.04.60051BE
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5425020009
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:47:14 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=WNx+PRJX;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=7lHgIyR0;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf31.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780490645;
+	s=arc-20220608; t=1780490834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=77CURzg/jAFNtzXDpoyP4AKbJU13c4kpfI7PfLbw04M=;
-	b=tBl6EOZdcZNZgnph7LJj92vjnDaST10XXhqlcZLis4JI+ezCQyeijb1q4yLKBalXGFzQO0
-	Ws+NZqKeYvmrgw0vjye6XuCtGF2QlVMvOQHb37Yh9ieZQQaAqOyldGNe8ive1cSe2MjzZG
-	OqrCa5aaJ3HUxy5DOs8U4FJ/1Xdtu8E=
+	bh=GJYS40BF5p4gKtpyUwmLgEs6O937x1vRUuroAyGoJDA=;
+	b=hCyiUEvANnUt1uoqkvpvDAEaWhYubQg6dXz+rfHcI8NhifJJa8z9KF0Rz0BRZU8qHMRfvP
+	h9aBst3TMdQn66h1JhhqvvNwcfG0CRJ+6dJXUG4oT6fsu35N3MTsVRv7KI6lNtd/j0GxH4
+	lOTw4fMlNIu1Tln8dxrEi9dEU3+VGIY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nzHlbMr9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=WNx+PRJX;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=7lHgIyR0;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf31.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780490645;
-	b=tLidS6vFy2nMWGj3NK8yrYg/vK/9Hxd5/mObGQRjklndx15SvzyzaFjkMogeR47Ey1wQKA
-	+r8/6mn4liTQDKC2c8NKeKNzdpFNXLNWxEPmcvj3919Lewq7flseAu/HUCkV2px9lD6/Rh
-	ouG2RnUvK52256foJ3cP+9bj8NTzoXE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 33D0740E06;
-	Wed,  3 Jun 2026 12:44:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585EB1F00893;
-	Wed,  3 Jun 2026 12:43:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780490644;
-	bh=77CURzg/jAFNtzXDpoyP4AKbJU13c4kpfI7PfLbw04M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nzHlbMr9Zu7Uvk7B04WhJ0QhPOPOipiK2G9DXWdN/kL9jUYjtrFt4j4JyEEt0lfi8
-	 SM2IY/6fCLWcREl46bmA4f8munOLqLt0a7M+YHpNB9dRZ4svHQskfBJrbfaZGsQDvc
-	 c2OIjE7vNBAYPLTQsBf2e9DtCBVwd8XBvShQR5roqbtI22mTyNN0Iqyl/0lgvlEXmp
-	 HAdGkKaKwytnjhr3Wb4OS23yvjJTZK8NdvrrnYquhc0tIUaJRWK7kTEGtzwtRkY/RF
-	 hzICiQ4z0CElqqjXYONrxy8KjBVRMNyEvgkLw1IxcMw0fLkHBDCPBGbepLfYQ6QMnN
-	 vQkU+Dtf4Rrzw==
-Date: Wed, 3 Jun 2026 13:43:55 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] mm: move folio LRU code out of swap
-Message-ID: <aiAg6jkIKebAhh1V@lucifer>
-References: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-0-5bbb567f8c99@gmail.com>
- <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-2-5bbb567f8c99@gmail.com>
+	t=1780490834;
+	b=YHV0faoVzmlRX3DRSGYS5YbV91fBa16I5kOw42G5uCo/znvPOIHlizy0ZIYkXHBp38sabV
+	AuYZBKDgMGuHs/YRYzKjTxSwJZzYAyTKC72/RIcxxxe388/ZNL54ZAV4/NmjAnUSOXLa67
+	O0pc4ijehWRXt1gZpKB0dzGZL9U6YcY=
+Date: Wed, 3 Jun 2026 14:47:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780490832;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GJYS40BF5p4gKtpyUwmLgEs6O937x1vRUuroAyGoJDA=;
+	b=WNx+PRJXN+NoUx7HcoaWTSD5Svn727DpFWpOSDbXCaxfiVtExaVZ0LQYYISjYgdsQbXHRJ
+	8A+GQBLXjhgkVe+sZCdCy9nRQ5xtHJUJ4J8v7L5uVXRydYyJePf8VV7GLcjqqOWgOTkbUm
+	ozi2sXGbvD+qMUzxlWWQXX+jigjhJ2214AeVswrmgDKj8z4QJaHQu4pEXkCSwCvk+eYuQJ
+	fsxaKjO6abeDXIW8jrWtP62/USKtM6OjxULvaBqEFVyuFvdvBZtsceLZ5176StpDeLuNkI
+	0uD3Z6lUIz3yoMvojgRxV4n5iuMTD/9JiCmYC3zCzjFsX4kK2k5NRVFP4A1Uog==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780490832;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GJYS40BF5p4gKtpyUwmLgEs6O937x1vRUuroAyGoJDA=;
+	b=7lHgIyR0ZJFeyDzWOt98sfoOm4cVsh1LX1k3k64UCMFSi0rzzRt2ITOLGAoisbEOwk66by
+	vtQ7+N6hpb69SZBg==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	Frederic Weisbecker <frederic@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Nam Cao <namcao@linutronix.de>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v3 0/6] vdso/datastore: Allow prefaulting by mlockall()
+Message-ID: <20260603144357-464a54b4-4569-4b49-b7ea-77dc0af730e5@linutronix.de>
+References: <20260518-vdso-mlockall-v3-0-bf4f2af2b41f@linutronix.de>
+ <fba91f44-34c6-444b-b049-50f72e059d39@kernel.org>
+ <20260603114217-9eaaa386-a766-4336-8930-250c2ff91d19@linutronix.de>
+ <10274d6e-0af2-4f9c-9788-2896065ec16a@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-2-5bbb567f8c99@gmail.com>
-X-Rspamd-Queue-Id: 0E6A5120002
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <10274d6e-0af2-4f9c-9788-2896065ec16a@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: dp134k7dn69byj5ds1hsx57646oyeymu
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780490644-869899
-X-HE-Meta: U2FsdGVkX1+4qbD8gYR7zOWqFbkPBmb/WJrtiAD0K+OFgZVw6+fEjlZh5tnIY7hNIwbbYVSHwtkeZY+TS/pDzEgaJyJL97em4k/3KxsplD2Kh2qKRLfF0gjiQksASrVuuBXX4zH3ZsAE8aK7z9QMIuoYeF/ybdtzRdgcVN4V7xkxDDWxuC6eHPFpMXZDChsJCvPzQx5A+pXikC0BwJJ7DLabj0COyf6U6NE8QX69HZiP4dxpNmmJWZTUXuoJr8Q6eDVZ8ryeeASQK6MR08scTPUu/9PozfcDZiX6l4RtFSucsEhjqfxaIKyDxM6qP3jXyUk+3NsyVaacf+C29aumfeIb4cEjZqagrP8KiVKiKof5fq5VT8T24srPFm/27uUY1+d2MexbolZF1trZ/JNDTPonvbp8UoXFkfLT43h69DGOp7Sr34mw14MG+GMm4UDpeJ4ENidECi4jb3Zc8c029eyJQwYEvA7Gby75sxv/ogye8KoZ6Jv2m9JekfmpcgwWzhADeNpiwWooi14J8vlfnKq5SzjzIcVA5wIr9xIhhLa3ckRfAAKpYIG2jeELH3ug0fy2lsniTlhuymS2Lzdsx8JoeQyQn4IgDv8q0mhvI29nPGq7kRP0dOs4NAlf1PDE3JMrgcC9OYs1LL9b1UgUfoJ0lQHUDoTDjQpTm7zHV7zpisJ2nxheN6O9RfHhyWamoJlsbRI0KgdU9/ysucAGYWPUPU5177JhwSc8pKh4ZhVOWRQBOjFArdEWpHkegTsUov0I8GOHUTj9ilC5xN0KU7bYkqcgIvboFiNtBXpkiODd83ct8FfLqXPqFyAxYg6HpNkEV36se4EiUCYsuF7J5lYU/SIKIdNsKadZ+iAFFYjzTFEeAK6vYUPvnFoh5ECDbDMDUImPegiJ5tRs6wFyD+7POe01Uvt/WZYS/Qnin9f4DR5Cy1FRxgh2c1ToAqIUUE5YW5iVAzTQxhAJtbl
- Lb45kYPm
- BLefG+l9TJUgwl0k+v6RdP7KqqFagZNrhdNq2ag8UcpowDITSmP6aEx3BpX0/Rxb9XFcbkB9y7vmaiqB2CuUS+17QH6t8slsCanhMULhajZbzcMUHXq+XYFT+YA0G+HfSthMzexvBVMUR8KLmtUPIZY4YqG8siZG+MOC9RzqQNjFlZQlYRUUmc+GN88u9Cftpk0diBn/VDDWqIT9vlWF/eHjkZx5iZSdAYsjKYIrdbs4noBgznIkCncxOKZoLmJEQKNS4tqqiL0QHB80InJG4Bke0MQb8jpe5vNwav4yxLwNEskJ4nI+x5iS/OcBHs71a/toEsmmhiprl0YI=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5425020009
+X-Stat-Signature: sorure79u4i49pzbaj9jem4uz41eenz4
+X-HE-Tag: 1780490834-126827
+X-HE-Meta: U2FsdGVkX1/QcuS0Nk4/wB62QeeSszz5c+s76S+ibQH85NNAFbHYiIKv2FTSbpSJAc7bFz58gzKA9u4cruqfxy3/at/j2ZeMH72ec0fn45lW/t4m7EwNsZEX2cUwV/TwTi1nQAOvKgYm9JVUUdy473lOjIa8DoHg7OnW110JUlTT6NGOYzDHA+b4lVxu9rdqAK/g21j5bB+vYICIomemdZpZSDFqa1YaihP8rSRlBkng8vVJHvtTs4+ufThzKRqHDkf1+7NgbMLxeDK+Q3dzziDaX5W+kGzdIx++Q649YWFsWLSdcXpfhGRV8t6Vc02RHKH/Q0PVoze+eVbigtntN9iATM6pWp0RbCbSTp6Da9d+H6vKSc1hUkohXgcPYqxHqgLJj0GP8tkXthOnThqkWiSwn0Eo8uCIDtwK8r+u8vy7pHrVWHTR4MY+SGsipNXHIykrnA08WG6GXZXmm0qagDOr2rW9IYGWt75q160jeNyNE2eI5lXBiHbPvxjUXTHo/3KlPi466sGGXpK+0fWy3/Xrg6Lbph3GVYV0Bqlw4wUGbMzX4r1n3xj/ab91sZM92DE1HwIJ0fHHs4SPm0uPhctzr+p/iZ5FvOWhTp+yOiQJgHMc0bzKJK2xkV+Mt0LSAFgwPtPbayzZ7E3O+RQ7ga6vUB/jC1O9ifQq5gQUHxtfB1LP4saIS6FlAXyYj6vZAlQxtxGr2ltPKu0eYExgs1HJsERjrmbHbMoP3L0GafCoPmHr885Vr9YXMjff/ih5DUWs0zMZXGTR9XVNF0KeObzQsIbzagi/CfsctTnm6tEncTULVG5UvFU1h14rHgQHXFh75AHFuhfbs7mYzt6s0RH0Ug0dKvnKHxt0pGJ5BokYTz7qNpmvPB41xA7wJM41WHXcB3EzJIAmvvecrZyWM6E20mcVMlmDcsMTvMJqdtnKngy723slIDer5cXrZ+pv1ymgP5JIcoT0n5AuAne
+ lLAqQ2NY
+ hS2w9pFCXg9VTn8wYFN283ikimGDEncUohuthdbNBZnXsjXtjBomyyun4GQl7HyayANZJJ88UEgORKsqZOOob0mntFUvieK8YRDbc0MSZlSFLBp267Raqrl/qxSgRgfWkf7IPt93J9LBxypX+CbpNHG3DW1B3pJARQyw39/RvyW/FdylDPhCAVV2749T9t9EdNx3l9nmWU5E6s+/1gOvteAUdbBGPy02bjCgor8CRpSyicVwI6aQGgADwnsaBfqC9YHGskd/gQKcKpdTByDnCqdC4QmnNUWNAnSdrinCQymhpZ2SjEnHtfub7kj0DEjr2x5qafpQT1vkP0YR+Anm8T/9mYYeymox7Ee2d1UMlieu4rC5CmrDLoglvPMrVyHmwwT0+KXduEtjM1tr3H1xLf0IRpejTj4j3dCKfFRNQ+zschv8Kq7mzpWMk7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,117 +111,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 09:01:16AM +0800, Jianyue Wu wrote:
-> Rename mm/swap.c to mm/folio_lru.c so the filename better matches
-> the code's main responsibility.
->
-> This keeps the implementation split from swap-specific code without
-> changing the published LRU helper interfaces.
->
-> Update MAINTAINERS and the remaining mm/swap.c documentation references
-> after the rename.
->
-> Suggested-by: Baoquan He <bhe@redhat.com>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+On Wed, Jun 03, 2026 at 01:35:19PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/3/26 12:10, Thomas Weißschuh wrote:
+> > On Tue, Jun 02, 2026 at 08:41:31PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 5/18/26 11:49, Thomas Weißschuh wrote:
 
-This LGTM, swap.c is really misleading, and we can figure out the naming-is-hard
-stuff later :P
+(...)
 
-So:
+> >> IIRC, we want to disallow read/write access that could have side effects through
+> >> ptrace, including process_vm_*(). For memory-mapped I/O that might certainly the
+> >> case.
+> > 
+> > There are no side-effects, this is just global shared memory.
+> > (But as mentioned before, writes can not be allowed)
+> > Accesses from other tasks need to be prevented, which is what
+> > patch 4 tries to do based on FAULT_FLAG_REMOTE.
+> > 
+> > The only data in these pages which is not globally shared and accessible
+> > are the time namespace offsets. But /proc/$PID/timens_offsets is
+> > world-readable anyways.
+> > 
+> >> With your change, you'd also unlock get_dump_page() on vdso pages.
+> > 
+> > We use VM_DONTDUMP on the VMA, shouldn't that prevent dumping?
+> > Dumping these pages is not a (security) issue, just pointless.
+> 
+> Ah, right.
+> 
+> So we still have
+> 
+> VM_READ | VM_MAYREAD | VM_DONTDUMP | VM_MIXEDMAP ...
+> 
+> So even FOLL_FORCE cannot write to it.
+> 
+> It might be good to document the change (pages can not be GUP'ed, including
+> being read by ptrace etc). But I agree that it should likely be fine.
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Should this "not" have been a "now"?
 
-But also - do we want to rename swap.h to folio_lru.h? Actually that's less
-clear as we have actual swap stuff in there too.
+I'll extend the descriptions and will resend the patches next cycle.
 
-I do also need to do more work on the softleaf conversion for e.g. swapops.h.
+Thanks for taking a look!
 
-> ---
->  Documentation/admin-guide/sysctl/vm.rst | 2 +-
->  Documentation/core-api/mm-api.rst       | 2 +-
->  MAINTAINERS                             | 3 +--
->  mm/Makefile                             | 2 +-
->  mm/{swap.c => folio_lru.c}              | 2 +-
->  5 files changed, 5 insertions(+), 6 deletions(-)
->
-> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-> index 97e12359775c..31d135e107cb 100644
-> --- a/Documentation/admin-guide/sysctl/vm.rst
-> +++ b/Documentation/admin-guide/sysctl/vm.rst
-> @@ -20,7 +20,7 @@ of the virtual memory (VM) subsystem of the Linux kernel and
->  the writeout of dirty data to disk.
->
->  Default values and initialization routines for most of these
-> -files can be found in mm/swap.c.
-> +files can be found in mm/swap_state.c.
->
->  Currently, these files are in /proc/sys/vm:
->
-> diff --git a/Documentation/core-api/mm-api.rst b/Documentation/core-api/mm-api.rst
-> index aabdd3cba58e..d6d189b9a996 100644
-> --- a/Documentation/core-api/mm-api.rst
-> +++ b/Documentation/core-api/mm-api.rst
-> @@ -117,7 +117,7 @@ More Memory Management Functions
->  .. #kernel-doc:: mm/hmm.c (build warnings)
->  .. kernel-doc:: mm/memremap.c
->  .. kernel-doc:: mm/hugetlb.c
-> -.. kernel-doc:: mm/swap.c
-> +.. kernel-doc:: mm/folio_lru.c
->  .. kernel-doc:: mm/memcontrol.c
->  .. #kernel-doc:: mm/memory-tiers.c (build warnings)
->  .. kernel-doc:: mm/shmem.c
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e3ee97f5474e..6bd39e0afceb 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16900,7 +16900,7 @@ F:	Documentation/admin-guide/mm/multigen_lru.rst
->  F:	Documentation/mm/multigen_lru.rst
->  F:	include/linux/mm_inline.h
->  F:	include/linux/mmzone.h
-> -F:	mm/swap.c
-> +F:	mm/folio_lru.c
->  F:	mm/vmscan.c
->  F:	mm/workingset.c
->
-> @@ -17045,7 +17045,6 @@ F:	include/linux/swap.h
->  F:	include/linux/swapfile.h
->  F:	include/linux/swapops.h
->  F:	mm/page_io.c
-> -F:	mm/swap.c
->  F:	mm/swap.h
->  F:	mm/swap_table.h
->  F:	mm/swap_state.c
-> diff --git a/mm/Makefile b/mm/Makefile
-> index eff9f9e7e061..5f712f9bbe73 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -50,7 +50,7 @@ endif
->
->  obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
->  			   maccess.o page-writeback.o folio-compat.o \
-> -			   readahead.o swap.o truncate.o vmscan.o shrinker.o \
-> +			   readahead.o folio_lru.o truncate.o vmscan.o shrinker.o \
->  			   shmem.o util.o mmzone.o vmstat.o backing-dev.o \
->  			   mm_init.o percpu.o slab_common.o \
->  			   compaction.o show_mem.o \
-> diff --git a/mm/swap.c b/mm/folio_lru.c
-> similarity index 99%
-> rename from mm/swap.c
-> rename to mm/folio_lru.c
-> index e4b3dadaa6dc..7dab6a544d94 100644
-> --- a/mm/swap.c
-> +++ b/mm/folio_lru.c
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
-> - *  linux/mm/swap.c
-> + *  linux/mm/folio_lru.c
->   *
->   *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds
->   */
->
-> --
-> 2.43.0
->
+
+Thomas
 
