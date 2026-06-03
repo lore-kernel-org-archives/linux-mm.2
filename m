@@ -4,89 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D520CD6E56
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:08:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 627E6CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:09:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDF886B0092; Wed,  3 Jun 2026 08:08:58 -0400 (EDT)
+	id CCF516B008C; Wed,  3 Jun 2026 08:09:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB7006B0095; Wed,  3 Jun 2026 08:08:58 -0400 (EDT)
+	id CA6516B0092; Wed,  3 Jun 2026 08:09:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF40D6B0096; Wed,  3 Jun 2026 08:08:58 -0400 (EDT)
+	id BE3DE6B0095; Wed,  3 Jun 2026 08:09:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C3D846B0092
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:08:58 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 977ECA0368
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:08:58 +0000 (UTC)
-X-FDA: 84838480356.20.8CCE6F9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B27D26B008C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:09:34 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 67AC41C093E
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:09:34 +0000 (UTC)
+X-FDA: 84838481868.26.75F9E00
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id F0CF1100011
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:08:56 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eIQ101iR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id B560040004
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:09:32 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gSN1iWB2;
+	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780488537;
+	s=arc-20220608; t=1780488572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bcPvlsJ3ZlZ9MeuQiLG4OrJyUMRTqYg7H9gJIZrjyk0=;
-	b=T5VZxJ9lO+m2od5bC/g52No8/ISOoINka5++95vQv89PpX5tnXYIespv8ZCjbCre2Yh+qo
-	CYrEb7Ms/8VfxQi1uX6miHcAQcL52SkHnH2O3ueyXXEwFlcKxPfBa9dh03Gn+bhmxiOnFL
-	rFbXyieK2yVZJCSpyLEGNhvftwvQG/Q=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eIQ101iR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=/AVS8+IasBd+d0ZAz5wyS8dLMDp95xsMmOPLp6VieFI=;
+	b=6CH5xD5uteZxED/pJXbeo2hI+lKSyQ1Ng1rkvc0WNRfYRs40EowGEhHygmGoI9n2kJFJh6
+	YWx90EHknCTHAze0/6/xdus0iZVy3FH/DPXXey8nvWMqFwsNyWWQyiTYxZaDS6C5v5+OeI
+	5jzD2hZcR1G+uZvAiALxa6clnx/pbuA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780488537;
-	b=y9hs6XBWa/yhpUAKXqngU69v3gvudBqUanVrYG4LxojC9imuIK+b3VBi52h/+w9LpMjiPd
-	pY+wx4XUPDa4o/crfakEAlwj6LjEzCXv75VeqrI3DWlgoIBvm7H4flvfT8rza7iRm95aRC
-	dbGnXn+aBmhtxodqJ/57MpaA1l6yDzI=
+	t=1780488572;
+	b=MyLvpd6PO+0REe5uZshg8WEZy+EF7sTLPCLw8rft5X3WBzvbFaqJWjpJ0g6RMAY84DWZeB
+	pJ+4S/tHYtlM6t3TsksYewZi+An7f0pLDXfD+CEe8+a8twE4ol43phyusOh9qTFNb75a4j
+	2c7/jsVzFgq1af0Lo/EuQWh5ryT+QsQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gSN1iWB2;
+	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1DEB644286;
-	Wed,  3 Jun 2026 12:08:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223971F00893;
-	Wed,  3 Jun 2026 12:08:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D670D41AEB;
+	Wed,  3 Jun 2026 12:09:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CC91F00893;
+	Wed,  3 Jun 2026 12:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780488536;
-	bh=bcPvlsJ3ZlZ9MeuQiLG4OrJyUMRTqYg7H9gJIZrjyk0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eIQ101iRBsPA6N5XS3Ycvye4F2+hH/77n6vCQfOfAefxiXa+Ak4zxKokck3yet1Jv
-	 OVAglGKBVhX6K4ozK5sODUtWd64ydP3XayR+Wyw/nlJkyJPeakio6DcZbUcV/ypnWZ
-	 9hwnbf6vZFuzOf6zBhZnjEtyzX2QNWg0zLP0A+aNbKqKP99o7SvedRM9NQrZY0z/hM
-	 c6V3C3bLoEpYrL1zOk7nl16NnR9kzDIueuzRlmNhuShqG0KcGCzRO+Rz42uUVUxX8t
-	 n8WoRwNBA2QzAqlUdGFFbSiIg/ghe3J9wqPBba7kyz4Yg6gR3cfdOEsD/WaWUwNUnx
-	 Tcvz+fafqolZg==
-Date: Wed, 3 Jun 2026 13:08:49 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, jannh@google.com, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	pfalcato@suse.de, vbabka@kernel.org, chrisl@kernel.org, kasong@tencent.com, 
-	baoquan.he@linux.dev, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
-	shakeel.butt@linux.dev, kas@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/mincore: handle non-swap entries before !CONFIG_SWAP
- guard
-Message-ID: <aiAY9FiHthu_CwIC@lucifer>
-References: <20260602172247.279421-1-usama.arif@linux.dev>
+	s=k20260515; t=1780488571;
+	bh=/AVS8+IasBd+d0ZAz5wyS8dLMDp95xsMmOPLp6VieFI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=gSN1iWB2z2uYsbqLT/cA9xdLVkwZDaF6xhL+8a7opfqs+UP7pcl4tUR+kR3i1la7A
+	 8dSDZXr1G438gduJPHbO5dX+kXxjyD1gLAfc3AbCfXrOxfRZxURXuLrP+4b95Bka54
+	 j0SvIt89mU+J0w3NE1DkLJ/IIQR5gHAyGJtnUB2o8R+WCEGQ9i9BFzeUfpchTQrugt
+	 8luds82brSLd7Upq+m2oNVLaBZvSfOw0Vp/NBElO4bs30bQkIso5teC2+XYiRi9TAG
+	 Mi3xRTu9QvykmaVbKbDgIvAOWzRmnSVu713FkoqRfGQw8/DqW7G+z3Y47lEoTLlfOq
+	 MzmxFal8Owc2A==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Thomas Gleixner <tglx@kernel.org>, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, Stephen Boyd
+ <sboyd@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, linux-block@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH 15/79] block: rnull: add `use_per_node_hctx` config option
+In-Reply-To: <CANiq72n5+JadJUW-GO0cwQrq9eJW7cB3ZK7zx4J484RzjxmYEA@mail.gmail.com>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-15-de9a7af4b469@kernel.org>
+ <Y7WTRL6v0WsR-DWju2vumM1EBu4KZgQzE0VJul7mK3pUwD6ba0UuQO8sclDzOaeLGGh9u3WG5iSKq9T3kQqH-Q==@protonmail.internalid>
+ <abfe2LbhLzXiGCkA@google.com>
+ <87cy13swpw.fsf@t14s.mail-host-address-is-not-set>
+ <CANiq72n5+JadJUW-GO0cwQrq9eJW7cB3ZK7zx4J484RzjxmYEA@mail.gmail.com>
+Date: Wed, 03 Jun 2026 14:09:11 +0200
+Message-ID: <87h5njkeqg.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260602172247.279421-1-usama.arif@linux.dev>
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: bbpm9xmi9sganh4kmccrytdkkd6nftgj
-X-Rspamd-Queue-Id: F0CF1100011
-X-HE-Tag: 1780488536-387527
-X-HE-Meta: U2FsdGVkX19bjSptce2jCM1SJDkfFzFZl82BRmo0LnmnpNRnAFenGzU3/UZRgUC1b1uS972KoGm9oze8sLsg7czGm25a2zGoNphfYOv3UjkLJ0kq90VI7FXjwF0ygppVPswI+vx02pKUDxLVFrHAcR62gr+dlsKvrfG448tASj90G/I1aD+KDz1feeRRdW4aF9BYL4CcRoKnmkqbeVPWb5nS91Qp4PFu65/EXmv8amzJOsbDH0QV698bIDXj7j1C97TMejN/eILyEox5i+baNNpifKb0N40FhW8vhX3weu9UlvGnIEPWm/jgDjVRnf98gQEQmkfn6CZ4dEzTGIycfvzRtbi53pQAsu9CrOP33+LXtgrMbnn3j2JEEQztJ8w3ECc+kEJLtLY82Qz5nt5+9HbJxfWccTRSDyy5w7IYI2nNx7EOyfK8uMrwO1XvAGlCn2rbIz+kTRV8ybLmO529IFfgQG4Rbo4sT6II9o2w9IsL4KDuOeOSaN/3Irf/9BjTg+g3NsImNtblqsNDh3twN+pMYf8ZZdG+AxLgphvk4P+WOc9rGZBv+ueyVJiKV0+7FLNTyndKYPJ+4zX3LkPFllEjf1IVqwFCN5Nqifdk3202CbPdxD491mhWBHWu4cVKt+QuxtYbxoG1VH6d+capaBsRX+54eFMyDqRbfg4LByng/avwdbnSe2fkXoPEP+5Cu0g+9bvG3yd32Vw+wEDCF8qz0wB0NwGxgROFQ0m9UKG3WTYYTRoZLMomx3OHPJ99Mx72Fd4WVjUcVDk/4ZwFpIIEUAzK9h4lQJJBZ1kmlB/CefIpFnzkRpsadGZfSERzu5pLW7KoNrHK+WZGs+BXYFGVEytSFFiI6RFOs3b84jX6NIOXrs//aJAu7qV6ywqi4qQOgJ3+TokerOpP49mLYJzKo1UsvLhWb0I8OT7927xiQhK++OlyunxCr/nHlvCz97FV2uH7jNmkoU49t7c
- rVvuYGFF
- 0yk2OFLpykBzxHU4P1xP26ICPiUl+ZfcLxMKHYYqrkuO8hc8qipoFI+kPM87d+nc+sgCgvVYhEgvwsdrdxn3ZOX3l2W0IzLBH4LNbL+M6qQPoja+zzOo15roniSKPU7qtEMhPQv7vj88mhPOIe1O2ckL0DTQtL8STu9iCmbe811Dk6D5/BhuKU5AXypHbWkVQW+gQsaIBfTDcsQKDTi3ibXXyU4f9H+9u5h50g2hGVA3adjPMc4ru+RcD5tBCb2Fi+F/phoadYzsxotAqWgdnQ6iyzePzAZhsgWMkyY4EduXEtqTAOyESFSVPmJSNqe8Rw4jiv4U/AyNfYue7hVTNs37qLZ2jWC1jmAZa4sGcgNr6cOI=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B560040004
+X-Stat-Signature: ej9y6a9w5osee1rz7w9m9jqwjj9h6wub
+X-HE-Tag: 1780488572-206548
+X-HE-Meta: U2FsdGVkX19pcIb4SH73j9fLedO5XAygPyBuZhQPAoP5N/jR8vzyhnF7ptEbffQ+tHQGQys2TR4iwxb25iis/sTgsjZrd8gA1D+HpsSXfqnR3CjYNdZXNL/GFif9JPqFe2+1237CsMpJhB0FaGlwP6R4yUhmVHlV4VBFdjx1flSrSbRhijdHS4oveKlM9pDTg4Do7maqGxFStTeHsVF15irek9HAHa7lugEQI/ZTN2Mg48GfdS4K8Ab5ph9+Ab/aD3tEkeO230DTvV3/3xt/6MgACiVPGhS363eEOP6PHVspNfYCl+h1MfCx3VLe2IzSOUsv5PDapbwJ7i5pqFHYEwyCfo9pCZPTvqR3TnspgHzo5Ti3ZGHxKLX9aOhvwvKvlda/xCDGKwZERfBCoWxBT1utR2HuU8JAOE1ZDdzS5gfUalntns4uqHmq0OQ8933KIMwCZU4VW0jWCKBhIt3RW485/3C4/1p98eNwii1GcDRABUZ1zbrgcm29qcaJHhPC4Gq84BvQo4m6S1DlfPPt6vstOyn8exq+DosHbGGyzMOz9IilIwTU8w5NDA/3IeclblVTH93ay2gA0Lub/IlBPW1YbDD3O/u3apLqe3rx4dCRCqLadDtcUpOyf6aAAMoktEnM8dlm0YzyxwMdra9nRq3ducM+sC4vcrymmPo0/QtQ4CrzCAVUkCnI7WXnHQYdghXEt5/vgGwI4XLloPRMWb4PvqfdyWV7yjv28izUpqg+yKWqPKU+tcZ8Z2kGyNCWeCbbGbC60FiAhd4+1BRpXlHtHNSewuWIqMtkSUnmBgPoa6F8hWSb3e8j4t6rprZc3RRI4IW13oWUQI4TA1GsvKa6veQ5JnFG7g/GlE38MJZOhh/BhzhqIxoHxc9zAZ2CwpcZ4Fml1ThSjzcl66tlIUlSM5ScNil578L4fRQsXkdeUJzTZvvPnpZ3QkA/WAZiyUQg8VUFW3C0iKNN38N
+ 19O95JsR
+ 8DYrOSDFk6m7WW2na611jxHOfDGP4eqrWW9vdBBKJA4Zgt+iSu1K6H+gC9U8EUz24yuWLljwXclmc/D1r1G+Gs1R0rnBwfsQMGPg+9FDkIO5qn21LsZ6kOxcMCMy+zYZIz7hFe0gN0vVxv8pHrKdtPDDkayAkrNMl5eiy4tiMQSfSu6nBrg6A8lORvs2mJXZt5Nxx9A13bFtX9oj95AUD8yxszW4Nd1aOY7m/ob28tI5cLxSr9VdWU+KOCvy33sLinegYDw11oMicngtfl/Z4X52DklvPnxQ0KsgbSVgbAYQFzKnHRpDho1kJEnkiByZkek8G/0wKr2Lbsui7sDzysxFxtg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,71 +107,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 10:22:47AM -0700, Usama Arif wrote:
-> mincore_swap() also fields migration/hwpoison entries (and shmem
-> swapin-error entries), which can exist on !CONFIG_SWAP builds when
-> CONFIG_MIGRATION or CONFIG_MEMORY_FAILURE is enabled.  The
-> !IS_ENABLED(CONFIG_SWAP) guard ran before the non-swap-entry early
-> return, so mincore_pte_range() can spuriously WARN and report these
-> pages nonresident on !CONFIG_SWAP kernels.
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+
+> On Mon, Mar 16, 2026 at 2:58=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> This is intentional. The line gets too long if I pull it up, and I don't
 >
-> Move the guard below the non-swap-entry check so only true swap
-> entries trip the WARN, and migration/hwpoison entries take the
-> existing "uptodate / non-shmem" path.
+> Do you mean you don't want to go over the limit or, otherwise, that
+> something else complains?
 >
-> Fixes: 1f2052755c15 ("mm/mincore: use a helper for checking the swap cache")
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> i.e. the limit is not a hard requirement -- exceptions can be made
+> where reasonable (as long as `rustfmt` is clean), and moving the line
+> to an odd position doesn't sound worth it.
 
-Logic LGTM so:
+Yes, checkpatch was complaining. I'll keep the long line then.
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Best regards,
+Andreas Hindborg
 
-Small note below but I think not a problem.
 
-Thanks, Lorenzo
 
-> ---
-> This was discovered when working on PMD swap entry series
-> (https://lore.kernel.org/all/20260602142537.198755-1-usama.arif@linux.dev/)
-> ---
->  mm/mincore.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/mm/mincore.c b/mm/mincore.c
-> index e5d13eea9234..296f2e3922b5 100644
-> --- a/mm/mincore.c
-> +++ b/mm/mincore.c
-> @@ -64,11 +64,6 @@ static unsigned char mincore_swap(swp_entry_t entry, bool shmem)
->  	struct folio *folio = NULL;
->  	unsigned char present = 0;
->
-> -	if (!IS_ENABLED(CONFIG_SWAP)) {
-> -		WARN_ON(1);
-> -		return 0;
-> -	}
-> -
->  	/*
->  	 * Shmem mapping may contain swapin error entries, which are
->  	 * absent. Page table may contain migration or hwpoison
-> @@ -77,6 +72,11 @@ static unsigned char mincore_swap(swp_entry_t entry, bool shmem)
->  	if (!softleaf_is_swap(entry))
->  		return !shmem;
->
-
-I guess fine to do this after software_is_swap() because for !CONFIG_SWAP this
-will always evaluate false?
-
-Not a big deal therefore I think.
-
-> +	if (!IS_ENABLED(CONFIG_SWAP)) {
-> +		WARN_ON(1);
-> +		return 0;
-> +	}
-> +
->  	/*
->  	 * Shmem mapping lookup is lockless, so we need to grab the swap
->  	 * device. mincore page table walk locks the PTL, and the swap
-> --
-> 2.52.0
->
 
