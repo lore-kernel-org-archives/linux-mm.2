@@ -4,110 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C25EFCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 16:20:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A79BCD6E57
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 16:22:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBD2B6B00B5; Wed,  3 Jun 2026 12:20:22 -0400 (EDT)
+	id 7BB806B00BB; Wed,  3 Jun 2026 12:22:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6DC16B00BA; Wed,  3 Jun 2026 12:20:22 -0400 (EDT)
+	id 792DE6B00BC; Wed,  3 Jun 2026 12:22:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5C766B00BB; Wed,  3 Jun 2026 12:20:22 -0400 (EDT)
+	id 6A9316B00BD; Wed,  3 Jun 2026 12:22:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C1AE86B00B5
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:20:22 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B8411203F8
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 16:20:22 +0000 (UTC)
-X-FDA: 84839113884.16.14CEF14
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E0136A0006
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 16:20:19 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=GisXoFoe;
-	spf=pass (imf25.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 560F86B00BB
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:22:48 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CE4E1C1A6B
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 16:22:48 +0000 (UTC)
+X-FDA: 84839120016.10.89260C0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2DA7A1A000A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 16:22:45 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KmKmrL6P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780503620;
+	s=arc-20220608; t=1780503766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KQF5anc3clInAXcjBfKS1egNzzHrFhfRAKh+Hd0L9uo=;
-	b=GgfGdaHi6g1LiZYkDcbdhDF0sqiuoP04gy7709uQ6tYEqrF4uIiGlpMM0y3hUhVgjnAdzd
-	GZpVfk/AXqi/z5kF/5kjOM+x5hjv5JET04hYp1mtB1OpaCWXk3R1CiCuLHtqPtRMrBwcCR
-	r2GN7RhnuxOE0BFz0tM2caNS+WATAgo=
+	bh=CxPhfVSO1PMBoWPiKi9ZwlNxfl6TXOtrDKfoICaOCcw=;
+	b=QfPT+in/fuKIXkt5Twe40388/bvcqcXTgXxG7l3kSCd4FCFYLJC1OAiiH+NIAwEfCxOhNd
+	APYP7XNwIPdyu0uf+JbUyyaUDn0jUmizfbXz3HvmJuT2H/zA6mFzajI7TeubYl1RTsAwcq
+	jkYVm/TPGNkPvzRe5dX6Jwfgjxe7Trw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=GisXoFoe;
-	spf=pass (imf25.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KmKmrL6P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780503620;
-	b=LiNylUNcUehPGcTR8SbbwNVKCe9LVWzqI0UwA/Z5/XDdMmqW/YcejKZKgKdhceFwq4fV1j
-	w3TSd71jv3MPVPM9v4hzjjUlHpVtWLSCpINE23qKtB2nxO8i91ed5eWNtrV/E4i66puYWF
-	fKml0E5xpCxa7nV0sAex3OugCOY9jh0=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BD55540E00B8;
-	Wed,  3 Jun 2026 16:20:16 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id fgZAnMZvIDEE; Wed,  3 Jun 2026 16:20:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1780503605; bh=KQF5anc3clInAXcjBfKS1egNzzHrFhfRAKh+Hd0L9uo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GisXoFoetprH2QNiza4ohZ5H5fYeZ9K6vD6/cFL6IzfaZaNrK/Vo43IkUWAhbwf6+
-	 77oeu3mqF8w6d7Z535vvPvr8t2ixE3MrIbXilf5CnkP4RXvGqk2ZUr9Z8QU96HTyf/
-	 Dmq1iHKmmA1OskVhADdGIj6/PDxBxqjZRssbaRcdMQ9GA6NJZLUAFAXQA9UeKNcg6w
-	 MKlAiVQ3i57S/StJRLYwloNvirlJIO3/Ng5Yh+phGb3RWCXYWHQl7mykvge+FJKS2Y
-	 CYM1GiCzPgf4Hq7E3OsgqjOcq+KtU6GKyT7TNGkFVIO02o2aj0efXaltN8eAflP/rG
-	 YeCO76N1GeyAkpZN3OfexfyRL0fGhxjQmEVtCoa5i14tGYB5iMYfsLtwvmRtqGYIV1
-	 GjtDbP50cI0UfAtcRiIzu4r8ffvk2OdRibREg1edMqEWA6dGZc0A0qi3u9SmtEzSeu
-	 uJb2qzuKbbh32Xct76RUGJtBm5Tkbg8l8r3GSsl9tGIfJoi/o+621202vZJTAIGw9w
-	 ZRvHZBL1gCDdtGkIfImM/27lLzWJ0+hEScKxivs8px7laLlIwy2jNEpdOX0OZrj4UA
-	 TgLftwLm80mKZFU8RhUtJRnW4KnZtqayhk/JttXGfPnRJBOhWeDIUD63tiWYDyF9Z1
-	 f2FdWuAToTow5Q5k9cOKUoyc=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A7F4E40E0031;
-	Wed,  3 Jun 2026 16:19:50 +0000 (UTC)
-Date: Wed, 3 Jun 2026 09:19:47 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	"Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
-	"mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
-	"Luck, Tony" <tony.luck@intel.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"linmiaohe@huawei.com" <linmiaohe@huawei.com>,
-	"xieyuanbin1@huawei.com" <xieyuanbin1@huawei.com>,
-	"Lai, Yi1" <yi1.lai@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: mm/memory-failure tracepoint change breaks userspace rasdaemon
-Message-ID: <20260603161947.GBaiBUI7C8WWPwD84S@fat_crate.local>
-References: <CY8PR11MB7134346A3E4BB28ECA28D6E989132@CY8PR11MB7134.namprd11.prod.outlook.com>
- <b930678d-a1ae-458c-8705-7ca9680d4cb6@kernel.org>
- <20260603121707.7eccb9fb@gandalf.local.home>
+	t=1780503766;
+	b=5WgUafsEY+Qd89qX54VmvKoOSixE4mdDad1c9FnAn+mrT9+/7L6rxl4zgIUW+C2V4gaZIn
+	82/uZ5LXDFCOwyC44mvbxvywb3TxEF7PYiG/MAkYFjm/yRDWky6E13Lt8kZFxQhLdKM4E0
+	Gg9awDjMwR7ABgC50b3Nyw9We5Qn3rA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 146E34169C;
+	Wed,  3 Jun 2026 16:22:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024BF1F00893;
+	Wed,  3 Jun 2026 16:22:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780503765;
+	bh=CxPhfVSO1PMBoWPiKi9ZwlNxfl6TXOtrDKfoICaOCcw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=KmKmrL6PswCLcYojvpvZX8QoCfztwKuJFaEFgpHaGxc3Vpz4WNJTGjNXUOdXgBMPG
+	 pfvWqWoQhPOk9xY3gH/FSWhOZBMAJNdcTVkuJHaEyWSr/cUJ25JOb/wA87+CGgvHXq
+	 8XHpMxjqKz57R+JVa29dzsNEtBi83+f6n5FGjxq9GGtG+zV1XSEVZ0JvFzn7ctkqvQ
+	 65peuRFmiA22Veq9kCRGtqCIkm4VxBh1KBgl3MiXlW5TUyQq5VtyopJIJTmDuMz5A9
+	 m6OudFzZkl4NQNqflq8rui6SMZo0KpZecbcFwKBdkVPTowovyF4pt6+gQEpKWBADT1
+	 yIzkRHuRwpS8g==
+Message-ID: <b6f6323e-6f5b-4928-b474-bd2743eac3f2@kernel.org>
+Date: Wed, 3 Jun 2026 18:22:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260603121707.7eccb9fb@gandalf.local.home>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E0136A0006
-X-Stat-Signature: o7g1e4q3k74g9tjayxzfcikze7ic4mht
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slab: improve kmem_cache_alloc_bulk
+Content-Language: en-US
+To: rob.clark@oss.qualcomm.com
+Cc: Christoph Hellwig <hch@lst.de>, Harry Yoo <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Mark Brown <broonie@kernel.org>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, linux-arm-msm@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, io-uring@vger.kernel.org,
+ kasan-dev@googlegroups.com, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>
+References: <20260528093437.2519248-1-hch@lst.de>
+ <20260528093437.2519248-2-hch@lst.de>
+ <5f7f90d8-cb32-4ffb-8f1c-0722aafbe869@kernel.org>
+ <20260529135045.GA10647@lst.de>
+ <5f3ba603-a6ad-4cf2-9a54-aebc10273c59@kernel.org>
+ <58cc76e7-2348-443d-a989-2a06e61178af@kernel.org>
+ <20260601113831.GA25535@lst.de>
+ <d7b08296-7f6e-4d89-ab3b-04e43d04929e@kernel.org>
+ <CACSVV00k-fxW6+waHNqvmYcnVNDkRexoWWprFzfayZfqdyMuuA@mail.gmail.com>
+ <CACSVV00dNWgpNVU5rB=Hmg+3oWF18yTyfKNr_tWesjoP1jMxwg@mail.gmail.com>
+ <5e6948b3-d235-4b61-aed7-e8b4d0f5b452@kernel.org>
+ <CACSVV02v0Fuc6=Rqyd89D-_tcSjEXuQmxz0+2-4aoRAEwJE4zg@mail.gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <CACSVV02v0Fuc6=Rqyd89D-_tcSjEXuQmxz0+2-4aoRAEwJE4zg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1780503619-106427
-X-HE-Meta: U2FsdGVkX1+STy3XlYIGUppKrnpTeY0raOpVsamy9HLCDiLF0SBWtT7Xuh1KL4EU1+FcFDNCEwKOEUCBN2KJgz9OX/lfcaa2+vtur8BPnAyDOQspYcdzgGhh0pJoIhIBnEiN57W933xFv3LHiUlFZGqMrnlU83mWzI8c2PLG/uL7D8EFjJGFJVrqd6qOtgEhh6gVwBmEaz7pHofm67CqIJ0L5OweALmgejXWa9fK1Y9jh/gPjMwpUHEbLXn2TAYxW81dd9Wx7fvdVSDRUEPJ+oowBQmKyvsG2IHVrFfEV0qqQvroPLKthDs9Ntzi1PAxEsJ8yh6eS6pKGtiN/CLI3qRXY5YumTTGOM+H8unbkX+C9yCzq70kuLXUbDGlT3xPaOy0EFjCnxtKa9YdJqcnxQ1UJFoq/oc4aQRegeHHHoor9hVQFZJrhSsVFB45AH538b4L2+vxB/lqP2/njp1YWamrzaNv/Bzfj0TrpydrnVQm3bzXANieW1P5jWhvAv7DY4i+nvjfJx5B6jvcU+r33XGEcayddsj7MaXyhPhZB9uqsJwpR44UR/C5s25IeyQJBgt+RdO32STnnTbXOmo1gqMqH+I8ipiVX4sgp70Fotpdw4bXBjK70F/IIaTm5m9p+/vYp8TpwFCBuu/2d/f3Nd3C1omglY7vrlfCpH/1QTSDHKjK0Oom3D2/BvaSav16FraGO5n46MQaMFzihOUppbODoEAUlmVcXA8V6f9WAytJIi4x+Nwn2trAJ0SnGIcu4WQfjLzHk1tKf5vmlT6jA2vB3X0NQUF64xNVElDS523SYut78G+XQQxOmKIxcxo1iBeSMtBkmGlVVJdJWlwLHwAfo2hlc1TcPjRxHRj9+g4e5ghPfwvnxbnBHC6sOgjO7+/+m59Eqeo2mUuit/JsVNFNNJQ/2O03pgIIMOuwmX6IVZvmB0ttfF73Rwm6Q2Jppvq/kgeFDndvrCdKDq1
- Xoc0iSGz
- WwgGMMdIn4Uzzu+jchII8dZ8Lc7ZqLKwHHlH/o9sx7SUYKlrTSFsrq2F+6fZToC9Yb+oD6IQxtC5OfaI9UCxfGxYbJaznG/BinGv+ORuUMLC/sCKvlSXY036C0yaQdvI5Z6JPKGHvpcn/UZVPN1ifVxK3s4lStb3ny4Rqkx4z591zAdVgYMqLRjYY33psIfYe4/CgTTuO1BXMDpKnZaLQ3fKmtRZw0gcUP2Ikfo7yeo+H+NmxsapA0JdXepGIqFppjGXsEsfTzTW4hpBknq7vEH/cMKR0k3PjDPiFg+kUcF5d9wfQDpjSeeWPtqG5sqTf7TC6vegktMI8mcpyZ6/ldDfvJ8TyR28Cyainiq0qWWROyj39ZsgvSxiHz7ycdxHTuj1Hz1rmccdB/ZTdl5V1eO+aurGCp4YvK72PUKZElyHDMUhrppEfwkEUBvTjpXXY1JocpaFGyIe8njn6t4B7b+HXQZpR9PizNRyKjq0aMsol0eF6F7sgcryQtiYnWaxtRE5wV2OGRZ+X8ckYEDLd0RADa9SSaBC/l562nZ3P7kWshG7uiOBym1fPHJuY99miURWZ+DXxEGlgjHKULAZBY/2hOh8oypPDCzBFl7IBMAzW/Xk=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2DA7A1A000A
+X-Stat-Signature: 7qwsg9wbyy6cp7upbp5oxmtq98csbhei
+X-HE-Tag: 1780503765-252931
+X-HE-Meta: U2FsdGVkX19tNdkMHZYwXevyEs7ZN9uTBVnO5NszkUOypPLveshI84LfmP0n46wClBVXmmq+yds7U2khtPzCSEUi32hnW6+EJuLOSZ2PqSziGU0h4U+B43r5Bkzqjlmz5+s6u501Vg7MmkZaph4pMOtydmyviui3Kv9jnsCxbY2od7n0LonqEspfjXuAi1yPJtCBjTKz0H/W7rZRCKw0LCDuA2L7NJrp4b5FKu3uiJFGBR9mBypSsXujQFUEp7uQ96vC9ewXD8a20n6XM9Ovvg9/AtsaDbLoAjn8imivBamjtVO3lCzW9JI8NzZl1S72lukgO7jJ4ULp8aYTNXe7y+QlurLj7/FmHdXPAt7zzYvBXL5qt7+Jnw0Y+iPVo3uxLflVa6kreOzIV5cYBoftUnxo+sxmK/UAlmGOF+LOl6xi5ClOXma6sMTEcDGvNFt+//q5764ZNxLpF4C4EGMBmjJYya2D7qxkSd+robnfORZxFonL7hCXE2TcufmrEllJIsfrrv+m3Vgm/w5rONuIRlRA16Z23HBWXfpi4p/DmEk4Sd0lru12a8SVNG9qgKlr1BLRgbnwmmvLe6ptBZgS7N+ajLqdiiJZOVF5gvA2g35OUt8KWUq7swruJdwssF5kw8Up/8k8JP6qOjBqh/4eh7nh1Iv1MGcG0u6F5mDArPIWkwwZZRxJkl+QrgXDbvK3g2PRoNmvp0lTBN5swvdovFJY2UQDmYoFvX0n/lwZjY6fpmZ98r/h6y6Nz2MhmZfEmjqI5PzhXzW0L5AIc+cRTbbF4rZMT3lmLnCdwaTV3DHK8LYWS8nrHHz0Tv9aedAFNm2CVtt0zP6Fbkgojt1Ny2PqLPojH1x0+8YZDwEqIJkGDKtdAH2JXJJj58LmKDyTxNjw4h/qBoPhoRKGhUHY/B385R4Yb4vwDddZ3WAnnvR4A8NwYZMTsexn2vpZo4uID4KMtRpWP6od6sd/8qF
+ 82tpidu9
+ ejrRIqEmiNzXBGQFofbmCxGKkm1pSUGVVldG4BBN1e8V0En3dznC889ADwmxtBrADPNF0j5974+Yy9lpkPh56ScdXhicu9wYbOpj+r2St2xrmeVLlQsaKb9N5h3SwyfLz/l8hEAL1jt12P4EVW+pB+HgV47wzSQ5HAHk7amubDzwDvSmwNW3vgNTNpgFIFz5kPn8ArR5T4EUY37rZdwqfwbORtc5rrq5yqexNBCqRyLcvJsq/vBqDX+qHIStOVGWL4fa2Q14gi1NsGzLmHPdHuEpiG082Edg1ExeDebzBghqrSHOzd64T3e8VPQssxhMIZWeEIvIc5b02Y7zwjLq2+e3ANzN+7nZ41iD+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,37 +152,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 03, 2026 at 12:17:07PM -0400, Steven Rostedt wrote:
-> On Wed, 3 Jun 2026 15:44:54 +0200
-> "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On 6/3/26 13:13, Rob Clark wrote:
+> On Wed, Jun 3, 2026 at 2:17 AM Vlastimil Babka (SUSE) <vbabka@kernel.org> wrote:
+>>
+>> We know p->pages is NULL in this case, right? Because it was allocated by
+>> vm_bind_job_create() using kzalloc().
+>> And the job can't be reused with a leftover value?
+>> (msm_iommu_pagetable_prealloc_cleanup doesn't set p->pages to zero).
+>> Or should we set p->pages to NULL here.
 > 
-> > Likely the latter. BPF [1] documents:
-> > 
-> > Q: Are tracepoints part of the stable ABI?
-> > A: NO. Tracepoints are tied to internal implementation details hence they are
-> > subject to change and can break with newer kernels. BPF programs need to change
-> > accordingly when this happens.
-> > 
-> > The Kernel ABI document explicitly doesn't list them AFAIKS.
-> > 
-> > There were previous discussions on the stability of tracepints [2], I don't know
-> > what changed in the meantime. CCing Steve
-> > 
-> > [1] https://www.kernel.org/doc/html/latest/bpf/bpf_design_QA.html
-> > [2] https://lwn.net/Articles/747256/
-> > [3] https://www.kernel.org/doc/html/latest/admin-guide/abi.html
+> Correct, the job is not reused.  But I suppose setting p->pages to
+> NULL would make things more obvious, so no objection to that.
+
+OK, did that, just in case. Thanks.
+
+> BR,
+> -R
 > 
-> Tracepoints are not stable or BPF programs only. But other applications
-> they are[1].
-> 
-> Adding Linus as he's the Supreme Judge on the matter.
+>> > +
+>> >         p->pages = kvmalloc_objs(*p->pages, p->count);
+>> >         if (!p->pages)
+>> >                 return -ENOMEM;
+>> >
+>> >         ret = kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, p->count, p->pages);
+>> >         if (ret != p->count) {
+>> > -               kfree(p->pages);
+>> > +               kvfree(p->pages);
+>> >                 p->pages = NULL;
+>> >                 p->count = ret;
+>> >                 return -ENOMEM;
+>>
 
-I *think* tools or libtraceevent can't really anticipate the TP namespace
-change so we might have to revert, I'm afraid...
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
