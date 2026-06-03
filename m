@@ -4,83 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C642CD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 08:19:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A40D6CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 08:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E0596B0088; Wed,  3 Jun 2026 04:19:34 -0400 (EDT)
+	id EAF246B0088; Wed,  3 Jun 2026 04:20:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B85B6B0092; Wed,  3 Jun 2026 04:19:34 -0400 (EDT)
+	id E5FA06B008A; Wed,  3 Jun 2026 04:20:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CE016B0093; Wed,  3 Jun 2026 04:19:34 -0400 (EDT)
+	id D9C2B6B008C; Wed,  3 Jun 2026 04:20:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CC9D6B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:19:34 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 179B31402AC
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:19:34 +0000 (UTC)
-X-FDA: 84837902268.22.0D41E06
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 65CF91C000E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:19:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nqlM7B6/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C9FE26B0088
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:20:59 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B2E0A0292
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:20:59 +0000 (UTC)
+X-FDA: 84837905838.16.BCB6173
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8EFB7A000C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:20:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yon+l6xv;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780474772;
+	s=arc-20220608; t=1780474857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t7AZ8z9mWLa7vVR6KumYSN0Nipei9xDbXIWVR1mkHhE=;
-	b=zdH+PFJmKgpWjKgC86K3wR0qV4NzMGRfke10v37jutNhRHjABY3nMGw1A5Tcze0Y501tTb
-	9Dinn1Jm/8FmHri3swMasOT4dTM5WyT1soD2VFsFj7/IqSF0RU9y2heoXxVKRc0DbWpzr4
-	gSMT+gQjoG7XpWPqq3HOO+T6ARjVqeA=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nqlM7B6/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=pRq08K52AkaLabs+jxp0xNc16t19qkjFsQsci3lW46U=;
+	b=oA88pM65MXVV1LCcF6asrtleSLuPifUIwa6a2pdTqM5H+kbKkULMNvN/m02U/DyXziNUwN
+	59f3/Vq+G8bwVW2NPmymCaTScUK9wVZSRUckOeftbBH2B4DwLKGkoPaC8zzBRT4q/8Z3Hp
+	5GNNXVu4mjEYLOZyBkfiN9FwOCNb88Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780474772;
-	b=c+CdYG5e3szwBj+5WZHgYud/sPQnIjAJxOYAu82FjnbLeJWoQ9Y3UYdHJa00NZTfM7WHtk
-	mm9dijLgkCZm+DnN0PRcG2VW/dH+WfMZdTiFdnh2Hh5llCHTv5ynt5AiEI1ggJfh5F5nN2
-	kDJhe0a/Jk/Fk5CNV5gBmnN2GaxwIF8=
+	t=1780474857;
+	b=PVAhmcPjZi48zMkPFby1MMSTYfhbdlFS144HBJhCCeV4HkwAWuTDbM2+swP3+bc8OlOcb0
+	5Pv6jK/k4xqOB/C0mkwvievu9zH98o2lbz8bOijKOaqjvtFmIwbuMV9KCXzwdeTxF6RWRK
+	8KXSTdDeFKX+9mf7lsYjHzfcRBGE7OI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yon+l6xv;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DAC7B60233;
-	Wed,  3 Jun 2026 08:19:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A666B1F00898;
-	Wed,  3 Jun 2026 08:19:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 915DF402FF;
+	Wed,  3 Jun 2026 08:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876031F00893;
+	Wed,  3 Jun 2026 08:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780474771;
-	bh=t7AZ8z9mWLa7vVR6KumYSN0Nipei9xDbXIWVR1mkHhE=;
+	s=k20260515; t=1780474856;
+	bh=pRq08K52AkaLabs+jxp0xNc16t19qkjFsQsci3lW46U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nqlM7B6/rqeikaLQVbwnEv15LF2reK199SOpmul7UFaeEXYYgiwdST4GAxD2Hql4y
-	 YN6sg6U2+XizT+sUpPImX81X5O++AIcLOFntQKDMSwzlebYaDQ6fgy//d3BzAr7NdL
-	 5MVg/L/CyROjWQtz/lDjHgAxkjEp7Ejhk7cu3RfvBMBZ2SvIp8yN2dvYJqLsv+4xS4
-	 ObXm5x0V3ynXkPCq+tZgv9kPImZYX2XVuWU2ZjSEbECzxRHoAwpkjmE46S4nAdQe5z
-	 1Hjdd9gIBVFVC4B1amHN6r0mHNE3ohkJS6lqdZlocSIS+6Ah0/gu2wz0lbzgawIO/e
-	 4g7JHoSzexK/g==
-Message-ID: <a0a19e2e-04b4-4224-95f6-3195006ee780@kernel.org>
-Date: Wed, 3 Jun 2026 10:19:27 +0200
+	b=Yon+l6xv26goOGhhSdePN8NWbgDf1PVL1auDkr/lBwrgNBxCRcN98yH5Qf7dHaJdt
+	 WykOJy3d8zrluxD6+rutk4eyES4j4HscjBpEndXJmFaH+EUJ1SmgByhPRgBUT5zjNd
+	 C0F4G7u2zo/cWZL2SO6QRXccr3f1BxzaPIczJZ0rOXHo8stFqa4jR59aVTdTDdhSYq
+	 bxG1WlrDamIR97USXvKBv1fV4qC3+o0k6YfTQZB0F7VtoE3ctfBQvI+Ssiu65fxJLy
+	 dgFNzXwMy6NjrILlhNtGj/80v+fM/7afFSho0s9Sisj7yQLjlAdu1PpYwsulClTt/L
+	 KD2zL1pRykpQg==
+Message-ID: <19983eab-0fcd-4ec3-955d-a18233bc4b59@kernel.org>
+Date: Wed, 3 Jun 2026 10:20:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/compaction: cap compact_gap() at COMPACT_CLUSTER_MAX
 Content-Language: en-US
-To: JP Kobryn <jp.kobryn@linux.dev>, akpm@linux-foundation.org,
+To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>, akpm@linux-foundation.org,
  surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
  ziy@nvidia.com, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com
 References: <20260519200851.141955-1-jp.kobryn@linux.dev>
- <b4e49d71-bcd6-4c6c-87cb-2dbd75b3c2bb@kernel.org>
- <e318bbc0-3da5-4a49-bb1c-5777b7b4e4e7@linux.dev>
- <e65672e7-9a56-4489-84a1-db25d2c75f28@kernel.org>
- <b17dd2a3-8ca3-484e-8398-e5423f5df9c4@linux.dev>
- <71edb773-d156-49e6-ba6c-8159665a2dbc@kernel.org>
- <89e01c8e-1b08-45a6-a702-b23e45b70a29@linux.dev>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -121,17 +115,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <89e01c8e-1b08-45a6-a702-b23e45b70a29@linux.dev>
+In-Reply-To: <20260519200851.141955-1-jp.kobryn@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: q55z9ryhk3wzgqunyosxafp3u5qzrnji
-X-Rspamd-Queue-Id: 65CF91C000E
-X-HE-Tag: 1780474772-113069
-X-HE-Meta: U2FsdGVkX19KIAhrhBBbTZIF4NaKkf7KY+/WMVOxOiWUBae7BdOsgk8eEjTKKSyZcY7UbvfnegvifxdCMr7ap7ENsADA9jmqErCly1NSHQ5fBC//+R3g1OoVWB/I1Hykvl2aYjVxX9VnvqVYH7P9L09K6ihXyuh8E5NK/eHHD3kCRNrDV1DR5DdVgl2tOMGhCqw15uSmIJZRpYc3+bto+mwvVRBn4VzpRm/EpWLtCj3nbGY3eLF4uRmg/TVru1OZTHhQvXD/0EjPtsO6sdi2zdZkBsH8jYJG6G6GnEvng/gVLBka3RsRRh35RpEX+0tlbifarvxzW9P0t1BOxZ3B793tGSiidhSx5N/CfTwLzVCDFAJ35bJVrjhewuqhJU4QmyRhDc9uSOjhZSXNGPB4T4P3upQuNR2VaSCdVHxdxfBnTNrCd2JFSAJdF2k7xbouxZQ7PLPvmG5bMuEbB5FYhDY5CtaZEfkicB12BIyUnKx+8Ciqzx2NU0oVJVakNt3znjaKWoHO2kFiv1utorOxbldU4F4qLlQgLrDPEvcl0xk4VAgXssMPhSheUA6XjNAfNlnDzYXwpbBAXw6Apaxr30OOspxb16B21C3vyI6zzyVqJUfUPRMuVVX1OgqCYUtxWFH8HxrQvte8DbRvBMquptHyIdfkoE6ZKoBHzcVYlGOU7ZtrEguvo7GrHVIetlSHbTZZGLbEGAmWglNzZgkSin2oEHUUvKTDjSLR0xe1ifHemqBbyFqCSOBn4rj+Pv+KxazFAY5vxnaLIEpE03RPA2Xa6iAcsb5om/gBqEYZXDtFm3UTX+xn4/pkHkrt4pkzo0VvwWDxQfvOAmZFz4Mv1c2hk89nptD3aOnqIRWyDLICKs2B1UE4/iCdNtWgwGvNmmaKb3pZJyphaAvxACeuqNL9j/fFa5kzpkqw/4ZXudJ/jGJB/9GdqvWDSXkHT24et6OKpvvWDjOwaybnf5+
- 9Y6zh26U
- n6QsxTFdpaJ92L/SBeKnUFJP7Ez3SVWu5rvkzFvOBA08f8Hb9sUT8K9WSFpz/X6hCdMIEs1/suU+Vt8K+q6dRhp4ByFfZbyLp7jR+BBuoQx5RY+cEakgK/EqcYYVeBMM2jkvNwCDBbSCMVxA5gJzAmVP36MQx6JzRedX2ta8FuFzeVddwbeZFMBhehYBD0zwYz+YLSxBl1J8vf9Ued+HgM+GQabYzM073NQjbONZj+gxDNSveQRHYiPKBxeF/C1adlt3GxVhwnyN+nC5v1INVM8rHckcZoxanYMbs2xRS2AHqcMZDI0JKsL6ZYwAJHw9UjsLY4zbHspiTJyw=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8EFB7A000C
+X-Stat-Signature: wstsxucmrmwxgt73bpr9t5i8c5sob61z
+X-HE-Tag: 1780474857-23217
+X-HE-Meta: U2FsdGVkX1/UVTptwLiLU3YuaDvJAMeqKAfCFmLyzk3uUm0cvBGBlGmHhk0ZBkN9dAop5OzcOUvyZfnswBdpASwqmeHUUNWTbpAlLku/qNx7hnxT56uKyUYPNH/hUtybaMv+/Phh604dBla693ZntM2s/BI636HZhpwHsBra9LdLdAvCTyVSP9GFUdDDeO2BFjBwor706yir6soKP82mjXxJZ3lF/tOmYxrbhZWs8aAb8Ubf66N1XF0dCj85AybG7s+AJIIXFNY3YUso0TzaawMbSl+IJS1hjxb83dpf9ve2NX352yHIwPTQUGW8+z13cRnmP5VTgvH7Odr9LvjmYASLuinDQTcaTf2owBUOcwUEKVtuPzdRIHB95qEsljXWWWbBlXdvbUUDxTiG3TQtINQXMQihSXySIEHowZBn1uK00IVmKg7cknUaFl0fewAFP8Rc62DBjEsJ9+ZQFMqdysqMq15/iWh+J0UACX2uzbuozUdvZfvVeW9FOCsgC/2Ny71ZD9VuMx97t3k7ih/TCh0PoelQku4ZRR9Sk4/VeY9ZJRHZE0kqnPHujT7PoDZdpco55H898wkuAjBRv91kcwlY4gaShy0U/mD8NgY1I3Y3NJVCTN0EzY9qqEghP7IOWDEOP6vw/KsRzr48y/ZbTfgffgt8ShQcZpe8NgnKTfrDabi0p6Y3x/41Y77dg2Vsj8vOcOJqxKdvI0U36+8zCEqlJkx6Ikk7O5Co5uHhvDa9hLobeG921cqYGm6V/xsNwLcsMMzaX4Z68QHqWRkwECwKdXx6ls3e5daoG3zdGTSf0VLwdmEjtH21REzh947YTF5ywRGLyJw8Wmxr5zAOyBKX6fSClDsQFWbRJltnmCPJAUgteDB0YauYBDXSn1KXyHhvyB5+lWW4fwoSF0g1xbBvEaQIXoItnKwavjjkuyKP/XMTEQVcwzV0PaFsoUQvXyhsxqVEPdWTeV3fjhP
+ SDUqIFEz
+ tolfUnj6TbnTOvCuBnLeedVlAgiv25P44sz0CT1S5voD6B8k1gc7yB02Pteo3C1OvTEofZnv/+ZzcVQq0LO0VVkQKbz7cMuhwus9rgIcX6MOaxk/xizOcGWctRNEC7/M0rbi/kIRtmbQHGiSYVQjUiOxLbqEEGjVOtquYfb5UPTL1oiL2yvUC3SPlyiHtpeevA9OIgciY7ACnBjIVYRkg3Wk/lB8+ieyEAxnJ3N67KoTPgIO/6N4uLmpVia9Jxy+Lf740yON/KB1t+B3kTwiZQ8aq/2YB2mFSJ9pJOx+SoVfgxpF/mLqvzawMbtAtpKCrlfaOfQt3ImhKaXs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,127 +133,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/3/26 09:15, JP Kobryn wrote:
-> On 6/2/26 1:40 AM, Vlastimil Babka (SUSE) wrote:
->> On 6/2/26 03:48, JP Kobryn wrote:
->>> On 5/28/26 1:51 AM, Vlastimil Babka (SUSE) wrote:
->>>> On 5/27/26 02:10, JP Kobryn wrote:
->>>>> On 5/25/26 3:02 AM, Vlastimil Babka (SUSE) wrote:
->>>>>> On 5/19/26 22:08, JP Kobryn (Meta) wrote:
->>>>>>> compact_gap() returns 2 << order, which is used as watermark headroom in
->>>>>>> __compaction_suitable() and as a reclaim target in kswapd. The computed
->>>>>>> value scales exponentially by order. For order-9 THP allocations this
->>>>>>> evaluates to 1024 pages, but the compaction free scanner's working set is
->>>>>>> bounded by COMPACT_CLUSTER_MAX (32 pages). The scanner stops
->>>>>>> isolating free
->>>>>>> pages once it matches the migration batch. The current gap
->>>>>>> over-reserves by
->>>>>>> 32x.
->>>>>>>
->>>>>>> On fragmented production hosts, kswapd will try and reclaim up to the
->>>>>>> gap,
->>>>>>> but it only reaches that threshold 18% of the time, causing reclaim to
->>>>>>> continue a majority of the time.
->>>>>> But doesn't that mean there's genuine memory pressure? We're effectively
->>>>>> raising the high watermark by 4 MB, but if processes are continuously
->>>>>> allocating, we'd be reclaiming without the gap as well? Unless the
->>>>>> workload
->>>>>> is sized to fit without the gap.
->>>>> It wasn't actual pressure, but the repetitive order-9 THP failures that were
->>>>> waking up kswapd. I should make this more clear in the changelog. After
->>>>> looking into why so much reclaim was occurring though, the compact gap stood
->>>>> out since it dictates the target amount to reclaim.
->>>> But the "amount to reclaim" is still defined as "reach high watermark +
->>>> compact_gap()" and not "reclaim at least compact_gap() pages" right? Or did
->>>> I miss something non-obvious.
->>> Within kswapd_shrink_node(), sc->nr_to_reclaim is the sum of max(zone high
->>> watermark or SWAP_CLUSTER_MAX) for each zone combined. The gap is not 
->>> added to
->>> that reclaim target though. It's used afterward as the threshold for 
->>> abandoning
->>> high order reclaim:
->>>
->>> if (sc->order && sc->nr_reclaimed >= compact_gap(sc->order))
->>>      sc->order = 0;
->>>
->>> balance_pgdat() then returns sc->order and that becomes the kswapd 
->>> reclaim_order
->>> value, allowing this branch to be taken:
->>>
->>> if (reclaim_order < alloc_order)
->>>      goto kswapd_try_sleep;
->>>
->>> Then in prepare_kswapd_sleep(), if pgdat_balanced() succeeds (at order-0),
->>> kcompactd is woken up for the original alloc_order (order-9).
->> 
->> Oh I see, thanks for explaining. I think it makes sense to target this
->> particular part (checking sc->nr_reclaimed) than change compact_gap()
->> globally then? It seems we have some mismatch in the various heuristics? IIUC:
+On 5/19/26 22:08, JP Kobryn (Meta) wrote:
+> compact_gap() returns 2 << order, which is used as watermark headroom in
+> __compaction_suitable() and as a reclaim target in kswapd. The computed
+> value scales exponentially by order. For order-9 THP allocations this
+> evaluates to 1024 pages, but the compaction free scanner's working set is
+> bounded by COMPACT_CLUSTER_MAX (32 pages). The scanner stops isolating free
+> pages once it matches the migration batch. The current gap over-reserves by
+> 32x.
 > 
-> I gave this a try and got some interesting results. Based on mm-new as
-> of earlier today, I ran three variations: original compact_gap (2 <<
-> order), capped compact_gap (this patch), and capped downgrade gate which
-> has the original compact_gap (2 << order) but caps within
-> kswapd_shrink_node():
+> On fragmented production hosts, kswapd will try and reclaim up to the gap,
+> but it only reaches that threshold 18% of the time, causing reclaim to
+> continue a majority of the time. The over-sized gap also causes 46% of
+> order-9 compaction suitability checks to fail unnecessarily - the zone has
+> sufficient free pages for the scanner to operate, but not enough to clear
+> the inflated threshold.
 > 
-> -       if (sc->order && sc->nr_reclaimed >= compact_gap(sc->order)) {
-> +       if (sc->order && sc->nr_reclaimed >=
-> +           min(compact_gap(sc->order), SWAP_CLUSTER_MAX)) {
->               sc->order = 0;
->         }
+> Cap compact_gap() at COMPACT_CLUSTER_MAX to align the watermark headroom
+> with the scanner's actual capacity. Orders 0-4 are unaffected since their
+> gap is <= 32.
 > 
-> The new approach showed improvements in THP allocations.
+> A/B test on ~100 instagram production hosts (64GB, 60s measurement):
 > 
-> thp_fault_fallback
->   original gap: 1217
->   capped gap (global): 738
->   capped gap at downgrade gate: 898
+> Unpatched (43 hosts)
+> pgscan_kswapd (mean/host): ~1.6M
+> reclaim efficiency (steal/scan): 83.8%
+> compaction success (success/stall): 2.1%
+> THP success (alloc/alloc+fallback): 4.9%
+> forced lru_add_drain (mean/host): ~107K
 > 
-> More details are below.
+> Patched (59 hosts)
+> pgscan_kswapd (mean/host): ~449K
+> reclaim efficiency (steal/scan): 91.0%
+> compaction success (success/stall): 28.3%
+> THP success (alloc/alloc+fallback): 17.2%
+> forced lru_add_drain (mean/host): ~64K
 > 
->> 
->> - in shrink_node() we have a should_continue_reclaim() call, which will
->> return false as soon as compaction is suitable, but before that, we are
->> likely to not accumulate enough sc->nr_reclaimed, because sc->nr_to_reclaim
->> would be capped by SWAP_CLUSTER_MAX's
->> 
->> - thus we won't pass the sc->nr_reclaimed >= compact_gap check in
->> kswapd_shrink_node()
->> 
->> - balance_pgdat() will keep looping because we're not raising priority
->> (kswapd_shrink_node() returned a high order) and pgdat_balanced() is false
->> (it checks for high-order page availability)
-> 
-> I added some temporary tracepoints to verify paths taken. The average
-> hits across three 60s runs are shown below.
-> 
-> kswapd_shrink_node downgrade to order-0
->   original gap:                     0
->   capped gap (global, this patch): 28
->   capped gap at downgrade gate:    80
-> 
-> So the downgrades are more frequent, but the suggested approach
-> regressed harder in terms of reclaim.
-> 
-> pgscan_kswapd
->   original gap:                    6328
->   capped gap (global, this patch): 3773
->   capped gap at downgrade gate:    7988
-> 
-> pgsteal_kswapd
->   original gap:                    5657
->   capped gap (global, this patch): 3243
->   capped gap at downgrade gate:    7101
-> 
-> This is because the suitability checks are still using the inflated gap
-> causing the split below.
->   kswapd_shrink_node() gap:      32
->   __compaction_suitable() gap: 1024
-> 
-> So it seems that capping globally (this patch) is the better option to
-> avoid the split above which causes unnecessary reclaim.
+> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
 
-OK that's convincing and thanks a lot for doing that. Could you summarize
-this in the changelog as well? Thanks!
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+> ---
+>  include/linux/compaction.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+> index 173d9c07a8952..09aea63b8a89d 100644
+> --- a/include/linux/compaction.h
+> +++ b/include/linux/compaction.h
+> @@ -2,6 +2,8 @@
+>  #ifndef _LINUX_COMPACTION_H
+>  #define _LINUX_COMPACTION_H
+>  
+> +#include <linux/swap.h>
+> +
+>  /*
+>   * Determines how hard direct compaction should try to succeed.
+>   * Lower value means higher priority, analogically to reclaim priority.
+> @@ -73,11 +75,9 @@ static inline unsigned long compact_gap(unsigned int order)
+>  	 * effectively limited by COMPACT_CLUSTER_MAX, as that's the maximum
+>  	 * that the migrate scanner can have isolated on migrate list, and free
+>  	 * scanner is only invoked when the number of isolated free pages is
+> -	 * lower than that. But it's not worth to complicate the formula here
+> -	 * as a bigger gap for higher orders than strictly necessary can also
+> -	 * improve chances of compaction success.
+> +	 * lower than that.
+>  	 */
+> -	return 2UL << order;
+> +	return min(2UL << order, COMPACT_CLUSTER_MAX);
+>  }
+>  
+>  static inline int current_is_kcompactd(void)
 
 
