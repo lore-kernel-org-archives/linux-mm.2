@@ -4,101 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97C4CCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 18:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C262CD6E57
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 18:29:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB67F6B00B1; Wed,  3 Jun 2026 14:26:18 -0400 (EDT)
+	id 7B5AB6B00B3; Wed,  3 Jun 2026 14:29:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E410F6B00B7; Wed,  3 Jun 2026 14:26:18 -0400 (EDT)
+	id 78D666B00B5; Wed,  3 Jun 2026 14:29:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7CE16B00B9; Wed,  3 Jun 2026 14:26:18 -0400 (EDT)
+	id 6A2B56B00B9; Wed,  3 Jun 2026 14:29:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C0D5F6B00B1
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:26:18 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5811B6B00B3
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:29:02 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 35671C1DEA
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:26:18 +0000 (UTC)
-X-FDA: 84839431236.14.F2AC2A0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6540E20007
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:26:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lweSA3OH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E8E43162641
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:29:01 +0000 (UTC)
+X-FDA: 84839438082.14.FB6CB06
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BDD5F40005
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:28:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=QhrlzeB1;
+	spf=pass (imf27.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.216.41 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780511176;
+	s=arc-20220608; t=1780511339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aj9xa8st7Hvx+2LGq6rt+CADlrLWll6a6d3QhFDJBzY=;
-	b=meIRkOGP0ut3B8SJOQ877c2st9cDGq/5ffpXjsTJYi06AfZ8LM35osCacuKDTCeScH4pI8
-	rFuGIQysM2L1Hu89K9eoM1DDrCejabxpgYR+FmJtejHQyQi6wQLejEH6VUfni+i2IYe8yU
-	+9a/JOXV372eQRzdWBnrqtOICRa/W9g=
+	bh=8VYe+dW7ZDjb/fodoLbEwUxVzR4phhS+HhNp00MJ/BA=;
+	b=2rkB4/XNDWeHQDPyQq+chV/C3iko/qtRuVcvtBl3GSOsaG6c5ypgJlH+ksQoGzZA9KWFTf
+	mEiQREchRMDDGYFY/Ma6EA4JFAFOsHaVLoIyAqhj38ARo1Bc83MtsBKnqSsvvZmqVq3hrR
+	CD/Ez377GzY+r1TBzsEaY4m0iiBufuE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lweSA3OH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=QhrlzeB1;
+	spf=pass (imf27.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.216.41 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780511176;
-	b=BTvcThFPchgJmMFvIgsuw9BzYqqMc8Lpi+SBEXhwuCy91uOzCe9vF99mD72U2O9YO2fo27
-	2xOt4egIc1EBF5t04JludO7AQJoq7wEkoCgBi/SVRQjEzuF6FwLt9cng/U1wlEYFvtA6Cr
-	rTVL2WnMCgVu7oQTgu3PDX+NWtHtxPk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D974C601F4
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCCE1F0089E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:26:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780511175;
-	bh=aj9xa8st7Hvx+2LGq6rt+CADlrLWll6a6d3QhFDJBzY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=lweSA3OHcLDrQaav9lc6Wir64ubnglJerfByUmJE1p/Qu69+5AJT/2hrWKyHRtiIF
-	 lMqxEfWzMxVu66n+z1AAurmnA7ZYRPIA0T+B2+5gupdwOosKscsY8OB1sqAIxDvGiS
-	 PaaL4y9VAuVcz61GkMVMkSwDQOtJl2b/ksEKhe4NW1CxHbR6diEaiZ/OAeS60z2qqh
-	 cRNOVUobhK+jt+uE+7MYWgzJFAaYRYE1uHJoe96cSXXUnLTTVvgcB96q5MiEr3ks+O
-	 vj737IcIsmdD4cvOTQrupb2OMIcxPuW05kY+NRpARBBKdK15pTjVLdwTtr9n6WRrtk
-	 dvcOoffxM0CPw==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-beb7f26ed62so508256366b.0
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 11:26:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/EcQ/pMdhH+WX38LEtyL1DIvvmqeJOZ7QmoH9kTcqNjXrzgXu6XRdjj1TEaBsFehmbBPFB77Qm4A==@kvack.org
-X-Gm-Message-State: AOJu0Yx7WS2z86c6FvJ3MQRDwm6mldIblFlKozhRcCiyPjilCEH2ON4T
-	uYxQFXSM38AAXxbd1znf2S7JDelEdRC8XCmGOvwHFaBEtxUiQIpjVvbiQbzrq02G5WQx+rVFPyy
-	hip+fwLpIVHTtdKZnW7npCROYufiznjI=
-X-Received: by 2002:a17:906:5a5c:b0:bee:215e:5486 with SMTP id
- a640c23a62f3a-bf0b3aaceacmr174660666b.36.1780511174539; Wed, 03 Jun 2026
- 11:26:14 -0700 (PDT)
+	t=1780511339;
+	b=aInnYk/GEFfbKT+MM5YeWKggERFcRXicJktPLXqPpwcY/7n1JHmbHXCdftDkFTHzRZbIlQ
+	RZ+aGd74qcSo0StrZ3Axi06HHHB00jH/wNlXStpwLSZwDYTuj7cxKCYV/fKuL6co8qyjTM
+	jq5fbfs+5tk78ylfec1nrHMwc98eSUQ=
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-36d98b9aa9aso3709569a91.3
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 11:28:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1780511338; x=1781116138; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8VYe+dW7ZDjb/fodoLbEwUxVzR4phhS+HhNp00MJ/BA=;
+        b=QhrlzeB1GDv2qaapMP8E4Jq8EebpK2RC/X9zOsgE9a8W3Z3hOqVnHoXnz7zc3G5ZI5
+         NmSQjyD/m47H7vhWvA0/pYlGBMx1hKXDgzhq+C0wNlLtLOR20gTcBipJcrkcWOWByEe/
+         YeiSKBQ7Q6Mvs+p342euXMAcRxtxHzf8A63F4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780511338; x=1781116138;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8VYe+dW7ZDjb/fodoLbEwUxVzR4phhS+HhNp00MJ/BA=;
+        b=bO06HvZlde4eFQIMDnWaftU4ShAHY760RT3xdJo4TwmKMEJv/ZFhFVUuf6wB4NOdhq
+         ghUzgIy1TpIU6h3HlX/4mexUgwqtCBhbixXmnDqPvgFVctKABbFUYgcicxsD1JkujhTf
+         Iyl+vHRaH1LWDW+YlQQOcbUQuzKX66hw1gs+XRPhXYuiNukLrUnYyrhBuA+CML7y3h4P
+         JmFDzWKLvCU9iDUjd8CCAmJUw/v7aJl6zjFD++mm/49DaOrEfsx+Sc6GFM99YN+uBeQC
+         /TuschYzQWCZW2hylI1svc4uQEWdEhwmGAvxkfq2zlxc2lVLVxkQEjVoZuARcKWcwYs5
+         zFKg==
+X-Forwarded-Encrypted: i=1; AFNElJ8/WU4GkK/WIZA4o2zuK+U/ZnvAOYO4aPQVlZAiuTdHWJN6fuFU/psDWzTaApQTNU5HPKrvGf2UJQ==@kvack.org
+X-Gm-Message-State: AOJu0YwNQY82778jLx8iPW9M6RZ3Sc7V2qFeCi9BdP9R5dWtROIRJPcJ
+	pr1F0Ob7EIuFP00cXVBrHsagghDSSK7GMsPs8zgZIvEMnOPcYuh7TsX3lKi/6Vz8EEm1Q54/rKw
+	tuK3nHquTLA==
+X-Gm-Gg: Acq92OGagyKZ/nvjxzcYOUwKx/cK0qs3FC5jL550mSiXgxUW/VxXYGZYOQ+SHuDO2p9
+	JijffGUk5u0ok45Fcpx57T47K3BCRn6c+XZ6LtSuwbMnBj2WIahyZo/H69wLkjDHJLfzU8yuK+o
+	2zxB7cSaS8fxYX8kPOX37ar8is6sUPjrlvk60s77Svrvb2TXfVo/Wrye+GgGEwsBPIkvNcYb4zw
+	h5CKJchRdrnEC9/Ph++QKpvuDA+01POXNKN9MqZ63hKQVhVzYp0ey3FPKBAlSYbS5NiRmKKAu/h
+	NZyfG1z7fJNLV+x1Ip82XbfZO3vDqnmOiEn4Y8x0gq4P2nsneC9zV3iw3TY3tUNlKVLoZJCfqD8
+	lkRyEkg/DDTpk85J0efUVx+BehFpUn1BTHYMbvU9uduSkWfYDQYNyad9rRlJG7Ol/vCJVfdCeag
+	iWMzBX9DCw0OXLcjTRKGgfOuq/VS3T9o8vDu+7EsXLCRIkWvFNu9ZHdRMeqALHtVUpUljQuuSks
+	Snf3ZadfM2OFHQ=
+X-Received: by 2002:a17:90b:258e:b0:369:de03:29c8 with SMTP id 98e67ed59e1d1-36e343872dbmr4558240a91.23.1780511338468;
+        Wed, 03 Jun 2026 11:28:58 -0700 (PDT)
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com. [209.85.215.181])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f70a2892esm336962a91.10.2026.06.03.11.28.58
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2026 11:28:58 -0700 (PDT)
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c8588ec1b44so3432569a12.1
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 11:28:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8EK32ZgZreKsurGHlXQOLRAaDiIAu1RocAeHe4Ix9xYIbiMX7JEnrT83sJYnGxg48HKYg+r0RxFw==@kvack.org
+X-Received: by 2002:a05:6a21:50e:b0:3b4:736b:da61 with SMTP id
+ adf61e73a8af0-3b49790c56cmr5052599637.35.1780511337548; Wed, 03 Jun 2026
+ 11:28:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
- <20260526114601.67041-3-jiahao.kernel@gmail.com> <aho-Z6wshceTAYd9@google.com>
- <ea2c1323-1440-e927-f14a-0eac54a245bf@gmail.com> <CAKEwX=PoBZ4ci30tKHQXs1o9=NDpPrtbe7RxxZTbnzVJf74ZYQ@mail.gmail.com>
-In-Reply-To: <CAKEwX=PoBZ4ci30tKHQXs1o9=NDpPrtbe7RxxZTbnzVJf74ZYQ@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 3 Jun 2026 11:26:03 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMBUMXy_bkeT8z+M=dXayU=6VGEw+-HmfDWR2fyJy=z+A@mail.gmail.com>
-X-Gm-Features: AVHnY4J4j3oM4dD13IqQZCy-bYs_O4SfhMK6I0X3Uvdscn_9ZGq_oohrA-pnMhM
-Message-ID: <CAO9r8zMBUMXy_bkeT8z+M=dXayU=6VGEw+-HmfDWR2fyJy=z+A@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Hao Jia <jiahao.kernel@gmail.com>, akpm@linux-foundation.org, tj@kernel.org, 
-	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
-	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Hao Jia <jiahao1@lixiang.com>
+References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
+ <20260602225426.122258-1-safinaskar@gmail.com> <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
+ <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
+ <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com> <CALCETrXzxubt4eWue3+wv7Fq9C2m7uu6bWPstqFh6Mo57bPwQQ@mail.gmail.com>
+In-Reply-To: <CALCETrXzxubt4eWue3+wv7Fq9C2m7uu6bWPstqFh6Mo57bPwQQ@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 3 Jun 2026 11:28:37 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiEwSjfbjfO74xu=UmkkdHXkJg5QNQ8pP-3iYmunmeV9g@mail.gmail.com>
+X-Gm-Features: AVHnY4I2wCOVMf6tT9iCpMFfYRmksgwgXPr0UvzSy7WYplz1D2yZ52_F3Jv-p8Q
+Message-ID: <CAHk-=wiEwSjfbjfO74xu=UmkkdHXkJg5QNQ8pP-3iYmunmeV9g@mail.gmail.com>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org, axboe@kernel.dk, 
+	brauner@kernel.org, david@kernel.org, dhowells@redhat.com, hch@infradead.org, 
+	jack@suse.cz, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
+	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de, 
+	viro@zeniv.linux.org.uk, willy@infradead.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BDD5F40005
+X-Stat-Signature: qikh3zfyojoedrpjka4abu4y5xp1ypkd
 X-Rspam-User: 
-X-Stat-Signature: pg9p93niaj41rkkry3zhzx9phksuzqxb
-X-Rspamd-Queue-Id: 6540E20007
-X-HE-Tag: 1780511176-814210
-X-HE-Meta: U2FsdGVkX18Vm03RlmaGA3r1eW4RHVC8ekA0Z9KeqDW8nIkyh3ddMRwJF+1i8RJ69NA6kIUFqzWs0TgNJq5GAW2sGj3L5fbMvD8st9+y68BU385bcDMtF3iO0pLAyKOnhNZgj/gLkTIQKPD/ELKrzQ7wRoVlVZQJufa10s/2ekEVxs1Ggp+Opix6rKPmIrUeJk0pJMdhHvH48rmzcc4Ks/NMrdkb+Mz+OGewtwpVyvccP+TMNmU/LtDnWiV8pS8FI+OUw4rNqFRRrWwfSCJshVJ65GVh3L3UhbxFvxVa3qeZGe5dYowc8vzODyWfFW2jlr2DUAoUNBbqXtBnB/3mjCyp2R0YLxgHiB4SNpqxftQtogs9ME7j+GpSQfppIM/cj/XDUqT9tz3B133XW4oaI9wRx8h4svuPPMs04NtNIK82lzd+Lx6YV/ayLJ3QdRQXB6bF9l7oOg78QDDOt93el2xIMD1Z5frGDcIkdDEe15CzEtwOGVwnLvpI2cndcXhIeB3pGi8uNYGeV3MXwOW4niFgUDns7vnw3NOdaAKiUJjDJNZVTjvg31WbxsKMmPeQzd0zGgR4sa6pCSSu0eT07iE+tetosz76QoT58pkJElASfbNenpCBXVzTZ0iEUzJTUYmIVoVhXlDPwIQPJPlnP1fQCOvdS/mRkDrwd2331Rm1j+BI3zrGTaZVjQdKpK3oA889dXBVRKMYNA/xHdMj+Jg0nmtaSI2U53L+NQPyO/KgjfMXxbZZaAI/Rbouis0/3g3KrWlPnVJoHPAKVL4eX3cbYBQYsuVaDh4QxNGqmWUHtZbUOYXjFF0SMfm2glZBZlEsb+BoFspAY0QNJFrfOpmsTWL9XdCqPZxG+SlO3Mf/iIQK7lWV1QEJv3cShJIPdcIGkK5SaQIo+v8JN0PscCfpemCg8eBWBh5g9FMrUlMvqbj6Ei49d3QKKw8Ag3lbiUMY7Y5oKO9Vn0EkSpb
- 0xJhzJQi
- czh3qk1BjptjAarEA8nRZm1oNeLsjqVFdkE3a9krQfoajEO056fmLpgibk4dHC8W+POGwXd4pSuhrubdzkGLBju/OANnHm/xGFCGgkE5nGvDXroNVIEOJOLE3W2FQdnAocNAujsCQwNE8oMwqGuiZKSOeI2frsrX2kW5gRh7ZPUkS6Wt1pVV1fyzcVzuIIXyJOHX4ukWYKi1RzDieywP06jebQpA0QfB32gqWi3JdC+hfgba3th4haLZqfNNV4zUiMaArU+Sjb1g2SnCD8j/5o+9bS4pAGRfSgtVgR5Z02OpIN2LDambjmveZtIB6gCTlR2YiswGvqCzYQUBacs0XKbafK6aiuevfCEkuKL75Do8jZmY=
+X-HE-Tag: 1780511339-188255
+X-HE-Meta: U2FsdGVkX18oaDW/gARZ1Pmw13MgmjmFThOEh1Zw9Zo3hmX5WBxiVKpXW8eDBV6UKVMGGE1I7UCrudoCnszhPqoqqfgUKbTXTo7GEQYo0y6rKgPLbfN+s4EaxyUaVsYLLJjl9O65jjKQNWtJJETrOe0zaBgdnlR/h9H/oo0GnOrrc4+DDFfyEWJLMXbUNtffibCRrmJRUF/LW95RR5ecd/bYI2jQ/WNanc6ZymPxH7XJVtYYe4ijB4B8aE+wJikPwIEN8+dC55UU19HFULwC+x0b02TZmzGl/vO1sDVQCqI1jGXfD64F5ZF+dm9MTfaIONnWFsHh6Pj3U+5xE9cIbSKk0lUqC4h3g1Ua+6L5N8dx7+0ojU7pmZOdPHULajXkq/KDrSOuqX1whzkaGxmwUaES08dqRVm4zBWY74FnPAaEFr4ex84kCy5C91tZpzdo/YQjPl1knqxTxfbboflZWejqc/GTwihlyI5TgUdYVHK07AoGvg7DLF9sTRHTdZflC+qRYL0qeufT94mMjyJtH2ekbFz0Owf4PF+AKKwB6xM47Hudfzq3XkiJkW8yIUlxhOXtBmY838otunCY3mlNBsUV2ilw42n6pc2k9xB2SgzcLZWMvnrGcwpz9U9SaQaIq+UVqTQZoXS6m5Ht/776vh8YLQ+3jNXhBpQlyCNSOld0ygAa77ZlFAcmeSQSG9CYv/uClTcaVxEFTaCuAGKPK4mi9U660Y9/zpmmNC1HSQn4Uz2XNe6zLy10ZT8JQumEy8RO0W8Y1GGAGM8E3fLmfFTfYyr0UvobVjVb5wfIJS90rYKYrQP+ixW/o+C1Nwwd+w0+Ub5nSRpwoirebCl2IrMT+PN8aK4QGQSCUCguhkg5BZx+PIg1MNUQ1kfQCBDLosLAlx+DmNLxwzlzhNsvZ0tOh/BPC3p+WddDNAoPBuoaBWg39z6GkqZgs5xJ7msEBKlq3QkjsQzX5TsBjp4
+ FtIBztxf
+ y2L9FcjLuLNcQZhjyeuheOLl6pbpVfLfnGImbhX/pr4g1Q5dj7TAzjBDyZwjTj+rpMRHEgBCqDFubNww8VOe924vkKhzHt/YO5u8boPj8RToBFBEw1mr3rSfM98068zOsx4AQ7wCtwQf9NcW75WWJjJgMnI7tcTaVp86BHtZbzCEmUnGvPorAqBH4W95YUG3l4Xv+6472hep/MQCZsGJIT/+XCHw06Q7oVpQwbpTi1hEuicIQmLDMqd7aU6KHGroPrVWT6rKPyTrO1ZIRzEpFp6rJZ5oaCOmXLM1iUOuzxKQmnOXcFqUsEGaa3JA/0RMFsmFYciVBVss7tRbfBx6rEQ54AvqRuKmhvU1/Cog3tfch7rjeyu9EmL8xAD51XRtAf66XHyjv/kFgxZMLLcGEPqgniRzHJXK/aZB+yKjPBmJp9mNcNNvKoNo8YfeMXQR7N2QBDIpNWvHlpdP4naLeuALu54EP0f1DpFZlM/jXvjouIZRs0jzd4jEDHRwl2Z835QdBuiAAO+KKonuClLWZ1kLNfCA1C97exQ2j95dtWRpdSiKDo1EF3Sc+1xiaUKduhjiq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,33 +133,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > > Is the main difference that we are scanning in batches here? I think we
-> > > can have shrink_memcg() do that too. If anything, it might make the
-> > > shrinker more efficient. Over-reclaim is ofc a concern, and especially
-> > > in the zswap_store() path as the overhead can be noticeable. Maybe we
-> > > can parameterize the batch size based on the code path.
-> > >
-> > > Nhat, what do you think?
-> >
-> > Nhat, since we now have the referenced-based second chance algorithm,
-> > should we consider doing batch writeback for shrink_memcg() as well?
+On Wed, 3 Jun 2026 at 11:10, Andy Lutomirski <luto@amacapital.net> wrote:
 >
-> I just take a look at shrink_memcg() and realized it's reclaiming one
-> page at a time. Thanks for the reminder - I hated it.
->
-> Please batchify it if it makes your life easier :) We don't reclaim
-> "just one page/object" anywhere else in the reclaim path, Sure, it
-> adds a bit of latency to zswap_store() if we reached cgroup limit, but
-> IMHO if we hit zswap.max limit at zswap_store() time, that is already
-> the slowest of slow path that you should have avoided with proactive
-> reclaim/zswap shrinker in the first place. And, setting zswap.max does
-> not make sense to me in the first place (I can write a whole essay
-> about it).
+> So maybe we should make sure that, if we go down the route of
+> disabling all the splice magic, that we leave an API, maybe the
+> existing sendfile or maybe something else, that does an optimized copy
+> from one fd to another and that is at least capable of sending from a
+> file to the network with at most one CPU-side copy.
 
-Should we batchify shrink_memcg() from the shrinker and background
-writeback, but leave the synchronous zswap_store() path to reclaim one
-page for this series at least to avoid potential regressions?
+Why?
 
-I think this change specifically needs more intensive testing (vs the
-other code paths).
+That is *LITERALLY* the attack surface - and the complexity - that we
+should be removing.
+
+sendfile() was a mistake. It is literally the "file->socket" thing
+that has been buggy.
+
+I absolutely refuse to get rid of splice code but keep the buggy sh*t
+cases that caused all the problems in the first place.
+
+Because *THAT* would just be completely insane and pointless.
+
+> Even if we=E2=80=99re just doing that, I continue to find it strange that=
+ we
+> require that a pipe be involved. What=E2=80=99s so special about pipes
+
+Again: it was never splice or the pipe that was the problem. Stop
+barking up the wrong tree.
+
+It was "file data to socket" that was the truly horrendous issue.
+
+That said, to explain the pipe: The reason for the pipe is to act as
+the kernel-side buffer.
+
+Now, these days we have much more capable iov_iter interfaces than we
+used to, and in that sense the "pipe as a buffer" is certainly not the
+obvious choice now.
+
+But even then you need to have a *handle* to the buffers for the
+general case, and that's what the pipe fd ends up then still
+effectively being.
+
+It was also done to avoid the M:N translation problem, because people
+wanted to do zero-copy between other things than just "file ->
+socket".
+
+But again: we're ABNSOLUTELY NOT keeping that "file -> socket" thing
+and getting rid of splice.  That's literally keeping the bath-water
+and throwing out the baby.
+
+Splice is the *good* part (well, relatively - splice is bad too).
+
+ile->socket needs to DIE IN A FIRE considering the security problems it has=
+ had.
+
+I hope Jakub is right that the problems have been all fixed, and this
+is all theoretical, but having seen just *how* many there were, I'm a
+bit sceptical.
+
+Because if people think splice is complicated, you haven't looked at
+the skb rules. They are completely arbitrary and complex and spread
+all over the tree.
+
+               Linus
 
