@@ -4,147 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 988A8CD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 19:13:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B3E9CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 19:22:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97ED16B00AF; Wed,  3 Jun 2026 15:13:39 -0400 (EDT)
+	id 9180C6B00AF; Wed,  3 Jun 2026 15:22:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92F526B00B0; Wed,  3 Jun 2026 15:13:39 -0400 (EDT)
+	id 8EFD96B00B0; Wed,  3 Jun 2026 15:22:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F72D6B00B1; Wed,  3 Jun 2026 15:13:39 -0400 (EDT)
+	id 82BE76B00B1; Wed,  3 Jun 2026 15:22:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B8E36B00AF
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:13:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A4A1C1F4D
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:13:39 +0000 (UTC)
-X-FDA: 84839550558.07.3551605
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 521B020002
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:13:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D/r/IFo6";
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780514017;
-	b=pmY9/cde1HWsIBnXDqQXoM9OdycJ5L7rnkf2s2YuN+TcKSWB6pCbHOU2AGnxB5n0C2a6dH
-	YAHvDxBP4YdEjhrw8LXXkEgE1NiKV1un9fyai8Y5U9HpdUSHrgoDgBClACNdeUJk4W4tQ2
-	ncsWp3t8SCVT3OczJ8sD/YgkFcBCo/4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D/r/IFo6";
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 729536B00AF
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:22:34 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 172F4A05A2
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:22:34 +0000 (UTC)
+X-FDA: 84839573028.16.B924504
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D2C4640012
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:22:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="i3/CeXQw";
+	spf=pass (imf17.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780514017;
+	s=arc-20220608; t=1780514552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JRRc8ydgJvk3dCRJzMoxz+ZM/cka9KnQs2wvZBmcrYw=;
-	b=KRQ+adVt+lkeS3ghjxAODeEF+Totxq/73CYfyK/i0zNPHgtLTfmmVZlzx7izqUrb+bYnVS
-	MofQzWW9x8+75DLcG2yVPf1XgRYJTeyiWOBN80viLiFzZL9gft+R8HjcyS5e141t8WkAeA
-	AW6L+B150NVqfM+MZPvqXzr3ocBmqbM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 96C75600AE;
-	Wed,  3 Jun 2026 19:13:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0951F00893;
-	Wed,  3 Jun 2026 19:13:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780514016;
-	bh=JRRc8ydgJvk3dCRJzMoxz+ZM/cka9KnQs2wvZBmcrYw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=D/r/IFo676vUApletMFZxTexyQsKoBkTA1G9DhNDmguCEgLDxVNm1u/AYN4XmV8Wl
-	 lJQcodJTA0k7HSI+dsqUOU7oyJEFY0g3/PE1QCVBkPdo1akBrAhfJF523TyurX9LZD
-	 PbUweaF1Epcv1Ys2i6q9cmWQ8zInCEffbwOSivMSBbc8ggeM26RJ3PXqhsAeh43GsF
-	 Mak2qHILhAzFXX221XyWE/VgebrN8XxVeHYGRXtqXasP3Lp7nBTjDqNx344DCG85QW
-	 T9a1Tr5UFhj6wue31HJp2HEimqryurvP/0EfhwpE+1HcQHw2MGF5Tagw/WlpTejf0c
-	 lNksNWWghOJ+Q==
-Message-ID: <b637ede2-73da-49f0-a7eb-70ec79e79624@kernel.org>
-Date: Wed, 3 Jun 2026 21:13:30 +0200
+	bh=SzfTa5HCL1jfcKZlB3EuMMBtnPEwh0opU3X/4Q5o0kA=;
+	b=g8eh/NjNsbN0r7TLcB6BjLRcCcaVTEh5TjWYXRvoIvRORSsGkLM5AbBbWLDgHXgAE6iqde
+	RlU35bDRCJD2VWeyNAESGIB3QJ4q+YihFby6H2ZyRO0jbBuarWsKYwvWvCUfwUHCJrrkTu
+	S9wNA6u3Aqadee+/qoNvlfgkHlMYo/I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780514552;
+	b=NmLHO94hj9ltCcw8Osvy81HS6tlU2Y5IK1N01CvkcGbvqTZLwYdnv5+2o9wa+I95kS9W/v
+	nq41HJDYnpGNNZeQsPVfyG8fZ2ygJZpVGiS3SEMyKAI7JC/u2ENXBV2mJNSWUHWJ/Brmtc
+	0QUJbJSKoZ9NLzWRR6JkdOO6dep3QL0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="i3/CeXQw";
+	spf=pass (imf17.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780514551;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SzfTa5HCL1jfcKZlB3EuMMBtnPEwh0opU3X/4Q5o0kA=;
+	b=i3/CeXQwYTAB/lF01W86EyYgx77uXSMR+bmEHBAEWjx/e9YHLz7COnJpnC4LYS1x/AcWEb
+	+UUg3PCFgTyEiHpaAki/JHjk0eERQ6MjT5d1FMXg6+cQoQz5qwlBVtDcGy1DIYzie7j1ZV
+	/mNz2FuzhjUUdOXbCgUC54HKkVyrGTA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-aQ1vVfH5Ndq95wd2x-ZPOw-1; Wed,
+ 03 Jun 2026 15:22:27 -0400
+X-MC-Unique: aQ1vVfH5Ndq95wd2x-ZPOw-1
+X-Mimecast-MFC-AGG-ID: aQ1vVfH5Ndq95wd2x-ZPOw_1780514545
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E63FE1956095;
+	Wed,  3 Jun 2026 19:22:23 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.48.52])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 75C3219560AD;
+	Wed,  3 Jun 2026 19:22:16 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+In-Reply-To: <CAHk-=wiEwSjfbjfO74xu=UmkkdHXkJg5QNQ8pP-3iYmunmeV9g@mail.gmail.com>
+References: <CAHk-=wiEwSjfbjfO74xu=UmkkdHXkJg5QNQ8pP-3iYmunmeV9g@mail.gmail.com> <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com> <20260602225426.122258-1-safinaskar@gmail.com> <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com> <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com> <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com> <CALCETrXzxubt4eWue3+wv7Fq9C2m7uu6bWPstqFh6Mo57bPwQQ@mail.gmail.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: dhowells@redhat.com, Andy Lutomirski <luto@amacapital.net>,
+    Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org,
+    axboe@kernel.dk, brauner@kernel.org, david@kernel.org,
+    hch@infradead.org, jack@suse.cz, linux-api@vger.kernel.org,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org,
+    patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk,
+    willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: mm/memory-failure tracepoint change breaks userspace rasdaemon
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Borislav Petkov <bp@alien8.de>, "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
- "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
- "Luck, Tony" <tony.luck@intel.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
- "xieyuanbin1@huawei.com" <xieyuanbin1@huawei.com>,
- "Lai, Yi1" <yi1.lai@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-References: <CY8PR11MB7134346A3E4BB28ECA28D6E989132@CY8PR11MB7134.namprd11.prod.outlook.com>
- <b930678d-a1ae-458c-8705-7ca9680d4cb6@kernel.org>
- <20260603121707.7eccb9fb@gandalf.local.home>
- <20260603161947.GBaiBUI7C8WWPwD84S@fat_crate.local>
- <0c16bf3d-7c6d-4e28-b200-03b7d0ef714a@kernel.org>
- <20260603130006.7d2c4a62@gandalf.local.home>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260603130006.7d2c4a62@gandalf.local.home>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 521B020002
-X-Stat-Signature: trgbygdho9ybhm895job86738tmomxni
-X-Rspamd-Server: rspam03
+From: David Howells <dhowells@redhat.com>
+Date: Wed, 03 Jun 2026 20:22:15 +0100
+Message-ID: <22766.1780514535@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: N3vkM-5m548d0M4bg-3Nda7FIrWpuM4rrxy4R8dq2m8_1780514545
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <22677.1780514496.1@warthog.procyon.org.uk>
+X-Rspamd-Queue-Id: D2C4640012
 X-Rspam-User: 
-X-HE-Tag: 1780514017-797037
-X-HE-Meta: U2FsdGVkX18LSCdeK4xeGSI/CY0X9H+m5IMlTvasyEQnOXsbGN3caSiR9jlmIAHVGqysqNJnvw1WUUwu+foUXE9TeAU10bkg7gNZ3pikhKPwucpCS3P52+3rXxfLabomXD9WDWLBx8FwKYzH2jE4IeRMAM8GgGT+WaMWWQ34dMiwKVxiApqRcwJsM7ouvdhjzZLq91DcY/D+YAwviwnCUGRubRGhyTvw/6bbwAb+W0z7HeacLh4S69B/rh9Q6HcRN0uIeGuiV5+TDcuOAuA6+nQTo5h3oOfbh2lef6AfLH2oWs7b7Tn4peV1Knh3hvDjnLuYrzawEzqGKR6feMRXvNJaZLSl7e1mcWRMLHVt2BEVan7f94ulO8xHoXWjsuECB1iFXStMkI2g41sP44whGQgHHwfrPpgGD3iZhn10X44UlRhz4I5lbWBkNT6ANnX7xxc5GMS8lrT8ciu7BHIX4sBRd6KGklkpL8AdqxqIbpG4rchbPfzeMml4xajZuDfAydZAZZ2+wDvmUem2mr630d2rNQSNQHqBHJdSF/wNa0hzDOk7h6Wk+kQ79MgP+ox5TWVrI4B2aRa9UKjInqHnfWvfhRoj/mF/g/MmWhNtpXT39ZEeJPYV7G+LditVovorIzb+CcbkygJmeeDmxO29DZF/70bfDsdWRzNYYxclcqA1e0B4j+0vlWRsu1nvC+5Pn/BWp0Qolidiqgg+8bqNkHTzA/rWwNemWqrQlNHt7y7QZe4Bl2M9Pi7fS7uxrUUhGU6tf/6Q+jhv/y2r/2m+z+OQggRS2rYc/OHE8QoDQtWX0IITHyy915FZMbRaRPbnrs8CXVTQuFWVeLyMz0jO0xGrcyrtgKAutRbRJQ2pY2/RkiWHd6lXGCRNwV2xqOTZSogB/FCpaO85kyCEIwQkGM3mxFD2YaLoWdFPtE/KNCxxusGEDcp8ZgzoAHLf8GItBmRSvtk2UJYJpePKe7u
- urFjeI5/
- 1R6ZVk0kkDEl8odgVnRFm9F4L83d54k/zZEvTqzDGeo84IATi9nGtF0GSu94fIbAiLIlRf43fNEhcZlsYcqYcJuQZcmQ7SJsTiRo4HOa2hsRpunXO0bxrHcb0Ye38+67MYF4VVc3lc7iRS0P87bLrH6o83EW1CDfEmexC+CK/mTKGjnc7aawWHTxAvVAhPJaM/Wx2chdBwwcA8Im7lDaw5HSKub4ZdTD/Er4VEp1d25HHCOesI9khDPXwENJpCXaGGxc3mePZrSwIyPBZ8YNuE9RJ6v22r0LWMKuCk2UBBkeCGmIub19kid7D1I0b/wm6Ld1CaGWMo7NUf2/UumkM8Y1SG2D8mH1iifp+4co3DBBrz7EbamogONmu3vSS9VMn6ItyRsJnqbWoryJt7E+K3afgI5XDNV6d803t51mmVWVGv9G2p5a20U25MA==
+X-Stat-Signature: oxthjcskw1ii1cb1qbxpe31585xdpuny
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780514551-37727
+X-HE-Meta: U2FsdGVkX1/Qi5rJqkNo+X3xMlLF53X8dtO6Hu77yNbAurYQxz9Xu4fcCwnuAFqj4OIrA2wALZ351Y3T4x0SZbZVMIJUeEIiIpT/dpCw96UUF5cVvGqf9VYKaujd3VjQpwgTlJSPE0C4QkkeLVqwoaZ6qK+SA47OfGmXtbGbYL9UM8oAeMn/5qfCHLw/GEbfGHMi94ZT12Y8Q5mFP9rR9bIx93TFWFzTEKl0NXiJ3JDX87nkt4wHj0jmhm5YOSwngoxbGkxyRK0JSHF4GWCS5vPcpFagPdoepbETWoQmF4IKKn17pfX26DLklrIJLx3MJAHvG4KBgkCLgh9FYthKdMbouDIKMf90QMxuZ2PSdxFxrCZBT+Mm+wto5HHdjk5qPXngRl+ZsDRsePPNVr7Kr00O5n34oo6s7SYC1W8hW9yAropqW80fEyYFtW8MdWaYrtj3scFKlcoybGtSCy+jH7nGiVkZrwB2x/OE+/Rrrgt3t6tDRm+Qis80lyEFoMkqoF4AeVsl0UwbEHVw2S+y6Ob0FDja2N+0+aj5G/XAbFFtX0W/7AEhr2o0H31ZwX0R4RnEHxOrfTjmS/jky6LscRJJZqM9NjPNVLM1+tiWmyHkfzXWjaTCbhqNzRx4r3NhWnlMKHkAkbc29iWz8Yikwu5iDTQ2Rugnc6q13yW0ZyaKvGF9p56j6K6gvITvAByBhsknuk0XawUE8DJ/XGOPjA9+Dwy8cEmekEtMawbEgfAUAhZQmp1DbUU8/CztQ7luLuH6pj3BZAQPd4MMlbVzksnAAJJ4ESv6dggODdHclq6zSWldNw+PA3fDZ24pphcrQwHs0ROo6I7N3lF7wYNUyYXfrXiNKfBhFd/DSUuV2UUZ7VeIVO/4ZH0Lr8uD1fxYfBiYycF2HWYW06FKqVaq6bHLujZI/QkTg2YdZmr9TOvKe32vXqLLiPunZZEVPyITqFhJdmzAnT54O+SRcMx
+ hAq3pDqz
+ WjVdqg9g6yLAZMvoCOPejNkC/IHFN/pGsRVVRT8eDg3t06Q0MtkgiFUWqlMzRUWGZwJpE0oC2I2yTKKy5fcqkdembmMboFIEAeuPhqHcttsbOfY3d5il8sw6FzSMv18r9rNzOErWD7LBXA5fJfdXNTTJHXQTQH6Vx76DmSG6AmdxicoOZUqzvh5zxtB+eMGVQj7KH6ueseJS60Y7RWqbWrK9zh1sz4nyjAI1JPmT4/VM0CkloS9dIryQ225v4WEb/XlSczrPPb0zqcNKpHfUnegalgDT5kLRms2kh6M7jakWy5S+Vqcwiq0ONmUm5yCcEnYnb3SkJIjrvJzQ073xQlTTskSyn5jAmcODE9AK7rT3gKqlIvOixZ0oLHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,72 +113,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/3/26 19:00, Steven Rostedt wrote:
-> On Wed, 3 Jun 2026 18:26:24 +0200
-> "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> 
->> Yeah, I was fearing that when I read in [2]:
->>
->> 	"It has become clear in the past that this promise extends to
->> 	 tracepoints, most notably in 2011 when a tracepoint change broke
->> 	 powertop and had to be reverted."
-> 
-> Technically the issue is with trace events and not tracepoints. The
-> difference is that a trace event is created via the TRACE_EVENT() macro
-> which defines what is to be collected from the tracepoint and exposes that
-> information to tracefs which applications can easily see.
-> 
-> A tracepoint is simply the hook in the code that you can attach to. Trace
-> events create a callback from that hook to extract the data from the
-> tracepoint to fill in the fields.
-> 
->>
->> Which means that I now also fully understand
->>
->> 	"Some kernel maintainers prohibit or severely restrict the addition of
->> 	 tracepoints to their subsystems out of fear that a similar thing could
->> 	 happen to them. "
->>
->> Whatever the result of this discussion will be, I'll try to document it.
-> 
-> You can still create a tracepoint without creating a trace event by using
-> the DECLARE_TRACE() macro. The scheduler subsystem uses that quite
-> extensively. That creates a tracepoint without exposing it to tracefs. The
-> runtime verifier uses these hooks to monitor the scheduler.
-> 
-> But you can still connect to these tracepoints from tracefs via a tprobe. A
-> tprobe hooks to tracepoints that you need the source code to find (just
-> like a fprobe hooks to any function). Thus applications *can't* rely on
-> them because there's nothing there to tell you it exists or not.
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-Thanks, that makes sense!
+> Because if people think splice is complicated, you haven't looked at
+> the skb rules. They are completely arbitrary and complex and spread
+> all over the tree.
 
-So, would it be fair to say that, in general, what's exposed through
-
-	/sys/kernel/tracing/events/
-
-is stable ABI?
-
-
-Would the following be sufficient to avoid a full revert and the dependency on CONFIG_RAS?
-
-diff --git a/include/trace/events/memory-failure.h b/include/trace/events/memory-failure.h
-index aa57cc8f896b..c46b17602578 100644
---- a/include/trace/events/memory-failure.h
-+++ b/include/trace/events/memory-failure.h
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #undef TRACE_SYSTEM
--#define TRACE_SYSTEM memory_failure
-+/* Some user space relies on ras/memory_failure_event */
-+#define TRACE_SYSTEM ras
- #define TRACE_INCLUDE_FILE memory-failure
- 
- #if !defined(_TRACE_MEMORY_FAILURE_H) || defined(TRACE_HEADER_MULTI_READ)
-
-
--- 
-Cheers,
+Yeah - I fell foul of the net loopback driver just reflecting the outgoing
+packet back, complete with all the original spliced bufferage.  I was
+wondering if the loopback driver needs to look at the skbuff, see if it has
+zerocopy elements of some sort and, if so, copy it (or drop it if ENOMEM).
 
 David
+
 
