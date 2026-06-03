@@ -4,93 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72DFDCD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:24:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10D5DCD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:27:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93C346B008A; Wed,  3 Jun 2026 08:24:29 -0400 (EDT)
+	id 792AA6B008A; Wed,  3 Jun 2026 08:27:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 919216B008C; Wed,  3 Jun 2026 08:24:29 -0400 (EDT)
+	id 76A546B008C; Wed,  3 Jun 2026 08:27:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 850CC6B0092; Wed,  3 Jun 2026 08:24:29 -0400 (EDT)
+	id 680586B0092; Wed,  3 Jun 2026 08:27:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 737426B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:24:29 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1328414034B
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:24:29 +0000 (UTC)
-X-FDA: 84838519458.30.7926F79
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AD1C94000E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:24:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HubuBb2q;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AAF56B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:27:23 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0462B401A6
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:27:22 +0000 (UTC)
+X-FDA: 84838526766.01.C543A54
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3EEC220008
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:27:21 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cl2NQkYC;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780489641;
+	b=lVOZLcV3xcL5lK90A7CHzQrTj7U4gjjO+rdmgr0UOSHfGUE4/mlyDN+AZktvPmp8mcJ3t9
+	uWn31t9uaraTYgBsJ+aWPhFc/XHNBODLboE2tFHDYtCTGaLTmZV9+ISTwuoQVM9Xx09kkh
+	P+ZlGBWa5KBxQvQYjZtVsSMM0/ys+zg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cl2NQkYC;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780489465;
+	s=arc-20220608; t=1780489641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i81FGwAX/vixZ25Q3Ngd8ivvoVTv7aSnS7HWQVQ1K20=;
-	b=SzaaL8ttFj8lBR87BsIQUmgVuuxeIrpnrzX3XbcUm1WYj/UKiFiY8MgzEm7/nshYcWCd8z
-	eaAXOnxt2/TgzoFbj6JBjoO9zQO3kQjJSOqdHuNTca13gKRdqV6bgoCE9urZod8PXegD1R
-	xlIpCHpP7lu+ki+uWYbN3xXqYW//NDU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HubuBb2q;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780489465;
-	b=W0j9x3YY0l1QPzS1B0rij1aV47CLDQiSAFMp/GlVQ1by51f8Z0r4/FSL74pL94uN10O4N9
-	tbFM4k6y7ZvGXcbeOQn3nzlo6kJ+7eR+CGtwlyKfYABB0wZ5MY0ofECSQodKrjccmUFrfZ
-	QqQhz6anK41/VDNcv4NhSY8JaWruJfc=
-Message-ID: <f9dd874a-b637-4740-9a63-8da66de323ca@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780489462;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i81FGwAX/vixZ25Q3Ngd8ivvoVTv7aSnS7HWQVQ1K20=;
-	b=HubuBb2qZb4N9mqtKd+HqBZxa//bXTQ7vqPh0cqo521lhCGrl2arQXZ0egrlgrhMVPjN1w
-	58IEh2Vdv9FcCt9r5uDyBa3ErJYP6T7LGb5Df4WMvfpy1qfJaqgAjvA1opfVW8eeXtT4yb
-	kc47gaP4MkVI9XYMHI853t/97ZI2r0w=
-Date: Wed, 3 Jun 2026 20:24:09 +0800
+	bh=uNfk9BcPdly9aVTPrznds3uJR0OWgZjLs5X0wKssQG0=;
+	b=XqfSYmhyg7iJcfEtJMYEiWhaox6KBzJDVbBINrWxFr0qBMZH0unODyJMljOaIriQfWY2JX
+	jMd2dLUDPwi1s41BqfM6TgT7F9nOtYkJIdSJ0M6OnPGpukJuoUKd2ftFECx9HXGYUWaRm6
+	7aVCYS2Yj40tRfa9y5j0sJbjVmwVksc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B671A60221;
+	Wed,  3 Jun 2026 12:27:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7BE1F00893;
+	Wed,  3 Jun 2026 12:27:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780489640;
+	bh=uNfk9BcPdly9aVTPrznds3uJR0OWgZjLs5X0wKssQG0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cl2NQkYCVfoihPRZMFzihOK/KzDr1MQWeGdKvH2VD3xbr9ngUyMrQgHpzHxo87puf
+	 Uhc5ydifJ8z/cw9MetJNzvcVZNyi66FkiF0YbAKt7EIBqwk7ea4vKb0HlftPvy10HN
+	 C5YrywpP4xwhXtmU3t7M8AM+iDyIy8WGdebGnJvPIRpNQvy8QAV/pwCkWvFKcuu1kj
+	 fsMx7i3HnwJJVyZB5QDnts8G8bCvhveQFYQxh4Lsh5p3kE5nt2NAmLyZyDxQm1G7nY
+	 WTzWZVluCtSXURw5yiWS+s+iLozVM0Oa+XNTHfXV4/4p5Z5qEkdbVXB/x0BeKzXmel
+	 DL7doHtiYgeTA==
+Message-ID: <053db37c-bafa-43b2-ac54-717e461b57a8@kernel.org>
+Date: Wed, 3 Jun 2026 14:27:03 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 15/19] mm/hugetlb_vmemmap: Move bootmem HVO setup to
- early init
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Muchun Song <songmuchun@bytedance.com>
-References: <20260603120246.1572177-1-usama.arif@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260603120246.1572177-1-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
+ collapse support
+To: Nico Pache <npache@redhat.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, lance.yang@linux.dev, liam@infradead.org, ljs@kernel.org,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, vbabka@suse.cz, vishal.moola@gmail.com,
+ wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org,
+ yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com,
+ zokeefe@google.com, Usama Arif <usama.arif@linux.dev>, usamaarif642@gmail.com
+References: <20260522150009.121603-1-npache@redhat.com>
+ <20260522150009.121603-12-npache@redhat.com>
+ <b8380eb3-096a-49f1-9ace-99c1e75888b4@kernel.org>
+ <CAA1CXcBg1su-bk3i_H+TW4-nTgvGSGqRNeC9MpQo7sGeH8ejnA@mail.gmail.com>
+ <d3c2b00c-6810-434a-b837-0707b0a11611@kernel.org>
+ <19639b08-5bf1-4974-9635-c458d512fa38@redhat.com>
+ <ef5c470f-3c32-418d-9566-17ec01b691bb@kernel.org>
+ <CAA1CXcD_Bz=Si+vP0Sg_FhAHVjbeAJ4VdvtWGM-jVYiRXFHAnw@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAA1CXcD_Bz=Si+vP0Sg_FhAHVjbeAJ4VdvtWGM-jVYiRXFHAnw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AD1C94000E
-X-Stat-Signature: 14wka85paahyot5aj45itissf6f9k464
+X-Rspamd-Queue-Id: 3EEC220008
+X-Stat-Signature: i61sbkmtj3bmt4j5548qn4gpisw53a6n
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780489465-981099
-X-HE-Meta: U2FsdGVkX19938LJ5IH9ky2JyM5mx3M7JR9deF58zohzxwF/WS2q7nW/MKfjrUopLmT+LFSslKUb3ztbkDPYgrJCL2HlcgsS27onxNzCUj/AHQ8+SS4SkRBKyoUF9KJqHZFzYg2HFAQQCOZ8mRNIl6a5sm5pQkGDiF1ye1uDhjHmntWCh1uH9JpfMcrxVEsSPD2v66+ILJ1/FZJ6aBjCaj7vP4vaXcV5OCmiHc3qGr5GAtFySmjwgcUIfUFZCJGavVXEJcZb9PAyNKZLJODaA4aboRJG+DDJTFEoiRA0XOtSdfib6qa0HI5LAeLDeP4vWBXovFDe6zMlbb2GlYLaV+58HNXxIInrj8ofVcLKorDXK8FrHTDw13X6gBv0GBOLp/y6B6j74XT1ClSCzrQKKONb6F64Bnm48oFG8L2taLF6RqoJAj/6cNcNKFgzH5g1i/ErtOXL3jOxl8rBjl8dvP3Q+NgpQWnskHl41aa4nrDUJdAcWKAbhihNBLlSGoi1OcxIVyhKmU29V+Qi2cvuGpQbu8BtIj61gqOwW5uNQS5umur3Z2ArJ9pgj4i3pbD/ZQlW2OTDMI4QFxG4WvrP53ZyhjMzMGa87uMxqzIbIjfpnTi2oprmCXtIOZ9U5lEBU6oJ+SeehpaIIVSg7w82jlWvgGSXZNHwI+PoXy/D2mBORuchy54weKG7v2wNpgot/tkFBHsOvT0tNYoY6gRh6qsTVGOSdF88X8BD2j/vGsjLqJTG88IRN3sQvkJlJI89vka1ApoUr3uMtIwg5DgMrMIR76J2wRmzLj7oILh3DsdtrtSI3H5DizBoc48QxaajbAtKixkKjchwUx3oF4nTT1XJd3vjbC3TUJElTqm0dDqpoiooUCLx1WoFMylvvyA5/xPsqWb/PcwKPMArHMtaSpmPgnp0QAMk2QZU7zRrLwDOG0OXvBp1+r1lY19yU/0RJkfKmqO+sBVycR+yuOZ
- 0cu+atH2
- vfrg1Mpoei/EimgsfWKuxNxBBHeJIxGZkiyQs6GZC3UXbiYVIqIlycsIT8f2/g9342FoaobBdM6tNk0jdHas7EdwRKPzqOb2RWhgeI182JJWKlDRXAqjnLo16Ky3PxysntcPgxM3PbYkjvNNAJLEn3RZ1hOH1d7mRW1Cl2jS61ty7G9np30ZGbc0lPcFk+7Q7soYaM3Ee98WTF+zughCfIzrM3pNanJtjPkiH6o/u40/94i9fyJk90teot28aiLRMHlYo2ThE8TdROxG+81pCvcy3MmskH8U0s4LxkkQS4H/kXXi9D+6eXIBifHbFgtiTsrMZMql6O3jSRhRB0WQm1HQPJlV+QThDJiMvv80DfICUJVh/VveYuIogPJ9OWmHRT5BO
+X-HE-Tag: 1780489641-907607
+X-HE-Meta: U2FsdGVkX1+CrL1htqjCyj6RFHymD2o+lNm2K46Hl37iXU2fqlJus/dBK3FNDZzB2WrzJ+GQ0P//guhaSvkQfwILg9JrNUGPqPgh5NcdYABwZX+TvaTS8yLkk8VTv5R68vVOuzvK3OwEmVV0iAVsOQMmUxkqW+ewnSfRWhoBxbK2/AezGMeFx961+IE6k26Pbq1bFPoOj4cj8Z7G1Nu2Ty3Y4Ru+rkhmnO9Lsgpb9kHD/SfSEZRWY3Y6EIndR+3nw/W7ZplcnVmrr4+Z/se9Cs+7DuThLuiNpZaUsmR9osqSr3jyZRF3sphkh2LfQYA28crDAj2bnHWWCaE/e897jJwdBEZ5//bHIK9qN7TfM8wjttkOjs8xjr/jCCEOQNIbG0ANafiv11hIeiP/DICi9a/gEQefwt+Q25xlM7AzzrDY4qXgcjZ1lJE/gQeJXgKtJBuNdPAfs2AjhjjMpf1GPtYPBm4UKiQmmr773IpXBmNhhg96ZgEq+pDLpYV3bUyHf4ehTLikSlHQD1nq/jtVvvN0EqV9w81bbnGhlfHa/G2HMt9PE3tcuZe/Gebu8MbqwSBdNtnQXES73Hsi7og7KmI9N0/ZVwFREZ08RJS54eUtrvJW8TrkGOu/TXctjVP/jyezaN77XibEVhp/I+6XfRn995hN9bxY7kjWiytTGPBZQY/m7ztFZ1QujDZtV4hGNvayOzVUJpygZ7sTL5q+5nyGHgS08JbwWcAL2bmWGVRW6OQtk+QSxI1A/Mxphyc582YSZgkq3rA6RoIYJxvdNFaKVtlf8ZXqcH2kCGzOaNDMzLM5uAw3IBhV2sV5ck1wQ4VrqRGm08TCdxyzonaPeYS5luUifL2qptDrLCVQiLZ9J7JEehGpTG6QmskWq0zYDdBMd++mX5oPNMzdav7QiD4j/qUzFBhl0K7/4HWDLr1bmQQRANVQ4+RoA+eMzmzpAS5GqQAE/Smv7DrxE5R
+ WTUQwQdK
+ TEgm4a3HGB+sIB3JxX8FXjLMQ8mJJqzDdGpi8cpRQyeSPNYIM5TAzJzc9wbcovVoD3U3JXAHQp4QR6q1CUwDNsKo3wB+Pz5Reve/UeqG//omKY9+sYEZtsWhnASV1AIIzQZGlyrZ6pEmXVRLbs9b1+JpemE7uhWibV15a8XB3crqSo9KitQbfIrss8oWm8P4oulXKafQFwBgv1Mya39Ap6FMPbh2Y8An6BdhyKlNl0Y5frXfuTxq+oY4lMfu+qta3APo4EDYE8Pns6D7V/Ruf83IUzyujdKOiMaYpvz9CYnVMPbW3erRP+6xwIekXf0OQndZzlcTVM5MU3FOtq5vHYA/8g5iiRGHQkyGMApg4rqagwcUpAy6D1L5r5fKlGKNcOs3w
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,157 +162,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/6/3 20:02, Usama Arif wrote:
-> On Tue,  2 Jun 2026 18:10:35 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
->
->> Bootmem HugeTLB pages currently defer HVO setup to
->> hugetlb_vmemmap_init_late(), because the optimization needs zone
->> information.
->>
->> Now that zone initialization is available earlier, the bootmem HVO setup
->> can be done directly from hugetlb_vmemmap_init_early(). This lets
->> gigantic HugeTLB pages apply HVO as soon as they are allocated.
->>
->> Bootmem gigantic pages that span multiple zones are now filtered out
->> when they are allocated, so the remaining bootmem gigantic pages seen by
->> later hugetlb initialization are already zone-valid. As a result,
->> hugetlb_vmemmap_init_late() no longer needs to handle bootmem HVO setup.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->>   mm/hugetlb_vmemmap.c | 67 +++++++++-----------------------------------
->>   1 file changed, 13 insertions(+), 54 deletions(-)
->>
->> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
->> index ea6af85bfec1..464578ee246e 100644
->> --- a/mm/hugetlb_vmemmap.c
->> +++ b/mm/hugetlb_vmemmap.c
->> @@ -745,6 +745,8 @@ static bool vmemmap_should_optimize_bootmem_page(struct huge_bootmem_page *m)
->>   	return true;
->>   }
->>   
->> +static struct zone *pfn_to_zone(unsigned nid, unsigned long pfn);
->> +
->>   /*
->>    * Initialize memmap section for a gigantic page, HVO-style.
->>    */
->> @@ -752,6 +754,7 @@ void __init hugetlb_vmemmap_init_early(int nid)
->>   {
->>   	unsigned long psize, paddr, section_size;
->>   	unsigned long ns, i, pnum, pfn, nr_pages;
->> +	unsigned long start, end;
->>   	struct huge_bootmem_page *m = NULL;
->>   	void *map;
->>   
->> @@ -761,6 +764,8 @@ void __init hugetlb_vmemmap_init_early(int nid)
->>   	section_size = (1UL << PA_SECTION_SHIFT);
->>   
->>   	list_for_each_entry(m, &huge_boot_pages[nid], list) {
->> +		struct zone *zone;
->> +
->>   		if (!vmemmap_should_optimize_bootmem_page(m))
->>   			continue;
->>   
->> @@ -769,6 +774,14 @@ void __init hugetlb_vmemmap_init_early(int nid)
->>   		paddr = virt_to_phys(m);
->>   		pfn = PHYS_PFN(paddr);
->>   		map = pfn_to_page(pfn);
->> +		start = (unsigned long)map;
->> +		end = start + hugetlb_vmemmap_size(m->hstate);
->> +		zone = pfn_to_zone(nid, pfn);
->> +
->> +		if (vmemmap_populate_hvo(start, end, huge_page_order(m->hstate),
->> +					 zone, HUGETLB_VMEMMAP_RESERVE_SIZE))
->> +			panic("Failed to allocate memmap for HugeTLB page\n");
-> The replaced hugetlb_vmemmap_init_late() path used to fall back to
-> vmemmap_populate() if vmemmap_populate_hvo() returned an error and
-> just lost the HVO optimization for that page.
->
-> The new path panics on any non-zero return.  Is the panic intended,
-> given that vmemmap_populate_hvo() returns -ENOMEM on allocation
-> failure and HVO is normally treated as an optimization rather than a
-> hard requirement?
-
-This is intentional; see patch 6:
-
-     mm/sparse: Panic on memmap and usemap allocation failure
-
-We already panic on OOM anyway.
-
-Muchun,
-Thanks.
-
->
->> +		memmap_boot_pages_add(DIV_ROUND_UP(HUGETLB_VMEMMAP_RESERVE_SIZE, PAGE_SIZE));
->>   
->>   		pnum = pfn_to_section_nr(pfn);
->>   		ns = psize / section_size;
->> @@ -800,60 +813,6 @@ static struct zone *pfn_to_zone(unsigned nid, unsigned long pfn)
->>   
->>   void __init hugetlb_vmemmap_init_late(int nid)
->>   {
->> -	struct huge_bootmem_page *m, *tm;
->> -	unsigned long phys, nr_pages, start, end;
->> -	unsigned long pfn, nr_mmap;
->> -	struct zone *zone = NULL;
->> -	struct hstate *h;
->> -	void *map;
->> -
->> -	if (!READ_ONCE(vmemmap_optimize_enabled))
->> -		return;
->> -
->> -	list_for_each_entry_safe(m, tm, &huge_boot_pages[nid], list) {
->> -		if (!(m->flags & HUGE_BOOTMEM_HVO))
->> -			continue;
->> -
->> -		phys = virt_to_phys(m);
->> -		h = m->hstate;
->> -		pfn = PHYS_PFN(phys);
->> -		nr_pages = pages_per_huge_page(h);
->> -		map = pfn_to_page(pfn);
->> -		start = (unsigned long)map;
->> -		end = start + nr_pages * sizeof(struct page);
->> -
->> -		if (!hugetlb_bootmem_page_zones_valid(nid, m)) {
->> -			/*
->> -			 * Oops, the hugetlb page spans multiple zones.
->> -			 * Remove it from the list, and populate it normally.
->> -			 */
->> -			list_del(&m->list);
->> -
->> -			vmemmap_populate(start, end, nid, NULL);
->> -			nr_mmap = end - start;
->> -			memmap_boot_pages_add(DIV_ROUND_UP(nr_mmap, PAGE_SIZE));
->> -
->> -			memblock_phys_free(phys, huge_page_size(h));
->> -			continue;
->> -		}
->> -
->> -		if (!zone || !zone_spans_pfn(zone, pfn))
->> -			zone = pfn_to_zone(nid, pfn);
->> -		if (WARN_ON_ONCE(!zone))
->> -			continue;
->> -
->> -		if (vmemmap_populate_hvo(start, end, huge_page_order(h), zone,
->> -					 HUGETLB_VMEMMAP_RESERVE_SIZE) < 0) {
->> -			/* Fallback if HVO population fails */
->> -			vmemmap_populate(start, end, nid, NULL);
->> -			nr_mmap = end - start;
->> -		} else {
->> -			m->flags |= HUGE_BOOTMEM_ZONES_VALID;
->> -			nr_mmap = HUGETLB_VMEMMAP_RESERVE_SIZE;
->> -		}
->> -
->> -		memmap_boot_pages_add(DIV_ROUND_UP(nr_mmap, PAGE_SIZE));
->> -	}
->>   }
->>   #endif
->>   
->> -- 
->> 2.54.0
+On 6/3/26 14:16, Nico Pache wrote:
+> On Wed, Jun 3, 2026 at 4:01 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
 >>
 >>
+>>>  next_order:
+>>> -             if ((BIT(order) - 1) & enabled_orders) {
+>>> -                     const u8 next_order = order - 1;
+>>> -                     const u16 mid_offset = offset + (nr_ptes / 2);
+>>> -
+>>> -                     collapse_mthp_stack_push(cc, &stack_size, mid_offset,
+>>> -                                              next_order);
+>>> -                     collapse_mthp_stack_push(cc, &stack_size, offset,
+>>> -                                              next_order);
+>>> +             if (order > KHUGEPAGED_MIN_MTHP_ORDER &&
+>>> +                     (BIT(order) - 1) & enabled_orders) {
+>>
+>> Why not a test_bit() ?
+> 
+> The test bit is at the top of the loop. This adds a exit if the lower
+> orders are all disabled or we hit the last order.
 
+Ah, now I understand what you want to do here.
+
+I guess you should add a () around the & and maybe add a comment.
+
+And likely using GENMASK is clearer?
+
+/*
+ * Continue with the next smaller order if there is still
+ * any smaller order enabled.
+ */
+if (order > KHUGEPAGED_MIN_MTHP_ORDER &&
+    (enabled_orders & GENMASK(order - 1, 0))) {
+	...
+}
+
+
+> 
+>>
+>>
+>> But, wouldn't you want to skip orders that are not enabled and try with the next
+>> smaller one in any case before you advance the offset?
+> 
+> We are currently iterating through each order (not skipping them).
+> There may be optimizations to avoid iterating through every order
+> (like your changes suggest), but currently, every collapse, whether it
+> succeeds or fails at the bottom order, must also iterate the offset.
+
+Right, we currently miss opportunities to just skip, that we can optimize later.
+
+
+-- 
+Cheers,
+
+David
 
