@@ -4,128 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B06BCD6E5D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 01:08:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A9D8CD6E57
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 01:29:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D7BA6B0088; Tue,  2 Jun 2026 21:08:54 -0400 (EDT)
+	id 9D0E86B0088; Tue,  2 Jun 2026 21:29:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 089B06B008A; Tue,  2 Jun 2026 21:08:54 -0400 (EDT)
+	id 9819A6B008A; Tue,  2 Jun 2026 21:29:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB9C66B008C; Tue,  2 Jun 2026 21:08:53 -0400 (EDT)
+	id 870286B008C; Tue,  2 Jun 2026 21:29:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D782C6B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 21:08:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61E991C035F
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 01:08:53 +0000 (UTC)
-X-FDA: 84836816946.21.3AAF061
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8756A100011
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 01:08:51 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DuddUUxl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 752CE6B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 21:29:45 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C133B401B4
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 01:29:44 +0000 (UTC)
+X-FDA: 84836869488.14.70BEB08
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0BEE18000A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 01:29:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MYJindhJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780448931;
+	s=arc-20220608; t=1780450183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d3GAR7SC93N2eePKpNe9tCYUdzk5c1g7WEzw2IFy6ZM=;
-	b=RLekYiI8nDHxPMW1pWY2NB/AYC/CEpLj3n239/YOehFgAvJJzP0RaGLYByW1BZk7j5MJ01
-	dCz/oxNTGvSqCs2LnRM6G99DJsP16RVU3gKUZIcMm3f8exqdQj7qpU9NNHiVdYnwdTM5yz
-	mbX7kfhmrgBiO7HzpPJ33B9xwKrOtLI=
+	bh=mZAzYbDB7KwJFZUH3vb8G02tWQdnEGJhvMuTYhptPfs=;
+	b=NXdTeg6SOKUN+VRlI09QJi4WnyTryTSjFbM1cgoZ8NxVl35CG2oU+OODnEtw1AthKi4Gvg
+	pVZ/enLbBsYRzvmvxDivV3a9iCJH5fv8oJ2KwhDpKz+H17guhMG81MXbJZtIybRj93pSAt
+	DI7fgP1YJxtkB+/jN+efD8bNGKjUP3o=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DuddUUxl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MYJindhJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780448931;
-	b=gDpUjg527ZW+ojkIvECkmF20hHDpurtvy5Y2Brh7QrVct5owG1ck9ynJqxZaLmSwnR3Do9
-	Lmp0ZNEEKvOCFYvgh1FqrB178F3nZPHj2g2jhG5zsClmO8AbvLF8mcEBzlRneP47AL9m4+
-	6Ffm/3xCCA5hvTrxNoNhHKYiI6JIr88=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490b2b037d2so11151375e9.3
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 18:08:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780448930; x=1781053730; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d3GAR7SC93N2eePKpNe9tCYUdzk5c1g7WEzw2IFy6ZM=;
-        b=DuddUUxl1HYytDVgRTok/Dfks2f68UhoSt0WiS995IC0MwZw6WNvvPO5xk1TiY+CLE
-         zl43+mL5SBh2zw0L8u4YMhEzv102pUU1IOS6OVJV+ITGHnIEahhznzxsUW4A3wN6mpmv
-         rLc9ELN3L2SatOn5p4NDtvIcrYMc1qvSCtyGSYJY/jswxyeqbI8+ceyTc6toPDo2meHs
-         x0p+MnYCBqmEtKAsdPwQNjQgD6fLrcjTQgFLCr8DtPb7IpSE5ppPtrgTpskEsGvSsDCJ
-         P02X9aWDqTPl7xDIcu5afeSDO4DMJUxXLJ7GXywn5vWzWagI2iERSI5mzLWFRiUgb6vC
-         faPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780448930; x=1781053730;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=d3GAR7SC93N2eePKpNe9tCYUdzk5c1g7WEzw2IFy6ZM=;
-        b=suuwOey8wuaRhe8rZQhI7OxeFIpfJk2IovEBWKrsi/Z0QVMnHKrdXoRTBVz9SQBPD0
-         rAVUoAFlcHC2p1hlKdYHvYtOCAFuqlTxOLam2vGUc3+0bYtYdfmWWV7qRuckgyH7MWGo
-         LLbdHgj1R9oI1X6D5qB+XxCwN1DjKA4suAo8aJU+aUSgBUovVInftlgH761AJp2eGhxp
-         GibEgLSMxeVFzTXU1tOx7c7kL5ginLeLQCtj8jqcRXko4fFnTF/ko2p45lXPb0CXJ5m6
-         +MVW0ca4OXLhuHuP3Q/Rg9PaJYL6ydvfDTfi6iLajZwgCvacmiEMdXjEbjp6L5OkAhLO
-         GVQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ86/bailLfWU2u0fCwWFPli8IHAHYtOeVVOSWpCFEC2nSeMxunljAkxwKAEYymHeUMqsI9bjjNVFQ==@kvack.org
-X-Gm-Message-State: AOJu0YwiuDsgLEgnKF2yBfbtwE7JCa5Oyyc3T9Mzk9dahcm1vxJI2t4+
-	bfDby4MXLwjiEOfX8L61/TGgq21FYL5hN1gY3GwcRx8Yk31MAndrvlYN
-X-Gm-Gg: Acq92OGPcDji/sGsgjdD3AhKSHWsFzQoitktaXOFZoyBFshpYdjsYKLqPcfOm9PZ9h4
-	ub3B8mpvIlT9+sLhAIkCH4KkJo5H2cZaVnDqOXrT4pr++GniJEQo3M6mHWUUQyVe6dVBMIuUl34
-	7qA5t3ti05oUk0hxoNzDzovLfgaxPB8Si2q/Hq5LGH/ok2bny2ZZx5LYiXx+705efrRoaUBetc1
-	X72jt/9eljP81ABTLMYpZB0HnLSOaplCKQD/J3wBqYRkmEilUU9RXf0d7jjjCt5o1ShjUOvye2L
-	NO7Z5fZ7LeH2PTKplPPluqPe301OvfVMzCtYXpJzTLQO2ICHYcPwvx1/LlyTN6/TCXF43rH4kTq
-	HrYN/yTjHOWYGkSBTwSgdB7koCmfHxXuuBZuzoslHj5v99cWiH9zWs+dga1zc1unH6ICscrvSJI
-	vl/eawcxXHgFi0nxoc+9zBYPno1SOt1g==
-X-Received: by 2002:a05:600c:3e19:b0:490:b58a:dcc1 with SMTP id 5b1f17b1804b1-490b60fcd56mr18908035e9.29.1780448929768;
-        Tue, 02 Jun 2026 18:08:49 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-490b725fb1bsm11254325e9.8.2026.06.02.18.08.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jun 2026 18:08:49 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: torvalds@linux-foundation.org
-Cc: akpm@linux-foundation.org,
-	axboe@kernel.dk,
-	brauner@kernel.org,
-	david@kernel.org,
-	dhowells@redhat.com,
-	hch@infradead.org,
-	jack@suse.cz,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	miklos@szeredi.hu,
-	netdev@vger.kernel.org,
-	patches@lists.linux.dev,
-	pfalcato@suse.de,
-	safinaskar@gmail.com,
-	viro@zeniv.linux.org.uk,
-	willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-Date: Wed,  3 Jun 2026 04:08:44 +0300
-Message-ID: <20260603010844.257094-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
-References: <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
+	t=1780450183;
+	b=zPBRjTB+tPznwmUYTvEfHETdcTnmBN/YEarpaN1h981WgjUk8W6eSRGAhE6ziFytg36PZE
+	G/1PPk+mCSGAlPkceAa+012FYgy2GOItuem5f86X3JiYgPbS07OfiQjfqnF0AjcKHM+Uck
+	hT9HlulKZYiTCIDhvLKFFEBhUMZ0nSk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 35AB0435CF;
+	Wed,  3 Jun 2026 01:29:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2672E1F00893;
+	Wed,  3 Jun 2026 01:29:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780450182;
+	bh=mZAzYbDB7KwJFZUH3vb8G02tWQdnEGJhvMuTYhptPfs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MYJindhJEOgi3egpo83m3LLIjCZkbjHljb1eimGJLVd2HYZEssloRJdsZjHNStpYg
+	 Y81g27zHb6dOtsvZIf3UR/rJJxa2sAvqWWYDXmXsALjsh3Wno1queunjXOvTCz3oFH
+	 FlCgwRmpHCNWM7Ql8sPDhiYr4PZwIhEuHiqWT6muRp65CpV241uEGPVaesnG8gzQcn
+	 4Xx7iARzxHR3xwlfy1D+IsrtYqI5Niqx3bllX97pFE65V53CuA+L6P7L9Xz/M+QNv7
+	 rIe4/b4oycBj7Z1TjAXPsdP3w9lAK0ffZolxG7+qHdYMH3bZNDrjc4byNIry7gzmz0
+	 rGSNgEddqn5mw==
+Date: Wed, 3 Jun 2026 01:29:38 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: kasong@tencent.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
+	apopple@nvidia.com, axelrasmussen@google.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org, 
+	chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net, david@kernel.org, 
+	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
+	jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, lenb@kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
+	mhocko@suse.com, muchun.song@linux.dev, npache@redhat.com, pavel@kernel.org, 
+	peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de, rafael@kernel.org, 
+	rakie.kim@sk.com, roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
+	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, tglx@kernel.org, 
+	vbabka@suse.cz, weixugc@google.com, ying.huang@linux.alibaba.com, 
+	yosry.ahmed@linux.dev, yuanchu@google.com, zhengqi.arch@bytedance.com, ziy@nvidia.com, 
+	kernel-team@meta.com, riel@surriel.com, haowenchao22@gmail.com
+Subject: Re: [RFC PATCH 0/5] mm, swap: Virtual Swap Space (Swap Table Edition)
+Message-ID: <ah-A2gQ0GPgerXop@google.com>
+References: <20260528212955.1912856-1-nphamcs@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8756A100011
-X-Stat-Signature: f4m1y665chf865ffcti7haud7new9eyk
+In-Reply-To: <20260528212955.1912856-1-nphamcs@gmail.com>
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780448931-19360
-X-HE-Meta: U2FsdGVkX1+c/YDxyJdIl5AKHNvxhx/leDd0swQvLmxiQNpbhy86cDoE1zrebTaP/AOrisb/3+nToB1gtxFpPDIWv/KEMgsKFTmP+bI+/rTNNHs5jhGYRCN7yHZfl/2nFVfbL0IxnmFb8Da4pJO03+GImJmQN8xPpPK1yZn7+6CQqL8HKITUwn/+jc8ByxilJ9ai+qxZee+71zC8tcemuAOxZZsXiEgsn27lqQL0OFbita8o4L2JwEDBM/4e1SdNTqZi3cPKfRnhpZ1M2CYyAGP4vfQqOrphJV9U/KrfzwlzAYgByuIpMdSThklYL813/AZQp05hy5LtqwnsTUXsoDcwfU5aMQXr98xBBgu/PBcd0pYncd4i/hT52eDlgM1Qte/7Gxyk1C4BVncyC0W3yDXq8y1gpP2qltqZaUU5mXWe8TtP396EM+yVh7m858ZRAeE2qJS90AfhKz5uiy709S1VO81RiIRPxfyX1GPc0AyqfajF580PusNsG+luqfGZ3+Wm69U0oHNjKKIE9mbVWxs2+vsOsOuExDN8ypjN8dFwTVvStXmyDyoPqI+VsLTo1Og3/XVE09MSWehFCQ70A5VU04lsAlfXH0T+PjVs+qejx271AVd/c3p25ckCQ56wFEzQO0IxVXxYzFCSpjrNRZCe/oFVv/2wlclKykQqSgTiQc9BP7D/1H9/xV5kgAfVe1S3jwXz1mnQFoujF/n3jt+ezDjH5FWKNHTUhmQb34eaMObNh8Z1lcHWbS5Z667+zg0La8jhFBmkrfzwZXws3ab5P6eWywmZ6nL0GaMA91RyleI5TkhNwiyHX3gOapzFK4veeTHkjpvvS271rmyc9Inz5QKF8rTxJY6y7QGXaq5HuBP9x0UwmTZ8MSr4tOVR3w2WwPOsONIQ02GV8iPKbReLEoy42VhV63lopE5/HRyTTBZXi9xaSx8j9NKJ/9Y/UYitHpxMtY70DG1Ernd
- mWjcn3Kr
- Tk1/CeddY6TJETLsoreA9Lp437SB2QTudTzT2XQEH8XzYS+t6UgLMXBhJp2jlE6+wtNX17uZw3548XnkbQc21dHlLKAe5Fqr4do0C9eKs0p0OHXk7a0o6QjqznK/7m9EnqopkrvtqpTt91IyDCp8FAnYPRKE31lDZa1YiKWV0dD21J/Cd356Or2WbsNHDp0X2Rm4yE1JgbzDVfX0t722kkhwa0SVdbsoIMotUGrd0cJKKHCyP+BVVmc/JVOcXKN+7fMr5Vd4AtYHQjJlk/833qNSx1wXpfbGBMu/ADFEXrZN4h66V5+wUPo0pwcv+wAkeiUrrotV7rIXW/y7KCr5D4BBa7mfz2Nd4h6xIc1IRPspBSQ5dHo8+f1/W6xq4FocS4/2j6Q2if1TI5WsdnLsxArEpOcI9AU+ryebHtIA/xBGTKV3GzR5QHZLpKVwiL03XERSefP8GfhxBN54=
+X-Stat-Signature: cf9ajktz3wj8twwp693z9jrm86brz4by
+X-Rspamd-Queue-Id: 0BEE18000A
+X-HE-Tag: 1780450182-233133
+X-HE-Meta: U2FsdGVkX18OiBZ5qKuSwDbr4zalbKscVJ/wjZi9Eoq9GMwEv73Nyg5KsL0Qc/BG0FMdOWn6NK2WU2NpHBdYR2OgQ5K2s0LfITEe7LN6JUgdnUx3OJzrdxYzSSnti0ronIuR9gQysq/QzCT1DZapMY1gjWhvjHPfBEYGPUdSV+NqZ9Q3rexSaJ0WHdH/LpcpHH3YvNvjpEn01qg9CQ3Q2Qxv70OEuXLgrR5IYda8yWcMfiRog0ugj74SyQPufQ/VEGw3fV+dyXFcYMwT62uACduvy+S3lL6/0MjIwyjPiKWG81ZGHrltcpVuPQWDKwetha5osjaQ6ReLBCX/JjFNTr8MhLAJUja55X2Iv8VWlmrs2IBYmbVE2qIYi1/e+5cNwY2iDdGrEzvwEWx3PKRMUCs3poYe3VsOMtca6nDLoZanWWhOp9pTiuY38wg7tzUyjc9EUxKTdmvbqTXccRntuW+cC5fOZHj3m3uj84AdyH3N1GUlNMB5D3/NSIci4MDmHZXLFsBLQ3nr0APeY1Bf1240kcG9LPn7CStDaArzBi2qwRzrYYt7PEhtGTOT9VJB29ClaHd8jdnt4ccwcaV+2AJ7IG3yEQM0aWBRtcCduOKDw5nXVK4hmHRBwLOWqyvVXb4KymIr5HOtYzq+tb/OStNqxuiNWOp3YaW4qlvdcqX1FrJp7MIunAEOllaOgxDNxcnGUkeg2N0ryinnGnO9hdYBYW3Aoxc/pq8WrCtzT1UpHKkKp3bon8RUrhuwEdR+av2SaUjc3SlqoZJp0sCpbik6ADlPJb+IypbUGvszScxMCTWxLEi2jcYf6iUGWiDEaON7WRFW3eTURAEAXQRuGscY7vm2r7VMT4vvjK1hz5plAg8xnIMA2ubyozwJNDxO+NUB7v5ZVtCpx61/j4cJo0QYWTxCHW/3UG2BCbSYl+HF8DaB5yWioTs+rIJwBgigV8FU7Pf7SYAQIygAxmw
+ pNRYyUjj
+ xdILxB0mb13YBNkUNM3G5Y7VffsYSWTyZ3o1G/TvkAqU4FtO3VPYKW8b9P0gpzPHqkLwyWCLl7R9svT05pWFqwsmtkIWOHabTXybE1B0Utj3K9j9QGDqGOKdsZjGn4oVtltoEdLTprw0KqGofYcD3PBgVG1Eu0X7oJAkLVdszLrWcI9wVPp7zzOvAl7kKJJkptvJdKhNSqF8lt3FuH2GyQruTNy30SBg3slGet5Pqw84UT4oXYWHsOV+MeHJ2PkkmoH4up3QF8aj7yWI0lyKzrGHG/PrjkU7C9Xxd9xgexNlLF07Ef7y9ggIybuzV0GtMU0tlq035K1jy7YWcCCQV+t4WGKJnN2KnVyP5Swd2LTpVPE6WMTCO/QQqm5B0/IkdUVCc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,17 +105,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Linus Torvalds <torvalds@linux-foundation.org>:
-> That absolutely would be my suggested next step.
+> II. Design
 > 
-> Something like the attached - get rid of filemap_splice_read()
-> entirely, and just replace it with copy_splice_read().
+> With vswap, pages are assigned virtual swap entries on a ghost device
+> with no backing storage. These entries are backed by zswap, zero pages,
+> or (lazily) physical swap slots. Physical backing is allocated only
+> when needed — on zswap writeback or reclaim writeout, after the rmap
+> step.
+> 
+> Compared to the standalone v6 implementation [1], which introduces a
+> 24-byte per-entry swap descriptor and its own cluster allocator, this
+> edition uses swap_table infrastructure, and share a lot of the allocator
+> logic. Per-slot metadata is stored in a tag-encoded virtual_table
+> (atomic_long_t, 8 bytes per slot), and physical clusters store
+> Pointer-tagged rmap entries in the swap_table for reverse lookup back to
+> the virtual cluster.
+> 
+> Here are some data layout diagrams:
+> 
+>   Case 1: vswap entry (virtualized)
+> 
+>   PTE                  swap_cluster_info_dynamic
+>   vswap_entry          +-------------------------+
+>   (swp_entry_t) ------>| swap_cluster_info (ci)  |
+>                        | +--------------------+  |
+>                        | | swap_table         |  |
+>                        | |   PFN / Shadow     |  |
+>                        | | memcg_table        |  |
+>                        | | count,flags,order  |  |
+>                        | | lock, list         |  |
+>                        | +--------------------+  |
+>                        |                         |
+>                        | virtual_table           |
+>                        | +--------------------+  |
+>                        | | NONE               |  |
+>                        | | PHYS               |  |
+>                        | | ZERO               |  |
+>                        | | ZSWAP(entry*)      |  |
+>                        | | FOLIO(folio*)      |  |
+>                        | +--------------------+  |
+>                        +-------------------------+
+>                               |
+>                               | PHYS resolves to
+>                               v
+>                        PHYSICAL CLUSTER (swap_cluster_info)
+>                        +--------------------------+
+>                        | swap_table per-slot:     |
+>                        |   NULL   - free          |
+>                        |   PFN    - cached folio  |
+>                        |   Shadow - swapped out   |
+>                        |   Pointer- vswap rmap    |
+>                        |   Bad    - unusable      |
+>                        |                          |
+>                        | Vswap-backing slot:      |
+>                        |   Pointer(C|swp_entry_t) |
+>                        |     rmap back to vswap   |
+>                        +--------------------------+
+> 
+>   Case 2: direct-mapped physical entry (no vswap)
+> 
+>   PTE                  PHYSICAL CLUSTER (swap_cluster_info)
+>   phys_entry           +--------------------------+
+>   (swp_entry_t) ------>| swap_table per-slot:     |
+>                        |   NULL   - free          |
+>                        |   PFN    - cached folio  |
+>                        |   Shadow - swapped out   |
+>                        |   Bad    - unusable      |
+>                        +--------------------------+
+> 
+> struct swap_cluster_info_dynamic {
+>     struct swap_cluster_info ci;       /* swap_table, lock, etc. */
+>     unsigned int index;                /* position in xarray */
+>     struct rcu_head rcu;               /* kfree_rcu deferred free */
+>     atomic_long_t *virtual_table;      /* backend info, 8 B/slot */
+> };
+> 
+> Each vswap cluster (swap_cluster_info_dynamic) extends the classic
+> swap_cluster_info struct with a virtual_table array that stores the
+> backend information for each virtual swap entry in the cluster. Each
+> entry is tag-encoded in the low 3 bits to indicate backend types:
+> 
+>   NONE:   |----- 0000 ------|000|  free / unbacked
+>   PHYS:   |-- (type:5,off:N)|001|  on a physical swapfile (shifted)
+>   ZERO:   |----- 0000 ------|010|  zero-filled page
+>   ZSWAP:  |--- zswap_entry* |011|  compressed in zswap
+>   FOLIO:  |--- folio* ------|100|  in-memory folio
+> 
+> We still have room for 3 more future backend types, for e.g. CRAM, i.e
+> compressed-CXL-as-swap, which is laid out in [10] and [11]. Worst
+> case scenario, we can add more fields to this extended struct.
+> 
+> Other design points:
+> - Both vswap entries (Case 1) and directly-mapped physical entries
+>   (Case 2) coexist as first-class citizens. All the common swap
+>   code paths — swapout, swapin, swap freeing, swapoff, zswap
+>   writeback, THP swapin, etc. work for both. When CONFIG_VSWAP=n,
+>   the vswap branches compile out and behavior should be identical to
+>   today's swap-table P4 (at least that is my intention).
+> - Pointer-tagged swap_table on physical clusters for rmap (physical
+>   -> virtual) lookup.
+> - Virtual swap slots not backed by physical swap are not charged to
+>   memcg swap counters — only physical backing is charged (I made the
+>   case for this in [7]).
+> - Careful separation of vswap and physical swap allocation paths and
+>   structures adds a lot of complexity, but is crucial to make sure
+>   both paths are efficient and do not conflict with each other (for
+>   correctness and performance). I do re-use a lot of the allocation
+>   logic wherever possible though.
 
-Okay, I will post something like this soon.
+Thanks for working on this! I mostly looked at the high-level design and
+the zswap parts, as the swap code has changed a lot since I was familiar
+with it :)
 
-But I'm slow person, and also I will test things in Qemu, so this will
-take some days.
+It seems like the direction being taken here is that we have one
+(massive) vswap swap device, and we keep normal physical swap devices
+around as well.
 
--- 
-Askar Safin
+A vswap entry can point at a physical swap entry, or zswap, or zeromap.
+If a vswap entry points at a physical swap entry, then the physical swap
+entry points back at the vswap entry (a reverse mapping).
+
+I assume the main reason here is to avoid the extra overhead if
+everything uses vswap, which would mainly be the reverse mapping
+overhead? I guess there's also some simplicity that comes from reusing
+the swap info infra as a whole, including the swap table.
+
+I don't like that the code bifurcates for vswap vs. normal swap entries
+though. Not sure if this is an issue that can be fixed with proper
+abstractions to hide it, or if the design needs modifications. I was
+honestly really hoping we don't end up with this. I was hoping that the
+physical swap device no longer uses a full swap table and all, and
+everything goes through vswap.
+
+I hoping that if redirection isn't needed (e.g. zswap is disabled),
+vswap can directly encode the physical swap slot so that the reverse
+mapping isn't needed -- so we avoid the overhead without keeping the
+physical swap device using a fully-fledged swap table.
+
+All that being said, perhaps I am too out of touch with the code to
+realize it's simply not possible.
+
+Honestly, if the main reason we can't have a single swap table for vswap
+is saving 8 bytes on the reverse mapping, it sounds like a weak-ish
+argument, even if we can't optimize the reverse mapping away. But maybe
+I am also out of touch with RAM prices :)
+
+I at least hope that, the current design is not painting us into a
+corner (e.g. through userspace interfaces), and we can still achieve a
+vswap-for-all implementation in the future (maybe that's what you have
+in mind already?).
+
+Aside from the swap code, the only sticking point for me is the logic
+bifurcation in zswap. Why does zswap need to handle vswap vs. not vswap?
+I thought the point of the design is to use vswap when zswap is used,
+and otherwise use a normal swap table. In a way, one of the goals is to
+make zswap a first class swap citizen, but it doesn't seem like we are
+achieving that?
 
