@@ -4,116 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71EEACD6E56
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:05:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A735BCD6E56
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:05:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8FDB6B0093; Wed,  3 Jun 2026 08:05:09 -0400 (EDT)
+	id 1CD1A6B008C; Wed,  3 Jun 2026 08:05:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B40606B0095; Wed,  3 Jun 2026 08:05:09 -0400 (EDT)
+	id 1A4206B0096; Wed,  3 Jun 2026 08:05:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2FA56B0096; Wed,  3 Jun 2026 08:05:09 -0400 (EDT)
+	id 0E1A16B0098; Wed,  3 Jun 2026 08:05:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 92FB46B0093
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:05:09 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 54434C17B8
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:05:09 +0000 (UTC)
-X-FDA: 84838470738.22.B8506AB
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6ABA2140010
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:05:07 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F22286B0096
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:05:48 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 96AEE1A0370
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:05:48 +0000 (UTC)
+X-FDA: 84838472376.17.284F6AC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 05EDD140015
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:05:46 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XHnZO7wy;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M8hQG6qN;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780488307;
+	s=arc-20220608; t=1780488347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1X7rdmAsUUmk8fm1lXinqRbOJ2Rb1qcFGzfHrd7zSSw=;
-	b=OX2YFG0c4PtHx1bpY0de+FO/6/RvKmo707l/fZ/v8J4AXLCCzEBruw/c3KjcYorRH31UF0
-	XhhFDsW7v4NrZrI/ZHYw6TCiDs83C8A0mRRDN9tnOBlp8bekr55sNjQ8RVa6t+B8uoMmy2
-	Ych4tA7bEPClySPlIHEDnDTlIqmp2Hk=
+	bh=MM7RRVhqPTlxtMXqTYBOK1SOCNMNrDXSVM/K+K1p8a8=;
+	b=36rz9MvFXtF6hXZfdyNqm/cZC2BMKR5CeF4Q6wvJ9WAGjBqsXDSJbUPLsTrCQrKZeo3dc1
+	G/4iVibSOam9m1uw5DvTbvGWjPL1PjjsCQQeUNItbm+j/dwjoHZUoROPPZpAJuOwkXzjeG
+	k5hEWgGsxfERduQ1E1lBspmUjegXguM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780488347;
+	b=7gCpGhYif2TCjFklAOp/cJbT1t5gQ1kmf+n7GrgROZ+6FgJ/CFZpZ7PWRyJ9vwtkn3Ayxl
+	q0nbZrYlRyBbm6DbM/x2jEZdTpABAYY48JU85s8xyFlAJkgbC90RYjgEKy1u3gGW4Stiu1
+	Umy2fUUwQ8IFl/VES8jkLuPKtYIoBvE=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XHnZO7wy;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780488307;
-	b=pF0ZC+ZTF2JSgqoc0EsAjbppu2GXWwX4Bd8oHvR85hMSGzW4/EReAiq7QlVfM2blcVTOMV
-	qFb+HsRMwrSB49qz7NtoYRTlv/jLtF+0STMacPx1UnI5s4sh1CGRgYCHdKrEABSduXtmRM
-	d/kOe82HGzLhULrAoR2Gx979NnbJcJo=
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8ce9d444173so40078746d6.2
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 05:05:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780488306; x=1781093106; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1X7rdmAsUUmk8fm1lXinqRbOJ2Rb1qcFGzfHrd7zSSw=;
-        b=XHnZO7wym5xIZh6I1M+8TAgOq4w2Fw2A4Hm+7LkgweWwhFyUZLMcSqm2zGgAgA7w7y
-         C9Hmajy7WP7SzHIzUqnJHA9tjuSwh1EXU+vD9ALr8aPKlhwRh6DqaNG0H0dTkx4mUzCZ
-         xb5Ql6lSkx6JlxPnefI7iwiF+PH0K8Bqq9pkTZuonzpJ7QCNwBj/vdL97t7ZQ1UNgMkK
-         Sy8wB+7dU+0HAgcrDWpgls+ykhk/C7tuxIrdzogYteRANtVaafPf6gy8ZwmyoeUPKoOk
-         cfABcvEL+Tux9UaLFB9njAQY2/xviF0ZkZ541OApul+HjX4cLBPZ227y7P1BeInGXc/S
-         PQ0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780488306; x=1781093106;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1X7rdmAsUUmk8fm1lXinqRbOJ2Rb1qcFGzfHrd7zSSw=;
-        b=jdVKLIv4TGkTYTNTncJSuBGSqKpjYK9OBw6NMvF5lrr6qzu+pQamisfMw/YJSUvoSL
-         KW0Uilu/cJMHNcOzcICU73g+dTOojFl916VZyMH4kM14rs7w17FMUcVct4vYnzKFYoNv
-         42Id3eo7qv8cen1aR+U2ZaWZ1rYv2SC8Y/NqQvSgS6j2tYCeFy6yESG0m0lheKezBrvZ
-         Rb5FwxATy1QSTjf4Tt52p0Ts7v0CRAgSzp247EFDiJWWeQ/6osTjctA00wV+fqc2XRMz
-         BYh3Og4CA4gXpuEBWX4+zFDlB9Dz7afAErOLYKNgzBesMJbqeMjpRvOO5dPSR+cyLWF0
-         +3tg==
-X-Forwarded-Encrypted: i=1; AFNElJ8u1XBQvKMlFX1ee+8Hutbgk6nofJ6IydLr835UJB+qE7gHCtE5nphMBnOSprLvm98pIhpS+lTyvQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzvm434xy+VF1qMci06wJ9/rUXNTVnV7yQ6+X8oQN2RMj1PUmEc
-	4FGSE8zXaV36jFq/NBvD2sveTG9rWaqDTGsTuzeHsUHBLxIdpUzH9DEwuFi9oAUqpow=
-X-Gm-Gg: Acq92OFyv1QPt8VYyIRK9l9uatbOr1uh2y6jI4hSM6idENZgn3FAuLI/7Keo9KKtnlO
-	KHepSDeUoLl899MxDtRGkeVQxehdaSWvTcClCWSV5m1dB4m1D+pZupFZ37a+N2EkZAbOXncwUKr
-	A9HWgVm9qLLVfUP5uha2e8oj6wFgghpZCRS93VZapD2o0RyUi/aObT94LvZeWuNTWOdKc46OKvh
-	iUUIQMMxdjsuplrH9GQAXqhE0B1Kvau0Hd9k+nGpJztK1epMUTa/Mz+SVIh9mv6V65O0cEHSBjF
-	TjfeA5MGe1ambTyQAqETPe/gHvy3IntJ7j54W7hOkRki84ZBKSQdm+8THR1ZKnnvFbYRzQ0XfnY
-	xOe/tWM+9suqi5FeFDW0YqkXXGZh+DttOYjdteoWG7rYTxXutigTSdEaAKZHZQDukt7p/mjoQss
-	RtX0M//u4JcRah25V2q+WKy7cuQa+10Rxi2X6aSXDIJ16iSVj7QIc4Jxa0SNzoRQ==
-X-Received: by 2002:ad4:5851:0:b0:8cc:f012:f42c with SMTP id 6a1803df08f44-8cecdc09461mr34569126d6.6.1780488306396;
-        Wed, 03 Jun 2026 05:05:06 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd2682f8sm18054716d6.43.2026.06.03.05.05.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 05:05:05 -0700 (PDT)
-Date: Wed, 3 Jun 2026 12:05:04 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	corbet@lwn.net, dmatlack@google.com, kexec@lists.infradead.org, 
-	pratyush@kernel.org, skhawaja@google.com, graf@amazon.com
-Subject: Re: [PATCH v6 07/13] kho: add support for linked-block serialization
-Message-ID: <aiANtYRRDr5iO5QR@plex>
-References: <20260603032905.344462-1-pasha.tatashin@soleen.com>
- <20260603032905.344462-8-pasha.tatashin@soleen.com>
- <178046937151.468621.13398573538792303093.b4-review@b4>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M8hQG6qN;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 58E316021C;
+	Wed,  3 Jun 2026 12:05:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11261F00893;
+	Wed,  3 Jun 2026 12:05:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780488346;
+	bh=MM7RRVhqPTlxtMXqTYBOK1SOCNMNrDXSVM/K+K1p8a8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=M8hQG6qNHb2FtS6Sae/SBDvlIBvgHlYZqYB6AKsm1UIxVpiBTbQkJdVTOeuvJnKmZ
+	 dOvXnU1M18/DYRL0FaS1GnNvxWMQVzb0t1poISDugfZHMhgW4IffllKTafTlgiOFch
+	 5vxs7ML2Y4VSJGAzmSwbSCHO/OWFlQnqSD/4kEicJ/fwmIB4IO3C1AAVc57qWBimtz
+	 gcoM3YG5nTPE/JyiDfy/jtwWoWdeM1iHboRxGnli7YzZPYWIXoVsFvtsPYKA+uVbWv
+	 Xe9yryB0Q5c8pwecX/95qGTQUQZhRc+MceUAi2kp6LFLYzpUR+pqW4mNkOHoEKuXvh
+	 zpy96EZI61jvA==
+Date: Wed, 3 Jun 2026 13:05:39 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Chris Gellermann <christian.gellermann@codasip.com>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, david@kernel.org, 
+	liam@infradead.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, 
+	surenb@google.com, vbabka@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] selftests/clone3: Fix wild pointer access of
+ getline due to missing init
+Message-ID: <aiAYQVaVGRLfmpAK@lucifer>
+References: <20260526113409.ea65314eb1da831de7c90ca6@linux-foundation.org>
+ <20260603104310.936706-1-christian.gellermann@codasip.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <178046937151.468621.13398573538792303093.b4-review@b4>
-X-Rspamd-Queue-Id: 6ABA2140010
-X-Stat-Signature: 4dzqyww6gk56x9jf9ss3skh8doge3gbf
+In-Reply-To: <20260603104310.936706-1-christian.gellermann@codasip.com>
+X-Rspamd-Queue-Id: 05EDD140015
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780488307-653256
-X-HE-Meta: U2FsdGVkX18WosIgYhMmHr2V2CNCAE3jhQV/Q1cTPeYgg2F6LyNdpKnt0QTxTtQEFaSaDotvQsAsDxXvu1r47M2ujoTnMOMe/5iIIckjB5JMEP98jIXB+ZKcdCm4Vr7b65LZ+fY3LowYHi5LLPXMJ+5iAtMQwO83R6NVleIN2ZJD3cX6ZX38EK9+OFgCPFiWrueNBq3oDdYlYJjVKLp1bsY5j5/5J/2h2BuvQTTKNnj5bJBpO7XZ3JQeBT2Zsa7MgrXQ5zzZ0YxmLduK7uGTCHzO7n8L9uVtDoRTn2NJdgdwVquWSloN33dPb+BXmjkdrqCJpRxFNMV/dK92W0WoHoIQHf9giIQ1QwyTTuCgJ85l4Fei12mM8O8Ax8UmN7GpuNPbXaK5rts8NEZZH8/vDu0F5g7mwjS3Mgn6WiLXB90o8zY+jcR1neK8zV9AlTWujP776PqPRI6t1XapIQJLf4A5gkFW1K78zQlbMaOLbxUK8z3qtpvxTpnbmGGdlNc1HeleUH6UmN1YFwG9WDn0UzyWIhtdeB+Ka1yuVNbGCU6jI8O/IKJ7wcrZjGZaBAoRSwvXQY9p7PZy6pBzL3P0A3kRItLGsshLh/d7FxEB0AsJ6NiqHcjVzsqJkvgOz9qJ5ell8c/NnFihRjisLNAec5HP+X26jUvAxEMwVvhYCIxxBkR5t8cO+qYbwa8paFnN8t1U4/FF2gyzm4+yJgfgiY08slyw8kfmQRAbWX/QwrwGQ51BCKWgBPMcymf85BJnQ1zl8W4cEHFshELWv8kIuKvpzXrnQkIXPWza7glRtJnaCg8+4afghllPoRclHJv6XezBzJboauq69yEMCDbFYp5+eSzr/COCJe+9Nwwh0STui6Wz2/IhCwyFskRDCg5D+I1kOGq2yymNaum9NfTxL7YLlOMb3EjSGN5IBvkJHegUfYvznxuIIJM9XRc++ngYqi/6PSmoQS+9jT0h0uw
- UtqPMHLq
- jteu6vuYvw84DROHueo/YmHD/tHY/asVdBILfmiY3IVV6KP3Kw7RBx8Y9Z3uRpqRmMSp7OTCqm/hMBPTlgkn6NoT4uemOVMTsfPTk/Lob+ik7GopU32mjYOH1y7WFVMGpfPNhqF5QzHBaWXbKnb+M942l16vsU9WASS2mO3C7e7ekdzVLoz/O3eJXDOvd0j2IdIuiaAzf0QUxhz+//PTRBnatQgM89t7v9zlmwzGopAbdCXb1/hHGrpmfDbjATNxzxUR6Hnf04PtyO2b5KXoHB/k1QVHHe3VQ+RSbaTl0+R2BZPcIt/2yCER/kn0rD1Csme5eTGMmd6FXrbzk1Po5WIHr6t/tuexEoV9c/4VvcSN7Jc1Sf1cWyJ4GbQ==
+X-Stat-Signature: 1ygwfa6qrqy81py9kf86ok1jh5nc5iyk
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780488346-442806
+X-HE-Meta: U2FsdGVkX1837qgD33jEP1Z4oco4svjTP0RsTBNFhuO28vk221Kzdqx795XVgKIkJn7fPgsSjbMmIlK4+XaR1Csk6WLuomMHQV6fVRRXQMUPL8UZ3lsDZmL0lSXCFrua4uvwFGtkhTC94CoItz0RnFUK4QmmvaG2GrC0f4bEIBUPEmJrb2PEhg+V9eWYJc7JpUEyA7ZMVvWAFydZniU7RzrP3OtstvbAedf4M3YMUk8PVLA+M9Oxrgn2UppwIpbHcPA0g4JnLqh6Wsnum+OdD2YFzgM+cOYum1q5uKW/+S484oJfmwegWUCyDPC39JQRZb5qSrxFQmzj+t7qsIpH4dF9OTNoE7EnNMvEvsjxJflZpwxn39BLz7/rhy/N/3aGrfzc1PhXlquSj5NIk/cEO/0Xmkf2exleLD0IA5cBZO+3XbfLOp3zT5sQiCjRTD8QofipnD7N4iy2X2iaa21dvZa9di+JZyW4A/O/NqHlxjyXemkDhqUDpIa3pkzSt3nDSRxXFiuzqfrTCP9ub44X7zG9ZVZlefxjtAaOfYh1Tpe6pq9YWe57lFk7sbQBp7GDUzZwKXviGFjU8VQo1tTeKAqE1tjYWQh3BIu2Xuw8djtbBStHoBoIg/iEx5SGM5bHBhrIQIQoaS/NfYc6NB2AGbqmE4AtYv4nFT6mAV0OPfpExiKxZoPOW4Mc8510SkyNI/LJ4VuM/CVNPNSF6wVDCqhwXSyqCwLlJUHDg3np+fV6WAa1S6DiQpXdNv48wcYa60fDuQEjGaYejjP727WrNLriq6vnhnyg3Hd9JkiDEjjFx1DbFyNni98QJb+JiUaUZzu8CQ2CPNvkggssM2AmG6/VGWgw3LKA+pASEWwcDRFdRJ4KcMd/cbWIlTrpRt3a727l2aYN3MybnkXQSNpnpxe6u98oYQIt3ZH1/D7bahKbD61f0UQbrQ0gBLM7y/+eLFNyt88Sga4r+8TXyJJ
+ exzliUC6
+ +yM7EWoiyKxFwNXim8vD3egNj+akBRM/jWnRRjq/j7emJy8nu7N7uFsI92hg4lok3D/RxCxCKX0EUPdjvtncyvmBYTrSZ5+f2w2VS6Xp6OYRXUSNl6eRxKeWLbpuhvIUzEagn81ymAg/N015RAlZ4FDRpATv0yQBbV+FS4U02Utejpo/u12SZI6F90Ojzti0JZU3nEpPV1jBlRhVquXNkDFE4EKFeSV1JtDvXieQfUONqrwkQjv4xQiBEpwyGvsqF3DttDHhf+K6LBdxgHX5yiafu7bjal3v+51U8LXx7GKOACqcJoVp3rYNrBdjdV/ezGr/LZWyQQ6UhOlMU+/2O70P/MhCgo6ogiUZ0xlPYVeadP37YbOylOaXtAN0CG2UpXnGFKIAT35rcdpDogTNOkCk7y4Z3QTnJbE4D6LI4IQRELuFb+bfRCnsvCycstYyhkqRSpDlNtslX/PIWT11e5d+LSDY1eDuFSlVs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,98 +94,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06-03 09:49, Mike Rapoport wrote:
-> On Wed, 03 Jun 2026 03:28:58 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> > diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
-> > new file mode 100644
-> > index 000000000000..8641c20b379b
-> > --- /dev/null
-> > +++ b/include/linux/kho/abi/block.h
-> > @@ -0,0 +1,56 @@
-> > [ ... skip 25 lines ... ]
-> > +#define _LINUX_KHO_ABI_BLOCK_H
-> > +
-> > +#include <asm/page.h>
-> > +#include <linux/types.h>
-> > +
-> > +#define KHO_BLOCK_ABI_COMPATIBLE	"kho-block-v1"
-> 
-> It's never used by block set and after looking at the following patches I
-> found that it's appended to LUO compatible string.
-> 
-> While this works for LUO, I think it should be kho_block_set_restore()
-> responsibility to verify the compatibility.
+Hm you're combining 2 of my least favourite things in one :)
 
-It should work for any component that relies on  kho_block. My proposal 
-is to use this method for other common KHO data structures (e.g.,  kho 
-vmalloc,  kho radix, future kho xarray). There is no need for them to 
-carry the compatibility string in their metadata, as whoever uses them 
-will include their compatibility string.
+- Doing a >1 patch series with patch N+1 in-reply-to patch N
+- Doing a vN+1 in reply to a vN series.
 
-For now, reviewers will have to make sure that if the ABI header content 
-is changed, the compatibility string is updated.
+Just for future, please send series independent of each other not in reply to
+other series, and if there's more than 1 patch, send a cover letter and have all
+the patches reply to that!
 
-> > diff --git a/kernel/liveupdate/kho_block.c b/kernel/liveupdate/kho_block.c
-> > new file mode 100644
-> > index 000000000000..4f147c308e6b
-> > --- /dev/null
-> > +++ b/kernel/liveupdate/kho_block.c
-> > @@ -0,0 +1,411 @@
-> > [ ... skip 121 lines ... ]
-> > +/**
-> > + * kho_block_set_grow - Expand the block set to accommodate the target count.
-> > + * @bs:    The block set.
-> > + * @count: The target number of valid entries to accommodate.
-> > + *
-> > + * Acts as a runtime notifier when new resources (such as files or sessions)
-> 
-> Not sure I understand what "runtime notifier" means in this context.
+Thanks, Lorenzo
 
-It came from discussion with Pratyush, but I think we are on the same 
-page what they are, and I will just remove this.
-
-> 
-> > [ ... skip 11 lines ... ]
-> > +
-> > +	while (count > bs->nblocks * bs->count_per_block) {
-> > +		int err = kho_block_set_grow_one(bs);
-> > +
-> > +		if (err)
-> > +			return err;
-> 
-> This leaks memory if more than one block is added.
-> 
-> > [ ... skip 31 lines ... ]
-> > + * unregistered, allowing the block set to release and unallocate redundant
-> > + * preserved memory blocks. Checks if the last block in the set can be removed
-> > + * because the remaining entry count is fully accommodated by the preceding blocks.
-> > + *
-> > + * Note: It is the caller's responsibility to ensure that entries are removed
-> > + * in LIFO (last-in, first-out) order (the reverse order of their insertion).
-> 
-> I think "in LIFO order" is sufficient :)
-
-Oh, I keep removing those :-)
-
-> > [ ... skip 173 lines ... ]
-> > +		it->i = 0;
-> > +	}
-> > +
-> > +	entry = kho_block_entry(it, it->i++);
-> > +	it->block->ser->count = it->i;
-> > +	return entry;
-> 
-> This looks way better than the previous version :)
-> Thanks!
-
-Thank you. I will send a new version of this patch as a reply to this 
-email to avoid cluttering the mailing list.
-
-Pasha
-
-> 
-> -- 
-> Sincerely yours,
-> Mike.
-> 
+On Wed, Jun 03, 2026 at 12:43:09PM +0200, Chris Gellermann wrote:
+> Clone3_set_tid uses getline(&line, ...) in a loop to read the child's
+> process status. The code expects that getline allocates the buffer for
+> the line on the first loop iteration. According to the Open Group
+> Spec[1], char *line has to be null pointer for this:
+>
+> > ssize_t getline(char **restrict lineptr, ...);
+> > If *lineptr is a null pointer or if the object pointed to by *lineptr
+> > is of insufficient size, an object shall be allocated as if by
+> malloc()
+> > or the object shall be reallocated as if by realloc()[...].
+>
+> However, char *line is only declared, leading to an undefined value
+> that is potentially non-null. In an example run with Musl v1.2.6, the
+> realloc call[2] of getdelim, which implements getline, triggers a
+> segfault:
+>
+> ./run_kselftest.sh --test clone3:clone3_set_tid
+> [ 1366.165898] kselftest: Running tests in clone3
+> ...
+> [ 1367.799244] clone3_set_tid[811]: unhandled signal 11 code 0x1 at
+> 0x0000000000000000 in libc.so[68184,3fbf69f000+4c000]
+> [ 1367.802808] CPU: 0 UID: 0 PID: 811 Comm: clone3_set_tid Not tainted
+> ..
+> [ 1367.804188]  epc: 0x0000003fbf6b0184
+> [ 1367.804188]  ra : 0x0000003fbf6d4664
+> [ 1367.804188]  sp : 0x0000003fce5f2e40
+> [ 1367.805314]  gp : 0x0000002aaab0dfb8
+> [ 1367.805314]  tp : 0x0000003fbf6f14a8
+> [ 1367.805314]  t0 : 0x0000003fbf63d000
+> ...
+>
+> Looking at the realloc implementation, Musl mallocs for a null pointer
+> memory. But for a non-null pointer, it assumes it's passed a valid
+> pointer to the heap and tries to access its meta-data. This leads to the
+> segfault we see:
+>
+> void *realloc(void *p, size_t n)
+> {
+>         if (!p) return malloc(n);
+>         if (size_overflows(n)) return 0;
+>
+>         struct meta *g = get_meta(p);
+>         ...
+> }
+>
+> Fix this by properly initializing the line pointer to NULL.
+>
+> [1] https://pubs.opengroup.org/onlinepubs/9799919799/functions/getline.html
+> [2] https://git.musl-libc.org/cgit/musl/tree/src/stdio/getdelim.c#n38
+>
+> Fixes: 41585bbeeef9 ("selftests: add tests for clone3() with *set_tid")
+> Cc: stable@vger.kernel.org
+> Acked-by: David Hildenbrand (arm) <david@kernel.org>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Chris Gellermann <christian.gellermann@codasip.com>
+> ---
+>  tools/testing/selftests/clone3/clone3_set_tid.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tools/testing/selftests/clone3/clone3_set_tid.c b/tools/testing/selftests/clone3/clone3_set_tid.c
+> index 5c944aee6b41..485efa7c9eed 100644
+> --- a/tools/testing/selftests/clone3/clone3_set_tid.c
+> +++ b/tools/testing/selftests/clone3/clone3_set_tid.c
+> @@ -141,7 +141,7 @@ int main(int argc, char *argv[])
+>  {
+>  	FILE *f;
+>  	char buf;
+> -	char *line;
+> +	char *line = NULL;
+>  	int status;
+>  	int ret = -1;
+>  	size_t len = 0;
+> --
+> 2.47.3
+>
 
