@@ -4,102 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 871C0CD6E6A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96E39CD6E64
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 09:57:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C1906B008C; Wed,  3 Jun 2026 05:57:19 -0400 (EDT)
+	id 025396B0093; Wed,  3 Jun 2026 05:57:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 998C56B0092; Wed,  3 Jun 2026 05:57:19 -0400 (EDT)
+	id F182A6B0095; Wed,  3 Jun 2026 05:57:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B01C6B0093; Wed,  3 Jun 2026 05:57:19 -0400 (EDT)
+	id E2D8F6B0096; Wed,  3 Jun 2026 05:57:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 796826B008C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:57:19 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 204161202BC
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:57:19 +0000 (UTC)
-X-FDA: 84838148598.17.7B17352
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6B967180006
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:57:17 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fazpvtii;
-	spf=pass (imf06.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780480637;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D088B6B0093
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 05:57:26 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8158E1A029D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:57:26 +0000 (UTC)
+X-FDA: 84838148892.29.A78546A
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7CEC91C0008
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:57:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=EzFDaVZw;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf18.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.222.170 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780480644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h79u5wvPs/2j+iDBVrKy4zYMNVex5xBYWpPHS0lfIyw=;
-	b=4H265mrECJXAZK8crW5p4xoaG1DV/KKXsujQRzX9QMM9M/3YkTcLZvx7QI0SgiilsCNmTo
-	Bxnay76PfWWwRY3Lgy7D2QZVGCdWXWfivHs1ApOixJ2IpWb68PlMJqhw2IncfnN1VamPMT
-	gfPiaNkhWllfh/Pqd4t3sJae9hqOP1k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780480637;
-	b=THqT9InfA0HpWsW33jTQZqr213gKPBYDs+u3bd97++MP5OQuBDaisD0ZwowbfbEYCCh7FV
-	KZCdfOblvbmfhxKJqRre8sTjciwAVkkeYUNTCgpHE9HPqhYv7LQQdLnhEwDak2VyX/mAFT
-	Ew9CrDmb1+G3iYUpNXFcDl/+oQdw6ds=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fazpvtii;
-	spf=pass (imf06.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E672060218;
-	Wed,  3 Jun 2026 09:57:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2DD1F00893;
-	Wed,  3 Jun 2026 09:57:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780480636;
-	bh=h79u5wvPs/2j+iDBVrKy4zYMNVex5xBYWpPHS0lfIyw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FazpvtiipGEEqGV18a7y0zKWUs6NbXwoMehsoqFHK7tFgDKIh0iLUak7m0QBFcMTz
-	 HCrTiCJWGtZoBYvN1XEeLo5DiMqc+JeNwEplxEmBOFmxavf4B3C/fkQiZGNZimkQ7g
-	 DUx998nKZduHNpZG5kv3UT0X5VeYjCu0ZyX9pHJr5XaBZlBTKbe6qM+i0Sd/o7gYaP
-	 T1xfNGM1svxnhLKh3i/0Q5s7usxJmPutwc3IolIoaKIqTotFaikNVZwsAshe+cpolv
-	 CVntxP+8tqQNcCgAf1rkvZipN7/8e18xxAET/TadPsp9xN13Q/K5COwDYHc0NU4nzo
-	 ZrUc4Fy01wCWQ==
-Date: Wed, 3 Jun 2026 10:57:11 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Nico Pache <npache@redhat.com>, akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	liam@infradead.org, mhocko@suse.com, vbabka@suse.cz,
-	willy@infradead.org
-Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
- khugepaged: add mTHP) collapse support
-Message-ID: <0560f9a3-d8d2-4f9e-a7e8-9da3512ce9f0@sirena.org.uk>
-References: <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
- <ah2ndruO3RQGtePP@lucifer>
- <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org>
- <ah2uDhs3a0bFcRNG@lucifer>
- <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
- <b5b1a7bf-de6a-488a-a011-673c37bd24d1@kernel.org>
- <07334dc3-79ba-407e-96be-21ceb2eec00a@kernel.org>
- <ah8Tflgn50DTMvwl@kernel.org>
- <ah_ML-Wm3B92ZniC@lucifer>
- <ah_oJEODZJp12oDl@kernel.org>
+	bh=ZCqrAxzAA1VkvSHMPbJW9yIvYLlRWu40qg6zjxtnKxA=;
+	b=XFlVZr8wHQgysUak99oq1kQbr1Uy4qfkEZvaO3s98AwElbMUe8AsKULWAK2BCN/yXrJ0Ik
+	KEb2g9HZ/9SsaeysOxV+6nkrDhnDqvitbmXSoW1S2a770JHcYFvSljt2vAy/03kj9d0RDF
+	yQyEFZRN0frjYZDRRyGPe2wB3atXFU4=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=EzFDaVZw;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf18.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.222.170 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780480644;
+	b=Avd/kEQ3HFzhbLOPEJJGk1POGKUCXFloHq8OWYH053bBCDHe5yBoI74O+qoaGRbc0nZyOG
+	IyVUpTD6p8NYj6r4qDUu3K4b9VRjXfjbo52rG/+ppq/UM3x8J2TWPVOcxbZQinBiKM6mCX
+	Ok0tOEHLJ1nHDH/YvQBabKHZmoEpHB4=
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-914bfa75911so57184085a.1
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 02:57:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780480643; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JBUCG0sIzYoY9cubvPuhgEQIshNe4jV1U2mApC8J/VvqqlayNEu/tM+c32aTPbN0KQ
+         rm1rk5A+T/aN698tugm0haE0eR2TT0VXaTRI88gf6tPhfVHY8Mr/w9jaUcfPQaEuHqrf
+         NDXKEtDCS9FI5BXd8cKjA/f+SZ+d7vHFS9kKP5x16Fb8Ayh/v7nzC6bJnCWO3mN5Nukt
+         W4v7Gb7WxpcyVAF8flvh+SPMYpKs4lc9UsOjgJxRG7Tutgw21a6xwHsXmvhAt2lQgSDp
+         T6+24n2nskog69Xa4lgWbzJjpPpK0NZAz5ErMnaxOA4OxeuMn4vV8PuKQmUzZso/rErg
+         UHKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ZCqrAxzAA1VkvSHMPbJW9yIvYLlRWu40qg6zjxtnKxA=;
+        fh=UbOQ1WLRWuKeQxk75KHaguS77M0276T7siADj9+l6jU=;
+        b=jNvfNRfGJRxrU/2z30DmqkQraPi20FJqfrqRE7vcJhVBepkTZ7Z+aiypUJ0nPEqsGO
+         M0qpuwKEGbjhdGXJoICio9QwiVPekoHrGMg74Tn9QwCif8JEbc2IZN6/nGSuIr1OmGPQ
+         SQaJAVeCEHecbYOvw3v2O0x1+EY5hUMM7tYH2nC07Qoyrs+YAsdeWrHTGx4fbzLEHRl1
+         uGkZ8IAchfZJlPxiOpFsj1ov9Bq9xFIyPoQjWtLs01rkNDHsAA1dfUtZBd46AiIo6cFR
+         lBqx4icsvdrpIYeVHFQhZUvnJkr8bvIWJvz/lrBWsRwFXlt1iaTMroG8Tmmx00zCc4ve
+         ZWRw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1780480643; x=1781085443; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZCqrAxzAA1VkvSHMPbJW9yIvYLlRWu40qg6zjxtnKxA=;
+        b=EzFDaVZwEX8C0eYV8B5vtnbCLmE/D1pFEyxvAZqeOU1bgTu18kG3bqzYID4bzTRZFz
+         hcu1yoUWvRHg/fhB39TAkfwcZtf++4tebgJzt9niTXqFt+5mXU2H4Kds+8lznQ+AoJ9x
+         jjPB3THI/OXRdMB2W06ri4Xegp44WR+OKBtrg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780480643; x=1781085443;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZCqrAxzAA1VkvSHMPbJW9yIvYLlRWu40qg6zjxtnKxA=;
+        b=LaqmrSof8NXXKSYL8CfXinUjNUOdNdQZ0iz3q+lZH6ISm648ef/9DwUWyKPAp75Eud
+         kGzBXnYXEYHctEqBKTV77B65WSePD/qDZ9EcMARX8BvHxZhyBpvbokNB6RBIZmKCyLT9
+         BIGp+ukiO97UQbSa+upZh3bsMG6taNeaE98lBmxC+ngn8qq/raJBWOgAIl4BZwR6q6ea
+         4Q4ffCHn7k96nDwPLX+DIhwZMDoEJrkQZX8tIVZ9XHcUfRNtpdNrypHXOTKPTAZG79G0
+         frLY9ZuVhznEfEnFh4wxOAwAnGaUd121YHMv5u2s0NrddG3K2grFxgT4TbRnlTwHzhvA
+         kt9A==
+X-Forwarded-Encrypted: i=1; AFNElJ+Ma0kRTtSMftgSSMXgfjMchlWQ0xgHX4X1sZdh0wVUQh567NH4BtJoQ8id8Wh6Ti+C/E2uaZB7CQ==@kvack.org
+X-Gm-Message-State: AOJu0YzbWTa8oXFjkZi2T6FWNe3kY7KT1CY9g5HkhXoBKu5mclITLpd9
+	x03bZvrLvR/7QbRKa5yKVj6gW2NUGR3CTzO+7roFgPaVwRDeeEwEC3VyL+ogmHNgF3niVdB1CiD
+	UgFSn3ccB8JzUBroop+GnIYJmp2KBtejbVmuQHgX4iw==
+X-Gm-Gg: Acq92OHu0PLncq05ggMHKq3omRcozQj4X+xw22GYPKOcCHYoZEeGkydUcFLIk1pxAYm
+	Ijs8KCYekmYFj39dDMgQDhkyT6elK+ij8yJxOLQ/QI+1FTfFuCWqg0r8OvZrzkwJb5/t1g2fhaf
+	eo3xXFHdRKjOgvGWSIZDQHeM8IL7suajxSU+Ng18Jx8bfAq6pyur2+ZdbxgSZfqRZf57lnX9AoV
+	bUKt96dZ1Ctp599BK5M/LY9Ce659+0dELdP/FQ17n03PCBXibTg8Iivd1IpPowYPwl+/dOG/Cos
+	7OhwvfbAh4RiZNd6O6xt/dSMjvbWuPzM1lOioit3QRAWJQqcJX9gYhCOkA==
+X-Received: by 2002:a05:620a:31a8:b0:915:422c:a0 with SMTP id
+ af79cd13be357-9158b6e2074mr292177985a.22.1780480643420; Wed, 03 Jun 2026
+ 02:57:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pIjCxBIkFLkSIORI"
-Content-Disposition: inline
-In-Reply-To: <ah_oJEODZJp12oDl@kernel.org>
-X-Cookie: Tom's hungry, time to eat lunch.
-X-Rspamd-Queue-Id: 6B967180006
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
+ <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com> <20260601173325.GH2636677@ZenIV>
+In-Reply-To: <20260601173325.GH2636677@ZenIV>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Wed, 3 Jun 2026 11:57:11 +0200
+X-Gm-Features: AVHnY4IqQCqMS4qklUMIqRUT1Fpv-SuCQDkhxYBkM9m1uTwHwBhUln17rZFWNU4
+Message-ID: <CAJfpegtH-E79D-3UL=pPv-QqJk6C4ODXLLZSAjzQJwSSeqqS-A@mail.gmail.com>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Christian Brauner <brauner@kernel.org>, 
+	Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-api@vger.kernel.org, netdev@vger.kernel.org, 
+	Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, patches@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>, 
+	Joanne Koong <joannelkoong@gmail.com>, fuse-devel <fuse-devel@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7CEC91C0008
+X-Stat-Signature: ggzio38tawbn7pk9jyntprxadmn1ipxt
 X-Rspam-User: 
-X-Stat-Signature: ytz4ij4kg5yhjegbsbs383p77e7si937
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780480637-451938
-X-HE-Meta: U2FsdGVkX1+HoLuaqplbBoRT1CGoQX0e4zFlLx5B00ewDH+UiIxRuSccBtByZ8ZC1x0DhEsOKktXlvdfOOAv8OrwboK+EATljVoEKfLTXlx1xPoNt88RmQtlAU63XYnEUUwMPNVMpxDWJAvX8buTiHdQxn5SUM9KhXNsE/19EVJVv5kubhW4/T17v3CD/fwQ4KvX++HnKdbZvFx1SBAOSKSdRhHLQMk2mTioamRxE57uvppWWKHS7JT3qcytM8O3aa/grX4/p8Mhm85oLETQQWgQgiSWKEBQr8ewUY2+6AveeyOfuQRM8vN+SnzcaB8KzRicIL8YbyNxR7A6TZy+1/Pw/mrEAvIeK/bGlIicnFlNp3Vj7dI5rUspt9UBF5L5M10jHin9MeUbDLxqRQgdUsmWY0x/tB9LFWlK8z2cIL2r4w7G5mpQU0QbiNnbuEjtuwtnZ70fk0BS3rwC2vJML5oJwz9ELWo/6NlriCWqRbkYV79D7dsW4nwuCWnO4pL8nHT/QJJLs5dt308xrDtgTvd3mi8aX6FEt91cc5Lcy5/kUv5dDDsVgY7XS/a3jcgA+l456+6aLiVUaBlQD3ME07fGUuA540qqBdyym24BIudsSmJLEFhtuAvd5uehj/DHR8U7VPsVFk8I02t+fJE7qDy+beGdn7BvlQnHPrtm8b9NTYs95RtWlQZN5r1rmhELoyPchHoh+W5gN15nQBnv9x6mTfn4s2Lq8Nbesm2VgGQ5W31Z1I+kkl6VDXc8nlLfyrTLISnYeX1eGJ3432qotbJIJ4n7lF30O1AOXq1aash12Y5AF1PMZ1uoOhOka+XHWufo+DIdWVdZQG5fLypU4sxIe9acqukTjUI4Y/ZxP+pVYCg6FHqQwAFWkeKLvPEMv+rv9nTP8hQpsCGOZQKlCbD+/ln6GBaIsQ3aNB15CYql9Fln5i/NiaO+731+M8taZ4b72BhuJ6iw7J6CIbK
- HS1SELJ9
- I+b836o7djRC9zoLnH4Jnh9pq3+dD6nEJ07BfmEJl+3SqwKZ9uEVNO3RqpMA0y4oFyT890TJThGl+ckWWzU97XNGT4L7DvVGOzdUNLxFuk2O8fjvaGMBZoVwtRCST2qqre7LMAFlMdBDXTnwv+0ong+VQs0w64RBqSQaf9H95fUxBiIzkdfjgBx+rcyHHROo6Z2HuGhQG7ZnDPrGTo4eE8I0XW0MfmVZ2zs7M7dteaO3Xls7elI9eVuShi3kduxa9twX9Vul9/Nmz4ytjpW5XT/HWpw==
+X-HE-Tag: 1780480644-395041
+X-HE-Meta: U2FsdGVkX199f1ogMNHpj4oUowBnAq5etmn4nVDPIXZISMyWCTYBnkKLnntk3URPLlfIubP9DEPDdb31XpgpGrgOrLNn2oRSn0xFRgOIo+ky/ucCsKmw4nbbsfCb+NPUHIkv71xzK8AYA1jOipRdsqfZzmZu0rdjUzzK/ByA3RI66w1brgU7ubHrQrePQ2TeT526MQ6hLZwoY11b3q0tUR6vgTQuMqMmRABLa5MssMn9qEXnRHN/QuF6asyHaWaLBtX+JW8VbhPY68cA5wcIYee96yehVn70aPJ34Z9D7d6VKHWglX+7vPpEY5YGV7M0jAVbGrL4S8Tt/rLcT+/LbaaqdBkrGpfifgemwcKVTxHZLqxxWateTqWTtJtHyJz47YyomLDXHLVmmweFdmjueWL1vjCYFoCltRh6lS2rmAcT1O4g94Kzgl+TdmBg/n4nWf3ivj2aAk06Ze/Q2zv/ECqPf49XGXUTyisfi9S2PrFXpJLnti8vT/3tQXXNIdhd28UYZ4gp1De18xz8Vi398Mnumbt+k+wXP6vtT+H23VNDXt7yGwAO79VxNMqCQbEqrv8cL/A+r985LV2AyjX8CFoocMfKzTP07FyJH07jTufgFXlQsHhJTiE45fQYe/DmoevzSU8SWzbdcJzoiXKzh413aqmCzIm0QfLoYyijR4owSruemE8Cg4b8w/Wnk7H/Aqc/hvQB1Wy0XSF1TuJx7sjH2QFSML0m7M2GpQ8tM2dJDY9O/XCgs6J1mAcPCRdb5AxRj8FO4XI3B4pJSoajKjIyilE5+L8aQT/vPZ5T+jb3AAWfZbx9ehoos0LNJeCsG7v7kDWU7jvIOUf4RG8rTbTTJYDa/Woiog4DMmIHna5AUQqiy4gc7SHPsIAKLjdY+C4SXNBrchHovqJDF0h2rMGZVCKSD+2HHxrc8WxO1dDvrOzSA1+2WVrDxhytVCHFqTP7ZmTKKR4LvuIBMRi
+ 4lf1i5HJ
+ lT74QEqpkdIWmsM6eZnOzTNudmvaBA8J/3hb/Mdd6lJWQ1DCodp6+5TbpwqKaP1fEIfYBRH/c57Ybwm7dvHndZj/ppv7rrAYxOZNMuatF7FEsmfOzImBbfdeBq7kunLxwftAjD9Tz6UvD9We6DS+Ry9ixVIvisqieTEtzcqV0AXet8NzhJul4JG2BXNeOAZk2LqXpVD+T6Rx5Z0Q1bSNdTXFAlBXHsr87dLgBz1mlTN8tc30om/MS0pHMIMjrMF/KFn+k+50wdybTvKfmM9YueLHBEvjWsxWQ3JugHzIxwnBVW4A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,36 +141,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 1 Jun 2026 at 19:33, Al Viro <viro@zeniv.linux.org.uk> wrote:
+>
+> On Mon, Jun 01, 2026 at 10:17:23AM -0700, Linus Torvalds wrote:
+>
+> > TLDR: maybe we could ghet rid of "f_op->splice_read". *That* would be
+> > a big simplification.
+>
+> FUSE might be interesting - fuse_dev_splice_read() and its ilk.
+> Communications between the kernel and fuse server at least used to
+> seriously want that, so that would be one place to look for unhappy
+> userland...
+>
+> splice-related logics in fs/fuse/dev.c is interesting; another place
+> like this is kernel/trace/, but I'm less familiar with that one.
 
---pIjCxBIkFLkSIORI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+[Cc: Joanne, fuse-devel]
 
-On Wed, Jun 03, 2026 at 11:39:00AM +0300, Mike Rapoport wrote:
-> On Wed, Jun 03, 2026 at 07:48:46AM +0100, Lorenzo Stoakes wrote:
+I'd favor simplification, but care is needed to not regress performance.
 
-> > - It makes it more difficult for us to yank things
+Joanne might be in a better position to say something about relative
+performance of various transport modes in fuse.
 
-> git rebase -i
-
-Remembering to add signoffs if you're rebasing something someone else
-committed (probably the most frequent cause of missing signoffs in
--next), --signoff helps there.
-
---pIjCxBIkFLkSIORI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmof+nYACgkQJNaLcl1U
-h9D0fQf/ZPzXPD4YO8daH3L8QLNzZjkJT5KghMzc9aH7zD1njgKG/JvuC7CkiEZw
-/nu1R78WnpyhNcmDI8YFkdv8tBiej38S31S7KnsedgIZwOmTkn+TlTYQjOkZyRFs
-XpmsaJ5kRNZ7TfX1y0k0cFex3VUzD811kq1Zki5dIkC0hseh5/UidmHlyuRNR+mP
-ZgPqSMsx1OyoWM+7QLHhZIN4WS7vLhaQUV1f9hXUqFNkIvIzLI/d4ceb7HtfIXTT
-dbLpaUJHPCPgE2qLG09HhRFUNtyS9HJ+Y4CVCpgy2NMGYD8xx3gpqk5iJOH6MAbD
-wxvUunMUtJiZm+wKRkHxcbEu+krzkg==
-=AYbg
------END PGP SIGNATURE-----
-
---pIjCxBIkFLkSIORI--
+Thanks,
+Miklos
 
