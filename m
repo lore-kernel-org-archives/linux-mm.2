@@ -4,117 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A29FCD6E5D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 03:10:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E60FCD6E5D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 03:13:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CE3B6B008C; Tue,  2 Jun 2026 23:10:45 -0400 (EDT)
+	id 7124A6B0088; Tue,  2 Jun 2026 23:13:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97E586B0092; Tue,  2 Jun 2026 23:10:45 -0400 (EDT)
+	id 6C2AB6B008A; Tue,  2 Jun 2026 23:13:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86D9B6B0093; Tue,  2 Jun 2026 23:10:45 -0400 (EDT)
+	id 5B26A6B0093; Tue,  2 Jun 2026 23:13:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7748D6B008C
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 23:10:45 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3FDAC140136
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:10:45 +0000 (UTC)
-X-FDA: 84837124050.30.CC73A0D
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5F129120003
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:10:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=THhrHXKW;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 46C626B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 23:13:01 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E5CC91C0A3E
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:13:00 +0000 (UTC)
+X-FDA: 84837129720.24.E305D80
+Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3A6FD4000A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:12:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780456243;
+	s=arc-20220608; t=1780456379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AkUPkSV1yVhPwfuKkUdfLaMgLJzqLtKdtBHH9XilSKA=;
-	b=239QH6gnsZNiurUEAoGY4l95QA8p5boI5pWpFPLHy24TXo+7Yaa4CSs0PhFcq+aaTM7Xvn
-	nre/wBW1bPL3q8AMB2E3SiQPRoOPpU8PYQq5bi9AkWtXGBcP0OT1hvUrhlFNue8fwbBBhL
-	vL4KVn6bXxLOXVxkTwfUVVtIIwQyQf0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ELAckSMkwRGZ6DfjbRItAGTsXXdLZQbzq00xTtjjcNs=;
+	b=ueBzRBh1D9etclNv+7mWuIQOU+eDK1Mqo++XtkZFzLASHCyN40M5kagKwfC1xaUSSirV9C
+	lxbt6DzZOBhZqgXrPfBp+Hr2AmWxXCOq0PlG9zT4Z0c+Gxs+EW6rVvxKQ74joV1+KlOq7t
+	ymDpuAmYA09lukxfZ37TbkTqB9PK1Fg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=THhrHXKW;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780456243;
-	b=rVaGlyBN3NUy8TgL/UXikxWyux/VGU16LwLdXAkZhCVq7kJilzhQebVEGcpTy1Ijz33fBm
-	bbNjwk9UVodt9QIQNoJNI9+qKVTh5UZFzV88Hd/tkZDlS3drO8IEmEt7dPrt9x7OXhktVm
-	4/pog5x5D4d0POjGHcv63WI/PyMUPNU=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-516d0db9372so106740771cf.2
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 20:10:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780456242; x=1781061042; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AkUPkSV1yVhPwfuKkUdfLaMgLJzqLtKdtBHH9XilSKA=;
-        b=THhrHXKWWV5IVNVSZJCldtjmEgLbXHW71lu4yH831bOiqO2pIe7exp3cC2MDBUh8Hy
-         YGhNgeKzV6YOvgA3Ob9wqFKkFVon2m405HTZCp99GnJUt4kr9P1cgFLVGDQyU0MI79EN
-         fDwk40GzrOqhW0PWlndyw3BdrlBbNJFSb9IUL+aTAWz+xB2VsL6ztMeW6BJDlANU6pBQ
-         rjCAmbwVW9DUlD5VqC+tC+8KNslHzaE2etxXDaZ5mWINBRg1VDws/qzgEFL5zSPXuGfr
-         6OYG1fYjaWDr+2x1UW+qW5sKJgRFhmrKvwPDP+QyjOVKQjd2ZZRnI5mCS+i6MrXQs3oY
-         dkgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780456242; x=1781061042;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AkUPkSV1yVhPwfuKkUdfLaMgLJzqLtKdtBHH9XilSKA=;
-        b=QdnkNIKVOSTeRNcUWXf9ZaE9rGn76DbhYlBEo1eYEYpw8f5dWUXVTFsVpgRuk2Y/ot
-         2eqFoIjMBPOUzBE8Lhv6IB3pVp2Aujqmb4S6mbPRTuomx5hbsfKEbq3yjJyRolI6vgEj
-         31MoM064gqZvOR9k8hS+LDfu5iBj0ATyW+plWnpFAhZ2OkJDpWExzWJfimOMhqyWPgC8
-         wEXa8gCnMIVjw4FayN1cTdomsdQMVvRp3SEp5T+NX5CroKWryCstxFJss0S/ZoFo/MkP
-         qz7+JlHCYcyG6z5xDIc9uapbRPyeXs88vHvcB7ynRxuwhlSwJMatFJBCjjheQodJaAo+
-         t86g==
-X-Forwarded-Encrypted: i=1; AFNElJ9rKKXRI+dRv+dOXstl1B5PEZylR6eZf2b4+DXga5UGKOtcfOFLCWqjXoTCZVX3wLL6mPyI+m9gcA==@kvack.org
-X-Gm-Message-State: AOJu0YwV353uteERjHuORaDnKCeaj6gbpvpG7npIu6jmmplwCgYGP7eG
-	Q86MThKVjK8FwIIOEQ52SeIHyI8z1aIurRRXEVsxmzm3L4vLHiRlEv1oIbyUaW+dvj0=
-X-Gm-Gg: Acq92OEC/ba5TlYs8e2mFMgoCT2jNgORajkQIwICoQEzZSUB+tf8OefIjlGegpMpGIW
-	fNrqumWGwVgmw6M3+YcCPERbni+KK+I/o1ipxhLLKNXLcqSl4pFSKRCz3r2LyYh4Zdh/mQhDa7Y
-	S4Z3MlrpTnxthvg817cLDurKIArALUfMHkKvq6BXe9ik+46C3nnSVsjoeQL6YxFOu8FlbhuVmnL
-	jwn4yfxvj0TImduPQBJ1uh/1P5zbzyiNQimZ7kMZVnCjvC4KKo8kpId9ubkUkIizss4mCylneKN
-	MjFpcXQwIcKZdemucP+dS7TL1LzQgOfidPC667/FHbJmtZ6gvqaGGvEK/Amcu3W87eDXohPfaoj
-	723n052zEY0R1ohBBNhMgDU+lUNKJKEMplLiUipBY8LAxC5YffHS8BSNs/L231Y4EHLfthcScVs
-	NexAX+KP6DJnb4d1cZVW2A9sF/b/XyUf4DY1k7QmXpZFVkyHTQyDGroXLBqBO3j5wbueR4yWtl
-X-Received: by 2002:a05:622a:2487:b0:516:510f:2dd5 with SMTP id d75a77b69052e-517786c83c7mr29904991cf.28.1780456242538;
-        Tue, 02 Jun 2026 20:10:42 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775c07f0dsm14637641cf.3.2026.06.02.20.10.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 20:10:42 -0700 (PDT)
-Date: Wed, 3 Jun 2026 03:10:40 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	corbet@lwn.net, dmatlack@google.com, kexec@lists.infradead.org, 
-	pratyush@kernel.org, skhawaja@google.com, graf@amazon.com
-Subject: Re: [PATCH v4 02/13] liveupdate: avoid mixing cleanup guards with
- goto in luo_session_retrieve_fd
-Message-ID: <ah-YOeu5PYa4d8xe@plex>
-References: <20260530221938.115978-1-pasha.tatashin@soleen.com>
- <20260530221938.115978-3-pasha.tatashin@soleen.com>
- <178038801485.119771.9514973100282773342.b4-review@b4>
+	t=1780456379;
+	b=uRWxAZoRVRY8B1eAcbHaw9XBeGzO+aMzIojLsqkbkiwjOEhGfjUwQXO1mPKh4ZQxvk5nMO
+	vT7EzetzQReunabLZpsh3flrKGejl8WjIwQmYUox2w2SXjVcWZLcL7WoZbOxg6r/OU6M9g
+	Z4Js5IUfcVATWNDpDmlUrEQC+RYFDe0=
+Received: from TW004-1.hihonor.com (unknown [10.77.232.85])
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4gVXlh3hQCzYl0S0;
+	Wed,  3 Jun 2026 11:11:12 +0800 (CST)
+Received: from TA004.hihonor.com (10.72.0.6) by TW004-1.hihonor.com
+ (10.77.232.85) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 3 Jun
+ 2026 11:12:53 +0800
+Received: from TA003.hihonor.com (10.72.0.43) by TA004.hihonor.com (10.72.0.6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Wed, 3 Jun
+ 2026 11:12:52 +0800
+Received: from TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1]) by
+ TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1%7]) with mapi id
+ 15.02.2562.037; Wed, 3 Jun 2026 11:12:52 +0800
+From: wangtao <tao.wangtao@honor.com>
+To: Harry Yoo <harry@kernel.org>, "catalin.marinas@arm.com"
+	<catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
+	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org"
+	<david@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
+	"sj@kernel.org" <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>,
+	"luizcap@redhat.com" <luizcap@redhat.com>, "zhangjiao2@cmss.chinamobile.com"
+	<zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>,
+	"ljs@kernel.org" <ljs@kernel.org>
+CC: "hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org"
+	<liam@infradead.org>, "vbabka@kernel.org" <vbabka@kernel.org>,
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz" <jack@suse.cz>,
+	"riel@surriel.com" <riel@surriel.com>, "jannh@google.com" <jannh@google.com>,
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+	"npache@redhat.com" <npache@redhat.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
+	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev"
+	<lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
+	"matthew.brost@intel.com" <matthew.brost@intel.com>,
+	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com"
+	<rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>,
+	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com"
+	<ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev"
+	<shakeel.butt@linux.dev>, "ryncsn@gmail.com" <ryncsn@gmail.com>,
+	"21cnbao@gmail.com" <21cnbao@gmail.com>, "jparsana@google.com"
+	<jparsana@google.com>, "dvander@google.com" <dvander@google.com>, zhangji
+	<zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
+Subject: RE: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Thread-Topic: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Thread-Index: AQHc7cjw5r5ki6LAJ0S2mW/rJEfblbYq8jCAgAEtZwCAABGecA==
+Date: Wed, 3 Jun 2026 03:12:52 +0000
+Message-ID: <2235c9949d8a4986b89c99757c5161a7@honor.com>
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
+ <0867dac0-bc48-4aa9-891f-2066a3eff989@kernel.org>
+ <7319ad82f9ee4fc4b18b50b1842c9f99@honor.com>
+In-Reply-To: <7319ad82f9ee4fc4b18b50b1842c9f99@honor.com>
+Accept-Language: en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.163.18.240]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178038801485.119771.9514973100282773342.b4-review@b4>
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3A6FD4000A
+X-Stat-Signature: jtkebjytjqm3dum8g6qregpyaejn69hc
 X-Rspam-User: 
-X-Stat-Signature: da1yk9xg34j5baq1awsamza63mw3e9h8
-X-Rspamd-Queue-Id: 5F129120003
-X-HE-Tag: 1780456243-164796
-X-HE-Meta: U2FsdGVkX18R+zSRP0at0NnDInqdwNQ4osCK/Fri2eiRC1xsrYowdpAaivsgfD+13KomdHKX35AoNFqOAbBZ2wAUUSy6Rzg42OXUkILzZe4zqif2C3V8AMFweEJxmyXFjvDaNLreTr8m8DDwuOy3O5Ofhsj7lLvtGq1/J/PS/j3YmQkoN3MGV2EqLM97+1mjYyzWa+X714+inLw5OoSiLEhC9KgsrxHeP9Y/O4hS8DNBtyTyWCCOEFdFbu7uYAcrBTdJfY1K1pAh5KfIroV6HIk+w2DRKaVjFNbpG8dpGBH+8Jec+b5Qr/oYoCZbHiIi2+E7ivbgB9N3P0W5cQ6sjRNpEx7ojPCCfN48LLvcX7mqd7a4AHurUyQkM/kmbNpQs8Rs3diyVO++TmZMMLKc4ZOtk9SFc39JNJMnnL3iBp0ISTthJOl23+FV/gFYi958LIfdd4VJ3g03ZjjjK1DOZeiihBRps5IkS7+umfeSGBL+DDSBuFj06pA39B2ySm8cv+EuoD6buT58LH14zGLLq4QjL34hL0Qv9SbRvpLlYyfAezBbJGpEEkiKbRFUUtYF8cwdHfrC0rGoLGrzDx2WnnjoQ+sqNCYTRkxaRTc8SdMy77LvJoUxH7LogyJl8Xap7LxU04VrY/wo9SDqcsTryEzuwuhRzgw2MvpSVHIfiuPT9ztcuDAMy2NYOpWbmF+CWogwpjyeIoMFZY2AV3QqOW2ihVWU9G3wwHnTgKeJRqCwtZ4xSoJ8xKWkQ3cuD9lrHed4CHo++hnGcvTKjCVPgFXgfnJD1obTOzbaY5QiU5B5MZ2anB4pmc56p0XrobQyRf/YUbE9moGEk8mHTAVTBlB9UBfXMRvJ4KldCzRVWaEHSjd7CsI/OVboZcYIIF9kveZcIbXP9BGW7Hx5H5igXHJW0vZg5wVJb7eV4/YaX7yUoY5pJW/uvwr0xZF1gADUorcmOpyvv1gfXzbptUH
- DwcBImX+
- VdlIuRzQxagyFRZNjnxKdygKAITcV4dpA97F1EqTcp1qJp14nJFZUpY9aJ2OEoazDU0XqO4JL7gUSwGCUjdtTId8AJAo4nEpvIl/Pzs3ozcDE31KOtusBmLwURv/WHl3xEVIvJbAo/6pwqfYd0phcSTRnvIXh23uCf08PWlELDrSkG65i9cD9RFA5eQDH9RqiZMjkldwcMfqyX3JPkwztpa2pvk0KZRqinahVFnHWyVI2cNQVIkhicjwDj1DauvFPyckWNoH8zpfsOr+1DpAzhkcb1gDc3a+8GZkZ95whgwCRQ9jTkgbAC5eqF0B+LBjjFCOX0nRrGoha4UZ207dYTUjPdsgwNHWGnhJXk0x1eVlW0XtjAOmJ9l0CGcSwbUIL50hNV64ygx0MNQfq/sGtCFY7wWwCLB+JSvyP
+X-HE-Tag: 1780456378-727191
+X-HE-Meta: U2FsdGVkX19STLQcMYUxEmXpIUHtItRdexVEACsESnzLqYu0n50MLg/7rFzVCXi3stA8TXLklyXJ2524CBm4xawI47PGtRyUP6NltSFOuWCe2l9Fy0zFJTShyqC5oa6GyHRWlU93VF0jCtXJYLHUsCdm2K4pKCBI6wz1n8/oZPyCTva12bLZnrkLXM+d4Y0fJk0QDmABDPtiiJU5u+z9kuh4DNgEwp5i1ty1rKHLf25K16drKMvANZfbJxPbbvLdLu9es6Q+RZaKY1YjYFMsCFDC+t4mBppNZKtlLCXeDLXDaE+CVTep5LVKMadvKzs99lSexsnowTBz6FUvu6M2Q6JqqCEHYTr9yPm/eWuV/88ddYemT49MEcFXRZC7m5yx6AYtqI1dcA4FSAKZczuPljr/ZBq+XbwzQwP2SaRozXPiI0QAjXwHRrLnsTNhWkNlH6+G+B6f39vVslQ1/X8s363/2i+A9wiEqSiz4bxNIZdpOTkkMc1tP6RfszJ+BUNz9QEDTsd9dQxCkNdvACaJEzdt1Vv0sr36Brb1PAbE0OkAI57N9n0BnLENvw1kjmx+Ldf8S6CAFx2Rv31j/m1YJOjyVQjiHa3jqraFOFY14JB4j8r0U9H/8tjOEvgYkAsE3NbwjHKIniDexj3AMq+z5JfwjtaD6Qy9aUhFIk/3XrSJTo3Htl72ct36Nb3+GImoO3B25H35c1I0bs9mFNcQYVN4i4SxcQUD2h8RlNGC+tB2RL0ePUrXWFw4JopAhuYItDZab/hXd6rRAN9B+kgOC4dZCUH+d8KDU2SrCb/d300xLQf9zPJZAZikyS6UlrexkxpOWuSYjBVVMlz3lSzbseK1bBwZbxmtOJijaTLlREtlyL1CvfDOXV1zghBv9Z82XJs/QJ+SsqBlygUVJ1Dcb7/0vWLm0FKh5dYGAf+uRxHfL6ew8/gWpOgqF4WO2JZBL17KW3c1UqGm/g9mwCh
+ fj2bd2vU
+ 47dwnIBVYcOxV+KB9KmoOvwe6BdZitFpZrcs1EtDJd5SfsZNbmleTOycj9f5bKc+Kt5j1WIsbK89VdLaI1GT/V2VCuw7kC9R941mZRwEbhEiQKP6WqiQuGgWsR0g9pONkRQ/EoAyN18RLx2XjmzBpClW3Zf83+kHRdOFNbc1htfGQY0h9JfxvbmbF4+2oQQiqXNHFXTI4gtwQwxnwbIKjdyOZhhlKJXjncWf1bGJtLM2Cayy4Ha0kVNzCkNDS7Nf3iKIfEKYPSy2QJ9KHDFP6Gle6qkt92WLAG70QTT9IZwC616w/4+v8TFmEkQ5PzeceDYMEiq9WtqO7Qj148nMn+DZw5I2u0P9kQKkNqOveejwXm8E8jaVDMCgIWEcW1nNUD2uFVlHn2M+PzOVBrkcriF8LrLOlhamkjzY69lw2d11lCe+H/ofxPBe5eQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,43 +137,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06-02 11:13, Mike Rapoport wrote:
-> On Sat, 30 May 2026 22:19:27 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> > diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
-> > index 146414933977..8d9201c25412 100644
-> > --- a/kernel/liveupdate/luo_session.c
-> > +++ b/kernel/liveupdate/luo_session.c
-> > @@ -291,25 +291,24 @@ static int luo_session_retrieve_fd(struct luo_session *session,
-> >  	if (argp->fd < 0)
-> >  		return argp->fd;
-> >  
-> > -	guard(mutex)(&session->mutex);
-> > -	err = luo_retrieve_file(&session->file_set, argp->token, &file);
-> > -	if (err < 0)
-> > -		goto  err_put_fd;
-> > +	scoped_guard(mutex, &session->mutex) {
-> > +		err = luo_retrieve_file(&session->file_set, argp->token, &file);
-> > +		if (err < 0) {
-> > +			put_unused_fd(argp->fd);
-> > +			return err;
-> 
-> I don't like piling up error handling inside if (err) statements.
-> 
-> As we only need the lock only for luo_retrieve_file() I think it's better
-> drop the guard and use goto:
-> 
-> 
-> 	mutex_lock(&session->mutex);
-> 	err = luo_retrieve_file(&session->file_set, argp->token, &file);
-> 	mutex_unlock(&session->mutex);
-> 	if (err)
-> 		...
-
-ok, done.
-
-> 
-> -- 
-> Sincerely yours,
-> Mike.
-> 
+PiBEdXJpbmcgcm1hcCB3ZSBjYW4gY29tcHV0ZSB0aGUgZm9saW8gYWRkcmVzcyB1c2luZyByb290
+X3ZtYToNCj4gDQo+IHZtYV9hZGRyZXNzKHZtYSwgcGdvZmYsIDEpID0NCj4gICAgIHZtYS0+dm1f
+c3RhcnQgKyAoKHBnb2ZmIC0gdm1hLT52bV9wZ29mZikgPDwgUEFHRV9TSElGVCkNCj4gICA9IHZt
+YV9tYXBwaW5nX2Jhc2Uodm1hKSArIHBnb2ZmICogUEFHRV9TSVpFDQo+ICAgPSB2bWFfbWFwcGlu
+Z19iYXNlKHJvb3Rfdm1hKSArIGZvbGlvX3Bnb2ZmICogUEFHRV9TSVpFDQo+IA0KSXQgaXMgaW5j
+b25zaXN0ZW50IGhlcmUuIFRoZSBvZmZzZXQgc2hvdWxkIHJlbWFpbiBwZ29mZiB0aHJvdWdob3V0
+LiBJdCBzaG91bGQgYmU6DQoNCnZtYV9hZGRyZXNzKHZtYSwgcGdvZmYsIDEpID0NCnZtYS0+dm1f
+c3RhcnQgKyAoKHBnb2ZmIC0gdm1hLT52bV9wZ29mZikgPDwgUEFHRV9TSElGVCkNCj0gdm1hX21h
+cHBpbmdfYmFzZSh2bWEpICsgcGdvZmYgKiBQQUdFX1NJWkUNCj0gdm1hX21hcHBpbmdfYmFzZShy
+b290X3ZtYSkgKyBwZ29mZiAqIFBBR0VfU0laRQ0K
 
