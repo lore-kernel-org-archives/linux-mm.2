@@ -4,135 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 780A2CD6E57
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 19:50:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 907C6CD6E57
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 19:51:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD85A6B00AF; Wed,  3 Jun 2026 15:50:01 -0400 (EDT)
+	id 0694F6B00AF; Wed,  3 Jun 2026 15:51:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B618E6B00B0; Wed,  3 Jun 2026 15:50:01 -0400 (EDT)
+	id 019C36B00B0; Wed,  3 Jun 2026 15:51:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A546B6B00B1; Wed,  3 Jun 2026 15:50:01 -0400 (EDT)
+	id E4AEE6B00B1; Wed,  3 Jun 2026 15:51:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 913E46B00AF
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:50:01 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A1D4120415
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:50:01 +0000 (UTC)
-X-FDA: 84839642202.30.61C5D0A
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2D26E20003
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:49:59 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iIOBJAGM;
-	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D0EE56B00AF
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:51:16 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 900C6404A7
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:51:16 +0000 (UTC)
+X-FDA: 84839645352.23.3CD9ED1
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7C3A640002
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:51:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="G95l0/Jm";
+	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780516274;
+	b=0NOvzYuVIQMMQVtHQSbAfPuK2GCFP21i8YbqTWoLAk6oyTav6MCrXUXOxo1wYCEYKJyq1T
+	Cb9iKhM8VGL6pDCpEWE/tUAQ6fUs7GP6n65tMF3yUTlaJFy6l2gWl9gnvD8nzLIPiLSpmj
+	HL+88HjY4QYehBgQLrN5vb+xqFntCE4=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="G95l0/Jm";
+	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780516199;
+	s=arc-20220608; t=1780516274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Wm9+xx3S7bwmxXSWwexU50eaBO95emwKPo2CvJTqv8=;
-	b=DiUNUm8Z4w3DVPlbKsD+5kzZAu36xT1MNd37oGjn0lmbnpIk2XMI/Xt4ALs/iCxCtcIXe+
-	lv2IYMLvMubZH4XA4OMTxci2FW/lrnJkhm9UdwQdft6GFHue0Bpxhg1ReZ3+hjHes/cUFV
-	0C4W9vuFXiIVghkDesTj5n2LC1ZEJpk=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780516199;
-	b=flgVUlw4RBDdkt10wplvPFV2Q49mBHTPok7nucO2f2A+vUSUYIAqsIWYMkH4jsS3TF+CcO
-	I7RllBSnuto3HegWnYJjoRDZFOG31Xd1Zn/n/bbjcDVSE5qdVj4oQwGsKZvjKCCZiHsnWe
-	QPdifSwgqELV3BscCQDGPG+wpV1EEkg=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iIOBJAGM;
-	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51765531803so149201cf.0
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 12:49:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780516198; cv=none;
+	bh=mydSJ6eCREv5J83WgrREA+4y0Y5cOb58d9V1q4tnNnw=;
+	b=Nb5rzn/UPO+ASGyvDyPTaU+tz7+GLgZXjmNH+ovn5nUV1dZvLlh9FcghXuVq/si9VNBWYV
+	TIxqdpLkwr/r/9PraC49cWE3cU0Jv1H/VDmb9NC4M9hewiB5sAvB2YOuf+F4LcltVQlS0N
+	4VgR/Kn5Ey0paRqoU+nLKd138QevKwY=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5177d1ff061so5341cf.1
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 12:51:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780516273; cv=none;
         d=google.com; s=arc-20240605;
-        b=jcmE/VFrLT5Gc1QkS6+uV54iH6g+2M0Ccj8s9nsIEoSbXELgnEwsPhner+WGlsMWfa
-         1WN3Fa1r4pN+NsQNrBRcHY5H7CwY9hYgGRktE94k1m2zikkJeNSdOHUw7vO0AlI0/Icg
-         3adxlK1yFWaXZjfn29mOBdYrbx5czKGjDaKW3NYfVCgwccW/Wm6y6msaLfbRd5bSbuiD
-         Vjo6qgpkI9pDd444raFEvqact7I/RUBQzuS0UbwbngxiWM5dH2OG6V5FdDaBLx5Dsn0O
-         9Gnr/NSVUln+wq87i05NbUDeANV2gXkyUB8fkj3MOoOof2zZ7vlsiTTzCG12CurqjnXj
-         ROkg==
+        b=W+TkqWGBCArJTwM8Hy5hXsLuz0gxrZyKsqT+eeoxFugp3OiSAmVLfnkPUD4X4n2YDE
+         ktj2eX4ihOUnZ+UMF1gWDdL7cF+fs+CjtAKHDY9YHBqlHyLCizpFiJOXOREOdbPfLbe3
+         Lpf9AZGGYf4dYsm8uxXP0J8epSSxpKMW7nnlV+wzQqSWDCZxinpcTCuhrjRl4zpJ5Nez
+         pBaQgJKm4e8ksholjs13DK/Y5PE1U76rm+NbI617z+/l4succ+fbPtfCz9v/v8A73mGP
+         0xbk436BycvxI41MSdp7vQnTB+5PrIbfo+HcYOF1ui+v6qs1KpYzAssqQ6nhTY5x3z4G
+         hgMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=3Wm9+xx3S7bwmxXSWwexU50eaBO95emwKPo2CvJTqv8=;
-        fh=8GsLghJMH0d6OTU1bTA7c9nxU8VDKkBPQINZRsyJUWA=;
-        b=fu9vbDhXx4AI9y/VlBFhmY0CIt2skQ3k+y4F6lloK2VaNrBU1fQ7SlmZalEbZzo6gg
-         qr3anhP9vKHLhP05Kv7ANR1FoRn7Ww5Lj1ZamfyZDbo28GZXYO4/A4a97xFnTsUdlVpV
-         aH9yQE+YI0Fl8PqhTaTVF885WDUbfqwyPvebsyb9DKnr2D9NEBrwxoBYVxFeo08NyPf2
-         wL4HxFdzYzrL8UqWgpVxgL+M72L7TNxy/sXK5sB/Ej91YKz9Au8XfTlnwr0C/EACDQaS
-         grgrd+NnynH4vRqYpe2+Unu9wfe7OaWy225SmNFOJ0hV68MbWQeENJnu2yLc7mKAPkEa
-         4XfA==;
+        bh=mydSJ6eCREv5J83WgrREA+4y0Y5cOb58d9V1q4tnNnw=;
+        fh=Q0eA3VRqRn4ABG4zHniD0797maI+s/wiNBkXBqB64s4=;
+        b=UNTZ8XGrHvhW7zSDqcDUUf2tFEN9rPJ+VlGBKQXTHrCYimED/JR748y6YT9t3P6Fti
+         RAPGmX26/CcuVbw4tTvM4GXjbGnpx8xhv8MBRIwukzNNZuLb5cL43a2fO3Vzs5pHYTec
+         ETGSAZ1Dj/fefA67uC1bmoI/5JoRF4Z9rsLrZRxJKbM4HcLFm0JTlCXBcs57dujJ+Jeu
+         HYI6sADWDW8JK4RWd7kPg02qzsVPi6OUcYuqMIkYIYH+sSkN5Ot2cNmQMZ4cZpJl38u8
+         /5n5UVa3ZdQlABOzBpCs7gUQYt96vpkKJt+lz3xoRx+x3qHTvOYoy2JPyQvUKIwZbgat
+         gqdw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780516198; x=1781120998; darn=kvack.org;
+        d=google.com; s=20251104; t=1780516273; x=1781121073; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3Wm9+xx3S7bwmxXSWwexU50eaBO95emwKPo2CvJTqv8=;
-        b=iIOBJAGMnLc9HabWePOR4mf/reNftDYUBj2CNvOV/3mofG1C5dmAkR8Xvgl4t20zrY
-         arDNftiXW9gy3s7ktIQXGhijMX2Z9Mo1d3uQqK93d1CkxchIGEg+A9XDLeep/vyBIA98
-         Ec08x5rF8nHSjNi6efksyXLaHrjqzT3c3Tm89X7fQs98g2LflVy7VxLzka91cKwxWrgB
-         Jc9EewQmpdgJYqmDC0cgdTcJMVJg7KeyEvu5+HTiCrNaQLiesJR6GdUjXG0NNO9UMXFo
-         W+81uO7Vh/tve5vDGXexqpg9rsbsUZSfvorFxXkcjWQ45slwQdvRnfmsxiiUtl5hcaXj
-         4BUg==
+        bh=mydSJ6eCREv5J83WgrREA+4y0Y5cOb58d9V1q4tnNnw=;
+        b=G95l0/JmzsMVNztXJzzKuWqdEvF/WAls1a8RojZyeypbbAH92nSSTflJ2ghsUZsJTs
+         hoI8JqntbcGgirwQFkFSF4UZ3wOJ3C4ChvFdBF1p0pK8399JiY6mUQu4CpoPTxZxCFr0
+         /EpS4XZbod5cmElcyAkt658MgiLdxl7vT15t0GhNLMZGZZngdYL80K+lwsJgxFAWkv/8
+         MyxT9Y5wgEDc1YVhCfGaCV+GoZywZI1X4aXIE85B/O9oFuUtZc31rFx74SGAOwL9Eeth
+         tUZRd/HL/bV4pxWjx/h0cF82cO2Q9VTgRJVOST86+wmM4VAbmQeWKqL8lSsQbbWnwJ4I
+         G8gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780516198; x=1781120998;
+        d=1e100.net; s=20251104; t=1780516273; x=1781121073;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=3Wm9+xx3S7bwmxXSWwexU50eaBO95emwKPo2CvJTqv8=;
-        b=owYKhkwLCzCM8jxiuFNZB/ph9xXLoSAp5X7y7ez6jbjdgZhOvqNKG2j4OEkZbAUDIy
-         kniukT+BzTDllPUoD5ulq6lV9Os40eczCRqILtEH36X/d9qKBfzrSiWYPwPkYBLBezub
-         CK3IcAAOhUdvbm+F6Yfqt1Up4YYGehXpbgznTQyzJPvJyZ/OjqfEhBhRWjuADfCT3fW/
-         HUr++E+cKtCebLoVL0yeSftFhQ860Y7Tz5t4wZwkNrg2NtwTAjh4oY9d2bz5ZPpyj0xE
-         FAa44vT7MwCegD/P6HdjTLg9BG6nI79WOLDfksrTsVacUUbsKblk2l5iBsctRrroYqio
-         8uEQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8JaJ9mIQF+uzAJe3cd4Sde/MCtt0cx4u7dva94r9AFuBBmR6NyTT5sXvorTDRphXZsk/rgip6HBQ==@kvack.org
-X-Gm-Message-State: AOJu0YxS7fwmD/K0DfVI+E8IAwQLjVCKrfFGGpSJ6vLzbnWqqF0HQjn5
-	OLwhCD2k08A7D+tKgWDC7ymBG87Lhci+ZnQmcksTgYkpnhIYw+zfPZ9zOPwMgtjvDg3UTUn6Kwx
-	ngDKwjDFseaiLe+W+qOjHjzIGH4TvmoLC/q9qhSqe
-X-Gm-Gg: Acq92OEaOGG63rtYRH4U6VO4I2Tr0hyPLo9Xc+h89Iyvl2dIzpnUVl4RSVBof28zLUT
-	tTfLx+qYAGrIEd177oP0QcEIpJj6w8EIXNOh8F3O/8EkaqZ6NgpYMYH3P3eiynqjSTuRuCupVMp
-	Z1mzosRDHUT284OFmME9GOBXcfzMHi8mRZ0jdlOcWMrvhksG87jdatkgvg+dP+GUqXyWkUdVwd5
-	x6uU4cTnqrdzmdTmMv8DODGyOwEpHqy+SKS9x38TUzCuxx6U76rsp7QlYalsq4X6Aba7dU++k2A
-	2neJ7fuCkE39MgGIHwP42vFalHHlnEdaGGoVFiggT9yHAeQl
-X-Received: by 2002:a05:622a:30e:b0:517:6488:904a with SMTP id
- d75a77b69052e-5178789c190mr519281cf.20.1780516197590; Wed, 03 Jun 2026
- 12:49:57 -0700 (PDT)
+        bh=mydSJ6eCREv5J83WgrREA+4y0Y5cOb58d9V1q4tnNnw=;
+        b=Rtlpd6ThYN1UHGuOVwaLzeR/kySGyy/EjKsPTUHAsRgrnXRPWN8yUsalgAEQOSlu2d
+         pKBDAIpk/cii2DygK+IYrdSy1VFitYB81X+bVTALsacMreu0GOdEcIbXEKvI20DZgZCA
+         NcJPsUFGD0lrWNg7yEsw7NRgOlacQGuc2eM4beuoU4xBV1TrBStEtrkx1SIoX9LHRZ21
+         BgTKDnJdIpHYQe6Wp8nLWOyubII6v2WlwtTXbDshBdkF6CkTz36PyxV+Ag8+KlcrUbbf
+         mCcrkoKtiVS6jzHuigtZipbPIf3NbFrbPdZDxSpkPGlQhT9X2vxVs5rJDKwGj+gCLNKt
+         d8kw==
+X-Forwarded-Encrypted: i=1; AFNElJ99D+dMZxeTNgiYi3UdOXT1QG0coGvNGUHty4vJjrpVJWNiuYQbcB2ypYEizPTXza2RxAN95P011A==@kvack.org
+X-Gm-Message-State: AOJu0Ywv5DQlrYdfUsqyOcp91LP3oRy2PVNM3BcVHEykcLw75wxqc/wL
+	v2ZHwbNfGRbjETJH4WlJKMBO+gcDpVHcJvBeemBsEjRbEt+e5+IDKGEWCV4+//guZ6apuPfvmdn
+	R6970SHlNLc9jwcP+NIbsFPF53poBn99MqOZG453a
+X-Gm-Gg: Acq92OFVSXIG9e/yBs27Z3czCnzApd6enXOuPGglW9ns4kOWti7WM53EElB0oa96NI1
+	DSBwLqT6quC7ZO0kAB/IKOkRkfvF7sYk6ZuIB7afVvU/pPWgEhI8zXeoF/ZiKNwWcsmVZJZNM7j
+	EdS3RMqKGatCOliIz6Cit3Isx3QkvTxCSzSE+nrg77C/1FZVYNmq5Z1ThAklzQW3I0P5/lrMqD/
+	jSUeytba4RiD+Vh5rMJF5SHeRTdXS4Jf/rf0u3DrOkYhenehkSLnW1/U4qMJLcEGEZAZm5GbgT1
+	r05dEjpWSt+HPC9LJDnMvgH3gO/3M/2ZnAsFEX0Zc9HbINIi
+X-Received: by 2002:a05:622a:1911:b0:50d:edb1:6bd1 with SMTP id
+ d75a77b69052e-51787a7423cmr531751cf.13.1780516273058; Wed, 03 Jun 2026
+ 12:51:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1779471082.git.abhishekbapat@google.com> <20260522131108.f972659717367c67082f3766@linux-foundation.org>
-In-Reply-To: <20260522131108.f972659717367c67082f3766@linux-foundation.org>
+References: <cover.1779471082.git.abhishekbapat@google.com>
+ <20260522131108.f972659717367c67082f3766@linux-foundation.org> <4ae038f0-cc33-4a60-b59b-ae86bb541735@linux.dev>
+In-Reply-To: <4ae038f0-cc33-4a60-b59b-ae86bb541735@linux.dev>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 3 Jun 2026 12:49:46 -0700
-X-Gm-Features: AVHnY4JK2eGu6vAIyV7j2iWie90EfZmLlPJI578QpZKL8AELxwAYPqn3IE5wdxA
-Message-ID: <CAJuCfpH+DQePnCFy5Ro-yKMYQsizQHPuY25m1tWgzGGg05xm6Q@mail.gmail.com>
+Date: Wed, 3 Jun 2026 12:51:01 -0700
+X-Gm-Features: AVHnY4IYfNFfNCUBiZmze5PFD-G7KhptyH4lRMaqQ5BQm2joDQxcOESI7al8bZY
+Message-ID: <CAJuCfpFdbq-0SMVg0i5Fg+gQONQEKTL-N7QC4cyCr1e9oVimSg@mail.gmail.com>
 Subject: Re: [PATCH v2 0/6] alloc_tag: introduce IOCTL-based filtering for MAP
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Abhishek Bapat <abhishekbapat@google.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Hao Ge <hao.ge@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Sourav Panda <souravpanda@google.com>, Abhishek Bapat <abhishekbapat@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7C3A640002
+X-Stat-Signature: 5obxm4dq3oak5xyk4zp1cuj4hhkc7sj6
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2D26E20003
-X-Stat-Signature: aqn1inogfshqocp4pszs1intdgfxcto6
-X-HE-Tag: 1780516199-95515
-X-HE-Meta: U2FsdGVkX1+rjRMzhbCAtYzO4He+RCVU4qEJA0keMjwMfSkfIFpfHHPHXV8DBQYPw5DaP/wrrXxYAfCLJTndhSiiN2wlirrDVV+NEEDCzhgV4vzd02xHGs7SM8dkoou4Ki/BH12omdAGc9fIkcYbHIQDthf+PSVG7VZVm2xBnMyRwihOdsvL6a+MHMQbn/4COYzEvjRm9/MdfK/Z2aatq/xvu2VX0rhklr9mm12YyGAMS/cIC3RnEL1IVfKTBjXk7f8aFwsjAxjg5K8wAekOqRyCpsSuUFYNziug2QJXbLknKk+hi38UuoLdB4F6+XUJ4xEyZGfCHLj1NjKvjPRJrgKv7dHTu4Hxkxvc5K7Pn4EgwxvFaer22HT7Eg/qE3HGtCvtzV3KEqexbXHEh3oyWxkEtwcbCx+VObiK9A2SoY/bvUfrtgsrXP4LptsBI1gaqRCCnz1/7oPEs77t/0CN/WGqED2HM0GzRoPhFIllmhVpRouckA9M/Zh8RmxcHeK5Jm5iKaZsRP+QSBrQRRAuOVh4J1Ckd06HY12SOpY9QnCLfa1w4UpDmUSlN0KlKSab5n6APffyGqLOcJ36k9bZO0GfVmEU3jfSov53S/eQEZBZmORblQY9MpiV6eoccTtFxFMdT9qaZ1OZPKqFFkgp/pFjsNNSNYJwFr73LA+QcQL6Gs2hvyJU0Y1vrNQ3YmaWutFE3rWghhppOk++rYyWlbq9fVA30GV8iVjfw91NGn3MJ0e+Ppwt+ETv5L+hD20LFgQZycJIsXjgZ7QeDgcxiZ+L8e7qkP7ZtrAzx6z/6MzXzxhjZ0TmzhpLthtXm+gEJhHj8s6r4CHvE+YeIN75i6mqgooHx2xCP8t1St0EISBSc+YKRsJdJYt44WVKzi2WcUzX7sEfJRtB7Fq6Uo68z610Z9un/Z5fJuUZKhzU7eOnv5IEel43wFWlpx+mI6Es5HP3HSwdqrY0LvXGMCm
- wev05sri
- a6cuKgO1nVwTCbYfjyHSCfNxAqIYV/hwWcdvcf539/1fkdz1PJwmkYVr6JHzOO7cnddN/BbeW5V6Lu9T4sEfvAq8LzNzNBxH0EhSJIU75xDxu0GF9o2XEQpENpcr4b4LIK8gfWOarle4dcLwXhKK7DyrrFb1sNdhLg0WLVmXxyRTmH5TVDnMdSTI+9i882cKWl4s0jgQPyDKSdgmPGygmRqVek1VCE7sb3UJEpOGmaMHvcv17/Gle91CNZY1LchJwTACV/vO4Bfptjp9KOoq+ElwV800mBGE2hdZWdpm/oFIr/ZctSY+cGtIS6x2vND5mEPC54+hjOJcrOGyv8D4fK3wY8vO0cQfY8fe/do9nnZkJJkCIL28PbcSRN09ZEdhnzXi/bhWsPML/KdEirLoVSmreGZa9CVt4Y162WEPoEZ8rG8E=
+X-HE-Tag: 1780516274-503440
+X-HE-Meta: U2FsdGVkX18AKUvKmH/JdQuMkiWNEVDzws1f8kvDw0hzS0PYzTZL8r6RaDrtB5gQ1L0XJnucNX7SHN4rEqi0V85bwZ1BXBsh+77yebShL5gPxvqINSPNJTigzeUvVBwNG0rseINLEPHx3A8F5WIc1gkEfkgmQoVNMrEiP+10c81xP1OdVofZcO3wLp8rGsr3YtIxGk5uzNaYhqmyERgD+fUtn+UhYKyXhblrkOe9lqIhrWd6BYReKrlqaVjyV8md1Sq5umemnjyVQHEcxadqygiGn1EpPgrWOg6JOfNeycFdmmYwmL0nZ/IMx4WCbbgsC3WqNqNmYLGHBg4H49DLEklhS+6T+/1lak702T14hdZ2xu11UG/7ZGFnLyGe5k1fr6eXL7FLl6bWHts21Kmq4UDxvSqBsK0ITjWellKqaVYOihnIMe+DxgRkJ/0LQFfcSSvXdfzwGJhz0AQFs6MkQEZqw45I6u6sqH/oGFuZgba5X6ibZ2fqTCQV6RhBWu9liOsZZlZikojP04koKsPeJndrQgYdNaXNPBd+PcVunbrJOBEQvwDoAe0/rg3HkXkHMrAZomAkjrHxFZBosdOsX4zAEMPnY4/xGFTWvLhlHIL8xhc0jVnk0Dv/qx1YplfMJTrYpOsI4DiabR+6bxKpBa2O0muymwi/wPF0Yc0GUQbdewzz0JkSx3o5dPZ3gLht83YUKL5LxWcuRTO0BsitaMl0uORT39XMG7q3OsM4MaJkU/8gtDTDZnypt05a+pfl0Y+FLGbyKpH8efn1fDv7JZ2vfIYlUDGxNrhiD7xLBNHC8HVuZ0ejTLHEoMPA1mJy8BQ8djNNKW2Kvsvij0HD2y+zk/648EpVYBY5hunB8cBw3CKvyGWmDspDt9OPr3cwGQkw1Uw+UcP5xWIb26kwQ/q/s80P0kpBMhb+YOtSh+FEq4i+3t+HiDCqnkNUgyqUKHPbyVgkrLG1u4IzQvH
+ w8lWdU2f
+ /1UT9TtZ6Q2TLG/td66X3GALktbeTulPsNVHCWgaLFyo1pGkOufs5zZoDj69CzleUJWgablu26QTs6JdtbD+EgE73TYxwN79ow5Cm4spmSn87qYS2OhVVWyw0cAYi0Cd37OjtQ9vZ0v6KNpc9JCbvAUIioOrZUnp4rZR+Ud4aggdxhl7I95+9F5mXddvUjqgtOUB0edULEKYLoKW0jdf6PfkoyWPSZJOCEHG5pK0CsSMwRSjk0aZx/3WXep+4wNs/36A3rmvqLnQTJgmkmK28pkYKg1qXGf7pLtKhn8miK9jk8m4tSzi8rUsSYuXXN5IFxvwBQOAem7rm0vhEIzGS5WGV9J7RXL90Kn1PyDBwizdIZh4y298WWwuMzddeCrwFTFuhJGJKhVip1fE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,93 +141,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 1:11=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
+On Mon, May 25, 2026 at 12:33=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
 >
-> On Fri, 22 May 2026 17:45:32 +0000 Abhishek Bapat <abhishekbapat@google.c=
-om> wrote:
+> Hi Andrew and Suren
 >
-> > Currently, memory allocation profiling data is primarily exposed throug=
-h
-> > /proc/allocinfo. While useful for manual inspection, this text-based
-> > interface poses challenges for production monitoring and large-scale
-> > analysis:
+>
+> On 2026/5/23 04:11, Andrew Morton wrote:
+> > On Fri, 22 May 2026 17:45:32 +0000 Abhishek Bapat <abhishekbapat@google=
+.com> wrote:
 > >
-> > 1. Userspace must parse large amounts of text to extract specific
-> > fields.
-> > 2. To find specific tags, userspace must read the entire dataset,
-> > requiring many context switches and high data copying.
-> > 3. The kernel currently aggregates per-CPU counters for every allocatio=
-n
-> > size, even those the user intends to filter out immediately.
+> >> Currently, memory allocation profiling data is primarily exposed throu=
+gh
+> >> /proc/allocinfo. While useful for manual inspection, this text-based
+> >> interface poses challenges for production monitoring and large-scale
+> >> analysis:
+> >>
+> >> 1. Userspace must parse large amounts of text to extract specific
+> >> fields.
+> >> 2. To find specific tags, userspace must read the entire dataset,
+> >> requiring many context switches and high data copying.
+> >> 3. The kernel currently aggregates per-CPU counters for every allocati=
+on
+> >> size, even those the user intends to filter out immediately.
+> >>
+> >> This series introduces a new IOCTL-based binary interface for allocinf=
+o
+> >> that supports kernel-side filtering. By allowing the user to specify a
+> >> filter mask, we significantly reduce the work performed in-kernel and
+> >> the amount of data transferred to userspace.
+> >>
+> >> Performance measurements were conducted on an Intel Xeon Platinum 8481=
+C
+> >> (224 CPUs) with caches dropped before each run.
+> >>
+> >> The IOCTL mechanism shows a ~20x performance improvement for
+> >> filtered queries. The kernel avoids the expensive per-CPU counter
+> >> aggregation (alloc_tag_read) for any tags that fail the initial string
+> >> or location filters.
+> >>
+> >> Scenario 1: Specific File Filtering (arch/x86/events/rapl.c)
+> >> 1. Traditional (cat /proc/allocinfo | grep): 22ms (sys)
+> >> 2. IOCTL Interface: 1ms (sys)
+> >>
+> >> Scenario 2: Compound Filtering (Filename + Size)
+> >> 1. Traditional: (cat ... | grep | awk): 21ms (sys)
+> >> 2. IOCTL Interface: 1ms (sys)
+> >>
+> >> Scenario 3: Size-Based Filtering (min_size =3D 1MB)
+> >> 1. Traditional: (cat ... | awk): 21ms (sys)
+> >> 2. IOCTL Interface: 14ms (sys)
+> > Yup, textual interfaces aren't fast.
 > >
-> > This series introduces a new IOCTL-based binary interface for allocinfo
-> > that supports kernel-side filtering. By allowing the user to specify a
-> > filter mask, we significantly reduce the work performed in-kernel and
-> > the amount of data transferred to userspace.
+> > And ioctl-baed interfaces aren't popular.  One would prefer to see an
+> > interface which uses read()/lseek(), pread(), etc.  It would be
+> > appropriate for this [0/N] to have a discussion of why that approach
+> > was not chosen.
 > >
-> > Performance measurements were conducted on an Intel Xeon Platinum 8481C
-> > (224 CPUs) with caches dropped before each run.
+> >>   .../userspace-api/ioctl/ioctl-number.rst      |   2 +
+> >>   MAINTAINERS                                   |   2 +
+> >>   include/linux/codetag.h                       |   1 +
+> >>   include/uapi/linux/alloc_tag.h                |  87 +++
+> >>   lib/alloc_tag.c                               | 303 ++++++++++-
+> >>   lib/codetag.c                                 |  11 +
+> >>   tools/testing/selftests/alloc_tag/Makefile    |   9 +
+> >>   .../alloc_tag/allocinfo_ioctl_test.c          | 505 ++++++++++++++++=
+++
+> >>   8 files changed, 918 insertions(+), 2 deletions(-)
+> >>   create mode 100644 include/uapi/linux/alloc_tag.h
+> >>   create mode 100644 tools/testing/selftests/alloc_tag/Makefile
+> >>   create mode 100644 tools/testing/selftests/alloc_tag/allocinfo_ioctl=
+_test.c
+> > At some point this should grow user-facing documentation, please.
 > >
-> > The IOCTL mechanism shows a ~20x performance improvement for
-> > filtered queries. The kernel avoids the expensive per-CPU counter
-> > aggregation (alloc_tag_read) for any tags that fail the initial string
-> > or location filters.
+> > And the right time for that is now, because such documentation is
+> > useful for code review - it makes that review both easier and more
+> > useful.
 > >
-> > Scenario 1: Specific File Filtering (arch/x86/events/rapl.c)
-> > 1. Traditional (cat /proc/allocinfo | grep): 22ms (sys)
-> > 2. IOCTL Interface: 1ms (sys)
+> > Sashiko had a few things to say:
 > >
-> > Scenario 2: Compound Filtering (Filename + Size)
-> > 1. Traditional: (cat ... | grep | awk): 21ms (sys)
-> > 2. IOCTL Interface: 1ms (sys)
-> >
-> > Scenario 3: Size-Based Filtering (min_size =3D 1MB)
-> > 1. Traditional: (cat ... | awk): 21ms (sys)
-> > 2. IOCTL Interface: 14ms (sys)
->
-> Yup, textual interfaces aren't fast.
->
-> And ioctl-baed interfaces aren't popular.  One would prefer to see an
-> interface which uses read()/lseek(), pread(), etc.  It would be
-> appropriate for this [0/N] to have a discussion of why that approach
-> was not chosen.
-
-We chose ioctl because it allows us to filter data without aggregating
-the per-CPU counters, which is the main overhead when reading this
-file. That's why we can achieve 20x performance improvement, provided
-we do not filter based on the allocation size.
-Aside from that, I plan on introducing an additional ioctl command to
-enable context capture for specific allocations.
-
->
-> >  .../userspace-api/ioctl/ioctl-number.rst      |   2 +
-> >  MAINTAINERS                                   |   2 +
-> >  include/linux/codetag.h                       |   1 +
-> >  include/uapi/linux/alloc_tag.h                |  87 +++
-> >  lib/alloc_tag.c                               | 303 ++++++++++-
-> >  lib/codetag.c                                 |  11 +
-> >  tools/testing/selftests/alloc_tag/Makefile    |   9 +
-> >  .../alloc_tag/allocinfo_ioctl_test.c          | 505 ++++++++++++++++++
-> >  8 files changed, 918 insertions(+), 2 deletions(-)
-> >  create mode 100644 include/uapi/linux/alloc_tag.h
-> >  create mode 100644 tools/testing/selftests/alloc_tag/Makefile
-> >  create mode 100644 tools/testing/selftests/alloc_tag/allocinfo_ioctl_t=
-est.c
->
-> At some point this should grow user-facing documentation, please.
->
-> And the right time for that is now, because such documentation is
-> useful for code review - it makes that review both easier and more
-> useful.
-
-Ack. I believe Abhishek is working on that.
-
->
-> Sashiko had a few things to say:
->
->         https://sashiko.dev/#/patchset/cover.1779471082.git.abhishekbapat=
+> >       https://sashiko.dev/#/patchset/cover.1779471082.git.abhishekbapat=
 @google.com
+>
+> I notice that Sashiko has reported a pre-existing issue, as described bel=
+ow:
+>
+>
+>  >  static void *allocinfo_start(struct seq_file *m, loff_t *pos)
+> This is a pre-existing issue, but can resuming a sequential read on
+> /proc/allocinfo cause a use-after-free if a kernel module is unloaded
+> between read() system calls?
+> The seq_file read operation updates priv->iter.ct during allocinfo_next()=
+,
+> stops iteration, and returns to userspace. If the module containing
+> priv->iter.ct is unloaded while the lock is dropped, the module's codetag
+> memory is freed.
+> On the next read() system call, allocinfo_start() with pos > 0 reacquires
+> the lock but returns priv without validating if priv->iter.ct still belon=
+gs
+> to a valid module. Does allocinfo_show() then dereference this dangling
+> pointer?
+> [ ... ]
+>
+> This issue is unrelated to the current patch series and can be resolved
+>
+> by reverting commit 9f44df50fee4.
+>
+> Therefore, I have submitted a separate patch addressing this issue,
+>
+> which is available at the link below:
+>
+> https://lore.kernel.org/all/20260525072117.112779-1-hao.ge@linux.dev/
 
-Ack.
+Thanks Hao! I commented on your patch, please take a look. I think
+there is a better fix.
+
+>
+> Thanks
+>
+> Best Regards
+>
+> Hao
+>
 
