@@ -4,132 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46DC8CD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 14:56:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30BF6CD6E57
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 14:57:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 198AD6B0096; Wed,  3 Jun 2026 10:56:01 -0400 (EDT)
+	id 62E986B009B; Wed,  3 Jun 2026 10:57:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14A0A6B009B; Wed,  3 Jun 2026 10:56:01 -0400 (EDT)
+	id 606C46B009D; Wed,  3 Jun 2026 10:57:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0384F6B009D; Wed,  3 Jun 2026 10:56:00 -0400 (EDT)
+	id 4F5A56B009E; Wed,  3 Jun 2026 10:57:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E60146B0096
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:56:00 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 807FC1C0A0D
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:56:00 +0000 (UTC)
-X-FDA: 84838901280.08.D8BA65C
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 512C318000E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:55:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=fazgitG3;
-	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.217.43 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780498558;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 405246B009B
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:57:31 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 001391C198C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:57:30 +0000 (UTC)
+X-FDA: 84838905060.26.526AF24
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021105.outbound.protection.outlook.com [52.101.65.105])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 028F14000F
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:57:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=codasip.com header.s=selector1 header.b=zBmB00Uc;
+	spf=pass (imf12.hostedemail.com: domain of christian.gellermann@codasip.com designates 52.101.65.105 as permitted sender) smtp.mailfrom=christian.gellermann@codasip.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=codasip.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780498648;
+	b=D0HaA5BkKZ5OuJaErttnpsx10PpR7Q5pVfQg0pEy5AaD6EIMpreNqMSuCbU+lKCeAMFpyd
+	6UI6tnbkPJK/onFYYW0Jf3FH76sHcdv53CkyKKlaYRq8qwSl9+pBxOEzCmEaDUJudaTtGa
+	yu8R4bOQa+It5Bf03x5f2wFnrqYM0e8=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=codasip.com header.s=selector1 header.b=zBmB00Uc;
+	spf=pass (imf12.hostedemail.com: domain of christian.gellermann@codasip.com designates 52.101.65.105 as permitted sender) smtp.mailfrom=christian.gellermann@codasip.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=codasip.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780498648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tHFJL4Vv9YiBmui2bXAlE3Jf5dI3wvXhQmEI6tHCSqU=;
-	b=UnGB5Oa3ieto7xwJ8/I9LvRObYei+nEnlbvzFrFog+6zHmxVHJEGihZgDKCHAibIyFZz0b
-	TalDBs0OFx+ZIcL9pY25yYRbuUstrJLGlQ1FTnTCLlFIuxNq3198ja4CxUPHHeyAXf2fiz
-	8r/PBDbYrMsJkVqVcSsFRWHjAIc+QNg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780498558;
-	b=rAqNo7u5gmLdyJE5qJ71OQvZkf2s+7shHw2W1XzG1giDo66y+C1xcDQsLxJZblpTv4bg4m
-	Sbqh/dWgTGfF7xogiqLaKnlsHKMJteWhVkVP60jc4t1zUjdnJWQW5qLdbv0x41kQGMdm0V
-	a8xho/V22YSHGNm0+yvYkunNcDiMJSA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=fazgitG3;
-	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.217.43 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-6c87709aa26so2597414137.0
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 07:55:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1780498557; x=1781103357; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tHFJL4Vv9YiBmui2bXAlE3Jf5dI3wvXhQmEI6tHCSqU=;
-        b=fazgitG3yCuMo+Rln8ILgFkUEM9Fw+KVVtMNV+z+DUqna4MiWMS0mYPR2Tdt8Lgtz0
-         gTWq8ywJIpT4jxvqc97DZBZz97vvVcPp3a9eJ6ZwmO3S5nVGuOKOwuoj4BBRVehTmuXS
-         SJ7sVtFva7zzAdZf9NgLZ32PFs80ejxmZ42Th7E2vlft1YxRHt7jx6+LzCTIdHJgRABA
-         j5S6I8gJTcaHjXuZhUHsLG1wDV0B1iwXFCGbo1m/lVCKB02dQ5sGa0vW8Lqe98j67tju
-         0/IHBeB9D2d2fZJpfhHVMRoQM7PgYydQz/llhZvcnL1ou/tRBjuHoQ2SS/P8kcDyUOr3
-         SHuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780498557; x=1781103357;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tHFJL4Vv9YiBmui2bXAlE3Jf5dI3wvXhQmEI6tHCSqU=;
-        b=ATZh0+bPAFkbMpBqDv4kQsnorfTyab+qpS3zc0DYbi/zKwhWP8zyNt+sBT5LN+03N+
-         UE3t52fyOPb2D/lhX7f+zYSA9fNwVRxke/CvzB+6qR2m7M0YHmwzEkrDP7P+keuIy8KS
-         WohysNbtn763+dND8fSqPrOYqH2i6cqNW43gqMGNBIQeszBoEBcEjfOxlJq/mndeTfGS
-         KU/1/YtaJ4rreH+fg7Hy/dH2JcSHrJ/EZPWXwGdd2iiWvTMMDay4iUgK6R5m7dvrEFBY
-         HQniLYhurHouo0zvtxm4rnoeFltvb1dkhr5uXkxGBu5Rxr+RO7eDPMfSvb/hVVgreZ4h
-         Mhig==
-X-Forwarded-Encrypted: i=1; AFNElJ9tqe6IeeifZDXYS1pdQ5DLRl0NNHGnigQjacmkWtkMDjCcCOY/Yi+5jtISUHH2qZJQeW7bdgXH0Q==@kvack.org
-X-Gm-Message-State: AOJu0Yxhd1zrIXuUL+RKow6gLSPuwzTcITyNtln0wMLl7tkMVV1UDJau
-	z3KQInyX20pXrJGR9WmuC2X9DGeJWP/4Uaf40rlWIEUBrKKX536rLVLg/fyyTXxlAYc=
-X-Gm-Gg: Acq92OGqlUyMu9bnddLKnLL7f985/zLcbU0N71wsfIHcY0PGOn49TWp5v8ZDXa3stbY
-	eBfIGdAuyqDHTXiM8TbFRe1jOHiXxdNGfSOoRlQ2hDXmO2czC2dxHnscvAQSbqXaC+cf3zvZo1V
-	kxIJxJNhJnfRsLCyx8slOOEOZRM7Ll8+Zke2ErDbuVoqeJ9eAF03xYsAN/mAaU6IhkXduwg57QP
-	6WTm9/CGRoRwC8u50boZVZ3jOeLhL+VaYL5j4vM48C3xw+790jgW7SDZ11Ik5fzoHodkQLe8m5V
-	9d9CBo3imZB1QTtdkiq8eSN6LhutwvuiP2hEifQ++uCmhgOTIJ57wsP+mOh40hJ4/K/s5awv9T+
-	5stznrEkuhfrjximMm76Gl4/gZ6pKrkRTOwciFMH7r3FwyQ17m/CGngdewAcjqpfNQvFN+yFq5M
-	6gJceEGgRUWn0go9ZdtQbNenNFpHjVnKol
-X-Received: by 2002:a05:6102:c06:b0:650:967f:fb32 with SMTP id ada2fe7eead31-6ec2978d496mr2278212137.3.1780498557198;
-        Wed, 03 Jun 2026 07:55:57 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd06b231sm22007136d6.33.2026.06.03.07.55.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 07:55:56 -0700 (PDT)
-Date: Wed, 3 Jun 2026 10:55:55 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] mm/swap: colocate page-cluster sysctl with swap
- readahead
-Message-ID: <aiBAe1WQWnuGzniz@cmpxchg.org>
-References: <20260603-ch-swap-series-plus-folio-lru-cleanup-v4-0-ce0219e100d9@gmail.com>
- <20260603-ch-swap-series-plus-folio-lru-cleanup-v4-1-ce0219e100d9@gmail.com>
+	bh=I82769B7x7fzuvm87oWOppc6HIdteTppUDVegIxxLVA=;
+	b=PErv0DWw4IAEh1NjH/weegR42G1+bc6rtgzksUYwtSm+mS0gkAtu3K2vswYZLq8LO2h/f3
+	gC5aQsgeG8tx0EMrQH7tF8hB0ZU1hbsRb0CV30IPWeBtInJogc16yHofaRTX4z3VVZ1y/u
+	/NGDf8O1GmlMMo61mIOsoXjB0H1jbpc=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GZ2wpBZu6HysJLehwyMnzBqsElG80rIV2P86VCX7uzcNMjEN29wfrF8U/FNb1LhKCdpY4ncc6tx7pCIyPVkzhAJXyUZ0gLw0LtANW5p/ArxuKKZIXsz8YPWLsoWC1sTwjKNxKKKbDLaBCD8yoTUzQWSkN4PJExfdOhSEDSNDPXfQYlyrsaBbYompn9qjAdeG/2Mbs5iivQuuRdUJMeMTziLaGPYKYRCsu/jcCcUIG9GPKCelmkve0fBe1xP0axbixX5vtA5IS2weT0UUfGad1V40Bw2UzzQogGeNC1fi8RPY/F+vl0xvJt+31Ep4g/bAlEpz7Nl3LxxHE2wu/G1tTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I82769B7x7fzuvm87oWOppc6HIdteTppUDVegIxxLVA=;
+ b=Q4k0jI3nw3vk+IBo47bGsvhJ3+p2dZvemCx7LFfmVfAqrisUUpjUOhg3XCjUlzJH7lbQYb/pMPECUmxa0//itzxNsWHZsX8Ah0L2FN8wPZWrDjrb7bdo6t2+pdlE2ZDRV3hZZi8dpfTkn+GS523EP+ZorGwHsTI5eTUe+0P0iE3emuS/7TtSKN9ocjByL8kHnBaJIgLlyMqnILI+oXZYyHMLe0foEKkUD6sLos8Vu1fPb9UT7l28A7TUuNKdHUwISwVuCy2CP1q29NnjXhy1Ni7i4m5djhBCKi8YeJYlwBm+UGtFDpg3Aac9mkJABi6RoFncBgE3fYMskPRz+CRdyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=codasip.com; dmarc=pass action=none header.from=codasip.com;
+ dkim=pass header.d=codasip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codasip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I82769B7x7fzuvm87oWOppc6HIdteTppUDVegIxxLVA=;
+ b=zBmB00UcfRnGAmwb5KqT1lb2xjcVmDjpxSieaeGswvLIMh3/CA1u1wvJJnX6Wmm4/9CS2ypxqj6iFLHVz3hHjIS0gjTXjhqLOJrXqNDcMrCBjL8yzo/9zM1OL0uSxdZsQwuVcs++gH92ZhrL5d+TJReoQ6dCmrGBd5yRUVY3MzTyumG+e2OGlzbE+We5cwBKQdkav/GcXSbSANda+ySmGTiZxy0Zvvq8O+/W9zIoK0+hAULuH0QT0pQPwf2MlNOztp9NONRPbt1+5pRogfe6kcNZUg9RNqCqGvLG1OmKE0fxOHc843Z2xvZWrG5C14QeujvrE/O6jr5SXcbV3zWDmQ==
+Received: from AM7P192MB0787.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:17c::14)
+ by GV1P192MB1665.EURP192.PROD.OUTLOOK.COM (2603:10a6:150:5d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
+ 14:57:18 +0000
+Received: from AM7P192MB0787.EURP192.PROD.OUTLOOK.COM
+ ([fe80::c1d1:f20d:9fb5:72d3]) by AM7P192MB0787.EURP192.PROD.OUTLOOK.COM
+ ([fe80::c1d1:f20d:9fb5:72d3%6]) with mapi id 15.21.0071.011; Wed, 3 Jun 2026
+ 14:57:18 +0000
+From: Chris Gellermann <christian.gellermann@codasip.com>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	brauner@kernel.org,
+	christian.gellermann@codasip.com,
+	david@kernel.org,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	stable@vger.kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: Re: [PATCH v2 1/2] selftests/clone3: Fix wild pointer access of getline due to missing init
+Date: Wed,  3 Jun 2026 16:57:15 +0200
+Message-ID: <20260603145715.1376288-1-christian.gellermann@codasip.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aiAYQVaVGRLfmpAK@lucifer>
+References: <aiAYQVaVGRLfmpAK@lucifer>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI6PEPF000001F9.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:808:1::907) To AM7P192MB0787.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:17c::14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260603-ch-swap-series-plus-folio-lru-cleanup-v4-1-ce0219e100d9@gmail.com>
-X-Rspamd-Queue-Id: 512C318000E
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7P192MB0787:EE_|GV1P192MB1665:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8879eaf1-c719-4a9a-152b-08dec180684a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	WTCtaWJ1e4pLJ9xMAo7J1cknQ+L53J4BnYZkOVcWBPrP61RmJSzwNOxi00A9USyeCW7Er2Exl8xPzPTaIxbWZNgR8jxNrxkE1RchkMbcKhxvGjTKCm/xetG/I4KzXHNPSWpLdPepORNu1VR53gTKdzi3PBnWpPWlcq8FUCWYPZXvAWj65kKORO4PMaKmU5c7Lc+UApCP5FfA2aBqcekPpgm7XZGjPnHuGt7SixjW7HVwPQ2PgurK1CkarRlgBUNZaH5jzpYAITjKDti1sbBtv5skQjnSJF56AOjlQN8p+/z3XNxQSeoXBiHdIcIuVy1b9UDN4JH6r72n+vRjNm1ud92sZwzEm+KGhE69VMLTRYxbXePinRL8AHcAFM/vbpBBbz24ZQYm4Ed1jMuB6mAGPsP196O/ZYREMYYG5solmsmG20Iv1nz34WvvbL9z2tVylfHnaxf8PHqTbZ2VrCqta5KKPl9zNq8cEKX+nlfm46gxE/JSmG/+rnct5hDuYbrpXkWnpaJzwtjtkXIeRBqcNIsAPeuTZARlLv/bs2X3pFbUdyqSaao1dCh7hApi2Ym8i9LqKPCkM1S/TYuTPu+Nq8/8cGsAHHnMmq/YRNa6WJlVUc9ZufGvv3p5ZionH7t1GCbqjEOm8vQFwSLgKkIe6kk10aGQgHF/hWJRG1X4+J5VpFu946XlTmwoDWnBogI6
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7P192MB0787.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?N2nh7nZRPUb80eV/n80a3NMdjMJ6fnqVeV9gc2RbcQ2jyT9LwMCFrpKPS8Gx?=
+ =?us-ascii?Q?WcaWYo9LfodctFvKjj7LlF17hc1WSTbDAAK2ySv0/CG8ruH+4Zbzs1ySPTHK?=
+ =?us-ascii?Q?Twa/4UkRgj11sDyoBLBGvR68CRxRcGARb4Hnr2kARucGR+whousoc4wo+iFN?=
+ =?us-ascii?Q?6DFS289nO1QD+4saOcF1KgjHsawmAQx4U8rZ/uwjf3k/EMbvRPwyu12klu//?=
+ =?us-ascii?Q?LbN/5T2oGVKygq6rP7fi5+Xwi6s7hdupZvGQ9jKUuLZMBmYtwAEZktgoQrfu?=
+ =?us-ascii?Q?JIN2fySvZxJ1Fcn7IppI3rCiTxQAW7k21Rk6CBcOdfRXDm6QFu7UJXzzJs8O?=
+ =?us-ascii?Q?Rn7L/d4Dop9q1JBrbcRCZyCr7fc16pO0fgXfX4BIpAdqEP6keC/kNzspeaRF?=
+ =?us-ascii?Q?+nrIzB2c2i2JVQkmDS4ecmlo5z1vdKMOb6rRARt2CR9tpcU933A/jXt/YaMk?=
+ =?us-ascii?Q?90xippkCNao1/+1JklsU90NIo3hTZOhKl0bedpJuNrIc2Ml1tb/cgbmY2dhk?=
+ =?us-ascii?Q?ZaSLZM/tYdLp/DIc06nNfYUfNB8JSYdNpY8U/a6FMAcmLku8G+4ytKytjMxk?=
+ =?us-ascii?Q?ETB3RrFVX5UKDJvM15tufdAOmv5cnmWgLo91VD5e83Xxmy2AwW6d5R7JG0i9?=
+ =?us-ascii?Q?JD4mH0MTwjeXLZ/1ck2wMur+JeMBc5jMVL5Sus6n1FfI5/WzcbvZRpzhwoxy?=
+ =?us-ascii?Q?MLs9XUB4+UKOduA7KPpX8YjO+FSVirQPJ/VfgQGOSHm/Cj3ueU5lctV3h4dV?=
+ =?us-ascii?Q?ro3LbIgcmOqdcas4VS+FL5DMRxHHznqGh7zF6utMfe56Nt34KCp0TFbVCUFc?=
+ =?us-ascii?Q?xoW6D0+q8HUe1L31/d8N703P0ph+jblaP4ZnPdX5ncqwkIa3ND950NaW9ZRg?=
+ =?us-ascii?Q?toWmuTNalRA6vgURK4P/KRpsBWNKKNOiNQpnuERFuHHSgfLi1H2hkVJO8ro5?=
+ =?us-ascii?Q?b4SmMi3I55hnrZptCSUdqdKiGm5XpkmGUQ910Z+kNs2lKMe1Z5t0SzJwBHOA?=
+ =?us-ascii?Q?ClGkg9ubsYuOxf1SE1pPsUQDEjUqGU36Xa+uFFO/+a01V/6weCTBAO8lAohn?=
+ =?us-ascii?Q?1IyWsz0DVzSNA8GF1oyx0lduD7FS+vwPzCw0KXBaoCCFj+JB+0lzv+NFYx34?=
+ =?us-ascii?Q?nx4WTBK4P2+s6Zd1SkjBMFBdfnb6W4uDuX9sVLNwn4NVpK4JAb5AE0Y3BwzT?=
+ =?us-ascii?Q?FgyI5/hOjQ7sZKuxCjEs5PUrsOypOm8KA56i4YHs70GYbk2L+kSqGaeCMwze?=
+ =?us-ascii?Q?HUfh/uT5poXjpgblMiyhtawrW0D1qcpxB+aDwm82klWm1Iq87P+TnclAMcZs?=
+ =?us-ascii?Q?UZ913Qd+uflv9p1UfJcPLCZ0y6+2PEcOheLVqOVKfD7e5dINrbdrD3Bd9dRd?=
+ =?us-ascii?Q?+xfN/AdsCeiP4mnYWjtY54PkA6J+VQfqk5MT6zVfRTPg55hO3YXETUQ/2RTw?=
+ =?us-ascii?Q?qURvSPJuSXsNTZIdK2MJqrXTl/m/Jz+Xp0AS7Vp88IK6G/fODY22ARjcDgJa?=
+ =?us-ascii?Q?R2XmLo4RaPoAxPzAMvK4xggxUvT4LhKzL/+4Vy+zzY/BskLWkxMsZtMpwahV?=
+ =?us-ascii?Q?xbBN5INy8SlDEoS8qSfAYLKQBwcdTDNyHwBwuH0zyiw8rIvhFSmXugdq4ejv?=
+ =?us-ascii?Q?/Cth9u5TPGHKDkzuo7ppw60R3EEY3w0A9EIcBaRhrnK4rBPwRaJyDF5PXS22?=
+ =?us-ascii?Q?/cFVaKwCYwqocPjNA9zbsv5qK/E0bwEmgMEdvo2niVDQloonVIqWMyNY3MgT?=
+ =?us-ascii?Q?5rB5czBZqQmYgAxVdYHlryTvJstP4HM1FYNl0F131Z2aa+Pd1HsN?=
+X-OriginatorOrg: codasip.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8879eaf1-c719-4a9a-152b-08dec180684a
+X-MS-Exchange-CrossTenant-AuthSource: AM7P192MB0787.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 14:57:18.4496
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0d91ffef-bb81-4cbd-b9b8-552583685f20
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Jx4Zt+wNnAYcxMBd/9prEUijl/MC7IiRBS+r0AzGegEbRvrGWuQHIg2rZGYc3lsrn6i4VRHH8HiYr0J5MtTZDUDHMgajkGfTsYkRfKrXwzUEJFtnkwQvKsHD7iT66nz+
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1P192MB1665
+X-Rspamd-Queue-Id: 028F14000F
+X-Stat-Signature: xfms1hn46fbbph7tfbnuxp435zw3fzsp
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: bwfpdiiwcm189eeeoehwjpipp67xe4ga
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780498558-293760
-X-HE-Meta: U2FsdGVkX19DhWixHdB9U1WjNlPY8qr8DZ0vr1jHBtc2Nk7tML437nwHt7SgDsJcKs2VowPhsUQq8PKuT1KmFUEPPRECcz3yIbPI2VsiTifotTzLDAhem4FMSOmFu0rFeToZ3znv9L+PXseYtRAuHc1ieEQlK9k1An4/0JKdWPJxORc3ZmmMYNN5eFs3EXVvaatbSH0KIRjCSw9bUY9DhA2SPtGM+5ejP8QCxIxuWElJg/a9LnaAZjo2rx7s9LC5ohkEFQB3a0bhiQEB4Fqde2YxVjmyqQ9vARBBuGKlnAdTgyQgy77HGUP1g+Jdvxa905Enqy5cApeew0Knm8r3gk59bQF5ZyOfc6zMuYNbI/OglVuuvKEbqs5l+zWKfhofJL54F3gMH9hWmD7e/cgvVDW0kqzsRzSTBPqvDn5IBrAk9kdEZisCTpfPO2LRjB1MZsUfgvE24vjup5ZlvL3uYXHhkwwxHmqrGp66TeCvK4D2PpQIotEyURFsMFXu/nG1xa4+Wy7BzMtMF26n094lmQO16Uec2dbxJkud7GE1suDg/5i/bI0F516hmqkIzIkJU505jt7X7n1oBFUmth1BrfI64ZUOPBiimpvFYcecPLrovugTHNPcbddgg4yJnJ1luVMyxJSiNNHFf/w2jlElbiRkBTk8Asoc7ecvePWMxGfz/PMOKmoDxQOT/vVAZuIiwj6Nrj0fCrukPtkd+63PFZ61t1DmOkd8PlWlO1G4EgL3qndeotAEQot2UoOeMXIYqNL4s9l401RfdVSrEmKojBm+8hrPhd8Qbc+lVxxIvNo/BtcamxIDd5TYLq6iiQ4HrrwN0/jR0wFpN0IjTO01gq4tIVRrhGBdWnYQNBWg4HqrOkcoU7l/z+Bc99oPTD7qKoCJnJOZJdiW1px+5qjS3nVa8W7+52WzJfOxkxywWTuHkI140unrzP7siEP9hvQJF2Onwl1W71SyoYyY1/s
- e8PwlhFy
- eQc11THBWNrvNEaURybDdK9EPBNd12Uzmyp1Ds9V7vZ18MoYRYRm722CPEuj9CN2z9zil46aana0yMUGdBIF5I0pdCHnM79rxTyzzWOpaXbQLRmyF6iP3ZcSGEIp+8QZ9pJeXrkqLqSQqrjnKFf/YneL+hL+xnZfgRBc8Xw8VmdkMO0iC+m15uezIp9qjKVFIjOarDtMalWN/5qTP1jOIv4zfV9P0xN05yrreyR+W6HHAyeITX8tVE3j4qph8yDiLWcpcjAfucLYEHlJnS6I68VnQm7RNGY/y5t/hKa1JZIRYoK8P/bZbjyRBmcvzbs1dclnL3cfPXSSD8yXU3yYJcR+z+I2HRndcON7FmPy68fd/2zkXEsqgiphUsqPTlIA2zFM2M9bMRe9o6eRMtu3GSvx03PCWbDCYf4Rt3ieiSYkHSBCc1RUQgM7P5RIHQWVu/8WThgRbEhytS9Sml4XP13iZZqYVvEVNg6yM3ntn+XedntAOP12XKsTkyQ==
+X-HE-Tag: 1780498647-936401
+X-HE-Meta: U2FsdGVkX1+MBNLf0tpg8aHDdPxLWVEljEe+dkWZuPtAgwtV1TKx0UD7rPuxU2a7eQ26+fqNubc1P77SO0SikgS0F6S5uR6KUSdXNJ2ZNbGkFVbUb/GAQTtJ1CRok8OxIVbKmEXqkbEDG8Cw8E0Ppc+Jep774/NGuYHGxnjVxTrHQ70ynWIoDVIJGDiEG9fPnrJpvVvQvwAad/r2vqypmiOwd6KoPeeAR+qP/KYel5TRSROnpVuHrOygH/E6bQe9NTX1uEZOYGgORUKbgQIt2iHrTIk5Q/Tuathd4iTcgdi/VHfVpiPwU2w0ogmik0JjhVatbnHTUJ9YbD6zzqHKKRsfZK+6vwet4c6sI6pw+yhVHlliQVElgUYSvXxHNEAEfpvXOUmTNrXO3lTfQvXH+CWpH2Ggr5p6TpiBOe/xKQ2zLppqqftQYGswiJddjCS21xpXQYU6WjDuqtC2Suhi1moKESzEKBIEf1MENBofzW5DxIB8gEsglbsljDrv4N8jIz904+vASuyAkRVcgjp2fVUFi1BXsxbxH+dFvNyo7taO6f6daRhb4H0M3TJbWoDaEBCERGHuWM2qtwVMeT/3Pe6Kvkt7JXlZ/LCAtiiRQP5dMZ/MR8El0NnFo6xqnxHn9ZR3s2mXeeUW/B+TizH3jBafNQ9X8pgUuZzJkHL62yxIDtnnj95Pn939vDMFCUCaeKyn/v5BquDgnNuwTmdZ1++4sXB2gBZg32cr8Ox6p7+NEJ83FriQYwQLq+mZfZzQ7wtiIV+P27pTOuClFi7WyIrzOM4XkELIgSuMnl4RXN5jLN6kOGUo8A1+BD/6nlyoPsgPvTFhAmy3pP8D3z/5TTS2CJQyiel5+w102Pcq/MZyQYecpsFlNHqB8zkZ2O2XHyzg8aYZ5Yq0OjS7qjA822VCf151R9Gt+9kpuquQP6ehO9qoJmPihPVHKR9SRGaPFVsN3HZGRcsOiZUW070
+ Yuu/ZUNi
+ ySzYYDZ9r4KxK0RmvpCI5854NJwTQLoL8IFKuFYeKHmQeN5fxUtfLHxTPJzXo6T8ZgcEbtmb2vdnC0CoKeQ5QBvQebTtJMuwLosGVrmFNgCaGz5UwZXi/6KoRBfwz8BPgUXpS+ML/az8/zJslHEz5IvdU2szxd7QQRhZj5FIIdnIU+HiLE5FcX969/VHWmMYVRnu6ASkK8dG5B94tzfdOPqF34CLZkoc4QVz4Tl5YIaV8RqnspR75nbB9XZi/0wpl22oC6zmxjGGVXqhW5bF+cR5Z56fBvxeDY5ZxXQSq8xWaQFhoy/wSj8IyeTYFH8K/fSTCxIn3IKDNnwBbgYgshY+MXbuRRpTicn1Gw5OxCAj1LcZ7QLNhwmwKbF/w6O+ni/q2gq5myD5x/l/BNZ5bv8m+uPZyrcPWbJf/kOnoIJ3uvg4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,26 +172,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 03, 2026 at 09:05:32PM +0800, Jianyue Wu wrote:
-> page_cluster and the vm.page-cluster sysctl are only used by swap-in
-> readahead in swap_state.c. Move them out of swap.c together with
-> swap_readahead_setup(), and make page_cluster static to that file.
-> 
-> Rename swap_setup() while moving it as well. The helper is internal to
-> MM and now only sets up swap readahead defaults and its sysctl hook, so
-> the more specific name matches its reduced scope.
-> 
-> swap_setup() previously lived in mm/swap.c, which is built
-> unconditionally, so the vm.page-cluster sysctl was registered also on
-> CONFIG_SWAP=n kernels. swap_readahead_setup() is now a no-op stub when
-> CONFIG_SWAP is disabled, so vm.page-cluster is no longer registered
-> there. The knob only tunes swap-in readahead and had no effect without
-> swap.
-> 
-> Suggested-by: Baoquan He <bhe@redhat.com>
-> Suggested-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+Sorry about the mess. It's my first time upstreaming something.
 
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Just for future, please send series independent of each other not in reply to
+> other series, and if there's more than 1 patch, send a cover letter and have all
+> the patches reply to that!
+
+Sure, will do that.
+
+Best,
+Chris
 
