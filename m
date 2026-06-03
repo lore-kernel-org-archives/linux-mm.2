@@ -4,83 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A271CD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 04:27:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F098CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 04:44:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAFAB6B008A; Wed,  3 Jun 2026 00:27:17 -0400 (EDT)
+	id 7737D6B0088; Wed,  3 Jun 2026 00:44:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5FEF6B008C; Wed,  3 Jun 2026 00:27:17 -0400 (EDT)
+	id 7242B6B008A; Wed,  3 Jun 2026 00:44:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B76616B0092; Wed,  3 Jun 2026 00:27:17 -0400 (EDT)
+	id 612BA6B008C; Wed,  3 Jun 2026 00:44:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A7B1C6B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 00:27:17 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 651D814021A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:27:17 +0000 (UTC)
-X-FDA: 84837316914.12.B0E946D
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 79B7EA0011
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:27:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oqBR8AJW;
-	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 50ECD6B0088
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 00:44:52 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E5F93A021D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:44:51 +0000 (UTC)
+X-FDA: 84837361182.14.A5AC47D
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 131C714000A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:44:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H7XQaTxB;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780460835;
+	s=arc-20220608; t=1780461890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EHa5eVMR4HXRrhIH0Z/X3J8xy1NBtxqzlOfVAuzIev8=;
-	b=fLaOcXnGCbh9vyUfiBZAmJe3hLT6gRQiHC0ina07p3xqyzNz8O7x5i45Q/zyZZW4b4GPeH
-	mn3AC8+131EEZNX2OsnrWKjp1Xo9h6WJKQwE2/HAUZQLI/CDD2dTg3lL80WlXqe3WhPdi1
-	LFR+q6KWyPVjW1anc7E/RiyIVYODe4I=
+	bh=Xj0nD0QD/WNmMfrUXCn9Q5TSzWLvSSnzm5MnjEnC8kQ=;
+	b=LqE7d2f7yT13cYGZWpHeUtwxXrL9Mf7DwMeARpbjMO64ZY9odEw2nafcMD+jkV0c/1v1Vl
+	jEX8OZ5cwwNlDEVmlGXBBwbhGm56SNC/T66PeEXTIMOFceTq//gJp62vAsfV6RvYOrI7Jr
+	Gkgpjv9Z0LLySNIn6k/xOg0vUR+j/zc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oqBR8AJW;
-	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H7XQaTxB;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780460835;
-	b=vSJ7s19GcdzbXgnEe/sJj7dnlpwjyoSWhuESxBMxk3PeeYr3lpBeS3ifAbwRK+9vbU1xbP
-	d0tQtOsEz/dxrZ/JW5+l7AO8ZEW9mG2PQTYpD4390NcOBPEKujcQh5obb9jJ0guiPSkuiw
-	luC+taP4nqx3u1E21+/T2jPc1kx7wis=
-Date: Wed, 3 Jun 2026 12:26:57 +0800
+	t=1780461890;
+	b=4xiiB/LwPaN8r3IoUhkalA3Z7/0MckRXOmE+sHdyoXcQ1nVtTdd+ujkDKpsx+I1vb+G3HP
+	M3QJSqFoS6+/sWNqNgrgEekdW96B1U8KAbAkhNJFKcanggZgPfdtwpOHP4iqqKUd3GD2UU
+	kdJ24Nwk7nHlrMvvr5NpOl6hVnb4g/E=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780460833;
+	t=1780461886;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EHa5eVMR4HXRrhIH0Z/X3J8xy1NBtxqzlOfVAuzIev8=;
-	b=oqBR8AJWKswu+TUBJI427l7tMXW46i5pJVFjhjvhm03A1vjbalG1LDflUcBusdBkf08nY6
-	AJL7vei+Q9OhyMld6u24rBVtnjyCuLKk6i5s8Q1STvlrLXOpcfJA0PwggLvGe5AjfkPw7L
-	KGZ+C6ZLKPOwXjgKjaF660P7CRHFkDI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry@kernel.org>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	bh=Xj0nD0QD/WNmMfrUXCn9Q5TSzWLvSSnzm5MnjEnC8kQ=;
+	b=H7XQaTxB33HBNwRGqtmsRiVQBxgVHF/d9blO8P3L26M95U+NwvCotTQfsN7Tz+YglGBoLI
+	kyBaTd4fgoO0wu/LWpkH0Bm5GswE6Yt8fHPDFaSxexO0DfwmxH8WaXqtR1mpPWw9xExSGx
+	yJ7IEzomxULbP0YlFDQ5qfIaAnLAtco=
+From: Lance Yang <lance.yang@linux.dev>
+To: hannes@cmpxchg.org
+Cc: lance.yang@linux.dev,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	shakeel.butt@linux.dev,
+	mhocko@kernel.org,
+	david@fromorbit.com,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	qi.zheng@linux.dev,
+	yosry.ahmed@linux.dev,
+	ziy@nvidia.com,
+	liam@infradead.org,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	vbabka@kernel.org,
+	ryncsn@gmail.com,
+	zaslonko@linux.ibm.com,
+	gor@linux.ibm.com,
+	baolin.wang@linux.alibaba.com,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/slub: allocate sheaves on local memory nodes
-Message-ID: <ah-naIiz09TTBpXo@fedora>
-References: <20260601095706.106551-1-hao.li@linux.dev>
- <33506b25-ab2f-4f31-a380-7c0fe65567a3@kernel.org>
+Subject: Re: [PATCH v5 0/9] mm: switch THP shrinker to list_lru
+Date: Wed,  3 Jun 2026 12:44:26 +0800
+Message-Id: <20260603044426.54863-1-lance.yang@linux.dev>
+In-Reply-To: <ah9PGv12mqai84ES@cmpxchg.org>
+References: <ah9PGv12mqai84ES@cmpxchg.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <33506b25-ab2f-4f31-a380-7c0fe65567a3@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 79B7EA0011
-X-Stat-Signature: k4fm8faxp1d6f64bdnzb94hfr399h8nz
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 131C714000A
+X-Stat-Signature: hpom8fy5poka8zswmam5feny4jgx9anj
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780460835-66006
-X-HE-Meta: U2FsdGVkX1+Wn0xQ+GyzaG+RflVjBAlK+2hXZnn+022eUJybCTRnUF5T5Iu+h+LPMH3dVwmVUVZLD6vWPtU6qvJSF2MZE0VCTVvhhgs1YbgYYAz/SGOX/e4iFOOc2ISs1Bz6R/Lv5QfP6Z6ug7oodN1RNAcDUzLwRvtd2WGyuhpqhxdgl4AErAEhlArIbhtj8kKNcR01QGIG4FbGhciooENGiw4QRp4+MwLZ/OGkEsXST2yClbpc1Sl1/4GJj7P/fSyhVVvcWMg4ZeAhKfmsIB29/uxyKEu5E71KOOpbaxZniaC4OKC/JAmg1Lrknmjh3/R+Mhm/nqne3Rg7J3BUsUK/jZ9YpObYniopBPL4pczC+2jNbp8BrqPIz8eXIfnXipjc7zDXpgYr/cJScyTIMu/LRDuh0KZeAAjRcjq0EmzlUgAodG5FbRJsbUl8rr+IEH4P0ib8w8KyBVOqHClH5wvhXeIpr8WQyISlVKchWdmMbZsqdROrbIBnNsuFJCXeUIZ9vPq9bWgRb3H5IK5yRxtGSk6yJJLsJJnRuRZpSwGXgfTPJYzAmlBPJth2+2/IA5TnvLUWqQu4IqGflxVT+mbzLeV8v214TqYoxAUCCaFPIX313gAl7PlOL9hFm60e7gIweYucf7YT6Yh4nImM9HVJDGpcRA9ESoozrIqD0bN0G3r4fldW4chaQfRN5kUN06eUmAiDXnH3jdEscPxgS8AfMuAlTWgxix4ou4BFI3C+87z9w2IOHrMxh324LiRsCdiqixKkjjmgNnvkHbJLyZbcxSTXWWHu7dUafvVa2UMic4WzgZ73F1OHSCtIAC498iIf77fKnRmm2TFZLQHRtI1LINFeXa/fyg+ftDHzfyI4Q+ETB5wTKJz1j/lqefD+xPKfJMVJGWRnF6L8TyMLE+ac6IAaVuPBf3jztiEjW30Iqms1U+v/RFVXboC4N/i7BU6YGDlh8qh6Ej1Js0V
- RZAZ7kku
- wocfW840YVkPiJ4yUEHW5cHj0VR+Q0JAK7ubRPG2+7Ryze7I+FUaAbwhLsirrIG0xdf99xqvwkWebdmCltyCHq4jmQSj0H91nf/P6Hljrgj6WgX7FcptmSyBDgTDP8z0WZFhm8FjY05BaGhbtyqgwGsYAAtJBiHT50KD6x3eZB0U9a879mJUWM1LsgRH+ZKGMrThOZrdjNxFZQm8=
+X-HE-Tag: 1780461889-339611
+X-HE-Meta: U2FsdGVkX1/g/JpdV3kTiBUP32ePIcdE0Qxo/GZdLss6H7XDwoPesciYqSuLGgRk4lIfq8OwVS1MOomHFBozqCIuVy8euD3Tn3eO0tEwyztzWS2kkVcGjM4s5YyrBxO0r25cpJIx8toXyS6O+6HXLvJp8nHR5db1Uw5o3XP8Ggd2wJ3yR4EAJzLQm0mzMYn5Za3KPupYeqAUSQl2sVNeuKRfJBz7ilp7G8Gz+DkONClJgtsucv3+30JdjCXt4KEIssK6wrAFtqUPdiATHpZOq/8XHw6P5RCAHUesXnLKNZriDyr0FbmW+FZ5NXKdxOsterDvSmeCDHfOuJCNUuDgl+msP0wPLlz6j5Nr/C4OUXjSLENVfefyanZexvGsLgm0x1QCYfN9/aXJcabE4cVUumMgUXhmqZ2Lc1zKVH+aIRN6Fcw0ym8u9OtigmLQSldAOrZH1uwaovmqmVy0RXN6D8ykZOyESvv2W/2sD3i9ZR1hkXZ1CGqmVfvgBEwN4jCR2Xh5Effldw0GxdKt5qI2Vwx9J8hvgkDPSleMyiI2kujKSEE+xMbCkmWrPRHiF8BqtLHN000FQNkX/1NsIeBxBJsbOhOp7ve4cNCtxKH9/sAmPw4LqVt8UZo0sDQVkUTv1cOp9r83/Vv4qro+Oic6DBYI6QWZ/YAkZUd7GmSeLMQ5q0EppHdTx1noYbxYXrtE8Nbm9zDtgeixSAU1myysIA3jsKHqCflqaize+xPM/MwFdvTpk+aCc8aU6+Se+WFJqZvvR+wls6Sln42Pt/ycIyyxU8xAqRQay6egzTlEk4DNLaosxqZpNv2J8T1cxOGzkma789pje0FxrsmE8+iGeXvLZNjkndyWiICzXnAT7fDfWPr0zvk6L5gE2kRbHo3NoNiNJNWDpxfK00AlJjJ9SZka5M5yIfC2GDF9L+WCQr1d6S49nnSMqUQrPdsasrmNN4nLeFpRNrcA4K7e9qy
+ eOOESLgG
+ LPSV5VWcIPKC/uWt2vfkbrMQSAkC7zZH8vDBqGtuyEWIypZJTtR0emw5JxzTRT3N65l9RY2xesGXySUvfoJLp2rczQpWDsgIuRZM6XXrr7jdYV+hDL5FzKzHgwWM9dhSMKo7rkkRIkVmBIvy5RnK6TwFX5n7rbHrnG66Wpos2/K9h+c/Ktx8a2LloW9phJplheq81gYE4IWJqDJe/UHQdRiKRkJ/wA3MDxSKrt+WyIsXqA/MUysPI3XakHfyzPTKsR+HmV/b5GnHK/C5o1Uqtnndv9k6jwmnFW9zEP5MlX054UeWqqPvGXhHLMx/dQzvSVATj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,64 +113,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 08:28:16PM +0900, Harry Yoo wrote:
-> On 6/1/26 6:56 PM, Hao Li wrote:
-> > Sheaf structs are exchanged through node-local barns. Since barn structs
-> > are already allocated from their local NUMA node, this patch aims to
-> > allocate sheaf structs from their local memory nodes as well.
-> > 
-> > To achieve this, the obvious choice would be using cpu_to_mem().
-> > However, init_percpu_sheaves() and bootstrap_cache_sheaves() iterate
-> > through possible CPUs, whereas cpu_to_mem() is only initialized for
-> > online CPUs. Therefore, we cannot use cpu_to_mem() and instead need to
-> > use local_memory_node(cpu_to_node(cpu)), similar to what
-> > __build_all_zonelists() does.
-> > 
-> > The primary goal of this patch is to improve NUMA node locality.
-> > Although the actual performance impact is minor, it still yields a ~1%
-> > improvement on a 192-core, 8-NUMA-node system when testing with the
-> > will-it-scale mmap test case.
-> 
-> Oh, nice :)
-> 
-> I have a question though...
-> 
-> I wonder if would be better to handle this by e.g.) not returning empty
-> sheaves back to barn and freeing them if the node id doesn't match and
-> it's not a memoryless node.
-> 
-> init_percpu_sheaves() and bootstrap_cache_sheaves() are not the only
-> places that can allocate sheaves from remote nodes; sheaves allocation
-> could fall back to other nodes and then SLUB could keep reusing those
-> sheaves from remote nodes even after memory is reclaimed.
 
-This is a good catch. In addition to the fallback mechanism, task migration
-between CPUs in __pcs_replace_empty_main() and __pcs_replace_full_main() can
-also mix up sheaf structs across different barns. So yeah, changing allocation
-locality is not a silver bullet.
+On Tue, Jun 02, 2026 at 05:46:02PM -0400, Johannes Weiner wrote:
+>On Mon, Jun 01, 2026 at 04:36:52PM +0800, Lance Yang wrote:
+>> As the changelog above says, the old queue is per-memcg only, rather
+>> than per-memcg-per-node. So reclaim on one node can still walk the whole
+>> memcg queue and split underused THPs from other nodes in the same memcg.
+>> 
+>> But I think the new one can lose reclaim in the cgroup.memory=nokmem
+>> case ...
+>> 
+>> With nokmem, the deferred shrinker can still run from memcg reclaim,
+>> because it is SHRINKER_NONSLAB. But the list_lru is no longer per-memcg:
+>> 
+>> __list_lru_init() clears memcg_aware,
+>> 
+>> 	if (mem_cgroup_kmem_disabled())
+>> 		memcg_aware = false;
+>> 
+>> so list_lru_from_memcg_idx() falls back to the shared node list:
+>> 
+>> static inline struct list_lru_one *
+>> list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
+>> {
+>> 	if (list_lru_memcg_aware(lru) && idx >= 0) {
+>> [...]
+>> 	}
+>> 	return &lru->node[nid].lru;
+>> }
+>> 
+>> That makes the shrinker bit unreliable. __list_lru_add() still sets the
+>> bit on the memcg passed in, but only when the list goes from empty to
+>> non-empty:
+>> 
+>> bool __list_lru_add(struct list_lru *lru, struct list_lru_one *l,
+>> 		    struct list_head *item, int nid,
+>> 		    struct mem_cgroup *memcg)
+>> {
+>> 	if (list_empty(item)) {
+>> [...]
+>> 		if (!l->nr_items++)
+>> 			set_shrinker_bit(memcg, nid, lru_shrinker_id(lru));
+>> [...]
+>> 		return true;
+>> 	}
+>> 	return false;
+>> }
+>> 
+>> If memcg A adds the first folio, A gets the bit. If memcg B later adds a
+>> folio to the same shared list, B does not get a bit, because the list
+>> was already non-empty.
+>> 
+>> So in the A-first/B-later case, reclaim from B may not call the deferred
+>> shrinker at all. The shared list is scanned from memcg reclaim only if
+>> reclaim runs from the memcg that has the bit, such as A here, or from
+>> global reclaim :)
+>> 
+>> Anyway, only after the shared list is emptied does the next memcg to add
+>> a folio get to be the one with the bit, IIUC :)
+>
+>Sorry for the delay, this took me a bit to think about. The shrinker
+>code is a mess.
+>
+>I read it the same way you do. And this is true for all list_lru users
+>when nokmem is set: we just set random nonsense shrinker bits.
+>
+>HOWEVER, the generic shrinker code fixes that up by IGNORING random
+>shrinker bits like this when !memcg_kmem_online(). And shrinking
+>correctly happens only against the shared root queue when the reclaim
+>iterator walks root_mem_cgroup.
+>
+>HOWEVER, the THP shrinker explicitly sets SHRINKER_NONSLAB, which in
+>turn overrides the previous override. So yes there is a weirdness: we
+>get the root cgroup invocation against the shared queue, and then one
+>more time triggered by that random memcg bit.
+>
+>The most direct fix is to just drop SHRINKER_NONSLAB. It declares
+>independence from kmem, which is no longer true.
+>
+>Cleaning up the shrinker code is left for another day.
 
-> 
-> If this works well, we probably don't need to handle it in
-> init_percpu_sheaves() and bootstrap_cache_sheaves() at all as they will
-> eventually be freed, while covering the other case too?
+Thanks for working on this!
 
-freeing the empty sheaf if the NUMA node mismatches instead of putting it back
-into the barn is indeed a good idea. I like it. But unfortunately, my testing
-didn't show a clear performance improvement, though there was no noticeable
-degradation either. :-(
+Wondering if this fix trades one problem for another, though ...
 
-I also did some more testing on my patch too. Under CONFIG_PREEMPT_LAZY, the
-improvement is only about 0.5% (sometimes 1%). And when switching to
-CONFIG_PREEMPT, the patch doesn't seem to yield statistically significant
-benefits, likely because sheaves get mixed during task migration.
+Before this series, the deferred split shrinker had a real per-memcg
+queue. Even with cgroup.memory=nokmem, memcg reclaim could still scan
+that memcg's own deferred_split_queue:
 
-So, perhaps the performance gain just isn't worth the extra complexity. It's a
-bit frustrating, but maybe we should just abandon this direction and keep
-things as they are... :(
+memcg reclaim -> deferred split shrinker -> sc->memcg->deferred_split_queue
 
-Thanks for the feedback anyway!
+With the fix, nokmem + w/o SHRINKER_NONSLAB falls back to a
+non-memcg-aware shrinker:
 
--- 
-Thanks,
-Hao
+memcg reclaim -> skip deferred split shrinker
+
+root/global reclaim -> deferred split shrinker -> shared list_lru
+
+Is that expected? There woud be no memcg-driven deferred split reclaim
+under nokmem, IIUC ...
+
+Not sure what the right fix is, as I am not a memcg expert ...
+
+Cheers, Lance
+
+>Andrew, if there are no objections, can you please fold this?
+>
+>---
+>
+>>From 6787efabb9584824c196bf01c517d93aae3764c3 Mon Sep 17 00:00:00 2001
+>From: Johannes Weiner <hannes@cmpxchg.org>
+>Date: Tue, 2 Jun 2026 17:11:46 -0400
+>Subject: [PATCH] mm: switch deferred split shrinker to list_lru fix
+>
+>Lance Yang points out a weirdness in the list_lru code with
+>cgroup.memory=nokmem: in this mode, list_lru collapses to a shared
+>per-node list that holds the folios, but __list_lru_add() still sets
+>the shrinker bit on the owning memcg.
+>
+>Usually this is fine, because the generic shrinker code ignores these
+>random bits when !memcg_kmem_online(). But the THP shrinker still has
+>the SHRINKER_NONSLAB flag set, which specifically declares an
+>independence from kmem. As a result, the shrinker fires twice per
+>reclaim cycle: one during the regular root cgroup scan, and then one
+>more time triggered from whichever memcg got the shrinker bit.
+>
+>Drop the flag, since it's no longer true. The deferred_split shrinker
+>then behaves like every other list_lru-backed shrinker under nokmem,
+>including the non-kmem ones (zswap, workingset shadow_nodes): skipped
+>from memcg-internal reclaim, driven by global reclaim only.
+>
+>This needs proper cleaning up on the shrinker and list_lru side, but
+>that's scope for a follow-up series. Just make it consistent now.
+>
+>Reported-by: Lance Yang <lance.yang@linux.dev>
+>Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+>---
+> mm/huge_memory.c | 3 +--
+> 1 file changed, 1 insertion(+), 2 deletions(-)
+>
+>diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>index 72f6caf0fec6..aef495891f8c 100644
+>--- a/mm/huge_memory.c
+>+++ b/mm/huge_memory.c
+>@@ -956,8 +956,7 @@ int folio_memcg_alloc_deferred(struct folio *folio)
+> static int __init thp_shrinker_init(void)
+> {
+> 	deferred_split_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
+>-						 SHRINKER_MEMCG_AWARE |
+>-						 SHRINKER_NONSLAB,
+>+						 SHRINKER_MEMCG_AWARE,
+> 						 "thp-deferred_split");
+> 	if (!deferred_split_shrinker)
+> 		return -ENOMEM;
+>-- 
+>2.54.0
+>
+>
 
