@@ -4,170 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8059DCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 13:55:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9487CD6E57
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 13:59:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E84236B009B; Wed,  3 Jun 2026 09:55:29 -0400 (EDT)
+	id 00BA56B0098; Wed,  3 Jun 2026 09:59:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5AFB6B009D; Wed,  3 Jun 2026 09:55:29 -0400 (EDT)
+	id ED7E36B009B; Wed,  3 Jun 2026 09:59:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D70E36B009E; Wed,  3 Jun 2026 09:55:29 -0400 (EDT)
+	id DC6886B009D; Wed,  3 Jun 2026 09:59:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C96906B009B
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:55:29 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78D65A024D
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:55:29 +0000 (UTC)
-X-FDA: 84838748778.18.B4E0450
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010053.outbound.protection.outlook.com [52.101.46.53])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 413431C0008
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:55:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=42gugWY2;
-	spf=pass (imf18.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.46.53 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780494926;
-	b=8KFWr1f+5tDSyvL8lGhYG/uzwHo8I3zlVa9hjgAzXoYTWlWTOkcTh3+wO+yYjRBcwJbUWp
-	XT6NXEzMsHwngr9P35adFAukSFEKu8vuHOTgq3b57B45gquwYFVwDV3NCrUE4wWGtZ34e7
-	pxq9p+IqzcdihpGHdJQ4ZuyhmAtyrU8=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=42gugWY2;
-	spf=pass (imf18.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.46.53 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780494926;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C78CD6B0098
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 09:59:53 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B16A1C1625
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:59:53 +0000 (UTC)
+X-FDA: 84838759866.20.95E9245
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A807D180005
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 13:59:51 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="etVZk3/a";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780495191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uE/McTSOOrB36ftjLqW2xMrfuoTeBjIHK1FVOjhQgvo=;
-	b=FSBJ1TmH4+6ot6KXC5K7wM68Hb0hG78xD6Zazh+bNu/MpYQyyl4Z5ZuEN+afGwDixtYP7R
-	PMS1Wo7qtcpyloQVpt5aFZwfNg7KOtTc3QeX8FcKQfJFbOWuBCAy9GF2vhpuRnDOkCsOYs
-	GJniUyHbgLVLEe+NFwxlWvbM6Ys/S2k=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LexPDtBMIFjaN48llagl/EqL8Jcnx4tRMYBOxi5+BRFQVcd38vHXJAhTNVJwK9OMRdMZ3Zf05Cwi+jQHlW4gyCSImM1cdnv9Xw64Kx3/PnV5H1tOQ3zaYUzrr9Qxt6t/86hw9hqTPxp5dr/Hl2mMhboYSEFbe+YGS/wx45P3ilck1cR1o+HYyIu/X5dB3OwTGmgTUZDIKVTFnitm+pbwCa2LmgvujcNrsJc6uLrrC5nsm//rl2vtv+3daglKe/ZwtkZo+8WfCY7sifdSOXCEDvUbH2/ANKkZN3HdXjMD61lzf9KYSxN5AOiNPa6I/J3WZvD/2mwRESEmPwGvgsBe6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uE/McTSOOrB36ftjLqW2xMrfuoTeBjIHK1FVOjhQgvo=;
- b=HNU8iHI9bVysrIEJhlWrpgx9ZV0BPUtyiVQbK7AUq36HmubsB7n5ah/G8s2xDPcpWAWnT5Ozlqyspf+3D3ckHA2TmpfN1fguUWO2fxOV1sFf22dArOoObkcJEVSGgdeb6u1h4Ycpl3jKApTz3V4o6TXx76bWvsjDRUQZLaXIUjnRLfXd/K7q20xSCT0ragi/LCB+LFOiVjJRYodlQyWg9dBllVqw8x4VYLqOJUal9zRfaRTuJAvplVualkwrbTmlmCLTw82vo5zKALA4YmniqbU+Ya54SGN9OFZCRSMuvYfy55P/lGgMz0lpm0/PJDr5hTzheTMaWfBBfukNsiczxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uE/McTSOOrB36ftjLqW2xMrfuoTeBjIHK1FVOjhQgvo=;
- b=42gugWY2obuVzaZLzMirH+Avhivm+Y//HcknNF1gnDxxdSUNyN1VIGQgSULpE5+OefQweuCHFZdwY/73VA8PpjgUitet3RbwGaRLJBbqCoQOc9sjzEu8zEkI4HLip5x/g3Hr3b6Y38XP5gskY6dr6S3V9T0BDkp32L8q3mcj5c8=
-Received: from SJ0PR13CA0069.namprd13.prod.outlook.com (2603:10b6:a03:2c4::14)
- by IA0PR12MB8325.namprd12.prod.outlook.com (2603:10b6:208:407::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 13:55:16 +0000
-Received: from SJ1PEPF00002316.namprd03.prod.outlook.com
- (2603:10b6:a03:2c4:cafe::4c) by SJ0PR13CA0069.outlook.office365.com
- (2603:10b6:a03:2c4::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.7 via Frontend Transport; Wed, 3
- Jun 2026 13:55:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00002316.mail.protection.outlook.com (10.167.242.170) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Wed, 3 Jun 2026 13:55:16 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 3 Jun
- 2026 08:55:14 -0500
-Date: Wed, 3 Jun 2026 08:54:33 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Ackerley Tng <ackerleytng@google.com>
-CC: Suzuki K Poulose <suzuki.poulose@arm.com>, <aik@amd.com>,
-	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
-	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <ira.weiny@intel.com>,
-	<jmattson@google.com>, <jthoughton@google.com>, <oupton@kernel.org>,
-	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
-	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
-	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
-	<yan.y.zhao@intel.com>, <forkloop@google.com>, <pratyush@kernel.org>,
-	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Thomas
- Gleixner" <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
- Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
- Annapurve" <vannapurve@google.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
-	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
-	<nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
-	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
-	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Youngjun Park
-	<youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
-	<shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
-Subject: Re: [PATCH v7 07/42] KVM: guest_memfd: Only prepare folios for
- private pages
-Message-ID: <p33thsff5tucnebtya6e5h2rwb6c3f3szs7tfm3dtko3ajmlam@osbwd3neuktn>
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <20260522-gmem-inplace-conversion-v7-7-2f0fae496530@google.com>
- <d01cf1ec-b85d-4af6-9810-8107c0e2a4ec@arm.com>
- <CAEvNRgGzOnA34WyOHtkOx5MZDZhOHaXAe+nD75AiJsZ-PsTSFQ@mail.gmail.com>
+	bh=AhF+jUpU1E0204EIQ63W4XnUB7T83kejus0i2mjqkkQ=;
+	b=pwP1qn+XkmI7sqrlBKJbgiV0qezilNzfyNLQ2jvniqHJ5dAeEzoPZTgt4Uy+OZtG5BtO9+
+	7t2VPwNRmylOr11FbN7utSHc3nJuaAUy4fracYW+w6QEqbYYlGnmHi71wDHf8+hPKnXL7z
+	O+3CLl4jvUoSB9z4S9ouepkRPyT+tag=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="etVZk3/a";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780495191;
+	b=KcveHR/CrgTNl5hb9DZBlPLbaZ9+epO4K5WAwxNO0NDSg11PLiRB6kpFfvlwLnEd/NVIGk
+	9yeri7M/cPV3JqSs97nBH47r2zFIdtGs8j1S22DW/r+DYCLQp7z2qfro2ZsXbomTnBLRb5
+	hbShBswEMJRuhUoPfVCedQEcSt9zQwU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 131F56021A;
+	Wed,  3 Jun 2026 13:59:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948C71F00893;
+	Wed,  3 Jun 2026 13:59:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780495190;
+	bh=AhF+jUpU1E0204EIQ63W4XnUB7T83kejus0i2mjqkkQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=etVZk3/aXRNhvGcH3Bm6kbdy06t+JcMXHeruO2GnT/u6CtGXxBz8gfWLcADNEMK+W
+	 TrgH1b1J0MvahPjHWsUzff9yQnoRg1zcYs4RD762G651aDk+OSt8A1CowDDE8at8R2
+	 ytUnXImjFNGI1IoeZMrkD39QqUJHdMTAMWeoIJCpyABH9UHsJirRprFUWWOroEHiuM
+	 lEzJwr5Hpirzmly1jAEX5EDKKn3TwLd/iP3y/wuvPqUJISIi/JVf0XiiG3di9Mmawm
+	 NOlnD0DFIRpnMHBYzHIZq2SbVwtglNMvID+T04ePOW5h3np1YwRp0rEHVNzWVWoutH
+	 Y2cnIDgib1x5w==
+Date: Wed, 3 Jun 2026 16:59:43 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org, shuah@kernel.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	skhan@linuxfoundation.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, corbet@lwn.net, dmatlack@google.com,
+	kexec@lists.infradead.org, pratyush@kernel.org, skhawaja@google.com,
+	graf@amazon.com
+Subject: Re: [PATCH v6 07/13] kho: add support for linked-block serialization
+Message-ID: <aiAzT9TvGYjITiB8@kernel.org>
+References: <20260603032905.344462-1-pasha.tatashin@soleen.com>
+ <20260603032905.344462-8-pasha.tatashin@soleen.com>
+ <178046937151.468621.13398573538792303093.b4-review@b4>
+ <aiANtYRRDr5iO5QR@plex>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAEvNRgGzOnA34WyOHtkOx5MZDZhOHaXAe+nD75AiJsZ-PsTSFQ@mail.gmail.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002316:EE_|IA0PR12MB8325:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2450ac83-b963-462f-32a6-08dec177bdd5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|7416014|6133799003|18002099003|22082099003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	DBaCMzf+9vkWjRKtMZA4ov4QTb7BhoHEFrx7UZ05foVtL/hgw1VRha1iGr+H7aAHdakmFidBJ93V4hTfPxH2MV5SpnfnustqG0k387tY40M4VOB7RVdC5tpVDhKyodSwFzUZkom5HSTWW/hgJs6x+Zl55UhBCLmqZ6Eqce4p7SwvuxZPsl9k1N0W7Ur2sLz7aVbFTBZSy0L41GVW1B/3K/IrQo3nJqIFOnMaxVQ5TdOUs3UKcX7WtDmIBA/ZZo1XrTtJiKjWuTxAm2NG3/zcynbnRGQkcOVFisp/tOtjLtQJNxCWuLmPix+b376n6p8WTVO8YbcAxa2jmO/avWZ8efuhvXut5+rloti9ImuQtkMiA3nC/6SyppPaSZmwLh1k/mggEbnPChHpirexw5APhHT4Cs/Bx8reMlWwMxobujp5P3lc5mzbZE4hTwPICHDaTttq/Zb6IB/x6n4O5o4tqVbSkkp//Qnnh57QAhLwpm15BAoJowQKchZ192SE5I61mIUpoP/PeRuzG9Y9o+Nb9sVV+v/7TLftrBFcIfxxkCJFEu6/6iEI5VvdUvYoEEYYv3yMnuLU055c7i2u3wh48kzKXzqAFsKngEhxDwqwTaHg/2HNpd30Q1QaHKQYfTtahEYsyI/eDT0PRNsrJ9It8EUW0kWc4j9d8q+b4ItQL48k+ZML6/02e/MOhK512Wkw11xJ5qxAGdXF2urKwzCOpi81CZMOpWb1V8rrZlRhV5c=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(7416014)(6133799003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	xAHgQEoY9Mk28nMO1K9H/+gpANYI6S9l3DnxVzdVO2BoRVZad81bXZwr+30PkEnDR++uKUKXKofcywZ2E2Ie0hopL2u1LHLGfxiq5jqOw05wA9vV1Lln5/ArIHtlq8FtkDNUhmHWMr8hGMWZdmsf3c1yrTjbva6VbnPKmi2gCT49b7obcs2lOaLFIaNihvmSsVTWaKiNX4tVEb+CYGzxAalWOqPbBJrcDA2ZAksYVWr8bQO3J14q17c1mN/l/kTpApeTiv6W6/V9eXI+cGlZSrh63E8gRZLmV4/raJeNJOIsCLBOuKTLZny+urJYAEXAdaNtN189JpT2W/MeHQkNtrtPUK8nwh6Dxc6OS0ETCvokorHvwISc47x2/LqBjMTr/LDqBh5XlKyONrjL/9ywn2oHe4m8xnJ3SsAEeLEupTjb5Cn4zwRuIH0IwxuT/4qr
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 13:55:16.2050
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2450ac83-b963-462f-32a6-08dec177bdd5
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002316.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8325
-X-Rspamd-Queue-Id: 413431C0008
-X-Stat-Signature: wk7akroaui7bqhzznqjnyexdt6iazji3
-X-Rspamd-Server: rspam03
+In-Reply-To: <aiANtYRRDr5iO5QR@plex>
 X-Rspam-User: 
-X-HE-Tag: 1780494926-688242
-X-HE-Meta: U2FsdGVkX1/T4hAHcbwzfQuioAaViD/LfoCTloUyP5XMeK3FI8nRz/d16fE6S5K9hrhGA+7wbm1PZBhzINGkty9CLy/mPsz4humOV+o9mUtXY6CuSTt/z9ATiuNVGmyFzdkI4K6dMSLDzYPuGcqC91rlqsnLkMavxuK4KpnJCOp0ocBj7QloA5JTi9KDJY4tQA3oJgJvBTca0z+ej4mKs4fYOjX0sPlWsvkgcgu1NvOu1YsEB/JFRbp1R+d3xY7tmuHYLrPtlpmwspo2lUCSvfxdadyNU1eivJDk1Kz749wqEf7o8CNst5BgNgXOaUaiK7fWarA8oPiMuPwXS3NeAXkFfFM5vVR0EsM0GNPQ/gSKRk19/hMCfq32Iq49EphQlzjdRrS2o7sTakRojhn0Y94A9WQoBKZDM8hHJy+cvUm6gC0sDiHFEXBBS+ch7OJeQXtHXVjNTtkVR4d/FRHLYdhZYfYAzwmTikyGygfqVjvbm/HxWL0leBvMWT2SGEfkD+auvJfDroSrfxfLJw/PlRuN+zlBsZUrD62Ey4o5mEv6DPEhqJX/04zeWESclqdXGswqcBjl0z01uBPcVPyLG5uBQshPWg07endyGilV1JXsV/J7fW69EyqjAZtaTo/q0oddchVcArqWL4c2L/KVfKFEkydeMbOci9v0IAVzlaBckufa/CEKuIKPgri3RfGbbgYSbgMgvdCsxY1x2BescaJCQ4V1DKX4wAWQOnDoO/T9+Z4XnGFntj3szZllCa88KNXS2PnRzNajShGF4KY0BYxKR+J+UGTGmkmp4gSg7WH3rkJ9cEhWhCQEcn5Sph6+qwXkLC0qMQIeUaqVLUqZlfn1k6YJ3jtFqQnxE+Gu0INg6b3hRk2kCLAfrMN9X342902NGNH5SxzQfxd+jP6E1uEfd9Y4bK9YU5T0JtkxjT/iqp/h0yG8ka8eA1F4fjutFzdKuJpbNTxxEVODgFu
- hbsxyN7S
- ISNOYKwQsRiddOpjRY+5+qXqp8czTUOp2XO7OwwQFcbI/4n11oFYYX8/LeTUjawfdFBYJy3dzJriP6zMPDo9vrMep384FJNFZWtZ/6d374bC4qp7mepR2x9QMTL40fnwXOjoSi5xlqA3WQ5VgEmEQgDtgfeMH48UNeSCL6eZOLxXUFX7x78cJGnxKg8SbnpDDMa2m1x1rtdJwS+MPHxslQ2ON+BD2fQpumIUciKmU/6Q+9gPvQleh3v7c5PfTm6KUES94gJ0vutirbFq8LUqr/pKyZ8T8pVjPJa4kM+nra9y1zEgmzEhccJkZgZ1WmIBsIHvfYK92bV2DzRO6aEnFyFpZv/BsTqHwXaTSmCoXYNikLDUIDTZVaoh2Bc0zivcgx6Nd/dNGSXmNd1r1lgb1KAOIq3Rk8JzgRDwKG4uGmtTJUxEiOsQmDCh5hkpBl4waYSrJ+FaxLYIw6GS9OhZclyGJ7EZRZEKRuxd2e+JF32fbZDyJLTVpZJ1rigOx7NYAUsc/ea2OscN71VYR3sExBlaiYJn3CesMFqJpefkAWDegPSr+AuB0bCg5Llp4EFAMPPUIuGGysGRtCjuGaQmKXQ/GYL+DdR+OwTwTO4OZ54pqmz71pOQ5CEq1AoAgxpoPCC9VJoXk+ZXS/oo=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A807D180005
+X-Stat-Signature: 1s1jugtc7465dq78t79qjxd8go7em8on
+X-HE-Tag: 1780495191-515865
+X-HE-Meta: U2FsdGVkX1+mM9914FsctnIpogrIck8u/VpIuhK/R3Dtb6MklfEhlbQS8tpE5PNrbvPXb7z4X3E0AdmgxWRa8STuPg5ny+HsZBEjhQY+TtiqFxOS7uHQzQWNh/c2nLYeeAEoirLbVl7po1GcomYVKMCJLWdRvIxRuE2kE7gSElEP8nslW8AnwFv5mcODmnj9TEq1luYLRE+XNrVImBy2NDFgtb9BU5VIF4+RkfnPA9lhfybZ8flO8FnGuHckXcJZlMN7Cn4FP+wQby8SS3l/qYe1wjcMDnQBt4WrBoym8Q6lIVKvoqbw3RJY4b+UHMizy64aQYYHOqIEjrFa14QuUsZpBcq1yBdYMBfH5pr0wsEJbUMkQvt/f8ASeZOa3Govx/igsCHXNUd32zJKdIt7otZCDWpJ7eQLN/ZGwjPrUNp+AXHw4JnHjWWQ8wbJHpl+AAUemh3mu/G7yxSMgf0UprRQrXh+K6WSJzFRa61CpRLy4aXSiD5kTjca1214RjasElhrPAGYUac5OmUcoKXqFx6wBii6p7JYrkFRmRQebDFLExAjJzVNy/GDG3un/7F0491OE9W9i8el56Kf8+X3HTPvdrQg1uTyi2Hg/7ZWf1ZD1CgedaObFD5sVIYaaaUNomq7Z1fFA3qbdyN4lZKap3+cdtRjkogG4O6c4C8ggzzXV/7Tfe7CmXNTeuVyA8Vh0aVNnX+iupHKyiJFPbHwpvg99CI2Zsk5S2uQU8wVMduy/HFOwQObflm40JgUDK1QD3m66IzxcZ4VehQZ67xXaa4LO+rSqelud8VMG9pzr4rBt78VtgRr2zNL7AlaKE+BXgNA97ayC+LsR6lszXU0XKDEowzzUwPovmPpufnzJDulFTT/cc7+LUJNUdlRBcGXcgio04ChFDSu90FbDji2VhqwYtrQHweeQX8WJQS8n0drAxtS5W+IBhj/YialVAaWd7jR5wBCEEVLmaiJBgT
+ qbcyOML7
+ zjdXh+z+wHtjCMHdtOIv9iTChzuHcc8mnNTXEX2QDMzvqoHgXudl0uqSEuuHZ+wpfm+VF/JKvZpa59QUXUUv0usV398Z3o0MFcMvwqpzcKoqohja9f1PQ5kKahJh4gignpGtJnZwNWozDSclMLJNNQY87DE87WuE8zObjWq+kQS1pdrKGkuk15S5sCwRNEIeGV9U3jd+Gx8qaAX3x1W6OxYf/tBTZ3+77qMSnsvDqBtiN8BFsaZZ7+BLUOFDUs7HqIfaxWmgSp9frpAhhjaKvM0Q1MglzQ3Acd7F7voIXZOeN6epxVacaG/x2aw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,53 +97,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 01:46:09PM -0700, Ackerley Tng wrote:
-> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+On Wed, Jun 03, 2026 at 12:05:04PM +0000, Pasha Tatashin wrote:
+> On 06-03 09:49, Mike Rapoport wrote:
+> > On Wed, 03 Jun 2026 03:28:58 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+> > > diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
+> > > new file mode 100644
+> > > index 000000000000..8641c20b379b
+> > > --- /dev/null
+> > > +++ b/include/linux/kho/abi/block.h
+> > > @@ -0,0 +1,56 @@
+> > > [ ... skip 25 lines ... ]
+> > > +#define _LINUX_KHO_ABI_BLOCK_H
+> > > +
+> > > +#include <asm/page.h>
+> > > +#include <linux/types.h>
+> > > +
+> > > +#define KHO_BLOCK_ABI_COMPATIBLE	"kho-block-v1"
+> > 
+> > It's never used by block set and after looking at the following patches I
+> > found that it's appended to LUO compatible string.
+> > 
+> > While this works for LUO, I think it should be kho_block_set_restore()
+> > responsibility to verify the compatibility.
 > 
-> > On 23/05/2026 01:17, Ackerley Tng via B4 Relay wrote:
-> >> From: Ackerley Tng <ackerleytng@google.com>
-> >>
-> >> All-shared guest_memfd used to be only supported for non-CoCo VMs where
-> >> preparation doesn't apply. INIT_SHARED is about to be supported for
-> >> non-CoCo VMs in a later patch in this series.
-> >
-> > nit: s/non-CoCo/CoCo ?
-> >
-> 
-> Yes, thanks!
-> 
-> >>
-> >> In addition, KVM_SET_MEMORY_ATTRIBUTES2 is about to be supported in
-> >> guest_memfd in a later patch in this series.
-> >>
-> >> This means that the kvm fault handler may now call kvm_gmem_get_pfn() on a
-> >> shared folio for a CoCo VM where preparation applies.
-> >>
-> >> Add a check to make sure that preparation is only performed for private
-> >> folios.
-> >>
-> >> Preparation will be undone on freeing (see kvm_gmem_free_folio()) and on
-> >> conversion to shared.
-> >>
-> >> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> >
-> > nit: Missing Co-Developed-by: ?
-> >
-> 
-> IIRC this should have been
-> 
-> Suggested-by: Michael Roth <michael.roth@amd.com>
-> 
-> IIRC Michael suggested this on one of the guest_memfd calls, Michael
-> please let me know if you remember otherwise!
+> It should work for any component that relies on  kho_block. My proposal 
+> is to use this method for other common KHO data structures (e.g.,  kho 
+> vmalloc,  kho radix, future kho xarray). There is no need for them to 
+> carry the compatibility string in their metadata, as whoever uses them 
+> will include their compatibility string.
 
-That rings a bell. Feel free to add, or just drop the stray SoB, either
-way.
+So if, say, memfd_luo uses kho vmalloc, xarray and blocks it'll have five
+compatibility strings glued together?
+ 
+> For now, reviewers will have to make sure that if the ABI header content 
+> is changed, the compatibility string is updated.
 
--Mike
-
-> 
-> >>
-> >> [...snip...]
-> >>
+-- 
+Sincerely yours,
+Mike.
 
