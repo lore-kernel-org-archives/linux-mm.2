@@ -4,108 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B3E9CD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 19:22:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0E3CCD6E57
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 19:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9180C6B00AF; Wed,  3 Jun 2026 15:22:34 -0400 (EDT)
+	id 522506B00B1; Wed,  3 Jun 2026 15:24:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EFD96B00B0; Wed,  3 Jun 2026 15:22:34 -0400 (EDT)
+	id 4FA206B00B3; Wed,  3 Jun 2026 15:24:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82BE76B00B1; Wed,  3 Jun 2026 15:22:34 -0400 (EDT)
+	id 436746B00B5; Wed,  3 Jun 2026 15:24:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 729536B00AF
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:22:34 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 172F4A05A2
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:22:34 +0000 (UTC)
-X-FDA: 84839573028.16.B924504
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D2C4640012
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:22:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="i3/CeXQw";
-	spf=pass (imf17.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 31C356B00B1
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:24:26 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BD9261A05F0
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:24:25 +0000 (UTC)
+X-FDA: 84839577690.24.E0C3B1D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9743040009
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 19:24:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ClQ+uuBg;
+	spf=pass (imf07.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780514552;
+	s=arc-20220608; t=1780514663;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SzfTa5HCL1jfcKZlB3EuMMBtnPEwh0opU3X/4Q5o0kA=;
-	b=g8eh/NjNsbN0r7TLcB6BjLRcCcaVTEh5TjWYXRvoIvRORSsGkLM5AbBbWLDgHXgAE6iqde
-	RlU35bDRCJD2VWeyNAESGIB3QJ4q+YihFby6H2ZyRO0jbBuarWsKYwvWvCUfwUHCJrrkTu
-	S9wNA6u3Aqadee+/qoNvlfgkHlMYo/I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780514552;
-	b=NmLHO94hj9ltCcw8Osvy81HS6tlU2Y5IK1N01CvkcGbvqTZLwYdnv5+2o9wa+I95kS9W/v
-	nq41HJDYnpGNNZeQsPVfyG8fZ2ygJZpVGiS3SEMyKAI7JC/u2ENXBV2mJNSWUHWJ/Brmtc
-	0QUJbJSKoZ9NLzWRR6JkdOO6dep3QL0=
+	bh=9gfUHrdoR1LzqY63DNhYraq2XhjxJEOvKb6+mvRgSVk=;
+	b=5ZVuDyXrlEkuptN9EDP6lwdZEp+Q7rA0SI3CKwDhYQqhnSuAMghnenvUk+jxpc1lX3BkOK
+	Z5pzx1JPdEQsJQLchuys/VImBp+5w6/Yez1SXdpaQz7+/DsnRjIntYgutTx2Yq/xdOnrsp
+	ig03KkdNpp8dYwatdmWTHSKIgbgI/YA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="i3/CeXQw";
-	spf=pass (imf17.hostedemail.com: domain of dhowells@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ClQ+uuBg;
+	spf=pass (imf07.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780514663;
+	b=O7dfdow9vaxaZD0/ns4LQZtKvVnUWSKLxePgTXNB0eawZpHnGrHkpf+IXUhE2DkiuYK0YG
+	5Fw6aFrv/00zKiMoa+4tpgJ7SBFhTsuHFNFtuNNMSDMWjH+NIHvLgCBG+Vbp9uB+wJQNv/
+	iBkeDKNIRWUE8NyrPryWbietnVEwtPA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780514551;
+	s=mimecast20190719; t=1780514662;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SzfTa5HCL1jfcKZlB3EuMMBtnPEwh0opU3X/4Q5o0kA=;
-	b=i3/CeXQwYTAB/lF01W86EyYgx77uXSMR+bmEHBAEWjx/e9YHLz7COnJpnC4LYS1x/AcWEb
-	+UUg3PCFgTyEiHpaAki/JHjk0eERQ6MjT5d1FMXg6+cQoQz5qwlBVtDcGy1DIYzie7j1ZV
-	/mNz2FuzhjUUdOXbCgUC54HKkVyrGTA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=9gfUHrdoR1LzqY63DNhYraq2XhjxJEOvKb6+mvRgSVk=;
+	b=ClQ+uuBgMx2Y78gHTLyLTVooT3mRxb+8aLUpYgZdtc/1c7/WUQ5bLC+21L/2vUPEvLOlIO
+	PLlJyRlwEzw0Dg+aZIjpLmRiE7e8n7UMauGBcjwtgmmMY87eyiJRGakfxrnAb9EidjugUZ
+	eux+oygqWjUFLVLyT0cGmTp80FED/ps=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-aQ1vVfH5Ndq95wd2x-ZPOw-1; Wed,
- 03 Jun 2026 15:22:27 -0400
-X-MC-Unique: aQ1vVfH5Ndq95wd2x-ZPOw-1
-X-Mimecast-MFC-AGG-ID: aQ1vVfH5Ndq95wd2x-ZPOw_1780514545
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-lMJTVDivP3Ogp6JqZBXk8Q-1; Wed,
+ 03 Jun 2026 15:24:19 -0400
+X-MC-Unique: lMJTVDivP3Ogp6JqZBXk8Q-1
+X-Mimecast-MFC-AGG-ID: lMJTVDivP3Ogp6JqZBXk8Q_1780514656
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E63FE1956095;
-	Wed,  3 Jun 2026 19:22:23 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1CFCE18002FF;
+	Wed,  3 Jun 2026 19:24:15 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.44.48.52])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 75C3219560AD;
-	Wed,  3 Jun 2026 19:22:16 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 219B0414;
+	Wed,  3 Jun 2026 19:24:08 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
-In-Reply-To: <CAHk-=wiEwSjfbjfO74xu=UmkkdHXkJg5QNQ8pP-3iYmunmeV9g@mail.gmail.com>
-References: <CAHk-=wiEwSjfbjfO74xu=UmkkdHXkJg5QNQ8pP-3iYmunmeV9g@mail.gmail.com> <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com> <20260602225426.122258-1-safinaskar@gmail.com> <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com> <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com> <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com> <CALCETrXzxubt4eWue3+wv7Fq9C2m7uu6bWPstqFh6Mo57bPwQQ@mail.gmail.com>
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
+References: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com> <20260531010107.1953702-1-safinaskar@gmail.com> <CALCETrW__=8mSusayfXG7UFCfue5BGbx+vqESj1d9wqOfX4s8w@mail.gmail.com> <ah2nBAdsE5vVJ2PL@casper.infradead.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: dhowells@redhat.com, Andy Lutomirski <luto@amacapital.net>,
-    Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org,
-    axboe@kernel.dk, brauner@kernel.org, david@kernel.org,
-    hch@infradead.org, jack@suse.cz, linux-api@vger.kernel.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org,
-    patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk,
-    willy@infradead.org
+Cc: dhowells@redhat.com, Matthew Wilcox <willy@infradead.org>,
+    Andy Lutomirski <luto@amacapital.net>,
+    Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
+    Christian Brauner <brauner@kernel.org>,
+    Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+    linux-api@vger.kernel.org, netdev@vger.kernel.org,
+    Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>,
+    Andrew Morton <akpm@linux-foundation.org>,
+    David Hildenbrand <david@kernel.org>,
+    Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>,
+    patches@lists.linux.dev
 Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
 MIME-Version: 1.0
-From: David Howells <dhowells@redhat.com>
-Date: Wed, 03 Jun 2026 20:22:15 +0100
-Message-ID: <22766.1780514535@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: N3vkM-5m548d0M4bg-3Nda7FIrWpuM4rrxy4R8dq2m8_1780514545
+Date: Wed, 03 Jun 2026 20:24:07 +0100
+Message-ID: <22834.1780514647@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Mimecast-MFC-PROC-ID: 3QDk11Pub4BX7BArQiPPML2SgNqrrLczcvw8ikXBg8M_1780514656
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <22677.1780514496.1@warthog.procyon.org.uk>
-X-Rspamd-Queue-Id: D2C4640012
+Content-ID: <22833.1780514647.1@warthog.procyon.org.uk>
+X-Rspamd-Queue-Id: 9743040009
+X-Stat-Signature: acos6q57u8ixzjx3wek56xwgg79spbmo
 X-Rspam-User: 
-X-Stat-Signature: oxthjcskw1ii1cb1qbxpe31585xdpuny
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780514551-37727
-X-HE-Meta: U2FsdGVkX1/Qi5rJqkNo+X3xMlLF53X8dtO6Hu77yNbAurYQxz9Xu4fcCwnuAFqj4OIrA2wALZ351Y3T4x0SZbZVMIJUeEIiIpT/dpCw96UUF5cVvGqf9VYKaujd3VjQpwgTlJSPE0C4QkkeLVqwoaZ6qK+SA47OfGmXtbGbYL9UM8oAeMn/5qfCHLw/GEbfGHMi94ZT12Y8Q5mFP9rR9bIx93TFWFzTEKl0NXiJ3JDX87nkt4wHj0jmhm5YOSwngoxbGkxyRK0JSHF4GWCS5vPcpFagPdoepbETWoQmF4IKKn17pfX26DLklrIJLx3MJAHvG4KBgkCLgh9FYthKdMbouDIKMf90QMxuZ2PSdxFxrCZBT+Mm+wto5HHdjk5qPXngRl+ZsDRsePPNVr7Kr00O5n34oo6s7SYC1W8hW9yAropqW80fEyYFtW8MdWaYrtj3scFKlcoybGtSCy+jH7nGiVkZrwB2x/OE+/Rrrgt3t6tDRm+Qis80lyEFoMkqoF4AeVsl0UwbEHVw2S+y6Ob0FDja2N+0+aj5G/XAbFFtX0W/7AEhr2o0H31ZwX0R4RnEHxOrfTjmS/jky6LscRJJZqM9NjPNVLM1+tiWmyHkfzXWjaTCbhqNzRx4r3NhWnlMKHkAkbc29iWz8Yikwu5iDTQ2Rugnc6q13yW0ZyaKvGF9p56j6K6gvITvAByBhsknuk0XawUE8DJ/XGOPjA9+Dwy8cEmekEtMawbEgfAUAhZQmp1DbUU8/CztQ7luLuH6pj3BZAQPd4MMlbVzksnAAJJ4ESv6dggODdHclq6zSWldNw+PA3fDZ24pphcrQwHs0ROo6I7N3lF7wYNUyYXfrXiNKfBhFd/DSUuV2UUZ7VeIVO/4ZH0Lr8uD1fxYfBiYycF2HWYW06FKqVaq6bHLujZI/QkTg2YdZmr9TOvKe32vXqLLiPunZZEVPyITqFhJdmzAnT54O+SRcMx
- hAq3pDqz
- WjVdqg9g6yLAZMvoCOPejNkC/IHFN/pGsRVVRT8eDg3t06Q0MtkgiFUWqlMzRUWGZwJpE0oC2I2yTKKy5fcqkdembmMboFIEAeuPhqHcttsbOfY3d5il8sw6FzSMv18r9rNzOErWD7LBXA5fJfdXNTTJHXQTQH6Vx76DmSG6AmdxicoOZUqzvh5zxtB+eMGVQj7KH6ueseJS60Y7RWqbWrK9zh1sz4nyjAI1JPmT4/VM0CkloS9dIryQ225v4WEb/XlSczrPPb0zqcNKpHfUnegalgDT5kLRms2kh6M7jakWy5S+Vqcwiq0ONmUm5yCcEnYnb3SkJIjrvJzQ073xQlTTskSyn5jAmcODE9AK7rT3gKqlIvOixZ0oLHg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780514663-96759
+X-HE-Meta: U2FsdGVkX19ra+8YrhNIa2xmXgvVtPVfCYZumuZp48THBJpG/5ZePZwlCjgIB6UY6L5pZIDaBlsZ4oVy+w8y0OlQTbOBF1wFuZrfBHyPytKyBxfIXH0Ut+2ntICp9OCWyb1lHU6YsCFvIQU3Gq+L/Z/0zfcQfnbb3B4Jk56slQ5nxN7NV6iEAdCU3JC79G8OmOQ8mgLAmUqO8Zuc2P5mQffeXyiW3rBvV/DwZeXIKlOQUtAMwypBnJ1p6/tz0SCtAxtw5WQBVCPG4MCE/Jwmyf9rVj6qNUJpQKKWJT4MLYK7Dei7FxmxmgynGCLRKVeRxcrOldKCbyCpkcMq1SSUOfDirMrwNnenxHBWtbuoEU7IV/UIz6/MFh4az+1VcDgbOkUKbkQ/XIU4i0Wnp6nIggIlnxmuwWUu3Up+Xsm4XpN2oRCAmSEeMQh5Wn4QRJ9p3ZAisGWa3ojxjbLLRvkG6kqAaXgcSnhNzgA5LIzBMFRGjYkuj//bUEVSVEdsuvgnbyxF9ktV+jSZGZxcvGNdOsOmgA5HDHJstUWGhw2j+XLgc8mLNV1rCsKKm7ZDpQCs7rFJiV9kUhIk2sV02buJQhlKEF0OJqEGCvyvAat1bCqtvYLESkavVctRd2p8GDim/QnJ4jIUQtrw1gPgMY8mak0i/zAztTCmhC+WJEMFWdUvWROwoirgt5UrN0IbpiewBXSQIY/rfGNnrg6mA8VSgTzmTFJK1B5jydfm1amjoLfm1AuFNcE187OHmcjOour1nj3YB3hoIkRWeZTRaXEYasKSjyAv6DuVOQ9E1L+Vipa+MNXRotzuMWAkW0ILBFSHRlcGWchsMD1IygU93wUkZb6lprNDzTW51KqZGud+5yK2cPpOowZ4Dws81IPJJbmC2HXAekxTayY79uwEWZKkMymd2Z9MAQ8yxHEgQELVWG/k+lLXtfKQIP3vh0sTdVAcSDZPP0Q/xMT/FAA4Bxs
+ 6ezZg8A1
+ RlENZI16udjo1fRBcrwFerXL8UcQ2hHLBxQliovBx7FU7f2pMXgU6L3kx5s/J6ROMfkz4CQXyEusCZfHxnMavy0gtBF9+QqCbri9hjRZqFrK32DYrfZqQPvwWqvmcDMp8fG3zGFdeh0AQbMdf2/hUHvaXuJmzX/UD/f8yQfNcKE4iGwDu02A4X929+lWgCI0s1isNqzxjqTkMDpyeXx8wdGLfJOdMTFFQ/pPAkBAyydbHPE9/JL5AfM4TKQMDagpNfZSKyn4dkAZ80YZcQPxcfC9hu/OC6cpUw5A1EwobAdwoEFgM5+tPTdPBat8Z5zyfy2sDwQVmmt7UKrK2L/P3euvqJSFDa/9D8Y2p0h+to2zgjkI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,14 +119,11 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-> Because if people think splice is complicated, you haven't looked at
-> the skb rules. They are completely arbitrary and complex and spread
-> all over the tree.
+> Well, since it pretty much is what I suggested a few years ago, I
+> certainly won't NAK it.
 
-Yeah - I fell foul of the net loopback driver just reflecting the outgoing
-packet back, complete with all the original spliced bufferage.  I was
-wondering if the loopback driver needs to look at the skbuff, see if it has
-zerocopy elements of some sort and, if so, copy it (or drop it if ENOMEM).
+I've been wanting to get rid of vmsplice for a while, so I'm in favour of this
+too.
 
 David
 
