@@ -4,114 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60483CD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:33:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21BAACD6E5D
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 02:40:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4177E6B0088; Tue,  2 Jun 2026 22:33:16 -0400 (EDT)
+	id 4227F6B0088; Tue,  2 Jun 2026 22:40:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C8716B008A; Tue,  2 Jun 2026 22:33:16 -0400 (EDT)
+	id 3D3176B008A; Tue,  2 Jun 2026 22:40:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DDEA6B008C; Tue,  2 Jun 2026 22:33:16 -0400 (EDT)
+	id 2E94C6B008C; Tue,  2 Jun 2026 22:40:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F8F46B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:33:16 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6CD3DC09E5
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:33:15 +0000 (UTC)
-X-FDA: 84837029550.07.638A0E3
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2795A80010
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:33:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="pwX/FwLf";
-	spf=pass (imf30.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C7D16B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 22:40:14 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8EC9401F7
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:40:13 +0000 (UTC)
+X-FDA: 84837047106.21.5C07427
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf04.hostedemail.com (Postfix) with ESMTP id DE4D740009
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 02:40:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="a6OO/AGV";
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780454412;
+	b=Gx5cvn42YDJe2YPjQ0v9FbgVuq6E9TAUKLen0BEMdWANe/6Gu85XXpV+NcLkcx1OKk0LT5
+	DEib/P1S2V9r4UpdF0+GdiGp4bKxAMHV1SawAuVOkVtJZ97Nxgj4Y/fBkHRNBigxM/TpRI
+	Uc5eMf0PFPT4+BGDum96TImFzWwwQzE=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="a6OO/AGV";
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780453993;
+	s=arc-20220608; t=1780454412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vHfwDEtQrbN077pHZVQUB5kFtwZn5VuD4rouby1Sq5g=;
-	b=nTD37vlTogmwuHUHJ3GdvsbB5qPZEDzOmlKilypY6dksccDrnOwjeJwm6/oqhkrVeAyC4z
-	HJRBPUxi534oCniBM9mHcEeXryhbBT28u1/vIxS6UzjIfpiqVZy0Tyvwag0A3vN2IkwYd+
-	wwx5X0XPau5Bbrpu3w3phbCjkL5i9RM=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="pwX/FwLf";
-	spf=pass (imf30.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780453993;
-	b=Bx9ZZ9VEzNc7rY9Vsas7eGnbDmWiiuGUZunZ4yi847VWVEKoBbtrPWiCyKgB1qkrriJzxz
-	wlAgBJxydZXKv+OZzH0dMg5Ni4YDTEa3lzjmfyl7tX8GYsB45lKQVbuKhkBNos8W4uSY+k
-	IIzJBeI9P2hizQKPZ7ylSXH4ryGlPIk=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=vHfwDEtQrbN077pHZVQUB5kFtwZn5VuD4rouby1Sq5g=;
-	b=pwX/FwLf0Z0XWLY+UYZMiEDu+1GHWfGUE1Huc+mqnyYOrAtgLxqd0RgdXNo+FHJh9qG5TIUMi
-	E6mb5BguU2Rz9q+HAndfUbJxHJQ7mYX7Mr1xd/82ZssGY7/3eoCkwycweLyjsXKk+0TDtst8NlQ
-	FmoI8h8zSR5GTRxLdxsJSI0=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gVWkj28JwzLlXL;
-	Wed,  3 Jun 2026 10:25:17 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id ABD1740575;
-	Wed,  3 Jun 2026 10:33:06 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 3 Jun 2026 10:33:06 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 3 Jun 2026 10:33:05 +0800
-Subject: Re: [PATCH v8 2/6] mm/memory-failure: surface unhandlable kernel
- pages as -ENOTRECOVERABLE
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Breno Leitao
-	<leitao@debian.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <kernel-team@meta.com>, Lance Yang
-	<lance.yang@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
-	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	<mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, "Masami
- Hiramatsu" <mhiramat@kernel.org>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
- Khan" <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>
-References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
- <20260527-ecc_panic-v8-2-9ea0cfa16bb0@debian.org>
- <19f968f5-1289-f573-4406-e5c91dcd8923@huawei.com>
- <e3d023f1-ab6e-4424-b304-55f1294480c3@kernel.org>
- <33ef8821-c809-b7d1-ea77-6e8a07a6e784@huawei.com>
- <21732071-14a1-486a-951c-34de97b7c757@kernel.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <4b27467e-935f-5587-2f48-5a794c30a592@huawei.com>
-Date: Wed, 3 Jun 2026 10:33:04 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <21732071-14a1-486a-951c-34de97b7c757@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2795A80010
-X-Stat-Signature: cf768xeymr4smjyecyf363izppb7rmxb
+	bh=enhp+3s0SIGEOwjQc/7W6s5wIzCQbFdyWa31w7PMhyM=;
+	b=UNVMSbpz0v4OEyZ+C/Q3vWpWtIGRPmLlUnahIgLaslv4Rtl4XhrlwD7l8fU/WcUGhhDDva
+	NceS3Rit7jtQlt5Dfr6z2brW6J2g7Sk3rZ3WjrStsFSyDi61gSUuIGj0L9xnZ2WdbccKzR
+	iVV+KAnJCBOdZ3jerFRXYCeAWE5t1zQ=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780454408;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=enhp+3s0SIGEOwjQc/7W6s5wIzCQbFdyWa31w7PMhyM=;
+	b=a6OO/AGVjZPTkYLmFE58mUZkc+Ig9OvucaVesgXboaIsfd35hyTrwEOUiKCMdq62BTHjWY
+	3iDA8+TOhj7GAKI9lEBKJK0ZAnOuZOAJh+A43sHVWZsP4eRe4lyDV6hA2e/VlitznVZPoQ
+	w1ZVN5buyzqpE2WMljQJpn7BDAJVmsc=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v3 19/19] mm/mm_init: Fold __init_page_from_nid() into
+ __init_deferred_page()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <178041489408.457517.2991925440539441241.b4-review@b4>
+Date: Wed, 3 Jun 2026 10:39:20 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <10D5F5E9-889C-4B4D-B104-A1579A771F45@linux.dev>
+References: <20260602101039.1867613-1-songmuchun@bytedance.com>
+ <20260602101039.1867613-20-songmuchun@bytedance.com>
+ <178041489408.457517.2991925440539441241.b4-review@b4>
+To: Mike Rapoport <rppt@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: DE4D740009
+X-Stat-Signature: 3qxtdeeigh6zqgpadzu5yemd9xg5e83i
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780453989-193353
-X-HE-Meta: U2FsdGVkX1/I77D6mJZjS3D0dQ5Gg4FJ4sg15EM96SDrn8bCL7Vjv+/AoNCiKskx3pzuYmUiYDwwpXJlOQ68Wd5oQ29cfW3X3a/dOcVE79RJzJUgDmRXbd0D/JgFSeJqr8wCHoAQV8K6SmXaa1ZgcHwaWvrQ9XLkfRZ03oxlO+o2IKMosLlf/HFgroq1YaFc9hTatKbZZTy53YB9tOj/F66LWuAlnD6DGGAcii1LcdA+dWfNfTodKqqp0+gZb1B2ea7DILwP1xK+fMorfmG+PGshr/5ZyWR3b/ELtrlnXA7ZHSwmhArIDQk52oVWO5lXz/AZs6LkTDWS9eoBtYGvZboeJzYJdVDWJcYIC8uL2zoU/n/GpwUGTDoGoomjeRvcIu9ZDddTVkgdAV/8F8eilEr6R3ZwWYADvANdSturY3IPFUm4Db01Du0OI3Up5dD2HSOBvpSCeJHcVz5E6fuoj+X1JgXp5jbXIMx01mtbfEDmkJomSI+0MJJgO51BRjLE6XBf5CwE2saQmOxkbhjOYvoKYdgEQREEShN9GxcFd53LE/QJZ45T/tK852htEhvjIQEslWqJKu0ZPb6HmWrqwk6vNMLM1+6GYJN4GwCrBGyBnqk6M66nHsKL6CJ9ro8GejJPUIADzMfCdInQwhJjylDdyXySmRX48WNy0ZauEiAs6lgrIrF1mIQ0DGApxkFJ7qycmY9CJ6r6FMoPz5B+jKgPXWZopjcqfTqAeIGPZHg99IvNzwwfyXjf16pLbKvNUvjyEzvjizsTyAwb0gcpXbHbCl5B48pGKNOEeqLhvgOP7vai/RnTk9+U0jPizb04zjuWwrhbxXM72tZr9uiEXRxwdf9AozDbjUz3O5mTSIFBrnqNNJxO3fM9fNjH26GXAGUweIKRq5th2Sj9Vp2Plz+Sw2NJC48w1c8fXIJc1CoO4rXxpFIi1Z5R3P3/TLApX25NvZHlMXEuu+jDFRH
- WJ2BfGIO
- 3MiBr/81vQDLFeIg0i93wEserooFD1GpEBzXABVgC+C+mrIwwmCzq4U3TSY3aZV6zk8kaXfheTDGZFdhIhB2XFB7yYBNDOVIhcmWsv6mbMEGYqwov/WFRy+7H/wvBaSWIqeXPEgRKUtGmeU1iN9IaarLmkBdlxrI4taxPCkUe/v+SaNCJ9vGC9Tv0wD3dbstroAefG49c7trZUfMVcbFLqC5xM931lveI5JY0KV8p18MCjsEbqroPMD/bn5pZz/U9s+BURVUO61YMT8+K+r6HQQIISzDuCqHlorc/Sf3XddD9OO0S3FX2B8kseTHLi6a67EWpnxVkzSaVEkDLNer4Flw9Egnttr/1x9Vj
+X-HE-Tag: 1780454411-26147
+X-HE-Meta: U2FsdGVkX19s5N/2kJSL3lX5MqW6B6vdh8K0OLIaYsIZ/giNv7Vv8LD44epQQ/0J9/f+U2LbfQtElkKzR9H/nki9f3bt1SZYH71KRIEtr9uk+EcVTCl/qMZWKt21yJXXi2BxlRYHTTuXkZU2XzOx6k7Y5G0gR+feXidTF9ZzQ4C0dAAiBH8pdl1HJyccaa/Kf1gimCa5cWipMSNdyUtl+bwuF1JOuqeaS1fdSPtIm0vHjOQc292yb78cb0ts8gH3ckpvEmLdw2birSdWtrem3D4tzdUQSUhn4CposDzZu6tWhU0LRHH2v076XdYQgp9n+CCXFhxN8ltPa9hA+MxjDoKOUVOT9LEHVA1EyCehzc/a+tNoeCIz6iuYE3G2pAuWGBFribEKLRYPjaKZP946tE2OItBSCeQwkly5vo7oRvBhUQZkgKJkBopyMOhoR/oHRi3uI4ZPMvfR7Q8HDshyhnCSoH/52LDL2P6A6vEoAZ/vdHRUrZQSO/d8u5CS+YC26mVms0JMUjrzq540XDaQfTEpYFSTRF7hCaRjdbLeNqkxC6t7D/qisjY7WVz5xROaslCZuhCj/aFNn+E3T/gJrahUMw7DOMfKkc7D1EjKHLk44qggcj5M7+e7UvevQyD9x1I3KJrVg1fiVGqEHbSYZ41JzOsVaG5TBOe4x4hDRdkIHH/dqxjbGMjJVTq0ef+JV3naZMY+eQjKOp7cY/a4qDXDZfT6btDxmlV0kkT2BS2ZZHI2id/p/Ey7IDXrbZMTc5NQKOg9ec3RJ28CypHIrPJdJYMqIgolhxuRZs9EDXUyfhkPXn4yg43f6nv39/TpRR/aFCR3FYFVbWC6tr3xRJMPkE6vTu7oUjqjmiv8kP6a1SKNJIpNhBLrfgIB6bujSa0xB0ZYQSK/ZamJ2T7OAGO1fqBiuR2DwAjPFTc3w9sHBojHdxaY5VO5sVh6aOyEp+y0uyg2pf0BhrrdK6p
+ V+6q9RS4
+ hfikIudjCpN+kw0PPaSOSIP/7LFstCiuI4Hn2rkSzupEyfyktD4cx3ObOdpdVtdMiPSLHvpvg6WXPBJmIjLZKaAZ415VEPsY3bCqFlFwdkA+BARJ6JOVD2lTBoXHkLgs2j+TwsX+cigqSKu0o+ppL6IUg9Q/YTbWrBr1JXPxft4pluagxgHM4AHtIgifHurAL+21Z2eGyZfqgnc95gBIkpUVi0IJSlViHChzemb8heN2bN8oIm9cQcNPs0SEyrwKqnh8hyya7Id643hQeHUEXcTqJXXlXjAH1HRArCg9NXFLjczuWFgQwQlM0SffLpoVo70QHmL7YYc84n2D2xJMc2G0F8SjcMqRTOYZTIDjgXDFYBwE46qakOr1cortsAT+6qyjnYIpG+1miBl/ZEDRykk7DaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,67 +106,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/6/2 17:41, David Hildenbrand (Arm) wrote:
-> On 6/2/26 05:08, Miaohe Lin wrote:
->> On 2026/6/1 21:22, David Hildenbrand (Arm) wrote:
->>> On 6/1/26 14:28, Miaohe Lin wrote:
->>>>
->>>> Thanks for your patch.
->>>>
->>>>
->>>> Once shake_page finds a lightweight range-based way to shrink slab, slab pages could be freed
->>>> into buddy and above PageSlab test should be removed then. Maybe add a TODO or XXX here?
->>>>
->>>>
->>>> I'm not sure but is it safe or a common way to test PageReserved, PageSlab,
->>>> PageTable and PageLargeKmalloc without extra page refcnt?
->>>
->>> Checking typed pages in a racy fashion is fine (PageSlab, PageTable,
->>> PageLargeKmalloc).
->>
->> Got it. Thanks.
->>
->>> Checking PageReserved in a racy fashion is fine as well. TESTPAGEFLAG() will
->>> allow checking it on compound pages.
->>
->> It seems PageReserved is not intended to be set on compound pages. I see there are PF_NO_COMPOUND
->> in its definition: PAGEFLAG(Reserved, reserved, PF_NO_COMPOUND).
->>
->>>
->>> For PageLargeKmalloc, we would want to check the head page, though. The page
->>> type is only stored for the head page.
->>
->> Maybe we should check the head page for PageSlab and PageTable too? alloc_slab_page only
->> set PageSlab on the head page and __pagetable_ctor uses __folio_set_pgtable to set PageTable
->> on folio.
->>
->>>
->>> So maybe we want to lookup the compound head (if any) and perform the type
->>> checks against that?
->>
->> Maybe we should or we might miss some pages that could have been handled. And
->> if compound head is required, should we hold an extra page refcnt to guard against
->> possible folio split race?
-> 
-> Races are fine. We might miss some pages, but that can happen on races either way.
-> 
-> 
-> I'd just do something like
-> 
-> if (PageReserved(page))
-> 	return true;
-> 
-> head = compound_head(page);
 
-If @head is split just after compound_head. And then @head is freed into buddy and re-allocated as slab
-page while @page is still in the buddy. We would panic on this scene as @head is PageSlab. But we were
-supposed to successfully handle @page. Or am I miss something?
+
+> On Jun 2, 2026, at 23:41, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> On Tue, 02 Jun 2026 18:10:39 +0800, Muchun Song =
+<songmuchun@bytedance.com> wrote:
+>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>> index 41b83dd18c01..f1bbf3b9a321 100644
+>> --- a/mm/mm_init.c
+>> +++ b/mm/mm_init.c
+>> @@ -771,10 +746,27 @@ defer_init(int nid, unsigned long pfn, unsigned =
+long end_pfn)
+>>=20
+>> static void __meminit __init_deferred_page(unsigned long pfn, int =
+nid)
+>> {
+>> + 	pg_data_t *pgdat;
+>> + 	int zid;
+>> +
+>> 	if (early_page_initialised(pfn, nid))
+>> 		return;
+>>=20
+>> - 	__init_page_from_nid(pfn, nid);
+>> + 	pgdat =3D NODE_DATA(nid);
+>=20
+> Nit: we can initialize pgdat at declaration line, other than that
+
+Yes, will do next version.
+
+>=20
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 Thanks.
-.
 
-> return PageSlab(head) || ...;
-> 	
-> 
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
+>=20
 
 
