@@ -4,151 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51CBECD6E57
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 20:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FB51CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 20:21:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C78D6B00AF; Wed,  3 Jun 2026 16:09:39 -0400 (EDT)
+	id A0DF56B00AF; Wed,  3 Jun 2026 16:21:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6776E6B00B0; Wed,  3 Jun 2026 16:09:39 -0400 (EDT)
+	id 9E4E96B00B0; Wed,  3 Jun 2026 16:21:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53F7C6B00B1; Wed,  3 Jun 2026 16:09:39 -0400 (EDT)
+	id 921DB6B00B1; Wed,  3 Jun 2026 16:21:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F1156B00AF
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 16:09:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D49361632C6
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 20:09:38 +0000 (UTC)
-X-FDA: 84839691636.11.64E65A2
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C5083C000E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 20:09:36 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jchv42uG;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780517376;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 849D36B00AF
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 16:21:29 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3DEAA140537
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 20:21:29 +0000 (UTC)
+X-FDA: 84839721498.03.7AAF3EA
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 31D2540004
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 20:21:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm3 header.b=U77kNaiY;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="Q EqQpWb";
+	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.148 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780518087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5UXz52IyptNhzUMFPSnoxyMNWSpG1/iGAkBQWmQCJm4=;
-	b=xp7KciMnEVAel9SkJL98Ban48a50iISPDK2n9ONsItGqfjCH3J38J0gYZGSHit5I0cE+bI
-	GYTqUxZcNtBzmecB2zHYFDxt3CbXDtFRb3cKxPXKYmTz8p6R05Eigw0ByA9X2vy1dScxs2
-	HI75TH6WTcelqWq5uGZ9zG0Rc76vQnU=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jchv42uG;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780517376;
-	b=52UxI8xlZBYVWUGJPUnnpZ6TskMzsyj02GdXV36w3RIIRRoHKC+0BFd6g3nfxCxB2etC+g
-	LvZo6uWEvcndT3dRMmGvmhEN3FzZ3x8dhhfJKOioVzmeDahHqRkI18GFAkk13VN1gp0nbm
-	EuU5B8PijfQGxbE28QavLFgjhIsQp+8=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490ae94a89eso31492225e9.1
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 13:09:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780517375; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WujiXwcy0Z5OTjdfWQmp8KKVwJgg9tJPOtbm1Yr4v/RXOp2qTF2IEdX7XmUpdetdIA
-         8EwXwFU57rXrGSsMDvKxEt4ZaQLpQuLfWniqtt9x+9pAZj47GZ++0VwGXr/kTKt6WXzN
-         PkxohIntOy1PeFV+VS93yOj37CXoJzp4ChrBebGF0INRKgnCma1mJu4TS70tJAWv8aUX
-         nHpWMpEtB1pbLsOasRweZ/D6gDWSxxij6iFtckRid8s3ixKZCn8Bcm3ds+UB2TWZ0rsq
-         Ik9DIeWqlTKlC+wPOF7jMp8wdIS6hxO26tIkyeqepxnziu0zbbfLb7pMDKqBi7qD846Y
-         U08w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5UXz52IyptNhzUMFPSnoxyMNWSpG1/iGAkBQWmQCJm4=;
-        fh=MjSOws/GzmoIwzQoSMVudHHCyWh8PSIZSCq6ouPYiJM=;
-        b=FTgiVz+CEoexHHMm2ZepOfukNuxRTgg1nAUKGBykUpX+1LMZ9cBUCwE0ofSGxPdoId
-         KpkeQ2RqI2bZFQHzTYA2Szbbf+N7Nn4x5sMI3iSgN9GRZlveYn7xFr++Z2wktX4M0V3A
-         vYm7KYbVqADLSQ0+Wepk9scHTep4wOJ4HnF/KoEl+cU38PLxGGRxGBb1ybsRRpZdjT5F
-         OjalqQRN2pNpSRuP3B4pjpx9L/1O+WpIIuoeGiX9lkcRng0uaR/miuLvSoT1veWQXXas
-         psQVwc7zNkSPI8i5QqUCH/UvY50tzGS7z2m1f+rQ+0xgRQ0wxLdtTruCKBQDEgSInN0v
-         yisA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780517375; x=1781122175; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5UXz52IyptNhzUMFPSnoxyMNWSpG1/iGAkBQWmQCJm4=;
-        b=jchv42uG3rd+1+OqB8rTy/rGSwlDr7Gp22OJUBTuWOtSjuG4lZzR3RLokZrGXoXIMM
-         KnUPxxieFEkWGi31FwGFPr66I604JJ1ZyG99W7G5eFHOEckMqRvPlGR9L9kK2xRKqCAA
-         IjsQIzZWYxARe7+XTKkGeg/S0Wx2cX5XIFM1lQBDXCUKddNtf4qATH0xzoriVfTg1bMw
-         2MCsuHXhd7onCYG65opkR1wmNp8T1YZ9arhXGQ5xqNbLpqICJ2V/hjr/2IdfM7Ub6rYr
-         Ro7fjjG/vCZM9wDAzXcs902aWgaoqXVZEGAE7RYR1jC3xHb4lIfbzbb0CKsMAzExEsSz
-         zyQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780517375; x=1781122175;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5UXz52IyptNhzUMFPSnoxyMNWSpG1/iGAkBQWmQCJm4=;
-        b=fjJrFs80VcU8gpcYv3aXAh28b4nAIMAY2CO50sp1cX1fqxPeoafbFElc7LnlEdgai5
-         Cdgy259zS+EGBb79SSp6jdLHV1bP/kxrc8UHWxSLXXZfn51FXTsWt5Pa5MOz1kGq/igt
-         DOIwRUyO61zyKvraZBD/7MGh839Rj2yDXLlB/6rtFSe8sx+HqpAajKd+EYYFJJibcALM
-         7xcmdMneSVtJMagTpnV/KuKrGW1fCWlZi3XaZlmU2QSG6kkVTknuXPCwNMbVKXlUcWvE
-         GK983DbdT8LRQZHRHWQoHenj/Yteu7PaUPDt7k55P7EqWQufSWzfFDVYv6mJn9Du6heX
-         HMbg==
-X-Forwarded-Encrypted: i=1; AFNElJ+VgDlyzAz4EI7bMbeOCrfzOpbGR9Padd0yxVEQ6tpIZedXEFgWwQTrcPsaomcRdXZA/4OR0lTZ0w==@kvack.org
-X-Gm-Message-State: AOJu0YyjTKkroFCzaCP550DPrs9lxsYomnepz88c0QPcMnE80ujLYDjH
-	hz/bNXDWie4FxarM4maX0rtabVV25dfuuC358D8NXOa1Q1IpxRjmB3mcmPlQpcEDdiK+AorHw7U
-	eAKChBSenMdc6MCwIGTQLR/5bjlT1bZE=
-X-Gm-Gg: Acq92OFDfi4k+ccWzPlE/G99I/5EWyZN4cgTducRYNkqROqFjPMWQKIdh1k9/vJyj5Q
-	+YOdpDTzrpRe+653ULQxL8fnneKjtxkyRdmtsHjcEcyWLj7x2VTnDLzs6PB3nPRvZDOp4/CsN7L
-	EtKmSn3byI2+C1wGc7uLMboyvsUjiIM6Egj/CjxxEx8Hl6ooABkFjhaorm4cuz46oacyGyPd70g
-	8CUPQZJJPGshrXHHCgOExPsl5JHBF68sSncyoQGtjpq34tLLH7nzHQPaPO5jRQEJ5frhvYAXlxL
-	uf9q1mqlYoX6nQtii1ga/iM5fj4j6j+Nasne9covQ49O11jhOQ==
-X-Received: by 2002:a05:600c:4fcc:b0:490:59cc:999f with SMTP id
- 5b1f17b1804b1-490b5ea1016mr84902405e9.4.1780517375148; Wed, 03 Jun 2026
- 13:09:35 -0700 (PDT)
+	bh=wudPYMJbd9nBt6rRuFR7VGGHZ8OrCgWzbJU+a5+FDnY=;
+	b=ZI5FEUh0BKzP4wMHef31QtiGtUYpUKK9FADpwvS/su327M1EaiGMQIjpEatng/6xwLB4f4
+	0YItmMndbqOCa/rIjCOQdHeeZSQaJFVRK0govuCHr5E8A+qgfVBTg5UtsDEXaSGaWqLieK
+	z6dF05cuforfx6vRX67DSkFTzdH0KII=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm3 header.b=U77kNaiY;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="Q EqQpWb";
+	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.148 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780518087;
+	b=LzTSifrPG+rApHfaE9CN5sPuoZwImjlGor7iO1AgBvwzy+GHTZ6g9y+8uM3LMiTwaENP0j
+	Rm7F0X1/8kIXGsHu9SaoKqtuWJFLmBcdnNFHrUOULkMyRa1FCfphcz3gjiIVqfLKuRsF/4
+	gwYJPMHoOA9+qacGzGLuJ7NEo3e9qGg=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 82BC3EC0166;
+	Wed,  3 Jun 2026 16:21:26 -0400 (EDT)
+Received: from phl-imap-05 ([10.202.2.95])
+  by phl-compute-04.internal (MEProxy); Wed, 03 Jun 2026 16:21:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780518086;
+	 x=1780604486; bh=wudPYMJbd9nBt6rRuFR7VGGHZ8OrCgWzbJU+a5+FDnY=; b=
+	U77kNaiYmbQGPI+nm8WKhb9YhiunrIuvPd+7P0JCjb8vLKlDoYHA7L10GOeRPHsD
+	9RW0y9Dq7OOdLQ//R+cDqIrzCVSi09rzZhbGdPVUiwKvzHzym/oJQ2HMrNrwxU2l
+	it1QDT3yi8E/n1FLy0GnVaqAZHwDxt02tXMJ2Mniz6ozMBqAGkQ7tlNifirnDznT
+	AWIeXBhAcWD8zXLHyPRkXwe5GMY0pEzNj98pFqIo+x2p+cpm0U6NydF6h5+Zuew9
+	pxtVNW6oXHHpsvR1K3cyvl+K/rcKmj8iFKhsbKmXOTjwj0b2h91Rndfdf+K+nicQ
+	VOanQaYxhzcvUje2habo6Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780518086; x=
+	1780604486; bh=wudPYMJbd9nBt6rRuFR7VGGHZ8OrCgWzbJU+a5+FDnY=; b=Q
+	EqQpWbpFEK1rJaRrZnCZx5BIWE4ivz/XAKzuJDVJt6FIwjng3+k7GqBksN3UNDe/
+	h1Mt1zwBP90Z1S7ZnDvoTZMwq9WhlDhQ8wbo/MQcfL4TNfyU3b8joTlIwxFNkRxK
+	HbEIsW4dHDZ1pk/f9Eih/zdQiuwp2v/rKVdHk7u64UTgvNariAVqo8IRhwjLF293
+	zDowS/QEk7TOwz8mhCX5KAk7l1xQqllo+ZmjnCT2Y/vVor3zBAs4IpbZa3dgNki+
+	aMGfgr2lEMBk6JJHU/5qVzMSC7IrZI1dqnpNWeeeB5YE3/YM9Mmc+rus7ymnkYI8
+	fqGrWFSwmoJEYCjMTYPzQ==
+X-ME-Sender: <xms:xYwgaqQQWEz2eyqXbYT5JyiReKj2foNFw8f3PT6VdWK_q3q0qwnMnw>
+    <xme:xYwgaqlBMQtzy8_GsEqZLzcVe1I7nIbJD8ppx3X7XoO5hm6MQMcyX21VzT5meejJe
+    NgUtq2ziUge8zFFDDmsxLp4xZUwd3yy-sHWcEZ9yIx4GUIYNIzMrGc>
+X-ME-Proxy-Cause: dmFkZTFL6z0FwDH0tnBaPQzrLvCB0HBtzeQMJLRtaNsjlTM3blpdIH09zaegPEmKGxPbz4
+    bUkFHahuzpzRIBkslrdk9vR2dVWlan306r18FirdADsote4p6CzKEhkHoANYGOW2fK/MRJ
+    AZyhhuiBYrlF/XGpyCiRA/3xO0SI8PIT9+p03jwHzqiRjHnIzwPTadWIIqebi98cmDro6O
+    X0S8MeMEZxylGdw9AsHVyyee3lRPBEbLIOZsd0UX9GEov4X4GwH4KPS8QQ4kjcjBAjlIqA
+    h/Kn26tJHBoCsVTNvlWGLh8E5Y2jslftjYz86udXPzxM1v0AhDLwVnePmPG5silA2TeDV7
+    YHzXjnIUmsirjPWoeNuWEdNXQjtgLnQTWgLrU+ldu0TeIVJ2+KFj4bEVoblAeIBARmsFNX
+    UdjdlTNEkSh5+AYU493hhOmLVr2IqsffGxIxllZFxmpl/6nIJBLxZLOBbQRfE+A56LT83D
+    cnqEQUN68PDdb0uXj/i3eDS/CKRNHu4IzrRxBdaLmUz3/8glCAlgi1rV9MzwVG3OCozNaS
+    IxVsu3db8X86F/vOhyJT5WzejCmmq0vvWpejSa/gNGdS5IQtItJxKPj11x0/MvUwZbjZU6
+    OO7y2jxRS/w/mzwQT5EMt/5lo2nmr+B2FPE+eWz1ghddFOs2LbAUX2pTbFgQ
+X-ME-Proxy: <xmx:xYwgat8H6_XnkWGWDmGT2EDF85o3xfAnAS6EHUVYST64RBtYLT6E8w>
+    <xmx:xYwgarAjpmUO0JYXXlhBntDz8tVMdHADwzhKdHi6Wor8JaFQX9zeDg>
+    <xmx:xYwgaiQhg3jRSFQaIDNpABITYgAEa-hFFT1Hl0kSyhkGXOm5sIAojg>
+    <xmx:xYwgaiuT-3OxahQ8j2RJHpXyDWgZ5Tjqb6oSVu-mdT_smQoKtruRpA>
+    <xmx:xowgarhjwEK_h2DsUBOJU0fo3JWqyGtHBl_2CpnJKvYpfvWgNZ5deLn_>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id B9197182007E; Wed,  3 Jun 2026 16:21:25 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-References: <20260528212955.1912856-1-nphamcs@gmail.com> <ah-A2gQ0GPgerXop@google.com>
- <CAKEwX=MWX9KkSFAoN4xEMg3b+gZUN9=yd7rirAWG5NOBf26eAg@mail.gmail.com>
- <aiB2sHqxcBAJrTkP@google.com> <CAKEwX=P95D7wNpWhEAXQpeNPM6eQa2mEZE8Srzfpct=-=Q40tg@mail.gmail.com>
- <CAO9r8zP+PkgRzXJcFv+3i2pKFQdLt78Ax1s1DY0qNaiUo7ySqA@mail.gmail.com>
-In-Reply-To: <CAO9r8zP+PkgRzXJcFv+3i2pKFQdLt78Ax1s1DY0qNaiUo7ySqA@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 3 Jun 2026 13:09:23 -0700
-X-Gm-Features: AVHnY4JWxeOICXM6CH91NR0yRjpkfQjVY9j65WnUJqukjOXglYl_lhKm7GRZ5q4
-Message-ID: <CAKEwX=M7zH=+83xeOnZcrHKt4jCo6hCB3qVLqWpfLquMcRbyUQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/5] mm, swap: Virtual Swap Space (Swap Table Edition)
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: kasong@tencent.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
-	apopple@nvidia.com, axelrasmussen@google.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, bhe@redhat.com, byungchul@sk.com, 
-	cgroups@vger.kernel.org, chengming.zhou@linux.dev, chrisl@kernel.org, 
-	corbet@lwn.net, david@kernel.org, dev.jain@arm.com, gourry@gourry.net, 
-	hannes@cmpxchg.org, hughd@google.com, jannh@google.com, 
-	joshua.hahnjy@gmail.com, lance.yang@linux.dev, lenb@kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
-	mhocko@suse.com, muchun.song@linux.dev, npache@redhat.com, pavel@kernel.org, 
-	peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de, rafael@kernel.org, 
-	rakie.kim@sk.com, roman.gushchin@linux.dev, rppt@kernel.org, 
-	ryan.roberts@arm.com, shakeel.butt@linux.dev, shikemeng@huaweicloud.com, 
-	surenb@google.com, tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
-	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
-	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
-	riel@surriel.com, haowenchao22@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C5083C000E
-X-Stat-Signature: 1yw7bdeu3dewrrrdh3prhxaihnmrha8d
+X-ThreadId: AoYHDdqsMtKV
+Date: Wed, 03 Jun 2026 22:21:05 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "kernel test robot" <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Linux Memory Management List" <linux-mm@kvack.org>,
+ "Alexander Lobakin" <aleksander.lobakin@intel.com>,
+ "Nathan Chancellor" <nathan@kernel.org>
+Message-Id: <840bb432-ccae-4efe-93b2-be447834e6ce@app.fastmail.com>
+In-Reply-To: <202606040044.XTS61C9j-lkp@intel.com>
+References: <202606040044.XTS61C9j-lkp@intel.com>
+Subject: Re: [linux-next:master 9857/10263] include/linux/property.h:226:undefined
+ reference to `devm_clk_hw_register'
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 31D2540004
+X-Stat-Signature: di3nfrn84rwahte85rbxn71tqmzsc3sc
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780517376-64741
-X-HE-Meta: U2FsdGVkX18xnSxAwIcdbHJjLUGgkUkdoc5uGu0n0o1v3+naaE68lqRmm/d4Naag/rSrNhl+RR/TVGcGMEjtk7TZ1PnW/o6C+Hi/BAxqT9ELWD9xjz2o+N4u3KST575HLiNsWs+CMul9Da8O62AF+Ilm1OTEhYeQjdpuG5fZpdokMmLUq8s9fi4GVvhk4MWM5v01Ap04/bPLWug/iJI7D2ThULItkGf4P5UsiuPmVf3j1afT9V7c/C1xeSK0SrvqSwuFKg9BgzCO+NRVso0zVp4n9+EwPEkz/7fezhGt4WMp2UyH+bYi1MiKJ6G6NsUsI7wadvseFfvD1eXJbjxsylm4acE9M7nssy/ylMpC4tUg9QcK/3LzOzLZ6J/ZYi1iUeMK5IK64BeG91YexXyK8JuMsNpxUqDZQoitgLyvxu8D8JI5EKCf7gphKk07UcoUG/k2HiIdpxz/Q+CFYAI6F9ACUZnl1AGdklh3kMqRajy13mm/MBACDWAqFYYujGOesw+FsPLiY3uWZ4foZL4qPp2mIV0TUVF15u177qwMsLysO/zcqgd86MwKpY0l3rRijxgUbfrVTRkEJvKTSvjotmckzfQEdBb5ecZrZCYQgW/5yc3Z0F1w187F0GbvSp0hjrjK/Zzk3kJlQE0ND5Z/gioxgNwWDSaGvo4FVRXydxm0VGWBnCTRlj0zdVtPzabf3wU15YiA9eF7E2DX+T63EtTlxWhobBk5jkjDkvSbzVdFm8LE4vYwUUyKtzmgD+vvcK8HHAf161CAYsEBv7Jxv4JbnNJb1y2tUJ8KFKt961XpqotLXeg6T/U29LYLUoJWDf+PFqJlX8ezGfRGgZ08sWWrXBtshdED5SQTqtzGjxpe/fnWTlTYEwwqaE7ak17/8UstuHjsN/I7TOk0fsHRzj5zFQvPW31pFOuglbbgK3gCyZAq3cVUdajkvaDS11XXxCR7y3eMIlGfkMvHquf
- 9zAw+fWY
- SpAMtvjW+aJ3d+Gm3IChYgrKw62rc1Jto3dmn0RJ7oROaJ5mjMRKWzJKl/yRRqfOtGnx7VdV07I9yep5pJWxi8K4VlyPp/t8gSk+a0A4z3pskzuCRvVVPZuJmhHgMH6bqnOZCG5zc1WSlfI5Wk1aXrVnyMErJHRYsXfBHj/+6fyqSnmfqf8p5Bf+a0iXzudPIFea0ClOkB672HPHxTEWABzQHLiARWpN2zLWChGlmpjmhlTJYvSWQK3kzRw6IH/Lrqsvjzv/9fsN/u9dB1OXdGCbGldXwl9gNBEM/ORYqxEF2sY3vVrQcI57k86a4j3rfcilug36zkAwYWjoVNgUBGVDL4MMOCxwkIKI73GK+tijkRy7DXCRrOTOvRyuHcoOYd17EDlQKToKCGbqAXAYYUdkxT2xYVLatrT+98Q98qKmjDIeFZ1zPQnyLvgD0YVKZ7pJtCtMu3Ef7LszVBTZ+ZDQzR2Uh4YQwzCZoWesYSVMRtl4Io1qDb2ahP7eTYsXJI5eGqXi1PkGTanQ=
+X-HE-Tag: 1780518087-298484
+X-HE-Meta: U2FsdGVkX18EWkGmCivhBb0EFUVInLa8fWnJGwMJiHd+xyT3QLpUkzF9IAux778QECu3g5c1inhWCRk6XNHWM+rec6YK0Mk2yF7npCXOOjeVZmB+OQ2A/HkwPtVg2usNjj5HmmAvqF6HwOkDn+ei1Pu7P9tcUeVxcf82IsSCaA1gHagxvrrvgYqOxWG+Eq4IrWhv2c6Bz5TygPo0LZRwAjSpge6LOrSMSMxZUuq5R8HmDTPI1+0EFEUe0KCHnUjcXyuuvJ86XDA6YsjtLX8NVUg1qY3OK+7uA0vlfma4/sGOzmcCPTGlAVJYMx33td9PEuUZXR1DTi1THF4ZLN/Atz02I/YwKcqk0v3B9nHswiedxpdvjuGgeXaFcJ1drRiTgWfoDsVzFlpY/q68LAxrjjfAPlicy6yCYJfKxrAlnLAQ6/3ZebSeCt8RdgtpnRPvIwQyw06htMfz+qqlgSMcaKWSS9JTznsUb4n37Ns4HpemMUqSOzdjv9LFnIm9dnNqp2KR72MOCUWO1ySlBdL4OkKNAwGWU0nCVXmHUyf5bjI9tk3cWtKNDQF4UMnBfzobLEB/oAhg8ozlNNTvtkX3J52yGxUnceHewjKsEj6/pkyxZn407iH0yE/laPDAnVbWqzC+WW/By4Sytck/mhTRt8Q8LBsmFwk5+sEhzYcdE7lVH73XfGDgdwQNcebI0SGePDi8qQG3o505HZeFbeHpyTddXT4qHCiAbDYWaWwAlryLtFeM1zV33mK11b6WzzFmGTSxuDCJr6rVeoIohO2+E7bxwiPRhGHkVeFcNQaupzNdAbiB+tMCOgnwEsSqX9Nw6wZKBcaHC2mkMQCn7VdLOEd72cgsHs2CYSZ6l1iDMkTOlb5TZqecaOqdJ+3nKTBs++uz6FLWC0Ymc+ocw4YnN8CRDcAahntVd7X8pAeyZZ+aLXwYwK2YM6IUi8LiR31ThzdYzVAASlZ8ZkX400m
+ 8zhCRFV5
+ tHiVqKzRx9k251+BKNzB0eZIszhBD8sORZZbKuz2ohMqUakJ2mc6TwmIfrhv1BXHhM51STxQWwHmYYqVbWHZvC1p+BrLD0PPBX0D6MSip6rF5DJHAbHH0J9XHDXsCWPheNR1AHUTsKw+IGY9QToeenDXSnIOThHEzoF8Hw6ijSFNaxetS2eXyNrMc8ZTbN3yBJyii3IIbN8Ygo75gFI5bkV8zo3oGnb5XVPI8/GDaTT5/+AjLkn5+moEG1URp0bs6cprrT27JOOOv9Qw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,114 +134,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 3, 2026 at 12:35=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> > > > > All that being said, perhaps I am too out of touch with the code =
-to
-> > > > > realize it's simply not possible.
-> > > > >
-> > > > > Honestly, if the main reason we can't have a single swap table fo=
-r vswap
-> > > > > is saving 8 bytes on the reverse mapping, it sounds like a weak-i=
-sh
-> > > > > argument, even if we can't optimize the reverse mapping away. But=
- maybe
-> > > > > I am also out of touch with RAM prices :)
-> > > >
-> > > > In terms of the space overhead I do agree, FWIW :)
-> > > >
-> > > > I think the other concern is the indirection overhead with going
-> > > > through the xarray for every swap operation, hence the per-CPU vswa=
-p
-> > > > cluster lookup caching idea:
-> > > >
-> > > > https://lore.kernel.org/all/20260505153854.1612033-23-nphamcs@gmail=
-.com/
-> > >
-> > > Right, but we should already avoid the xarray with the swap table
-> > > design, right? We just have one swap table pointing to another
-> > > essentially?
-> >
-> > Hmmm, I don't quite follow your suggestion here.
-> >
-> > For normal swap devices, we organize the space into clusters, and
-> > maintain them in various lists (free, nonfull, full etc.). The only
-> > difference with a vswap device is we do not have a free list, and have
-> > the clusters themselves dynamically allocated.
-> >
-> > If we're using vswap, we will incur the xarray overhead. There's no
-> > avoiding that if we want a dynamic indirection layer. We can of course
-> > revisit this data structure design later.
-> >
-> > So yes, it will be one swap table (vswap cluster) pointing to another
-> > swap table (pswap cluster). But to get to the first swap table, you
-> > will have to go through xarray still.
->
-> Why the xarray? Don't page tables (and shmem page cache) just point
-> directly to the vswap entry the same way they point to swap entries
-> today?
->
-> *looks at the code*
->
-> Oh, it's to find the actual cluster because the vswap file can be
-> sparse? Hmm yeah I guess we can revisit the data structure here later,
+On Wed, Jun 3, 2026, at 18:58, kernel test robot wrote:
+> FYI, the error/warning was bisected to this commit, please ignore it if 
+> it's irrelevant.
 
-Less sparsity, and more dynamicity :) It might be dense for all we
-know - we just don't really know (or want to figure out) the size
-statically.
+It's not related to my fix, that one just got the build further
+so it ran into the next error.
 
-> but IIRC xarrays aren't particularly good for sparse data. Maybe it's
-> usually not sprase in practice.
->
-> Maybe a maple tree? :)
+> commit: 0bf6bc1fe82a9307fa772e64c3adb89e98390f72 [9857/10263] err.h: 
+> use __always_inline on all error pointer helpers
+> config: sh-randconfig-001-20260603 
 
-Maybe :)
+I would not expect sh randconfig to work normally
 
->
-> > > > If folks like it, what I can do is have CONFIG_ZSWAP depends on
-> > > > CONFIG_VSWAP, removes all the non-vswap logic, and call it a day? :=
-)
-> > > > Then, on the swap allocation side, if vswap allocation fail and zsw=
-ap
-> > > > writeback is disabled, we can error out early.
-> > >
-> > > Hmm maybe we can keep it around for now and do that after vswap
-> > > stabilizes? It ultimately depend on how much complexity we maintain b=
-y
-> > > allowing both.
-> > >
-> > > I think another problem is 32-bit, technically zswap can be used on
-> > > 32-bit now, right? So vswap not supporitng 32-bit is a problem.
-> >
-> > Ah shoot I forgot about that. Hmmm.
-> >
-> > It's not impossible to make vswap support 32-bit. I did that for v6
-> > after all. It just needs extra fields because we have fewer bits to
-> > leverage in pointers etc., complicating the logic a bit. Follow-up
-> > work? :)
->
-> Yeah we can do that, but it's a blocker for zswap only using vswap.
+>    sh4-linux-ld: drivers/media/i2c/tc358746.o: in function `fwnode_handle_put':
+>>> include/linux/property.h:226:(.text+0x1b04): undefined reference to `devm_clk_hw_register'
 
-Yeah we can table that. FWIW, if you enable vswap, then zswap should
-go through vswap already. It's just code complexity (hopefully for a
-short while).
+I'm pretty sure the oneline change would be the correct fix.
+On most architectures, COMMON_CLK is set in (almost) all randconfig
+builds, but on sh it is not, which makes it run into errors
+that others don't see.
 
->
-> > > General question (for both zswap and general swap code), would a boot
-> > > param make implementation simpler? Right now we seem to key off the s=
-wap
-> > > device having the "vswap" flag, would it help if it was a runtime
-> > > constant?
-> >
-> > Hmmm, even if it's a runtime constant, both branches still have to be
-> > there, no? Does the boot param simplify it somehow?
->
-> Maybe it doesn't simplify the code, but if the branching causes
-> performance overhead we can use static keys. I guess we can still use
-> static keys per-swapfile, but it would be more complicated.
->
-> Anyway, not super important now.
+     Arnd
 
-Ahhh I see what you mean. Yeah we can optimize this later.
+diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
+index 8f2ba4121586..1498473d4160 100644
+--- a/drivers/media/i2c/Kconfig
++++ b/drivers/media/i2c/Kconfig
+@@ -1370,6 +1370,7 @@ config VIDEO_TC358743_CEC
+ config VIDEO_TC358746
+        tristate "Toshiba TC358746 parallel-CSI2 bridge"
+        depends on VIDEO_DEV && PM && I2C
++       depends on COMMON_CLK
+        select VIDEO_V4L2_SUBDEV_API
+        select MEDIA_CONTROLLER
+        select V4L2_FWNODE
 
