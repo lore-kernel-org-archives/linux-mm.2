@@ -4,96 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79599CD6E56
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF28CCD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:16:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E07B56B0092; Wed,  3 Jun 2026 08:09:39 -0400 (EDT)
+	id ADCD76B008A; Wed,  3 Jun 2026 08:16:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDECB6B0095; Wed,  3 Jun 2026 08:09:39 -0400 (EDT)
+	id A67236B008C; Wed,  3 Jun 2026 08:16:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1C756B0096; Wed,  3 Jun 2026 08:09:39 -0400 (EDT)
+	id 92E5E6B0092; Wed,  3 Jun 2026 08:16:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C53206B0092
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:09:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8655B8D16B
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:09:39 +0000 (UTC)
-X-FDA: 84838482078.21.650BB46
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id DCA5820002
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:09:37 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hudv1vT9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7EEDE6B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:16:18 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B9181C02DD
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:16:18 +0000 (UTC)
+X-FDA: 84838498836.09.B35E27D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AEAAB40014
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:16:15 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ENoDXXJy;
+	spf=pass (imf07.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780488577;
+	s=arc-20220608; t=1780488975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TnuFx4Ou3kejucSUC1CjBWPb8/IIbrdEZSaYmxrJMXo=;
-	b=4XX2clh7ekp5spLpCht7oXfs5f+cp3L///up36/e4ehQhfSb26ISOVGQylkmQWqRqPHWT6
-	jZbuz4DuCiyyimJpKmAGOntZaxVLVLEOhq/9So379Wy2lxDpwGJynCctiV9j1LtREtkqIb
-	Nqo4MPi8l9XJRF0H2IQ5o2Nf0hUDTzY=
+	bh=wNEtlb9dNSrrLzMMlCD/oxjjgcgHEDwsYx0ryDudzQI=;
+	b=FeN+Dv4QAQGrP3D9nOhf4rUvamntupBeeDDNwrghrXefopNM4lgVbce0yfpghH9I1ciP+O
+	SBGbgxdZo41P1t/qQSPsn+p3kBntuo8AhQ2SqEWClLkc8/uhrYbgWJnuS1Q7Bm08r8i9sG
+	fQ41+Dlst2k5jJRNGpyXqspm0lXmsPQ=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hudv1vT9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ENoDXXJy;
+	spf=pass (imf07.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780488577;
-	b=SRo/mVAMBLivkOdO3NJMC+Lm0MKUx3l2sfVrQtrrBe0XTXhQ1+TYEL70On/upe7bBrzbgD
-	C6CdAc3qTOBcJM+0EFbvk9JRbM95EnKwcFS3H3BV2CLTlDxSxSfz68kNuwDIJTvgKEiPcf
-	sZo8X4SfvYnEk2Q9jeZ7ocLi2sqFdEA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 16E8741706;
-	Wed,  3 Jun 2026 12:09:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D5A1F00898;
-	Wed,  3 Jun 2026 12:09:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780488577;
-	bh=TnuFx4Ou3kejucSUC1CjBWPb8/IIbrdEZSaYmxrJMXo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Hudv1vT9OqicBhA3XISYHEipfy8FQmRWxTfPZ9jZFgY5EZqvVMG7+hOsfzAa3geFa
-	 llZzLC4aGEBsxE7wPLpES/rpe4l+Lvet3VGeR70wmk8OEtNmysRisJWr1RUDG5RrYv
-	 GnMsOAfkyO3iw3VDKraNRk+WZBCO/M37aifHQ1m6kN39ri4CjFq8z+p/6+hF7Po8uU
-	 ZkdM2MFPrUIR6HirYHTHvFjdX6Ds5SzmNiaBync+kWfhuIUYVUZZE6mYzT/9LPPsco
-	 2lUlL33vAbUpXWxc/3YQoZK3Mk8KVMRN8SfYkEU7350ymoSSnac+eVkgLPGu9Aimwo
-	 mol4W5y7LyXIQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
- Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 14/79] block: rnull: add submit queue count config option
-In-Reply-To: <abfeIpz8HP_Pr5Yv@google.com>
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-14-de9a7af4b469@kernel.org>
- <abfeIpz8HP_Pr5Yv@google.com>
-Date: Wed, 03 Jun 2026 14:00:00 +0200
-Message-ID: <87jysfkf5r.fsf@t14s.mail-host-address-is-not-set>
+	t=1780488975;
+	b=WHcNTtn0kVXrNiu3RLPBfKmh2rCxp78vF/plCGDafAubx89J0mcrwzECCe9MmTKnvyWhEI
+	EHIc+2MhxyD/p7S7gkPzxkOwZ/I2YiF0aEmLb+Yjo7X3Nu5DTa/m+zlaQYPnPKccyVo3QQ
+	HCvWkpsW2vsK7ft35LR+XXF3XpPNWGk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780488975;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wNEtlb9dNSrrLzMMlCD/oxjjgcgHEDwsYx0ryDudzQI=;
+	b=ENoDXXJygJMzCTYM6HIcPLyIHubSDtglALegnTLSmqCWSr24wbrg8FxVQjeNJQxiJb2+2W
+	v8qQgRMoAiD/XRGpFLeRbqH+xOAlJ/N9fAgdGkzY1l5cwIiYGIXNoJinRgzBLZXjAuU9kS
+	ixmjpWbO425DMdJElvBgU0feI7pcrT4=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-wlqaPjbmOpyGkM4vBMI2KA-1; Wed, 03 Jun 2026 08:16:12 -0400
+X-MC-Unique: wlqaPjbmOpyGkM4vBMI2KA-1
+X-Mimecast-MFC-AGG-ID: wlqaPjbmOpyGkM4vBMI2KA_1780488971
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-7dbe4c01345so7173957b3.0
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 05:16:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780488971; x=1781093771;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wNEtlb9dNSrrLzMMlCD/oxjjgcgHEDwsYx0ryDudzQI=;
+        b=BxESI+c4ZSomslxnBed/qj+20PDlyG+5h5ELUzSrJ0SRHwVnM1kaG3et7WFDFsefWb
+         8QvTgmXTiK6KdPK41YB116x8dqPYzfVRgPdqHkEWEoDavd9re8QvUf++LBU9rI2n9MN7
+         gAJOvUdmckJYBxaOuAHXAJA/RyyE8sZ8DdI/L5hpZcd2gvMBHEEQJSInZ1VkdqosRLKc
+         EawObpwAXXuNWJqZ9ByYkvYP6WeZMl2Ct/pUCfHfeehWWCKcg8TPmLorbkCTIvfjPlz4
+         ScEz1W3U5r+oQRrMU3GF0LmjopNWfS5my+G5sWTj+YWPr9+NL/5VPSAppULtP/F6bjsC
+         wUlw==
+X-Forwarded-Encrypted: i=1; AFNElJ/eHStbd8uhO9E+tskU5/1qFT6Mn5yqZA+Y+/CS7pTPs3KhWx5cIgXDzAflydzYjGNz8T6g82yEkg==@kvack.org
+X-Gm-Message-State: AOJu0YzfdEhf3y1iQHGvCCs8DZwfFN4Z/8WWy1A5QLCBOGAQX2gwxe0w
+	8fXLSmy4wb+4hHjP6FnuRW/WtL5wZlbYO/6uNQLxz6fg7+dYuEX3x7SVtOpvkPfZ/cD7Gugw+ak
+	I1t5Aas9az+NAZVDHzRRaLTbEAHxlTrR6HjgCrpbkLGHzLsg1L73J/Gs1ShM+rVtQ8C0gmixCl5
+	62gW92Qhk7AikT+Hqzbub/MTkk+KM=
+X-Gm-Gg: Acq92OGk7+i8VGniC8aa/ZzVXkx4dRLkZk89ac3lJjWQAiMC5yP3ffVWkhw1bobPSfh
+	/x0ZJ1ATmlghz8aopi4T4ky6dEQlgkrvATj5TyHqWy7mm4+lLkjTFLv2BJ1SIheW7EQHJsdHb9x
+	imTt1M3JPN6UMTWbhr8vSvaK3SsCr0wCm9XSxDytbSHshIvopHX2MOpuxHal/LzXqb7N28GUQbo
+	Sd5JNpKKjD7z3z6zg==
+X-Received: by 2002:a05:690e:440c:b0:65c:58d2:18a5 with SMTP id 956f58d0204a3-660dcbf56cfmr1408273d50.41.1780488971400;
+        Wed, 03 Jun 2026 05:16:11 -0700 (PDT)
+X-Received: by 2002:a05:690e:440c:b0:65c:58d2:18a5 with SMTP id
+ 956f58d0204a3-660dcbf56cfmr1408255d50.41.1780488970976; Wed, 03 Jun 2026
+ 05:16:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam07
+References: <20260522150009.121603-1-npache@redhat.com> <20260522150009.121603-12-npache@redhat.com>
+ <b8380eb3-096a-49f1-9ace-99c1e75888b4@kernel.org> <CAA1CXcBg1su-bk3i_H+TW4-nTgvGSGqRNeC9MpQo7sGeH8ejnA@mail.gmail.com>
+ <d3c2b00c-6810-434a-b837-0707b0a11611@kernel.org> <19639b08-5bf1-4974-9635-c458d512fa38@redhat.com>
+ <ef5c470f-3c32-418d-9566-17ec01b691bb@kernel.org>
+In-Reply-To: <ef5c470f-3c32-418d-9566-17ec01b691bb@kernel.org>
+From: Nico Pache <npache@redhat.com>
+Date: Wed, 3 Jun 2026 06:16:52 -0600
+X-Gm-Features: AVHnY4LAQaiaHNznOXVI6g4R-yc6NKejy8321oN1JhGLTXQQA6dG-VWPanP8lA0
+Message-ID: <CAA1CXcD_Bz=Si+vP0Sg_FhAHVjbeAJ4VdvtWGM-jVYiRXFHAnw@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
+ collapse support
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com, 
+	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
+	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
+	lance.yang@linux.dev, liam@infradead.org, ljs@kernel.org, 
+	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, 
+	mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, 
+	raquini@redhat.com, rdunlap@infradead.org, richard.weiyang@gmail.com, 
+	rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
+	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, 
+	surenb@google.com, thomas.hellstrom@linux.intel.com, tiwai@suse.de, 
+	vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com, 
+	will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com, 
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com, 
+	Usama Arif <usama.arif@linux.dev>, usamaarif642@gmail.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: IAjPT7xWgPZkL5EGK1lel_3M0f1wB6LmWzISHpQdsnQ_1780488971
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: AEAAB40014
+X-Stat-Signature: kgocx7c7wjc7c1433gqbouujnte7kcmt
 X-Rspam-User: 
-X-Stat-Signature: i6eqdajz3xxca7umm3xj98hs41wsdwr6
-X-Rspamd-Queue-Id: DCA5820002
-X-HE-Tag: 1780488577-643874
-X-HE-Meta: U2FsdGVkX19hAZMylzGH4itxwYmFvXzyN4BNUYRK1IPm/BanKZTZMFwM3VBQG2MZd6zF4z3tQeCCjkiTJBauqJIgJohVAoJQiGx4CCRRC1P7kVGSXHVdxDPAZ8mYJfhaP6rkphF1279aSIq4AgZq1HJHa1qiBzE3aDDQZo0wh0kI4q2RgxPy3Dbp9c8z7/FSkX9AbJi5e71FCDFfcfnWFgkGaKb+Gui/lfPpg8eLpX8lEoc56c7jAHG6ynui9esqhr6NCOBn8j4IJ8eDJDFySajKa8STPBEUzG2f3ZA6km3H9uD65woJiDpBBafQl5Is//fWOap9PehZgQTDE0/XPAYKXMhmIeo7N3noQRRV/dFU+bkcDGPf3WN+FOkv1p9+I5sTgsApjttemJW60WtfEuIDSKzRIfruofMy7uppfV+sqpA5DCpRLvUDJumMmq+SZ2/MM5E23HMWTLZ7XEVGSwDPGobf3/fyaB0bQ8KUW+KuKkgxf2Y0hCL1c8rdGOaiFl/HZuYmKMpuqXpl0IXx3VVV9a9xPvMsNm6lMLQF3CqgENNu2DtxUSLge/UyPOEHz7BArpccN1MFUIcnbYGYkDUfawH0PyK9rePRFM3ctiS+DHJaE7e9t4iQLsoftwtzyOfjjZRLPqN3Aj0/4+O1v1wKLJc4pDaCJYSy7jDgYJqW4lHEgK6g58I75pFAHvBAUGeEOMj5lOquAVhgwJ4NmRJ3RPx1A/b3+TH9gCMf2cmLWrbj/WPjylsDiTIOZxcBxPqvhojeVTifYr9RyFDKSW5dFsG1WV5NXlQZ26RDSZ9wVr3NwsVnJx2ZteFS1A20Up/qWq1WdCsDGfnP5LyLfVpjRnE8gmXRtkTTDfNrs3Zdh1rdLnvP4iO6ZMaxWp6LO9v4zGYcb0R+WrgYpWBCKf7leNnpdYB6HTjCuX5CL4f+fHINFpDFpj1xxZU4+XRaARXp8TjvptVw0lY4jiI
- v7+cGOwz
- 2F1kvukO+Be/L80W1bdCo9vSvx1//+e35L5VrGURbABeqxG/Vs2ihwsxB09DpScvuTMnMM8FjWFSuglMfM2FyaTdN4Tlqdt7NXmBkiny87gzHbj3Xi762vDo5929m8FxdIQfM9NmGPZtTTOM8Qse8tDkt2f/+Xc0ECc8qJy9oxdm2bFfWXeGwJUqQ6H39/2YbklmFD8XYow+RCRkZSXrpj4ARkb+JKBqAF6nac9hDvhSNBBYI9ggDJGq+qhFQcvQyXBk8NDjkXxmZXl6q7fuZEGtkZLEi26/N84bvdcool0Xw1SpfW9uJhzwcoKACJ5t25vhWarzMREGFWNQ=
+X-HE-Tag: 1780488975-604771
+X-HE-Meta: U2FsdGVkX18Sx3SBPV2yj2tYueVXPrxiCQhbbr/kuZkX9UCf0wPYeQdpIda1NsmSO9KSAocVPYwwTbAwsvmpk1bq37GbuwtgIxGnpz5rzuouIHuGjjSyv/4nBSQu3l+yGYm00sEgrKEfz1JtFxvhFywgyESfSEhk1xrKH0LwgCx4vbnMYANYPMY2rRDqEUqtDa6fl6Cc1rL72R/wqKtfYj4LUanyval8yDrZwnPI8v1TmX5q/MWaCv/k8sChTmNHf8NlGI5mv67D3BW70aan7XRvsmU0E0xJ79FjiewU1urHL9V1pmcGbTBpqE+BVJbcWhXz6hD+Q1eW0I1bwGHG73cyoKkpCgg6ug92IyoNZeRcHuvvEWgS1y22ZQZ2gDFAK+ZYu4CR8Dqun5nZaaKkC9L0dl9vOFHLfRKkzZqWd6qccxW70o1U8kr0m256X7QklQFZaVasRZAh2QafHzcTeE555ufUN1I1dHNfGr/Sr5SmmFXZ5HDxSgBmJl/kfp7Vc9bTygOCiDFBtZMLCDmtJatuvIwrDvw4tGTjLizwRcWN++DiOmIRxWNp69iSf2+R02OIMLfcnIqlOu2BG5HlBO4xLErEBlnqrFLc/KHDKUkG1xoAE0oCJIxYHTlHZ2FRtwSH+IHjcRelQcC6sqwNDb6gJsGKU1IMAuTIqeSYhxHTzw1ueWQswWMpJx7JbQ+9d5GZ4j8PnT+vaR9L+agbi0TL3KBQ2DYQUn4rwzdVQSvBgEo6g3v3aNo12Dy4xwYImjDhX6asOuj4stWUJo4TwFSWGfB5wnHm87z8PSkSt1Hs2Rj6LPPRQjHEGG5gHojn9DTXXDg99JnoMZNr1bTPjA1JaWQi+4jRcWpDRMmlQ3MWjiNxM+BnbeY/Dep6YrzJo6qz4f+cYqNOFf80uR24TubL4/EfOfdEElCoQynSdrEv8LaY93zu2+Lo5w9kz/rJgwU4rA7+x0pXH77N1a6
+ xtudLZ9M
+ GhwvHDQ4NqjEhMnlu7cjwrkUh7mXUMfyReFM0U0xOizhXL/kg69cb46enLZ4X8dm7no/XX/ArzhlYp9E4rChKxvZxMcG3H4IEqO4msLUpt7aDizJX8zI2UykTi80XBL0eqqA+65SKXCTrENKAVnAYxdVjUa9AgNc+60T3IjO/sCylrzb/gGUzhxH5ynKbDIifn38jknmukGNAnXskvQuDFB4kllULk0RYMwvADhi5q7+5WFtkQe8/kIqOnBjNMjuSFCWA9dCY7xbdTPe3XSreBj+3CBViZ9MNv5KZc+5X2yS0XAIKszfPZJFlCqdByzwXsPiSr3ooROSR3VcOXSrHi5Q4WLg1NoGmw3UkUch4sx24zZF2tzlXpCAt2A9QxsN/Ip7xwdbawmhEDzSyYH3idNr1lA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,39 +145,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Alice Ryhl <aliceryhl@google.com> writes:
-
-> On Mon, Feb 16, 2026 at 12:35:01AM +0100, Andreas Hindborg wrote:
->> Allow user space to control the number of submission queues when creating
->> null block devices.
->> 
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  drivers/block/rnull/configfs.rs | 56 +++++++++++++++++++++++++++++++++--------
->>  drivers/block/rnull/rnull.rs    | 56 +++++++++++++++++++++++++++--------------
->>  2 files changed, 83 insertions(+), 29 deletions(-)
->> 
->> diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
->> index b5dc30c5d3e20..fd3cbf7aa012e 100644
->> --- a/drivers/block/rnull/configfs.rs
->> +++ b/drivers/block/rnull/configfs.rs
->> @@ -59,7 +59,10 @@ impl AttributeOperations<0> for Config {
->>  
->>      fn show(_this: &Config, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
->>          let mut writer = kernel::str::Formatter::new(page);
->> -        writer.write_str("blocksize,size,rotational,irqmode,completion_nsec,memory_backed\n")?;
->> +        writer.write_str(
->> +            "blocksize,size,rotational,irqmode,completion_nsec,memory_backed\
->> +             submit_queues\n",
->> +        )?;
+On Wed, Jun 3, 2026 at 4:01=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
+l.org> wrote:
 >
-> Missing comma? If so, this may indicate missing test coverage :)
+>
+> >  next_order:
+> > -             if ((BIT(order) - 1) & enabled_orders) {
+> > -                     const u8 next_order =3D order - 1;
+> > -                     const u16 mid_offset =3D offset + (nr_ptes / 2);
+> > -
+> > -                     collapse_mthp_stack_push(cc, &stack_size, mid_off=
+set,
+> > -                                              next_order);
+> > -                     collapse_mthp_stack_push(cc, &stack_size, offset,
+> > -                                              next_order);
+> > +             if (order > KHUGEPAGED_MIN_MTHP_ORDER &&
+> > +                     (BIT(order) - 1) & enabled_orders) {
+>
+> Why not a test_bit() ?
 
-Indeed :o
+The test bit is at the top of the loop. This adds a exit if the lower
+orders are all disabled or we hit the last order.
 
+>
+>
+> But, wouldn't you want to skip orders that are not enabled and try with t=
+he next
+> smaller one in any case before you advance the offset?
 
-Best regards,
-Andreas Hindborg
+We are currently iterating through each order (not skipping them).
+There may be optimizations to avoid iterating through every order
+(like your changes suggest), but currently, every collapse, whether it
+succeeds or fails at the bottom order, must also iterate the offset.
 
+lmk if that makes sense!
+-- Nico
+
+>
+> --
+> Cheers,
+>
+> David
+>
 
 
