@@ -4,132 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E60FCD6E5D
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 03:13:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F23CBCD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 03:29:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7124A6B0088; Tue,  2 Jun 2026 23:13:01 -0400 (EDT)
+	id 10D7F6B0088; Tue,  2 Jun 2026 23:29:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C2AB6B008A; Tue,  2 Jun 2026 23:13:01 -0400 (EDT)
+	id 0BE7D6B008A; Tue,  2 Jun 2026 23:29:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B26A6B0093; Tue,  2 Jun 2026 23:13:01 -0400 (EDT)
+	id EEF326B008C; Tue,  2 Jun 2026 23:29:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 46C626B0088
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 23:13:01 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E5CC91C0A3E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:13:00 +0000 (UTC)
-X-FDA: 84837129720.24.E305D80
-Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3A6FD4000A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:12:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780456379;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ELAckSMkwRGZ6DfjbRItAGTsXXdLZQbzq00xTtjjcNs=;
-	b=ueBzRBh1D9etclNv+7mWuIQOU+eDK1Mqo++XtkZFzLASHCyN40M5kagKwfC1xaUSSirV9C
-	lxbt6DzZOBhZqgXrPfBp+Hr2AmWxXCOq0PlG9zT4Z0c+Gxs+EW6rVvxKQ74joV1+KlOq7t
-	ymDpuAmYA09lukxfZ37TbkTqB9PK1Fg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D9BA56B0088
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 23:29:09 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79E3340209
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:29:09 +0000 (UTC)
+X-FDA: 84837170418.29.00A6FE0
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C48E1100004
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:29:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Tv2HhggE;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780456379;
-	b=uRWxAZoRVRY8B1eAcbHaw9XBeGzO+aMzIojLsqkbkiwjOEhGfjUwQXO1mPKh4ZQxvk5nMO
-	vT7EzetzQReunabLZpsh3flrKGejl8WjIwQmYUox2w2SXjVcWZLcL7WoZbOxg6r/OU6M9g
-	Z4Js5IUfcVATWNDpDmlUrEQC+RYFDe0=
-Received: from TW004-1.hihonor.com (unknown [10.77.232.85])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4gVXlh3hQCzYl0S0;
-	Wed,  3 Jun 2026 11:11:12 +0800 (CST)
-Received: from TA004.hihonor.com (10.72.0.6) by TW004-1.hihonor.com
- (10.77.232.85) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 3 Jun
- 2026 11:12:53 +0800
-Received: from TA003.hihonor.com (10.72.0.43) by TA004.hihonor.com (10.72.0.6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Wed, 3 Jun
- 2026 11:12:52 +0800
-Received: from TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1]) by
- TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1%7]) with mapi id
- 15.02.2562.037; Wed, 3 Jun 2026 11:12:52 +0800
-From: wangtao <tao.wangtao@honor.com>
-To: Harry Yoo <harry@kernel.org>, "catalin.marinas@arm.com"
-	<catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
-	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org"
-	<david@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
-	"sj@kernel.org" <sj@kernel.org>, "kees@kernel.org" <kees@kernel.org>,
-	"luizcap@redhat.com" <luizcap@redhat.com>, "zhangjiao2@cmss.chinamobile.com"
-	<zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>,
-	"ljs@kernel.org" <ljs@kernel.org>
-CC: "hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org"
-	<liam@infradead.org>, "vbabka@kernel.org" <vbabka@kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz" <jack@suse.cz>,
-	"riel@surriel.com" <riel@surriel.com>, "jannh@google.com" <jannh@google.com>,
-	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
-	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-	"npache@redhat.com" <npache@redhat.com>, "ryan.roberts@arm.com"
-	<ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
-	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev"
-	<lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
-	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
-	"matthew.brost@intel.com" <matthew.brost@intel.com>,
-	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com"
-	<rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>,
-	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com"
-	<ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev"
-	<shakeel.butt@linux.dev>, "ryncsn@gmail.com" <ryncsn@gmail.com>,
-	"21cnbao@gmail.com" <21cnbao@gmail.com>, "jparsana@google.com"
-	<jparsana@google.com>, "dvander@google.com" <dvander@google.com>, zhangji
-	<zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
-Subject: RE: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Thread-Topic: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Thread-Index: AQHc7cjw5r5ki6LAJ0S2mW/rJEfblbYq8jCAgAEtZwCAABGecA==
-Date: Wed, 3 Jun 2026 03:12:52 +0000
-Message-ID: <2235c9949d8a4986b89c99757c5161a7@honor.com>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <0867dac0-bc48-4aa9-891f-2066a3eff989@kernel.org>
- <7319ad82f9ee4fc4b18b50b1842c9f99@honor.com>
-In-Reply-To: <7319ad82f9ee4fc4b18b50b1842c9f99@honor.com>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.163.18.240]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	t=1780457347;
+	b=cc9T3bRK6Pqo49Lpo9uM75hFwoTScweo5NoLYEvVD2yERy92x41pyzPmD2PSfpZO9qKGqj
+	BjbaR2EKz2jHyf5AKbYHVKVTjD8l3RQroPj2Y8WKYnT1BwI/AZa6+q98CvRJj6HTvsMGcM
+	81AChoMtX+z9mMJXoOO3Ufn+X9m0Wc4=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Tv2HhggE;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780457347;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=P4+c0fQ4LYrHNLHZUplyns5z+KGYVI4xj+rLgvLL9F4=;
+	b=A4knDnY1J4sJRpY4lqhgZ84gyfw+NFedJUwqFcMelFZJWB4Q1S3jfR9irZQ9zxl5gDXuci
+	yYW13UeoDKdefZkDqTY0YpgXIfC9/l1R0jXy4pZDovnIbV8Q8HsWSM0zUc/CnoKQJ14zFU
+	QqBHvITc+MtXSBeG+pRUEmAV1AENJ0o=
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8ce9df49c5fso46353036d6.1
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 20:29:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1780457347; x=1781062147; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=P4+c0fQ4LYrHNLHZUplyns5z+KGYVI4xj+rLgvLL9F4=;
+        b=Tv2HhggE+OLSC5iA1zw8JYwpIVzmFZiHXj1L2k64H60EGX2xrdGIbt/KEmhCW9/NLb
+         f4MeyJl5DxIsF4RpYC5XxP4wW4fQ/LDyfCwI21GVlG88XlrGHcuY2x9jnbtPYHmkc7N7
+         x+ZvyIMfcfD069qtLrPuHAXAx7+2x5WcndKjmQRujw97tpZFa37PMfmfOtZr2M+Kg7P1
+         bnVsATCL0LZm64ss4sJLldgWEnC/b8WkyK2GVLuKK/WAO7wCxpUh9kNKY3IQ94vqyo9J
+         fuiLuuE/OEAbInVMRUh8RyOqufdDyRNxHr5MkP0IAhBne9yICkwSEsx6Nrjtkxq2VU0P
+         /ZpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780457347; x=1781062147;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P4+c0fQ4LYrHNLHZUplyns5z+KGYVI4xj+rLgvLL9F4=;
+        b=SEiIpmzEzBLgewGDhBWup7DI2KwI3gNVDxsfXAX0P/aF+EfJhnMtNhOBkAGVfph5az
+         2TuvFWQQxKGYO49bZU1asEfBKbv1eTqovcOExCVG8G9exPmol2y6dNBGEbMHYsZXqDYT
+         9X8pJaMBM3nQrt+0hZ66YVz7zG3z9/PhAGRXdZD8Tv9QgF2yWD/U7hM15nqJcvPPtU/J
+         z2+QmYa4ZSAer5o9nD8AfmK22dG2nn7322N0FX4n9qNhUKbwXAWC1aWESXW/cvGJ5jJC
+         PzbUCAPVJ53W2zptcRTN/aceePJSlPIXcxqPJLwVIVYeIwXBTenQvrSt4AZExYJVc/nT
+         OV0w==
+X-Forwarded-Encrypted: i=1; AFNElJ8iJtBCuMf2DEB1Ez1YfRi7fpUHYnEVWo+0YvSi2crrufmIyiXcPBra4G5qN3CVd1vLGg40BRHipA==@kvack.org
+X-Gm-Message-State: AOJu0Yz7+Znz0rRpVUKnFraSF9DKzYUh4+A9HLhOAMb9kNDXLZjTB4Mq
+	Dzy0AKlTWmtlIjMJQH0iU46InyhyIiGGJ96EdRbLvJvNRAQenGz+XrvSLp+XPlyzhBw=
+X-Gm-Gg: Acq92OGCMJEPTmmA18bX4HUBUtJS0O6OBQqOcMgJ0Gou2FokQe0KZJYmc03wOHpX6/x
+	ocPIxEK2/YpDkX4shTIzIiBl6unyjpam2EnTxibR/Lb8AA8w4Bitf+8Ctb4+ZNVhUEZfBPFXhQ8
+	yKOc9XkOjUFqK4DzXBd2sRxTFwh72olLEGtT5UHOc9C2JImiuNPIjDW5KDRTH8vV+5O+cnRavIC
+	gm5KbXiYPL7fd30MQ7lc9VEYmY071xitAdaXFPX1/mLdSDEvl4l9MLHFY3G9j1PsK687v98VYn8
+	ITHyB70HzAx0JtVbr84e9CuJFpAGaeeP7bFIYlGCWZ8nmJ5qzepG47A622GV3l30yTj3kQq7KDs
+	YjJQ5WeTgobpstu+/CD9WBILDPx2X1EP0qKvi7ikuwuk6fKIvddjysW+vwZCALOv86u/uI7MyxW
+	H1qxneyGigBJY0bbVyvpRxrO2FtEFtr/1+gZ9K4bC1cgx3W+8athIYnGXUknW25A==
+X-Received: by 2002:a05:6214:493:b0:8a1:8b0a:6678 with SMTP id 6a1803df08f44-8cece03811amr23330036d6.31.1780457346835;
+        Tue, 02 Jun 2026 20:29:06 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd26b3b9sm9244566d6.45.2026.06.02.20.29.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 20:29:06 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: linux-kselftest@vger.kernel.org,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	corbet@lwn.net,
+	pasha.tatashin@soleen.com,
+	dmatlack@google.com,
+	kexec@lists.infradead.org,
+	pratyush@kernel.org,
+	skhawaja@google.com,
+	graf@amazon.com
+Subject: [PATCH v6 00/13] liveupdate: Remove limits on sessions and files
+Date: Wed,  3 Jun 2026 03:28:51 +0000
+Message-ID: <20260603032905.344462-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3A6FD4000A
-X-Stat-Signature: jtkebjytjqm3dum8g6qregpyaejn69hc
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C48E1100004
+X-Stat-Signature: feeezru8rq7qgmrdc3jhwtx7mtrnnzm5
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780456378-727191
-X-HE-Meta: U2FsdGVkX19STLQcMYUxEmXpIUHtItRdexVEACsESnzLqYu0n50MLg/7rFzVCXi3stA8TXLklyXJ2524CBm4xawI47PGtRyUP6NltSFOuWCe2l9Fy0zFJTShyqC5oa6GyHRWlU93VF0jCtXJYLHUsCdm2K4pKCBI6wz1n8/oZPyCTva12bLZnrkLXM+d4Y0fJk0QDmABDPtiiJU5u+z9kuh4DNgEwp5i1ty1rKHLf25K16drKMvANZfbJxPbbvLdLu9es6Q+RZaKY1YjYFMsCFDC+t4mBppNZKtlLCXeDLXDaE+CVTep5LVKMadvKzs99lSexsnowTBz6FUvu6M2Q6JqqCEHYTr9yPm/eWuV/88ddYemT49MEcFXRZC7m5yx6AYtqI1dcA4FSAKZczuPljr/ZBq+XbwzQwP2SaRozXPiI0QAjXwHRrLnsTNhWkNlH6+G+B6f39vVslQ1/X8s363/2i+A9wiEqSiz4bxNIZdpOTkkMc1tP6RfszJ+BUNz9QEDTsd9dQxCkNdvACaJEzdt1Vv0sr36Brb1PAbE0OkAI57N9n0BnLENvw1kjmx+Ldf8S6CAFx2Rv31j/m1YJOjyVQjiHa3jqraFOFY14JB4j8r0U9H/8tjOEvgYkAsE3NbwjHKIniDexj3AMq+z5JfwjtaD6Qy9aUhFIk/3XrSJTo3Htl72ct36Nb3+GImoO3B25H35c1I0bs9mFNcQYVN4i4SxcQUD2h8RlNGC+tB2RL0ePUrXWFw4JopAhuYItDZab/hXd6rRAN9B+kgOC4dZCUH+d8KDU2SrCb/d300xLQf9zPJZAZikyS6UlrexkxpOWuSYjBVVMlz3lSzbseK1bBwZbxmtOJijaTLlREtlyL1CvfDOXV1zghBv9Z82XJs/QJ+SsqBlygUVJ1Dcb7/0vWLm0FKh5dYGAf+uRxHfL6ew8/gWpOgqF4WO2JZBL17KW3c1UqGm/g9mwCh
- fj2bd2vU
- 47dwnIBVYcOxV+KB9KmoOvwe6BdZitFpZrcs1EtDJd5SfsZNbmleTOycj9f5bKc+Kt5j1WIsbK89VdLaI1GT/V2VCuw7kC9R941mZRwEbhEiQKP6WqiQuGgWsR0g9pONkRQ/EoAyN18RLx2XjmzBpClW3Zf83+kHRdOFNbc1htfGQY0h9JfxvbmbF4+2oQQiqXNHFXTI4gtwQwxnwbIKjdyOZhhlKJXjncWf1bGJtLM2Cayy4Ha0kVNzCkNDS7Nf3iKIfEKYPSy2QJ9KHDFP6Gle6qkt92WLAG70QTT9IZwC616w/4+v8TFmEkQ5PzeceDYMEiq9WtqO7Qj148nMn+DZw5I2u0P9kQKkNqOveejwXm8E8jaVDMCgIWEcW1nNUD2uFVlHn2M+PzOVBrkcriF8LrLOlhamkjzY69lw2d11lCe+H/ofxPBe5eQ==
+X-HE-Tag: 1780457347-856661
+X-HE-Meta: U2FsdGVkX1+EgteQS5ncG7v2mmJ/Reyf0hyIWDLNM3feEohFuwE/uSgxKi4AZ4G7AJSzTDP+k87UaI06hYTqeNSs7LOuFM7eH5OC+yAoaMLRk1kwrqLkTLHIHvoupV6JccqnZld3VEWyugddhhkN7hY0jeCDztIPbSZ7jWsqXhnBlKDN2Y4iycJ1j+1P28Qvf453UOSicec/MhJ44khlmXAiMH0HvSzgR5oASbJP1avZn9xGcpmXc19s0lkD1FGJf8HT7U138GwTOpfjx5JrdxxS7d/2M3kKT7y9SbM4xHNrOeWumyW59VavX5Llizyr0RPcZuHYtxTLu/Dur/+mqQBDRv/RI3NQqmZ9aU4PxW7doLWQJbKz6qB1dA0eGCMwM4wbWuLQoy1y4Sw8BSxc5YD7NUFrmHEAzP8gnFiayv7p2yr1PoMPFT4yCEUclMFCvKkM38jyE7jVLq13ZA2KHKwX/ikEFdXZ4TW5RwRkWE23b+XvGIWtsDCcMX+kDhJfv3QcTwP9dv7Bm2SeLlLOHNIMwROun8zbQK6syTN+TdRDGo/B1JtDURDNbDUhi1u7xEJeq0lZyE+hxVBzKHURXzWvR/+aAz3lzOW2Q+d9H7Eh6L0EmrdPPYhTt09BZwiR3HBUFoYDVihJH+rjefcEUQ003wtCwpKOnc1uZ4IMGPrucKgQ3dT6Ou4G4xduLqkS2ICWvjBKGtp516jUcXJLMPNV7VNF2yJFMKn29ounNiJVsQzhURuGinpt0ECNu0QrWYdqAe9e+pXW7c+pxql/cCHWkbO6YP6qY2FwnJGkDvuhCmKLFbGipBEpEPRLd3bR8nhbNursVsZWqWbXIcYl9OYIW8C3vbO3eJ3lzz+8ECU/B97y07KM4c1OVIQD3WJHw2RTOV8oNv4tnsy/8csj5zay2IMyijjDJPeoD+mKl8kCl15aTHW3hLKL1ho/Kn876v4kJfwxAP3ikbl3Vr7
+ cGS2jTi/
+ TWsvPvvCplG7rKzcwSZhk+pHGDbMwR80R8vFMsYfTr1jy4pGavHIuXhDrsyVigLrv8NmmGO40Q/SQjqlxZZbUUrZGZA820FpoC/DNQ9vFeLsfOCNyZxTNe8mg/Rzzaq7hRAKAzqmEkwSlfyvyBwFPR/gFQn8wIVRvyLWVdiVpOwPiXxiMWMkLtCdguqxPiBtwhPQWPadpw3arPjDAH+oQ1DXxJXDlcg08TSkBNvTN0zXLHv7SDaqmn3sx8gz630kdAIzjZmbmSGMt+hUyWjTucxjHA3qzvPpk5qOMahUvNIqMXbo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,14 +125,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiBEdXJpbmcgcm1hcCB3ZSBjYW4gY29tcHV0ZSB0aGUgZm9saW8gYWRkcmVzcyB1c2luZyByb290
-X3ZtYToNCj4gDQo+IHZtYV9hZGRyZXNzKHZtYSwgcGdvZmYsIDEpID0NCj4gICAgIHZtYS0+dm1f
-c3RhcnQgKyAoKHBnb2ZmIC0gdm1hLT52bV9wZ29mZikgPDwgUEFHRV9TSElGVCkNCj4gICA9IHZt
-YV9tYXBwaW5nX2Jhc2Uodm1hKSArIHBnb2ZmICogUEFHRV9TSVpFDQo+ICAgPSB2bWFfbWFwcGlu
-Z19iYXNlKHJvb3Rfdm1hKSArIGZvbGlvX3Bnb2ZmICogUEFHRV9TSVpFDQo+IA0KSXQgaXMgaW5j
-b25zaXN0ZW50IGhlcmUuIFRoZSBvZmZzZXQgc2hvdWxkIHJlbWFpbiBwZ29mZiB0aHJvdWdob3V0
-LiBJdCBzaG91bGQgYmU6DQoNCnZtYV9hZGRyZXNzKHZtYSwgcGdvZmYsIDEpID0NCnZtYS0+dm1f
-c3RhcnQgKyAoKHBnb2ZmIC0gdm1hLT52bV9wZ29mZikgPDwgUEFHRV9TSElGVCkNCj0gdm1hX21h
-cHBpbmdfYmFzZSh2bWEpICsgcGdvZmYgKiBQQUdFX1NJWkUNCj0gdm1hX21hcHBpbmdfYmFzZShy
-b290X3ZtYSkgKyBwZ29mZiAqIFBBR0VfU0laRQ0K
+Hi all,
+
+This series removes the fixed limits on the number of files that can
+be preserved within a single session, and the total number of sessions
+managed by the Live Update Orchestrator (LUO).
+
+The core of the change is a transition from single contiguous memory
+blocks for metadata serialization to a chain of linked blocks. This
+allows LUO to scale dynamically.
+
+1.  ABI Evolution:
+    - Introduced linked-block headers for both file and session
+      serialization.
+    - Bumped session ABI version to v4.
+
+2.  Memory Management & Security:
+    - Implemented a dynamic block allocation and reuse strategy. Blocks
+      are allocated only when existing ones are exhausted and are reused
+      during session/file removal cycles.
+    - Introduced KHO_MAX_BLOCKS (10000) as a safeguard against stupid
+      excessive allocations or corrupted cyclic lists during restore.
+
+3.  Expanded Selftests:
+    - Added new kexec-based tests verifying preservation of
+      2000 sessions and 500 files per session.
+    - Added self-tests for many sessions and many files management.
+
+Tree: git.kernel.org/pub/scm/linux/kernel/git/tatashin/linux.git
+Branch: luo-remove-max-files-sessions-limits/v6
+
+Changes v6:
+- Addressed comments from Mike and Pratyush:
+- Simplified kho_block_set_destroy() to only free successfully tracked blocks
+- Enabled dynamic entry count tracking in kho_block_set_it_reserve_entry()
+  to automatically update the count field in block headers on every reserve.
+- Removed the error kho_block_set_it_finalize().
+- Renamed various kho_block_* APIs to kho_block_set_* (e.g. kho_block_set_grow,
+  kho_block_set_shrink, struct kho_block_set_it, etc.).
+
+Changes v5:
+- Addressed comments from Pratyush:
+  - Renamed kho_block_restore -> kho_block_set_restore, kho_block_destroy -> kho_block_set_destroy.
+  - Renamed block iterator next/read functions to reserve_entry/read_entry.
+  - Added public helpers kho_block_set_head_pa() and kho_block_set_is_empty().
+  - Added validation to treat zero-count blocks as errors during restoration.
+  - Simplified block iterator reading loop from a while to an if statement.
+  - Changed standard WARN_ON macros to WARN_ON_ONCE on iterator allocation checks, and added warning details.
+  - Simplified session serialization by removing a redundant NULL check on sessions_pa.
+
+Please review.
+
+Thanks,
+Pasha
+
+Pasha Tatashin (13):
+  liveupdate: change file_set->count type to u64 for type safety
+  liveupdate: avoid mixing cleanup guards with goto in
+    luo_session_retrieve_fd
+  liveupdate: centralize state management into struct luo_ser
+  liveupdate: register luo_ser as KHO subtree
+  liveupdate: Extract luo_file_deserialize_one helper
+  liveupdate: Extract luo_session_deserialize_one helper
+  kho: add support for linked-block serialization
+  liveupdate: defer session block allocation and physical address
+    setting
+  liveupdate: Remove limit on the number of sessions
+  liveupdate: Remove limit on the number of files per session
+  selftests/liveupdate: Test session and file limit removal
+  selftests/liveupdate: Add stress-sessions kexec test
+  selftests/liveupdate: Add stress-files kexec test
+
+ Documentation/core-api/kho/abi.rst            |   5 +
+ Documentation/core-api/kho/index.rst          |  11 +
+ MAINTAINERS                                   |   1 +
+ include/linux/kho/abi/block.h                 |  56 +++
+ include/linux/kho/abi/luo.h                   | 149 ++-----
+ include/linux/kho_block.h                     | 106 +++++
+ kernel/liveupdate/Makefile                    |   1 +
+ kernel/liveupdate/kho_block.c                 | 411 ++++++++++++++++++
+ kernel/liveupdate/luo_core.c                  |  99 ++---
+ kernel/liveupdate/luo_file.c                  | 205 ++++-----
+ kernel/liveupdate/luo_flb.c                   |  60 +--
+ kernel/liveupdate/luo_internal.h              |  16 +-
+ kernel/liveupdate/luo_session.c               | 219 +++++-----
+ tools/testing/selftests/liveupdate/Makefile   |   2 +
+ .../testing/selftests/liveupdate/liveupdate.c |  75 ++++
+ .../selftests/liveupdate/luo_stress_files.c   |  97 +++++
+ .../liveupdate/luo_stress_sessions.c          | 102 +++++
+ .../selftests/liveupdate/luo_test_utils.c     |  24 +
+ .../selftests/liveupdate/luo_test_utils.h     |   2 +
+ 19 files changed, 1196 insertions(+), 445 deletions(-)
+ create mode 100644 include/linux/kho/abi/block.h
+ create mode 100644 include/linux/kho_block.h
+ create mode 100644 kernel/liveupdate/kho_block.c
+ create mode 100644 tools/testing/selftests/liveupdate/luo_stress_files.c
+ create mode 100644 tools/testing/selftests/liveupdate/luo_stress_sessions.c
+
+
+base-commit: 2935777b418d2bfcbfe96705bb2c0fa6c0d94e18
+-- 
+2.53.0
+
 
