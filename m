@@ -4,129 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC4F4CD6E57
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 22:43:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC134CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 22:47:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC6376B0005; Wed,  3 Jun 2026 18:43:24 -0400 (EDT)
+	id 2A99F6B008A; Wed,  3 Jun 2026 18:47:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D76D86B0088; Wed,  3 Jun 2026 18:43:24 -0400 (EDT)
+	id 25A7C6B008C; Wed,  3 Jun 2026 18:47:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8CD96B008A; Wed,  3 Jun 2026 18:43:24 -0400 (EDT)
+	id 14B746B0092; Wed,  3 Jun 2026 18:47:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BAD646B0005
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:43:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 324F01C12B0
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:43:24 +0000 (UTC)
-X-FDA: 84840079128.02.8D5CB12
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 50FF314000A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:43:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="aNyr/HhV";
-	spf=pass (imf09.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780526602;
-	b=AGfGpN3gD2kbCqzIeidXBxs3Cld8rGO8pEiJR7gKnzP87QKu1V6Zv367Pc8jqhXT9lqb3K
-	3i4cpnedro8sokR+JaIME1cqkJidvCOTakFEuDfdGnVjNKq+Cp8CpbtYIOyyy/U1iMWX25
-	O9nk5ymaCegS/x0mH6JLKLgic+hYYC8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="aNyr/HhV";
-	spf=pass (imf09.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 008646B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:47:41 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A8281C1E31
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:47:41 +0000 (UTC)
+X-FDA: 84840089922.15.926DBBF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D6AEEC0004
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:47:39 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bbQqIZXO;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780526602;
+	s=arc-20220608; t=1780526860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iTE44OxcHCqYjYX+doIy+3NqUmI4SQrZkrHVFocDs+M=;
-	b=U9/bUcryxKwx4zZ5gBVIB2NARtQHJBzY/FP3pVHcRRk8oSgR35QsZfSyILkYeIwNW4BpMX
-	sse+VyPe8r0UYpx0cpMEhSkd3xae5Sfe0w/e78yxjpVo8HyHEHdqXPGNrS9aDbiWl6FqbU
-	3oa1bRBch4ciDMKWA/BF8KHXQ59q70Y=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490bb83a3f6so666665e9.0
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 15:43:21 -0700 (PDT)
+	bh=R7Sz/+Fr0suuQeg6EVNsiUNZZL7j8WmTr/VEGuzHW30=;
+	b=g8mirMaf4nRpubDjkcG0YNGa4PssetIa3M5I3GiSmVoq2u7c4VLn3OGlr2Ow9A1Fj6dsAL
+	196978XSCeXexDrybUoRAHJCnaAdSe83lxZfsmfRlZ81rhhSwy+wMmJ8P3zfFkyOc48apM
+	PAplCic14uQF1Q+M4Fix4VrIFXWi0+Q=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bbQqIZXO;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780526860;
+	b=iZaCZVmA/a8igZVIF1Yi39w5BGNXKiXfmxa5TDwt90b0EzFXC+oV0LjnKBmPZIZBNpRG0U
+	5W49VlnXK72mzmoY/Ap8YIXnV+WQYmgj7x24kr0h42mUo1ciwXjTMcTg93PIHopx0YR1jL
+	1g0a6wdIzRLKj+mvOIBqFkJaF6u4KyU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 37F47601F5;
+	Wed,  3 Jun 2026 22:47:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691F51F00893;
+	Wed,  3 Jun 2026 22:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780526601; x=1781131401; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iTE44OxcHCqYjYX+doIy+3NqUmI4SQrZkrHVFocDs+M=;
-        b=aNyr/HhVQqTLxfEFkmB7PuY71S6czomXGt/8coN2WAyRB/kaNKmqgGtYoskIvIjdas
-         qsVa9enGPUCeWelbVmf2fnrSnNqbAuCmvpkrt/pSBm5XQCjgEqcI3GwPmAhFTd/AMR78
-         rTHPpWfB9KXxu1xoCoTpBFaC0GxH2tFjS9axQn431vgibRn916Y8spDokUz2QzJqNq/6
-         isbUaTItJWKMQzzi2+K1N1G74N0I7T+Vn21L1XNxJ8MOteFyXc5cpu86vwXgFs4fx3tW
-         v1vBklmxL8/8trzePDsT3KWJvsDpoYGT22so3Td6r+WToa+Ej0KYuPZ4vgDePDtdgXkC
-         ovRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780526601; x=1781131401;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=iTE44OxcHCqYjYX+doIy+3NqUmI4SQrZkrHVFocDs+M=;
-        b=UOldNGRtw9z4hgoao8dAU9I9c+dF/4Tx+1Ym+aWhQ8EcgzlZ7XnkZtXvAvs04ZVzde
-         Mh9LnSbHB2ZaBBj8mRES6eO2ngJ1uQvK7emMBRAH85ucVEHLR3wYcClDAwmek9SDnW4T
-         ZImH0j/lN7N0eu3KRNXaGrC0ieXutVuedQyF3ddm+e5OpwoOH9A1rsioFZ+uoEak4Vqa
-         XIKiCt4h8lua27/FwqcA/IZDyBKaSg/kuW/lVmgxXKm0+mCkudD8zuRZRnkCq3/esk5Q
-         derjgwI9sm0KiNLAt+Wkt+FUf/eoY1hiLqB0A3QHt+D7FcCCe8dUCey57YhjNEWMhVVw
-         v5IQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/hnrRXyTiuv3txOOPK7UyhwkchrIT4I5q1OLK0LELJe7ynLtg3qQ970jTglHqpBWxYzcn+WC+Cng==@kvack.org
-X-Gm-Message-State: AOJu0YwOSmtDaagBE7vuHRVTxUuy5goSILWerqX4AnuHBENDzpXr5kpx
-	ZKQuagR55pB5xs/EuMJFx7a882d6Om93Yx5g8DFC/yx7X4rO2l/YsdNQ
-X-Gm-Gg: Acq92OGS+boaI351qgOVweuOGbsBJzNGiA18gjk04dZZgYsOV4olwUxmF/RW8O9hUix
-	2Xh0gSNurWuQAIsjh6VikBazyFdmkuTMjrqHl4BdYRpr8HdCQhtvMqef5XJr89jf78Cjlrgygye
-	3fHRP1Uil2fZFsFyRMdjZ/Ud365GmYrZ1g1G7OyiEeeRnc+VCW9yDlXd4V8m+3C8JkCm8jj/wsJ
-	0PROxW1Hd7oNPC8wtygqmBx2oySYjh+JIfasv46GC+IKyX0OSksXc9w5h0MF2M+L0ByMaP7xJil
-	kDXbSSS0lEoXG7i6RI5JMQt0ME3yeE618Uxc+x5XGH0/+NG8xzAeCttqDSessYcHNlf/PDc7g6u
-	G16hPNBDdMvw5qzX7JejnCbtz0Y6IhLDnRWPxZstYMn/fzxjNllABzt4AU668Ox7bagI3CCGWrc
-	iu4Ya9I6lnzcZ3YwRY7DxoE4QJ3XbBoA==
-X-Received: by 2002:a05:600c:a09:b0:490:688b:f9f8 with SMTP id 5b1f17b1804b1-490b5fe6672mr83368675e9.27.1780526600498;
-        Wed, 03 Jun 2026 15:43:20 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-490bc391aaasm29855955e9.1.2026.06.03.15.43.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jun 2026 15:43:19 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: luto@amacapital.net
-Cc: akpm@linux-foundation.org,
-	axboe@kernel.dk,
-	brauner@kernel.org,
-	david@kernel.org,
-	dhowells@redhat.com,
-	hch@infradead.org,
-	jack@suse.cz,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	miklos@szeredi.hu,
-	netdev@vger.kernel.org,
-	patches@lists.linux.dev,
-	pfalcato@suse.de,
-	safinaskar@gmail.com,
-	torvalds@linux-foundation.org,
-	viro@zeniv.linux.org.uk,
-	willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-Date: Thu,  4 Jun 2026 01:43:11 +0300
-Message-ID: <20260603224311.834796-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CALCETrW3XcNLuB1Y6PSkxQDSK2o+=EB2AAd25SjWQqcJemwnbw@mail.gmail.com>
-References: <CALCETrW3XcNLuB1Y6PSkxQDSK2o+=EB2AAd25SjWQqcJemwnbw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 50FF314000A
+	d=linux-foundation.org; s=korg; t=1780526858;
+	bh=R7Sz/+Fr0suuQeg6EVNsiUNZZL7j8WmTr/VEGuzHW30=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bbQqIZXOyyk7fzneEICQY56/lMcWDjClRrPFceC+/rWMhGEB8XAK3dziozHfdH17j
+	 E1rwgyU6ZGwyFv/ZX4LcK+Irri7OE4WdDAFgP11VfB3U0LzlFzuLbUmz9064VNmFbZ
+	 abaVMIlu4z9qNTtnU8HxF3YjN2Pdly1LauygKJdc=
+Date: Wed, 3 Jun 2026 15:47:37 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+8ffca916f3fa5455f9b4@syzkaller.appspotmail.com>
+Cc: apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
+ gourry@gourry.net, joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-next@vger.kernel.org, matthew.brost@intel.com,
+ rakie.kim@sk.com, sfr@canb.auug.org.au, syzkaller-bugs@googlegroups.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, "Michael S . Tsirkin"
+ <mst@redhat.com>
+Subject: Re: [syzbot] [mm?] linux-next test error: kernel BUG in
+ post_alloc_hook
+Message-Id: <20260603154737.48dfcc19a51da03241e1af48@linux-foundation.org>
+In-Reply-To: <6a20a309.85ccb786.283107.0005.GAE@google.com>
+References: <6a20a309.85ccb786.283107.0005.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D6AEEC0004
+X-Stat-Signature: nrbq8dxb51hpub16e7cgugwrkt5boc1s
 X-Rspam-User: 
-X-Stat-Signature: rr8jocxwpjhc6fxgrjfgd64waypd6zgf
-X-HE-Tag: 1780526602-782392
-X-HE-Meta: U2FsdGVkX18fChzVXwMAzkojIzGwKezeVi1Qzwinrl630EOAIzh+XqSjAN2u8rqBHfKxgo99cE4qMAOmH7OBVWSuygfClHfxE8aHhFtqZyKZ68s1p1ugE/CyMIs8ZkjJjK3yj1/GIwEAcPiYXzlpiaQEKIJ50m1bhMgNYXOPXsAZl7BtMK/LFo3DuU2P4ZjDC2kEoS4TlU1x5URfywdgRe4Jn18cRefS2K4unbJBdZlPkz011iz27qZ/Wl1C4QH0lWg3HZ+61kv65uk9uikGALzcG8AFCN2YckNTE7U4BRW3VRyxB3R9ybg4Aeqq8ONTo20KXno7bOlwumqWgWkKtG0T7UGYnkwGgLiBdVSsCQgoM0nsbZvFC0YhyZ0JkI+5rzWQ0LoojY8kpJxOlFINUMw6wuLWKl6Mi818TQTALyHzZdTJuxlXr71eAIe6+DXyMuiz3G6j4meHgBk6LmOcVXSqIhA208ssCMbBQJXKo9IKq4TT5rU9F5iSBiPuB8ikd4uoBJdcmmyD7Q9EoIysh59SAIeSuwseRwmvWxVkrm+xWHLoN0JS/IbHcvt9cg2fVpQ5XqNSnM9ac/dt7ezPrryqPX3WSNY27WMn2Jnjkcxw7eq3OPRLMnG2Zf1tU0rtwWKxqIaRQ0Ybi8PYRK76aGlcMtMpFi+QvogqQPl1+iENAmYaFbqHAOU7ue03064YsJOkCeXRQ6so3tFBx/COJqIgly+auJPde84gWigkgJAnXuwcw0ztFGB+edvZpglKSFnFfenoTQDZwLZan4B6UBnwcmDty/rX5J2UV/g5wxkB5esUMfgQRNEsrZhPplV1IG7JdKmXdDQovT+Sb000k9qEHIPRniafLwgwa2xz3YJdc9NmE2zQbjm8nVLGClZzSDFaiXlEqN7xP0DXt9lAhFmN+YbUxZq9ACUnSPpOY80JeklhCrf3jX6o9VR5TlB3b+S+ZcJeb0op+xHApKl
- qqw6kFzh
- lADKMn94M8xXMBhAz7TouWsi628Xp5USLSAV2cdNmF/KiSVHK6BDJxNZxs9sL6F/j6NhgZ4jjPItOw0Bsj2xqyA2pjE2PKvNCrN0pIIxcOKhafv8SeyM1+rOHGOPMBGDjyEQPXAzn7D0Cun4vRMrx+EzBO81kx8fVTYqvz6gZFtMS32t2EsMXHQxzrJlcpqprVkT5iutoojTBiFJQuQYtr9XyZ50Ir27bw9nZiuSGq7/IX4AK/nSCtTW8eAUEkA37iOhTVayr9Sqce+dLHwtv6++jLtmHNoK8YqPMfCmQf/06noipdVTCTfzk2eMWqbZ2C2xVIXahyuk3EhWZFi+GjaPwxh5gPs1uPZYCuhxoe+CtWx5PnnsYw9UMfF28g2VKpozWTLu041zIqNMpecnlOgw05vzQjnzGnmTtwWZlnbeNjlOGTTWmyIWbLfml8R8NDYcAvegKB4JXbY4=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780526859-22610
+X-HE-Meta: U2FsdGVkX1/uNDONxwkoJAHDofNOHI51NTncW5xWsSC6q6oTPbpWUu6omkAsJ11Ob7g/YAWHqCIGn4VPvq0ZOKeLiVCM3HW9kQob3tD6UIjh1TEQKgekl2P+yYLmfuporZ+ZKK4eyD7sZ4S9uwJvezpgUqRsPUtdyMZLcKwoplSP7avI4wNAHfcXdxXwWar+z78GQ26zskioO+qupzz+rYG9ha9ZedxW5RNymjyHomkf60bDfHtp2Z4GsPcPc5rOv0odxfoyTK0yFDftI/Hn1z4SoX1DD0zP6U12CXWHLlPx/M3JAGGTrwn1ZrtcIjOr/VayUfnPCuUec2jZIGT9tx58OQULA2SYaNGbhjSvnaSUeE9YPT3YaUFweAVLhsVcZbBsa00F9YowrjD9NU2zPgy2gMaZPlBjVYnAkfsnWTz9NnXzO1b2xzyc2tQ8J1gr/FmK9EJtaIKREjp+cPIOaxPJZTs/qbdZgPE5XvBzz8Ryrcjco6aC+ryo1q3ynwq8m3N2ErrJKw4d5r3UVyIQ4Xa81nThxPf8pfeKeuHelWSKqMPP9yxFFFpsTyS1uAhDeUaG5l+kOUzqvmp4eVZ1phac+AFIKEYpSWtCZxW4tPmQeyrZxLhODLaKJhII975Plewfuu7Dc4LW+8bwKW8sIj0MHA6eXhzguacNKzipNHVPYJ8ZW+l1tkI2qXva2SsxRm2bwspHO7AdgoLAWRfokg2khS0Y5irUbvskmxe7tfS6IEI7PNQz5uCXf52Yx60fj75+ec9YmuHJDHfnL2FCI2bn8si9uUT5TYN37x6n3RlZLdIzPtChr2G+jyqtL7xMXyNAyHdXA3Qki873wmrHGbDLZmwisZUBVFtLLi+EhDsXJlJdgpDQTyhodccHWhUkh+GqzSDhjc1UbAbGUiPyIM5iq6X0eecSiyduKR+jR7n00EODWlsuHLpNQrfaOKphitHTy+9AUSrG93wZ4Ua
+ 2HrfzW+1
+ K+KYoU2r+do9vHQ/P3XGYeLoY+/rqxJIe2jbk8VwB5S7jIaNlKlcuehIf96InKFXARQFa5HMlVoB2gxEi9iBt6Gt5WvWcgFT3SKW+4eyhDGl/LdxRy6PEi2QyI8Fesc7G2H/9US+JIkpdLZ+mmPIeyRRu38KvuX5TG2ho8dohJxzCtMhBpZCY/VffqZMBECH4CI0NMGLgetXNuGkzEjEPTJ9EGOomUqnYyZyVsZHhFXUBVTsMcBi23HfgOuscUw1giCLnj/o+sKOHCZd000I7wUtoXDEfZD9CiBmH780Df0eFmm98G4JTlrjpw4JtLTcuDrQW3LZ2HtpEAFK4Rxem95a3hy9pXw2uy0IB+2M0CLse99dDTW8D4t4r9+DU1jxrIlpOLUl11YxCz6riwI5V/hQ2jOrmRjTxoBqUavwr6FXr4DBCrDpfp3yaBb0KPSa/VoKZ6et3GlL5gJ6dVhSmjZ3L/Tte7KkZXJF5L54o3Cr+39GoNgabkJYx2kM1sljpQcXKGkB+O+3blx1WERJVUUk1EDNDjMFdKZPfZWlZaYs/8JNeyyddHWvBWv6QYiy+zgDwKUfsuZZmBQlMdkQe+mSItrtNVYLKXvlZZXXVxxrDtneS+6KF8RKRJIcpawR5Zkz6f7bfA2ryNa4p5lXfG8eBHjzIhohjdZwBdoImxTNtowYRQjMKJw8fU5M7RNo6Fyf9LgucCxrTiQ3CckI1egOS5YjB3He4F9joJcXe8+T7myNLqAfxEtFGq8WzN08XS2+VLcjSZvrF8IhSeLs/y4e0cjjMLcBpB63KnUe5vHWGfPSffyH0R3mkzM2Q1WgRkpvcn8W/whmq7k2+7lz51zRnz3yAr2KHuys90+kdWmh65noj3fDlO204KUWH978TlAUbZX9+CAbiDsEhAf2a0wI3tujxWlh4vo3ywUSa4wIKVEYFF+sLNkGf/mIwY4RDbunhZugZ8sOHaAZUE4+uaxz/qJTk
+ 2T97gJQk
+ pQz5Oo/NUZckxjsXmc03Gd0XfxgUZS24HgVTVNe+ik/dzkiNJEfWUiCdVOy7eORPbHsiCnZ7Xkmqr/lQKquAkpS8SpAYfn1sUHKbPz1maBsenNipkpk4Y6Z4aFIr6XT8/WLJOKhYETLfV9BLLjLjjhPBDTbnpLbawGG4WWBgo9dysE7nPJELPgjEu9ofxrar0ZbTBfjS4PIqgulCXRtlzA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,52 +96,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Andy Lutomirski <luto@amacapital.net>:
-> Maybe we should keep an API that does an optimized copy, from one fd
-> to another, that can send from a file to the network with at most ONE
-> cpu-side copy.  Not aiming for zero like sendfile / splice.  Aiming
-> for one.
+(cc Mike Tsirkin)
 
-Yes, this is what my hypothetical future patch will do.
+On Wed, 03 Jun 2026 14:56:25 -0700 syzbot <syzbot+8ffca916f3fa5455f9b4@syzkaller.appspotmail.com> wrote:
 
-One copy from pagecache to pipe, and then network uses that buffer
-directly.
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    a225caacc365 Add linux-next specific files for 20260603
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=13b0de66580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=717edf2a5f9fc390
+> dashboard link: https://syzkaller.appspot.com/bug?extid=8ffca916f3fa5455f9b4
+> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/f799d07ea17d/disk-a225caac.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/72d0f0ff94e6/vmlinux-a225caac.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/99d4279e6fec/bzImage-a225caac.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+8ffca916f3fa5455f9b4@syzkaller.appspotmail.com
+> 
+> ...
+>
+> **********************************************************
+> **   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
+> **                                                      **
+> ** This system shows unhashed kernel memory addresses   **
+> ** via the console, logs, and other interfaces. This    **
+> ** might reduce the security of your system.            **
+> **                                                      **
+> ** If you see this message and you are not debugging    **
+> ** the kernel, report this immediately to your system   **
+> ** administrator!                                       **
+> **                                                      **
+> ** Use hash_pointers=always to force this mode off      **
+> **                                                      **
+> **   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
+> **********************************************************
 
-> But splice_to_socket involves
-> MSG_SPLACE_PAGES, which I think is a part of the mess that you
-> dislike.  And the path where one does copy_splice_read and then
-> splice_to_socket has to be a bit complex because of tee and (I think)
-> because splice_to_socket cannot assume that the incoming data is just
-> ordinary unshared buffers.
+Geeze, who added that.
 
-My future patch will provide new guarantee: pipe buffers are always
-stable, i. e. they will not be externally-modified.
+> page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x13fe38
+> head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+> flags: 0x100000000000040(head|node=0|zone=2)
+> raw: 0100000000000040 dead000000000100 dead000000000122 0000000000000000
+> raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+> head: 0100000000000040 dead000000000100 dead000000000122 0000000000000000
+> head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+> head: 0100000000000002 ffffffffffffff01 00000000ffffffff 00000000ffffffff
+> head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000004
+> page dumped because: VM_BUG_ON_PAGE(1 && PageCompound(page))
+> ------------[ cut here ]------------
+> kernel BUG at ./include/linux/page-flags.h:682!
+> Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+> CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted syzkaller #0 PREEMPT_{RT,(undef)} 
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/09/2026
+> RIP: 0010:__ClearPagePrezeroed include/linux/page-flags.h:682 [inline]
+> RIP: 0010:post_alloc_hook+0x287/0x310 mm/page_alloc.c:1863
 
-So hopefully network code will be adjusted to use this guarantee.
+That's the __ClearPagePrezeroed(page) added by 504f40f6bda6 ("mm:
+page_reporting: skip redundant zeroing of host-zeroed reported pages").
 
-But pipe buffers will not be "ordinary unshared buffers".
+Was it intended that this series
+(https://lore.kernel.org/cover.1779315441.git.mst@redhat.com) be
+included in -next?  It's huge, it's late, review is minor.
 
-They still may be shared with other things because of tee(2).
-(But they are still stable! They will not be randomly modified!)
+<remainder of report is below>
 
-But network code can do "pipe_buf_try_steal" and thus ensure that
-these buffers are not shared with anything else.
-
-So, network code can be modified to use "pipe_buf_try_steal", and you
-will get "ordinary unshared buffers" exactly as you want. This will
-give you in total exactly one copy.
-
-Also: as well as I understand, previously, pipe_buf_try_steal was
-kind of lie. It may return true for buffers created via vmsplice with
-GIFT. (I did not check this, but I think so.) I. e. pipe_buf_try_steal will
-return "true" in this case, but pages are still shared! But, thanks to my
-vmsplice patchset (which is already applied), this is no longer true!
-So now pipe_buf_try_steal is absolutely safe to use!
-
-Finally, we can degrade tee(2) to copy, and hopefully this will
-allow us to always be sure that pipe buffers are not shared with anything.
-This is possible future direction.
-
--- 
-Askar Safin
+> Code: ff ff 89 da be 01 00 00 00 48 c7 c7 40 50 4f 8e e8 ce 4b d4 02 e9 c5 fe ff ff 4c 89 ef 48 c7 c6 40 ef 7a 8b e8 2a c6 05 ff 90 <0f> 0b 31 ed f7 44 24 04 00 01 00 00 0f 84 8e fd ff ff e9 86 fd ff
+> RSP: 0000:ffffffff8e0078e0 EFLAGS: 00010046
+> RAX: 0000000000000000 RBX: 0000000000000002 RCX: ffffffff8e0fef40
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
+> R10: dffffc0000000000 R11: ffffed10170c4903 R12: dffffc0000000000
+> R13: ffffea0004ff8e00 R14: 1ffffd40009ff1c0 R15: 0000000000000000
+> FS:  0000000000000000(0000) GS:ffff888125a79000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: ffff88823ffff000 CR3: 000000000e1b8000 CR4: 00000000000100b0
+> Call Trace:
+>  <TASK>
+>  prep_new_page mm/page_alloc.c:1925 [inline]
+>  get_page_from_freelist+0x3081/0x3320 mm/page_alloc.c:4015
+>  __alloc_frozen_pages_noprof+0x194/0x380 mm/page_alloc.c:5376
+>  __alloc_pages_mpol+0xe0/0x390 mm/mempolicy.c:2495
+>  alloc_slab_page mm/slub.c:3287 [inline]
+>  allocate_slab+0x83/0x5e0 mm/slub.c:3404
+>  new_slab mm/slub.c:3447 [inline]
+>  ___slab_alloc+0x160/0x930 mm/slub.c:4485
+>  __slab_alloc_node mm/slub.c:4549 [inline]
+>  slab_alloc_node mm/slub.c:4925 [inline]
+>  __do_kmalloc_node mm/slub.c:5331 [inline]
+>  __kmalloc_noprof+0x140/0x7b0 mm/slub.c:5345
+>  _kmalloc_noprof include/linux/slab.h:973 [inline]
+>  _kzalloc_noprof include/linux/slab.h:1286 [inline]
+>  __alloc_empty_sheaf mm/slub.c:2774 [inline]
+>  alloc_empty_sheaf mm/slub.c:2794 [inline]
+>  init_percpu_sheaves mm/slub.c:7555 [inline]
+>  do_kmem_cache_create+0x8ae/0x9a0 mm/slub.c:8595
+>  create_boot_cache+0xbf/0x120 mm/slab_common.c:717
+>  create_kmalloc_cache+0x41/0xb0 mm/slab_common.c:735
+>  new_kmalloc_cache+0xd4/0x180 mm/slab_common.c:982
+>  create_kmalloc_caches+0x14/0x50 mm/slab_common.c:1005
+>  kmem_cache_init+0x14a/0x1e0 mm/slub.c:8496
+>  mm_core_init+0x7e/0xb0 mm/mm_init.c:2728
+>  start_kernel+0x162/0x3e0 init/main.c:1034
+>  x86_64_start_reservations+0x24/0x30 arch/x86/kernel/head64.c:310
+>  x86_64_start_kernel+0x143/0x1c0 arch/x86/kernel/head64.c:291
+>  common_startup_64+0x13e/0x157
+>  </TASK>
+> Modules linked in:
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:__ClearPagePrezeroed include/linux/page-flags.h:682 [inline]
+> RIP: 0010:post_alloc_hook+0x287/0x310 mm/page_alloc.c:1863
+> Code: ff ff 89 da be 01 00 00 00 48 c7 c7 40 50 4f 8e e8 ce 4b d4 02 e9 c5 fe ff ff 4c 89 ef 48 c7 c6 40 ef 7a 8b e8 2a c6 05 ff 90 <0f> 0b 31 ed f7 44 24 04 00 01 00 00 0f 84 8e fd ff ff e9 86 fd ff
+> RSP: 0000:ffffffff8e0078e0 EFLAGS: 00010046
+> RAX: 0000000000000000 RBX: 0000000000000002 RCX: ffffffff8e0fef40
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
+> R10: dffffc0000000000 R11: ffffed10170c4903 R12: dffffc0000000000
+> R13: ffffea0004ff8e00 R14: 1ffffd40009ff1c0 R15: 0000000000000000
+> FS:  0000000000000000(0000) GS:ffff888125a79000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: ffff88823ffff000 CR3: 000000000e1b8000 CR4: 00000000000100b0
+> 
+> 
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> 
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+> 
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+> 
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+> 
+> If you want to undo deduplication, reply with:
+> #syz undup
 
