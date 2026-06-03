@@ -4,149 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 869CECD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 22:14:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8858CD6E57
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 22:17:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CAD76B00AF; Wed,  3 Jun 2026 18:14:55 -0400 (EDT)
+	id 429316B00B1; Wed,  3 Jun 2026 18:17:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97BC16B00B0; Wed,  3 Jun 2026 18:14:55 -0400 (EDT)
+	id 3DB136B00B7; Wed,  3 Jun 2026 18:17:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8430C6B00B1; Wed,  3 Jun 2026 18:14:55 -0400 (EDT)
+	id 2F01F6B00B5; Wed,  3 Jun 2026 18:17:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7272B6B00AF
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:14:55 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4EBEA04C3
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:14:54 +0000 (UTC)
-X-FDA: 84840007308.23.EF64349
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DBF99C000A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:14:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nnVK57o1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E9576B00B1
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 18:17:12 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B4FB04060B
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:17:11 +0000 (UTC)
+X-FDA: 84840013062.24.727CF98
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	by imf04.hostedemail.com (Postfix) with ESMTP id AC22C4000B
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:17:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mokyQUzf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780524892;
+	s=arc-20220608; t=1780525029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FmzDsup0sFlBNWhGg0+0FS+tEwpLPYz+Yh+3amtQtVM=;
-	b=TmefxpGVJo77Vqg4dBYhs6aWlpYc6gncSy3/3Dy1qw9rm7K7y7j86VetZwSVquHB9h6iQq
-	rWbauHVM0Y6H1oH1+vOsDAm3eUKWNnU7qmXX7BJDtKZAwRSoQ7O6Zc8hdxe4F7edjH4wN9
-	YRupJncXW6mT02uqD+nD1Mn5FrH0FG8=
+	bh=V6pazkEL6DFXw7u78OwlQURha9CAXkBpjIcDT/R6oxE=;
+	b=PTPpbkk+WTMTj0iAv1QUF1lqlIQSvX+ZtyRe0BA60i3E9OzgzBIYf2N3gQHQOmnaixbiBl
+	5RgxDv3RgAOiAvPXPOZJvTtphNYLH7qntLvm9129wR/HUU3FMIuM5z/oNN7SpuKhORTK1F
+	ytKJ09KGiwrmByTGPB7b8ZjQvwEelxU=
 ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nnVK57o1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mokyQUzf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780524892;
-	b=e4+Yok8VWzupT4mV7CO13OcdZnOSx6al8nDYoQZOrU+4oWzf3cfTjM/3wPEi0Sd6jgTtDk
-	v8/IOnZgOZtiMQBlsrt9HHoXo23UOKTZGmQGy7Zo9xaHzh2QYb8+lpSZbRnTxbQ4adaDPq
-	bRaZHxxqBmtd/5WVuBaIPpFBjSkhvxg=
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-91562bf6c12so10282985a.2
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 15:14:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780524892; cv=none;
+	t=1780525029;
+	b=p1lu2IOg93BwZ5n6qxcnZUTacnJ8XYd4ODiuemYnYmz6a0/3ehibEN1AvRJFRjSVdHwp0D
+	wA7G5GRAt/b2y7EnQjKMIocmH4v7WSWlNP4e0O4Rl2C1xrEoVbZZohbZy0x8gb3wkSDZes
+	3+qOTSijcG0TTMNfc2h8pZgCHGn3+/4=
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-13721dfd471so59610c88.1
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 15:17:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780525028; cv=none;
         d=google.com; s=arc-20240605;
-        b=cQOxONdIPTqq1bfNZE2Ea6kdhv8Pn6j5zZccwX3pyc1qkg6X4IsgokkLYARpTPKDN2
-         zsdpMkuVjp1ZuxbxuoCtD7jQet2GP9QaPaCTLfwr59FS/9lakromM+1ajPzeUcz+CM9d
-         /U5kUwRyvrxv4WYUuhseZ0tsj7GlKKeBnlXOdCgzqLx8a3eb9Zf38T/VBYtuRAkWJKZH
-         91wArTqaOquNzeZn423rzmr4wxlNZgMsB+Whf5zrV3kdkFhW8e0anIvRavQZ9y/RTCOY
-         iGjmqaX5WE90ZuIY/xWqLvbd11gatQvzc2v/3g727flj2HwnXUCu9sgtLQXufEAk0mA6
-         d3Wg==
+        b=byGtuvC/brQ8uOqKW2/ZJ5Bo4nNxasZQLvcSc18jTNEFPpf1JAkxJaCGSe7niZ7eB4
+         Ov896eUeDFFxPdh216zhvoQs/3dUJ//u5N2fJ8lm9x9TUG7E2RUxVWWfC5oUYbX88qv8
+         N1EsL6tOeq4ZgelYu9VmDZSgno5vd1I2zH95UrZuapuwCOhBMjrjS24ywzcm9t2fPOow
+         E6enBfk4zE3wHhFeNWK2b3KY5Laq+kWwLcP55X0ep/QidCsdIsk5VjneWEpuDKGF5iwW
+         k/2ga6XVTans0Pn0zqOXJhTfv/7QngF0o9f9+4TdlMTaxib13GUge/4GolzQnp2QHZFV
+         ct+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FmzDsup0sFlBNWhGg0+0FS+tEwpLPYz+Yh+3amtQtVM=;
-        fh=DotKrzN339hx4DRVY+I55+Kv4CIqrGd43PP1Hk89HF8=;
-        b=cuIzQTZnsYTLNozLzoFIOcXZsQTWvlJgQUZcGbi0gYpE0LAyugDwCF3Je6U6q4lHBF
-         9W0HDQlB5j7TIUQbbV2hwVj9hptebSsgWPbdvlR82VVbgCdl1cDGKOZG2mySSblX47cQ
-         bNW9pIpKbuMgKJOd45sUUjtwKwLesef4zmHo3irotNow0cRO6yHaNQ1SPQKNyWmjiKSO
-         GHGg/ti57wHE9EXCU7CUjNdKoTTiCy2+jylaUtAYvnWnTcUh/o8xrZ8yen/wPgnPtTCA
-         XF8SaMfZ0K6CM+rC5esVxLT7QEC5VlAnqzufMFmoUcdVNRocTO3g37SiQkUolhNZd9lR
-         enAA==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=V6pazkEL6DFXw7u78OwlQURha9CAXkBpjIcDT/R6oxE=;
+        fh=TukmWgoY0n6S2XcoEg+Y6VTemIvGBGnPN9zZEn5pzc0=;
+        b=bAil0pm4WyHojm7S/xXzqzeZU3SUxhzel4JDl8+y4BzVOHvYWqYJ5NbIyv3hs2uj6n
+         t7dXjCOBu1uj5mndg+ATyxSXs40jxm2aFh/w74D49mp96Y1uAkcTQPlsZ4OwDvhWKqU2
+         px8Ca4reU3IoltHwWf588jOZ5qVeWgPnX/rgkqhiTzzQQRWJ0/YCKVRHHcydIas1Sor/
+         9Sq10hhCdzd64py5GJw1dmr0ySHXcr67U7gIBOteErloLXH//lVenIWZVtqsbHIca1kg
+         32zqvurPh2uCTXUMQ1qJW9rZKIjYExZzMG5ayB00TgVs9C0shTVJAwhDtofQpg/GYihL
+         lJHQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780524892; x=1781129692; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FmzDsup0sFlBNWhGg0+0FS+tEwpLPYz+Yh+3amtQtVM=;
-        b=nnVK57o1kbammAKyNiOgkERErJZO0W7YslPT2nMJ93XJJD+bK11MwibZTIccGIrefk
-         7SmsM/fItHPMHiQDs6J7glu5qZJobkBC6C/sgfV7ueLqGV8LmenMQJL20Z+3/JB18bow
-         vHB6yZYUWbOuh/jI1wu7Sqt3++FEBxAJpSPsHnVYmr4sJ43vCbV7D+tb6bEMSXjrQP9b
-         HQMuEG7MAT3Zxkskk8NQagiASasLQvcBI+i8UovINhvfHrMHpVxnu99YvdCA8dtxBhpU
-         EclJZIZfgdHnqKJi6YZvW7oqUCzymo8nUivU1HZ/JX6UDYu8TVoDoDEOxMekXmA35qqc
-         ovfw==
+        d=google.com; s=20251104; t=1780525028; x=1781129828; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=V6pazkEL6DFXw7u78OwlQURha9CAXkBpjIcDT/R6oxE=;
+        b=mokyQUzfAoKrKGNDHIxdxPDD6opY8FP5pR8BU2e4ROtXzz1D3OPKn03sxuc2eLulfy
+         +fqK0sBvjL5uHqLwij7Gsao4nuJwcvYjIz4FCLr1/cQIBARfoMUESc6YZq+f2ertv4tU
+         efG795vndfLxUytI8DkzyjhdQyfJPJnGGXdCh5JV7JMg1XMkW5SaZZBK1+wWv9xupDNJ
+         zvLl3Dj68nWKk9/2ft9D0NgmjD9nEI4ahhHLGy8nbv3pUowy0b/ZkpRQBjNbVTIkyDhD
+         HbdDcthHb5fA0FeEWLpgNO6pTtr0yMPtm43NFRMGkulOizBh3d5f3ZWGFF3kn5h5mjT9
+         Hqlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780524892; x=1781129692;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FmzDsup0sFlBNWhGg0+0FS+tEwpLPYz+Yh+3amtQtVM=;
-        b=fDBQgow/JIzKhG9LVOKlHAEqDNCHBIwVLXjtM6bXJ881+pPkwCDR+I9tvaV/MyqDXf
-         6fDpeZZsCvdV2D2S32GZDyvCOy10LUrtj4cdrAYuCe2GtTS938h6yKNjQKoMtrfSeaeV
-         DtMqHRk8+aMPpnV8Nbqseg95dklbldKDi0a3OQUz0U9ECZVg/KmrlIT0i2e8kdnMAoHh
-         pF7ho6OfHrBwYu8yMvuxOWpJuZxxhcSquuy7bCsr6js4ZXfzckVVsLwgyMxtlU+YFrVo
-         ET77Gsug4Hz25zThZrHTy0u1Bzp3QpxZdvO5/pdkvrS5Ts3pgO2h4HXWrluIuVuIa2m0
-         rM6g==
-X-Forwarded-Encrypted: i=1; AFNElJ9EuyQGTCUOrWT+tVLAgQzoaEtCm0FhxaqQJL3KrX7lCvhns3Be820qsNMdhRt/Qgfx0+ikFPpRcw==@kvack.org
-X-Gm-Message-State: AOJu0YwE/RXGGiLfLzUGzch9spoRKy3pgGjjK0KW2AyxjB3kMic+mifX
-	UdJcjd9zYkSMoWj2hob8buuANferIlfgbH97ZyFsnKb2mI/kH7xITUhDNGkS6Hv9OHyyyPQvm9s
-	WDr6st95ZrdsUt1rvoTxKBz47HwKFF8s=
-X-Gm-Gg: Acq92OHIb+Nm3OFBWnz1YIlluVnFskped5HnfQtvcO18fE/+lTJfNXeg7yxfCm8JEBP
-	W39QEtvfThOQ9894WwJTjrnDtHG6S4k1QCXtZF6sCsWY+tbcgyhFcnvJY4m6eLKWgheJyOVZswK
-	2yJi+3TBsRsxpREC608V5Rn9t9X00xscHMgUrwDpV6dLysogtCjGKdUhB4ucl0V3B3hOQZVe3gV
-	QSshtEUlrxDR3DYF+x+xO6+jkXyK+D9rZLAKrY238odqf+P7/2Ort8e1uRZKllaYQYpUSsT10eG
-	z87V0Xn7yscHq2s1LGDJmdgVebo1/x2coeXzmXsiEA1iLb6F
-X-Received: by 2002:a05:620a:40c4:b0:915:9c4b:fdb4 with SMTP id
- af79cd13be357-9159c4c0fccmr119218285a.22.1780524891016; Wed, 03 Jun 2026
- 15:14:51 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780525028; x=1781129828;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V6pazkEL6DFXw7u78OwlQURha9CAXkBpjIcDT/R6oxE=;
+        b=fgZtmlCO3/6L7zG0HLOe+jzZ4JmzhMz2smqi5tpZuCqvfePwqthbtzkIUAYSQxqHUJ
+         3IiBVHr3aSXJpvaZVJvZ092FU2dbw022wUvzS/q7jsHD0tAxIDU3tEDnzMyd5mw2oZpH
+         Hvo6ELBZ2fpxUtKeW3+rSBFZOuzVaWKiP/2ROLA7GTWOv086BKCbFe0lEnIxGlOT4nWc
+         JxI/zzUmKmBLQnOTAIxsUNSuE3+gtgi6ICi2BcbcHUt8vpAWfNZyZQSJ03FPq9ZIyuZe
+         VhaRIeK9S51KDq3SmQwjdtVd3bSfBKX+6mqUFaSUL10cFXTiDaC3m08DCqeeMI7wvGfI
+         CKfg==
+X-Forwarded-Encrypted: i=1; AFNElJ8+sCYUWsu66qksT7hVWC7YFN1aI4TafTUZlfZmIYqh1c3x3YQWMbQkjQAktNkjjuZBTw4+RNd4yA==@kvack.org
+X-Gm-Message-State: AOJu0YziB8DYYCCWHC/H+4Z5VKMDBlrKEjADgqeniDsbztAuR6vx4kwX
+	uVle5vSC/6dhkifoqc81HChiUC0jbbivzjF+Rw1HGHsuRRF7F1/vOCP0VeGoqo1bzc+Lj/v4n5I
+	CV9496xQca/NbJLctWnexvx/yfGgFWX0eAoQs1ZTt
+X-Gm-Gg: Acq92OHSgmVD6MA/l11RtGzh+f23tLVYWzKWgQVHvPqX0eI/gBtcox/uMH37dmnIU8f
+	MeizHs8JpDEttN/lM2uZsjl8JWlu/+U/REmxJ0S3xktPYfh/VuM3zQFIWEUYsZPzOrIfpkuFpEh
+	Ze/9b8VIGs5G6p03fIVg741wQtMBN0vq2UEzUJ6+XlMijmj4Ib3CcBESto1ERNloxcnElcyjU0H
+	M3O20Efjw4ovesu5IwxYQf5J3FoOBMP0iBtJMf9+KfOZXbufUayx3qR797JINeIdF4y3IDrGOBU
+	tPzgI0fUvBKTD02y/6IJX/sMHdRKOVQtzJGn36hub1EAg/Bs9g41VLpBEvvOQJiEfHvBPyYFlt6
+	/SmFL
+X-Received: by 2002:a05:7022:7f19:b0:137:ef27:e29d with SMTP id
+ a92af1059eb24-137f6c126b1mr1478374c88.31.1780525027812; Wed, 03 Jun 2026
+ 15:17:07 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 3 Jun 2026 15:17:06 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 3 Jun 2026 15:17:06 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ahmbVaCUcBrYK8qO@google.com>
+References: <cover.1779080766.git.tarunsahu@google.com> <9huzwlwnbgdd.fsf@tarunix.c.googlers.com>
+ <ahmbVaCUcBrYK8qO@google.com>
 MIME-Version: 1.0
-References: <20260527110147.17815-1-tao.wangtao@honor.com> <70377626-500d-46f2-a3f5-a0d2914ce365@kernel.org>
-In-Reply-To: <70377626-500d-46f2-a3f5-a0d2914ce365@kernel.org>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 4 Jun 2026 06:14:39 +0800
-X-Gm-Features: AVHnY4LRywF8yijh3uWS4ASgIO-DqQ0mxyZBegdnnjWwYExKtCPyz-v6JopNV6g
-Message-ID: <CAGsJ_4zg8+pVDwtsJtxxiC1ahJ9MR56Ue8VXCt_VrQgcXES2uQ@mail.gmail.com>
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma creation
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: tao <tao.wangtao@honor.com>, catalin.marinas@arm.com, will@kernel.org, 
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
-	x86@kernel.org, akpm@linux-foundation.org, willy@infradead.org, sj@kernel.org, 
-	kees@kernel.org, luizcap@redhat.com, zhangjiao2@cmss.chinamobile.com, 
-	kas@kernel.org, ljs@kernel.org, hpa@zytor.com, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	jack@suse.cz, riel@surriel.com, harry@kernel.org, jannh@google.com, 
-	jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, lance.yang@linux.dev, xu.xin16@zte.com.cn, 
-	chengming.zhou@linux.dev, nao.horiguchi@gmail.com, matthew.brost@intel.com, 
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	pfalcato@suse.de, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, damon@lists.linux.dev, shakeel.butt@linux.dev, 
-	ryncsn@gmail.com, jparsana@google.com, dvander@google.com, zhangji1@honor.com, 
-	wangzicheng@honor.com
+Date: Wed, 3 Jun 2026 15:17:06 -0700
+X-Gm-Features: AVHnY4KwIBznOQxPeeZp-k-7DNYvQD8SHlCWDjhKoWsxt_QvgGRs8hmrB0P3Bno
+Message-ID: <CAEvNRgHsJbGz8k8vgCn_HSxeeQ8agEm4oBYQQ0+b3gFb-aVokg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 0/8] liveupdate: kvm: Guest_memfd preservation
+To: Sean Christopherson <seanjc@google.com>, tarunsahu@google.com
+Cc: axelrasmussen@google.com, mark.rutland@arm.com, skhawaja@google.com, 
+	Mike Rapoport <rppt@kernel.org>, sagis@google.com, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Shuah Khan <shuah@kernel.org>, corbet@lwn.net, dmatlack@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, vannapurve@google.com, 
+	Pratyush Yadav <pratyush@kernel.org>, david@redhat.com, aneesh.kumar@kernel.org, 
+	vipinsh@google.com, Alexander Graf <graf@amazon.com>, David Hildenbrand <david@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kexec@lists.infradead.org, 
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DBF99C000A
-X-Stat-Signature: 7fwrw8uqmupxxmjf7tqs3xsepq1jjgkr
+X-Rspamd-Queue-Id: AC22C4000B
+X-Stat-Signature: 7jdeu8wtmc7ndxq79d7yx5eqf8xj9rst
 X-Rspam-User: 
-X-HE-Tag: 1780524892-111130
-X-HE-Meta: U2FsdGVkX18s8UfN6tEYIRaBOSEcc9zlnji3KUSLgUl5W5s4v/Q/OGk9DqpQO9JkWkKNbhEpWq5hzKHmD5OcYLRAtJjImWV3r0wK5WKsBIHnOSHymZOEBCoeaim2s5kv8OGeRVXmcRE1zvaI/XZg9Xwhep63AHXXxAPG9+zCAFYmAHWmbOxM8kZajrGNvCSgmARLe+E2wPUawhOxLsAcCn8tQsD0R36HbemzTfTMc3SoBeeUb6iD/PaFQNcQRgLJZwd455Pykho7Wsmq5aGo378K8xik9WNho+4YgiwmOfVe2B0Koqe62Rbueqryobz4qaWY5CaIoKhAJ+jhp8zxOaQQbDq2Uqre+uCancNgdNdYITyLzTfjDNk1OHWWqZ80bGoTmR+VoWwOWl264LOsvMgX7f6fInutYkubupPcItBZ+R8BxyWVc4LLk6mL/18Dv2oKhzSixUiVL8BVwezcSel1/V7sl8BI8/IUL6e7GwrqrSPd3QIp5VAQERHkzBcvC6YRNfMF/SqdjfARj/KUrvPrBQidOIMfptBGcewjvbXbwYgl7CwPrnnnA9ds/O/BBgbHh8pbNkIixC+VbAM5mDDA0BuMDe7TjnzTongmfJiIdNyMnqqZSSLcNV3KS1KX2FDaYnfqqnIXIvvbRoMRM47CU7vCfDJ0UcKUxY7QYKiSJsl3A3MXDuCyzQhG/vsniu15QJ4uqvsABPLkjQzi9SuANmXIyHr0+Q29ElQ8nz98u85q6zquhOxI0K6kJwk0cIDaLbwLCF2FVyaqsACYHTr7rbHP38/QehNAirr0tvwvooVsSI3XRBksuqUeXYikxZmN55zjaiipTvLJZS8EVPlr0nr2KoBHwGnQqFjhryNHJqwFMOrDb6grFeJJ69nLCX1hUnB4vZquHrfkeD5hfl2psQ74T5n/tt5nNaPHZg21Jw9eFAQ+PAU8+W6vyblNkdTAeTJXCFw/1Q4FXLf
- dn9McBVa
- IjV0lJowUu2IDzBVQsS5jEQhlYZFEMC0y/5XL1QzrIz0oG7jO10dKKFdXhyoiym/NYKuOPICJanTI0DLOFVH9/FxOlHqAPBCAySxJpwLuyKtTlJ3/PQ7c9D1EDQ88c+LF3WVTdnvEhIBWlhAR2hmQ9uONfMJLTlY4XMbQRyk+/885Mmn0f73RTNo4WFH5l+OC0C5mifYotIC2kCy8z/9rbPILLtJrQb5EtsKmF2gyrrOf0C1NoIJ3DMLnjZT+huXQjDzqvRJaPm4tFYY88zYaK8jGcFpvx7MnoB/vvHlHJs4/RhhcPF06BRlEl+apOYvaQwm2nPasc5Mqk8PvFx/2zRoTBefsEvRBbQDGwO3ckXLQYFpVbS8Ze4I/zMYt2ae9+SN3smeT1EPEl7XC49o6X4lB66FtyKQWW6ciUBaWkwzqIVsmSxWnMSQwKnA8Ziu8Zipu7rUOIpHNG5gBSp7osPpwX2Aarb8vEw9mhXIVbYuRo2X31GQ+fXZ7dDha1AS2GjOTHCSqkOEApZUlLVnr68PtZlQCJg35Psoa
+X-HE-Tag: 1780525029-585866
+X-HE-Meta: U2FsdGVkX1/XbbqfTdBGxw6mg9/WsRfbOfB54gKROBLebFbPXkTOIgtYTn6yipgIq5gmPTpDsQ7HS/2Xx3QHhC1wM8XT5zXmLSoTAb6yMLGamtl+cyqHS7P2IY5Kvtwml11g2EXG+ziP2cypPAJbaKfw1O2+9ZM0YDASGL5J0b+koQomSyi5NOmS7TFLF0hmE1gJ9Nhqfza6ZzClgsYSJx+LkrT5puNY5PpAjnRhQDmYNqGBnMPoucS2t2+h3kmOwSARCTTQwiPqghywFnZrqwscogNIlRaEL6gNOwMF0rnJ6rj3JoP4WNRT2Px20hXFYsmjERnaUoec5LDKD9nOjBDQaeAxLZ0zSLz4mq72P03vaJhALvP1sIy+T4/pQ/E47gQE9ejlp35LTfooOODw/0Ba1BBMI/aY88xXD099N8fY/+QjT6uMKbjph7JcYEpplVlNJopWkHF99hzGS8NVMxFhJ/rQV9L6hDVl192Fm7grBx7GoiTa6qbw4npOPbw4CtBPMUwfFk6kzy5JEWr6Tjesu+SKBoee8CZHNAdzmhheIPScv6/WlwVT2qac7E0Pq2Fngg3n+D/bjkgMC9zS5uzrN9p/VZwy9eEGrvCeisuyxV9lufduwPPitxGY40pt0wWcCXw14FrkycM62c9TxmtCTKcmi0JI5y6OvJY2MMN4KbO4j1OtHhxUBnV7HA5JYBLiFJqShHe3WoCEeKkTAkZ+eSP4seS3oqvLD4OhkXX3ScgdZs/0qV4UqhG/yoeYgPCvC9cX9eOtgLMZZI5DAPt5kMSw+X2m4DDLbZc6I08QUb05FyG5WfI8B+DA+mO71kdVnS9JnGEIknsHmElm3TwIn0VCOLmU8gCMAnSs2YVkDCu+y383/IiGyDFK8SXOCdy2GsxZ0xKMdchsp2D88YzozOeE0yvqiSdE/gHUzZQE+9GidS6Z9/zYjV7Lnguim8RpzvaURG3tFC3elmK
+ p+vaGLDG
+ wWV0eFvJdKaNW5feCwtaNJ7EgXux1bYuR2mYai3tjuJHgTR0Be1H7vYAks7G6WNTejWVPW2ti5iSEr6Wj4PXKkboj4ZW7qQco4wj2RXGOTYcE66h4IFXGgfDFBNKLknO7sxrpqxaKHci2oQWdGvQgmlOYiP479jNaWuZmHDNTRBRFkYJtkDyZV1f97mK9bJCYIUN4sPk/AmwJSCd+6oYIZGRkDbruw1U5lio/mhlJGjBXEpbhQDqcT5L2iK/0tzdi+c9R3YiGNiACwAGxGFJvBzxb7TDsR+gMEu0jZRH9D4cW/zcN8xo7IKECtdhHY1HLhl1f5VKPQ70b6D5TPdV3WryAFk73gkEvAQ5fMlkw4V2qKf9Uy72fMWZfF+BY1KG4/u0JM9aWXsDIJch80mjlx9bQW8xvSc5jdl6ikxAjD7Kllb77ywkCECuF3tmCKr16zBYJ2gwTpax6wTQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,172 +148,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 4, 2026 at 4:25=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
-[...]
-> >
-> >  arch/arm64/Kconfig         |   1 +
-> >  arch/x86/Kconfig           |   1 +
-> >  fs/proc/page.c             |   6 +-
-> >  include/linux/mm.h         |  38 ++
-> >  include/linux/mm_types.h   |   9 +-
-> >  include/linux/page-flags.h |  34 +-
-> >  include/linux/pagemap.h    |   2 +-
-> >  include/linux/rmap.h       | 165 ++++++++-
-> >  mm/Kconfig                 |  22 ++
-> >  mm/damon/ops-common.c      |   4 +-
-> >  mm/debug.c                 |   2 +-
-> >  mm/debug_vm_pgtable.c      |   2 +-
-> >  mm/gup.c                   |   6 +-
-> >  mm/huge_memory.c           |  16 +-
-> >  mm/internal.h              | 171 +++++++++
-> >  mm/khugepaged.c            |  13 +-
-> >  mm/ksm.c                   |  43 ++-
-> >  mm/memory-failure.c        |  11 +-
-> >  mm/memory.c                |  19 +-
-> >  mm/migrate.c               | 126 ++++---
-> >  mm/mmap.c                  |  15 +-
-> >  mm/mremap.c                |   4 +-
-> >  mm/page_idle.c             |   2 +-
-> >  mm/rmap.c                  | 690 ++++++++++++++++++++++++++++++++++---
-> >  mm/vma.c                   |  76 ++--
-> >  mm/vma.h                   |   4 +-
-> >  mm/vma_exec.c              |   2 +-
-> >  mm/vma_init.c              |   1 +
-> >  28 files changed, 1279 insertions(+), 206 deletions(-)
->
-> Hi!
->
-> When I saw the diffsat I was concerned. Going through the patches made me=
- ...
-> more concerned :)
->
-> This is a lot of complexity. On top of something that is already so compl=
-icated
-> that I fail to grasp most details without regularly taking a look at the =
-nice
-> figures Lorenzo created recently.
->
-> For example, I read above "since child VMAs do not need to allocate anon_=
-vma"
-> and wondered how that could be part of something that is just done lazily=
-. Then
-> I had to learn in the patches that there is some additional "Child VMAs
-> are created as ANON_VMA_TREE_PARENT and do not allocate anon_vma" -- excu=
-se me,
-> what? :)
+Sean Christopherson <seanjc@google.com> writes:
 
-Yes, that part is quite complicated here. There are two cases here:
-1. A forks B, and B inherits a VMA from A. In this case,
-B's VMA gets ANON_VMA_TREE_PARENT.
-
-2. A forks B, and B later creates a new VMA via mmap().
-If a page fault occurs in this new VMA, it gets
-ANON_VMA_TREE_VMA.
-
-In both cases, we need to upgrade B to a regular anon_vma
-when B becomes a parent and performs a fork().
-
-This may be a bit off-topic, but I'm also considering
-whether there is a chance to work with Suren to support
-case 2 via a GKI hook in the Android kernel before
-Lorenzo's work is ready.
-
-Even then, the optimization would apply only to the case
-where B never forks, allowing us to skip the anon_vma
-"upgrade" entirely. That assumption holds for most
-applications, although there are a few cases where it does
-not.
-
-I'm actually hoping Android could eventually disable
-forking for UI applications altogether. From what I've
-heard, some applications use fork() primarily to evade
-LMKD (the Android low-memory killer daemon). For
-example, a child process may monitor the main process,
-and if the main process is killed, detect that event and
-request a relaunch. This is one way some applications
-attempt to keep themselves alive indefinitely.
-
-But even if we limit the optimization to the subset of
-case 2 where B never forks, we still need to handle
-mremap(), VMA merges, VMA splits, and similar cases.
-That starts to become quite a headache.
-
-So please just ignore my rambling if it turns out to be
-nonsense :-)
-
+>>
+>> [...snip...]
+>>
+>> we have one open Question left:
+>> 1. How to check guest_memfd is fully shared.
+>>
+>> [...snip...]
+>>
 >
-> Reading about VMA refcounts made me shiver. Reading "Holding only
-> folio_lock(folio) cannot guarantee that the split
-> operation completes atomically." confused me. Learning that we have to in=
-vent
-> interesting ways to make page migration mutually exclusive to free_pgtabl=
-es()
-> concerned me. Figuring out that there are arch-specific config options an=
-d
-> runtime toggles is a clear warning sign.
+> Given that lack of support isn't going to be limited to _just_ guest_memfd,
+> simply disallow preservation if the VM supports private memory:
 >
-> Seeing test_folio_unmapped() was funny, though (why?! :)).
->
-> I think this patch set has a noble goal of reducing anon_vma overhead whe=
-n anon
-> pages are not shared during fork. However, using anon_vma for them actual=
-ly
-> makes the overall implementation (e.g., rmap walks, locking) more consist=
-ent and
-> simpler.
->
-> Even if we could be convinced that most of this here is correct, how shou=
-ld we
-> reasonably maintain this increasing level of complexity here?
->
-> I won't echo what has already been said in this thread (and I didn't mana=
-ge to
-> read all, unfortunately), but for such big and invasive work it's often b=
-est to
-> get in touch with the community earlier. Otherwise, you might end up wast=
-ing
-> your time.
->
-> Ok, arguably, someone who writes that code learns a lot on the way. And i=
-f this
-> code really was written by one developer only, I tip my hat! I'd be curio=
-us if
-> that code already ran somewhere on some Android kernel out there?
+> 	if (kvm_arch_has_private_mem(kvm))
+> 		return -EOPNOTSUPP;
 
-I heard from Zicheng that they have been running this for
-months and it seems reasonably stable. Please correct me if
-I'm wrong, Zicheng :-). This really should have been
-discussed with the community earlier.
+Makes sense. Tarun this was the other option that I was suggesting when
+we discussed offline.
 
->
-> But adding more complexity on top of something that's already extremely
-> complicated to save some memory looks like the wrong direction, really.
->
-> I was excited when Lorenzo started working on a completely new approach t=
-hat
-> would focus on improving the common cases while trying to reduce the over=
-all
-> complexity. Because I think most of us really dislike anon_vma. It's stil=
-l work
-> in progress, and I am sure there are some rough edges.
->
-> But fundamentally, I think we want to find a new design that is just natu=
-rally
-> simpler.
->
+I think (?) it is possible to create a fully-private guest_memfd for a
+non-Confidential VM, and even after conversion lands, for both
+vm_memory_attributes=true and vm_memory_attributes=false.
 
-+1
+In that case, your preservation series can still preserve memory tracked
+as private by guest_memfd but not used as private, right?
 
-> Lorenzo has been hard at work exploring various design options (and I'm a=
-fraid
-> he might be one of the 3 people on this planet that understand anon_vma i=
-n full
-> detail), so I suggest we wait for a redesign proposal from him and see if=
- that
-> is doable?
->
-
-Thanks
-Barry
+I don't think anyone will use this combination before guest_memfd
+write() support lands, we just need to make sure there's no kernel crash
+or corruption in this case.
 
