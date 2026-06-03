@@ -4,109 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE86FCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:55:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A74CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 637BD6B008C; Wed,  3 Jun 2026 08:55:49 -0400 (EDT)
+	id 2E0956B0095; Wed,  3 Jun 2026 08:56:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E8486B0092; Wed,  3 Jun 2026 08:55:49 -0400 (EDT)
+	id 265F16B009B; Wed,  3 Jun 2026 08:56:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FF076B0095; Wed,  3 Jun 2026 08:55:49 -0400 (EDT)
+	id 12E256B0098; Wed,  3 Jun 2026 08:56:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F2616B008C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:55:49 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BBB4120342
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:55:49 +0000 (UTC)
-X-FDA: 84838598418.04.59D7AAD
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1615D100006
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:55:46 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=tSnbWX4d;
-	spf=pass (imf14.hostedemail.com: domain of "prvs=46141c1cd1=mnissler@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=46141c1cd1=mnissler@meta.com";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F2FB36B0095
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:56:15 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E78D8D335
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:56:15 +0000 (UTC)
+X-FDA: 84838599510.13.DAC5A16
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 09D08A0017
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:56:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=HPbq2RCU;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=46141c1cd1=mnissler@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=46141c1cd1=mnissler@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780491373;
+	b=UI01KM5yb1072/+bJuOoj5V7tV2H7HKeKZzAtxHQvXae37KsZgmlBhTLrjtwsoc0DOSrLa
+	st/Mh8+pvf+C9Si/CvVv/gXN91Ri1OdIrNeW+SvrLtWN6n9Pi7/XGWhAiMrE0vDr1p+NO1
+	vyU0fpq/J6mCvF197dFYzpEDjPsGdTM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=HPbq2RCU;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=46141c1cd1=mnissler@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=46141c1cd1=mnissler@meta.com";
 	dmarc=pass (policy=reject) header.from=meta.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780491347;
+	s=arc-20220608; t=1780491373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=aZJXhZ1R6tmRZeIAA1pMw/fmLtckUxz+309lEoPq9uQ=;
-	b=n4/0DtowJC/QtpKjU4CX2l7e/rH8+XouywcmytSpZqpwyemZcUSSeSTFONW4Ysi1Cu+HLP
-	FbvPFkSyJ4PdJ+Qcr6ODCGKtqp34rl5BZbmO33XNvV6caTrYnpB2Dd4I3byRaPg41XbPZA
-	Ea0NP5nJLlid5See+V3aZYKK00AmPXc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=tSnbWX4d;
-	spf=pass (imf14.hostedemail.com: domain of "prvs=46141c1cd1=mnissler@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=46141c1cd1=mnissler@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780491347;
-	b=jEAOIygBHHo45sPTL321CHZ5ZVKqO/nGz7pt4K/4QrQcBuwLnNGzDkKZYKVDjtCFXwfY3O
-	2r9Strb+XHOlsE3on2Mq2Bpbzm3AVcA/SR7QXUNrrcLEtbEgoiU6K1r7Zq8w5wpcBHemPA
-	5RNQitkQBcpwjnQtY0hB7BDVM564YHs=
-Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 652MS0Yr251538;
-	Wed, 3 Jun 2026 05:55:44 -0700
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nBwBIUCMdRNvL7f/v1/Q1s15uv1gsyHqvb+RTBqsOdw=;
+	b=lryIcVCG11whwkwG4fkEyj5wAyvJ+fs6HfzE4JRdPvRanoIbs5wS/7PfNREUDTb+0/VVo+
+	Zc24GO0ET1TSgHsGn6r0/oYBDO4QgsXoodE+jprSDY2ejFixXW0Y9hYpJXCxAV14CD300J
+	mlym4+JZ2YINeV8350/990IAxIGCXU0=
+Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 652MSFX13309990;
+	Wed, 3 Jun 2026 05:56:10 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=s2048-2025-q2; bh=aZJXhZ1R6tmRZeIAA1
-	pMw/fmLtckUxz+309lEoPq9uQ=; b=tSnbWX4dKPfPErIJ1iZbKNYLqMLppHG3vN
-	5RJRUim0Go7/rPjdnC6mA76WzH7B3w8EBk7E94wuyHcz5uRpnn4z6OYCeR8we7ci
-	xsgglJTJnbvcDDo/H7679e9OXbfjJXvDVJenHMV8Z3ZUhHyDWItRAXXrmSLWnI4S
-	As3SUnnZ4OiN417HKKz0pVMKgrZ6oAKvkdU5Fdl+O2NnfTfT7CTZPmJLftzEeli+
-	azCQmmiVKnnFcqKRCEq0uMtQF5klGFhuLTu4btgcfI14DFTR/T65rtMCl0vuE7fU
-	Bqp0KMuzik6oO3H1UEJtxPPV2y/MqnIhfp8y/fDhrfS0Z47HLd8g==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by m0089730.ppops.net (PPS) with ESMTPS id 4ehxr4qwm9-2
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=nBwBIUCMdRNvL7f/v1/Q1s15uv1gsyHqvb+RTBqsOdw=; b=HPbq2RCUB7cL
+	0SDXx+OKhe6D+L+K9YZClpeSNCYhNAfaPWCW20fh5i+uof+PuneDgqnBLLhj5A4Q
+	AIAMfk5DdFZ5OnsR/dkOJlGTChC2uUQhl6XFiFHwHL9/tGBf2pslG9tLaK5pGbOf
+	VdAkZdQvehssZqfGlqJd+Kj3BngLLPCUFlgXuRUOPtnAkuvP+0U9H/uqBhJvjgy8
+	2ZiItOk1wEfPHOCCfHbm6FfH54l9g3inbN3TSFTD58aH6fbDVkIrJ5KttO1WlwtC
+	8h8IBtWqQTSX92cKI4Y4NbE/AwT9dbKbIdhJh4WwJOj9B1DLg4epF3ppYDHzA/ez
+	ETOp2XSUWA==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ej14mxx6e-2
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 03 Jun 2026 05:55:44 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1b::30) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+	Wed, 03 Jun 2026 05:56:10 -0700 (PDT)
+Received: from localhost (2620:10d:c085:108::4) by mail.thefacebook.com
+ (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.41; Wed, 3 Jun
- 2026 12:55:43 +0000
+ 2026 12:56:08 +0000
 From: Mattias Nissler <mnissler@meta.com>
 To: <linux-mm@kvack.org>
 CC: Hugh Dickins <hughd@google.com>,
         Baolin Wang
 	<baolin.wang@linux.alibaba.com>, <mnissler@meta.com>,
         <mattias.nissler@gmail.com>
-Subject: [RFC PATCH 0/2] mm: memfd with write notifications
-Date: Wed, 3 Jun 2026 05:55:19 -0700
-Message-ID: <20260603125521.1468362-1-mnissler@meta.com>
+Subject: [RFC PATCH 2/2] selftests: `memfd_tripwire` selftest
+Date: Wed, 3 Jun 2026 05:55:21 -0700
+Message-ID: <20260603125521.1468362-3-mnissler@meta.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260603125521.1468362-1-mnissler@meta.com>
+References: <20260603125521.1468362-1-mnissler@meta.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [2620:10d:c0a8:1b::30]
-X-Proofpoint-GUID: IOOvnXtSp7o4UO-yFHkUgAek_2oEtYTw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDEyNCBTYWx0ZWRfX8tOsleKKKtcu
- 0cfnwdgnhBZBvf5vmc6XEgIhCjfH+8k/0REW00LDMEBOURvv1+FjXQS6FzaFp+DnZhLnD1+g7sp
- dWS4g9huwpZE2mJkPw8RcFDhgHhj+mZHD9AGZNQbQhXxzF4nF7HdB3H1lLqT+IrPP2BTWe1WG0c
- 9DajmxuTZ7GjTRnSBvmdGJdhzr6WrfOFR95b1Bj3OauSmSMCOFHQ8b0vGwR26mLweeFXcdRQP+B
- uaHuTVZMksVjrw2s4jDmPdQIr+3dbNFlt0afGkM/EqjfIK2NiQPNWVoMQM3rGkT7xSJFyNpxUOX
- dlDXgulXIoVd0opu68ipok4w8WdDcUS9j/6UwlAIHWQd37VeV3IDZh/cvajHdJzk2gJuNpDvyuj
- qlcS86/pHlF2J9chM2utnJhziOChCAJl+fYteQ1Br8peBT8p/LhshTMPfgz/bwKFnU/SjIcMbui
- cy2b/EYPP9n1d6QI6lw==
-X-Authority-Analysis: v=2.4 cv=dsbrzVg4 c=1 sm=1 tr=0 ts=6a202450 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+X-Originating-IP: [2620:10d:c085:108::4]
+X-Proofpoint-GUID: 440piY091cWxMuRaErXoomyl6Bn-XuSx
+X-Proofpoint-ORIG-GUID: 440piY091cWxMuRaErXoomyl6Bn-XuSx
+X-Authority-Analysis: v=2.4 cv=d9XFDxjE c=1 sm=1 tr=0 ts=6a20246a cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=855S8uPTkML1Oy45N9_h:22 a=q0Np7pfqVLJJm0Jx16kA:9
-X-Proofpoint-ORIG-GUID: IOOvnXtSp7o4UO-yFHkUgAek_2oEtYTw
+ a=wpfVPzegXHpEFt3DAXn9:22 a=VabnemYjAAAA:8 a=g6bl-ZKSQ4VxT3QDCaQA:9
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDEyNCBTYWx0ZWRfX5+uLB7RZx+jP
+ G3XEoml/cqfOFvmf4cjsilKtlIVKvax6RWQwSCSO5M8dLo6B6Nz0bfwN2KpDIiOF8wzkINRxrNv
+ NSYEGAUXOIA8nd0IIIFpu13KAct2jQ/sg7U4l8SW4rPzK4Y8SoPH6WXE4hhHbhNl2I7UniBwkER
+ O6F7nj4Si+DSQkPKPejrxg6Goybxk+7KW6wuOxdeJOWEqggfgxMu+9nGgSJnKzIHfkbl8LLTi+W
+ w8qaZZZ+Uk4V+ksFrblJJEPX8kS4T4rfUKAunrCE10xjhpJpbBVq77UnqpCgnK0/pdUebgMgAOp
+ 0pDBnJUj53Mpa8+jk+z92ANKQhJEonEawvnK3qxJMjN8++sBNnYnJ7I4ZKihRwb3SnLl6Rp62JR
+ y/e0QD0rtSixQlvQ3Ppsj8JW4Ndzm85hxAD0gQBULmJiyTSWNSKFVRpBWhmc5KjKe3pqZeyr6zj
+ S3PMR1SZZ6pYx36ubkg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-03_04,2026-05-28_03,2025-10-01_01
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1615D100006
-X-Stat-Signature: q1qjzjknrm3311rjzrmsxg4spibp19bj
+X-Rspamd-Queue-Id: 09D08A0017
+X-Stat-Signature: xpdgqob3xzwn7grm3fepqdtqyqqa1ego
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780491346-941013
-X-HE-Meta: U2FsdGVkX1/ZIbin/e54YIfmgEdpaVr25kMpZhtzX3RWTk485KGntPN9rm4AJS6tYXZFdyKH3kt5Kq9+rvb5mYIyxgzkNDhgnhKP5GMGsqATQdpQWfTwEXlKHY5WSf0W8Nz3NmX/3f1c4R4WAh0Qq7a60BhVnUMYa29H4RtS7HeO56hKIMvyrZlnohlo8lNyxwaW1HUVNVQr3yOiA3Dp2e8cyjUt/4qM+peedHUMNxpRzS0r+9a/H03dgkB0wPvyoimK5QERV/9tRQta6ft6fjjIgRAeBYp6q1lXfrCgBea4RctGoxC1odr/NaXyFejewu6tSoPrPxTG60vIy5c9VYcZS8eZYA6t1SRo+v7aClGMKGtZ5TlITSIi8wplU0Swsq7tS3Y6m40zCGoIFziU6HX0s4rl/t0SiUCUzejqB3gLFhdXM9ZbC4QINzx2GZZ2WM3zmi65xZa21f+fvdSGdNULfgqdMwf/vPp2OiLDGpQc5M5l8UKuLPAkxmjndH8Nj3shXvhfkzpc8a+w0pi8TPCM0WcCwfV/x6yMxLdg9izN01DNVzj1TCq4/d1+pDALQQMXDRSWO47YYKjPDTQ0DL+z1Mpv6TWjGRWkleYKbZ2A1izE3790YMW8Lygtbpv6hwwQVdmehynWjMCh7G2PxXPtEST6TGiy62haMsHHpdM4r2aS5Jj+aVDed/Wz6pihVgjBKpM/kj7a4f3FGb6pewsI3ZzgEGSw4kjijmV19ngVcTy2AezmYJzxnr4LEy9rsd6B6aoltPUvnKgKnzhEZJx+qmKZkpS0KWsGF1YB7n9tNC1xtQ7eUNSld2FTHXFRDBVR77DVCkl13ASFwmRrl3WmxeqsWUWwIoCHkuyGILBqWhZlqMWN6RCIplw2NTSMBgVy1P5H4tuEUnwNuNUYLbXwtxiXz+aUS3qnpR/YmgzLL3s9mR0KCWx1yZ93m76znYxn6x4pHN3V44vq18u
- LYb7x7Wh
- RC7+5q/FbuH0wI5cRTx9VLGzI8Vl7aNUNzjByhlZxwwsR+ZuT5UZaavi1Hnlg7OG8tLRO+Su1Eq0pdllpuDQMz9EAz9PbwzSOWUuUA7zZ3aX1EIcz/4HKX2lmj9rAaqEjkBgYZkAwVGizjlEcZlUl7hW2ybZrNC8jqG430nDuC1AihZkkK+FTQed++oG/6v4THZZjj/Wys/bxHlH3WtMi7M4kv4KMuBMx9Wwx8SEoKWqrGrQIxX7pxufkHcAiPcjh/0GYuaBJYPoapb1IECJsE1gPk69evNhY5xNOvcfseYhaUkgCV/3+VTVM1M9qsBM6HvTW7PGqKQ6yqgkda66G4x86EjVb7R3HCjnDRpzRhOS9L3YAra5aUBAMBfKR9B8IruAZ4HcFlV+JSEYCY78gDJ9O6D9RMqvpuxRGjGyI6TqSf9eZtqC5fMt0XHcpUaJmCucC9rifJsS/o41EMXqFUKMcPA==
+X-HE-Tag: 1780491372-435378
+X-HE-Meta: U2FsdGVkX1/EREJSc2omMmtrTkSyyNP/fiobXlyu2c9GNHAxt5/7AhAPsCvki1eqr+QHW5z9un4bLL1pNB70BBqeycHf/MdQovAPpcyD4JwdBypOre8l411pXo+pU0BjOGnCgglNoDEK/DZZXVPtmJfuE0CDSSA3v0mcLuQWKLDj2TTLbWG+O7zqh3E8WigzLQ1Rbx9M6eVRypi1TUxqa0k0B7yvQzsjBjg1Orqp+VVj2wTkjGxujZ54qqjK/n/fZBzGZy9FyyTbpr33yRxzOhYziE0XITLw6Hkdqf/iTVi4WhgNpoIGAz9sBLyhoakBffQ6wr44S58wyfuYkbteN725cWVhcb5M/wN2i25Veiev0AwA+hsjt6NnvaIapyodixnOFJ+qNj1rm6B7ndPFScibteTzxZ3lDrWjiizkIW5av3UYPC4tQJ3MSMSB5jIndD45zjs6yHehGSIGxnIFLzrgSTDnryE5NtVRtAgNYqGMNMDdoxtMkYjrC9HZfRA9NtDkgVSxTge96YOhfJYZ/0p+e10v10O5bGPOTA8dMmtB/cCjWblCQgWxiJ7kItMsrR3WRnUDbNbxxUrv2GaPIT+YJSMy24s1uK8U573GqNP3GrRcgwKzDCYaMHwILo5Kw+ztlv1kRGo8KHj3r5UyNcgPUdFq8oGNZtA1AOScqld/b0yjrr7C4jmbHw0ludcmolrHT7Nz8h4XnSmjS1xYF7ljgQDH4LPSRTAnhtXxhxUP6yz+pKkCOa/1PJbupXU8Fy3UGlFDbuDU18qJCLcR0blhjF7UUgG/9BRtLOGSKmb24E6Aepnksj7821jILpAi4FTCccMYfCzchQ2J0/MxO2WFcOXc1HHj54Vx/jffDf3vnmoiuYSob26tn0kPEvU9pYS+YsCMSXk7yiKXv6ScV2LHgeyxtr29g2NfnBUiOHGWd1hhl2FI9qc6IrFDoE8SmZrfcD7qw6IEeJjNTie
+ nSnFsGSd
+ MfnSDnktiq81GQYDv376bjEAbzvldjBvWtN5FSwjFMh+pQbxEb6kzenpKm6HL3t/p00zrmWBV+aWbvDPCq+uRFQDpiQ9fcHaHJZvq6PMbs86kadsp4XHg5htdWXCEKOTaf+hkTHCJ7TfWs0eikatm3Meck5wBffl0ufkvYaYdvQFyNBwEOfThqidEs1NNgwmv935JLz6sfzqKUVCM6GJpkDKBdrj9NtUqVCW9Jp8XI5spXdf0ygH0lij1RUmAaRxfczD95fhrrDuZZJneptDjFqKHwuQy2hoXSHyjeMAULgeQJOqo+0XeefKX6eP9W5EVncXpnArFlk22l2V5BMShY1ycmxHirhNHMuUqq4UVp4eGsff7qRv75C71xqMYAfh9cSjH5P52O54zJpDgCEJH53eh/Ql5yINBndUCl529K+pd0Wkbvb6s3mSGryUDLjw2B5MMP8Jdc5br4JiYRslN2zUHvmvVYk/j+J5RjvBjdQDXlLKgaUa5ytOHlliHiTQlvpMJzk0mIA3Nc4+mpae+LZW8Xseb5/U44DmFPFPYzpxImDQCgHNP4yzwYLwTxSwfCtUXH1LNQJg20+c4yMEcdQzKoZdvJOZTEEGqeJgzRzk848Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,135 +119,730 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I want to propose a kernel facility to have user space create memory
-regions that can generate notifications on write access. This is useful
-as a cross-process communication mechanism, where a producer writes to
-the memory, and a consumer polls for new data to be available.
+Add test cases for `memfd_tripwire`, exercising basic semantics as well
+as verifying behavior under stress.
 
-I'm including a minimalistic proof-of-concept implementation meant as a
-vehicle to demonstrate the idea and clarify semantics. It works by
-mapping the memory region read-only, so write accesses will generate
-page faults. The `page_mkwrite` handler can thus trigger notifications.
-It also allows the mappings to become writable temporarily until the
-mechanism gets rearmed.
-
-Intended usage looks as follows (cf. selftest code included):
-  1.  Call `memfd_tripwire` to create an instance, `ftruncate` to
-      configure its size.
-  2.  Pass the file descriptor for `mmap()`ing to the producer and
-      consumer (potentially across process boundaries).
-  3a. The producer writes to the memory region whenever there is new
-      data to publish to the consumer.
-  3b. The consumer runs a poll loop:
-        * Wait for `POLLIN` event.
-        * `ioctl(MEMFD_TRIPWIRE_ACK)` to (1) re-arm for subsequent
-          notifications and (2) make sure prior writes are visible.
-        * Examine the memory region to collect and process the data
-          provided by the producer.
-
-The intention is to guarantee that no change to the memory region can
-slip through undetected by the consumer. The ACK semantics are
-instrumental in achieving that. When the ACK returns, we assure the
-consumer that (possibly concurrent) writes to the region are either
-visible, or if not they will trigger a subsequent `POLLIN` event. Note
-that there is no guarantee that each write will generate an individual
-event. Neither are any details on the triggering write provided
-(address, value). The consumer is expected to inspect the memory to find
-out what has changed. The details of this depend on the communication
-protocol producer and consumer are following.
-
-A direct consequence of the above semantics is that for a write to be
-detectable by the consumer, the write must change data in the memory
-region. Re-writing an already-present value would generally not be
-detectable. Sequences where a location is written briefly with a changed
-value and then restored to the previous value can't be reliably detected
-by the consumer either. I'm calling this out as a noteworthy restriction
-that will prevent certain usage patterns.
-
-I also want to call attention to an inherent race condition. Page faults
-signal that a write is being attempted, but obviously they fire before
-the actual write happens. Thus, write notifications are generated before
-the write, and race with the write actually taking place. If the
-consumer wins the race and gets their ACK through before the write
-manages to land, the consumer could see unchanged memory, and the
-producer would fault again. This is perfectly compatible with the
-desired semantics, but creates the risk of a lifelock situation. In
-practice, it is hopefully exceedingly unlikely for the consumer to win
-the race consistently so that this can be ignored.
-
-Switching to motivation: Producer / consumer communication can be
-implemented in many different ways. Pairing shared memory with a
-notification mechanism such as `eventfd` gets the job done nicely, but
-requires the producer to operate an `eventfd`. This can be undesirable
-or impractical for cases where the producer is designed to talk to a
-hardware interface in which a register write also conveys a "doorbell"
-to trigger hardware processing. The proposed mechanism allows software
-implementations of the consumer side that behave functionally equivalent
-to the popular ring buffer + doorbell consumer implementation in
-hardware. This is particularly useful in contexts where hardware is
-simulated, for example in VFIO-user server implementations. The tripwire
-mechanism isn't restricted to that use case though and is generic enough
-to be useful for other purposes as well.
-
-In terms of related technology, there is some overlap with both
-`userfaultfd` and KVM's `ioeventfd`. `userfaultfd` has a write protect
-mode that will generate notifications upon write access. This can be
-used to construct a similar notification mechanism to the one proposed.
-However, the producer will be blocked until the consumer resolves the
-fault and provides a writable page. The consumer will then have to give
-the producer time to carry out the write before re-arming write
-protection. Furthermore, `userfaultfd` is scoped by design to a process
-/ `mm`, whereas the proposed tripwire mechanism makes the fault handling
-and notification mechanism a property of the memory region represented
-by the file descriptor. The latter is simpler to integrate with existing
-IPC protocols that already exchange file descriptors (such as
-VFIO-user), avoiding the need for additional setup code in the producer
-to instantiate a `userfaultfd` and pass it to the consumer. Also, the
-tripwire mechanism doesn't make an attempt at providing a generic fault
-handling framework, which sidesteps the access control complications of
-`userfaultfd` when it comes to handling faults generated in kernel
-context. In contrast to `ioeventfd`, `memfd_tripwire` does provide
-regular memory semantics, whereas `ioeventfd` discards written values.
-
-There are also a number of design choices / alternatives that warrant
-consideration. For simplicity, the proof-of-concept implementation
-generates `POLLIN` events on the file descriptor representing the memory
-region. That's somewhat unconventional given that `POLLIN` is originally
-meant to indicate a file descriptor's readiness to be read, which is
-always the case for memory-backed files. An alternative design might
-associate a separate `eventfd` at setup time to deliver events to. If we
-were to deliver events via an `eventfd`, we could possibly also fold the
-ACK operation into the `read()` that clears the `eventfd`, which might
-be considered a cleaner API.
-
-Finally, I acknowledge that the proof-of-concept implementation has a
-number of gaps that would need to be filled in for a production
-implementation. This includes read and write `file_operations`, support
-for sealing and THP, etc. These features are already implemented in
-`shmem`, so a production version would likely make most sense as a new
-`shmem` feature. I wanted to get high-level feedback on the concept
-before starting work on that though.
-
-Mattias Nissler (2):
-  mm: `memfd_tripwire` proof-of-concept
-  selftests: `memfd_tripwire` selftest
-
- arch/x86/entry/syscalls/syscall_64.tbl      |   1 +
- include/linux/syscalls.h                    |   1 +
- include/uapi/asm-generic/unistd.h           |   5 +-
- include/uapi/linux/memfd_tripwire.h         |  19 +
- kernel/sys_ni.c                             |   3 +
- mm/Kconfig                                  |   9 +
- mm/Makefile                                 |   1 +
- mm/memfd_tripwire.c                         | 246 +++++++
- scripts/syscall.tbl                         |   1 +
+Signed-off-by: Mattias Nissler <mnissler@meta.com>
+Assisted-by: Claude:claude-opus-4-6
+---
  tools/testing/selftests/mm/Makefile         |   1 +
  tools/testing/selftests/mm/memfd_tripwire.c | 695 ++++++++++++++++++++
- 11 files changed, 981 insertions(+), 1 deletion(-)
- create mode 100644 include/uapi/linux/memfd_tripwire.h
- create mode 100644 mm/memfd_tripwire.c
+ 2 files changed, 696 insertions(+)
  create mode 100644 tools/testing/selftests/mm/memfd_tripwire.c
 
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index cd24596cdd27e..f87839733df5a 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -106,6 +106,7 @@ TEST_GEN_FILES += guard-regions
+ TEST_GEN_FILES += merge
+ TEST_GEN_FILES += rmap
+ TEST_GEN_FILES += folio_split_race_test
++TEST_GEN_FILES += memfd_tripwire
+ 
+ ifneq ($(ARCH),arm64)
+ TEST_GEN_FILES += soft-dirty
+diff --git a/tools/testing/selftests/mm/memfd_tripwire.c b/tools/testing/selftests/mm/memfd_tripwire.c
+new file mode 100644
+index 0000000000000..7229b387ffcf4
+--- /dev/null
++++ b/tools/testing/selftests/mm/memfd_tripwire.c
+@@ -0,0 +1,695 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * memfd_tripwire selftest
++ *
++ * Tests for the memfd_tripwire() syscall which creates a shared memory region
++ * with write notification support via poll() and ioctl-based re-arming.
++ */
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <poll.h>
++#include <pthread.h>
++#include <sched.h>
++#include <signal.h>
++#include <stdatomic.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include <sys/syscall.h>
++#include <sys/wait.h>
++#include <time.h>
++#include <unistd.h>
++
++#include <linux/memfd_tripwire.h>
++
++#include "kselftest.h"
++
++#ifdef __NR_memfd_tripwire
++
++static int sys_memfd_tripwire(unsigned int flags)
++{
++	return syscall(__NR_memfd_tripwire, flags);
++}
++
++/*
++ * Poll the fd for POLLIN with the given timeout in milliseconds.
++ * Returns 1 if POLLIN is set, 0 on timeout, -1 on error.
++ */
++static int poll_check(int fd, int timeout_ms)
++{
++	struct pollfd pfd = { .fd = fd, .events = POLLIN };
++	int ret;
++
++	ret = poll(&pfd, 1, timeout_ms);
++	if (ret < 0)
++		return -1;
++	if (ret == 0)
++		return 0;
++	return (pfd.revents & POLLIN) ? 1 : 0;
++}
++
++static int tripwire_ack(int fd)
++{
++	return ioctl(fd, MEMFD_TRIPWIRE_ACK, 0);
++}
++
++static long page_size;
++
++static int setup_tripwire(size_t size, int *fd, char **mem)
++{
++	*fd = sys_memfd_tripwire(0);
++	if (*fd < 0) {
++		ksft_test_result_fail("memfd_tripwire: %m\n");
++		return -1;
++	}
++
++	if (ftruncate(*fd, size) < 0) {
++		ksft_test_result_fail("ftruncate: %m\n");
++		goto out;
++	}
++
++	*mem = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, *fd, 0);
++	if (*mem == MAP_FAILED) {
++		*mem = NULL;
++		ksft_test_result_fail("mmap: %m\n");
++		goto out;
++	}
++
++	return 0;
++
++out:
++	close(*fd);
++	return -1;
++}
++
++static double time_elapsed(struct timespec *start)
++{
++	struct timespec now;
++
++	clock_gettime(CLOCK_MONOTONIC, &now);
++	return (now.tv_sec - start->tv_sec) +
++	       (now.tv_nsec - start->tv_nsec) / 1e9;
++}
++
++/*
++ * Test 1: Sequential single-process semantics.
++ *
++ * Verifies the complete life cycle:
++ *   create -> poll (clean) -> write -> poll (dirty) -> ACK -> poll (clean)
++ *          -> write again -> poll (dirty)
++ */
++static void test_sequential(void)
++{
++	int fd;
++	char *mem;
++
++	if (setup_tripwire(page_size, &fd, &mem) != 0)
++		return;
++
++	/* Freshly created: should not have POLLIN */
++	if (poll_check(fd, 0) != 0) {
++		ksft_test_result_fail("POLLIN set on clean fd\n");
++		goto out;
++	}
++
++	/* Write to mapped memory */
++	mem[0] = 'A';
++
++	/* Should now report POLLIN */
++	if (poll_check(fd, 100) != 1) {
++		ksft_test_result_fail("POLLIN not set after write\n");
++		goto out;
++	}
++
++	/* Polling again without ACK should still show POLLIN */
++	if (poll_check(fd, 0) != 1) {
++		ksft_test_result_fail("POLLIN lost without ACK\n");
++		goto out;
++	}
++
++	/* ACK re-arms the tripwire */
++	if (tripwire_ack(fd) < 0) {
++		ksft_test_result_fail("ioctl ACK: %m\n");
++		goto out;
++	}
++
++	/* After ACK: should be clean again */
++	if (poll_check(fd, 0) != 0) {
++		ksft_test_result_fail("POLLIN set after ACK\n");
++		goto out;
++	}
++
++	/* Write again: must re-trigger */
++	mem[0] = 'B';
++
++	if (poll_check(fd, 100) != 1) {
++		ksft_test_result_fail("POLLIN not set after second write\n");
++		goto out;
++	}
++
++	ksft_test_result_pass("sequential\n");
++out:
++	munmap((void *)mem, page_size);
++	close(fd);
++}
++
++/*
++ * Test 2: Multi-page, writes to different pages trigger after re-arm.
++ */
++static void test_multi_page(void)
++{
++	int fd;
++	char *mem;
++	size_t size = page_size * 4;
++
++	if (setup_tripwire(size, &fd, &mem) != 0)
++		return;
++
++	/* Write page 0, observe, ACK */
++	mem[0] = 'A';
++	if (poll_check(fd, 100) != 1) {
++		ksft_test_result_fail("POLLIN not set after page 0 write\n");
++		goto out;
++	}
++	tripwire_ack(fd);
++
++	/* Write page 2: A different page must also trigger */
++	mem[page_size * 2] = 'B';
++	if (poll_check(fd, 100) != 1) {
++		ksft_test_result_fail("POLLIN not set after page 2 write\n");
++		goto out;
++	}
++	tripwire_ack(fd);
++
++	/* Write page 3 */
++	mem[page_size * 3] = 'C';
++	if (poll_check(fd, 100) != 1) {
++		ksft_test_result_fail("POLLIN not set after page 3 write\n");
++		goto out;
++	}
++
++	ksft_test_result_pass("multi_page\n");
++out:
++	munmap((void *)mem, size);
++	close(fd);
++}
++
++/*
++ * Test 3: Cross-process producer/consumer.
++ *
++ * Parent is the consumer (polls for events), child is the producer (writes
++ * to the shared mapping). Verifies that writes in the child process are
++ * visible to the parent via poll().
++ */
++static void test_cross_process(void)
++{
++	int fd, status;
++	char *mem;
++	pid_t pid;
++
++	if (setup_tripwire(page_size, &fd, &mem) != 0)
++		return;
++
++	pid = fork();
++	if (pid < 0) {
++		ksft_test_result_fail("fork: %m\n");
++		goto out;
++	}
++
++	if (pid == 0) {
++		/*
++		 * Child: wait a bit then write. The parent should be blocked
++		 * in poll() and wake up when we write.
++		 */
++		usleep(50000);
++		mem[0] = 'P';
++		_exit(0);
++	}
++
++	/* Parent: wait for the child's write */
++	if (poll_check(fd, 2000) != 1) {
++		ksft_test_result_fail("POLLIN not set after child write\n");
++		kill(pid, SIGKILL);
++		waitpid(pid, &status, 0);
++		goto out;
++	}
++
++	waitpid(pid, &status, 0);
++
++	if (!WIFEXITED(status) || WEXITSTATUS(status) != 0) {
++		ksft_test_result_fail("child exited abnormally\n");
++		goto out;
++	}
++
++	/* Verify data written by child */
++	if (mem[0] != 'P') {
++		ksft_test_result_fail("data mismatch: got 0x%02x\n", mem[0]);
++		goto out;
++	}
++
++	ksft_test_result_pass("cross_process\n");
++out:
++	munmap((void *)mem, page_size);
++	close(fd);
++}
++
++/*
++ * Test 4: Multi-round cross-process producer/consumer.
++ *
++ * Uses a pipe to synchronize rounds between parent (consumer) and child
++ * (producer). Each round: child writes, parent detects via poll, parent
++ * ACKs, repeat. Verifies that the full cycle works reliably across
++ * process boundaries.
++ */
++static void test_cross_process_multi_round(void)
++{
++	int fd, status;
++	int pipe_to_child[2], pipe_to_parent[2];
++	char *mem;
++	pid_t pid;
++	int rounds = 1000;
++	char sync;
++
++	if (setup_tripwire(page_size, &fd, &mem) != 0)
++		return;
++
++	if (pipe(pipe_to_child) < 0 || pipe(pipe_to_parent) < 0) {
++		ksft_test_result_fail("pipe: %m\n");
++		goto out;
++	}
++
++	pid = fork();
++	if (pid < 0) {
++		ksft_test_result_fail("fork: %m\n");
++		goto out;
++	}
++
++	if (pid == 0) {
++		/* Child: producer */
++		close(pipe_to_child[1]);
++		close(pipe_to_parent[0]);
++
++		for (int i = 0; i < rounds; i++) {
++			/* Wait for parent to signal us to write */
++			if (read(pipe_to_child[0], &sync, 1) != 1)
++				_exit(1);
++			mem[0] = 'A' + i;
++			/* Tell parent we wrote */
++			if (write(pipe_to_parent[1], &sync, 1) != 1)
++				_exit(1);
++		}
++		_exit(0);
++	}
++
++	/* Parent: consumer */
++	close(pipe_to_child[0]);
++	close(pipe_to_parent[1]);
++
++	for (int i = 0; i < rounds; i++) {
++		/* Tell child to write */
++		sync = 'G';
++		if (write(pipe_to_child[1], &sync, 1) != 1) {
++			ksft_test_result_fail("write to pipe: %m\n");
++			goto reap;
++		}
++
++		/* Wait for child to confirm write */
++		if (read(pipe_to_parent[0], &sync, 1) != 1) {
++			ksft_test_result_fail("read from pipe: %m\n");
++			goto reap;
++		}
++
++		/* Detect the write */
++		if (poll_check(fd, 1000) != 1) {
++			ksft_test_result_fail("round %d: POLLIN not set\n", i);
++			goto reap;
++		}
++
++		/* Verify data */
++		if (mem[0] != (char)('A' + i)) {
++			ksft_test_result_fail("round %d: data 0x%02x\n", i,
++					      mem[0]);
++			goto reap;
++		}
++
++		/* Re-arm for next round */
++		if (tripwire_ack(fd) < 0) {
++			ksft_test_result_fail("round %d: ACK: %m\n", i);
++			goto reap;
++		}
++
++		/* Confirm clean after ACK */
++		if (poll_check(fd, 0) != 0) {
++			ksft_test_result_fail("round %d: POLLIN after ACK\n",
++					      i);
++			goto reap;
++		}
++	}
++
++	close(pipe_to_child[1]);
++	close(pipe_to_parent[0]);
++
++	waitpid(pid, &status, 0);
++	if (!WIFEXITED(status) || WEXITSTATUS(status) != 0) {
++		ksft_test_result_fail("child exited abnormally\n");
++		goto out;
++	}
++
++	ksft_test_result_pass("cross_process_multi_round\n");
++	munmap((void *)mem, page_size);
++	close(fd);
++	return;
++
++reap:
++	close(pipe_to_child[1]);
++	close(pipe_to_parent[0]);
++	kill(pid, SIGKILL);
++	waitpid(pid, &status, 0);
++out:
++	munmap((void *)mem, page_size);
++	close(fd);
++}
++
++/*
++ * Test 5: Producer/consumer race stress test.
++ *
++ * A producer thread writes continuously while the consumer thread polls and
++ * ACKs. The invariant is: we must never "miss" an event. Specifically, after
++ * the consumer ACKs and the producer writes at least once more, the consumer
++ * must eventually see POLLIN again.
++ *
++ * We use an atomic generation counter to track this. The producer increments
++ * the generation and writes to the mapping. The consumer records the
++ * generation at ACK time and verifies that when it next sees POLLIN, the
++ * generation has advanced.
++ */
++static atomic_int stress_gen;
++static atomic_bool stress_stop;
++
++static void *stress_producer(void *arg)
++{
++	char *mem = arg;
++
++	while (!atomic_load(&stress_stop)) {
++		atomic_fetch_add(&stress_gen, 1);
++		mem[0]++;
++		/* Intentionally no explicit delay to maximize contention */
++	}
++
++	return NULL;
++}
++
++static void test_stress_no_lost_events(void)
++{
++	int fd;
++	char *mem;
++	pthread_t producer;
++	int ack_count = 0;
++	int gen_at_ack, cur_gen;
++	struct timespec start;
++
++	if (setup_tripwire(page_size, &fd, &mem) != 0)
++		return;
++
++	atomic_store(&stress_gen, 0);
++	atomic_store(&stress_stop, false);
++
++	if (pthread_create(&producer, NULL, stress_producer, (void *)mem)) {
++		ksft_test_result_fail("pthread_create: %m\n");
++		goto out;
++	}
++
++	/*
++	 * Consumer loop: run for ~2 seconds. In each iteration:
++	 *   1. Wait for POLLIN (the producer is writing continuously)
++	 *   2. Record the current generation
++	 *   3. ACK (re-arm)
++	 *   4. The producer is still writing, so POLLIN must come back
++	 */
++	clock_gettime(CLOCK_MONOTONIC, &start);
++	while (time_elapsed(&start) <= 2.0) {
++		/*
++		 * Wait for a write notification. The producer is looping, so
++		 * the timeout should be plenty.
++		 */
++		if (poll_check(fd, 1000) != 1) {
++			ksft_test_result_fail(
++				"POLLIN not set (ack_count=%d, gen=%d)\n",
++				ack_count, atomic_load(&stress_gen));
++			atomic_store(&stress_stop, true);
++			pthread_join(producer, NULL);
++			goto out;
++		}
++
++		/* Record generation and ACK */
++		gen_at_ack = atomic_load(&stress_gen);
++		if (tripwire_ack(fd) < 0) {
++			ksft_test_result_fail("ACK failed: %m\n");
++			atomic_store(&stress_stop, true);
++			pthread_join(producer, NULL);
++			goto out;
++		}
++		ack_count++;
++
++		/*
++		 * The producer is running concurrently. After ACK, it will
++		 * write again and increment the generation. We don't need to
++		 * check anything here because the next poll() iteration will
++		 * verify that the write was detected.
++		 *
++		 * Spin briefly to let the producer get ahead, exercising the
++		 * race between ACK (write-protect) and producer (write).
++		 */
++		cur_gen = atomic_load(&stress_gen);
++		while (cur_gen == gen_at_ack) {
++			sched_yield();
++			cur_gen = atomic_load(&stress_gen);
++		}
++	}
++
++	atomic_store(&stress_stop, true);
++	pthread_join(producer, NULL);
++
++	if (ack_count < 10) {
++		ksft_test_result_fail("too few ACK cycles: %d\n", ack_count);
++		goto out;
++	}
++
++	ksft_print_msg("stress: %d ACK cycles, final gen=%d\n", ack_count,
++		       atomic_load(&stress_gen));
++	ksft_test_result_pass("stress_no_lost_events\n");
++out:
++	munmap((void *)mem, page_size);
++	close(fd);
++}
++
++/*
++ * Test 6: Randomized multi-thread visibility stress test.
++ *
++ * N_VIS_WRITERS writer threads and N_VIS_READERS reader threads operate
++ * concurrently on a shared memfd_tripwire mapping for VIS_DURATION_S seconds.
++ * Each writer owns a uint32_t slot on its own page and writes monotonically
++ * increasing values, interspersed with random sleeps. Each reader randomly
++ * polls or sleeps; on POLLIN it snapshots committed values, ACKs, then reads
++ * the mapped memory and validates visibility.
++ *
++ * The invariant under test: after a reader calls ACK, all writes that were
++ * committed (writer_committed[i] updated with store-release) before the
++ * reader's snapshot (loaded with load-acquire) must be visible when reading
++ * the mapped memory. The ACK's TLB-flush IPI provides the cross-CPU memory
++ * barrier that makes this guarantee hold.
++ */
++
++#define N_VIS_WRITERS 4
++#define N_VIS_READERS 2
++#define VIS_DURATION_S 2
++#define VIS_WRITER_SLEEP_PCT 20
++#define VIS_READER_SLEEP_PCT 30
++#define VIS_MAX_WRITER_SLEEP_US 1000
++#define VIS_MAX_READER_SLEEP_US 3000
++
++struct vis_ctx {
++	int fd;
++	char *mem;
++	atomic_uint writer_committed[N_VIS_WRITERS];
++	atomic_bool stop;
++	atomic_bool failed;
++	char failure_msg[256];
++};
++
++struct vis_thread_arg {
++	struct vis_ctx *ctx;
++	int id;
++};
++
++static void *vis_writer_fn(void *arg)
++{
++	struct vis_thread_arg *ta = arg;
++	struct vis_ctx *ctx = ta->ctx;
++	int id = ta->id;
++	uint32_t *slot = (uint32_t *)(ctx->mem + id * page_size);
++	uint32_t value = 0;
++	unsigned int seed = (unsigned int)(id * 7919 + 1);
++
++	while (!atomic_load_explicit(&ctx->stop, memory_order_relaxed)) {
++		if (rand_r(&seed) % 100 < VIS_WRITER_SLEEP_PCT) {
++			usleep(rand_r(&seed) % VIS_MAX_WRITER_SLEEP_US);
++			continue;
++		}
++
++		value++;
++		*slot = value;
++		atomic_store_explicit(&ctx->writer_committed[id], value,
++				      memory_order_release);
++	}
++
++	return NULL;
++}
++
++static void *vis_reader_fn(void *arg)
++{
++	struct vis_thread_arg *ta = arg;
++	struct vis_ctx *ctx = ta->ctx;
++	uint32_t snapshot[N_VIS_WRITERS];
++	unsigned int seed = (unsigned int)(ta->id * 6971 + 42);
++	int i;
++
++	while (!atomic_load_explicit(&ctx->stop, memory_order_relaxed)) {
++		if (atomic_load_explicit(&ctx->failed, memory_order_relaxed))
++			break;
++
++		if (rand_r(&seed) % 100 < VIS_READER_SLEEP_PCT) {
++			usleep(rand_r(&seed) % VIS_MAX_READER_SLEEP_US);
++			continue;
++		}
++
++		if (poll_check(ctx->fd, 100) != 1)
++			continue;
++
++		for (i = 0; i < N_VIS_WRITERS; i++)
++			snapshot[i] =
++				atomic_load_explicit(&ctx->writer_committed[i],
++						     memory_order_acquire);
++
++		tripwire_ack(ctx->fd);
++
++		for (i = 0; i < N_VIS_WRITERS; i++) {
++			uint32_t *slot = (uint32_t *)(ctx->mem + i * page_size);
++			uint32_t observed = *slot;
++
++			if (observed < snapshot[i]) {
++				snprintf(
++					ctx->failure_msg,
++					sizeof(ctx->failure_msg),
++					"writer %d: observed %u < committed %u",
++					i, observed, snapshot[i]);
++				atomic_store(&ctx->failed, true);
++				atomic_store(&ctx->stop, true);
++				return NULL;
++			}
++		}
++	}
++
++	return NULL;
++}
++
++static void test_stress_visibility(void)
++{
++	struct vis_ctx ctx;
++	struct vis_thread_arg wargs[N_VIS_WRITERS];
++	struct vis_thread_arg rargs[N_VIS_READERS];
++	pthread_t writers[N_VIS_WRITERS];
++	pthread_t readers[N_VIS_READERS];
++	size_t map_size = N_VIS_WRITERS * page_size;
++	struct timespec start;
++	int i, nw = 0, nr = 0;
++
++	if (setup_tripwire(map_size, &ctx.fd, &ctx.mem) != 0)
++		return;
++
++	atomic_store(&ctx.stop, false);
++	atomic_store(&ctx.failed, false);
++	ctx.failure_msg[0] = '\0';
++	for (i = 0; i < N_VIS_WRITERS; i++)
++		atomic_store(&ctx.writer_committed[i], 0);
++
++	for (i = 0; i < N_VIS_WRITERS; i++) {
++		wargs[i].ctx = &ctx;
++		wargs[i].id = i;
++		if (pthread_create(&writers[i], NULL, vis_writer_fn, &wargs[i]))
++			goto stop;
++		nw++;
++	}
++
++	for (i = 0; i < N_VIS_READERS; i++) {
++		rargs[i].ctx = &ctx;
++		rargs[i].id = i;
++		if (pthread_create(&readers[i], NULL, vis_reader_fn, &rargs[i]))
++			goto stop;
++		nr++;
++	}
++
++	clock_gettime(CLOCK_MONOTONIC, &start);
++	do {
++		usleep(100000);
++	} while (time_elapsed(&start) <= VIS_DURATION_S &&
++		 !atomic_load(&ctx.failed));
++
++stop:
++	atomic_store(&ctx.stop, true);
++	for (i = 0; i < nr; i++)
++		pthread_join(readers[i], NULL);
++	for (i = 0; i < nw; i++)
++		pthread_join(writers[i], NULL);
++
++	if (atomic_load(&ctx.failed)) {
++		ksft_test_result_fail("visibility: %s\n", ctx.failure_msg);
++	} else {
++		for (i = 0; i < N_VIS_WRITERS; i++) {
++			ksft_print_msg("visibility: writer %d committed %u\n",
++				       i,
++				       atomic_load(&ctx.writer_committed[i]));
++		}
++		ksft_test_result_pass("stress_visibility\n");
++	}
++
++	munmap((void *)ctx.mem, map_size);
++	close(ctx.fd);
++}
++
++#define NUM_TESTS 6
++
++int main(void)
++{
++	page_size = sysconf(_SC_PAGE_SIZE);
++	if (!page_size)
++		ksft_exit_fail_msg("Failed to get page size %m\n");
++
++	ksft_print_header();
++	ksft_set_plan(NUM_TESTS);
++
++	test_sequential();
++	test_multi_page();
++	test_cross_process();
++	test_cross_process_multi_round();
++	test_stress_no_lost_events();
++	test_stress_visibility();
++
++	ksft_finished();
++	return 0;
++}
++
++#else /* __NR_memfd_tripwire */
++
++int main(int argc, char *argv[])
++{
++	printf("skip: skipping memfd_tripwire test (missing __NR_memfd_tripwire)\n");
++	return KSFT_SKIP;
++}
++
++#endif /* __NR_memfd_tripwire */
 -- 
 2.52.0
 
