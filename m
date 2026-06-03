@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1DDCD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 10:15:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C63DCD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 10:41:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 068B26B008A; Wed,  3 Jun 2026 06:15:58 -0400 (EDT)
+	id 5BEB96B0088; Wed,  3 Jun 2026 06:41:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 019DD6B008C; Wed,  3 Jun 2026 06:15:57 -0400 (EDT)
+	id 5709D6B008A; Wed,  3 Jun 2026 06:41:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4A8E6B0092; Wed,  3 Jun 2026 06:15:57 -0400 (EDT)
+	id 485356B008C; Wed,  3 Jun 2026 06:41:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D214B6B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:15:57 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B76740309
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:15:57 +0000 (UTC)
-X-FDA: 84838195554.01.757951B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 36E036B0088
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 06:41:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A06D81202CC
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:41:05 +0000 (UTC)
+X-FDA: 84838258890.02.9A14139
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CDB1240011
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:15:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtSSZsou;
+	by imf25.hostedemail.com (Postfix) with ESMTP id EC844A000D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:41:03 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N+OYS/J/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780481755;
+	s=arc-20220608; t=1780483264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/1qAgvTTvf0xlsZiADLfe2fg7WDkq6Xjj3OBNJ3gL8s=;
-	b=5AgrhyHxG1WGQkoGhtlPT2Sa2TR9+CW09Cxy+qQZVn7g1nEugNigH1KYLbyKjaxjN5/Qco
-	EuzbAoueCQgq3dSooDemQpW8CU7qpK2HNJVyf/DeL4QA2cYPwe81poWpWsUybRczRJG/C8
-	9ent+7Fettx6Kc7/g9pDEZ/5MSkXXWM=
+	bh=s7g+YgnU5mYzWEYBRa4inLWSLO7CCiRf4ByLQT5tfZY=;
+	b=Sk7I79sPKvDCdae657G9IumGiTHqIC8ASxi6OWnlNmE8V+CHuFXgR7s+eZMny3Rv9KkpXg
+	xVxdZyMtmgBjbGRN1OCcTkcBz3J/GF7nzpj7z88p5N1kTfRJHy/gn3tabx+xu3XC25jNmq
+	1wVfqBrwKaPQCpzP1e0P1Tp/GCFTfxM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gtSSZsou;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N+OYS/J/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780481755;
-	b=npWT6wtLhOHEL1rf8aEG7T9Drg0bZqPFKlfUTdX62wYHH7LH8aflktVj0HNh4TK9WZ9ZEW
-	QmZ7osgjCtzcEme2k51NAag39FG3SG12teuege+CevFvUDGHShlPnyKGPWcYO6WoumdzAB
-	I8BT+Z4PyrUbrJ+BMgJRbIOpDsYObbA=
+	t=1780483264;
+	b=DYGiojyTE49jPy73a5cg4XzDd6oRsCkwBKJHnJG6ZTaw9QVd3nAX01M32fSEUhJ9hftPLL
+	wzWAiat7XaD7Fk7+4htKgRRm21PDLc/O1bCKw8otCngvbqBsvQqp43r33Yet8k5Hml5a/x
+	rCIGfwuSb2PzmFPzxMSRGPBQsMjaHGM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DBE6743490;
-	Wed,  3 Jun 2026 10:15:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8191F00893;
-	Wed,  3 Jun 2026 10:15:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 23DD940ADB;
+	Wed,  3 Jun 2026 10:41:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFBA1F00893;
+	Wed,  3 Jun 2026 10:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780481754;
-	bh=/1qAgvTTvf0xlsZiADLfe2fg7WDkq6Xjj3OBNJ3gL8s=;
+	s=k20260515; t=1780483263;
+	bh=s7g+YgnU5mYzWEYBRa4inLWSLO7CCiRf4ByLQT5tfZY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=gtSSZsouD8cpySavp5/KCA2H4xsJ0k33u5QsI54YwWdTBvVrwh1EQJoZKLTUcRYDi
-	 nMKVQ25m+DVsx7fnEUljFRRXcSps9Wa9xplTuvBA5+rr1nNS3aWK8UBwzAydajFHxf
-	 HtFrhyeERBNXQ08tv3rlbDHPQ4gXWnGgHTEbcq/9rfB6r8DVzepSZohFqaZ/SNpYym
-	 4UQSfaBL0iflTvEzNtyqsATxsoImbcfFZU+5b3Nb/jW8Uhl1hxHeDtJsFffRvBG22n
-	 wQBNPD6ldeFmVIinRjFx9C81t9ZjoHXZJSwCafXds57TqF+Yf4PP/248p/pEympUZF
-	 kZ9QODUrn7mSA==
+	b=N+OYS/J/t3VZ0KZzQP4YJ7w3BTT26YT5oyBCWmyE1q1r+8mnOg1ld4b6EeAhfEAQ2
+	 pKOVfEsgvxq6CHYTuRNjM/aCl1g+UUDrtSfrbHLWWldfsVfpP6duEcC+68+gwaSCaI
+	 dIWSw1rsnuiHIxJLVJjZZPYrEJEQlJ6hvQvjWb36uGwEVc2z6RbBWI9jTXnMlfQ8bX
+	 l1JIrwYR1XFBQ7LMeGvPkMcPdaloKd08pATKIFQuRV/nEBIrZzv3zOwPBZ3jcWC0uT
+	 e6ICzSlXKZIzciWouRQiDt7rn0cphZRUkkZTLc/j87zkvtA5z9+YVAO8lHYB5DuyDv
+	 mtamVBdFFBoBg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
@@ -77,23 +77,23 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
  <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 24/79] block: rust: add `BadBlocks` for bad block tracking
-In-Reply-To: <abfvrh0ObKhtsR8I@google.com>
+Subject: Re: [PATCH 06/79] block: rust: add `Request` private data support
+In-Reply-To: <abfXIqlT9qRhXssT@google.com>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-24-de9a7af4b469@kernel.org>
- <abfvrh0ObKhtsR8I@google.com>
-Date: Wed, 03 Jun 2026 12:15:41 +0200
-Message-ID: <87wlwgj5f6.fsf@t14s.mail-host-address-is-not-set>
+ <20260216-rnull-v6-19-rc5-send-v1-6-de9a7af4b469@kernel.org>
+ <abfXIqlT9qRhXssT@google.com>
+Date: Wed, 03 Jun 2026 12:40:49 +0200
+Message-ID: <87se73kitq.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: p8ggfwxuq7ehgw8jwaddibu5pi97okuu
-X-Rspamd-Queue-Id: CDB1240011
-X-HE-Tag: 1780481755-404606
-X-HE-Meta: U2FsdGVkX1/l637VXhvJl2DsFQemkQj6cAYJEFqnBwSD7J6UvFUD6ohq+Jz4oedSV1HazMasQZPes+1/4l+iyXXsHw6+gMMRfWTt8yNagxIVLYwxSgKu+uMxtEgEEAFkQFJbNDw4jY04HWF3K4c9vGlnpt2ktrjbng85cNhS2cVQ1ciaE+pR0lHBH7T9+0DSc37MIvuELDTN+Ti2IBDNPIV4uj8XZCNJu/mGVYv8ktY4QBU1heA3XRWFwIN/89LEfZOr0itdpZyyfyMBYr5hpW5pVtdq4JB4wRMXJTTny2WiepuZELVEeHApJuosGXNygtaIDj8F74K5amC0cH1ZHLoJHdFFPteVYC4S93E8VIaSLGYq5ISVWHdAprp7zG5XPpb0693RIrFqf0T3xKTqZcwVw4aFjipFbKQrG6XtBP2frvtc+0XGdUA4sVkcrXj9h5X6lElNQTAnI3fZNnzsqLvQTA7/ZulyM33Iv1JGbwGYBJ8nLdFNkUuJDgpLlB8CaCPTOCMr0VWZcIhjZ5ScTY0IuqteoDAqsvw5eXtUs1Y12IZPGMtoOp2XKrtLtr1c3BRzqn/ojFF+M4YVcJYchl2AU8mWE4P1r6AZYLUjGgH0IeDcTHz4dSv+lORODEVLrsCSWf9OWX764V8FqfVIZjTn0FfSJ/ZrAWKw42+K3mhPfBGYUfPiEQMAjDK7L5OK9rCS4dAYGddcCIave3bmNLN5uTCE7pDu4klk0N0OqvdUedhp+qcZjRnuDqjpxfXf2jQaglLtYghFnqjjJeU4AqAxmZUPzz14QR7ZkBefIJb6DaC5SKtns+OOHHwCy2TPDkvscp0gKOt7R3BRZ75AFzC64zQqe9GmW4zYRppTTXgWTgL3Ny83JAQgWIvr5f3bRvkwIau2i3qlGbmibxxuj/JVoCjIb5/uZdIXEmK5nKFusZXa8adCzMO/Ja2cX1a8sr6JKCQJdQAriRrW1Q1
- 2LqZPVTS
- OsywN9eTM1Sy7oDw+9tgDYpP7+b7bwEZ2pFnQ99ZEhtUScrxMgGcfqyb6Txs8QrLa1BKm7BfmGd9n4DAOcnZwdzmNXQm7NA0nL7sZKGkLKRFbPZxbLEpIESjHcWhUm8ZmNdbEBQ4gfQr3H+8/D+OjskvTr/tW30455HNmZac/Gku0l5V71nPlW5TYYfOiqXLNQyCYwqcIGms7ti68PuKkUG00d6iyZhTWgql11oP/B9UsbvoJcMWgyjQPkiFG7T4QIqRUdNeTBUQMdV/ErZ8ayixQJwNgamWwz8asVxN/ZWGGXiSzrT4EYaVOJULC7wv5px3gcTsj4rNbiNKc2FQjySv1K73zsaDirKTBF0uS/69ot86rnVIXnTB31JAYTXV05S5D
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EC844A000D
+X-Stat-Signature: prc3akkikeutjyuhdqht13dd8oksudwx
+X-HE-Tag: 1780483263-600492
+X-HE-Meta: U2FsdGVkX1/n92PHYe3EK0r33AB1DV/b41d/P4iPU2GX+vfRUMvtTl/tegUjB2a/A1iMJYaas4iPjxBHWKwUjSh0t3A5+b91aoJyAQer86l0ZO25vQe/Qz4GmZujuBJ6RqPQKTC7UUYDZZfX5r9w4aJm0wkE4/POj7zppQUGgq95KGq4U5r0RdNBLWT5thMMkuGncr/cV++Nb38c54YYSBTm5LvhF+l3vx5vvBnhipXj5MYhOTrRLwRgBDzkuipaGpYHwANweZbBmxsYZSn+rf39lU5WyQ/WVJEtTMZ31LUlWUU5i+Mpw4TZ5YoLjYepJ6UNOxuOhdfNeSykXVAM1oLa4jOXnz0S19prLk0nzSnY5BKJvNzZ5aE8oyfHfyeAGqP2mX5IRSLvGPp1ImMkQ71iOw5DlFcV5ouFeIELG2xderf5HpDwCrJu6aBiZtccNLEmVV2bAqlkXaL8p34VsQTkSQRHX8QrrtHXzRcdmDim1lvtBlngTTyrqw7pOxmbpjImBSF3iAdoQNv4+YaS7OjMHzaGCJacp3CoYnrZqtaX2p/ncmNIRlEJ/m1il2zyBXZFmRLsG29R+mD9krd02Rb1+DxjTtuui/GDWXerneV7D2nL7RtMnag46t8Aio0DMVlHbESolKFEWQroDh7aqH+nS4U9hgtv0VK+xPOC0GMKSYB7juAXDthrXzq9C6pmqgBlkd1YT/SpuV9xZMnaDsRUYFeDyogGeJD3WETmMDgHgnxmd9aev3PG6+F64Zk8NB5fCoOf5mrCgzC9GwxCzDg+HpFmzLLnuVaY7jyStuR8PRX5/m0EamqofoV3PGOKDjiSFA+C03P8yQN2HFDH+KGBfN4QT8rZyug3Vyr8E+D7s8E6pPG365sSj31lPx0n6P6qOsnFyFjELKRvheYwr4Wv0Uz4fDUFodCLhugOXP2E4teRyq8PYEo+4hby8nDCPasVoUaDuUKfTH+wfFe
+ 1NqfcrV+
+ /o/JHzux01NB7CXhjcDZ72xCWgfRUsL6myt9giuhnB6JFQSrf0Tj4VNbs+JSI/BNuSfRLO0wAk51Nn2WlGb+g4Ok7aKD0Y45aJvUjr+ZUw7c0eV0mKvayRzqYBMAM+5hmb1eK6IPiP9yepRZ3yoLy6i+7Yokq5z92Fs7Rj4ivALdt+kFjcPZjR+oBm8/fLuRSmpRVYyrkCKX1pL/xOJIZXMZPWedRR912hj+Ph/sRtenXyjjXgmd5TuOEmqlra1UBUytgDt45hCsQNPC60ZDSN1z39xusiHwGO9huWYvS7iEW61RWEk1CjDjpQ13SClVbwIZs/e+cu11BdcE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,218 +103,141 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Alice Ryhl <aliceryhl@google.com> writes:
 
-> On Mon, Feb 16, 2026 at 12:35:11AM +0100, Andreas Hindborg wrote:
->> Add a safe Rust wrapper around the Linux kernel's badblocks infrastructure
->> to track and manage defective sectors on block devices. The BadBlocks type
->> provides methods to:
+> On Mon, Feb 16, 2026 at 12:34:53AM +0100, Andreas Hindborg wrote:
+>> C block device drivers can attach private data to a `struct request`. This
+>> data is stored next to the request structure and is part of the request
+>> allocation set up during driver initialization.
 >> 
->> - Mark sectors as bad or good (set_bad/set_good)
->> - Check if sector ranges contain bad blocks (check)
->> - Automatically handle memory management with PinnedDrop
->> 
->> The implementation includes comprehensive documentation with examples for
->> block device drivers that need to avoid known bad sectors to maintain
->> data integrity. Bad blocks information is used by device drivers,
->> filesystem layers, and device management tools.
+>> Expose this private request data area to Rust block device drivers.
 >> 
 >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
->> diff --git a/rust/kernel/block/badblocks.rs b/rust/kernel/block/badblocks.rs
->> new file mode 100644
->> index 0000000000000..a5fe0fde2e755
->> --- /dev/null
->> +++ b/rust/kernel/block/badblocks.rs
->> @@ -0,0 +1,721 @@
->> +// SPDX-License-Identifier: GPL-2.0
+> Overall looks ok. A few nits below:
+>
+>> ---
+>>  drivers/block/rnull/rnull.rs       |  5 +++++
+>>  rust/kernel/block/mq.rs            |  6 ++++++
+>>  rust/kernel/block/mq/operations.rs | 24 +++++++++++++++++++++++-
+>>  rust/kernel/block/mq/request.rs    | 24 +++++++++++++++++++-----
+>>  rust/kernel/block/mq/tag_set.rs    |  2 +-
+>>  5 files changed, 54 insertions(+), 7 deletions(-)
+>> 
+>> diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+>> index 6a7f660d31998..065639fc4f941 100644
+>> --- a/drivers/block/rnull/rnull.rs
+>> +++ b/drivers/block/rnull/rnull.rs
+>> @@ -134,6 +134,11 @@ struct QueueData {
+>>  #[vtable]
+>>  impl Operations for NullBlkDevice {
+>>      type QueueData = KBox<QueueData>;
+>> +    type RequestData = ();
 >> +
->> +//! Bad blocks tracking for block devices.
->> +//!
->> +//! This module provides a safe Rust wrapper around the badblocks
->> +//! infrastructure, which is used to track and manage bad sectors on block
->> +//! devices. Bad blocks are sectors that cannot reliably store data and should
->> +//! be avoided during I/O operations.
+>> +    fn new_request_data() -> impl PinInit<Self::RequestData> {
+>> +        pin_init::zeroed::<Self::RequestData>()
 >
-> Could use a srctree link to badblocks.h here.
+> Simpler to just return Ok(()) here.
 
-Will add.
-
->
->> +/// # Examples
->> +///
->> +/// Basic usage:
->> +///
->> +/// ```rust
->> +/// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
->> +/// # use kernel::prelude::*;
->> +///
->
-> Unhide the imports or remove this empty line.
-
-Ok.
-
->
->> +/// // Create a new bad blocks tracker
->> +/// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
->> +///
->> +/// // Mark sectors 100-109 as bad (unacknowledged)
->> +/// bad_blocks.set_bad(100..110, false)?;
->> +///
->> +/// // Check if sector range 95-104 contains bad blocks
->> +/// match bad_blocks.check(95..105) {
->> +///     BlockStatus::None => pr_info!("No bad blocks found"),
->> +///     BlockStatus::Acknowledged(range) => pr_warn!("Acknowledged bad blocks: {:?}", range),
->> +///     BlockStatus::Unacknowledged(range) => pr_err!("Unacknowledged bad blocks: {:?}", range),
->> +/// }
->> +/// # Ok::<(), kernel::error::Error>(())
->> +/// ```
->> +/// # Invariants
->> +///
->> +/// - `self.blocks` is a valid `bindings::badblocks` struct.
->> +#[pin_data(PinnedDrop)]
->> +pub struct BadBlocks {
->> +    #[pin]
->> +    blocks: Opaque<bindings::badblocks>,
->> +}
->> +
->> +impl BadBlocks {
->> +    /// Creates a new bad blocks tracker.
->> +    ///
->> +    /// Initializes an empty bad blocks tracker that can manage defective sectors
->> +    /// on a block device. The tracker starts with no bad blocks recorded and
->> +    /// allocates a single page for storing bad block entries.
->> +    ///
->> +    /// # Returns
->> +    ///
->> +    /// Returns a [`PinInit`] that can be used to initialize a [`BadBlocks`] instance.
->> +    /// Initialization may fail with `ENOMEM` if memory allocation fails.
->> +    ///
->> +    /// # Examples
->> +    ///
->> +    /// ```rust
->> +    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
->> +    /// # use kernel::prelude::*;
->> +    ///
->
-> Ditto. (Many times throughout file.)
->
->> +    /// // Create and initialize a bad blocks tracker
->> +    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
->> +    ///
->> +    /// // The tracker is ready to use with no bad blocks initially
->> +    /// match bad_blocks.check(0..100) {
->> +    ///     BlockStatus::None => pr_info!("No bad blocks found initially"),
->> +    ///     _ => unreachable!(),
->> +    /// }
->> +    /// # Ok::<(), kernel::error::Error>(())
->> +    /// ```
->> +    pub fn new(enable: bool) -> impl PinInit<Self, Error> {
->> +        // INVARIANT: We initialize `self.blocks` below. If initialization fails, an error is
->> +        // returned.
->> +        try_pin_init!(Self {
->> +            blocks <- Opaque::try_ffi_init(|slot| {
->> +                // SAFETY: `slot` is a valid pointer to uninitialized memory
->> +                // allocated by the Opaque type. `badblocks_init` is safe to
->> +                // call with uninitialized memory.
->> +                to_result(unsafe {bindings::badblocks_init(slot, if enable {1} else {0})})
->
-> I think you can just cast the boolean to an integer.
-
-Ok.
-
->
-> Also, formatting here is off (but ignored by rustfmt due to macro.)
-
-Will try to fix.
-
->
->> +    /// Enables the bad blocks tracker if it was previously disabled.
->> +    ///
->> +    /// Attempts to enable bad block tracking by transitioning the tracker from
->> +    /// a disabled state to an enabled state.
->> +    ///
->> +    /// # Behavior
->> +    ///
->> +    /// - If the tracker is disabled, it will be enabled.
->> +    /// - If the tracker is already enabled, this operation has no effect.
->> +    /// - The operation is atomic and thread-safe.
->> +    ///
->> +    /// # Usage
->> +    ///
->> +    /// Bad blocks trackers can be created in a disabled state and enabled later
->> +    /// when needed. This is useful for conditional bad block tracking or for
->> +    /// deferring activation until the device is fully initialized.
->> +    ///
->> +    /// # Examples
->> +    ///
->> +    /// ```rust
->> +    /// # use kernel::block::badblocks::BadBlocks;
->> +    /// # use kernel::prelude::*;
->> +    ///
->> +    /// // Create a disabled bad blocks tracker
->> +    /// let bad_blocks = KBox::pin_init(BadBlocks::new(false), GFP_KERNEL)?;
->> +    /// assert!(!bad_blocks.enabled());
->> +    ///
->> +    /// // Enable it when needed
->> +    /// bad_blocks.enable();
->> +    /// assert!(bad_blocks.enabled());
->> +    ///
->> +    /// // Subsequent enable calls have no effect
->> +    /// bad_blocks.enable();
->> +    /// assert!(bad_blocks.enabled());
->> +    /// # Ok::<(), kernel::error::Error>(())
->> +    /// ```
->> +    pub fn enable(&self) {
->> +        let _ = self.shift_ref().cmpxchg(-1, 0, ordering::Relaxed);
->
-> Is there not a C function you can call here? It would be simpler that
-> way. Surely drivers don't do this directly.
-
-No, this is the canonical way [1].
-
-[1] https://github.com/torvalds/linux/blob/ba3e43a9e601636f5edb54e259a74f96ca3b8fd8/drivers/block/null_blk/main.c#L563
+Not sure why I picked zeroed. Will change.
 
 >
 >> +    }
+>>  
+>>      #[inline(always)]
+>>      fn queue_rq(queue_data: &QueueData, rq: Owned<mq::Request<Self>>, _is_last: bool) -> Result {
+>> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+>> index b8ecd69abe980..a285b753ada88 100644
+>> --- a/rust/kernel/block/mq.rs
+>> +++ b/rust/kernel/block/mq.rs
+>> @@ -69,8 +69,14 @@
+>>  //!
+>>  //! #[vtable]
+>>  //! impl Operations for MyBlkDevice {
+>> +//!     type RequestData = ();
+>>  //!     type QueueData = ();
+>>  //!
+>> +//!     fn new_request_data(
+>> +//!     ) -> impl PinInit<()> {
+>> +//!         pin_init::zeroed::<()>()
+>
+> Simpler to just return Ok(()) here.
+
+Will change.
+
+>
+>> +//!     }
+>> +//!
+>>  //!     fn queue_rq(_queue_data: (), rq: Owned<Request<Self>>, _is_last: bool) -> Result {
+>>  //!         rq.end_ok();
+>>  //!         Ok(())
+>> diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
+>> index 3dea79d647ff7..cd37b939bbf30 100644
+>> --- a/rust/kernel/block/mq/operations.rs
+>> +++ b/rust/kernel/block/mq/operations.rs
+>> @@ -13,6 +13,7 @@
+>>      types::{ForeignOwnable, Owned},
+>>  };
+>>  use core::{marker::PhantomData, ptr::NonNull};
+>> +use pin_init::PinInit;
+>>  
+>>  type ForeignBorrowed<'a, T> = <T as ForeignOwnable>::Borrowed<'a>;
+>>  
+>> @@ -28,10 +29,24 @@
+>>  /// [module level documentation]: kernel::block::mq
+>>  #[macros::vtable]
+>>  pub trait Operations: Sized {
+>> +    /// Data associated with a request. This data is located next to the request
+>> +    /// structure.
+>> +    ///
+>> +    /// To be able to handle accessing this data from interrupt context, this
+>> +    /// data must be `Sync`.
+>> +    ///
+>> +    /// The `RequestData` object is initialized when the requests are allocated
+>> +    /// during queue initialization, and it is are dropped when the requests are
+>> +    /// dropped during queue teardown.
+>> +    type RequestData: Sized + Sync;
+>
+> It was surprising to me that `request` is reused over many requests. I
+> think it could be a bit more obvious in the wording.
+
+I will add a bit of info in the `Request` type docs.
+
+>
+>>      /// Data associated with the `struct request_queue` that is allocated for
+>>      /// the `GenDisk` associated with this `Operations` implementation.
+>>      type QueueData: ForeignOwnable;
+>>  
+>> +    /// Called by the kernel to get an initializer for a `Pin<&mut RequestData>`.
+>> +    fn new_request_data() -> impl PinInit<Self::RequestData>;
 >> +
->> +    /// Checks whether the bad blocks tracker is currently enabled.
->> +    ///
->> +    /// Returns `true` if bad block tracking is active, `false` if it is disabled.
->> +    /// When disabled, the tracker will not perform bad block checks or operations.
->> +    ///
->> +    /// # Returns
->> +    ///
->> +    /// - `true` - Bad block tracking is enabled and operational
->> +    /// - `false` - Bad block tracking is disabled
+>>      /// Called by the kernel to queue a request with the driver. If `is_last` is
+>>      /// `false`, the driver is allowed to defer committing the request.
+>>      fn queue_rq(
+>> @@ -236,6 +251,13 @@ impl<T: Operations> OperationsVTable<T> {
+>>              // it is valid for writes.
+>>              unsafe { RequestDataWrapper::refcount_ptr(pdu.as_ptr()).write(Refcount::new(0)) };
+>>  
+>> +            let initializer = T::new_request_data();
+>> +
+>> +            // SAFETY: `pdu` is a valid pointer as established above. We do not
+>> +            // touch `pdu` if `__pinned_init` returns an error. We promise ot to
 >
-> You explain the meaning of return values twice here. Just drop the
-> 'Returns' section.
-
-Ok.
-
+> typo
 >
->> +    /// # Thread Safety
->> +    ///
->> +    /// This method is thread-safe and uses atomic operations to check the
->> +    /// tracker's state without requiring external synchronization.
 >
-> This is implicit from the signature of the function.
-
-Will remove.
-
+>> diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
+>> index c3cf56d52beec..46481754b1335 100644
+>> --- a/rust/kernel/block/mq/tag_set.rs
+>> +++ b/rust/kernel/block/mq/tag_set.rs
+>> @@ -41,7 +41,7 @@ pub fn new(
+>>          // SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
+>>          // all are allowed to be 0.
+>>          let tag_set: bindings::blk_mq_tag_set = unsafe { core::mem::zeroed() };
+>> -        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper>()
+>> +        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper<T>>()
 >
->> +    pub fn set_good(&self, range: impl RangeBounds<u64>) -> Result {
->> +        let range = Self::range(range);
->> +        // SAFETY: By type invariant `self.blocks` is valid. The C function
->> +        // `badblocks_clear` handles synchronization internally.
->> +        unsafe {
->> +            bindings::badblocks_clear(self.blocks.get(), range.start, range.end - range.start)
->> +        }
->> +        .then_some(())
->> +        .ok_or(EINVAL)
->
-> then_some() is quite obscure. I would recommend if/else here.
+> size_of in prelude.
 
-Ok.
+Fixed.
 
 Thanks,
 Andreas
