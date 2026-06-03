@@ -4,98 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4512ECD6E60
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 15:18:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37E35CD6E57
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 15:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DF966B009D; Wed,  3 Jun 2026 11:18:49 -0400 (EDT)
+	id 663B86B009D; Wed,  3 Jun 2026 11:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B6A26B009E; Wed,  3 Jun 2026 11:18:49 -0400 (EDT)
+	id 614316B009E; Wed,  3 Jun 2026 11:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F3706B00A0; Wed,  3 Jun 2026 11:18:49 -0400 (EDT)
+	id 551686B009F; Wed,  3 Jun 2026 11:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D88A6B009D
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:18:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A55668DCDF
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:18:48 +0000 (UTC)
-X-FDA: 84838958736.18.2D782F8
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44A8B6B009D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 11:32:22 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DBD701C1A06
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:32:21 +0000 (UTC)
+X-FDA: 84838992882.08.F7D6334
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D5BAB4000F
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:18:46 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gqiDx2XI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3F461C000F
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 15:32:20 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NBjAKwNW;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780499926;
+	s=arc-20220608; t=1780500740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Row1/ZMLh6mM+sigh4dqTjgwYgOfCp9sUzuCj7aY0Fw=;
-	b=fwsH2UzDChKCf1hConPU+khBiZ7ahA9ywHCnaiYiTe2U9UTgCfegKs143pkMjT/Y9Tn4Af
-	QNfn3Xn7ugU7GMHrjaF9pbqxj5JfRQj1C8hLpIZ2qMlvd9vYQSArYw97fLPLTQFVQNy9xR
-	eESJ8MVtc2N9DhlrxmlYrQ+mVGQH2lM=
+	bh=phx5JcnRqGG29OmuItoF1MyG6kbDGtyE55/LgSKTFQI=;
+	b=d+ZjghMSBjMPsJiiOoExLZ/RCXIWmmrLHNCe7PA3+vo0puO3tH2xAVqZoKEUChFLdmosF2
+	Cfvv4EUpV5O1RccV7cL2LiPJcj36oUvtsIL+FXtoxxruo+aBR1WztF7hi3bUzdtah8FrGg
+	kDIjmPs5QBpt/ih7k1pC0H/fzeeSJ4Q=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gqiDx2XI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NBjAKwNW;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780499926;
-	b=k1SSU7URR75mEnqFQL/TeExLxCM6m4cB/ZhgCe3sQVUQEooS8qpiPHpZX8qsccaJhyW9UP
-	HwFNXYhsRuwNWP9HJzCLsrno70uyOR+gZSzzLtZDGofk0J4WXP0U5rmlXJwZLCFmApEX5n
-	5R/ZTqfFAoaPHeOuV2EfiZODdgzyFew=
+	t=1780500740;
+	b=NlZ95nkafBNLxIxnSglfyWjba6fo17+ru4SXKylOpWfPyEU0TLFZqvI4cVagym4aZoM5Y9
+	TUANw/ctaay+Fvr+e3yXxAjlGYo9jdTg6P2rJMvBa5GWeu5zgc9SfXN0Zib5c8EswCAHS6
+	E8qaHhK0QyrfGoxosM70JhQf0YQLEcY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5FE2C601DD;
-	Wed,  3 Jun 2026 15:18:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17521F00898;
-	Wed,  3 Jun 2026 15:18:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 97A12601DD;
+	Wed,  3 Jun 2026 15:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D931F00893;
+	Wed,  3 Jun 2026 15:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780499926;
-	bh=Row1/ZMLh6mM+sigh4dqTjgwYgOfCp9sUzuCj7aY0Fw=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=gqiDx2XIJ6TAOhH6COyc85O7nZTepQiHDoIwbNNC292yB9TuNTxpGhJ/VrhM5MgSG
-	 hCV+5zMk9sWy8BJLb6mJEiXT/PFhFr/ysO1atbo7egQSNjeeYYqVvW3/maP6WuQDLl
-	 4ksBKHdCFbbC0xk3Wc6+1V91XA5ji5JyMED+9Rqs+mbNNtuzP4kry6+rq0iFxpuMv9
-	 QzEbzzSDWUgCIhTx4qU+EXMSm3EoPiuHSgHqN00eIC2jOYah12EaiVGODawZwWRz12
-	 01NbzKgqcrqvjs5B7e9buR3+Wf9D07ezTSb5wyK22sUjVLWU7hMtWJvkm2AbPEunzS
-	 0JKuLIzwWry2w==
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v6 07/13] kho: add support for linked-block
- serialization
+	s=k20260515; t=1780500739;
+	bh=phx5JcnRqGG29OmuItoF1MyG6kbDGtyE55/LgSKTFQI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NBjAKwNWWkdXPnLE43ZMJidLUxB8XdsOO9xqQnl/3aN33mYlvXyBD3L40D4TN8vtn
+	 uPM7V5kP1pgyDn6pqyCu6K1Zbb3c7r/VoZNKKqc1/WQpvjiMSG0K51pcZ31ROU4/dx
+	 dO3AgiJK+1ObA9c/0zQEDY7f/1YZet57+UbbHYGe1KwCSMV5UAJ5iutGFModUrXm8a
+	 pGAozlH4yewc0IpBUO2V4JFgBEjRMrJxIsr00TrJ/tB+cCuNC+DVasC+GdC4Q1xZm7
+	 dMpCDpG9dqVLnCzUSC6/n+bfeSP8W6sBWZdD+XIXyO6dqqAIpw+7PiOTGYg9mq8AzP
+	 D1rxX8HCPL/BA==
+Date: Wed, 3 Jun 2026 18:32:13 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Mike Rapoport <rppt@kernel.org>, linux-kselftest@vger.kernel.org, 
- shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
- skhan@linuxfoundation.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, corbet@lwn.net, dmatlack@google.com, 
- kexec@lists.infradead.org, pratyush@kernel.org, skhawaja@google.com, 
- graf@amazon.com
-In-Reply-To: <aiA_j7udFaO9TRBP@plex>
-References: <20260603032905.344462-1-pasha.tatashin@soleen.com>
- <20260603032905.344462-8-pasha.tatashin@soleen.com>
- <178046937151.468621.13398573538792303093.b4-review@b4>
- <aiANtYRRDr5iO5QR@plex> <aiAzT9TvGYjITiB8@kernel.org>
- <aiA1slnqPnC4_8XY@plex>
- <178049725439.475072.11560134126837430744.b4-reply@b4>
- <aiA_j7udFaO9TRBP@plex>
-Date: Wed, 03 Jun 2026 18:18:38 +0300
-Message-Id: <178049991886.481270.8804649242857550471.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam10
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, Rich Felker <dalias@libc.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 00/10] sh: remove NUMA and SPARSEMEM support
+Message-ID: <aiBI_QEmeVSBb2HY@kernel.org>
+References: <20260510135546.13554-1-rppt@kernel.org>
+ <agr7XvoWn_-axX1-@kernel.org>
+ <adb1db8d1fbb9d219fa041776ae863aa2fc09270.camel@physik.fu-berlin.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adb1db8d1fbb9d219fa041776ae863aa2fc09270.camel@physik.fu-berlin.de>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3F461C000F
+X-Stat-Signature: 8odrzbykiazegihpq653pzszgs7qszoj
 X-Rspam-User: 
-X-Stat-Signature: 51syxms5d14chcgcpd757dw9fuhbiyon
-X-Rspamd-Queue-Id: D5BAB4000F
-X-HE-Tag: 1780499926-902799
-X-HE-Meta: U2FsdGVkX19ocbqaxXEPONY50MtVfL42hSdfSBKVKPfo1a1/nBM3uC1XlVl5jLjCWP3sh14o+upGgZy3pEPtvbhYx1YBo5F3NXZdqdlaC83+RNFsO+F16eWg2Oe/F5Fwxqdf5TkxsTSlAchB0R8dzsXkMxpuevsSY0d6FfddpjH83TqYmC05cbbEnsdQ6Y1Lq1oqYG8h+n3lcDYprWe5uvDvrtrG94Es6CvY/AZgYWX3/uDtxgMgykNq7PC7B8ZtdMLe2HHn4RJkjGUdz3kmHP8LExu9QvfajS0OQWly9IuGeV29jxc1xftQXPLs1KGrvpQiZ0oED+Q3V6Q/CkpiVgSaSQ8vtIF5ahHnIpFZ58OX4vm9hNkGRGNgzkWMuOfovMnLlFTu7gxSpgvaexkhmkBvgCblPTEc7R+Z5hzaLVM770u5gj+Jf6lT0AhJ/DyNAD7zOcvZyZwX6tgpmPHffq1FVrpVHKJWAodp/opxKnquemDtCuqr0VJxKN0NR1D5ubKFF4X2pd9ZdlukWX68CHMBdmKIecwrz+wq3EgvmokPKOi6ZcGU0OqaQez7lcEqpqKee/D8yykp4vzjZ74YrcSU6+MhLNEvBW9nHCTaICwrvkt/RkEOZ61F6gA9xOnNd5HcxODn+qTzB6Zyvlox/AE84MidmNE3FWvpuMJljaUKkGGmo5OK4TjhYIR1VxppB3l6lkUMupZNx3+/UxiFyWUGLTmnaCk8nIwTgJungSPFK4HFhdBClBGoOdUdd9rytaAXnYuQFd2L4q6E6BGFCGlHgF69kED/qKegN1blmzRZErl1lQEJGND89xpgc7acGtpmPnPCxJ2ywbxt8fhBuK9ccdGJRrBrvMwKw0JdTaAs5LGRJLjta8aUczmWHXSLiJDga+YSi4YRNJV46C8USdwB2fAAz7v4ti00aCyuc6qvH4r/NU7nuHBJ0OeG0pdL9L6gwXWN4i+HMOnM3XD
- ZbE2byYD
- ccNiCBWmm+KQuGnZfD59NqPLxyY1Gn4Qo0EuCTFMLYxCn0SEPqBFJ5ENO94noQ4X8N7UGLnPuxttE3kp9nqgjh2RW/q/Ou5LSKM+qb+sFodTRdvx0YuN7qKH4YL3LA/WL20OsVE6EekskSjuw+hB+3t5iMQPheoqydIgfTpOWhm7zTKAjwPsmqGGRA0FrQFh8Zc7VjmMyUefPiKT/Rr25IDB2xRqFTgadfoddwXKW+oB/UAyX9BRuITCbzM3RRdGY1UoPnWqIPHZRrGQn79Qw8Jdu25m5bTLHVIXSYJwom7ImaAU=
+X-HE-Tag: 1780500740-187413
+X-HE-Meta: U2FsdGVkX18RvzH3l2XwF3ShiV9U34xxYYx23wAsNr9Wb4Bos0VJtF7YZtXn5C0rctAbRDxKn7kHsM7Ol8Wsp9ZHj+ehtyADGPgXo51+sL/ElVZOydsPGWFQrUQLUWqJ8WIm2pnpAGgO5pdHUqkm3rl3pl4Gp9NT/itxLbYWAi/bpltbVYsZ9jU+gHIa20sb8Y2o2c9ihpO2uLX0TqNDoRGGpiqtXeX4C42l5DP3VrMK3N8MRJyj6yFFUSxOqtePg0Hu+LKgCf1hHaqw8/Ak8tL2+CShIDw0VfcGxfsWxr+xAaDjLXA5ioUHMU6I6t5b/QepYbC4nbAHgb5Step8N2221Ppi4HjDiBsYj+X+y5p+QISdB2CiQRVvYUdgGBVgfqGlTBa87J/jet2YM55wVdN0nnSPfsU/iwzHyyFuTEg5va0usyC1fiSSB5VMOamL8Uee6yzVNgol46zT74bWdEHOlShvSttmzz2boELkoEhS8r+qo7/gYaeFp+SYaNmsPLUX+vHnAVk6pEHmNnL+J/eg0h7x/nGKCYqJJDT1mp0SjaL01D71BlMfCY5Mq4btFD9LFh4GKfz2LHANg9pZpfnRImqCdjKWdevsgJf0/0m/NGEshogHrqMgHmmbk4lV+0HYIMO5iA1kevtDvIC6MmofPWIFD/fT+vFSmzGiuqcpkpoRFN85ANlLYnVutGddW6BJmRhdL24B9Es/NkwlC/ncxrn1D2sO0tq17dpYoAc80wtAWPig7ZHFyU5oIldJX13v8NtJCgYRXCVpBLGCcdXkBxYqwft3owqWiEihUVLBiZ12wH+OZWABGIr/KVH6GUxwTOz75JFBLY0T45BV6tqgjCjxkY67p5qGTv7wvL91yvNw2Yv1Bef7Zifbya1t0hNp9UgVrFwJXNlz7hPJA/bKff156u2P+omExCEzcZFqRNmWjZecmeHN8V5wu/Ll2KmzYcwP/YfAjPzli7z
+ PccH/rlL
+ 98Gu2Ss+dunkhXUBz2VgKsyzHECHsSagDC4IaAXbOfj1YB8CrI442o7CdP/3fy1MQQO0w4+QjHpTna67BaWTsjZq2fA6rjbt5BE6kfic0nmiOcqcKSCL0Sm+u6wo137GXMf/RV9MqmgY4szny4ZEAnfHDM7/f/QmeUlkGwVpypAINSYs6mDKZhOLda4XPEOnvNuAk5mf/fD2rVCIv6I/NdBGgNdLQsDoYIxtcY0VN9A6+UnISrwT6m56d8EeyHefZu+8z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,114 +94,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-03 15:03 +0000, Pasha Tatashin wrote:
-> On 06-03 17:34, Mike Rapoport wrote:
-> > On 2026-06-03 14:11 +0000, Pasha Tatashin wrote:
-> > > On 06-03 16:59, Mike Rapoport wrote:
-> > > > On Wed, Jun 03, 2026 at 12:05:04PM +0000, Pasha Tatashin wrote:
-> > > > > On 06-03 09:49, Mike Rapoport wrote:
-> > > > > > On Wed, 03 Jun 2026 03:28:58 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> > > > > > > diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
-> > > > > > > new file mode 100644
-> > > > > > > index 000000000000..8641c20b379b
-> > > > > > > --- /dev/null
-> > > > > > > +++ b/include/linux/kho/abi/block.h
-> > > > > > > @@ -0,0 +1,56 @@
-> > > > > > > [ ... skip 25 lines ... ]
-> > > > > > > +#define _LINUX_KHO_ABI_BLOCK_H
-> > > > > > > +
-> > > > > > > +#include <asm/page.h>
-> > > > > > > +#include <linux/types.h>
-> > > > > > > +
-> > > > > > > +#define KHO_BLOCK_ABI_COMPATIBLE	"kho-block-v1"
-> > > > > > 
-> > > > > > It's never used by block set and after looking at the following patches I
-> > > > > > found that it's appended to LUO compatible string.
-> > > > > > 
-> > > > > > While this works for LUO, I think it should be kho_block_set_restore()
-> > > > > > responsibility to verify the compatibility.
-> > > > > 
-> > > > > It should work for any component that relies on  kho_block. My proposal 
-> > > > > is to use this method for other common KHO data structures (e.g.,  kho 
-> > > > > vmalloc,  kho radix, future kho xarray). There is no need for them to 
-> > > > > carry the compatibility string in their metadata, as whoever uses them 
-> > > > > will include their compatibility string.
-> > > > 
-> > > > So if, say, memfd_luo uses kho vmalloc, xarray and blocks it'll have five
-> > > > compatibility strings glued together?
-> > > 
-> > > That is correct, but it will be in only one place: the header of the 
-> > > client's KHO subtree. Since it is dynamically sized and 8-byte aligned, 
-> > > it should be safe to include in any struct.
-> > 
-> > This is safe, you are right.
-> > But I have more usability concerns from one side and the duplication it
-> > causes from the other.
-> > 
-> > I can see the downside of putting the version information in the data
-> > structure itself as it either requires a different header for the first
-> > element or needlessly increases all the headers.
-> > 
-> > But 
-> > 
-> > #define LUO_ABI_COMPATIBLE     LUO_COMPAT_BASE "-" KHO_BLOCK_ABI_COMPATIBLE "-" KHO_VMALLOC_ABI_COMPATIBLE "-" KHO_RADIX_COMPATIBLE
-> > 
-> > is not really digestible too. And it forces KHO users to potentially
-> > track KHO internal changes.
+Hi Adrian,
+
+On Mon, May 18, 2026 at 02:05:39PM +0200, John Paul Adrian Glaubitz wrote:
+> Hi Mike,
 > 
-> These are compatibilities; I think they are quite digestible, both to 
-> write and also when the  LUO_ABI_COMPATIBLE  string is printed out for 
-> debugging/info purposes.
-
-I agree to disagree :)
-
-It's KHO property, not it's users.
-
-> > We still don't promise any compatibility between different kernel
-> > versions so to avoid blocking this series on the decision what is the
-> > best way to convey KHO data structures compatibility I suggest to bump
-> > kho ABI version in v6.2* of the patch that adds KHO blocks and postpone
-> > this discussion to after rc1 when we'll have plenty of time.
+> On Mon, 2026-05-18 at 14:43 +0300, Mike Rapoport wrote:
+> > Gentle ping?
 > 
-> Let's keep this patch as is for now. We will have a broader discussion 
-> when we convert other participants to this new scheme. If we decide not 
-> to pursue this approach, we will change this code to use an independent 
-> compatibility string. However, having this in place as a template will 
-> help us convert other components correctly, ensuring proper alignment 
-> and that correct string helpers like  strncmp / strscpy are used—which I 
-> have already ensured is the case in LUO.
+> It's on my TODO list for this week!
 
-Pasha, this sounds like salami approach :)
+It's sad to see this being dragged since mid April (if we count v1 and
+there were really minor changes in v2).
 
-We didn't agree yet to convert other components and even to use this
-scheme globally. Changing this during -rc does not seem a good practice.
-So whatever new versioning scheme we'll come up with, it'll have to wait
-until v7.3.
+If you don't have time to take care of that, just say so and we'll take
+this via one of the mm trees in the next cycle.
+ 
+> Adrian
 
-Let's bump kho and LUO ABI versions and drop the concatenation for now.
-It's a small change to the patches, so I don't see it as a blocker for
-merging them in v7.2.
-
-> > * sending a new version of a single file does same email traffic, but it
-> > confuses b4 and quite possibly other tools, so I think v7 is better.
-> 
-> Agreed, I also prefer re-sending the whole series...
-> 
-> Pasha
-> 
-> > > Pasha
-> > > 
-> > > >  
-> > > > > For now, reviewers will have to make sure that if the ABI header content 
-> > > > > is changed, the compatibility string is updated.
-> > > > 
-> > > -- 
-> > > > Sincerely yours,
-> > > > Mike.
-> > > 
-> > 
-> > 
-> 
-
-
+-- 
+Sincerely yours,
+Mike.
 
