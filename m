@@ -4,96 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C64D2CD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 14:34:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46DC8CD6E55
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 14:56:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12A8D6B0005; Wed,  3 Jun 2026 10:34:23 -0400 (EDT)
+	id 198AD6B0096; Wed,  3 Jun 2026 10:56:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DC1D6B0096; Wed,  3 Jun 2026 10:34:23 -0400 (EDT)
+	id 14A0A6B009B; Wed,  3 Jun 2026 10:56:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0D566B009B; Wed,  3 Jun 2026 10:34:22 -0400 (EDT)
+	id 0384F6B009D; Wed,  3 Jun 2026 10:56:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E0CC36B0005
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:34:22 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81BDA120399
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:34:22 +0000 (UTC)
-X-FDA: 84838846764.22.8D4564C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CE0952000C
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:34:20 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RncmSrbY;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E60146B0096
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 10:56:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 807FC1C0A0D
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:56:00 +0000 (UTC)
+X-FDA: 84838901280.08.D8BA65C
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 512C318000E
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 14:55:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=fazgitG3;
+	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.217.43 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780497260;
+	s=arc-20220608; t=1780498558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yu2f5FIaIpPGb9LsISKA98pvWiCaazPbEtHtZWNusVY=;
-	b=4m2inG0RaMtakz8sMNGggBf9is7Q4DPi6Q62QeArVEG6WDuFDBw3kpGD0090acE60ag1Z8
-	EUiRo/DKMq6agtCddGYmUpMVSJHrPWJ0DDANeGL2rsbly88/R/FQZQ0Rm9ciF3Yd/olVZu
-	hOg63JjUW9frO2nFP1P9tGEFxhKpVm4=
+	bh=tHFJL4Vv9YiBmui2bXAlE3Jf5dI3wvXhQmEI6tHCSqU=;
+	b=UnGB5Oa3ieto7xwJ8/I9LvRObYei+nEnlbvzFrFog+6zHmxVHJEGihZgDKCHAibIyFZz0b
+	TalDBs0OFx+ZIcL9pY25yYRbuUstrJLGlQ1FTnTCLlFIuxNq3198ja4CxUPHHeyAXf2fiz
+	8r/PBDbYrMsJkVqVcSsFRWHjAIc+QNg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780497260;
-	b=ulAv6p4VmwdkhYYU6fAw3MZzG5lslAT0n1PuBKlxoQjodfSIDdH/SZhOC9vOe9Z8IYqlv4
-	ZTF2InaMSTEBIoyoP8HssO2KVT5fvK+UKpuJcPTEHkOE4qKm+K9qELvL/eKfpY3+btP/hv
-	uKnn/brziWhKJ6QN2y+viBz6Hc3lFvk=
+	t=1780498558;
+	b=rAqNo7u5gmLdyJE5qJ71OQvZkf2s+7shHw2W1XzG1giDo66y+C1xcDQsLxJZblpTv4bg4m
+	Sbqh/dWgTGfF7xogiqLaKnlsHKMJteWhVkVP60jc4t1zUjdnJWQW5qLdbv0x41kQGMdm0V
+	a8xho/V22YSHGNm0+yvYkunNcDiMJSA=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RncmSrbY;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E54D60233;
-	Wed,  3 Jun 2026 14:34:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2ED1F00893;
-	Wed,  3 Jun 2026 14:34:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780497260;
-	bh=yu2f5FIaIpPGb9LsISKA98pvWiCaazPbEtHtZWNusVY=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=RncmSrbYsIH29DH7UOSflSaLWXVrOKpLLAkTNCb1nluOnMdGip2i37TURU6W4HJeJ
-	 TZmp9pFP/lbNDNr3NmDkkjJQARDS1Em4yc4OBjvD/HMqo5Kld1S1vJuw7KOZcI/GDd
-	 IjXr1uUeuaJ6ivMy9Kcf1kEZLJ30C1L9MYns8jf2EuhRyGX6snzePBcWJ0eCFfN0FT
-	 focV5Pz8fwOO1Xg4xet9jBisJNLqZE3MMFs794fvDkya9D/WUwSrHHZT26Bl5MLnrR
-	 fi6kk90xXakTHdzzz88I1gudGHOY/XZtbx+xIuSYhxAJQiCjkJycHRHBYMAZXRurbj
-	 7KVS/pipaYesw==
+	imf06.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=fazgitG3;
+	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.217.43 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-6c87709aa26so2597414137.0
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 07:55:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1780498557; x=1781103357; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tHFJL4Vv9YiBmui2bXAlE3Jf5dI3wvXhQmEI6tHCSqU=;
+        b=fazgitG3yCuMo+Rln8ILgFkUEM9Fw+KVVtMNV+z+DUqna4MiWMS0mYPR2Tdt8Lgtz0
+         gTWq8ywJIpT4jxvqc97DZBZz97vvVcPp3a9eJ6ZwmO3S5nVGuOKOwuoj4BBRVehTmuXS
+         SJ7sVtFva7zzAdZf9NgLZ32PFs80ejxmZ42Th7E2vlft1YxRHt7jx6+LzCTIdHJgRABA
+         j5S6I8gJTcaHjXuZhUHsLG1wDV0B1iwXFCGbo1m/lVCKB02dQ5sGa0vW8Lqe98j67tju
+         0/IHBeB9D2d2fZJpfhHVMRoQM7PgYydQz/llhZvcnL1ou/tRBjuHoQ2SS/P8kcDyUOr3
+         SHuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780498557; x=1781103357;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tHFJL4Vv9YiBmui2bXAlE3Jf5dI3wvXhQmEI6tHCSqU=;
+        b=ATZh0+bPAFkbMpBqDv4kQsnorfTyab+qpS3zc0DYbi/zKwhWP8zyNt+sBT5LN+03N+
+         UE3t52fyOPb2D/lhX7f+zYSA9fNwVRxke/CvzB+6qR2m7M0YHmwzEkrDP7P+keuIy8KS
+         WohysNbtn763+dND8fSqPrOYqH2i6cqNW43gqMGNBIQeszBoEBcEjfOxlJq/mndeTfGS
+         KU/1/YtaJ4rreH+fg7Hy/dH2JcSHrJ/EZPWXwGdd2iiWvTMMDay4iUgK6R5m7dvrEFBY
+         HQniLYhurHouo0zvtxm4rnoeFltvb1dkhr5uXkxGBu5Rxr+RO7eDPMfSvb/hVVgreZ4h
+         Mhig==
+X-Forwarded-Encrypted: i=1; AFNElJ9tqe6IeeifZDXYS1pdQ5DLRl0NNHGnigQjacmkWtkMDjCcCOY/Yi+5jtISUHH2qZJQeW7bdgXH0Q==@kvack.org
+X-Gm-Message-State: AOJu0Yxhd1zrIXuUL+RKow6gLSPuwzTcITyNtln0wMLl7tkMVV1UDJau
+	z3KQInyX20pXrJGR9WmuC2X9DGeJWP/4Uaf40rlWIEUBrKKX536rLVLg/fyyTXxlAYc=
+X-Gm-Gg: Acq92OGqlUyMu9bnddLKnLL7f985/zLcbU0N71wsfIHcY0PGOn49TWp5v8ZDXa3stbY
+	eBfIGdAuyqDHTXiM8TbFRe1jOHiXxdNGfSOoRlQ2hDXmO2czC2dxHnscvAQSbqXaC+cf3zvZo1V
+	kxIJxJNhJnfRsLCyx8slOOEOZRM7Ll8+Zke2ErDbuVoqeJ9eAF03xYsAN/mAaU6IhkXduwg57QP
+	6WTm9/CGRoRwC8u50boZVZ3jOeLhL+VaYL5j4vM48C3xw+790jgW7SDZ11Ik5fzoHodkQLe8m5V
+	9d9CBo3imZB1QTtdkiq8eSN6LhutwvuiP2hEifQ++uCmhgOTIJ57wsP+mOh40hJ4/K/s5awv9T+
+	5stznrEkuhfrjximMm76Gl4/gZ6pKrkRTOwciFMH7r3FwyQ17m/CGngdewAcjqpfNQvFN+yFq5M
+	6gJceEGgRUWn0go9ZdtQbNenNFpHjVnKol
+X-Received: by 2002:a05:6102:c06:b0:650:967f:fb32 with SMTP id ada2fe7eead31-6ec2978d496mr2278212137.3.1780498557198;
+        Wed, 03 Jun 2026 07:55:57 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd06b231sm22007136d6.33.2026.06.03.07.55.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 07:55:56 -0700 (PDT)
+Date: Wed, 3 Jun 2026 10:55:55 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] mm/swap: colocate page-cluster sysctl with swap
+ readahead
+Message-ID: <aiBAe1WQWnuGzniz@cmpxchg.org>
+References: <20260603-ch-swap-series-plus-folio-lru-cleanup-v4-0-ce0219e100d9@gmail.com>
+ <20260603-ch-swap-series-plus-folio-lru-cleanup-v4-1-ce0219e100d9@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 07/13] kho: add support for linked-block
- serialization
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Mike Rapoport <rppt@kernel.org>, linux-kselftest@vger.kernel.org, 
- shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
- skhan@linuxfoundation.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, corbet@lwn.net, dmatlack@google.com, 
- kexec@lists.infradead.org, pratyush@kernel.org, skhawaja@google.com, 
- graf@amazon.com
-In-Reply-To: <aiA1slnqPnC4_8XY@plex>
-References: <20260603032905.344462-1-pasha.tatashin@soleen.com>
- <20260603032905.344462-8-pasha.tatashin@soleen.com>
- <178046937151.468621.13398573538792303093.b4-review@b4>
- <aiANtYRRDr5iO5QR@plex> <aiAzT9TvGYjITiB8@kernel.org>
- <aiA1slnqPnC4_8XY@plex>
-Date: Wed, 03 Jun 2026 17:34:14 +0300
-Message-Id: <178049725439.475072.11560134126837430744.b4-reply@b4>
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260603-ch-swap-series-plus-folio-lru-cleanup-v4-1-ce0219e100d9@gmail.com>
+X-Rspamd-Queue-Id: 512C318000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CE0952000C
-X-Stat-Signature: nu95dnnw56z5b1rxuf3iw8hkqdgtcg56
-X-HE-Tag: 1780497260-416565
-X-HE-Meta: U2FsdGVkX1+QgucV8GzENOLGeuarGINPuxLrQsmJXIgV7dBmDDxCZJQUxSxusCpevbO/frAR4vJupTdXz0ZlaSGQ/46llPDHZVYXaYFQHsJ/W1zkva16/VMdHipzW4ENiCeFUDvEOFNFLHHuHMHMDt5pxHgyOIpvUFIsSkQvJButXRa1flAQ1spgN22VJmybb33Zuw7SbljC0UhUBBPe9Y3YpUE6Fnt1c5LcLH8G1qxtRF0v2w3ZA8gQP1kQtBtolkHw4ETpW+qXfWUC4V10d7eO5TlQ+t8wlqkxIZUfR9Ow5Np+DAD80XoKyXd6GUKcadZ022+e7GXzGIAlp6ZzVEO3YW6n6bs3Kc1AprNNez0pFw39/qakiURjHlpiy3euysRNUNkk42/G9V7eyuqtdrHo4kAF8zXDw84rGkQMlxxNeV5h7eF6Qf4runPhMhyTrRqgJ4NkI+OAVvW7ysZRV3LigXfuw/MIfIi7lfQflsh43T097YfKRqYy9FZmYE/dKMmeb3H960oO3HlFb2+xFjRM6mRWD6WvslZNV4tBEz/dGwUFq/NUMacybXYqthzsqwsB4ma+bHfEgcMhfQrfPUwmosp4X1VMmtLsSUbYkTCqgroUygneoGugIeIrbM7wXh5qiC90jqvzWqEgUqj89LCZ3Eu9X23j/ZsU2kLppkmTW1ulgBbxQi9nLEkQFQCWuZoziXyECniznvAoBUgCd1r8iGWZRTPj3tGG8NM80FLjT2VMetShE1t2NhLW9yJCBO89NQ3nYNmzSa7NU1ifW8wXBlQG5GZVX2iDUx7mmGbhhuHCyJrpH2+HdqJGaiCFsiqOQZShXaCzj02FMPpT56xk1vnpRWgiAhtmwo2jG80u/N+5w5lXQgplG1/Nb9YDIBLE9eOMB4uMGWErNQH5s6b8A8iMsMpQJQwr0J2YIGRTZEAreyFJuouXSC2/lpNRsf17h0neCcnF45uC1wu
- cjyt7/Xu
- LUZcpgmNd9FVs697RiALb0hbLXrSlyQD8CG8tYlZQBqNFzY/KPA8af/V4JHw9sdO9QjW7+d0hwoACK55ky3tyC69xxA72C+uUtbqrA8KTtTKmmYW+gE1fzkMtcuLceoxvbZTdaHj6tTYvtTtWXcgyllr3xmPOaAEpxpNbD2ha2xXzhyqUnH5LdKK4g4VTO9/tEPYtKHTDqrRA7JEFXm6zR8riq7tSnvQepP+N3FyHeLtrtB6m52G6dVCqm2gQl7FgVX9DN5MTxhFX9UoMhlQM2KDBXQ==
+X-Stat-Signature: bwfpdiiwcm189eeeoehwjpipp67xe4ga
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780498558-293760
+X-HE-Meta: U2FsdGVkX19DhWixHdB9U1WjNlPY8qr8DZ0vr1jHBtc2Nk7tML437nwHt7SgDsJcKs2VowPhsUQq8PKuT1KmFUEPPRECcz3yIbPI2VsiTifotTzLDAhem4FMSOmFu0rFeToZ3znv9L+PXseYtRAuHc1ieEQlK9k1An4/0JKdWPJxORc3ZmmMYNN5eFs3EXVvaatbSH0KIRjCSw9bUY9DhA2SPtGM+5ejP8QCxIxuWElJg/a9LnaAZjo2rx7s9LC5ohkEFQB3a0bhiQEB4Fqde2YxVjmyqQ9vARBBuGKlnAdTgyQgy77HGUP1g+Jdvxa905Enqy5cApeew0Knm8r3gk59bQF5ZyOfc6zMuYNbI/OglVuuvKEbqs5l+zWKfhofJL54F3gMH9hWmD7e/cgvVDW0kqzsRzSTBPqvDn5IBrAk9kdEZisCTpfPO2LRjB1MZsUfgvE24vjup5ZlvL3uYXHhkwwxHmqrGp66TeCvK4D2PpQIotEyURFsMFXu/nG1xa4+Wy7BzMtMF26n094lmQO16Uec2dbxJkud7GE1suDg/5i/bI0F516hmqkIzIkJU505jt7X7n1oBFUmth1BrfI64ZUOPBiimpvFYcecPLrovugTHNPcbddgg4yJnJ1luVMyxJSiNNHFf/w2jlElbiRkBTk8Asoc7ecvePWMxGfz/PMOKmoDxQOT/vVAZuIiwj6Nrj0fCrukPtkd+63PFZ61t1DmOkd8PlWlO1G4EgL3qndeotAEQot2UoOeMXIYqNL4s9l401RfdVSrEmKojBm+8hrPhd8Qbc+lVxxIvNo/BtcamxIDd5TYLq6iiQ4HrrwN0/jR0wFpN0IjTO01gq4tIVRrhGBdWnYQNBWg4HqrOkcoU7l/z+Bc99oPTD7qKoCJnJOZJdiW1px+5qjS3nVa8W7+52WzJfOxkxywWTuHkI140unrzP7siEP9hvQJF2Onwl1W71SyoYyY1/s
+ e8PwlhFy
+ eQc11THBWNrvNEaURybDdK9EPBNd12Uzmyp1Ds9V7vZ18MoYRYRm722CPEuj9CN2z9zil46aana0yMUGdBIF5I0pdCHnM79rxTyzzWOpaXbQLRmyF6iP3ZcSGEIp+8QZ9pJeXrkqLqSQqrjnKFf/YneL+hL+xnZfgRBc8Xw8VmdkMO0iC+m15uezIp9qjKVFIjOarDtMalWN/5qTP1jOIv4zfV9P0xN05yrreyR+W6HHAyeITX8tVE3j4qph8yDiLWcpcjAfucLYEHlJnS6I68VnQm7RNGY/y5t/hKa1JZIRYoK8P/bZbjyRBmcvzbs1dclnL3cfPXSSD8yXU3yYJcR+z+I2HRndcON7FmPy68fd/2zkXEsqgiphUsqPTlIA2zFM2M9bMRe9o6eRMtu3GSvx03PCWbDCYf4Rt3ieiSYkHSBCc1RUQgM7P5RIHQWVu/8WThgRbEhytS9Sml4XP13iZZqYVvEVNg6yM3ntn+XedntAOP12XKsTkyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,78 +137,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-03 14:11 +0000, Pasha Tatashin wrote:
-> On 06-03 16:59, Mike Rapoport wrote:
-> > On Wed, Jun 03, 2026 at 12:05:04PM +0000, Pasha Tatashin wrote:
-> > > On 06-03 09:49, Mike Rapoport wrote:
-> > > > On Wed, 03 Jun 2026 03:28:58 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> > > > > diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
-> > > > > new file mode 100644
-> > > > > index 000000000000..8641c20b379b
-> > > > > --- /dev/null
-> > > > > +++ b/include/linux/kho/abi/block.h
-> > > > > @@ -0,0 +1,56 @@
-> > > > > [ ... skip 25 lines ... ]
-> > > > > +#define _LINUX_KHO_ABI_BLOCK_H
-> > > > > +
-> > > > > +#include <asm/page.h>
-> > > > > +#include <linux/types.h>
-> > > > > +
-> > > > > +#define KHO_BLOCK_ABI_COMPATIBLE	"kho-block-v1"
-> > > > 
-> > > > It's never used by block set and after looking at the following patches I
-> > > > found that it's appended to LUO compatible string.
-> > > > 
-> > > > While this works for LUO, I think it should be kho_block_set_restore()
-> > > > responsibility to verify the compatibility.
-> > > 
-> > > It should work for any component that relies on  kho_block. My proposal 
-> > > is to use this method for other common KHO data structures (e.g.,  kho 
-> > > vmalloc,  kho radix, future kho xarray). There is no need for them to 
-> > > carry the compatibility string in their metadata, as whoever uses them 
-> > > will include their compatibility string.
-> > 
-> > So if, say, memfd_luo uses kho vmalloc, xarray and blocks it'll have five
-> > compatibility strings glued together?
+On Wed, Jun 03, 2026 at 09:05:32PM +0800, Jianyue Wu wrote:
+> page_cluster and the vm.page-cluster sysctl are only used by swap-in
+> readahead in swap_state.c. Move them out of swap.c together with
+> swap_readahead_setup(), and make page_cluster static to that file.
 > 
-> That is correct, but it will be in only one place: the header of the 
-> client's KHO subtree. Since it is dynamically sized and 8-byte aligned, 
-> it should be safe to include in any struct.
-
-This is safe, you are right.
-But I have more usability concerns from one side and the duplication it
-causes from the other.
-
-I can see the downside of putting the version information in the data
-structure itself as it either requires a different header for the first
-element or needlessly increases all the headers.
-
-But 
-
-#define LUO_ABI_COMPATIBLE     LUO_COMPAT_BASE "-" KHO_BLOCK_ABI_COMPATIBLE "-" KHO_VMALLOC_ABI_COMPATIBLE "-" KHO_RADIX_COMPATIBLE
-
-is not really digestible too. And it forces KHO users to potentially
-track KHO internal changes.
-
-We still don't promise any compatibility between different kernel
-versions so to avoid blocking this series on the decision what is the
-best way to convey KHO data structures compatibility I suggest to bump
-kho ABI version in v6.2* of the patch that adds KHO blocks and postpone
-this discussion to after rc1 when we'll have plenty of time.
-
-* sending a new version of a single file does same email traffic, but it
-confuses b4 and quite possibly other tools, so I think v7 is better.
-
-> Pasha
+> Rename swap_setup() while moving it as well. The helper is internal to
+> MM and now only sets up swap readahead defaults and its sysctl hook, so
+> the more specific name matches its reduced scope.
 > 
-> >  
-> > > For now, reviewers will have to make sure that if the ABI header content 
-> > > is changed, the compatibility string is updated.
-> > 
-> -- 
-> > Sincerely yours,
-> > Mike.
+> swap_setup() previously lived in mm/swap.c, which is built
+> unconditionally, so the vm.page-cluster sysctl was registered also on
+> CONFIG_SWAP=n kernels. swap_readahead_setup() is now a no-op stub when
+> CONFIG_SWAP is disabled, so vm.page-cluster is no longer registered
+> there. The knob only tunes swap-in readahead and had no effect without
+> swap.
 > 
+> Suggested-by: Baoquan He <bhe@redhat.com>
+> Suggested-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
 
-
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
