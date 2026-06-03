@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9116FCD6E56
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 03:29:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB546CD6E6A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 03:29:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECA436B008A; Tue,  2 Jun 2026 23:29:11 -0400 (EDT)
+	id 1AA8D6B008C; Tue,  2 Jun 2026 23:29:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2C216B008C; Tue,  2 Jun 2026 23:29:11 -0400 (EDT)
+	id 15AB26B0092; Tue,  2 Jun 2026 23:29:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1A6F6B0092; Tue,  2 Jun 2026 23:29:11 -0400 (EDT)
+	id F17886B0093; Tue,  2 Jun 2026 23:29:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B5ACC6B008A
-	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 23:29:11 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70A2E1C042E
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:29:11 +0000 (UTC)
-X-FDA: 84837170502.24.CE2514A
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9DB01C0003
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:29:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=JI9lQ+jz;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id DEDEE6B008C
+	for <linux-mm@kvack.org>; Tue,  2 Jun 2026 23:29:12 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9F61E8C777
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:29:12 +0000 (UTC)
+X-FDA: 84837170544.10.7D46E1C
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf18.hostedemail.com (Postfix) with ESMTP id DB6E41C0006
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 03:29:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=OzoWqa7F;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780457350;
+	b=dJNEZdWY+u5KDHwQAiuGNHnMYconQs9Bonle/mky8nYA8zsBC9J3hwXS1loJfTtm1scMjN
+	aBWgnq38rFtZSJ/CnFJm0EWYsL+S/rZJRkDikicNe1OnJ3OlGr5QK14d7tayOzZjZQHwks
+	zrn9NZrX0R+HytMKHh2xbSmLbpfyFFw=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=OzoWqa7F;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780457349;
+	s=arc-20220608; t=1780457350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yVlCXZe8SHDSOJUkKVBaYBikNvs5G4Pkl6SfmcOaAr0=;
-	b=vDyJuVus4Kpqk96qKoUxUOvzY09lGjMljzPZenrrhTlVzdGGvduwZkF3amfcYdw+dkRC5p
-	aOVMCSEBauH8MlU88JQXBQuxwGjCjgb7s/HqmEAgUuT8myPBoIgDy4amhcNjNat46YnuD+
-	HPDajr5AmmQzofPMdTQanqcIQ5nSB5I=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=JI9lQ+jz;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780457349;
-	b=AOFeoqPgp4NW9Y3cB7DapJwfiEZjcNkRCn0nd+ZYJN5C+eqfnm5yMYfz8Skwmm4vpUhrFA
-	LN4KrjULgEe6eqLB88HQoQVMFfVe8c8OOSkfDoN4e2QpTEIhqu7xyjCVCrT2HPzsusp8Or
-	Qi01UA4/KY4CUx7AE5RASD+TLP3ya8g=
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8ccedaf0b54so27714106d6.0
-        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 20:29:09 -0700 (PDT)
+	bh=EeknQ7K2aMvDWr+2KhWa4BnSPX1nCQezxpcXmui2530=;
+	b=a6184Ksi3Ya5/QjCaV3sC084pqz8ACuWgdUQftOywBKBPM2dsIK4ovT/LulHsXUcQJD7pU
+	3DzUhfSQb5x+WMnvQStRXAtcJOV6ogYtd5oririo/6yr/Y+PcO33Sz/lygOCvtfNHPvA+c
+	e6rakDE0Norb4581LV2vHjhV0eEbEMg=
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8ce9e56f68cso25594386d6.2
+        for <linux-mm@kvack.org>; Tue, 02 Jun 2026 20:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780457349; x=1781062149; darn=kvack.org;
+        d=soleen.com; s=google; t=1780457350; x=1781062150; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yVlCXZe8SHDSOJUkKVBaYBikNvs5G4Pkl6SfmcOaAr0=;
-        b=JI9lQ+jzBCHXtp8yImaC0BiOpCeAcPW2qPx7D8p2lWdfZ6zRgBYGQqlFbQn8OpRQPD
-         UdTq04BimQCSqaSb2A4BQ5MSvTHuVnRp7761vu6m6daZNbMwA0+s2YQbFWBefP7sOzU8
-         QkXLWvJdX6QC/JMg7kN3NbT0h3jrqmaRsM6JpS7pqvPCTLq7ylKjzwSQuZo/aAQDGUF8
-         6rLaFgerlr+SsVeBAA92ZlR3kpAzyAYTa6wR+BPB00CVCpPnMgbfDBRPRR50775W8xwM
-         ns6QvTUN2a6nBgnnrzauoQAUR/eWXB20rUpqbMoVjWUynvf/Cazg2NgGa6ibgD4EbIjk
-         wa5g==
+        bh=EeknQ7K2aMvDWr+2KhWa4BnSPX1nCQezxpcXmui2530=;
+        b=OzoWqa7FQ2OkEsqqlr2o9VqE3uEUJDEymqsePCcqTnEnCJozmEgAPFI6+g6+MwICG+
+         d0g8o8iTrSZcTO0cBpKOfjQHURYr8+s/PUWtyFlJwQz0D6S1ul1Y/YRxBaCsgrLYvdyM
+         5n3QeMR/7o9z2aa8hnCYh95gaJSAKPN1suXKj6JVO9YR0/pWC72SthmxunJ7AYjNVTjC
+         2kGFGJn8SVddAJSE+/e7Qc3i8eP1mQ8nkSIU450Aep4w0dt96CEdf1kzii12JxcRYk9F
+         vTaKplTssZFt/G5+ifKd4wM/Kdj4ZJcb+Ya53vqnzTIigUyvigv9HqLjZD3O3pLMm7by
+         n7Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780457349; x=1781062149;
+        d=1e100.net; s=20251104; t=1780457350; x=1781062150;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=yVlCXZe8SHDSOJUkKVBaYBikNvs5G4Pkl6SfmcOaAr0=;
-        b=Y6thWnDqrNg326H9TkuVUkDahTqHi995BbQBxvdRZ6Oe1GQazK/YkbCkcn1yN0+DdN
-         5tYl32BSsKZMOtI/9ZeZVQ7cWXQ8ehGwh0zX/L6JArZ/vV8tMKz65DS7c6axorpF0hg9
-         D0jfrByRsDOUoQ2nV9yCdyv0PggWR3QEVPx8L5MBM6NSIu0pxJ2/uWvCyku9/nVYU30T
-         1fGdYmO3YpPWd5j9GJJm6T5kXbqyLyahhBJAoVG05FI9ZK0MbsIebMuFUFoxnpXwO9GJ
-         PjKvdkXw+qFJawx2BtxB/Vb5RZ6vSn+b6M79DgyPEgeb/iJrhJr1rPpFeDlqp1g32GBC
-         H+jg==
-X-Forwarded-Encrypted: i=1; AFNElJ/1NOjwKxj/5FWtboJlk4zq40izsuEVgkRKSdchljPNkF191oyjdxAnroEbTMC2wOvCLlctSFIIKQ==@kvack.org
-X-Gm-Message-State: AOJu0YzRZK7NNXRtiZjYSE90tXIFGB6h+yLw0n27QKxEdPMZpy3hEadX
-	XEKZKaCqf/iMGeET9rCk+AX1g6Bi3qCTyi9iXEL6If7xrH/jUDy0H74ALDHCrDHZfQs=
-X-Gm-Gg: Acq92OHXeO3enBJ1IdAUSfw9Q3Ct46wP/fJ39iCDG6/g7KFKIMYoJgB26tsjxBsku4q
-	XOgzC8LlkPg5vOMb6+7alyiRYbk3jKNwnhGaYLv+QqpBYQFPajkjQKcifgsNyWqmWKIQ3YI1xDX
-	mgcpW/A/Vbv9axlPN9a2ZmwUtlbB86/1O8SokkbLo+GKEK8D9Vx8yZWx2V+s8NYSTTUMuDdZaUL
-	qS6j8YyJHq28N4kZ5Sv+66OQ31Iw8g2iyxgJOHCEAclk8xmjFK8lGjRjbyPgTiM/RVRjU7gb5fm
-	dWb2tpdDIv/iybr9jWvEFaHRuW83zgy0zbTd0XYhjXDWgqONiuP+DLp+6CrCNyfYKQccVlmD66T
-	VIu7ORyRo6mq87I0n75PZSloSnjgjYtBS/pdJJIte5btYjB0+JBTHP/crJyIA1E3wYtWA/C1igu
-	UC74xs9rpi81CXyT9dfnJ8Z/FadbKKQ7fzi4bLas3lJxmDEUt6XRM9UdF2CPMwaQ==
-X-Received: by 2002:a0c:f09c:0:b0:8cc:dfa6:3333 with SMTP id 6a1803df08f44-8cece028a1amr19783726d6.32.1780457348680;
-        Tue, 02 Jun 2026 20:29:08 -0700 (PDT)
+        bh=EeknQ7K2aMvDWr+2KhWa4BnSPX1nCQezxpcXmui2530=;
+        b=hMLfOsRCWGUVJvhDdihKDyiOxWz+St2QmmLwzQ8T+LidYrpz6uz0Dd60G4FdVaRhBR
+         SaoH5n3Nqw8vUF1WRptRAfV089DuTWRq7UETaPssZ0H3PbYG1ksxmpZIWdUHkJQllkY4
+         fPvPwojOkDEuJWqbs7fpKKI/dowVWNTHjwKVdY578BssJwn56oKJXrDs+ahwVP30X7DH
+         oAhE5JP1h+twr7NNpfwGlhryfy3Z3U+Txumqmi0vnRjE+zkWRzfJgMpr75sFTNqbd80j
+         i/jk7tTiLknSWi68JKdNPECjPkz3gFqCxLq4/7y6tAM1YtttJanzC91ESLFYaUaB+Dsn
+         43Ng==
+X-Forwarded-Encrypted: i=1; AFNElJ91Mk8j3qWBEMW7h4aJps+jl9QWBqRDBb/TQZjRONSq7ODzOV95l9ieVn4qe2z+yuxxg58HPr3Elw==@kvack.org
+X-Gm-Message-State: AOJu0Yysip7+3lqGfow+mUb2h+G6AgQP1Ce9wsE1Jg4xhoEv5kVLqc69
+	lrF88P5g/efh/xF2r9/NkK9WMpjtgut6No1cEJKKrGMxtPNbB4vCZv2+vg5oX24Lyqs=
+X-Gm-Gg: Acq92OEUfACIBYfrBAcvy1mrKMTu+s1l3Ai+2bDRupn0NMqpAIEUVjP379gGn0lH7uQ
+	5JyUL4T6vpSbSML9I0nK8Ln4unvBgOJKY8pI8Xr1LW0IfT0MD3XBti7thzhRbL22e6PQEgf9ig7
+	wPGpMjSBVyZccuY1Ir8/C/ZCdrxtofuMOAeSrJyF3ucL07jPTicTrNghsXSl2o3Nm2SN4NVXvD0
+	71Io4p2u0Udx+3bk+i9ZVQcdKB+BxxpVBjHs4Qy14rde4xV/c6MkiUohmCxZak6nU/+amVHaC7t
+	decHNnlbxZTa0lLMTtz7xLcuo4MjwpbD7iyfhzGhE3ynnfQP2sAufnk2Va4qsEoboVDfs7T8sMu
+	MV/nPGamGQAJyc9ArlVhtxm4Cx31BEiOB1VVHW2B/Hpc5j5ZlplY2SLNCtAG5WvlET8cQSllluv
+	CNmdiHEw1mknXrOrWFO1+8YuU3BAcDnz6JVbyP2Re9ShxpvzTja3COwwOKtlTP/A==
+X-Received: by 2002:a0c:e086:0:b0:8ce:ade5:e8fd with SMTP id 6a1803df08f44-8cecdf0cdfdmr18753906d6.25.1780457349833;
+        Tue, 02 Jun 2026 20:29:09 -0700 (PDT)
 Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd26b3b9sm9244566d6.45.2026.06.02.20.29.06
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd26b3b9sm9244566d6.45.2026.06.02.20.29.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 20:29:08 -0700 (PDT)
+        Tue, 02 Jun 2026 20:29:09 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	rppt@kernel.org,
@@ -106,22 +106,22 @@ To: linux-kselftest@vger.kernel.org,
 	pratyush@kernel.org,
 	skhawaja@google.com,
 	graf@amazon.com
-Subject: [PATCH v6 01/13] liveupdate: change file_set->count type to u64 for type safety
-Date: Wed,  3 Jun 2026 03:28:52 +0000
-Message-ID: <20260603032905.344462-2-pasha.tatashin@soleen.com>
+Subject: [PATCH v6 02/13] liveupdate: avoid mixing cleanup guards with goto in luo_session_retrieve_fd
+Date: Wed,  3 Jun 2026 03:28:53 +0000
+Message-ID: <20260603032905.344462-3-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260603032905.344462-1-pasha.tatashin@soleen.com>
 References: <20260603032905.344462-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9DB01C0003
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DB6E41C0006
 X-Rspam-User: 
-X-Stat-Signature: zcf99f37muqwibg77wwip33swpiwfejd
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780457349-411608
-X-HE-Meta: U2FsdGVkX19zh+dg3Z22z0XI38j0gZezvIjpzddEVWW0LyJ+kPq//YcsD7coTP1qcX1wDXfDMeK7Xf+p6BvKWwIi/ulol3uyV7euKOsUEjMWKEY/ZPyvm9aFI1A1RSnKdenEdVWvX9tZTr6VpuRLtZAy3StTvgsb5npWxi4puYOqfjJcDSUGTqsQBbZEfMVO0KiPLkDmeqwLtxVVXnjBA5JKp6STOfbpCGYLFowCKXBXf1b83etQijbgcGsl0nr/c0kIuHuLsNZwmviiN+m7o1sQDcPwklmiGhaLUUkPv4zPEbt0OcBxwdZ7/IylGd6JJ5KWQoaGVvW3LlMA+5fY5Z2YwoXB1FlI/PJ8l+//JUSsAMDkKl29RU4U/Zl+owdCjn/Uy4zfnMLhmolYlXNyY/3PAyYMXknJZ2ykSBLk4v1DbMmsBBOS1ZYmLH/NPOLfWCaRl8ZpWSpqJrKH5wuZmQTXpfB2bpbzOzqMm5fzpyC274VQD+B43E2cQBwRFjV2W4sebheyiy3kIn/xOOt/HZ9G8mNG3e+F/hl1oYQCdbgd5oYDZmCi1Yg3GULJvw7ZATpGuTIkDwP2xjRiKeiNhX2Twj+74eQJiEmOjpTXLRIW2muWWrQJyjD4p1o/5VzLTpy+9chebYALMJuFgc+xH6tZqkPfmu+U+blxVOLvVAYvxgR4VO9Jxkd41KWPmtDgZ9M72RpT8AUOTOzGxlnH/4Ae6fWsPLhYDogGoEFdTXC/Rz1WjdCswid4eq/Z3CibgKJgsqq/dmw588Hl0dTCd1bToFTHiRaMIlfwmeihqizTH4S/Ghba9ChsHrVMJkY5FXKrG4nb8heSvPpOgQnoRsX1OkNVPK0TS/7OlmKyvEfVwpekQstS33/b4DcSHjBn8CGhs+umFgAsGomGWGqoRLnFPDhcnF/E3bMTAxtU5zlQAprikKK1MDhMc0Ctn0b4leDSCzC7GAlSKZsAtdV
- iESc2AIb
- MqLhRCCnWuynLyUnE86n+XB6fAsz8Hf6J0eYHkr5LAZQ+d8Am5StW4wqVF5sRaTWXdOJuB9P/SR+OTfJSAJKjsG8tmieC1hu29XwVkwejPeAIhnAVWlRPW1zZhdR1Eeg1ZdNVzjrOIaqFNtpE535BUUtGk/q8oTgDbCdyt82jMk1dMNphTbgRfg+DQlmqjT+AWA90SQ+RVPnNqw8X0qXpWr4rF2dZSwMPYamIEhVF/wJw6SmW/p6Mc3qH3jGDZo2e1oS2pjhFcyP83zYVDff/jvB+zTku3jSe5PrtvZljArzxrYXlJndeNLb5ScWWq60RFNX9LEzDUmcpE8xlYuVdr/hliGAgzUtLAVt5FGKC5gq/E75mXydcWml+TrW5ySnHTeS0xcNUv/Rlnys=
+X-Stat-Signature: upfrixk1zih7pem9cad1r9746p5q4yrb
+X-HE-Tag: 1780457350-745693
+X-HE-Meta: U2FsdGVkX1+QxT+dk8nQvZM1U12tpgGV9vIJIpkUtj2oEwRgU1IGkEP3Y9w/dd3APQovA1z0Pp90aHjsleV7IvXQXSKycYdtWSRMtTsAKeaosTmqEPY0y+j0AkInTSCPDSAdUrvHxKURvg8XxOaRrDph3ehujrXF53zhsPMYpyfte9BJYK5j7b5H93wVepPKfaaKQrwa2tHCAKiNYcY/pdp541nW1mhxIrcnYLs+7NVRtzgW3/s3qGYs81HOZ+D/aUtYyaenMiEKkIzs2pvp5Wa6ctEY4mCG9kbgfcDZPZhAvudOWF9be8ohOsJOTCokKi0qT+vhN8/VlBNkHRe7CjQzSIQlGo+uX+6JTtRnSPdPg6YcQOJKx5PMfEuBk2l0eiDpe1q3h+XJYqIzJ9PdM36IocXjAlHkZ9Z2FRnY59H/bUYdLdn6U6P8SHjjhWTm0sK6A7JeIzohhEhp/dqAGdjwY+VQeTgo/ZMg4WqQOZgMRxVISKuWYvnf7J+Cy7iUEf5tAbDK4u8Wh3+Oeascta8Fh5jXmPBEsuEHQk5IkjGIow/ooHXqWWQjG1kTN8aVyXrlkOZ8W68CvYSoXzvNrsNtWk2+VPu4+6maPBmZlNGVcdtbX14mIa1AwWRR82NA2jR/Ume+JYJ8ZXNHvhNS5SbpZfLO5xUobH4EdvRIHMGN9gxYwvmM/omQi3jKOBeBGgL6NodB31tM04AJDp+VFk7ACHLRLmOSj0mPY3etxbI2NgWFliBnvpy2bBH1PZjDc1xV5gEeBVaB/9DbOa9TMHzOpg+kwZYORmNAoaL6C83UVeRBcMNwA0NGtiF4Hjh0xTSYQBCEedd8yn1NRWQd6aj8JPCtpcwaVz8iEe7/qEBQIbO/B/1ogQHLfpO9Ad5pk8ssElnBq8fzHYBm5jjDJkBdMH3QSH+rbrQYpywWRj+cnIhbVyx7lkPJHJfEo022qkLNoky7R4vvT3IWgYl
+ ESCuu3EE
+ XJBkNItTqDKoZSbO0iKwxEqGZM05q3GhLt9gYpZE11/nckUbYsG4BSuau+O9BzuqnTXtcsrJkvv1JgDmuPgXbt5ru8GCOokYHWv2tTAP1IUEiK22S9phpgGYJphTwkLkxxFoDVJpfPVPXdFSS3d5T9f2GG7yidteE4MIvNIAvw/43KwcB6P3dttn9fLDsAyAjd0DXxeYRIICoeI8Hf/GMxzSWHBVUpcr8KfQpeu5uHXQa3LeUcoYg8jvAjhJ9aC59KOu4iSXzSEK8w+RxT60RxJXqSKf57sBRLF+k7uxz5IXeq1H60u6GqTUIDs+RF74DBHWQYU4BXU+2vzl1Agq4Uhr8TnzHavipOEGH/aa4J9neFsNBnkxK4drmUiFJFrNoeTax1CUVoZuEZ4Xgj4fItFbvdFtcHkDT1U27dIlaFrLtxFVxYLwJDpRHDjrDHIHC6LBBoqdZNakjBAJckvPZ6v3F8YmVDc4P5MYm+BIpJ5xBMns=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,30 +129,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This improves type safety and aligns the in-memory file_set->count with
-the serialized count type. It avoids potential truncation or sign
-conversion mismatch issues.
+Refactoring luo_session_retrieve_fd() to avoid mixing automated
+cleanup-style guards with goto-based resource release, which is not
+recommended under the Linux kernel coding style.
 
 Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/liveupdate/luo_internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/liveupdate/luo_session.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-index dd53d4a7277e..ae58206f14ac 100644
---- a/kernel/liveupdate/luo_internal.h
-+++ b/kernel/liveupdate/luo_internal.h
-@@ -52,7 +52,7 @@ static inline int luo_ucmd_respond(struct luo_ucmd *ucmd,
- struct luo_file_set {
- 	struct list_head files_list;
- 	struct luo_file_ser *files;
--	long count;
-+	u64 count;
- };
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+index 5c6cebc6e326..47566db64598 100644
+--- a/kernel/liveupdate/luo_session.c
++++ b/kernel/liveupdate/luo_session.c
+@@ -291,10 +291,11 @@ static int luo_session_retrieve_fd(struct luo_session *session,
+ 	if (argp->fd < 0)
+ 		return argp->fd;
  
- /**
+-	guard(mutex)(&session->mutex);
++	mutex_lock(&session->mutex);
+ 	err = luo_retrieve_file(&session->file_set, argp->token, &file);
++	mutex_unlock(&session->mutex);
+ 	if (err < 0)
+-		goto  err_put_fd;
++		goto err_put_fd;
+ 
+ 	err = luo_ucmd_respond(ucmd, sizeof(*argp));
+ 	if (err)
 -- 
 2.53.0
 
