@@ -4,99 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DA11CD6E55
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 08:39:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11216CD6E64
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 08:58:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26CF86B0088; Wed,  3 Jun 2026 04:39:11 -0400 (EDT)
+	id 1EDDF6B0088; Wed,  3 Jun 2026 04:58:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21DF56B008A; Wed,  3 Jun 2026 04:39:11 -0400 (EDT)
+	id 19F0C6B008A; Wed,  3 Jun 2026 04:58:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 134656B008C; Wed,  3 Jun 2026 04:39:11 -0400 (EDT)
+	id 0B4946B008C; Wed,  3 Jun 2026 04:58:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 066166B0088
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:39:11 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9F79B8CF95
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:39:10 +0000 (UTC)
-X-FDA: 84837951660.05.8620CAC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F2F286B0088
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 04:58:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 479251A02D8
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:58:15 +0000 (UTC)
+X-FDA: 84837999750.25.1B17D84
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 00491180006
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:39:08 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i98P46mH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 422D140005
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:58:13 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mnPkKyEg;
+	spf=pass (imf27.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780475949;
+	s=arc-20220608; t=1780477093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pKr4pUf7s0iQKui1I94X0WI85TpgG6R24P5fLVzYq+I=;
-	b=qVYbWzS3lE6ANcLYPOHB5uOpVhDvU52kLpHKUaETcWUnoB8Nsk5Uiwd/xwNZ1iePy2PrqU
-	OthCGTkEZQVOIOXTeK7Wf36h7AMCsLWvbiljum0xGw2nXE8oLWERQY6iTMKddcxKDRsrfW
-	9+j8p+YqiMbe+IWMZ6XXR2SSLlW3uXo=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i98P46mH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=HNO5aQb0rtRKtux/wu+5AcytYSH9RtOlt3U0qrUIzPI=;
+	b=cU84oWRcEZBMPb6rz1EDb8XM8K74/VfVcJ3xir3ScI5geyORb+XPlUUd1spe/dC529axeC
+	t//rUK2Al6j630L06kAeye2MNW9b9cbZzRJRnHaw+3qo+A4JxSAGAPGu+k3LbKb29opzQU
+	57Gs1Ei3768pALQ+0mnyQPpgqyArN6E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780475949;
-	b=XfXQXSHQju/nOrtjjPi1plm680qKduHOLNTOR379eL1ceSvUWcZWomp6yaCziQ2yrRRBDT
-	/ha90kLNd1NzDMYggWU3/KvS8dALpo72BV8js06CVqQ6Ar4gxPpYaMG6sR5Jaf03sM2EV9
-	bWIBCuqxUS+0ga1+so3kMaUexKpgj+s=
+	t=1780477093;
+	b=RSonFOrDnSsnfq4gUMmrUMZSNpFPL/5ZQEu5tWGHdkPitOhVZIzSqzHP1anXeRUD9kcEbP
+	v1O6nfifgUYc2m3ajaMbrYu5BuzI699iTseNirsYqg/+VReenfcuPHH2dGRarmtpzsLOal
+	Q4Ri3jwczn9eVLSXCm+ARaMN3S3SdE4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mnPkKyEg;
+	spf=pass (imf27.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E5CEC43E5E;
-	Wed,  3 Jun 2026 08:39:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492E11F00893;
-	Wed,  3 Jun 2026 08:39:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 71350434B2;
+	Wed,  3 Jun 2026 08:58:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924931F00899;
+	Wed,  3 Jun 2026 08:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780475947;
-	bh=pKr4pUf7s0iQKui1I94X0WI85TpgG6R24P5fLVzYq+I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i98P46mHgVeg+UxDqZZWoEzhKi1tPOQXy7qPWwBJVFxBJ0k26UtD5ig0yvDTl/Xj7
-	 u9605qUhGM5vFr8e4OM9GCpYkswEqCDCmDVu0Ork21OvSdUiw5b/8tiaqOliWbKMy8
-	 GFD0BjTBBU52GOTAz4REmcKEU+MRRaNv9Ig5aHSButGWQTNfeHBYti5d3MLNKhHS2w
-	 L+jlZWBwEEdRIw9R+wG5AexLma0a+fd/YFv+K7RqYUP73b5vsNUBYdqYLPM5f4J0ze
-	 4TUG6S9bhRKLOVEBO1rp2FcqGA0gQs5KGd6oDXagyO+NLO/JcAPtqgOP4/UdxPjZ0N
-	 5/21fSatppZuQ==
-Date: Wed, 3 Jun 2026 11:39:00 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Nico Pache <npache@redhat.com>, akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	liam@infradead.org, mhocko@suse.com, vbabka@suse.cz,
-	willy@infradead.org
-Subject: Re: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14]
- khugepaged: add mTHP) collapse support
-Message-ID: <ah_oJEODZJp12oDl@kernel.org>
-References: <fa9095cc-69a1-468d-a1fe-718386398b10@kernel.org>
- <b45f9b55-5143-4387-aa98-e077390d542a@kernel.org>
- <ah2ndruO3RQGtePP@lucifer>
- <506fed6b-8954-40fa-8b5e-c8bd8c0d004b@kernel.org>
- <ah2uDhs3a0bFcRNG@lucifer>
- <ca37b7ce-76b0-4825-b238-b504dd499d3d@kernel.org>
- <b5b1a7bf-de6a-488a-a011-673c37bd24d1@kernel.org>
- <07334dc3-79ba-407e-96be-21ceb2eec00a@kernel.org>
- <ah8Tflgn50DTMvwl@kernel.org>
- <ah_ML-Wm3B92ZniC@lucifer>
+	s=k20260515; t=1780477092;
+	bh=HNO5aQb0rtRKtux/wu+5AcytYSH9RtOlt3U0qrUIzPI=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=mnPkKyEgBAoJhHyCjKocF+n+JqkHcWSmPH184p/CrskKjSd4JLPoFSBGrYLKU9Mar
+	 B1hI8HW9H+53ks3lghDx4U+J6rNa6f8KquouzDq0+DM7/4ZBRzC0AuXQVPvI5bKqkY
+	 NglLbcu+ZBDleA+IgNkKfEKOPcXRhxVfSNk8lTpECqvKoBh+iHSyU2ZFRwFPFE4daX
+	 kw0WCczgVzTNS8Nry/XjBs//vr21nJLOAmz9iMERtpe8gUl3WYdzTVYvcHDMtqVnlJ
+	 wu/GIoZWa0/6+fA9X2Sm0u6y0MnNMo3tVdcswt4ZtD+mHXcn/QmWy2xNCp5hUrCygR
+	 dCBoxrKjfQI+w==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9E4CDF40075;
+	Wed,  3 Jun 2026 04:58:10 -0400 (EDT)
+Received: from phl-imap-05 ([10.202.2.95])
+  by phl-compute-01.internal (MEProxy); Wed, 03 Jun 2026 04:58:10 -0400
+X-ME-Sender: <xms:ouwfaqCSomCUHn2Pcxt39NzT6QrYDOwoUaHjVutpQNUu0GYFMZl_Ig>
+    <xme:ouwfavUBA_wa0-Kl0rwIin5phZ0Xk0GMcV5YCAKgwCXtZX9t6zPJc0f21igxmxdFZ
+    el9mEG9Na6KsRXZeOce-ahEOIXmRVtrBYvtLtWGWDsGbs4lRkjjK10>
+X-ME-Proxy-Cause: dmFkZTGr2weDGKBa0sUCUcj036iLL5Y1yiuWXtlNLmEI4O4KffGEG7mKCI4rtXP1Kjy/sC
+    Vn4JLRDUw3n/LlH/P7ldcJy2f2NLMW7zEwQdl58eFGDw13Gd7uBwZtBFefeubqM57vT7KW
+    gxI5DHTPlMa9V7t7GBAVKnyC4disspoUcyOJuYcuXeoXUDa8M5AS9XNNfwK+hXW4k6RRKP
+    P+HnepDfV9Ly2SCGeboQtn62xJxY4OofV3op27GBS756vLSUraZsZIubTiRwHvbO7GWFg8
+    TN89ZhNEjfm9JCDm1LdV/dDNhv9gsSNYWX/LbCMQhfYJTNEbDdYGKUoqZbehxmbuTXbkFU
+    XnaKhsn2lQq7XiJ+YTNPtHlw97iNDWbeNZirflpUY26TpW4YlC0yGx1F2Pdjov4xxyaUZd
+    nGZuSrO0ofec6SMf5X9bTikzbc7jU39nUFa8+EDOEs+sLMDgAb7Jfbkdo1r3Pi14q8HECl
+    WOyAkHMSoapVwjPlMra4gfnE/Sq1KO70VhXXH61epQ6Rh+aRLmPHQfsv+x4lMOk7iiwpsY
+    2Ln1UDislceGN/Gw4GkBXiCXnvOln8phYiq7SJoKkYgBG145jAMq3GJUgudNXhcY+kY+fP
+    qpGcyL1cKdvM1YoB3pTqsi5xKVO8SJQEPQQW/+ABFCEXztbk2H+BY/x90g+g
+X-ME-Proxy: <xmx:ouwfam3-PZsrAVqqiP-EfVs-0jTgxsPILW5ya_Lkxs4FNvUMV00I3A>
+    <xmx:ouwfaqtJQPQRdRGCSDlzv7oyJj2hWevC-qAmYiniqjt8Bubu_25WPg>
+    <xmx:ouwfai_l9FuzR3F73C0xJHJLI6BrnbgCXaJCGZTs31csy6qmGWmmEQ>
+    <xmx:ouwfauR1k_z1hiMDOUWOdTJsWToATwu--U1XlEgRSm3i3JLjPhl_jg>
+    <xmx:ouwfaoCm3jrQTsvC8JSjjw2cVnzpsLJPRFYPY4I2sfuqg_7otMeSlp9g>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 77D33182007A; Wed,  3 Jun 2026 04:58:10 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah_ML-Wm3B92ZniC@lucifer>
+Date: Wed, 03 Jun 2026 10:57:49 +0200
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "Will Deacon" <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ "Ard Biesheuvel" <ardb+git@google.com>
+Cc: "Catalin Marinas" <catalin.marinas@arm.com>, kernel-team@android.com,
+ linux-kernel@vger.kernel.org, "Mark Rutland" <mark.rutland@arm.com>,
+ "Ryan Roberts" <ryan.roberts@arm.com>,
+ "Anshuman Khandual" <anshuman.khandual@arm.com>,
+ "Kevin Brodsky" <kevin.brodsky@arm.com>, "Liz Prucka" <lizprucka@google.com>,
+ "Seth Jenkins" <sethjenkins@google.com>, "Kees Cook" <kees@kernel.org>,
+ "Mike Rapoport" <rppt@kernel.org>, "David Hildenbrand" <david@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "Jann Horn" <jannh@google.com>,
+ linux-mm@kvack.org, linux-hardening@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, maz@kernel.org
+Message-Id: <2c7929d4-6622-475d-af1b-bcd0cd997cd3@app.fastmail.com>
+In-Reply-To: <178041415770.4024555.11336437584927054639.b4-ty@kernel.org>
+References: <20260529150150.1670604-17-ardb+git@google.com>
+ <178041415770.4024555.11336437584927054639.b4-ty@kernel.org>
+Subject: Re: [PATCH v7 00/15] arm64: Unmap linear alias of kernel data/bss
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 422D140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 00491180006
-X-Stat-Signature: tmizchoktiiqdcu3hud16j64zqsgzg7w
-X-HE-Tag: 1780475948-316111
-X-HE-Meta: U2FsdGVkX1+HwrxBhJwh+T8kSrE0QW0wn7ziB/76LJ/WGLQxVBUNuDv9lTKTK9o7S1Qky5euaQVr5ILE7UbdKcVeJzIbnxwPpb6t0s1d6FA6J2Z/BF44ZZtSsJAu/vbLLIh0PopuuOxhl2o2chCMpNqqS7w3qnIVC3/NRYZa5Z6z7hXujrq4BfqtsWXcKwWyEIYg2vDVDE/r6TvJUDvqoin5j/2d/dZnQr3N2KbNdIWfxaNMThcDMuGUm7V5orM1jBJ8+aqeN5eytuCJnbsg9+U25roVCV3wyx+UHD8GVJq9ddU211FzpUNGUXxqVVAgWyXq7HmA2/LDFSaJXzEbDocTN94cjuKZ+HfUaF7sbbrIy8sGqOIcYWViK3zbKzVJJnEIqFFR0qgD+b8nO/I06OeuBUcvH3bPnPuqOlm7NQZKE1QMZs0/nR/Yo8hxbvWp0iNqpdAGSwAtYKl6NmxM9pc+ALcbl1iuyh5MUJ/PE5IgadD8IbOA7+yNSdfMgRCWs7ALqe685VRANULItTc4imSJE+14yIiBJeN4bGL5gtFPk3SzTfXAyMGLEiFxW+fAq54a2rBdxUSmvmMVit3EeeC/9DSK/9Kyyj3CUq2Z6mo9HGWPYgGBaJPyDyZhwOKusZE3QmrzWEORE4vqkkymZzx5mJ7Hi4G/qMJh2e8BJThMVru53Z0wVt9JZ7+KE9wBY5jPrwc+jprXpHbllaZi9OAim72ysDdrrnlvIlvftbisCyKuw00CzG0c6Nb8mEyj0iwZSaYaomWpXJ7hv7E+jPnPRvKlh9NbpQtj0O5iRnF64b7xOkX5GHncDOvRJMG2Uy2w8/FIUDXwEJHhY+Lza9Z7WHlPiYZIt54cTAD4Pqd8nC6vdfOoyVaWtwX07Yu2uteyZI6DcMeZjTZnSUdscXl/QN6JjIPNLmVxMFL/C6SGdzmVEudzQc2NbbuSx7tXMzFGCxEghRwzisMGz/7
- FbI16/AH
- 1klh2hdfDgCrDJjwyQUcksR48jbt2euxoEODDBmCZ8eA6SHWeY8t7W0zlUv+5VWGIP//c/McZzVUhSOxme0bkTaiLLJ0cTvnoj+HAFS0c9RYtz3woikMTNOQztcz/86M2AzJojByxco7Lf+FQOQZisQKjNAjJ8BxBzNXjObQLQm3x4BsE0ZhDcNGXTCHjY7WvjeUwKpb1yvoKVRGDPJIiJ7+oElmam/1mxirAqGgSGNzr9ZFmisNkaQepc0p55wbu0oVZ
+X-Stat-Signature: 4ebn4cdqbjajeoz6kxtx8sbobcecbwxx
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780477093-692785
+X-HE-Meta: U2FsdGVkX18Xo4DrN15MIFB7uOgMOrxw3xRBn/esElN1SZANc0FP6VTjJ8RCfUxAW9j6f2pj16Lhk3pyfTS56xz/B3qO2Kw6fLgz95gW/A4OyI4CmaTL0Jq/qcCc7GXqKv09SMf1EYHtnW5AOgUCoRze7PRw70/lWNo8cgLcQxCk5phZIjyQ38IvwLJqJZDpGDf10XBeFtX6fTLqbZhG5l1FBQFFnT4b3GUTi9O9OdASJuUDpz8JWNJoRIpFms2JsnZGm9eqOAcudj4MGcG1lPPHOqmAD/E0sloCl1wjmwnfGSVnaKcpDnn4TtRJ7vbgbNLzl+xg26D81TUJrNsF4y3fOQcsAlKQXK7Gbv3Ks1zHTu4U+0xMEPxjPl5VlNk7DokZOPK0qdQOaknAlIUjpyXKJqLgX9ry9cl1APCVt7RiGuqkp/yz6o9qXZt5j8SkR3uq8bIkgOa/OonpFXYP9Hz+ZyJCSq/7lWFGkxlVA2oN5ObygiXjOJ2xkNhWz6qVbIAQOnJF+DklrJB18Qv0btO/a5wLC2XXEAB2xi1mAlEPp50ChfTeU+Mg7ZOAVR2cG6pxiZVPyDESbBigzIzHwwy0Ej8oxsrAirwerjOJ6adP8elAY1X/byCx2QC6i3Ppjb6oA7SCY9lhBB3e+G0VARkTUheizDGQa/Uyto4OPnBhO6xWsl9+4kPwd/KolzVa8vQeosFrTtRG+UfINl65cTmxzHshGAz7PlmPYLEgh+vQmUf+oRdgZejemRrgP06VYX7RBij8vyX5IFpJj9BkJCzd9dQ9smLD1mYeSsyd+BYTnPpQbW+qQ/+VwrFwijr/wMWchFk0tEN5UDDpdDzk0zmftiSVob11wqASlytmndcT/i2IvfOw27+xeeDhIWw/BR8Jk8rXvnLlD13irw5/dXxN2ef8sBcFqTTdFjUPBqZe3r8boggmZldLTXfzc41AMcrBA/jfrF7cORJr+Kg
+ Q1WxupWw
+ 87fGwoBS5y8Q4DFmINkG3FajSbzbUd9jdbHYJU+n8zp2D6U/gjOLTKS4QuZD4PZosREopnKU9pOhWzboumhmF6xxq5jHtGS5c7l2dTpNUREMGJo16ao0o0JSZ6uNr/UZTErn5X5VwtulglsHwi/jsi5hO4prAXpUMpqZWC3TXgt8i/17uFhSZGRHKiwMviseFAiQh49yhWwxK8/woKbcafyO7p/30R7FJrFNfPsjOM69f9roDvN1xgYjAkYs2g4xZqW75bbTXB5CR09uNGVazyS1B+EmytJnNhP3JLQDEt/H1N0dY7nhd5qC9fLQot/5mUm0Z8HgmlFy7jPU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,41 +128,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 03, 2026 at 07:48:46AM +0100, Lorenzo Stoakes wrote:
-> On Tue, Jun 02, 2026 at 08:31:42PM +0300, Mike Rapoport wrote:
-> > * Supposing we keep the model of early merging for testing [Lorenzo, don't
-> > yell at me ;-)] I think it's reasonable enough to drop everything that's
-> > not going upstream at, say, rc6 and ask contributors to rinse and repeat
-> > after rc1.
-> 
-> I won't yell :) but I really don't want us to do this, and to improve our
-> testing locally. Because:
+(cc Marc)
 
-There's no contradiction between improving our local testing and allowing
-to merge early to expose to the wider testing.
+On Tue, 2 Jun 2026, at 22:34, Will Deacon wrote:
+> On Fri, 29 May 2026 17:01:51 +0200, Ard Biesheuvel wrote:
+>> One of the reasons the lack of randomization of the linear map on arm64
+>> is considered problematic is the fact that bootloaders adhering to the
+>> original arm64 boot protocol (i.e., a substantial fraction of all
+>> Android phones) may place the kernel at the base of DRAM, and therefore
+>> at the base of the non-randomized linear map. This puts a writable alias
+>> of the kernel's data and bss regions at a predictable location, removing
+>> the need for an attacker to guess where KASLR mapped the kernel.
+>> 
+>> [...]
+>
+> It would've been nice to hear from the ppc folks on patch 11, but I've
+> picked it up on the assumption that they'll love the negative diff stat.
+> Worst case, we can drop/revert stuff if they have late objections.
+>
 
-The merge early is a part of what makes mm community welcoming as opposed
-to tip's policy "only 100% perfect material goes in".
+Thanks.
+
+There is a de facto ack from Michael Ellerman in the Link:, which is why
+I included it.
+
+Note that Sashiko found an issue with KVM+MTE, where a read-only mapping
+of the zero page in the linear map may result in issues:
+
+"""
+Does moving the zero page to .rodata (or unmapping/read-only mapping its
+linear alias) expose a guest-to-host denial of service with KVM and MTE?
+When an MTE-enabled KVM guest reads an unmapped memory address, KVM handles
+the stage-2 fault by mapping the host's shared zero page. KVM will then
+call sanitise_mte_tags() in arch/arm64/kvm/mmu.c.
+Since the PG_mte_tagged flag is never set on the zero page, KVM's
+try_page_mte_tagging() succeeds, and it calls mte_clear_page_tags().
+This executes the STGM instruction using the zero page's linear map alias.
+If this alias is read-only or unmapped, won't the STGM instruction trigger
+a synchronous permission fault or translation fault in EL1, causing a host
+kernel panic?
+"""
+
+Marc seems to think it is legit, so I came up with the following (I'll send
+it out separately with another pair of tweaks):
+
+-------8<------------
+From: Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH] arm64: mte: Disregard the zero page explicitly for
+ manipulating tags
+
+The zero page is conceptually immutable, and will be moved into .rodata
+to prevent inadvertent corruption.
+
+Prepare the MTE code for this, by ensuring that the zero page is never
+taken into account for tag manipulation, given that those actions will
+no longer be permitted on the read-only alias of .rodata in the linear
+map.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+
+diff --git a/arch/arm64/include/asm/mte.h b/arch/arm64/include/asm/mte.h
+index 7f7b97e09996..093b34944aee 100644
+--- a/arch/arm64/include/asm/mte.h
++++ b/arch/arm64/include/asm/mte.h
+@@ -80,6 +80,11 @@ static inline bool page_mte_tagged(struct page *page)
+  */
+ static inline bool try_page_mte_tagging(struct page *page)
+ {
++       extern struct page *__zero_page;
++
++       if (page == __zero_page)
++               return false;
++
+        VM_WARN_ON_ONCE(folio_test_hugetlb(page_folio(page)));
  
-> - We've become a bit notorious for breaking linux-next
-
-I don't think only mm breaks linux-next :)
- 
-> - It makes it more difficult for us to yank things
-
-git rebase -i
- 
-> - It blurs the line between the stable branch (which in the new model we will be
->   updating constantly rather than right at the end) and some 'unknown state' of
->   'whatever we just sent to linux-next'.
-
-The aggregate "next" going to linux-next can include both, stable and
-stabilizing parts.
-Or they can go as separate branches.
- 
-> Cheers, Lorenzo
-
--- 
-Sincerely yours,
-Mike.
+        if (!test_and_set_bit(PG_mte_lock, &page->flags.f))
 
