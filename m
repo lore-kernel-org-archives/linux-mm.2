@@ -4,90 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 461EDCD6E4A
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:20:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72DFDCD6E4A
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Jun 2026 12:24:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABB9A6B008A; Wed,  3 Jun 2026 08:20:14 -0400 (EDT)
+	id 93C346B008A; Wed,  3 Jun 2026 08:24:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6CB36B008C; Wed,  3 Jun 2026 08:20:14 -0400 (EDT)
+	id 919216B008C; Wed,  3 Jun 2026 08:24:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 982416B0092; Wed,  3 Jun 2026 08:20:14 -0400 (EDT)
+	id 850CC6B0092; Wed,  3 Jun 2026 08:24:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 861186B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:20:14 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2F5B81C1757
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:20:14 +0000 (UTC)
-X-FDA: 84838508748.04.F1011BE
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 40152100004
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:20:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="MkxB/4IX";
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 737426B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 08:24:29 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1328414034B
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:24:29 +0000 (UTC)
+X-FDA: 84838519458.30.7926F79
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AD1C94000E
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 12:24:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HubuBb2q;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780489212;
+	s=arc-20220608; t=1780489465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JVPf2HxnOSeDo+U9qlfy4aat8ZJ692PaW/P5vPj0roc=;
-	b=0X/vmTIzH3qnZKV8NeNdL2SCO8ULagh4lt2/Z+4Q2TWS5Uinci3F64MXsEDlDjIwrnKD+J
-	Z5j5PDPVTOA1XvJ34T+Y/fTjWJzWn8HuHSWcrJFGRrHiSLVdmfEodRAPKKCUB7Lio5mbUY
-	bxVmyVfoyHaD92AOIuDQm7kXPNn4Vf0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780489212;
-	b=MqRaa1yo3rQp3UE+cterFv6mo+QjRxjSYn0vxk61Tvz0jv66BOe7nPn+envuUHXE0Xl6nj
-	+UCdg+p2k+Be6MLYTDO38/r4wmFT+Wpj1mTW5ZpxbilUT3+kUZuZdMdvip4QGS2gL49LVA
-	xH8TG2NHLcyS6EYBWIniQZKy1SJwNZM=
+	bh=i81FGwAX/vixZ25Q3Ngd8ivvoVTv7aSnS7HWQVQ1K20=;
+	b=SzaaL8ttFj8lBR87BsIQUmgVuuxeIrpnrzX3XbcUm1WYj/UKiFiY8MgzEm7/nshYcWCd8z
+	eaAXOnxt2/TgzoFbj6JBjoO9zQO3kQjJSOqdHuNTca13gKRdqV6bgoCE9urZod8PXegD1R
+	xlIpCHpP7lu+ki+uWYbN3xXqYW//NDU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="MkxB/4IX";
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <ea70f2cd-0cca-4703-973c-6f3344ac345a@linux.dev>
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HubuBb2q;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780489465;
+	b=W0j9x3YY0l1QPzS1B0rij1aV47CLDQiSAFMp/GlVQ1by51f8Z0r4/FSL74pL94uN10O4N9
+	tbFM4k6y7ZvGXcbeOQn3nzlo6kJ+7eR+CGtwlyKfYABB0wZ5MY0ofECSQodKrjccmUFrfZ
+	QqQhz6anK41/VDNcv4NhSY8JaWruJfc=
+Message-ID: <f9dd874a-b637-4740-9a63-8da66de323ca@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780489210;
+	t=1780489462;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JVPf2HxnOSeDo+U9qlfy4aat8ZJ692PaW/P5vPj0roc=;
-	b=MkxB/4IXntiepknr2HPty4AE/U6fUgJTQXWGd/DQzxZkMcFotDK0S4I1PROFNjE83/wgaY
-	fOzGvdJSZVKI4IPaZKPvt9cMJaUNvGT/c24R8FMu0qsaXcvxvrVZs4D0ceLlN05uSOga8E
-	5eGLLSIMksIxNpQw4dGLg9m/HWOR6m0=
-Date: Wed, 3 Jun 2026 13:20:00 +0100
+	bh=i81FGwAX/vixZ25Q3Ngd8ivvoVTv7aSnS7HWQVQ1K20=;
+	b=HubuBb2qZb4N9mqtKd+HqBZxa//bXTQ7vqPh0cqo521lhCGrl2arQXZ0egrlgrhMVPjN1w
+	58IEh2Vdv9FcCt9r5uDyBa3ErJYP6T7LGb5Df4WMvfpy1qfJaqgAjvA1opfVW8eeXtT4yb
+	kc47gaP4MkVI9XYMHI853t/97ZI2r0w=
+Date: Wed, 3 Jun 2026 20:24:09 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/mincore: handle non-swap entries before !CONFIG_SWAP
- guard
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, jannh@google.com,
- liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- pfalcato@suse.de, vbabka@kernel.org, chrisl@kernel.org, kasong@tencent.com,
- baoquan.he@linux.dev, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org,
- kernel-team@meta.com
-References: <20260602172247.279421-1-usama.arif@linux.dev>
- <aiAY9FiHthu_CwIC@lucifer>
-Content-Language: en-US
+Subject: Re: [PATCH v3 15/19] mm/hugetlb_vmemmap: Move bootmem HVO setup to
+ early init
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Muchun Song <songmuchun@bytedance.com>
+References: <20260603120246.1572177-1-usama.arif@linux.dev>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <aiAY9FiHthu_CwIC@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260603120246.1572177-1-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AD1C94000E
+X-Stat-Signature: 14wka85paahyot5aj45itissf6f9k464
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 40152100004
-X-Stat-Signature: yan38o7u3nfpkb4fk9c16gwffd3giuwi
-X-HE-Tag: 1780489212-652249
-X-HE-Meta: U2FsdGVkX1/KfmpyYHCFJTUk7KD8wla4RIgxnqyLvuN8bTIEA1zda4jf7fqVPNoyfdCkiER8deigP8NvtKNnZP/2BdfoShGtlqh3b/mTGMdLlIFpdtKBsK8GhtLbH+PEQU895Mc284BRvf1JOxofaSjHHrfxpNACwN16Iky2D5rYMrIeTev17jx2gZi5wl+8yg+ptB8oul6seKctUfrwP25jBojtv7Bqgl/GM64lTLymFdsyNTUI4Iuku0EmF8OIadqGuLdlJUcOvWpmhsDgXZz4Uhvjp7WLa9OF+le4gq4pAkQkObHj9J5kRUvjFLFAvPiBCGoFsbCdzTGo9U4t2UY6lU6jVMv7Csc0XbZVHN5Uk//p7KQA44VixpKxX6Dk+x/Wk0Q8r0fef1HOcGLHM5EpegUgwEGWCOkZbE73trevS7IRx5HRp3+3OHcjyaEfRw98/Kk4D4J/m64UzC3EqqBgct5cB+qhPk3ffjUe4J5zNkWnS5c0Sf6mnzxQbSf55SrZFvf/e5C4bDvDfXaL5gJtfCV2eqx4kYJGb3oitBDB0npGD4Ib6FV7NDMGnVtDR9+d3oj6+WompGlyt0Bxn2xvnZDDpG7vIgkfWWnRf83sBa5cAYlVI0kL+0811bVeuavppcixrwJv6XJpqf/ZqFp0+OSaNncIXdaWnfveSLa4qhbc8dwI5OE2MFS76EYmZdNwbp61Ei15+swUo82thd00w6hq+iH4nUSp/XnEac0Aq+lPVU+dhbQsfYTlKza2vwdjwdCTXClXnalwrEB2/GDu2fEkI2JhXKLhtFP9uw8eojlEkpawGTB247YaxJAgRdXzqQ/kB7G2NZvyyr4cwqXBW79EwIrAdzARC0tqM+aGkLTqbNydd57RWeu/TBwZLomgxGVUP9rMSup7jsyOKyRlzTHAC/2GFzbaTrVvIC4yhuceyl7RHatGCaolOirICiyTWaeaIFaD+Mp4hWM
- FKpFs0rj
- aJW0t/SZaNomda/6KXWOV0JQv0Pcq03jUGhr8T7l/L50CcvBc5R7a7XO2dGsuGBEoX4AP/ACnFRhqtZii/YxdQVtuqDsdp7cRAkworT329rxZmO9U/Ml+AGht8fI4ouqb1OczBo1Nh6ZgswNz5GWOVYZCNAMfHfn6dMCsYeBQHBSqROtNQOt1xS3TluPNLSvr0by5cmUp6YCd4yadgo41xTWMntjFX9wN6q9FWg3KJlkEGKLZ0nHy/gFnvj9eLxMg0CpOg+/AT9SEjbhuGeihkn8XJLcDhZCg8ctSuhnz2waJ9doFKeu7WJ6Ze7nujoPDWPnO
+X-HE-Tag: 1780489465-981099
+X-HE-Meta: U2FsdGVkX19938LJ5IH9ky2JyM5mx3M7JR9deF58zohzxwF/WS2q7nW/MKfjrUopLmT+LFSslKUb3ztbkDPYgrJCL2HlcgsS27onxNzCUj/AHQ8+SS4SkRBKyoUF9KJqHZFzYg2HFAQQCOZ8mRNIl6a5sm5pQkGDiF1ye1uDhjHmntWCh1uH9JpfMcrxVEsSPD2v66+ILJ1/FZJ6aBjCaj7vP4vaXcV5OCmiHc3qGr5GAtFySmjwgcUIfUFZCJGavVXEJcZb9PAyNKZLJODaA4aboRJG+DDJTFEoiRA0XOtSdfib6qa0HI5LAeLDeP4vWBXovFDe6zMlbb2GlYLaV+58HNXxIInrj8ofVcLKorDXK8FrHTDw13X6gBv0GBOLp/y6B6j74XT1ClSCzrQKKONb6F64Bnm48oFG8L2taLF6RqoJAj/6cNcNKFgzH5g1i/ErtOXL3jOxl8rBjl8dvP3Q+NgpQWnskHl41aa4nrDUJdAcWKAbhihNBLlSGoi1OcxIVyhKmU29V+Qi2cvuGpQbu8BtIj61gqOwW5uNQS5umur3Z2ArJ9pgj4i3pbD/ZQlW2OTDMI4QFxG4WvrP53ZyhjMzMGa87uMxqzIbIjfpnTi2oprmCXtIOZ9U5lEBU6oJ+SeehpaIIVSg7w82jlWvgGSXZNHwI+PoXy/D2mBORuchy54weKG7v2wNpgot/tkFBHsOvT0tNYoY6gRh6qsTVGOSdF88X8BD2j/vGsjLqJTG88IRN3sQvkJlJI89vka1ApoUr3uMtIwg5DgMrMIR76J2wRmzLj7oILh3DsdtrtSI3H5DizBoc48QxaajbAtKixkKjchwUx3oF4nTT1XJd3vjbC3TUJElTqm0dDqpoiooUCLx1WoFMylvvyA5/xPsqWb/PcwKPMArHMtaSpmPgnp0QAMk2QZU7zRrLwDOG0OXvBp1+r1lY19yU/0RJkfKmqO+sBVycR+yuOZ
+ 0cu+atH2
+ vfrg1Mpoei/EimgsfWKuxNxBBHeJIxGZkiyQs6GZC3UXbiYVIqIlycsIT8f2/g9342FoaobBdM6tNk0jdHas7EdwRKPzqOb2RWhgeI182JJWKlDRXAqjnLo16Ky3PxysntcPgxM3PbYkjvNNAJLEn3RZ1hOH1d7mRW1Cl2jS61ty7G9np30ZGbc0lPcFk+7Q7soYaM3Ee98WTF+zughCfIzrM3pNanJtjPkiH6o/u40/94i9fyJk90teot28aiLRMHlYo2ThE8TdROxG+81pCvcy3MmskH8U0s4LxkkQS4H/kXXi9D+6eXIBifHbFgtiTsrMZMql6O3jSRhRB0WQm1HQPJlV+QThDJiMvv80DfICUJVh/VveYuIogPJ9OWmHRT5BO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,80 +100,155 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 03/06/2026 13:08, Lorenzo Stoakes wrote:
-> On Tue, Jun 02, 2026 at 10:22:47AM -0700, Usama Arif wrote:
->> mincore_swap() also fields migration/hwpoison entries (and shmem
->> swapin-error entries), which can exist on !CONFIG_SWAP builds when
->> CONFIG_MIGRATION or CONFIG_MEMORY_FAILURE is enabled.  The
->> !IS_ENABLED(CONFIG_SWAP) guard ran before the non-swap-entry early
->> return, so mincore_pte_range() can spuriously WARN and report these
->> pages nonresident on !CONFIG_SWAP kernels.
+On 2026/6/3 20:02, Usama Arif wrote:
+> On Tue,  2 Jun 2026 18:10:35 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
+>
+>> Bootmem HugeTLB pages currently defer HVO setup to
+>> hugetlb_vmemmap_init_late(), because the optimization needs zone
+>> information.
 >>
->> Move the guard below the non-swap-entry check so only true swap
->> entries trip the WARN, and migration/hwpoison entries take the
->> existing "uptodate / non-shmem" path.
+>> Now that zone initialization is available earlier, the bootmem HVO setup
+>> can be done directly from hugetlb_vmemmap_init_early(). This lets
+>> gigantic HugeTLB pages apply HVO as soon as they are allocated.
 >>
->> Fixes: 1f2052755c15 ("mm/mincore: use a helper for checking the swap cache")
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> 
-> Logic LGTM so:
-> 
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> 
-> Small note below but I think not a problem.
-> 
-> Thanks, Lorenzo
-> 
+>> Bootmem gigantic pages that span multiple zones are now filtered out
+>> when they are allocated, so the remaining bootmem gigantic pages seen by
+>> later hugetlb initialization are already zone-valid. As a result,
+>> hugetlb_vmemmap_init_late() no longer needs to handle bootmem HVO setup.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 >> ---
->> This was discovered when working on PMD swap entry series
->> (https://lore.kernel.org/all/20260602142537.198755-1-usama.arif@linux.dev/)
->> ---
->>  mm/mincore.c | 10 +++++-----
->>  1 file changed, 5 insertions(+), 5 deletions(-)
+>>   mm/hugetlb_vmemmap.c | 67 +++++++++-----------------------------------
+>>   1 file changed, 13 insertions(+), 54 deletions(-)
 >>
->> diff --git a/mm/mincore.c b/mm/mincore.c
->> index e5d13eea9234..296f2e3922b5 100644
->> --- a/mm/mincore.c
->> +++ b/mm/mincore.c
->> @@ -64,11 +64,6 @@ static unsigned char mincore_swap(swp_entry_t entry, bool shmem)
->>  	struct folio *folio = NULL;
->>  	unsigned char present = 0;
->>
->> -	if (!IS_ENABLED(CONFIG_SWAP)) {
->> -		WARN_ON(1);
->> -		return 0;
->> -	}
->> -
->>  	/*
->>  	 * Shmem mapping may contain swapin error entries, which are
->>  	 * absent. Page table may contain migration or hwpoison
->> @@ -77,6 +72,11 @@ static unsigned char mincore_swap(swp_entry_t entry, bool shmem)
->>  	if (!softleaf_is_swap(entry))
->>  		return !shmem;
->>
-> 
-> I guess fine to do this after software_is_swap() because for !CONFIG_SWAP this
-> will always evaluate false?
-
-Yes, thats right. In softleaf_is_swap(), softleaf_type() returns SOFTLEAF_SWAP
-iff type_num < MAX_SWAPFILES. MAX_SWAPFILES is a compile-time constant independent
-of CONFIG_SWAP, so softleaf_is_swap() isn't structurally gated, but every producer
-of real swap entries lives under CONFIG_SWAP.
-With !CONFIG_SWAP none of those run, so softleaf_is_swap() is always false.
-
-> 
-> Not a big deal therefore I think.
-> 
->> +	if (!IS_ENABLED(CONFIG_SWAP)) {
->> +		WARN_ON(1);
->> +		return 0;
->> +	}
+>> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+>> index ea6af85bfec1..464578ee246e 100644
+>> --- a/mm/hugetlb_vmemmap.c
+>> +++ b/mm/hugetlb_vmemmap.c
+>> @@ -745,6 +745,8 @@ static bool vmemmap_should_optimize_bootmem_page(struct huge_bootmem_page *m)
+>>   	return true;
+>>   }
+>>   
+>> +static struct zone *pfn_to_zone(unsigned nid, unsigned long pfn);
 >> +
->>  	/*
->>  	 * Shmem mapping lookup is lockless, so we need to grab the swap
->>  	 * device. mincore page table walk locks the PTL, and the swap
->> --
->> 2.52.0
+>>   /*
+>>    * Initialize memmap section for a gigantic page, HVO-style.
+>>    */
+>> @@ -752,6 +754,7 @@ void __init hugetlb_vmemmap_init_early(int nid)
+>>   {
+>>   	unsigned long psize, paddr, section_size;
+>>   	unsigned long ns, i, pnum, pfn, nr_pages;
+>> +	unsigned long start, end;
+>>   	struct huge_bootmem_page *m = NULL;
+>>   	void *map;
+>>   
+>> @@ -761,6 +764,8 @@ void __init hugetlb_vmemmap_init_early(int nid)
+>>   	section_size = (1UL << PA_SECTION_SHIFT);
+>>   
+>>   	list_for_each_entry(m, &huge_boot_pages[nid], list) {
+>> +		struct zone *zone;
+>> +
+>>   		if (!vmemmap_should_optimize_bootmem_page(m))
+>>   			continue;
+>>   
+>> @@ -769,6 +774,14 @@ void __init hugetlb_vmemmap_init_early(int nid)
+>>   		paddr = virt_to_phys(m);
+>>   		pfn = PHYS_PFN(paddr);
+>>   		map = pfn_to_page(pfn);
+>> +		start = (unsigned long)map;
+>> +		end = start + hugetlb_vmemmap_size(m->hstate);
+>> +		zone = pfn_to_zone(nid, pfn);
+>> +
+>> +		if (vmemmap_populate_hvo(start, end, huge_page_order(m->hstate),
+>> +					 zone, HUGETLB_VMEMMAP_RESERVE_SIZE))
+>> +			panic("Failed to allocate memmap for HugeTLB page\n");
+> The replaced hugetlb_vmemmap_init_late() path used to fall back to
+> vmemmap_populate() if vmemmap_populate_hvo() returned an error and
+> just lost the HVO optimization for that page.
+>
+> The new path panics on any non-zero return.  Is the panic intended,
+> given that vmemmap_populate_hvo() returns -ENOMEM on allocation
+> failure and HVO is normally treated as an optimization rather than a
+> hard requirement?
+
+This is intentional; see patch 6:
+
+     mm/sparse: Panic on memmap and usemap allocation failure
+
+We already panic on OOM anyway.
+
+Muchun,
+Thanks.
+
+>
+>> +		memmap_boot_pages_add(DIV_ROUND_UP(HUGETLB_VMEMMAP_RESERVE_SIZE, PAGE_SIZE));
+>>   
+>>   		pnum = pfn_to_section_nr(pfn);
+>>   		ns = psize / section_size;
+>> @@ -800,60 +813,6 @@ static struct zone *pfn_to_zone(unsigned nid, unsigned long pfn)
+>>   
+>>   void __init hugetlb_vmemmap_init_late(int nid)
+>>   {
+>> -	struct huge_bootmem_page *m, *tm;
+>> -	unsigned long phys, nr_pages, start, end;
+>> -	unsigned long pfn, nr_mmap;
+>> -	struct zone *zone = NULL;
+>> -	struct hstate *h;
+>> -	void *map;
+>> -
+>> -	if (!READ_ONCE(vmemmap_optimize_enabled))
+>> -		return;
+>> -
+>> -	list_for_each_entry_safe(m, tm, &huge_boot_pages[nid], list) {
+>> -		if (!(m->flags & HUGE_BOOTMEM_HVO))
+>> -			continue;
+>> -
+>> -		phys = virt_to_phys(m);
+>> -		h = m->hstate;
+>> -		pfn = PHYS_PFN(phys);
+>> -		nr_pages = pages_per_huge_page(h);
+>> -		map = pfn_to_page(pfn);
+>> -		start = (unsigned long)map;
+>> -		end = start + nr_pages * sizeof(struct page);
+>> -
+>> -		if (!hugetlb_bootmem_page_zones_valid(nid, m)) {
+>> -			/*
+>> -			 * Oops, the hugetlb page spans multiple zones.
+>> -			 * Remove it from the list, and populate it normally.
+>> -			 */
+>> -			list_del(&m->list);
+>> -
+>> -			vmemmap_populate(start, end, nid, NULL);
+>> -			nr_mmap = end - start;
+>> -			memmap_boot_pages_add(DIV_ROUND_UP(nr_mmap, PAGE_SIZE));
+>> -
+>> -			memblock_phys_free(phys, huge_page_size(h));
+>> -			continue;
+>> -		}
+>> -
+>> -		if (!zone || !zone_spans_pfn(zone, pfn))
+>> -			zone = pfn_to_zone(nid, pfn);
+>> -		if (WARN_ON_ONCE(!zone))
+>> -			continue;
+>> -
+>> -		if (vmemmap_populate_hvo(start, end, huge_page_order(h), zone,
+>> -					 HUGETLB_VMEMMAP_RESERVE_SIZE) < 0) {
+>> -			/* Fallback if HVO population fails */
+>> -			vmemmap_populate(start, end, nid, NULL);
+>> -			nr_mmap = end - start;
+>> -		} else {
+>> -			m->flags |= HUGE_BOOTMEM_ZONES_VALID;
+>> -			nr_mmap = HUGETLB_VMEMMAP_RESERVE_SIZE;
+>> -		}
+>> -
+>> -		memmap_boot_pages_add(DIV_ROUND_UP(nr_mmap, PAGE_SIZE));
+>> -	}
+>>   }
+>>   #endif
+>>   
+>> -- 
+>> 2.54.0
+>>
 >>
 
 
