@@ -4,92 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92770CD6E6B
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 12:48:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE4ACD6E6B
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 12:49:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 046936B008A; Thu,  4 Jun 2026 08:48:10 -0400 (EDT)
+	id 74EE26B0005; Thu,  4 Jun 2026 08:49:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F125A6B008C; Thu,  4 Jun 2026 08:48:09 -0400 (EDT)
+	id 7258A6B0088; Thu,  4 Jun 2026 08:49:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDA396B0092; Thu,  4 Jun 2026 08:48:09 -0400 (EDT)
+	id 63C036B008C; Thu,  4 Jun 2026 08:49:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C7F8B6B008A
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:48:09 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7ACD98F36C
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:48:09 +0000 (UTC)
-X-FDA: 84842207898.05.009665D
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7320A140011
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:48:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=l4Bdpw3R;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FC1D6B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:49:54 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 013C2A04BC
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:49:53 +0000 (UTC)
+X-FDA: 84842212308.08.B3AB523
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 47C0040011
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:49:52 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsuML8MA;
+	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780577287;
+	s=arc-20220608; t=1780577392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uO6E5r3K1wR5HuZ7FR4dwiQlznCkNkhdvy8XPywIrCs=;
-	b=cbuonmw42y3/FRg1/Fc/cAJ8lGP5B62DLl7ZH87NAKYJjv0cN1VT0M0svMOb9Gy38ydD9L
-	x3uMI76fjb2PvGEm23Lg6Cpe4osOAkEGtf/glqlh6nFrsC4kaFBC5sVTneVSViigJUYuWF
-	SsupKpCiMryXB2dSCMnDbIlrusJ8VkM=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=l4Bdpw3R;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
+	bh=CPt7WmdqXc8TmefIma0e17PhXj7+J8IItu6xxPYhLBY=;
+	b=rRrHJVFRA0GTPWR2H82jXEo/sFzda3QEmjWvIrDpi0t0turzjwehaMePXYjWI2VfVPeYLs
+	DapF++1kVeGWYvx8r+EZDqPbqWe++oA6BOmtH0ew1tT1QamGEs16yfopCVxSOVMhh2hw/e
+	ITBEgwoidYfxmX/7loMGx66N1935Ynw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780577287;
-	b=oI+78MNJe737HPg2OfeKVxj+U8MDDhR7EcXrNAww4u208hHsokfrjunakxPYj6nMnP2SNe
-	39Rsb9YkYE2P2HJoYf/nM6XtfNQzoDqrC1UJymR0UWDEbm6n3oRwMET6QXmz2NaQYvynkE
-	WcgSP7taKKM9IFpjOcXrZZ2iD6XTY8M=
+	t=1780577392;
+	b=ZCd/IOE6oMsKTFFFbh1RE6hlaA7NbR1mNim2UazKoS8T5b7mVwdt33uX5AgdIfSq/6Ynaw
+	Bdwmq2QBfMl9G0rrD3q2SJcEcHN8xNGBuY5ytovwbKg0Mo1mCi+IYagGQ7aNhiBzrlEOrA
+	nFUVKZrSRGfvbmZFkIlaAywwP0I6wg0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsuML8MA;
+	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 196D043DD7;
+	Thu,  4 Jun 2026 12:49:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EEE1F00893;
+	Thu,  4 Jun 2026 12:49:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780577391;
+	bh=CPt7WmdqXc8TmefIma0e17PhXj7+J8IItu6xxPYhLBY=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=IsuML8MADwjAXf0QeYiq6ebS0Vo8GAiunm2wQqhXcztfHwRGwIoOMfeeJ5yONUzG1
+	 TYo6cP+vGu0uzrAzwTMy3IZ9ZJL138OcLbLJhehdvOmn9UKekHZrydojGZJi9kNps1
+	 RHjGLzvdJtOggWmZi2OC3DD/oh9LcEdfvHgamjbrJvF8YXzZ2OA/0BKRXZfKYNcus6
+	 shiKG1hjjRaVwXvDu7Yo2yDpe1TFwod5QqOMMBOOOUQGi97yN7bNqpdgzk0qLq/Tmn
+	 41MUFBnQV/ZQy1HAdYNOHkyKFtm2mSWxmgJOVliqLtTs13IiM07nENRiT4Jz8/cHuc
+	 i84ZWA5e4BJAw==
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780577275;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uO6E5r3K1wR5HuZ7FR4dwiQlznCkNkhdvy8XPywIrCs=;
-	b=l4Bdpw3R+NXNwi7a7a3iwPUoM25HbvBYR4G3wJPJVxGTRoSign06+gp0BqljYQ9vcNR0ke
-	AyWHPw2wBgjLOQ8Qx/o9IyBY8HW6xCRsi/hd0hF7q8Jj3pSrzQ89G+n3XJHXQYFJQNrQ17
-	ycDGG/R8qe7MgHxwe6l1Voz1YaL8za4=
-Date: Thu, 04 Jun 2026 12:47:49 +0000
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: ilya.gladyshev@linux.dev
-Message-ID: <431c8a974d685d547b0ba1ebe887ce200291e044@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v3 1/2] mm: drop page refcount zero state semantics
-To: "Kiryl Shutsemau" <kirill@shutemov.name>
-Cc: ivgorbunov@me.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- apopple@nvidia.com, artem.kuzin@huawei.com,
- baolin.wang@linux.alibaba.com, david@kernel.org, foxido@foxido.dev,
- harry.yoo@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
- rppt@kernel.org, surenb@google.com, torvalds@linuxfoundation.org,
- vbabka@suse.cz, willy@infradead.org, yuzhao@google.com, ziy@nvidia.com,
- pfalcato@suse.de
-In-Reply-To: <aiFZ57eRrCcWmS6E@thinkstation>
-References: <5dabf3a748fee0c7b142c74367e7586f5db1ed1e@linux.dev>
- <7c28d766b007345f5f31ba9a086a3bffe95a013d@linux.dev>
- <aiFZ57eRrCcWmS6E@thinkstation>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7320A140011
-X-Stat-Signature: f6wqrzhfsq9nqibwrcb1qecu1u935br5
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v5 1/2] mm/process_vm_access: pidfd and nowait support
+ for process_vm_readv/writev
+From: Christian Brauner <brauner@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Alban Crequy <alban.crequy@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Christian Brauner <brauner@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R . Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ Alban Crequy <albancrequy@microsoft.com>, Peter Xu <peterx@redhat.com>, 
+ Willy Tarreau <w@1wt.eu>, linux-kselftest@vger.kernel.org, shuah@kernel.org, 
+ Usama Arif <usama.arif@linux.dev>, 
+ David Laight <david.laight.linux@gmail.com>
+In-Reply-To: <8e738cc8-dce8-4043-9b93-2bb867c43028@kernel.org>
+References: <20260602100917.3641359-1-alban.crequy@gmail.com>
+ <20260602100917.3641359-2-alban.crequy@gmail.com>
+ <20260603082707.3831525-1-alban.crequy@gmail.com>
+ <8e738cc8-dce8-4043-9b93-2bb867c43028@kernel.org>
+Date: Thu, 04 Jun 2026 14:49:44 +0200
+Message-Id: <20260604-ornament-sparen-biegung-e9930ee7444e@brauner>
+X-Mailer: b4 0.16-dev-f5839
+X-Developer-Signature: v=1; a=openpgp-sha256; l=988; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=oHSYB+oD4hXjFnZRLLSBQY0UEHAn287ySYBd4bpRJmc=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQplmQVWnNyhukcytGNM/Dl96g8EptptzBYcfWfd8vO1
+ l7cm+7WUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJH4w4wM376ze4nnHuX5wb66
+ sX359Q25W1njX5752hOrc8L/hV9gDyPD969fQlMdOwLZPl4QjtjncqHH++2r/vtW/39XHVsvcvg
+ yNwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-HE-Tag: 1780577287-842025
-X-HE-Meta: U2FsdGVkX18krCLqyP3lC1l+7JGB21PsNon5uDXfUd/H/78nyWrB0rVMCeghfByUJR8hCoAOix6oB3vb/P204Qadu+uxREmVoKPH5s3J1kdrufQvpJFfq8bFlyLamBh+xFyU+s2SPCmzhYcny9QijTHqOYikk0jJTMkWkVxEPCCaFsY1KdCwj2yetoZnDBq47ogApZjaBX5udOI+CiVhDLrWlQcWrYu1igbXNeNaf8tPd0eA6RlOAEj5XFBqXKvys0uNcvMVfLV5NkdY4+Ellt6KMbg5ypeNVKQWJEcIhdA6rWD6m74E5hY3Z8YXwzla52OGC5O2tixIPNxKqVztR6VqdElUh6u8bd1tb4C2dxNgSkKSEVhboK4mL/qRHb7p5RDU/rlCBinKOSB9NhgyGnF8RDLhnIJnBQEa+UI/WmdNxHrfz+71VthF4d/LuzpljnH8OjwQML8KNQP5FVGRx5VJaFMuECOTuWesWWJBVmrDOT47aOOGV1iMc98BliIy0Je68/WXYpXQMOLbwuPD5tXeZXpn8zlOTrMRmuqGbDzzO1gqg3s8qpwl1ktc7t8id4+8dP6JG6GpTBtjNTmDRwrE4aEEdzLamGQ0rrUnQ+oHXSp/MM+iQ79pZUjrdubqb7uh6FW0FvmwsRsrGQvMmrKsw3t7H8TOxRLFF1MNlwV3tsDRDGAMu6MX0BKETCZ0rVfoZPs+d7uUSfiL5Hg8moPVEfETFUMC2vokiW928zhnmFuw6rzx3ulaU8C43wFB7WBu/O6ZnQtjCcywYM6YDplNBfaem3Z5L9RL2pcbw8sSJIzRxSugKCQ2aRRJ5WMlRg0DJISVxb3S3LFZNkkI9VcAk4kbGNDnvKtoh5IvCyTnu075z/1i5pY+gOTrUT9/V/gkWsGOsb5S8EaAYnoMPqN/ktdWIuLL0kin98zaZ7EyACbXiHzQVR1Oqht3iwJPUV3Blj/xO5yyGDc0PT0
- C3idwY51
- 1ASxL8OHTYUxUFMoTEMy7fGXewPMu2mZ4SauI+DEyK2ZhPD4dOCItgUZ5Y/uPftyPUM2j80ik6WpZ5XqBf4DkXO/eOf79fKrnKRjbFNUi5G+C4If0/ZTsrZhFR1hTOCBnAQU8uOUnoC7Ur7V7BgWZvdVaS7aKOqJfsuX2929FxEeZI6UsXrprT+D6QS9iTNhNnhtTW8xBxarHxN13RHY5mny9uw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 47C0040011
+X-Stat-Signature: bbg8u7f79rbk6y7r1ccw3anr9zi3fk3n
+X-HE-Tag: 1780577392-974123
+X-HE-Meta: U2FsdGVkX1/njeDG8WPdY6nQwKkskp01s86BZs4zxfKc6v6FyEDilAY0tQ8BNH3whGMMh5DXY02bpi6m0ccqed/WzmHNmEBukjJWmFSBBzfP5/wWXbFjo4faf99H3Q3LNu9mmGcMcw8xqhhSOCbNCtxjL0aet5rvlGbK/rOtZGCaKii+K+ITGKwoUXs6ZR/zT5L7mBIYvC35SLTHksjidHxwNj46GOTHmbfArKOsNFHtWc/1kUr1SkO2mIt/7sErl1mCJwF4HUjfLF+19vqENHTIF+nPMtwRHiVVtyjs1LkcUzZsXo7Vw/fBh+WoTrfblMf8qjGwbTIi8oxk6jrKb/hB7fj4PdnDT9JQpix8MIZXevaH5LQlJb0cXnPNEnVBf8ugFNKvWq2PNKYrWaiJbRSTfBVq04RWxgSsJkWaIF+oJV0Of96MPqszfZN8Q7lDqLXJApQ2aKYUlQVUFPXI5pFcB7pQR8UTYOBB/8JsMFNWpmPvQ03e2YBmcxM4mnfmea8zTG0zdBFrU8m3SK2BcXgRk1QU1zi4zT4mMeVTyuZbQAYGtKdlJ/HDdSGoBPyzq8ED00FtDMjaXVHVWqeHHUMRnTIIdGFggIDw8bAask1XxKV/jNSXEADu/bDyO0jhe+oYklk1PfK3cGvBmQD0Vc+i9yuo4uG8ynUUWdFkE2T1gDGNGWxlVn/My1eGKkLEzOb0YY6jsov1qqwwm7O6j27zympELAonOoJkaqO1DhoYix4EkcU9zKDU/3szTJrJ6YZaqi6Juugze+5jPuxHr8d4W7zwZuUxlnWOcVzT3GaoZNeK1vZltEewp/OPRd5hAyzhKnjRQ5QDCU3KXgH+XvHMDNIhYkNTVjT5b7ipJP+mVbAsWGUn6c2P0NHUsiLjqKdfV988/j0aqzweC/pXR4Ul9yjL4A7UCyQBtrDITSFSO0QpjOFNWAKLFy0ku4NdwLxCZVfJaiSp4Shc+RF
+ 2OJjwPxQ
+ Su7J21dKxPaa77/eyMXcS2qx2OTu+P23fuFvy81tYS6QhCraNixpxwBAFWFviTosDiLtePaw9b2MbZBJIEk0A7QrXiBnwL8sNJX8+orP7kPUR59Egjksuq8bHcYbhGTHQrbT0nJOzsOB5/KQqe1Vl8NRtflQFryehCLaJmzDmqHzOKczCdMvycVzlZtcMv3+JtFWm3x2PparoW1qMWn7GdWR9vmWyjBOb/ZfNaL2GNLMg/e9oaN4HbX2izCbvgwwrC87LTdwUym9HLJrzTSgPdSgaTmbx8ZRuvssbGsk8mBr5soU+XbpINxHVXe+dV1bVgeNXtujhNWuIa+ITMdxoLhSfceQjMnrSwr48gHEiNCpxVWPH1zbSe7pcaJi0Hcnqy+URs/uv1oGO40k7OdB1zEuc/qOkBdqD5eqz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,56 +113,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->=20
->=20On Thu, Jun 04, 2026 at 10:15:12AM +0000, ilya.gladyshev@linux.dev wr=
-ote:
->=20
->=20>=20
->=20> @@ -115,8 +120,14 @@ static inline void init_page_count(struct page=
- *page)
-> >  set_page_count(page, 1);
-> >  }
-> >=20=20
->=20>  +static inline void set_page_count_as_frozen(struct page *page)
-> >  +{
-> >  + set_page_count(page, 0);
-> >  +}
-> >  +
-> >=20
->=20This name is strange. Maybe something like init_page_count_frozen()?
+On 2026-06-03 15:54 +0200, David Hildenbrand (Arm) wrote:
+> > However, the exited-leader case is a real limitation for profilers.
+> > OpenTelemetry eBPF Profiler wants to profile a process where the main thread
+> > has exited but secondary threads are still running [2].
+> > [2] https://github.com/open-telemetry/opentelemetry-ebpf-profiler/pull/376
+> > 
+> > Using plain TIDs (flags=0) would work, but it means users cannot use
+> > PROCESS_VM_PIDFD in this scenario.
+> > 
+> > What do you think this patch should do? I see two options:
+> >  - Address this limitation in a separate future patch that fixes
+> >    pidfd_get_task() to use PIDTYPE_PID when PIDFD_THREAD is detected in
+> >    f_flags, benefiting all callers (process_vm_readv, process_madvise,
+> >    and any future users).
+> 
+> Extending it consistently for that scenario seems like the right thing to do?
+> @Christian?
 
-TBH I slightly dislike "init" in this naming, but it's probably better
-than our proposal. Maybe set_page_count_frozen()?
+Yes, but I cannot vouch whether the mm operations deal correctively with
+subthreads.
 
-> And don't you want to update it in patch 2 to set the bit?
-
-My bad, apologies. Don't even know how it passed stress-tests...
-
-> >=20
->=20> static inline void page_ref_add(struct page *page, int nr)
-> >  {
-> >  + VM_BUG_ON(__page_count_is_frozen(page_count(page)));
-> >=20
->=20Hm. These VM_BUG_ONs are useless after patch 2.
->=20
->=20In patch 2, you make __page_count_is_frozen() check the frozen bit an=
-d
-> page_count() masks out frozen bit.
->=20
->=20I guess you want to read raw ref number here, no?
-
-Yes, indeed. I will rewrite with __page_count_is_frozen(struct page *)
-
-> And why not VM_BUG_ON_PAGE/FOLIO()?
-
-Will change to those
-
-> >=20
->=20> atomic_add(nr, &page->_refcount);
-> >  if (page_ref_tracepoint_active(page_ref_mod))
-> >  __page_ref_mod(page, nr);
-> >=20
->=20--=20
->=20 Kiryl Shutsemau / Kirill A. Shutemov
->
 
