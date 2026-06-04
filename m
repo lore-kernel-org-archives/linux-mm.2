@@ -4,100 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3AC3CD6E6D
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 16:09:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8897CD6E6D
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 16:10:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9178F6B0088; Thu,  4 Jun 2026 12:09:58 -0400 (EDT)
+	id 4D26D6B008A; Thu,  4 Jun 2026 12:10:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C7EA6B008A; Thu,  4 Jun 2026 12:09:58 -0400 (EDT)
+	id 4824B6B008C; Thu,  4 Jun 2026 12:10:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DDF76B008C; Thu,  4 Jun 2026 12:09:58 -0400 (EDT)
+	id 3BF8D6B0092; Thu,  4 Jun 2026 12:10:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B91A6B0088
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:09:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 03BC6400E9
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:09:57 +0000 (UTC)
-X-FDA: 84842716476.10.7EB2442
-Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EE2C4A000B
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:09:55 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=1wt.eu header.s=mail header.b=TElWUM0s;
-	dmarc=pass (policy=none) header.from=1wt.eu;
-	spf=pass (imf15.hostedemail.com: domain of bounce@1wt.eu designates 51.159.59.229 as permitted sender) smtp.mailfrom=bounce@1wt.eu
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D1056B008A
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:10:19 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E161F8BF98
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:10:18 +0000 (UTC)
+X-FDA: 84842717316.28.410C67D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E6F99A0019
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:10:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MEq5dlFI;
+	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780589396;
+	s=arc-20220608; t=1780589417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y/e/KFECQ0nVdisZcQGbObkQi59gFXxoiirNSRFoeAU=;
-	b=nUTeDdolumd4u+kBp5QsOW79sfAMJnppZbIEbL3mvA4rTBOAZzmhzviIjLMMlMarWJeRyc
-	MOiwf6QiKUlwDczsQ8A6Oz8xcDyGhwozi6dzumLWMK7jRBjO/EoMNXaJLILX07fbaQdozD
-	h0iXEIVH5nZNroKlScPfMYifdfXXquI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=1wt.eu header.s=mail header.b=TElWUM0s;
-	dmarc=pass (policy=none) header.from=1wt.eu;
-	spf=pass (imf15.hostedemail.com: domain of bounce@1wt.eu designates 51.159.59.229 as permitted sender) smtp.mailfrom=bounce@1wt.eu
+	bh=YW7V6VQa29YjcMSrmd42lxjY3Q5BWm+8nU4PiEtSpss=;
+	b=f+d0JpZ8ajVVvD8B4eCqzPhJUALUSp7O2WLjXP0h/U/ACrKeweK92R94i231Z7ybPBC8c2
+	zPnuDgG/+kEzSto14BOBsb5LYiT2KvT20hAaoKxg8DZRlC8RFnHcxtuY/+cciDJ3hj5gYU
+	vTv8Qf5DU8dz7CHgqPQhcNf+4Z2fD7E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780589396;
-	b=b+uwXYLSmlTc2oa+50S9IcQIz0DlKwJtpYj7kcJhL2azvtBP9naeus1WfUB6sUFvX8Rrsc
-	lgONPgBZoHPVLq/e9td3DdaRkHwDqErVHsOwUnt6ifK+05J+1q1wQ7/bhe+CeDVmvP4hbb
-	QBEojr7mhxigSvWxD5DEMxrrNx9MKmY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
-	t=1780589394; bh=y/e/KFECQ0nVdisZcQGbObkQi59gFXxoiirNSRFoeAU=;
-	h=From:Message-ID:From;
-	b=TElWUM0sOEBUzobw2i+ObteZadlxtBDeRmHqCRPCvh5A8JvN3VVhCrmkxgCvned89
-	 gmmyp3Pp+k3E4V5MOhBKRMkYMNO+fi3SWg5c7mqTFtLTt5SRePYS6NF8eqRvdPqZMy
-	 zGRiGXJVHF2QJGmtNzwVRIVXrzMUAuNzP2a//igE=
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by mta1.formilux.org (Postfix) with ESMTP id 8DE61C0BB1;
-	Thu, 04 Jun 2026 18:09:54 +0200 (CEST)
-Date: Thu, 4 Jun 2026 18:09:54 +0200
-From: Willy Tarreau <w@1wt.eu>
-To: Andy Lutomirski <luto@amacapital.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org,
-        Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@infradead.org>,
-        David Howells <dhowells@redhat.com>,
-        David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
-        Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev,
-        linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <aiGjUqI59e966oBu@1wt.eu>
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
- <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
- <20260601173325.GH2636677@ZenIV>
- <20260601160455.2c187574@gandalf.local.home>
- <20260601172825.a51a588ec1c32617a0e12d78@linux-foundation.org>
- <aiEb8CTM-ovMIq7-@1wt.eu>
- <CALCETrULMixRGJyGqAAujW7RN6PP2f_Orn2Y_0hpPMjRqQnY7Q@mail.gmail.com>
+	t=1780589417;
+	b=JJ801g+QmOBipsRB3S7c1qAtEQoEXlQ2Wk4msnHAU9+0qaK8aZTm0pa5zs3LKjWTWGhiDj
+	qnWVAwraP2fVyCwCKUB68oZevQL0rQw5rUl4kXrjVumN7FF1NrOC/tQfqp3gsdGpbM/6bm
+	inW3f88cwoLVBvq0gFCbh6OAQDFg/uw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MEq5dlFI;
+	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DCDDD44498
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:10:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB2D1F0089C
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:10:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780589415;
+	bh=YW7V6VQa29YjcMSrmd42lxjY3Q5BWm+8nU4PiEtSpss=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MEq5dlFIJfV2cj25Gy5Iphar+8EB3Q+M++ma3ddkZ79VItR+ZvWCy5GquLxnOwLVT
+	 J0TvzAcGjl7Z1/O41TXXKHBFelMg54n3BTGq2Q9EZgUNoAihogBT0qG+6UYmqVnx2H
+	 Mu7raqFZSeIZhtTt2+xGRdXmofZV6p0dcICRAwft3WVZmbtnX+2V2U5eRc3gWEeD0u
+	 Lg5SEKkRDUZMSEKAkIxpE3/03WJK7VloDAFzWaehmiYDKu9IZw5eqQFmuC9/jPXudl
+	 Pqvz5HUrco5yx9+lUkOI41JCLlWsJ1Flg08a2vxZpM9oXrMH5s7EcHnoJFSDpt2rW1
+	 X/t1zmDjUd3fg==
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-9158643e538so82467085a.1
+        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 09:10:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+4pg2WvuAC03BZulNzIy5xUTJI4mCivTOKZTcnIT4K4SK9kGW11DKywY14W1/BYhnDlR98M55OIg==@kvack.org
+X-Gm-Message-State: AOJu0YxS67McuRK9IAgoUwAqR6g1DK9bkqpy4rwP7RFSpQOiRa9BXQtz
+	0fpjdsRBgZj9P9q0u/NmUxHwd8Q4q03crJQ5Lm/qDI9XX4NIlSQGWK6t8r9c/sFCud+VM1VQFJI
+	uSjfdadJWM2PFPquVDAhkmgyqHjUyYPI=
+X-Received: by 2002:a05:620a:a181:10b0:914:ca75:e8cb with SMTP id
+ af79cd13be357-9158a7a7d31mr980372885a.39.1780589414974; Thu, 04 Jun 2026
+ 09:10:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALCETrULMixRGJyGqAAujW7RN6PP2f_Orn2Y_0hpPMjRqQnY7Q@mail.gmail.com>
-X-Rspamd-Queue-Id: EE2C4A000B
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-2-jiahao.kernel@gmail.com> <aho7nepN5jZtKmef@google.com>
+ <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com> <ah4ZZGl7GYJf54Wz@google.com>
+ <ff344c9f-51da-8b3a-e7a9-c4a7f4702ef8@gmail.com> <ah9i3uhh3PFiS0Uk@google.com>
+ <c7870fe2-3588-79db-cbfb-bd6a2b78f594@gmail.com> <aiBpibRNi0BcM1Zu@google.com>
+ <9898f83d-fae9-e284-6b85-c7f4089840a0@gmail.com> <CAO9r8zPBH6-0SQ6-_ZOhTQeyu=rz4F=ugikCrU-JR_skm6fEWA@mail.gmail.com>
+ <a60eedb6-f3fd-4092-b726-04a17a695ace@gmail.com>
+In-Reply-To: <a60eedb6-f3fd-4092-b726-04a17a695ace@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 4 Jun 2026 09:10:01 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMydJfQ+28OQkPYyH1yHngxYCNByo-4hu=D2eoJBtTX-Q@mail.gmail.com>
+X-Gm-Features: AVHnY4JkU6wiALPrkeGY5YeF8-NFodHMhfIp-dzt841kR4__pG_M4xsJghd5PrI
+Message-ID: <CAO9r8zMydJfQ+28OQkPYyH1yHngxYCNByo-4hu=D2eoJBtTX-Q@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor per-memcg
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
+	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Hao Jia <jiahao1@lixiang.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: hm3kub51639zoxup7b1p131yb4n8u6it
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780589395-637686
-X-HE-Meta: U2FsdGVkX1+79ZxQe5gW9eHmyuXVd09sC2QArosxuQK5vbH/32TXg26slfF48TP2KmOYeFM4DMXCQuqXqQR89teySkhye7InV5m0Gwt2An24Jphrfz9Up5Bo9G24TkAWxQPZeIlB4QqE/KxqCQWl64aAiKdI6ItVQTVgT+TW4gMpyB3ey79feN4cQu0Rm75+4cnELKfgNBk9uEve5ouazw4PhFL8XCXuyT8AouUSLWdKOf9U0IcI1pRTAzNet+lEkywDwyB2jWq192vzoRkFenbdfolk0hIq+0kTuGjQcm/kFdSeKvlVyAX63EIFoxeGv+AQyRAepeZQSY1W/iMJq88OXbHsZhWaJdzfy/I3rtn3bAUbD0nzrZpF2UW0fXBZU7oh16iypZF2ToRugTmfp0pxm4UkGzGrrH7Vqa4sKoBY1vFpEg0/cTR0mIYkFsc1UIbg+D5nHPmQP/9z8yyznd3PWyeNuJQ8WpQOQ+WBFmhUtdiwLThpwwZ/AZcrMXDh32wssccGPiiqTHrHJj+xFSXZI++oUxJXwOKP+dtqR+fAp+RcTtGiENlp9SQKdfkk4s/p4KYDFFzApPnb8By9DjKOVNGOV2wUYQrYkg/BMhk9ZvKp753rJOTGV4Bm81y36NmbXumVbzP8AwDUc0SZ4/1WpxpEP3atql3VW5gPzmoc2cMj4Km9BQkQlgEW8w3TrymOaIO1XddQg13Oq7KewrpIZKQ+oRkKxMt+rkcLe724apNQRCPPfCuZAJgsQ3Z05yXIymRzn7/qne2o2ny/oyboPvpqQWc442gX03wiq9MtbrfVxHYUwxQMAjZHMH5eLJeogTU1/q9dgYfsGb22HXzdec6Ipga5m9ccLjbht/jf/hvQ8aGbkJVZ5CdVcCRrf4TEvqUNt5U35AY48Y+iKWt8QKJKqI4tIo+1lmOEJ4maK1tN40/64ndJZ1XPYoVkOcOCFj7EQCyBDax6dLE
- AuTzvGY8
- h1HGGxEa5eOqSRWv6eqFF3cA+RfzH1UnSYdTLlD7TcnS+7BlLtsNElMFXeA5TVv/Ex3HudfAupl/NuvI/XEWmZqeDvZnWifXV5skLp+PIpLfCkAe4EMneDVlE9o0bh9MBi7WPOGh0X6MmEErsuqk5UzTZUUWREwXtb83CSykYUWlFSO6TPU/V0ZheiLkOnVjPy6Dr0QvqIbdOC1vX1RfqDEOQ5bLAXLOzFqOuozLJrx4s0p9bjW3UZmxi9ElL/pJCEK9Xvc8fXVtHzptNUs5P2eByMzrB/1EwU08QZHAmyGJGbc4MZA0F+pcQ6X6WSOcTVu9iOExdwz0gu/Alm+27KBs4KQAP8tbh8tkeRDJEr0Y7qdwcYndDqnY6V1ASG6yyYMF3hgPdWB0yA1odlVXGpxtiFTQETujbuCKwGHrcJKE31JXOeiZZDqne6b2PTlUglh1qzQoBaYNAGt/XqEBiQVqmSuODINb9xBM+g7ScOg7pAK9rnC1l5gCvH9HSoNqkI02AIpnGnRxhn85MAJavgxelXesti5+UaJujuUEG0DPpJg5FUSQK57x8T+LMdEMRNdrvW3Xzm99sgM4sL37bf7eD3wwPAbtUdCrzxQ6qa5MEEjyvht2xSuFj3X5lRAJF7YvcaJM6CF+Y/ZzDjocp7HTsh7mbxOU5GXdEv4cWio1hgHFHogBTmZv3W0Eh5QvRqJYMzVwl9kigD298/abhlISTEw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E6F99A0019
+X-Stat-Signature: ficn1xf3ecixetmksiganzinhrytyp7u
+X-HE-Tag: 1780589416-337004
+X-HE-Meta: U2FsdGVkX1+2yZy7fIb5y85XlULizgRyhN1BdV5AUcy6xfsETo5rUrHjjb8Ue5h4U3E0JE5CrR91kxaDzboo1Bu5C+/GRfKcgAFuMqzYHKG04ZjbF460EC07W+C4jBhlz/K8EyKrX0fKlanBPnqWcS2iknw1o+0IE+Wrab4V5vLRx4huF/xt5yjBqwmetturjKuAoRbD9Fr9zejJEc3uYEqXJgO7bGb4aFBvQq21hIifIUsUvcNo9PleWY00rMOnmUPpiAgd+TGp23QZtY+bHShsipNQQw0aayfWauqqNku+YoVhW/uRrtRLm9VOmAAw/hHwcCNzXVLFYKd7O2YvUqFa1GSKvFCSc6GTgsNnZAdiDnZ5jmJmt4/KM3ZeqaN8IRyyGRxI50uqpJlVpHN2c4BDPteuX1XgEpI0fZ3+PTqnmjzqvV9Hg4O+F85UV0IaDqxVqoqHgITYF8+a2EF60nuMWwZLcsM3+u5Bl0bh6t66WBl+12mxmOj9eEGhG1G1tm7RO8HOrAJ0R5q3nJQC5c4e1nWX/ng92ihFIOm7N1f/OqKeYiWCB5XzTdyASYxaV7297Qw0coxPZr+58yuxBn4aku9zRcnrsWug+jZRnTmknTa1XibOrhQ5+rPipoIl1zM9ffwB7gqRDfdclwjkNjAbtrrxfCTai+s+0MHgC+BdiVINQyLIERnbpNv5SLz4cb2yFBbxK//vIP0nUN0RjIF+W5P3Q/IzuIGNg0NJmAcPItEvgMxRUOEDPPqboiEt50fg9KMgKEf+bzmmWY3BINyJmh0TZSZxDnyqdJFZigZWKGYBOpfDNFDbhcuOScYMfe9Fv+kOAcFNq+YsgIgHK15oGxfrj85xdC122VNnNJp4kwgOorEvuzKdiq2+OGBrvNEZXVFQlweGq0ZuiOiS0bxehSBKRwMQwLXlwTFhC8pyJppFCJ21nB7xDXl+BRjNwqLZnTFlSTLRWtmWDzF
+ LtLBRvfY
+ 6BSqPL9XCXC67YeC+m+/nM4Y2Cn0PmxTNKTj6EQgxMPKfhwlviFZKJdJ1JrgELW2RrDfzqboSdg8hHGCl+DI+O0oBdlzskWzkKc3s62ayR6WwTLAIbQ/2gnLxZNiH6llL4Ryk1Pzh5ZbA7QJkHkvMXtfAGhopqPFhSv4Fq9UOT18aS2/9nTrLX2mgeiV+zcD2tjkiFRGCFp6UzwoitJIhGbKWC+nK6Q/KcspuS6eGXLR5wl1shOd4PHeNq5165FmhpIc+fiir5GA6BYSPXpbYUGBMEcr24p9uRq1k4OnP/410hksaR7hkESzKL2tF7zrv4NHhHvCG7b3IPZ8COR30d8I1FDS4KoFgHCAILdWZB8f1xZDRC9FjEg6tELGFpnjTtG63k2C5fJGqqzVWERy7IHQZvz6ik707NKNpdKcNRXpBD3KYDgVXiSlWIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,156 +112,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 04, 2026 at 08:53:15AM -0700, Andy Lutomirski wrote:
-> On Wed, Jun 3, 2026 at 11:32 PM Willy Tarreau <w@1wt.eu> wrote:
+On Thu, Jun 4, 2026 at 6:06=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> wr=
+ote:
+>
+>
+>
+> On 2026/6/4 13:34, Yosry Ahmed wrote:
+> >>>> For instance, suppose a parent memcg has two children, memcg1 and me=
+mcg2,
+> >>>> each with 200MB of zswap (100MB inactive). Triggering proactive writ=
+eback on
+> >>>> the parent memcg will exhaust memcg1's inactive zswap pages. After t=
+hat,
+> >>>> even though memcg2 still has plenty of inactive zswap pages, it will
+> >>>> continue to write back memcg1's active zswap pages. Writing back act=
+ive
+> >>>> zswap pages causes the user-space agent to prematurely abort the wri=
+teback
+> >>>> because it detects that certain memcg metrics have exceeded predefin=
+ed
+> >>>> thresholds.
+> >>>
+> >>> This will only happen if the reclaim size is smaller than the batch
+> >>> size, right? Otherwise the kernel should reclaim more or less equally
+> >>> from both memcgs?
+> >>>
+> >>
+> >> I gave it some thought. Not using a cursor could lead to unfairness
+> >> issues with certain writeback sizes:
+> >>
+> >>    - If the writeback size is an odd multiple of WB_BATCH (e.g.,
+> >> triggering a writeback of 3 * WB_BATCH), with 2 child cgroups, the
+> >> writeback ratio might end up being 2:1.
+> >>    - If a memcg has 5 child cgroups and a writeback of 2 * WB_BATCH is
+> >> triggered, it might repeatedly write back from only the first 2 child
+> >> cgroups.
+> >>
+> >> Although setting a smaller WB_BATCH might mitigate this unfairness, it
+> >> could hurt writeback efficiency. Let's just use per-memcg cursors to
+> >> completely fix these corner cases.
 > >
-> > On Mon, Jun 01, 2026 at 05:28:25PM -0700, Andrew Morton wrote:
-> > > On Mon, 1 Jun 2026 16:04:55 -0400 Steven Rostedt <rostedt@goodmis.org> wrote:
-> > >
-> > > > On Mon, 1 Jun 2026 18:33:25 +0100
-> > > > Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > > >
-> > > > > On Mon, Jun 01, 2026 at 10:17:23AM -0700, Linus Torvalds wrote:
-> > > > >
-> > > > > > TLDR: maybe we could ghet rid of "f_op->splice_read". *That* would be
-> > > > > > a big simplification.
-> > > > >
-> > > > > FUSE might be interesting - fuse_dev_splice_read() and its ilk.
-> > > > > Communications between the kernel and fuse server at least used to
-> > > > > seriously want that, so that would be one place to look for unhappy
-> > > > > userland...
-> > > > >
-> > > > > splice-related logics in fs/fuse/dev.c is interesting; another place
-> > > > > like this is kernel/trace/, but I'm less familiar with that one.
-> > > > >
-> > > > > rostedt Cc'd (miklos already had been)
-> > > >
-> > > > Thanks for the Cc. The tracing ring buffer was specifically made to be used
-> > > > by splice and the libtracefs has a lot of code to use it as well. As
-> > > > reading the ring buffer literally swaps out the write portion with a blank
-> > > > read portion, that portion (sub-buffer) is used to be directly fed into
-> > > > splice, providing a zero-copy of the trace data from the write of the event
-> > > > to going into a file.
-> > > >
-> > > > trace-cmd defaults to using splice to copy the tracing ring buffer directly
-> > > > into files to avoid as much copying during live recordings as possible.
-> > > >
-> > > > Whatever changes we make, I would like to make sure there's no regressions
-> > > > in performance of trace-cmd record.
-> > >
-> > > Well yes, The patchset seems sensible from a quality POV.  But to make
-> > > a decision we should first have a decent understanding of its downside
-> > > impact.
-> > >
-> > > I haven't seen a description of that impact in the discussion thus far.
-> > > And that description is owed, please.
-> > >
-> > > I assume a small number of specialized applications are using
-> > > vmsplice() to great effect?  What are those applications?  What is the
-> > > impact of this change?
-> >
-> > > Once we are armed with that information, is there some middle ground in
-> > > which we de-feature vmsplice()?  Fall back to pread/pwrite in the
-> > > tricky cases and still permit vmsplicing if the application is
-> > > appropriately restrictive in it usage?
-> >
-> > I'm using vmsplice() + tee() + splice() in high-performance applications,
-> > load generators to be precise, and soon a cache. This is super convenient
-> > and extremely efficient:
-> >
-> >   - vmsplice() is used to prepare a "master" pipe with data to be sent
-> >     over TCP or kTLS
-> >   - then for each request, we do tee() from this master pipe to per-request
-> >     pipes.
-> >   - the per-request pipes are those that are used to deliver the data to
-> >     the socket via splice().
-> >
-> > So we effectively use vmsplice(), tee() and splice() here, and for exactly
-> > the reasons they were designed: only play with page refcount and not copy
-> > data. The code is here for the curious:
-> >
-> >    https://git.haproxy.org/?p=haproxy.git;a=blob;f=src/haterm.c
-> >
-> > and its ancestor is here:
-> >
-> >    https://github.com/wtarreau/httpterm/blob/master/httpterm.c
-> >
-> > It simply doubles the network bandwidth compared to not using that.
-> > (62 Gbps per core vs 31). I would seriously miss it if I couldn't use
-> > this anymore.
-> >
-> 
-> Wait a moment.  This is neat, but it's literally just a benchmark,
-> right?
+> > Exactly, the batch size should be small enough that any unfairness is
+> > not a problem. I would honestly just do batching without a per-memcg
+> > cursor, unless we have numbers to prove that the efficiency is
+> > affected when we use a small batch size. Let's only introduce
+> > complexity when needed please.
+>
+>
+> If you prefer not to use per-cgroup cursors, do we still need to keep
+> the global cursor (i.e., the root cgroup's cursor) zswap_next_shrink?
+> I found this part to be quite tricky when trying to reuse the main logic
+> of shrink_worker() in zswap_proactive_writeback().
+>
+> Of course, I think we could also keep zswap_next_shrink and write a
+> small helper to check if it's the root cgroup, allowing us to use
+> different memcg iteration methods.
 
-No, it's a benchmark *tool*: it's being used to stress production code,
-which is important and super hard at high loads. You place it after your
-proxy and you measure the performance of the proxy (which is supposed not
-to be as capable as the testing tools otherwise the methodology revolves
-to testing the testing tools, which is not the point).
-
-> I skimmed the code, and it doesn't look like a production
-> workload, either.  And you manage to get around the awfulness of the
-> vmsplice API's complete failure to tell you when it's done with a
-> buffer by ... never actually changing the contents of the buffer.  Do
-> you have any idea how you would write correct code that uses vmsplice
-> for sends and then *ever* mutates the data without literally
-> munmapping (or madvise or something) the data do you can safely mutate
-> it?
-
-I'm not sure what you mean here Andy. I *do not* need to change the
-data, it's just a pre-made pattern.
-
-> > I also have mid-term plans for using vmsplice() to deliver contents from
-> > a cache to sockets as well via splice(). Right now our cache is split into
-> > too small chunks (1kB) to make that useful, but as soon as we can move to
-> > 4kB pages, it will make sense. There the same gains are expected, and I
-> > would particularly dislike the idea of no longer being able to implement
-> > zero-copy!
-> 
-> If I'm understanding you correctly, you see (and measured!) a
-> performance improvement, and you would like to use it in production.
-
-The prod for the tool is to be used to benchmark other tools. It does
-the job quite well. It's even more important when you use kTLS-enabled
-hardware where you can get zero-copy all along the line and delegate
-the crypto to the hardware. That's the beauty of all the nice work that
-was done in the stack along all these years. That code started to be
-used in clear maybe 15 years ago or so, but nowadays the gains are even
-more interesting.
-
-> It seems to me that this is an excellent opportunity to remember that
-> vmsplice gets a performance boost in a highly synthetic situation that
-> sort of resembles a cache scenario and then to deprecate vmsplice and
-> build something better!
-
-I've definitely been keeping vmsplice() on my radar for our cache,
-and we've progressively implemented various architectural updates in
-haproxy precisely for this.
-
-> Or discover that we already have something better, perhaps :)
-> 
-> https://man7.org/linux/man-pages/man3/io_uring_prep_send_zc.3.html
-
-io_uring is different. We tried it "the dirty way" in the past, by
-emulating a poller, and it's not worth it this way. And in order to
-do it the right way, it needs to be done totally differently, which
-has impacts all over the stack. The code in the file pointed to above
-is just for the httpterm testing feature, but the rest is much more
-complex.
-
-> I see that this can submit a buffer without a syscall (tee + splice is
-> *two* syscalls!) and that it has directly addressed what I see as the
-> really big deficiency in vmsplice: "This second notification tells the
-> application that the memory associated with the send is safe to get
-> reused."  If I were writing the user code, I would very much want that
-> notification to be an explicit part of the API instead of making a
-> wild guess as I think I would need to do with vmsplice.
-
-I agree, for the cache it's something important (not for the load
-generator). But IIRC that's something you can also check via SIOCOUTQ
-which is normally sufficient for a cache's eviction system (though not
-fantastic).
-
-Willy
+I think we want to keep the global cursor, at least for now.
 
