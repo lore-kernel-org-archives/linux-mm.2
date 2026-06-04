@@ -4,137 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C3FCD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 07:32:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3690CD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 07:35:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 854636B0005; Thu,  4 Jun 2026 03:32:45 -0400 (EDT)
+	id 23DAD6B0005; Thu,  4 Jun 2026 03:35:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DDA86B0088; Thu,  4 Jun 2026 03:32:45 -0400 (EDT)
+	id 1EE576B0088; Thu,  4 Jun 2026 03:35:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A5716B008A; Thu,  4 Jun 2026 03:32:45 -0400 (EDT)
+	id 0DD276B008A; Thu,  4 Jun 2026 03:35:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 53E7B6B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 03:32:45 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C0EEE140657
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:32:44 +0000 (UTC)
-X-FDA: 84841413048.13.3C380B0
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9EE2440008
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:32:42 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=HWzBCnC9;
-	spf=pass (imf04.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.208.46 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780558362;
+	by kanga.kvack.org (Postfix) with ESMTP id EE47E6B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 03:35:27 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B33161405E3
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:35:27 +0000 (UTC)
+X-FDA: 84841419894.12.4BEC1EE
+Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B78A41C0006
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:35:23 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=MAlF3fYm;
+	spf=pass (imf18.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780558525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8QeCUKmkVy2NrZVi3REONjZfBBnfnlNmwwM3gXjDs+A=;
-	b=tDWySIuYMpOX1T/L4DgUhfqSVfbW4aZdtU20lc1H8AXCxhPlO8k3KN2aCtVhXjbu2SXmbV
-	AV2EKiryza6bxwqXnq+YVY3lNn4fZvmmFUPj8mx1iuh80Oad+6mIFQ3Rg2QcNq35o/mbrm
-	2WdSRDMon9U5YeLcB10HSUfeo5VtUO0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780558362;
-	b=Qp0eWT0Gmss28T1JDZvP2zBqyyBxJWYlwXwVCH6sfK699lHEVBDbaha6C+teQifbyqajR8
-	TCQTFCAWAHdS05qV63i8kmA33d8BQJLpnrhdN1eajKaz3kMVFoHXEo85fmFO4Hzq/E8+s2
-	4P7eIGovISVkliUAkrEQ5O6+eOLXluw=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=HWzBCnC9;
-	spf=pass (imf04.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.208.46 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-68acf0a15b3so546114a12.1
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 00:32:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780558361; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Wwm0I8WohAUD8a7dLj55kb5AaRcfMQq2JKHwf9Ie674ayn0ozAaQukM6vvV/iWNJOY
-         wk9r2OZ6Bmat0kLY1UgdTa5ZYh/8i2NrpgSBPP6Ic3aQIzZN5deIGf5rjbe3oulsnrfz
-         QWApS9Tu6Lf+ymzWLp8yGjB7H5aHZVUrHBXaml5DHtJukEYU/SHHtCuAld0w9i8metq1
-         KXreXVcdSF/LGu4XpfGWgZzyUrV8i5FKqRyp8nhz5EfuE1fCdO1TAe2q665M96/9DCkR
-         3goyuhifBnHetT0EFRHgPJlHPG55znzYQmamAMq+NRkX1/FQbw4cG1C3KFw/XzynpqzG
-         bqbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=8QeCUKmkVy2NrZVi3REONjZfBBnfnlNmwwM3gXjDs+A=;
-        fh=7HzroyLu2gypCt5FSbroIiQCMS9yCOAR5pu/QqRl7Gc=;
-        b=aMWfW1u6AzCVdwbVD6hL7maTLfuC1fNBFHw1ZxHxKIyUxcSRtXWyBmet5/sEruuNAb
-         cy4i8SmG1zOm2nZ3Q9zjSe/VHPnQdkr7kIzVcVKfB7U9gwhNlBQx5AktkCYpvcyLTTkn
-         3GyWJILvcafC5GwqDdPW58sTmV42pxIO9cDrQKPe3rG4G0DXeGDeWr7io0jZFvnHbaiu
-         oEXn5Gj9yNmp0pMd+FbzxFk55+yUIDbRj5QIO3P7QHa2GCgT7owpMaM/mvk0jnzbE/4n
-         ExeIrr940z/7ETdUC7TTbed7ae+y11DkEJ0fQQSo498OL5tTfkrtbbq5tnTgZ2zmYqTO
-         PJJw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780558361; x=1781163161; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8QeCUKmkVy2NrZVi3REONjZfBBnfnlNmwwM3gXjDs+A=;
-        b=HWzBCnC9UqTzS2WMRx5skXfQmvPeOJtzr3wIviVdlKO2OQdKpuT+eNguHqIJL20OaB
-         bo7Aitrs9+HpwAbED9ZxeenyrNl/hq4fVKf5kTGNV1/UoTyl+e2oWVQCNylNmHo+FO6j
-         WPmPMPKEsLTouR3Qu5kETeIrhej57i6j4jtzNVLnrgaJ+a6RnnfxNgTAAT5GbJInY7wd
-         /7QQjvY5sOLaRTi9XcKvRx7njGF+1prnNgwg1Yy8GNFgqBBLhlugthXWAdKEIb9PZ1KE
-         74r23WvpbHFfoITgURmYHk37lIh/aVGLEh8RWCINR9F+C0E6H5+xzVJ0Lq2w0PZ+ytWm
-         V2pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780558361; x=1781163161;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8QeCUKmkVy2NrZVi3REONjZfBBnfnlNmwwM3gXjDs+A=;
-        b=FaY+cEYZoRcB1Hs5XCOuUNHJxfbWkXIkYCSWWYg6STR/O2d8US+H1Cewxsxhjo08+H
-         Prl4dh5KGZ6YifxkX1cq62st5w0A142jkgvH6oU41wQTiuoNN5bfL3FjMMz8oSIB6c0D
-         c+gN71g2QW/14G7FWaW0nIwib7W8Qm7cLqLfte704Hdqjj0YTL3eopp7GhZupblXVbYo
-         rA5DwaGDPCSsoVBVw68kV5/wTel7o30s17+a2W4ZzxKhNRCeEhNQI0CRM8OWiV6ft7RK
-         hkm+QGWobGr54uwQKrB3Aib1Sm838O3wpw3SGoU5NFkCMH0VYugkRSvI39fzG4KIKKiP
-         ZjiQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8jMMFF5+8WcC49jJXoIBBBQupUkj1dxD1c1LRc34yi+5mdLl99SsKYrTN0UKBCHjh1V3LNkXHfsQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz5M3Ifryf3U0JbDSyiMqGFyNeFSc/SPg3im3wvYSR2eYfBi6uF
-	u269h/jXq8ImBN0PsKav5NLw1a5KgJ0EyyTMNyRSxEBXBe34zBfk/soGfEVaZtwdKNrk2hMrzAh
-	e/Vdw+f5VRhbauc4EFHuruNP6GRlty2qTa5kICLggWQ==
-X-Gm-Gg: Acq92OEaXgzV9+58ZjhH/HIBiF7CJlBCj79DHTlYNyWIx+qUeHXpCrLFQ2i7R4Waw4F
-	c/ogd9zXqA2yrL6fk/8+miC5O2cjJZS7GPxUx/FhRv8YsQigj40t+mT3Rl17z/GhGCxVvAr8EVv
-	JBsbWIlec+yII1Fuqpv3Bk0nyo/7lpq0bamTnWCiR5xXh0e9eItK/3iz6jdLs2/OTsLgh+XPIx3
-	qCbkN2EuLoGkPLdcoQnvxqWxf9/4ie8CbIzd23LiLSOzHhwCVPBThZ5F+ROfWBpKB0MQDsOvMqo
-	A4EXJ7+B+GT70R8t52tSP80IHa3rjgbh9s1r/kgRP6oJbI8=
-X-Received: by 2002:a17:907:8e0e:b0:bea:4c91:fe88 with SMTP id
- a640c23a62f3a-bf0ad204057mr309239166b.18.1780558360935; Thu, 04 Jun 2026
- 00:32:40 -0700 (PDT)
+	bh=9h5MDONrlf5udMRRWdNkQZ2RCA0Oam9E19zys+QVifc=;
+	b=j1f2+Omtt0tqrV0oDZssXRUjtAOwHfCBL3PmZQdLkqtVFPIpKV656ruNLi52ZkpS8YqPKn
+	f7+LywzijLpa7SSroQFLC0iNWxG6iNTGbWaJSh3VufcWj52CO9q0ZgvnEoqpYtH353A94Z
+	ykSSgDjbF2E3koBcZiUtQcZOKzydGGg=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=MAlF3fYm;
+	spf=pass (imf18.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780558525;
+	b=pJym7guJKhJ33StWpYQaviYRyHtg7dQQXP5GNv4tDavx42w7ze7UiyADZmkmeQi+jYRLaX
+	Z0VE92Ni2Cx1JFI8518DM43gaf1IrLPsSpFSi7AQXffQZMWDklscoulBa2CKvqACI5KYUs
+	c8nQVhjGKUDfkGLfbr/TW1Lp0Rg4fDE=
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=9h5MDONrlf5udMRRWdNkQZ2RCA0Oam9E19zys+QVifc=;
+	b=MAlF3fYmlZBznxMRnPOaTW9/Xu6Cl1PQpuaNrTdumG3c7d/S+iH/b0+6O9gJpaoev1YAXsgsO
+	ot3OKjO7lBz608uUW/2Swz0jn/wrqpbjnfeKHGa/9iad50CBgTZfEI5ceXLRX/ZV6FQ0SyHf/CT
+	KsZB3CVHnX0eapmbUDOFx4M=
+Received: from TW006-1.hihonor.com (unknown [10.77.215.153])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gWGXP33Q3zYlRXB;
+	Thu,  4 Jun 2026 15:33:57 +0800 (CST)
+Received: from TA006-1.hihonor.com (10.77.232.151) by TW006-1.hihonor.com
+ (10.77.215.153) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 4 Jun
+ 2026 15:35:15 +0800
+Received: from TA003.hihonor.com (10.72.0.43) by TA006-1.hihonor.com
+ (10.77.232.151) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 4 Jun
+ 2026 15:34:25 +0800
+Received: from TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1]) by
+ TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1%7]) with mapi id
+ 15.02.2562.037; Thu, 4 Jun 2026 15:35:15 +0800
+From: wangtao <tao.wangtao@honor.com>
+To: Barry Song <21cnbao@gmail.com>
+CC: "David Hildenbrand (Arm)" <david@kernel.org>, "catalin.marinas@arm.com"
+	<catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
+	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"willy@infradead.org" <willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>,
+	"kees@kernel.org" <kees@kernel.org>, "luizcap@redhat.com"
+	<luizcap@redhat.com>, "zhangjiao2@cmss.chinamobile.com"
+	<zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>,
+	"ljs@kernel.org" <ljs@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"liam@infradead.org" <liam@infradead.org>, "vbabka@kernel.org"
+	<vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
+	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz"
+	<jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, "harry@kernel.org"
+	<harry@kernel.org>, "jannh@google.com" <jannh@google.com>, "jgg@ziepe.ca"
+	<jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+	"npache@redhat.com" <npache@redhat.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
+	"lance.yang@linux.dev" <lance.yang@linux.dev>, "xu.xin16@zte.com.cn"
+	<xu.xin16@zte.com.cn>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
+	"matthew.brost@intel.com" <matthew.brost@intel.com>,
+	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com"
+	<rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>,
+	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com"
+	<ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev"
+	<shakeel.butt@linux.dev>, "ryncsn@gmail.com" <ryncsn@gmail.com>,
+	"jparsana@google.com" <jparsana@google.com>, "dvander@google.com"
+	<dvander@google.com>, zhangji <zhangji1@honor.com>, wangzicheng
+	<wangzicheng@honor.com>
+Subject: RE: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Thread-Topic: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Thread-Index: AQHc7cjw5r5ki6LAJ0S2mW/rJEfblbYszHKAgAAenICAAOQZkP//ggoAgACqSnA=
+Date: Thu, 4 Jun 2026 07:35:14 +0000
+Message-ID: <3031859912bb43a7ab16ec63863914ab@honor.com>
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
+ <70377626-500d-46f2-a3f5-a0d2914ce365@kernel.org>
+ <CAGsJ_4zg8+pVDwtsJtxxiC1ahJ9MR56Ue8VXCt_VrQgcXES2uQ@mail.gmail.com>
+ <273d02a1af954b8c9f4da7fb74e6b4cb@honor.com>
+ <CAGsJ_4xTMsV8fJVfhshDQp4=Ax2f_+b6yR873cEP11bjcEa_5Q@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xTMsV8fJVfhshDQp4=Ax2f_+b6yR873cEP11bjcEa_5Q@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.163.18.240]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20260522225853.878411-1-tjmercier@google.com> <ahPqbfH54R3JJyaV@infradead.org>
- <20260527160716.GN2487554@ziepe.ca> <20260604-dangerous-tuatara-of-sympathy-28e05e@houat>
- <CAO_48GEJsg4X7++zg-ztQgVibY_FjjManaA5_W3usjicGUQPdg@mail.gmail.com>
-In-Reply-To: <CAO_48GEJsg4X7++zg-ztQgVibY_FjjManaA5_W3usjicGUQPdg@mail.gmail.com>
-From: Sumit Semwal <sumit.semwal@linaro.org>
-Date: Thu, 4 Jun 2026 13:02:28 +0530
-X-Gm-Features: AVHnY4Iu3YbvJ8smZ2k5Oglofp60PZLnbqbe_g3OJ5J_F-575g430amKBK4ebP4
-Message-ID: <CAO_48GGCdU6znkdHW5gns=s+N0wtNAq4U8s4OtLEyW6Y73oMUA@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: Export set_memory_encrypted and set_memory_decrypted
-To: Maxime Ripard <mripard@kernel.org>, Jiri Pirko <jiri@resnulli.us>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Christoph Hellwig <hch@infradead.org>, 
-	"T.J. Mercier" <tjmercier@google.com>, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, chleroy@kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	lkp@intel.com, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
-	linux-mm@kvack.org, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	linux-s390@vger.kernel.org, Dan Williams <djbw@kernel.org>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 9EE2440008
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B78A41C0006
+X-Stat-Signature: 7sxydmdtdtyfpy8xyxqwc6hjh8ie4ujd
 X-Rspam-User: 
-X-Stat-Signature: 9zeugjfkxu9d8g3yrpk3pn7mbiq8mjij
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780558362-358648
-X-HE-Meta: U2FsdGVkX18IbKGFmvpf7zcMKQKIomp6VrYYLzfB9J829LP8Dak5ynXwSq2nDVgWWerDpQYuyi8LNFQxEeSE+f85KBrngC7Phb419RNx+OBBdAgjhe0hZch2XQp+LC6Cb0gCOw5J9+aZC+zHHmVWecMtFnch2pnjq+3l2B6W+ffSVndPWH0j3MoWmk1J3+WDT4oFO8TURlIKv+6fiC3LnAkP57UbC+jxXZsGSMiX/+bBs8QS6esiSJwg3n7f1iEtyT/UY9NnNwIX0nlmn0BinEZ+2XqnBOwxnPk6mxDaZ+SwwySov7j1l7Hy1ATI+GgDdhXOi5qIzRorRu+TX1NTZCeBfJS4uvTWWkuJSf7418cNbM3i1SXWEEcIsU7ckd7NN8fv7ccmXv04cavGNQSv3QhtGl5qsOAYiIUR3g3Yabqz/mDv0zcXSxVFxYE+Rk25sKgeitHpPcF4d8CtCJpYd45iiiCfjkXYWefj0TkakKg11cxCvDrLLkFQod98Xyum7333pt2Ys4cWqp8Ui9isko1Ef+uIw3+cstxw714uAlFcVixnDuENKPXUBXaGLDkEc+v3uNL4Jentg8x+mK/iFY3d5yQq9q5ZD3mdE0CAshjfwB70WAyV5XCtYAhGHYO4tLg6MD/E3JsGcEO1gApd39WHNDD8XNVvuyJNRuAlR/Llv/ZfyU1LnknXtdHA97h1ywpOjLGvxkcAycCE5jO01PDmNSc/6emIO0w7uzuE+gmdwuVn++DPwIr9AVSs/HoKNFgO4AphpaPvlsXJXbMZGmbtFlJLLvkZY2t8dQy7ZdjL3ABULC5Vnvq6/7YVYqvRQvXOnNlgbJX4v1UMslcikD7svpHb59SuYbiPiJoxbSkIG2hdifPKI+ROfXBV+gNmCjHB9DubEOtKXltzUyX7iAbTYTlgEWHkuYYV8bc0VS8amaiPdBJ0gmUCcuVXZUXXzFpfwjUWLXtTauLqMFO
- MwDk9slp
- knLHe/qnsXJy+dSR3WPBncMW6YcppMcTT+NqHAGX1Dlb1a8+FQp+JJM3We0dZ1QnuBUDFepwyHFqrt2ofMvhy9N5uWLBI07vV379EQhAkc/Gb1YKjNcDj6Bf4vmAoiuMqdDEDjL5hEq5u4n6FbM2VMgiNUBzpJor5Uwpj4UWaOl1y+Wi7FQEvMZl72SYpVKWx5sFC7Eu7wArwYG57EHGtgk9YwYrYNcZhszYEskiueOXeZOAfbuEBUwcH4gpoYV0Gpps+n62Hk7ic5AA0A2IWokCqNFoXx2Ymqj8+0tHIJMiQ/LgWE3wLuSyckD9oX+iaS2uRnCiJtNubKg4qwqivhMb2X6SXCHArUFyRT8HH+S0WdQ4=
+X-HE-Tag: 1780558523-391214
+X-HE-Meta: U2FsdGVkX1+GBaqf5nay0Uny5VYes5g0Cy4RKRWFy76Jcl2bZqtxRfeAAz8ylktlk7kh273Dq1+sSLI81VB04xUy70y0qWEEqh0rfllSZ1pwIApbWj6WmV5PhNGkeCspKRohnZeehtl83fg7T/OgJ5UOqNZFWFJZlpLhJgxFbw7iU/HG9jWgmtrGWTgjiDZXE+gZEqdOo4ycO0lPqtYPZ0gfXP0G8Zvz2IvZ59hWJzm34QqUeyyovotz/7gEG/KSZwHP3BKfOtsLHMTB6ubG/aE+zZt+gjkLQL9nSO5GYLohnwQmBaew+hI0T8uzMcJstm8H3+nbFjgSCjHJs27PF3csLtgRs4DPMz6VpaPUqgJXSYBKp9pDf5DyVu1G7YB5rOD7w4VsrDT9F7pIX/lR4fBXhFanJcKIK084HaCtz/yve/mTXTC2YG2ocXCdiGaeNfzJCmPWrvGBtEB6K3DQSe8EVxWqj9ocuqdGIXp2bDkCSFDxiS1UqqN/KaYqqCKTTi0t4Np48miCcwok8Sx7q+kMDQq08OvLBlJU5M7JbebeAhrn366FOeu1V5OK1/7xYASH9gOUMJrb+RalnNu4gPy+mFp4VIk0T0Ij0FhgajBW0zyPqek2vZ7UFUug021F0DMziwmX7qgLDTNbREbhfxHRynXxhsZZx17AAjKU9cRjDggEM9g6ST3g2SlK40S6OQMPfAqFOO9AdDD80rbpOvm/hLHo3q0OqWq6l6REglke/Izx+stIAZIO0qu+RxZUNE41oXN4HTKh7/v+/uJ5HpAfieePFOeu8SXjuKc0/IFpdkpzb/AfLx3P/e3CdPUFrUsu1SWzuj9JWlt5MfMPRMX60bQuGdzhYjJQb7E/35P9Rv0maHS+wuG0zdkOs4X2zLFAjIZHwK/ATTuXF7PZRb0Yby8IvbUUEL70fZUYomV/0ZMbHC0Zomm4Yzgz7iss8P6eZ0ASFIYA8V3J3RU
+ L9UuWuaF
+ lGnywrsZox4fFHD25963ssNDDwCneFWY0ozqfRe7tGn6cNrlASEHEJU/eDhzzG8g7m76bRjQtgJhGN+yM0zCkcP/wP1Cmqr9KnAhhLyDO+t1zkcIoMjlD3oSsbspzlT7EU/VXZTWvWS1zZx820yGbqD3otXxLuc3vU5Jw8fhaDVvoo+PgWevgweYxidw2dNAriHBmDBf/FHCTQ8xspEzc4Nul4HzLgN7F+2+MtleGISoSl0UWQRyT+t9H6j1eAKMNGC/6+6db5QzHyZyK/9eNCLgsY30xIs+h1VNHob7z4QPSLw9Yz5UhlY1WeSodqKw5R/+m4fS8XEVrFynAB6t5jyO0DCpxxQztcup3ANZ4uLEf1TLY6+30E8DPM+pZ6qCHufM9TFIQ6pq5mbgmwvbldQur9lIa2AakHzQdeXLK8fz/1wf80i4o1iKbXWj9vuwmEvlo5nDr34BfR1hhkF6+j8YzmXlmF7n9mfWOLt4He2h8KPqcGbD8ghv12f3HjoYFEGWGuRmKAa/E/v8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,54 +146,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 4 Jun 2026 at 12:51, Sumit Semwal <sumit.semwal@linaro.org> wrote:
->
-> Hi All,
->
-> On Thu, 4 Jun 2026 at 11:04, Maxime Ripard <mripard@kernel.org> wrote:
-> >
-> > On Wed, May 27, 2026 at 01:07:16PM -0300, Jason Gunthorpe wrote:
-> > > On Sun, May 24, 2026 at 11:21:33PM -0700, Christoph Hellwig wrote:
-> > > > On Fri, May 22, 2026 at 03:58:53PM -0700, T.J. Mercier wrote:
-> > > > > After commit fd55edff8a0a ("dma-buf: heaps: system: Turn the heap into a
-> > > > > module") the system dma-buf heaps can be built as a module. The
-> > > > > system_cc_shared heap uses set_memory_encrypted and set_memory_decrypted
-> > > > > but those functions are not exported on powerpc. This can result in a
-> > > > > build error like:
-> > > >
-> > > > I'd much rather revert the above commit.  Yes, x86 has exported these
-> > > > since 2017, but that's a really bad idea, and we should fix it instead
-> > > > of spreading the export.
-> > > >
-> > > > Setting memory decrypted is a dangerous operations and should only
-> > > > be available to core code.  We should have various allocators for
-> > > > decrypted code, but not export the functionality to random code.
-> > >
-> > > At the very least an EXPORT_SYMBOL_NS.
-> > >
-> > > Looks like there are about 3 modules using it already..
-> >
-> > So, I'm not really sure how to fix this now. Should we revert the patch
-> > making the system heap a module, or should we export the symbols for all
-> > archs?
->
-> Given that Christoph's objection is not really about the modules part,
-> but that the set_memory_{encrypted,decrypted} should not be used here,
-> one option is to revert 78b30c50a7ac until that issue is sorted out?
->
-> Jiri, any thoughts from you?
-
-Argh, I'm sorry I missed that some modules are already using it. I apologise!
-
-Christoph, is there a way we could accept the symbols export for other
-archs if the arch maintainers are ok? Heiko seemed ok for S390, so
-this needs agreement for powerpc.
-> >
-> > Maxime
->
-> Best,
-> Sumit.
-
-Best,
-Sumit
+PiBbLi4uXQ0KPiA+ID4gPiBJIHdvbid0IGVjaG8gd2hhdCBoYXMgYWxyZWFkeSBiZWVuIHNhaWQg
+aW4gdGhpcyB0aHJlYWQgKGFuZCBJDQo+ID4gPiA+IGRpZG4ndCBtYW5hZ2UgdG8gcmVhZCBhbGws
+IHVuZm9ydHVuYXRlbHkpLCBidXQgZm9yIHN1Y2ggYmlnIGFuZA0KPiA+ID4gPiBpbnZhc2l2ZSB3
+b3JrIGl0J3Mgb2Z0ZW4gYmVzdCB0byBnZXQgaW4gdG91Y2ggd2l0aCB0aGUgY29tbXVuaXR5DQo+
+ID4gPiA+IGVhcmxpZXIuIE90aGVyd2lzZSwgeW91IG1pZ2h0IGVuZCB1cCB3YXN0aW5nIHlvdXIg
+dGltZS4NCj4gPiA+ID4NCj4gPiA+ID4gT2ssIGFyZ3VhYmx5LCBzb21lb25lIHdobyB3cml0ZXMg
+dGhhdCBjb2RlIGxlYXJucyBhIGxvdCBvbiB0aGUgd2F5Lg0KPiA+ID4gPiBBbmQgaWYgdGhpcyBj
+b2RlIHJlYWxseSB3YXMgd3JpdHRlbiBieSBvbmUgZGV2ZWxvcGVyIG9ubHksIEkgdGlwDQo+ID4g
+PiA+IG15IGhhdCEgSSdkIGJlIGN1cmlvdXMgaWYgdGhhdCBjb2RlIGFscmVhZHkgcmFuIHNvbWV3
+aGVyZSBvbiBzb21lDQo+ID4gPiA+IEFuZHJvaWQNCj4gPiA+IGtlcm5lbCBvdXQgdGhlcmU/DQo+
+ID4gPg0KPiA+ID4gSSBoZWFyZCBmcm9tIFppY2hlbmcgdGhhdCB0aGV5IGhhdmUgYmVlbiBydW5u
+aW5nIHRoaXMgZm9yIG1vbnRocyBhbmQNCj4gPiA+IGl0IHNlZW1zIHJlYXNvbmFibHkgc3RhYmxl
+LiBQbGVhc2UgY29ycmVjdCBtZSBpZiBJJ20gd3JvbmcsIFppY2hlbmcNCj4gPiA+IDotKS4gVGhp
+cyByZWFsbHkgc2hvdWxkIGhhdmUgYmVlbiBkaXNjdXNzZWQgd2l0aCB0aGUgY29tbXVuaXR5IGVh
+cmxpZXIuDQo+ID4gPg0KPiA+IEkgaW5pdGlhbGx5IGRldmVsb3BlZCBhbmQgZGVidWdnZWQgdGhp
+cyBiYXNlZCBvbiB0aGUgQW5kcm9pZCBHS0kNCj4gPiBicmFuY2ggYW5kIGRpZCBzb21lIHByZWxp
+bWluYXJ5IHRlc3Rpbmcgb24gYW4gQW5kcm9pZCBwaG9uZS4NCj4gPg0KPiA+IFNpbmNlIEdLSSBn
+ZW5lcmFsbHkgb25seSBhY2NlcHRzIGZlYXR1cmVzIG1lcmdlZCBmcm9tIHRoZSB1cHN0cmVhbQ0K
+PiA+IGNvbW11bml0eSwgYW5kIHRoaXMgbWVtb3J5IHNhdmluZyBjb3VsZCBhbHNvIGJlbmVmaXQg
+dGhlIGNvbW11bml0eSwgSQ0KPiA+IHBvcnRlZCB0aGUgcGF0Y2ggdG8gdGhlIExpbnV4IG1hc3Rl
+ciBicmFuY2guDQo+ID4NCj4gPiBCZWNhdXNlIG15IEVuZ2xpc2ggaXMgbm90IHZlcnkgZ29vZCBh
+bmQgSSByYXJlbHkgcGFydGljaXBhdGUgaW4gdGhlDQo+ID4gY29tbXVuaXR5LCBJIGFtIG5vdCBm
+YW1pbGlhciB3aXRoIHRoZSBjb21tdW5pdHkgd29ya2Zsb3cuIEkgZGlkIG5vdA0KPiA+IHNlbmQg
+YW4gZW1haWwgZm9yIGRpc2N1c3Npb24gaW4gYWR2YW5jZSB3aXRoIGFuIFJGQyB0YWcuIEkgYXBv
+bG9naXplIGFnYWluLg0KPiA+DQo+IA0KPiBObyB3b3JyaWVzLiBJIGtub3cgc29tZW9uZSB3aG8g
+aGFzIHdvcmtlZCBvbiB0aGUgTGludXgga2VybmVsIGZvciBtYW55LA0KPiBtYW55IHllYXJzIGFu
+ZCBoYXMgZXhjZWxsZW50IGtlcm5lbCBleHBlcnRpc2UsIHlldCBoYXMgbmV2ZXIgc3VibWl0dGVk
+IGENCj4gcGF0Y2ggdGhyb3VnaG91dCBoaXMgY2FyZWVyIGZvciB2YXJpb3VzIHJlYXNvbnMuDQo+
+IA0KPiBJIGhlYXJkIGZyb20gWmljaGVuZyB0aGF0IHlvdSBhcmUgSE9OT1IncyBrZXkgTU0gZXhw
+ZXJ0IGFuZCBoYXZlIGJlZW4NCj4gZ3VpZGluZyB0aGVtIG9uIG1lbW9yeS1tYW5hZ2VtZW50IHJl
+bGF0ZWQgd29yay4gVGhhdCdzIHJlYWxseSBpbXByZXNzaXZlLg0KPiBQZXJzb25hbGx5LCBJJ2Qg
+bG92ZSB0byBzZWUgbW9yZSBpZGVhcyBhbmQgY29udHJpYnV0aW9ucyBmcm9tIHlvdSBpbiB0aGUg
+bGludXgtDQo+IG1tIGNvbW11bml0eS4NCj4gDQo+IEJUVywgcmVnYXJkaW5nIG15IGVhcmxpZXIg
+c3VnZ2VzdGlvbiBhYm91dCB1c2luZyBHS0kgaG9va3PigJRsaW1pdGluZyB0aGUNCj4gb3B0aW1p
+emF0aW9uIHRvIG5ld2x5IGNyZWF0ZWQgVk1BcyBhbmQgdG8gYXBwbGljYXRpb25zIHRoYXQgbmV2
+ZXIgY2FsbA0KPiBmb3JrKCnigJRkbyB5b3UgaGF2ZSBhbnkgaWRlYXMgb24gd2hhdCB0aGUgc21h
+bGxlc3QgcG9zc2libGUgaG9vayBjaGFuZ2UNCj4gd291bGQgbG9vayBsaWtlPw0KRXZlbiBpZiBB
+bmRyb2lkIGRvZXMgbm90IGNvbnNpZGVyIGhhbmRsaW5nIGZvciAzMi1iaXQsIEtTTSwgb3INCm1l
+bW9yeS1mYWlsdXJlLCBhIGxhcmdlIG51bWJlciBvZiBob29rcyBhcmUgc3RpbGwgcmVxdWlyZWQu
+DQoNCkEgZGlmZmVyZW50IGltcGxlbWVudGF0aW9uIGFwcHJvYWNoIGlzIGFsc28gbmVlZGVkLiBG
+b3IgZXhhbXBsZSwgb25lDQpvciBhIHNldCBvZiBhbm9uX3ZtYV9sb2NrcyBjb3VsZCBiZSB1c2Vk
+IHRvIG1hcmsgd2hldGhlciBhIFZNQSBpcw0KbGF6eSwgc28gdGhhdCB3ZSBjYW4gYXZvaWQgbW9k
+aWZ5aW5nIGFsbCBwbGFjZXMgdGhhdCBkZXJlZmVyZW5jZQ0KYW5vbl92bWEuIFJlc2VydmVkIGZp
+ZWxkcyBpbiB2bWEgY291bGQgYmUgdXNlZCB0byByZWNvcmQgdGhlIHJvb3Rfdm1hDQphbmQgYSBy
+ZWZlcmVuY2UgY291bnQgcmVzcGVjdGl2ZWx5Lg0KDQpSb3VnaGx5LCBob29rcyB3b3VsZCBiZSBu
+ZWVkZWQgaW4gdGhlIGZvbGxvd2luZyBwbGFjZXM6DQoNCjEuIF9fdm1mX2Fub25fcHJlcGFyZTog
+bWFyayBsYXp5X3ZtYSBpbiB0aGUgZmF1bHQgcGF0aC4NCjIuIF9fZm9saW9fc2V0X2Fub24gYW5k
+IGZvbGlvX21vdmVfYW5vbl9ybWFwOiBzZXQgbWFwcGluZyB0byBsYXp5X3ZtYS4NCjMuIHJtYXBf
+d2Fsa19hbm9uOiBoYW5kbGUgcm1hcF93YWxrIGZvciBsYXp5X3ZtYS4NCjQuIGZvbGlvX2dldF9h
+bm9uX3ZtYSBhbmQgcHV0X2Fub25fdm1hOiBhZGQgaG9va3MgdG8gZGlzdGluZ3Vpc2gNCiAgIGxh
+enlfdm1hIGhhbmRsaW5nLg0KNS4gYW5vbl92bWFfZm9yazogZGVjaWRlIHdoZXRoZXIgdG8gdXBn
+cmFkZSBwdm1hLT5hbm9uX3ZtYS4NCjYuIEFkZCBhIGhvb2sgaW4gdHJ5X2R1cF9hbm9uX3JtYXAg
+dG8gdXBncmFkZSBmb2xpby0+bWFwcGluZy4NCjcuIGFub25fdm1hX2Nsb25lOiBoYW5kbGUgbGlu
+a3Mgd2hlbiBzcmMgaXMgYSBsYXp5X3ZtYS4NCjguIHZtX2FyZWFfYWxsb2MgLyB2bV9hcmVhX2R1
+cCAvIHZtX2FyZWFfZnJlZTogYWRkIFZNQSByZWZlcmVuY2UNCiAgIGNvdW50aW5nLg0KOS4gbXJl
+bWFwOiBoYW5kbGUgdXBncmFkZXMgaW4gY29weV92bWEgYW5kIG1vdmVfcGFnZV90YWJsZXMuDQoN
+CklmIHRoaXMgY2FuIGJlIHJlc3RyaWN0ZWQgdG8gYXBwcyBvbmx5IGFuZCB0aGUgYXBwIG5ldmVy
+IGNhbGxzIGZvcmsoKSwNCnRoZW4gNSBhbmQgNiBjb3VsZCBhbHNvIGJlIHJlbW92ZWQuDQoNCklm
+IGVhY2ggcGFnZSdzIG1hcHBpbmcgaW4gdGhlIHBhZ2UgdGFibGVzIGlzIHN5bmNocm9ub3VzbHkg
+dXBkYXRlZA0Kd2hlbiB1cGdyYWRpbmcgbGF6eV92bWEsIHRoZW4gNCBhbmQgNSBjb3VsZCBiZSBt
+ZXJnZWQgaW50byBvbmUuDQoNCklmIGxhenlfdm1hIGlzIHJlc3RyaWN0ZWQgdG8gYW5vbnltb3Vz
+IFZNQXMgd2hlcmUNCnZtYV9tYXBwaW5nX2Jhc2Uodm1hKSA9IDAsIHRoZW4gcm9vdF92bWEgYW5k
+IHRoZSBWTUEgcmVmZXJlbmNlIGNvdW50DQpjb3VsZCBhbHNvIGJlIHJlbW92ZWQuDQoNCldpdGgg
+dGhpcyByZXN0cmljdGlvbiwgd2UgY291bGQgZGlyZWN0bHkgdXNlIGZvbGlvLT5tYXBwaW5nIHRv
+IHJlY29yZA0KbW0sIGFuZCBsb2NhdGUgdGhlIHZtYSB1c2luZyBmb2xpby0+aW5kZXgsIHdoaWNo
+IHdvdWxkIHNpbXBsaWZ5IHRoaXMNCnBhdGNoIHNlcmllcy4NCj4gDQo+IFRoYW5rcw0KPiBCYXJy
+eQ0K
 
