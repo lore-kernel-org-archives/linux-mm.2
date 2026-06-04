@@ -4,104 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E7DCCD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 05:34:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A8F1CD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 05:36:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A4346B008C; Thu,  4 Jun 2026 01:34:33 -0400 (EDT)
+	id 699526B0088; Thu,  4 Jun 2026 01:36:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97B316B0092; Thu,  4 Jun 2026 01:34:33 -0400 (EDT)
+	id 649D26B0093; Thu,  4 Jun 2026 01:36:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B8AC6B0093; Thu,  4 Jun 2026 01:34:33 -0400 (EDT)
+	id 586F36B0095; Thu,  4 Jun 2026 01:36:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BC336B008C
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 01:34:33 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45C62C1BAB
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:34:33 +0000 (UTC)
-X-FDA: 84841115226.18.D38F985
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7D0731C000A
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:34:31 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 47A276B0088
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 01:36:23 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB1CA16291F
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:36:22 +0000 (UTC)
+X-FDA: 84841119804.13.2F899B6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 09A3D1C0006
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:36:20 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IxW4QK6l;
-	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XwRV0eD2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780551271;
+	s=arc-20220608; t=1780551381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dBjgi3h65nFOda/5nltf0/WjlV3uis7HxPyve8TgC1A=;
-	b=E8l4KMMerzl5EUA4toMeZTMEQ+JwEkSZnsi0xS2iI7/XSNrdyVMI/wYQhCUk+W1gw/Vw1y
-	wqCOehCf1MGNIrzg7i9eorHVOBTUtGv5LFFovGhmPcoVE1JteHR2KpZg7SQJLikhRjwZNL
-	IF6tCekX/ijMb/9zzdFJZIqptV6sTZQ=
+	bh=hlf6gZ7zE0nZZVqddnEN3mtWYxn26ImLM+nzUagCUEc=;
+	b=sJsbDpDMamIf491Z5xO40jU/alRPty/65UKR3UvrZo3a9GygwPnzNZAxiBARQq20xrwFv1
+	MBAnk/8wPW8ObZ44rvhE833PQfcM/e3Dp4Nw/2tr7T1i+wq9OByHbP3h7l0AMjC/4Mal9I
+	Fv/FOKhjm/50qvBFa4rdHntuZLXVeHk=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IxW4QK6l;
-	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XwRV0eD2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780551271;
-	b=xEas2vFYGWUcelh5Yiitr/UDyIDOEfkr46+GwtLZi3kQe+jbItHGffiqVcFn6lc5xNouBM
-	Ex0Rbk6PCQ9+6gpUpjFTKyqp/nDCtxoLup8lJFvreQ5L5xkT4LO3hdvT/kg+wPfYV4Ol6p
-	N6wLbMTvdZYLlxin2GOvZyEEJSVeZQg=
+	t=1780551381;
+	b=sake3p72vkcO/dw5TUVAvWsrx+KltPKGkGtziyM2a+42u2Nwg1Ur3EqEV46ZDb5ruUmWvM
+	SoT6rl2wKxfeKTUG+G8cQcvVcL1TFvRdzwToOypzq4IY0qlkUWTI98azDxwYS6yrIHtikn
+	14Yp4sSkY7+uLJ0s2wSTVEKyuXjr4JA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2633B60219
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:34:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8F11F008A1
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:34:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1287C43D8E
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:36:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C8B1F0089B
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780551270;
-	bh=dBjgi3h65nFOda/5nltf0/WjlV3uis7HxPyve8TgC1A=;
+	s=k20260515; t=1780551379;
+	bh=hlf6gZ7zE0nZZVqddnEN3mtWYxn26ImLM+nzUagCUEc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=IxW4QK6ls26ShtfRGvRr2x2HcKcyVcz1DPWUOMq1tHyNNvLdnaBWG/e5h3c4wvy99
-	 KSF+Sf1Z+1gfhGpMUHohUTifmkOUeu+bx/Fa17b+Gp0SbL2jCMde1RGLp1EOb6vkG/
-	 yrca4otWvs1k3I9lBeifqV46S5F87O8j0GRzQjFJ5pp39tcAcxRhCRtI6xE/Vy7PfF
-	 lJM04L/X7ll7kEf5wItZH82axyFQ/o6YeQ4RflDEkLzXfLuhQbk7paIBrPixNaC2Lb
-	 ei2uav4+KTiqZs+xiWrzD2fC9p00Ch6ihJaa5FTiKcOb3mGC5f6sDiKwRty7Iqp7pU
-	 epc8D2iBZwMyg==
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-68be16c61d1so487734a12.2
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 22:34:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/LoixrxUGhQc5bzNMPjgmo9LFeVXPmO6xkoZuvPLfnozk2NoqFamaX9T1dRfM2VO/4erqtzqW8kQ==@kvack.org
-X-Gm-Message-State: AOJu0YzOIvI47y9r6HQoiKE3fDpfDMEdNWMrVWqhowoJmzUyhMQXLn11
-	xrtKYlCSFd9yQBWNlTaiIxLx2ROnblp1w5Rhz4Yz/VhiOzGa47HyUjGXYvPL+VNFKWIBuwRm69B
-	jXiWR06VXpJa4Xiw/UmGcKIifW58zS3k=
-X-Received: by 2002:a17:907:7f9e:b0:bec:2d9f:2aa7 with SMTP id
- a640c23a62f3a-bf0b2bd07edmr353177466b.24.1780551269748; Wed, 03 Jun 2026
- 22:34:29 -0700 (PDT)
+	b=XwRV0eD2mP3KPr7RZkEfnvYCGUrsjbiPIQZYk9xpDp5lqBMHUJ4b7FXfPUH99wSC1
+	 w815Qu9kAKBgRkZBqOGFybdtc+cvpVNV4lUM3yZ8LJUipzdRpcJSpkepHqK69p3RkI
+	 8Fn/PMW0aph95zGIThx6M4OeODH4XOf/jhRxnIRhYgTVziJUr/dj4osCOYygmz3EpD
+	 CatAHI8bo+2WXB4fBMtaFOUKEOMiKhlyiwSaY2FVID6E0jiIV97z3HwGgkpcfPMQR4
+	 9sBrEQlxvfkI5vhyWAp321cqPo/R0JHYH9h84fnHD+g2Rr1BhDmvshLwvlguw7hoj/
+	 D8G60UKBgs+dA==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-bec354815b9so22758566b.3
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 22:36:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/F6nZIDgG28Qh76wlYnSHjXlk+aSpzllPM29CCoWF0gIfnMOjgkXk893qH4BuohtGadd7Xyl4X1w==@kvack.org
+X-Gm-Message-State: AOJu0YwvyCpi/nPlHrtghYbePxsbwKRt9tlX3aJFzjoAnUcUqus4V7fI
+	j4dnHOhEP5PMfJN3AboalL6R3ZhdA2I70XPVZLRMZcZSFLNXF2sHobmn7pGrcXFlnkW7HxpXyun
+	MgdCyc3sRjAylXtxNcLcO38kL4HHBMJY=
+X-Received: by 2002:a17:907:c289:b0:bef:87ca:aec5 with SMTP id
+ a640c23a62f3a-bf0afaf5209mr309828866b.47.1780551378864; Wed, 03 Jun 2026
+ 22:36:18 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
- <20260526114601.67041-2-jiahao.kernel@gmail.com> <aho7nepN5jZtKmef@google.com>
- <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com> <ah4ZZGl7GYJf54Wz@google.com>
- <ff344c9f-51da-8b3a-e7a9-c4a7f4702ef8@gmail.com> <ah9i3uhh3PFiS0Uk@google.com>
- <c7870fe2-3588-79db-cbfb-bd6a2b78f594@gmail.com> <aiBpibRNi0BcM1Zu@google.com>
- <9898f83d-fae9-e284-6b85-c7f4089840a0@gmail.com>
-In-Reply-To: <9898f83d-fae9-e284-6b85-c7f4089840a0@gmail.com>
+ <20260526114601.67041-3-jiahao.kernel@gmail.com> <CAKEwX=MQe_KFZe2vBXQYh0aa-x+E8AzNwmyjJGJk4tDoS9ML3A@mail.gmail.com>
+ <aho_VtLCmIRsNyvO@google.com> <6deeaea7-3cd1-4403-29fc-d2dc55c297f8@gmail.com>
+ <aiBqzOtEv5iAC_qC@google.com> <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
+ <6db27a22-cc7a-9a94-db3f-c912fd39aa32@gmail.com>
+In-Reply-To: <6db27a22-cc7a-9a94-db3f-c912fd39aa32@gmail.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 3 Jun 2026 22:34:17 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPBH6-0SQ6-_ZOhTQeyu=rz4F=ugikCrU-JR_skm6fEWA@mail.gmail.com>
-X-Gm-Features: AVHnY4Ku_FxWJkBn8j4XFqE3NCwF4f-sPcyoSpNO4PUEnd9_caFmKAyU5mggsGc
-Message-ID: <CAO9r8zPBH6-0SQ6-_ZOhTQeyu=rz4F=ugikCrU-JR_skm6fEWA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor per-memcg
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+Date: Wed, 3 Jun 2026 22:36:07 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zM4SDdTgz9L2s1VfXL8K2VBjMD9ej2BTDxaGge1t2+quA@mail.gmail.com>
+X-Gm-Features: AVHnY4IE7N3d59FLndV-s7gDFevntutRjRoeBw3qu7WJHZARyl3yLsqSevGQ5pQ
+Message-ID: <CAO9r8zM4SDdTgz9L2s1VfXL8K2VBjMD9ej2BTDxaGge1t2+quA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
+To: Hao Jia <jiahao.kernel@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, shakeel.butt@linux.dev, 
+	mhocko@kernel.org, tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev
+Cc: Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, chengming.zhou@linux.dev, 
+	muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
 	Hao Jia <jiahao1@lixiang.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 7D0731C000A
-X-Stat-Signature: pxgum478ofif9oc834umb7psf7js1ywt
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 09A3D1C0006
+X-Stat-Signature: 9ubz53w57qzqwxcb3bbsqepw33owiq1d
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780551271-810686
-X-HE-Meta: U2FsdGVkX1+m7UKrEQAtRVbpilnba+KSW78nnaue+uhOkExrQWaQZRttDVad3814SNpZJ2wcZO1oC8Cbjt62ePAD0RSf31WMTOhAF0aLD20TGUIMpxpR+pFmc8bma0i2P3d7MK3I9HwgYh7zZ1a7Nn94gjWFVo5y/3EfSy+9AExXuWLpVKIUcF6dp2Ove7elnCjGeypL7s9HfAnPlUUsQMjIk25w0Guv2Q+3/UjRR+CBkVfPaCuDUT1CV0H7JMOvQLKuwS5S2cVRVMoIDKQuKSo9G4Z6B2+ICzRsUo4o9DB2yJfW/g3JZuGfPDCpuB9AIVEovFTrX5QNZ4zA6JZm84fwUm2W4sZuE9ZhXFKHNiTokFt9IyljGgp2GHgHr4DJ+6/hJYkva/KKdO9NLC7jK3VE+vgj/HwPzVpTvOPOBKRhZG+MXnA+Bx+BHjkaR5Q6GuCE3MPOsqTB8ekqr4tT0iXwKmCAsccADy2lsEHJ0HAF3b3UQQQ52piN2aeT3uiAVMZAAhSpT1YeKzY0/fM6CbGVp3KrkZE2OfGnznKD6BIV4TVCr/yjRqijTLLDYLtQWpBGZy+UO4MKm+mFaLAsdfbegZnXvcQYdQyTKlMe3D7uqqh+PXQ/KTx2QxBuazP0ZwtN08PV2/JUs2+SWkTyuEFr1KldBcUHnVWItYxHJiK8k5a5QkY6kh6duCTa6Na0eV/3LzAIJY9uwemB3nCEgr8ZI9Sy862aPyuYnMyMaNd6DgXtHmmob3yXkEkupFVWyGN0KczB/Zsae109L4q+NkydMeAGHgFqBGvk7lAfNxn+vxTsHXq/FCoQMjj6iUR5s9effDpDSb/GV6Bbi5M0g1++xvMhjXmNSj7OetxcHrEDWILVYbl+esWg9s5Kv6tWqInmFDN1EYZL4B27EpI9Zfkh2o9XcAX41DaWheWi4UIOnARFX6c1Gg99KNEGCGqzTNdwVPoNrl2CMfjJmUa
- dS0ExxIg
- f8SsJYv10YYxPKtLV2WnMQMLAxaeDLWeboO0VLqzVbkEIbVQbhTctfmWA40Daro1CqHlXL4WDxQUaJfup5wcP69Bm+3uuq76LKPDpcst6bkdQj0AThYEK8W90Sl3SoqLNcGbSTDL8iDNuIHQwdhfZWtTyYSytavXFjt8c4SxGXaVxnYPKHIy7m0Tk1lPDhNLRyYbeADi8LJEl5s7bMdXhtOxtssJLORrKoky48xlxbZkp5wcbdm0+TDN1JBIIP93zbsDXsIrZUGpRFiUHTGs6v2Q3ux22LSHBnbUN8U32grMgjJagy+f8T+7Tnan7IVZTxcH3NwyOznbBQ0B8ZjAdbwvge9DhKuqw88ai5VW4tzd7ZsBwES1aDM9AHzBm721pIKuzrpwipb/6qK/ICJzJH6/RFA==
+X-HE-Tag: 1780551380-820815
+X-HE-Meta: U2FsdGVkX1/F1M0f9lu98eemjgcuTuwYdjwAWCbMU0mbEFUVSKWvWjOyWPk/k/QGE9vr+ho/p3f7pZvMB0oT/YFedpANT2t9cK5VbgjLnI+TyIJiDNWpyumzOSF9raCPOn6Z1Q11KUOOK7ZSfdIw7rxWjBjIsKZihNQEtOFLPait0gz2PXUq6RG4SLESn3nmFb1EqteUJLg43zkkzZGDBPRGo2Y8dD9baa5T6T2YU6m3AOrYcbwxA+fyzp03CCg7YhzjFATlN9Ie3Z/CL8KiuEZcj3knV1u10s4jTr2z2YROB3NAivRtMLhu5LzXABKWxOpwFUlzThvMNADRbdnI1LmBldiYN85dEkxlf4ugG383XULnm/vAyYseXZlg15mnGdtRbWcwGnATc7JugBsvYBG9XgrwIIzF+xLrJUEclU6vuphP9D6mMH6eiKz4nOHwARYzPa+TGAd46YhVDen+cn+9M8/AYHLxarq4zD2ajCt3aUmeki4FWv6cVzB0JaXD8M217tM8lNbz3DDWjR3s8pyi7uRAsEuYhEf8fhs7YnHy89Fr0fn7OlLNS3flUFfpVkbiD7Pj1rnrO3CUhNvp9xojilX+oePVyggUfewcIfGenBjrmj475aNGmSFke9YDTC70ZIBSWk74cIj85MkE7H7pZq4eKUY5crlHOvcLACbnO+6iUT+AteITAp7sZarksUrbgD4EkTcHMICeq/tg7cZIHrpQQd9XquWBpJnyVG+2Tz21tYamp57NQQYBPsRiOIY1Lrw1194ItDgeOtSU7ZUM9fvNGhdV9ip7A5lg38xCDDoPnHuvBjeZSTYub+9uESwhUvwFvuYqCkGWuI7DVs8hsZTwy/hDufU39kxfpePb1GbZNzjUqrz0gWUrcjwTHnWqcASQdk5x+Wb4kUeqMN+Kv6mIMygQ0g2EwiCsnvd0P52mKYy+RrKiy3RWHpikf3K7Iyw/agXNuuR8GQ1
+ wxNoRbar
+ 6ceaFfwcaTnm5jk5vPxqu2T+IntQ3cIuCiIFt8usZYBKLlG+kIKeYNTm8B0I23xN9mzFgNoMJWfVGE3f9jPf6eLiNcHngyO+oM+xkSEVq6d0+SohInsP5RhCoyzkNEZ1vHsvpR3WPJMp7phJp8IIpAaZk/39c8pPMcs58vVYBXODGMj1QTXLD5AJy+utCeW8iabnv8mYC6EjYiHy2YciAUgDWZHWgQlVWeLS9PTqxnASEmnKzwp+oKQoxxzYIbkZaWIGr2rQWFWGnLcskKY1tQDws6MxNZWuDoL/LenObKqPFgd5xu98hX8/e9KQjJid0IKqKkXoehTBrFhRVL1G8U8RdnNpM7K6nIzeT8HoGeY4aiA8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,37 +107,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >> For instance, suppose a parent memcg has two children, memcg1 and memcg2,
-> >> each with 200MB of zswap (100MB inactive). Triggering proactive writeback on
-> >> the parent memcg will exhaust memcg1's inactive zswap pages. After that,
-> >> even though memcg2 still has plenty of inactive zswap pages, it will
-> >> continue to write back memcg1's active zswap pages. Writing back active
-> >> zswap pages causes the user-space agent to prematurely abort the writeback
-> >> because it detects that certain memcg metrics have exceeded predefined
-> >> thresholds.
+> >> But doesn't it make more sense to specify the compressed size, which is
+> >> ultimately the amount of memory you actually want to reclaim.
+> >>
 > >
-> > This will only happen if the reclaim size is smaller than the batch
-> > size, right? Otherwise the kernel should reclaim more or less equally
-> > from both memcgs?
+> > I personally prefer compressed size to pre-compressed size. That's
+> > kinda what user cares about, no?
 > >
+> > One thing we can do is let users prescribe a compressed size, but
+> > internally, we can multiply that by the average compression ratio.
+> > That gives us a guesstimate of how many pages we need to reclaim, and
+> > you can follow the rest of your implementation as is (perhaps with
+> > short-circuit when we reach the goal with fewer pages reclaimed).
 >
-> I gave it some thought. Not using a cursor could lead to unfairness
-> issues with certain writeback sizes:
+> Got it. I will change it to use the compressed size in the next version.
 >
->   - If the writeback size is an odd multiple of WB_BATCH (e.g.,
-> triggering a writeback of 3 * WB_BATCH), with 2 child cgroups, the
-> writeback ratio might end up being 2:1.
->   - If a memcg has 5 child cgroups and a writeback of 2 * WB_BATCH is
-> triggered, it might repeatedly write back from only the first 2 child
-> cgroups.
->
-> Although setting a smaller WB_BATCH might mitigate this unfairness, it
-> could hurt writeback efficiency. Let's just use per-memcg cursors to
-> completely fix these corner cases.
+> Yosry, Nhat, should we continue using the zswap_writeback_only key to
+> trigger proactive writeback?
 
-Exactly, the batch size should be small enough that any unfairness is
-not a problem. I would honestly just do batching without a per-memcg
-cursor, unless we have numbers to prove that the efficiency is
-affected when we use a small batch size. Let's only introduce
-complexity when needed please.
+I *really* want the memcg maintainers to chime in here, it's
+ultimately their call.
+
+Michal? Johannes? Shakeel? Roman? Anyone? :D
 
