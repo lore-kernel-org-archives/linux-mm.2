@@ -4,124 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A39DECD6E6D
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 14:17:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B9F2CD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 14:19:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 172D36B008A; Thu,  4 Jun 2026 10:17:35 -0400 (EDT)
+	id E1FEF6B0005; Thu,  4 Jun 2026 10:19:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14AA06B008C; Thu,  4 Jun 2026 10:17:35 -0400 (EDT)
+	id DD1046B0088; Thu,  4 Jun 2026 10:19:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0604A6B0092; Thu,  4 Jun 2026 10:17:34 -0400 (EDT)
+	id CBF356B0092; Thu,  4 Jun 2026 10:19:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EACE46B008A
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:17:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7EAE2C2473
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:17:34 +0000 (UTC)
-X-FDA: 84842433228.01.33BDAE0
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 40C162001B
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:17:31 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="P8ipu/Z0";
-	spf=pass (imf13.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B9CD56B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:19:54 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 80E311A078F
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:19:54 +0000 (UTC)
+X-FDA: 84842439108.05.D6C02BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 41A388001B
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:19:45 +0000 (UTC)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780582652;
+	s=arc-20220608; t=1780582785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lAn7tUi15DsxPNLBVxb55DsaCLzi2ItCgQT81dYuAAI=;
-	b=TIkf+eAQagLfhMLkbL3He19i09OMpUJNYSOpK1BwRqex8+B4+oQUJbRiOHRV09CBIKkB5C
-	VIBORnbK55O51A93CfpF1IDcz4hgQ0y/9WfJXSBSG1V9MlPpjaYuoouZaRWh//UA63PGZ4
-	jT/ioqHZGzSTbtsc+rR9xY77KseOdns=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780582652;
-	b=rWCXoNDMv/yM8YdIg/i2PicUgIp80x+FCwmSSiA1jGFjyMPHuJ2I2i/dStU1f/RnYkavHX
-	JcqhKVq66D6lR4F9yJN1R2qZ+CBoCxys7p+//ChJR1m8IRqCgNO4hba3X8b8S6+zvs/rKl
-	QqZ8038Od/CPmIwWjhi705zg4fvQ1tI=
+	bh=kz+wMMmvmIne9m547qA6qN3203xltR1Hvn5aJqU4oto=;
+	b=0Cxc/PVTEX/Q64H6oDvrnQErYYdQKsVGu9Ed62EZy4F4TX46Si0PaIYZu4Sb5h/CWvQA0o
+	8cTAhTGTSsNXX2rOs/ACvI51lyi3hsdokPdZkSZQF2HmUHkQ5TOgAihsIw5Ey3H6Pp88Ir
+	tPMr6eNru+hOZhCi//Q0klqUMTX8Cyk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="P8ipu/Z0";
-	spf=pass (imf13.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bec429c2bb1so117758966b.1
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 07:17:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1780582650; x=1781187450; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lAn7tUi15DsxPNLBVxb55DsaCLzi2ItCgQT81dYuAAI=;
-        b=P8ipu/Z0URzg4CdVa55DnI0iF9VrSz9CyfsEUNUekvN64O4DkgG1zWwjliuFotWXAm
-         MJm0u/1NQ6lOQa51kYw3moBeRwMb2V7tdlCqqWuYLcF29r7UVGk8C/Pbj5rVB/nyaW0S
-         DNCoodzTgi65qq6wxLFo3kiX2kuTPoC54ftk4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780582650; x=1781187450;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lAn7tUi15DsxPNLBVxb55DsaCLzi2ItCgQT81dYuAAI=;
-        b=kmr8Y7b9Suy/8oguVnDRSTS3AQlE+X3L0/6gLooNSnFYK6J5uqVVlib1nPs3SH3BXg
-         nJidVguYflFejDC2CcOyI12T+Vzpfl639Ra/j6d0qv8gpLA6/QzqlkdSkDUFy8fakBsB
-         WOvvJMBsgph2kM7KM2v/X+mRqf0xg0es/QlkwER+FoMD0QGjUdMa35rOX7+NUtIkLi85
-         rf6jxtm5pAHC5ya9ovt/mRmYAwpZTjXpZpJ/gr99I6U2KHVuUcng2wIpJPEF/HCrax4u
-         nlzOjfyS5DyxvatFfMop2fIqzlvBnoSr4hn4y978dvfzV0Q3pXqyFcvkpj44FGWDM6ot
-         v9jg==
-X-Forwarded-Encrypted: i=1; AFNElJ/PDJ7L6ywpBrW+tuHCRZKtzh1kEqk/BdIAx5BjOKMYmKhtsjBsp6OvXXo7RrkCi0aB/VZHZqgjgA==@kvack.org
-X-Gm-Message-State: AOJu0YxcitVN0IYsxeIcExPJZeXG27zv+IFLc3qRFJoBj+q1TP5/qpwL
-	WqRKAJ9e72deUSRQ8A769z3Ep4NO8ZDI6Wa4K7tjTOOpsQYkm8DrvbGKpE4/yhOwaeofbvZKaSx
-	UREIf9FypnQ==
-X-Gm-Gg: Acq92OHeTe7vx2BvNtl5HtGZ+iwe9UjbEyYwgMHL5lHv3ILSEsYWGYSqHfSDDWNQUYv
-	psosGP3gD4+6bEXL+aCT1Yvvo0JDH0vrcMjx2eQrveZa7AwIVhybdFLmnO7kNUWZYPJ2Wh4blXe
-	Qfink/hszw8gEWic2rqvhpStJr0oO6fXue2oC2xGGhhTfD6l8CcUOoSrX4dfx0pTlUGouzpgBSp
-	yJVwIa5kOWXWXo/2Jv0ie42pSUgcIENYw1Tqq21C6WE1c58hObZDdm6sGVWOri5kfHX+cELH509
-	exVDJu++KwNZlknMz/axpbqNwhdsV19fiLRFUk0j/DtY+0OTc/tA2ixbH3nSP6NT1ChycPAv3xo
-	yAoP5vDRa0uZs8KYUcVu4MCAMu0BAA2i8U3fYXmoWir/ewJ9RilNUFInWQpToE9tF3d9qhZMjQA
-	WRaa4IzGl5K1TpqIA7LlzE1VNpgqGN1G2kTrRqxmKW4qxBe0Ojr8tLrSzojgVpuxEjjQQylb5g9
-	j+VFrT7T4H8vvViNjYGeQ==
-X-Received: by 2002:a17:906:9c86:b0:bec:40f8:b54a with SMTP id a640c23a62f3a-bf0aed0cb16mr457181866b.38.1780582650297;
-        Thu, 04 Jun 2026 07:17:30 -0700 (PDT)
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com. [209.85.208.42])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf051d82a78sm308083466b.18.2026.06.04.07.17.28
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2026 07:17:29 -0700 (PDT)
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-68ca6f01079so881532a12.0
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 07:17:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/ORx+99nWUuuxL1/J0f+puLXzyXoOJkHv5Uk8Ufk+GNAsLQRm1x1cKRu2YJ7PuEABNmknjzOkMLQ==@kvack.org
-X-Received: by 2002:a05:6402:5296:b0:670:8add:2b8d with SMTP id
- 4fb4d7f45d1cf-68e72739555mr4177743a12.24.1780582648047; Thu, 04 Jun 2026
- 07:17:28 -0700 (PDT)
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=REp6kxpn;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780582785;
+	b=W6YeljFkAvXOwjEXmD4kl8TNuzGf0FWEG5scDDwXgklnroMZoZrN8p2/vNdrbhUgXlzCfa
+	xJ5m1cSxAJJl9BbMR94zFuX83kSHSHNHBhE5QAbyfZUgBtukVnMzCQr4+OnPVlaY5jiV5Q
+	VpuWrnS/tNFEocaz7xwfnXIT4Ngxx5w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A2C54600B0;
+	Thu,  4 Jun 2026 14:19:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AF81F00893;
+	Thu,  4 Jun 2026 14:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780582784;
+	bh=kz+wMMmvmIne9m547qA6qN3203xltR1Hvn5aJqU4oto=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=REp6kxpnKHKF7Ism8aaIytnDkU7xRoucVEkuISs54uR5MXWWepe3UnWL/tQoD8DXr
+	 VUXgdw29fqcarvKqqAUhAfxgU1MGck9nAUlr7fVfW2RffXNIj8D/6TuNwGVl2dWVZT
+	 Zf9Zg9gJ35eAy7WnpeM+ZzFuCbRxdCkyD9uUFSB+XcdyYCW1xWDpW4ucPPEx2eIevr
+	 cwE9PEV7FeSl/VVWYrqzuAewSpshIWfPMdPsahSI4VfMtSK5e84fhSUxzR3hT6gkfV
+	 nug6Q55EELfwUz7/oRX3xmuRJS0FUim1SCpgcOF8uEqodtUCRgz2gZxCzC0d3WxeKx
+	 9iMrHB639LFxg==
+Date: Thu, 4 Jun 2026 15:19:29 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Nico Pache <npache@redhat.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, akpm@linux-foundation.org, 
+	anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
+	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
+	lance.yang@linux.dev, liam@infradead.org, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, 
+	pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org, 
+	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
+	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
+	thomas.hellstrom@linux.intel.com, tiwai@suse.de, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com, 
+	Usama Arif <usama.arif@linux.dev>, usamaarif642@gmail.com
+Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
+ collapse support
+Message-ID: <aiGIkgToAV4T71ab@lucifer>
+References: <20260522150009.121603-1-npache@redhat.com>
+ <20260522150009.121603-12-npache@redhat.com>
+ <b8380eb3-096a-49f1-9ace-99c1e75888b4@kernel.org>
+ <CAA1CXcBg1su-bk3i_H+TW4-nTgvGSGqRNeC9MpQo7sGeH8ejnA@mail.gmail.com>
+ <d3c2b00c-6810-434a-b837-0707b0a11611@kernel.org>
+ <19639b08-5bf1-4974-9635-c458d512fa38@redhat.com>
+ <aiGFIrg8_vZZxnPg@lucifer>
 MIME-Version: 1.0
-References: <f919874c-065e-48be-ac5b-300c4ab86d4e@samba.org>
- <20260603211736.755139-1-safinaskar@gmail.com> <20260604100609.6b37f500@pumpkin>
-In-Reply-To: <20260604100609.6b37f500@pumpkin>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 4 Jun 2026 07:17:10 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjvb56qo27-axALOKCY-CjLsj9_294zeBovPVJaYm14dA@mail.gmail.com>
-X-Gm-Features: AVVi8CcQ0yaowxPCFqM7JCGZCz4oCGBQaQ6sAmWXnRpVnXINniRqjS3Vb3FRVpM
-Message-ID: <CAHk-=wjvb56qo27-axALOKCY-CjLsj9_294zeBovPVJaYm14dA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Askar Safin <safinaskar@gmail.com>, metze@samba.org, akpm@linux-foundation.org, 
-	axboe@kernel.dk, brauner@kernel.org, david@kernel.org, dhowells@redhat.com, 
-	hch@infradead.org, jack@suse.cz, linux-api@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org, 
-	patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk, 
-	willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 40C162001B
-X-Rspam-User: 
-X-Stat-Signature: yqa6u7bgebr79sf15zm18jnf4usxg6rj
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780582651-751262
-X-HE-Meta: U2FsdGVkX19mk+IwHliH6oDAK3xRFSfGh8JPOre2Knsu8gOYWzhwT+XTXNhLL2IV99IGhB1+H+99AS/UoCbQRdH35Tk2gFM+v3zMCKw9EbltH8Khy1DInG1unu8Z2cExbkK0UbecX0CL2OQddo+CEx//r5b6OE5IHjRPi8oNmUXgjeZsuYWJejQvuFV5MeRODWrcJyFliHyGZT8J4vNzhFNZQVadt0W9AX0S2MJbFI9j9MwqHs5UHVsXUEkT+q9DytyEOl7Q90wKwbpevYw205C4161FMp5t5jRYxncPjpfLUKACxfwnUOXm6XIr8dYkYSAKqGtmu6+ptz7UBXbuuiCwlCLus0QAJOunFUC44zK2T7FVXL+gZstpJA5uge+wWRUDP19Ec2Q03lmxJCRGzJ8QM5Noy1/shSjqo+ncuosC5Vy4xxJB6Go9kDm6nIjIt3SvYpL6eQr9v16CsszUWTyaL73Uz+HTwmx92GavnOMMlLxzvpHZOuzZ9YiVC0+MyOcfhG0WFXTG+KJ9hY8OX/1p83qu+SvxRCysSonsXr8DzjjdBwIVOBMlanw7bk97XzQJD+80AgwixqWZykg9Fhfy21xmO9fGpGUPo2J4iryPaMcg03+9kUy9xIc+JWYDM4ovgUSmKgFPCIQgsSu82Xs3KLKIbhQQ2B+Lh/thTkIJd56FWWrAxmW6YhBJNGTfo9+hhr19B1SP+TUz2P3Jhc07ovjh7lhStvhnkpW+lp07lj5EdMLgGXET8vDQdx48X01EO2HkcRrWPW09P9MCdlIf23HzrAChJa4SY9/pX/njWffOtVac0U2EBwv9lso9IbWWCwouMFZZXWwJZWS8tDGJNaprOZVLlKI4wEINgMgAZXFpxeOMnl/2b6+U3wXORLbSn/D8OUZsRLfOYyWEV/7yA86FKbvOS7PrfXqpDhP48EMt1yfM0A4Zc0TRMShq9BTNrESpSblj/7Rnr6N
- /Auc0lOH
- TOR47yi5wOpLdC40F6dpDWTaDkFbM9r7gwWnJZLlBg80zjUDKLECsIkPj+rNqAI/M6XMTXEYlwo+iE6XL/iWm0PzB8Tkh03+dTuwX9tZgtYMNvqnOtveQBrQJ/ZT2cji4aGT77vmO2P03ycLH/1/b1VuUawfSWPSNedD60h9ePJzrJ0xl5yWrQ40LT9fecLX+nUeqSzIUl1OWgPyLP0dBBryeQeEgjOyiGOkhSCiaPb+d3w+coqm676q4QxwGMtiUwnv8jx1qkJjmH+B8gYXtD/v45I4AQFoK15l+ONKgalGNXB0mVjqMEHJxuKoYG79mS1/lIs8KOr+Rjjd/lNGuPf8CCtFQUi4I0jIS1fCNuIcKD/Js5LEMFX0nTe75fdY+G49TQeYxL7D6X4dgfY1/flZv6pKIlAk0rZbgoPZNrOCyRs7jdiLiv17tkRJYDvMCW8x/az82h25OdaX9tdmBAF2vcHf/7crYj0D7aN31LJotkGBZbCR0YfSJGgUYmvSaw1HWWfR3fZbCTIjzFMlqGIiDVZbljeONEr+5fReJ6l09zf5XXuNtjKXm2rJUTeDSf2tv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aiGFIrg8_vZZxnPg@lucifer>
+X-HE-Tag: 1780582785-998296
+X-HE-Meta: U2FsdGVkX1+aVpzdf3erKFotgbtfzETsOq2tqW+KlxsBNWkG9XWQTfmw/COwKWbFJCZE93NTYS5z96Xzfmkkm6mkaaS2bPXjUTr+N6pBTfJL9UNrTOQHkYpZDNa54wW/RaJIJJBFHlsIDCFN7i2NIjMUbRYoWX4aYBwMpR94ogxWofLMxBYRfGlrC7lBuZUrSOuHv33oqdU0OPAE7+bLbabnjVGIhStqtmC8JHVvuVCbJE9jN7gU/bT+fi1KOeI4Xlm0MqU+KOmkkOyTXfm89g/vPyYa+k0iOHBNHbFtDhx/5OqH75+KK4yvDwnvtnYdKX42T43J+Vlnj0xCr+r4K9Zwz27aXykEDKiEukMMdztHyzZTxkELJpZEI0Y2r+NApDCwNZFXDNq1ql6qVKoO5caciEhkHibecxpvWiaEcFZhFCHfEDYVjo8FP8FH7l0HlM2lw0+E/XJM2keoP9+sYmxFtedjqca/XQTOmaLe2v5oSX0vXI1qojryynxtWwRaxGdKuRsNxFs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,30 +102,325 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 4 Jun 2026 at 02:06, David Laight <david.laight.linux@gmail.com> wrote:
+On Thu, Jun 04, 2026 at 03:14:59PM +0100, Lorenzo Stoakes wrote:
+> On Tue, Jun 02, 2026 at 11:23:35AM -0600, Nico Pache wrote:
+> >
+> >
+> > On 6/1/26 7:15 AM, David Hildenbrand (Arm) wrote:
+> > >>>
+> > >>> Reading this, it is unclear why exactly do we need the stack.
+> > >>
+> > >> So I looked into your items below. It seems logical, and I think it
+> > >> works the same way; however, your method seems slightly harder to
+> > >> understand due to all the edge cases and more error-prone to future
+> > >> changes (the stack holds implicit knowledge of the offset/order that
+> > >> must now be tracked in the edge cases).
+> > >>
+> > >> Given the stack is 24 bytes, I'm not sure if the extra complexity is
+> > >> worth saving that small amount of memory. Although we would also be
+> > >> getting rid of (3?) functions, so both approaches have pros and cons.
+> > >
+> > > I consider a simple forward loop over the offset ... less complexity compared to
+> > > a stack structure :)
+> > >
+> > >>
+> > >> I will implement a patch comparing your solution against mine and send
+> > >> it here, then we can decide which approach is better.
+> > >
+> > > Right, throw it over the fence and I'll see how to improve it further.
+> >
+> > Ok heres what the diff looks like on top of my V19.
+> >
+> > you can access the tree here https://gitlab.com/npache/linux/-/commits/mthp-v19?ref_type=heads for easier review.
+> >
+> > So far I have no problem with this approach it appeared cleaner than i thought. Did some light testing. Gonna throw it more through the ringer tomorrow.
+> >
+> >
+> > From 9496c5d17eba7f6d04820d78c7c6f1592a58888a Mon Sep 17 00:00:00 2001
+> > From: Nico Pache <npache@redhat.com>
+> > Date: Tue, 2 Jun 2026 10:26:18 -0600
+> > Subject: [PATCH] convert from stack to forward loop
+> >
+> > Signed-off-by: Nico Pache <npache@redhat.com>
+> > ---
+> >  mm/khugepaged.c | 96 ++++++++-----------------------------------------
+> >  1 file changed, 15 insertions(+), 81 deletions(-)
+> >
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 498eba009751..6de935e76ceb 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -100,28 +100,6 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
+> >  static struct kmem_cache *mm_slot_cache __ro_after_init;
+> >
+> >  #define KHUGEPAGED_MIN_MTHP_ORDER	2
+> > -/*
+> > - * mthp_collapse() does an iterative DFS over a binary tree, from
+> > - * HPAGE_PMD_ORDER down to KHUGEPAGED_MIN_MTHP_ORDER. The max stack
+> > - * size needed for a DFS on a binary tree is height + 1, where
+> > - * height = HPAGE_PMD_ORDER - KHUGEPAGED_MIN_MTHP_ORDER.
+> > - *
+> > - * ilog2 is used in place of HPAGE_PMD_ORDER because some architectures
+> > - * (e.g. ppc64le) do not define HPAGE_PMD_ORDER until after build time.
+> > - */
+> > -#define MTHP_STACK_SIZE	(ilog2(MAX_PTRS_PER_PTE) - KHUGEPAGED_MIN_MTHP_ORDER + 1)
+> > -
+> > -/*
+> > - * Defines a range of PTE entries in a PTE page table which are being
+> > - * considered for mTHP collapse.
+> > - *
+> > - * @offset: the offset of the first PTE entry in a PMD range.
+> > - * @order: the order of the PTE entries being considered for collapse.
+> > - */
+> > -struct mthp_range {
+> > -	u16 offset;
+> > -	u8 order;
+> > -};
+> >
+> >  struct collapse_control {
+> >  	bool is_khugepaged;
+> > @@ -137,7 +115,6 @@ struct collapse_control {
+> >
+> >  	/* Each bit represents a single occupied (!none/zero) page. */
+> >  	DECLARE_BITMAP(mthp_present_ptes, MAX_PTRS_PER_PTE);
+> > -	struct mthp_range mthp_bitmap_stack[MTHP_STACK_SIZE];
+> >  };
+> >
+> >  /**
+> > @@ -1458,50 +1435,14 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+> >  	return result;
+> >  }
+> >
+> > -static void collapse_mthp_stack_push(struct collapse_control *cc, int *stack_size,
+> > -				     u16 offset, u8 order)
+> > -{
+> > -	const int size = *stack_size;
+> > -	struct mthp_range *stack = &cc->mthp_bitmap_stack[size];
+> > -
+> > -	VM_WARN_ON_ONCE(size >= MTHP_STACK_SIZE);
+> > -	stack->order = order;
+> > -	stack->offset = offset;
+> > -	(*stack_size)++;
+> > -}
+> > -
+> > -static struct mthp_range collapse_mthp_stack_pop(struct collapse_control *cc,
+> > -						 int *stack_size)
+> > -{
+> > -	const int size = *stack_size;
+> > -
+> > -	VM_WARN_ON_ONCE(size <= 0);
+> > -	(*stack_size)--;
+> > -	return cc->mthp_bitmap_stack[size - 1];
+> > -}
+> > -
+> >  /*
+> >   * mthp_collapse() consumes the bitmap that is generated during
+> >   * collapse_scan_pmd() to determine what regions and mTHP orders fit best.
+> >   *
+> >   * Each bit in cc->mthp_present_ptes represents a single occupied (!none/zero)
+> > - * page. A stack structure cc->mthp_bitmap_stack is used to check different
+> > - * regions of the bitmap for collapse eligibility. The stack maintains a pair
+> > - * of variables (offset, order), indicating the number of PTEs from the start
+> > - * of the PMD, and the order of the potential collapse candidate respectively.
+> > - * We start at the PMD order and check if it is eligible for collapse; if not,
+> > - * we add two entries to the stack at a lower order to represent the left and
+> > - * right halves of the PTE page table we are examining.
+> > - *
+> > - *                         offset       mid_offset
+> > - *                         |         |
+> > - *                         |         |
+> > - *                         v         v
+> > - *      --------------------------------------
+> > - *      |       cc->mthp_present_ptes         |
+> > - *      --------------------------------------
+> > - *                         <-------><------->
+> > - *                          order-1  order-1
+> > + * page. We start at the PMD order and check if it is eligible for collapse;
+> > + * if not, we check the left and right halves of the PTE page table we are
+> > + * examining at a lower order.
 >
-> Something needs to ensure that the high 32bits of the fd get masked off
-> on 64bit systems.
+> Yeah this is not good enough sorry, before there was some kind of explanation of
+> the algortihm, just because you can explain the _code_ more simply, that's not
+> very useful.
+>
+> I had to sit down and spend quite a bit of time to figure out how the actual
+> output looks so I think that should be explained.
+>
+> >   *
+> >   * For each of these, we determine how many PTE entries are occupied in the
+> >   * range of PTE entries we propose to collapse, then we compare this to a
+> > @@ -1517,26 +1458,20 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+> >  {
+> >  	unsigned int nr_occupied_ptes, nr_ptes, max_ptes_none;
+> >  	enum scan_result last_result = SCAN_FAIL;
+> > -	int collapsed = 0, stack_size = 0;
+> > +	int collapsed = 0;
+> >  	bool alloc_failed = false;
+> >  	unsigned long collapse_address;
+> > -	struct mthp_range range;
+> > -	u16 offset;
+> > -	u8 order;
+> > +	unsigned int offset = 0;
+> > +	unsigned int order = HPAGE_PMD_ORDER;
+> >
+> > -	collapse_mthp_stack_push(cc, &stack_size, 0, HPAGE_PMD_ORDER);
+> >
+> > -	while (stack_size) {
+> > -		range = collapse_mthp_stack_pop(cc, &stack_size);
+> > -		order = range.order;
+> > -		offset = range.offset;
+> > +	while (offset < HPAGE_PMD_NR) {
+> >  		nr_ptes = 1UL << order;
+> >
+> >  		if (!test_bit(order, &enabled_orders))
+> >  			goto next_order;
+> >
+> >  		max_ptes_none = collapse_max_ptes_none(cc, NULL, order);
+> > -
+> >  		nr_occupied_ptes = bitmap_weight_from(cc->mthp_present_ptes, offset,
+> >  						      offset + nr_ptes);
+> >
+> > @@ -1553,7 +1488,7 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+> >  				collapsed += nr_ptes;
+> >  				fallthrough;
+> >  			case SCAN_PTE_MAPPED_HUGEPAGE:
+> > -				continue;
+> > +				goto next_offset;
+> >  			/* Cases where lower orders might still succeed */
+> >  			case SCAN_ALLOC_HUGE_PAGE_FAIL:
+> >  				alloc_failed = true;
+> > @@ -1581,15 +1516,14 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+> >  		}
+> >
+>
+> This obviously needs some comments describing what you're doing here. I think
+> David said so too.
+>
+> >  next_order:
+> > -		if ((BIT(order) - 1) & enabled_orders) {
+> > -			const u8 next_order = order - 1;
+> > -			const u16 mid_offset = offset + (nr_ptes / 2);
+> > -
+> > -			collapse_mthp_stack_push(cc, &stack_size, mid_offset,
+> > -						 next_order);
+> > -			collapse_mthp_stack_push(cc, &stack_size, offset,
+> > -						 next_order);
+> > +		if (order > KHUGEPAGED_MIN_MTHP_ORDER &&
+> > +			(BIT(order) - 1) & enabled_orders) {
+>
+> Wait, if I disable an order this changes the way we get mTHP doesn't it?
+>
+> Let's say I disable order-4 but retain order-3 and order-2 for offset 0 we get:
+>
+> 9->8->7->6->5->5->6->5->5->7
+>
+> And we simply can't get order-3 no?
+>
+> This seems broken doesn't it? Maybe I'm missing something?
 
-That something already exists: CLASS(fd, f)(fd);
+OK it's the way this is written, very confusing. I do not know why you are
+writing this code in this 'compressed' way.
 
-It ignores the top bits, because 'fdget()' takes an 'unsigned int'.
+(1 << order) - 1) & enabled_orders is to see if there's _any others_ to check.
 
-We have been a bit random in how we declare the system calls in
-general, and we mix 'unsigned int' and 'int' and 'unsigned long'
-pretty much randomly when it comes to file descriptor arguments to
-system calls.
+>
+>
+> > +			order = order - 1;
+>
+> order--?
+>
+> > +			continue;
+> >  		}
+> > +next_offset:
+> > +		offset += nr_ptes;
+> > +		order = min_t(int, __ffs(offset), HPAGE_PMD_ORDER);
+>
+> Also wouldn't, in the case where an enabled order check above skips an order--,
+> we could have offset=0 here and end up just looping around checking from (0,
+> HPAGE_PMD_ORDER) again? That also seems broken?
 
-fs/read_write.c in particular uses all three cases with no real logic to it all:
+Yeah sorry the offset += nr_ptes fixes that anyway.
 
-  SYSCALL_DEFINE3(lseek, unsigned int, fd, ..
-  SYSCALL_DEFINE3(readv, unsigned long, fd, ..
-  SYSCALL_DEFINE4(sendfile, int, out_fd, ..
+And the fact it's a mask check above makes this OK.
 
-but then anything that uses fdget() (through one of the helper classes
-or not) will simply not care.
+So the logic seems probably fine but it needs to be clearer.
 
-Does it make sense? Is it pretty? Nope. Does it matter? Also nope.
-
-                  Linus
+>
+> Also, what's __ffs(0)? Isn't it undefined? We shouldn't be relying on undefined
+> behaviour no?
+>
+> https://elixir.bootlin.com/linux/v7.0.10/source/include/asm-generic/bitops/builtin-__ffs.h#L5
+> Says as much?
+>
+> I guess we're assuming we're not going to get to 0 here, but that could do with
+> a comment or a VM_WARN_ON_ONCE() at least.
+>
+> Also why aren't we making this a function?
+>
+> static inline unsigned int max_order_from_offset(unsigned int offset)
+> {
+> 	if (!offset)
+> 		return HPAGE_PMD_ORDER;
+>
+> 	return __ffs(offset);
+> }
+>
+> Though __ffs() works on unsigned long... probably... OK?
+>
+> >  	}
+> >  done:
+> >  	if (collapsed)
+> > --
+> > 2.54.0
+> >
+> >
+> >
+> > >
+> > > [...]
+> > >
+> > >>>> +     bitmap_zero(cc->mthp_bitmap, MAX_PTRS_PER_PTE);
+> > >>>>       memset(cc->node_load, 0, sizeof(cc->node_load));
+> > >>>>       nodes_clear(cc->alloc_nmask);
+> > >>>> +
+> > >>>> +     enabled_orders = collapse_allowable_orders(vma, vma->vm_flags, tva_flags);
+> > >>>> +
+> > >>>> +     /*
+> > >>>> +      * If PMD is the only enabled order, enforce max_ptes_none, otherwise
+> > >>>> +      * scan all pages to populate the bitmap for mTHP collapse.
+> > >>>> +      */
+> > >>>
+> > >>> You should note here, that we re-verify in mthp_collapse().
+> > >>>
+> > >>> But the question is, whether we should relocate the check completely into
+> > >>> mthp_collapse(), instead of conditionally duplicating it.
+> > >>>
+> > >>> What speaks against always populating the bitmap and making the decision in
+> > >>> mthp_collapse()?
+> > >>>
+> > >>> Sure, we might scan a page table a bit longer, but the code gets clearer ... and
+> > >>> I am not sure if scanning some more page table entries is really that critical here.
+> > >>
+> > >> Someone asked me to preserve the legacy behavior (PMD only). Although
+> > >> rather trivial, if you set max_ptes_none=0 for example, we'd still
+> > >> have to do 511 iterations for no reason if PMD collapse is the only
+> > >> enabled order rather than bailing immediately.
+> > >>
+> > >> I'm ok with dropping it, but I think its the correct approach (despite
+> > >> the extra complexity). @Usama Arif brought up this point here
+> > >> https://lore.kernel.org/all/f8f7bb71-ca31-46ee-a62d-7ddfd83e0ead@gmail.com/
+> > >
+> > > We talk about regressions, but I am not sure if we care about scanning speed
+> > > within a page table that much?
+> > >
+> > > After all, we locked it and already read some entries.
+> > >
+> > > Having the same check at two places to optimize for PMD order might right now
+> > > feel like a good optimization, but likely an irrelevant one in a near future?
+> > >
+> > > Anyhow, won't push back, as long as we document why we are special casing things
+> > > here.
+> > >
+> >
+>
+> Thanks, Lorenzo
 
