@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70359CD6E6D
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 15:04:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C150CD6E6D
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 15:04:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 320386B0093; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
+	id 49B196B0096; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 313356B0096; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
+	id 472B76B0095; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 164E56B0095; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
+	id 3DC3E6B0098; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 092816B0092
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 253836B0092
 	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2660120141
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:04:39 +0000 (UTC)
-X-FDA: 84842551878.22.9BB0C72
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1DF51160153
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:04:38 +0000 (UTC)
+X-FDA: 84842551878.22.A2C9BBB
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 630A62002F
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:04:30 +0000 (UTC)
+	by imf09.hostedemail.com (Postfix) with ESMTP id 674D214001B
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:04:29 +0000 (UTC)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780585470;
+	s=arc-20220608; t=1780585469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=i+p0/RBuQRaBsziDgezlLtukeizs4bDB3qb+hgSN71o=;
-	b=PdDBfgutWlwsFwl6Kc5LAKfeuEFOGT6SBoyCl2OvQmKclnnZJOjKDTjPXUzi7B2/KjudVT
-	TAnaxGxd0n5YPfLVUxujgPCLCCWT+hFQknFNVEULr6/WTUCPi3LnqSS3OCgkuQdYjXS1fL
-	zoRG6PSG0fdTot4kBrI4TQEVAk8yXp8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+	bh=HudAFG/Ern9fDRlBBQ6m2/knYAiLXOw0v8RTPwWCmtk=;
+	b=LvfIulPB7Ak8gY0sy7Kktj+0rAmLFtEo/5xi6VdmaZnjpsE7KNgVnHRRMo4qIQm10BjhpN
+	6C/Ue8hYvMZwdB8qpWqOq9l04RJHndXzYoIxZlKgvkBBBdftFuMQamuonm06pY3a5770oy
+	v72Domz6RPGDgu4k82xg0WyqKA84xdU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780585470;
-	b=tQcMB8i8qJrg5cRmNdQHzDSCOW9G3swhqAWeOj3M7EdnkKYrsHYjCFsgtKg5t68gbapNV7
-	UQAcckO5I8M1vhHSYH8hdDlVtaxrvG5Q9yUH2JHDutTHkheJ8/n/KcENfK/WdATKjvKY06
-	aIHC6lRGEjhXFqmKb/Tj2zN02ZpALgE=
+	t=1780585469;
+	b=VpMYEUtZFWG1U5pwYk+jK6vqcyUa+GSU12dmMr7capGEKfexoCKe3dADql2WN1opm72dTD
+	6nhnx7V4dWaIV07fp4HL1Q0YNR8UQ9AtwgRMAa/Ao9Z3oIwNxkQYZKRWSSSovgTZt97VAL
+	V30hKnioXvB2jFb3tw1OL70Tb6onUtM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gWSX56FnjzJ468x;
-	Thu,  4 Jun 2026 23:04:21 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gWSW75cDQzHnGjF;
+	Thu,  4 Jun 2026 23:03:31 +0800 (CST)
 Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8E64D40569;
+	by mail.maildlp.com (Postfix) with ESMTPS id 78C9A40569;
 	Thu,  4 Jun 2026 23:04:25 +0800 (CST)
 Received: from mscphis01197.huawei.com (10.123.65.218) by
  mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
@@ -61,9 +61,9 @@ To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
 	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
 	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v3 2/4] mm/damon: Generalize ctx_target creation for damon_ops_id and add vaddr support
-Date: Thu, 4 Jun 2026 15:03:35 +0000
-Message-ID: <20260604150338.501128-3-gutierrez.asier@huawei-partners.com>
+Subject: [RFC PATCH v3 1/4] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto tuning
+Date: Thu, 4 Jun 2026 15:03:34 +0000
+Message-ID: <20260604150338.501128-2-gutierrez.asier@huawei-partners.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260604150338.501128-1-gutierrez.asier@huawei-partners.com>
 References: <20260604150338.501128-1-gutierrez.asier@huawei-partners.com>
@@ -73,8 +73,8 @@ Content-Type: text/plain
 X-Originating-IP: [10.123.65.218]
 X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
  mscpeml500003.china.huawei.com (7.188.49.51)
-X-HE-Tag: 1780585470-851773
-X-HE-Meta: U2FsdGVkX18nw4zVl2LcjBXIGDp7ccYYAbzBYLT7J+lVMr6eM6So3vwdU/oRHzQ0dN0s48Poc9/ZVxq2S99dkje4zHapc2mDVjeIaESv1qqhrxvBDeL2szPpwcAkchKrPKWhOHC29CUlPxqpLyc2ujl1LLH8WJepvHvYRu/tRD2zfp/djo0olDPMoqaaep9bl+tVry96xJy0DMejuIM+zMndbqN+tuvLLzT9NrhlMJhVl+//wBoUskWwWT4iH4LSJEaI//MBJ/cznDvFlImL66f6Q1B4haC2kl7OlpkuoznSIOreNMQWHU7B0VDSMZrh66z3qKJfyu+vQT4ER1Q/MKd1OXyXnCbGJnh4jNmxU+L4ulBEZs7LmacaMEsjMbmFhFodv2XmvX3PN3BNvvXKsg==
+X-HE-Tag: 1780585469-944968
+X-HE-Meta: U2FsdGVkX18kKg9f4zmuWF3NIgSqJDo3RLc2fNVQYvfcXwx+dFVjIJaHpk4rhnu0XLM5EFrDQ42vjrnyHSNQD8PWaYWgPHBrXk2UfWndi4nNQqZRoyz2kGI6TuxjM1cGkFKnhm13hO0LsOhEpZHeciSsjLM67GD+SIXwgk/wo9XZhFIjrWxvi/M0oyco0M15l+dJ1l2TU9OZiAtEVPzaXzfQnfdhLQAA+Dg7M157n0zjKQw7tHRn00Uu44cdbe/qt8qQ/WisiMK9QeFw84nKHmhBzjxtssRwJtFLEe0xOtQqPzZRrcSyCN3q6TSETcGeVFuHXrO5Ngw5D/tB1CLL3K/mF7GCKK1jvJScYLEzjOcAerYfSxSif1nb14xDlORSWi7ot90VlOwilAHlg2fNz09d18v8j76A
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -84,89 +84,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-This patch adds a new function damon_modules_new_vaddr_ctx_target.
-Since ctx_target creation for vaddr and paddr is almost
-identical, the logic is extracted to a new function,
-damon_modules_new_ctx_target, and vaddr and paddr functions
-are left just as interfaces.
-
-This change was suggested earlier1 and it is needed to allow
-developers to create DAMON modules that use DAMON_OPS_VADDR targets.
+Introduce DAMOS_QUOTA_HUGEPAGE auto tuning Add a
+new DAMOS quota goal metric to measure the amount of huge
+page consumption to total anonymous memory consumption
+ratio.
 
 Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-Suggested-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/modules-common.c | 31 +++++++++++++++++++++++++++----
- mm/damon/modules-common.h |  3 +++
- 2 files changed, 30 insertions(+), 4 deletions(-)
+ include/linux/damon.h |  1 +
+ mm/damon/core.c       | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/mm/damon/modules-common.c b/mm/damon/modules-common.c
-index 86d58f8c4f63..9b0cc80378f8 100644
---- a/mm/damon/modules-common.c
-+++ b/mm/damon/modules-common.c
-@@ -10,12 +10,13 @@
- #include "modules-common.h"
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index c7a31572689b..8e15a674e893 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -177,6 +177,7 @@ enum damos_quota_goal_metric {
+ 	DAMOS_QUOTA_ACTIVE_MEM_BP,
+ 	DAMOS_QUOTA_INACTIVE_MEM_BP,
+ 	DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
++	DAMOS_QUOTA_HUGEPAGE,
+ 	NR_DAMOS_QUOTA_GOAL_METRICS,
+ };
  
- /*
-- * Allocate, set, and return a DAMON context for the physical address space.
-+ * Allocate, set, and return a DAMON context.
-  * @ctxp:	Pointer to save the point to the newly created context
-  * @targetp:	Pointer to save the point to the newly created target
-+ * id:	DAMOS op id. It can be VADDR or PADDR
-  */
--int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
--		struct damon_target **targetp)
-+static int _damon_modules_new_ctx_target(struct damon_ctx **ctxp,
-+				struct damon_target **targetp, enum damon_ops_id id)
- {
- 	struct damon_ctx *ctx;
- 	struct damon_target *target;
-@@ -24,7 +25,7 @@ int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
- 	if (!ctx)
- 		return -ENOMEM;
- 
--	if (damon_select_ops(ctx, DAMON_OPS_PADDR)) {
-+	if (damon_select_ops(ctx, id)) {
- 		damon_destroy_ctx(ctx);
- 		return -EINVAL;
- 	}
-@@ -40,3 +41,25 @@ int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
- 	*targetp = target;
- 	return 0;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 9f38deddcb30..7fc7477a353a 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2536,6 +2536,17 @@ static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
+ 	return mult_frac(inactive, 10000, total);
  }
-+
-+/*
-+ * Allocate, set, and return a DAMON context for the physical address space.
-+ * @ctxp:       Pointer to save the point to the newly created context
-+ * @targetp:    Pointer to save the point to the newly created target
-+ */
-+int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
-+				struct damon_target **targetp)
-+{
-+	return _damon_modules_new_ctx_target(ctxp, targetp, DAMON_OPS_PADDR);
-+}
-+
-+/*
-+ * Allocate, set, and return a DAMON context for the virtual address space.
-+ * @ctxp:	Pointer to save the point to the newly created context
-+ * @targetp:	Pointer to save the point to the newly created target
-+ */
-+int damon_modules_new_vaddr_ctx_target(struct damon_ctx **ctxp,
-+				struct damon_target **targetp)
-+{
-+	return _damon_modules_new_ctx_target(ctxp, targetp, DAMON_OPS_VADDR);
-+}
-diff --git a/mm/damon/modules-common.h b/mm/damon/modules-common.h
-index f103ad556368..324b9cb4957e 100644
---- a/mm/damon/modules-common.h
-+++ b/mm/damon/modules-common.h
-@@ -47,3 +47,6 @@
  
- int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
- 		struct damon_target **targetp);
++static unsigned int damos_hugepage_mem_bp(void)
++{
++	unsigned long thp, total;
 +
-+int damon_modules_new_vaddr_ctx_target(struct damon_ctx **ctxp,
-+		struct damon_target **targetp);
++	thp = global_node_page_state(NR_ANON_THPS) +
++				global_node_page_state(NR_SHMEM_THPS) +
++				global_node_page_state(NR_FILE_THPS);
++	total = totalram_pages() - global_zone_page_state(NR_FREE_PAGES);
++	return mult_frac(thp, 10000, total);
++}
++
+ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
+ 		struct damos *s, struct damos_quota_goal *goal)
+ {
+@@ -2567,6 +2578,9 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
+ 		goal->current_value = damos_get_node_eligible_mem_bp(c, s,
+ 				goal->nid);
+ 		break;
++	case DAMOS_QUOTA_HUGEPAGE:
++		goal->current_value = damos_hugepage_mem_bp();
++		break;
+ 	default:
+ 		break;
+ 	}
 -- 
 2.43.0
 
