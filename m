@@ -4,148 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87E1CCD6E6E
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 20:38:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13D6FCD6E6E
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 21:14:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A58C26B00A6; Thu,  4 Jun 2026 16:38:52 -0400 (EDT)
+	id 18B586B0092; Thu,  4 Jun 2026 17:14:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A099F6B00A7; Thu,  4 Jun 2026 16:38:52 -0400 (EDT)
+	id 163006B0093; Thu,  4 Jun 2026 17:14:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F85F6B00A8; Thu,  4 Jun 2026 16:38:52 -0400 (EDT)
+	id 079436B0095; Thu,  4 Jun 2026 17:14:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 809F16B00A6
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:38:52 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27D761201E5
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:38:52 +0000 (UTC)
-X-FDA: 84843394104.02.62BDBCC
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0918F40006
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:38:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=X8VIU0am;
-	spf=pass (imf12.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780605530;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F14866B0092
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 17:14:37 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A4B41C10EC
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 21:14:37 +0000 (UTC)
+X-FDA: 84843484194.20.95F0821
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5471E4000D
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 21:14:35 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XyrRI1sn;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf17.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780607675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hk9oGJDA0EQYu4fCSnjCmC9aao7J7f5eU8cgGN0cNm0=;
-	b=7WMwZudkO/rfA34DQIqZoS4FPrFHp/2/d2RW4frwk3bQWLtmfvT5/aBUomZlQNkTm3Iyhs
-	owtgCAt2Y4lVmF4YRqjcNMDUZvjJM8iGfsTcgEVQZEP3v6Er97WsU2RepLhrtMTUZPqRBA
-	GcbKajdic2+/upNJiwOxMaszbtNyqUM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780605530;
-	b=A2Stk+0pyBFhd2GTw1MA+yaVI6TX/R8eXJE0/YlTehw3LjUElbRPcezeiqH+XEkJZSWlZL
-	eFrF7pHPKp/K6qtJPMg7daRad6Y0RWS4+ffIwdWdcX99i4KwL2QCk7qoolgEPCx0Ltl4oJ
-	s8IDFJF/ihUzTjXywIZCnTfIu6LU8Os=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=X8VIU0am;
-	spf=pass (imf12.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780605529; x=1812141529;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=lDpJv4n65K4Es/uES+BPuZ1DzxHogGjpuTXWYjQ7ksE=;
-  b=X8VIU0amUKeCxhuA6JXOwOc2Wo5yFxjJ88o9MC/nzao0rxFP6g5oAqTZ
-   7AUjdJAF6lX1oO47tNat9M/t1QscHZz2Gfdd5F+TN08ZGsu+jGWHGJq+p
-   LL4ERwIJIDegu1YfokNWvFUxZ+d7/U5QtFxEo/zJ0FWoUJJVR59XWOW3I
-   aYZbpxVjqSRg6WLfxPpyLDw1ldWqrQVPsnMon/iQNW6ZVQEDKNKT6Trnf
-   3dniG3AC4fNkcMN3xjZxKbktZ3Um+YfRYO/retDeGJ26RIRWyrq0NYpZi
-   XV/M/IhwVufZcJzmesk+ZPtNKlFZiudK1tYWaAOa57wdH5iefLfML+GAJ
-   Q==;
-X-CSE-ConnectionGUID: jub5WJluRn230J0sx/oqYQ==
-X-CSE-MsgGUID: duDFH8+lSGKm5i/BvMIr4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="81624975"
-X-IronPort-AV: E=Sophos;i="6.24,187,1774335600"; 
-   d="scan'208";a="81624975"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 13:38:48 -0700
-X-CSE-ConnectionGUID: x5o45sZxRwS2L9plWh9vHw==
-X-CSE-MsgGUID: GC/kVGZjRQSH7+XuwDMGsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,187,1774335600"; 
-   d="scan'208";a="249748999"
-Received: from unknown (HELO [10.24.81.183]) ([10.24.81.183])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 13:38:47 -0700
-Message-ID: <bae37c0c-f9e8-486b-a1a8-53c9dc0af8e0@intel.com>
-Date: Thu, 4 Jun 2026 13:38:39 -0700
+	bh=lyPEsnWgMEwVBTMM4vHE6GHrBW2HxmanLD1B4poadMk=;
+	b=lPcCmC9w0lWimJl47clMGxeBlIz4uSk2WvaaRcIl0r4nrQVY29dMyJm6Vja/zmHIeg40Zj
+	Nuh8QikKgfxg6z7jfNwwh6PrEXdYsJhnsejisMRSduPiTaILk1HaR9/qhsQkxobikSd7oL
+	Vz20Ec2dzQJN+9vKAJ3eV3TnyH2rTKM=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XyrRI1sn;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf17.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780607675;
+	b=upJ7k4qZioLEB5cqfGNqhCkcTWsJED50TbK1dS7qC6PEpt4P1dG/RD8QjJN4PxkbjsViTj
+	L1XTZkmFPhfl0ToKE/wEKgoZZBjcGnZd42we6NfNWk3QF3uzuWSl1/3KQe7kVKSIlV6RYh
+	M7ZNwWOT5gLhvZzw4NufOMJEvIItIo0=
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-307631dbfedso2397676eec.0
+        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 14:14:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780607674; cv=none;
+        d=google.com; s=arc-20240605;
+        b=I3pENZ5lqjGA/NBS9W1YFFiF1+SEqPgxd8NZK2RixfVYHukLAwwIlJDz5oaDdDbqx8
+         thmX3OBLC0bK1soSC9mzoW4dYXnlJMQ3B+6v1UethGwBshaKmK/jDVPGKtlqVdcL9Koe
+         W4mI+/Xj5QM/3AF3bJ9M8fYD3zSrsBx4NyUCBd14ObqLucWgTv6XKV3zyMtOTMQ+SepH
+         /4mgzbhgjK0p+0iQ3jcHC/9NvtowNSMMPe78EsVEMOHKAeK9x3Ar/R9GEA56kbD6hwA3
+         4WwbLaamPGRd6uXq4LiCvQtySLRefJBZ/CcchiexLIFxwdnYzsMXhyiTvJ7C66PB+HvP
+         O3YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=lyPEsnWgMEwVBTMM4vHE6GHrBW2HxmanLD1B4poadMk=;
+        fh=hV6wxGjuR/5S7eH6JnSeORahSbZVoEDewOd7Ooh+bJ4=;
+        b=b1+twQ3zp9XDBXguqrvKdZndb5GxzqXp6zPzzdv6usxjszfQpMPyj38QbbGpxgW9XW
+         hzxZkFVGe9ceWjVnj2yHHSvkxxlHnB1PqfRcEP4IXalAb3ltC6yLlrjUVzKmFernO+Lz
+         uaP/4w2jipKbaHDQp0DgLQoVOiSYBIVFZFENn9ZQ/nqOj/4gW1+2fCsjIqLjtnmOwXA5
+         o8EhruprMvwoj1E/hdZyrNbk5IfOPx1yOQi7BPMHHoUPRy25VuccCcIasu1oWj64Sx9g
+         fD0uK+QHKjA1FYKZn72w32A0r74JiKZfOhoDensUC52uCbM6CD9qmqEiW4RJT7vxdzfZ
+         +Png==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780607674; x=1781212474; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lyPEsnWgMEwVBTMM4vHE6GHrBW2HxmanLD1B4poadMk=;
+        b=XyrRI1snGLdYvbivoylVnGhIEYrB9lnOzBqiVqgfTPKZwHCqBL7qRkL2rdehCY5AAc
+         J4OEfhAEeXb3UvxMXZaX4GwC1bTDjDqas6tfZaWz1xc0L4UiKBZy+45kBXu97/uCv6RE
+         mURoQCs2wvw5z4Ge36kHpfLepvPPlPjC+XoOVct7HjbCykLHJ+KWX00MIa8S/eIXZdOX
+         3vQa2Hmh3BM9FZc6j1+5Dc9UL/gGNrX7a4TgXUbJci3GjRMWFKRd9GWoZYvYNS2zzqv7
+         K+bFi/jaShpOg0R1Mlc0TXxlgFCufOxvTK/YUaIPZtLueR1ALCWsYvDM/JIWP9HTlTwd
+         Hfiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780607674; x=1781212474;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lyPEsnWgMEwVBTMM4vHE6GHrBW2HxmanLD1B4poadMk=;
+        b=QqXqogRLR8QNad3x0hoPcIYcRYUWxAcrDMezLA8qbIPmZfU3wheQoQyk66XlGfYmdC
+         FTcDoKYG9kHI3V/pBlbXITjJuHeesJZNgfA6nIIh64tOmO32WwtduebCJIZHmzJtKblv
+         qDQUHpJ6CPVoXlx0fBz5zV/S3/gf47kt0cAoEIhXlqmAoBLxcFhSg81eJrJn6UiHesNd
+         Lw1HZf6Cg+CSwn6u+4yO5yIXRP8vnkACG4JoLPvw1BSJOsACfCANyrWb4hCEe/+9BqvT
+         o1tAuIWNyjnva9iGiXeY6NtUC0qe/yDLkpxmtA3axqCJtgaFv+PCoIliq9hKIjTmKNkw
+         osKQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8J6FRW6sRr9O35deLthrAJqALRtfnDIweK0xK+Pwt+0qWcnYuOTOmTFzmxtwHhbRTM1C4XyFUeYw==@kvack.org
+X-Gm-Message-State: AOJu0Yy08s0bAd+aZ6tR/ii3EEJSQudUvIL89NWZTb9jHMe47NCRPT5z
+	oN+8b0AILmTYn/XFxbc4PomOL8m6RuAPt+5wXGUN6Ba6eCNO/s4NugkSRYtEAwIpHYtg/Ccx9L+
+	B2F6UEStCm688Lco9OwVdJH7gWfrV6GpmBhyJkKxw
+X-Gm-Gg: Acq92OEKVdNWxXzzD+7UBefeyFdH2NweBTmz5oDUuN19BkXYcvXV+MM+s36Ygy0n0YG
+	mtkjGD17Rr8PmqjMFPkrjJSEYDX6TTlJvD4Z9OdZg7E8Dkf+PSEWXjj53+noFV2iN1n3XbEbTTr
+	75QqvTPiWMlc/7lBvjPlLQpXsFbMP36zcbOiOk/UBQ/0iGf3B/WMVSUJzpTLVmHrh6+Lg4Ye9zM
+	feuP68iO2uVxpWwpboXG5WNQRYHh7UT4Fx5N7t8LAwbSkpH0wRNVwCfkOjVZ80Hv70Slk/iLzYC
+	knoUsnfQGcBxaLvZiYeYjOj7m6p6XyH2RR9z+tyoyKBy8sZUKFHKtuDd0kvnp3d4kMfZYvwwvXL
+	f38o=
+X-Received: by 2002:a05:7300:5b83:b0:304:acc:f086 with SMTP id
+ 5a478bee46e88-3077b7ec417mr207174eec.33.1780607673246; Thu, 04 Jun 2026
+ 14:14:33 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 4 Jun 2026 14:14:32 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 4 Jun 2026 14:14:32 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aiHeDZEPkAcWcSkn@google.com>
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <CAEvNRgGpaggjd3=ooyzv7iEbmA-x1mWJHgjLSjPi8=5CPrk-yQ@mail.gmail.com> <aiHeDZEPkAcWcSkn@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arch,x86: Skip setting align_offset for hugetlb mappings
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov <bp@alien8.de>,
- Karsten Desler <kdesler@soohrt.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260601125015.216110-1-osalvador@suse.de>
- <53b599ef-0f16-44d9-bfda-a5a751649193@intel.com>
- <aiGRCdKXdusBu2tU@localhost.localdomain>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aiGRCdKXdusBu2tU@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0918F40006
+Date: Thu, 4 Jun 2026 14:14:32 -0700
+X-Gm-Features: AVHnY4J7O-BvLwAbWwmNVfQCapmW0Jz58QA9MN7lFJVjBHp7oGK-p6NKEbfSA24
+Message-ID: <CAEvNRgHz5GDjq0GqRmpQdHc-X45gCNr39VYWZH-T7XhPEtN5CQ@mail.gmail.com>
+Subject: Re: [PATCH v7 00/42] guest_memfd: In-place conversion support
+To: Sean Christopherson <seanjc@google.com>
+Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 5471E4000D
+X-Stat-Signature: back78ihh8fntpy4xn3k4s8rbqs3u383
 X-Rspam-User: 
-X-Stat-Signature: iayiurtahshxrrsswk7wei1ms17faptm
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780605528-132257
-X-HE-Meta: U2FsdGVkX1/cSfhzIS1eucj7ldP+HtkR4Tb2vY6xm5mo/cV0STVIsP8Rfvjmbd+LdZSmBMM/X/K17jLwDstkVUOrXLUC+YcYLe4q6uFcr803i3eBz1d0e/xUD28v7qfAMQUv3520QVhv1Ft4Jr+E+A44KmqU6Es9F/gsKTVQNULdMg+C2Q1zxzMQtCnM9tG07yAm2UylDJnEvBveJ5bi541wvkASL06U1OjANk/RGFIpJe/o5nCRCPwg64R0ULRWLVAD5CWXUcbGwyBP1HOyCJVZI8i9OXu/re3vGxEdV+hBGc9k3/ZOcLCDTG8drsWNckrk1nwXIAZM+VngZ4XyJY08/9+93p5XJCngesvqRHeNQhteyiOLLcKvpwnA4Blr84cHHTQStFU4WYoONAhS+ugPGrP+9kdGlaZBg1wT4SmjstEnCFl1u5n/udiZy81DlDfbbmvbu98Yw171wBPFWxXsBBCyj4/HBtfDwxJcA17qo88E75ANpArZf841RZN1i9VD4Q+fmnxSa5ek799aWyqFTnI7XIGK+d9g1he5i0IFQszcJTUoG1E4MLh5YGsv6ZxOw/2ZRC8QKLzKtqGxMtZYbzDcGaKwtdgvKHELiPq9AME4ZSzw1H4XV1tRdmd4xQCZB4tDjZc5o4tyG7U9hZXsfy0zXNNSQlY8o6IS9qiP++CLAGio15kTK+qHGI5LAXY9iQM2Uotynmye0VDvrTDFlwXSsxp4UZ15zb3SDmNjC/hbDZwGdIoxql3c+wKsGaubHM5pVOHQ16AZG0F16S2ne5HHHGRzQbUlew9VP5rpLlNrS/TV1OpujDsiNIzY9Gzz2V/x8ZjXBXcFQPuDOTZ+/mIJVNahM7MBUripg6CWLi3w8eTPO5+XIK6O53yc5iU122UMO76Q/X+CSebdAy26WobM4EMKC9ZBxzVU04df1Vpg+FcRA3UcjQnfVJ8XrTJ0NQU6+OTu+OuHrH9
- ym1lP6qw
- b+ss2Fys8RoHm2vcRjTyAuX+NwHt8R6qKGyFM1yv3eXE4gTsYewYQiWOVTV9Pr/94LRbbeub59Z3gf8AkUpzQir140YZdSqa75LdYHs8mfC9iiQ67Q0YaZPPkbk7p9vMQRLj7Uq6T14Hn867D83pmZQstDNYsTkz+EUeUHTQDZHKhGvwiptw5nOe/awVhbzZR3X5ELfe3hzFHJivkrvRMdaEZZ3m5Ws68FOvIovTPM/ycZU7o5LSlMjfdUv7DMDz7FIqTJDJ9q5axlvUr59ojL5sXnTNW580x/cdkrQJtQwOMThu2lljNenbCIPqctajxO9R2
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780607675-820565
+X-HE-Meta: U2FsdGVkX19dLHJml2ggVOIGcgWQ0ID0Ryhkx4oqSr7v7T+/aEn78Blice61EUPtlYeKPtHXEWhma3xsrK0fLNEYNJcNF+5s+LCvlAHxm7Re9mXHGlz0UrS7W0LTQyf6p5aRsCKnEfJ3kMtJ4nyq40XQxaQYeEHx1BgnjQSZxTGs3gWgR28OU4py8fMLOOeCeB7fWU8TKYlHWYY/vmPzUbMiK7jAebhrO3HH1EkLj+kLQU8IXO8EwViSfBdjf+UPCiKFBMzbfMNw8nZMf5i3DFq2YpnZYCb3cU7aJG7THg/ij8Fn7pfLO+nxGbsk2qIM3eV7hp+KO4T/hTHRh8g9EOb+8xpOmB27In0/OqFY+oH3ieZCTkcLOwL6xdc44BoP2DhJQ6FTN3TZx/EpTEkJY5B83MWXBdSpILdg8pcfCvcawo8VhJDTUiWzPKvycrJf2gj6VLefWL1W1Xwx7f22KboNkuXhTHLk8dbyEYdWVDbO+AJb0O44KJElYGvEUZpabYUjZkRH0r3rcEHe2TFpk+Y3VHVuklhLujwm4XTKa7fs+0DcsvnsTClbH5aqN5Z4AScKZCv158rKG90v5S6nh/FK43yPNMrmH61EULgRCxSz08D3BEUK31F16EbYt/tsX0JW9OTJ1ALr0ppyniLuLQMfBeF5f+7YYCBA89n019E1YqqGTHP6EMpfw6YOo0bIJeTCyP0x94tQRMRtUnblZGnT+ussucwC7nB4lTgZchRT7Ljef4W7ulY+AQ/4M9OpQPBUQO7K1Ztd8IT6rq6cQCP/iTABr5DmE0i7rocuo5iDL+B5MTZJ7csXFkGGjuaQ6MCw7sXnJsZDywYVu2sxK1fXgAuJBzuNI2q9WnaoHudYyKjNqcMOut9BCwY4xoMfo18IvDYK0uS1zMJA+eNPXrxTlErIcwsNxyXjQIeyhy9NGTCYoQsql99/VIDSshakFis4NiakUgtp73pkhDn
+ VMuyLZBM
+ rkVSFJzwNlAKlr8qBXzq3jIy/dHpa7Tr6JPxNbqg3iQ1L7dWcosoy9IWnObX3WwyI6g1/QMbLjY5ufSlqNTzZe4WVJKPtQN30vfAEltz9jdm8XoS8HUDadvaANzv8Bigy2y1hnR4iCA3nQ2A9E8Gdnlr6uSTYVdm/lTNo7043Nhn0tIol4Iv+IWvMlyMSewDMtEOWQLgX1XE6BsM1cw2WBg1UW7C/V7wA1iNBiW6TfA0wNZaxUvJ9+Be5r37Tv/VmPOpuZAtcXfFZp0AcCbsrlCbxuGZ72mENRXDXuFbjIMRPkDVe5GbB6E3oW3Xmw0u5ejwb4OTkpa4Zs12MMuT2ReC1DjBAEr/03RBTxuSlZtt1c+qOTHawPZUMhIFrV1+ZwrsVwD4TKTeGWTMVrX4sgyXMoxOWlro0+26Jl49C2mFBlvuf6QHVhbx1oA7N+ee9erYqhYYlix/I+KudIWRYnJxCyuNE/hueTg25Opwfq7GGs+FN/RqyBpvH9kX+cIaCXfkkhtgC+W6JxUK5n03QTIrdwTU9MdsuDmsg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,54 +165,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/4/26 07:51, Oscar Salvador (SUSE) wrote:
-> On Mon, Jun 01, 2026 at 01:25:12PM -0700, Dave Hansen wrote:
->> Oscar, even if the real fix involves a couple of patches, can we please
->> see that, first? Then, we can go back and make an informed decision
->> about hacks versus proper fixes.
-> Fix sits here [1].
-> It is quite straightforward, is arch-agnostic and I can confirm it fixes
-> the AMD regression.
-> It is part of a 8-patch series [2] (#1 is the fix and follow up are
-> cleanups).
+Sean Christopherson <seanjc@google.com> writes:
 
-So it does appear that the x86 workaround wasn't the best direction.
+> On Wed, Jun 03, 2026, Ackerley Tng wrote:
+>> Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+>> writes:
+>>
+>> > This is v7 of guest_memfd in-place conversion support.
+>> >
+>>
+>> Here's the outstanding items after going over everyone's comments
+>> including Sashiko's:
+>>
+>> + KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+>>     + Need to move page clearing into __kvm_gmem_get_pfn to resolve
+>>       leak where populate can put initialized kernel memory into TDX
+>>       guest
+>>     + See suggested fix at [1]
+>
+> That fix works for me.  The initial guest image will typically be a tiny subset
+> of guest memory, so unnecessarily zeroing a few pages isn't a performance concern.
+>
 
-That patch looks fine. I find it a bit hard to parse. I'd probably say
-something more along the lines of:
+In regular usage moving the zeroing in [1] doesn't change anything,
+since the same zeroing would have first happened when the host faults
+the pages to put the initial image. When populating, there's no more
+zeroing since it was zeroed.
 
-	/*
-	 * hugetlb mappings need to be huge page aligned.
-	 * mm_get_unmapped_area_vmflags() only gives back PAGE_SIZE
-	 * aligned areas.
-	 *
-	 * Extend the requested unmapped area for the worse case
-	 * scenario: the address comes back and needs to be aligned
-	 * up by one small page short of a large page.
-	 */
-	len += huge_page_size(h) - PAGE_SIZE;
+[1] covers the case where the host doesn't write anything to the pages
+and directly tries to populate the pages to the guest.
 
-Also, wouldn't it be more clear to just talk about the length in terms
-of page sizes, not masks?
+>> + KVM: guest_memfd: Only prepare folios for private pages,
+>>     + s/non-CoCo/CoCo in commit message "INIT_SHARED is about to be
+>>       supported for non-CoCo VMs in a later patch in this series
+>>     + Use Suggested-by: Michael Roth <michael.roth@amd.com>
+>> + KVM: selftests: Test that shared/private status is consistent across
+>>   processes
+>>     + Improve test reliability using pthread_mutex
+>>     + I have a fixup patch offline.
+>> 	
+>> I would like feedback on these:
+>> 	
+>> + KVM: selftests: Test conversion with elevated page refcount
+>>     + Askar pointed out that soon vmsplice may not pin pages. Should I
+>>       pin pages through CONFIG_GUP_TEST like in [2]? I prefer not to
+>>       take a dependency on CONFIG_GUP_TEST.
+>
+> I'm not exactly excited about taking a dependency on CONFIG_GUP_TEST either, but
+> it probably is the least awful choice.  E.g. KVM also pins pages is certain flows,
+> but we're _also_ actively working to remove the need to pin.
+>
+> Hmm, maybe IORING_REGISTER_PBUF_RING?  AFAICT, it's almost literally a "pin user
+> memory" syscall.
+>
 
-Also, do you even need this if()?
+Hmm that takes a dependency on io_uring, which isn't always compiled
+in. Between CONFIG_IO_URING and CONFIG_GUP_TEST, I'd rather
+CONFIG_GUP_TEST.
 
-	if (addr0 & ~huge_page_mask(h))
+>> + KVM: selftests: Add script to exercise private_mem_conversions_test
+>>     + Would like to know what people think of a wrapper script before
+>>       I address Sashiko's comments.
+>
+> NAK to a wrapper script.  This sounds like a perfect fit for Vipin's selftest
+> runner (which I'm like 4 months overdue for reviewing, testing, and merging).
+> If the runner _can't_ do what you want, then I'd rather improve the runner.
+>
+> [*] https://lore.kernel.org/all/20260331194202.1722082-1-vipinsh@google.com
+>
 
-So the code looks like this:
-	
-	pgoff = 0;
-	addr0 = mm_get_unmapped_area_vmflags(file, addr0,...
-	/* Align the address to the next huge_page_size boundary */
-	addr0 = ALIGN(addr0, huge_page_size(h));
+Good to know we have this!
 
-If it's aligned, it won't do anything.
+Thanks, I'll work on a v8 to clean up the above.
 
-But I'm 100% ok with the approach. I *believe* the code you have is OK,
-although I'm not feeling super confident that I've read the mask
-calculations correctly.
-
-So while I'd like some improvements, I'm OK with this:
-
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+>>
+>> [1] https://lore.kernel.org/all/CAEvNRgEVC=fFuKVgZYvWyZD7t_zvUZihFG8hrACjvtkD5cwugw@mail.gmail.com/
+>> [2] https://lore.kernel.org/all/baa8838f623102931e755cf34c86314b305af49c.1747264138.git.ackerleytng@google.com/
+>>
+>> >
+>> > [...snip...]
+>> >
 
