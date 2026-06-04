@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD5B0CD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 11:32:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBD64CD6E6B
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 11:32:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 131026B0088; Thu,  4 Jun 2026 07:32:00 -0400 (EDT)
+	id 501AD6B008A; Thu,  4 Jun 2026 07:32:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 108C16B008A; Thu,  4 Jun 2026 07:32:00 -0400 (EDT)
+	id 4DCC26B008C; Thu,  4 Jun 2026 07:32:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01EAE6B008C; Thu,  4 Jun 2026 07:31:59 -0400 (EDT)
+	id 3EF946B0092; Thu,  4 Jun 2026 07:32:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EAD816B0088
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:31:59 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5615CC1DDD
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:31:59 +0000 (UTC)
-X-FDA: 84842015958.13.8CA781D
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3991C120009
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:31:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CYZ9U8Kh;
-	spf=pass (imf29.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 30A046B008A
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:32:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C0C1A40273
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:32:09 +0000 (UTC)
+X-FDA: 84842016378.24.5006789
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 12CA540013
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:32:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Fzoi0xU9;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780572717;
+	s=arc-20220608; t=1780572728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7UgAkBaY/d/7ezqgbIeADZSgUpEbmYU0w3siNBffvvc=;
-	b=tpr2ATqvmARL8iDpuzgiGoAedUTXprTe9JWL1cVYk9I/6avmevxhpUzJbcnT6PORKXtHCu
-	vSQXdHtoH1PwJja9MHJFYgGrObZcoFY9ZlwqPm8jvvi0ZDgxszevjHIwsEoCzyt3sxbuJO
-	MwVwmWMECd3GvORJJ/4tCTP43A438B8=
+	bh=XZtxzLZEWBXulcLtCK2gibovFAvz1jsUS0zrTG+fguM=;
+	b=OHMfiXqB5luilG+aHfqyQNSo8C5QeYKgRM71Y/eRHgOhdu73infG8+il+sgROdwNvxqwMs
+	7VAKJGQcT6tE6m5DfQxO66QOr6qLzZyna9T9j9fM3HeH66iGru9Jczf8xmJu+Omlluh+Q5
+	2mx64oE40mgjf47rPujjL3iPhflmqpQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CYZ9U8Kh;
-	spf=pass (imf29.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Fzoi0xU9;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780572717;
-	b=L3QpPG522AmeQbPFVjYXOJZ7ohtRW1ojZ8wK8KYLpLfNEwdg6wZ7bzLgipZdIKKKT8cAjv
-	Kl7sAWg1k4Es55R/t5PSkat/n+m5CELfKxKz7oMdi6VQBkEzB+2rDHLRhAofxbXFZPqt73
-	JZh2SzkZhBs08QqFSriHvSdkbzCLhus=
+	t=1780572728;
+	b=fqfC7TpZL5sa3Oit/WgcdHGitA79V4fRIYpsJKTVuzeeNvQ3jPlQbAGhqKxE2MIKLpowIZ
+	Mv3YWE7q1wvcG9GhTCl7DLPcR4Ke/PYMfj6SxjVFjkcDaYqjOyIsc+moul+p/+Z2als7RD
+	oBYlUmRUSiMzvYc8hntR/TLweiOZMRs=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780572716;
+	t=1780572726;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7UgAkBaY/d/7ezqgbIeADZSgUpEbmYU0w3siNBffvvc=;
-	b=CYZ9U8Khray64pOp693cftUUp4vB3ZgNwkX1LXln+EDnb+eFbn6FJAM0Lljh/cImZvHzri
-	wz1iNunqsUXPuoRf7OpPGiYDvWQTtObS+MYyknGp74jBvX8CokpefVlwqpQHm34CweoTWx
-	5mcDoV3VGQVc26v0kCEl5Ejq+l1Ta78=
+	bh=XZtxzLZEWBXulcLtCK2gibovFAvz1jsUS0zrTG+fguM=;
+	b=Fzoi0xU9vYYAnSMnlu5zthRCNd7hOwLDueLDz3bA0h4OWI34nOgXo+dPLbhSiRHWhZwgRE
+	fiH8wvoW2EzCvOKSAmTXpJ9bM2pOw4nPXA6ltxabIKctDCQl3rXu2yT8rGDqoxQIF5iy3w
+	8bT5etaJHPp5KUoif0WFTKF0aJKOTuU=
 From: Kaitao Cheng <kaitao.cheng@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Dennis Zhou <dennis@kernel.org>,
@@ -72,22 +72,22 @@ Cc: muchun.song@linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH v2 1/3] mm/vmalloc: honor GFP constraints in pcpu_get_vm_areas()
-Date: Thu,  4 Jun 2026 19:30:59 +0800
-Message-ID: <20260604113101.89510-2-kaitao.cheng@linux.dev>
+Subject: [PATCH v2 2/3] mm/percpu: honor GFP constraints when populating chunks
+Date: Thu,  4 Jun 2026 19:31:00 +0800
+Message-ID: <20260604113101.89510-3-kaitao.cheng@linux.dev>
 In-Reply-To: <20260604113101.89510-1-kaitao.cheng@linux.dev>
 References: <20260604113101.89510-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3991C120009
-X-Stat-Signature: nexdx4mn14kdupit3ex97btkfjppam7b
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780572717-802273
-X-HE-Meta: U2FsdGVkX18OqgHKWexu4QiiCTz8S9f11ty3FLaJ2JXoGT4PvTQXJTBVNuBaJaBJyaeiB7+lQ6O7rejZwQWAKx2gxMnrC58/SkML/93/cjcJmuoNmexU0YQzZg7Xpx8sTrzQlKN+pBm40wR09PuXTlv5Ae1AcSd+Ra0ADKHuxOB0fNJiPTl6QBV7D4hIe1WmfJVDRQkowr0pr9e7YGOM+AHidntrpaa367D6y7J33gLhmHZLQLp8Jak0G/RQSzcQzVVWqEL7hXbhDJV6/nWuiSu9alXdkfnZW3yN7aIlt8BIh+2YgqsLTkIbzzRaP8Ffx4zQ18j9BEXXhDnjUqoXhDy99aQbx9Tgv8Cwyx8+/zpKDh6tVaJr578WHh7yOaimMJwdZXt7hd89nBHBzZnY6iD2tFM9HnQ2+XBwZF5yDznh1ST9PakNOn2hgx+HMXArWAk/wjuMdEZ7MnUzfdxp4wy+Gp35KUMhc3khXSldZJgCZy+UJiBjTNHNBQ2H7Axr/o5P5r1on5Lad8fAsGu4xx1E/L0xxKPD2z55VIz6Aqz/le0m3mCa2wpM0XZeHekSJepojz1DLCZb0ok159hfAagNJzi7CnnbzH0zoRJF/mk95pu7fae5ZrTYiU/dVrb+jsMx5/CykpH0oH6k19w4yDpXk8vX2HGabvQMy7rJ79tiUfUZaFcjsZgSi0q5i9IPLS4vFcDlLINmSU6vmfc14fTTv3y6sn3PjoSiSBvv55vfJmXfAvt9UmY4CnkY1NjHwz2wCQhWMHb6abjVFnPvcSmjQxKBp1UJWVXrsp6vHw+fxGo6lgnWGSpIKv9cr5CGrudqtQWalra6IvaxVLoK8zTMRcqWBYYPpWawZbm1fpNnqO2pGohKuhoFolRMM80VqOysosBScTRqJA9H557ixlrqDMEOXW4LLZhFVw3E+X6Qu3UTn7WXuOKTyTZP8KmttkVbpQqX/H84NklrYOL
- btgZ9ABY
- j8a1Ft9KW4hSswvLezr9oy1dNCeC1V42i8Ry8zZM+S0AJRvdXQyOyjYxWA38yCc7NB+xGQHM8MK6Cs7AcnlFAkuTH6pJrKgVKhauDsWQ5BjYpd4HJDbNCYzNYHVSug0JOdTAQhUEw5dEBuZI7cSlcprwhT+nrhLpDVDd6ZbX/8d93ZCJPxWBvNU+ofp8gwhJ+vHXDKZjRWKvCsw5gSPRimoXKz6lk0V+Bmq/Uocc5FBmRWRnbNUMFWHoSOA==
+X-Stat-Signature: 5aaxz7ysd79c5ptorx7d4a5nianam4u8
+X-Rspamd-Queue-Id: 12CA540013
+X-HE-Tag: 1780572727-501913
+X-HE-Meta: U2FsdGVkX1/hhoDmGSLJlzkyCVnygJGXb3d/xpCzzl/p/PLEM+6vJu9P9AsTwnkxB7rPPph66fVZSKIeOdyMu16QYsSPDHGTrbDm0dEIxcRLCU/NEuUNRwDVz2/loNVHBq1muYOQCvXtEKW0brpgPs34RPQnhA4kACZVIrq5Z43YYcMhazD9TclspiMVXoeCBU+/OT0L0IPE6DgiWsKZx9nqITfis0V/oe6G6MhOxnwlfyDtrQjcdFu7qYS1cTvjXYjsX5QfpAuJsjntxElvF++DFnkqnD/jdcyReiGS+Rq3cbiMFh+y0bhymrNS1LRTL7FAhtfpENNetRXfEJjFC3NFif6FDSTc/uzqA9SWlvaO8wMquWoeUopezaCaR5yEeP6zuCEVfs3BasXdYd2LqooYlLjOy+eQygWF8JZYR5s8DAqJOPz3mn7uCin4JT36SxSain9/0doW1n+KrEbZcxFMB4mzOUymshb/kDK5XArr8Jh1/FzqOjoHFh+OGqTxUCXXpACjO0o7etbQgq5sDyEkj2DSp17y5kYjTt7ddFAAA/V/VIWqN4xCmpGm7vnSdG8ewNnZvhGoWqi+ewAdHrws+me08CQbVKNrOASSZYDBBT3Y2EyV7QTomNznF9pbPL99OdWAZm+SCfAyZBmdn2nfsucqoEZSAHZ4kEUxB6zxgyEey2USz7BWIh3iz6R8MCPRw2o+TP066G1S2mAJ8GM8sHY7MBnxUZVuUgHJpYCdARNLKPOdMp2axVHR7Lw7YfNOMjeoTHCquUaIf1B863y+oYl1YZjeaOXCnFaIPzhNUMEyutZ+JJJSaMVHG6SEpsXcvYDAc+iuZKRhyOfXU1TdoK9Kl2NBDA8BhIVSt86qGwaCY+XB1+Tu77sT2DlH4Tglofj5oVds7amHzmpxnJ0mGCfhtimpPRrfGUnMRO36pv3lZj5r+YusGnmmmyyIHsBMnMGyrRs4ysG2JPR
+ UzIzn2Wt
+ TdAqe7zPgtKup1Ur0bjlIikhupkd+Tu5EVAKOdkEsRp69bmoGwTjr/POrvhUM4QNlFR9s+kywLkV7u8+0OB5Y9Z6K8ubbkVSEnjeKkoGttt1xddy01KGb/N6Bh9H4xGv0I1AF4NO6VVlTxFxKntqQr9vJsSgDD4wLdoIsrp/QmvFCq59dTDqyH+T+dnTOlBt5E5St/FoJp6V+i08=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,16 +97,24 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-pcpu_alloc_noprof() derives pcpu_gfp from the caller supplied GFP mask
-and passes it down to the backing percpu allocator. However, when the
-percpu vmalloc allocator has to create a new chunk, pcpu_create_chunk()
-calls pcpu_get_vm_areas() to allocate the corresponding vmalloc areas.
+pcpu_alloc_noprof() derives pcpu_gfp from the caller supplied GFP mask and
+passes it down to pcpu_populate_chunk().  pcpu_alloc_pages() already uses
+that mask for backing page allocation.
 
-pcpu_get_vm_areas() currently performs its internal allocations with
-GFP_KERNEL, including vmap area metadata, vm_struct metadata and KASAN
-vmalloc shadow population. This means that a caller which deliberately
-uses GFP_NOFS or GFP_NOIO can still enter FS or IO reclaim while creating
-the vmalloc areas for a new percpu chunk.
+However, the populate slow path still has internal allocations and page
+table allocations which can lose the caller's allocation context.  The
+temporary pages array is allocated by pcpu_get_pages() with GFP_KERNEL,
+and pcpu_map_pages() maps the backing pages through
+vmap_pages_range_noflush() using GFP_KERNEL.  The latter can allocate
+vmalloc page tables implicitly, so a caller which deliberately uses
+GFP_NOFS or GFP_NOIO can still enter FS or IO reclaim while populating
+a percpu chunk.
+
+This has the same concern as chunk creation: callers such as blk-cgroup
+may use GFP_NOIO because they hold locks which can be involved in queue
+freeze or IO reclaim dependencies.  If an allocation reaches the percpu
+slow path and needs to populate previously unbacked pages, the internal
+GFP_KERNEL allocations can defeat that context.
 
 One possible case is blk-cgroup after commit 5d726c4dbeed
 ("blk-cgroup: fix possible deadlock while configuring policy").
@@ -118,10 +126,11 @@ q->blkcg_mutex, and blkg_alloc() was changed to GFP_NOIO for that reason:
     blkg_alloc(..., GFP_NOIO)
       alloc_percpu_gfp(..., GFP_NOIO)
         pcpu_alloc_noprof(..., GFP_NOIO)
-	  pcpu_create_chunk(GFP_NOIO)
-	    pcpu_get_vm_areas()
-              -> if percpu chunks are exhausted, chunk create may do
-                 internal GFP_KERNEL allocations
+          pcpu_populate_chunk(GFP_NOIO)
+            pcpu_get_pages()
+	    pcpu_map_pages()
+              -> if the selected percpu chunk has unpopulated pages,
+	         chunk population may do internal GFP_KERNEL allocations
               -> direct reclaim / writeback can issue IO to this queue
               -> IO waits because the queue is frozen
 
@@ -135,124 +144,150 @@ So the concern is that the caller deliberately uses GFP_NOIO because it
 may hold a lock which can be acquired after queue freeze, but the percpu
 slow path can temporarily lose that allocation context.
 
-Pass the caller supplied GFP mask from pcpu_create_chunk() to
-pcpu_get_vm_areas(), and use it for the internal vmalloc metadata and
-KASAN shadow allocations.
+Pass pcpu_gfp through pcpu_get_pages(), pcpu_map_pages() and
+__pcpu_map_pages().  Apply the corresponding memalloc scope around
+vmap_pages_range_noflush(), because vmalloc page table allocation does not
+pass the GFP mask down explicitly.  Keep the first chunk setup path using
+GFP_KERNEL, matching the previous early-init behavior.
 
 Fixes: 9a5b183941b5 ("mm, percpu: do not consider sleepable allocations atomic")
 Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
 ---
- include/linux/vmalloc.h |  4 ++--
- mm/percpu-vm.c          |  2 +-
- mm/vmalloc.c            | 23 ++++++++++++-----------
- 3 files changed, 15 insertions(+), 14 deletions(-)
+ mm/percpu-vm.c | 38 ++++++++++++++++++++++++++------------
+ mm/percpu.c    |  2 +-
+ 2 files changed, 27 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-index 3b02c0c6b371..9601e06624c8 100644
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -308,14 +308,14 @@ static inline void set_vm_flush_reset_perms(void *addr) {}
- #if defined(CONFIG_MMU) && defined(CONFIG_SMP)
- struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 				     const size_t *sizes, int nr_vms,
--				     size_t align);
-+				     size_t align, gfp_t gfp);
- 
- void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms);
- # else
- static inline struct vm_struct **
- pcpu_get_vm_areas(const unsigned long *offsets,
- 		const size_t *sizes, int nr_vms,
--		size_t align)
-+		size_t align, gfp_t gfp)
- {
- 	return NULL;
- }
 diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
-index 4f5937090590..69b00741dc68 100644
+index 69b00741dc68..ccd03cc152d4 100644
 --- a/mm/percpu-vm.c
 +++ b/mm/percpu-vm.c
-@@ -340,7 +340,7 @@ static struct pcpu_chunk *pcpu_create_chunk(gfp_t gfp)
- 		return NULL;
+@@ -21,6 +21,7 @@ static struct page *pcpu_chunk_page(struct pcpu_chunk *chunk,
  
- 	vms = pcpu_get_vm_areas(pcpu_group_offsets, pcpu_group_sizes,
--				pcpu_nr_groups, pcpu_atom_size);
-+				pcpu_nr_groups, pcpu_atom_size, gfp);
- 	if (!vms) {
- 		pcpu_free_chunk(chunk);
- 		return NULL;
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 1afca3568b9b..08f468135e4d 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4946,16 +4946,17 @@ pvm_determine_end_from_reverse(struct vmap_area **va, unsigned long align)
-  * @sizes: array containing size of each area
-  * @nr_vms: the number of areas to allocate
-  * @align: alignment, all entries in @offsets and @sizes must be aligned to this
-+ * @gfp: allocation flags passed to the underlying memory allocator
+ /**
+  * pcpu_get_pages - get temp pages array
++ * @gfp: allocation flags passed to the underlying allocator
   *
-  * Returns: kmalloc'd vm_struct pointer array pointing to allocated
-  *	    vm_structs on success, %NULL on failure
-  *
-  * Percpu allocator wants to use congruent vm areas so that it can
-  * maintain the offsets among percpu areas.  This function allocates
-- * congruent vmalloc areas for it with GFP_KERNEL.  These areas tend to
-- * be scattered pretty far, distance between two areas easily going up
-- * to gigabytes.  To avoid interacting with regular vmallocs, these
-- * areas are allocated from top.
-+ * congruent vmalloc areas for it. These areas tend to be scattered
-+ * pretty far, distance between two areas easily going up to gigabytes.
-+ * To avoid interacting with regular vmallocs, these areas are allocated
-+ * from top.
-  *
-  * Despite its complicated look, this allocator is rather simple. It
-  * does everything top-down and scans free blocks from the end looking
-@@ -4966,7 +4967,7 @@ pvm_determine_end_from_reverse(struct vmap_area **va, unsigned long align)
+  * Returns pointer to array of pointers to struct page which can be indexed
+  * with pcpu_page_idx().  Note that there is only one array and accesses
+@@ -29,7 +30,7 @@ static struct page *pcpu_chunk_page(struct pcpu_chunk *chunk,
+  * RETURNS:
+  * Pointer to temp pages array on success.
   */
- struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 				     const size_t *sizes, int nr_vms,
--				     size_t align)
-+				     size_t align, gfp_t gfp)
+-static struct page **pcpu_get_pages(void)
++static struct page **pcpu_get_pages(gfp_t gfp)
  {
- 	const unsigned long vmalloc_start = ALIGN(VMALLOC_START, align);
- 	const unsigned long vmalloc_end = VMALLOC_END & ~(align - 1);
-@@ -5004,14 +5005,14 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 		return NULL;
+ 	static struct page **pages;
+ 	size_t pages_size = pcpu_nr_units * pcpu_unit_pages * sizeof(pages[0]);
+@@ -37,7 +38,7 @@ static struct page **pcpu_get_pages(void)
+ 	lockdep_assert_held(&pcpu_alloc_mutex);
+ 
+ 	if (!pages)
+-		pages = pcpu_mem_zalloc(pages_size, GFP_KERNEL);
++		pages = pcpu_mem_zalloc(pages_size, gfp);
+ 	return pages;
+ }
+ 
+@@ -191,10 +192,22 @@ static void pcpu_post_unmap_tlb_flush(struct pcpu_chunk *chunk,
+ }
+ 
+ static int __pcpu_map_pages(unsigned long addr, struct page **pages,
+-			    int nr_pages)
++			    int nr_pages, gfp_t gfp)
+ {
+-	return vmap_pages_range_noflush(addr, addr + (nr_pages << PAGE_SHIFT),
+-			PAGE_KERNEL, pages, PAGE_SHIFT, GFP_KERNEL);
++	unsigned int flags;
++	int ret;
++
++	/*
++	 * The vmalloc page table allocation path does not pass @gfp down
++	 * explicitly.  Apply the corresponding memalloc scope so implicit
++	 * page table allocations preserve NOFS/NOIO constraints.
++	 */
++	flags = memalloc_apply_gfp_scope(gfp);
++	ret = vmap_pages_range_noflush(addr, addr + (nr_pages << PAGE_SHIFT),
++				       PAGE_KERNEL, pages, PAGE_SHIFT, gfp);
++	memalloc_restore_scope(flags);
++
++	return ret;
+ }
+ 
+ /**
+@@ -203,6 +216,7 @@ static int __pcpu_map_pages(unsigned long addr, struct page **pages,
+  * @pages: pages array containing pages to be mapped
+  * @page_start: page index of the first page to map
+  * @page_end: page index of the last page to map + 1
++ * @gfp: allocation flags passed to the underlying allocator
+  *
+  * For each cpu, map pages [@page_start,@page_end) into @chunk.  The
+  * caller is responsible for calling pcpu_post_map_flush() after all
+@@ -211,8 +225,8 @@ static int __pcpu_map_pages(unsigned long addr, struct page **pages,
+  * This function is responsible for setting up whatever is necessary for
+  * reverse lookup (addr -> chunk).
+  */
+-static int pcpu_map_pages(struct pcpu_chunk *chunk,
+-			  struct page **pages, int page_start, int page_end)
++static int pcpu_map_pages(struct pcpu_chunk *chunk, struct page **pages,
++			  int page_start, int page_end, gfp_t gfp)
+ {
+ 	unsigned int cpu, tcpu;
+ 	int i, err;
+@@ -220,7 +234,7 @@ static int pcpu_map_pages(struct pcpu_chunk *chunk,
+ 	for_each_possible_cpu(cpu) {
+ 		err = __pcpu_map_pages(pcpu_chunk_addr(chunk, cpu, page_start),
+ 				       &pages[pcpu_page_idx(cpu, page_start)],
+-				       page_end - page_start);
++				       page_end - page_start, gfp);
+ 		if (err < 0)
+ 			goto err;
+ 
+@@ -271,21 +285,21 @@ static void pcpu_post_map_flush(struct pcpu_chunk *chunk,
+  * @chunk.
+  *
+  * CONTEXT:
+- * pcpu_alloc_mutex, does GFP_KERNEL allocation.
++ * pcpu_alloc_mutex, does @gfp allocation.
+  */
+ static int pcpu_populate_chunk(struct pcpu_chunk *chunk,
+ 			       int page_start, int page_end, gfp_t gfp)
+ {
+ 	struct page **pages;
+ 
+-	pages = pcpu_get_pages();
++	pages = pcpu_get_pages(gfp);
+ 	if (!pages)
+ 		return -ENOMEM;
+ 
+ 	if (pcpu_alloc_pages(chunk, pages, page_start, page_end, gfp))
+ 		return -ENOMEM;
+ 
+-	if (pcpu_map_pages(chunk, pages, page_start, page_end)) {
++	if (pcpu_map_pages(chunk, pages, page_start, page_end, gfp)) {
+ 		pcpu_free_pages(chunk, pages, page_start, page_end);
+ 		return -ENOMEM;
  	}
+@@ -319,7 +333,7 @@ static void pcpu_depopulate_chunk(struct pcpu_chunk *chunk,
+ 	 * successful population attempt so the temp pages array must
+ 	 * be available now.
+ 	 */
+-	pages = pcpu_get_pages();
++	pages = pcpu_get_pages(GFP_KERNEL);
+ 	BUG_ON(!pages);
  
--	vms = kzalloc_objs(vms[0], nr_vms);
--	vas = kzalloc_objs(vas[0], nr_vms);
-+	vms = kzalloc_objs(vms[0], nr_vms, gfp);
-+	vas = kzalloc_objs(vas[0], nr_vms, gfp);
- 	if (!vas || !vms)
- 		goto err_free2;
+ 	/* unmap and free */
+diff --git a/mm/percpu.c b/mm/percpu.c
+index b0676b8054ed..4d89965cba16 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -3256,7 +3256,7 @@ int __init pcpu_page_first_chunk(size_t reserved_size, pcpu_fc_cpu_to_node_fn_t
  
- 	for (area = 0; area < nr_vms; area++) {
--		vas[area] = kmem_cache_zalloc(vmap_area_cachep, GFP_KERNEL);
--		vms[area] = kzalloc_obj(struct vm_struct);
-+		vas[area] = kmem_cache_zalloc(vmap_area_cachep, gfp);
-+		vms[area] = kzalloc_obj(struct vm_struct, gfp);
- 		if (!vas[area] || !vms[area])
- 			goto err_free;
- 	}
-@@ -5101,7 +5102,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+ 		/* pte already populated, the following shouldn't fail */
+ 		rc = __pcpu_map_pages(unit_addr, &pages[unit * unit_pages],
+-				      unit_pages);
++				      unit_pages, GFP_KERNEL);
+ 		if (rc < 0)
+ 			panic("failed to map percpu area, err=%d\n", rc);
  
- 	/* populate the kasan shadow space */
- 	for (area = 0; area < nr_vms; area++) {
--		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area], GFP_KERNEL))
-+		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area], gfp))
- 			goto err_free_shadow;
- 	}
- 
-@@ -5158,7 +5159,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 				continue;
- 
- 			vas[area] = kmem_cache_zalloc(
--				vmap_area_cachep, GFP_KERNEL);
-+				vmap_area_cachep, gfp);
- 			if (!vas[area])
- 				goto err_free;
- 		}
 -- 
 2.43.0
 
