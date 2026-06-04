@@ -4,111 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A403CD6E75
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 18:13:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 775EACD6E75
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 18:24:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EB276B0005; Thu,  4 Jun 2026 14:13:15 -0400 (EDT)
+	id 8CD1D6B0005; Thu,  4 Jun 2026 14:24:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49C496B0088; Thu,  4 Jun 2026 14:13:15 -0400 (EDT)
+	id 8A50B6B0088; Thu,  4 Jun 2026 14:24:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C0916B008A; Thu,  4 Jun 2026 14:13:15 -0400 (EDT)
+	id 793F26B008A; Thu,  4 Jun 2026 14:24:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AF626B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:13:15 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD1D18C84D
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 18:13:14 +0000 (UTC)
-X-FDA: 84843027108.21.5DD38EA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 21D7C4000B
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 18:13:13 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="V/XV3iVQ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780596793;
+	by kanga.kvack.org (Postfix) with ESMTP id 68FB46B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:24:53 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D523B1C087C
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 18:24:52 +0000 (UTC)
+X-FDA: 84843056424.22.08CD297
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D9894180006
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 18:24:50 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NLxzxL9v;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780597490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h9siRJLal0UIGuKxUNFIYMAX2s/cZPxHkMdng7Hug/w=;
-	b=Q7Af78ydeOmeEO3Ke6RpGGOGAD2wBDmarl8+tSuMWCFCpcKZPHxtHAAXXTTmzSSQMyXFIi
-	7F0UeBmHDDNdMiIv1DqqBaxa72ap6PJFgtrUwCOF70VRUO+U+bUO3UdEwb/G70ZEJofY5F
-	kwkNgLFvJEOLeuxVk5iaAQGFrNJ8E34=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="V/XV3iVQ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780596793;
-	b=Ewhblf4qUa4DZy5wY33RGD6TtYRdvmmBr6VN4Fi3gfVbF9KhkVUog1454DmwvmSZLmlWyM
-	VfTEU+xRFFSFoXnfjiDLxE7rTC4V3nGcdjWYvTxtcP44TKc9j9l5Cd0fZ+UHPFF4MbEzQH
-	6Vve+y2X5xo/WwX9Rao8oL0mFBWsMdQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B881E40A7B;
-	Thu,  4 Jun 2026 18:13:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AA21F00893;
-	Thu,  4 Jun 2026 18:12:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780596791;
-	bh=h9siRJLal0UIGuKxUNFIYMAX2s/cZPxHkMdng7Hug/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=V/XV3iVQ4PRKNVCvTu15YxKWSS8z2rg9Z5nKNSe0DJ+dG1R0b21v8OhFQ4xjYmiv5
-	 WoLCGhlsrNR38uXgEgJvbBjPqBWzfmmFlsf/sdlzB1Ofqr5TAsYQwvF3CDdBLgoakl
-	 aOe9tkeCuQRFp1PjFSSIuqO/tybLyiWr2qyQMufO+BTAwWqzMb6nGcNHiaeEPBnRvn
-	 rgf8y0PSub1b3PAkTQEjcsGxF5s6Z/W+/p7EOceykOuqrmXTRI+Kz9LIInpTzzKysG
-	 chLeb1cJbQD6EMoAlGWIOEqSOuUodSfhLmmXLR1XUTUezVeiZ+Ze23Sp4berUW2oCt
-	 0eR/Zhg2EC1UA==
-Date: Thu, 4 Jun 2026 19:12:56 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
-	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
-	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
-	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
-	liam@infradead.org, mathieu.desnoyers@efficios.com, matthew.brost@intel.com, 
-	mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, 
-	rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org, 
-	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
-	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
-	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
-	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com, 
-	usama.arif@linux.dev
-Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
- collapse_huge_page for mTHP collapse
-Message-ID: <aiG_-lP_HfxWXB4G@lucifer>
-References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
- <20260601032804.96122-1-lance.yang@linux.dev>
- <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
- <616de1a8-1cfd-40b8-b04f-7b324be40bfd@linux.dev>
- <6b11bf0a-769c-4ef2-ac6f-2af38200a6bc@kernel.org>
- <baa0a462-46e0-44ab-b583-c722ad253afe@linux.dev>
- <06d9b665-945f-4967-9ed9-b06514478996@kernel.org>
- <CAA1CXcAeEGOsqp-ywAQ7GMYQzXEeco-rUxUkk2hEF69HybC4=w@mail.gmail.com>
- <CAA1CXcBSPVG4CJFCBDvbuodcJ_7eXoDQTpK0ZN0HEhkDPi-DEw@mail.gmail.com>
+	bh=Mz1GvkDFt3r+PPi/7RT2S9SEefp8yaIm3TzzC0PikKw=;
+	b=fce4h0YdUqBwbPWDrOO3u6tTaD1ZEawl/UW1RgTP1XuwaRXqjBeyrE3mjDrzEO8uJowx8h
+	nu6ik9D5yNZEdTWp9WHmrJubaEIvRc1gEvbJdktt2cLpAb2sO7/1sJ7yY3gLEPDXCAdzvZ
+	uL18viohKt/iinHEKJZEiw6f+tnxyKQ=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NLxzxL9v;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780597490;
+	b=U/N/yN2YFfyV4NJkNnAZDEt7FPYgK7w4LQviRyw1beADUu5KOI0C4beHLW/mhMOEcSB3ii
+	n97cFMcIGymXi6gxBUGuXQ2Kz7zX6Q98LHY5dchQksT33WDl/AV6R0gOael10w+7eDwRN6
+	UK9L+wYupR2NtitAx1tdjjGHpmFvRRA=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c0b1a48855so21355ad.0
+        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 11:24:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780597490; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UUoSTp5c1t57h4yY+y6bUFLn+Dpf2KBXy63sbCAZ/+DF72agVBOKlKf9oe/O6RvAgO
+         Wg0vsgcGQLpsVlxSAMUrlxv+I3w/iyIHv6xCUnxtRG27plqt/nICNEHmZ5isbOdH4wRT
+         tVaD43tDYCEWTnBxVdhYrBcInJjlHGJb87nNqaz4EABiXHauEf47DzmfFIG0X757nKEU
+         gp40rFkDhu6xLpK02CQNxsGszuSdh9i4ZPG9hOJy7xSkCz5vKHX8Fv89sdgcAtqZWq/C
+         wEqi7GdM/D/Cl2yFfFuXHBJFfiDU6AdC7XSP07U2LSg5K/wlSeVyDgLG4k5oLs4MT4bI
+         iv0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Mz1GvkDFt3r+PPi/7RT2S9SEefp8yaIm3TzzC0PikKw=;
+        fh=kJj9S/KTL5Xm4Pk3ULickNL7D2f0iRMRvzvj0ADARx8=;
+        b=fv/j1exCUNeEb7q9EJBGoK+mHicZGv3UDTLPdeHJx5aiVUEeFCLnOEBEQiy3f8BcXc
+         0djt/JxLFOLPqH/fNkVml7m2Yhpc2E/kVzFFu3s6UpcV4J4SbJ645obexymP8vchTc/I
+         SJce1Py5yrTw3jJu1IhWFTHrMXyEMeeHny7KJwet9TQL8DQ0Pfe6rGgJG09fDk2wRudB
+         uOFxNeAFGNW4T2VSpQhvqKhGDHXI89FZI/VIj6Vd68YBdCyIsYwVp54ThnNn036xKY7k
+         8nd98i2HfSIsj/GLy9AJUYtfxrNtgnFYk41B790DntlUv7rYPbTEFZUVCs0BLhpnsz1J
+         rDDA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780597490; x=1781202290; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mz1GvkDFt3r+PPi/7RT2S9SEefp8yaIm3TzzC0PikKw=;
+        b=NLxzxL9vXw/4RVtx5/4vWCuCTncROYJXBD1MLa7PlBch8Z4JJ1Gaa/UH7Y4YNmkfRH
+         lwoutaSgaRAzkHgYkKGUgxwPX/FHZ/TFtA55JlG4FPGJNe8uQfJzpUbf5luGWQWuXI/j
+         YyZiHGEb2zOHQQNS2Kni/wZNjcbEOy0p1rPzbB+Hfrqw7+y48OzBbQmuDpwbTOmT3soX
+         GZLWN3MCZJQfrd6HlpHRrWYij1Qma4Gvr0e/ICxg3yZxf8+jx451pqwRZh33Bfzx15aQ
+         ZpmgEai15e20FJ1uwWMMnK9gRkbKHOSKCsOziQfMfQYHt2I+tqzZuYQIpedll6Xq24JM
+         hQCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780597490; x=1781202290;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Mz1GvkDFt3r+PPi/7RT2S9SEefp8yaIm3TzzC0PikKw=;
+        b=lVk2on//MLR+njX4tyN8rpBWuBgJaGQ6cN4GLiYBIcVp4NgO+CuY38oDAFR1RgtDyM
+         7OZBfW0CnkxVu+r6Ak4IK2qch12f8x0HgPO8nPdub837Cm2ovWsFO3hsiunepIABcCBW
+         0vt++ZhOBvP43ZFEz/K7qR8r7eZG3nP73SmJ0LL30V/LYnIB6IWtZazbgY2hoRJDuz1c
+         +KdsPLd6nQTCjeQ91to0WxUVLKdS/nzWiblIkvMlCM1rix0aUUjRv5iorUis6FBiHJgy
+         cLZDVfW8BAh1ND6eUYPrlmuNtjrJNwBEKmRc+ir1Zh4RPUaiHBgvZCC8TSt9N3H2OKWK
+         RecA==
+X-Forwarded-Encrypted: i=1; AFNElJ9cRARPIFbQ3SeLJ6U56FZV6+A8mSvgFHj/O0pXt3F5TyICWyndXHXPM/twT0/MwDcUMkML9/+8WQ==@kvack.org
+X-Gm-Message-State: AOJu0YwlWDMRPm4Zo9w4RNQ4CJBy3HEJknxAbG8uY9GW2Vor/JitpboE
+	QCDMqCzl2AIgnStBl4Y3fBY6Ov/LlLbNUO2lGifu6/HtEfdy9qroQw5drqJdx1pripXEVk2+7+7
+	kGvV/Z/YWlFkPKy8v1tlcu3VigADGEjDOQQsxo0eN
+X-Gm-Gg: Acq92OEC3KhUQI++H7fBAkNCFqm3u9LRdb927wIXrZ1SV+tPw2ClZjawPEG9EVssGYb
+	IcIspZNi5SIVT1Z7CAZxnpISmjIKcac/j7YEjyJ0xL8BPfAnNGnlXWSUfpsflqC+qsZOy7zpPVg
+	5IfyeBYJ5Y7Gtjin/I1Nxg7oYDoRWaqMxkhDOMYrDdZmzWBsTzmfBRFdw6DdsbNTTn+vbPPo8ix
+	53X2rjoWOiyiZ2JgTrP6EXzmQqtW9ytTs1n47fA/vAoiKoaEu2mcBQN7ZvrpjSf4UB9ruo2YAXu
+	a4+wtzJfLQgmsfqHzg0xZ2gFtxqn9NdhKIy3Bu903NgYyBTO
+X-Received: by 2002:a17:903:fb0:b0:2bd:6dad:7ccd with SMTP id
+ d9443c01a7336-2c1e3acbc73mr290345ad.25.1780597488867; Thu, 04 Jun 2026
+ 11:24:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA1CXcBSPVG4CJFCBDvbuodcJ_7eXoDQTpK0ZN0HEhkDPi-DEw@mail.gmail.com>
+References: <cover.1779471082.git.abhishekbapat@google.com>
+ <20260522131108.f972659717367c67082f3766@linux-foundation.org>
+ <4ae038f0-cc33-4a60-b59b-ae86bb541735@linux.dev> <CAJuCfpFdbq-0SMVg0i5Fg+gQONQEKTL-N7QC4cyCr1e9oVimSg@mail.gmail.com>
+In-Reply-To: <CAJuCfpFdbq-0SMVg0i5Fg+gQONQEKTL-N7QC4cyCr1e9oVimSg@mail.gmail.com>
+From: Abhishek Bapat <abhishekbapat@google.com>
+Date: Thu, 4 Jun 2026 11:24:36 -0700
+X-Gm-Features: AVHnY4KsU8yEoJgCLNo_jZOZ1ytTBNw47Zvt-iCaZSiHNSip0BLl0JGiQwhbc_w
+Message-ID: <CAL41Mv6=cRMnRz5Lqa0nz2H9EGw0mW1GZAByba8sD8kVvCj-3Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] alloc_tag: introduce IOCTL-based filtering for MAP
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Hao Ge <hao.ge@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D9894180006
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 21D7C4000B
-X-Stat-Signature: ts1z8fjrjin59tn7w5hz36pq84y5fk6y
-X-HE-Tag: 1780596793-599207
-X-HE-Meta: U2FsdGVkX19kFUg9fGCxYRuZpsoHTkQO6srIuP/TTdldQyAa2c1d1xwoGSjs7QHmMHhEizm6dwSJpdQ04wJy5PHdBc5t3XNafA5Fb8SetAJs/ydszsXlB/C/PwgPNOFuFMLLXdsYghMh5QrPLd1tUr0VWhj0BnBq3GEJVH9BijZFHOlbpF3EtUShAttNoU72MLHPu1BfG7mMIjkboDyKeSuLIlFxe3POoj8+gRM1emblrWmg7yWJ9DETCQ6OdQ9Nr7YHcOXp5HfjfQaiEjPTQEcXGghKXbbpsEYpDPhgHwyJwLZy3dTFvfXDEAddRsmHKQrKamq8nvOLZLm4M8nPCSrmseWvQ0l+PxV8f+SdJGZjb8ln88ABR2YjB4eXmJ5ExI3Iq5Ub3BzrULzjEW8ZIhaUkVb0LZMr3s8JvCJj/9JGxqwpuQsObuPwjJRtQXpZJIUSf0bwtEqMKwXRHJ4MkgllNojwLlj5dwZP9aTlRabMioGqOWUQzdPv24VRakHCVudHBFLPC4lFt4yvg6oyeX8MD4bbT4BcBju8lW8tPetqw1uHCwmvkL5/KVvo9bHvlX4FvOdXQTbicTbmc1VUWrD0jN53G+Y2zF70j1+nRsLb14GHvR2ZA7GTkkXwwU0uaRUG+xJj4vOai7AZGzXx7UI3hJMjQeGbS8m8A/vMS0sWIrv9LLy2+AgRkfkDvirU72/ubUeMv3N671R5St4YaLJGjqITafQ9v0uK4WkmUYh1mZZwhAx4aWpx2lwzlWlzxvdT7ItF/iSD34fWoP4oGoNmprYfZbV8ntagg5rQoLOGKmEvP4qNqJ2wy93YPdpovNM6CchhMUQ/J6fFA5R9rSqaPbV0iwfUBZj0gm5oDYnTasTLwP1I3GbwbPS+PPcmDUUaM8GnNFtANKCVROQE5vZo/epEywX6auU5yoXf3cgFKlY/IJ4J4vMQlGCN82bXcNvtv3FPvEVCjp0fpVG
- UzzhWS39
- RizEGASoqRfqOfduAO42YCi++S5/yLRcHeVjPSWN0yqSW8MjVsVhGvEK95sII4pyd/ODAzAJihn7C2duEZB/tkvrMuceXJJtI/vLRq5tKZ6P3M/mhPdkrw3iKzh7SFPQ820nsTIH6wSg+PUwMn9IXENnf/rdTCuk5Ftan2mGrzFv2er1SWec+flB5WG15k6THHMOnaNdMCUD8zlWMElBYXHMzOti2GEvwU3x/gp3PqDPoToVaUAw7xhu0Iwyc6gRCvQA7N3BUdiuxzmJVzciLw3ZA5uSn/jFFUZgCiuG4hJFV2RU2QeCT7rCPKgrZEhQ6Y5aGzKY/xm/N1LrBrt7ne9S67nZxTgwkzTnWp4SXYrvuY9qHjIV8pz7x2zv+L7phke5mIJUfcz26Wb4OmpKxCJIekAPrDqNH5eEiYQFmbCJG5DcwIA0KyZOnM1uNKawZBW5b
+X-Stat-Signature: fzwf5tmkkux95w8sms4jaoj4gh1hjpxw
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780597490-171413
+X-HE-Meta: U2FsdGVkX19LBPzS2Bcw0ixiFQWemcOThQ229OgymoGbcftgP7fzbltLWbEgipLVMwL20so0kBMMo3EFN/WzIHktYOWt0kXF38o0J1ucN4K2s81dx+tMV6WLHs8BasTHIjKa7x5yR/wYhAysEr5Foc24l06l9+RrO4KY3VW6rF0LsoB5pldncXWLg4u5dxcpAfDrHRlrtFrGvqPXYEjkmDiEXlPAcSRoey7q5A4FwxUyvreJ4Eug5DbA1gRmS2xJ+ZFtZjVMkktFPT0sR8/ZDC+E+5LUB19lUUousNUqZL355i080iqDyr+06wUEeZtIRQt+UnjKRRuTZMYw/7444lm6s8ueAyyH3mh8cKLoXIyTinHDa1Nr+6Qlcx5gXzgixHOhpFsdv7jJKhnbthc8zkJTO406dvCNpbEzj2v9n5wEuHWzl/SdDKPkbcoLsv5yhjmPaKlq8o2B7j2Japxe2GxBL9RKtPEafEk8tQBoDqddnOab7RjDl63wXzGdXdFggRGuZLuAH3qPHyRQ8TyyXSCgsW5oGwC4g4BKft4bNuTk6G6WXNyJ49dc3kQOaHNxG6S0OjGVVl9ixTenvKS/Rkqef53O7kHH0OTj+Tfjr3cqqrzREbVmQofbRbox6fQxQsyIUhphizOpJw/vpQAnvTuCOUtDWmLRYahmgei3GiWIzYx7hnmnlKBJ0cWBVQI5KnD/eYNnLS6tAF12wagh4jvfxbCkwmnYFryfPxUmPL4Ujfj1u+LXABA6FWiJoT9UBOxWbhBqrwNq3SE9Gran1rlzAAMQHq5+2gQ0n7wQhYoFKylFUImNE9VCn1Wz/6qNrVLAMy1nEfHY1Bpjm2o71UxT82vxnz+8ngFf7yhBhJjKjRNLsVNbCMJCYAwqorNTRGjjOswRze/YhGWqotivO6fK2+BUdwTLkAf3JNsrz9XZa7O55eBOib2N7LoyyXd0VBrhMvqKeL+j84v54Q0
+ C7HWlbZO
+ 5Kfig4qQ8u24nJ4LSi8dVm1Vxp73+ALGtgRUrSeqjX+4oDGZ8bMyJ/ajnbD7ZdC/Ava/jS3mRbCPi00KoDntiLylG37M3CY5BnFFhCSwwnjUJosrwYpuPaWpt8oBZJFKR7Iibfj7e7+NnV9uSvsa0NRGTqSGz/qhoaNSCV/mtVXXrkgXFheMdS8VlX8LG0uoo9Zy8IJljPSaVxXWP0oeQ9zZnUriVscl3RsNvdhYe8mBLCrCTqgtgRaSCFuKNHhQMiMNEzFIx09yYJ3mMe64aDKOid7UfWSonrrDj9c3bAVQ8jucu3SY7PyiPqBJRjaSREtmluBuUGDvgPQ1B6nMH80aAkx6HQm9GycMjMl1zLnjo0UfKlv8s47JOhq60TO36vm37UQWKyAzhhPo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,104 +142,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 04, 2026 at 11:04:35AM -0600, Nico Pache wrote:
-> On Mon, Jun 1, 2026 at 9:00 AM Nico Pache <npache@redhat.com> wrote:
+On Wed, Jun 3, 2026 at 12:51=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Mon, May 25, 2026 at 12:33=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
 > >
-> > On Mon, Jun 1, 2026 at 5:14 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
+> > Hi Andrew and Suren
+> >
+> >
+> > On 2026/5/23 04:11, Andrew Morton wrote:
+> > > On Fri, 22 May 2026 17:45:32 +0000 Abhishek Bapat <abhishekbapat@goog=
+le.com> wrote:
 > > >
-> > > On 6/1/26 12:47, Lance Yang wrote:
-> > > >
-> > > >
-> > > > On 2026/6/1 18:23, David Hildenbrand (Arm) wrote:
-> > > >> On 6/1/26 11:08, Lance Yang wrote:
-> > > >>>
-> > > >>>
-> > > >>>
-> > > >>> One small thing, I think we should probably keep the smp_wmb(), and just
-> > > >>> move it before the earlier pmd_populate().
-> > > >>>
-> > > >>> IIUC, the ordering we want is still:
-> > > >>>
-> > > >>>    clear old PTEs
-> > > >>>    smp_wmb()
-> > > >>>    pmd_populate()
-> > > >>>
-> > > >>> so another CPU cannot walk through the re-installed PMD and still observe
-> > > >>> the old PTEs, right?
-> > > >>
-> > > >> There is a smp_wmb() in __folio_mark_uptodate(), that should be sufficient?
-> > > >
-> > > > Ah, cool! __folio_mark_uptodate() already does the job :P
-> > > >
-> > > > So yeah, no extra smp_wmb() needed here!
+> > >> Currently, memory allocation profiling data is primarily exposed thr=
+ough
+> > >> /proc/allocinfo. While useful for manual inspection, this text-based
+> > >> interface poses challenges for production monitoring and large-scale
+> > >> analysis:
+> > >>
+> > >> 1. Userspace must parse large amounts of text to extract specific
+> > >> fields.
+> > >> 2. To find specific tags, userspace must read the entire dataset,
+> > >> requiring many context switches and high data copying.
+> > >> 3. The kernel currently aggregates per-CPU counters for every alloca=
+tion
+> > >> size, even those the user intends to filter out immediately.
+> > >>
+> > >> This series introduces a new IOCTL-based binary interface for alloci=
+nfo
+> > >> that supports kernel-side filtering. By allowing the user to specify=
+ a
+> > >> filter mask, we significantly reduce the work performed in-kernel an=
+d
+> > >> the amount of data transferred to userspace.
+> > >>
+> > >> Performance measurements were conducted on an Intel Xeon Platinum 84=
+81C
+> > >> (224 CPUs) with caches dropped before each run.
+> > >>
+> > >> The IOCTL mechanism shows a ~20x performance improvement for
+> > >> filtered queries. The kernel avoids the expensive per-CPU counter
+> > >> aggregation (alloc_tag_read) for any tags that fail the initial stri=
+ng
+> > >> or location filters.
+> > >>
+> > >> Scenario 1: Specific File Filtering (arch/x86/events/rapl.c)
+> > >> 1. Traditional (cat /proc/allocinfo | grep): 22ms (sys)
+> > >> 2. IOCTL Interface: 1ms (sys)
+> > >>
+> > >> Scenario 2: Compound Filtering (Filename + Size)
+> > >> 1. Traditional: (cat ... | grep | awk): 21ms (sys)
+> > >> 2. IOCTL Interface: 1ms (sys)
+> > >>
+> > >> Scenario 3: Size-Based Filtering (min_size =3D 1MB)
+> > >> 1. Traditional: (cat ... | awk): 21ms (sys)
+> > >> 2. IOCTL Interface: 14ms (sys)
+> > > Yup, textual interfaces aren't fast.
 > > >
-> > > Yeah. BTW, I think we'd need a spin_lock_nested(), so @Nico, treat my code as a
-> > > draft.
+> > > And ioctl-baed interfaces aren't popular.  One would prefer to see an
+> > > interface which uses read()/lseek(), pread(), etc.  It would be
+> > > appropriate for this [0/N] to have a discussion of why that approach
+> > > was not chosen.
+> > >
+> > >>   .../userspace-api/ioctl/ioctl-number.rst      |   2 +
+> > >>   MAINTAINERS                                   |   2 +
+> > >>   include/linux/codetag.h                       |   1 +
+> > >>   include/uapi/linux/alloc_tag.h                |  87 +++
+> > >>   lib/alloc_tag.c                               | 303 ++++++++++-
+> > >>   lib/codetag.c                                 |  11 +
+> > >>   tools/testing/selftests/alloc_tag/Makefile    |   9 +
+> > >>   .../alloc_tag/allocinfo_ioctl_test.c          | 505 ++++++++++++++=
+++++
+> > >>   8 files changed, 918 insertions(+), 2 deletions(-)
+> > >>   create mode 100644 include/uapi/linux/alloc_tag.h
+> > >>   create mode 100644 tools/testing/selftests/alloc_tag/Makefile
+> > >>   create mode 100644 tools/testing/selftests/alloc_tag/allocinfo_ioc=
+tl_test.c
+> > > At some point this should grow user-facing documentation, please.
+> > >
+> > > And the right time for that is now, because such documentation is
+> > > useful for code review - it makes that review both easier and more
+> > > useful.
+> > >
+> > > Sashiko had a few things to say:
+> > >
+> > >       https://sashiko.dev/#/patchset/cover.1779471082.git.abhishekbap=
+at@google.com
 > >
-> > Okay, I read the above and did some investigating.
+> > I notice that Sashiko has reported a pre-existing issue, as described b=
+elow:
 > >
-> > I will try to implement and verify the changes you suggested :)
+> >
+> >  >  static void *allocinfo_start(struct seq_file *m, loff_t *pos)
+> > This is a pre-existing issue, but can resuming a sequential read on
+> > /proc/allocinfo cause a use-after-free if a kernel module is unloaded
+> > between read() system calls?
+> > The seq_file read operation updates priv->iter.ct during allocinfo_next=
+(),
+> > stops iteration, and returns to userspace. If the module containing
+> > priv->iter.ct is unloaded while the lock is dropped, the module's codet=
+ag
+> > memory is freed.
+> > On the next read() system call, allocinfo_start() with pos > 0 reacquir=
+es
+> > the lock but returns priv without validating if priv->iter.ct still bel=
+ongs
+> > to a valid module. Does allocinfo_show() then dereference this dangling
+> > pointer?
+> > [ ... ]
+> >
+> > This issue is unrelated to the current patch series and can be resolved
+> >
+> > by reverting commit 9f44df50fee4.
+> >
+> > Therefore, I have submitted a separate patch addressing this issue,
+> >
+> > which is available at the link below:
+> >
+> > https://lore.kernel.org/all/20260525072117.112779-1-hao.ge@linux.dev/
 >
-> I've implemented something slightly different actually and I *think* its better!
+> Thanks Hao! I commented on your patch, please take a look. I think
+> there is a better fix.
 >
-> } else {
->        /* this is map_anon_folio_pte_nopf with no mmu update */
->         __map_anon_folio_pte_nopf(folio, pte, vma, start_addr,
->                       /*uffd_wp=*/ false);
->        smp_wmb();
->         pmd_populate(mm, pmd, pmd_pgtable(_pmd));
->         /*
->          * Some architectures (e.g. MIPS) walk the live page table in
->          * their implementation. update_mmu_cache_range() must be called
->          * with a valid page table hierarchy and the PTE lock held.
->          * Acquire it nested inside pmd_ptl when they are distinct locks.
->          */
->         if (pte_ptl != pmd_ptl)
->             spin_lock_nested(pte_ptl, SINGLE_DEPTH_NESTING);
->         update_mmu_cache_range(NULL, vma, start_addr, pte, nr_pages);
->         if (pte_ptl != pmd_ptl)
->             spin_unlock(pte_ptl);
->     }
-> spin_unlock(pmd_ptl);
->
-> The logic here is that when the PMD becomes visible, PTEs are already
-> populated (no possibility of spurious faults on local CPU)
->
-> the SMP_WMB makes sure of the above
->
-> And the pmd is installed with the pte and pmd lock both held through
-> the mmu_cache update.
->
-> This follows the conventions used in pmd_install() and clears the
-> potential for local CPU faults hitting cleared PTE entries.
->
-> I think both approaches are correct but this prevents any possibility
-> of my first point. although mmap_write_lock prevents this too.
->
-> Let me know what you think. I can revert to your implementation but
-> this is what I tested.
+> >
+> > Thanks
+> >
+> > Best Regards
+> >
+> > Hao
+> >
 
-Yeah let's go with the original implementation please :)
-
-Thanks!
-
->
-> Cheers,
-> -- Nico
->
-> >
-> > Or an even crazier idea... what if we ensure MIPS checks for PMD_none
-> > before walking a PTE table?
-> >
-> > -- Nico
-> >
-> > >
-> > > --
-> > > Cheers,
-> > >
-> > > David
-> > >
->
-
-Cheers, Lorenzo
+All, just wanted to acknowledge that I've gone through the comments
+and will be sending out a v3 patchset addressing them. Thanks for the
+reviews!
 
