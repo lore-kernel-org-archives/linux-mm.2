@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C36D8CD6E57
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 10:15:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44B0ECD6E57
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 10:16:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 292596B0088; Thu,  4 Jun 2026 06:15:21 -0400 (EDT)
+	id 727016B0005; Thu,  4 Jun 2026 06:16:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26A0F6B008A; Thu,  4 Jun 2026 06:15:21 -0400 (EDT)
+	id 6D7F66B008C; Thu,  4 Jun 2026 06:16:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 158EA6B008C; Thu,  4 Jun 2026 06:15:21 -0400 (EDT)
+	id 6157C6B0092; Thu,  4 Jun 2026 06:16:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 06BC96B0088
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 06:15:21 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8E8D7120493
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:15:20 +0000 (UTC)
-X-FDA: 84841822800.02.500B573
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 887DC40014
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:15:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mjDQkYbP;
-	spf=pass (imf12.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F5726B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 06:16:04 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DAD45C1AC7
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:16:03 +0000 (UTC)
+X-FDA: 84841824606.21.DAFE186
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E854B4000C
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:16:01 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UyD3Flju;
+	spf=pass (imf01.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780568119;
-	b=eMv1QrrdcqMoHpqOtxuOcdMMesyVv6sXq2mymAhueF3PfqPR23PhHo1xofr68iHdrVw4TK
-	T3//E74qL6HU67zZxTUzwA+UMFFbK+y0fsmSQ8Lpst0xZ34jvixakLDeRhCWq7f415ElUZ
-	BwhfQR+u6SALjTMOpH6HMqYdWtLqQSY=
+	t=1780568162;
+	b=qzoCwxd+HMeofStcl57UMakItLvTpyxyJ4eAPJf2GuZ+yvEjK9Qj5eYmJ+D0iLJCwB9Py5
+	3R/R/qLTHURAfrTQaNpGo2M9ZWSqQEA7TGeY/4Ptbfo1PcYnXm0pY6dYFAUSvg8j5Whwc6
+	JxV6Kt2aN7dJmf1IwGiLv6C4gPoNwd8=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mjDQkYbP;
-	spf=pass (imf12.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UyD3Flju;
+	spf=pass (imf01.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780568118;
+	s=arc-20220608; t=1780568162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1/eK1JWmIdEpDOFar9tPJ+EuVXYz4VWUnvo+5T0o2kw=;
-	b=ERHD5WofiWh1HLLHLxB2KSUIquVYWWAcI8wPsoxF9XGm+rubW7i46s0fn8GhhX49ABKSnJ
-	LvYTy2NAvXR44iiD9AC0fXVugLV+4d1hugcS/t8w5iuTIOTj1icnqRdTTM06RZ4naiKE2V
-	7Vx0jtyD1kCukHcoID+tUgJY5p5qC54=
+	bh=0qNmtiXuwb0Ppur00DNdkJYZlOVI0uDXAYEOqp9/VNI=;
+	b=gFbX0fEZyRWuekkUD8JDiJfrqncsJK7LFLbmIRxgkqrx+XXdgQxnO0WpzUaBFWbuSEoVCo
+	bOLCeMYVTJX07BqW8bw0rKPM122daTGjr/zKhewF782694Hu1rr7HYrTiIjiDSg0FgfL+Z
+	XG0ghZIgfeUG5biCSXWkfOWk4RVOzSk=
 MIME-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780568115;
+	t=1780568159;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1/eK1JWmIdEpDOFar9tPJ+EuVXYz4VWUnvo+5T0o2kw=;
-	b=mjDQkYbP1JIGt8bh13BKfIe8BbWkKuF+ZRWSxIGjbW7i0twHqiAdQpj9DZXnPjcxC80+21
-	izHFyfhPug4leDjH8KjDk76VglF/Vgw1Ip818J/bnlB0ebbecdAhUV3RPgNEdB50KiOXAZ
-	+qD2HAzxJYrfz4YHTETqTv3nhp2le9Q=
-Date: Thu, 04 Jun 2026 10:15:12 +0000
+	bh=0qNmtiXuwb0Ppur00DNdkJYZlOVI0uDXAYEOqp9/VNI=;
+	b=UyD3Flju98zCYaKYt0PMZvHaHTND8cObc7KPKeG04gx7OvuAlpb1obDbKZcDnfGQtQNkSW
+	APR8ElbuCra1w33GDt14lKRvgoVruHwlHm3OBxG5BP0Vfd8zVEnoMa3mdbkyLL2cKMwSfU
+	Qsow44k1KDyZEt181NxxZiRFBpagmbE=
+Date: Thu, 04 Jun 2026 10:15:55 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: ilya.gladyshev@linux.dev
-Message-ID: <7c28d766b007345f5f31ba9a086a3bffe95a013d@linux.dev>
+Message-ID: <9c0605c782299a2bb3ab6a8e73da26bafddea52f@linux.dev>
 TLS-Required: No
-Subject: [PATCH v3 1/2] mm: drop page refcount zero state semantics
+Subject: [PATCH v3 2/2] mm: implement page refcount locking via dedicated bit
 To: ilya.gladyshev@linux.dev
 Cc: ivgorbunov@me.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
  apopple@nvidia.com, artem.kuzin@huawei.com,
@@ -81,13 +81,13 @@ In-Reply-To: <5dabf3a748fee0c7b142c74367e7586f5db1ed1e@linux.dev>
 References: <5dabf3a748fee0c7b142c74367e7586f5db1ed1e@linux.dev>
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 887DC40014
+X-Rspamd-Queue-Id: E854B4000C
 X-Rspam-User: 
-X-Stat-Signature: 5hxou7gp8q1nzeou6xsxp1j5az9zsnw6
-X-HE-Tag: 1780568118-516699
-X-HE-Meta: U2FsdGVkX19zuM9+PEQAdPqRK2bG+SiXCYh4SXV9alBbdZsmAoTcRVLrD9VcYVKThxXVaKOHVVl/P/QayEGklc+OXPiyBC/JKDGFCSnG2Wv/Jx4Xg8JJFN+9N9ascNP8PahztrrneilPer4nVa3AOWvTcwvJAUfFL2xFdJM4UrlQaaZ6/D1Nl1xDBEo76eGQqi6TQD5mSPTs1HeLtnzs2wSjveF1hkQop2XQexfVV+MgCf0e+kZ8gRzkc9lD8kdp+ArONqoBbefwTaW5xBLATHR4RdvFch1S7exYB803+YINYcRyVRnfd8bRMfSOArx2Aw646w4+sQoEQ/DWQdXUfCA/KA2u+kBL9aAmUJvPA9ykL44nsuwwXFLqZ5eqATbA9gdkva6sKwv7chEbTfqERsh5hNj7jyE6qfXXaEn478hlkt3LEKwQ2ixzDsSHXd2RKO0Qh2mHzFTne63FQXiTPHirfzKeZ5aosCT0MQcgDNNE2DoTYAAJAYc2DdYM86YOJwKVNLXt7GWvg+q01QWg+unHfSX7vctL+Np0oPYzsSUvUmWx+XLfvM5KL6EseKPC/UgutmYoQ9BH/pIZ0dKV2hUS0E6dhOoD9zI15NQTTci2ZQQCLYjcTMsadbuiOFO/zci4LT/BGSS1/AD6WTPIrwyox/lwJ2NrCc/p029eBaFD0cBe/Q0zKEGo1YbNWgKL1vWv0phNxa4ZBk0X/zdgeKwhQL/vmZR7/uenMM6Keuv9IQk8CW3xxZGoLR83qzaQdQjh2Uj7BNZv1MT9kyojfDoPeKPuJYV7h6C2L1tu76V22SpVh0Ky6srdA/8bJstzvQ98iQ2x8ycQ40GK6xG4lr3qFUqdIz38FWioJ5Eb8UHnab+nzq/Ri6arakjo+U3SJpZmrlwHXSjSrnGPJckeIDf87LLnsXK2jtPxf6wNEBSNDoknYy8L5aZJ0p/PK2CNx6gTgM2ea7HFMuTlKfV
- GYL+vxKR
- MOj/KAAZuUwmkPJmehLPWx0Gk0oWbNZa9Vd/U6eiQJcyAhxCL3N04KLLnQQC0HXFjh4FhPXg7UUNxgijdZaaW0+TIruuYnJfnCuWN6kM7rHI/CohkoYEfqLuJtDfQIYDsXp5dzUWVW7yqVa6f5nH36kx2HXJNnAmqnrddDZuivRPkVITCUfuVMK1M1XJtqi8xI0Qlb6h6AtBgmvd5qR2+L3CJilS/qdg+1riHgQqwuFYgHroUx/PmLLYSyqWjb5wftRtbv1LnRRggQQkOrXtpqvVMegdbioRmxElXRtoA4NTOOWgeSId0IyimuL7O77caNwAN
+X-Stat-Signature: 3zxtsarcto9rn1scgnbdutkgwouo9bfy
+X-HE-Tag: 1780568161-398106
+X-HE-Meta: U2FsdGVkX1+siptcjvGWSrQm/zqZ1HYg2FiheG6nGrcRDjnNo+r05pTGWXfOFZOgYSXE7xJmQAwdxIjoTk5vDn+LvSOvlkucpzvQepGRx29BctMBTQzblLl64bl7GphxdPYjJdNZNzhTRr6A7vJS0fingXm36MptneeTXHpZZ+c2Mor3FtmWNq7cCSOl4Ok1HPGhBrGr4qrsEDJ6wH47drjIlORF6146OH7CNweLZk2voiyuFiDIF+Lo5kIMkBqIzvviDcEhTjhaLvhu6ZhphUUS52R6QMY2web3fIQ/gOmzmBhbNHes5flnCyuZXeG871G3TMCvEYPYTVEHMemo5jvStEnoJE+048/9lC/YUDYcKw+6ENFlre0jlKPY3JCvITjZD3oJ7qh/GYNUSVpHQIpeN/TAxoDcaX10Wyv/diUoGQFAmHGK3+/vxGXyFJEBRrhBVM0Z3p8xr2TFsAc+kTUyAYJetv1F1fL3y97yAJiGIUTQRJWtV2qUWQkwfgrFtyHIURIbfWYP8iKqqA1y4tSOA01tpV7JpdbPZTy3/eahTWdivmAlQSiGVbc6OozRraATsVB+O3i26ZBeyjc01Vr8m32b9kIJ3Gbqhn3Q/6bmcsCBt73IeDlKJ3uSlZi6QLg2o2sIEPm+fapy2OS069sbTG6hqvK8xRoO1nLU9WRLERjr6ysa2FtjQKneNFtTXd/2ZvBlXFFi4fkJktdAztdS8jJ4MRspBYlfMerxCUAx6VwzEcttlY1Fv80XiZw7i7KSL5Jg//FB4mu+qwT8hvbOhiRjrQ1RrsnShGioRlMwIzXaT4GyCV1cRIs+R4pFya4NLVx+UCxJjwCwwkktu702UqTw49jj5hTD+JXYFkNIMOCcTxUdDIjECecorzBVkgH4T7ZXO9q1w/F709oyfAongtVB1peTa6UXals5C5KonDKqvUreoh3qudRP/ysiCgGTzEDnuQiTP7gY5Cq
+ 55yB7b86
+ UeQoWyLdoI5SimFnRsZX0HvHE75kMIqkE0+K9fptnKkiP2oMxgxYqnu+PlFlLCDzqOHBYvhzzgyBAK6m5GBOxJNiwhv2xaXmdqNxpvcHYrMY+n0D66cjSf/UIOWcorkDCgNImEo5jSZFaptfeLcSiNbwvq8KjNNK45y2hULrwzuZukeTBTGpqFXepM43j5nZwUeP5BSMGjK++bPlLxNPexvcjkmLAFP8D44clMUV/qoRCcmyr+/kCeRB6qwO0rnZeHeIbMwx1K5aTZLHmlsW2hRwE1JmqTsm0wfPzSQxrL7Ay39kskOUjeVyhNjEGABkb+WO0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,390 +95,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Gorbunov Ivan <ivgorbunov@me.com>
+The current atomic-based page refcount implementation treats zero
+counter as dead and requires a compare-and-swap loop in folio_try_get()
+to prevent incrementing a dead refcount. This CAS loop acts as a
+serialization point and can become a significant bottleneck during
+high-frequency file read operations.
 
-Some call sites manipulate page refcount directly via
-set_page_count() instead of using more direct API like set_frozen() /
-init_refcount().
+This patch introduces PAGEREF_FROZEN_BIT to distinguish between a
+(temporary) zero refcount and a locked (dead/frozen) state. Because now
+incrementing counter doesn't affect it's locked/unlocked state, it is
+possible to use an optimistic atomic_add_return() in
+page_ref_add_unless_zero() that operates independently of the locked bit.
+The locked state is handled after the increment attempt, eliminating the
+need for the CAS loop.
 
-This conflicts with the next patch, which will stop treating zeroed
-refcount as the indicator of a frozen page. To prepare for that change,
-this patch:
-
-- "Deprecates" the internal assumption that a frozen page has refcount=3D=
-0
-(and vice versa). Callers of page_ref_count() still see 0 for frozen
-pages.
-
-- Inserts VM_BUG_ON() checks in every refcount API function to prevent
-  following errnous behaviour:
-
-page =3D alloc_frozen_page() // page is frozen
-page_ref_inc(page, 1) // BUG: Increment on frozen page instead of init
-
-- Renames _unless_zero() functions into _unless_frozen()
+If locked state is detected after atomic_add(), pageref counter will be
+reset with CAS loop, eliminating theoretical possibility of overflow.
 
 Reviewed-by: Artem Kuzin <artem.kuzin@huawei.com>
-Co-developed-by: Gladyshev Ilya <ilya.gladyshev@linux.dev>
-Signed-off-by: Gladyshev Ilya <ilya.gladyshev@linux.dev>
+Co-developed-by: Gorbunov Ivan <ivgorbunov@me.com>
 Signed-off-by: Gorbunov Ivan <ivgorbunov@me.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com> # p2pdma.c
+Signed-off-by: Gladyshev Ilya <ilya.gladyshev@linux.dev>
+Acked-by: Linus Torvalds <torvalds@linuxfoundation.org>
 ---
- drivers/pci/p2pdma.c               |  4 ++--
- include/linux/mm.h                 |  2 +-
- include/linux/page_ref.h           | 31 +++++++++++++++++++++++-------
- kernel/liveupdate/kexec_handover.c |  6 +++---
- lib/test_hmm.c                     |  4 ++--
- mm/hugetlb.c                       |  2 +-
- mm/internal.h                      |  2 +-
- mm/memremap.c                      |  4 ++--
- mm/mm_init.c                       |  6 +++---
- mm/page_alloc.c                    |  4 ++--
- 10 files changed, 41 insertions(+), 24 deletions(-)
+ include/linux/page-flags.h | 13 +++++++++++++
+ include/linux/page_ref.h   | 28 ++++++++++++++++++++++++----
+ 2 files changed, 37 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 7c898542af8d..7aca5852dccc 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -148,7 +148,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struc=
-t kobject *kobj,
- 		 * using it.
- 		 */
- 		VM_WARN_ON_ONCE_PAGE(page_ref_count(page), page);
--		set_page_count(page, 1);
-+		init_page_count(page);
- 		ret =3D vm_insert_page(vma, vaddr, page);
- 		if (ret) {
- 			gen_pool_free(p2pdma->pool, (uintptr_t)kaddr, len);
-@@ -158,7 +158,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struc=
-t kobject *kobj,
- 			 * because we don't want to trigger the
- 			 * p2pdma_folio_free() path.
- 			 */
--			set_page_count(page, 0);
-+			set_page_count_as_frozen(page);
- 			percpu_ref_put(ref);
- 			return ret;
- 		}
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 06bbe9eba636..34f83c5c2d24 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1780,7 +1780,7 @@ static inline int folio_put_testzero(struct folio *=
-folio)
-  */
- static inline bool get_page_unless_zero(struct page *page)
- {
--	return page_ref_add_unless_zero(page, 1);
-+	return page_ref_add_unless_frozen(page, 1);
- }
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 7223f6f4e2b4..ea9904a67334 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -196,6 +196,19 @@ enum pageflags {
 =20
-=20static inline struct folio *folio_get_nontail_page(struct page *page)
-diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-index 94d3f0e71c06..24b09c8fbb68 100644
---- a/include/linux/page_ref.h
-+++ b/include/linux/page_ref.h
-@@ -62,6 +62,11 @@ static inline void __page_ref_unfreeze(struct page *pa=
-ge, int v)
+=20#define PAGEFLAGS_MASK		((1UL << NR_PAGEFLAGS) - 1)
 =20
-=20#endif
-=20
-+static=20inline bool __page_count_is_frozen(int count)
-+{
-+	return count =3D=3D 0;
-+}
++/*=20Most significant bit in page refcount */
++#define PAGEREF_FROZEN_BIT BIT(31)
 +
- static inline int page_ref_count(const struct page *page)
- {
- 	return atomic_read(&page->_refcount);
-@@ -101,9 +106,9 @@ static inline void set_page_count(struct page *page, =
-int v)
- 		__page_ref_set(page, v);
- }
-=20
--static=20inline void folio_set_count(struct folio *folio, int v)
-+static inline void folio_init_count(struct folio *folio)
- {
--	set_page_count(&folio->page, v);
-+	set_page_count(&folio->page, 1);
- }
++/* Page reference counter can be in 4 logical states,
++ * which are described below with their value representation
++ *        state              |         value
++ * (1)  safe with  owners    |   1...INT_MAX
++ * (2)  safe with no owners  |         0
++ * (3)  frozen               |  INT_MIN....-1
++ *
++ * State (2) can be only temporally inside dec_and_test.
++ */
++
+ #ifndef __GENERATING_BOUNDS_H
 =20
 =20/*
-@@ -115,8 +120,14 @@ static inline void init_page_count(struct page *page=
-)
- 	set_page_count(page, 1);
+diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
+index 24b09c8fbb68..b041894b6659 100644
+--- a/include/linux/page_ref.h
++++ b/include/linux/page_ref.h
+@@ -64,12 +64,17 @@ static inline void __page_ref_unfreeze(struct page *p=
+age, int v)
+=20
+=20static inline bool __page_count_is_frozen(int count)
+ {
+-	return count =3D=3D 0;
++	return count & PAGEREF_FROZEN_BIT;
  }
 =20
-+static=20inline void set_page_count_as_frozen(struct page *page)
-+{
-+	set_page_count(page, 0);
-+}
+=20static inline int page_ref_count(const struct page *page)
+ {
+-	return atomic_read(&page->_refcount);
++	int val =3D atomic_read(&page->_refcount);
 +
- static inline void page_ref_add(struct page *page, int nr)
- {
-+	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
- 	atomic_add(nr, &page->_refcount);
- 	if (page_ref_tracepoint_active(page_ref_mod))
- 		__page_ref_mod(page, nr);
-@@ -129,6 +140,7 @@ static inline void folio_ref_add(struct folio *folio,=
- int nr)
-=20
-=20static inline void page_ref_sub(struct page *page, int nr)
- {
-+	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
- 	atomic_sub(nr, &page->_refcount);
- 	if (page_ref_tracepoint_active(page_ref_mod))
- 		__page_ref_mod(page, -nr);
-@@ -142,6 +154,7 @@ static inline void folio_ref_sub(struct folio *folio,=
- int nr)
- static inline int folio_ref_sub_return(struct folio *folio, int nr)
- {
- 	int ret =3D atomic_sub_return(nr, &folio->_refcount);
-+	VM_BUG_ON(__page_count_is_frozen(ret + nr));
-=20
-=20	if (page_ref_tracepoint_active(page_ref_mod_and_return))
- 		__page_ref_mod_and_return(&folio->page, -nr, ret);
-@@ -150,6 +163,7 @@ static inline int folio_ref_sub_return(struct folio *=
-folio, int nr)
-=20
-=20static inline void page_ref_inc(struct page *page)
- {
-+	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
- 	atomic_inc(&page->_refcount);
- 	if (page_ref_tracepoint_active(page_ref_mod))
- 		__page_ref_mod(page, 1);
-@@ -162,6 +176,7 @@ static inline void folio_ref_inc(struct folio *folio)
-=20
-=20static inline void page_ref_dec(struct page *page)
- {
-+	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
- 	atomic_dec(&page->_refcount);
- 	if (page_ref_tracepoint_active(page_ref_mod))
- 		__page_ref_mod(page, -1);
-@@ -189,6 +204,7 @@ static inline int folio_ref_sub_and_test(struct folio=
- *folio, int nr)
- static inline int page_ref_inc_return(struct page *page)
- {
- 	int ret =3D atomic_inc_return(&page->_refcount);
-+	VM_BUG_ON(__page_count_is_frozen(ret - 1));
-=20
-=20	if (page_ref_tracepoint_active(page_ref_mod_and_return))
- 		__page_ref_mod_and_return(page, 1, ret);
-@@ -217,6 +233,7 @@ static inline int folio_ref_dec_and_test(struct folio=
- *folio)
- static inline int page_ref_dec_return(struct page *page)
- {
- 	int ret =3D atomic_dec_return(&page->_refcount);
-+	VM_BUG_ON(__page_count_is_frozen(ret + 1));
-=20
-=20	if (page_ref_tracepoint_active(page_ref_mod_and_return))
- 		__page_ref_mod_and_return(page, -1, ret);
-@@ -228,7 +245,7 @@ static inline int folio_ref_dec_return(struct folio *=
-folio)
- 	return page_ref_dec_return(&folio->page);
- }
-=20
--static=20inline bool page_ref_add_unless_zero(struct page *page, int nr)
-+static inline bool page_ref_add_unless_frozen(struct page *page, int nr)
- {
- 	bool ret =3D atomic_add_unless(&page->_refcount, nr, 0);
-=20
-@@=20-237,9 +254,9 @@ static inline bool page_ref_add_unless_zero(struct =
-page *page, int nr)
- 	return ret;
- }
-=20
--static=20inline bool folio_ref_add_unless_zero(struct folio *folio, int =
-nr)
-+static inline bool folio_ref_add_unless_frozen(struct folio *folio, int =
-nr)
- {
--	return page_ref_add_unless_zero(&folio->page, nr);
-+	return page_ref_add_unless_frozen(&folio->page, nr);
++	if (unlikely(val & PAGEREF_FROZEN_BIT))
++		return 0;
++
++	return val;
  }
 =20
 =20/**
-@@ -255,12 +272,12 @@ static inline bool folio_ref_add_unless_zero(struct=
- folio *folio, int nr)
-  */
- static inline bool folio_try_get(struct folio *folio)
+@@ -191,6 +196,9 @@ static inline int page_ref_sub_and_test(struct page *=
+page, int nr)
  {
--	return folio_ref_add_unless_zero(folio, 1);
-+	return folio_ref_add_unless_frozen(folio, 1);
+ 	int ret =3D atomic_sub_and_test(nr, &page->_refcount);
+=20
++=09if (ret)
++		ret =3D !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_FROZEN_BI=
+T);
++
+ 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
+ 		__page_ref_mod_and_test(page, -nr, ret);
+ 	return ret;
+@@ -220,6 +228,9 @@ static inline int page_ref_dec_and_test(struct page *=
+page)
+ {
+ 	int ret =3D atomic_dec_and_test(&page->_refcount);
+=20
++=09if (ret)
++		ret =3D !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_FROZEN_BI=
+T);
++
+ 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
+ 		__page_ref_mod_and_test(page, -1, ret);
+ 	return ret;
+@@ -245,9 +256,18 @@ static inline int folio_ref_dec_return(struct folio =
+*folio)
+ 	return page_ref_dec_return(&folio->page);
  }
 =20
-=20static inline bool folio_ref_try_add(struct folio *folio, int count)
++#define=20_PAGEREF_FROZEN_LIMIT	((1 << 30) | PAGEREF_FROZEN_BIT)
++
+ static inline bool page_ref_add_unless_frozen(struct page *page, int nr)
  {
--	return folio_ref_add_unless_zero(folio, count);
-+	return folio_ref_add_unless_frozen(folio, count);
- }
+-	bool ret =3D atomic_add_unless(&page->_refcount, nr, 0);
++	bool ret =3D false;
++	int val =3D atomic_add_return(nr, &page->_refcount);
++	// See PAGEREF_FROZEN_BIT declaration in page-flags.h for details
++	ret =3D !(val & PAGEREF_FROZEN_BIT);
++
++	/* Undo atomic_add() if counter is locked and scary big */
++	while (unlikely((unsigned int)val >=3D _PAGEREF_FROZEN_LIMIT))
++		val =3D atomic_cmpxchg_relaxed(&page->_refcount, val, PAGEREF_FROZEN_B=
+IT);
+=20
+=20	if (page_ref_tracepoint_active(page_ref_mod_unless))
+ 		__page_ref_mod_unless(page, nr, ret);
+@@ -282,7 +302,7 @@ static inline bool folio_ref_try_add(struct folio *fo=
+lio, int count)
 =20
 =20static inline int page_ref_freeze(struct page *page, int count)
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec=
-_handover.c
-index 1b592d86dc48..b397bdb30461 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -361,7 +361,7 @@ EXPORT_SYMBOL_GPL(kho_radix_walk_tree);
- static void kho_init_pages(struct page *page, unsigned long nr_pages)
  {
- 	for (unsigned long i =3D 0; i < nr_pages; i++) {
--		set_page_count(page + i, 1);
-+		init_page_count(page + i);
- 		/* Clear each page's codetag to avoid accounting mismatch. */
- 		clear_page_tag_ref(page + i);
- 	}
-@@ -372,13 +372,13 @@ static void kho_init_folio(struct page *page, unsig=
-ned int order)
- 	unsigned long nr_pages =3D (1 << order);
+-	int ret =3D likely(atomic_cmpxchg(&page->_refcount, count, 0) =3D=3D co=
+unt);
++	int ret =3D likely(atomic_cmpxchg(&page->_refcount, count, PAGEREF_FROZ=
+EN_BIT) =3D=3D count);
 =20
-=20	/* Head page gets refcount of 1. */
--	set_page_count(page, 1);
-+	init_page_count(page);
- 	/* Clear head page's codetag to avoid accounting mismatch. */
- 	clear_page_tag_ref(page);
-=20
-=20	/* For higher order folios, tail pages get a page count of zero. */
- 	for (unsigned long i =3D 1; i < nr_pages; i++)
--		set_page_count(page + i, 0);
-+		set_page_count_as_frozen(page + i);
-=20
-=20	if (order > 0)
- 		prep_compound_page(page, order);
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 213504915737..0cbcf9da4911 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -1715,7 +1715,7 @@ static void dmirror_devmem_folio_split(struct folio=
- *head, struct folio *tail)
- 	if (tail =3D=3D NULL) {
- 		folio_reset_order(rfolio);
- 		rfolio->mapping =3D NULL;
--		folio_set_count(rfolio, 1);
-+		folio_init_count(rfolio);
- 		return;
- 	}
-=20
-@@=20-1729,7 +1729,7 @@ static void dmirror_devmem_folio_split(struct fol=
-io *head, struct folio *tail)
-=20
-=20	folio_page(tail, 0)->mapping =3D folio_page(head, 0)->mapping;
- 	tail->pgmap =3D head->pgmap;
--	folio_set_count(page_folio(rpage_tail), 1);
-+	folio_init_count(page_folio(rpage_tail));
- }
-=20
-=20static const struct dev_pagemap_ops dmirror_devmem_ops =3D {
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4b80b167cc9c..9a5ecdc71c44 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3130,7 +3130,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(=
-struct folio *folio,
- 	for (pfn =3D head_pfn + start_page_number; pfn < end_pfn; page++, pfn++=
-) {
- 		__init_single_page(page, pfn, zone, nid);
- 		prep_compound_tail(page, &folio->page, order);
--		set_page_count(page, 0);
-+		set_page_count_as_frozen(page);
- 	}
- }
-=20
-diff=20--git a/mm/internal.h b/mm/internal.h
-index 5a2ddcf68e0b..3f2a91de8a80 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -595,7 +595,7 @@ static inline void set_page_refcounted(struct page *p=
-age)
- {
- 	VM_BUG_ON_PAGE(PageTail(page), page);
- 	VM_BUG_ON_PAGE(page_ref_count(page), page);
--	set_page_count(page, 1);
-+	init_page_count(page);
- }
-=20
-=20static inline void set_pages_refcounted(struct page *page, unsigned lo=
-ng nr_pages)
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 053842d45cb1..8025cc27b408 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -462,7 +462,7 @@ void free_zone_device_folio(struct folio *folio)
- 		 * Reset the refcount to 1 to prepare for handing out the page
- 		 * again.
- 		 */
--		folio_set_count(folio, 1);
-+		folio_init_count(folio);
- 		break;
-=20
-=20	case MEMORY_DEVICE_FS_DAX:
-@@ -519,7 +519,7 @@ void zone_device_page_init(struct page *page, struct =
-dev_pagemap *pgmap,
- 	 * memunmap_pages().
- 	 */
- 	WARN_ON_ONCE(!percpu_ref_tryget_many(&page_pgmap(page)->ref, 1 << order=
-));
--	set_page_count(page, 1);
-+	init_page_count(page);
- 	lock_page(page);
-=20
-=20	if (order)
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index f9f8e1af921c..cb40f63084bc 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1040,7 +1040,7 @@ static void __ref __init_zone_device_page(struct pa=
-ge *page, unsigned long pfn,
- 	case MEMORY_DEVICE_PRIVATE:
- 	case MEMORY_DEVICE_COHERENT:
- 	case MEMORY_DEVICE_PCI_P2PDMA:
--		set_page_count(page, 0);
-+		set_page_count_as_frozen(page);
- 		break;
-=20
-=20	case MEMORY_DEVICE_GENERIC:
-@@ -1086,7 +1086,7 @@ static void __ref memmap_init_compound(struct page =
-*head,
-=20
-=20		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
- 		prep_compound_tail(page, head, order);
--		set_page_count(page, 0);
-+		set_page_count_as_frozen(page);
- 	}
- 	prep_compound_head(head, order);
- }
-@@ -2224,7 +2224,7 @@ void __init init_cma_reserved_pageblock(struct page=
- *page)
-=20
-=20	do {
- 		__ClearPageReserved(p);
--		set_page_count(p, 0);
-+		set_page_count_as_frozen(p);
- 	} while (++p, --i);
-=20
-=20	init_pageblock_migratetype(page, MIGRATE_CMA, false);
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d49c254174da..617937e42b2e 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1599,14 +1599,14 @@ void __meminit __free_pages_core(struct page *pag=
-e, unsigned int order,
- 		for (loop =3D 0; loop < nr_pages; loop++, p++) {
- 			VM_WARN_ON_ONCE(PageReserved(p));
- 			__ClearPageOffline(p);
--			set_page_count(p, 0);
-+			set_page_count_as_frozen(p);
- 		}
-=20
-=20		adjust_managed_page_count(page, nr_pages);
- 	} else {
- 		for (loop =3D 0; loop < nr_pages; loop++, p++) {
- 			__ClearPageReserved(p);
--			set_page_count(p, 0);
-+			set_page_count_as_frozen(p);
- 		}
-=20
-=20		/* memblock adjusts totalram_pages() manually. */
+=20	if (page_ref_tracepoint_active(page_ref_freeze))
+ 		__page_ref_freeze(page, count, ret);
 --=20
 2.43.0
 
