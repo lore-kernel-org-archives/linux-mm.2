@@ -4,108 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE4ACD6E6B
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 12:49:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17374CD6E6D
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 12:53:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74EE26B0005; Thu,  4 Jun 2026 08:49:54 -0400 (EDT)
+	id 57E616B0005; Thu,  4 Jun 2026 08:53:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7258A6B0088; Thu,  4 Jun 2026 08:49:54 -0400 (EDT)
+	id 52EB26B0088; Thu,  4 Jun 2026 08:53:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63C036B008C; Thu,  4 Jun 2026 08:49:54 -0400 (EDT)
+	id 4447C6B008A; Thu,  4 Jun 2026 08:53:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FC1D6B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:49:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 013C2A04BC
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:49:53 +0000 (UTC)
-X-FDA: 84842212308.08.B3AB523
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 47C0040011
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:49:52 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsuML8MA;
-	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780577392;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 33F5C6B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:53:32 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D87EB162B80
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:53:31 +0000 (UTC)
+X-FDA: 84842221422.02.D8394D3
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C881680005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:53:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hqknlAZb;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf30.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780577609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CPt7WmdqXc8TmefIma0e17PhXj7+J8IItu6xxPYhLBY=;
-	b=rRrHJVFRA0GTPWR2H82jXEo/sFzda3QEmjWvIrDpi0t0turzjwehaMePXYjWI2VfVPeYLs
-	DapF++1kVeGWYvx8r+EZDqPbqWe++oA6BOmtH0ew1tT1QamGEs16yfopCVxSOVMhh2hw/e
-	ITBEgwoidYfxmX/7loMGx66N1935Ynw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780577392;
-	b=ZCd/IOE6oMsKTFFFbh1RE6hlaA7NbR1mNim2UazKoS8T5b7mVwdt33uX5AgdIfSq/6Ynaw
-	Bdwmq2QBfMl9G0rrD3q2SJcEcHN8xNGBuY5ytovwbKg0Mo1mCi+IYagGQ7aNhiBzrlEOrA
-	nFUVKZrSRGfvbmZFkIlaAywwP0I6wg0=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsuML8MA;
-	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 196D043DD7;
-	Thu,  4 Jun 2026 12:49:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EEE1F00893;
-	Thu,  4 Jun 2026 12:49:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780577391;
-	bh=CPt7WmdqXc8TmefIma0e17PhXj7+J8IItu6xxPYhLBY=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=IsuML8MADwjAXf0QeYiq6ebS0Vo8GAiunm2wQqhXcztfHwRGwIoOMfeeJ5yONUzG1
-	 TYo6cP+vGu0uzrAzwTMy3IZ9ZJL138OcLbLJhehdvOmn9UKekHZrydojGZJi9kNps1
-	 RHjGLzvdJtOggWmZi2OC3DD/oh9LcEdfvHgamjbrJvF8YXzZ2OA/0BKRXZfKYNcus6
-	 shiKG1hjjRaVwXvDu7Yo2yDpe1TFwod5QqOMMBOOOUQGi97yN7bNqpdgzk0qLq/Tmn
-	 41MUFBnQV/ZQy1HAdYNOHkyKFtm2mSWxmgJOVliqLtTs13IiM07nENRiT4Jz8/cHuc
-	 i84ZWA5e4BJAw==
+	bh=g69Tg8i+2AI/l9rLO/HBsvL7C8sDT3SBWBYRRkExyv4=;
+	b=q5h0LgXSulDMHOyaiZlQCtgsCk6+LbomOBGlxmZHI0kd0CBhpT9sPeoB0JWA+k+yKhremo
+	iLXVIDWH+XXN0b8wHDQe090sKwF02CcccdC+jFILt8ksZ34t2BxXvz3rnZo9YgohxJDXZB
+	Hi/MLE1LuAUzOXCoPclxbzwkfgXrLfk=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hqknlAZb;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf30.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780577609;
+	b=Nb4GXbRwPM3oZr6/dKGHx3BCw8NDQxCnBZG9JY9BKL29A/VnlAs3rLn72NvnQib6fM1Ft5
+	uRrY/olhB2NwHdGfbZoKtTFvNfM/tvJMiODfrKgvxh1XNdXTAQI2ikbPFdwQYCiFmPfSS4
+	NZn8BK6rOoZoJxiYMYeY79xuuCsXIb0=
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6603b01758cso71593d50.1
+        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 05:53:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780577609; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jpA/5sN03AVgsE87Ns78MOZQqI+k/4nvfdH98q0eCc8tJkDPvAIKDBDPfyP9CnMPy6
+         D/gm2juRUIxETFAIJF7z7M2JYYqZc7KXsJ5iwPns+uuBxie5fFD5ThUEiWEyN0LyFeZh
+         ujNdg5P2gNJAeObDNXaRVZFuj68vS+lln9gwpuOEFzHG/sgPVXoNYuaInqQZN96fZN9P
+         LaL9oKxngTEm0GDKv41+KdAXh+1N8j9Czu9ImtEXoYIGrZ2rXpdAkH4gjXZz2mBTYizm
+         tICjxJmvzwEXCkuyGW0s0Q1u3KNV3uVPk9u9y/8LEoo1D0TSsSiVYNKpkk3A0NvwgF95
+         4M0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=g69Tg8i+2AI/l9rLO/HBsvL7C8sDT3SBWBYRRkExyv4=;
+        fh=1oMChL3bCWQDtQ9AfhD659unRuppM7NiMaF+/WZVAbM=;
+        b=GM8aWkc4Dl4tm+403grbcPElW2waPAPtLbkjVK01WhIJy23rie/OysHSiRWI/J++Ni
+         P3l0Q/eyDKv3ieuDH3uNYgVmY87OUcLfUjnxp32oS/ky1vx+OP4ef/MC5ll/JYeyuHNt
+         fRo0i5KpT3shp4WWcwcDyIJZUyhI+gw++TPVpmPf10koXUSEkCgSBrQVrcn1gkYfUors
+         RYhlalCUo9+txEvde8uNhvC7t66fCRGKRX+twiDnZgqyBAkSP3scE5IpNUykVhJzM04B
+         XvN+UD//b/k4qJVEfL8wBKhRJ5sRYF0fNM/270U/FPN63nvBqb6Wf6LjrfhoCvuuamAq
+         ZuFQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780577609; x=1781182409; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g69Tg8i+2AI/l9rLO/HBsvL7C8sDT3SBWBYRRkExyv4=;
+        b=hqknlAZbs/kfnpvfyhScI8L107CgzCsj38xe2phPqQQEeUEU47Ps631Ra+wcZLNqFy
+         nroQswaRf4vTnVqR9xctFpKUP1/WepdingTYbr/kpeE5z4x3gUvoZWDdDp83WgEiOtKO
+         PoexGSZKpd0hiM6rvhSXDBmQxnmCO2/GPkCvcP+cdGse/z5VniIMKX2b1Vqf67yyPZs3
+         hiMRCCwvJmdxTbxC5e28wfDV6PBQtjGnYWkPz0IRjy7Gj8yBtxCRa+72B+TuX72WKOJ8
+         cvZpKguHHeNxUQTuwREaqmponkK5p7Kriaqi5zDNnh4ejmKBcSJ9UYXO84wBkOPdxoXk
+         1+Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780577609; x=1781182409;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=g69Tg8i+2AI/l9rLO/HBsvL7C8sDT3SBWBYRRkExyv4=;
+        b=q7wWr/Twij+irEStwbDoPToNMTuu9QMOKmBYKd5SdI20ErgAcmgB2Aju1bfHxnxGaq
+         CA0ZCyFJ5FWE4uH67n/bmWyskbuQ5AQ60hX2MI6/Q3gVqD9arbe4DNwnPTWfMUI0Foem
+         SB3X584mt+F+aS6ws4RUOy8RcNlIT1dofrAr8ebe7upb/l5X8hOyDh6e/iWFQ5vlPApN
+         NZ9fUL0cvbwFEOm8XrNx0BHPVj6axglGPCc2zZSnsYmHR0w/me1LH3l4sRfF0O1i+tEL
+         fmipJ6IpMR1wdhnxz5nGWdvBK864KoEFNExzQGXZOW72u9UrDrGhUk3icdesIl7BCRoE
+         BPIA==
+X-Forwarded-Encrypted: i=1; AFNElJ9nclRbkl8TuEyX39086pJ661kPcE8llsx2vkgTVH4J2hYJzSjxA+vw07essUxRy4daGvKFaQBIjA==@kvack.org
+X-Gm-Message-State: AOJu0YycvSLP8AxmK1YUoT16krfTj5N3zyhzo4XG14SKbL9y9+i4I9/n
+	FhB4l6Vtf0jQT9B3KUsNiMdC0sYRXeM6OoFUcQP5bnlWzJWll/F+6wHtrRJFYgkngo3lT+uXY2n
+	dz4018JViB1Tl16vpU5GiDLvPILYMZB4=
+X-Gm-Gg: Acq92OEYn8QEo7qdGTlBn+3NNxrh9HxZROF6ZQjCsCJzL+cD/9rUeDw7FaB8GrtCzIl
+	FGhFe5kr79ePD06W/8uC5AFBLjC9v1apYn3c6SNOMkENlkVgaEU8WIMtYB7clBvqJHn3qCw3AUT
+	fsHDN9VK66SmfkWOGtpv40TKYYvwwTduNqRO5tkkr5ZWIU387ogyCgNa0zt4ZI/KmSO/0kF4x7X
+	iCLWj1rv2SIB48gsRyy7N0x4n7i/9IsTLvvNyRH30cBS6FtvxyZIiKsYNrNCxaB33O1EF0fC9Mt
+	NNgoMTFTTQMCj8nTd+EiJFMvXhsBjlxKofjdjdfqkyYShcBxngQOtNZJJsvynDMZvnSLaIEOiDC
+	zHAhq/fVyCXpg1yN+z83P7BP444zwW3J8
+X-Received: by 2002:a05:690e:1915:b0:65d:6f14:9070 with SMTP id
+ 956f58d0204a3-660f45c9302mr1314879d50.4.1780577608699; Thu, 04 Jun 2026
+ 05:53:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5 1/2] mm/process_vm_access: pidfd and nowait support
- for process_vm_readv/writev
-From: Christian Brauner <brauner@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Alban Crequy <alban.crequy@gmail.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Christian Brauner <brauner@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R . Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Alban Crequy <albancrequy@microsoft.com>, Peter Xu <peterx@redhat.com>, 
- Willy Tarreau <w@1wt.eu>, linux-kselftest@vger.kernel.org, shuah@kernel.org, 
- Usama Arif <usama.arif@linux.dev>, 
- David Laight <david.laight.linux@gmail.com>
-In-Reply-To: <8e738cc8-dce8-4043-9b93-2bb867c43028@kernel.org>
-References: <20260602100917.3641359-1-alban.crequy@gmail.com>
- <20260602100917.3641359-2-alban.crequy@gmail.com>
- <20260603082707.3831525-1-alban.crequy@gmail.com>
- <8e738cc8-dce8-4043-9b93-2bb867c43028@kernel.org>
-Date: Thu, 04 Jun 2026 14:49:44 +0200
-Message-Id: <20260604-ornament-sparen-biegung-e9930ee7444e@brauner>
-X-Mailer: b4 0.16-dev-f5839
-X-Developer-Signature: v=1; a=openpgp-sha256; l=988; i=brauner@kernel.org;
- h=from:subject:message-id; bh=oHSYB+oD4hXjFnZRLLSBQY0UEHAn287ySYBd4bpRJmc=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQplmQVWnNyhukcytGNM/Dl96g8EptptzBYcfWfd8vO1
- l7cm+7WUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJH4w4wM376ze4nnHuX5wb66
- sX359Q25W1njX5752hOrc8L/hV9gDyPD969fQlMdOwLZPl4QjtjncqHH++2r/vtW/39XHVsvcvg
- yNwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+References: <20260601133941.111989-2-giorgitchankvetadze1997@gmail.com> <20260601134427.dda82558dfb2da579d66cbb0@linux-foundation.org>
+In-Reply-To: <20260601134427.dda82558dfb2da579d66cbb0@linux-foundation.org>
+From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
+Date: Thu, 4 Jun 2026 16:53:17 +0400
+X-Gm-Features: AVHnY4JPI5ZoHsj3kCakMzoQNU0ShVKpROBSnYaYX10AP5q-EBPKGug1lIOe_RM
+Message-ID: <CAE7dp2ou3f8d0dAqyFQf8RQ1jgYtdsBxq70GF=OECAcvfA3UKA@mail.gmail.com>
+Subject: Re: [PATCH] mm/compaction: guard move_freelist_head() against invalid freepage
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com, 
+	hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C881680005
+X-Stat-Signature: pb17cke3qfpzc6jom7frun6r3zbfhzxr
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 47C0040011
-X-Stat-Signature: bbg8u7f79rbk6y7r1ccw3anr9zi3fk3n
-X-HE-Tag: 1780577392-974123
-X-HE-Meta: U2FsdGVkX1/njeDG8WPdY6nQwKkskp01s86BZs4zxfKc6v6FyEDilAY0tQ8BNH3whGMMh5DXY02bpi6m0ccqed/WzmHNmEBukjJWmFSBBzfP5/wWXbFjo4faf99H3Q3LNu9mmGcMcw8xqhhSOCbNCtxjL0aet5rvlGbK/rOtZGCaKii+K+ITGKwoUXs6ZR/zT5L7mBIYvC35SLTHksjidHxwNj46GOTHmbfArKOsNFHtWc/1kUr1SkO2mIt/7sErl1mCJwF4HUjfLF+19vqENHTIF+nPMtwRHiVVtyjs1LkcUzZsXo7Vw/fBh+WoTrfblMf8qjGwbTIi8oxk6jrKb/hB7fj4PdnDT9JQpix8MIZXevaH5LQlJb0cXnPNEnVBf8ugFNKvWq2PNKYrWaiJbRSTfBVq04RWxgSsJkWaIF+oJV0Of96MPqszfZN8Q7lDqLXJApQ2aKYUlQVUFPXI5pFcB7pQR8UTYOBB/8JsMFNWpmPvQ03e2YBmcxM4mnfmea8zTG0zdBFrU8m3SK2BcXgRk1QU1zi4zT4mMeVTyuZbQAYGtKdlJ/HDdSGoBPyzq8ED00FtDMjaXVHVWqeHHUMRnTIIdGFggIDw8bAask1XxKV/jNSXEADu/bDyO0jhe+oYklk1PfK3cGvBmQD0Vc+i9yuo4uG8ynUUWdFkE2T1gDGNGWxlVn/My1eGKkLEzOb0YY6jsov1qqwwm7O6j27zympELAonOoJkaqO1DhoYix4EkcU9zKDU/3szTJrJ6YZaqi6Juugze+5jPuxHr8d4W7zwZuUxlnWOcVzT3GaoZNeK1vZltEewp/OPRd5hAyzhKnjRQ5QDCU3KXgH+XvHMDNIhYkNTVjT5b7ipJP+mVbAsWGUn6c2P0NHUsiLjqKdfV988/j0aqzweC/pXR4Ul9yjL4A7UCyQBtrDITSFSO0QpjOFNWAKLFy0ku4NdwLxCZVfJaiSp4Shc+RF
- 2OJjwPxQ
- Su7J21dKxPaa77/eyMXcS2qx2OTu+P23fuFvy81tYS6QhCraNixpxwBAFWFviTosDiLtePaw9b2MbZBJIEk0A7QrXiBnwL8sNJX8+orP7kPUR59Egjksuq8bHcYbhGTHQrbT0nJOzsOB5/KQqe1Vl8NRtflQFryehCLaJmzDmqHzOKczCdMvycVzlZtcMv3+JtFWm3x2PparoW1qMWn7GdWR9vmWyjBOb/ZfNaL2GNLMg/e9oaN4HbX2izCbvgwwrC87LTdwUym9HLJrzTSgPdSgaTmbx8ZRuvssbGsk8mBr5soU+XbpINxHVXe+dV1bVgeNXtujhNWuIa+ITMdxoLhSfceQjMnrSwr48gHEiNCpxVWPH1zbSe7pcaJi0Hcnqy+URs/uv1oGO40k7OdB1zEuc/qOkBdqD5eqz
+X-HE-Tag: 1780577609-84748
+X-HE-Meta: U2FsdGVkX1/EZhBZAEEaQzKgxDA1LoGk/9iR5SNvII3cRPoEXr/zy2pLg5rfrfZoUyLlnkT2qwGBx2QGkwE3+sUiZXb7gsSmC5XaOFY9a3ALS1UEXU2QD6ihn0FvWkl9uin0/AsUlScj/+5HQduNGUN07iQ5jhqSu7l0mAZmj2hF8gYzZRBaaJsBspmIWabRGYNT80P5DnoFlHgDeeenAwdxapnjGU2jDOwXuoqYMlAWUPikaRyY3oTpXcxzXB6fWw2fR3zIxk2IfjneUUf1qk1R/1Dl9ujJHAHMDVApvtnFugcluwlLeXXSuvIAjILKRInFgDLGwm3TWK0JQsNSEQDiNL8kxq4eexvF1WNoDuJIh0NPx6SVoS9GGgC7ZP6lL6u9yYgWBUNsFEt8n0bjT9PsKVKqg5QSqRQlEHHFI6OQQEs0+tMNfqMUPamtpwqKF6LIfSNoxfb+64TKyKdzHpiUYOnmtFCCr9Xhiwxj3ljWYU+48n+b5FesTQRP4YVxKnf7fHpBXTcATl1c1Phtgw/prQ9fKxJWzDPa99q4GHvIWoGaQv53oSozolZfq4K/Dxq0tH1BN6fr0YsoQsuYCEd+kwsprgepNnPCXvfvlhMFIDiQeLvL7pddb8ju4bmcgR4/yimPRundTpUaMcCMcQrGb9KUEUGuVjQE1QW/7PON2BeABWNSsRQHNt7e8mR4tSlWyDkwYZIvnLutOFQ8UadQT8rXhkjFmmI9j3Ut29i45CQb/iVqV0PoBqqkd77V6mlSdYiDgrfjD5sqjs89FlweJ7G2or9xkKspClI9yE8xIxL7Ro6YlJ3CFJ1McfHPvZrLlBxcl7U4Xo7PX4Q7chyIRlVZ8Ix7rex+eArIeVrOvKq7Zhi3TQntSOSTY88zaALBIFmAq8u+wmrx9OAS9QilVNzelnttqU41J8GGehKDQmQsAXioMttCgOEezwnWgYou8rDDABsj42MaCT+
+ 35kSXygh
+ EphlFVH18lHs95BIYs/qIAoaRJ5zJbzVONWJQB/0TYJ/jwp1DUVH2EqHa68pR7zoqQb1IwFejuPAZ+fUfxtAnNOw3ehJTn75Uf5m1lrWESwCChEMuoxiY4MunvGzRL9ohzZ9KJ6XX5su+NgZrChd13H2rGJVqLuwoMhT+IJYTkvnKAjeo2xLgHYQbPdwtHmzHdjepK59fj4YT7aPRwHmRp+d9I73jV3BUN/y+V1FjJMbVDCpLuSmEEtQUOp9HNfzAUduPp8GxUx5BaPgVn5CsQ4VdLZxMlsFAMsTeRLUWHq6C+AJQxczyN/4mzgF+zn5bbkEKivMiKnZ/IrfobKvaDLkkCMaSjpPkq6s/VbVTVj/D5iQEws49fRUQlL93iWARAAqTAM5rUsnAZyoRuAnQd4CsAzjGV9uV3tGFae4b0Yt4rryKsfa/QIeRP4DBnrbQF3FjQw87x7RIP1LAevAdgB/4do+DM7/mD62uO65HlvU2UKyyBftpsCU5dAu/5DxyyzHYCL0dTctlxLru1gHNBbIQEHmOI4bo3LBY3XO9ieU63Pkmr0awm46kkeGquTFqaVUAnvtkRpxyT3LrD1x0S4ZPDvlD0bhHNi0hzpdkz6EYruFPkRzUQ9mLTe8JN4xQNTA0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,25 +140,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-03 15:54 +0200, David Hildenbrand (Arm) wrote:
-> > However, the exited-leader case is a real limitation for profilers.
-> > OpenTelemetry eBPF Profiler wants to profile a process where the main thread
-> > has exited but secondary threads are still running [2].
-> > [2] https://github.com/open-telemetry/opentelemetry-ebpf-profiler/pull/376
-> > 
-> > Using plain TIDs (flags=0) would work, but it means users cannot use
-> > PROCESS_VM_PIDFD in this scenario.
-> > 
-> > What do you think this patch should do? I see two options:
-> >  - Address this limitation in a separate future patch that fixes
-> >    pidfd_get_task() to use PIDTYPE_PID when PIDFD_THREAD is detected in
-> >    f_flags, benefiting all callers (process_vm_readv, process_madvise,
-> >    and any future users).
-> 
-> Extending it consistently for that scenario seems like the right thing to do?
-> @Christian?
+On Tue, Jun 2, 2026 at 12:44=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> Seems correct from my reading.  That code is rather twisty.
+>
+> > This issue was identified via Coccinelle (use_after_iter.cocci).
+>
+> But AI review is worried:
+>         https://sashiko.dev/#/patchset/20260601133941.111989-2-giorgitcha=
+nkvetadze1997@gmail.com
+>
+>
 
-Yes, but I cannot vouch whether the mm operations deal correctively with
-subthreads.
+Hey Andrew. Thanks for the review. Yes, Sashiko is right. This seems
+to be deeper than I initially thought.
 
+My patch is too broad and skips the freelist rotation mechanism when
+the scan reached the limit without finding a suitable page. In that
+case page is NULL, but freepage still points to the last scanned real
+entry, so the rotation should be preserved to avoid retrying the same
+unsuitable tail entries.
+
+I'm thinking of assigning freepage to NULL like this :
+struct page *freepage =3D NULL;
+
+and later checking:
+if (freepage)
+move_freelist_head(freelist, freepage);
 
