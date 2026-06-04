@@ -4,89 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B743CD6E75
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 19:07:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE998CD6E75
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 19:12:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3B1F6B0005; Thu,  4 Jun 2026 15:07:12 -0400 (EDT)
+	id DA4A06B0005; Thu,  4 Jun 2026 15:12:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEAE36B0088; Thu,  4 Jun 2026 15:07:12 -0400 (EDT)
+	id D077F6B0088; Thu,  4 Jun 2026 15:12:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D009B6B008A; Thu,  4 Jun 2026 15:07:12 -0400 (EDT)
+	id BA7A76B008A; Thu,  4 Jun 2026 15:12:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C08B96B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:07:12 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8C2A21A0268
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 19:07:12 +0000 (UTC)
-X-FDA: 84843163104.30.FC8B623
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B7D7012000C
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 19:07:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=X95QMe1D;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A587F6B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:12:11 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 47E09120286
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 19:12:11 +0000 (UTC)
+X-FDA: 84843175662.03.E80069D
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 05FD920002
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 19:12:08 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=du+BNIwg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MIZ1n7v5;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=du+BNIwg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MIZ1n7v5;
+	spf=pass (imf31.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780600030;
+	s=arc-20220608; t=1780600329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tPNx0ceI7jZ/wZ7ZeuZoSeTQHDWTmdvA1iGMDZOoaVw=;
-	b=2zL3nUpl+IpZTt31RLOr7Qe4h/TqLMmywMafYeKb8S31L26xXob9I5TmKvp0uZe6ceYNGs
-	h/njRpQyKvgdX0qCAnbf3SXf0T6o+hRmXVhAGhGBg4UxYedLu8ajHi/of8WbV89IDDeMDs
-	VVb/CznhbGYHI1Zs80lVB+EDNvkaYrw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=X95QMe1D;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=9L7i2swvOC+jyqEqBi6J71Dz7ZL2TF4c4yN/go0BL5o=;
+	b=3Lpzj/JvqmCjIG7d+Gpap5hCG6v6jeCrZwvGwgLWvdQCTtYNCPdLyXwWC1BNMaqlqLbPiR
+	mLibtsSF8r6REEUWg4rwhj6NGlJY0spvzTOdzL7ndfqbUpTy49NiY4zCHn5Fb4Zh0uHces
+	2uyoN5L3KZR9guGj4xCK4w/apd/zI0I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780600030;
-	b=3omdjjWW6Goe6gNROkPpXAnxHT//fXEEf44G4ygUMwzEP6bdQLDv7thx7zyOPCExlG1/j0
-	xHeCZwANVrMfvdynasTnm+U1kyeeRHmIZ8aA1FqVoncXl0qikFLz/MXrDVcMkgStCl15Dd
-	vXq1CmenhMotOC5BEG1ImLzu4YGhssc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 23DD460052;
-	Thu,  4 Jun 2026 19:07:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F391F00893;
-	Thu,  4 Jun 2026 19:07:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780600029;
-	bh=tPNx0ceI7jZ/wZ7ZeuZoSeTQHDWTmdvA1iGMDZOoaVw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=X95QMe1DQa/bJlL5J7XNBmh5eWEZZpUvPc5iH6tAfn7srWo9BFzIMrHrRCpQqEYT7
-	 yIS85dWrunomN7GvekNplK3OwKOtRGBKYDkIpVnVNS4kCOZH8lG3DsRoXWUrG1xTKX
-	 PvIP+1YCFjvAqfzbl503rus1E0k4bL1Lh8whxHQo=
-Date: Thu, 4 Jun 2026 12:07:09 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
- Lameter <cl@gentwo.org>, Uladzislau Rezki <urezki@gmail.com>, Pedro Falcato
- <pfalcato@suse.de>, Vlastimil Babka <vbabka@kernel.org>, Michal Hocko
- <mhocko@suse.com>, muchun.song@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH v2 3/3] mm/percpu: Avoid IO/FS reclaim in backing
- allocations
-Message-Id: <20260604120709.445c027637b3ad72ad13279a@linux-foundation.org>
-In-Reply-To: <20260604113101.89510-4-kaitao.cheng@linux.dev>
-References: <20260604113101.89510-1-kaitao.cheng@linux.dev>
-	<20260604113101.89510-4-kaitao.cheng@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B7D7012000C
+	t=1780600329;
+	b=T/DCDcLRO+pMc9JD20Kj+Cq3EmieLqqWoP9qePepOiavHCorRTEle47EJ+O5fRxdgJxeXk
+	PnAt7q+wyk6z1PmHF4kLuolBBD9qP4C2TGBjNDJr53NriyvFuZn+dtjHnUL9NUqMkmRTqt
+	fgDTyKea5AHal9ffTKX/EvR5NAFC5NY=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=du+BNIwg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MIZ1n7v5;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=du+BNIwg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MIZ1n7v5;
+	spf=pass (imf31.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 71F816B029;
+	Thu,  4 Jun 2026 19:12:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780600327; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9L7i2swvOC+jyqEqBi6J71Dz7ZL2TF4c4yN/go0BL5o=;
+	b=du+BNIwgZkPrCHvZZp6Z5pgYTtbhQg6LVpneHU5VcpuZUPHfCuNNJJxDn08F6cRF8XjfEg
+	kpwU2X5A5fBjRAkEaQx2ZvKzsCBjTktKKMF8uRkANugAs8Lr+LvgrAVxAreIEihf045E0z
+	+B447SxeQm16FMgnEJ7FVzy/TqQ7cW0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780600327;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9L7i2swvOC+jyqEqBi6J71Dz7ZL2TF4c4yN/go0BL5o=;
+	b=MIZ1n7v5OoSUdcDUgR1RvEt12w6lYFbzx5nExRtHBJkzaCfLmp/gyJmNpZoCjbgRfzoaIy
+	SLLWM/u6shUkS6BQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780600327; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9L7i2swvOC+jyqEqBi6J71Dz7ZL2TF4c4yN/go0BL5o=;
+	b=du+BNIwgZkPrCHvZZp6Z5pgYTtbhQg6LVpneHU5VcpuZUPHfCuNNJJxDn08F6cRF8XjfEg
+	kpwU2X5A5fBjRAkEaQx2ZvKzsCBjTktKKMF8uRkANugAs8Lr+LvgrAVxAreIEihf045E0z
+	+B447SxeQm16FMgnEJ7FVzy/TqQ7cW0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780600327;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9L7i2swvOC+jyqEqBi6J71Dz7ZL2TF4c4yN/go0BL5o=;
+	b=MIZ1n7v5OoSUdcDUgR1RvEt12w6lYFbzx5nExRtHBJkzaCfLmp/gyJmNpZoCjbgRfzoaIy
+	SLLWM/u6shUkS6BQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CFEFC779A8;
+	Thu,  4 Jun 2026 19:12:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id F7e4LQXOIWr4fQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 04 Jun 2026 19:12:05 +0000
+Date: Thu, 4 Jun 2026 20:12:03 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Harry Yoo <harry@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, linux-hardening@vger.kernel.org, linux-mm@kvack.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Simon Horman <horms@kernel.org>, 
+	Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
+Subject: Re: [PATCH 2/2] net: skb: isolate skb data area allocations into a
+ separate bucket
+Message-ID: <aiHIQ4ZxnMSifhmi@pedro-suse>
+References: <20260602183122.747759-1-pfalcato@suse.de>
+ <20260602183122.747759-3-pfalcato@suse.de>
+ <6d70757a-a849-4828-89e7-f3d51bf8c9f8@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6d70757a-a849-4828-89e7-f3d51bf8c9f8@kernel.org>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 05FD920002
 X-Rspam-User: 
-X-Stat-Signature: wa946ns73rfq67nc3gy3ttyq9fzttuhg
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780600030-524591
-X-HE-Meta: U2FsdGVkX195CM5fxSWlpddrEtffLh8gQb8AzRE6fVLYU6kZk5egvfejj7NFeRzV127nD8HodGnOzyds0smhFP2GN08gR1W5yXpnBVi/lJoKvDbMaqE0hxkyOjzRNO3Nsjq0FEJ/b3P0NIUGMI7fhRuiSN2pBAksJIojuyPR9vFg0DyC17Vx6+00Ton0H6MWg+Scifh+HKkEzkNVD96By/tQy7SoSgDzhKcAsXPxBe3P39+bgpUo8uu4dHUw1ZHsE/p1xfNu3IheM4f7Q1NkAQUyEQC8ljA5i/gH7PwI2nki7KccERsSkoJXD7t2rLXrvOiyze6Y1E8dspkj6DwO1y74XiNHg9SLPLKD1hlRLv/yPfeymM39ZG6f/o10KZvKT0cNLze6WEK4XeqFMsQUcsKAJkpABojPtRcQZHfu5p7YCLIinEgCVJB1/pjMUZA9ROgwLbQhlPlr0XnoGkdT+UtrTJffiymNgGO7Vxrq/iN8OFO3dq6CyImDx/YVfDNExICZrLW+QaBB5MOyhwJpuIG1KEVnyEK9uZ7dMUcHKpP+KFpX/3eSyWNFC69hN0fRGEsorgZrSFQ/zITgf+t4n71zEpbbWglB+LIgxiL8cs865D0dpLK5F8qu+Mpy7fAT4P3wKMlNPLIVGtRYZ5gD1GxAe+yGSgPADvzvyO3pbMCpdRIDtfQqFawBOgSriMiqxClXUs6SLEfUcr4pPVrKQxKVYh7QbnvTXhR5KGYigfOtIcldZbF8UaHonlrGwWspfJUPGBjgrJM1FpIRLi6axiUzsmL8ogFSB2snaPY4qSgQBl8Xofc9QCDitTtBxNlv+Sn/H1emAsW1jPsVFxoGZvGjAJzU6DWFGclbo82NUsxp9cZMrTirYKNZsrl0riBn1x97bAMpPKn3DCm2XQSBR1FAMGFkSWK0X6yzU8XuKO02U3BrYgWcb4zVfqXyBObEJpyrf9YU9pC7omOFsVC
- UchjxHPl
- I0sX7vMySiM3a6hiwb+LhhqQepE0t0WxKuMIHMJMwwDyrSlgKHOCRjkB3xaatvUi35p2Y3qLOzyjtV/qBSZyHfC9Am6rTlugwnBZ6A3EOKU1QrkiEORyv2AbsdG2RYxNdRQzIl1viUXzfhGEMtX6SFnTyvBZjtzAiZrnR15MQRrZr8hNkDpWrVW/LWmhcxrKRx/NGrYD9/+SsFrI09ECrXblQlUP57se+xrNCln0vAsT8mpAR/n3pkyJ8bZ1Nw+rmBfntvP95hzFrPEnnOPHMIOr9n52PPH2Vaa7TUIBMbYB4jOJvNVxlVQyKnQ==
+X-Stat-Signature: kf5aihq5nq4thsryksujws4do1epo3pw
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780600328-806048
+X-HE-Meta: U2FsdGVkX1/EaA32K+y+IiZpI2na8wr7VWHEvTQUJoYNujQhdKk1ae5f61Z5o+2mLc20Nz6NSj1APtyabGi5X2V7bvXg+Mb9TeO9Ie6x+b7VhWDl3bfY7uclEo8jjEsue/Lj70ZMtFuP1+7SfKSkTln7NgsVKMyiUam+QYT9nzVjHQM/KkE2B60z3Uw4txRsqvpJLfD8uvEwVlmJ0ApM7tVt8xB57qBum0cxKOd1fmxA4DR+EGh/dSZRJ/gez+zbENtfkGXpK19R1uMQAIpmjH6LOzO3in3rKJ9qw+Z285T2frrgGJcS9EShX/sbulDoTcKjrtrO+XP3G3kp1H/GOJTjPKsjq+RHr3abIt9HHj+U72TSd6zimhG9d289Zgt4z21Mk5BPb0bw3BLEyfqB6hdf8hrrYFsTHrLfft3YCDyPzAsyEuspDgbGqBwqWkh0nQiXT0JPyr1f3wxyP4Ed5q4Jsq2l8CbVInEwZi4VzUfNaSZZ9h2kKYhsMphcYVvv8DuZ/01eHcfF+Ce2FrYR8A7BpLPe+tnXu52w4e2+1ZA1HgXiSyr3Wv3gzkovAelr3vtKNs2+bRy6HirANNSbCKuPmdaCyfPOKCGXyUKFaCcudCHZdKaf8QxA7aqQmj8sfvLsrWq4pFkbwtYOiQgGCJLzWpbKm73/3ROcnS43/Pb76akLTLQK0ZbhlCauIv32yHpAF7iac4Qy6SRXKCqZutZplKRBep2vfMNYBA9j5dVevrZdynYbsEn46C6JSbf38XBQLI+B7VLcUzmGHjtTxy46p5uM7TtSyflLFxG2mJ3MnGgPSFAXPIqWqzHDtvaL+uXnCXu7YKWfygoZcZ5fhLrJ89aVfXyLUyb96hnJ61L4V/y4DOtr2ruvop6vWqSqLOgnWQl/jU817gEaA0ga+NdNU8GxwltmYkGxLKoIdG4xXcSSKEiIdCkTzO0JbSOEEvF2H4b8iyE5YpVE4Nc
+ XqSqEg6E
+ 1+OuGDXftBZGL5mBzL/N6OjwvJNB6MXB8qyKRN4VKJOA/W2qMZ3008olMG3eaa7DGU+EZ0ckatTjwNzvnBOFyQyFuPgH56+N8QVjYehUBnP0u83+QNDYoW7CfTX47NI4Mwpln8shJGue2/iBAmTVzAeyFzTix6U4+6GxjrinHEscW+dg6OKa9svPFJ7NcrUdIws3phE3iIFVl5hojK+4wLrmPEgdqNIUZSN1WKAF7B9wZKmCDbW29YLv+gdpVOxBGoCPmGdDm4V7D1rBjGft2rO8Lgjm/XBvqLCRjnc+PyjPwulfH6ChgVhVe5Ba7bmUJ+yihB34hN4DNvc8RFYrun9j7ICZNR97DnTg5Zs1UmQivxac=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,71 +139,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  4 Jun 2026 19:31:01 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
-
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+On Thu, Jun 04, 2026 at 02:30:34PM +0900, Harry Yoo wrote:
 > 
-> Commit 9a5b183941b5 ("mm, percpu: do not consider sleepable
-> allocations atomic") allows sleepable GFP_NOIO and GFP_NOFS percpu
-> allocations to take pcpu_alloc_mutex.  This avoids premature allocation
-> failures, but it also makes the mutex visible to callers from constrained
-> IO/FS contexts.
 > 
-> Thread A calls pcpu_alloc_noprof() with GFP_KERNEL and takes
-> pcpu_alloc_mutex. Since the internal allocation is not constrained by
-> NOFS, it may enter FS reclaim while still holding pcpu_alloc_mutex,
-> creating a dependency like: pcpu_alloc_mutex -> fs_reclaim -> FS lock
+> On 6/3/26 3:31 AM, Pedro Falcato wrote:
+> > SKB data area allocations (as done from alloc_skb()) use kmalloc().
+> > These allocations can be variably sized and their contents can be more
+> > or less controlled from userspace, which makes them useful for attackers
+> > that want to overwrite a use-after-free'd object from the same kmalloc slab
+> > (which often just requires the sizes to roughly match into the same kmalloc
+> > bucket). [0] is an easy example of an exploit that uses netlink skb
+> > allocation to target another similarly-sized accidentally freed object.
+> > 
+> > While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
+> > probabilistic. Use the existing kmem buckets API to further isolate these
+> > allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
+> > 
+> > Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
+> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> > ---
+> >  net/core/skbuff.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> > index 44a7f8401468..1f6c6b531ece 100644
+> > --- a/net/core/skbuff.c
+> > +++ b/net/core/skbuff.c
+> > @@ -594,6 +594,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
+> >  	return kmalloc_node_track_caller(obj_size, flags, node);
+> >  }
+> >  
+> > +static kmem_buckets *skb_data_buckets __ro_after_init;
+> > +
+> >  /*
+> >   * kmalloc_reserve is a wrapper around kmalloc_node_track_caller that tells
+> >   * the caller if emergency pfmemalloc reserves are being used. If it is and
+> > @@ -632,7 +634,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
+> >  	 * Try a regular allocation, when that fails and we're not entitled
+> >  	 * to the reserves, fail.
+> >  	 */
+> > -	obj = kmalloc_node_track_caller(obj_size,
+> > +	obj = kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
+> >  					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
+> >  					node);
+> >  	if (likely(obj))
 > 
-> At the same time, Thread B may already hold an FS lock and then call
-> pcpu_alloc_noprof() with GFP_NOFS. It will try to acquire
-> pcpu_alloc_mutex and block, creating the reverse dependency:
-> FS lock -> pcpu_alloc_mutex
-> 
-> This can still form a potential deadlock cycle.
-> 
-> Avoid the dependency by restricting percpu backing allocations to GFP_NOIO.
-> The public allocation still uses the caller's GFP context to decide whether
-> it may block, but the internal memory allocations performed while
-> pcpu_alloc_mutex is held cannot recurse into IO or FS reclaim.
->
-> ...
->
-> --- a/mm/percpu.c
-> +++ b/mm/percpu.c
-> @@ -1726,9 +1726,8 @@ static void pcpu_alloc_tag_free_hook(struct pcpu_chunk *chunk, int off, size_t s
->   * @gfp: allocation flags
->   *
->   * Allocate percpu area of @size bytes aligned at @align.  If @gfp doesn't
-> - * contain %GFP_KERNEL, the allocation is atomic. If @gfp has __GFP_NOWARN
-> - * then no warning will be triggered on invalid or failed allocation
-> - * requests.
-> + * allow blocking, the allocation is atomic. If @gfp has __GFP_NOWARN then no
-> + * warning will be triggered on invalid or failed allocation requests.
->   *
->   * RETURNS:
->   * Percpu pointer to the allocated area on success, NULL on failure.
-> @@ -1749,8 +1748,14 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
->  	size_t bits, bit_align;
->  
->  	gfp = current_gfp_context(gfp);
-> -	/* whitelisted flags that can be passed to the backing allocators */
-> -	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
-> +	/*
-> +	 * Whitelisted flags that can be passed to the backing allocators.
+> What about kmalloc_pfmemalloc()?
 
-We're supposed to say "allowlist".
+Good point, that looks free as well.
 
-> +	 * Backing allocations under pcpu_alloc_mutex must not recurse into
-> +	 * IO/FS reclaim.  Otherwise a GFP_KERNEL caller holding the mutex can
-> +	 * block on reclaim while a GFP_NOIO/NOFS caller holding an IO/FS lock
-> +	 * waits for the same mutex.
-> +	 */
-> +	pcpu_gfp = gfp & (GFP_NOIO | __GFP_NORETRY | __GFP_NOWARN);
+Sidenote: isolating kmem_cache_alloc for possibly-aliasing caches could also
+be useful. skb allocation has net_hotdata.skb_small_head_cache. It doesn't merge
+with anything for $raisins (odd size, plus I don't think usercopy caches are
+getting merged?) but it feels too... accidental?
 
-AI review
-(https://sashiko.dev/#/patchset/20260604113101.89510-1-kaitao.cheng@linux.dev)
-asked why we're currently removing __GFP_NOFAIL here.  There are
-probably good reasons for this, but it would be good to describe them
-in that comment.
+Maybe passing something like SLAB_NO_MERGE and making the size
+standard-looking would be nice. I have a size of 704 bytes per object, and
+this probably causes some weird wastage for each slab.
 
+
+-- 
+Pedro
 
