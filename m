@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D650CD6E75
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 20:14:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B857DCD6E75
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 20:14:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D42776B00B1; Thu,  4 Jun 2026 16:14:47 -0400 (EDT)
+	id 2BB076B00B2; Thu,  4 Jun 2026 16:14:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D19616B00B2; Thu,  4 Jun 2026 16:14:47 -0400 (EDT)
+	id 293106B00B3; Thu,  4 Jun 2026 16:14:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2FE16B00B3; Thu,  4 Jun 2026 16:14:47 -0400 (EDT)
+	id 1A9376B00B4; Thu,  4 Jun 2026 16:14:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B10DA6B00B1
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:14:47 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E9701C0A73
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:14:47 +0000 (UTC)
-X-FDA: 84843333414.24.053199E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B2E0A40016
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:14:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L1KhBYKa;
-	spf=pass (imf11.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 094016B00B2
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:14:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C8C6F1C116E
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:14:57 +0000 (UTC)
+X-FDA: 84843333834.23.3434B68
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D878240012
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:14:55 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=emyi1bE3;
+	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780604085;
-	b=y2QsUA0OMOhUVA3ZQpjOopb4HtJBBBs+I7dr4o4qznwRjilk93Tm2P7/BzjoglbdTg32vI
-	Prit8HRbvr6QqALHfRpHRP7e0u7gtNMdNRVRoEzMMmxAwQdsaocroXnN3LSCq3i8gW8CT/
-	KwfSTJ/ug6GhbW/VRnCLgLn8FtSbC5k=
+	t=1780604096;
+	b=ZdK5u3F8APYoTVnPqAcz8lKWzGWL6bQtVt3LGN2qUR3yNPnX2YfS6y9JdfsVPOMroUfNFq
+	vcjAf1n9HVkJtGS4Hkd0cpNNWbsVq/niUN7BXr41CQf9RMA4r1uLtI0XwktkBQQtwYjJx7
+	wi8iXZfM3W/yOfUfHE19EFmacvy7r64=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L1KhBYKa;
-	spf=pass (imf11.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=emyi1bE3;
+	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780604085;
+	s=arc-20220608; t=1780604096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hN3l3BdGf/2AYaP03yQUTPwUIONO7SBS5tD05SJ/lgU=;
-	b=rFYGtT4IqLOrex916exhgodYZKx7sKFOsurHg+Cr1m1fqXuWf8FUQc2wfEH/q2c/2ijVph
-	jVsB1RaHMF4EyCxkVTBALf6fVDFvE3mAkHAwdHEn0F0v2toSsSXr+CqRCC49qFsjLAVmLg
-	nmhAWoGFaNGaHY8gucgarwGUPERou+I=
+	bh=t4H8eqNZN4/mIO1u313XVeuHkqdUneIpioBG/gGEBMQ=;
+	b=oaBTYDUJ1BParexA7Mrl362PfjmY2EiGqnfptT5csfFMVgwMVBbjg5J/jOw02M014y97yw
+	t9AYpXgpoBZL3Szxam2nwn578VXOuaN++dI12hRd9+qlc7CHgOzoJpaf0XomGfxpuv+qPO
+	/DVSMYH0I7PtVkQGs8MwiwZxuUdaEt4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 404EC6001A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 29A3D419A5;
+	Thu,  4 Jun 2026 20:14:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946FA1F00898;
 	Thu,  4 Jun 2026 20:14:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAAD1F00893;
-	Thu,  4 Jun 2026 20:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780604085;
-	bh=hN3l3BdGf/2AYaP03yQUTPwUIONO7SBS5tD05SJ/lgU=;
+	s=k20260515; t=1780604095;
+	bh=t4H8eqNZN4/mIO1u313XVeuHkqdUneIpioBG/gGEBMQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=L1KhBYKardL4WLZ1hxlsOwhksTaRQTGI+GRdaf7u+5MQLYeqW4lEoJFDK5PY8udEi
-	 OgD8pgWy26+xr++oM7Eas5xkaFfFQVWQF0gfnE/F5TPP3XfvNea3Mz2VTe3tTpDBeP
-	 1bxU43ejnz6I/o5682xm0l7UOqZ79U5PkaIjHZv+CUzCOAngWwGH0ZvEcQGeYsQjKK
-	 0F4rK27NUH9tegKW2KFdA132RgpjWZg1P1S53KoP6Z/MZy+yzc98gRrwDxVmDTiYFe
-	 kDSJcR75jkiLmb+QjuR21BLBIU9xRGCNr3KPvMstFAKl8aKJzXXN6D8QTD5Zg2oVcn
-	 fIEFQRiqEI/Pg==
+	b=emyi1bE3lT84UiMs0H/e5sWLBpipKD8aP4rx9nCFc5ww2rHWzTrNroixBU1R1eW3k
+	 VvDyq+Y9/EKTN5YutDxaS2ya7aaz09ocK8otk3HD4GePbWSC8Nq3UzR3jpHPJsKnlW
+	 D+G1ixqQ2oKb5RLaZIvJKK62Ge4aMEzL6NR04y47K5UJ14jmX8IhLAu4hN5UEpcV0p
+	 QeUQfwkvgeuV7wWv1oUW5AiTbIKO9lPOEnLAnAOPOPK8bI7//XDk5clHDilppzR/TY
+	 GZxIkL2upvxl1wSbQAKqhnKfs+Sb4dtPjK9uSDcEaZPvRLUc9O84wyUuh3WcYXZw+B
+	 dXBq+GQKoz+hA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 04 Jun 2026 22:11:15 +0200
-Subject: [PATCH v17 03/10] rust: implement `ForeignOwnable` for `Owned`
+Date: Thu, 04 Jun 2026 22:11:22 +0200
+Subject: [PATCH v17 10/10] rust: page: add `from_raw()`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260604-unique-ref-v17-3-7b4c3d2930b9@kernel.org>
+Message-Id: <20260604-unique-ref-v17-10-7b4c3d2930b9@kernel.org>
 References: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org>
 In-Reply-To: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -99,32 +99,33 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
  dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
  linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>, driver-core@lists.linux.dev
+ Andreas Hindborg <a.hindborg@kernel.org>, driver-core@lists.linux.dev, 
+ Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2733; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=wiR/tjsjZUc/szwoZmoCjaXgIOvvjFpABHNna2O4ox0=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIdvojMJS3KEQLaRggiy/IympJ139LRe+De2u3
- A92SMSRv/eJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiHb6AAKCRD6UCkIqsW9
- 0EKxD/40KjICAkhQszkmSwLgDHYHvBdMURq9hW/tlw+Ez08KtTHqNDPCkZkXsfpdsApuKNQ52UY
- heVYe2Yx5rTJP9GY1T2tzh/4qCJcYe5U8yfWfpDPvYLgePHgSOnQbWO1MSJV4IDC2qfkuecSU6i
- ClrnIWqCB5Yd9DMGk36B2kktJPrDCXH+brMTD93I6IMz/2J87PsQRvQ4qubjvCa84SEGjlPd578
- KvK0wji01jfUpXS0QX8ccaXUELffUfenAKI38ilen48Wvfx28oqWGJoEDbtq/65D5iYOo+9DHMp
- GIgDlOzszni4/tUFObbPb6jT6bBa4E8O9wKm8UjQflIOdHbF8QetJbsVaDkoPOq1qcIO8LKJ003
- nl+kT+DMCM7PUpWagcDVIcAqrL4U/t7j5koXNEGeIa8UEQa2Z8aYquOZuof61j4uCgyGCzy1jZE
- 7XDIK/8L+icsgpd8LLw7wUA5Amh0VcC28HvhGDK2yNUqIiMCXJuknR487j5nUawXyETew8AdwWn
- GfykSQUfGIUCawqJiakE4IQbS/kIXDbCQAdcBUxxEG/nv/4Zj2NUTuEk5Ld4CXZ1i2kkBir5Rbn
- EatZvAMk+OKzHVMWpEI4lfthHa377Jq6ytw19hLZoMHp/i2Ja1l19oLBy5I/y9Ko0JM50AxQWaj
- Gkz2Qjxyvb6xu+g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1098; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=MTxQNyPl556p/37N9iYrjSR5gCSkwSCTZpMY90B8pEY=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIdvvpNub7j04mvxMdRLdPaAd/MQZCqnEQ9G7x
+ 6NHPMMF+bKJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiHb7wAKCRD6UCkIqsW9
+ 0MI+D/0QPO+RBFAbjZRXC9pKgYwjFXnKxpO8ZzAKgdud2wdZcrmS6XnxjFCuPYPaFQ93AhOYZJa
+ 4HV8ITv5TB34RklZib+C1ex0+Q7HyqZjU22svIR16LfDNFX/PzVeBvcMhmc1WvMZxfKE72VeYMD
+ lG1FuQHv/rWnofDymriWJ1qTmmIh7KcWTZTBWOBoRgKjjYMflJitin0NXq39YIxXu1MqcEGW20v
+ ceF6r4JVyWfA1qLVdGeuXR56Z/tP/9demSf0WEz4n/JNfPwSO2fQGqgHU5Wl5QkOeyepnUg4nCf
+ V7AX9lwpje33yM15jdHfXun61mNZa7LYV/QZyVny/IV39nPfxrEMJMFFzFZhx3H9v6+wmG7Rl7h
+ cOtjeMyzfmUxEJ95Tx/gR6H9Lv9v03K0ZTh/L5YdaCZvaNDy0gi0KOnWUL1eP93qbY2kiyZmE5f
+ t+Xfj7TX4TebKhIwyEuO/uBVPqXJyZTHt2mkjJ2wP+OAjZlc3btrRL3brJE0UGHxHzedtn8XHk8
+ TyidsBvAMRGQ+VtyZO8Vi+OXdrfsKfO4XV4jyBjM1uPFGEafgzam59BvvN/aO0sZQB62OEFCXKc
+ SQoUbEQRjie1O1BooUeWFUAPW1OpcbGv5nlsQmCDSxE49cATUzyJjv+bd3ihJjA8yLKgc8vmC5j
+ m2qAWViBmLjYVlA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B2E0A40016
+X-Rspamd-Queue-Id: D878240012
+X-Stat-Signature: uwwe83n7g6f78z4ns84bfxtmbci77t58
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: ma6ctsisdf9on6k33x9sr954wszeupth
-X-HE-Tag: 1780604085-924984
-X-HE-Meta: U2FsdGVkX1+fdKJMc7Aqh0F9LsqH6bRYWTZJ5sxe+4HevYSm9rvMYNDx79W4z6QYtFisMff5JuKoUYkTyyW6TnTC0/yIfs+cSAtNkR2DYpTrn54VGx8GBiS+3Nv9mzRx8K98ce4ApewrmRAQGQZdw157j4ERaHR9QAu340MFgZ3B8TuZexxXnRAMXhY6omI9gMH5J+x4+tDFM4RUe2RaXo115j63zfosMRHnjzQDLznso/S07CmzdABBtDqBAvx5/bSoudlyfTPBJdXVBHlduspJer5HvSdxH/dQUFLfnxNU2YxFszCghjVLQtd32a9B6Ojwy22EO9XIEiRcmAkxgUrwmehqTRGgNgTYN80zWYzsWDWyXbpbh5csB8xlxr23DquZPmky2tAAkicl4feYY/unrUT24eo83gv48iW2P+NhgoUr9P5Oy8vHKQHD+mXgg+QKFhO+2QHKaEQMuh1SKxlSmU+ftT32zv9dskLTxFdV/euOC4H2oAqkpGqOqIhsg9K7MLeGhxny3/Vpyb8IzTb5p7Zf95pU34SY10/4SAj5AxNqntE2/bdViOAHT4uRCkXFkNC85lkSNTH7bn/bsLGI3HBjuEDVgmZ7dqEZnfzWfZBOSfqy9rfEjBLu/Cab3QPcNkUEZxSgmq3jtRPkMY2njyIpzqrVe/bhVqAbMFWKsmL0/mCCbNXPjLNE3L5knmxLtuB0jGb+JLhfUAUhKUPp9xOeNAnbhH2fn08VqdHdevIm4eHUykE2P8rrSYcPyzpixglxPnk61ERjLBmMViVzONiEq87erp8L41qVOHQb6aWdS5DmP4MuhzP/oR1kbf87WOPbD9164+4saqHtgA75Os+bSa0o6qdwb6/jV+9K/duW6s820lvJ0CzDzaDDv5ZHOqcATgueAbXvcOMiW4e9LeIFCpc1weI4PHQg9H6+0tG5qkizk/nehck4swpB2MM+GrrrLkaG9s+Ry1G
- g62araJs
- Xi73AMLiQojs/Gwb1cA4BWRcwUlRwAOaiXJ943mlo23WsPkIECTFvjvj03vbjMsQ9ncuuJloBQIUZX6h7CTcSqx3Nbg5ts4fs4ZjRJKx74ymvB12eFuVwbl/cYa1ps/PVKo21+HKvwe4khJIMuehWlvRziuztsxnmRNc48Vpiz3Ya+/zvRpJZu6TurLIeDSor3Qt2C7FsiJ0kFm8klTFf9+LqmKqUVwmt8KAZvunOFrZMhFFAH9vX2zR/Pk8PJvd7KvdZuiTWk207RTyZpeUvEgXWEwSTuXA/eD8/
+X-HE-Tag: 1780604095-253163
+X-HE-Meta: U2FsdGVkX18U5onUkslN5v+hOAfMPRarHBoTjwhTZlI5Y2AHL1yGlbJ5bXqqsjNTCmpmWYwrRQhDD47nwnLi9wsWp27s6dxezxDS353FBnMhmM8bfGRlDT1bqTw6z1oJDao3/PJtzhEYqLES2DW8WZ4+Xq3pHPYPWTinQ/0zSWj1L+HWhWu8HXUiPvwYnUPmpR6ISDJWjDwFbpICXXYRwZbEGnD9n5vDniarclT2yCv8OEjCcRZ+wxjZNv/dSAnJwWznXK9b5Lu8jGxBUZMkMtOdNWJldabfHEJTm78otmhjCmZ8unkDr1wKgNbZFtgZYZhUB5EIGPzmhsftXVyarTqTUnGBF6YBV7YntLFs1+voe74OFumf3KQrT8iFAYd/IYUyIN2AGXxpmKMkdUwb02aosBigRts8eWTu3V/8x4OIxOOcsD5JHvnKZV05tets2+Izx++DoOB7QaXHW6ccKoH8kBn9DKEIETrc3rpBp4LGlDW0BCf9xBYAIPr9jFW70VO3hwpTVwTtsxlAYKJzhZMu3XAVKuLWaYRNghMVwPG2TldftpaJiy0iA1zSbpdQA0b7jRqQmNLxZEsjJZz14jMSId5eTDtiCpp9lI5cEQ7Ue3uzr7YAFr16mydCvhnVJhqUCGI0aR4e420rfbYIfd+HWEbFpPREMIeBUI0lRkqg0P1lbEstRQDJW8dWzQ2sqC9Gh1Cv7wb02srkNAOFssx8dBQJmqlUQ0nO9O4bZMXORc6+erueRJ2rxIvEn4iGKx6ycOav0kqhg1BqkJv+gG00jzc2uhNE2qpI2ocAYULLGy8HrIJV4MKeFXZldgYKyQK8T26roVxEOkmxYHQMN95IPLtIAfTzUwXzWu20zNX7q3MktjNRSelIgXOgTIMgEkinyeVB1aDg5MtdPl5OXy0AIIgluo73pmhhbds4Cmu5djzKuhoxYR8cY96FUIzJyIW3T2CiB0oaxEZkK6g
+ jXw/ThzV
+ 6VPJTz/bax1gW2bMT6IT7rqV9XxBUWOoA3gh/aDUByABxwK8eEME2onEEuPfh3uUH96hrjzaqBveCJI+or7Hqy4bcZRiFq6gwGh6sh1cdWFtQM0rZj9fZlzBR/tqAwzSI2n/30kCwviVohz+gYMTQJsMvpZ91CyGIN5kurBk6N75Uag3iIkbDoppdT9oNndjp8mWaSbVeuj9alMb+fj07Cw93Fz7xMwdxcmIpQ6tOYI0sfJMRREETCUdxqYubZj+fOHbzUIi+VtJ+zYUtNMkNPqUphNvhDyhFp2RgduaKgH3Jb1ethUSqqWf/X0WbjAaQc7gj9S+9fdnqowA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,85 +133,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement `ForeignOwnable` for `Owned<T>`. This allows use of `Owned<T>` in
-places such as the `XArray`.
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-Note that `T` does not need to implement `ForeignOwnable` for `Owned<T>` to
-implement `ForeignOwnable`.
+Add a method to `Page` that allows construction of an instance from `struct
+page` pointer.
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 ---
- rust/kernel/owned.rs | 46 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ rust/kernel/page.rs | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
-index 456e239e906e..5eacdf327d12 100644
---- a/rust/kernel/owned.rs
-+++ b/rust/kernel/owned.rs
-@@ -15,6 +15,8 @@
-     ptr::NonNull, //
- };
- 
-+use kernel::types::ForeignOwnable;
-+
- /// Types that specify their own way of performing allocation and destruction. Typically, this trait
- /// is implemented on types from the C side.
- ///
-@@ -108,6 +110,7 @@ pub trait Ownable {
- ///
- /// - Until `T::release` is called, this `Owned<T>` exclusively owns the underlying `T`.
- /// - The `T` value is pinned.
-+#[repr(transparent)]
- pub struct Owned<T: Ownable> {
-     ptr: NonNull<T>,
- }
-@@ -185,3 +188,46 @@ fn drop(&mut self) {
-         unsafe { T::release(self.ptr.as_mut()) };
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 844c75e54134..d56ae597f692 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -214,6 +214,18 @@ pub fn nid(&self) -> i32 {
+         unsafe { bindings::page_to_nid(self.as_ptr()) }
      }
- }
-+
-+// SAFETY: We derive the pointer to `T` from a valid `T`, so the returned
-+// pointer satisfy alignment requirements of `T`.
-+unsafe impl<T: Ownable + 'static> ForeignOwnable for Owned<T> {
-+    const FOREIGN_ALIGN: usize = core::mem::align_of::<Owned<T>>();
-+
-+    type Borrowed<'a> = &'a T;
-+    type BorrowedMut<'a> = Pin<&'a mut T>;
-+
+ 
++    /// Create a `&Page` from a raw `struct page` pointer.
++    ///
++    /// # Safety
++    ///
++    /// `ptr` must be convertible to a shared reference with a lifetime of `'a`.
 +    #[inline]
-+    fn into_foreign(self) -> *mut kernel::ffi::c_void {
-+        let ptr = self.ptr.as_ptr().cast();
-+        core::mem::forget(self);
-+        ptr
-+    }
-+
-+    #[inline]
-+    unsafe fn from_foreign(ptr: *mut kernel::ffi::c_void) -> Self {
-+        Self {
-+            // SAFETY: By function safety contract, `ptr` came from
-+            // `into_foreign` and cannot be null.
-+            ptr: unsafe { NonNull::new_unchecked(ptr.cast()) },
-+        }
-+    }
-+
-+    #[inline]
-+    unsafe fn borrow<'a>(ptr: *mut kernel::ffi::c_void) -> Self::Borrowed<'a> {
-+        // SAFETY: By function safety requirements, `ptr` is valid for use as a
-+        // reference for `'a`.
++    pub unsafe fn from_raw<'a>(ptr: *const bindings::page) -> &'a Self {
++        // SAFETY: By function safety requirements, `ptr` is not null and is convertible to a shared
++        // reference.
 +        unsafe { &*ptr.cast() }
 +    }
 +
-+    #[inline]
-+    unsafe fn borrow_mut<'a>(ptr: *mut kernel::ffi::c_void) -> Self::BorrowedMut<'a> {
-+        // SAFETY: By function safety requirements, `ptr` is valid for use as a
-+        // unique reference for `'a`.
-+        let inner = unsafe { &mut *ptr.cast() };
-+
-+        // SAFETY: We never move out of inner, and we do not hand out mutable
-+        // references when `T: !Unpin`.
-+        unsafe { Pin::new_unchecked(inner) }
-+    }
-+}
+     /// Runs a piece of code with this page mapped to an address.
+     ///
+     /// The page is unmapped when this call returns.
 
 -- 
 2.51.2
