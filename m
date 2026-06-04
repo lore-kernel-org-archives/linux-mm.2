@@ -4,122 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E13EECD6E57
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 01:52:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2722ECD6E57
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 01:58:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD0C06B0005; Wed,  3 Jun 2026 21:52:38 -0400 (EDT)
+	id 576276B0005; Wed,  3 Jun 2026 21:58:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D81B96B0088; Wed,  3 Jun 2026 21:52:38 -0400 (EDT)
+	id 4FFA66B0088; Wed,  3 Jun 2026 21:58:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C977B6B008A; Wed,  3 Jun 2026 21:52:38 -0400 (EDT)
+	id 3C7516B008A; Wed,  3 Jun 2026 21:58:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B86CF6B0005
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 21:52:38 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5A9291A04AC
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 01:52:38 +0000 (UTC)
-X-FDA: 84840555996.27.FE07134
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3569420002
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 01:52:35 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=WBOPrWqV;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 27F846B0005
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 21:58:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF5EE140504
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 01:58:38 +0000 (UTC)
+X-FDA: 84840571116.07.57ACF26
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D8E08C0003
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 01:58:36 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QIdgNneW;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780537956;
+	s=arc-20220608; t=1780538316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ti3H/yNlOCN9jiz2PA4OGwlivuSMT91KkxAffb1eRD4=;
-	b=1YO5WNky07PlCSvnQMdTgiT75Bj4VNJiDmnJcKihdYV8mV0NXEDIdp56Qtb0lk0Vk0TTpB
-	DvgNMuDVCnrR7fwJDJDT+hqrIYw05f9b6LdyFwV/OeBPnM9bkduwPYhP1h2qRx4sDjLnyL
-	dMN5A2XooB0n+1cvevwIgcW0Iwd1GEs=
+	bh=CnlelyjEPA4eQLtR+vH42NF5EXOCOjHQA+g+i9GlLcA=;
+	b=MeZl/hecWUCNQhErJaOYR9Op8LihWP8JPdZHYOA7KHgkZ417+8N6GEGHyfCjxdt8WbnvAV
+	I4x6ItyIRqR3u9PrYMIog2Qt1XRzWbeVDuxXo40Zy05xIm0f3xJH1NhvYUsp6BuIXnAqO2
+	uqi9JVKqXe6gcpw/X8k+3M2p9s5QDWU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=WBOPrWqV;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QIdgNneW;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780537956;
-	b=nj3gpRreBuOINe5a2r/49bnjxVnmSXSwdAQgqkEpq/E6527VivHFJPD2TirI/u0Zlkk2gZ
-	RysipkKjlk39kzhGrKI0h48IJPfnlfNeVyRBbZfTORSw2duujlAJquN7FlUCVRnN+tnEf3
-	wyR8LE2iPbq2bW72qd0qDqj59I8yLwc=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-bec3f69d343so19000466b.0
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 18:52:35 -0700 (PDT)
+	t=1780538316;
+	b=ldcykPLCN/uCIMsdaqEGcvmybD04WQjw8SRgZZo+mpSWs++1upPcftcKJ37yEPtMKtNNqz
+	gYJx9KMWOYeMrV445rHxJ1bRkud/D/9/uRS6qWpW0B7XLM+1JseYJOYYFRQKpC7v0IuWob
+	jPD6YigenoO2an3C+KpMBlvEr0N6n3Y=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-36ba285e98bso138996a91.2
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 18:58:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1780537954; x=1781142754; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ti3H/yNlOCN9jiz2PA4OGwlivuSMT91KkxAffb1eRD4=;
-        b=WBOPrWqVQYk5yZ0/uIUNUiF5j+L0+s8Uszox4x+t4S36raIBIZ20BJzDT/WWxVm613
-         UiQPSO6z/V3/Wtdd4y1EZGxi80mGgyhoD6QffEM5EE7u4fogWOhVx9cR96aiVS73YRPt
-         hOheGsxtbVz/2VyAU6BAubsLUiq71Cz6bZF9w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780537954; x=1781142754;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780538315; x=1781143115; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ti3H/yNlOCN9jiz2PA4OGwlivuSMT91KkxAffb1eRD4=;
-        b=HTtnCQ2HVgYTr0H0rKGwFJ5At4jzFogK6CPnFzqCl0Gqsw/jtCUAheVGDzuCt81DjI
-         oGGtHBIIHBTkC8O8EUSKXToAaCw6BFLYB5hNuNmyS+IVPoKh68GzlCnc0EV4j1wlpfFJ
-         7aRMxRG0uy52URBD1CF35ZQe5c83+nuvB19bFQVSkMkdT77Pm36piwapbWbLeWozDtWc
-         O4cIC4AxPCOlS9OTWy3KNbSq3iVAPst2B4n7w0+wTeOuCEVe4nESJkF9khnkEi5vlONv
-         nE1FncNrjkvHw/viIJPII9JlKhml4Y5Sn8P8SSh8Ya/aOkykdikFe5/P9pScjg/sM0Md
-         qD5Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+y7GrnZbUnRbKWsEbLRK0W6lMyPY69HT0+MS0Af0a2T4zzD81y6hdmLJEDG9aq2LPpuv7ap8xEdw==@kvack.org
-X-Gm-Message-State: AOJu0YwI80+c4cPh2C6TsldoZczUzfMmZ27+jNYbHAdf8BkLjh+1nZ8F
-	vwHf0IJUxuWDd/+Q0ZKkSgnvGgAi9aN1IJO9R2sEgMMSChCUiWuF7fhbTDNSxErS4WR4PpAHa/m
-	+f3uLt1XgNw==
-X-Gm-Gg: Acq92OGB1Y7Yp3S7lAN6QWiDEOSLLTeJ5lnMnQp5+b95TwJ+Hm/v9p40alPVWhjXLyH
-	bnxMT/U4aWXrxvsXd4ATr4PsBZ2naT21gjwpdbG6AVt5tlhYybuaYYkGk5gJk4/s2umMJ27unBW
-	hyYDcbxni7M05XGPeL5unphMEsZ4UlkPjawyQKoA/jWiJPpq4GpT57PrbqD7EEsNQ0SwvyoCPok
-	hewFrxemTfQU7vusvab4ixgIZRfLg38v6niqsrQTZLM0/H0vqPuo5Hw2uAYQMfIFpkQiJemf/PX
-	EqcAyEUkn1S0e3mrs7Odwq18zp0AHJ2WTDZ3lH41xJTgY5hKd0FmX9CxmLtJQwlPYfQ7uNgun22
-	+cDdeAEtpxzlvqrlyHGBJndzGMz+3GrEEc46Xbd0BTFm35A45Ya0ZoJyVkq3Fb5ADdXJhOdUcrK
-	t7N0CT18qvReW//9Ud14PFzIAbwKXDfEV+4AIKojS2GKbjOfkiRisuOzularNfk4oMP5a+arnpk
-	QW+I00X4Ow=
-X-Received: by 2002:a17:907:9815:b0:bd5:2cc7:d845 with SMTP id a640c23a62f3a-bf0ae4000cbmr326677866b.30.1780537954293;
-        Wed, 03 Jun 2026 18:52:34 -0700 (PDT)
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf05228a16csm230512666b.28.2026.06.03.18.52.33
-        for <linux-mm@kvack.org>
+        bh=CnlelyjEPA4eQLtR+vH42NF5EXOCOjHQA+g+i9GlLcA=;
+        b=QIdgNneWHZTG2yySdaAbrGzjxPtt7mpJinbs+Aeobg+Q4pVp5ogohMXiwYRaI1p8o5
+         VnrAmVqDctT0d9swnZ8vrRPbp2fIkDCtj+GOPujdTKP18BFPcgEvAMLoUK1/8uSUE+ZZ
+         lbQyXBl+QjJAigCpHTjEJFq8dOBf+NmZ7vccseXyszjmZIqP0GZMIRfTRZTZ01BtzIL2
+         G6n19Qu1oBgE8tRoZGKo99FANOyCeN4ko4VfSGQjw0bFCDHjYEIS4Qcx8jepynglw7Jy
+         uT9LUSQ8wm4IYsUlNtqNM+6jQsiDZpE3Zi230vVFj7wSlUcm+tuT5YB4F1WZ3CPeLDCk
+         S8ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780538315; x=1781143115;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CnlelyjEPA4eQLtR+vH42NF5EXOCOjHQA+g+i9GlLcA=;
+        b=FGKG0ibf+0xI/3Ps8DSOfpiG/0ny1itb1e2jQWCgHXzf7vjLaeOjp9u90uL+GPCvLw
+         sqO+9mI4D3DlqsmVI7UVA6NJLukHgZmNaW8HpM0fEwULIsLMwhv1lk7/nANVrGH7Y5Sa
+         PeIHD0Geu/Io+8z+IYAdiWG7HuMS2CBJujsRCFBF5CjE6ReyK4bi1Z13+r703fznyAsV
+         LkHn3Qhx8BGtsy4OOoYhHcHlLTTd4JxtiGean+ZT+SjQKkWDWWxYTYluMH19YecgvBhJ
+         JCJBi4XxDTO8r2rD+gQ+58o9/nFD4VQDj9CeVa3yckwz6umG7sRw0JPS6KC6nKHHWPfW
+         mK1g==
+X-Forwarded-Encrypted: i=1; AFNElJ8c8lygPnMCxEk1aeUYL75sxuN1l5zjr2Z+yyUMs1Le6kTTSbmPwUw5cPM4vmee4WHW9E3DiilsUg==@kvack.org
+X-Gm-Message-State: AOJu0YxMOmVRV2gF2fHq4BjFWfXSx+6TN78aHlC+DX3S4umUDyzgLptH
+	W1jTT8en5Rg8eKz2r/0+xWomewrBO2dihVf86YYjmzwWMpOToG4+MQYu
+X-Gm-Gg: Acq92OG7BL/uBPxgCpf8Hs/5IKae/R4MkbxXuixvHnSxgjt2tHAhAkc7qH8yh/Ne5wi
+	hIMz1VAhyLRmycfSXcYv+yFXHyY/Wj+KkssddrsvTolKO+rtdo82vqeDxPoyMm2VNluWXFZlD0S
+	XZisoUvwGm039mSvZvr78MpgJHyQOMtOiPzXqhqEQiy+9JM8o4pn81fVasy3i3ESvraRkp4vy50
+	ZC7iLFqckIdY6QLTOhThTRA9lUEZEP6oPBaDdneMS7ulnbj812LYQ5U6LhPJLM3U0/zW+5SCQgy
+	5zzDJif8tnd4rhZUKls+NgVX5IhgCynIchbD/23AE5knqOpZhG8hlney2Epvu2jw0BMxzFsJiuM
+	aUjQHDV+XADsI4itSLFKwB8Iq49+XEmCJb5ZR1QZnOtq9O8gn6UoROG9v92e4bGuAw0Iw/+jq6y
+	XD4eOB5cHji3H6VBeOFh0NgIdrAZXm48cKtwqVyDC1p4wYk6gZDtBGsg==
+X-Received: by 2002:a17:90b:224e:b0:36d:f28b:72e2 with SMTP id 98e67ed59e1d1-36e32a4281dmr5807810a91.8.1780538315484;
+        Wed, 03 Jun 2026 18:58:35 -0700 (PDT)
+Received: from [10.125.192.75] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6dba8064sm1082124a91.12.2026.06.03.18.58.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jun 2026 18:52:33 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-68bac6e24fdso178856a12.1
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 18:52:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+6eHnEZkJxuEa81UZ/1Uysxq528J/luDmqU2E46VMStepWu0yIDKkBDbWvaeu4g2sMvi9k4/nbEA==@kvack.org
-X-Received: by 2002:a05:6402:550a:b0:66d:d2f9:520c with SMTP id
- 4fb4d7f45d1cf-68e72250122mr2844444a12.19.1780537952777; Wed, 03 Jun 2026
- 18:52:32 -0700 (PDT)
+        Wed, 03 Jun 2026 18:58:35 -0700 (PDT)
+Message-ID: <9898f83d-fae9-e284-6b85-c7f4089840a0@gmail.com>
+Date: Thu, 4 Jun 2026 09:58:21 +0800
 MIME-Version: 1.0
-References: <20260531010107.1953702-1-safinaskar@gmail.com> <20260604004559.1112474-1-safinaskar@gmail.com>
-In-Reply-To: <20260604004559.1112474-1-safinaskar@gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 3 Jun 2026 18:52:15 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgPzxQL9Bdze=qnSa5v8A2D6cPaU0Bi=j4N38+ja1NkzQ@mail.gmail.com>
-X-Gm-Features: AVHnY4Ia6Rugs2gzhFv567LCSFsgwGvMvJbpyqp7BVsPOVMqNGKAIqxMQwoy6bY
-Message-ID: <CAHk-=wgPzxQL9Bdze=qnSa5v8A2D6cPaU0Bi=j4N38+ja1NkzQ@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Askar Safin <safinaskar@gmail.com>
-Cc: akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org, 
-	david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
-	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de, 
-	viro@zeniv.linux.org.uk, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor
+ per-memcg
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
+ shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
+ nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
+ roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Hao Jia <jiahao1@lixiang.com>
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-2-jiahao.kernel@gmail.com>
+ <aho7nepN5jZtKmef@google.com>
+ <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com>
+ <ah4ZZGl7GYJf54Wz@google.com>
+ <ff344c9f-51da-8b3a-e7a9-c4a7f4702ef8@gmail.com>
+ <ah9i3uhh3PFiS0Uk@google.com>
+ <c7870fe2-3588-79db-cbfb-bd6a2b78f594@gmail.com>
+ <aiBpibRNi0BcM1Zu@google.com>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <aiBpibRNi0BcM1Zu@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D8E08C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3569420002
-X-Stat-Signature: 9cfieh7o31an8ee1hybsu1ux93kd96px
-X-HE-Tag: 1780537955-367105
-X-HE-Meta: U2FsdGVkX1/sYmNPtwlXpuNjvfLejGyjh+IuLC7ZIJsZKzEaK0Zwzc+p8DkhVLOMJryEq0q1JM0ZdY0bbI7Fo0cl95oRX2uDwONxbTHYG4w7UrsKTYzzYsbJkTDma9z3ULuq6mcDhHC24YtPmloYpLmHi2imYynlpLbI5nMSiYewBf/iYmabzsWvTJpzL8rwbjGH6Lsf0wb6kPSYMugcjL0LKmFIfWVoNARKLqp2bzACWSjANsRrouJ2jzCNoTO5uNb9v25Wf5XRlwKfoYwHpG1QAXqZAkCj2GRcOcirbvl3FW1GKV5TZAfjW7L6hgF4QNus9bdfxsPcdZo+15ZzHLvxWD4CTjcPy6qa+3gZcL32X8qp+0KFXvt5h3+LtNoSft/zgTtDcpEzVMsIPSPUrCOOGA20Ce6nqi6nAgspnlJb99jO8WB1IZYpBYWF0wExEsNR4XoTUebGPUrAptnBeTuB4AqenFC2AEsxiRIB5ifZkPi4f2vdf1Yn26RM4tBKEl/M026km9MJxVrRBFrl3oBfToWfsH1VE6Ucx7MXL6l0+BdzgKG2yMjS93csIl+nCYOk8Ap/3gb99umP9Ppwr7+2c576gLRPQ7vEItXecrtSO1JxHOSbAOiF//2GJHdZ3fIGJmREXeSN5V54NjHbXkgzXMpF2bvqukqYz4cid3NvtigGT1wyr/V7ieDWmh/NEluIUURlinYhv18CGvRS8gu+tGo+eIDtr+2tRdBpAuiXrD3ZVgljNaxCddWpyn7jqHVP3U6KXCJcoxUoG+nblOojBfP8qiEqV6HtT7pzKZBDDfDZcvWZ35zi26cWDj4Hd4AqDiU+7oDxasfiF+uQCHApGvf6ziB5vLKH/GJYn7F27UiDKlaX2k1epk+qbjlPpgSrI4isy/SVuW0RBX6RHxlYIo/ZGzmb+lfS90AlZYYI/KxBlGGdL3KI8ROKPoITjSCFakekzf+KP6LSM2w
- 0SjAQ1Jf
- uMpoQOJUMNtQDZUY01TR3FRW9rDlQV+L3hyOIsbnecDVvR0iXUAqNWuapU7IYf8bLZyN6lzvjntHY1pfe3oGdXD5HRpmqT/lFOnBzSJ9wUF7o5zXL2Vr0UOy3F0vuxCBtL6dUqhn4Dpw0XyC8DGPQ3gj0ZU/2Ipw4EyogCg+IeBbXp6W7Dmk+QS2WkuM1mMpMieaZHFBSNLmiBH1v4YGWqozwSC7G8L+yds63gkfBfD9TeTtF2Yn711KLP/5YrWxXaeIr6+jFACJ1TfNNYOQZrP29NRAQtoRnK4Sp+vDNkiVWTc1u5TqTsVkEaFSZKLAW5v5WGEhTXlFQZ/JfnWKalSBEVKDALvUxQ0kOC3fB4pL4kZvR83JSjH7arULht+a0bO/9oBTA0A1Ix7b9+ggWQb9xrLj3Oqf77FwcgdW1Gbh0+lLlIoRGHnrwVGJc/dNa54Oct4kUUj0coZMCOd/ecDi/bawP0PcUDNXAtJJ1UdIDvIJVA2WZpWXndORI/XggMNgBEO3AjmPiot3vsRtVk+yzAQ==
+X-Stat-Signature: 1658i619qkhqz5jg1nbacxbxjc5k7yad
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780538316-377838
+X-HE-Meta: U2FsdGVkX186kCDVbWDWoTPH8sgiaoCp7mS59Kan9k1NepYyd1FmT1g8fDiy88gp5HDl8VS2bWTJVg+SEx6L+CdOm/s33mSBZQPA6s0sL615907NlP+aiX+q8cBRbaWUH0l/K2Qg/CQsLVNccahNAh6I9b2GrJy470SCPGjLseQijJZbtijHaPRo+muVPXGqZr3ajQq5JJsYabL7KgkWlrICGM5ydA/k/GeBHS4j9ZC9IUZY+yZlQ0TVb9sJf+w/0mD7t+o1ZHzRU7SZtWl3VUrKMM5RqIQayXunEl3TWcZROb2zj4yZWt0OrPg0j5TMgogl1gLGRldTwe/4wDDYU//4Hzgg4cAoBmpHQaUElpWD6StIBHvyk+fihD0KnFU58v8lnN6fPNyKPtN9qZym2hUddQk6yoT/6PP1haqRWt5fCEs7CMDn4tDYqnLeYvRWdCDRAAqBtDu6/zGGO3an6q2UiP7gmgRWhwbY1wgMaFSKBAscTv+zdmeBL7dPZLDCUpiEHGaezO4sL/wbnbhBRz2HP/LTdz4jFm42rzdRMNJQTzbpRIU5oWRJzmivdojttynkfpNBNh8bNSShUtvzi96NS8hxPF+G5KnE94FIojXdT3cd/jEU7CgiIH/wiTrSzcOxxeIyKm0PY2JytBG9kfc6f0sljjBmGfi9MFnTmbHFWoF9qFuaaYYmZVmlp/LobvBL60vdTamNncBpvlXeRIacZEMXxY/4Zqy7Zo145ulnQ1Xl+Lc3PZ4KE31UhxdSkfw50wC9IPLt34xfvBKl/GZuCfOBleg4acEizKpHQc9htleEAQr9Xe3HGJsMuSkRHIN8Xlc+ufIEK0Mv+f1TQysuYABE/+w/XplOHazVc3KV0ZdcbNY6tZHlJEvuAcaFGykQV6M1e5hvhksEq8zO27SGcJ32mftqYQISUZ5h7T1Y3YJp40KOyY6+6/88+VgC+7rxtZIJoxZdAsmtJfP
+ mLI44wjN
+ NAbhHCdJTJ8wAP1k9WYmuCl5bUuqpBXwwsBfVjwy14BVH5jzRL0cj7pf1WeMLE0HU47ITCJa8gj01Qp468FZRttQVCGfcBT0rNMZmIxyce7U/EzP1B6rM4bj0nDCK5OBLS5ew7QtLcn+0ynnHQY1WAzwBOv3KDSYATmi8Fugua2Aup+AGr4zRdoGWHA36iSmTx5Xy++03dvMlLN/Vy/tt7gngvAx0rsUY0bYx+zn6korbo1N2XlflqBkefVJtHpuHzHsrRn+o01xoKT/CAbslBHAWaktreUR2eLEfwdBfgQ4N8Z1ewA6vthhvLpGfYuAL5BxRmzkOEPxzWUZaIdnYZfeKQ96YsBiwCFjPHKboEQJAPtRCBajTj8e88N5QsWIj0CuLUwQVuorUW/XWdh6oCt8xed8/EZbd3WcbLITGP1u+K2z4AQ3to/7+thkbCPfhj9lmwseY+jTNu5k17bsYReajfQNLtP06lCnx6n5EdcuqObA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,76 +133,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 3 Jun 2026 at 17:46, Askar Safin <safinaskar@gmail.com> wrote:
->
-> For example, in vmsplice I do "CLASS(fd, f)(fd)" and then I pass
-> "fd" (i. e. integer) to "do_writev/do_readv". I don't know whether
-> this is okay to do so.
 
-Oh, good point.
 
-It's ok in the sense that it will work, and it's not really going to
-cause problems, but it does mean that the 'struct file' will be looked
-up twice.
+On 2026/6/4 01:53, Yosry Ahmed wrote:
+> On Wed, Jun 03, 2026 at 11:02:54AM +0800, Hao Jia wrote:
+>>
+>>
+>> On 2026/6/3 07:19, Yosry Ahmed wrote:
+>>>>>>>> Proactive writeback also wants a similar per-memcg cursor that is
+>>>>>>>> scoped to the specified memcg, so that repeated invocations against
+>>>>>>>> the same memcg make forward progress across its descendant memcgs
+>>>>>>>> instead of restarting from the first child memcg each time.
+>>>>>>>
+>>>>>>> Is this a problem in practice?
+>>>>>>>
+>>>>>>> Is the concern the overhead of scanning memcgs repeatedly, or lack of
+>>>>>>> fairness? I wonder if we should just do writeback in batches from all
+>>>>>>> memcgs, similar to how reclaim does it, then evaluate at the end if we
+>>>>>>> need to start over?
+>>>>>>>
+>>>>>>
+>>>>>> Not using a per-cgroup cursor will cause issues for "repeated small-budget
+>>>>>> calls" cases. For example, repeatedly triggering a 2MB writeback might
+>>>>>> result in only writing back pages from the first few child memcgs every
+>>>>>> time. In the worst-case scenario (where the writeback amount is less than
+>>>>>> WB_BATCH), it might only ever write back from the first child memcg.
+>>>>>
+>>>>> Right, so a fairness concern?
+>>>>>
+>>>>> I wonder if we should just reclaim a batch from each memcg, then check
+>>>>> if we reached the goal, otherwise start over. If the batch size is small
+>>>>> enough that should work?
+>>>>
+>>>> Even with a small batch size, for small writeback requests triggered by
+>>>> user-space (e.g., 2MB, which is batch size * N), it might still repeatedly
+>>>> write back from only the first N child memcgs.
+>>>
+>>> Yes, I understand, I am asking if this is a problem in practice. For
+>>> this to be a problem we'd need to trigger small writeback requests and
+>>> have many memcgs.
+>>>
+>>>> This could cause the user-space agent to prematurely give up on zswap
+>>>> writeback.
+>>>
+>>> Why? The kernel should not return before trying to writeback from all
+>>> memcgs. If we scan the first N child memcgs and did not writeback
+>>> enough, we should keep going, right?
+>>>
+>>
+>> Yes, this issue is not caused by the kernel, but rather by our user-space
+>> agent itself.
+>>
+>> For instance, suppose a parent memcg has two children, memcg1 and memcg2,
+>> each with 200MB of zswap (100MB inactive). Triggering proactive writeback on
+>> the parent memcg will exhaust memcg1's inactive zswap pages. After that,
+>> even though memcg2 still has plenty of inactive zswap pages, it will
+>> continue to write back memcg1's active zswap pages. Writing back active
+>> zswap pages causes the user-space agent to prematurely abort the writeback
+>> because it detects that certain memcg metrics have exceeded predefined
+>> thresholds.
+> 
+> This will only happen if the reclaim size is smaller than the batch
+> size, right? Otherwise the kernel should reclaim more or less equally
+> from both memcgs?
+> 
 
-And *technically* it's a TOCTOU race, where the first time you look it
-up - in the vmsplice() wrapper - it could be one file, and you make
-decisions based on that. And then pass it off to do_writev(), and it
-will look it up again, and now it might be a different file.
+I gave it some thought. Not using a cursor could lead to unfairness 
+issues with certain writeback sizes:
 
-Does it *matter*? No. Even if the file changed, and is now something
-else, it's just going to be a different file that the user does
-writev() on. do_writev() will still do all the appropriate safety
-checks etc, so it doesn't really change anything. It just means that
-you could pass what you *think* is a pipe (because you did that
+  - If the writeback size is an odd multiple of WB_BATCH (e.g., 
+triggering a writeback of 3 * WB_BATCH), with 2 child cgroups, the 
+writeback ratio might end up being 2:1.
+  - If a memcg has 5 child cgroups and a writeback of 2 * WB_BATCH is 
+triggered, it might repeatedly write back from only the first 2 child 
+cgroups.
 
-+       if (!get_pipe_info(fd_file(f), /* for_splice = */ false))
-+               return -EBADF;
+Although setting a smaller WB_BATCH might mitigate this unfairness, it 
+could hurt writeback efficiency. Let's just use per-memcg cursors to 
+completely fix these corner cases.
 
-and by the time do_writev() then looks up the fd again it might be
-something else, and now the user used vmsplice() as a really odd way
-to write to a another non-pipe file instead. But the user could have
-done that with a regular writev(), so it's just the user being silly -
-not something that really confuses the kernel.
+Thanks,
+Hao
 
-Coimpletely harmless, in other words.
-
-But it would probably be *cleaner* to pass in the 'struct file *'
-pointer that you already looked up once instead, and use vfs_writev()
-instead of do_writev().
-
-And I do suspect that the wrapper system call should use the same
-
-   SYSCALL_DEFINE4(vmsplice, int, fd, ..
-
-that the original used. Because it somebody crazy had the high bits
-set in 'fd', the old vmsplice() system call didn't care, but your new
-emulation system call will actually see the high bits on a 64-bit
-architecture.
-
-Again - that doesn't actually *matter*, because "CLASS(fd)" takes an
-"int fd" and those high bits will be masked out at use time both in
-vmsplice() and in do_readv/writev().
-
-So it won't affect any behavior, but it does look a bit odd in the conversion.
-
-And I already answered Christian wrt the change in behavior: I think
-RWF_NOWAIT should always be set on the writing side - because splice()
-never waited after it filled a pipe - and instead that
-SPLICE_F_NONBLOCK flag should be used before write to check for
-whether we'll wait *before* doing the write like it used to do with
-
-        ret = wait_for_space(pipe, flags);
-
-in vmsplice_to_pipe().
-
-(On the other side, vmsplice_from_pipe() used to do
-pipe_clear_nowait(), but I think that becomes a non-issue with the
-conversion to readv()).
-
-And once you need wait_for_space(), that probably means that the new
-vmsplice() wrapper simpler needs to remain inside fs/splice.c, and we
-just need to make vfs_readv/vfs_writev non-static.
-
-              Linus
+>> Of course, real-world scenarios are much more complex, and this kind of case
+>> is extremely rare in our environment.
+>>
+>> That being said, your suggestion of using the global lock for the per-memcg
+>> cursors makes the writeback fairer and would resolve these corner cases.
+> 
+> Right, but I'd rather not do per-memcg cursors at all if we can avoid
+> it. Will using batches help make reclaim fair over all memcgs without a
+> cursor?
+> 
+> We can always add the cursor later if needed.
 
