@@ -4,118 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28A47CD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 07:22:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C3FCD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 07:32:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EA886B0005; Thu,  4 Jun 2026 03:22:06 -0400 (EDT)
+	id 854636B0005; Thu,  4 Jun 2026 03:32:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C1746B0088; Thu,  4 Jun 2026 03:22:06 -0400 (EDT)
+	id 7DDA86B0088; Thu,  4 Jun 2026 03:32:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D7A76B008A; Thu,  4 Jun 2026 03:22:06 -0400 (EDT)
+	id 6A5716B008A; Thu,  4 Jun 2026 03:32:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B48B6B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 03:22:06 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1E17C1D34
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:22:05 +0000 (UTC)
-X-FDA: 84841386210.04.A3DB883
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 92869180002
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:22:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=CLqqatZU;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf16.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.208.45 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 53E7B6B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 03:32:45 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C0EEE140657
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:32:44 +0000 (UTC)
+X-FDA: 84841413048.13.3C380B0
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9EE2440008
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:32:42 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=HWzBCnC9;
+	spf=pass (imf04.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.208.46 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780557723;
+	s=arc-20220608; t=1780558362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lrvkDQfBnoMGYCzLOCiivKkoiHfHm/OTQW0RCIfHRHg=;
-	b=Yiv9vJU10pM596Up2bT6Wb1YNhB4E6v1E3r21vL5qEov/Qj+C62Z6RNLqktOLOyxyK8gYt
-	jr9qEHkitbrTxYFtkEcPrQsy48mtZDhV0fpZ5fn9cFm4Aqu40qtZUbG0HSA9f5TB/qd8+M
-	zkT82RLf23HOWh1G4qgRvL4TUyOxfJw=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=CLqqatZU;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf16.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.208.45 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+	bh=8QeCUKmkVy2NrZVi3REONjZfBBnfnlNmwwM3gXjDs+A=;
+	b=tDWySIuYMpOX1T/L4DgUhfqSVfbW4aZdtU20lc1H8AXCxhPlO8k3KN2aCtVhXjbu2SXmbV
+	AV2EKiryza6bxwqXnq+YVY3lNn4fZvmmFUPj8mx1iuh80Oad+6mIFQ3Rg2QcNq35o/mbrm
+	2WdSRDMon9U5YeLcB10HSUfeo5VtUO0=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780557723;
-	b=QXK3Xvg0u3Tyg7UCdnEVN5Hg7TyQQUIDVU34pU4T/N2B6UVCgbzbBgZjftZFNTNkf3dDXY
-	o0LKriF2u7B/A/QsMN7ZubRo3ArV3u1ZowuI1DEmKlPvPeAg5bBIwtmondnRPMa9GbvC7n
-	E2UsIeqET/Z5MNXTwhh1xPbQ0NQw9YE=
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-68bd9fce347so592397a12.2
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 00:22:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780557722; cv=none;
+	t=1780558362;
+	b=Qp0eWT0Gmss28T1JDZvP2zBqyyBxJWYlwXwVCH6sfK699lHEVBDbaha6C+teQifbyqajR8
+	TCQTFCAWAHdS05qV63i8kmA33d8BQJLpnrhdN1eajKaz3kMVFoHXEo85fmFO4Hzq/E8+s2
+	4P7eIGovISVkliUAkrEQ5O6+eOLXluw=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=HWzBCnC9;
+	spf=pass (imf04.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.208.46 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-68acf0a15b3so546114a12.1
+        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 00:32:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780558361; cv=none;
         d=google.com; s=arc-20240605;
-        b=lac4aviFO0di37315TDZbxrAzZB4oU1KgE+V6QSjhJ1nmwJoAwTCURPMT0Rns3AOS6
-         S/xTmflEvccl5zBLlx5s8r/e0PAQFDXo/P5C14bATyQ4PYtsBebHhk0K/RXWwrwKcqhG
-         Y2ay/fcEnnDRLYrb+0S3hZUESMn0dvFD8hGIY1vDKgKLcp+g3X2rgI4dCxbO5ysph55E
-         9MpKFeFcpPYJmfBM4olFky6MBkYJ8KGlZi9UFKwYuTq6zGSfJbelnBw7ueiWMRwcTiuv
-         kX3iv1EokQbicukrEjp8JH5UnMK0LmqlGTKauFPx0BtujUi3cV3hgmeJqRt0gQEPx+FI
-         MCYQ==
+        b=Wwm0I8WohAUD8a7dLj55kb5AaRcfMQq2JKHwf9Ie674ayn0ozAaQukM6vvV/iWNJOY
+         wk9r2OZ6Bmat0kLY1UgdTa5ZYh/8i2NrpgSBPP6Ic3aQIzZN5deIGf5rjbe3oulsnrfz
+         QWApS9Tu6Lf+ymzWLp8yGjB7H5aHZVUrHBXaml5DHtJukEYU/SHHtCuAld0w9i8metq1
+         KXreXVcdSF/LGu4XpfGWgZzyUrV8i5FKqRyp8nhz5EfuE1fCdO1TAe2q665M96/9DCkR
+         3goyuhifBnHetT0EFRHgPJlHPG55znzYQmamAMq+NRkX1/FQbw4cG1C3KFw/XzynpqzG
+         bqbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=lrvkDQfBnoMGYCzLOCiivKkoiHfHm/OTQW0RCIfHRHg=;
-        fh=GWcqvjeA0ZbQUlKNKFKQO0myCNXGJmemMfgv3G/3Low=;
-        b=PhNmXMYyA13smqWIiyPK2u47OSfEn1inCvlMDb1xr9ilOqZz7Iqsci2dMmIRoCp11o
-         UZDjvoR1HAXYjXR81MEZd2I6wbkrxid+dayqQF10+j5dLFYBLdaNfkKYQ7+Jqh5ksx2x
-         76wETjtGqqDm3DQ1ZxqXJYSzjYUwoRKuChwHhSYfKslYAxedpuxfh4UZoV9JcHo61Fo+
-         yZnvxCQLkxG3ncPynQKsDSVJzgx2Dfi6Fb+KJMf3QKddwqvvsXtrwijdF2rnFloV0BRb
-         2cRCu2AEph6gAKC3zkkVkvUxlfCbq4t9ptF86Ljy0+/uokylqJFteeGNnwtnbwFwG9Yk
-         df0Q==;
+        bh=8QeCUKmkVy2NrZVi3REONjZfBBnfnlNmwwM3gXjDs+A=;
+        fh=7HzroyLu2gypCt5FSbroIiQCMS9yCOAR5pu/QqRl7Gc=;
+        b=aMWfW1u6AzCVdwbVD6hL7maTLfuC1fNBFHw1ZxHxKIyUxcSRtXWyBmet5/sEruuNAb
+         cy4i8SmG1zOm2nZ3Q9zjSe/VHPnQdkr7kIzVcVKfB7U9gwhNlBQx5AktkCYpvcyLTTkn
+         3GyWJILvcafC5GwqDdPW58sTmV42pxIO9cDrQKPe3rG4G0DXeGDeWr7io0jZFvnHbaiu
+         oEXn5Gj9yNmp0pMd+FbzxFk55+yUIDbRj5QIO3P7QHa2GCgT7owpMaM/mvk0jnzbE/4n
+         ExeIrr940z/7ETdUC7TTbed7ae+y11DkEJ0fQQSo498OL5tTfkrtbbq5tnTgZ2zmYqTO
+         PJJw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780557722; x=1781162522; darn=kvack.org;
+        d=linaro.org; s=google; t=1780558361; x=1781163161; darn=kvack.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lrvkDQfBnoMGYCzLOCiivKkoiHfHm/OTQW0RCIfHRHg=;
-        b=CLqqatZU9B3HOYqtBHO4CiRs7NzFm5Q3kSxKWzRvIkOIZMlp0wE1RyCMoPUvCZAONw
-         p1Zmm5StQ8BtOmeGGUGmJ/D9Q4zbdyutV+2NErICz4Ddi/Z/kv/rXVoR0jpqOwO6pLu3
-         24gnk2NdS+BnZ5IhVBndIRaEK+gP4SBwttu/Rbd01DI4HpdXgFUGanD7d+ntic7kroCl
-         e5BIUlUw0hVZY+VBUr+vrZZO/3HJmxSYxriHNtlewGHnbVzaEZ3E+WGhBObDXzyVXY8m
-         dUeF3r+CZPXvQRfcVgR7gq1WWTv83eeY0cNec6h7SgtPk3eHZ/173cN0E5ofhh/GUN/R
-         u2ug==
+        bh=8QeCUKmkVy2NrZVi3REONjZfBBnfnlNmwwM3gXjDs+A=;
+        b=HWzBCnC9UqTzS2WMRx5skXfQmvPeOJtzr3wIviVdlKO2OQdKpuT+eNguHqIJL20OaB
+         bo7Aitrs9+HpwAbED9ZxeenyrNl/hq4fVKf5kTGNV1/UoTyl+e2oWVQCNylNmHo+FO6j
+         WPmPMPKEsLTouR3Qu5kETeIrhej57i6j4jtzNVLnrgaJ+a6RnnfxNgTAAT5GbJInY7wd
+         /7QQjvY5sOLaRTi9XcKvRx7njGF+1prnNgwg1Yy8GNFgqBBLhlugthXWAdKEIb9PZ1KE
+         74r23WvpbHFfoITgURmYHk37lIh/aVGLEh8RWCINR9F+C0E6H5+xzVJ0Lq2w0PZ+ytWm
+         V2pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780557722; x=1781162522;
+        d=1e100.net; s=20251104; t=1780558361; x=1781163161;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lrvkDQfBnoMGYCzLOCiivKkoiHfHm/OTQW0RCIfHRHg=;
-        b=NB6B7livvB+jZWWiMOazIU7tXo5fFkhSDJIOsNSyx2um0zfi9akjp45GeZEXRjXEc/
-         thb0D11wAC5oxKaAsJwsDzAe5EFxqXd0pQpfbqX5SgaSxNbfHuXu9y1PmU38nsKdvRb2
-         Ybrc7jtoVzZOXigvtOD6s1e/Cx0MbiK5FjoR1on21uhn3i/5PWXDrqHemIN+1ZjAQ0uT
-         Krud0VnLyUyLODkCLE0AtUu5cFsraUBBbDvBWg2Yr9VTBsYVuBak2h4S2gw5esyEypy6
-         U8nujSdMLZptQZP2MJCG3oO0fhaOCQZuBpTDbky5vFwduzyr83aq2GFW5GC3XZFadIPj
-         3azw==
-X-Forwarded-Encrypted: i=1; AFNElJ+xBrwOQQrslUTfrPszhqfjcLqj+3W0/oK7n9YLDyeewb13XruIHrkzDG/4p+DvaJDG524/23tkvw==@kvack.org
-X-Gm-Message-State: AOJu0Yy/v+YlatJ+i8UzRpKOYHxOo8sr/U6wWt1869fDdpMSrV76CUHh
-	zYpCyZgDDjS+7kQWFKWg6yM0F0P/kk4DbdS6+nQJJjA4FwW/LLhqS2skXgJdVd78Y0xhc3Sg/el
-	1u64Vv57AWOsxNoBbMEF4KIweH0XUxEpkl49zP1AUaw==
-X-Gm-Gg: Acq92OHPfce8tmVC6fNB7OMDDhrZ5XwRogwSJ6QAax05p5ixeGopzrgQQbxMtcOM5Vl
-	JXESR2nVoFMehrQXa93ih/Z54C8ovt5yIkFztsDCd1klks8x4s7IiTWdmf+W6i84P7dpx8jWYK7
-	hrwkQtYaHsDbcCx+c9dOapxLthnMUzSrEbJq6P2qjnnuNnt0s8bGTQmYF4YFFYfWZ8mzElGD4Fm
-	HL7E6pZT/OTlYAbXaK2GXCzNCipiMfaUd3Wn8efI0kPEaveOQl64GzH16kigh0tMdze6irVLzdK
-	+2vb86BYw9iVbIqt/rnw7hyXkE4mT0GTXdMKhjBWXglQjwOH7w==
-X-Received: by 2002:a17:907:cb89:b0:bee:45f5:3e with SMTP id
- a640c23a62f3a-bf0b4395beemr416640866b.47.1780557721718; Thu, 04 Jun 2026
- 00:22:01 -0700 (PDT)
+        bh=8QeCUKmkVy2NrZVi3REONjZfBBnfnlNmwwM3gXjDs+A=;
+        b=FaY+cEYZoRcB1Hs5XCOuUNHJxfbWkXIkYCSWWYg6STR/O2d8US+H1Cewxsxhjo08+H
+         Prl4dh5KGZ6YifxkX1cq62st5w0A142jkgvH6oU41wQTiuoNN5bfL3FjMMz8oSIB6c0D
+         c+gN71g2QW/14G7FWaW0nIwib7W8Qm7cLqLfte704Hdqjj0YTL3eopp7GhZupblXVbYo
+         rA5DwaGDPCSsoVBVw68kV5/wTel7o30s17+a2W4ZzxKhNRCeEhNQI0CRM8OWiV6ft7RK
+         hkm+QGWobGr54uwQKrB3Aib1Sm838O3wpw3SGoU5NFkCMH0VYugkRSvI39fzG4KIKKiP
+         ZjiQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8jMMFF5+8WcC49jJXoIBBBQupUkj1dxD1c1LRc34yi+5mdLl99SsKYrTN0UKBCHjh1V3LNkXHfsQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz5M3Ifryf3U0JbDSyiMqGFyNeFSc/SPg3im3wvYSR2eYfBi6uF
+	u269h/jXq8ImBN0PsKav5NLw1a5KgJ0EyyTMNyRSxEBXBe34zBfk/soGfEVaZtwdKNrk2hMrzAh
+	e/Vdw+f5VRhbauc4EFHuruNP6GRlty2qTa5kICLggWQ==
+X-Gm-Gg: Acq92OEaXgzV9+58ZjhH/HIBiF7CJlBCj79DHTlYNyWIx+qUeHXpCrLFQ2i7R4Waw4F
+	c/ogd9zXqA2yrL6fk/8+miC5O2cjJZS7GPxUx/FhRv8YsQigj40t+mT3Rl17z/GhGCxVvAr8EVv
+	JBsbWIlec+yII1Fuqpv3Bk0nyo/7lpq0bamTnWCiR5xXh0e9eItK/3iz6jdLs2/OTsLgh+XPIx3
+	qCbkN2EuLoGkPLdcoQnvxqWxf9/4ie8CbIzd23LiLSOzHhwCVPBThZ5F+ROfWBpKB0MQDsOvMqo
+	A4EXJ7+B+GT70R8t52tSP80IHa3rjgbh9s1r/kgRP6oJbI8=
+X-Received: by 2002:a17:907:8e0e:b0:bea:4c91:fe88 with SMTP id
+ a640c23a62f3a-bf0ad204057mr309239166b.18.1780558360935; Thu, 04 Jun 2026
+ 00:32:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260522225853.878411-1-tjmercier@google.com> <ahPqbfH54R3JJyaV@infradead.org>
  <20260527160716.GN2487554@ziepe.ca> <20260604-dangerous-tuatara-of-sympathy-28e05e@houat>
-In-Reply-To: <20260604-dangerous-tuatara-of-sympathy-28e05e@houat>
+ <CAO_48GEJsg4X7++zg-ztQgVibY_FjjManaA5_W3usjicGUQPdg@mail.gmail.com>
+In-Reply-To: <CAO_48GEJsg4X7++zg-ztQgVibY_FjjManaA5_W3usjicGUQPdg@mail.gmail.com>
 From: Sumit Semwal <sumit.semwal@linaro.org>
-Date: Thu, 4 Jun 2026 12:51:49 +0530
-X-Gm-Features: AVHnY4LN7rgVW4AsJ6ueOLy3-gj_m35-QjBHqySb09IN1JOBtBY4T1wqgFsSviE
-Message-ID: <CAO_48GEJsg4X7++zg-ztQgVibY_FjjManaA5_W3usjicGUQPdg@mail.gmail.com>
+Date: Thu, 4 Jun 2026 13:02:28 +0530
+X-Gm-Features: AVHnY4Iu3YbvJ8smZ2k5Oglofp60PZLnbqbe_g3OJ5J_F-575g430amKBK4ebP4
+Message-ID: <CAO_48GGCdU6znkdHW5gns=s+N0wtNAq4U8s4OtLEyW6Y73oMUA@mail.gmail.com>
 Subject: Re: [PATCH] powerpc: Export set_memory_encrypted and set_memory_decrypted
 To: Maxime Ripard <mripard@kernel.org>, Jiri Pirko <jiri@resnulli.us>
 Cc: Jason Gunthorpe <jgg@ziepe.ca>, Christoph Hellwig <hch@infradead.org>, 
@@ -126,14 +127,14 @@ Cc: Jason Gunthorpe <jgg@ziepe.ca>, Christoph Hellwig <hch@infradead.org>,
 	linux-s390@vger.kernel.org, Dan Williams <djbw@kernel.org>, 
 	Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 92869180002
-X-Stat-Signature: oshkpst79twkpsjhkpgth7opf9tudqpa
+X-Rspamd-Queue-Id: 9EE2440008
 X-Rspam-User: 
-X-HE-Tag: 1780557723-933383
-X-HE-Meta: U2FsdGVkX19z3GwMfUSD+6d5ExvdyyFe6DBHqC1IVMg5TPUSgw7J8rhe6Mf4m0YtVAKZsbcc7c2GEUUAqI6ttzVO0S0PwDSYJUGx7MO/S50Swts/MD+rRzUPfC1KhOwrBq/5kNUCuizd7BFsLAeCtu3X6EwuVEVcqEz+2qEWIj0C6YZUK65EggZuE4LLu3BVYWliEsHGOHMb1eBBZD+LpYgPS4erXOGCGYpf3n2xxvhQAXtNNE/kHsWzHRqU6N+l09rQHrv5d6dMO+HMm1DxTL54YvnJqjA31fGl1h0Du+bT5GqCOiZw1RXV2DNMNpExeqAl15fIfLc3SQpE6e/D7/vgzNIo6Heu3QW6/YYDPeP076sk2EoMG+d798M2rLI6GiAmofA2uoQP58sJ7NZh19seA//9wIrh43kfp0O/sb+OmweqTV5YvT3dHXuwqy/jVpS0UvOPRHvrtSJGFx3uIMr2YOl1NtAyAcnfkgBNf0qibM1uWPbFuhie7ZNlPjZQX1TvBUfvgHLTVILobQcFQZ5KrrmK2JhTfQGeARaBcP7i9UN1/vLimnKUqJDeZVTYq2mVgT4vLp2ezfykj0/UMhSyd6dqP2SbrgFzX8E2Zwy9RoXGFxntb+IAeWsNiRx86i14ATb+aCtl0I+a8yU9aIzhoHJMjBzL6PdRpsdWOlnHrzXAlPOiDzyGpkZYUo2ZfHFvENUb7Wm7+fN8BoUeoBI49kfI7GDZQGHQK5R6T089EsY1i9FS2jzBpf4A5E5EPaKOBMheVxesHix96HCDEhij/rhJ7BjkOompe3ispJG/qSpt53io3w04ssvuINYpDk2BOVQDl+qyHrnS+uXgmbovgYUIeMy3zCdwlqzUxAE7c0uKa4Lby7vM3IIBoKRhHq7OFqPNMSP3nBGzlmwXEzwEHNu+tu/2jqio4nSafyt9kPb7FSuJ6XQSgwQm2utVTP6NGxcoH7pOjFF5aKV
- /kRliexZ
- oUj+FzRdEEQK8JhNet7lZqTMaCtTI5mz8bO5NAbvtvA4uqF9LrhqiPmr5TrNdq47t9TVKmUXtpnVq9gRKsgnEEx2sbzIuNNVhCrVHDsMlnLu7TPzQnqwguFzc2/3vkyEtPpNd/KzgIqhVmax+PXMXKt8kZQ85+uf4iRbnr5/a+hDCd5G8h6aYrFU+bTkBPqjraXQTwR+OwwCSytTTyweHuWf5SUIO/qFOe0FV6EMpPpCYeam6m7b+JTAQaZ/Tq9PSg3my7Qu07zfEP8uQMUiCCnFhV5ZRt+7H6Pvztb8YpdSjDkVdjCviHbi7tw==
+X-Stat-Signature: 9zeugjfkxu9d8g3yrpk3pn7mbiq8mjij
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780558362-358648
+X-HE-Meta: U2FsdGVkX18IbKGFmvpf7zcMKQKIomp6VrYYLzfB9J829LP8Dak5ynXwSq2nDVgWWerDpQYuyi8LNFQxEeSE+f85KBrngC7Phb419RNx+OBBdAgjhe0hZch2XQp+LC6Cb0gCOw5J9+aZC+zHHmVWecMtFnch2pnjq+3l2B6W+ffSVndPWH0j3MoWmk1J3+WDT4oFO8TURlIKv+6fiC3LnAkP57UbC+jxXZsGSMiX/+bBs8QS6esiSJwg3n7f1iEtyT/UY9NnNwIX0nlmn0BinEZ+2XqnBOwxnPk6mxDaZ+SwwySov7j1l7Hy1ATI+GgDdhXOi5qIzRorRu+TX1NTZCeBfJS4uvTWWkuJSf7418cNbM3i1SXWEEcIsU7ckd7NN8fv7ccmXv04cavGNQSv3QhtGl5qsOAYiIUR3g3Yabqz/mDv0zcXSxVFxYE+Rk25sKgeitHpPcF4d8CtCJpYd45iiiCfjkXYWefj0TkakKg11cxCvDrLLkFQod98Xyum7333pt2Ys4cWqp8Ui9isko1Ef+uIw3+cstxw714uAlFcVixnDuENKPXUBXaGLDkEc+v3uNL4Jentg8x+mK/iFY3d5yQq9q5ZD3mdE0CAshjfwB70WAyV5XCtYAhGHYO4tLg6MD/E3JsGcEO1gApd39WHNDD8XNVvuyJNRuAlR/Llv/ZfyU1LnknXtdHA97h1ywpOjLGvxkcAycCE5jO01PDmNSc/6emIO0w7uzuE+gmdwuVn++DPwIr9AVSs/HoKNFgO4AphpaPvlsXJXbMZGmbtFlJLLvkZY2t8dQy7ZdjL3ABULC5Vnvq6/7YVYqvRQvXOnNlgbJX4v1UMslcikD7svpHb59SuYbiPiJoxbSkIG2hdifPKI+ROfXBV+gNmCjHB9DubEOtKXltzUyX7iAbTYTlgEWHkuYYV8bc0VS8amaiPdBJ0gmUCcuVXZUXXzFpfwjUWLXtTauLqMFO
+ MwDk9slp
+ knLHe/qnsXJy+dSR3WPBncMW6YcppMcTT+NqHAGX1Dlb1a8+FQp+JJM3We0dZ1QnuBUDFepwyHFqrt2ofMvhy9N5uWLBI07vV379EQhAkc/Gb1YKjNcDj6Bf4vmAoiuMqdDEDjL5hEq5u4n6FbM2VMgiNUBzpJor5Uwpj4UWaOl1y+Wi7FQEvMZl72SYpVKWx5sFC7Eu7wArwYG57EHGtgk9YwYrYNcZhszYEskiueOXeZOAfbuEBUwcH4gpoYV0Gpps+n62Hk7ic5AA0A2IWokCqNFoXx2Ymqj8+0tHIJMiQ/LgWE3wLuSyckD9oX+iaS2uRnCiJtNubKg4qwqivhMb2X6SXCHArUFyRT8HH+S0WdQ4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,43 +142,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi All,
-
-On Thu, 4 Jun 2026 at 11:04, Maxime Ripard <mripard@kernel.org> wrote:
+On Thu, 4 Jun 2026 at 12:51, Sumit Semwal <sumit.semwal@linaro.org> wrote:
 >
-> On Wed, May 27, 2026 at 01:07:16PM -0300, Jason Gunthorpe wrote:
-> > On Sun, May 24, 2026 at 11:21:33PM -0700, Christoph Hellwig wrote:
-> > > On Fri, May 22, 2026 at 03:58:53PM -0700, T.J. Mercier wrote:
-> > > > After commit fd55edff8a0a ("dma-buf: heaps: system: Turn the heap into a
-> > > > module") the system dma-buf heaps can be built as a module. The
-> > > > system_cc_shared heap uses set_memory_encrypted and set_memory_decrypted
-> > > > but those functions are not exported on powerpc. This can result in a
-> > > > build error like:
-> > >
-> > > I'd much rather revert the above commit.  Yes, x86 has exported these
-> > > since 2017, but that's a really bad idea, and we should fix it instead
-> > > of spreading the export.
-> > >
-> > > Setting memory decrypted is a dangerous operations and should only
-> > > be available to core code.  We should have various allocators for
-> > > decrypted code, but not export the functionality to random code.
+> Hi All,
+>
+> On Thu, 4 Jun 2026 at 11:04, Maxime Ripard <mripard@kernel.org> wrote:
 > >
-> > At the very least an EXPORT_SYMBOL_NS.
+> > On Wed, May 27, 2026 at 01:07:16PM -0300, Jason Gunthorpe wrote:
+> > > On Sun, May 24, 2026 at 11:21:33PM -0700, Christoph Hellwig wrote:
+> > > > On Fri, May 22, 2026 at 03:58:53PM -0700, T.J. Mercier wrote:
+> > > > > After commit fd55edff8a0a ("dma-buf: heaps: system: Turn the heap into a
+> > > > > module") the system dma-buf heaps can be built as a module. The
+> > > > > system_cc_shared heap uses set_memory_encrypted and set_memory_decrypted
+> > > > > but those functions are not exported on powerpc. This can result in a
+> > > > > build error like:
+> > > >
+> > > > I'd much rather revert the above commit.  Yes, x86 has exported these
+> > > > since 2017, but that's a really bad idea, and we should fix it instead
+> > > > of spreading the export.
+> > > >
+> > > > Setting memory decrypted is a dangerous operations and should only
+> > > > be available to core code.  We should have various allocators for
+> > > > decrypted code, but not export the functionality to random code.
+> > >
+> > > At the very least an EXPORT_SYMBOL_NS.
+> > >
+> > > Looks like there are about 3 modules using it already..
 > >
-> > Looks like there are about 3 modules using it already..
+> > So, I'm not really sure how to fix this now. Should we revert the patch
+> > making the system heap a module, or should we export the symbols for all
+> > archs?
 >
-> So, I'm not really sure how to fix this now. Should we revert the patch
-> making the system heap a module, or should we export the symbols for all
-> archs?
-
-Given that Christoph's objection is not really about the modules part,
-but that the set_memory_{encrypted,decrypted} should not be used here,
-one option is to revert 78b30c50a7ac until that issue is sorted out?
-
-Jiri, any thoughts from you?
+> Given that Christoph's objection is not really about the modules part,
+> but that the set_memory_{encrypted,decrypted} should not be used here,
+> one option is to revert 78b30c50a7ac until that issue is sorted out?
 >
-> Maxime
+> Jiri, any thoughts from you?
+
+Argh, I'm sorry I missed that some modules are already using it. I apologise!
+
+Christoph, is there a way we could accept the symbols export for other
+archs if the arch maintainers are ok? Heiko seemed ok for S390, so
+this needs agreement for powerpc.
+> >
+> > Maxime
+>
+> Best,
+> Sumit.
 
 Best,
-Sumit.
+Sumit
 
