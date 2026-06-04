@@ -4,102 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAF73CD6E55
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 02:10:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C052DCD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 02:12:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E60C06B0005; Wed,  3 Jun 2026 22:10:01 -0400 (EDT)
+	id 2F2DB6B008A; Wed,  3 Jun 2026 22:12:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E11E86B0088; Wed,  3 Jun 2026 22:10:01 -0400 (EDT)
+	id 2CA536B008C; Wed,  3 Jun 2026 22:12:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D275D6B008A; Wed,  3 Jun 2026 22:10:01 -0400 (EDT)
+	id 2072B6B0092; Wed,  3 Jun 2026 22:12:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C4FBF6B0005
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:10:01 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 560A81C1E94
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:10:01 +0000 (UTC)
-X-FDA: 84840599802.18.1E17608
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0EE8E180002
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:09:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BVM+v5AS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 120B76B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:12:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE67B1C1C74
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:12:04 +0000 (UTC)
+X-FDA: 84840604968.01.34100D9
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf31.hostedemail.com (Postfix) with ESMTP id EB36620002
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:12:02 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="FZ53DP/H";
+	spf=pass (imf31.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780538999;
+	s=arc-20220608; t=1780539123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SYYlpuIZtVb2DJ6ddOz5+v3tiHxrY2b/L9P1iXO5xQw=;
-	b=420zi7T/G0bgr6H/luthIb9NGEc58LlUSuGKHfj9CRsN1Ox1nc39VtGQ4PcKRyLLVwoXFw
-	Nm/3L+SCNh/0TT24lZf5ddZ/xY0iTeFSRWNsgGS/WhEKclckXPen17vQCOr4lrWg6aKKWL
-	rMzwql3VtjQR7ev4EKkug9NSsqlXwrQ=
+	bh=6SZO2PTw2KcbXgjzwwx+KH4Kf8JNmzc6dqKetjt7KYo=;
+	b=vXI9UJzGgymcZwPg4XjYIXD+Qb7goLZGvofz2ZhTC998OP11sK8Cx7w477/neZazJaU599
+	EuEoxgKHIOmdirctJLYqkI4Asuk8OPa6ZOStmibvfjIgJUQNPlEKGC+RlPpbIxzZ0hBI1V
+	cxbBcDonILdsQCZ9rvCvHCU1EX3npms=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BVM+v5AS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="FZ53DP/H";
+	spf=pass (imf31.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780538999;
-	b=5sjA5G4WbON+vjNWl17s9z4L+0HcqZXi+ZeUVQQP+A45f3l0lkd91lkvK6NU1ExFnzKCAP
-	wMdCn8+gMbDehkYYdeVOiYFROEgeaC8ZFzp+PfS7jO6dE4Mq1CuPQ0t8s6pGOYSA/e5OOW
-	4OjiU5BLWgN40Di/qJcS8ibMmKwoYkY=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780538996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SYYlpuIZtVb2DJ6ddOz5+v3tiHxrY2b/L9P1iXO5xQw=;
-	b=BVM+v5ASLEaiZ4JQLzfJvFLqOPWTDAaGV3KSPFn4gTmSu1BmjE3O6M4yv4EtfiH47FXbD2
-	cmbSuWpxrMaBHktf3GQUIFVP8zvy+XElWOSf4Sdq+OWHkKiqyLF/NSOOby8Y92bPZLZcGe
-	WIdlju8y8/J0hbvxMAfo8q7jpk0gJzE=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v3 03/19] powerpc/mm: Fix wrong addr_pfn tracking in
- compound vmemmap population
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <a4tbwv0s.ritesh.list@gmail.com>
-Date: Thu, 4 Jun 2026 10:09:05 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org,
- Mike Kravetz <mike.kravetz@oracle.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4242FACE-1A30-4EE9-8679-A0B6284BB0B9@linux.dev>
-References: <20260602101039.1867613-1-songmuchun@bytedance.com>
- <20260602101039.1867613-4-songmuchun@bytedance.com>
- <a4tbwv0s.ritesh.list@gmail.com>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0EE8E180002
-X-Stat-Signature: k59d9581fkun3kh3bymspit4c48sfgij
+	t=1780539123;
+	b=iZ7G8/1gNZuNf76+y3t5jd8GJGc4Nif8oXzhY1fAItrqXwq4GCKRX+kU9Qq40+4nkgKHvZ
+	12NxW0/vjdmmTKXxfQkEPj0DGbb4T705nvwBQa5Pj4AY7VvL2ep4vLE3RCOxA2RjA/IC4V
+	7U8vKJsGgGKFeUKscwjPi4e3IJ9I5wY=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-36b9d265355so67711a91.2
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 19:12:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780539122; x=1781143922; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6SZO2PTw2KcbXgjzwwx+KH4Kf8JNmzc6dqKetjt7KYo=;
+        b=FZ53DP/H+FlDivzabErDixOHQ6eWJVO7Onl2K0xRqBYQ0CHEtghK2O3Pb/bTM/PnrJ
+         Istidy1Ub6zksBj7rO7KNZHLZm5eIWL4eKytpGl66NDKlSGoy5kNiIGx+lMB50CtCxfx
+         oVv6Q00INMnRvcteG5nrMMiPL0KVzxQM9EIVKR70EPvk+10toEJ0eV3VroVKa2+8bRaP
+         Qkr3MWSZr2JgBq/UwEr175GiYpCGVEUc+8YOgzsO7umZWKQm/TEZUrcMFDpNaeZezdyU
+         Wjzs4tWo0uPdW2LXqvsOoatzaTOi7bgduNM0vNaF5xJhPLMZ2A1gjKpseiqMzgt5Uq5p
+         Levg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780539122; x=1781143922;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6SZO2PTw2KcbXgjzwwx+KH4Kf8JNmzc6dqKetjt7KYo=;
+        b=A+m34fY/oXk+YpyqeP2V64WSefTOd6IWELi1liXZy6Bk83T+ACi9gwGlje5fyeMu0H
+         MxZkLfJ94an9pZk5usTId49qkCwNOivgf+1IyhNM/ePG1PztD727cziYN3Iopiu+p6D7
+         ldYvnE5oNlTCWJwLZPtzp/exhAlv7LJKpU5YsPDGYffE2ypHAZUWk1yeeGpcgilX2uK9
+         IpCHvKU7BQBiHi9w/5FXstbNekuRlTDocGpFhby4viy0XNF2CxNsceOv3QW7zM3ZJjbX
+         XJOmiOD/noWOncxypa5k0BqrVglaVSrozTonaFpsNoNczZpG29JK+9xfNDF7Scuu3hYd
+         vTxg==
+X-Forwarded-Encrypted: i=1; AFNElJ+70rItXF4ZZ2hOhfvhWpCb648vYn6tHfCEHYTvKCoSY1EUasabmMqiQxT6VsySLtlfy88RzRGvUA==@kvack.org
+X-Gm-Message-State: AOJu0YzXEaztDe7aopqbFA1APdg9BcvVj3AeJcqMhCGbUGaPvIb4NT5Y
+	IjIO45ivaj8Z/N3z9ufdtZqyxWOBxuqM4OldKOHQ9EfsjVx8eQua+px8
+X-Gm-Gg: Acq92OH3AXku9zJQesYrYmBagNtoB5OnJLWxqeRhnBUZQs1KqAYyBsesiKnO84R1AVS
+	3Uqcqa9mb09ETGypk6yt9x04DeKQKgcr0UCbLANKhc2w7g/AtVuE4Pbud47cnFi9kz3/exEyt7O
+	VnU/tO/oxgmFLku/4sM+qS1GL8KEtHTdioCiCOsOrs93aqLgzmE9E/b2sRc8bt6u+JcpEjGv4yO
+	K+xx4TQ+K+zzuGYgvxJmH+mhq8uWqvXKItFd3O3vFPri1pUs/Ay+80r9W5eQVoU25MWzabkG6S3
+	N+rtrfmTCYaxscCV+tlSCviqhrHkEc5NSVXZFsLyja1r2PG1NWED4+mbA/+ZtwCP0tbLCFJ0b/g
+	a08YD85+d7xwOTOzsIXBXyC5OzyEKfcaNQS51PGChRnI8Ad2XrFRsRZMy2Q3dEO1AZADdZy9cYD
+	bCBNQyMlTC2TuIunzOJMkz3EfwDiXxmiqu0eUr8+h/skhdKxMSHNhuuQ==
+X-Received: by 2002:a17:90b:4ac7:b0:36b:93f7:a903 with SMTP id 98e67ed59e1d1-36e30a2adf0mr5186933a91.18.1780539121743;
+        Wed, 03 Jun 2026 19:12:01 -0700 (PDT)
+Received: from [10.125.192.75] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f68b03ef6sm1101582a91.0.2026.06.03.19.11.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2026 19:12:01 -0700 (PDT)
+Message-ID: <6db27a22-cc7a-9a94-db3f-c912fd39aa32@gmail.com>
+Date: Thu, 4 Jun 2026 10:11:43 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
+To: Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, akpm@linux-foundation.org,
+ tj@kernel.org, shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
+ chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-3-jiahao.kernel@gmail.com>
+ <CAKEwX=MQe_KFZe2vBXQYh0aa-x+E8AzNwmyjJGJk4tDoS9ML3A@mail.gmail.com>
+ <aho_VtLCmIRsNyvO@google.com>
+ <6deeaea7-3cd1-4403-29fc-d2dc55c297f8@gmail.com>
+ <aiBqzOtEv5iAC_qC@google.com>
+ <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EB36620002
+X-Stat-Signature: twah3wtf8y1saga97zoorbu6583cwnoa
 X-Rspam-User: 
-X-HE-Tag: 1780538998-568781
-X-HE-Meta: U2FsdGVkX19wBIzHeJBmnVrNhTgqWTl9nvvF5DAWwchVuQpYlSOMzg0552q2JurXpqFXYsGip8AmLi6GmAJj119ybGn01HWYBBWWN/aF2nmfNC6ewY6r3rzJJy+VM2KT/W4BQ+I83zGhqf9y107ym3i+xObw5BVsCnEmre8MPEQ6t2cQgKkaiEv2zukfuj0DxpmeOEq6BtQ2OflXHt8PkZRkAtkngqHSTEaiKEDEBn9mP9T4dLVAIaNOw5PoEHjxWeNZlbEGndEJusco+bUIGPGCaDtLpd4yDbCUNjavqFnNRAd6ScOSiHfa2mGF183PNpJi6ixY4/R8+r5wURyfixbi7ZiHKp100L3XINJG6qNAGqhLJXmTtH0UU3uhdCGa/qenJx+dRGyyx5Hh4/9L8r3oQKEOc9pgBGPnagUgfnuFQG9AEkwN3oqnGj4VFAykNSYNMvk+tTrA+AQDQuPSShbUgfkXAcwnUmhNasid2u93l6KEsqr6DfgPz2XIGGmNOYfcovYPH9ZO8N6dWpflWQp4gigbq1ptyQ5Hmu2UO6x/nC0PM6YTOzH9tP6AG7RhVIw1Cfbj8hhb9s8e5cLwAOfxj+tlqk8Ln1HevRaqNOY4CElGZY3ll6lBz/vgo9Dz+oz0FZNPFWUZEaiGZ+CxOO32xVP2Qs3N9/Dg70U3Zck95HReLdt+JuOuvqBAW0qJiDWvRuQeup2lYYDi9dbD5rD5eAMnd5AdbRdl25hbDbevhByHNEuJw2iiUy1Y3TkTDlYh7FrD0zYulOTIWDvQwaopw30u9sVF0Dxa2HQhf+QHJqcC++StvhLwQotsRnXUW+rK4B9gHoH4pbHuaApKGbT9Bg31WtiwcWUOuVivhIpFsHFbGRXvrAvrPSbcNKhrcgMIMBE+noj8XeecOaNpOM+ACK+OLWAycnO3fhLe/9bss5UiJ7k2VVkpSNYrDQLMgXanBEUG5dN+TCTfc97
- X+PzR+pR
- Q+h5yH6+LUXmCgj3xEvNL5Z54DhQ+W/O0hlQlyNCO6LkfwjeoLi7k1S8Fyo0Faf6OqcwByJIGTEmZEsHIp8XiF2697lLh0/2pLbn5L0pmUcVclmE4fvTq1/72P36jMG4CGIXkuVEsNlXb4EVzngEAXTjvR7+m8u3eez/fybZOWSUlYJ7ZeO6qy4Moq8tFW/dl1oukgiTOjxiHVMlpSF//k1XrFs1DlBBmqG7JsND4EVzR8k9RuE6wtiJyhYljkOVxEZU99pFGN4wkTOTHvGdxY4zUbbn2OFDxyGf3+drjC7t4+7+4rAQrJspHIClQaErYuwikAXTzV2gFSTLVlrrXKP7wRQf8TQ1rlcaK2TcU5i3VjKMMm5WsPIoDnC6vxLHx0ZkZVE7Rel1IwIp2bizENiCDmOXdpvxkj70b/2KlXI2/khw=
+X-HE-Tag: 1780539122-723543
+X-HE-Meta: U2FsdGVkX18tmz5n8kI196bH150JCYfEwYYzAfmjrZHG5YLg+hRh5tCZOnvoMaZ0RpoQ78h2/LQaVXYFCVXHSyUBXZZnEk80ZJgq2GbeMJzd3dQVoeqE2CUYoCI/O+2YgotX775MwVRfGGc3GDz/Vc6VqCeaDDbxsst768fQUWzYdU34U3Yu7S833H3jjjsvbFyXetBY8lCQrnRMD3IJLLXqf7ZJyycgSCMNuCCv13bvnm6+RR3mAGmiJCfN8rm90B4udKqb37KlJBE9bCBMsJq9GdYEnqcfAQ3/jPngUqERoRQ/vsI2Mpt+1laLGon2iMy/+m/m2GEFXiQojMi2FmyQjxX6NMjoDiknEKcOfy/S/KBPaKuPazI0KrObrVra/G9J2VARlmGiuyQ0OBTgWi2hK99B9X+8Oti4ItWz9NonQShdOiCPG3nz0QQAnOR1X3PZnH9NcdBWOCzPvu9wKHXiAi84kSD7fls9vrT8qavOYh+7Wfk1NyMKIwuWb99cQ0aoicmeUwc0E8IJ24f0avQpN02q5B0PaUoBn3eWpx4fZLQ65UMroATzNL2QG0xW83K+wzoUgv7CLgfwiRdeAOw8cW4apDdGDYZvqsYbecfhpI/hgrzqP63GVHNkQtfsYhzJ/J9rR31R8HAaSEX+WdLWuq9WSzIXu4Oni0BVPEkskuzgLodC1RxVYvjM2Kigwu0Pyi/TQoQDBeIfD2Nb8fhRU5lXj/Dw9ebqNb5NfMWMeAsBJLJG3z7LjnDIB0YqFCJreFiV3lMr+2R504cwMamgDjJlQVHntxfNZ5ljzE9aW2lrIDGaO3ZNSu4SSy+GZoOCMt6+o2WYTMLBf6B8yINYwMgctDJNTmlxi2B7D+aytYFQwRMk/KE9rWIcDBSkFsygoZPU4/VSlOZYgf/PD/NPjTMW2jmu+dV0SM1M70ufWLvRVDWaHfQfjasJXxkLH5VtwVEY4H/wZwIZVbs
+ C4Ea+vEC
+ kf3p9sD8QiWIZaYkU1phbT5F2JGGHkxqcVsMf0T0sVNl2ggxI/HLNOl07es+2MWpapFmSFGScuV6dcwGTBNrDahOaSCkwVvyREeyaCyi5bdW6/j3iXgb+fkSHByUtUNIGBaA2cB6XeRwq2r9cBJE6tAozVrFZVaIkc98QohC/DOfwC2YJkBsV5Uryfub7d8HKX+DrI9CeUdss1V8HRJ1cR/xreAJ/7MEkMciw1h4PZ1f9LK5XCXBJMZM0U/HPl3OFxjW38VHcsuoUz8yFRDAGsU8NRcqk67+oSj/i0rzP6jIOvuuy7G7y/BohXTcBmGA6XMhKtbNCn9XcvnoO80wt7u7fr7nyk8pd5ca3itq82Y6LSOfPE1R7/Gu+GgCVvP6Fvw4zqBgYxdBWhGWdJ+sUghmAuq+wsFr1IsmL22pOCG7rzoHLaGj840I+03fI/ZGAGe8ktgtLzyd78WwOhak1SjkmWne6KsK2pDAsKn4TefNUPB2NCdFakD6llG+enbNyKB7HWO8ycku4f1NcqglmGdqvBE47BHHG+DV0RpixAgEts+paEQwnXKmIpswI3cdwWooQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,64 +131,85 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Jun 3, 2026, at 22:36, Ritesh Harjani (IBM) <ritesh.list@gmail.com> =
-wrote:
->=20
-> Muchun Song <songmuchun@bytedance.com> writes:
->=20
->> vmemmap_populate_compound_pages() uses addr_pfn to determine the PFN
->> offset within a compound page and to decide whether the current
->> vmemmap slot should be populated as a head page mapping or should =
-reuse
->> a tail page mapping.
->>=20
->> However, addr_pfn is advanced manually in parallel with addr.  The =
-loop
->> itself progresses in vmemmap address space, so each PAGE_SIZE step in
->> addr covers PAGE_SIZE / sizeof(struct page) struct page slots.  Since
->> addr_pfn is compared against nr_pages in data-PFN units, it should
->> advance by the same number of PFNs.  The existing manual increments =
-do
->> not match that and therefore do not reliably track the PFN
->> corresponding to the current addr.
->>=20
->> As a result, pfn_offset can be computed from the wrong PFN and the =
-code
->> can make the head/tail decision for the wrong compound-page position.
->>=20
->> Fix this by deriving addr_pfn directly from the current vmemmap =
-address
->> instead of carrying it as loop state.
->>=20
->> Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap =
-optimization for radix")
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Oscar Salvador <osalvador@suse.de>
->=20
-> Thanks for fixing it. I guess this was not caught because section size
-> on powerpc is 16MB and with 64K pagesize we have 256 pfns to map. The
-> vmemmap size required for this is 256*sizeof(struct page) =3D 16KB =
-which
-> is < 64K (pagesize). So basically we never loop in
-> vmemmap_populate_compound_page(), because
-> next =3D addr+PAGE_SIZE will be > end after the 1st iteration itself.
->=20
-> But I agree this is a bug which needs fixing and it can be easily =
-caught
-> with 4K pagesize, where we have 4096 pfns to map within a 16MB =
-section.
->=20
->=20
-> The change looks good to me. Can we please add stable tag too?
-> Cc: stable@kernel.org
+On 2026/6/4 02:14, Nhat Pham wrote:
+> On Wed, Jun 3, 2026 at 10:58 AM Yosry Ahmed <yosry@kernel.org> wrote:
+>>
+>> On Wed, Jun 03, 2026 at 07:22:36PM +0800, Hao Jia wrote:
+>>>
+>>>
+>>> On 2026/5/30 09:40, Yosry Ahmed wrote:
+>>>> On Fri, May 29, 2026 at 12:58:09PM -0700, Nhat Pham wrote:
+>>>>> On Tue, May 26, 2026 at 4:46 AM Hao Jia <jiahao.kernel@gmail.com> wrote:
+>>>>>>
+>>>>>> From: Hao Jia <jiahao1@lixiang.com>
+>>>>>>
+>>>>>> Zswap currently writes back pages to backing swap reactively, triggered
+>>>>>> either by the shrinker or when the pool reaches its size limit. There is
+>>>>>> no mechanism to control the amount of writeback for a specific memory
+>>>>>> cgroup. However, users may want to proactively write back zswap pages,
+>>>>>> e.g., to free up memory for other applications or to prepare for
+>>>>>> memory-intensive workloads.
+>>>>>>
+>>>>>> Introduce a "zswap_writeback_only" key to the memory.reclaim cgroup
+>>>>>> interface. When specified, this key bypasses standard memory reclaim
+>>>>>> and exclusively performs proactive zswap writeback up to the requested
+>>>>>> budget. If omitted, the default reclaim behavior remains unchanged.
+>>>>>>
+>>>>>> Example usage:
+>>>>>>     # Write back 100MB of pages from zswap to the backing swap
+>>>>>>     echo "100M zswap_writeback_only" > memory.reclaim
+>>>>>
+>>>>> Hmmm, so this 100MB is the pre-compression size? i.e if this 100 MB
+>>>>> compresses to 25 MB, then you're only freeing 25 MB?
+>>>>>
+>>>>> I'm ok-ish with this, but can you document it?
+>>>>
+>>>> That's a good point. I think pre-compressed size doesn't make sense to
+>>>> be honest. We should care about how much memory we are actually trying
+>>>> to save by doing writeback here.
+>>>>
+>>>> The pre-compressed size is only useful in determining the blast radius,
+>>>> how many actual pages are going to have slower page faults now. But
+>>>> then, I don't think there's a reasonable way for userspace to decide
+>>>> that.
+>>>>
+>>>> I understand passing in the compressed size is tricky because we need to
+>>>> keep track of the size of the compressed pages we end up writing back,
+>>>> but it should be doable.
+>>>
+>>> Agreed. Using pre-compressed size is probably easier to implement. IIRC,
+>>> interfaces like ZRAM writeback_limit are also calculated using the
+>>> pre-compressed size.
+>>>
+>>> I'll clarify this in the documentation in the next version.
+>>>
+>>>>
+>>>> If we really want pre-compressed size here, then yes we need to make it
+>>>> very clear, and I vote that we use a separate interface in this case
+>>>> because memory.reclaim having different meanings for the amount of
+>>>> memory written to it is extremely counter-intuitive.
+>>>>
+>>> Agree. This would indeed break the semantics of memory.reclaim. I will use a
+>>> separate interface for proactive writeback in the next version.
+>>
+>> But doesn't it make more sense to specify the compressed size, which is
+>> ultimately the amount of memory you actually want to reclaim.
+>>
+> 
+> I personally prefer compressed size to pre-compressed size. That's
+> kinda what user cares about, no?
+> 
+> One thing we can do is let users prescribe a compressed size, but
+> internally, we can multiply that by the average compression ratio.
+> That gives us a guesstimate of how many pages we need to reclaim, and
+> you can follow the rest of your implementation as is (perhaps with
+> short-circuit when we reach the goal with fewer pages reclaimed).
 
-Yes. I'll add it next version.
+Got it. I will change it to use the compressed size in the next version.
 
->=20
-> Also, feel free to add:
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Yosry, Nhat, should we continue using the zswap_writeback_only key to 
+trigger proactive writeback?
 
-Thanks.
-
-
+Thanks,
+Hao
 
