@@ -4,198 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 539A7CD6E75
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 20:12:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F44DCD6E77
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 20:13:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 771D26B009E; Thu,  4 Jun 2026 16:11:59 -0400 (EDT)
+	id 6FE336B00A3; Thu,  4 Jun 2026 16:13:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 722B06B00A0; Thu,  4 Jun 2026 16:11:59 -0400 (EDT)
+	id 6D5B86B00A2; Thu,  4 Jun 2026 16:13:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E9BF6B00A1; Thu,  4 Jun 2026 16:11:59 -0400 (EDT)
+	id 5C4776B00A3; Thu,  4 Jun 2026 16:13:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BFE76B009E
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:11:59 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE148A0286
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:11:58 +0000 (UTC)
-X-FDA: 84843326316.14.399D3B0
-Received: from relay.hostedemail.com (unirelay08 [10.200.18.71])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5FC8F180006
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:11:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=2")
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780603915;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AD7D6B00A0
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:13:17 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF1991C0AC7
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:13:16 +0000 (UTC)
+X-FDA: 84843329592.15.256C3B3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 283411C0006
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:13:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d7+DGx4k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780603995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ehepKg8FOSa82/M5mSznYS7OaYhO2ANopb6/U31fiZU=;
-	b=5e2I+e37Azkz3LHEaE0W4kbfI+ZYRbol76EJVXYmNsF2MVgzAbXurCnI/fnSzUCouF5gpL
-	tuEB4x3dE0EQjlEn2TfzYIoYizb1UbL/ecbFCkvlrgQb5cuEkBDZh0gaRPBUUe1zaUzHjL
-	DqJYy5Cn7LnH0robgBsSdknhM4CQxi4=
-ARC-Authentication-Results: i=3;
-	imf16.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=2")
-ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780603915;
-	b=74hk7YMt8wf+x+/XqO8zAgoYsoFP8GjLDWmdhD3XbmFcr9sX5KwYT7xbdmF4iUKcKJ5GZ4
-	Mu/vppS4+idpbWOAWQLEO64RX8+LyA0s/gcUvr1J0pZErgSPrXJdiGFFULcywSoT1ieLRi
-	VtK2TchVT1fmyqTbeLY4rF1wjibZ1wI=
-Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 085EF1401F1
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:11:54 +0000 (UTC)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9A5A401F3
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:11:54 +0000 (UTC)
-X-FDA: 84843326148.27.CD8D4A1
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012065.outbound.protection.outlook.com [40.107.209.65])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 788594000C
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:11:51 +0000 (UTC)
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780603911;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ehepKg8FOSa82/M5mSznYS7OaYhO2ANopb6/U31fiZU=;
-	b=XCpe1lstZf4prFRy0Xy587LI7Kl/PfdzpDF80ojnNRbpbuAdMR0G2xOTB/M3uOLQ6I1eTy
-	4pOA/uzMbfxSdRFdkJ6qEO1kXRhMF/6SnTaACyUVLfUYP3/jNsrtFt06wm6eaNU29j5rf+
-	aus/pWKCBuRapMBZ5gzlffoM/NyauRI=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=kWsDyGAW;
-	spf=pass (imf01.hostedemail.com: domain of Michael.Roth@amd.com designates 40.107.209.65 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780603911;
-	b=I+ha/bVZ+0iK6rpzzpKUvgyrkNutbFgj3ldo606ti007kzHSmW/rdYVslLr1qCawWgP5j7
-	8UwkpzMB7gISONjzoPVKpy/0kH0ZYJKqLOqXyj/74zMgrcuOhW9mRS/ZSNE/JWflcDBUMS
-	kRHZ5IuE3/sUIv7ea0n8BZApx8n9/So=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lBUXV649xWaB0jIvVDWBE9vQD8z5H2w0BAH2AlY6d+LfcNLW1eGFbj5rGvKzduGL+E+BvtMDWp3XDx+C/4WsSXup3L43Cz7tGLUMsW9OA2yORvbOr36NACw+wkJfr+Qr+ZaS4GZEKBR6l53D2US/ksiO3PZteXe2h9GOtZPTgK9wdU5TPAzaHNzzc1IUZIqyXUMD2mXi5bUAuJtYjw3dTTkCSS/bhPykMb55Oo3h3rvj+2PC3u338ls6hrbVA93JCHPiMtVX03lI8B9MEvbKwkXS7w81y+SfmJTd1/9syqs4jd5VuN2i1xzxSDn63DV/ohLpnwN22aXRnfEbs6EJ/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ehepKg8FOSa82/M5mSznYS7OaYhO2ANopb6/U31fiZU=;
- b=cV+cAZMuHqQf5t4dwLff+LVPIQ7ngTnKYOizpXBTS5YjscXmohLaUKJw/ruwC9KqUpiYSMj3t93J0cUPvswWWWZ70vNMOrRZsOpGTfpZiCdmJZohc4UVvncOjOIFTMEY64i7UU9cbkydBGimX0HgUjDzmOvm7mjxMgf3I4dmMNLTeJTdfTGXBVNHKObSib/5QaLF8u+B8Ldiui5y81aQxTl0dgF/BVWOKM1pu7oBFeFbO9X81gHq9ScEHnbDiAIrOI2e7t4HKkFSP/stig+tjUBNbothdprkDSlpDef/zqDnWi3ntRPm1wO5rlKpbCi7ZN7cHA9cKBA3J2EyTSXMvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=arm.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ehepKg8FOSa82/M5mSznYS7OaYhO2ANopb6/U31fiZU=;
- b=kWsDyGAWkrTkFh13JfWZHJLOTwSfiYfoVe1D3zaylmcIjFTED8+40h34skmlQJGl4U6BV4bikeNDaNtdG+QLjVgKnfHtrFrPMaMrS24/nW1hi5RSSCLnJH+ELS6w4b3uHsy0jRDWKKG/plPj9Yega5YeBXtiQMYASjqZ6IJ22Qc=
-Received: from BLAPR03CA0152.namprd03.prod.outlook.com (2603:10b6:208:32f::16)
- by CH2PR12MB9520.namprd12.prod.outlook.com (2603:10b6:610:280::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Thu, 4 Jun 2026
- 20:11:42 +0000
-Received: from BL02EPF0002992D.namprd02.prod.outlook.com
- (2603:10b6:208:32f:cafe::55) by BLAPR03CA0152.outlook.office365.com
- (2603:10b6:208:32f::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.8 via Frontend Transport; Thu, 4
- Jun 2026 20:11:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0002992D.mail.protection.outlook.com (10.167.249.58) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 20:11:42 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 4 Jun
- 2026 15:11:42 -0500
-Date: Thu, 4 Jun 2026 15:11:26 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-CC: <ackerleytng@google.com>, <aik@amd.com>, <andrew.jones@linux.dev>,
-	<binbin.wu@linux.intel.com>, <brauner@kernel.org>,
-	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <ira.weiny@intel.com>,
-	<jmattson@google.com>, <jthoughton@google.com>, <oupton@kernel.org>,
-	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
-	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
-	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
-	<yan.y.zhao@intel.com>, <forkloop@google.com>, <pratyush@kernel.org>,
-	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Thomas
- Gleixner" <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
- Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
- Annapurve" <vannapurve@google.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
-	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
-	<nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
-	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
-	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Youngjun Park
-	<youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
-	<shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
-Subject: Re: [PATCH v7 20/42] KVM: SEV: Make 'uaddr' parameter optional for
- KVM_SEV_SNP_LAUNCH_UPDATE
-Message-ID: <4muegrza5iyyhqx6wevdlssnb6wvlc4m4wmuz5hmd3xikkftc4@3e2lpuq6tjgr>
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com>
- <9d15479e-e36b-4865-804c-7d93eb339e4e@arm.com>
+	bh=FyqbifIs0gEb+brR0HRbFPYYe8b52/vPAxEVwbskZ2U=;
+	b=FxLlD4GKOs7hla2EHhyx/wQuRseekw1hlT6F3yZcXbdsDTRGxwxUAi1Im4P2KCK/uQYTDD
+	HMChwnjJib0A1RZQGnbJh4hJD7Hy85J9uHe7cf1cYejUaGSoLI/UWdvngGLtVZB42xJnyg
+	Qwbq0TiKljz4i4un7PHP2/7IGR/N5cM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d7+DGx4k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780603995;
+	b=QgqBbzG8ytJHtnGGVoU4n+06RbOW7iANw3O8IKBdlV9bF7NfRZMJ0B1DhkBhfINKgHz5Px
+	2wmiVlve/fQoPLVVl8sB4jW3UFxbjpXc408+4JBL/fT5qZtDruxqsYencMHM470Ch2q2KH
+	eudC+noXyy1dD/B45sLMvxg/TnOn05c=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 55A7344244;
+	Thu,  4 Jun 2026 20:13:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B489B1F00893;
+	Thu,  4 Jun 2026 20:13:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780603994;
+	bh=FyqbifIs0gEb+brR0HRbFPYYe8b52/vPAxEVwbskZ2U=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=d7+DGx4kRvBF22JK7YfD6UvK3MZe3cZ/G1pHGIQ/3H8UfQSOg7Ieg0mx1bvLq8xYE
+	 stPU76+2J+5djPEJUrJ1IJm9wxEsW9K1zFRweb/+eze4ZwWaK8HxgXzLBfo8ZCB7ex
+	 E6JVc6TzkG/cwill6Ag6itwfXLT+HjIzQS4e2j4JAEXcKLJ1ea2ES/Y2Aixk+6YMcV
+	 +zPKqF7gU8duISScX8HUFNycYk6Q9tClZy4tbVRZfiMySzFe/DI/+aarw/vw5bQ+zy
+	 sK5VJR26InjGBY29wYKn90akDlQ9bsTfZNRrgTc8VLd0dHkUdyQeYrz3ziSwEvPitl
+	 Du+Cpa9aaWiug==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Thu, 04 Jun 2026 22:11:14 +0200
+Subject: [PATCH v17 02/10] rust: types: Add Ownable/Owned types
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <9d15479e-e36b-4865-804c-7d93eb339e4e@arm.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0002992D:EE_|CH2PR12MB9520:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52262dc8-6390-4a33-6394-08dec2757e93
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700016|1800799024|11063799006|4143699003|3023799007|6133799003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	lu6sqxUGYqPCgvxOdefNZxByYSGMIpUqf8Y+mPwow7dxjlAfjtcdCLhRnNApa1qC8jTlA8nmGJq2TjcMm0wtDWPFe1KnAnl+q2E/Ky/8V8JW9wvdprKoj7tozXPN4T1SwAij1z71eaYR6YOgaoQXKq8KvJnh8e1JV4hYasgVRCkjDy3f3wz49dorkY8bWntGtRa9OhIu6HV4L2CEPhzeBiwDN2Q/T60dLONogbs3UiBGzvzvl5X7EhhRi5FwagcexmlFwqNG3vjuHagAb4ub8SlxONmBO91cneyZWTF7ObcnspaAza8ClZjShZz/y1JPV8PsHDSqJVAwRGC0SOtJF0+7IgKrkR33r+63Sl6yDgJuiWsU6phz8+Fixrzeqsq4GagJXowFQVeV+afxSF7xHNeyXcWhPcUnaSfvzeJpMqW5kKoFD8GcBSSwcJhcHDcOHQVS9FVRowGkGvNCaXdeLQhIRRqxTCZidP6YzIlusdqAIaFRwlXb1i+uR9nbytw6Po2H1NRZzb4xJFekQg4BRRnHPgEf95fq3+tOCqxfQF4yQfqvFdC+UGrxnw+8FeGfA3CLNbjR5po+bFOM7VB7Uy88DmKbkJ0hRTEK4cuuQLty2TedcJVbPmdUd2AiyGjPlDA/JC4TgGSEXOZdVNOCBtLR94dkBlJQcIqXUWhX9YSYd5lohp6rWhjsDhkSmaWESCNgzCjMpn2K6OPPKs80W7j8Cm5uVZlsdDhzOYzNEgc=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700016)(1800799024)(11063799006)(4143699003)(3023799007)(6133799003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	LLcs+4L3zs5m8BwYkucXGFxexfRwNBu1wJoeW+OP+EM/C/Cgznn9zpS50ANLu4aPLPo2dSsvZTJ8CtQPZPh1zSbDSSI+920AS24GwAdH6r8alLrnbzJ7yU5ka87BJnEmdC+HVmznBCRkJE4vnsvqr/kYY9pRr8Tk3M5yw8NnIdnW3/JiAq4vxm+f3PmDyo2nYPytCB/uzEVI1iHerIhEjPihXtwWZenU467cOXpa3LUtefwGPSWmQTn1fJkFPX+TaxdlTOe9Zns0Aj5uOtM8VpkJS8Pp501ZbNB9C5l2+8XUi8AwkU4tAD6cmJ4oDWQNV0W39zfT6JzlAGHvMrrh3oS44BagVG9p8YWrwd3QkiHZdU7dAO4Vswzeb6lLRSxMWwros8fe+7KFosaKZD57On3RvywUJsdAstZmtondCimpIwnxoWP25Q5RrQXnoXR6
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 20:11:42.3295
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52262dc8-6390-4a33-6394-08dec2757e93
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0002992D.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB9520
-X-HE-Meta: U2FsdGVkX1/0yl9pA3KBZEC8BgHmnGpDfmB9by+uxW5OzGwTxS6fVox66qunIox+UEtx0IammS6SNVdycxaVsYgeudR2CJKJp8LqCOdizgliC4Xqvfst0YT0Gjv05m7co+s/2aVX21VnLMNe25RmyyxM2GirKu+AV96NIt8xKPTROuKpm+XjzA7Af/Ri0+McVYpl7+BnucGFQ6pRELqT0L93hZQa7+3zklUVOW0umAlJozub1UELAQiLTc9qx/KsP3tsIu/FYa1FsVy5cuyF2crsqvdt7fngRSuDzodozaRSLvAPUf9FDZEkxkl7WqKvm5xAKWmP+hxMWcZs/InzIWlopWxMkZHlEkekKSjIGt3X3Qkr+MlCAu2wbPbBX9jy0OCzUsYFk4f/uGgIDk59ndMEcP7eWrGVPli5HbLSFZQwTnnzpyd2BjrXjAYiRVYgLIbCJAfw4yz0mU+HntbIpqmtsSUubGRy6NZTY5UPxoAkf2tdUBv3Cdx0IfxEC590sRk3odqyhUYvYvV5BIwF4tttesP9xYZxZF2/o4XMMOPja4J+FLvlAdpRxn/xOZ81VSYoJlCIqF8LMzFQdvItrkqRQRXeQXowGwwirYD96tODloHYLi51b4hQhUr3RGhH+sOykcV1eqU9J1F7do5GepM/BCjLl18XhfXPKVUdNtraq8EwE/3Q6Xe2rcB0c7d5gNks8JvQqxLEfbb/cJnofm/N33J/hxtFPy9gPnMjuOmQBysscY9hz8LlrQG3ZZZbZRxHdYniiDFVhjV7cWxmz+UkXeKl2YNIg6XAOhYzmcwCdjISgFRG6iJA57reQKxQJwrw0iAuhnj0eYIO5tKCxhD5XDHLTo2BzgnQ14qDWtU44qUNzNPJ7A3uztOWUe/k2VIlrs4T7FdawYrmRkKsPgajKCdSsCmUVL/JzSeAyIrtMmTIK0bdnsmUEzIY7HDev1e73+CTi3SeMdnHgNa
- nsltVSnC
- /+XGPSUgMlcgBC+2BVrhLZ0kAJsnUrJmaR7+c11CnnJTxe3KMDLYe+ZdaulIF2wdpQni7zA/6qW8nvrBIoLChZ1LOacEdFCUM3nNEDhCabG1no5zrgpVRViCSzugYDs/KxkTs7o5N0cI63bWYBOESSG1vaz8n7jOTL4fh64MeZNKrwTG/LveR17zagcCvJCUdgk4oT4tlEZd2ileNhWQIYkVNGj4slZWm1P2YWZprqvVNRSayk+uZFd+vWk71YGr//zLHy0dmwSQpv7suKk2My5l+hJ+8UYSkOj6mLCxhMF6Lzerh+vO99udkeylVYaFvetdbTfO0nBR2aCLzftKmCnt/2eY9zEGsRN6OxD2d5sRfBeoBNuUnNbFY++Sk+oK0fSYKU9Xsn3JCeZAw2ufjFCBCb8b8mn5aiFKW/FWi01qUYSEE6ylXwLbFxRv7hr+9qi0Jl1BLLhOZl+lUGLLGsb7FJd/i6R1uKP8PrhteovJeKghn7oYJBymwLpA19jpLI6Flbtbi4I1bG+dpWkUJCE6cF9eRRgbOYgxdM/FLogtqZ1Rs/29RnNpQ4NcPaZmls5fvGnjzl3lXjrzg8KPhet9RZQ==
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5FC8F180006
-X-Stat-Signature: nc6ypaqjuu7p888ibw55i5q5wm6mngg3
-X-HE-Tag-Orig: 1780603911-833340
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260604-unique-ref-v17-2-7b4c3d2930b9@kernel.org>
+References: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org>
+In-Reply-To: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+ Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, 
+ Igor Korotin <igor.korotin@linux.dev>, 
+ Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Boqun Feng <boqun@kernel.org>, 
+ Igor Korotin <igor.korotin@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>, driver-core@lists.linux.dev, 
+ Asahi Lina <lina+kernel@asahilina.net>, 
+ Oliver Mangold <oliver.mangold@pm.me>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10553;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=ofZDFIhDjpLPpUbpvtXo6zWuRmODfjHMDH0JWHuSFdY=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIdvofKBkFboGfACnM0viGjPeiixT1NxDQcbNU
+ MsW74xazMuJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiHb6AAKCRD6UCkIqsW9
+ 0DEkD/4gf7Ho/vS4edp6caiLITOv/bLkSQN5bDrgSo/Dqw6VjWYilBwVVAiLblnteDI9tSnZAz4
+ evcQDaMvY7IrsQilUAtM8OixDbWtvlR+x/eslY/TZ3XhvbZhSLsMnQ8UkkHAOto8tCBTvl53I5a
+ G8FmcHac+ptW26zaW0XNDXoedp4ZU4w/MElpuhCWopnNx578V/5+/Kd0++KK9AJdewxigY+O09R
+ XKMuyGtiteZwpDtUCDrndWu6LUELJFBk8DlTERSF7P+OV3b/Z3bb9nsbkjC2dNa6SG0WmIUu3OP
+ QeyC4cPcKPSTzIGcS8ecFZzwJp5ChQN+O3DEGMwV9NTEV9WrrGRGEeqcW05Jd8akGmDILrPT9uw
+ 7PPhGLGSGJvPJ94joJDKzhWeGGQKN4Ypt7eKVQMrFp9Ydul9sXRxfanYsRd7xUsVCJsXHe0qRhw
+ axz+zRqxcYG96KESp5w1DAN0DXXjeDg5Tip6/Di/vvvoZrcnl66TJxO8IaBQoKUir/7KAjhvDKh
+ 6sAopNMKeJY/bAeb+sNVhiaT50U9xhsI6ME1e6JBNS2dFoe68qSHt4tpl0mNEtS+P2FRcWnIkw8
+ 9wvr6lwo2ivn1lb6ppIFBpmHrqozyBAsxUj/60/7Ugd0+pXRJQrGpGnYAMRg8JMKgAIEIQN+hgo
+ Di9hhF085JUUMWg==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780603915-410568
-X-HE-Meta: U2FsdGVkX1/fvI8OWiBFxaZ2Rwq2jbpjtza8/6qGj9LnfxStYwMRq4rUWScY4d55XS+VdPiuNcC/PwXdK+5kpX3ppwMZIb6wo//VfKWH6s1m8frIFE1LmmRFo4er5M44HrTWl0ygzj/53o8H0ZRjPEHxZHndTXWo1/3Wl1JmFVhcjmfXuFD/42RJLdGa204h3UGZ5vV17scjQrVyMqMT1e2UYuXVMkTPYbN85iT7bNye4nRLT52O98bC0xh4Ct7Oo7/+TD4hYshohsN157fh2PnTWJVZI7UYC1TGaAmAb+CNi7+WmMdVVR71nR5gw6PiBuYY8KwioNBPMYEZrv/5CG6vBP2+gbXQJCYviIIXnL2ag+K+4c2ud22GvryM6cqh46/J0phXVwysxouNg+/0P6r3O1dT5YyYRx0klTFBytx7nQaeJM8m+uv/SDmmlm1st9BhdOBnwDZUGxTcSOlrg0dDuvRwr2cjN8ALOP0jSDMTitgbbIJ3vFlN3rRGO88YIvn6NLuao/P1eN8Qtar33nakz0X1JUnPNyHdpxMxorBJ/b5iQ1UNRsijWQOi6Sts+hRWK74LhaJl/P4QNohwmsuJHWbf1OJ/pDwlhk0vGAVygVDxgLd/YGgU0RIKrB5VV/5mku/z5N1CQiqLDJoNxi0WfiihgRcTP5JTI1zH1Eh1BygS4P/AfIL88mTo/hzxd+TDOlQOY62JU8UPwqtvEvjgZnhvsTwf17UrXF6zCycHYCddH72Doo0O/bDQC8p+8YRZtKs3CAlWUqpR+VF7d3Ss3s2emIAYIefdKjiWrv1Quu2tyNucMQQnTfGusgvlSkdBHCunJ5AXis7xKkFtFEg2uIRmn7uYpUzaFeNv0tc1L6+A5aCyz/fL7hqgEM6Xbs+xXdMOdstpm6Ku+v7tKJuDHBiFWyDE80FYnSR82dKMWDcWl1en+eJ+VcoMfktmqLnrYvJf+LDGkQmsOC+
- /bsSMyd/
- o3Sz3WHomLad12zfeeNbZom68gj0RESAmCLUUaMWP/jqhEz2tCgdDgTYXN+0A4IYbVahMfTUDaSdNs0LqD36qm6AHyDufRGyuCmDZZBR4U4msxp111G1gOTfcYkuc0z793bl1EcWr0jkEoBBjHDLYW3JlVlwbRSXB/ihR6hoVsB2aWqu76TB/d+Yu0KKEi2CBuHV06TE+04+6oWfTq+8nBJfazced2jqTvTFUzsOZMUoHJh4ApAIhB7DSBv37ixUs2V+Dn+NmdXhbestiDYM9vzJN/ZdvMZi0Z0aRey2QyqljFcc0KAFl78D/LnY3HR+878Opg23iihNtEuX6VV5UZtvIGJ340BbElLpvQiVroIZmy2QbJGnsZ4uHSbEuT7zxuRuPK4J36+JLPmOedVe4E6PUrJanUl1DAePVhGFJE7D7+n3XzA7VoNT01kZG3rVF+C/djaVvf5m8SPOfIRCtNVqtNxjccv+Iwx4x0HLH/w967hbx11qKVjJivz07VeHgWxEFY8papWIvj0Gc85PV/ao6SA==
+X-Stat-Signature: cx1h198478kby5cuqi3csdbyj3ohghbd
+X-Rspamd-Queue-Id: 283411C0006
+X-HE-Tag: 1780603995-974669
+X-HE-Meta: U2FsdGVkX19YBi+Ra08rLSNnR2X8nxLWX0LK240ddRHwR/QhMOuK4ZT+ZCWjMXLs2yaOzO/F6hdyobKVALREnjBhutoq06vqkv8s918aiAoGsPDbtGH/Pup7lszlzcYEo8RsUcwG7cDzby52N+q9ywcGq5GnFY3XWx9sGwrYIuzKF0IqjsraPVsc3obghugd24ORgfEkaS8pOWjaNv3XSBMfft6JxuZRtXzSB0NICo4M+/jN2vLFbzvJAwII62awp5ht3/YT1WIkmviAqBZQSTNXj63C3Jz9F9qizqljtkvry2oaqUc9pJZsMlDjt13rGR6MTIsQ16IzOKK1ugRHmYGxkGJ+H+xl2hkBxTXUXFk1i6V/zfzDc8H+ZhFftxHLQS1wxKeqanXLUGwZ42nbSoGkICkDFujWF5hLnbKB3Q7Uhi1IrywFeS6OSGewUBhD0R6onNQh/tI3xshAnK4e2mYDfSle/hevkstuTULhYIdWzw52fnGKXX4nd9WkK49Bbn1YshotgSqzc/AYcIVhyVNKX/fiCfvdCy7yUX5tMOkacFNuiXvyM/kVm2WfD4qmxwy/OIRINdvbBRLZ73HUyQJ/ukr1Y/vK+qpTehzg7Shq60d9tettQurHO9ou4tHPYsX+smMcYBswTI9RvcENX92UiCaJOtj6tQQiJlbIIRMLz2Zs/BrV9wSUMA7iAzMIfoU2xTTvEtTX6ZHnZzT1yYy6do0NRjXVh3/t9f2KeWpwJ4EbjTT1wh9U9WU74L8bcXQMIpKu4sKGNRxPuIP2AD6cw1IG3Gsk+INh3bQsyU2c1y7y5C8jbAAQi3kv2W7G/Cg2JDHryn0CFiuCZ9os6xRzkpkmsltmaVgjgHpNjE0NJgyFpTKmndpNVBBvHCDqVAIJ9FDDymwHLQIfLfQRpytI9J9jacW7K3eZX8aEfOQQqSmZv7OU1MYhg3E+ZU7heSv8vSE8CjlBmeyJD+4
+ iMMb1eXp
+ COKexPCaugK21HdO0O77uHGKzX9+WXNRhOCa78W9jtGd8p/ynHR2pqM/GWuCF8I6DoFPjgbpA1m1BE9uXsjMtssToA0c6BRniN+Fbg25N+LeZ2KfkYon/CGiWTMCa2mPmV95D9V+QdSV0nn5wsp+5Bxpjky0YDGrVo10HHsAl8X0cDupO/d9Vs72sdNvV7jZj7F4eDQj3sNjQ2jDq+lBlnAuP9NSKoa9wK/eYXOXN6OqCKz3sVK0kYIfN+YKYH8f9WBduBqiolU7WL1Sp7lzSmEwT+sA/KWUse/LCJZCA3S8do1lJMSBN4IO/ivVppmaIlevTZbkDvL90006PfzuQYbeI92QNm2wVR/2X7LK7uklsbZIvlrNfHkLcHxytFrrlh+L0r//wtXVD5masFlEEy2sWMIHbdvn1urTT2Au//05q/9PzON9APooEG6qxD+P4uPai90YY7TL1M433cJ6tcOx+PsxQbBn8jPdGLD5bgJ44y/HFKvah92j4dJXmQr9eQZsI4e35qgpvWZeVkILoQXr/r3ZNsEfBVnnW3Fz8PM8jvovWP89WWnoqwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -203,151 +135,288 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 04, 2026 at 04:29:19PM +0100, Suzuki K Poulose wrote:
-> On 23/05/2026 01:18, Ackerley Tng via B4 Relay wrote:
-> > From: Michael Roth <michael.roth@amd.com>
-> > 
-> > For vm_memory_attributes=1, in-place conversion/population is not
-> > supported, so the initial contents necessarily must need to come
-> > from a separate src address, which is enforced by the current
-> > implementation. However, for vm_memory_attributes=0, it is possible for
-> > guest memory to be initialized directly from userspace by mmap()'ing the
-> > guest_memfd and writing to it while the corresponding GPA ranges are in
-> > a 'shared' state before converting them to the 'private' state expected
-> > by KVM_SEV_SNP_LAUNCH_UPDATE.
-> > 
-> > Update the handling/documentation for KVM_SEV_SNP_LAUNCH_UPDATE to allow
-> > for 'uaddr' to be set to NULL when vm_memory_attributes=0, which
-> > SNP_LAUNCH_UPDATE will then use to determine when it should/shouldn't
-> > copy in data from a separate memory location. Continue to enforce
-> > non-NULL for the original vm_memory_attributes=1 case.
-> > 
-> > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > [Added src_page check in error handling path when the firmware command fails]
-> > [Dropped ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES]
-> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> 
-> 
-> 
-> 
-> > ---
-> >   Documentation/virt/kvm/x86/amd-memory-encryption.rst | 15 +++++++++++----
-> >   arch/x86/kvm/svm/sev.c                               | 18 +++++++++++++-----
-> >   virt/kvm/kvm_main.c                                  |  1 +
-> >   3 files changed, 25 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> > index b2395dd4769de..43085f65b2d85 100644
-> > --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> > +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> > @@ -503,7 +503,8 @@ secrets.
-> >   It is required that the GPA ranges initialized by this command have had the
-> >   KVM_MEMORY_ATTRIBUTE_PRIVATE attribute set in advance. See the documentation
-> > -for KVM_SET_MEMORY_ATTRIBUTES for more details on this aspect.
-> > +for KVM_SET_MEMORY_ATTRIBUTES/KVM_SET_MEMORY_ATTRIBUTES2 for more details on
-> > +this aspect.
-> >   Upon success, this command is not guaranteed to have processed the entire
-> >   range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
-> > @@ -511,9 +512,15 @@ range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
-> >   remaining range that has yet to be processed. The caller should continue
-> >   calling this command until those fields indicate the entire range has been
-> >   processed, e.g. ``len`` is 0, ``gfn_start`` is equal to the last GFN in the
-> > -range plus 1, and ``uaddr`` is the last byte of the userspace-provided source
-> > -buffer address plus 1. In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO,
-> > -``uaddr`` will be ignored completely.
-> > +range plus 1, and ``uaddr`` (if specified) is the last byte of the
-> > +userspace-provided source buffer address plus 1.
-> > +
-> > +In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO, ``uaddr`` will be
-> > +ignored completely. Otherwise, ``uaddr`` is required if
-> > +kvm.vm_memory_attributes=1 and optional if kvm.vm_memory_attributes=0, since
-> > +in the latter case guest memory can be initialized directly from userspace
-> > +prior to converting it to private and passing the GPA range on to this
-> > +interface.
-> 
-> Just to confirm, so the sev_gmem_prepare doesn't destroy the contents in the
-> process of making it "private" ? i.e., the contents of a SNP shared
-> page are preserved while transitioning to "SNP Private" (via RMP
-> update).
+From: Asahi Lina <lina+kernel@asahilina.net>
 
-sev_gmem_prepare() does sort of destroy contents since it finalizes the
-shared->private conversion which puts the page in an unusable state
-until the guest 'accepts' it as private memory and re-initializes the
-contents.
+By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+(typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
+`AlwaysRefCounted`, this mechanism expects the reference to be unique
+within Rust, and does not allow cloning.
 
-But that's run-time, when the guest is doing conversions. The
-documentation here is relating to initialization time when we are
-setting up the initial pre-encrypted/pre-measured guest memory image,
-via SNP_LAUNCH_UPDATE. That path calls into kvm_gmem_populate(), and it
-is then sev_gmem_post_populate() callback that actually finalizes the
-shared->private conversion. The sev_gmem_prepare() hook doesn't get used
-in this flow (kvm_gmem_populate() calls __kvm_gmem_get_pfn() which skips
-preparation).
+Conceptually, this is similar to a `KBox<T>`, except that it delegates
+resource management to the `T` instead of using a generic allocator.
 
--Mike
+[ om:
+  - Split code into separate file and `pub use` it from types.rs.
+  - Make from_raw() and into_raw() public.
+  - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
+  - Usage example/doctest for Ownable/Owned.
+  - Fixes to documentation and commit message.
+]
 
-> 
-> Suzuki
-> 
-> 
-> 
-> >   Parameters (in): struct  kvm_sev_snp_launch_update
-> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > index 1a361f08c7a3d..e1dbc827c2807 100644
-> > --- a/arch/x86/kvm/svm/sev.c
-> > +++ b/arch/x86/kvm/svm/sev.c
-> > @@ -2343,7 +2343,15 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> >   	int level;
-> >   	int ret;
-> > -	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page))
-> > +	/*
-> > +	 * For vm_memory_attributes=1, in-place conversion/population is not
-> > +	 * supported, so the initial contents necessarily need to come from a
-> > +	 * separate src address. For vm_memory_attributes=0, this isn't
-> > +	 * necessarily the case, since the pages may have been populated
-> > +	 * directly from userspace before calling KVM_SEV_SNP_LAUNCH_UPDATE.
-> > +	 */
-> > +	if (vm_memory_attributes &&
-> > +	    sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page)
-> >   		return -EINVAL;
-> >   	ret = snp_lookup_rmpentry((u64)pfn, &assigned, &level);
-> > @@ -2390,7 +2398,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> >   	 */
-> >   	if (ret && !snp_page_reclaim(kvm, pfn) &&
-> >   	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
-> > -	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
-> > +	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM && src_page) {
-> >   		void *src_vaddr = kmap_local_page(src_page);
-> >   		void *dst_vaddr = kmap_local_pfn(pfn);
-> > @@ -2423,8 +2431,8 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> >   	if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
-> >   		return -EFAULT;
-> > -	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d\n", __func__,
-> > -		 params.gfn_start, params.len, params.type, params.flags);
-> > +	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d src %llx\n", __func__,
-> > +		 params.gfn_start, params.len, params.type, params.flags, params.uaddr);
-> >   	if (!params.len || !PAGE_ALIGNED(params.len) || params.flags ||
-> >   	    (params.type != KVM_SEV_SNP_PAGE_TYPE_NORMAL &&
-> > @@ -2481,7 +2489,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> >   	params.gfn_start += count;
-> >   	params.len -= count * PAGE_SIZE;
-> > -	if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
-> > +	if (src && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
-> >   		params.uaddr += count * PAGE_SIZE;
-> >   	if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > index ba195bb239aaa..3bf212fd99193 100644
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
-> > @@ -105,6 +105,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
-> >   #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> >   bool vm_memory_attributes = true;
-> >   module_param(vm_memory_attributes, bool, 0444);
-> > +EXPORT_SYMBOL_FOR_KVM_INTERNAL(vm_memory_attributes);
-> >   #endif
-> >   DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
-> >   EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
-> > 
-> 
+Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
+Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
+Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+[ Andreas: Updated documentation, examples, and formatting. Change safety
+  requirements, safety comments. Use a reference for `release`. ]
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/lib.rs       |   1 +
+ rust/kernel/owned.rs     | 187 +++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/sync/aref.rs |   5 ++
+ rust/kernel/types.rs     |  11 +++
+ 4 files changed, 204 insertions(+)
+
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index b72b2fbe046d..d07759eec799 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -100,6 +100,7 @@
+ pub mod of;
+ #[cfg(CONFIG_PM_OPP)]
+ pub mod opp;
++pub mod owned;
+ pub mod page;
+ #[cfg(CONFIG_PCI)]
+ pub mod pci;
+diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
+new file mode 100644
+index 000000000000..456e239e906e
+--- /dev/null
++++ b/rust/kernel/owned.rs
+@@ -0,0 +1,187 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Unique owned pointer types for objects with custom drop logic.
++//!
++//! These pointer types are useful for C-allocated objects which by API-contract
++//! are owned by Rust, but need to be freed through the C API.
++
++use core::{
++    mem::ManuallyDrop,
++    ops::{
++        Deref,
++        DerefMut, //
++    },
++    pin::Pin,
++    ptr::NonNull, //
++};
++
++/// Types that specify their own way of performing allocation and destruction. Typically, this trait
++/// is implemented on types from the C side.
++///
++/// Implementing this trait allows types to be referenced via the [`Owned<Self>`] pointer type. This
++/// is useful when it is desirable to tie the lifetime of the reference to an owned object, rather
++/// than pass around a bare reference. [`Ownable`] types can define custom drop logic that is
++/// executed when the owned reference [`Owned<Self>`] pointing to the object is dropped.
++///
++/// Note: The underlying object is not required to provide internal reference counting, because it
++/// represents a unique, owned reference. If reference counting (on the Rust side) is required,
++/// [`AlwaysRefCounted`](crate::types::AlwaysRefCounted) should be implemented.
++///
++/// # Examples
++///
++/// A minimal example implementation of [`Ownable`] and its usage with [`Owned`] looks like
++/// this:
++///
++/// ```
++/// # #![expect(clippy::disallowed_names)]
++/// # use core::cell::Cell;
++/// # use core::ptr::NonNull;
++/// # use kernel::sync::global_lock;
++/// # use kernel::alloc::{flags, kbox::KBox, AllocError};
++/// # use kernel::types::{Owned, Ownable};
++///
++/// // Let's count the allocations to see if freeing works.
++/// kernel::sync::global_lock! {
++///     // SAFETY: we call `init()` right below, before doing anything else.
++///     unsafe(uninit) static FOO_ALLOC_COUNT: Mutex<usize> = 0;
++/// }
++/// // SAFETY: We call `init()` only once, here.
++/// unsafe { FOO_ALLOC_COUNT.init() };
++///
++/// struct Foo;
++///
++/// impl Foo {
++///     fn new() -> Result<Owned<Self>> {
++///         // We are just using a `KBox` here to handle the actual allocation, as our `Foo` is
++///         // not actually a C-allocated object.
++///         let result = KBox::new(
++///             Foo {},
++///             flags::GFP_KERNEL,
++///         )?;
++///         let result = KBox::into_non_null(result);
++///         // Count new allocation
++///         *FOO_ALLOC_COUNT.lock() += 1;
++///         // SAFETY:
++///         //  - We just allocated the `Self`, thus it is valid and we own it.
++///         //  - We can transfer this ownership to the `from_raw` method.
++///         Ok(unsafe { Owned::from_raw(result) })
++///     }
++/// }
++///
++/// impl Ownable for Foo {
++///     unsafe fn release(&mut self) {
++///         // SAFETY: The [`KBox<Self>`] is still alive. We can pass ownership to the [`KBox`], as
++///         // by requirement on calling this function.
++///         drop(unsafe { KBox::from_raw(self) });
++///         // Count released allocation
++///         *FOO_ALLOC_COUNT.lock() -= 1;
++///     }
++/// }
++///
++/// {
++///    let foo = Foo::new()?;
++///    assert!(*FOO_ALLOC_COUNT.lock() == 1);
++/// }
++/// // `foo` is out of scope now, so we expect no live allocations.
++/// assert!(*FOO_ALLOC_COUNT.lock() == 0);
++/// # Ok::<(), Error>(())
++/// ```
++pub trait Ownable {
++    /// Tear down this `Ownable`.
++    ///
++    /// Implementers of `Ownable` can use this function to clean up the use of `Self`. This can
++    /// include freeing the underlying object.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that the caller has exclusive ownership of `T`, and this ownership can
++    /// be transferred to the `release` method.
++    unsafe fn release(&mut self);
++}
++
++/// A mutable reference to an owned `T`.
++///
++/// The [`Ownable`] is automatically freed or released when an instance of [`Owned`] is
++/// dropped.
++///
++/// # Invariants
++///
++/// - Until `T::release` is called, this `Owned<T>` exclusively owns the underlying `T`.
++/// - The `T` value is pinned.
++pub struct Owned<T: Ownable> {
++    ptr: NonNull<T>,
++}
++
++impl<T: Ownable> Owned<T> {
++    /// Creates a new instance of [`Owned`].
++    ///
++    /// This function takes over ownership of the underlying object.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that:
++    /// - `ptr` points to a valid instance of `T`.
++    /// - Until `T::release` is called, the returned `Owned<T>` exclusively owns the underlying `T`.
++    #[inline]
++    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
++        // INVARIANT: By function safety requirement we satisfy the first invariant of `Self`.
++        // We treat `T` as pinned from now on.
++        Self { ptr }
++    }
++
++    /// Consumes the [`Owned`], returning a raw pointer.
++    ///
++    /// This function does not drop the underlying `T`. When this function returns, ownership of the
++    /// underlying `T` is with the caller.
++    #[inline]
++    pub fn into_raw(me: Self) -> NonNull<T> {
++        ManuallyDrop::new(me).ptr
++    }
++
++    /// Get a pinned mutable reference to the data owned by this `Owned<T>`.
++    #[inline]
++    pub fn as_pin_mut(&mut self) -> Pin<&mut T> {
++        // SAFETY: The type invariants guarantee that the object is valid, and that we can safely
++        // return a mutable reference to it.
++        let unpinned = unsafe { self.ptr.as_mut() };
++
++        // SAFETY: By type invariant `T` is pinned.
++        unsafe { Pin::new_unchecked(unpinned) }
++    }
++}
++
++// SAFETY: It is safe to send an [`Owned<T>`] to another thread when the underlying `T` is [`Send`],
++// because of the ownership invariant. Sending an [`Owned<T>`] is equivalent to sending the `T`.
++unsafe impl<T: Ownable + Send> Send for Owned<T> {}
++
++// SAFETY: It is safe to send [`&Owned<T>`] to another thread when the underlying `T` is [`Sync`],
++// because of the ownership invariant. Sending an [`&Owned<T>`] is equivalent to sending the `&T`.
++unsafe impl<T: Ownable + Sync> Sync for Owned<T> {}
++
++impl<T: Ownable> Deref for Owned<T> {
++    type Target = T;
++
++    #[inline]
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: The type invariants guarantee that the object is valid.
++        unsafe { self.ptr.as_ref() }
++    }
++}
++
++impl<T: Ownable + Unpin> DerefMut for Owned<T> {
++    #[inline]
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        // SAFETY: The type invariants guarantee that the object is valid, and that we can safely
++        // return a mutable reference to it.
++        unsafe { self.ptr.as_mut() }
++    }
++}
++
++impl<T: Ownable> Drop for Owned<T> {
++    #[inline]
++    fn drop(&mut self) {
++        // SAFETY: By existence of `&mut self` we exclusively own `self` and the underlying `T`. As
++        // we are dropping `self`, we can transfer ownership of the `T` to the `release` method.
++        unsafe { T::release(self.ptr.as_mut()) };
++    }
++}
+diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+index 9989f56d0605..4ee5fac0e0b6 100644
+--- a/rust/kernel/sync/aref.rs
++++ b/rust/kernel/sync/aref.rs
+@@ -29,6 +29,11 @@
+ /// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) to create reference-counted
+ /// instances of a type.
+ ///
++/// Note: Implementing this trait allows types to be wrapped in an [`ARef<Self>`]. It requires an
++/// internal reference count and provides only shared references. If unique references are required
++/// [`Ownable`](crate::types::Ownable) should be implemented which allows types to be wrapped in an
++/// [`Owned<Self>`](crate::types::Owned).
++///
+ /// # Safety
+ ///
+ /// Implementers must ensure that increments to the reference count keep the object alive in memory
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 4329d3c2c2e5..4aec7b699269 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -11,6 +11,17 @@
+ };
+ use pin_init::{PinInit, Wrapper, Zeroable};
+ 
++pub use crate::{
++    owned::{
++        Ownable,
++        Owned, //
++    },
++    sync::aref::{
++        ARef,
++        AlwaysRefCounted, //
++    }, //
++};
++
+ /// Used to transfer ownership to and from foreign (non-Rust) languages.
+ ///
+ /// Ownership is transferred from Rust to a foreign language by calling [`Self::into_foreign`] and
+
+-- 
+2.51.2
+
 
 
