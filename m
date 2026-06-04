@@ -4,77 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B79BDCD6E6D
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 15:04:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9302BCD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 15:29:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86B206B0092; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
+	id B9C796B0005; Thu,  4 Jun 2026 11:29:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81C3C6B0095; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
+	id B4D2D6B0088; Thu,  4 Jun 2026 11:29:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70B816B0098; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
+	id A3BFA6B008A; Thu,  4 Jun 2026 11:29:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F7116B0092
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:04:40 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 23E5540153
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:04:40 +0000 (UTC)
-X-FDA: 84842551920.29.907DC21
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5271140027
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:04:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 90EC86B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:29:42 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 348E914015F
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:29:42 +0000 (UTC)
+X-FDA: 84842615004.07.A8A31D7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C32CA2001E
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:29:32 +0000 (UTC)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780585470;
+	s=arc-20220608; t=1780586973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1RteInx86sePvuvcbd5ot78grkb4cpvOZ0dj8V9OSlk=;
-	b=X9u+FQ3asENAjNqpcng6Oek5LzDgmxfbS8HOCKT7+eWDRhk6CIMkD1xWuT+3dv7QrbGEqc
-	4cGr6PrcPVcPbbcRFUfh+3V4nYuTYK4X293wp82DAoK0eOlrin8Z4+LyJaZCRWI1PFwkHC
-	5x6Sans37zxnqT2HTqJUJzPYqXtowIM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf01.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oAOEYCeVLuk0MxXqfEEyYdHUVyxutQs3EwBq/h1/vek=;
+	b=x7iNFhu4I83S0XLTstZ8MelWuMDdSjaWryTkI6e5hJyZNIcJwZkwn4sziu/tjOSQEIJWjH
+	3a8uz/Fn8jd4vyyKe2kkYiHzR042cwGJ/4eqVG6NHgXE881tJvL6Dlyn+vwkmj1SJ5H2iA
+	UjK9yhEbWearnGrfLoNUvYbLXczxQ4o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780585470;
-	b=WiCxGCLHvROh2gcBlmp9eYE4+i/CcTBMb4EqIvvWunvnDdpesg89ll1n1jxOqytlnktJEq
-	u9J9P0EXoWtas29LUUAlYblg4TDG8ltqPE+m5VMsUJkSIG+BosDoUfUzD7p/LM1lkJeIle
-	stZmWbuThU+zNwGjx7/gyW0kNMEZXHA=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gWSX60SCWzJ468w;
-	Thu,  4 Jun 2026 23:04:22 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id BAB9A4057A;
-	Thu,  4 Jun 2026 23:04:25 +0800 (CST)
-Received: from mscphis01197.huawei.com (10.123.65.218) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 4 Jun 2026 18:04:25 +0300
-From: <gutierrez.asier@huawei-partners.com>
-To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
-	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
-	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v3 4/4] Documentation/admin-guide/mm/damon: add DAMON-based Hugepage Management
-Date: Thu, 4 Jun 2026 15:03:37 +0000
-Message-ID: <20260604150338.501128-5-gutierrez.asier@huawei-partners.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260604150338.501128-1-gutierrez.asier@huawei-partners.com>
-References: <20260604150338.501128-1-gutierrez.asier@huawei-partners.com>
+	t=1780586973;
+	b=rHxcmrjhXkQq0m78Ozvam/XIo0kh/TddrBEM7daZQSqgF3AGNIOG2kNrM5ba+mCt6L5Kkj
+	Rjw04wIOQZA1n6tl0OpzAFiEdO2spiN7FGMsw/sBNh/bOejGImnns7nEjhFIoYesy/ghVw
+	2Br/+6LolwLoZQ6/gojuPyrGE1NyMzU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=u5tYSEK0;
+	spf=pass (imf13.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C2EB21516;
+	Thu,  4 Jun 2026 08:29:26 -0700 (PDT)
+Received: from [10.57.95.39] (unknown [10.57.95.39])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DA02C3F86F;
+	Thu,  4 Jun 2026 08:29:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780586971; bh=bsr5b2gpdP7Z02h1Njek9qwNAkWcpQjmCyE6Te0xtUY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=u5tYSEK0WD6FzVygVZ2inUsRE7KPNU6aiooHb7WFFytVH7MwdY+o3iH91d3sWJQym
+	 G77ajQTrso6CQR5994wgSjTDCEuz6fiiAdnuNQFgcq6pkYJfcMWf+6whcM46UC6c2z
+	 1s46Od/7JFr/FBCHQRzYdrTjrodXGQYEF9NX3838=
+Message-ID: <9d15479e-e36b-4865-804c-7d93eb339e4e@arm.com>
+Date: Thu, 4 Jun 2026 16:29:19 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.65.218]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-HE-Tag: 1780585470-791948
-X-HE-Meta: U2FsdGVkX1+EqjqfarCuJar6LEVchsKFBYgAkMR1hKlNTL/yT19tutBHjxDghaaEQjlGLkzsyIct5ImgH5K6sUSWc9lXLlVAG2G71RQaM4M4hlnJW2aRK7TO+UpYCORQzm0LceQmBjAEwo/BdoUCgVLdtatDceZkbc+MWi7ISh9WwrQszf5THq4W9C+HzrQSL/6JibLQn4PCmLY3ETq/Swe7QPOQ0Z2adxcNMluNhCtFSbYpfJ0jS7gt9a6EXj/R/y9qotiNekSWXL2MxgIy3yIG2PpvDfwlmuS5TXwf9E0G7YnzJF6guRWhqLmYNNxCSxA8QRqC3fL9Rl7NAT+IQ3Fw5XS/HCVtFRSYTWQKWfcMjaIlG3PiqFmrG0NFsINfmnpW/IhyTFVPyWgdOK7dVw==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 20/42] KVM: SEV: Make 'uaddr' parameter optional for
+ KVM_SEV_SNP_LAUNCH_UPDATE
+Content-Language: en-GB
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, ira.weiny@intel.com, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-HE-Tag: 1780586972-957611
+X-HE-Meta: U2FsdGVkX1+1RN6phsHq8G/U2yYsxwJtLnw4ovxM3sNW7xPkeSKhioEPi1tQmRzZBeXo8S3NJ9ZYDYjIk2IrNU/ubSJQ5ho3zq5f/cAP4Usp9XYDoItjVJBFEakWFJC4c8ZontdhcDCZdopzOiEdZ7suD3HPjnfGa5HsyYwDSOeLmzTVVAyRfJ51VQrZzCe2Phbm21baKPd88vi5jQqEdHVEjOXeDoJwmd/Di0cIcaOEXwQS5T5lvRZgbkhnkpV1d4GeN7+qcMhUsLb5NlTOR2tyxbYIbP7p2zt4uaoe7yQTcExkptmAz0OUCOXQ015SRvL2lLy5HRtTUVkPt92AghVuSiFO1OwGtewPrUJvU86hifHLQHF3U8HRvK/n1eO2xcP6/dZr2d+bIwCLFvaNEYD5spn0JfYv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -82,299 +109,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+On 23/05/2026 01:18, Ackerley Tng via B4 Relay wrote:
+> From: Michael Roth <michael.roth@amd.com>
+> 
+> For vm_memory_attributes=1, in-place conversion/population is not
+> supported, so the initial contents necessarily must need to come
+> from a separate src address, which is enforced by the current
+> implementation. However, for vm_memory_attributes=0, it is possible for
+> guest memory to be initialized directly from userspace by mmap()'ing the
+> guest_memfd and writing to it while the corresponding GPA ranges are in
+> a 'shared' state before converting them to the 'private' state expected
+> by KVM_SEV_SNP_LAUNCH_UPDATE.
+> 
+> Update the handling/documentation for KVM_SEV_SNP_LAUNCH_UPDATE to allow
+> for 'uaddr' to be set to NULL when vm_memory_attributes=0, which
+> SNP_LAUNCH_UPDATE will then use to determine when it should/shouldn't
+> copy in data from a separate memory location. Continue to enforce
+> non-NULL for the original vm_memory_attributes=1 case.
+> 
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> [Added src_page check in error handling path when the firmware command fails]
+> [Dropped ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES]
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-Add documentation for the DAMON-based Hugepage Management
-(SAMPLE_DAMON_HUGEPAGE) feature, which automatically manages
-huge pages by identifying hot memory regions and collapsing
-them back to regular pages. The documentation covers the
-module's features, operation, and all available module
-parameters.
 
-Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
----
- .../admin-guide/mm/damon/hugepage.rst (new)   | 271 ++++++++++++++++++
- 1 file changed, 271 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/damon/hugepage.rst b/Documentation/admin-guide/mm/damon/hugepage.rst
-new file mode 100644
-index 000000000000..86104aaa4d1c
---- /dev/null
-+++ b/Documentation/admin-guide/mm/damon/hugepage.rst
-@@ -0,0 +1,271 @@
-+================================
-+DAMON-based huge page collapsing
-+================================
-+
-+DAMON-based huge page collapsing (SAMPLE_DAMON_HUGEPAGE) is a static kernel
-+module that aims to collapse hot regions into huge pages.
-+
-+Where Proactive huge page collapsing is Required?
-+=================================================
-+
-+The amount of available memory grows faster than the amount of TLB entries.
-+This leads to higher amount of TLB misses and excessive cycle wastes. Huge
-+pages are meant to solve this problem. However, huge pages usually lead to
-+memory fragmentation and memory waste.
-+
-+Collapsing selectively hot regions in a specific process can avoid big
-+memory fragmentation, while increasing TLB performance.
-+
-+SAMPLE_DAMON_HUGEPAGE solves this by:
-+
-+- Identifying hot regions that have been accessed for a configured time
-+- Automatically collapsing the regions into huge pages back
-+- Auto tune the huge page usage ratio to meet desired targets
-+- Controlling the collapse rate with configurable quotas to avoid performance
-+  degradation
-+
-+
-+How It Works?
-+=============
-+
-+SAMPLE_DAMON_HUGEPAGE uses kdamond to identify anonymous memory regions that
-+are:
-+
-+1. Large enough to be backed by huge pages (``PMD_SIZE`` or larger)
-+2. Have been accessed for a configured time period
-+
-+Once identified, SAMPLE_DAMON_HUGEPAGE triggers synchronous partial collapse
-+of those regions. The collapse operation is controlled by quotas to limit the
-+impact on system performance.
-+
-+The module also supports automatic tuning of the collapse rate to achieve a
-+desired huge page usage ratio. Administrators can configure a target percentage
-+of huge page usage vs total anonymous memory usage.
-+
-+Additionally, the module accepts manual feedback from system administrators to
-+adjust the effective quota level based on observed system behavior.
-+
-+Interface: Module Parameters
-+============================
-+
-+To use this feature, you should first ensure your system is running on a kernel
-+that is built with ``CONFIG_DAMON_HUGEPAGE=y``.
-+
-+To let sysadmins enable or disable it and tune for the given system,
-+SAMPLE_DAMON_HUGEPAGE utilizes module parameters.  That is, you can put
-+``damon_hugepage.<parameter>=<value>`` on the kernel boot command line or write
-+proper values to ``/sys/module/damon_hugepage/parameters/<parameter>`` files.
-+
-+Below are the description of each parameter.
-+
-+enabled
-+-------
-+
-+Enable or disable SAMPLE_DAMON_HUGEPAGE.
-+
-+You can enable SAMPLE_DAMON_HUGEPAGE by setting the value of this parameter as ``Y``.
-+Setting it as ``N`` disables SAMPLE_DAMON_HUGEPAGE.  Note that SAMPLE_DAMON_HUGEPAGE
-+could do no real monitoring and collapse due to the activation condition.
-+
-+commit_inputs
-+-------------
-+
-+Make SAMPLE_DAMON_HUGEPAGE reads the input parameters again, except ``enabled``.
-+
-+Input parameters that updated while SAMPLE_DAMON_HUGEPAGE is running are
-+not applied by default.  Once this parameter is set as ``Y``,
-+SAMPLE_DAMON_HUGEPAGE reads values of parameters except ``enabled`` again.
-+Once the re-reading is done, this parameter is set as ``N``.  If invalid
-+parameters are found while the re-reading, SAMPLE_DAMON_HUGEPAGE will be
-+disabled.
-+
-+Once ``Y`` is written to this parameter, the user must not write to any
-+parameters until reading ``commit_inputs`` again returns ``N``.  If users
-+violate this rule, the kernel may exhibit undefined behavior.
-+
-+min_age
-+-------
-+
-+Time threshold for hot memory regions identification in microseconds.
-+
-+100 milliseconds by default.
-+
-+quota_ms
-+--------
-+
-+Limit of time for the collapse in milliseconds.
-+
-+SAMPLE_DAMON_HUGEPAGE tries to use only up to this time within a time
-+window (quota_reset_interval_ms) for trying collapse hot pages.  This can
-+be used for limiting CPU consumption of SAMPLE_DAMON_HUGEPAGE.  If the
-+value is zero, the limit is disabled.
-+
-+10 ms by default.
-+
-+quota_reset_interval_ms
-+-----------------------
-+
-+The time/size quota charge reset interval in milliseconds.
-+
-+The charget reset interval for the quota of time (quota_ms) and size
-+(quota_sz).  That is, SAMPLE_DAMON_HUGEPAGE does not try collapsing for
-+more than quota_ms milliseconds or quota_sz bytes within
-+quota_reset_interval_ms milliseconds.
-+
-+1 second by default.
-+
-+quota_sz
-+--------
-+
-+Limit of size of memory for the reclamation in bytes.
-+
-+SAMPLE_DAMON_HUGEPAGE charges amount of memory which it tried to collapse
-+regions into huge pages within a time window (quota_reset_interval_ms) and
-+makes no more than this limit is tried. This can be used for limiting
-+consumption of CPU and IO.  If this value is zero, the limit is disabled.
-+
-+128 MiB by default.
-+
-+quota_autotune_feedback
-+-----------------------
-+
-+User-specifiable feedback for auto-tuning of the effective quota.
-+
-+While keeping the caps that set by other quotas, SAMPLE_DAMON_HUGEPAGE
-+automatically increases and decreases the effective level of the quota
-+aiming receiving this feedback of value ``10,000`` from the user.
-+SAMPLE_DAMON_HUGEPAGE assumes the feedback value and the quota are positively
-+proportional.  Value zero means disabling this auto-tuning feature.
-+
-+Disabled by default.
-+
-+monitored_pid
-+----------------
-+
-+PID of the task that is going to be monitored for hot regions.
-+
-+quota_percentage_hugepage
-+-------------------------
-+
-+Huge page consumption to total memory anonymous memory consumption ratio goal
-+in bp ``(10,000)``. SAMPLE_DAMON_HUGEPAGE automatically increases and
-+decreases page collapse aggressiveness in order to achieve the given value.
-+
-+sample_interval
-+---------------
-+
-+Sampling interval for the monitoring in microseconds.
-+
-+The sampling interval of DAMON for the hot memory monitoring.  Please refer to
-+the DAMON documentation (:doc:`usage`) for more detail.
-+
-+aggr_interval
-+-------------
-+
-+Aggregation interval for the monitoring in microseconds.
-+
-+The aggregation interval of DAMON for the hot memory monitoring.  Please
-+refer to the DAMON documentation (:doc:`usage`) for more detail.
-+
-+min_nr_regions
-+--------------
-+
-+Minimum number of monitoring regions.
-+
-+The minimal number of monitoring regions of DAMON for the hot memory
-+monitoring.  This can be used to set lower-bound of the monitoring quality.
-+But, setting this too high could result in increased monitoring overhead.
-+Please refer to the DAMON documentation (:doc:`usage`) for more detail.
-+
-+Note that this must be 3 or higher. Please refer to the :ref:`Monitoring
-+<damon_design_monitoring>` section of the design document for the rationale
-+behind this lower bound.
-+
-+max_nr_regions
-+--------------
-+
-+Maximum number of monitoring regions.
-+
-+The maximum number of monitoring regions of DAMON for the cold memory
-+monitoring.  This can be used to set upper-bound of the monitoring overhead.
-+However, setting this too low could result in bad monitoring quality.  Please
-+refer to the DAMON documentation (:doc:`usage`) for more detail.
-+
-+addr_unit
-+---------
-+
-+A scale factor for memory addresses and bytes.
-+
-+This parameter is for setting and getting the :ref:`address unit
-+<damon_design_addr_unit>` parameter of the DAMON instance for
-+SAMPLE_DAMON_HUGEPAGE.
-+
-+``monitor_region_start`` and ``monitor_region_end`` should be provided in this
-+unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
-+``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
-+Then SAMPLE_DAMON_HUGEPAGE will work for 10 KiB length of physical address range
-+that starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
-+
-+``bytes_hugepage_tried_regions`` and ``bytes_hugepage_regions`` are also in
-+this unit.  For example, let's suppose values of ``addr_unit``,
-+``bytes_hugepage_tried_regions`` and ``bytes_hugepage_regions`` are
-+``1048576``, ``42``, and ``32``, respectively.  Then it means
-+SAMPLE_DAMON_HUGEPAGE tried to collapse 42 MiB memory and successfully collapse
-+32 MiB memory in total.
-+
-+If unsure, use only the default value (``1``) and forget about this.
-+
-+
-+kdamond_pid
-+-----------
-+
-+PID of the DAMON thread.
-+
-+If SAMPLE_DAMON_HUGEPAGE is enabled, this becomes the PID of the worker thread.
-+Else, -1.
-+
-+nr_hugepage_tried_regions
-+-------------------------
-+
-+Number of memory regions that tried to be collapsed by SAMPLE_DAMON_HUGEPAGE.
-+
-+bytes_hugepage_tried_regions
-+----------------------------
-+
-+Total bytes of memory regions that tried to be collapsed by SAMPLE_DAMON_HUGEPAGE.
-+
-+nr_hugepage_regions
-+--------------------
-+
-+Number of memory regions that successfully be collapsed by SAMPLE_DAMON_HUGEPAGE.
-+
-+bytes_hugepage_regions
-+-----------------------
-+
-+Total bytes of memory regions that successfully be collapsed by SAMPLE_DAMON_HUGEPAGE.
-+
-+nr_quota_exceeds
-+----------------
-+
-+Number of times that the time/space quota limits have exceeded.
-+
-+Example
-+=======
-+
-+Below runtime example commands make SAMPLE_DAMON_HUGEPAGE to find memory
-+regions of  the task with PID 1234 that have been accessed in the last 100
-+milliseconds or more and collpases those pages into huge pages. The page
-+collapsing is limited to be done only up to 1 GiB per second to avoid
-+SAMPLE_DAMON_HUGEPAGE consuming too much CPU time for the collapse operation. ::
-+
-+    # cd /sys/module/damon_hugepage/parameters
-+    # echo 100000 > min_age
-+    # echo $((1 * 1024 * 1024 * 1024)) > quota_sz
-+    # echo 1000 > quota_reset_interval_ms
-+    # echo 1234 > monitored_pid
-+    # echo Y > enabled
-+
-+Note that this module (SAMPLE_DAMON_HUGEPAGE) cannot run simultaneously
-+with other DAMON-based special-purpose modules.  Refer to
-+ :ref:`DAMON design special purpose modules exclusivity
-+ <damon_design_special_purpose_modules_exclusivity>` for more details.
-\ No newline at end of file
--- 
-2.43.0
+
+> ---
+>   Documentation/virt/kvm/x86/amd-memory-encryption.rst | 15 +++++++++++----
+>   arch/x86/kvm/svm/sev.c                               | 18 +++++++++++++-----
+>   virt/kvm/kvm_main.c                                  |  1 +
+>   3 files changed, 25 insertions(+), 9 deletions(-)
+> 
+> diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> index b2395dd4769de..43085f65b2d85 100644
+> --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> @@ -503,7 +503,8 @@ secrets.
+>   
+>   It is required that the GPA ranges initialized by this command have had the
+>   KVM_MEMORY_ATTRIBUTE_PRIVATE attribute set in advance. See the documentation
+> -for KVM_SET_MEMORY_ATTRIBUTES for more details on this aspect.
+> +for KVM_SET_MEMORY_ATTRIBUTES/KVM_SET_MEMORY_ATTRIBUTES2 for more details on
+> +this aspect.
+>   
+>   Upon success, this command is not guaranteed to have processed the entire
+>   range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
+> @@ -511,9 +512,15 @@ range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
+>   remaining range that has yet to be processed. The caller should continue
+>   calling this command until those fields indicate the entire range has been
+>   processed, e.g. ``len`` is 0, ``gfn_start`` is equal to the last GFN in the
+> -range plus 1, and ``uaddr`` is the last byte of the userspace-provided source
+> -buffer address plus 1. In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO,
+> -``uaddr`` will be ignored completely.
+> +range plus 1, and ``uaddr`` (if specified) is the last byte of the
+> +userspace-provided source buffer address plus 1.
+> +
+> +In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO, ``uaddr`` will be
+> +ignored completely. Otherwise, ``uaddr`` is required if
+> +kvm.vm_memory_attributes=1 and optional if kvm.vm_memory_attributes=0, since
+> +in the latter case guest memory can be initialized directly from userspace
+> +prior to converting it to private and passing the GPA range on to this
+> +interface.
+
+Just to confirm, so the sev_gmem_prepare doesn't destroy the contents in 
+the process of making it "private" ? i.e., the contents of a SNP shared
+page are preserved while transitioning to "SNP Private" (via RMP
+update).
+
+Suzuki
+
+
+
+>   
+>   Parameters (in): struct  kvm_sev_snp_launch_update
+>   
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 1a361f08c7a3d..e1dbc827c2807 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2343,7 +2343,15 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>   	int level;
+>   	int ret;
+>   
+> -	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page))
+> +	/*
+> +	 * For vm_memory_attributes=1, in-place conversion/population is not
+> +	 * supported, so the initial contents necessarily need to come from a
+> +	 * separate src address. For vm_memory_attributes=0, this isn't
+> +	 * necessarily the case, since the pages may have been populated
+> +	 * directly from userspace before calling KVM_SEV_SNP_LAUNCH_UPDATE.
+> +	 */
+> +	if (vm_memory_attributes &&
+> +	    sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page)
+>   		return -EINVAL;
+>   
+>   	ret = snp_lookup_rmpentry((u64)pfn, &assigned, &level);
+> @@ -2390,7 +2398,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>   	 */
+>   	if (ret && !snp_page_reclaim(kvm, pfn) &&
+>   	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
+> -	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
+> +	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM && src_page) {
+>   		void *src_vaddr = kmap_local_page(src_page);
+>   		void *dst_vaddr = kmap_local_pfn(pfn);
+>   
+> @@ -2423,8 +2431,8 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>   	if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
+>   		return -EFAULT;
+>   
+> -	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d\n", __func__,
+> -		 params.gfn_start, params.len, params.type, params.flags);
+> +	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d src %llx\n", __func__,
+> +		 params.gfn_start, params.len, params.type, params.flags, params.uaddr);
+>   
+>   	if (!params.len || !PAGE_ALIGNED(params.len) || params.flags ||
+>   	    (params.type != KVM_SEV_SNP_PAGE_TYPE_NORMAL &&
+> @@ -2481,7 +2489,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>   
+>   	params.gfn_start += count;
+>   	params.len -= count * PAGE_SIZE;
+> -	if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
+> +	if (src && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
+>   		params.uaddr += count * PAGE_SIZE;
+>   
+>   	if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index ba195bb239aaa..3bf212fd99193 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -105,6 +105,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
+>   #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>   bool vm_memory_attributes = true;
+>   module_param(vm_memory_attributes, bool, 0444);
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(vm_memory_attributes);
+>   #endif
+>   DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
+>   EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
+> 
 
 
