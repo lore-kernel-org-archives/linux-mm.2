@@ -4,87 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96668CD6E6B
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 11:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF029CD6E57
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 11:04:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9AF86B008A; Thu,  4 Jun 2026 07:03:39 -0400 (EDT)
+	id 4FF826B0092; Thu,  4 Jun 2026 07:04:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4B8A6B008C; Thu,  4 Jun 2026 07:03:39 -0400 (EDT)
+	id 4D6B46B0093; Thu,  4 Jun 2026 07:04:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D62796B0092; Thu,  4 Jun 2026 07:03:39 -0400 (EDT)
+	id 3ECE06B0095; Thu,  4 Jun 2026 07:04:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C0C276B008A
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:03:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8A2EE1C20F4
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:03:39 +0000 (UTC)
-X-FDA: 84841944558.15.C20C98D
-Received: from outbound.baidu.com (mx16.baidu.com [111.202.115.101])
-	by imf29.hostedemail.com (Postfix) with SMTP id 0AA1F120008
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:03:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b="N1c+ApV/";
-	spf=pass (imf29.hostedemail.com: domain of "prvs=md16098F0731=lirongqing@baidu.com" designates 111.202.115.101 as permitted sender) smtp.mailfrom="prvs=md16098F0731=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780571017;
-	b=H/E/BuGnUIaRTGLtWj1K97gGWxaP9I7ATjhFzpOJ1MEPqvrcAnTpQzK2ubpzpUUpUURlxn
-	GFHLrEtrbZzaSXnKSYVU1KDFjIrX8FSxzWR4uB+iQIJhX4uzP4e+XtoMr9Er21mAZXu8+2
-	UaAA92Kqzc2xx1m4oO9S97I1l4t4L4Y=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b="N1c+ApV/";
-	spf=pass (imf29.hostedemail.com: domain of "prvs=md16098F0731=lirongqing@baidu.com" designates 111.202.115.101 as permitted sender) smtp.mailfrom="prvs=md16098F0731=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2EC426B0092
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:04:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EFEE11C1422
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:04:40 +0000 (UTC)
+X-FDA: 84841947120.05.4BA572B
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 03B9C1C0018
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:04:38 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="U N8fj7r";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=kHkU6uCX;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780571017;
+	s=arc-20220608; t=1780571079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=w92cZ2nK9Zp3rFwz53YEnnxqHwDnKWU566oE80egZhQ=;
-	b=3/MpETbFUC8p9dDihp8PwYZbaUCIboD1vKEgLK4IbH9Hdsekn1LFpP8awNP7yNg8uzhtGO
-	V28j3TJ6WuFyBVGZcvByhEBpgbE743M9tOBcb6L5c4KNz3Q8HS6pZuECVRjyZBVPf+bLe0
-	x0jX9INxf4d4tNICa8CW2qLV7LZyxl8=
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph
- Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
-	<roman.gushchin@linux.dev>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-CC: Li RongQing <lirongqing@baidu.com>, Matthew Wilcox <willy@infradead.org>,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v3] mm/mempool: Untangle CONFIG_SLUB_DEBUG_ON abuse and switch to static key
-Date: Thu, 4 Jun 2026 19:03:18 +0800
-Message-ID: <20260604110318.2089-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+9Guk1v6UCqcbYZsqfj0527/CdsZdpy+8usy0jwjfTw=;
+	b=YzK782ZdjwPBK7e89clkH7vBRDzdzCSjaVcRVPOzdcGHUZOu4r4xyTN4DMFf3rhNR+WvUf
+	uFOS8sIHhrNzOx17aJCxj8Jds/TL+uxeiYG84HePW+fGCsrvvJGiUik7cGWmhrt+82EV+i
+	dyI8klJfwLYe/NK1Q5PmEHdMLLPp/i0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="U N8fj7r";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=kHkU6uCX;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780571079;
+	b=HszMJQf/yDdgc6na6Petr6jv1JKvndHLpXhTmz5IK0gGrEtNvAVaeFW1cTmW47RwnG5CDl
+	LXqCrtNagrlfRVBohvXkmF0bQlXd70hzxii4ScD6+LqzRxa+Ck+tTMDh2o5DgBibC5rC+k
+	6PCl7MM25qIeqaJtAS9D48jnbHljN6M=
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailflow.phl.internal (Postfix) with ESMTP id 4A08B1380154;
+	Thu,  4 Jun 2026 07:04:38 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Thu, 04 Jun 2026 07:04:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1780571078; x=
+	1780578278; bh=+9Guk1v6UCqcbYZsqfj0527/CdsZdpy+8usy0jwjfTw=; b=U
+	N8fj7r9HNdENn3fljE7rLtleY7XVbGsqBvc3itSmLb6ul3E2mJOFvb+SsQJrMYaD
+	vuhy/2bqu4MUD7RPwOafy2goW9KrD/9dV9HbVbIw82hH91amdxFv0D5DCwZJBnQp
+	8FyxDfAJIWdCXzJMWkq41jM9y0e68ibr0yUu6AwvXeUQjeJl7IjXNBylH9lhVHx3
+	ke3WrlUYmI/GFXxNHXt0to50J+cWI3LCl3ixsPTzUjGWN37hYzoXH5BI4y6UECR7
+	eMPHzJHK5r5/whA1ySLkSZ2vCnGV4BLW+y3oXQEQsumfbSk0IgWtPktW+vmQXH/Q
+	Pbz/KiDxYd123LhscxcVg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1780571078; x=1780578278; bh=+9Guk1v6UCqcbYZsqfj0527/CdsZdpy+8us
+	y0jwjfTw=; b=kHkU6uCXyVwnOSfyicVgiL98Zy1Mzr7HcLims8y3A3ymhcjPGpt
+	pU6W2Rl/cuaZ74Gg9AjSbUHdytPNb7gugHHoBqVds/5fd9XsReu5TF9eSWcQeto/
+	Q9ezekyQd45w/jtXHNLF4iYb6m+CeX3cgNPRDUrAuVg0kIjsnwS03LDLlsTn0lX/
+	zQxSRw1RzCSaoQJf9ikzRJp3nkWDRmOnRgh1KTM5fOw69jbFkn0AJZI511GDyM3o
+	vAkWe87UyMUC6KFdq2Q4tyVtHFL5taP/bcR3gG3DHn58vhl8UWPdIkLV/m0d74ft
+	g5yoQjeRtqTDbXqJE57/sKJaZDfuzoEe9kA==
+X-ME-Sender: <xms:xFshaoOPXNWTozIsfycI2bzP_z-RwNoc8JSx0DKdNLCNxh_WSObnxg>
+    <xme:xFshaoDijg3dqf8LsVhlQJ_e4MoqWAzKS1WSLbrQjSW3lCfpuqHqBOQwqNZkwePC1
+    eGOG7aTUvQGHqk8ecz1sHMdzcDqF2KfjWYjO426jh4P9hLlHnbfG4Qv>
+X-ME-Received: <xmr:xFshaiOH9uWkm-uMGwidrC1L871JS1bPQI8ssKkhjWXGfgrfv4rFQkt-EHO79g>
+X-ME-Proxy-Cause: dmFkZTFr7QY4Bhqerzvha2I0LMExUdgcQI1Pil8VbJFkYBwNmGuMv7KaM8ber1k+HdlcAG
+    1s5+QrPd4KwJEjqFsISpo4w+LkK5jrKBiwoDgOJtaDO3dj81Zq2H3GQGLNawialwaf7srz
+    3zVJoZYR1HEyHypVh27Ahm7mTIJRTosEyIpn7neBAKhOkauj1wMopJz34cjlvypisv7e0k
+    7Jfoh878GmndHrULSK3KHkC3q/9kEkSCZ4CZyerIPyuiDxEvEdWJHVzMyQEpThTfPvbomQ
+    TybmSQsniqdHboagZX5srV5ADMe5dQs/fA8IYav29U2QBvCT8kcZKy/pXHbJ3kzUYYTnba
+    oBgpyxK82g3Hn/mMVcx1+RRNjatLwQnPZ4jTKnkC2q2yCB9xDV+nWXGMnv0RpRaDUnMDNz
+    v1uhbJpYq8FBu2H4dMsekHF1CjTJ/m6x9Q46iP6hgokaoFC044lPuz+qg9lFC/+RE4ysBj
+    KreHfPHLR3uMZvPye70tETzN7i7YKOO4KFFHnnQMvp5L0XEHnSAQkLf1cJ/Ma4UaSAIcmA
+    X6UmeIixFCc9YKL9Lwg+jJezQFL8HAYsHvEoPKC87VHtpvz4nDOezrWLibwhV624pMvvko
+    qcT7FHMjjiCFyA+7CWABWmdadTTcNjFEdtnZbX9yWsY+BGXy1jGFw92jRMow
+X-ME-Proxy: <xmx:xFshatwLU7jBZRPW2SrYzxg-C-HZ6Iuhyqr75j4jBYJ3EIU1DDjc1g>
+    <xmx:xFshatc5fZeoNi8tJsRuHxeaFfTgO6txytoFoOPKyBZ2cgdKxYFpHg>
+    <xmx:xFshag00HPPdbK3j2zyTDffKlafc9mWz9RtDelizIfSaHqWCK8VTqQ>
+    <xmx:xFshaumMmVFAbBMSGmBpNl6GLC-0W02GI1oBjsHVdTI0HJCqLuFw0A>
+    <xmx:xlshasNx9iMhkb7lAzQlUmrPcn-_ykuAdM-kySpr5Tlv196TFi9h7TCX>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 4 Jun 2026 07:04:35 -0400 (EDT)
+Date: Thu, 4 Jun 2026 12:04:34 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: ilya.gladyshev@linux.dev
+Cc: ivgorbunov@me.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
+	apopple@nvidia.com, artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com, 
+	david@kernel.org, foxido@foxido.dev, harry.yoo@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com, 
+	muchun.song@linux.dev, rppt@kernel.org, surenb@google.com, torvalds@linuxfoundation.org, 
+	vbabka@suse.cz, willy@infradead.org, yuzhao@google.com, ziy@nvidia.com, 
+	pfalcato@suse.de
+Subject: Re: [PATCH v3 1/2] mm: drop page refcount zero state semantics
+Message-ID: <aiFZ57eRrCcWmS6E@thinkstation>
+References: <5dabf3a748fee0c7b142c74367e7586f5db1ed1e@linux.dev>
+ <7c28d766b007345f5f31ba9a086a3bffe95a013d@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.31.63.8]
-X-ClientProxiedBy: bjhj-exc4.internal.baidu.com (172.31.3.14) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1780571009;
-	bh=w92cZ2nK9Zp3rFwz53YEnnxqHwDnKWU566oE80egZhQ=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=N1c+ApV/0pkSLxt4fczPqkwaZ4ftA8kmr7FB0uM/rwDL6ilndlCEGjbyKuyVfTel2
-	 Tw4OBAPybFtKpvmttiIdbi7v6+7UeSrV5SBmsZX2pawVtEdHng35VLGrjXBKpGMNdI
-	 y836GFNAz684i44gvTxKYvVaPONvgcjjENr8LD9RhQx61gTbnir7xt9wFF4BS9J8zx
-	 YEDUeqJPOyoJDFyEhHwqH/4aJ0lJxJBLeNMuO8h4gxK3cPKIdg/V+mH4LPoNmblSDJ
-	 L40ZOTA3XI/GVZRFJMH9F4+e50p2r2IF1btMO5CYvDr8bL3d/UW6iOmnel8Ebt2g2m
-	 s6dP76NwaIZCQ==
-X-Rspamd-Queue-Id: 0AA1F120008
-X-Stat-Signature: p8amezcainbifjw14yhgzk435pcmbrhm
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7c28d766b007345f5f31ba9a086a3bffe95a013d@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1780571013-681150
-X-HE-Meta: U2FsdGVkX1+A1WM9avF17MQSo/7dqbr3pzmtiL7+SR29+LV6rhk4gxveo8PR5TlYkGXcrbi8Hdu2yIa+IZevPVjANOv/fXpHSe2CcLZogt5+aw2w+y9TvI0Om6RJFK1H6KUnoZe4IP6iHW4oCNGYg7kZjjArluk0SXq2MjcSZkxdZwqK0JFlgPopqFV92GrwEOHuhnQSV/KxOeOstsH1SVIkNbScZw2qUFwKjiCoJLRe3lICl05HEOVsNNm0l6CIxPXlQUnTn6z8V7fpWQnInqUbBh9UJYugSREBDcDDJPdOFzPVCKtyBcLQbCS2zr736vUOY0LddPqMF0q2XQLKQK+MJIk12mUUwE669d15RTrteAEgYSEx5YlZpm3kYBPjKZvmNJi9XO+5L8xnn7pMxyObfVRiXKNKBz6He69hpTs5YiSyCyQtOH8c1LFSq70/RYU4Hixc9eY/776c45GwhRzMbh1twGt4JWuhO92uTSAikC2fiw3JG3uMettNnzR7bsksO8Za5IwyOu5/xNx/CDSOsDtJc8ExudhNR4tgFTl4MhSZ2O/k4HumZzhw7iuyEmFsGFhrr8yEa88RgAQyYHvdZZlbAd77cskqKJc/QMWd07lgGEs6sRU+9oKAIQbt5gdn/giuLMWyvkBt78rDYsXZX12XIHn4wveDZ2XBMu4OiG1j7Hi8v3sI4/MNQqiMbjvQpsxLjqc1HYNxAdgCMU3r7weucBrVDRfoHOYrDaj5cuIkL9y4NSLU9Z6aO2I1FuNCnGoBWzyihmGmL+8KIFZlhNspp50ks4Ix9W0UE6M5lhIwhcxjg+TfCRfv6vI/adqz8aiR+pz4QbA4DPQnoArjwOLnUKNOY0ctjusYl1cN4skk43i+wd1bPtOStirWx55c7Ac8kpdUY8C+foVjG1fWV1kUyOUY9Gp0RwdjPODiso2xPucx/A/qqpW/BPdSlP2JFtN0EMtZa/fl6A+
- cc8JchG5
- ljag2+PwRM/vWMDMtv6fVqA74AaLI8TOohRNDiEThwa29fJsqCpce8TLbgjpkca9TAA0fLjpVi15nrICj5geHsgKeKXHIRuZ6BftfjMgqh7GbQVuTlGbH20qvuw2oIf59QyeRpY+UqGJkJTAWlJBJk9RuC6YU1x2fJziSOAEjYbTaEU9gCiT8jh2+VprwKxkZf3yvw2P3CCfb1DlbKvQXT8w71h9rwzPkOle39kl/8HRauEN8wckE+VxHXxUdpp7AY4clJMQvh1m7NZRfa5fJXxuSnQ56Ty+UbIyLBr1n5Vf5xrSgd6GB1qWk6P14/UKewUyhKwP7UAvVI8zREi9JV0W+f9P5GVpQljv3x1AYB5/vOFSzR6mOoHi9LBzfICLETx/8rQ746CsRC7D3Qamqs4UzhkQaySlT/OCFHGN0jUoO/U07StLWHJOK03BCW2dAOQXzf2Cnr3C+wEVtTfs26TE5LnR7ay3o60j1WtJK/uag0H25XWBLEKWsjrnSeAVthgMdu30yReJDxA7q9NtuKaJO/2zUGdVhnPIoWvCdFX6s00jxucdXWLislCkgVnGbPsVO42texfBLEMHOhzLTHAt+GrWDkUKVn8heNjGQzx99j/5wD6gLU1qYw3suFpUOi9VvROS4WHh6WjIHkETLtwPsjQ==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 03B9C1C0018
+X-Stat-Signature: xry68xan3xn846w39e9ycm9bcg7phto1
+X-HE-Tag: 1780571078-538170
+X-HE-Meta: U2FsdGVkX19XJ70wcmnDnF0mIWd+fe1GdQUApGlW2AOctyhOhutqeFrLfxb2gFVoZttMQreyPW1sBpUi5VlglEmFVnCEr9Rvl8QAwBo8cxU3bDi4QLymONuoLrbOmSiw+Suy2xxhS5FxDR8WlEpbyARiy2vMkszm+FACmZ46LvcjV56+wAEl27fT4o+BDCHo79qCROZb9SiXCAu7Jhddz4BEF8h+2JMfz+//HsLB4hhFV1nCUaHo7wKVZVfxmJj82PjfRTOPmu1kr2f9JSdH1TEWJMJzxaulvaWz1XrNHnFWvbvo08mK2U5cKqK2AmRmoVrPtn2QNVkAt41xFc0+mBNJ61LuVvxVkFfiJ3NEqvPWBOmGzjtkLaPrTDa6Qep5F+GriESgYoyFNM9bx+rEDE+OKQHWzbSORrXrdre1enDY3fSLW+vO01bVmVlsYoPAZI8o7d0b6K9RVtXEGmcba92QToYS+cLWMCDHdlLGV0yolsOU38TdR97ZfPZvNMnDPgjc2ZXuUmdXnJxPL68q5Y8wMcVw6ZjhaHB2/GqdJlYICsLbWsETQ96LE+aO2phi0fAmueWMu2JNNtF3Z7xNYmRsQ0VYkT9iqFQa9dlj841AL0iflGlICE2mVe6P1w8v4r3aIV6NhpvWCYlCUtdwsqvtA/9lZTPcOKiGhiczVdehseZ84hDzjYczYTResFhlhjfRVBIWk8KtcrWNLZwNZPMYfxmldDkUID22czFBQUXsflZjf4exArpxOFP+tMIp67+imQuqRV8L5qgiMGawbXQQGENwOh8uSBfj0sQ/ucdhGgA9h7DqeYF3FjCFNng2jvBWKV9jFLbO0TihDUkfhg1gU4w974nbqOz77Gsom5ZcWPTlNHdqa2pw64jmuI5oHuQ2T/vul3p1SWVE0gJGgW+lOtDl2mjcCIMGo/vcJM6T/ZspwjyFpI4y0PlJ0u3W8WCSewHf+ycipyIRMjU
+ VvX0NPB2
+ HWGZ97JL64h8q5BxIGJqTR64G6wSBd2X5Q8n66ffDWAXtJeo/nu2qhUSuCDMcFEUiQmtfnrJuU81dx0NaXPoo0bbgXUs3riJzuZ+p85dzAT58sxcMVQIm8HSi9cRzeaB0oMxXymlY6mKRpoKEVk6OHX+8LBSOiIbWZh3T0F+G8+2Nz+dxxTXu+PfX+ALguQ6wpJYTATcVBh3oL8NvJEf29LamkPnbpM3XYSaU8bsRECBVTJqNibAQQJg1WbSOqE67Nb2yw+4+3pF7VvshyvourWfCiHVkXIG1Ux0RYWnG19RItQUebOvSdB75aeKJAi2iXsLwvYIXoJvfQBwBTp4HztEFBNREssvy9rfwPTX/wO7KNkGNmxrZs4nW0+S0dAOmz4f/d8iHC3UnSku86aBOZ7dTubQ08ARCBjDKYEjzDjt8X5X9azKANGG2ST13eZslkia7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,136 +133,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Li RongQing <lirongqing@baidu.com>
+On Thu, Jun 04, 2026 at 10:15:12AM +0000, ilya.gladyshev@linux.dev wrote:
+> @@ -115,8 +120,14 @@ static inline void init_page_count(struct page *page)
+>  	set_page_count(page, 1);
+>  }
+>  
+> +static inline void set_page_count_as_frozen(struct page *page)
+> +{
+> +	set_page_count(page, 0);
+> +}
+> +
 
-The mempool subsystem historically wrapped its debugging logic inside an
-merely defines compile-time defaults for SLUB and caused two flaws:
+This name is strange. Maybe something like init_page_count_frozen()?
 
-1. On production kernels where CONFIG_SLUB_DEBUG=y but
-   CONFIG_SLUB_DEBUG_ON=n, mempool debugging was completely compiled out
-   at compile time.
-2. On kernels with CONFIG_SLUB_DEBUG_ON=y, mempool debugging stayed active
-   even if a user explicitly disabled slub debugging at boot time.
+And don't you want to update it in patch 2 to set the bit?
 
-Clean up this mess by removing the #ifdef and switching to a runtime static
-key (mempool_debug_enabled), allowing mempool debugging to be toggled
-cleanly via its own boot parameter.
+>  static inline void page_ref_add(struct page *page, int nr)
+>  {
+> +	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
 
-Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>
-Cc: Christoph Lameter <cl@gentwo.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Usama Arif <usama.arif@linux.dev>
----
-Diff with v2: Move the check out of check_element/poison_element 
-Diff with v1: Rewrite commit message, change early_param to __setup
+Hm. These VM_BUG_ONs are useless after patch 2.
 
- Documentation/admin-guide/kernel-parameters.txt |  5 ++++
- mm/mempool.c                                    | 35 +++++++++++++++++--------
- 2 files changed, 29 insertions(+), 11 deletions(-)
+In patch 2, you make __page_count_is_frozen() check the frozen bit and
+page_count() masks out frozen bit.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 642659b..89b5994 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3980,6 +3980,11 @@ Kernel parameters
- 			Note that even when enabled, there are a few cases where
- 			the feature is not effective.
- 
-+	mempool_debug	[MM]
-+			Enable mempool debugging. This enables element
-+			poison checking when freeing elements back to the
-+			pool. Useful for debugging mempool corruption.
-+
- 	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable memtest
- 			Format: <integer>
- 			default : 0 <disable>
-diff --git a/mm/mempool.c b/mm/mempool.c
-index db23e0e..dabe05c 100644
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -16,11 +16,28 @@
- #include <linux/export.h>
- #include <linux/mempool.h>
- #include <linux/writeback.h>
-+#include <linux/static_key.h>
-+#include <linux/init.h>
- #include "slab.h"
- 
- static DECLARE_FAULT_ATTR(fail_mempool_alloc);
- static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
- 
-+/*
-+ * Debugging support for mempool using static key.
-+ *
-+ * This allows enabling mempool debug at boot time via:
-+ *   mempool_debug
-+ */
-+static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
-+
-+static int __init mempool_debug_setup(char *str)
-+{
-+	static_branch_enable(&mempool_debug_enabled);
-+	return 1;
-+}
-+__setup("mempool_debug", mempool_debug_setup);
-+
- static int __init mempool_faul_inject_init(void)
- {
- 	int error;
-@@ -37,7 +54,6 @@ static int __init mempool_faul_inject_init(void)
- }
- late_initcall(mempool_faul_inject_init);
- 
--#ifdef CONFIG_SLUB_DEBUG_ON
- static void poison_error(struct mempool *pool, void *element, size_t size,
- 			 size_t byte)
- {
-@@ -140,14 +156,6 @@ static void poison_element(struct mempool *pool, void *element)
- #endif
- 	}
- }
--#else /* CONFIG_SLUB_DEBUG_ON */
--static inline void check_element(struct mempool *pool, void *element)
--{
--}
--static inline void poison_element(struct mempool *pool, void *element)
--{
--}
--#endif /* CONFIG_SLUB_DEBUG_ON */
- 
- static __always_inline bool kasan_poison_element(struct mempool *pool,
- 		void *element)
-@@ -175,7 +183,10 @@ static void kasan_unpoison_element(struct mempool *pool, void *element)
- static __always_inline void add_element(struct mempool *pool, void *element)
- {
- 	BUG_ON(pool->min_nr != 0 && pool->curr_nr >= pool->min_nr);
--	poison_element(pool, element);
-+
-+	if (static_branch_unlikely(&mempool_debug_enabled))
-+		poison_element(pool, element);
-+
- 	if (kasan_poison_element(pool, element))
- 		pool->elements[pool->curr_nr++] = element;
- }
-@@ -186,7 +197,9 @@ static void *remove_element(struct mempool *pool)
- 
- 	BUG_ON(pool->curr_nr < 0);
- 	kasan_unpoison_element(pool, element);
--	check_element(pool, element);
-+
-+	if (static_branch_unlikely(&mempool_debug_enabled))
-+		check_element(pool, element);
- 	return element;
- }
- 
+I guess you want to read raw ref number here, no?
+
+And why not VM_BUG_ON_PAGE/FOLIO()?
+
+
+>  	atomic_add(nr, &page->_refcount);
+>  	if (page_ref_tracepoint_active(page_ref_mod))
+>  		__page_ref_mod(page, nr);
+
 -- 
-2.9.4
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
