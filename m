@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CD68CD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 05:53:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D80DCD6E68
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 05:53:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99A786B008A; Thu,  4 Jun 2026 01:53:27 -0400 (EDT)
+	id B70246B008C; Thu,  4 Jun 2026 01:53:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94B536B008C; Thu,  4 Jun 2026 01:53:27 -0400 (EDT)
+	id B47956B0092; Thu,  4 Jun 2026 01:53:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 860F46B0092; Thu,  4 Jun 2026 01:53:27 -0400 (EDT)
+	id A84F46B0093; Thu,  4 Jun 2026 01:53:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 74C8D6B008A
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 01:53:27 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1467040505
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:53:27 +0000 (UTC)
-X-FDA: 84841162854.28.B66119E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 996C36B008C
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 01:53:34 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46C7B1C1CA2
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:53:34 +0000 (UTC)
+X-FDA: 84841163148.26.3FB6198
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0310E180006
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:53:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=D1a37+sI;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	by imf07.hostedemail.com (Postfix) with ESMTP id 71B7040002
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:53:32 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=MSn4AOul;
+	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780552412;
+	b=cLxaSXTTPr8v/kYRvbcfvsDabQR4yeLst0+UZNTMGMy1YfnvRZQIuPAK1wNnRFatk9a9nL
+	XKQjSkPRAh5SYlaJ0mjskyhEUrzjnOLAdSotkD3uH5eY/8+UAfWNCaRFr4S7QV7EjxqWQ8
+	MjPNoaeoCFHpC+UMPf7zBsZgfx0ChUc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=MSn4AOul;
+	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780552405;
+	s=arc-20220608; t=1780552412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=j0tJrvPG5j4W541NDyjuYhXgvJ/KNn4DD8KwVnnKfO0=;
-	b=qKu5d8kIsPWDmVZknXSAq4sdAYRektCn81Mr9n36q2nPDo6XW0mCEWuamhVCxrtXwWPtdz
-	Qq2V6xdO6hE/vn8faxjudZwx18DRkfnlLZtv+lJhWor1qXCW4ip0kj9OQPZ0HOVRGU3dKp
-	IGmkaQyODL2BZjfgSqFFIi9Dlh8QELQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=D1a37+sI;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780552405;
-	b=2qJfF07L2/sU06Dkq+91YC9+EtEmYzqKpiyjZM+5ynbY7aBZCf3Ig+7JoyFDvpgrL/uJhl
-	O65KoMgQne6ifGQBG/ok0XgJxtKX67jX0HKp1dR+nz33bGhNoHljWYxpU8LQ16i586KQ59
-	SOgN2qKjFw558JWULwG14aLNMvXjjQo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=442DefUoGf8kF5AaejP8Bj6Wub13cuDeUByj4L/5ksc=;
+	b=aqDOPH5+Yvp/od5HgtgJV/8hbqBELlpgZGXH+XeJH8ucrQwU6JqrozyChrCI8Xi7FwzYg8
+	N32d3yJnwIS3Aj7o7yqAfVz9Hw4qYWnzqcFP5xT4sVnEswTU6/9aI+G/X6Aj6U8GEjTAFh
+	khFMpFj55Y9/q3XbJAxNkOnRzcwjojs=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D59DD302F;
-	Wed,  3 Jun 2026 22:53:18 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B4C53161;
+	Wed,  3 Jun 2026 22:53:26 -0700 (PDT)
 Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.31])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3FB453F632;
-	Wed,  3 Jun 2026 22:53:16 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 690073F632;
+	Wed,  3 Jun 2026 22:53:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780552403; bh=EEYF8O7AEUhjF+sbv704hFcrFcRtIyD5CazH5tKQkzY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=D1a37+sIbot7rEMsl+X7Bzskf3G5TgA/GAw/D7RevEV0fp8qxIkJ2B/uhYSoMm5ar
-	 aDtSYl6v07F611Ilnq4KyRnscxl0KPU8m7l2eHqyeEFZH/SeT/Hx7H6mM8GFLlrNnO
-	 Hu1p38L1w2w5Hzzx4Ptv6FeP2BFRzlCEmJq9P+bQ=
+	t=1780552411; bh=fr1ZIAKStZBd1psxptXiTd8a10xNZESCVeJoWx72PSo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MSn4AOuln+fZ2CVLJ6oX5bcQMRbDlPvZYZoMQ4eHlTUvTMK5Np1lmbcTk7jobKzHN
+	 8ZftqXvWi5eO40qEL1SBCbcQqQZp8q8oAIv94LeQHM8Tev4qI9i3B0EsWM57JtrJmA
+	 QKoxqVtIl2Z5nGJo+44H7uVSc+cVItHrU+DAlwn0=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	liam@infradead.org,
@@ -82,21 +82,25 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	linux-kselftest@vger.kernel.org,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com,
-	usama.arif@linux.dev
-Subject: [PATCH v3 0/2] mm/hmm: A fix and a selftest
-Date: Thu,  4 Jun 2026 05:53:04 +0000
-Message-ID: <20260604055308.1947679-1-dev.jain@arm.com>
+	usama.arif@linux.dev,
+	stable@vger.kernel.org,
+	Oscar Salvador <osalvador@kernel.org>
+Subject: [PATCH v3 1/2] fs/proc/task_mmu: do not warn on seeing non-migration pmd entry
+Date: Thu,  4 Jun 2026 05:53:05 +0000
+Message-ID: <20260604055308.1947679-2-dev.jain@arm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260604055308.1947679-1-dev.jain@arm.com>
+References: <20260604055308.1947679-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0310E180006
+X-Rspamd-Queue-Id: 71B7040002
+X-Stat-Signature: bja7g7n88yt35uxit7peyar7s5fftfaw
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: ja3ajm4zo1tognnfepxn5wmx74gy1tqo
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780552404-168155
-X-HE-Meta: U2FsdGVkX1+nRJpj4zNcJ702WnSCKuhhY/4VQZOkpXS154YmKoW5zK4J7h9ibyEXKEP6/Y3/RFQZ2WHOAa8zg33OvwjC03IBvOXeUFs5Y9Hv/l0zUh6G8IXixGCl7x3z5xesikytCgVdn44OQ4JcswE3wnX3hWLMQK7di2GwQwXqWsqFlr8eo8o5iBi6/do2uMiEzyxCa8h39A23S449h6w6vj3MadSpzp09QNT29VUxNqNLa0sOwuPQY9KJXTYKtZP83QZ4rvctAK95wdj9cgdedw7Vv5lomjsAko39rxirjps499ZIoH7+SFwQw9/32SBrPlPAfwMyqwIPs8x+lMMPclY9QCmZfX/LOl3Le7wwInu5gIbK16Kj13yj1tTbWjWd8MgrHY2aKVC4MDmV4PF02aidqvyH1iKot8pwlGmxo4Jcn9yXFquxG+OYgax6uC0CPs631xvuctGSLDCudFc3Hap9WI0MBosZuVS36F6dwTWn09zEvnXv6proyNFG+tQFq088M1F6o0OJCkyRW4q3vQ4oq+m28P9vCItaSlQo+CbAE17YXSVrO5/u2GBN4+fRMs6hqZInLXRwvdYbWmLauIrlhS6QVJsQEVBadf6+TCVLw6Vn2i8+lIyTWPHZCjbskl1yznTFRJmJpXYli7wYAM9bwPRNau3U0fw2A3ZkzSuzSKPMpABQ20iAs04WacTx80obSZsoB1Xaz2UsSudOdQrCJTs5GFtWAeW+Ms8N791QIH1DI4eK/WPsHSS9Y2b+5c+1cwtd0h7uK+wcE38CBpYEr9+jcOBf9a9K3jGLG+RrYoOObvEGEjd+YOqb5365n9buPxTxvyIoANLvDD+opHyojxJm/JCoB1Viw3V+yrgqEUd21fRvPwMUZ4HZGzJ2YoMf8K6DcnKjO2ZTfnh0FKtfB9AAHEASTVD9HquB3tMu/k54jRDWJMa/06RKviSe7xLnC+abT5VMLJX
- ZFr9KQj7
- cVOqz4V3DAdjMh7Zc4h3RRulAtDclMm/Ftg62WiTZZtadfv4BACDgRX3z+/wIv9s8rmF1+phE7RCPIT+t/fmAnY40TynAYIEZdrNrrVQG3Qc479HuooMAIcZn/mLsX1UEEC66DsisIMSJro+WycFJIP2gGa5D3bI/gKwyaxZmRoFeDYkorYVo4JQGRQ==
+X-HE-Tag: 1780552412-10100
+X-HE-Meta: U2FsdGVkX1/FPX5f1N2xeKz9VlOrDyQDi0G690D48zWiguLkM93zDxMRMnJP8XmDszvB520ZpyrZS8xvbPw6jsisORB/oG/pAU3Z4XSwBK3QMjLrH8Vc/Lx+ksLPHZiZ+Xc+8wrfz+fwqE9ZDqI1EZly1dTFfSOuV700GpdYDhhnWeJjw/QOPHwkoAOUcdZIqj1Hjlh7q17bF4DYOQoBeKqpNsRS6rMsYi3WwdDGMrsNGBTVFu9I8GmoqxQ4gsWJTojPn7NzBIb383ZwmsDAZHVsm7Lze5sUq9vVH+b5olkUscI86GtVW1yzJzTE15p3SvhlLuSEa9nwbYdCkmW+LiM/NJCkeMa/lXBal7Iut/ihRXLu1wjylAhjkmW+476y7Bpbk8GkAiS6cfd8qq/qGdxvPREpwopXAxNHFxOAoYAiyiT0F7KIfsraSGkq9No8qB3Op5ek6CPttF1HjNfxZU3Gu7cimZBfkQThJd/rFmyeD7I+J6yj57JtXGfpYVo+cH07A0W/f8+CA7LAB2bwtYXp4NE+Ty5urM4G4r7ni6+UKpxmgGDVNK0YV7eZ/E/G43VvKRhsKds3lYcGVOgICUFwNkUT+kM+Uq0t8GWRyhDy00nXDbBQ8imwWBEAJs66ClapFuuGjjxFWZbaF4N2Adgk0QK95tfOt/nO7Ctf4zxCliP9FzFCNGr4J8V1wyhCoB5qq9to+YBkMfOk0C0AZ6ZuU99H4sBo0hbkahC/KDsQAUbzsnFq9U66jI6CAexYjrh+CZybMOUSJPUK9L7WD1VwCIcF0jsJ1q3YjK0rNZawxLBBfCJDDyCwsS3deGHN11vqEihg3pzhkRtYPsbGkqHsXsbIyj6nRB/LkctJ1JsOOPpJ9R0K/ZTiDNtgtjXIMHTh51A9BAbUjXl2BTQ0Qv4z7gra29GNl+8+jxaF4/9pvHGdFY4U8pUClYrXSuzCo9vqxUvvRCY1gz1jAT+
+ F0m/R8Fq
+ CO+Sx3+l2U4QKVhYrg3srv0EvBxh3BfA+HkQr4RwoSXQITUIiJIcGIiSJfrFHBfKTF/swEBz6RjJ1dONtMY4KipzHBaPjWrHwRT5hD7riGFUSxWofu4QMnA/UWrkPAvgIuLfVY7gSN8KBuuFUVdtb0vjc5wtu2lqubFZ4eEEPnRm3S1Xe2LuId8QXmmhHl1OiJHo0xDXXVFoIdZxWScy6iS/2mp25ohXrOjT+J6gdnAaFGeEdYJV8h0Ok4muHrTitPdMb6/hYj7HONloYDosL/rDDqif9Zf51uY57kaJ2iOMHwvwuh65JVWnSV65MqFyo3kizHg+EoCVwfU1hu546BpcXNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,30 +108,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Patch 1 fixes a stale warning present from the time when only migration
-softleaf entries were supported at the PMD level.
+pagemap_pmd_range_thp() warns if a non-present PMD is not a migration
+entry. This became false once device-private entries at the PMD level were
+added.
 
-Patch 2 adds some code into hmm-tests.c which exercises the pagemap path
-for PMD device-private entries.
+Therefore, remove the stale migration-only assertion.
 
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+Cc: stable@vger.kernel.org
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Tested-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
-Applies on mm-unstable (d17fe8a046a2).
+ fs/proc/task_mmu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-v2->v3:
- - Use MADV_COLLAPSE, use PAGEMAP_PRESENT
-
-v1->v2:
- - Add test
-
-Dev Jain (2):
-  fs/proc/task_mmu: do not warn on seeing non-migration pmd entry
-  selftests/mm/hmm-tests: test pagemap reads of PMD device-private
-    entries
-
- fs/proc/task_mmu.c                     |  1 -
- tools/testing/selftests/mm/hmm-tests.c | 34 ++++++++++++++++++++++++--
- 2 files changed, 32 insertions(+), 3 deletions(-)
-
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 1e3a15bf46f4e..58938e62154d9 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -2129,7 +2129,6 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
+ 			flags |= PM_SOFT_DIRTY;
+ 		if (pmd_swp_uffd_wp(pmd))
+ 			flags |= PM_UFFD_WP;
+-		VM_WARN_ON_ONCE(!pmd_is_migration_entry(pmd));
+ 		page = softleaf_to_page(entry);
+ 	}
+ 
 -- 
 2.43.0
 
