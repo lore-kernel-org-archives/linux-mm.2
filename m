@@ -4,96 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9568FCD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 06:44:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36048CD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 06:46:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7B1D6B008A; Thu,  4 Jun 2026 02:44:58 -0400 (EDT)
+	id 8FDE96B0092; Thu,  4 Jun 2026 02:46:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E534C6B008C; Thu,  4 Jun 2026 02:44:58 -0400 (EDT)
+	id 8AEE56B0093; Thu,  4 Jun 2026 02:46:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D90436B0092; Thu,  4 Jun 2026 02:44:58 -0400 (EDT)
+	id 7C4706B0095; Thu,  4 Jun 2026 02:46:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C91756B008A
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:44:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71491A0626
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 06:44:58 +0000 (UTC)
-X-FDA: 84841292676.10.67F1CFE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A5A5E20002
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 06:44:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kSINESaE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A5716B0092
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:46:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 118CF8EAC2
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 06:46:01 +0000 (UTC)
+X-FDA: 84841295322.03.B54DEFC
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9B0F04000A
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 06:45:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FNRZSfnc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780555496;
+	s=arc-20220608; t=1780555559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eg1wO0x1ENq/IsXBJXt2gj46nNJYx81jKKCliiCgZLU=;
-	b=hvOvcunamF9XUu6QHP9cevOmUVD0VDSSkDaky6Nf8karkxLGZVpZMBlxii8RBNbgL7YH+A
-	/GpQ6spxj7jJ/E5yWhTcybElPbCvLehk8mphT6OAcZA5FDnMDHzDavZ7J4xAnXD/UyZbby
-	9SuXh1dpevY8MSrTTAl9h3PiI4p9SpU=
+	bh=KhIU+QoUu5iwz8e1xyKoqpvvqNCKUWZqivCuhNU2rC0=;
+	b=PgFVTkFXQcve8buiHzspSI+6pqdsAmwYaexeK/L+W+irFwEA8zB5jPvFLuko5YWSERxkGE
+	wnjS/QpaXa3IsSCH/p9zC+Ujowl949KreMmkHQfQUInEE58Fx9coVvNKCwWLWv2bVLsbXj
+	kb/XysnqwedNI9al6ENXlSJxmy0qpsE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kSINESaE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FNRZSfnc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780555496;
-	b=Ju+S406eMaJpfPH6njJYALSadstY8xxo5JKWH9ik5CMt4buWwBUXNUpMlyHUgHRsJxa2R9
-	Si5sllLJwYSdCSoXGlMV0BKwU700Owi1ywkvpuD28+Ok2dD82hmAicaLyYBmlkvtafps4k
-	2h+S5RaW07oQlUbcQ5WT43koXnBfX/Y=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 99F6443E6E;
-	Thu,  4 Jun 2026 06:44:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD531F00893;
-	Thu,  4 Jun 2026 06:44:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780555495;
-	bh=eg1wO0x1ENq/IsXBJXt2gj46nNJYx81jKKCliiCgZLU=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=kSINESaEKV7JW5BpKKWTTJLN2/ROfMq1dt1OAHj8IfNMYKL2MLNJ66QCsHWkO0lXJ
-	 YtTchJHjUYP7utCwVMrFTJBZVlq6ZbMUl1Ly4Nefp7TxoWRxpx6S6U/pzwIHhjuKuw
-	 shrkgCZq3tVOokqWtM5bHelh8wbCpQJGuqcMDHt6AEg9xW2oveFYQfEI6aTsr6fXPg
-	 BcBWRyKlRe9n7nlgztHjCUBViF3rUstPFCK439VKoMRRsnCegTIY9AVtuQsJbdtbe1
-	 cjsnyWWxuLhZSjgBpgHpI59eO2mKuM6ykjZzApUhEpTILD+TPXQc/2du324kXUR92r
-	 TM2Hdamrbccug==
-Message-ID: <045f9e77-7264-48b9-81e3-c4995d84d026@kernel.org>
-Date: Thu, 4 Jun 2026 15:44:34 +0900
+	t=1780555559;
+	b=2eB7UO9iwwmt1bxhe+L+Mh5w23nE/SlhWaT4FyQQFLtjuTtALNPbuv2ubhF5UnV70YXklq
+	WEn+WfaH8BIrAYCrmNRvuiGiTIsvhmJZfFiZJd83dQFzYsoWLvLne6fTMavE13kJBvcFy3
+	n8qIYgH89WoeRBhbXOguAO0Ay3aoh4Q=
+Message-ID: <02ae706c-0fa2-488a-8530-b6da8daf39ca@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780555555;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KhIU+QoUu5iwz8e1xyKoqpvvqNCKUWZqivCuhNU2rC0=;
+	b=FNRZSfncCTtCtDhmojfDOjkb8DdFyeYZDPH0LX4m3b/8ClYV4sV5MHLh4fiy4pPptsGnpV
+	505Acmfftk3PWAv2uXjs6PV1qSa3gPcI2Cyan+ZlNdkauR3pagZkKtP5wxZwOC/PxTdw1R
+	AwRfff08EjJaLC2wHdVeq2catRUkZTQ=
+Date: Thu, 4 Jun 2026 14:45:17 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 bpf-next 3/4] bpf,slab: Add slub-backed allocator for
- bpf_arena
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
-Cc: daniel@iogearbox.net, andrii@kernel.org, memxor@gmail.com,
- eddyz87@gmail.com, vbabka@suse.cz, harry.yoo@oracle.com, david@kernel.org,
- tj@kernel.org, roman.gushchin@linux.dev, peterz@infradead.org,
- linux-mm@kvack.org, Hao Li <hao.li@linux.dev>
-References: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
- <20260530011345.99342-4-alexei.starovoitov@gmail.com>
- <ca1bb6bf-f25e-44ba-87c5-e23e4939dbd5@kernel.org>
- <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
- <264ec41c-dd1f-4957-9032-943fe719dffe@kernel.org>
+Subject: Re: [PATCH] alloc_tag: fix use-after-free in /proc/allocinfo after
+ module unload
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260525072117.112779-1-hao.ge@linux.dev>
+ <CAJuCfpG7YCRYWHUn6JM+nFp0eeZz1RSxp620BQUJA8GKKay0uw@mail.gmail.com>
 Content-Language: en-US
-In-Reply-To: <264ec41c-dd1f-4957-9032-943fe719dffe@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------0VNFm27eFE0tres1yP8QrSXf"
-X-Rspamd-Server: rspam07
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpG7YCRYWHUn6JM+nFp0eeZz1RSxp620BQUJA8GKKay0uw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: mfgfxzm15amaxbg7d1nws1r7qh3zh9g3
-X-Rspamd-Queue-Id: A5A5E20002
-X-HE-Tag: 1780555496-252777
-X-HE-Meta: U2FsdGVkX19Rx4iVoaWTq4xKRQnsBKZ2deHWy+Dqun5nP/OUdrfnGaOMepMGZ5VWE2kwejzjhuxLQJ9a/nCuzmFuDdPOK9cRTuIw+VnnRmg0FiU25wt704YbI/b+Ul56gQ1NmkDQ3+bEee6fMgTth6sDm97RsDeMxBA5OaiNyOB8UcMHYl7267bdSiw7PIDpqGKVP9k9yyhGJz+40o96sdxxxuT5IsmmvK50iICTYH2uX6vydAN5GT70wcQxYAFqsWWq8Sy/E10WAdMRzs4prychoC2OC4sA83oe5hS5e9qhu4VPrEXXMbS1Rp76aCq/1HAVHufGWDpAMmL93O7QJ8HXF0re9//yqJZFWKzuKBg7ynm84cYjZmHF0GYnQ3hFwBK/EyQdC89NW8bfru1TLFoXqZhIbLYK95ckM7cEc8eSMX05ff7/Yl5ipl0QhPXETV3v/FYrKUQCJo7Qj6QWMHhV6K2dFOj7eO2i5hBXOvz4BJWdlwSMmVgOOQDMjT4hjQ1YNaFZTALMvfrYXP2qU2Qd4H63sEs8ra571M7SdPEvStDD5NeuA8QV0scPI9piNixzZ9oubQTjyqDyr0ndEsnmUrq+Wi9H3xI2a3zgdywoUMD7WeLdpHQCiyKRXveHC2rM0JYOecmGGAIdZnnQFpmU3z21ABY7KK1eqc60lHZLG2Hjf+nNYfMdSz5hxVlTbxxHMIumlWe5E6OsaKZnSZZ4m0wM2UJhxG/qLd/5AsP7Ke8y5JotiRLQWvvvTfWCK5ucIw9j8v2cLv6PeRNgIcOXV3SF5gEwuhxxkQoyGrZlOU7VyvMHoZUlcdBH/mkBUx913Bo1i1RrwrOypfCkHikdOzxHH8HTuYw+yAyzZg/gzZAfVmh0e1uOhzA/4aeD+04wA5r23FARVZXhela99FWD2NApgR3DTB7YYRuLFcQFycdRZN5W3LDCBk8mfaRgu+g16hqpY7chhG1AGFc
- nUoRYPPA
- c6oyySIfisIUz4O35R3Peef7Ju1cKANgFG4KVz6/MRmft7YSzLkqWOM+RVGLBoGEl4e4toBmLeW4uwujiP7arKQpYV8Uf632K451Ek71EKU8J2+bl6d4oY+pFEe6btOazhp+3DkGptz2IZ1XMjM5PFKrH6Bj/4nj+7Gd0yATWoSGCUqdoLQrL2GQxBL3LNe5OryJfe9DHWcRcx/tNPoxx9LvF+rsrvheAr0iH5t7w3WdYsGdo7aan1a9wgXEO/IsRXblIIAG70CH2k7fi3loduLJTHMxXyvUdNyoIwgr3/UvpXue14Uqc8mL1aXZPm89qXYhXhTqwIjaa7pQ/clTylHTkU4CRUA77XyMdA510JyO4z07qII3BaUkO+3irFxihcWnNKsVgZn0+P0L7zl8WpZ9AK/tvu/Maa0P0IJesM1YE5bzKP1jGQiB3HDQursThUzGjNhpm0niecKFOC4TFLZTLrTBCoj/Pb9iMzZ0g2tq0tJL1brUjlmoOKXj+kLkTam40srl7jZmn1CclzYoUgfwsctxaXE38BZkRYtzic4uV7K4cZ/S50KuXnfxIq1DIhPMRr3kFErj1Y1U=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9B0F04000A
+X-Stat-Signature: swuout1ocrqjpcuqqo7ayzewnzshxzy3
+X-HE-Tag: 1780555558-227339
+X-HE-Meta: U2FsdGVkX18s1T1EAcKn7vTp9eg3ChyrFFB8qCCrIqpVjgPORwUYRoUY7AvPdrXgBMvc68w2FzMcqV3gykxL38d8bwstKFgvy280VPmcm9ZGPnqs3pIFvvnN42UJHioNaJ6nU5UXlj8nflF3unTuQAZ/kvvcBQOn00YJWxYBHB49UsaqiU2cwovUWi4DIQNx6cKWI6eCiOlGa3VnHoVfxr4VVLkSUVZZyTOsYWV4OtomDp8VYl28Nut1PJABRxzAd43nrUnaBjhniPdbt3+SZMr19bqYLfS6VhtAFg5CdIukyLM0V78gDRdpiwpSXdZcj66jjIKu4+PQ3lV3QS3TmNb0m1H4SuF72u6XrgfBuFkPuIPqKkhikMFJo7DYdRdow6MWyb4Jy1Y5RJ00VP7nlEdqHxeLYWZfmd3qa4AEAnvrtoYgINokpmlLse13002WBOQAZ6BQjQGRlrHiWYowXML+4/89Wggv9tAXdm0wcfUN3cG7IkGEw/J4eEsPpxoHcYICGH2+hhf0iSUJXKS+I8wG4MV1Y8KeeZ/4XTFLNc6nzLV+No2yQtu/PKU1CQWNXdzkDRxxuvy4ILIxqLjVCJLKc6aq2LbNLbyDwkBWjnqPBpAMuoz1DAAQTZHvx+2SobL0L+TchvYzpQr3yzcvogECTYVJJRJYU7bxiT7x9AOL0S05V5IyPF3poZmg31TaWagsR881kxVCbXnihRGK6Mg3+dBrtFHkaqvPTzCl2Z0SJBs/9Z/F+0YtL4EkmGFOCX+qR/BsIyNnv+ZB1a1PwbvykE0SA/L+u76/umfDzIxZtEbat6IjoT0MeofIcL1CaN2Gf2ihlhbgTr+MSqkJzu/aDP7/tXdOZlAjnMX9UW2gMHrEmeX09BGWVZ00Gfg0iCQJY3npHDxqxCqjUigZJ4mJXtrSD173IT0I/E2BbrEzZqEP3tFb0hZz1Xfhyz/TW0LPpLTmm63NTUas9KH
+ dyaXW+Ud
+ nN7Lm8QQ2/mkj18nx+jhkLK2MPf214Uomt4aZOtLeX/9IdibU9yNSsdo2iomvhPr6koK3fovxWJpBdqtHgWlsvNeQsMEobIyCUaaN98L6GjZvriInoOBLBW0VKsgMlRdjgOjTdhdQTkH84+2HjAbH2vWIMdXxbYUsKT24tVBMYX5ZlJxrsAhWbbEOAuRhDN8u1eLywlgR3WdFrA6Hx2uwkWncnPNfEavjGWb+3PgZuktrHmOituWeYTCHrkbdxjT++cfK7FASflePNI2NZXbEL0PBcC4Jj3jMRpWrftXSzs63L2OjwxLkidM3O0+rLYkUH9YB8GJbGTIdvveZaVJQjDgAPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,75 +92,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------0VNFm27eFE0tres1yP8QrSXf
-Content-Type: multipart/mixed; boundary="------------JelRG0POZLUZAiAcIUC1l3PH";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org
-Cc: daniel@iogearbox.net, andrii@kernel.org, memxor@gmail.com,
- eddyz87@gmail.com, vbabka@suse.cz, harry.yoo@oracle.com, david@kernel.org,
- tj@kernel.org, roman.gushchin@linux.dev, peterz@infradead.org,
- linux-mm@kvack.org, Hao Li <hao.li@linux.dev>
-Message-ID: <045f9e77-7264-48b9-81e3-c4995d84d026@kernel.org>
-Subject: Re: [PATCH v2 bpf-next 3/4] bpf,slab: Add slub-backed allocator for
- bpf_arena
-References: <20260530011345.99342-1-alexei.starovoitov@gmail.com>
- <20260530011345.99342-4-alexei.starovoitov@gmail.com>
- <ca1bb6bf-f25e-44ba-87c5-e23e4939dbd5@kernel.org>
- <acc86e41-21d7-4b1b-b5de-fdc02064a959@kernel.org>
- <264ec41c-dd1f-4957-9032-943fe719dffe@kernel.org>
-In-Reply-To: <264ec41c-dd1f-4957-9032-943fe719dffe@kernel.org>
 
---------------JelRG0POZLUZAiAcIUC1l3PH
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-
-
-On 6/1/26 11:53 PM, Harry Yoo wrote:
-> On 6/1/26 11:36 PM, Harry Yoo wrote:
->> On 6/1/26 11:06 PM, Vlastimil Babka (SUSE) wrote:
->>> On 5/30/26 03:13, Alexei Starovoitov wrote:
->>> I'm far from sure the masking is enough to contain all the bad things=
- that
->>> can happen as a result of a corrupted freelist. Even the hardened ver=
-sion
->>> wouldn't help much I think, if a malicious program can both read and =
-write,
->>> it doesn't have to know the secret seed to craft valid freepointers.
+On 2026/6/4 02:59, Suren Baghdasaryan wrote:
+> On Mon, May 25, 2026 at 12:22 AM Hao Ge <hao.ge@linux.dev> wrote:
+>> allocinfo_start() only reinitializes the codetag iterator at position 0.
+>> For subsequent reads (position > 0), it reuses cached iterator state from
+>> the previous batch.  allocinfo_stop() drops mod_lock between read batches,
+>> which allows module unload to complete and free the module memory that the
+>> cached iterator still references:
 >>
->> I hope "a malicious program" doesn't have CAP_BPF, or am I being too
->> hopeful?
->=20
-> AND (hopefully) distros that care about security don't allow
-> unprivileged BPF programs these days?
+>>    CPU0 (read)                        CPU1 (rmmod)
+>>    ----                               ----
+>>    allocinfo_start(pos=0)
+>>      down_read(mod_lock)
+>>      allocinfo_show()
+>>      ...
+>>    allocinfo_stop()
+>>      up_read(mod_lock)
+>>                                       codetag_unload_module()
+>>                                         kfree(cmod)
+>>                                         release_module_tags()
+>>                                       ...
+>>                                       free_mod_mem()
+>>    allocinfo_start(pos=N)
+>>      down_read(mod_lock)
+>>      // reuses cached iter, skips re-init
+>>    allocinfo_show()
+>>      ct->filename   <-- UAF
+>>
+>> After free_mod_mem() frees the module's .rodata, allocinfo_show()
+>> dereferences ct->filename, ct->function which point there.
+>>
+>> Fix by always reinitializing the iterator in allocinfo_start().
+> Thanks for the fix!
+> Yeah, unfortunately with the way seq_read_iter() is implemented, the
+> op->next() fetches the next element and then seq_has_overflowed()
+> might cause op->stop() without printing that element. So, in the
+> op->start() that follows we can't just call codetag_next_ct(), which
+> would handle the module unloading case (see
+> https://elixir.bootlin.com/linux/v7.0.1/source/lib/codetag.c#L93).
+>
+>> Fixes: 9f44df50fee4 ("alloc_tag: keep codetag iterator active between read()")
+>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>> ---
+>>   lib/alloc_tag.c | 13 ++++++++-----
+>>   1 file changed, 8 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+>> index ed1bdcf1f8ab..2b2d1580c714 100644
+>> --- a/lib/alloc_tag.c
+>> +++ b/lib/alloc_tag.c
+>> @@ -51,16 +51,19 @@ struct allocinfo_private {
+>>   static void *allocinfo_start(struct seq_file *m, loff_t *pos)
+>>   {
+>>          struct allocinfo_private *priv;
+>> +       struct codetag *ct;
+>>          loff_t node = *pos;
+>>
+>>          priv = (struct allocinfo_private *)m->private;
+>>          codetag_lock_module_list(alloc_tag_cttype, true);
+>> -       if (node == 0) {
+>> +       if (node == 0)
+>>                  priv->print_header = true;
+>> -               priv->iter = codetag_get_ct_iter(alloc_tag_cttype);
+>> -               codetag_next_ct(&priv->iter);
+>> -       }
+>> -       return priv->iter.ct ? priv : NULL;
+>> +
+>> +       priv->iter = codetag_get_ct_iter(alloc_tag_cttype);
+>> +       while ((ct = codetag_next_ct(&priv->iter)) != NULL && node)
+>> +               node--;
+> I don't quite like this fix because if a module that we already passed
+> gets unloaded too, then skipping "node" count of elements might skip
+> some extra valid lines that we did not report yet. That's why
+> codetag_next_ct() directly goes to the next module using
+> idr_get_next_ul(). I would rather store the last codetag reported
+> using allocinfo_show() (last_reported) and use
+> codetag_next_ct(last_reported) in the allocinfo_start() to go to the
+> next one (or possibly skip to the next module). Does that make sense?
 
-I think we need some input from BPF folks about whether it's enough
-to perform best-effort, cheap sanity checks to avoid letting the kernel
-crash in most cases, or assume that a carefully written random,
-malicious BPF program might try to crash the kernel and try harder to
-prevent that.
+Hi Suren
 
---=20
-Cheers,
-Harry / Hyeonggon
+Thanks for the suggestion, I completely agree.
 
---------------JelRG0POZLUZAiAcIUC1l3PH--
+My patch has exactly the problem you described - reinitializing from 
+scratch on every
 
---------------0VNFm27eFE0tres1yP8QrSXf
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+start() also has an O(n) performance problem: each start(pos=N) needs to 
+skip N
 
------BEGIN PGP SIGNATURE-----
+elements from the beginning, regardless of whether any module was unloaded.
 
-iHQEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaiEe0gAKCRCGXBN6rc5S
-1oJNAQDFXIYveJocYCTW+3lbDX/I0UmTYyRpXNoIdkCynpoz+wD3agpdnu0bi3Dm
-/Z8gZShtV431bsDrNIpS3P73bRvhAg==
-=XtUT
------END PGP SIGNATURE-----
+One small difference from your suggestion: I save the iterator state in 
+allocinfo_next() rather than allocinfo_show().
 
---------------0VNFm27eFE0tres1yP8QrSXf--
+Since seq_read_iter() may roll back show()'s output on overflow
+
+https://elixir.bootlin.com/linux/v7.1-rc6/source/fs/seq_file.c#L276
+
+saving in show() could capture an element whose output was discarded, 
+causing it to be skipped on the next start().
+
+In the Fill loop, next() is not called again after a show() overflow 
+since seq_read_iter() breaks out immediately.
+
+Will send a v2 shortly.
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+>> +
+>> +       return ct ? priv : NULL;
+>>   }
+>>
+>>   static void *allocinfo_next(struct seq_file *m, void *arg, loff_t *pos)
+>> --
+>> 2.25.1
+>>
 
