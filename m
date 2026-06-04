@@ -4,160 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13D6FCD6E6E
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 21:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005F9CD6E6E
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 21:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18B586B0092; Thu,  4 Jun 2026 17:14:38 -0400 (EDT)
+	id EC5F36B0005; Thu,  4 Jun 2026 17:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 163006B0093; Thu,  4 Jun 2026 17:14:38 -0400 (EDT)
+	id E9D656B0088; Thu,  4 Jun 2026 17:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 079436B0095; Thu,  4 Jun 2026 17:14:38 -0400 (EDT)
+	id DDAA66B008A; Thu,  4 Jun 2026 17:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F14866B0092
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 17:14:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A4B41C10EC
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 21:14:37 +0000 (UTC)
-X-FDA: 84843484194.20.95F0821
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5471E4000D
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 21:14:35 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XyrRI1sn;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780607675;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D37676B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 17:32:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8936F1A02A5
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 21:32:22 +0000 (UTC)
+X-FDA: 84843528924.22.C8FEB58
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 996ABA0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 21:32:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hLYfYn0b;
+	spf=pass (imf25.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780608740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lyPEsnWgMEwVBTMM4vHE6GHrBW2HxmanLD1B4poadMk=;
-	b=lPcCmC9w0lWimJl47clMGxeBlIz4uSk2WvaaRcIl0r4nrQVY29dMyJm6Vja/zmHIeg40Zj
-	Nuh8QikKgfxg6z7jfNwwh6PrEXdYsJhnsejisMRSduPiTaILk1HaR9/qhsQkxobikSd7oL
-	Vz20Ec2dzQJN+9vKAJ3eV3TnyH2rTKM=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XyrRI1sn;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780607675;
-	b=upJ7k4qZioLEB5cqfGNqhCkcTWsJED50TbK1dS7qC6PEpt4P1dG/RD8QjJN4PxkbjsViTj
-	L1XTZkmFPhfl0ToKE/wEKgoZZBjcGnZd42we6NfNWk3QF3uzuWSl1/3KQe7kVKSIlV6RYh
-	M7ZNwWOT5gLhvZzw4NufOMJEvIItIo0=
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-307631dbfedso2397676eec.0
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 14:14:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780607674; cv=none;
-        d=google.com; s=arc-20240605;
-        b=I3pENZ5lqjGA/NBS9W1YFFiF1+SEqPgxd8NZK2RixfVYHukLAwwIlJDz5oaDdDbqx8
-         thmX3OBLC0bK1soSC9mzoW4dYXnlJMQ3B+6v1UethGwBshaKmK/jDVPGKtlqVdcL9Koe
-         W4mI+/Xj5QM/3AF3bJ9M8fYD3zSrsBx4NyUCBd14ObqLucWgTv6XKV3zyMtOTMQ+SepH
-         /4mgzbhgjK0p+0iQ3jcHC/9NvtowNSMMPe78EsVEMOHKAeK9x3Ar/R9GEA56kbD6hwA3
-         4WwbLaamPGRd6uXq4LiCvQtySLRefJBZ/CcchiexLIFxwdnYzsMXhyiTvJ7C66PB+HvP
-         O3YA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=lyPEsnWgMEwVBTMM4vHE6GHrBW2HxmanLD1B4poadMk=;
-        fh=hV6wxGjuR/5S7eH6JnSeORahSbZVoEDewOd7Ooh+bJ4=;
-        b=b1+twQ3zp9XDBXguqrvKdZndb5GxzqXp6zPzzdv6usxjszfQpMPyj38QbbGpxgW9XW
-         hzxZkFVGe9ceWjVnj2yHHSvkxxlHnB1PqfRcEP4IXalAb3ltC6yLlrjUVzKmFernO+Lz
-         uaP/4w2jipKbaHDQp0DgLQoVOiSYBIVFZFENn9ZQ/nqOj/4gW1+2fCsjIqLjtnmOwXA5
-         o8EhruprMvwoj1E/hdZyrNbk5IfOPx1yOQi7BPMHHoUPRy25VuccCcIasu1oWj64Sx9g
-         fD0uK+QHKjA1FYKZn72w32A0r74JiKZfOhoDensUC52uCbM6CD9qmqEiW4RJT7vxdzfZ
-         +Png==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=IQN7agybo6gzy0fVoImTNH+8qqV3opcO9FSCB/3Heuk=;
+	b=M0aPjxdDHqfXNZqQRGheEjv8ZOqWh2dIShQJ5M8ozo/ODxnfyIss1MXi5tvTsci7NLEZTa
+	W7lOEIOATFEbNXKaTdDx2Ux4K400Jm9+jtaWd6fWDvzLB2NeNW0GcSzMh9v+Y3pWHpXk0n
+	L7BYxyUeA5agVHB1QU7Lv8PVk0Llj7A=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hLYfYn0b;
+	spf=pass (imf25.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780608740;
+	b=lOnPzARG8zUOjGwkrh5++lgkL3f4RHCoqrqfUcLpG7RKvmmehJLsiVMnN90Gcv/LPlPOcv
+	ptRDCwp7mxM3vNHOiTJESnsS08Z63aDRzS1wstlH+m7wfku82w1MxiNxtM5kZSd7TsqaUs
+	1Kwtp1abuzqEjYN4jtdt0+SmjFaQ74I=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490bc6a7958so12604135e9.1
+        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 14:32:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780607674; x=1781212474; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lyPEsnWgMEwVBTMM4vHE6GHrBW2HxmanLD1B4poadMk=;
-        b=XyrRI1snGLdYvbivoylVnGhIEYrB9lnOzBqiVqgfTPKZwHCqBL7qRkL2rdehCY5AAc
-         J4OEfhAEeXb3UvxMXZaX4GwC1bTDjDqas6tfZaWz1xc0L4UiKBZy+45kBXu97/uCv6RE
-         mURoQCs2wvw5z4Ge36kHpfLepvPPlPjC+XoOVct7HjbCykLHJ+KWX00MIa8S/eIXZdOX
-         3vQa2Hmh3BM9FZc6j1+5Dc9UL/gGNrX7a4TgXUbJci3GjRMWFKRd9GWoZYvYNS2zzqv7
-         K+bFi/jaShpOg0R1Mlc0TXxlgFCufOxvTK/YUaIPZtLueR1ALCWsYvDM/JIWP9HTlTwd
-         Hfiw==
+        d=gmail.com; s=20251104; t=1780608739; x=1781213539; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IQN7agybo6gzy0fVoImTNH+8qqV3opcO9FSCB/3Heuk=;
+        b=hLYfYn0byi+VWoQcfCfDS3FjHQSwUnIEzUvH86iRzgtz0MDb6HMfUop4H0cEE+Sydt
+         NCKsClpw1ifkC6G7lNz+n/X0+xnYGYPq8EOugZMtXJgzYkAaYYyk52F5iJmbN1JLvumm
+         0DKdUOOdykL+TAubxOzFv1p/1tj281GcmS6WU5mU2ngnh6XJJbbT0pUeeSlzb2+Xt4xh
+         bH6FK4vBLVNXhEdWXyJOvY6XzdHcWMJXsCYQ8mojJKjC4J/VLiOcF167b4x7rK2mRkjd
+         aj8V8O+HX/iRA4F5VkQ/D93SZ7HogfnI1rRsKuLMZSgYk3NoKRhTFzm0+TRusUCWGPVD
+         3tlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780607674; x=1781212474;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lyPEsnWgMEwVBTMM4vHE6GHrBW2HxmanLD1B4poadMk=;
-        b=QqXqogRLR8QNad3x0hoPcIYcRYUWxAcrDMezLA8qbIPmZfU3wheQoQyk66XlGfYmdC
-         FTcDoKYG9kHI3V/pBlbXITjJuHeesJZNgfA6nIIh64tOmO32WwtduebCJIZHmzJtKblv
-         qDQUHpJ6CPVoXlx0fBz5zV/S3/gf47kt0cAoEIhXlqmAoBLxcFhSg81eJrJn6UiHesNd
-         Lw1HZf6Cg+CSwn6u+4yO5yIXRP8vnkACG4JoLPvw1BSJOsACfCANyrWb4hCEe/+9BqvT
-         o1tAuIWNyjnva9iGiXeY6NtUC0qe/yDLkpxmtA3axqCJtgaFv+PCoIliq9hKIjTmKNkw
-         osKQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8J6FRW6sRr9O35deLthrAJqALRtfnDIweK0xK+Pwt+0qWcnYuOTOmTFzmxtwHhbRTM1C4XyFUeYw==@kvack.org
-X-Gm-Message-State: AOJu0Yy08s0bAd+aZ6tR/ii3EEJSQudUvIL89NWZTb9jHMe47NCRPT5z
-	oN+8b0AILmTYn/XFxbc4PomOL8m6RuAPt+5wXGUN6Ba6eCNO/s4NugkSRYtEAwIpHYtg/Ccx9L+
-	B2F6UEStCm688Lco9OwVdJH7gWfrV6GpmBhyJkKxw
-X-Gm-Gg: Acq92OEKVdNWxXzzD+7UBefeyFdH2NweBTmz5oDUuN19BkXYcvXV+MM+s36Ygy0n0YG
-	mtkjGD17Rr8PmqjMFPkrjJSEYDX6TTlJvD4Z9OdZg7E8Dkf+PSEWXjj53+noFV2iN1n3XbEbTTr
-	75QqvTPiWMlc/7lBvjPlLQpXsFbMP36zcbOiOk/UBQ/0iGf3B/WMVSUJzpTLVmHrh6+Lg4Ye9zM
-	feuP68iO2uVxpWwpboXG5WNQRYHh7UT4Fx5N7t8LAwbSkpH0wRNVwCfkOjVZ80Hv70Slk/iLzYC
-	knoUsnfQGcBxaLvZiYeYjOj7m6p6XyH2RR9z+tyoyKBy8sZUKFHKtuDd0kvnp3d4kMfZYvwwvXL
-	f38o=
-X-Received: by 2002:a05:7300:5b83:b0:304:acc:f086 with SMTP id
- 5a478bee46e88-3077b7ec417mr207174eec.33.1780607673246; Thu, 04 Jun 2026
- 14:14:33 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 4 Jun 2026 14:14:32 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 4 Jun 2026 14:14:32 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <aiHeDZEPkAcWcSkn@google.com>
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <CAEvNRgGpaggjd3=ooyzv7iEbmA-x1mWJHgjLSjPi8=5CPrk-yQ@mail.gmail.com> <aiHeDZEPkAcWcSkn@google.com>
+        d=1e100.net; s=20251104; t=1780608739; x=1781213539;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IQN7agybo6gzy0fVoImTNH+8qqV3opcO9FSCB/3Heuk=;
+        b=XnI+t162CBe+E/lnhD1+zFOKbiwWxAph8k8AZXYCP4uyXhdiIBU112VY6rbUr34iCd
+         PZT+a/OUWz3dtj6R6/sh39dQCwLbArUmz3V0VDI3ocnZWdlv11tXgVOsJ2vGyTSolj6p
+         DWC8HmzkWQQi0QdJCfctX6gpw1kzPl5/9/nSYJsB9h0ar4XZyPw6XInuN3nykxCeeiYT
+         msiEElpuLRwUU2QmoY00tnNnSe9qOQpxnWw4AXFI23m5kH5Fd51mOYS8srumdTZlS/hC
+         gCC0fqh3Rotm7hFh5bCvuc8188lPhJZn+PaSDnDLnVZ9I+mS6i8qOWuoA9ZS+yPtj+yO
+         jkQA==
+X-Forwarded-Encrypted: i=1; AFNElJ/ghdYWc1HwdwDsxbzUXlTfOsev/GFNu79kH7WZlzRLY6rYE2J3+opORHwwv70RaFGOknFh05ih0A==@kvack.org
+X-Gm-Message-State: AOJu0YywOlY1BR6BCdBPrIlgEghFdy6UXSfrZt1nl7m5h1EOYabXojpZ
+	vgKqCvcvp1wdzn1E02oWT6NvGfPMAR3er+ekBkjTU0zv7uOl2hu/fgmg
+X-Gm-Gg: Acq92OFbESdA9aUabaXfkQ+bgzYu5nwgLoULquINGzs9aga0lalrftt8PeDHkc2iEla
+	aLZZV7KFhaCy/jkmOEPe9p4F2z+FLnM5A8zfl7A223zPrakjspTxlDrpmbZAy9gH8S0dX5f7Hxa
+	+Akh3qHHoS1ht5zmnyfxyd0Hv69fhG2s6kNfw4w1wJt0orQ8DI9hWpOHube8JbDiWgsvrS0/vmE
+	o+Hp2DhUxd/vY8hOztBSR8a/ufy9KmUmmQY3PcTgci9hMApiZXeOOsi8WchaVik7tE2cfxIq40k
+	VEodXeDNVzFuXS2ITadeuuhYKRyGXjbANAEMRERk/ybALERdOB5CdUrkuqtHHHRsc5b7ra4ExEt
+	P28uD8bWs05e8Rd3mCvkNYyz8CPH4bEqTVkcHHZP8Gf45OmeijgbgbTjhMWjH3kPKwrkVP6M2Qe
+	2QJqpexW+9l3p+ebvYb7T/y9vLLB4WoiDXQgVzigqCFZFgWi2WuuVEVseegi/uYy52KEbekXI=
+X-Received: by 2002:a05:600c:348f:b0:490:4b89:5372 with SMTP id 5b1f17b1804b1-490c25e2739mr4133095e9.11.1780608738825;
+        Thu, 04 Jun 2026 14:32:18 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3918fcsm111713545e9.3.2026.06.04.14.32.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 14:32:18 -0700 (PDT)
+Date: Thu, 4 Jun 2026 22:32:16 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Askar Safin <safinaskar@gmail.com>, metze@samba.org,
+ akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org,
+ david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz,
+ linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu,
+ netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de,
+ viro@zeniv.linux.org.uk, willy@infradead.org
+Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <20260604223216.73468830@pumpkin>
+In-Reply-To: <CAHk-=wip3mwLOHOYJ9TtjDxOaq9YUXmuCg2AycyASGgeY6qqUw@mail.gmail.com>
+References: <f919874c-065e-48be-ac5b-300c4ab86d4e@samba.org>
+	<20260603211736.755139-1-safinaskar@gmail.com>
+	<20260604100609.6b37f500@pumpkin>
+	<CAHk-=wjvb56qo27-axALOKCY-CjLsj9_294zeBovPVJaYm14dA@mail.gmail.com>
+	<20260604183829.63c35fd9@pumpkin>
+	<CAHk-=wip3mwLOHOYJ9TtjDxOaq9YUXmuCg2AycyASGgeY6qqUw@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Date: Thu, 4 Jun 2026 14:14:32 -0700
-X-Gm-Features: AVHnY4J7O-BvLwAbWwmNVfQCapmW0Jz58QA9MN7lFJVjBHp7oGK-p6NKEbfSA24
-Message-ID: <CAEvNRgHz5GDjq0GqRmpQdHc-X45gCNr39VYWZH-T7XhPEtN5CQ@mail.gmail.com>
-Subject: Re: [PATCH v7 00/42] guest_memfd: In-place conversion support
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 5471E4000D
-X-Stat-Signature: back78ihh8fntpy4xn3k4s8rbqs3u383
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 996ABA0005
+X-Stat-Signature: z4abxp4effr6qq9bac9oyyt773souw49
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780607675-820565
-X-HE-Meta: U2FsdGVkX19dLHJml2ggVOIGcgWQ0ID0Ryhkx4oqSr7v7T+/aEn78Blice61EUPtlYeKPtHXEWhma3xsrK0fLNEYNJcNF+5s+LCvlAHxm7Re9mXHGlz0UrS7W0LTQyf6p5aRsCKnEfJ3kMtJ4nyq40XQxaQYeEHx1BgnjQSZxTGs3gWgR28OU4py8fMLOOeCeB7fWU8TKYlHWYY/vmPzUbMiK7jAebhrO3HH1EkLj+kLQU8IXO8EwViSfBdjf+UPCiKFBMzbfMNw8nZMf5i3DFq2YpnZYCb3cU7aJG7THg/ij8Fn7pfLO+nxGbsk2qIM3eV7hp+KO4T/hTHRh8g9EOb+8xpOmB27In0/OqFY+oH3ieZCTkcLOwL6xdc44BoP2DhJQ6FTN3TZx/EpTEkJY5B83MWXBdSpILdg8pcfCvcawo8VhJDTUiWzPKvycrJf2gj6VLefWL1W1Xwx7f22KboNkuXhTHLk8dbyEYdWVDbO+AJb0O44KJElYGvEUZpabYUjZkRH0r3rcEHe2TFpk+Y3VHVuklhLujwm4XTKa7fs+0DcsvnsTClbH5aqN5Z4AScKZCv158rKG90v5S6nh/FK43yPNMrmH61EULgRCxSz08D3BEUK31F16EbYt/tsX0JW9OTJ1ALr0ppyniLuLQMfBeF5f+7YYCBA89n019E1YqqGTHP6EMpfw6YOo0bIJeTCyP0x94tQRMRtUnblZGnT+ussucwC7nB4lTgZchRT7Ljef4W7ulY+AQ/4M9OpQPBUQO7K1Ztd8IT6rq6cQCP/iTABr5DmE0i7rocuo5iDL+B5MTZJ7csXFkGGjuaQ6MCw7sXnJsZDywYVu2sxK1fXgAuJBzuNI2q9WnaoHudYyKjNqcMOut9BCwY4xoMfo18IvDYK0uS1zMJA+eNPXrxTlErIcwsNxyXjQIeyhy9NGTCYoQsql99/VIDSshakFis4NiakUgtp73pkhDn
- VMuyLZBM
- rkVSFJzwNlAKlr8qBXzq3jIy/dHpa7Tr6JPxNbqg3iQ1L7dWcosoy9IWnObX3WwyI6g1/QMbLjY5ufSlqNTzZe4WVJKPtQN30vfAEltz9jdm8XoS8HUDadvaANzv8Bigy2y1hnR4iCA3nQ2A9E8Gdnlr6uSTYVdm/lTNo7043Nhn0tIol4Iv+IWvMlyMSewDMtEOWQLgX1XE6BsM1cw2WBg1UW7C/V7wA1iNBiW6TfA0wNZaxUvJ9+Be5r37Tv/VmPOpuZAtcXfFZp0AcCbsrlCbxuGZ72mENRXDXuFbjIMRPkDVe5GbB6E3oW3Xmw0u5ejwb4OTkpa4Zs12MMuT2ReC1DjBAEr/03RBTxuSlZtt1c+qOTHawPZUMhIFrV1+ZwrsVwD4TKTeGWTMVrX4sgyXMoxOWlro0+26Jl49C2mFBlvuf6QHVhbx1oA7N+ee9erYqhYYlix/I+KudIWRYnJxCyuNE/hueTg25Opwfq7GGs+FN/RqyBpvH9kX+cIaCXfkkhtgC+W6JxUK5n03QTIrdwTU9MdsuDmsg
+X-HE-Tag: 1780608740-769012
+X-HE-Meta: U2FsdGVkX188FnMdmhUtEP9SsZRbz0Fo0earhqaNqL79+LiCRmPO9PAIOUqlmp1fkN6bW1HCg56uNCS7XGcIbQ9frxqSztEPDhH2qV5z9/v3u1Ovfvxy99HBQ9ESElRwEUKb+iqvumTYabLbjQoHSgl2mBujNtUXDtu+LZrv6k8GAr7AG79Uy6hvH/ZqMjvtvbOWTYVIzUOlOGGU+sQEDXbpeoEQLXKMoZdir29uz4IC7OrDwglWr4CgOwoz4vAoRss7mTEaWvtzPWyeVFG5Kv+hNGrFCdH5GfjOINxpX4/+RuXBdRkWpJPQ7xaXr1JRgF0uukBttDcfpSpDb4+tpPm6pNw7RcqFEmuEMeWvMF9Isoz/08Hsh5jpwDdOMrVBols9U0/2WrE1Edbba2+jJN/8rjWi6DvGLqkEX51cT0BfzRB1tUkUXQnsgTUpMRJDI9NFLnzyP6lC2HQrU9wV8T7442uA0upGFmyC7d6Ielk6z1ulzVP+vbkAI3OD4o15G/Wd8EiL1uav92/hDxuVGN1Z+f5uYDt+x3DPR+yv7QWYtQBVxoK8RV2t1LDJ7Dfg5/VfJYslzT2apgYb437jBRZ+s+kjWpkQMXTj22NRiSZ0Iqgtrww04sD3CUVeVza+1dwAlYPbNJyhDP1gTpAkuJCztQenpeevAxruxJ3vpFBt+IPmHITEP6eo4mlCs04AoaMRDTHCugvYUg8kwdKbQkOoeE8+o70G9xPqug2vusPEY9JHeDXmD0bCMGmz6RGaahC458HACN3HmcLdn2MlbCTc0NvctuGObSpXS46yMj+Sq4M/uS1xaVhfAQBOXuMG6ywqrUBoxho2m9vom5dDB/ipWd38CYc8GVEtdM5RRMT1FZ9+0J2P6OVdrLhhl7cDrEGl5z2JOuCTeBa8ZvM2/JFkfY5/9+fgZA+xY64IPOvzNc4IIcSVjGxYjjJ0HjLPTkOB+FYa9ah39B1z4y9
+ gQT/7r/f
+ Ypq3x2xvfTD/9Oskn8lFYMmoQDqCnC0+xgZdCDSFGd8ikf5UoHixPFtDpvy54q3qDr//TBw+w1vXzoaEvCPlN1gXYMesHDQh4IgKmLLV3sdbhFkBxNf1Mo8bq4aJ1rmP8dwL9AFUm0pC8ToMnrl1csouN+I+MrvjuBFdoZO8a6hAzPyJfMd/kPQD1TUrty0FSJgf56vbKOfgHtrgOfIbSjiR3VSUJbeXJ5wUyX3lFVoj5Hm6v6XtAeh3K0zy9iKiLnEMdNOFo3bq3Q2RK83AS0W9jJ3/7JwUNBRt9MIOFHDWVuUcEmCCcQyqnY5PSX51Dokkukgkx9PSEhPmJB9ShkyQQZLgjSdOVI/4HIYaWJklXrsA/TcQQ8ZJckgat2W0OujN9t00Z2epeNp7OBCmiUni6T6YCg0EZfSTMZvQGfaWSUjusQmHX9mY/ydk2LaSUh3lLa5EM8Aa/Cr6m6Air1HRWVxnPOkWJK24utjaLX0ydl7xsvc3aYZDSbYcoBINEcXNkGrqFQdF9mVUwvxW0jiGHeAAVgASbyiBSkQbVizuB11OG5KLYlgZ+fV3GfEKzZvrL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,84 +130,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+On Thu, 4 Jun 2026 12:30:30 -0700
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-> On Wed, Jun 03, 2026, Ackerley Tng wrote:
->> Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
->> writes:
->>
->> > This is v7 of guest_memfd in-place conversion support.
->> >
->>
->> Here's the outstanding items after going over everyone's comments
->> including Sashiko's:
->>
->> + KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
->>     + Need to move page clearing into __kvm_gmem_get_pfn to resolve
->>       leak where populate can put initialized kernel memory into TDX
->>       guest
->>     + See suggested fix at [1]
->
-> That fix works for me.  The initial guest image will typically be a tiny subset
-> of guest memory, so unnecessarily zeroing a few pages isn't a performance concern.
->
+> On Thu, 4 Jun 2026 at 10:38, David Laight <david.laight.linux@gmail.com> wrote:
+> >
+> > Bool is another matter entirely, (IIRC from a couple of weeks ago)
+> > gcc will assume that the low 8 bits of the parameter register are
+> > either 0 or 1 and clang assumes that the low 32 bits are 0 or 1.
+> > You can't even check with 'if ((u32)bool_param > 1) error()' because
+> > the compiler 'knows' it can't be false.  
+> 
+> Nobody should ever use 'bool' as a system call argument. Anything that
+> takes a boolean should take a 'flags' field with bits.
 
-In regular usage moving the zeroing in [1] doesn't change anything,
-since the same zeroing would have first happened when the host faults
-the pages to put the initial image. When populating, there's no more
-zeroing since it was zeroed.
+I was thinking of more generally, not syscall arguments.
+In C you can't really guarantee that a 'bool' variable will always
+contain 0 or 1.
 
-[1] covers the case where the host doesn't write anything to the pages
-and directly tries to populate the pages to the guest.
+Even if you write: https://godbolt.org/z/81P87vv7o
+int f(char *p, _Bool b)
+{
+    return p[b ? 1 : 0];
+}
+you get *(p + b), neither (int)b, !!b or (b & 1) make any difference.
 
->> + KVM: guest_memfd: Only prepare folios for private pages,
->>     + s/non-CoCo/CoCo in commit message "INIT_SHARED is about to be
->>       supported for non-CoCo VMs in a later patch in this series
->>     + Use Suggested-by: Michael Roth <michael.roth@amd.com>
->> + KVM: selftests: Test that shared/private status is consistent across
->>   processes
->>     + Improve test reliability using pthread_mutex
->>     + I have a fixup patch offline.
->> 	
->> I would like feedback on these:
->> 	
->> + KVM: selftests: Test conversion with elevated page refcount
->>     + Askar pointed out that soon vmsplice may not pin pages. Should I
->>       pin pages through CONFIG_GUP_TEST like in [2]? I prefer not to
->>       take a dependency on CONFIG_GUP_TEST.
->
-> I'm not exactly excited about taking a dependency on CONFIG_GUP_TEST either, but
-> it probably is the least awful choice.  E.g. KVM also pins pages is certain flows,
-> but we're _also_ actively working to remove the need to pin.
->
-> Hmm, maybe IORING_REGISTER_PBUF_RING?  AFAICT, it's almost literally a "pin user
-> memory" syscall.
->
+Talking of broken compilers, had you noticed that:
+struct foo {
+    int a;
+    char c[32];
+};
 
-Hmm that takes a dependency on io_uring, which isn't always compiled
-in. Between CONFIG_IO_URING and CONFIG_GUP_TEST, I'd rather
-CONFIG_GUP_TEST.
+int b(struct foo *f)
+{
+    return __builtin_object_size(f->c, 1);
+}
+returns -1 (size unknown/indefinite).
+You can't use __builtin_object_size() to stop code running off the end
+of anything referenced by address - even when the size is constant.
 
->> + KVM: selftests: Add script to exercise private_mem_conversions_test
->>     + Would like to know what people think of a wrapper script before
->>       I address Sashiko's comments.
->
-> NAK to a wrapper script.  This sounds like a perfect fit for Vipin's selftest
-> runner (which I'm like 4 months overdue for reviewing, testing, and merging).
-> If the runner _can't_ do what you want, then I'd rather improve the runner.
->
-> [*] https://lore.kernel.org/all/20260331194202.1722082-1-vipinsh@google.com
->
 
-Good to know we have this!
+> But this is basically what a lot of the SYSCALL_DEFINEx() macros are
+> all about - sorting out ABI assumptions.
+> 
+> For example, on powerpc (iirc - maybe it was 390), a 32-bit argument
+> is always sign-extended by the ABI, and the compiler *depends* on
+> that.
 
-Thanks, I'll work on a v8 to clean up the above.
+I think riscv might sign extend 32bit values in 64bit registers.
+x86 and arm both zero extend.
+Zero extending is more friendly to the kernel where pretty much
+all values are non-negative.
+I think I've used signed variables slightly more often than fp in the
+last 47+ years.
 
->>
->> [1] https://lore.kernel.org/all/CAEvNRgEVC=fFuKVgZYvWyZD7t_zvUZihFG8hrACjvtkD5cwugw@mail.gmail.com/
->> [2] https://lore.kernel.org/all/baa8838f623102931e755cf34c86314b305af49c.1747264138.git.ackerleytng@google.com/
->>
->> >
->> > [...snip...]
->> >
+-- David
+
+> But at system call boundaries we can't trust that the user side
+> actually follows the ABI, so SYSCALL_DEFINEx() will actually take a
+> 'unsigned long' and turn it into a 32-bit argument so that things like
+> this are well-defined and you can't fool the kernel by not following
+> the ABI rules.
+> 
+> The same would be the case if some system call actually takes bool
+> (but I don't think such garbage exists). The SYSCALL_DEFINE() macro
+> magic would take the full register content and *force* it to follow
+> the ABI conventions, whatever they are on that platform.
+> 
+>               Linus
+
 
