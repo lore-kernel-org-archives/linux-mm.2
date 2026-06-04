@@ -4,100 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4C4CCD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 07:43:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49051CD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 07:58:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E57326B0005; Thu,  4 Jun 2026 03:43:29 -0400 (EDT)
+	id 7B7626B0005; Thu,  4 Jun 2026 03:58:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E08046B0088; Thu,  4 Jun 2026 03:43:29 -0400 (EDT)
+	id 78E846B0088; Thu,  4 Jun 2026 03:58:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1E396B008A; Thu,  4 Jun 2026 03:43:29 -0400 (EDT)
+	id 6A4A66B008A; Thu,  4 Jun 2026 03:58:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C07ED6B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 03:43:29 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5D72390461
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:43:29 +0000 (UTC)
-X-FDA: 84841440138.10.1F637D4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B27EE1C0006
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:43:27 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FP8b2xGD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C1B46B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 03:58:40 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C507016347F
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:58:39 +0000 (UTC)
+X-FDA: 84841478358.25.E044B96
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0A81E120003
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:58:37 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FpaLIYtj;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780559007;
+	s=arc-20220608; t=1780559918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FcphQ0Rw2o1L4ixWXv1z/UyHZdPxmHTlt/k525r269U=;
-	b=ipnQv8fCB3iANau/+mGKkK0aTwjYxEyxGqZs6xmeqAc+/JLVTynKKMEhlIh1m+vvEtZ/ac
-	Lrkaymezw03Ff0LF0f5rjEukpuFDczw3Y3q/1AsRGqEUK2FdJiqS9xt0wZxHVrO3HxuwzE
-	MSFKQpQMC3ayPEQn+R+gKrREfJtUfEM=
+	bh=cI/C7RCRmc8Hsh1eMUTfrVJyDrrbEkoM3eflEXaUTBE=;
+	b=FkNZdNPu8tyQFa8G/mrpgSmJgBtg6FsRHGMrLgCW/NwDnouW6VuCp5H3l4FWytwkfQtzKt
+	KlCIrTe3zZbZbN6Dvh97VPHgt5rI1EW1MqZeqwZGCG1MVotbcCz3EfIdyrNJNH0OQH5hob
+	YN6GsCEMVjRIS1j9Ch/icSzO4u3AzQQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FP8b2xGD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FpaLIYtj;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780559007;
-	b=1nRRb8iSy5KLFPY/lwOHP1GgxsDE42bAt2N6rJp8Gqx2PvRHMOQ/Sbx5xnmvzo4CeLajP1
-	gWzstd6hr3e1egUTOp9OzGm4dSgKkd4WdywjUyJ4XIV3pVHD69EgHWLG23O7r9WYPYtWpy
-	d2zqdApvA9kwmYtxiCSV4MIJCOpEH+A=
+	t=1780559918;
+	b=gXd9yvTGROdQnaOZG20KrWnmXC1EdjC/894BCJRBGZaXRUVUZ/DlVN0bv9PFsEYf2WbhrB
+	I8okYfVHKfW9bds9ffWMCRzHiqE7my3JrLfkechFkCetM7v3aCzSBRJdiTaSaLKfr1k0ci
+	aQtHtIQq44BPH1o1L7GHELk+zCpSnYs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E62760126;
-	Thu,  4 Jun 2026 07:43:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BE01F00893;
-	Thu,  4 Jun 2026 07:43:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EB98E41AF0;
+	Thu,  4 Jun 2026 07:58:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D0A1F00893;
+	Thu,  4 Jun 2026 07:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780559006;
-	bh=FcphQ0Rw2o1L4ixWXv1z/UyHZdPxmHTlt/k525r269U=;
+	s=k20260515; t=1780559916;
+	bh=cI/C7RCRmc8Hsh1eMUTfrVJyDrrbEkoM3eflEXaUTBE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FP8b2xGDkzxHJ7n2qYYxpH1CybRl8kL3CD+0OVxwkPI/nHpC05YEnca4gvdN7gNb/
-	 lNynqq4CtTAoVYy5gcVYxgxcyR+ySL7wGXlUJl7SXYUt+iBE7iVmXvpBBM+2ZqjF6g
-	 S6HCf1RdhXjHRVgAnWsNT2IkrrMof03Tzon8NrSOG7oG6Q7iIrM9GW/GzpfWV+Z0QD
-	 x0c9tYofo+wlJFnOT8RyGrdU6BkUBheELnytF2mQlTwMYTlA7KUDyyB2PVRQFlSBgg
-	 rBdpIxXTBVVqbhtHf77+iowcjPoA1Dv5MyERvxzSPC/DKi6Z0ThqJoDesIlgePnZYK
-	 2LCn5WB81zLvw==
-Message-ID: <11d2f0bd-baca-42aa-89ce-328a9d555f7e@kernel.org>
-Date: Thu, 4 Jun 2026 09:43:19 +0200
+	b=FpaLIYtjwJ/lE1DJA8ORxe7LFYqGYDF+O8gjlNo1owKRCNg2b6VgTWAV+XMio2Xrv
+	 HMRMuj5xQ4rwimdfYDCWt79HMeK+3QU6Ub16tsmehrXinULX/oli/WMK+h1olshPWp
+	 jftrZ+RL8HFddxEjx8v0LgmawNo7+qPHitptILKCST7+NOp4f9DDbpGmty+YZBo4Ru
+	 FIqV06x7qcjL3lsQfKYtyip+7HmXZ2McPWlz7E9LxC7Ntj2t8IRVa3edKTDvoVDdej
+	 /RJDkNHt1+gC0GrjM2TG7DkIft/eOJeOLBQYJ53/dEaV7fLcQlptmbQHdS78sDQmIs
+	 cr1UnsIoH0Lqw==
+Message-ID: <a6cac07f-5509-4821-b0a8-dd3afb89c26e@kernel.org>
+Date: Thu, 4 Jun 2026 09:58:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 11/15] powerpc/code-patching: Avoid r/w mapping of the
- zero page
-To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
- mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>, Liz Prucka <lizprucka@google.com>,
- Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, linux-hardening@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-References: <20260529150150.1670604-17-ardb+git@google.com>
- <20260529150150.1670604-28-ardb+git@google.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260529150150.1670604-28-ardb+git@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] mm/slub: preserve original size in _kmalloc_nolock_noprof
+ retry path
+Content-Language: en-US
+To: Harry Yoo <harry@kernel.org>, hu.shengming@zte.com.cn,
+ akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ zhang.run@zte.com.cn, cai.qu@zte.com.cn
+References: <20260603211011530GqLSXP_rgcuQdR47IGQLL@zte.com.cn>
+ <07f55792-c83f-433c-bb16-58a5824d1dd7@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <07f55792-c83f-433c-bb16-58a5824d1dd7@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0A81E120003
+X-Stat-Signature: 98kd3togf6rn5ttr8c1yw6q9p3sk1thj
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B27EE1C0006
-X-Stat-Signature: ee4sbxs3g4z6ysm8f6hjd35dionkn5tb
-X-HE-Tag: 1780559007-30296
-X-HE-Meta: U2FsdGVkX1/AjwlpHTptDHmTRLAYPBxdWGxmepnOJ0uh/eCf65Eap99czm08wiZHllI4toWov0tHidkWnT/xaM6B87zxMO5tBYk/87EsROw1Y4ZJw+krk6JgeV/vFOaBVEaQkrOLnWyssGznr8iAQcfI0/Wyel/Ufo82V5zJoMefzFjsb85ogsAfADmegVZg+6OWKg1c7AklDfFaqn4OJl5x9kSVsAEUFwsWV6CDrMjfrPFoaQrDGSF3e5nDn2TNfKqu9KG6xCKEsEZg+uIP/pE8wkqomyQ5ReWqlNdbFCdEbJgBg7o7oBjGVF9JDYO3q7NwSe8JyAPCM/RteAsk9LTyzeDe5sfmUyPq6Cq0sZICLpRCM2cZs5/aFVPsNQrSL9FW6arwQ8MOXNf6pp0/+401o8haUU+Bv5NpjZlJrX4pvXMFWt30j2kN7O2b4hji0kDu+RIIx+Gtk0q1a2sT5FErMhQX6mO5dk39arusr5MLSBlKoZOMGWL+hSHJ6RfjtcPUDbk47fOAFFpppT7nc3WaB8SbrQcPcqAmVBSWTPM35ZetCTzQct8KARbbpfxc4zhNrIz5mtLV0jZfno+8tYITw9f7Yfdkd2KtnDI8sLXsjiJJPSTVGmd7vjISrl51iqwQfdEHTx7iu9q0jq9tNa+K7brMzVjqMsVII1kGWyiXTacjkJRkFF0yMCj6+BNopzLw332otBXKvT7Umu+0n1E77PBZwgO71UXLmtQP0hhp2tbf6UhYSQvbpnqV3DyFtUnvoNp6I3xc6B3OHwC4um49JgAErxvGAtf0XKFz423FPKq3Mnw2+Yh30JOJhAb+Pwrm66CLQJU3zB2+goxf85BjLVMGjeVjTf+lZ+RN1vJ0E81JLmymaiPr0d2r8k2vuAr6xl52BHZS7/aNCiO1aDGtlKRMHyHfQoEK82bjAHytk7N/G2W7j3wiE194aYajmTln8t1EAAUKptCXjPa
- 2L/0vaz5
- 6tWojJI8GLwezUaaCuWNMOY1F2i8SD4oFEoRWh1ueOQKSJI2F31xDv1YdbtWAX3XF5X5eBm65nJr/ewMo/JOjhO+B+JrG98iYdkrWDX9ki+ksI3u5J347BYS/2CCr7u4mgs9LJX6Sbh9SB3NKQ34qoQHr9c/mfloUbasK8ff80xxsZbABgriIpXHXuYq896onXjMOVfxiy0hUFzgJZl/LZ4Pk1knK7/GwZTJ17LFfeFY5nFGW/E8gKdjixQkUZHSqoMrJcuaLxOd5Ohqy6OV74TJV+zfKonAoJxmWnul4pLOuN1D9zlht1ItsVj1tYihAdQ2DmNi8gkaNWYzRSFKc+LNOCHfmqxFlAssiL2/A9SEe1CW2SBAcbjoAjmC3ml/mviu9W3pCSq8AnF2ud4hL6IZZ0rEnvxBHj2vzu/jgx6OovhSf0dljATF7TYhForEvrzx4aWEaGjBPrPyYter6jPveSMvibfAr0XgPvJpu6KWNy0jFHvD5FYO9yQQ79h/aTx1JbNoE+gjnah/neHacDQlBLt4pIiSuU30awdDVgeZ6SMAYYEUBy+EY6WbXKn+8070o
+X-HE-Tag: 1780559917-276048
+X-HE-Meta: U2FsdGVkX1+iXTTMj4DBqJEXK9B7z4c2QYrpDnj/SrbNa8cORhVhLlz8UwZV0EIvVMYuSDmTYAD9px+KRQhR0br3NTXrHYreFKl9wMqQM7n3yDxgQEeesLx0rwugeRX2F5ZR2EEW+rimof/Dy8wE36XUqRBC0LSsSLA9FpKT6Yxsy7vlpLkGwjySQasZY4KSUf/zy7o72HqG3fSEjIiqPqDWOp4wemwIGOXM2SimVo7BxyhY91PsrNE3uMYoEucVKlc5D0zV6TnYRw+BetuMi5okXWJMzOpKZQVdWvh9SDMGnufzLijPTn7nWxO3jcpxVdbDyVbm0+Sx0jMH2KXzsTNTnxJ6WbbGac+sLWX2PhEiqOH2Gp7c/EOAPXU0id2P1PMfktIO9w8aatA28MrKMfek5w3WqxSrUGbLRDxeQIHsI2DgFtvtRqkHdRKfBoSV/HYVAXTk/ds12GXZmRcxur1ShIrzlnGzp0E7Hy/KqN/LJX+6cUwjiAkqBlJOF8lIQPvWqAdAUeauC1vPpTfT7kpZkrItQsykT0qcD6Z5LUcv8F0iFTlmFuIqllIIgMKmC22yikfkgjNsAL4jV/F7FltZ4MeOSXZqBjhxK5ypkRXR7MLdzCluWaxwkaXmooCDdfa2KPyNTF+esKHaD14sNVU9ku8524yJ0A+PyA6NZFFXCBybgX4N4xdVhBjcFN01f4ZLsClQEYj8ZkyUB2PXLoDQMCFEcHXyHp5DYEGAqIPwubC7ScsMZs+igtJcNLN3exqxPN8EkA3czGJGABdCCxOJECbk6WmzxoYkthFxjxAPgjCML8euB2cf+6A6Ctw9a5DP/YLqfBfp85eRSM83v7Ys3kUvbzGrmGoZSC1CFS9NGmmrH1P5dx1xF6upL/v3rbGZgeST/Kny8+epKk4mUFoJCaHVujspAO9EOhtGWlj4D2PSv+3z+ru4rm+rOM3Da2j/yyxnLeLuvTeCohb
+ zJVuS0rT
+ si8HhoOebrzPFVjziq8A6aTClsPap5jqP6KGgXF4tCyo/Kn9oniKJJKl46eN4EU3YSFvJ5D7OCoDjJezXljZOpbs70qf+0vGGvqSs98EAI3FF+OkdCWqZ90pdyEmGIlhNVmWui/+n7YOSKU0wvpgM3TYs74K65zSpKN6bnGas0MprxXD6nXAvo3X2Ou/iID0HIRRHCGsUxjPxW1vUnoOojl61DnbCPRU4hdYwUhZrR6WUAD35twc/yteSnnEb/zMv7VXDPTwIKNmP8KqkYrD+HBPsKpSgApmWJgwb+Y76tfnE3u8rqDhPn3Pv+yGjW1hY/xSnQY+5UC67cZGz6MTCWasekP4m/ppa0C3sfvqpoC7afkPFkmJH6MNEBHVjziBiJeEsbw9SoSG4sLk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,122 +136,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 6/4/26 07:46, Harry Yoo wrote:
+> 
+> 
+> On 6/3/26 10:10 PM, hu.shengming@zte.com.cn wrote:
+>> From: Shengming Hu <hu.shengming@zte.com.cn>
+>> 
+>> _kmalloc_nolock_noprof() retries from the next kmalloc bucket when the
+>> initial allocation fails. The retry currently reuses `size` as the
+>> bucket selector and overwrites it with s->object_size + 1.
+>> 
+>> That value is later passed as the original allocation size to
+>> __slab_alloc_node(), slab_post_alloc_hook() and kasan_kmalloc(). On a
+>> successful retry this makes KASAN/slub-debug observe the retry bucket
+>> selector rather than the caller requested size, potentially widening the
+>> valid kmalloc range and hiding overflows.
+> 
+> Good catch!
+> 
+>> Keep a separate `bucket_size` for choosing the retry cache and preserve
+>> `size`.
+>> 
+>> Fixes: <af92793e52c3> ("slab: Introduce kmalloc_nolock() and kfree_nolock()")
+>> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+>> ---
+> 
+> I want to note that this conflicts with Vlastimil's work-in-progress
+> feature [1] where it separately stores orig_size in struct
+> slab_alloc_context which naturally solves the problem.
 
+Thanks, didn't realize it was solving this problem as a side-effect, hehe.
 
-Le 29/05/2026 à 17:02, Ard Biesheuvel a écrit :
-> From: Ard Biesheuvel <ardb@kernel.org>
+> [1]
+> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/slab_alloc_flags
 > 
-> The only remaining use of map_patch_area() is mapping the zero page, and
-> immediately unmapping it again so that the intermediate page table
-> levels are all guaranteed to be populated.
-> 
-> The use of the zero page here is completely arbitrary, and not harmful
-> per se, but currently, it creates a writable mapping, and does so in a
-> manner that requires that the empty_zero_page[] symbol is not
-> const-qualified.
-> 
-> Given that this is about to change, and that map_patch_area() now never
-> maps anything other than the zero page, let's simplify the code and
-> - remove the helpers and call [un]map_kernel_page() directly
-> - take the PA of empty_zero_page directly
-> - create a read-only temporary mapping.
-> 
-> This allows empty_zero_page[] to be repainted as const u8[] in a
-> subsequent patch, without making substantial changes to this code
-> patching logic.
-> 
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-> Link: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2F20260520085423.485402-1-ardb%40kernel.org%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Ca75a9b5e25f14d0d9b2208debd935266%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639156637598013085%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=Q82ykchJOsuWlbmq%2BKFb2cTWIU4wGXbR53VQjNvgOCk%3D&reserved=0
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> No strong opinion on whether to queue this patch and then rebase
+> Vlastimil's work on top, or wait for Vlastimil's work to solve the
+> problem instead...
 
-Reviewed-by: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+It's better to queue fixes separately first, in case someone wants to
+backport them, even though stable shouldn't be really necessary here.
+This fix could still go to 7.2 but my series only to 7.3.
 
-> ---
->   arch/powerpc/lib/code-patching.c | 52 +-------------------
->   1 file changed, 2 insertions(+), 50 deletions(-)
+>>  mm/slub.c | 7 ++++---
+>>  1 file changed, 4 insertions(+), 3 deletions(-)
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 67abbbf68fc1..6a2b3ade3611 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -5350,6 +5350,7 @@ EXPORT_SYMBOL(__kmalloc_noprof);
+>>  void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, int node)
+>>  {
+>>  	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_NOMEMALLOC | gfp_flags;
+>> +	size_t bucket_size = size;
+>>  	struct kmem_cache *s;
+>>  	bool can_retry = true;
+>>  	void *ret;
 > 
-> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-> index f84e0337cc02..44ff9f684bef 100644
-> --- a/arch/powerpc/lib/code-patching.c
-> +++ b/arch/powerpc/lib/code-patching.c
-> @@ -60,9 +60,6 @@ struct patch_context {
->   
->   static DEFINE_PER_CPU(struct patch_context, cpu_patching_context);
->   
-> -static int map_patch_area(void *addr, unsigned long text_poke_addr);
-> -static void unmap_patch_area(unsigned long addr);
-> -
->   static bool mm_patch_enabled(void)
->   {
->   	return IS_ENABLED(CONFIG_SMP) && radix_enabled();
-> @@ -117,11 +114,11 @@ static int text_area_cpu_up(unsigned int cpu)
->   
->   	// Map/unmap the area to ensure all page tables are pre-allocated
->   	addr = (unsigned long)area->addr;
-> -	err = map_patch_area(empty_zero_page, addr);
-> +	err = map_kernel_page(addr, __pa_symbol(empty_zero_page), PAGE_KERNEL_RO);
->   	if (err)
->   		return err;
->   
-> -	unmap_patch_area(addr);
-> +	unmap_kernel_page(addr);
->   
->   	this_cpu_write(cpu_patching_context.area, area);
->   	this_cpu_write(cpu_patching_context.addr, addr);
-> @@ -233,51 +230,6 @@ static unsigned long get_patch_pfn(void *addr)
->   		return __pa_symbol(addr) >> PAGE_SHIFT;
->   }
->   
-> -/*
-> - * This can be called for kernel text or a module.
-> - */
-> -static int map_patch_area(void *addr, unsigned long text_poke_addr)
-> -{
-> -	unsigned long pfn = get_patch_pfn(addr);
-> -
-> -	return map_kernel_page(text_poke_addr, (pfn << PAGE_SHIFT), PAGE_KERNEL);
-> -}
-> -
-> -static void unmap_patch_area(unsigned long addr)
-> -{
-> -	pte_t *ptep;
-> -	pmd_t *pmdp;
-> -	pud_t *pudp;
-> -	p4d_t *p4dp;
-> -	pgd_t *pgdp;
-> -
-> -	pgdp = pgd_offset_k(addr);
-> -	if (WARN_ON(pgd_none(*pgdp)))
-> -		return;
-> -
-> -	p4dp = p4d_offset(pgdp, addr);
-> -	if (WARN_ON(p4d_none(*p4dp)))
-> -		return;
-> -
-> -	pudp = pud_offset(p4dp, addr);
-> -	if (WARN_ON(pud_none(*pudp)))
-> -		return;
-> -
-> -	pmdp = pmd_offset(pudp, addr);
-> -	if (WARN_ON(pmd_none(*pmdp)))
-> -		return;
-> -
-> -	ptep = pte_offset_kernel(pmdp, addr);
-> -	if (WARN_ON(pte_none(*ptep)))
-> -		return;
-> -
-> -	/*
-> -	 * In hash, pte_clear flushes the tlb, in radix, we have to
-> -	 */
-> -	pte_clear(&init_mm, addr, ptep);
-> -	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-> -}
-> -
->   static int __do_patch_mem_mm(void *addr, unsigned long val, bool is_dword)
->   {
->   	int err;
+> But in either way, I think it's more straightforward to introduce
+> orig_size as a variable to keep the original size and pass it to
+> __slab_alloc_node().
+
+Agree. Because above, we wouldn't initialize bucket_size to a real bucket
+size, but a <=bucket size so it's misleading.
+
+>> @@ -5372,9 +5373,9 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
+>>  		return NULL;
+>> 
+>>  retry:
+>> -	if (unlikely(size > KMALLOC_MAX_CACHE_SIZE))
+>> +	if (unlikely(bucket_size > KMALLOC_MAX_CACHE_SIZE))
+>>  		return NULL;
+>> -	s = kmalloc_slab(size, NULL, alloc_gfp, PASS_TOKEN_PARAM(token));
+>> +	s = kmalloc_slab(bucket_size, NULL, alloc_gfp, PASS_TOKEN_PARAM(token));
+>> 
+>>  	if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
+>>  		/*
+>> @@ -5408,7 +5409,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
+>>  	 */
+>>  	if (!ret && can_retry) {
+>>  		/* pick the next kmalloc bucket */
+>> -		size = s->object_size + 1;
+>> +		bucket_size = s->object_size + 1;
+>>  		/*
+>>  		 * Another alternative is to
+>>  		 * if (memcg) alloc_gfp &= ~__GFP_ACCOUNT;
+> 
 
 
