@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49F14CD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 14:41:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9BC1CD6E6D
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 14:45:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 713936B008A; Thu,  4 Jun 2026 10:41:15 -0400 (EDT)
+	id D811A6B0092; Thu,  4 Jun 2026 10:45:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EA3A6B0093; Thu,  4 Jun 2026 10:41:15 -0400 (EDT)
+	id D58BE6B0093; Thu,  4 Jun 2026 10:45:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 626CB6B0095; Thu,  4 Jun 2026 10:41:15 -0400 (EDT)
+	id C96DD6B0095; Thu,  4 Jun 2026 10:45:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 518D16B008A
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:41:15 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F125A1A00EC
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:41:14 +0000 (UTC)
-X-FDA: 84842492868.18.C63E6A3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AE500A0018
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:41:05 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id BB2AD6B0092
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:45:47 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 398784011E
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:45:47 +0000 (UTC)
+X-FDA: 84842504334.14.1451CBF
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C59D380033
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:45:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UunZbDmJ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780584065;
+	s=arc-20220608; t=1780584345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CtDt3lYeen32tJjPtVhK83NQYah0kpWdJdJve8FYL6Y=;
-	b=KWLIHFYTSwf/GRjnv338lx/4TQaWCr/vI3GB8oBwr4q4h7x+snKc/SzFXy736itNT1mr5d
-	q3gMzZp42t/Pjy+J9fKS4AJFGumY2ooGVV2XHRmYv1KR93IsmQi4nck47KplRF1MGRrF81
-	+3iJ2csV7grBGlI9K0ORdZ55OD3ORjo=
+	bh=LoH9pVzSpYK0TgEx0hXQxnSD6c2BaICmL/xjSUK10Ww=;
+	b=fSrIEEcLvwMCawhECDnpJ6AsYZ3RyUgxloXc5KRXC+lJTFOIR6pBoW00+g3HEXUtvBYRZy
+	f9BoXXb4tsA7gNqdYo3CinueQU7Tu/9we7gJ+Dvbbnhb+MawGZzsxxI/2ckS4SmcdnadU+
+	AxE/3br291kSnSLxoHGKwAbh9qxVdjI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ip7V26mZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UunZbDmJ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780584065;
-	b=3SVtLcFBZqhwqWvjzFaqnqhtq6Y19Versf62ZS5N2TiEGsv/xSG3KozK+bigTiQ7OFt+pB
-	07iRMxAKQGcXEtuLxC3ac3R4KttqFdaGh+yg2VYciAniCu6wfxfRwBXzOLzyIf/rQrrGm+
-	LQ3coM6xsBmFkSRM3odvWneDLfjVLew=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35C57600FC;
-	Thu,  4 Jun 2026 14:41:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813361F00893;
-	Thu,  4 Jun 2026 14:40:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780584064;
-	bh=CtDt3lYeen32tJjPtVhK83NQYah0kpWdJdJve8FYL6Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ip7V26mZ3lpilTPjqq54piAcvOldqnXrk4MptULiPvlt1TPj3O9KC/WGiBCpb6sS+
-	 FE/PcYpQMfmHU4JeXTJyoK7qBUwLxMAT46k1dxOCBZ+IVZ/92S6R53dGbiuMpcfyZK
-	 62TXYPA9ty+/tG9g1H445TrGZInqnRDINE0QCHnsRCJNisxk2ShRvoayrgTln0h3JT
-	 Qh3k1N7Iic1u2ZWCI5CxGC92BdXhxeVP4kM4LU68/a0v9PaxSay2rbsuPPl8Q0du7s
-	 QwF1SpaHIfafTST+QIOw9/ekg10tpWZbR3mnERIgDF6duw7/NNe4JE8yOrvpGwcnGK
-	 FJin50Cz7XUIw==
-Date: Thu, 4 Jun 2026 15:40:49 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>, Nico Pache <npache@redhat.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, akpm@linux-foundation.org, 
-	anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
-	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
-	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
-	liam@infradead.org, mathieu.desnoyers@efficios.com, matthew.brost@intel.com, 
-	mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, 
-	rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org, 
-	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
-	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
-	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
-	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
- collapse support
-Message-ID: <aiGOZyvD6lHskQSH@lucifer>
-References: <20260522150009.121603-12-npache@redhat.com>
- <20260531071845.10875-1-lance.yang@linux.dev>
- <CAA1CXcA+oZmp=cxiC2_EBDxqGX94gAd335d9eFPNv=j_0=og7Q@mail.gmail.com>
- <185f5699-3797-4300-8c54-bb99fc2a45e0@linux.dev>
- <46bb9d9e-03f0-4e26-9ac9-1cdc5ba9bf4d@kernel.org>
+	t=1780584345;
+	b=8Gzo8nCAwK7qslE/3ZkcixqCZX46vIy/O7txJlF2Zv/aIFvTkBDl/wCDB5zbKZVENWACS4
+	g0Ab8wIrZsPcmKfWNHL7+UluNh59LpHbOzDkO25QqrbDMeWeNXGyrb8hDnBCGNVRHk/v/n
+	iu12cfY7/+Wqolglb1J/yfLByVkx34E=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780584342;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LoH9pVzSpYK0TgEx0hXQxnSD6c2BaICmL/xjSUK10Ww=;
+	b=UunZbDmJFl2Hukw9c9Op95EHjP5Wse54/m/q/IlZ7etwX58pebkfyhKwUwj1wQiFgiXAWZ
+	Gk38TisXJS8L6yZGP9fJd+nu8bTes3YLNenILQ0e0QyogbJL9pKJOfGhjqkzmzMtySFZEs
+	VbgOWsG1RIFkQsZSvgh6sx/5q6Ncvm8=
+From: Usama Arif <usama.arif@linux.dev>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH v7 3/3] locking: Add contended_release tracepoint to sleepable locks
+Date: Thu,  4 Jun 2026 07:45:36 -0700
+Message-ID: <20260604144537.3249856-1-usama.arif@linux.dev>
+In-Reply-To: <02f4f6c5ce6761e7f6587cf0ff2289d962ecddd4.1780506267.git.d@ilvokhin.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <46bb9d9e-03f0-4e26-9ac9-1cdc5ba9bf4d@kernel.org>
-X-HE-Tag: 1780584065-784942
-X-HE-Meta: U2FsdGVkX1/evkp42QV1ZY5ML1pPutV/7B21kj1L2zN2Z5qADR+6mVY49GoG5X0XT7zWFoy32aNTIuYiJaUgmn5pFV4wettId9e9NImrsrmBtfXMwwZrUzcOFR/LSR+jV9rloOwS1bX0sk/pNKeoIP706g7zj/Fxr4R80sPvpQlNpBpLMg+GlOGwDZPMmDydu3XRBJdv0UuEgOEE5dPV/fBi+tpwnoAIzP4uf6rlvkfycIs5QRrTBqmGtjFRMt9UixCtEiOHpIRy8BirxSKcNYxlm3yk6DZngr0dhEA/rNhIX++BrK21n/pS/1jFxPY0YFVnBL1q86hm9BaDgOXaiUpWOnAOTLG5JgLyCXhuvN2uWVcS5GhpJAODc8VpZnrqQDRolcGCsDg=
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspam-User: 
+X-Stat-Signature: d3dyb8idh995y7cbu9yhtuz7ps5e5mar
+X-Rspamd-Queue-Id: C59D380033
+X-HE-Tag: 1780584344-899088
+X-HE-Meta: U2FsdGVkX1/f3S5FuQt3ji7FkmgN+Nk3M23T/buHE/OEV/konO/yKUeqfXUl9GcLLtuQYXEptAlgBj9qnnJ7DF2YroyfhUD9+iJUWRT96S3y4qY8YCh+EmkBDNo0lGKrcwWojtFa2JSdX5B/BXHV11R6oZ5N9L/4C0+cOjV7k3qjcj24UfFACru/N901L095LubMT0NSNY/XHdldmtdPVrPUGxS/PwOwEeIhLRNSPvHtr4VTcMI3ktOc7IDMp8L4X+e0oSVNOLHnIa+FFIac6ig4FIdFBVfbq8dqZq+/2S/SGvrKCnEdbobMkjgYSLLCeYA2ASP3UzioiR37FNNiwadngNjNRuixl3n8cUQoq2Jo7QQbc467b0Uee4GUTiDYdlD/sDa9aF57bnP3+yrju8OZjXM17P+XpoG63AXj57NSiyQf8m2eOLc+O/6iPTAHz32GXdon2Qw8gEE9oTbaGGkzIa95mRpfAKc2Q/p72WGAjsVs9boFCyKVEyEpLNgRjHqeahfxMN7wz26ubyRnlezI482oypQgC5+x/E/sWruddNTKDJpHdbCqS+PKI7EdQFq7aMf3raq/pAIwTBfqRSytTHtNTEXNd4asH8QpDdKwsfHqoTmM1b90XvXvqRtfN3XGRPQoBl93sMHqxF0ARoXOy+8SZfZzz9tdw6/XWcdVcJMCJheAvB9uEWV+p6axNpB6CQaV1uRmdqF2VPXtITIsJYDj/efY1xt1KCMI0yVwj5C/n46vCpfuiy4lMwYDCXJR/CDOV6W6WAc6GTzvkJtGkV14DGDOEXxSIWjYpvjm+a/SpHYA78CW73glEF+PEIZh3vRAQyt4tgfnSF8oLnOhKv+MxkjN5iyNXwlyKDckjvWXEzeobygI+JVUwjtMwhmfuL7GXZLxHPnHZGdxATFA6XQmBZdXPgHKMgEq2hVAo3MpAH1fQshaDZyoi7FykYqf2aB9zmflQmTcCCo
+ 7StGTHkY
+ wnjwdZ1lfyp9GDskHOoK3PeZWYVjkU6Yol8SG+Ir99zM8lJGD0ZqODgFFn91rPSXIqHbTTPq6hRhHheAAqZR51SC9feilREqRoqBLrgNPsAeGC6wBJhXnutQtzvot17VDsQMtyHUjfKgzPrhwe2LhknBlV451KVqYUvG8f6QkRzWCW3Ui10v1Sp2MtZFKbG4t6svUfFG1J0FJF7muO08tI6VmerhUt+ZkAAl/HHhI2BJE712pooXNIuH330aJEOh0sDsIm6ZnktLcsIlW0++p/6UIlb8d6wm0CGxFT9yl8ePbwoSXhqQalygb8rs60B2pZ+hTwuZi05IZ5hc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,51 +101,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 03, 2026 at 10:05:08AM +0200, David Hildenbrand (Arm) wrote:
-> On 6/2/26 17:44, Lance Yang wrote:
-> >
-> >
-> > On 2026/6/2 18:58, Nico Pache wrote:
-> >> On Sun, May 31, 2026 at 1:19 AM Lance Yang <lance.yang@linux.dev> wrote:
-> >>>
-> >>>
-> >>> [...]
-> >>>
-> >>> Hmm ... don't we lose the allocation-failure result here?
-> >>>
-> >>> Previously collapse_scan_pmd() propagated SCAN_ALLOC_HUGE_PAGE_FAIL from
-> >>> collapse_huge_page(), so khugepaged would call khugepaged_alloc_sleep()
-> >>> in khugepaged_do_scan().
-> >>>
-> >>> Now if allocation fails and nr_collapsed stays 0, we just return
-> >>> SCAN_FAIL. So we won't back off via khugepaged_alloc_sleep() anymore?
-> >>
-> >> Ok I did the error propagation! I think I handled both of these cases
-> >> you brought up pretty easily.
-> >
-> > Thanks.
-> >
-> >> However I don't know what to do in the following case: We successfully
-> >> collapsed some portion of the PMD, but during that process, we also
-> >> hit an allocation failure. Is it best to back off entirely? or can we
-> >> treat some forward progress as a sign we can continue trying collapses
-> >> without sleeping.
-> >>
-> >> Basically, do we prioritize SCAN_ALLOC_HUGE_PAGE_FAIL or the
-> >> successful collapses as the returned value?
-> >
-> > Thinking out loud, forward progress should win here, the allocation
-> > failure only matter if we made no progress at all?
->
-> Agreed, in the first approach, forward progress makes sense.
+On Thu,  4 Jun 2026 07:15:07 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-Sounds sensible to me.
+> Add the contended_release trace event. This tracepoint fires on the
+> holder side when a contended lock is released, complementing the
+> existing contention_begin/contention_end tracepoints which fire on the
+> waiter side.
+> 
+> This enables correlating lock hold time under contention with waiter
+> events by lock address.
+> 
+> Add trace_contended_release()/trace_call__contended_release() calls to
+> the slowpath unlock paths of sleepable locks: mutex, rtmutex, semaphore,
+> rwsem, percpu-rwsem, and RT-specific rwbase locks.
+> 
+> Where possible, trace_contended_release() fires before the lock is
+> released and before the waiter is woken. For some lock types, the
+> tracepoint fires after the release but before the wake. Making the
+> placement consistent across all lock types is not worth the added
+> complexity.
+> 
+> For reader/writer locks, the tracepoint fires for every reader releasing
+> while a writer is waiting, not only for the last reader.
+> 
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> Acked-by: Paul E. McKenney <paulmck@kernel.org>
 
->
-> --
-> Cheers,
->
-> David
-
-Thanks, Lorenzo
+Acked-by: Usama Arif <usama.arif@linux.dev>
+ 
 
