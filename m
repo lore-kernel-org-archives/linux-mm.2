@@ -4,119 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E788CD6E6D
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 14:32:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 453E5CD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 14:35:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1B9F6B0005; Thu,  4 Jun 2026 10:32:00 -0400 (EDT)
+	id 6469C6B008C; Thu,  4 Jun 2026 10:35:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA5146B0088; Thu,  4 Jun 2026 10:32:00 -0400 (EDT)
+	id 5F7856B0092; Thu,  4 Jun 2026 10:35:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D45BA6B008A; Thu,  4 Jun 2026 10:32:00 -0400 (EDT)
+	id 50DD36B0093; Thu,  4 Jun 2026 10:35:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BFAA26B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:32:00 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 31CC640789
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:32:00 +0000 (UTC)
-X-FDA: 84842469600.17.AE8D031
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 07C15A0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:31:49 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CE3F6B008C
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:35:32 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED0271C0C83
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:35:31 +0000 (UTC)
+X-FDA: 84842478462.25.682B2C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CEB47100010
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:35:22 +0000 (UTC)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780583510;
+	s=arc-20220608; t=1780583722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jHCD/usXrKJEgEC7iBTBFv6T3P+9p6Aw20cG/HazQio=;
-	b=DzA6EnL2Fg+WNGTDkpSkcZrGD6JfI1pvOyK9/q5J99UAG9q234PlvfY/ZsBHbA6Kzf9y8e
-	sONicIzMapJ8Orslny5X+yo1E/Hl3P6dHzkgb41X/oWR3z6JQeHG7r8RIPwPEacWI9Qy9k
-	0V1XNpPPFZsdbZmSjJWuVktuYo+SHtM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vgLl/p3qkGVQ4J0lmKFNqcECALdu6p7bDPIjji6x+rw=;
+	b=fVu0yEGNiMf2kZ5umi0gvPxD9FAXXqS+oiCXSNYTFh6m0z8mixtPTgqXA5M0qhSmX7edNS
+	1po+DHbGMmHXlpSkN4O/keAwAqbSuOgmPTnsiSjDDuX/levsEpr1JC9CPqDb1xkPfvUqg+
+	1hnMT66Nv0hemKd7BcBRkupX5VRi7xQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="fkNxj/BS";
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.50 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ElwbEHai;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780583510;
-	b=v3+E7IvEADlkW1BtiV1A2sjrFQtY7ICtiHedBfey1p6pjm3UEmBzLjCtOWDWy4gt3Kj4nm
-	N34ew1Y53sqzXw0fhfHUrexZMZ9r0eY98iF6629njakfbiqDHKcR6DnH8kueZh5j0yb11P
-	grzEs/i9axrgWOJS6FNkZJLlDHujixQ=
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bec3ffb95dbso126174766b.0
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 07:31:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1780583508; x=1781188308; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jHCD/usXrKJEgEC7iBTBFv6T3P+9p6Aw20cG/HazQio=;
-        b=fkNxj/BSFj4qa8Az1PODgVS6LOi8Vx7Od1DGnw/K5Wkjk199tuM0vQMyP84CyASsDH
-         4BjxWrJX0PRTAljAjHyimj1wJn+ptD9XQUKW88pgxubGeMHGavPIG2WAWkB+TQV5zllt
-         yWnKj+yU7c81G4X9LUZLaw+Qy9wVU+b6vUIJM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780583508; x=1781188308;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jHCD/usXrKJEgEC7iBTBFv6T3P+9p6Aw20cG/HazQio=;
-        b=fC9DGUcSNhZh5OT39NvQdIZfcNE2EFpX4BzUTKj/PcceiIZ1usjgtmht1KpEQxGJRb
-         3o5Gs97gi8Tc3V6EOqX1TfjzitI/mCRZ6GTMseClHBSSOZtksot0JneTQGTVYg90bPjA
-         X20rYYDgWhaxMndH+3Z+Leq4Nyf2ZqtmqafZ8yEfCWOB94Ih72MjQuBrFNlkaI+pqfmb
-         C4IwTIxjLQFItLLCCz70O06rVdeG/PJI35EOkcgTenUMCpb4XjZ3u3a9Xg0G2R3cm/FD
-         0ZTJuOXhOE6SRPhSZv71jGQeesY61Stg8OKR+bwR3uS549Kg3o6ekESKGyr0SmWDs3WF
-         Qc8A==
-X-Forwarded-Encrypted: i=1; AFNElJ82CD2dQAGg5AwEKA/i1o2/f6cR9Pddr+ba0jNtRdPB2CF5OrjfohkrPxOSUak+D3EDKGjmbbONsg==@kvack.org
-X-Gm-Message-State: AOJu0Yy5Gn5f60Fg7dZ2dGIje9aXsR/0G8bLV0Krpj5Wh+NyONMbh+vl
-	C81UHptKqmf6rvKn1a4hLf0eWA29zXJlDwcet78zfSvU6ImhIdEvVSWmqFRSQ+5R0CDlWb18vtp
-	ZJmZ1nesugA==
-X-Gm-Gg: Acq92OEpf5V2GNpteadXqHqDE4uvtKVaSpUmD15XF7d0bY7gEWZKPuAr1YPrfQAxjVb
-	+sbVRj1lBbtIzTo+EUZ9Tanhtpx4GgIk+44u3IqGSSTl1zx8Tp1sf4r758lAfVAHKa8OQNiBusz
-	UJpPzYUhr8OaI1DwLhTwhYRonErVfD0QnPg/wDeA7Bk2s8P5vYqzb+OQehiQVCSpe9Y4RuTcbjK
-	4P/BLNBTvEbdSVfRgLf1b2LDOUjTGsDjDO71YRK5RKbHDJf9P18v81g3yKt4Fnp0XebqXW/5mBh
-	vQuDE4AnfNFuL1+G26Kq8mk8T45/s4QLxEjqM1sHVSf3FdHlYiBfaj/OmeHKBJZJqxFAjX22q23
-	OHRJ+nXDGytHol745VmKXwbjpzWXIt/WLT8BeMguhSiIxEZDqoZjO6Cs2IMHo05TSXl2bJmABdD
-	HS7KTXbgKHL7uVauR0AiU0958NMLWOEliHsvY+zNPg31gorcpRW6M/Yjy3x5djn2/Zh5nv5V+mC
-	Aa/uVsejpc=
-X-Received: by 2002:a17:907:aa1:b0:bee:4c9f:187d with SMTP id a640c23a62f3a-bf0af1095d5mr295474566b.39.1780583508210;
-        Thu, 04 Jun 2026 07:31:48 -0700 (PDT)
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com. [209.85.208.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf0558f3885sm307732466b.54.2026.06.04.07.31.47
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2026 07:31:47 -0700 (PDT)
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-68cc6c7df99so1098606a12.1
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 07:31:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8L6UOVoM7b9w92FNeACxRzKvsT8cXhukmOs87jHTfjqALErhdg7pH9NBH2Mqms1xVAWrKo4vGQwA==@kvack.org
-X-Received: by 2002:a05:6402:43cf:b0:688:12fd:789c with SMTP id
- 4fb4d7f45d1cf-68e70412737mr4177929a12.9.1780583507075; Thu, 04 Jun 2026
- 07:31:47 -0700 (PDT)
+	t=1780583722;
+	b=BQ7DGX60N1zUwVVJOntUlmeZ7W19ggu1frOkdZWPLtjHMx1vG9XrDiOc6SH4QUM/iHjSzQ
+	QlgbYhjj2AXqORr8Kg+Mcp2ZfDcaWdTiVGgimoQ7+rKE6kBbtjSFOOUr9t2L+yHstLZPEW
+	DjOl5XSoWTN1ZjI4/EbA652yYbUG3vY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 44F46600B0;
+	Thu,  4 Jun 2026 14:35:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56451F00893;
+	Thu,  4 Jun 2026 14:35:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780583722;
+	bh=vgLl/p3qkGVQ4J0lmKFNqcECALdu6p7bDPIjji6x+rw=;
+	h=From:To:Cc:Subject:Date;
+	b=ElwbEHaiF9IANaaSytaLz7EQlu4/Ut/lrGHBqHUmDI9GqM32kqROX2k3s6R9oZ7HO
+	 CmFNXNc0tCreViLwZ1EdrWC3D015+uxhUrLiO6o2N3iVQmMduj0A9lILeInKuNAScc
+	 TArZZ0o463TVLgqlK5TyivceCRd8CIN+6YhOurHJSSdn1eR5pmqUV9XdkJSTnpTQlF
+	 9FQxxclMfLLMtP+ub6Sg+x6B8UJCcwqpK+w8wNYNMn2y+dNwgaPq4caZHJK3WAhPNN
+	 hTMKViaQXzV5jQjjDG+Ltjy3udAOEvOXzyity8vnqeCRDkuvmzN4BKu5WemCBhTMGB
+	 i+W1jgcaDdg+g==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 11 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.1] mm/damon/core: always put unsuccessfully committed target pids
+Date: Thu,  4 Jun 2026 07:35:08 -0700
+Message-ID: <20260604143514.84310-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
- <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
- <20260601173325.GH2636677@ZenIV> <20260601160455.2c187574@gandalf.local.home>
- <20260601172825.a51a588ec1c32617a0e12d78@linux-foundation.org> <aiEb8CTM-ovMIq7-@1wt.eu>
-In-Reply-To: <aiEb8CTM-ovMIq7-@1wt.eu>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 4 Jun 2026 07:31:30 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiQB-j53cTs9kM4UeXoXPaFj78aJe3D6Yp1Fohg7i4tWA@mail.gmail.com>
-X-Gm-Features: AVVi8CdMcH2Yi8zy-bOiW7jRaCCsKof-RnAg4JQ3nwUYFdve2Wu3l5Vz6H4KhIU
-Message-ID: <CAHk-=wiQB-j53cTs9kM4UeXoXPaFj78aJe3D6Yp1Fohg7i4tWA@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Willy Tarreau <w@1wt.eu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-api@vger.kernel.org, netdev@vger.kernel.org, 
-	Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
-	David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, 
-	patches@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	Jan Kara <jack@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-X-HE-Tag: 1780583509-814556
-X-HE-Meta: U2FsdGVkX19QDgN4+T9ooYfMCreNP1uwE0bwXTn8c+tq+/17g1dhFNWqutKO1lq8jSX15o1d9wjmTiGXRfK4eHVLxaUOW0YkHVe4B71hZtolVCaMyHSDQsYehj0GCFhCfNqdxT/ZtTkEBI7KlkSt4EiX/+XPqeqj2nNkY+JuHpVlKIzL8VqYjd1Kfzj6sq7oYNppVOjK+tmkmpX+FmSye0PWD0kOARx2gzvlRjpAoUVFpwP6sSePwqetlNCD9uNuCCKSylHne46cP4/PhNpSJQeiCwYjJM28SQXxGzUX3UbkhbhUO9ANkuqj65uNaDR+8K2/xM/m9wKn9hu58MBV+6v7JyuLPbWn6qKwdsDY+Y60Feu+1J4LAatZi10SWZ97OpflQkMTaEeDV1YMj+aFVTnA23IR2ZyGg7cz/i84khZS2ZPVLtkE7mbVRa7oamiNHebCERww634=
+Content-Transfer-Encoding: 8bit
+X-HE-Tag: 1780583722-990827
+X-HE-Meta: U2FsdGVkX1+na7HeTfBxunXqdj4AYnXRxjrdLWLMyAhIptVUYdiYhWERo46GNU7zq1zkUfurhWXNQDXj/Js2Rh9uzHUhkSwSm/Q3Ld//SjTkK4YdPce5YEp/e7QAhlxJtIcmF+ksrHA1fwoCwtT/PSBdsGQaTbIUNtZxkCFCc/Y2569Q2ehXLIAYbjg8dqjxc4DM0eCtOXJztv8AfxD723F3LyhrFzyhQAL9DCj6EXbz9FfjDjWdTiXefj4ttyjtZ4cb4EN1d2bH2mFkmBSwXc6A0LK1kKvjs8iCwg9tlPfdeNQK0GhO8qQRnNRe0xqxnXWh4V+tFs5+gTmt9VkLwdn0Bh4faMyPMwoFq+Bk3d41kjRO6sDH+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,50 +82,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 3 Jun 2026 at 23:32, Willy Tarreau <w@1wt.eu> wrote:
->
-> I'm using vmsplice() + tee() + splice() in high-performance applications,
-> load generators to be precise, and soon a cache. This is super convenient
-> and extremely efficient:
->
->   - vmsplice() is used to prepare a "master" pipe with data to be sent
->     over TCP or kTLS
->   - then for each request, we do tee() from this master pipe to per-request
->     pipes.
->   - the per-request pipes are those that are used to deliver the data to
->     the socket via splice().
+damon_commit_target() puts and gets the destination and the source
+target pids.  It puts the destination target pid because it will be
+overwritten by the source target pid.  It gets the source pid because
+the caller is supposed to eventually put the pids.  In more detail, the
+caller will call damon_destroy_ctx() after damon_commit_ctx() to destroy
+the entire source context.  And in this case, [f]vaddr operation set's
+cleanup_target() callback will put the pids.
 
-So most of those would actually not be affected by any of the existing
-patches: the pipe->socket splice would remain, the tee() code would
-still just take a ref to the page count.
+The commit operation is made at the context level.  The operation can
+fail in multiple places including in the middle and after the targets
+commit operations.  For any such failures, immediately the error is
+returned to the damon_commit_ctx() caller.  If some or all of the source
+target pids were committed to the destination during the unsuccessful
+context commit attempt, those pids should be put twice.
 
-The vmsplice() would change, but looking at your haterm.c sources, it
-looks like it's mostly a fairly small thing ("common_response[]" being
-16kB).
+The source context will do the put operations using the above explained
+routine.  However, let's suppose the destination context was not
+originally using [f]vaddr operation set and the commit failed before the
+ops of the source context is committed.  The destination does not have
+the cleanup_target() ops callback, so it cannot put the pids via the
+damon_destroy_ctx().
 
-That is typically *faster* to just copy than look up pages.
+As a result, the pids are leaked.  The issue in the real world would be
+not very common.  The commit feature is for changing parameters of
+running DAMON context while inheriting internal status like the
+monitoring results.  The monitoring results of a physical address range
+ain't have things that are beneficial to be inherited to a virtual
+address ranges monitoring.  So the problem-causing DAMON control would
+be not very common in the real world.  That said, it is a supported
+feature. And damon_commit_target() failure due to memory allocation is
+relatively realistic [1] if there are a huge number of target regions.
 
-HOWEVER.
+Fix by putting the pids in the commit operation in case of the failures.
 
-It looks like you're actually doing exactly the thing that I thought
-was crazy and wouldn't even work reliably: you change the
-common_response[] contents dynamically *after* the vmsplice, and
-depend on the fact that changing it in user space changes the buffer
-in the pipe too.
+The issue was discovered [2] by Sashiko.
 
-So that would break *entirely* with the vmsplice() changes if I read
-the code right (which I might not do) simply because that looks like
-it really does require that "wrutably shared buffer after the fact".
+[1] https://lore.kernel.org/20260603112306.58490-1-akinobu.mita@gmail.com
+[2] https://lore.kernel.org/20260320020056.835-1-sj@kernel.org
 
-Interesting.  Because the vmsplice() code uses get_user_pages_fast(),
-and honestly, it never pinned the page reliably to the original source
-- it breaks COW randomly in one direction or the other after fork()
-(and I thouht even after a page-out, but thinking more about it the
-swap cache may have made it work for that case).
+Fixes: 83dc7bbaecae ("mm/damon/sysfs: use damon_commit_ctx()")
+Cc: <stable@vger.kernel.org> # 6.11.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from RFC
+- rfc: https://lore.kernel.org/20260604042349.67720-1-sj@kernel.org
+- Check destination cleaanup availability using the cleanup callback.
+- Do the cleanup for all commit failure points in
+  [targets commit, ops commit] scope.
+- Wordsmith the commit message.
+- Add 'Fixes:' and Cc: stable@.
 
-Uhhuh. That does look like it makes the vmsplice() changes untenable.
+ mm/damon/core.c | 55 ++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 47 insertions(+), 8 deletions(-)
 
-But I may be reading your haproxy code entirely wrong.
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 265d51ade25bf..7e4b9affc5b06 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1387,10 +1387,36 @@ static int damon_commit_target(
+ 	return 0;
+ }
+ 
++/*
++ * damon_revert_target_commits() - revert unsuccessful target commits.
++ * @dst:	Commit destination context
++ * @failed:	Commit failed destination target
++ * @src:	Commit source context
++ *
++ * Revert target states that changed by damon_commit_target(), and cannot be
++ * cleaned up by the destination context's ops.cleanup_target().
++ */
++static void damon_revert_target_commits(struct damon_ctx *dst,
++		struct damon_target *failed, struct damon_ctx *src)
++{
++	struct damon_target *target;
++
++	if (!damon_target_has_pid(src))
++		return;
++	if (dst->ops.cleanup_target)
++		return;
++	damon_for_each_target(target, dst) {
++		if (target == failed)
++			return;
++		put_pid(target->pid);
++	}
++}
++
+ static int damon_commit_targets(
+ 		struct damon_ctx *dst, struct damon_ctx *src)
+ {
+ 	struct damon_target *dst_target, *next, *src_target, *new_target;
++	struct damon_target *failed;
+ 	int i = 0, j = 0, err;
+ 
+ 	damon_for_each_target_safe(dst_target, next, dst) {
+@@ -1404,8 +1430,10 @@ static int damon_commit_targets(
+ 					dst_target, damon_target_has_pid(dst),
+ 					src_target, damon_target_has_pid(src),
+ 					src->min_region_sz);
+-			if (err)
+-				return err;
++			if (err) {
++				failed = dst_target;
++				goto out;
++			}
+ 		} else {
+ 			struct damos *s;
+ 
+@@ -1419,25 +1447,34 @@ static int damon_commit_targets(
+ 		}
+ 	}
+ 
++	failed = NULL;
+ 	damon_for_each_target_safe(src_target, next, src) {
+ 		if (j++ < i)
+ 			continue;
+ 		/* target to remove has no matching dst */
+-		if (src_target->obsolete)
+-			return -EINVAL;
++		if (src_target->obsolete) {
++			err = -EINVAL;
++			goto out;
++		}
+ 		new_target = damon_new_target();
+-		if (!new_target)
+-			return -ENOMEM;
++		if (!new_target) {
++			err = -ENOMEM;
++			goto out;
++		}
+ 		err = damon_commit_target(new_target, false,
+ 				src_target, damon_target_has_pid(src),
+ 				src->min_region_sz);
+ 		if (err) {
+ 			damon_destroy_target(new_target, NULL);
+-			return err;
++			goto out;
+ 		}
+ 		damon_add_target(dst, new_target);
+ 	}
+ 	return 0;
++
++out:
++	damon_revert_target_commits(dst, failed, src);
++	return err;
+ }
+ 
+ static void damon_commit_filter(struct damon_filter *dst,
+@@ -1571,8 +1608,10 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ 	 */
+ 	if (!damon_attrs_equals(&dst->attrs, &src->attrs)) {
+ 		err = damon_set_attrs(dst, &src->attrs);
+-		if (err)
++		if (err) {
++			damon_revert_target_commits(dst, NULL, src);
+ 			return err;
++		}
+ 	}
+ 	dst->pause = src->pause;
+ 	dst->ops = src->ops;
 
-               Linus
+base-commit: eeac72cb1b86b53f95c1596ec43db17827a8355e
+-- 
+2.47.3
 
