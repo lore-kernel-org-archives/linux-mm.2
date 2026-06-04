@@ -4,97 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B9F2CD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 14:19:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CCDACD6E6D
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 14:27:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1FEF6B0005; Thu,  4 Jun 2026 10:19:54 -0400 (EDT)
+	id 8FBF86B0005; Thu,  4 Jun 2026 10:27:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD1046B0088; Thu,  4 Jun 2026 10:19:54 -0400 (EDT)
+	id 8ABE76B0088; Thu,  4 Jun 2026 10:27:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBF356B0092; Thu,  4 Jun 2026 10:19:54 -0400 (EDT)
+	id 7C17A6B008A; Thu,  4 Jun 2026 10:27:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B9CD56B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:19:54 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 694A46B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 10:27:50 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 80E311A078F
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:19:54 +0000 (UTC)
-X-FDA: 84842439108.05.D6C02BA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 41A388001B
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:19:45 +0000 (UTC)
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 007FD140730
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:27:49 +0000 (UTC)
+X-FDA: 84842459100.05.1321638
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1FAF440015
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 14:27:39 +0000 (UTC)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780582785;
+	s=arc-20220608; t=1780583261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kz+wMMmvmIne9m547qA6qN3203xltR1Hvn5aJqU4oto=;
-	b=0Cxc/PVTEX/Q64H6oDvrnQErYYdQKsVGu9Ed62EZy4F4TX46Si0PaIYZu4Sb5h/CWvQA0o
-	8cTAhTGTSsNXX2rOs/ACvI51lyi3hsdokPdZkSZQF2HmUHkQ5TOgAihsIw5Ey3H6Pp88Ir
-	tPMr6eNru+hOZhCi//Q0klqUMTX8Cyk=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=R33ngYkbWnebADGAzsK5ks4popeK8vSxrgF0a+6sSXE=;
+	b=hlxw4MRkFBl+4wAjwCG+ZmAMFzi28WegZxAI4v2ohXYtsJcYskpbVz7JHQLLa9IJ6jmzbZ
+	ka5pWSfIQUKySZTusgp+KYAxnJVItkHzfgSfCw/UuVnaY0WBgF4NIlI0APgOrfnH51lVkA
+	wpO2LLQ7NpsgAshfz/C/x7yv/0Ty5A8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=REp6kxpn;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=X14LB1ei;
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780582785;
-	b=W6YeljFkAvXOwjEXmD4kl8TNuzGf0FWEG5scDDwXgklnroMZoZrN8p2/vNdrbhUgXlzCfa
-	xJ5m1cSxAJJl9BbMR94zFuX83kSHSHNHBhE5QAbyfZUgBtukVnMzCQr4+OnPVlaY5jiV5Q
-	VpuWrnS/tNFEocaz7xwfnXIT4Ngxx5w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A2C54600B0;
-	Thu,  4 Jun 2026 14:19:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AF81F00893;
-	Thu,  4 Jun 2026 14:19:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780582784;
-	bh=kz+wMMmvmIne9m547qA6qN3203xltR1Hvn5aJqU4oto=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=REp6kxpnKHKF7Ism8aaIytnDkU7xRoucVEkuISs54uR5MXWWepe3UnWL/tQoD8DXr
-	 VUXgdw29fqcarvKqqAUhAfxgU1MGck9nAUlr7fVfW2RffXNIj8D/6TuNwGVl2dWVZT
-	 Zf9Zg9gJ35eAy7WnpeM+ZzFuCbRxdCkyD9uUFSB+XcdyYCW1xWDpW4ucPPEx2eIevr
-	 cwE9PEV7FeSl/VVWYrqzuAewSpshIWfPMdPsahSI4VfMtSK5e84fhSUxzR3hT6gkfV
-	 nug6Q55EELfwUz7/oRX3xmuRJS0FUim1SCpgcOF8uEqodtUCRgz2gZxCzC0d3WxeKx
-	 9iMrHB639LFxg==
-Date: Thu, 4 Jun 2026 15:19:29 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, akpm@linux-foundation.org, 
-	anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
-	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
-	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
-	lance.yang@linux.dev, liam@infradead.org, mathieu.desnoyers@efficios.com, 
-	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, 
-	pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org, 
-	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
-	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
-	thomas.hellstrom@linux.intel.com, tiwai@suse.de, vbabka@suse.cz, vishal.moola@gmail.com, 
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com, 
-	Usama Arif <usama.arif@linux.dev>, usamaarif642@gmail.com
-Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
- collapse support
-Message-ID: <aiGIkgToAV4T71ab@lucifer>
-References: <20260522150009.121603-1-npache@redhat.com>
- <20260522150009.121603-12-npache@redhat.com>
- <b8380eb3-096a-49f1-9ace-99c1e75888b4@kernel.org>
- <CAA1CXcBg1su-bk3i_H+TW4-nTgvGSGqRNeC9MpQo7sGeH8ejnA@mail.gmail.com>
- <d3c2b00c-6810-434a-b837-0707b0a11611@kernel.org>
- <19639b08-5bf1-4974-9635-c458d512fa38@redhat.com>
- <aiGFIrg8_vZZxnPg@lucifer>
+	t=1780583261;
+	b=7u+OTEOz+wldzx5WKqWdalt0iHgayAPsylBRHqHMDMbGUxTZN4ZPNcFOtqEHbpfmW/FPKh
+	GGXnQ+QDoKDoJrvROwAOTlZJWFtturcHBxEqqIe9r24dAC1ZZvwtjNFGaTTDAgvCDgGa0X
+	p/GAF3IrhDGD0X92Bhj+CL/mcEPkkB0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780583260; x=1812119260;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=qYAsPKDXPUppKRwSP5FI2/CzU7v5gDFzmtLPJdUPH0M=;
+  b=X14LB1ei1LZwqwxSDvqeL8YmFgL05Qx2wVdz0QCJ07ZYjMp3Tykh2UZd
+   8I1Iunb/c01gtWxEXi81GhU08IysC4xoCPjJZyIB9G8bpcUfekBxhnJT7
+   kyiH5UlzLOFgaLivD/rlvfupXfz8YPYIGUWEupNs6ytwmPDZOQFIMbrdT
+   7AOxDSFGUZcZE0syefHHmrBzzNLzIzIOKXS5nJhx/sp9WW1OYB1RLFmTV
+   WZscIzDa1yQdxxwyUplcIoFW0c0WN+fLkYjp/0BKi+sRqHW4GHbl9KZJm
+   TZNV10xnFgPI2J6VdkiBzIdG+ZdUhxpfTIqEgJBNkLiHBjzYWmtyDSuRG
+   g==;
+X-CSE-ConnectionGUID: 4yORx6mQQWGRl8WjbP/uxg==
+X-CSE-MsgGUID: 1VnMLvBxRHS7opUcyTIFdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="80550184"
+X-IronPort-AV: E=Sophos;i="6.24,187,1774335600"; 
+   d="scan'208";a="80550184"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 07:27:38 -0700
+X-CSE-ConnectionGUID: FZio8IAXSwmTFeqHuoxEpg==
+X-CSE-MsgGUID: gs/P/7SfS/CPn4BnoD6cXQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,187,1774335600"; 
+   d="scan'208";a="243482543"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 04 Jun 2026 07:27:36 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wV92i-00000000EoS-4BsW;
+	Thu, 04 Jun 2026 14:27:32 +0000
+Date: Thu, 04 Jun 2026 22:27:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ =?utf-8?Q?"Bj=C3=B6rn?= =?utf-8?Q?_T=C3=B6pel"?= <bjorn@rivosinc.com>,
+ Jason Gunthorpe <jgg@nvidia.com>
+Subject: fs/dax.c:1370:41: sparse: sparse: incorrect type in argument
+ 3 (different base types)
+Message-ID: <202606042228.F7YX6xYX-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiGFIrg8_vZZxnPg@lucifer>
-X-HE-Tag: 1780582785-998296
-X-HE-Meta: U2FsdGVkX1+aVpzdf3erKFotgbtfzETsOq2tqW+KlxsBNWkG9XWQTfmw/COwKWbFJCZE93NTYS5z96Xzfmkkm6mkaaS2bPXjUTr+N6pBTfJL9UNrTOQHkYpZDNa54wW/RaJIJJBFHlsIDCFN7i2NIjMUbRYoWX4aYBwMpR94ogxWofLMxBYRfGlrC7lBuZUrSOuHv33oqdU0OPAE7+bLbabnjVGIhStqtmC8JHVvuVCbJE9jN7gU/bT+fi1KOeI4Xlm0MqU+KOmkkOyTXfm89g/vPyYa+k0iOHBNHbFtDhx/5OqH75+KK4yvDwnvtnYdKX42T43J+Vlnj0xCr+r4K9Zwz27aXykEDKiEukMMdztHyzZTxkELJpZEI0Y2r+NApDCwNZFXDNq1ql6qVKoO5caciEhkHibecxpvWiaEcFZhFCHfEDYVjo8FP8FH7l0HlM2lw0+E/XJM2keoP9+sYmxFtedjqca/XQTOmaLe2v5oSX0vXI1qojryynxtWwRaxGdKuRsNxFs=
+X-HE-Tag: 1780583259-568827
+X-HE-Meta: U2FsdGVkX1+uOXb8ki5AJ7iFz2Q7XxZJpRdiph5b3EqUpyhf8qP01Dyl9YihvIOHwajT3/uuAtFRh2uoYVUKwih1hz/5Xq/eld+BRUxH5gJF76U47iuzEwi4/ujZP2kdTuuAy8dX1jiIu2cwoi8TZSqcmGuulKgO6qTR9CXhTtEcjW2sl4aZsE6lQChHiEoGDra4/ld9kenjrB3xrYOfy3kjpe9EDtw9P/vtuBH0OZ+iJtEeyTy18Sibnn5qOdX1JtgpB7W0lMT2IYZGZTbgHi5i5FnjS6LIoFOpG+FjWv8d6UBHzXDGV/FvwIqY5GFbEbHH5Km2SJazk3glVwdZygf9EAaUVXDGEwoZ41iyNF6I2Fsfgcblj4Jp9ymxnfPxkJxl4SHKR9MneW47U61KeOQcpDHiY8a31KovjHSBGgwCVpBPqEtdDwoKQC0MKrS7yEewayEShXKlvukUO/z70URfiGU1wya0VSjKhde00AezFBFCwRaidHOvNdeXZQz/K0acrW7fnIJGRtLUN/BS3x32qL2OvmrBfBCXEEZEjRnw7coqypG2qMBZ1IEkp25uMfk4XyRLCOch1OhXi5fKMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,325 +96,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 04, 2026 at 03:14:59PM +0100, Lorenzo Stoakes wrote:
-> On Tue, Jun 02, 2026 at 11:23:35AM -0600, Nico Pache wrote:
-> >
-> >
-> > On 6/1/26 7:15 AM, David Hildenbrand (Arm) wrote:
-> > >>>
-> > >>> Reading this, it is unclear why exactly do we need the stack.
-> > >>
-> > >> So I looked into your items below. It seems logical, and I think it
-> > >> works the same way; however, your method seems slightly harder to
-> > >> understand due to all the edge cases and more error-prone to future
-> > >> changes (the stack holds implicit knowledge of the offset/order that
-> > >> must now be tracked in the edge cases).
-> > >>
-> > >> Given the stack is 24 bytes, I'm not sure if the extra complexity is
-> > >> worth saving that small amount of memory. Although we would also be
-> > >> getting rid of (3?) functions, so both approaches have pros and cons.
-> > >
-> > > I consider a simple forward loop over the offset ... less complexity compared to
-> > > a stack structure :)
-> > >
-> > >>
-> > >> I will implement a patch comparing your solution against mine and send
-> > >> it here, then we can decide which approach is better.
-> > >
-> > > Right, throw it over the fence and I'll see how to improve it further.
-> >
-> > Ok heres what the diff looks like on top of my V19.
-> >
-> > you can access the tree here https://gitlab.com/npache/linux/-/commits/mthp-v19?ref_type=heads for easier review.
-> >
-> > So far I have no problem with this approach it appeared cleaner than i thought. Did some light testing. Gonna throw it more through the ringer tomorrow.
-> >
-> >
-> > From 9496c5d17eba7f6d04820d78c7c6f1592a58888a Mon Sep 17 00:00:00 2001
-> > From: Nico Pache <npache@redhat.com>
-> > Date: Tue, 2 Jun 2026 10:26:18 -0600
-> > Subject: [PATCH] convert from stack to forward loop
-> >
-> > Signed-off-by: Nico Pache <npache@redhat.com>
-> > ---
-> >  mm/khugepaged.c | 96 ++++++++-----------------------------------------
-> >  1 file changed, 15 insertions(+), 81 deletions(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index 498eba009751..6de935e76ceb 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -100,28 +100,6 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
-> >  static struct kmem_cache *mm_slot_cache __ro_after_init;
-> >
-> >  #define KHUGEPAGED_MIN_MTHP_ORDER	2
-> > -/*
-> > - * mthp_collapse() does an iterative DFS over a binary tree, from
-> > - * HPAGE_PMD_ORDER down to KHUGEPAGED_MIN_MTHP_ORDER. The max stack
-> > - * size needed for a DFS on a binary tree is height + 1, where
-> > - * height = HPAGE_PMD_ORDER - KHUGEPAGED_MIN_MTHP_ORDER.
-> > - *
-> > - * ilog2 is used in place of HPAGE_PMD_ORDER because some architectures
-> > - * (e.g. ppc64le) do not define HPAGE_PMD_ORDER until after build time.
-> > - */
-> > -#define MTHP_STACK_SIZE	(ilog2(MAX_PTRS_PER_PTE) - KHUGEPAGED_MIN_MTHP_ORDER + 1)
-> > -
-> > -/*
-> > - * Defines a range of PTE entries in a PTE page table which are being
-> > - * considered for mTHP collapse.
-> > - *
-> > - * @offset: the offset of the first PTE entry in a PMD range.
-> > - * @order: the order of the PTE entries being considered for collapse.
-> > - */
-> > -struct mthp_range {
-> > -	u16 offset;
-> > -	u8 order;
-> > -};
-> >
-> >  struct collapse_control {
-> >  	bool is_khugepaged;
-> > @@ -137,7 +115,6 @@ struct collapse_control {
-> >
-> >  	/* Each bit represents a single occupied (!none/zero) page. */
-> >  	DECLARE_BITMAP(mthp_present_ptes, MAX_PTRS_PER_PTE);
-> > -	struct mthp_range mthp_bitmap_stack[MTHP_STACK_SIZE];
-> >  };
-> >
-> >  /**
-> > @@ -1458,50 +1435,14 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
-> >  	return result;
-> >  }
-> >
-> > -static void collapse_mthp_stack_push(struct collapse_control *cc, int *stack_size,
-> > -				     u16 offset, u8 order)
-> > -{
-> > -	const int size = *stack_size;
-> > -	struct mthp_range *stack = &cc->mthp_bitmap_stack[size];
-> > -
-> > -	VM_WARN_ON_ONCE(size >= MTHP_STACK_SIZE);
-> > -	stack->order = order;
-> > -	stack->offset = offset;
-> > -	(*stack_size)++;
-> > -}
-> > -
-> > -static struct mthp_range collapse_mthp_stack_pop(struct collapse_control *cc,
-> > -						 int *stack_size)
-> > -{
-> > -	const int size = *stack_size;
-> > -
-> > -	VM_WARN_ON_ONCE(size <= 0);
-> > -	(*stack_size)--;
-> > -	return cc->mthp_bitmap_stack[size - 1];
-> > -}
-> > -
-> >  /*
-> >   * mthp_collapse() consumes the bitmap that is generated during
-> >   * collapse_scan_pmd() to determine what regions and mTHP orders fit best.
-> >   *
-> >   * Each bit in cc->mthp_present_ptes represents a single occupied (!none/zero)
-> > - * page. A stack structure cc->mthp_bitmap_stack is used to check different
-> > - * regions of the bitmap for collapse eligibility. The stack maintains a pair
-> > - * of variables (offset, order), indicating the number of PTEs from the start
-> > - * of the PMD, and the order of the potential collapse candidate respectively.
-> > - * We start at the PMD order and check if it is eligible for collapse; if not,
-> > - * we add two entries to the stack at a lower order to represent the left and
-> > - * right halves of the PTE page table we are examining.
-> > - *
-> > - *                         offset       mid_offset
-> > - *                         |         |
-> > - *                         |         |
-> > - *                         v         v
-> > - *      --------------------------------------
-> > - *      |       cc->mthp_present_ptes         |
-> > - *      --------------------------------------
-> > - *                         <-------><------->
-> > - *                          order-1  order-1
-> > + * page. We start at the PMD order and check if it is eligible for collapse;
-> > + * if not, we check the left and right halves of the PTE page table we are
-> > + * examining at a lower order.
->
-> Yeah this is not good enough sorry, before there was some kind of explanation of
-> the algortihm, just because you can explain the _code_ more simply, that's not
-> very useful.
->
-> I had to sit down and spend quite a bit of time to figure out how the actual
-> output looks so I think that should be explained.
->
-> >   *
-> >   * For each of these, we determine how many PTE entries are occupied in the
-> >   * range of PTE entries we propose to collapse, then we compare this to a
-> > @@ -1517,26 +1458,20 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
-> >  {
-> >  	unsigned int nr_occupied_ptes, nr_ptes, max_ptes_none;
-> >  	enum scan_result last_result = SCAN_FAIL;
-> > -	int collapsed = 0, stack_size = 0;
-> > +	int collapsed = 0;
-> >  	bool alloc_failed = false;
-> >  	unsigned long collapse_address;
-> > -	struct mthp_range range;
-> > -	u16 offset;
-> > -	u8 order;
-> > +	unsigned int offset = 0;
-> > +	unsigned int order = HPAGE_PMD_ORDER;
-> >
-> > -	collapse_mthp_stack_push(cc, &stack_size, 0, HPAGE_PMD_ORDER);
-> >
-> > -	while (stack_size) {
-> > -		range = collapse_mthp_stack_pop(cc, &stack_size);
-> > -		order = range.order;
-> > -		offset = range.offset;
-> > +	while (offset < HPAGE_PMD_NR) {
-> >  		nr_ptes = 1UL << order;
-> >
-> >  		if (!test_bit(order, &enabled_orders))
-> >  			goto next_order;
-> >
-> >  		max_ptes_none = collapse_max_ptes_none(cc, NULL, order);
-> > -
-> >  		nr_occupied_ptes = bitmap_weight_from(cc->mthp_present_ptes, offset,
-> >  						      offset + nr_ptes);
-> >
-> > @@ -1553,7 +1488,7 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
-> >  				collapsed += nr_ptes;
-> >  				fallthrough;
-> >  			case SCAN_PTE_MAPPED_HUGEPAGE:
-> > -				continue;
-> > +				goto next_offset;
-> >  			/* Cases where lower orders might still succeed */
-> >  			case SCAN_ALLOC_HUGE_PAGE_FAIL:
-> >  				alloc_failed = true;
-> > @@ -1581,15 +1516,14 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
-> >  		}
-> >
->
-> This obviously needs some comments describing what you're doing here. I think
-> David said so too.
->
-> >  next_order:
-> > -		if ((BIT(order) - 1) & enabled_orders) {
-> > -			const u8 next_order = order - 1;
-> > -			const u16 mid_offset = offset + (nr_ptes / 2);
-> > -
-> > -			collapse_mthp_stack_push(cc, &stack_size, mid_offset,
-> > -						 next_order);
-> > -			collapse_mthp_stack_push(cc, &stack_size, offset,
-> > -						 next_order);
-> > +		if (order > KHUGEPAGED_MIN_MTHP_ORDER &&
-> > +			(BIT(order) - 1) & enabled_orders) {
->
-> Wait, if I disable an order this changes the way we get mTHP doesn't it?
->
-> Let's say I disable order-4 but retain order-3 and order-2 for offset 0 we get:
->
-> 9->8->7->6->5->5->6->5->5->7
->
-> And we simply can't get order-3 no?
->
-> This seems broken doesn't it? Maybe I'm missing something?
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   ba3e43a9e601636f5edb54e259a74f96ca3b8fd8
+commit: d438d273417055241ebaaf1ba3be23459fc27cba mm: remove devmap related functions and page table bits
+date:   11 months ago
+config: s390-randconfig-r134-20260604 (https://download.01.org/0day-ci/archive/20260604/202606042228.F7YX6xYX-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 15.2.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260604/202606042228.F7YX6xYX-lkp@intel.com/reproduce)
 
-OK it's the way this is written, very confusing. I do not know why you are
-writing this code in this 'compressed' way.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: d438d2734170 ("mm: remove devmap related functions and page table bits")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606042228.F7YX6xYX-lkp@intel.com/
 
-(1 << order) - 1) & enabled_orders is to see if there's _any others_ to check.
+sparse warnings: (new ones prefixed by >>)
+   fs/dax.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/fs_dax.h):
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   fs/dax.c:728:39: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
+   fs/dax.c:728:39: sparse:     expected unsigned long v
+   fs/dax.c:728:39: sparse:     got restricted vm_fault_t
+   fs/dax.c:730:39: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
+   fs/dax.c:730:39: sparse:     expected unsigned long v
+   fs/dax.c:730:39: sparse:     got restricted vm_fault_t
+   fs/dax.c:734:31: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
+   fs/dax.c:734:31: sparse:     expected unsigned long v
+   fs/dax.c:734:31: sparse:     got restricted vm_fault_t
+>> fs/dax.c:1370:41: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:1370:41: sparse:     expected int result
+   fs/dax.c:1370:41: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:1878:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted vm_fault_t @@
+   fs/dax.c:1878:21: sparse:     expected int ret
+   fs/dax.c:1878:21: sparse:     got restricted vm_fault_t
+   fs/dax.c:1881:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted vm_fault_t @@
+   fs/dax.c:1881:21: sparse:     expected int ret
+   fs/dax.c:1881:21: sparse:     got restricted vm_fault_t
+   fs/dax.c:1884:16: sparse: sparse: incorrect type in return expression (different base types) @@     expected restricted vm_fault_t @@     got int ret @@
+   fs/dax.c:1884:16: sparse:     expected restricted vm_fault_t
+   fs/dax.c:1884:16: sparse:     got int ret
+   fs/dax.c:1902:46: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [usertype] ret @@
+   fs/dax.c:1902:46: sparse:     expected int result
+   fs/dax.c:1902:46: sparse:     got restricted vm_fault_t [usertype] ret
+   fs/dax.c:1918:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted vm_fault_t [assigned] [usertype] ret @@     got unsigned long @@
+   fs/dax.c:1918:21: sparse:     expected restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:1918:21: sparse:     got unsigned long
+   fs/dax.c:1961:51: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:1961:51: sparse:     expected int result
+   fs/dax.c:1961:51: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:2041:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted vm_fault_t [assigned] [usertype] ret @@     got unsigned long @@
+   fs/dax.c:2041:21: sparse:     expected restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:2041:21: sparse:     got unsigned long
+   fs/dax.c:2076:62: sparse: sparse: incorrect type in argument 4 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:2076:62: sparse:     expected int result
+   fs/dax.c:2076:62: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:2138:55: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t @@
+   fs/dax.c:2138:55: sparse:     expected int result
+   fs/dax.c:2138:55: sparse:     got restricted vm_fault_t
+   fs/dax.c:2156:58: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:2156:58: sparse:     expected int result
+   fs/dax.c:2156:58: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:279:13: sparse: sparse: context imbalance in 'wait_entry_unlocked' - unexpected unlock
+   fs/dax.c:509:49: sparse: sparse: context imbalance in 'dax_lock_folio' - different lock contexts for basic block
+   fs/dax.c:576:17: sparse: sparse: context imbalance in 'dax_lock_mapping_entry' - different lock contexts for basic block
+   fs/dax.c:1142:9: sparse: sparse: context imbalance in 'dax_writeback_one' - unexpected unlock
 
->
->
-> > +			order = order - 1;
->
-> order--?
->
-> > +			continue;
-> >  		}
-> > +next_offset:
-> > +		offset += nr_ptes;
-> > +		order = min_t(int, __ffs(offset), HPAGE_PMD_ORDER);
->
-> Also wouldn't, in the case where an enabled order check above skips an order--,
-> we could have offset=0 here and end up just looping around checking from (0,
-> HPAGE_PMD_ORDER) again? That also seems broken?
+vim +1370 fs/dax.c
 
-Yeah sorry the offset += nr_ptes fixes that anyway.
+ff17b8df224b98 Shiyang Ruan    2022-06-03  1351  
+e30331ff05f689 Ross Zwisler    2017-09-06  1352  /*
+91d25ba8a6b0d8 Ross Zwisler    2017-09-06  1353   * The user has performed a load from a hole in the file.  Allocating a new
+91d25ba8a6b0d8 Ross Zwisler    2017-09-06  1354   * page in the file would cause excessive storage usage for workloads with
+91d25ba8a6b0d8 Ross Zwisler    2017-09-06  1355   * sparse files.  Instead we insert a read-only mapping of the 4k zero page.
+91d25ba8a6b0d8 Ross Zwisler    2017-09-06  1356   * If this page is ever written to we will re-fault and change the mapping to
+91d25ba8a6b0d8 Ross Zwisler    2017-09-06  1357   * point to real DAX storage instead.
+e30331ff05f689 Ross Zwisler    2017-09-06  1358   */
+e5d6df73302c8d Shiyang Ruan    2022-06-03  1359  static vm_fault_t dax_load_hole(struct xa_state *xas, struct vm_fault *vmf,
+e5d6df73302c8d Shiyang Ruan    2022-06-03  1360  		const struct iomap_iter *iter, void **entry)
+e30331ff05f689 Ross Zwisler    2017-09-06  1361  {
+e5d6df73302c8d Shiyang Ruan    2022-06-03  1362  	struct inode *inode = iter->inode;
+91d25ba8a6b0d8 Ross Zwisler    2017-09-06  1363  	unsigned long vaddr = vmf->address;
+b90ca5cc32f59b Matthew Wilcox  2018-09-11  1364  	pfn_t pfn = pfn_to_pfn_t(my_zero_pfn(vaddr));
+b90ca5cc32f59b Matthew Wilcox  2018-09-11  1365  	vm_fault_t ret;
+e30331ff05f689 Ross Zwisler    2017-09-06  1366  
+e5d6df73302c8d Shiyang Ruan    2022-06-03  1367  	*entry = dax_insert_entry(xas, vmf, iter, *entry, pfn, DAX_ZERO_PAGE);
+3159f943aafdba Matthew Wilcox  2017-11-03  1368  
+38607c62b34b46 Alistair Popple 2025-02-28  1369  	ret = vmf_insert_page_mkwrite(vmf, pfn_t_to_page(pfn), false);
+e30331ff05f689 Ross Zwisler    2017-09-06 @1370  	trace_dax_load_hole(inode, vmf, ret);
+e30331ff05f689 Ross Zwisler    2017-09-06  1371  	return ret;
+e30331ff05f689 Ross Zwisler    2017-09-06  1372  }
+e30331ff05f689 Ross Zwisler    2017-09-06  1373  
 
-And the fact it's a mask check above makes this OK.
+:::::: The code at line 1370 was first introduced by commit
+:::::: e30331ff05f689f8f2faeb51664299c4d7841f15 dax: relocate some dax functions
 
-So the logic seems probably fine but it needs to be clearer.
+:::::: TO: Ross Zwisler <ross.zwisler@linux.intel.com>
+:::::: CC: Linus Torvalds <torvalds@linux-foundation.org>
 
->
-> Also, what's __ffs(0)? Isn't it undefined? We shouldn't be relying on undefined
-> behaviour no?
->
-> https://elixir.bootlin.com/linux/v7.0.10/source/include/asm-generic/bitops/builtin-__ffs.h#L5
-> Says as much?
->
-> I guess we're assuming we're not going to get to 0 here, but that could do with
-> a comment or a VM_WARN_ON_ONCE() at least.
->
-> Also why aren't we making this a function?
->
-> static inline unsigned int max_order_from_offset(unsigned int offset)
-> {
-> 	if (!offset)
-> 		return HPAGE_PMD_ORDER;
->
-> 	return __ffs(offset);
-> }
->
-> Though __ffs() works on unsigned long... probably... OK?
->
-> >  	}
-> >  done:
-> >  	if (collapsed)
-> > --
-> > 2.54.0
-> >
-> >
-> >
-> > >
-> > > [...]
-> > >
-> > >>>> +     bitmap_zero(cc->mthp_bitmap, MAX_PTRS_PER_PTE);
-> > >>>>       memset(cc->node_load, 0, sizeof(cc->node_load));
-> > >>>>       nodes_clear(cc->alloc_nmask);
-> > >>>> +
-> > >>>> +     enabled_orders = collapse_allowable_orders(vma, vma->vm_flags, tva_flags);
-> > >>>> +
-> > >>>> +     /*
-> > >>>> +      * If PMD is the only enabled order, enforce max_ptes_none, otherwise
-> > >>>> +      * scan all pages to populate the bitmap for mTHP collapse.
-> > >>>> +      */
-> > >>>
-> > >>> You should note here, that we re-verify in mthp_collapse().
-> > >>>
-> > >>> But the question is, whether we should relocate the check completely into
-> > >>> mthp_collapse(), instead of conditionally duplicating it.
-> > >>>
-> > >>> What speaks against always populating the bitmap and making the decision in
-> > >>> mthp_collapse()?
-> > >>>
-> > >>> Sure, we might scan a page table a bit longer, but the code gets clearer ... and
-> > >>> I am not sure if scanning some more page table entries is really that critical here.
-> > >>
-> > >> Someone asked me to preserve the legacy behavior (PMD only). Although
-> > >> rather trivial, if you set max_ptes_none=0 for example, we'd still
-> > >> have to do 511 iterations for no reason if PMD collapse is the only
-> > >> enabled order rather than bailing immediately.
-> > >>
-> > >> I'm ok with dropping it, but I think its the correct approach (despite
-> > >> the extra complexity). @Usama Arif brought up this point here
-> > >> https://lore.kernel.org/all/f8f7bb71-ca31-46ee-a62d-7ddfd83e0ead@gmail.com/
-> > >
-> > > We talk about regressions, but I am not sure if we care about scanning speed
-> > > within a page table that much?
-> > >
-> > > After all, we locked it and already read some entries.
-> > >
-> > > Having the same check at two places to optimize for PMD order might right now
-> > > feel like a good optimization, but likely an irrelevant one in a near future?
-> > >
-> > > Anyhow, won't push back, as long as we document why we are special casing things
-> > > here.
-> > >
-> >
->
-> Thanks, Lorenzo
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
