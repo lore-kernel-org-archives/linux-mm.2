@@ -4,145 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9701ACD6E57
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 08:36:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4254FCD6E57
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 08:45:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A603B6B0005; Thu,  4 Jun 2026 04:36:37 -0400 (EDT)
+	id 628026B0005; Thu,  4 Jun 2026 04:45:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A10566B0088; Thu,  4 Jun 2026 04:36:37 -0400 (EDT)
+	id 600E16B0088; Thu,  4 Jun 2026 04:45:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 900246B008A; Thu,  4 Jun 2026 04:36:37 -0400 (EDT)
+	id 4C7FE6B008A; Thu,  4 Jun 2026 04:45:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EFC66B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 04:36:37 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 14924406B6
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:36:37 +0000 (UTC)
-X-FDA: 84841574034.12.190DD7B
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 19A47C0004
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:36:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=OWvZrvSI;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.221.44 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 366BC6B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 04:45:44 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D379FC1C82
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:45:43 +0000 (UTC)
+X-FDA: 84841596966.25.74CC901
+Received: from mout.web.de (mout.web.de [212.227.17.12])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B90F180014
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:45:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=TAVTvqNl;
+	dmarc=pass (policy=quarantine) header.from=web.de;
+	spf=pass (imf30.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.17.12 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780562195;
+	s=arc-20220608; t=1780562742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GOxxBGCqGPcmxW8c5748w9UZojPmDniQUCAc18TCQK8=;
-	b=BAe+Ffn29DHNbghqvHERPStpr2UKX62IpjS8GxWAaomzYnjb8vWHImieV5gxh737BWKTZH
-	MznTubCIsGtY77h1LFaTRXCw2uqqU8zPKoGfpu7T+54+ww0mjQD1azfiS3nRlRVrhb8L7s
-	9GRdQTQ6Sgyk+giDC1cg2QZpM2yFZ2c=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=S+hjzIrDTeIODDL5m7s+ngimdUqXBpyiitAoczEsaSs=;
+	b=Omxrr4G8FrN/dmVbHAzLE+GuZwE9OL3mKBcM7qRxecxtd/Zl3mD+ZDReC5WG+rSPP+Rzjk
+	Gwciz3d4wZmgmWyklEtxD67nzP3ku3FNeFxd31IOOPk/YX/OSXy2JojgFdhYMW0Q0042qK
+	ypd0q0Fqp62Dl67Y+NGJ9a0HiqMJfo8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=OWvZrvSI;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.221.44 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf30.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=TAVTvqNl;
+	dmarc=pass (policy=quarantine) header.from=web.de;
+	spf=pass (imf30.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.17.12 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780562195;
-	b=7zoZ2euKWamUKghiGftevNvEOJ7qGojEENPm2mp1McN1BXxm14YwLZZoPTa7Ww7Gb23SIE
-	JXz98hfB7LnZ/XtImFDs/lDd6l33bXfGcAAskNd8a+3bXPnAhQtX3ec7C6wcW5fnTnVLYt
-	g/c0PBo4O74/XDNtPD8w7Og1dD9uKnM=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-45eee266c6cso322334f8f.1
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 01:36:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1780562193; x=1781166993; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GOxxBGCqGPcmxW8c5748w9UZojPmDniQUCAc18TCQK8=;
-        b=OWvZrvSIVZmZrMSZw/+MsTO+rNHyLP6Nac45EF9Kwp82JI/eCjELkcOGzsmORBuk1x
-         2Wfza3IrXj76sIompEICHAnLNx7eLY5XpAKo0zqD6FSlhygPGA8ICkVrX9aM4DJFOsHr
-         a+LiTTLAXhmMNMjlFzuJtugR9znykqwSpF/bFWlkcRd7AHjudpz6EeOqaOmG5rN3jkmC
-         Y9taj5FNxQYXZBg20ij8jq0/VAd7u/qeLoFnxSEtH7Djr6Ffs+uKIQ8++dwZBGRY6Vjk
-         3HFomhjmAQefIYThh1lRRex/WCQ6l9Z/yDW7D9GZqst5TPAgNrAhl/+21V4VxLGd+5bb
-         gz6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780562193; x=1781166993;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GOxxBGCqGPcmxW8c5748w9UZojPmDniQUCAc18TCQK8=;
-        b=Q8eIuI4kkseKgh6kk/co6Zu7m7g+M/rY+l0dNhiwmCDrhqFCKqqhHZClm90+qLGB54
-         VHIFbiR44QJXDZxHebhCAmNbMLJWchMaAshJ5ugJgC7R7kx6yPrthg1+LpFErOfnaVne
-         Vo8Qud3wbGZxvf2Zq0xdt3q38FxChIBDEM5uS7pvlH6E9isNBBggGOS/0KGQQC8DS0OI
-         H1ZL5kiaxVOYPXiZP0u4Zz1qBG5uC7/4Nsgg5QAwgZ2I3WmZDKfY6yk/fAxpUs9evx6i
-         HKYuBdBbTP4Eg5eJDWVeCbQp6V2BCAE8w2vS1RCCy3jcVRPyt7o4yAb74ETKP/1Hm3OW
-         pVYw==
-X-Forwarded-Encrypted: i=1; AFNElJ87UiQieeW+tO+X3iib8UdaH1+R7ZnqcgObQxHDq/Wo5d+qFzOOZp5SiF+4bdTOyucdL8thdQgp3w==@kvack.org
-X-Gm-Message-State: AOJu0YzAQU1rWRARORz2nUY9oAPd36YglW2WlGbGogm9koF4saRm9XH3
-	Abfd+Za+ClRFfHaFlUq/D3xh3fE51rcsfdLGZ4QOnxPQTLf9K9P0ZdnaBXtmOZ+EEno=
-X-Gm-Gg: Acq92OGxgA7lqI49KbjIia3wVRhMdVZqf2+zsGi4MILULURtfNRrvp1N2EBSLSQEJIA
-	eikSHWhKTOUStaz6+kSIAaKQzWB48E7XJdA2d6oHhrpII3EsXfKoRlpCFU7DiscjkDSkeFTliTB
-	2vepWHm3LsI4yydjZ6Zd/4/YKD9UZ7rHBaYwOI35VZYK39QKzWlvhVcwkkLCJWtVXwckOe/Cixb
-	HFxDPSSr1UZ+3wBt1Zf+9bGgTSsuq4I/K+qfS1Op1C2gU9TKVZDudT2ZMdlzE0R84E5Vab2dj8q
-	2o36LjgCDmcDd0Ue2MtcU4TwsCVqV5nSLtRu9vCHXgEDED86ZPkBGb+iwcTNZnNY4t6UNvnjkly
-	D18dYSp81ZbQ15RIt+eg2Eb5zeCiE8h4XBq5G0JYpfDlme5rdBm41LC1WIDvuxrXXthYN2Anie/
-	Pk7Onm1f0ckdKnxyHXtcysZA8H6p/+eiRkAGK88vhZCQ==
-X-Received: by 2002:a05:6000:4a02:b0:43d:50c:6f33 with SMTP id ffacd0b85a97d-4602194fc19mr9571400f8f.26.1780562192938;
-        Thu, 04 Jun 2026 01:36:32 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::7:a76c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4602cda363bsm1765818f8f.31.2026.06.04.01.36.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 01:36:32 -0700 (PDT)
-Date: Thu, 4 Jun 2026 09:36:29 +0100
-From: Gregory Price <gourry@gourry.net>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	damon@lists.linux.dev, kernel-team@meta.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
-	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
-	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-Message-ID: <aiE5DZC8Io4SNI3H@gourry-fedora-PF4VCD3F>
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <ag6XyvxR-NU5rGn-@parvat>
- <ahOqzpzAua96HVkn@gourry-fedora-PF4VCD3F>
- <ah47NNhuiClgGCdn@parvat>
- <ah6bDNxlB1zBUnzN@gourry-fedora-PF4VCD3F>
- <ah-0CyZurn5D1ezY@parvat>
- <ah_RcTU8SpQG7hab@gourry-fedora-PF4VCD3F>
- <aiDVMgu0viTIml8H@parvat>
+	t=1780562742;
+	b=UvDh1OFQBZO4KL+1TMvHJJFyY787kYzUufmTs0rdPQWpy/dLY3cvwl5iW22lHcU0tu65ny
+	QNmItG8md2pe8Hux8k1riluWlLLKNluC3vHNq3xQYPRn6exmab68aANrA5IvQQl641Bms8
+	0hofun9cqNnTQejLFMAW4x7JytsKlXY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1780562740; x=1781167540; i=markus.elfring@web.de;
+	bh=S+hjzIrDTeIODDL5m7s+ngimdUqXBpyiitAoczEsaSs=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:From:Subject:
+	 Cc:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=TAVTvqNlN9wq4OEuIa7fKBQxGrv2uZg/nYcXn4hzzYiiXr9Y/nYFBdiVB4HeAJD5
+	 86Xpk6At0SISUW9VoKdKRYw/qEX4J6r1g7PDsciMnv9w5ylP35iCyaZL0PJVhKEPt
+	 xA+dbm8g9EhW85TNKWWEizEuPyq5pByRhzDgOfkb3Ojx69qxZLaH2MgDlZ24XphOl
+	 Mn8NU1tbIFSa2tVQs8u0gnIDJI4uwV7QoAqqAyBFg4CbhF1O5f2pwqwdNbuuEmKL4
+	 n87W/m4d8b8Lm5ch/W/sgic0+SOojmxneaCatbVin9G3rGncaQ2I7/GUyZv6kfmAj
+	 Y4LFLhEx+NjNT3e+zA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MYu1C-1wiH7j3smG-00MfGZ; Thu, 04
+ Jun 2026 10:45:39 +0200
+Message-ID: <126a924b-6f68-43bf-ae5a-449fb93e527b@web.de>
+Date: Thu, 4 Jun 2026 10:45:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiDVMgu0viTIml8H@parvat>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 19A47C0004
-X-Stat-Signature: dg6ihzmmqxcw1iqja87ijrfxyszhi5n5
+User-Agent: Mozilla Thunderbird
+To: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] zsmalloc: Simplify data output in zs_stats_size_show()
+Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:jmFiDZfJJ4Gtd7CB5aqbrRA9lWmoW0szILtpZ1pIIRHjjUpIQCc
+ IZnr7R5TdsWQGdm4LBw8vnjDKl7X/cMYxtq3q7+JcvOvdKKEc9eogPFW1TacJTzZoDf6b93
+ Rl9binAQ/vcQmGGF/JkvqRk7E8aAz4D78obnPzAPi0KCqNeemRrma8N/GPF2ADtvt96t6bk
+ yCReUQG6NUPUoSfA36ViQ==
+UI-OutboundReport: notjunk:1;M01:P0:Cfx44kd3Ia0=;3y7AoRAty/aFc6xEFaaiqevWzsa
+ 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
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780562194-414213
-X-HE-Meta: U2FsdGVkX1/Ur80qTFaFHjBNRh3N6SYzMrGjrYAG2DYJ8E5tqtROOTxyp47bN2Svm7O6xfpCU1HOVKezT095XGsJRVlLYnw2+M7IeXAiwMEAcpNBx4wxZjU6hnZEuPtw+j/QL5WXcneCwxWS1NEu/2XeaNENXw3koqM3CJVHq5/kNubsVpH+riiAvsXWyIOkLvAwSiXPzJsBcP3feh+0aGH354cB49nZskeVZKrDkaz4iUh7/7hJQFO248YNhRQFF9DREaC93EQ/6R83SwSyHg4cBUReJJjqVsjmIVMqhEEeXkRoPqETq+p07crJ92cs/LD7GCHs2V43JlMF3Fl91IYDDubNPIP/b3a+bhY1pdbgeSqRi8IJOHt7IYoFQNvJNhXJtJcqE7HweUwNZK+nMjC4bviM4JFHIMUmourEaNAcClDQckaau11mps+4YklvYw56a7iT1DT2LI+owNmQnDSxNvfGpvOCtB28r8S1p8Q6J5Sz138Vgpe48hKsPCM+Bvzfh9C5Q8yHNf1RZ/ZdiqP7I80c5caMmKO1UiYJ2tVwXn83ya91NXLe5xr6u7s8rOqkCXkLHwzsocR+D2VmkpmhMb4WztPmV419+aeX3Az5uE3lU+2HEnLoXlP2Hk6AxtOCGDwoV7lzfXZ3NHU2bDquu4DUdqhFU0hE0aBqWhmQQT2RKy6c12N18v0wlb3csFEhj9aZGrOcIuwMxYU7fw1FnGz+XK7oT4ZjbjlccpWqwPPqaSqNFKSbXTlm+tjHtnsZuYIt/M+KxkPJCL6SdQp0IR0+anbK1M083dIUWv9bzWcBkHAafosMbhXJ77jBtXFQ7T4LHPiG9hI8SMkz1oLBkHwhPBMY2PytkQY8Haj6YlUqwFNggwMjI4ivNg3n4oxy58/Iq4WRqZwCvzXXq7XMB+4DnrwxenCYiwzPa6TXU6JQLWdZV/Bc42hGPGHQ2cHAkIIkifd78XM4fbx
- vYZCf4L+
- YxnC3v28f7mC9dCnbxpjOSo1VKzkd56MHzvzblTYqsGNUthsFINmZ8yEsGla67ZD+J7HC0wWlLD7JrqwTGGCYY4F/V1hZWB/hf7FRn7K51eQeh0xmoLRYOZHMCIqxH08ZNJtPwkye6Nspjx0qptiwDsWBZeiDS9ksyyCkCiy6aEeMdSAqQWGvc3X9yFQL24PsQRTrT6Nccm6KTXiESf2dhGnx5pBUiy/12yCjy0qrnGd/Cs+pYgqE/Jd2c6Ac00pmIw8WrX0QJHulGDBtSZ0PyAqtSBxVe0ErOhHgPF1OfVixNotiIofRJmP3zCJXsrcxa0x2/WY+wz2xNJYTbOCy1nsbne/9tphbJFpZRYuoSmqL3px4glUXeDD9TIkC07sOKDBSJQglnFiJ+gmjXiUOR05eTuLCXJlh5s/wtQVH4SZlBXTwCeDgKaJo5QUYOrO4PZ8t
+X-Stat-Signature: 87trhenxd1bk6si8ym9nco7jytufznq5
+X-Rspamd-Queue-Id: B90F180014
+X-HE-Tag: 1780562741-28707
+X-HE-Meta: U2FsdGVkX1+PjDPAJJIanZmCjMRwqrUvJ5k43i+5US/OiqqIJiacDPpmaP1U6TERzeTMCV9bI90j+UvdzMpGgEG5Z149CJDCaPHJ/PXQKEwLHhN1PQj15JipuSESdT1rEm8pmMjT3ZrePVnOI3jT4VW5z2dhpSrfg0AwfytCzvXVsTSFpPXrkDv4+FZqxSEqQE4GtN2Tr5UwSXxcKPE84o4xpsKXnEtZNviWttiOnfZ8Hz69zQjFO6kjBLbVdJK7LL0ZNkLYw9wSHh/Oi1+SB9hf6Yo5lY2QgIEYuO7tQJMBPFEfsLw92YRmrMbLCroCIvJnL3qLSoVYvf7qVlQX5epxBLizXqIV7PesjukU6jM3USp5bx/i09AjAt5rLxOYg8hQc4VUBCFHW7BFWsqiNNJAP3RnBc+jARaxRmYLk6zsrn+3sb0Mhvfc6Wi7mOZf0NzWdBNSvFZ6STIjkAxUCRlm1ChJ85FUWc8SjM400HL7KjIok6gZwakvT2fiKwZstdfYlL+pbF+5VcOLxam7BBOZ9jBmySyYyB27fE9jXk7Fe92fyPTiSaehzhnQJbuuRgj2X6lvw56BHGfz5otv/YjTkLUWlMMwTq+mSLOhSfBe+TtrH9zqM73smVl17tnN1sFYihP5RcBVpkvsG+Hq95/c7P3MgnL5JpLh3LEXi+lUGyP8AgB7H5Ml6v5bxQlcYSJaDH0u4aZm3IlzJVCCvayJuZUASNKsV/sN2tnwlOLfVDXJ5qY6IX6EQDdMM/5l9DV1V9DcSY308o4QrBh/Df/sAaiijuCpoG5fmwQgCy4kMr5a+uS4YIXTHzdzb2jzCNst2tMUGD7Ozd8qvPTocUPzlRapodyMVuzfGSd5avEzhPSSSEhZX3NlSTrw8sGfTlH/8u3mrIRwXo/LS3Z6nCwG9nAeE9Am+mY/y+xe1lG2dsK0GoQPmDzz2WMgMIMSH5iVhMKyMO6J4V9QwPU
+ vNcX6GO+
+ 3dTm/sBCpDGZNXDbSr9MCb4ojWmNvhCUJ16IMcy/FPBKGOSQbuHd3plFUB80hbwx8WCt9xlHbJIgx1XU76e7tcrwLoSfVevjeZ0TX0RpUyj7InUjtkCvH28DzEaO/+2Xg2nunCGs7dq0OJzVZHsTkYxeP92fkda3aLIidmcmNN7clbsRwG0PD7lmbSaOZIIF6T7EqoRRNGq8h4ZWf5n7Eo80Kszhz17miqf8QzMwzh1rqkcUpt6oRhXt3vlghBNCv9rjGOWoiLvCK9H681vHgiF8Dn90+tUy13j6ERhEhhlcqfNfQcjC4hJ1cAXL0VtvMflAf7PgvqdtYNCSD3rpMVcMacgWprZ9YvJ9RxDhEAMHfRxmw4vAwKyG6V3C8vcAhb5FK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,205 +176,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 04, 2026 at 11:43:14AM +1000, Balbir Singh wrote:
-> On Wed, Jun 03, 2026 at 08:02:09AM +0100, Gregory Price wrote:
-> > 
-> > Here is how the page allocator fallback lists and nodemasks interact:
-> > 
-> >    Fallbacks A:  A B 
-> >    Fallbacks B:  B A
-> >    Fallbacks C:  C A B   (Private)
-> >    Fallbacks D:  D B A   (Private)
-> > 
-> 
-> Do we want regular memory (N_MEMORY) in the fallback list of device private nodes?
-> The assumption is that we have ATS translation enabled? Assumiung A and
-> B are N_MEMORY here or am I misreading your illustraion?
->
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Thu, 4 Jun 2026 10:20:03 +0200
 
-If we don't have __GFP_PRIVATE, then probably not.  This is a holdover
-from the current __GFP_PRIVATE branch so that if the preferred_nid=
-value is a private node (which is a hint, but not a hard control),
-there's a way for that allocation to land *somewhere*.
+Move the specification for a line break from a seq_puts() call
+to a seq_printf() call.
 
-__GFP_PRIVATE would say "Only allow access to private nodes if this
-flag is provided - otherwise treat that as unreachable and fall back".
+The source code was transformed by using the Coccinelle software.
 
-(__GFP_PRIVATE | __GFP_THISNODE) then does exactly what you expect (only
-allocate from specifically this private node and don't fall back).
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ mm/zsmalloc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-This has the added benefit of not causing OOM on allocation failure.
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 63128ddb7959..83f5820c45f9 100644
+=2D-- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -565,8 +565,7 @@ static int zs_stats_size_show(struct seq_file *s, void=
+ *v)
+ 		total_freeable +=3D freeable;
+ 	}
+=20
+-	seq_puts(s, "\n");
+-	seq_printf(s, " %5s %5s ", "Total", "");
++	seq_printf(s, "\n %5s %5s ", "Total", "");
+=20
+ 	for (fg =3D ZS_INUSE_RATIO_10; fg < NR_FULLNESS_GROUPS; fg++)
+ 		seq_printf(s, "%9lu ", inuse_totals[fg]);
+=2D-=20
+2.54.0
 
-Some would consider such a request a bug (i.e. that caller has a bad
-mask), but I find the premise of that statement to be flawwed if only
-because we do not have good controls over what ends up in a nodemask due
-to the existence of things like possible_nodes.
-
-
-> > If we wanted to change this behavior, realistically we'd be looking for
-> > a way to add specific nodes to certain fallback lists - rather than
-> > modify the nodemask interaction in some way.
-> 
-> Yes, that is what we did with CDM, control the fallback for
-> N_MEMORY_PRIVATE, but there is a design decision to be made here.
->
-
-Agreed, but also one which can be deferred and played with since it's
-all kernel-internal.  None of this should have UAPI implications, and we
-need need to accept that we're going to get it wrong on the first try.
-
-> > 2) full mempolicy support doesn't really make sense
-> > 
-> >    task mempolicy PROBABLY should never really touch private nodes,
-> >    while VMA policy certainly can.  Assuming we're able to support
-> >    multi-private-node masks, none of the non-bind mempolicies even
-> >    make sense for most private nodes (interleave? weighted interleave?)
-> > 
-> 
-> Yes, mostly, but is that baked into the design? If so, why?
->
-
-"Baked in" in this case would mean:
-
-  set_mempolicy(..., private_node) -> -EINVAL
-  mbind(..., private_node)         -> Success
-
-With appropriate documentation.
-
-This can be changed later if a reasonable design was agreed upon.
-
-> > 4) File VMA interactions don't entirely make sense with mbind
-> > 
-> >    In theory you might want:
-> > 
-> >    fd = open("somefile", ...);
-> >    mem = mmap(fd, ...);
-> >    mbind(mem, ..., private_node);
-> >    for page in mem:
-> >       mem[page_off] /* fault file into private memory */
-> > 
-> >    In reality: This does not work the way you want.
-> 
-> Why not? Just curious about what you found?
-> 
-
-Because pagecache pages are associated with potentially many VMAs.
-
-The fault can be a soft fault or a hard fault.  On soft fault - the page
-was already present, and will simply fault into VMA without being
-migrated.
-
-You can imagine the following
-
-Process A:
-    fd = open("somefile", ...);
-    mem = mmap(fd, ...);
-    mbind(mem, ..., private_node_A);
-    for page in mem:
-       mem[page_off] /* fault file into private memory */
-
-Process B:
-    fd = open("somefile", ...);
-    mem = mmap(fd, ...);
-    mbind(mem, ..., private_node_B);
-    for page in mem:
-       mem[page_off] /* fault file into private memory */
-
-If process A runs first, and assuming VMA mempolicy is respected for
-file backed allocation (note: it's not, see below) - then the second
-process will think the memory now lives on node B when it's already
-living on node A (pages are not migrated on fault).
-
-filemap page cache means file-backed pages are global resources.
-
-Re file-backed VMAs - see filemap_alloc_folio_noprof in mm/filemap.c
-
-struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
-{
-        int n;
-        struct folio *folio;
-
-        if (cpuset_do_page_mem_spread()) {
-                unsigned int cpuset_mems_cookie;
-                do {
-                        cpuset_mems_cookie = read_mems_allowed_begin();
-                        n = cpuset_mem_spread_node();
-                        folio = __folio_alloc_node_noprof(gfp, order, n);
-                } while (!folio && read_mems_allowed_retry(cpuset_mems_cookie));
-
-                return folio;
-        }
-        return folio_alloc_noprof(gfp, order);
-}
-
-We'd have to hang a mempolicy off of the file and use fctl or something
-like this if we want a file to have a node preference.
-
-> > 
-> >    I went digging and we need a few mild extensions to allow
-> >    migration on mbind to work for pagecache pages, and the fault
-> >    path does not necessarily respect the vma mempolicy always.
-> > 
-> >    You also start getting into the question of "what happens when
-> >    the node is out of memory and you don't have reclaim support?".
-> 
-> Yes, we should discuss reclaim support, I think we should allow for
-> reclaim. It allows you to overcommit private memory the way we can
-> with regular memory.
-> 
-
-Reclaim support is feasible, but again - crawl, walk, run.
-
-If we get the base private node infrastructure in place, we can break
-things like mempolicy and reclaim support into different work streams
-to enable support for these features.
-
-Different private node users will be interested in different
-combinations of mm/ service support.
-
-For example:  compressed memory as a swap backend DOES NOT want explicit
-reclaim support - it will need to manage its own shrinker.  This comes
-from requirements associated with that specific use case (which I do not
-want to get into here).
-
-That is why this series introduced the concept of NP_OPS_* - so that the
-owner (driver) of a private node (such as a CXL-enabled accelerator
-driver) can tell mm/ what services it should enable for that node.
-
-> > 
-> > For all these reasons, I think the be mbind/mempolicy support with
-> > private nodes needs to be brought in with follow up work - not
-> > introduced as part of the baseline set.
-> > 
-> 
-> I am not opposed to the follow up work, but I feel mbind() should
-> be the fundamental work and user space API.
->
-
-This is informed by a single use case / device.
-
-There are users / devices that don't want any UAPI for their memory,
-but simply wish to re-utilize some subsection of mm/ (page_alloc,
-reclaim, etc).
-
-> > 
-> > I am arguing for #1 - the community has argued for #2 and "fixing
-> > existing nodemask users".  I think we can ship #2 and pivot to #1 if we
-> > find fixing existing users is infeasible or too much of a maintenance
-> > burden.
-> 
-> Again happy to discuss this, I'd like to make sure we agree on the
-> design. I am wondering if there is any experimental data to choose
-> between 1 and 2.
-> 
-
-I am trying to test whether, lacking __GFP_PRIVATE, any normal runtime
-operations access private nodes removed from fallback lists are reached
-via something like the possible / online nodemask.
-
-I remember, maybe a year ago, there were per-node allocations happening
-during hotplug and that's why I originally proposed __GFP_PRIVATE, but
-I'm trying to re-collect that data now.
-
-~Gregory
 
