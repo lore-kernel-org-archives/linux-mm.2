@@ -4,135 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17374CD6E6D
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 12:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADC02CD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 12:56:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57E616B0005; Thu,  4 Jun 2026 08:53:32 -0400 (EDT)
+	id 2277E6B0005; Thu,  4 Jun 2026 08:56:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52EB26B0088; Thu,  4 Jun 2026 08:53:32 -0400 (EDT)
+	id 1FF6C6B0088; Thu,  4 Jun 2026 08:56:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4447C6B008A; Thu,  4 Jun 2026 08:53:32 -0400 (EDT)
+	id 114EF6B008A; Thu,  4 Jun 2026 08:56:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 33F5C6B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:53:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D87EB162B80
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:53:31 +0000 (UTC)
-X-FDA: 84842221422.02.D8394D3
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C881680005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:53:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hqknlAZb;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780577609;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F19F16B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:56:09 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90B76A02C9
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:56:09 +0000 (UTC)
+X-FDA: 84842228058.16.79F824B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E9B3F80011
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:56:07 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cRyD32bJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780577767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g69Tg8i+2AI/l9rLO/HBsvL7C8sDT3SBWBYRRkExyv4=;
-	b=q5h0LgXSulDMHOyaiZlQCtgsCk6+LbomOBGlxmZHI0kd0CBhpT9sPeoB0JWA+k+yKhremo
-	iLXVIDWH+XXN0b8wHDQe090sKwF02CcccdC+jFILt8ksZ34t2BxXvz3rnZo9YgohxJDXZB
-	Hi/MLE1LuAUzOXCoPclxbzwkfgXrLfk=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hqknlAZb;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of giorgitchankvetadze1997@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=giorgitchankvetadze1997@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780577609;
-	b=Nb4GXbRwPM3oZr6/dKGHx3BCw8NDQxCnBZG9JY9BKL29A/VnlAs3rLn72NvnQib6fM1Ft5
-	uRrY/olhB2NwHdGfbZoKtTFvNfM/tvJMiODfrKgvxh1XNdXTAQI2ikbPFdwQYCiFmPfSS4
-	NZn8BK6rOoZoJxiYMYeY79xuuCsXIb0=
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6603b01758cso71593d50.1
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 05:53:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780577609; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jpA/5sN03AVgsE87Ns78MOZQqI+k/4nvfdH98q0eCc8tJkDPvAIKDBDPfyP9CnMPy6
-         D/gm2juRUIxETFAIJF7z7M2JYYqZc7KXsJ5iwPns+uuBxie5fFD5ThUEiWEyN0LyFeZh
-         ujNdg5P2gNJAeObDNXaRVZFuj68vS+lln9gwpuOEFzHG/sgPVXoNYuaInqQZN96fZN9P
-         LaL9oKxngTEm0GDKv41+KdAXh+1N8j9Czu9ImtEXoYIGrZ2rXpdAkH4gjXZz2mBTYizm
-         tICjxJmvzwEXCkuyGW0s0Q1u3KNV3uVPk9u9y/8LEoo1D0TSsSiVYNKpkk3A0NvwgF95
-         4M0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=g69Tg8i+2AI/l9rLO/HBsvL7C8sDT3SBWBYRRkExyv4=;
-        fh=1oMChL3bCWQDtQ9AfhD659unRuppM7NiMaF+/WZVAbM=;
-        b=GM8aWkc4Dl4tm+403grbcPElW2waPAPtLbkjVK01WhIJy23rie/OysHSiRWI/J++Ni
-         P3l0Q/eyDKv3ieuDH3uNYgVmY87OUcLfUjnxp32oS/ky1vx+OP4ef/MC5ll/JYeyuHNt
-         fRo0i5KpT3shp4WWcwcDyIJZUyhI+gw++TPVpmPf10koXUSEkCgSBrQVrcn1gkYfUors
-         RYhlalCUo9+txEvde8uNhvC7t66fCRGKRX+twiDnZgqyBAkSP3scE5IpNUykVhJzM04B
-         XvN+UD//b/k4qJVEfL8wBKhRJ5sRYF0fNM/270U/FPN63nvBqb6Wf6LjrfhoCvuuamAq
-         ZuFQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780577609; x=1781182409; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g69Tg8i+2AI/l9rLO/HBsvL7C8sDT3SBWBYRRkExyv4=;
-        b=hqknlAZbs/kfnpvfyhScI8L107CgzCsj38xe2phPqQQEeUEU47Ps631Ra+wcZLNqFy
-         nroQswaRf4vTnVqR9xctFpKUP1/WepdingTYbr/kpeE5z4x3gUvoZWDdDp83WgEiOtKO
-         PoexGSZKpd0hiM6rvhSXDBmQxnmCO2/GPkCvcP+cdGse/z5VniIMKX2b1Vqf67yyPZs3
-         hiMRCCwvJmdxTbxC5e28wfDV6PBQtjGnYWkPz0IRjy7Gj8yBtxCRa+72B+TuX72WKOJ8
-         cvZpKguHHeNxUQTuwREaqmponkK5p7Kriaqi5zDNnh4ejmKBcSJ9UYXO84wBkOPdxoXk
-         1+Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780577609; x=1781182409;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=g69Tg8i+2AI/l9rLO/HBsvL7C8sDT3SBWBYRRkExyv4=;
-        b=q7wWr/Twij+irEStwbDoPToNMTuu9QMOKmBYKd5SdI20ErgAcmgB2Aju1bfHxnxGaq
-         CA0ZCyFJ5FWE4uH67n/bmWyskbuQ5AQ60hX2MI6/Q3gVqD9arbe4DNwnPTWfMUI0Foem
-         SB3X584mt+F+aS6ws4RUOy8RcNlIT1dofrAr8ebe7upb/l5X8hOyDh6e/iWFQ5vlPApN
-         NZ9fUL0cvbwFEOm8XrNx0BHPVj6axglGPCc2zZSnsYmHR0w/me1LH3l4sRfF0O1i+tEL
-         fmipJ6IpMR1wdhnxz5nGWdvBK864KoEFNExzQGXZOW72u9UrDrGhUk3icdesIl7BCRoE
-         BPIA==
-X-Forwarded-Encrypted: i=1; AFNElJ9nclRbkl8TuEyX39086pJ661kPcE8llsx2vkgTVH4J2hYJzSjxA+vw07essUxRy4daGvKFaQBIjA==@kvack.org
-X-Gm-Message-State: AOJu0YycvSLP8AxmK1YUoT16krfTj5N3zyhzo4XG14SKbL9y9+i4I9/n
-	FhB4l6Vtf0jQT9B3KUsNiMdC0sYRXeM6OoFUcQP5bnlWzJWll/F+6wHtrRJFYgkngo3lT+uXY2n
-	dz4018JViB1Tl16vpU5GiDLvPILYMZB4=
-X-Gm-Gg: Acq92OEYn8QEo7qdGTlBn+3NNxrh9HxZROF6ZQjCsCJzL+cD/9rUeDw7FaB8GrtCzIl
-	FGhFe5kr79ePD06W/8uC5AFBLjC9v1apYn3c6SNOMkENlkVgaEU8WIMtYB7clBvqJHn3qCw3AUT
-	fsHDN9VK66SmfkWOGtpv40TKYYvwwTduNqRO5tkkr5ZWIU387ogyCgNa0zt4ZI/KmSO/0kF4x7X
-	iCLWj1rv2SIB48gsRyy7N0x4n7i/9IsTLvvNyRH30cBS6FtvxyZIiKsYNrNCxaB33O1EF0fC9Mt
-	NNgoMTFTTQMCj8nTd+EiJFMvXhsBjlxKofjdjdfqkyYShcBxngQOtNZJJsvynDMZvnSLaIEOiDC
-	zHAhq/fVyCXpg1yN+z83P7BP444zwW3J8
-X-Received: by 2002:a05:690e:1915:b0:65d:6f14:9070 with SMTP id
- 956f58d0204a3-660f45c9302mr1314879d50.4.1780577608699; Thu, 04 Jun 2026
- 05:53:28 -0700 (PDT)
+	bh=E/t9HfmEbRVqs7G3h4kU5c/TixnCl9Nz0OjrJ5hFnTU=;
+	b=mlwf+rhvscqSkiK4UBDaNuOI5pSp1GOX9JLrLH3eu4y3d0xhN1KKXqK+W+tYp3kgJm67Mg
+	nVjrvP92A84aAIpJOxa4rg281GlCVlWHScQQ0IefWN+zMmI2WO6kzK8UwFuuq+6NrckEkW
+	OGlF6pLHsX+VJu6++qfK+mk5lrIhHHY=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cRyD32bJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780577767;
+	b=asNjD6koO3SYWkDXbrw763KPDCaUc+pk/N4uCwbaPz8dxCqIPabVqZnPD5I22BUbU1/bjG
+	lZcE5o+zPrxzYe8fPDlDhClnlfhm1SLTtOP6/zkczUfslYEFRVycjEE2bst/frQ4n+vQH3
+	sgGP/WlFqY3w8kl8sjVV8TyFG5pLt2U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B0216024D;
+	Thu,  4 Jun 2026 12:56:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99021F00893;
+	Thu,  4 Jun 2026 12:55:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780577767;
+	bh=E/t9HfmEbRVqs7G3h4kU5c/TixnCl9Nz0OjrJ5hFnTU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cRyD32bJvEDHx3YAv5J4621Os7fes4qjj6Ovkq21AMLxiLmxsPU+ESEgvsIbUFKbl
+	 ZBjRrbpBJIhmUiHfuLYnZH8FiFybEZt50NZ06al/wDHpr2JatVWT9NIY+kWVCNE7b1
+	 q8LDyxOYQTiuuLY+JkvtfObAZUi4pH6+2M3ULmKJ9a36wL8fq+jwR4gGafg5aGZpMJ
+	 GVvnD02iQfWTtlmuvxB5cXhgKPqmlllgLa9hse7rXNanK1DMAEsAml3uILAxt4Ez6K
+	 hZp95jn9b7ObmvSb60HbLnXRuj5xoQuxJmMOXsOUUFbtG5Xl06B6nSjthJbRrBpfA4
+	 ly8usQL8tvIJg==
+Date: Thu, 4 Jun 2026 13:55:51 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com, 
+	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, 
+	jackmanb@google.com, jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, 
+	kas@kernel.org, lance.yang@linux.dev, liam@infradead.org, 
+	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
+	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
+	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
+	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
+	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com, 
+	Usama Arif <usama.arif@linux.dev>
+Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+Message-ID: <aiFz-VSKSQ-zBfN7@lucifer>
+References: <20260522150009.121603-1-npache@redhat.com>
+ <20260522150009.121603-7-npache@redhat.com>
+ <aiFTSLb0kkTR7I9A@lucifer>
+ <aiFw80oLty6F_-8m@lucifer>
+ <CAA1CXcDxZEmWtmGFiKDKSPSae8pN0at4vYV24FOs+t_GTGkZ6g@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260601133941.111989-2-giorgitchankvetadze1997@gmail.com> <20260601134427.dda82558dfb2da579d66cbb0@linux-foundation.org>
-In-Reply-To: <20260601134427.dda82558dfb2da579d66cbb0@linux-foundation.org>
-From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-Date: Thu, 4 Jun 2026 16:53:17 +0400
-X-Gm-Features: AVHnY4JPI5ZoHsj3kCakMzoQNU0ShVKpROBSnYaYX10AP5q-EBPKGug1lIOe_RM
-Message-ID: <CAE7dp2ou3f8d0dAqyFQf8RQ1jgYtdsBxq70GF=OECAcvfA3UKA@mail.gmail.com>
-Subject: Re: [PATCH] mm/compaction: guard move_freelist_head() against invalid freepage
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com, 
-	hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C881680005
-X-Stat-Signature: pb17cke3qfpzc6jom7frun6r3zbfhzxr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAA1CXcDxZEmWtmGFiKDKSPSae8pN0at4vYV24FOs+t_GTGkZ6g@mail.gmail.com>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780577609-84748
-X-HE-Meta: U2FsdGVkX1/EZhBZAEEaQzKgxDA1LoGk/9iR5SNvII3cRPoEXr/zy2pLg5rfrfZoUyLlnkT2qwGBx2QGkwE3+sUiZXb7gsSmC5XaOFY9a3ALS1UEXU2QD6ihn0FvWkl9uin0/AsUlScj/+5HQduNGUN07iQ5jhqSu7l0mAZmj2hF8gYzZRBaaJsBspmIWabRGYNT80P5DnoFlHgDeeenAwdxapnjGU2jDOwXuoqYMlAWUPikaRyY3oTpXcxzXB6fWw2fR3zIxk2IfjneUUf1qk1R/1Dl9ujJHAHMDVApvtnFugcluwlLeXXSuvIAjILKRInFgDLGwm3TWK0JQsNSEQDiNL8kxq4eexvF1WNoDuJIh0NPx6SVoS9GGgC7ZP6lL6u9yYgWBUNsFEt8n0bjT9PsKVKqg5QSqRQlEHHFI6OQQEs0+tMNfqMUPamtpwqKF6LIfSNoxfb+64TKyKdzHpiUYOnmtFCCr9Xhiwxj3ljWYU+48n+b5FesTQRP4YVxKnf7fHpBXTcATl1c1Phtgw/prQ9fKxJWzDPa99q4GHvIWoGaQv53oSozolZfq4K/Dxq0tH1BN6fr0YsoQsuYCEd+kwsprgepNnPCXvfvlhMFIDiQeLvL7pddb8ju4bmcgR4/yimPRundTpUaMcCMcQrGb9KUEUGuVjQE1QW/7PON2BeABWNSsRQHNt7e8mR4tSlWyDkwYZIvnLutOFQ8UadQT8rXhkjFmmI9j3Ut29i45CQb/iVqV0PoBqqkd77V6mlSdYiDgrfjD5sqjs89FlweJ7G2or9xkKspClI9yE8xIxL7Ro6YlJ3CFJ1McfHPvZrLlBxcl7U4Xo7PX4Q7chyIRlVZ8Ix7rex+eArIeVrOvKq7Zhi3TQntSOSTY88zaALBIFmAq8u+wmrx9OAS9QilVNzelnttqU41J8GGehKDQmQsAXioMttCgOEezwnWgYou8rDDABsj42MaCT+
- 35kSXygh
- EphlFVH18lHs95BIYs/qIAoaRJ5zJbzVONWJQB/0TYJ/jwp1DUVH2EqHa68pR7zoqQb1IwFejuPAZ+fUfxtAnNOw3ehJTn75Uf5m1lrWESwCChEMuoxiY4MunvGzRL9ohzZ9KJ6XX5su+NgZrChd13H2rGJVqLuwoMhT+IJYTkvnKAjeo2xLgHYQbPdwtHmzHdjepK59fj4YT7aPRwHmRp+d9I73jV3BUN/y+V1FjJMbVDCpLuSmEEtQUOp9HNfzAUduPp8GxUx5BaPgVn5CsQ4VdLZxMlsFAMsTeRLUWHq6C+AJQxczyN/4mzgF+zn5bbkEKivMiKnZ/IrfobKvaDLkkCMaSjpPkq6s/VbVTVj/D5iQEws49fRUQlL93iWARAAqTAM5rUsnAZyoRuAnQd4CsAzjGV9uV3tGFae4b0Yt4rryKsfa/QIeRP4DBnrbQF3FjQw87x7RIP1LAevAdgB/4do+DM7/mD62uO65HlvU2UKyyBftpsCU5dAu/5DxyyzHYCL0dTctlxLru1gHNBbIQEHmOI4bo3LBY3XO9ieU63Pkmr0awm46kkeGquTFqaVUAnvtkRpxyT3LrD1x0S4ZPDvlD0bhHNi0hzpdkz6EYruFPkRzUQ9mLTe8JN4xQNTA0
+X-Stat-Signature: rdp97xi5u993gwi1ngh1rbrw7195denu
+X-Rspamd-Queue-Id: E9B3F80011
+X-HE-Tag: 1780577767-840978
+X-HE-Meta: U2FsdGVkX193TAgoLZl2kr2XyPrtfEd8PLMVIYtgPog1n4r78pzq45LOr0q5k4rq6xLBJBrrLDYVOpJlU0NSBo2AAVew1bSuVSRIixpB5b7piMgBqn5ccX6LUgBnnkkUx06XwHaT6TjHhCBAGrOcdnx9usQ7ehSJjsVo7hqzGbc7mZglEVg4TZuMnGU4j+nNr2apGHhtPza123tLvL9nC80cXwVSgMqX06KpUbHqO+JT9Ngxn/rQJogPHphRnS5lGztJF1njJZHIfUX3cnNE+JY7PpHp/N2XEZjMO9bGrIus0rmO1OxM7ScfKA9v8cFx0RjrRWv16fMGyLQv6EFeGOS/KKsyLw2r09tVsCabgoFUX7ED8doH7T4XhPX4SzjgV9qX34kp+u7JAWpkm+at7meIpDzeVQl+k1zSMmB+6M6W7o53gSTBh9S4oUWvMSHOzkjPbT15mIrfCgBbU6W6/GUGEGrI1wVtFc8YFUlFoqRj0SFYhoxRF6Zy9vPUntOmXZ9xSFm4Kgdo3pKeFAvG4dVs31s4pHTofH0ztnUzo9tTdx84le8nggMeEMDkAyzaAjh2vmUCSUCGJljcXZvp90b5quMboyedz9qQWznA3OFJcxuejLHtveOXVZIb1uo6eVShmtWVtD2fR8Z1iTE/xMiOj68aVWO0bgdnV9elMSKzlMIdQ9Kw1a3i/cBNqjZkQeCL0ht1s248lzDbQbQBkXqr4e8UcYGfmdMwpZ2/cL1l7RC9l61A2jGvY8x52326yWRTuRcBxRBlcJvebe9p4dj2YA0PIFVVVm/ZT/Xzlqw7iYnYlyZAe6EjCSNDI/fYThln9gKy0mhGnoAmFxYErlhghporViV6M647R4Nz0qpPbYiqh1oU9Cw75ngVusTGzuiy8A2dCP+2Z3YvQ1WlyfOXEw2P4P6+mAUwICfXSB6A0gE9gRQar7gfgBu7uTpIhPOJQlPMe+jwhxb96CZ
+ 7Y42kyuo
+ eUkZOjUleoMKhf/WCgXTEm9UJD8D+Hubgl+aTQqUzGWY8UIjqBB+h34F2shLigptXZ2HSbeerGvQIsON2D+MRVeuvjXzG97dt/y0inI7gik6cea2gmWaQPLnmgQtSSs//y9gxP2l5zd6WJMVRHBoTbnJmFbig3EPaGkIT/MLIA08AzSnZJA0jtK9k7AyBDEHr+o5s5iekzwtCE67cK8c0RM3wOhinWgjFeWm1jk4KiL3b6/SJw1o5cvdO7RGBROxE2NSv6a0tuCQhjWcWWnWBqN2Cd6frmvxbzVSVez+Y+G+TuXKxR76kA3W29JbzWGlBVHGKVF2jNS4jYFxSbMsRsxbhzVRXeAeJj9CW5kV4dZU39A2PyQrqGrczFs9TCGNsYEgkLOmHY+nt+kv9KukUMYTyZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,32 +112,361 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 2, 2026 at 12:44=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
+On Thu, Jun 04, 2026 at 06:45:58AM -0600, Nico Pache wrote:
+> On Thu, Jun 4, 2026 at 6:40 AM Lorenzo Stoakes <ljs@kernel.org> wrote:
+> >
+> > On Thu, Jun 04, 2026 at 12:38:30PM +0100, Lorenzo Stoakes wrote:
+> > > I will go review the thread about the cache maintenance separately and
+> > > respond about that.
+> > >
+> > > On Fri, May 22, 2026 at 09:00:01AM -0600, Nico Pache wrote:
+> > > > Pass an order and offset to collapse_huge_page to support collapsing anon
+> > > > memory to arbitrary orders within a PMD. order indicates what mTHP size we
+> > > > are attempting to collapse to, and offset indicates were in the PMD to
+> > > > start the collapse attempt.
+> > > >
+> > > > For non-PMD collapse we must leave the anon VMA write locked until after
+> > > > we collapse the mTHP-- in the PMD case all the pages are isolated, but in
+> > > > the mTHP case this is not true, and we must keep the lock to prevent
+> > > > access/changes to the page tables. This can happen if the rmap walkers hit
+> > > > a pmd_none while the PMD entry is currently unavailable due to being
+> > > > temporarily removed during the collapse phase.
+> > > >
+> > > > Acked-by: Usama Arif <usama.arif@linux.dev>
+> > > > Signed-off-by: Nico Pache <npache@redhat.com>
+> > >
+> > > The logic LGTM generally, some questions for understanding below, and of
+> > > course as per above I want to review the Lance/David subthread.
+> > >
+> > > Thanks!
+> > >
+> > > > ---
+> > > >  mm/khugepaged.c | 93 +++++++++++++++++++++++++++++--------------------
+> > > >  1 file changed, 55 insertions(+), 38 deletions(-)
+> > > >
+> > > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > > > index fab35d318641..d64f42f66236 100644
+> > > > --- a/mm/khugepaged.c
+> > > > +++ b/mm/khugepaged.c
+> > > > @@ -1214,34 +1214,36 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
+> > > >   * while allocating a THP, as that could trigger direct reclaim/compaction.
+> > > >   * Note that the VMA must be rechecked after grabbing the mmap_lock again.
+> > > >   */
+> > > > -static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long address,
+> > > > -           int referenced, int unmapped, struct collapse_control *cc)
+> > > > +static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long start_addr,
+> > > > +           int referenced, int unmapped, struct collapse_control *cc,
+> > > > +           unsigned int order)
+> > > >  {
+> > > > +   const unsigned long pmd_addr = start_addr & HPAGE_PMD_MASK;
+> > > > +   const unsigned long end_addr = start_addr + (PAGE_SIZE << order);
+> > > >     LIST_HEAD(compound_pagelist);
+> > > >     pmd_t *pmd, _pmd;
+> > > > -   pte_t *pte;
+> > > > +   pte_t *pte = NULL;
+> > >
+> > > As mentioned elsewhere for some reason this was dropped in
+> > > mm-unstable. Maybe a bad conflict resolution?
+> > >
+> > > >     pgtable_t pgtable;
+> > > >     struct folio *folio;
+> > > >     spinlock_t *pmd_ptl, *pte_ptl;
+> > > >     enum scan_result result = SCAN_FAIL;
+> > > >     struct vm_area_struct *vma;
+> > > >     struct mmu_notifier_range range;
+> > > > +   bool anon_vma_locked = false;
+> > > >
+> > > > -   VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+> > > > -
+> > > > -   result = alloc_charge_folio(&folio, mm, cc, HPAGE_PMD_ORDER);
+> > > > +   result = alloc_charge_folio(&folio, mm, cc, order);
+> > > >     if (result != SCAN_SUCCEED)
+> > > >             goto out_nolock;
+> > > >
+> > > >     mmap_read_lock(mm);
+> > > > -   result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
+> > > > -                                    HPAGE_PMD_ORDER);
+> > > > +   result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+> > > > +                                    &vma, cc, order);
+> > > >     if (result != SCAN_SUCCEED) {
+> > > >             mmap_read_unlock(mm);
+> > > >             goto out_nolock;
+> > > >     }
+> > > >
+> > > > -   result = find_pmd_or_thp_or_none(mm, address, &pmd);
+> > > > +   result = find_pmd_or_thp_or_none(mm, pmd_addr, &pmd);
+> > > >     if (result != SCAN_SUCCEED) {
+> > > >             mmap_read_unlock(mm);
+> > > >             goto out_nolock;
+> > > > @@ -1253,8 +1255,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > > >              * released when it fails. So we jump out_nolock directly in
+> > > >              * that case.  Continuing to collapse causes inconsistency.
+> > > >              */
+> > > > -           result = __collapse_huge_page_swapin(mm, vma, address, pmd,
+> > > > -                                                referenced, HPAGE_PMD_ORDER);
+> > > > +           result = __collapse_huge_page_swapin(mm, vma, start_addr, pmd,
+> > > > +                                                referenced, order);
+> > > >             if (result != SCAN_SUCCEED)
+> > > >                     goto out_nolock;
+> > > >     }
+> > > > @@ -1269,20 +1271,21 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > > >      * mmap_lock.
+> > > >      */
+> > > >     mmap_write_lock(mm);
+> > > > -   result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
+> > > > -                                    HPAGE_PMD_ORDER);
+> > > > +   result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+> > > > +                                    &vma, cc, order);
+> > > >     if (result != SCAN_SUCCEED)
+> > > >             goto out_up_write;
+> > > >     /* check if the pmd is still valid */
+> > > >     vma_start_write(vma);
+> >
+> > Hmm actually I think we have another problem here.
+> >
+> > For PMD THP this is fine. Only a single VMA can span the range we need, and it
+> > will span the entire PMD.
+> >
+> > But for mTHP we have an issue...
+> >
+> > See below...
+> >
+> > > > -   result = check_pmd_still_valid(mm, address, pmd);
+> > > > +   result = check_pmd_still_valid(mm, pmd_addr, pmd);
+> > > >     if (result != SCAN_SUCCEED)
+> > > >             goto out_up_write;
+> > > >
+> > > >     anon_vma_lock_write(vma->anon_vma);
+> > > > +   anon_vma_locked = true;
+> > >
+> > > I worry that we hold this lock a lot longer now? Maybe the algorithmic
+> > > change alters that, but Claude did suggest on the s390 bug that longer lock
+> > > hold might be an issue.
+> > >
+> > > I wonder if we'll observe lock contention as a result?
+> > >
+> > > Correct me if I'm wrong and we're not holding longer than previously,
+> > > however. Just appears that we do.
+> > >
+> > > >
+> > > > -   mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, address,
+> > > > -                           address + HPAGE_PMD_SIZE);
+> > > > +   mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, start_addr,
+> > > > +                           end_addr);
+> > > >     mmu_notifier_invalidate_range_start(&range);
+> > > >
+> > > >     pmd_ptl = pmd_lock(mm, pmd); /* probably unnecessary */
+> > > > @@ -1294,26 +1297,23 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > > >      * Parallel GUP-fast is fine since GUP-fast will back off when
+> > > >      * it detects PMD is changed.
+> > > >      */
+> > > > -   _pmd = pmdp_collapse_flush(vma, address, pmd);
+> > > > +   _pmd = pmdp_collapse_flush(vma, pmd_addr, pmd);
+> >
+> > ...So we exclude VMA locked faults faulting in a new PMD entry for PMD-sized THP
+> > but for mTHP we might have _another_ VMA that spans another part of the range
+> > mapped by the same PMD entry.
+> >
+> > So we clear this, but we do not have a write lock on any other VMA, and so
+> > racing VMA read locks can install a new PMD entry.
+> >
+> > > >     spin_unlock(pmd_ptl);
+> >
+> > Especially since you unlock this :)
+> >
+> > And...
+> >
+> > > >     mmu_notifier_invalidate_range_end(&range);
+> > > >     tlb_remove_table_sync_one();
+> > > >
+> > > > -   pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
+> > > > +   pte = pte_offset_map_lock(mm, &_pmd, start_addr, &pte_ptl);
+> > > >     if (pte) {
+> > > > -           result = __collapse_huge_page_isolate(vma, address, pte, cc,
+> > > > -                                                 HPAGE_PMD_ORDER,
+> > > > -                                                 &compound_pagelist);
+> > > > +           result = __collapse_huge_page_isolate(vma, start_addr, pte, cc,
+> > > > +                                                 order, &compound_pagelist);
+> > > >             spin_unlock(pte_ptl);
+> > > >     } else {
+> > > >             result = SCAN_NO_PTE_TABLE;
+> > > >     }
+> > > >
+> > > >     if (unlikely(result != SCAN_SUCCEED)) {
+> > > > -           if (pte)
+> > > > -                   pte_unmap(pte);
+> > >
+> > > OK I seem to remember this is because we're holding the anon_vma lock
+> > > longer. That does imply that on e.g. x86-64 the RCU lock is being held a
+> > > bit longer also as well as the anon_vma loc.
+> > >
+> > > I guess it's also because we need to hold anon_vma and pte lock because
+> > > we're fiddling around at PTE level for mTHP not just PMD level as 'classic'
+> > > THP did.
+> > >
+> > > (Rememberings going on here :)
+> > >
+> > > >             spin_lock(pmd_ptl);
+> > > > -           BUG_ON(!pmd_none(*pmd));
+> > > > +           WARN_ON_ONCE(!pmd_none(*pmd));
+> >
+> > ...this will get triggered.
+> >
+> > I don't know whether we can safely hold the PMD lock across everything here for
+> > mTHP?
+> >
+> > Maybe the solution would have to be to scan through VMAs in the range of the PMD
+> > and VMA write lock each of them?
 >
-> Seems correct from my reading.  That code is rather twisty.
->
-> > This issue was identified via Coccinelle (use_after_iter.cocci).
->
-> But AI review is worried:
->         https://sashiko.dev/#/patchset/20260601133941.111989-2-giorgitcha=
-nkvetadze1997@gmail.com
->
->
+> I believe we've spoken about this before, but because we always make
 
-Hey Andrew. Thanks for the review. Yes, Sashiko is right. This seems
-to be deeper than I initially thought.
+Maybe worth a comment then...? Ah how rewarding review is :)
 
-My patch is too broad and skips the freelist rotation mechanism when
-the scan reached the limit without finding a suitable page. In that
-case page is NULL, but freepage still points to the last scanned real
-entry, so the rotation should be preserved to avoid retrying the same
-unsuitable tail entries.
+This is something that somebody else might very well wonder about and
+forget that it happens to be covered there.
 
-I'm thinking of assigning freepage to NULL like this :
-struct page *freepage =3D NULL;
+Also:
 
-and later checking:
-if (freepage)
-move_freelist_head(freelist, freepage);
+/* Always check the PMD order to ensure its not shared by another VMA */
+
+Is pretty lightweight there. Something about avoiding racing page faults
+would be helpful.
+
+> sure the VMA spans the full PMD we won't ever hit this issue. If we
+> wanted to support mTHP collapse on regions smaller than a PMD, the
+> locking gets tricky (hence the design choice to not do that for now).
+>
+> This is handled by the HPAGE_ORDER in hugepage_vma_revalidate().
+
+The existing code is atrocious, and sticking this on top has added to the
+pile of assumptions and conventions and having to go check a bunch of
+functions to 'just know' you're safe for X, Y, Z.
+
+We really need to see some cleanup series coming after this and I'm going
+to get pretty grumpy(ier) if we don't.
+
+>
+> /* Always check the PMD order to ensure its not shared by another VMA */
+> if (!thp_vma_suitable_order(vma, address, PMD_ORDER))
+>
+> -- Nico
+>
+> >
+> > That could cause some 'interesting' lock contention issues though? Then again,
+> > we will be releasing the mmap write lock soon enough which will drop the VMA
+> > write locks.
+> >
+> > > >             /*
+> > > >              * We can only use set_pmd_at when establishing
+> > > >              * hugepmds and never for establishing regular pmds that
+> > > > @@ -1321,21 +1321,24 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > > >              */
+> > > >             pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+> > > >             spin_unlock(pmd_ptl);
+> > > > -           anon_vma_unlock_write(vma->anon_vma);
+> > > >             goto out_up_write;
+> > > >     }
+> > > >
+> > > >     /*
+> > > > -    * All pages are isolated and locked so anon_vma rmap
+> > > > -    * can't run anymore.
+> > > > +    * For PMD collapse all pages are isolated and locked so anon_vma
+> > > > +    * rmap can't run anymore. For mTHP collapse the PMD entry has been
+> > > > +    * removed and not all pages are isolated and locked, so we must hold
+> > >
+> > > Right because some PTE entries be unaffected by the change.
+> > >
+> > > > +    * the lock to prevent neighboring folios from attempting to access
+> > > > +    * this PMD until its reinstalled.
+> > >
+> > > OK. This is slightly annoying for my CoW context work as it means there's
+> > > another case where we need to explicitly hold an anon_vma lock for
+> > > correctness :)
+> > >
+> > > Anyway I will think about that separately, is what it is. And in fact
+> > > motivates to want this merged earlier so I can work against it :)
+> > >
+> > >
+> > > >      */
+> > > > -   anon_vma_unlock_write(vma->anon_vma);
+> > > > +   if (is_pmd_order(order)) {
+> > > > +           anon_vma_unlock_write(vma->anon_vma);
+> > > > +           anon_vma_locked = false;
+> > > > +   }
+> > > >
+> > > >     result = __collapse_huge_page_copy(pte, folio, pmd, _pmd,
+> > > > -                                      vma, address, pte_ptl,
+> > > > -                                      HPAGE_PMD_ORDER,
+> > > > -                                      &compound_pagelist);
+> > > > -   pte_unmap(pte);
+> > > > +                                      vma, start_addr, pte_ptl,
+> > > > +                                      order, &compound_pagelist);
+> > > >     if (unlikely(result != SCAN_SUCCEED))
+> > > >             goto out_up_write;
+> > > >
+> > > > @@ -1345,18 +1348,32 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > > >      * write.
+> > > >      */
+> > > >     __folio_mark_uptodate(folio);
+> > > > -   pgtable = pmd_pgtable(_pmd);
+> > > > -
+> > > >     spin_lock(pmd_ptl);
+> > > > -   BUG_ON(!pmd_none(*pmd));
+> > > > -   pgtable_trans_huge_deposit(mm, pmd, pgtable);
+> > > > -   map_anon_folio_pmd_nopf(folio, pmd, vma, address);
+> > > > +   WARN_ON_ONCE(!pmd_none(*pmd));
+> > > > +   if (is_pmd_order(order)) {
+> > > > +           pgtable = pmd_pgtable(_pmd);
+> > > > +           pgtable_trans_huge_deposit(mm, pmd, pgtable);
+> > > > +           map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
+> > > > +   } else {
+> > > > +           /*
+> > > > +            * set_ptes is called in map_anon_folio_pte_nopf with the
+> > > > +            * pmd_ptl lock still held; this is safe as the PMD is expected
+> > >
+> > > PMD entry you mean?
+> > >
+> > > > +            * to be none. The pmd entry is then repopulated below.
+> > > > +            */
+> > > > +           map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /*uffd_wp=*/ false);
+> > >
+> > > So here we populate entries in the existing PTE _table_ to point at the new
+> > > order>0 folio? With arm64 of course doing transparent contpte stuff?
+> > >
+> > > > +           smp_wmb(); /* make PTEs visible before PMD. See pmd_install() */
+> > > > +           pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+> > >
+> > > And then we reinstall the pre-existing PMD _entry_ from none -> what it was
+> > > before?
+> > >
+> > > > +   }
+> > > >     spin_unlock(pmd_ptl);
+> > > >
+> > > >     folio = NULL;
+> > > >
+> > > >     result = SCAN_SUCCEED;
+> > > >  out_up_write:
+> > > > +   if (anon_vma_locked)
+> > > > +           anon_vma_unlock_write(vma->anon_vma);
+> > > > +   if (pte)
+> > > > +           pte_unmap(pte);
+> > > >     mmap_write_unlock(mm);
+> > > >  out_nolock:
+> > > >     if (folio)
+> > > > @@ -1536,7 +1553,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+> > > >             /* collapse_huge_page expects the lock to be dropped before calling */
+> > > >             mmap_read_unlock(mm);
+> > > >             result = collapse_huge_page(mm, start_addr, referenced,
+> > > > -                                       unmapped, cc);
+> > > > +                                       unmapped, cc, HPAGE_PMD_ORDER);
+> > > >             /* collapse_huge_page will return with the mmap_lock released */
+> > > >             *lock_dropped = true;
+> > > >     }
+> > > > --
+> > > > 2.54.0
+> > > >
+> >
+> > Thanks, Lorenzo
+> >
+>
 
