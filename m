@@ -4,176 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D9F8CD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 02:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA9E1CD6E55
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 03:11:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3B106B0095; Wed,  3 Jun 2026 22:53:32 -0400 (EDT)
+	id B38706B008A; Wed,  3 Jun 2026 23:11:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BE5D6B0093; Wed,  3 Jun 2026 22:53:32 -0400 (EDT)
+	id AE8BD6B008C; Wed,  3 Jun 2026 23:11:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85EB76B0095; Wed,  3 Jun 2026 22:53:32 -0400 (EDT)
+	id 9B0596B0092; Wed,  3 Jun 2026 23:11:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7238B6B0098
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:53:32 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1B0B7A0534
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:53:32 +0000 (UTC)
-X-FDA: 84840709464.20.15AA8B6
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010033.outbound.protection.outlook.com [52.101.46.33])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CA31040016;
-	Thu,  4 Jun 2026 02:53:28 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BsUtxZEE;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.46.33 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780541609;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 837316B008A
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 23:11:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1E2771A04EC
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 03:11:00 +0000 (UTC)
+X-FDA: 84840753480.01.8D83806
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 086EB100003
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 03:10:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf05.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780542658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=khUZ2Q8lrI1rHGypm9wMPqVGRa+3CwW2C0FwHsof6hQ=;
-	b=XLMTGd0LO8CDEcRlK/lL8Q89s6E1Pu793FqImb2Y0iSNtLeLEeDc29I/xYhDJ2XXKZ7CkM
-	F6MJHJqK5nF46vI4p6zySJeSFyVwt58MngB1AQHYmNssE+j2f7RSzIjnK6y6RsgfVuBKPT
-	9QlxKrWToR4bUmC59s1YmTGsaeIH9UI=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BsUtxZEE;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.46.33 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780541609;
-	b=yFaaUghjbLEhOEef88QLElezb8tn52755Rb4x4DjdJ9qo5ObqCyCmFJeIPsE19HqtRbIFd
-	a+g/Rj/+5QQx0A/YYcnnZuif/1nFtCzN7CCITZ1nLNxPQfEEtBkpEVC6EklKFrF6BODBHO
-	aa+lEoZfvws8PhvKESIowSQXv7Z61Tw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DDSUz2o6ZyVVwLcfdI1jOq1ZW0fkWJTzLgBHH/WkdBkKhb5lJ5GyX79cX1Qwbz3NnFGsFUitVSrcIob2+gIZmQaPyZGqwDYeUtm2p/rpkdF0o5+9DHx8b/U/dCnMqAQcQm8Z70TWlsXXLi6r1J3S1ORdUq1uHlKYL5jVuDjuJiH+55+UMB9fwZvXsk0o6LEtf6xELEoxEQIJPGe+zb8E3orY8Ln2mBuKS1gDc5dPvJDaTmJn5u9nV0saBFhQx2Y5PUTg34LbMSnJVdLwmpL0YsU0fUU6YJHvyVzBxm2QzxYulJBYGQh8WM43110ZK8Zk32hOIypBZo8p/zLtzFkbgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=khUZ2Q8lrI1rHGypm9wMPqVGRa+3CwW2C0FwHsof6hQ=;
- b=aSlMGW7Sia9872yyu5To3NzBmevdLbgPSLd19KDz6kdNq8HZrHOWkKv/uQlPuoOMJiQWVGk/VRsRR2p1LoGw3P9gkgJhHNnRQRCQUMs2MNKVgBQHAoECM6e2nkOGbqbwefaJy/aM9n+V5z15Is7fs3sxWjwJ+kFbQipWgkfZYWD/YkeGUi7JF0XKNwEtBTho4ERmklIBx7gpBMGRAI1Gf7OLFGNgOw6tPHn4olDsSXs1kBfVNeoWrip0QrRxQJoOOs6H8TZM5t+64NukAr683gRXTV2auAymKG6qfe8ORY8qAJFD6DprnlW6veERLtYGFyJXgQC8QgvGCBid5VWM2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=khUZ2Q8lrI1rHGypm9wMPqVGRa+3CwW2C0FwHsof6hQ=;
- b=BsUtxZEEypojRnuPP1GfA/n+4EGY3xf/WLAbKLqWJv3Jl97bv6VKAUYA4Uuw58j47xOJmnmtm7gLEN70NPZ56zgnGJOeaVn3fcaHIJ3nNqtXcMI/MfST30WOZloi+92JnXBXvSa8BsaWYmyWfN5Y+yHWyEn9LBTOxA/sm6jUr0oOBWImOusRRdPw4WZxaVQeXjfsqpVwKEKjL0wRxDq6pBnfVCwicDGh7auF/ASNH4xPmc5PELpFPRQjG6gc5NFlBg/ZzB4Lbh6fmJUkj8Od8/7SFkzbJbgdkAZdNloAHcb22kq/RrJ8qu7iAasXs/A6RzvljU+nwwdAEUG4YZtSpg==
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- LV2PR12MB999072.namprd12.prod.outlook.com (2603:10b6:408:354::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
- 02:53:21 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
- 02:53:21 +0000
-From: John Hubbard <jhubbard@nvidia.com>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Kees Cook <kees@kernel.org>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Chia-Lin Kao <acelan.kao@canonical.com>,
-	Benjamin LaHaise <bcrl@kvack.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-fsdevel@vger.kernel.org,
-	linux-aio@kvack.org,
-	linux-mm@kvack.org,
-	kvm@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v3 2/2] libfs: drop redundant SB_I_NOEXEC/SB_I_NODEV in init_pseudo() callers
-Date: Wed,  3 Jun 2026 19:53:15 -0700
-Message-ID: <20260604025315.245910-3-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260604025315.245910-1-jhubbard@nvidia.com>
-References: <20260604025315.245910-1-jhubbard@nvidia.com>
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY3PR05CA0007.namprd05.prod.outlook.com
- (2603:10b6:a03:254::12) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|LV2PR12MB999072:EE_
-X-MS-Office365-Filtering-Correlation-Id: b0ae9ae8-9a47-47a0-ab82-08dec1e46fe9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	b3SbZ5CBYRDixONPxDAmeIsVTUm98ZBJttM8RLQ1A7ooJgyOsmNA9yscrTraqhS+RxmktD55TUcA0Y1pXsS7R0EBTsnvsYn6VCxyk1wPo+sOgTAOwuA7IalgZIGhAvqcD9CMABlJyBnOl6OdInxcCJXNs99SMvVJBV5EzTkz8H3Jx/LUVpGMViXnb8GvmEr1+NCJ0RKPnnuSgh872cRciIvBqy0xMO7c6UevO1Fq5PddY1liEJKk+p6me0EHTCYgG1wHUmpRfmh5z+cLyD/aWY9TmGVmZVG6WJwL0WgnLP9TjolokA5+QEZVfoMubhB/tWa3E7324AtLoFP0c8swvufhOp9oYLkGPpczwZVofAIlg5sLx6WJ39g1/fslcmsP3Z0obGuVDDaXEtgNn99ceFyZuYWc87u5agHM5R4VXBOx8z8NPQvjtE0S6MKIj4p1dx4j4fWoac/Bs3tY5nZ/s8u33VUVvmTyVT86FY3J63AnqK1w0VD4tHVrqbYeBBMX0v1Rb5WPPSrlTYMY7h9pMqBza92pe9EUTzA5ANeaUdwKrN0sPGLoakAsvbYcGe9A1n6WrrkINTo/+vRFEH/z7awfcbh4AB6keeODDDXMJf7slss6aD84b3RQkgfKFBU91hKDr9vPPOuYGbVDKllj/kp2znarIOPVe1XVJ8rqMmHZPxFMPmC3JcK/WGHjDNPX
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Nanr1v9SfcxHGg+6zDbxgPbAeCEBg3vC+ztLaHvLu2agZ7gi0LW0R1BSW6kg?=
- =?us-ascii?Q?b1aXscGDi09WpU4+7uTHKs3kIl4ZBXHN82GMDpRxiGwo0RzobloGgwtK4o/O?=
- =?us-ascii?Q?GLfj/Fc99YNW2bJXzI/zKuGT3qyUvobapmBUA8TfF3O82+QJtTjflw/cUSbe?=
- =?us-ascii?Q?6qxU7NMv9nnayDWy4xlkBZAcejN7DE5UwDA5YMyHwlg+3U0T1vGxGTrX/48N?=
- =?us-ascii?Q?qJ+OL8Yl2jpUVLit1K9gbRsGglRPvNyKFD6x0LwrtUbA8F9K60lkWJOW3Kza?=
- =?us-ascii?Q?1fS6g+DokOIC4jfJ7W5sC32wqDi2/8+RgvMYzvXtTMBTT8Kia0yYmEhQm4xU?=
- =?us-ascii?Q?WFpC3bhvGBXwAPfwyqi5gezXXN4FoIYveFuHmQnWOlRbLpLmrOOAxiWPzcuZ?=
- =?us-ascii?Q?45uCcv/29GheUqPkBIaBaasQDeP1E+ydcPYMPc1Y1yeP8T9YsB/qLK2Y3uS7?=
- =?us-ascii?Q?R9hSD0oS0K93Is9x5KpbS7akUVaJBdrV4rvk8Upk0iF+uB6k4qb6N9QhojTa?=
- =?us-ascii?Q?UNIBjMaLct0sVivBzhygj7AB85dcuMtXWlcT6mTue56lAaKVmQ5ii4itpFMT?=
- =?us-ascii?Q?AKu3l2EAvVkaxkngwp32OVvaWUN5O5GaCJEtpqdaDvZCYs5LTzfRRd6TqLdy?=
- =?us-ascii?Q?+frz9fypMxF2gpu6EhlOvzUUvBQMZ0EiMzQ3KgsGEsXL/IUyyFLubBIpQW1T?=
- =?us-ascii?Q?QrV7derDLjB+rMscHiJaRMlTuQeDFnjls0c6tMRjtzWIZqH9iwMjialzmne1?=
- =?us-ascii?Q?QKLIILM7fUKKO4dc0DdT6PcSinGALcqygjbSPHINoCo7em4qgwXpg9ONj4yS?=
- =?us-ascii?Q?fNHl6x+7E309bApEnzqWH6iK7migC77D2aGOTdJ0/aZiA0fKTrNyRlQs1HGF?=
- =?us-ascii?Q?lxlzgUBWjVL+ZFF4zYcNrPQ/OeTP7vP3Kf46lDv0AVMl19LuLNH+Ke7oxnR/?=
- =?us-ascii?Q?+D+Ey1x1nOfAK30Hy54QKGHOCjiZ5K//yWiUc4eYIePqMtmanqB15ylyKq8t?=
- =?us-ascii?Q?jVUMfPYa5OCpY28w0PuaxPBcgd60GgpLsImm0ELEKcYv4atuSClkkmDDww92?=
- =?us-ascii?Q?Lr6Y9UMipBcj6AmLfTzx1n/2FrSJnykwMXZwkuDdP85g4oJSFf5bQq1I1C/A?=
- =?us-ascii?Q?2BO0ypGWvjwlxFdzMqg/vjcEJUdOLnQjudWYFgZKGtUNXjg5W45UCkyWngy5?=
- =?us-ascii?Q?7yz5lay8yFT4J36bLNVdBfE6+8AdaUjW4KCd+GXYZTdH/TwWIw5pgneE4VRN?=
- =?us-ascii?Q?Ruqht8XKc/IN0xOlmMKmYSMypvLtjTv9Tr/oC+k/sw00D6wOJ32i6mugXD6S?=
- =?us-ascii?Q?52hYLxWX4WUgU4tYljlL44BWmrSJVzE3D70q0KWPCp+uBErL3MTcf2CNsMFz?=
- =?us-ascii?Q?QQjpMNsnBZmvzIsN5bbzplYpUds9//t0SKwDn/dIL9JymREJCGYZcmmNA7sB?=
- =?us-ascii?Q?iZc/Y0vGzHzHt64vaQyLeVVV3G08Tt5B4NyNekQA5QSX+/4cctjjWDpGSJQ/?=
- =?us-ascii?Q?945rDlX4hnP39l5R5IJZCsoFXf6IIMMK3QOFnzqOixLOOOCZP/ICHIV6F3GV?=
- =?us-ascii?Q?nnPDldwTzkcahhW4nWq6dQxN/8MPuNvjn/y48xxIpDhl/tz6ILlpJS36YYGI?=
- =?us-ascii?Q?bWt/cVDaJtxlCLia5ooPdGiJBj0iwU/45oaBMR78YJe2PBp5YWfRYOkwi/6R?=
- =?us-ascii?Q?pE834dSybTfahYWfZz9eBT55NsmBimWOJK3vfgyunWXLGrDzpnPsLZD271+S?=
- =?us-ascii?Q?z2Amb3qDYg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0ae9ae8-9a47-47a0-ab82-08dec1e46fe9
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 02:53:20.8908
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qHS7ecOd0iqOF12BpSXW6exq4cY/IAFGdcdvvguzAOSC1OK0pEYlQ3VpbK5zs6YNmXD3zBjQr23eAdRDwq03uQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB999072
-X-Rspamd-Server: rspam07
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3GQ0+2aJZj9B7sWkIO2tuyK/dPU/1gz1VXQ9fI4xIH4=;
+	b=eP7rmytuk0bpHKNce0V7Cq+fqOQ4OVNsWJT4jkwz6xd9sqpTZix7/DO4F623EJC2SYSiWC
+	nb4lNpVAtPNy2ucuMhwI9y1MVIbG0jEThaTziETp2PlDdH7L4LAd3mFsF0SZ1cXOVaP6sj
+	wB57xpzyGsUZ32hXCBF2VxUXdPdhkng=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf05.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780542658;
+	b=s/9uimqu8j18e2xMAlgvsHC/xlX7sM0d6Qi+jGvvOP5cjDeT19Xyg13wlN8DoGLCY2fkYE
+	sSf7T7kUzU7+DZuKFd8nXU7Uk1OFkkrkHFI0vCsV4u8NDNMeDcyWDVYJxEWKa+uz/aHVQn
+	ND7YPECFYQZRr9/u9TJuJ9FhNzgflqs=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gW8hh3Vhyz52SFw;
+	Thu, 04 Jun 2026 11:10:44 +0800 (CST)
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl2.zte.com.cn with SMTP id 6543AYsC051407;
+	Thu, 4 Jun 2026 11:10:34 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp04[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Thu, 4 Jun 2026 11:10:35 +0800 (CST)
+X-Zmail-TransId: 2afb6a20ecab4ed-9e08f
+X-Mailer: Zmail v1.0
+Message-ID: <20260604111035154Lk-9ZgwKY4Nlk4zz30U1t@zte.com.cn>
+In-Reply-To: <70377626-500d-46f2-a3f5-a0d2914ce365@kernel.org>
+References: 20260527110147.17815-1-tao.wangtao@honor.com,70377626-500d-46f2-a3f5-a0d2914ce365@kernel.org
+Date: Thu, 4 Jun 2026 11:10:35 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <david@kernel.org>, <tao.wangtao@honor.com>
+Cc: <tao.wangtao@honor.com>, <catalin.marinas@arm.com>, <will@kernel.org>,
+        <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+        <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+        <akpm@linux-foundation.org>, <willy@infradead.org>, <sj@kernel.org>,
+        <kees@kernel.org>, <luizcap@redhat.com>,
+        <zhangjiao2@cmss.chinamobile.com>, <kas@kernel.org>, <ljs@kernel.org>,
+        <hpa@zytor.com>, <liam@infradead.org>, <vbabka@kernel.org>,
+        <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+        <jack@suse.cz>, <riel@surriel.com>, <harry@kernel.org>,
+        <jannh@google.com>, <jgg@ziepe.ca>, <jhubbard@nvidia.com>,
+        <peterx@redhat.com>, <ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>,
+        <npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
+        <baohua@kernel.org>, <lance.yang@linux.dev>,
+        <chengming.zhou@linux.dev>, <nao.horiguchi@gmail.com>,
+        <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
+        <rakie.kim@sk.com>, <byungchul@sk.com>, <gourry@gourry.net>,
+        <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
+        <pfalcato@suse.de>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+        <linux-mm@kvack.org>, <damon@lists.linux.dev>,
+        <shakeel.butt@linux.dev>, <ryncsn@gmail.com>, <dvander@google.com>,
+        <wangzicheng@honor.com>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCAwLzE1XSBtbTogaW50cm9kdWNlIEFOT05fVk1BX0xBWlkgZm9yIGRlZmVycmVkIGFub25fdm1hIGNyZWF0aW9u?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 6543AYsC051407
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Thu, 04 Jun 2026 11:10:44 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A20ECB4.000/4gW8hh3Vhyz52SFw
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 3srrzjhnc33pswutozxp65ff5r588r7d
-X-Rspamd-Queue-Id: CA31040016
-X-HE-Tag: 1780541608-162994
-X-HE-Meta: U2FsdGVkX18TnpN1gvpIQCYZKLP0BpWbHs3583A4dUpKELs1jCrcnvnq7TT9lNqPVsqDpyVPzL/8W4vxx02CQ2mSUx6PO3EaHh5tkqtxloaVyFIWzVkg50fBh5Bb+o1rPZPBzemAubjjD57p+tGfTTnDYVMU7fZKc6m7Pbah2aY87mHBtxutkW7RCKIwAEsHvCA4QaDWPMrYZiG7zT8nB4ksF7Jn7VCjhDMRRhRCSrhRmTiSEcfXNkb5QALKzlv4SThIjtfYnUiYHCubxvw6rfK8y0bW9+7LZdXzNnPeVoMNlxMcIkvOSB631y4BXwIrqvYqxDk8+pxE5FAN9aD8x22SLYtlL8VxjUYSRZ1lTOUjb7FqChBw6WLxhhFkVDIDVYO/mXQWbBb7thIKM6j2PCI5XXSfCimplwMd3Wus4DbzCAJQXoRDNOVpE8IeN577VBg+nR3Fwe/D+OcpqP3Kf7r4hFyGUU2rlPHZ6Q/b3r5xH+XtcodSH7CWMkXrTZutpy6bFiY1VtOo/ihkzbP6mc0Tl3DCQRxSxUbG2bLY50Fq9/qjkGDuAQ3cSlmZ+mH1fPAxB9N9rgo6cKOhrh7aq3T/+hP9kTUUjgsjPE/2jaJWye3jwpwCrC1ZfUArZHcW2QgqAsLH+gFzgx7TZfLHQhyZCZ9SDQe+CPbHtzHdInqkfkCGDVgDy5ES0I3Y+5VLaNvPAu1JSDL/rLthW+z1L0ABzX8y7pJKDnjd1+8j+o+XxH43VcgR6Tny+pjwKrQppawfIJeCB8V227neflByTQzVA8wc9b2fsjVwjRQRUJjDLg/JYIPKXukFpFfSfbwPxzcX4Cv8vGEnDw6H86fM8SStXtVced8Fc7xZXjN8TWwPPDeDcnqpUBsP77Bmm0MWEFC2O4MFGVxgTEbp7N3AKricelvhKTrssmFIg7aotIP+hS4vVBNBjTux4aaNAcdwo3tTKBCp2TAKs6996Xx
- 6If9DxlU
- pwAmef466QwZBgVfFIHnJ+B7wp2vlMEutAAnPAUTYSizhydUmxEOWrHMDW0iymaGR52pntnhOk1nRx9TTZhEujgsJCFP/WIOCWo7k+ygmKArS7GwXDzJe4miQpOMC7/30Soks9z3lSqJ0dsOrsm0Vwk6pelflTZxMzcNU/ayvvy4cuU1vnh/P508b7hwHMi1HTbxdF4EbVesdnNYv0Ql4MgkH9SoNSuYsHDDDh5K5A3RuL7/Uw7uH2AiMBdRniRaGyU/O/6ntKD8QTu1DsAZj42NVC/S3AQ9Bj6VcjyaiAykUj9mUJCEe8gfLOwf0vC6ok/aTA6PFYRJClwL726+eJ1QVKj4v4wK1XrKD9nc8kygIipt2OyQ5+8bcEFVY3inwJ+RIgNHkiYaI1QMoCYqo3B0+Pn2qgf9VAUfvcdq3wdfM4dQW52KMlcIM43HAYkV8uvBUHYKBrdH++gtEQEVpii1gxyzC+q2wS4xG6/NQnxMyIFLPaJpcQ9G3E+rO/meY7uX/
+X-Stat-Signature: gn5jifteapq9a3fdxoqjcosqifoc1r8o
+X-Rspamd-Queue-Id: 086EB100003
+X-HE-Tag: 1780542656-203464
+X-HE-Meta: U2FsdGVkX19Z4a1IwsGNe7djXwNhfMR08CcOuwbiZJvpHwQTfTsvtHF+ECOg9+0ofDCUS6/sp5+kKubhwFxsOSzb7h7OgwK4sWr0bJf3PlIX/hyiBrAArCuL+suDYSPpXxoeyqDM3wW9zvSdrHuAl5CvUKaIEwbIwaHHiRjgMPFwTbh4JSYWQHukTWqbHeKXcLUn2nl7a2W9QhRj4JWx2WhyXtSRD/2/NCAZel4tWqlSRgXLH/mGozWbzTuDDz60bqorunD4IKzHyDLmoIKtPiaKsg++C+mnWhHXJnB/FASO4yMVrrxWVDNKYH7EHkZHQa2jnTnNWjyOYCfOMt/WiIknTRzVMPbp7uK3fUj8DyBkONjyBPfOmqQJz0uMQ1J8lFjAgnOL4+qbYLcDbyGBXJgSZ52MqH5dfNQuy6UpWwaFEMLynxw7VX8zebvIBsp75Jq9ZjKzJf/CAsdPaEpmhr/a2L2YnRJUaz2/aTvwg4LhF02lzZEkDbOBj4eRCqB2ekxW8KDMdo51+MqN5WY9UBO8eTLH9F3Pac5rAOYPfvdDwD6qP4+M38SbMrwznZ9heJJ+uTS3W7w08wFwiLRCYLoW/4WTJS9HeLp7PLvHVYdlFmArlFGIoA0zrC8e+EpiTLa1pMWkTy9sr1aue3XlNZmfKpmCHvFv/pV/No09WTwdkZqrXm0tjA2yFcANrjmRVzCFcoQIGXmMIhnTBsSu/woXRsWShOBze3Rhx7S4Zt2ZvV4ymJaMy+w2WJ2JYdJzicVnahIn6pVeT04hkjBU6ArLgbHgFVi+7DmxUPTQ9BNz7nZh6tuvybglkpYPjzDeLGZHZqZGjHrZaVbbeaeGo+6BB6UB0Unw+HIlFA6NOoU+iKJBDsDlENxw45a35efjQkr5j4ct+LpocvYTrkZ9OhgkQJ680H93965zCYIL8Le3F5WmHG/j9PXAXl6379+WgfvdayzSQ/oIL5jP+5n
+ T4IBTe9l
+ 62812p3o1v/RFJiY8p5CKJmXlAzifi6W6suBCeq7d1niD7i8jy1q4huG1IiAwlkONfuGJza7BHcVKm/tyTFKZWfc5ev8acAIJp6NAsPaTS7ielNd7LP119Q6vCCVOk/NzOwvKF396o2Z0UNIq1pNkls0HeOFdZdVvoQQ6QArl6qUr+SEU+bwe+UNcJNXAZIDWOTyzJEkTY46U4T4XeOf2LizQaiI5Z/7a1tiEeM/eGIGFonoZwwBrPTQ3nnky+L+OQZFFGQSI89B443SmmfCaBseAhxKET9DKRNA3Xt4DkhLT2m774DUagNdGvUM+4lLufHALNWV1f6h1xg7XfwIAYESKSJrv4sSjrY9O8oGnyKUx5cc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,96 +117,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-init_pseudo() now sets SB_I_NOEXEC and SB_I_NODEV by default, so the
-per-caller assignments are redundant. Drop them.
+> > 
+> >  arch/arm64/Kconfig         |   1 +
+> >  arch/x86/Kconfig           |   1 +
+> >  fs/proc/page.c             |   6 +-
+> >  include/linux/mm.h         |  38 ++
+> >  include/linux/mm_types.h   |   9 +-
+> >  include/linux/page-flags.h |  34 +-
+> >  include/linux/pagemap.h    |   2 +-
+> >  include/linux/rmap.h       | 165 ++++++++-
+> >  mm/Kconfig                 |  22 ++
+> >  mm/damon/ops-common.c      |   4 +-
+> >  mm/debug.c                 |   2 +-
+> >  mm/debug_vm_pgtable.c      |   2 +-
+> >  mm/gup.c                   |   6 +-
+> >  mm/huge_memory.c           |  16 +-
+> >  mm/internal.h              | 171 +++++++++
+> >  mm/khugepaged.c            |  13 +-
+> >  mm/ksm.c                   |  43 ++-
+> >  mm/memory-failure.c        |  11 +-
+> >  mm/memory.c                |  19 +-
+> >  mm/migrate.c               | 126 ++++---
+> >  mm/mmap.c                  |  15 +-
+> >  mm/mremap.c                |   4 +-
+> >  mm/page_idle.c             |   2 +-
+> >  mm/rmap.c                  | 690 ++++++++++++++++++++++++++++++++++---
+> >  mm/vma.c                   |  76 ++--
+> >  mm/vma.h                   |   4 +-
+> >  mm/vma_exec.c              |   2 +-
+> >  mm/vma_init.c              |   1 +
+> >  28 files changed, 1279 insertions(+), 206 deletions(-)
+> 
+> Hi!
+> 
+> When I saw the diffsat I was concerned. Going through the patches made me ...
+> more concerned :)
+> 
+> This is a lot of complexity. On top of something that is already so complicated
+> that I fail to grasp most details without regularly taking a look at the nice
+> figures Lorenzo created recently.
+> 
+> For example, I read above "since child VMAs do not need to allocate anon_vma"
+> and wondered how that could be part of something that is just done lazily. Then
+> I had to learn in the patches that there is some additional "Child VMAs
+> are created as ANON_VMA_TREE_PARENT and do not allocate anon_vma" -- excuse me,
+> what? :)
+> 
+> Reading about VMA refcounts made me shiver. Reading "Holding only
+> folio_lock(folio) cannot guarantee that the split
+> operation completes atomically." confused me. Learning that we have to invent
+> interesting ways to make page migration mutually exclusive to free_pgtables()
+> concerned me. Figuring out that there are arch-specific config options and
+> runtime toggles is a clear warning sign.
+> 
+> Seeing test_folio_unmapped() was funny, though (why?! :)).
+> 
+> I think this patch set has a noble goal of reducing anon_vma overhead when anon
+> pages are not shared during fork. However, using anon_vma for them actually
+> makes the overall implementation (e.g., rmap walks, locking) more consistent and
+> simpler.
+> 
+> Even if we could be convinced that most of this here is correct, how should we
+> reasonably maintain this increasing level of complexity here?
 
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- fs/aio.c               | 1 -
- fs/anon_inodes.c       | 2 --
- fs/nsfs.c              | 1 -
- fs/pidfs.c             | 2 --
- mm/secretmem.c         | 2 --
- virt/kvm/guest_memfd.c | 2 --
- 6 files changed, 10 deletions(-)
+Indeed, it's very complex, but having the changes of 15 patches scattered across
+various subsystems is really frustrating for reviewers. It took me a whole day to
+read through the entire patch set, which made an already complicated matter even
+more complex (maintaining such complex code in the future will be a pain).
 
-diff --git a/fs/aio.c b/fs/aio.c
-index 722476560848..f57fa21a2503 100644
---- a/fs/aio.c
-+++ b/fs/aio.c
-@@ -318,7 +318,6 @@ static int aio_init_fs_context(struct fs_context *fc)
- 	pfc = init_pseudo(fc, AIO_RING_MAGIC);
- 	if (!pfc)
- 		return -ENOMEM;
--	fc->s_iflags |= SB_I_NOEXEC;
- 	pfc->ops = &aio_super_operations;
- 	return 0;
- }
-diff --git a/fs/anon_inodes.c b/fs/anon_inodes.c
-index b8381c7fb636..a7b9b948e33d 100644
---- a/fs/anon_inodes.c
-+++ b/fs/anon_inodes.c
-@@ -86,8 +86,6 @@ static int anon_inodefs_init_fs_context(struct fs_context *fc)
- 	struct pseudo_fs_context *ctx = init_pseudo(fc, ANON_INODE_FS_MAGIC);
- 	if (!ctx)
- 		return -ENOMEM;
--	fc->s_iflags |= SB_I_NOEXEC;
--	fc->s_iflags |= SB_I_NODEV;
- 	ctx->dops = &anon_inodefs_dentry_operations;
- 	return 0;
- }
-diff --git a/fs/nsfs.c b/fs/nsfs.c
-index 160018c4fb36..c3b6ae76594a 100644
---- a/fs/nsfs.c
-+++ b/fs/nsfs.c
-@@ -664,7 +664,6 @@ static int nsfs_init_fs_context(struct fs_context *fc)
- 	struct pseudo_fs_context *ctx = init_pseudo(fc, NSFS_MAGIC);
- 	if (!ctx)
- 		return -ENOMEM;
--	fc->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
- 	ctx->s_d_flags |= DCACHE_DONTCACHE;
- 	ctx->ops = &nsfs_ops;
- 	ctx->eops = &nsfs_export_operations;
-diff --git a/fs/pidfs.c b/fs/pidfs.c
-index 1cce4f34a051..c363416766f1 100644
---- a/fs/pidfs.c
-+++ b/fs/pidfs.c
-@@ -1115,8 +1115,6 @@ static int pidfs_init_fs_context(struct fs_context *fc)
- 	if (!ctx)
- 		return -ENOMEM;
- 
--	fc->s_iflags |= SB_I_NOEXEC;
--	fc->s_iflags |= SB_I_NODEV;
- 	ctx->s_d_flags |= DCACHE_DONTCACHE;
- 	ctx->ops = &pidfs_sops;
- 	ctx->eops = &pidfs_export_operations;
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 5f57ac4720d3..4877c262cb1f 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -245,8 +245,6 @@ static int secretmem_init_fs_context(struct fs_context *fc)
- 	if (!ctx)
- 		return -ENOMEM;
- 
--	fc->s_iflags |= SB_I_NOEXEC;
--	fc->s_iflags |= SB_I_NODEV;
- 	return 0;
- }
- 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 69c9d6d546b2..80f201035d77 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -973,8 +973,6 @@ static int kvm_gmem_init_fs_context(struct fs_context *fc)
- 	if (!init_pseudo(fc, GUEST_MEMFD_MAGIC))
- 		return -ENOMEM;
- 
--	fc->s_iflags |= SB_I_NOEXEC;
--	fc->s_iflags |= SB_I_NODEV;
- 	ctx = fc->fs_private;
- 	ctx->ops = &kvm_gmem_super_operations;
- 
--- 
-2.54.0
+However, overall, I think the original intention behind Tao's patch is innovative
+and valuable, and Tao could definitely make this patch set simpler and more
+readable, because the core changes actually start from PATCH 10.
 
+I believe that if Tao had done the following, things might have gone better and easier
+for reviewing. In fact, I understand the motivation behind the patch is quite simple
+at its core (just wanting to avoid allocating the anon_vma structure when a VMA hasn't
+been truly forked, and instead put the VMA information directly into folio->mapping):
+
+1) You could actually simplify your patch significantly — without adding a lot of wrappers
+and helper functions that introduce extra review overhead — and keep only the most essential elements.
+
+2) Provide complete test code (in tools/testing/selftest) that covers the affected functionality,
+such as VMA, huge pages, KSM, etc.
+
+3) Use the RFC tag to start a discussion.
+
+
+I would be very glad to see if Tao could post a simpler v2 version that does not alter the rmap
+core data structures too much and does not introduce excessive complexity, no matter whether
+it can be merged finaly.
 
