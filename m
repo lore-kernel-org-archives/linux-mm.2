@@ -4,91 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7537DCD6E75
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 16:50:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07447CD6E74
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 17:04:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE7F86B008A; Thu,  4 Jun 2026 12:50:14 -0400 (EDT)
+	id 2D8296B0005; Thu,  4 Jun 2026 13:04:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBF9E6B008C; Thu,  4 Jun 2026 12:50:14 -0400 (EDT)
+	id 2B0B06B0088; Thu,  4 Jun 2026 13:04:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD5816B0092; Thu,  4 Jun 2026 12:50:14 -0400 (EDT)
+	id 1C60B6B008A; Thu,  4 Jun 2026 13:04:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C0B256B008A
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 12:50:14 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 696E58C343
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:50:14 +0000 (UTC)
-X-FDA: 84842817948.15.47E2A69
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A9B7DC0017
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 16:50:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aJAG3WSg;
-	spf=pass (imf10.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D4A46B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 13:04:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A52CB161903
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 17:03:59 +0000 (UTC)
+X-FDA: 84842852598.01.19E196D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 24CC21C0006
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 17:03:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KixjPKkc;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780591812;
+	s=arc-20220608; t=1780592637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jQM2oAwH9sOdxU7ZJ6Wbzc8gk7FiaryNTF5Gp9vtO2k=;
-	b=GA5DtGF1bKu77IXMJvCUJ5etJAxB5iK3cKJzaqiVTwKX8zlEGCqsy2sVjDxjQ7aULr7Jq1
-	Wi1Ic8g8kEmcsV2M8JlpscYoAEkmgiqxAo8gMBFDM+wE6MZPu0Rp5Y/acSlIdxFbnY0KOl
-	iIZOzgfIhNFhUMQ5P3chmCmbyrP1O2c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780591812;
-	b=jVtkxsTDE/050Q6Kj4NtCVXSuZKJ6ECwC/nv+2MxzhDykq37btSZSATachyXgQMc/RfV2I
-	Ro2Siosbv364HmYVVIZlhHfpBZY4GxO8hltmN6YmU6plcJ49covizo4TfM2aBUzuXtgA/u
-	sLTB/T8i+sg0suHL6l+yXguPKCqmMsc=
+	bh=mFdbSvVLclwxYmscPcZ8kkZXJU9Ks9VowvahVknrrs4=;
+	b=24OUG5cd40JhZT4T6jZ+LsYeLqVIOV/HYtLxRxiniGpcuWMrJ4oVW+c3eCGcCHQ5x+dNEh
+	6MdDGCEfbf4W+7qYSoOgdYSgkiBTB0CI+BWv5vxwaDheL092/YKSgWq89Nxoxz7Pkyhr4o
+	Gm9rRAJ4C6gn9Vn7jJ4oIa+yuhyv2w8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aJAG3WSg;
-	spf=pass (imf10.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E218600FF;
-	Thu,  4 Jun 2026 16:50:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91791F00893;
-	Thu,  4 Jun 2026 16:50:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780591811;
-	bh=jQM2oAwH9sOdxU7ZJ6Wbzc8gk7FiaryNTF5Gp9vtO2k=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=aJAG3WSgvGrImZ5mo9o/LnFScifnNkL4CEKMr9GhNlTwR2MwGOsP/lxBKEPsVQvfp
-	 E5cftbTAzq7KUS3dqb1RM5EFJcpXnlc7I0JlQcktF3k/p64cWmdBtrmxE9ZjejP+AR
-	 p2fMI2vuMmrMZXWPak1G/CQ0Drs0Pou6XLT91HXDjUCeDKmJcRdU4x0gtVOunW1DOf
-	 N/caZGcmMFEG/HYtbMYjk3BNAK3cdZ099Oz66D7OmDwvuEZOkfG9FMHG4fPyFuMEg+
-	 W4aKUIe4YhGMPYxSay3P3aIzMVrlVlE7J+z2mCJSt8LW/U7Bytccwp7Np6IlljjXYv
-	 NfaYcXe0f3ftA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09C73930A0F;
-	Thu,  4 Jun 2026 16:50:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KixjPKkc;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780592637;
+	b=EtW0eyIm0O6rBQ+MGidZEgKLXbgTWYlYxNKuucxORJXLM8I9VPHAXe2LyALk9/KPPRVdxv
+	lbtw14tNrGUcP1NZdjh1xNIofKOR0bBKTqB6LYV+fHVAhXcydBIjwj1HUFmGxunzdykN1c
+	I3HqPI8c1YlD3H3ysqFV9LiNPSy2U8g=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780592636;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mFdbSvVLclwxYmscPcZ8kkZXJU9Ks9VowvahVknrrs4=;
+	b=KixjPKkcIh2mT0u10q+P/TOAblb3SHaXmQr7H6VDzAOZL1j+HZMvdcWNnidwC2KTk0Lv5E
+	EdqZZc3Diaf+nx7m3IFz2vQWpc0BdPKy+yn5Ej7c/rzCoAsZ0X1GX0XKNIg4KZ4g0dkTMU
+	tCdQHdIpONx3r3f9Lmy6RXjaLSiMU30=
+Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com
+ [74.125.224.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-281-CbwltO-KMQugo1QYBkwVIA-1; Thu, 04 Jun 2026 13:03:55 -0400
+X-MC-Unique: CbwltO-KMQugo1QYBkwVIA-1
+X-Mimecast-MFC-AGG-ID: CbwltO-KMQugo1QYBkwVIA_1780592635
+Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-66044a47d6fso1845742d50.2
+        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 10:03:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780592635; x=1781197435;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mFdbSvVLclwxYmscPcZ8kkZXJU9Ks9VowvahVknrrs4=;
+        b=Uw8WPt2Cddxpum8d8g4eLhUd7cCAnCUAfVuZY/dqffYtUe7FRs72HLpAKKtKURER+2
+         f8TD7YRhuZb4D4Hzd4losSph9pVb5+7ckhB7oJOGKgXhWY0PSyf5k7DQEc35Q8hghrme
+         mPahKdNWvNbd6of8qRVw+aeXtUMeCnd76SCMCuVBSrZY3srAR+yL2v93jFXeLMEjskn3
+         nBHNPhv9qTefCrPG4RpAGR8PssW4d21XdW0o1WBLFsjTiivr5v/0o6UcChM07ooM5Jer
+         PfVjvTFERqMeTjW2xcTJTziYpyy3r8Vw7wsOSBNxcLkgsS/Cus1m2pZ4SLQu48F7nDyE
+         rzqQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9uYOI/xMWzEs1WXKvevvU2XsEcUk4smKHXCGHmLKvwCaPJlx3DSGZaT35rWMc5QL5QsisOo8iPBQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy644h74ZOQnPPSFiDnijo4oW2h27YBFgKbByXecwTSktWVQPCB
+	buaxX+hvBtfSdzieXo1AY4veNB+62tzjbD+ozeVOOu2+KIi+hYAMIUhqrJlT6jcVbi01iiXxwUV
+	3bJXOKvrLqswZ+42THmZDK9xPXbdHp4PvfCW5Kz3IxRnVKXXI6vjitndPfXR++GU3TnFJ2N5D/P
+	ZxB93gIhTq5y1sARQcjoF4gTecIsI=
+X-Gm-Gg: Acq92OEobMkFxz6NqWPLuOFcbMjz6yOjfxsJh65y7Z/y5Ex9aGSghv7x2I/GYENxBjB
+	jiMhy7fYnj+BMZgjlXYYNxvNVrOq3bdFudtrNnM0vmKRL1U7kNR7u/fgKQny/P9JjHEdifB0/2R
+	5BTCyH56YkcUTL06D3JQ5vdPKoxxj+Z3TQ9/C8SR4OM6IUlaU9J+riRU37YWASgF/FZxO8AJxT2
+	oKEG1/6reL8GTM=
+X-Received: by 2002:a53:d016:0:b0:660:689b:1539 with SMTP id 956f58d0204a3-660dc5af389mr7257809d50.58.1780592634539;
+        Thu, 04 Jun 2026 10:03:54 -0700 (PDT)
+X-Received: by 2002:a53:d016:0:b0:660:689b:1539 with SMTP id
+ 956f58d0204a3-660dc5af389mr7257769d50.58.1780592633890; Thu, 04 Jun 2026
+ 10:03:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf-next] bpf: Take mmap_lock in zap_pages()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178059181241.2942053.15264975706579133260.git-patchwork-notify@kernel.org>
-Date: Thu, 04 Jun 2026 16:50:12 +0000
-References: <20260528222014.38980-1-alexei.starovoitov@gmail.com>
-In-Reply-To: <20260528222014.38980-1-alexei.starovoitov@gmail.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: bpf@vger.kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- memxor@gmail.com, eddyz87@gmail.com, david@kernel.org, tj@kernel.org,
- linux-mm@kvack.org
+References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
+ <20260601032804.96122-1-lance.yang@linux.dev> <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
+ <616de1a8-1cfd-40b8-b04f-7b324be40bfd@linux.dev> <6b11bf0a-769c-4ef2-ac6f-2af38200a6bc@kernel.org>
+ <baa0a462-46e0-44ab-b583-c722ad253afe@linux.dev> <06d9b665-945f-4967-9ed9-b06514478996@kernel.org>
+ <CAA1CXcAeEGOsqp-ywAQ7GMYQzXEeco-rUxUkk2hEF69HybC4=w@mail.gmail.com>
+In-Reply-To: <CAA1CXcAeEGOsqp-ywAQ7GMYQzXEeco-rUxUkk2hEF69HybC4=w@mail.gmail.com>
+From: Nico Pache <npache@redhat.com>
+Date: Thu, 4 Jun 2026 11:04:35 -0600
+X-Gm-Features: AVHnY4I_L8TwfZPfpH2lQFz1V2RvpVRsRnPJ_VPp-rqHDi22wC_1Io6tlGI8brU
+Message-ID: <CAA1CXcBSPVG4CJFCBDvbuodcJ_7eXoDQTpK0ZN0HEhkDPi-DEw@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com, 
+	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
+	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
+	liam@infradead.org, ljs@kernel.org, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
+	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
+	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
+	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
+	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
+	zokeefe@google.com, usama.arif@linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: hm1p-uFE9NBFqlQM8IxzxsCWWakC0WeuoPSkqh7zbJo_1780592635
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A9B7DC0017
-X-Stat-Signature: dexe753nf4k1mou3fxoc84qigyoj5feo
-X-HE-Tag: 1780591812-217166
-X-HE-Meta: U2FsdGVkX1/gLBX19dS5zv3Yg4pkCo/FfEQSLVm0b0nlRNur7uBpHve+tMUEkzibubwWsf2U6OBkU10dsyD4jnx8TJAcRRzoNrX7tIddF0gZipjUdteF6nGIEarxgfWRafk6x5I+e0mWYxI5u5JazrYM99AK2FLaVcMhd/MFxYa/v47isKg33pbuQDBNKcwX+3ElSj0HBscALsNQkkrSG6Kse5wnFcSg/EeFXSt7JkHcHOPhce5jNFAug4wyX7kZ8fKYFrX/rommaO2qw5J0KpN0tIsKOGDP4SymKXAoSrQiRP1aBaqV991FNl39EEKrp2tn041LvjdoyN6v1SyLiwlj3GEf+b09U0evjstcYQCyb+tJDhM0DDV5dLbXZTvEvyv6NZHdlk+dS+ENgQypyzwfYcu3TN0rTRySMqwF3jtw6ZPT9fVpL/MFF62/FoEQszFPk5zIk/Fhc0SZrgOwBjB28dPfQVSDunlgscQS+IzVPk9WUyXr7xaJ4Fga2+u5CML7G4xI7Cceby/h2QCaGBNBDEFDZyjt6HN1IP7HiY32xiR7dwJJmy27yPpGZ6c1BReaBvQCgA9KSvQyxg1c8TTCNH7kyO3sGUGoV3x9n38V1TzGSFABWh9iBDPjCpSm+fq8DSkYwZ+tEe+mYNHsC3GJN2zjylDRnDRaiHhsbCZLcUG/pKsQOkfXC6gHfztC5D7llF0tdIE4+5mgwMkiLqTwxp/jhPevhKFZfnvN4z8PIwDGJb2a1GTLSMpThBHJgzIL7abqqtHEjyfOTqrJcalSX+AhZqplSS9YB8vhwUfVYhnf3kPfz7TNkkbM+bA5J85agGPTRX8V8YiKpTqDtR5SMCB+uZr9TjQGxj5RT0gJ0OQk38FDTodcid+6/Pesa32yZ8cl7opFeyOMH2m/aQgSDsYtJCDhuw8pHhDFSMRaVglsCLn6NBxP3I7SeuQIvi2utdrf0ng6ew4ZDp9
- 1eh9DfaC
- zD06J7hT8TukVQqLIkWYovDvFuRmqPY16kKNV34opFAkOFdn8Rd/deaELwY4mZwGlJQNoDvgFyJbiJmofusKfs9Hq78HIsKv1CRGaTH51vft7JuhCG9rsYcNGSEsfSWKrVW8qNGJdfo2fh48exur+2o7ngdMQYXxjgoSDUI4ILOQGgKadBRKbMsEPb2H1+vHacBlIxqNOPIX5g/QMHSVa5PPCiSoPWdrpjWhdGqMkQso9UNx89lZShadCBE9CtriidoMjwx/qUB94C9pcqji/qTjIqHc1/83xZgQuUR1z92AVA99rWRyRIPzJqxEL9LLHUoIAUuAZXGobmUZ3zap0G1OS8wsFor1MG74DG3IOi7At2onJ0VvpTpih/RYabXfhtFUXICs9x2XV8khHS8ySo031Tw/yJeQZ7SR1vpwsZ5bJNedsiQ7D38/+/RIpRcTTeMhH9KpHJIcQfjyfTGIp2mE9FSOIDrrwXwgtLfwk/b+6wA4=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 24CC21C0006
+X-Stat-Signature: yjcusx3rbucbw1ktobcpaysif5cdednu
+X-HE-Tag: 1780592636-817953
+X-HE-Meta: U2FsdGVkX1/NgbkvlWtg31NSf3GG+zgKPsayc35FadbVpAG+YbmQIHhMVCw/53c+Wwd5DRI6gDN/FCM1pbM39GktKFwohomfYNg526E2CbaB1mxQQjZmSu8+XAu8QK9EEjiK8sPXrAv2zdbbPeIgraZiBcu6wOt58IHIsVyfSipK3DAmgP1HOYGwGqK4XrZYIjKuf0y3phD61elIJ8kPREaesQIEeY1B4xcspBVPBiwxkMrtBaj6rAR3ooe/5Ay2R5EnJQX9drmOgCNNQBY/KloI/SK9GnIdqfbR19U2FYUCWEgUB8rMJOvVBZhrqEHIC0y0tZAtE30cbZCbrqb8LTATVz9G3LT9vARWdlnBlaWnpelDN/C8HMjToyMXCQF/iil/qiwpunmyWwLZPu1oh3qf8JrM1dhNNxprvZRXhfwkPF1g7WBPVl4TAtoskntj2NffR76hc1ZZBGCLpb3kmsKXt+NQQqXewIpch/893q+DdjEsrnK0lguB2Y2jQmm1NP+QoZweEKZd8swRPoxh5oLtaIEfy/1m0vMfni91j2+OKkyVecFlepXWLvx9R3qfbjIpszNADRtOX7haslIc+jCJie0G3C1pvLcMgqSAxUJp920v0+7tfDXqANQc7vqwJ9mVHz4IwhoW7ncyIDKq7PWh4oPK2yPpVg4L2+TBpmGDR7B6LvS1VSK3zNKZ+/ReGjqgfpc4pkOcY3iijdZ8HTnmqNfIokUZJp4Owm17vrvZ+6WYCgEwJTlLeTWman/9cBUhuwJflxzAkYnngHLMwSobLMmvrsmP6zhwea/tBZx7/JYt2/N1CgTWKNrDSOz8U4YLmZ5nE2zz9sayeucbI2D6+mIWzSN94oYd0Aj+lE9FOuCyDMnRgx66DVOiaGaH1GroxDdaz69jEGDVmQSjY9pPsy8cYiM5pgSGV1ARuACCr3Qyz1DZpDCTs4iGhbCo4pExHt80tjV35pVC/+W
+ 8/gLx6pW
+ 4+wFO+HvnsirgchEK/30Rvbd7mC5W+SJePNcBbp3mcevZL1R5OYzxkUc2Eysh7htl/C3eOg2uXgEy8/4KMOR5vcBo03zlns/kLYdqmkzr24aVdRdspf4o5xEUx1tJADR0cEUeJBo7cvXhWPGo3wXQyM2K17IcFvImREqsFyxeCF9RSnI7+77CXCuw6oVcE1RvWQhvZGGx4ferfcLcw7QHW0KvrS+jMLR4iRtKTUfz5IT2ozzbOjBJq2sfo8cGdCG8Z7Wvn7VrTJVkCxCPHrUDYQ+PE9L7yRLgIWLvUR32Lm9sLNPMoQWB/hqLVT/UMhLbmufj/jh2e3UEO3gxzEQzp8yQBgdKuskOo6a53IgamMj/uZiCX1Io8lXxDFQhxWxrSOjIRUSd+JJNp1CFSUeqCItjwcQW8oy2osOuoSZaPWjADvOQVNsx9tt4007KZ4239KLck0aOnjoe/qVczHwfztyAmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,33 +146,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
+On Mon, Jun 1, 2026 at 9:00=E2=80=AFAM Nico Pache <npache@redhat.com> wrote=
+:
+>
+> On Mon, Jun 1, 2026 at 5:14=E2=80=AFAM David Hildenbrand (Arm) <david@ker=
+nel.org> wrote:
+> >
+> > On 6/1/26 12:47, Lance Yang wrote:
+> > >
+> > >
+> > > On 2026/6/1 18:23, David Hildenbrand (Arm) wrote:
+> > >> On 6/1/26 11:08, Lance Yang wrote:
+> > >>>
+> > >>>
+> > >>>
+> > >>> One small thing, I think we should probably keep the smp_wmb(), and=
+ just
+> > >>> move it before the earlier pmd_populate().
+> > >>>
+> > >>> IIUC, the ordering we want is still:
+> > >>>
+> > >>>    clear old PTEs
+> > >>>    smp_wmb()
+> > >>>    pmd_populate()
+> > >>>
+> > >>> so another CPU cannot walk through the re-installed PMD and still o=
+bserve
+> > >>> the old PTEs, right?
+> > >>
+> > >> There is a smp_wmb() in __folio_mark_uptodate(), that should be suff=
+icient?
+> > >
+> > > Ah, cool! __folio_mark_uptodate() already does the job :P
+> > >
+> > > So yeah, no extra smp_wmb() needed here!
+> >
+> > Yeah. BTW, I think we'd need a spin_lock_nested(), so @Nico, treat my c=
+ode as a
+> > draft.
+>
+> Okay, I read the above and did some investigating.
+>
+> I will try to implement and verify the changes you suggested :)
 
-This patch was applied to bpf/bpf-next.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
+I've implemented something slightly different actually and I *think* its be=
+tter!
 
-On Thu, 28 May 2026 15:20:14 -0700 you wrote:
-> From: Alexei Starovoitov <ast@kernel.org>
-> 
-> zap_vma_range() requires the owning mm's mmap_lock to be held.
-> 
-> Taking mmap_read_lock under arena->lock would AB-BA against
-> arena_vm_close() and arena_map_mmap(), both of which run with
-> mmap_write_lock held and then acquire arena->lock. Instead drop
-> arena->lock, mmget_not_zero() the vma's mm, take mmap_read_lock, and
-> re-resolve the vma via find_vma() since it may have been unmapped or
-> replaced while waiting.
-> 
-> [...]
+} else {
+       /* this is map_anon_folio_pte_nopf with no mmu update */
+        __map_anon_folio_pte_nopf(folio, pte, vma, start_addr,
+                      /*uffd_wp=3D*/ false);
+       smp_wmb();
+        pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+        /*
+         * Some architectures (e.g. MIPS) walk the live page table in
+         * their implementation. update_mmu_cache_range() must be called
+         * with a valid page table hierarchy and the PTE lock held.
+         * Acquire it nested inside pmd_ptl when they are distinct locks.
+         */
+        if (pte_ptl !=3D pmd_ptl)
+            spin_lock_nested(pte_ptl, SINGLE_DEPTH_NESTING);
+        update_mmu_cache_range(NULL, vma, start_addr, pte, nr_pages);
+        if (pte_ptl !=3D pmd_ptl)
+            spin_unlock(pte_ptl);
+    }
+spin_unlock(pmd_ptl);
 
-Here is the summary with links:
-  - [bpf-next] bpf: Take mmap_lock in zap_pages()
-    https://git.kernel.org/bpf/bpf-next/c/80b89d0226a0
+The logic here is that when the PMD becomes visible, PTEs are already
+populated (no possibility of spurious faults on local CPU)
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+the SMP_WMB makes sure of the above
 
+And the pmd is installed with the pte and pmd lock both held through
+the mmu_cache update.
+
+This follows the conventions used in pmd_install() and clears the
+potential for local CPU faults hitting cleared PTE entries.
+
+I think both approaches are correct but this prevents any possibility
+of my first point. although mmap_write_lock prevents this too.
+
+Let me know what you think. I can revert to your implementation but
+this is what I tested.
+
+Cheers,
+-- Nico
+
+>
+> Or an even crazier idea... what if we ensure MIPS checks for PMD_none
+> before walking a PTE table?
+>
+> -- Nico
+>
+> >
+> > --
+> > Cheers,
+> >
+> > David
+> >
 
 
