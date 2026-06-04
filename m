@@ -4,131 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49051CD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 07:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB28CD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 08:10:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B7626B0005; Thu,  4 Jun 2026 03:58:40 -0400 (EDT)
+	id 7EF516B0005; Thu,  4 Jun 2026 04:10:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78E846B0088; Thu,  4 Jun 2026 03:58:40 -0400 (EDT)
+	id 7A0E06B0088; Thu,  4 Jun 2026 04:10:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A4A66B008A; Thu,  4 Jun 2026 03:58:40 -0400 (EDT)
+	id 68EA76B008A; Thu,  4 Jun 2026 04:10:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C1B46B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 03:58:40 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C507016347F
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:58:39 +0000 (UTC)
-X-FDA: 84841478358.25.E044B96
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0A81E120003
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 07:58:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FpaLIYtj;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 544836B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 04:10:38 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E64B3404CA
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:10:37 +0000 (UTC)
+X-FDA: 84841508514.08.4F5EEFF
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6E1E3C000E
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 08:10:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uZ7Nw1GO;
+	spf=pass (imf22.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780559918;
+	s=arc-20220608; t=1780560636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cI/C7RCRmc8Hsh1eMUTfrVJyDrrbEkoM3eflEXaUTBE=;
-	b=FkNZdNPu8tyQFa8G/mrpgSmJgBtg6FsRHGMrLgCW/NwDnouW6VuCp5H3l4FWytwkfQtzKt
-	KlCIrTe3zZbZbN6Dvh97VPHgt5rI1EW1MqZeqwZGCG1MVotbcCz3EfIdyrNJNH0OQH5hob
-	YN6GsCEMVjRIS1j9Ch/icSzO4u3AzQQ=
+	bh=P85ckZTk9u8LnBjRMxQ2RWcMT/9mNbK4Xr+1MlYh7A8=;
+	b=HV8Rijuo6ONhWKnUg1O0qA58qVi987o7nDK6nfIIsJZykyivTjhRkpvFPnf3nq/ewEO+OG
+	XxaMv6d3+wEdbsl1hmkJEnEu2b/mH9siJQz8eciBKdErbwHCrSoRcyQKtrCKfWukkshnrm
+	M6B6BCFKw5xl59gBYkzaH1nThVs+wRg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FpaLIYtj;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uZ7Nw1GO;
+	spf=pass (imf22.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780559918;
-	b=gXd9yvTGROdQnaOZG20KrWnmXC1EdjC/894BCJRBGZaXRUVUZ/DlVN0bv9PFsEYf2WbhrB
-	I8okYfVHKfW9bds9ffWMCRzHiqE7my3JrLfkechFkCetM7v3aCzSBRJdiTaSaLKfr1k0ci
-	aQtHtIQq44BPH1o1L7GHELk+zCpSnYs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EB98E41AF0;
-	Thu,  4 Jun 2026 07:58:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D0A1F00893;
-	Thu,  4 Jun 2026 07:58:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780559916;
-	bh=cI/C7RCRmc8Hsh1eMUTfrVJyDrrbEkoM3eflEXaUTBE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FpaLIYtjwJ/lE1DJA8ORxe7LFYqGYDF+O8gjlNo1owKRCNg2b6VgTWAV+XMio2Xrv
-	 HMRMuj5xQ4rwimdfYDCWt79HMeK+3QU6Ub16tsmehrXinULX/oli/WMK+h1olshPWp
-	 jftrZ+RL8HFddxEjx8v0LgmawNo7+qPHitptILKCST7+NOp4f9DDbpGmty+YZBo4Ru
-	 FIqV06x7qcjL3lsQfKYtyip+7HmXZ2McPWlz7E9LxC7Ntj2t8IRVa3edKTDvoVDdej
-	 /RJDkNHt1+gC0GrjM2TG7DkIft/eOJeOLBQYJ53/dEaV7fLcQlptmbQHdS78sDQmIs
-	 cr1UnsIoH0Lqw==
-Message-ID: <a6cac07f-5509-4821-b0a8-dd3afb89c26e@kernel.org>
-Date: Thu, 4 Jun 2026 09:58:32 +0200
+	t=1780560636;
+	b=4UlS2ycn7sckukRJofYlxmnB0YyBML/8gqxBHv+n7XZQpUUhWRC6DbMVhuRLG5nq5aI9ZM
+	P0YflellHTAEe1X5qCGHlEkkIX/hmgCHJiZ9XE0bGbAPFPxvnZYaV0yUN5zlH56DG7QjTa
+	7aDSK0lKjhUn7UY/gHKS2oiC5Jr5Ym4=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1780560629; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=P85ckZTk9u8LnBjRMxQ2RWcMT/9mNbK4Xr+1MlYh7A8=;
+	b=uZ7Nw1GOHo7rjGj7mFXXGhuwyikz2RgOPwxCyC1gVGMW3z7QzhXt1qKZcPEfQ/dnny2N6l8eOPug1h4K8zdGo3AmIPWHIon8+UY6RXYXiMvk9eIgJg5K2nqS37zpBehDzuT3Sc3DjQ46oq5zi8A3igZLwH1jLgsU7l0/3NEa018=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X49dg.w_1780560626;
+Received: from 30.74.145.98(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0X49dg.w_1780560626 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 04 Jun 2026 16:10:27 +0800
+Message-ID: <3e6c2559-cc95-4545-83ee-807bbfc1b3e9@linux.alibaba.com>
+Date: Thu, 4 Jun 2026 16:10:26 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slub: preserve original size in _kmalloc_nolock_noprof
- retry path
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>, hu.shengming@zte.com.cn,
- akpm@linux-foundation.org
-Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- zhang.run@zte.com.cn, cai.qu@zte.com.cn
-References: <20260603211011530GqLSXP_rgcuQdR47IGQLL@zte.com.cn>
- <07f55792-c83f-433c-bb16-58a5824d1dd7@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <07f55792-c83f-433c-bb16-58a5824d1dd7@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v14 3/8] arm64: add support for ARCH_HAS_COPY_MC
+To: Shuai Xue <xueshuai@linux.alibaba.com>, catalin.marinas@arm.com,
+ will@kernel.org, rafael@kernel.org, tony.luck@intel.com,
+ guohanjun@huawei.com, mchehab@kernel.org, tongtiangen@huawei.com,
+ james.morse@arm.com, robin.murphy@arm.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, ryabinin.a.a@gmail.com, glider@google.com,
+ christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
+ naveen.n.rao@linux.ibm.com, tglx@linutronix.de, mingo@redhat.com
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com
+References: <20260518084956.2538442-1-tianruidong@linux.alibaba.com>
+ <20260518084956.2538442-4-tianruidong@linux.alibaba.com>
+ <056610fa-0dcc-46e9-a0b4-7c72067437ae@linux.alibaba.com>
+From: Ruidong Tian <tianruidong@linux.alibaba.com>
+In-Reply-To: <056610fa-0dcc-46e9-a0b4-7c72067437ae@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0A81E120003
-X-Stat-Signature: 98kd3togf6rn5ttr8c1yw6q9p3sk1thj
+X-Rspamd-Queue-Id: 6E1E3C000E
+X-Stat-Signature: 69cwis6itsceygn9i3mieqxac6h36ry3
 X-Rspam-User: 
-X-HE-Tag: 1780559917-276048
-X-HE-Meta: U2FsdGVkX1+iXTTMj4DBqJEXK9B7z4c2QYrpDnj/SrbNa8cORhVhLlz8UwZV0EIvVMYuSDmTYAD9px+KRQhR0br3NTXrHYreFKl9wMqQM7n3yDxgQEeesLx0rwugeRX2F5ZR2EEW+rimof/Dy8wE36XUqRBC0LSsSLA9FpKT6Yxsy7vlpLkGwjySQasZY4KSUf/zy7o72HqG3fSEjIiqPqDWOp4wemwIGOXM2SimVo7BxyhY91PsrNE3uMYoEucVKlc5D0zV6TnYRw+BetuMi5okXWJMzOpKZQVdWvh9SDMGnufzLijPTn7nWxO3jcpxVdbDyVbm0+Sx0jMH2KXzsTNTnxJ6WbbGac+sLWX2PhEiqOH2Gp7c/EOAPXU0id2P1PMfktIO9w8aatA28MrKMfek5w3WqxSrUGbLRDxeQIHsI2DgFtvtRqkHdRKfBoSV/HYVAXTk/ds12GXZmRcxur1ShIrzlnGzp0E7Hy/KqN/LJX+6cUwjiAkqBlJOF8lIQPvWqAdAUeauC1vPpTfT7kpZkrItQsykT0qcD6Z5LUcv8F0iFTlmFuIqllIIgMKmC22yikfkgjNsAL4jV/F7FltZ4MeOSXZqBjhxK5ypkRXR7MLdzCluWaxwkaXmooCDdfa2KPyNTF+esKHaD14sNVU9ku8524yJ0A+PyA6NZFFXCBybgX4N4xdVhBjcFN01f4ZLsClQEYj8ZkyUB2PXLoDQMCFEcHXyHp5DYEGAqIPwubC7ScsMZs+igtJcNLN3exqxPN8EkA3czGJGABdCCxOJECbk6WmzxoYkthFxjxAPgjCML8euB2cf+6A6Ctw9a5DP/YLqfBfp85eRSM83v7Ys3kUvbzGrmGoZSC1CFS9NGmmrH1P5dx1xF6upL/v3rbGZgeST/Kny8+epKk4mUFoJCaHVujspAO9EOhtGWlj4D2PSv+3z+ru4rm+rOM3Da2j/yyxnLeLuvTeCohb
- zJVuS0rT
- si8HhoOebrzPFVjziq8A6aTClsPap5jqP6KGgXF4tCyo/Kn9oniKJJKl46eN4EU3YSFvJ5D7OCoDjJezXljZOpbs70qf+0vGGvqSs98EAI3FF+OkdCWqZ90pdyEmGIlhNVmWui/+n7YOSKU0wvpgM3TYs74K65zSpKN6bnGas0MprxXD6nXAvo3X2Ou/iID0HIRRHCGsUxjPxW1vUnoOojl61DnbCPRU4hdYwUhZrR6WUAD35twc/yteSnnEb/zMv7VXDPTwIKNmP8KqkYrD+HBPsKpSgApmWJgwb+Y76tfnE3u8rqDhPn3Pv+yGjW1hY/xSnQY+5UC67cZGz6MTCWasekP4m/ppa0C3sfvqpoC7afkPFkmJH6MNEBHVjziBiJeEsbw9SoSG4sLk=
+X-HE-Tag: 1780560633-333829
+X-HE-Meta: U2FsdGVkX1+y3n9uR6t6XH4F6Ye8sYGr5z3EZUeAek7eGHDqZ0OXeR8EUeMb3mRjXvtFjUgyPhy758dswkuLDF8zvc/cE8syMK3Afak2EMeDEFHREwsIm8EhaF6tDY8ZYJxIWhcjtyRip+0W/LEc/0UKW2XuK8MJclUtds0KA66Y3zIAHysIPvn+NDrNpPHJBg3Z88C9YS4wQ+dFYSMLHQjS09sNDKfF3uVqV7ct9Jh5RuE7LGBXAfWLcPrMYZZAwUnbSUnbC1oXgg+3sECict6tnd3hbv+MDUcQkfOv3ZZ+pxlcZDykcJftxJc/YfkjoSjJq9LHXPsob/kH9pmuQpu7bf+GC5Iu7Id+0NWciEGDeVzSKNQPOupyqiZzx26cjS3iUQigswDGzooyn/GepL+2I9rxTq4twhP2dpqiIY3Wy5l6BvwEWAo6QlP1lfkx6BtYjvCoXEvmVnNyW0W7jZQ5KjfsrZm42b13yH9D4MZXO6CbmwiKG3RmTBXt8Zbwy+BB2ucPxuB/7TtdubJ8+hPOx4QMgi0WschCmThFoQu1JyrVGZALVHyRUaE/Utl5ve0y5fOM1a5f0lyUDJybOfLUx058lBmCMNuNp6yxmPpZ5/XGgU5KjNWxFwb+gOPV3w9Lc66KcfGRg/u8aFYlpf03nfPTRsFMeF4otj128MaDSH+QCvwwZaTHKzFzcm7mxK5aXOj0zN/hTzALwMGEGbJvNvXweJxVUF32xWD3tQxOPicOgDeXFRrm9hZazejHDn0LYfTjTZGWuK7nRGrkYhyfn5UvCVq4EmJDj5gb4tNBqIjrMYsAbwpuhtQeGej5/R67qcZUxoFulttH5oB9T4E/0QPKjvsYxWr4SKLHrMRj0tcIa6PmBpaE7UxyZV3XNi5sb4fAzPwQGtn4a2lMPHztig5DEgJIlcQFrcUKxHcnz6yTMpzOQQ5FKJoJE5yMOwCEZ4ninNscZi6Qdj5
+ 76og2Fxm
+ /c11ZrifJfLs/RlfTHI7CraQnIj875wWZ4tvdx3KizeGDcuTeqxfQ3STYrK9S9tQFk+aoF/C2FnUgrA51Qlk+s+6UJPZdUUHzqnBUB5a3mn05OPMCc2CuFc6zQnu9sxBAxF3gcBqfCH72XcLbWzeZ7Gmw6TobWgIsz2Y6C8gsnGmuMNbjyy5xKdlULBWJZbzRuVBlvZZrdEQUrSXM3YTdfqBDT4Y3969pOOmzFUUY5iUTnekp9AfaiOGU0Bx4n3CNII4tqC4T6vg8k0wAdqWClhBp1OMQi6MXzpuY5ejw5eE+cAs+RbRs3W8hkVnIDBN/C5H4PWBYUj/h7xvprDLO6ZlHYhP4Y/wJ/vclMfDzy0gmrVL+FlQadTafvLuGdVwr5JxnC6ORCTVgM16OiqgR+pivtEAcIbL/Bdnkhi7FE8sVKwptfw6JIsUG89WZPI3ZZrecOTif2fG9GU/CPXv3uPOiTl5n+CuUTclR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,92 +96,291 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/4/26 07:46, Harry Yoo wrote:
+
+
+在 2026/5/27 19:35, Shuai Xue 写道:
 > 
 > 
-> On 6/3/26 10:10 PM, hu.shengming@zte.com.cn wrote:
->> From: Shengming Hu <hu.shengming@zte.com.cn>
->> 
->> _kmalloc_nolock_noprof() retries from the next kmalloc bucket when the
->> initial allocation fails. The retry currently reuses `size` as the
->> bucket selector and overwrites it with s->object_size + 1.
->> 
->> That value is later passed as the original allocation size to
->> __slab_alloc_node(), slab_post_alloc_hook() and kasan_kmalloc(). On a
->> successful retry this makes KASAN/slub-debug observe the retry bucket
->> selector rather than the caller requested size, potentially widening the
->> valid kmalloc range and hiding overflows.
-> 
-> Good catch!
-> 
->> Keep a separate `bucket_size` for choosing the retry cache and preserve
->> `size`.
->> 
->> Fixes: <af92793e52c3> ("slab: Introduce kmalloc_nolock() and kfree_nolock()")
->> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> On 5/18/26 4:49 PM, Ruidong Tian wrote:
+>> From: Tong Tiangen <tongtiangen@huawei.com>
+>>
+>> For the arm64 kernel, when it processes hardware memory errors for
+>> synchronize notifications(do_sea()), if the errors is consumed within the
+>> kernel, the current processing is panic. However, it is not optimal.
+>>
+>> Take copy_from/to_user for example, If ld* triggers a memory error, 
+>> even in
+>> kernel mode, only the associated process is affected. Killing the user
+>> process and isolating the corrupt page is a better choice.
+>>
+>> Add new fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR to identify insn
+>> that can recover from memory errors triggered by access to kernel memory,
+>> and this fixup type is used in __arch_copy_to_user(), This make the 
+>> regular
+>> copy_to_user() will handle kernel memory errors.
+>>
+>> [Ruidong: handle EX_TYPE_UACCESS_CPY in fixup_exception_me()]
+>>
+>> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+>> Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
 >> ---
+>>   arch/arm64/Kconfig                   |  1 +
+>>   arch/arm64/include/asm/asm-extable.h | 22 +++++++++++++++++++-
+>>   arch/arm64/include/asm/asm-uaccess.h |  4 ++++
+>>   arch/arm64/include/asm/extable.h     |  1 +
+>>   arch/arm64/lib/copy_to_user.S        | 10 +++++-----
+>>   arch/arm64/mm/extable.c              | 21 +++++++++++++++++++
+>>   arch/arm64/mm/fault.c                | 30 ++++++++++++++++++++--------
+>>   7 files changed, 75 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+>> index fe60738e5943..831b20d45893 100644
+>> --- a/arch/arm64/Kconfig
+>> +++ b/arch/arm64/Kconfig
+>> @@ -21,6 +21,7 @@ config ARM64
+>>       select ARCH_HAS_CACHE_LINE_SIZE
+>>       select ARCH_HAS_CC_PLATFORM
+>>       select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+>> +    select ARCH_HAS_COPY_MC if ACPI_APEI_GHES
 > 
-> I want to note that this conflicts with Vlastimil's work-in-progress
-> feature [1] where it separately stores orig_size in struct
-> slab_alloc_context which naturally solves the problem.
-
-Thanks, didn't realize it was solving this problem as a side-effect, hehe.
-
-> [1]
-> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/slab_alloc_flags
 > 
-> No strong opinion on whether to queue this patch and then rebase
-> Vlastimil's work on top, or wait for Vlastimil's work to solve the
-> problem instead...
-
-It's better to queue fixes separately first, in case someone wants to
-backport them, even though stable shouldn't be really necessary here.
-This fix could still go to 7.2 but my series only to 7.3.
-
->>  mm/slub.c | 7 ++++---
->>  1 file changed, 4 insertions(+), 3 deletions(-)
->> 
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 67abbbf68fc1..6a2b3ade3611 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -5350,6 +5350,7 @@ EXPORT_SYMBOL(__kmalloc_noprof);
->>  void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, int node)
->>  {
->>  	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_NOMEMALLOC | gfp_flags;
->> +	size_t bucket_size = size;
->>  	struct kmem_cache *s;
->>  	bool can_retry = true;
->>  	void *ret;
+> At this commit:
 > 
-> But in either way, I think it's more straightforward to introduce
-> orig_size as a variable to keep the original size and pass it to
-> __slab_alloc_node().
-
-Agree. Because above, we wouldn't initialize bucket_size to a real bucket
-size, but a <=bucket size so it's misleading.
-
->> @@ -5372,9 +5373,9 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->>  		return NULL;
->> 
->>  retry:
->> -	if (unlikely(size > KMALLOC_MAX_CACHE_SIZE))
->> +	if (unlikely(bucket_size > KMALLOC_MAX_CACHE_SIZE))
->>  		return NULL;
->> -	s = kmalloc_slab(size, NULL, alloc_gfp, PASS_TOKEN_PARAM(token));
->> +	s = kmalloc_slab(bucket_size, NULL, alloc_gfp, PASS_TOKEN_PARAM(token));
->> 
->>  	if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
->>  		/*
->> @@ -5408,7 +5409,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->>  	 */
->>  	if (!ret && can_retry) {
->>  		/* pick the next kmalloc bucket */
->> -		size = s->object_size + 1;
->> +		bucket_size = s->object_size + 1;
->>  		/*
->>  		 * Another alternative is to
->>  		 * if (memcg) alloc_gfp &= ~__GFP_ACCOUNT;
+>    - arch/arm64/lib/memcpy_mc.S does not exist (patch 7)
+>    - arch/arm64/lib/copy_mc_page.S does not exist (patch 5)
+>    - arm64 has no copy_mc_to_kernel() override
+>    - __HAVE_ARCH_COPY_MC_USER_HIGHPAGE is not defined
 > 
+> Build does not break because the generic fallback in
+> include/linux/uaccess.h and include/linux/highmem.h covers it, but
+> ARCH_HAS_COPY_MC=y silently means "plain memcpy() with no MC
+> handling at all" between this commit and patch 7. Anyone bisecting
+> an MC regression in this window will be very confused.
+> 
+> Please move this select to the last arm64 implementation patch in
+> the series.
+> 
+> 
+>>       select ARCH_HAS_CURRENT_STACK_POINTER
+>>       select ARCH_HAS_DEBUG_VIRTUAL
+>>       select ARCH_HAS_DEBUG_VM_PGTABLE
+>> diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/ 
+>> include/asm/asm-extable.h
+>> index d67e2fdd1aee..4980023f2fbd 100644
+>> --- a/arch/arm64/include/asm/asm-extable.h
+>> +++ b/arch/arm64/include/asm/asm-extable.h
+>> @@ -11,6 +11,8 @@
+>>   #define EX_TYPE_KACCESS_ERR_ZERO    3
+>>   #define EX_TYPE_UACCESS_CPY        4
+>>   #define EX_TYPE_LOAD_UNALIGNED_ZEROPAD    5
+>> +/* kernel access memory error safe */
+>> +#define EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR    6
+> 
+> KACCESS_ERR_ZERO is already "encode err reg + zero reg". Tacking
+> _MEM_ERR on the end reads like "+ another mem-err reg". Please
+> rename to e.g. EX_TYPE_KACCESS_ERR_ZERO_MC, which directly tells
+> the reader "MC-safe variant of KACCESS_ERR_ZERO".
+
+MC is an x86-specific term and may not be appropriate here. I plan to 
+rename this to EX_TYPE_KACCESS_SEA (and drop ERR_ZERO, since this case 
+does not need it) so it is clear that the current fixup is caused by SEA 
+rather than a translation fault.
+
+> 
+>>   /* Data fields for EX_TYPE_UACCESS_ERR_ZERO */
+>>   #define EX_DATA_REG_ERR_SHIFT    0
+>> @@ -42,7 +44,7 @@
+>>       (.L__gpr_num_##gpr << EX_DATA_REG_##reg##_SHIFT)
+>>   #define _ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, err, zero)        \
+>> -    __ASM_EXTABLE_RAW(insn, fixup,                     \
+>> +    __ASM_EXTABLE_RAW(insn, fixup,                    \
+>>                 EX_TYPE_UACCESS_ERR_ZERO,            \
+>>                 (                        \
+>>                   EX_DATA_REG(ERR, err) |            \
+>> @@ -55,6 +57,17 @@
+>>   #define _ASM_EXTABLE_UACCESS(insn, fixup)                \
+>>       _ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, wzr, wzr)
+>> +#define _ASM_EXTABLE_KACCESS_ERR_ZERO_MEM_ERR(insn, fixup, err, 
+>> zero)    \
+>> +    __ASM_EXTABLE_RAW(insn, fixup,                    \
+>> +              EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR,        \
+>> +              (                        \
+>> +                EX_DATA_REG(ERR, err) |            \
+>> +                EX_DATA_REG(ZERO, zero)            \
+>> +              ))
+>> +
+>> +#define _ASM_EXTABLE_KACCESS_MEM_ERR(insn, fixup)            \
+>> +    _ASM_EXTABLE_KACCESS_ERR_ZERO_MEM_ERR(insn, fixup, wzr, wzr)
+>> +
+>>   /*
+>>    * Create an exception table entry for uaccess `insn`, which will 
+>> branch to `fixup`
+>>    * when an unhandled fault is taken.
+>> @@ -76,6 +89,13 @@
+>>       .macro        _asm_extable_uaccess_cpy, insn, fixup, 
+>> uaccess_is_write
+>>       __ASM_EXTABLE_RAW(\insn, \fixup, EX_TYPE_UACCESS_CPY, 
+>> \uaccess_is_write)
+>>       .endm
+>> +/*
+>> + * Create an exception table entry for kaccess `insn`, which will 
+>> branch to
+>> + * `fixup` when an unhandled fault is taken.
+>> + */
+>> +    .macro          _asm_extable_kaccess_mem_err, insn, fixup
+>> +    _ASM_EXTABLE_KACCESS_MEM_ERR(\insn, \fixup)
+>> +    .endm
+>>   #else /* __ASSEMBLER__ */
+>> diff --git a/arch/arm64/include/asm/asm-uaccess.h b/arch/arm64/ 
+>> include/asm/asm-uaccess.h
+>> index 12aa6a283249..c8f0af5fde63 100644
+>> --- a/arch/arm64/include/asm/asm-uaccess.h
+>> +++ b/arch/arm64/include/asm/asm-uaccess.h
+>> @@ -57,6 +57,10 @@ alternative_else_nop_endif
+>>       .endm
+>>   #endif
+>> +#define KERNEL_MEM_ERR(l, x...)            \
+>> +9999:    x;                    \
+>> +    _asm_extable_kaccess_mem_err    9999b, l
+>> +
+>>   #define USER(l, x...)                \
+>>   9999:    x;                    \
+>>       _asm_extable_uaccess    9999b, l
+>> diff --git a/arch/arm64/include/asm/extable.h b/arch/arm64/include/ 
+>> asm/extable.h
+>> index 9dc39612bdf5..47c851d7df4f 100644
+>> --- a/arch/arm64/include/asm/extable.h
+>> +++ b/arch/arm64/include/asm/extable.h
+>> @@ -48,4 +48,5 @@ bool ex_handler_bpf(const struct 
+>> exception_table_entry *ex,
+>>   #endif /* !CONFIG_BPF_JIT */
+>>   bool fixup_exception(struct pt_regs *regs, unsigned long esr);
+>> +bool fixup_exception_me(struct pt_regs *regs);
+>>   #endif
+>> diff --git a/arch/arm64/lib/copy_to_user.S b/arch/arm64/lib/ 
+>> copy_to_user.S
+>> index 819f2e3fc7a9..991d94ecc1a8 100644
+>> --- a/arch/arm64/lib/copy_to_user.S
+>> +++ b/arch/arm64/lib/copy_to_user.S
+>> @@ -20,7 +20,7 @@
+>>    *    x0 - bytes not copied
+>>    */
+>>       .macro ldrb1 reg, ptr, val
+>> -    ldrb  \reg, [\ptr], \val
+>> +    KERNEL_MEM_ERR(9998f, ldrb  \reg, [\ptr], \val)
+>>       .endm
+>>       .macro strb1 reg, ptr, val
+>> @@ -28,7 +28,7 @@
+>>       .endm
+>>       .macro ldrh1 reg, ptr, val
+>> -    ldrh  \reg, [\ptr], \val
+>> +    KERNEL_MEM_ERR(9998f, ldrh  \reg, [\ptr], \val)
+>>       .endm
+>>       .macro strh1 reg, ptr, val
+>> @@ -36,7 +36,7 @@
+>>       .endm
+>>       .macro ldr1 reg, ptr, val
+>> -    ldr \reg, [\ptr], \val
+>> +    KERNEL_MEM_ERR(9998f, ldr \reg, [\ptr], \val)
+>>       .endm
+>>       .macro str1 reg, ptr, val
+>> @@ -44,7 +44,7 @@
+>>       .endm
+>>       .macro ldp1 reg1, reg2, ptr, val
+>> -    ldp \reg1, \reg2, [\ptr], \val
+>> +    KERNEL_MEM_ERR(9998f, ldp \reg1, \reg2, [\ptr], \val)
+>>       .endm
+>>       .macro stp1 reg1, reg2, ptr, val
+>> @@ -74,7 +74,7 @@ SYM_FUNC_START(__arch_copy_to_user)
+>>   9997:    cmp    dst, dstin
+>>       b.ne    9998f
+>>       // Before being absolutely sure we couldn't copy anything, try 
+>> harder
+>> -    ldrb    tmp1w, [srcin]
+>> +KERNEL_MEM_ERR(9998f, ldrb    tmp1w, [srcin])
+>>   USER(9998f, sttrb tmp1w, [dst])
+>>       add    dst, dst, #1
+>>   9998:    sub    x0, end, dst            // bytes not copied
+>> diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
+>> index 6e0528831cd3..f78ac7e92845 100644
+>> --- a/arch/arm64/mm/extable.c
+>> +++ b/arch/arm64/mm/extable.c
+>> @@ -110,7 +110,28 @@ bool fixup_exception(struct pt_regs *regs, 
+>> unsigned long esr)
+>>           return ex_handler_uaccess_cpy(ex, regs, esr);
+>>       case EX_TYPE_LOAD_UNALIGNED_ZEROPAD:
+>>           return ex_handler_load_unaligned_zeropad(ex, regs);
+>> +    case EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR:
+>> +        return false;
+>>       }
+>>       BUG();
+>>   }
+>> +
+>> +bool fixup_exception_me(struct pt_regs *regs)
+>> +{
+>> +    const struct exception_table_entry *ex;
+>> +
+>> +    ex = search_exception_tables(instruction_pointer(regs));
+>> +    if (!ex)
+>> +        return false;
+>> +
+>> +    switch (ex->type) {
+>> +    case EX_TYPE_UACCESS_CPY:
+>> +        return ex_handler_uaccess_cpy(ex, regs, 0);
+> 
+> Pointed by sashiko:
+> 
+>     copy_to_user.S annotates its MOPS prologue/main/epilogue with
+>     USER_CPY(..., 1, cpyf{p,m,e}wt ...), so uaccess_is_write=1 for the
+>     whole MOPS sequence. With esr=0 hard-coded here:
+> 
+>         cpy_faulted_on_uaccess(): uaccess_is_write=1, fault_on_write=0
+>                                   -> returns false
+>         ex_handler_uaccess_cpy()                       -> returns false
+>         fixup_exception_me()                           -> returns false
+>         do_apei_claim_sea()                            -> returns -ENOENT
+>         do_sea()                                       -> panic
+> 
+>     So any MC SEA taken inside a MOPS copy_to_user() panics the kernel,
+>     exactly defeating the recovery this patch claims to provide.
+> 
+> 
+>> +    case EX_TYPE_UACCESS_ERR_ZERO:
+>> +    case EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR:
+>> +        return ex_handler_uaccess_err_zero(ex, regs);
+>> +    }
+>> +
+>> +    return false;
+>> +}
+>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+>> index 0f3c5c7ca054..efbda54770be 100644
+>> --- a/arch/arm64/mm/fault.c
+>> +++ b/arch/arm64/mm/fault.c
+>> @@ -858,21 +858,35 @@ static int do_bad(unsigned long far, unsigned 
+>> long esr, struct pt_regs *regs)
+>>       return 1; /* "fault" */
+>>   }
+>> +/*
+>> + * APEI claimed this as a firmware-first notification.
+>> + * Some processing deferred to task_work before ret_to_user().
+>> + */
+>> +static int do_apei_claim_sea(struct pt_regs *regs)
+>> +{
+>> +    int ret;
+>> +
+>> +    ret = apei_claim_sea(regs);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    if (!user_mode(regs) && IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC)) {
+> 
+> The IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC) test is also dead on arm64:
+> ARCH_HAS_COPY_MC is selected iff ACPI_APEI_GHES, and without
+> ACPI_APEI_GHES apei_claim_sea() returns -ENOENT and we never reach
+> this branch. Please drop it.
+> 
+> 
+> Thanks.
+> Shuai
 
 
