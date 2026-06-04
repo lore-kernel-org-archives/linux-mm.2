@@ -4,102 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E4ECCD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 13:43:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35068CD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 13:43:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1168C6B0005; Thu,  4 Jun 2026 09:43:06 -0400 (EDT)
+	id 758556B0088; Thu,  4 Jun 2026 09:43:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C7716B0088; Thu,  4 Jun 2026 09:43:06 -0400 (EDT)
+	id 72FBD6B008A; Thu,  4 Jun 2026 09:43:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF8B36B008A; Thu,  4 Jun 2026 09:43:05 -0400 (EDT)
+	id 646CD6B008C; Thu,  4 Jun 2026 09:43:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DA57C6B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 09:43:05 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1B8741A072C
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 13:43:05 +0000 (UTC)
-X-FDA: 84842346330.21.6F1283C
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 894E520014
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 13:42:55 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 53BFB6B0088
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 09:43:13 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EE78A1635AB
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 13:43:12 +0000 (UTC)
+X-FDA: 84842346624.02.A9F034D
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C14E640029
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 13:43:08 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=3yh5Pqqg;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf27.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780580575;
+	s=arc-20220608; t=1780580591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YQzLfI7cqcuvs6IyIPvW2YW8ka+WX6auHJcS9qJj5k8=;
-	b=XW9XBqzgqvG184z7gXH7S+LAUaSPYgE2CkPJNqpdaPJaUQMv0sdpy65hGAIrkmzKhmrFbK
-	vG34r1TS+gIWTJLiM3zsL0t8CAPM7BWtgT0VmgsxSPVSfT9rfv7W5kcNFoU5VbHlz6ZRU4
-	bzH1yAFtujNUj3tP7/UGJpxLPHDlDBI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zqAH+jkzeCPdGtaLFK/vNcS/ptJTugJ6NWWQSyS0myc=;
+	b=Vfr8eNrSeUFvRKFlScfA1zATSAX8lZUcuTPnrH7pGBD/2lf1UTO3tnryM/0lR7w9e300Fn
+	FS6OGl6PRD+2dzP3oSxfv7gcoZ6HhWJtfz4Y+ASTcI10ovzmejztFVv0inAeEk2EApPnbu
+	zU7jmtRHLywvJdtEErIZLMQBgRWG7bo=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=WUYxK7i1;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf31.hostedemail.com: domain of imran.f.khan@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=imran.f.khan@oracle.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=3yh5Pqqg;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf27.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780580575;
-	b=D80ssclx9EQh85VBmIUw+ZBq/pjh1JjbWeEY0BRNuTh7/fMnowJdAfbTGtrrfDr2oN/2H2
-	Syb304zg4wz8SqtOTPPNY+IiKS2gKF996ojMLENo+B77TfE88/ybLwiBsbq5u7RW++OovQ
-	4RAUSaxpdjfpFpsbRwof6njO/oqC/sk=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6548npAP1821678;
-	Thu, 4 Jun 2026 13:42:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=YQzLfI7cqcuvs6IyIPvW2YW8ka+WX
-	6auHJcS9qJj5k8=; b=WUYxK7i1TuEoO5KVcLNHx/fAPh7EeqPQn8lvJCMScWvt0
-	2pb/Tt2lUj1/dwVEWsvL+IgddDSF0ITwqmuH/sXC5oYS9ipplUNxoziZ3ORoaZjk
-	tOfTNGKrXJxP1EnbJUCLF6P5ktwxtT8ZbgQKc6L0R8gvzkFVihlK70a4B6W6/TfS
-	jSh36CvsJRs7diFGPJeBfdDt46XUC9U/L/Mbk+eOhI6m0ObF2/fH/Kthlpw0MHa8
-	GdXJOWxhhXjEzPAUfM3epqoretKGCMixOwYUIxrU2vKhwabJSPKmhy1nTlSbhx7M
-	zzvn33tk4aOliorKijrsXSRY+/I6D1anT4ll7tMBg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4efqgs078u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 04 Jun 2026 13:42:41 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 654DdjP0001204;
-	Thu, 4 Jun 2026 13:42:40 GMT
-Received: from imran-metabox.au.oracle.com (dhcp-10-191-115-51.vpn.oracle.com [10.191.115.51])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4efpbfwatb-1;
-	Thu, 04 Jun 2026 13:42:40 +0000 (GMT)
-From: Imran Khan <imran.f.khan@oracle.com>
-To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-        liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
-        surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/vmstat: avoid taking zone lock in /proc/buddyinfo reads
-Date: Thu,  4 Jun 2026 21:42:45 +0800
-Message-Id: <20260604134245.1580287-1-imran.f.khan@oracle.com>
-X-Mailer: git-send-email 2.34.1
+	t=1780580591;
+	b=D9rCbDnUbJ8O4gHBpKITiomJ/JTArA2dXupvmGk+c4ScqoV8/OdKCHKbDPLjkfdTzwPICQ
+	/ZKmyAAuV0ACkEPjodqcdOVbrkaPIsk8apcpUTiJnIobsHiFs4nMLgsYaDwjuFz292YXi9
+	yWyZ/yiOcpoyuxQRMmOTvhN5DBp6nR0=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=zqAH+jkzeCPdGtaLFK/vNcS/ptJTugJ6NWWQSyS0myc=;
+	b=3yh5PqqgSnBSISBzTBPiZwewd95hdoGK4zOI9D0d4eHRtNow6c2R3WCcx+OInBv50bJXPiRv9
+	4hfxuoWEHnv7lWdmLGMhF1N52MQtX/fq8+6avM38jhqqSKdhlN+cA4K6k9ackulgXZ3ouMqQHqe
+	ZNdDvCe1UL8/eke3vqzbyZg=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gWQY028ygzcbRy;
+	Thu,  4 Jun 2026 21:35:00 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id B624F201E9;
+	Thu,  4 Jun 2026 21:43:01 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 4 Jun 2026 21:43:01 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <david@kernel.org>, <qiuxu.zhuo@intel.com>, <bp@alien8.de>,
+	<akpm@linux-foundation.org>, <rostedt@goodmis.org>, <linmiaohe@huawei.com>
+CC: <linux-edac@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-trace-kernel@vger.kernel.org>,
+	<mchehab+huawei@kernel.org>, <tony.luck@intel.com>,
+	<torvalds@linux-foundation.org>, <xieyuanbin1@huawei.com>,
+	<yi1.lai@intel.com>
+Subject: Re: mm/memory-failure tracepoint change breaks userspace rasdaemon
+Date: Thu, 4 Jun 2026 21:42:09 +0800
+Message-ID: <20260604134209.111533-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <4de75e51-025c-4926-871a-4b9da479cefa@kernel.org>
+References: <4de75e51-025c-4926-871a-4b9da479cefa@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-04_04,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- adultscore=0 suspectscore=0 phishscore=0 malwarescore=0 bulkscore=0
- spamscore=0 mlxlogscore=999 lowpriorityscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2605130000 definitions=main-2606040133
-X-Authority-Analysis: v=2.4 cv=NLnlPU6g c=1 sm=1 tr=0 ts=6a2180d1 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=3I1J8UUJPc9JN9BFgKH3:22 a=yPCof4ZbAAAA:8 a=YhumCNMSV65wbhEYhDcA:9
-X-Proofpoint-GUID: pAa5fQDIeDXB7xp4SIyCmHOP4A8V3zu5
-X-Proofpoint-ORIG-GUID: pAa5fQDIeDXB7xp4SIyCmHOP4A8V3zu5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA0MDEzMyBTYWx0ZWRfX1XST2npXnF+U
- BveeUULTvCursnK7A7KCROvMx+IB7k+d8KFAj2C1it3tgi8bYH/anK9DeV7lb3f0tZAciBRTBgQ
- ULNYn4HtRt/M9/6qcFJJ3s4RKwciIKYUXjOMyjtF9YNpKufba3K3X42uDSaD/D9KU//tovh/voM
- JzPKl7h4Ie0Ru+yszy/JmzpTO5k0k4PTHO5HQlH4DifMuVGaDKvk6mhSxVuQ71a8c2EGg6bL0L2
- hYLtqwPzeSBQOvqH7aRrMkQzIz0Dt2ybUOdmXKfDNJEusCao3/wKqOQAj5ZqBCO1wJtNiwNN+e/
- C4UiItG3VJXX9IzimQF6CWHgqMWmoIK9PMY3OjPWyT4mf3Wac1VhgYyop8Hl24UOChLAxmt82Da
- 5JrRY9LXhsb/lmdS7oIucl9O5/K8xMNjU/dbW67Wf5VjzaOGr9EZCu4OqElZrkTg+joNgs3l5eP
- fveCgnnU2TMOZ5U6wCQ==
-X-HE-Tag: 1780580575-732094
-X-HE-Meta: U2FsdGVkX1/R4eEoe9LAZ9EyNow0GdtdnIWH4FIPh0wULklpYMyCa7Lby0BNTsGAaNKmGx1Hfa80rTYTCB9UKlJ3VsMUP357gpJko64Sj+lbEY35cgRbLkNNh2FzTyjNVbGiG9ct3cYGUfDLGGzZHpnqsB/a868Tq9ZCXGvlSLeIoIu2gdEe2KXlw09PIRRX4m/+oPtAvqPO7EejB650B1+8ttE+qDO//6QSfk5Zb7wYc0FB1zA17GH1ik4HjZLCPfi9cGejRnS/kTCS2ClcLPeWv9fICpTbc8Bs317Zm9QTDJOXtk8YiZLUAXf97ekds6TU+9VY9g1dNN8Icp30THJlpBZFze/zo3jjS042eU/ZzKHJXiEaOYZkrw0XrLxT7b7MSn7lV98hVXrOGrRceE6F8Z2Yk+Hb
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Rspamd-Server: rspam07
+X-Rspam-User: 
+X-Stat-Signature: tsc8jhr31g9tende5atg5ukhk19ygrat
+X-Rspamd-Queue-Id: C14E640029
+X-HE-Tag: 1780580588-801341
+X-HE-Meta: U2FsdGVkX182hx3tCQQxqoDNWyvUsh9UWR7CSzlWA4GZvzPc/NO7gkuQ0mfK0A1yC1iKVXQYSOs7GdQG+AyplzwntqVrx5gK5/M3pDYtlxy3F3UEu6uSLGhKGva0Bjp1iFzQpvdcUDc9A5ba2egIsOOnWNrwBZhj/ehGdVNJuhb2CB2+JfmmvuBxHdAmN/hGYodoAc/oZk7SLkaJQqIcsw7PxuzFt99GMv2APW2SsF4MCB3n2XSb6WG1jIu9K00Js4acDhJXvpGoTLwi3HX0jMT4DMLH+vYSf6kjZ1uULQcuqOAV/2aOGrEfxOXx/o3/NXjqDBVZ92yvL4hJj5YFvybZVfHn/YF6T9hzcfnUcN0NkgvU8wtDK58eOVBjjX0zjuhBlRYFas3g7q9icQ8JYCvFw4u1mcNvKMlqWu/hyza1E3UwhrmH4O7oKQEMrx1uAuNxwml0BpNBznWuRtbzeq+OzPiJV3gPsFff5HAP8kSuTuAOa2EM0cR21tmTErAaoRDG37G0DWBi+LBxCVqyfSsFMaxVvhHpnYfknNP9CvU9ZloYDyFZ9KR4Zwsf3mTGn9n7cUpE6Ku3qNG20BA0clsJ85G4iHTdB4fOszRcEJznEdp0hk0YDbnSy0ZNypZZArpL7HV1s77rA1n074FtyS4gaT2iw70/8lUPl9kC2zZ7ykjUdTK6bAOrcVwppMCFerFM8HsO2yfNi+hi7MSfQeRWebQ+ICX38WTOix01blOOq8zy0StCeIeVH9RP1cPHxx/+3Wyoj+OMkVTPD6ZMM0RVvsjisLftlotvJTW2X93Yr7CkzsB8/ogYihU23YSHv++GcTBTyww1DzKnKkpM4+YUPMmtTwh9mLaCTmH7aaRvjXETkjwnSP1cHhU5qshq3z1FAvE0y+xDau7TjMwjy+dJK9Ss5+hZuDpBbWXslpE59lx75t8mplstS6r52Eo2D/g4V3Oh4I1HFdSxxKX
+ OBggXslR
+ VQQmaeS4TVsobJ3nZ/YmHgvVR//vif3ETh7hbHC6CjZg2fPN2R5tJLVEIyJGHgleEc1wwuHE8Rlsnv7rLvDNeRVQlmB6+5xz7KaMvI0cRy+kYKk+m7O+VFXzribjSjNMM+cWHcSaF6KjZSC3GxwOh+qZISprESShwgHKtxNQF/jwgn0Jg0tdPzbTt1JznLOuwPfkURM6z1I72l+wlyE09yTPydK0uywOca4C5A5sluGgveQShjqLcMg4eA5F053zQ+6YoVmEyB5HyVLNFwyxbRH+jftWxeMmkeWNaZ1b2OPOWgt0CSMFYzQU8gvpSRUowuUOylH8+3YNoDTEwDSfoCbThAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,33 +101,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-frag_show_print() just reads zone->free_area[order].nr_free, so
-it can safely do this without needing the zone->lock.
+On Thu, 4 Jun 2026 08:42:37 +0200, David Hildenbrand (Arm) wrote:
+> Yeah, if only I had known that we would break user space by changing trace
+> events ... now we know :)
+>
+> Do you have capacity to send a fix?
 
-Pass nolock=true from frag_show(), so that walk_zones_in_node()
-can skip the zone->lock acquisition.
-
-Signed-off-by: Imran Khan <imran.f.khan@oracle.com>
----
- mm/vmstat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index f534972f517de..7b93fbf9af092 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1568,7 +1568,7 @@ static void frag_show_print(struct seq_file *m, pg_data_t *pgdat,
- static int frag_show(struct seq_file *m, void *arg)
- {
- 	pg_data_t *pgdat = (pg_data_t *)arg;
--	walk_zones_in_node(m, pgdat, true, false, frag_show_print);
-+	walk_zones_in_node(m, pgdat, true, true, frag_show_print);
- 	return 0;
- }
- 
-
-base-commit: e43ffb69e0438cddd72aaa30898b4dc446f664f8
--- 
-2.34.1
-
+Sure, with pleasure.
 
