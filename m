@@ -4,124 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C052DCD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 02:12:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77143CD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 02:36:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F2DB6B008A; Wed,  3 Jun 2026 22:12:05 -0400 (EDT)
+	id 75C6E6B0005; Wed,  3 Jun 2026 22:36:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CA536B008C; Wed,  3 Jun 2026 22:12:05 -0400 (EDT)
+	id 70D2A6B0088; Wed,  3 Jun 2026 22:36:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2072B6B0092; Wed,  3 Jun 2026 22:12:05 -0400 (EDT)
+	id 5FC126B008A; Wed,  3 Jun 2026 22:36:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 120B76B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:12:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE67B1C1C74
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:12:04 +0000 (UTC)
-X-FDA: 84840604968.01.34100D9
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf31.hostedemail.com (Postfix) with ESMTP id EB36620002
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:12:02 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="FZ53DP/H";
-	spf=pass (imf31.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780539123;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AA506B0005
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:36:06 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CE561120591
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:36:05 +0000 (UTC)
+X-FDA: 84840665490.27.74A3047
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C41FC100004
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:36:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gpQc3e3G;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780540563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6SZO2PTw2KcbXgjzwwx+KH4Kf8JNmzc6dqKetjt7KYo=;
-	b=vXI9UJzGgymcZwPg4XjYIXD+Qb7goLZGvofz2ZhTC998OP11sK8Cx7w477/neZazJaU599
-	EuEoxgKHIOmdirctJLYqkI4Asuk8OPa6ZOStmibvfjIgJUQNPlEKGC+RlPpbIxzZ0hBI1V
-	cxbBcDonILdsQCZ9rvCvHCU1EX3npms=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="FZ53DP/H";
-	spf=pass (imf31.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780539123;
-	b=iZ7G8/1gNZuNf76+y3t5jd8GJGc4Nif8oXzhY1fAItrqXwq4GCKRX+kU9Qq40+4nkgKHvZ
-	12NxW0/vjdmmTKXxfQkEPj0DGbb4T705nvwBQa5Pj4AY7VvL2ep4vLE3RCOxA2RjA/IC4V
-	7U8vKJsGgGKFeUKscwjPi4e3IJ9I5wY=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-36b9d265355so67711a91.2
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 19:12:02 -0700 (PDT)
+	bh=lLAxFtsFe46fSa82xZpNfQF3MHB85xuM5UN74w7VLM4=;
+	b=TcdjoagiKz5Q3NdE935CkfO7Xp+V4pN0Wn0PUgSWody8/YHmJ9PmT9ZF/XrLExFMqEHLzF
+	zsqQPSdryakiwO3sgsodyNLsmSkOrIqhfDxbzuEiihip/ZprvLBmWX5aNN485b4RIbpmR1
+	ukgzmej9Cf49PjxvtO3fxHsOWVHmAjA=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gpQc3e3G;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780540563;
+	b=fSzYHUUVbJqXhstD19+PBZ9KEH6qCA4ovk3q6VBtnDqjYZxkOW5bWPLGUyAonAC/tqxQWM
+	C0+psbdEZOxvRj7Jtmi5Ag7DMnKoV0Dkn2W4Bq8OqJQunddFhW56F9YtiyifdheObKrtSF
+	JyzpaFgrsWHY5t4jog8L7cUoEEzjcck=
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5aa5ce4904eso174403e87.3
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 19:36:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780540562; cv=none;
+        d=google.com; s=arc-20240605;
+        b=i5B6HcgSbNukmURcRp6Jbvu0dMtb5eyYVrdOvuNhPFRmHw0mkCt+AWf2tvWPULuSEE
+         aStLSWSMAOW2A54dkbRyT43nwxGMTQrrimCnj8/GWWrDC62x3yNaOidN6zRcDLveV/8M
+         5E2rzS2SfV9X2RV5HF6C5uUmR/668ICJNr1jQ3Ca0jJEukRTQ1k9PI0jahN19pRChC1g
+         2a7SM+mB0YkvaBXdMkC6BnzqKnJTpgiE3wOHNdEOEo14R3AWuQEgFPqhObAE4IBhI1DE
+         r6CZH9fex4oA44CRG/+U69fxFrL3PRgcI5tvBUfsiJfJSghyeThCC9fklbY2VZsIcurq
+         uOsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=lLAxFtsFe46fSa82xZpNfQF3MHB85xuM5UN74w7VLM4=;
+        fh=+MZNp+87pnIOjKdNLlzxQP0Nf7IwPvZNWjfTep3c2+Y=;
+        b=VysMnADDuehoFztz5uFsOlzFER5BxGy1Bs3oKiFZ2OJd3g9ImQHp7znQh8BQ3F33Ra
+         9/aVO4qcY46pYl5WyBZfR2Cz2Qi59SHFm0tBRsQpxA5bNXz4siRVz7Bz7Hze3CzcdcTl
+         QXzHXt16crllHU3DDKfRGeykaUqRIcvkVhArJ0zxOgkR+pAKiT/OS7VqGzgL6F9i+cfq
+         JSk23cvJCqXerZ6iI3fhLAYd3YhJNHPvC9N7Lx7CThY8rhGCem6i1vJxFbpR+HQdw7y1
+         HXXlHFaTju5P9BaNT5D/VszEkv5bdfKNoOjlJnaMKna45KvE6HLXD4i8TOSBCYpWrHNT
+         rumQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780539122; x=1781143922; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780540562; x=1781145362; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6SZO2PTw2KcbXgjzwwx+KH4Kf8JNmzc6dqKetjt7KYo=;
-        b=FZ53DP/H+FlDivzabErDixOHQ6eWJVO7Onl2K0xRqBYQ0CHEtghK2O3Pb/bTM/PnrJ
-         Istidy1Ub6zksBj7rO7KNZHLZm5eIWL4eKytpGl66NDKlSGoy5kNiIGx+lMB50CtCxfx
-         oVv6Q00INMnRvcteG5nrMMiPL0KVzxQM9EIVKR70EPvk+10toEJ0eV3VroVKa2+8bRaP
-         Qkr3MWSZr2JgBq/UwEr175GiYpCGVEUc+8YOgzsO7umZWKQm/TEZUrcMFDpNaeZezdyU
-         Wjzs4tWo0uPdW2LXqvsOoatzaTOi7bgduNM0vNaF5xJhPLMZ2A1gjKpseiqMzgt5Uq5p
-         Levg==
+        bh=lLAxFtsFe46fSa82xZpNfQF3MHB85xuM5UN74w7VLM4=;
+        b=gpQc3e3Gu6RavC/t0DWgkqvbI5p4jSIBvnv/DIkjBAoribWwZp8Vy4pZAeYVIsY/Mz
+         tgShB8QxEymeAC5MbPWrztWgTR100fAzpLo5KajmxJ6W+4PDc0LpxZ8gBfdyEjfyQEZ6
+         wRDphrcrzjqm/bU82tYY8Vo7Z9sARTgKd9gEpz2Zvj6jn0LKBmf41e8nHsL5lt0QAEXL
+         7QrqNOu9jMuEsY8ClNYh6YVesR7UzKa7YrevYa3g/xdblk32Cu5r5CvgtTyiqdntruZI
+         ns76qTK9gV8nv0iZASbBjFYGXbVj7egD6blvK38jYzHMt1Nni9xGEgKObmRwV+oidBFE
+         Br3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780539122; x=1781143922;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6SZO2PTw2KcbXgjzwwx+KH4Kf8JNmzc6dqKetjt7KYo=;
-        b=A+m34fY/oXk+YpyqeP2V64WSefTOd6IWELi1liXZy6Bk83T+ACi9gwGlje5fyeMu0H
-         MxZkLfJ94an9pZk5usTId49qkCwNOivgf+1IyhNM/ePG1PztD727cziYN3Iopiu+p6D7
-         ldYvnE5oNlTCWJwLZPtzp/exhAlv7LJKpU5YsPDGYffE2ypHAZUWk1yeeGpcgilX2uK9
-         IpCHvKU7BQBiHi9w/5FXstbNekuRlTDocGpFhby4viy0XNF2CxNsceOv3QW7zM3ZJjbX
-         XJOmiOD/noWOncxypa5k0BqrVglaVSrozTonaFpsNoNczZpG29JK+9xfNDF7Scuu3hYd
-         vTxg==
-X-Forwarded-Encrypted: i=1; AFNElJ+70rItXF4ZZ2hOhfvhWpCb648vYn6tHfCEHYTvKCoSY1EUasabmMqiQxT6VsySLtlfy88RzRGvUA==@kvack.org
-X-Gm-Message-State: AOJu0YzXEaztDe7aopqbFA1APdg9BcvVj3AeJcqMhCGbUGaPvIb4NT5Y
-	IjIO45ivaj8Z/N3z9ufdtZqyxWOBxuqM4OldKOHQ9EfsjVx8eQua+px8
-X-Gm-Gg: Acq92OH3AXku9zJQesYrYmBagNtoB5OnJLWxqeRhnBUZQs1KqAYyBsesiKnO84R1AVS
-	3Uqcqa9mb09ETGypk6yt9x04DeKQKgcr0UCbLANKhc2w7g/AtVuE4Pbud47cnFi9kz3/exEyt7O
-	VnU/tO/oxgmFLku/4sM+qS1GL8KEtHTdioCiCOsOrs93aqLgzmE9E/b2sRc8bt6u+JcpEjGv4yO
-	K+xx4TQ+K+zzuGYgvxJmH+mhq8uWqvXKItFd3O3vFPri1pUs/Ay+80r9W5eQVoU25MWzabkG6S3
-	N+rtrfmTCYaxscCV+tlSCviqhrHkEc5NSVXZFsLyja1r2PG1NWED4+mbA/+ZtwCP0tbLCFJ0b/g
-	a08YD85+d7xwOTOzsIXBXyC5OzyEKfcaNQS51PGChRnI8Ad2XrFRsRZMy2Q3dEO1AZADdZy9cYD
-	bCBNQyMlTC2TuIunzOJMkz3EfwDiXxmiqu0eUr8+h/skhdKxMSHNhuuQ==
-X-Received: by 2002:a17:90b:4ac7:b0:36b:93f7:a903 with SMTP id 98e67ed59e1d1-36e30a2adf0mr5186933a91.18.1780539121743;
-        Wed, 03 Jun 2026 19:12:01 -0700 (PDT)
-Received: from [10.125.192.75] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f68b03ef6sm1101582a91.0.2026.06.03.19.11.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jun 2026 19:12:01 -0700 (PDT)
-Message-ID: <6db27a22-cc7a-9a94-db3f-c912fd39aa32@gmail.com>
-Date: Thu, 4 Jun 2026 10:11:43 +0800
+        d=1e100.net; s=20251104; t=1780540562; x=1781145362;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lLAxFtsFe46fSa82xZpNfQF3MHB85xuM5UN74w7VLM4=;
+        b=Y7htseRLnKNpWuEAmAWGSCtBqc0TUAHY+AdqYe8UTutdOekH+/+tZRdu+wYm7o1QR1
+         4VeJEj3ICBDWemQWnXJXSpsljf84aoUL66j7dmXzla/3gPxmNMWcxps5uiXeyaHxWWj5
+         PyBPV2DO5rBwcxTf6I9Ae6yhUNJvIetkbdz2AdwGLtl94AdIBI57F/yCD71ZrYM1F6Er
+         82gvQdQY09DvGrG1JsMBemsPGkIcEfEzecsyu1Z3X5M8F+xQ3Wp7LMLArOJuO13CoZ0d
+         oXoqjitHm+fUxfBUtv52JqoVXYdBumNj9XyllQdZm19tBhjpVqJRDPqcBUAeGsCoyGer
+         1W1Q==
+X-Forwarded-Encrypted: i=1; AFNElJ94253fgnFzQZML4qUHEaAYvjkysW7NESWXed1mHIMMlYsIm86W82WKtQ4xn/wkTCdc8APWFZg0pg==@kvack.org
+X-Gm-Message-State: AOJu0YzEJ9cV/blfc/1VpWQGfN8XXFK1ujWA2NfYfWbyotU1Rp3BYuo1
+	3pkxi+EwZDQoO38RDs2EAvVviS1lb1cUAc/lwNmcxVB88EWw9tvZJdwcfBwh7eJuQWxtuu2JmVe
+	u8Uf9JQ6AWUIFIQ9QUrjvoFyDbRf2PcQ=
+X-Gm-Gg: Acq92OF6uxOyEvA/a4AzZORr9YsDEUZQ4QmqZqXvqUWI0sTvMJxv/zatjnS+LGo9ifW
+	ykBAIniuAEwGXiiiembbyXqNPTsSB7I3g/zF51MrYt6OIJeQU3pRYVMITPmn1g3zMeqXkJIEZFY
+	rbGeulBWOdIAQ8U793ujK/nPqZFuEolGbjd5GyV6rR5SAXL5qKiq6FebYLJRsaEKaDuZRCgG1HS
+	i9zS2foAdzkSHzgjjKn2pyu1bA5+/fgRVR9+15tJmYubGBvF1B58pY74z3fq3bifxxPBoBn8D6g
+	lNalH591XbB8qSYfVRSxH7DXA8Viji79493h2fZUskgHJvLp
+X-Received: by 2002:a05:6512:641b:b0:5aa:6db6:530 with SMTP id
+ 2adb3069b0e04-5aa7c132a98mr1679500e87.39.1780540561715; Wed, 03 Jun 2026
+ 19:36:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
-To: Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, akpm@linux-foundation.org,
- tj@kernel.org, shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
- chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
- <20260526114601.67041-3-jiahao.kernel@gmail.com>
- <CAKEwX=MQe_KFZe2vBXQYh0aa-x+E8AzNwmyjJGJk4tDoS9ML3A@mail.gmail.com>
- <aho_VtLCmIRsNyvO@google.com>
- <6deeaea7-3cd1-4403-29fc-d2dc55c297f8@gmail.com>
- <aiBqzOtEv5iAC_qC@google.com>
- <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EB36620002
-X-Stat-Signature: twah3wtf8y1saga97zoorbu6583cwnoa
+References: <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-0-5bbb567f8c99@gmail.com>
+ <20260602-ch-swap-series-plus-folio-lru-cleanup-v3-2-5bbb567f8c99@gmail.com>
+ <ah79c9IIuXt51ybs@casper.infradead.org> <aiAGrJsNm_uAf1qu@MiWiFi-R3L-srv>
+ <aiAXwQQz0MeGrD1x@lucifer> <CAJxJ_jhTAS3gbo5AoLPGCUSchUPTsUVzkNVprg9pfzqXFpPEaA@mail.gmail.com>
+ <aiBKx7t7XRBWJLm_@casper.infradead.org>
+In-Reply-To: <aiBKx7t7XRBWJLm_@casper.infradead.org>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Thu, 4 Jun 2026 10:35:48 +0800
+X-Gm-Features: AVHnY4IHjvRwGyyBKk4_oB_lVa0SOk6XAU0xbOvdFDBcfTAADNNwXEM5Z_e59K0
+Message-ID: <CAJxJ_jhXcNQ2bCrt7JEjCLQ4Ah8YQ8_Y3pCWaZtMKzGw7nGJeg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] mm: move folio LRU code out of swap
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Tal Zussman <tz2294@columbia.edu>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C41FC100004
 X-Rspam-User: 
-X-HE-Tag: 1780539122-723543
-X-HE-Meta: U2FsdGVkX18tmz5n8kI196bH150JCYfEwYYzAfmjrZHG5YLg+hRh5tCZOnvoMaZ0RpoQ78h2/LQaVXYFCVXHSyUBXZZnEk80ZJgq2GbeMJzd3dQVoeqE2CUYoCI/O+2YgotX775MwVRfGGc3GDz/Vc6VqCeaDDbxsst768fQUWzYdU34U3Yu7S833H3jjjsvbFyXetBY8lCQrnRMD3IJLLXqf7ZJyycgSCMNuCCv13bvnm6+RR3mAGmiJCfN8rm90B4udKqb37KlJBE9bCBMsJq9GdYEnqcfAQ3/jPngUqERoRQ/vsI2Mpt+1laLGon2iMy/+m/m2GEFXiQojMi2FmyQjxX6NMjoDiknEKcOfy/S/KBPaKuPazI0KrObrVra/G9J2VARlmGiuyQ0OBTgWi2hK99B9X+8Oti4ItWz9NonQShdOiCPG3nz0QQAnOR1X3PZnH9NcdBWOCzPvu9wKHXiAi84kSD7fls9vrT8qavOYh+7Wfk1NyMKIwuWb99cQ0aoicmeUwc0E8IJ24f0avQpN02q5B0PaUoBn3eWpx4fZLQ65UMroATzNL2QG0xW83K+wzoUgv7CLgfwiRdeAOw8cW4apDdGDYZvqsYbecfhpI/hgrzqP63GVHNkQtfsYhzJ/J9rR31R8HAaSEX+WdLWuq9WSzIXu4Oni0BVPEkskuzgLodC1RxVYvjM2Kigwu0Pyi/TQoQDBeIfD2Nb8fhRU5lXj/Dw9ebqNb5NfMWMeAsBJLJG3z7LjnDIB0YqFCJreFiV3lMr+2R504cwMamgDjJlQVHntxfNZ5ljzE9aW2lrIDGaO3ZNSu4SSy+GZoOCMt6+o2WYTMLBf6B8yINYwMgctDJNTmlxi2B7D+aytYFQwRMk/KE9rWIcDBSkFsygoZPU4/VSlOZYgf/PD/NPjTMW2jmu+dV0SM1M70ufWLvRVDWaHfQfjasJXxkLH5VtwVEY4H/wZwIZVbs
- C4Ea+vEC
- kf3p9sD8QiWIZaYkU1phbT5F2JGGHkxqcVsMf0T0sVNl2ggxI/HLNOl07es+2MWpapFmSFGScuV6dcwGTBNrDahOaSCkwVvyREeyaCyi5bdW6/j3iXgb+fkSHByUtUNIGBaA2cB6XeRwq2r9cBJE6tAozVrFZVaIkc98QohC/DOfwC2YJkBsV5Uryfub7d8HKX+DrI9CeUdss1V8HRJ1cR/xreAJ/7MEkMciw1h4PZ1f9LK5XCXBJMZM0U/HPl3OFxjW38VHcsuoUz8yFRDAGsU8NRcqk67+oSj/i0rzP6jIOvuuy7G7y/BohXTcBmGA6XMhKtbNCn9XcvnoO80wt7u7fr7nyk8pd5ca3itq82Y6LSOfPE1R7/Gu+GgCVvP6Fvw4zqBgYxdBWhGWdJ+sUghmAuq+wsFr1IsmL22pOCG7rzoHLaGj840I+03fI/ZGAGe8ktgtLzyd78WwOhak1SjkmWne6KsK2pDAsKn4TefNUPB2NCdFakD6llG+enbNyKB7HWO8ycku4f1NcqglmGdqvBE47BHHG+DV0RpixAgEts+paEQwnXKmIpswI3cdwWooQ
+X-Stat-Signature: 69zspz9ooy1cozh9pgkk9rs8m7wms9bb
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780540563-157795
+X-HE-Meta: U2FsdGVkX18jvSW3+m27rh1Z6Ka0muelFT38ARDi79TmONNvq+iDCK7h0j/HMYzYh52oBi2cVt0k5ivJCs37fjkrboKgPNnzN3Ylm9eUp7nh/n4s2hIVSysAkcmC9OnJrJrvnIZQFB0YeKIEapURFfUw0cZjGwwgGL/OlnkOHwAeDuNmpsCGhy+jU+efqzS+XNFR53a/lSrbJ2BbCH/LAYa8KWWXdT5q50Z+oDMtQhexYfm/QGSVv5KCfrsDGOT5+OLdr2z2WtvU2NyGC/A9ZshVhBmS3z40FeRJIkmvYnETsbPIb/V4i5sx9yetWVOFEqAAlBfHuiVoxFOx22RCbYNKM3TrEFlsU1G4jJLLYMfU88qwpfmZ/tBA7RTcGeAcnz7DWCYohCRI0i8kHKKY+iZX+Jw+Af0O3ST0Eb632FmE6qyxf5BLShDnd4biigLRuAaO8HNg00uBGS3SVTwtfRWo0xOM6TQq+uDX5erPNvLZ6JPq2hklSFoUn6jj9CxNFMi0quZiNi1duijHozQN81ro3TPE+PQ238Y+R+M8qEzcG1MMhz+PtRAQaDUtM67vR32IopHVBJ8AnCcKl+hAkqStsgDD9zI83g/RBAeXl2ruZa1FHLSW4LjOutNtP7CwUE7SUVoamrPPoOrvwIwvbbwoL3661KhVd5m9rrZx431RocO4n6lIPlNWgd2jgbyveSVGkdgW36V3YBjrrtyDXbLhlRb56IuRvYbVAPSnyf7t5iJl/8D5HweGn/XwoqS134EpjEwCA+k3yasMNEVb+H5m+0PybE1c9HhJUntOE1BwYA8nYKJYLv90X8zeiX16TTxDcF/g7H+DpQ1LOXyIdbVOwfiEvetbzhYLzyJOBJ/W3m4FhWhiPUsbwq6VpfYBWc1XUkBvXVquvyrBPKnYM2k6MRXragkLp7Wx9vY1vpZbakHtmkY3CBb9SYXesvFc64NEVr2cAEWE/RdcM8t
+ LSd2bNcE
+ O0M5xtzZOutfKmm5CsxcPlq2PAet9VCXm2YaH6VWNmdyuINNaJQL8WAzUUIGQQSxkpAUSZFyrYSJHd8ube5x6xnxg2an1jDn4euQ1mRjvvcfc0Jz/8SnoeUVcV3hoXmraBWTYn+NZHNCmpdCy+paSpnYaXu7n1TYEhXMReIowCvClH4rrUnGsoBMBcG/AnCBAHX/sB/tbPVOCFKf+8FwF91RaRe8wti57xbKEm7yLyCj+4hYO9L44+FTw7dHTKxo9A6tISHALwWoThwgQIAZcYE03e1zI7wAvrp5EyQnQLvXNve4Yw2I4hJU8ZIKFeXqIcb/6iU40Ki1qD3O56qeBOZEDX9SVaz1wTXg8KT9a7Rx6xBpmNIVFrOYPr+uILiWJDzgGMo3lV9+Yqa61Fc7Nom1U9QjdLF3AugswjthCpw4qUbbipbNlDEBIV4brLE2r4OXEvLai7UN3iABZ8p5wF4t6szBhtiGJBwHQLey2g8/EwFI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,87 +153,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jun 3, 2026 at 11:40=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
+> wrote:
+>
+> What's the hurry to post a v3?  It's not going in this merge window.
+> I don't mean that you should also pull in Tal's patch series, merely
+> that your series renames swap.c to folio.c (and we give serious thought
+> to whether we create a folio.h, or leave folio functions spread over
+> mm.h and swap.h)
+>
+> Then Tal comes along afterwards and moves the folio locking functions
+> into your folio.c.
+Thanks Matthew,
 
+Yes, a bit rushed previously:) Actually not aiming for the merge window, ju=
+st
+because I want to update some of the code comments and commit logs.
 
-On 2026/6/4 02:14, Nhat Pham wrote:
-> On Wed, Jun 3, 2026 at 10:58 AM Yosry Ahmed <yosry@kernel.org> wrote:
->>
->> On Wed, Jun 03, 2026 at 07:22:36PM +0800, Hao Jia wrote:
->>>
->>>
->>> On 2026/5/30 09:40, Yosry Ahmed wrote:
->>>> On Fri, May 29, 2026 at 12:58:09PM -0700, Nhat Pham wrote:
->>>>> On Tue, May 26, 2026 at 4:46 AM Hao Jia <jiahao.kernel@gmail.com> wrote:
->>>>>>
->>>>>> From: Hao Jia <jiahao1@lixiang.com>
->>>>>>
->>>>>> Zswap currently writes back pages to backing swap reactively, triggered
->>>>>> either by the shrinker or when the pool reaches its size limit. There is
->>>>>> no mechanism to control the amount of writeback for a specific memory
->>>>>> cgroup. However, users may want to proactively write back zswap pages,
->>>>>> e.g., to free up memory for other applications or to prepare for
->>>>>> memory-intensive workloads.
->>>>>>
->>>>>> Introduce a "zswap_writeback_only" key to the memory.reclaim cgroup
->>>>>> interface. When specified, this key bypasses standard memory reclaim
->>>>>> and exclusively performs proactive zswap writeback up to the requested
->>>>>> budget. If omitted, the default reclaim behavior remains unchanged.
->>>>>>
->>>>>> Example usage:
->>>>>>     # Write back 100MB of pages from zswap to the backing swap
->>>>>>     echo "100M zswap_writeback_only" > memory.reclaim
->>>>>
->>>>> Hmmm, so this 100MB is the pre-compression size? i.e if this 100 MB
->>>>> compresses to 25 MB, then you're only freeing 25 MB?
->>>>>
->>>>> I'm ok-ish with this, but can you document it?
->>>>
->>>> That's a good point. I think pre-compressed size doesn't make sense to
->>>> be honest. We should care about how much memory we are actually trying
->>>> to save by doing writeback here.
->>>>
->>>> The pre-compressed size is only useful in determining the blast radius,
->>>> how many actual pages are going to have slower page faults now. But
->>>> then, I don't think there's a reasonable way for userspace to decide
->>>> that.
->>>>
->>>> I understand passing in the compressed size is tricky because we need to
->>>> keep track of the size of the compressed pages we end up writing back,
->>>> but it should be doable.
->>>
->>> Agreed. Using pre-compressed size is probably easier to implement. IIRC,
->>> interfaces like ZRAM writeback_limit are also calculated using the
->>> pre-compressed size.
->>>
->>> I'll clarify this in the documentation in the next version.
->>>
->>>>
->>>> If we really want pre-compressed size here, then yes we need to make it
->>>> very clear, and I vote that we use a separate interface in this case
->>>> because memory.reclaim having different meanings for the amount of
->>>> memory written to it is extremely counter-intuitive.
->>>>
->>> Agree. This would indeed break the semantics of memory.reclaim. I will use a
->>> separate interface for proactive writeback in the next version.
->>
->> But doesn't it make more sense to specify the compressed size, which is
->> ultimately the amount of memory you actually want to reclaim.
->>
-> 
-> I personally prefer compressed size to pre-compressed size. That's
-> kinda what user cares about, no?
-> 
-> One thing we can do is let users prescribe a compressed size, but
-> internally, we can multiply that by the average compression ratio.
-> That gives us a guesstimate of how many pages we need to reclaim, and
-> you can follow the rest of your implementation as is (perhaps with
-> short-circuit when we reach the goal with fewer pages reclaimed).
+I=E2=80=99ll wait for consensus on the folio.c/.h discussion and update the=
+ naming once
+that settles.
 
-Got it. I will change it to use the compressed size in the next version.
-
-Yosry, Nhat, should we continue using the zswap_writeback_only key to 
-trigger proactive writeback?
-
-Thanks,
-Hao
+Best regards,
+Jianyue
 
