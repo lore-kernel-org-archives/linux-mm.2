@@ -4,107 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49B98CD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 06:15:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3CFDCD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 06:18:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 724196B0005; Thu,  4 Jun 2026 02:15:12 -0400 (EDT)
+	id 442996B0005; Thu,  4 Jun 2026 02:18:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D4E36B0088; Thu,  4 Jun 2026 02:15:12 -0400 (EDT)
+	id 41A136B0088; Thu,  4 Jun 2026 02:18:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EAC86B008A; Thu,  4 Jun 2026 02:15:12 -0400 (EDT)
+	id 3574C6B008A; Thu,  4 Jun 2026 02:18:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DB4A6B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:15:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E9AC71405DD
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 06:15:11 +0000 (UTC)
-X-FDA: 84841217622.21.C6BA6E7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 50D5D1C0002
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 06:15:10 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YZdzENTk;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 281956B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:18:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D49F58E6E9
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 06:18:13 +0000 (UTC)
+X-FDA: 84841225266.26.8629410
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C8C6B160002
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 06:18:11 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MbFhU2LC;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780553710;
+	s=arc-20220608; t=1780553892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=maKYg38a30VxIX8QCcSBujTuAdCuRyvh3rWBPMbaTa8=;
-	b=Dk4Iqonle24Ep3DnDJPDa3T0ki6GJ0LOnfdU/zHGrqdN5UuNDM9D20L7rT+tvAZzvgzQx5
-	KxmuIk7BH8fhF0vJkgHcMQ+xlF2oD+11lPJeXS/AXzBKV5sWQaU9adTzU6L64R4KIh7ukc
-	Cr1JF7N8l1UqlbHXvCm+J6izYB7BeBs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=uhNb1e5oAaAySIL2wfE6fLLmLDDye9t6TqH0x1C5HS0=;
+	b=nQPR6tmoXi0IKORxdNfah2oZ/OitMG2NZcQCcQAWTcYK1w209/WPlj+7xjIcUwB/5Rw4Eq
+	iaS6Y8T/8yCab0/ckSFjSNVY0X4j6/IrAUu+K91VYTik8SUS+NLWCjZtes1ceBLOT7jZJg
+	cqL2+RnToxB5Bhpa9AciBljCk3cqpJM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YZdzENTk;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MbFhU2LC;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780553710;
-	b=vjfRUQ8TwxYEjOMTNyW28a7L5Ppsi6Kp8DilpE4r2Svzmu3wwda7sayH8ZyRbvLk1rXIy8
-	gr82nEgnCjhQvfoN9MrJUgKU4nRbg7xMLNB5h1Ma2XSX3ITJGlBmXFSD8b4AeF5VC7itzB
-	1oHZOSdsv27UXzlqOFW2v20NgAcdne8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 69B134398B;
-	Thu,  4 Jun 2026 06:15:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6611F00893;
-	Thu,  4 Jun 2026 06:15:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780553709;
-	bh=maKYg38a30VxIX8QCcSBujTuAdCuRyvh3rWBPMbaTa8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YZdzENTkOazs5XSTumSTfKjNe97Bx1gIjbWPEe0rEOYizlJ+PG3Skn0hS26Ux74Jl
-	 AXCvUF5ahoFRq9So4PlOjS3IWyCIq5NTGNUoudm5MMRDdJhNBKN1LdgBDErw0LtVFd
-	 jzKhcofKN8uPI1V71amXjFQlau+IKLTXzAiqIsn/g+sTxSoMC/LouWT+HEHb+idjuI
-	 8F/5ZnoIZWEz4pT/Oim/JLh5w98h2ycR5nXmcdy58o4NERbYl1r+Hpa7rpblTquRvP
-	 owmPxKztmOlhAuoaO/iNyxsWnpCrb8pm0xA6MdS2Qr/cnlFMvHA1Yq1Qntrgg1OIwG
-	 JJVS4xnu2W56g==
-Date: Thu, 4 Jun 2026 09:14:57 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Theodore Tso <tytso@mit.edu>
-Cc: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Breno Leitao <leitao@debian.org>, Kees Cook <kees@kernel.org>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, linux-nilfs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
-	linux-ext4@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 10/17] jbd2: replace __get_free_pages() with kmalloc()
-Message-ID: <aiEX4UTxEnBTjVKo@kernel.org>
-References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
- <20260523-b4-fs-v1-10-275e36a83f0e@kernel.org>
- <yfzx3jgzwesernofl7mzixa2mhjfii5v3o7yapghtmozixrpfu@6bsh7iixyiov>
+	t=1780553892;
+	b=oNsMgpJwtPoIyIMQcTnrjIrGXsnIABawDniSKZzoq5rIawDn6r7GRq5HYIiVo0UCAE8Keg
+	paK1OCG/iTJo7OJQiJyszaWvCjtv8FaA1RyAEZ7ohr+gGamhaXM3j+kH0Efm0LsaEV9To9
+	VEUPnGCTJ82oU8PA/HMc/V2IzxRo68s=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780553886;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=uhNb1e5oAaAySIL2wfE6fLLmLDDye9t6TqH0x1C5HS0=;
+	b=MbFhU2LCuUY+aSj/13pvSUxdoBFZf2JPQ/rLfTIkJhA7bVQnwsZGbYfROKpc41BvSZWXaQ
+	SPbYbfspX/dw9CMZqrnaNbbkk1zL7vA4yzG2s88ko6WqEnyI0TnLLH9HTja6XmALJL+iZR
+	sukH8LwIbMOtrnFUAce9B+WLeZBlgqs=
+From: JP Kobryn <jp.kobryn@linux.dev>
+To: vbabka@kernel.org,
+	akpm@linux-foundation.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com
+Cc: shakeel.butt@linux.dev,
+	usama.arif@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/compaction: cap compact_gap() at COMPACT_CLUSTER_MAX
+Date: Wed,  3 Jun 2026 23:17:25 -0700
+Message-ID: <20260604061725.13800-1-jp.kobryn@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yfzx3jgzwesernofl7mzixa2mhjfii5v3o7yapghtmozixrpfu@6bsh7iixyiov>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 50D5D1C0002
-X-Stat-Signature: tt3wci7jambywubbect7gesbarhckx1b
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780553710-421568
-X-HE-Meta: U2FsdGVkX1+PDKNzAV9iR01uTPLgfuTpkJhoUsoylVL2oGoncybLBdwj/KMmguRT9ch063OSsL7zwWMqFBzYMBFxhzEZ+6Fo6XpKM7q6lRCbg8mCi+fgA+hXMSxG73sXDQuSIB9Sf+K+UNegSEhvB95d0NBuTt6UQSNoSgrn3P6GYm7l8icNCueRdo7N1sqMHqeNENW5NY+8V5X65dcc6yNIBiUc3a1NVf14Q6cpltBXTEF8tloTV07Y4vReAtRNex/PWSABncWEBuZgtXZUk2Lv7+dpSQrSwR8Byuh+Vc4k4ZjitAqgSy8w9vKGHBLx24SCjS9sF8ve5SxBe7PWM56GT3dvWwn1WvVPBuHir3HE9yvUoAO8gEoUyAOLSa6jm8P4AwEE5GwfPZHKM1X2ppUvMk/XTZiLqYk/G5JiNbULSnCnh3SnTM27xhlzwx5GMC16excHiGhta/KNV8wQ8qjB97e1cQpOyG9jQMduCMcIBb2tEZCj+Ab67PjLpgr7Cz4xXI2HDam044KRUWFt51faYVw871yPvp+XZvGqR2F4ZrL6opaxCqHbUC8I4lGtwbFy/IQDRRQe4diCcQXUaL+8rHCOig78BtDwVhipLGrhZe58H5pT9OULm4YU+uHtEWo5xwIDWkEWbNcXiibalXb6R4Loym9tSMIYL8MqhaTjwXR3PhdmCeuM7KJ+jKTZKhASywmc1iPQRJQsUuegR/eoHkZqCudhPNBWwwS/hrovKmD+n/pU/ZJfLVceUfg47yD1saEW7dc9xZ0Jbw/pU/Nn83UhYffszuR8jTOyQvhyp4lO85qfe96S2v6H9iGp8XbFTWDwLj4ph/GcdOjcF4iZPneRVgs3V+Ji99NJNQUx/URNE5z6AW5OQxGnEs9tq/YZxkKvjCh4TUKQR39aU83ZRmigYn0Nz796XAULCdeGQi706Aw2utM+BCq9zxBeikIKhV2aQwrprVZjLE7
- Jg8vdcfw
- GIzPuo0aO1WjLqGuauwHes1hueicjciYlGobq/ds/5kNWtkVhsgYHIu1lhnfPLWZzKSpNoub2YnBqjRn1xUamig5s3IGCesCb8YpvA+uifxf396tFTEKGE8WWP8v9mlFVnEjw64kyflNflLx/O7YxHa5vVxMW6T0BLHDKeht9Ty4ZomOBmhvdRhiQp6hxLJ+umbaCIvb8x/xIrfQwp9fzTfAmLWYZNY6ox0dkGRr8sCpir1KY66t/RKlBsL2j9+iVhPZCUsQIi2VFvXtsBZpJayqQGF5474uutSegwy55jypB8wbVfaFK2QyGgpxqIhfKBfovH+S/l7s6MQaCuFOQWtVgf/sHyfTVftTNx+uGDIk/NEk2/KdRXXQEWCFqaiIZ+2rMEOevEXo4I4R7uziX74RkBw==
+X-Stat-Signature: 643359jjkutdd3qraxpt3rs734yjhe5q
+X-Rspamd-Queue-Id: C8C6B160002
+X-HE-Tag: 1780553891-738705
+X-HE-Meta: U2FsdGVkX1/IVL0YB/VP9iErgdYq7+a+AIX6DZQqq33SoKmwPZ0UFzonzIQgMcqcC/w8gOup7ddG+QF8sM0BbXsqKeSq2pHXIEHxcAaawnJnyasrxp7uB0Bnsj+skn6kcASqQ4SciysleUFzZ4yZUqnbGjCc2FU6MxxJ09SwOOGQL8mwYDj0YUxITMhhQpUhEONtigtbhHn1o3tVwMg+50DmNUIUV6MKIDHfqvlACe8wPkY9x2Uz6ixqfLha2oETcH6DuMQ+w9KSZe7HHGwZjXp9SqPUhhMeQvax+DKuXeId3Yk6e2k3HW/Qdirle+UvVTd0YQ9ILaa+IP4FtYejo6PgF7BHbt1zOBqs4ZRI9nMT7dPYJWFHDFXikSh2HUZQFAyLi6NN5iffDamcJRXUB+bhcITnP1mnrPGsTii7ZvsVIcRtSc4BCQEg+dOrY4DHcbfTE2QraG3K7CiqL5fViWS4WV38LqY454BOPVYHgIW7aaunFbv0ZyfNc8TmcqY2hVmTwTdFbf9d6iuYJ92pytKO5IxE9K2w74JLzt1p2JrjL7+e21KNUYT8177h28atEu4xgThuo1z+ue2K1ARp5smX+7JlxlgDNA66/RQB3TlSqWMZk74ygeSA9aDvkLhouWq91bcHc4KOe67sHkbhYnqt8DH7IntpYpFfcTOc3xrWeteN8WR/i92DZwPUcJSz9Vy6gjCz4Q6QYfvyPDhfilZpfgUsC40Ty1Qvar91OJqKIfwPk3xmDbZZ9tunRF9sjoxM8eG6NOrVnQ9RJw4WnFZvC7Q4Q2LeR7gquaO2pcGJO+Hss/ImzP2EMH7x+ndJaexuSSVyw44NFpiMuRRYnRiOZ43hyTiznwSLTFTl3dnayVs+fgblGFu+yV7flgV27a6fZHqmDV4Im4AJqdvhYfGBdytimuhaLmH/RjzKep1tSoXaMhaD2tYbl6arxS6EEk6AeXgV8MoI9tZ9R+F
+ lNOSOAAU
+ mWm8/N2dk1OdIGwYBTolhAkkiVjucu2yT/ZoGJYmX1mD1vZL/yD60VRcL+Z3vTY2KQ5J9vUkFRAQKc66/VHMgvhGAPi6RX7sPGmKTfyeMyjRUPYxgsBf/E1IiHZZ/3LxcZ0U+glfbGDlo4NAtZ5w/1pO6DqM/C9kLAhz8/jdTYW1ZbgdsSryb3pjSxCydaiktSphphTJ94nO4oLFcVO+O8FQAeKsB7QYsbWd9F23/G9UFGhViCXTDWRiOdp+B6S5U+YlULCOq30dearDQYEqzcPECrNbOBSA2KrI9A255DojB0hongm3WNIaJuZHKP9M1Vw1MMv+udMgHeHoNouWYc5jZD630bEPRxw2lx/7Jk86hvDYFCH9bwk4E4iGwdL0iu7QRHNQNEru5G6R460l+Rj6I+2SULquS5SrWb/m81Q2YV2WlI2mDnFI9jA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,57 +91,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ted,
+From: "JP Kobryn" <jp.kobryn@linux.dev>
 
-On Wed, Jun 03, 2026 at 09:50:15AM -0400, Theodore Tso wrote:
-> On Sat, May 23, 2026 at 08:54:22PM +0300, Mike Rapoport (Microsoft) wrote:
-> > jbd2_alloc() falls back from kmem_cache_alloc() to __get_free_pages() for
-> > allocations larger than PAGE_SIZE.
-> > But kmalloc() can handle such cases with essentially the same fallback.
-> > 
-> > Replace use of __get_free_pages() with kmalloc() and simplify
-> > jbd2_free() as both kmem_cache_alloc() and kmalloc() allocations can be
-> > freed with kfree().
-> > 
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> So historically __get_free_pages() was more efficient than kmalloc
-> since previously the kmalloc overhead meant that a single 4k
-> allocation would take two pages instead of one.  I'm guessing that has
-> since changed?
+compact_gap() returns 2 << order, which is used as watermark headroom in
+__compaction_suitable() and as a threshold in kswapd reclaim decisions.
+The computed value scales exponentially by order.  For order-9 THP
+allocations this evaluates to 1024 pages, but the compaction free scanner's
+working set is bounded by COMPACT_CLUSTER_MAX (32 pages).  The scanner
+stops isolating free pages once it matches the migration batch.  The
+current gap over-reserves by 32x.
 
-Today there's no memory overhead for kmalloc(PAGE_SIZE). Cache refill takes
-more pages of course, but they will be handed over to the next
-kmalloc(PAGE_SIZE).
+On fragmented production hosts, kswapd will try to reclaim up to the gap,
+but it only reaches that threshold in 18% of attempts.  As a result,
+reclaim continues in the majority of cases despite many lower-order free
+pages being available.  The over-sized gap also causes 46% of order-9
+compaction suitability checks to fail unnecessarily: the zone has
+sufficient free pages for the scanner to operate, but not enough to clear
+the inflated threshold.
+
+Cap compact_gap() at COMPACT_CLUSTER_MAX so the watermark headroom reflects
+the scanner's actual capacity.  This function is used by two key
+heuristics.  The first is when kswapd can stop high-order reclaim and
+downgrade to order-0 balancing, allowing kcompactd to be woken for the
+original higher allocation order.  The second is zone suitability checking,
+where the smaller gap allows compaction to start sooner.
+
+Note that orders 0-4 are unaffected since their gap is already less than or
+equal to COMPACT_CLUSTER_MAX.
+
+A/B test on v6.13-based instagram production hosts (64GB, 60s measurement):
+
+Unpatched (43 hosts)
+pgscan_kswapd (mean/host): ~1.6M
+reclaim efficiency (steal/scan): 83.8%
+per-compaction success (success/stall): 2.1%
+THP success (alloc/alloc+fallback): 4.9%
+forced lru_add_drain (mean/host): ~107K
+
+Patched (59 hosts)
+pgscan_kswapd (mean/host): ~449K
+reclaim efficiency (steal/scan): 91.0%
+per-compaction success (success/stall): 28.3%
+THP success (alloc/alloc+fallback): 17.2%
+forced lru_add_drain (mean/host): ~64K
+
+Additional tests were also performed using a workload of similar shape and
+based on mm-new at the time of testing.  Across three 60s runs, the patch
+showed improvements consistent with the previous test: reduced kswapd
+reclaim and fewer THP fault fallbacks.
+
+Unpatched
+kswapd_shrink_node downgrade to order-0 (mean): 0
+thp_fault_fallback (mean): 1217
+pgscan_kswapd (mean): 6328
+pgsteal_kswapd (mean): 5657
+
+Patched
+kswapd_shrink_node downgrade to order-0 (mean): 28
+thp_fault_fallback (mean): 738
+pgscan_kswapd (mean): 3773
+pgsteal_kswapd (mean): 3243
+
+Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+---
+v2:
+  - reword changelog and add mm-new validation data
+  - update comment in kswapd_shrink_node to reflect the gap change
+  - no functional changes
+
+v1: https://lore.kernel.org/linux-mm/20260519200851.141955-1-jp.kobryn@linux.dev/
+
+ include/linux/compaction.h | 8 ++++----
+ mm/vmscan.c                | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+index c829c48d1c71..f29ef0653546 100644
+--- a/include/linux/compaction.h
++++ b/include/linux/compaction.h
+@@ -2,6 +2,8 @@
+ #ifndef _LINUX_COMPACTION_H
+ #define _LINUX_COMPACTION_H
  
-> Can you explain to someone who hasn't been tracking the changes in
-> kmalloc over time:
-> 
->   * How does the efficiency of kmalloc compare to __get_free_page when
->     order == 1?  What is the overhead in terms of memory overhead?
->     I'm a bit less concerned about CPU overhead, but it would be good
->     to know that?
-
-There's no memory overhead when order == 1.
-As for the CPU overhead, the difference for the fast path allocations is
-not measurable and for the slow path it is anyway determined by the amount
-of reclaim involved rather than by what allocator is used.
++#include <linux/swap.h>
++
+ /*
+  * Determines how hard direct compaction should try to succeed.
+  * Lower value means higher priority, analogically to reclaim priority.
+@@ -73,11 +75,9 @@ static inline unsigned long compact_gap(unsigned int order)
+ 	 * effectively limited by COMPACT_CLUSTER_MAX, as that's the maximum
+ 	 * that the migrate scanner can have isolated on migrate list, and free
+ 	 * scanner is only invoked when the number of isolated free pages is
+-	 * lower than that. But it's not worth to complicate the formula here
+-	 * as a bigger gap for higher orders than strictly necessary can also
+-	 * improve chances of compaction success.
++	 * lower than that.
+ 	 */
+-	return 2UL << order;
++	return min(2UL << order, COMPACT_CLUSTER_MAX);
+ }
  
->   * What does kmalloc() do when a size > PAGE_SIZE is passed?  Will it
->     return contiguous memory, or return an error or worse, BUG?  And
->     same question as above; what is the overhead of kmalloc() when
->     size is 2*PAGE_SIZE?  8*PAGE_SIZE?
-
-For size >= PAGE_SIZE kmalloc() always returns contiguous page aligned
-memory.
-
-Larger allocations (> PAGE_SIZE * 2) go straight to the page allocator. 
-
-> Thanks,
-> 
-> 						- Ted
-
+ static inline int current_is_kcompactd(void)
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index e8a90911bf88..3f3ff25e561a 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7014,7 +7014,7 @@ static bool kswapd_shrink_node(pg_data_t *pgdat,
+ 
+ 	/*
+ 	 * Fragmentation may mean that the system cannot be rebalanced for
+-	 * high-order allocations. If twice the allocation size has been
++	 * high-order allocations. If at least the compaction gap has been
+ 	 * reclaimed then recheck watermarks only at order-0 to prevent
+ 	 * excessive reclaim. Assume that a process requested a high-order
+ 	 * can direct reclaim/compact.
 -- 
-Sincerely yours,
-Mike.
+2.54.0
+
 
