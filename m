@@ -4,137 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1C52CD6E75
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 23:53:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E2B0CD6E75
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 23:56:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA2DF6B008A; Thu,  4 Jun 2026 19:53:25 -0400 (EDT)
+	id BA7B16B0005; Thu,  4 Jun 2026 19:56:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B53096B008C; Thu,  4 Jun 2026 19:53:25 -0400 (EDT)
+	id B58B16B0088; Thu,  4 Jun 2026 19:56:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1B866B0092; Thu,  4 Jun 2026 19:53:25 -0400 (EDT)
+	id A47276B008A; Thu,  4 Jun 2026 19:56:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DD246B008A
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 19:53:25 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4420A1C1218
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 23:53:25 +0000 (UTC)
-X-FDA: 84843884370.02.A9E5B03
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3CEF040009
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 23:53:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MIeYDlKN;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E3B06B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 19:56:38 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21E57A03B6
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 23:56:38 +0000 (UTC)
+X-FDA: 84843892476.11.42A5461
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 172E8C0008
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 23:56:35 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IapdqJVf;
+	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780617203;
+	s=arc-20220608; t=1780617396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1sayKnAkcvjh5O6e9c0QpImq/vePww6nkOl9CjIY9+Y=;
-	b=gDeSrkFd3Jwrb06QemiN1beyMVcu/JfjCvb0uaLl42ed5jonj1k9TPx353uR7V065HS4t1
-	IpDOxRAtb+llkC0ziDnXl6VIVm0NzAWKurb6c1L3HLoT3UpSmP195sd6GszVjzxJEtIPfp
-	yw0KDoHSFToWuEdFjhcRvUpUaxOyjTc=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MIeYDlKN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+	bh=tTbBsUwHHm3SfLBan5a6Nuc5JlHgCbloUDANxbT9zzE=;
+	b=7qV3p81zwRuwP+oz9+Q7GlK0/PLGApkZ5ECp9j0dEON14IELcsiNMLDndoqHaykF/XOJ2+
+	LokGNyWUHkjSQTn6XU82p2iIef0nLsnB3Z74kFerUcDKePPuQN/EoxaZYW0wkbLeVrrU19
+	y5+W6vBzh6NOfj9dWJ84vAH7kqtgTi0=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780617203;
-	b=JD255jjJ1JrwJDczbhuZEx6qDsYYwAQl3YSugPTODP3NAeONt+ddADcI+mQFt46ku/4R/+
-	jL7oRebS0uDFfkhiXFo2MMGXNc/xLD93IwjUb+U7i//qZITepz0s5xaYN4KW9BUwP//cKW
-	YoySUhNPhBOj6SrUKFmJW0uaZUDU10A=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2bf2d865383so30425ad.1
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 16:53:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780617202; cv=none;
+	t=1780617396;
+	b=JiRocGzui2oTLHvof5wqwqs1uZPzYbug+oaZWrNi3qDmCrW8zDLuNC9ys/RTDf1+ckwTRr
+	O2WYxvlxu4QRJnz/uDevjgIMRow7OufkQ1VDbxPHY5NH15FSJ/sn3x7TdjNS1sNKB4bcz3
+	BJgQv1PHjqbav6i1e41nPDZPtbX8DbM=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IapdqJVf;
+	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51765331535so131001cf.1
+        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 16:56:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780617395; cv=none;
         d=google.com; s=arc-20240605;
-        b=gP3/g/alh0zWeVFuhIPcjPjDxUtZmv/kBE0jp6iyVz/xup1c6yNy2vtin3xbsEDkbP
-         VjyLGf0iO6h9UPan0HlTv6uGUZ/nHwDqUrR+1HoEAwBNRC8Udw5ArI16NMScQVJqH/OX
-         c59nTvhXizqFNMiAhErc8JcDo4jVqHGh2rUus8lvK5gAagDeQBK6EBqyT/0tz1luiud4
-         pFgtqGI+a8AItzgwPM85cMooCYqeIhrpZdllWomC6kQlwLp4BjqytoJ9Y+3pnbsM+0u0
-         FX334/FLONksgrR7FnsBx490MvarjebC6pVzqrCnte65x+qGjdyWKB+7K/jHT8zsfTv+
-         zCYQ==
+        b=g/5L04E6yelVXJ+0F15sW3or6lzRbo6VJvjWsZZZTMhVYulBaY3R3BRc0BEM+btiPR
+         sJSa8rHzD8YkbSj+xpzraHd0NEDvv3C6NjJmoEvS+DaiMx9LOE2IY1wGQeu8N+n1+7s6
+         adjzUnsJJGjx1YPhFiWEcyQ+74dLL2fYt2i0JIz87CZMkhlpn/2omc79m7yuG9lCYuwg
+         BD+4uE/XMfmn+YSSRKKFgJgfZ6uNpuFfgwvyK56VFp3RxUGhpdtT75SJ9G5Nv4E+yK7D
+         0G9E70Gng2VzFvAnZFZ8j/yKX7ZmDnqw5o39BSLl6LjOkAvGBR2bg8GDBg3c8jOCH1IG
+         3DFQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=1sayKnAkcvjh5O6e9c0QpImq/vePww6nkOl9CjIY9+Y=;
-        fh=IS5dAkzaZa2A4We0NeVCuRxlHIXJnj3umssJQN90zWo=;
-        b=B1uZiPJvuRPw6QVMwLOhWVx74Yx3D5RLSTvghz9yoe8wJcd5jTxPU/oKusZZFbo/MR
-         23cc8pL1NUECg1KJxMD35v7OjGTI2AZq4mR89sO2/OaqwCpA6xlN8TorU4dziyixKybD
-         TkVM58FwA63DK+MAUDrLaVBBUY9mW7MvHkrm2INuAfIjnayHIi66HPWME5roVOOFl3c5
-         y7mfM0k2/5OJo5YDTsol/RobAsQbEwDUfPV70QftckxALLJaky5JmVofYi+7vRuu2PPj
-         kx4Un9fZVmnIjACzVJnE1I9gu1YgN7xUb2dJJpatkN5OKs8WLE7lGiFzpf7uR6Cs5j6L
-         E65Q==;
+        bh=tTbBsUwHHm3SfLBan5a6Nuc5JlHgCbloUDANxbT9zzE=;
+        fh=02EPAuqmdNmJuOoSMgoZZjJlZy/OHbXy61sAkLjcCK4=;
+        b=AAKhYTUcMtib1+G+mEsEZmAK1K7nl44zyWj3YilBYE8nlv5sY6CbxLgLhYSDSWnBkx
+         dr1gqS6/C7DCqxKl7wSa4EE5fQZAx+wPUf80fywvYmVnOZH+lv+/hy0pgqR8FQFC6aAr
+         Xbv9gZ1CvpH5oBR5OgxlusUXYdw00+I2RNGhKy1GIbP6jvLkUPKGD03vO0OvtpB8nehJ
+         ss1DuMBgDlKH61AKJbkthhjIsJT8ZyfObyXSMZrZDnMrkKVSJWcZm9XWVshrrc5iOY7b
+         U61iCca4MgdJqTp7yqc6abZRKajnnKMUQKi6XJTxBqbe7Sylgl8Coc7pMAN4aZyVLtag
+         VKbg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780617202; x=1781222002; darn=kvack.org;
+        d=google.com; s=20251104; t=1780617395; x=1781222195; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1sayKnAkcvjh5O6e9c0QpImq/vePww6nkOl9CjIY9+Y=;
-        b=MIeYDlKNSfMmlwjy6fw1P6b7zfC8iIhwk9ph1TtZOcgZly2ybTj9yzDB3g9LExqpCZ
-         qIL1ZpTu3/cGkgdJQl7KQ/qzAGJzR6T+WopTM9agvPGlnxj6I2b9mvNcIjTdFr/O6V4H
-         bv0zox2wwgSuEAYrFxvvFQkPniV32Ci2pwMADHUqfl5nbKx1gRuMNeoDSABaiNI0Giog
-         aw4jmFa5JSTXYD/wfBUY8o2FFQmmO0Ze5UVMItwe1ri2V3jSbAhP5AtUgh9kpqmftXQX
-         EovYjAzeayQpwYIjRn38vPV4gwDJa2X+XouwRh+SgFklcHFi7++xQAGM97iRy9VgoHdJ
-         l1yQ==
+        bh=tTbBsUwHHm3SfLBan5a6Nuc5JlHgCbloUDANxbT9zzE=;
+        b=IapdqJVf+EeI6rXfNRj41/RaZOCBFtDbaeXOpQPl7m0QSkIIQ7Tw4SKkru+UZk3ecq
+         4qPWaA68vVHIhmytTMFV6W6lkQr7J9NUjuhz1yNn3w57YmG49kh0To2+l3EAE9Qigds5
+         JLNI6ef74kEJ+HKowh4JxU3c3kApiaPJHz5pNaPgGMSEdvPD2z1eCQwjfTZMLiH/L+dR
+         NCrITK0KEsr+rk/9u8dJ8HFoi33ft9WVjX8PzkTE4jRDNPZ7WFo12k2tvAn1TR+SUYBq
+         1gnSZfstiBw75Z09QFYQNH2Zo4qIuWC0w82AOsUA/ze1/FhhvHamzllRkCAkCkpThK+T
+         MOjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780617202; x=1781222002;
+        d=1e100.net; s=20251104; t=1780617395; x=1781222195;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=1sayKnAkcvjh5O6e9c0QpImq/vePww6nkOl9CjIY9+Y=;
-        b=b/QIbEME7bmy5yhuhFuvjYc708F9krDyR+BXoCSbydvh04CjZRTgM+2ZfczzeXkMFl
-         tlAALHF/XeXpGc69PWPupCARdiK+GjtkH+ILZc8MynnzBnmjrzdGmoXJj1toSU8kf+Bh
-         lg6s9al6GGvCkU3XgyRyt+dBZGXJq4xIxhLeY6XxX97HiEdNpZtmgL7c+pY+YlDl5TyP
-         e3h+wQcU5LUPfCp3IbRYMM00MsPEUUdCkFUL9LtsI+9kB1pERVBtQLtwevgW+abAcWWI
-         Ch+1AA9Egn0Dr7Qrzz3sHjpgMYjsjflRNEqQlKAY19FNvGnFDVr0NIs6lC6Fw+yGW57k
-         s8XA==
-X-Forwarded-Encrypted: i=1; AFNElJ8pb+8Yct6Y+1cMF3lbhpGz4hwEleD1PJ+Dmx+KMOIkuRcejvHH462PsuKvpHnxF5K/EulHVKRlzw==@kvack.org
-X-Gm-Message-State: AOJu0Yy/Q/M6c1bv3w68yHlIKqdMXA/1ORaOvIhS7RL8DDoopqiUOijH
-	UEnVfCHwBK5abneeDtxvXAv91wVqe2pDvRglxapEqUXPkB7ju2FQ/rfhu4GcXFoBqwDFjE+7qs2
-	3ILv5qp/oKygxWTzW3MFHNX/FxyWeJwA0xY/E+1Xi
-X-Gm-Gg: Acq92OHcsX2WI2jjKjJnrxqKD7dNqkfmSUJKA88ZQbAgZmQAPppLqbMY8TZQMUDZWQq
-	zJy16oDROuEqe4MGlm+lebwVLgu4DHneFvWaYte+0zaa6wwKRuNbndVCfU8wyoTBiKr746OUjst
-	dO5gMdkqLnsC/eKDyZyRax2WdPdF0W/CdCj18iA1FqAZx9OIGENAc89zbwfs5A4B31pRqHZ+v1E
-	Uigd7hc3jGUhrSNfZbR+v+GiniEwBf7rL4uXCBiK/EK+I+tL11AnDOcth8dRz1F7OqOcaoOJCQV
-	MOvAz9aPGhy6ipVBdTzYDfx2vKd+R+a5a+UEWv8twc1fvoz/
-X-Received: by 2002:a17:903:3807:b0:2b7:b03d:9dce with SMTP id
- d9443c01a7336-2c1ebeb5fa8mr261515ad.18.1780617201343; Thu, 04 Jun 2026
- 16:53:21 -0700 (PDT)
+        bh=tTbBsUwHHm3SfLBan5a6Nuc5JlHgCbloUDANxbT9zzE=;
+        b=sxC3oe93W1S6O/v9dj2/6zP9HO8h6V3bo3+4LBRc0X/BbypFEyRjiXJ87AoBc9t9TV
+         WBG1KNcikK8WkMwZTXAqQ2wtQiMY3QIg90UTBYxgdCwGT2LA3/ruNaJgj0ZMJB72sEUE
+         6v3EQLKmuZc3/2rGqcxFgPlgLGoLvEQYwLmkdROy+yImQI/2tGJyHday0vD2Mw578sEC
+         5e97hQ7v59g5Lx4ujN9p467qfi8/hAmNbPK/Mo39kUdtnFl0RoEGg4U7My8W2fWL0H2H
+         wGej7VKwdqmesv+uKM7ealGCil3yLqT97nX6VUHDfnAyAXGcbmH2O/EniLwRlhWDx75t
+         U3cg==
+X-Forwarded-Encrypted: i=1; AFNElJ+TWCRr/fSe1Oc+6Z+4SyHDAgSzIPzrvh0MxeXg3y+natj/tPdKFDcUjQMsq9/A969i0PfOZctdZg==@kvack.org
+X-Gm-Message-State: AOJu0YzDgUr+KOFdfHWZPtMUd6zVdFfCinaiaMActhpR2i25KLy95wwR
+	HjVJ5BXaWWEIy5bZyQVAPHcOWthhD36y6yQ5asJaQmOHlNaLgtxawNVBAV+0UbPBB402jqFlmkS
+	SspMs+aozO3EKkm/gYZleRg66YlBiButGzhGYvu/S
+X-Gm-Gg: Acq92OH2hTQUXvZFCUBJHHswnMHkslPjGNXBi9K5Ix+nTEVpoI9d1YE9NMkwdbLc9YB
+	cwQrj/ta8BiHBL0ooJgIAisaUKD9W74Bb3KD0Hvbq2WT6vOF4Nv/5Hrirpl4RMxBmmdJ1AVe+0W
+	nio6/WRemHv8nW9sIwu++7jiHCrK4BR4OZV9M6JC9MptjYdcHIYfEXMtz5iwTT6c7hBjgPE3w/c
+	/Hf8kz8Az7f0BpM+PbepYj52OyobJDwB2yXtMFCIooCQxzYQGzGtbvSMhK1GKL+Q3UgKqnzVyjT
+	E1dCOcsSlHPJaCV3
+X-Received: by 2002:a05:622a:a10:b0:517:6010:7c71 with SMTP id
+ d75a77b69052e-51797ffdbd5mr1473801cf.4.1780617394531; Thu, 04 Jun 2026
+ 16:56:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1779471082.git.abhishekbapat@google.com>
- <f177efebdfda5c2a179d7cd6768e0c6f37efb9c4.1779471082.git.abhishekbapat@google.com>
- <aba73999-dc29-45c1-b6cd-54a7c1b824fa@linux.dev>
-In-Reply-To: <aba73999-dc29-45c1-b6cd-54a7c1b824fa@linux.dev>
-From: Abhishek Bapat <abhishekbapat@google.com>
-Date: Thu, 4 Jun 2026 16:53:10 -0700
-X-Gm-Features: AVHnY4KyqsDiHrH7JcfoQPZjpkORjY20gfnuwslf8qqI9Nu431iLe4LIAgxAv_o
-Message-ID: <CAL41Mv4fkK-t55GuDNTe9fie9nUBfY_Ap3CpgT1XDpn8sSU0qg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] alloc_tag: add ioctl filters to /proc/allocinfo
+References: <20260604024008.46592-1-hao.ge@linux.dev> <77d12ac6-0a0c-4d1e-8fed-ac59b519fe28@linux.dev>
+In-Reply-To: <77d12ac6-0a0c-4d1e-8fed-ac59b519fe28@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 4 Jun 2026 16:56:23 -0700
+X-Gm-Features: AVVi8CedoBvarsPN8O1nAQn60jm_ZqXLYYumTl-EwDmlsfPM-d_7cOfCQprypS8
+Message-ID: <CAJuCfpHjf6wpgwpHWf2gOy2Q06EWUo278817_hzLyxzMeFrS+w@mail.gmail.com>
+Subject: Re: [PATCH v6] mm/alloc_tag: replace fixed-size early PFN array with
+ dynamic linked list
 To: Hao Ge <hao.ge@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, 
+	Linux Memory Management List <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 172E8C0008
 X-Rspam-User: 
-X-Stat-Signature: rfbwe4kuz8wapr5qizepn8fi3e8hpybi
-X-Rspamd-Queue-Id: 3CEF040009
-X-HE-Tag: 1780617203-551850
-X-HE-Meta: U2FsdGVkX1/vx7CojW3y4apbI/94X6Dks0MeQGfLjlolV8lA0yi8pMQlt9JvXuAeRK8+4RkZKrcFlZnLbM4ujCk8BjlpzZ/Sk0ACswUtitKTaoL/FMN6C0g/lVdiSNrjVF3ZZ5hdG2LH/aaB3VxLjpW3RDwiyt86pHbxP0ahMffSCA9urUBPRLbSsVPy/kvX9cVJqUHtFED0tjCkuh+3ThRZlSWHw24PiaUK0ENb2HgvFoTGPsgczh926wmZvVmMS5NMl0vYOQ2nednbMKyjgyugHJ4ItfRfpHN4xYVVGKZ4RciO9oIDuAvsTwwYgG6Yxy6VFAg0yOWSa9vtFbGOf9h5mnqbo8ygTH4E7HayEpUr+jsyq7YcraM2EYSoaDzKpD74NsVNnvGlKH0rstyfnzKkldNDAThMpzw9QdqCapnCd8/HwBa+WHB8JwAZDMLiroJaa7/y6cyZJc2eBPRC3neTYUtf/ZEPFnMKSZVSLtCAg/ZIdE1sUoIPWZ574vElIWEFFO2JYvL1SiIl1Nev6i2OknAnfizxfVxFpFgzlosdVV0QhxnOBJwk/lj5CIMfg/hueYBzi7lpUsB11A9sMmLr3FvV2l89/jOY2OA97v8lkxbRUZRSmFKZuEY+nW0kdpul3Ykbp1OCNcNIFoESU5I4+w2XwUUQ1iDAa6eGwo5JLd8jVFa8xYDfaJLOJvdvJ8Tm1KM0wlniC6ye12md5WzgKd4vDBdex7lAMYX8/yJ4Cj9ZttDhWR0fbQvAKCOycwtDatpnAz5f6E9IW3o9d9ZcDxfFRIZh+EVN86RfjWkqSzM1d7FNZx0x5400z4qjuAXwq/8GcxeM24O8AMcSj7Qpe98vaUnjo58bGqIzNrP92mIM3qr3rKSk6a6DcVD0MEsbdZQQnmp/XTjMd3dEnKJFX0ZoZCcCBRfeOAx7n9l4J7XmisKktBClIPQMAapncqh31sfXklPT+EsYVXB
- MM1xBW/g
- ufuliPWC8JOrdI2jhkA22nm9Rfe1WtgIEFlKaAcmEvi+n3pHYhshVQK3I4yEv1PtjFVAlipYyT6tfGGCDrx1J3dsohfN7Z3KipBUPNu5wQY4yEn5D6E4P/iqRTwmTZmdakiLp4vIQ/GndUT5KJXmf9DXCHdiEQ9FXu4Q1nO/BulCdHU/USn1+zLlen/pop3oLa5gpt+aEuKn98rSeSo7yF0WrqcWCx5egpdqZ6rLVwU3gNcQscEJUN+/nykExxn3I/1Rj5W4OwA2MAYwSOC1cKsIIhJmbYglnfG5nuHtw/B+v1/K3Uk50D4xY3QR84Wzdacu+eJYBhcDzwIY=
+X-Stat-Signature: yaphybxwy8jjgh3tp46uo6gwbh5dimu3
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780617395-845336
+X-HE-Meta: U2FsdGVkX1/AxXy5LoPaxqZaPzZYVuYyk53iSeMh1hHsMJWoq6vEFR58EZ4oxtFXYPbS0ixyymBZN6qJTHtqqRcx25969rSp+1hgoYcJOnJagBitXD5gEA0XZhXDE5cIj2Y6Hxg+Ld63WjSrO0Z1WXQn/AerFAJs+6Iul/Wy5g07iFLgf+O95Zaj+WJOtctyfodaeGQU8tLJ+3/z+2M9ZLVbFEeUFOYGnacVI6qHXj5MHdSGGUweJi4V17oPhTgfmDCiAu6CatUgfW7udxcPG1RrzttnaejvnRsTiXU0bmmolw9yW47ETEPKedtqfG8qiKtD8FXPP8W9qOffLGVEErNZ2DNf5KyLO9hpIcTQ/gN/9dfMqu0/4YL3WEWh4Z9U7fWtyxfrxgHL0e2u2n8aUlraxqVTnOdspnTOEm2qNq+p/mrrKFEg86GupWHFCtSDWCpb+VHGkTkILGxHSLCoN91DuuKW30m+mPNuh9suGAAuU7IdoFt/Zr5c9nFyqN3WGKtx4Ih59w0JfjO/qXe4BesF8DxwwYTELJJX8MAYvZf0CdeJzcUq90qyVndJtpgMvUfZpl+6Fjw7RaHFWeZC7yT5SUQ4Pdq5+tXjXAuqNUhKPNh8v8ayoV+zXy/mhmu/5bGs+hJzqTsbvNq3Wvuwar7UyFysWtafbICII0xxzep1cXS8tO6DmkCrozZ2qdG/Ls5Ti+c8G3vURGO0/g6OBf7hJedl4IVo7C2/lRC1yT3fpGR9pL6V0oe70cqYgnoYbCWiMux5orotF7g8cjc4jLFcU0Rk6f/DuMOxKFWdVoTF6gUwW7/vBIozFkkmt+/tWiiUzyHoTWEB7KN9PmV/gNsYVfTVfC96A4Zaaw8Yei/RQPirog/8NK2OHZ2D1uRovvNdFwXvE8tzIG0XcoQHMMlbeOIbaoiRmXg/P1qgCuzwqpGxb4344ggwT7u8mP8Bood+UUwBTOjsw1y398f
+ Lzv3tZRr
+ PQsdy8B4Oqqzp0XkqScjuN9N0sjNYHCcfmNhe0m/ReixWHXFCpJ+2txnnegPY5l0XsPkn78xu9NSk4OU8YbMIqqoAMPOkUAvTlfLvfisladmVoUQiLqv3fj7MuiMDIlru7MP5pWjO1zBV0NxUDTudZoxKRzx9B93oLjX/F1WWPw8K+7DwrybyQH4y8nzBkeaqbSDF2pqmvomCiDoVdaSRY/lKwTeQaXcWzlWAVlAt7A0zYrThO/QCvHnTKx7OHDXe1jgdn8tk8k6S6s9TO6WQ+/0KPMLMQFNvyz2sxFquEp+rht/KC4MP2tzqe/AOuEkqyTSBd8pBJHrck4JmotMbpBfRV7qmfBBN+YJP7kfAkb64Xe8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,234 +140,363 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 24, 2026 at 8:00=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
->
-> Hi Abhishek
+On Thu, Jun 4, 2026 at 2:59=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
 >
 >
-> On 2026/5/23 01:45, Abhishek Bapat wrote:
-> > Extend the capability of the IOCTL mechanism to filter allocations base=
-d
-> > on tag's module name, function name, file name and line number.
+> Add cc:linux-mm@kvack.org and lost part of the changelog
+>
+> because of local Git environment glitch.
+>
+> Sorry for this.
+>
+>
+> On 2026/6/4 10:40, Hao Ge wrote:
+> > Pages allocated before page_ext is available have their codetag left
+> > uninitialized. Track these early PFNs and clear their codetag in
+> > clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set"
+> > warnings when they are freed later.
 > >
-> > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> > Currently a fixed-size array of 8192 entries is used, with a warning if
+> > the limit is exceeded. However, the number of early allocations depends
+> > on the number of CPUs and can be larger than 8192.
+> >
+> > Replace the fixed-size array with a dynamically allocated linked list
+> > of pfn_pool structs. Each node is allocated via alloc_page() and mapped
+> > to a pfn_pool containing a next pointer, an atomic slot counter, and a
+> > PFN array that fills the remainder of the page.
+> >
+> > The tracking pages themselves are allocated via alloc_page(), which
+> > would trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() and
+> > recurse indefinitely. Introduce __GFP_NO_CODETAG (reuses the
+> > %__GFP_NO_OBJ_EXT bit) and pass gfp_flags through pgalloc_tag_add()
+> > so that the early path can skip recording allocations that carry this f=
+lag.
+> >
+> > Suggested-by: Suren Baghdasaryan <surenb@google.com>
+> > Signed-off-by: Hao Ge <hao.ge@linux.dev>
+
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+
+>
+> ---
+>
+> v6:
+> - Use hardcoded __GFP_HIGH | __GFP_NO_CODETAG instead of inheriting
+>    caller's gfp_flags for internal pfn_pool page allocation.
+>
 > > ---
-> >   include/uapi/linux/alloc_tag.h | 26 ++++++++++++++-
-> >   lib/alloc_tag.c                | 58 ++++++++++++++++++++++++++++++++-=
+> >   include/linux/alloc_tag.h |   4 +-
+> >   lib/alloc_tag.c           | 140 +++++++++++++++++++++++++------------=
 -
-> >   2 files changed, 80 insertions(+), 4 deletions(-)
+> >   mm/page_alloc.c           |  12 ++--
+> >   3 files changed, 99 insertions(+), 57 deletions(-)
 > >
-> > diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_=
-tag.h
-> > index e9a5b55fcc7a..0cc9db5298c6 100644
-> > --- a/include/uapi/linux/alloc_tag.h
-> > +++ b/include/uapi/linux/alloc_tag.h
-> > @@ -34,8 +34,32 @@ struct allocinfo_tag_data {
-> >       struct allocinfo_counter counter;
-> >   };
+> > diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+> > index 02de2ede560f..068ba2e77c5d 100644
+> > --- a/include/linux/alloc_tag.h
+> > +++ b/include/linux/alloc_tag.h
+> > @@ -163,11 +163,11 @@ static inline void alloc_tag_sub_check(union code=
+tag_ref *ref)
+> >   {
+> >       WARN_ONCE(ref && !ref->ct, "alloc_tag was not set\n");
+> >   }
+> > -void alloc_tag_add_early_pfn(unsigned long pfn);
+> > +void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags);
+> >   #else
+> >   static inline void alloc_tag_add_check(union codetag_ref *ref, struct=
+ alloc_tag *tag) {}
+> >   static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
+> > -static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
+> > +static inline void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gf=
+p_flags) {}
+> >   #endif
 > >
-> > +enum {
-> > +     ALLOCINFO_FILTER_MODNAME,
-> > +     ALLOCINFO_FILTER_FUNCTION,
-> > +     ALLOCINFO_FILTER_FILENAME,
-> > +     ALLOCINFO_FILTER_LINENO,
-> > +     __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_LINENO
-> > +};
-> > +
-> > +#define ALLOCINFO_FILTER_MASK_MODNAME                (1 << ALLOCINFO_F=
-ILTER_MODNAME)
-> > +#define ALLOCINFO_FILTER_MASK_FUNCTION               (1 << ALLOCINFO_F=
-ILTER_FUNCTION)
-> > +#define ALLOCINFO_FILTER_MASK_FILENAME               (1 << ALLOCINFO_F=
-ILTER_FILENAME)
-> > +#define ALLOCINFO_FILTER_MASK_LINENO         (1 << ALLOCINFO_FILTER_LI=
-NENO)
-> > +
-> > +#define ALLOCINFO_FILTER_MASKS \
-> > +     ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
-> > +
-> > +struct allocinfo_filter {
-> > +     __u64 mask; /* bitmask of the filter fields used */
-> > +     struct allocinfo_tag fields;
-> > +};
-> > +
-> >   struct allocinfo_get_at {
-> > -     __u64 pos;      /* input */
-> > +     /* inputs */
-> > +     __u64 pos;
-> > +     struct allocinfo_filter filter;
-> > +     /* output */
-> >       struct allocinfo_tag_data data;
-> >   };
-> >
+> >   /* Caller should verify both ref and tag to be valid */
 > > diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> > index 3598735b6c93..56c394ef721f 100644
+> > index ed1bdcf1f8ab..f2f574bcf383 100644
 > > --- a/lib/alloc_tag.c
 > > +++ b/lib/alloc_tag.c
-> > @@ -48,6 +48,7 @@ int alloc_tag_ref_offs;
-> >   struct allocinfo_private {
-> >       struct codetag_iterator iter;
-> >       bool print_header;
-> > +     struct allocinfo_filter filter;
-> >       /* ioctl uses a separate iterator not to interfere with reads */
-> >       struct codetag_iterator ioctl_iter;
-> >       bool positioned; /* seq_open_private() sets to 0 */
-> > @@ -167,6 +168,11 @@ static void allocinfo_copy_str(char *dest, const c=
-har *src)
-> >       strscpy(dest, allocinfo_str(src), ALLOCINFO_STR_SIZE);
+> > @@ -767,50 +767,82 @@ static __init bool need_page_alloc_tagging(void)
+> >    * their codetag uninitialized. Track these early PFNs so we can clea=
+r
+> >    * their codetag refs later to avoid warnings when they are freed.
+> >    *
+> > - * Early allocations include:
+> > - *   - Base allocations independent of CPU count
+> > - *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_ini=
+t,
+> > - *     such as trace ring buffers, scheduler per-cpu data)
+> > - *
+> > - * For simplicity, we fix the size to 8192.
+> > - * If insufficient, a warning will be triggered to alert the user.
+> > + * Each page is cast to a pfn_pool: the first few bytes hold metadata
+> > + * (next pointer and slot count), the remainder stores PFNs.
+> > + */
+> > +struct pfn_pool {
+> > +     struct pfn_pool *next;
+> > +     atomic_t count;
+> > +     unsigned long pfns[];
+> > +};
+> > +
+> > +#define PFN_POOL_SIZE                        ((PAGE_SIZE - offsetof(st=
+ruct pfn_pool, pfns)) / \
+> > +                                      sizeof(unsigned long))
+> > +
+> > +/*
+> > + * Skip early PFN recording for a page allocation.  Reuses the
+> > + * %__GFP_NO_OBJ_EXT bit.  Used by __alloc_tag_add_early_pfn() to avoi=
+d
+> > + * recursion when allocating pages for the early PFN tracking list
+> > + * itself.
+> >    *
+> > - * TODO: Replace fixed-size array with dynamic allocation using
+> > - * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
+> > + * Codetags of the pages allocated with __GFP_NO_CODETAG should be
+> > + * cleared (via clear_page_tag_ref()) before freeing the pages to prev=
+ent
+> > + * alloc_tag_sub_check() from triggering a warning.
+> >    */
+> > -#define EARLY_ALLOC_PFN_MAX          8192
+> > +#define __GFP_NO_CODETAG             __GFP_NO_OBJ_EXT
+> >
+> > -static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
+> > -static atomic_t early_pfn_count __initdata =3D ATOMIC_INIT(0);
+> > +static struct pfn_pool *current_pfn_pool __initdata;
+> >
+> >   static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
+> >   {
+> > -     int old_idx, new_idx;
+> > +     struct pfn_pool *pool;
+> > +     int idx;
+> >
+> >       do {
+> > -             old_idx =3D atomic_read(&early_pfn_count);
+> > -             if (old_idx >=3D EARLY_ALLOC_PFN_MAX) {
+> > -                     pr_warn_once("Early page allocations before page_=
+ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
+> > -                                   EARLY_ALLOC_PFN_MAX);
+> > -                     return;
+> > +             pool =3D READ_ONCE(current_pfn_pool);
+> > +             if (!pool || atomic_read(&pool->count) >=3D PFN_POOL_SIZE=
+) {
+> > +                     struct page *new_page =3D alloc_page(__GFP_HIGH |=
+ __GFP_NO_CODETAG);
+> > +                     struct pfn_pool *new;
+> > +
+> > +                     if (!new_page) {
+> > +                             pr_warn_once("early PFN tracking page all=
+ocation failed\n");
+> > +                             return;
+> > +                     }
+> > +                     new =3D page_address(new_page);
+> > +                     new->next =3D pool;
+> > +                     atomic_set(&new->count, 0);
+> > +                     if (cmpxchg(&current_pfn_pool, pool, new) !=3D po=
+ol) {
+> > +                             clear_page_tag_ref(new_page);
+> > +                             __free_page(new_page);
+> > +                             continue;
+> > +                     }
+> > +                     pool =3D new;
+> >               }
+> > -             new_idx =3D old_idx + 1;
+> > -     } while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx)=
+);
+> > +             idx =3D atomic_read(&pool->count);
+> > +             if (idx >=3D PFN_POOL_SIZE)
+> > +                     continue;
+> > +             if (atomic_cmpxchg(&pool->count, idx, idx + 1) =3D=3D idx=
+)
+> > +                     break;
+> > +     } while (1);
+> >
+> > -     early_pfns[old_idx] =3D pfn;
+> > +     pool->pfns[idx] =3D pfn;
 > >   }
 > >
-> > +static int allocinfo_cmp_str(const char *str, const char *template)
-> > +{
-> > +     return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE);
-> > +}
-> > +
-> >   static void allocinfo_to_params(struct codetag *ct,
-> >                               struct allocinfo_tag_data *data)
+> >   typedef void alloc_tag_add_func(unsigned long pfn);
+> >   static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdat=
+a =3D
+> >       RCU_INITIALIZER(__alloc_tag_add_early_pfn);
+> >
+> > -void alloc_tag_add_early_pfn(unsigned long pfn)
+> > +void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
 > >   {
-> > @@ -198,27 +204,71 @@ static int allocinfo_ioctl_get_content_id(struct =
-seq_file *m, void __user *arg)
-> >       return 0;
-> >   }
+> >       alloc_tag_add_func *alloc_tag_add;
 > >
-> > +static bool matches_filter(struct codetag *ct, struct allocinfo_filter=
- *filter)
-> > +{
-> > +     if (!filter || !filter->mask)
-> > +             return true;
+> >       if (static_key_enabled(&mem_profiling_compressed))
+> >               return;
+> >
+> > +     /* Skip allocations for the tracking list itself to avoid recursi=
+on. */
+> > +     if (gfp_flags & __GFP_NO_CODETAG)
+> > +             return;
 > > +
-> > +     if (filter->mask & ALLOCINFO_FILTER_MASK_MODNAME) {
-> > +             if (!ct->modname)
-> > +                     return false;
-> > +             if (allocinfo_cmp_str(ct->modname, filter->fields.modname=
-))
-> > +                     return false;
-> > +     }
-> > +
->
-> Apologies -- I previously suggested the "!ct->modname ->
->
-> return false" approach, but I realized we broke the ability to
->
-> filter for built-in allocations.  allocinfo_to_params() returns
->
-> modname=3D"" for those, so a user would naturally try to filter
->
-> by modname=3D"" -- except it never matches because ct->modname is
->
-> NULL, not an empty string.
->
-> Maybe something like this instead?
->
-> if (filter->mask & ALLOCINFO_FILTER_MASK_MODNAME) {
->
->      if (ct->modname) {
->
->          if (allocinfo_cmp_str(ct->modname, filter->fields.modname))
->
->              return false;
->
->          } else if (filter->fields.modname[0] !=3D '\0') {
->
->              return false;
->
->          }
->
-> }
->
-> That way modname=3D"" matches built-in tags, which lines up with
->
-> what the API actually returns.
->
-> Thanks
->
-> Hao
->
-
-Ah good catch, will use the following logic that's a bit cleaner:
-if (filter->mask & ALLOCINFO_FILTER_MASK_MODNAME) {
-                /* user wants to filter by modname but ct->modname is NULL =
-*/
-                if (!ct->modname) {
-                        /* validate if user was attempting to filter
-for built-in allocations */
-                        if (filter->fields.modname[0] !=3D '\0')
-                                return false;
-                }
-                if (allocinfo_cmp_str(ct->modname, filter->fields.modname))
-                        return false;
-        }
-
-> > +     if ((filter->mask & ALLOCINFO_FILTER_MASK_FUNCTION) &&
-> > +         ct->function && (allocinfo_cmp_str(ct->function, filter->fiel=
-ds.function)))
-> > +             return false;
-> > +
-> > +     if ((filter->mask & ALLOCINFO_FILTER_MASK_FILENAME) &&
-> > +         ct->filename && (allocinfo_cmp_str(ct->filename, filter->fiel=
-ds.filename)))
-> > +             return false;
-> > +
-> > +     if ((filter->mask & ALLOCINFO_FILTER_MASK_LINENO) &&
-> > +         ct->lineno !=3D filter->fields.lineno)
-> > +             return false;
-> > +
-> > +     return true;
-> > +}
-> > +
-> >   static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *ar=
-g)
+> >       rcu_read_lock();
+> >       alloc_tag_add =3D rcu_dereference(alloc_tag_add_early_pfn_ptr);
+> >       if (alloc_tag_add)
+> > @@ -820,7 +852,9 @@ void alloc_tag_add_early_pfn(unsigned long pfn)
+> >
+> >   static void __init clear_early_alloc_pfn_tag_refs(void)
 > >   {
-> >       struct allocinfo_private *priv;
-> >       struct codetag *ct;
-> > -     __u64 pos;
-> >       struct allocinfo_get_at params =3D {0};
-> > +     __u64 skip_count;
+> > -     unsigned int i;
+> > +     struct pfn_pool *pool, *next;
+> > +     struct page *page;
+> > +     int i;
 > >
-> >       if (copy_from_user(&params, arg, sizeof(params)))
-> >               return -EFAULT;
+> >       if (static_key_enabled(&mem_profiling_compressed))
+> >               return;
+> > @@ -829,37 +863,45 @@ static void __init clear_early_alloc_pfn_tag_refs=
+(void)
+> >       /* Make sure we are not racing with __alloc_tag_add_early_pfn() *=
+/
+> >       synchronize_rcu();
 > >
-> > +     if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
-> > +             return -EINVAL;
+> > -     for (i =3D 0; i < atomic_read(&early_pfn_count); i++) {
+> > -             unsigned long pfn =3D early_pfns[i];
+> > -
+> > -             if (pfn_valid(pfn)) {
+> > -                     struct page *page =3D pfn_to_page(pfn);
+> > -                     union pgtag_ref_handle handle;
+> > -                     union codetag_ref ref;
+> > -
+> > -                     if (get_page_tag_ref(page, &ref, &handle)) {
+> > -                             /*
+> > -                              * An early-allocated page could be freed=
+ and reallocated
+> > -                              * after its page_ext is initialized but =
+before we clear it.
+> > -                              * In that case, it already has a valid t=
+ag set.
+> > -                              * We should not overwrite that valid tag=
+ with CODETAG_EMPTY.
+> > -                              *
+> > -                              * Note: there is still a small race wind=
+ow between checking
+> > -                              * ref.ct and calling set_codetag_empty()=
+. We accept this
+> > -                              * race as it's unlikely and the extra co=
+mplexity of atomic
+> > -                              * cmpxchg is not worth it for this debug=
+-only code path.
+> > -                              */
+> > -                             if (ref.ct) {
+> > +     for (pool =3D current_pfn_pool; pool; pool =3D next) {
+> > +             int nr_pfns =3D atomic_read(&pool->count);
 > > +
-> >       priv =3D (struct allocinfo_private *)m->private;
-> > -     pos =3D params.pos;
+> > +             for (i =3D 0; i < nr_pfns; i++) {
+> > +                     unsigned long pfn =3D pool->pfns[i];
 > > +
-> > +     skip_count =3D params.pos;
+> > +                     if (pfn_valid(pfn)) {
+> > +                             union pgtag_ref_handle handle;
+> > +                             union codetag_ref ref;
+> > +
+> > +                             if (get_page_tag_ref(pfn_to_page(pfn), &r=
+ef, &handle)) {
+> > +                                     /*
+> > +                                      * An early-allocated page could =
+be freed and reallocated
+> > +                                      * after its page_ext is initiali=
+zed but before we clear it.
+> > +                                      * In that case, it already has a=
+ valid tag set.
+> > +                                      * We should not overwrite that v=
+alid tag
+> > +                                      * with CODETAG_EMPTY.
+> > +                                      *
+> > +                                      * Note: there is still a small r=
+ace window between checking
+> > +                                      * ref.ct and calling set_codetag=
+_empty(). We accept this
+> > +                                      * race as it's unlikely and the =
+extra complexity of atomic
+> > +                                      * cmpxchg is not worth it for th=
+is debug-only code path.
+> > +                                      */
+> > +                                     if (ref.ct) {
+> > +                                             put_page_tag_ref(handle);
+> > +                                             continue;
+> > +                                     }
+> > +
+> > +                                     set_codetag_empty(&ref);
+> > +                                     update_page_tag_ref(handle, &ref)=
+;
+> >                                       put_page_tag_ref(handle);
+> > -                                     continue;
+> >                               }
+> > -
+> > -                             set_codetag_empty(&ref);
+> > -                             update_page_tag_ref(handle, &ref);
+> > -                             put_page_tag_ref(handle);
+> >                       }
+> >               }
 > >
-> >       mutex_lock(&priv->ioctl_lock);
-> >       codetag_lock_module_list(alloc_tag_cttype, true);
-> >
-> > +     if (params.filter.mask)
-> > +             priv->filter =3D params.filter;
-> > +     else
-> > +             priv->filter.mask =3D 0;
-> > +
-> >       /* Find the codetag */
-> >       priv->ioctl_iter =3D codetag_get_ct_iter(alloc_tag_cttype);
-> >       ct =3D codetag_next_ct(&priv->ioctl_iter);
-> > -     while (ct && pos--)
-> > +
-> > +     while (ct) {
-> > +             if (matches_filter(ct, &priv->filter)) {
-> > +                     if (skip_count =3D=3D 0)
-> > +                             break;
-> > +                     skip_count--;
-> > +             }
-> >               ct =3D codetag_next_ct(&priv->ioctl_iter);
-> > +     }
-> > +
-> >       if (ct) {
-> >               allocinfo_to_params(ct, &params.data);
-> >               priv->positioned =3D true;
-> > @@ -254,6 +304,8 @@ static int allocinfo_ioctl_get_next(struct seq_file=
- *m, void __user *arg)
+> > +             next =3D pool->next;
+> > +             page =3D virt_to_page(pool);
+> > +             clear_page_tag_ref(page);
+> > +             __free_page(page);
 > >       }
+> >   }
+> >   #else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index d49c254174da..50b2bc8f42d9 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -1240,7 +1240,7 @@ void __clear_page_tag_ref(struct page *page)
+> >   /* Should be called only if mem_alloc_profiling_enabled() */
+> >   static noinline
+> >   void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+> > -                    unsigned int nr)
+> > +                    unsigned int nr, gfp_t gfp_flags)
+> >   {
+> >       union pgtag_ref_handle handle;
+> >       union codetag_ref ref;
+> > @@ -1254,17 +1254,17 @@ void __pgalloc_tag_add(struct page *page, struc=
+t task_struct *task,
+> >                * page_ext is not available yet, record the pfn so we ca=
+n
+> >                * clear the tag ref later when page_ext is initialized.
+> >                */
+> > -             alloc_tag_add_early_pfn(page_to_pfn(page));
+> > +             alloc_tag_add_early_pfn(page_to_pfn(page), gfp_flags);
+> >               if (task->alloc_tag)
+> >                       alloc_tag_set_inaccurate(task->alloc_tag);
+> >       }
+> >   }
 > >
-> >       ct =3D codetag_next_ct(&priv->ioctl_iter);
-> > +     while (ct && !matches_filter(ct, &priv->filter))
-> > +             ct =3D codetag_next_ct(&priv->ioctl_iter);
-> >       if (ct)
-> >               allocinfo_to_params(ct, &params);
+> >   static inline void pgalloc_tag_add(struct page *page, struct task_str=
+uct *task,
+> > -                                unsigned int nr)
+> > +                                unsigned int nr, gfp_t gfp_flags)
+> >   {
+> >       if (mem_alloc_profiling_enabled())
+> > -             __pgalloc_tag_add(page, task, nr);
+> > +             __pgalloc_tag_add(page, task, nr, gfp_flags);
+> >   }
 > >
+> >   /* Should be called only if mem_alloc_profiling_enabled() */
+> > @@ -1297,7 +1297,7 @@ static inline void pgalloc_tag_sub_pages(struct a=
+lloc_tag *tag, unsigned int nr)
+> >   #else /* CONFIG_MEM_ALLOC_PROFILING */
+> >
+> >   static inline void pgalloc_tag_add(struct page *page, struct task_str=
+uct *task,
+> > -                                unsigned int nr) {}
+> > +                                unsigned int nr, gfp_t gfp_flags) {}
+> >   static inline void pgalloc_tag_sub(struct page *page, unsigned int nr=
+) {}
+> >   static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsig=
+ned int nr) {}
+> >
+> > @@ -1852,7 +1852,7 @@ inline void post_alloc_hook(struct page *page, un=
+signed int order,
+> >
+> >       set_page_owner(page, order, gfp_flags);
+> >       page_table_check_alloc(page, order);
+> > -     pgalloc_tag_add(page, current, 1 << order);
+> > +     pgalloc_tag_add(page, current, 1 << order, gfp_flags);
+> >   }
+> >
+> >   static void prep_new_page(struct page *page, unsigned int order, gfp_=
+t gfp_flags,
 
