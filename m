@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 903B9CD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 02:38:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E5BDCD6E55
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 02:38:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3EA46B008A; Wed,  3 Jun 2026 22:38:46 -0400 (EDT)
+	id 872DC6B008C; Wed,  3 Jun 2026 22:38:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E15D86B008C; Wed,  3 Jun 2026 22:38:46 -0400 (EDT)
+	id 822C46B0092; Wed,  3 Jun 2026 22:38:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2BF96B0092; Wed,  3 Jun 2026 22:38:46 -0400 (EDT)
+	id 739026B0093; Wed,  3 Jun 2026 22:38:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C34186B008A
-	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:38:46 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6FEA3A059D
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:38:46 +0000 (UTC)
-X-FDA: 84840672252.20.F17DB9E
-Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A6311140012
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:38:39 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KhpbDGb5;
+	by kanga.kvack.org (Postfix) with ESMTP id 656396B008C
+	for <linux-mm@kvack.org>; Wed,  3 Jun 2026 22:38:51 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2BF03A059D
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:38:51 +0000 (UTC)
+X-FDA: 84840672462.05.7201476
+Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com [209.85.216.67])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 672588000D
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 02:38:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="P1R/FhOK";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.66 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+	spf=pass (imf02.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.67 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780540719;
+	s=arc-20220608; t=1780540729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Jg2muu/RqGJ6FJ6mWO/tENjNo0VfGXgaATf3xERkFo=;
-	b=pnM+nb4z09R4flSyzJr4HKqiiZHwl+Jv73t+HsR3/QaI0ZX11aKvMQ5Q/sZ4bnXtCE/o6j
-	sj4PXiIekOsnrGyzJo2nKtyJFVmpzD5flJaIUyrXUFR2fz1wdZwc9gkYg3QLOme4FUt4z8
-	Hw5gSIRhyzIWsZdgvgb/Yb9LgH9h4Z0=
+	bh=903p+XYNW6RRuBbLdT64GGYbi0Y3SIaWw22qBNVgp0Y=;
+	b=yFs0ie1iIVOWliBAxnFYGhcAcpP5vUkY1KlwbY0kLJf6CHAnuRXPsAzAc+QAGZPIUb/IKB
+	QMumfQArtq/1KhFWPF9MdEjOw3Xcy85TO6nf00f+Y2wUPTbfdOJoU6Q+l24Z11nhV4JWW5
+	ejZLHHKBUOLr+hsU+JABD30KtTSZeqQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KhpbDGb5;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="P1R/FhOK";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.66 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+	spf=pass (imf02.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.67 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780540719;
-	b=AUGdiUctB45INoKAdKO80nOk/5kkh2k39XHu1Btp+AzQXwFrAqqk0oJ7cwc3RU9mIVBcgZ
-	wS6O23ywaJGGodqiNFB4bx4hfl4v+aUVvku1/iHmzDHKYVEgBZgp/dfZBm9hC1/jX6ITDf
-	6+2/EVeDbQnqCx/DA7l/AFlPg+pfUT4=
-Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-36d9794d82aso93647a91.0
-        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 19:38:39 -0700 (PDT)
+	t=1780540729;
+	b=1c6LoE7hic+w7mN8iF8m0Qv7FA9G6wrvV6jrRuZTghVgfBzhxcsIknW5curnX1MufuRHNn
+	S0n4399/tf8zDNqyrgQgLpyaOSZnSzQFGUQyOtuASLNV5XQfLq3AlmCk2v5vB43h/MTJq1
+	6DpCeWXfJFMM8IEuGqoknOVyPaKMJGY=
+Received: by mail-pj1-f67.google.com with SMTP id 98e67ed59e1d1-36ad15213fbso133793a91.0
+        for <linux-mm@kvack.org>; Wed, 03 Jun 2026 19:38:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780540718; x=1781145518; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780540728; x=1781145528; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2Jg2muu/RqGJ6FJ6mWO/tENjNo0VfGXgaATf3xERkFo=;
-        b=KhpbDGb5jyZwkGKQkuXB75OSSLoNWPgLd7G9qDUIvo2yLkGSlJe4fXLW0wLnxbTV4+
-         WmhjkcvibZ8IeLkfdwK6Nf73Zk2RRaOFlzN8c4cewRqS6Xv9qmQpIZbk8W6OlhBEEYiQ
-         mmI1sLvl3x7J6W897FgcCOPn54eXate1aM442mUcbdfAlWfbDGqNeIGVaLSZv2T5ki5N
-         JDgZp8lOnNxdKQHtcQEv6HgBYI6nVr+Ap6HkiVz5ha8CXzrvTY3O2tX0Z65u/EnxYbZY
-         HTUJS3w5uGMH+HzbmU/9RkbhsWrmQh0xDZLMvST9JF8NQYVzn9srjKSg5Xr169EY8vwX
-         xOMQ==
+        bh=903p+XYNW6RRuBbLdT64GGYbi0Y3SIaWw22qBNVgp0Y=;
+        b=P1R/FhOKtFygnkXGotSg9kL+uUCBi/gUDo9yURSJF7rDGnC5mA98xSmMC+Ighnpy1L
+         pmb/ibkYkIR8NiaNHD5A/B8eRdiNfBuZxpVpmTOCwwKk+ri8kM5K5kZrPBQRJFm5QHuc
+         1mKtmub8UfWb8EvQO3wU2jtfrXiPrWbY9OD+OQN6h+09wTFZzeiJXH+O77SaGie5mmj5
+         C4iy61mSBVVFO4UUKi4M8cfX8je/YvGCDKp7+5F5uYjv9fCmiF1RB1M3axkOq1DK+qBZ
+         Nn0yzqsfF7iRlhMnUfnaZRdxqDpcOAwwjg8RrnkNg1xsKfwjdOtzqmdJt0xAYByFjdYO
+         JuCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780540718; x=1781145518;
+        d=1e100.net; s=20251104; t=1780540728; x=1781145528;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=2Jg2muu/RqGJ6FJ6mWO/tENjNo0VfGXgaATf3xERkFo=;
-        b=al3jjFdJhNEbjSRiAt6N/mZRqz5LMaCAZfkcLVelXL3udliw7Vp6fov69fEeZ8gMkN
-         Q/kiExNgvVXIEDypLiQQBD2Xy7FCf8xR9SFQ6a/8IgZBGPS9Am34LPrDmMyn+J6hYKGY
-         f8YO49L+EkeTmec/VeHC1MDHXMTy6f4qnoBoDaMGQiF0QljBk05/fblRly0gD9y09Jdz
-         y5O2IuPbRzUqE03YkgPYM4RvZVXhVhPaM/gvWcwuDrgEjvwoGsEbeV0MLrwOrGSMhmkM
-         Tyo0ddPcTJ8XR0lg2Nq4unZ//8bMoqHTPPpHrMjIAuOyKBFy7ZYncJkyqsi82ATwQvFZ
-         xJfg==
-X-Gm-Message-State: AOJu0YyLF/7x1bgbAvUUhiuY8l8RxFRSCUJ9/nJCGgUtiCfE1RQ+bEMY
-	psjdVxaA7ONuj8Fu7zlabtePAX9G3K+HCdca1egMfVP7MeudWMIRISORR2MxZX2Fgpbqjw==
-X-Gm-Gg: Acq92OG0c8AZyI3EPud0PlKFyM4pk99iLirGhkbMxAOTZCNYQ8hWLyy0im0LCOFhxKb
-	s++VImcOgf68PEq8vG/Jp+mIRyPi2/Wd/jiR2rYv+7wFRE3ua3bZdE3w/0ejg0J+S2EMWCWwZhc
-	YTv6BGgXtsLMmfQicocTlBQ5TdiFBC54khc9z9Zml/6blq7f3wMpvE9latnRGbYXD38moErcm+5
-	86z2YR7Kq+8AzspnETAbUlZtvyJ8fI5KiuGfSInTz2TwhaUggl6ysqmmL2Sf2eb6uH25ejjVYba
-	MoPB955+95rjA4MtNaa74OZL9TT5vTOAGqred06q2YCsrKPqa4mlS7X/07wQm0kD3PR9O29l/WZ
-	55n5am36H7aGhhyrjxl2UxFkQexEtGSPxRRJx9x7cGzglCBbUtKcSXbpANoWDqIjtSoK+nyQUZU
-	dMJu4fg5XOcxOJ0crDJKZiKeeWYIFjKQ8s0U4ySpIfmVn31O2DgccDiZyVYA==
-X-Received: by 2002:a17:90a:c2c5:b0:368:9da3:c496 with SMTP id 98e67ed59e1d1-36e335db4fbmr6149440a91.24.1780540718488;
-        Wed, 03 Jun 2026 19:38:38 -0700 (PDT)
+        bh=903p+XYNW6RRuBbLdT64GGYbi0Y3SIaWw22qBNVgp0Y=;
+        b=ND3rgubwMk3nEq27s/SlJPVQ8O4Li5ChskupI7U+xKY+vj72pnV8yD1iGixpmM4+je
+         BDJsTWCwKnQp8Z8Gz0W2F+81a8Fd3jouzf1ljQTX++1qCWnWGdlNaa9fC/0O4W1NS08j
+         nY3j/iWqNqHxlAR/ZQoSyScPBvbFfOeRHD6qSnd2CrD2pBjpTzE9vIAWdvUUC2eMtxs0
+         mnF4m90YAZVmYSyhZixuc9jvYOT0suAmwrYR9J1XDB9t5areFLOGc28dUmurzz0EBell
+         lFkJGnPF9MMTvs9AnwbU+ZZ2uMq+HDKpbPyA9lRWJzIJhyCBXquBYwIKQNisflku/g8W
+         JDug==
+X-Gm-Message-State: AOJu0YzepsvVuUVjDJ6hCDpB/Eu6QlBsMaFW6BOr6QCpmR+VkRur+aq/
+	KYFUxqMJXgQr9kW7jt1DEvKLdCa7s0n/+ZVb6tcl46JduN7LtP1F0dBV8Y7GaLwyHp2NSw==
+X-Gm-Gg: Acq92OGTkswl7ambe3aAvv4QeTBsX0nAA0ZHdYQ8tjY40rhYMMTaVkAzCoLAe2MMVSo
+	zum3XM/3s2MqOSz+raQ+GkgSbC9U2OJEJ4eRRazq+i86aFos5bPcjOcTLGsXg3Hj16GZZL1ysK+
+	wirV2Ew38UFPP5UuN0eFPJ6SOhG63/+4Eyo465MiRhB1Rr2j/36shcebDoMzfTgGvv6CSt7K9BF
+	XgphfbgpFZqACRNHkB3r61wEUATvopDhM1kemBMHb323tC+CDiWBBAt9UwKoCzW9CRKNqH0Ku1x
+	BEffE4wAD9lnlDkHqR1B8M3nHurwDpZFbgf7PZyFN77zeBE1JnAY/ZKOFny6KA5p/lG78uExFbQ
+	bUMZmuCpoTz7OmUWQQ1lGQ9w92/X2QKQBMkaEsHrOOZH7JfON52idOVM2p6oZWA08vgiQayj7LS
+	bnNpOFlYn0oFWLdkSl9rERXy1u9BQkpslw521JGXFq/ZzDBhg=
+X-Received: by 2002:a17:90b:2b86:b0:36b:aed6:235a with SMTP id 98e67ed59e1d1-36e33106b26mr5951841a91.22.1780540728330;
+        Wed, 03 Jun 2026 19:38:48 -0700 (PDT)
 Received: from intel.company.local ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6dba8573sm1253072a91.14.2026.06.03.19.38.29
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6dba8573sm1253072a91.14.2026.06.03.19.38.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 19:38:38 -0700 (PDT)
+        Wed, 03 Jun 2026 19:38:47 -0700 (PDT)
 From: Wandun Chen <chenwandun1@gmail.com>
 To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
@@ -111,22 +111,22 @@ Cc: akpm@linux-foundation.org,
 	bigeasy@linutronix.de,
 	clrkwllms@kernel.org,
 	Alexander.Krabler@kuka.com
-Subject: [RFC PATCH 1/3] mm/compaction: skip isolate mlocked folios when compact_unevictable_allowed=0
-Date: Thu,  4 Jun 2026 10:38:10 +0800
-Message-ID: <20260604023812.3700316-2-chenwandun1@gmail.com>
+Subject: [RFC PATCH 2/3] mm/compaction: add per-folio isolation tracepoint
+Date: Thu,  4 Jun 2026 10:38:11 +0800
+Message-ID: <20260604023812.3700316-3-chenwandun1@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260604023812.3700316-1-chenwandun1@gmail.com>
 References: <20260604023812.3700316-1-chenwandun1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A6311140012
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 672588000D
+X-Stat-Signature: bh3m4yse8odx76ufz46n9s4jhmd5qtyo
 X-Rspam-User: 
-X-Stat-Signature: ay9hrssdxhshx9hwkfhb3uk1f67ahdpb
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780540719-354763
-X-HE-Meta: U2FsdGVkX1/DpKndq9pOr72mwX20ErOhyQjKKwIfOARmUMhSEnMp0VLurwNKo+PiJPgCb9M2rXxrgdMdF1bwNEKK/EFspf2rna/MdUSr/P6n93eVrXhCOHLePvn0sjwwAyK3BreAKt6wSGOz447nFxRxNMBza/6Vz55Ux8WPRIQeSZXaBpmTYGImtZ7u22uh9YShuhZu6HauS5FRhuQkNrJL9VfEvYDWRTQwqZsrBRZ2i6CRFxBem50+AP0MGOd44rW8yKK6z4bpR/mJxkStsDgOc51iFI5rU6eSqm07hjmbyZWiXSCGm2Ji2g4GAZrboALUSP0qUfTGxyvU4KdJHb7QoBSqBjPXoDkko+EL64T7xS1BD0EYwj80XW6fR8xszJxwqwxPQ7+gHaJUUy/06zyHUTxh9Z7pKn92oMnmDRnSOw206OKe7QlzqDy6MvBZ/X5i7ErVl9uZS9Z/VGfzyOq05qufX0MGWlV7RPuHO38SeyNDQk9d6QhJL6Nb+Qh1g+pUkKdTGUt4GaZ2TpPjIuAxENpXOvqUceQ0FXgk9+059oJ2r2TNMVkW7PSEt/O4D0L97Jmu1BtQv5KvV8OLi+qkDfQ5MmeYM08DR0uMaz8LV5dIsSV4Y1ossMSbbf+eih07GKwNuEb3aQXyfZpIHUgmudqG+13Q/G60IHxWULmZuN4JskGMgk3odA/BEvmP7t9bLYAWdbNCIs2H2fpTdbLLzuCsOzvTeawPAYFu0ZF3Nq7a4GaCUFKLAb9QCWZxoFHjGjB/W0ADjx6DjVSEfvgtKpWq7rzOdVKhRVpJZoV3FvlpDFyVJBG3St4vCEZzbp8UpOUawivONVuzZKhZBYuymlaAXhNzoS7/gpTT+NAYsVNix9RaxHzgNg99rJsDF1I93xE05wbOG9WpzC5pBKBTc8GeSe6P3kce7ZmCuVwNMfB5NzJoczB2we2enmEjaCtDXkaQY5PtDRRXQ15
- 3zKwbHYb
- VA04m1EhY9rqRv0h/tzEExfLvIDEcWB42nxs3lbXjOzSJzhDx7JhDfikMEwNzbXml8Lhr86D3cPUxLemPKv0YZ0WPFrrjt9pmfR4W9lY5Kv94GSmPfpNDREhQ6GeYeHsW2vyrgw77AF1eLh7PxhSYdYNrgXcpWUuBWQTIhcIryd5jKeGpb1XT1tiWxrmzrSLq0qIMnjE4xlnNJZXVwbLeLeZtqLr7q9k/v37krizmG21nxBLTVHR/jj0/k5TIQC76pGOlnJvMXzGk4JFOz+lxmO+5ku78l1xsa1y+NQ+zo9S60YT2BixEJwsLTxolTICyu0rRZss47/NZCXo6rnC9qNwf3oEJh5VuhpChaWRKrkJv5+HMMzE4FDm1A9+4gAh70AZD82R0/ctBmzG1Q4lKi6bFbLHO5OZaWb/rzQITMGRPw2VFrWB5DT6I6danhd6ANtzwgZLDAEAhpe/Q0unGJzW+zaSMgx7FoTsuAtMsSkpj0j6cvmtZadWxTTWsIXnS1d2AYaUftVRU/Z6fQS9FaWax3xJIBpx1XYknSBmW2BPkJo879RqOnrgGxMTHfpqUaTkPLEKhSpOOWfauyhfrvVpCYwY/Pg/3nFHo4IZ/HvKzpYZeYQR2fJFm5bV3ykJBbnTiaKu5S7lYALrwK5ggm+0ycOnlb27yYHkPws6CAmIwWesMxS2R4cf/4w==
+X-HE-Tag: 1780540729-122274
+X-HE-Meta: U2FsdGVkX18E1DJDOiHUSwaZkyjfSmHzUqTlsg16v56aGKbKU2q3UvzDvvE5E/eqFe9oMBLsqlBEQKvXw6oQrIH4iroPgCGe3f+03906pxWd1K7S7z9o8npZTAfmYuXHnoTz65foKHrYgG59zHeGBJ99yNFUs9yTd7gggYuf5Gfo2iJdjw2AmEJ9hrHxbQlNVADCjpW+UzSn3eJr9km0uTlxo2XvU+RxKBNujLIi9PjCSpCdJAv86rLgriyPkqqtCsFWPckCGBm8dunriM+Glo/HCT+Rzuyz5aeD+kqq6JzpIxD18fWWMfLOjIj9BkwCCOFeDy52B8XUrG2PP7cWHcEUcLcQlJ7JhcemdJvJ2D8OzyJaIGjG9pQmj8t8EZLOVudnhFmaP7FqTjJ1W5nw6S6ywRT5c4JSyJqFF4UyacP/k6l3zA99zSJgQSFHW3VgSUAgRVJQACwKz5EUJ94BQ69t1HVruS0Pgz8ISL2MSc3DblaGvE6uZ4elesopMTMuTWwPQl+4eO0U2OJP5L3lozE81Gmk2KEcTFt+xq3JE9Nd7TnNcCdVJBNruHelfDj3+1tXr77XECuE6+aI/1jDxR49THAwN/SttzGE0o8d1lyR022vRM9plSGVKN6RIR6Eld2zKoS21nsvSWW6fJKgCEvOx/GTVqRT4gZFXxQX7E+Jey7XYjFL3map+ZPVUZXwSn6d76VPLCjWR8cbBEkBLdd5QhZd+CsnqFJwUAgfE8Wh8lKZ0fvsW3j5IT3rwVoHCd2pxb6sr+isjIPZ4XkEjAz1afVmIyo0buWX0JIwKNJs2Y9zaIMSsfc6TvdqtcZNWwy/eyw2mEdVvZiyJkYoXI0qLq9HrKd2s6t4PY4ofMfNMe3bE7dYdzGVjGcsgnlIsdBBjbQ6IoCHaKzed/z9NyVbFbpjbqYrDjlnkjswtungqZodQTwODC909/xi366xAKMorF8Mz5mBfJl4fdU
+ zkPCVs3v
+ FslZhfSQaMYbI2osS6dX+Jar8Jmj5UsAaQjWHE1W9VyMRvYrkEc2W+YUGp14BpMwU5uvwfM0gLUCXcswIFFo9aGxeh7CaygaOpEuFUZHscaIALNavXvPMv8Xpi4TPnuWP+Yam0PelbHeSPMbpB/nBT/GzwQGNkwZTiuFV8ncFH8jsSwKTQqUvAnzEVYanA8lSXzpR22AorkBcrwja6wd9GXwMBpY95V0KFJRmrM9nX7pna4tn/TGNj+SNZEQLrLqLPtN4OrwZCBiOtkEcJIEicBLeGrDZe3F3ImfiL8DY2VzpyGpIHw36cxyUhfJqP5kKQORVE5wdr3BXJf6CBg59GRO1SXTpKlSPYjHfdbTdEE65kMpvz5HqOIfHewWGL7jQn0nMnXqgoAyhRGjCPHCg5vJ2lARZggOeB4COR6epgIt4ZWbJf+NwnI9bKp2zocf3YuTR+rZQUJkdjucccm3E6VUycXnsRZv6qFVdLLP2vNZ01oYkPiL2XQnWW5s68v75UB3YwtLoSOg3Zxg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,42 +136,70 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Wandun Chen <chenwandun@lixiang.com>
 
-compact_unevictable_allowed is default 0 under PREEMPT_RT,
-isolate_migratepages_block() skips folios with PG_unevictable set.
-However, mlock_folio() sets PG_mlocked immediately but defers
-PG_unevictable to mlock_folio_batch(), result in a folio with
-PG_mlocked=1 but PG_unevictable=0. Compaction will isolate such a
-folio.
+Add a tracepoint that fires once per folio successfully isolated by
+isolate_migratepages_block(), recording the pfn, isolation mode and
+the folio flags. Knowing these makes it easier to debug unexpected
+isolation, such as mlocked or unevictable folios showing up on
+PREEMPT_RT kernels [1].
 
-Fix by checking folio_test_mlocked() together with the existing
-folio_test_unevictable() check.
-
-A similar issue has been reported by Alexander Krabler on a 6.12-rt
-aarch64 system. Vlastimil suggested to check the mlocked flag [1].
-
-Reported-by: Alexander Krabler <Alexander.Krabler@kuka.com>
-Closes: https://lore.kernel.org/all/DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com/
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Inspired-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-Link: https://lore.kernel.org/all/33275585-f2db-4779-89f0-3ae24b455a67@suse.cz/ [1]
+Link: https://lore.kernel.org/all/20250820142919.HTybedrl@linutronix.de/ [1]
 ---
- mm/compaction.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/trace/events/compaction.h | 26 ++++++++++++++++++++++++++
+ mm/compaction.c                   |  2 ++
+ 2 files changed, 28 insertions(+)
 
+diff --git a/include/trace/events/compaction.h b/include/trace/events/compaction.h
+index d05759d18538..8b8b3ec0f324 100644
+--- a/include/trace/events/compaction.h
++++ b/include/trace/events/compaction.h
+@@ -76,6 +76,32 @@ DEFINE_EVENT(mm_compaction_isolate_template, mm_compaction_fast_isolate_freepage
+ );
+ 
+ #ifdef CONFIG_COMPACTION
++TRACE_EVENT(mm_compaction_isolate_folio,
++
++	TP_PROTO(unsigned long pfn,
++		isolate_mode_t mode,
++		unsigned long flags),
++
++	TP_ARGS(pfn, mode, flags),
++
++	TP_STRUCT__entry(
++		__field(unsigned long, pfn)
++		__field(isolate_mode_t, mode)
++		__field(unsigned long, flags)
++	),
++
++	TP_fast_assign(
++		__entry->pfn = pfn;
++		__entry->mode = mode;
++		__entry->flags = flags;
++	),
++
++	TP_printk("pfn=0x%lx mode=0x%x flags=%s",
++		__entry->pfn,
++		__entry->mode,
++		show_page_flags(__entry->flags & PAGEFLAGS_MASK))
++);
++
+ TRACE_EVENT(mm_compaction_migratepages,
+ 
+ 	TP_PROTO(unsigned int nr_migratepages,
 diff --git a/mm/compaction.c b/mm/compaction.c
-index b776f35ad020..7e07b792bcb5 100644
+index 7e07b792bcb5..007d5e00a8ae 100644
 --- a/mm/compaction.c
 +++ b/mm/compaction.c
-@@ -1116,7 +1116,8 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 		is_unevictable = folio_test_unevictable(folio);
- 
- 		/* Compaction might skip unevictable pages but CMA takes them */
--		if (!(mode & ISOLATE_UNEVICTABLE) && is_unevictable)
-+		if (!(mode & ISOLATE_UNEVICTABLE) &&
-+		    (is_unevictable || folio_test_mlocked(folio)))
- 			goto isolate_fail_put;
- 
- 		/*
+@@ -1223,6 +1223,8 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ isolate_success:
+ 		list_add(&folio->lru, &cc->migratepages);
+ isolate_success_no_list:
++		trace_mm_compaction_isolate_folio(folio_pfn(folio), mode,
++						  folio->flags.f);
+ 		cc->nr_migratepages += folio_nr_pages(folio);
+ 		nr_isolated += folio_nr_pages(folio);
+ 		nr_scanned += folio_nr_pages(folio) - 1;
 -- 
 2.43.0
 
