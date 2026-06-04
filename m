@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77311CD6E68
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 05:20:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 745AFCD6E68
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 05:30:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5473C6B0005; Thu,  4 Jun 2026 01:20:00 -0400 (EDT)
+	id 8DAFA6B0005; Thu,  4 Jun 2026 01:30:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F82B6B0088; Thu,  4 Jun 2026 01:20:00 -0400 (EDT)
+	id 88B8F6B0088; Thu,  4 Jun 2026 01:30:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40DCC6B008A; Thu,  4 Jun 2026 01:20:00 -0400 (EDT)
+	id 77A446B008A; Thu,  4 Jun 2026 01:30:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 30B7B6B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 01:20:00 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8A9F11A0521
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:19:59 +0000 (UTC)
-X-FDA: 84841078518.17.1B99629
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 63F616B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 01:30:45 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9170C18CB
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:30:44 +0000 (UTC)
+X-FDA: 84841105608.26.8747A9C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id ED8391C0006
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:19:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IdsUA08B;
-	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5747740016
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 05:30:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BRneAZeV;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780550398;
+	s=arc-20220608; t=1780551043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zXipXIgKd+8KQkn/WaaFioKTx6VwCL4kWpBxM2Pbdb4=;
-	b=JDcpe0J7zahl73nAc+1a2VLYOLrLyh4sXSZsdroVqvv/nAPxmsIIKdGH1PdpPD7u8dg4T1
-	U+dB10kKjaEiRHF2zjWB9UUEpiiOQjjR7+jTbKlkf5lovHyMCEuZPtlvoGkY3KqAm9quSp
-	DZU1/1Bi3yM0ZoXKJIPaX6aLMljP8+c=
+	bh=8sJyfXerJU9iiEPT8ZT0fAwQWe3UJ8yZ+Wj6Yp6I/XM=;
+	b=BWTzia0akYLFST6OMTQUNEpxGeNRvJZDqo1eT2benPzA9Tri7uNgCyd0m0cg6Bk0xYJDCi
+	nQgJak8dJvsiBCXg4N+I1wOEVV5Yj+EKaA9mBSyaM8n06YiHim7/6dzjwF9Ri2qgiBIw+o
+	qhiaYolQgKAKobE2kmYQ0Rzn2KeE2r8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IdsUA08B;
-	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BRneAZeV;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780550398;
-	b=x5CwPHBE1KhVNGgI8FQp0tHQk235eudmu7cZWKYhDrQQVwwS5W1oKAmD+ks9MURKRasZ4a
-	Y0pADYEd18JovnZOeqRyzB8BkNJyn91BfXK0/AmugHQlsIsdZVWgq0qr/uePu+b9dfmOZq
-	wgy27Ju+/apicgn3NjQNrPJ4V0aZ1Qg=
+	t=1780551043;
+	b=H3y4PQp4BD0y+hJQTCGU4Ccm73VhNjSnf6z3XRv8dpPFT6sa6uHrNOsLuEEe+3HM+P/ZKU
+	gHAK/fHTxI/JoRfnrI36Tzs1pnUOlbtXP43spEog+6Yn9PELzhnzZorfrN012HGK65t2wR
+	628dX9GDE6+ci25iKf1B/b1OYvwUXDk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D83A601DD;
-	Thu,  4 Jun 2026 05:19:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE891F00893;
-	Thu,  4 Jun 2026 05:19:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AAD6E601DD;
+	Thu,  4 Jun 2026 05:30:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524671F00893;
+	Thu,  4 Jun 2026 05:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780550397;
-	bh=zXipXIgKd+8KQkn/WaaFioKTx6VwCL4kWpBxM2Pbdb4=;
+	s=k20260515; t=1780551042;
+	bh=8sJyfXerJU9iiEPT8ZT0fAwQWe3UJ8yZ+Wj6Yp6I/XM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IdsUA08B60viXspX4laPU4RhtoUAglT4tchpnbtoykZ7L+E29e5Fsvj6ToY1eAc4Q
-	 uWufd+bXNzcomnTNfoFgkma/R+MsYJE6TU3LtkM6XlhILc5Xhced7r9H6CeiSHcqsi
-	 CDzdqyPY7/CGhT03Ra+MZ6785gZFG3R8YschSGGKtpxBMn5cJXnZ++4tw2cPI/muRS
-	 ojTr6kpWEhUIdXVn0lCXfiI0niC7bCaZdZBsSJthD+Fi1fP6ufJAUN/4wMx7d2rvjc
-	 PxCP6NULO+RpHO0J3LUH89UFTqbYr+/CuXy+Gg7QPXnEGdzMSYiVjfHQmhTdh2V+90
-	 YdS+P5Qlr9TdQ==
-Message-ID: <ed9e834d-e3a0-40c2-9407-252f7ac7f00b@kernel.org>
-Date: Thu, 4 Jun 2026 14:19:30 +0900
+	b=BRneAZeVwpgn7kmaxaAgWt7ghltBXKLdOIt48MhO+V2jMeTdvfrbhJUJaUF30tK3c
+	 jfyYncISAoFB740uCW92U5qld8AJZvXgOOySRWQIox3dti/zyfIAqizY5mCkUsV+ui
+	 ueVmRxQG1X07meMyw+x7VDyfrM6ejNPDPOwvivSRqpRaMIgPfr8NN0x0JdSOXEyGAY
+	 XfSCCnJ3TO7zdpxt3oWh0EfLbD7zS0mz7np/Gn8DdB5/np4m/zqWkcxjjeZSbtQHrl
+	 hbWLrF9rIzOtikYYZGlIi8p9zF13KWyZtdPIGN/tUkjZRxj3QaV6rYdulbPytI6oUI
+	 VrmZLIUr+3gIA==
+Message-ID: <6d70757a-a849-4828-89e7-f3d51bf8c9f8@kernel.org>
+Date: Thu, 4 Jun 2026 14:30:34 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/slab: add a node-track-caller variant for kmem
- buckets allocation
+Subject: Re: [PATCH 2/2] net: skb: isolate skb data area allocations into a
+ separate bucket
 To: Pedro Falcato <pfalcato@suse.de>, Vlastimil Babka <vbabka@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -80,21 +80,21 @@ Cc: linux-hardening@vger.kernel.org, linux-mm@kvack.org,
  Roman Gushchin <roman.gushchin@linux.dev>, Simon Horman <horms@kernel.org>,
  Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
 References: <20260602183122.747759-1-pfalcato@suse.de>
- <20260602183122.747759-2-pfalcato@suse.de>
+ <20260602183122.747759-3-pfalcato@suse.de>
 Content-Language: en-US
 From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260602183122.747759-2-pfalcato@suse.de>
+In-Reply-To: <20260602183122.747759-3-pfalcato@suse.de>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------R1qkIECy0a412Zihr25diudF"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: ED8391C0006
-X-Stat-Signature: f4dpuxrsputpbwt8y17u1x55xr89n1kc
+ boundary="------------58iuvSQkp47XgPodjS4574QO"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5747740016
+X-Stat-Signature: m4byezkfauuyjnu3f6s7kt1ara1opkwd
 X-Rspam-User: 
-X-HE-Tag: 1780550397-179165
-X-HE-Meta: U2FsdGVkX19556JQKPr6VysBntt0AywwffI7/7zBXRS4etWPgm0GYHurYxKXJjHRhZFCIvMmddcZyZUhZLT4fG9lmUdifR5knwx5Mu+dArh8bE73bFW3F5ohe4QeKuCHA2eeG+NJWCixYGA7h4/3d5c+n3GN+l+oIi1R9StE+CWAJq7a4OBtLkYMga3H/c3ItTAii5/KuDe1T2mp5spc6gDCbFwMa9n+oF0izsqHXAPWhvSDNCfLiWXu47bZv3B64dY4diZCwkO9CpAFvISAf/SA8aIBNONDusdltlj/x2+W4twht1WYEnUl5BZhZ/+lcsfP+6bjNO6STl41F+bwkWDjRqWizMwtKcamTb3z+NrR+hDvrNNYpctnN3HHl1IWjCT8dZ5eJBzXEnLR6/g/Mkxt8s5f+Mwegv9jq+/PVhqSoc6zYLwL/ibRRBjEO7YF8ffAuDXwYlPSh+mZxbW5Tm131P29jzTkQ1bC87cS+2LVlLCcqlUrz9ScAaqLbgrhIwCLe5xufhoejO9saJu0xFJmGNq+7ll1tg1tGQvun7H83bLmr7l/gIpmykzSNFW+q6vaXrQwBxV40kQNqPqlmR4kf6SW6GCExPc21Skz2FhX6QcL7iXrMVfejvWWfbqqeo5YB/SkBAuMQjKUuAHTrv+Uc9DIXKkqRilBp/r46T8y0dqybuENaDDF7yLwgaV4lNZy4CRe7bJI9tqxC4uApwFDcarkwNSDHml2Y/gB9gDnUO1jFc9mhREjxLSyPVD9f9E2MhBJzvjh4IflQbcwRMJcLM0jsvjyiZr6m2jVSaLPcx+FCeb5xX48idHaKRIFz5VQlaA1elBzRhVHmwFKL/xXYk6q2MAWOHQ5Rp0RndOMyRJQcK8mgWsSazt9S41vDBq9nSnR9h1LFY13rq0t3gV01V4FK2sSQxtcFD9hBKmbfL9QnvV5QtFzLyPwhaAQEkXdNdyI49N+CAbOw5G
- pRT7xlJm
- A3W9daTuktKEgv+0FB/m2bolGKZGGG/uAikQM4GhLY7n0Dl6kkVXMb6HndBS+pRDbesLzFtXYX+VX0q7xjJBDxgiI9R2Vvm71Z5s6hMwZvHvwF8Q9EnHzOKtRgCcEd+X/5nFvQhvXAoRWdz+5gMudTlovPxZr+plptToHHBYebg5qYtc4eGVLJxMHg7ayo0B6Sb8R1Q+5JOQ55+a8+AC9OEGuOl4iCzND4ak1Ei64WWg/y3ypuVZI9DD/tqysqlHl211pSmNVoZnPskV4wL7qwL0oNIDNQnTVjGYrDC4dz1xoLGn7adAOT8M6awISiTt4f3zD+JspN1Q6yp8yyozKLaeRIZnhZTVKKT/D36GCH3tb8IbWQrRtalTb0iOgi3lIMBlgazRCCz0eH1bSAM+UV2QfNBaylOiSeHLmNrJFAUuHavnLXQxRA8zmJfZqdeApKSQ1/6IK8I3qn2MMEOLuK/UuQMo1J+Wu5GDYhGE5vF8d+fAYQC56W6i7l9jQpchyp9qdImTymOFEL0C4bSqIHonqW9BZ9fl6zybl
+X-HE-Tag: 1780551043-966597
+X-HE-Meta: U2FsdGVkX19uZIUsjFcu+VURq9dAPpkZlkzhv2kiTnPUf92pnzm8mBJ3pozKkG8VP+5s9Vs9tavI6tQGPUs3OLEyAfDXmXOhCDOIxfiajK2S/TirjSVXFJpOYtGqQnNhNn/wMdVN0auoRzoajwS/Mia3+Rlk9Fei6cdOTd9K5y7u6gspYfA+xvVPh0y7ogJVx0XcmiDsP2feBZO+/piPiI+iLitY3e8M++n2iOuo9jqhYbBnOTxV0WuM1bSh+T6MgkG/lomRXX8ehJj74O1YlQS5Q08jWe49iAHPkNUkzwqNjWUiHSm3P+Rxp00NIqrEH+fOcVcDooE9NzPCD/F0SeLYRCSAHN/zEPGHstbObqz9ZVUFkgV/2w681K//n1t457A3oQ9tYqFx+CGwveB+zTQiWpzBa2JOQogGWeSvYf2/fQskUZvc33TDMmNWB2wnQ+gA+bnkkIsDzd/aCxs0w/SgO7gN6KzSyyhiIKEIrBOKVkcsPlYwYfbRtQ7FurofKbQ7nEIkLPel74bsoUPjeBHULLOAPTHLptRfMaV7/IjSQLgUZgQUsaXV7Z7rhFBfhlkI/B6tDDiQgzGXgply1N3dnLdRFlE7aiQPp6QfWF1t9NwN9t3TTactqwZYRTJ6WxI5Pr/ekpHZLijNddmSNLA1I6/ei0ZZR+QwU2fwC7QG3+C6j9kDU6PwzStEbGyvL7oj49i6O7ktvWkdC4zV9MRlxNU8BWXDLju0TyNP5fW7k9bctfaYWdeZVtYc3Ftarw2CXooJJd6HfoNzHHyBGNJPyU8AT7HwZZXG+45K7cVsZdbq/BytzRj3rbl2JfCtyRipAlNmB2crVInz+0l9pkicSJ+xpRe+F1F6W9lo721exobHJubwM6BHOYJUWkt6F96AN99XNFSNtDmXNvQXVrLWqhEnJQaXAvVfYVLJKgMakGLB1tTrWs1NVOzfO0Rz58+emYfCEYB1ry2oQ3K
+ 4uV5Sn4P
+ L9VRgISQlnpqbVpjNt4MkpfrhwkBqhAz2nA1z8Y8wbpJ+6ftWmB+FYWFituZJQ4osnt/JjqJZaI/s6hyXv+rRyR/rxWPDy4PFxkNL/a1OBAibtFvP0h4ykYI+iz7j67jE/5lr910ieXvugZWMdFsQvF/WeO59896rmfaKKQb+ay8AHIp+kuC/gvK43WkA9REz/4g/+/nNVIrCywvvepIz6ZZ5EbAAIve4r32ngmqbtrwz6q46+LZu+MwWgfnBOsgPDWjXH+2HN9FJ/PigPM/xcSxNsP90Y0utbaBiN6waUsEYsiJRau3BVCbwlN3XS7ttOpSy5qdervUdVmDgM+MW3qOnAqt9pOdMI8maLBHdy74BTvp/CbxZZJbq1MzOo2Izbxup3lGTUx0eLSJfWg08c9GN9aIRxq/ja3rtPG1AoNKMg0qzVIjSYos3dpe6JBcqf6HfPxEekxrMWJbHq1iVDMedHeOkEB06fpygoROw+tf5m6btzjZj15WdaIdh3/qLvSkB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,8 +103,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------R1qkIECy0a412Zihr25diudF
-Content-Type: multipart/mixed; boundary="------------8aADOAqpLj38nVKRPt8K4gTn";
+--------------58iuvSQkp47XgPodjS4574QO
+Content-Type: multipart/mixed; boundary="------------axTL8uth9J2LpeygQTj3by2S";
  protected-headers="v1"
 From: Harry Yoo <harry@kernel.org>
 To: Pedro Falcato <pfalcato@suse.de>, Vlastimil Babka <vbabka@kernel.org>,
@@ -117,46 +117,104 @@ Cc: linux-hardening@vger.kernel.org, linux-mm@kvack.org,
  David Rientjes <rientjes@google.com>,
  Roman Gushchin <roman.gushchin@linux.dev>, Simon Horman <horms@kernel.org>,
  Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
-Message-ID: <ed9e834d-e3a0-40c2-9407-252f7ac7f00b@kernel.org>
-Subject: Re: [PATCH 1/2] mm/slab: add a node-track-caller variant for kmem
- buckets allocation
+Message-ID: <6d70757a-a849-4828-89e7-f3d51bf8c9f8@kernel.org>
+Subject: Re: [PATCH 2/2] net: skb: isolate skb data area allocations into a
+ separate bucket
 References: <20260602183122.747759-1-pfalcato@suse.de>
- <20260602183122.747759-2-pfalcato@suse.de>
-In-Reply-To: <20260602183122.747759-2-pfalcato@suse.de>
+ <20260602183122.747759-3-pfalcato@suse.de>
+In-Reply-To: <20260602183122.747759-3-pfalcato@suse.de>
 
---------------8aADOAqpLj38nVKRPt8K4gTn
+--------------axTL8uth9J2LpeygQTj3by2S
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
 On 6/3/26 3:31 AM, Pedro Falcato wrote:
-> This is required by users that want to use kmem buckets, but still
-> desire specifying the NUMA node.
+> SKB data area allocations (as done from alloc_skb()) use kmalloc().
+> These allocations can be variably sized and their contents can be more
+> or less controlled from userspace, which makes them useful for attacker=
+s
+> that want to overwrite a use-after-free'd object from the same kmalloc =
+slab
+> (which often just requires the sizes to roughly match into the same kma=
+lloc
+> bucket). [0] is an easy example of an exploit that uses netlink skb
+> allocation to target another similarly-sized accidentally freed object.=
+
 >=20
+> While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these =
+are
+> probabilistic. Use the existing kmem buckets API to further isolate the=
+se
+> allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=3Dy.
+>=20
+> Link: https://github.com/google/security-research/blob/master/pocs/linu=
+x/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
 > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 > ---
+>  net/core/skbuff.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 44a7f8401468..1f6c6b531ece 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -594,6 +594,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gf=
+p_t flags, int node)
+>  	return kmalloc_node_track_caller(obj_size, flags, node);
+>  }
+> =20
+> +static kmem_buckets *skb_data_buckets __ro_after_init;
+> +
+>  /*
+>   * kmalloc_reserve is a wrapper around kmalloc_node_track_caller that =
+tells
+>   * the caller if emergency pfmemalloc reserves are being used. If it i=
+s and
+> @@ -632,7 +634,7 @@ static void *kmalloc_reserve(unsigned int *size, gf=
+p_t flags, int node,
+>  	 * Try a regular allocation, when that fails and we're not entitled
+>  	 * to the reserves, fail.
+>  	 */
+> -	obj =3D kmalloc_node_track_caller(obj_size,
+> +	obj =3D kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_si=
+ze,
+>  					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
+>  					node);
+>  	if (likely(obj))
 
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+What about kmalloc_pfmemalloc()?
+
+> @@ -5213,6 +5215,7 @@ void __init skb_init(void)
+>  						0,
+>  						SKB_SMALL_HEAD_HEADROOM,
+>  						NULL);
+> +	skb_data_buckets =3D kmem_buckets_create("skb_data", SLAB_PANIC, 0, I=
+NT_MAX, NULL);
+>  	skb_extensions_init();
+>  }
+> =20
 
 --=20
 Cheers,
 Harry / Hyeonggon
 
---------------8aADOAqpLj38nVKRPt8K4gTn--
 
---------------R1qkIECy0a412Zihr25diudF
+--------------axTL8uth9J2LpeygQTj3by2S--
+
+--------------58iuvSQkp47XgPodjS4574QO
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaiEK4gAKCRCGXBN6rc5S
-1vM6AQCkY4YYTzaxNH/LFE8/hF3kloS36ybDDdJp9a+btRaPqAEA4IOb16AiRT4O
-zjOEcyJ4mUNx0EPzF0P4UEotgig/1QE=
-=VEOt
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaiENegAKCRCGXBN6rc5S
+1iLnAQCiHXHsoLVAPzu2eqLSBL/0qUnsHH8Rl1w8PYVRFrUQZAEAjAmcp39Ue/7d
+KAD/ZxX4pGdrNWb8HUTS2rQYIoNNkg8=
+=NWSc
 -----END PGP SIGNATURE-----
 
---------------R1qkIECy0a412Zihr25diudF--
+--------------58iuvSQkp47XgPodjS4574QO--
 
