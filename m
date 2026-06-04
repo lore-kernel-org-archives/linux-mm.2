@@ -4,144 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E004CD6E4A
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 15:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6094CCD6E4A
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Jun 2026 15:53:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C34B26B0005; Thu,  4 Jun 2026 11:53:32 -0400 (EDT)
+	id C5C596B008C; Thu,  4 Jun 2026 11:53:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0CD56B0088; Thu,  4 Jun 2026 11:53:32 -0400 (EDT)
+	id C0C6C6B0092; Thu,  4 Jun 2026 11:53:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B22456B008C; Thu,  4 Jun 2026 11:53:32 -0400 (EDT)
+	id B49A16B0093; Thu,  4 Jun 2026 11:53:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A18F16B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:53:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 03A37120127
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:53:31 +0000 (UTC)
-X-FDA: 84842675064.29.181B0F6
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CAD4D20004
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:53:29 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20251104.gappssmtp.com header.s=20251104 header.b=jpkivYJ8;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of luto@amacapital.net designates 209.85.167.44 as permitted sender) smtp.mailfrom=luto@amacapital.net;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780588410;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A482B6B008C
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 11:53:42 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6C1FB160EB0
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:53:42 +0000 (UTC)
+X-FDA: 84842675484.25.1CD7ED9
+Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 72AE6180002
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 15:53:40 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=1wt.eu header.s=mail header.b=aaJG32qR;
+	spf=pass (imf16.hostedemail.com: domain of bounce@1wt.eu designates 51.159.59.229 as permitted sender) smtp.mailfrom=bounce@1wt.eu;
+	dmarc=pass (policy=none) header.from=1wt.eu
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780588420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B6H/bsprACHYwfP1VnZci/atvKi9rC7jAoAwzWHNDIk=;
-	b=OxLdcSnlj/rtv/fxBWJZ3cN7Ahv4IpQHu4+JBpKK4rWcmp4jNbtY9u0yxma6l+6AopXxC+
-	/3gEGWnvZ9H5in7y5OYLVhRy6h+lXPpwGO5rDvxNz0uSkNVY4pq3utOBGKycUFfh1wXhhF
-	47/FZUb8uUfvBU8WqyAa0P2yqwpne2k=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20251104.gappssmtp.com header.s=20251104 header.b=jpkivYJ8;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of luto@amacapital.net designates 209.85.167.44 as permitted sender) smtp.mailfrom=luto@amacapital.net;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780588410;
-	b=J5vWbI9PETATVb4XNBptP3ZjB3wlXEfurJj4sYsNWYdqxyjb3caSq3oO3mkA3S/eFrpEf1
-	k2Kvq+BmQpyD80k6Gs0VjzUbRyuFPX4gsrsrvGr+e7Xo+AEDwQI02M2CNJf9YA70fi5BjF
-	qQpA+rKlxkCcGaCKXbYMA93ih+2KIEA=
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5aa68d9dc18so948621e87.2
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 08:53:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780588408; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fgauO9JdfpDCQYuvXKiqOa6KB2jzDKgF46b3W46rv9BAFWIqQzbhubWU5WvxmPTpHg
-         gI4z6ZCXrs+7GnfPTM17XvovpSwmk4nEq+qw1389icc4qbtQHLs8kpP7yMFniscPxinW
-         Hy3+SInqGYjkAe8lqjyCYMaMYtV4dXNfJFMznggQrvTUklrC2iNrq3LTAZjOnWqCR6Ro
-         RbAylRo0uy+hFx1iv7t4KuJoNIKRRn6otvbiqdhwIvyDSCR5zeTAwm6XKQukMO4NFYnt
-         7DBDk/54iajWn2MEiTO+CUQSOUsY7u/NSK/gkVD1qzlbPyqc/b07jAAdOBSBReHoOSqs
-         gYnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=B6H/bsprACHYwfP1VnZci/atvKi9rC7jAoAwzWHNDIk=;
-        fh=jcLWk965ExfZZGnAJQpD8fl2x5/zPS1O2dyebHShiWo=;
-        b=NfB0IlM02RAySaOwex1nw0P9gviZZpm8QmKs5wwhIHjd5IoG4tx2tKq78kFrgCRq7G
-         Ohnc3QCxg5+EyIOwTw0rUWmLcWI9CBccTBzEA/C4Kn9ciFSH15ynIMBA3YaWHwJPfJrW
-         9EIvQCSCQFK0g93JsQ8VbEK4nI5vZI1nDnSgNuBTjUiHsvE0LX6xw+f/mZ/3b+BHbIDJ
-         wPHudII30+nnYcejFhJJorT1YdG4nVNKooHQbAYWr8a1szArqm8lycZ0mZ9VJyYNQcl7
-         u8HxXJegHJseB9m38tgs2xEmOVmp8tx8Tdqmb3ivrkpAFGhg3Jz1nLCsqmgYOwAugEWH
-         vjjw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20251104.gappssmtp.com; s=20251104; t=1780588408; x=1781193208; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B6H/bsprACHYwfP1VnZci/atvKi9rC7jAoAwzWHNDIk=;
-        b=jpkivYJ8BPXSQs0nFbazAyeo7qSiesjvViaosm/G/J7lnUMgqcP15DZCG+PkVXSz3a
-         BYpLShSL1kQXEEFSDwA/DBF0+esS12Zxes4D1P6k69suD+fFnnIgrYFoVtqZkhSowQ61
-         a5tekAfSJtInC29gU3Rv8L4VZlACwh3k87LT3QKdln8Zbx6JUdrGBQ7EJYHEkGWj/Eld
-         534NpPtfZZ+3jXuf3Yl8OF4zclfyX1eq5J0h4xsFQGwbW8jnWeIuvK5eaSYwaHT8EbpJ
-         q8iumcXrdkySNuud/MThRUDjxEDbK73Py/rM2FsAD29qVY2/OU4j7SyLJ5xIAPPt8Q7K
-         uGCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780588408; x=1781193208;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=B6H/bsprACHYwfP1VnZci/atvKi9rC7jAoAwzWHNDIk=;
-        b=hGi/8LLuN1i3YPzgJ5irjKjbQNrtDapRVoj1raSfYtFLajnflFlpdJzBx76Pgl7ZVi
-         Xv70MMJYcVMfaeL6d00i9yGgoDklVEZ43BUb7W0NfwOz11mgc7Z5L31585NOygdqc9I6
-         Q0YjUIwQ6YwBM+k26iMooDzI22yQ7BzFy+Wabp+nAPjRPSgq/HBj1WRh25n1iX+Xb/MP
-         gmixQWO3teDxmurnb3UtrsL/v3dPrVTwi9elKALeLLWULQvNBeAlTseausyL8sRxl7p+
-         7PEeXQd+b1X7HlRNx2atAtj2/FO5JMYivKWGBd72sVQ1ERcMCUSeyXeYA09r2xyDPBHN
-         OX0g==
-X-Forwarded-Encrypted: i=1; AFNElJ/rs4R7OkC4Vi9gbL92XDOsAwnJiEr/6IRY2NaiX4fqnTjk23xjkxzE3bjQBvgzASijxSpj79xKbw==@kvack.org
-X-Gm-Message-State: AOJu0YyzVLHRZ817fJ52O7bA3o9V8Qa0nLEnvdYaAHLYleewKaLNiE8C
-	aT491TRZkkk1yrHQDWTvTAD+9Rq78faN0wAWI3uu0L6/Xa0ulUSpIDuyXIi8ZFtmxM/gsomqUQu
-	Cf/9gUKTaRWPpKrgSVKaG+J8kAIb/w608csn/C1l1
-X-Gm-Gg: Acq92OGj7/RmpPBALPVbL1OnNb86M7gaXQJ/WupjD/NCF8FdiahN1ggFAgty9B0kU8W
-	w4StardZpBqBZCAFZViQXlwkcU5uLgwakgRFYlTuKPvyT56U6DLemDNVCujgY4FaGSGQUpiEPC/
-	HXZc4Os2yOn9oAZkezJodQHF0VVhDZc2UjSD0vQgXNUWksJGKUcA1QEwgSwZb5sjOxJFTgX7vvY
-	7qike+vUVikwoMpkdSlbChjcyLt1kgGvB6zlG4sdFWFqR0UyQmBZYo4+9IoSGqE3kci11/ZWF+5
-	b73ZFcILWmbrICmLXMbu0tUfog==
-X-Received: by 2002:a05:6512:3186:b0:5aa:7126:c63c with SMTP id
- 2adb3069b0e04-5aa7c0888ccmr2415181e87.5.1780588407521; Thu, 04 Jun 2026
- 08:53:27 -0700 (PDT)
-MIME-Version: 1.0
+	bh=juT3AhUSnv3+LEExiQBNIpyMhKj+7Ht6/Ub5bBjOybo=;
+	b=VgNsliD/NBhOQ9TvclS6Y3oKe37UVGFIYv/FXrqgWB7Owf2A5G6sw5Ckr6Y6PC+NjXsMr0
+	dzsz39vBbcZxQqaaiq72yERQ7ZEMBH7MgM50LNCVd12Z9Fk4Crvr+iHZCB27JhI7pSn7Ix
+	vUi6WwWppNkqAxrPRb3f3C59AJypNVw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=1wt.eu header.s=mail header.b=aaJG32qR;
+	spf=pass (imf16.hostedemail.com: domain of bounce@1wt.eu designates 51.159.59.229 as permitted sender) smtp.mailfrom=bounce@1wt.eu;
+	dmarc=pass (policy=none) header.from=1wt.eu
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780588420;
+	b=C6QRej4/0MbzT5qCjRdJt9STi2uTQl7H/MULx/ZG4Vha6Ai724kEbHL7bxd7MHmvp3966D
+	evvjcjgh9bf4gENlaecYDw28+p29UbxgtaJRuAzwlwRbZ9QuT920Af2uo6qA1apys+FgmL
+	JlHsNb812O+a3dEGq+s/G3YzWOkvjXU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
+	t=1780588418; bh=juT3AhUSnv3+LEExiQBNIpyMhKj+7Ht6/Ub5bBjOybo=;
+	h=From:Message-ID:From;
+	b=aaJG32qRMUOIDg915/7kh3rDdW4vh2IvOB/PNr31yOeigP7OiDM0YHIhZoiZp8UMr
+	 NjXu6O405jBSx5uIwefKURTQZonCG1DnK7RxtvWKkjkUveM2Rqq1sV+8PrM60xISZy
+	 s80aAPevr1LZI2sSO5N94ajr5iCOo4kiSDrTDoDw=
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by mta1.formilux.org (Postfix) with ESMTP id 4A2D1C0ABE;
+	Thu, 04 Jun 2026 17:53:38 +0200 (CEST)
+Date: Thu, 4 Jun 2026 17:53:37 +0200
+From: Willy Tarreau <w@1wt.eu>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org,
+        Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+        Christoph Hellwig <hch@infradead.org>,
+        David Howells <dhowells@redhat.com>,
+        David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+        Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev,
+        linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <aiGfgRch99l_5z11@1wt.eu>
 References: <20260531010107.1953702-1-safinaskar@gmail.com>
  <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
  <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
- <20260601173325.GH2636677@ZenIV> <20260601160455.2c187574@gandalf.local.home>
- <20260601172825.a51a588ec1c32617a0e12d78@linux-foundation.org> <aiEb8CTM-ovMIq7-@1wt.eu>
-In-Reply-To: <aiEb8CTM-ovMIq7-@1wt.eu>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Thu, 4 Jun 2026 08:53:15 -0700
-X-Gm-Features: AVVi8CcFmOEXliFqkwckAyyy2jg3Zlvf93FEoWWD2xBje7cN4CAoI605l5f9FiY
-Message-ID: <CALCETrULMixRGJyGqAAujW7RN6PP2f_Orn2Y_0hpPMjRqQnY7Q@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Willy Tarreau <w@1wt.eu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Christian Brauner <brauner@kernel.org>, Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
-	Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
-	David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, 
-	patches@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	Jan Kara <jack@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
+ <20260601173325.GH2636677@ZenIV>
+ <20260601160455.2c187574@gandalf.local.home>
+ <20260601172825.a51a588ec1c32617a0e12d78@linux-foundation.org>
+ <aiEb8CTM-ovMIq7-@1wt.eu>
+ <CAHk-=wiQB-j53cTs9kM4UeXoXPaFj78aJe3D6Yp1Fohg7i4tWA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiQB-j53cTs9kM4UeXoXPaFj78aJe3D6Yp1Fohg7i4tWA@mail.gmail.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 72AE6180002
+X-Stat-Signature: 3h5adjkrwnt11rec4fqy7gk1ynzs6uhi
 X-Rspam-User: 
-X-Stat-Signature: xsbkw6k3pr3nzjx5mhj1acqo65h7kcch
-X-Rspamd-Queue-Id: CAD4D20004
-X-HE-Tag: 1780588409-638269
-X-HE-Meta: U2FsdGVkX1/Ty0VeU+akJtTVnirliIfC8U13cv9VfPCHmFdliseEKPsQuf6v4159R0AknXPFRdY6gUxw2jpGElv6W/vseTEU7NeoP57Xcb3MuQzdocubmqjZaYbtpD/At4fvf6C078YewF51chvT/Vu1TdeTFfm/OBMVlU9r1PSIONFtdpoA5p44HDLUjHPS7k9xualSeXDrt7iU3CUEfMEP2AcQZyq0i1YRiDRqyxhYUg6toNhC69v3CSUQgme3+IVMZ9/RY3g+6hfMksAdJ8MFfZeqMgVji/vq9zsWxWUpGGQrflxkX1Y2EJCq8DEbzqIoGavxwUhqXydR3odJSfV+4Df1LqMJxvYOnzIbEUPE5DeMlYkxTiyvavl0zwnKlDVcYsoqd2t28kNYlsLNWjNqjiLBVEqlo8Zs0S4d8N8a9+w4STuhvu35YcED4O0f8nGhRFyi6BdkUaP2zFs0uYNtS7mtxkWDVxMPdSV15tBxrrPuuqgOAuVxuvFoWdIUfZkxTxXxmsWi55MPYUgxtJL5rhM4CLC58C8mpExe6QPF2PgH63oCuJLe3LT0YVOyHI2EdxkN6OpZX2k+ooFg01Vbkr0bQCQWkj+r0blCTD64IKYKcagtcbv90RM4RWqqu/kW0royhyTy/E/SsXCvJb4AItgkzps//1ilkRx6sGoTzbecyXZr4k24OcxKGLTG1p3fcsoUxJ+Da6ASXtBiXfF6n3iNRusqN0gSuZJBtsn/+C7PXFpDZHTaJOAC79IOy3oRgcf+e8y1xBkSmxfD6nfbldo87JySG6dRasQnDPkyVwr3Gk7rgeQgtHEZTd5IS1VB+kic1VMf5pDaCwNErXfLK6zeyvNhlFL6h2KtpREvmctibcsj57K0xIW48/ZKeWPgV3xMo2k39AVn6EYeLBP79iMhvctZo0I9fUG0wmg8KbrIM/svk3vw2TkZy8x86+AD/fA6iC8kzMaOd68
- rbb4HZuf
- r8eIlUwKuzmZGzD3OHMGuV1a2yzu0Bu72+gm+skmeKV5dv9aYGRnVDCihzprRvsrGgPQVygZ8iVkg6EUhbO/0DsfnrMKitYXQfZ9QBxvgM30gnW+avnLpzWtqqhzIwS1Evh3YXpjp8GKSxEs+7esONWuY2ev7x6DpBpyU9SFVH+LZPn+a1wHl/TfUa6hU6rXI7eWJ4CPGvYQEBKafcnvfe4n7aCmu8Z+/ehp9EIHzcOWulCBjbkT/mB6N+vzLTvIT8QYEv9DIi+jLMk06tn8ORiEvHggJ/1Pf8lB3YgjKXx8QS4ozNUwRcTz9C+7WzNLXKTJyjFvskDysUeH8kzup5JtHQI2BO7xscty828wEFz3kp0LA36cBIbtr0Wj2980/ANQzmhef72kpVvfB67ZxlWrCkeSCRNXw06m3w/GXFrtJIu18Jsv07G/vc81Payq54H2oH6h0Sj0OfMIKQu20nL3JBwvPttdIrEd7PC6Ai4FFUO0lhi66rdHO6mLUFeAMAZwuGnltFbAhmWtqVAW74FyUznjIBN237RNXx3O9SwBZo/DxvKmzFFe+SMYHiHN57IN+5c/jUb6r9WRqB2rSpyd1863KznZ43VMKrtEKi7S9HIjsXKdfRVpdmXsRyx7AdGfME67/HU7Y/LxD7s+b5qI+O80whlHiSpp4zl12meJkA3r0b2AMsuW4+VV+G+A5NEbYIZfhjukFUEpkjJ61BcSmiY7W3Y3uHYiibBeHIksBlyFEoukdODxxHcjhNn+YkIg6L7UNP2cbNAHAJ8CxJGl98xPvab799WWc
+X-HE-Tag: 1780588420-733179
+X-HE-Meta: U2FsdGVkX1/NSqavIKgiVnOKkpsLiDoAlKfIzZdY6kHfiPULHjUYXJ/1tnsV++M81z96/t+k8O5pxyYLZ0vQLCzywoMobl5Hir8o2ZMg3xF3SjHz9oUEXvtWRbQOt1nPEEvPiqsWLbIj+TMvTbkpiljXpCiPWjxbMpDpu84Z9/dJClf3TlA3E4sW3sa7IJunr2pGz4cse8X2q5XC/22oByig7KrgaqwrupYjB5DsHJgvNvJEuFejFDWxOMkrQPZdlzMbW4D8JAd1L/nk3u76uHXeA2JcCALC7FoduYM8cR6jZDxc0VP6sNoSpO0Tk8itp6k+OseeJY7yINJ5wgh9WGtulSLyNzRqa59KyDVZMACdVHxydP6Lm/98g6vMVdKBYW35xnz3njmHAaJZ+r9agpszYZWzBMF+KVgxIp0NBzaSpitfZtCJSkcG20fTYMT8gNl8I8/lPoscLQW8v9+GQRA7mtkfaomp29NLm/+qIxYWBuQDNRU+rU0mrJrghI/56ncsIrmgFlZn2YhF7Vcjz1yEUTseeVLBIxoAPyTKqEMSSbU5oehY7a3cNj7QirUKrcoeo3prCiOp/iXLor61nKuKnmXkxaJ4JFFV5hQQWYvBqo406P2ZxYz+AeemN+ZTGdwRw2cI9jmq7znzKiO4x37/qDyMIzeMHgIObaTOKNFgtghzDemNT+b2rLo6amrzZVPmCVVD+X6bdiy76zue2u46KqFfENkJix+GpkCvDyR6Lst7BF1bia0IRQUuJLMpXXAO08pquqoc4jXMlnt16WDZljO2H7DWgpQcB3SttwNGkVpbEtVtp7nw8nS7Bed+33DlHcbodNs98eBxAMFGLNvk9j+keV81CYEAbaxcNcepc9cgCs0PNULcDXzp5YC8cchm1xT408GCbS8eG/KBYqSXXpYGYfzfsuWRDcfzY+/rcNjR3QJP7uk6IgAYkC7LQEi0GFRktKrEhKeKH7S
+ KgGjqtEv
+ 5n8U9MlgZK4LmThrVSTs8bpMm9+6R8dTRFOi+wK9jXf/5u4AOIEwV07m9tJ/yNPY+4ai0aFo6TPsJob3TV98106xVBYIh2G4YQw4S3dJgSPDzKVPSnRL2p5THh2sr9Cvxp8WsdxFD8eIZztIZUzb3EkF/2+/kzs6977sXcdgsjJBYxrn+TQ8ibf11vNOpyMvT8lisIIQ7e4BGKgBR2P94073nV+f8ZK3l2kwd4M4r4FqiCQqd6sSbO9IALJUHjZXyppwWjsH1RcctOQQEerfAy+7V3eFFAfNX6MVoCOVK4+CvtECge2qsyNaRaSDW36Edb2GCysG7gF6pZq0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,132 +102,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 3, 2026 at 11:32=E2=80=AFPM Willy Tarreau <w@1wt.eu> wrote:
->
-> On Mon, Jun 01, 2026 at 05:28:25PM -0700, Andrew Morton wrote:
-> > On Mon, 1 Jun 2026 16:04:55 -0400 Steven Rostedt <rostedt@goodmis.org> =
-wrote:
+On Thu, Jun 04, 2026 at 07:31:30AM -0700, Linus Torvalds wrote:
+> On Wed, 3 Jun 2026 at 23:32, Willy Tarreau <w@1wt.eu> wrote:
 > >
-> > > On Mon, 1 Jun 2026 18:33:25 +0100
-> > > Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > >
-> > > > On Mon, Jun 01, 2026 at 10:17:23AM -0700, Linus Torvalds wrote:
-> > > >
-> > > > > TLDR: maybe we could ghet rid of "f_op->splice_read". *That* woul=
-d be
-> > > > > a big simplification.
-> > > >
-> > > > FUSE might be interesting - fuse_dev_splice_read() and its ilk.
-> > > > Communications between the kernel and fuse server at least used to
-> > > > seriously want that, so that would be one place to look for unhappy
-> > > > userland...
-> > > >
-> > > > splice-related logics in fs/fuse/dev.c is interesting; another plac=
-e
-> > > > like this is kernel/trace/, but I'm less familiar with that one.
-> > > >
-> > > > rostedt Cc'd (miklos already had been)
-> > >
-> > > Thanks for the Cc. The tracing ring buffer was specifically made to b=
-e used
-> > > by splice and the libtracefs has a lot of code to use it as well. As
-> > > reading the ring buffer literally swaps out the write portion with a =
-blank
-> > > read portion, that portion (sub-buffer) is used to be directly fed in=
-to
-> > > splice, providing a zero-copy of the trace data from the write of the=
- event
-> > > to going into a file.
-> > >
-> > > trace-cmd defaults to using splice to copy the tracing ring buffer di=
-rectly
-> > > into files to avoid as much copying during live recordings as possibl=
-e.
-> > >
-> > > Whatever changes we make, I would like to make sure there's no regres=
-sions
-> > > in performance of trace-cmd record.
+> > I'm using vmsplice() + tee() + splice() in high-performance applications,
+> > load generators to be precise, and soon a cache. This is super convenient
+> > and extremely efficient:
 > >
-> > Well yes, The patchset seems sensible from a quality POV.  But to make
-> > a decision we should first have a decent understanding of its downside
-> > impact.
-> >
-> > I haven't seen a description of that impact in the discussion thus far.
-> > And that description is owed, please.
-> >
-> > I assume a small number of specialized applications are using
-> > vmsplice() to great effect?  What are those applications?  What is the
-> > impact of this change?
->
-> > Once we are armed with that information, is there some middle ground in
-> > which we de-feature vmsplice()?  Fall back to pread/pwrite in the
-> > tricky cases and still permit vmsplicing if the application is
-> > appropriately restrictive in it usage?
->
-> I'm using vmsplice() + tee() + splice() in high-performance applications,
-> load generators to be precise, and soon a cache. This is super convenient
-> and extremely efficient:
->
->   - vmsplice() is used to prepare a "master" pipe with data to be sent
->     over TCP or kTLS
->   - then for each request, we do tee() from this master pipe to per-reque=
-st
->     pipes.
->   - the per-request pipes are those that are used to deliver the data to
->     the socket via splice().
->
-> So we effectively use vmsplice(), tee() and splice() here, and for exactl=
-y
-> the reasons they were designed: only play with page refcount and not copy
-> data. The code is here for the curious:
->
->    https://git.haproxy.org/?p=3Dhaproxy.git;a=3Dblob;f=3Dsrc/haterm.c
->
-> and its ancestor is here:
->
->    https://github.com/wtarreau/httpterm/blob/master/httpterm.c
->
-> It simply doubles the network bandwidth compared to not using that.
-> (62 Gbps per core vs 31). I would seriously miss it if I couldn't use
-> this anymore.
->
+> >   - vmsplice() is used to prepare a "master" pipe with data to be sent
+> >     over TCP or kTLS
+> >   - then for each request, we do tee() from this master pipe to per-request
+> >     pipes.
+> >   - the per-request pipes are those that are used to deliver the data to
+> >     the socket via splice().
+> 
+> So most of those would actually not be affected by any of the existing
+> patches: the pipe->socket splice would remain, the tee() code would
+> still just take a ref to the page count.
 
-Wait a moment.  This is neat, but it's literally just a benchmark,
-right?  I skimmed the code, and it doesn't look like a production
-workload, either.  And you manage to get around the awfulness of the
-vmsplice API's complete failure to tell you when it's done with a
-buffer by ... never actually changing the contents of the buffer.  Do
-you have any idea how you would write correct code that uses vmsplice
-for sends and then *ever* mutates the data without literally
-munmapping (or madvise or something) the data do you can safely mutate
-it?
+OK!
 
-> I also have mid-term plans for using vmsplice() to deliver contents from
-> a cache to sockets as well via splice(). Right now our cache is split int=
-o
-> too small chunks (1kB) to make that useful, but as soon as we can move to
-> 4kB pages, it will make sense. There the same gains are expected, and I
-> would particularly dislike the idea of no longer being able to implement
-> zero-copy!
+> The vmsplice() would change,
 
-If I'm understanding you correctly, you see (and measured!) a
-performance improvement, and you would like to use it in production.
+OK but for this use case it's not dramatic (it could be more annyoing
+for the cache where I'd like this zero-copy from memory to the wire
+though).
 
-It seems to me that this is an excellent opportunity to remember that
-vmsplice gets a performance boost in a highly synthetic situation that
-sort of resembles a cache scenario and then to deprecate vmsplice and
-build something better!  Or discover that we already have something
-better, perhaps :)
+> but looking at your haterm.c sources, it
+> looks like it's mostly a fairly small thing ("common_response[]" being
+> 16kB).
 
-https://man7.org/linux/man-pages/man3/io_uring_prep_send_zc.3.html
+In this one it's indeed a 16kB block that is repeated into the
+same pipe by simplicity, in its ancestor it was 64kB. We try to
+make as large a pipe as we can, but that's all.
 
-I see that this can submit a buffer without a syscall (tee + splice is
-*two* syscalls!) and that it has directly addressed what I see as the
-really big deficiency in vmsplice: "This second notification tells the
-application that the memory associated with the send is safe to get
-reused."  If I were writing the user code, I would very much want that
-notification to be an explicit part of the API instead of making a
-wild guess as I think I would need to do with vmsplice.
+> That is typically *faster* to just copy than look up pages.
+> 
+> HOWEVER.
+> 
+> It looks like you're actually doing exactly the thing that I thought
+> was crazy and wouldn't even work reliably: you change the
+> common_response[] contents dynamically *after* the vmsplice, and
+> depend on the fact that changing it in user space changes the buffer
+> in the pipe too.
 
---Andy
+No no, it's definitely not doing that (or it's a bug, but it's not
+supposed to happen). I'm perfectly aware that one must definitely not
+do that, and it's a guarantee the user of vmsplice() must provide.
+
+> So that would break *entirely* with the vmsplice() changes if I read
+> the code right (which I might not do) simply because that looks like
+> it really does require that "wrutably shared buffer after the fact".
+
+We agree that this would deliver complete garbage an I'm not interested
+in such a "feature" at all.
+
+> Interesting.  Because the vmsplice() code uses get_user_pages_fast(),
+> and honestly, it never pinned the page reliably to the original source
+> - it breaks COW randomly in one direction or the other after fork()
+
+I must confess I never knew how it deals with pages shared over a
+fork(), and have been wondering if two processes could create a
+shared memory area on the fly just by using vmsplice() on each side
+and end up with the same pages (I don't need this but it could have
+very nice use cases).
+
+> (and I thouht even after a page-out, but thinking more about it the
+> swap cache may have made it work for that case).
+> 
+> Uhhuh. That does look like it makes the vmsplice() changes untenable.
+
+No no don't worry, I'm not seeing any value in changing data after
+vmsplice() and that would just be a bug. My goal here is only to
+pre-fill a buffer with a pattern then prepare the pipe with that
+pattern, nothing less, nothing more.
+
+> But I may be reading your haproxy code entirely wrong.
+
+I think so, but I wouldn't be the one blaming you for this ;-)
+
+Thanks for the clarifications!
+Willy
 
