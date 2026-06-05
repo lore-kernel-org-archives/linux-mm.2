@@ -4,146 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A73C8CD6E7C
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 17:22:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B0FECD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 17:26:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E707B6B0096; Fri,  5 Jun 2026 13:22:09 -0400 (EDT)
+	id A7FD26B009D; Fri,  5 Jun 2026 13:26:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E21406B00A0; Fri,  5 Jun 2026 13:22:09 -0400 (EDT)
+	id A30566B009F; Fri,  5 Jun 2026 13:26:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D10156B00A1; Fri,  5 Jun 2026 13:22:09 -0400 (EDT)
+	id 91F1B6B00A0; Fri,  5 Jun 2026 13:26:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C3AC86B0096
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:22:09 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 73E76163159
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:22:09 +0000 (UTC)
-X-FDA: 84846527178.04.8E556ED
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9ADBDA000D
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:22:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BRHTcwSL;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AA526B009D
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:26:35 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 256471A01CA
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:26:35 +0000 (UTC)
+X-FDA: 84846538350.13.0062924
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
+	by imf19.hostedemail.com (Postfix) with ESMTP id F2C941A0004
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:26:31 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=astralinux.ru header.s=mail header.b=QioEPdcf;
+	dmarc=pass (policy=quarantine) header.from=astralinux.ru;
+	spf=pass (imf19.hostedemail.com: domain of adiupina@astralinux.ru designates 93.188.205.243 as permitted sender) smtp.mailfrom=adiupina@astralinux.ru
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780680127;
+	s=arc-20220608; t=1780680392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pG5SFLXqHSL16ior17lMXeykIDslLb784eO5noWxsxY=;
-	b=S12wiYNyikMNZnRwdWQXqWYD4JEtM49o0XNzAMfjWDXRaOZWmJ4CcSg0O/aRbTyNaACRN/
-	ji8cq9kYbq7vf/KTGP+qxMeRtawX0R3dK8x5mEwNxw7HFtfWkF+yau2+9ZrBipHFhiwvd8
-	exkE8p0UjiKX1OVsuskZCwXJuadIbBs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780680127;
-	b=J+tfSptsbCTCLlVavf4q9kY1TXcRz019OBwUKl66yTdRTTM/+nZD6GdaTIDqWDvMe11xAJ
-	KhSnIH8otBAgyg1xrzTc5e1a3FxEMq7xNaSeAVlqeConwPxiBGxUXXzRXR25gnj8Irzb0m
-	Aq46/cwp6+rPWfMkohfGMXzQmIlxlN8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=03StQ3YYfAUQKT9V5RSLovWaHyp6Zx/w5Ez5DaFKM/k=;
+	b=eIHAiI2oX5VjvIRJEmUUGJunzdwhI4gxgb63tdKQ9talMl/6oxdOaVRbJ4pDZ2fRNas2If
+	swtQSM2pNehfUhDzmR27haU19yOYY+V6xwfaODcXLsMamPyxdIQ3BsMnbu//rry+j7xBJ2
+	TGXwdYqS3DkMUsjRu77tr74VfAUPf/U=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BRHTcwSL;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9CFBB418FF;
-	Fri,  5 Jun 2026 17:22:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB7A1F00893;
-	Fri,  5 Jun 2026 17:22:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780680126;
-	bh=pG5SFLXqHSL16ior17lMXeykIDslLb784eO5noWxsxY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BRHTcwSLuouyHkitWoP16Un5boWNOPQuWBN7Wfs4c5kaxEYJ5pzQ8IC76YLhWwEJE
-	 MfOCyBaL2kAydrKWSApqqYLHEBWPHcaG4eDe30unadQuD6RcUvfa2vw1+2Za984I1O
-	 T6ebBHPw/pq0y5QyWi1323ELh9Tqq83f7wYypIDpQfPGzm5O5Feudng6r7ZlPyLaSm
-	 iBmmGcoRUVYnsCXsjWiFykWgBHb6b1neceY1xFS8zkQoVWE9SpVL7uBRM6AhpnN+vm
-	 LfrXK+Y4iyvFm+H/zZQ+YWgb+mpoBjGJ6KpuRXcgpszyIIooSDNHVSCiPTBqfk+fs9
-	 RL6Kk8Jp0ZBLw==
-Message-ID: <aeff656a-ffc9-4c7b-9a3c-b27cae571961@kernel.org>
-Date: Fri, 5 Jun 2026 19:21:58 +0200
+	imf19.hostedemail.com;
+	dkim=pass header.d=astralinux.ru header.s=mail header.b=QioEPdcf;
+	dmarc=pass (policy=quarantine) header.from=astralinux.ru;
+	spf=pass (imf19.hostedemail.com: domain of adiupina@astralinux.ru designates 93.188.205.243 as permitted sender) smtp.mailfrom=adiupina@astralinux.ru
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780680393;
+	b=xpoHwcUuzsR4XWaFLgkRbcuMekDhbfdt+FMPg5xZwmtWYPH8AlvnblfMVLjSZf4+m5TxsL
+	c+4tlhI/+Bp9wkRwzVKVsC0NbOOlKCfLvJ+E+PyboE2zBHABhDdyS/sjlmbaCulKq5cbY+
+	L2jCbug2oWZ187n34dx5f+EJ6YX49OQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1780680389;
+	bh=I1udSyvjJtZNsTU1DKRRMlaA3SuRLgeegsMwVMcxdTI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QioEPdcf+nmDVP4XK23s0EgFOosVQ9Q6bpPnchrXclYBC+KkXCNYEco6QNvPYuO7x
+	 xsbVeyqecQcv5d5PNfKnexqxPKoMFp+7ToItF/8nRlI8SQWXAcIM6Xq1BbB7WIz2cb
+	 oUSJGlYz508QTwgDl9+PfMYHbD1IJXQkI6WaHlhYulLRObwDXT7Rb0Xw2QPj1hWbka
+	 IppiKzq7dcwFoPBpbRAKEIn8aE6prSpDbB0PyT0TDz7a7Ra1lnxU7gUSJA7r/4adEo
+	 BEV2vZacUiu0k/7GcweZgQy5TQ2IArr5+IGV2VTLrAgJ0nuWrb6yMOmzqXIR0/ASof
+	 Xa/zS1BIoe/PQ==
+Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id F39331F9BF;
+	Fri,  5 Jun 2026 20:26:28 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Fri,  5 Jun 2026 20:26:22 +0300 (MSK)
+Received: from rbta-msk-lt-302690.astralinux.ru (unknown [10.198.53.178])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gX7dT3xl6zJpKL;
+	Fri, 05 Jun 2026 20:26:21 +0300 (MSK)
+From: Alexandra Diupina <adiupina@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexandra Diupina <adiupina@astralinux.ru>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Pankaj Raghav <kernel@pankajraghav.com>
+Subject: [PATCH 6.1] mm/memory_hotplug: fix hwpoisoned large folio handling in do_migrate_range()
+Date: Fri,  5 Jun 2026 20:26:04 +0300
+Message-Id: <20260605172604.16034-1-adiupina@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-To: Mark Brown <broonie@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
- Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-api@vger.kernel.org,
- netdev@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>,
- David Howells <dhowells@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, Pedro Falcato <pfalcato@suse.de>,
- Aishwharya.TCV@arm.com, ltp@lists.linux.it,
- Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <20260531010107.1953702-3-safinaskar@gmail.com>
- <d9806b34-fc73-4878-997a-95c5e8ae4b29@sirena.org.uk>
- <CAHk-=wjBZAzPdZgEeHAtSiwJpomt8ZZgKbixuiHfRm09a4=PtA@mail.gmail.com>
- <1eac3b42-5dde-41c4-930a-d74cda9e6d68@sirena.org.uk>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <1eac3b42-5dde-41c4-930a-d74cda9e6d68@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9ADBDA000D
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/06/05 16:47:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: adiupina@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 107 0.3.107 575e75fe8e3b9d45c142d144823c5de38605099e, {date_rfc_vio_soft_silent}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1;lkml.kernel.org:7.1.1;astralinux.ru:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 203696 [Jun 05 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.22
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/06/05 16:27:00 #28217824
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2026/06/05 16:47:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F2C941A0004
+X-Stat-Signature: czid1njjrjq6rw7aij888wdkomjgu4ou
 X-Rspam-User: 
-X-Stat-Signature: um3aw4ftqci7tu9mn97e88iyqpw6f5y5
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780680127-50081
-X-HE-Meta: U2FsdGVkX1/1tzFM37bayytHjzoFfA6goCcQymbYiaGZox10ItaPZBr8ufX1NA3cBoWAqU0OvlkvRFVk0pbtbeIETJ6LwcFHLSLtCaIbb57daeQRY34fEsWUubxN/8dTEO7cUx/WJGQlTvcALjf8+D2GghmFAPOq06/bPHuVDncZIIjCMjbULQCOagXrau5YjoGNDtsqzURdUHYzV0G4u/Q8o9cSXyJH4uzmveZok0vNZLJvlD2clA9DJyXXde6nuGM6jpockf54lGh6J8z5pKiiMa8Jq48bigdMq8C6s7sLyG+K8xIGDudhetzPUjxJjVGXGTxddNr7vRiLxyS/6iTtdra8BHliFfrLh1SxqzL8TuOiikVL092VIkutLFQhURy/jdyfrW8+/wiQdRncNgJZoTNNNV6XcO2/vLPVWyhr5VZepJHzXaMmkCP7uC1J+0VH2u95IbMTY3R/jUbiwnawApPBwfwY+dZ+LQQvYzsslFkqXBOZjGXM9Np8lB/QHdLtd4mJrb7mIo428EhxVMP9hYeYBi4Gqm24AsfKFcSMQl4oiPIAwgnHHbf9bY4H+9KGV0atkAJwT2ty0lbbFPAE/7AP+zKkr3hes6K34nG/Z0EsKFt3lPYH4erbSMSZFyyRz33I4jzAEP9fB/vZ8e2fuQKwW3cXv83k5Jwz/pnoiJAzI9UIyYIULyBc5oAcj5YswNnQVhUhTNIL8Sotufa3cn1ntUXl20nudOYBC+PSXLFYt1Fqr7c6OoOhkqJzB2FFfShEri+NhdoOYgsJ8qdft5hVpoczooOvmkID3W+JJ/qosid5cbgnZS3EnbHvFmwtLhHM2tn+pOj5ZiRfIfl9ZNrU0sYrbA8zCcVYGkhokoM5MwARmzITIE8J/ua7RMoGofD29Cyn/5lWGmWZrYLoXTGU36krcRVxRxoMeIseI7BRelnulnNZ4LkQFjd6038IzSfeElxRkvcVSeU
- UIvNUw+O
- JP9l4eLZ2MhJuSR0IwXQt5NcpsKNNrrSiMM28+eRklmIjcGT6Pkdbh5IrqP4HhQjoOJA/Wu2fnAD2BpWK2kMTL/vCZ5IAWqDEQiwjVSY2+pY8FYsW29QbkhGhNEJCCxg/EYCYbdBIJaghivH7qtMro9z5Wu8u2QuAXdGopk66nbOAy/+PcD1qW/ivB50ZLSQSF6jsv3/eeR4S682iR9VWa0vq3WRLIV1agVI+UfnAszLKnstD0Dy6XO3I0lcO/dNcmsrNFN2Clrk21x4Axbxp3dclYYtgZjcMQWr5
+X-HE-Tag: 1780680391-612559
+X-HE-Meta: U2FsdGVkX19Abupt/D2AjFuOiov8QaBO/HnnDYX5Gv/uVKrSaG7tNXiEht6ecS8NaDm4R6GZ1Pp8j4gUqAPv05RLxy9Z4lxiSWXHjV4zA9wRGwEyx3ZZ4SXdOL2YG8lRWIqT4D822JceASCWdcwWIm5LbJfS3AeoxdnAIVVGB+3wDnbhx5myN/hg+Vu3Tz1p2f3GaUgjGzrfmQIBQgsikR1f50woF66kYJCWJe6z7pqqFvBtutPZeWXAjxAoTAnCZv+/82EbpPeykLE54TKeONWo8/H6ThLMiPN4qjcY2OYAJubAy0Zdv9c6y1kQApRS3PbnnkuZlxJFyRlx+iQAh/6j2IipSPlNNhtqz2CcqCs6JFGmuwySYHNI19z1AKLXeT+vwujyGwI/gEOi9rhPiPxV42GdVjA5N0pdNuZJdDgHcrya9smNA5T5XwybRk42A+PUSzTb1JAkMPXLO2pJ6sBif1SSw0w8jLgNzpWszYtJfI8TWN2qhvkhHXboPbh0G3hZpSMjtmHWnjPLeF0ac8+bkQwAK3FAQS+PHd/AySFPBtuAIYhsjjNzzf8mgzK1WQz7waRGS8y46OZ/8GRfExrJ2JPIzeB2B75kqEWjoJ6xsLY9I6ZtjlrBW7BNXMtU/u4GQASa+HzJhZ/0SGCaph1tZ0N/tm19m+XpHfUocq2wnCNlmdFrlWPSISymXlXa2QqgaoYFhQq2Ta6C3ZCG2qqokpPW5nfb6sXoK2oij2G6E0vq2ArP5OVDUscR72nbl7HNHfbcRVJ5eJGD8huOc1kTwq19z9ZRRfC/n6qy6H9ThshTwKnzKwek8cNDn8T4r7ZhpB1cjwRFrAFNtdhzpxWz6MqHY32NzQxtAEnycod9g3pZ+J3FuV2v/VL8yBg+oqIrFdu1gigSRb1QChc5neKC4w3CFNNCU2v2vwG+ih3RkPg3gTUS6NETL1aieD1QQYxMrb1QiFOpVCuEr8E
+ PPfaLlD5
+ rlm2cBoSKkf6/8W/gQ5SzX5AxUi5CwQrWRf+b1+LVE7rkxZJyocoV6+oPyCPCFV+1++ZXAfDkAHnsmxdYFqJXQfDIObQg1UwA+uHWb4QIXEkS5mzgSx83w4mZeWLXmfq3A0JDMI4rg6KQabBOB4noYqpjmwqnPXGklIPP59oFwNBx7DX1gP9HSwgaTjwnfvA0zVmn6SEuO3IIj+is9BHKC9h3fjoWOXxB2SimIr3HVceorT5YdN1rS8vg/+gsG66WKbiP2BNMK1CWbiNbcOi2ztd99wjwXWSbGPpsZA0D1QCPSqyIPBRaERm/qTTDJEC1tamYri16SvXz9hU8d0nd7/qAB8jFdxeHHxh0ayYPd8aV0x3icJenXykf/kWVB9SyFISzOf8UxVs+hd6MCr2v4Bsabf2KAu+zQ8HNa1RU3CTfnm5yVaF2CIy4BiY+FtPWMXSPwVIvdzyEMKrpQTONptqRUmN3dhL+WJKLhBSI2i2ANaReDhQIPK0g4iY2vX1awdLXiQT11a3vBC+xLMCtIwpA/Tymx6zLcU3k7juh73JwvMgFsvx4DMxXkrkk1O5vvW/ovsFWaVWEppW/lbiZFx58bcwUdTl4HM7XShn/O/LEgSJgT5gtStEH8EvrpCV17mTSr/z507Eou6uu+TcTPjGiFd7H7dM7Ebo3rjc78jeTu23S0z4xt5KV3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,29 +126,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/5/26 18:26, Mark Brown wrote:
-> On Fri, Jun 05, 2026 at 09:02:52AM -0700, Linus Torvalds wrote:
->> On Fri, 5 Jun 2026 at 04:02, Mark Brown <broonie@kernel.org> wrote:
-> 
->>> | L4472tst_test.c:2050: TINFO: Tested kernel: 7.1.0-rc6-next-20260604 #1 SMP @1780589917 armv7l
->>> | L4473tst_kconfig.c:71: TINFO: Couldn't locate kernel config!
->>> | L4474tst_test.c:1875: TINFO: Overall timeout per run is 0h 00m 30s
-> 
->> I htink this is the same thing that Christian already noted (he said
->> "reported by David", but I don't know which David ;), where the
->> vmsplice() writev() emulation was done as a blocking write, even
->> though vmsplice only blocked at the beginning (ie waiting only for
->> _initial_ space to write, not then blocking afterwards).
-> 
-> Ah, yes it is - exactly the same issue that's mentioned in[1], I missed
-> it in the middle of the quite large thread and didn't directly find
-> David's report.  Sorry for the duplication there.
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-Yeah, I quickly discussed this with Christian on a different channel and he
-ended up sharing the report with the analysis directly.
+commit 397f6d14f9c370e4910e6885294c340f39dedbf5 upstream.
 
+In do_migrate_range(), the hwpoisoned folio may be large folio, which
+can't be handled by unmap_poisoned_folio().
+
+I can reproduce this issue in qemu after adding delay in memory_failure()
+
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Workqueue: kacpi_hotplug acpi_hotplug_work_fn
+RIP: 0010:try_to_unmap_one+0x16a/0xfc0
+  <TASK>
+  rmap_walk_anon+0xda/0x1f0
+  try_to_unmap+0x78/0x80
+  ? __pfx_try_to_unmap_one+0x10/0x10
+  ? __pfx_folio_not_mapped+0x10/0x10
+  ? __pfx_folio_lock_anon_vma_read+0x10/0x10
+  unmap_poisoned_folio+0x60/0x140
+  do_migrate_range+0x4d1/0x600
+  ? slab_memory_callback+0x6a/0x190
+  ? notifier_call_chain+0x56/0xb0
+  offline_pages+0x3e6/0x460
+  memory_subsys_offline+0x130/0x1f0
+  device_offline+0xba/0x110
+  acpi_bus_offline+0xb7/0x130
+  acpi_scan_hot_remove+0x77/0x290
+  acpi_device_hotplug+0x1e0/0x240
+  acpi_hotplug_work_fn+0x1a/0x30
+  process_one_work+0x186/0x340
+
+Besides, do_migrate_range() may be called between memory_failure set
+hwpoison flag and isolate the folio from lru, so remove WARN_ON(). In other
+places, unmap_poisoned_folio() is called when the folio is isolated, obey
+it in do_migrate_range() too.
+
+[david@redhat.com: don't abort offlining, fixed typo, add comment]
+Link: https://lkml.kernel.org/r/3c214dff-9649-4015-840f-10de0e03ebe4@redhat.com
+Fixes: b15c87263a69 ("hwpoison, memory_hotplug: allow hwpoisoned pages to be offlined")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Pankaj Raghav <kernel@pankajraghav.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Alexandra: replace continue with put_folio label ]
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+---
+ mm/memory_hotplug.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index c8cc2f63c3ea..013db41f6ce2 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1654,15 +1654,21 @@ do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+ 		 * the unmap as the catch all safety net).
+ 		 */
+ 		if (PageHWPoison(page)) {
+-			if (WARN_ON(folio_test_lru(folio)))
+-				folio_isolate_lru(folio);
++			/*
++			 * unmap_poisoned_folio() cannot handle large folios
++			 * in all cases yet.
++			 */
++			if (folio_test_large(folio) && !folio_test_hugetlb(folio))
++				goto put_folio;
++			if (folio_test_lru(folio) && !folio_isolate_lru(folio))
++				goto put_folio;
+ 			if (folio_mapped(folio)) {
+ 				folio_lock(folio);
+ 				try_to_unmap(folio, TTU_IGNORE_MLOCK);
+ 				folio_unlock(folio);
+ 			}
+ 
+-			continue;
++			goto put_folio;
+ 		}
+ 
+ 		if (!get_page_unless_zero(page))
+@@ -1687,6 +1693,7 @@ do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+ 				dump_page(page, "isolation failed");
+ 			}
+ 		}
++put_folio:
+ 		put_page(page);
+ 	}
+ 	if (!list_empty(&source)) {
 -- 
-Cheers,
+2.30.2
 
-David
 
