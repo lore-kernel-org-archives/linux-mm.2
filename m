@@ -4,119 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFD6BCD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 05:47:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82C75CD6E74
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 05:59:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0738A6B0088; Fri,  5 Jun 2026 01:47:06 -0400 (EDT)
+	id 715A26B0005; Fri,  5 Jun 2026 01:59:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 023636B008A; Fri,  5 Jun 2026 01:47:05 -0400 (EDT)
+	id 6C6576B0088; Fri,  5 Jun 2026 01:59:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7BAF6B008C; Fri,  5 Jun 2026 01:47:05 -0400 (EDT)
+	id 608856B008A; Fri,  5 Jun 2026 01:59:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D80556B0088
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 01:47:05 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90152A0366
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:47:05 +0000 (UTC)
-X-FDA: 84844775610.19.56C2618
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9F51140002
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:47:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aaUJ4a39;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of error27@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=error27@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 513F06B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 01:59:37 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDCB414089C
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:59:36 +0000 (UTC)
+X-FDA: 84844807152.02.A9ED0B0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4636620004
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:59:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=afXQTfY7;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780638423;
+	s=arc-20220608; t=1780639175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fjDrLfKQSx9/iTAOpM8mEBvBfa+kxAhmd9fKCaMvT60=;
-	b=BTdI9XjGqCWpfP94Cx9U/rHQgkEe38IqLjQvASwap0yUUB+AS6/OiRSXg3QeeGb17do8eO
-	rr7xd0nsabQjU+VflY/6EvR4orG+x8Ptx327bRF7r3iNiG+P6G99JqodAbGRSrw23a5Bks
-	vo4lwZU7TSJhyIj8UuYvGTF24oDNi9M=
+	bh=VZG9no7GTW408RV/60BpZX7jKUvr/kEIeLtGBvYuZZ0=;
+	b=cLegcQp1zHvVNz6ybQwJK91vFAdpCsFXPmEqdkrXDwcNnL4wKemkv2jWQNn6QyImVff5DN
+	2U9rptIGXIz/+dBiki4BBkp68OgqM2NNJxv4ATEba1o4bhahUSXmbbMy+QK43DphdCQ/h1
+	FXnrX1Bdp5WmA+lRt2UZ2MD/zgRcH9Q=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aaUJ4a39;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of error27@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=error27@gmail.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=afXQTfY7;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780638423;
-	b=Fn6MVmiVqUqbQS8v6UD2IO+p00J1hCSRO0xK/8DwRI5UUlTv+og7r2ap79bv23fpQXTPey
-	xzEo8EOcOscsLmMDk3S+zebm2BiaFJ3YcoukpUT72CAHyedJcXuTdDO7M1OqYsVuCYaZg2
-	84gjIVJ0KWz8jmc+H7GwaBG9vgHOtFo=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49068493267so10743165e9.1
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 22:47:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780638422; x=1781243222; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fjDrLfKQSx9/iTAOpM8mEBvBfa+kxAhmd9fKCaMvT60=;
-        b=aaUJ4a390nzd6Vx3GOIDWcAOlKTXvs1WpMATPXgTZBKf37APm1NpSf1ipzm6+2Dh7V
-         NqEzxBsUPUNlbpdh6cbmVsNi7GRuFuzuJ/IfDQDKBZuj6jwUzhuHTdcOZ8CXe/AM9W6f
-         Im7DTibNClomU9qfOXQCu4WcK+PasDofJr24uAWhXgCA+nudtR8+qfeWq2SlPQNtIRLP
-         INqK4gqQxYm6KBsiOVIKg9HlUk9FBkXXsJ/Ihl/gVmYZcxmenR6UqdI36f0E1ECDYaWy
-         l0tnmagZSvYg6NnLV0cbeW08YMJp7ViiLxAyz6V7v5my9ckZTexAWNLltXR6TIPGAjsB
-         EHGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780638422; x=1781243222;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fjDrLfKQSx9/iTAOpM8mEBvBfa+kxAhmd9fKCaMvT60=;
-        b=WO0i7hbPjV8WRPt2TJ0O2DicNwDsMx3Dg/NMMZudXU23rTiVmNrXREvQg3CeApSEyk
-         0/oAZSoOteXvFA/oW4hfkBjkHhwf7s8AALrALiLf+ty72W/13IGlyiETLrR1VGr0TRgu
-         7zQNQQ/W8O7EpGP1nG/kMqVOcsYNpsXSFQNWDhp6pVP5wNMZkDXZxm1lV8X9veEDr0P+
-         6Bnt4UXZhIXibYSXiIScLSqek+3K7yVkSbhpnPcQGF4L2vdGJwFB4tz7wzgET4oaIhK2
-         gqQ/QjGaCPcQK5hNzUDiaNLiNyHBjYXtoMzJa4u6C399wFpqgmM3n29/MdkycV3Laemn
-         ybpQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+dKnn4jr6nTBcTKXOhBNSf33gV+rDq0vPiwqHAY9WfbdvFWmkz3/Qv0kbTtf8X9nJr8I7uLxAGmQ==@kvack.org
-X-Gm-Message-State: AOJu0YygzTWZT+7CNzSdpk2tqnQ6ytr8Zh5wqycBY5ihlNO8eyj1jJKO
-	3Sd/1GM+t30PqO0MD5P0UzoakDTewnluYYm1+KNwXwoI41Q7eMxqmAaK
-X-Gm-Gg: Acq92OEa9lkatTbuns207atAQ8EaNraao5+vnKVRG0rs1JhKQ5vGPeUDRr6xINGxuJt
-	3wLGhZRBBaVMh02QeveS/pR6XQrw8OoL/dRHDN1h5eqAwbsyGaVHgxTgRapXSIs2Y0b59bzOcpc
-	vxzywTASCcQOdaUZThGYFrkzINLKCqVGRSAqgtuIYtufDr1AGrxQdairCPp2Z30VUabMRfcHFqz
-	OJKchx1IUENuiA+FDKyZrli4SC0dgskzm5nkJRhEYsMNuzEtamg9U+x+E2wgoFsiVZmOC+pVAWo
-	ZvHWXBtKQ8JAh/Yygu9tUP4OwgTS3YLDONosKPZdKMt5xzQXFsMtBwR7VcNoRUaR6ar2K2eGT2e
-	xWW3o4zYYP5Eg78FLo/JNwcEPsR1JlFEr7CJ+mvnvnSfvjt/HTX2ajYlR7oeauWl1qA4YlbAYUO
-	8jhoz+aTC52w4kO8ehOafqH+5gGVyvDg==
-X-Received: by 2002:a05:600c:c493:b0:490:bb3e:30c2 with SMTP id 5b1f17b1804b1-490c25f1682mr28690675e9.18.1780638421991;
-        Thu, 04 Jun 2026 22:47:01 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2ec711sm21676813f8f.12.2026.06.04.22.47.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 22:47:01 -0700 (PDT)
-Date: Fri, 5 Jun 2026 08:46:57 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Marco Elver <elver@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>, nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 3/4] cleanup: Annotate guard constructors with nonnull
-Message-ID: <aiJi0WcYE8FZt-jO@stanley.mountain>
-References: <cover.1780064327.git.d@ilvokhin.com>
- <85fee12eec20abfcf711443518e8f0caec982a86.1780064327.git.d@ilvokhin.com>
+	t=1780639175;
+	b=ggmTdn8hf5ZCUfjGPj0xsgk3baDEo55j/Yps68m4LUzqhWKnjNWeztCOKoq8t9GqjA0WT2
+	2msYn+W2OYc92emaDnLFioJDNUDTy98FFCJtQEqu2r3hQ3uTboKt2PgrPmAvFEdP6N3/Ib
+	qq1CwmoXG8gdz7qzMh8Qe126a+2l6mM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 40561423C3;
+	Fri,  5 Jun 2026 05:59:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42AE1F00893;
+	Fri,  5 Jun 2026 05:59:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780639174;
+	bh=VZG9no7GTW408RV/60BpZX7jKUvr/kEIeLtGBvYuZZ0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=afXQTfY7mlWhg66Vp8DQgnBNBuw1R80YdSq++am4RaFjH5i2h1K/w9tWb1CCQMA9n
+	 B2+xwhktTQ3oczmJe/BO3NKZ9nOROjxpaaGuvQCMt2EUiUrYilQNF0N9GsBtIZYEFM
+	 0NhWFxTTiNAc1f/z2ck6N1neKifOxCk39hprXyWSTrcUJA/iZjlraVBanBY2DjRT8O
+	 AyxeP+SnxAHgkRjI9YLUDopGnScNZiTxVg5ZjYHAyBFcXPDd7MfvbSYcDJphLcpDUs
+	 e935zO9VR4bVKaRzo+zWWHwk+RcvqJD9+pARw3BIcYc1l/Cuu39wEsD0ufUS9k48Yu
+	 keK25jwAMDxPQ==
+Message-ID: <c452e1a6-f577-4b72-b034-827f83387448@kernel.org>
+Date: Fri, 5 Jun 2026 14:59:22 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <85fee12eec20abfcf711443518e8f0caec982a86.1780064327.git.d@ilvokhin.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9F51140002
-X-Stat-Signature: 1uzwprhmftygkamqwfs59utaxckep9kc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/slub: preserve original size in
+ _kmalloc_nolock_noprof retry path
+To: hu.shengming@zte.com.cn, vbabka@kernel.org, akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ zhang.run@zte.com.cn, cai.qu@zte.com.cn
+References: <202606042027323804pk3MRY42Jy7y42OHAhQZ@zte.com.cn>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <202606042027323804pk3MRY42Jy7y42OHAhQZ@zte.com.cn>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------mvMhvM0STHKjAKiB8hmyrDMn"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4636620004
+X-Stat-Signature: gjnos5qsdzehhnrrqpk5thssg3xt5835
 X-Rspam-User: 
-X-HE-Tag: 1780638423-513144
-X-HE-Meta: U2FsdGVkX1+pFSpCZGBwB8wXdhX8+UHrWaNEpaActKMy9Z7mP+j4H098v58/wX0kNWugvYLrI644fmDBiI34LeE+6/7OTm/0EfmmLLa0CuHwwP9Qal2yI2WapBdOchT5dDuwx8el3fxDVEtmnSxd7O29jTSfiRP9G82ybYxeL5lnlGX5v2vbEuPm6DNxG0EY3E9SawSNLNHG8zLYnyM7xOVEcZIKRCvbx4HwdAyYZFsqkhuROAsztfGYVKUPANwDKeWhG5stU2tiZkKYT818jlGkHlGTEJYquBXEPgXJJsSaPJGfZ6LoZyPWEu3vN8mPDhPMCdZp85s+J51IzFIUd7ON5S3xJ+a6anBtshNu3iC2MncVndt7cKHD7QHZde+SjkOVKhpq5kN4hXu/pwaNeUNgUAU4mB9KjVMkk/9uvsgKBPFRTK+/Rnyoq263evx4PlCl4Pf9BM++K+TPtKGKKf97+YxITdfTaLtbz45nPfDD7cxYu+tMfwcKc3rdPv9wphChtdNdqiNPjCxaZLkRG0xaHqda5Bwk28fKQzdfHu4F6S0SXipk6bcMnudu8KQaZz/uWKCMdWg7qSydxcnS5yQBKugWit2A4rPx/W+2/BuoxT1O0Jt0xNcQVIqH2XaIEspy5qW7K6FII4LsXxO+1p+2Z4nrAqaXpB5l2KbfUKcuecI4Ui0/pHJOl2ERlyqO8U9B4wQ7nNa8U9quYtS7rTcy+7Qks+DyL/9XOwlZm4q6nxM0BBY+R99vF6O4OG1b8ylcwq5otnYz5vi8JaYjwKxm099MCsnFhXPEjrdxcAkdcWQpKy0lKtd+kWr64hOPRyOQ+LqjhfqoJ3CXXqWy5h7aON+CjiguIABx7KkDVqBiYLW8vXzoYkHnhcdpIUVye3SjyjaQEz8d2BJQdn7Bw/SH9/Q4odPALFdko82/FJtG37RJXBt3G/o08pPuFnKmrnge8JpMdquW8m9QFRX
- CzMBuIEc
- lC1nM7lbUb2oVpJdYJck0PoYCNUvttLfdt4gt/+QmnSnuKT/Y2f8Xal5KMLfWTmnk9spYeZCzXrnQqLO3G4nySO30m4mW9VPTt9iqiNT8mA+QgrKysxQm8cOV7vcI3cukSOFtMkFPVGMQ3XGWlGrQpEEjTXOuMQ9jxMSQpnQKdZ+W/y2lam7kvfcWuDRDYOmmEw/OSGBputn9+1SwqAAqOiLw8vbL+jBIDcrTb15cRz1JTZfpXXChdfBQ83uCReQzFOuttrMf+ntqnYJPWC0VbHi7TMsjtQEF0c4zSgWrLPCD5fB290wP+46YECXDLtzGP7CabE5oCQaCDcsOky5zwd7JxFfVkhBQDm9GznPj49yerUPAnpG57JvkNMl/0d6O0F0QFVCdqnkUvXFodheaLjdnvpquHwh1+bEDtWw0ZbHWq5IKb+buwkiaC9UL/vCYdvNDGA7PxEZRX3pyc5IQBVIwfVzJb5zV9+YQ0QfyzvewbOiYsBPI4PasRQ==
+X-HE-Tag: 1780639175-542832
+X-HE-Meta: U2FsdGVkX1+u+mZgq13bFXYhUXVTxHrxDSAnyuGbhNmEFQLnbPDSaipSAw+4iwZvY+KqkvdG21b1HEmw/oYSZn2VFR0qIGYIInF5Pmm3qwIOpl3ikn1n7ZqRGE92jv+jXRhj2VPtGKe/lTVb9WYPcDcmwtX+mLvA0KMYHjx3h9W/nuyPHK5XZlztaA6Upm+7RGOeBBAfRE2H8IjxnRJ5urDk+DgqrcrIokNpi1VANAbnZo0tj4ga6DeviQDIE+Zbkm6mfXlnDwHeGOswYzxgaWnIJPdoWcgkxSENd3ZDEwzY7OUfBJTT/gQkU005enX992JPxnlf5tBW9vGoaxn8qgNUGchh64T6WmGRgLfOvlS6RD1wxcl0vsb11+OPtSjOeMQHPxlyDNawYgMugaKT3froQholEfgJelxpX4XUg+yDSFFdR+cTOhdIq3TOZhY2WBTHgeHfI+gzNMtflrVscSyUHQXTzTK7FHqovym//8/MJKx9FrO1z3PtIywGTSJooNSHK7wEYBDtXvCV8/mcNGDIvvgrT2hAn79xDRinmVF6AtZP3HyfTiipw7XYySosdbhx6Nw0cgoIwpTPHM3z2TwofPAJiE3KIK25yl537a//CJhZ33oSqFCHkCw2xG7jWUstHh9v19cMBD76uKfz12qk7nlvdh4aI3d3rRZzRJI60SoRyFOh7F7U7vs9gWLSNl2F/vcBudXrV3lq6Y05IsAhahucwcTz1eCPVindyp6uRJsEZ9PVP5ItpVxWjjsdrnc5bvXyI3dOVBZSYVr7xKhn7a34qa0dV4PZ88OyVmkAAfXXKOegb3BL29yusmZ1KeNJeFaus+WNJXY1H/J7LDryv3ZdZMU8CKI5KFgqgFbPcTxtHo2/9OqaL0coW7ZFZxMDa2wxVOcDVcozVpCQaXtBQqTO8Na56wMDMsv+nqa6+MmGopKWYEjlCQjcwD0cm6TVKsAaWCBgtypvMFu
+ g+MZTOG1
+ GLXsTb1JdMBxD7wSv1Kica/IlG4CGebH0Xzls9x7Y9pqsPytTQb6CTu7HTBudFu+lwIUP074ITzuAlXJxWCFDGgmC8pqIrmI8gQwmMDKb/0o7wwEUdd9GDwV1TlTo4idQRRqYjRUZLKkwpCWdtzAT0F4ChbuoyaR4MIZbMuAMARfvmcu1edvlXa0cjMccH+TKpBig68lTQ9POIUpFTp7iLxZ+1JA3nZQ9hDzwJWSwxkAzfudxdTdkuv9LZZa62nSt2+LFJYlGcygM4l/gxzZTTH1npW2lUFeTpgJXROEfDyE5EdxiqD1nMlldZz54MacBfNgxnbAUkiYyJLTel5J6+JErKWkdiwVMbBqoCU4kEc6J3tc3t3Ov19bFifNsXhrBARvaDZJNj5vTfGXbWPnE951g6bbI1Nk2TT4PsWaA7e3fmWMkrislG/ZIpXH4ajbhyUys0R6GNBgd15JFTOfztEWF7y40fd9nJBmhmpLOSNH9wg9PpBE+Qnn6L3qaykxbdtRWubTbOAlCmObAS5hR0n1rmDdfP3thj/D2fDM2qHeaAzuf43WSYbazZqBSmDt8nG+dYgcxqb/nUDg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,39 +95,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 07:12:52AM +0000, Dmitry Ilvokhin wrote:
-> Add __nonnull_args() to unconditional guard constructors so the compiler
-> warns when NULL is statically known to be passed:
-> 
-> - DEFINE_GUARD(): re-declare the constructor with __nonnull_args().
-> - __DEFINE_LOCK_GUARD_1(): annotate the constructor directly.
-> 
-> DEFINE_LOCK_GUARD_0() needs no annotation: its constructor takes no
-> pointer arguments (.lock is hardcoded to (void *)1).
-> 
-> Define the __nonnull_args() macro in compiler_attributes.h, following
-> the existing convention for attribute wrappers. Deliberately not named
-> '__nonnull', to avoid clashing with glibc's __nonnull() when kernel and
-> userspace headers are combined (User Mode Linux for example).
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------mvMhvM0STHKjAKiB8hmyrDMn
+Content-Type: multipart/mixed; boundary="------------UaqwdqBkjfBUljnSAbpOsztD";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: hu.shengming@zte.com.cn, vbabka@kernel.org, akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ zhang.run@zte.com.cn, cai.qu@zte.com.cn
+Message-ID: <c452e1a6-f577-4b72-b034-827f83387448@kernel.org>
+Subject: Re: [PATCH v2] mm/slub: preserve original size in
+ _kmalloc_nolock_noprof retry path
+References: <202606042027323804pk3MRY42Jy7y42OHAhQZ@zte.com.cn>
+In-Reply-To: <202606042027323804pk3MRY42Jy7y42OHAhQZ@zte.com.cn>
+
+--------------UaqwdqBkjfBUljnSAbpOsztD
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+On 6/4/26 9:27 PM, hu.shengming@zte.com.cn wrote:
+> From: Shengming Hu <hu.shengming@zte.com.cn>
+>=20
+> _kmalloc_nolock_noprof() retries from the next kmalloc bucket when the
+> initial allocation fails. The retry currently reuses `size` as the
+> bucket selector and overwrites it with s->object_size + 1.
+>=20
+> That value is later passed as the original allocation size to
+> __slab_alloc_node(), slab_post_alloc_hook() and kasan_kmalloc(). On a
+> successful retry this makes KASAN/slub-debug observe the retry bucket
+> selector rather than the caller requested size, potentially widening th=
+e
+> valid kmalloc range and hiding overflows.
+>=20
+> Keep the caller requested size separately as orig_size and pass it to
+> the allocation/debug/KASAN paths. Continue using `size` as the retry ca=
+che
+> selector.
+>=20
+> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock=
+()")
+> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
 > ---
-> Miguel, I dropped your Acked-by due to the rename. Went with
-> __nonnull_args() (over __knonnull()). Happy to restore your tag if that
-> spelling works for you.
-> 
+> Changes in v2:
+> - Use an explicit orig_size variable instead of bucket_size, as suggest=
+ed
+>   by Harry and Vlastimil.
+> - Link to v1: https://lore.kernel.org/all/20260603211011530GqLSXP_rgcuQ=
+dR47IGQLL@zte.com.cn/
+>=20
+> ---
 
-Sparse doesn't like an empty __nonnull_args() at all.
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-./include/linux/spinlock.h:608:1: error: an expression is expected before ')'
-./include/linux/spinlock.h:619:1: error: an expression is expected before ')'
-./include/linux/spinlock.h:631:1: error: an expression is expected before ')'
+--=20
+Cheers,
+Harry / Hyeonggon
 
-Shouldn't we specify the arguments which are non-NULL?
-__nonnull_args(1)?
+--------------UaqwdqBkjfBUljnSAbpOsztD--
 
-regards,
-dan carpenter
+--------------mvMhvM0STHKjAKiB8hmyrDMn
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaiJluwAKCRCGXBN6rc5S
+1mDiAQDMsuhI+fb3bj0yV2uXPZmU7SL6rZGXaVTpa+0qqfyOXAEA4c7/8ULItr0w
+L8g4FZ2T8JQFVYrjv1BlKTwU2h5EdAY=
+=ADM0
+-----END PGP SIGNATURE-----
+
+--------------mvMhvM0STHKjAKiB8hmyrDMn--
 
