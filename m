@@ -4,126 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4D19CD6E7D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 12:38:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AB45CD6E79
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 12:49:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FF3A6B0005; Fri,  5 Jun 2026 08:38:11 -0400 (EDT)
+	id 4C31A6B0005; Fri,  5 Jun 2026 08:49:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B0356B0088; Fri,  5 Jun 2026 08:38:11 -0400 (EDT)
+	id 474066B0088; Fri,  5 Jun 2026 08:49:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39F486B008A; Fri,  5 Jun 2026 08:38:11 -0400 (EDT)
+	id 363026B008A; Fri,  5 Jun 2026 08:49:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A1DA6B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:38:11 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E509F1C2519
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:38:10 +0000 (UTC)
-X-FDA: 84845811540.02.317897C
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 858621C000A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:38:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=Ui7qEpxA;
-	spf=pass (imf20.hostedemail.com: domain of miklos@szeredi.hu designates 74.125.82.177 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780663089;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 21EF96B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:49:34 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CA748140BBA
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:49:33 +0000 (UTC)
+X-FDA: 84845840226.29.23CC3AE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0B652180002
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:49:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lnniuxn6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780663772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jaIH6xUqz6qcuESYoZJL7a5QWsRjb8U7RVmYk0JRpxw=;
-	b=XpKxsMJrw1B8XnML8R2geXVc/PJlKwwrDbv5CxQkKKbQUjUd8hN62EsN0t65Doq/c0oyzr
-	nXIFpjlCca/ooDCJcPJUPmLh0vCTM0pHRz/biaCz4FDKhCJzIYc6dD20Czu0i1QYjbD3yc
-	Aat9BJT5OQGvIgBD4im8lnxyqMtfgGY=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780663089;
-	b=hyr1hSGuseZJoQ06oIg6VEW9ULp/aXEdZMyBdWfbb/xgRkRPoZknZC9YVs9yW9bz9sNUm1
-	Hwi8fcnrdBLFkNoBIFZhaKxSlOCMu1o21yEvdkuKfTfjrNsFhJ/dQzaBGdv4cBMbA5pwLn
-	/NrS0foFIRFfO3DEDuKndjVhC7lZQZY=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=Ui7qEpxA;
-	spf=pass (imf20.hostedemail.com: domain of miklos@szeredi.hu designates 74.125.82.177 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-307631dbfedso3859127eec.0
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 05:38:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780663087; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EJxFbDYF9gnSYrTzLrQduCpsnOR/+cumwdt5F8aBUBMGmidm1kZ9gx5270jLeQQ1np
-         MeY2Y1y13Bpf4dBWqepgouO25o79x6RH74+68u/D4+b9/D9QUnB4aiultT/GRJCtXpN+
-         Lbx5J9G/21ckDofgP23k8SnR3iuhI0tQoNwlmgzInbOyWgrzUSlPRN1XtF/hSQKnkYtp
-         mpagMAUBLShDoxVWDyHB2yRE4EYpwe1niWT3dm9HMbJ3SPMv0VugMXNJXsSqqYQOONl0
-         EG+FnE+5JciNKkfWB1/l2DIOBup9xtm4T7hXV9eX7RzfWdmgmGMyM+pMaVj7mMHIsLSJ
-         kPPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=jaIH6xUqz6qcuESYoZJL7a5QWsRjb8U7RVmYk0JRpxw=;
-        fh=yxw01p1Eb4iDWv73N+f7XRhbplzEZLA+o9y3fJfNIig=;
-        b=MOJwRfjng77AAVgWegfMcMSe5f/gXd1j9xGSvpT5ERQWlBzikAYy0Ef1uPtyRU+iO5
-         knqjhX39gycO5k6fnEu4aZfVJFi4SvoUoZcWsAQl6gtEW4H3e1DyXg33mcvHV1jNG2K0
-         u5B07rGHJAhRzuXjXDoDOpoM9mysP6o6knatIArLBr6VOQubYNPjh7XoH7fOQEp6Rm63
-         f4dxpFh0ABcapB3SVThQrEvidaeoLS/3TfKI4R6k2rdTIhvqVbaPw4w+2Am2TcAdng7u
-         UtlsOxZMaDNviSQ6wHy2sBc1pP3JuhuCgtrxWXsu4XIYDuP0/iAHDNvOwS++Sko6e0w5
-         a8Rg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1780663087; x=1781267887; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jaIH6xUqz6qcuESYoZJL7a5QWsRjb8U7RVmYk0JRpxw=;
-        b=Ui7qEpxA2xqDgFeKsdxtWjeKWMUa89sr2BHHin/n7lF6uLyt2YH21PCMB/tDLF4Y+i
-         9kaWz7JwfeKQR4ueJHMLIJrOVBpvfLZ+6Y/6VTTNyQUgXpmcCSm5XuC8uPShE5lHHE4I
-         tkuKxEauiF3u6Txs+Uf936lsZqQ4FVMUWQt9w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780663087; x=1781267887;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jaIH6xUqz6qcuESYoZJL7a5QWsRjb8U7RVmYk0JRpxw=;
-        b=N8tZUDPuXhSjfzDAEby1AJuHSn807wysU1GMCavN8aFmt3n7vv1/54T7Df/66AeZ7p
-         T9tZjDbqMpqLbgFL9/hta+0tkV3jy097rTDuwZxHnV7ZKOikROGEDQKHi7zmbVW32R4/
-         5pD96ro1Pn/UMO5UTjpLMmGjoB8U6NIx9MkH2yh+p7pIN8ur4HUr4JE3e7jLPsVfWssU
-         w70JD+MSaqcMvMUbAK0Y3EQOjFpK3b74VCb8HcOuU46yU6OkGfCA4/is5hm1l79fTBJY
-         5UwR8Vadtneh6JyX2OQBZ1StdKsAbDOGCLaaH8S7V+UgJCS+QfPpKZJjhf/RbJk/UrNQ
-         wfeA==
-X-Forwarded-Encrypted: i=1; AFNElJ/qkMDgHCfepTi51nfiGO9+qKLVHx/Zqzsd5FfPcUz9+BNvdA6rkXhlQJc6U17YxUxtUIQ8A6sWkg==@kvack.org
-X-Gm-Message-State: AOJu0YwNdsiJ1yi+0q9BeOJUPFdr8VdH2YwuDFrs6/KvxlHZ78H5qP2b
-	lVR0RoHe/Dccy0H/tWM/dmiWWH+HLzBRN6ZF8jFthSHJ09YVLGDhy93zOR1RZdnG5bbwBio7UTR
-	pnFqbveFvW76eL0nQVBHruk/ZMl/7lNo1WP5bLRk6tg==
-X-Gm-Gg: Acq92OHPr3qWVTuKsWjbYuZyWzvUkNKgMXigsm7FMRhby9HMvLSUm70X0uxarqX7ZVK
-	xcZHomIZoutLJ3iSFRBHhrHxwHvgEFqlkebHKdjPsMTs0eeitD/jbWloKCxdpMzs8SlNcmyCdNU
-	AOUGPgrutaFnQ0PGf6dj3NsgbUXSWvvU34MPTfUu/5YLbYzyDz21Y4yB7yDUl33T+ICsTiV5Hzo
-	ZAGpav0/bsYdv2ZnvVz8xZVhd6I4Kt7/KaCea+rLJNc66CJJvA5dNitfqeUv6Pb4xFXHqhpkho3
-	WsZ98eX66l+0rzLWAaUkoidGKlE01ZQiYNRL4UDkKQWkEwY=
-X-Received: by 2002:a05:693c:37c8:b0:304:6d18:3646 with SMTP id
- 5a478bee46e88-3077aeb08e2mr1619952eec.0.1780663086996; Fri, 05 Jun 2026
- 05:38:06 -0700 (PDT)
+	bh=DbXvzqzWUI/yNPOIrBVfVpZL6e03sj4LaZM/QYpv8vM=;
+	b=a2rvTazKwDGKuEEchxkCgIvh1guKabS1FHI525YdOOUCjjOQXJ9fI3TuQoH25Cb4uOQz6C
+	qGJilzMGvchlOHamREx0+Xc5ZYtYE6ueM1FDryNipDJnqFWyGQ2CI6t/RrRwt5RFpPsFJe
+	1HDuDiZDeT4++G6XNHb3Bo0KZM0epd4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lnniuxn6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780663772;
+	b=POFYNstrM6scqRDDPPRq0wCD6GddRfPeSjFNPWol2JMWobf5+aIlDZVlArteyt9+5olkVJ
+	cv8gGb2FeedIooSQeYCr4vDMb4QQAFEBj48RKafwuHaeXntkGfLt+6uWPKPuZ9B8xVl7q0
+	9zSusluaxcZJu97csHRb2ennTo4nGTw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2915B43B13;
+	Fri,  5 Jun 2026 12:49:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB1C1F00893;
+	Fri,  5 Jun 2026 12:49:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780663771;
+	bh=DbXvzqzWUI/yNPOIrBVfVpZL6e03sj4LaZM/QYpv8vM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=Lnniuxn6zpcULhgD86Zhf0jeGeat3INq1QENC+Sop/i/8bGteKv/mrWHE+7W3Jwxc
+	 keasW1MGaUmrwkAoM2dmE3gOeyUfRckryjBj2OpLE4DfNvUgTk+7B/oWuxhZGC8PjD
+	 qWy8YOpMT5MWGoLrhkMJxThiguUtONFUj5LOpooIchKY6C20S+FXtzRvH9D8AWM/uw
+	 S4zkifYchvwcNAAOMi8qL/4sO985EylJXWhWsejA8yHsSS3JamwwLBL9YsPiIxDCZ/
+	 UZyWwhqfnz7sm6zltX5XHsLdOVDvuXDspx46t0zVeuP0de/0dO1GVxmHBchQCvm+KF
+	 F5eBPZ7pBKSow==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Fri, 05 Jun 2026 14:49:14 +0200
+Subject: [PATCH v2 1/2] rust: page: add `SafePage` for race-free page
+ access
 MIME-Version: 1.0
-References: <20260601162454.2116375-1-mszeredi@redhat.com> <20260603-fehlschlag-teamleistung-korpulent-5e0b7fa7f12c@brauner>
-In-Reply-To: <20260603-fehlschlag-teamleistung-korpulent-5e0b7fa7f12c@brauner>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Fri, 5 Jun 2026 14:37:53 +0200
-X-Gm-Features: AVVi8CcsjS-pOQInTF6xJp7mIhrit2P92AFENeMBRNq41bIxUZ72aQoIYL-42L4
-Message-ID: <CAJfpegvuY_EcQz8fgyWk22=agPq1sboiribP780DjR4i+eqUUg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] simple xattr improvements
-To: Christian Brauner <brauner@kernel.org>
-Cc: Miklos Szeredi <mszeredi@redhat.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 858621C000A
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260605-page-additions-v2-1-03f04c8fdbbf@kernel.org>
+References: <20260605-page-additions-v2-0-03f04c8fdbbf@kernel.org>
+In-Reply-To: <20260605-page-additions-v2-0-03f04c8fdbbf@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Boqun Feng <boqun@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Boqun Feng <boqun@kernel.org>
+Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4342; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=AelOEKha7GwTPFJdgoQQNjBmJCDzWgaXA39VobkZzlQ=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIsXOnWIygn8Vagmtn4BvhUyA54DhFiX+GqHf3
+ rcWSH+7qj6JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiLFzgAKCRD6UCkIqsW9
+ 0KDPD/wMbFzdfGL4JHtCnbq0hmUaI2BPJbBiOMFMIOKGztxXzGWLm8dWGL6HoCLKAl3EsJNGXtx
+ 2ZpIV7WmOrWIAbAklAreGAgmpiDsTVBF4XHQiDjszP72ZE4glAHF0Z1di2pqmNBR9RRruV0H+MH
+ QD+HdyV77pVYqiEGv9m3ZWeH/tuSP4r88hrAg/UbF0eVOaKUU83DfSoxahRgBByJAZKUHULhxq/
+ tXQfC4nkHUH+FLe+vk39JDQPxsWeHnaVHe+c2gYGOVvW47B33Ra+oX0vcW0Ty0cNYYeIJH6hLYM
+ iSyFJpRqI2nHkHjud11gNeRrvJd7m5c7OH6x1Ym8OaGfo4U8QNTLjh/mKPvdPevZWArkimyOR4w
+ 0BfnxijniadAUC+qj7lsYHPFt0BnL/aQjYe00uyoZ2zYR4gmBMDjDTVCpbdIi39KQjuhgF3Bcwm
+ 5vHsTIfDGaLWYe12xSYAZvyUxc13xeaVEpSAliOG1+VK7KL6O5OZL6r3uiag5HXAjDg6POliC+B
+ aVev1PAe51A8UrYLR8d9J+04A73jHL6Dg++nfdSsIyUsyVjXjnA/8iYnDPGcfnYHqfkMvPyjj0G
+ xp9LUSluY/7422BOR40JG5Tk3wo6QxhPTfet9h/Ee6F8Qr5kuZs9Uw3OTIamF16UxxevVx2Oy4K
+ xzOlM3UW2luVfqQ==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 91z1hctxgjoq1irdbieq76ffoziuku5m
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780663088-353723
-X-HE-Meta: U2FsdGVkX18JHjecuSP7qUsYj1TWMTXyVdXXVfYw4D/TDmynw7O9Pqis4urO7vZTSuhh0p5QQ3b6ePPn5b72Eh+0AAH5As96j8tNev0aAIGcIP8gR/LbRP8ftzPm4hwOEHLFvUOJyyrFLWQvspHoDJVH0bSZJrgbMgjfqclFV7r6N/AuwhLrOuolBtSiWmzBaz+U1Zi6rdXBPQq5SxWbLLaUZABDauvLsnTDQv+Wekz2sPaDghXYy85rQTERf5sq2Wmbu1q3Me9P6exAvQgNPKZk6G+Tj1sdsisvsuq1LrdfY93LNKvwPgItnXelMC8h8OLFptItJuEfsqXjH5fg1Lc2oPZE7Pep+MQ/6BcGWJSI2F109h3i/eiaJ2hhEhCO66ic0yTFWMDahoAnmAMGzp/Vf4jrgwj3WE4/GDwdapwfIsjoVgCiLdRL70991si+rKj1XHQDDka1G8U8nfDw+5MYRg5Xt+iNyZj399JU5/0yqbh//zMiUaaScHSG1DVjKXCCFVbaMCMhFaVDlvfB7Zi4TF9OfjzAxJZmIHYLUw4nv2VWMP8zZZRfJbrf24GjDIDr8VCmtuj3BUERtkLzIRvab9RO5tqZMWgTruJ+UtVOjATdPGjVs3WaMQtA0mNDAvVEJ9yQfx7JcCdnKZia1BRp3BMVuTcsP6pJ/TCdDX1dwo+bgT1TvnKsjMeTlqBpFj2c8OMuKGgFFNYFa50YfPKMJEPpm20HFKLDHp1yeoAuwv4sH1Ppt1p4pNfk3CATby4Ww6iCTERHHlnIsNuhcRLPDEZJ9vNbC0H1mhtwcEU6YdPfUbRt8PqnbBTAd6ihWFFJ+DOl2O98cvjChF+6gf022OW4+a4R8EMTDm1r5hQLtp0FqflYMAmc71p9QZcAy8/Nm9puwoC0fw1SO9OsxpEuwMivGhVd1TcWuZz6lCHAxmPf3fMFWDOW1BXErD4P0oURUZf748yFlb4mM7e
- LXcmT2zl
- 99irVmFZGbdyVNV5RTaKAyb2Yphn4+Fbti06sti/veYlAHdpAxhE6Rv/7Wxh6GxZnMjgiIAHkgVX5gdFGxZZAiOBCSS9BBfdCilgyDNUbirBfgjN1Rt9SN1ShEj9jM0C7wcwHJfnUFdSIZF3JjN4Cjzgh3wFQD2JpW/ivRyIMvbybNIehopU6vITSyj2vDQn5SFXeX8AZmlEEw1enBYH31/fOJkQNHPwbw/htONoAGvknMiWoAhg7HhoaBDfLvyfv7ya4
+X-Stat-Signature: u9yf7pzm9m5xeuwdeoojebshjf4uyx4q
+X-Rspamd-Queue-Id: 0B652180002
+X-HE-Tag: 1780663771-721935
+X-HE-Meta: U2FsdGVkX1+bmB4wHp6dM1cI4ECpXYgVN7Ks+NpBSL+z2p6DmlYf2Z/8hcQOsSvfMShMf7UENjCzjytmSqyGwcoSYVx9LQtVq1DhwhkBqKwN6Ahnrlzqey4BxBmKpkL/QMctntkZqyvE8aLFaJGjB27mdxqvo3wFbbgRdWJAp+2kKq30VUMtM13I1KVhuxPhgrIlFLwHU3O51dkvkPlEFF00rth+dqaHIknedbouVhdhNjQ0PJJ0wqO+TUCiKqgVhKwrwZTv9Tl4xwzqRKlrcu5hHn+6TdjzJjk4cr9g3iO/qsXj+BZObzOO0yUYNFNGlrM7YpWmlBVDaIrAZ/o+CP5CRJ2Awx8BdQZTZxEEm9JPsNuIFDgszbhBkQERbaBzbdTldHL8XO5UUN/hIqdOIUgPO+t7ScqUD/HzkY4YrBciiRd7NqnUi7ClJRGelayPwd6hrxCT+UoQ0rxfC9tCo7EBlK1kHKRAjvs3oGm2fSjo7oxFMbiho3uWlxfuiIsIfdFmPR0SbnQzKjxsSgq+25k1xKnN9qCaKruXnjmYAXoQDugtL6TMrvwewe5bfBPR4+JlmoJQ92/HFDcBdH93ogfzCJIb2K3WF2bau9gs6P8ERLS+nw8eLuiU/olIqGgfah9wRhytueHNbUgOaMuvrTCkSM9rTej5n+326asyvtaOmtNnGZrMyg696hkn/D+mwYF9Ghm1AVW1N6v4T2nM8yVoZi+9Nc0SLQbF5zdC8O8xPa9Cu9MqVPjlsf8m0b/JuLzD1BXh3tTsNMgEEMODrbKHj/HxpYMA4kpxzp6hBqIenIrdmgHeId7oEBFIWwFB5TYGU+J+LS+gCeWm3chcxQs3tofG+XLUq4GaQyIpn6bl8jmS9TDkxdXfUvwWt22T9jlVEQYW7mh9ZIkc4uVVAJC/dMlCcdr0aBcoVYVMvaXsclFN5oAKxH7wyeTYHG6uEcLGvwZUvRlhzNJyBVL
+ +co1Esqp
+ BamkXZKTID8RRmJMzP4c+rrw8AGKbqHvIVCVTKr09biPMSfrqwqdRnBhukONh1dOR5CuWOQ1OqIOprzDn3dSlgzh6sfaatNGjAogeYeRGKb0Reax0VyF1Xt2pMZLlvEd5+g7PdRxTXoiRmoZOgvBLopIgY9ZvOwCRDdKGEBxeGF9tRu2ANPVpM3W+QINyqB6hlPWxcjI7VaRpeVYAnapyeD0WzJ3WgA3YHURBdMByBakQokZXzhv8gDoxmg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,17 +116,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 3 Jun 2026 at 09:31, Christian Brauner <brauner@kernel.org> wrote:
+`SafePage` wraps a regular page but adds an invariant that the page data
+area does not incur data races. This means `SafePage` cannot be mapped to
+user space or shared with devices, and it becomes simpler to directly
+reference the contents of the page.
 
-> I've fixed a bunch of that before already but thanks for sending it
-> again. Fwiw, we now also carry support for bpf xattr in the
-> vfs-7.2.xattr branch. I'm still applying my kernfs fix on top.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/page.rs | 73 +++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 62 insertions(+), 11 deletions(-)
 
-And sashiko keeps finding bugs, so I keep resending the patchset.
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index d56ae597f692..f143b42d1bd6 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -8,8 +8,10 @@
+         Flags, //
+     },
+     bindings,
+-    error::code::*,
+-    error::Result,
++    error::{
++        code::*,
++        Result, //
++    },
+     types::{
+         Opaque,
+         Ownable,
+@@ -20,7 +22,7 @@
+ use core::{
+     marker::PhantomData,
+     mem::ManuallyDrop,
+-    ops::Deref,
++    ops::{Deref, DerefMut},
+     ptr::{
+         self,
+         NonNull, //
+@@ -193,14 +195,10 @@ impl Page {
+     /// ```
+     #[inline]
+     pub fn alloc_page(flags: Flags) -> Result<Owned<Self>, AllocError> {
+-        // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
+-        // is always safe to call this method.
+-        let page = unsafe { bindings::alloc_pages(flags.as_raw(), 0) };
+-        let page = NonNull::new(page).ok_or(AllocError)?;
+-        // SAFETY: We just successfully allocated a page, so we now have ownership of the newly
+-        // allocated page. We transfer that ownership to the new `Owned<Page>` object.
+-        // Since `Page` is transparent, we can cast the pointer directly.
+-        Ok(unsafe { Owned::from_raw(page.cast()) })
++        let page = SafePage::alloc_page(flags)?;
++        // SAFETY: `SafePage` is `#[repr(transparent)]` over `Page`, so a pointer to a `SafePage`
++        // with ownership is also a pointer to a `Page` with ownership.
++        Ok(unsafe { Owned::from_raw(Owned::into_raw(page).cast()) })
+     }
+ 
+     /// Returns a raw pointer to the page.
+@@ -401,3 +399,56 @@ unsafe fn release(&mut self) {
+         unsafe { bindings::__free_pages(ptr.cast(), 0) };
+     }
+ }
++
++/// A page whose data area follows standard Rust aliasing rules.
++///
++/// [`SafePage`] has the same usage constraints as other Rust types. Thus, it cannot be mapped to
++/// user space or shared with devices. This makes it safe to reference the contents of the page
++/// while the page is mapped in kernel space.
++///
++/// # Invariants
++///
++/// The data of this page is accessed only through references to [`SafePage`]. While a shared
++/// reference to a [`SafePage`] exists, there are no writes to its data. While an exclusive
++/// reference exists, there are no other reads or writes of its data.
++#[repr(transparent)]
++pub struct SafePage(Page);
++
++impl SafePage {
++    /// Allocate a new `SafePage`.
++    pub fn alloc_page(flags: Flags) -> Result<Owned<Self>, AllocError> {
++        // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
++        // is always safe to call this method.
++        let page = unsafe { bindings::alloc_pages(flags.as_raw(), 0) };
++        let page = NonNull::new(page).ok_or(AllocError)?;
++
++        // SAFETY: We just successfully allocated a page, so we now have ownership of the newly
++        // allocated page. We transfer that ownership to the new `Owned<SafePage>` object. Since
++        // `Page` and `SafePage` are transparent, we can cast to the raw page pointer directly.
++        Ok(unsafe { Owned::from_raw(page.cast()) })
++    }
++}
++
++impl Ownable for SafePage {
++    #[inline]
++    unsafe fn release(&mut self) {
++        let ptr: *mut Self = self;
++        // SAFETY: By the function safety requirements, we have ownership of the page and can free
++        // it. Since `SafePage` and `Page` are transparent, we can cast the raw pointer directly.
++        unsafe { bindings::__free_pages(ptr.cast(), 0) };
++    }
++}
++
++impl Deref for SafePage {
++    type Target = Page;
++
++    fn deref(&self) -> &Self::Target {
++        &self.0
++    }
++}
++
++impl DerefMut for SafePage {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        &mut self.0
++    }
++}
 
-One of them was a pre-existing bug with kernfs, where inode locking
-isn't sufficient due to kernfs nodes being shared across super blocks.
+-- 
+2.51.2
 
-Thanks,
-Miklos
+
 
