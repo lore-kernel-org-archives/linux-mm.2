@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BFB2CD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFC71CD6E7B
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:13:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 673FB6B0092; Fri,  5 Jun 2026 07:13:13 -0400 (EDT)
+	id 5D9556B0093; Fri,  5 Jun 2026 07:13:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6252B6B0093; Fri,  5 Jun 2026 07:13:13 -0400 (EDT)
+	id 5B1486B0095; Fri,  5 Jun 2026 07:13:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53B0F6B0095; Fri,  5 Jun 2026 07:13:13 -0400 (EDT)
+	id 4EDC76B0096; Fri,  5 Jun 2026 07:13:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 447FA6B0092
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:13:13 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D925A8E13B
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:13:12 +0000 (UTC)
-X-FDA: 84845597424.21.E08D781
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CA67BC0008
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:13:08 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 43E6B6B0093
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:13:56 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA6E1C16CF
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:13:55 +0000 (UTC)
+X-FDA: 84845599230.22.55CF756
+Received: from lankhorst.se (unknown [141.105.120.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id ADEA9C000C
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:13:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=lankhorst.se header.s=default header.b=CEexm4Sd;
+	spf=pass (imf28.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se;
+	dmarc=pass (policy=none) header.from=lankhorst.se
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780657991;
+	s=arc-20220608; t=1780658034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/QEsQwTfrJ80Yu9q+iUcuaiZpy77wKLkBx4OjYCnhu4=;
-	b=CvkxGE6B/lcrl6VpG6LebCTJq1ZxvwsN1q9TxF0sKLrkGClc5fHdAaxfPnj/zUSxLOYXF8
-	Hc8nmc9Fk+Rsbc4I6LdYrhr/XHZp6ALQ9b02+lHrNrIvk6OqXv5XbOb7FFy/nhpScd8k8h
-	SeWMH6WBeEzS5ViMKjb97/wRqAzK+v4=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2KAk5fsVGqt5HRP4TAQleYj/TjjN6+qkBGxgDqlgfD8=;
+	b=qhvzUaRSQCYbPWlOAsG5A6r/SyFqGTroYohdWiE0D/VEN4COmYt1HysTp2LyXXU6Hvj7mU
+	A54Ubj85LOctYVuqGt4tvBbfOIh6WcT59TEE3my5Nd7M8eLaoLJZZF9PmlaeSmc47uI2Ag
+	Mce4cem3295brSMr1Fznr+qi3HUuayU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780657991;
-	b=4Kw/MDdD7QhioSjz+1HtWzfOj6MKhrlbqtCWh07CWC4MJIdmdobyCzAX4R6n5c5L/N8qo2
-	1L1pgkpA9I+69siN1jHxfeAeYEbhWPKW9jFgGyZzRd5vDeCCxYlWW7tGEPK70qg4BmQygv
-	vr5r6CxI3NvU18Pv4VZjZwN9H2umiIg=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gWzKg3MtBzHnGkZ;
-	Fri,  5 Jun 2026 19:12:07 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id D09B740584;
-	Fri,  5 Jun 2026 19:13:02 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 5 Jun 2026 14:13:02 +0300
-Message-ID: <a9269eaf-a567-4dfe-99a3-cee4b13946de@huawei-partners.com>
-Date: Fri, 5 Jun 2026 14:13:01 +0300
+	t=1780658034;
+	b=osYUFPVBG/dzAs53YrDDeYeXGyNLpf6+B6VmtLybsojhZorl6Ip8CANB/7EKhNKxT7NofF
+	EhHu0eJgr+cJkpIg309ZOCh99JTcqmpgnssMRTbbg1mscSJqa3pc9kBSfhlYapPn+znbU7
+	PAoNa7BTd3cnGwpeg7G1muyB0ATC0jU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=lankhorst.se header.s=default header.b=CEexm4Sd;
+	spf=pass (imf28.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se;
+	dmarc=pass (policy=none) header.from=lankhorst.se
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
+	s=default; t=1780658031;
+	bh=ZMIjWts6XvJ/jhRFZHvdvlkNH+2yiGMbLQW8gHV1kwM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CEexm4Sd9mFFbUW90LsMcO3+Mj3TbO0dZyBWnLyaExoVg9Nx4w1NiQFwerSK7AEVa
+	 pUXW/dRqapt1pg4raMvsX2k9eCYQSgtFEOKWEb9pGTWBgSM5Hs/yVt30aCOCUE8Icq
+	 0kC64phG1c1l0dR5LD9hwJlb8JB/eo4Cg0MqJoG8CowI7XJO5RoJWSJ3BuFmgnN4ty
+	 CM5A9c8bml2t/C9wrJ40Ovyp6RZjK/KLrbv58d/4Gk9eVJdthXa/losttEAXScNfCt
+	 i2W5MmIQCrs9H5ctSLwh3MsX4BwuSISL2e96oeF0Jr8qxvZ0bVq4sAzbtpCPeTxOdJ
+	 BK59XHVm4B/vA==
+Message-ID: <fdce637f-703f-46d9-91ab-05fe3728393e@lankhorst.se>
+Date: Fri, 5 Jun 2026 13:13:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 2/4] mm/damon: Generalize ctx_target creation for
- damon_ops_id and add vaddr support
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260605005023.82747-1-sj@kernel.org>
+Subject: Re: [PATCH v3] cgroup/dmem: introduce a peak file
+To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Maxime Ripard <mripard@kernel.org>,
+ Natalie Vock <natalie.vock@gmx.de>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, kernel-dev@igalia.com
+References: <20260514-dmem_peak-v3-1-b64ce5d3ac38@igalia.com>
+ <ahCISfTlN10gD8e6@localhost.localdomain>
+ <89901220-0a43-4668-9d20-aaecc72c58dd@lankhorst.se>
+ <ahmOBo02TA8u8RW2@localhost.localdomain>
 Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260605005023.82747-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CA67BC0008
-X-Stat-Signature: phgiixnwrr8zxbtahg6abgxoxxt5s1wt
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <ahmOBo02TA8u8RW2@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1780657988-95527
-X-HE-Meta: U2FsdGVkX1+n6M3bH0e5ey5HC5WAAchY4VMypvBV/FJVSsPNyIxotQ1MtwkbT3HHNfI44TCTOqlO2DiZKLZbX2kZwkYxYCWNN67xyoJRY5O02ZOwNzWSAVdr375CsghOxcFt0rcIwudTgsD1HtkCpX8qwMAoIuJ2wM0ZMegJxvbHHg8KMbAr5z4FiZJF6jLcUvvLvpqS0XMTTAx4KEWVaFYHUVN9UJxKtRl46KOjILw1WgQEUZ+22QZK5swgqPMLpsMDQrhwcjKJ1rhQK/cHLf+uZaqPRei3D+wrueiT8AkSSnbFhX3W8UpR5c/QbawQfGT9xxvmlBla5I6N12ByQWGlRAuSyOInxDxmUcim2iMaQDnyzOaFxb7qTjaRKyI8BuXlGxS5IfQkmNpD+pt7GU8sEbUz5Xbh9Ll08DQqu5JwqrqyRP7Te9Dp2uQ3TJtfUZB8CXd8gSMkyVUciTKpyajIcvd/ubh6w17ZZofPoQew4ngwTC7+aVQ5wUTCyxxvJ7T99REZaGLgOcE2OwCRMg6mFVhJ8kfVOAE+0S87lFiAawyPuYPNiaTpemQvI0tGfKk1r4J9jempMqYc5Tlux8Bz0UbSCi0zKi4cKf7e0oEI3ZU6dtABLXbQNDRJlYNU37fuZh1foU8RPmiuU3ekF9j9a+CoXZXvUSxaltqDZhS8eMCs9UsIdd+iCsC5zmq18kl9sYCpwA6XQn+pM8e1sDPZEB2SLsvCdmYrLR8cwr84wsp7RHrcafoUoOsQtC+S+1pmTswY3bqTGh5CDIBqv2NE9s8fpR4JdM7ITNphfX0tNuKFGZkgtZxI3G4dyGX5QPFWpYASGCfZj905rdYigeLcXadVFfqPSmdeKDrPZE7Ut6wmNauhWTTZJ6s6rPf98gppZSuMNoUeTYZKvSta7PQ3EW+5bkZCTyY4Rn1m7m2CYAP0JweLhc0HdDveeP3pb4Gw5m9ml3dQ/aY8jWL
- F/7e2HbW
- 55+pzHCaJXPZpHg/tMeQhUyHdGDBB1RfBRWlWH78N/Y5WWzoT0k7QvPiunCcRBwIsp8J9AfqxkqNiUYhn+fqVW27ZKZJ0REYJLyBuEN0YakmGFuRgJW2j1uAc+rSZruh7MXPXJAsW2bxBXgNBFIHchzVq+DUsRglEsXYD+smXefRsxgV84/ZNZfGMrubguCnj16cQ0mKFaASTeF7up5vBHpn7nNE7joV/bvA813eksl8IVq38/0QiNpCMWbdCTVId0KwrFMiLb3tZT0gUygVdnGPDYKmDAQTlOGQdJJE0K8LJmMNe0gqntpF6TZfGftNPvGEkbBddgBPUWbg0wfuvdat/NTbgQ0G6Sv+4
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: ADEA9C000C
+X-Stat-Signature: 4m9tp7oiet7hn6cgjeaejkp8oxb9uphw
+X-HE-Tag: 1780658033-978422
+X-HE-Meta: U2FsdGVkX1+E3LYlYhFpObrxZHsfUpLVe81RdAr20aL25se4fMPCrp/na2WesqpV9xnVIjdso7t8lq/0EXNm9qzUedB9MATKNm3kJNJLNz5ei+66RirmGzzV9oxrPSocxi6Vf9O0XI+PB1FZto0nd5PUpOE4f6A2HXIREtK+QFzs90IkpnHPMXwjdzysWrgyCOr6b0KtB6PKtzjtFHucQu8AKR56GoXcuyu07f4dERrSNCyU69j5P9zc9PdbQwHIcSkQZc3wrK38gyt1ruIa30ByQCAnSqDowNkyjhNbPBnaopfRuEBFG5nmAfg5DCrdYeEyRB9bvqeCxz/k8TOTtYHJVshT9DSB4hDGb98bjt6aYIego1CnRAB3FRJusfMVQhpoweLNzH9gmEwaqa5kZwaZODHLhtfsdXATj8rJLPB/rt1vw6p4dmr+mqZr2yPgkQw9D7IcZb0qdhrpIwFpQtV900lSCPcKFiceYweELjXDIqdJreVuTpOgnRW1qj+++ARgqt8TZTNXs3o0ezdke5qpv0bKvB2seZwyIS67MkiCeB/B39nHqeh5OG9l1CwGxSB4ngTrGp58izzc3u9RNK9b4snozr/VD+TadLOwe9p7+MyNI4IDLNyXEulmE0lag8PJxkZPIDveoQpkKVHiO39DmF66F6fTrS2v3qBwvkEFgWbz+DDyrGHAfC15Z1qUGCuUmS3l/ytLOe0d1rJZlAQgYCeLA/7vs1xVYNW6KyBLQ/Hopxcbsx1llSkXgzVZ56vz/nyZPQlY8yfmRiiAhMIwCkaV9i7lIw84RQyYgwJeKgCPPqg7e32wnf3QIEBhOgIa0gICcOsNYyMRsoL63glUc6RDVedxMW7H3Sgq9NM/VJyVon4c47y9OivEg3kW4UNAYCz0NAIZTlXIjwy8PpXBIHWN5/ePdE3BOAPJOvsry15RHVx2JhBcP6Uu8XG/AYvd1gTPa5S04k8j2BQ
+ eGd+obcA
+ P0J3nNCQ32a3qHaCL3XdHLnVDxCbBjibzoNCG3bSbud7GPI6hw5sjbztmhkHQZOyBIDMHwxxO8dJ7rfpKUI5Eyou87++YBKptMqiPY996Gdpykbidi5kiNaKZIpW7qujK1ZFfiHHBw9EJe+QYRsJJgqJJJNT5MP89THF9qJZrabJAulH142zTPAQtzG7G3X8x2pVQQupAS6JoZTUlLvf3AhPRU4tArVUkBOyaouAbKy3Oon+vfUcWm523AXDha9goE3ey
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,45 +99,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hey,
 
+On 5/29/26 15:01, Michal Koutný wrote:
+> On Fri, May 29, 2026 at 09:34:28AM +0200, Maarten Lankhorst <dev@lankhorst.se> wrote:
+>>> Reviewed-by: Michal Koutný <mkoutny@suse.com>
+>> Reviewed-by: Maarten Lankhorst <dev@lankhorst.se>
+>>
+>> With your r-b it's ok to push it to the dmemcg tree?
+> 
+> Please go for it.
+> 
+> Michal
 
-On 6/5/2026 3:50 AM, SeongJae Park wrote:
-> On Thu, 4 Jun 2026 15:03:35 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->>
->> This patch adds a new function damon_modules_new_vaddr_ctx_target.
->> Since ctx_target creation for vaddr and paddr is almost
->> identical, the logic is extracted to a new function,
->> damon_modules_new_ctx_target, and vaddr and paddr functions
->> are left just as interfaces.
->>
->> This change was suggested earlier1 and it is needed to allow
->> developers to create DAMON modules that use DAMON_OPS_VADDR targets.
->>
->> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->> Suggested-by: SeongJae Park <sj@kernel.org>
->> ---
->>  mm/damon/modules-common.c | 31 +++++++++++++++++++++++++++----
->>  mm/damon/modules-common.h |  3 +++
->>  2 files changed, 30 insertions(+), 4 deletions(-)
-> 
-> This change is for the sample module that will be introduced by the third patch
-> of this series, right?
-> 
-> I'd like sample modules to be simple and completely isolated under sample/
-> directory.  Is this change really required for the sammple directory?  If not,
-> could we please drop this patch?
-So, just create the context manually in the module without a new
-damon_modules_new_vaddr_ctx_target interface?> 
-> Thanks,
-> SJ
-> 
-> [...]
-> 
-
--- 
-Asier Gutierrez
-Huawei
+Thanks, pushed and queued for v7.3!
 
 
