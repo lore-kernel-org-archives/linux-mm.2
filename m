@@ -4,108 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51E66CD8C81
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 15:15:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22946CD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 15:16:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 882786B0095; Fri,  5 Jun 2026 11:15:46 -0400 (EDT)
+	id 723086B0096; Fri,  5 Jun 2026 11:16:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 833BF6B0096; Fri,  5 Jun 2026 11:15:46 -0400 (EDT)
+	id 6FA926B0098; Fri,  5 Jun 2026 11:16:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FAE56B0098; Fri,  5 Jun 2026 11:15:46 -0400 (EDT)
+	id 637DE6B0099; Fri,  5 Jun 2026 11:16:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F3C76B0095
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:15:46 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3308814019F
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:15:46 +0000 (UTC)
-X-FDA: 84846208692.05.1DF34FF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 670404001D
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:15:44 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EmLAYhfL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of tamird@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tamird@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 555016B0096
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:16:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 890731A0189
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:15:58 +0000 (UTC)
+X-FDA: 84846209196.16.06248EB
+Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8BF9B40011
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:15:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=samba.org header.s=42 header.b=YuDPDQ6Q;
+	spf=pass (imf17.hostedemail.com: domain of metze@samba.org designates 144.76.82.148 as permitted sender) smtp.mailfrom=metze@samba.org;
+	dmarc=pass (policy=quarantine) header.from=samba.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780672556;
+	b=Rjg4G/jLgAlGmqN2i+Nnu6HHAKgXT5Uxl/f/7cOKCnrIA4Wr9zvyhMT+o8RBTnUWG3OVoM
+	psaLSAserBWIDbdtML/rMchPpaV3Ifk2EpzAPfIB/snOw4LiblENh5GU2oc1o1SUdog+WE
+	5sSBJA4fg+G+6YvAL8F4OKXxwRI72Rk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=samba.org header.s=42 header.b=YuDPDQ6Q;
+	spf=pass (imf17.hostedemail.com: domain of metze@samba.org designates 144.76.82.148 as permitted sender) smtp.mailfrom=metze@samba.org;
+	dmarc=pass (policy=quarantine) header.from=samba.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780672544;
+	s=arc-20220608; t=1780672556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RsE0MWm9RWknf3vEr/lnGCDxSan/mj8St/jdV9gvrPg=;
-	b=2qk5W6TU9pL0OpZs94Tp0VYwb9cWUfNfxR86kx2PiYKdpp8CG+quuSLKAdepLPnZXmtXkU
-	OETI3b4LGofWIaiLggBovmdDZD8wxx4fIx4YvyuNWTQVmwc5UC5XMXkRkUAfbAh7VwmGWK
-	2jYIBeVnzI6Q+6bGFRrKmtP4BKyFefE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EmLAYhfL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of tamird@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tamird@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780672544;
-	b=U+c8/MFab5N595stZjLpYHbB82GOlBE9xyO0n/YtuXQmwL9Nq4azXubyX2AauRUScOQrwu
-	SapAj0drv3fbw0Zs2XhVV77wwm9AFRuaD4NVJb2XyxPVk4uD+lOwA13gtBb8HL+jvPOkiL
-	20O4ee3lnSuPYogS0UoyufKiDuE4yjs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F14DE6020B;
-	Fri,  5 Jun 2026 15:15:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2F11F00899;
-	Fri,  5 Jun 2026 15:15:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780672543;
-	bh=RsE0MWm9RWknf3vEr/lnGCDxSan/mj8St/jdV9gvrPg=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=EmLAYhfLU/lYkC+kiwmTU0DMhVcgVG88rZuc84btTFw2S88Z1VQjCcGp9ojAuTEZg
-	 sgvXVN8rmlHIu7YAjwQxMj5BeTVmI4DvmeYMZrM78+cmYI4h7hnmfqvxwbUqxsYCyJ
-	 eOFqzBL4T9282GoM/yb/YZPNBwoIFGcfpVhWqQF8BAV/qQhoM61WR3MpfySCB1J1xl
-	 c8KmFEDalPjozCmbpzGdFxBwR76It4ZjRoSW+i98qwMQ1v5+N3JjXdieHZsWa1shNa
-	 3uhNFdDBSYFAL6S7Qb3rh+7AJsqA8Ma+CkBQ+rlkS5e4KEv7UgtF06bxgffQby4Uc9
-	 IJk3M09dsIS/Q==
+	bh=53NeptYyaF5olDNYNWO0bJ8crWCXIS1XcDfrtYn88/o=;
+	b=NnSncUvsQS38QTeiEKnROuzQh9HHDSA9ANP5XY43y/MiZNgcBwHXITTC43tCpVn+q7LSHv
+	1ROJN4JRyrr07Q7sSNySJN5cUiJzCxGk250hXFkn1t+mystHMDMFv9JU+fzNeIfYR9Kufm
+	1Dhbe8W/mUXS4tRk2Pu1lihMG5ErWXY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
+	s=42; h=From:Cc:To:Date:Message-ID;
+	bh=53NeptYyaF5olDNYNWO0bJ8crWCXIS1XcDfrtYn88/o=; b=YuDPDQ6Q+LUcMPqoxR7mHb6PrZ
+	y6obdJ0OOI2BVMrzNG8xQiporP9alfySr3RP+58Qpo9BKcJeYZYvMOlo83U9MFrz5E4K1OBS/jjwN
+	M9JBNIdAV2sNgyIpIWnCyGhYMHwAQta7Oqk6A0YS8rdUVowtFVReJUxzhfCD9kNe+QASCPOD77B+d
+	rDTJXMiO/f8MyE/25J0GnblyrCr+0y0gmELA6K1NS1vlkb1Md7LvLopGmCV5Xjg/rh/ALFYyCEVkr
+	CGPGWSbgPI8lZsCMpw/8ZGfHDLDM/08U4XfvuriX5ANszUaM1ZvoSRNFgyAs89SrWVsp1neyThmgi
+	FWiTWyaXaW+K/Q34yU06NrX2cTk/9JeCAFXyl6lqH7DY+dQ1xquqF5w94eCuNcJ7TAwhcjqIk0g8i
+	uvWuHksJmqdKLXn0lpTAeNaFxnbI4CWMMQ6d/18Xv5j58pXT/O3cpqgwNn52Ra4zgB40L+Jiy2pBU
+	9yKmLz6kOirkFXxGVJSejpkD;
+Received: from [127.0.0.2] (localhost [127.0.0.1])
+	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
+	(Exim)
+	id 1wVWH3-0000000EIOH-0FeB;
+	Fri, 05 Jun 2026 15:15:53 +0000
+Message-ID: <f1c7fbbf-5be1-48b0-8927-2d9b75a35816@samba.org>
+Date: Fri, 5 Jun 2026 17:15:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Andy Lutomirski <luto@amacapital.net>
+Cc: Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org,
+ axboe@kernel.dk, brauner@kernel.org, david@kernel.org, dhowells@redhat.com,
+ hch@infradead.org, jack@suse.cz, linux-api@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org,
+ patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk,
+ willy@infradead.org
+References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
+ <20260602225426.122258-1-safinaskar@gmail.com>
+ <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
+ <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
+ <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com>
+ <CALCETrXzxubt4eWue3+wv7Fq9C2m7uu6bWPstqFh6Mo57bPwQQ@mail.gmail.com>
+ <CAHk-=wiEwSjfbjfO74xu=UmkkdHXkJg5QNQ8pP-3iYmunmeV9g@mail.gmail.com>
+ <CALCETrW3XcNLuB1Y6PSkxQDSK2o+=EB2AAd25SjWQqcJemwnbw@mail.gmail.com>
+ <CAHk-=wgn3QTLj+F+XccE10dXY-UGWN8+fNLEvhsLw+tik9rOmg@mail.gmail.com>
+ <CALCETrXpqPMS487Bm8f8mHe8hv9DzCqoaW4UdoHetzYBUAhYLw@mail.gmail.com>
+ <CAHk-=wh5bFj1a7eaGp9sixDg3UXu7xUGfU=YJo+ckpGxGAyhXQ@mail.gmail.com>
+Content-Language: en-US
+From: Stefan Metzmacher <metze@samba.org>
+In-Reply-To: <CAHk-=wh5bFj1a7eaGp9sixDg3UXu7xUGfU=YJo+ckpGxGAyhXQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 07/11] rust: xarray: add entry API
-From: Tamir Duberstein <tamird@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Tamir Duberstein <tamird@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
- Hao Li <hao.li@linux.dev>, Daniel Gomez <da.gomez@kernel.org>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org
-In-Reply-To: <20260604-xarray-entry-send-v4-7-965f6028790e@kernel.org>
-References: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
- <20260604-xarray-entry-send-v4-7-965f6028790e@kernel.org>
-Date: Fri, 05 Jun 2026 11:15:13 -0400
-Message-Id: <178067251358.96312.14084909265600226392.b4-review@b4>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1561; i=tamird@kernel.org;
- h=from:subject:message-id; bh=7/3ohZokdRnzNHERRuARU9gC+/joNlb5cQbAU87A21U=;
- b=owGbwMvMwCV2wYdPVfy60HTG02pJDFlKL4Rm/hKLfv/7K9/3JRPuCcz43miydGfSD8WUR3c9Y
- tZIaO2d3jGRhUGMi8FSTJElUfTQ3vTU23tkM98dh5nDygQyRFqkgQEIWBj4chPzSo10jPRMtQ31
- DI10DHSMGbg4BWCqt0YwMnyoO/WwwrRhi4XutHdVopqKfLW/VK0nZNZ8YHii4j1r3UqGP9xhU/5
- 7Gpzc7xQZmu5w7jHzfdsjvH6bV2xvOG7FZ93KxwcA
-X-Developer-Key: i=tamird@kernel.org; a=openpgp;
- fpr=5A6714204D41EC844C50273C19D6FF6092365380
-X-Rspamd-Queue-Id: 670404001D
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8BF9B40011
 X-Rspam-User: 
-X-Stat-Signature: a7376rh1wxstkmoprdq5qqfj4o7xejyu
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780672544-39650
-X-HE-Meta: U2FsdGVkX1/o5SodGG1PXdTGgg3RMMD5fgDg1BvNE5omBMiNeSAJd8NN99Rg7/wG5hOLPaBLkrzbh45b0BcXH6WsRBrfel0HYrpGeMwcmz6CerK93EU/+QQ9zx8DuHCg4set4OEjJR28hWmimIAufsEVqha2RFXqzx/P0BZTV8s19vDgFGRBo2wor0SHJE7bL1vWdADhGpChfDHviT3WWRq1+EzD2ihuAdkNEjJ/P238WzCitXDPjJfk7dhRIWEMp6kLH1o/VCLr4kCIs7+aoW01Evqqzs0l4zhIJFha4J6VS9thh7kuoRa39dQX3rBSzjSOkamhgBxIUb/2gGPdi8D1CAnYiD/SBMAKG/Pijli7tnI6xw3VeZF7sMtprdj2nIh8KRh5NaRuzyyaAkJrRzLjb3/8FSVaI10gFsz3ZPyawFiyOnmuzXNGUxKsUt59wiDNdnQqBwNmgsfh3Ta8uAqf8nEE44CGFfz1tEc4OfwlD8+Qlt7//al1kY7XmTO9ISuA9gCAzRjR8eb3OtqQGlQz9pPhIPoxHBRTtd1/SogfONtCcP3e8vjLYC78birGXWet5YBJMVnast7WXJiT3Ra5PCRgAFMwyWkRAZSCML1tCYHkahNby3SXpeKXt1rfAFpOhOCoaADCsPg+91gWtpiTLrfyh8ZsqFjS37iXZw9057QYqvulTbWUHs1WmAI5vqz5eIZqKMVWDFVZvt5TnMqlfz7S8xCsQfDR3hkV01OgMD9IDtdY6CUrgfz6KQcJVLj1UnZ+Oj1OU+koRyNPXqiSz31OwSnh+ALXlIBZUbrXH/l5eVrpjMv7NUW6nRvbLu38YtVSn+djBgUt+rEq2r9MJIPOjf0BaHAxy8+nxIfmANwNQoHmQKXAeHOy+46+oDSzKs6/iVLJU5DtVF7Dj4mFTqmxsI95Bl7vrCY6K6C845Z+QprqKvWgdh75lOC8FRnsFzMvKLVgWjoTL/G
- VikfuXrP
- dsRoDCNc21tGVyO+2FB/LhNGPkFehS5qcxvjTDpB2rQ2FU300zUNQnzBCmyYLsLJgWTFyWrGVVs7v+hvfiFPePeYiTCrJ2cSOxYQi23ExGgJuKImgAJx99PXgidXgpEyR1PQNG6Bl138HdJaKKrBNb/FX7vAid4CJZAMeJtGeNm9kbhZPRjDTdtVYBJV2uCC/I6+0SPdCzXV8afvm9LOTGppJrFYn4fQ5/2Y5/Xrym14luorVtNCsx663v8rIHZmPTmuJr/44x+z4mqumQaeCy29eu07b6ME414wN0Tjhmlm1CJPnPuvw3gLba8dgup2UYe2i/bWSAwqVAamlHg+mtd4i8GRks2eRWETYB5NkZg3zeSc=
+X-Stat-Signature: spxp8pso8uiaafzfnx4xkyawgkxy6j4q
+X-HE-Tag: 1780672556-146590
+X-HE-Meta: U2FsdGVkX18gKmHHrbGGl7aPujoaEK4mDqOOnnySh8kYR7/PtL/REWCh8AUlpP1ds4NKJJPQQKxB8iIPVe+xF6jhiNPCZkx7WMWeWhuWwX8bmDSN156iD16vss8oK3pS2nYk6p+2RuqImAwWb0Y+uxyBW/ew2eiHPu4VRWOH8lMxzJB3BspBhJgwvP0wU+Zltday2fNuNk383wekTaBHA85XMvPn80gw5AJAbeji48m+xAaoE4FY2TqQGmt0zJ3PduT+TtURIUtT9WxVTArAkuYt2IrjczU+maThhBeJIy+CgoSs8ugiPpF8902oyZKgFq9omWhF/NbGdSupAHdTwBrYAamPM0k4rkviXKB++nYhktJb3OnuTZDTSoCRUhP2DIoDoVcMI6F0LkVfZtKJVEl5f7RL5kqyvvbIpUr0c0XVz6zgkXBjYN5y8NfBSDHMjIoO13ZJUYCQSXr8xL/o+nc1dmsmHPd/X+C9CFDKLRgmqf9g1BqJHZWZeb8IPJZ2lsYReO7ZRNyhABmfDJnfzgid6+kzbhXisfqfHU78ZLUmvReZ4trpNMeWydDiWeBRPLVf0D0NyFCkGBcwAJWd9cQQp9UnFn8HfyrRSrkSIg7e95ZmTD4JUPIPxd5QOGMteOERucsz7XuEJky5pfADnmvDebdFXYbns0uFLWGLnqkdhrb9GMhbj+tKbZK0H0mYUbU0Lu5ROQ2Rasq/AnLzL7gNcvDdVKHI5J6t8DgMuHnZTH4sGcx/6Sx6dgMv8v4iuB0Bx9Fl3N1+T2n21xto7NYjNLZla+Cp3abVnNlE8mZi6d4OGuIePaM8mOSyEL099N/AIongtBFiHFNqiBM0Wr7Ec6nS8OKj9ORrmQZEUV989m5848T4qxAO2QLM5FcXzLNvH4Z6uAkskNK/Zvj54O8tfg9eZJbaDVOxlWZvsp4z3JHNLx/g8n3LInLEmFZU5EclN5v8DAORjbYzEjS
+ zmWWdiDm
+ YQNMO6tqbUu6b6TWYYwnjHKOVqsPZ9Vifd4pgerE914TrFo/S0rTUN1C6nsqC1LaHdn+JCoc2Q1ogfAHq3UnwI81wlHQZ7o0im7F++2KZxdL1EXgOTNTm1Z2N7o64dgV2E/ihjHiqFybPTrUYS9rntoPbk7vKKqHyPaq3VRvRoVIznQB0S2GCrgTVqtzr7nVrIWrEPl4TbWSJ96jj3rUpdwHRYmN/+tRUwJkpFZZ7ZC9WwfwzOiauOI2kInb3e0nJXQxetMeBfJX3foJ126AuVo5UfjL4wPAjTqqQBl62nf9vL52gBqux2kwlzxo3vJ00s02WLhP2BWSJZzhJHtGb1ZeKSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,49 +110,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 04 Jun 2026 21:58:13 +0200, Andreas Hindborg <a.hindborg@kernel.org> wrote:
-> Add an Entry API for XArray that provides ergonomic access to array
-> slots that may be vacant or occupied. The API follows the pattern of
-> Rust's standard library HashMap entry API, allowing efficient
-> conditional insertion and modification of entries.
+Hi Linus,
 
-There's a lot more API here than this lets on.
-`find_next_entry{,_circular}`, `Entry::is_occupied`, `into_guard`,
-`insert{,_entry}` (do we need both?), `index`, `OccupiedEntry::swap`,
-`Deref{,Mut}`.
+> On Wed, 3 Jun 2026 at 15:23, Andy Lutomirski <luto@amacapital.net> wrote:
+>>
+>> So I'm suspicious that you've possibly make bugs much (MUCH) harder to
+>> exploit, but the underlying awful code and opportunity for bugs is
+>> still there.  MSG_SPLICE_PAGES is still around, and there is still
+>> (AFAICS) no actual coherent description of what it means.
+> 
+> I don't disagree. I've only looked at the filesystem side.
+> 
+> The networking side does some odd stuff too (and I did look at some of
+> that, and had to be edumacated by Jakub on some of the subtler rules
+> for what skb data sharing is ok and when it's not - really not my
+> area).
+> 
+> But at least MSG_SPLICE_PAGES should be kernel-internal only
+> interface, and once you don't share page cache pages with networking
+> code I think that kneecaps a lot of the attacks.
+> 
+> So that's really the aim here for me - at least _attempting_ to go
+> "maybe we can just limit splice enough that it doesn't even *matter*
+> when networking does something odd and questionable".
 
-It's not clear that all this API is needed, and this message does not
-attempt to justify it. It is also inconsistent with the split in patches
-3 and 4.
+While prototyping a smbdirect_splice_to_bvecs() in order to
+do use rdma_rw_ctx_init_bvec() I found things like pipe_buf_try_steal()
+and dived a bit deeper into struct address_space and found things like:
+mapping_mapped, mapping_tagged, mapping_deny_writable, mapping_allow_writable
+and similar things.
 
->
->
-> diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
-> index 08979b304341..19fce6862c78 100644
-> --- a/rust/helpers/xarray.c
-> +++ b/rust/helpers/xarray.c
-> @@ -26,3 +26,20 @@ __rust_helper void rust_helper_xa_unlock(struct xarray *xa)
->  {
->  	return xa_unlock(xa);
->  }
-> +
-> +void *rust_helper_xas_result(struct xa_state *xas, void *curr)
-> +{
-> +	if (xa_err(xas->xa_node))
-> +		curr = xas->xa_node;
-> +	return curr;
-> +}
-> +
-> +void *rust_helper_xa_zero_to_null(void *entry)
-> +{
-> +	return xa_is_zero(entry) ? NULL : entry;
-> +}
+With that I'm wondering if we could allow splicing of
+pages only if nobody mmap'ed the file => mapping_mapped() returned 0
+and the page is not tagged with any of PAGECACHE_TAG_{DIRTY,WRITEBACK,TOWRITE}
+and once a page is spliced we tag the page in the i_pages xarray
+with a PAGECACHE_TAG_SPLICED. In all other cases the page would be copied.
 
-These functions already exist in C, but are `static inline` in xarray.c.
-Can we move them to the header instead of duplicating them here please?
-That is what I did in 79ada2ae ("xarray: extract helper from
-__xa_{insert,cmpxchg}").
+Then any call to do_mmap() or vfs_writev at the highlevel
+and at the lower levels most likely filemap_get_entry()/filemap_map_pages()
+will remove the pages marked with PAGECACHE_TAG_SPLICED
+and allocate new pages used for the pagecache of the related index.
+It would be a bit similar to invalidate_inode_pages2_range() for direct io
+writes. Maybe optimizing by clearing PAGECACHE_TAG_SPLICED if the refcount
+of the page is 1.
 
--- 
-Tamir Duberstein <tamird@kernel.org>
+This would also mean the content of spliced pages won't be changed
+by future writes to the file, which removes the problem with unstable
+pages and checksums.
+
+It means the most common workload, e.g. a file only opened for
+file serving (or simple opens in general) would still be able to
+be optimized.
+
+Does that sound useful and doable?
+
+metze
 
