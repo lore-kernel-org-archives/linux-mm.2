@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C94ACD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 10:34:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D27DCD6E74
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 10:34:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AC5A6B0005; Fri,  5 Jun 2026 06:34:34 -0400 (EDT)
+	id 689076B0088; Fri,  5 Jun 2026 06:34:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 883D96B0088; Fri,  5 Jun 2026 06:34:34 -0400 (EDT)
+	id 660AD6B008A; Fri,  5 Jun 2026 06:34:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79A6D6B008A; Fri,  5 Jun 2026 06:34:34 -0400 (EDT)
+	id 59EEE6B008C; Fri,  5 Jun 2026 06:34:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AA2E6B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:34:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 134104068F
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:34:34 +0000 (UTC)
-X-FDA: 84845500068.21.0969B57
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 42FD74000C
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:34:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGC2KChr;
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A31A6B0088
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:34:40 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8D7E5C340C
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:34:39 +0000 (UTC)
+X-FDA: 84845500278.29.F222DB7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CC52F4000C
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:34:36 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IvGlW61y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780655672;
+	s=arc-20220608; t=1780655676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dFrQhcTjYjYlQDboe4vfQTAW28MKKhrj+2TnMlIO5uI=;
-	b=ZfGolebmeVZkwDXUde0LQoFiDM39PqmlvlOy//sOu/H/bw15YFCz4cPqolPGG+qE23M3GA
-	TDlAcUFdFbQFwbJm201Ztd9AbCtjS261HRb/OleQBRYSggXT4Tl3pg0ZH0KCtVVpm2ps9E
-	cRwY2LZ5asXV/vnOhRWpSiu+JFKC2PY=
+	bh=+7JQf8IUtRGP37hIV4LYjpS7Iz51JvjpcMlTL4+STF0=;
+	b=JZXDvNL6O43uGtmR4wbJmTRgXXk6S/puSnroehMtaEHfEgax13bzUhUFb36OOKSKXO7C8d
+	NQMuw+J0YJB2agi6zMzddqexUqH573ZhZQIdlClEt1yNHrBCCY7g/jinezA6SeGjGYwdEX
+	mRI1mmgeEBoSlegiZsNjWtG9flWrcoU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGC2KChr;
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IvGlW61y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780655672;
-	b=kXnlwzgZOyH30nEbtwCv07OFtMGb75tWP3+8X/+wcCkVKsEiEtzQ3R28mQC4tHW3WKJUym
-	Sw+pWpsoNAp1yXIlPGKQcQU+HTPsFuB5Zaf8thbmo2Ns2DBx3SsFLY9SldUkunLnfq4FBy
-	KJSIoObXUfTXrgRwIAlrn0ya7vUWCyk=
+	t=1780655676;
+	b=Y1yLy53JrJn/dMdOr5euJcE4Rs5bglu5mDZWp5RMYnkMvlo5B3pplJ4zdWmIZE17YhlwCo
+	dFvkbEkXlU5gXCyUXI4bPzhoxB5A54kdFYzM1/D9R2Nu+JnNYnIp/pzfKQfdPlrz5sxT3O
+	xMEuqzUIoUp5MhOdV4xeopH/7mc+mFs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6940843A67;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2BE37601F1;
+	Fri,  5 Jun 2026 10:34:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CFE1F00898;
 	Fri,  5 Jun 2026 10:34:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA091F00893;
-	Fri,  5 Jun 2026 10:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780655671;
-	bh=dFrQhcTjYjYlQDboe4vfQTAW28MKKhrj+2TnMlIO5uI=;
+	s=k20260515; t=1780655675;
+	bh=+7JQf8IUtRGP37hIV4LYjpS7Iz51JvjpcMlTL4+STF0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=iGC2KChr+cM2ShXwX3tEWOKqXt5ArIT5thwI9IvtSsOdSElCRqDB5wZzh4JJuHkPm
-	 k0hqAYp/ZaOPUPhjIrphb10bvG3JyQcC/q1vkXtIN55OJMZS4QqO/agY3zwS9yOFYu
-	 i1JJGQR2W25GI8iWhaSaR8/YGXqWzYH4FKEQmHa6C5NAOOdaorhiYzPU/FczqiFVvy
-	 5c7x6vV+sSk9dx26IDFXsQ2l1a67/eSfiJioaiqEbNSauQSPHBvKsOKlnuJvGr52u1
-	 Z61ZJZIS99KE/OB1HRZi3lRAwKJlrizHbL1CnaKH3/MIKcu3sNbKZP8rfTmVpwVTB6
-	 NfED15UIHCS2g==
+	b=IvGlW61yjtcZvNvfpsz8yYcP/YVEMZHbe342EhS45RnmQwwoDZs+vt62/lmCuslC7
+	 O5TlQ7DD5SZqj3LobjPRTEJe717h6ycoIFa1S65p4beAOngF4wngZqGA67ARGikh5X
+	 KljHOYUEIm1PzUhCpRdAdjIX0U4ZHiajCpWu/vSiLHgMXRWUsNFp304/0oFs/cTaS9
+	 jfP8RkvLLbVjhGKfi2hI1VPyuMw2vKVtIqz2y+QpWcsTadrr2COguCRyAWzEOVTytk
+	 6voLYSlN0m5a6ryoKi4kgtbMbqSXcbE6bpjWW1JNrZGB4KGH6T9J8ieFdOxBzBlOMT
+	 zM3daR2QHGDTA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 05 Jun 2026 12:34:13 +0200
-Subject: [PATCH v4 1/2] rust: sync: atomic: add atomic_per_byte_memcpy
+Date: Fri, 05 Jun 2026 12:34:14 +0200
+Subject: [PATCH v4 2/2] rust: page: add byte-wise atomic memory copy
+ methods
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-page-volatile-io-v4-1-0e217d9bf11a@kernel.org>
+Message-Id: <20260605-page-volatile-io-v4-2-0e217d9bf11a@kernel.org>
 References: <20260605-page-volatile-io-v4-0-0e217d9bf11a@kernel.org>
 In-Reply-To: <20260605-page-volatile-io-v4-0-0e217d9bf11a@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -85,30 +86,30 @@ To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3097; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=eRfxmUkQqrmh+7ydAl1CyAaP+7fYfnTrTU8habC1k08=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIqYpP6qiupR/U70KNHOs89WvnUNI/gtu/Zo+7
- I2fFFhQiB2JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiKmKQAKCRD6UCkIqsW9
- 0KeKEACD8pnjBqC3fn4EZ4nMld6CxkNc5dIvf62nnvTRQ9TfcKZ55qD3cn26nWR3IgsvXuOQ7FS
- sZMCsWA5S93ZlCU2egckrQByPuy6y02y1FFoFDWon2RzwGnk5rRSB5iwIweKS2UxmUXRI8slSxD
- A4+Fj6P9iBMXDSlOsVbSFVqgKBjU8i0WYExpQYvaLldVS3BgU/QB0ox4Xo0C5ac+0YiDYnc8WnY
- lUJ3cqJ7L7GOG/jj9IzFDy3HQvzvmLIZ7LGNaw1kzHNf6PxitsWdeg7GZZJ1GU4CiEd9soq4trD
- dhYxD2Z6pYiONUDXkrAukSUBGPhO/6Wggoo+nZJ/gG2t+4G5DlZsPs+KHMu97myYs70ZizEuzmh
- LbYRRyMNDK3dES8QEgRZTThIAD+MKhlREdR/FDBHi7leiFRzGBT2RM5i1NpL2c3xbDQHZOEKk79
- +zu4SAMu4Ybii5E6FMJxIq6duOOVwNzCealyZ7QgmaP0YCF+lZBWlzO3Ode17DSPSDn1H+2YgV6
- KYn6cGor9f91TO30z+Pes0qekQyGSA9adg/ick7oJqHC47OyZj6vvB7mINgIyagCCxNYmZAlVff
- 1SbIVuRcSPEqMNPrIIiVhut7pxJPJIYi6L+4pfGpvO3M4wZgSt2KL5FnnHeu7sp5GYOlFRx+5VI
- cHUC+hGGeYphYbA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5384; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=DX8++9L27SP2fzIpUixQUyM6WiazGqLQWDakH66n1oU=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIqYqBtBaekmbf4rV8ceuwFuR1DUVbhBXdQxvs
+ 6JRnWUKVbyJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiKmKgAKCRD6UCkIqsW9
+ 0Dt4EACDRgLGFbSSmO6aZi4d1MvDVtc6UJr49O9Mj/u9i9d6Z8lMYIlaXwuVqPrSOJSzQ9EOPv4
+ QEb8KWZvGyZ1ZFBZsAHk85tnp0/vHY3d0RKRraMJv1gHnUd+a/bYu9+Dur9T0T34CaVCCXYR6Ox
+ HNg1BUkyztNBystgcH8amPU3O42Oz/7ZSrueGexznPiGb0FaGN68v6WycMhZDDWZqWOm76J07zr
+ 0GMRNY5QX86FBsfpSLYXd4wZ+/tRACuEjHRozKWsxdbsnm2jGuyZISaHSoiqg6rDSL3Sk8N//r2
+ JGWPNL/spaaC9tH7HjHuU4LxW2/aluG14bZUtoSIqZaTuI2l6rlDvPnJbbQ6ttXmogkJrrCQN9x
+ uj4hZKNFURbI0jtLaUdLPjci+uS1Uxrw1eOq/YbhxhC0eHCbOPyszWvZS5tavW+TNvDAkQtEC3V
+ ywp9MRaT/G5hSIYruo5U3YWFOR2b9I1vKOFtiT+ex+EkwV0arqPNHi7uzXC56fM9VJ9v9JkmrK0
+ hOv0tocKxONG951TG+S8k7r8Vbxww4fiMLrO3oDJZfZx628DOUpqzUBJRrWAT0Adu1Y3+R3yTh8
+ E5q8qwZX+yZLgr3qw9ui+6qY7rk8UDnE7dKYdgQLeRu1WTaGypp/mNSH9v0ihZDVBIQHNlDDpu0
+ 6XihUunKp3R/1Gg==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 42FD74000C
-X-Stat-Signature: bufo1kufo6qhp37phan9wmh4w893uuq1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CC52F4000C
+X-Stat-Signature: 5tp68i8qte1trm96o81159t3y56hwtpe
 X-Rspam-User: 
-X-HE-Tag: 1780655672-383649
-X-HE-Meta: U2FsdGVkX1+LmVNEkjIMolAfktz8yUwKgG5QGLQO7do+gz/qn0beoE8MXpvvOzC96pzZ1Wz6pq2/CJvSbCD8uw/bTycCH6POnfl66Xr+4Yq91xCEZn2gRZG8EYPYkRa8+gogoWYv5xwrITEQacHW1hgkW8ohKxFsm2myVqeW4rXQHZAXWBrnLz/JMIiqToMwyz+jwLmkdzS8PXeHZwbUE5h+Ph3uYGEa58KUkzLAsGCFxPENB87OXxSfr0AJhfD//fzdhmOnUAy+7IjKuEmh4jc1LG6dHLxjTmi2ArMWzaz9BM6vaRbAf00dC8Kw2wyDV331NLjao5tGejnvCqUcrLlkBSGowEzrBxSBZbuWxnANu1OF105haEmMf1RLJU3ZhLhXj64s9VmQt5Uyv87Ks/ttRVFZioy0dRN/Xvdvfr/ZdLvmxqjE/hfYLjFWqAsNsRf2aA9ZD4Eb5ZkRzwCKAFYRHNDk5TCFAYWzXca8qCQx+FSwF5EeCZCM7V03hvnEaiDRGhqTnhBvl0XkwXsc5hKgcF/0VE3qmfMPj1QiahTM6cUGF3Bk/u5iwVPhAoQdC5QQIw9ZSrw6+BUJDWgRTss8gxc3SrRXi6pcgnnhZUYh68ou02qv3stvsVcGgNsJvtdIdqmJUxCS54XRXt+W7VOV+OWM2cIi8G8o3/xgXI6GcU3M5mhsHthqJCRHwbsUb5eSbUQ9uVeLyZNaFMKOB+MO8CBHsC9SRvvpgbuMMUf6B3X7W1q74LT/tA4FDhAL6Xz6bp6Tl+GotbtTF92oHmxYTdDrCyImtYsfXvOl07JekAtwG16GS1YD8J7hAYE6cu9bbd8sNmKCfZEWIUwfL0Nvj6bF1lgOqZgPtdz3PiwjIAelXMr5ejHMGbYY39uMY/st5Y8eq9LoRi9vcnsa9smd5eeBOCrl6UKrLCFGz2vqHEXa+/Wq4E/uhneG7y3C6EJzavtnnLEliF8qye5
- 8iJd35uw
- uVGkrWN+E8iWLeQyDgoHoEuUOf8dUOOK2WxKFbq6it4nqLiE8ELNyz9oWrBJsgr7EpYvylwhk4cEJWrUEUXVv+8xcLxDzVBgrZBwbkcLf1UdO0rO8vgGPvsyxa2bdk2wRMrV5M10CPu2D/vF+rKyky8GcD0Vc/o0ezPF625FfomhrzO6pMxOSO4Sfr8jZZ1L3YDfHgNyUylbnvyXodR7Lp8Plr9o1pW5flo1ja1pQ70r408lWlPIy24pJcOeSkxDYRBCmYflWlWSWOMG9kUlJCEg/KQLDElcBRG9r1veH/+oP/o68c3bcjiHgCCkPVT2yhSEc1O961eYy+YyY2PNlfU/tSujYKorQOyqDQSmilAsGsg0=
+X-HE-Tag: 1780655676-378405
+X-HE-Meta: U2FsdGVkX1+aCpRn+ZOHy1rXrFQR3E8cJsYqaJvDvHUFvcn9n+l8igw4UwrCHZM/tzehumFMN10kU6MxMGVeW6MJX8t2BLn5uFHYwGJW0w90cKvguu+NGEAXGpYsxx/BgwyAJH5XAm7DgRWqdFqAOjb9W6pYMtrtuKzgEie86Vd8MmopTj3UWXFLOfhoTvgdH+Ax1hC8cd1PmoLzTzY/G/JHqRVT3ajdJy6rM/IlrEVbnZWX14NSoGnZZDu5T9A1Q6IG/1bQ0rNG3Jquz+fgAeR4iTs7sgEnHW/bFclVFrGNuPe4j/4xOjR+VOo9awqBkl5JjGMY5JdU/QU/BH9H4DCM5q6h835E3TfsWJaM31MzfrhuJgHr/2bHlmhGKHpbL1cqhy4I7rYxoYACRePZGBCxZg9PTy4mUKWe5DtxjYkAhUd5DqMZn45yg8q6pTekY84LCcjkbEvia/YhE0W0LY5lsRDRgGcOLPmqVWS91jAStSxGz8cxoUPl3Fwmf5rbcYKmlxuHTHDj2P+NxIOPBWTVJ1eTYgaieki3IAQucr1LKcH7TJEp8CAtbom4KVXuWc9soqbd8Dx1SSi+htvDht8b6BrnIlckc8ZmwGYE35MYOyq4XGurZcYAdcfGQN5kguBxfpHpcWRA7Lnt5koQacewc2MNkxjoevX0B1TVGKLc+8BuNJ5jQ2lV7hzbljhJ5kcNkJvq81SzqGXSVcpv7GvVOFNuy/dvBCbD53gsG88k1cwY1kxsm5HjH/ZcVKHRtSgoUjijCwa8bxNXusvC1g45Eew5itD+zKAspzsTEyy53R+4uRcbmyKXO0SAXW0NPXW5dnjhnhybMdYYRoQX7/DTjNUXt0bR9pB6YtCVkSKyB4ntevZjYgACRPwOp5lL87kAKAQK+RUKR/5cdFnrEbWT2fyPyVd/E013hDKoDmtLMfsZ1100TglW/j/opWNbZpCpmz2bMd/RQF1feg+
+ U3i17syd
+ lyY0nSnihO18+/EhZsPLDxbF135L6i2yX+1jxAuNaZelXwWyqLp9VPJd39E5WUSU7xFWhnZyXwCEjf/6yEmAyEu3qL6GlEg/ZJk85MZU/sgKHg8eqyRuC9IPoqr1qcewrrgK8tyGYp0qTyjEfee3HeuhLZcchNJA3hGFTKcg4C8FMBivGqDdex3EZSVhJlKpOk9MRBwOerxr6ZWFxoZ6kWqVcQCbm9XSeSlC/CN/o+uyvFDNOa1JwUj9tQyd85U8EMeXa9LbOrtZYhHjku3f63wRwucjmD9QaNY8R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,72 +117,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a helper to copy `len` bytes from `src` to `dst` using byte-wise
-atomic memory operations. This is the concurrent-safe counterpart of
-`core::ptr::copy()` (the equivalent of standard C's `memcpy()`).
-Because of the atomicity at byte level, when the copy races with
-another concurrent atomic access (or when a normal read races with
-an atomic read), or with an external access (from DMA or userspace),
-the behavior of this function is defined: the memory is copied at
-(at least) byte granularity.
+When copying data from buffers that are mapped to user space, it is
+impossible to guarantee absence of concurrent memory operations on
+those buffers. Copying data to/from `Page` from/to these buffers
+would be undefined behavior if no special considerations are made.
 
-The helper is the building block for higher-level byte-wise atomic
-copy methods (e.g., on `Page`) that need to remain defined under
-racing accesses, such as when copying to or from a buffer that may
-be concurrently accessed by userspace or DMA.
-
-The implementation forwards to the kernel's `memcpy()`, which is
-implemented in a way that byte-wise atomic memory load/store
-instructions are used.
+Add `Page::{read,write}_bytewise_atomic` to read from / write to a
+page using byte-wise atomic operations layered on
+`atomic_per_byte_memcpy`. The methods are asymmetric: the parameter
+buffer must support byte-wise atomic accesses, while the page side
+held through `&self` only requires the absence of concurrent writes
+(or of concurrent reads or writes for the write variant). This
+follows the intended usage where the page is private to the caller
+and the parameter buffer may be shared (e.g., with userspace).
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/sync/atomic.rs | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ rust/kernel/page.rs | 70 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
-diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-index 9cd009d57e35..3c76f1a14b53 100644
---- a/rust/kernel/sync/atomic.rs
-+++ b/rust/kernel/sync/atomic.rs
-@@ -848,3 +848,38 @@ pub unsafe fn cmpxchg<T: AtomicType, Ordering: ordering::Ordering>(
-     // per LKMM.
-     unsafe { Atomic::from_ptr(ptr) }.cmpxchg(old, new, o)
- }
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index adecb200c654..7bb201442679 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -296,6 +296,38 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
+         })
+     }
+ 
++    /// Maps the page and reads from it into the given memory region using byte-wise atomic memory
++    /// operations.
++    ///
++    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
++    /// outside of the page, then this call returns [`EINVAL`].
++    ///
++    /// This function is guaranteed to perform byte-wise atomic memory writes to `dst`, but it may
++    /// perform only normal (non-atomic) memory reads from the [`Page`] `self`. Accordingly, the
++    /// safety requirements below ask for byte-wise atomic discipline on `dst` and only for absence
++    /// of concurrent writes on the source page.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that:
++    ///
++    /// - `dst` is valid for atomic writes for `len` bytes for the duration of the call.
++    /// - This call does not race with a write to the source page that overlaps with this read.
++    pub unsafe fn read_bytewise_atomic(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
++        self.with_pointer_into_page(offset, len, move |src| {
++            // SAFETY:
++            // - If `with_pointer_into_page` calls into this closure, then it has performed a
++            //   bounds check and guarantees that `src` is valid for `len` bytes.
++            // - By function safety requirements `dst` is valid for writes for `len` bytes.
++            // - By function safety requirements there are no other writes to `src` during this
++            //   call.
++            // - By function safety requirements all other access to `dst` during this call are
++            //   atomic.
++            unsafe { kernel::sync::atomic::atomic_per_byte_memcpy(src, dst, len) };
++            Ok(())
++        })
++    }
 +
-+/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
-+///
-+/// This is the concurrent-safe counterpart of `core::ptr::copy()` (the equivalent of standard
-+/// C's `memcpy()`). Because of the atomicity at byte level, when racing with another concurrent
-+/// atomic access (or when a normal read races with an atomic read), or with an external access
-+/// (from DMA or userspace), the behavior of this function is defined: the memory is copied at
-+/// (at least) byte granularity.
-+///
-+/// Implementation note: this is currently implemented by the kernel's `memcpy()`, which is
-+/// implemented in a way such that byte-wise atomic memory load/store instructions are used.
-+///
-+/// This copy operation is volatile.
-+///
-+/// # Safety
-+///
-+/// Callers must ensure that:
-+///
-+/// - `src` is valid for atomic reads for `len` bytes for the duration of the call.
-+/// - `dst` is valid for atomic writes for `len` bytes for the duration of the call.
-+pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
-+    // SAFETY: By the safety requirements of this function, the following operation will not:
-+    //  - Trap.
-+    //  - Invalidate any reference invariants.
-+    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
-+    //    operation and all operations by the Rust AM to the involved memory areas use byte-wise
-+    //    atomic semantics.
-+    unsafe {
-+        bindings::memcpy(
-+            dst.cast::<kernel::ffi::c_void>(),
-+            src.cast::<kernel::ffi::c_void>(),
-+            len,
-+        )
-+    };
-+}
+     /// Maps the page and writes into it from the given buffer.
+     ///
+     /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
+@@ -317,6 +349,44 @@ pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Res
+         })
+     }
+ 
++    /// Maps the page and writes into it from the given memory region using byte-wise atomic memory
++    /// operations.
++    ///
++    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
++    /// outside of the page, then this call returns [`EINVAL`].
++    ///
++    /// This function is guaranteed to perform byte-wise atomic memory reads from `src`, but it may
++    /// perform only normal (non-atomic) memory writes to the [`Page`] `self`. Accordingly, the
++    /// safety requirements below ask for byte-wise atomic discipline on `src` and only for absence
++    /// of concurrent reads or writes on the destination page.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that:
++    ///
++    /// - `src` is valid for atomic reads for `len` bytes for the duration of the call.
++    /// - This call does not race with a read or write to the destination page that overlaps with
++    ///   this write.
++    pub unsafe fn write_bytewise_atomic(
++        &self,
++        src: *const u8,
++        offset: usize,
++        len: usize,
++    ) -> Result {
++        self.with_pointer_into_page(offset, len, move |dst| {
++            // SAFETY:
++            // - By function safety requirements `src` is valid for writes for `len` bytes.
++            // - If `with_pointer_into_page` calls into this closure, then it has performed a
++            //   bounds check and guarantees that `dst` is valid for `len` bytes.
++            // - By function safety requirements there are no other writes to `dst` during this
++            //   call.
++            // - By function safety requirements all other access to `src` during this call are
++            //   atomic.
++            unsafe { kernel::sync::atomic::atomic_per_byte_memcpy(src, dst, len) };
++            Ok(())
++        })
++    }
++
+     /// Maps the page and zeroes the given slice.
+     ///
+     /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
 
 -- 
 2.51.2
