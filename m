@@ -4,152 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A0BDCD6E7B
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 17:49:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ACE5CD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 17:50:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DB6E6B0098; Fri,  5 Jun 2026 13:49:53 -0400 (EDT)
+	id A78A86B009B; Fri,  5 Jun 2026 13:50:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B3176B009B; Fri,  5 Jun 2026 13:49:53 -0400 (EDT)
+	id A565B6B009E; Fri,  5 Jun 2026 13:50:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C9546B009D; Fri,  5 Jun 2026 13:49:53 -0400 (EDT)
+	id 966686B009F; Fri,  5 Jun 2026 13:50:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 77AB86B0098
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:49:53 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20915C13B9
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:49:53 +0000 (UTC)
-X-FDA: 84846597066.10.5825D70
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5B7FD4000A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:49:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ot0TX+03;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780681791;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 859326B009B
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:50:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 34CA114023F
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:50:43 +0000 (UTC)
+X-FDA: 84846599166.28.A2DD1C7
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2BD172000D
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:50:40 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DCyr8UGu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780681841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LwGtvOXKAGZrSsdtQYxVodblsUwtKRfClda98rWcRDc=;
-	b=F3VxG5zElJEdLAY8twcKYorlDb44FbkQ9wOkpZhmiMTKV/f4Qm4crr7iJsS7PUir3yenC8
-	yCmrqIJPVtXmk1STs2jjfyHzHRo/y+bxrn2J/MZQ4JnZxJeRaWa2u0xR1DfUxjoOvOM/7F
-	SMifr1Dy79YQx5EvGECHrhvrWILKGeY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ot0TX+03;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780681791;
-	b=Xf4IJQmPwct3gSqeToRw3pH05vBbO/9FlMBl77iF/mO+4K/JzMSCfiXikCoyIoDNBqo0os
-	MajYB08eDk7dQpbRsgMvpbLUPpEMveqd5dQIM2g2Gkl4EQ2VR49Z3RqgiZSBBxfZ7B2Srr
-	oMgu2xqZRLF67eppl2Sp5rvkIrlZjvk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D2014601DD;
-	Fri,  5 Jun 2026 17:49:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434EC1F00893;
-	Fri,  5 Jun 2026 17:49:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780681790;
-	bh=LwGtvOXKAGZrSsdtQYxVodblsUwtKRfClda98rWcRDc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ot0TX+03yOgzXrp8V7VE9CTLkYrkd0ZBlLgBbzx8SovkOxfR8IJChQWDsXmPsJcIH
-	 yUuy6/rCRZHxamblQ217ZHj1seYnsi1jdhHzJU8HR2QNJgJbuGbb6vxLx5B+8Hgs5Z
-	 v7lzYET7aRBhNj0yL1kz7VrcnGdSmYYf3Vzit6lWUVXAfYdqJ9GMKcio+8D1S6n2Os
-	 Qn25r5M9g94b5zudlxshPinbuuabMmzLeM1lJJWXluq0lUtJTBnaynQ9gFATakZN5H
-	 sYfzw3/dGyKrzU+JhcgzHVkL/S9aG6JvP2AEUotwxX9/6/mKI9UrKHbh64kevzHXPf
-	 2DjJHK2bGFBZw==
-Message-ID: <44b12ede-1e16-47f5-9051-27fa4ea34236@kernel.org>
-Date: Fri, 5 Jun 2026 19:49:34 +0200
+	bh=CWtfjedIG3N0dLb3NUTN1ftwb7AjvxqbbhQR5qXgkIs=;
+	b=TYkgopIqmItzeSP3ILQlUQ5yKAipEZz9w+tqHL9JD7KDd/hCu5Y7HSPE2wYeNdP9fPdyZ4
+	+CXb3pcRlGb4wKbwEiqCx+/D4vE/DeRqS0Cl/XRJEndoZ8lYmTTSicXo4ZnUIHevtp1QoO
+	rFu+fRAyKKS9JjCwVAoPmCORtERaMsk=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DCyr8UGu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780681841;
+	b=uxCELT6n9mml7XKDZaeEWQTx6TwlXJwfnU7TBlemJfo0OfUCzi3T8MBJRkdUpsKJXqxMr6
+	725z5l1LfKu9heuVAM1RjUBRAel4QjMKkQgSOQlH3Zn/x2pt33SDrQZIPnM6QNbXo9yNg/
+	eAR39zWw18CUnnk4mbcSvjvS+qAqUn0=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-45ef6565cfdso1102216f8f.0
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 10:50:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780681840; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Nze+wG4V2gp1Zkz4Tud1/o5Bgne20SNvuZA1acCObr6OPmVoHR+FAlyGuQ4bhWLaSO
+         j8LSw9He8IIZNRZSbuBohouvoDF1rPysCvmjLnFth2dWKnJPzgUXqE12YSDn7b7QWCfD
+         hGcIym+Li0Gj62xA8H2YQlQxEj3x6bq1pWBxBGOFxYTkeiE+v+bpzAFWTVKsJ8okqYfa
+         r+thZDrRzCpazuhcOhRFOM/ianI6mxzvmATlXrd3f2c8OWzuJZIb2P3rLZY7jNyOtJF0
+         /j1sjvL6lVv8BssrKS9nH0G/cVGiBnN5AqXPEyXq7Yed0LwfLMgx+DupbSHEpCilUcQU
+         ZqOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CWtfjedIG3N0dLb3NUTN1ftwb7AjvxqbbhQR5qXgkIs=;
+        fh=NP3uzfdIgMnWzYkJCdZJ3BlWbRluauxwKRjiQPMFlAw=;
+        b=PKV9Zxn2Mn+Ky+XwtzXtawZzN/3lKL1+lFIXMZN2hDvZuNbyJquGK6jqaMVC/dIQpy
+         ne21STSTuF0CerBoGgPPq4KaEAhhtBZkAJmUAUHZrV4QdxyLMnDGk2RWjht9gRo8064w
+         Dbv/FsQ6KYtXuhSxLMlCE3L5sc2BbmXxqPZit1a2/yzhINbtMAa/Wd+jt4Ea4+wjwALl
+         A83OVlczkJRvtc95loLTnWSs3bZGNBCrBHNM2INHSqGWK5CwOcTqk/GVp2tHkp1ZgbiA
+         dtnpr1nY4HR6vjJ72HvxiaRSC20caVU0UrX3EsXvuNY6Q31xfoapYyLVk/vsm/cwwW/K
+         /I0Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780681840; x=1781286640; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CWtfjedIG3N0dLb3NUTN1ftwb7AjvxqbbhQR5qXgkIs=;
+        b=DCyr8UGuaueJpZp00NlXxeR5khWhcoU9nktxjmEX+yk2jAwOlNYqUzN6Et6ktfzcPR
+         t2IW8750rAVCDyKd5Cb+3TWlHWcczsp1z7+ise79eyDkzog6NKz63wFsNCAtGJcEd95E
+         xtml/AiAPnVTuiuuyKsWkLN3QG9NXDtK/hxgyGta729wBFkdgsJSndUTcUmLIKaOz4tR
+         hwdN1C8WItvvKSZW0b3VbwP1iqhZgS0BwUh7FWk73NoR12NeMq4IEL46Feyq28X1JLc6
+         2JUxqyECP2w9U6Jcu8yjtZsqy/VI3u9RNkPBX4Gs3UAaPZy2/Q6nycd6rg21U+e46V2S
+         4+fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780681840; x=1781286640;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CWtfjedIG3N0dLb3NUTN1ftwb7AjvxqbbhQR5qXgkIs=;
+        b=TTG1eave0T35GJW30xbQdtx1YAhksSj6CNAEbZ+muPbh7ve2lOCyalEWpDbh+LzEGE
+         7bRGW2aSUoq5HBYaC/aCyoq6+4Q4HmVMAUDvO3PrMFMKNw5HhQnMa7oPSjvj5qzggZto
+         ex07tW5y2oRzcKGcW5e/oikHVvluU04D40fYBJtgitZotp5RcRzxtofREwF+1U0rJSB2
+         zWmOuJ+as5VEXbhZ7VNwaLh2v33UBtljJjV1HK4hBPaJ2La85KH+qjKm/stipAwnsROm
+         HvjgkBhrufIF9jPe+WAGQ8nve2KchyCZz0lV36cNPGfBCgpANlffJ4WAq/y7zQpy+M2/
+         MXVQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+2AW2Ui8I+DADRMwY7hSrvMkqhHfriCpF4UeSeXqh/mwi09xvSNXi6aLJh14Ab1sf/1mpVA3FvGw==@kvack.org
+X-Gm-Message-State: AOJu0Yyn1EKcafkSWYlAxP8ghQ4ApD49GB212Q2bLMHqCQgsLg0MDWNf
+	+OKEl0bh3ThMKZYvzGPSeCQ2OUlUE1FbWus0nP73LwCFZBfa2GbEDfVbQWBz+vLvdYLTZyRq20A
+	wd+AOykHH7koj2/RvzxILwOOgv+bC85U=
+X-Gm-Gg: Acq92OEIXHr/bdlUspYcMxpK7M5bzuocjB9ulqUTik0GprWqkrSK9CCb7wgqVa0jjf0
+	sWn/usgZ56/dZ7hwQszvxkGXy8TKYoR4ghH6YEghiNQZ4Gt5bEVM7lUDJUZB8c7BSOcFXhfDimJ
+	YxwC0CY4qG61eYbGk9FLC3Jvs6YxBqtx4EodWg6+Fd+BIcF5fdEbJaJAQBXGitjqmk38VJxvqPU
+	4f0lGnlyzFuhNgGqW216KflKs5xxN87xxqt2xgTDhSQ67nDwWbKe31T/f3Yf+t86vLxxKkF/whh
+	RKfnuOQ3AWkhI0FxBqVmvPK/oP8yGF7eECFuZNO8qq2qnUmZEw==
+X-Received: by 2002:a5d:5e86:0:b0:45e:f46d:fa95 with SMTP id
+ ffacd0b85a97d-460301814d3mr7727837f8f.0.1780681839734; Fri, 05 Jun 2026
+ 10:50:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v19 12/14] mm/khugepaged: avoid unnecessary
- mTHP collapse attempts
-To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org
-Cc: aarcange@redhat.com, akpm@linux-foundation.org,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
- cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
- dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
- jack@suse.cz, jackmanb@google.com, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- liam@infradead.org, ljs@kernel.org, mathieu.desnoyers@efficios.com,
- matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
- peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
- rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
- rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
- shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
- thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
- vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
- will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
- Usama Arif <usama.arif@linux.dev>
-References: <20260605161422.213817-1-npache@redhat.com>
- <20260605161422.213817-13-npache@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260605161422.213817-13-npache@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5B7FD4000A
+References: <20260601113449.3464734-1-hch@lst.de> <20260601113449.3464734-6-hch@lst.de>
+In-Reply-To: <20260601113449.3464734-6-hch@lst.de>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 5 Jun 2026 10:50:27 -0700
+X-Gm-Features: AVVi8CfC1wbNx2TjHrUqjGLNgOt9Fn3Dei1FVAHhg6EnkmT2xDTr9x02LTUsonQ
+Message-ID: <CAKEwX=PvysjBk+nRjTMhXSBqFwXmq-OpWF+=U5WzNqBuQa3UKg@mail.gmail.com>
+Subject: Re: [PATCH 5/8] mm/swap: remove count_swpout_vm_event
+To: Christoph Hellwig <hch@lst.de>
+Cc: baoquan.he@linux.dev, akpm@linux-foundation.org, chrisl@kernel.org, 
+	usama.arif@linux.dev, kasong@tencent.com, shikemeng@huaweicloud.com, 
+	youngjun.park@lge.com, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2BD172000D
+X-Stat-Signature: cx55r6g7o7jbwfhf913ehu1c6qpcs44p
 X-Rspam-User: 
-X-Stat-Signature: trbabdzurqubd1cmwa11qeh8xazmumo4
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780681791-754761
-X-HE-Meta: U2FsdGVkX18wJxEjbPiaeVlwQcKXPsSuwUTHqrEEwMxYSwaGGs5lzSHysJTWpyoFvdY4w4dZk2XI+A/bU8cSNS2svYsXppfDMxRUAUGJ2Xjc3+wZ+doSLUNmnsVH/bhkP/HkP4WPewIJ9VjX+rflnWR+8Gjbr3XD55shnKS4psHfG07Q7ayLg8JhCjkeuYj6B44dWTn9+sC0OMlksJba0bfXmqsF0r1x/f+JOpAIBLOhlEx2Bef24ulCWNDu9qyJZxr+knc/gJXUt7HqtewQit04Fb5MpCmho4+Bv/8nUcGEQZrWipiqo4dq6Xbju6PihN7e3yUj5JOk9PMgLc+VAiIlrKFELL1TxbFuspnmDKsRgVgJTrYnhskiWYZQkSfjn1A3iLzIfHy0zVFp3xdMLkPkjeLEqeQjcf0Pt6JgCu+BHYPTTdZVzdF41FMcWdxHah/mG3oPG44qJivOurnxYLmyqDAbsRV+bvnFLoM81SVVKHYc/a7etQVb2h9oje+3iB19n0lpK7jF8eqLVdb2K7YiFYP37lp7XO10v/5+LPEeFgbaxl7BwRAIPkNu6M1WCoZ9XUk9+tIjqr/gt3x5oyVsEbSN1FMnq6ErkgGmk0kOHHUdeE+Ob/M4a45mHPaTkCpJI3AlX6jmF8ZAXlRFeIShZH7iKmhf6u9+g/mzoO5W9nXXXgG0yQECKCmgD7cyNoEqzYRBGRG/23gnphk9fkOHoVvP6PcDjPOV9nG30uFI1Gk54N7C8P33zvC0tx0kPBSQgP3u145YjwdM4+Baco3qt4/dYikTaHPA9F0lynRUXXFpEW8x32NZ+Sis86ETtXJ8ylC0ZXMs0yJhhhYBTBG1qz/QWKiiYCZLx37cvyj6QbdIUj3dib93quzZv+T6F4MZ2Mic0e4a2t+fHfgRf0ZFQr9+6jcJ7ve26YpcGrpf+TLpQJ1iF68wS0YlVj0iNCk78QpeuhmgquSxDt6
- z2JtXzdt
- DVbKU/bma4XmiVfxrV892zLamOCqWq6cXr/5ikB3AY1MyV+lF0mYx8nmpTlp/DT/1C8D405VweatmKG/WEFrA5m/wpYkkSY8AWC2RYDWVI82aOo9o42AitXr88o1sjTKA+uyIbbO99haJIMumHgZEbIEPShkJF6SstPiZXZUfLfLgssIBgWUNt4PKIIIeuez3fhkZUFBHRo1GbJtNrdQAX/z7GWpUJrtuYqXz7gpL53upxQOmTA23a8n0JqJS+R7xCp0EcWvBROobFkA7qvOaKtdFdUelIO0i3JWZIchARlFjVvZoovHP1nX4MQmkJSdFndoyfBpDQZ7lwQmmhgNMN+Xq79uROADPHzE/jIIIAplkNN/uYFRaka2zDYPyPFsVZbvfd0sr/qkfn4c0IYE8JlqCMw==
+X-HE-Tag: 1780681840-444187
+X-HE-Meta: U2FsdGVkX1/SQ2lndUSbAGnK9QDbjBpI0rtdV1h+bs6/CuJr3idTLEcz5babhjwhlHggy+5fJIrAvZ0+NR1KhBZZAs0rJmaap03Myya+XJ/yBj38wm44C+b0ISdvblwZ1g0LiE+1Wf32epKgsyrU9TFAONwJGIA9sngkdTjbONxetP2VqLpVW5o0gfcabbjvXV1VDgcENYdA2KSh0EimVkX61CEhOR70jO45cfpZ0yNNLczKKSNOwB4rRzeQ6CICCaXb1uLBTQl8/Qz33ppO65lt9iSDJ3ghpkz8MC387ekG1DScqiu0bVd+e/VXG+RUBZd73mDTYefWLVco5MsaAA2pDovImaAJunIIsG9CdqPHv09D600/MmJHc1IHdBAJEFh7KYFJQ2FT8jyQNLP7CrFYMIMLfvC9oA6ARtjzNwpw+oCnBjuznatGmaSriUqxlySOAUNs8LaXikQqK/i4lwhZ0ZdW4ZpDC8t5n0WmiuVpom1bFqn8tFTn9AZwDPn/pDJC4RbgYp+X/zNgkR8J1HohFQ1Xv3tASSDBwl95QAAThYh+/M2KVIJ+nuPQVRmM0KQphDZ7D7cUvLlBS7IwTerLxwbtGnK2aH1UY7ZNyVV/km9fKcAR06ZSUC6FSTMVzS2JwUNkhyflmUmjfKZmKm7n+B8QcuCmgsi3VKLZZXe/HvdjAyCSeXgzCuAS5+fwh5HyQCrhAEqbd4TGwwewV/zKjz7FUgTJDlMq0Ar+Xui1LIS6QoJMfbAz09HAd//FB9uO42BgVbfeuAyb4mXfYegsJFCl/yLSg1/XCSKR9hRl3BR/4/UsaikJTo+c8xXuAYQyXr6gOJ5O4JjXC+5B9DVCULKIH/loq1/FBDFM9GI/WNdcXtPgTd19h7dTeBYsTHBRv7UxBIXTRhzsS3tu0w/gjrDouVL6XKS42not5PC1jzl3jeBySiePq0JmMBSG5Q+J4qOWHlRSnN2/VTn
+ olwEZxUv
+ 0FJri0dfPT4QtBnp0W3tY2khgp1TDC9VSLz2O0w0IEMpzsXqQvimIOgPiLdCU84YxE2PhPBXXGeyoqhFWmcF4+pjkZtHnKHycGoqk7D9Hj5PUmZaxdemDkUhjiabIlMvAPgjbG8k7OW6/wNQTHcoD3TKEKqZVubvjZ+ACYaCCcidjqf6XjMViN1WMC0hrlDTmlVlsfYOSsr/e/Sdr8GaubnRP7WhLfciF390pkiPLqXItC00GwMOQMNsvxdKDKKhiwg43Ge+/3ACSEns/FZej62qf4bK0A4Lo4mrslvMFRgnI02373eYN6HnJXXwedSps5UiVODUgdsz5L4wvhmUGJParzxfPNOjxzp6XvW/xz5ZOA649G6FB4urU3dkC3wXWqwW77DrjgqvfWNsCBHhiSBdIZ7X2GQf5M7UfOoPGFjqaxv5YTuqBskGFkx5f6LOypUVpDpw62jO+yc4/bSviNeI53+Kna9LVkzJ9E4reOG9VggQKmYnk+xXuGzxVkw47oZjI9ejVSGB9lan4Ck8fnDIm/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,33 +139,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/5/26 18:14, Nico Pache wrote:
-> There are cases where, if an attempted collapse fails, all subsequent
-> orders are guaranteed to also fail. Avoid these collapse attempts by
-> bailing out early.
-> 
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> ---
->  mm/khugepaged.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 430047316f43..7de92b28dd30 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1499,6 +1499,7 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
->  			collapse_address = address + offset * PAGE_SIZE;
->  			ret = collapse_huge_page(mm, collapse_address, referenced,
->  						 unmapped, cc, order);
-> +
+On Mon, Jun 1, 2026 at 4:35=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrote=
+:
+>
+> There is only one caller left, so merge it into that.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Unrelated to this patch, but not the end of the world :)
-
--- 
-Cheers,
-
-David
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
