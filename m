@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F186CD8C83
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 18:35:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF23CCD6E7B
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 18:35:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B0166B00B0; Fri,  5 Jun 2026 14:35:54 -0400 (EDT)
+	id 2F42C6B00B2; Fri,  5 Jun 2026 14:35:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E4F46B00B2; Fri,  5 Jun 2026 14:35:54 -0400 (EDT)
+	id 2A44D6B00B4; Fri,  5 Jun 2026 14:35:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 737B96B00B3; Fri,  5 Jun 2026 14:35:54 -0400 (EDT)
+	id 192556B00B5; Fri,  5 Jun 2026 14:35:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 564286B00B0
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 14:35:54 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19A5DC1566
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 025E86B00B2
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 14:35:56 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C42541C1223
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:35:56 +0000 (UTC)
+X-FDA: 84846713112.28.A6DCBDE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1E14440013
 	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:35:54 +0000 (UTC)
-X-FDA: 84846713028.26.EEBBF83
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 87A1D80011
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:35:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N+JEX5bD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RDp1KNMz;
+	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780684552;
+	s=arc-20220608; t=1780684555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jPW7ndBXFMlA6BumIKFLGL62i1vzthwDUNuAA0KAxEI=;
-	b=YSS3+yfhsW7gKeqcmmSELveolnsWJclfbJnlriZtJrmYV52FFr3fajQBVpzJZRHc8b3001
-	BIhg2iQvA43o2X+G6Ra8k343FQaLOveouzazH0ZejaD/i0KGkkpOUajgCjkuoLmqZC/2NY
-	SpnM3I818W/oio/aHdN7B1xVDHOL/pM=
+	bh=WPKtkl44aSyXLvNV0tx53TGY2duqMQJ5kATLVHTv48Q=;
+	b=eXAenbi9dGBGPI8fB5oBsqUiBPZ8RmO4rV9DTV4U6yqUVztxgx5fyflZyEmhfFS76G4KOH
+	6gvb3CuO5e5cWp+XhcHzpXryw0uAA0FBbgiHEm0eB7yUgnj8EM386wc4Fbud+huQxKB9x5
+	eww32fOS+EAQZkxJs/jkkvmjH77tYUU=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N+JEX5bD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RDp1KNMz;
+	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780684552;
-	b=0bQfct1H1TFRKxeaOAac0muZxbabcgtY2gqntGzdoSZK6/8N0ym6vn0YXiAMpcIK2VR55r
-	3aGF4KKwM1ymmryLdwshaTaS/l95TmlnTJVi6SVs9gZ+t7N56VDtRaiIGGVDM96y2yQNN+
-	Sj0Vv6/Au2P8rJO04efpZJGO2r4TJNI=
+	t=1780684555;
+	b=WpQbORzjwIwQMbytj6WsuSm9K2/9LEYotfNB93uhgnm3dKBPSbPQgY6s+LUav4CbS70t1w
+	d07t5fqbnKhEm6s2C0MbaLG4J83dBDyuf0WXNnp66YKCLVFzyFMy8Pa+zf0SRNL0QnnbxA
+	Y7cs9zcagmEGopI11lecve8+r3G1Cdc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 25D69601EE;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6622C40E28;
+	Fri,  5 Jun 2026 18:35:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AC11F00893;
 	Fri,  5 Jun 2026 18:35:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD5E1F00898;
-	Fri,  5 Jun 2026 18:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780684551;
-	bh=jPW7ndBXFMlA6BumIKFLGL62i1vzthwDUNuAA0KAxEI=;
+	s=k20260515; t=1780684554;
+	bh=WPKtkl44aSyXLvNV0tx53TGY2duqMQJ5kATLVHTv48Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N+JEX5bD/I8m0d8e+OQIBAsmVQ/s+zaYtMEOhMZxjsUC1DvogGlpCdU5fU7dSgDuK
-	 8FOWQdo9Jdkn1RAHZ4OeyZNGINZ3xZfaxNiixKoxDT6cDEs4v0ExWj/oQ5Og3nyed1
-	 ASfJel4zQfjp3wIDec1AM44piTUCmrOYJfw1mOBrZWcEVcsnMDYB/CCcby8ha8JwCz
-	 +GCjI0StGsXqftjYieXLfwS/4R65Yt/er8LvobiSDz+DNU4x8j3rcON2Tq4V9pXNrL
-	 67yP935PjiYOf1ITt6cFYJ+tZrJJClDC38cJ62veB3lkZvct/6DCvZ9bW2mGxop0E6
-	 UsLSLdO/jBwdw==
+	b=RDp1KNMzreXggo/k5UN4yM2Vg2nlZmZX0Wh5BFATiEUCiYt/OzIlMXhoid/ZuvPyN
+	 o4JRp+ybptcE3KR0SR3U/GQFA/Br52X8PwyfyCE4K3xKLiNjlhROn0yP1az6fS50Wn
+	 bckAsmKkXRIqSnpu1yJiHqNZVyowEnPJ10728SdPQGvjnMmzM9y1joufJMK910774F
+	 lRXdWbT6mcNbofW9uEe0x5g2GSQFs7sdkzA/1xaMKVz39RhPwDt8/omJg0HDymZ245
+	 xuO+UITtPc5kwdHIQEnEVE5tMo1s3yjeCbPEqych8hP8XehChB+QxjwGezXjXy/QBP
+	 zU6rKaEGZ2Wig==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -77,22 +77,22 @@ To: Mike Rapoport <rppt@kernel.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 16/18] memblock: make HugeTLB bootmem allocation work with KHO
-Date: Fri,  5 Jun 2026 20:34:49 +0200
-Message-ID: <20260605183501.3884950-17-pratyush@kernel.org>
+Subject: [PATCH v2 17/18] memblock: allow calculating reserved size by flags
+Date: Fri,  5 Jun 2026 20:34:50 +0200
+Message-ID: <20260605183501.3884950-18-pratyush@kernel.org>
 X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
 In-Reply-To: <20260605183501.3884950-1-pratyush@kernel.org>
 References: <20260605183501.3884950-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1E14440013
+X-Stat-Signature: 15a3db13jhudko77618uo3p97azujtsx
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 87A1D80011
-X-Stat-Signature: xsueasnebn5kbzobmsgek8by17orjd1n
-X-HE-Tag: 1780684552-695282
-X-HE-Meta: U2FsdGVkX1+5coz1oFlzO/i9OhenUu3ZS11ZybMrDqkSSpEg5eeHCUgf2j2hZHGfA5obTfcdLqSeemulz4B6ry7iz7s7oUL0v6LbZqqQSgqMXpXkSlbIe2mZkqNKDwGgMMsynvk+PEgdsGHJpLlK87rtCqwsrmN2gqgBy3vipoiUa4u7GcA5vkXmVqJPMCcJU4z0/3Pnkle0NHpcdpxf2EdLaRIlc4YpEtYXo95lA/+drJ7XADzrZIbDNR+ByYyk8DR5Z9pCRjz28sTrYae4UNAady74FoRhonaFpQgF2U/RFeBvmvcosdgVrCwI56s0w5Af3jCkGtzArBMNGuHIVC7oKYuSi30mX8MDYBEgWVVfoELEEFqwriT0T7T3oynqHDzNSoQyX5AqOXxrqtIXCNWTQw5MtkoWr+/dM5pDCNYLSIDs5UqVpWv1cOda5hM7SjZOSF3VcqOq82W0JImMUIhjaZaFRP4MqqCESW1WOOwIt8QercCqfvEQ+yPUgfvqBvpw9wnkIBpz9KU27X4Kfjwh0iH95/snANMuBS9bzB6IuwAbrCLTZKBRG57g3tvA0dk77D5vEmXlkK74GnNzUH9xFCc6k9YQaBZ5m4r1RKRk0jaRl3eFNmTxVl8WaL6JEjdmT2hQfN33dq7lu4ajvv+WgXKCJ9ptiGmABDGciw54lXiF0fk7k3FaDt7D3KbeKDcv9qOEv+D3aQiDfzIlht/1Mslw17g6R35TN8yFh3RIsrr6NVYi0aobjTlD27Wh2pWpxkSaKiyNvUJqKr7RyR+WXs9S1sHL1wmZ7goKsFt3UlfzDIFQ7GQAlGWxFMPRfWNYakK/tlmK2hdLdMZwqR8G1RVNz7U5rFvu+yeo4kuK0X2WskwCyaTlX4Jp9wmWjHs+WV4KXVxeR0KtLo/APJ0up/dp/Lc1z+zXlxLfif8V+Z71Gv6YEwpsqkDt5S5a9xQCFnyu9ZbG4LiEBKi
- saCUCPnE
- aaUZAGp/O9qa7jXjL0kV7seQ07K7q7Ev8e+sBaJUQ5N4PEXlzNGF57d0iADBdvkQupZm7QlLTDPLFR4ynasuVbFi8hAlWSb7PZtaFZmrc/aGCVBe+m1yKlg3C+UssNBl8Ur0ewCiPOW7YghLC68c63UqbU3dEIRDxtFY22DhddSfVHhQdciO8/xlITeeg/QVai0/VMEYTFWUovz5y6+JXtmUvRqTBnDbZ0uOmBCTBb9+Prsw=
+X-HE-Tag: 1780684554-348386
+X-HE-Meta: U2FsdGVkX1+cQXm5vpj+uw4p39Gvqo1x3K7DuiJVFxL0844h2uKjPN8NrNRkMrOH0MZcAlM0vt0nUVBKjtcwAUVWZ0o++dTGfIVw/4utX8dlQtwXizVyc9+thXihwMHg6H9qYtd33YkA8yi3bwlkReU+/kUTXwe1hOH3Zv8eVmba2s9A188KFdvPtmWM5+KngPuGqG/ig2k8EFRRk+P9nT0DcvFEO+ZnwhrmG0mZrSVH5QoKbZZvICYjvIh6/KJ/5q4fTS6pn5ZpGP3TVc+XSi1u+X7zp0LtfT8TTq5rn26tFUS/LeVKNlV8ZNxJuVUVJvoXgA+zSyF++0GE7bcWkcNerFdyhdC4qL2PgpG3aH9cGTwKz/kYY7roJDn2VKsicR1uqzqytALdfwiqLLY8WSYcZktGfXXZpIzZrpy6WeU83RbiW6LGp7VXkeDPGcn4HLB4VwIpS24YMAvlUCXwtv/yNiJDbNqvEInj18k/eVJi5CIAn3LuqWAoLZkhYkJfFV8YPhloAzciLvD+ByniNZ7Ll7Ym/tK4L5LLcWNDmua2N9z5AavAecrRYoU5nybPPidmU2gIWXL4V3bJsWIR1g9Au9ljlbHTCba7APCYE2fwjLwvNnPwRflpV6meQI1VagigWZsazdToZ9IO9MsgVLXHEyfUAby5j9yUa40lQ37ewR4/AFhLgitb6JbqgVgFTYYCXv2Hc0fx8Cn2lZaTE2chhx0+Vx++mQ2CmYQ3kg/H9UwiDcJXGBaeRl1Ws5DAmg7zb54/Kk5AUKu/YssCXy2vjamEXMKyxI9W2wUId2Krt8o8nUhpEsijMKuADW1u4EEnBTxUDBQqXCJ+Gp30gRUy2add21fzUFgShBsUtWp4DWAmXNxEIG2TCkV8/DB8HvOjkmjgKS+wRXV90DlNuEXIMT7Yq6kQdDR3HDYGNluPXK2w8u7YhagtzAqbYQd0diPVmkZH8qiCgRMcw9b
+ 0C6XnGYl
+ NMBe/d89kIXsHssiMJ665T3dsrb6Ocd21KjdmgyWdMx6ZYvA27T7eV9rNge6HH/+9vJcU+dWPMSnGKqVy/3fJhTS2qg+0kDcUnPMjXtIlmgcT2occe8ju0cAu9T0vU6nlQUE3oUFE9A2RHkQGy5WPmjD3OrNZiqCwughNQ3BWKAKq0nCx0UoFU58BuYMiKpPH9yWHv6GlBqIWa2B29Utr/fmbkJXJ6Vqh+9alQeHo2zwoW/bPjZtJnb8859Wj79VSXB1uZFP0loKmezU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,263 +102,103 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Gigantic huge page allocation is somewhat broken currently when KHO is
-used.
+memblock_reserved_kern_size() returns the total size of all reserved
+areas flagged RSRV_KERN. KHO also needs total size of all reserved areas
+flagged HUGETLB to correctly size its scratch areas.
 
-Firstly, they break KHO scratch size accounting. RSRV_KERN is used to
-track how much memory is reserved for use by the kernel. Since
-alloc_bootmem() calls the memblock_alloc*() APIs, the hugepages
-allocated also get marked as RSRV_KERN.
-
-Allocations marked RSRV_KERN are used by KHO to calculate how much
-scratch space it should reserve to make sure the next kernel has enough
-memory to boot when it is in scratch-only phase. Counting hugepages in
-that blows up scratch size, and can lead to the scratch allocation
-failing, making KHO unusable. This will show up when huge pages make up
-more than 50% of the system, which is a fairly common use case.
-
-Secondly, while not supported right now, huge pages are user memory and
-can be preserved via KHO. The scratch spaces should not have any
-preserved memory. Allocating hugepages from scratch (on a KHO boot) can
-lead to them being un-preservable.
-
-Introduce memblock_alloc_hugetlb(). This lets memblock tailor to the
-needs of hugetb without exposing those details to the general allocation
-routines.
-
-First, it does not use mirrored memory for hugetlb. Mirrored memory is a
-limited resource that is best saved for kernel data structures, not user
-memory.
-
-Second, if the memory found overlaps with KHO scratch areas, it discards
-the memory and retries.
-
-Third, it simplifies the argument list by baking in some hugetlb
-assumptions like alignment and exact_nid. This also simplifies
-allocation logic in alloc_bootmem().
-
-Also introduce MEMBLOCK_RSRV_HUGETLB to mark reservations made for
-HugeTLB. This will be used by KHO in future patches to correctly
-calculate scratch sizes.
-
-Refactor some of the preparation logic like kmemleak tracking and
-accepting memory into a separate helper memblock_prep_allocation(), and
-use it from both memblock_alloc_hugetlb() and the usual
-memblock_alloc_range_nid().
+Refactor memblock_reserved_kern_size() into
+memblock_reserved_size_flags(). The new function returns total size of
+all reserved areas which match _any_ of the flags.
 
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- include/linux/memblock.h |   3 ++
- mm/hugetlb.c             |  22 +++-----
- mm/memblock.c            | 112 +++++++++++++++++++++++++++++++--------
- 3 files changed, 100 insertions(+), 37 deletions(-)
+ include/linux/memblock.h           |  3 ++-
+ kernel/liveupdate/kexec_handover.c | 14 ++++++++------
+ mm/memblock.c                      |  8 +++++---
+ 3 files changed, 15 insertions(+), 10 deletions(-)
 
 diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 546d7ef798b8..b3b4a6145fad 100644
+index b3b4a6145fad..a3b57066611d 100644
 --- a/include/linux/memblock.h
 +++ b/include/linux/memblock.h
-@@ -52,6 +52,7 @@ extern unsigned long long max_possible_pfn;
-  * memory reservations yet, so we get scratch memory from the previous
-  * kernel that we know is good to use. It is the only memory that
-  * allocations may happen from in this phase.
-+ * @MEMBLOCK_RSRV_HUGETLB: memory is reserved for hugetlb pages
-  */
- enum memblock_flags {
- 	MEMBLOCK_NONE		= 0x0,	/* No special request */
-@@ -62,6 +63,7 @@ enum memblock_flags {
- 	MEMBLOCK_RSRV_NOINIT	= 0x10,	/* don't initialize struct pages */
- 	MEMBLOCK_RSRV_KERN	= 0x20,	/* memory reserved for kernel use */
- 	MEMBLOCK_KHO_SCRATCH	= 0x40,	/* scratch memory for kexec handover */
-+	MEMBLOCK_RSRV_HUGETLB	= 0x80, /* memory reserved for hugetlb pages */
- };
+@@ -487,7 +487,8 @@ static inline __init_memblock bool memblock_bottom_up(void)
  
- /**
-@@ -421,6 +423,7 @@ void *memblock_alloc_try_nid_raw(phys_addr_t size, phys_addr_t align,
- void *memblock_alloc_try_nid(phys_addr_t size, phys_addr_t align,
- 			     phys_addr_t min_addr, phys_addr_t max_addr,
- 			     int nid);
-+void *memblock_alloc_hugetlb(phys_addr_t size, int nid, bool exact_nid);
+ phys_addr_t memblock_phys_mem_size(void);
+ phys_addr_t memblock_reserved_size(void);
+-phys_addr_t memblock_reserved_kern_size(phys_addr_t limit, int nid);
++phys_addr_t memblock_reserved_size_flags(phys_addr_t limit, int nid,
++					 enum memblock_flags flags);
+ unsigned long memblock_estimated_nr_free_pages(void);
+ phys_addr_t memblock_start_of_DRAM(void);
+ phys_addr_t memblock_end_of_DRAM(void);
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 8540608b8602..b3c33f150e85 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -749,13 +749,15 @@ static void __init scratch_size_update(void)
+ 	if (scratch_scale) {
+ 		phys_addr_t size;
  
- static __always_inline void *memblock_alloc(phys_addr_t size, phys_addr_t align)
- {
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4b80b167cc9c..fadcfa267ceb 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3029,29 +3029,21 @@ static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
- 	if (hugetlb_early_cma(h))
- 		m = hugetlb_cma_alloc_bootmem(h, &listnode, node_exact);
- 	else {
--		if (node_exact)
--			m = memblock_alloc_exact_nid_raw(huge_page_size(h),
--				huge_page_size(h), 0,
--				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
--		else {
--			m = memblock_alloc_try_nid_raw(huge_page_size(h),
--				huge_page_size(h), 0,
--				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-+		m = memblock_alloc_hugetlb(huge_page_size(h), nid, node_exact);
-+		if (m) {
-+			m->flags = 0;
-+			m->cma = NULL;
-+
- 			/*
- 			 * For pre-HVO to work correctly, pages need to be on
- 			 * the list for the node they were actually allocated
- 			 * from. That node may be different in the case of
--			 * fallback by memblock_alloc_try_nid_raw. So,
-+			 * fallback by memblock_alloc_hugetlb_bootmem. So,
- 			 * extract the actual node first.
- 			 */
--			if (m)
-+			if (!node_exact)
- 				listnode = early_pfn_to_nid(PHYS_PFN(__pa(m)));
- 		}
--
--		if (m) {
--			m->flags = 0;
--			m->cma = NULL;
--		}
+-		size = memblock_reserved_kern_size(ARCH_LOW_ADDRESS_LIMIT,
+-						   NUMA_NO_NODE);
++		size = memblock_reserved_size_flags(ARCH_LOW_ADDRESS_LIMIT,
++						    NUMA_NO_NODE,
++						    MEMBLOCK_RSRV_KERN);
+ 		size = size * scratch_scale / 100;
+ 		scratch_size_lowmem = size;
+ 
+-		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
+-						   NUMA_NO_NODE);
++		size = memblock_reserved_size_flags(MEMBLOCK_ALLOC_ANYWHERE,
++						    NUMA_NO_NODE,
++						    MEMBLOCK_RSRV_KERN);
+ 		size = size * scratch_scale / 100 - scratch_size_lowmem;
+ 		scratch_size_global = size;
  	}
+@@ -773,8 +775,8 @@ static phys_addr_t __init scratch_size_node(int nid)
+ 	phys_addr_t size;
  
- 	if (m) {
+ 	if (scratch_scale) {
+-		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
+-						   nid);
++		size = memblock_reserved_size_flags(MEMBLOCK_ALLOC_ANYWHERE,
++						    nid, MEMBLOCK_RSRV_KERN);
+ 		size = size * scratch_scale / 100;
+ 	} else {
+ 		size = scratch_size_pernode;
 diff --git a/mm/memblock.c b/mm/memblock.c
-index 6349c48154f4..131e54dd5d8d 100644
+index 131e54dd5d8d..cc21f877cb67 100644
 --- a/mm/memblock.c
 +++ b/mm/memblock.c
-@@ -1506,6 +1506,32 @@ int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
- 	return 0;
+@@ -1893,7 +1893,8 @@ phys_addr_t __init_memblock memblock_reserved_size(void)
+ 	return memblock.reserved.total_size;
  }
  
-+static void memblock_prep_allocation(phys_addr_t start, phys_addr_t size,
-+				     bool leaktrace)
-+{
-+	/*
-+	 * Skip kmemleak for those places like kasan_init() and
-+	 * early_pgtable_alloc() due to high volume.
-+	 */
-+	if (leaktrace)
-+		/*
-+		 * Memblock allocated blocks are never reported as
-+		 * leaks. This is because many of these blocks are
-+		 * only referred via the physical address which is
-+		 * not looked up by kmemleak.
-+		 */
-+		kmemleak_alloc_phys(start, size, 0);
-+
-+	/*
-+	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
-+	 * require memory to be accepted before it can be used by the
-+	 * guest.
-+	 *
-+	 * Accept the memory of the allocated buffer.
-+	 */
-+	accept_memory(start, size);
-+}
-+
- /**
-  * memblock_alloc_range_nid - allocate boot memory block
-  * @size: size of memory block to be allocated in bytes
-@@ -1580,28 +1606,7 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
- 	return 0;
+-phys_addr_t __init_memblock memblock_reserved_kern_size(phys_addr_t limit, int nid)
++phys_addr_t __init_memblock memblock_reserved_size_flags(phys_addr_t limit, int nid,
++							 enum memblock_flags flags)
+ {
+ 	struct memblock_region *r;
+ 	phys_addr_t total = 0;
+@@ -1908,7 +1909,7 @@ phys_addr_t __init_memblock memblock_reserved_kern_size(phys_addr_t limit, int n
+ 			size = limit - r->base;
  
- done:
--	/*
--	 * Skip kmemleak for those places like kasan_init() and
--	 * early_pgtable_alloc() due to high volume.
--	 */
--	if (end != MEMBLOCK_ALLOC_NOLEAKTRACE)
--		/*
--		 * Memblock allocated blocks are never reported as
--		 * leaks. This is because many of these blocks are
--		 * only referred via the physical address which is
--		 * not looked up by kmemleak.
--		 */
--		kmemleak_alloc_phys(found, size, 0);
--
--	/*
--	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
--	 * require memory to be accepted before it can be used by the
--	 * guest.
--	 *
--	 * Accept the memory of the allocated buffer.
--	 */
--	accept_memory(found, size);
--
-+	memblock_prep_allocation(found, size, end != MEMBLOCK_ALLOC_NOLEAKTRACE);
- 	return found;
+ 		if (nid == memblock_get_region_node(r) || !numa_valid_node(nid))
+-			if (r->flags & MEMBLOCK_RSRV_KERN)
++			if (r->flags & flags)
+ 				total += size;
+ 	}
+ 
+@@ -1930,7 +1931,8 @@ phys_addr_t __init_memblock memblock_reserved_kern_size(phys_addr_t limit, int n
+ unsigned long __init memblock_estimated_nr_free_pages(void)
+ {
+ 	return PHYS_PFN(memblock_phys_mem_size() -
+-			memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE));
++			memblock_reserved_size_flags(MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE,
++						     MEMBLOCK_RSRV_KERN));
  }
  
-@@ -1756,6 +1761,69 @@ void * __init memblock_alloc_try_nid_raw(
- 				       false);
- }
- 
-+/**
-+ * memblock_alloc_hugetlb - allocate boot memory for HugeTLB pages
-+ * @size:      size of the memory to be allocated in bytes
-+ * @nid:       nid of the free memory to find, %NUMA_NO_NODE for any node
-+ * @exact_nid: only allocate from the specified nid. If %false, the specified
-+ *             nid is tried first, and then all nodes are tried as fallback.
-+ *
-+ * HugeTLB pages are always aligned by their size, so the alignment matches
-+ * @size. Since the memory is for userspace, mirrored memory is not used. The
-+ * memory is not zeroed. Does not panic if request cannot be satisfied.
-+ *
-+ * Return:
-+ * Virtual address of allocated memory block on success, %NULL on failure.
-+ */
-+void * __init memblock_alloc_hugetlb(phys_addr_t size, int nid, bool exact_nid)
-+{
-+	enum memblock_flags flags = choose_memblock_flags();
-+	phys_addr_t addr, start = 0, end = MEMBLOCK_ALLOC_ACCESSIBLE;
-+
-+	memblock_dbg("%s: %llu bytes, nid=%d, exact_nid=%d %pS\n", __func__,
-+		     (u64)size, nid, exact_nid, (void *)_RET_IP_);
-+
-+	/* Don't waste mirrored memory on HugeTLB pages. */
-+	flags &= ~MEMBLOCK_MIRROR;
-+retry:
-+	/* HugeTLB pages are always aligned by their size. */
-+	addr = memblock_find_in_range_node(size, size, start, end, nid, flags);
-+	if (addr)
-+		goto found;
-+
-+	/* Try all nodes if allowed. */
-+	if (numa_valid_node(nid) && !exact_nid) {
-+		nid = NUMA_NO_NODE;
-+		goto retry;
-+	}
-+
-+	/* Found nothing... :-( */
-+	return NULL;
-+
-+found:
-+	/*
-+	 * HugeTLB pages can be preserved with KHO and no preserved memory can
-+	 * be in scratch. So retry if found address overlaps with scratch.
-+	 *
-+	 * Scratch areas are normally not very large, so this shouldn't take too
-+	 * many retries.
-+	 */
-+	if (kho_scratch_overlap(addr, size)) {
-+		if (memblock_bottom_up())
-+			start = addr + size;
-+		else
-+			start = addr - size;
-+
-+		goto retry;
-+	}
-+
-+	if (__memblock_reserve(addr, size, nid, MEMBLOCK_RSRV_KERN | MEMBLOCK_RSRV_HUGETLB))
-+		return NULL;
-+
-+	memblock_prep_allocation(addr, size, true);
-+	return phys_to_virt(addr);
-+}
-+
- /**
-  * memblock_alloc_try_nid - allocate boot memory block
-  * @size: size of memory block to be allocated in bytes
+ /* lowest address */
 -- 
 2.54.0.1032.g2f8565e1d1-goog
 
