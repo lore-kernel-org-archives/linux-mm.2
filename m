@@ -4,80 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C2CCD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 08:51:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E73D7CD6E6B
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 08:52:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 617AA6B0088; Fri,  5 Jun 2026 04:51:44 -0400 (EDT)
+	id 57CFA6B0088; Fri,  5 Jun 2026 04:52:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C8986B008C; Fri,  5 Jun 2026 04:51:44 -0400 (EDT)
+	id 52DEA6B0093; Fri,  5 Jun 2026 04:52:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B85A6B0098; Fri,  5 Jun 2026 04:51:44 -0400 (EDT)
+	id 41D4A6B0095; Fri,  5 Jun 2026 04:52:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A5316B0088
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 04:51:44 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 003C3140AE0
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:51:43 +0000 (UTC)
-X-FDA: 84845240928.24.1CA9C48
+	by kanga.kvack.org (Postfix) with ESMTP id 323766B0088
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 04:52:37 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E73E614097A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:52:36 +0000 (UTC)
+X-FDA: 84845243112.03.4A5187B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 432FD140008
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:51:42 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=de1zSMnq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3B99E160010
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:52:35 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VhNQwunr;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780649502;
+	s=arc-20220608; t=1780649555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IIeJ9iL/lDvJySy7dwtIphbMaPaW1rE4MmoyhmBkXhM=;
-	b=V1d0oxHSlIMfMQ7q/s+ZMAKeuPCennEsVkpapzck6FIF2UJ14kyFbOod4JQJe7WAHyi5ip
-	p8h8FppE8VbtiaVC3yx1uoC0gO+pFzHc3AIqzmFW4K6nkmoYfbT/12rbyEcWFBA229+UH+
-	47f/0YvDY7UFwEdkkVNbOxaIan/hixk=
+	bh=PsbfKlaq01f0v1LgLlTEBpfjv/xhSdlj/1kCdcHwrCA=;
+	b=2Po7seNk2uX+mjnCTSyowR9qTSAfV5c47nVxUunGiRVI08MJRBsFMNoYCLR3p8fM/poryh
+	bHBa+4+1hcfajkj5XsTse/YsD/nKVrRNUXMsAjeXC8Nzxk3NBqplW64OseI37gs+x+CwJY
+	TTJUKG9i7CIWVveluJsnDYiX7Y5WS5g=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=de1zSMnq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VhNQwunr;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780649502;
-	b=aFwUtTwuZYeoRb8kuq5LRvpCXce3wG/0ZCESTgciQ0MtvriJfgiRoVR2D16rnWw+YW5sV0
-	cMzP/z6J9OpRzRBpd58YRnBWZE/SXjyGcSBDJL7ozC46aExt6TlTqeYiOJZSoXsDaZ+evX
-	UXTQia7s7foIUU/nYCx4feWAcILknFs=
+	t=1780649555;
+	b=slsYIAGQdc1Y1tdz/OExwTcWmjKSpx5svhB/9uVWy2k8dYXA4Udg9WF4Vb7/vZ5VlW/yOl
+	QVk8sWWF70GysJhebc7xaqL2ODrLHoE7SRehXVHu4rU98/GPOq5xPOoGX41FlTDlzUYWb9
+	T4rSk8Z09Ixj32qno17sAz6be+7i0aQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 87EDC600AA;
-	Fri,  5 Jun 2026 08:51:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1296E1F00893;
-	Fri,  5 Jun 2026 08:51:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9112A600B0;
+	Fri,  5 Jun 2026 08:52:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC3A1F00893;
+	Fri,  5 Jun 2026 08:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780649501;
-	bh=IIeJ9iL/lDvJySy7dwtIphbMaPaW1rE4MmoyhmBkXhM=;
+	s=k20260515; t=1780649554;
+	bh=PsbfKlaq01f0v1LgLlTEBpfjv/xhSdlj/1kCdcHwrCA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=de1zSMnqVEgSxN0NuY43apjjCw8weSD6Yqs0qDheynej3/5uzpJ3BcBucvOjU0FqN
-	 N5O+ucZbnVM5/lKIjvqhVw8vPjrtJsckzMuhWIHkFdC77e9NNzpQ+jx60NyQAkgujA
-	 I87krPuwzgTZ1Jgz/jfIBD64CKNxVAAXnWT2xt9W/6zNWz8KjkCJf74yvuGLSMwtxv
-	 /jQWa6XQHhg+mPcJBlRoOhoA4uli8Kaz8VHLi5uobGppq6/NKgd7yRODnWjDediKfl
-	 YHexHFXdw56TOlZOBHqPHq7toE46jHuqRbYmNrYQCt80M23BJyFm5zr6hIXrEuzXUO
-	 GzdOVw5WcMD8w==
-Message-ID: <ebf488ab-779d-44be-8c57-d275ec26726d@kernel.org>
-Date: Fri, 5 Jun 2026 10:51:33 +0200
+	b=VhNQwunraPqo9lM7LGohuEyegSpdEJJ77cUJE5P1Ox/get019RYJYAEVLNDQV1d/5
+	 QzIKEooTy7semBQCXWBL8YxJjYKmzE0IWJU3MqPE8Bj4mvPHRwd518P+woHXM9XsAr
+	 dJwjfRFcYKbpopr9XvXWliGuhVhU006c1Wi3N7tA+0nOj5U0wWYwoNPHh+1gRFxmeR
+	 mvf+UBBZqIoVRofOon0uk57guY1wjXFnhkruc3Gi/Jcq8INlVmo/5nbeqbNHuniPGw
+	 fWGFoIv3fjDfkG3WjZWvmo46nowXgG+ISjVa3ahCEjl39CHLomOpOHENYcfQzg37mB
+	 B8H0nT/51c/+g==
+Message-ID: <39cbb38f-ed3b-4f17-b9b7-ed466957ee99@kernel.org>
+Date: Fri, 5 Jun 2026 10:52:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory-failure: trace: change memory_failure_event to
- ras subsystem
-To: Xie Yuanbin <xieyuanbin1@huawei.com>, qiuxu.zhuo@intel.com, bp@alien8.de,
- akpm@linux-foundation.org, rostedt@goodmis.org, linmiaohe@huawei.com,
- nao.horiguchi@gmail.com, mhiramat@kernel.org, mchehab+huawei@kernel.org,
- tony.luck@intel.com, yi1.lai@intel.com
-Cc: linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, lilinjie8@huawei.com, liaohua4@huawei.com
-References: <20260605081213.154660-1-xieyuanbin1@huawei.com>
+Subject: Re: mm/memory-failure tracepoint change breaks userspace rasdaemon
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Borislav Petkov <bp@alien8.de>, "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
+ "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
+ "Luck, Tony" <tony.luck@intel.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+ "xieyuanbin1@huawei.com" <xieyuanbin1@huawei.com>,
+ "Lai, Yi1" <yi1.lai@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+References: <CY8PR11MB7134346A3E4BB28ECA28D6E989132@CY8PR11MB7134.namprd11.prod.outlook.com>
+ <b930678d-a1ae-458c-8705-7ca9680d4cb6@kernel.org>
+ <20260603121707.7eccb9fb@gandalf.local.home>
+ <20260603161947.GBaiBUI7C8WWPwD84S@fat_crate.local>
+ <0c16bf3d-7c6d-4e28-b200-03b7d0ef714a@kernel.org>
+ <20260603130006.7d2c4a62@gandalf.local.home>
+ <b637ede2-73da-49f0-a7eb-70ec79e79624@kernel.org>
+ <20260603153115.775a2e81@fedora>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260605081213.154660-1-xieyuanbin1@huawei.com>
+In-Reply-To: <20260603153115.775a2e81@fedora>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3B99E160010
+X-Stat-Signature: qbwn46drskrdtkqwst8iawq78m9s5byx
 X-Rspam-User: 
-X-Stat-Signature: s7bxemqhzhi53d7kfi4usba3qk9acj44
-X-Rspamd-Queue-Id: 432FD140008
-X-HE-Tag: 1780649502-736104
-X-HE-Meta: U2FsdGVkX1+8cRvUlBhsgGth5lJAA3lJ5LoV65iB9oYT4hYAtyBn0tq56Ufxld7Ya8KS4CY9DyUHEzysJpVAlX2LfwNURS0Lr+8x6F7sr87gSvTlgho+dA19MrQwL5cn6mDgRIqAMkLgyiR7R8Xswo+NZysvDYEropmKeC00Sm7d+Fy8sU94uvH2qjdw7o5JnxV64gm4gGD4j/eblK3da8QAbvw1XQksiE2gfYO0blFI3gLHMGXySHPbmTPivMaMF7W2/vWVwGt6C92h+HSsb5LC7Z6cczddQPu5S3az7mT09QIDyvWVTpSh6YmAMjuUsbTyKUUG9H57vPqxBNY8w4M7x0rUAXvL0vUkHuGkyFK1Olo+GepTwXedA2frpMueHSThSBLvE/4/LFc1g812bgor11WlFkmQg9ZmTOUscb/zfPajwpUuWOUdDOKOEix1JGxf0SLg6KCsxLNYJJKhF304BZgPaPjdumVncyuqUJ43rcVNzBb4drH906u+MDUPtcmY+G2ZivHmNV6Z+hl+fvU9W/hKb/0S7GW2sI6ikohG2Jm4tV6J6I7tjWfAE2d4egeiJ3qq2Q0xpyJoaQh7GJSMxsYKKL1q+thsM+DZdJlk7baliaFn82AoENF5xX8Z2uE37OgLmZQjyUDEJB74o6URl4GMNxha7VujjCYvHpwFXYQhpeGx89V7dCotwGKTxZfbSq5fmc4hokYVFHEM8tkwq4fTmLrTgqo1dOMNcd0/xbXV3T0bWSNTVp2VFKnU117gbkt5L13MNAFIMRaW0dXT8vfD82FzrnxGjMt5kNEqGplF+VXoAmnCxmuUl/K4H3loozs05VHQpfk3+8gcgpdBeL/KXmm/6cMDSXQsZJZA3KAvXfmEU5vcJQ03f1azr4rJw3P2bManvEsrF0sq1abKAAQuuiEFsPMaEU6DzseO24f51M2EYnZFld4cy8JsMP7Ctj0qFpqOuuOFcPE
- P5aGR2+v
- DPM/iAXlpxXHYdSIApuO/5kVBmqOxE++EPP2YxAp3bwOhW4qBsL2JK8viAT/Zrh6xY918ZdTBbRqdfxg8F4mawxYdMafTOMwJgbxweedyR+6oh7gk9GnKMaF2VSN72ogwcTaQgTBb0B/CngtmQ3Pte0Hf6D1E2V3b2WqEPspVEuEs5j+RNXHb7EqU0CbZnSAEqYLZzhVT3CKu02QFU8UGys1SIlBCQuq0mnchCAYy4nP/fZyCWTE613ZcmfuJ5s27K7ZKc+FUR+3uvlUBGqgP3wpbmLFYj7V3RNJ5s5eL5hFy+lUuaJ6YwiboqvHc9Yr5ArTr805WTzgpq1do3cz92JRt2d+hbLJ/CnRZFaK4C07QDsf0DBuPJDmDLrvd03/38BxRX/pqzbe2UEzkWydDHL/Py1o4lb3Aiqk2G6dH+6IDQV8g/OgktgQEZvzaxwIiGoNWd4t0PvpQj3QvVoL3AY5QicJcixKBo85439Wd22GKPD9szLyZbnd0r8pfNSrt8MK5MFS8+t/VIX59WsIMOyJ5wvKiH3gPCnKUC5GvfOSpwbAgobrF3WCX4MaLs1Ukge2NzKnHyCGzRGbvQGE/cbQqv8Gj76mxeUkMxzImFdNmSUMSMjrMrEx2wJhD9Cz5KYop
+X-HE-Tag: 1780649555-91852
+X-HE-Meta: U2FsdGVkX1+vCSjZ/Sbtb7QTtylAMMfOXT11j9zgnAeGLPCzW0htT/HOHKG3lwHmDQTF9dF8sM42lypwh7JhZpJ2rXfKgV7xoCEuEpqAjsqzuz3As93xELr9AC982RpPd7klgFayLfoAr//lJ6yft7rfNewQVajdo3iw+HB9ePQzo44SXdxrVpBAdG5PGCxwUE1j7tG43OYJaq2dl8rZTI4EK1geG+6doSV5DGnGHNZhfvBhdvW8jaYK2UA6juExKyZ13LZlWAFg/BSBuK2TkjJVHiuymZx8vbLhgowV4QWWhVvSk1sCTrHgL8FfiqSQzuqd4JoorucO5FgCxgFORZkvgursauiq7M/xd2QNsdwCCJoxn2/Lt4imX4PfBnCEpSKyxKs6hWcp3VfrOcmwdGnF2w3eYjKynTWw3giOzQHxTd+7C3QrRFtKkqVJNhnqjBxPoXx1MSa91j3Jnm6QZmevnwj2XX2VgA+tZkx8Nn/rH37kpv7xZ+XEUHPIFjwTEC9YXDwp/IinlXGNEFisDAvXsqjBg6kVR2xY3jOJBw8HzAf7OBpSd4EvNHyZiqn8XAseZ8YhvlaZSA/JVQrOyofVrdNclg981Y6WhHPlExFuCP9Ft/XAkjaV5Lwc5XEu4i+fA1188LnHvo08Fq3w55NmSXuSm5T7h7O3Z03vFCYyTH4kAsxJaJjac74Pst9yi+Kt1+Tm6Yv5w7aNERA/OmOfS02qpmCdNl/BfGnZlNl1gYk0UKKUA7LmN/FP/VwfUIrdVijqPAtNAUZL50xtuyMo9iwWy+HHL+bO9Ncc/bFB0ekPwXpZBCG4LlNssmAaz3jWnqaWSrHPb9jFvsVhA3AyuUYIVESVYVTPxwtHJlB01DcvujWbusCobvZdjr0NhaFZ/8hJbwKTIWVZ0ZTpnj2b2cD8psQ2/1DdFQRebmMgriAOk5jJ9Nqpaa/s0E2haJK8hx7Xk4VC55MYwF3
+ 5jpW+bDe
+ gt/voAE6FTux2LU3OU3bXT01l1sBk2FA/8kWVs7Kd7xKmEUDU4iXR7ioaoKdKTwPyfBI90hsBt0MenMO1mW0Bvqd3jr0TwaUM84XPi7aM6W4TDPz+fnwKa9uOZG9Ev2aTDnzpln0frlk4maZGsGuF+8pXC6BElUszKvubYvPjR9jyAXUfzdsR030XjpwglmbSXEmuJruz4b+yb6ABnVxhSzAONWS6LK63WU88fsbmN7KFsgRmC27KhxBIhucSm5wz12P6609DOYfsK76A2rBQey2xvYeML7R4Dc51dovPgP8FDBRIWNXTKWpu0yMRscjNTfSB4RQfuoj5abkAT0ck/C7KdcPUfRfip/zrHrNIX3NdkzF0gucpjcMlpfLupGry/vH9FwdbZUL6Qm4tmisqmdgU5MazEAOAOVeKG7XDWH/go99SXXmweaNcug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,57 +154,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/5/26 10:12, Xie Yuanbin wrote:
-> For historical version, commit 97f0b1345219 ("tracing: add trace event
-> for memory-failure") introduced memory_failure_event in ras subsystem.
-> commit 31807483d395 ("mm/memory-failure: remove the selection of RAS")
-> changed memory_failure_event to memory_failure subsystem. This breaks
-> the backward compatibility, some user programs rely on it.
+On 6/3/26 21:31, Steven Rostedt wrote:
+> On Wed, 3 Jun 2026 21:13:30 +0200
+> "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 > 
-> Change memory_failure_event to ras subsystem to keep backward
-> compatibility.
+>> Thanks, that makes sense!
+>>
+>> So, would it be fair to say that, in general, what's exposed through
+>>
+>> 	/sys/kernel/tracing/events/
+>>
+>> is stable ABI?
 > 
-> Fixes: 31807483d395 ("mm/memory-failure: remove the selection of RAS")
-> 
-> Reported-by: Yi Lai <yi1.lai@intel.com>
-> Reported-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-> Closes: https://lore.kernel.org/linux-mm/CY8PR11MB7134346A3E4BB28ECA28D6E989132@CY8PR11MB7134.namprd11.prod.outlook.com
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Miaohe Lin <linmiaohe@huawei.com>
-> Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-> ---
->  include/trace/events/memory-failure.h | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/trace/events/memory-failure.h b/include/trace/events/memory-failure.h
-> index aa57cc8f896b..7a8ee5d1a44e 100644
-> --- a/include/trace/events/memory-failure.h
-> +++ b/include/trace/events/memory-failure.h
-> @@ -1,6 +1,10 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  #undef TRACE_SYSTEM
-> -#define TRACE_SYSTEM memory_failure
-> +/*
-> + * For historical versions, memory_failure_event is in ras subsystem,
-> + * some user programs depend on it.
-> + */
-> +#define TRACE_SYSTEM ras
->  #define TRACE_INCLUDE_FILE memory-failure
->  
->  #if !defined(_TRACE_MEMORY_FAILURE_H) || defined(TRACE_HEADER_MULTI_READ)
+> It's only stable if something depends on it. It changes all the time.
+> It's only when someone complains about it that it becomes "stable"!
 
-We should
+Heh, so we only know that it's stable when we break it ...
 
-Cc: <stable@vger.kernel.org>
-
-given that it's in v6.19 and nobody noticed :(
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Thanks, and fortunately now I learned about possible ABI salability of trace events.
+Let me figure out how to document that.
 
 -- 
 Cheers,
