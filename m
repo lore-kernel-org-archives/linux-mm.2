@@ -4,129 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69D81CD6E7C
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 12:14:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF6B4CD6E79
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 12:19:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F71B6B0005; Fri,  5 Jun 2026 08:14:09 -0400 (EDT)
+	id D45D46B0005; Fri,  5 Jun 2026 08:19:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A8206B0088; Fri,  5 Jun 2026 08:14:09 -0400 (EDT)
+	id D1E376B0088; Fri,  5 Jun 2026 08:19:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7977B6B008A; Fri,  5 Jun 2026 08:14:09 -0400 (EDT)
+	id C33BD6B008A; Fri,  5 Jun 2026 08:19:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 65B3D6B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:14:09 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 212E8140BB3
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:14:09 +0000 (UTC)
-X-FDA: 84845751018.05.2923461
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 49BA0C0009
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:14:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EBYyKq4J;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A67AE6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:19:50 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2FF9340BDB
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:19:50 +0000 (UTC)
+X-FDA: 84845765340.01.BE52859
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3B0031A0007
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:19:47 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=b0qpvNtV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780661647;
+	s=arc-20220608; t=1780661988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hFn2Kj21t7vBXcRahiovSs8PTd0jvYFlnhPHBtEsQwo=;
-	b=X0STANhsJ+AVqb5SPMsbh9MrL03AHBNsb0dEDJJS2E9r1K1pkO1Oe25jLh6blSMZN9Frnk
-	aROUP9VeXAiQvuYeMKIW1FaYo2woDid2wpeIvT6GKRnKih3XlzMqvM8gYvpUq2An9gWJ+T
-	k33ExXm/s1KI5alqt6eUv07kG1iXiTw=
+	bh=Gz+VtwQhYk3ng5JxyiUgLQa8oImJtLVBwaLlzEeVzFo=;
+	b=v6pLrW0BUP65pPln0dLF5KPI6/3GyPeb/1W68Sbi/9tyYvF5u4dMRH1QelHXZQfiXDaeF/
+	kd7yp0s8PMp5uJsgrIpidZZGOe+ga7sLiAUR2NMco3RoV04T7cYg/J5SXtoai2wnmTLFvk
+	4LkEnQc2U66xN0zAgrH12OHT0Zhjcko=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EBYyKq4J;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=b0qpvNtV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780661647;
-	b=7jkBNyII6lRO4nY/iZV9X8PsoK4Y/He48NbKCl5q16DOb1V56bi8yNpqmk4w8XemuKsjqI
-	ScI9Kr7zaJMBmHtQ7Lfe0gpX+RC9edHUDCw67L4jiqnS5o2tvVHX4I8dmQRK8Fk3xInS+C
-	8e5GI238G0hM4H6EaN/C7kmGOcVE5MM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43B4B409AE;
-	Fri,  5 Jun 2026 12:14:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F69C1F00893;
-	Fri,  5 Jun 2026 12:14:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780661646;
-	bh=hFn2Kj21t7vBXcRahiovSs8PTd0jvYFlnhPHBtEsQwo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EBYyKq4JCAW8GNUGiIHBtC4FTeUBGRM86DnzC8blZmSIdcNUJcW7DjTEGD710n+B+
-	 U4evLNzQvWAC74XqMyk/+Fld2I9s2fyoYQxyeSgBa3xn++HxB4Iq6ftza8Mb+9yACZ
-	 tMb0Br1lnhUKLfdV8ifew9cxkHWyg3yDM4wHfKKMYZCzq0rkXX5kWCEpQfsq6Oqxoj
-	 H4HXAbk+EIBYO5MjajoMtf2roE5f6x9ZcUmh1CneSM/5sFklBy85el1M11qU4hUQ0m
-	 H+wVVuDcryGip/HPQ0Ew6QmcrcxLcC6YHk1SL3MD4kYsuAKrpk0V2ZG0EAH2D4cZ7a
-	 +Uzrsy2rRykPA==
-Message-ID: <ab26c726-6769-4251-bfe0-fe0dc927cd5c@kernel.org>
-Date: Fri, 5 Jun 2026 14:14:02 +0200
+	t=1780661988;
+	b=FepKhiD/BFcFUP67ao6izAawf5UJ9R68S8dpqkzjMOEziP/PFNiSQHtVh+38cMGJ5zeSX9
+	8AXw5+nJL7iW5t0xIKYPePaZLEYAwxq4JvIieYZ0cj1N2Q1BYwOMZfycMofh0IqCu6lXw5
+	1Fj55aUSIZED+jcIlEcMQJcBNy15Kek=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490b2b037d2so16449015e9.3
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 05:19:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780661987; x=1781266787; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gz+VtwQhYk3ng5JxyiUgLQa8oImJtLVBwaLlzEeVzFo=;
+        b=b0qpvNtVB3FlS8yND78WEgKxQ488eIajmpkVIQXg4pm6LN0mY7VRyvD+kmod8NsTNw
+         08WVshJYPcgifC32l1dLyHamF/3kabpFINQUmgVROLV9WVQIoykZv1M3JujQBEk0h64o
+         2EcscrXFq0PaAKgLr/ZAn5t5BpeolbvptNeokAdZTek0xjItDmYkZmL00KZqRU8L4tA0
+         y/uIJNjvzIGAKFWRSUaAgbJUOOhpdyDgczUxUuBTawlFRJJd5X2gP1tr/RikVAhW980X
+         +Zp61RtFDAiJ0/Y/J05t3bo64RheSrOjamu/Q+Fbph70rIG4NvwqwjrdJltMVmkBPFYG
+         EaFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780661987; x=1781266787;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Gz+VtwQhYk3ng5JxyiUgLQa8oImJtLVBwaLlzEeVzFo=;
+        b=k/kh6NBbGopWCWvEcuBRdKs8pUH8K8iJ7VtGMUvU178mwQvKXJXCHKkIzD01EYZIqS
+         D9vxHIWRrmtAGlpnQc4IGJBBu3mjAk60zEho9age7tVTzTNHPoXT7hrXTjR3vHcEkXx+
+         86pXEuUeiUA0etrjvYSmmIP5OUBu8BahtwWteB7zDqvcPhToEoh9G4LbtY+0k9bDmhhh
+         rvUx1jAyS04n+ReiHttd7DjJBdPjuvyOR6igyOMKDVikt5wGUfFtWoCnHHR+9aG3LT/N
+         WFwySsvhqxTkIPdCtZAPh62G0auvr/kHWi86nW6IRntXZdwaFO/j0h4DOuKqnENwn8Ln
+         tgdg==
+X-Forwarded-Encrypted: i=1; AFNElJ85qNESJ/BuK3CFTrGyfISPcxGEFNgtCkVS1p3PPpjn2W/fba7S7nc9st8v6ubDs0pt1oHNm88kwQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyd/kYjfxVUvu+zb78F+JzBK5fZLpYe0ZJ/VKDykxzCBG8HyhL6
+	lvEIArHddF+chLSgkd6WkT0nEMeA5E1PfjuuGpIWCojzfg7Tqu6tNPqP
+X-Gm-Gg: Acq92OHrcLIIWB9F4Jb91adihy5O9q7ey+2c9Nvac/0J2hF1IyZ/RMY2YdnJlfsNCGA
+	By3o/991gnMxiBPtcMtDpEqULEAzozBPxEyROmZlSyLq3dSR4UWuqTGbIuZK5vOi1pNil9tHn4Y
+	9OJB10Wm22Ev6f6291vd7BTq3ohVXOpExjuV2c3KQXIubZpwZTkMHuLahD1LBhUvJvCu13lZ66U
+	cUGDLcab9zAK0M60NmuSFy8UCWyXJz2G1yEUSRov8/xSEld15hB2Y9VUfvb3SJqElUZ9XXnDVYh
+	i4P4LFyDJ+u9vswCJb7aDkxvlqwwiJD3xgEfK+H9SLg8wO1peKp3XQVvvcWhJbv9HeHxY7Z0Otr
+	pxhFOEcV9lTyQJG6SsQNlC7RaQVNvHZyEUEuMG6decejz3pyGhkdltgo4kTH00XFNenj9KUfRPr
+	xBdNojBnviGSHCO6eznq2AJOHkVO+8YCjPoX4VeSf4o7tB2L1fVHr2nhkqfn5anX9O8R1KF9hl8
+	ysA1Fsq4Q==
+X-Received: by 2002:a05:600c:1d12:b0:490:7227:100 with SMTP id 5b1f17b1804b1-490c26049a0mr52430315e9.18.1780661986468;
+        Fri, 05 Jun 2026 05:19:46 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3cbfe4sm152016275e9.7.2026.06.05.05.19.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2026 05:19:46 -0700 (PDT)
+Date: Fri, 5 Jun 2026 13:19:42 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Stefan Metzmacher <metze@samba.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andy Lutomirski
+ <luto@amacapital.net>, Askar Safin <safinaskar@gmail.com>,
+ akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org,
+ david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz,
+ linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu,
+ netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de,
+ viro@zeniv.linux.org.uk, willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <20260605131942.4584728e@pumpkin>
+In-Reply-To: <512d948f-7883-4d8c-b2c5-a777e70ca975@samba.org>
+References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
+	<20260602225426.122258-1-safinaskar@gmail.com>
+	<CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
+	<CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
+	<CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com>
+	<512d948f-7883-4d8c-b2c5-a777e70ca975@samba.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmstat: avoid taking zone lock in /proc/buddyinfo
- reads
-Content-Language: en-US
-To: Imran Khan <imran.f.khan@oracle.com>, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260604134245.1580287-1-imran.f.khan@oracle.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260604134245.1580287-1-imran.f.khan@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 49BA0C0009
-X-Stat-Signature: mg9sx46y3sumimgja5hp1hjn7igmozhk
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780661647-237847
-X-HE-Meta: U2FsdGVkX1+L4FYqE5wcPGfD4QidKh6lEDnMKgiTnPjrq+EiALLLMW8+jtYg/2OtgdTpbLQFsKV53vshcbSS3xTRQ0Xo58xS1GQSJX9syqN11eJQ7nIly77HAPm9Gihr9oNTCtnOJangy4P8PuRGQ4zsA1Ef/7ZJlvVV/2mNkhThFgtA7TCQh2Du5Y4vAJO0sDqWg2BtAtpd0Ho0497ZBXO+xpCtRJ/8xZxregRCYdK9g7/1f7gzRmvbQmh4ABlxK7UkLk8VDf15UEjQCZuOYKBAMM1JHwvE5ggG2Qum9SocAmkvrZNn+tfyjh0orULvsuVL3K2zgnX+SyGdX1wBh5HA1vkURGIdP6dW+U4672JfWgTszWXOuv8Dkjo+Aoh54tevAeL5+ZZ9ROntcnzunUXmqGfJdCBX9yxOh497KPPp2Ijj/M3ZpfUeqGeh++gJuB2MMcGyds4CgiMtly2/2lgxUPx/QOTuIuVhlHyxKtSJnMoGhJdU05vQ86Hf987aOYRScytwmHnG6S+ECTEZSVHTC4HHN14g14wFGohbQXZc9+ChWB5Vc2TYVK2oPfW/n9xKz8b93eZZLS/VMLAjkKqx93RdZUUZqWneJJnOAkEbgqgkACdRwO837pCsaii0CD8GBoUoDIRvyK4b8Rm3+KNATj5dRyEEwwPc8pozh0rEMvW05VedVBkNysjoYJ/AhylLAzsxIkFik61u+fNl8228Flmp69UetKJhXc2zF7LBQ+iBW+dq1Duo5U7UBSxq4p73oVLD6h8yQBZGAhMx9UXBQtSExJa4VQtFnjBTxUEAVie6PzydEW3N36F4twYVyMA55IaB0MF5w9t6vsMlJeWMAMLfSsUM4AetbpOOPGPzq3SUV6g/yNNHKGRitLmWcEmajkDpFbvYWlB5KZsNXTamtRzVH3wU1X8y3yL10UV+6oyJ+dXfESLYUcMySiS3H1ETjbbOqYFcPB8YbSR
- CyPeLERn
- voK+iScPsAJSy30Lz01KtQQ0kIAtUjuUrcNuADKi8kwL8oC0smAR4fvtghYtQVmVw266RS9c+Q4qzUqU8rLzItDnktLT9GLJfvbVIVBHiAtxhgf71V5Rv5Xh73XI5E0wcI1w9UGa57zBBhTxSfGCU+k6N641KvVRb6d/Dw0doV98VfLag3NmqmK+cizKigyt/CM++TCTJ8KD3Bx7msFZLUYBe5WN6ZsKZEwWV11AGX6j1pb0il79MH6L0YRaMVUx6M8p1narP009cx2leqs/FHnOBJbmppCffeLvysGMzMAYxREBWSJ3dIQ9G6A==
+X-Stat-Signature: 43tbrdf6pyj5iqkzoke94gm3q8krjre7
+X-Rspamd-Queue-Id: 3B0031A0007
+X-HE-Tag: 1780661987-642182
+X-HE-Meta: U2FsdGVkX1/Xi0qG0no0vaxpVWmQ+HHVIA0z1e3EC/7V+KAOAhQluKPt4gnY+V+1jfALhl7yKwXMg8n/pweAOE0u9Knr7r5MRlytfVmE1uhUeLatu2v3PvuJr7I/3pzoZKjZ3ZaZRhl0tv1waKyuuZRreIT9bpSqrpAu7qZO8k+o5cOAdT6PvlA+F+4Q+w9jeFQKDHXVp0bIJ1Acyd/IhCuVA+YLxf7/5XF5KaSe8QXmtl7PdP3wBBUK5bbokQjwbHOq5//HtEVELCfIUgcY6mpqtCTUdW1k+wx/NQRC9bPlM9vYO5xixM3izCDhPiLAzWQ9plWw9r2UdvqpuIMclTbAmiGTqGLEcJKA+5OLgO3jh0OAJI7KBfIKDYsiVxbTyZmmCAF8fz3drhvoPV1HJkRAAC6FBfNITk23sTiClYt5SUKKRLwUO/T9CvqL7KmC5HwPBCAoZ9yBRwdIzMMyWxjXAeaY8O2IpO2P3T4M8jSNjtzmgDnmiYs+qUWaWrrNnS8b6EjF5SsUk48ur+RZ07adGi+7u6fyX+ah1Vb9QfAumOz3GXLal5+ZgXlnPE61bfSMHqma5mBhn4qDt2THX0vQT1lq6n39zqMwqVCTdfHFplRBrQqtUS+NQi8XV0x8gKQk19O/sSqdsOlWYh7FcVw2lL2ulQwLR5vyLyOUaWu0FIKxjwydUuQOLtiHMNeYKepoEnyOPJeLyBJxwssYxV5wtVFKy+wJHwEr4ifO3gE/Iq1qTwElHrFfLSDJu3dyYdkvpXHXiKnWJS3US08XZeGowxHtiVcwt89fXfh0u/0aEEQm1PFE8B13Pl66PeR0xe26ymtqGCORSk63y7r/TBXZcWaJmhAMz3ux6aRoOUF04UlSHJ2jZ+24EpKZhBgC9l2D0C2Y6ejK27l5B+ZzcVGIXapFiYX4PcZHyt2Pl4o6W8CPkscrmmmYKKm+x6I9xLuacc8OF36RYnUijWM
+ JBmcp/Oj
+ 6rA3sx/8z9r2TbJ2Ad/Cqjyeiv6TIavxwOneGegbT/hLDfRiyl8T+CRS/6wzRyCf3TtJynU1cE8KlZ2e5/Z7K/z3shAyn6yWjHhp917jAfk1Y0POSqgRgyvoi8mOXeQYXYGpPsZtMQGvimgWGDGdbKSeIhTR56DXQFgLQ5CoOibqxYabTVXr2pYRrxvkfNNxMAGcMTAlEOg2TJtJ4JNLan7ZO/hsBPEllsM1WDRRnkaSHjlyubctsYuSSCBa06+1gPBjPUYuB4rjR0MCt+8umkTdNZemgiatrbD7webnNNEMrb9FTiKhSmGbJZZOlecF8Misq+JfmJb8dBdljBlpRMmqSNxbQBVoFtd3FSznu0LoPSgl8sMm45kvoXWYj1H6KWyK6EvSzNzgJ6rNwS/zWK1p/hJFDlIddTsSOyMzdLxpvDJIqpoTenEW3UVcf1jT9uoEGLGqWvSqfyJ5Hj1Zw+/UqvxQjn2wyQ1wgHjBwjJfNvl8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,36 +132,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/4/26 15:42, Imran Khan wrote:
-> frag_show_print() just reads zone->free_area[order].nr_free, so
-> it can safely do this without needing the zone->lock.
-> 
-> Pass nolock=true from frag_show(), so that walk_zones_in_node()
-> can skip the zone->lock acquisition.
-> 
-> Signed-off-by: Imran Khan <imran.f.khan@oracle.com>
+On Fri, 5 Jun 2026 11:43:45 +0200
+Stefan Metzmacher <metze@samba.org> wrote:
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-
-> ---
->  mm/vmstat.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Hi Linus,
 > 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index f534972f517de..7b93fbf9af092 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1568,7 +1568,7 @@ static void frag_show_print(struct seq_file *m, pg_data_t *pgdat,
->  static int frag_show(struct seq_file *m, void *arg)
->  {
->  	pg_data_t *pgdat = (pg_data_t *)arg;
-> -	walk_zones_in_node(m, pgdat, true, false, frag_show_print);
-> +	walk_zones_in_node(m, pgdat, true, true, frag_show_print);
->  	return 0;
->  }
->  
+> >> Am I understanding correctly that this will completely break zerocopy
+> >> sendfile?  
+> > 
+> > Very much, yes.
+> > 
+> > And it's worth making it very very clear that ABSOLUTELY NONE of the
+> > recent big security bugs were in splice.
+> > 
+> > They were all in the networking and crypto code that just didn't deal
+> > with shared data correctly.
+> > 
+> > So in that sense, it's a bit sad to discuss castrating splice.
+> > 
+> > But it's probably still the right thing to at least try.
+> > 
+> > I've seen very impressive benchmark numbers over the years, but
+> > they've often smelled more like benchmarketing than actual real work.
+> > 
+> > There's also a real possibility that a lot of the sendfile / splice
+> > advantage has little to do with zero-copy, and more to do with the
+> > cost of mapping and maintaining buffers in user space.
+> > 
+> > If you are sending file data using plain reads and writes, it's not
+> > just the "copy from user space to socket data structures".
+> > 
+> > There's also the cost of populating user space in the first place:
+> > page faults for mmap made *that* historical copy avoidance basically a
+> > fairy tale.
+> > 
+> > And not using mmap means that you have the cost of double caching in
+> > the kernel _and_ user space etc.
+> > 
+> > So sendfile() as a concept (whether you use combinations of splice()
+> > system calls or the sendfile system call itsefl) isn't necessarily
+> > only about the zero-copy, it's really also about avoiding the user
+> > space memory management.  
 > 
-> base-commit: e43ffb69e0438cddd72aaa30898b4dc446f664f8
+> I don't think so. Ok, maybe for webservers just serving tiny
+> html files, that's true. But for me with Samba it's really the
+> copy_to/from_iter() that is the major factor.
+
+Is that copy also doing the ip checksum?
+I really can't tell from the code (it does sometimes, even for tcp).
+But I can't help feeling that optimisation is well past its sell by date.
+
+-- David
+
+> 
+> We can use io_uring with IOSQE_ASYNC in order to offload
+> the memcpy cpu wasting to different cores, but it's still
+> wasting a lot of resources.
+> 
+> For the case of filesystem => socket, we can use
+> IORING_OP_SENDMSG_ZC and that at least removes the
+> copy_from_iter() in the sendmsg path, but the
+> IORING_OP_READV of buffers in the sizes up to 8MBytes
+> is wasting cpu in copy_to_iter().
+> 
+> For the case with smbdirect and RDMA offload with 2x200GBit/s links
+> changes from only ~33GBytes/s are used (and the server cpu even if using multiple cores)
+> is the limit. Without the memcpy waste ~46GByte/s is easily reached
+> and the limit is just the network link.
+> 
+> Maybe another solution could be having a version of
+> copy_to/from_iter that uses async_memcpy(), but didn't
+> have the time to experiment with that yet. Maybe a new flag
+> to preadv2/pwritev2 could control that, so that the
+> application can decide what's better.
+> 
+> But without an alternative please don't kill splice.
+> 
+> A lot of people are frustrated because they bought hardware
+> that is able to handle a lot of throughput, but
+> e.g. with the default of smb over tcp they get no
+> higher than 3.5GByte/s on a 100GBit/s link that's able
+> to handle ~11GBytes/s. And io_uring and splice are
+> a key factor to fix that.
+> 
+> Thanks!
+> metze
+> 
 
 
