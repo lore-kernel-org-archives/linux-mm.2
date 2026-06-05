@@ -4,140 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C4B5CD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 08:59:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3494BCD6E5D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 09:07:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC41E6B008A; Fri,  5 Jun 2026 04:59:38 -0400 (EDT)
+	id 3BC6A6B0005; Fri,  5 Jun 2026 05:07:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4E376B008C; Fri,  5 Jun 2026 04:59:38 -0400 (EDT)
+	id 36D446B0088; Fri,  5 Jun 2026 05:07:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEE7B6B0092; Fri,  5 Jun 2026 04:59:38 -0400 (EDT)
+	id 25BEA6B008A; Fri,  5 Jun 2026 05:07:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ABE8B6B008A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 04:59:38 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F0541C2322
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:59:38 +0000 (UTC)
-X-FDA: 84845260836.25.DA39F5A
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 76C2E40004
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:59:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dhh7PXSj;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780649976;
-	b=NsFQlYa6eG1uINGxS7e+9YSJwNTzbi0tuA7Ya6+572+ItL6poDiGYhiLaAOPHEsad694VG
-	2rOtWSmEmctH4LbWubJY0TldmmZ3VGhsByFoIQfObpUr9Cu0U3UiCCoKq7dzRc2885hPkn
-	mn4mYzEwCP/HAEu01BgfjkYHe0A6Yrc=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dhh7PXSj;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780649976;
+	by kanga.kvack.org (Postfix) with ESMTP id 14C6B6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:07:07 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 937061403D5
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:07:06 +0000 (UTC)
+X-FDA: 84845279652.03.2A79EE4
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A54B0C0009
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:07:04 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cOHMJlHQ;
+	spf=pass (imf28.hostedemail.com: domain of dvyukov@google.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=dvyukov@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780650424;
+	b=srdYeykbtCkQ0WIr8qKigyE6UtwHFOcYD7KAuqjSkF3sD8tvGH5MXgjmwBt/fTjxHzUjYw
+	zHXjL/ubHntQLyG+iZviW/gs/hrhGkHQsWvazrUqq2CUL0Dnshpjbnnm4uzsTv4Q/MIspd
+	q0wVq2BtNB4j0rSpF0yYNvneEva+95s=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cOHMJlHQ;
+	spf=pass (imf28.hostedemail.com: domain of dvyukov@google.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=dvyukov@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780650424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aph3F0yH35JYxECybQiTrc4aeTySkKR0krHjxKePy6w=;
-	b=rG4uAw2348EOz50hOsh5c23DpCqjKpaqy0NpNfn+hUXIxqOSgZUjMucPvb0NAQt7PA9oVV
-	ZoeMtzt6O8YBpeyK/SxvJCO5uiPoyD6zAvA0cdATSFrIhB6pEoKQ6EbaPpU8+hEDenha+0
-	FSoo43ikJBnOROdGat5XQwrmX/sUoZc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780649974;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aph3F0yH35JYxECybQiTrc4aeTySkKR0krHjxKePy6w=;
-	b=dhh7PXSjnqOSGRZLH5vbiPzF+QSQXB5XerF/69shhrDMybXrN9ejD+mg7fsY598xDL7TOB
-	PkwYWYJ4hhvFk7dgkSszqLeqJbpYkzbjuX6JInJZXdm5weNWfisyyy7lsvwt3SUOK5R4o8
-	/vsuaca21affbDpb0uGv8xRTZRPq4Ck=
-From: Lance Yang <lance.yang@linux.dev>
-To: ljs@kernel.org,
-	david@kernel.org,
-	npache@redhat.com
-Cc: lance.yang@linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jackmanb@google.com,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	liam@infradead.org,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	zokeefe@google.com,
-	usama.arif@linux.dev
-Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize collapse_huge_page for mTHP collapse
-Date: Fri,  5 Jun 2026 16:59:03 +0800
-Message-Id: <20260605085903.77186-1-lance.yang@linux.dev>
-In-Reply-To: <aiJ90SWqXvwN9dNT@lucifer>
-References: <aiJ90SWqXvwN9dNT@lucifer>
+	bh=93fbw1bv3SHPIBFbW1fWK/rBbsnGyvJpoDZh05ChLkM=;
+	b=e0mqgp2rCNI0NtDLIdmK0YAGbspP5pGporQVUfSnQtxd6CclDVLHptJsTwsEiX/wm/r7+M
+	A/yzypaA5o0rw7Waa0BOL/8VR/0H5aMIuvpbJA6r77uwXT1IeQrGMnhZsxO/l57NTKxVyK
+	FJY9MfW1qyW6KQAX3YzXehbsZUc6SEc=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bef1e6423e7so176463066b.1
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 02:07:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780650423; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Qkz6iPSWM2ftEOT7DI50QA37N9siWSVwMAyqhQqHn59WIKsTj0wrpGTywioyIERVWZ
+         K3r6VbEyfcQt1ZtwsApov2NDvmUtctzC0LH5wHoYkS/6ex9NmXqXSkyS7HYZ2Eo5jF6Z
+         Gnufm0cuFsOdnWhkkssUttryE5VK2/Mw3Dav6qgM09FJ6o8ScwdZHImd+purqSWSj29S
+         I8KEVmCCkwbu/iZ9RQ4ciN5xn+HxJw7agR0u2okKdm+RucBG60p9OqhApEpws7IrqkHj
+         TK/vNc+kroESZUACV7liGxdyJPAVh/1Deq98WaLVXMsCiGfbp2QjdQsgzgu7FX6qVsd/
+         yC7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=93fbw1bv3SHPIBFbW1fWK/rBbsnGyvJpoDZh05ChLkM=;
+        fh=11nkrvwFR5/iP2VffOLBwk2YZ4pROa9QAZgmuvstnuc=;
+        b=FOa4sIMzkeIIUR+Ue0FGj3GjNh8JQ7FsfTbNyP8fO+7Z7tzwgoM8rwIUgvPNlC7OU2
+         Sh/BXMAcsmmO11VMcnD5JKBcrxgszn311qAUOD/QB5LKr/ClovXg3l+t1KAPlmxJW1wL
+         gesJTa93OVqV5fQu1VYxEDQuu271l1gHTXRFlUKk0g4Bdjll4wK6rhGvj5LoRoKdO0uy
+         5eqdrmwo6YJipUR3jNbANxKQdrW6f70QVTFSNvQjxUAkjdD7xk9QFtCEq4oogo42UIbR
+         8LeDZqZGAygX/wa14suAPgTfnIsghvQ0IqD9Zzx0IYJaQK4qjgkOU05KWKKzOFcdaasO
+         kn4A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780650423; x=1781255223; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=93fbw1bv3SHPIBFbW1fWK/rBbsnGyvJpoDZh05ChLkM=;
+        b=cOHMJlHQT44T/WEDSDYoqYmKsvIMYmto+uijfmehsLb+Quy3om++E/rirlMejHFPLj
+         OEGBHTZIa+xRS1LYIs50H9VXapT8HSrxePzjhopJijqyuVGnDJ4PpfgWyWtzZ0PNciAa
+         xiIpP/p3JlM2CAyLcfXmj0xsU5Cy5m4JkqL74lpHhlWc/hCqx0ZZS9ToXI8ZPeGHCxyp
+         GiAvgmAhT7vt1dZRVrUNOPYZLtmlSv4fmWPwaRgnwIttvfeyx39Udin6FnatJ0LG0ByU
+         HKc9Urv7ioFslKHAFAgn/O2FuuiWk+HcIdySSChZX3tb8cVBJTXsZ2ICeenGoSMLmCpq
+         4NnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780650423; x=1781255223;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=93fbw1bv3SHPIBFbW1fWK/rBbsnGyvJpoDZh05ChLkM=;
+        b=JTD1cABNj+191ezExLUlEKoU+6alldCYj05sQWLIICfZqKfToAVnPm9IA2GBZnHvW4
+         p+JsY+203KYajxFHQuhTxKeVkRsPqjoNrVpq5NOR1DyMk2HItNwTg/7+UwBWmiWwm8y9
+         ubLzjhYoU+lonE9DIT12rcLBTuJ44BU6s3pnqBx2paR4ybpUGAfILeFFL+4exw0SQ1AX
+         c+rDEkcHq4R3VQW/GtojocIqJaxa6bAZ7gEEFvOOpmUULQZV1lbKwmPNGiUdkYqA80Az
+         /jGHyzTzSrGavsfTx90q19gdqD/16DsvbrSLVNkmHJGTqoC6nEpQ9Wo6ttMQvSP1n8kP
+         Ax0A==
+X-Forwarded-Encrypted: i=1; AFNElJ/AUYpVm6J/NyitI5h9L9l/dXsHqrxMasmwqCWPvg/2Z0hOScKP0Voaw5QBoG4+z97Rit8GdJ7v8w==@kvack.org
+X-Gm-Message-State: AOJu0YyNW2yJ8Sc6RM0SYR0XDkvJKSPX9Q0bx98BdqCd4yvxaYrvjjVj
+	ZF98P1ok3Zf3FByUW0vEyiaK3tMEpC3t5aQ64jO99j1bRfqDCnSqmlGMgd1L9szo0g0V2JN4WZl
+	ssCWI0UB/DMHCh5krWFMviuXp56rx0bOUGPQdQnhG
+X-Gm-Gg: Acq92OHF9k4SkfLg15hRvzuPWQHiuVqxpSSxb5/caFINBZGfphKRDC6HeZEgZksnQZ7
+	UCtArKCBkvT+qLUP1hfVeKOtovjZBZMt0VXFug1SbuHYHV78xG6a525kXlgsKWVsauv5qcI9xAG
+	B04APXNnWS0JAJFO+hutBEABDb5xZZXjL4j5+zJj6dsJ+BKbDbeB9a6TuS+kmBWAFd4MYTpAAwX
+	mxwgEHUdLGd2IhhiqUDtYVf++5WG5HqzfU5NOvH651SC6+MwsEFM2JMG6wAsAdfF0jo73Xn2v6l
+	uX9hz7U+aY3JTnHn4puLXPA+2etdSO/D5cg+1IjbZEKRK/L7DN6ssYVUCIWYUt/ZYgdhbeLc89i
+	8LhUVfw==
+X-Received: by 2002:a17:906:6a01:b0:bea:4c91:fe88 with SMTP id
+ a640c23a62f3a-bf371b5030fmr114555966b.18.1780650422334; Fri, 05 Jun 2026
+ 02:07:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 76C2E40004
+References: <20260605085423.1962700-1-glider@google.com>
+In-Reply-To: <20260605085423.1962700-1-glider@google.com>
+From: Dmitry Vyukov <dvyukov@google.com>
+Date: Fri, 5 Jun 2026 11:06:50 +0200
+X-Gm-Features: AVHnY4Iyj_m2RkQBFj5XA0EUzxPdPq-a_LH9u8rfp3fEOU8jhhARGzXiJeAZk0U
+Message-ID: <CACT4Y+bZ_Ev0SAdTt9MWnc4o_itqeXcKFqJV0gPerrzy+48ekw@mail.gmail.com>
+Subject: Re: [PATCH v1] MAINTAINERS: add self as a kcov reviewer
+To: Alexander Potapenko <glider@google.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, elver@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: A54B0C0009
+X-Stat-Signature: qtez349f8q81egocttaf1b89xecszek8
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: sw6ocywegcgkmj9dch9stp8c1nxfw8z7
-X-HE-Tag: 1780649976-846769
-X-HE-Meta: U2FsdGVkX18T5sjN0oQULsuM09us0xWxeUn6iTrl5W0qWQN7T1x87YFbKbET2PL8vrBANq6J7sjaHf96RTb0FdL09mhoaXTyQ0+oqEzLi9ZZXV9WKVuidrmTtwlg1dKRFLI8AwHJdBONos1RhjC3vSnkZwUP7vIwS18XyzN3J7xXp0bHZ3z2XO3YqT7M48tybQfQMTqGsRDEfLX12hEcBUOTdiR7Pvy13pHoF5WkPMOD86VbBgK9p+ZeOVqCUHrAMKlIOfoU9JAMz7/DnD+yTUvYaPDmBVvTCQepoOGkZ2S5tX49KO73hnddOn0CPauwFg5G6gauhpZ2WLLQ6tbSNdyHbyCLWExZm2fClhJDYjOI0yjNWnPq0Q7lAGmS645oLVnHy4bj0+Wjh5GmJaDbhM6H/rdWygQUzW/bApn+JbY85ruGi1IkrQxSPFqhlYrkHNbnNn+yh/uykM60dbcISSHBes9eOSBhY3ior6AdUwvyRot4AeuMEjIAsMNLT1stw/nStQpo/HcXm0eSMvhVhh6CKAEr9kqfSd2RBrWNxpkqM0lj2KCgIenvXGtKrTM2ERwzBivL1VwDJw1k8vKAulckKBch/75Ou4cc3MgsiE0svobcmOCncC+dfkxs2JCMQX2ARCUIb/BhTgY3jpKyCtAbSeQ3i24UMqRuRUeqKehxXgbouN3bATJZxm5Ea013uocqrTzE6lDDdPyV6gsNABCVuaJvEc+1+81rH/RfAkXtBJJ2XS5vnCRXiY1lWlc2mXa74n8coRneAhIueI11TOfV8jr8jZ7m1GQ6DSOGw8hV5lBI4ij4l0DDwEnIa/Bne3wx2oIWJQCJaR0DUUE0nTM8iOYbcJchbfJb999/PwW6iXqsd6xYZufH3Nr0BPDmOz5/50EFeqLjK63In3q8bxSicOFZXy84WQrCIs1Vu6vccHgfpgXRepK4c0ImYqIstQ+fdJ/+Bw8SflGzlrI
- 1DQrbtwG
- qw2wyvElkGIzOX6mlzcjhCkRb6dAXSJpNEL1Y5ffu0BbMwdyMpmqfkNzhE/f/be7oY0W0Y+kIB6vZTROYsz5aDac1UOO6krW0pGsBkDBrnP/6YJL/g6w5fdegIxTNpsawyMIzoxzJoUjkz06DO7VW7/Y9HchZgF6kz06LJWD8N7gXKh3LQoS5tzb4RWMDObPVe2b429ntJLYhHDAVGERMVMewlm2VEIH1YSkAFfs5eCeEeIMtlcnRlyb1LSLQKu3ZbotrE4OVBx2ZrAYY/tKn5pFEphMyQudKypKwrnV2gIed06MUU2U1VJurD81M+f4YzFih78syyeMZcVEtHT1V6/bVzDyNSi5jXZJRvahQpzRAxNPpSPxGEUQi/z5YW2KwKjr+A03prOuOKISVHXvWJqoroA==
+X-HE-Tag: 1780650424-324601
+X-HE-Meta: U2FsdGVkX1/4jQPxlUEo0Y5Vtp5IKgeMDdZslyGPiMPzg4lxzkGWRyCng2m+fcEHJjkwjjNfBJ+eEtcc1QkldrA5PX8leBEraflmZ9nOkiDppDRMA6Y8GJAVJ6cLJ9vLzRTI9tCJDHP6WGbWgssgoqMrI8zN2vtOvDwOulBshG1qB9qo0oSgzSKP4XGQycQSsLpNhlubPtf/hEzxcCjdiu1YkOcA15dtqX0H59nwq5JvPkhSgCu46LG6730zRDpFGRmJJ51kZl78Of5N2kCXxkJoauxI6M6JeE0rR8jMiGWcSZ2QvHG6u4o6YcR+oBB4Bt0lBkPLAPLZgdxJWzrBnds1/gPGpq9ew826SqUDCdX4yLazhLZIiRLU4mvXTwDeljAdbVCohdqhidgAWbhJh+qvMtrbd84Nd32pWrbbV1JdkcExl5E0pkjpp55EUTw8LqCf3yYeGzbbHRSvN/cc22vdE46s68CO9fM7fkTTyAV1+Cc4C8LhUkqfmnZAJaHJO1DiNhgzdg0AQ03SI/tJrkfk8IScjB04NNKJgFIU0zG46Q+HUO457BXaaI470S6beGloV7YJvbBXUR5OkKJgUSa+8wDrN/5NnsxJZTQhs99LzUJ2K385D38j4qAGJDj6wKukFHwV+qjxKT34bfu3BWbcYcnQhsUPnILuBZlMhixNSZ1GF09OCSYLB/X+2nXBLM0v7QzKY4cbIWUj9XA7T1nx/0kOgm2hsqXwYC6RhT2XkDTI2DUVy7sHpvcWail5QpI4GMXayRqEGqqz+ll7eFZrr8v6yCvUE3IGuO00lHIy51TWIGlLonvluBY4HvfAj+U//22dNj97lGjzPm+YuMd8CuiVm6SIWApdKclE/eGF9s25zcD5MGR1Po3KKp17R3OIU2yBwHNewris6IFk0vMzOCXt1IF10Y1JbuS7tpoG0mjcJ+EQDHDbPRnXjobF65R6LIHC6erfyrWLlVB
+ IhFFGNbv
+ ihRFQxwA8SdlNZ0N0RT5hLu5n0+KN2OPoktrExPwgcB0ZJViV+yztZKNvEt/NYL6C4smROU10Gg98dR0D4QO3meZffZdGZNPQnxhWke6ITYCbz36PvEmW60d78rLqb82BQ1IieYpTfx58pbOmSjo2azSJpM8pS4WB73JpQItK0L+2imB3txYB23xynnfxQ/FSIGoVqPVH4ZeloupwbuORWQ8M5hqsII7ov2evotJpqET3R4uYk8SqnMQxYenGPQV17T8OPCHzgbPtstPB4K9Nmct/JKsnU+osyAn2a6exGdrv+fyzqielVZTgi08ehevKkxgpBxsShk/jpjezTyCVgBISnUmOPXfx7WSjfVG1C+RxLMo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,134 +136,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Fri, Jun 05, 2026 at 09:07:23AM +0100, Lorenzo Stoakes wrote:
->On Fri, Jun 05, 2026 at 09:18:27AM +0200, David Hildenbrand (Arm) wrote:
->> On 6/4/26 19:04, Nico Pache wrote:
->> > On Mon, Jun 1, 2026 at 9:00 AM Nico Pache <npache@redhat.com> wrote:
->> >>
->> >> On Mon, Jun 1, 2026 at 5:14 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
->> >>>
->> >>>
->> >>> Yeah. BTW, I think we'd need a spin_lock_nested(), so @Nico, treat my code as a
->> >>> draft.
->> >>
->> >> Okay, I read the above and did some investigating.
->> >>
->> >> I will try to implement and verify the changes you suggested :)
->> >
->> > I've implemented something slightly different actually and I *think* its better!
->> >
->> > } else {
->> >        /* this is map_anon_folio_pte_nopf with no mmu update */
->> >         __map_anon_folio_pte_nopf(folio, pte, vma, start_addr,
->> >                       /*uffd_wp=*/ false);
->> >        smp_wmb();
->> >         pmd_populate(mm, pmd, pmd_pgtable(_pmd));
->> >         /*
->> >          * Some architectures (e.g. MIPS) walk the live page table in
->> >          * their implementation. update_mmu_cache_range() must be called
->> >          * with a valid page table hierarchy and the PTE lock held.
->> >          * Acquire it nested inside pmd_ptl when they are distinct locks.
->> >          */
->> >         if (pte_ptl != pmd_ptl)
->> >             spin_lock_nested(pte_ptl, SINGLE_DEPTH_NESTING);
->> >         update_mmu_cache_range(NULL, vma, start_addr, pte, nr_pages);
->> >         if (pte_ptl != pmd_ptl)
->> >             spin_unlock(pte_ptl);
->> >     }
->> > spin_unlock(pmd_ptl);
->> >
->> > The logic here is that when the PMD becomes visible, PTEs are already
->> > populated (no possibility of spurious faults on local CPU)
->> >
->> > the SMP_WMB makes sure of the above
+On Fri, 5 Jun 2026 at 10:54, Alexander Potapenko <glider@google.com> wrote:
 >
->THe locks prevent those 'spurious' (really: incorrect) faults anyway so I don't
->think this is necessary.
+> Also move Dmitry Vyukov to the bottom of the list.
 >
->> >
->> > And the pmd is installed with the pte and pmd lock both held through
->> > the mmu_cache update.
->> >
->> > This follows the conventions used in pmd_install() and clears the
->> > potential for local CPU faults hitting cleared PTE entries.
->>
->> After the pmdp_collapse_flush() we'd be getting CPU faults due to the cleared
->> PMD already? So the case here is rather different.
+> Cc: Dmitry Vyukov <dvyukov@google.com>
+> Signed-off-by: Alexander Potapenko <glider@google.com>
 
-The issue I was worried about: update_mmu_cache_range() can re-walk
-vma->vm_mm while the PTE page table is still not reachable through the
-PMD. And, yeah, that assumption is ugly, but it is what it is, and there
-maybe be similar code elsewhere ...
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 
-So the ordering we need is "the PMD points to the PTE page table from
-_pmd before update_mmu_cache_range()", not "new PTEs before PMD".
-
-Those PTEs are cleared, but we hold the PTL, so nobody else can install
-anything there :)
-
-So David's original suggestion looks enough to me:
-
-if (pte_ptl != pmd_ptl)
-        spin_lock_nested(pte_ptl, SINGLE_DEPTH_NESTING);
-
-pmd_populate();
-map_anon_folio_pte_nopf();
-
-if (pte_ptl != pmd_ptl)
-        spin_unlock(pte_ptl);
-
->Yeah conceptually the code above is problematic because you immediately make the
->PTE available right at the point you populate, so taking a PTE lock after that
->is rather shutting the stable door after the horse has bolted.
+> ---
+>  MAINTAINERS | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
->Doing it this way is not a good idea in any case because we're adding
->complexity, an extra function and an open-coded cache maintenance call for
->really no benefit.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b2040011a386..2c293ba3d391 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13832,8 +13832,9 @@ F:      fs/proc/kcore.c
+>  F:     include/linux/kcore.h
 >
->I asked Nico to abstract the anon folio mapping stuff explicitly so we could
->avoid this sort of duplication so let's not roll that back :)
->
->So again, I think going with the original suggestion (with an updated comment)
->is the right thing to do.
->
->
->Anyway, an aside But in practice we can't have page faults here right? The VMA is:
->
->- Ensured to span at least the PMD range (this isn't immediately obvious in the
->  code)
->- VMA write locked (mmap write lock held)
->
->And we hold the anon_vma lock so no rmap walkers can walk the page tables here
->either.
->
->So I actually wonder, given that, whether we need the PTE PTL at all.
-
-I'd keep it. Cheap, and lets us sleep better at night :P
-
->But.
->
->At this stage it'll almost certainly be an owned exclusive cache line so it's
->very low cost to do it, and it means we honour the update_mmu_cache_range()
->contract.
->
->And it also makes it clear that we're gating changes on the PTE being
->untouchable so any future stuff that maybe changes some of these rules doesn't
->get caught out.
->
->So probably worth keeping.
-
-Yes!
-
-Cheers, Lance
-
->>
->> --
->> Cheers,
->>
->> David
->
->Thanks, Lorenzo
+>  KCOV
+> -R:     Dmitry Vyukov <dvyukov@google.com>
+>  R:     Andrey Konovalov <andreyknvl@gmail.com>
+> +R:     Alexander Potapenko <glider@google.com>
+> +R:     Dmitry Vyukov <dvyukov@google.com>
+>  L:     kasan-dev@googlegroups.com
+>  S:     Maintained
+>  B:     https://bugzilla.kernel.org/buglist.cgi?component=Sanitizers&product=Memory%20Management
+> --
+> 2.54.0.1032.g2f8565e1d1-goog
 >
 
