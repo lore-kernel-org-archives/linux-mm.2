@@ -4,78 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 028EFCD6E74
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:48:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FC32CD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:59:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 599816B008A; Fri,  5 Jun 2026 07:48:24 -0400 (EDT)
+	id A8D5B6B0005; Fri,  5 Jun 2026 07:59:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 571056B008C; Fri,  5 Jun 2026 07:48:24 -0400 (EDT)
+	id A3E346B0088; Fri,  5 Jun 2026 07:59:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48C946B0092; Fri,  5 Jun 2026 07:48:24 -0400 (EDT)
+	id 92D316B008A; Fri,  5 Jun 2026 07:59:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 37AB06B008A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:48:24 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C919AC34A8
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:48:23 +0000 (UTC)
-X-FDA: 84845686086.30.0184E27
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EF170A000B
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:48:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQaR97ZI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 81B426B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:59:27 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0ED43164305
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:59:27 +0000 (UTC)
+X-FDA: 84845713974.18.CB219F5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 574C120006
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:59:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zl2REIDg;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780660765;
+	b=lT+TNbSHE8YLT+QkHFg+c+tpOjPDYAnPKKQ6i6jMWvl3k8HEEQlROPgQnxRYD671Ctm7cC
+	dS107KybcUOZ36NY9t0WYia8xR0tLJ+Dv1oJ2zsTX3JfP7+l2Sq9uj5dLTuWyXYSjVxmCq
+	nK3xuCAmxC3uouwqOAVVo5rJMC/M4Ww=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zl2REIDg;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780660102;
+	s=arc-20220608; t=1780660765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F+BmeJkpk7lnOtX+3YvPCn5bRjFC6wSEqIYi3NffkYk=;
-	b=mnqnKzx5sbELD4Ma2EW/DRMWL920QkC6YJk6VPfQQHYJ4NbxeQikDBWpT6pMccM20kqKZY
-	7ZrNDAShicPncehQVNf2XEb0hFPIsf6L4UDzWMYMm2lCnkvkV49GtzyrVlJeSGIDKwccwg
-	4kDX2hhTHkXVkMKffTDH+BYhegkDDA8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQaR97ZI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780660102;
-	b=E/fVgVVEP/KAfGiilvw1NDNORyjvTm5uQvbRYblYzesXWS5V10jlSe9mKD+OW6BtPVOVkL
-	9BjIFAgC8XKliUK3y9zr55KgfEUKTmqi5FFtpdo7BVCNH1t4B7E/uiA/JAkZwFd4RHgVL4
-	1BUik096xF6j7ghOPsStg4XK4DNhnkA=
+	bh=wiOY95bbms3ph6ntuxqrCRd7im8fwXbJxnhcBs8rZm0=;
+	b=Y8pd/M7Hy+2cJYgpA7Ac5Tw9Z+hV64w5omYdr4KMezW3/1PRAQqW+N41Q2b0iY8rk6A0zy
+	6occ23gn6ZCBO8XLXxqNhIhhB8GuqRnhHFJB/X0cZwNp5MUrT5RupViJ+79+ydF6Ygy+AW
+	cRIV0Z7xIhJbUGUa12MEjkuo0s+QWUU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 392FD40A21;
-	Fri,  5 Jun 2026 11:48:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEDC1F00893;
-	Fri,  5 Jun 2026 11:48:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B7F16601DD;
+	Fri,  5 Jun 2026 11:59:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221391F00893;
+	Fri,  5 Jun 2026 11:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780660101;
-	bh=F+BmeJkpk7lnOtX+3YvPCn5bRjFC6wSEqIYi3NffkYk=;
+	s=k20260515; t=1780660764;
+	bh=wiOY95bbms3ph6ntuxqrCRd7im8fwXbJxnhcBs8rZm0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gQaR97ZIGbsQN1dRhHE4kN85ro6UbhtBym/Qt4GpoIaqTI/ZQ4sZATyoRCsNzjg7o
-	 t1QrSxfUQJVa6o1Z0Ig3BaDzDIpVOKs5Dy3XB9ZIeiAQyIRuC5qHLmMzVV7QS3BMuA
-	 I72kEh3vLBXZNalw1qAQ212aDm1A8nwjKSk6ujzMgInTG69zFYQlfPHs+SaiVezlyF
-	 zZddhFjvCv0f4AO8ppFCBHJhaGbmqRfdm5B2sSXCoPd/j+3Vt8Kyz4XSyEzEmnVgCp
-	 cL0TkejaPOP8ItTjJX+BfebVX8hcQh5dYjptIwfKFevNNKCcyV0hWT1ofz8fR1LivF
-	 9ZFaGo1/xIwrg==
-Message-ID: <2dc81b31-36f5-40fb-ba3d-e3f80d65cc15@kernel.org>
-Date: Fri, 5 Jun 2026 13:48:16 +0200
+	b=Zl2REIDgG5ZqGgghwyl7YWWUvU1WXXbSFjB0mqOW1AxnfPowAFppenxyPu5QZ8WQC
+	 YLvFTcIaZ69LfBP38RP3NJsmOFKSwlJRwfO0axy8wEOcHPdtC1r1y/bZxAzR5wOD9n
+	 FHwz+UDCB22ler3P5uVPVZ4UYD6QJ2XKQh6RazBWNDqsaKryrgSPXnB8qD5AYUksJQ
+	 PCkklFXpZIQd6RpTwocpvtgO7gpYJQPf26guJ/eqc6/kj0zyHONXlKOsG6GwOEwqKk
+	 A8IcgxbQKDfxJ8lL3KuYJAgI3mnbNT84sX6g6AW4CGpdvZD6lSvgiG6rHX7aVED1bd
+	 9b9YM7gR1ifVQ==
+Message-ID: <63ecf4a2-13a2-42d2-8990-e53e50ae9a65@kernel.org>
+Date: Fri, 5 Jun 2026 13:59:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/slub: preserve original size in
- _kmalloc_nolock_noprof retry path
+Subject: Re: [PATCH 1/2] mm/slab: add a node-track-caller variant for kmem
+ buckets allocation
 Content-Language: en-US
-To: hu.shengming@zte.com.cn, harry@kernel.org, akpm@linux-foundation.org
-Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- zhang.run@zte.com.cn, cai.qu@zte.com.cn
-References: <202606042027323804pk3MRY42Jy7y42OHAhQZ@zte.com.cn>
+To: Pedro Falcato <pfalcato@suse.de>, Harry Yoo <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Simon Horman <horms@kernel.org>,
+ Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
+References: <20260602183122.747759-1-pfalcato@suse.de>
+ <20260602183122.747759-2-pfalcato@suse.de>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -116,17 +123,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <202606042027323804pk3MRY42Jy7y42OHAhQZ@zte.com.cn>
+In-Reply-To: <20260602183122.747759-2-pfalcato@suse.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 574C120006
+X-Stat-Signature: 7q65uxji6cwcro6bw4ineufbiw3jnkta
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EF170A000B
-X-Stat-Signature: ky3zjijrr87pngqx6pyro6g8ojwtt35q
-X-HE-Tag: 1780660101-232501
-X-HE-Meta: U2FsdGVkX18uPk3J8RiMkmyJne5/+VpJJRKByQ/uk1OaoKQMtqIpCjbmNn8QqdyKfTNdllBaq472iXuh4TEvEnhkr8kZKH7ixCmEeOEz/Wz8yA1HR7l04ds4HD6mjWJWgCBjhn28QllaqtAFSQdW8953lHdTqSy5b+VuySWRwmp0dc7IOM//Sy0Pv1v/+r/FsLRzt3w4lZIt/lnYCNv83KIhHaTl4v+GQel5kRK3rC/E5HArI6SGJlaZ//4rDdOnCQqGa9yladQsGFeU/5Z/J3ff1lVylZsvaFv2g6DxnfB7Xr2ilVzPUPKPmM3ZRo+jKmr8grfS+sWPOMuefPjJWwiCnpw0Mkz2sKVhPSZTZu5qH7Gl8W5KnMMaqdT87usYKpn2lUQc/7IGmTU8bxorVQCPUoDzajpPNXX31a642TtZcuDkzDpDSIVHN8KOBi+M9xUWhWgPwODREWdq/MOj6qonrpJ2wkfxSSPkNTkgo9+d6e6c6R4SXLfHxwYfF3dzuWnANuv7Y3sdyHSjCvQKCgGHW98G4unQdU98QEyJAKzQBLGrXzBh5gMbBIqGTd6LCgtDxfI0CeE73zAUzMj4MZuUx1P+sWgmh6D/Oczot7T1QpcZQrqCWL3eAmRQsBKSoHJBH0wvQYV6xvFlOjr36yKRnbVNN0iXo3Z+z31DD8+hw1T7nz5H+EGEa3Ouw2YkJkIdQJmCPe24jgv5M80Nn0iH/xk8RhZf7xsqiPUPfc0KNhx3zyj4ANdogafwEsPdxnmMO87qPBe9osEcyHM91nSuUiVfiOP9rJPn7UfULaSvLDLjm6hoyve1zoYnvPrcffxeJF/1Owfh4BG0mWBkLzypLMv14W6YtrC3rn3y+XiU3achmQsEPYNF2MolqGeKTOYsDaBKbNQTzJWHkCnKyuEMyg1jcKdINkmMrsyeWa4uBTUUncc20nsGsB4mQeusvNT2TmJbXGIu+yLmKwF
- 1yJ2junR
- 726d1azCvi+ksGVjjhqRPXC3PBPDnhnncGzL9YXlOV5JxnLTknbAivGJK0XvJAV1cq9U5irxZtUsiTAjO+1GPRQOs9bdmrRe2U6mLoheQSLAhElcryeQ62M2cCBkrz9foX45/qGfUIpZuGBGYNY1JOFwaRmOCsGnvldmHdVI3sMiKxUSwk1VeBtZAhXvG5PiCTvOF4ffIAvjMbiyONi4xCJ2MVot7XxrQjaxEfCkkMbPa/iPnUk9oMKmEUeRexBashFpv5tbibyQDck2rIAoEw4lUdGV7R4xJgk1j45WI8IIqj7w9kp7LF8YZ8VAa3zz6mkfAEDzUJRqRqocaKQIgNg9r7FLeqrUX7qNz+5Db7H+P7XP+h0v+cYmjcmAV+I5Tp+7YbKdnheZxbcs=
+X-HE-Tag: 1780660765-327738
+X-HE-Meta: U2FsdGVkX18gDywlpj7tsXlKd68qk+Frypp2QbiIYOnFRxGKo5LCSBPS2c5BpYInUTyqKuelHzztQ4OXPMcXLuGk5ouAG30Wn1XxEdkA5v83xLZNq96Sr1iRUZT2e3ytnNApJftgTWyBnhGF3SCRaJ+wyIXUOsBBxUUmegf0/HKVOIucO6b/sgts7epdewsCHfr/rOShoaG++V4H5snZk/s+IBuL+beQjlxVJIj03NzeX8LYkIFxhBnXgJzd4t0+ThyIDtxkfDwY2TVh7zlsslNpG+PAgTJap+b2a/lFDWlDKqQQSwxGAGlhbjCG6GvVJ2NeMp3PfmjQ0cCRl2ldPXCscv0TsPRm+t6AzElh/haEt1aY3vbLJ0CCy/K4GR9yWSFvl7CZKmGJkBfchB3yFp8ZbT9DaJaXphYt2gXzVOyU+M4gXzN5nS9sYhQNOJkpRBIeZq+WkhI6/9XpR4D4D0/BkWCD8HNT2O0oGCIOPVQ2ae6p0iyyvWALYwBPAnnlJh3R9ZDBBo3PXDGLTKlospAR2m2/vmzKfqCqvCy/iD2j0HO/+dOlm+nkPtbriM4HGbkZjP5h0V46MNmLk+ApGjJzQsUynOlPetzsig+3vCE5zrwUWb6AOlBUXWjFel6hwvtcl8s8TQd/3B2mdyEE6dR8gv/5LqZCn9C4kOOLs3xP7Dsz/FBJWXo41m/Pq6J2Nmsl69Hx/5O7ajx+Ix5OvhrE1kdW2qvZE6/z9KDargsN0BRwo5QEyKu4hmzllX2gl5RPi8Ucbv3Fp/as4e3RXPsE5GNFft7u+DM3vXuOxzUXVpaEmn8pHz+TgFpH/TEE9Wkm+e5Q2VINEqyGwYj+vzwptptf0h1p5mvtbDXELzfhdMOvhnAd7JzkQOVTqX19Mwpy5SS5V56rreLF+FSmZE1ffC05Ygbm8aFNX7nCqKM6B0rXr8O7zEkmjSGMwzzvsRGw2glz0PHfB9ljcdX
+ tPaAgsvq
+ Jicww77N48xyrxbMmUCtx2gKykq+vprPrd8OwmCmnM4ILPO2Zan/y3SxDPVGAhRvOjCLLGr8at++vHf5Zjn9TxbYURjTy2LJLOShntZdNayVW0cblotGLZL8Z4sIdKcziETh+SQXYd/rvYAYBdEL1gxmXjBsT9JCOQHaf7K6aDfv+Rz/NvDlXlaqMOuyKwmJnFZ4jrpZU78YY/+PTgUU4IlU1vV7myJ7QagE3mieLDRMgA8Uk6VpJkug/yTtEU1vb5IqV6CL8rns93uAxJ19Ae2X08g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,70 +141,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/4/26 14:27, hu.shengming@zte.com.cn wrote:
-> From: Shengming Hu <hu.shengming@zte.com.cn>
+On 6/2/26 20:31, Pedro Falcato wrote:
+> This is required by users that want to use kmem buckets, but still
+> desire specifying the NUMA node.
 > 
-> _kmalloc_nolock_noprof() retries from the next kmalloc bucket when the
-> initial allocation fails. The retry currently reuses `size` as the
-> bucket selector and overwrites it with s->object_size + 1.
-> 
-> That value is later passed as the original allocation size to
-> __slab_alloc_node(), slab_post_alloc_hook() and kasan_kmalloc(). On a
-> successful retry this makes KASAN/slub-debug observe the retry bucket
-> selector rather than the caller requested size, potentially widening the
-> valid kmalloc range and hiding overflows.
-> 
-> Keep the caller requested size separately as orig_size and pass it to
-> the allocation/debug/KASAN paths. Continue using `size` as the retry cache
-> selector.
-> 
-> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock()")
-> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-Merged to slab/for-next, thanks!
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+As the main change is in net code, probably should go in the net tree?
 
 > ---
-> Changes in v2:
-> - Use an explicit orig_size variable instead of bucket_size, as suggested
->   by Harry and Vlastimil.
-> - Link to v1: https://lore.kernel.org/all/20260603211011530GqLSXP_rgcuQdR47IGQLL@zte.com.cn/
+>  include/linux/slab.h | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 > 
-> ---
->  mm/slub.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 67abbbf68fc1..7e1a1fe5daaa 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5350,6 +5350,7 @@ EXPORT_SYMBOL(__kmalloc_noprof);
->  void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, int node)
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index 7b46fa499b08..685a87d8f0c5 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -1153,8 +1153,11 @@ void *kmalloc_nolock(size_t size, gfp_t gfp_flags, int node);
+>  #define kmem_buckets_alloc(_b, _size, _flags)	\
+>  	alloc_hooks(__kmalloc_node_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, NUMA_NO_NODE))
+>  
+> -#define kmem_buckets_alloc_track_caller(_b, _size, _flags)	\
+> -	alloc_hooks(__kmalloc_node_track_caller_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, NUMA_NO_NODE, _RET_IP_))
+> +#define kmem_buckets_alloc_node_track_caller(_b, _size, _flags, _node)	\
+> +	alloc_hooks(__kmalloc_node_track_caller_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, _node, _RET_IP_))
+> +
+> +#define kmem_buckets_alloc_track_caller(_b, _size, _flags) \
+> +	kmem_buckets_alloc_node_track_caller(_b, _size, _flags, NUMA_NO_NODE)
+>  
+>  static __always_inline __alloc_size(1) void *_kmalloc_node_noprof(size_t size, gfp_t flags, int node, kmalloc_token_t token)
 >  {
->  	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_NOMEMALLOC | gfp_flags;
-> +	size_t orig_size = size;
->  	struct kmem_cache *s;
->  	bool can_retry = true;
->  	void *ret;
-> @@ -5398,7 +5399,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->  	 * kfence_alloc. Hence call __slab_alloc_node() (at most twice)
->  	 * and slab_post_alloc_hook() directly.
->  	 */
-> -	ret = __slab_alloc_node(s, alloc_gfp, node, _RET_IP_, size);
-> +	ret = __slab_alloc_node(s, alloc_gfp, node, _RET_IP_, orig_size);
-> 
->  	/*
->  	 * It's possible we failed due to trylock as we preempted someone with
-> @@ -5422,9 +5423,9 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->  success:
->  	maybe_wipe_obj_freeptr(s, ret);
->  	slab_post_alloc_hook(s, NULL, alloc_gfp, 1, &ret,
-> -			     slab_want_init_on_alloc(alloc_gfp, s), size);
-> +			     slab_want_init_on_alloc(alloc_gfp, s), orig_size);
-> 
-> -	ret = kasan_kmalloc(s, ret, size, alloc_gfp);
-> +	ret = kasan_kmalloc(s, ret, orig_size, alloc_gfp);
->  	return ret;
->  }
->  EXPORT_SYMBOL_GPL(_kmalloc_nolock_noprof);
 
 
