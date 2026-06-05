@@ -4,157 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 273F8CD6E7D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 16:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6EEECD6E7D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 16:16:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 890AD6B00A2; Fri,  5 Jun 2026 12:16:31 -0400 (EDT)
+	id 313026B00A4; Fri,  5 Jun 2026 12:16:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 841B96B00A4; Fri,  5 Jun 2026 12:16:31 -0400 (EDT)
+	id 2C3346B00A6; Fri,  5 Jun 2026 12:16:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E2C96B00A5; Fri,  5 Jun 2026 12:16:31 -0400 (EDT)
+	id 1D97A6B00A7; Fri,  5 Jun 2026 12:16:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 599D06B00A2
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:16:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 24B6216276B
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:16:31 +0000 (UTC)
-X-FDA: 84846361782.29.E544284
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0B798120012
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:16:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YvsAQEec;
-	spf=pass (imf29.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 082AD6B00A4
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:16:41 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA4D61C0E3A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:16:40 +0000 (UTC)
+X-FDA: 84846362160.19.8324DC0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2F8961C0018
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:16:39 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k1kCUpAM;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780676189;
+	s=arc-20220608; t=1780676199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c41C+aUCjryZaKfFd1hJe5PThl4zuDF1MGYxzScNCi0=;
-	b=HT5YV0PDT3Y47X0oDvoaE1Y9y4z269nnYk2J6n8ecSOuJJN7hMuSBw/dZo2gG4LAuQ101N
-	VuiquYhAQliCuXUbHJxo8xGLl5q/7aLhkF7tI2iJBdRr50fIjZJUPvQIngsaL2VjOXg6fC
-	eztswKztw75YDYBrLk5OstA9ShNWH7Q=
+	bh=cGh7xKS+6dNdAiknFwIkf2jb0tCAsHXdEn02Ydj68R8=;
+	b=ZL2pU7WeZ9GwE8mPOyLHAyyYDc903x8q4KH0+LK/eal2FfW1PfcYqGiOZyok7ojSQ01Iee
+	D5ZEfCraR+RSYLIo0tJPywfZhjJtPuWZ1RtIP6bUdC/Fkr0Ol3YKVGLcfSwXG6TB2mLBGT
+	tUYOyfJ2oRshHFqAyEIN8yLyZ6myI/Y=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YvsAQEec;
-	spf=pass (imf29.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k1kCUpAM;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780676189;
-	b=egs6aNipTSWXTW3Qexy44BpjEaEX4NmYsQ1PlBS83+mJc1UeOnNnS5zuKqYQsqA5Xp/S0a
-	/PBZf3EgTzcwnkHN1MzzNQgyCv+LQ9sg4FfZUY3i3PnFhKbufNXcE234t/P7xaO8ackDnI
-	7d8rDwWQZMLohVhwU2So/gwn9xsa8+I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780676188;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c41C+aUCjryZaKfFd1hJe5PThl4zuDF1MGYxzScNCi0=;
-	b=YvsAQEec/+/FPrNwjlEGFpGHVhGbYJ88OmVsCg3ZLTvN6Ctep5KuByEoVHGxd33AsTzK6f
-	XbNIM/vvEgKx7YpETHCictnb9FnIt6+mg5Ukz8izuA7bQNpvSpskQC1vMtCltIFpMdZuGN
-	JFXpnKjDhqJ4gEBFYuEMKMx1khxOnt4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-529-VUvJV_pRPzG4_wIOTd0_jQ-1; Fri,
- 05 Jun 2026 12:16:24 -0400
-X-MC-Unique: VUvJV_pRPzG4_wIOTd0_jQ-1
-X-Mimecast-MFC-AGG-ID: VUvJV_pRPzG4_wIOTd0_jQ_1780676176
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 41A751956089;
-	Fri,  5 Jun 2026 16:16:16 +0000 (UTC)
-Received: from p1.redhat.com (unknown [10.44.22.9])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CD408180049F;
-	Fri,  5 Jun 2026 16:15:57 +0000 (UTC)
-From: Nico Pache <npache@redhat.com>
-To: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jackmanb@google.com,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	ljs@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	npache@redhat.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	zokeefe@google.com
-Subject: [PATCH mm-unstable v19 08/14] mm/khugepaged: add per-order mTHP collapse failure statistics
-Date: Fri,  5 Jun 2026 10:14:15 -0600
-Message-ID: <20260605161422.213817-9-npache@redhat.com>
-In-Reply-To: <20260605161422.213817-1-npache@redhat.com>
-References: <20260605161422.213817-1-npache@redhat.com>
+	t=1780676199;
+	b=aEe5tG4AyDkVQi6zJJbJagc5QaXUzeED8H3M0CEdmmAt8OeE9LIIj4b7hdc2bySlGfcX0s
+	TwWESWzIqV1tfQmgM0UID4XOjjtaUb+XdyYKnjR9qRklaN6IPO/62SluVbti0JbxaWsyLZ
+	c9Gf3Am+oxRhuErMmNY2J+Q6CwIeh8s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B393E601DD;
+	Fri,  5 Jun 2026 16:16:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347E81F00893;
+	Fri,  5 Jun 2026 16:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780676198;
+	bh=cGh7xKS+6dNdAiknFwIkf2jb0tCAsHXdEn02Ydj68R8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=k1kCUpAMvDwlpBNYkHI9NMCiTSmoOsgNAVNakc1A8kZiCr4n2U1+A2bdlXGWl07+C
+	 kf2GdGWcXWooA/3kLETM5eaOMqPoc7GwsAdSPuOSgDn1QFcfH5q+/F0VvnhyLSe3iN
+	 Tjyt3sG6t77L37h+j48FqntMQejCFF77tjDZRz9h5zogKgk4pSDeAIW7P+UKQSTSnj
+	 r7z00dgbzSeiExwB/tIaTLFMK0MxNnvfsgKr3Ne2PDAKkz8D6x7fjapPQ4NkI6DfTJ
+	 ph6/zmep1QfX4suunupnQxrGPLlrCnoRB3uulyVUwWSc0cH3tUx1eZZfJLFxvClxO6
+	 fTYAK7S/6669Q==
+Date: Fri, 5 Jun 2026 17:16:33 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: xu.xin16@zte.com.cn, akpm@linux-foundation.org, 
+	chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, corbet@lwn.net
+Subject: Re: [PATCH v7 3/6] MAINTAINERS: add myself as reviewer for rmap
+ section
+Message-ID: <aiL1nlpPk1xEvC8k@lucifer>
+References: <20260530170624912AfpqJafVKV2Xmz1EPfHH2@zte.com.cn>
+ <253b529c-273e-4346-91ae-823c8313c31c@kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Hy6k1vGWLgghUvRaCJQXmVVMBZs4RUWRy1CGpRoD858_1780676176
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0B798120012
-X-Stat-Signature: jd7n4qhr7kyusz1haz8dsjmsdbf3b8ri
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <253b529c-273e-4346-91ae-823c8313c31c@kernel.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2F8961C0018
+X-Stat-Signature: 91b5p4bfxnnnzyuk9j4qs8tqict85ssb
 X-Rspam-User: 
-X-HE-Tag: 1780676188-680398
-X-HE-Meta: U2FsdGVkX1/5803Go4yARbDoB209YuCENGbrgUCHkRqwpQCJkTK2UjPoD+wFBDg0SfYB2Y3O29x1eii8X0Ah49Jfn3URRomsYOV94SE0i+lh8Buc+AngfaO9YEzNdDvJ9f2i7Xt4f9qi9eTeVRNdN4Ga4oPKP4oVUUb1n8FrPAUWL9IRPJ2Gnf+x0LRp9AE+FuwmDzzOvfDisIKSGX+cFqgxbMDVp6u/paWtSlFOg/DkfdNjilYqTv1AnNHaTHC3LK9jjfKBTLPF3CRPJCWu1M9Q2iw7ocQK/vnjKeDjTA6OSsTe0EPTK+Q4/LsKxlvWbFYVoMIM0t91IjA4RZ9JI++KIkeMBFWEVWVySEkxpYRL5T9WD9MBLvKI5u3OXsJE0J4ehWFkb/udBTtU6U7kwxVWKniqdoQj3X+DKTAU8d4BhHjlC2wi/vzH22qNB1kQEEXignfQ5HSj9Sh62u4XhGmr5gXfUsOxm98Qb4av/MW2MLeJZU7ETflppnoA20MQtf3aNniGvSTvY0MB7I03a/ZBqFWpJ5MyXgnKjZwjyTI90krZjA33rt+U8cBXY7ASrbJg228NxbfwKZDv4+pDND+vH0RjWS0eJzLx1qWEjTSaHIQJRO/V8xeNADOz6gFQaXs0zVv4lyBAMp2H5wnvdCD/wBk1rboyAScRBfWheUvS+D8dM+DwVmgUYxdjPOmOv+V92ausS9Lf73SBs549REWK6OyTUyrO6A9AtYi2YM2EDo1gXPLqhOgL3PE+fKDgz7BP5j9DzfpayDquHmZLMUGH0qjMyFALama9HVExauQVYvXyKeDbFNabBtq9STMnZQw3tWYv6WocNQ/UdxkJ38UE96xRzE8MBBGr0aiuEaSHsMsTXM00WQuNW4Gn1K2ttrbiMkZWjzU6gzBPOoaEn3xLk+EczABJZCFRUBtBJoekEq36rwtCvcaUV5xN93rF4GV7ZBjsUF7ttWJsrZ1
- 2Zn9OEE4
- 1D36fyX84EVobOwU8ge65SohjrNkh7LtdsWR/4weOTc/XWT7JKpyyj7ejeuEtzlTGdTKFsGRFxKuJU6JaGhgeHZZwnStovhiLaoZHBe2MkN/fuojZ64JSQ6zZRHebTzJzZuH18L8gIUPTqJAJrl6FlFBu46ILFoaCxycjEuG9f+IT5rDhQ/YYeC6nb0um0TRk06kY0qBDQQNdHwd1+WFwaGiyfml0mLd3ShAIYWrnUwkSBL0PP2Xv+SUWbF0dFJIDz1Q1bhvqpLaN2lXy3+qene6ifoGYF5QfCdJj2N6unQdyGzhAc6AmHbUL5Utgc3I1Q8QDpPJ4JEXkZZ8W3IbB1TloCNbUHztBmkwufUmwVf5GoIcqFVP4FPMegRBSf7aMjiWo0wzzc97AXtMJzT9RGkY4It6cJGzjkHcKeLalYoJG+mDMTq1+Ux2n8A==
+X-HE-Tag: 1780676199-325075
+X-HE-Meta: U2FsdGVkX19dxkgXY3bFso9kLJ5p971tIl/gs2hoKkQVkleQrYNVszRBjB3uPj3YkHC+FeWWP7jpkerJ1i70g0iPjlWA1SYe8fmYBB4a/RMw/JZEBfPNt1xAzZX33oriJ82pjB1P9YXXqgYEA3Y2gieUHZqaRw/1tmW/bHjxnXlUkpRaCCzQfCDyN9bamDQbWnKrf81NeSY0+3dO3XU7MloNYW7JdqzYN/ypTl6MaOARSFu857vAT5GfIKP1X4b96DKyi/cYlH79/h7TjGAOz+7izzZtB0KSqbz7D7F96Pc+IpP8la2u8+Ek72KEibNGxIPw+3Bom0z0xKU0wtDLddRNyoD3VbyvtwVlFAE5zKkznPhjnTaIZ/mBPQ777Rp3QwUcEv5ahAkxwqMa9Q4Z9/m+h90soyA4bgbcw7P25Vi5m/gaRA2BNyF4Q/IH18uKYYtqmxLsX8qERUbC315mBi436xh+wpr9o3B2LJMXKgzdcDkgRA2IIoyCOpsZHU8C2dCA/78q+50dO0+cVmZsEBQncNfiHPpl+7Gj7H7ZN1TpEb1SGksEIUDog17pcOZf/c7d6dT/ZbeMKdyEiiKBYhHH7H32eXN00xix1HNkjWDq8YGRfVdOs6nl7Wpey99mR79StTA90xxoHaIYndD0v6KA9gU9DhvApngRu+XiCkYVxFYMoZflHAnKGTcrvmOyhdE/L4cbUzPccwdpl4PJEhn8/E61lbz1yxcBu4jBaHICdeOgeerjvIotFF30hJ9ArgVdx5qjDC8jyu1+F/3TwdmXLTWxOFxI3sBq/+B/lNepDt0wqrazdKyFmoy47L1tV2Ko+oJrhYiasZDn23GanvIg9r2iEZE3N8TAGm148LVoKa9lEa+ATCUbsjJ94BkZippIhY32Hy2UGcZV1kvnfjl0ACD+WCZV7NjGrDiMGdElx/pDZNCl9eolfZ00cvD0peeiuDShNZSzjyTy0bv
+ WG/cQl9z
+ l+0bc0h11MgOneZqB2MhkkaO3PdhjHYsEkLJnQIZVmkeFK3j0ACldmRUmiTtKfU1lZdu3PwQRr7bm7e1MazcfW2LGUVpz2ty97/npMt1sDKb91rAxfWlbdtRnTe3V/15HTMSu54cP99Y77JljdczuLgFo+473vVw4hjug/UuvtWopyZU1p/Cip9EfT7JWeAqh1FlCbZVzfWIryp5H8UOVwzopz19NFB2y+f/grun258AMIuv3HIYI8QF3lQy82GLRSn6lm55/t2n8ir3sHY7TtwFHrvvBxfpQEZYsqOddDXGoeoPyQw1/ir4y/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,167 +93,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add three new mTHP statistics to track collapse failures for different
-orders when encountering swap PTEs, excessive none PTEs, and shared PTEs:
+On Fri, Jun 05, 2026 at 06:03:37PM +0200, David Hildenbrand (Arm) wrote:
+> On 5/30/26 11:06, xu.xin16@zte.com.cn wrote:
+> > From: xu xin <xu.xin16@zte.com.cn>
+> >
+> > To help review future changes related to rmap tracing and testing,
+> > add myself as a reviewer (R:) for the rmap entry, and also update
+> > the file patterns to include:
+> >
+> >  - include/trace/events/rmap.h
+> >  - tools/testing/rmap/rmap_benchmark.c
+> >
+> > Signed-off-by: Xu Xin <xu.xin16@zte.com.cn>
+> > ---
+>
+> We always appreciate more review and I am happy that you want to do more review
+> officially in the rmap space!
+>
+> However, before we add you as a trusted and reliable source for rmap review, I
+> suggest you first engage more in rmap review, and provide tags.
 
-- collapse_exceed_swap_pte: Increment when mTHP collapse fails due to
-	encountering a swap PTE.
+Agreed - reviewship is meaningful, it indicates that a person is a trusted
+and known member of the community who has contributed significantly to
+review.
 
-- collapse_exceed_none_pte: Counts when mTHP collapse fails due to
-  	exceeding the none PTE threshold for the given order
+I see you're already a reviewer for KSM, so simply we'd ask as David says
+for you to contribute more review to rmap series.
 
-- collapse_exceed_shared_pte: Counts when mTHP collapse fails due to
-	encountering a shared PTE.
+Since I intend to send a bunch of code for this relatively soon, that
+should be a good opportunity for you to do more :)
 
-These statistics complement the existing THP_SCAN_EXCEED_* events by
-providing per-order granularity for mTHP collapse attempts. The stats are
-exposed via sysfs under
-`/sys/kernel/mm/transparent_hugepage/hugepages-*/stats/` for each
-supported hugepage size.
+>
+> Thanks!
+>
+> --
+> Cheers,
+>
+> David
 
-As we currently do not support collapsing mTHPs that contain a swap or
-shared entry, those statistics keep track of how often we are
-encountering failed mTHP collapses due to these restrictions.
-
-We will add support for mTHP collapse for anonymous pages next; lets also
-track when this happens at the PMD level within the per-mTHP stats.
-
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Nico Pache <npache@redhat.com>
----
- Documentation/admin-guide/mm/transhuge.rst | 14 ++++++++++++++
- include/linux/huge_mm.h                    |  3 +++
- mm/huge_memory.c                           |  7 +++++++
- mm/khugepaged.c                            | 15 +++++++++++++--
- 4 files changed, 37 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-index a74844e01f1e..b98e18c80185 100644
---- a/Documentation/admin-guide/mm/transhuge.rst
-+++ b/Documentation/admin-guide/mm/transhuge.rst
-@@ -714,6 +714,20 @@ nr_anon_partially_mapped
-        an anonymous THP as "partially mapped" and count it here, even though it
-        is not actually partially mapped anymore.
- 
-+collapse_exceed_none_pte
-+       The number of collapse attempts that failed due to exceeding the
-+       max_ptes_none threshold.
-+
-+collapse_exceed_swap_pte
-+       The number of collapse attempts that failed due to exceeding the
-+       max_ptes_swap threshold. For non-PMD orders this occurs if a mTHP range
-+       contains at least one swap PTE.
-+
-+collapse_exceed_shared_pte
-+       The number of collapse attempts that failed due to exceeding the
-+       max_ptes_shared threshold. For non-PMD orders this occurs if a mTHP range
-+       contains at least one shared PTE.
-+
- As the system ages, allocating huge pages may be expensive as the
- system uses memory compaction to copy data around memory to free a
- huge page for use. There are some counters in ``/proc/vmstat`` to help
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 443852423790..148109ebd08a 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -144,6 +144,9 @@ enum mthp_stat_item {
- 	MTHP_STAT_SPLIT_DEFERRED,
- 	MTHP_STAT_NR_ANON,
- 	MTHP_STAT_NR_ANON_PARTIALLY_MAPPED,
-+	MTHP_STAT_COLLAPSE_EXCEED_SWAP,
-+	MTHP_STAT_COLLAPSE_EXCEED_NONE,
-+	MTHP_STAT_COLLAPSE_EXCEED_SHARED,
- 	__MTHP_STAT_COUNT
- };
- 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index eea83da9114a..222e421d9e8e 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -717,6 +717,10 @@ DEFINE_MTHP_STAT_ATTR(split_failed, MTHP_STAT_SPLIT_FAILED);
- DEFINE_MTHP_STAT_ATTR(split_deferred, MTHP_STAT_SPLIT_DEFERRED);
- DEFINE_MTHP_STAT_ATTR(nr_anon, MTHP_STAT_NR_ANON);
- DEFINE_MTHP_STAT_ATTR(nr_anon_partially_mapped, MTHP_STAT_NR_ANON_PARTIALLY_MAPPED);
-+DEFINE_MTHP_STAT_ATTR(collapse_exceed_swap_pte, MTHP_STAT_COLLAPSE_EXCEED_SWAP);
-+DEFINE_MTHP_STAT_ATTR(collapse_exceed_none_pte, MTHP_STAT_COLLAPSE_EXCEED_NONE);
-+DEFINE_MTHP_STAT_ATTR(collapse_exceed_shared_pte, MTHP_STAT_COLLAPSE_EXCEED_SHARED);
-+
- 
- static struct attribute *anon_stats_attrs[] = {
- 	&anon_fault_alloc_attr.attr,
-@@ -733,6 +737,9 @@ static struct attribute *anon_stats_attrs[] = {
- 	&split_deferred_attr.attr,
- 	&nr_anon_attr.attr,
- 	&nr_anon_partially_mapped_attr.attr,
-+	&collapse_exceed_swap_pte_attr.attr,
-+	&collapse_exceed_none_pte_attr.attr,
-+	&collapse_exceed_shared_pte_attr.attr,
- 	NULL,
- };
- 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 191e529c185c..ac4731addafa 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -651,7 +651,9 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 		if (pte_none_or_zero(pteval)) {
- 			if (++none_or_zero > max_ptes_none) {
- 				result = SCAN_EXCEED_NONE_PTE;
--				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
-+				if (is_pmd_order(order))
-+					count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
-+				count_mthp_stat(order, MTHP_STAT_COLLAPSE_EXCEED_NONE);
- 				goto out;
- 			}
- 			continue;
-@@ -693,7 +695,9 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 			 */
- 			if (++shared > max_ptes_shared) {
- 				result = SCAN_EXCEED_SHARED_PTE;
--				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
-+				if (is_pmd_order(order))
-+					count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
-+				count_mthp_stat(order, MTHP_STAT_COLLAPSE_EXCEED_SHARED);
- 				goto out;
- 			}
- 		}
-@@ -1152,6 +1156,7 @@ static enum scan_result __collapse_huge_page_swapin(struct mm_struct *mm,
- 		 * range.
- 		 */
- 		if (!is_pmd_order(order)) {
-+			count_mthp_stat(order, MTHP_STAT_COLLAPSE_EXCEED_SWAP);
- 			pte_unmap(pte);
- 			mmap_read_unlock(mm);
- 			result = SCAN_EXCEED_SWAP_PTE;
-@@ -1459,6 +1464,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 			if (++none_or_zero > max_ptes_none) {
- 				result = SCAN_EXCEED_NONE_PTE;
- 				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
-+				count_mthp_stat(HPAGE_PMD_ORDER,
-+						MTHP_STAT_COLLAPSE_EXCEED_NONE);
- 				goto out_unmap;
- 			}
- 			continue;
-@@ -1467,6 +1474,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 			if (++unmapped > max_ptes_swap) {
- 				result = SCAN_EXCEED_SWAP_PTE;
- 				count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
-+				count_mthp_stat(HPAGE_PMD_ORDER,
-+						MTHP_STAT_COLLAPSE_EXCEED_SWAP);
- 				goto out_unmap;
- 			}
- 			/*
-@@ -1524,6 +1533,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 			if (++shared > max_ptes_shared) {
- 				result = SCAN_EXCEED_SHARED_PTE;
- 				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
-+				count_mthp_stat(HPAGE_PMD_ORDER,
-+						MTHP_STAT_COLLAPSE_EXCEED_SHARED);
- 				goto out_unmap;
- 			}
- 		}
--- 
-2.54.0
-
+Cheers, Lorenzo
 
