@@ -4,149 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E73D7CD6E6B
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 08:52:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32489CD6E5D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 08:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57CFA6B0088; Fri,  5 Jun 2026 04:52:37 -0400 (EDT)
+	id 8B3A96B0005; Fri,  5 Jun 2026 04:54:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52DEA6B0093; Fri,  5 Jun 2026 04:52:37 -0400 (EDT)
+	id 864426B0088; Fri,  5 Jun 2026 04:54:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41D4A6B0095; Fri,  5 Jun 2026 04:52:37 -0400 (EDT)
+	id 77A816B008A; Fri,  5 Jun 2026 04:54:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 323766B0088
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 04:52:37 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E73E614097A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:52:36 +0000 (UTC)
-X-FDA: 84845243112.03.4A5187B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3B99E160010
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:52:35 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VhNQwunr;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A3D96B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 04:54:26 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F02AC1A0A0B
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:54:25 +0000 (UTC)
+X-FDA: 84845247690.24.A94B7E2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B707FC0008
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:54:23 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Gzzb9pgK;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf28.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780649555;
+	s=arc-20220608; t=1780649664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PsbfKlaq01f0v1LgLlTEBpfjv/xhSdlj/1kCdcHwrCA=;
-	b=2Po7seNk2uX+mjnCTSyowR9qTSAfV5c47nVxUunGiRVI08MJRBsFMNoYCLR3p8fM/poryh
-	bHBa+4+1hcfajkj5XsTse/YsD/nKVrRNUXMsAjeXC8Nzxk3NBqplW64OseI37gs+x+CwJY
-	TTJUKG9i7CIWVveluJsnDYiX7Y5WS5g=
+	bh=lEuH5zXvmD9QtdXA+3xoE2aKHaOUnCeUw+r6C/eGv50=;
+	b=QIgFmk79XpBX0R1QeYLVC2Msis8NFRhMV3vEBxfEWpPyEk5Rq/rIDXJM/SnsmS+cHGJyFj
+	uysZBua1HZJUA2rqjTYjdtxLSh1pTsBtU9GB8gwtwf8qKNlWHaErarPm+LmCZDL1/Ss+ri
+	CqOQ6nnVmSPDFs2Wrn3ijK0DtFo9iVo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VhNQwunr;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Gzzb9pgK;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf28.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780649555;
-	b=slsYIAGQdc1Y1tdz/OExwTcWmjKSpx5svhB/9uVWy2k8dYXA4Udg9WF4Vb7/vZ5VlW/yOl
-	QVk8sWWF70GysJhebc7xaqL2ODrLHoE7SRehXVHu4rU98/GPOq5xPOoGX41FlTDlzUYWb9
-	T4rSk8Z09Ixj32qno17sAz6be+7i0aQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9112A600B0;
-	Fri,  5 Jun 2026 08:52:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC3A1F00893;
-	Fri,  5 Jun 2026 08:52:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780649554;
-	bh=PsbfKlaq01f0v1LgLlTEBpfjv/xhSdlj/1kCdcHwrCA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VhNQwunraPqo9lM7LGohuEyegSpdEJJ77cUJE5P1Ox/get019RYJYAEVLNDQV1d/5
-	 QzIKEooTy7semBQCXWBL8YxJjYKmzE0IWJU3MqPE8Bj4mvPHRwd518P+woHXM9XsAr
-	 dJwjfRFcYKbpopr9XvXWliGuhVhU006c1Wi3N7tA+0nOj5U0wWYwoNPHh+1gRFxmeR
-	 mvf+UBBZqIoVRofOon0uk57guY1wjXFnhkruc3Gi/Jcq8INlVmo/5nbeqbNHuniPGw
-	 fWGFoIv3fjDfkG3WjZWvmo46nowXgG+ISjVa3ahCEjl39CHLomOpOHENYcfQzg37mB
-	 B8H0nT/51c/+g==
-Message-ID: <39cbb38f-ed3b-4f17-b9b7-ed466957ee99@kernel.org>
-Date: Fri, 5 Jun 2026 10:52:28 +0200
+	t=1780649664;
+	b=2Xov4X2c6PGWQsuajWT6nGHcUCnKdo6c62O1OeCjPqfSit4AAyyD6eHxLRRRAwFNt7Drpo
+	gDDYLeS6LzSa7R3vKam+VIYaaZB4u8G7mZXGueuIm3Vi/hoLwggVqZ66HEsCkMRwKNCTDv
+	LKqxUkynI1lkEQGsCiSEW4mQ71pFGyI=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9952C4CDF;
+	Fri,  5 Jun 2026 01:54:17 -0700 (PDT)
+Received: from [10.57.92.75] (unknown [10.57.92.75])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 36C5A3F632;
+	Fri,  5 Jun 2026 01:54:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780649662; bh=za/Q5W3FetgNGBxC3/mNtBqJ6BCx8IDSiT33jjoXZNw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Gzzb9pgKm/VqzuNQWn4GqmeLpozOIVHEL4a7lpQ6LY9IuNt0PSiF4UMuyHA313reK
+	 adqVfC75WvtPaiw9gE55+iUPvW+5IJFa0HDb8PCVsfPSAiOnAbMba7hYbKQPgjS02w
+	 IVon2C90mRhBq/CB0loy54WttdKIcrw9FAQvra1o=
+Message-ID: <3322698e-af49-4998-b619-34ab24094374@arm.com>
+Date: Fri, 5 Jun 2026 09:54:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: mm/memory-failure tracepoint change breaks userspace rasdaemon
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Borislav Petkov <bp@alien8.de>, "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
- "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
- "Luck, Tony" <tony.luck@intel.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
- "xieyuanbin1@huawei.com" <xieyuanbin1@huawei.com>,
- "Lai, Yi1" <yi1.lai@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-References: <CY8PR11MB7134346A3E4BB28ECA28D6E989132@CY8PR11MB7134.namprd11.prod.outlook.com>
- <b930678d-a1ae-458c-8705-7ca9680d4cb6@kernel.org>
- <20260603121707.7eccb9fb@gandalf.local.home>
- <20260603161947.GBaiBUI7C8WWPwD84S@fat_crate.local>
- <0c16bf3d-7c6d-4e28-b200-03b7d0ef714a@kernel.org>
- <20260603130006.7d2c4a62@gandalf.local.home>
- <b637ede2-73da-49f0-a7eb-70ec79e79624@kernel.org>
- <20260603153115.775a2e81@fedora>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260603153115.775a2e81@fedora>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v7 20/42] KVM: SEV: Make 'uaddr' parameter optional for
+ KVM_SEV_SNP_LAUNCH_UPDATE
+Content-Language: en-GB
+To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
+ andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com,
+ jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
+ oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
+ rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
+ steven.price@arm.com, tabba@google.com, willy@infradead.org,
+ wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
+ pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com>
+ <9d15479e-e36b-4865-804c-7d93eb339e4e@arm.com>
+ <CAEvNRgF43RBv77RgM67kXRRHDnQw4L5uwQTuvkJHzkHJWB1mag@mail.gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CAEvNRgF43RBv77RgM67kXRRHDnQw4L5uwQTuvkJHzkHJWB1mag@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3B99E160010
-X-Stat-Signature: qbwn46drskrdtkqwst8iawq78m9s5byx
 X-Rspam-User: 
-X-HE-Tag: 1780649555-91852
-X-HE-Meta: U2FsdGVkX1+vCSjZ/Sbtb7QTtylAMMfOXT11j9zgnAeGLPCzW0htT/HOHKG3lwHmDQTF9dF8sM42lypwh7JhZpJ2rXfKgV7xoCEuEpqAjsqzuz3As93xELr9AC982RpPd7klgFayLfoAr//lJ6yft7rfNewQVajdo3iw+HB9ePQzo44SXdxrVpBAdG5PGCxwUE1j7tG43OYJaq2dl8rZTI4EK1geG+6doSV5DGnGHNZhfvBhdvW8jaYK2UA6juExKyZ13LZlWAFg/BSBuK2TkjJVHiuymZx8vbLhgowV4QWWhVvSk1sCTrHgL8FfiqSQzuqd4JoorucO5FgCxgFORZkvgursauiq7M/xd2QNsdwCCJoxn2/Lt4imX4PfBnCEpSKyxKs6hWcp3VfrOcmwdGnF2w3eYjKynTWw3giOzQHxTd+7C3QrRFtKkqVJNhnqjBxPoXx1MSa91j3Jnm6QZmevnwj2XX2VgA+tZkx8Nn/rH37kpv7xZ+XEUHPIFjwTEC9YXDwp/IinlXGNEFisDAvXsqjBg6kVR2xY3jOJBw8HzAf7OBpSd4EvNHyZiqn8XAseZ8YhvlaZSA/JVQrOyofVrdNclg981Y6WhHPlExFuCP9Ft/XAkjaV5Lwc5XEu4i+fA1188LnHvo08Fq3w55NmSXuSm5T7h7O3Z03vFCYyTH4kAsxJaJjac74Pst9yi+Kt1+Tm6Yv5w7aNERA/OmOfS02qpmCdNl/BfGnZlNl1gYk0UKKUA7LmN/FP/VwfUIrdVijqPAtNAUZL50xtuyMo9iwWy+HHL+bO9Ncc/bFB0ekPwXpZBCG4LlNssmAaz3jWnqaWSrHPb9jFvsVhA3AyuUYIVESVYVTPxwtHJlB01DcvujWbusCobvZdjr0NhaFZ/8hJbwKTIWVZ0ZTpnj2b2cD8psQ2/1DdFQRebmMgriAOk5jJ9Nqpaa/s0E2haJK8hx7Xk4VC55MYwF3
- 5jpW+bDe
- gt/voAE6FTux2LU3OU3bXT01l1sBk2FA/8kWVs7Kd7xKmEUDU4iXR7ioaoKdKTwPyfBI90hsBt0MenMO1mW0Bvqd3jr0TwaUM84XPi7aM6W4TDPz+fnwKa9uOZG9Ev2aTDnzpln0frlk4maZGsGuF+8pXC6BElUszKvubYvPjR9jyAXUfzdsR030XjpwglmbSXEmuJruz4b+yb6ABnVxhSzAONWS6LK63WU88fsbmN7KFsgRmC27KhxBIhucSm5wz12P6609DOYfsK76A2rBQey2xvYeML7R4Dc51dovPgP8FDBRIWNXTKWpu0yMRscjNTfSB4RQfuoj5abkAT0ck/C7KdcPUfRfip/zrHrNIX3NdkzF0gucpjcMlpfLupGry/vH9FwdbZUL6Qm4tmisqmdgU5MazEAOAOVeKG7XDWH/go99SXXmweaNcug==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B707FC0008
+X-Stat-Signature: 5yf8xitrja1j8sjskdnx6xb979rwn83p
+X-HE-Tag: 1780649663-250642
+X-HE-Meta: U2FsdGVkX188r8v59M6yPT38LXbrCCFXnsT4HIYpwhv2qN1bikVnhA1xM2Ssq3hfdMkpcRVg7XkzeTc+UMpCutq3VAjlfiPOrjtCkj9O/1jSDWQnvSrBFUFjAqmRNWIDL83eBX9mcfAR4kup9c5CBZoahOF1Xc7B+rvsiL5FvXtiYRemuafpdQFtaULO7v1AkvCtFWm3zNDZiWyszCeAG4rmaVzGrv/mgQUsXgmqWA4f2lfM7qwhuy8QkvGc/imIV2EohgU25NAYwJygURLaML8zuIqjJsL42mhfcMmn7xi/jitkfwRYVTTzq6DB+vdC1aEPhLVqDVl5qsitbzMrI0mropqQRFoJwpQBEp/VSHSFSH59R5UBV0qVzvaCWG3ZHLDpo8/xVitOSn2RfUYtfp+oPhvQGUMMg+HP2ocNIHMlBwaiwTHzmIf40lflSFq37sYzsoxYthJsliXs+wp97k2LXsfw38JJVpmSJBJfw27/maguPO0BTu96hN3zfD5Jza+VqysE6rH1Wk5OwsCwImCqMK8UHiRiowxjP5HoIpOBrJy23oKVfChOtePGHusOlOerqOK9+/cQe31nUmebM/bSZiX4ZDB+UzZ7Y0xPKlDA/Q4wRdMTXegHES3U8Im6sdjpRNxIi94EwEUqlRXWJVLeLKWk/yJF7J2kOsLZToEM6lgn37WA7c99IkMF0GiNDwLn1FgH2F6jUhvyKWEEyE87c3CzJp2llOfSz0WXXxfhqkIGUMr8NyLmWMPpSJvia4zW+NBbJWPWz5QKTWL98b6cX5i0yAb9/+1+sRNG4gSvRkjRsusvM8B5V316FfTiHLyRD/LU3dU/hTJD0oxZH+x1TtPaladluXI8j2pJFU4GY3WNbfXpTG3fjvkhwXYS3QMV2M5UK06GfIwnPHCzOqlR5FVvp1JSYURrWXp06bMifTKPxkj4ZvDmlRb3gXbOzzb6oPb2he8qEzw3T3L
+ uxPDB4e+
+ CZ9bH+TGK9nN+tPUv87+CkdAJ0mJ7HDZk7l60OltDpl0Hcszf5+KeepgMEZomSYl2kMVrcY0RBcwgDKYzzB4Jl2x7nCw6+f+4FVz7NZ84ojvaKIh82cdU0RVIoChfYT4BXLvxjWRYc54bS1uIndRN9RjvoiQJBLcZapYSAaA+ZNAn/leTkOC2D4Hk2lgid2aXMjTxMEx0wPssPezLQ8JxEim/1DhliVZ23PXXvYmXYyF2RMo9xzyCGDu96ZCMLf1Vkr6lRxt+NxHtgjVy0Bp7wjjk87O3wEQA7GUIe2BVAhbQ5I2KeOhkjHyXyaSmA/vpGjJNkQZ1aZN5gu2WjKN+IbICvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,27 +121,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/3/26 21:31, Steven Rostedt wrote:
-> On Wed, 3 Jun 2026 21:13:30 +0200
-> "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On 04/06/2026 20:05, Ackerley Tng wrote:
+> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
 > 
->> Thanks, that makes sense!
 >>
->> So, would it be fair to say that, in general, what's exposed through
+>> [...snip...]
 >>
->> 	/sys/kernel/tracing/events/
+>>> +In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO, ``uaddr`` will be
+>>> +ignored completely. Otherwise, ``uaddr`` is required if
+>>> +kvm.vm_memory_attributes=1 and optional if kvm.vm_memory_attributes=0, since
+>>> +in the latter case guest memory can be initialized directly from userspace
+>>> +prior to converting it to private and passing the GPA range on to this
+>>> +interface.
 >>
->> is stable ABI?
+>> Just to confirm, so the sev_gmem_prepare doesn't destroy the contents in
+>> the process of making it "private" ? i.e., the contents of a SNP shared
+>> page are preserved while transitioning to "SNP Private" (via RMP
+>> update).
+>>
+>> Suzuki
+>>
 > 
-> It's only stable if something depends on it. It changes all the time.
-> It's only when someone complains about it that it becomes "stable"!
+> The following is the guest_memfd perspective, I didn't look at the SNP
+> spec:
+> 
+> Do you mean specifically for KVM_SEV_SNP_PAGE_TYPE_ZERO, or for any
+> type?
+> 
+> guest_memfd has no plans to do any special zeroing based on type.
+> 
+> guest_memfd decoupled zeroing from preparation a while ago (Michael had
+> some patches), so zeroing is supposed to be once during folio ownership
+> by guest_memfd, tracked by the uptodate flag, and preparation is tracked
+> outside of guest_memfd. So far only SNP does preparation.
 
-Heh, so we only know that it's stable when we break it ...
+I am talking about the SEV SNP conversions (specifically quoted in my 
+response), I will follow up on Michael's response.
 
-Let me figure out how to document that.
+Suzuki
 
--- 
-Cheers,
-
-David
 
