@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86958CD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:35:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA214CD6E74
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:35:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEDC26B0005; Fri,  5 Jun 2026 07:35:22 -0400 (EDT)
+	id 426316B008A; Fri,  5 Jun 2026 07:35:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9E876B0088; Fri,  5 Jun 2026 07:35:22 -0400 (EDT)
+	id 3D63E6B008C; Fri,  5 Jun 2026 07:35:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A697B6B008A; Fri,  5 Jun 2026 07:35:22 -0400 (EDT)
+	id 2C56C6B0092; Fri,  5 Jun 2026 07:35:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 923CF6B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:35:22 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DF9FAC0AD9
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:35:21 +0000 (UTC)
-X-FDA: 84845653242.21.87BAC79
+	by kanga.kvack.org (Postfix) with ESMTP id 16D756B008A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:35:49 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE12FC3436
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:35:48 +0000 (UTC)
+X-FDA: 84845654376.22.4A68181
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 29FB28000A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:35:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CCYLicqX;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780659320;
-	b=IYkggmpe0NLgYx3mF54B/7hZJQHnDCW/EmBdVdVm/pc2sDdvAy+Na2ExOyCAwPKmhpX9bL
-	FraW/bsHKD6duOp2K3gXWq1SvaxnVk/QC7ApOvnGYNHOO+r2tHfzEGBNJTqWFKjaphwuyF
-	q04ihtzA5lGkWnhd7lUfTbdVlxm4yvA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CCYLicqX;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1E4AE4000A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:35:46 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SK3RXkPY;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780659320;
+	s=arc-20220608; t=1780659347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VYwSlTfRiNAfg0kY061d17bvHyd81A79wpzN3UgaPPU=;
-	b=lfjdAftTGVukvBLWWzsGKNy2qx85IEfWc0r0vruLK7tFkz0cHLPkdWN0Ay+9wrCQf2WE90
-	sM1Nqfrbba/gaI3g+MYrUfRQMIyfKbz3Fyeew6vSD0oAIffyFswqdaEHANhsBEY8Ft0zXc
-	WL0oXLEbnhojg3tKWsxrehAlL5a4IOg=
+	bh=f7BVss6j6kOZoY1G1bBrjCYbl0PQn+LeN+QUqhUy2Gk=;
+	b=syOiUPT+vW00CiXEC94qmIgPS73V8oUXQYuHqK++IkoNDq5dJetF581smFs7/opmCt7MtQ
+	iwm9GUJoGK46Vqe7GcFOUJasSgh/5w4xm8NoWOhL0qPS8cC33DWDGkQ5VZ5S8riUC7bfQl
+	Yd55wfat9RfpPP2QG2KnPlOmubYbLxI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SK3RXkPY;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780659347;
+	b=RTMFpUuga+OQ21wSKYOvGkeAuXtv9QqHSVq2qOWJmQi46OIlTj1ZGAwzqeQe/Mh3Atq8J0
+	4DO6q8jYP3k5XnqmODX/91vHGp3FsKYfPtQEtP3XQwW4WHs2mVx+USTtZvnlDbJsL9wWpN
+	f9YM6RamZbKERAZRjCnuLZgzP6dowsw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 88AB9601DD;
-	Fri,  5 Jun 2026 11:35:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24BC1F00893;
-	Fri,  5 Jun 2026 11:35:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 94C73601DD;
+	Fri,  5 Jun 2026 11:35:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA411F00893;
+	Fri,  5 Jun 2026 11:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780659319;
-	bh=VYwSlTfRiNAfg0kY061d17bvHyd81A79wpzN3UgaPPU=;
+	s=k20260515; t=1780659346;
+	bh=f7BVss6j6kOZoY1G1bBrjCYbl0PQn+LeN+QUqhUy2Gk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CCYLicqX0yVvXA51o3INPCbyOLWqJ3kuKlqsEkwDCzrSsTSZpghUE25hAudi8TcEX
-	 BOM0WLwYjoWHYFJkGEne/7igpxlsKjqmC2B9jVkPriF5xkM1boT+1PHxBqg3Dr75kW
-	 cd/FWJ1i492m6XRU/0DXAVs6NpqFsYVTPIo3lfWi5QIwA3O7jD/E8nJpst3/F517M+
-	 vbQCiiDF+qOesamEO8bTFvMyRvaGU5z4gvJfvMQgMWfCk1XxEfaX9AKXlENCXxMc1d
-	 4JqzIHo2FVc4UGTRmpgBCl2TCvnQxGMtcwZV0trWrIqsgu0qhnxkWKbvKsK5Juv3zG
-	 pcI4qiilLyNoQ==
-Message-ID: <7c96ba7b-1460-4d62-938a-5051d03609d5@kernel.org>
-Date: Fri, 5 Jun 2026 13:35:11 +0200
+	b=SK3RXkPY5ggBTCPPqN/gLZ6rjYe5Rq77NsYv80iGvYDVemRt2XMxKXlvlJ8fpHMcy
+	 loaWPJdEDu5dp63vdK3smDwIJ+GaOYH3MWlJvzqvAddah10I8ernY086EiSZiiXm0l
+	 IMoYvNZ/mCkVA7JYKHupElVmqsIK6FsBjZxf4Bub73gzNUTgJjKslKbar3Z7kbMIM/
+	 G+SFARLHUqtHEuXbidpNtE5vPwWb0YlxUx8PKF+jeb7OFT+v+dS0C+ntRMpw7Z0sZl
+	 HdcpsHQeKVeT6NWotvWbyLNs7GDqqJr1hsVyAc3Jtf4Due0rEJXeRv/KQe42AHcH/A
+	 NTehpmFHN237g==
+Message-ID: <a5c26cde-e23e-488c-ba3b-cf8bc9be76da@kernel.org>
+Date: Fri, 5 Jun 2026 13:35:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/7] mm: shmem: Update shmem handler to the MF_DELAYED
- definition
+Subject: Re: [PATCH v4 4/7] mm: memory_failure: Generalize extra_pins handling
+ to all MF_DELAYED cases
 To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -85,7 +85,7 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
  vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
  tabba@google.com, dave.hansen@linux.intel.com
 References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
- <20260602-memory-failure-mf-delayed-fix-v4-3-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-3-a5bc7db5a9b2@google.com>
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 29FB28000A
-X-Stat-Signature: i5t1qw1ck9qmgkj8568aqicto977ajc7
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1E4AE4000A
+X-Stat-Signature: hb3jhm5f9bq3hiw4owtrzfcr3axopo4q
 X-Rspam-User: 
-X-HE-Tag: 1780659320-740737
-X-HE-Meta: U2FsdGVkX19Di1vOYFcfqmYcn69Lox+Xit1Isz6XM7lRZXXjR0qhepgECHb7/itsYXnDTt6cbtf00+O6E8LQYO4Tpb4Xv/pYCKa93NiSuEHgoTvLmAU9fe8mYwQXg+SWosVdjYm1Cgx88XUQF+kHtiIfPY9IdnC7rZu3idFgV/+9q8si+Xqf33iaqc9TGh5JNRJKK1D3IG7Q2gPYBBGl/ZOehkXWVRAmUYEnUkKOt1DI0UwohBZikthsNGx2k9VDWgKcVNqGFVx20/SAHL3QhO5ZHJMqfQYB5kXrHOEw+uouaucXNqsaMmxt6kpbkQKn37mLzWaVc2Hh1z5vIhI/0GR3+lUMb9KoUNG+d4d5LovvAuEYOODmmhrT5AlDai+sX8/Vl1zpxh5d2I/K+l5mukSWOf8Fq44A5hTCGgjRshC8GANM9Vb87a9Ae/pZOhtt4CD9TMeHp+vK8H/Q8NNZB3sZrKKD4AlPxP1Fx3DEZA+tRSI0kk7hCzm2yYDVmlOvXJjXXMJUlZFPeoH9K6jgMT44OdcZfkXwizAqqaP8SYQrr7Cm0LtDG6le6GcGgy5Jkh/EI1SNBt2ZPvzshyWKzQJDPbLrGe1qjAqRVkZDKCDZ4LVWeIoapvup/ytp41gemsUdpQWdh9rky1ZSZTs4FyMU66pduInNg0IdqsZRegtfJAgGU2+kLtPhZuVrp//vKikt0KYvrVnZrdzaj85Cy61sHcx0VOd/saDdf+3u4y6RNLjZaIli3pj3+ZFf/U7c2K8TGTfAPl47xDo1Y6canpzFAD5+22GQg77FR/27MOtJ+iSbH9VO06zYWFnkmg6CIb/4DGUtkpfkUPJo+RIuWv2ezIi7flLHouaHUrCX+nQO2jXnBo+Cufrswj0za5qBuNL87740ShNUpkIOKyOe65LEvkDRBs8bUqEFBEBHMRfN2l54/RLV8FitwwJSso97vaHw8iCRZhDQT6WaJY6
- 8P/ep2pW
- vTPcI+uk/23LGhFcJ8ap2dTcpuQuuqo4rCVPZSrw01+QM/Llz5qOpMTtlH6u+Evp5j4OLVlmfa2AVDy5dEHhga1iFPtV7C5l9ixZPMdNXfpShvRCkfJzIQW5pCOqpk4zEzkMDwj7NzceTYNTKkbCVVgFALViFnPey5vBEb+GXuDVpGapTUNSxVL1YpCWTlrfNCmbA9aS+NUNxgyjqkxzPzOwRovYXZTg+aljKj5tHt6ZEoiDP/dAZ1+RfsyW8+Lm+sJejmkGyA+Iv1d6FCWOSxAfbb8Eo2w8Cs8bv6gfALeyQEWNE023knyhnOZ6S2c8qj/ASBvn/qKikr21ZOX3TJKQL3lCVgEx9upiRRA6hygqCLmVIGRqv2TzUe+4SV0fwY1srfCcnfG+XIG41OtZzEh4dfvnNOIlZGlnPiGCMllUDyac=
+X-HE-Tag: 1780659346-698933
+X-HE-Meta: U2FsdGVkX18pZhK1ibHtH0zkAQr/wZbPNP/8LrOMLkDK89E0ZWhYd+59Do4icqCb2Au8A0EN6zLcdTTW0s5uyErBAiJKjwz1KkZoP7q8dqIvyFwPK/x3E+MsKHfFkYRTdHvv+OqupaOiIddr1mhw6Tz84cGOfCYUluOsmlcWU9NtZRs6Nb0mPwiKC25lGyqwk1tYUosthYy3H3cpLcbPN4KOI1qDcKQVfFdYKnFLmKLSP9P/XgUx1nrZA5kG32af9Uk8r2Ub2s5S5t0teUJLme4Z3Cbxvrils3i5KMFscak/IiHlN4/JpNahWVDKXJM4CbYKZG/YrVbsPKqNp7YhDga1CgAonnUGYFbC5ZPyF4HSanfC7hw1b1qZIqmo45giZjDDsC78eDRI/W8vor3Npnf3ReSKsL4XCS2j6Rmh26N8Z/CFyAcfZGcwSuV3ZeSj35OugsdNRx+972n3Wia/BnrC2dYFEfZUZMrwL8aUjPvcO0jORyVwTXyit0wxIcxBOgh5NlRb2mEoY4sxlyFxycP7G/+a+n/tCDakMAsYSKFa/DA/tzDfJ41stmgXC/031eK+lG0q3Tms4R3xJKB4CK3QgXZBJvEZUpdXBFwysF8fslKMqMWPFykiJtRd2pjjp3mysE+1IwwGKUM19gTHxi5KYWW9bUCFgYr1QsC8Gti0DB6wlTVjn24Ava1Fgje/OND0gE7W/5nhUODAGOwAswoKCSLGgx+r8AJdB6p9ENMU9nxqmwsgMTnUSvXTq4qc8F6oNLLj1eoItEmrUasdCh3FpCDPGtMnmJZaoEHGQJZXiUk5YbFUy0MrbAk6/RpW223zkQD8MkIJVHw256OdUWSlKg0MfMa+h6D9jG8DN8WMye/omk4AWfa6wmLMU4DyHIKcp3Y8waYbbsNXANbHLksovw9HpwqE8Sv4Yv2LH+mpxOtmv1ux7g2W4rGv4Th7qB6PN3kfzPaShzmEmic
+ P5CfyU8K
+ 1SVSAZaNEBlMLDi0hJ3iyfSOHCIWcv9essSGXJQWq/BJl+qVmjdfdYy1G5SIyjKySC2edQoZob/s3t2+s5VIo7KUe82ZmxP27kDUt9y/Z6wYE+Vt3v5iJPgKG4mxt1Lz3LR6fBtglTO5bjEzm4VdJMb/V8hOtAwJ5c+SqzY8vrtWrZaSjSy59B6qyoh/yIqpBka/kjdSuj+RRQqwWMWlGlLZUBbfFYfEv10psOLoIB9pwzUMyEoKMcZxMQIJHOAtfIVkd6ScNrA1ScZJCOWVQjd09B532Tcs6rTn8HbvIUEHmMudr9VwJycJrQHTkjBWRmdUZ3HNTwwDgn8j9e0XII6YoE9cfVwtyLOr5AtFq1yMDZnQy7u4+j4uSfWIzBvsYERAYtPEM8W3rrT8GvZeybPRssBNnWvch6u+yV5UzAtkDRD1Ny6ZcClU4ss7fk2/bDdQgCmlsB5qMZ62qoAdC+M1o+4YbftwMLt/H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,30 +151,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/2/26 23:55, Lisa Wang wrote:
-> To align with the definition of MF_DELAYED, update
-> shmem_error_remove_folio() to return MF_DELAYED.
+> Generalize extra_pins handling to all MF_DELAYED cases not only
+> shmem_mapping.
 > 
-> shmem handles memory failures but defers the actual file truncation. The
-> function's return value should therefore be MF_DELAYED to accurately
-> reflect the state.
+> If MF_DELAYED is returned, the filemap continues to hold refcounts on the
+> folio. Hence, take that into account when checking for extra refcounts.
 > 
-> Currently, this logical error does not cause a bug, because:
-> 
-> - For shmem folios, folio->private is not set.
-> - As a result, filemap_release_folio() is a no-op and returns true.
-> - This, in turn, causes truncate_error_folio() to incorrectly return
->   MF_RECOVERED.
-> - The caller then treats MF_RECOVERED as a success condition, masking the
->   issue.
-> 
-> The previous patch relays MF_DELAYED to the caller of
-> truncate_error_folio() before any logging, so returning MF_DELAYED from
-> shmem_error_remove_folio() will retain the original behavior of not
-> adding any logs.
-> 
-> The return value of truncate_error_folio() is consumed in action_result(),
-> which treats MF_DELAYED the same way as MF_RECOVERED, hence action_result()
-> also returns the same thing after this change.
+> As clarified in an earlier patch, a return value of MF_DELAYED implies that
+> the page still has elevated refcounts. Hence, set extra_pins to true if the
+> return value is MF_DELAYED. This is aligned with the implementation in
+> me_swapcache_dirty(), where, if a folio is still in the swap cache, ret is
+> set to MF_DELAYED and extra_pins is set to true.
 > 
 > Signed-off-by: Lisa Wang <wyihan@google.com>
 > ---
