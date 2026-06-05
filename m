@@ -4,135 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2D2BCD6E7D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 15:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AA67CD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 15:18:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15A116B009E; Fri,  5 Jun 2026 11:18:04 -0400 (EDT)
+	id 0BDD76B009F; Fri,  5 Jun 2026 11:18:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 131DD6B009F; Fri,  5 Jun 2026 11:18:04 -0400 (EDT)
+	id 095906B00A1; Fri,  5 Jun 2026 11:18:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 047D76B00A0; Fri,  5 Jun 2026 11:18:03 -0400 (EDT)
+	id EEDC66B00A2; Fri,  5 Jun 2026 11:18:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D4A6B009E
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:18:03 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A4A0586CE6
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:18:03 +0000 (UTC)
-X-FDA: 84846214446.21.993067E
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9ADB7A0002
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:18:01 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="j92h21/L";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780672681;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DE7EA6B009F
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:18:17 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 83713A01B3
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:18:17 +0000 (UTC)
+X-FDA: 84846215034.06.9B69929
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id AF1D22000A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:18:15 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GSPu40WW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780672695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eUirbwCPewTyFfnhv/ApKk+4P5ttqM6DO2JIqx8LspU=;
-	b=vncChq1AaZD0jyNah3raeoponAM1g/yvllJqdK7wKohRlMZ13PA7HSlt6Lv72wT8zutPQE
-	dz0Ph80D1fe1pl83gc6IRbw99eHOncg0YJHyF6ZwqkmXqDlAWPHf5ZiGzFYw/Lv5DjBecC
-	phTaR/b0s7dc25/D/Rui5SFidGF8E9w=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="j92h21/L";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780672681;
-	b=zr3k3p7TrDsRrXKj3wE1If48hBpcyULrlGjKlbaW76kl3haNqmqgI5KxJijlS/wl5EGwWI
-	4Qs9gzAoLTVhX4MIhyd2pY6WuIBNbmrflckSHn8IKkg+CAjaC3eElcTFSkxbDCDRP02mgv
-	iShlN3rDcC0vEOnP0ampUwaKG+Atws0=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-68bd7ec2371so10497a12.1
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 08:18:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780672680; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hExtPVkpiD+hPYpFiqwIsyFC7+g38KJe65awkPXlb9bA6w0/t1c9mHyHHaj3gf/KX3
-         D0LB/nxScIKOdXm3Zj+4IQRL7NDUpd4pgMj0GlDwsYrO3JfTps8xT1/0neCy+NQ3/sa5
-         M6OGNyDV4agOIdqlwpxShrj9vFM6J18Bs6r/mYH61Y7bySXndr8Fb/DnQG46DdNtxq/H
-         6hCv8S0wYCA4gLfbWKp4gFzS4Fuomg+r7Z7f8pGcAx8my9jlhFTm7XH44/DjgyMyPFCy
-         Ksrm29LB1hvZtcqOdTEqFlM6LFrHffBH+ry7DRTmSkoEkg7CHVR2+Al87L+00rv+L2QS
-         1veA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=eUirbwCPewTyFfnhv/ApKk+4P5ttqM6DO2JIqx8LspU=;
-        fh=MgSqigyKAUBg9ZDJ1cjNkAqG12z9biRqGUCZIxzfRyE=;
-        b=ju9bWTs9DSEQ3B6+IELD71QKXbbTYJZ9BYuMX89AKSACQO7WHbbwZ1BbJ7VmJWBPW3
-         6FoX0j7Rj3W10NEuZwl6kCjDmI6wnq65oNSlVX0Z9hPlx/46t/vO8taQdeLw4UfK7zQE
-         d6KlRBB5DCAb935MTztn/Ua6bFMuoz/3gw0q5xh6aiWJ21BJSrjJ5gDEO0RS31yaqcse
-         piA8cT0Y1c4J0hjZSQN/XmwqMw32RRd0beik1Go2Q94kl6WZk+XWc6l97sTtGEUNG+tx
-         KeDNkXS/ovxYJKGPPVY4xbabBMn4q1VeCxdHyhiNdbOtnoK01T3kkPGU4fxMoiIirhLo
-         xXVw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780672680; x=1781277480; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eUirbwCPewTyFfnhv/ApKk+4P5ttqM6DO2JIqx8LspU=;
-        b=j92h21/LFGUTJl1NKvNfpDfx7I+Tv+jf5x0PkhRsY4cROVRZjLBkPcdwXrCINfMtgm
-         qwqxhTmHOxnsAZRbhJzbWMebCYt6MNPSNqwGn2LSCNYRPdr8LZ84HKpB4peAAr/90NFK
-         Ej1zTPn/oNHjUuaO8w7T72FcxroIKPQ271lnb8c/7ykUJ/2pfdsePMrMpH6vyP3qQNjA
-         uFWzNmmrmqnd2W4eezyCl0S4PgMrKDCRccOJ85xm+/V3ora3sAlAvj0NSLB3oCIcNaWI
-         O+5Yc/u99kHeDSSjxOo/zaagLqLk3Z9/LfHfT+TjWXfjuz71Recn+7HwdzD7OsDl1KZu
-         1xgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780672680; x=1781277480;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eUirbwCPewTyFfnhv/ApKk+4P5ttqM6DO2JIqx8LspU=;
-        b=mYg3iDb5gktNEy+zgvI5BR+IyY+ekgbiUR7gOv3GfapJ6QzVZQpOCNTH7t2UEAe0WV
-         iZef+kSyNpWQl88QvxEtmlEDDZawwIfN0OVRQthjwRpbDYxmca63e1iMSwyYeB0odnle
-         46eOXUz9LHCyVBvYWvrX6K50xq/zz6Q/2BwAPxx+P4jNnRaGEkcYGlvAPWHwBeqXut7k
-         mq6zq8FOkY/Ul9Kw7LIyJaM0k5dafm+uIPEiDAEC0cmy68r4QzcYDra1O8gw0Ja3uiem
-         Iblf454/RLtnff/33Uqd9fO8lomtYsCeCLD6fOQ++/xexDSPHEnRJCUFfamxxgOqGQ9/
-         e5aQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9qPVzyxrXlyaz26oPNhHuNFb+XG0O+SscfTAeOmMIwF4zHS9rlzl6q5BD3GE5oLYk0/SnMicq0Aw==@kvack.org
-X-Gm-Message-State: AOJu0YyDt23VfxnWSBlgxknhCXYxXlpFoU6DY4AsEZB+jSJQh2tEflEF
-	O8r+7xkXQ4RNU05oHguh1vSeKK/nuSD4JcNQXyUGEpi45uggqNRElBScVfMa3dB2AABTq6ZPL70
-	9cmWVlz8aALgR7txAf2qiLMKnWcgEpx3tMnzxbDRg
-X-Gm-Gg: Acq92OGiZlnfyD8hlHvpAikNj8dQpmMN9qOcTL0LR8n7stXxJ/GeQLiQChOaviUsrhO
-	8K2WJbuWklIDo441dsZfJh04P1kgIUcWegKzAZJb6fJzV0MXBauV3mgGw+78lGIiWBeZ7Oz1uvd
-	y0u0I+90Dkl+Re0eN9eyK4UV2Ma45y9WKc+wI5I//paVIIR4AOq80ktkhb1AUbgV5qxvG/3PRY/
-	9EN+/EBaSWQn2p0SpzriecAR/DXxlCcofudzLeqB7FH56NCL4ziTHtyrwzXDX5SBUzb4xGUIjwE
-	cjVkaYSgWg7WDu043VnOroE1ORI=
-X-Received: by 2002:a05:6402:52db:10b0:683:33ae:8689 with SMTP id
- 4fb4d7f45d1cf-68fe8b4cf79mr40043a12.4.1780672679627; Fri, 05 Jun 2026
- 08:17:59 -0700 (PDT)
+	bh=bpBz50L7GInctas+/Il3i3Hx7c4Pv4RIfM6k49q0DxM=;
+	b=p2q+Lf6VIKwgjplr5xx0vN5zLcYATdEE/JJ7DUTZlNhvZ6wgc2P9yIBJDIMVZpFuEQJxqE
+	O0LGypEkBi7OmLb5KWSkENmFQMhxMFENPqd5lEOBR5Vlskw8EWXpVvlaC8NuGcENLJOUFJ
+	Gf3HAZ7+9wHRWP3WRkNepYy0+O0hg5E=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GSPu40WW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780672695;
+	b=buI3wDBvUUXenPMzxnspAm4rugJ0uIg4DZwJfkp+Nd049nTHI7Pzatxm2vaaYhX44gerqb
+	eeGsWWxeJasCMrVhqVcElcGYIsXCsxM0i13+OVvmzhtRK0Tj9L4WYM+diqrNGObsKOwZRI
+	Utb0AaSeeBCpiEFP2diNt5f+Hm3QKyA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E38F843278;
+	Fri,  5 Jun 2026 15:18:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696671F00893;
+	Fri,  5 Jun 2026 15:18:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780672694;
+	bh=bpBz50L7GInctas+/Il3i3Hx7c4Pv4RIfM6k49q0DxM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=GSPu40WWv9onXNY6VO0dlcw7gsX0kg6588NMgROX+7us5AEUFjsK+9/iM1JALiQve
+	 s9FIHVxGScwUx0snSzqh7890Rvu3diNQ15ki1tIq4j85wka8H7p6WucwIqbQyOM2I2
+	 hBnkXoJI7ZJAVkpkIbJHfqCEh/o6znOhql5PeV2JEp1IfSIOLjl5P7nQ3iis3Uzq+P
+	 9u60D0CPpvy8fLYJp7JncpQfH9t2EKVDtKWBGdJkd2OBdXVDzj6rGRatKgUGb8/23Z
+	 3WlhRQF0kKRXyR0Kptz8QJfDNfZ3JHMDu8VjLy2Y3RB4RxB6Mo2Y/6NFLb9Ra1VK57
+	 7YcT54/CLRijQ==
+Message-ID: <25c4bc47-b65d-4c04-8a8f-18eef2b5566a@kernel.org>
+Date: Fri, 5 Jun 2026 17:18:07 +0200
 MIME-Version: 1.0
-References: <20260604065938.105991-1-hao.ge@linux.dev> <CAJuCfpFBcnS8thEbKnd74xTyuKd6qaOKk8+sogC17yL2XE0THA@mail.gmail.com>
- <d4eff260-1e11-47f4-84cf-80cfa6d45d2b@linux.dev>
-In-Reply-To: <d4eff260-1e11-47f4-84cf-80cfa6d45d2b@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 5 Jun 2026 08:17:46 -0700
-X-Gm-Features: AVVi8CffJ306SAPzCbeeT2c_1PiUQyUhVbSOMhNwR1aYeIr8PK-Jk8P1XXkkzQI
-Message-ID: <CAJuCfpHEf9=jCzy-9SwADc1oxut_hf0=Pxdwa8Um66itpMap6Q@mail.gmail.com>
-Subject: Re: [PATCH v2] alloc_tag: fix use-after-free in /proc/allocinfo after
- module unload
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 9ADB7A0002
-X-Stat-Signature: 3ywawh6ja5krdnzud4y5mumxsia5ymcg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: don't allow empty relative nodemask in
+ mpol_relative_nodemask()
+To: Farhad Alemi <farhad.alemi@berkeley.edu>,
+ Gregory Price <gourry@gourry.net>
+Cc: falemi@asu.edu, Yury Norov <ynorov@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Waiman Long <longman@redhat.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, cgroups@vger.kernel.org
+References: <20260528124133.c88c27b11a8ea0ef05e494f7@linux-foundation.org>
+ <20260529152616.2308736-1-joshua.hahnjy@gmail.com> <ahnRIDBk4bQ3xX2q@yury>
+ <fe33c767-ea11-43e2-8732-f752c9c1205c@kernel.org>
+ <ah6X-RtVX75YP7VX@gourry-fedora-PF4VCD3F>
+ <c98eb14d-b878-4eeb-91f0-d2b1d4407e1e@kernel.org>
+ <ah6oS7wiGB4u4-eR@gourry-fedora-PF4VCD3F>
+ <CA+0ovCiEz6SP_sn3kN4Tb+_oC=eHMXy_Ffj=usV3wREdQrUtww@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CA+0ovCiEz6SP_sn3kN4Tb+_oC=eHMXy_Ffj=usV3wREdQrUtww@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: AF1D22000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780672681-130538
-X-HE-Meta: U2FsdGVkX19UTSlKq2VGiqHUJ9J8iOuU5xNh7boeVFvSYOpg+6LNztQwutuEa2NJ3xPOWJ4LpSiluSYyjbdCkWoXj+1wESKq85Sa9fku1ffMdDnjbjmhgEXbJ2pINDneMjvroe4ZMr2XeJj8xo/5GBjbrQmGbk6J5NaKbCEzLHj0wy/77f8tyxNoYHzSeGSitd2kLZoE1y8xIpMp78yR1i7SIlO5oFZki+VZSQwyx5ZPmLJ3RpCFTzY/tK+qPgVol64J9WCCJUhCfbeHnZqJucv6Li0R1MiAFEpNcTuemzJYlc+yC1/k/sAOXMGViJa3Jiv6PU9og0Jj6Hmb5gbpb2WIFNxkVLBtP3/pNDLKqZeCdw2gPfsq1oxUiS6TBdktcpDgjbp3nuBsEWimmviGFvcU2zB+Crt6Sm/2xHEXXpf0FK8unXGmLWjhtrZ1YcqmJ2SIxZSzk3bRznyK5rzPblBXN6/Rg7loOPc03LWH822ggbZLNrXPiwUYQ4jJo7BPLk9w832B0Sblikm/2fOQS8Uw8HgAUwMfdQ85Zl/l3AwvowiTELovts7tO0YCsRu/poSR+WRsnj9wD7OYoMSsI9BGRIwKWbgY3fZbJc3iF319edwkgLWfcMAEUsbuzEtlHmOX0O1wXrMyfFB4BsAc4JAXF42P6vC/Zdm67xNdke8aQ+rT/m+EADuIgNKjgq/01SQkfC1J6Hu32u5X86b+DkVv/Jl7mT5/SjJVED0Yys1oiJsaJRyb+rEWpCiJoPRYwiRJglDEYdzdc9oSIkBJOsTmhWdf6z4ZYnVh8B3Wnku8wGtZNIRalPXTU3xs3ahfrM9Fvqb1SZxmomvOLQzP0QnibYNYp/QlCMMJmHHr0LLPXxzGw1GVJ5q6zB+loElr+0kR/h9upkyKd/emVF08BOZOyEq+gGeklUQ0+2yOsUAO0xtoYPbcG2uWW5XvUVyrC6jwLUuc+2V1kgmMWoP
- FQvwvxLZ
- /WN0V+ZTCerqoUYMaMvq1lXVCEIP3wcMA8eQNrrISpxoXEnoAvetFv0O7UMkouXWmaPnVFBeQ0UdwPJJVwHoNMPkPLOlnQLrI0/j6fFv5KAePqGv1MaGpYfb8jCkc/8yP1imBb4xKSXJBNvb8B+RjYakinQga4aJ98UE6tiPIkw9hpK6rIE5PGlWFAwe1IZHtwNy/RieljptP4Y4uaCJ7YSex7YCbwm2e9lxjctE+1k+tQfu01XUGNTxuNvgAmsasl5pqOZ9zKL1Qp93iIya5/NuDXxcnq9Qf2p0cag8sp8RrzUzErmIpr4RUTAOy1wnxDQ/xkPOarmYwNsI=
+X-Stat-Signature: puhhqip33uhjyw1kqyg95py178hxabom
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780672695-46502
+X-HE-Meta: U2FsdGVkX19PiQ/hMPA6HGhr8JD/cnNBZYqd6VNM8Zxy/sqqhrZn8RS2Y13o5i1pyDImuWCcgJevGo4vfS+EHLld9Yxm7ldDgGhJTy+aUv0xfsDUram6TqMMLcuJUGDEPSpjyq5Kh2sLzuKjEig0YMX8H39H8dosWzkE08X4qJ430dKFdCI3eG6LA/6dNbTxVnLy2THhPa9dSCWhy4DYlGpso4u6mcAWAa/AySdDnv/+tI2t0u5p4IKBppkNM9mX60PKm8aEjAsST3lCM93IodQoiWakRvPlC2Y/+ce55pfcGH4RfU8RnJ3kBsFS8MflbxgoDbVjoAoL9MsP69q4aGN1r51T9KwBp5N/P+7ICdTdblyMuNS2aFKNs04ctKKMS7cXo4Uw+AzAUMILXXc/gIVD3dVvoO29XVpl4nFyeIwhgw/jrKwIdDaUnGXosiKH4NDCrja9nRKAwBq8kBXzif8GzLSac+EUFSwCIM/N36dl8YLgMK2UhNI61RNauzOYWCcwPoYeZKuzkBhPr6zpdBLeh3J24whl09OBt4UstIyyHL5HegiLpHWSdyuPPz9wvPr8otEuzdvuvbGqkLgIFk5TBPt9SgygjqHkcvNW8fiTf6VJJftAwr4Z5+0MuTJu9wLLO79POyI7dnIDGXCrGeq0ELtzSdXAtvealSxUoe/vNzLz3pe9KCdRoDuaq+J30n/Th14KHjY7C286H1o2tlVoFrbCitn3vs+xuBiqFj7VvombsoZkK4rlrGX5MYHCbql82OozL+qsMTeuusJ+uZQkjZLqcFZ9SdnS/MW5Lrlmt3J9/AVksbSa29fKG6eIbcF6QZWoz6R/l6t1RT0EXAhW8lVa+OmWBqA7gpat8q7veuz1aGnfvnKKCAZQA9KKKD4qs52UwhRk0b0Jk9WkOS+gsNytd9Vs//4BfqMhJ8CO6JPn8BuFmTz1LIS49NKjnYT6JqcFPmpoLwf+bBi
+ X87I84tF
+ tOgunuadhzzdnx/9IauM4yMyFJo9ywYFdNVQ4oQYt7202v1BhUfsMeAddP8tdkCd4zN+Wx9QqiW5hUkgTL7M12PJJ3VKQ8FWYAhiyVopND3oDpvl6o2UX00rrNjgb8UD9rt/f1ed86hnlALyakLfWPFq/iuPkA0hCU40e4JEWTWO7DLuMMAHb8PzwSJ5lRneElV8COVlAd/6T9EI7Lrjfn5PmYHxMox7p0xNh65V7pfCqrQDbawrdnNyj/yJRpkbpjg7zwQQCtpYlfctXjSQ/Fhw0qlrgvh+zmYuL5/GtHvDSy2auB14a8ugzqAk9itDp/IKB0QsGATFxvXcTVHZdk/FBKY7MnHqCV5NeP2ul2saQ8Mtb3loX9nMNMnhq4pUdCqXc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,165 +152,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 5, 2026 at 12:44=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
->
-> Hi Suren
->
->
-> On 2026/6/5 03:24, Suren Baghdasaryan wrote:
-> > On Thu, Jun 4, 2026 at 12:00=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote=
-:
-> >> allocinfo_start() only reinitializes the codetag iterator at position =
-0.
-> >> For subsequent reads (position > 0), it reuses cached iterator state f=
-rom
-> >> the previous batch.  allocinfo_stop() drops mod_lock between read batc=
-hes,
-> >> which allows module unload to complete and free the module memory that=
- the
-> >> cached iterator still references:
-> >>
-> >>    CPU0 (read)                        CPU1 (rmmod)
-> >>    ----                               ----
-> >>    allocinfo_start(pos=3D0)
-> >>      down_read(mod_lock)
-> >>      allocinfo_show()
-> >>      ...
-> >>    allocinfo_stop()
-> >>      up_read(mod_lock)
-> >>                                       codetag_unload_module()
-> >>                                         kfree(cmod)
-> >>                                         release_module_tags()
-> >>                                       ...
-> >>                                       free_mod_mem()
-> >>    allocinfo_start(pos=3DN)
-> >>      down_read(mod_lock)
-> >>      // reuses cached iter, skips re-init
-> >>    allocinfo_show()
-> >>      ct->filename   <-- UAF
-> >>
-> >> After free_mod_mem() frees the module's .rodata, allocinfo_show()
-> >> dereferences ct->filename, ct->function which point there.
-> >>
-> >> Save the iterator state in allocinfo_next() and resume from it in
-> >> allocinfo_start() with codetag_next_ct(), which detects module removal
-> >> via idr_find() returning NULL and skips to the next module.
-> >>
-> >> Fixes: 9f44df50fee4 ("alloc_tag: keep codetag iterator active between =
-read()")
-> >> Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> >> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> > Acked-by: Suren Baghdasaryan <surenb@google.com>
-> >
-> > Thanks!
-> >
-> >> ---
-> >> v2:
-> >> - save the iterator state in allocinfo_next() and resume from it in
-> >>    allocinfo_start() with codetag_next_ct(), which detects module remo=
-val
-> >>    via idr_find() returning NULL and skips to the next module (Suggest=
-ed
-> >>    by Suren).
-> >>    v1 link: https://lore.kernel.org/all/20260525072117.112779-1-hao.ge=
-@linux.dev/
-> >> ---
-> >>   lib/alloc_tag.c | 9 +++++++--
-> >>   1 file changed, 7 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> >> index f2f574bcf383..551cc14bb1fd 100644
-> >> --- a/lib/alloc_tag.c
-> >> +++ b/lib/alloc_tag.c
-> >> @@ -45,6 +45,7 @@ int alloc_tag_ref_offs;
-> >>
-> >>   struct allocinfo_private {
-> >>          struct codetag_iterator iter;
-> >> +       struct codetag_iterator reported_iter;
-> > nit: I would call it maybe prev_iter since it's not yet reported (you
-> > store it in the allocinfo_next(), not in allocinfo_show()) but that's
-> > a minor detail.
-> I see...
-> >>          bool print_header;
-> >>   };
-> >>
-> >> @@ -58,16 +59,20 @@ static void *allocinfo_start(struct seq_file *m, l=
-off_t *pos)
-> >>          if (node =3D=3D 0) {
-> >>                  priv->print_header =3D true;
-> >>                  priv->iter =3D codetag_get_ct_iter(alloc_tag_cttype);
-> >> -               codetag_next_ct(&priv->iter);
-> >> +       } else {
-> >> +               priv->iter =3D priv->reported_iter;
-> >>          }
-> >> +       codetag_next_ct(&priv->iter);
-> >>          return priv->iter.ct ? priv : NULL;
-> >>   }
-> >>
-> >>   static void *allocinfo_next(struct seq_file *m, void *arg, loff_t *p=
-os)
-> >>   {
-> >>          struct allocinfo_private *priv =3D (struct allocinfo_private =
-*)arg;
-> >> -       struct codetag *ct =3D codetag_next_ct(&priv->iter);
-> >> +       struct codetag *ct;
-> >>
-> >> +       priv->reported_iter =3D priv->iter;
-> >> +       ct =3D codetag_next_ct(&priv->iter);
->
-> AFAIK, in the seq_file call flow (start -> show -> next -> show -> next
-> -> ...):
->
-> start(0): iter =3D get_ct_iter(); next_ct() -> iter.ct =3D A
->
-> show():   dump entry with iter.ct =3D A
->
-> next():   reported_iter =3D iter(A); next_ct() -> iter.ct =3D B
->
-> show():   dump entry with iter.ct =3D B
->
-> next():   reported_iter =3D iter(B); next_ct() -> iter.ct =3D C
->
-> show():   dump entry with iter.ct =3D C
->
-> The same holds for the overflow case in the Fill loop:
->
-> next():   reported_iter =3D iter(C); next_ct() -> iter.ct =3D D
->
-> show():   overflow, output rolled back, break
->
-> stop()
->
-> on the next read:
->
-> start():  iter =3D reported_iter(C); next_ct() -> iter.ct =3D D
->
-> show():   dump entry with iter.ct =3D D
->
-> So reported_iter always points to the last element that has been
->
-> shown to the user.
+On 6/2/26 17:01, Farhad Alemi wrote:
+> Confirmed, with a standalone reproducer (attached); it panics linus/master
+> at e8c2f9fdadee. cs->mems_allowed can legitimately be empty
+> on v2 -- a freshly created cpuset child that never had cpuset.mems
+> written keeps mems_allowed empty (never initialized) while effective_mems
+> is inherited non-empty in cpuset_css_online(), and v2 allows attaching
+> tasks to it (the empty-mems guard in cpuset_can_attach_check() is gated
+> on !is_in_v2_mode()). So the non-empty guarantee holds for effective_mems,
+> not for the configured cs->mems_allowed; forbidding empty cpuset.mems
+> would break v2's inherit-from-parent semantics.
+> 
+> The reproducer enables +cpuset, mkdirs a child without writing
+> cpuset.mems, moves a task in, mbind()s a VMA with
+> MPOL_BIND | MPOL_F_RELATIVE_NODES, and offlines a CPU; the hotplug walk
+> then calls mpol_rebind_mm(mm, &cs->mems_allowed) with the empty mask and
+> folds modulo nodes_weight(*rel) == 0 (console logs attached).
+> 
+> The newmems instinct looks right: it's the effective, online mask the
+> task is actually allowed to use, guarantee_online_mems() keeps it
+> non-empty, and it matches cpuset_attach(), which already rebinds against
+> cs->effective_mems. The fix this implies:
+> 
+>   - mpol_rebind_mm(mm, &cs->mems_allowed);
+>   + mpol_rebind_mm(mm, &newmems);
+> 
+> I built the current base (e8c2f9fdadee) with and without this one-liner:
+> the unpatched kernel panics on the first cpu1 offline, while the patched
+> kernel runs the reproducer's 8 offline/online cycles cleanly, with no
+> divide error.
+> 
+> This regressed in ae1c802382f7 ("cpuset: apply cs->effective_{cpus,mems}",
+> v3.17), which moved cpuset_attach() to the effective mask but left this
+> rebind on cs->mems_allowed.
+> 
+> Happy to send this as a proper patch (Fixes: ae1c802382f7, Cc: stable,
+> reproducer) if you agree the cpuset side is right, or to test a
+> mempolicy-side fix if not.
 
-Yes, you are correct. I thought there was a case when we move to the
-next but then do not show because of the overflow but upon revisiting
-that code I see that is not the case. All good.
-Thanks!
+Yes, please send a patch, including a high-level explanation of what you
+analyzed above!
 
->
-> I'm fine with prev_iter as well,  What do you think?
->
->
-> Thanks
->
-> Best Regards
->
-> Hao
->
->
-> >>          (*pos)++;
-> >>          if (!ct)
-> >>                  return NULL;
-> >> --
-> >> 2.25.1
-> >>
+-- 
+Cheers,
+
+David
 
