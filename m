@@ -4,120 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8424CCD6E7B
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 18:25:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50AF2CD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 18:28:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7BC06B0005; Fri,  5 Jun 2026 14:25:22 -0400 (EDT)
+	id 8DA776B0005; Fri,  5 Jun 2026 14:28:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2C226B0088; Fri,  5 Jun 2026 14:25:22 -0400 (EDT)
+	id 8B18F6B0088; Fri,  5 Jun 2026 14:28:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1AEB6B008C; Fri,  5 Jun 2026 14:25:22 -0400 (EDT)
+	id 7C83B6B008C; Fri,  5 Jun 2026 14:28:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BFC0E6B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 14:25:22 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 593B7C13EF
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:25:22 +0000 (UTC)
-X-FDA: 84846686484.06.6F932FF
-Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 29A1E100009
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:25:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=astralinux.ru header.s=mail header.b=hpBcXqju;
-	spf=pass (imf14.hostedemail.com: domain of adiupina@astralinux.ru designates 93.188.205.243 as permitted sender) smtp.mailfrom=adiupina@astralinux.ru;
-	dmarc=pass (policy=quarantine) header.from=astralinux.ru
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780683919;
-	b=rTtWk7yOpxAUbFKgs79xsi69GqvqaLnvHemxJgGgM4GFQ9n2GJ63+SO/IOcGpfLQq+r0Hy
-	o3m7afshOXWIwdS5f1kEHiosyKCc09bwOmAydtM6F9ro0OX7nwZ0NakLY298bpHY01zoUn
-	LUtxyQ8F3YOw8TiNa2unhyTEY8JzSys=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=astralinux.ru header.s=mail header.b=hpBcXqju;
-	spf=pass (imf14.hostedemail.com: domain of adiupina@astralinux.ru designates 93.188.205.243 as permitted sender) smtp.mailfrom=adiupina@astralinux.ru;
-	dmarc=pass (policy=quarantine) header.from=astralinux.ru
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CC6B6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 14:28:02 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2963340269
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:28:02 +0000 (UTC)
+X-FDA: 84846693204.27.23E481F
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 760D980006
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:28:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IKcoCuNs;
+	spf=pass (imf02.hostedemail.com: domain of 3LhUjagYKCD0rdZmibfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3LhUjagYKCD0rdZmibfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780683919;
+	s=arc-20220608; t=1780684080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z5Oh9xra6/GQ5h6DbagQNEnB88SWNQqpceHBbmpNm4A=;
-	b=RqlJu/X7tZnGAl3dDSc06zNbb4TbxBTyQe2OK0EIfNgEeeaC9ARjfE9DQIzIh2ZQqlKpEL
-	m8Z7+SfJhnLwvqS0/rFmA+0fORq5YB5UTHLWB068CJ6hXub9vNTmcF8xmKp4zCeXKaQyjm
-	s2cocr5G1qhMIGjEaGbEq7asXpQ2KVY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1780683916;
-	bh=xKSk2dALkJcfG7FYHRnFSGtr1WGvMhlswavq/il6ass=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hpBcXqjusVv+SWAEpw737RfZlyDkNywKi8SGONvl2AhYMnrsGuvS58+HDc54LvKs7
-	 awVkZjN3RXGsxNVE83x5ohhh1Mm3a+QqpY2lOjmrM7L7BOkEWUg2tt6EJ1sM3Mg8fW
-	 BZ6MBAZ/25rp6s0TsAwE2gaeRStrPvuBUCtpfLqqRb6lIDi2pfaPVNKCGX7HG7MaOA
-	 IoTiRIxEA/w4TpBeCDlEWvI6Uu93EfQfKkMwxDAMK+b54ZHQt5dIRfKeBjdiJTEqLG
-	 NJ1vQz9To2gEuW9WsD8uzQZ0w+MEJykwI4bUZwpU5GeBQui95svvV5rgY1PN5ywmUn
-	 cv1FQCDckB+2Q==
-Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 039661FA57;
-	Fri,  5 Jun 2026 21:25:16 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Fri,  5 Jun 2026 21:25:13 +0300 (MSK)
-Received: from [10.198.53.178] (unknown [10.198.53.178])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gX8xN74brzwQQc;
-	Fri, 05 Jun 2026 21:25:12 +0300 (MSK)
-Message-ID: <788800cf-061c-4312-9595-3da2b5814d47@astralinux.ru>
-Date: Fri, 5 Jun 2026 21:25:11 +0300
-MIME-Version: 1.0
-User-Agent: RuPost Desktop
-Subject: Re: [PATCH 6.1] mm/memory_hotplug: fix hwpoisoned large folio
- handling in do_migrate_range()
-Content-Language: ru
-To: Zi Yan <ziy@nvidia.com>
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
- Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
- Jinjiang Tu <tujinjiang@huawei.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Luis Chamberalin <mcgrof@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Michal Hocko <mhocko@kernel.org>, Pankaj Raghav <kernel@pankajraghav.com>
-References: <20260605172604.16034-1-adiupina@astralinux.ru>
- <F08546F3-3CE1-4DEB-B65E-32D3FFEF4256@nvidia.com>
-From: =?UTF-8?B?0JDQu9C10LrRgdCw0L3QtNGA0LAg0JTRjtC/0LjQvdCw?=
- <adiupina@astralinux.ru>
-In-Reply-To: <F08546F3-3CE1-4DEB-B65E-32D3FFEF4256@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/06/05 18:08:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: adiupina@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 107 0.3.107 575e75fe8e3b9d45c142d144823c5de38605099e, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lkml.kernel.org:7.1.1;new-mail.astralinux.ru:7.1.1;astralinux.ru:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 203696 [Jun 05 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/06/05 16:27:00 #28217824
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/06/05 18:08:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 29A1E100009
+	bh=Al0zDa4bN146O1R+FtGZtDttdy90kv7zGQH5evIcYPw=;
+	b=eUQmX2SFt1TommlRwSAeM+QTmjEusNJNJ+dUlBYV6M8mu/J+wSP7zqbFyC8X5lJcj6e/PB
+	Ecvrxtn5RLPFiRILmol8l9WdXcS/7FOwWN5y5zYkaglX2FdEFAbqMxj2Hl4qMrg+10OBDZ
+	HtyCqBg4i7u+5EyBxTUzLkYBQ4T9KVk=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IKcoCuNs;
+	spf=pass (imf02.hostedemail.com: domain of 3LhUjagYKCD0rdZmibfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3LhUjagYKCD0rdZmibfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780684080;
+	b=Ji23qxbmTj0OC0KsAbcS4Z18HbF9J+wtkni3XAlgcyIiGLiMgpK0xy32vz2jRluG3Nrn9e
+	MP1SbawEZ3r/YNdN8GMRQBBU1h8mxNu06iF/mEL5MienwnGGbKu0+0HewE1gNqjKCkpd+i
+	B/gv6dnp1KQVVVVlMLqEoaSTTfN8wu4=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d98b54cf2so1690286a91.1
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 11:28:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780684079; x=1781288879; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Al0zDa4bN146O1R+FtGZtDttdy90kv7zGQH5evIcYPw=;
+        b=IKcoCuNsZESS5qpCJKXvTOczSvbe+0jXiEtMD93/0i8hGTfPpwh/eg6gWC+6OWQfqQ
+         yKrioz5W4nK6wII27khSHL9m8kNnL78F9LB3VayWT8caUxTAlPsn93M+zZGalcWS9yC/
+         Fu7oPdNPj5XqdHjyeRGA4liJ0t/9fg2UFU7KXClptIep/0NStIkhAYkpv6DnKtWhqA85
+         IedImGyBw2JNoPsMpGSZjk2NIy2PGUSepUnzamKywwJLncbu78Dvr01pM9rjtOMt3Xk9
+         /ZIB5kMuDCuidMxXkX+YwRQJ/s7TYEtRsv01RfsdKdUP4ZTurHxsKw8fZY4yJUw9VvF8
+         sP3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780684079; x=1781288879;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Al0zDa4bN146O1R+FtGZtDttdy90kv7zGQH5evIcYPw=;
+        b=M/cA60QHh6RVVspiDwd5yv5X6DvStSRZ2Scrl3bJKxSPONpdFZ7o4NDrjQFHOAh48J
+         XPhZo+sjMNmlwpXIJXjc3f6I3a5IZwMt3oQ/QIFKY5mdjUHxU4N2c/OOpbxIC156w81V
+         5wIbP1porW+jpZQ5d187fl7IbUSHr6fvU12j26dnKlQPgRY0/uqZQJRWTmlluenshgHI
+         wJPcbyALhFyRKbjSgqJI53DYiHeohwYVznqm0Q+K/g0n2gAOnfXPuL8EjqDAOodZqQRG
+         zAFzpQ4tVfG+QJzLlFYtqdSEHip96x3e6HM9FzOyjbfGP71NhZ13mTfwdtX+rj4+kqZg
+         yAPw==
+X-Forwarded-Encrypted: i=1; AFNElJ9ADo9Ksix/s3SsILpLG6B5TZP2WteQ22qulY5FXf2KoqubHEOY7bPwHjFVER0xl0el9XmRGIAvQA==@kvack.org
+X-Gm-Message-State: AOJu0YxcKOJBmzMtlH23Qtkx6UOshIkjTBuIPbVD8XS3zqF1hVHp9W15
+	Pz93ro0mCuIgKSpqsGU/1yaX4p0s9X8STi1wGVmjDqrSlMRf2Wkyb53Qw55TQJ//JaExMbEXt0Q
+	nQNGaEA==
+X-Received: from pfwp41.prod.google.com ([2002:a05:6a00:26e9:b0:842:5fa6:3103])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5210:b0:36a:1ed8:6fe6
+ with SMTP id 98e67ed59e1d1-370f0b58cefmr4684526a91.24.1780684078907; Fri, 05
+ Jun 2026 11:27:58 -0700 (PDT)
+Date: Fri, 5 Jun 2026 11:27:58 -0700
+In-Reply-To: <CAEvNRgHz5GDjq0GqRmpQdHc-X45gCNr39VYWZH-T7XhPEtN5CQ@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <CAEvNRgGpaggjd3=ooyzv7iEbmA-x1mWJHgjLSjPi8=5CPrk-yQ@mail.gmail.com>
+ <aiHeDZEPkAcWcSkn@google.com> <CAEvNRgHz5GDjq0GqRmpQdHc-X45gCNr39VYWZH-T7XhPEtN5CQ@mail.gmail.com>
+Message-ID: <aiMVLtblIKu1DQWJ@google.com>
+Subject: Re: [PATCH v7 00/42] guest_memfd: In-place conversion support
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: 760D980006
+X-Stat-Signature: u9jii9h44i5juobgs5ccutryhwe6ww4y
 X-Rspam-User: 
-X-Stat-Signature: ad9qj6johtag6iqm16fj6etiskzogb1n
-X-HE-Tag: 1780683918-846916
-X-HE-Meta: U2FsdGVkX18H+Pq4o/a+eyVYJCUb5eZRdASWrhgsiC65Izo1BLAwNwrsLhlQwKnVaMH/j8nNcnIOg/gTmpD3y/sXa4vfh7zuIvHpo4QtKXL7floqwJI3lVbgQXrvlV4zvvIMjUK0Maghf2MJVtG4JrIBTjitO9+LH+DeUvDMifEtxwaub/Hlhq0nNGbAq2G6zufyYjjpJgG3rIDAxjvGAogXYqJs3yOdrkKdjSk4luYLyYiujsu5OTyKu37z2Vl/dp987vi4TERVpQAC1AJTx6vBddy2KPIW0PltMLMrHSG3vrv5IK+WVBXDJVNys/9Xhz4eP4tzsq5+6zLOqPxn/w0RJFgZRrRzPf3jKRamLLnBBokjToB67/+/jAarbayengC77tJqTDxiegkQz2omtfzFQa+2llkeLLi2CC4GYM2yG6N3KX7OOt0RvZmqNFVgFcsMa0LX1hLw3MfKs0c3jgpkKOPIc6sjiKd5B2KSO35jMnUhX25kqpliMUwjVU5iT4cUUrmtnKDqFTpXWu9uNPB3PKZM5sOQSajsU9sM+HtXTAf71awgD6MLub/p7BTtN7suZiphOWwMct9SWY4uiruRicadYoUTR69XjRoBFf+5lB2nR8NPUc+SuwAnl36Vf2GlAyoYgYvR0h4eEBbdIwN19+NFfRUi90SZY+DvooUV50CqsnDtOxDiQc3E17SVzvSS0Mbc6+OaT92l1z6UeaBNCWsyVh4INipv9rg7PxA4lp882Zh+pGJnOK8AvYutTe1gNQhkPTaWp3dNF0OQAGGuNL+xJpWjG0QcPDqPIAcTkIcBxSFZyxiEET5YU+0IZXtQrQ3b6rSkDycUXXzuXDECWTqP/+pb7u9bxyOsypaFjl97GhDLvA7NY+UF/izdd0osUHBamgg8CNmSqPIBYEG4VV2NzK1TvnUD6Z8bKxgdA6bG9ATPDYCU32CATIxY7AipuFgkILU867FlWM/
- yDevij11
- /jqN+nD/AO5jaKZ7sD6F7tV67+BQ4U9ScgoSEf2dlwz1Rn11L5uQSj+DZwe5oN0rZ1MwTFrNsVdV8WcwAY5Aue5WbnvwDrdkUid7H+c55jrc4wEAGpsOm9xnWA22F/u6vuK3pCGCYwTDCC1Pxj4k8/zVWZhWIgncUrXFzaXvzhI2Q6/5OfR/P1Tx6LNlhbvpBdpP0vRs711UPmr2V6qEJupxwsJUA8VvNfb9tIzmDjaBMiLSbjsFWH6qIaS2dNgcrfos256cy/OJLGzJsRgwPz1fFKJStYBzEWZ3DNV+WAkevYiFR6ap5WQBuTUjPpSwfkumFYDRF/6LbGAQi7JK3rxpdsgCh7pqD8v6osX9Ap7WhQ1dQUaDevNcSm6S6Q8dVdxNv9OYtX9S7vAPid+MvAhslTXAmCfvk0AI0OcSW5b0XeT8QtF/KrZk0SyYGSEOhPfV6Dh+8RDrP068AWtCBH5lzg6exufUqpDeYjYhKgAEHDcN6C9e+0mUCYcKFlZOioKOQBZmR6A3Ek51FDQ7U1gM2CwuCQ2uDXp5MPOL8ySelNMLuHS3ShpSiDNo7/PvhETYbTKU7y16x0mXlWd3yKEeMHYEYrecXwNQAKWwAzuYg/ohkBuASGcAdN25XBbr5oU5RHJrqhkSmZvV/U2cY/tQcepJxZ3V85t3MHjvF/fOdJV+xeH/BaSdoauKcFqZwIMWgqPX4m9Z7ZIbBs389zqxhgj8QVDIPEgo4ThpwtXQ4yvkx8TKn150xj3RfjbWlBdksdU8TrWafwKeKt4QEzROMtjzw0VtHlKu+
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780684080-496445
+X-HE-Meta: U2FsdGVkX19e5XE/S5MKBlNdixvGNpCd7jA2hsdBAdkoiMYRVnSU4YjjaEiVFMQ+DSmGdtYyREj5VcbJE0AgpwksfFp3/WeBfDMtd9ecxCWGJCSN0+LLKDjzUaiQCC6iuQjnGDEHTODlUNkOwEchBG6tqsgXOG5QlX6Mv4OpYssfcOMoCwx+uNcQGYJeubbO+2uAYR6NFD2U3MuerHK8hxgvKw65CzimSgLR3pGkT+9ZoFk9F/aJFkoiN/DvVHrJtY/YbsVJh1oC//Ttv7auoQKvdWJO87btPXhbB32EjTI406A924R4Ufu/mOuC1I8nhaiRfJYWoU4l3duf5UlS8jgs4ZO9W4Xo8mozzGbdyW9vv4WcUovJjgZ8KRYRH3fe1jjXe7mIVVHBYXopkXwlRwmelYy9BPZWyNuG2bK7V52ZSMjfdBlhMEEj/rZIonhS+Xx5sHlsIm4dvtRSGMJcjRMLfj3fmphIGUJWflkwD6Dt2nd68u9cHxcrcZ3bL1xTxD4PXYY7vjv3XRg8bZPMcbV9HjWzS9ePV22Xl+w8weu5Y2+93xQuwCHuy7P40d1OkvQWXEK4CZKxlWswo9p9B8nB3hzMWpn8oc1vXDHt7DEWvCT0r8kGVQN384Qrxbx5tufnVU4AR5Vr4mYyVEvLsgzU2Otj7OIiWExt1bgsFWAc08TWAx2YQAK/AXJ2kdh04/KLEQmHBtDGgovP1q/47sytW/eU0MKYqesBpTE9BcuQwtULNE2zULOuSeB88EayeQgWtYz1RKB8fWXELchUfeycO3ZZ0UmiJu2QNTuQYoVZsMPCG3oWp9/dMGr4m9kVAOzYZDEaEAYceb/tlu6cKydSggTRe5pONYpUd1KpgFzKuxkA3AKvWyyTCStpGThrR83+A1I09CO/7Z40qKSN7CBff8wRPzyQ0vU+dioolkNehh/2R09KlIBUeWhzucataNFPTefQR+L7ltq4HzW
+ N/j7qHYD
+ ptCgB1jPjrPN749X5+aJnBLISks2rV6hPb13VBwxKHI34tbdpzOe58e1WirsOxlew1WDjS/xHR0y5YgxdzT+GIvg/ZgblANGvgmBTx1NqcYf/0rEWut1rYr/vGRan+dcM8gja7S907+k1GFVKPaNkXY5w9xFskdiFVHWY2KVgKT++mWGQH0/3Nc2YAb6fiN8J1pkbA1cALtufsaq2qHfAEy1agEu0gN3uLYIH9YBRixMy5+Pt3jU7XJOYOickL4J2YoriuXxtBwhUs0apoWz+tN95bO6iutw4XV+VbnsSkDmkWaXCaqSC3xafvMNzQ9k15umsJJ6JZHIRkd3WRw0P9oFtNNGqhnJYD3wYiCy7wc0nchsDC+PIcREJ7g85hacWJ4/zI5xOvKu+vE9oWWIQTXHeXC/SbW0+RR4FEHMC2+AT6Efklw0Y6uw7+rnZXu860/moBfzjYS+eNu+7LOq8gT6qxMEW6d7c1J5bRkuMo1FOy2dRzcDYrCrm+L2Ak5Ugbb3Dd+PHD1bouBr6LHAVa0+8ypaLlSzLqu78UVboVgbPP8G+bl0zlkAOrtCyoNogT6OTyIZeXJSZG+Rbv52JiHzc7WkM8wkxqipfeD+M/sx+Lsom4IPwdU6ez/g14aVGuOSXhMuo3/1dkAuoKdRq7TrvZhmVQ0r7DzT+vZkVgnaiD2cvgjdLzo04DU/kpqU1oIemeIBa213unIXqDcj+laBwXhpdwqMeu7+xIbmr1AvTVvoyUbzTT+gZihEfOqX+oR/n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,114 +132,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-05/06/26 21:09, Zi Yan wrote:
-> On 5 Jun 2026, at 13:26, Alexandra Diupina wrote:
->
->> From: Jinjiang Tu <tujinjiang@huawei.com>
->>
->> commit 397f6d14f9c370e4910e6885294c340f39dedbf5 upstream.
->>
->> In do_migrate_range(), the hwpoisoned folio may be large folio, which
->> can't be handled by unmap_poisoned_folio().
->>
->> I can reproduce this issue in qemu after adding delay in memory_failure()
->>
->> BUG: kernel NULL pointer dereference, address: 0000000000000000
->> Workqueue: kacpi_hotplug acpi_hotplug_work_fn
->> RIP: 0010:try_to_unmap_one+0x16a/0xfc0
->>    <TASK>
->>    rmap_walk_anon+0xda/0x1f0
->>    try_to_unmap+0x78/0x80
->>    ? __pfx_try_to_unmap_one+0x10/0x10
->>    ? __pfx_folio_not_mapped+0x10/0x10
->>    ? __pfx_folio_lock_anon_vma_read+0x10/0x10
->>    unmap_poisoned_folio+0x60/0x140
->>    do_migrate_range+0x4d1/0x600
->>    ? slab_memory_callback+0x6a/0x190
->>    ? notifier_call_chain+0x56/0xb0
->>    offline_pages+0x3e6/0x460
->>    memory_subsys_offline+0x130/0x1f0
->>    device_offline+0xba/0x110
->>    acpi_bus_offline+0xb7/0x130
->>    acpi_scan_hot_remove+0x77/0x290
->>    acpi_device_hotplug+0x1e0/0x240
->>    acpi_hotplug_work_fn+0x1a/0x30
->>    process_one_work+0x186/0x340
->>
->> Besides, do_migrate_range() may be called between memory_failure set
->> hwpoison flag and isolate the folio from lru, so remove WARN_ON(). In other
->> places, unmap_poisoned_folio() is called when the folio is isolated, obey
->> it in do_migrate_range() too.
->>
->> [david@redhat.com: don't abort offlining, fixed typo, add comment]
->> Link: https://lkml.kernel.org/r/3c214dff-9649-4015-840f-10de0e03ebe4@redhat.com
->> Fixes: b15c87263a69 ("hwpoison, memory_hotplug: allow hwpoisoned pages to be offlined")
->> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> Acked-by: Zi Yan <ziy@nvidia.com>
->> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
->> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
->> Cc: Luis Chamberalin <mcgrof@kernel.org>
->> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
->> Cc: Michal Hocko <mhocko@kernel.org>
->> Cc: Oscar Salvador <osalvador@suse.de>
->> Cc: Pankaj Raghav <kernel@pankajraghav.com>
->> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
->> [ Alexandra: replace continue with put_folio label ]
->> Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
->> ---
->>   mm/memory_hotplug.c | 13 ++++++++++---
->>   1 file changed, 10 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->> index c8cc2f63c3ea..013db41f6ce2 100644
->> --- a/mm/memory_hotplug.c
->> +++ b/mm/memory_hotplug.c
->> @@ -1654,15 +1654,21 @@ do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
->>   		 * the unmap as the catch all safety net).
->>   		 */
->>   		if (PageHWPoison(page)) {
->> -			if (WARN_ON(folio_test_lru(folio)))
->> -				folio_isolate_lru(folio);
->> +			/*
->> +			 * unmap_poisoned_folio() cannot handle large folios
->> +			 * in all cases yet.
->> +			 */
->> +			if (folio_test_large(folio) && !folio_test_hugetlb(folio))
->> +				goto put_folio;
->> +			if (folio_test_lru(folio) && !folio_isolate_lru(folio))
->> +				goto put_folio;
->>   			if (folio_mapped(folio)) {
->>   				folio_lock(folio);
->>   				try_to_unmap(folio, TTU_IGNORE_MLOCK);
->>   				folio_unlock(folio);
->>   			}
->>
->> -			continue;
->> +			goto put_folio;
->>   		}
->>
->>   		if (!get_page_unless_zero(page))
->> @@ -1687,6 +1693,7 @@ do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
->>   				dump_page(page, "isolation failed");
->>   			}
->>   		}
->> +put_folio:
->>   		put_page(page);
->>   	}
->>   	if (!list_empty(&source)) {
->> -- 
->> 2.30.2
-> I am not sure this is right.
->
-> The original patch uses put_folio, because folio_try_get() is called
-> before this if block. But for 6.1, get_page_unless_zero() is called
-> after this if block, so the page in this if block has no elevated
-> refcount compared to the original patch context. You might want to
-> replace “goto put_folio” with “continue” in the original patch instead.
->
-> Best Regards,
-> Yan, Zi
-Thanks for the comments,
-I'll send the second version of the patch
+On Thu, Jun 04, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> >> + KVM: selftests: Test conversion with elevated page refcount
+> >>     + Askar pointed out that soon vmsplice may not pin pages. Should I
+> >>       pin pages through CONFIG_GUP_TEST like in [2]? I prefer not to
+> >>       take a dependency on CONFIG_GUP_TEST.
+> >
+> > I'm not exactly excited about taking a dependency on CONFIG_GUP_TEST either, but
+> > it probably is the least awful choice.  E.g. KVM also pins pages is certain flows,
+> > but we're _also_ actively working to remove the need to pin.
+> >
+> > Hmm, maybe IORING_REGISTER_PBUF_RING?  AFAICT, it's almost literally a "pin user
+> > memory" syscall.
+> >
+> 
+> Hmm that takes a dependency on io_uring, which isn't always compiled
+> in. Between CONFIG_IO_URING and CONFIG_GUP_TEST, I'd rather
+> CONFIG_GUP_TEST.
+
+Or try both?  If it's not a ridiculous amount of work.
 
