@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3806CD6E7B
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 08:43:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DA03CD6E6B
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 08:43:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EDFE6B008C; Fri,  5 Jun 2026 04:43:19 -0400 (EDT)
+	id BB1976B0092; Fri,  5 Jun 2026 04:43:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19E496B0092; Fri,  5 Jun 2026 04:43:19 -0400 (EDT)
+	id B61D46B0095; Fri,  5 Jun 2026 04:43:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B3B36B0093; Fri,  5 Jun 2026 04:43:19 -0400 (EDT)
+	id A4E906B0092; Fri,  5 Jun 2026 04:43:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E9EF56B008C
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 04:43:18 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B50D7A0B12
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:43:18 +0000 (UTC)
-X-FDA: 84845219676.09.1614BB3
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DCBFC16000D
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:43:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IM2UpROY;
-	spf=pass (imf08.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 8EE0B6B0092
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 04:43:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6919AA06BD
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:43:22 +0000 (UTC)
+X-FDA: 84845219844.22.32B5E9E
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 87358180006
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:43:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BnOIKdBK;
+	spf=pass (imf06.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780649000;
+	b=U+Jg1eQWDaK4/51pYhVVFf1ITg65piTCreChLkhhT8/2cQFoCw+vmiz+ValJ/KAC6mXtTX
+	flCWQ/w0/jIyqO01h4uKqPZg8SBuKYRajbmQngUj15ib967MLJT26ZrHEcU74eg435YhSn
+	jpZ5Z7CScp6WYWHc7nIj7Xbb14wiiGM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BnOIKdBK;
+	spf=pass (imf06.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780648996;
+	s=arc-20220608; t=1780649000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n185DjbA+W+3OzU5ke/OSZXijWXnafvOkeAJL8VmlKA=;
-	b=8hgE7t12PAZwua6c5lfibZAYt8uzmq2YmIuJbmvnFa1ZtewgkVst+yrehF45Wis1AL4SPv
-	HP2lM1ft2NeNSTDby+QnMHrV/b9R06ztKDXzrjoEvG3RLAkCR3bp0znRMORZ6yAfi+4GSW
-	cG88wzFAaRJVFruZV0VSxDGCAiTvEmM=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IM2UpROY;
-	spf=pass (imf08.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780648996;
-	b=mE/1LrB/4rcHToYBQclRQnifIbSVmjdNPNWTJItdP9jF3V1dAWygcV0nOBcouwYOzUelZ9
-	Pb/irpKifYt1G9V/HUSE2JQ8f6NGG3V9cMUmaS6+KKtSlGszlFDq5EaUmPd6ZSOylvyUki
-	RC8NyfzoDgzYKl3RdROgA/P5G5QdIfo=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-36d9794d82aso1182434a91.0
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 01:43:16 -0700 (PDT)
+	bh=J5brAHyiBTWKYNL/XpyaHSOnMQ5/iB4MkIc268tnFsk=;
+	b=8JmPo/Qk+Me5WoICkjbMuu+63iytp5G9seqcjE+wUgJQCO/OsPifnrVXZjWk5xdz4oJx2C
+	RbTyi/ycNcIhs0VTQzRAiFDuQVZ4N9wIJbxNwE9x2j5rohtpMBhi/YWzH3Hw2tkUPdYzD6
+	DsByCS2ZQJ6Rgt7evJLSqLX/l6hBC9I=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36bba9a1089so1087380a91.3
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 01:43:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780648996; x=1781253796; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780648999; x=1781253799; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n185DjbA+W+3OzU5ke/OSZXijWXnafvOkeAJL8VmlKA=;
-        b=IM2UpROYjoE20uCkNnFE9vPBuwtRrqhDCQlA63ua7wEvGr3nekLKilg0pKYcZISOos
-         e9yX54GPZyorJZtzS9L/d6PcbNrz70zVk4tcM7e1hE8NW2vHMddC4gNBM7vGmr5htKlc
-         MtsVPQlNByrcTn7sSi0vL1Cw4kgXJLiqnFXwdHg6PNnVV9nYbpRJS92I4C5DKhJ4T7LX
-         LI07dZqKiO30QFAcZm1Sp/EjIL4hO0pGEfq5vAfH5FJsgUxEq4hKyNop0ZHnyibIiuRK
-         ipnGd0HPUnWA2197x8jru5ltpvKjll+0wUGN1HJqNfSpqVuFwqp/ehRh6dWeKfPvarzF
-         8g7w==
+        bh=J5brAHyiBTWKYNL/XpyaHSOnMQ5/iB4MkIc268tnFsk=;
+        b=BnOIKdBKjlpY7p/pIJ/q5YQmthlR7RNY9FoWFfvsViEi3zlxkDz2f/k5a5W4eeTC3f
+         KZgJI9/nQ53je4LoU5oxxuiGgvx+OhmcLDx9WKv1BtVskUaZl8RcftURyKnLOoQCk3hg
+         4MKYgrWJHeBM7E5yU6NxXbosFZvcgACBAwo7VVCvShKVjfJ7S8s9cjoPvN2wl+4FTPiQ
+         NdLdhhQRZ992eciZpoeSPWtezwS1vN5D+t17Hl3b9pmqz1Y8BaU10XvCm/jgmogp/jx0
+         KjjTzN9AY1wLI/mxLmFu0fWkyg7eKuoIYe/K9ajaoPamzxDGcWqXRfWnvDeauJ2Q9BKp
+         MBNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780648996; x=1781253796;
+        d=1e100.net; s=20251104; t=1780648999; x=1781253799;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=n185DjbA+W+3OzU5ke/OSZXijWXnafvOkeAJL8VmlKA=;
-        b=dhq9OUnevnXnvEEDREt/qu76KJ9SuL9+O7A+GaKl0qVv2UsyYzUME0uu1k48FyFkmR
-         zlVc9V204f6Lit+kFIYPy3KprLAmDrdwRBbWujg33p7+1kcOsCSL90tYGVd7KplM0MiN
-         fKF9Hst3ZC7TIfBR7xicIUPT4kCOsQDj6ApEAXJq0OAvJUCAh+0cKv0ucCgTXUe+Ss5U
-         cM0nGZU6/drvz+thxnRQZx0vfIbm9Y/RPeo8C6MGdOAD/YhgvA+JDcN3j9Ai3FKHzBHS
-         vOMXS5UR/Uvg25iKc1fh/ywPOyyytL2k5tLxQhCadkndPd/BHTwsn2kydVWe7aKWV22O
-         CIGg==
-X-Forwarded-Encrypted: i=1; AFNElJ/BTlKPc22ZOVADGIBDdGZJkgtmvRrh02pd8LvfmSS6D2CCcSsdeSHj5UnIxshCj8l8F+nJroAX+w==@kvack.org
-X-Gm-Message-State: AOJu0YyWpvfQ/+wIR7DaYlLHDkpuKm2uZFLdCJK1khDx0P9U7cuwBZp7
-	tPWir2eVW13Pdd6xeFKf88QDlRH5l5xGZUh9ffoRa569vzcgmhrnROQ/
-X-Gm-Gg: Acq92OE5JtOhDJpDV6CZt8yO4Thh0fi/3cha79hL7iEorSoC/kiCMqHnv7/AA0/i1vP
-	w37nYBdZ7iC1hrHx71Q8N7LjInvyc+9b+On7UHhU9vc1atFxJOLnighPMD8/ef690aGG0/Lsilh
-	3/Bq/jJ1fUenRrCLGkJsULXR8M9jyYIJfpm6iI8aehvRCFS7qa7T3qlgOjI+JIuYGAK21GIDLV4
-	s4hjrL6LHQKOnUuRtpXkIueTYWRY92BYA/J9dk5or/7LLBORhEoovGDFDZs2uN8f6QPqqisFsct
-	ezLHOKg2j260J95zWjkqsnu1/yLCw3hYnAvsQ4wAm4sisIEsA0VMCUi3amI/ShQvG6mL6Iz15MQ
-	rnCO6aPjtE6dLE5ZjHFm+5uyt7qYYfaDChXYOF5pzaFi+5+TLM+q5CUmaaOGjk2+wo4zr2SvM09
-	zrFQK8SsrUpQIcRL1T4SRtOmM17+36dg/vTbzL6g0YWfNzm6uzBA==
-X-Received: by 2002:a17:90b:57c4:b0:35f:b647:d98a with SMTP id 98e67ed59e1d1-370ee64373dmr2739847a91.5.1780648995812;
-        Fri, 05 Jun 2026 01:43:15 -0700 (PDT)
+        bh=J5brAHyiBTWKYNL/XpyaHSOnMQ5/iB4MkIc268tnFsk=;
+        b=I2nFFlhTbN3HJJIim/TcuwA/oj4Ir3tW4W/HhKwmOv0PqKMqmlxK3TLTlAhXzgecMp
+         SBDdsRm4el8A7m+gAcXRTXm5fKq1bHca8kdUtBbdG1m8HvrpNH3OEOnquJ/0jF/GSD/b
+         LUthWwo6ORSFKyqYMazWb2zl1Q9iVwoIK9ScRJ0nGNYCAaGRgULTyM53gbkXsn4NG2Or
+         pgndAoFOqg/Ns3kUCRs9RrL/KVejaf/9N8VzpQGodFPvoBs1AviZnItb8PdqairaHG9u
+         PqmYgpKxNjj57L0jO4n6RFEaMY+0Y2Yi6DGmcchZFro0Ww44u+DcBehSzeQPlqo18lkK
+         LnJw==
+X-Forwarded-Encrypted: i=1; AFNElJ+btvfb7DSyhyAtR2L7SJvGmeGHExSJj22pWfIlr6BI5VWjekEi8CqX2fWMdZNwOe6IB0ACLCCLRQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx/VPSFXH8ymHuY6ORq/OePGq6IAzglN3Y/cZP8R3lPYlImebMX
+	7z93L1abSEvSoHbjm+dnvEuL7J9mf6Z1AhISVMMdQPTFL2cd03aJRnbV
+X-Gm-Gg: Acq92OG1kfJNPIGRv/ckNGc1M8VEFP3ThOCTTLRf5fhCR7QVZy8BdiEhqNzKndfNqvs
+	MMyDcpJcXdSxyzgyN+Du77Aj4obXwNuK9uOn+4GYRECPxlQhj8LOTw3WlJ9tTwyKjOUfSImurCV
+	BorbAQ44QqWkFI+krtC81I6EZoWD5FJBXCAiAjycJuy0W042Ekd3E414Gw6HZKvwZb/QHMRPrdj
+	ygHdZ6Ais4IA+ZU7swqRCfN4TSuzrqbRrUPALXxUw8n2g+/7mfuNyX2NOfXPWiUtBxdjcC7BgbS
+	CXXPiSphtnu3t+4AHHLjJ84L7TaAy/bp26pVo3I6CKOJd7IzTY0JrOWoG8ZSJmAw2RvO0cxEw6o
+	wK0LttvAMgVrlb/+mTtjxQj+I9/aaqOU9ZGEQx3Uf25pp0dOeJHNLKiVixBUXyeoOAVyII7dELq
+	ZVpg4IFoCOu4+XD0ITy5S9yCzikwBtgGcti9PU9bCcQ1dmK4FpMQ==
+X-Received: by 2002:a17:90b:3a8d:b0:365:a5f6:4a5c with SMTP id 98e67ed59e1d1-370ee5448f4mr2558375a91.1.1780648999316;
+        Fri, 05 Jun 2026 01:43:19 -0700 (PDT)
 Received: from ubuntu22.mioffice.cn ([43.224.245.232])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3712fcb2607sm926632a91.0.2026.06.05.01.43.12
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3712fcb2607sm926632a91.0.2026.06.05.01.43.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 01:43:15 -0700 (PDT)
+        Fri, 05 Jun 2026 01:43:18 -0700 (PDT)
 From: Wenchao Hao <haowenchao22@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
@@ -99,24 +99,23 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: Nhat Pham <nphamcs@gmail.com>,
 	Joshua Hahn <joshua.hahnjy@gmail.com>,
 	Barry Song <baohua@kernel.org>,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>,
 	Wenchao Hao <haowenchao@xiaomi.com>
-Subject: [PATCH v3 3/4] mm/zsmalloc: drop class lock before freeing zspage
-Date: Fri,  5 Jun 2026 16:42:41 +0800
-Message-Id: <20260605084242.1549811-4-haowenchao22@gmail.com>
+Subject: [PATCH v3 4/4] mm/zsmalloc: document free_zspage helper variants
+Date: Fri,  5 Jun 2026 16:42:42 +0800
+Message-Id: <20260605084242.1549811-5-haowenchao22@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260605084242.1549811-1-haowenchao22@gmail.com>
 References: <20260605084242.1549811-1-haowenchao22@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DCBFC16000D
-X-Stat-Signature: ohozhkth3yyuum6ft8ms73rnrduq6s1s
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 87358180006
 X-Rspam-User: 
-X-HE-Tag: 1780648996-41556
-X-HE-Meta: U2FsdGVkX1+Cf+p3VpYDGXsfmtpw250u1y7PIuE5uNVNso2DkjCSE+NtyUb3R1yy+6qOiEQqZa97hMLMEzC/LyuvFHx2qShDwZQtazgwAP1VM5u4P2Q72S7EouE/WBgl3vgREPpzgf4aMUKPhHTXUex7D+OQc0RaXOoCS2RmG7m5glS6kE7CwAOvCwe2I131C7gre+pJQ2h2HXI00aHGf4n6gExWB2tr07Yb1/+MyxCO1shBzcgwKEi6v/bax4eKhN4vZUUI8MYniYiBBp4opzwFPmVUNiTHe4xl+QHWdnAnEUIOFTS4DeNChlTZGiP24YzSJVWM0jpIR5M4m2TBVnY2M04RUzzi5OxnbJHdxql8m2h6/oSRrGrvCe/jKamIOzms9yvU0jNCdbmIzAMg8PuggS/AgfjFrzdjMLkFx9jou/vmiqFZApY5vtgvcra+2MOFA3OSmeBLPvOErjCaawo9V+NbbPECHVTaq+NMPAV6mcWs6V3SC41qp4dQTPbCY/5gXSoABcZqkq2D7nkiQZOFZuyjaNDzTXhAFgjwVRkTqkPHRWbQVsXJL62Qu4+fl9LId/rqDGI5FEFbLLKmnCy9wzVZsMnqKw3d/P89IhyeVArwMWcU1qdO6Tis46lCxILw9iU1GiW7ipdGAYDQk3GrQXZy+FvnyoIzYwYQccMW5yq8NmjvtVwHIR9OPimgHryY+fQG09bqhPJ1zSyTfJMPt7zY6z7KT2jEbnuHEgRM+nBNiKHcnk/2yOWpsbxI7CZife+yU9RM8oIVrVwA7UVioKfF4q5iB8vVs8EamdTRkw6XqfR5X05ohqqXiViNYPCkxkPJD8kiBZ5nRU25zWKBHOA/nszy3evLGOdIlI3MtHJgFrHLNc8uxDxj7wESu5N+K7V07Xw8UM3iFeGopHAduQ1sATPL7nveBU1pcSoX4tYheoKrSzncGbynY+32J/Ya0fUbWDZOFLC1OGy
- 7UV70/1X
- bjQMMTDHHj1R3rybTrLY0jd84b8lWFc3vW6+ya/tgike6dee7kve115oRObxJo13Uc+5VtQn/74iKOuOjsPA/SktmHTUZoTbeuW85il5iuypnwV+B89QLp3exAVTSuf8DlreHMmPyHVwuXxBBcbu1WAgu8JfcYiujhmT44SzQPQJIWQWUI9dLqMROqPm1PqgPdeOz3g96vJIWI3VCUYdHWneA9QKe9rN+jrwgoyO1woIIN8XADTxWmJFIcPkU5gYfNybHehk7OwR42oly0/5wYfUmeN0WmD6tfqopzfL2HvBRtz83EQPU/CPpMJPUIuw1HY2vfpJhKw46BQJmGvCxGMqh/GNGfKTiqoq157e0b9iKXy8VFeglqJxLsnsNoW5J07cZF0MmgN8OQnSSyr4/EiOdk1yaCdwDYID/EbPQxre/W5Mt2s5A8tKE/iRjpRUhxRzgx//bSFnPNxypPSfyTk35vJEDSbl9031d9xBI0mBexbISrwfkVt1aRsmkQp/PoyEx
+X-Stat-Signature: jntjawpd3qnouq7riot1cmpxtj3qpxwr
+X-HE-Tag: 1780649000-491881
+X-HE-Meta: U2FsdGVkX1+DLpztf14gO0hdcBNtx6Z4671Ld6SC17jtn4GTdMVZdQz6bbbsfcZ+IdiUPQv1ICuLONknZy4tFQpxw3dUNM8VqpQxyn0YclKqsMwlLuB5DRrWy2v76KVJGpHSt03tMtdeGsokCBkbhRSXdjoC16QS8vLLTbapKyPsAjLByUKgkf0exjj6+CpZVE91055gjDjH/FCuQEkB1NJhl0b5Cv3Uun2MOK91MkZSJ1IKikjdNgK/dKZ/wLEQXSzMTjyB2F518iCDYE1yZ4jrjE/+mgojgrZ8JOYv0RlqRecMAlOgqB0cHUX/GGIjTIVMshMGUBXXWVCwJllWsIS840fckzr7QexrjYk44zQQbmv7Iff/X0ONYwuVoJHMlqrrYROgzAZVBS7k4V/oJVfvSde2vvquhdM3PGZOTc/CcJUh+obkdta8BBnZmEvNvN1hylu1mO9et+tXJaQms0tXRD7vcp8qB0nVD7c9JvdLVpsqya06QtY4Bn1e0UZBIeii95W3PYOLBeQX/L4VG5KIkTZIgfQHpHxIuaI0HW6IjmH4SWfmHjQzu+4GBejP8vFUVRdK3FblQvuzBc9EIfkbcjHBzcSRFic19oQhBregLd1UwS+KV3lAqnB1B9dvm/pu2Loi51CYZnkaSg7kOqOhl7Rtks8Yn6FivoW3Z4asGe2IGVBnoghVbEI0e+X9mrf3N3bDh0XyxteWwasOMgQirRNbppxdPk8HdXtoVLkA+OIvIl8AitaqLJSMAnPmc4C2wzfKaS0iADMo2vFra0Rh/VKIsKnjtyvDIF1f9bqXVTJtWhvK6bH/7O77Sjbqvhb4XgjVdO/GvgmexqyIbJbfeVGaADk2jLf/J3OFIKISIPwuX0t4De4Wz64GnacN9o1V8xm885vG9QZH2siOOjtB+JsV7F4wrOCmZlxK24vcjXs0LSo+eys/Tfa647ghs7kkIEsMmpy/q3h/nyX
+ 3XH+080k
+ xjbLWPcxpIiWdpwh4BWa8LrtScy/tXwCvop1pWCzG2oIQovxtyJLQlnVr0mendH2WZUKlEuUfsTJM37rfGmsxis7kHH9scCZTkowfxc/4ugzdmR+BKdhMe05Df0pdp5JCD6bHmxXqJUprpGfa/+4EzE5fHXy59p5a/KjL4qvq7hT1yLMCaVLYNZ41OVEXnU4nreNIxGGQlOAu9d5le6HBzxfJbuQDay2RRGF0b2k+AxFioLF19/Dk3J2AnrQt/23crtNwQLvCZxDRoGQAd3fFfLDzlA9KoZDmBpp4tEvFdLDpfe5qPbQMbbGtB9RgGBNDj4dkDG18+M3VLhNemD7uDjE6KlbnuS4brLJJfP12UmfcgMeEbz+kDexhYirrvscgrgnZnWzj/nbrcCz6l4/FhFQi95B/mWWbZ+Sqr/xqrfNYhz6caM6EFvSGhAvJntUpzD0NIOrNSFHDG344A+i7PCam/Jfv5urf7wPP+ikW5jAsopNhoc72NB+Iowgr96tv0h3fKK/3qGS3u+86PjfvQya/t1jU9gMy3nh6iDI3X+6CuLGpyu8GdcSodw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,99 +123,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+From: Wenchao Hao <haowenchao@xiaomi.com>
 
-Currently in zs_free(), the class->lock is held until the zspage is
-completely freed and the counters are updated. However, freeing pages
-back to the buddy allocator requires acquiring the zone lock.
+After splitting __free_zspage() into a lockless core and a wrapper that
+does the class-stat bookkeeping, three similarly-named helpers coexist:
+free_zspage / __free_zspage / __free_zspage_lockless.
 
-Under heavy memory pressure, zone lock contention can be severe. When
-this happens, the CPU holding the class->lock will stall waiting for
-the zone lock, thereby blocking all other CPUs attempting to acquire
-the same class->lock.
+Add a comment block above them describing what each does and where it
+is used, so the names are not easy to confuse.
 
-This patch shrinks the critical section of the class->lock to reduce
-lock contention. By moving the actual page freeing process outside the
-class->lock, we can improve the concurrency performance of zs_free().
+No functional change.
 
-Testing on the RADXA O6 platform shows that with 12 CPUs concurrently
-performing zs_free() operations, the execution time is reduced by 20%.
-
-Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Suggested-by: Nhat Pham <nphamcs@gmail.com>
 Signed-off-by: Wenchao Hao <haowenchao@xiaomi.com>
 ---
- mm/zsmalloc.c | 29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+ mm/zsmalloc.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 88d10f814da9..2ecdf79cea03 100644
+index 2ecdf79cea03..9f588b63ec0d 100644
 --- a/mm/zsmalloc.c
 +++ b/mm/zsmalloc.c
-@@ -856,13 +856,10 @@ static int trylock_zspage(struct zspage *zspage)
+@@ -856,6 +856,21 @@ static int trylock_zspage(struct zspage *zspage)
  	return 0;
  }
  
--static void __free_zspage(struct zs_pool *pool, struct size_class *class,
--				struct zspage *zspage)
-+static inline void __free_zspage_lockless(struct zs_pool *pool, struct zspage *zspage)
++/*
++ * Three free helpers, kept apart here:
++ *
++ * __free_zspage_lockless(): bare core; walks zpdescs and returns pages
++ *   to the buddy allocator.  Caller owns all zpdesc locks and has
++ *   removed the zspage from its class list.  Used by zs_free() outside
++ *   class->lock so the buddy-side work does not stall the class.
++ *
++ * __free_zspage(): __free_zspage_lockless() + per-class accounting,
++ *   under class->lock.  Used by async_free_zspage().
++ *
++ * free_zspage(): full wrapper - trylock zpdescs, remove from class
++ *   list, call __free_zspage(); kicks deferred free on contention.
++ *   Used by compaction.
++ */
+ static inline void __free_zspage_lockless(struct zs_pool *pool, struct zspage *zspage)
  {
  	struct zpdesc *zpdesc, *next;
- 
--	assert_spin_locked(&class->lock);
--
- 	VM_BUG_ON(get_zspage_inuse(zspage));
- 	VM_BUG_ON(zspage->fullness != ZS_INUSE_RATIO_0);
- 
-@@ -878,7 +875,13 @@ static void __free_zspage(struct zs_pool *pool, struct size_class *class,
- 	} while (zpdesc != NULL);
- 
- 	cache_free_zspage(zspage);
-+}
- 
-+static void __free_zspage(struct zs_pool *pool, struct size_class *class,
-+			  struct zspage *zspage)
-+{
-+	assert_spin_locked(&class->lock);
-+	__free_zspage_lockless(pool, zspage);
- 	class_stat_sub(class, ZS_OBJS_ALLOCATED, class->objs_per_zspage);
- 	atomic_long_sub(class->pages_per_zspage, &pool->pages_allocated);
- }
-@@ -1492,6 +1495,7 @@ void zs_free(struct zs_pool *pool, unsigned long handle)
- 	unsigned long obj;
- 	struct size_class *class;
- 	int fullness;
-+	struct zspage *zspage_to_free = NULL;
- 
- 	if (IS_ERR_OR_NULL((void *)handle))
- 		return;
-@@ -1502,10 +1506,23 @@ void zs_free(struct zs_pool *pool, unsigned long handle)
- 	obj_free(class->size, obj);
- 
- 	fullness = fix_fullness_group(class, zspage);
--	if (fullness == ZS_INUSE_RATIO_0)
--		free_zspage(pool, class, zspage);
-+	if (fullness == ZS_INUSE_RATIO_0) {
-+		if (trylock_zspage(zspage)) {
-+			remove_zspage(class, zspage);
-+			class_stat_sub(class, ZS_OBJS_ALLOCATED,
-+				       class->objs_per_zspage);
-+			zspage_to_free = zspage;
-+		} else {
-+			kick_deferred_free(pool);
-+		}
-+	}
- 
- 	spin_unlock(&class->lock);
-+
-+	if (zspage_to_free) {
-+		__free_zspage_lockless(pool, zspage_to_free);
-+		atomic_long_sub(class->pages_per_zspage, &pool->pages_allocated);
-+	}
- 	cache_free_handle(handle);
- }
- EXPORT_SYMBOL_GPL(zs_free);
 -- 
 2.34.1
 
