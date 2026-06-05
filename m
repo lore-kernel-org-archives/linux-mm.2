@@ -4,123 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C140CD6E7C
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 12:33:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4D19CD6E7D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 12:38:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 127C16B0095; Fri,  5 Jun 2026 08:33:47 -0400 (EDT)
+	id 4FF3A6B0005; Fri,  5 Jun 2026 08:38:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DA2B6B0098; Fri,  5 Jun 2026 08:33:47 -0400 (EDT)
+	id 4B0356B0088; Fri,  5 Jun 2026 08:38:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB8F26B0095; Fri,  5 Jun 2026 08:33:46 -0400 (EDT)
+	id 39F486B008A; Fri,  5 Jun 2026 08:38:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D63526B0095
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:33:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 92CB716444F
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:33:46 +0000 (UTC)
-X-FDA: 84845800452.18.0631838
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4BC7F4000A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:33:44 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gE6oLMBd;
-	spf=pass (imf11.hostedemail.com: domain of mszeredi@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mszeredi@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780662824;
-	b=ZbaUZC40EKxJUkqFBdEtBFMJwjaXhpNXaa6OESIpPli+abi4sfoJaGXnxkonwOcahR7XP0
-	ciZJfgbESPdEB/mv0sx4u8f1YQGmAoH0nxLpuyS6gV6vGoZLLkZyRL1pPKAWAJ2kqeIXHr
-	PFY4RPyvCodiW6U/RSCiURp+e+Yye5k=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gE6oLMBd;
-	spf=pass (imf11.hostedemail.com: domain of mszeredi@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mszeredi@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780662824;
+	by kanga.kvack.org (Postfix) with ESMTP id 2A1DA6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:38:11 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E509F1C2519
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:38:10 +0000 (UTC)
+X-FDA: 84845811540.02.317897C
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 858621C000A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:38:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=Ui7qEpxA;
+	spf=pass (imf20.hostedemail.com: domain of miklos@szeredi.hu designates 74.125.82.177 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780663089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rwkmnnyuqltjtn/dFDZqCg4EJ+RHFfRYdL7FyVhTeQk=;
-	b=k6SqVyI571BbJPsSmddkwABptFwb/pTh5AddwMPElCGWiCfCZNpKtvodxm+iIt3F0QdoaX
-	f9Bm1TcwOjcAfm7+rucefRosnveuivTCFMbvcSsxVPLCMhh+khGVtobXVc+vTfrUgeZYMQ
-	EpZCzrtUIr3K1BRnim5/HSqnU3pRpQM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780662823;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rwkmnnyuqltjtn/dFDZqCg4EJ+RHFfRYdL7FyVhTeQk=;
-	b=gE6oLMBdgUxqsO6KLh9GuY46hSciDKAnnxnpzTg8NSA0P/oqEAsY/gZnoh9jMjy6k3gqP4
-	cCtPUJB53fF3SfxUvM4bNU9FEn1ZM8mgfSE0rdOCjFl2YDFCzNzJNu3m+F54h4jQC9B8o8
-	Bv21rvoG5ZO9uIM2iE1IGcLitHPD+AY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-lLMr-O8kM5y4XGWJnKCbCQ-1; Fri, 05 Jun 2026 08:33:41 -0400
-X-MC-Unique: lLMr-O8kM5y4XGWJnKCbCQ-1
-X-Mimecast-MFC-AGG-ID: lLMr-O8kM5y4XGWJnKCbCQ_1780662820
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45ef697092fso1189680f8f.1
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 05:33:41 -0700 (PDT)
+	bh=jaIH6xUqz6qcuESYoZJL7a5QWsRjb8U7RVmYk0JRpxw=;
+	b=XpKxsMJrw1B8XnML8R2geXVc/PJlKwwrDbv5CxQkKKbQUjUd8hN62EsN0t65Doq/c0oyzr
+	nXIFpjlCca/ooDCJcPJUPmLh0vCTM0pHRz/biaCz4FDKhCJzIYc6dD20Czu0i1QYjbD3yc
+	Aat9BJT5OQGvIgBD4im8lnxyqMtfgGY=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780663089;
+	b=hyr1hSGuseZJoQ06oIg6VEW9ULp/aXEdZMyBdWfbb/xgRkRPoZknZC9YVs9yW9bz9sNUm1
+	Hwi8fcnrdBLFkNoBIFZhaKxSlOCMu1o21yEvdkuKfTfjrNsFhJ/dQzaBGdv4cBMbA5pwLn
+	/NrS0foFIRFfO3DEDuKndjVhC7lZQZY=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=Ui7qEpxA;
+	spf=pass (imf20.hostedemail.com: domain of miklos@szeredi.hu designates 74.125.82.177 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-307631dbfedso3859127eec.0
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 05:38:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780663087; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EJxFbDYF9gnSYrTzLrQduCpsnOR/+cumwdt5F8aBUBMGmidm1kZ9gx5270jLeQQ1np
+         MeY2Y1y13Bpf4dBWqepgouO25o79x6RH74+68u/D4+b9/D9QUnB4aiultT/GRJCtXpN+
+         Lbx5J9G/21ckDofgP23k8SnR3iuhI0tQoNwlmgzInbOyWgrzUSlPRN1XtF/hSQKnkYtp
+         mpagMAUBLShDoxVWDyHB2yRE4EYpwe1niWT3dm9HMbJ3SPMv0VugMXNJXsSqqYQOONl0
+         EG+FnE+5JciNKkfWB1/l2DIOBup9xtm4T7hXV9eX7RzfWdmgmGMyM+pMaVj7mMHIsLSJ
+         kPPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=jaIH6xUqz6qcuESYoZJL7a5QWsRjb8U7RVmYk0JRpxw=;
+        fh=yxw01p1Eb4iDWv73N+f7XRhbplzEZLA+o9y3fJfNIig=;
+        b=MOJwRfjng77AAVgWegfMcMSe5f/gXd1j9xGSvpT5ERQWlBzikAYy0Ef1uPtyRU+iO5
+         knqjhX39gycO5k6fnEu4aZfVJFi4SvoUoZcWsAQl6gtEW4H3e1DyXg33mcvHV1jNG2K0
+         u5B07rGHJAhRzuXjXDoDOpoM9mysP6o6knatIArLBr6VOQubYNPjh7XoH7fOQEp6Rm63
+         f4dxpFh0ABcapB3SVThQrEvidaeoLS/3TfKI4R6k2rdTIhvqVbaPw4w+2Am2TcAdng7u
+         UtlsOxZMaDNviSQ6wHy2sBc1pP3JuhuCgtrxWXsu4XIYDuP0/iAHDNvOwS++Sko6e0w5
+         a8Rg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1780663087; x=1781267887; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jaIH6xUqz6qcuESYoZJL7a5QWsRjb8U7RVmYk0JRpxw=;
+        b=Ui7qEpxA2xqDgFeKsdxtWjeKWMUa89sr2BHHin/n7lF6uLyt2YH21PCMB/tDLF4Y+i
+         9kaWz7JwfeKQR4ueJHMLIJrOVBpvfLZ+6Y/6VTTNyQUgXpmcCSm5XuC8uPShE5lHHE4I
+         tkuKxEauiF3u6Txs+Uf936lsZqQ4FVMUWQt9w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780662820; x=1781267620;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rwkmnnyuqltjtn/dFDZqCg4EJ+RHFfRYdL7FyVhTeQk=;
-        b=HbfGOMli4xVOIVX/TfqtABQchmUBNVZmnQ3L+7MVg2lZvQueH4BSH948NBuqcjSKAP
-         O3pOwAl/0fJnUZlDZ2BqFwAKbkuA1YgU37u6iVZl4kE/NBfBB0wZ9GMqbYZmhxMjMZHa
-         QIZcgWc9TcH/uzCJ+9Ghr+K7b2sTugz5VrWdW8P7XWfNASORr96NcQQbk9KUzE152HDp
-         dPX9e9feg4E4/0JxchqIQfMJG7ZzHYcROfsQFSJxTWS0Fk9EvTjgIEwnpQshcv4xFnRY
-         jbVZanem1z9uePl88asukqnDTwTESVtDpyjlwtr9jez2IzoGugvpJ5oUEL5fjg8RaGnD
-         CHLA==
-X-Gm-Message-State: AOJu0Yw7uId+7h4r+kDamWkH6p42Bc4DXznZZtv70mwr+kj6bbI5muCM
-	zSJyRqCUbB4p50VtOLh/R2z9GVKpBbZdD12oyQG3ldCj4iNpcJOCdRMSQAXbEOqXARM1JkPybEh
-	SujvpN1ryz/cv7M5LWDcErI8s7+d1D0z30czCNsgVceKd3dpx/4LyKMsrXDAw
-X-Gm-Gg: Acq92OENPEny3Zo/SNg93g5oY/4iAoo8F8NXIln0BwnAgpgtE37Td8rUqqavqZDXHYD
-	4PEK1EMJMDqSKkzCZ5MbcVBjMImYvaVG1hYSx63y0mfVKW/CPSzeQ1+tQPb4xpkKd9Q00JqT708
-	ClTMHxRvr6tPsM2p2D5dURrqwY65eXJaA9fUg1aODR0MBgQmDq2IY/gZQEfyv0zqElSk8RmR/Q8
-	HacQH4q6duV1tdkecF9E4rTNcxK2vabMlDkFluFuALW7v7nt6ttUqeGTz3PGKVJHMmCbe7rDpAu
-	H9hDK3iVgv3VGIxevDfqjkXFe77JTfVNfG5SaY83QFMoBTnZbzR7feCqajse0ZwFXKihOj9fczw
-	5DbOzgjMfzFI9AXRRqH/7Kd2PVzJZLUb9kMs6+aEGf1SG7YFcTzF1BMxqpZhJ7maltmeot1DjjJ
-	Tn+BeWAw==
-X-Received: by 2002:a05:6000:54f:b0:45e:b21e:f840 with SMTP id ffacd0b85a97d-460304ec0e8mr4578782f8f.8.1780662819558;
-        Fri, 05 Jun 2026 05:33:39 -0700 (PDT)
-X-Received: by 2002:a05:6000:54f:b0:45e:b21e:f840 with SMTP id ffacd0b85a97d-460304ec0e8mr4578718f8f.8.1780662818911;
-        Fri, 05 Jun 2026 05:33:38 -0700 (PDT)
-Received: from maszat.piliscsaba.szeredi.hu (84-236-1-92.pool.digikabel.hu. [84.236.1.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4602cda3651sm12702780f8f.32.2026.06.05.05.33.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 05:33:37 -0700 (PDT)
-From: Miklos Szeredi <mszeredi@redhat.com>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH v3 4/4] simpe_xattr: use per-sb cache
-Date: Fri,  5 Jun 2026 14:33:29 +0200
-Message-ID: <20260605123331.2621677-5-mszeredi@redhat.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260605123331.2621677-1-mszeredi@redhat.com>
-References: <20260605123331.2621677-1-mszeredi@redhat.com>
+        d=1e100.net; s=20251104; t=1780663087; x=1781267887;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jaIH6xUqz6qcuESYoZJL7a5QWsRjb8U7RVmYk0JRpxw=;
+        b=N8tZUDPuXhSjfzDAEby1AJuHSn807wysU1GMCavN8aFmt3n7vv1/54T7Df/66AeZ7p
+         T9tZjDbqMpqLbgFL9/hta+0tkV3jy097rTDuwZxHnV7ZKOikROGEDQKHi7zmbVW32R4/
+         5pD96ro1Pn/UMO5UTjpLMmGjoB8U6NIx9MkH2yh+p7pIN8ur4HUr4JE3e7jLPsVfWssU
+         w70JD+MSaqcMvMUbAK0Y3EQOjFpK3b74VCb8HcOuU46yU6OkGfCA4/is5hm1l79fTBJY
+         5UwR8Vadtneh6JyX2OQBZ1StdKsAbDOGCLaaH8S7V+UgJCS+QfPpKZJjhf/RbJk/UrNQ
+         wfeA==
+X-Forwarded-Encrypted: i=1; AFNElJ/qkMDgHCfepTi51nfiGO9+qKLVHx/Zqzsd5FfPcUz9+BNvdA6rkXhlQJc6U17YxUxtUIQ8A6sWkg==@kvack.org
+X-Gm-Message-State: AOJu0YwNdsiJ1yi+0q9BeOJUPFdr8VdH2YwuDFrs6/KvxlHZ78H5qP2b
+	lVR0RoHe/Dccy0H/tWM/dmiWWH+HLzBRN6ZF8jFthSHJ09YVLGDhy93zOR1RZdnG5bbwBio7UTR
+	pnFqbveFvW76eL0nQVBHruk/ZMl/7lNo1WP5bLRk6tg==
+X-Gm-Gg: Acq92OHPr3qWVTuKsWjbYuZyWzvUkNKgMXigsm7FMRhby9HMvLSUm70X0uxarqX7ZVK
+	xcZHomIZoutLJ3iSFRBHhrHxwHvgEFqlkebHKdjPsMTs0eeitD/jbWloKCxdpMzs8SlNcmyCdNU
+	AOUGPgrutaFnQ0PGf6dj3NsgbUXSWvvU34MPTfUu/5YLbYzyDz21Y4yB7yDUl33T+ICsTiV5Hzo
+	ZAGpav0/bsYdv2ZnvVz8xZVhd6I4Kt7/KaCea+rLJNc66CJJvA5dNitfqeUv6Pb4xFXHqhpkho3
+	WsZ98eX66l+0rzLWAaUkoidGKlE01ZQiYNRL4UDkKQWkEwY=
+X-Received: by 2002:a05:693c:37c8:b0:304:6d18:3646 with SMTP id
+ 5a478bee46e88-3077aeb08e2mr1619952eec.0.1780663086996; Fri, 05 Jun 2026
+ 05:38:06 -0700 (PDT)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: S5wAOV8-Y2QdQOO5rDV4BOepdKwwEc_fTDMmteE-fnE_1780662820
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 4BC7F4000A
-X-Stat-Signature: km9r4pqrwy5qru3177sxgqyb9txeohg7
-X-Rspamd-Server: rspam03
+References: <20260601162454.2116375-1-mszeredi@redhat.com> <20260603-fehlschlag-teamleistung-korpulent-5e0b7fa7f12c@brauner>
+In-Reply-To: <20260603-fehlschlag-teamleistung-korpulent-5e0b7fa7f12c@brauner>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Fri, 5 Jun 2026 14:37:53 +0200
+X-Gm-Features: AVVi8CcsjS-pOQInTF6xJp7mIhrit2P92AFENeMBRNq41bIxUZ72aQoIYL-42L4
+Message-ID: <CAJfpegvuY_EcQz8fgyWk22=agPq1sboiribP780DjR4i+eqUUg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] simple xattr improvements
+To: Christian Brauner <brauner@kernel.org>
+Cc: Miklos Szeredi <mszeredi@redhat.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 858621C000A
 X-Rspam-User: 
-X-HE-Tag: 1780662824-625561
-X-HE-Meta: U2FsdGVkX1/o1EQsOp3v54MhtbBVCsumfMVeeP0+NF1xiV9ejhcQTCU7F6nfw9+pwf+92vghfshzfK2C2pxh2NVMp8MAlkxRBqCaDpxqIrD5E5tQB6lo/pF74rcvJ/6X/uFRKvjkZlVU8swpyzUUYjnF3Io9jii4MjDackkl6bC/9sX1tIIAUh+/T8IXvp7CyvyK8dstWUW72xyer3sLYBCWv1CxNjLYVGD9xoGkpPFO9QuqYOvnpHTYvKcSmK29gIeFW/EsYjTPp69bp4LysTNpiaSF9NsFtp5R46azjVlsXG1YNUIvxvXMklR/2jtxcvxRQB4b1xt3u/FR/dRLeCDRZKDEPFhiZBKuOWVRKdedncySG5eX5GzWAl0g4w1p5l5EZoYtPd+xXEppXEBc+uJTkolmNUC40DpGZ3c3yV8RRaBYN+r+LiPLb4PJ4vRhOcknlm2+MqkFGJKwBlJWYK7yX1AVqUeBpmfDR45cEC+r9LI3+Sne6UsL/XIiSUhgkD7XOj54xKqbpMVQvGuDYDbWnJnFk/VJKbrkVoLKEsSKk8FUUQwEdcY2LhSsAu2p0zV+YPsuAbIjIFtpSnkUC8WyxQ8JYGj85l8+Sxzyp7zosLoyMJ6jG8CUvhYtfNvIiePPbEMO7Ab8hSt4N+PTE9mAQH2f7EhOUCJPA12wdtWD24bS5GqPjx15DQ7D44Afm6XCQ+hpB/bPbDvy9w5ccNZigo9eHqBkSWIfUCtCEmdztOtJERJyVqnYCxWuzBTNI0/EZNArgYJR+s0KlAMZr8NZ5o5Ru/YAy/fjGnCoSoidRI68W18bJImhpOf1PA1cZ4X8h1JjlehBP2xril9l0aLj5lqRFzIGh9LkPn8CpQ0kBshV/EyhNXXD/y3NYWRx2KrChdQtiPTk+moiDmfqGD3QYlYzdnVCa5tFIYRfuAeJeQQuGpa6iKsE+HDHWQ0JFHrH8bDMVFUrw95uvpk
- LToMQ1pi
- odKMFOxJp7TbtmJprx32+XTwTr8O1qISv6fG0j9XylFfAtKk2qxbPitUl4n3HXggHbGjbdDZMMrSqifz+65Eo5NIoYlvvJnIf2wND3anZxWCxVH+6fI+/cBPYzQyxW4I6C45w6OHoZ/+nrQlTw8/1mMtfinubJ8eANYXeS2ZYq6ADuZx4c0FdaV7mLMaayepzggEkcraHzk2ySiLqBANWUCwRnbiyXc1RBpLuDdNxcQBxBNe0ThG8P6Bj2X01uu529ztTePuntXh8qYAPbjVbfG+E4ZAZxrJZ9zi4YmreC6H5VtsIi7NHgoxZvF+T/ums2E+hcdbsrSw51OZwcptC4eX6M+qscjOezXH5unZ0SYJ2ApH9y/96zjyQeVsdb4IpKSdBZZACjAr1g7M=
+X-Stat-Signature: 91z1hctxgjoq1irdbieq76ffoziuku5m
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780663088-353723
+X-HE-Meta: U2FsdGVkX18JHjecuSP7qUsYj1TWMTXyVdXXVfYw4D/TDmynw7O9Pqis4urO7vZTSuhh0p5QQ3b6ePPn5b72Eh+0AAH5As96j8tNev0aAIGcIP8gR/LbRP8ftzPm4hwOEHLFvUOJyyrFLWQvspHoDJVH0bSZJrgbMgjfqclFV7r6N/AuwhLrOuolBtSiWmzBaz+U1Zi6rdXBPQq5SxWbLLaUZABDauvLsnTDQv+Wekz2sPaDghXYy85rQTERf5sq2Wmbu1q3Me9P6exAvQgNPKZk6G+Tj1sdsisvsuq1LrdfY93LNKvwPgItnXelMC8h8OLFptItJuEfsqXjH5fg1Lc2oPZE7Pep+MQ/6BcGWJSI2F109h3i/eiaJ2hhEhCO66ic0yTFWMDahoAnmAMGzp/Vf4jrgwj3WE4/GDwdapwfIsjoVgCiLdRL70991si+rKj1XHQDDka1G8U8nfDw+5MYRg5Xt+iNyZj399JU5/0yqbh//zMiUaaScHSG1DVjKXCCFVbaMCMhFaVDlvfB7Zi4TF9OfjzAxJZmIHYLUw4nv2VWMP8zZZRfJbrf24GjDIDr8VCmtuj3BUERtkLzIRvab9RO5tqZMWgTruJ+UtVOjATdPGjVs3WaMQtA0mNDAvVEJ9yQfx7JcCdnKZia1BRp3BMVuTcsP6pJ/TCdDX1dwo+bgT1TvnKsjMeTlqBpFj2c8OMuKGgFFNYFa50YfPKMJEPpm20HFKLDHp1yeoAuwv4sH1Ppt1p4pNfk3CATby4Ww6iCTERHHlnIsNuhcRLPDEZJ9vNbC0H1mhtwcEU6YdPfUbRt8PqnbBTAd6ihWFFJ+DOl2O98cvjChF+6gf022OW4+a4R8EMTDm1r5hQLtp0FqflYMAmc71p9QZcAy8/Nm9puwoC0fw1SO9OsxpEuwMivGhVd1TcWuZz6lCHAxmPf3fMFWDOW1BXErD4P0oURUZf748yFlb4mM7e
+ LXcmT2zl
+ 99irVmFZGbdyVNV5RTaKAyb2Yphn4+Fbti06sti/veYlAHdpAxhE6Rv/7Wxh6GxZnMjgiIAHkgVX5gdFGxZZAiOBCSS9BBfdCilgyDNUbirBfgjN1Rt9SN1ShEj9jM0C7wcwHJfnUFdSIZF3JjN4Cjzgh3wFQD2JpW/ivRyIMvbybNIehopU6vITSyj2vDQn5SFXeX8AZmlEEw1enBYH31/fOJkQNHPwbw/htONoAGvknMiWoAhg7HhoaBDfLvyfv7ya4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,900 +131,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move the hash table to the super block to remove excessive overhead in case
-of small number of xattrs per inode.
+On Wed, 3 Jun 2026 at 09:31, Christian Brauner <brauner@kernel.org> wrote:
 
-Add linked list to the inode, used for listxattr and eviction.  Listxattr
-uses rcu protection to iterate the list of xattrs.
+> I've fixed a bunch of that before already but thanks for sending it
+> again. Fwiw, we now also carry support for bpf xattr in the
+> vfs-7.2.xattr branch. I'm still applying my kernfs fix on top.
 
-Before being made per-sb, lazy allocation was protected by inode lock.  Now
-inode lock no longer provides sufficient exclusion, so use cmpxchg() to
-ensure atomicity.
+And sashiko keeps finding bugs, so I keep resending the patchset.
 
-Though I haven't found a description of this pattern, after some research
-it seems that cmpxchg_release() and READ_ONCE() should provide the
-necessary memory barriers.
+One of them was a pre-existing bug with kernfs, where inode locking
+isn't sufficient due to kernfs nodes being shared across super blocks.
 
-Use simple_xattr_free_rcu() in simple_xattrs_free(). This is needed because
-the hash table is now shared between inodes and lookup on a different inode
-might be running the compare function on the just freed element within the
-RCU grace period.
-
-Following stats are based on slabinfo diff, after creating 100k empty
-files, then adding a "user.test=foo" xattr to each:
-
-v7.0 (no rhashtable):
-  File creation: 993.40 bytes/file
-  Xattr addition: 79.99 bytes/file
-
-v7.1-rc2 (per-inode rhashtable):
-  File creation: 939.73 bytes/file
-  Xattr addition: 1296.08 bytes/file
-
-v7.1-rc2 + this patch (per-sb rhashtable)
-  File creation: 946.84 bytes/file
-  Xattr addition: 111.86 bytes/file
-
-The overhead of a single xattr is reduced to nearly v7.0 levels.  The per
-xattr overhead is slightly larger due to the addition of three pointers to
-struct simple_xattr.
-
-Fixes: b32c4a213698 ("xattr: add rhashtable-based simple_xattr infrastructure")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
----
- fs/kernfs/dir.c             |   5 +-
- fs/kernfs/inode.c           |  10 +-
- fs/kernfs/kernfs-internal.h |   4 +-
- fs/pidfs.c                  |  14 +-
- fs/xattr.c                  | 283 +++++++++++++++++-------------------
- include/linux/shmem_fs.h    |   3 +-
- include/linux/xattr.h       |  26 ++--
- mm/shmem.c                  |  13 +-
- net/socket.c                |  12 +-
- 9 files changed, 192 insertions(+), 178 deletions(-)
-
-diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
-index 368dc4a217d9..8ba2f2f3da9e 100644
---- a/fs/kernfs/dir.c
-+++ b/fs/kernfs/dir.c
-@@ -606,7 +606,7 @@ void kernfs_put(struct kernfs_node *kn)
- 		kernfs_put(kn->symlink.target_kn);
- 
- 	if (kn->iattr)
--		simple_xattrs_free(&kn->iattr->xattrs, NULL);
-+		simple_xattrs_free(&root->xa_cache, &kn->iattr->xattrs, NULL);
- 
- 	spin_lock(&root->kernfs_idr_lock);
- 	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
-@@ -621,6 +621,7 @@ void kernfs_put(struct kernfs_node *kn)
- 	} else {
- 		/* just released the root kn, free @root too */
- 		idr_destroy(&root->ino_idr);
-+		simple_xattr_cache_cleanup(&root->xa_cache);
- 		kfree_rcu(root, rcu);
- 	}
- }
-@@ -706,7 +707,7 @@ static struct kernfs_node *__kernfs_new_node(struct kernfs_root *root,
- 
-  err_out4:
- 	if (kn->iattr) {
--		simple_xattrs_free(&kn->iattr->xattrs, NULL);
-+		simple_xattrs_free(&root->xa_cache, &kn->iattr->xattrs, NULL);
- 		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
- 	}
-  err_out3:
-diff --git a/fs/kernfs/inode.c b/fs/kernfs/inode.c
-index f2298de6bc6f..2cb20294aaf5 100644
---- a/fs/kernfs/inode.c
-+++ b/fs/kernfs/inode.c
-@@ -37,6 +37,7 @@ static struct kernfs_iattrs *__kernfs_iattrs(struct kernfs_node *kn, bool alloc)
- 	if (!ret)
- 		return NULL;
- 
-+	INIT_LIST_HEAD_RCU(&ret->xattrs);
- 	/* assign default attributes */
- 	ret->ia_uid = GLOBAL_ROOT_UID;
- 	ret->ia_gid = GLOBAL_ROOT_GID;
-@@ -296,11 +297,12 @@ int kernfs_xattr_get(struct kernfs_node *kn, const char *name,
- 		     void *value, size_t size)
- {
- 	struct kernfs_iattrs *attrs = kernfs_iattrs_noalloc(kn);
-+	struct simple_xattr_cache *cache = &kernfs_root(kn)->xa_cache;
- 
- 	if (!attrs)
- 		return -ENODATA;
- 
--	return simple_xattr_get(&attrs->xattrs, name, value, size);
-+	return simple_xattr_get(cache, &attrs->xattrs, name, value, size);
- }
- 
- int kernfs_xattr_set(struct kernfs_node *kn, const char *name,
-@@ -308,6 +310,7 @@ int kernfs_xattr_set(struct kernfs_node *kn, const char *name,
- {
- 	struct simple_xattr *old_xattr;
- 	struct kernfs_iattrs *attrs;
-+	struct simple_xattr_cache *cache = &kernfs_root(kn)->xa_cache;
- 
- 	attrs = kernfs_iattrs(kn);
- 	if (!attrs)
-@@ -322,7 +325,7 @@ int kernfs_xattr_set(struct kernfs_node *kn, const char *name,
- 	 */
- 	CLASS(kernfs_node_lock, lock)(kn);
- 
--	old_xattr = simple_xattr_set(&attrs->xattrs, name, value, size, flags);
-+	old_xattr = simple_xattr_set(cache, &attrs->xattrs, name, value, size, flags);
- 	if (IS_ERR(old_xattr))
- 		return PTR_ERR(old_xattr);
- 
-@@ -372,7 +375,8 @@ static int kernfs_vfs_user_xattr_set(const struct xattr_handler *handler,
- 	/* See comment in kernfs_xattr_set() about locking. */
- 	CLASS(kernfs_node_lock, lock)(kn);
- 
--	return simple_xattr_set_limited(&attrs->xattrs, &attrs->xattr_limits,
-+	return simple_xattr_set_limited(&kernfs_root(kn)->xa_cache,
-+					&attrs->xattrs, &attrs->xattr_limits,
- 					full_name, value, size, flags);
- }
- 
-diff --git a/fs/kernfs/kernfs-internal.h b/fs/kernfs/kernfs-internal.h
-index 1dc6663553d1..aa784b540b36 100644
---- a/fs/kernfs/kernfs-internal.h
-+++ b/fs/kernfs/kernfs-internal.h
-@@ -26,7 +26,7 @@ struct kernfs_iattrs {
- 	struct timespec64	ia_mtime;
- 	struct timespec64	ia_ctime;
- 
--	struct simple_xattrs	*xattrs;
-+	struct list_head	xattrs;
- 	struct simple_xattr_limits xattr_limits;
- };
- 
-@@ -54,6 +54,8 @@ struct kernfs_root {
- 	rwlock_t		kernfs_rename_lock;
- 
- 	struct rcu_head		rcu;
-+
-+	struct simple_xattr_cache xa_cache;
- };
- 
- /* +1 to avoid triggering overflow warning when negating it */
-diff --git a/fs/pidfs.c b/fs/pidfs.c
-index eb5105bddeca..143d0aec16af 100644
---- a/fs/pidfs.c
-+++ b/fs/pidfs.c
-@@ -37,6 +37,8 @@ static struct kmem_cache *pidfs_attr_cachep __ro_after_init;
- 
- static struct path pidfs_root_path = {};
- 
-+static struct simple_xattr_cache pidfs_xa_cache;
-+
- void pidfs_get_root(struct path *path)
- {
- 	*path = pidfs_root_path;
-@@ -96,7 +98,7 @@ static const struct rhashtable_params pidfs_ino_ht_params = {
-  * use file handles.
-  */
- struct pidfs_attr {
--	struct simple_xattrs *xattrs;
-+	struct list_head xattrs;
- 	union {
- 		struct pidfs_anon_attr;
- 		struct llist_node pidfs_llist;
-@@ -196,7 +198,7 @@ static void pidfs_free_attr_work(struct work_struct *work)
- 
- 	head = llist_del_all(&pidfs_free_list);
- 	llist_for_each_entry_safe(attr, next, head, pidfs_llist) {
--		simple_xattrs_free(&attr->xattrs, NULL);
-+		simple_xattrs_free(&pidfs_xa_cache, &attr->xattrs, NULL);
- 		kfree(attr);
- 	}
- }
-@@ -224,7 +226,7 @@ void pidfs_free_pid(struct pid *pid)
- 	if (IS_ERR(attr))
- 		return;
- 
--	if (likely(!attr->xattrs))
-+	if (likely(list_empty(&attr->xattrs)))
- 		kfree(attr);
- 	else if (llist_add(&attr->pidfs_llist, &pidfs_free_list))
- 		schedule_work(&pidfs_free_work);
-@@ -1007,6 +1009,8 @@ int pidfs_register_pid(struct pid *pid)
- 	if (!new_attr)
- 		return -ENOMEM;
- 
-+	INIT_LIST_HEAD_RCU(&new_attr->xattrs);
-+
- 	/* Synchronize with pidfs_exit(). */
- 	guard(spinlock_irq)(&pid->wait_pidfd.lock);
- 
-@@ -1048,7 +1052,7 @@ static int pidfs_xattr_get(const struct xattr_handler *handler,
- 	struct pid *pid = inode->i_private;
- 	const char *name = xattr_full_name(handler, suffix);
- 
--	return simple_xattr_get(&pid->attr->xattrs, name, value, size);
-+	return simple_xattr_get(&pidfs_xa_cache, &pid->attr->xattrs, name, value, size);
- }
- 
- static int pidfs_xattr_set(const struct xattr_handler *handler,
-@@ -1063,7 +1067,7 @@ static int pidfs_xattr_set(const struct xattr_handler *handler,
- 	/* Ensure we're the only one to set @attr->xattrs. */
- 	WARN_ON_ONCE(!inode_is_locked(inode));
- 
--	old_xattr = simple_xattr_set(&pid->attr->xattrs, name, value, size, flags);
-+	old_xattr = simple_xattr_set(&pidfs_xa_cache, &pid->attr->xattrs, name, value, size, flags);
- 	if (IS_ERR(old_xattr))
- 		return PTR_ERR(old_xattr);
- 
-diff --git a/fs/xattr.c b/fs/xattr.c
-index 9ef7ad8a8f32..89374cd9029a 100644
---- a/fs/xattr.c
-+++ b/fs/xattr.c
-@@ -28,6 +28,11 @@
- 
- #include "internal.h"
- 
-+struct sx_key {
-+	const struct list_head *parent;
-+	const char *name;
-+};
-+
- static const char *
- strcmp_prefix(const char *a, const char *a_prefix)
- {
-@@ -1269,23 +1274,32 @@ struct simple_xattr *simple_xattr_alloc(const void *value, size_t size)
- 	return new_xattr;
- }
- 
-+static u32 sx_hashfn(const char *name, const struct list_head *parent, u32 seed)
-+{
-+	return jhash(name, strlen(name), jhash(&parent, sizeof(parent), seed));
-+}
-+
- static u32 simple_xattr_hashfn(const void *data, u32 len, u32 seed)
- {
--	const char *name = data;
--	return jhash(name, strlen(name), seed);
-+	const struct sx_key *key = data;
-+
-+	return sx_hashfn(key->name, key->parent, seed);
- }
- 
- static u32 simple_xattr_obj_hashfn(const void *obj, u32 len, u32 seed)
- {
- 	const struct simple_xattr *xattr = obj;
--	return jhash(xattr->name, strlen(xattr->name), seed);
-+
-+	return sx_hashfn(xattr->name, xattr->parent, seed);
- }
- 
- static int simple_xattr_obj_cmpfn(struct rhashtable_compare_arg *arg,
- 				   const void *obj)
- {
- 	const struct simple_xattr *xattr = obj;
--	return strcmp(xattr->name, arg->key);
-+	const struct sx_key *key = arg->key;
-+
-+	return xattr->parent != key->parent || strcmp(xattr->name, key->name);
- }
- 
- static const struct rhashtable_params simple_xattr_params = {
-@@ -1298,6 +1312,7 @@ static const struct rhashtable_params simple_xattr_params = {
- 
- /**
-  * simple_xattr_get - get an xattr object
-+ * @cache: anchor for the hash table
-  * @xattrs: the header of the xattr object
-  * @name: the name of the xattr to retrieve
-  * @buffer: the buffer to store the value into
-@@ -1311,19 +1326,19 @@ static const struct rhashtable_params simple_xattr_params = {
-  * Return: On success the length of the xattr value is returned. On error a
-  * negative error code is returned.
-  */
--int simple_xattr_get(struct simple_xattrs **xattrsp, const char *name,
--		     void *buffer, size_t size)
-+int simple_xattr_get(struct simple_xattr_cache *cache, struct list_head *xattrs,
-+		     const char *name, void *buffer, size_t size)
- {
--	struct simple_xattrs *xattrs;
- 	struct simple_xattr *xattr;
-+	struct sx_key key = { .parent = xattrs, .name = name };
-+	struct rhashtable *ht = READ_ONCE(cache->ht);
- 	int ret = -ENODATA;
- 
--	xattrs = READ_ONCE(*xattrsp);
--	if (!xattrs)
--		return -ENODATA;
-+	if (!ht)
-+		return ret;
- 
- 	guard(rcu)();
--	xattr = rhashtable_lookup(&xattrs->ht, name, simple_xattr_params);
-+	xattr = rhashtable_lookup(ht, &key, simple_xattr_params);
- 	if (xattr) {
- 		ret = xattr->size;
- 		if (buffer) {
-@@ -1336,11 +1351,45 @@ int simple_xattr_get(struct simple_xattrs **xattrsp, const char *name,
- 	return ret;
- }
- 
--static struct simple_xattrs *simple_xattrs_lazy_alloc(struct simple_xattrs **xattrsp,
--						      const void *value, int flags);
-+static struct rhashtable *simple_xattrs_lazy_alloc(struct simple_xattr_cache *cache,
-+						   const void *value, int flags)
-+{
-+	struct rhashtable *oldht, *ht = READ_ONCE(cache->ht);
-+	int err;
-+
-+	if (unlikely(!ht)) {
-+		if (!value)
-+			return (flags & XATTR_REPLACE) ? ERR_PTR(-ENODATA) : NULL;
-+
-+		ht = kzalloc_obj(*ht);
-+		if (!ht)
-+			return ERR_PTR(-ENOMEM);
-+
-+		err = rhashtable_init(ht, &simple_xattr_params);
-+		if (err) {
-+			kfree(ht);
-+			return ERR_PTR(err);
-+		}
-+
-+		/*
-+		 * Provides release semantics on success, so that use of a
-+		 * non-NULL READ_ONCE(cache->ht) will be ordered relative to the
-+		 * above initialization, due to implicit address dependency.
-+		 */
-+		oldht = cmpxchg_release(&cache->ht, NULL, ht);
-+		if (oldht) {
-+			/* Race lost */
-+			rhashtable_destroy(ht);
-+			kfree(ht);
-+			ht = oldht;
-+		}
-+	}
-+	return ht;
-+}
- 
- /**
-  * simple_xattr_set - set an xattr object
-+ * @cache: anchor for the hash table
-  * @xattrs: the header of the xattr object
-  * @name: the name of the xattr to retrieve
-  * @value: the value to store along the xattr
-@@ -1370,50 +1419,58 @@ static struct simple_xattrs *simple_xattrs_lazy_alloc(struct simple_xattrs **xat
-  * Return: On success, the removed or replaced xattr is returned, to be freed
-  * by the caller; or NULL if none. On failure a negative error code is returned.
-  */
--struct simple_xattr *simple_xattr_set(struct simple_xattrs **xattrsp,
-+struct simple_xattr *simple_xattr_set(struct simple_xattr_cache *cache, struct list_head *xattrs,
- 				      const char *name, const void *value,
- 				      size_t size, int flags)
- {
--	struct simple_xattrs *xattrs;
-+	struct sx_key key = { .parent = xattrs, .name = name };
- 	struct simple_xattr *old_xattr = NULL;
-+	struct rhashtable *ht;
- 	int err;
- 
--	xattrs = simple_xattrs_lazy_alloc(xattrsp, value, flags);
--	if (IS_ERR_OR_NULL(xattrs))
--		return ERR_CAST(xattrs);
-+	ht = simple_xattrs_lazy_alloc(cache, value, flags);
-+	if (IS_ERR_OR_NULL(ht))
-+		return ERR_CAST(ht);
- 
- 	CLASS(simple_xattr, new_xattr)(value, size);
- 	if (IS_ERR(new_xattr))
- 		return new_xattr;
- 
- 	if (new_xattr) {
-+		new_xattr->parent = xattrs;
- 		new_xattr->name = kstrdup(name, GFP_KERNEL_ACCOUNT);
- 		if (!new_xattr->name)
- 			return ERR_PTR(-ENOMEM);
- 	}
- 
--	/* Lookup is safe without RCU here since writes are serialized. */
--	old_xattr = rhashtable_lookup_fast(&xattrs->ht, name,
--					   simple_xattr_params);
--
-+	/*
-+	 * Hash table lookup/replace/remove will grab RCU read lock themselves.
-+	 * This makes sure that hash table lookup is safe against concurrent
-+	 * modification on another inode.
-+	 */
-+	old_xattr = rhashtable_lookup_fast(ht, &key, simple_xattr_params);
- 	if (old_xattr) {
- 		/* Fail if XATTR_CREATE is requested and the xattr exists. */
- 		if (flags & XATTR_CREATE)
- 			return ERR_PTR(-EEXIST);
- 
- 		if (new_xattr) {
--			err = rhashtable_replace_fast(&xattrs->ht,
-+			err = rhashtable_replace_fast(ht,
- 						      &old_xattr->hash_node,
- 						      &new_xattr->hash_node,
- 						      simple_xattr_params);
- 			if (err)
- 				return ERR_PTR(err);
-+
-+			list_replace_rcu(&old_xattr->node, &new_xattr->node);
- 		} else {
--			err = rhashtable_remove_fast(&xattrs->ht,
-+			err = rhashtable_remove_fast(ht,
- 						     &old_xattr->hash_node,
- 						     simple_xattr_params);
- 			if (err)
- 				return ERR_PTR(err);
-+
-+			list_del_rcu(&old_xattr->node);
- 		}
- 	} else {
- 		/* Fail if XATTR_REPLACE is requested but no xattr is found. */
-@@ -1425,11 +1482,13 @@ struct simple_xattr *simple_xattr_set(struct simple_xattrs **xattrsp,
- 		 * new value simply insert it.
- 		 */
- 		if (new_xattr) {
--			err = rhashtable_insert_fast(&xattrs->ht,
-+			err = rhashtable_insert_fast(ht,
- 						     &new_xattr->hash_node,
- 						     simple_xattr_params);
- 			if (err)
- 				return ERR_PTR(err);
-+
-+			list_add_tail_rcu(&new_xattr->node, xattrs);
- 		}
- 
- 		/*
-@@ -1466,6 +1525,7 @@ static inline int simple_xattr_limits_inc(struct simple_xattr_limits *limits,
- 
- /**
-  * simple_xattr_set_limited - set an xattr with per-inode user.* limits
-+ * @cache: anchor for the hash table
-  * @xattrs: the header of the xattr object
-  * @limits: per-inode limit counters for user.* xattrs
-  * @name: the name of the xattr to set or remove
-@@ -1480,7 +1540,7 @@ static inline int simple_xattr_limits_inc(struct simple_xattr_limits *limits,
-  * Return: On success zero is returned. On failure a negative error code is
-  * returned.
-  */
--int simple_xattr_set_limited(struct simple_xattrs **xattrs,
-+int simple_xattr_set_limited(struct simple_xattr_cache *cache, struct list_head *xattrs,
- 			     struct simple_xattr_limits *limits,
- 			     const char *name, const void *value,
- 			     size_t size, int flags)
-@@ -1494,7 +1554,7 @@ int simple_xattr_set_limited(struct simple_xattrs **xattrs,
- 			return ret;
- 	}
- 
--	old_xattr = simple_xattr_set(xattrs, name, value, size, flags);
-+	old_xattr = simple_xattr_set(cache, xattrs, name, value, size, flags);
- 	if (IS_ERR(old_xattr)) {
- 		if (value)
- 			simple_xattr_limits_dec(limits, size);
-@@ -1540,12 +1600,10 @@ static bool xattr_is_maclabel(const char *name)
-  * Return: On success the required size or the size of the copied xattrs is
-  * returned. On error a negative error code is returned.
-  */
--ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs **xattrsp,
-+ssize_t simple_xattr_list(struct inode *inode, struct list_head *xattrs,
- 			  char *buffer, size_t size)
- {
- 	bool trusted = ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN);
--	struct simple_xattrs *xattrs;
--	struct rhashtable_iter iter;
- 	struct simple_xattr *xattr;
- 	ssize_t remaining_size = size;
- 	int err = 0;
-@@ -1566,21 +1624,11 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs **xattrsp,
- 	remaining_size -= err;
- 	err = 0;
- 
--	xattrs = READ_ONCE(*xattrsp);
- 	if (!xattrs)
- 		return size - remaining_size;
- 
--	rhashtable_walk_enter(&xattrs->ht, &iter);
--	rhashtable_walk_start(&iter);
--
--	while ((xattr = rhashtable_walk_next(&iter)) != NULL) {
--		if (IS_ERR(xattr)) {
--			if (PTR_ERR(xattr) == -EAGAIN)
--				continue;
--			err = PTR_ERR(xattr);
--			break;
--		}
--
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(xattr, xattrs, node) {
- 		/* skip "trusted." attributes for unprivileged callers */
- 		if (!trusted && xattr_is_trusted(xattr->name))
- 			continue;
-@@ -1593,15 +1641,14 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs **xattrsp,
- 		if (err)
- 			break;
- 	}
--
--	rhashtable_walk_stop(&iter);
--	rhashtable_walk_exit(&iter);
-+	rcu_read_unlock();
- 
- 	return err ? err : size - remaining_size;
- }
- 
- /**
-  * simple_xattr_add - add xattr objects
-+ * @cache: anchor for the hash table
-  * @xattrs: the header of the xattr object
-  * @new_xattr: the xattr object to add
-  *
-@@ -1612,125 +1659,67 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs **xattrsp,
-  * Return: On success zero is returned. On failure a negative error code is
-  * returned.
-  */
--int simple_xattr_add(struct simple_xattrs **xattrsp,
-+int simple_xattr_add(struct simple_xattr_cache *cache, struct list_head *xattrs,
- 		     struct simple_xattr *new_xattr)
- {
--	struct simple_xattrs *xattrs;
--
--	xattrs = simple_xattrs_lazy_alloc(xattrsp, new_xattr->value, 0);
--	if (IS_ERR(xattrs))
--		return PTR_ERR(xattrs);
--
--	return rhashtable_insert_fast(&xattrs->ht, &new_xattr->hash_node,
--				      simple_xattr_params);
--}
--
--/**
-- * simple_xattrs_init - initialize new xattr header
-- * @xattrs: header to initialize
-- *
-- * Initialize the rhashtable used to store xattr objects.
-- *
-- * Return: On success zero is returned. On failure a negative error code is
-- * returned.
-- */
--int simple_xattrs_init(struct simple_xattrs *xattrs)
--{
--	return rhashtable_init(&xattrs->ht, &simple_xattr_params);
--}
--
--/**
-- * simple_xattrs_alloc - allocate and initialize a new xattr header
-- *
-- * Dynamically allocate a simple_xattrs header and initialize the
-- * underlying rhashtable. This is intended for consumers that want
-- * to lazily allocate xattr storage only when the first xattr is set,
-- * avoiding the per-inode rhashtable overhead when no xattrs are used.
-- *
-- * Return: On success a new simple_xattrs is returned. On failure an
-- * ERR_PTR is returned.
-- */
--static struct simple_xattrs *simple_xattrs_alloc(void)
--{
--	struct simple_xattrs *xattrs __free(kfree) = NULL;
--	int ret;
-+	struct rhashtable *ht;
-+	int err;
- 
--	xattrs = kzalloc(sizeof(*xattrs), GFP_KERNEL);
--	if (!xattrs)
--		return ERR_PTR(-ENOMEM);
-+	ht = simple_xattrs_lazy_alloc(cache, new_xattr->value, 0);
-+	if (IS_ERR(ht))
-+		return PTR_ERR(ht);
- 
--	ret = simple_xattrs_init(xattrs);
--	if (ret)
--		return ERR_PTR(ret);
-+	new_xattr->parent = xattrs;
-+	err = rhashtable_insert_fast(ht, &new_xattr->hash_node, simple_xattr_params);
-+	if (err)
-+		return err;
- 
--	return no_free_ptr(xattrs);
-+	list_add_tail_rcu(&new_xattr->node, xattrs);
-+	return 0;
- }
- 
- /**
-- * simple_xattrs_lazy_alloc - get or allocate xattrs for a set operation
-- * @xattrsp: pointer to the xattrs pointer (may point to NULL)
-- * @value: value being set (NULL means remove)
-- * @flags: xattr set flags
-- *
-- * For lazily-allocated xattrs on the write path. If no xattrs exist yet
-- * and this is a remove operation, returns the appropriate result without
-- * allocating. Otherwise ensures xattrs is allocated and published with
-- * store-release semantics.
-+ * simple_xattrs_free - free xattrs
-+ * @cache: anchor for the hash table
-+ * @xattrs: xattr header whose xattrs to destroy
-+ * @freed_space: approximate number of bytes of memory freed from @xattrs
-  *
-- * Return: On success a valid pointer to the xattrs is returned. On
-- * failure or early-exit an ERR_PTR or NULL is returned. Callers should
-- * check with IS_ERR_OR_NULL() and propagate with PTR_ERR() which
-- * correctly returns 0 for the NULL no-op case.
-+ * Destroy all xattrs in @xattrs. When this is called no one can hold a
-+ * reference to any of the xattrs anymore.
-  */
--static struct simple_xattrs *simple_xattrs_lazy_alloc(struct simple_xattrs **xattrsp,
--						      const void *value, int flags)
-+void simple_xattrs_free(struct simple_xattr_cache *cache, struct list_head *xattrs,
-+			size_t *freed_space)
- {
--	struct simple_xattrs *xattrs;
--
--	xattrs = READ_ONCE(*xattrsp);
--	if (xattrs)
--		return xattrs;
--
--	if (!value)
--		return (flags & XATTR_REPLACE) ? ERR_PTR(-ENODATA) : NULL;
--
--	xattrs = simple_xattrs_alloc();
--	if (!IS_ERR(xattrs))
--		smp_store_release(xattrsp, xattrs);
--	return xattrs;
--}
-+	if (freed_space)
-+		*freed_space = 0;
- 
--static void simple_xattr_ht_free(void *ptr, void *arg)
--{
--	struct simple_xattr *xattr = ptr;
--	size_t *freed_space = arg;
-+	while (!list_empty(xattrs)) {
-+		struct simple_xattr *xattr = list_first_entry(xattrs, typeof(*xattr), node);
- 
--	if (freed_space)
--		*freed_space += simple_xattr_space(xattr->name, xattr->size);
--	simple_xattr_free(xattr);
-+		rhashtable_remove_fast(cache->ht, &xattr->hash_node, simple_xattr_params);
-+		list_del(&xattr->node);
-+		if (freed_space)
-+			*freed_space += simple_xattr_space(xattr->name, xattr->size);
-+		/*
-+		 * Free with RCU, since the xattr might still get accessed by
-+		 * the hash compare function
-+		 */
-+		simple_xattr_free_rcu(xattr);
-+	}
- }
- 
- /**
-- * simple_xattrs_free - free xattrs
-- * @xattrs: xattr header whose xattrs to destroy
-- * @freed_space: approximate number of bytes of memory freed from @xattrs
-+ * simple_xattr_cache_cleanup - free the cache
-+ * @cache: anchor for the hash table
-  *
-- * Destroy all xattrs in @xattr. When this is called no one can hold a
-- * reference to any of the xattrs anymore.
-+ * Destroy the cache table, which was lazily allocated on adding the first xattr.
-  */
--void simple_xattrs_free(struct simple_xattrs **xattrsp, size_t *freed_space)
-+void simple_xattr_cache_cleanup(struct simple_xattr_cache *cache)
- {
--	struct simple_xattrs *xattrs = *xattrsp;
--
--	might_sleep();
--
--	if (!xattrs)
--		return;
--
--	if (freed_space)
--		*freed_space = 0;
--	rhashtable_free_and_destroy(&xattrs->ht, simple_xattr_ht_free,
--				    freed_space);
--	kfree(xattrs);
--	*xattrsp = NULL;
-+	if (cache->ht) {
-+		WARN_ON(atomic_read(&cache->ht->nelems));
-+		rhashtable_destroy(cache->ht);
-+		kfree(cache->ht);
-+		cache->ht = NULL;
-+	}
- }
-diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-index 93a0ba872ebe..69b0177da156 100644
---- a/include/linux/shmem_fs.h
-+++ b/include/linux/shmem_fs.h
-@@ -48,7 +48,7 @@ struct shmem_inode_info {
- 	};
- 	struct timespec64	i_crtime;	/* file creation time */
- 	struct shared_policy	policy;		/* NUMA memory alloc policy */
--	struct simple_xattrs	*xattrs;	/* list of xattrs */
-+	struct list_head        xattrs;		/* list of xattrs */
- 	pgoff_t			fallocend;	/* highest fallocate endindex */
- 	unsigned int		fsflags;	/* for FS_IOC_[SG]ETFLAGS */
- 	atomic_t		stop_eviction;	/* hold when working on inode */
-@@ -89,6 +89,7 @@ struct shmem_sb_info {
- 	struct list_head shrinklist;  /* List of shinkable inodes */
- 	unsigned long shrinklist_len; /* Length of shrinklist */
- 	struct shmem_quota_limits qlimits; /* Default quota limits */
-+	struct simple_xattr_cache xa_cache;
- };
- 
- static inline struct shmem_inode_info *SHMEM_I(struct inode *inode)
-diff --git a/include/linux/xattr.h b/include/linux/xattr.h
-index ded446c1ef81..7aaaf4f8aff5 100644
---- a/include/linux/xattr.h
-+++ b/include/linux/xattr.h
-@@ -106,12 +106,14 @@ static inline const char *xattr_prefix(const struct xattr_handler *handler)
- 	return handler->prefix ?: handler->name;
- }
- 
--struct simple_xattrs {
--	struct rhashtable ht;
-+struct simple_xattr_cache {
-+	struct rhashtable *ht;
- };
- 
- struct simple_xattr {
- 	struct rhash_head hash_node;
-+	struct list_head *parent;
-+	struct list_head node;
- 	struct rcu_head rcu;
- 	char *name;
- 	size_t size;
-@@ -132,27 +134,31 @@ static inline void simple_xattr_limits_init(struct simple_xattr_limits *limits)
- 	atomic_set(&limits->xattr_size, 0);
- }
- 
--int simple_xattrs_init(struct simple_xattrs *xattrs);
--void simple_xattrs_free(struct simple_xattrs **xattrs, size_t *freed_space);
-+void simple_xattrs_free(struct simple_xattr_cache *cache, struct list_head *xattrs,
-+			size_t *freed_space);
- size_t simple_xattr_space(const char *name, size_t size);
- struct simple_xattr *simple_xattr_alloc(const void *value, size_t size);
- void simple_xattr_free(struct simple_xattr *xattr);
- void simple_xattr_free_rcu(struct simple_xattr *xattr);
--int simple_xattr_get(struct simple_xattrs **xattrs, const char *name,
--		     void *buffer, size_t size);
--struct simple_xattr *simple_xattr_set(struct simple_xattrs **xattrs,
-+int simple_xattr_get(struct simple_xattr_cache *cache, struct list_head *xattrs,
-+		     const char *name, void *buffer, size_t size);
-+struct simple_xattr *simple_xattr_set(struct simple_xattr_cache *cache,
-+				      struct list_head *xattrs,
- 				      const char *name, const void *value,
- 				      size_t size, int flags);
--int simple_xattr_set_limited(struct simple_xattrs **xattrs,
-+int simple_xattr_set_limited(struct simple_xattr_cache *cache,
-+			     struct list_head *xattrs,
- 			     struct simple_xattr_limits *limits,
- 			     const char *name, const void *value,
- 			     size_t size, int flags);
--ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs **xattrs,
-+ssize_t simple_xattr_list(struct inode *inode, struct list_head *xattrs,
- 			  char *buffer, size_t size);
--int simple_xattr_add(struct simple_xattrs **xattrs,
-+int simple_xattr_add(struct simple_xattr_cache *cache, struct list_head *xattrs,
- 		     struct simple_xattr *new_xattr);
- int xattr_list_one(char **buffer, ssize_t *remaining_size, const char *name);
- 
-+void simple_xattr_cache_cleanup(struct simple_xattr_cache *cache);
-+
- DEFINE_CLASS(simple_xattr,
- 	     struct simple_xattr *,
- 	     if (!IS_ERR_OR_NULL(_T)) simple_xattr_free(_T),
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 9111d7efee9c..a736a84de1a5 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1425,7 +1425,7 @@ static void shmem_evict_inode(struct inode *inode)
- 		}
- 	}
- 
--	simple_xattrs_free(&info->xattrs, sbinfo->max_inodes ? &freed : NULL);
-+	simple_xattrs_free(&sbinfo->xa_cache, &info->xattrs, sbinfo->max_inodes ? &freed : NULL);
- 
- 	shmem_free_inode(inode->i_sb, freed);
- 	WARN_ON(inode->i_blocks);
-@@ -3084,6 +3084,7 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
- 	inode->i_generation = get_random_u32();
- 	info = SHMEM_I(inode);
- 	memset(info, 0, (char *)inode - (char *)info);
-+	INIT_LIST_HEAD_RCU(&info->xattrs);
- 	spin_lock_init(&info->lock);
- 	atomic_set(&info->stop_eviction, 0);
- 	info->seals = F_SEAL_SEAL;
-@@ -4258,7 +4259,7 @@ static int shmem_initxattrs(struct inode *inode,
- 		if (!new_xattr->name)
- 			break;
- 
--		if (simple_xattr_add(&info->xattrs, new_xattr))
-+		if (simple_xattr_add(&sbinfo->xa_cache, &info->xattrs, new_xattr))
- 			break;
- 
- 		ispace -= simple_xattr_space(new_xattr->name, new_xattr->size);
-@@ -4282,10 +4283,11 @@ static int shmem_xattr_handler_get(const struct xattr_handler *handler,
- 				   struct dentry *unused, struct inode *inode,
- 				   const char *name, void *buffer, size_t size)
- {
-+	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
- 	struct shmem_inode_info *info = SHMEM_I(inode);
- 
- 	name = xattr_full_name(handler, name);
--	return simple_xattr_get(&info->xattrs, name, buffer, size);
-+	return simple_xattr_get(&sbinfo->xa_cache, &info->xattrs, name, buffer, size);
- }
- 
- static int shmem_xattr_handler_set(const struct xattr_handler *handler,
-@@ -4313,7 +4315,7 @@ static int shmem_xattr_handler_set(const struct xattr_handler *handler,
- 			return -ENOSPC;
- 	}
- 
--	old_xattr = simple_xattr_set(&info->xattrs, name, value, size, flags);
-+	old_xattr = simple_xattr_set(&sbinfo->xa_cache, &info->xattrs, name, value, size, flags);
- 	if (!IS_ERR(old_xattr)) {
- 		ispace = 0;
- 		if (old_xattr && sbinfo->max_inodes)
-@@ -4962,6 +4964,9 @@ static void shmem_put_super(struct super_block *sb)
- 	free_percpu(sbinfo->ino_batch);
- 	percpu_counter_destroy(&sbinfo->used_blocks);
- 	mpol_put(sbinfo->mpol);
-+#ifdef CONFIG_TMPFS_XATTR
-+	simple_xattr_cache_cleanup(&sbinfo->xa_cache);
-+#endif
- 	kfree(sbinfo);
- 	sb->s_fs_info = NULL;
- }
-diff --git a/net/socket.c b/net/socket.c
-index d3597c858345..a8014f930d9e 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -310,8 +310,10 @@ static int move_addr_to_user(struct sockaddr_storage *kaddr, int klen,
- 
- static struct kmem_cache *sock_inode_cachep __ro_after_init;
- 
-+static struct simple_xattr_cache sockfs_xa_cache;
-+
- struct sockfs_inode {
--	struct simple_xattrs *xattrs;
-+	struct list_head xattrs;
- 	struct simple_xattr_limits xattr_limits;
- 	struct socket_alloc;
- };
-@@ -328,7 +330,7 @@ static struct inode *sock_alloc_inode(struct super_block *sb)
- 	si = alloc_inode_sb(sb, sock_inode_cachep, GFP_KERNEL);
- 	if (!si)
- 		return NULL;
--	si->xattrs = NULL;
-+	INIT_LIST_HEAD_RCU(&si->xattrs);
- 	simple_xattr_limits_init(&si->xattr_limits);
- 
- 	init_waitqueue_head(&si->socket.wq.wait);
-@@ -348,7 +350,7 @@ static void sock_evict_inode(struct inode *inode)
- {
- 	struct sockfs_inode *si = SOCKFS_I(inode);
- 
--	simple_xattrs_free(&si->xattrs, NULL);
-+	simple_xattrs_free(&sockfs_xa_cache, &si->xattrs, NULL);
- 	clear_inode(inode);
- }
- 
-@@ -441,7 +443,7 @@ static int sockfs_user_xattr_get(const struct xattr_handler *handler,
- 	const char *name = xattr_full_name(handler, suffix);
- 	struct sockfs_inode *si = SOCKFS_I(inode);
- 
--	return simple_xattr_get(&si->xattrs, name, value, size);
-+	return simple_xattr_get(&sockfs_xa_cache, &si->xattrs, name, value, size);
- }
- 
- static int sockfs_user_xattr_set(const struct xattr_handler *handler,
-@@ -453,7 +455,7 @@ static int sockfs_user_xattr_set(const struct xattr_handler *handler,
- 	const char *name = xattr_full_name(handler, suffix);
- 	struct sockfs_inode *si = SOCKFS_I(inode);
- 
--	return simple_xattr_set_limited(&si->xattrs, &si->xattr_limits,
-+	return simple_xattr_set_limited(&sockfs_xa_cache, &si->xattrs, &si->xattr_limits,
- 					name, value, size, flags);
- }
- 
--- 
-2.54.0
-
+Thanks,
+Miklos
 
