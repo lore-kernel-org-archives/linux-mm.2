@@ -4,128 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1F97CD6E7C
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 15:54:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2082BCD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 16:03:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DAE66B0093; Fri,  5 Jun 2026 11:54:31 -0400 (EDT)
+	id 262006B0005; Fri,  5 Jun 2026 12:03:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B2636B0096; Fri,  5 Jun 2026 11:54:31 -0400 (EDT)
+	id 239B06B0088; Fri,  5 Jun 2026 12:03:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EF716B0098; Fri,  5 Jun 2026 11:54:31 -0400 (EDT)
+	id 14F1F6B008C; Fri,  5 Jun 2026 12:03:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E7936B0093
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:54:31 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E18B9C0C66
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:54:30 +0000 (UTC)
-X-FDA: 84846306300.08.FCB6AF2
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 036192000F
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:54:27 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=SINscNok;
-	spf=pass (imf31.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 05FE06B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:03:18 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CBA5E161D56
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:03:17 +0000 (UTC)
+X-FDA: 84846328434.26.1B5CE92
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7F4DDC000F
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:03:15 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="W/564lmP";
+	spf=pass (imf28.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780674868;
-	b=uEapzP+2l5PpsRvmmQwR6XQ4U4g/IR2ABTVGjzZxTvVYU+MevNGB8ru1U5+xRdIXERhzTf
-	a0qt13gDR+aT4DLa8EN4NutThXFMPGXdJjszegR0vCUWDXD9Y0XUydUSh4MIzrU0XhAgs5
-	/x8Uex1xKskHonnXfhWcoyL9xruY9a4=
+	t=1780675395;
+	b=zV1zUJOFiw2sd/h9D5stN/Ixxs7tpqDo4zfBkgVy+dJ0YbOsSEzGnx6mqjZhW3fteRVakJ
+	Nu6K2hpO7cVHeLhOO41n2gWijMS/41Bu0yKNZcwLuxq9eN51HccKwo+6chdRtrds3CiEj+
+	WH/DEmTUAUNmeGdTw3ohpJ+GlaaEgAc=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=SINscNok;
-	spf=pass (imf31.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="W/564lmP";
+	spf=pass (imf28.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780674868;
+	s=arc-20220608; t=1780675395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1hPSWEkREGIx4yoYWkytVFmLCkNUDGfpLW+35vC71FY=;
-	b=mttQhRzEHaym4lm33BAy+uic6Ga2GlCV9/2TJgaS8ASwmSKMpyGYyZPJ9kgd5FWNfbtwyH
-	ydc/DYYOUKxJ2kzUWQHCV2mVyEUz3K2+pNQmRFw+p1Nmobd9VnMA8ffywcjC+xQiAO8C8G
-	uwcrbjEh0NjqtQXvGlTS8iLHEb940ok=
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6914a658115so58003a12.0
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 08:54:27 -0700 (PDT)
+	bh=y6UQFMgxs4xPTWbEaYQXP4WreuO3V04h3DiBWisQT8s=;
+	b=Gk4QvoeD3sbcZkYfBu5ImRl99eiQL26yJkl2I8W4SZnYKIwGYtqSLlitRn/X4fWRsdgIFE
+	fl5HEqDXgP1AN1Nr3s81K+EacQ4qxfdxtQfkr9calTFB4903pkd4KIuVmDIGaBNOg0jL6T
+	yC9aWfeI9vyK1ES2PU/gGy7ds3N+45w=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-bdb3fd39045so267033566b.3
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 09:03:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1780674866; x=1781279666; darn=kvack.org;
+        d=linux-foundation.org; s=google; t=1780675394; x=1781280194; darn=kvack.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1hPSWEkREGIx4yoYWkytVFmLCkNUDGfpLW+35vC71FY=;
-        b=SINscNokwFFAeQycDM6VXqp+0qhS6DtYMS8kduzWQcStpZMXrAAK294RAETT5wrmHR
-         Xgje2vogWgZmiYgVeSwtnPD/Hze9GrHLojsQy707+Tc27DxW/VZIxPy5aeV22Wv57Yl1
-         efGyUbFtIu+2ZxaDwu2Ovv5kJpY5jr+uZ/Ni8=
+        bh=y6UQFMgxs4xPTWbEaYQXP4WreuO3V04h3DiBWisQT8s=;
+        b=W/564lmP4ph8J6t3Tbb4RIt7MoHA9bGXKz1hh3edMsloQtFAeO5JErbJxKfNJDwBVd
+         mNkYqTWIHgjJq2hGiNTGnHMQVb34rqytvBYNxbCD1F5rpyF4qN3yHqjxSvHcYoK64Qqs
+         m/QQ0YdzYfTdMt+v54BVe/Fx8LUAnjsLtZcgw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780674866; x=1781279666;
+        d=1e100.net; s=20251104; t=1780675394; x=1781280194;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1hPSWEkREGIx4yoYWkytVFmLCkNUDGfpLW+35vC71FY=;
-        b=ZAX757ERiYbIq6OuhZJg7rF0oV8u6cHsiB1dC4r70GHdJ93Efopg0XzmJX27OoRc/K
-         cz5XsCsk7QinE1PQAFm4ZSQ643KHXXc8E20VVnqAReBhBWeJSdigsK6c6zIfeH0eXcAx
-         9KmYwX5/UfkBUpw9Uv8bfNgMMqE984JnnaR/+BrolnqEutYt/GKH6nvG8G0cbanx9O/g
-         ClhEtLO4xNycNfdFsxMmpc1OvXMGHMu/QVcKVQeBZJ7ye2NB6BM35coNMLZMwEQuMjAY
-         PF/8rNIPVASQysB39E92bMGz5cIRPuQqtpQ/3GUSRPNSACy+EmABIbloNLvUggPmW63M
-         zqTA==
-X-Forwarded-Encrypted: i=1; AFNElJ874oM0aiExwrthEpVRFuJjpC9Mxwq9pkFhfrBNrQkVT+Tq4E5NnNudw7NHYxNeCxukU17a5XUCKQ==@kvack.org
-X-Gm-Message-State: AOJu0YzNlTmT7rMOvVuymSNeeQSScctiPKmqfJeFO/z6gQ3A+V3U/yBX
-	iv1GuL4GnRr5Wk1MfVYh6nlBYL4LtH8lOMsjzEox+PNqZ/Rj20fj20PMVJKzoNgjpv6o/1737/3
-	kRVfujNKXCA==
-X-Gm-Gg: Acq92OHNDCuER14YHud2H1Q+RCQWqjqwnnM0LK7D7VcJhRsR9gAYy64wwo2PstKq2cl
-	bvQt9MmXOc9SNq8R7ycW/PJVD3ZSjV+G97asJBMLFKsdsSfoM7x0TqUBGGR7Kr4IlQ5v1V7yHRy
-	StAnipLs4jYx+mJS57zsncliB9xtV/xYEwGPfVW+VbmOPaS3tr/rhl9Ht8zhp9jnkldk7rXILLi
-	x/5I5rKttqFaNdXhDNjKeOkmGyZKD9rSrwJLCJeYTKuB+kXIYInftc4jQYvJFasoCAxyfSjGAVX
-	U+roKxR9dKz7w7CN1GXoKWdOLfAdu7pbySzUJPVoRVcLV+Ae76V0q49bWVKQAAOOyebgO0VsHCE
-	eVDf4wMvt9agw+ZXaRjfp0xNkLyqLy4zMgfILuqxJhkswrMgLp3ldeClFTEIzfoYfovNfAs2RLA
-	YjoHsVMptk/ytQpA06RUzmwq9TJ0A31FeocLWrzljIsm0y+Cmp2y271iA8O4m+YWC2Qa2whQW11
-	V7LV/QTNqo=
-X-Received: by 2002:a05:6402:268f:b0:68e:4c0:f599 with SMTP id 4fb4d7f45d1cf-68fa4c16b80mr2156480a12.5.1780674866047;
-        Fri, 05 Jun 2026 08:54:26 -0700 (PDT)
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68e65c542c7sm4074576a12.31.2026.06.05.08.54.25
+        bh=y6UQFMgxs4xPTWbEaYQXP4WreuO3V04h3DiBWisQT8s=;
+        b=oJ0DThUPo9YoYRipLmipX7CNHj/uHbQXXxcr5RIv7WIRpZjx3zMjl4VsKvnBgTElko
+         O/igsjcRkzPeKYliD+76l/2V9OubuQpAIulXGc4gnwk+i8VtL8i87Unr4GsQ2VB9s5qK
+         zh6JrFaTRxmTwioMU51/Bw+Dm3ZoKe7ukCMBJwUckVX8OQSu3OsQuPOP5+CE1JRyPxXM
+         ZubbBZb3GLfxWPmToJpJ1dSHiq9KG0kOnSNjUXQ7aJNAPcJBh0xM9WGP0PF+tKFu824H
+         LQiL9Cp4DUiVAenYcofdAWAeXqGSTqJ72POSaQFVf3dNKWKuWwijlvMIs6+nsnNmOR+7
+         bZLQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+4zDhZrhsvmEGlJkNXGeqq/HN5tQNnz34Yh+uUeI7N4Qp+3E6n+AMLLY+sGW/CHF4KXH+1lzDgSg==@kvack.org
+X-Gm-Message-State: AOJu0YwI0NXAyFmkfUH8bDDTtCxp9aFfL9dUxTaTVMMb/CTfqd4yHubG
+	yYzjUXeIuOPUsU1t29cL3uFNyAwpoaE1+FpXbr63C2PwjkUXc4iV+RrnfrvOuGMJXbt0AP++byb
+	KRiao22zG+Q==
+X-Gm-Gg: Acq92OFDaX3orsteHxhMf0ZVk4tlMXq56AaXcx9Sa668+WWHwhvJdDJH6heMPtUBzve
+	gYlR/5MflKd65e2nvuoenisxsTk5Uwljl3vdaN4AKly2sCxrD3sZwfL97hMeBpgzvW3/9HHlP2Q
+	ixDbybI7AX0K+qGimvZsOWhopBYIvQT/ydf8p2FCruHe/TT/7P5x3U6IEmjMFJRwVl6sN7fbgeQ
+	o0maf3lQGExVOVp9Mw1v2f3/2AxI+YhIaIcwxT05868fYIVPR+FQsIeWV9brhJ8YSkRXQlSFlqI
+	hAB/6uKGb7qjtMLUeHK7ncPT1IPz9hKPU2k/bPyKMLR5CWCBoqabdHwZ7lgr02ng44RcMiCy8Y+
+	j5QazhaSjvACPRq37r+ZOnGFxr/Jm0MgRDYbetV9NkCAJW4ZOILKKCSpQh5XpTMqYHOYXcQ61kR
+	hRQSyYxs+k1b9/BF89bO8SSkVr15qOzqbAvHdJStjLUFcGUpg8wOOZ/BhYTIGP6nR9tHTXcH5Cf
+	EWRgYD6p2c=
+X-Received: by 2002:a17:906:f59f:b0:bd4:8b66:334f with SMTP id a640c23a62f3a-bf372931c66mr238346566b.33.1780675393210;
+        Fri, 05 Jun 2026 09:03:13 -0700 (PDT)
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com. [209.85.218.50])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf054e05199sm465101166b.29.2026.06.05.09.03.10
         for <linux-mm@kvack.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jun 2026 08:54:25 -0700 (PDT)
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6914a658115so57967a12.0
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 08:54:25 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+6jQL6XUPOHCqRB1CMRnBXScSf02fR8TxjD95/u7ZdUy6Cfzkqo3VSCLo612c4tbUXUi7P8TF8wQ==@kvack.org
-X-Received: by 2002:a17:907:741:b0:bef:d760:93ea with SMTP id
- a640c23a62f3a-bf37234c965mr227182666b.30.1780674864895; Fri, 05 Jun 2026
- 08:54:24 -0700 (PDT)
+        Fri, 05 Jun 2026 09:03:11 -0700 (PDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bef47b1ac01so334825066b.2
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 09:03:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/+uxa/bRM+Z3O4T/YAOntrHg3GRMqYb4BEpEaCnHWZxyLxJiPZO3jfVCodnpjxxxKKQPOJPf4QDg==@kvack.org
+X-Received: by 2002:a17:907:9686:b0:bee:323d:1239 with SMTP id
+ a640c23a62f3a-bf372e1e4fdmr260752266b.38.1780675389972; Fri, 05 Jun 2026
+ 09:03:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <f919874c-065e-48be-ac5b-300c4ab86d4e@samba.org>
- <20260603211736.755139-1-safinaskar@gmail.com> <20260604100609.6b37f500@pumpkin>
- <CAHk-=wjvb56qo27-axALOKCY-CjLsj9_294zeBovPVJaYm14dA@mail.gmail.com>
- <20260604183829.63c35fd9@pumpkin> <CAHk-=wip3mwLOHOYJ9TtjDxOaq9YUXmuCg2AycyASGgeY6qqUw@mail.gmail.com>
- <20260604223216.73468830@pumpkin> <CAHk-=wh1Avi8FGbWkt9k0Z-KXWB0spo5mQyowO8PB2sJ3unbkw@mail.gmail.com>
- <87se71jps4.fsf@oldenburg.str.redhat.com>
-In-Reply-To: <87se71jps4.fsf@oldenburg.str.redhat.com>
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <20260531010107.1953702-3-safinaskar@gmail.com> <d9806b34-fc73-4878-997a-95c5e8ae4b29@sirena.org.uk>
+In-Reply-To: <d9806b34-fc73-4878-997a-95c5e8ae4b29@sirena.org.uk>
 From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 5 Jun 2026 08:54:07 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjkZSAhxykvG6tQM5DnBoS30_XCKkYpCsQwEGcxJb=i3Q@mail.gmail.com>
-X-Gm-Features: AVVi8CdvqDsmiM-EYrTUflKR5aYKg4JuQO6h_hoIzVtXJtUhEM3tfPOlti75Shw
-Message-ID: <CAHk-=wjkZSAhxykvG6tQM5DnBoS30_XCKkYpCsQwEGcxJb=i3Q@mail.gmail.com>
+Date: Fri, 5 Jun 2026 09:02:52 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjBZAzPdZgEeHAtSiwJpomt8ZZgKbixuiHfRm09a4=PtA@mail.gmail.com>
+X-Gm-Features: AVVi8CdZ5f-_r2ry70kDuq_xsye2rLgypwsymONxqFNfT92KlgrDUIUXs4-jBmo
+Message-ID: <CAHk-=wjBZAzPdZgEeHAtSiwJpomt8ZZgKbixuiHfRm09a4=PtA@mail.gmail.com>
 Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Florian Weimer <fweimer@redhat.com>
-Cc: David Laight <david.laight.linux@gmail.com>, Askar Safin <safinaskar@gmail.com>, metze@samba.org, 
-	akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org, 
-	david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
-	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de, 
-	viro@zeniv.linux.org.uk, willy@infradead.org
+To: Mark Brown <broonie@kernel.org>
+Cc: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-api@vger.kernel.org, 
+	netdev@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, Aiswharya.TCV@arm.com, ltp@lists.linux.it, 
+	Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 036192000F
+X-Rspamd-Queue-Id: 7F4DDC000F
 X-Rspam-User: 
-X-Stat-Signature: 1ygkwzh6hwrumu733cq396dio7gj7m3u
-X-HE-Tag: 1780674867-617707
-X-HE-Meta: U2FsdGVkX1+FPh9q3cFZF4KfGp2b2xfy7UdWQYuPNZcrhE97ATIeNNDdeMFgGfT5rjcM/Ej4i+NcSPaWbDqxO1f3Qo21MBefJcQwyuJDsz1VBuRISneOAcnAELgJQ6JdzXylRo5ONg010ZO4XYbQ6ottsqjqaTGw0ucy+3nKxVoG9kINF2FZ6TpsofHMzfg9eZBSsLdMa+tOR2VsGtFRb63/JzpoxMYTZ0ObtYP9e/8J/WiLAKCIGKyFCUmwoRz4YzFwe6WZgfT9HzYrHNjV18c991l0KhsPh/6zLQqES8vpZa1MY+vfMet8s7wAZvQtLjEOiaqctTzQ9iSLYUThrS1ToKB/OZAyJnt24te0torzAlUtbGInvz3I4zN7dOXNBYVrVENUgQrQBVSl0mhsW1SI+xfE+b+y7LqAAw4bsPdCfYFZcwHA7IR8mo1UXk/T32I9D2Y4Vv2hXvvYED4UhoK990KmPa8MJ4j9G2LvAAC8WGM1yuT4QrN7JdqHoAqllt5bYor1P8rk3sitmKE/wBMO83oKzOAJ0dgCBS6xXteRoHZJlZoV9Z6lKcaJLboDGem+h++BJACsZuQTxaCYsxS68nTc1kAW6ejgJ4+20s+ObwVks9t4s1ol0DCzjoRLGNoxndJkL0/rGEnfFXolc8lzomQNLpqhrO8FikXN8tDscaHjBlL2k7zEBegovDTPOArqDDQU6ZQQHeQzwRvssCIyp9ZP19TwwgvCghEBMRZQv8pNTEF0z5y6TrGTSyBST73Dl/oAjW+Y8rteIJINiH5XBLTv/5FcRLCpBRum1kGyEnGIQRyNEctFKAms36BGvy96lnV6AAUbzfvuLl7ueBQVHt9AVdAovHYVFisxxJDir4Iz7ej/nuF66GC+SZyp60kUDf0s8QfVZxRQUYATFgef2bq+t4ggJsZ76Dl1LwGfLQWgkm5Y9DEgtsrIxdKdzP9NM3gLNP0nx7WK8ir
- v7mT4L17
- 1TSFqNZHfi79hGlHQEBQptLhDWxNiQ7GPjPpAV/UMGWGUMjaV5WnKiaCQhFOGbtHf03Gnt+m9N/OqUG3RPP76kG4WC/Ai+oHf/W39C7lSWDImaW8g6mW+v95xdvwlOnb4i8QpJIfXIbcIzC6lzgJxsOeWR0Bh+r5Lpy/e9az5AX/0ydGzMZjYnzaa7K9wgGf98WhUIjkzSSIiwrqLDubR/jrgwCe8kF/euu522lVHRD7eAGEfJHaXsV1NANBhYuB6TnBDwLYxCfbyx1UFOujVGljF5auqmiR956rmfZz0K9KThYnlo/kp1ganyUgqqvk2LCbzth1/RfBisGGH+7ntdAcMV7E4O9VUn1Kmee1MnyJtDGjZWgVbi4b5CbK6kBi28d6plh3TO4y5OnlqDhRULDt1MW14SHVCrHHQaEbMSR1U7n/EMIoLOKl8HG2PLw1Y3U8hVn6t31z1zoNQPzKPlJC1SWLPEEVdv9SgiqfSX3uoyKN/OE3887PCt/5YH0JDFr9CkyFgCfYajt03ZT/VXByuAucCkiwKeyZxJ0KEK7nzu+aw1qYZt5YnFyLJ4mrVqHR5K6OHeVfoAHfqcT5ryzen1agqQq5vZxO8
+X-Stat-Signature: 7zjpgpos8788osw8rywyuortmrafx737
+X-HE-Tag: 1780675395-980237
+X-HE-Meta: U2FsdGVkX1+OutyC3JxEVKeCncm1hcUtfvHsChIWo9pwAjPpJIHuOcOiNftyr9AeOFBk3BoPjuFQA5StELqaTTS0LsuNjmqR2eRzlINMAyYlBDCqR3AqI3QDy2F3cTS1xKm3GPj07wXNojtQ/JZ5iCPwQMe4PNznefeffNWnl6dtjwiQODttRDp0xHaRUVballIW5ceg3n2AuWG25FvWhDAlHNVfUH8sCK/1YrkbKtatJGbcjMeTbF+nMDPYJyCKl3IIIa7d2E11XnkvUo+SX/jQbK28fzJfVzJ8hvtzzG/3lBqMI6tsQkQ1n08+q5mhasw+I8IDT1kAgwdCvHHn1T1NX2iuZyWn893cXA2P0hblf2rEyaq48t+rhqCivndToK3+2zo3jbMF3KAFN2Zhn4D2KTRLTTNyKMuquSYFm8O6lUJrXpD7G2IC6dseN1fNNlbKnvQccDx7oqC4Ug5TZ+08/hNBvb/EXrFn/aT9Ao50AQnzWXRMeNLVM4UJ6bb1LRa9CdVhCBQtx+v2yMo6GJecCLQfphYemEK/auKLjT+CKLIGiUl7gMrjlUwqYLGJMp9YSEdo6PcCVYGu7DrlyW0G3POD46p/qD6IOdmwJUh9nVW4YxIZnvf7v32xGGka4V7Qa0xDimFhqOVHaVfzzA7B+GfDf6YiomZ/QoGso5UnCvuB7iw+ppwrxnE1NlEx9QfQXxWThO9/yLXecajf0lBb11SBq1Amzz2PMITH5ZkhweEicx0dUsPtUXk+sVxB6PEvjUi52cujXCD8TcZatqeMnAv85tPh4r1vFYPB6+kPbYVfBzlNuUWb6rXOB2oUeP1HEN7vhR6GtvZwISbdFdyJBvIu1eCe2W3KANDDhXCNpNlX+R9JyLGkvKxPKOlFxsRQAKwdb32tX6uPT5fMVG3U4f9zkDUnFSMD+S8M+BmUlpfKyvS0lTCdNFPExKrpBje6EA27m32I4xiq4LD
+ LOA8716J
+ Od0VRBVwIKKDolic5syOn+iNzThqIykjiNZ/TpEtQCZWN1R7Qb5Zp2zxVdn6sMxvsbr2A8zQuR+4BB2M9XX1252+QlKkeTTPP9N7U4L39kKoJ//fAg5HoM8mZ1O+EYZXQyGme5MZfHVP9bp9H5QyN828xHRE2Q3C2iq3NwsBFL1fwWOLU46CUu8lvdNacDiNvPResyYFYVvgXqwXM/kB4biWmI4fBsyPbyoxhIQ1XTCna+cFd59cTfYwSo6Wr7xk8NcRr1rIwVY3+sAT8apNPKx8KzVSiV/wi6tE6A2+2Hz32sHbMpV00Pga+UzlGx2t2/67Xehb9inFOosJFKCihDq6TAHSSmvRRdJofJ2paSlB4/19s070PNdhNr7T904miJqKRTM8R4Rw84VX67WgtN2U5Qf9/4dxxMg81nYkBKAp20DZchhJHshkEX3jmP9Z/YxPzsfs8OaFy8qFvNM+0+7nkrvw+q52WShFHV+UgCVWWCNI+KTzUiQdDbhuYWGT3yUKvUKXCuI1qaUbqJo1qT4akk0izqa5hfEF6wZ7t6sdYNoSP9dLzPb9LgQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,39 +130,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 5 Jun 2026 at 02:33, Florian Weimer <fweimer@redhat.com> wrote:
+On Fri, 5 Jun 2026 at 04:02, Mark Brown <broonie@kernel.org> wrote:
 >
-> * Linus Torvalds:
+> FWIW this is triggering a failure in the LTP vmsplice01 test case (which
+> sends with a vmsplice() and then tries to read that with a splice()) in
+> -next:
 >
-> > x86 really doesn't *care*. If the caller zero-extends or leaves high
-> > bits set randomly, according to the x86 ABI that's perfectly fine: the
-> > callee will only care about the low 32 bits. So the high bits are
-> > simply not relevant for the ABI.
->
-> Please note that Clang does not implement the x86-64 ABI and requires
-> zero extension.  We see increasing problems from that, now that we have
-> more C code calling Rust code.
+> | tst_tmpdir.c:316: TINFO: Using /tmp/LTP_vmsp3vEmQ as tmpdir (tmpfs filesystem)
+> | L4471tst_test.c:2047: TINFO: LTP version: 20260130
+> | L4472tst_test.c:2050: TINFO: Tested kernel: 7.1.0-rc6-next-20260604 #1 SMP @1780589917 armv7l
+> | L4473tst_kconfig.c:71: TINFO: Couldn't locate kernel config!
+> | L4474tst_test.c:1875: TINFO: Overall timeout per run is 0h 00m 30s
 
-Uhhuh. But that is only specific to 'bool', right?
+I htink this is the same thing that Christian already noted (he said
+"reported by David", but I don't know which David ;), where the
+vmsplice() writev() emulation was done as a blocking write, even
+though vmsplice only blocked at the beginning (ie waiting only for
+_initial_ space to write, not then blocking afterwards).
 
-If it were to have the same issue that powerpc(*) had - that 'unsigned
-int' has to be passed to functions with well-defined high bits - that
-would be bad.
-
-And I'm pretty sure that clang doesn't do that.
-
-Anyway, for the kernel, this shouldn't be an issue simply because we
-typically avoid 'bool' in arguments or structures that are exposed to
-outside.
-
-(I say 'typically' because I'm sure it happens in some broken UAPI
-thing anyway).
-
-                  Linus
-
-(*) I may mis-remember. Maybe it was s390, not powerpc. The s390
-compat layer independently had a similar issue wrt pointers, where bit
-31 had to be cleared. s390 dropped the 31-bit code entirely fairly
-recently, but it caused some "interesting" code in the already
-disgusting syscall argument handling wrapper macros.
+                 Linus
 
