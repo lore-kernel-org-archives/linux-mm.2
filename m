@@ -4,91 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73918CD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 10:07:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6257CD6E5D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 10:08:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF4D76B0005; Fri,  5 Jun 2026 06:07:35 -0400 (EDT)
+	id 1F5946B008A; Fri,  5 Jun 2026 06:08:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7F066B0088; Fri,  5 Jun 2026 06:07:35 -0400 (EDT)
+	id 17F2C6B008C; Fri,  5 Jun 2026 06:08:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96D7C6B008A; Fri,  5 Jun 2026 06:07:35 -0400 (EDT)
+	id 06D626B0092; Fri,  5 Jun 2026 06:08:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 834FE6B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:07:35 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 13DC5163C41
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:07:35 +0000 (UTC)
-X-FDA: 84845432070.27.374D81C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 889AF80004
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:07:33 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gfHC/39l";
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780654053;
-	b=pQJPf/uuQc2dAwVv1/4sjEr8+MCHzGBENhKcrKPZmUZTCcSUl6x25xaGu2JkWk0y0sfI2M
-	weX02NvdIb9R0k1+lx1RUokbPYSv/z7OTX8wRtNjf67cixRKrR7OeHwQ1qg9ZuzNO0jFHI
-	6BuE8IzoMxV5rWN3pUdVD9pq+V2PZCU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gfHC/39l";
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E632A6B008A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:08:15 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 82F6F93CEC
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:08:15 +0000 (UTC)
+X-FDA: 84845433750.13.A941DE2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B263540009
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:08:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DE2kG58h;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780654053;
+	s=arc-20220608; t=1780654093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QDWfEtj/uv2UeI4MSIT6eBgOcKQg5g0Z1Ndc4JZpq2Q=;
-	b=aO2TEm/ZO3f6jHpuft/zo4C7vHUkvGyEv5eLpXvMSwftJZHbGWhf3Q6Polzs2c7CIkvn7n
-	biwLOWM+RMJAvRXB/tKO0QoSNkEYH48zWZFmoiSvmM+YDjZ0dy7jdCl56RlmbCCI6k5QPQ
-	LdziZWF6EiUWQhwxKJ5fjU5ZqGBszE0=
+	bh=I5VqecLRt7G5iGb70TpzMF2J4Qjuy+1vUMH27FXaf78=;
+	b=Ft04IBymuSsgaDgv1dLvrHQOo23WU0mGf44NucCIq+vN5E3w6gLJT7auHoqEwVgAElbC/q
+	GWUzHKvvpn0B34GaiYujcwDPzOsJ08T1Jyw03YLEPmnvCfOVwoTjQjwsloFe3kEvuVomBk
+	Mo33hKx4BrifmTJx9/w7Ewl5WBJk83E=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780654093;
+	b=wLYlnPifuTkhYDBzBK3pAjudKWOqx6OhROwLesy5hI0UOmnVel7anPHtMeb1Gel73q+fuJ
+	Yia4npXPggQ2jXdK0anrCmq/sablBOtwgA9HVI47voY7W5syMwrOcjhR4706gv71NhPDWs
+	9s2qG5+BPZwB456cXkhDIYB4oWDT2MI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DE2kG58h;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E40F7601F1;
-	Fri,  5 Jun 2026 10:07:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670F01F00893;
-	Fri,  5 Jun 2026 10:07:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B41CD408E8;
+	Fri,  5 Jun 2026 10:08:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC571F00893;
+	Fri,  5 Jun 2026 10:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780654052;
-	bh=QDWfEtj/uv2UeI4MSIT6eBgOcKQg5g0Z1Ndc4JZpq2Q=;
+	s=k20260515; t=1780654092;
+	bh=I5VqecLRt7G5iGb70TpzMF2J4Qjuy+1vUMH27FXaf78=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gfHC/39lBZlUSNCckLLDS7HF46/GQxX19IkSby2aUztDE8K7hPG+MuXxXId4/Rz/l
-	 9lnIb5AZxQyVxYh/5z/3cMSjEhKE4Guo1tNieJQxhbfkWj52SWhz3J1sg+8o2/QcVj
-	 1n8G9Cj6Eyq0NQQtaYaMoHl1iHdWvrRYvUzcjA49Rzm+B4k6P/nsugJHIYzPS2ClQ1
-	 dJvTr0Oz7PrylhrISfdyaJzJBirjDYk+uy0yLImiFtuC5BefElHO/7pmhVR1IgU/n3
-	 8bJB7UbQQvHgnlDDzA052a4Qb34uEK1uK9ADMffVc3MmR5SqEZh+1upTkzpo+BDhhV
-	 QhA0H9SveSkKg==
-Date: Fri, 5 Jun 2026 11:07:26 +0100
+	b=DE2kG58hMxthGFnLTKM9WgyXXW0z/Ih2lPXc1ijI95aFcx2R7AziaFPmXqsNZ3iEo
+	 GJgPWk5slRIzPwDbGO0AL7r0+PbMGl0PHsUB5OtVy0oOTph7uJNMn8sFlSyIW/eDPU
+	 VjOeQjH0eVcLx3V6XQwfaEW04TFaTMRsqDxImeXLXM9YGApwhre4/PuiZboowesG+q
+	 PGQzllDWMEEz0pIBeeiWsdy05fSAGlpHIlKQTq4fd6LKW0Tej7F42wt9eTt8sQvn8V
+	 Er3vsj+ZXmfqiQwrPrmtc0ZsIGnnYFk312C4Ww2XJq1lNttvuHNlzozmQErjtzci6D
+	 fwBQzxAn0xlOg==
+Date: Fri, 5 Jun 2026 11:07:57 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, SeongJae Park <sj@kernel.org>, 
-	Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: use correct flags for device
- private PMD entry
-Message-ID: <aiKficIP-akvSQAf@lucifer>
-References: <20260601083044.57132-1-ljs@kernel.org>
- <73762983-d48d-486f-ad5f-78015e6f95ee@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: xu.xin16@zte.com.cn, tao.wangtao@honor.com, catalin.marinas@arm.com, 
+	will@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, akpm@linux-foundation.org, willy@infradead.org, 
+	sj@kernel.org, kees@kernel.org, luizcap@redhat.com, 
+	zhangjiao2@cmss.chinamobile.com, kas@kernel.org, hpa@zytor.com, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	jack@suse.cz, riel@surriel.com, harry@kernel.org, jannh@google.com, 
+	jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, chengming.zhou@linux.dev, 
+	nao.horiguchi@gmail.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, pfalcato@suse.de, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, damon@lists.linux.dev, shakeel.butt@linux.dev, ryncsn@gmail.com, 
+	dvander@google.com, wangzicheng@honor.com
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Message-ID: <aiKd7tfrICFnlWxV@lucifer>
+References: <20260604111035154Lk-9ZgwKY4Nlk4zz30U1t@zte.com.cn>
+ <68a4aec0-72d4-4967-b063-b57cc7ee40cf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <73762983-d48d-486f-ad5f-78015e6f95ee@arm.com>
-X-Rspamd-Queue-Id: 889AF80004
-X-Stat-Signature: jyd585fqe7iyaomo46ri86yfkb9sed5q
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <68a4aec0-72d4-4967-b063-b57cc7ee40cf@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1780654053-328236
-X-HE-Meta: U2FsdGVkX1+U1b6LBlwi7acp3dspBHNu0B6YhI9+jd/zlOpf/aEbK8us4U0G+SY5i1Xb/NPTttEcjnvoR/e0Ghejd2kyb/OJZCNAMz3esmIEWjXNfXZZvH+RgV0h5E8GI/B8E7hYVEZ/+kjKtGKGuxitCj4gWzk3fKJD2XiO6dr/wNTcmQZXiebIfdf+j6z8xE+y48UTSNflt/7NMyhNKZFkn7qAfzYS3OWAAF8UJvf9AXCfixDPEtnvrm4Uz6jTMSnIIgw2MZ9QUQJAWhBEDWGpsOqX357aK20NSxE1tJyn4gym6xh7vAfDAO9nC1l7xYCxXGKJ5NahD0MABhLdWyyb8Di0PZ7iFyteG3DhR3eB5utynIgN2WJNdGBaDYwQ7uBWAz11X25mPexanzWKfFFg/gNjzkCGCXJQ//jMPy97Sz8pOLITjRboNXC4zVua/x0djHIFgDeqmTAfMWIv9AqvzkMHFLWOOGShF7eFiCn0lbiqwxWiPs7PpOW/jr3Gk2e6TqlLDBswNESWwjp5er/E+jTjKA/8JfwLamr63jfMlghahaeEk5yPtAdCC6yeGOJ0CEU37VE8hJXJxaWmiAjEkZOuELwn8s3YfWlYbJksTSzGsW22yLq6cNClkvdnr+6Wh4LtfPJhVceweCObvvjgDy/skXyQFEkoJcv6208mQnpPRX2iOhIlZ+d1pJ13u3aoXLGIGEb+ruWS4yxxjyLtULOhoev7F1yzmrOzRaud8syeK5hiRge8YWK8TEwAXKrDkG8MqlIq/6hg/yjicCcekA3JTYIu0bbFSuqDpl/iF/OVW3fPX3lX41hGvAsz6lpDeeOvO9yWrT/P0N/Hgcx7f6Wc8L8B4gQEhQoElTY6qPTLgGZKXW+HPzbkku5Yx+EuP1s3arJe/JXR6Tu8ksclFYHXuiF/MWj5fpIbdwNOwJ/4/tZyWnHUZZp5U949LIVI0axCEYvxB63iaTe
- L4wPQ1MU
- I9CfDEn4cxj2KB5K0Coum0EtVkWyphl5Ks+DVtvVwU/v4ELDN2Lt+RMBQHROWuHtCdluEaXWbdOAyqmcitj52VxPKlG8Fk2m0fTWcOZCtRkRPMmpWVK2pe1FmtSOvycU/L3MNuDmoolioYBOhIzw5MHRJdhj9aWzCGsPTITCfTSmRwITKBLjrXGFYHOaAvrdQnQ+dGpQoBs633WysMyVIkPCCui6mwbbdcqTaLkNH3o4KZgksbodkY3m/C3JBsCKxjp5TbFCX9T0ggahGZP0k3Ow5mDhmeyUNFbsGbI7F1D62LXg=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B263540009
+X-Stat-Signature: 55etci8c66pyr4bwc6tkmjsgy1msb37m
+X-HE-Tag: 1780654093-8902
+X-HE-Meta: U2FsdGVkX19O+F01qsTU2pNX4fwWufi6Wh4chtKWgUjjNwNuA0XLSvOFYPH0lg9YiWqBpOZltIRnYMn4tR7TkN52xr4dKLbMNAg6vIl9pwh4TAi+QXmDJuKOF4XFAoQ936IYanZ0hxjJE+s8Yf/eogAboDZy5cjDSJcGD6vqnS6ZmYVLsHa9Y3n/vKM7g/Xqv9qHc4+4+YlEy4dOtduf8kxnAKBfylMTtacU8eFSPo+vqAtNyjvbEEFQOJVCaG55kldBXAvYDp97cu6oNI582PcnYPt/cFMwk7ULlEWGPwJ5PFGs4P82aTLkbmxxEOm8qP0ljnmBcARJbapHvW1+CVERZ5ShFaMlvJeksEd3xNIBnf52tudkOPvJAizQ54oiatWOnr439uoqex6UPIp3DYZ0Af3yPUk/24iovzKVXhJV11kKSDjvUruc8KB8SkYCGYk6ahUku0ovjYb8ffXV4dtS0y9XA/jWE2Xu2EQqQVBcfL/72/9AbPa7yeHOxjWCX/FEeaxH0mmDRJioG3Bbe4228FVmH7YsmwyRqV7E70im9UyySSRUrysQohyiNGSQKvPSgfFEX0T3I0DeyFAsFuEbhZHIQsXIKm54TEGpdu/PavgitPFkUvilnxQmEOPPecxWKd7xOJrewBQCG7WyZgzaHXHmzH26ZhAXypvNHhiXKtAUGr7eKw72OqsumrGwrg0yl4sJsQTusoz70Hy8a5ZfT59kyBMgdEF0wQJKF2J442XpA5BrludyhTdTEn0ztIsiiIuMT15lujHKS06u4Ltd4NZF2p6fY5cY1uJKD5juL5qlnez5VjtoP6WvEeO1Gi+xarhBcExcizwmQpXhSVTQku7rcU2PuUCuXLz7xWVVBa1oMZUuXcdUb1An4X2SSU6vI65V1EOucyzZD28q19QK/lwKTPZZsgyUlrBtrdP4puv0dxk18U5qLZOROxXZ+o3i9qvylB1eZO8ha90
+ 4qZ8UX93
+ F+5TTyg8LXs/dkExk4bQ5habWm+OqXymAd4VdpeWJlQzOaPW2m+2rX9PQJ1ZnAGPeDeTkydVfjqPry2CHYh9N8Cijc4J2isNsY3eTFaEQE8Ksl9OdedcfE9tGwSlPvMP5lHwTo9uc5Jgm1y8cMEDAZxFWSzjEde1cqIwqYSbKsMI9xgIzkaneNiPEyWingIZTJQul1kIzmW3du1OmHKpqT1GYLvxojZaAYOhBhs57KH2+2buVX9BdzQHq+Th6C3ZNyhaB6fnq2YtMe9qepFPJ+FkLIL5Q+PYo39eF1d9u+AZhtQnDxHaIiqsr3upMY88xYMt1U0xK1reKn3+ecmUZrNXPK/Bpre0U5OKMEEFz2oReP6Bm9Iba69FE1N+RDDd3hDt4tRsRD8T8Mvu2pzUnEjpvwELR9xHBNrru2WjHIzpBV0gDLPrXAd5qzanDHFyvoHb5fxvJN9AEF/Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,14 +108,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-By the way,
+On Fri, Jun 05, 2026 at 11:38:52AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/4/26 05:10, xu.xin16@zte.com.cn wrote:
+> >>>
+> >>>  arch/arm64/Kconfig         |   1 +
+> >>>  arch/x86/Kconfig           |   1 +
+> >>>  fs/proc/page.c             |   6 +-
+> >>>  include/linux/mm.h         |  38 ++
+> >>>  include/linux/mm_types.h   |   9 +-
+> >>>  include/linux/page-flags.h |  34 +-
+> >>>  include/linux/pagemap.h    |   2 +-
+> >>>  include/linux/rmap.h       | 165 ++++++++-
+> >>>  mm/Kconfig                 |  22 ++
+> >>>  mm/damon/ops-common.c      |   4 +-
+> >>>  mm/debug.c                 |   2 +-
+> >>>  mm/debug_vm_pgtable.c      |   2 +-
+> >>>  mm/gup.c                   |   6 +-
+> >>>  mm/huge_memory.c           |  16 +-
+> >>>  mm/internal.h              | 171 +++++++++
+> >>>  mm/khugepaged.c            |  13 +-
+> >>>  mm/ksm.c                   |  43 ++-
+> >>>  mm/memory-failure.c        |  11 +-
+> >>>  mm/memory.c                |  19 +-
+> >>>  mm/migrate.c               | 126 ++++---
+> >>>  mm/mmap.c                  |  15 +-
+> >>>  mm/mremap.c                |   4 +-
+> >>>  mm/page_idle.c             |   2 +-
+> >>>  mm/rmap.c                  | 690 ++++++++++++++++++++++++++++++++++---
+> >>>  mm/vma.c                   |  76 ++--
+> >>>  mm/vma.h                   |   4 +-
+> >>>  mm/vma_exec.c              |   2 +-
+> >>>  mm/vma_init.c              |   1 +
+> >>>  28 files changed, 1279 insertions(+), 206 deletions(-)
+> >>
+> >> Hi!
+> >>
+> >> When I saw the diffsat I was concerned. Going through the patches made me ...
+> >> more concerned :)
+> >>
+> >> This is a lot of complexity. On top of something that is already so complicated
+> >> that I fail to grasp most details without regularly taking a look at the nice
+> >> figures Lorenzo created recently.
+> >>
+> >> For example, I read above "since child VMAs do not need to allocate anon_vma"
+> >> and wondered how that could be part of something that is just done lazily. Then
+> >> I had to learn in the patches that there is some additional "Child VMAs
+> >> are created as ANON_VMA_TREE_PARENT and do not allocate anon_vma" -- excuse me,
+> >> what? :)
+> >>
+> >> Reading about VMA refcounts made me shiver. Reading "Holding only
+> >> folio_lock(folio) cannot guarantee that the split
+> >> operation completes atomically." confused me. Learning that we have to invent
+> >> interesting ways to make page migration mutually exclusive to free_pgtables()
+> >> concerned me. Figuring out that there are arch-specific config options and
+> >> runtime toggles is a clear warning sign.
+> >>
+> >> Seeing test_folio_unmapped() was funny, though (why?! :)).
+> >>
+> >> I think this patch set has a noble goal of reducing anon_vma overhead when anon
+> >> pages are not shared during fork. However, using anon_vma for them actually
+> >> makes the overall implementation (e.g., rmap walks, locking) more consistent and
+> >> simpler.
+> >>
+> >> Even if we could be convinced that most of this here is correct, how should we
+> >> reasonably maintain this increasing level of complexity here?
+> >
+> > Indeed, it's very complex, but having the changes of 15 patches scattered across
+> > various subsystems is really frustrating for reviewers. It took me a whole day to
+> > read through the entire patch set, which made an already complicated matter even
+> > more complex (maintaining such complex code in the future will be a pain).
+> >
+> > However, overall, I think the original intention behind Tao's patch is innovative
+> > and valuable, and Tao could definitely make this patch set simpler and more
+> > readable, because the core changes actually start from PATCH 10.
+> >
+> > I believe that if Tao had done the following, things might have gone better and easier
+> > for reviewing. In fact, I understand the motivation behind the patch is quite simple
+> > at its core (just wanting to avoid allocating the anon_vma structure when a VMA hasn't
+> > been truly forked, and instead put the VMA information directly into folio->mapping):
+> >
+> > 1) You could actually simplify your patch significantly — without adding a lot of wrappers
+> > and helper functions that introduce extra review overhead — and keep only the most essential elements.
+> >
+> > 2) Provide complete test code (in tools/testing/selftest) that covers the affected functionality,
+> > such as VMA, huge pages, KSM, etc.
+> >
+> > 3) Use the RFC tag to start a discussion.
+> >
+> >
+> > I would be very glad to see if Tao could post a simpler v2 version that does not alter the rmap
+> > core data structures too much and does not introduce excessive complexity, no matter whether
+> > it can be merged finaly.
+>
+> I'm afraid, the overall complexity would increase in any case.
+>
+> So to quote myself "But fundamentally, I think we want to find a new design that
+> is just naturally simpler."
 
-I think maybe the reason you didn't hit this in your work on the spurious
-warning stuff for hmm-tests is that I also had to set CONFIG_DEVICE_PRIVATE
-(as well as CONFIG_TEST_HMM) to get this to trigger.
+In general I'm prioritising my work, and hope to ship something within the next
+month, even if it might just be some early bits of work on this to plumb stuff
+in, and certainly the main ting will be an RFC :)
 
-I think the reason others maybe didn't see it is because the self tests
-will just skip the hmm tests if CONFIG_TEST_HMM is not set.
+So keep an eye out for this which will hopefully address people's needs!
 
-Cheers, Lorenzo
+>
+> --
+> Cheers,
+>
+> David
+
+Thanks, Lorenzo
 
