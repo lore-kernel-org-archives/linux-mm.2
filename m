@@ -4,98 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 011CBCD6E7D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 15:53:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A4C4CD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 15:53:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAEA96B0005; Fri,  5 Jun 2026 11:53:20 -0400 (EDT)
+	id 539166B0088; Fri,  5 Jun 2026 11:53:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5EED6B0088; Fri,  5 Jun 2026 11:53:20 -0400 (EDT)
+	id 510326B0092; Fri,  5 Jun 2026 11:53:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D74406B0092; Fri,  5 Jun 2026 11:53:20 -0400 (EDT)
+	id 426156B0093; Fri,  5 Jun 2026 11:53:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C75416B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:53:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6EBDE1A01B9
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:53:20 +0000 (UTC)
-X-FDA: 84846303360.23.F312D50
-Received: from lankhorst.se (unknown [141.105.120.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2651A4000A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:53:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=lankhorst.se header.s=default header.b=HKtT4aia;
-	dmarc=pass (policy=none) header.from=lankhorst.se;
-	spf=pass (imf12.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se
+	by kanga.kvack.org (Postfix) with ESMTP id 3472A6B0088
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:53:28 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E63934019B
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:53:27 +0000 (UTC)
+X-FDA: 84846303654.14.2D3DBF9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1F4AF40013
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:53:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FTVlKQyS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780674798;
+	s=arc-20220608; t=1780674806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DLryhwFngzdLEruCB/iVB9f0uVf7W+GPi0/Zb4M1y5g=;
-	b=dgAu3Uo4h7nYCM7tnO+N7aKey/UdMtB7eau7n0dI7u4Wmo7g/YMQm4VyhkNbrHUmcS6Eui
-	U9ySNfwuVEJoA4vPfmNj3GK+RBA08AqWMLqQ9qmtphevvk+rb0Swt7i9rCnYMZ5gRADnzG
-	tatz1bGyrXdb8aGezcVBZfN7l8jxZsI=
+	bh=UCx7E8Saqsm4dUn7ZhmhHh+wGg3mmDyGspPFKlQt0wg=;
+	b=xU2Fo7uuKPEGmRDXpzmmTLS/Itto9wBKK/lJrhUc6N5IYClMzcXzAq7TVgzPDlGxdi3v84
+	gbsTqa7xnGgopwbnoOpwY/kGZx73Q8eTb/Bvn/OG5Z0ekPyYJd8HMiltktLqPoktXb4oyU
+	qkyOEZFJKb5EI4MWTg7Kt0k5blO5eSM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=lankhorst.se header.s=default header.b=HKtT4aia;
-	dmarc=pass (policy=none) header.from=lankhorst.se;
-	spf=pass (imf12.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FTVlKQyS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780674798;
-	b=fwIrf5LstaLpQHbIRT//597ij/lLCZg5jiWM4Uszkr6c/Bsn9833KJBgU/XLuz2G7f44+C
-	GUC0/NKdJ5gDJ5e7FnRp44xN8btAk27jXKtUCQ2hLmnYNVNuuhP7kG3EhlwAjpNQDXyo8w
-	CW1sVrd4LNMK5dGdxnYKabQkIMrRb4c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
-	s=default; t=1780674796;
-	bh=KHV7Fhy3ZcWBoItd6My6nFLOPmYf7jB0k6jodzEWg7o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HKtT4aia3WWT2tzcVXI+3VWpQ23gDCQYrXrrNZBhkl6DzG+UDBwgl/CCMoXyPVsOc
-	 hB8jBZvWwgIg7zVTRHwtYVYMbLfzuVVJIQlOipw0ztzvLaBOag/+Pd1ydQSQglviUM
-	 LOjTWStzoANoaNrme8SUVMbfol4zc+gR9LGIfqCS6qACDLRkJIEG0hxooyNHBDJ2xE
-	 bQIoXuqoLzdGfJrs18kvYf9Gly5Zk1AwbytFbmPVuAZASDjSGS28j95+ATMW9AwW06
-	 I/2gELsdMnVao7bV2lOmZYjYguEv4V1OL+E+CNQMWP0XI32nrAm687iJWUBlUM0Cyv
-	 A+5mxS7AWf8MA==
-Message-ID: <9c59cddf-0a1b-4110-886d-477d7f334f08@lankhorst.se>
-Date: Fri, 5 Jun 2026 17:53:17 +0200
+	t=1780674806;
+	b=gdSfOXtT5Rz9pS3wOAkUhcDCmZuI+Bgc/otHvgcW0Qwjtqv1gCWKVs0lKXQdvwAAmqPIQG
+	Qy9ffsNc2ez6GP7n4Htlu7Q6Ule8Ua4msYZY35++3rsBQT7QBHuYtg1HrHb06tdpNUSAwR
+	f2nGYZWSSKc4LPwF7+bcsJTk2cICvk8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 73C80601F5;
+	Fri,  5 Jun 2026 15:53:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02741F00893;
+	Fri,  5 Jun 2026 15:53:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780674805;
+	bh=UCx7E8Saqsm4dUn7ZhmhHh+wGg3mmDyGspPFKlQt0wg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FTVlKQySSMbp2NN1U/7TLYk0uxNkzvK0wb4StT2P8Es7lkMvj5KtyrsK5m0JSX6SD
+	 s+5ztxBBVIdNyDeC1k37kBfI8Odqv2lxXjj4Sw8x4KTXMajUOY914AS0STksfn/mUk
+	 yO3CuuSRZx1sVJZckvh7GbhdbdmTS0aiFdl5NsNjX6fVDgxr3s+ZzjkSnjH04MAf48
+	 X+ls/5IlezKQNR2sZzRceVPymEsZrUhI2ZU5ifDcvCiCwRY1g8SjoOogqqJjdYadkQ
+	 b/bwC7kFyl+FyYQal3xRKU/Csk6lKlV0eDUmwirzRM2KKXtHd+afc1KEbKLFaGwa9W
+	 Cb/ORGFWkXDuw==
+Message-ID: <041ba9b4-305e-49b1-affd-079fe4220e48@kernel.org>
+Date: Fri, 5 Jun 2026 17:53:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] cgroup/dmem: add dmem.memcg control file for
- double-charging to memcg
-To: Eric Chanudet <echanude@redhat.com>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Maxime Ripard
- <mripard@kernel.org>, Natalie Vock <natalie.vock@gmx.de>,
- Tejun Heo <tj@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, "T.J. Mercier" <tjmercier@google.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>,
- Dave Airlie <airlied@gmail.com>, linux-doc@vger.kernel.org
-References: <20260519-cgroup-dmem-memcg-double-charge-v2-0-db4d1407062b@redhat.com>
- <20260519-cgroup-dmem-memcg-double-charge-v2-2-db4d1407062b@redhat.com>
- <ahBxB5a9sX9DEWvl@localhost.localdomain> <ahXKFYBdCMDBvc_N@x1nano>
- <158bc103-7f99-4df4-8d3b-2da9b04ac0ed@lankhorst.se> <aiLVbQPxK1qI1h4p@x1nano>
+Subject: Re: [PATCH v7 1/6] mm/rmap: add tracepoint for rmap_walk
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
+Cc: chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org,
+ corbet@lwn.net
+References: <202605301703094695zmVgcSC27BNR0rH0N8_x@zte.com.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <aiLVbQPxK1qI1h4p@x1nano>
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <202605301703094695zmVgcSC27BNR0rH0N8_x@zte.com.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: tkh8z6tbe1ux9jipr48pg4xg9w7hkcks
-X-Rspamd-Queue-Id: 2651A4000A
-X-HE-Tag: 1780674798-77422
-X-HE-Meta: U2FsdGVkX18jhZqEE1u9Xe/dcixwYJpo8PMh14BusyBiqKwmi432fxnGUUPxdu4U69HtNQbpzxH5gbv9fVI5dmz8ROySRe67CoLy9qf8SFXwzTKAiOJzsey4nf3pQBULrYSlF+h34jYa5E1TZjVgau42SFsr0t8RV6ez7m03FoZLbIH8XBi1tvD6iA+d3vxLuXfoDYOG+z7TmllXU02pIZx91ROLEM3n9o+rz6Qe557ug8SThX6qYUtoy82Uw9wvc6Rji/06TK78b5Z7w23N8VSSdqh3ibJ0U1HgxagSqDBfYOVxIE7PXjJq+BC0PTqd8U6k/gn2cIXeROFaa5D9KnD8E8fSkp6Wh1iWDAzJcNhb+TDSYpKtnsW9KWmn7EJ7mwnnXn1CGJ5a0c4IKmvV6L5lefhI2I25iUR6WUQD2lV/1Y0EVmmBU1oExlxWlcjKwceEWQI/2lwR33dPmQJ7BZ2XLRlfqP7+7ySncu2BJJme6Z5bbxGb5oi35xRO5gSsA56Qo9wOIBJVemitMH98lRMsyw4S7A6xylg0pMN2YSgFsTbuP9rO0dzM5QxRB+7JxiiKr+hQ1RcxJayvuzze6Afn3pjhQ0XHYOpT82QM3baA4ddbwWokVDHY+cjkL+HarRqfQbSNIMHqLGO1CoOQtNDvbV2DcjPQBitflWyUiHdWiXgJ+GzWVOx9Q0KW0Sjv1bN+hJwAa2nuER1MHHTAXalMRyCf+NXqHGFWn9iXkbUr/QrovX/YJESFhb9pdaUk48IdrZRXg5WncFWQCixwPeSJtI/P8mzgQ1CgmAVpUV0r40HdW97779y70KMmN99JRghzSWoELIo0bXDqB52ezXX8wzQy/6Trb18xU0zI4gTrAye6mN7pl7R9qs0gHiVxhxHhSW6wWpZQ1/7qijRoh/hMyNvS/fno54fGRhqbD9sRMo1ZWhpXaJ2is2eHCexHI+U6+Yl7zDokgcRoQQY
- OyTeqSri
- u0Yu2JiYAfnekIAHjKeAGGYK3T7ZgrHfu5lvlII8PGYzwLT1+h4fVRmUtzuommmTqai3uG24ipUANV/pofoY946LVrOPOM1qtNbunJtNkbpuWkpF+uUmbbm5Ym3e5VVZXzRNQsL1OA9RL6dKsDKAx+bpy0MgOanQcW524wKVSIoGjN5I8v0mDw+2cqMT5PqIkMSGNDK1Tdo3M2ZVtW5vmFYsys1SNM+rKyR8MqDiKMUNeuVR1fp3RkQV8IOu+VsGcehsjwi/eo0J8TanSVwjMoxT+tj46ApRK9mdH
+X-Stat-Signature: 9c3r3m1e76n9ja16815gx545ckiqksg3
+X-Rspamd-Queue-Id: 1F4AF40013
+X-HE-Tag: 1780674805-833596
+X-HE-Meta: U2FsdGVkX19UnQWOPyh/9sVPK1pkVAXGMm8DpZZEdeYNmE2ZHSJ3hmYouRnNQdffsl7J1BHO5HMDSPUxzMZh+4MpJyWBsoIkWwHq2o6qiCzD9lvoKLddasU4BWEaIQTbXW749SVn8xotHBK93xnVYepZTwyZroLrSOppwHC+Yn1ebgxEa5n9ReH+0DXMXRGVfpGChbsJwmm1Zo99knDhBaM+JSSWD1VewgYZOo+DcYwMdBFm3qibwriUDWRPUB1UEn6Sj7eTES+6tWje8A0ZWx1ZNOa+8EmO11mVRV7kYypnzfHuQN8nc1/GuRudejGmb9KxCucAC+U3ErTFrAGerx291AaLliGZjkW7Kh1c0oinjCPH/D+nBd+5CJi+ut3cyOWIysYtLTE0DCmsN0P6idN6mYISQ5GgpQgnmwZkVo5Dy1KaRmo4/sp17WjzBx7nEwlhQ3WqGie7CEd9g+olwWjA6fWEhd87LJBWpE00mkGa2D+98slhkEvpQWJbFTzYiQhDAf9mUomcKQ5/ID6QVa6id4GZEiSHvNVghO7dza/r5sF848C1pCt1MgrmHqVOX9wN0dfzlmb9LmyqGrXhodZMY0uxmdRu4ONIQPrx40OyEyd+51PuFmuJ1w8NgqKF31ALadDOAXxOkTZdSLWet+zfQLskXTbivD1WZLwv1u/89AIFbwt5S8hC6PotvwQAb2/otneZQtV71UaZQPk1TuPtLtoUp8Rpy25Nqcg/pbxZ8BRgxZUzEOyBe6z+DypCp5h703WdQx0i19I9Knhu8HLTM33kjoR1ON0Ol3HOcFJWtdp2nk1If8rXaH7OhMe6jIPfQb7O3LimsHPSOm3nRi5U4knY2VE4o9hF0lGpD4s91lPp1m3FypoDZwKrAesj1mjPHVF/L09RSUGnomc+9hXmPV6XilH1e+4igUsTewIGP2mf2MElv4DfnEJ8/iPC0tyFj67ph8LLWEnSOGt
+ hcdfxEMU
+ hI9wK/KDb0CNS6m8Vj21SIZQ9IYwBwfUEX7XDuqRk2Xk5V+w6MOEF0xbp4z1pE+On7HmNdEkaWMWbufdPYS7JYtaPJKLJV8zTYHqOYzUtXwUhaFNhdEBUk0Hokma7J4ysMPymPJIOnLsjjudXXffElTaLgAEbj4KU0eoz22pYpIMbDHhk1WKhL5Tc03/XGZL64Pzd8n7999mLmV+KL9x9Z909Xj/+H+Zxv0d/ttP9gu83T0QrVMc87c/SNGjtmIe8bjumI3woI6/viaJDA7A/rsEGQg2t1TGJbMLim+4uiJKOrLnct5vt3ZuZKCaA5MzzPUYnroeBv3tyJFLdif/wawzde5QDKMqOyu/wZjrCChW5mDJu7BbKmheyQQydZicAyQom
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,126 +138,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey,
-
-On 6/5/26 17:42, Eric Chanudet wrote:
-> On Fri, Jun 05, 2026 at 01:27:09PM +0200, Maarten Lankhorst wrote:
->> Hey,
->>
->> On 5/26/26 18:59, Eric Chanudet wrote:
->>> On Fri, May 22, 2026 at 05:26:16PM +0200, Michal Koutný wrote:
->>>> Hello Eric.
->>>>
->>>> On Tue, May 19, 2026 at 11:59:02AM -0400, Eric Chanudet <echanude@redhat.com> wrote:
->>>>> Add a root-only cgroupfs file "dmem.memcg" that lets an administrator
->>>>> configure whether allocations in a dmem region should also be charged to
->>>>> the memory controller.
->>>>
->>>> This kinda makes sense as it is not unlike io.cost.* device
->>>> configurators.
->>>>
->>>> Just for my better understanding -- will there be a space for userspace
->>>> to switch this? (No charged dmem allocations happen before responsible
->>>> userspace runs, so that the attribute remains unlocked.)
->>>>
->>>> (I'm rather indifferent about the actual double charging/non-charging
->>>> matter.)
->>>
->>> Yes, this is intended to be configured before the user space stack that
->>> would start allocating things is started. Once it has started (and tried
->>> to charge something), the configuration is locked
->>>
->>>>
->>>>>
->>>>> To handle inheritance, dmem adds a depends_on the memory controller,
->>>>> unless MEMCG isn't configured in.
->>>>>
->>>>> Double-charging is disabled by default. Once a charge is attempted, the
->>>>> setting is locked to prevent inconsistent accounting by a small 4-state
->>>>> machine (off, on, locked off, locked on).
->>>>>
->>>>> The memcg to charge is derived from the pool's cgroup, since the pool
->>>>> holds a reference to the dmem cgroup state that keeps the cgroup alive
->>>>> until it gets uncharged.
->>>>>
->>>>> Signed-off-by: Eric Chanudet <echanude@redhat.com>
->>>>> ---
->>>>>  Documentation/admin-guide/cgroup-v2.rst |  23 +++++
->>>>>  kernel/cgroup/dmem.c                    | 158 +++++++++++++++++++++++++++++++-
->>>>>  2 files changed, 178 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
->>>>> index 6efd0095ed995b1550317662bc1b56c7a7f3db23..1d2fa55ddf0faa17baa916a8914d3033e8e42359 100644
->>>>> --- a/Documentation/admin-guide/cgroup-v2.rst
->>>>> +++ b/Documentation/admin-guide/cgroup-v2.rst
->>>>> @@ -2828,6 +2828,29 @@ DMEM Interface Files
->>>>>  	  drm/0000:03:00.0/vram0 12550144
->>>>>  	  drm/0000:03:00.0/stolen 8650752
->>>>>  
->>>>> +  dmem.memcg
->>>>> +	A readwrite nested-keyed file that exists only on the root
->>>>> +	cgroup.
->>>>
->>>> Strictly speaking this is not nested-keyed but flat keyed [1],
->>>
->>> Indeed,
->>>
->>>> which leads me to realization that this is the first instance of a boolean.
->>>> All in call, such a composition comes to my mind (latter is RO):
->>>>
->>>> 	drm/0000:03:00.0/vram0 enable=0|1 locked=0|1
->>>>
->>>
->>> So per[1] 1 key, 2 sub-keys (enable RW, locked RO), that looks better
->>> and match the documentation, thanks!
->>>
->>>>
->>>>
->>>>> +static ssize_t dmem_cgroup_memcg_write(struct kernfs_open_file *of, char *buf,
->>>>> +				       size_t nbytes, loff_t off)
->>>>> +{
->>>>> +	while (buf) {
->>>>> +		struct dmem_cgroup_region *region;
->>>>> +		char *options, *name;
->>>>> +		bool flag;
->>>>> +
->>>>> +		options = buf;
->>>>> +		buf = strchr(buf, '\n');
->>>>> +		if (buf)
->>>>> +			*buf++ = '\0';
->>>>
->>>> I recall there was a discussion about accepting only a single device per
->>>> write(2) (at the same time I see this idiom is still present in other
->>>> dmem.* files, so this is nothing to change in _this_ patch).
->>>
->>> I would second that. When setting say dmem.max for 2 regions, with a
->>> typo on the second, the first one is set, but write still get EINVAL.
->>>
->>> Also, I just notice dmemcg_limit_write() returns EINVAL if the region is
->>> not found (this patch returns ENODEV).
->>>
->>>>
->>>> Thanks,
->>>> Michal
->>>>
->>>> [1] https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html#format
->>>
->>>
->>>
->>
->> Perhaps a bit late, but before we start adding this UAPI we should enforce a
->> single region per write?
+On 5/30/26 11:03, xu.xin16@zte.com.cn wrote:
+> From: xu xin <xu.xin16@zte.com.cn>
 > 
-> I can send that separately, although that is a UAPI change. Is there any
-> user that would be affected?
+> Add trace_rmap_walk_start() and trace_rmap_walk_end() to bracket
+> reverse mapping walks.  Unlike manual clock sampling, these
+> tracepoints record no timestamp; latency can be computed offline
+> by tools (e.g., perf, trace-cmd) using the event timestamps.
 > 
-> This series is hung on charging memcg using memory objects from the
-> context of dmem, when at that level of abstraction it doesn't have
-> access to the underlying pieces that were allocated.
+> When tracepoints are disabled, the only cost is a static branch
+> check (no clock read, no duration calculation), making them
+> suitable for production use.
+> 
+> The information (folio type, locked state) helps diagnose
+> performance issues in KSM, anonymous, and file-backed rmap walks.
+> 
+> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+> ---
 
-It's a uapi change, but I see more and more interest in the development and usage of dmemcg.
-I believe it's better to fix this before users (perhaps accidentally) start to rely on this behavior.
+Learning that trace events can easily become stable ABI, we should consider
+dropping this patch or switching to DECLARE_TRACE().
 
-Kind regards,
-~Maarten Lankhorst
+See Steve's explanation:
+
+https://lore.kernel.org/r/20260603130006.7d2c4a62@gandalf.local.home
+
+I assume this could be carried as an OOT patch when really working debugging
+scenarios?
+
+-- 
+Cheers,
+
+David
 
