@@ -4,76 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5841ACD6E7C
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 17:19:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A73C8CD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 17:22:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 803B16B009B; Fri,  5 Jun 2026 13:19:18 -0400 (EDT)
+	id E707B6B0096; Fri,  5 Jun 2026 13:22:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B48D6B009D; Fri,  5 Jun 2026 13:19:18 -0400 (EDT)
+	id E21406B00A0; Fri,  5 Jun 2026 13:22:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A3256B00A0; Fri,  5 Jun 2026 13:19:18 -0400 (EDT)
+	id D10156B00A1; Fri,  5 Jun 2026 13:22:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 57F896B009B
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:19:18 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE87A8CBDF
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:19:17 +0000 (UTC)
-X-FDA: 84846519954.20.0F3687E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1B1D4140008
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:19:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oTmNJSyk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C3AC86B0096
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:22:09 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 73E76163159
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:22:09 +0000 (UTC)
+X-FDA: 84846527178.04.8E556ED
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9ADBDA000D
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:22:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BRHTcwSL;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780679956;
+	s=arc-20220608; t=1780680127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OUcW5mSbSc9PFjh1QilJt+/LGG+Ya3wus4s8DgcyGkg=;
-	b=hXx5TlnVSzaJDtamy47Wok4dRDOxcMuG5CL2ImKdHcYPZJ77mhePYeDz9DkZAgdlaMeX05
-	u9LjjCHRCPuLqIOwtPpKXbezyefsd4nRKmJH1P7PuJgAuqD91FLCqxQmjCsArbUKbh0srG
-	p/jGh6AcOP8c4oLjhBGgErWFRXc5DNk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oTmNJSyk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=pG5SFLXqHSL16ior17lMXeykIDslLb784eO5noWxsxY=;
+	b=S12wiYNyikMNZnRwdWQXqWYD4JEtM49o0XNzAMfjWDXRaOZWmJ4CcSg0O/aRbTyNaACRN/
+	ji8cq9kYbq7vf/KTGP+qxMeRtawX0R3dK8x5mEwNxw7HFtfWkF+yau2+9ZrBipHFhiwvd8
+	exkE8p0UjiKX1OVsuskZCwXJuadIbBs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780679956;
-	b=ltwFODioFqKMABx9cSAcr8iCllKl9+4hs/DXInSIbV/7xkdoSxfdTpuwAGPYD+LyeOyw9d
-	qBiWxZC/NmrUyX+mm76NWuEU/qO+itemaandhryJ3XPSTMeVXIxqpkcIr7Lu9OGeCi/aFi
-	CphBUl4yZQnjDTeyiMu6dfSnuqySp2s=
+	t=1780680127;
+	b=J+tfSptsbCTCLlVavf4q9kY1TXcRz019OBwUKl66yTdRTTM/+nZD6GdaTIDqWDvMe11xAJ
+	KhSnIH8otBAgyg1xrzTc5e1a3FxEMq7xNaSeAVlqeConwPxiBGxUXXzRXR25gnj8Irzb0m
+	Aq46/cwp6+rPWfMkohfGMXzQmIlxlN8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BRHTcwSL;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5298B601DD;
-	Fri,  5 Jun 2026 17:19:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C351F00893;
-	Fri,  5 Jun 2026 17:19:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9CFBB418FF;
+	Fri,  5 Jun 2026 17:22:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB7A1F00893;
+	Fri,  5 Jun 2026 17:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780679955;
-	bh=OUcW5mSbSc9PFjh1QilJt+/LGG+Ya3wus4s8DgcyGkg=;
+	s=k20260515; t=1780680126;
+	bh=pG5SFLXqHSL16ior17lMXeykIDslLb784eO5noWxsxY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oTmNJSykJ/e3TDxCk87JrTbsCALSdI3l5uDTAqpytiF9KZWVNjlBNbJm9HyUY+Dvl
-	 hYaqxI5ooasQzCk9+EmJbzvjx76Yk6jbYlviMohas5VioecW8nerudTerJvfYv8xmK
-	 JPX9XywswBiwoSGKUdka6YeinaTKlOX/WlM2J7ce6LKl1lbzbGdv9iW8liXjXDGxyP
-	 7sDtjIxfY1piiHgHwL4/nJ7TQSx7hLeh9x3Brs8JT1I5t+nRQ75rCBwGXIiNdCHl3H
-	 fTbQejGut/7rZJNmXCa/2aEElRBXhZ/QV006bxjji65xjW4OqOELxvCj63nuZv6EAs
-	 q9rbytckx5XQg==
-Message-ID: <f6834452-a244-4bb7-8982-136f00591f87@kernel.org>
-Date: Fri, 5 Jun 2026 19:19:09 +0200
+	b=BRHTcwSLuouyHkitWoP16Un5boWNOPQuWBN7Wfs4c5kaxEYJ5pzQ8IC76YLhWwEJE
+	 MfOCyBaL2kAydrKWSApqqYLHEBWPHcaG4eDe30unadQuD6RcUvfa2vw1+2Za984I1O
+	 T6ebBHPw/pq0y5QyWi1323ELh9Tqq83f7wYypIDpQfPGzm5O5Feudng6r7ZlPyLaSm
+	 iBmmGcoRUVYnsCXsjWiFykWgBHb6b1neceY1xFS8zkQoVWE9SpVL7uBRM6AhpnN+vm
+	 LfrXK+Y4iyvFm+H/zZQ+YWgb+mpoBjGJ6KpuRXcgpszyIIooSDNHVSCiPTBqfk+fs9
+	 RL6Kk8Jp0ZBLw==
+Message-ID: <aeff656a-ffc9-4c7b-9a3c-b27cae571961@kernel.org>
+Date: Fri, 5 Jun 2026 19:21:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 4/6] ksm: add pgoff into ksm_rmap_item
-To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
-Cc: chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org,
- corbet@lwn.net
-References: <20260530170711362Lxt422zijBMtOvPlJD-0-@zte.com.cn>
+Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+To: Mark Brown <broonie@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
+ Christian Brauner <brauner@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-api@vger.kernel.org,
+ netdev@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+ Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>,
+ David Howells <dhowells@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Pedro Falcato <pfalcato@suse.de>,
+ Aishwharya.TCV@arm.com, ltp@lists.linux.it,
+ Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <20260531010107.1953702-3-safinaskar@gmail.com>
+ <d9806b34-fc73-4878-997a-95c5e8ae4b29@sirena.org.uk>
+ <CAHk-=wjBZAzPdZgEeHAtSiwJpomt8ZZgKbixuiHfRm09a4=PtA@mail.gmail.com>
+ <1eac3b42-5dde-41c4-930a-d74cda9e6d68@sirena.org.uk>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260530170711362Lxt422zijBMtOvPlJD-0-@zte.com.cn>
+In-Reply-To: <1eac3b42-5dde-41c4-930a-d74cda9e6d68@sirena.org.uk>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9ADBDA000D
 X-Rspam-User: 
-X-Stat-Signature: m5auw34uboicxnpcufiwya5g893kst1m
-X-Rspamd-Queue-Id: 1B1D4140008
-X-HE-Tag: 1780679955-141445
-X-HE-Meta: U2FsdGVkX1813kTCce1LilX+nhQAVI0BTlA9LJSUSMU6bfnjOo1rYMdpahePhM1zjZHGf9O63w6Y8K/9Km/4uZMG1FxOuBXSXJqVwYo2oAMuVePNfAHH/H0wqb++BtKyy8hBcn7nKxz+pik1z5plAmeSNpY2KvviBpN7sn48VuWT9jFnBjcKlP66vWjMMTK8YfHy+DERh717Epjo0hXJyFCBzGnX4zBQNLZOorcLj1ewmSutB49cA1yU9ofPYuZ+E15ruFXGr3V1i0dQM3FiEfCBjnyoWk4HRG3f6RU9njzq9hHo85sVEhSjKVPtSoxhzTK/FZiZm2n12e0rZlWQYMKRkKTllqmGVVF010Uvs801F8kaqLIk1MJf+UqcchpCvKXicsIDbktPudmBB7QSFuMC6w3OOTOBhnYgxTC6FuB50sK5rPyBF6K8NSU3HylzhHmtE+kCJEmSEm7e+D7fxQK6M3Pk/dQTZd9mPho0L3pv4Ytao4HDRuDODJ3BAga/NrYbvchQl+2BRbrxItVlXgjdo+GEl12GFFoFtYaDs2w5lBTHwn+ZGA6YTCXqmqZ1HnTa5c9mFgZRiiYJx1kqVTu1ujdQ/KST8da5iuCQa3nCmAnnKKGGoqhppXAKHLnKiMBdCkCHcSAa9rWd0Q5FqOq0x+n+TA+Rs8l1qyTCxxKwcV2WN1g6LPVSf2enxoceTNOAds13GkT9KWWXfYH20YivCGEWXpNY+qfv4bklKCBxz4eHsBRxDcFjRaOeudSEHzoQdvg9x88S/sDAo16/5Tynglkw+YvVGSXnTqts90rBPvABZgTA2mPpGgaJsBODNoIVmNYW24RWxVISaBektOicY8oJNWC6FiYlndvE0+l9tTxKCJ9TriqkL987Da+ZlIqCdKyL/Oe5cjFkygLDhrPED6dFkoPmG5I/mb4lzPyXOqvFsAap2YE5uoCSpAO0ymsU2dWwW2fMbYMhT/g
- P1/58/j+
- TmExeof1yp+smirZW8aHmXK5uwPjOi6hkyng2IagToSd4lJL3yEqxfKUVc9svxvsTTTZoQeinLQtryzGgz1LJ7ofJV2zCa4WL4/OVzakP57U8KzPHrgv3fE2VSi7V9PbqL8oMltY5LlMxA9s4+Cf6167JcO0b0/gxGaQtb6S6LOKHHxtFBiLNHOr+ewR/A4dp2FpRGLK4zy4wNBpsCOZDkB43Fb3lliz275EHiVKSNE4u7hYnLN2EqW3LVxO+Q8ijurm3j7kIrmIVB77HkCLGs6DUFluO4pitqEcvSpPuM86WkIXtG8W+HYMxyIffgjQqbDxmN9Zulc0rojp01voLjLVwg+1ciQv1hdoEOK0GIofhfYPorPvAmPbUZjliEwTnqwki
+X-Stat-Signature: um3aw4ftqci7tu9mn97e88iyqpw6f5y5
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780680127-50081
+X-HE-Meta: U2FsdGVkX1/1tzFM37bayytHjzoFfA6goCcQymbYiaGZox10ItaPZBr8ufX1NA3cBoWAqU0OvlkvRFVk0pbtbeIETJ6LwcFHLSLtCaIbb57daeQRY34fEsWUubxN/8dTEO7cUx/WJGQlTvcALjf8+D2GghmFAPOq06/bPHuVDncZIIjCMjbULQCOagXrau5YjoGNDtsqzURdUHYzV0G4u/Q8o9cSXyJH4uzmveZok0vNZLJvlD2clA9DJyXXde6nuGM6jpockf54lGh6J8z5pKiiMa8Jq48bigdMq8C6s7sLyG+K8xIGDudhetzPUjxJjVGXGTxddNr7vRiLxyS/6iTtdra8BHliFfrLh1SxqzL8TuOiikVL092VIkutLFQhURy/jdyfrW8+/wiQdRncNgJZoTNNNV6XcO2/vLPVWyhr5VZepJHzXaMmkCP7uC1J+0VH2u95IbMTY3R/jUbiwnawApPBwfwY+dZ+LQQvYzsslFkqXBOZjGXM9Np8lB/QHdLtd4mJrb7mIo428EhxVMP9hYeYBi4Gqm24AsfKFcSMQl4oiPIAwgnHHbf9bY4H+9KGV0atkAJwT2ty0lbbFPAE/7AP+zKkr3hes6K34nG/Z0EsKFt3lPYH4erbSMSZFyyRz33I4jzAEP9fB/vZ8e2fuQKwW3cXv83k5Jwz/pnoiJAzI9UIyYIULyBc5oAcj5YswNnQVhUhTNIL8Sotufa3cn1ntUXl20nudOYBC+PSXLFYt1Fqr7c6OoOhkqJzB2FFfShEri+NhdoOYgsJ8qdft5hVpoczooOvmkID3W+JJ/qosid5cbgnZS3EnbHvFmwtLhHM2tn+pOj5ZiRfIfl9ZNrU0sYrbA8zCcVYGkhokoM5MwARmzITIE8J/ua7RMoGofD29Cyn/5lWGmWZrYLoXTGU36krcRVxRxoMeIseI7BRelnulnNZ4LkQFjd6038IzSfeElxRkvcVSeU
+ UIvNUw+O
+ JP9l4eLZ2MhJuSR0IwXQt5NcpsKNNrrSiMM28+eRklmIjcGT6Pkdbh5IrqP4HhQjoOJA/Wu2fnAD2BpWK2kMTL/vCZ5IAWqDEQiwjVSY2+pY8FYsW29QbkhGhNEJCCxg/EYCYbdBIJaghivH7qtMro9z5Wu8u2QuAXdGopk66nbOAy/+PcD1qW/ivB50ZLSQSF6jsv3/eeR4S682iR9VWa0vq3WRLIV1agVI+UfnAszLKnstD0Dy6XO3I0lcO/dNcmsrNFN2Clrk21x4Axbxp3dclYYtgZjcMQWr5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,257 +151,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/30/26 11:07, xu.xin16@zte.com.cn wrote:
-> From: xu xin <xu.xin16@zte.com.cn>
-
-You should wrap you patch description at 75 columns max.
-
-(Documentation/process/submitting-patches.rst)
-
+On 6/5/26 18:26, Mark Brown wrote:
+> On Fri, Jun 05, 2026 at 09:02:52AM -0700, Linus Torvalds wrote:
+>> On Fri, 5 Jun 2026 at 04:02, Mark Brown <broonie@kernel.org> wrote:
 > 
-> The reason for adding pgoff to ksm_rmap_item has been discussed in previous
-> mailing list threads [1][2]. The main purpose is to allow the KSM reverse mapping
-> to obtain the original page's linear page index, so that during anon_vma_tree
-> travering, it can conditionally locate the VMAs and avoid scanning the entire
-> address space [0, ULONG_MAX].
-
-I suggest
-
-"As preparation for KSM rmap optimizations, let's track the original
-linear_page_index() of a de-duplicated page in its ksm_rmap_item, so we can
-efficiently search for the page in an address space, avoiding scanning the
-entire address space. This was previously discussed in [1, 2]."
-
+>>> | L4472tst_test.c:2050: TINFO: Tested kernel: 7.1.0-rc6-next-20260604 #1 SMP @1780589917 armv7l
+>>> | L4473tst_kconfig.c:71: TINFO: Couldn't locate kernel config!
+>>> | L4474tst_test.c:1875: TINFO: Overall timeout per run is 0h 00m 30s
 > 
-> To minimize the size impact of adding pgoff to ksm_rmap_item as much as
-> possible, a trick that David suggested is to use a UNION that groups the members
-> related to the unstable tree together with the newly added linear page index. The
-> members that valids only when in unstable tree include oldchecksum and age information.
-> However, the function should_skip_rmap_item() in the smart scanning needs slight
-> modification, since this function still uses the age information even when the
-> rmap_item is in a stable state (the page is not KSM), a situation that occurs
-> during COW faults. After using union, the size is still 64 byte without increasing.
-
-And here
-
-"To avoid growing ksm_rmap_item, let's squeeze it into the existing structure by
-overlying some members (oldchecksum, age, remaining_skips) that are only
-relevant while on the unstable tree. The new entry will only be relevant for
-entries in the stable tree.
-
-However, as the age information is read by should_skip_rmap_item() with the
-smart-scanning approach even while we have an entry in the stable tree, but the
-page changes (no longer a KSM page, for example due to COW), we have to change
-the handling there a bit.
-"
-
+>> I htink this is the same thing that Christian already noted (he said
+>> "reported by David", but I don't know which David ;), where the
+>> vmsplice() writev() emulation was done as a blocking write, even
+>> though vmsplice only blocked at the beginning (ie waiting only for
+>> _initial_ space to write, not then blocking afterwards).
 > 
-> We keep the same way to store the pgoff as rmap->anon_vma which is set when the page
-> is merged and become a KsmPage at try_to_merge_with_ksm_page(), and reset at
-> remove_rmap_item_from_tree() and remove_node_from_stable_tree() and reset when break_cow.
-> 
+> Ah, yes it is - exactly the same issue that's mentioned in[1], I missed
+> it in the middle of the quite large thread and didn't directly find
+> David's report.  Sorry for the duplication there.
 
-I wonder if "pgoff" is the right term here. Hm. Can we simply shamelessly call
-it "linear_page_index" ? (or just index? )
-
-So maybe
-
-"We'll calculate the linear page index in try_to_merge_with_ksm_page(), when
-adding it to the stable tree, and reset the index (to reset overlayed data) when
-removing an item from the stable tree -- in remove_rmap_item_from_tree(),
-remove_node_from_stable_tree() and break_cow()."
-
-
-That means that age information is reset whenever merging fails. We could try
-merging more often. I assume that's nothing we care about in practice. If we
-ever do, we can e.g., look into remembering it on the callpath somehow.
-
-But I suspect we don't care.
-
-
-> To be specially clarified, the reason for resetting pgoff at break_cow() is:
-
-s/pgoff/the stored index/
-
-> 
-> - When a page successfully becomes a KSM page (i.e., after stable_tree_append()
->   sets STABLE_FLAG), both anon_vma and vm_pgoff are stored and remain valid.
-
-s/vm_off/the index/
-
-> - However, during the merging process there are several failure paths where a
->   page that was temporarily treated as a KSM page must be reverted back to an
-
-What about:
-
-"However, during the merging process, there are several failure paths where we
-already prepared an rmap item to be added to the stable tree, but must revert
-that as some part of the merge process failed. Examples include:"
-
->   anonymous page. Examples include:
->     * The second call to try_to_merge_with_ksm_page() fails in
->       try_to_merge_two_pages().
->     * stable_tree_insert() fails in cmp_and_merge_page().
->   In such cases, break_cow() is invoked to break the COW mapping and discard
->   the KSM state.
-> 
-> Currently, break_cow() already contains a put_anon_vma(rmap_item->anon_vma)
-> to release the reference taken during the aborted merge. Because 'pgoff' is
-> logically paired with anon_vma (both are only meaningful when the rmap_item
-> is in a stable state), it must also be cleared (or reset) in break_cow() to
-> avoid leaving stale pgoff values that could confuse subsequent rmap walks
-> or scanning logic.
-> 
-> [1] https://lore.kernel.org/all/adTPQSb-qSSHviJN@lucifer/
-> [2] https://lore.kernel.org/all/202604091806051535BJWZ_FTtdIm3Snk24ei_@zte.com.cn/
-> 
-
-[...]
-
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-> ---
->  mm/ksm.c | 41 ++++++++++++++++++++++++++++++++++-------
->  1 file changed, 34 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 7d5b76478f0b..4761ca3fa984 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -195,22 +195,28 @@ struct ksm_stable_node {
->   * @node: rb node of this rmap_item in the unstable tree
->   * @head: pointer to stable_node heading this list in the stable tree
->   * @hlist: link into hlist of rmap_items hanging off that stable_node
-> - * @age: number of scan iterations since creation
-> - * @remaining_skips: how many scans to skip
-> + * @age: number of scan iterations since creation (unstable node)
-> + * @remaining_skips: how many scans to skip (unstable node)
-> + * @pgoff: pgoff into @anon_vma where the page is mapped (stable tree)
-
-Is it then "stable node" ?
-
->   */
->  struct ksm_rmap_item {
->  	struct ksm_rmap_item *rmap_list;
->  	union {
-> -		struct anon_vma *anon_vma;	/* when stable */
-> +		struct anon_vma *anon_vma;	/* for reverse mapping, when stable */
->  #ifdef CONFIG_NUMA
->  		int nid;		/* when node of unstable tree */
->  #endif
->  	};
->  	struct mm_struct *mm;
->  	unsigned long address;		/* + low bits used for flags below */
-> -	unsigned int oldchecksum;	/* when unstable */
-> -	rmap_age_t age;
-> -	rmap_age_t remaining_skips;
-> +	union {
-> +		struct {
-> +			unsigned int oldchecksum;
-> +			rmap_age_t age;
-> +			rmap_age_t remaining_skips;
-> +		};			/* when unstable */
-> +		unsigned long pgoff;		/* for reverse mapping, when stable */
-
-Again, suggesting "index" or "linear_page_index".
-
-> +	};
->  	union {
->  		struct rb_node node;	/* when node of unstable tree */
->  		struct {		/* when listed from stable tree */
-> @@ -776,6 +782,10 @@ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
->  	return vma;
->  }
-> 
-> +/*
-> + * break_cow: actively break the write-protect of the VMA. This is called when
-
-This description is not quite correct. We unshare the KSM page (break cow ->
-create an anonymous apge copy). It has nothing to do with VMA write-protection.
-
-"actively break COW, replacing the KSM page by a fresh anonymous page."
-
-
-> + * rmap_item has not yet become stable, but page has been merged.
-> + */
->  static void break_cow(struct ksm_rmap_item *rmap_item)
->  {
->  	struct mm_struct *mm = rmap_item->mm;
-> @@ -787,6 +797,8 @@ static void break_cow(struct ksm_rmap_item *rmap_item)
->  	 * to undo, we also need to drop a reference to the anon_vma.
->  	 */
->  	put_anon_vma(rmap_item->anon_vma);
-> +	/* Reset pgoff that might overlay age-related information. (still unstable) */
-> +	rmap_item->pgoff = 0;
-> 
->  	mmap_read_lock(mm);
->  	vma = find_mergeable_vma(mm, addr);
-> @@ -899,6 +911,8 @@ static void remove_node_from_stable_tree(struct ksm_stable_node *stable_node)
->  		VM_BUG_ON(stable_node->rmap_hlist_len <= 0);
->  		stable_node->rmap_hlist_len--;
->  		put_anon_vma(rmap_item->anon_vma);
-> +		/* Reset pgoff that might overlay age-related information. */
-> +		rmap_item->pgoff = 0;
->  		rmap_item->address &= PAGE_MASK;
->  		cond_resched();
->  	}
-> @@ -1052,6 +1066,8 @@ static void remove_rmap_item_from_tree(struct ksm_rmap_item *rmap_item)
->  		stable_node->rmap_hlist_len--;
-> 
->  		put_anon_vma(rmap_item->anon_vma);
-> +		/* Reset pgoff that might overlay age-related information. */
-> +		rmap_item->pgoff = 0;
->  		rmap_item->head = NULL;
->  		rmap_item->address &= PAGE_MASK;
-> 
-> @@ -1598,8 +1614,15 @@ static int try_to_merge_with_ksm_page(struct ksm_rmap_item *rmap_item,
->  	/* Unstable nid is in union with stable anon_vma: remove first */
->  	remove_rmap_item_from_tree(rmap_item);
-> 
-> -	/* Must get reference to anon_vma while still holding mmap_lock */
-> +	/*
-> +	 * Must get reference to anon_vma while still holding mmap_lock,
-
-s/,/./
-
-> +	 * We set these two members of stable node here instead of
-> +	 * stable_tree_append(), maybe because we don't want to hold
-> +	 * mmap_read_lock again. Here mmap_read_lock is already held to
-> +	 * find_mergeable_vma before merging.
-
-Is the "maybe" stuff really something we should put into a comment?
-
-What about something like:
-
-"Must can only reference the VMA while still holding the mmap lock, so
-reference the anon_vma and calculate the linear page index early, before
-stable_tree_append(). If anything goes wrong, break_cow() will clean it up."
-
-> +	 */
->  	rmap_item->anon_vma = vma->anon_vma;
-> +	rmap_item->pgoff = linear_page_index(vma, rmap_item->address);
->  	get_anon_vma(vma->anon_vma);
->  out:
->  	mmap_read_unlock(mm);
-> @@ -2458,6 +2481,10 @@ static bool should_skip_rmap_item(struct folio *folio,
->  	if (folio_test_ksm(folio))
->  		return false;
-> 
-> +	/* There is no age information in stable-tree nodes. */
-
-Maybe we can make it clearer here:
-
-"There is no age information in stable-tree nodes. We might end up here without
-a KSM page for example after COW."
-
-> +	if (rmap_item->address & STABLE_FLAG)
-> +		return false;
-> +
->  	age = rmap_item->age;
->  	if (age != U8_MAX)
->  		rmap_item->age++;
-
-I think with these things addressed, this LGTM.
+Yeah, I quickly discussed this with Christian on a different channel and he
+ended up sharing the report with the analysis directly.
 
 -- 
 Cheers,
