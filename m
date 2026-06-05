@@ -4,93 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF6DCD6E75
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 01:34:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08380CD6E6E
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 01:39:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B7536B0005; Thu,  4 Jun 2026 21:34:17 -0400 (EDT)
+	id 674586B0005; Thu,  4 Jun 2026 21:39:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8685D6B0088; Thu,  4 Jun 2026 21:34:17 -0400 (EDT)
+	id 5FE216B0088; Thu,  4 Jun 2026 21:39:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77DC66B008A; Thu,  4 Jun 2026 21:34:17 -0400 (EDT)
+	id 4C5866B008A; Thu,  4 Jun 2026 21:39:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 66B9A6B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 21:34:17 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07895163BC0
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 01:34:17 +0000 (UTC)
-X-FDA: 84844138554.22.DD399DA
+	by kanga.kvack.org (Postfix) with ESMTP id 381C56B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 21:39:00 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0265F1C21C6
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 01:38:59 +0000 (UTC)
+X-FDA: 84844150440.28.5B0BA35
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6697B140009
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 01:34:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OAKRgs+d;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7B992120008
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 01:38:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IszDWLyF;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780623255;
+	s=arc-20220608; t=1780623538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G3ZSWOHSrBK5V4kJO2JQzcyduOQ7iEIJclYsKR3PoQs=;
-	b=MaEn6DjWiWGsmhRAvmdXuLDFZIWXpijl4AndY8ootOvOJrtPb569r+SnWUXAe/qUsUP2Yr
-	erRdwNBL62LVJfkXHRLPevksqBpFWvbit4UxlBuPEMGA4rvc/UeBpzVOLW48IrQaZw/KF7
-	RCL99IN2KqCMpueyFTPL9rlWQmIj/VI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OAKRgs+d;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	 in-reply-to:references:dkim-signature;
+	bh=3FMzbu3u71nQTcvhV84Inp+2khcRaSZTlpCYSxQCCNM=;
+	b=EYAoC0fg/4rN32TttzE7kkscFm304E4d7AVbWjfDkUx3gkbj+m6BIM02umC9K6+5Tfhd7C
+	qmt2j3KNG5kQnk8EHHe7EuLdFZeGTIouKIesDl2iBu3PXW3XJ47OnGpMKZFitK35e02BqI
+	Ms9dNo9JtK+r+Cs8nJwNIoxK+jlHDnM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780623255;
-	b=mrk50VYERudXlTEOXegoMFaoS4kOTd4Hr1IoJt0HM3/hsd0RfKY4wOTPXmgeoRtxTWZzhB
-	89fqbqy8veLQsJqx3QEEbvbDeglUK5h4Z+AvZE+UbtpZncRMjzGBUuHeUqho+ovqBP8Z80
-	R0iVDCPOB0N0uPQgORUy8BaAAHFpYYc=
+	t=1780623538;
+	b=RTEnX3iU1GxTQoYn+pUwD6lSjFq0tSF8ZsFZ68lW6jxfDAIbwT32UnX1WNi1PwjCT+arvZ
+	UGSNPh3RHZ9YebbxBpurdGq2I3a38pa7Ki7iFUX2eniWvxOKMJjiCylHrB2bZTLSC1HC82
+	XzLx+hqsUmQP58D/YKJ4nDAgS14XugM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IszDWLyF;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D490160052;
-	Fri,  5 Jun 2026 01:34:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDA21F00893;
-	Fri,  5 Jun 2026 01:34:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F2F976001A;
+	Fri,  5 Jun 2026 01:38:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4288E1F00893;
+	Fri,  5 Jun 2026 01:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780623254;
-	bh=G3ZSWOHSrBK5V4kJO2JQzcyduOQ7iEIJclYsKR3PoQs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OAKRgs+dhu4ExCzmHxD960saOAhddzjGQJmDPutx9P1MroRUv35qlcocTJF357pla
-	 1zbxnVsplUKi8xthxyLy9mE3ymXmgs7xsCUlTI2Sx7tdkVF8I8Zmt5n/j6HGdd5Ia2
-	 H9lCWjC3jYQU+pt6a9sKm+G0P46bTjMBElPeqtatYwafTsh7V74qLt8E6NSYZre0Rj
-	 JHmfFcr0otCSKHRBFl54Ro70iEwrwFjTHr1FuGsPVZssMoUyCWDUetVsmQ28HySFPm
-	 bqE3LHtDU7pKye7ibP+ix8p5joPnMBiqa0QEzQX7LkTrn4/V7NS0Jb5dRya5WZtGIi
-	 6wo367gIlGaZA==
+	s=k20260515; t=1780623537;
+	bh=3FMzbu3u71nQTcvhV84Inp+2khcRaSZTlpCYSxQCCNM=;
+	h=From:To:Cc:Subject:Date;
+	b=IszDWLyFitkjiWmwl+Kee4Ar/yCCt+rr2vPxubON5Sn5HOqlMHCIUrqBfjdR0v+TI
+	 S1nvsmhv6yxqw7JSKXKNx26PulPRAU2/+sRVyNVePkQdxFb/yHdL6yvTZjmeKrB/jw
+	 tEC57196PqU+PM5l4g4iAtO4uaJUcITvtuF76B3M/fNt4U5ZA88WHatwJWQ06vcYoi
+	 KgUa5ObeT1M0LTVK37OUko46qiJbqdUrKj63jVzY/BTxIakQVHNetitOxwJnM5Ryqo
+	 8+IFVvW6INjYGSyo85+h9YLAsm525Fj9em3MXZE1P3uyPmsplPhmUs6h+CIslCzKDB
+	 zRLqtJGVFfySw==
 From: SeongJae Park <sj@kernel.org>
-To: gutierrez.asier@huawei-partners.com
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
+	"# 6 . 11 . x" <stable@vger.kernel.org>,
 	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v3 0/4] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
-Date: Thu,  4 Jun 2026 18:34:05 -0700
-Message-ID: <20260605013406.83441-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/core: always put unsuccessfully committed target pids
+Date: Thu,  4 Jun 2026 18:38:48 -0700
+Message-ID: <20260605013849.83750-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260604150338.501128-1-gutierrez.asier@huawei-partners.com>
-References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7B992120008
 X-Rspam-User: 
-X-Stat-Signature: m51sdgcfqkggqdiu8oy4r1ofu4qqq4r6
-X-Rspamd-Queue-Id: 6697B140009
-X-HE-Tag: 1780623255-841631
-X-HE-Meta: U2FsdGVkX19GOVIM6ckHp3OD2qfPL/V+pD7I93QbedAGZv0axEqObofn9Ht0ZwRMKFmMo25i40dRjiOABcAmptcRntDQA9cFLiviNA3r3V6/y3fbgxw4sBR8L9BsftEvGSsiyoNgE6RH5BsS9/ITYLXL5k1iWaq1sePbDrncK7Owk9UAeYfTd9tJDXuNisa7Eqeevp4aN2irbqUThoP3veePyH1k+rjBK9VRznl+xXORcpQrFlUlX6ipKrDygLbVv3Y41c0QKL3gbscwoUtNXogNAE6LyyynJkw1e3/tfXfqhik9whYr0I9fyQusSsGCfIQOGX8E+Fe85PLhFf9WVcsDylVAqSoqcnBy6/StRI5bhSr8Li13G5APGCdppILwokDr/IIfckW81W/jrc2Dut7HqpsVFsQ5GW7Y2nJIEV3q/eJXrDQ2rebaDil57KH1LoqdFufy+cfiuVhqFcikU8SYhuCOEtAGwkiVU7EM/UWPKQf8+vlanlvOTk21m0i3RhUMged1UNAalRFj2nTcZH2DNXUyCT0xSkxnBIMEDs310oob84e0tFUFi1Uk/tZKjM5jjjqSrNwFy7yV/2wwa7+gXaab34LQYCMmXhFV3Uuv2/gPUBIxURryM3TE8y76o7aJbSvJX6RIzyZSggnfuJe0Mo3JZ8Wqcmw4BVsXxL1KgU1Q9mcu/cxpg5zMxzgMoocQtvGz5QwZJCa0Gger96C6TWF9F45A9KEJhW8Sx4ZUVWWOSDSiysNT54YFdekjylBrXSWEIkd2uQkaAnNmXfHpvKIkIvI5ps7zBf72KpgWjoWG5lNzV6a/0DMJn/lyd1QnjlslQFuusv0kMpUe2x8CYjSsJxGE7zgkRoh3kj8CZKIcAZBnqifc3a0PlQ2eKA/6zcWI5RRyJOVDLxu6iPfEA9ve/KjnUX6jQI8VjzbEhX0CfPBLECtfV+JYJn10E49YKS6Xs9h4Z0hx66U
- z5QTMlzh
- bHdvfg63WBpJk6Hwp8Y2X03ygTh3GT2pJXCrvF5hSvDxng2dEDu5qK7wuS8Do4bHeALLt+yQHeoq8AbC81tMMLQOPuMAZRqz/2EOxVq41QPtrYRbp30OC0Ejy00Udef3SgvP/nl6jlY31HYuoF/aKS1DW+eiJv4tH/1HPNH5AKd3tPJQAqgMQxulAUntScve2luUwF08HYQnYI0OCgcxOPf2mc4Mry1WImtAeZPEQi/Ooo/3TPDgHATp7WOFkjULska/Ninh1pwfQ/TRz3Gn+gayv/tD1iZxxgGWhBDQLRW4FOgidPPkNTv7obg==
+X-Stat-Signature: z44f688cys7ipwmrykfy6gczyr1fkrjn
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780623538-792979
+X-HE-Meta: U2FsdGVkX1+GpHyKWJUIm2I5goMjg6p/fpi7AlgB4L/sn/uDmyP75B44OiypyLr3Vl5YzQUCqWXTEjYU2WZq6qKDjNHhzinxWOGzFw9Mx4iENzJifmBog3DyvEtgSZn1x59U0FDGZDPa7eVsLDCCrnphvtBHYqPNYb2hfzxw+oSs7CwpYpByfGic/qGhqIatlqhq9IvObqplHE2XeGP6Ng8Cj2GKkU9+gFDwDM57Dx5wlFyHW9mJ9BdQEZmi1kHYrVuAcP08ND8W15CZwYHN//D+jDb0ftyFj3r+OpR9loNFA6TxRGLZrEEd88+cdewhi/U38b5PoKaRaHaN/6KYQV0VrF7ejpDbZo5aY/PYGG+hnMaXn9X0zN8nKf5ifWbIxAOzTMl8u5Rm6bFzMeFdGLTsdIkHe0TXnUt24c2g1XJuZATRF4KzY3nnHvfH1IEUsimszKAHOH2ZYxWFjKOaZk8RMkM/gvv6qwYsorj9kaaSvrdwqpNDNvmu3XB6PYJjh3owH/+itEhv4zcxCYFJZsaat+q1xCVadLEPBpbYPIbqnmUmEAb30maBnA73nj0L79Z8Waali6mpuk9sWa8RYPuxJt8KJunXNjY/RwbAj2VQ4qltvlE0U+Pth62C2oVIKyTNpUlYTi3bkuRBNMpsn1FNA6kh8MqFhpV6CmXPbiRLr8M09r1bE84JjIyAGKSocqvTQh2xL64vTdS2mM9A/qjE4BFYS/BdYcw+vK++++T5L4ndeoQ9WZNb3lQXxJ2vuFtNGkuNnfn2n3vPX4Y4ZbAstNPBk0XLDfFe9hIYF2FUUCRvSsesiPbxhhcu9mQ/dFAV2S0LfRPQW9OlV5SV7jET9pCssdNtZDS+pQIe4RTI+lxiZO41Y9sXyPSvNd0ROijfXi/TAn4Dm//z19u18V32dQrck/3+m+tedDwIo/cqsA0VBPts5RCJ+BWUYeo6nCINeQGEas+umePqUUZ
+ bjqZetx1
+ 5DbjBnmNuRqQkfO0Gn1CQTregI90i/LSgJnvUQmJx29BZ3ZUDNkPLbhpPdrLKnUiPUOoQcCtXZ4FkbeqnIKWyuFZOUXhxDP0EykzmHyxuDoyvMMcHen9TywvVSCagMlwajAP/vK6uynwbJelq334QdOl2WyM12QRkQgTGgMT+eneIZgHLPhL/Z8eIwaLQI5yKq2pfsZEbqgBrTnpajHSkvQpMIqd2XhhGQ9fyvlU+O/cIlej7V25pEZRWcLST7L+9w14y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,220 +91,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Asier,
+damon_commit_target() puts and gets the destination and the source
+target pids.  It puts the destination target pid because it will be
+overwritten by the source target pid.  It gets the source pid because
+the caller is supposed to eventually put the pids.  In more detail, the
+caller will call damon_destroy_ctx() after damon_commit_ctx() to destroy
+the entire source context.  And in this case, [f]vaddr operation set's
+cleanup_target() callback will put the pids.
 
+The commit operation is made at the context level.  The operation can
+fail in multiple places including in the middle and after the targets
+commit operations.  For any such failures, immediately the error is
+returned to the damon_commit_ctx() caller.  If some or all of the source
+target pids were committed to the destination during the unsuccessful
+context commit attempt, those pids should be put twice.
 
-Thank you for revisioning this great patch!
+The source context will do the put operations using the above explained
+routine.  However, let's suppose the destination context was not
+originally using [f]vaddr operation set and the commit failed before the
+ops of the source context is committed.  The destination does not have
+the cleanup_target() ops callback, so it cannot put the pids via the
+damon_destroy_ctx().
 
-On Thu, 4 Jun 2026 15:03:33 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+As a result, the pids are leaked.  The issue in the real world would be
+not very common.  The commit feature is for changing parameters of
+running DAMON context while inheriting internal status like the
+monitoring results.  The monitoring results of a physical address range
+ain't have things that are beneficial to be inherited to a virtual
+address ranges monitoring.  So the problem-causing DAMON control would
+be not very common in the real world.  That said, it is a supported
+feature. And damon_commit_target() failure due to memory allocation is
+relatively realistic [1] if there are a huge number of target regions.
 
-> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> 
-> Overview
-> ========
-> 
-> This patch set introduces a new autotuning which allows to collapse
-> hot regions into hugepages.
-> 
-> Motivation
-> ==========
-> 
-> Since TLB is a bottleneck for many systems[1], a way to optimize TLB
-> misses (or hits) is to use huge pages. Unfortunately, using "always"
-> in THP leads to memory fragmentation and memory waste. For this reason,
-> most application guides and system administrators suggest to disable THP.
-> 
-> Currently DAMON has DAMOS_HUGEPAGE, DAMOS_NONHUGEPAGE and DAMOS_COLLAPSE.
-> However, there is no way to tune the settings. It will collapse all the
-> hot regions that meet the access pattern. If the server is a bare metal
-> database or big data server, this will also lead to eventual fragmentation.
-> 
-> Additionally, currently THP is set globally. Ideally, there should be a
-> way to control which tasks can use huge pages.
+Fix by putting the pids in the commit operation in case of the failures.
 
-We can do process level control using prctl(PR_SET_THP_DISABLE) [1], isn't it?
-I think the last above sentence is better to be reworded or simply dropped.
+The issue was discovered [2] by Sashiko.
 
-> 
-> Solution
-> ========
-> 
-> DAMON has now a way to autotune some of the variables and adjust quotas
-> automatically, so that DAMON is fired only under the right circumstances.
-> It would be nice to have something similar, but for huge pages.
-> 
-> A new autotuning quota goal[2], damos_get_used_hugepage_mem_bp, is
-> introduced, which checks the huge page consumption to total anonymous
+[1] https://lore.kernel.org/20260603112306.58490-1-akinobu.mita@gmail.com
+[2] https://lore.kernel.org/20260320020056.835-1-sj@kernel.org
 
-In the previous revision I suggested to
-s/damos_get_used_hugepage_mem_bp/damos_hugepage_mem_bp/ and you agreed.  Seems
-it was forgotten?
+Fixes: 83dc7bbaecae ("mm/damon/sysfs: use damon_commit_ctx()")
+Cc: <stable@vger.kernel.org> # 6.11.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from RFC v1.1
+- rfc v1.1: https://lore.kernel.org/20260604143514.84310-1-sj@kernel.org
+- Rebase to latest mm-new.
+- Drop RFC tag.
+Changes from RFC
+- rfc: https://lore.kernel.org/20260604042349.67720-1-sj@kernel.org
+- Check destination cleaanup availability using the cleanup callback.
+- Do the cleanup for all commit failure points in
+  [targets commit, ops commit] scope.
+- Wordsmith the commit message.
+- Add 'Fixes:' and Cc: stable@.
 
-> memory consumption. This new quota mechanism reuses current autotuning
-> architecture.
-> 
-> A new module is introduced to demonstrate the use of huge pages
+ mm/damon/core.c | 55 ++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 47 insertions(+), 8 deletions(-)
 
-Let's clarify it is a  sample module.  That is,
-s/A new module/A new sample module/ ?
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 265d51ade25bf..7e4b9affc5b06 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1387,10 +1387,36 @@ static int damon_commit_target(
+ 	return 0;
+ }
+ 
++/*
++ * damon_revert_target_commits() - revert unsuccessful target commits.
++ * @dst:	Commit destination context
++ * @failed:	Commit failed destination target
++ * @src:	Commit source context
++ *
++ * Revert target states that changed by damon_commit_target(), and cannot be
++ * cleaned up by the destination context's ops.cleanup_target().
++ */
++static void damon_revert_target_commits(struct damon_ctx *dst,
++		struct damon_target *failed, struct damon_ctx *src)
++{
++	struct damon_target *target;
++
++	if (!damon_target_has_pid(src))
++		return;
++	if (dst->ops.cleanup_target)
++		return;
++	damon_for_each_target(target, dst) {
++		if (target == failed)
++			return;
++		put_pid(target->pid);
++	}
++}
++
+ static int damon_commit_targets(
+ 		struct damon_ctx *dst, struct damon_ctx *src)
+ {
+ 	struct damon_target *dst_target, *next, *src_target, *new_target;
++	struct damon_target *failed;
+ 	int i = 0, j = 0, err;
+ 
+ 	damon_for_each_target_safe(dst_target, next, dst) {
+@@ -1404,8 +1430,10 @@ static int damon_commit_targets(
+ 					dst_target, damon_target_has_pid(dst),
+ 					src_target, damon_target_has_pid(src),
+ 					src->min_region_sz);
+-			if (err)
+-				return err;
++			if (err) {
++				failed = dst_target;
++				goto out;
++			}
+ 		} else {
+ 			struct damos *s;
+ 
+@@ -1419,25 +1447,34 @@ static int damon_commit_targets(
+ 		}
+ 	}
+ 
++	failed = NULL;
+ 	damon_for_each_target_safe(src_target, next, src) {
+ 		if (j++ < i)
+ 			continue;
+ 		/* target to remove has no matching dst */
+-		if (src_target->obsolete)
+-			return -EINVAL;
++		if (src_target->obsolete) {
++			err = -EINVAL;
++			goto out;
++		}
+ 		new_target = damon_new_target();
+-		if (!new_target)
+-			return -ENOMEM;
++		if (!new_target) {
++			err = -ENOMEM;
++			goto out;
++		}
+ 		err = damon_commit_target(new_target, false,
+ 				src_target, damon_target_has_pid(src),
+ 				src->min_region_sz);
+ 		if (err) {
+ 			damon_destroy_target(new_target, NULL);
+-			return err;
++			goto out;
+ 		}
+ 		damon_add_target(dst, new_target);
+ 	}
+ 	return 0;
++
++out:
++	damon_revert_target_commits(dst, failed, src);
++	return err;
+ }
+ 
+ static void damon_commit_filter(struct damon_filter *dst,
+@@ -1571,8 +1608,10 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ 	 */
+ 	if (!damon_attrs_equals(&dst->attrs, &src->attrs)) {
+ 		err = damon_set_attrs(dst, &src->attrs);
+-		if (err)
++		if (err) {
++			damon_revert_target_commits(dst, NULL, src);
+ 			return err;
++		}
+ 	}
+ 	dst->pause = src->pause;
+ 	dst->ops = src->ops;
 
-> collapse autotuning. The goal is to collapse hot regions of a given
-> process into huge pages. The module launches a kdamond thread for a
-> certain task provided by the user through monitored_pid module argument.
-
-Following other vaddr based sample modues' pattern, what about
-s/monitored_pid/target_pid/ ?
-
-As I also commented on the third patch of this series, apparently it is not
-following the sample modules' pattern but that for non-sample modules.  Could
-you please rewrite in a more simple way?
-
-> Hugepage goal autotuning will automatically adjust the aggressiveness
-> of hot region collapses.
-> 
-> This module also has a user autotuning knob which allows the user to
-> adjust the aggressiveness of page collapsing.
-> 
-> Benchmarks
-> ==========
-> 
-> Huge page collapse autotuning was tested in a physicial machine with
-> MariaDB 10.5.29 and sysbench as the benchmark framework.
-> 
-> The hugepage module was set up in the following way:
-> 
-> # echo 1000 > min_age
-> # echo 1000 > quota_percentage_hugepage
-> # echo $(pidof mariadbd) > monitored_pid
-> # echo on > enabled
-> 
-> The goal was to achieve 5% of the total memory used as hugepage.
-
-Any reason to set it 5% ?
-
-> 
-> The table below shows the memory consumption over time. Gaps in the
-> timestamp means that no changes in the hugepage consumption happened
-> over that period of time.
-> 
-> +-----------+----------------+----------------+----------------------+
-> | timestamp | total mem used | huge page used | percentage hugepage  |
-> +-----------+----------------+----------------+----------------------+
-> | 0         | 4721188        | 0              | 0%                   |
-> | 28        | 4216848        | 4              | 0%                   |
-> | 37        | 4189912        | 38912          | 1%                   |
-> | 39        | 4195188        | 47104          | 1%                   |
-> | 55        | 4111612        | 51200          | 1%                   |
-> | 59        | 4137012        | 53248          | 1%                   |
-> | 60        | 4137052        | 55296          | 1%                   |
-> | 61        | 4156832        | 57344          | 1%                   |
-> | 62        | 4136920        | 59392          | 1%                   |
-> | 64        | 4109872        | 61440          | 1%                   |
-> | 65        | 4119108        | 63488          | 2%                   |
-> | 66        | 4145532        | 65536          | 2%                   |
-> | 67        | 4134544        | 67584          | 2%                   |
-> | 68        | 4158244        | 126976         | 3%                   |
-> | 69        | 4124276        | 204800         | 5%                   |
-> | 70        | 4100680        | 333824         | 8%                   |
-> | 71        | 4095540        | 462848         | 11%                  |
-> +-----------+----------------+----------------+----------------------+
-
-What is the timestamp unit?  Second?
-
-What is the mem used unit?  Byytes?  Kiloboytes?
-
-I also remember you mentioned you will compare the numbers for more setups
-including module disabled case (baseline) and THP disabled case.  I think "THP
-disabled" case was my typo.  Maybe I wanted to say "THP enabled" case.
-
-Is that still on your TODO list?
-
-Given this series is adding relatively small change (assuming the sample module
-will be simplified), I wouldn't strictly request all such tests.  I'm just
-curious about your plan.
-
-> 
-> Performance:
-> Baseline -> 18,162.45 transactions per second
-> Hugepage autotune -> 18,211.82 transactions per second
-
-So, 2.7% improvement!  I think it is not bad for this simple approach.
-
-Could you further elaborate how the performance is measured?  From when the
-transactions per second measurement is started, and when it was stopped?  Are
-the numbers average?  Mean?  Or something else?
-
-> 
-> 
-> Eventually, the amount of huge pages reached 20%. This is consistent
-> with how quota goals autotuning work. We are more aggresive when the
-> quota is less than 10%, and less aggresive when the quota is higher.
-> At some point, the aggressiveness just fades and no more collapses
-> occur.
-
-Could you share more hugepage utilization change for long term that captures it
-converges to 20% but after that doesn't increase more?
-
-Also, have you tried temporal quota tuner?
-
-> 
-> TODO
-> ====
-> - Support page splitting for cold hugepages.
-
-This is a future work out of the scope of this series, right?  I think that is
-better to be clarified.  In the previous revision, I was reading this as a TODO
-for a future revision of this patch series.
-
-Also, do you have specific changes you want to make to this series before it is
-merged, or dropping the RFC tag?
-
-> 
-> Patches Sequence
-> ================
-> Patch 1 -> Introduce DAMOS_QUOTA_HUGEPAGE and autotuning
-> Patch 2 -> damon_modules_new_vaddr_ctx_target
-> Patch 3 -> Module that demonstrates how to use DAMOS_QUOTA_HUGEPAGE
->            and the new VADDR ctx creation
-> Patch 4 -> Documentation
-
-As I commented to each patch, patch 1 looks good except a few trivial things.
-Patch 2 seems unnecessary.  I hope patch 3 to be much simplified and wrote
-again following the sample modules' pattern.  Patch 4 seems too much for a
-sample module.
-
-> 
-> Changes from previous versions
-> ==============================
-> RFC 2[3] -> RFC 3
->   - Module moved to samples
->   - Change autotune to monitor total memory and hugepage
->   - Added performnace benchmarks to the cover letter
->   - Bail out gracefully when trying to start disable
->     the module after the monitored task exited. This 
->     issue was discovered by sashiko [4]
->   - Fixed typos and added quota_sz to the documentation
->     discovered by sashiko [5]
-> RFC 1[6] -> RFC 2
->   - Rebased into mm-new
->   - Use DAMOS_COLLAPSE instead of DAMOS_HUGEPAGE
->   - Fixed an issue that returned silently an error when the PID
->     didn't exist in the system.[7]
-
-Thank you for continuing this great work, Asier.
-
-> 
-> [1] https://dl.acm.org/doi/pdf/10.1145/3307650.3322227
-> [2] https://lore.kernel.org/e67f05ad-dbb9-45e6-ba30-b167a99ac67d@huawei-partners.com
-> [3] https://lore.kernel.org/20260522145518.158910-1-gutierrez.asier@huawei-partners.com
-> [4] https://lore.kernel.org/20260522171210.900B11F00A3D@smtp.kernel.org
-> [5] https://lore.kernel.org/20260522171633.AAF5B1F000E9@smtp.kernel.org
-> [6] https://lore.kernel.org/20260430134139.2446417-1-gutierrez.asier@huawei-partners.com
-> [7] https://lore.kernel.org/all/20260430154338.E22E6C2BCB3@smtp.kernel.org/
-
-
-Thanks,
-SJ
-
-[...]
+base-commit: f499b8d2253d32f4ea1e16198f348e6259cc14ca
+-- 
+2.47.3
 
