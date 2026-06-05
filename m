@@ -4,134 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14F00CD6E7E
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 21:19:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D96ACD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 21:54:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 881C36B00A1; Fri,  5 Jun 2026 17:19:36 -0400 (EDT)
+	id 509B76B0088; Fri,  5 Jun 2026 17:54:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80DD16B00A2; Fri,  5 Jun 2026 17:19:36 -0400 (EDT)
+	id 4E17D6B008A; Fri,  5 Jun 2026 17:54:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 687AA6B00A3; Fri,  5 Jun 2026 17:19:36 -0400 (EDT)
+	id 3F76C6B008C; Fri,  5 Jun 2026 17:54:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 554236B00A1
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:19:36 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 12B431637CA
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 21:19:36 +0000 (UTC)
-X-FDA: 84847125552.18.4A5FBB8
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 488CE1A0009
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 21:19:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tsDuhQAK;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CF046B0088
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:54:09 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E0A08CE10
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 21:54:08 +0000 (UTC)
+X-FDA: 84847212576.27.237A266
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 97EA7C0013
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 21:54:06 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=iI4wKL2O;
 	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780694374;
+	s=arc-20220608; t=1780696446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l77sljwLY2ZMyEKXbyo6m0iIvdzx8NQv05f4wwNhT4k=;
-	b=KZI1H7pcm5Goa0CQ7M2FNum0gQUgaIjaiq9C58Tr1CVMEvWO9eXn3Ei77ktfZGfiefBf+z
-	Y8R+RyL+RBXhX4xQYgpWbzxXZ6xTnUbPAzPb3rbR9mR8fijy/E03Z3sSpBoqB/AAkOzJhU
-	TwIZArRgOUcUyJ231gNaPlFDJkj4AF8=
+	bh=GoJ+Vwme80sUgV4v1KvmROpzHYouNqOpe95veiDZSmc=;
+	b=Y7HlBtS/AzCvMisZtj+5leBMFBEAXRYBVjLK48BawCzvIR1prglcs00yKUKAtyXcQ/FW61
+	Bz/PmFBPpXhCLCxIo8nLlucPyWLVmtqIP2kiOkTcSUqeSxNKkQ4jyxEaDyqz87hZoBgGAd
+	9EXRNvnNVaDhOAQnit014iB3yEGg+/A=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tsDuhQAK;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=iI4wKL2O;
 	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780694374;
-	b=oVkbXmJ1oUIdizAa0oI0eWaFvjR+d5hMhqJ6HMlegOby2jlBjNVZV1+l1uK3R9YzKm/QAX
-	WSNsyseI7JcvB0M7Z3zT9If61P3dZu+O+d/B1EQfX3zK3TZUD2kR+GIuiZ9D2HwHxiA6uh
-	AJZGGq0sBBflU7TO1QNAkFr0l8QKwOs=
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8ce9d444173so28830876d6.2
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 14:19:34 -0700 (PDT)
+	t=1780696446;
+	b=xrOb730qCv2VtwxhxzMOHlfmFinMbeehAEiwcoKfN5Zc3eCzDvZ4/6i00CIv2utMo/u0Se
+	H3rTMCTsd2eERllCJCRTZzinyDTfq3t2e0LpvYA+i9m4Vjf1v9H1EaRYciDLJBBAJ3O3A4
+	DG3/l2GrxB2swoeloNT8oc/0MM57iJM=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8ccf6a63a45so28818396d6.3
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 14:54:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1780694373; x=1781299173; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l77sljwLY2ZMyEKXbyo6m0iIvdzx8NQv05f4wwNhT4k=;
-        b=tsDuhQAKIvySZ+gYeTbGKTv70oAlu0eb++cBHK0hHxbqnlHg6KnQkRvIL0sDc1kwHY
-         XJ9iN6/F/C204bXnHLlk96TYAGMRyYblWhJRfdi73fq6m6otQOU62Y4BG29wOWPffUl5
-         feMj6KBRQxLR5Ad1NdLAXH4jyQI/8Rx/5AXxiUIQ7eX1R/QVV6e43fw+hlUFaGEw5xP1
-         lETnA+BPVI1DQ4XFpov1N3SmXxYVcmgRWe11cjzov34BF0ihHo+XuxWFO+Cf6NK65O7J
-         Vxqp+I6kyV/sXVRtbbb0MJdtTjXjYQBtw5V3PkDx11cVTjTlmMZkyX4mhck3cf1O78jz
-         0MnA==
+        d=gourry.net; s=google; t=1780696445; x=1781301245; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GoJ+Vwme80sUgV4v1KvmROpzHYouNqOpe95veiDZSmc=;
+        b=iI4wKL2OxPJgeq5FKoDjaE93A5k2FvKP/Z/OtN/NverJz9LgR45AS9T2UkpIXZQDar
+         oGTAl0hMy89xEjkxIp8V8HQem9msNDTfnfoyvuupvwugs2Bh4AXt7rW9HmRmcOlex3pm
+         qx8oLs3rAMIyZTwOgRXyikiJwOjC6UqcobKPCO42n2a9f9Q/5JryKdPLj9UaC2FXe1Ei
+         umFsDIWDv9rOuqTIZ6XnFareO9dIOvni5fd98SLwskZaNaBW4j/iKdHtU/SGeBTr+uVN
+         cKRwfkWGaEaCJ9OFjiE01kkMWzyz4gj+rrFp1VDPrJSg+6ERxg+WuX4HcoeERKdmZVbt
+         XofA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780694373; x=1781299173;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=l77sljwLY2ZMyEKXbyo6m0iIvdzx8NQv05f4wwNhT4k=;
-        b=haquDrx/JC+YHqLXT+1y3l6r0uQivE0Ahp8z5fIVI8uOyS8O23L81tHUchdu9fIpPv
-         /7Amb5GKp/Ax/wHlQrlxUIpBSoPHCTMQ/3iqVnwVNqBOavZFIbjMoGKrfp/3JpsY6Lq9
-         YtqsUKIjRPFRP4XNL7mjpeCljFqtA68NBrm304Qi2bPCw3JZTM4pSXby4gc5vF5FUrCO
-         Bp40bkHd+TgLEqaT8oCcvJd9nvKM/6ub73QpqK8zoNfxXmwiX1OY2bIfN3Clf/7KeXfJ
-         W44rupAeETTouzUqMNT1Ss3qr0Bl2lSXZptowqyRmxlqphGmDBTeQNsxh2hx3+3Cwn8M
-         2yUQ==
-X-Gm-Message-State: AOJu0YxSMIkR4ISLtYwK9f8VKSLseGH8e/w3oXzi0M6h0qdUv0o3Jip1
-	w0xb6jhQIHh13394DmsCKAAkKNbPTPY3sXXNI9+bwo2iWX9937xpfsRxfZt0X12AF1G5bEaRmm8
-	ZC2cFStwWQw==
-X-Gm-Gg: Acq92OGUKRWqpjpFDaUv9Ijjg73PTriI6pZVczOXPGju+Lc1FQ1J+8X/MddORxLdILH
-	odLtdSy3ZfAKI2wmDhc8Cy6aFZ5QiEmj22vghxGnpCe8qH5bC0zqcG2yP7+Zwz91dXfQ7yHDAQe
-	0mWK32OfPhhXadXs6SCfdYvtjihf/FtebPAnzcn57JK23cJPnlVMQbzIXklG6M1wdXMc2qqzI6O
-	9RpPqcuV3BSZ/y93bJWnAlk7Zhckvecorx969cMReRb+R8Qxm7tFWXkg2WJEp/B7YNI5cVgx5ro
-	vgDN8ONrMORiwCc+8SStVifJuKucC2V0pLgJI9c9wCQs0OBfnqPJCSh4HUStlCRZBeveYeGelH3
-	LZVJXMZehaBaLYBwJrOhpHyTKtN4Ua0HR+uUXYe4A33RMnNziS5JiduDccB+1HYPnmoDAJ5ozDU
-	VRpVX3kPOXby0vdT4JJQR+oA5lpzkzpskDOzE+9cTo0gJPPweF83vnDnSoKK3GVhGaGI8bcUWc7
-	RNTx0yhGPrlISBmCBpDucv3T04tbcED5w==
-X-Received: by 2002:a05:6214:2aad:b0:8ca:2559:8886 with SMTP id 6a1803df08f44-8cee5fbda5cmr92189846d6.13.1780694373324;
-        Fri, 05 Jun 2026 14:19:33 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd277bbcsm90518196d6.49.2026.06.05.14.19.32
+        d=1e100.net; s=20251104; t=1780696445; x=1781301245;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GoJ+Vwme80sUgV4v1KvmROpzHYouNqOpe95veiDZSmc=;
+        b=lc0yYqNIgkCbM7VoRMGbL0A1ZbTeqM4ZW6rK0Q2oJbyxfjJYiDdNmys4Fsfocmsds8
+         2MMNoGo7SDtLCNLYiUazxuFGGnWB2j9QsAKlRnNd3noYkbKxqjH2dTCOpaxSKg8bnbhN
+         U5K874HpbZnIgFvdZNTKlsLnaad9EU5aKT3pI+BlSDiqkC7z0T4rZL9bQIAvsmMQiC7l
+         uZQfMSygGVNeZhmxt7uavH0xt9P1rD4dk+Su+I7T3rKMR4OgrFWaBc48/Bl0opX1Sy4Y
+         1s6dGvEUv6jmfN/bwweyfGFkpxg6lspDjXU4rO6dZZgxOWIdtxF3DW3/kBbUZmdwdONI
+         69cw==
+X-Gm-Message-State: AOJu0YxcBL1kwKD4opSqYAoUJuUot9f+Ff6Zs2IZFqZjCXFv+7DCrkkA
+	qAldXffziTzvHLDFRt7pGB2zGigKKmvOMBPUuyeXZgFUSnwqwEdLAXLq5dYAgQOp4po=
+X-Gm-Gg: Acq92OEBY8P5vgb6vhoga4aY/RZmpH4ADExiu7tzzOFANqAPhEuDHirPWakooxlrUnY
+	Jp0mGroycyuzmlLrJBQJ9w+wHqXGn9IWxncpkULkUNKRErZNhL75ryZ79EwiBPkVlxIC1Ip4ANV
+	8yHG2lr0Ag7xcIUg66UGK9ZdrWshtEh7lasXirPi/3KVmbI8cZCjNFKIhS8iLFqQnZhAtf+Shcm
+	NdR4kltRt1xIIM7In/jDh62f3YEWNODSxDVa/b1UnA5+62UM4uTD2IRB5N58Y5rp9rgFyYDE08Q
+	aRLFJdunkAMRj4GYEDnQpS/AqiBx4fhIteLf/wXw6KJILToWhy48o1j6xfIqeaaDwACqM+QwXDo
+	C3w3Nua5fQ8IDOlHOli/UhRIgosOaTKQ1aVUJ9f8IjiSmHeR+knqK+ql/9pzxPBplY7upgbeVgw
+	tOzx8oa4RNyIwb4Vq1dkr57wRM8isoXMTtlGxSVePG0ob6auUaJPds98bOH9u5w1VRekeb+HOAa
+	COoCXBXL3vGJBf4fw==
+X-Received: by 2002:a0c:e98f:0:b0:8ca:2413:607a with SMTP id 6a1803df08f44-8cee5fe51ecmr66740956d6.5.1780696445597;
+        Fri, 05 Jun 2026 14:54:05 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd0535b0sm93658406d6.28.2026.06.05.14.54.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 14:19:32 -0700 (PDT)
+        Fri, 05 Jun 2026 14:54:05 -0700 (PDT)
+Date: Fri, 5 Jun 2026 22:54:03 +0100
 From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org,
-	nvdimm@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	linux-cxl@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	djbw@kernel.org,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	osalvador@suse.de,
-	shuah@kernel.org,
-	gourry@gourry.net,
-	alison.schofield@intel.com,
-	Smita.KoralahalliChannabasappa@amd.com,
-	ira.weiny@intel.com,
-	apopple@nvidia.com
-Subject: [PATCH v4 9/9] selftests/dax: add dax/kmem hotplug sysfs regression test
-Date: Fri,  5 Jun 2026 22:19:11 +0100
-Message-ID: <20260605211911.2160954-10-gourry@gourry.net>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260605211911.2160954-1-gourry@gourry.net>
-References: <20260605211911.2160954-1-gourry@gourry.net>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-mm@kvack.org, david@kernel.org
+Subject: Re: [PATCH v4 6/9] dax: plumb hotplug online_type through dax
+Message-ID: <aiNFezMarbvIZNa0@gourry-fedora-PF4VCD3F>
+References: <20260605211911.2160954-7-gourry@gourry.net>
+ <20260605213143.A18F01F00893@smtp.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260605213143.A18F01F00893@smtp.kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: xb6f1zcfisfhhyjwxgdod3yh3ntc98mm
-X-Rspamd-Queue-Id: 488CE1A0009
-X-HE-Tag: 1780694374-774106
-X-HE-Meta: U2FsdGVkX19TZwhNB91K9IRcUMuSsogrXu1nUrOCvZzsvvPMiqvXW3Gs37bPqSXzpa2kKE/g4t8Pt1JJ6HEOx8yRjHfZVRiv616cHlPn2pfwUPeuDfyYbgVEtfqQazoFJ0HmzHsnNB2vmal4P5a65CzzdXX2oy4I01RUoHE8hAo7aglFWGDm2N4GugwKDir20Xew8z9G/GtdmQ+au311LJdQiFWuTU0C2DZwElA2so2mHMkxsXpoqVbBwjRBI8IN4TMvi9kXJTrx5LgKg4OadY+PUpr/L6jBfiQg2SXbVjO7va9zIn6QExaCPxwkZrUdtJgmIaeuuXMbsi/OOdBzh8Lo5w/axDvjcqtEH4SjmSccS6CIMakaj6d9e/k4zkerIHJhqUc1hpi+rb5b0dLN6vgUDcd28W7sc4+5vDrmWNKkeTonS+X1kPbT0o/ZDy1/eKpLkxZSnM6pYBV+EZ4B/Lyre+GfUpOU37C4nYCv6LW5P+b1Y1977u4takKZubxHEsqujOGpVroLmS0hOujX/nMUP1+Ctk/49QoAvPIuOPz92en0CtsbeIdpLFwdYjMZPrY66Y6Jk2bhywbLWf5ydPT6gP7Oa5PR4Z0Ps/eHiSpnGX8c5EtXUZdq36URxSKmY9SXzAC9f74wVuLdWpOx+hvqC3X6r5tCruhpZeVnepWGIq2ubpMuor9kJl0gkwqqZLUFwyg4uKmpoE0py9BoskUoOHS9o1ALP+4hd+4zFhwbiEISwW/nFkp1WsstyP8PxQgecvvqJ0057ZeKOeuD0dTI5wervPZ17Upm8ajyQ8wP3P0OG3HKDBk/DdxluF+IUZOgDmblOTstaoMSvXfDWX+aUKtB23HufGTchEdRCHnXpocgmfJGntQRTTlbeWcUingz60W2n88JQH4fZY9wHGqTjNTqATh0fRB04XJR35UvReNdiE9ic5kBstNgFX+RsjA3kQ/7Dp/Gkcz21xE
- iAAMPH/m
- fL8qbdAP0VN0wLpQz13NqfcCQPUaUv9VPSsILvk+ziSSowKnW+93E5ryeAFuaSFcuhsLCG1uAF9owZQQiZ15H5Md1I6lrPG9IJoCAbT66POjsgsm4BdJ32zZCJLiu2zsVjA+K8cokBxavAtBNOq9mIr32WsJvj7EBp51w2rw/5L4ezmEHItmXd+LAg/kc4RN+aV2+g4J7l9RoYHW99XR4wlN4DLzM2WPluIhwL1faEYBzT498ZI9BlBcrzJsUyz5anBIy8YWgQlLl5bCcVS7HTkD/CnsFoOanWFbXjl8KTpuJYeFrwESuEhtd9Q==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 97EA7C0013
+X-Stat-Signature: 9ndfsawq1cmcyz4jaemdu63jspqqrgxc
+X-HE-Tag: 1780696446-740994
+X-HE-Meta: U2FsdGVkX1/1OYcKRNk5KgPawZ7Im6bh0XBMLrp7oWyImvwR3dWQRshYJoeAZyoMSOz+rmo1pMR+Gq0x7NNl+4+BblAMg1xktLbwRRb6fPDCSKa9/cenmtm97klbve7gC4PkGB4VtCy2bwMIafpVAXjc9N3eGIva7uAiVgfkzxvsZyKrVRBeQ7U9d3riozfNL446b7K09orgkktAbGUPjhKOTmyeRHyvKtpyvDGiQkgx4K9p/i8KS3xVVGJWTOJj7JmyqMJuxLGPhIVokWezwlbsQ8qCfn1ag/b7pcgYUatKyzm/3e62heYF/lBuTe3RtvRe0TBaol42AJwDMnvNqWJM+sckgd3xtnHkJel8Un/j0nP/bYlBFWErEJ6ZrK2aQcX4lMOgmPpchVourp8aWdPVkzCHm7eqpahqmpBzpV52nfBVEiNAbaL/xCAJ/wQq0ySLVkc2xAcrqpa7gIH4WFr7Au4y/rN1UND3XTe5uLnr6TZE/CVJB8m465Upa7H1Y3WZpB9ZTEABY9mvFehYS9R6nBWWQ0h5iuoxfagsoWl2tZsCDzwpXX5N7lb3u98NlaG3sPKawXZolUVuiGWb94AXZsUp6h1k65qiVonM6M3oho7lLXCogHwnCGrXJYTPs9dFqsCNL9qfr4Gbsp6TbOkeevJVlc2Ns2vV3/yAU6b7jP+EN7VUjuIuq5qaS4L5ttpq82oks9RraAzCLmkmfR3N6AHpHsl6x5SuLOOw8NkCXQJNBCLYaaaexolBm+DQxn5LfNvZmXDalfVnJgdL4q25nxL8Jff9OkA4U7yRaX74p9P4zIYrHFZOFr6UeEhtSxSbWaKX4f/CL+AvO+vJYP7urKoP3xJdkz6w6HaZ0OpZVgW/LvGPB5H3wrEtWbxVUcFW20bYW5g8QGdkAnwPTASRt/U/6wci3G/jiLFcSA1oTvtiQ1eXRDrR0Smk/Zoh779ekVyekj4LeoQAQaM
+ E99eaV0m
+ UALWeYF8XDRZfb/uvcbX7u53r4YdZghUkMbAHQRxQqTKQOfINRtj2wlOrK8bWbNYonFXyUpoCiiBQBdkeDLuaYujymSQoGvZs+EK+w7yOshk5HDSx/jhaMXbYQM9gMbstT4e5fzszEay6u3++ZZkm6qaHGn/B7MYYV0dkmpnCxdiUi5Bt5i9whAivw0Jm5AZ+IDWfotxvCHoEJyYXw73Bz63L2sH12UN4ZmxvFY4Zg+4LMey9ZlS5tvTCsUKqrGIOX0Y0d7P9wRUrzUAulI+yxiEMxixKc8BSVqxaNSjXxYBKHCM1fo6z3us05K7lYjLfd5Qv1Ept4OD1m9aNE1N3lrbSfVOOIHnCtRUvDTeXjJchJ5GPuuAtV/MHGmMK6svXp9hPmoZt7fGASaB4x445ZavFlqFiapuMpQCIscvr8Hqu/K5wosvL5MPBmfj4L3dFvyU/ULzPaUTI8no=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,235 +116,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a kselftest for the dax/kmem whole-device "hotplug" sysfs attribute
-(/sys/bus/dax/devices/daxX.Y/hotplug), which transitions a kmem-backed
-dax device between "unplugged", "online" and "online_movable".
+On Fri, Jun 05, 2026 at 09:31:43PM +0000, sashiko-bot@kernel.org wrote:
+> 
+> > diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+> > index 592171ec10f49..41ccb618a1464 100644
+> > --- a/drivers/dax/kmem.c
+> > +++ b/drivers/dax/kmem.c
+> > @@ -172,8 +172,9 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+> >  		 * Ensure that future kexec'd kernels will not treat
+> >  		 * this as RAM automatically.
+> >  		 */
+> > -		rc = add_memory_driver_managed(data->mgid, range.start,
+> > -				range_len(&range), kmem_name, mhp_flags);
+> > +		rc = __add_memory_driver_managed(data->mgid, range.start,
+> > +				range_len(&range), kmem_name, mhp_flags,
+> > +				dev_dax->online_type);
+> 
+> [Severity: High]
+> Does capturing the auto-online policy at device creation time break dynamic
+> sysfs policy changes?
+>
 
-Provisioning a devdax device and binding it to kmem needs daxctl/ndctl
-(or the tools/testing/nvdimm emulation) and is out of scope for an
-in-tree selftest, so the test discovers an already kmem-bound dax device
-and SKIPs (KSFT_SKIP) when none is present or when the memory cannot be
-freed to reach a known baseline.
+@David - we talked about this ~6+ mo ago at this point, i originally
+proposed something like MMOP_SYSTEM_DEFAULT
 
-When a device is available it validates the interface contract:
-  - online / online_movable actually add memory (MemTotal grows),
-  - online is idempotent,
-  - switching between online types without an intervening unplug is
-    rejected,
-  - unplug removes the memory and the reported state matches reality,
-  - invalid input is rejected.
+https://lore.kernel.org/linux-mm/20260114085201.3222597-3-gourry@gourry.net/
 
-In particular it covers the online -> unplug -> online_movable -> unplug
-cycle: a re-online must re-reserve the per-range resources so that a
-subsequent unplug actually offlines and removes the memory instead of
-silently reporting success while the memory stays online.
+https://lore.kernel.org/linux-mm/c4ed9675-269c-4764-86d5-87f4f83fc74d@kernel.org/
 
-Signed-off-by: Gregory Price <gourry@gourry.net>
----
- tools/testing/selftests/Makefile              |   1 +
- tools/testing/selftests/dax/Makefile          |   6 +
- tools/testing/selftests/dax/config            |   4 +
- .../testing/selftests/dax/dax-kmem-hotplug.sh | 145 ++++++++++++++++++
- tools/testing/selftests/dax/settings          |   1 +
- 5 files changed, 157 insertions(+)
- create mode 100644 tools/testing/selftests/dax/Makefile
- create mode 100644 tools/testing/selftests/dax/config
- create mode 100755 tools/testing/selftests/dax/dax-kmem-hotplug.sh
- create mode 100644 tools/testing/selftests/dax/settings
+'''
+   I don't like having fake options as part of this interface.
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 6e59b8f63e41..8c2b4f97619c 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -14,6 +14,7 @@ TARGETS += core
- TARGETS += cpufreq
- TARGETS += cpu-hotplug
- TARGETS += damon
-+TARGETS += dax
- TARGETS += devices/error_logs
- TARGETS += devices/probe
- TARGETS += dmabuf-heaps
-diff --git a/tools/testing/selftests/dax/Makefile b/tools/testing/selftests/dax/Makefile
-new file mode 100644
-index 000000000000..25a4f3d73a5b
---- /dev/null
-+++ b/tools/testing/selftests/dax/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0
-+all:
-+
-+TEST_PROGS := dax-kmem-hotplug.sh
-+
-+include ../lib.mk
-diff --git a/tools/testing/selftests/dax/config b/tools/testing/selftests/dax/config
-new file mode 100644
-index 000000000000..4c9aaeb6ceb4
---- /dev/null
-+++ b/tools/testing/selftests/dax/config
-@@ -0,0 +1,4 @@
-+CONFIG_DEV_DAX=m
-+CONFIG_DEV_DAX_KMEM=m
-+CONFIG_MEMORY_HOTPLUG=y
-+CONFIG_MEMORY_HOTREMOVE=y
-diff --git a/tools/testing/selftests/dax/dax-kmem-hotplug.sh b/tools/testing/selftests/dax/dax-kmem-hotplug.sh
-new file mode 100755
-index 000000000000..705a34cc3c6d
---- /dev/null
-+++ b/tools/testing/selftests/dax/dax-kmem-hotplug.sh
-@@ -0,0 +1,145 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Exercise the dax/kmem whole-device "hotplug" sysfs attribute:
-+#   /sys/bus/dax/devices/daxX.Y/hotplug  ->  unplugged | online | online_movable
-+#
-+# The test needs a dax device already bound to the kmem driver (so the
-+# 'hotplug' attribute exists).  Provisioning a devdax device and binding it to
-+# kmem requires daxctl/ndctl (or the tools/testing/nvdimm emulation) and is out
-+# of scope here; if no suitable device is found the test SKIPs.
-+#
-+# To actually run it, provision a kmem-backed dax device first.  For example,
-+# carve a chunk of RAM into an emulated pmem region via the kernel command line
-+# (the region must be at least one memory block, e.g. 128MiB on x86):
-+#
-+#   memmap=2G!4G
-+#
-+# then, in the booted system:
-+#
-+#   ndctl create-namespace -m devdax -e namespace0.0 -f
-+#   daxctl reconfigure-device -N -m system-ram dax0.0   # binds the kmem driver
-+#   ./dax-kmem-hotplug.sh
-+
-+DIR="$(dirname "$(readlink -f "$0")")"
-+. "$DIR"/../kselftest/ktap_helpers.sh
-+
-+DAX_BASE=/sys/bus/dax/devices
-+
-+memtotal_kb() { awk '/^MemTotal:/ {print $2}' /proc/meminfo; }
-+get_state() { cat "$HP" 2>/dev/null; }
-+# set_state STATE -- write a state to the hotplug attribute; returns the
-+# write's exit status (0 = accepted by the kernel)
-+set_state() { echo "$1" > "$HP" 2>/dev/null; }
-+
-+find_kmem_dax() {
-+	local d drv
-+	for d in "$DAX_BASE"/dax*; do
-+		[ -e "$d/hotplug" ] || continue
-+		drv=$(readlink "$d/driver" 2>/dev/null)
-+		[ "$(basename "${drv:-}")" = kmem ] || continue
-+		basename "$d"
-+		return 0
-+	done
-+	return 1
-+}
-+
-+ktap_print_header
-+
-+if [ "$UID" != 0 ]; then
-+	ktap_skip_all "must be run as root"
-+	exit "$KSFT_SKIP"
-+fi
-+
-+DAX=$(find_kmem_dax)
-+if [ -z "$DAX" ]; then
-+	ktap_skip_all "no kmem-bound dax device with a hotplug attribute"
-+	exit "$KSFT_SKIP"
-+fi
-+HP=$DAX_BASE/$DAX/hotplug
-+ORIG=$(get_state)
-+
-+# A failure to reach the baseline is environmental (memory in use), not an
-+# interface failure, so skip rather than fail.
-+set_state unplugged; rc=$?
-+if [ "$rc" != 0 ] || [ "$(get_state)" != unplugged ]; then
-+	ktap_skip_all "$DAX: cannot reach 'unplugged' baseline (memory in use?)"
-+	[ -n "$ORIG" ] && set_state "$ORIG"
-+	exit "$KSFT_SKIP"
-+fi
-+mt_unplugged=$(memtotal_kb)
-+
-+ktap_print_msg "using $DAX (initial state was: $ORIG)"
-+ktap_set_plan 8
-+
-+set_state online; rc=$?
-+mt_online=$(memtotal_kb)
-+if [ "$rc" = 0 ] && [ "$(get_state)" = online ] && [ "$mt_online" -gt "$mt_unplugged" ]; then
-+	ktap_test_pass "online: state=online, MemTotal $mt_unplugged -> $mt_online kB"
-+else
-+	ktap_test_fail "online: rc=$rc state=$(get_state) MemTotal $mt_unplugged -> $mt_online"
-+fi
-+
-+set_state online; rc=$?
-+if [ "$rc" = 0 ] && [ "$(get_state)" = online ]; then
-+	ktap_test_pass "online idempotent"
-+else
-+	ktap_test_fail "online idempotent: rc=$rc state=$(get_state)"
-+fi
-+
-+set_state online_movable; rc=$?
-+if [ "$rc" != 0 ] && [ "$(get_state)" = online ]; then
-+	ktap_test_pass "reject online_movable without intervening unplug"
-+else
-+	ktap_test_fail "online->online_movable not rejected: rc=$rc state=$(get_state)"
-+fi
-+
-+set_state unplugged; rc=$?
-+mt=$(memtotal_kb)
-+if [ "$rc" = 0 ] && [ "$(get_state)" = unplugged ] && [ "$mt" -lt "$mt_online" ]; then
-+	ktap_test_pass "unplug from online: MemTotal $mt_online -> $mt kB"
-+else
-+	ktap_test_fail "unplug from online: rc=$rc state=$(get_state) MemTotal $mt_online -> $mt"
-+fi
-+
-+set_state online_movable; rc=$?
-+mt_mov=$(memtotal_kb)
-+if [ "$rc" = 0 ] && [ "$(get_state)" = online_movable ] && [ "$mt_mov" -gt "$mt_unplugged" ]; then
-+	ktap_test_pass "online_movable after unplug: MemTotal $mt_unplugged -> $mt_mov kB"
-+else
-+	ktap_test_fail "online_movable after unplug: rc=$rc state=$(get_state) MemTotal=$mt_mov"
-+fi
-+
-+# The online -> unplug -> online_movable -> unplug cycle once regressed: a
-+# re-online failed to re-reserve the per-range resources, so this final unplug
-+# reported success while leaving the memory online.  Assert it is really freed.
-+set_state unplugged; rc=$?
-+mt=$(memtotal_kb)
-+if [ "$rc" != 0 ]; then
-+	ktap_test_skip "unplug from movable not accepted (memory in use?) rc=$rc"
-+elif [ "$(get_state)" = unplugged ] && [ "$mt" -lt "$mt_mov" ]; then
-+	ktap_test_pass "unplug from online_movable removed memory: $mt_mov -> $mt kB"
-+else
-+	ktap_test_fail "unplug success but memory remained: $(get_state) $mt_mov -> $mt kB"
-+fi
-+
-+set_state online_kernel; rc=$?
-+mt=$(memtotal_kb)
-+if [ "$rc" = 0 ] && [ "$(get_state)" = online_kernel ] && [ "$mt" -gt "$mt_unplugged" ]; then
-+	ktap_test_pass "online_kernel: MemTotal $mt_unplugged -> $mt kB"
-+else
-+	ktap_test_fail "online_kernel: rc=$rc state=$(get_state) MemTotal=$mt"
-+fi
-+set_state unplugged
-+
-+before=$(get_state)
-+set_state bogus_state; rc=$?
-+if [ "$rc" != 0 ] && [ "$(get_state)" = "$before" ]; then
-+	ktap_test_pass "reject invalid state string"
-+else
-+	ktap_test_fail "invalid state not rejected: rc=$rc state=$(get_state)"
-+fi
-+
-+[ -n "$ORIG" ] && set_state "$ORIG"
-+
-+ktap_finished
-diff --git a/tools/testing/selftests/dax/settings b/tools/testing/selftests/dax/settings
-new file mode 100644
-index 000000000000..ba4d85f74cd6
---- /dev/null
-+++ b/tools/testing/selftests/dax/settings
-@@ -0,0 +1 @@
-+timeout=90
--- 
-2.54.0
+   Why can't we let selected users use mhp_get_default_online_type() 
+   instead? Like add_memory_resource(). We can export that function.
+'''
 
+I guess the argument here is that the value can't be cached?
+
+But we can't really enforce that.
+
+This is a behavioral change we have to agree on (either we change it or
+carry something like MMOP_SYSTEM_DEFAULT for this).
+
+~Gregory
 
