@@ -4,91 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63042CD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:32:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 841A6CD6E5D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B24FB6B008A; Fri,  5 Jun 2026 07:32:03 -0400 (EDT)
+	id C10366B0005; Fri,  5 Jun 2026 07:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFCC36B008C; Fri,  5 Jun 2026 07:32:03 -0400 (EDT)
+	id BE77B6B0092; Fri,  5 Jun 2026 07:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3A556B0092; Fri,  5 Jun 2026 07:32:03 -0400 (EDT)
+	id AFDFD6B0093; Fri,  5 Jun 2026 07:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9794D6B008A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:32:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E39F1C23B0
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:32:03 +0000 (UTC)
-X-FDA: 84845644926.11.39701B8
+	by kanga.kvack.org (Postfix) with ESMTP id A26716B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:32:22 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6CD8F1C23D4
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:32:22 +0000 (UTC)
+X-FDA: 84845645724.25.44A57FE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 86FFA18000C
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:32:01 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LpgVnwBS;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8F6E640008
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:32:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahr5YecM;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780659121;
+	s=arc-20220608; t=1780659140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fc9vcaYFGx4VJWN/qkM/ZED/XUOAhAtzfGEMOALwC10=;
-	b=tPNsjUXFqUrNT1mGZL3Yd+BCswmw/9tdO5CzHULtY1fJF4vfQdCNkMWY+f+pKUMuuDFStW
-	TNIlTO3zlcdNUNjjEwDlxH5XBZL50+qUB6gkK4lwEXpcGc83k/4U8hgAJxn524VMSxa3vM
-	5ULUhweshRfWuwr9t/UIYrqWmwOgNKE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780659121;
-	b=VgKpka5SaesB6Svq0oASI5gm9FoCp1h36eJoTKXjHo/IuuV6PEi2XAY9ygEa0lNg1TVswf
-	2qOrN/0rm2bb1w5bwcIpCI1wSFyyhyvp2/sYnmYlzCfMjQG84rGLI0oUURR2I9OCCx05DL
-	H9TTw8pf2lUg2aazbJZ/uQlx19RTr8Q=
+	bh=fF/BiTpGv7MEy4Irsog+VHzMagQe3yTpi2h0C4MJboU=;
+	b=ZAXnpmHxLcO07ca0b+05IvIHNPBdL4iV6sqfB8DGgvCvJZTSInxv6sr4uJP5Pzkg4rXr4v
+	c8itXO1Byvm8Ev/hoaUnRGMexM20GG7cRkoJuD3Dk24f1PrMkuri2/mEbPEHLCEyUuFlXI
+	iUVtRs61ybgqnnQa3xTV7ARZJcWKKgM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LpgVnwBS;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ahr5YecM;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780659140;
+	b=UEuX6wGT46oeBZ2F7l7TbU1BY4paROMnis0h3D9Z5QeTZYeE6zq+DdmDr2oSdXjI4oMoOJ
+	8Yox8boLRhlc+w+gid327AZC1LpK+1WaR6qc+FH9U8foP/qUgv9YlJ++dYdWaRx9i0RxKC
+	1SE38HE9RMHWKzaXZ4wrr3GB7VFB92s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9AB3F44251;
-	Fri,  5 Jun 2026 11:32:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FA61F00893;
-	Fri,  5 Jun 2026 11:31:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D5C7440216;
+	Fri,  5 Jun 2026 11:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D626E1F00893;
+	Fri,  5 Jun 2026 11:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780659120;
-	bh=Fc9vcaYFGx4VJWN/qkM/ZED/XUOAhAtzfGEMOALwC10=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LpgVnwBSDBMv2ZCVDsEcjfQRjXldbcrdFN6YWC0rquZ76JA4WLAVGYdrU2Hg0J0lu
-	 b9l48jH/dtdOxXSdPpiNOqWudkX7H+Dmk6Tu9z2LXgLyILK31qQOLW7KZ2lLLYAx3I
-	 fUYlaYaQdJ3iXTb1M1TogOngIKpo02yqpbd2QnvxpVH038t+JW9MFZDkhAV1DQCDii
-	 dOyl2XK8+BhGI4nDZpgsWPVpoFWUOyBIbuadfyTaVSYMIvySJTlLYbadUiM4xtF7KN
-	 8RLN2HjeI1uJyOM2NAk8ouza4Wv8Bl+HS7G4okRB0cqcK7sKPLJJVHjh9v1hcoxnp2
-	 dAjEYyWjWwq7A==
-Date: Fri, 5 Jun 2026 12:31:52 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, liam@infradead.org, jgg@ziepe.ca, 
-	leon@kernel.org, david@kernel.org, shuah@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, pfalcato@suse.de, balbirs@nvidia.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, linux-kselftest@vger.kernel.org, 
-	ryan.roberts@arm.com, anshuman.khandual@arm.com, usama.arif@linux.dev
-Subject: Re: [PATCH v3 2/2] selftests/mm/hmm-tests: test pagemap reads of PMD
- device-private entries
-Message-ID: <aiKdccWcgUaWCMes@lucifer>
-References: <20260604055308.1947679-1-dev.jain@arm.com>
- <20260604055308.1947679-3-dev.jain@arm.com>
+	s=k20260515; t=1780659139;
+	bh=fF/BiTpGv7MEy4Irsog+VHzMagQe3yTpi2h0C4MJboU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ahr5YecMtOAvTEqCOgXxM67NPD7ec3mwlWfFszalPPSGGSAzTi3vRr8Ah44scyGa+
+	 Qmb1z7+bK+3yqNNsuaiXhUu2M7X8MKMnErlQMW6AlKfOzMW04X6bnauaWcZX0c1nuU
+	 0ohhtzmGS6KEZ7Qecscn7n39o2Gxdk6lqeuXUeGeceLf+Mg/toSVy3ml4Z3l22d5Z9
+	 gSKWAMmGTMqQ4SoQv8izDYFDByB2afWJi4CxvXB0ngUgL8Jk9FjUUNGoZavvjuus+q
+	 7PMeu8LE8u01xKcA6eUo2k7gozbNod+0sgL1FIs3RJ9Ty1Tku+mIpF0pisKd/8Hr/C
+	 /r/Di9hN4OiRQ==
+Message-ID: <d5d9365c-89b6-4dbf-9421-fbf7a709c225@kernel.org>
+Date: Fri, 5 Jun 2026 13:32:10 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260604055308.1947679-3-dev.jain@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/7] mm: memory_failure: Allow truncate_error_folio to
+ return MF_DELAYED
+To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
+ vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
+ tabba@google.com, dave.hansen@linux.intel.com
+References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-2-a5bc7db5a9b2@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-2-a5bc7db5a9b2@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8F6E640008
+X-Stat-Signature: uq7rpyfqa97p95ftej6mihkw1eb5fqft
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 86FFA18000C
-X-Stat-Signature: u34coj5zz9gczxumbmsy8jqdp6j3or7h
-X-HE-Tag: 1780659121-48684
-X-HE-Meta: U2FsdGVkX1+sy6NH8wpzvfGUXyNw5H3NsUJgXtSMqnIx1Xd7U9ZlKhSjEpK0PADZDBEVSUt6PIHfCldMm5Pkmnr1OqIVzBgYWc7LEfIqUPk8W9++gj3wtIg1wNJKNcTgUF/jqjwOmQUVOdi+xOU0Bqmm54JG9Y+D378IZgs6rkAwmmgqG4YItN1JHDhOu6Gdp8VfvGKCS6kCtLE6julISOshnmhBHeFCA7a1cMaGZqqSHtV+z59CgtXVzosSl2TQs7fZCIr+BK8EcIVTzoGcpcSnbFBT4Fx8IyxZ0JsXp506eEYRc8GvWB5zdxm/VvPq8OZT36D+WO1eSLfPBCyIoZizOh8XQwN/SCHK7hjH+Lx/6mrszqHVakx5xSKF/F9ViOQ2QFSx56UK2+fTCT8qdGMmDNGle497vUpi6Hd3MdK7dOBPrlMl53fdtXG6BbNxGV2rJ71m3JkFxye0L8+d4V2Q18NyEBJZrCjAx6AQ0rj9p+lLVw0g54/M70rU2F4JTdAVo6umMRY78vgchONhQ1jHrSyUNOyftNUNHW145S6cilVMUJQJkFdhMYBXw/tdV17AzWHyeCY4xZfVWzYzN9dRFSrGOIg2rydBNmf/xDWzcXMnhBCvbwNCbEH3Svl5prXvkQxYobckXShT3cwJDqXTUl1Tz0YDux4PjPhoDEgjcYeN7KJ3ukNwo6rXyTPLK5LpCzpLhUl2fljP7/wjlttv1X5XTFEFY98aWNkqJkBzBr82ij0O0f9Ckib6SMtPM1HI1TcE38/4NJ2htV4s/bje1TiIrkQrY8caNuYvoxXeoTlndvFhimr0+mu/y6R1OPu48FtIZz9qTgwoqjnqhkD7UDVyeVC9+W4B/usRO/5o09CUiZ6MrV+zHNN0dCFdjbIcog/C6AvlAuDvSMTJqoFp85/s7YeOnYHOqxsRRVbnSRH0+ffvNl0ZuQqfylMUcXpDLoIFGMXxpUdBtaV
- xcK3tR3a
- iJsYJsWFzoppuDM8nMFzS34o5Bu7XSEPIqYeeB2CoBDsNNPAyJ/IFvaFDsiVyFVvXxNUVyiHrbBgiPmrATN+Fqh+y5dqUyupPsyADJzge71ELGg4/D6emxuFl7q2ew/QP23i+v5ieLWRmvGXQcuX7vl2+9w5QOo4bEAPJ0/3guEqbeqSFWp9RXQcYjBkYNonNW5ZWoz8dsXZunqd1+NXcmJ63ksPgsBh5SGpkPGwzYSD20BrmnPLqvh7F/r+cLgPP1b4jvrQh1hX8vNdN246veWQ5o0w47EF+gswungeiQZTw1qwl6XXc9+JpmwZZGd5EOe6ZYB5WjcmxnW9Pkd4XsyfWHw==
+X-HE-Tag: 1780659140-419198
+X-HE-Meta: U2FsdGVkX1+Ho5XCqLDOyQf0cI5dv+CUAf6NBaR27NuPM/nHjKlAEoMC0FooPLH78JZ7x9LbTMXldzksgTDwSQKUl21Ms6q9denWcJCC98JG+JtGLYsp5h4GJ3TuAFNRSFrxBlymz33lSg3mnBhZmBTkXwquLtu8FChFRcKySz1wGgFdn6RJuhoAmpAU0L2w4RLxUHMo+4U7NtP4a1jqidYuK6dk/f4xcUKYd1LmBuJqp0zBFVW9jxKHb0Um1E4hm+TbSsvmigDK63aDE6TyEAIZG3G4oDJEfoZrkZvCdpxB6iV2xguL87n2boU5Sl8I1IEpFCLobm9A1ibVxVtwV3Zdt8Z/xx65Bs2euJ5NGEZtHDmK7Ol5ZrCdSKG+JXQQ8J1oZX0Hgjfls+U8G2a4aJlpTXlYv3j/rkNRircvTacrf0ABSsqduly8orlhwqzNHIfHzs3+Km0UZ/6QuWMONtfl14DgT+hETtnL0JSpbVOF2AHCRZFBOv4+cWPW1uaHaZdSfiA1MBzLsCMmDKvUfro4AfZINlnszPPA9rh8KL45X6uichiqm03wq5FaXWVEwkAAGa0PN0+iNuKfROjF+sRG8bGm9XK7/YMt/d8hgLTBrC4NOwuW7XCn8JSZbuBP+1GnYgBvhP0DRbPzRJzyXWkSw8+C9m5OQ4zkr4Ix+uo6hum25ZkbriBwJdLYnEcRwkX8/2V98NPNInFN27l4SPufcXNPUzAJjKESqM1dDiU35gbb/gzJahNi/FMuTdIVI6tiwtK9KQDT+Jaeztf7XjsWJHcMU/bD19JsV9M9RPCJfGmEx4igUYJTIMQ50/rKyrCUbW9vDRa+bsm1/bqGr/364rqUKWMJD45V9zeEfYWPVP5FKpbitN3hcQWVzk611c36ahW4M/wPP9NqX1jHFU9xVWNW5Y/j6D5MvJwqjs4iwroM1dcevrE6uYd3lY1UEDAcSfSsIo4DG7geLr5
+ 7RWQ6OWA
+ dMbv4QJ/Ye2YZq2YuUF3IQpcVvNSjddIW2gvw8juEWGPTVyfK5pLFE6rx8Wv4ndTd2wr9O54FqiXTQpGPk3obwO8m+VQhFsfxiMSr095CVqziYCPi6RRwv0gQKi8/WsVukWwgP/BkzCOf1lPcJj5DU9egqkPIyzAPbD6AoBsha8DPnc9MnSzMA/VJVyx8+q8eUvtGxde4Gik94Ubz2LtkuKkuTJ7dkLvkr3BOxoDslVsLdpjN8SNNwFVBkTYoHA/KKeUgTw932lauJxsbao3rOIL43ouYE74D6JfDkK3Sg0dOHVMC83ylOPD6i4AUN/mxRq8BGTPPMGlNSPZTjTygyfZSavut5hOy0FW0o/Jkz1JxaeYkiWWreUvONVYGSkDMREQFUBV/PL9bN77GpcAhHvXoXz5fuTCU42DWWu/vN1vRvnQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,92 +150,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 04, 2026 at 05:53:06AM +0000, Dev Jain wrote:
-> To cover pagemap paths scanning PMD entries, add assertions to check
-> whether a device-private PMD entry has the correct pagemap information -
-> the PM_SWAP bit must be on in the pagemap entry. Before that, we must
-> assert through HMM_DMIRROR_SNAPSHOT snapshot that the leaf entry is
-> at PMD level and not PTE level.
->
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-
-LGTM, and confirmed this triggers the issue locally so:
-
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-
+On 6/2/26 23:55, Lisa Wang wrote:
+> The .error_remove_folio a_ops is used by different filesystems to handle
+> folio truncation upon discovery of a memory failure in the memory
+> associated with the given folio.
+> 
+> Currently, MF_DELAYED is treated as an error, causing "Failed to punch
+> page" to be written to the console. MF_DELAYED is then relayed to the
+> caller of truncate_error_folio() as MF_FAILED. This further causes
+> memory_failure() to return -EBUSY, which then always causes a SIGBUS.
+> 
+> This is also implies that regardless of whether the thread's memory
+> corruption kill policy is PR_MCE_KILL_EARLY or PR_MCE_KILL_LATE, a
+> memory failure with MF_DELAYED will always cause a SIGBUS.
+> 
+> Update truncate_error_folio() to return MF_DELAYED to the caller if the
+> .error_remove_folio() callback reports MF_DELAYED.
+> 
+> Signed-off-by: Lisa Wang <wyihan@google.com>
 > ---
->  tools/testing/selftests/mm/hmm-tests.c | 34 ++++++++++++++++++++++++--
->  1 file changed, 32 insertions(+), 2 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-> index e1c8a679a4cf3..46e0c8c921c3d 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -2276,8 +2276,11 @@ TEST_F(hmm, migrate_anon_huge_fault)
->  	unsigned long npages;
->  	unsigned long size;
->  	unsigned long i;
-> +	unsigned char *m;
-> +	uint64_t entry;
->  	void *old_ptr;
->  	void *map;
-> +	int pagemap_fd;
->  	int *ptr;
->  	int ret;
->
-> @@ -2300,8 +2303,6 @@ TEST_F(hmm, migrate_anon_huge_fault)
->
->  	npages = size >> self->page_shift;
->  	map = (void *)ALIGN((uintptr_t)buffer->ptr, size);
-> -	ret = madvise(map, size, MADV_HUGEPAGE);
-> -	ASSERT_EQ(ret, 0);
->  	old_ptr = buffer->ptr;
->  	buffer->ptr = map;
->
-> @@ -2309,6 +2310,9 @@ TEST_F(hmm, migrate_anon_huge_fault)
->  	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
->  		ptr[i] = i;
->
-> +	ret = madvise(map, size, MADV_COLLAPSE);
-> +	ASSERT_EQ(ret, 0);
-> +
->  	/* Migrate memory to device. */
->  	ret = hmm_migrate_sys_to_dev(self->fd, buffer, npages);
->  	ASSERT_EQ(ret, 0);
-> @@ -2318,6 +2322,32 @@ TEST_F(hmm, migrate_anon_huge_fault)
->  	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
->  		ASSERT_EQ(ptr[i], i);
->
-> +	if (!hmm_is_coherent_type(variant->device_number)) {
-> +		ret = hmm_dmirror_cmd(self->fd, HMM_DMIRROR_SNAPSHOT,
-> +				      buffer, npages);
-> +		ASSERT_EQ(ret, 0);
-> +		ASSERT_EQ(buffer->cpages, npages);
-> +
-> +		m = buffer->mirror;
-> +		for (i = 0; i < npages; ++i)
-> +			ASSERT_EQ(m[i], HMM_DMIRROR_PROT_DEV_PRIVATE_LOCAL |
-> +					HMM_DMIRROR_PROT_WRITE |
-> +					HMM_DMIRROR_PROT_PMD);
-> +
-> +		pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-> +		ASSERT_GE(pagemap_fd, 0);
-> +
-> +		for (i = 0; i < npages; ++i) {
-> +			entry = pagemap_get_entry(pagemap_fd,
-> +					(char *)buffer->ptr + i * self->page_size);
-> +
-> +			ASSERT_NE(entry & PM_SWAP, 0);
-> +			ASSERT_FALSE(PAGEMAP_PRESENT(entry));
-> +		}
-> +
-> +		close(pagemap_fd);
-> +	}
-> +
->  	/* Fault pages back to system memory and check them. */
->  	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
->  		ASSERT_EQ(ptr[i], i);
-> --
-> 2.43.0
->
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
