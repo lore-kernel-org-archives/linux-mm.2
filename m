@@ -4,131 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38CC8CD6E74
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 05:42:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71EF7CD6E74
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 05:45:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BE5D6B0005; Fri,  5 Jun 2026 01:42:08 -0400 (EDT)
+	id CF3856B0088; Fri,  5 Jun 2026 01:45:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 795CD6B0088; Fri,  5 Jun 2026 01:42:08 -0400 (EDT)
+	id C7CFF6B008A; Fri,  5 Jun 2026 01:45:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AB866B008A; Fri,  5 Jun 2026 01:42:08 -0400 (EDT)
+	id B44B56B008C; Fri,  5 Jun 2026 01:45:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DE9D6B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 01:42:08 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 07A388B05C
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:42:08 +0000 (UTC)
-X-FDA: 84844763136.25.5A7985B
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 27D5C14000C
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:42:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XUFjbc2G;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of praan@google.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=praan@google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A07486B0088
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 01:45:42 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70831A0370
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:45:42 +0000 (UTC)
+X-FDA: 84844772124.23.F7D99A4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id CC2A4C0007
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:45:40 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uu+kycIx;
+	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780638126;
+	s=arc-20220608; t=1780638340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rbv0AZ2j24l1SmU6m1H5V7hzpCBteEa/IZu6sKIRnTI=;
-	b=1ta35jkGMYPRYOVC11DRjpyyPKTilUyHs8f6jm3KcbFOqBY6ThEzHsTTaONbWdYWUb7Ml5
-	Nex6SDrATk7mE9Tbj6XrudmnrgGEz1Uleb6eaXpFBidmuDiS1xucDzA/wFx5ynAcpRypQi
-	xnAE5GdScbP32t7tDqpRHNavk1G9pBE=
+	bh=mhVtNpIY3P5HlHg06DPqLtn0RckcLp4C6pdGau2Sqv0=;
+	b=8o/MGsPMF8fKrbl0kLg1uYB7DbznbxRZUm0xJrTZMMdKAE1XlZcO9qXkNehZimC3L0lE42
+	sHmW8fRHN929P0tUdQ1xJgo5Nrwez6Ou4SplLNgzMKCYP3FC3SKVBBhs5yWv49gjv+ZSEb
+	tUpOyRLGY3Fmf6jNDg3oiIJ0nAFCP7g=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XUFjbc2G;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of praan@google.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=praan@google.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uu+kycIx;
+	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780638126;
-	b=gTryKOrciyYNq8c6rQ7SiDPBa/i62jqEWTRCUAUIpnjmYqZPSS02VokA17CMShtsIoKHvH
-	6+zahkRoX9UuAcP/xGdgZ7nIl4sC3CtaveYgKPuZzxPMDaRRRhLVpnZdCZtvzmxGNijG+i
-	4r0m43igbZ44tgHzatS9CeFuxY/07rU=
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-137ff9a7d5eso6093c88.1
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 22:42:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780638125; x=1781242925; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rbv0AZ2j24l1SmU6m1H5V7hzpCBteEa/IZu6sKIRnTI=;
-        b=XUFjbc2G/2eIABp0YZZwqGxapnv8EptAm7JxVYDIG/zn1c8qlq/++UKk+nqea+oiqu
-         GI3i4QJETlh/2U0U44LKviLwbgoMpYcNSurDeZ5Ed8vZU3+PPTj5hnKCmZb0PdoocXak
-         jVlAbE9SipYzfeA4yk6zq/qkOnp8ehHacznxhJt7DcAWuAkXWxDez/RbL9A0fES67Nfw
-         V9c6kdFVBBozrDWvAEjfm5bcCJdN598d1Ka96QGc3Gcos+hcu+/BnRy/EgYOdmG0LkDZ
-         02KfaOb5YKpk1yGLquUifiuV7CPJao3UiGHVKcI2wwA8Ag5tu+aUJ+54A2hXC6/LN7tV
-         Zv0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780638125; x=1781242925;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Rbv0AZ2j24l1SmU6m1H5V7hzpCBteEa/IZu6sKIRnTI=;
-        b=tESgIgfG9Mum7c7xHnzbH+9PQiKunpo4bn8gz9C9b5rzEESukxn0RQ9ZcGmBmNsKKR
-         bPjQoklc2sEB5tOVNqchMEJBD669+IGF0GRkdd91XtMaVZW597RLD5rqr0E/cyOw9egQ
-         +8b3aB44An13/0mEkDaXVUrk0UJyoj457GKdQoJDbgj8YO4WYzlPCBepeAZhz2KGHLun
-         so08MQvOoycfIFbn4/JDcH+MOCkTZUx2NSEpxCY/0Zc4C+x1fdYdW+olaenLOw1k1DQ+
-         FRXKkiUlyjrrOWj/eFuCuuESFsh8CnybiXS/6eiqkwMsJQrlVdLY01HG9E09X3S8JuTG
-         S31A==
-X-Forwarded-Encrypted: i=1; AFNElJ88yHp2RQz5YY+XiKNU2kchOkq2XjyfYlCYsVpNNjwgzfPluho7E7QqhjHq3kTdfOnmRTJ2vUshrA==@kvack.org
-X-Gm-Message-State: AOJu0YxA3iP2FMIBO4HfvcT0V/S4JNmJqGVwwPgMi11GyrNUN4XfzdiN
-	zYRFYNcdeLGEk7UO+XgwQ9+J4elU96CMTsPGPwupVOqnwZkvevR8/j+QlCgZHmUhKQ==
-X-Gm-Gg: Acq92OEPxylM9Fm+XNoNtqZJYElUkSGdzecGbxv6TXqhcC7ap4JuPM289EmGM3Tu1ts
-	dEa7ACRwHbPaiZi2Cw1gfGJh8xUeeyPsUAqLXOS5PS5zXKz0jhpS1mO6/uRkuGPycZdsSpNXXt6
-	KYgxbcLtbbJG4gjbl+WYy1yQQpUO0BxvzJqxyRgn5W/y/zI/ZACzuqVJYGqEBDS7V7Ofc2n1plH
-	pZmVAPCxLoizzuZmfZ/EgJtkQ0LO9AFN3xzpXc632roVUBiZxM1KchnD2EeVcBIo0CZyvo0IDkL
-	BIh0ZQIoL4JWcQln/9FyXD1TdBsnaeqFhyYKU6WgZDEM6426LVpbXAZFGz7uQLdXhLL5l8Gah7n
-	5erOsO8LkTfFqsoiEiau2e5GBUDp3nhI6LU6j5Eu+E/NclMNzXMjRIRDSk2jxYt0BXFuc/myMho
-	dgYSfLYDtACRdnxvS4y70hHmJNWBzSNDwoSTcuSjiE3acTJb7SjoOVsANCgo19JBtHLqwztYM=
-X-Received: by 2002:a05:7022:107:b0:136:d02a:67ee with SMTP id a92af1059eb24-13807cf45e2mr63052c88.24.1780638123822;
-        Thu, 04 Jun 2026 22:42:03 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074deaab1asm6539103eec.17.2026.06.04.22.41.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 22:42:03 -0700 (PDT)
-Date: Fri, 5 Jun 2026 05:41:54 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 01/12] PCI: liveupdate: Set up FLB handler for the PCI
- core
-Message-ID: <aiJhoq_Yj6-1Hl5r@google.com>
-References: <20260522202410.3104264-1-dmatlack@google.com>
- <20260522202410.3104264-2-dmatlack@google.com>
+	t=1780638340;
+	b=ZMqsFxHpM36sZC18e6j+y9wDC3BO4RzH/38VEOgQsZSb9sjxe7qS5SBqmc9BNABrcCOhSY
+	Os5luTqRiueGjsq0+yJE/bXrStNx7XJDGe81HRD4GtF8PwOR+WHDC+3Oqy7+1IsMQQvLGA
+	QF1/UE88858ukpdemnuW8ZsSLQUfP2s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 30EB860052;
+	Fri,  5 Jun 2026 05:45:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593121F00893;
+	Fri,  5 Jun 2026 05:45:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780638339;
+	bh=mhVtNpIY3P5HlHg06DPqLtn0RckcLp4C6pdGau2Sqv0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Uu+kycIxx/OwP3X+MW0bxkvQU4ddOXwn3XvJ7ehtVT3TKsoeCOSObRuucLETHpt5k
+	 pdlTazcWxqM/rvf0VsEj6F9iXGfWD79yvmqOWbXXD3qK4rHo1aBhHk/Lg6KqoOSwJS
+	 /KH227tJUhDSUda5T4B9vGDT09V7SFVSXF6uSX+HDBmBkd9Av5QPF+sDmUZaXgFMM/
+	 6cKhDwlHOBYRPdbkwf8VLc8FFqlK8PMTNpWTshOJ/dBtdWtERGC0abLZ9Fx6NGIXM3
+	 ilTMDOT3piuhx356QjyJfh3GekndYg4p4r+HuBlK6LBYMRAddiO76Flw4lnODF5BLy
+	 KovD8fMcDvSmQ==
+Message-ID: <0198cf7c-ba09-47e9-abc3-dd230c1183dc@kernel.org>
+Date: Fri, 5 Jun 2026 14:45:28 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260522202410.3104264-2-dmatlack@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] net: skb: isolate skb data area allocations into a
+ separate bucket
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Simon Horman <horms@kernel.org>,
+ Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
+References: <20260602183122.747759-1-pfalcato@suse.de>
+ <20260602183122.747759-3-pfalcato@suse.de>
+ <6d70757a-a849-4828-89e7-f3d51bf8c9f8@kernel.org>
+ <aiHIQ4ZxnMSifhmi@pedro-suse>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <aiHIQ4ZxnMSifhmi@pedro-suse>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------997bZ7rcMfhtcga6qMSb40eN"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: CC2A4C0007
+X-Stat-Signature: jdnoaw4tnu6nd8x3j93woue3ftcend8y
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 27D5C14000C
-X-Stat-Signature: zdzupwm8httprwcy9ir4eqwx1rmk1j9x
-X-HE-Tag: 1780638125-156620
-X-HE-Meta: U2FsdGVkX18RrsUoxJ8/h72YL/4Id/bOlSaWpUV/506bSnFzTI0EF4ckyit0Hibm54hAlU0I0TBHbKeuHmzLrDbXBBmvxINu8v+n50OKF6fFKfkmEy6QDBP+UgJdUJJW0ppD+6ANmug3ps8gAMR0MGSnANzJk4t387HBsa6BHPwS/fTqCdvI4kmapvUqkmW4cV+Q6cxDbUIsgOjQkO+QUGIRyiGXgarVWF0ruTij6p0DYwCBjCqP9WfTfxzVJYwWAKMsJ6WSjeZFCCVBr/oaWsmcj5t7nMk3kyHS9G0iQd4tUndFLoPau2TfPRja1q8sRqcqT7wPBX10uUfx3p8KiRRU3atPntSrYHgycVXjfFZtrBs7Li9yNP8lFH0ReH3iJbCnzhgOSKsr+LViXeUmrUGDMEXebEkZCPNKFQcgJZx3C7BCE37acQLL01QPGvMlLjDRlMHc13CaREW9AxxPemM5ca6qVbvNDOaDiA2MKn5t1ZgizsGDf6WsUkL0gszi+VckMRi7OEoXBwlnJwF2LyRj7OCuF9M8mbwbKgQ4S9JrtTlo/hjOry8WROWlElJNUfilurJd0blNLugiAzbx3Ni1av1cGYY4OF4fuGyVAE5K+JeeQZLMPrCJdUREPhZ1xYn5bCqtqyb7C8Q/GMnS8AVK0UYnyKS2f8I7XFFMyLmRjhSGKdHS4xDPQdH1wmMVuBjmGQPjS/heiypZcnfpwRhH0JsvcXRAA9yLFWGNlNxly4meu5tIt2o17yYjDbTF67wvbMyz0dll72mXNtDcnjCnsUJ9ywJTMc10WfcJ1LTvlZVJTcEzgZxO4yeIizVbYRF0r4d52JCFUWVN553wMr/IU8O5y/LsQfnQAX6+n93NapEBe0Sdl4k8mIYAwhAjFyxNoRT9bk9J4g5690YuTARXkNlElhXZmqvgu5tzmEouqbgUJm93EeRPCF5QvLlAI5yNpCaKlT02lChDnqg
- fVF6p2XO
- SfG/Ukz9896NG+iVSPKCRsmzdvrUeuibDXy9R7Bx+4Y2qJgvCZ8tOgxJORlSCyrrqX3Xu70BuGY4XPdWB3ITA/sUV37KGUubK3lr1skuoZh0q8wT9+mm9LDJ2s5JyAvZM4JlJNOllKGRkbIsY9ge49GPgVeCidZxknK5XyXuOXj0hlGiQP9xyM9f1V/UmMYm1tSzZlCWFVVzeAOvg2gV5J//RElRMp+m9k2xE0/CdqJ47JOKkRLJvJs3h1gVHKSb0+7FBYiQ5O03MCPTNVofN7EiUKthikppxH7Hh8iwW+e/Ufb3cE1oWhGUJUkmD4FWnoZEPBym4Nr5sxgKZTsWwIscP/osvQnQydoEf
+X-HE-Tag: 1780638340-815114
+X-HE-Meta: U2FsdGVkX1+9h8aTCOgrFGe95tcpuMyQjhtbdt+UGZJ1boTohNxvJEKS7gfXzVmrTBzhjc+7NWiv+rnNSiiqqemt42sDQBnE6E6mSA4ybLUpogBmcvhKIOaE9jcEVvM8njnRIJ+jKsv9nfgiTtSSR2NfVGEI7sXcVI7cjvu3rkjpaDO3xXfFsKEQ3GqaiFnzNuZk/i+yTNuU2C5M1qmhZvhvNCC5PEthI/1cTKzBx6mmsnRNAQwx1AluDHuPKuj4EgSL/Uce4KE3ZQjsUHZ1pgs7qJa3UfkbI7FbmBROecjAEBu0/TvWKUycyCJKuWH4PFEGHIk2epKv3E3L16qRBMsDTrie/RNIUxVLssPtUENkFHZNVMJ308wABjnJVSDRMi73FuKNTgPgxCM4gOM075dNl6B/KknxyIQkZzhYAIyVhmzfOUY6RjcvdB4pwaM5krAf7AQglOBf6bV6XKVxfHCbLI6K/um+ejaigsMscY9/A2dMtbHV5SJwv4n0tB6ldLXWzNEcBQPrbXzCM14qcb/88owYUXkLNqQz+0bEP3FN51pm8GTkiqjI3cRJ6n6DnsDipKtboU2ANI7mb/SdXT0Ciec3gxpDmiTqMAVfY47GUEJ6dToUO9VHDzs9Du8V06gUY/a7tYc2w7NFdJMUn8mlwHsLJnSFo7Mg+0hEqIOc/er2EKCxrGXuboqmnwekJhWEBNGzxPrOQ24zx38h22O51j5/T/GBWeKg44O/yOxo0ofpPRyaX1j3wv6kD2Gzakq1jCfOnvu6osAwbK+dcOFWCz8QmwOVrezFjz6U0Dhbojun+rELney4OrAF6di0J3Ny5XHwBdg0PZ+/A64yz0K03NRQoEtFLlUe5KeJaR63U4CEP/tXXfH3bT8xv+xavMT+TnN+AH+qry5pJZDiRvOquoaoW0ZR8b6VebHXONpuNap+FbsnMVySzD3mQ5EZ4aPqDfDwr7h0ptg1Kas
+ 3qQ35Ekv
+ pP2esTDQxBQIsgc+RUOoEP90NoSyLdzB2nwmA2sI9SldqYCFJ6As+cM5/LY5jkqW4U6coGmjak9V/nd+HNBJnJfHy85Kyr4MhwNK4KoitlZQU8BzsOOQ4N9OHUacWDPkk0zkptMr5rUXeIik+VwEj55vtsw4SbifDJjLO5c0SSFDfe4TRTpgINo/ghadrzZRW8+L8HxcomrJmMg1mqT5BLjZWkC516r6Y+lzVYTcJm3v+7Tg85nU2ymCqPsN+Gq5VmYsSSTggvi/Yupe06NxyR+SZhPsBhjenby+FCGuHTO8z7nGO8EiBNUjy6IrFND1GwQC0PshJrpptQnURIMImfWHSYAQ6lYwrKLb+7XpxvZ809B+R0VO3JhEYtLcCeKaEk2r9zZmzuzihIb1vbU5/THLqMb1K98bwXufYui20b4m806zlt+Gb/4HhloeRo4wBxvV4vUDCI0LT8L2CJowuxE38md2QvXmHjpNQuJrM++bnh8yfqRrx+FN41LYVbQW33k5H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,90 +104,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 08:23:59PM +0000, David Matlack wrote:
-> Set up a File-Lifecycle-Bound (FLB) handler for the PCI core to enable
-> it to participate in the preservation of PCI devices across Live Update.
-> Essentially, this commit enables the PCI core to allocate a struct
-> (struct pci_ser) and preserve it across a Live Update whenever at least
-> one device is preserved.
-> 
-> Preserving PCI devices across Live Update is built on top of the Live
-> Update Orchestrator's (LUO) support for file preservation. Drivers are
-> expected to expose a file to userspace to represent a single PCI device
-> and support preservation of that file. This is intended primarily to
-> support preservation of PCI devices bound to VFIO drivers.
-> 
-> This commit enables drivers to register their liveupdate_file_handler
-> with the PCI core so that the PCI core can do its own tracking and
-> enforcement of which devices are preserved.
-> 
->   pci_liveupdate_register_flb(driver_file_handler);
->   pci_liveupdate_unregister_flb(driver_file_handler);
-> 
-> When the first file (with a handler registered with the PCI core) is
-> preserved, the PCI core will be notified to allocate its tracking struct
-> (pci_ser). When the last file is unpreserved (i.e. preservation
-> cancelled) the PCI core will be notified to free struct pci_ser.
-> 
-> This struct is preserved across a Live Update using KHO and can be
-> fetched by the PCI core during early boot (e.g. during device
-> enumeration) so that it knows which devices were preserved.
-> 
-> Note: This commit only allocates struct pci_ser and preserves it across
-> Live Update. A subsequent commit will add an API for drivers to tell the
-> PCI core exactly which devices are being preserved.
-> 
-> Note: There is no reason to check for kho_is_enabled() since it can be
-> assumed to return true. If KHO was not enabled then Live Update would
-> not be enabled and these routines would never run.
-> 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------997bZ7rcMfhtcga6qMSb40eN
+Content-Type: multipart/mixed; boundary="------------n0FZEuI5Zztetg5lfgI5QZI8";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Simon Horman <horms@kernel.org>,
+ Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
+Message-ID: <0198cf7c-ba09-47e9-abc3-dd230c1183dc@kernel.org>
+Subject: Re: [PATCH 2/2] net: skb: isolate skb data area allocations into a
+ separate bucket
+References: <20260602183122.747759-1-pfalcato@suse.de>
+ <20260602183122.747759-3-pfalcato@suse.de>
+ <6d70757a-a849-4828-89e7-f3d51bf8c9f8@kernel.org>
+ <aiHIQ4ZxnMSifhmi@pedro-suse>
+In-Reply-To: <aiHIQ4ZxnMSifhmi@pedro-suse>
 
-[...]
+--------------n0FZEuI5Zztetg5lfgI5QZI8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-> +/**
-> + * struct pci_dev_ser - Serialized state about a single PCI device.
-> + *
-> + * @domain: The device's PCI domain number (segment).
-> + * @bdf: The device's PCI bus, device, and function number.
-> + * @padding: Padding to naturally align struct pci_dev_ser.
-> + */
-> +struct pci_dev_ser {
-> +	u32 domain;
-> +	u16 bdf;
-> +	u16 padding;
-> +} __packed;
-> +
-> +/**
-> + * struct pci_ser - PCI Subsystem Live Update State
-> + *
-> + * This struct tracks state about all devices that are being preserved across
-> + * a Live Update for the next kernel.
-> + *
-> + * @max_nr_devices: The length of the devices[] flexible array.
-> + * @nr_devices: The number of devices that were preserved.
-> + * @devices: Flexible array of pci_dev_ser structs for each device.
-> + */
-> +struct pci_ser {
-> +	u32 max_nr_devices;
-> +	u32 nr_devices;
-> +	struct pci_dev_ser devices[];
-> +} __packed;
-> +
-> +/* Ensure all elements of devices[] are naturally aligned. */
-> +static_assert(offsetof(struct pci_ser, devices) % sizeof(unsigned long) == 0);
-> +static_assert(sizeof(struct pci_dev_ser) % sizeof(unsigned long) == 0);
 
-Minor Nit: Shall we consider using specific bitwidth types here?
-I'm wondering if down the line another u32 field is added to 
-struct pci_dev_ser.. in that case on a 32-bit machine 12 % 4 == 0 but on
-a 64-bit machine 12 % 8 != 0..
 
-[...]
+On 6/5/26 4:12 AM, Pedro Falcato wrote:
+> On Thu, Jun 04, 2026 at 02:30:34PM +0900, Harry Yoo wrote:
+>>
+>>
+>> On 6/3/26 3:31 AM, Pedro Falcato wrote:
+>>> SKB data area allocations (as done from alloc_skb()) use kmalloc().
+>>> These allocations can be variably sized and their contents can be mor=
+e
+>>> or less controlled from userspace, which makes them useful for attack=
+ers
+>>> that want to overwrite a use-after-free'd object from the same kmallo=
+c slab
+>>> (which often just requires the sizes to roughly match into the same k=
+malloc
+>>> bucket). [0] is an easy example of an exploit that uses netlink skb
+>>> allocation to target another similarly-sized accidentally freed objec=
+t.
+>>>
+>>> While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, thes=
+e are
+>>> probabilistic. Use the existing kmem buckets API to further isolate t=
+hese
+>>> allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=3Dy.
+>>>
+>>> Link: https://github.com/google/security-research/blob/master/pocs/li=
+nux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
+>>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+>>> ---
+>>>  net/core/skbuff.c | 5 ++++-
+>>>  1 file changed, 4 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+>>> index 44a7f8401468..1f6c6b531ece 100644
+>>> --- a/net/core/skbuff.c
+>>> +++ b/net/core/skbuff.c
+>>> @@ -594,6 +594,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, =
+gfp_t flags, int node)
+>>>  	return kmalloc_node_track_caller(obj_size, flags, node);
+>>>  }
+>>> =20
+>>> +static kmem_buckets *skb_data_buckets __ro_after_init;
+>>> +
+>>>  /*
+>>>   * kmalloc_reserve is a wrapper around kmalloc_node_track_caller tha=
+t tells
+>>>   * the caller if emergency pfmemalloc reserves are being used. If it=
+ is and
+>>> @@ -632,7 +634,7 @@ static void *kmalloc_reserve(unsigned int *size, =
+gfp_t flags, int node,
+>>>  	 * Try a regular allocation, when that fails and we're not entitled=
 
-With the nit:
+>>>  	 * to the reserves, fail.
+>>>  	 */
+>>> -	obj =3D kmalloc_node_track_caller(obj_size,
+>>> +	obj =3D kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_=
+size,
+>>>  					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
+>>>  					node);
+>>>  	if (likely(obj))
+>>
+>> What about kmalloc_pfmemalloc()?
+>=20
+> Good point, that looks free as well.
+>=20
+> Sidenote: isolating kmem_cache_alloc for possibly-aliasing caches could=
+ also
+> be useful. skb allocation has net_hotdata.skb_small_head_cache. It does=
+n't merge
+> with anything for $raisins (odd size, plus I don't think usercopy cache=
+s are
+> getting merged?) but it feels too... accidental?
 
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Right, we never merge caches with useroffset/usersize.
 
-Thanks,
-Praan
+Hmm...
+
+/* SKB_SMALL_HEAD_CACHE_SIZE is the size used for the skbuff_small_head
+ * kmem_cache. The non-power-of-2 padding is kept for historical reasons =
+and
+ * to avoid potential collisions with generic kmalloc bucket sizes.
+ */
+#define SKB_SMALL_HEAD_CACHE_SIZE					\
+	(is_power_of_2(SKB_SMALL_HEAD_SIZE) ?			\
+		(SKB_SMALL_HEAD_SIZE + L1_CACHE_BYTES) :	\
+		SKB_SMALL_HEAD_SIZE)
+
+
+What are "historical reasons" other than avoiding collisions with
+kmalloc caches?
+
+> Maybe passing something like SLAB_NO_MERGE and making the size
+> standard-looking would be nice. I have a size of 704 bytes per object, =
+and
+> this probably causes some weird wastage for each slab.
+
+Yes, unless the "historical reasons" do not make it infeasible to do that=
+=2E
+
+And I wonder if net/core/skbuff.c intends to always prevent merging, or
+only with hardening configs like SLAB_BUCKETS.
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+
+--------------n0FZEuI5Zztetg5lfgI5QZI8--
+
+--------------997bZ7rcMfhtcga6qMSb40eN
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaiJieAAKCRCGXBN6rc5S
+1vqiAQCwzNxsZCILMai81ko92snBjCKgniuSar5HpR5PyzdzLQEAgghVBLPZo6us
+vlmp+GMB8t+jxEqUqiKgV0KKMxhigg0=
+=p8Ku
+-----END PGP SIGNATURE-----
+
+--------------997bZ7rcMfhtcga6qMSb40eN--
 
