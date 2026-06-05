@@ -4,99 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18D81CD6E74
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 09:43:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DEEFCD6E74
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 09:51:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A6D86B008A; Fri,  5 Jun 2026 05:43:53 -0400 (EDT)
+	id 3B0D96B0005; Fri,  5 Jun 2026 05:51:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37E386B008C; Fri,  5 Jun 2026 05:43:53 -0400 (EDT)
+	id 33B216B0088; Fri,  5 Jun 2026 05:51:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 294386B0092; Fri,  5 Jun 2026 05:43:53 -0400 (EDT)
+	id 202A66B008A; Fri,  5 Jun 2026 05:51:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B5C06B008A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:43:53 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B6BCC140298
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:43:52 +0000 (UTC)
-X-FDA: 84845372304.15.F831EB2
-Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CA654140010
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:43:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=samba.org header.s=42 header.b=3cszkcrM;
-	spf=pass (imf26.hostedemail.com: domain of metze@samba.org designates 144.76.82.148 as permitted sender) smtp.mailfrom=metze@samba.org;
-	dmarc=pass (policy=quarantine) header.from=samba.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780652631;
-	b=4K7GHFLtNnBFCAhxW5wHWCTKDcrW3lEcshgB7Ve0lUpHxCZbR7843FMgjVNWzqCCL4gUXb
-	XG0lhO6BVIkZfjIx/OL9aDwsEQkDjmN4VWRegS5CLTuewS3V7110NXUFgRBRIpPiDKBL+6
-	6QGAafffhknu/NlMo9FRy+YfSQyy+RE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=samba.org header.s=42 header.b=3cszkcrM;
-	spf=pass (imf26.hostedemail.com: domain of metze@samba.org designates 144.76.82.148 as permitted sender) smtp.mailfrom=metze@samba.org;
-	dmarc=pass (policy=quarantine) header.from=samba.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0CA1A6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:51:03 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACD1C140A48
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:51:02 +0000 (UTC)
+X-FDA: 84845390364.21.6EC842E
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BCD84160007
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:51:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Np/UNrwJ";
+	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780652631;
+	s=arc-20220608; t=1780653060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t9/ac27hGADmFEUeWK9UOrni0IAhBio+aj/EwSAvs6c=;
-	b=x9cvxHHIDNXJj8u6C2qvCTP9G5fdlS6Mwc8+uojh5jUzEPpTRiMr/qE1bqGnVwK7IXVj8X
-	B0i0KfyFAG4O51L+UTFNIiGYnriX5sqp5ipHftdRDu/701zHtvYutiHYzXTBNAMGFwZma6
-	ngK2OpQS4pYNF8yKIFrfQYm/8dvs8vo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-	s=42; h=From:Cc:To:Date:Message-ID;
-	bh=t9/ac27hGADmFEUeWK9UOrni0IAhBio+aj/EwSAvs6c=; b=3cszkcrMUa9e0iFFaqn9tXeh3m
-	srCm+/TqQ5cDc/r3RDKwMGy6Kc+ytoNbB1Q7eyNWVRWZ7jmfMaMMlpFcd/ub/AFHPv/JGAgz4EKYI
-	HDkqgD4MR2wj2Cm1vrMMXPl9rshyLdUrwxBHoYlFYuxdrzKvfbrg79g1kN0oZlWOl0MP0vB/eRVX7
-	Uw+xPIK98RTZpLVkYW4ouxNPO6fBSmLoxnNFL42y9K4f1J6XeK3tm1EzALd7D8D3p+oD+lTXxDlJ3
-	Xow8nZQd7OSqhlFTLh5d7SBPzOu5lfpOXRCCci2oZhsEVpGnNZqWx0q5gERdwlu93RGuZBplxAgxv
-	jcXsoEEXvF+NdRDA82SzGph7eEdIFtE0lud0gFktxIHlcrCchpczpNRQbXrtro2Mb07859aL51067
-	1XCBjS50nJ+uTGzrVGLCD8tgBc6Qg7OqKFWIl7KZnxQ9IW6W+AWmRo4aDXD74v7VLIpNM47Md+TlY
-	60QLHdqSou+luNHxXAjl4G7z;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-	(Exim)
-	id 1wVR5e-0000000EDwm-2S8I;
-	Fri, 05 Jun 2026 09:43:46 +0000
-Message-ID: <512d948f-7883-4d8c-b2c5-a777e70ca975@samba.org>
-Date: Fri, 5 Jun 2026 11:43:45 +0200
+	bh=xjcf+ZeYGf95GdPFKMkbVvi+CX0UN2Mwhbe9F7S/JCk=;
+	b=5fp9KdGIj7U0qmQUokm6pwm8FYDkc6Z99s6poPrun/YgKwklLV84ft5R/oovkY1fbHwxVP
+	g4VS7NvQxqIQB4MIJIQCuNxIXjEXyRY149kE4UfqheutzmrQ/4tHFqhrCLb57WLjaOdWbU
+	mfPdw7RpURfXJ2QMWaRZ3bE51Rny9hU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780653060;
+	b=iP7hGq8EyDUdinh+zsDI5MRZGTM9khZalIi60GC1I+W2/8RVcR/KIhaNf5n5PPNh/leItz
+	cUsfOyjkH9qMX4UTy1aXEqDx4fNAgj0htjSPCVq1y5Zi+C19a0Emrlr/FDB3rTJOV9ufT8
+	t6diEzcWmwXEaiuToQ7zC6nnmHzd6lQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Np/UNrwJ";
+	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5aa2c25c632so1802123e87.1
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 02:51:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780653059; x=1781257859; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xjcf+ZeYGf95GdPFKMkbVvi+CX0UN2Mwhbe9F7S/JCk=;
+        b=Np/UNrwJ1i1mPt9ZO0Gyi9Zj7I09yW1Tc9XABRMNL54oAIseXvGFKCsbdPuWC8TibC
+         k7QShYlFwgc6uA/d1jAZ4aUUq8LExE2RGVe8sq6bb46gAaaDGvBSFf0WdrgbfrB+oFro
+         ULq9VNtAhaUR84mYEJ6Vl8DQQGbFq/RuQPAyiYS5PsHV04Z6e00PwxPsMZMamKC1Rkfy
+         Ibb/2XZzmjxFbItAowCavIStLYq9a3Hbpw0cG2e/r6qamBT0Os247+LwkebRYLdWq3I7
+         pahgPCTCF0Bky+2iwnldoi43SI7PwUhbhPDOBOd5vn3EADYulUkr4ou93g9GL+aEScym
+         g0GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780653059; x=1781257859;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xjcf+ZeYGf95GdPFKMkbVvi+CX0UN2Mwhbe9F7S/JCk=;
+        b=qWH+WUqa7saKW7fZkCzcuUm7zbIlUXJ5g4ugaySoW6jtEXM8BE1SPnzNHsOQIL8nYM
+         w/01OXYMXNJk/ZT0UDGVn9GH1GMwHuozS9GyM1FF5ZzbcWeQREKjAWQjzhVpnOliQCD4
+         n79a1K0H5dfOCxQOZuOmCb1crfRnISWFFmBLOrLPjVaSr2zBpN1chkQPPK/rd3L6zcz0
+         s9NJGVzcCMU9rCZ34rwWJxq1LI/mHat6K6XNpmDkytMlTJQhn2Ms+UESjChHtiC+5ZzR
+         ebMAQ4BnsQaM4A7FsrJup0ufijbsMIvOTqKXvvefK7KV1qnxrtDabD9qXuKfNQY+33ZN
+         pOwA==
+X-Forwarded-Encrypted: i=1; AFNElJ/F3xS3tMjAT6LRRv/ap4FX8ECzAg667JDPwnZthUTMrWMYeNt1R8i3+YatzvFsWwBKJgj2dImNhQ==@kvack.org
+X-Gm-Message-State: AOJu0YzrJaZ3nx59agc1mBQt2jViEz1SnuQHj/mM4+1v/nH+h/bIjWJB
+	nkA4nm0pnR9sDTdt2FOY4IAHvKk6kKn3aLv+2xka66y19NFnjlPJ8rNo
+X-Gm-Gg: Acq92OHX0n5JiwQjOrv1pya2Bq+3tLVO3ZoXswWd8o8E0jkxWIcpEFra/yisvWWTaFt
+	4uxt3kWhsgTjX51HS1brcVtqyI6V8E448D79yY0U+2StZOmBWQhI5CmsFZMupiSCpxg3cH1POpu
+	ayVkrR/gyTWPCjgJc0Q/Gbi2IZlX/GfV9OOMZ26Xz1KzcuxWzkeLO0Zd60PBsojB5scyHL9qS7s
+	mV989XKFIahPIxzTomSUU+MgsxGbjLGjd2FsboJeI1UAtf4J+0AKGyWTTbadqeUUeIpE5enqReb
+	kFIK0HSzIlB39CX6yfC11GcElsW60tq8+Ipddm0OQ0U7BUkn2DavnFNUvlBuSMmZXezLee/J/aD
+	pP6r92HbVcmI7cCrtTscj01ZBjE+wABTXGvIq9NoKykxYfdu2u8HLipLvEt7eVPIRjV8OtPVwvN
+	zp9d+MRntwyKS2vSZtOfc=
+X-Received: by 2002:ac2:4e0e:0:b0:5a8:6cbc:60f3 with SMTP id 2adb3069b0e04-5aa87c03398mr899588e87.34.1780653058812;
+        Fri, 05 Jun 2026 02:50:58 -0700 (PDT)
+Received: from pc636 ([2001:9b1:d5a0:a500:de96:9acf:5dca:ede4])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aa7b97a71fsm1761298e87.46.2026.06.05.02.50.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2026 02:50:58 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Fri, 5 Jun 2026 11:50:56 +0200
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Theodore Tso <tytso@mit.edu>, Mike Rapoport <rppt@kernel.org>,
+	Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Dave Kleikamp <shaggy@kernel.org>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Breno Leitao <leitao@debian.org>, Kees Cook <kees@kernel.org>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev, linux-nilfs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+	linux-ext4@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 10/17] jbd2: replace __get_free_pages() with kmalloc()
+Message-ID: <aiKcAIbzz3z9vN9a@pc636>
+References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
+ <20260523-b4-fs-v1-10-275e36a83f0e@kernel.org>
+ <yfzx3jgzwesernofl7mzixa2mhjfii5v3o7yapghtmozixrpfu@6bsh7iixyiov>
+ <aiEX4UTxEnBTjVKo@kernel.org>
+ <ximvn6jwgtam665a4droqkp73o55kwvd5uukyidwjesmysobth@oe7rigpsjfkz>
+ <20260605093332.7b067876@pumpkin>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Andy Lutomirski <luto@amacapital.net>
-Cc: Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org,
- axboe@kernel.dk, brauner@kernel.org, david@kernel.org, dhowells@redhat.com,
- hch@infradead.org, jack@suse.cz, linux-api@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org,
- patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk,
- willy@infradead.org
-References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
- <20260602225426.122258-1-safinaskar@gmail.com>
- <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
- <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
- <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com>
-Content-Language: en-US
-From: Stefan Metzmacher <metze@samba.org>
-In-Reply-To: <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CA654140010
-X-Stat-Signature: ouxb8qmhuf5ja4r46drcuq6t3jqecmm6
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260605093332.7b067876@pumpkin>
+X-Rspamd-Queue-Id: BCD84160007
 X-Rspam-User: 
-X-HE-Tag: 1780652630-512470
-X-HE-Meta: U2FsdGVkX1/bKX94Fk4ScW80TvamwJ3kba789VdoneiVlMpNxRg6QCTdjVCBy/74O8u9Pd5Y+c/80Z6mG3pNIuYS553vS0Fem5gPum3ivFGe0jzWJSRvpQbOb6moIqmYHJA9g2cBBlLOBX0IRW6EojvKxEDsUN6q5mDfRBs9ERsQ2O/tEOkA9UH0UxAnlW5PLx+xU/WchK/PE37eNGRFrHrE1C2/aWUZaJEMwKutM5ZtG1doP1GjK7txLlZItorr6SyAGPUcnCWSNAoQX05LRCqxAXDkfPHFzrYFwIJwW+fiHBRgwPApHRwzvoCR0G38Ig/rWoxMJCCpCV+zSpMos4l+cuSOITj6c4Ly2/4LPdMV/zBIT9BwOs6ykT9UoDooR6xwQN7yNVKdtTOg0Tp+JbR+B6L7EcIQUrxt3KpWxszwI5phT1+uSKevMbjuxva0Jbqw433ozKKFNWemXkaHBxInYxSIG+es0sW4ZUJfta0ejc92qzhqV5m2snGzVbLfD0aFXv7+P3mtgVSyzDIHhF7CxVidjTjFhBXP3sVKZouqvPef8KL83TBLSYOed0ZT9+L15C8+z5ZmEuM+gwBTKyXavn1hhWEGmQRFbIzh5iY/FyrjnidubcO1rD24NxvkjX0wRFPA69KJ3waWSsbnjodBZLmM7aiwZIrX1D5BxpZE5wc1ppTI/ptPjYgZPDL/MMQqGkzpYKJNGMN7G0hvZahw77cepUUAbUEpLQd5tbiLAS+HxlNvN1PXq5dV9AZ3Q3EFL+b1uIErYGMiCRy6uR4IxZZz1m849OspH12WNwtDAaeEHfM8RJYI0zgGga54YT3LsTqpkTFCp2xeTGdpTLEKzhOUSufKjf8xKJslsJreQwVZNxwbEKh/OURk+dx6h+lwHhta5bAkOmQX2S0RwMQM6FZP5fc7psoHozcWd9vOcEndaX0DquUFGrTmKnP3ugMcs8vZH8Lbg3hiQ1k
- //7lykBz
- VLWPWhHBpNaYfqKK4lMWKw0/TspT8FrEBs96ycVJIHsJmvqOhlC1ayQAnQlFa9W0R28shKLWGyNqeM0C8XzlgFZLH5so+eWfefwMpwBzXLw00/aaaWsJiDEW5tmUMCyzVEitq3wLrX8whzamYTr8GASG/gruPgKitdLedhrj+U67He90GF3dWMLdbVLrLq0uJZLEglAODiggB1jVwb7JFz71RuJgIo5rjwe5hVVxxM1iGlqVGS/Zefl4tzCK8W1pKsjfHZ6vJ5POIE+/m9REVTKKpRw==
+X-Stat-Signature: 3eiwipsey3n1o7syww844tacouw57j4x
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780653060-545046
+X-HE-Meta: U2FsdGVkX18ydjH/RESLMXHMbDOI3yUrX+NG/+HpPKtbyWNsDhvenpion1JWrk6d3jmj1M/Pxk7y9tgeq/IINi/im9YeqMlY0EuEWko5zS5ytLCSTMsj8NqNb2GVahlbU0Vlu4TG9WC3tSyaMSXxV3F+PA/x9u0LxCl0cc+5FDoLKx7QP0MtApCiOXGyHJCj0MAwo15SkQ+CV9UFpHVG0aCpm67nUDZRHoBkKwmnC3CTpIZ5iA7I3fEae/OJKKIGqKY8Z2xIYhm3qz4WXO3FuwXyO3ozemm7Bvbr0a4/ti0WavvwPpwbxBYMb8+o/cdt3vWFLwVafFulVVX60vozLV5dFmJszoaYrYio7WVzux1yvaighageiYEqXNYJd0RWC4XdW44rWsM1XRZgfIlc747qfWL69UzStHksd2JWsnHa07X2zRRAbMJwt4fK78/B3a8uPGlXbQ1fLOmP0WjZMcyXuAu5XHb2BKrvA/Vv4SzRDLSqjj9jZy5SOpyTYi+uUP7yxqL0xF6ZqmencbOeR/ZEwGq6071bwCK5z95t9jyRGYtj/cG/7umSN1MBkymyUD+no1hsmLFggRPsxap14RUZV9x3lDiXMlYKjxj68Slw6Lll5hyO5SDBBLMcAfUPvZMsvPIChtA1CM2DZHoNH4Lr+aaKjLjvjP+E9SSWe78R8feyI5ws91YBkIcmEI+qtiQ0xdx2bDyqmxfZ6qGuXk63567AR/+hmfwCRyemMyY+nq0NjIn54bCavXwEabmRtrPD98P9w/ytTZMRiINkANJEFaNsMOsyl4yoqq0Hkzuu+XV+evar2TGTLvbtKncOfXcN4PrxrQbDljXB14PSmheoziiZ/G6kKvOdK0/cooxKx5uuwpO4XmC+AF8K8eos12BlEfZBEX7pZk9mcIqucZrJlkciVIgLs9gUb9YxYmQS6z45BTHQiWarJQSWm1oQ5MrSobS0URb48CMqWOz
+ 6irJsSxv
+ XChGtZ0PMFtYGknQluthPO7p+BZwihkCgckqB4C/1LUBalY8kGIEO2FlYa4F6NxGLQgVOyvXgsZtJudIojrk3U01gkV+zgOOsfwD0sO6GFyYnReTdGJNvtuIByALMnxh/cHf72LloUx0niUH41lnT0fdpf6+A45EqNBd7NFh/PZZZ3EcWOPV/sBQqi0wlWLB8nUVLHOEtvGGCM9FL96YXbEVVBY9Au6x806Vco79w914ZgXyiGyUqV26bayuSxxmJDGsYoIbYUqObLNXA6P/DldyT6YkHAjNcI6TCswBXzruG/4zMx0t2m1iL7GgO3xAkgx36zcNtkf7Tsm5TdOL9q3VMEDTeThUSD7uAJr9jBn2wnycERgQ2/4h2U0QP61S6ngxyObYISpqI2kaXBTT1jwZC6S6M5YfrNeUUu/WVEJYMyk2GJz7jtZiEQ+zv9OlcPHLoRCwlQJ41dxtIpiaggqvFgEsqVLVHf32WqbkcMAfNgjmuaxg4xqejqFxAQ0YIS/G3XImaIT73mb8quD4bZVFzdYRkduwZuiwcf9r22+SIXdmwdJNxlnQrVKTWrtgKcZuldVKx9BxtosnUaZibPBLaJHak4h1ca96R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,79 +143,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On Fri, Jun 05, 2026 at 09:33:32AM +0100, David Laight wrote:
+> On Thu, 4 Jun 2026 10:05:52 -0400
+> "Theodore Tso" <tytso@mit.edu> wrote:
+> 
+> ...
+> > I suppose we could do it with kmalloc() with some flags which to
+> > prevent forced reclaim / compaction, and if that fails, then fall back
+> > to vmalloc().  Is there a better way?
+> 
+> There is already kvalloc().
+> I'm not sure how hard that tries to get kmalloc() to succeed.
+> 
+I assume you mean kvmalloc()? kvalloc() is something unknown to me.
 
->> Am I understanding correctly that this will completely break zerocopy
->> sendfile?
-> 
-> Very much, yes.
-> 
-> And it's worth making it very very clear that ABSOLUTELY NONE of the
-> recent big security bugs were in splice.
-> 
-> They were all in the networking and crypto code that just didn't deal
-> with shared data correctly.
-> 
-> So in that sense, it's a bit sad to discuss castrating splice.
-> 
-> But it's probably still the right thing to at least try.
-> 
-> I've seen very impressive benchmark numbers over the years, but
-> they've often smelled more like benchmarketing than actual real work.
-> 
-> There's also a real possibility that a lot of the sendfile / splice
-> advantage has little to do with zero-copy, and more to do with the
-> cost of mapping and maintaining buffers in user space.
-> 
-> If you are sending file data using plain reads and writes, it's not
-> just the "copy from user space to socket data structures".
-> 
-> There's also the cost of populating user space in the first place:
-> page faults for mmap made *that* historical copy avoidance basically a
-> fairy tale.
-> 
-> And not using mmap means that you have the cost of double caching in
-> the kernel _and_ user space etc.
-> 
-> So sendfile() as a concept (whether you use combinations of splice()
-> system calls or the sendfile system call itsefl) isn't necessarily
-> only about the zero-copy, it's really also about avoiding the user
-> space memory management.
-
-I don't think so. Ok, maybe for webservers just serving tiny
-html files, that's true. But for me with Samba it's really the
-copy_to/from_iter() that is the major factor.
-
-We can use io_uring with IOSQE_ASYNC in order to offload
-the memcpy cpu wasting to different cores, but it's still
-wasting a lot of resources.
-
-For the case of filesystem => socket, we can use
-IORING_OP_SENDMSG_ZC and that at least removes the
-copy_from_iter() in the sendmsg path, but the
-IORING_OP_READV of buffers in the sizes up to 8MBytes
-is wasting cpu in copy_to_iter().
-
-For the case with smbdirect and RDMA offload with 2x200GBit/s links
-changes from only ~33GBytes/s are used (and the server cpu even if using multiple cores)
-is the limit. Without the memcpy waste ~46GByte/s is easily reached
-and the limit is just the network link.
-
-Maybe another solution could be having a version of
-copy_to/from_iter that uses async_memcpy(), but didn't
-have the time to experiment with that yet. Maybe a new flag
-to preadv2/pwritev2 could control that, so that the
-application can decide what's better.
-
-But without an alternative please don't kill splice.
-
-A lot of people are frustrated because they bought hardware
-that is able to handle a lot of throughput, but
-e.g. with the default of smb over tcp they get no
-higher than 3.5GByte/s on a 100GBit/s link that's able
-to handle ~11GBytes/s. And io_uring and splice are
-a key factor to fix that.
-
-Thanks!
-metze
+--
+Uladzislau Rezki
 
