@@ -4,102 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD029CD6E7B
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 18:20:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8424CCD6E7B
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 18:25:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4E9E6B0096; Fri,  5 Jun 2026 14:20:57 -0400 (EDT)
+	id E7BC06B0005; Fri,  5 Jun 2026 14:25:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFEF66B0098; Fri,  5 Jun 2026 14:20:57 -0400 (EDT)
+	id E2C226B0088; Fri,  5 Jun 2026 14:25:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CED796B0099; Fri,  5 Jun 2026 14:20:57 -0400 (EDT)
+	id D1AEB6B008C; Fri,  5 Jun 2026 14:25:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B7CA46B0096
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 14:20:57 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 845FA1C0E8F
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:20:57 +0000 (UTC)
-X-FDA: 84846675354.09.4A03E90
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BD893A000D
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:20:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G6j2xosM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BFC0E6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 14:25:22 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 593B7C13EF
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:25:22 +0000 (UTC)
+X-FDA: 84846686484.06.6F932FF
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 29A1E100009
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:25:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=astralinux.ru header.s=mail header.b=hpBcXqju;
+	spf=pass (imf14.hostedemail.com: domain of adiupina@astralinux.ru designates 93.188.205.243 as permitted sender) smtp.mailfrom=adiupina@astralinux.ru;
+	dmarc=pass (policy=quarantine) header.from=astralinux.ru
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780683919;
+	b=rTtWk7yOpxAUbFKgs79xsi69GqvqaLnvHemxJgGgM4GFQ9n2GJ63+SO/IOcGpfLQq+r0Hy
+	o3m7afshOXWIwdS5f1kEHiosyKCc09bwOmAydtM6F9ro0OX7nwZ0NakLY298bpHY01zoUn
+	LUtxyQ8F3YOw8TiNa2unhyTEY8JzSys=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=astralinux.ru header.s=mail header.b=hpBcXqju;
+	spf=pass (imf14.hostedemail.com: domain of adiupina@astralinux.ru designates 93.188.205.243 as permitted sender) smtp.mailfrom=adiupina@astralinux.ru;
+	dmarc=pass (policy=quarantine) header.from=astralinux.ru
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780683655;
+	s=arc-20220608; t=1780683919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r+zVvdL1dXafGmhtKQIc5JAjS1cg9OS8KCtGRJH3gyw=;
-	b=xW+ogaOHhWoO5uQXcLmCgxMgRxqNlgDL87mHp7CzoHBdw4sXxylSYLlY9BOa0PgXAifB+e
-	3/lGBSmhP9y1/I1IhSIrxHA91doAeZhz42YvX+vr2zp0JeThRu8JM9g4hceoqxvEHFvI8M
-	P9GJ7RGi1+fJHmCnsYYg05AINSZexr8=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G6j2xosM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780683655;
-	b=2QLq/mdDFhfm67DmbSIWXi2Gg7G7wNMlx8pQ/BTsWoUJqmDxLxF6L8+ePqSGXCgcQqQtTY
-	716BxqP0Qnp//dcZtzBxfjeEMjgZNGQ87N8xKm021YDLxe6HPDsrPha/OBHaXpGPUaCmGD
-	3W2njmPVKv+7824BhrvcaWsqYx7ylRg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2FBB8601DB;
-	Fri,  5 Jun 2026 18:20:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5771F00893;
-	Fri,  5 Jun 2026 18:20:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780683654;
-	bh=r+zVvdL1dXafGmhtKQIc5JAjS1cg9OS8KCtGRJH3gyw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=G6j2xosM+nK/vGyDuiWC5HPu28msvGJihCctYNYSbrCCHx1W1zU91cb6B/2sv+Iyj
-	 3MooWXDSODBUEZz/OdfZz0wBnlFUcrGt4t85nSG9XiYqnNUvrDFsEGLTjZqXicf8e6
-	 pbE1JeALaahtaOQEIowFTXyapGPdBr01DWTmU93N4gI/NpqxbRdLHCoTHKJyraRWsY
-	 +Uh+y7hIFgMLZub0+5lnSjn5InOrwj/Ho3bUI1zqkQgGoZx+o2qCDusTxCt6ZCdp7F
-	 jFt8tLKKLB72G2kraakYZOgYrx8jslacyh/sJuoKirFoV2UhxyAfMKvizJhkvNdPZC
-	 eRe0tKBIY0Irw==
-Date: Fri, 5 Jun 2026 19:20:39 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
-	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com, 
-	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, 
-	jackmanb@google.com, jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, 
-	kas@kernel.org, lance.yang@linux.dev, liam@infradead.org, 
-	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
-	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
-	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
-	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
-	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
-	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com, 
-	Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Re: [PATCH mm-unstable v19 14/14] Documentation: mm: update the
- admin guide for mTHP collapse
-Message-ID: <aiMTFl2vvns1_dn3@lucifer>
-References: <20260605161422.213817-1-npache@redhat.com>
- <20260605161422.213817-15-npache@redhat.com>
+	bh=Z5Oh9xra6/GQ5h6DbagQNEnB88SWNQqpceHBbmpNm4A=;
+	b=RqlJu/X7tZnGAl3dDSc06zNbb4TbxBTyQe2OK0EIfNgEeeaC9ARjfE9DQIzIh2ZQqlKpEL
+	m8Z7+SfJhnLwvqS0/rFmA+0fORq5YB5UTHLWB068CJ6hXub9vNTmcF8xmKp4zCeXKaQyjm
+	s2cocr5G1qhMIGjEaGbEq7asXpQ2KVY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1780683916;
+	bh=xKSk2dALkJcfG7FYHRnFSGtr1WGvMhlswavq/il6ass=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hpBcXqjusVv+SWAEpw737RfZlyDkNywKi8SGONvl2AhYMnrsGuvS58+HDc54LvKs7
+	 awVkZjN3RXGsxNVE83x5ohhh1Mm3a+QqpY2lOjmrM7L7BOkEWUg2tt6EJ1sM3Mg8fW
+	 BZ6MBAZ/25rp6s0TsAwE2gaeRStrPvuBUCtpfLqqRb6lIDi2pfaPVNKCGX7HG7MaOA
+	 IoTiRIxEA/w4TpBeCDlEWvI6Uu93EfQfKkMwxDAMK+b54ZHQt5dIRfKeBjdiJTEqLG
+	 NJ1vQz9To2gEuW9WsD8uzQZ0w+MEJykwI4bUZwpU5GeBQui95svvV5rgY1PN5ywmUn
+	 cv1FQCDckB+2Q==
+Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 039661FA57;
+	Fri,  5 Jun 2026 21:25:16 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Fri,  5 Jun 2026 21:25:13 +0300 (MSK)
+Received: from [10.198.53.178] (unknown [10.198.53.178])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gX8xN74brzwQQc;
+	Fri, 05 Jun 2026 21:25:12 +0300 (MSK)
+Message-ID: <788800cf-061c-4312-9595-3da2b5814d47@astralinux.ru>
+Date: Fri, 5 Jun 2026 21:25:11 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260605161422.213817-15-npache@redhat.com>
+User-Agent: RuPost Desktop
+Subject: Re: [PATCH 6.1] mm/memory_hotplug: fix hwpoisoned large folio
+ handling in do_migrate_range()
+Content-Language: ru
+To: Zi Yan <ziy@nvidia.com>
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
+ Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+ Jinjiang Tu <tujinjiang@huawei.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Luis Chamberalin <mcgrof@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Michal Hocko <mhocko@kernel.org>, Pankaj Raghav <kernel@pankajraghav.com>
+References: <20260605172604.16034-1-adiupina@astralinux.ru>
+ <F08546F3-3CE1-4DEB-B65E-32D3FFEF4256@nvidia.com>
+From: =?UTF-8?B?0JDQu9C10LrRgdCw0L3QtNGA0LAg0JTRjtC/0LjQvdCw?=
+ <adiupina@astralinux.ru>
+In-Reply-To: <F08546F3-3CE1-4DEB-B65E-32D3FFEF4256@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/06/05 18:08:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: adiupina@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 107 0.3.107 575e75fe8e3b9d45c142d144823c5de38605099e, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lkml.kernel.org:7.1.1;new-mail.astralinux.ru:7.1.1;astralinux.ru:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 203696 [Jun 05 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.22
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/06/05 16:27:00 #28217824
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2026/06/05 18:08:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 29A1E100009
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BD893A000D
-X-Stat-Signature: nhxdb57hkha3ddyerbqnmssixeb6ewhn
-X-HE-Tag: 1780683655-642773
-X-HE-Meta: U2FsdGVkX18rJXkBslVZBsbAfoDVGfDM7TG/SwUPaFvVyoht9TyYVXpSM6ZYHs8TlZ4c5n0ksZPMYvOOqOpMEWGdQlcbAzof32uGzFyyCpZ4PHDkhKFljpHN+WY/g78dy84UbLZjfBrl5RvSt/eAgIx54uQyaACO2A0Xs4pN7txzymFCLA4VhxdzefDWsVyYwYoY+dv1E/HkEV5Fbt/ppZ92T12h9UaVjF6zefki1gH6i0cvcqO1mU0xJ/gIh4g72bDtD28FEQpr4qj4SxBcRdysWfBIBBOfRhzrSpjuVuEJ1x1cuXdtxM+m58IzizgYEJdBEWAgVRLU/p8PZ2O30tGnMG9Qc1hcjKZekN52NTYPD5o78ijTEAv6TNAbl0DMxAmPei8FjgT2ghbCQzG659B+vWvp0SeG7Ef4h+F9e8uY8qTVGhT/uvm33OlLrDLj5sSMAFV8oUtV/QCQwLy6XqejpRSa8o2XaXsXviOtbwlU80I5ko1Xg9PAdhnOu5tLv0BXySCGoZhGckpwEjGFBd5djPD4pvfWU43HWOzFEUMEHTVMuHtPDXAwF/aUv7uBsxf9rn2EKOtuoda7fDQgt3XG6xr7OM/TbzsujST+Z4MKt1jecPgzIiwJ8Ex97HOfu5UAitxGHhXrkDENrsoPeLYf8AY9y5T3VFuQutlrQdt8/sejrCGtzoHbh9zwPuueMd1LgoerY3iIyqoJXtHcuiwlXzyHdJJGJFaZ90xs4pEM4e8fjDMVk8/g+7RLXtgTyBXn51z2QuuAt49r6t/31Ww3XNxak/v/i/fxMNYSOG/qufDx7eICv2RIwI1VfrQ4+zcNR8mOn1B10MbhrD0gpJ7BTn3frjIa005RCSQ2cNyt/cdMnJEWTeGbZ4xQz5hw/T5SX8MEVk2KySweHxa3aoPrjv0n3oPW0TETdl/x17P2eT39q8PNMZyFXTw6W+hzq58HPUkxV1vtA010vMf
- 96THZGsh
- 3Rg7xFHTW5vbjoB8NH8TduH2pt9vIa8IsU0s4Klp/aSKqTWkuBuHrw7GxAFBNfi0iAlpnHO4ND/o5eTfsWFLExHF8brOTMZYDB+zcb6ciL598reVueM1X0LppweYaBXDL3daNPSehJLDuarojMLWbd0IRTVdwc2WQsEK2gDHAeqcU9c+eE9GYdg/zwdgP6bZ7JKEyxBGg043vA0AlwYCXT8F8zLmY3zwLFPZpvsq1bDbMVIZsZoNN654kcMj9UC6o354lKkqUt11ORAn3PIWhY93KbOHCDpqxXrBn36RcwtOhEdsOO8kynf7N0aV8owxvCQGaOiJRUPUU1awC/y9pso+eEgeKl+X1dqgqditzmXWmgozzmUg2kVzEtKuWCQ4u+CN13qQ/Qazap//NZvdUR2z/vw==
+X-Stat-Signature: ad9qj6johtag6iqm16fj6etiskzogb1n
+X-HE-Tag: 1780683918-846916
+X-HE-Meta: U2FsdGVkX18H+Pq4o/a+eyVYJCUb5eZRdASWrhgsiC65Izo1BLAwNwrsLhlQwKnVaMH/j8nNcnIOg/gTmpD3y/sXa4vfh7zuIvHpo4QtKXL7floqwJI3lVbgQXrvlV4zvvIMjUK0Maghf2MJVtG4JrIBTjitO9+LH+DeUvDMifEtxwaub/Hlhq0nNGbAq2G6zufyYjjpJgG3rIDAxjvGAogXYqJs3yOdrkKdjSk4luYLyYiujsu5OTyKu37z2Vl/dp987vi4TERVpQAC1AJTx6vBddy2KPIW0PltMLMrHSG3vrv5IK+WVBXDJVNys/9Xhz4eP4tzsq5+6zLOqPxn/w0RJFgZRrRzPf3jKRamLLnBBokjToB67/+/jAarbayengC77tJqTDxiegkQz2omtfzFQa+2llkeLLi2CC4GYM2yG6N3KX7OOt0RvZmqNFVgFcsMa0LX1hLw3MfKs0c3jgpkKOPIc6sjiKd5B2KSO35jMnUhX25kqpliMUwjVU5iT4cUUrmtnKDqFTpXWu9uNPB3PKZM5sOQSajsU9sM+HtXTAf71awgD6MLub/p7BTtN7suZiphOWwMct9SWY4uiruRicadYoUTR69XjRoBFf+5lB2nR8NPUc+SuwAnl36Vf2GlAyoYgYvR0h4eEBbdIwN19+NFfRUi90SZY+DvooUV50CqsnDtOxDiQc3E17SVzvSS0Mbc6+OaT92l1z6UeaBNCWsyVh4INipv9rg7PxA4lp882Zh+pGJnOK8AvYutTe1gNQhkPTaWp3dNF0OQAGGuNL+xJpWjG0QcPDqPIAcTkIcBxSFZyxiEET5YU+0IZXtQrQ3b6rSkDycUXXzuXDECWTqP/+pb7u9bxyOsypaFjl97GhDLvA7NY+UF/izdd0osUHBamgg8CNmSqPIBYEG4VV2NzK1TvnUD6Z8bKxgdA6bG9ATPDYCU32CATIxY7AipuFgkILU867FlWM/
+ yDevij11
+ /jqN+nD/AO5jaKZ7sD6F7tV67+BQ4U9ScgoSEf2dlwz1Rn11L5uQSj+DZwe5oN0rZ1MwTFrNsVdV8WcwAY5Aue5WbnvwDrdkUid7H+c55jrc4wEAGpsOm9xnWA22F/u6vuK3pCGCYwTDCC1Pxj4k8/zVWZhWIgncUrXFzaXvzhI2Q6/5OfR/P1Tx6LNlhbvpBdpP0vRs711UPmr2V6qEJupxwsJUA8VvNfb9tIzmDjaBMiLSbjsFWH6qIaS2dNgcrfos256cy/OJLGzJsRgwPz1fFKJStYBzEWZ3DNV+WAkevYiFR6ap5WQBuTUjPpSwfkumFYDRF/6LbGAQi7JK3rxpdsgCh7pqD8v6osX9Ap7WhQ1dQUaDevNcSm6S6Q8dVdxNv9OYtX9S7vAPid+MvAhslTXAmCfvk0AI0OcSW5b0XeT8QtF/KrZk0SyYGSEOhPfV6Dh+8RDrP068AWtCBH5lzg6exufUqpDeYjYhKgAEHDcN6C9e+0mUCYcKFlZOioKOQBZmR6A3Ek51FDQ7U1gM2CwuCQ2uDXp5MPOL8ySelNMLuHS3ShpSiDNo7/PvhETYbTKU7y16x0mXlWd3yKEeMHYEYrecXwNQAKWwAzuYg/ohkBuASGcAdN25XBbr5oU5RHJrqhkSmZvV/U2cY/tQcepJxZ3V85t3MHjvF/fOdJV+xeH/BaSdoauKcFqZwIMWgqPX4m9Z7ZIbBs389zqxhgj8QVDIPEgo4ThpwtXQ4yvkx8TKn150xj3RfjbWlBdksdU8TrWafwKeKt4QEzROMtjzw0VtHlKu+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,135 +125,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 05, 2026 at 10:14:21AM -0600, Nico Pache wrote:
-> Now that we can collapse to mTHPs lets update the admin guide to
-> reflect these changes and provide proper guidance on how to utilize it.
+05/06/26 21:09, Zi Yan wrote:
+> On 5 Jun 2026, at 13:26, Alexandra Diupina wrote:
 >
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
-
-This is completely fine, and no blockers, but just a couple tiny things
-below Claude brought up for a possible trivial follow up.
-
-> ---
->  Documentation/admin-guide/mm/transhuge.rst | 49 ++++++++++++++--------
->  1 file changed, 32 insertions(+), 17 deletions(-)
+>> From: Jinjiang Tu <tujinjiang@huawei.com>
+>>
+>> commit 397f6d14f9c370e4910e6885294c340f39dedbf5 upstream.
+>>
+>> In do_migrate_range(), the hwpoisoned folio may be large folio, which
+>> can't be handled by unmap_poisoned_folio().
+>>
+>> I can reproduce this issue in qemu after adding delay in memory_failure()
+>>
+>> BUG: kernel NULL pointer dereference, address: 0000000000000000
+>> Workqueue: kacpi_hotplug acpi_hotplug_work_fn
+>> RIP: 0010:try_to_unmap_one+0x16a/0xfc0
+>>    <TASK>
+>>    rmap_walk_anon+0xda/0x1f0
+>>    try_to_unmap+0x78/0x80
+>>    ? __pfx_try_to_unmap_one+0x10/0x10
+>>    ? __pfx_folio_not_mapped+0x10/0x10
+>>    ? __pfx_folio_lock_anon_vma_read+0x10/0x10
+>>    unmap_poisoned_folio+0x60/0x140
+>>    do_migrate_range+0x4d1/0x600
+>>    ? slab_memory_callback+0x6a/0x190
+>>    ? notifier_call_chain+0x56/0xb0
+>>    offline_pages+0x3e6/0x460
+>>    memory_subsys_offline+0x130/0x1f0
+>>    device_offline+0xba/0x110
+>>    acpi_bus_offline+0xb7/0x130
+>>    acpi_scan_hot_remove+0x77/0x290
+>>    acpi_device_hotplug+0x1e0/0x240
+>>    acpi_hotplug_work_fn+0x1a/0x30
+>>    process_one_work+0x186/0x340
+>>
+>> Besides, do_migrate_range() may be called between memory_failure set
+>> hwpoison flag and isolate the folio from lru, so remove WARN_ON(). In other
+>> places, unmap_poisoned_folio() is called when the folio is isolated, obey
+>> it in do_migrate_range() too.
+>>
+>> [david@redhat.com: don't abort offlining, fixed typo, add comment]
+>> Link: https://lkml.kernel.org/r/3c214dff-9649-4015-840f-10de0e03ebe4@redhat.com
+>> Fixes: b15c87263a69 ("hwpoison, memory_hotplug: allow hwpoisoned pages to be offlined")
+>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> Acked-by: Zi Yan <ziy@nvidia.com>
+>> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> Cc: Luis Chamberalin <mcgrof@kernel.org>
+>> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+>> Cc: Michal Hocko <mhocko@kernel.org>
+>> Cc: Oscar Salvador <osalvador@suse.de>
+>> Cc: Pankaj Raghav <kernel@pankajraghav.com>
+>> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>> [ Alexandra: replace continue with put_folio label ]
+>> Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+>> ---
+>>   mm/memory_hotplug.c | 13 ++++++++++---
+>>   1 file changed, 10 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>> index c8cc2f63c3ea..013db41f6ce2 100644
+>> --- a/mm/memory_hotplug.c
+>> +++ b/mm/memory_hotplug.c
+>> @@ -1654,15 +1654,21 @@ do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+>>   		 * the unmap as the catch all safety net).
+>>   		 */
+>>   		if (PageHWPoison(page)) {
+>> -			if (WARN_ON(folio_test_lru(folio)))
+>> -				folio_isolate_lru(folio);
+>> +			/*
+>> +			 * unmap_poisoned_folio() cannot handle large folios
+>> +			 * in all cases yet.
+>> +			 */
+>> +			if (folio_test_large(folio) && !folio_test_hugetlb(folio))
+>> +				goto put_folio;
+>> +			if (folio_test_lru(folio) && !folio_isolate_lru(folio))
+>> +				goto put_folio;
+>>   			if (folio_mapped(folio)) {
+>>   				folio_lock(folio);
+>>   				try_to_unmap(folio, TTU_IGNORE_MLOCK);
+>>   				folio_unlock(folio);
+>>   			}
+>>
+>> -			continue;
+>> +			goto put_folio;
+>>   		}
+>>
+>>   		if (!get_page_unless_zero(page))
+>> @@ -1687,6 +1693,7 @@ do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+>>   				dump_page(page, "isolation failed");
+>>   			}
+>>   		}
+>> +put_folio:
+>>   		put_page(page);
+>>   	}
+>>   	if (!list_empty(&source)) {
+>> -- 
+>> 2.30.2
+> I am not sure this is right.
 >
-> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-> index b98e18c80185..23f8d13c2629 100644
-> --- a/Documentation/admin-guide/mm/transhuge.rst
-> +++ b/Documentation/admin-guide/mm/transhuge.rst
-> @@ -63,7 +63,8 @@ often.
->  THP can be enabled system wide or restricted to certain tasks or even
->  memory ranges inside task's address space. Unless THP is completely
->  disabled, there is ``khugepaged`` daemon that scans memory and
-> -collapses sequences of basic pages into PMD-sized huge pages.
-> +collapses sequences of basic pages into huge pages of either PMD size
-> +or mTHP sizes, if the system is configured to do so.
+> The original patch uses put_folio, because folio_try_get() is called
+> before this if block. But for 6.1, get_page_unless_zero() is called
+> after this if block, so the page in this if block has no elevated
+> refcount compared to the original patch context. You might want to
+> replace “goto put_folio” with “continue” in the original patch instead.
 >
->  The THP behaviour is controlled via :ref:`sysfs <thp_sysfs>`
->  interface and using madvise(2) and prctl(2) system calls.
-> @@ -219,10 +220,10 @@ this behaviour by writing 0 to shrink_underused, and enable it by writing
->  	echo 0 > /sys/kernel/mm/transparent_hugepage/shrink_underused
->  	echo 1 > /sys/kernel/mm/transparent_hugepage/shrink_underused
->
-> -khugepaged will be automatically started when PMD-sized THP is enabled
-> +khugepaged will be automatically started when any THP size is enabled
->  (either of the per-size anon control or the top-level control are set
->  to "always" or "madvise"), and it'll be automatically shutdown when
-> -PMD-sized THP is disabled (when both the per-size anon control and the
-> +all THP sizes are disabled (when both the per-size anon control and the
->  top-level control are "never")
-
-Claude was very pedantic and said we need a full stop here :P
-
-This is not a blocker, obviously...!
-
->
->  process THP controls
-> @@ -265,8 +266,8 @@ Khugepaged controls
->  -------------------
->
->  .. note::
-> -   khugepaged currently only searches for opportunities to collapse to
-> -   PMD-sized THP and no attempt is made to collapse to other THP
-> +   khugepaged currently only searches for opportunities to collapse file/shmem
-> +   to PMD-sized THP. Only anonymous memory will attempt to collapse to other THP
->     sizes.
->
->  khugepaged runs usually at low frequency so while one may not want to
-> @@ -296,11 +297,11 @@ allocation failure to throttle the next allocation attempt::
->  The khugepaged progress can be seen in the number of pages collapsed (note
->  that this counter may not be an exact count of the number of pages
->  collapsed, since "collapsed" could mean multiple things: (1) A PTE mapping
-> -being replaced by a PMD mapping, or (2) All 4K physical pages replaced by
-> -one 2M hugepage. Each may happen independently, or together, depending on
-> -the type of memory and the failures that occur. As such, this value should
-> -be interpreted roughly as a sign of progress, and counters in /proc/vmstat
-> -consulted for more accurate accounting)::
-> +being replaced by a PMD mapping, or (2) physical pages replaced by one
-> +hugepage of various sizes (PMD-sized or mTHP). Each may happen independently,
-> +or together, depending on the type of memory and the failures that occur.
-> +As such, this value should be interpreted roughly as a sign of progress,
-> +and counters in /proc/vmstat consulted for more accurate accounting)::
-
-So Claude said maybe it's worth mentioning that the per-mTHP counters are only
-actually exposed through
-/sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/stats/ and maybe worth
-mentioning here too?
-
->
->  	/sys/kernel/mm/transparent_hugepage/khugepaged/pages_collapsed
->
-> @@ -308,16 +309,21 @@ for each pass::
->
->  	/sys/kernel/mm/transparent_hugepage/khugepaged/full_scans
->
-> -``max_ptes_none`` specifies how many extra small pages (that are
-> -not already mapped) can be allocated when collapsing a group
-> -of small pages into one large page::
-> +``max_ptes_none`` specifies how many empty (none/zero) pages are allowed
-> +when collapsing a group of small pages into one large page::
->
->  	/sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
->
-> -A higher value leads to use additional memory for programs.
-> -A lower value leads to gain less thp performance. Value of
-> -max_ptes_none can waste cpu time very little, you can
-> -ignore it.
-> +For PMD-sized THP collapse, this directly limits the number of empty pages
-> +allowed in the 2MB region.
-> +
-> +For mTHP collapse, only 0 or (HPAGE_PMD_NR - 1) are supported. At
-> +HPAGE_PMD_NR - 1, we collapse to the highest possible order. Any intermediate
-> +value will emit a warning and mTHP collapse will default to max_ptes_none=0.
-> +
-> +A higher value allows more empty pages, potentially leading to more memory
-> +usage but better THP performance. A lower value is more conservative and
-> +may result in fewer THP collapses.
->
->  ``max_ptes_swap`` specifies how many pages can be brought in from
->  swap when collapsing a group of pages into a transparent huge page::
-> @@ -337,6 +343,15 @@ that THP is shared. Exceeding the number would block the collapse::
->
->  A higher value may increase memory footprint for some workloads.
->
-> +.. note::
-> +   For mTHP collapse, khugepaged does not support collapsing regions that
-> +   contain shared or swapped out pages, as this could lead to continuous
-> +   promotion to higher orders. The collapse will fail if any shared or
-> +   swapped PTEs are encountered during the scan.
-> +
-> +   Currently, madvise_collapse only supports collapsing to PMD-sized THPs
-> +   and does not attempt mTHP collapses.
-> +
->  Boot parameters
->  ===============
->
-> --
-> 2.54.0
->
-
-Cheers, Lorenzo
+> Best Regards,
+> Yan, Zi
+Thanks for the comments,
+I'll send the second version of the patch
 
