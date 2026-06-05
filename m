@@ -4,103 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6257CD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 10:08:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63FB7CD6E5D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 10:26:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F5946B008A; Fri,  5 Jun 2026 06:08:16 -0400 (EDT)
+	id 7DC306B0005; Fri,  5 Jun 2026 06:26:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17F2C6B008C; Fri,  5 Jun 2026 06:08:16 -0400 (EDT)
+	id 765EA6B0088; Fri,  5 Jun 2026 06:26:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06D626B0092; Fri,  5 Jun 2026 06:08:16 -0400 (EDT)
+	id 62D7B6B008A; Fri,  5 Jun 2026 06:26:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E632A6B008A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:08:15 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 82F6F93CEC
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:08:15 +0000 (UTC)
-X-FDA: 84845433750.13.A941DE2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B263540009
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:08:13 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DE2kG58h;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DE9D6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:26:05 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DF663164476
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:26:04 +0000 (UTC)
+X-FDA: 84845478648.10.1646F51
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1174610000E
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:26:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf05.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780654093;
+	s=arc-20220608; t=1780655162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I5VqecLRt7G5iGb70TpzMF2J4Qjuy+1vUMH27FXaf78=;
-	b=Ft04IBymuSsgaDgv1dLvrHQOo23WU0mGf44NucCIq+vN5E3w6gLJT7auHoqEwVgAElbC/q
-	GWUzHKvvpn0B34GaiYujcwDPzOsJ08T1Jyw03YLEPmnvCfOVwoTjQjwsloFe3kEvuVomBk
-	Mo33hKx4BrifmTJx9/w7Ewl5WBJk83E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780654093;
-	b=wLYlnPifuTkhYDBzBK3pAjudKWOqx6OhROwLesy5hI0UOmnVel7anPHtMeb1Gel73q+fuJ
-	Yia4npXPggQ2jXdK0anrCmq/sablBOtwgA9HVI47voY7W5syMwrOcjhR4706gv71NhPDWs
-	9s2qG5+BPZwB456cXkhDIYB4oWDT2MI=
+	 in-reply-to:in-reply-to:references:references;
+	bh=ciQ2oDQLw0MbG7A9kcyJ+1XOsuZ2rw2D3whGS867BJU=;
+	b=VDJtzyUticiV5KdZ1Vfriv2alU83rLeB+uk3Od/KyjpHWc5Uqg80shK0GVKpVakM2xmcRr
+	h9VlDWeX5P6djGc182fpErat5W73QYorNjNLo5hZlm5TWLbwdlj3rA5ZJ919tTBRv2imJm
+	64CG8gakhB/fzJrpP07tzAxZ6pRk+EA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DE2kG58h;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B41CD408E8;
-	Fri,  5 Jun 2026 10:08:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC571F00893;
-	Fri,  5 Jun 2026 10:08:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780654092;
-	bh=I5VqecLRt7G5iGb70TpzMF2J4Qjuy+1vUMH27FXaf78=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DE2kG58hMxthGFnLTKM9WgyXXW0z/Ih2lPXc1ijI95aFcx2R7AziaFPmXqsNZ3iEo
-	 GJgPWk5slRIzPwDbGO0AL7r0+PbMGl0PHsUB5OtVy0oOTph7uJNMn8sFlSyIW/eDPU
-	 VjOeQjH0eVcLx3V6XQwfaEW04TFaTMRsqDxImeXLXM9YGApwhre4/PuiZboowesG+q
-	 PGQzllDWMEEz0pIBeeiWsdy05fSAGlpHIlKQTq4fd6LKW0Tej7F42wt9eTt8sQvn8V
-	 Er3vsj+ZXmfqiQwrPrmtc0ZsIGnnYFk312C4Ww2XJq1lNttvuHNlzozmQErjtzci6D
-	 fwBQzxAn0xlOg==
-Date: Fri, 5 Jun 2026 11:07:57 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: xu.xin16@zte.com.cn, tao.wangtao@honor.com, catalin.marinas@arm.com, 
-	will@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, akpm@linux-foundation.org, willy@infradead.org, 
-	sj@kernel.org, kees@kernel.org, luizcap@redhat.com, 
-	zhangjiao2@cmss.chinamobile.com, kas@kernel.org, hpa@zytor.com, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	jack@suse.cz, riel@surriel.com, harry@kernel.org, jannh@google.com, 
-	jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, chengming.zhou@linux.dev, 
-	nao.horiguchi@gmail.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, pfalcato@suse.de, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, damon@lists.linux.dev, shakeel.butt@linux.dev, ryncsn@gmail.com, 
-	dvander@google.com, wangzicheng@honor.com
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Message-ID: <aiKd7tfrICFnlWxV@lucifer>
-References: <20260604111035154Lk-9ZgwKY4Nlk4zz30U1t@zte.com.cn>
- <68a4aec0-72d4-4967-b063-b57cc7ee40cf@kernel.org>
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf05.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780655162;
+	b=gaA5nHG1mUQmv0sbVT+GAEk26VQ2Y9rM6rmmd0Vi0GgKH+bCbuVxI/9RP2clBj3Ddv3oNO
+	OZP/cOAf8U2BK7YaJ+AGBayXtOCvzJruSet870KFiOARDVlRe0FULykF2mSY9WGAHXogfm
+	J7kqId/zRyte5/MbJu42mcLjV8mAEP8=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gWyJJ0hzSzJ4692;
+	Fri,  5 Jun 2026 18:25:52 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 21DA140571;
+	Fri,  5 Jun 2026 18:25:57 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 5 Jun 2026 13:25:56 +0300
+Message-ID: <9f9e2159-5a6b-496f-9633-fa06c0217948@huawei-partners.com>
+Date: Fri, 5 Jun 2026 13:25:56 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <68a4aec0-72d4-4967-b063-b57cc7ee40cf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 0/4] mm/damon: Introduce a huge page collapsing
+ mechanism using auto tuning
+To: SeongJae Park <sj@kernel.org>
+CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
+	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260605013406.83441-1-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260605013406.83441-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Queue-Id: 1174610000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B263540009
-X-Stat-Signature: 55etci8c66pyr4bwc6tkmjsgy1msb37m
-X-HE-Tag: 1780654093-8902
-X-HE-Meta: U2FsdGVkX19O+F01qsTU2pNX4fwWufi6Wh4chtKWgUjjNwNuA0XLSvOFYPH0lg9YiWqBpOZltIRnYMn4tR7TkN52xr4dKLbMNAg6vIl9pwh4TAi+QXmDJuKOF4XFAoQ936IYanZ0hxjJE+s8Yf/eogAboDZy5cjDSJcGD6vqnS6ZmYVLsHa9Y3n/vKM7g/Xqv9qHc4+4+YlEy4dOtduf8kxnAKBfylMTtacU8eFSPo+vqAtNyjvbEEFQOJVCaG55kldBXAvYDp97cu6oNI582PcnYPt/cFMwk7ULlEWGPwJ5PFGs4P82aTLkbmxxEOm8qP0ljnmBcARJbapHvW1+CVERZ5ShFaMlvJeksEd3xNIBnf52tudkOPvJAizQ54oiatWOnr439uoqex6UPIp3DYZ0Af3yPUk/24iovzKVXhJV11kKSDjvUruc8KB8SkYCGYk6ahUku0ovjYb8ffXV4dtS0y9XA/jWE2Xu2EQqQVBcfL/72/9AbPa7yeHOxjWCX/FEeaxH0mmDRJioG3Bbe4228FVmH7YsmwyRqV7E70im9UyySSRUrysQohyiNGSQKvPSgfFEX0T3I0DeyFAsFuEbhZHIQsXIKm54TEGpdu/PavgitPFkUvilnxQmEOPPecxWKd7xOJrewBQCG7WyZgzaHXHmzH26ZhAXypvNHhiXKtAUGr7eKw72OqsumrGwrg0yl4sJsQTusoz70Hy8a5ZfT59kyBMgdEF0wQJKF2J442XpA5BrludyhTdTEn0ztIsiiIuMT15lujHKS06u4Ltd4NZF2p6fY5cY1uJKD5juL5qlnez5VjtoP6WvEeO1Gi+xarhBcExcizwmQpXhSVTQku7rcU2PuUCuXLz7xWVVBa1oMZUuXcdUb1An4X2SSU6vI65V1EOucyzZD28q19QK/lwKTPZZsgyUlrBtrdP4puv0dxk18U5qLZOROxXZ+o3i9qvylB1eZO8ha90
- 4qZ8UX93
- F+5TTyg8LXs/dkExk4bQ5habWm+OqXymAd4VdpeWJlQzOaPW2m+2rX9PQJ1ZnAGPeDeTkydVfjqPry2CHYh9N8Cijc4J2isNsY3eTFaEQE8Ksl9OdedcfE9tGwSlPvMP5lHwTo9uc5Jgm1y8cMEDAZxFWSzjEde1cqIwqYSbKsMI9xgIzkaneNiPEyWingIZTJQul1kIzmW3du1OmHKpqT1GYLvxojZaAYOhBhs57KH2+2buVX9BdzQHq+Th6C3ZNyhaB6fnq2YtMe9qepFPJ+FkLIL5Q+PYo39eF1d9u+AZhtQnDxHaIiqsr3upMY88xYMt1U0xK1reKn3+ecmUZrNXPK/Bpre0U5OKMEEFz2oReP6Bm9Iba69FE1N+RDDd3hDt4tRsRD8T8Mvu2pzUnEjpvwELR9xHBNrru2WjHIzpBV0gDLPrXAd5qzanDHFyvoHb5fxvJN9AEF/Y=
+X-Stat-Signature: fihkiargjw9fkganusu9ds4bwasyreoy
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780655160-914711
+X-HE-Meta: U2FsdGVkX18krWQHbceaDLm8Jb7r0GywuIagNbnZzkQ0HEaZ9VfLPwGtQQjO/RAx8QDBfvZAVa1D+/u7dDZuu7yayxk5KSj+rfkWDfQ3CPfMVHx2l/hGFGngXRPm286bngMYF5NC3oAI5iCJYBBhyLJrZmfyIferOv1F7Bx7ZFHCv7qjBPI1dO4i7sktKQM8dCZxnvXwCotgeWvxQn2SkrvERIUrN/YEcLWuabeHMIB8X1W7eJh7S/dexRAttltYD/Z74X/SU/+bmoepXwXjtkHhT4ZbsG9JGIfxcvo8JANlKKs20HQQmXDekyjsGkUbtDae90cW5OKtsIrivnoozl3b5OcRz+SRbCjNPwdK3pgpNZwtDYVtFGOArq4kNXxvHUkrAX2aKx19Hfzy7BtQf0koljiS6f8eszsxdm54D+oQc3SD8viSU/2MLmqCFAwCIv3WP3FCthi6k8BOTtQ63S/NlgClK3OoVH69LYvg/+6M+SUNBvlsKuAfvV9E93t5RCTxQsRLQ9lIFgYIzLKpMq0yyKiPvPLyzk9vn+scbeLv+rskycAubo6B8eWjhmcgqC/4Q8O2nYlEE2JytBo1fUYAk6lXwV+t8PpTmw+jUC9L2m1CaF5HbrM97r2+vW+l6jWHLEF9CyoSTo73j/qZujk7dixd7ADInsGe/rfgfDmjyCKE0nlLuYf4TJFTkh4iK3oAZhL6mGG58w/c/kxqpqdbF5xhUIoC0mjWuKKPbR7dL3Q3mmwiT69IMVX3jYXCkeV1/mUUlzBA/d1wB6MIfb5OjD0++IPmXeLHJoYv3Hi4YkCKFcrPFrjmi+ut6FS4fB7HnfwrPy/Lb0OjHXalEXba9ZlDw4Zh9Q4/JNbK616YHJadIhucovf5aUsYgecn28GbT9UCv6TwaF4gVYjOHxb5TZ91sOCf4lX5ILootJ35eeuUK3/7CrBwk0KKf86zUcQ5NcyoZR7YxoDcLuA
+ DbvkaO1u
+ fZgCsnEpaXzeJM1MhNLzuT3BJf0oLR/puYDayI6KjHm7pV5tkVWh3sPLuf2QI3p5xfEnQuya/2SdxMjrGzF4qFUqfVhGpw4Y3++WKQ9W5R+1G4C5aWXAo0W2wAucKWLEFdKybDFCJS3e3skmr5u5MiNNW/A2ktCuLjtWVcxJ0a6Lbb8HEls/faPhvCuiOiBTkkSTMQFA+ChM8oHqAYIGJ3UmPEDD0wbe9l8XGiIGiOC+x+LleFKw5TcYaHQijXYGoSPFccMwCcoBhM547GqpVItgb/QqNzl+ZnGC/1jym4XU00rNu+wyevmT3FIQs0c+gZLFaC7DpYOnhmfo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,114 +94,247 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 05, 2026 at 11:38:52AM +0200, David Hildenbrand (Arm) wrote:
-> On 6/4/26 05:10, xu.xin16@zte.com.cn wrote:
-> >>>
-> >>>  arch/arm64/Kconfig         |   1 +
-> >>>  arch/x86/Kconfig           |   1 +
-> >>>  fs/proc/page.c             |   6 +-
-> >>>  include/linux/mm.h         |  38 ++
-> >>>  include/linux/mm_types.h   |   9 +-
-> >>>  include/linux/page-flags.h |  34 +-
-> >>>  include/linux/pagemap.h    |   2 +-
-> >>>  include/linux/rmap.h       | 165 ++++++++-
-> >>>  mm/Kconfig                 |  22 ++
-> >>>  mm/damon/ops-common.c      |   4 +-
-> >>>  mm/debug.c                 |   2 +-
-> >>>  mm/debug_vm_pgtable.c      |   2 +-
-> >>>  mm/gup.c                   |   6 +-
-> >>>  mm/huge_memory.c           |  16 +-
-> >>>  mm/internal.h              | 171 +++++++++
-> >>>  mm/khugepaged.c            |  13 +-
-> >>>  mm/ksm.c                   |  43 ++-
-> >>>  mm/memory-failure.c        |  11 +-
-> >>>  mm/memory.c                |  19 +-
-> >>>  mm/migrate.c               | 126 ++++---
-> >>>  mm/mmap.c                  |  15 +-
-> >>>  mm/mremap.c                |   4 +-
-> >>>  mm/page_idle.c             |   2 +-
-> >>>  mm/rmap.c                  | 690 ++++++++++++++++++++++++++++++++++---
-> >>>  mm/vma.c                   |  76 ++--
-> >>>  mm/vma.h                   |   4 +-
-> >>>  mm/vma_exec.c              |   2 +-
-> >>>  mm/vma_init.c              |   1 +
-> >>>  28 files changed, 1279 insertions(+), 206 deletions(-)
-> >>
-> >> Hi!
-> >>
-> >> When I saw the diffsat I was concerned. Going through the patches made me ...
-> >> more concerned :)
-> >>
-> >> This is a lot of complexity. On top of something that is already so complicated
-> >> that I fail to grasp most details without regularly taking a look at the nice
-> >> figures Lorenzo created recently.
-> >>
-> >> For example, I read above "since child VMAs do not need to allocate anon_vma"
-> >> and wondered how that could be part of something that is just done lazily. Then
-> >> I had to learn in the patches that there is some additional "Child VMAs
-> >> are created as ANON_VMA_TREE_PARENT and do not allocate anon_vma" -- excuse me,
-> >> what? :)
-> >>
-> >> Reading about VMA refcounts made me shiver. Reading "Holding only
-> >> folio_lock(folio) cannot guarantee that the split
-> >> operation completes atomically." confused me. Learning that we have to invent
-> >> interesting ways to make page migration mutually exclusive to free_pgtables()
-> >> concerned me. Figuring out that there are arch-specific config options and
-> >> runtime toggles is a clear warning sign.
-> >>
-> >> Seeing test_folio_unmapped() was funny, though (why?! :)).
-> >>
-> >> I think this patch set has a noble goal of reducing anon_vma overhead when anon
-> >> pages are not shared during fork. However, using anon_vma for them actually
-> >> makes the overall implementation (e.g., rmap walks, locking) more consistent and
-> >> simpler.
-> >>
-> >> Even if we could be convinced that most of this here is correct, how should we
-> >> reasonably maintain this increasing level of complexity here?
-> >
-> > Indeed, it's very complex, but having the changes of 15 patches scattered across
-> > various subsystems is really frustrating for reviewers. It took me a whole day to
-> > read through the entire patch set, which made an already complicated matter even
-> > more complex (maintaining such complex code in the future will be a pain).
-> >
-> > However, overall, I think the original intention behind Tao's patch is innovative
-> > and valuable, and Tao could definitely make this patch set simpler and more
-> > readable, because the core changes actually start from PATCH 10.
-> >
-> > I believe that if Tao had done the following, things might have gone better and easier
-> > for reviewing. In fact, I understand the motivation behind the patch is quite simple
-> > at its core (just wanting to avoid allocating the anon_vma structure when a VMA hasn't
-> > been truly forked, and instead put the VMA information directly into folio->mapping):
-> >
-> > 1) You could actually simplify your patch significantly — without adding a lot of wrappers
-> > and helper functions that introduce extra review overhead — and keep only the most essential elements.
-> >
-> > 2) Provide complete test code (in tools/testing/selftest) that covers the affected functionality,
-> > such as VMA, huge pages, KSM, etc.
-> >
-> > 3) Use the RFC tag to start a discussion.
-> >
-> >
-> > I would be very glad to see if Tao could post a simpler v2 version that does not alter the rmap
-> > core data structures too much and does not introduce excessive complexity, no matter whether
-> > it can be merged finaly.
->
-> I'm afraid, the overall complexity would increase in any case.
->
-> So to quote myself "But fundamentally, I think we want to find a new design that
-> is just naturally simpler."
+Hi SJ,
 
-In general I'm prioritising my work, and hope to ship something within the next
-month, even if it might just be some early bits of work on this to plumb stuff
-in, and certainly the main ting will be an RFC :)
+On 6/5/2026 4:34 AM, SeongJae Park wrote:
+> Hello Asier,
+> 
+> 
+> Thank you for revisioning this great patch!
+> 
+> On Thu, 4 Jun 2026 15:03:33 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> 
+>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>>
+>> Overview
+>> ========
+>>
+>> This patch set introduces a new autotuning which allows to collapse
+>> hot regions into hugepages.
+>>
+>> Motivation
+>> ==========
+>>
+>> Since TLB is a bottleneck for many systems[1], a way to optimize TLB
+>> misses (or hits) is to use huge pages. Unfortunately, using "always"
+>> in THP leads to memory fragmentation and memory waste. For this reason,
+>> most application guides and system administrators suggest to disable THP.
+>>
+>> Currently DAMON has DAMOS_HUGEPAGE, DAMOS_NONHUGEPAGE and DAMOS_COLLAPSE.
+>> However, there is no way to tune the settings. It will collapse all the
+>> hot regions that meet the access pattern. If the server is a bare metal
+>> database or big data server, this will also lead to eventual fragmentation.
+>>
+>> Additionally, currently THP is set globally. Ideally, there should be a
+>> way to control which tasks can use huge pages.
+> 
+> We can do process level control using prctl(PR_SET_THP_DISABLE) [1], isn't it?
+> I think the last above sentence is better to be reworded or simply dropped.
+Yes, although you will not disable it for all the processes except onein the system. I will reword it to make it more clear.
+>>
+>> Solution
+>> ========
+>>
+>> DAMON has now a way to autotune some of the variables and adjust quotas
+>> automatically, so that DAMON is fired only under the right circumstances.
+>> It would be nice to have something similar, but for huge pages.
+>>
+>> A new autotuning quota goal[2], damos_get_used_hugepage_mem_bp, is
+>> introduced, which checks the huge page consumption to total anonymous
+> 
+> In the previous revision I suggested to
+> s/damos_get_used_hugepage_mem_bp/damos_hugepage_mem_bp/ and you agreed.  Seems
+> it was forgotten?
 
-So keep an eye out for this which will hopefully address people's needs!
+Actually, I changed the code to damos_hugepage_mem_bp. I forgot to update
+the cover letter. Will do it for the next RFC version.
 
->
-> --
-> Cheers,
->
-> David
+>> memory consumption. This new quota mechanism reuses current autotuning
+>> architecture.
+>>
+>> A new module is introduced to demonstrate the use of huge pages
+> 
+> Let's clarify it is a  sample module.  That is,
+> s/A new module/A new sample module/ ?
 
-Thanks, Lorenzo
+Right, I will update the cover letter.
+
+>> collapse autotuning. The goal is to collapse hot regions of a given
+>> process into huge pages. The module launches a kdamond thread for a
+>> certain task provided by the user through monitored_pid module argument.
+> 
+> Following other vaddr based sample modues' pattern, what about
+> s/monitored_pid/target_pid/ ?
+Makes sense. I will change it.
+> 
+> As I also commented on the third patch of this series, apparently it is not
+> following the sample modules' pattern but that for non-sample modules.  Could
+> you please rewrite in a more simple way?
+
+OK, I will remove a lot of the module parameters. I'll use the prcl.c as
+an example.
+
+>> Hugepage goal autotuning will automatically adjust the aggressiveness
+>> of hot region collapses.
+>>
+>> This module also has a user autotuning knob which allows the user to
+>> adjust the aggressiveness of page collapsing.
+>>
+>> Benchmarks
+>> ==========
+>>
+>> Huge page collapse autotuning was tested in a physicial machine with
+>> MariaDB 10.5.29 and sysbench as the benchmark framework.
+>>
+>> The hugepage module was set up in the following way:
+>>
+>> # echo 1000 > min_age
+>> # echo 1000 > quota_percentage_hugepage
+>> # echo $(pidof mariadbd) > monitored_pid
+>> # echo on > enabled
+>>
+>> The goal was to achieve 5% of the total memory used as hugepage.
+> 
+> Any reason to set it 5% ?
+
+The database was not particularly big. This means that I set the target
+too high, it may never reach it. Not all the database is hot, actually.
+
+I will make it more clear in the following cover letters
+
+>>
+>> The table below shows the memory consumption over time. Gaps in the
+>> timestamp means that no changes in the hugepage consumption happened
+>> over that period of time.
+>>
+>> +-----------+----------------+----------------+----------------------+
+>> | timestamp | total mem used | huge page used | percentage hugepage  |
+>> +-----------+----------------+----------------+----------------------+
+>> | 0         | 4721188        | 0              | 0%                   |
+>> | 28        | 4216848        | 4              | 0%                   |
+>> | 37        | 4189912        | 38912          | 1%                   |
+>> | 39        | 4195188        | 47104          | 1%                   |
+>> | 55        | 4111612        | 51200          | 1%                   |
+>> | 59        | 4137012        | 53248          | 1%                   |
+>> | 60        | 4137052        | 55296          | 1%                   |
+>> | 61        | 4156832        | 57344          | 1%                   |
+>> | 62        | 4136920        | 59392          | 1%                   |
+>> | 64        | 4109872        | 61440          | 1%                   |
+>> | 65        | 4119108        | 63488          | 2%                   |
+>> | 66        | 4145532        | 65536          | 2%                   |
+>> | 67        | 4134544        | 67584          | 2%                   |
+>> | 68        | 4158244        | 126976         | 3%                   |
+>> | 69        | 4124276        | 204800         | 5%                   |
+>> | 70        | 4100680        | 333824         | 8%                   |
+>> | 71        | 4095540        | 462848         | 11%                  |
+>> +-----------+----------------+----------------+----------------------+
+> 
+> What is the timestamp unit?  Second?
+> 
+> What is the mem used unit?  Byytes?  Kiloboytes?
+> 
+> I also remember you mentioned you will compare the numbers for more setups
+> including module disabled case (baseline) and THP disabled case.  I think "THP
+> disabled" case was my typo.  Maybe I wanted to say "THP enabled" case.
+> 
+> Is that still on your TODO list?
+> 
+> Given this series is adding relatively small change (assuming the sample module
+> will be simplified), I wouldn't strictly request all such tests.  I'm just
+> curious about your plan.
+> 
+>>
+>> Performance:
+>> Baseline -> 18,162.45 transactions per second
+>> Hugepage autotune -> 18,211.82 transactions per second
+> 
+> So, 2.7% improvement!  I think it is not bad for this simple approach.
+> 
+> Could you further elaborate how the performance is measured?  From when the
+> transactions per second measurement is started, and when it was stopped?  Are
+> the numbers average?  Mean?  Or something else?
+> 
+>>
+>>
+>> Eventually, the amount of huge pages reached 20%. This is consistent
+>> with how quota goals autotuning work. We are more aggresive when the
+>> quota is less than 10%, and less aggresive when the quota is higher.
+>> At some point, the aggressiveness just fades and no more collapses
+>> occur.
+> 
+> Could you share more hugepage utilization change for long term that captures it
+> converges to 20% but after that doesn't increase more?
+
+Correct.
+
+> Also, have you tried temporal quota tuner?
+
+OK, I will give it try.
+
+>>
+>> TODO
+>> ====
+>> - Support page splitting for cold hugepages.
+> 
+> This is a future work out of the scope of this series, right?  I think that is
+> better to be clarified.  In the previous revision, I was reading this as a TODO
+> for a future revision of this patch series.
+> 
+> Also, do you have specific changes you want to make to this series before it is
+> merged, or dropping the RFC tag?
+> 
+>>
+>> Patches Sequence
+>> ================
+>> Patch 1 -> Introduce DAMOS_QUOTA_HUGEPAGE and autotuning
+>> Patch 2 -> damon_modules_new_vaddr_ctx_target
+>> Patch 3 -> Module that demonstrates how to use DAMOS_QUOTA_HUGEPAGE
+>>            and the new VADDR ctx creation
+>> Patch 4 -> Documentation
+> 
+> As I commented to each patch, patch 1 looks good except a few trivial things.
+> Patch 2 seems unnecessary.  I hope patch 3 to be much simplified and wrote
+> again following the sample modules' pattern.  Patch 4 seems too much for a
+> sample module.
+Thanks for the feedback, I will work out the patches.
+>>
+>> Changes from previous versions
+>> ==============================
+>> RFC 2[3] -> RFC 3
+>>   - Module moved to samples
+>>   - Change autotune to monitor total memory and hugepage
+>>   - Added performnace benchmarks to the cover letter
+>>   - Bail out gracefully when trying to start disable
+>>     the module after the monitored task exited. This 
+>>     issue was discovered by sashiko [4]
+>>   - Fixed typos and added quota_sz to the documentation
+>>     discovered by sashiko [5]
+>> RFC 1[6] -> RFC 2
+>>   - Rebased into mm-new
+>>   - Use DAMOS_COLLAPSE instead of DAMOS_HUGEPAGE
+>>   - Fixed an issue that returned silently an error when the PID
+>>     didn't exist in the system.[7]
+> 
+> Thank you for continuing this great work, Asier.
+> 
+>>
+>> [1] https://dl.acm.org/doi/pdf/10.1145/3307650.3322227
+>> [2] https://lore.kernel.org/e67f05ad-dbb9-45e6-ba30-b167a99ac67d@huawei-partners.com
+>> [3] https://lore.kernel.org/20260522145518.158910-1-gutierrez.asier@huawei-partners.com
+>> [4] https://lore.kernel.org/20260522171210.900B11F00A3D@smtp.kernel.org
+>> [5] https://lore.kernel.org/20260522171633.AAF5B1F000E9@smtp.kernel.org
+>> [6] https://lore.kernel.org/20260430134139.2446417-1-gutierrez.asier@huawei-partners.com
+>> [7] https://lore.kernel.org/all/20260430154338.E22E6C2BCB3@smtp.kernel.org/
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+> 
+
+-- 
+Asier Gutierrez
+Huawei
+
 
