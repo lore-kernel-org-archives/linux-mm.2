@@ -4,110 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08974CD6E74
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 10:58:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB4D1CD6E74
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:00:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FED96B0088; Fri,  5 Jun 2026 06:58:39 -0400 (EDT)
+	id D18226B008A; Fri,  5 Jun 2026 07:00:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AFE96B008A; Fri,  5 Jun 2026 06:58:39 -0400 (EDT)
+	id CC9016B008C; Fri,  5 Jun 2026 07:00:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C5DB6B008C; Fri,  5 Jun 2026 06:58:39 -0400 (EDT)
+	id BB7D26B0092; Fri,  5 Jun 2026 07:00:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E2786B0088
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:58:39 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C60C21405E2
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:58:38 +0000 (UTC)
-X-FDA: 84845560716.02.2847C2F
-Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8546620003
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:58:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b="YLGabnD/";
-	spf=pass (imf13.hostedemail.com: domain of "prvs=609c00c84=dipiets@amazon.it" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=609c00c84=dipiets@amazon.it";
-	dmarc=pass (policy=quarantine) header.from=amazon.it
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ABCDC6B008A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:00:17 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E94040B74
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:00:17 +0000 (UTC)
+X-FDA: 84845564874.30.6646B8A
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5851214001A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:00:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf26.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780657215;
+	b=rXOMU61ReDIHxwW8ealS+Nk01A073kdrPPrSGcCS11dFWMyCwNoGmXvFzAmZu/slNP7EMs
+	eCs2UPAWwta6/pfysrwow5HB9l3RDLzJFUPYD/HaLv57Ikh9UuFq29peUzcdeGEr+D6+OK
+	aw/exAuPjtzwkIwT8gd4SFADuEw98H0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf26.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780657116;
+	s=arc-20220608; t=1780657215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LQWB1MRHO0Oh1cerb+7kF6+zS8TJPeY9gp4o8uPVemk=;
-	b=nM15iauEobBnUEPT7dUW+mHNMaUclPNzNShWFHlGDkuFh5FUFEA5uAC01BOPv0lNc0CHQw
-	zTIFOqn0OccGrCB+Q8wdntsHLE7dwlvCajp/m16F07AuZwp01AN9oW9wEr931AUfEI28+Y
-	F2cKlybaYI7Spc5t5WnZHwXTQyp6jVY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780657116;
-	b=SzFEOKyVHAxUFNtCsXn2UwQj85yCLFbvuJIJFpdJ+NhT+1rGCrhFkt7JO6IHMVboCESxZw
-	q7ia3B3yUtbCBe66D/pjckhggw7+Kg6o4oIGTvHyzeW/wSIEScZCrsx8k83NBMFzI7rVAz
-	xO2yKiPUbHZAqobfvdMODwXXD9QfI1g=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b="YLGabnD/";
-	spf=pass (imf13.hostedemail.com: domain of "prvs=609c00c84=dipiets@amazon.it" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=609c00c84=dipiets@amazon.it";
-	dmarc=pass (policy=quarantine) header.from=amazon.it
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1780657116; x=1812193116;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=LQWB1MRHO0Oh1cerb+7kF6+zS8TJPeY9gp4o8uPVemk=;
-  b=YLGabnD/qeyc1pCaRbNzb5j8umcm34WHSG32EUUTKXILByjco/lAljwc
-   rj+zXtriMQHTlZ4lb3tMUr7/IEZwBUzEGgeyHwEyAF8ISQqTrTqnMDUxq
-   W9C+LBvnu3YpNmVXro8szj91JMU4SW/jC4hfYh1ejvNid6iEfD7vFdXrM
-   cfrUSFYKTOgbCr1zs8jlgie6bu2iL50/jnURsWpnEjif5f2U2DScv88vI
-   qyr9t9XbKmdma5IbGcnorMV6er4YMwHDcv/ucv/tGTwgULpHJcf6l2uop
-   DunVY2Uyuxq1sdP6kw+PE0dNIwwVA3uiGpp+wP0iGOeskIPJRZYIqvK0D
-   w==;
-X-CSE-ConnectionGUID: otzO6A7JQ9m3VqZ7jJM4YA==
-X-CSE-MsgGUID: YbolRiWaRlWuZk/E8m1fAw==
-X-IronPort-AV: E=Sophos;i="6.24,188,1774310400"; 
-   d="scan'208";a="21175211"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 10:58:31 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:23098]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.63.253:2525] with esmtp (Farcaster)
- id 78f04fa3-8d95-440e-8f7c-1128dfcf6f2a; Fri, 5 Jun 2026 10:58:31 +0000 (UTC)
-X-Farcaster-Flow-ID: 78f04fa3-8d95-440e-8f7c-1128dfcf6f2a
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 5 Jun 2026 10:58:30 +0000
-Received: from cdd-dev.amazon.com (172.22.139.101) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 5 Jun 2026 10:58:30 +0000
-From: Salvatore Dipietro <dipiets@amazon.it>
-To: <kmanaouil.dev@gmail.com>
-CC: <abuehaze@amazon.com>, <akpm@linux-foundation.org>, <alisaidi@amazon.com>,
-	<blakgeof@amazon.com>, <brauner@kernel.org>, <dipietro.salvatore@gmail.com>,
-	<dipiets@amazon.it>, <djwong@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-xfs@vger.kernel.org>, <ritesh.list@gmail.com>,
-	<stable@vger.kernel.org>, <vbabka@suse.com>, <willy@infradead.org>
-Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
-Date: Fri, 5 Jun 2026 10:58:26 +0000
-Message-ID: <20260605105826.3337-1-dipiets@amazon.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260531232929.mn6f76yrnc6e4cpf@wrangler>
-References: <20260531232929.mn6f76yrnc6e4cpf@wrangler>
+	 in-reply-to:in-reply-to:references:references;
+	bh=0lINxcPmpVaC2If8ZBX0Icy37s4iF9IkDas5F8WQ+bQ=;
+	b=vxb1GoB8IoWlgvNRuF7HYzMppKXLiZpk8Qn24G6C3DFZx2pL60uRYs9jPNR6LUj+1j1bRq
+	TWFFSHYdmmcV0PsaEwIquVkyk5CKxeCuxo8cW6zpFn3sJRocdmrO2ww5jLKtZVRobqPWsw
+	80UIUzV8S9m90vdtxORJ7WzmT4t+OeA=
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gWz2q2BFtzHnGkQ;
+	Fri,  5 Jun 2026 18:59:15 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id A38BC40584;
+	Fri,  5 Jun 2026 19:00:10 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 5 Jun 2026 14:00:10 +0300
+Message-ID: <cc60cd6b-d841-4b5f-b3f8-b5dd39ea5808@huawei-partners.com>
+Date: Fri, 5 Jun 2026 14:00:09 +0300
 MIME-Version: 1.0
-X-Originating-IP: [172.22.139.101]
-X-ClientProxiedBy: EX19D043UWA004.ant.amazon.com (10.13.139.41) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 1/4] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto
+ tuning
+To: SeongJae Park <sj@kernel.org>
+CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
+	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260605004422.82568-1-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260605004422.82568-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8546620003
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Queue-Id: 5851214001A
+X-Stat-Signature: 7crh711yq3iyix91gr1i7suaxtq9zbkg
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: jsxfn9gyyxi355p6i1475d9rt9dczjgg
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780657116-524194
-X-HE-Meta: U2FsdGVkX1/a7sYJiwbm9rvUd4ciLKCUaKu+6PAliZvSrerNQ9OKaKb7AyHa4jYSXSCsxWJKPX22qXdQUs8xAYdxhGg0ul15x/NRUj2nJHqwymRsYz+RSkaOFpM/gG+8WrhvPkaN22b2WGU1/A5awQ5tA0OuIOHZEbzgevqy4jS/OIcVHeyJLeqRC+Ygq5P+rCsenFD9Or1aMj0732agzbiH9mc3fxpuSHxEYL3ZT7uAltiCk5Ii0rVSbJvPORYA1xstWKwQi7ocKDVDKfdO2EPZx2c+LexbSveVzSQ2k8TBnVl0pVvxNmBpmLFkbEtJF3wk+iBkh2JqsqBfxWA/JuhqJXE9N2oWo3Cn7yxDU2sOLV8PDcJoDv3CMdhBsEEs1EqR8Q9IH7QSrA16SqWuuAT9dSSqCiymC8sdr3mrGKHxn2P72MVknVnhUj/wHnE9Epuq8evvT5SJWYrV8tVBMGpNAaKtiJHRv1n73Sr+vt3cmcrlcaqXgM0xua8WXH2vptWKMSLj1/tn8JJefNfVFu1AFiiKCA0a1B10KOTPQYN7WQvoN93fGoL6N+AaEiurqdYJSPsMsn/juNxcMzoR0biNUn9mrnV4//qLMOBKlfCT/yb+M28mqCL7TM4wlYON78+hj7Z2Tt1rjKbNTin0SM1dBtMAnjNg1CVk8/VYNAsSbdKcoXmPMrC5YnaKMMh0gF/EaRAuPgfdKH0xjm/k1J2GA791Xj+TaIR6XN/ijR1/obbdCuWEdVK6ln57tA3DwCPfJLqAaFBcMoCRePx4CPjiOeGKUeO7Y/CuDP+MwasgnVRWlnWRwy7PZzVzJBJyD5ImfvNFuM7HvteW2xkpI1v9tEAM2JLFLlTgqprdQM4wCnQOSlHcGvdM3raN37REMQGBF8r+IvC2x2B9vpvqC+L+HOWJ0aAWGUrloEGIg7AbD2KR/ocxd7vrO0EDQS4WrL14RhF0VW2GpXCNRpw
- UHFoBekN
- YZYTzSGdQRM8uJcTxUqrjkGklGKtsNaKSJBXBRTkNtZlWlU0L73aF4occ5UKRl7ex/9lDDA3MmZqEeasd+Z86WisJ4gUwprStAUinS3dfeN8h2tHwG99N+AudF18JbqQbQO4T1w40iSjchuNFDZHoE/s8x35fr1SmihBM44UmiRb7uIel+d+5So7/VxhYD0DXPLEh4r1KmnNNG1+IbhWI2yybgp80ef8u704rTW3MrmOAwEmGL/xtTCO6MqgnR9Dd6aWlIf/NQky+iUVIUKOy7iW6/St+NHE1jZ4o/SDSqAUEjj6NIrwJHp4Zp+91dabwxBtUVEM3n7opKxZDkiMa4CnStYMmBzoHW3GRuF+UvzHn/+vf5lSj+hHU+CRtnlaxWt9+3Cl5WfTfx9RvPOFoaBrHi9nz/4aE6rDtj271EK3EMeq5yWjeYLwaoxTPwqxwvm6GWWzBDec4TNk4Ul9VMVUbsnq2feP2o5eXabsQv4wpxNateEeaaJq49lWcDhr1n9aYVVQvL9bGMlcsqUy1/bjqpTfFtb7LqjmsL2Tm2Et5W7VnrfarlFBeIqRzSERCxOFMBamgXxR83MeSwbPP0EfrzEfIIarIl8rQS2Gcfl+RD4KdF4l2SO1x2EjHVHTstdnTTAOWSAGznp0=
+X-HE-Tag: 1780657214-639544
+X-HE-Meta: U2FsdGVkX19XdqbGKz5uZLWRvEBoHsnK3C54tMG6OidispUa1GChymkjnAiiNQWsnLhUJ7zgXl/+/hadTS3f7fwDmY1BxKdyb0Up6EBzbsYYfnDqVuO3MK3rugTSUi3JIjkw8dhZrJejBcYXY8qBqmDtFRdEWH9B5w5aEZ+5EPr55IqVOIS1mU9/4Z8qexOPpvki3V8BqQ98FcgsE06sQpn2D7HhFYhqM4DgbBh0QzcIY3Kx2sHfc7SKl3CqpTR0uzU9O9Q40vYq0fqSzZ4XFXlzmpfETcvnzpdKzSEoEKGYQJ0lGnlXpkj1y+oNh5l2PAxD2fN4d8vCZ3VYnrTSn73/XsDJgTvEaUGU0WF4drM5UNN2waU0INTAvGg6xmNODXoFwbtfEPvQ/TVL+yX5oRX0GjCfLgaxErhUX1qIFp22goIlglgAsb5uOcuVYOimiuR0Tnl1lhK4hYTDFE03504l8/MQEQsGem/ofZFs6L8XW4MU9u2zEWkfW8zZ5Dv9Dfqf3BulcGxJa+rEXZuxiUbp0f3U++OIYKrbIhwjbZFaQ3xu7s84AUPjdU+TzcZs4omwTarNkojHAfb92lJzIRAgHEV1cqFO6Q85D5zG6UmgRqcrSrGdAVtiyeeo5nfwt/nfZ3up5qqLku8YYjVNruzk5kQ6DW7LnpGL2n6FI4P+JfkXZYKi4A5Kl53eunlQPN9xDwTpjFZYIoh4xJ4hW3PgcFX3ycGmUwhePQBDJnsrvfFttScxlSk1ESCfWPzLNv2XADNt6/q8f+OhMOVrj9sHC6AfULjaRiqxQrTtvnmJCiRWbhmDxcLcT2I0WNGu72stec5dr+/rj+xgmCHDIMwMH1YMACmeJB51VAEjqcSf0eaMvhkyINc8ITd9Ua1LfR/0vcToWjK+tJQ6DRrJ6j/jZbMES5e75+meT/m6yWSt66R9b+DF9EiGDqG9ny+lEQ1X2yPT6P9RewAzrR6
+ FspRDBO0
+ uDKvVBB050tPdqbYUdCeWjBfw2bg2dnCl9Qta2jhubm/lTlp66sFK3TjSjDVyVPiiavMictYCv2KSLJErl0OtL/CuJVkDMJJOfcKvS6Cqytm1d+QkU/RzBSnem4ReS0v+JjfHiJJIY0enlMFNigo5/6W8tRH3Yp+OKaXfp5XFh0pdguHMzEJrOKkkEFgaNcumONsGITBGoZobc9tkNDkJxjQlY2IVD8Fij685V3hjUTXTl1RlY8SCMVnaSb+7WuIl+RwtRo/meCwMm/R86NjYeRpt3mX7qwFqIxBL0R61JUnoBQlMl8pgbi5fTz0iH7/LI7vqkmnCxD7NA8Lz/ymjbCo9itxurVVjNqH4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,40 +95,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Sat, May 31, 2026 at 11:29:00PM +0000, Karim Manaouil wrote:
-> I am not very familiar with THPs in the page cache, but for anonymous
-> memory, we have /sys/kernel/mm/transparent_hugepages/defrag which
-> decides what to do in the event of a THP allocation failure, whether to
-> enter a synchronous compaction or wake up kcompactd.
 
-Thanks Karim for the suggestions. To clarify, THPs are not used and do not 
-have any performance change on this workload as reported in [1]. 
-The failing allocations are for high order file-backed folios in the 
-iomap buffered write path.
+On 6/5/2026 3:44 AM, SeongJae Park wrote:
+> On Thu, 4 Jun 2026 15:03:34 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> 
+>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>>
+>> Introduce DAMOS_QUOTA_HUGEPAGE auto tuning Add a
+>> new DAMOS quota goal metric to measure the amount of huge
+>> page consumption to total anonymous memory consumption
+>> ratio.
+> 
+> s/anonymous// ?
+> 
+>>
+>> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>> ---
+>>  include/linux/damon.h |  1 +
+>>  mm/damon/core.c       | 14 ++++++++++++++
+>>  2 files changed, 15 insertions(+)
+>>
+>> diff --git a/include/linux/damon.h b/include/linux/damon.h
+>> index c7a31572689b..8e15a674e893 100644
+>> --- a/include/linux/damon.h
+>> +++ b/include/linux/damon.h
+>> @@ -177,6 +177,7 @@ enum damos_quota_goal_metric {
+>>  	DAMOS_QUOTA_ACTIVE_MEM_BP,
+>>  	DAMOS_QUOTA_INACTIVE_MEM_BP,
+>>  	DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
+>> +	DAMOS_QUOTA_HUGEPAGE,
+> 
+> On the previous revision, I suggested renaming this to
+> DAMOS_QUOTA_HUGEPAGE_MEM_BP for consistency, but it didn't got your reply.
+> Could I ask your opinion?
+> 
+> Also, I asked you to add the kernel-doc comment before dropping RFC.  I know
+> you didn't drop RFC tag yet, but could you consider adding it from the next
+> revision?
+Sorry, missed it. I will change it.
+>>  	NR_DAMOS_QUOTA_GOAL_METRICS,
+>>  };
+>>  
+>> diff --git a/mm/damon/core.c b/mm/damon/core.c
+>> index 9f38deddcb30..7fc7477a353a 100644
+>> --- a/mm/damon/core.c
+>> +++ b/mm/damon/core.c
+>> @@ -2536,6 +2536,17 @@ static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
+>>  	return mult_frac(inactive, 10000, total);
+>>  }
+>>  
+>> +static unsigned int damos_hugepage_mem_bp(void)
+>> +{
+>> +	unsigned long thp, total;
+>> +
+>> +	thp = global_node_page_state(NR_ANON_THPS) +
+>> +				global_node_page_state(NR_SHMEM_THPS) +
+>> +				global_node_page_state(NR_FILE_THPS);
+>> +	total = totalram_pages() - global_zone_page_state(NR_FREE_PAGES);
+>> +	return mult_frac(thp, 10000, total);
+>> +}
+> 
+> As Sashiko also [1] commented, let's avoid divide by zero by checking if total
+> is zero, before calling mult_frac().
+> 
+> I wouldn't mind ignoring Sashiko's 32-bit concern, but do you have any opinion?
+I just answered. I can cast 10.000 to unsigned long. I don't think many people
+using 32 bit systems will use over 1.6GB of huge pages, but it makes sense to
+be safe anyway.
+>> +
+>>  static void damos_set_quota_goal_current_value(struct damon_ctx *c,
+>>  		struct damos *s, struct damos_quota_goal *goal)
+>>  {
+>> @@ -2567,6 +2578,9 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
+>>  		goal->current_value = damos_get_node_eligible_mem_bp(c, s,
+>>  				goal->nid);
+>>  		break;
+>> +	case DAMOS_QUOTA_HUGEPAGE:
+>> +		goal->current_value = damos_hugepage_mem_bp();
+>> +		break;
+>>  	default:
+>>  		break;
+>>  	}
+>> -- 
+>> 2.43.0
+> 
+> Other than the above comments, looks good to me overall.
+> 
+> [1] https://lore.kernel.org/20260604151932.93C431F00893@smtp.kernel.org
+> 
+> 
+> Thanks,
+> SJ
+> 
 
-> I am just trying to think loudly here and address the root cause. The
-> real problem here is fragmentation due to unmovable pages, probably in
-> your case the page tables. We should work more on reducing pageblock
-> type mixing. Also page tables can actually be made movable so that
-> compaction can treat them as movable pages.
-
-I agree that making PTEs movable could potentially resolve the
-fragmentation at its root, since page table pages are indeed the primary
-source of unmovable fragmentation in this workload. However, making page 
-tables movable has much broader implications.
-
-
-[1] https://lore.kernel.org/all/20260428150240.3009-1-dipiets@amazon.it/
-
---
-Salvatore
-
-
-
-
-
-AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
-
-
+-- 
+Asier Gutierrez
+Huawei
 
 
