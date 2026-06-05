@@ -4,158 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7AADCD6E7C
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 16:18:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A8ECD6E7D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 16:20:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D4C76B00B0; Fri,  5 Jun 2026 12:18:26 -0400 (EDT)
+	id 31A126B0088; Fri,  5 Jun 2026 12:20:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 585A16B00B1; Fri,  5 Jun 2026 12:18:26 -0400 (EDT)
+	id 2CA316B0092; Fri,  5 Jun 2026 12:20:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 425EC6B00B2; Fri,  5 Jun 2026 12:18:26 -0400 (EDT)
+	id 1B8E86B009E; Fri,  5 Jun 2026 12:20:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 328236B00B0
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:18:26 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F09271A01DB
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:18:25 +0000 (UTC)
-X-FDA: 84846366570.11.88DA17C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0706E18000F
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:18:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MdC1YzDY;
-	spf=pass (imf16.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780676304;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C2DD6B0088
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:20:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0D3E8C6BA
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:20:52 +0000 (UTC)
+X-FDA: 84846372744.04.8C11D18
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012008.outbound.protection.outlook.com [40.107.209.8])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BDC921C0013
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:20:49 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=O3Wrg7Ob;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.8 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780676449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2bBQWaXR8oRLz4Hk62HvwsKqlzdG1BUydAb8xounnNo=;
-	b=LvyzD3mLIi158S8V6j1i3c3IVRMdRNH2MfwhvdBiMZqKOCxyCFiBo5/kfQ1GucGv60FPJl
-	KcCfB9Ez9UAAFYWubS6ONlBjrVoL6FsbGvJ9YnW7dCcdHiWkwxrYhPE6XCb1HcP9XNBlEW
-	+xYGoxZMN1uoTkHdz0pZM/P/UXqDfvM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780676304;
-	b=tfjrTMl1Fmhm2lrnDFD3zpGoMVLh1I6Rq/fLknQbg417e0aR0chG2Dw0uoIZDhNYEvnzxd
-	GNbAOnXUfBWORrNmAep+AvtFnWrWU7ORiYQJoO6YF2RUlmItgDH3XuZUitDmEBYyLX7LFE
-	6Tr2o17jW5Qg4FANzsfPuPSwhab57CI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MdC1YzDY;
-	spf=pass (imf16.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780676303;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2bBQWaXR8oRLz4Hk62HvwsKqlzdG1BUydAb8xounnNo=;
-	b=MdC1YzDY6bzMsiqXCHSzXjZOmuxkqN373ojA6VpopSDtKz5Lr1kpJ8fQ7z5UHQZ4S3bExN
-	wzAt1HlLb5LaUutFfUji8OV18rkv5Lonpt9H13BYaGmx/JH0GYwI/boSDBQNFzWadqdVsM
-	K/RN6kHiB2CaZNFq1GJGPQrvtSrf0k4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-18-JWfnN4gWNYOluJxhfkitRw-1; Fri,
- 05 Jun 2026 12:18:20 -0400
-X-MC-Unique: JWfnN4gWNYOluJxhfkitRw-1
-X-Mimecast-MFC-AGG-ID: JWfnN4gWNYOluJxhfkitRw_1780676290
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 98A32195608E;
-	Fri,  5 Jun 2026 16:18:10 +0000 (UTC)
-Received: from p1.redhat.com (unknown [10.44.22.9])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B35A918005AE;
-	Fri,  5 Jun 2026 16:17:50 +0000 (UTC)
-From: Nico Pache <npache@redhat.com>
-To: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jackmanb@google.com,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	ljs@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	npache@redhat.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	zokeefe@google.com,
-	Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: [PATCH mm-unstable v19 14/14] Documentation: mm: update the admin guide for mTHP collapse
-Date: Fri,  5 Jun 2026 10:14:21 -0600
-Message-ID: <20260605161422.213817-15-npache@redhat.com>
-In-Reply-To: <20260605161422.213817-1-npache@redhat.com>
-References: <20260605161422.213817-1-npache@redhat.com>
+	bh=/1a1qxpB1IoQi8pQD+6oWQb1iy1Y6bEAp37OumbiNWI=;
+	b=yITXrTSroUsUVXDxN9nTS35tDESz7D1lPFGvLQ/PGi5LPQ7StF0uUyxveozWX8oPP4hIQG
+	E88+dHYi/Tr1VmMASWS9Mrnh+ua52JI3lBN93U/o4oZtn1gP1nM40ypvNEayWBXSW6Rp8G
+	HrXzNNaRWu6BsrVFOHGpqYs3vEv/kf8=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780676449;
+	b=Mj/6YVFO+KDGWO/lukIOhA7zKkdd+ID/dV7xM5cXqCjiDcoFslU3jYye07fOpOaMrEpEUp
+	UsPrXPu6uR0Kf44U5UnQr0rcAtE5rgUox4grbBvN4qwWLWsc/JDT7Mg39MQUU9fQpiF8RC
+	lBpIcQR0kPWTbUhD29W4kt46zyClWv0=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=O3Wrg7Ob;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.8 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vCZt32nLF+bi8C9mCJc/0fjjo5n4SRIlayjpg33Tx872mb7vIem9rGODSlQ8VF2eEZqct9+3YxqcHjFmZOUKvgSQo6lYNkHeX0U77uyPdYvy1Gddk6yY1HDWHBVqc5zC9H+yeF6nHNOExC/jKnXNLBK5SBGoaJERIOVI4OlplR5npGdoM5ZYVghJyT/PpKKBgSQ980sJfGav4jVD13zvBo0I2sYMDDvvW8khESOBFEP+gI/yInncLj4lZAUoJLsq+XHo01IsJldtUA1Bt+RowBHuYCLS6m56bpCrnPjoIMcj/B1FjQ7FjlmXd7hs/zEouNq4bUparNAWBPa8thJBiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/1a1qxpB1IoQi8pQD+6oWQb1iy1Y6bEAp37OumbiNWI=;
+ b=tT4+g+seP+5NWhX56TULPBQCbykwcJTp5Uhp/ub9GtWlErElPIKVCQUCB2y1p/qyWQCM4p9ih/1IJS4bn+LFF+h/g9WaeYX/CG3sB+weoENQ7c7Hzv2ZNIViQiXA+3dBvITuyjyngUeNHNPEYeFWz+JZgcMWgALhCo1NBkA7V0PDwfnWhM5j7mYQp0v/qFcCWQvHxiWt9VZ1oARNXfZSG/Go2yw/50WGmapFfZspdy2A5Qsy8piahorTx5AmYOj81NFskSzN7iQkkNSO07cX0KE4QbblRojjQpJfasBvoJCqQgXaJp3f+DZXd6jaW+xg3eTbSt9EfpN4OHyLTqQHkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/1a1qxpB1IoQi8pQD+6oWQb1iy1Y6bEAp37OumbiNWI=;
+ b=O3Wrg7ObjdVAWdsK6S+nMQOu44IQ1BLUPQffoxJB9Xy8RYGx033X7QDe8TTh0llZN0gi4caPeYyir4BJxwUkCBxDc/SeY6sgrZeeyEeZffipIOWAX6bNOA/Mk+yrJNQzyM1FdY9CGsLIMuozQ1anrrQicM+1cGqSbm4KpNOvGyZf3aVeZDJgDY/qiRwSEAJ3H13qFG3QQ3dzEOrMAkvpIxeoYOek6AFnRBTP2Z1Vt1Qm1fe//fCPh/Nk0IjTQzvg9xGgcJP5VP86yK/yuEwbttpnqcO/8MsCEdGpfUIpIhGKy2E97n0WQgVXxBdK/lhaSp8PwSeUg5+3Jeaar4CBwA==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ IA0PPFDDA81179A.namprd12.prod.outlook.com (2603:10b6:20f:fc04::be9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Fri, 5 Jun 2026
+ 16:20:40 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
+ 16:20:40 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ John Hubbard <jhubbard@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Peter Xu <peterx@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+ Sourab Gupta <sougupta@nvidia.com>
+Subject: Re: [PATCH] mm/gup: fix GUP-fast fallback for NULL-mapping order-0
+ folios
+Date: Fri, 05 Jun 2026 12:20:37 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <7A8AEDE1-C28F-4490-8A2E-72E4E8D0E78F@nvidia.com>
+In-Reply-To: <5aae8c80-e886-47b1-a1e1-4e91771f3492@kernel.org>
+References: <20260409014647.397515-1-jhubbard@nvidia.com>
+ <4d6c1af0-dee5-4f1b-b74c-2ebc23de7baf@kernel.org>
+ <08afbec2-bbe7-4e8a-8d99-8a5eaecaeee7@nvidia.com>
+ <aiJbJVbD4W-y1XDg@nvdebian.thelocal>
+ <5aae8c80-e886-47b1-a1e1-4e91771f3492@kernel.org>
+Content-Type: text/plain
+X-ClientProxiedBy: IA4P220CA0011.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:208:558::11) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: kgcoa3uBq3X72wz8VeJxtHXpcosrVs4F-XZTVD6lBRY_1780676290
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 0706E18000F
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA0PPFDDA81179A:EE_
+X-MS-Office365-Filtering-Correlation-Id: 07c20f7e-a1e8-45cc-b22f-08dec31e6277
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|18002099003|22082099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	SWwl8yk/DwjZdCljl1BNSNSK3QX/dARjqXoLL8jpTf/CpSw3mgq4ALS43+3YPBXEqALeg7jCkj5McvzS0bOHJoQdk62TPtG/J4mv4Tef/4YfhVy6xIQ/rYsCluLw8eGWrpr2TzoZ7wouTTtSbPXHr9xouHImgq+de/kpTsFymwpY5o3Sj5QZSeFDv6tu62BTYjwus/bkoqPuYyF0jGRwOsxwCi4uZp2bU3NI0NTM/weKCO+hMLKJtLRFEwxvFqHpDbq4AlK/EikrVfb7N9lJp95yON69s6cArH0M+J+36XKd2c4IKlXBgk9CxFEN7xTwQ0npCKDg0jEpVu27pNleQLEuQdt3p1jodT3ZfKyEIz0oeLnZk8nO8duUVApnr7yU2BUsyGalYLfiHN2yZ3zOZWnrz0/paRWeHg3cDvRuGCMhuPr7DgMufFrYm7jzDnjZcwUI6UpLnHPpuI82Z66M3rQ7+Q1TiVt1MDOzZ+AgVDDayR+mThrTzV1jl+UVWa05Kpkt4JZ/ctmYdzzdtOd58XrnP1wUmmvGoO1e5D44dplsjVDP4272D1x+3bv69CIfesbtPUtgEDMwdJHhl48/nFmJXLDpFqmCoWyQw/DZraslXsIxcV579d1V4x6xI69AVRX1d326C5yY82+7jOpe4lZmAD8lRC/AAPc8LbUfY96JEnuVevAIn3N5gykRSJEw
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?NpB/eDPRyd+EiuSe6KSGzQQglgG2y3vosQNPP7D9flxY4Uf9QPePwobljk0O?=
+ =?us-ascii?Q?xou9hJ8onxzKEiyFqNdKZjf9wnk1Y/ll4yNIjiM/rMZl1WQV1V9qgNcyvb31?=
+ =?us-ascii?Q?pfVDALJWvbXBdjXWHVa6MJHq74i0ILn7kPxnO4e+l9UdISQ7aWCYMsvM9oaq?=
+ =?us-ascii?Q?ZYB4ZkmUWY29gR9BOkxPIHnRKOt3Hqey2IaLwkQtOLE8oTZg4Wza7h9hL7pH?=
+ =?us-ascii?Q?PjkByr0Cjq8lJU0vPI61X5LrXAmuy8pLKbemMdyrpwv+anQB9YVYypEcMC45?=
+ =?us-ascii?Q?EteejK/q5t/0JsBWIu7iV5yaYEJw6g77zbn+zJRLiekgWvcuiXmVFtOs2yiz?=
+ =?us-ascii?Q?GfdIn86FVOOiZZABV4bJkFZvpXEerlDngRqs7c9m8kNll2QF3rbftq++61K1?=
+ =?us-ascii?Q?wJUPKh34HnD4BwhtEfGX8R3FF8luA5uTXBb5yQB3f/gDZG5eg5GjvjuMa3rH?=
+ =?us-ascii?Q?uyiDguCwcf4IEk6jx9HUWc4/5lzTOWW2UAUUm0rkTcLLlnsHzW6soKVB21ao?=
+ =?us-ascii?Q?zXOU9ETky/Gkpuph23LuvOt4lKM/fo2NsGMKTUsk+E61j9qNWczi/gohlpLF?=
+ =?us-ascii?Q?Ks/RYw5xHjDOcvxocUZ6Bj/ozSMYEMo0sBN8ESFrje0O8/Xwuyf3Jg3Ihm5w?=
+ =?us-ascii?Q?hkSzgCM1wgShIXpwHIN3yP/Fib4wSsppkjF4ZH+5Gm7hqHq2XG/rCL+AtaBk?=
+ =?us-ascii?Q?rGZ/xsI4HwUTdL2MfBnViTW7F7VAHo8e2AFFsC5UbiH/pCB7WZC9l0KjPq6n?=
+ =?us-ascii?Q?BGg2S12Qwt4xM0prlBKoV84bqP+3RpUUAR0yi6q2mDBwhDiN6Zx2x9lYrZir?=
+ =?us-ascii?Q?QEKDmwXBR7PEXYqDIHl65THSGryNyPUYGnxN29g21IBCBoX+ButYS8SdKxuA?=
+ =?us-ascii?Q?0nIyzKUkXpxQu7AjYpaNgoZLiSdJ43nCQjTtLFIzMhYO1E7gEjr+pY54okJT?=
+ =?us-ascii?Q?AVDMfdmfFHWd7D6eGoIFRTd408qG4VA9Kun/hA/44ufbcj5+i1JCOiK16Rtb?=
+ =?us-ascii?Q?EMFlicYCKgo/fer0cyNCPpZrdWE8ft3HqPZszlfoPe0mrr8HfyvPuxDlkaTL?=
+ =?us-ascii?Q?croa83LaP3RpRcWS+eR1strT2UWDUtHZukG68N69P7r4Am+KX9JEktVr3yyd?=
+ =?us-ascii?Q?VxbMSQKgGKx52BbJdgktS+bMfZaG4bOX6uvwLvHrxffbQcaiYdnro3byMKWM?=
+ =?us-ascii?Q?/ePm0ahLXppLLKkXMl6xqnoVo0oZXgepIhuSF/SaukoUAQGbosH5Y9k0vyZT?=
+ =?us-ascii?Q?Qa327M4RdrQkVXEc0BwtNa+4dWIgEWLWteJpqZEro9k3oUgR7w0vNjX4tc2E?=
+ =?us-ascii?Q?vYxUmGvDG6U+PBByl4E7jq7VB962BnUhUd/3LDXynZhMMERK4GHRInmNcPsR?=
+ =?us-ascii?Q?BQFhvuI66lcwE7C64SKuItk+6mZayKXeJBtWB7pqGQhau0f/lKawdPIi+Be8?=
+ =?us-ascii?Q?Af4cbyk6GfsKB/sP0BBNZhth5s5Gs8WyN8TFa1e4+3EfTkolYLdeeQdj8Wcs?=
+ =?us-ascii?Q?/rYjz2Go3fdd14QFsFNzpwoMn8J9r3WzqtgKZvIt4hnkBT+Ci/H9JpwnJHEv?=
+ =?us-ascii?Q?9SLjYxzVGi5WEFQVea6MEKs+KYeBL48wmizN2HwP55xM3hdAv5rimvUpYtm+?=
+ =?us-ascii?Q?nYTBGbpwR4xQkYbh0BHHvpgZ2zHRlZTBjEIvugy5TT+8R3McVX3X4C80YFvC?=
+ =?us-ascii?Q?ShKCjjSFAwnVIpva0nTB9fSfwkoonsy+aNpPG2FPM2wZQuSq?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 07c20f7e-a1e8-45cc-b22f-08dec31e6277
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 16:20:40.3091
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lnwlwnp9kZg2drBZEYviG0E4KjY5hEnJB9CERRRaDEo0sk2AuvdMczStppSkwqpr
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPFDDA81179A
 X-Rspam-User: 
-X-Stat-Signature: x8zta9btj9c8tretoc7cgnirsfu9newz
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780676303-449611
-X-HE-Meta: U2FsdGVkX1+ZThYaRKtPDqA1EfZZPy/BHcUKWvH8QfUXvxjVbcR4wZzi/lMOC3aZVF8hcnQ2x1CBRe7mY9oOFAY50tsfo98cX1SfoZFr7fbLyN23XEUSxflm2huaOUDri37HBATdojXa4Mdvp3Cb26SB32sRiWYqdkgSkMMTKi2u9WecnrLAebgkv6h943MXJR5sbtk+guX2yrnkgTppjwJ3I0z9kjhhzmT8Z+dVorr1lJ76VwmS6UDruafd+FbEtwYqlSTNk+QhfPAM7C4N8qXHJ9YyF9IjfOz5pOOKb7CIP+xYd2OfCIiuFBm0IAJ9AiVxoXqF5XESX0IsUEWu33EKbrzfmLGUaOHL7JEg3C9tQNoUxLZGhjUKt8HmzEDh45a0ne3oiaErk8JY/p7DGZP7B69jxZpkAOto/8csskks6cUf6d/+6t8jyMxmzsrAlIKN+0zTqUAML6vm0IaQbJ9ruYEsfttMEvMDP17UhRcL50A3cmp4lhOw0qsiwTpJHjSMgcVffgh55FHuY/xqnwTpxMNtBXIRRJBQ/Rc2cUWOJuW55lN8kL76hXVj4LdxoUsq4xHiAuRtAaLTnIbtaZcb77nsD7vOWXQv2PwvubA15RUG387FAqcnRDsuIlBb/nIqQxvXyWPwl4RD3zP2EnldQYK6zuhFRyMwgEWlUsuu5s/5BLeuKcxjfddh+Yc2SkbLt4HwJ+slA14wzLuBJJ7lB5abh+9f6Uye67pQZVN7jLtcWQFgsvaNcSPgNHeBMSu1O3eEMIJ5HztEpR5y40bLusVsOm2bUKYeCYG2X2wY1wQ5pDHDweOGzB/AlKO770f18RgFsBHC6vp6rJmdWTR0zgd/xHoi8Hn3qco2w4qAKN38H52MVH672USHhwWp9DDXsNEt1uwCE8c40oZBpmDXDwoNyYzo5xospBA7gIOJol7Ke9Pq0FhM8WuvzTJtGkFsncne7olWg25EnMy
- B04bQNXC
- gU+6tjmHUbTAs6GCXLAvBjrQi2jQG12Wg9umWKZwAoTfAA5ZDf6NOqnc+swtssb0RdzQqnR5Xu7CPx+wRctRMrZPjgKPX3GInSDJvoH9CZeMUICwJTRDT/KHdKmh8RQEDs++Y1skHYaHcQypj+Qni3KxvT0KBRvMukJxxELUP5Mlee8lZStZx5QgX6nTVt9+k/b51h2RjBK+a2GTtOXbzkcT87XGeY+g5i8Fkrf/+ZoygejsSq59In6jfJcl623Ueb8TsRyx6y0/z4DcqLYwUvKXswQQ4uqVGctjaqf5wUzXgsGg2xHjyJ302piGx4mbMYEGQB0LRqdLv4Lp8VYifPAnvEypNNCHu/5Uj99VnZy0mhH3JWL/aEhOVy/xInhicmPG+hVNg6aug1a1vTxrD9Kw0X9gOLQ3AQ1esGpmEX83w1BfRVhDNn1uX8Q92JG6J7BhrlfQr4hVW3ksiMQHd9EvdYw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BDC921C0013
+X-Stat-Signature: ch5fj8ug1fab78obpqg5jehn3uhz3q9h
+X-HE-Tag: 1780676449-645940
+X-HE-Meta: U2FsdGVkX1+Bik6b8hlFpqdZBZgFRdWvnkvIZCy2THdOuxx+EUwxoCaICwcQ8wq7c8uoeU1KXMd8hRKPESOnw/ySxliLS6/YjC2CK/ihpUhEpSALv/I/z/Wat+Lqroxzt83PRGF2t1UQjRBOt5/siY5YGNHU6XLITTbsghwLYOXIId0TqsielQvBh160iITZvGYTlA7oo1fguQ3bV3lpcKTtFvRbLV1b0SniOIs7T63B6xbUDAKpzAeUECiLu48YyON/tqcnu/QETcHYjiA2hKS8LEcurBj+op6k7e+n07W+usCn0u4jMcwY/YWOAEPmQYm1+3aEwxbN15sMQclidVry9AcgBKLnfBot+j/L4p/SWRM0cCCqQXNZVFqc2hM9g4VeevHBwXpDuGDkWpTV2mVnMYXVGln2aCmrZFsEadWBOqTwJXxrm+jDYJzR1A25u5sImF3iFTzD0gwGzLQ2flpcVHBi4P4L7SRHn86oGlGZq/4KYWC80HVLScsdJ4aJrnKAB2ormp0KUvbJOV/3y347hga9AY+nCbvhVHSBCpCqchpNK7YVzSudU8Fb2u7Sfb0VVrUyvX5bFpPAf3kMLhO3Rwku1YdeeYVCmhu18B1/EqnrC3//RMjEYLq0wHVP80z6F7pFa0tbDVvePlPjjiZaWMuFgDY9ODxNCNJU1Cpyi3R5kDBc/UqnEPKutvCfP3Y61l9OyWlOdInMa4xPJczChaKYIqCndHPqNidn7K3GYEM9zHN5j7AhDzw6JBRkHTLu99DVM6UdDge3HWGQ/yheYOtyK2A3BGma4FZBBP0eOtE+yPexYxp/T0zwa2B4EIums9INKZO9VuCO3wYi7dXWgfP8cD5Nmm/3wMukeItaAJrQXfkN5tYT4aucs1oc35tCD559LYlGcyUOidaSmAN/G5CBjWeSAdzomuV1LvO44cSyTQKUULcMG6TBTgE+oEDmg8SvCFrHirdh4NT
+ fhgabVuY
+ xXPLqfmqN0CpWdvQ8uBcCOmNMqQpFojW0myfkA8ThYwiarVo9W1oXBqvSsRtYbqsOZeIg+iXqB9WkX0hP1tHEaNgNUGGg5Fq5HdjJGjsHxHcAzxYB8GPLNYQLiOX8ZthiePkNnm1Tp0DXzWrriCYN2SOhUSASJNWE45eahr39O9vyFgkXzJVjmxKTYyKv+M4AQ4zqB2KUKZkqcM23hJIwjL/+v0AWVYggKiEovVL3sQkp3W/3zV/pFgQhJ59dXqasHnxkTTMYw9/GRVkQJRnwJD4vy6Ih9k/ST6vYVFMgsTX0gbBAK4aF9wKCxmC/58x2PX2QWzg1O7e8HLG7lQ4uuRw9MZ7XkDplSge1CdFb2coId/+Eto+Iwc9fEssh3tvpWKUU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,117 +166,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that we can collapse to mTHPs lets update the admin guide to
-reflect these changes and provide proper guidance on how to utilize it.
+On 5 Jun 2026, at 5:22, David Hildenbrand (Arm) wrote:
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Signed-off-by: Nico Pache <npache@redhat.com>
----
- Documentation/admin-guide/mm/transhuge.rst | 49 ++++++++++++++--------
- 1 file changed, 32 insertions(+), 17 deletions(-)
+> On 6/5/26 07:17, Alistair Popple wrote:
+>> On 2026-05-15 at 10:09 +1000, Balbir Singh <balbirs@nvidia.com> wrote...
+>>> On 4/9/26 17:52, David Hildenbrand (Arm) wrote:
+>>>>
+>>>> Hm, what if secretmem folio just got truncated? I hate to rely on some
+>>>> handling in the caller to detect truncation differently during GUP-fast,
+>>>> but this function returning "true".
+>>>>
+>>>
+>>> Can secretmem folios be truncated? I assume you are referring to
+>>> ftruncate(), I am looking at the setattr implementation of secretmem
+>>> and it does not seem like it can be truncated.
+>>>
+>>>> Zi is working on a way to distinguish folios from non-folio things: that
+>>>> we can identify whatever was added through vm_insert_page().
+>>>>
+>>>> Because that's really the key problem here: vm_insert_page() pages are
+>>>> not actually folios, they just look like a folio today, but looking at
+>>>> fields like ->mapping does not make any sense.
+>>>>
+>>>
+>>> I still think this is a short term fix worth having until we get
+>>> Zi's fixes
+>>
+>> Agreed - this clearly results in a performance regression and we have customers
+>> reporting it as such. I think Zi might be out of the office atm but when I last
+>> spoke to him he agreed this fix should go in for now and his approach will come
+>> later.
+>
+> He should be back now. But yeah, let's get this fix in.
 
-diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-index b98e18c80185..23f8d13c2629 100644
---- a/Documentation/admin-guide/mm/transhuge.rst
-+++ b/Documentation/admin-guide/mm/transhuge.rst
-@@ -63,7 +63,8 @@ often.
- THP can be enabled system wide or restricted to certain tasks or even
- memory ranges inside task's address space. Unless THP is completely
- disabled, there is ``khugepaged`` daemon that scans memory and
--collapses sequences of basic pages into PMD-sized huge pages.
-+collapses sequences of basic pages into huge pages of either PMD size
-+or mTHP sizes, if the system is configured to do so.
- 
- The THP behaviour is controlled via :ref:`sysfs <thp_sysfs>`
- interface and using madvise(2) and prctl(2) system calls.
-@@ -219,10 +220,10 @@ this behaviour by writing 0 to shrink_underused, and enable it by writing
- 	echo 0 > /sys/kernel/mm/transparent_hugepage/shrink_underused
- 	echo 1 > /sys/kernel/mm/transparent_hugepage/shrink_underused
- 
--khugepaged will be automatically started when PMD-sized THP is enabled
-+khugepaged will be automatically started when any THP size is enabled
- (either of the per-size anon control or the top-level control are set
- to "always" or "madvise"), and it'll be automatically shutdown when
--PMD-sized THP is disabled (when both the per-size anon control and the
-+all THP sizes are disabled (when both the per-size anon control and the
- top-level control are "never")
- 
- process THP controls
-@@ -265,8 +266,8 @@ Khugepaged controls
- -------------------
- 
- .. note::
--   khugepaged currently only searches for opportunities to collapse to
--   PMD-sized THP and no attempt is made to collapse to other THP
-+   khugepaged currently only searches for opportunities to collapse file/shmem
-+   to PMD-sized THP. Only anonymous memory will attempt to collapse to other THP
-    sizes.
- 
- khugepaged runs usually at low frequency so while one may not want to
-@@ -296,11 +297,11 @@ allocation failure to throttle the next allocation attempt::
- The khugepaged progress can be seen in the number of pages collapsed (note
- that this counter may not be an exact count of the number of pages
- collapsed, since "collapsed" could mean multiple things: (1) A PTE mapping
--being replaced by a PMD mapping, or (2) All 4K physical pages replaced by
--one 2M hugepage. Each may happen independently, or together, depending on
--the type of memory and the failures that occur. As such, this value should
--be interpreted roughly as a sign of progress, and counters in /proc/vmstat
--consulted for more accurate accounting)::
-+being replaced by a PMD mapping, or (2) physical pages replaced by one
-+hugepage of various sizes (PMD-sized or mTHP). Each may happen independently,
-+or together, depending on the type of memory and the failures that occur.
-+As such, this value should be interpreted roughly as a sign of progress,
-+and counters in /proc/vmstat consulted for more accurate accounting)::
- 
- 	/sys/kernel/mm/transparent_hugepage/khugepaged/pages_collapsed
- 
-@@ -308,16 +309,21 @@ for each pass::
- 
- 	/sys/kernel/mm/transparent_hugepage/khugepaged/full_scans
- 
--``max_ptes_none`` specifies how many extra small pages (that are
--not already mapped) can be allocated when collapsing a group
--of small pages into one large page::
-+``max_ptes_none`` specifies how many empty (none/zero) pages are allowed
-+when collapsing a group of small pages into one large page::
- 
- 	/sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
- 
--A higher value leads to use additional memory for programs.
--A lower value leads to gain less thp performance. Value of
--max_ptes_none can waste cpu time very little, you can
--ignore it.
-+For PMD-sized THP collapse, this directly limits the number of empty pages
-+allowed in the 2MB region.
-+
-+For mTHP collapse, only 0 or (HPAGE_PMD_NR - 1) are supported. At
-+HPAGE_PMD_NR - 1, we collapse to the highest possible order. Any intermediate
-+value will emit a warning and mTHP collapse will default to max_ptes_none=0.
-+
-+A higher value allows more empty pages, potentially leading to more memory
-+usage but better THP performance. A lower value is more conservative and
-+may result in fewer THP collapses.
- 
- ``max_ptes_swap`` specifies how many pages can be brought in from
- swap when collapsing a group of pages into a transparent huge page::
-@@ -337,6 +343,15 @@ that THP is shared. Exceeding the number would block the collapse::
- 
- A higher value may increase memory footprint for some workloads.
- 
-+.. note::
-+   For mTHP collapse, khugepaged does not support collapsing regions that
-+   contain shared or swapped out pages, as this could lead to continuous
-+   promotion to higher orders. The collapse will fail if any shared or
-+   swapped PTEs are encountered during the scan.
-+
-+   Currently, madvise_collapse only supports collapsing to PMD-sized THPs
-+   and does not attempt mTHP collapses.
-+
- Boot parameters
- ===============
- 
--- 
-2.54.0
+Right, I will work on my solution soon. Meanwhile, this change
+is simpler and can be easily back ported.
 
+BTW, should it be back ported to older kernels?
+
+Best Regards,
+Yan, Zi
 
