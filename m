@@ -4,123 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F549CD8C83
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 13:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CC06CD8C81
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 13:53:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A78596B008A; Fri,  5 Jun 2026 09:53:31 -0400 (EDT)
+	id 880716B0092; Fri,  5 Jun 2026 09:53:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A29EE6B0092; Fri,  5 Jun 2026 09:53:31 -0400 (EDT)
+	id 7DFE66B0093; Fri,  5 Jun 2026 09:53:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93E676B0093; Fri,  5 Jun 2026 09:53:31 -0400 (EDT)
+	id 6F58C6B0095; Fri,  5 Jun 2026 09:53:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 872D76B008A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:53:31 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3F9531A00E8
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:53:31 +0000 (UTC)
-X-FDA: 84846001422.05.4D372CA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 62D816B0092
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:53:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 12AF7140117
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:53:32 +0000 (UTC)
+X-FDA: 84846001464.20.17205FE
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0F45D100014
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:53:28 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KZ2WP8U7;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of mszeredi@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mszeredi@redhat.com
+	by imf27.hostedemail.com (Postfix) with ESMTP id E00C34000D
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:53:29 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dSJoNmmx;
+	spf=pass (imf27.hostedemail.com: domain of mszeredi@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mszeredi@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780667609;
+	s=arc-20220608; t=1780667610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Zek5lka7I+V+M7YhuZBNsWHTpvMuxGl7NM9kjldurc=;
-	b=j+k0BEs0lEmJQqhOQSnjlRTj8ijkrdM42JKO2wwGr+qE0riTxp4duNtwslH0BtZOuiKICx
-	6eCzE0Xb7cMpTUJz6CaeNX7EiCvJrS4iNLsokIlnXkYiMaUsexSFCM5ZweT5z/wEW5pjcU
-	juJ4s0TJpFCZApWbpXZjeKHjFDU8WqM=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=iavcFnyVi7+3Trg9epYKO4ba/4sETBjrALB/+SG2R4E=;
+	b=l2kxNaPLuFrpEANia4Qr1OCAGFxMelyQsnnswCUEnqEiM8P/fei/TJskfOGWJ++OK3+gPk
+	zJCCHU/3N2n2+77/jZ42rY2fENp9nd64VunsBd8+h67Z4nL3O1gDKQhlEhJ1TzCDaa+pIp
+	T0bRWs7gciHuM7hvDErrM5Ae4rE+RJA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KZ2WP8U7;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of mszeredi@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mszeredi@redhat.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dSJoNmmx;
+	spf=pass (imf27.hostedemail.com: domain of mszeredi@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mszeredi@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780667609;
-	b=aWLQ6pT5aM6lo+2a7I4PwtGCLCYnJqzy8Bei0q9J6vtTofEHN+T4VzdqnU364dHNwB+UDe
-	DW4OTNjNLBw/nm1i8R/zH0QB24iLzi2Gv1zv9Cj/ycLygdjyJ5GQFal7ZaAIxA41fGm6i6
-	EvBuBnl17pMTManPU+kzb67WYVBUrc4=
+	t=1780667610;
+	b=rt9qJu7Yexn2HkbzShM5L8qxaazPGFMLJyg9VNSdKOvjs7+0eRzLxxgA5s72qOf1tZNjUx
+	/aK8tnIPICL6iOLh7ZTEJtWR2HPRvF6e3zPQGPJfhNhMwAS+F5pXV1kSQ1KSx8lthZYaMZ
+	8ZwhbiBeJsxYoC8cePtMa+kTGzqspm4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780667608;
+	s=mimecast20190719; t=1780667609;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8Zek5lka7I+V+M7YhuZBNsWHTpvMuxGl7NM9kjldurc=;
-	b=KZ2WP8U74FXEmLAuC+DQNdGyyGyarH0SfFu3TYTC8eRHY0yjYyamNXvYBXdCUtZjZcsTGy
-	VSXriEAzFjOw9KxojlRSnW0N8BFyJmToLa8lxGVMSBoIblwif2yxg1Od6yIO2+oBhzQVMi
-	a9GyghS1h7+azAiu+v2uDiZVqCha0to=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=iavcFnyVi7+3Trg9epYKO4ba/4sETBjrALB/+SG2R4E=;
+	b=dSJoNmmx4Mj5DE2I5LnIaIUKKb70xxipBBzAHI2PPQUStZYNHljKErX6CNDlRqjU119ZPD
+	kRIX5yxlDtZrlQhy/qBRcnP+jZi8FnXADrbuwgReZ++bMU9ABngcuXQWWSHSzXGIHxyzDB
+	bwShnnaeQGCl6Gsr2DsuI5ZPBiYcMwQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-277-VSzYyiX0P56ZwQxHzapzPw-1; Fri, 05 Jun 2026 09:53:27 -0400
-X-MC-Unique: VSzYyiX0P56ZwQxHzapzPw-1
-X-Mimecast-MFC-AGG-ID: VSzYyiX0P56ZwQxHzapzPw_1780667606
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-490a767c7dcso16961305e9.2
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 06:53:27 -0700 (PDT)
+ us-mta-27-uPTVKODxMd2ry4cbShXzkw-1; Fri, 05 Jun 2026 09:53:25 -0400
+X-MC-Unique: uPTVKODxMd2ry4cbShXzkw-1
+X-Mimecast-MFC-AGG-ID: uPTVKODxMd2ry4cbShXzkw_1780667604
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-46011aa5000so857158f8f.3
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 06:53:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780667606; x=1781272406;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8Zek5lka7I+V+M7YhuZBNsWHTpvMuxGl7NM9kjldurc=;
-        b=LwhbbotRIfFRLWyTQFPHDl7gCWHkF3g8Q5Ehdn0G7nCMIzr5FS7Z4AZNC/v4ccWsVw
-         s4dCjo4uUi2yPD3pEzYMrDy1NSgoj6swidtYAsRLmQ2dQZbMD/0G9WMw3S6QVx4r3IKS
-         SKQViY4VBqU+bBNyDb80FHmA6CSw09BPp3qdZB8r5dd8CXHG/mnuRrHVzGzntMf9biPD
-         vHAchY3fmcE1jOFTgxX6VbVIWaIJQ7cYqLSTer4Fqot+TfGfjHLJLeC5FHp+6OGh+aP4
-         iNhrkiOCYtN1hTVOGD3SKhWz0gRPE4MlEF1KjkUPXQawFhad9XtvQSORHV+74B0uDwSh
-         v6aw==
-X-Gm-Message-State: AOJu0YzJwhKY2eszAJ7OZfGSbmr2XCDi1VkGih1EjMyM1KjqIGynbe1e
-	LYGB3sWm04RioktchHtCskR/P+rTyNbMraX4HMPP/mH/UB/wNBcHs+gzFOSv02BZM6X926gYNh3
-	ThQRMWptzSEp4tKpHeb4YA1o7FNAG9b3dwNpP7y58nLiPKk44usajglsnkk0P
-X-Gm-Gg: Acq92OF6MeMA2Mj1Rgt/FVnYqdb47UaNpZJH/876vUkS441vLNyOArnqzz3OS5HF1lH
-	0je+J8aqjKuvWl1q4qvnY3/aN5g/6S4km+jHuKfKCUy5onuY6x+gCxHA3ipb6NErOC2Buj5/Lew
-	SgE6FI73L3F/fTeMAk9ofmu4GD70Qp48Aylr7x9hf9XJuaU1KshVFcbqAEldHQuMRIKP3U8grBg
-	Zk2zsl5Y16Pm2dKwOinB/qjG0r11qSry+PG+vHh2iyHwo0ARBgbxS0jz9r1j3cn+W2J/be/OAWQ
-	mM5u9eopgkZNPGrb9myv3VKkSAUghxmTl5U/NC7fYegTd0dR5YfuyVmB9lMrHU19G94nQ21uKNW
-	G2gXMKNZPxhixv78sN5suvRqyjfYYdNNKJpWADqmqvVt65yoQC5K9Oo3CKzLZ0sCDMOi4ejzXpX
-	omSTclGg==
-X-Received: by 2002:a05:600c:314b:b0:490:bfae:55cb with SMTP id 5b1f17b1804b1-490c25f5df4mr55867495e9.21.1780667606095;
-        Fri, 05 Jun 2026 06:53:26 -0700 (PDT)
-X-Received: by 2002:a05:600c:314b:b0:490:bfae:55cb with SMTP id 5b1f17b1804b1-490c25f5df4mr55867145e9.21.1780667605812;
-        Fri, 05 Jun 2026 06:53:25 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780667604; x=1781272404;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iavcFnyVi7+3Trg9epYKO4ba/4sETBjrALB/+SG2R4E=;
+        b=r+H7NIx5rcxJrMxE8mk2591VIN8sP/04LJSuXebmsRFV8NMGoXZHmro3wl4xsJdLPR
+         hxUJcotYpMJzy1ZYG2EOCI43OAdR5ie9Q8cB9Yx40l3/TlqcF9jkjsGvCyhErhNTZNEh
+         7R6ah4CTrWWZDJx1aTyw++mkJ7ciqnb2o4WSGfHRTIW4KzK1uUHNrVdrp9SHCJLp6I27
+         t7mU2LSRgVDYTP8GRg+9x1WuARUVb5y6MABGPQfsMiiFD0tqZqGv0/r9zBmouqn8x/eb
+         zcSVBnTr7XfeQHWxEjsLS2bq6WkHkNVDGqBKeGbLowNQCAqOAxRS6ai3wURyZ2hKCT78
+         9D4A==
+X-Gm-Message-State: AOJu0Yy0DtnFHybcUKlFEtBN4Epsjv0cqTmIwVKxQgDfqIMk9WI3l8wV
+	LeHtwtAGXSuQy83KmUtNRvatowcmzvN5/HUPo1WMfy1BbYn+3SotzfhV7sWMZpPIuTM4JtkylDV
+	NU893t3wtC+cV+rgiDSvm8cPlIzRYFf6Xfu2aBpdmQ1I6maAALKtf
+X-Gm-Gg: Acq92OFcZu/mrMotwvujxz5utXCv3awYAXZa0muo2gkAj7RZruW48Ah4z3wZmoIen1m
+	C9751Iv581KG9/Eix++rdsVkc0A+7W56pG0k0352DLHoQYo3JObt4wN1lzhcchrbnizdAvyLI6N
+	emSjzrlqpx1nD4iFK10YzznkJbS+bgX0m7nqLLZr69yXIqhHNbMRFbOl4EBDgKprP+yZxXZSUNY
+	Azvak+VuSEHgBY+UFGtckCVxD+IEf8FhBA/CZ+hIekEOKeKCjulhcDivj8Ie0osGoyubcapmZpj
+	/XfdfP90uJJPw/5algQ4b0AT6s+yJhzz6MLNA7etJ0EIUMIYaw2VyLO8wKDTn7IoS4tUBmchYxF
+	ALsqXRSn0nWxYY4B8vAY7+zSSO8iRaDEQDZLmcpuxedXnXc59EgwM2eoLrPpFtVe6HPtS3x1STy
+	6fFctWbw==
+X-Received: by 2002:a05:600c:620d:b0:48f:e249:4094 with SMTP id 5b1f17b1804b1-490c25fa907mr53133285e9.18.1780667604488;
+        Fri, 05 Jun 2026 06:53:24 -0700 (PDT)
+X-Received: by 2002:a05:600c:620d:b0:48f:e249:4094 with SMTP id 5b1f17b1804b1-490c25fa907mr53132865e9.18.1780667604107;
+        Fri, 05 Jun 2026 06:53:24 -0700 (PDT)
 Received: from maszat.piliscsaba.szeredi.hu (84-236-1-92.pool.digikabel.hu. [84.236.1.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3cbfe4sm157999025e9.7.2026.06.05.06.53.25
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3cbfe4sm157999025e9.7.2026.06.05.06.53.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 06:53:25 -0700 (PDT)
+        Fri, 05 Jun 2026 06:53:23 -0700 (PDT)
 From: Miklos Szeredi <mszeredi@redhat.com>
 To: linux-fsdevel@vger.kernel.org
 Cc: linux-mm@kvack.org,
 	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH v4 2/4] tmpfs: simplify constructing "security.foo" xattr names
-Date: Fri,  5 Jun 2026 15:53:17 +0200
-Message-ID: <20260605135322.2632068-3-mszeredi@redhat.com>
+Subject: [PATCH v4 0/4] simple xattr improvements
+Date: Fri,  5 Jun 2026 15:53:15 +0200
+Message-ID: <20260605135322.2632068-1-mszeredi@redhat.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260605135322.2632068-1-mszeredi@redhat.com>
-References: <20260605135322.2632068-1-mszeredi@redhat.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6HqPH3jy8sRzDNOQtX5KMi5cSZDU6RySTyA99OilB24_1780667606
+X-Mimecast-MFC-PROC-ID: IT4oqidz8ngpoevObE03rLeTEI7z5CP7mn2UF_7EU2A_1780667604
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0F45D100014
-X-Stat-Signature: 8ttemhdzr6xswera4mp5xio8ec7a987h
+X-Rspamd-Queue-Id: E00C34000D
+X-Stat-Signature: 6ffk1coqdu9e65zd6j6f8r4zjrf4bfsf
 X-Rspam-User: 
-X-HE-Tag: 1780667608-49634
-X-HE-Meta: U2FsdGVkX18rgAyvW3hfWwFGbHKrxYgDpDGJMKKDCAuyCeQt0NxVN6s2uhxecH28BB16vhl6xR4pxZYw1PT8r3HI3f+rshDahLTpXq1MJBbfCurvolbUmyPlag+FMOUqMdvbf4IBCoeIDstfVTcMb4yAKLC1CBK7kQAqxO34HtiCzENBxNFM2FoGjZEDoEIj9sGcfI61rGU1vVLBZCttrJe5vxOCacjwAU9shyVfZOax8cc3dBynOUNOLCHhqvq08vbkksmC9VIB9oPN4yrnemHB4j5rJKS2H035bW2GkCNPqr3KbkZx1SzcLSwSaamiwq8L/ZKh088hz/G2zqcR/jYynNhgt/1LHJ5r1c5bGWnQpmPRSCNH9tFRv5qswiEalo8kClJufhSJ5gDs9zAXQpWMdGM1lLhnv0LbEquYgPTcqqhV+XGGl9vD8B9gUCigU9filZvtXT8VwccnEXxgzC0k2hjVYh6jFHED/MdrvAWh4MHLP87mtw6AXnSwPYGbHSqsSfUkrw1fQ/hWK6mWNW4EPgyv2MCqGYAD7X6w3//XwWKs9gxe1BY928r//kiNhJsSyw9Ao09EHsZDHGzKUWMHj1PzoV8aZBjjb2L5G1Y0u/GqtD1XgIY+cHIxBjAPLAJYHLOfMtgE+wLBjQwcyZ3QZRfSia/czDV08i2e6dopjIlGaC+sakgCLbGFDzIqqvjZTNcj/Xm7mMwIPpmmtED/2kINVBWxxADKJWh6wHHEHQuGPxb6x8tWorFzOm1jfTGq4ojX6UoSz0vuzMTkvUQfatjgphnbd25ATdzhCAQUB0QvmYLEWi58uQUK1t9VuKu8I0THV7YYcuLRo0F5HXyB5SYCz1ow7uG1cHnFFY1Pkx2OgZ9+e8Ty0AfeMnmFW5qW2Jldu22A2D/F2NA4fX5nYHDjPb+La2fTpAF5ldyrO938wC6r9F1mMz9NPOXsSJp06Y4MuRyDc1RWM6g
- aXvcksGP
- KCVKFIqxzsr+5eqPdT7UciGfsxOmSAl6tIfPaCaTbCo2kjtm0G2CZQ27p2cluc6Mcyj3OPozPiqZuvZHR/93kL3USJ2+5CyCvaut2Jzh9KuFjd4EtnaafvWS7Y9uVbhiWGXHI5UU2Tdr/NHpZlZRXncyqk1UG4tFt8Pe0/zWux0dYJchUUjF0uEuu1nONpNasL5WCild+psmJUqbfnQge1uNHJf1ihd7qvxtTYrntOgNG3OplcloYoCutlwhirJuSGEMn/QemkzhiZUG8T4zbJkaXNvGKd+dypkuGqG3h2Xvk2ugpXUZgpR7Q8L05BrQlnKDKZ6Xg4Z0IntxNkFbbRSPuzmkJsPamngaZBku06Hd8yzxzouhJevDc/LpPMDs2SqI5XV1vhP9CfRGc9TZrXsaqSTKqHdBsPkq0
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780667609-649271
+X-HE-Meta: U2FsdGVkX19X6oVvLzOswm/RfW8gKsFr96/+uEWWRofappvuydvTcjwgLj6SbKTKvovA/E8NSLkSkfFyKL/S6kgm8qjqfeu7ojDR7Eq5SVc480WZ1mElGG14IyD816JyfsQ2oaLV6ObW3Vv2OmRLi56p1w7MVelMtm4WCVTugW3V675ZMQr5+DTv+ug74v8D1HoKaxCbN1wkboxgJUsP5dsLB4PgRtgtXgqRDg0qw0Sab0rqxI31VpFTqCm+WeImQPKObV2BrAGl0LN7NyhgtrEJUINp/nENDRPcW0/pajCphSMbUjU0VS0OaKjl+08SniXLBE8ckNUNzm+CNUwg7SaCCwC+CDaDKi2xrfPEn19wTN1JFxw7FIOj5JYan+2S71hqxzmGfOUdAYOvRKC7hJo0Np+JMjSR62rJlfqiXvZrlG98WS+hojmwPVXkokYXmhtYVtQDycZ1b0jd90fR7bcYMlblv7MW0/6e4Jb8RLGwWhvSpeU+AG4/x5F65nq1igXsLWZ5kuACkGuBg68a+pYkdoSJO6puSCU8a5ILPu290QBaGjUmfYFWu0h1ZweLJhlivfcj7/mN5bDxlMKNrafGyhFhFxixYZ16ZTSRUP7/S0ctnVTUi0mi2aOwozFRVy9NiXbMX6rWV6kdbuR7DZXRTWSgeUcMNyjLZ/CXWeROrmRu3LlyUZBNxL6lE+Syt/25LjreKVazi2Izcz16OgqinZfk2zRpGWiC3Mn+EQuBhiQMHYrHRDw3PuniVfbZB4e/B3rPX1RokLJgWQho6WzcMWzZ7FVqvhuIcgjE9pIunX/2xiYgNjcv1BL+37P9gUmgJs4WDK4a9CubWfwjh2EcVOM8Zpoq4kjFXb+eDOGFZkY+tDEvpmkzIwhSafK462dBNFEDYVgvHSHb5gxWKN6J+elpnkfhUloByVUErMYuneOWuhXLCGQ5XRMuuJS032W/9HQyg0nLgw9ImZX
+ v2Zw7Qrg
+ przTKPCU70S3dTTbB3/UTrcpLD4jiIQWUeCa0eMR5Ly2bvLsMALDvTSRfwGYEctjN8CM+PhE+heZLDuG6nleQJEcYRvAJ22o9Zdf+BrFfIE/7VhBNwsdybLUVTt9x04fQErm1kvqcGnJDBsFa/32SVRK/yOLkU2yXv4gRogOjjpKrXJeb9EWkLZ/HAEOGX14pP2GmCQlnJ4UC7DHltq0VVQSY7tAuzjoRdqD6cQuu+zHEHIlq3QmWXoEHy2qOzaKBOR5PcNFm+LWoEcK6jFR0BfhHS5NHS0Ivxv+OKcSUYKHq36s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,45 +124,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use kasprintf() instead of doing it with kmalloc() + 2 x memcpy().
+v4:
+ - yet another accounting fix for shmem_initxattrs
 
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+v3:
+ - need per kernfs_node locking for simple_xattr_set
+ - another accounting fix for shmem_initxattrs
+
+v2:
+ - don't use xxhash
+ - fix lazy alloc concurrency
+ - fix rcu freeing on evict
+ - fix rcu walk of per-inode list
+ - don't double account freed space
+
 ---
- mm/shmem.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+Miklos Szeredi (4):
+  kernfs: fix xattr race condition with multiple superblocks
+  tmpfs: simplify constructing "security.foo" xattr names
+  simple_xattr: change interface to pass struct simple_xattrs **
+  simpe_xattr: use per-sb cache
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 3b5dc21b323c..c7897570fc9f 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -4232,7 +4232,6 @@ static int shmem_initxattrs(struct inode *inode,
- 	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
- 	const struct xattr *xattr;
- 	size_t ispace = 0;
--	size_t len;
- 
- 	CLASS(simple_xattrs, xattrs)();
- 	if (IS_ERR(xattrs))
-@@ -4260,17 +4259,11 @@ static int shmem_initxattrs(struct inode *inode,
- 		if (IS_ERR(new_xattr))
- 			break;
- 
--		len = strlen(xattr->name) + 1;
--		new_xattr->name = kmalloc(XATTR_SECURITY_PREFIX_LEN + len,
--					  GFP_KERNEL_ACCOUNT);
-+		new_xattr->name = kasprintf(GFP_KERNEL_ACCOUNT,
-+					XATTR_SECURITY_PREFIX "%s", xattr->name);
- 		if (!new_xattr->name)
- 			break;
- 
--		memcpy(new_xattr->name, XATTR_SECURITY_PREFIX,
--		       XATTR_SECURITY_PREFIX_LEN);
--		memcpy(new_xattr->name + XATTR_SECURITY_PREFIX_LEN,
--		       xattr->name, len);
--
- 		if (simple_xattr_add(xattrs, new_xattr))
- 			break;
- 		retain_and_null_ptr(new_xattr);
+ fs/kernfs/dir.c             |  13 +-
+ fs/kernfs/file.c            |  13 +-
+ fs/kernfs/inode.c           |  36 ++---
+ fs/kernfs/kernfs-internal.h |  24 +++-
+ fs/kernfs/mount.c           |   2 +-
+ fs/pidfs.c                  |  45 ++-----
+ fs/xattr.c                  | 261 +++++++++++++++++++-----------------
+ include/linux/kernfs.h      |  11 +-
+ include/linux/shmem_fs.h    |   3 +-
+ include/linux/xattr.h       |  35 +++--
+ mm/shmem.c                  |  50 +++----
+ net/socket.c                |  30 ++---
+ 12 files changed, 252 insertions(+), 271 deletions(-)
+
 -- 
 2.54.0
 
