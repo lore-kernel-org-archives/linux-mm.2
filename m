@@ -4,87 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73E42CD6E6B
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 07:44:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AFA3CD6E74
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 08:07:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D8996B0005; Fri,  5 Jun 2026 03:44:06 -0400 (EDT)
+	id A985F6B0005; Fri,  5 Jun 2026 04:07:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 989A36B0088; Fri,  5 Jun 2026 03:44:06 -0400 (EDT)
+	id A21FA6B0088; Fri,  5 Jun 2026 04:07:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89F726B008A; Fri,  5 Jun 2026 03:44:06 -0400 (EDT)
+	id 8EA6C6B008A; Fri,  5 Jun 2026 04:07:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D88A6B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 03:44:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E2BD1C28DC
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:44:06 +0000 (UTC)
-X-FDA: 84845070492.01.27728DD
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 16BAE80006
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:44:03 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VewviDzU;
-	spf=pass (imf02.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780645444;
-	b=Niun+c49fgA/IcXwj5w2fc8o/Cf10OOi6zMa/Ya5e4rJ9S8x9SwcaUUk3Y3u54ebNsbwOj
-	LOgW7M7jBvcbipsGth+0fR3HpOX/o63W1NKkYwl8IXXTTbnJVa2glYh+woYijnHThN2+DP
-	/GnNbrjJasSmjwM06h2arKS59YRKNlY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VewviDzU;
-	spf=pass (imf02.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 797466B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 04:07:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0DE64A0B24
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:07:42 +0000 (UTC)
+X-FDA: 84845129964.14.DED8B7A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 552434000E
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 08:07:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jeQED94S;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780645444;
+	s=arc-20220608; t=1780646860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LcvkWMpmE6Q9kfSZCHeUxEPneHRTmz74/VUa7WoySEs=;
-	b=5PzVsa2Lj8mS79T6sKNworTzd/9MbPtiYeuMyfTIo17/yCfY7DB+yr0M3UrpIiXyelnUOq
-	gfokRolZXjbvuI9uOrtQR1ZNHJYfGCEBmX4Y0e5ctFBZQAGil1bkDb2dhuRtd/ZvuISqwk
-	5qniAZWN4vHkPLMkXFcbZaHHthqA1PY=
-Message-ID: <d4eff260-1e11-47f4-84cf-80cfa6d45d2b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780645442;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LcvkWMpmE6Q9kfSZCHeUxEPneHRTmz74/VUa7WoySEs=;
-	b=VewviDzUK829S+czYkrUZ7Gl5kGSvSPmBmYVZ2BOP7CLmh6y1ESmDqejJIOgHhMyDZDVOI
-	Cf2ZK1I2MiHMBwQp/jRlQN5mRmdfAh1WOKvqhcQ/6RWgpwz41L8/w3uhbekou/RTUyyYin
-	5ToKtZeVG1t6lqiOymDzZT1s5WOZdok=
-Date: Fri, 5 Jun 2026 15:43:14 +0800
+	bh=w8kRAMlknVLQLfZAIgetzKT8WiVn11imE2IVzaLKdwc=;
+	b=kKVYO4HisHDK0W7YNBqmrV+re5cQQ0MFldWKjC5XtUkXzO5rO7mqGQS5fvwC/gPCUShOMm
+	8GU4qcq+rCidVULWAB91pwiPJqoD+O2l811Z3ZIqujXfrJu+hIx/rKm0L1QG7l9IgLlXpS
+	9goCe6AT+o/jAj291iHVPY5XyLA1iVg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jeQED94S;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780646860;
+	b=6zlh/MyDrvw3AEQJDK/3MUYGyZYHO2KrKCwDsCsjjz09ePehjG0lokaTdJ8IDr0di13hjn
+	iECHFxOxxPmxuHIOcjhtSqXR2ToCZG9lsE+J6rNIiD1NxaxKcWXf1zepfYs4pms0wkbhQu
+	173jfGnDpSvrqsuJU66W0/rNl7SA1Q4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 783C9441D6;
+	Fri,  5 Jun 2026 08:07:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C0C1F00893;
+	Fri,  5 Jun 2026 08:07:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780646859;
+	bh=w8kRAMlknVLQLfZAIgetzKT8WiVn11imE2IVzaLKdwc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jeQED94Sid+eP6XYPiyQtS/9tDsTpbhHbsga0f0MGCMFWycZ7TBodq4q+ofyjtNWt
+	 H3No+jBLfDjAB5Ml2G70qjsUCV0W7udUJgt+kLD8snZc39i1tEwYd1B8iqJUcr6wjB
+	 BFMKkt07IDVyDvfv1Fkh/f6vvFvgi7gIk45O9dpw2Xi02owgCzTGsTJAqT4AT/ACoh
+	 VsiRS9K/NmtwqmtFMa9YXGBH/J51PYI1vDWWghVE+fUR6gp/ejP9sE1TGMA7cPggks
+	 Zc897pF/K1divsMisGWoHQ0ECpuFZxiTed3uMJyY6bFT9WyPP3LGYuTmlG3uNnndVx
+	 rruLEKYp4cQ7w==
+Date: Fri, 5 Jun 2026 09:07:23 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Nico Pache <npache@redhat.com>, Lance Yang <lance.yang@linux.dev>, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, akpm@linux-foundation.org, 
+	anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
+	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
+	liam@infradead.org, mathieu.desnoyers@efficios.com, matthew.brost@intel.com, 
+	mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, 
+	rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org, 
+	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
+	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
+	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
+	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com, 
+	usama.arif@linux.dev
+Subject: Re: [PATCH mm-unstable v18 06/14] mm/khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+Message-ID: <aiJ90SWqXvwN9dNT@lucifer>
+References: <2024af56-5e99-4799-a586-e9ba756cecb9@kernel.org>
+ <20260601032804.96122-1-lance.yang@linux.dev>
+ <f5d38f64-ab92-496d-afd3-29ccc17fec2b@kernel.org>
+ <616de1a8-1cfd-40b8-b04f-7b324be40bfd@linux.dev>
+ <6b11bf0a-769c-4ef2-ac6f-2af38200a6bc@kernel.org>
+ <baa0a462-46e0-44ab-b583-c722ad253afe@linux.dev>
+ <06d9b665-945f-4967-9ed9-b06514478996@kernel.org>
+ <CAA1CXcAeEGOsqp-ywAQ7GMYQzXEeco-rUxUkk2hEF69HybC4=w@mail.gmail.com>
+ <CAA1CXcBSPVG4CJFCBDvbuodcJ_7eXoDQTpK0ZN0HEhkDPi-DEw@mail.gmail.com>
+ <0ef96c28-9e6c-4d04-90ae-ac43c81d465d@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] alloc_tag: fix use-after-free in /proc/allocinfo after
- module unload
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260604065938.105991-1-hao.ge@linux.dev>
- <CAJuCfpFBcnS8thEbKnd74xTyuKd6qaOKk8+sogC17yL2XE0THA@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpFBcnS8thEbKnd74xTyuKd6qaOKk8+sogC17yL2XE0THA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 16BAE80006
+In-Reply-To: <0ef96c28-9e6c-4d04-90ae-ac43c81d465d@kernel.org>
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: z3iu6c9b58hnp786or9earnw4oh6pkdz
-X-HE-Tag: 1780645443-546970
-X-HE-Meta: U2FsdGVkX19CvN7CpbIDul6PnPgq+1remJTkcecjQwuvUri0rW3VlGiQzBXAsW8con1rJq2iDE9Lu7L7sOx8bEXfL8na/Cgnv8cc93kk6scySuDKg7t7iJYVE2m2xyzIzEtilvScgjX9xEHk1rNiUX2PGxquTN7rbtzYOnsHhyXz4f08MI0YS8Y5TLLxx9jT9v0iS8U6SGP7whD4cSnGZQfJoFqDF86PYKKrjY8ouR7wz/aAlFZ6fRyJjdSKqtwum2RC7weeMN4blMvplDcDz7sca1Au9vZbCmw716hEAA56AuUm06OJJYFxl1osugt99dY78JNIsIOYV+fkp8Kiyn9ZkBFqhRN3Q3/Yo+nV3kuEYQfHbvQsm/pVfbLcdM03hfI4Pfrep/fFDAqhZ3TmcIteIc1oxJ15l2KILn9ugHxoVQ3QI3eSLMPVMd/ZIDdPMs3ztzVjgX4EmbiSFacK1pADmKqSaz8yrjSM26Z/9BrdsgMu+3RQOsCjbFUS28mB6eZw5YbcO1JPUAoMoxfkOyAluXwFatWHwk8wh3ZmE6RG9Prl5BQQ4aqHeTEBN++EKsTGm7UXUsGFM9U6KE26Bdmhz9FYhPWuQREDVvCjqR7mNVWQLErEV2mL1Tm3fqM/0RaWqmZfaBx4r0QTSNHWhn64GdjrxHAlVqtwuUr0p83cGcMhTDKbqi7gqIKAVfGj+mioxkQoGoj+kyKMwEn2/XnkhiBoZ9FKXu16I7+eK6RhZznT5WmzlxMjYmDRRDr677NSIUPgOFnF00SFmwh/ByBV2n1xUdfiPH4O+5lp2p670Kd6hJI8xbiTGQtO7b486XHNP3Mtuf3l2L2NuaUT39NuLzkRDDLoruqhO484rXDllyxd7wlF1yQDm18MysAwbjGfENXJ9pnAKfC0C22zgA4z0kDlLR3ir4h7X7rMy3mT4TtSDbQxF+hwYkp/f/axWPgXbUe3VpfLTdLYaa/
- Kmj6TaYN
- 5FsWWFNSfti+G5zF1NGE7AiJkFgnCo9dAKtDuxgcD16EDSVThF8vSRRrJlM+iYoys9HNHR6TzZnTn2bMcXbGcEjb1pwvK7oIKNfbjKGvPuyc8wV3CNHO7nDb3kLHVSDXra7mvln1FFqxNtHx/mWR5hWL+h7pSlikOO+LOsQ8cdBBtGwEPGbe/lFPyH8jrSH5MXDOVPC9RRJtrG/uWEo9XNaNc/e3NwLHHquDLvCL2A8ivsmOaJF3zbWWU87nqKVWiUFNBVyAEMsuvs2r82713Vqd810pZDGXzxnrpcC9T1OBUd4T1DcB/5R4pt9GlnPxCrhbnSKhVvYARh+E=
+X-Stat-Signature: 9ikjrfi1fimwipue98ccnqg8myiwxdgg
+X-Rspamd-Queue-Id: 552434000E
+X-HE-Tag: 1780646860-294804
+X-HE-Meta: U2FsdGVkX1+EXhv1OgEz5Cdg/PWGMYS7YFmHLaGxGjWxzIhsQlo+imSa5rakDlAlDwoQOe2qSdJ+gfFW3DiJXdrfZ/JRXwJVr7QuMujhzJrbVYtLsx5r3T3lgoo7BoVuLuRog8QImL9eEa1DieF43+jiLARTNuceZxu/G+Q8xWB0SnoBbxND/guzeaFYUqmAMfcSSzftlqACEkdVfhRkUkab/FLAe7vorqEbsC1kbx2vROAZXC6W7Ykr6fZXT0fzF5AtmgRJ2bjoNTiHNyOLY904Fcf9vrBU6TtbtdNDvbMK8Ffjuir41WA4Hg5TKKM9Z30fURMPpH2CcKN7Fdhhdc7Voi+mHOU7SkALSqAK3bqMz4qaoMMZLzNJiyqlOatO8i5H3EiXIWnzJOKDLNxgDP/jO/Xf+IDzUW0zztLUqIfG7zCdjEzxkYa7tvdxuJ8MIkIQUr6438J8HnBw6mEm7uH5jbAQ8YBIbOFEM1d1YdYJW88gnBTggal6tNKxQq3j/XhEYRQvnKMs8s3FgocY0DzxQTZK/obcszLskqiHjm9q3OqVTeXKOAIQ0ea3QgXfkQuitcGFqzndlTgQeeTTFs4avRkjynpZR6OycvNTQjfIvnF/OVm5ocOIqxvVZWwQYqVrMzVPQXfmAeS0pg1H/02qyezGl4hAexNDlMOJqNZMkefTmL6EVjLHgCj6IvLomT0vnj/5PpTAFnFtFv0ChSuFpqtq/pfYXyaVNMX8HnweF/nQbmRQI/TYry5XLmhRyekQM+j15p7v7hTqqTx954X36rHkaG0/bWzPL/5yrt/bgcanubmlx9cQ51oTI2YDj4m9YmySWYOn8RDeYW56HU9eOS7qyYo7XwKZYxh6UqQZyRnY8csMZu/Me8dM4gLkdK9hzAkWxHkRl7sVgbqtn3MTSeoGUty/BjvMLiWRXsAqm+eeeVBA1sIuNPed+YYqp2RneXNno6s0ZtgtktF
+ JAmdhaz0
+ fbYW7WD0i1M8ZgIlaf2PYYz9OIHJZ/HHZCdhRV427+bqkPAlm5RKNCTpPIhNzJ5iQxUd/pnb/3+ts2eCUy3LRL5hNwA/IuK78fG4Qb55To0I7+Bul2S+O3BdkYU0OIT/h7f8gWljqD4/e9c6wjhPMTodrAO5mskOPu1dgcCUWwY8Tgbm4JOduWIpUjNGFNdtqhPPJ3VsT985bZeMQMktuk6Fax/7f8GEB6m2Lx7RJQEBPQ7fRu0k3Sg0Hz6t2GC1kfZeS9okrAdVSIlz0fL8bMQBJBD+6mLWxM44DmPwVCyQniXACeHPD1PKYaJvDvQbyUoCgmhwOkKRdNxvn3av9KH3ZvMKLSWCnteCFpf+98m9Q+MprAx91/1riHLB6LbAcSEQI7GvYXmUwfez9qKxAYsg5n+kbRcFm8vQbgBsbasXIRJVyJsDXbw5PhtGLhkpJzgX5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,145 +117,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren
+On Fri, Jun 05, 2026 at 09:18:27AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/4/26 19:04, Nico Pache wrote:
+> > On Mon, Jun 1, 2026 at 9:00 AM Nico Pache <npache@redhat.com> wrote:
+> >>
+> >> On Mon, Jun 1, 2026 at 5:14 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
+> >>>
+> >>>
+> >>> Yeah. BTW, I think we'd need a spin_lock_nested(), so @Nico, treat my code as a
+> >>> draft.
+> >>
+> >> Okay, I read the above and did some investigating.
+> >>
+> >> I will try to implement and verify the changes you suggested :)
+> >
+> > I've implemented something slightly different actually and I *think* its better!
+> >
+> > } else {
+> >        /* this is map_anon_folio_pte_nopf with no mmu update */
+> >         __map_anon_folio_pte_nopf(folio, pte, vma, start_addr,
+> >                       /*uffd_wp=*/ false);
+> >        smp_wmb();
+> >         pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+> >         /*
+> >          * Some architectures (e.g. MIPS) walk the live page table in
+> >          * their implementation. update_mmu_cache_range() must be called
+> >          * with a valid page table hierarchy and the PTE lock held.
+> >          * Acquire it nested inside pmd_ptl when they are distinct locks.
+> >          */
+> >         if (pte_ptl != pmd_ptl)
+> >             spin_lock_nested(pte_ptl, SINGLE_DEPTH_NESTING);
+> >         update_mmu_cache_range(NULL, vma, start_addr, pte, nr_pages);
+> >         if (pte_ptl != pmd_ptl)
+> >             spin_unlock(pte_ptl);
+> >     }
+> > spin_unlock(pmd_ptl);
+> >
+> > The logic here is that when the PMD becomes visible, PTEs are already
+> > populated (no possibility of spurious faults on local CPU)
+> >
+> > the SMP_WMB makes sure of the above
 
+THe locks prevent those 'spurious' (really: incorrect) faults anyway so I don't
+think this is necessary.
 
-On 2026/6/5 03:24, Suren Baghdasaryan wrote:
-> On Thu, Jun 4, 2026 at 12:00 AM Hao Ge <hao.ge@linux.dev> wrote:
->> allocinfo_start() only reinitializes the codetag iterator at position 0.
->> For subsequent reads (position > 0), it reuses cached iterator state from
->> the previous batch.  allocinfo_stop() drops mod_lock between read batches,
->> which allows module unload to complete and free the module memory that the
->> cached iterator still references:
->>
->>    CPU0 (read)                        CPU1 (rmmod)
->>    ----                               ----
->>    allocinfo_start(pos=0)
->>      down_read(mod_lock)
->>      allocinfo_show()
->>      ...
->>    allocinfo_stop()
->>      up_read(mod_lock)
->>                                       codetag_unload_module()
->>                                         kfree(cmod)
->>                                         release_module_tags()
->>                                       ...
->>                                       free_mod_mem()
->>    allocinfo_start(pos=N)
->>      down_read(mod_lock)
->>      // reuses cached iter, skips re-init
->>    allocinfo_show()
->>      ct->filename   <-- UAF
->>
->> After free_mod_mem() frees the module's .rodata, allocinfo_show()
->> dereferences ct->filename, ct->function which point there.
->>
->> Save the iterator state in allocinfo_next() and resume from it in
->> allocinfo_start() with codetag_next_ct(), which detects module removal
->> via idr_find() returning NULL and skips to the next module.
->>
->> Fixes: 9f44df50fee4 ("alloc_tag: keep codetag iterator active between read()")
->> Suggested-by: Suren Baghdasaryan <surenb@google.com>
->> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> Acked-by: Suren Baghdasaryan <surenb@google.com>
+> >
+> > And the pmd is installed with the pte and pmd lock both held through
+> > the mmu_cache update.
+> >
+> > This follows the conventions used in pmd_install() and clears the
+> > potential for local CPU faults hitting cleared PTE entries.
 >
-> Thanks!
+> After the pmdp_collapse_flush() we'd be getting CPU faults due to the cleared
+> PMD already? So the case here is rather different.
+
+Yeah conceptually the code above is problematic because you immediately make the
+PTE available right at the point you populate, so taking a PTE lock after that
+is rather shutting the stable door after the horse has bolted.
+
+Doing it this way is not a good idea in any case because we're adding
+complexity, an extra function and an open-coded cache maintenance call for
+really no benefit.
+
+I asked Nico to abstract the anon folio mapping stuff explicitly so we could
+avoid this sort of duplication so let's not roll that back :)
+
+So again, I think going with the original suggestion (with an updated comment)
+is the right thing to do.
+
+
+Anyway, an aside But in practice we can't have page faults here right? The VMA is:
+
+- Ensured to span at least the PMD range (this isn't immediately obvious in the
+  code)
+- VMA write locked (mmap write lock held)
+
+And we hold the anon_vma lock so no rmap walkers can walk the page tables here
+either.
+
+So I actually wonder, given that, whether we need the PTE PTL at all.
+
+But.
+
+At this stage it'll almost certainly be an owned exclusive cache line so it's
+very low cost to do it, and it means we honour the update_mmu_cache_range()
+contract.
+
+And it also makes it clear that we're gating changes on the PTE being
+untouchable so any future stuff that maybe changes some of these rules doesn't
+get caught out.
+
+So probably worth keeping.
+
 >
->> ---
->> v2:
->> - save the iterator state in allocinfo_next() and resume from it in
->>    allocinfo_start() with codetag_next_ct(), which detects module removal
->>    via idr_find() returning NULL and skips to the next module (Suggested
->>    by Suren).
->>    v1 link: https://lore.kernel.org/all/20260525072117.112779-1-hao.ge@linux.dev/
->> ---
->>   lib/alloc_tag.c | 9 +++++++--
->>   1 file changed, 7 insertions(+), 2 deletions(-)
->>
->> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
->> index f2f574bcf383..551cc14bb1fd 100644
->> --- a/lib/alloc_tag.c
->> +++ b/lib/alloc_tag.c
->> @@ -45,6 +45,7 @@ int alloc_tag_ref_offs;
->>
->>   struct allocinfo_private {
->>          struct codetag_iterator iter;
->> +       struct codetag_iterator reported_iter;
-> nit: I would call it maybe prev_iter since it's not yet reported (you
-> store it in the allocinfo_next(), not in allocinfo_show()) but that's
-> a minor detail.
-I see...
->>          bool print_header;
->>   };
->>
->> @@ -58,16 +59,20 @@ static void *allocinfo_start(struct seq_file *m, loff_t *pos)
->>          if (node == 0) {
->>                  priv->print_header = true;
->>                  priv->iter = codetag_get_ct_iter(alloc_tag_cttype);
->> -               codetag_next_ct(&priv->iter);
->> +       } else {
->> +               priv->iter = priv->reported_iter;
->>          }
->> +       codetag_next_ct(&priv->iter);
->>          return priv->iter.ct ? priv : NULL;
->>   }
->>
->>   static void *allocinfo_next(struct seq_file *m, void *arg, loff_t *pos)
->>   {
->>          struct allocinfo_private *priv = (struct allocinfo_private *)arg;
->> -       struct codetag *ct = codetag_next_ct(&priv->iter);
->> +       struct codetag *ct;
->>
->> +       priv->reported_iter = priv->iter;
->> +       ct = codetag_next_ct(&priv->iter);
+> --
+> Cheers,
+>
+> David
 
-AFAIK, in the seq_file call flow (start -> show -> next -> show -> next 
--> ...):
-
-start(0): iter = get_ct_iter(); next_ct() -> iter.ct = A
-
-show():   dump entry with iter.ct = A
-
-next():   reported_iter = iter(A); next_ct() -> iter.ct = B
-
-show():   dump entry with iter.ct = B
-
-next():   reported_iter = iter(B); next_ct() -> iter.ct = C
-
-show():   dump entry with iter.ct = C
-
-The same holds for the overflow case in the Fill loop:
-
-next():   reported_iter = iter(C); next_ct() -> iter.ct = D
-
-show():   overflow, output rolled back, break
-
-stop()
-
-on the next read:
-
-start():  iter = reported_iter(C); next_ct() -> iter.ct = D
-
-show():   dump entry with iter.ct = D
-
-So reported_iter always points to the last element that has been
-
-shown to the user.
-
-I'm fine with prev_iter as well,  What do you think?
-
-
-Thanks
-
-Best Regards
-
-Hao
-
-
->>          (*pos)++;
->>          if (!ct)
->>                  return NULL;
->> --
->> 2.25.1
->>
+Thanks, Lorenzo
 
