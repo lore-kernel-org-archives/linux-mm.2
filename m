@@ -4,110 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D3C1CD6E7C
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 17:09:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C8E1CD6E7D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 17:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE89E6B00A4; Fri,  5 Jun 2026 13:08:56 -0400 (EDT)
+	id A91E26B0005; Fri,  5 Jun 2026 13:12:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D78766B00A5; Fri,  5 Jun 2026 13:08:56 -0400 (EDT)
+	id A693C6B0092; Fri,  5 Jun 2026 13:12:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3CF06B00A6; Fri,  5 Jun 2026 13:08:56 -0400 (EDT)
+	id 97F666B0093; Fri,  5 Jun 2026 13:12:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 88FB96B00A4
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:08:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 442BE4021D
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:08:56 +0000 (UTC)
-X-FDA: 84846493872.23.8D530EA
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 639B1A0003
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:08:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GxORypqu;
-	spf=pass (imf15.hostedemail.com: domain of 3pAIjagkKCI0Ar8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3pAIjagkKCI0Ar8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780679334;
-	b=q/2N3aSdn4b3cUSh+ArRq3nr9HtYr90wWSi5wWDlLcK3m99QQN1CupWIWHoWWUtAYcu5Cu
-	JRUYvsJDj9+jIVNd/GWoXEtrTHWuRQWx+2txmJyimm+wFzdARA/uq5+FYKZJW6x9d408kw
-	aopHH7UuRWGSvONu7a1GBGhdCElSpwo=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GxORypqu;
-	spf=pass (imf15.hostedemail.com: domain of 3pAIjagkKCI0Ar8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3pAIjagkKCI0Ar8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 83E4B6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 13:12:29 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4AF83C132A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:12:29 +0000 (UTC)
+X-FDA: 84846502818.07.36CEE32
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0DC8840009
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 17:12:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=Zz2xYX0G;
+	spf=pass (imf11.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780679334;
+	s=arc-20220608; t=1780679547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JKOif6j4jVPzr5ukiPmavhItUicYy0w0O5SDkKy/EaQ=;
-	b=TV9AA88T6XSb25W9LXpHAzZoagAL9CRikrtMemWei87Pm42yQJVuslg6hrVePLYcxWbfVu
-	QuWxsxuUu2T2fJ3yWJLx0Gkry5cH/0GckZxoWm1nVcaQJFZBU/Lj0f4SOhLuSN5e2f3/AH
-	2oiQLnL48PWT5yipCxUI7NnG8spCXgw=
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-bf473656dcdso31295766b.1
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 10:08:54 -0700 (PDT)
+	bh=zbDn0l7MCqGrATagRYR/CBho/Q+7UgNMgo5uDntFVrI=;
+	b=g/ubydO1v0R1UlugtVJOhc9nBNsJCtUJWtBVdvBubCpIbklIueU64CNqBkc3YScv6lYXLn
+	xG8BapNIhlHnjfm1Rm+Hd6hL9MSy32tiSzKVB8vgDP2lh5Pde+jIVCG0JDrzr1Neqanlsk
+	3mTwsitKd/ghT7DFvAaUGNSxC8TCyYs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780679547;
+	b=1a2q9F5ex+W8hAgMU+9AKnt2yhAiU4IA/+EZMwJVXSufZKBql6vpvh7fUZaC4AoayK8UX6
+	VA+WD80QngrTS+R2cOrlDawtR+6dt7+5rsQUx1D+i231t3TdXXE69G/07s6Yhdt+0i0Pla
+	dcI/kpMurQQv8/mNr1LXh2V91Py3480=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=Zz2xYX0G;
+	spf=pass (imf11.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-bdb3fd39045so276464566b.3
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 10:12:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780679333; x=1781284133; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JKOif6j4jVPzr5ukiPmavhItUicYy0w0O5SDkKy/EaQ=;
-        b=GxORypqu4hh9U+b/JAtoCGW1lfCmd4mdIdHgvjqIn627Eb/2nnahcROcmY9aIYEJby
-         ZNLcCEDtHyxwRpAR8vjTg5tF8UTN+suvSLXg5QOSChDAYpDT7eD0mIuMyiZivBs8rin2
-         8oxZ9DPZmK/LUy+SbMWsCa51Y9/GnHCl/fctDL62BUcM/U9oIFVoMC2HShJbXUdode7w
-         3RrtlD9GiloKl7zi5jZzMM3yfKpaR/6vd2JH0AJB5DID3F3cDCsdBiS06/zCctsh7/Wm
-         zy6B1aQNOHjv4zzRf2tMfsHL1tUnA2wMuOszgV13GTXF7gCpQuSE0f9FXiEpI3+pgARO
-         /xBQ==
+        d=linux-foundation.org; s=google; t=1780679545; x=1781284345; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zbDn0l7MCqGrATagRYR/CBho/Q+7UgNMgo5uDntFVrI=;
+        b=Zz2xYX0GBira/eZAn4tbuVFU7oXprlVVBXvWCw7+9GlWxDLKq8lkswaTAzfnvXFye+
+         QBUiGG9FFcFKSjKEtKcjmilrugKADAyr1ksr+tiJEUh2rfvoAwBmtHGcnfNrtwGIM2H6
+         +GQvCYN9W8m5QPuc+Syetv3/AtoOx5Id1dNmk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780679333; x=1781284133;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JKOif6j4jVPzr5ukiPmavhItUicYy0w0O5SDkKy/EaQ=;
-        b=FNVgk3rAH9Sly0PYqVA10vJygJolrSWhCEZx82dS37KORHtyrplS70GFo34B6GG3/C
-         +XQ7j8dVRCA2LWexMH93t95Ro8ckMBkZSwTpwO06WOoSD3GmmmX4ms3WSDznWGgsLDSC
-         y+exwoOuFQb9Kt/w7PU5monaOxeOOfds7qUFX6UD7IMPNrOT2IbUosJ5X6jKCKOGNiK6
-         05jh1+E2MZXB48NNg7eB+15QBtsvFHaj6fwGhvHAAKTEINxq3TLEq8cwFenqB/rX8xOo
-         l+GIc9V8C95c+ThtXSH7BH0O5h3TIOWUkS+VeWjAy1+30Tbo0QYxGC64gF01w+vxUNJV
-         d+KA==
-X-Forwarded-Encrypted: i=1; AFNElJ+M4cLcwgO1fgzM6CSoTmVdi4zCyvMIS8ZrQTyM0flHTcQhkfmP/YdUAwKMYsJGxVHjt5MHdOfsDA==@kvack.org
-X-Gm-Message-State: AOJu0YyTkHJfAEXydSc2xYajelVMrQovyKDxHNXRWXplnlDcT+vN9GSz
-	hayrax16c1WTXShcTTBdn+hyUmvvWfhruvcgUfR0ap4pcdZLBYWHo3zqYLslNCaRyHrRk99eW3b
-	MIDjh/O3A/xuDyZzyaQ==
-X-Received: from ejgi16.prod.google.com ([2002:a17:906:3c50:b0:bee:1279:f6c5])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:7a8f:b0:bee:31b0:b53c with SMTP id a640c23a62f3a-bf3748d76f8mr236059566b.47.1780679332631;
- Fri, 05 Jun 2026 10:08:52 -0700 (PDT)
-Date: Fri,  5 Jun 2026 17:08:35 +0000
-In-Reply-To: <cover.1780676742.git.tarunsahu@google.com>
-Mime-Version: 1.0
-References: <cover.1780676742.git.tarunsahu@google.com>
-X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-Message-ID: <deb20fbe3584a8c6bfda276447fe464c6553737d.1780676742.git.tarunsahu@google.com>
-Subject: [RFC PATCH v2 10/10] selftests: kvm: Add guest_memfd_preservation_test
-From: Tarun Sahu <tarunsahu@google.com>
-To: Jonathan Corbet <corbet@lwn.net>, vannapurve@google.com, 
-	Tarun Sahu <tarunsahu@google.com>, fvdl@google.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Shuah Khan <skhan@linuxfoundation.org>, sagis@google.com, 
-	aneesh.kumar@kernel.org, skhawaja@google.com, vipinsh@google.com, 
-	ackerleytng@google.com, Pratyush Yadav <pratyush@kernel.org>, david@redhat.com, 
-	dmatlack@google.com, mark.rutland@arm.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	seanjc@google.com, axelrasmussen@google.com
-Cc: linux-kselftest@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-mm@kvack.org
+        d=1e100.net; s=20251104; t=1780679545; x=1781284345;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zbDn0l7MCqGrATagRYR/CBho/Q+7UgNMgo5uDntFVrI=;
+        b=Ssuwgu3ndrnjCjDg8YHOIAy8wz/7y0LN8BBR55WfFZissUt2JyngIzO+bA+aUEl0q7
+         8TNCZiMpIFVWfeAv7z1cafdiieKbl8hM14uW7zKmw23zTK8iVCXd2jBqWbE2kQJj79h9
+         ZuEU51xTOrl367MWNDFls0fufAlVHH4ATGtayonSPdHUw5Bure3xnZZim1ZvKv+JJLF0
+         JYRLilDKb8LcXxiYkKqDJCCyxAFeVlpF6ehMXd1N8lXgOu4rV1c+o11+eGEMt05VGuz8
+         VArwvEi3a2rJ9e8CsZWnwuAIpCHi8ETEBTPdUGYHfp3zil/YHTKPExRHGzS273Mbd6wR
+         fb5A==
+X-Forwarded-Encrypted: i=1; AFNElJ9i7Ey5gBeNK34FFiAvuw4zKiV9w+Fb5vtGShccfvl3sNgDUQ9pLtLuaExTTzNZvZi6S++53Eh58w==@kvack.org
+X-Gm-Message-State: AOJu0YwtboG0frWuKdKvlGAHfpK8i2eo2NK6JvIynHrTXV0MWNJnq8Hk
+	jDlicYkc4tU1bXOT7h/oQkChvwQ3ggcEJqJqssGwuufidFpAiO8VjvPCQt4PnstKtA0BiYu3H9X
+	8nIjN6hkpDA==
+X-Gm-Gg: Acq92OFFqalZPPSMlRYulBHPrsVLPYe/qyHVFAX5zHPlqPRpo4GfmU3heN7jjPq9MIR
+	wGats0/e/ZAU17rji03KQ2tupCbUYSnvv+b7z2ZOELnFiw29OBonpiHtxS8BjqDIEsVuYSml6xy
+	yma1XLbXNjv5S3wNm9BNBcEpcCKsjN1IzPcz9oaWjdDuD6zmjbQVR3Q193fNSM+r+RH5SSIsIjx
+	149nzrEEyGZKBFogsSR669Os/9e8AQoPU7KilpSZHPCJmF9IKUBKvTAgwRif10/M19hRDnpffLM
+	Cht/ClFklFTfZxvjrHGIYH+7tGXFE02DvIGLhyGGnQGR5/oFhZjFmy2cmO8+XikDZuUDoDSaBu3
+	aCV5HtVO8NgSe6/iPPrbTmzVfzeEqA5ujhWKriIE5mZt7lJ74MMVHGXS32KcHa5hxEW86/fy2+C
+	GHnocN4ykJMLXZ5OV/QVb+GDfFgbkfKFBDop3SqpxtXH9cCcg9DQy2kMvOpTeADRwvxH/s5Xj1n
+	a7QnDnR0fQ=
+X-Received: by 2002:a17:907:9686:b0:bee:323d:1239 with SMTP id a640c23a62f3a-bf372e1e4fdmr280009166b.38.1780679545281;
+        Fri, 05 Jun 2026 10:12:25 -0700 (PDT)
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com. [209.85.218.49])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf0558f3885sm483642166b.54.2026.06.05.10.12.23
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Jun 2026 10:12:24 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-bdb3fd39045so276459966b.3
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 10:12:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8KBW0kzPeGQjgF1jLqmXteEAPez+w63JVTYSvfk8ICYoxDew3e5ZdPBL4iXCpvFQJzXr8wKuxcrA==@kvack.org
+X-Received: by 2002:a17:907:2d92:b0:bf0:59a2:4ccc with SMTP id
+ a640c23a62f3a-bf36fd9bc68mr283989066b.3.1780679543586; Fri, 05 Jun 2026
+ 10:12:23 -0700 (PDT)
+MIME-Version: 1.0
+References: <f919874c-065e-48be-ac5b-300c4ab86d4e@samba.org>
+ <20260603211736.755139-1-safinaskar@gmail.com> <20260604100609.6b37f500@pumpkin>
+ <CAHk-=wjvb56qo27-axALOKCY-CjLsj9_294zeBovPVJaYm14dA@mail.gmail.com>
+ <20260604183829.63c35fd9@pumpkin> <CAHk-=wip3mwLOHOYJ9TtjDxOaq9YUXmuCg2AycyASGgeY6qqUw@mail.gmail.com>
+ <20260604223216.73468830@pumpkin> <CAHk-=wh1Avi8FGbWkt9k0Z-KXWB0spo5mQyowO8PB2sJ3unbkw@mail.gmail.com>
+ <87se71jps4.fsf@oldenburg.str.redhat.com> <CAHk-=wjkZSAhxykvG6tQM5DnBoS30_XCKkYpCsQwEGcxJb=i3Q@mail.gmail.com>
+ <87wlwdhrvr.fsf@oldenburg.str.redhat.com>
+In-Reply-To: <87wlwdhrvr.fsf@oldenburg.str.redhat.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 5 Jun 2026 10:12:05 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiTQr4YYYUH38srGvWAq3_UpDeAPR+qZWVyf-ZU7z8Hzw@mail.gmail.com>
+X-Gm-Features: AVVi8CckZsnJXSGEqzilnfJFExIfoQ08Dq0LHvA2PxDFlkolpXQtrHtyU3UQHDE
+Message-ID: <CAHk-=wiTQr4YYYUH38srGvWAq3_UpDeAPR+qZWVyf-ZU7z8Hzw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+To: Florian Weimer <fweimer@redhat.com>
+Cc: David Laight <david.laight.linux@gmail.com>, Askar Safin <safinaskar@gmail.com>, metze@samba.org, 
+	akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org, 
+	david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
+	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de, 
+	viro@zeniv.linux.org.uk, willy@infradead.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 639B1A0003
-X-Stat-Signature: gc5i5kei3ur8c4qoc6pyqnyat475f11r
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0DC8840009
 X-Rspam-User: 
-X-HE-Tag: 1780679334-883969
-X-HE-Meta: U2FsdGVkX1/IKFAJ3WlYohqloIm3Aq7/IeLqNfnp9J+D4BRf6i2jkM5egQ7W9mZI/AFUbrAIIN2QxVZO49CPmeCFkHgOI8wYXxpn8ZPyF6bw/WSJAXQWe1vUIbnbO/E6xWQ92i1FDW4nt9cDhaFIvn+YO7Y543EhWZ3Flz4NUNeMm7HQu2uh65hHNj9jubS4T+LtBInmAbrW59n4pmrx832AmVMfznjkfzj8BwVvokABqVZyAH2cxbwRHNf5dkeUA/UrWXbgqGAd7avH5zjaopgAubP9mmB3B0Mgpn++h9/b9tV+y8jx7/XvvcU74alzeqkB8rrurkLWTb2W3ASTxTttX+7+IIxACm4+V4jfKE3PLyrfMsERv9OQ0yatuDewsm/UeEanqXAZVplKOEWjtKmPGx+rhJ6Daci8bwLCsfoWd3IXGJ+x6gq4GNK3MU5iDWkdQQVxj3uMXnx9HXAsEzcFD/A6loLi/K8bnzSjDSrt7i7PFuu1SlzwOlEhPbjwVO1m65fCwtvXkMN1V17kwN+2+u/BXdstmGc+kE0XeM+0RKrUyKm7OEGOaNkYQCMUrhzCbksaDEx9vIRJTWfn8LI3aeP6dJde7OJzkc1vpQqRSBrsB+cHf0OR6SnkEaiw4I2B9xY8qQQnycfGUvOz6ABnPX0WzdJ3uA5ZUOKxqtp8Cyk5QYohwh2wLVyFn3fRlamp6SP7PiTgk8ruwQFzFir5VT4euwFhuY2+Ps7RWvWgaQczzQ00ItesI2vyMyGBNO7Vzzupr9hUYEi5csNuNuY1tvVpxtzl9o239sOqosuxaNEwj5i05zRF3sjKRgBgkPsLi5ew+L9h0C/Pvik/RR1A9/sSYiwGNx/3YcHyxxYw3lQUdialYM71bHk3t0VzQZHJtVeZoS/BeyPVxSxj8N1wf9Sy4PZlUkSdlKMyedkYL9pEkvN5xCdqkDyKM+Txar0aq0nI221akKLoi7d
- NxGjKISQ
- NjkY+QJdvGMVW8YCKjnOssxNUDYhLH6UwJJwzHbHoX4xqiPbI0JVvvyOvxRwd3ZvVwcywnU63rqtHMro5BzmYQSLTvOrFS7Ff/LvCTaGnlF5n6OcYwXX1jA6/2IGePomuwM7XdfkWIbWcxqwQamr+yQBII7rAypI2LXz6V6z0TOo1yo+xrsiksugYpJ4YHiiAGPVl4SgYY6YOdUEDXyPwRtls9Q/pNXT1rqYGBHGDPNmq7GQh7w5QM0QCnxepHyPuGHazPBC+R/Uuzv9E6GQ16BYzwJN5ERx32/G5Q8QrF6dRBCMjrY0iWG8n49ftsEuw02vFqyqiktKV+pqbmhOo5BO1SlAOykCC4EHhAWq2Z11WOqmLJZez6k6Ur1iBspepOY9s1advZSJntox2KYw2ILJzEfeNuBGYVju/KYQB8WjBfG50Vum2RWyLNFBkMRW50h8gV2w0B4sp7U74moMlUBrc2D5KQthw9BhevERSUomcaXgIQM531SCB9JEbUD4jMo+kCtOHYDUPn4OJZTbSYxWhUxKtDoNgdtOHbC1nDcrsdl4xF+TPPB6N3XV2rTTNlrn84oh1ANLppJRpvwHJ2KL+sdkup7bVMUppcjxEUJXWXSG0fcGE5Ri4a65QMFNhSo4cxhv/03ezU5fAulTWyVu+64FtJZYS7cBHe90iNwsLzt/n3a75Ij4RWeGj+3w8MpxfSPVD/U/fK573aa4zpcM5DEBIRN50mVQJVRiLAkTm2dtbSguVqstnSw==
+X-Stat-Signature: q9qeebcoaffuke83na3s5gnkddu5c9yx
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780679546-64931
+X-HE-Meta: U2FsdGVkX199Np34znPudO4PPjPCh/oStmcgFxcoKe/3gCyZ1Y3DsiUgitS+jXi04mk+JxWAisoUqnPD+J1rWYiU281s2J24aRr0km3bvgUbHjpvN91UwcqHTVoWlwfIDTjARU4C0deYQ9EA+3uSDRMWgtTuYj5EsSzD//CiLv5CiNZQh7rAoddKTEbpZqnsdwYu2kOv5PNcFCPFua000xZ0YmJ1zkMQQd+99GefYV75GAnggZB2XJiIJcWVvfsIrnYmKZcJeENXYTXoD24wWEoacz9YGAPzcaUG9mgjqChxlEbjFnvfLJaveicOPzj4tt5u2MUFZ4mDymVDgOLwEh4WIXiqIVFhVDfg6T5mdA5QEHU5Oz3Wm+mHLOC4PqCLiwVXAOorPQ2A/zk6icsRey7Z39VoHlOf2e0qHvaOInx60Xgtd3ANbhU7T7y3d7vHJ37yEzqn2Iyl27bqAfi0sGi779VbgHGcy4T6wiODG8t8hSPOd5nu9jg0JJj6IxOPeFIgAnBNtXrELoe9LGAFZAEo9Kl/TfGRGN44Ezwx2KuvV+1zeqSLJEoH/pY9mDH0ODoHkeSlXE1hA92a63+uIB/o1A7v7HfYJRsYujMIv+yNhv/3Au8NGcmA/++E0geMoPYzUj2WQd8rdDMmJxAYPzvb4XSkAghyZgbE1q648BUYgRvUxCpUlixANpOwg6iNYKgYxuX4BdfAhbIUVRuz0SFLtJnAgjVf1+evNS7KfHVpCJS3W9naLGVzPdAp5e8n/5NgjlFtZc4IWuAyXT/lr8OIrHKwQMaJZwOBZ7ITaljelx4zM6tjpJX+spqzKMnHxckftfsdM/xl6gk90nF4VE3xOL1gfuv+s0s49PqjPsdbGbzgVn2LleWnij52SmLygny431jASJaRJl4pr2j0JqGIkpr4yX+pkIF8efAFTwxDnHDUdB7d/iXSnF64rYG0YUtTqO1VMREKspNHTT1
+ X4hlBu3B
+ +9hlQBUpDChBku2iRnXX7WQXT98HLhJ6UWTLEEa6kOX0LLyJfVj9/qcF8GwwjWDL2eCCMUIUw4oWniZlMkHGQdsHjZPRdzEqrKsZuky895dQRrXKFWf4akZQpxbVq+yIyUi+9CvuZcEs14PXh8R7UME3ZlMH8XRSmh5/sHVD5S2Z0s70a2Fv7e7Ijl3cSqV9lW0jSpu4uAjnQEx96EasY1PtPEBxI6wxDbqyT5F4Gk14ihQ89JKF+xqextgPbKGGXlKUw1J9uRPAPPYCWMXDajkLtzE8XZBSAY4fJFCnfgSDJgbXqn2CFAZRo75FYco3Gd94oCNNKgXx51cIDQaKI+CJuxSTM51FhdS8evmR8XeAT3+rtG4JQA4/wwQCtn6XlFoL1xRNleIcnWicwHSZHjHVNHRprWcXlkVX5lnWGm+Z/sbYhOKsI1Sn5xrlySID3NmbvvqNpxNdMgc+nfqBKA0OvryziuLiBD/VjGtXQgi3ENNC5XOGGaF504fPH5V7AcEHT0ZDGgFzQ75Qj1oolSbC/NCpDRQ6SAcuxmuXIM2leOr9x2UadHgVhSruc3LJehFY8BuUkJr8uWHW91r4+M7QX8JcEYB5onKQv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,315 +134,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a new KVM selftest `guest_memfd_preservation_test` to verify that
-guest memory backed by guest_memfd is preserved properly.
+On Fri, 5 Jun 2026 at 09:30, Florian Weimer <fweimer@redhat.com> wrote:
+>
+> > Uhhuh. But that is only specific to 'bool', right?
+>
+> Also char and short.
 
-The test leverages the Live Update Orchestrator (LUO) infrastructure
-to validate that memory folios and configuration layouts are
-successfully saved and then restored during kernel live updates,
-preventing any memory loss for the guest.
+That sounds like a complete ABI violation as far as I can tell.
 
-Here, I have used the kvm selftests framework by creating a new
-vm and mapping two memory slots to it. One is the code that is executed
-inside the vm and other is the guest_memfd whose memory is being
-written by the guest code.
+Scary. Because I would not be surprised if we have code that assumes otherwise.
 
-In Phase 1: Once data is written the vm exits and wait for the user
-to trigger the kexec.
+Now, the kernel *seldom* uses char/short types, and since compilers
+are typically at least self-consistent in those cases and we don't
+interact directly with untrusted sources.
 
-In Phase 2: A new vm is created with retrieved kvm and again two
-memory slots are assigned. Once for guest code, and another is for
-retrieved guest_memfd where guest_memfd memory is verified by the
-executed guest code. If verification succeeds, The test passes.
+The system call interface is special, but we wrap that for other
+reasons so deeply these days that we'd not be impacted.
 
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
----
- MAINTAINERS                                   |   1 +
- tools/testing/selftests/kvm/Makefile.kvm      |   6 +-
- .../kvm/guest_memfd_preservation_test.c       | 230 ++++++++++++++++++
- 3 files changed, 236 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/kvm/guest_memfd_preservation_test.c
+But we also do have various assembler code, and I certainly wasn't
+aware that apparently compilers have been walking away from the old
+ABI rules.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ca459d032712..76e59620d2f1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14419,6 +14419,7 @@ L:	kvm@vger.kernel.org
- S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
- F:	Documentation/liveupdate/vmm.rst
-+F:	tools/testing/selftests/kvm/guest_memfd_preservation_test.c
- F:	virt/kvm/guest_memfd_luo.c
- F:	virt/kvm/kvm_luo.c
- 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 9118a5a51b89..68584d4ee1b0 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -161,6 +161,8 @@ TEST_GEN_PROGS_x86 += pre_fault_memory_test
- 
- # Compiled outputs used by test targets
- TEST_GEN_PROGS_EXTENDED_x86 += x86/nx_huge_pages_test
-+# Manual test that forks a persistent background daemon; skip auto CI run
-+TEST_GEN_PROGS_EXTENDED_x86 += guest_memfd_preservation_test
- 
- TEST_GEN_PROGS_arm64 = $(TEST_GEN_PROGS_COMMON)
- TEST_GEN_PROGS_arm64 += arm64/aarch32_id_regs
-@@ -254,6 +256,7 @@ OVERRIDE_TARGETS = 1
- # which causes the environment variable to override the makefile).
- include ../lib.mk
- include ../cgroup/lib/libcgroup.mk
-+include ../liveupdate/lib/libliveupdate.mk
- 
- INSTALL_HDR_PATH = $(top_srcdir)/usr
- LINUX_HDR_PATH = $(INSTALL_HDR_PATH)/include/
-@@ -308,7 +311,8 @@ LIBKVM_S := $(filter %.S,$(LIBKVM))
- LIBKVM_C_OBJ := $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_C))
- LIBKVM_S_OBJ := $(patsubst %.S, $(OUTPUT)/%.o, $(LIBKVM_S))
- LIBKVM_STRING_OBJ := $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_STRING))
--LIBKVM_OBJS = $(LIBKVM_C_OBJ) $(LIBKVM_S_OBJ) $(LIBKVM_STRING_OBJ) $(LIBCGROUP_O)
-+LIBKVM_OBJS = $(LIBKVM_C_OBJ) $(LIBKVM_S_OBJ) $(LIBKVM_STRING_OBJ) \
-+						$(LIBCGROUP_O) $(LIBLIVEUPDATE_O)
- SPLIT_TEST_GEN_PROGS := $(patsubst %, $(OUTPUT)/%, $(SPLIT_TESTS))
- SPLIT_TEST_GEN_OBJ := $(patsubst %, $(OUTPUT)/$(ARCH)/%.o, $(SPLIT_TESTS))
- 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_preservation_test.c b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
-new file mode 100644
-index 000000000000..74f90c5c4bf5
---- /dev/null
-+++ b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
-@@ -0,0 +1,230 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2026, Google LLC.
-+ *
-+ * Author: Tarun Sahu <tarunsahu@google.com>
-+ *
-+ * Test for VM and guest_memfd preservation across kexec (Live Update) via LUO.
-+ *
-+ * NOTE: This is a MANUAL test and is excluded from automated CI/testing
-+ * frameworks because Phase 1 daemonizes into the background to pin resources
-+ * and requires a human operator to manually trigger kexec before Phase 2
-+ * is executed. Running Phase 1 automatically would leak the background daemon
-+ * and cause CI runners to falsely interpret it as a passed test.
-+ *
-+ * Usage:
-+ * Phase 1: ./guest_memfd_preservation_test
-+ * Phase 2: ./guest_memfd_preservation_test --phase2
-+ */
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <errno.h>
-+#include <stdio.h>
-+#include <fcntl.h>
-+#include <sys/mman.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <sys/ioctl.h>
-+#include <linux/sizes.h>
-+#include <linux/falloc.h>
-+
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "test_util.h"
-+#include "ucall_common.h"
-+#include "../kselftest.h"
-+#include "../kselftest_harness.h"
-+
-+#include <libliveupdate.h>
-+
-+#define SESSION_NAME "gmem_vm_preservation_session"
-+#define VM_TOKEN 0x1001
-+#define GMEM_TOKEN 0x1002
-+
-+#define GMEM_SIZE (16ULL * 1024 * 1024)
-+#define DATA_SIZE (5ULL * 1024 * 1024)
-+
-+static size_t page_size;
-+
-+/* Deterministic byte pattern generation based on offset */
-+static inline uint8_t get_pattern_byte(size_t offset)
-+{
-+	return (uint8_t)(offset ^ 0x5A);
-+}
-+
-+static void guest_code_phase1(uint64_t gpa, uint64_t size, uint64_t data_size)
-+{
-+	uint8_t *mem = (uint8_t *)gpa;
-+	size_t i;
-+
-+	for (i = 0; i < data_size; i++)
-+		mem[i] = get_pattern_byte(i);
-+
-+	GUEST_DONE();
-+}
-+
-+static void guest_code_phase2(uint64_t gpa, uint64_t size, uint64_t data_size)
-+{
-+	uint8_t *mem = (uint8_t *)gpa;
-+	size_t i;
-+
-+	for (i = 0; i < data_size; i++) {
-+		uint8_t val = get_pattern_byte(i);
-+
-+		__GUEST_ASSERT(mem[i] == val,
-+			       "Data mismatch at offset %lu! Expected 0x%x, got 0x%x",
-+			       i, val, mem[i]);
-+	}
-+
-+	GUEST_DONE();
-+}
-+
-+static void do_phase1(void)
-+{
-+	uint64_t flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
-+	int gmem_fd, dev_luo_fd, session_fd, ret;
-+	const uint64_t gpa = SZ_4G;
-+	struct kvm_vcpu *vcpu;
-+	const int slot = 1;
-+	struct kvm_vm *vm;
-+
-+	vm = __vm_create_shape_with_one_vcpu(VM_SHAPE_DEFAULT, &vcpu, 1,
-+					guest_code_phase1);
-+	gmem_fd = vm_create_guest_memfd(vm, GMEM_SIZE, flags);
-+	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SIZE, NULL,
-+				 gmem_fd, 0);
-+
-+	for (size_t i = 0; i < GMEM_SIZE; i += page_size)
-+		virt_pg_map(vm, gpa + i, gpa + i);
-+
-+	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
-+
-+	dev_luo_fd = luo_open_device();
-+	TEST_ASSERT(dev_luo_fd >= 0, "Failed to open /dev/liveupdate");
-+
-+	session_fd = luo_create_session(dev_luo_fd, SESSION_NAME);
-+	TEST_ASSERT(session_fd >= 0, "Failed to create LUO session");
-+
-+	ret = luo_session_preserve_fd(session_fd, vm->fd, VM_TOKEN);
-+	TEST_ASSERT(ret == 0, "Failed to preserve VM file descriptor");
-+
-+	ret = luo_session_preserve_fd(session_fd, gmem_fd, GMEM_TOKEN);
-+	TEST_ASSERT(ret == 0, "Failed to preserve guest_memfd file descriptor");
-+
-+	printf("\n============================================================\n");
-+	printf("Phase 1 Complete Successfully!\n");
-+	printf("VM file and guest_memfd file have been preserved via LUO.\n");
-+	printf("Tokens: VM_TOKEN=0x%x, GMEM_TOKEN=0x%x\n", VM_TOKEN, GMEM_TOKEN);
-+	printf("Machine Size: %llu MB, Data Size: %llu MB\n", GMEM_SIZE / SZ_1M,
-+				 DATA_SIZE / SZ_1M);
-+	printf("------------------------------------------------------------\n");
-+
-+	daemonize_and_wait();
-+}
-+
-+static struct kvm_vm *vm_create_from_fd(int resurrected_vm_fd,
-+					struct vm_shape shape)
-+{
-+	struct kvm_vm *vm;
-+
-+	vm = calloc(1, sizeof(*vm));
-+	TEST_ASSERT(vm != NULL, "Insufficient Memory");
-+
-+	vm_init_fields(vm, shape);
-+
-+	vm->kvm_fd = open_path_or_exit(KVM_DEV_PATH, O_RDWR);
-+	vm->fd = resurrected_vm_fd;
-+
-+	if (kvm_has_cap(KVM_CAP_BINARY_STATS_FD))
-+		vm->stats.fd = vm_get_stats_fd(vm);
-+	else
-+		vm->stats.fd = -1;
-+
-+	vm_init_memory_properties(vm);
-+
-+	return vm;
-+}
-+
-+static void do_phase2(void)
-+{
-+	int retrieved_vm_fd, retrieved_gmem_fd, dev_luo_fd, session_fd;
-+	struct vm_shape shape = VM_SHAPE_DEFAULT;
-+	const uint64_t gpa = SZ_4G;
-+	struct kvm_vcpu *vcpu;
-+	const int slot = 1;
-+	struct kvm_vm *vm;
-+
-+	dev_luo_fd = luo_open_device();
-+	TEST_ASSERT(dev_luo_fd >= 0, "Failed to open /dev/liveupdate");
-+
-+	session_fd = luo_retrieve_session(dev_luo_fd, SESSION_NAME);
-+	TEST_ASSERT(session_fd >= 0, "Failed to retrieve LUO session");
-+
-+	retrieved_vm_fd = luo_session_retrieve_fd(session_fd, VM_TOKEN);
-+	TEST_ASSERT(retrieved_vm_fd >= 0, "Failed to retrieve VM file descriptor");
-+
-+	retrieved_gmem_fd = luo_session_retrieve_fd(session_fd, GMEM_TOKEN);
-+	TEST_ASSERT(retrieved_gmem_fd >= 0, "Failed to retrieve guest_memfd file descriptor");
-+
-+	vm = vm_create_from_fd(retrieved_vm_fd, shape);
-+
-+	u64 nr_pages = 2048; /* 8MB is plenty for slot0 pages */
-+
-+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, 0);
-+	kvm_vm_elf_load(vm, program_invocation_name);
-+
-+	for (int i = 0; i < NR_MEM_REGIONS; i++)
-+		vm->memslots[i] = 0;
-+
-+	struct userspace_mem_region *slot0 = memslot2region(vm, 0);
-+
-+	ucall_init(vm, slot0->region.guest_phys_addr + slot0->region.memory_size);
-+
-+	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SIZE, NULL,
-+				   retrieved_gmem_fd, 0);
-+
-+	for (size_t i = 0; i < GMEM_SIZE; i += page_size)
-+		virt_pg_map(vm, gpa + i, gpa + i);
-+
-+	vcpu = vm_vcpu_add(vm, 0, guest_code_phase2);
-+	kvm_arch_vm_finalize_vcpus(vm);
-+
-+	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
-+
-+	printf("Resuming / Running VM in Phase 2...\n");
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
-+
-+	printf("\nSUCCESS: Phase 2 Complete! All 5MB complex data verified intact!\n");
-+
-+	luo_session_finish(session_fd);
-+	close(session_fd);
-+	close(dev_luo_fd);
-+	/* This will also close the vm_fd */
-+	kvm_vm_free(vm);
-+	close(retrieved_gmem_fd);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	bool phase2 = false;
-+
-+	TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
-+	page_size = getpagesize();
-+
-+	for (int i = 1; i < argc; i++) {
-+		if (strcmp(argv[i], "--phase2") == 0)
-+			phase2 = true;
-+	}
-+
-+	if (phase2)
-+		do_phase2();
-+	else
-+		do_phase1();
-+
-+	return 0;
-+}
--- 
-2.54.0.1032.g2f8565e1d1-goog
+I did find assembler code that clearly uses just 8-bit register
+accesses and function calls, but it was all _entirely_ within
+assembler. The low-level debug printing in
 
+    arch/x86/kernel/relocate_kernel_64.S
+
+puts the character values in %al and then calls pr_char_8250() or
+pr_char_8250_mmio32() with it, but that is *all* in asm code.
+
+I didn't find anything obvious that calls C code with that kind of
+argument though (which makes sense - we typically call the other way:
+C code calling into asm code, not the other way around).
+
+So at a guess we're fine, but it's still somewhat unsettling.
+
+And maybe others were aware of this, and it's just me that has old
+32-bit x86 code in mind.
+
+              Linus
 
