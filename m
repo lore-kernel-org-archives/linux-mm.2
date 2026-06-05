@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B087BCD6E6E
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 00:44:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF3BACD6E6E
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 00:50:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A42416B0005; Thu,  4 Jun 2026 20:44:31 -0400 (EDT)
+	id E435D6B0005; Thu,  4 Jun 2026 20:50:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F3716B0088; Thu,  4 Jun 2026 20:44:31 -0400 (EDT)
+	id DF49C6B0088; Thu,  4 Jun 2026 20:50:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9091A6B008A; Thu,  4 Jun 2026 20:44:31 -0400 (EDT)
+	id D0A1C6B008A; Thu,  4 Jun 2026 20:50:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 83B836B0005
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:44:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF8A9120563
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 00:44:30 +0000 (UTC)
-X-FDA: 84844013100.27.F753FC6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BC5C56B0005
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 20:50:30 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 21A511C1D5B
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 00:50:30 +0000 (UTC)
+X-FDA: 84844028220.13.E24636E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3E84F140003
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 00:44:29 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=evSrm9Fc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 80877140005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 00:50:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NBZmZlfF;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780620269;
+	s=arc-20220608; t=1780620628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6q2i0FownRA3YZDzx7XlKDNjZ1os0IoGmvW0lPidl0Y=;
-	b=Lco8kMHli15nhoYUSLKk/ctbVYTz01e2Wdvx1EXyFmLBGOmip/miyuVWXgF56dYcr88M/v
-	sCSsc+3V63A7ZgTqKKs58X2q+y9GEBwneH8C4yMv33oEsfrA75rir1VZAVKiSxbjQKWFW6
-	M8fR0LQ3LHDMviV+CeydftlxYnu/8OQ=
+	bh=aDnCUPpoLZgUbgYz+bZGmLvJQT8tB7FcJjGeZKgm4hQ=;
+	b=MPSQ8GPm9/yyVlXiptVylNM9qENqlVV39Qz3rwo8Pel654t6QiubWr1QXeYtZ+OapbhwAy
+	JiXlDFO5rwYHUBA9vANO19VFFtu6rPs07IahrS4x8Kt3pm0vLyNxjhX421IXNeePy0cFhZ
+	5hXp2UtmPLU3qb8GlGJGu1c06uJ3KdI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=evSrm9Fc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NBZmZlfF;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780620269;
-	b=Up7f/wh+i7MM4tGzAsEaMfeKtIGwQZLlBNrsGpKfG0mO3CNLxbAWlsaWqTLrtvmhPgQniM
-	T1AzEyR7KgrOa8hn9HJgtEpGo6vJpJwdvoVnKVoV4fcEtGTJ6HPJvpIOgA5UjG0HwpbaE7
-	BBpXZ5Tn3Z9UXb6uUrhctQMrJl8tIv8=
+	t=1780620628;
+	b=SdnlDvP5XbSApSygT5slc1dA39DgM46ihXUOVSDvxCG5IFILEgzLpaQ/we0qR5+23VkZQT
+	bPYz3LmRu8j5WLpcv8ARJ5F7NrXbtrloFB6ux+fw7p1V1RNeJSS+OeMnp6ASl6x52uhUXy
+	opXrMzhyJQXX+0gLnlKSLQDLvoy7SKM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3FACA43F97;
-	Fri,  5 Jun 2026 00:44:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8A41F00893;
-	Fri,  5 Jun 2026 00:44:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A5243407F7;
+	Fri,  5 Jun 2026 00:50:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C300D1F00893;
+	Fri,  5 Jun 2026 00:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780620268;
-	bh=6q2i0FownRA3YZDzx7XlKDNjZ1os0IoGmvW0lPidl0Y=;
+	s=k20260515; t=1780620627;
+	bh=aDnCUPpoLZgUbgYz+bZGmLvJQT8tB7FcJjGeZKgm4hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=evSrm9FcuKl26K4DQgLNCuVj0BGkyeskpZqhPt+rGdj2hEX78hB/S+maA9XDn9w7H
-	 eB/9UvWVhr1vC8htSeE+oxgVjQpIEIJ8ryqaCvNcqVTmQaWozEQysDKevfJvTubzzD
-	 xRazdqK6U+9QrLjDopCbUxU2mpOfBsIwdN8//vuwx8CQMvG2jwb7BBhr6SwSfBkaGN
-	 3ibx6nn1KujOWLQsd2L+X/PLf3lYTEo7+IjTrczhFxAKC0mMyQvll4zNXc5G61cfGJ
-	 XyLPtblkPCq0+tmePgdkbpqnNnR4AmOo4HghrlcniKPnfIWCUelqASA47Pc4PmAxXm
-	 m/46vt3uDbGvw==
+	b=NBZmZlfFcoV0LGn8j1wV45Gn3eVLJ6bvQwvt+IS9VG7rciMqpnAoC7Kg2SZ0G2rCC
+	 UCroVgi362p3I90GsFhaDMVYpimXF3S4M6LHiMR3Qtsxbfmd8ygLLJUDSh/gYLaL4u
+	 qAB7TztmvRQLKRlcZfRkqX51ZwqDUahwK37FDMEG5APhffiWOXxpskdSgzi/OlIUWY
+	 yvmqP7MRnyh0Fs3yDFc5SyCRnJ2WOzbD/MlDCZJ3emMFJtkyc+qzd7mwMJa1ZunB13
+	 B0NOgBlhXzAjWEU28qhJnCCXeF7PG5CrzUjdhSLksQETqFNnHjI8FpATPkMpqLtDNr
+	 O/hphuY/b4yLQ==
 From: SeongJae Park <sj@kernel.org>
 To: gutierrez.asier@huawei-partners.com
 Cc: SeongJae Park <sj@kernel.org>,
@@ -75,22 +75,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v3 1/4] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto tuning
-Date: Thu,  4 Jun 2026 17:44:22 -0700
-Message-ID: <20260605004422.82568-1-sj@kernel.org>
+Subject: Re: [RFC PATCH v3 2/4] mm/damon: Generalize ctx_target creation for damon_ops_id and add vaddr support
+Date: Thu,  4 Jun 2026 17:50:21 -0700
+Message-ID: <20260605005023.82747-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260604150338.501128-2-gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260604150338.501128-3-gutierrez.asier@huawei-partners.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 80877140005
+X-Stat-Signature: zmtjycw6hgx8f6d7bugcy1k8g7zxhhou
 X-Rspam-User: 
-X-Stat-Signature: rnrwtaognjnyf1b1kh1oa66uwj6jpof3
-X-Rspamd-Queue-Id: 3E84F140003
-X-HE-Tag: 1780620269-426237
-X-HE-Meta: U2FsdGVkX18qd+Y7Zdax6AYXSGjrKIvfUHfLslL/AJRLhiikWFHg0OMxAug627KIx8ha6GYH6A6hGkecb80NP1eTM3vCfNARgo79GnghK7wF94ZTKWNmFrqDDz+3eUxy5qw8gl1JZHcZGOB/VAJiZCdzgV5x/N9sysmR87t6RoZ8ZAhl5nY8Ek95q97ZSEQhmXm2aySbgQPgyW6h3PdkH+dMs24QyA3W/6QqOQuOU16ctkP7oCQ/iMcnAGdNKAer6TUWR7Vo75EAaq0rGJhAloed/OfMsedhicmf4m7ma1SUnFWbyaPRkqRhIUB86/1ngtTkkGgTTt7XU1babp6DmSwXujCPSqaeDkvVZsbtIRG3MrYIk0/xxq/5/kGz1080+joyJ39y57f0u++2tl/wLcE0XHcxzWGx5mlw0jsBS+KyusjXcZnish7yNq9f5fBgCe88+ruSKgfW630Tv/EvqYRp1E5LV/P7vlcm6rCBd0deYdDH+0N+Eoa3Q/yN4U1Xp0uNjCksjlIlasBbNtOzKkAdOQt0siu7y6tg8qG7On4iO+dFuTAKEPEhOO+lxlBhq2cOzXk/GTdvf/tOtd/knaydpM84m1wSWbFgwJLMGCbJwCH0MB0/JLBdMm8c7/3qZ0rwn8VsiJTIb9HfSKjsQj00tJj0sKy7eRCgsb2GaQvbvx262/riffZlgL1sRoio8EdLp/zE3yAPwAUDjKhAg0hmBFdVbqXUb7/8H9a4O3zVqVmmctNAoksLQJ++ok2R9xnfLUD+z3Sr0l4MJGmTX7mXiIH7VyEePNh/z8VjQbh0BnCtxRxilblpincGdt4zQSUi4RDHK2SMkBZFefDaPuEjvXkOhX0Qhwag01T5XujhBj5xf+pyYXTRhq5AgpJO8GNEALsdyQfya3MJ3NQNdgxtZmL+74kYq6Fke2A4MXzdSncFbBPNO2EmGiFoqgdoTVk4fxgo3tSr23ZahDc
- BFjfkX/N
- J4kjJJCkn9GG/gQ6UWWMl1X0gTCk+wqHbrQUdjc1b8f0Kn94rtY6YXczVJmA5vprtpTeCZsDzupG+3L9vOZ8IbznAMISZvDidAGVXuMiN/xl5ESOe2uinHOMHtkAQKz2YC60cty3qurWpGtDGREL8uzDdZgVo8/90YDlOW1uqpcfSGtSDQQFodpafKspQCNj6sXWVLlh0SZxhZxZCjMucS7U2DvZujtJ/gI8QSpL8/UX6WlfYyYe6tUzk0auUV71jeYGDAEDbQuMpHo6xgXIAUEzcwdZ+F/69Mu7G0QJg2vLypXmn+tuoOQIGEbm0jJgAl5XtC71sJKq4GEKR7Sfcn2nRFA==
+X-HE-Tag: 1780620628-203115
+X-HE-Meta: U2FsdGVkX19+NSE9p+FkQAILTFsBmaWgZNP9UsSgt9twpXioHkIza+aKuTmitDfNCh7YEau53weUS84tOn1r9Ujspy0OSifF4nf5YfffhSOzARQWWFxdM8ktSuFXILXKlEK2PcrUmi61V5ZFsDxzD2MVHBDfinSHGZ4aNCeCtc9UF9apT25YlXmKDlwWwqvMhQqoDHpUz1b+fy+PDO/mbT49KyiAxTbS+micJdMP/4hJkHGOSZPiRBMxaAiYd8EGMdHl6+d0btn3+q2FSJe61O0D5Hin/f4IG8jdQEbffZ998XMYJuDkR2poeyNN5AKAZZXAERWztKPYJhcgiEw2WzONCGRP6si/GUbXMdqHjJfAIJSNzcDtnouCAqrzUagRurJEWAjcjSgHvVO+4TW97W5IZsRtshP8q0Uyi23KV3c4+rBkHrYxr+Ky3OQY1R0GgRefE4oyxE2v/BEfX5mkr3d+rP451lB2ipqICKtXmI1UXU7CPSdPY7bazl8oAjAv5mTPQlNUE4HFMZrl2lwZM7z55aQ1RYYtVEwk6gpA/8laJtYuPD/9sQSciEEuL/Zv9jwKcC5d4nl079Wk5OZtPRf2mJTVIzSiw9SEzuEGf13rVJ7xIsCz8Lsgj2KrEg5/aa/wlRY1Yq1zXJ44L4ivsPtK400ceQ7J2UZpXeWdZtdXm2yAc5riM9UW9OuMAMoEbKktCBO4LMFaATd19T7qbfGsWHSwKlTPWR7ChGJSWnB5ErIr67gTkkcYyYuCjoTtSySfAHnrrwIwC6eIkO/DcEO2u63zEsZXYnlicAC6RhWtPiAKCPcpZB3be6mNkEfsrTQIijstF8COO2MbXl72MRkEXnADA24+uLEEZkaeCP/W7wizr/On1fU+vvTXwaxGozpxROWoLhiOHkCqtIGazU+LOOkUVPBRO+loDKskilwr2qDtnlFL4eRfa3W0itvo2AajAae0LDynOtnlf6u
+ gY/o9I5X
+ CkvY6rKDykf+i3E7PNC2EvD7YKHp4Bd+BdSHOrTEb/m7UfKoG1D3bFoGDHTPqPLt/7wHTwkObfBP+0jj6XTXRfVAQHkPaHlv2XM+Y+KKLK6D8onZWv6peaGfHudu1IwAeYFfOkxAYw36EvNtVvjluzSUzzcqDbUwGm9liwqu0Sbo84CeEECOU5lmOrvb0JLH7G9c/5KSk1xq/BT/CqYHnzaXFxU8JOaXx1qxcRdTCOAk3arhV2IfSh+6M1mZpW/AKOW0LYR3TRuWc7C5xUlxNS+mXKrWCNZMOvg3YmhEb+awO9LcAsh7bXcJg6UQ2h2SEVBmEf2QWk3mneqWeo78gpy36Nw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,91 +98,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 4 Jun 2026 15:03:34 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+On Thu, 4 Jun 2026 15:03:35 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 
 > From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 > 
-> Introduce DAMOS_QUOTA_HUGEPAGE auto tuning Add a
-> new DAMOS quota goal metric to measure the amount of huge
-> page consumption to total anonymous memory consumption
-> ratio.
-
-s/anonymous// ?
-
+> This patch adds a new function damon_modules_new_vaddr_ctx_target.
+> Since ctx_target creation for vaddr and paddr is almost
+> identical, the logic is extracted to a new function,
+> damon_modules_new_ctx_target, and vaddr and paddr functions
+> are left just as interfaces.
+> 
+> This change was suggested earlier1 and it is needed to allow
+> developers to create DAMON modules that use DAMON_OPS_VADDR targets.
 > 
 > Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> Suggested-by: SeongJae Park <sj@kernel.org>
 > ---
->  include/linux/damon.h |  1 +
->  mm/damon/core.c       | 14 ++++++++++++++
->  2 files changed, 15 insertions(+)
-> 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index c7a31572689b..8e15a674e893 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -177,6 +177,7 @@ enum damos_quota_goal_metric {
->  	DAMOS_QUOTA_ACTIVE_MEM_BP,
->  	DAMOS_QUOTA_INACTIVE_MEM_BP,
->  	DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
-> +	DAMOS_QUOTA_HUGEPAGE,
+>  mm/damon/modules-common.c | 31 +++++++++++++++++++++++++++----
+>  mm/damon/modules-common.h |  3 +++
+>  2 files changed, 30 insertions(+), 4 deletions(-)
 
-On the previous revision, I suggested renaming this to
-DAMOS_QUOTA_HUGEPAGE_MEM_BP for consistency, but it didn't got your reply.
-Could I ask your opinion?
+This change is for the sample module that will be introduced by the third patch
+of this series, right?
 
-Also, I asked you to add the kernel-doc comment before dropping RFC.  I know
-you didn't drop RFC tag yet, but could you consider adding it from the next
-revision?
-
->  	NR_DAMOS_QUOTA_GOAL_METRICS,
->  };
->  
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 9f38deddcb30..7fc7477a353a 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2536,6 +2536,17 @@ static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
->  	return mult_frac(inactive, 10000, total);
->  }
->  
-> +static unsigned int damos_hugepage_mem_bp(void)
-> +{
-> +	unsigned long thp, total;
-> +
-> +	thp = global_node_page_state(NR_ANON_THPS) +
-> +				global_node_page_state(NR_SHMEM_THPS) +
-> +				global_node_page_state(NR_FILE_THPS);
-> +	total = totalram_pages() - global_zone_page_state(NR_FREE_PAGES);
-> +	return mult_frac(thp, 10000, total);
-> +}
-
-As Sashiko also [1] commented, let's avoid divide by zero by checking if total
-is zero, before calling mult_frac().
-
-I wouldn't mind ignoring Sashiko's 32-bit concern, but do you have any opinion?
-
-> +
->  static void damos_set_quota_goal_current_value(struct damon_ctx *c,
->  		struct damos *s, struct damos_quota_goal *goal)
->  {
-> @@ -2567,6 +2578,9 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
->  		goal->current_value = damos_get_node_eligible_mem_bp(c, s,
->  				goal->nid);
->  		break;
-> +	case DAMOS_QUOTA_HUGEPAGE:
-> +		goal->current_value = damos_hugepage_mem_bp();
-> +		break;
->  	default:
->  		break;
->  	}
-> -- 
-> 2.43.0
-
-Other than the above comments, looks good to me overall.
-
-[1] https://lore.kernel.org/20260604151932.93C431F00893@smtp.kernel.org
+I'd like sample modules to be simple and completely isolated under sample/
+directory.  Is this change really required for the sammple directory?  If not,
+could we please drop this patch?
 
 
 Thanks,
 SJ
+
+[...]
 
