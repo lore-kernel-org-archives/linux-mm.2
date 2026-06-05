@@ -4,99 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3DDDCD6E74
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 06:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74293CD6E6B
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 06:57:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B09586B0088; Fri,  5 Jun 2026 02:47:38 -0400 (EDT)
+	id 858616B0005; Fri,  5 Jun 2026 02:57:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB9036B008C; Fri,  5 Jun 2026 02:47:38 -0400 (EDT)
+	id 8093D6B0088; Fri,  5 Jun 2026 02:57:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CF3F6B0095; Fri,  5 Jun 2026 02:47:38 -0400 (EDT)
+	id 71F076B008A; Fri,  5 Jun 2026 02:57:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 88B676B0088
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 02:47:38 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 321ABC2523
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:47:38 +0000 (UTC)
-X-FDA: 84844928196.30.2DAA379
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A0E2940009;
-	Fri,  5 Jun 2026 06:47:35 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=O1syVw0R;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf11.hostedemail.com: domain of BATV+25760b9178a0880d3e7d+8321+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+25760b9178a0880d3e7d+8321+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B7896B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 02:57:18 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0244D93081
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:57:17 +0000 (UTC)
+X-FDA: 84844952556.04.996E823
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 85C2D4000C
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:57:15 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=korg header.b=vT2fhohF;
+	spf=pass (imf07.hostedemail.com: domain of cryolitia.pukngae@linux.dev designates 172.234.252.31 as permitted sender) smtp.mailfrom=cryolitia.pukngae@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780642636;
+	b=z+KhbvBlpyl9vjNOzRpjtz7COIOHISy21Zp0seNpoyfcwe00Trcrpouv61OWh6YygpnD8O
+	nzmqaRRbXR0FRGYUsm/eMGygXTibumaluv3SycLWeikaxyfGd6KSKyYFAb9rJPXHqo6q5U
+	BGJFlbi3LXbjHM5PyMYQLUVlXALRl2c=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=korg header.b=vT2fhohF;
+	spf=pass (imf07.hostedemail.com: domain of cryolitia.pukngae@linux.dev designates 172.234.252.31 as permitted sender) smtp.mailfrom=cryolitia.pukngae@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780642056;
+	s=arc-20220608; t=1780642636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
-	b=mOo0csaqaPe0tp67qwK4KE2YKBL7Tj8k5cY+HcWWhnu+HIuMsTHWhvRSSCvHpyRXNvjbQq
-	VOv36baemnhQZtlPmWabv6eq4pMOtid8zw3RnjkUhcYp1WtVxS2mdtwyM/ve9Fc/aNCmL5
-	y2H5uRLpyaBzy4Bvm6URC4wtnZdzE98=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=O1syVw0R;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf11.hostedemail.com: domain of BATV+25760b9178a0880d3e7d+8321+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+25760b9178a0880d3e7d+8321+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780642056;
-	b=c9q/MzpwhiIkFkaH/SGbKk+WGyzkgGE4bIWuM/i0YpwAiJfjYWuc3n6RKzicZQSw4dU2n9
-	JH/0c8HiR5jdUthqI1aKKRLHC2JLMk7+Ts94LPfsKAsT6Bj4v+KjFnAm8oPUV1+3+SGrCE
-	UKx+I3ONwGIykwfPqa1R5nnhUtxGVl4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=O1syVw0RObUNsUloXhEatKWUIe
-	+8iwjfg6FEZjfbqmaleJjUITEnUf87i4rMzY0ykIJQN1Z5X5WxmLKq0/sQgK8UbWrD6KIA9+Jo/aM
-	4NBngO9DpCzY8mbr+EQgzQQhdWAGPiz3/ryp2KRUSoYUy+Ngol++HwEOySoIcZ/LyRhs/aWSMbEYG
-	wcXpqUl8Jqx/ZSLw96YZ/vY2f/5HwrvN/mFF6n49gnbmeQMlvJJ5Dudp2vS/Q6gS/5KX9o2+zIgwd
-	sqKvUXSlr2SK6bDM4GEf/FZAJTimGblho2KAyWQi8w/b22h+FsbF+fbhkJTLkrRdx69Voe1JDxvOU
-	ZEmD7VJA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wVOL6-00000000BOe-2pM2;
-	Fri, 05 Jun 2026 06:47:32 +0000
-Date: Thu, 4 Jun 2026 23:47:32 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@infradead.org>, Kees Cook <kees@kernel.org>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Chia-Lin Kao <acelan.kao@canonical.com>,
-	Benjamin LaHaise <bcrl@kvack.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org,
-	linux-aio@kvack.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 2/2] libfs: drop redundant SB_I_NOEXEC/SB_I_NODEV in
- init_pseudo() callers
-Message-ID: <aiJxBKwK1v2e1wQn@infradead.org>
-References: <20260604025315.245910-1-jhubbard@nvidia.com>
- <20260604025315.245910-3-jhubbard@nvidia.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jYWJOnlyygTlEBobdMl6/aMt270x3xPYNVbHwWdReV0=;
+	b=oiuWq4lBRnELAl6kmcbOcTwXJSuWOGmj1f08Kbdfeg5TBbJSucgSDNj5H8SmcovOJfT2jD
+	elYuLKHSsdYb2FxrYm+I1hZUEKRM/EYUbnUx7oYbhFXNaAFy0BTfBjQhASGubqyt7oGeBO
+	H1jiAGUd8nW8cf4KWfhusm7txWpmUXY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BFF7E43D84;
+	Fri,  5 Jun 2026 06:57:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9EAE1C2BCF4;
+	Fri,  5 Jun 2026 06:57:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
+	t=1780642634; bh=+19Zsk5vOXZMyuMg7RMcM29ulngnILx4+uZ4DNkfhqg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=vT2fhohFphNNPru2XOOUvCyDL1p5NKcSO42ZRUJ2m+qZVdA+pKSaKJj54t+AGYBEr
+	 WHqkm78f+KzD3FQa1DKcm1u1IrLtN4Tp3gUomPpUO0BusNCx9W+owBNG1fexFLjvoe
+	 +xISEKsmEEyPv9WkQMbUUF4AqsFOJ59hx6x8Xvfo=
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84022CD6E6B;
+	Fri,  5 Jun 2026 06:57:14 +0000 (UTC)
+From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+Date: Fri, 05 Jun 2026 14:57:04 +0800
+Subject: [PATCH RESEND] checkpatch: Suppress warnings when Reported-by: is
+ followed by Link:
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260604025315.245910-3-jhubbard@nvidia.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260605-checkpatch-v1-1-8c68ae618513@linux.dev>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22OOw+CMBSF/wq5szUtPhqcHGR10NEwtJerLUZK2
+ kI0hP9uwdXxnHznMUIgbynAIRvB02CDdW0SYpUBGtU+iNk6ach5vudbLhgawmenIhqmC1lz1CS
+ JCkiBztPdvpeyG1zKa3k+QfXzQ68bwjg3zaSxITr/WVYHsfD/BgbBBNvJWnGUivSGH/s2/YuEZ
+ o3uBdU0TV89BkK0wgAAAA==
+X-Change-ID: 20260401-checkpatch-b97d0cbe7ee9
+To: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
+ Dwaipayan Ray <dwaipayanray1@gmail.com>, 
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhanjun@uniontech.com, 
+ niecheng1@uniontech.com, kernel@uniontech.com, 
+ Cryolitia PukNgae <cryolitia@uniontech.com>, Petr Vorel <pvorel@suse.cz>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780642625; l=1814;
+ i=cryolitia.pukngae@linux.dev; s=20260401; h=from:subject:message-id;
+ bh=c9WOjIkf6PqQcC+UWyqhsH7Lp0mHPos984XKOAN5Tdo=;
+ b=wmZomkal1ceAYLxYqsR55LBmE95VujryRzX7m4nZXkxbncAL+HlNFyns9W1vugQF9VpuvsNUC
+ tdG5nZGkDf6Dw3/lubNoHtBG5fuOHAJhPQlmNOcAaM9Hs2hBtq7nwCj
+X-Developer-Key: i=cryolitia.pukngae@linux.dev; a=ed25519;
+ pk=kF6wBkp7j9167keuk8Q9RvPgMRPuHlJztbLy0vbJ3K0=
+X-Endpoint-Received: by B4 Relay for cryolitia.pukngae@linux.dev/20260401
+ with auth_id=712
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 85C2D4000C
 X-Rspam-User: 
-X-Stat-Signature: 4p5fnommpuoh1daucwtgkoafbp1c7pud
-X-Rspamd-Queue-Id: A0E2940009
-X-HE-Tag: 1780642055-542838
-X-HE-Meta: U2FsdGVkX19Ao8hUqAgwSHOih542ryqTA3nU6ovxUjDCBD1wKhLZLopDiTPgEODdg/4qGzTQkG4vdHTKYzh8vl8lUOnFjj4DvaG4Mzm4oHToOtXTnui35aIapsjZNlvunEpGcI9AXWtIg5eQ3otJ6EDATymkBdbodPnOlTeJEjqU8fUMfxs6GU5o2Md04S8xdq9t4d+tr93kp9ariD07F90MrN/qqajtwHjs2+mjHrzcYzc1pU+p6pJ5CQPoMYjBjHlAX0OyGhdqLDgNcYWSKLepMvFxVHMDXQ6uZwwvpTewSFnUrKXdqNtOtXhNXu0QmWKrKPfkTt79guXGQUimix3yKpFvTBM4PmsflKOFbUy0uIt3oTbR7JU0Q8OTH5HQ3g5Em89fcHPuKlNl9fg2fiUpP0Bz6YxVtgPEJwAAiMJAQ6qPWJFaHp4PNwGWnAAgKNUeP1F5Ai5B1wZD74GcN2isYYdNwQ0UZnhSzsONJzDvj5ciZj8ZDFUy9pBOqSe9AqOZ7j9xyaK5S0+ochLBWPQURGazyWy3kYUK3kd+HUXVQJJNBQI31ZmQulp4Z+KIWCHs7NFhqH5taKgOuu1+1cyd1p+6UhpZFNVieDf/tWzIYh6UKNhyfuAog01Ca+mrduCTQJFI3MaiDRIvPav6ciKlny2SEf/8rzuGvojF76jyf61cUi5yKGSFeUj3hug1/vjC5v3vLLEIcBhSqc0Ir9No7tn1YWlbUcwsPf8shZsD+iijjohfHvkm/jFOy7ci//a4SLzkbg63qmU3dtzfbKhb/UpaRXPOVPVUw7BpgNJGWJ2oEZ9a/ZwJFSu7AlH1OBLDBceHCpRAIzDy2T8TFvPtFUS0COrSEQ8SB4nQ2aKUBRLN9H3dXSSPrri9ZHDDOEg6nIY/5QJRirV17XdUNhmZGJIorGAqolUPfyajaqSVxv+6cjbXV7yKcG8tMFLKOfsNd7Z/Lttb5KkVNtc
- o6lHc/jp
- 7lM5g5upUC7y9Qet7nKy8eu4sqrYqcjRptS45zi856SVoe3AsX2VqkeOU4g6PDdteuM/hZFigx6Q/hjl0a6hdOJZixBO9zKYiLHJhHjpu/sfL4tCEg5rfjy5vOU1na8AEymeh+lxVSl40THKJ3rFt23YECWBeJKEXjsh/no+1HXF69UZvYLd+AlDT7kvAoUJ1NZpg7bScjrItC00UJXf9BvuzBfglwidUNrJ7du1H/nwkFdhBNxEmM81xxj2OxzkUlYh0/K/lpZacy6S9cmvkPwU/RM975ZEPW5FFzZ6LWyWR+ntapQCFFTW4DekWjiJjSUCXOLnr/WPQDYY2oel42UZt9Luajp9Tg/aFxUk0nxwkVuAqs2tKioxXNjwvY3pnglx/EOHLYgC8EwTpOBV0ylTZqL3uWv27jUH2OOC96PiyxgyhVo8I5/2Osb0vbYxY7J1zkoumauFE5HHbWasXMQV1HTrtvOjX//W466GUgvcryrB4iqkuJqjx8X6079iNlupF2S+Jj003jvStOfVVXPIa+EPCJ/bY3QKy8GB++FdTXQyl8p/ijUPgDXxp5DBhBiOi8YcCPobeuwsXT0pVLUPbVPwgJ/WuFMdc/Hn1cqEdTlZjnoSk7wyCJNMMl8ZoecO3orPzDXn3o6v8uGSBEco7KSKxPLjOmaUWEEsx+MRGofu+BLjgElWsiMNE2+6bi88pxwGH3Bh+xvzKp4PXizPU05s6oJmm753y
+X-Stat-Signature: u179qcpxa8eokgebpibsctwmhot6q6ob
+X-HE-Tag: 1780642635-651679
+X-HE-Meta: U2FsdGVkX18f62muzMHj+xCcYQ2tD6h/uZOy6mKUCg/ITbuSz/4EO7l3/t8lty+DLmOCqyClgN/MyZWpE+yPI4x6b4L5El45IWcNpkG/ChTNuIJElXpHQ4214RXKTvxEZNW+4MiFyjFsR9aDerhhjv/r66bd37AaNm+MZiqiarqZzsXHBWsIa6OPpIeKSVIgj/o3ayyeABwmUpZXDICDO6vQHG9fLcCAKGPy5JNHuKrzThTV2qWbDS6O4Quq8YUGxmyzVKT1a8KCjAunwduFtDmv5WeI8dO2ef9H+nYjclDLV8HV0KRymSKHpVF07AgXKRC7Zhq5nHg/spqTlMGGEx6yufWeZMphyOJBpVIPMwXjW1CMZMBtWOAFyPVwvWr5pTqB/xncoLqB7WCSywNXBFUPUgxWzGxWJYug/03kFDqIc76JOuLgvKBHxBe9gWmJ5Uq6m/tnbBdO9u91ncXCWTDzxzAaDWy6P5lRoTM7kBME4+vuZGpXjE+YVWAHQAx9pskn6aUUSaCIQrnNQnPzWRobAnv4ZkVGs4HpGg1AyLVF6XGJacvDiIxYicN8RnJmCuuXivyj18jPwLphNC492E1IvSYFubbrJaGK/namefiGyjTDc12xYISg9jctIV0vQWJXVa8voRdihrG4rs4s9lJW/X1vJZbQOfek82WGU4lfiy8ilxwya+K71r8QVWodoQUDCTf/BXfrmKjTZLb58c3DfUE4RWHG3/t2W993a1FXCy5QidFKPDV/8vjkkvrv1DJtAgT5qIObc9/J/ygmTo5x7sOhqr7SNASbu+OnklRs1eS/nDBta8o7/vFIS9YxTSNPDHXH6gFNfux7iCUU/zB6yd/ON/tj283bHREyFjqoqm7HLvGOEIuT425eHCFfyMpr0dkvg2EuNRC3gjbnqHC2j9ZAQXeGIjdUfQLffGNuO+ihsTWsPrfOm+gYHdllouv8/+87t5A0C1fhpvZ
+ +bx3Uqfr
+ AEWpEZ4xeeVRotglOuhEghRWTK+j/kDxNCXPOFnJv1K/1f78LYJf0sM93/qozj+HlO/uykGeoNiOkaMCqi4pT6+IxYyD7gfFFsOowVuVYiZG2fVknzEpsbz4ClIrvharSDs0K7XxIsH26ViA1/yolPK9E/iAl+ULPTvu1BaBSlEpPblZJQJZa7sy48H67onNS8CgaJ8uOu2H1vqnYffi2LEg0InAvH9LLAnYxh4Grt7Xwiza9bvT3mb3WobXbdhdlETDH7E2/CoF/fnVEZkrYraXRJyhquQO4qzkpdCd78wq/pBrVStMzzBLJuuU5n4L/Zzz1XWv59c7VPFlqoQY65sRRKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,8 +107,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Looks good:
+From: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+> The tag should be followed by a Closes: tag pointing to the report,
+> unless the report is not available on the web. The Link: tag can be
+> used instead of Closes: if the patch fixes a part of the issue(s)
+> being reported.
+
+Accroding to Documentation/process/submitting-patches.rst , Link: is
+also acceptable to followed a Reported-by:, if the patch fixes a part
+of the issue(s) being reported.
+
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+---
+ scripts/checkpatch.pl | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 0492d6afc9a1..bb452f5313b6 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3233,10 +3233,10 @@ sub process {
+ 			if ($sign_off =~ /^reported(?:|-and-tested)-by:$/i) {
+ 				if (!defined $lines[$linenr]) {
+ 					WARN("BAD_REPORTED_BY_LINK",
+-					     "Reported-by: should be immediately followed by Closes: with a URL to the report\n" . $herecurr . "\n");
+-				} elsif ($rawlines[$linenr] !~ /^closes:\s*/i) {
++					     "Reported-by: should be immediately followed by Closes: or Link: with a URL to the report\n" . $herecurr . "\n");
++				} elsif ($rawlines[$linenr] !~ /^(closes|link):\s*/i) {
+ 					WARN("BAD_REPORTED_BY_LINK",
+-					     "Reported-by: should be immediately followed by Closes: with a URL to the report\n" . $herecurr . $rawlines[$linenr] . "\n");
++					     "Reported-by: should be immediately followed by Closes: or Link: with a URL to the report\n" . $herecurr . $rawlines[$linenr] . "\n");
+ 				}
+ 			}
+ 		}
+
+---
+base-commit: ddd664bbff63e09e7a7f9acae9c43605d4cf185f
+change-id: 20260401-checkpatch-b97d0cbe7ee9
+
+Best regards,
+--  
+Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+
 
 
