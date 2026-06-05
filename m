@@ -4,81 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EFFCCD6E6B
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 09:16:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF0CDCD6E5D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 09:22:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CC006B0088; Fri,  5 Jun 2026 05:16:51 -0400 (EDT)
+	id 13BB66B0005; Fri,  5 Jun 2026 05:22:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37C976B008A; Fri,  5 Jun 2026 05:16:51 -0400 (EDT)
+	id 0ED356B0088; Fri,  5 Jun 2026 05:22:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26B046B008C; Fri,  5 Jun 2026 05:16:51 -0400 (EDT)
+	id F1D6D6B008A; Fri,  5 Jun 2026 05:22:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 130726B0088
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:16:51 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA3751A0535
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:16:50 +0000 (UTC)
-X-FDA: 84845304180.13.872B800
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DF4646B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:22:13 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B2B0C2327
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:22:13 +0000 (UTC)
+X-FDA: 84845317746.04.50EB61D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CF670180002
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:16:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HCupAZ+B;
+	by imf01.hostedemail.com (Postfix) with ESMTP id B059140011
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:22:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mKURoMZu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780651009;
+	s=arc-20220608; t=1780651331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PUq+nIhSFr8gp3CQgUCBWu4jGQTgkDryqqH+bXHUaMI=;
-	b=OjIBXesMs6JbFvMVvtZHDNM//kdQdudMD2+pNKbdweQc/v2AYawGF0lN3QFdnJij1ISUqO
-	MZSaMCjneztq6AaY6verFhGFs1YLhFNgaSoKsHw1Bc7TDJIBvOIUy0hLgrvbp9KagQc5jN
-	chLjbg7EebAji3uRcqLyyp9V8yj7HuI=
+	bh=jhbbJw1+8nFdKF7iBjsal2tsKrPYztqe8jkFrRv+M4s=;
+	b=qKuA19I4D4dIw0wL1YjBX5R76HXRGHy9hldvlXy8UQW+pkYV0YC8dZi7yh6ooonmUzU3RT
+	a2KRo2sBKik0y7Ec2A/KQhrGMUwLUbdbt288rqKhCtWnd1rZ7i0UZglLrUFeNY+Hct5Pxm
+	U5vUHDLD7hrVPmTnmTovy3ct2s3mHXA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HCupAZ+B;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mKURoMZu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780651009;
-	b=skScXEC9O7MaHBjfK7SdOAZtE1gUmss2pzPPeaau5ZAsQzpMpKzcjmdmgnuV1Oal/ufrvX
-	NdgrMAJTUyQtxtE7/qHi5fCDN6vhtAguAjTpcNLYpyFfLlR/31iuZ79XnpHXOWAwki8KqC
-	EznmWpYvwwzKs5E9SJVFAlcrR5Mp1JI=
+	t=1780651331;
+	b=evph6+O13jdV+2LvYrxbeEawSz5opTVH52aYem5u/a2FVu1J5fGTRL27PbPjVtC7cu4lk4
+	BC+lmWDQ/x0+q1IyskthOjG3EtVq8KMGzejyf7tO/GYVvNZaNpaEVkRBQFdgGEcVe5oaWf
+	rTIIqEjynUKCldUKcD0Sa9IQR7Sm6v8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DA06A4342C;
-	Fri,  5 Jun 2026 09:16:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A24B1F00893;
-	Fri,  5 Jun 2026 09:16:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D34604174E;
+	Fri,  5 Jun 2026 09:22:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC011F00898;
+	Fri,  5 Jun 2026 09:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780651007;
-	bh=PUq+nIhSFr8gp3CQgUCBWu4jGQTgkDryqqH+bXHUaMI=;
+	s=k20260515; t=1780651330;
+	bh=jhbbJw1+8nFdKF7iBjsal2tsKrPYztqe8jkFrRv+M4s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HCupAZ+BROQAVbG7NDmnlZh+v1BYp9SStVVgGalXCY1haekBfxqpoEwnrlKwKff3l
-	 rmlRlvpGdRTroGt0YRbzY/vD5gKqKdW3SJ1A+aksP6uMOwKu70KxyDo4fVbB57oOCU
-	 BDwufvMgPGiRPCrDEO+po9ZjLOrrK2S0IJeAW6qji/2E0TyDPE0rYrZOArM3jRR6eP
-	 KTzYYwZt40yPcyLNYvVNp5nVF/DG1s+Y2iEmtJN6znNoHTYDFMe+BrtDx3yNfzCXz4
-	 cg5EFI1+m7Solvz719PlWKdqZSaKFB/l+hznlmH74ySS6xQKVpyw0NWyXUWl2ZxBQd
-	 gjyBqL6Rhwvaw==
-Message-ID: <da19ffcf-8042-4f96-9c2d-649468dc6a0a@kernel.org>
-Date: Fri, 5 Jun 2026 11:16:41 +0200
+	b=mKURoMZue+AtZNQKf0EPlAVQIq/zNoBQrF7LiX9aEP+WS86xWR6WnRLEn3wOeRgcA
+	 GC09liXgi2keglH9pGZYTeUF9WczP0XQjt43Gk5Muv62Pp+vQnum/z71pcd5eA4CBQ
+	 haOZ6ebeEstgl9txZF9Ew69ygrgHdb52t0J74yAwq7N8OUu5whr8zy4ct67eMXuF3B
+	 Ur+jh4Ka+PeVXepAPbzvpkrKRszkORT0Agwu4Y11HJwwOf5sdW13Gdnw1hAYqYdGuA
+	 3a7TodSNgosYBiAerJETY1esejSTngZgpFSyJNMxxW9MXrXqxopBPZmnyrg1YI2vRr
+	 fB2UABqeIUcgw==
+Message-ID: <5aae8c80-e886-47b1-a1e1-4e91771f3492@kernel.org>
+Date: Fri, 5 Jun 2026 11:22:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] riscv: mm: Avoid spurious fault after hotplugging
- vmemmap
-To: Vivian Wang <wangruikang@iscas.ac.cn>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti <alex@ghiti.fr>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260605-mark-after-vmemmap-populate-v3-1-a06001ac9264@iscas.ac.cn>
+Subject: Re: [PATCH] mm/gup: fix GUP-fast fallback for NULL-mapping order-0
+ folios
+To: Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Peter Xu <peterx@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+ Sourab Gupta <sougupta@nvidia.com>, Zi Yan <ziy@nvidia.com>
+References: <20260409014647.397515-1-jhubbard@nvidia.com>
+ <4d6c1af0-dee5-4f1b-b74c-2ebc23de7baf@kernel.org>
+ <08afbec2-bbe7-4e8a-8d99-8a5eaecaeee7@nvidia.com>
+ <aiJbJVbD4W-y1XDg@nvdebian.thelocal>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260605-mark-after-vmemmap-populate-v3-1-a06001ac9264@iscas.ac.cn>
+In-Reply-To: <aiJbJVbD4W-y1XDg@nvdebian.thelocal>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 6tz54dzpegjcp9jog3muz9j3wk98gsuo
-X-Rspamd-Queue-Id: CF670180002
-X-HE-Tag: 1780651008-974864
-X-HE-Meta: U2FsdGVkX1/LXMO5HRschMKnYsd6TVKInFcxaNQesMJkrKdAUMbSth3rKeIHUsghC+fqwvifydem3IMadI6TnHW45k2yTdFTFsb+CXxWI/oMLjUiM2oQletf16d3p1IEm+HgNlu4NmQ0Sz1pxMJCGNmaCc6M7gqYmIg1C/NaTlRvZVI4yPl9RbEUKhLD9O2nVwe2whYzgELv2+hWEO5dU9aql0s8/5aku3LSTzj6yf52vF/BcRAoihHCMWkwFelR0kXHWza01MZsyViBgDDyi5Z0QhY0Bl9w08ZmLpU4sLAvGS3yH6gMaxdLEEND7Fdd5EaHpuMl1oL9jeeH9gNhe9LxcS/RN2NWo9RfDYfb7grEbcLI9vlMla9Q6kCRlteqFrGZNkLBXBaIWMIE9pUezWFlsht+o6AnlJqFwefYSNjEoFJDbQDm74/2T5ZIrGkQlHWzzp5s/giR1UyyTnid3JoeSrlCoGjvKeJAemxTLew5QpIms6Rv4g+jQVn7xcQEPAF/N9Yz6G2fZhI64pnJxMi/OBvtlj/zcSJxrxo37bNOoXoIR5L0bV3fN6DjRsSc0wv7DuHQN/2Qg0M3yZxFS/ex6Pp0Eod7WDpAdRexD54O38az1mrMBLE1MEnTTRY5Zu4/g1xUZlT3N+QEcB9PqBL5QWnMIv329xVXhdKH9mFhczuMAUaXJ+QK/L5KOllU7YihZ0YRQUqtyMYPTUEe/8X1RUT75/i9aSheXjsJWUC2x3Y734F8reshnOUioOzYmvG9MA7bh1J6YpGLsxZElYouYWZ4fEK5uKxPrqwEdvjiE3SomQH6tj0kTXeDFp/XQnPThW5MJShQd1v9C88QsKEY91yJUYOeYELYHFlZ0qrcl85BHMi7eFBetdouiRRF6NyYNcGz4tPOnAgr7cJrKSm4YnzG+dCVpmCMr1/QPX5ovTEH0cu290PLmnfIi61x461HKeZMCFh2BYV6Ceb
- FGjuW/vH
- vOyWdZPWtpDCHeqG2EFOewrbvektI5BtPYsXzp537KizGQ08i/6lhbJsOJ49801ZzzijkRtCCckwB+6TfOL/mcJmlOXsy1IQbEEUOhlchiCfdOZZAtSBa7mjj2r1L88t2wfH4XehYaYNy5JxRxjXdobnNoePuJDWratCNwHOHZcBQC/aaTxpfqGbKMJx9yKPJSmQiknHmjqZbysVBdfibvID1PnZVIKI8yNotZ+Wd6P8pp3WKV8vkbsq0vBgdpHiObsevqdKQS6WkAocLg9M3L/JIAH8uRqMrwJlLiaYdMnEcZZa1fz+DfFS2gHcG1EZMEXZcQEpYJjkRfaMu8T9vbU3qF6U2b/BhK7cxffNySq8ElqWvRZyhcqqkjA==
+X-Stat-Signature: wbmw1txb89hnzsohnhbc1tpb1cuor9jx
+X-Rspamd-Queue-Id: B059140011
+X-HE-Tag: 1780651331-983927
+X-HE-Meta: U2FsdGVkX1/v/qFqsXPEsw2mOYYhLwdO5/6dfVHEzxRvcVQ8CcvMnxheQDYg+yegJcJ5UzEeQ7DukIF16xgGUz+KePLH7bM/6Gc3TFDNogA6n2CX7YT3MmmyRb9rOyekqxzBU6pCjiiUs6AZbpmvOorxUCyRHhUbxTkjhN4k0qT6f50XMFQy4gOsL45xZh55fm8D41Jm1wCiHty8JfW/KzoNF0JgnARrcxppNP8A1LtoqVxqlOcewHrpd79KqQUJDeC3bw8Wv8zAKMr/7m4x7psMgd0Alj3lpxxrGlJdf0TdROz3Tqf7jmkkUiVZ8wYpH8OJfjm59D9iJUQ+XYlxbL39E8vwp/iaP0TZfrTSIdLNU6k+Qrko0mOL2daIB8k8loj9NoMseTPFsZOKScyII9+sUlRnqML9V3GpCJUu3TNStHCOcxuC3nvjLFfMWnE3M4TdK81ybL0DqnFI0+2AiCcLyc0bUF2/ytgb1Y7OgYMD+YI3BpBp0LMNEMzMFUp+zy5VH0Ue/DgDh15kZh8QzC6OLOVpDkaK1ChAh/4Ek0Ciw3EkHKsOcbQBF0UJrfpRg2+rqf5OKkM6T+cXVeSQSVixXTL3QaqVjxJH9nfN1vUMuMrTqjZ1XtAY8Ts7EA17O6VEOtL9RLlynb7E/Iz1GJ4QScHSD0kZQ13Xms7QMkCw/Gr7LkWcaSucIFM1qNLCkumlSV/5aijYVoyFEOXWWMyHKDY+XQmZfiqSWOGxTmuzi5mZujXTH2x4uNFEOWz23MgUro99hQCCnZzFj7Yg5WPbkVtet6lAiRoLAJrIEPRXvYcK7xxxxn5FalFrmTh738VJ6FLRjhehhc6r3pT3phkwJ4e++cDDEbXPjLHSyncSoBx5/nXWJ+65b0kzf1FYNLQ91/mZFleV3wdY7YAqnO6/LjsrCF5CjDK+Uv28EAdVL758L8FnEzUo1r8C5Qp40+Q1+s3btbGLghEoFkA
+ I6pBNQwZ
+ bfmk3F7bKhVmm/7r1nXw869dgy0NznyMknVWU4sS0IM12V14Tr8rnJ891orHtLhUF8CJlRnXa/QMS2usYmMfO8lH6Jc9etQIjCKjLaZYZNIHNs6GBkJygEpNIaZP1LLiSffhc8vVvvrmyXz718/+UzUK4sJJIOGyulfzrh3uMILfP33I3YUo+or70cgOGWe9/ivKEMcMb1ZH90c2fpEX6sjwdsiH726QQT7KhYmCUym/1Ku5fFPN9xl6wE9ANfiK5ekp0hGXs/hk+4GhpuUxXxqAXWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,84 +144,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/5/26 07:23, Vivian Wang wrote:
-> section_activate() does not flush TLB after populating new vmemmap
-> pages. On most architectures, this is okay. However it is a problem on
-> RISC-V since there the TLB caching non-present entries is permitted,
-> which causes spurious faults on some hardwares.
+On 6/5/26 07:17, Alistair Popple wrote:
+> On 2026-05-15 at 10:09 +1000, Balbir Singh <balbirs@nvidia.com> wrote...
+>> On 4/9/26 17:52, David Hildenbrand (Arm) wrote:
+>>>
+>>> Hm, what if secretmem folio just got truncated? I hate to rely on some
+>>> handling in the caller to detect truncation differently during GUP-fast,
+>>> but this function returning "true".
+>>>
+>>
+>> Can secretmem folios be truncated? I assume you are referring to
+>> ftruncate(), I am looking at the setattr implementation of secretmem
+>> and it does not seem like it can be truncated.
+>>
+>>> Zi is working on a way to distinguish folios from non-folio things: that
+>>> we can identify whatever was added through vm_insert_page().
+>>>
+>>> Because that's really the key problem here: vm_insert_page() pages are
+>>> not actually folios, they just look like a folio today, but looking at
+>>> fields like ->mapping does not make any sense.
+>>>
+>>
+>> I still think this is a short term fix worth having until we get
+>> Zi's fixes
 > 
-> This seems to be most easily reproduced with DEBUG_VM=y and
-> PAGE_POISONING=y, which causes these newly mapped struct pages to be
-> poisoned i.e. written to immediately after mapping.
-> 
-> Add a hook vmemmap_populate_finalize() in __populate_section_memmap()
-> after population, to allow architectures to handle such situations as
-> needed. Then implement it on RISC-V to arrange for the existing
-> exception handler code to deal with these faults if they happen.
-> 
-> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
-> ---
-> Depends on my earlier kfence fixes for mark_new_valid_map() [1].
-> 
-> Found while testing AMD_HSA/ZONE_DEVICE on SpacemiT K3. Using
-> ZONE_DEVICE requires another fix [2].
-> 
-> [1]: https://lore.kernel.org/linux-riscv/20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn
-> [2]: https://lore.kernel.org/linux-riscv/20260309-riscv-sparsemem-vmemmap-limits-v1-2-f40efe18e3cd@iscas.ac.cn
-> ---
-> Changes in v3:
-> - Merged back into one patch (Mike)
-> - (No code changes otherwise.)
-> - Link to v2: https://patch.msgid.link/20260604-mark-after-vmemmap-populate-v2-0-ab6a7d03b434@iscas.ac.cn
-> 
-> Changes in v2:
-> - Split patch in two, hook point and riscv hook 
-> - Explain hook necessity in patch 1 message (Mike)
-> - Make hook #define based (Mike)
-> - Call finalize hook only on populate success
-> - Link to v1: https://patch.msgid.link/20260525-mark-after-vmemmap-populate-v1-1-e698d859ba16@iscas.ac.cn
-> ---
->  arch/riscv/include/asm/pgtable.h | 4 ++++
->  arch/riscv/mm/init.c             | 6 ++++++
->  mm/sparse-vmemmap.c              | 8 ++++++++
->  3 files changed, 18 insertions(+)
-> 
-> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-> index a1a7c6520a09..aa0f50e3d534 100644
-> --- a/arch/riscv/include/asm/pgtable.h
-> +++ b/arch/riscv/include/asm/pgtable.h
-> @@ -1243,6 +1243,10 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
->  #define TASK_SIZE	FIXADDR_START
->  #endif
->  
-> +/* Needed on SPARSEMEM_VMEMMAP */
-> +#define vmemmap_populate_finalize vmemmap_populate_finalize
-> +void __meminit vmemmap_populate_finalize(void);
-> +
->  #else /* CONFIG_MMU */
->  
->  #define PAGE_SHARED		__pgprot(0)
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index 706f43523935..cf9ae4099f82 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -1360,6 +1360,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->  	 */
->  	return vmemmap_populate_hugepages(start, end, node, altmap);
->  }
-> +
-> +void __meminit vmemmap_populate_finalize(void)
-> +{
-> +	/* Avoid faults on cached non-present TLB entries. */
-> +	mark_new_valid_map();
-> +}
->  #endif
+> Agreed - this clearly results in a performance regression and we have customers
+> reporting it as such. I think Zi might be out of the office atm but when I last
+> spoke to him he agreed this fix should go in for now and his approach will come
+> later.
 
-How does mark_new_valid_map() handle concurrent access?
-
-There is some comment in there, but I am not sure if that actually implies that
-mark_new_valid_map() can be called concurrently from arbitrary context?
-
+He should be back now. But yeah, let's get this fix in.
 
 -- 
 Cheers,
