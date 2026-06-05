@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2835CD6E75
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 03:34:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FE6BCD6E75
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 03:34:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43AA56B00A1; Thu,  4 Jun 2026 23:34:02 -0400 (EDT)
+	id C77D76B00A4; Thu,  4 Jun 2026 23:34:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EB786B00A2; Thu,  4 Jun 2026 23:34:02 -0400 (EDT)
+	id C29026B00A5; Thu,  4 Jun 2026 23:34:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 302606B00A3; Thu,  4 Jun 2026 23:34:02 -0400 (EDT)
+	id B3F686B00A6; Thu,  4 Jun 2026 23:34:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E4F56B00A1
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 23:34:02 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DC8021C11F8
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 03:34:01 +0000 (UTC)
-X-FDA: 84844440282.20.292E1FE
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3129220009
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 03:34:00 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="KH/yOIwo";
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A43DC6B00A4
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 23:34:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 762841C2776
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 03:34:14 +0000 (UTC)
+X-FDA: 84844440828.07.1967D0E
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BC0E2100010
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 03:34:12 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=PFlTjPs2;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780630440;
+	s=arc-20220608; t=1780630452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jYmKPVlEdqw9nJIpln28SQxgNWXUbITnOaKq2Dm+DFI=;
-	b=AXx0SsWf9/u1wZtlLOYfj4LqhBq2IEAcnmYOLjs2/S++Q1tZjq8Sjq3KJVnmrfzzU4xAt7
-	mA8ksq7z4xPLzlAqRwaTDdlTQi0Q5ZchOsvZHRgPOsbQj6JDRSrXtdmTdrNoMWBqhiSICp
-	ZYcgZM8hkM94J6pRjrbk56KuTtZXdbw=
+	bh=2YcWKgEizOcY9z0vq5q3df4Dwqk/3q2KHCFvnTeL730=;
+	b=4/xo3Si0YUexLBLpCJOMPRuY1Ur/Y/oLlPbKLhGm40vRXuS0OEb5C93ELAoIjC+vIEp+Py
+	hR2NSx9kd7LPrDjgWibKxvuRKnT+EMVgd8TyJR1u/PRgjNj7irVRcH4doDRNKuvsHPM8TT
+	1WfrQVqeBvhcTLVarfIrMpRoRv61wsw=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="KH/yOIwo";
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=PFlTjPs2;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780630440;
-	b=xmjumA5Nx0scLIwcOxwpA7FalmIsIi0Neai4VhLzp2daVSl1aRh3D/BS9SL7RCHDCLZy8x
-	BI95PiXWlyCjLkVUedF1s9EEJemizfoeEUIvAOam60JxTo0PbzAHRfvBKTY6WixJVLLnLY
-	25KBXh5hEMrAgjppRYBidBvRHdDVBV0=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-915aa0a9293so52384385a.1
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 20:33:59 -0700 (PDT)
+	t=1780630452;
+	b=zlbTDJ633LnwUhhqtcAHhMZ9OHosber14ri9pRDVa3HR4KETmlgyTvXz8tGDN/3a5UAGOu
+	U6loBvSdwGow91rjfD2tNV1CNdHzfo7srLsZWDX0tbRhL1xZ66BImRhvhOL7/49LTNn9bh
+	zikj4wNemeYf4tGqi1STYeoSvhvf6vU=
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-91587626a3eso182710185a.2
+        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 20:34:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780630439; x=1781235239; darn=kvack.org;
+        d=soleen.com; s=google; t=1780630452; x=1781235252; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jYmKPVlEdqw9nJIpln28SQxgNWXUbITnOaKq2Dm+DFI=;
-        b=KH/yOIwoH0hO0jitISUXICkI7HCkynWoI99G3zCFl/EmdWnQ+Xmp0nZMDjWrfwFnKY
-         KjjLdnIQo8lXURAGaxqd9cTYVdFCReDj8D0gpp7cxBgNi2JyfXYIiwlilycPyeIaL6UK
-         T6E5xMAoOrb9jX1SXHs58oRBAVHy4SBPc4rRKY6q+nFR9n6XTF3NqR1h4U5gJeB0/N31
-         0662LQxNSJ4NUjColQHS3BWyfcCW5v5OVg37dL9XlLwK0vt7cinVU911j05TMX5/UOeC
-         KXeMmTO3uCfbE6R0bLUEPK+Q9uXuGBQpjOn4OF2cL6BhVIFAUm7ndanEV+L6Xry41lfG
-         rKbg==
+        bh=2YcWKgEizOcY9z0vq5q3df4Dwqk/3q2KHCFvnTeL730=;
+        b=PFlTjPs2N+JuE51GE+jaEF988p1d668BcAPa0784Xsm4ZgY8UasbY/lGJC64+Uz4Do
+         oB0hVPQ8nT1HVZBjBbtYl6LeV3lX2Z/qtIG47MULhFnzX2l4FUMcpOoTxsMM5wLqtI1Y
+         YX3aze+GYnpczuWIWlRP+26DDCX5cqXKw9ushIwW00s225bZCSIxh+T4IsH+8hilVFLT
+         BdYrXeGZBw0QK2L4JQAHsIg4USeWA1ZWC3jgjW7DtlpaE0mrqKlzH0EwHHDH4MOcNAGY
+         WCXXZ7938OCSx44yf2TwW5GfYqerUX5RxpOC57ZbJxmTiO7rEKxue0NC6YxVugWygZQv
+         PesA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780630439; x=1781235239;
+        d=1e100.net; s=20251104; t=1780630452; x=1781235252;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=jYmKPVlEdqw9nJIpln28SQxgNWXUbITnOaKq2Dm+DFI=;
-        b=YsnZV7e1ehWKDxrvIBu8Rx8kI3S4TvGbxvID3ZICurNMwp3qRZxhLZN05mHcd1uHOP
-         V0eaKfgK1ik7hqolVVxQWCFAns4VOSNQrZY5G7PHvHeVkIIL+fXYRnAIXL8IT1jX3Mwm
-         7Y/20Vb5t8JX82C7nbURDGeSQNh2OELIauntj89FHemcXaN4VRtxzxwhaDUn983grMFQ
-         Zz86JKwyV2s0E0P0dWpY41WhI5MAlVm9wr/1iRg8yIEpetg6gyHsCGtMQHSUtlDbZqgO
-         cxoA2x9DYQ5A60NheyTqDwG60jF+Loz4MACS62YzD1VrKbjwYRaINLzMnhC5P+dyvWYE
-         JH3Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+UDH7QbUHXn5DCBYVj9vgChMFdEM/+oDYbYmScBJMCOGfQKQKTThF2Fkmc7V80hMAGo0rlajo2Cg==@kvack.org
-X-Gm-Message-State: AOJu0YzeuXO+xQN24CABtQEJSTg0MFEXGAiOrONzSZzWPvq2/c9VE/g+
-	sVcWWvk0WHS+ndq7FgViWPgr4Ko+8MHASqy2jG5gw5kfBJhMruIVM984DJm/3nUBdzc=
-X-Gm-Gg: Acq92OHzCKUOFhCGpd5esqd2eD+4qziqrsDZ0UM/GroKHW1WAqOTAK5pbyYRBpwnhAs
-	DJUY1GSIf+9VFcVzj/p+snlLKWaAixF7o9FBmFHi19uqeA8L+7Ix07jUYYaK5GQYea2pXBR5oaG
-	o7cGjEOl8BoKBPQHhoWfeqrXvd7iKoV5uSzsf0bgm7TNHVbPG0j3b+/ZfCIBG7rxQkcyLnm16od
-	zIzo7dmFWWPqjBJwVk5SMI6c/Wb6dlEwJbY0QErtzUGAIcFwBd7mKplB7FVQKDE0Zh12Vp77mO2
-	8nTif0jCUb/KzoBZ99MgaZMGk1OqDL1n5zox1tZ/b+3MOLiIYc1MYFgFqBb2NwQqDolqbtQuvup
-	xZmgDircGGyNIG6UW1L0iaBfY81VN4CNlveqqmllnyw+g7dX7C5aPKxeu7MiuHWE2+Z02fOu5hI
-	jtiIZjUEYj06G4eriUk8efH9iW7ndwW/qxi+TCFQOBqXhYDwyef6D8vdC3BAux1Q==
-X-Received: by 2002:a05:620a:450c:b0:8cd:d688:7aef with SMTP id af79cd13be357-915ad197c8dmr107318585a.19.1780630439344;
-        Thu, 04 Jun 2026 20:33:59 -0700 (PDT)
+        bh=2YcWKgEizOcY9z0vq5q3df4Dwqk/3q2KHCFvnTeL730=;
+        b=CYlNVb1YtzoqkxUaHk2e4r41L//yBUk5qZML2lMd7rw03N55kESaed0wgEOsuoYE6J
+         bT+yKziqmYAaK79dt3WUT2fi66XLGqIggkBCUxwzgZyWziz0JVp4GwnDYKE2zLWkDHqH
+         XjKm/PL9sjVPcNDZpU6dBFEnqIecM38ONc2RoHx/qgkZKVepTlRG4E++nPtWTzccSfl9
+         boTYYVjXfSFedamxdAFTmjxvD9I+7G9IiOKvrkXdOGOzaUTnj5CgU2JV9NPYF0Lev8NH
+         JkApNRfF1x7Un+2gWti7WZZuLLzgQqVtq40dUtlHcXkZKLuvV3Y5J2Zyki2GhvhMsZLT
+         CdYw==
+X-Forwarded-Encrypted: i=1; AFNElJ9mHej2okap9ygYiZihQr6g/BlazxMrzD5Rcy3liUi6tQiEB6OruBSAm4EU3njc9Dc9CMzfXjU07Q==@kvack.org
+X-Gm-Message-State: AOJu0YyIHEJ8YbETxBDpvAUPB+VKMrizGqHsW9NZge67EqigblRrjY0U
+	w2ngTyQPf7aoUXpTGEcH9w/O815zeZAM0mvFDC8B+Cin6wkSXptQ8xKfvlr5EZjy5NA=
+X-Gm-Gg: Acq92OHg5ot5lMlv0bZ/AdE2G5RLXVkORmKKx2hXdBT3hWFlCLmIDT1WH9jvv3OeBK2
+	D6KBFp8XeAksL5aBWRXDlwV93hpUftumPGy5iKFL3sENss2KEuDJR/B/sVpEvHysfZdspgWdlkC
+	+obUV9dA/8J4kRxEq2vuw21MglFpMVr5/EHxRnrVG2y4eRuLJEhM+hoHKjVfwQ6f6CZbgN9fx9/
+	tD5G1AznLP+J8/+5mZctOs3A6w4ZFXvLst0eTVQsmRds1UlLQsWBXk6N3iCi+rB+H+e/oitn/KT
+	gHV8l5+U2tIXAM2v5jWl0fagxtHyBRxeZ2d84rWzMZBkL+aHsAQF2BIGSt5ospp6Dz8q/e44aJ9
+	K40Olxfzf6jmDnCbZzN52YAG0Rk28KN5kDRkgL0yGG2JtRmpKqxDu1/NJ1BF3N28j8eSM/ceGPY
+	Hr+05iem4q+V1IIyhRf9Eo4ALpwC2ikx/tGhsL5JhieL0SVWv6xs7HzPksINB2UA==
+X-Received: by 2002:a05:620a:f0e:b0:915:a953:4b93 with SMTP id af79cd13be357-915a9c4b267mr362733285a.3.1780630451754;
+        Thu, 04 Jun 2026 20:34:11 -0700 (PDT)
 Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-91589ea0bcfsm780607085a.0.2026.06.04.20.33.58
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a00b474sm768496585a.10.2026.06.04.20.34.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 20:33:59 -0700 (PDT)
+        Thu, 04 Jun 2026 20:34:10 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	rppt@kernel.org,
@@ -106,22 +106,22 @@ To: linux-kselftest@vger.kernel.org,
 	kexec@lists.infradead.org,
 	pratyush@kernel.org,
 	graf@amazon.com
-Subject: [RFC v1 7/9] kho: decouple radix tree compatibility from global KHO version
-Date: Fri,  5 Jun 2026 03:32:33 +0000
-Message-ID: <20260605033235.717351-8-pasha.tatashin@soleen.com>
+Subject: [RFC v1 8/9] kho: decouple vmalloc compatibility from global KHO version and update memfd
+Date: Fri,  5 Jun 2026 03:32:34 +0000
+Message-ID: <20260605033235.717351-9-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260605033235.717351-1-pasha.tatashin@soleen.com>
 References: <20260605033235.717351-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BC0E2100010
+X-Stat-Signature: kmnk63pkrh443z5fix411i1nqtptyqsd
 X-Rspam-User: 
-X-Stat-Signature: kgi3e1qbg4rigiena1kdphjoq6xze8na
-X-Rspamd-Queue-Id: 3129220009
-X-HE-Tag: 1780630440-706972
-X-HE-Meta: U2FsdGVkX1+l8nGuYU9HBFP+V0h/N5jz0pcrqbIns/SgjvuuanNxhYkFf75g0Dms3QSMj8ZoK+zD4K3ySjYz5/uaOD4yDX4XRXgyYPsKP159gsdawoC5q3aVYr1RRbY7ThyrR/BvlSfpTo7zBFB1E5vFvgJXSuITQcoSrxv9WF6n6IWe10RowNbWAT71qcomA2iGmqR/YV4/teYgPhsYwBzSetj9IpKRc/tzdcD1enHynufcz7sXXxALWfe2TpV4KE5mJVHZY5rSu4wgpYp2EIrmFPBo/BK6IqtoNcb56omrEuWV+KSWxEXOWUbxfMOoygXHZboeXa6wuG4l4HuhziyW2zU35JUP9tt0X3kQZKFXz4wrqFirBrRJfJSJC+rnMoVr+XQ5mf/MH43dAmx1wDjUfpsxHjtpM8fs6HZpaMq6GLKPlLk4y2jfFwwFSCI7gwLn/+dZ23RsnaXudTMdLYfuwcfXPoI+krCRz3dUjPJETNkUgD5CwuboKSooQOv82x34am2PB3YvGHnAMR7nmoI4SpbwBvrHko6Ud0CjL1jQsfY0yFiR00DU2AAhEUgW5ltOPful7iahxC2vjn35kPua+hN/rw2WltL3ZIxP8Gtrq5qYal6cHEcdskO9zQov7Z03LQ29aJjtUzxpVYdVJX7AKZhiytyMOg80wV/XrbYtiiR6k9EH6XBwFinpJU7sRFR+M0nCC4ElRfk6qCYYYZ79L8ooPQ+tu8XHzKud75JgQrfxXqnRvH1q1n5EOMV7nNjEZlkh4QWnBT9uW6VF/CDoYfJoOa7+HQGM3+SW5/z+VMP690jJeqMe3ADpUr4oYI1Rl8WhHOtfYmr6qRsvZk6Gde/8mgl+IueJsUkYB9I4EMEKytOXGJkcQPSS1/KzAw2FJahyAciUMT7nJV+vF6qT+LLehWqHkAeJQxsgc+RMpG7Wvy1AIQZ774D0oUN0TO3hLe1VKHWORTeRUr3
- j+DzCbt7
- TtVyEe0RRSmiX/b2YSygKxNAGtEZVTO7myZiRVffAHw+Gz22Q47kpmUCmbbLm3w7BsPmoJ1m1gT1HUIbK2fCuRLL7cpwGjHd/wgQ5VImllMt8h0oXm2z7ZD+q2RaPnvB8Xi1dfnQBwt2nxPSNIVXt1PW0h36ILsvQtnbYjk0vKiTGZuTQ+798AYbqYeyTCj9JaNflF5EsvSmspj5Hu9NTekO8RtMF2jaR5NbHxQ1hrOdZTmTAcy8Oo8lNHOwN4ni1+SMmAIPkPGu5gLCRQUvDBDY5zEMwTwZxS8FOIK0B72e/j5VJsfYBf5ZVhGH0tpTGVzdy/8P6qdm7Ymx9B5giBAb2Pz6sqWw6Yay/kndjL4LN8AaCFykPgsTfig==
+X-HE-Tag: 1780630452-838883
+X-HE-Meta: U2FsdGVkX1+w3jBJYTdQMJhrGUuoOB40KJx6YmI1XZtb5PwitVVDPoNQofoFyPW904jDjYKG9ylHjoTEcY2ByFX3B67ZLOullCeaHf8dUoR6taDxAv3ivE3swFZdZRNqrho+ckvNlGKAepLODBmnv5pTn9KcEPtHBq2oa9SgOvyvB6rmbEQT1s4ZKw2pnd+1EKJfkRn9b9PUayi4Kz/vIcgYxwkKC0BkfgbDdFjG9Qvr3GsIkskGg279k6RBvxVCweUUnAnPFWhQ9dieA50iHnf7JR7KEmWFc543Z6omj3XiCBYVEg85rlfHuc+a6GEH+TrHGT3gVtV1loPBnFr/TWYGCF8iv2/moVsZ4F1QXpzvRA0c8JJGTP1EhqcmzZVLwo+IAXNYNhOhr/+/OP518i/ijwXrCI9IX0h9uIlrj+vPtmEBN8atQMvEloiG5PAEQYZ3PPVuJhcP4iSXN5vwsdh1gaCri4flNS4pjCfxZdWUp3Q1ZbrQ7Lq9uD0OFnvs1uvba42dr6JQHtEn5qO8HYcg7kyz6TVjOP8g1JdoHBM0RR1OcU35vAO1/wDaMsxR51JvJAIxrhzurswDOhLwHIoj/9M/vxUYt3eRKbojPGbhcWOKf/2W9yMZw5CxvkT0ovm2U85XRIbXoRW4gdfszqftZD7r3QjnIHnlXoe9NDXOmen/GGQaeGWnnmGTTQeWEZriGYfX88O7sO2utrQwVsIXFH5crp9N+W07ATStPyI0OMKC7v3Da+cUoUex0TXGJ+ZCxvN99eaT3spDdFPGSCtgt7kUcxCJ0cyT31IgzQOy6sHuH7nZ7CWgscmWfsIFXGfJV6bQjMkytocQm7a1E72MrZiN+xc9U8P9W67OjMR0/RbpYAwIrzChIb5c3MB2Sqm2k+K1NIyjBci0g8VKYY+xIEO7G2MqfaRFlCqqDhi4tY2m2eDeCYVP8Z3CS30Fh4Aum4kT+ubI+7ge48j
+ Gpe1nDDc
+ wQSO2eycJJVasWYZM/H9hd+B7ThqrDL+NnGRkIqotfGJDjzUDJKjdep3ZzGj+alM/8psQ8E4MFFba4bEWtL2TB4xGFfWKcHZV0iFAHXK2YfM/IPzLgf1oOLk3BNtYUvZWbODqG+q4V7fnCseHQS4nvBDeOZyJJ8bBfOHetPucMmsKapToYP0V/NRGKkbzAW4jNPZkOzWA9a1H46AmwlB1ffE9qk/CUEdpz28hCIqK/greDntCnn0MIziyq2r9PrKdaNUwAUEcmys6lgpEATozQXgMHyozttQdbbwW7qxmQ+1h8u6NjD2DRWUdpty+PdOCPTwbD1GimpEZWvU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,91 +129,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Decouple the kho radix tree compatibility version from the global
+Decouple the vmalloc preservation compatibility version from the global
 KHO compatibility version KHO_FDT_COMPATIBLE.
 
-Define the independent compatibility version "radix-v1" for the radix
-tree KHO_RADIX_COMPATIBLE in radix_tree.h.
+Define the independent compatibility version "vmalloc-v1" for vmalloc
+preservation KHO_VMALLOC_COMPATIBLE in vmalloc.h.
 
-Integrate KHO_RADIX_COMPATIBLE into the composite root compatibility
+Integrate KHO_VMALLOC_COMPATIBLE into the composite root compatibility
 string KHO_FDT_COMPATIBLE.
 
-Additionally, document the new KHO Compatibility ABI under the
-Documentation/core-api/kho/abi.rst section.
+Additionally, update the memfd compatibility string
+MEMFD_LUO_FH_COMPATIBLE to include the vmalloc compatibility dependency,
+and add a static assertion to verify its length limit.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- Documentation/core-api/kho/abi.rst     |  5 +++++
- include/linux/kho/abi/kexec_handover.h | 10 ++++++----
- include/linux/kho/abi/radix_tree.h     |  4 +++-
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ include/linux/kho/abi/kexec_handover.h | 4 +++-
+ include/linux/kho/abi/memfd.h          | 9 ++++++++-
+ include/linux/kho/abi/vmalloc.h        | 6 ++++--
+ 3 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/core-api/kho/abi.rst b/Documentation/core-api/kho/abi.rst
-index b61363679829..6acdb7c85239 100644
---- a/Documentation/core-api/kho/abi.rst
-+++ b/Documentation/core-api/kho/abi.rst
-@@ -10,6 +10,11 @@ Core Kexec Handover ABI
- .. kernel-doc:: include/linux/kho/abi/kexec_handover.h
-    :doc: Kexec Handover ABI
- 
-+KHO Compatibility ABI
-+=====================
-+
-+.. kernel-doc:: include/linux/kho/abi/compat.h
-+
- vmalloc preservation ABI
- ========================
- 
 diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
-index c893b5045078..49ac4b47cc3d 100644
+index 49ac4b47cc3d..f048bc95fed3 100644
 --- a/include/linux/kho/abi/kexec_handover.h
 +++ b/include/linux/kho/abi/kexec_handover.h
-@@ -8,9 +8,8 @@
- 
- #ifndef _LINUX_KHO_ABI_KEXEC_HANDOVER_H
+@@ -10,6 +10,7 @@
  #define _LINUX_KHO_ABI_KEXEC_HANDOVER_H
--#include <linux/types.h>
--
--#include <asm/page.h>
-+#include <linux/kho/abi/compat.h>
-+#include <linux/kho/abi/radix_tree.h>
+ #include <linux/kho/abi/compat.h>
+ #include <linux/kho/abi/radix_tree.h>
++#include <linux/kho/abi/vmalloc.h>
  
  /**
   * DOC: Kexec Handover ABI
-@@ -85,7 +84,10 @@
-  */
- 
- /* The compatible string for the KHO FDT root node. */
--#define KHO_FDT_COMPATIBLE "kho-v4"
-+#define KHO_FDT_COMPAT_BASE "kho-v4"
-+#define KHO_FDT_COMPATIBLE						\
-+	KHO_FDT_COMPAT_BASE						\
-+	KHO_SUB_COMPAT(KHO_RADIX_COMPATIBLE)
+@@ -87,7 +88,8 @@
+ #define KHO_FDT_COMPAT_BASE "kho-v4"
+ #define KHO_FDT_COMPATIBLE						\
+ 	KHO_FDT_COMPAT_BASE						\
+-	KHO_SUB_COMPAT(KHO_RADIX_COMPATIBLE)
++	KHO_SUB_COMPAT(KHO_RADIX_COMPATIBLE)				\
++	KHO_SUB_COMPAT(KHO_VMALLOC_COMPATIBLE)
  
  /* The FDT property for the preserved memory map. */
  #define KHO_FDT_MEMORY_MAP_PROP_NAME "preserved-memory-map"
-diff --git a/include/linux/kho/abi/radix_tree.h b/include/linux/kho/abi/radix_tree.h
-index f4cc5c02f37a..89cd7eb4a91d 100644
---- a/include/linux/kho/abi/radix_tree.h
-+++ b/include/linux/kho/abi/radix_tree.h
-@@ -20,7 +20,7 @@
+diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
+index af310c0c9fdf..24ecbf48cbe1 100644
+--- a/include/linux/kho/abi/memfd.h
++++ b/include/linux/kho/abi/memfd.h
+@@ -11,7 +11,9 @@
+ #ifndef _LINUX_KHO_ABI_MEMFD_H
+ #define _LINUX_KHO_ABI_MEMFD_H
+ 
++#include <linux/kho/abi/compat.h>
+ #include <linux/kho/abi/kexec_handover.h>
++#include <linux/kho/abi/luo.h>
+ #include <linux/kho/abi/vmalloc.h>
+ #include <linux/types.h>
+ 
+@@ -89,6 +91,11 @@ struct memfd_luo_ser {
+ } __packed;
+ 
+ /* The compatibility string for memfd file handler */
+-#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
++#define MEMFD_LUO_FH_COMPAT_BASE "memfd-v2"
++#define MEMFD_LUO_FH_COMPATIBLE						\
++	MEMFD_LUO_FH_COMPAT_BASE					\
++	KHO_SUB_COMPAT(KHO_VMALLOC_COMPATIBLE)
++
++static_assert(KHO_COMPAT_ALIGN(MEMFD_LUO_FH_COMPATIBLE) <= LIVEUPDATE_HNDL_COMPAT_LENGTH);
+ 
+ #endif /* _LINUX_KHO_ABI_MEMFD_H */
+diff --git a/include/linux/kho/abi/vmalloc.h b/include/linux/kho/abi/vmalloc.h
+index 87650e1dd774..1847b82e147b 100644
+--- a/include/linux/kho/abi/vmalloc.h
++++ b/include/linux/kho/abi/vmalloc.h
+@@ -9,13 +9,13 @@
+  *
+  * The Kexec Handover ABI for preserving vmalloc'ed memory is defined by
+  * a set of structures and helper macros. The layout of these structures is a
+- * stable contract between kernels and is versioned by the KHO_FDT_COMPATIBLE
++ * stable contract between kernels and is versioned by the KHO_VMALLOC_COMPATIBLE
+  * string.
+  *
   * This interface is a contract. Any modification to the structure fields,
   * compatible strings, or the layout of the serialization structures defined
   * here constitutes a breaking change. Such changes require incrementing the
 - * version number in the `KHO_FDT_COMPATIBLE` string to prevent a new kernel
-+ * version number in the `KHO_RADIX_COMPATIBLE` string to prevent a new kernel
++ * version number in the `KHO_VMALLOC_COMPATIBLE` string to prevent a new kernel
   * from misinterpreting data from an old kernel.
   *
   * Changes are allowed provided the compatibility version is incremented;
-@@ -94,6 +94,8 @@
-  * 4KB.
-  */
+@@ -36,6 +36,8 @@
+ #include <linux/types.h>
+ #include <asm/page.h>
  
-+#define KHO_RADIX_COMPATIBLE "radix-v1"
++#define KHO_VMALLOC_COMPATIBLE "vmalloc-v1"
 +
- /*
-  * Defines constants for the KHO radix tree structure, used to track preserved
-  * memory. These constants govern the indexing, sizing, and depth of the tree.
+ /* Helper macro to define a union for a serializable pointer. */
+ #define DECLARE_KHOSER_PTR(name, type)	\
+ 	union {                        \
 -- 
 2.53.0
 
