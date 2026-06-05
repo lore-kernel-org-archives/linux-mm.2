@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8734DCD6E7C
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 15:15:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 577C0CD8C81
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 15:15:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7E316B0088; Fri,  5 Jun 2026 11:15:39 -0400 (EDT)
+	id B8F2A6B008C; Fri,  5 Jun 2026 11:15:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2E606B008C; Fri,  5 Jun 2026 11:15:39 -0400 (EDT)
+	id B3FD96B0092; Fri,  5 Jun 2026 11:15:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96B636B0092; Fri,  5 Jun 2026 11:15:39 -0400 (EDT)
+	id A7C226B0093; Fri,  5 Jun 2026 11:15:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 875376B0088
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:15:39 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F78CC0770
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 969BF6B008C
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:15:41 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 194C71201AA
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:15:41 +0000 (UTC)
+X-FDA: 84846208482.27.7B6B55F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 57F0F140013
 	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:15:39 +0000 (UTC)
-X-FDA: 84846208398.28.5FE1883
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5888F40010
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:15:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bAkHgqrh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of tamird@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tamird@kernel.org
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNFGN8bG;
+	spf=pass (imf26.hostedemail.com: domain of tamird@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tamird@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780672539;
+	b=SJe6iDl6tWSyGVvkAkUHQYIZn0cO3KfwK30LXGKdmuVkCCUr9rD14qr5IIr/h0GSIrh+87
+	qRqb8fCRY1C9wulJRLJYlAcBaenUnKUfCS17+WpZ5yZoAGhmWEdkCy2gHZdWPvydC1fbsv
+	L2b/SJPR9Ho1ySyBx5Eke6Ow+7lBX34=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNFGN8bG;
+	spf=pass (imf26.hostedemail.com: domain of tamird@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tamird@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780672537;
+	s=arc-20220608; t=1780672539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=puhtAJbtTv10DbpMBzxxn4d8tkyueRSzpyS9PIcm/Do=;
-	b=vmiCDYpp20lOxljTBfAGauEGPyKsBQWLf4tR3fPDqLdV+fWfqs8XVSd4wRbgACqYX6MyVv
-	2QkVFx2cE9KLVTzDsW/XxmqN50PFbNowQl2bmABR+0aBCpmTw4iNN64ARVTMdtt36Lga/T
-	qv0CoDaLil06WO6+3d64USiPaOIvOVE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bAkHgqrh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of tamird@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tamird@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780672537;
-	b=u5nplvyEBJyFJPzvqDNhTx74Cf3O94MxBNUypUEPb5Mk64zBJLA4oNlixPetE/pb7PlXR1
-	CjdMhSLDuK7PfQBW/WeQXyZyNyy4O2E+3lM3lvpmpp2mkVaSn2eRrll7kVj3V8hCbPYq3W
-	FjCkXJPpjMTobpl559/lYj91bIJ6ISU=
+	bh=m28nkewcyqgL6abQPpmwBZHkP7XmcVeR2cfNbPfRcgw=;
+	b=jyJ0z9lyMOhDH2VAw5ssQb6dSHSX1ChckjDKw2jlRF3odwokkEpsvJ2AKa8dN5FR8PYgIB
+	EjX+nMioXJUMUNYzFiXf6sDtb6n7g36r0WtSDdnIi3c7qMInDFEV/owwPH2YeFIdxHyHdV
+	23S4kGDGMWOPGpTrTEzo3GU79Xkqdq4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 31F6A40364;
+	by tor.source.kernel.org (Postfix) with ESMTP id E3D2F601FD;
+	Fri,  5 Jun 2026 15:15:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C231F00893;
 	Fri,  5 Jun 2026 15:15:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8321F00898;
-	Fri,  5 Jun 2026 15:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780672536;
-	bh=puhtAJbtTv10DbpMBzxxn4d8tkyueRSzpyS9PIcm/Do=;
+	s=k20260515; t=1780672538;
+	bh=m28nkewcyqgL6abQPpmwBZHkP7XmcVeR2cfNbPfRcgw=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=bAkHgqrhvi63nXp1C7VGteim+y4gX3V6BNOlfGB3MuR/OoTCl95ozYQpmoWVp0o8Z
-	 oOOQ5UBAofckRS+WVkyQ01hS2CI9zCdJJ+Ag9+mQkd3X/VqYTcGSc+8l9g361rmSgD
-	 S1G5QdXJMzt0GOg1cWWMsTIXMb7Arvfk2DHl4+QBw3SVHcHlKkyXE2uRTbdw/yxSed
-	 1glD6bSHdeIlxKCglJydri+dhGRfBiW1XgVuN8ZN2VNEbQifjwUzat8yu74WuUAlGW
-	 aUChmd43TXFT/rlxMXAKa2HnVXULJjewyCHp1aK0+qpADq0zq7snXGHOM7MdZY+3Yb
-	 rzvz0PfohMfCw==
+	b=hNFGN8bGicL+Ge/BV8PW2aaLc2p07OPtI1bbcmI+TVtAMz0k1xFNz0XRSScPYJIFP
+	 oZ5rX+zDkFrKXCgb8TM0uDvCDCC9Y3N9jDWiahC9nK6UNizXSieKNJ0uPgn9UVKL2d
+	 jNq9bV5sJc6BM2CCJwO805IUbofdeQDjFAnA8KB5DHV5hCFVRzoUS6LLkvF54iAkbW
+	 Rtel3vI82cAiXr6wLDvoLTIofxBBVWijw3OAvqStKAA8juLq1b/rn4CLKVUAWk+Bvs
+	 P6KXKdj82hLwuYfPrRtKzD9yHjWX363uOAJ7JGa4gDtJ4JF6T2bmR34n0V428NZk5M
+	 wUo2e/dRghljg==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 03/11] rust: xarray: add `XArrayState`
+Subject: Re: [PATCH v4 05/11] rust: xarray: simplify `Guard::load`
 From: Tamir Duberstein <tamird@kernel.org>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -84,28 +84,28 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Hao Li <hao.li@linux.dev>, Daniel Gomez <da.gomez@kernel.org>, 
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org
-In-Reply-To: <20260604-xarray-entry-send-v4-3-965f6028790e@kernel.org>
+In-Reply-To: <20260604-xarray-entry-send-v4-5-965f6028790e@kernel.org>
 References: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
- <20260604-xarray-entry-send-v4-3-965f6028790e@kernel.org>
+ <20260604-xarray-entry-send-v4-5-965f6028790e@kernel.org>
 Date: Fri, 05 Jun 2026 11:15:13 -0400
-Message-Id: <178067251345.96312.12627213045914595867.b4-review@b4>
+Message-Id: <178067251349.96312.11784247103754750756.b4-review@b4>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1380; i=tamird@kernel.org;
- h=from:subject:message-id; bh=0yZ8MNnL/6JmXr7ul0Kx6gDu12++TzJW8JGsu0EE8KQ=;
- b=owGbwMvMwCV2wYdPVfy60HTG02pJDFlKL4S28b9iVNtz/WnUqw+ODBmZC0qWyBXc7e/3/tM6p
- 3OVrl5xx0QWBjEuBksxRZZE0UN701Nv75HNfHccZg4rE8gQaZEGBiBgYeDLTcwrNdIx0jPVNtQz
- NNIx0DFm4OIUgKk2kmb4X+QtM+1rgP7T2VOduqTWLS/YuDz2Y/m+C9dsTFbpdFb1z2RkOKP9o5z
- pe4NU8PPff/U4P99pEHyq3X3zuUnTthl775vrswIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1015; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=EkC6+9W3siIvte4lZvaojy+iXrYIEK6ZDWqpH/zTx4w=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDFlKL4TiTDqWeV4xvOvlulvqnhNL+cyYr9IRj3z+lkU01
+ SqlqzJ3TGRhEONisBRTZEkUPbQ3PfX2HtnMd8dh5rAygQyRFmlgAAIWBr7cxLxSIx0jPVNtQz1D
+ Ix0DHWMGLk4BmOpZMxkZ9jRWZZoFnFRku2PovOvSs7kOeStPNwcJ1d3LO6suX7qhj+GvaGrozpg
+ dwRPWz3VieRLPu7Tdbs916YCahusH7jppnM9lBAA=
 X-Developer-Key: i=tamird@kernel.org; a=openpgp;
  fpr=5A6714204D41EC844C50273C19D6FF6092365380
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 57F0F140013
 X-Rspam-User: 
-X-Stat-Signature: kbirzp378d3e9fnh9szqjeemeigbs87k
-X-Rspamd-Queue-Id: 5888F40010
-X-HE-Tag: 1780672537-101957
-X-HE-Meta: U2FsdGVkX1816LaLMALPpFAwXmwKTNZr/ROmPqPSPM+MubaRtI/TdXAMJnG9h72ODlIvqf9zMIiDtCezMLtcD18hpKvLcY+M55y8pV194i2aSLoqQ5zCdkF88Jr9VcXyCF2DYVSOaZukcGH+oZg87kBB08Dc/HYg1UOnsxOnhIyw+wyZ8AG94O9Bivuqj2SzZ34Gj3nUHry9eTdktjpsK02aQv+0qF1ej9X3uLy/IX1WXkQqXuMojEkOtk71SgHWGRY8pyJN6w7iN6Vy8bA4kP6/uEmQatXI+13LWwHo+wfSKHMl9+vgybRsRm0dMlt9aZPL2i+wUafjy3qEwzkSiazW7ysIcj4++1kEH4GT322ZvHpYv2T/n7YyycJB2l0jrU03+SlJz/YsuSKA4LDtDQDEDSCeVwZg1Ktt91blTDNe3Fph4T3hnaMG3WjOYVj+XedIQHU9aF69JuQqi/IUkK4YYbmLh0TaRk0N3YeeFjCuL5d9SEGrG1ansz8o6xDaX7QWGo1KNfsgf/xkqOw6/AhQ3KnLwWqVyAL8sSjvtqK/koftRGT0j2bQ2Mu4jzT6wlzigcEVx0zCUNq1toetmvj4mT8GNC6TwVj8iSqSgKHQrB79BXhmmkbPHrxCoR1ycg5SnpnS/39r48ouw01ZAX8q7hJzJW5aSsz1BheiNllqSiHuvAUd0hFTr/vCrPdghQvFYn+OnI3JDzp4Dadeij2QWPOoDgFOcPK4UrT5Zu7M3Nv9Sds933BDrOThDvTC6+H+Tyhq3tKXC8LPBzwF8cqtvJTCq0SbCU6vSiQdZKrS13LDRwWDGjhKSA1d8PWf3J6Od9+hOky91/Xo6Z1bziacF3Q/L80lSf+/FezsbusDGXhRcTUNuYoCZKdzHwtyOb8lDXGyD1CysnkvkKcrNiwSmdFPDJI/IQC/ccCMfNoarkzVLS9g/+Kj9QKpZK4AaHPkhUe/UYLqO1BUMYZ
- rpBqjyzr
- OpWVzRuT79qVqkR3n8q8oXDkVIwbVuAbBCtD41efIQlvuHcJqU9RgyRGmTO2rkEbodF8knTQfc+/bC+gg/GN/+iEWcxr1DUufs7Mr0Uv7T9qfIDrju38k6vO91HU16jNRMkRak9fjkQKfWf1/2PXkC19kMcp5o37Mg+EZv0M6Sv4OfX1LAvPUwVoNk40j+8RuU2mtfvci9jDjA8oQ2zEfloTztRlisel66n5eQronuGd91jOR98WxZwfw0/SX14DEMRZQdnpCKYZMyArJu+v6ramFBbgrsHM83zA0PT9celMczlnTOSNnhif/3EvlkDnzCfc8EErq4LNu72pWtMuTv35aumyuB7FN2dI8tJTIM96uOezuwYEPzuUte3Nh8Twl4Ahylast7GZjSFFWRDtkWrihGQ==
+X-Stat-Signature: 4m4ohn75ke9t5517cxwjij8jh7fao6d1
+X-HE-Tag: 1780672539-777887
+X-HE-Meta: U2FsdGVkX19h++Dfo3cQLZ51+0pm/wytWmTUCZn/6TAJ4IF7AD2sdYn8hicaDef/DCGIydHHjsl0SsI6imaLW9WKt6tmG/oKZRSKvBJfNrcpePI4rOlmQMHFDVms2qbJpUcXHGOdaCp7K7Te/FJB3SzgbGdumP70bKxEYh6m6RRHddyfkzVO7UjSTCn2d0Rp+rx2OYQgPVDjnIFiRa3Z4lpeVHFXQx5tQqImnNF2NQ+Q59T5fT+DphdRuRJkZNSj7nOVqXCk+t0e66ueYl5jtTbs7yYl4LhKY6eScUaZZUzqZehAsCWO060a+fkrrn24Whr31wMNSTiCqydbzRzoDBBz/xGmm8halmVpiqTNRQrsyrcG0AXpcwwr4eiloy7uJ5IEqx2aGA36kSE6jHAHY2mc4n19oGSzcZvqEhvWA6WKAHVX2u6GgscR4/oDLwfozhDvMaQYoXnl1mCklacEWbsgxZGT/O/gR6/GEeBCeNcj/9a9lYFa4GYWxOcn9GaP4tEgUriDwO0el+65pM7c7wpNGtY0YRO14AMzi4R27x6EyA8vaCkkTEgnz/dvDngdJ8X48FmNlKwCjBTsUE9ABgqSDsDllaU9PjaCII0CcHc8101B3eKz18s8oHQ3nSf39vJZHHeQyeLHdLnQ/IpXC5ph21iTsKCOClolNn11EJC4/b2vag4syOfOBhrFV1UqkgsUAovdTXmn56MqEJ/96oFIhj01Z/CkCxGLGEZNCTTw19W0p/FVYbJAnZEqw1H3uAQgShjZ6h3/f+UEi3U9cr/PoXHC3a7D/eLsJz67z45gZynXZ/CGnJfB2uQFISYgctDDSr+3yzYXdI18TdE28QGdwoPHxMQr8oCvuZNLVUKYE5nkTcj2mSms1QKhmQNgtT+e2zIip9oZiDVUiiTDyBLUMMitaUjaUGU9Vi2J5QOnEmcj0Y9x0LbP1Yn5+8Eq5W6wCO8ScWIQOPoZ/xC
+ 7yrbQ/cT
+ VT8PbXjBLX/bNz5uhG48GId329ZrxA9ahPwnPsxKf9ylJckvNGn5TT+3JeoZxxS5pTfVWlxCApysODfzYX29jF5leEk1hstjOyhIixph7wkoQVR4+mP3PDBqEFgoZG3EDSgbP+eUbV/XXus0swt8QsChLX9uIFMA+cbvrsqIyom35mIvHRGmNxvQne7tQ4mbBVFQYcp9CF0kSFj1pTjrRsLlT/VPoIFe8mdxB87Nt1OA/oJJKPp2HualkQXp4incWn9IHX4Vt/jpuhSZUXHAJlVEZBbDeoFBygRb5+xGja5z6WXVNeHMSre5m8IZdCIq1wOxf5Wt6MPAq0ykFKrotxQemKr6jQVpeHL6OOgepKh3gob8VrYDunAoiS/yighVktv3fXTUbJqJmE/g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,39 +113,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 04 Jun 2026 21:58:09 +0200, Andreas Hindborg <a.hindborg@kernel.org> wrote:
-> Add `XArrayState` as internal state for XArray iteration and entry
-> operations. This struct wraps the C `xa_state` structure and holds a
-> reference to a `Guard` to ensure exclusive access to the XArray for the
-> lifetime of the state object.
-> 
-> The `XAS_RESTART` constant is also exposed through the bindings helper
-> to properly initialize the `xa_node` field.
-> 
-> The struct and its constructor are marked with `#[expect(dead_code)]` as
-> there are no users yet. We will remove this annotation in a later patch.
+On Thu, 04 Jun 2026 21:58:11 +0200, Andreas Hindborg <a.hindborg@kernel.org> wrote:
+> Simplify the implementation by removing the closure-based API from
+> `Guard::load` in favor of returning `Option<NonNull<c_void>>` directly.
 
-The review of this patch in v3 requested the next patch be absorbed into
-it.
+This is simpler, but the closure-based API was here for a reason (to
+avoid passing around untyped pointers). This patch is estabilishing the
+style for subsequent patches, but doesn't honestly describe that it is
+doing so.
 
 >
 >
 > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index d54942aeb201..6d0d4905004a 100644
+> index 05e6dc1ffe69..7da57c778669 100644
 > --- a/rust/kernel/xarray.rs
 > +++ b/rust/kernel/xarray.rs
-> @@ -299,6 +302,67 @@ pub fn store(
-> [ ... skip 17 lines ... ]
-> +impl<'a, T: ForeignOwnable> GuardRef for &mut Guard<'a, T> {
-> +    type Value = T;
-> +    fn xa_ptr(&self) -> *mut bindings::xarray {
-> +        self.xa.xa.get()
-> +    }
-> +}
+> @@ -212,28 +212,23 @@ fn from(value: StoreError<T>) -> Self {
+> [ ... skip 26 lines ... ]
+> -        self.load(index, |ptr| {
+> -            // SAFETY: `ptr` came from `T::into_foreign`.
+> -            unsafe { T::borrow_mut(ptr.as_ptr()) }
+> -        })
+> +        let ptr = self.load(index)?;
+> +
 
-I'm having a hard time understanding the need for this trait, and it is
-not described in the commit message at all. How is this different than
-using Deref? `&mut T` has a blanket `Deref<Target = T>` impl.
+Inconsistent whitespace.
 
 -- 
 Tamir Duberstein <tamird@kernel.org>
