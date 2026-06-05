@@ -4,119 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E773CCD6E7C
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 18:42:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7595ACD6E7C
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 19:03:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 324AC6B00B8; Fri,  5 Jun 2026 14:42:05 -0400 (EDT)
+	id 938AE6B00A4; Fri,  5 Jun 2026 15:03:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FC226B00BA; Fri,  5 Jun 2026 14:42:05 -0400 (EDT)
+	id 8EA066B00A5; Fri,  5 Jun 2026 15:03:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 211846B00BB; Fri,  5 Jun 2026 14:42:05 -0400 (EDT)
+	id 7B1D76B00A6; Fri,  5 Jun 2026 15:03:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EC716B00B8
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 14:42:05 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A2C25140186
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:42:04 +0000 (UTC)
-X-FDA: 84846728568.25.BD5A53C
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E7F411C0007
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 18:42:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=trailofbits.com header.s=google header.b="DFJKT/Af";
-	spf=pass (imf21.hostedemail.com: domain of sam.moelius@trailofbits.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=sam.moelius@trailofbits.com;
-	dmarc=pass (policy=reject) header.from=trailofbits.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780684923;
-	b=K62GYWNfFs+Q6h3ALWhgmxZWAmMAu3XLdkipNWd5/cnb5PoG8UqZRjTbdStzzcJq7Nb4Wk
-	gLSTxwKfGg3ZDGXEJNgypqfeTNs1pVXCxVsfxKRhzJwbEJ65qlrEo7KievqFZOriolz0eN
-	WYQ1FweWuDmXvp5/YplvvinKR4jpikE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=trailofbits.com header.s=google header.b="DFJKT/Af";
-	spf=pass (imf21.hostedemail.com: domain of sam.moelius@trailofbits.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=sam.moelius@trailofbits.com;
-	dmarc=pass (policy=reject) header.from=trailofbits.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780684923;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AF5E6B00A4
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 15:03:45 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBF7FC158A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 19:03:44 +0000 (UTC)
+X-FDA: 84846783168.21.7C86283
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011032.outbound.protection.outlook.com [40.107.208.32])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BA22616000D
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 19:03:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TtjpzMzd;
+	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780686222;
+	b=mXASbtyh/4CDv9lK/RGmqD/Uh8/NM0Htxv6t84/gz4Vkopw+wctWSlTTYzfC8TgoWRt9uW
+	kQwHXNVrTn1OyLuhy0Ys1uSCjN/HClfD5tu/+faLexI663/iSJdE3xTwWtq10Soxv7bWD1
+	DUQQ/Ys1MbmlRd8r7OZa87fejFAGcMo=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TtjpzMzd;
+	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780686222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9dziyAFDBMS+ZSt7oFPGlKy1Vv4XAHLNgQ9Ot2eQsEo=;
-	b=gOVGIO/OPcrrNUVj0bru4xkyN683HMZbDsHpitqlpW+kNrrMBuW6F1kZfig4w9+eO/1YxE
-	ULXK8zv3z6j0DqIP+VeXAB80ieEnrqBNpf8ZJVtAcIPCbvYhBMNxtofWUjH4drcKr0j5lR
-	rFRI2Eqvnt9BtALkVpc7vIRbUE2vjSw=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-517863a2edfso17686911cf.1
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 11:42:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1780684922; x=1781289722; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9dziyAFDBMS+ZSt7oFPGlKy1Vv4XAHLNgQ9Ot2eQsEo=;
-        b=DFJKT/Afnp4MZRv0LzF6yzekOX1rMR2fbwmmeRF880qrP74TUDqD9vq0tl993m06yw
-         /jtMVVtsDs+PH444EPdGew3GmAJ8SpPt2aHaw4pymWH+dflYJWuSLm7w3INjxjsIMAeR
-         Lc48anGERhS7YichTdRNyALzuT3k1y9R+d4treJV9LWapMm5Vis3UrszaSna2JoCmdSR
-         ZkV1moCJUf5DOeuej9OjXynjNSinKCsAbbOUTvjHAHanHmDQV05Ir7sGlofe/ufDsYKR
-         IXq9OclXyrgye1jwy1YfZSBhJNdAa7CuINh+I/7TMESC8VR5N7oP4owgXjLjfvOH8XV8
-         C/gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780684922; x=1781289722;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9dziyAFDBMS+ZSt7oFPGlKy1Vv4XAHLNgQ9Ot2eQsEo=;
-        b=P4/LRvkYem+YulLAP6lCKFEtXByZc76d4YG0q1iB9n5cz4N66Gz3BlY12NCnNBJMKc
-         OSRdKoUjweBdTkh0VLETuW59gWSRebOTbcPUXQztVmPgtFG9uxAMcoFRYaW9w32udHMJ
-         MKjik+98dw8UxB+r8M/gIkHmFUlur2gApFMhIks5lIyIfTLAAhAe4DwTo3hgmAymmCe5
-         K+Tmur2etm16WTcVljdLRhDLtRY6yAzpLaKAbBERoGV354HVptZ+RsMbNxPML+IY9gjG
-         D9Fc6q2uatQOLcq24Ba8yvxDcDC256OPNsp/ncQFwrvSrt+66MBTOKRBx1NJf6qlj6xF
-         ug3g==
-X-Forwarded-Encrypted: i=1; AFNElJ+TI6ni0JaTUmbQsmqiE/b0qoMIWVtPc1SQgAWcelXCCk+O5zYizaReXFgopzRs31+7hZNqfJsTRA==@kvack.org
-X-Gm-Message-State: AOJu0YxxFbq/RSOEurI1MUxpRIBUlH9SS7rwWNqg9k5+ZJBJtBXelBIk
-	VagOF596J/nNa0hqKe3bxwbDtDh5T1HXUySuXoF/QAQnSgjtTmVuz11xjDvefnVe99o=
-X-Gm-Gg: Acq92OGH8g02PSHtrQEFmA6BrjvA7eH7y9lFrtDaNvVCS1WtJBhohGjxot308z5sGGa
-	oArlXcl6JvqvQ+Pjhs92XiCiCYYsUR/PsJ/iAT6X7Yz1Zmbbf4h1nhtWsbOEkicV1KdtXH8bf25
-	M4Y/760n3RTqKoKtg70tho+aqC6pnsYHCssPLxd8NWZ3gxOT0d5yfwnlT3eB+wjBqCYQBxKnm+H
-	XBiSgeO39tYOyZc7VTfBBfD3bSaY0p8AQIbkDurddAroRSldrCOGHUUJaM/QIHCyzGQmDTSExMm
-	DEy3dRJ3nR12GH136IIue7s+JXnjOj+4Jik2+en3BcIYrLP1h3CwpoHPsRPH0reppgLJPKGtmdP
-	yMno/vj876C84SZbWpzBFSnEW7ko5hEmGW24fipW2YEi1rlcCgAR5PEJ20ZePELcA1VPaXd3WZW
-	cNZpGHzoiuliMQ1IAbze1l8mzygFtzUpfc/kv4Wg==
-X-Received: by 2002:a05:622a:4c13:b0:517:8f2e:5d9e with SMTP id d75a77b69052e-51795a71833mr68589031cf.7.1780684921860;
-        Fri, 05 Jun 2026 11:42:01 -0700 (PDT)
-Received: from localhost ([161.35.96.86])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-51775c2e2casm85460011cf.9.2026.06.05.11.42.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jun 2026 11:42:01 -0700 (PDT)
-From: Samuel Moelius <sam.moelius@trailofbits.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Samuel Moelius <sam.moelius@trailofbits.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - MISC),
-	linux-kselftest@vger.kernel.org (open list:KERNEL SELFTEST FRAMEWORK),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] mm/page_frag: reject invalid CPUs in page_frag_test
-Date: Fri,  5 Jun 2026 18:41:52 +0000
-Message-ID: <20260605184157.2490353-1-sam.moelius@trailofbits.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=e5Zt1lYz8476Up6o6xsCXIvYzDKxz+lEH8ny8OlgWVU=;
+	b=tZ85lEuxnnB7xJ5HGLx5yYPlfHuGtYaOmvvTAnDTGmHpcMiMVukwLVaKrgJQu/t1OlenC0
+	yzON8jNJrEXVoqjBkOVPDGRHkqo35v6zw3HLarqZStgnBQMjAm/LoP9CcvJ15qAzsB4bkn
+	mc95Yeu/Zjp/1mOWhHrdx3u/zMk+ybw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fucx7M0MhzXzxLMLBD5vLgrzlpSa4UNkPxafBmY6Dl/A3xGoXKpoBHKLg6ygji+xAiZ/beVJyRz2OnwunN4YmNrkvtpEFV0zmm2iZ+k6RaF/YJRYFeBI+F54bQT4Yf+SdF2oEPClF9XquvR35bG+Ep8yT4fkIwv5x4lVJbKNLo+BFqzMEzu0HjRjwGwiyUTJ9s9EP+b3Dqb5F3cKFwfMtOBgpG7gGDqw38ytDhT16XZHOH/fR12j3ZXJWCqRQjfCC0TXvicLkQo2kscO6l7tdlFGxW5ojRCJs+tXWnFebSv0NIMnd2LDptv86o1gbsDcAXiUmmMPS0dNPdGSKTU4lw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e5Zt1lYz8476Up6o6xsCXIvYzDKxz+lEH8ny8OlgWVU=;
+ b=EkT/5tlNdtM82RVmLcnD0nfFF5q2NX+LQygaTnCUZmf2H4CmO5n1f92aqvfZlWRnVn6jKXzvAngF7Ys74bf1xr2tHEiJedX0TOHqnbE4DWq9audw6W1lkT/3HV39Vo/aPqOVGBf8RDeVScb5cca+54+dkgLUfI/Y2q/KmqC1xeymfhSsW4QsnE1aA6C6jCc0uHLWq7goJd3PtM6ZeFMd16tGzns2XOfZB8KkUiq9Be66cIb3Hqa2WVv4ftHJGOLNA7PuMx4ROXwfjnzYCJb2NZRODvg9C5CzhkhCmAk6pKydRxjmvxLDvdt0l3Ba+rHf4V7NMLE3vK5daMdy0rd2KA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e5Zt1lYz8476Up6o6xsCXIvYzDKxz+lEH8ny8OlgWVU=;
+ b=TtjpzMzdIr3gmleYjDJLa12FrK2MDRMkpUvX12hvboDKVQlyxyToJ977xEIQDQ71N500Xo/73eyYtmL4TZEpZRIMLwidzqLGAARM2x6KNgrepWk5ObiDUkTxqqQRuwdec4+ITg57VR7j2NMa86/4HdT8ZxgO3YNFRp3d2GdiQwIY/FuspSHrTU/nE5tlFkwLjbYXoSszKdjTgbm8nQ0XiK1xGWsjcvaTAUrN6/6PxL6civp8iRybkOQvpg/oPOd8YHgHXOQExTLfViA2k18iyH9G/o5qPOttqE8NYw0rJNcqOGQEgynPpOL3s0P9+n7+1nez134L5O4aM4LRn2EbBw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ MW6PR12MB7069.namprd12.prod.outlook.com (2603:10b6:303:238::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
+ 19:03:34 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
+ 19:03:34 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
+ gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz,
+ jackmanb@google.com, jannh@google.com, jglisse@google.com,
+ joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
+ liam@infradead.org, ljs@kernel.org, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
+ rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
+ rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v19 04/14] mm/khugepaged: generalize
+ __collapse_huge_page_* for mTHP support
+Date: Fri, 05 Jun 2026 15:03:16 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <89D0DDA6-9712-4DB3-AB8C-B632857BD281@nvidia.com>
+In-Reply-To: <20260605161422.213817-5-npache@redhat.com>
+References: <20260605161422.213817-1-npache@redhat.com>
+ <20260605161422.213817-5-npache@redhat.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SJ0PR03CA0046.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::21) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E7F411C0007
-X-Stat-Signature: 34cbefhokspo614ues1xorowzrn6d1dy
-X-Rspamd-Server: rspam03
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MW6PR12MB7069:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40fee859-1826-437e-2e43-08dec335240e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|11063799006|4143699003|3023799007|6133799003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	/r2iWY3zE1VZOHiO+fVXs5g/f9EI4hAvKx2s+TqwwI3bF0hWpGf8FXyGQxGkplgGSRNOhiBJex9vj/JsI0rYn8zPG2BV5LyZMAlJ9p5rJI4/OscAC4SxkCqZWreVCVlEXFO1j792IBpPh/1q2aVGeF27riUrFe7Mc6m0igzHMl+mcFuPLwILg5n2W2Bif6F2OKlp1gfwCC25uGMoAfeW/GE4WKzAtBmKT1sadFjuVPU9p4hR2bvfjzGZu9hm4E+bf+d3q3Qw+YnvCtp0gNOzFZwLBg3zXsm414Q8b3Vy27B44zQuupe8aQViKOK3ze/pUikUcbuVvpC5o/ET9qXrGaw6BaHLc5qttPnYQwytKqE30iyYOabZHy+1AQwVGtN4dTw7Mjo2jfhrAcBh/0HZ0/AdbMxuR3iFQVS0nmXoMWjwl4bwdkEXPiV1IkI3iSNXW9Y3m3gpIhUezigVeLl1FxUCQToxNee7R+Rw4FUER/q1mCylbIxIdCVewQSKwsPGLdcizIpx9eH3/8mjuzEElIpCi5KfMRGc8Y5azZlesuyQPcieX1P2jvzifOWBUneoxK767GN1qavJutOQXvPTV2+nfc0aQ0p+XCBNvCKXD93LcQ2ZjMRU7RJp1Sm8UDVLfTO1i6Bfld5HiSIHfYM3oPoX0GCG23ZZzOrZJsB+ph4EBU4ZdTD+tMGJA6i8S53H5wVKOUJXjXuBnvEpf8PfGA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(11063799006)(4143699003)(3023799007)(6133799003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lmIiCDwiyhA9HJuL3Xlu2N6lE7atA1P1l2eDOWiWf6+RHcwEzdtwowQihtIm?=
+ =?us-ascii?Q?kxl6VWfkh0ZGpepfyIobZBmRApSi/Ah5PH3aeWhx0LxBGez1wFDaXFXuEb/E?=
+ =?us-ascii?Q?lWm9fz1sy1AT9pXY0uo/Y2BeXR5TZPtoPO9J1oDb501cKTxx+wCstQb5DGQK?=
+ =?us-ascii?Q?hJP3TXax6UAhNZ6PPG4etH9LXtZD/y+OMuYdmPxx/R7I8YIUo4p3F69lIbat?=
+ =?us-ascii?Q?UGNTEazRblW1KxNyV9uhRCylsOw62zdkjgtObwOWk2itiZHmOq2f4kR7WAeE?=
+ =?us-ascii?Q?zXEEvhK+DtHrWSG4kCSmlfjA64jzYps54IqwMd+RPrEjjDvyTG6MGcfpzqbM?=
+ =?us-ascii?Q?YN7U77VCca2eHNU8aQAhZA7bAMDUphhM7ILyZ7Hd/DFpimvsuTjRzUWH42vu?=
+ =?us-ascii?Q?P/CHgymrEnCPiA+vOkeIEw68lUCt5YMmVCj6ziygNRIppH1caNqgRMhlnAhi?=
+ =?us-ascii?Q?Oa5jbH9s2+M5a6Lrdb6IxQmlg6LAuvVU+O2zMd/HzdiLg8OxdZQAcuejWyIs?=
+ =?us-ascii?Q?TkvvxPXJZCNbQdvus03IzGHBtHLAl2kRA60/tKi+6tNA81Iuh7UZR+GybHDZ?=
+ =?us-ascii?Q?L1+7V63uikN8wqoeWeU9eqdds/ZQunDxOBldHr7cMCrvC2lr27f181UqVwCE?=
+ =?us-ascii?Q?D0vjvHmuSeKTd2xGwsg9TWzD0zhryNZ3YFApzAkimFtCz+aBDkOSBX4y6sPd?=
+ =?us-ascii?Q?la/NMaaV+rBdvhaan+JAnAjI/2DF8RjaWN+9m8LkGZNHWSY2Bv/IczLuHS34?=
+ =?us-ascii?Q?geQQ2udG1e3S1WoFbcOxbuz3yZVWBBC4+mn4esr5zRO7wHz6egYoxIdEzuzi?=
+ =?us-ascii?Q?xV7IGhkeYGASLcmU5HnmH0xi1iGM5HgPc7KPKp5RhcSpvlqIZklpJYb0DyxH?=
+ =?us-ascii?Q?v4Gh/Rf4lPao7Ght+s7w0lERcLxUk6yr8CCF1+3D7D0QjuNs1Js5nG6V37jx?=
+ =?us-ascii?Q?SsiQBeZd4QGU7ZnSeX8e02tXC10tA3PSZ99e9Cnu36BX4dlRoHG18GuJE3f0?=
+ =?us-ascii?Q?n+hySkJDerK/XbTiG9v7cOhAMeXOUSb+3xp35UdBGfI8JKXvzRmm+GIAQuPp?=
+ =?us-ascii?Q?DSZ6W3mSpg0ELYRZzmWVf81S45lLHaNvdzvHGI0b4SCqlwRgTJQaHEULtk3N?=
+ =?us-ascii?Q?57waJ2NA86+yDgjUFANc4XnDvWtZxinKUGbZ/WwEDbe5IhK1MfkRALmD3YnO?=
+ =?us-ascii?Q?j/afZeMT6T1wOdMWaoXoyyRhs7iJgOhWRq6Ul/Sh1AOV7t2kVQlDEeKM9Eqt?=
+ =?us-ascii?Q?xwUFMrjM0DfsP1g/r+SdAEpBW6fAhXSVS0GFZzn6Irx1GQgB2kwHiUJbwv4R?=
+ =?us-ascii?Q?ziLXTFa8nzXR5jllzZG0C8M5QZ03/TtzB67m0M7Xg2qiSS0M8h9gQxhEEO4J?=
+ =?us-ascii?Q?hRuLgEjxXp6izDqd+wz5t60cBsjsYBPk0hwUP/WVkq3otBxjwoH+9DKudzOk?=
+ =?us-ascii?Q?3G6gkd4yDhm7/Qj7KvG6RL5DDIiMhj0G63tanwy9LhTJcbqp6oUuUR+V5u5t?=
+ =?us-ascii?Q?KUYJOqiZRdNy+89lPQo59/NR3WcGWSK3Tzk9jneabBNzlw3WTRrwFUSnSeBx?=
+ =?us-ascii?Q?tNU/NavBikU9AygGsUsjgVkSYTjCO6JeKYGY6EXCcZF/SCMzL9RaGYVqyPmr?=
+ =?us-ascii?Q?Yxc/MPqTwC9OgHyNyO1VSQsXLg88gUywSyR8WREhQ81gnUWieaDFM58dtP3I?=
+ =?us-ascii?Q?4pIHvf1+A3WQqaZUQHz5pIqxcdsZzYqhw3ybZWZecWBRE0Jv?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40fee859-1826-437e-2e43-08dec335240e
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 19:03:34.0011
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ToqjogQKfgJn4dd8z/tPnuhNwQHbIUaAEVy2GGegn3eJe9f4w/M9GJYw4XnqsgRD
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB7069
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BA22616000D
 X-Rspam-User: 
-X-HE-Tag: 1780684922-767637
-X-HE-Meta: U2FsdGVkX1/rnWxiFOrbq8BEtwDgT9CjMsX0YI19iV+QvHLFcc5T4kXhux568efsThKYvRuS+tDngFhYAop+pbzyJCtywyC2Zgsqe0+i7psgeVRLqF1qnwmiTHvvVvUB3gBJWfNaPeVEEe6+l6WZwjbFs1320AatTilDjVbXh9Vl+MifkGFadJ4PnX/9Kc328G0hx9xOgI2AXCyM6Qv27h3nuWKMzpm0ZhFg32cFCIHdMha0k2VoXYwXq6xGZVC+3KSKSRF1zuzRY+nzQny6zMjSWA7qEEn46afYSHJNU0D2pfB6c1wFAMtb+Q3q6uZIpWWEYFakooGkKlB1831s1w3231fLZt8M+O2eCRuxuvu7M3JfLpZi1y42feiRuxvna42adkUhUSNC/3Dd9x5cwGtQLI8Zq+LUF5/u8UeQ1Ht9P5rAWqqyCG46jxbqY+Ez61SIEuS8v1/mIxUaNKGh7VYngMLiF1GJdF1/ZquRl6ta81XhjvCc9kS/Wdnt0zKHEuoeazdv/j7MQrkwWDeoXJiwbo/2JWH7ATwOqzLlt07UsZOjClalBmfpkz1xbfI2tlVl7/PWuosqeA3aGwGqX4uO0Li9soHAx6U2WMAwzeDFUkOmYiLQOlMvN42reT3YIRfLhwdnNS2IaYG7OfIRVupXX59x1bTVFHYL34+MFEFty7WeoQ6Ycaib6gLtNPPgfFU78LAi9Y8NTBEECHkobnRZlE/GIdlSRrUUyPxNMLaOHfPyvK39TjD56VJFf7g5/Eersb7Mye96zI5oYCUL5eHJLV4Jf0HASfkjCtqK5I8zo6KV0dOhhBqSNpdITsffCvAzW2JkCkQNUk1ELcC/fLkS6YmdrWHxD+aH+mgOq4fZrEqr9sAMl/i80Lklr25Pj7Q3l9HlJaTxVkCXWf/2onXGsz5al8pA+4urLO21OLwA00fAZ0wytYBJSrhljQbX509SOgVoNGNV7UliGJF
- wfWjCwZz
- zPJVzl2dcBrq+axaCzMMBEPBDc7O/vQoS3OJIRs7kQBF6n3WxtWwQVSPNwdLOhSWxWzCjCGXwTb9ScnNbv2hl3+PlsPPV+0ifOPCR8KoChn+qSEauN+zXyZIAUI2lLIh6ebBhAAX0Qlv+2E5Cm0tAqHmS5JNTZd3ogZuVOobmlXyiSeCLba51fVdcENCnWC3VxPpl0uxVVSvdiWMswy0lcbUOx4V959bRcCajjcrRVevd/V7wGSCoucvCVZ++ewfXq5koqZQPygzwouPYg4kk+0DRvP7nx42+bZ6cqzY+0ppsuHHTWRbp0INGMSWvReenUiFhWFPYGfsJdexK2b6UL0oNJ74/KyDTCeC5LK/BPQ96iR6WBpvGIZAVUUr8VP8DyEaCpfgJw3xSMLTkdtsIOxnEbw==
+X-Stat-Signature: umcnarfpbeisnpiqrnnb5wypxn6tpdrh
+X-HE-Tag: 1780686221-372824
+X-HE-Meta: U2FsdGVkX19gYF2An5gpEBdQOYpIMmovF7EJbN3yVW4Nr9hGN+LpazQxPRDm4rvKSJKXUUJnuoyHsiqi5++d2nHCgpWrS/t0n0AhHSmWHQGQDLPM4Tdhn8SNCDNEgD/t2v4IaKcuLK3mTMPxEKMv4WwBqoG7nt+m+geZGR3cIVsl9CrY6ICfxorkso6usaakwehVnannbe+UZJyimN2RcECFUPdVavH6gL3zMpUMaQaeL/7N5H7RA9kZMQs3H7gI/gW4N6LOhUJKX3r6q+LeJ7BEbRMuVdA65f0U47kipO+wZivg8f1QRGjosd5lut+X1spDEkBFRM61+mhbBhSGfynDJMbm63qseBTezoV3e4ZE5ZdfX2f+G1baU47xe2+w43t/24b+8++FbeepyOHgaaJd4WIxTd+Q8jq3afT+2/5r0VLsIvJ6q3EJR2bOV27D3wGdiCjwAogas+LNWYwIqsdvITttD8uncObwuwpKLO8+tlFrPGwPq0BKiiw4qscrvKYu5eQzYrAJenCOqyJHD7n9G83K1gwI0ZLYUWlSS5u4veLQ7X7APBBYf2b0HDQ7B4PkFPnZwbQVkihEy+UGpqjw9pWT/Cd8/WZXLK6cVxjysyRCLEw2130joQZKV0pepMC0e5WcOwcNhZLyKGk7esZaRbB+KBBO/B35YNQjaYbSzQYmaw1VMLAmNK2Sa6Y1NofApTWsHs0YVD4BDKQoGiBXBHPDl821dxgE598TnU6Cc/ctJ6VWn8h9/ThHkacb7F82KJUDVXT8jOYLvectowMuRbbvZPoMK6tZa9y4vhHhHxfaMYgr370t44iNYAZGF6vKboC6xks3b8SWwd4r2kq0YD6CzI06KDI6wrUZNN7xwXh7XxuVMPV5mX7I/C+A09pPIVGabjLQpxB1F/vdcnKp5Qn8JEhgDk33mlKYNriN6Bl5GArRDENher2ZdgTQV8yuqWPZpxP1hdKYYms
+ KzmL9szC
+ /2dFOfIzf59YYJwaeyDNFKODhZsdBItN4sEN+2Chf0iiawpH9R6cS6JPxA/SzSURSRrIbCg4/8BZPkswzR28d2GnydnI+299xPnGirCwYb8xw7l/SpLc1kzWCUOIX0q+dTupQlfsze4QThgdoQlmgvvBNTaVtPdLGPW35YfxBl6jD6Ekr1IBRg13KcHX0P6Nq4MZfHNbUVN7fCGytKWsLIG9y9HQ01dQ4PKJehwQVNGzvEoRWIYXYzd+HYlEKDW8x2lAsFrat0GBaFLiJCRqxcoZ7XMTTWJ2wIK5z9iUk277VyaIhX+eco1cHHUwy8umX4nGiuHX8PncldFaiZOo4ig2HgchEu9K6fpVqG1WHjY06SXxIWo7V7DS//R6wDe6T98AIaGP4rL3+1ml9QcCXQRVLDhi2HXZGBZG2x90xhdBVl5ZFkhUzwYc8wzzhBea7rKi03rqsNNNwv4sfnQ9D4J/i4tvgAFJ/VzfGUAA+iHB/CksbdNKGbR7ZxyvtMcdIut/NbfvPlR8SdgLDDd/3+dvTRwMigeko0PBISw4NZ3qZ79bYSTmISbA3iQsPnug2z1cMlPB0UlLSAqLpKxGUcxnXodQ2Rc8qCWTXO5e/GwV5WnQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,39 +178,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The page_frag selftest module accepts test_push_cpu and test_pop_cpu as
-signed module parameters, then validates them by passing them directly
-to cpu_active().
+On 5 Jun 2026, at 12:14, Nico Pache wrote:
 
-That validation is itself unsafe for negative or out-of-range CPU
-numbers. For example, test_push_cpu=-1 is converted to a very large
-unsigned CPU number before cpu_active() reaches cpumask_test_cpu(),
-which trips the cpumask range check with CONFIG_DEBUG_PER_CPU_MAPS
-enabled.
+> generalize the order of the __collapse_huge_page_* and collapse_max_*
+> functions to support future mTHP collapse.
+>
+> The current mechanism for determining collapse with the
+> khugepaged_max_ptes_none value is not designed with mTHP in mind. This
+> raises a key design issue: if we support user defined max_pte_none valu=
+es
+> (even those scaled by order), a collapse of a lower order can introduce=
+s
+> an feedback loop, or "creep", when max_ptes_none is set to a value grea=
+ter
+> than HPAGE_PMD_NR / 2. [1]
+>
+> With this configuration, a successful collapse to order N will populate=
 
-Reject CPU values outside [0, nr_cpu_ids) before asking whether the CPU
-is active.
+> enough pages to satisfy the collapse condition on order N+1 on the next=
 
-Assisted-by: Codex:gpt-5.5-cyber-preview
-Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
----
- tools/testing/selftests/mm/page_frag/page_frag_test.c | 2 ++
- 1 file changed, 2 insertions(+)
+> scan. This leads to unnecessary work and memory churn.
+>
+> To fix this issue introduce a helper function that will limit mTHP
+> collapse support to two max_ptes_none values, 0 and HPAGE_PMD_NR - 1.
+> This effectively supports two modes: [2]
+>
+> - max_ptes_none=3D0: never collapses if it encounters an empty PTE or a=
+ PTE
+>   that maps the shared zeropage. Consequently, no memory bloat.
+> - max_ptes_none=3D511 (on 4k pagesz): Always collapse to the highest
+>   available mTHP order.
+>
+> This removes the possibility of "creep", and a warning will be emitted =
+if
+> any non-supported max_ptes_none value is configured with mTHP enabled.
+> Any intermediate value will default mTHP collapse to max_ptes_none=3D0.=
 
-diff --git a/tools/testing/selftests/mm/page_frag/page_frag_test.c b/tools/testing/selftests/mm/page_frag/page_frag_test.c
-index e806c1866e36..c8584d0fdeab 100644
---- a/tools/testing/selftests/mm/page_frag/page_frag_test.c
-+++ b/tools/testing/selftests/mm/page_frag/page_frag_test.c
-@@ -131,6 +131,8 @@ static int __init page_frag_test_init(void)
- 	init_completion(&wait);
- 
- 	if (test_alloc_len > PAGE_SIZE || test_alloc_len <= 0 ||
-+	    test_push_cpu < 0 || test_push_cpu >= nr_cpu_ids ||
-+	    test_pop_cpu < 0 || test_pop_cpu >= nr_cpu_ids ||
- 	    !cpu_active(test_push_cpu) || !cpu_active(test_pop_cpu))
- 		return -EINVAL;
- 
--- 
-2.43.0
+>
+> mTHP collapse will not honor the khugepaged_max_ptes_shared or
+> khugepaged_max_ptes_swap parameters, and will fail if it encounters a
+> shared or swapped entry.
+>
+> No functional changes in this patch; however it defines future behavior=
 
+> for mTHP collapse.
+>
+> [1] - https://lore.kernel.org/all/e46ab3ab-a3d7-4fb7-9970-d0704bd5d05a@=
+arm.com
+> [2] - https://lore.kernel.org/all/37375ace-5601-4d6c-9dac-d1c8268698e9@=
+redhat.com
+>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> Acked-by: David Hildenbrand (arm) <david@kernel.org>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Co-developed-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Nico Pache <npache@redhat.com>
+> ---
+>  mm/khugepaged.c | 126 +++++++++++++++++++++++++++++++++++-------------=
+
+>  1 file changed, 93 insertions(+), 33 deletions(-)
+>
+LGTM.
+
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+Best Regards,
+Yan, Zi
 
