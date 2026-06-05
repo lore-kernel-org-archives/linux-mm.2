@@ -4,115 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77C01CD6E7D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 16:30:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A40A7CD6E7D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 16:35:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAEDC6B00A4; Fri,  5 Jun 2026 12:30:36 -0400 (EDT)
+	id E51E26B0005; Fri,  5 Jun 2026 12:35:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D865C6B00A5; Fri,  5 Jun 2026 12:30:36 -0400 (EDT)
+	id DDBFE6B008C; Fri,  5 Jun 2026 12:35:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9CBB6B00A7; Fri,  5 Jun 2026 12:30:36 -0400 (EDT)
+	id CA3136B0093; Fri,  5 Jun 2026 12:35:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD9C96B00A4
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:30:36 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D8928C7AD
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:30:36 +0000 (UTC)
-X-FDA: 84846397272.17.AB0A768
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 242631C000A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:30:34 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dKaFqsfr;
-	spf=pass (imf21.hostedemail.com: domain of fweimer@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=fweimer@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780677034;
+	by kanga.kvack.org (Postfix) with ESMTP id B5C1C6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 12:35:12 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4DFAD1401C4
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:35:12 +0000 (UTC)
+X-FDA: 84846408864.19.B271207
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4B49912000D
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 16:35:10 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="jf4e3R/o";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780677310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2WV80dwMeo/Oh+o/H20bt+QiS4rQvxiM6pL+lxNyrA4=;
-	b=vdTDbgeHVqDlGiyBid6b+b6MAe6Po2D+A3lKZEugaFe/KyzKXmSAag3/kLV1hQP1mPjflg
-	6K4705igH4lkUVPWYO7RcnqivJaSBPfVKJ2S+L3HPFObZ07FlG/4UHPRryoP1iMLwN1+sm
-	ejgBNANNhN8sjgwGH4HaT/oCPpMr2Ys=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780677034;
-	b=MnCUn+cXcBAHFEhOID5cxmBB3KY+LAfx1wD2VvHPY/x55EWunGDcIDFZ2DNsh/nwJtYuRX
-	aK5xcWcQr1bFV/lVO+ZPIYW5G2m3VzcUeRxxsOvn652RDO8y+jv1M6p7HaCOaSkV73FJ3W
-	RG7amdgEISzuRVV7H3x3/EBjnnWnHH8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dKaFqsfr;
-	spf=pass (imf21.hostedemail.com: domain of fweimer@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=fweimer@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780677033;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2WV80dwMeo/Oh+o/H20bt+QiS4rQvxiM6pL+lxNyrA4=;
-	b=dKaFqsfr4DIvRIJD4RQz+iNfeUL5NtIy9qS9rK/r305axILaWiFdzM1PI1t4/+k8/bZhPU
-	Cl0m4MTAaaFt+Ns2XU1QbC/npniEuYwh9qEIOWuzLJZM7dj+a0DFRCRa2d+5JactEe2mQ1
-	mSIgKDT8PrMgq3lmp8TWFkH8rCBLJ5A=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-g4IP06-0Mb-aHZMfCcNRyw-1; Fri,
- 05 Jun 2026 12:30:30 -0400
-X-MC-Unique: g4IP06-0Mb-aHZMfCcNRyw-1
-X-Mimecast-MFC-AGG-ID: g4IP06-0Mb-aHZMfCcNRyw_1780677025
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7DA421800370;
-	Fri,  5 Jun 2026 16:30:24 +0000 (UTC)
-Received: from oldenburg3.str.redhat.com (unknown [10.44.50.55])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AEEB01800351;
-	Fri,  5 Jun 2026 16:30:18 +0000 (UTC)
-From: Florian Weimer <fweimer@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: David Laight <david.laight.linux@gmail.com>,  Askar Safin
- <safinaskar@gmail.com>,  metze@samba.org,  akpm@linux-foundation.org,
-  axboe@kernel.dk,  brauner@kernel.org,  david@kernel.org,
-  dhowells@redhat.com,  hch@infradead.org,  jack@suse.cz,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  miklos@szeredi.hu,
-  netdev@vger.kernel.org,  patches@lists.linux.dev,  pfalcato@suse.de,
-  viro@zeniv.linux.org.uk,  willy@infradead.org
-Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-In-Reply-To: <CAHk-=wjkZSAhxykvG6tQM5DnBoS30_XCKkYpCsQwEGcxJb=i3Q@mail.gmail.com>
-	(Linus Torvalds's message of "Fri, 5 Jun 2026 08:54:07 -0700")
-References: <f919874c-065e-48be-ac5b-300c4ab86d4e@samba.org>
-	<20260603211736.755139-1-safinaskar@gmail.com>
-	<20260604100609.6b37f500@pumpkin>
-	<CAHk-=wjvb56qo27-axALOKCY-CjLsj9_294zeBovPVJaYm14dA@mail.gmail.com>
-	<20260604183829.63c35fd9@pumpkin>
-	<CAHk-=wip3mwLOHOYJ9TtjDxOaq9YUXmuCg2AycyASGgeY6qqUw@mail.gmail.com>
-	<20260604223216.73468830@pumpkin>
-	<CAHk-=wh1Avi8FGbWkt9k0Z-KXWB0spo5mQyowO8PB2sJ3unbkw@mail.gmail.com>
-	<87se71jps4.fsf@oldenburg.str.redhat.com>
-	<CAHk-=wjkZSAhxykvG6tQM5DnBoS30_XCKkYpCsQwEGcxJb=i3Q@mail.gmail.com>
-Date: Fri, 05 Jun 2026 18:30:16 +0200
-Message-ID: <87wlwdhrvr.fsf@oldenburg.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=fq86Giqz4sRTswuw2Pr3zOZSxkSZOaMq8XWUrepitc0=;
+	b=v4TqOQLlc0N1wq3jJXCaAX0LYEUugyoNQUqMkiFD+uRo7R3pLbg3BWqhjrUAaJEr6mxixP
+	jyOkBlCNu+9oj9uneYNEjDi6ARqnBQUkRTQ/3Uz/eHNfNC9EGoVtced4zn0sobdYEq1niu
+	nlLM00GHE292QXaeXcZZUJ7ujmojPM0=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="jf4e3R/o";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780677310;
+	b=dd8Z8ZLOBgxVIxDM/ruwB4wbFfZDnaeK08UtNbAXOW7WKUhYTbcUh2uuDZl0SBeCre+kzW
+	KnSdmg0fm9Ej+D7iROGUBBw6wWYVIpEsiuCe7Gc6SOFqu+36NOHgbCgtfLwvnDN995QaBD
+	yp8K1BNw1M35UqzbgBaAdzj6w8sBnbo=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490b7866869so25435715e9.2
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 09:35:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780677309; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NEMDqkUz5UQhr3LZ2DLcngVgiA5XTajsco1xv3bQguuoCXv58SyR4o6pCjoT/qYqok
+         px+cAAvxutK7bMVxJMnjIgV7tOGiNlzZMxL4G14osBs2A7aYLEc577pOT7U2HdFNs++g
+         L3Zerl+HV/Q7+dzjwmuBtl3NH7/v3UBMYRmmXblF9Xk6WxW8hJa9QmdIvGCBe/L7Nqx9
+         mu4l1RknF3z2QYQRDh96nbCvHj1YV6SqNDk0xcy5lenR4c9d411/JxetEAY0WN0fEJwR
+         Yek/lps9OqTZlVB+ovyvTsQazoYfWlQxA50FLtFI1Bw2CQ5MvWoq4KsxwzHlgFFuS9FB
+         xRLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fq86Giqz4sRTswuw2Pr3zOZSxkSZOaMq8XWUrepitc0=;
+        fh=RdvALwV6jbSmNmIM/6XXi0y+ESAFuAquhwVyTU6J7xk=;
+        b=W8O2vCqIUzimlfii13CETdpIGAX1Xb/JIU/2YpoUdwq91kfAgnG5UDejhMYztzdJ0x
+         ZuNV+0I3IbNyk1Z5gkfbVZmL9FETdkIsBfAziLkFqmYlXvTYw9qd+/4P6WB30HJx8yPt
+         J0Cp54eDykbi0bRCX930/3VMQDu3FaufujAIA2qgzmjEmO0c+rTsIcjYLXESKEkibVFb
+         pj8RmRzY0WJPUd20GI/7GsQuC2Xy86m4QoGQ3UmZ4FvaqUY+UVDAvySZZ/hoEGEgrSRD
+         1RqF7Y6XsM49bM349YS4M6hLwRoTDHu4oxWi2Kucf9oGvBN/DYVfWO6xcY5Z6HHTb27L
+         cMxQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780677309; x=1781282109; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fq86Giqz4sRTswuw2Pr3zOZSxkSZOaMq8XWUrepitc0=;
+        b=jf4e3R/ojL8Y4ue40X0x/XWh1cVEhl5cmsQs5ZHt8bAD1+y2IP0wCgnRJaAGVqQdqY
+         boh44HVPeZxqFK4ejd0v427NnR5TewJUa6d1599I2KVGb2gE/7+n5DNtcFX6Tc3dvSSl
+         XGBU6oX8T5za4toMLeLyaTq5Qywh2anOf6aWu9rLRxah5PM98VGULcnATIReCAp0Ked5
+         5Ss8sDsoBXCb8w/7QODjUgywZrMh5nOY16zyAm8THtvcnJ+DfIGvpjAG7ALtjKvAbqVG
+         LrLQel14lWlFJEKejg0iNgtdA0GDkD5ulKoPwN+9q+dzY/H7dIG4KE162zeFDBhTUH1u
+         p4DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780677309; x=1781282109;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fq86Giqz4sRTswuw2Pr3zOZSxkSZOaMq8XWUrepitc0=;
+        b=HoeA1pCY9BsWD/lwPal1VlfOV4JwiYGSF43/9/6UBMl9J1swxZ4Z312DR5vDk2vwfi
+         uz0y3t9v7fMfP/n4ddVWqU5HWHWjC1r36g8h5k4ftsEmjvLHpgOm2yyJ/3msFHsdu/1M
+         FpqueQVjHniSjgtdgZJpPEMnX4Gh3G+d4tL3pgFv6MF3jfMo6imEwE88s4uDbfvFGUz1
+         tDaBfP0B0fwI3sibYXrWqIoVvp9PbDtTGdkcEXvsnoCfIxS+oU0NexJ8ltSU+KJi4B/D
+         uHu7Dc8txj306hF+T1fYell3+sNFmrRkdfVzsE3uJtrn1t+o8gL/BjBUxJbt/8bJc4wb
+         6J6w==
+X-Forwarded-Encrypted: i=1; AFNElJ+aJTRPmvaNVnDH+MJ2SL+8eZzJ9vfyxHE74+9UET6N3n6JRfKKlMzmmLSZf4QhLu92KUdN3GAutw==@kvack.org
+X-Gm-Message-State: AOJu0YzU3B9zg5ItsIDz3I+9o6IbuVTZPkuJhhBQZbmJjo/DDT6RKIIb
+	r66cyi50LV25bzVzytVa3NzvjFFEh09poaKTquKqsN2ZV02S26F1dessPraKXyRMRtvLB8eXyxb
+	aswZ3V1RukNZWXhhbyBfbmQlTYc8pURs=
+X-Gm-Gg: Acq92OFOjskGtrQ9jd3y2U+efP8UkoxegWDKxmtqMBbhejSovijayRkAmZW8lehwLDv
+	Cjd5K1DhoYOB0FF4R7bSeUCsKmhV2mBXDl5SEeeh314hyyvAFxWxs3NLZgQYNmz2AKXJlgwE1d7
+	R7U/zm+mZqWfagwQLks0X5SDeVVgnkXkq4j3axWeh1roFDFztyWIUIEllkJY+4Uea40LX6Tkz4E
+	x/FDNtRi8pdnZE9C74UkfrfR5W/k48V76ZcQfgSwXkZObpDrk3zBGDN3vo0TSwivwfn0myDe7uZ
+	m7uqfzQs9IEfnJBYnw9gOndM5FANgFVg7iB/3X2rkEfUd+99wg==
+X-Received: by 2002:a05:600c:8b83:b0:490:b58b:a8ca with SMTP id
+ 5b1f17b1804b1-490c263fd08mr74110175e9.27.1780677308558; Fri, 05 Jun 2026
+ 09:35:08 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: zQ3_1OT3ixv1zDmgYV0PXcDnYB1-_CgSYSlnhuDl5mw_1780677025
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 242631C000A
+References: <20260605084242.1549811-1-haowenchao22@gmail.com> <20260605084242.1549811-5-haowenchao22@gmail.com>
+In-Reply-To: <20260605084242.1549811-5-haowenchao22@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 5 Jun 2026 09:34:56 -0700
+X-Gm-Features: AVVi8Cd_BzbKI-kFicZgkjWkgdcITVLzgbqtSi8KNSPAWE77qQD1N7NqENEVLf0
+Message-ID: <CAKEwX=NiAwQdJFUErh41+wMvDDtFK2seTXx+bUu5SAAN46gCdw@mail.gmail.com>
+Subject: Re: [PATCH v3 4/4] mm/zsmalloc: document free_zspage helper variants
+To: Wenchao Hao <haowenchao22@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Minchan Kim <minchan@kernel.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Barry Song <baohua@kernel.org>, Wenchao Hao <haowenchao@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: yrhf65tis1cqnzu5md4er6m3o6hfht3x
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780677033-231688
-X-HE-Meta: U2FsdGVkX19GG+992SkU6K6uOvutQyWIhvCY0RfYfCOt7PVoI3PVSaoI37rbWe2ND5UDw+6XkD07nue3J3ugsoatOFSuC90KH/KKmeFj3oLVhl1Fijy7W8kl74LGLL11y3kBXF29sd0OQpqUR1Z34Zbawu56LR2p6KrfBSb0QcewuGxE2nSsPK6wVuTYjF281t8fuURavaU8mB4S6rG0nyYgs0gPdspOLOCmVPs61V0CsdQ8BvouSyDO6sNxNxVR5Fq6I8GAmopVulURDMaI6Q1qggcozpM1tdGeW28lUOoNss8cPtzhxClGMvUrGYCR8em3dk/PbGyZFZW53+CJq4uMgdTZIjcb9PR3KpEBAOMATjixkgjK1Tn2anQ44lkP16kBLme4xUBnC4EuWM+y4nlATfH1GEHjaKakDw6KbYebYtwSybxZiw3Eb/4c+M8BvVtY8eLpot81I/khv7nn3JNslF1Hr5NN/bfLvpw1wVs/OZ7MyTRefrEXLk2ROaWSJnOpy8vHXkr6YmSgvk5obuKVyFxVr+aoLddNSqTo+Zz+cwPpSXpJhTLme7t770l24PmAfBrQB+iHo956QLnNlohFRM0/UD0jg2L0GsZmL0H8apfjfOSFtnUh+54bSta+5HlLmPVpeIJqASy+sPinwxWrg1QV1a+cko8OfI+IFFFHlm9zr8zWy2x2csH9hm8UuDIsKaZLN/A/Ujhy7++ozVgrwO53eUBR+0EHbevzJ81h2s7klCZbBFxbTI9GgkG0i2uNsRI8RpLqDZlm2Ie0t3WSrQCzxcjFyasERrvoj9gKnmhKfLiepsNL2Ed+CeBZ5dgDjX9Mf6hlpErNuUkvbs66NnHEZdiryp2zXhRtt9oOLlQCmkGqQH32Cm9DRkVvaT4A5877H702hhsk26ySgciBgmBoX3T6TUOtzYasyF7KBeWlvc9N0aBbJ1w7RxazNeohxTfHYjYbwxvlo3r
- v8x+F/72
- tA1FbLCLTKlUTN1qMdXmabGB7m/TeUscMEcsi7Z5WRRXjkC4V6O8HmY/IkH3pMWV0li79C54/kTFeVAgLep9aLOiDrA3jDcqZvz+FncLT8VAV6avjXb4L3z0dCUjkxyZR68ZMfbSI7FxfSfRcXLQSYafGUp59QcLAScKSAdJFsvUCwft5y5SFo3CwhTNl7XBqUaxwj1PiygrlzJEBWHpFNwOBmGRV7YhzHlMh6pLXYKDI7mQavVcsKW2q2lihFdleI+mZX7eo02NxgkvSl4sA6QIlLCUrSTba/RgsSv0IvpT/kkJZ8XXIpHx31V+pATAmZ2NTsqS+Gg2wd4SAmNWpWFIDpRgPSb8XT/F8c2CQUNaS2QdRWmqvB8loLVoy0uScFxnV
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4B49912000D
+X-Stat-Signature: q4p5qt84nyzkdmh3i9i47rx61zg4sdxr
+X-HE-Tag: 1780677310-94650
+X-HE-Meta: U2FsdGVkX19cvV3DoWZWl/nmNv2i0pCUeUIfNhQTsiUHdroFUI8w4h8EINTAuWi+kIsN2Jch8KSah7Adqr1aeawOV+X+e8P9IR2ow3odejQmLtdsPgCLGcxLbzpl+kW/YBFYF0lC6imDS9xfWn8APRtRa+R9tRef3SveEnBrPxWzjl6ZCVuDAXGiZr7oEw0J6YTetdxyES3QkqEO8LjsAMmFgT6ptbFLO4eazptnE/Z0IzXKsXbkK8Dr0d3VcDnUx/acJ22Qsr2JTFUsF+ZqkmjKu8+qU7cgcf56vok76ygtztcscwSvtzdUYiAPRjD+iArZjuUA5vvaeBCGqq3UocBzF7dxbUZ2/y6o4GCBf9BDmUTv0NzpqISUANRdCndke/rmpv67z43nRRfi/3+hYEeUIi/nPuTYAYrmvxgIf0W3gFqkJl4d2zVxCykKVH5YoHmpUlCruSLmUca5IHWXyW8v8CWNW3tOrp/ekHh1uN1RMmUPxtsN2HebnpTV3+gS9b9j2GLHGAsw7jZ5G2L1AVGIph8DX1r6lNpQUFxDc8b3+gIBbRUUSktpWSjeZXfsMAODZCCiL1HkPaaK4oM6/djlVdTJ8+jruFS95NY9IdnoNHI/x0HCu61ADLq4RyxorBGypxcpzg0W/6pY1wVVU80haOGWJj5MJD0bfY2kZHWgo+DRsP7o9Qez6IRjlXGiH4hckyn0BKIVZDwm9nd9JVdMt5To71MqR0SfJuEhVKTBtLWNHbDZYWoGilC+dUkaOZfNNXSryRra5RWv5BR7DSZafJxdcRloQSvHTDqyU/oF1HPj20wDieujo7exn+RRFIOx7UkNf4BH54nf2TCaJLg7tzZGQ7ORWNV+aSwSjD42nm1l0nHsWL/hJeR7e6SNzSEB7lobco9wujrelCtWfveoVOMe8uoIRrqocEXLswM63VenKaR21bprwTSMA3zcd1o7n7r97YSYJAtBURe
+ af8Qw0zA
+ bPKgYaxR0ndXzpNY4ktyqyEv5Z8ZHBriTjEHXei/al/2DrstBmwBzzmqM3cIwrrFSGdWFvdM2G0CXAkNRJCpYHYHwnDQFbSpxnH7oPbmcU2WOciTOJ2D7EhLBs9Fyl9g9ZhemvVlfuKA4x/wXoUB/ig9z4TiGqiDwWjzBXY3k6i4IuYTsKG9pfbcr5TCHEflm+vgJmPYvbY/RqY47v6pJ2sPbkNK/CP5qTJJBHO5PTcsXfPl1CGK73n4nB9wTcJAdt5Y7t5XAm0KjXfqEP0nU321TM3IkzLD1Z+PtE8sKFtaNd8v569tqzEWuPJl6RiiCBbWfsESKEQzrKp4uiCOhxWXCXL3njRyjRkgL4dcJ/e+ljDEJjnt2qqFjpW9VQJh/j9f2JdiOrtxPVbVG7oMYA5mPulKLYkU2svviws8suK1HcFc29aULS6FL2ASFNxGLlNZIcnK4g/cikw592eOdzfsUfvACA9TCNlG+H1pV+CP4TEubaLfJJGfU3ohNotKRedKYMJ8B6DMGR7HQW4nn2SrQftrnacKxMxusavK/A68y8jyXUeoBSeQikn4Eex6PxEr3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,64 +140,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* Linus Torvalds:
-
-> On Fri, 5 Jun 2026 at 02:33, Florian Weimer <fweimer@redhat.com> wrote:
->>
->> * Linus Torvalds:
->>
->> > x86 really doesn't *care*. If the caller zero-extends or leaves high
->> > bits set randomly, according to the x86 ABI that's perfectly fine: the
->> > callee will only care about the low 32 bits. So the high bits are
->> > simply not relevant for the ABI.
->>
->> Please note that Clang does not implement the x86-64 ABI and requires
->> zero extension.  We see increasing problems from that, now that we have
->> more C code calling Rust code.
+On Fri, Jun 5, 2026 at 1:43=E2=80=AFAM Wenchao Hao <haowenchao22@gmail.com>=
+ wrote:
 >
-> Uhhuh. But that is only specific to 'bool', right?
+> From: Wenchao Hao <haowenchao@xiaomi.com>
+>
+> After splitting __free_zspage() into a lockless core and a wrapper that
+> does the class-stat bookkeeping, three similarly-named helpers coexist:
+> free_zspage / __free_zspage / __free_zspage_lockless.
+>
+> Add a comment block above them describing what each does and where it
+> is used, so the names are not easy to confuse.
+>
+> No functional change.
+>
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Wenchao Hao <haowenchao@xiaomi.com>
 
-Also char and short.  This
+I think it LGTM, but I'll let the zsmalloc maintainers have their say :)
 
-extern int a[];
-int
-f (short i)
-{
-  return a[i];
-}
+Feel free to add:
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
-gets turned into:
 
-f:
-	movslq	%edi, %rax
-	movl	a(,%rax,4), %eax
-	retq
 
-This code assumes that the short value has been previously sign-extended
-into %edi.
+> ---
+>  mm/zsmalloc.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 2ecdf79cea03..9f588b63ec0d 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -856,6 +856,21 @@ static int trylock_zspage(struct zspage *zspage)
+>         return 0;
+>  }
+>
+> +/*
+> + * Three free helpers, kept apart here:
+> + *
+> + * __free_zspage_lockless(): bare core; walks zpdescs and returns pages
+> + *   to the buddy allocator.  Caller owns all zpdesc locks and has
+> + *   removed the zspage from its class list.  Used by zs_free() outside
+> + *   class->lock so the buddy-side work does not stall the class.
+> + *
+> + * __free_zspage(): __free_zspage_lockless() + per-class accounting,
+> + *   under class->lock.  Used by async_free_zspage().
 
-As I read the original psABI, this assumption was not valid, and the
-extra bits were unspecified by omission.  And GCC tends to use shorter
-instruction encodings without extension if that does not result in
-partial register stalls.
+nit: maybe a short note on when async_free_zspage is needed?
 
-> If it were to have the same issue that powerpc(*) had - that 'unsigned
-> int' has to be passed to functions with well-defined high bits - that
-> would be bad.
+(IIUC, only when trylock_zspage() fails in zs_free(), correct?)
 
-I would have to ask around.  It's hard to tell from experiments what the
-expectations around int/unsigned arguments are.  Clang and LLVM treat
-the upper bits from int/unsigned return values as undefined in some
-cases.
-
-> Anyway, for the kernel, this shouldn't be an issue simply because we
-> typically avoid 'bool' in arguments or structures that are exposed to
-> outside.
-
-Right, but array indexing with u8/u16/s8/s16 function arguments is
-impacted, too.
-
-Thanks,
-Florian
-
+> + *
+> + * free_zspage(): full wrapper - trylock zpdescs, remove from class
+> + *   list, call __free_zspage(); kicks deferred free on contention.
+> + *   Used by compaction.
+> + */
+>  static inline void __free_zspage_lockless(struct zs_pool *pool, struct z=
+spage *zspage)
+>  {
+>         struct zpdesc *zpdesc, *next;
+> --
+> 2.34.1
+>
 
