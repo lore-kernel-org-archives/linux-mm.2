@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80C6ACD6E75
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 03:33:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 598FDCD6E75
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 03:33:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E725A6B0093; Thu,  4 Jun 2026 23:33:03 -0400 (EDT)
+	id C02306B0095; Thu,  4 Jun 2026 23:33:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E236C6B0095; Thu,  4 Jun 2026 23:33:03 -0400 (EDT)
+	id BD96D6B0096; Thu,  4 Jun 2026 23:33:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D39A46B0096; Thu,  4 Jun 2026 23:33:03 -0400 (EDT)
+	id AC8026B0098; Thu,  4 Jun 2026 23:33:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BFF1F6B0093
-	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 23:33:03 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ABCA6B0095
+	for <linux-mm@kvack.org>; Thu,  4 Jun 2026 23:33:15 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8231E9263F
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 03:33:03 +0000 (UTC)
-X-FDA: 84844437846.09.ADE5820
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BB7CC1C0003
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 03:33:01 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BVtn3ZvW;
-	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3EE35163FDA
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 03:33:15 +0000 (UTC)
+X-FDA: 84844438350.09.203FACB
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 78F1E14000A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 03:33:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=KV3DrsNp;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780630381;
+	s=arc-20220608; t=1780630393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CGemO6oM+fzlXtG0xc8ivWmdV7Y8sG7GsOK7Le1P9V4=;
-	b=vKvOOy7UeWCX53YMUoCx+PAzN2OcnDElJD044XAKXzITKBQboMQPvfvjIEZgFKNXz08TV2
-	B/ggGm0BZzoqzuE6p/NcYiSRzZoEqDb2cE+OUHEkaPbNyMZ6vXptTmQIytWsB5+6czRVNU
-	5608n5JpGPU0fLXF/bnBC/fKudKdamg=
+	bh=gH8mRD7OHBJqm1quLMa7hgev2fQ64GiB6Pr4Gxty2sM=;
+	b=zw7j5vEfrQR12eF7dN2Il0Zc3v+Mp3NlbhVquOfKdrIX6ho91qhCO6RjbZ9CWZz4kwVmTV
+	oad/zIW7K5woQJF9OmQqI5SsUUjrLRfa9vRpQPINL7u4EF3YsQK2ciQYENcNGIYcpki5kS
+	Y12OEzMmKYoUj5aML2WIscVmLKoT54Y=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BVtn3ZvW;
-	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=KV3DrsNp;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780630381;
-	b=52w9MoA4r7oVMCaDf6ACzpILkWQtc4dZA5muBv7hXbZgA5qp36iIambgJzO5aFPW6yETL/
-	Qu/khaoj2BIWIk0VuYAL4KIjrswbPgq1apS0pATCy7ALsVwbpzFEguKNIlpmUtM3oWa63U
-	qcm1SDEFhsf66VeBUbP1ukhKZ6sazYE=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-91574384cc2so172499885a.2
-        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 20:33:01 -0700 (PDT)
+	t=1780630393;
+	b=p7NM0g/PirR4tQ87ogXNz7kUden3aM48Rhj7WhUlCFggVa4u9YRifQtNnJwXKKAvvytSvM
+	hXA+CUVIN9FIqnIvJ2RZjDEev1g9zIOGR2yle2TF4OYV+KBtFO9eIgGcZtInBaFABTpI+U
+	1ZQUM6FdX5Qbgn0idUOvfNG+AZk3TyY=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5176d4c14f5so12044521cf.0
+        for <linux-mm@kvack.org>; Thu, 04 Jun 2026 20:33:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780630381; x=1781235181; darn=kvack.org;
+        d=soleen.com; s=google; t=1780630393; x=1781235193; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CGemO6oM+fzlXtG0xc8ivWmdV7Y8sG7GsOK7Le1P9V4=;
-        b=BVtn3ZvWyQ/QzX1ypx+fHSRX+wyrzqRfahY3key+p0yCQYwx339e6PhtTgAFjrGe7X
-         1bmvR8hXrxOKtZpj/E6xREvFO5WjRh3yntFwFB3Ywd5RFgYTrXgwO5pKKwMCirSGonBO
-         yYzhbL1+77Kq9vhnzoBrKx68XHLZ1OFODi8afqVOHvt2aVdGYkRR4lBSDc0Yceyj7U25
-         uivgFvFLWfcCci1u2jSHdBRJvvCZagSoplDqlvaqd2A3WWfI5FB2nkSDeTj1Gf1Q4jOz
-         n6v0BdRNY/HmdY2SHz2eVrE+Q4fCiBbtDHFVKsBxX89Y5kZGhdfrED0J43ccdukO8xO7
-         Ez+Q==
+        bh=gH8mRD7OHBJqm1quLMa7hgev2fQ64GiB6Pr4Gxty2sM=;
+        b=KV3DrsNpkQYGgyauGY37rx9+aw6p9/Lkpaox29FSoKw37YJY6DwsmL5XuSn4tJvlnH
+         rv/MunyyuGAI9jgXNSO6dE2Ub0iRyps65ympI7UgMxI0qaVpLaLa0wW715112z4NKoLk
+         uoidSu8Wsi7K1qDSpKG0szr+yj2195uXaBq/vDsN++6tvGjFeDRppQMSv9TrRTsXuiRQ
+         Jrz945SzFZayqCJz6yTh+2os8AY0DEdksoQ8FlCGVFnMPnIelX8Gq8a0Bck8D9g6cB01
+         DYZ1QSvOGQ7u2PlRTpvIGlZxevBwXWGCTx2OGYCeWBjXWYO+SEGl3myUzvLKa6Ky2Dby
+         Vvjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780630381; x=1781235181;
+        d=1e100.net; s=20251104; t=1780630393; x=1781235193;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=CGemO6oM+fzlXtG0xc8ivWmdV7Y8sG7GsOK7Le1P9V4=;
-        b=s7g6bdyfjodNn9OxPFLCuyT7Ovppx4SKPk2CEmLN7zU3yysyb5X0IUsEgnO9PGVUY9
-         VmBxirj0rQ/PV/0XPjda/iDlvCDv28Q2sXalF2PmchG95Er4XqdYACIpy6j0Se7IjUPw
-         Hkjq4fb5HOeUrfNUlqOJERW/v2lUnUYTwi6HRIz6qWlpwLjRc4pqpJMP0+NSfqs2Jd0j
-         t/HnDiOJG4nk2IbMo8QRGk7/Z9ESxoWYhOrXLWo604/uOhta0OqHeFGqo5B85iIL28d4
-         XXz0aiu8M0yIhSCiBZrlULcgwvCTmMwwsPH22EXW5C88U0wIjLV4WK1PAmuUqns2OUJq
-         uNaQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+gE/5GbegHGw05GrTaZUVntddJEe1YZ9jfThhmApccajffdB833hh6ZqsD8/IzSXEHjU71VUoz6Q==@kvack.org
-X-Gm-Message-State: AOJu0YzEEHrV63ZdeVa5e66QfWp6fZ4K25CdJATJJnefpU5Iw5u7HkTn
-	AxabBwCnC6TRkAfytRgq65mTkvSheo96BqZgtj4EcSW4uMae/clUAn5Xo46gj14SSV4=
-X-Gm-Gg: Acq92OGHigbsDeszQ+Ce1yuWBV0imLAtF54wFgdVehBcqeEKgka1LUGj63b/YzLqwal
-	ByngwRpq9RRBPrQSTjvsw4FjyhLP8S7lAboU0485PHBQ+jFF5f0F2XU8oTeErNC5M4MnDS7ZQHr
-	4NVUEmhVGENnitv/6RIFPAcf7y+O9PWYIjpgerkchvoRW2l94hr+LQB/Qee9cwcMU6cxVSF5Qqo
-	CENKCpw/B2fuXuaHKjDvVxV6SuGntz0ueY42cB3nt/B+nF4NrG0NaJhJCZDXVf8kNB4w0fP7KFV
-	Licv88kUaGzw9uWI33kGqPn7x1kpBAJceYtTbqOek1NTomlJwPV83RVU84kJNmzOgT0079PK0A4
-	4P5F1QjTWsW1HveGOiILIB0NIKjjdPdzYH18XZzt2goOQJxSKsEfF29olpaFO6aXL66WOvs/AZY
-	Ik07eaKh5A/de6eoIOgxC0QlIoqD04XI8fGNWRHJzLNhmJTS51uR/5pY1EXCDbKg==
-X-Received: by 2002:a05:620a:1709:b0:914:cc9d:e29 with SMTP id af79cd13be357-915a9cadf6fmr346442685a.21.1780630380676;
-        Thu, 04 Jun 2026 20:33:00 -0700 (PDT)
+        bh=gH8mRD7OHBJqm1quLMa7hgev2fQ64GiB6Pr4Gxty2sM=;
+        b=sBwbfrUI8I46djy2nqcd3unQq3HZATNaxI47B1VFfsjRbSiYoLzbhODaRDAjO9OBud
+         gnvGrTuZKfoOWP9EAfVwW8dO4j/zBmbvdh12TqkJGMXJtWSTMM2QFudzUWXgAAn2rWN3
+         /m+tiVvKTmgM8C7ADdGaO+sGWmWI9hwf3AKDztJQw1YEFLcg3bclDXQwk5s76TlGbpQN
+         M4lMgbo/9E2JEylBCLFpS/oBwhsyNjprzej2lgXP2e7Fc2ke87rwHy48BaBkZu4b6dcu
+         TX99R4U9ur1IbWQIXWCms8GtRRaTXQ/w4t5zUbKkCIjlAvmM3v6Jjn8frn+HqXiMhYoE
+         x0ww==
+X-Forwarded-Encrypted: i=1; AFNElJ/onjIFzjt4p6zjcgR/Zw/1n/iwXplKegq6vPHWkYMjf5fbcpuxeOk+EszwQg0u+YxO3cdq9o8LBg==@kvack.org
+X-Gm-Message-State: AOJu0YwIBwiq1x8NJMkQV320LXq3891E68EbsnZb4kbFZ/dGvytMAK0J
+	IFxRQVG150YLtRHyQeKmiacSAgEmhrYqz61Dlk0N2MjiJcoi2ktofPzRbukKMXGblFQ=
+X-Gm-Gg: Acq92OGtqVaxwZdhrCDf5jGZBLFVdsVyRhDrlFc+EkN2DBXY2gwNadJPfgEc7c6Fd0u
+	p36oeT7IwGDVExZtje+Sn/SvDUYaLCTge+DpVGlQYzW4QonrXCWtHJ3QRakYpzBrtVjpBWzo16Z
+	ED0YKOfYPMpeXgY1TwbmF7NpL2Rqgesm21CzE5gISQzTlGlus4IJ2q6gHGKvy6sBJmyW/4HB4OJ
+	aE4iD/6auD5H9VRVnqYfDtGTUr7/uBKIvEroWfDP8IKOEA6d8oVeXSFjZC8joN/OEka/YHN3m12
+	vt45wu6/SiE9oBr5xDLyFl80ZqbluCgIAEVpvCyKMsCprR++wKVQonYGuq3Lz6gqNGynmtLuMVj
+	Iw0KvTMABW51j/wK1KDes1/mn1HX/icdijVo1mH6UK95HMfJN9wvkhg+L3l70Fg+hJglILp29D1
+	rTtApSMmRoTOpeMllrjPtrzja+QctZWLVxh7lTB4aTwv8ziJinfpwmbPA819hufw==
+X-Received: by 2002:a05:622a:4390:b0:517:7b11:70ea with SMTP id d75a77b69052e-51795bbf9bbmr20136841cf.31.1780630392493;
+        Thu, 04 Jun 2026 20:33:12 -0700 (PDT)
 Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ceccdb915csm70807166d6.14.2026.06.04.20.32.59
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775dcf367sm70258631cf.25.2026.06.04.20.33.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 20:33:00 -0700 (PDT)
+        Thu, 04 Jun 2026 20:33:12 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	rppt@kernel.org,
@@ -106,22 +106,22 @@ To: linux-kselftest@vger.kernel.org,
 	kexec@lists.infradead.org,
 	pratyush@kernel.org,
 	graf@amazon.com
-Subject: [RFC v1 2/9] kho: split radix tree headers out of kexec_handover.h
-Date: Fri,  5 Jun 2026 03:32:28 +0000
-Message-ID: <20260605033235.717351-3-pasha.tatashin@soleen.com>
+Subject: [RFC v1 3/9] kho: split out vmalloc preservation into kho_vmalloc.c
+Date: Fri,  5 Jun 2026 03:32:29 +0000
+Message-ID: <20260605033235.717351-4-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260605033235.717351-1-pasha.tatashin@soleen.com>
 References: <20260605033235.717351-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BB7CC1C0003
-X-Stat-Signature: tc5tz55kabuioyg8faa6n6yw9r8mbt58
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 78F1E14000A
+X-Stat-Signature: fayywwnddjaxrby1sd1g5k4dbs6s73et
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780630381-19395
-X-HE-Meta: U2FsdGVkX18/lLfqob8RBObldP5e52olMU8h6CmFHjW3icNyCgIk4IKrrfGmosCEh5MyC2kSMkylDSyzBPNJQQQz1D2NZH9bWgT/dJefTL4upl8rA8YwCiISb3iOf+cEMsD6HAPUAHe5XvE3mpvw7V10a0O7Nol/qxVeDSAAITfSbon0k4ugydh8yxLHBbCxeG2tX6a+JgUOo1iRjgYkmD+Vwm290yf9A6QiqNsdDcsZMkTMAB0/uVmOMHLEVyo9txD0n85KgBMUkzbzrZxpoqbYEiG0pNbeUOhI/GSrjEIRqXHkCw+e5PssUO3b20Ad2bIAu2Gy5b2PMfJBKVU5i8shZe5bbHz8WxA5UVa2Jyy04ZQdkRPofu/3dS+tZVKkHNcLhSx6F8m9iCoVZIJvUMG28YJg9lk665s9Sj26enJh4N2AQegpUVE4zu/PSXoVGwOs3RsNcrwdL+7evjaFwOUBtk8BdQJdhe0MM/CAP9T+nwhHtrTWvn+zqf8+Bzn57vKl/gt1qvJYjY0EBzIlBaXOuFaIwEftzXTJgNhKmDp+ZoYDyclIV0/oRdcH/yJsWAaGRuq1iu8AtSqLbR3MmO9NKdGrzTw7YGmdF94FQPfPSUB+OTY9bqDd2yBcfNvBuFxz5nKfFXRlP7ldH2g7BEke/n5DDwjTc79uKqUvhbj78pyMR0Z5W9K/szOP9xuveEPbUVtl1Jr3FmpQ9wxd9wCVT9d580NvjGIw+P9ly7c5mnUmEXSCs7lRlIwExRl4Sd0Cnf7VxsxF/2V1n4MYbfL9KGDj+LLXslS1t8KmTKNcyQ5VwkYoRY4vzQ3G+Brrx0wdm5ooobfgbS5SAn6PsD3IHOLEqNwRf3eDd7wcaapJMBzfg4CUwLNb28/8d+pzR6BVRiNFYiRfPlpAxwcys5LqRnU/g3dPxldFeoN+TzfAIubwZU2sWeczDV0YrBFgh9+tZmo1a1/agnLoob3
- obGNCqzl
- Ru4qN+q/NxMdkk6+BpAwbudosiP56Hgn/LsSuMHGHojZxrTEjaARkFZeyvhzSuyu6kujUZH5824jW3YFgArojX1mfBUuGGAQmxWduUqkP1yROUqCoxZT6qnaj6usVIKuYeYsmNlu7HlGGkdZnggiBAnmA7XBL82Tni4VvXkAC5SS9C2yq4BvaiwsN80VwnQgcgmwnJARYD0yjqQqswiqWWeO6VH09+9VZCdm0DAlcwTho0CRp0FRAOL++7tPjuqVU4JhuITWuJgGHJ853EvB/7b8FvJUwFyOQVYWnq1gNDCQuT6sUbRn1ID2Ma2/nkOyFPCWfmz2MnnLNVCmERYvWjq2Cs6TzQJISDloTKCQY7tmZNSvOhXcxscSeiFvjJpIHKMRKdJGErKXCgQ8+Yy1e1xfxHzSLPTMe9HSl/2X1Ldr7y8gBLXY8UqxB/JuD7Hwg8qwu
+X-HE-Tag: 1780630393-323667
+X-HE-Meta: U2FsdGVkX1+ohi2ks7DdHECCoq5a/d/lzIlalWuBgLBX9erCvpqvoZw8vhLv09Zwp8Hmko/tN+BM4CK+q6liUGSeGXOaAiPXsG1TbLZoX4NNbn2X/UmavC6v/oYyLDGUfCgbqW9HeWuDrV4S14El3sz05oEyI6w5ntvbRLyWmwqiQl4JlE3RTu+JY9cR76fdEHw/D1wXQMCzgp3lDKTr9Q2CqIaqEZwbo7TE9RyiTbfAK2KgdeYKs061m3tRsaREfAyFzdKlDZElyVeWf/2SgNcJZwTF91gqvhtKOLo5g9w7TIXqpMPAdtA5nw8DYbY5GZs0NvHQjPZbtXR64lkcfBJxPwVWQX0lZNesVr6yD3VKK39OCE8UHInqne6dxNrIOb3/Ex1bkM9lvui7LD21AVAGFdgKVq3T5VmG2tOJzFcm0BSqhtjLIqcoOa35rjbpjPKI3DLgNBElwBayTPYOeDPpTGv7Gpe2oiNliJls7aLiSa+ySC3wWw9di0SqParejGSkdzc6wsmXyZHAPHgV+pWGhl9LpDMxYd3r2cm4YicQC/o3YAYE67v/PJU/fhXqwO3TCLqNn6EXwHXFY3VEsJx/EXXzz9QoELX7ot7QsXO45qzVYPkwCDWy/X8LJI0MVTy8Qsyr9P4A3dWycet3tEJ0jlLHZmzr25jiv4Zs9RrCTg5ITMIRAlNxFgelKea4GFV/xYbMphVXgkmamYE8jsGRLpgwBvtEA2EoiFq6cQoLcEtbN60wdn/BfLB54jhQF1ffFloxbg038MWTtAK7K7aaniAeu/d7LD0sXMog5CCjBCS1TIRsFHpGCt4TZaPAxYFGhPgmjKQejwfJZdmiLeDRfcq9qUg3CJ9dwvJzU635yWqcGHW2TTVNBwGO3eBGVSC9b3S7LSLM0LkXz2Iu7ZddVjvhUnUIci8SRhPSyh4yKEKxbhQ1KbFyHnCJpY/K1uRL4mycsoRiaJt/NVU
+ aw2NFGXO
+ 0JQhaeqLhuwo4XmS617jepCWmBtfwdvRj3RKxSpf5sTBlfep6IfnYEUAhMczvdiyUs6lr76svP175Ec8Ufr9O7HRFCZiHgSYd55IQ/h/Q0rj5Yhk6eNlgohn5StNpVxQGw7+bzg6nYlQ9RRQGzE1jhSuBaJobHbpRtLTDuhMvKT/1020P2g0So5n+5uMofuhtlxhgJn8RIxM+mVAYI9uQ9sduapYCzI9+sPlUYNfTFE17I0GiCfi/dUD/IDuVH5MnDD9X6RVQLbVITF0U6oSeizH6QzKK2jEuz3nA0Drh6AwlPIo6fa9CZgrj0eoX4By+I7Dcvm2sOi67ANFsQDJEkphcRn+0M9ERD0J8ANd8/+6b9k1XZpWCnPcxJnf5CDXuCS8yZS3HKvNlb4pJc6b1bUzEz/2KszD9/+ZEruRhLar9TYs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,382 +129,647 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Split the radix tree tracker-related ABI definitions and header
-declarations out of the monolithic kexec_handover.h header into a
-dedicated header file (radix_tree.h).
-
-Additionally, rename kho_radix_tree.h to kho/radix_tree.h, organizing it
-within the existing kho directory structure as more KHO data structures
-are introduced.
+Move the vmalloc serialization and preservation implementation out of the
+core KHO code into its own dedicated file (kho_vmalloc.c).
 
 This is a pure code movement patch; no logic or functional changes are
 introduced.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- Documentation/core-api/kho/abi.rst            |   3 +-
- Documentation/core-api/kho/index.rst          |   2 +-
- include/linux/kho/abi/kexec_handover.h        | 114 ---------------
- include/linux/kho/abi/radix_tree.h            | 131 ++++++++++++++++++
- .../{kho_radix_tree.h => kho/radix_tree.h}    |   5 +-
- kernel/liveupdate/kexec_handover.c            |   2 +-
- kernel/liveupdate/kho_radix.c                 |   2 +-
- 7 files changed, 137 insertions(+), 122 deletions(-)
- create mode 100644 include/linux/kho/abi/radix_tree.h
- rename include/linux/{kho_radix_tree.h => kho/radix_tree.h} (96%)
+ Documentation/core-api/kho/index.rst |   3 +
+ kernel/liveupdate/Makefile           |   3 +-
+ kernel/liveupdate/kexec_handover.c   | 258 +------------------------
+ kernel/liveupdate/kho_vmalloc.c      | 274 +++++++++++++++++++++++++++
+ lib/test_kho.c                       |   1 +
+ mm/memfd_luo.c                       |   1 +
+ 6 files changed, 282 insertions(+), 258 deletions(-)
+ create mode 100644 kernel/liveupdate/kho_vmalloc.c
 
-diff --git a/Documentation/core-api/kho/abi.rst b/Documentation/core-api/kho/abi.rst
-index edeb5b311963..da5c6636bb17 100644
---- a/Documentation/core-api/kho/abi.rst
-+++ b/Documentation/core-api/kho/abi.rst
-@@ -25,8 +25,7 @@ memblock preservation ABI
- KHO persistent memory tracker ABI
- =================================
- 
--.. kernel-doc:: include/linux/kho/abi/kexec_handover.h
--  :doc: KHO persistent memory tracker
-+.. kernel-doc:: include/linux/kho/abi/radix_tree.h
- 
- KHO serialization block ABI
- ===========================
 diff --git a/Documentation/core-api/kho/index.rst b/Documentation/core-api/kho/index.rst
-index a9892c671ec3..f69367d217cf 100644
+index f69367d217cf..a10b10700fb9 100644
 --- a/Documentation/core-api/kho/index.rst
 +++ b/Documentation/core-api/kho/index.rst
-@@ -74,7 +74,7 @@ the next KHO, because kexec can overwrite even the original kernel.
- Kexec Handover Radix Tree
- =========================
+@@ -86,6 +86,9 @@ Public API
+ .. kernel-doc:: kernel/liveupdate/kho_radix.c
+   :export:
  
--.. kernel-doc:: include/linux/kho_radix_tree.h
-+.. kernel-doc:: include/linux/kho/radix_tree.h
-   :doc: Kexec Handover Radix Tree
++.. kernel-doc:: kernel/liveupdate/kho_vmalloc.c
++  :export:
++
+ KHO Serialization Blocks API
+ ============================
  
- Public API
-diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
-index 5e2eb8519bda..99e4a53d4e35 100644
---- a/include/linux/kho/abi/kexec_handover.h
-+++ b/include/linux/kho/abi/kexec_handover.h
-@@ -4,15 +4,10 @@
-  * Copyright (C) 2023 Alexander Graf <graf@amazon.com>
-  * Copyright (C) 2025 Microsoft Corporation, Mike Rapoport <rppt@kernel.org>
-  * Copyright (C) 2025 Google LLC, Changyuan Lyu <changyuanl@google.com>
-- * Copyright (C) 2025 Google LLC, Jason Miu <jasonmiu@google.com>
-  */
+diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
+index a3ee8a5c27a2..b481e21a311a 100644
+--- a/kernel/liveupdate/Makefile
++++ b/kernel/liveupdate/Makefile
+@@ -9,7 +9,8 @@ luo-y :=								\
  
- #ifndef _LINUX_KHO_ABI_KEXEC_HANDOVER_H
- #define _LINUX_KHO_ABI_KEXEC_HANDOVER_H
--
--#include <linux/bits.h>
--#include <linux/log2.h>
--#include <linux/math.h>
- #include <linux/types.h>
+ kho-y :=								\
+ 		kexec_handover.o					\
+-		kho_radix.o
++		kho_radix.o						\
++		kho_vmalloc.o
  
- #include <asm/page.h>
-@@ -177,113 +172,4 @@ struct kho_vmalloc {
- 	unsigned short order;
- };
- 
--/**
-- * DOC: KHO persistent memory tracker
-- *
-- * KHO tracks preserved memory using a radix tree data structure. Each node of
-- * the tree is exactly a single page. The leaf nodes are bitmaps where each set
-- * bit is a preserved page of any order. The intermediate nodes are tables of
-- * physical addresses that point to a lower level node.
-- *
-- * The tree hierarchy is shown below::
-- *
-- *   root
-- *   +-------------------+
-- *   |     Level 5       | (struct kho_radix_node)
-- *   +-------------------+
-- *     |
-- *     v
-- *   +-------------------+
-- *   |     Level 4       | (struct kho_radix_node)
-- *   +-------------------+
-- *     |
-- *     | ... (intermediate levels)
-- *     |
-- *     v
-- *   +-------------------+
-- *   |      Level 0      | (struct kho_radix_leaf)
-- *   +-------------------+
-- *
-- * The tree is traversed using a key that encodes the page's physical address
-- * (pa) and its order into a single unsigned long value. The encoded key value
-- * is composed of two parts: the 'order bit' in the upper part and the
-- * 'shifted physical address' in the lower part.::
-- *
-- *   +------------+-----------------------------+--------------------------+
-- *   | Page Order | Order Bit                   | Shifted Physical Address |
-- *   +------------+-----------------------------+--------------------------+
-- *   | 0          | ...000100 ... (at bit 52)   | pa >> (PAGE_SHIFT + 0)   |
-- *   | 1          | ...000010 ... (at bit 51)   | pa >> (PAGE_SHIFT + 1)   |
-- *   | 2          | ...000001 ... (at bit 50)   | pa >> (PAGE_SHIFT + 2)   |
-- *   | ...        | ...                         | ...                      |
-- *   +------------+-----------------------------+--------------------------+
-- *
-- * Shifted Physical Address:
-- * The 'shifted physical address' is the physical address normalized for its
-- * order. It effectively represents the PFN shifted right by the order.
-- *
-- * Order Bit:
-- * The 'order bit' encodes the page order by setting a single bit at a
-- * specific position. The position of this bit itself represents the order.
-- *
-- * For instance, on a 64-bit system with 4KB pages (PAGE_SHIFT = 12), the
-- * maximum range for the shifted physical address (for order 0) is 52 bits
-- * (64 - 12). This address occupies bits [0-51]. For order 0, the order bit is
-- * set at position 52.
-- *
-- * The following diagram illustrates how the encoded key value is split into
-- * indices for the tree levels, with PAGE_SIZE of 4KB::
-- *
-- *        63:60   59:51    50:42    41:33    32:24    23:15         14:0
-- *   +---------+--------+--------+--------+--------+--------+-----------------+
-- *   |    0    |  Lv 5  |  Lv 4  |  Lv 3  |  Lv 2  |  Lv 1  |  Lv 0 (bitmap)  |
-- *   +---------+--------+--------+--------+--------+--------+-----------------+
-- *
-- * The radix tree stores pages of all orders in a single 6-level hierarchy. It
-- * efficiently shares higher tree levels, especially due to common zero top
-- * address bits, allowing a single, efficient algorithm to manage all
-- * pages. This bitmap approach also offers memory efficiency; for example, a
-- * 512KB bitmap can cover a 16GB memory range for 0-order pages with PAGE_SIZE =
-- * 4KB.
-- *
-- * The data structures defined here are part of the KHO ABI. Any modification
-- * to these structures that breaks backward compatibility must be accompanied by
-- * an update to the "compatible" string. This ensures that a newer kernel can
-- * correctly interpret the data passed by an older kernel.
-- */
--
--/*
-- * Defines constants for the KHO radix tree structure, used to track preserved
-- * memory. These constants govern the indexing, sizing, and depth of the tree.
-- */
--enum kho_radix_consts {
--	/*
--	 * The bit position of the order bit (and also the length of the
--	 * shifted physical address) for an order-0 page.
--	 */
--	KHO_ORDER_0_LOG2 = 64 - PAGE_SHIFT,
--
--	/* Size of the table in kho_radix_node, in log2 */
--	KHO_TABLE_SIZE_LOG2 = const_ilog2(PAGE_SIZE / sizeof(phys_addr_t)),
--
--	/* Number of bits in the kho_radix_leaf bitmap, in log2 */
--	KHO_BITMAP_SIZE_LOG2 = PAGE_SHIFT + const_ilog2(BITS_PER_BYTE),
--
--	/*
--	 * The total tree depth is the number of intermediate levels
--	 * and 1 bitmap level.
--	 */
--	KHO_TREE_MAX_DEPTH =
--		DIV_ROUND_UP(KHO_ORDER_0_LOG2 - KHO_BITMAP_SIZE_LOG2 + 1,
--			     KHO_TABLE_SIZE_LOG2) + 1,
--};
--
--struct kho_radix_node {
--	u64 table[1 << KHO_TABLE_SIZE_LOG2];
--};
--
--struct kho_radix_leaf {
--	DECLARE_BITMAP(bitmap, 1 << KHO_BITMAP_SIZE_LOG2);
--};
--
- #endif	/* _LINUX_KHO_ABI_KEXEC_HANDOVER_H */
-diff --git a/include/linux/kho/abi/radix_tree.h b/include/linux/kho/abi/radix_tree.h
-new file mode 100644
-index 000000000000..f4cc5c02f37a
---- /dev/null
-+++ b/include/linux/kho/abi/radix_tree.h
-@@ -0,0 +1,131 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2025 Google LLC, Jason Miu <jasonmiu@google.com>
-+ * Copyright (C) 2026 Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
-+
-+#ifndef _LINUX_KHO_ABI_RADIX_TREE_H
-+#define _LINUX_KHO_ABI_RADIX_TREE_H
-+
-+#include <linux/types.h>
-+#include <asm/page.h>
-+
-+/**
-+ * DOC: KHO persistent memory tracker
-+ *
-+ * Subsystems using the KHO persistent memory tracker rely on the stable
-+ * Application Binary Interface defined below to pass serialized state from a
-+ * pre-update kernel to a post-update kernel.
-+ *
-+ * This interface is a contract. Any modification to the structure fields,
-+ * compatible strings, or the layout of the serialization structures defined
-+ * here constitutes a breaking change. Such changes require incrementing the
-+ * version number in the `KHO_FDT_COMPATIBLE` string to prevent a new kernel
-+ * from misinterpreting data from an old kernel.
-+ *
-+ * Changes are allowed provided the compatibility version is incremented;
-+ * however, backward/forward compatibility is only guaranteed for kernels
-+ * supporting the same ABI version.
-+ *
-+ * KHO tracks preserved memory using a radix tree data structure. Each node of
-+ * the tree is exactly a single page. The leaf nodes are bitmaps where each set
-+ * bit is a preserved page of any order. The intermediate nodes are tables of
-+ * physical addresses that point to a lower level node.
-+ *
-+ * The tree hierarchy is shown below::
-+ *
-+ *   root
-+ *   +-------------------+
-+ *   |     Level 5       | (struct kho_radix_node)
-+ *   +-------------------+
-+ *     |
-+ *     v
-+ *   +-------------------+
-+ *   |     Level 4       | (struct kho_radix_node)
-+ *   +-------------------+
-+ *     |
-+ *     | ... (intermediate levels)
-+ *     |
-+ *     v
-+ *   +-------------------+
-+ *   |      Level 0      | (struct kho_radix_leaf)
-+ *   +-------------------+
-+ *
-+ * The tree is traversed using a key that encodes the page's physical address
-+ * (pa) and its order into a single unsigned long value. The encoded key value
-+ * is composed of two parts: the 'order bit' in the upper part and the
-+ * 'shifted physical address' in the lower part.::
-+ *
-+ *   +------------+-----------------------------+--------------------------+
-+ *   | Page Order | Order Bit                   | Shifted Physical Address |
-+ *   +------------+-----------------------------+--------------------------+
-+ *   | 0          | ...000100 ... (at bit 52)   | pa >> (PAGE_SHIFT + 0)   |
-+ *   | 1          | ...000010 ... (at bit 51)   | pa >> (PAGE_SHIFT + 1)   |
-+ *   | 2          | ...000001 ... (at bit 50)   | pa >> (PAGE_SHIFT + 2)   |
-+ *   | ...        | ...                         | ...                      |
-+ *   +------------+-----------------------------+--------------------------+
-+ *
-+ * Shifted Physical Address:
-+ * The 'shifted physical address' is the physical address normalized for its
-+ * order. It effectively represents the PFN shifted right by the order.
-+ *
-+ * Order Bit:
-+ * The 'order bit' encodes the page order by setting a single bit at a
-+ * specific position. The position of this bit itself represents the order.
-+ *
-+ * For instance, on a 64-bit system with 4KB pages (PAGE_SHIFT = 12), the
-+ * maximum range for the shifted physical address (for order 0) is 52 bits
-+ * (64 - 12). This address occupies bits [0-51]. For order 0, the order bit is
-+ * set at position 52.
-+ *
-+ * The following diagram illustrates how the encoded key value is split into
-+ * indices for the tree levels, with PAGE_SIZE of 4KB::
-+ *
-+ *        63:60   59:51    50:42    41:33    32:24    23:15         14:0
-+ *   +---------+--------+--------+--------+--------+--------+-----------------+
-+ *   |    0    |  Lv 5  |  Lv 4  |  Lv 3  |  Lv 2  |  Lv 1  |  Lv 0 (bitmap)  |
-+ *   +---------+--------+--------+--------+--------+--------+-----------------+
-+ *
-+ * The radix tree stores pages of all orders in a single 6-level hierarchy. It
-+ * efficiently shares higher tree levels, especially due to common zero top
-+ * address bits, allowing a single, efficient algorithm to manage all
-+ * pages. This bitmap approach also offers memory efficiency; for example, a
-+ * 512KB bitmap can cover a 16GB memory range for 0-order pages with PAGE_SIZE =
-+ * 4KB.
-+ */
-+
-+/*
-+ * Defines constants for the KHO radix tree structure, used to track preserved
-+ * memory. These constants govern the indexing, sizing, and depth of the tree.
-+ */
-+enum kho_radix_consts {
-+	/*
-+	 * The bit position of the order bit (and also the length of the
-+	 * shifted physical address) for an order-0 page.
-+	 */
-+	KHO_ORDER_0_LOG2 = 64 - PAGE_SHIFT,
-+
-+	/* Size of the table in kho_radix_node, in log2 */
-+	KHO_TABLE_SIZE_LOG2 = const_ilog2(PAGE_SIZE / sizeof(phys_addr_t)),
-+
-+	/* Number of bits in the kho_radix_leaf bitmap, in log2 */
-+	KHO_BITMAP_SIZE_LOG2 = PAGE_SHIFT + const_ilog2(BITS_PER_BYTE),
-+
-+	/*
-+	 * The total tree depth is the number of intermediate levels
-+	 * and 1 bitmap level.
-+	 */
-+	KHO_TREE_MAX_DEPTH =
-+		DIV_ROUND_UP(KHO_ORDER_0_LOG2 - KHO_BITMAP_SIZE_LOG2 + 1,
-+			     KHO_TABLE_SIZE_LOG2) + 1,
-+};
-+
-+struct kho_radix_node {
-+	u64 table[1 << KHO_TABLE_SIZE_LOG2];
-+};
-+
-+struct kho_radix_leaf {
-+	DECLARE_BITMAP(bitmap, 1 << KHO_BITMAP_SIZE_LOG2);
-+};
-+
-+#endif /* _LINUX_KHO_ABI_RADIX_TREE_H */
-diff --git a/include/linux/kho_radix_tree.h b/include/linux/kho/radix_tree.h
-similarity index 96%
-rename from include/linux/kho_radix_tree.h
-rename to include/linux/kho/radix_tree.h
-index 84e918b96e53..1e337e73deba 100644
---- a/include/linux/kho_radix_tree.h
-+++ b/include/linux/kho/radix_tree.h
-@@ -5,6 +5,7 @@
- 
- #include <linux/err.h>
- #include <linux/errno.h>
-+#include <linux/kho/abi/radix_tree.h>
- #include <linux/mutex_types.h>
- #include <linux/types.h>
- 
-@@ -24,11 +25,9 @@
-  * Client code is responsible for allocating the root node of the tree,
-  * initializing the mutex lock, and managing its lifecycle. It must use the
-  * tree data structures defined in the KHO ABI,
-- * `include/linux/kho/abi/kexec_handover.h`.
-+ * `include/linux/kho/abi/radix_tree.h`.
-  */
- 
--struct kho_radix_node;
--
- struct kho_radix_tree {
- 	struct kho_radix_node *root;
- 	struct mutex lock; /* protects the tree's structure and root pointer */
+ obj-$(CONFIG_KEXEC_HANDOVER)		+= kho.o
+ obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 041efff7ca11..4a3d6a54a17f 100644
+index 4a3d6a54a17f..6672bc168e57 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -16,7 +16,7 @@
- #include <linux/kasan.h>
+@@ -13,7 +13,6 @@
+ #include <linux/cma.h>
+ #include <linux/kmemleak.h>
+ #include <linux/count_zeros.h>
+-#include <linux/kasan.h>
  #include <linux/kexec.h>
  #include <linux/kexec_handover.h>
--#include <linux/kho_radix_tree.h>
-+#include <linux/kho/radix_tree.h>
- #include <linux/utsname.h>
+ #include <linux/kho/radix_tree.h>
+@@ -23,11 +22,7 @@
+ #include <linux/libfdt.h>
+ #include <linux/list.h>
+ #include <linux/memblock.h>
+-#include <linux/page-isolation.h>
+ #include <linux/unaligned.h>
+-#include <linux/vmalloc.h>
+-
+-#include <asm/early_ioremap.h>
+ 
+ /*
+  * KHO is tightly coupled with mm init and needs access to some of mm
+@@ -84,6 +79,7 @@ static struct kho_out kho_out = {
+ };
+ 
+ 
++
+ /* For physically contiguous 0-order pages. */
+ static void kho_init_pages(struct page *page, unsigned long nr_pages)
+ {
+@@ -702,259 +698,7 @@ void kho_unpreserve_pages(struct page *page, unsigned long nr_pages)
+ }
+ EXPORT_SYMBOL_GPL(kho_unpreserve_pages);
+ 
+-/* vmalloc flags KHO supports */
+-#define KHO_VMALLOC_SUPPORTED_FLAGS	(VM_ALLOC | VM_ALLOW_HUGE_VMAP)
+-
+-/* KHO internal flags for vmalloc preservations */
+-#define KHO_VMALLOC_ALLOC	0x0001
+-#define KHO_VMALLOC_HUGE_VMAP	0x0002
+-
+-static unsigned short vmalloc_flags_to_kho(unsigned int vm_flags)
+-{
+-	unsigned short kho_flags = 0;
+-
+-	if (vm_flags & VM_ALLOC)
+-		kho_flags |= KHO_VMALLOC_ALLOC;
+-	if (vm_flags & VM_ALLOW_HUGE_VMAP)
+-		kho_flags |= KHO_VMALLOC_HUGE_VMAP;
+-
+-	return kho_flags;
+-}
+-
+-static unsigned int kho_flags_to_vmalloc(unsigned short kho_flags)
+-{
+-	unsigned int vm_flags = 0;
+-
+-	if (kho_flags & KHO_VMALLOC_ALLOC)
+-		vm_flags |= VM_ALLOC;
+-	if (kho_flags & KHO_VMALLOC_HUGE_VMAP)
+-		vm_flags |= VM_ALLOW_HUGE_VMAP;
+-
+-	return vm_flags;
+-}
+-
+-static struct kho_vmalloc_chunk *new_vmalloc_chunk(struct kho_vmalloc_chunk *cur)
+-{
+-	struct kho_vmalloc_chunk *chunk;
+-	int err;
+-
+-	chunk = (struct kho_vmalloc_chunk *)get_zeroed_page(GFP_KERNEL);
+-	if (!chunk)
+-		return NULL;
+-
+-	err = kho_preserve_pages(virt_to_page(chunk), 1);
+-	if (err)
+-		goto err_free;
+-	if (cur)
+-		KHOSER_STORE_PTR(cur->hdr.next, chunk);
+-	return chunk;
+-
+-err_free:
+-	free_page((unsigned long)chunk);
+-	return NULL;
+-}
+-
+-static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk,
+-					 unsigned short order)
+-{
+-	struct kho_radix_tree *tree = &kho_out.radix_tree;
+-	unsigned long pfn = PHYS_PFN(virt_to_phys(chunk));
+-
+-	__kho_unpreserve(tree, pfn, pfn + 1);
+-
+-	for (int i = 0; i < ARRAY_SIZE(chunk->phys) && chunk->phys[i]; i++) {
+-		pfn = PHYS_PFN(chunk->phys[i]);
+-		__kho_unpreserve(tree, pfn, pfn + (1 << order));
+-	}
+-}
+-
+-/**
+- * kho_preserve_vmalloc - preserve memory allocated with vmalloc() across kexec
+- * @ptr: pointer to the area in vmalloc address space
+- * @preservation: placeholder for preservation metadata
+- *
+- * Instructs KHO to preserve the area in vmalloc address space at @ptr. The
+- * physical pages mapped at @ptr will be preserved and on successful return
+- * @preservation will hold the physical address of a structure that describes
+- * the preservation.
+- *
+- * NOTE: The memory allocated with vmalloc_node() variants cannot be reliably
+- * restored on the same node
+- *
+- * Return: 0 on success, error code on failure
+- */
+-int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
+-{
+-	struct kho_vmalloc_chunk *chunk;
+-	struct vm_struct *vm = find_vm_area(ptr);
+-	unsigned int order, flags, nr_contig_pages;
+-	unsigned int idx = 0;
+-	int err;
+-
+-	if (!vm)
+-		return -EINVAL;
+-
+-	if (vm->flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
+-		return -EOPNOTSUPP;
+-
+-	flags = vmalloc_flags_to_kho(vm->flags);
+-	order = get_vm_area_page_order(vm);
+-
+-	chunk = new_vmalloc_chunk(NULL);
+-	if (!chunk)
+-		return -ENOMEM;
+-	KHOSER_STORE_PTR(preservation->first, chunk);
+-
+-	nr_contig_pages = (1 << order);
+-	for (int i = 0; i < vm->nr_pages; i += nr_contig_pages) {
+-		phys_addr_t phys = page_to_phys(vm->pages[i]);
+-
+-		err = kho_preserve_pages(vm->pages[i], nr_contig_pages);
+-		if (err)
+-			goto err_free;
+-
+-		chunk->phys[idx++] = phys;
+-		if (idx == ARRAY_SIZE(chunk->phys)) {
+-			chunk = new_vmalloc_chunk(chunk);
+-			if (!chunk) {
+-				err = -ENOMEM;
+-				goto err_free;
+-			}
+-			idx = 0;
+-		}
+-	}
+-
+-	preservation->total_pages = vm->nr_pages;
+-	preservation->flags = flags;
+-	preservation->order = order;
+-
+-	return 0;
+-
+-err_free:
+-	kho_unpreserve_vmalloc(preservation);
+-	return err;
+-}
+-EXPORT_SYMBOL_GPL(kho_preserve_vmalloc);
+-
+-/**
+- * kho_unpreserve_vmalloc - unpreserve memory allocated with vmalloc()
+- * @preservation: preservation metadata returned by kho_preserve_vmalloc()
+- *
+- * Instructs KHO to unpreserve the area in vmalloc address space that was
+- * previously preserved with kho_preserve_vmalloc().
+- */
+-void kho_unpreserve_vmalloc(struct kho_vmalloc *preservation)
+-{
+-	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
+-
+-	while (chunk) {
+-		struct kho_vmalloc_chunk *tmp = chunk;
+-
+-		kho_vmalloc_unpreserve_chunk(chunk, preservation->order);
+-
+-		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+-		free_page((unsigned long)tmp);
+-	}
+-}
+-EXPORT_SYMBOL_GPL(kho_unpreserve_vmalloc);
+-
+-/**
+- * kho_restore_vmalloc - recreates and populates an area in vmalloc address
+- * space from the preserved memory.
+- * @preservation: preservation metadata.
+- *
+- * Recreates an area in vmalloc address space and populates it with memory that
+- * was preserved using kho_preserve_vmalloc().
+- *
+- * Return: pointer to the area in the vmalloc address space, NULL on failure.
+- */
+-void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+-{
+-	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
+-	kasan_vmalloc_flags_t kasan_flags = KASAN_VMALLOC_PROT_NORMAL;
+-	unsigned int align, order, shift, vm_flags;
+-	unsigned long total_pages, contig_pages;
+-	unsigned long addr, size;
+-	struct vm_struct *area;
+-	struct page **pages;
+-	unsigned int idx = 0;
+-	int err;
+-
+-	vm_flags = kho_flags_to_vmalloc(preservation->flags);
+-	if (vm_flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
+-		return NULL;
+-
+-	total_pages = preservation->total_pages;
+-	pages = kvmalloc_objs(*pages, total_pages);
+-	if (!pages)
+-		return NULL;
+-	order = preservation->order;
+-	contig_pages = (1 << order);
+-	shift = PAGE_SHIFT + order;
+-	align = 1 << shift;
+-
+-	while (chunk) {
+-		struct page *page;
+-
+-		for (int i = 0; i < ARRAY_SIZE(chunk->phys) && chunk->phys[i]; i++) {
+-			phys_addr_t phys = chunk->phys[i];
+-
+-			if (idx + contig_pages > total_pages)
+-				goto err_free_pages_array;
+-
+-			page = kho_restore_pages(phys, contig_pages);
+-			if (!page)
+-				goto err_free_pages_array;
+-
+-			for (int j = 0; j < contig_pages; j++)
+-				pages[idx++] = page + j;
+-
+-			phys += contig_pages * PAGE_SIZE;
+-		}
+-
+-		page = kho_restore_pages(virt_to_phys(chunk), 1);
+-		if (!page)
+-			goto err_free_pages_array;
+-		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+-		__free_page(page);
+-	}
+-
+-	if (idx != total_pages)
+-		goto err_free_pages_array;
+-
+-	area = __get_vm_area_node(total_pages * PAGE_SIZE, align, shift,
+-				  vm_flags | VM_UNINITIALIZED,
+-				  VMALLOC_START, VMALLOC_END,
+-				  NUMA_NO_NODE, GFP_KERNEL,
+-				  __builtin_return_address(0));
+-	if (!area)
+-		goto err_free_pages_array;
+-
+-	addr = (unsigned long)area->addr;
+-	size = get_vm_area_size(area);
+-	err = vmap_pages_range(addr, addr + size, PAGE_KERNEL, pages, shift);
+-	if (err)
+-		goto err_free_vm_area;
+ 
+-	area->nr_pages = total_pages;
+-	area->pages = pages;
+-
+-	if (vm_flags & VM_ALLOC)
+-		kasan_flags |= KASAN_VMALLOC_VM_ALLOC;
+-
+-	area->addr = kasan_unpoison_vmalloc(area->addr, total_pages * PAGE_SIZE,
+-					    kasan_flags);
+-	clear_vm_uninitialized_flag(area);
+-
+-	return area->addr;
+-
+-err_free_vm_area:
+-	free_vm_area(area);
+-err_free_pages_array:
+-	kvfree(pages);
+-	return NULL;
+-}
+-EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
+ 
+ /**
+  * kho_alloc_preserve - Allocate, zero, and preserve memory.
+diff --git a/kernel/liveupdate/kho_vmalloc.c b/kernel/liveupdate/kho_vmalloc.c
+new file mode 100644
+index 000000000000..84c17b7a81ae
+--- /dev/null
++++ b/kernel/liveupdate/kho_vmalloc.c
+@@ -0,0 +1,274 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * kho_vmalloc.c - KHO vmalloc space serialization/preservation
++ * Copyright (C) 2025 Microsoft Corporation, Mike Rapoport <rppt@kernel.org>
++ * Copyright (C) 2025 Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++
++#include <linux/errno.h>
++#include <linux/gfp.h>
++#include <linux/io.h>
++#include <linux/kasan.h>
++#include <linux/kexec_handover.h>
++#include <linux/kho/abi/kexec_handover.h>
++#include <linux/kho/vmalloc.h>
++#include <linux/mm.h>
++#include <linux/slab.h>
++#include <linux/vmalloc.h>
++
++
++#include "../../mm/internal.h"
++#include "kexec_handover_internal.h"
++
++/* vmalloc flags KHO supports */
++#define KHO_VMALLOC_SUPPORTED_FLAGS	(VM_ALLOC | VM_ALLOW_HUGE_VMAP)
++
++/* KHO internal flags for vmalloc preservations */
++#define KHO_VMALLOC_ALLOC	0x0001
++#define KHO_VMALLOC_HUGE_VMAP	0x0002
++
++static unsigned short vmalloc_flags_to_kho(unsigned int vm_flags)
++{
++	unsigned short kho_flags = 0;
++
++	if (vm_flags & VM_ALLOC)
++		kho_flags |= KHO_VMALLOC_ALLOC;
++	if (vm_flags & VM_ALLOW_HUGE_VMAP)
++		kho_flags |= KHO_VMALLOC_HUGE_VMAP;
++
++	return kho_flags;
++}
++
++static unsigned int kho_flags_to_vmalloc(unsigned short kho_flags)
++{
++	unsigned int vm_flags = 0;
++
++	if (kho_flags & KHO_VMALLOC_ALLOC)
++		vm_flags |= VM_ALLOC;
++	if (kho_flags & KHO_VMALLOC_HUGE_VMAP)
++		vm_flags |= VM_ALLOW_HUGE_VMAP;
++
++	return vm_flags;
++}
++
++static struct kho_vmalloc_chunk *new_vmalloc_chunk(struct kho_vmalloc_chunk *cur)
++{
++	struct kho_vmalloc_chunk *chunk;
++	int err;
++
++	chunk = (struct kho_vmalloc_chunk *)get_zeroed_page(GFP_KERNEL);
++	if (!chunk)
++		return NULL;
++
++	err = kho_preserve_pages(virt_to_page(chunk), 1);
++	if (err)
++		goto err_free;
++	if (cur)
++		KHOSER_STORE_PTR(cur->hdr.next, chunk);
++	return chunk;
++
++err_free:
++	free_page((unsigned long)chunk);
++	return NULL;
++}
++
++static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk,
++					 unsigned short order)
++{
++	unsigned long pfn = PHYS_PFN(virt_to_phys(chunk));
++
++	kho_unpreserve_pages(pfn_to_page(pfn), 1);
++
++	for (int i = 0; i < ARRAY_SIZE(chunk->phys) && chunk->phys[i]; i++) {
++		pfn = PHYS_PFN(chunk->phys[i]);
++		kho_unpreserve_pages(pfn_to_page(pfn), 1 << order);
++	}
++}
++
++/**
++ * kho_preserve_vmalloc - preserve memory allocated with vmalloc() across kexec
++ * @ptr: pointer to the area in vmalloc address space
++ * @preservation: placeholder for preservation metadata
++ *
++ * Instructs KHO to preserve the area in vmalloc address space at @ptr. The
++ * physical pages mapped at @ptr will be preserved and on successful return
++ * @preservation will hold the physical address of a structure that describes
++ * the preservation.
++ *
++ * NOTE: The memory allocated with vmalloc_node() variants cannot be reliably
++ * restored on the same node
++ *
++ * Return: 0 on success, error code on failure
++ */
++int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
++{
++	struct kho_vmalloc_chunk *chunk;
++	struct vm_struct *vm = find_vm_area(ptr);
++	unsigned int order, flags, nr_contig_pages;
++	unsigned int idx = 0;
++	int err;
++
++	if (!vm)
++		return -EINVAL;
++
++	if (vm->flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
++		return -EOPNOTSUPP;
++
++	flags = vmalloc_flags_to_kho(vm->flags);
++	order = get_vm_area_page_order(vm);
++
++	chunk = new_vmalloc_chunk(NULL);
++	if (!chunk)
++		return -ENOMEM;
++	KHOSER_STORE_PTR(preservation->first, chunk);
++
++	nr_contig_pages = (1 << order);
++	for (int i = 0; i < vm->nr_pages; i += nr_contig_pages) {
++		phys_addr_t phys = page_to_phys(vm->pages[i]);
++
++		err = kho_preserve_pages(vm->pages[i], nr_contig_pages);
++		if (err)
++			goto err_free;
++
++		chunk->phys[idx++] = phys;
++		if (idx == ARRAY_SIZE(chunk->phys)) {
++			chunk = new_vmalloc_chunk(chunk);
++			if (!chunk) {
++				err = -ENOMEM;
++				goto err_free;
++			}
++			idx = 0;
++		}
++	}
++
++	preservation->total_pages = vm->nr_pages;
++	preservation->flags = flags;
++	preservation->order = order;
++
++	return 0;
++
++err_free:
++	kho_unpreserve_vmalloc(preservation);
++	return err;
++}
++EXPORT_SYMBOL_GPL(kho_preserve_vmalloc);
++
++/**
++ * kho_unpreserve_vmalloc - unpreserve memory allocated with vmalloc()
++ * @preservation: preservation metadata returned by kho_preserve_vmalloc()
++ *
++ * Instructs KHO to unpreserve the area in vmalloc address space that was
++ * previously preserved with kho_preserve_vmalloc().
++ */
++void kho_unpreserve_vmalloc(struct kho_vmalloc *preservation)
++{
++	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
++
++	while (chunk) {
++		struct kho_vmalloc_chunk *tmp = chunk;
++
++		kho_vmalloc_unpreserve_chunk(chunk, preservation->order);
++
++		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
++		free_page((unsigned long)tmp);
++	}
++}
++EXPORT_SYMBOL_GPL(kho_unpreserve_vmalloc);
++
++/**
++ * kho_restore_vmalloc - recreates and populates an area in vmalloc address
++ * space from the preserved memory.
++ * @preservation: preservation metadata.
++ *
++ * Recreates an area in vmalloc address space and populates it with memory that
++ * was preserved using kho_preserve_vmalloc().
++ *
++ * Return: pointer to the area in the vmalloc address space, NULL on failure.
++ */
++void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
++{
++	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
++	kasan_vmalloc_flags_t kasan_flags = KASAN_VMALLOC_PROT_NORMAL;
++	unsigned int align, order, shift, vm_flags;
++	unsigned long total_pages, contig_pages;
++	unsigned long addr, size;
++	struct vm_struct *area;
++	struct page **pages;
++	unsigned int idx = 0;
++	int err;
++
++	vm_flags = kho_flags_to_vmalloc(preservation->flags);
++	if (vm_flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
++		return NULL;
++
++	total_pages = preservation->total_pages;
++	pages = kvmalloc_objs(*pages, total_pages);
++	if (!pages)
++		return NULL;
++	order = preservation->order;
++	contig_pages = (1 << order);
++	shift = PAGE_SHIFT + order;
++	align = 1 << shift;
++
++	while (chunk) {
++		struct page *page;
++
++		for (int i = 0; i < ARRAY_SIZE(chunk->phys) && chunk->phys[i]; i++) {
++			phys_addr_t phys = chunk->phys[i];
++
++			if (idx + contig_pages > total_pages)
++				goto err_free_pages_array;
++
++			page = kho_restore_pages(phys, contig_pages);
++			if (!page)
++				goto err_free_pages_array;
++
++			for (int j = 0; j < contig_pages; j++)
++				pages[idx++] = page + j;
++
++			phys += contig_pages * PAGE_SIZE;
++		}
++
++		page = kho_restore_pages(virt_to_phys(chunk), 1);
++		if (!page)
++			goto err_free_pages_array;
++		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
++		__free_page(page);
++	}
++
++	if (idx != total_pages)
++		goto err_free_pages_array;
++
++	area = __get_vm_area_node(total_pages * PAGE_SIZE, align, shift,
++				  vm_flags | VM_UNINITIALIZED,
++				  VMALLOC_START, VMALLOC_END,
++				  NUMA_NO_NODE, GFP_KERNEL,
++				  __builtin_return_address(0));
++	if (!area)
++		goto err_free_pages_array;
++
++	addr = (unsigned long)area->addr;
++	size = get_vm_area_size(area);
++	err = vmap_pages_range(addr, addr + size, PAGE_KERNEL, pages, shift);
++	if (err)
++		goto err_free_vm_area;
++
++	area->nr_pages = total_pages;
++	area->pages = pages;
++
++	if (vm_flags & VM_ALLOC)
++		kasan_flags |= KASAN_VMALLOC_VM_ALLOC;
++
++	area->addr = kasan_unpoison_vmalloc(area->addr, total_pages * PAGE_SIZE,
++					    kasan_flags);
++	clear_vm_uninitialized_flag(area);
++
++	return area->addr;
++
++err_free_vm_area:
++	free_vm_area(area);
++err_free_pages_array:
++	kvfree(pages);
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
+diff --git a/lib/test_kho.c b/lib/test_kho.c
+index aa6a0956bb8b..6907e09688dd 100644
+--- a/lib/test_kho.c
++++ b/lib/test_kho.c
+@@ -20,6 +20,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/kexec_handover.h>
  #include <linux/kho/abi/kexec_handover.h>
- #include <linux/kho/abi/kexec_metadata.h>
-diff --git a/kernel/liveupdate/kho_radix.c b/kernel/liveupdate/kho_radix.c
-index c836783a1376..f48088847264 100644
---- a/kernel/liveupdate/kho_radix.c
-+++ b/kernel/liveupdate/kho_radix.c
-@@ -11,7 +11,7 @@
++#include <linux/kho/vmalloc.h>
+ 
+ #include <net/checksum.h>
+ 
+diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+index 59de210bee5f..ade2aa24c7b8 100644
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -76,6 +76,7 @@
  #include <linux/io.h>
- #include <linux/kernel.h>
- #include <linux/kho/abi/kexec_handover.h>
--#include <linux/kho_radix_tree.h>
-+#include <linux/kho/radix_tree.h>
- #include <linux/mm.h>
- #include <linux/mutex.h>
- #include <linux/types.h>
+ #include <linux/kexec_handover.h>
+ #include <linux/kho/abi/memfd.h>
++#include <linux/kho/vmalloc.h>
+ #include <linux/liveupdate.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/vmalloc.h>
 -- 
 2.53.0
 
