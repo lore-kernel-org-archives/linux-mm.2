@@ -4,89 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB4D1CD6E74
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:00:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5A90CD6E74
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:02:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D18226B008A; Fri,  5 Jun 2026 07:00:17 -0400 (EDT)
+	id 9BFDD6B0005; Fri,  5 Jun 2026 07:02:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC9016B008C; Fri,  5 Jun 2026 07:00:17 -0400 (EDT)
+	id 949606B008C; Fri,  5 Jun 2026 07:02:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB7D26B0092; Fri,  5 Jun 2026 07:00:17 -0400 (EDT)
+	id 8115C6B0092; Fri,  5 Jun 2026 07:02:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ABCDC6B008A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:00:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E94040B74
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:00:17 +0000 (UTC)
-X-FDA: 84845564874.30.6646B8A
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5851214001A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:00:14 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf26.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780657215;
-	b=rXOMU61ReDIHxwW8ealS+Nk01A073kdrPPrSGcCS11dFWMyCwNoGmXvFzAmZu/slNP7EMs
-	eCs2UPAWwta6/pfysrwow5HB9l3RDLzJFUPYD/HaLv57Ikh9UuFq29peUzcdeGEr+D6+OK
-	aw/exAuPjtzwkIwT8gd4SFADuEw98H0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf26.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D2096B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:02:19 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 12F36A06AF
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:02:19 +0000 (UTC)
+X-FDA: 84845569998.13.75D5004
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 73A6F4000D
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:02:17 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ctl1HVvS;
+	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780657215;
+	s=arc-20220608; t=1780657337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0lINxcPmpVaC2If8ZBX0Icy37s4iF9IkDas5F8WQ+bQ=;
-	b=vxb1GoB8IoWlgvNRuF7HYzMppKXLiZpk8Qn24G6C3DFZx2pL60uRYs9jPNR6LUj+1j1bRq
-	TWFFSHYdmmcV0PsaEwIquVkyk5CKxeCuxo8cW6zpFn3sJRocdmrO2ww5jLKtZVRobqPWsw
-	80UIUzV8S9m90vdtxORJ7WzmT4t+OeA=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gWz2q2BFtzHnGkQ;
-	Fri,  5 Jun 2026 18:59:15 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id A38BC40584;
-	Fri,  5 Jun 2026 19:00:10 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 5 Jun 2026 14:00:10 +0300
-Message-ID: <cc60cd6b-d841-4b5f-b3f8-b5dd39ea5808@huawei-partners.com>
-Date: Fri, 5 Jun 2026 14:00:09 +0300
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zh9rGnRJpkY1lBOy/bvqPYjNbqncuR4wcG+xL8RKLDo=;
+	b=TN78rL2TdolplXsIqvYEWR/iKMLeBsr3p+kH7CG1cevQBqZKYt43kgOqdZkErMgR0KZ41r
+	hZXanSN8eByVlIook1HAFQqJ1+xTaut4zRTsj9FHWekFnjMVKH3cXJ835FaMaat3/iYt3y
+	znYZN6cnKJiNBjpYkgYAruGJftr4Js8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780657337;
+	b=UNcvOIpyN4akzfN65u6EAA/BIYy+xkjkK9sB7H8NmCiHjVAeDXhZx3fNtNIjwtoRDp5r7k
+	m20r4UmMqv0oUfA/Sxh08HOip0uKoto2vjMDTFI3pKeSHoKRkKqcUs3IG+jbVTv2X8+YkJ
+	cvvfxpv3PoTmAPrs8q/iQACJgao9z/I=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ctl1HVvS;
+	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E5DC0601E3;
+	Fri,  5 Jun 2026 11:02:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C108A1F00893;
+	Fri,  5 Jun 2026 11:02:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780657336;
+	bh=zh9rGnRJpkY1lBOy/bvqPYjNbqncuR4wcG+xL8RKLDo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ctl1HVvSgU76Vw6SULqs72AZrmRA3tDJG9jTF/UpoFIKpJUomvQkaONMJ0CyA9XU9
+	 AkValjofDC0hU7jmySenQo7PC2jTWR++sfyBzpPIN4kFLupY0/SQ5fuOxm0sMu2UvS
+	 mnw5IswfgWxzvZQmznyBKaEMmzydtp2dP/ojQV10k5/AGwyGmYgG8PseTg2XUfNaEp
+	 1Om4a1nsYuMCXxy89ZtD2An6nsoOWDeNwAsM8Ep4t1ECWeFLLuev5uaXz3YkBNJ9la
+	 osxrOwWtnj2IXDSpeWpSMPFEW3nhQ+w9XwUKEpCpFuARveTnsZzKfm+0ppwEhhix9k
+	 UTdfJR3rGbA4g==
+Date: Fri, 5 Jun 2026 12:02:10 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-api@vger.kernel.org, netdev@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@infradead.org>,
+	David Howells <dhowells@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>, Aiswharya.TCV@arm.com,
+	ltp@lists.linux.it, Miklos Szeredi <miklos@szeredi.hu>,
+	patches@lists.linux.dev
+Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <d9806b34-fc73-4878-997a-95c5e8ae4b29@sirena.org.uk>
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <20260531010107.1953702-3-safinaskar@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 1/4] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto
- tuning
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260605004422.82568-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260605004422.82568-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Queue-Id: 5851214001A
-X-Stat-Signature: 7crh711yq3iyix91gr1i7suaxtq9zbkg
-X-Rspamd-Server: rspam03
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cImTK7GwRCQ+7M7E"
+Content-Disposition: inline
+In-Reply-To: <20260531010107.1953702-3-safinaskar@gmail.com>
+X-Cookie: Today is what happened to yesterday.
+X-Rspamd-Queue-Id: 73A6F4000D
 X-Rspam-User: 
-X-HE-Tag: 1780657214-639544
-X-HE-Meta: U2FsdGVkX19XdqbGKz5uZLWRvEBoHsnK3C54tMG6OidispUa1GChymkjnAiiNQWsnLhUJ7zgXl/+/hadTS3f7fwDmY1BxKdyb0Up6EBzbsYYfnDqVuO3MK3rugTSUi3JIjkw8dhZrJejBcYXY8qBqmDtFRdEWH9B5w5aEZ+5EPr55IqVOIS1mU9/4Z8qexOPpvki3V8BqQ98FcgsE06sQpn2D7HhFYhqM4DgbBh0QzcIY3Kx2sHfc7SKl3CqpTR0uzU9O9Q40vYq0fqSzZ4XFXlzmpfETcvnzpdKzSEoEKGYQJ0lGnlXpkj1y+oNh5l2PAxD2fN4d8vCZ3VYnrTSn73/XsDJgTvEaUGU0WF4drM5UNN2waU0INTAvGg6xmNODXoFwbtfEPvQ/TVL+yX5oRX0GjCfLgaxErhUX1qIFp22goIlglgAsb5uOcuVYOimiuR0Tnl1lhK4hYTDFE03504l8/MQEQsGem/ofZFs6L8XW4MU9u2zEWkfW8zZ5Dv9Dfqf3BulcGxJa+rEXZuxiUbp0f3U++OIYKrbIhwjbZFaQ3xu7s84AUPjdU+TzcZs4omwTarNkojHAfb92lJzIRAgHEV1cqFO6Q85D5zG6UmgRqcrSrGdAVtiyeeo5nfwt/nfZ3up5qqLku8YYjVNruzk5kQ6DW7LnpGL2n6FI4P+JfkXZYKi4A5Kl53eunlQPN9xDwTpjFZYIoh4xJ4hW3PgcFX3ycGmUwhePQBDJnsrvfFttScxlSk1ESCfWPzLNv2XADNt6/q8f+OhMOVrj9sHC6AfULjaRiqxQrTtvnmJCiRWbhmDxcLcT2I0WNGu72stec5dr+/rj+xgmCHDIMwMH1YMACmeJB51VAEjqcSf0eaMvhkyINc8ITd9Ua1LfR/0vcToWjK+tJQ6DRrJ6j/jZbMES5e75+meT/m6yWSt66R9b+DF9EiGDqG9ny+lEQ1X2yPT6P9RewAzrR6
- FspRDBO0
- uDKvVBB050tPdqbYUdCeWjBfw2bg2dnCl9Qta2jhubm/lTlp66sFK3TjSjDVyVPiiavMictYCv2KSLJErl0OtL/CuJVkDMJJOfcKvS6Cqytm1d+QkU/RzBSnem4ReS0v+JjfHiJJIY0enlMFNigo5/6W8tRH3Yp+OKaXfp5XFh0pdguHMzEJrOKkkEFgaNcumONsGITBGoZobc9tkNDkJxjQlY2IVD8Fij685V3hjUTXTl1RlY8SCMVnaSb+7WuIl+RwtRo/meCwMm/R86NjYeRpt3mX7qwFqIxBL0R61JUnoBQlMl8pgbi5fTz0iH7/LI7vqkmnCxD7NA8Lz/ymjbCo9itxurVVjNqH4
+X-Stat-Signature: pa5615iha6dw5j695goepphmxxp6j4kr
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780657337-235138
+X-HE-Meta: U2FsdGVkX1/8aFyB2e48fUvYVUbQNpJn9+71hQzkbdP4IMXFnjnyCw4ApKCKM9S/mjwMGiYT3H2qLdQwAk90lmE7c4Y3SGG3I/8t1nBfQUSe4yV/CSk6SWeWERiiaFJ9sy7ykhwDn67LaUzYZBDklYXjR8MTEVeKCvlLFvXiO2LzziJgKdOs+YwKTZ8gxvuQetPSBvISUsSPLPFQb1LGMysYrSdIgtFAXGUhCgisNBUkbIxwlVnA9tf6IApa5CFzN4fZ+DC14DpmwXu8rr9crHy5XVmwO7tydvAfaT+YzEEUXr992xX0pthRU/yz5NsJdxIKJqqRNR3gZKGscMy3kTMKGgQ/m2uwuFyOcs/t9rIyxVuRM2K0dhjAjKNtBfPVdAUpZ4C6/IVf0oibPyonuQmEtZmcN5LA8gAxuQrM8BbfDOSPAxPYXwk8sumus2ZUjkkaDfmTcIAvZzKPwBu3XMnBPwBXd+STANFIolOmyF6fjG5tzIAxKg/jsnurFr5sFeUFEKZac9qW0vk5/iI0NOmJa/SCUYTAu2EObT34xu2k3qySMLfNFAkhoYsGPa02tLAzQ4kAPRIpbQrkHtC6BHoAQolf/ZKyH+kDCz8Vgm6pE+ufDxJOt9t0vPB4DN6oJwSe0iWCvGip0TagDH2KMSYd4N6rAL0ZCCXwFs6LzBXpoE8eMGd9uCzywsn0g2yTUJi+s81WJUM8cq8mjoonULGULTMMo77XRnJWrAX0NbT4cOsVhSZlqs4CAaV736X18RgNKhlc7aE+4S5NwxtUGK/Ui2SUqp4LsDBLDRL8NAu02hSaSpt6QSso+pOYBs9iXxqGMyilJhyMW3S+TkfJcFNJK+ErPp98TbbBENJLDKmO5U/2wjoNhp0aRvzVxslAmXrRSemHsR3kpPajlZsOawHQDIoXGHovIMaXm4f+ocSCrkbTs13kxy6UTtCSCPLaQrbbv1SOI5Qq1Pq+1nQ
+ 2wwwd3YS
+ UrCrps2Y4+dyV9T1yliViM93F34opQseDEJDehpliXDErYkTTrkUe06QoHUDNtz3REzsJ1JXvDHVQSAXkuwGBKy5N1wRCf4TADqpMOUJwTGUIgl9Z0IzYOZYLm9btGJu9Yi30wbmJA2AN9qPLcurQikQtoa7fqa8CH1uFNjVRF4ZfxLr0ppxI90L4Uu2NGZe41GMLDd3ckpMfU2f8um//6j+6zry3ct/xEGgAG9DCc3HFHXOpurdPAfFmcQ7OHmtC/uHhn+fLfzz1rKOfdVOm4eCVAmCitXGsv7p1SPPzvSJ67u5ACuLnlT3Pgy6c6aaGHC11YS5u7sgKl0QMP9oeGAvPPcBZacY3+MVW1mr4JuiMc+uhS8Gs9PHijZ9nGtSNQnJOHrzwda3nTSRsrn9du6v62dGTZZ8rt3bwC5EFj5QqKTU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,101 +106,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+--cImTK7GwRCQ+7M7E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 6/5/2026 3:44 AM, SeongJae Park wrote:
-> On Thu, 4 Jun 2026 15:03:34 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->>
->> Introduce DAMOS_QUOTA_HUGEPAGE auto tuning Add a
->> new DAMOS quota goal metric to measure the amount of huge
->> page consumption to total anonymous memory consumption
->> ratio.
-> 
-> s/anonymous// ?
-> 
->>
->> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->> ---
->>  include/linux/damon.h |  1 +
->>  mm/damon/core.c       | 14 ++++++++++++++
->>  2 files changed, 15 insertions(+)
->>
->> diff --git a/include/linux/damon.h b/include/linux/damon.h
->> index c7a31572689b..8e15a674e893 100644
->> --- a/include/linux/damon.h
->> +++ b/include/linux/damon.h
->> @@ -177,6 +177,7 @@ enum damos_quota_goal_metric {
->>  	DAMOS_QUOTA_ACTIVE_MEM_BP,
->>  	DAMOS_QUOTA_INACTIVE_MEM_BP,
->>  	DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
->> +	DAMOS_QUOTA_HUGEPAGE,
-> 
-> On the previous revision, I suggested renaming this to
-> DAMOS_QUOTA_HUGEPAGE_MEM_BP for consistency, but it didn't got your reply.
-> Could I ask your opinion?
-> 
-> Also, I asked you to add the kernel-doc comment before dropping RFC.  I know
-> you didn't drop RFC tag yet, but could you consider adding it from the next
-> revision?
-Sorry, missed it. I will change it.
->>  	NR_DAMOS_QUOTA_GOAL_METRICS,
->>  };
->>  
->> diff --git a/mm/damon/core.c b/mm/damon/core.c
->> index 9f38deddcb30..7fc7477a353a 100644
->> --- a/mm/damon/core.c
->> +++ b/mm/damon/core.c
->> @@ -2536,6 +2536,17 @@ static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
->>  	return mult_frac(inactive, 10000, total);
->>  }
->>  
->> +static unsigned int damos_hugepage_mem_bp(void)
->> +{
->> +	unsigned long thp, total;
->> +
->> +	thp = global_node_page_state(NR_ANON_THPS) +
->> +				global_node_page_state(NR_SHMEM_THPS) +
->> +				global_node_page_state(NR_FILE_THPS);
->> +	total = totalram_pages() - global_zone_page_state(NR_FREE_PAGES);
->> +	return mult_frac(thp, 10000, total);
->> +}
-> 
-> As Sashiko also [1] commented, let's avoid divide by zero by checking if total
-> is zero, before calling mult_frac().
-> 
-> I wouldn't mind ignoring Sashiko's 32-bit concern, but do you have any opinion?
-I just answered. I can cast 10.000 to unsigned long. I don't think many people
-using 32 bit systems will use over 1.6GB of huge pages, but it makes sense to
-be safe anyway.
->> +
->>  static void damos_set_quota_goal_current_value(struct damon_ctx *c,
->>  		struct damos *s, struct damos_quota_goal *goal)
->>  {
->> @@ -2567,6 +2578,9 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
->>  		goal->current_value = damos_get_node_eligible_mem_bp(c, s,
->>  				goal->nid);
->>  		break;
->> +	case DAMOS_QUOTA_HUGEPAGE:
->> +		goal->current_value = damos_hugepage_mem_bp();
->> +		break;
->>  	default:
->>  		break;
->>  	}
->> -- 
->> 2.43.0
-> 
-> Other than the above comments, looks good to me overall.
-> 
-> [1] https://lore.kernel.org/20260604151932.93C431F00893@smtp.kernel.org
-> 
-> 
-> Thanks,
-> SJ
-> 
+On Sun, May 31, 2026 at 01:01:06AM +0000, Askar Safin wrote:
 
--- 
-Asier Gutierrez
-Huawei
+> vmsplice behavior on writable pipe became equivalent to pwritev2.
+> vmsplice behavior on readable pipe already was nearly
+> equivalent to preadv2, but I made this explicit. I. e. I made it
+> obvious from code that vmsplice now is equivalent to preadv2/pwritev2.
 
+> Also I moved vmsplice to fs/read_write.c, because now it arguably
+> belongs there.
+
+> Note that SPLICE_F_NONBLOCK behavior slightly changed: previously
+> vmsplice ignored whether the pipe was opened with O_NONBLOCK, and mode
+> of operation depended on whether SPLICE_F_NONBLOCK was passed only.
+> Now the operation will be non-blocking if O_NONBLOCK was passed when
+> opening *or* SPLICE_F_NONBLOCK was passed to vmsplice. Previous
+> behavior was arguably buggy, and new behavior is arguably better.
+
+FWIW this is triggering a failure in the LTP vmsplice01 test case (which
+sends with a vmsplice() and then tries to read that with a splice()) in
+-next:
+
+| tst_tmpdir.c:316: TINFO: Using /tmp/LTP_vmsp3vEmQ as tmpdir (tmpfs filesystem)
+| L4471tst_test.c:2047: TINFO: LTP version: 20260130
+| L4472tst_test.c:2050: TINFO: Tested kernel: 7.1.0-rc6-next-20260604 #1 SMP @1780589917 armv7l
+| L4473tst_kconfig.c:71: TINFO: Couldn't locate kernel config!
+| L4474tst_test.c:1875: TINFO: Overall timeout per run is 0h 00m 30s
+| L4475tst_test.c:1632: TINFO: tmpfs is supported by the test
+| L4476Test timeouted, sending SIGKILL!
+| L4477tst_test.c:1947: TINFO: If you are running on slow machine, try exporting LTP_TIMEOUT_MUL > 1
+| L4478tst_test.c:1949: TBROK: Test killed! (timeout?)
+
+As the test itself notes it's not super realistic but thought it was
+better to mention it since I didn't see any report on the list yet, I've
+CCed the LTP list.
+
+Full log:
+
+   https://lava.sirena.org.uk/scheduler/job/2831199#L4468
+
+bisect log:
+
+# bad: [b99ae45861eccff1e1d8c7b05a13650be805d437] Add linux-next specific files for 20260604
+# good: [5e9d583f58c8b56c9f5022639ac70cb7ae6e9fe9] Merge branch 'for-linux-next-fixes' of https://gitlab.freedesktop.org/drm/misc/kernel.git
+# good: [a9f7db50ed2fff96727782456f49bf88def68510] tee: fs/splice.c: remove unused parameter "flags" from "link_pipe"
+# good: [215701873a7ed1214bba82c8fadcd2583d0246c3] net: mdio: realtek-rtl9300: Add ports to info structure
+# good: [b882d807fa443b529ae8bf917d7b640a8d555437] tools/nolibc: stackprotector: Avoid stalling program startup if crng is not init yet
+# good: [835fa43a4d36bd66ad0dd052f9fa15f7bd365fa8] tools/nolibc: add ftruncate()
+# good: [5d72c6a754ef488f88ad33c83d14556c6f38af3a] Merge branch 'pci/controller/dwc-qcom'
+# good: [04b18289834f20bbed25813c4978833ca8bd6e82] Merge branch 'pci/controller/misc'
+# good: [94bf692c483ffb325af0b110429ad37f445d40b0] Merge branch 'pci/endpoint'
+# good: [1c996a37fd244d19e5dbb715328c1676e28ef607] tools/power turbostat: pmt: Improve sscanf() hygiene
+# good: [083c9ab12c402efe9ed55c942ede92eb35f8bf2a] crypto: omap-des - add COMPILE_TEST and fix CONFIG_OF=n build
+# good: [49e05bb00f2e8168695f7af4d694c39e1423e8a2] crypto: atmel-sha204a - fail on hwrng registration error in probe path
+# good: [86ad8069366642fec18c1bc53c24cad3da720ce5] Documentation: qat_rl: make rate limiting wording clearer
+# good: [d58b4a09d7f06750a706b70d068f5a678dad8233] crypto: atmel-sha204a - remove sysfs group before hwrng
+# good: [34808ac8ddafc3e2c2a59e84eaab0a410e7a0fdc] regmap-i2c: fix sparse warning in regmap_smbus_word_write_reg16
+# good: [dc3ec9af62a92a46378960e599521c2ac5f81343] hwrng: core - use MAX to simplify RNG_BUFFER_SIZE
+# good: [513f49c33e91e58975ada7967b44512179f0e703] power: sequencing: print power sequencing device parent in debugfs
+# good: [bb2d82d41894cb30d836e9796ff67d2f9a71eccf] Merge tag 'v7.1-rc2' into nolibc/for-next
+# good: [07a1a6562ce29e2e0c134a57882d6e52e8758492] kcsan: Silence -Wmaybe-uninitialized when calling __kcsan_check_access()
+git bisect start 'b99ae45861eccff1e1d8c7b05a13650be805d437' '5e9d583f58c8b56c9f5022639ac70cb7ae6e9fe9' 'a9f7db50ed2fff96727782456f49bf88def68510' '215701873a7ed1214bba82c8fadcd2583d0246c3' 'b882d807fa443b529ae8bf917d7b640a8d555437' '835fa43a4d36bd66ad0dd052f9fa15f7bd365fa8' '5d72c6a754ef488f88ad33c83d14556c6f38af3a' '04b18289834f20bbed25813c4978833ca8bd6e82' '94bf692c483ffb325af0b110429ad37f445d40b0' '1c996a37fd244d19e5dbb715328c1676e28ef607' '083c9ab12c402efe9ed55c942ede92eb35f8bf2a' '49e05bb00f2e8168695f7af4d694c39e1423e8a2' '86ad8069366642fec18c1bc53c24cad3da720ce5' 'd58b4a09d7f06750a706b70d068f5a678dad8233' '34808ac8ddafc3e2c2a59e84eaab0a410e7a0fdc' 'dc3ec9af62a92a46378960e599521c2ac5f81343' '513f49c33e91e58975ada7967b44512179f0e703' 'bb2d82d41894cb30d836e9796ff67d2f9a71eccf' '07a1a6562ce29e2e0c134a57882d6e52e8758492'
+# test job: [a9f7db50ed2fff96727782456f49bf88def68510] https://lava.sirena.org.uk/scheduler/job/2827407
+# test job: [215701873a7ed1214bba82c8fadcd2583d0246c3] https://lava.sirena.org.uk/scheduler/job/2804576
+# test job: [b882d807fa443b529ae8bf917d7b640a8d555437] https://lava.sirena.org.uk/scheduler/job/2801267
+# test job: [835fa43a4d36bd66ad0dd052f9fa15f7bd365fa8] https://lava.sirena.org.uk/scheduler/job/2801414
+# test job: [5d72c6a754ef488f88ad33c83d14556c6f38af3a] https://lava.sirena.org.uk/scheduler/job/2827129
+# test job: [04b18289834f20bbed25813c4978833ca8bd6e82] https://lava.sirena.org.uk/scheduler/job/2827205
+# test job: [94bf692c483ffb325af0b110429ad37f445d40b0] https://lava.sirena.org.uk/scheduler/job/2827087
+# test job: [1c996a37fd244d19e5dbb715328c1676e28ef607] https://lava.sirena.org.uk/scheduler/job/2801077
+# test job: [083c9ab12c402efe9ed55c942ede92eb35f8bf2a] https://lava.sirena.org.uk/scheduler/job/2804905
+# test job: [49e05bb00f2e8168695f7af4d694c39e1423e8a2] https://lava.sirena.org.uk/scheduler/job/2804997
+# test job: [86ad8069366642fec18c1bc53c24cad3da720ce5] https://lava.sirena.org.uk/scheduler/job/2804815
+# test job: [d58b4a09d7f06750a706b70d068f5a678dad8233] https://lava.sirena.org.uk/scheduler/job/2805032
+# test job: [34808ac8ddafc3e2c2a59e84eaab0a410e7a0fdc] https://lava.sirena.org.uk/scheduler/job/2783569
+# test job: [dc3ec9af62a92a46378960e599521c2ac5f81343] https://lava.sirena.org.uk/scheduler/job/2804763
+# test job: [513f49c33e91e58975ada7967b44512179f0e703] https://lava.sirena.org.uk/scheduler/job/2801614
+# test job: [bb2d82d41894cb30d836e9796ff67d2f9a71eccf] https://lava.sirena.org.uk/scheduler/job/2744679
+# test job: [07a1a6562ce29e2e0c134a57882d6e52e8758492] https://lava.sirena.org.uk/scheduler/job/2745239
+# test job: [b99ae45861eccff1e1d8c7b05a13650be805d437] https://lava.sirena.org.uk/scheduler/job/2831199
+# bad: [b99ae45861eccff1e1d8c7b05a13650be805d437] Add linux-next specific files for 20260604
+git bisect bad b99ae45861eccff1e1d8c7b05a13650be805d437
+# test job: [2d4099641dbaed4b98711fc7d8ec94c5aec0a0f0] https://lava.sirena.org.uk/scheduler/job/2827279
+# bad: [2d4099641dbaed4b98711fc7d8ec94c5aec0a0f0] Merge patch series "vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2"
+git bisect bad 2d4099641dbaed4b98711fc7d8ec94c5aec0a0f0
+# test job: [e2c0b2368081bef7d1f6758cc9e7edde8521237c] https://lava.sirena.org.uk/scheduler/job/2827345
+# bad: [e2c0b2368081bef7d1f6758cc9e7edde8521237c] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+git bisect bad e2c0b2368081bef7d1f6758cc9e7edde8521237c
+# first bad commit: [e2c0b2368081bef7d1f6758cc9e7edde8521237c] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+# test job: [7d75aa8edfce3e8ac4f0f8fe5728fd1eab8f7f23] https://lava.sirena.org.uk/scheduler/job/2829187
+# skip: [7d75aa8edfce3e8ac4f0f8fe5728fd1eab8f7f23] splice: remove PIPE_BUF_FLAG_GIFT
+git bisect skip 7d75aa8edfce3e8ac4f0f8fe5728fd1eab8f7f23
+# first bad commit: [e2c0b2368081bef7d1f6758cc9e7edde8521237c] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+
+--cImTK7GwRCQ+7M7E
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoirLEACgkQJNaLcl1U
+h9Bk5Qf/eatF0RmQ7gGfc55SuODXJPE8XNaHAlHHQ3iC2NRcFeVQo4pKa5flxn+O
+bEVCehiyAL9Z0ny5YXd0/A9jml5JtO9l7r0RG1x0niqavPnW4K4aFhP9KJU0xZPW
+kVFZWuJL1IfTvicSPh2V8kAuTxxcMC9UafI4I5R6kyOZl3b7qM/8dFUYxYo14Va7
+k8Qzo8YzxS9VFsLhy5X/vCCUq9Gj5e3YC24HBEDuxmxzTV2nLlbsWc8CuTKnO8hX
+2krdz5ApoZr5Z1iVR4peZphMMyHq6O+RMVltfWoO3K3U5vB6eqteU1w+yGq8WGH3
+Iz1m6atckmGWCI9jlvwaKjChWGDV1Q==
+=PcsM
+-----END PGP SIGNATURE-----
+
+--cImTK7GwRCQ+7M7E--
 
