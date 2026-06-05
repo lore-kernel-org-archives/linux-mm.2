@@ -4,113 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DB7ACD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 10:34:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A7CECD6E5D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 10:47:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5A836B008A; Fri,  5 Jun 2026 06:34:43 -0400 (EDT)
+	id 3688A6B0005; Fri,  5 Jun 2026 06:47:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A31CF6B008C; Fri,  5 Jun 2026 06:34:43 -0400 (EDT)
+	id 33F276B0088; Fri,  5 Jun 2026 06:47:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96F966B0092; Fri,  5 Jun 2026 06:34:43 -0400 (EDT)
+	id 27BFD6B008A; Fri,  5 Jun 2026 06:47:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 884746B008A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:34:43 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 210401203E3
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:34:43 +0000 (UTC)
-X-FDA: 84845500446.18.CB7E081
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 46E1020003
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:34:41 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cvGJa/uf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 176036B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 06:47:03 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A0ACA1C215A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:47:02 +0000 (UTC)
+X-FDA: 84845531484.25.3440A2D
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CDE58180006
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 10:47:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=c9a5EEXY;
+	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780656421;
+	b=0n8fkrwVkzK8/PWqWJLYQ+GZXzwbFS44YIjmqEbr6mQ1bKnx4Vhd4XihX9LYAtpVJ8Ahsf
+	owLS5s99M2+9+ain6IB8RIA49/t/8YFbEMtz4HHftPc7l9vp6IFdk9bkpWKFgy+3cVZOaP
+	4FyEf7SwsLMp46qtHpDrdlHIlkI8P4Y=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=c9a5EEXY;
+	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780655681;
+	s=arc-20220608; t=1780656421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=NST7gRmZZfVHFgmkPYEmeNwfb5XeOUP3jSBT+FhU7LA=;
-	b=JxTiZQaC9ykAeyyvoLEovXNWHYV2Cry7Oy/1qeec/03qGAGwN934l1cw+lT3XVSGFrlv7/
-	9ghSYL9KWJHVXioQ1QSkNoq9Z1WqSPVkugIktlCuvvmQWFeRdSOVEbIfU65f18wwGEFHS4
-	GuzfyHm8Q797XWof25LPkrFugOUKWGU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cvGJa/uf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780655681;
-	b=pYs3Y9A4WaxmkutYcVA3Fcue9cVPaN+7hVnoOVUPguJj/dfHa8nYmTHAQQovERz1AZialF
-	Wc8hlsqShvNO1+2dqvaAR4CbPwRTbhtqG3elJEAGc5PKtbkEhvSdBj1Un7GjgCGV29jRWg
-	ROEw1Uco1uE59YocIVN5QxsmYQ0Ad4Y=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9277143421;
-	Fri,  5 Jun 2026 10:34:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1A81F00899;
-	Fri,  5 Jun 2026 10:34:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780655680;
-	bh=NST7gRmZZfVHFgmkPYEmeNwfb5XeOUP3jSBT+FhU7LA=;
-	h=From:Subject:Date:To:Cc;
-	b=cvGJa/ufFqXBY6vq5amhcKIu5LOPT5oUd8zzFw5Rg1rqwQlAPMPT8ApUiiyP7ebbr
-	 pww3rWJH4nGsHtKbI3we6z6r/D8djMPH0yAQmLZGq9Mk1Wy7x6xG6XLbJTYAfIXpEy
-	 FeKWaz5ukrh+RQkhPpIOR0Yr7Nm+xBV09KaPP8raTy8Z4xPtVi/Mcwyh71hrvVp/hO
-	 NmIX5uT45Q34h11ofGeWBmQR+HOOBfvFvQzjx2keCydxnRx/pH7JDlzQMVACJfPrmB
-	 I1jY3qddsobhwvoNsS+ZeCcFycAuxspERb830Y3C1zFns9KXjy+/qFyjfQxNwQJDqU
-	 27rhrxLaqMr1w==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH v4 0/2] (no cover subject)
-Date: Fri, 05 Jun 2026 12:34:12 +0200
-Message-Id: <20260605-page-volatile-io-v4-0-0e217d9bf11a@kernel.org>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+zcuQvJC3/7xOL+Yo+LO6my0PF5BMauyh6lq359XSB0=;
+	b=uvtdwGJrAl2ATtvad7hMAzGzAi0NR5OcdKrnISWGSnn5XXgdBX5oM09PvIam/9QQXthuvR
+	xHukl/lzvzVgTNPdKz9irvdXS4YqegUmJfiN0pJ337pAK7n22XeQZNBqQBP0FmkKfPNu1h
+	GA3KPvZpVcSmDUYduq/JgRuSK8M6DoY=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 27DDED11F7;
+	Fri, 05 Jun 2026 10:46:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1780656419;
+	bh=+zcuQvJC3/7xOL+Yo+LO6my0PF5BMauyh6lq359XSB0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=c9a5EEXYxNTUdd/FaPlFU+POGZlR683okhiAIY96m/VfrQD72YA/O2C15wxgYmiVd
+	 9oKNkNWf1oklNIzv9f98Tchmgh5WtP/7y4h8L66m0Jg9MTFHyF6EQYnSfgpjYIlNVm
+	 Z/mAdNdpLI0ZXQiEpKeNuEth9WAz/j7Nh7yvYqBA=
+Date: Fri, 5 Jun 2026 10:46:55 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Dan Carpenter <error27@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Dan Williams <djbw@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Marco Elver <elver@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>, nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 3/4] cleanup: Annotate guard constructors with nonnull
+Message-ID: <aiKpH3cLBEj3TF2Q@shell.ilvokhin.com>
+References: <cover.1780064327.git.d@ilvokhin.com>
+ <85fee12eec20abfcf711443518e8f0caec982a86.1780064327.git.d@ilvokhin.com>
+ <aiJi0WcYE8FZt-jO@stanley.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIACSmImoC/33NTQ6CMBAF4KuYrq3pP+DKexgXhbbQSChpSaMh3
- N2BjRqJmdV7k/lmRslGbxM6H2YUbfbJhwGCOB5Q0+mhtdgbyIgRpgjlBI8auhx6PfkelgET6Zy
- spCSF4QjOxmidf2zk9Qa582kK8bl9yHRt/2CZYpjKccNt6ZiSl7uNg+1PIbZo1TJ7C4yyHYGBo
- Llq6qowVDbsR+CfAt8ROAhGEVEWNRFGkC9hWZYXxzPFJTUBAAA=
-X-Change-ID: 20260130-page-volatile-io-05ff595507d3
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
- Boqun Feng <boqun@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Boqun Feng <boqun@kernel.org>
-Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2483; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=P3H4bvDaNbcUvf4aTCEML/eCJnRBIR/vOv9WWmF1sn4=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIqYmjpAF+ERZQcuSvF68y1p8um9kTxpFgh2+O
- /Yv/A4AIHKJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiKmJgAKCRD6UCkIqsW9
- 0HPAD/91R3/BZFEWBZ++ERJCcH8ilwctEVhIYqSM9hvtEaBafttDHRpQ1Bj6DmttG1H8e6I1bQy
- tsjCdmhxz+QJ2kdgyPga02OSBXxwzW8hAg3XHDdfIXGkiUFJLyM20AHtED9a48NrSLg1i2kZHQB
- 4ScmcNPiviCdBo9JmNz8Sz52ki4uEkdmfTdj0sex9GtXVukois7BT9Ks7irXUnVCWcoT9EyKZJm
- EYXxGkEMD6+qaVp4YUQzxzWLVlEcoXKNd8PXVBw2/y2OJVCiRbpt0jk7wLsoNTDFojOg0TSRrGL
- KNccfjy6ixxlar4uYqGl5LUlxBHoy7s1WU7lPa1Ein4Def3IlTUKdtb1Cvy/yobtZQMgNAZTf1E
- oGU3rDPZrEt3lPVBF9pYyg1+vO4hDAbCmGhpoXjJSzs2EvJ3JwRZQrlhFPtXoux6FgEFHIvW5Ip
- gBbbxd7zY/cTwX+GQ9gBbdckKEcTU1toGdoFPDvcjtn1TXxhBBF8RSq/XJSdEK493bt0ZDra+9w
- DDaAQByyoV+W+Jo/UOLXKvNHHK7uwJ9X38QsCN/rbFoEgRXlT0pNa++iWW+tnpCtwlqyTFvG54H
- P3MI+qYAh6tv6IbCxsuQLIZ0h65AB7uc6vuXg834BMRCNMxgpVcpxzA+Hwvyr3ekh7LCacVelmn
- z7ZdzC+3zHrfm0g==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aiJi0WcYE8FZt-jO@stanley.mountain>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CDE58180006
 X-Rspam-User: 
-X-Stat-Signature: qdyyfizbcyoatnad5cpa4ijxnsg7ogfk
-X-Rspamd-Queue-Id: 46E1020003
-X-HE-Tag: 1780655681-12983
-X-HE-Meta: U2FsdGVkX19pEz4jS6WaEzWUc5zO/S+NbQWrxi3gVKEOT3mWGLOEB57PRRjuS+NIXJENQUbaP8q9eCP4bhfNrB4VZANdekxiFsgCOrd613Cu7TvzstT/Rc3Sqy0uQDOrGjpUKe7e8WZ5glbW+X6HcMsQwKw2O/MyfUDYx5gNQd6REtk87wzHuEjiIkG5rEDVslOKZ5LnP36Lf1S8UQxSJaTdq2OiM4937tGQ0bWWmNSPKO858I5pePlzPW/hq67OmqeGMtiLyQl8unlKmOMlLt0ilB0AJ34/MhOE36VqxbDUpsWRTzLL3/xfO1B9GCOanPSYK+Xg1gof/J3tpIA/lq/QBtpY7qDCA7F1sp8yCjkhAF7eI7+Q5TtbhlRt7n4CXfj/TDRc47zuoi3ihf+Sk6w3IGTJXbF+TATKpkTCjsIVR8jywTNZg2M1c1Vj7bc0K0qqv0JWcwWJXLvPzjn//hMaEPuxGi1xBugIGotzsshuTDBO/YpqOqdU3hKbwfE4LExmzrUKdXFfQLtmkWZMhloAfVcKN0GrqrzmCRvoz/xJI9+KSWzCjwAoLIbdfgHxhKrKtxjyWXBO+q8dXXe3yVbKzcCRLZvYXdtSQwpIfRxklRpVU5ZsOsru/8qoi10079AVuGkvtaOptDxCLT/vWZ4mMdKeoP+nuUBGWpulvr6+hX4lfRRFd3s0K+TSJwLcWMgLmq8U9l2s0/GRREGPUQHH/ur+c0A8TrBoX7/YR9ti+Dj63ijmAtptd75uIcWQj/6ok+g5yyPAD3iJRqt+WIKz7MbPpk1ueyq0CsvHj8HkifC8boJzAZ+kdNACKaTlXue94TmWcZF7iHKMVZowxfNhER9oLZP0GN26WSMSGY15fPI/FENJHsxlX59Ujnywe557KzZzQniLBdHxrWTWQ2hjpDFSqkxox9k/9O1uB4wTKhx73hYOEhQeyjKj2WbEbCHsv2Z/NqFjuLsbQGU
- u5XyAMik
- ql+6S3GlglYwxR+xUKYV9fDhpzvasEB4Mv/n1w92A4uiBM3g9WRTpsU7mEe6eYafbPQOmVk5ZtAvpW4x0PFO97FkBEorRhYu91e798yweKIeRY1x5mXcxjS3mitQab691VyKgV+TgPmhStJoN4oDUjzb6bsD3f1K4j4yTyMPAzspJ5h9e+CpLd5nuM2CLCR3ljt8U/UOo9R+DcR545h1eCMzRNNKAQbo2LTT1AYdlqmwwQyNeFv1+wzz2xiN9yNaQqLUoV3m1E8QhQ084mqWjqJPWsv2MW2YMe+KBM9Zu9Hu3xIvCeUVFKuwYzaOFdqt6YXk/9Zvhs+F/OL6B1ZN1fTcZIfmRWows0YAV31cuwL+Kka8ASOyan401dH16TjTAXKMM9CRMU79g0V3mlckNVvUez6yMLAVx/7xgoJsUuUbFz0KaKkB7e68z6mwRt6yD0cIntisQn0dcwznGTJPcc8fjvD3PUeuQuRpqwkGNIPcAMcN2BWiZlE3DNizA0LsbXykSdTUtiwGTs8oMUvsU07hQ2lk8Zz3tVx76E3vALjiJZSkl9zcXEnEwS7gUOQBh8U9oEXbTjSTDTBjSDr7AyPWcMGHMPeIIUCjwfj35LWIPI0vLl/Soj9euv1EAPpYudJpQ68sQFoSXZxXlV+Jc3i0lQdSYV82nlGEMkxUqemyLjzIy8GacdnqJCPGICp8mKoA1Kx+vVC0U8n0=
+X-Stat-Signature: mtp849jfzhdiufeabt45fsef9ad6rz5e
+X-HE-Tag: 1780656420-48054
+X-HE-Meta: U2FsdGVkX1+WOoEmM4ZR9mbtl1txz9P6qfDQGY9yUvXB9Pvj0idXTF6bfZ7EmR6XN59R94zTvB7LfyionfUcZAFfx965BByJ8eso8/y2ddkLRpIkujkGNAnSHdbVrG3UXk7PP6B3PdsPN8UIHgjbBVONOyZQQQ2mV7B4piRVj0bbBGoLNDWJMBfF5lW2/uInwokB8fCweNFxnv23D/KKUsSR9xuCBGIK+JOcKCvqWZPqqGt3z61Rq8rG5gWBogxT94H2LlCAp+FIFunrKu3ZsEgdElPiRgoDvVal1PWdw5Tw5WJuahNVpMgF/dbI0c7tqdB5j7mBA1iuT5JkE0cQ3A3Sj6Bc2WO2UM0SXHmcpgwHKPZb1hzpwNmwxXaFwKj1t/R2UdeuTYOqsN4y9AituHrgYilWXozvm8l0ihqq2dCm5CyB0N7lgeWjJ82l/43uA1SAj2QnqimWs7FAPNwcBlPnyJu8YpGnHvuC3WgekegNLOjYmbQXFaK/tnWOmcSoYNl697zM16vsw2p9IsBCDskIyeIKhi5a0tMOYDyex74aElzd3Gc1gxm1Y4A9B1Qp8O+b29wE878NBMxqfjIppqfpW+jmzApFWCGMExiNvejlaOSh13/jpvs4md5EO0wxvzTUnh6LBdL/qMlhhq59dSbwOCAZW4VyH+ioSvTJ8lcpzFya3WH87ZE6unVYK3Yv18nyP3/wTLViNijEUrPC3KhcJw7iFLO1K6Gm9NKsXZHeSmzKCbUSTj3O99bA1UaChfu1RNZZm9tyWsTnNcGMjbk+/HwzaBB6m8B1HnvXIbe4ebYYm6iScQtFbCvQd8qWTbDoYqofzj19FAW7GSJ2+NohXRxP9oDLliXdx0N55uGpRuYHd5EZSs2Mh3mY7py1I4tveBdWAQYF9dBLhnBp7GVF20A2t9agRgravNVJL2WnhNefJRD0aT3MfYFRlUVM7VQxjS92v1WPDCBMQPF
+ w2ntTTKR
+ G3lj6JWWr1GeWxpvChOrg2qiA+YeChGsiwB3pEaAbHsCL5+4qI5+Z7FjMjT/jXu1i8MDG48uLYdOj5+2uQ1Z3ga+jTm4tArp32TavsudnPIH5+QDd9VNQ1Q4f7QheMkigPfr+BO9WgUlGd1tTclqxRBByqc36kNWyfGOZ7Bo+2RRymyKzI56bobVUnVc61XKhLIHjVq13pUSLEltOTvvwJNxpEKxpf9ORJuhHqCF01jJImWLIOvwt8NGCtAnq8jtVzQp/tDv1b7A/yiiZI1npSR+N16kIkZubF+Ngl3snDDghaAYzoZ7BxHrdrvzPKzLSPfRPm5r2JWZPilMqOAFl8NDwag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,65 +95,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Fri, Jun 05, 2026 at 08:46:57AM +0300, Dan Carpenter wrote:
+> On Tue, Jun 02, 2026 at 07:12:52AM +0000, Dmitry Ilvokhin wrote:
+> > Add __nonnull_args() to unconditional guard constructors so the compiler
+> > warns when NULL is statically known to be passed:
+> > 
+> > - DEFINE_GUARD(): re-declare the constructor with __nonnull_args().
+> > - __DEFINE_LOCK_GUARD_1(): annotate the constructor directly.
+> > 
+> > DEFINE_LOCK_GUARD_0() needs no annotation: its constructor takes no
+> > pointer arguments (.lock is hardcoded to (void *)1).
+> > 
+> > Define the __nonnull_args() macro in compiler_attributes.h, following
+> > the existing convention for attribute wrappers. Deliberately not named
+> > '__nonnull', to avoid clashing with glibc's __nonnull() when kernel and
+> > userspace headers are combined (User Mode Linux for example).
+> > 
+> > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> > ---
+> > Miguel, I dropped your Acked-by due to the rename. Went with
+> > __nonnull_args() (over __knonnull()). Happy to restore your tag if that
+> > spelling works for you.
+> > 
+> 
+> Sparse doesn't like an empty __nonnull_args() at all.
+> 
+> ./include/linux/spinlock.h:608:1: error: an expression is expected before ')'
+> ./include/linux/spinlock.h:619:1: error: an expression is expected before ')'
+> ./include/linux/spinlock.h:631:1: error: an expression is expected before ')'
+> 
+> Shouldn't we specify the arguments which are non-NULL?
+> __nonnull_args(1)?
+
+Thanks for the report, Dan.
+
+That is interesting, it seems sparse trips over the empty-parens form
+the guard macro expands to, nonnull(), but is fine with
+__attribute__((nonnull)) without explicit arguments, that a few places
+in-tree already use. GCC and clang accept both, so this probably
+deserves a fix in sparse too.
+
+Meanwhile, spelling the argument out explicitly is a simple and
+reasonable fix (and arguably clearer). Patch below.
+
+From 50f7e7eaad1d33773cee9a278625fdb4b451f53b Mon Sep 17 00:00:00 2001
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+Date: Fri, 5 Jun 2026 03:06:22 -0700
+Subject: [PATCH] cleanup: Specify nonnull argument index
+
+The guard constructors were annotated with an empty __nonnull_args(),
+relying on __nonnull__() marking every pointer parameter as non-NULL.
+Sparse cannot parse the empty argument list.
+
+Both constructors take the lock pointer as their first parameter, so
+specify the index explicitly: __nonnull_args(1).
+
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/all/aiJi0WcYE8FZt-jO@stanley.mountain/
+Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 ---
-Changes in v4:
-- Split `atomic_per_byte_memcpy` out into its own patch (Boqun).
-- Expand `atomic_per_byte_memcpy` documentation to explain the
-  concurrent-safe semantics and to note that the kernel's `memcpy()`
-  uses byte-wise atomic load/store instructions (Boqun).
-- Clarify the src/dst asymmetry in the documentation of
-  `Page::{read,write}_bytewise_atomic` (Boqun).
-- Use the "valid for atomic {reads,writes}" shorthand in the safety
-  lists of the new methods and of `atomic_per_byte_memcpy` (Benno).
-- Drop the redundant data-race bullets that v3 added on
-  `Page::{read,write}_raw` (Miguel).
-- Link to v3: https://msgid.link/20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org
+ include/linux/cleanup.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Changes in v3:
-- Update documentation adn safety requirements for `Page::{read,write}_bytewise_atomic`.
-- Update safety comments in `Page::{read,write}_bytewise_atomic`.
-- Call the correct copy function in `Page::{read,write}_bytewise_atomic`.
-- Link to v2: https://msgid.link/20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org
-
-Changes in v2:
-- Rewrite patch with byte-wise atomic operations as foundation of operation.
-- Update subject and commit message.
-- Link to v1: https://lore.kernel.org/r/20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org
-
-To: Will Deacon <will@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-To: Gary Guo <gary@garyguo.net>
-To: Miguel Ojeda <ojeda@kernel.org>
-To: Björn Roy Baron <bjorn3_gh@protonmail.com>
-To: Benno Lossin <lossin@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-To: Trevor Gross <tmgross@umich.edu>
-To: Danilo Krummrich <dakr@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org
-Cc: linux-mm@kvack.org
-
----
-Andreas Hindborg (2):
-      rust: sync: atomic: add atomic_per_byte_memcpy
-      rust: page: add byte-wise atomic memory copy methods
-
- rust/kernel/page.rs        | 70 ++++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/sync/atomic.rs | 35 +++++++++++++++++++++++
- 2 files changed, 105 insertions(+)
----
-base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
-change-id: 20260130-page-volatile-io-05ff595507d3
-
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
-
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index 65416938e318..b1b5698cbf1b 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -397,7 +397,7 @@ static __maybe_unused const bool class_##_name##_is_conditional = _is_cond
+ 	__DEFINE_GUARD_LOCK_PTR(_name, _T)
+ 
+ #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
+-	static __always_inline __nonnull_args() _type class_##_name##_constructor(_type _T); \
++	static __always_inline __nonnull_args(1) _type class_##_name##_constructor(_type _T); \
+ 	DEFINE_CLASS(_name, _type, _unlock, ({ _lock; _T; }), _type _T); \
+ 	DEFINE_CLASS_IS_GUARD(_name)
+ 
+@@ -498,7 +498,7 @@ static __always_inline void class_##_name##_destructor(class_##_name##_t *_T) \
+ __DEFINE_GUARD_LOCK_PTR(_name, &_T->lock)
+ 
+ #define __DEFINE_LOCK_GUARD_1(_name, _type, ...)			\
+-static __always_inline __nonnull_args()					\
++static __always_inline __nonnull_args(1)				\
+ class_##_name##_t class_##_name##_constructor(_type *l)			\
+ 	__no_context_analysis						\
+ {									\
+-- 
+2.53.0-Meta
 
 
