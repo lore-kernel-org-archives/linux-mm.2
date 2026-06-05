@@ -4,82 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF0CDCD6E5D
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 09:22:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4AC2CD6E5D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 09:32:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13BB66B0005; Fri,  5 Jun 2026 05:22:14 -0400 (EDT)
+	id BD1EE6B0005; Fri,  5 Jun 2026 05:32:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ED356B0088; Fri,  5 Jun 2026 05:22:14 -0400 (EDT)
+	id B5C4D6B0088; Fri,  5 Jun 2026 05:32:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1D6D6B008A; Fri,  5 Jun 2026 05:22:13 -0400 (EDT)
+	id 9FC226B008A; Fri,  5 Jun 2026 05:32:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DF4646B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:22:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B2B0C2327
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:22:13 +0000 (UTC)
-X-FDA: 84845317746.04.50EB61D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B059140011
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:22:11 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mKURoMZu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C0A46B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 05:32:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F1581A054E
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:32:01 +0000 (UTC)
+X-FDA: 84845342442.11.0F664E1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 76EEB14000B
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 09:31:59 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DNgiJnLA;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780651331;
+	s=arc-20220608; t=1780651919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jhbbJw1+8nFdKF7iBjsal2tsKrPYztqe8jkFrRv+M4s=;
-	b=qKuA19I4D4dIw0wL1YjBX5R76HXRGHy9hldvlXy8UQW+pkYV0YC8dZi7yh6ooonmUzU3RT
-	a2KRo2sBKik0y7Ec2A/KQhrGMUwLUbdbt288rqKhCtWnd1rZ7i0UZglLrUFeNY+Hct5Pxm
-	U5vUHDLD7hrVPmTnmTovy3ct2s3mHXA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mKURoMZu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=GdduqExShaT7dff5IoDbAyZHmANXhd+uGbGSM1erRXA=;
+	b=5OUci10ODh/05RddS/01GZtZKdOlOxUcLJZJB9CPZYAk17vplZPkrdZws2jOar+PxnFRa8
+	EVY4jxMQNv2Es4KVp6ps5BVDRtVxCOQBJGwA7S/YHn9KABuwyy1h8clgwfvZyPNrHqlfhq
+	2vjc7Q+yxie3ub8CsSdBXjAKfrzHFlI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780651331;
-	b=evph6+O13jdV+2LvYrxbeEawSz5opTVH52aYem5u/a2FVu1J5fGTRL27PbPjVtC7cu4lk4
-	BC+lmWDQ/x0+q1IyskthOjG3EtVq8KMGzejyf7tO/GYVvNZaNpaEVkRBQFdgGEcVe5oaWf
-	rTIIqEjynUKCldUKcD0Sa9IQR7Sm6v8=
+	t=1780651919;
+	b=k9yMdRHPi3FKLX/WdZcMlbSMoepM/iwvhtvh8jO45XkKbK3FmLhblO5bZRCrcAAeeB9SY1
+	qNneLBiJk9beYtiTCzLXcA0nTH5idebPL3vJV9p0BMWj+hgNrbQauRKgM3M0Vj8+7ngwxa
+	1BFMck35eLYJrIYHJJFv+D4qHTWSWeA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DNgiJnLA;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D34604174E;
-	Fri,  5 Jun 2026 09:22:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC011F00898;
-	Fri,  5 Jun 2026 09:22:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E4624601DD;
+	Fri,  5 Jun 2026 09:31:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7E41F00893;
+	Fri,  5 Jun 2026 09:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780651330;
-	bh=jhbbJw1+8nFdKF7iBjsal2tsKrPYztqe8jkFrRv+M4s=;
+	s=k20260515; t=1780651918;
+	bh=GdduqExShaT7dff5IoDbAyZHmANXhd+uGbGSM1erRXA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mKURoMZue+AtZNQKf0EPlAVQIq/zNoBQrF7LiX9aEP+WS86xWR6WnRLEn3wOeRgcA
-	 GC09liXgi2keglH9pGZYTeUF9WczP0XQjt43Gk5Muv62Pp+vQnum/z71pcd5eA4CBQ
-	 haOZ6ebeEstgl9txZF9Ew69ygrgHdb52t0J74yAwq7N8OUu5whr8zy4ct67eMXuF3B
-	 Ur+jh4Ka+PeVXepAPbzvpkrKRszkORT0Agwu4Y11HJwwOf5sdW13Gdnw1hAYqYdGuA
-	 3a7TodSNgosYBiAerJETY1esejSTngZgpFSyJNMxxW9MXrXqxopBPZmnyrg1YI2vRr
-	 fB2UABqeIUcgw==
-Message-ID: <5aae8c80-e886-47b1-a1e1-4e91771f3492@kernel.org>
-Date: Fri, 5 Jun 2026 11:22:05 +0200
+	b=DNgiJnLAEJPr5JwKuY2/1gEfv9isFZJXBijEgs0PK0x9Umv2xGyhas/e1EZBgF2Ef
+	 vAEAQIT/GjcX0zYHMiR4puctAxje3RBaaeiVWH46LiA+av7Ii1+EU0DFX1VImMG0ZY
+	 r/3FVsnxAvCSoqGlJlI1NOAy1xWSF1FeITRrSRUoZM21wLGSsohNkF+DNrHstXghur
+	 SRo1KGUaZcP+9bDaXCtz5oMelFciV34HGwENGnXKQu4DySyuL20KvoQSxpvE1LO/KT
+	 rcbas1BoKwa/FzVUFWIhiTYA+NG5qrcHgZ5qkY4/UO/f+cZbJttw4cbd+6xsFE3Aoz
+	 OD/d2TvBSulEQ==
+Message-ID: <6f5265f1-d7c5-43b9-bd93-5066313704b4@kernel.org>
+Date: Fri, 5 Jun 2026 11:31:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gup: fix GUP-fast fallback for NULL-mapping order-0
- folios
-To: Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Peter Xu <peterx@redhat.com>, Mike Rapoport <rppt@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
- Sourab Gupta <sougupta@nvidia.com>, Zi Yan <ziy@nvidia.com>
-References: <20260409014647.397515-1-jhubbard@nvidia.com>
- <4d6c1af0-dee5-4f1b-b74c-2ebc23de7baf@kernel.org>
- <08afbec2-bbe7-4e8a-8d99-8a5eaecaeee7@nvidia.com>
- <aiJbJVbD4W-y1XDg@nvdebian.thelocal>
+Subject: Re: [PATCH v5 1/2] mm/process_vm_access: pidfd and nowait support for
+ process_vm_readv/writev
+To: Christian Brauner <brauner@kernel.org>
+Cc: Alban Crequy <alban.crequy@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Alban Crequy <albancrequy@microsoft.com>, Peter Xu <peterx@redhat.com>,
+ Willy Tarreau <w@1wt.eu>, linux-kselftest@vger.kernel.org, shuah@kernel.org,
+ Usama Arif <usama.arif@linux.dev>,
+ David Laight <david.laight.linux@gmail.com>
+References: <20260602100917.3641359-1-alban.crequy@gmail.com>
+ <20260602100917.3641359-2-alban.crequy@gmail.com>
+ <20260603082707.3831525-1-alban.crequy@gmail.com>
+ <8e738cc8-dce8-4043-9b93-2bb867c43028@kernel.org>
+ <20260604-ornament-sparen-biegung-e9930ee7444e@brauner>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aiJbJVbD4W-y1XDg@nvdebian.thelocal>
+In-Reply-To: <20260604-ornament-sparen-biegung-e9930ee7444e@brauner>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 76EEB14000B
 X-Rspam-User: 
-X-Stat-Signature: wbmw1txb89hnzsohnhbc1tpb1cuor9jx
-X-Rspamd-Queue-Id: B059140011
-X-HE-Tag: 1780651331-983927
-X-HE-Meta: U2FsdGVkX1/v/qFqsXPEsw2mOYYhLwdO5/6dfVHEzxRvcVQ8CcvMnxheQDYg+yegJcJ5UzEeQ7DukIF16xgGUz+KePLH7bM/6Gc3TFDNogA6n2CX7YT3MmmyRb9rOyekqxzBU6pCjiiUs6AZbpmvOorxUCyRHhUbxTkjhN4k0qT6f50XMFQy4gOsL45xZh55fm8D41Jm1wCiHty8JfW/KzoNF0JgnARrcxppNP8A1LtoqVxqlOcewHrpd79KqQUJDeC3bw8Wv8zAKMr/7m4x7psMgd0Alj3lpxxrGlJdf0TdROz3Tqf7jmkkUiVZ8wYpH8OJfjm59D9iJUQ+XYlxbL39E8vwp/iaP0TZfrTSIdLNU6k+Qrko0mOL2daIB8k8loj9NoMseTPFsZOKScyII9+sUlRnqML9V3GpCJUu3TNStHCOcxuC3nvjLFfMWnE3M4TdK81ybL0DqnFI0+2AiCcLyc0bUF2/ytgb1Y7OgYMD+YI3BpBp0LMNEMzMFUp+zy5VH0Ue/DgDh15kZh8QzC6OLOVpDkaK1ChAh/4Ek0Ciw3EkHKsOcbQBF0UJrfpRg2+rqf5OKkM6T+cXVeSQSVixXTL3QaqVjxJH9nfN1vUMuMrTqjZ1XtAY8Ts7EA17O6VEOtL9RLlynb7E/Iz1GJ4QScHSD0kZQ13Xms7QMkCw/Gr7LkWcaSucIFM1qNLCkumlSV/5aijYVoyFEOXWWMyHKDY+XQmZfiqSWOGxTmuzi5mZujXTH2x4uNFEOWz23MgUro99hQCCnZzFj7Yg5WPbkVtet6lAiRoLAJrIEPRXvYcK7xxxxn5FalFrmTh738VJ6FLRjhehhc6r3pT3phkwJ4e++cDDEbXPjLHSyncSoBx5/nXWJ+65b0kzf1FYNLQ91/mZFleV3wdY7YAqnO6/LjsrCF5CjDK+Uv28EAdVL758L8FnEzUo1r8C5Qp40+Q1+s3btbGLghEoFkA
- I6pBNQwZ
- bfmk3F7bKhVmm/7r1nXw869dgy0NznyMknVWU4sS0IM12V14Tr8rnJ891orHtLhUF8CJlRnXa/QMS2usYmMfO8lH6Jc9etQIjCKjLaZYZNIHNs6GBkJygEpNIaZP1LLiSffhc8vVvvrmyXz718/+UzUK4sJJIOGyulfzrh3uMILfP33I3YUo+or70cgOGWe9/ivKEMcMb1ZH90c2fpEX6sjwdsiH726QQT7KhYmCUym/1Ku5fFPN9xl6wE9ANfiK5ekp0hGXs/hk+4GhpuUxXxqAXWQ==
+X-Stat-Signature: wj69kbkkdcnnigd7pf3591e8f9t6zwo4
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780651919-501182
+X-HE-Meta: U2FsdGVkX18S13Jw01kQS7Ur4h84bAWxMjWG/dpUwo9BhBsSnkF0oQuzndgMhUx/D6xA3cAyl7lM+H5dLgDDPl/BNPDGwFBumUMFFW+AKNCRDpKfhto2xxR52c1zmO+3mw4SaO0fzvnTMf0pLH7kBwFKUeU/RL3TqNvK1qsuJcFcbcePy4KC388s2AheQKPLgD32HU2cgevDSWB+Fshpxf9G3FmQ7bS1KsEbeGjFypa9UINW8ctoIJjz2ZgL3echLz9tuPTSgoMMgWcOtSjXlq7iEfSXdQsPrkyrpCjAvQO0nr6uT/QLtnCUXbtT6u3wx+KBJt7wxtu9a6H1naHty+kTf+ELNszFU4n9sbojvaPtUcVGqftvsOlQjqaWIYTO58MVH1wHzcRja/DwcPCZ3n1Y0S0suuYMxYErPPBSux27qaSU7H3GbWyEiVoBRgS23fVjvLQSzR23pPFsLn7HHF4NV8f8eadtXIvLnghLaNKWhHWrnGN9gpx+kElS7lbZNFmijKtNRqEh9ImPMEVGxVrxnUs32AZcPqHbAU0oD5lEQPQCO0deaXAU0ZL9rlMKrRYka/bc6Sx7I1cUmI6E0aBZpMLWxCbYb8KWHbE20TSxOxftEOS1KhsocdIVORjrjrxGr5ofiFRIATw4y6x3cTfPQHIhcUU8gG+KEEngFyLbtvUjZO3fBbxmB6E0IdDvkMoYmFQwWzc49LUgwG4RR+TDVtB/aPU5RRZucgSzRALmdgB60AT6/YDvqTqh/MGS7pvsHS3hGwllGL13O0Cd/5BF8Acw4SalhlHlRyQr263Nv4aBhXVVHFDrpzR4VIl2+jm3pi3oaKsYBVVVlNMC6SmkBI/zyElVgE5o6woA+l8RwhYso6uPOQMak2Unce3CLYmjRe35WjMU6M4wCPCWfBLINzmayryx5ha/jW5xDqyd79w7G/8+VqBdLE33rIkjAjwAQN3dclYJK40w5cA
+ yNjGYDsb
+ BhHq9rpjRITY0haigJIHaNtELo+7x2LdET2MTOtOBXASWIrTAkXrFQUCPKgkyFvmZ0A8FYoPrQ+NH2brE52auw8EJL33hOLXKvBRy4cchSYTDyutMuwNk9ROCpB8ySe1cPxH+13dochLOGCVCnfBtlh+/KLSBoUL12/l2rzcQqHthEHL/Z1TdoSM3MhhnIRnx/iWTcyfK44wwIR1+j/l/GReAr5DXthvY6GfZCQgv7Fzji2IW/OlpDOf1hNeltRRoSB39pKQRqgJEbGRaOJcUwxxIHoQTcR7vJwd6iZHTQvmFuXUac2h+m4dHxP9uUhOA2VYimXE+DYuaJ1bpgmn96Qup+uBA6hrQHvLD+RC3GtmQKc5sU/5DbTSlEW3nT/G3Xldp3mi+2XIEjqivDRWvUyqJWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,36 +150,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/5/26 07:17, Alistair Popple wrote:
-> On 2026-05-15 at 10:09 +1000, Balbir Singh <balbirs@nvidia.com> wrote...
->> On 4/9/26 17:52, David Hildenbrand (Arm) wrote:
+On 6/4/26 14:49, Christian Brauner wrote:
+> On 2026-06-03 15:54 +0200, David Hildenbrand (Arm) wrote:
+>>> However, the exited-leader case is a real limitation for profilers.
+>>> OpenTelemetry eBPF Profiler wants to profile a process where the main thread
+>>> has exited but secondary threads are still running [2].
+>>> [2] https://github.com/open-telemetry/opentelemetry-ebpf-profiler/pull/376
 >>>
->>> Hm, what if secretmem folio just got truncated? I hate to rely on some
->>> handling in the caller to detect truncation differently during GUP-fast,
->>> but this function returning "true".
+>>> Using plain TIDs (flags=0) would work, but it means users cannot use
+>>> PROCESS_VM_PIDFD in this scenario.
 >>>
+>>> What do you think this patch should do? I see two options:
+>>>  - Address this limitation in a separate future patch that fixes
+>>>    pidfd_get_task() to use PIDTYPE_PID when PIDFD_THREAD is detected in
+>>>    f_flags, benefiting all callers (process_vm_readv, process_madvise,
+>>>    and any future users).
 >>
->> Can secretmem folios be truncated? I assume you are referring to
->> ftruncate(), I am looking at the setattr implementation of secretmem
->> and it does not seem like it can be truncated.
->>
->>> Zi is working on a way to distinguish folios from non-folio things: that
->>> we can identify whatever was added through vm_insert_page().
->>>
->>> Because that's really the key problem here: vm_insert_page() pages are
->>> not actually folios, they just look like a folio today, but looking at
->>> fields like ->mapping does not make any sense.
->>>
->>
->> I still think this is a short term fix worth having until we get
->> Zi's fixes
+>> Extending it consistently for that scenario seems like the right thing to do?
+>> @Christian?
 > 
-> Agreed - this clearly results in a performance regression and we have customers
-> reporting it as such. I think Zi might be out of the office atm but when I last
-> spoke to him he agreed this fix should go in for now and his approach will come
-> later.
+> Yes, but I cannot vouch whether the mm operations deal correctively with
+> subthreads.
+> 
 
-He should be back now. But yeah, let's get this fix in.
+I'd think so, but I could give it a detailed look when reviewing a patch :)
 
 -- 
 Cheers,
