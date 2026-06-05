@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA214CD6E74
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:35:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECD1FCD6E5D
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Jun 2026 11:38:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 426316B008A; Fri,  5 Jun 2026 07:35:49 -0400 (EDT)
+	id 1925D6B0005; Fri,  5 Jun 2026 07:38:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D63E6B008C; Fri,  5 Jun 2026 07:35:49 -0400 (EDT)
+	id 16A886B0088; Fri,  5 Jun 2026 07:38:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C56C6B0092; Fri,  5 Jun 2026 07:35:49 -0400 (EDT)
+	id 080C16B008C; Fri,  5 Jun 2026 07:38:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 16D756B008A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:35:49 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE12FC3436
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:35:48 +0000 (UTC)
-X-FDA: 84845654376.22.4A68181
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ECA906B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 07:38:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8EE791641B7
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:38:39 +0000 (UTC)
+X-FDA: 84845661558.30.C02B48A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1E4AE4000A
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:35:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SK3RXkPY;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id CF4F018000E
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 11:38:37 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNy6ftJA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780659347;
+	s=arc-20220608; t=1780659517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f7BVss6j6kOZoY1G1bBrjCYbl0PQn+LeN+QUqhUy2Gk=;
-	b=syOiUPT+vW00CiXEC94qmIgPS73V8oUXQYuHqK++IkoNDq5dJetF581smFs7/opmCt7MtQ
-	iwm9GUJoGK46Vqe7GcFOUJasSgh/5w4xm8NoWOhL0qPS8cC33DWDGkQ5VZ5S8riUC7bfQl
-	Yd55wfat9RfpPP2QG2KnPlOmubYbLxI=
+	bh=hk6Cdaq1vDA1FKg7w+fi/63xjHZurL3yEZTMwESU0Ro=;
+	b=PfM9E7UPrh+aj9ReSeTexR6z0TiRSECeW7dCUqX+F3TO7kG93uWpxi+cjuYj/7KPw2Sx/R
+	nqjggufs8hYeTOh5AC5eIA8NuQCq3hd4f8v0+ydzKTLIv81JMFtJJvti8OVwQ6psL/wiR3
+	Hl9eHJxY9UPeTqesLPHuGuRosxarqXA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SK3RXkPY;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNy6ftJA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780659347;
-	b=RTMFpUuga+OQ21wSKYOvGkeAuXtv9QqHSVq2qOWJmQi46OIlTj1ZGAwzqeQe/Mh3Atq8J0
-	4DO6q8jYP3k5XnqmODX/91vHGp3FsKYfPtQEtP3XQwW4WHs2mVx+USTtZvnlDbJsL9wWpN
-	f9YM6RamZbKERAZRjCnuLZgzP6dowsw=
+	t=1780659517;
+	b=alE+wdxbhMKPq9YhrVCFRk9YI5sCTEYAiUxddCk8IGxlaGb+hvVqtI1rx7LGbDvBgCSJQv
+	bs/jG6kPvcFWwVqJlVo/buiJ2WjY5QTEk+p4QsEvLAgX5u8+pjz8/nN7+7KeCs94NtnP/u
+	Xp3IplpUUUZWgAHlyPCU/vVxJSHfKsQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 94C73601DD;
-	Fri,  5 Jun 2026 11:35:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA411F00893;
-	Fri,  5 Jun 2026 11:35:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 483B6601DD;
+	Fri,  5 Jun 2026 11:38:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3098B1F00893;
+	Fri,  5 Jun 2026 11:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780659346;
-	bh=f7BVss6j6kOZoY1G1bBrjCYbl0PQn+LeN+QUqhUy2Gk=;
+	s=k20260515; t=1780659517;
+	bh=hk6Cdaq1vDA1FKg7w+fi/63xjHZurL3yEZTMwESU0Ro=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SK3RXkPY5ggBTCPPqN/gLZ6rjYe5Rq77NsYv80iGvYDVemRt2XMxKXlvlJ8fpHMcy
-	 loaWPJdEDu5dp63vdK3smDwIJ+GaOYH3MWlJvzqvAddah10I8ernY086EiSZiiXm0l
-	 IMoYvNZ/mCkVA7JYKHupElVmqsIK6FsBjZxf4Bub73gzNUTgJjKslKbar3Z7kbMIM/
-	 G+SFARLHUqtHEuXbidpNtE5vPwWb0YlxUx8PKF+jeb7OFT+v+dS0C+ntRMpw7Z0sZl
-	 HdcpsHQeKVeT6NWotvWbyLNs7GDqqJr1hsVyAc3Jtf4Due0rEJXeRv/KQe42AHcH/A
-	 NTehpmFHN237g==
-Message-ID: <a5c26cde-e23e-488c-ba3b-cf8bc9be76da@kernel.org>
-Date: Fri, 5 Jun 2026 13:35:37 +0200
+	b=BNy6ftJAwVHg37IYpk5Rv//MNKo5MzbM0y/uXf+gMVfqipFvNqQqbMAmBZfdu1VoF
+	 Iceg1pOY3uUfEjbQgLbNwQhVN9sZ/bRQ5CsvQC48QMRgE0pnhv+UFibDVg7KOSZOpm
+	 GwD5jeLzDG0h8BYYGceo9CgjFE5booO4aeafj65eHlnXp2p6XENnXZrQmSzWaIxJtl
+	 zpAL/OXvw86PTx8iWpOgzPXPqZpu9mjpiy1iTPS6BQ1g+UIgeLTMwKXziOTmzZjnI8
+	 eHhsMne8cBeDpp75AJfSj/Mg3Q9szdQB+/lkJZxEcGeYqnm+JtjNEU/fO29nEV2bWQ
+	 zX749eAX8p1mg==
+Message-ID: <6963083d-6725-4081-b2a2-894a0510c6fb@kernel.org>
+Date: Fri, 5 Jun 2026 13:38:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/7] mm: memory_failure: Generalize extra_pins handling
- to all MF_DELAYED cases
+Subject: Re: [PATCH v4 5/7] mm: selftests: Add shmem into memory failure test
 To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -85,7 +84,7 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
  vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
  tabba@google.com, dave.hansen@linux.intel.com
 References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
- <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-5-a5bc7db5a9b2@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-5-a5bc7db5a9b2@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 1E4AE4000A
-X-Stat-Signature: hb3jhm5f9bq3hiw4owtrzfcr3axopo4q
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780659346-698933
-X-HE-Meta: U2FsdGVkX18pZhK1ibHtH0zkAQr/wZbPNP/8LrOMLkDK89E0ZWhYd+59Do4icqCb2Au8A0EN6zLcdTTW0s5uyErBAiJKjwz1KkZoP7q8dqIvyFwPK/x3E+MsKHfFkYRTdHvv+OqupaOiIddr1mhw6Tz84cGOfCYUluOsmlcWU9NtZRs6Nb0mPwiKC25lGyqwk1tYUosthYy3H3cpLcbPN4KOI1qDcKQVfFdYKnFLmKLSP9P/XgUx1nrZA5kG32af9Uk8r2Ub2s5S5t0teUJLme4Z3Cbxvrils3i5KMFscak/IiHlN4/JpNahWVDKXJM4CbYKZG/YrVbsPKqNp7YhDga1CgAonnUGYFbC5ZPyF4HSanfC7hw1b1qZIqmo45giZjDDsC78eDRI/W8vor3Npnf3ReSKsL4XCS2j6Rmh26N8Z/CFyAcfZGcwSuV3ZeSj35OugsdNRx+972n3Wia/BnrC2dYFEfZUZMrwL8aUjPvcO0jORyVwTXyit0wxIcxBOgh5NlRb2mEoY4sxlyFxycP7G/+a+n/tCDakMAsYSKFa/DA/tzDfJ41stmgXC/031eK+lG0q3Tms4R3xJKB4CK3QgXZBJvEZUpdXBFwysF8fslKMqMWPFykiJtRd2pjjp3mysE+1IwwGKUM19gTHxi5KYWW9bUCFgYr1QsC8Gti0DB6wlTVjn24Ava1Fgje/OND0gE7W/5nhUODAGOwAswoKCSLGgx+r8AJdB6p9ENMU9nxqmwsgMTnUSvXTq4qc8F6oNLLj1eoItEmrUasdCh3FpCDPGtMnmJZaoEHGQJZXiUk5YbFUy0MrbAk6/RpW223zkQD8MkIJVHw256OdUWSlKg0MfMa+h6D9jG8DN8WMye/omk4AWfa6wmLMU4DyHIKcp3Y8waYbbsNXANbHLksovw9HpwqE8Sv4Yv2LH+mpxOtmv1ux7g2W4rGv4Th7qB6PN3kfzPaShzmEmic
- P5CfyU8K
- 1SVSAZaNEBlMLDi0hJ3iyfSOHCIWcv9essSGXJQWq/BJl+qVmjdfdYy1G5SIyjKySC2edQoZob/s3t2+s5VIo7KUe82ZmxP27kDUt9y/Z6wYE+Vt3v5iJPgKG4mxt1Lz3LR6fBtglTO5bjEzm4VdJMb/V8hOtAwJ5c+SqzY8vrtWrZaSjSy59B6qyoh/yIqpBka/kjdSuj+RRQqwWMWlGlLZUBbfFYfEv10psOLoIB9pwzUMyEoKMcZxMQIJHOAtfIVkd6ScNrA1ScZJCOWVQjd09B532Tcs6rTn8HbvIUEHmMudr9VwJycJrQHTkjBWRmdUZ3HNTwwDgn8j9e0XII6YoE9cfVwtyLOr5AtFq1yMDZnQy7u4+j4uSfWIzBvsYERAYtPEM8W3rrT8GvZeybPRssBNnWvch6u+yV5UzAtkDRD1Ny6ZcClU4ss7fk2/bDdQgCmlsB5qMZ62qoAdC+M1o+4YbftwMLt/H
+X-Stat-Signature: xp135rm135yw895k1y6o6jtkiddm63y7
+X-Rspamd-Queue-Id: CF4F018000E
+X-HE-Tag: 1780659517-62172
+X-HE-Meta: U2FsdGVkX1+tR4RtqTr8PC4xpVgwdNqpVrj2KHLcNfjPB6wWdW+Mm9yK7Mn/7bQC5thdFoSNE4ZPfAS7dDW8VrhJTYCfLtC8j2vjUXEu2E20AYSSIiKAbxD9s+v1R0AIjbWawIdzpBlcZMLxHZp27ao8OTQF0DYNyg/KHsaJtX/u2cr3wfoS0XIYd2WFmOf6Obzyku71qGiBHDwpiCoBzvV/N87ZSULQRwlyerg7JHogde4f0+nYLvnd5JUZ3d0EQxzbEA3LARRXPrLdsDjsIyAgVnZlQojDQG6NBHtlX3Zmw1HEL2ZRqemGpMCHcf9eGexqdkygiLpq8Hfhmg4QlXr4o0fM+ahoXEHkMCJYMZ2tcdtKHDiYaxV3z9l8VbO+QG52skxroC0vZYBhpBa6S4yS6CWXaPL050ktKD2TTefb9b5WW81Wwa+MpA6xbpYLvr9Xb5KSGlbqSptqKPqZvTi/2C3aRYzjUHNSvH0a9E/FNFFwMVaLqvoBw+29JAihydort/s+FuNGuERFoST72PLQn+Z6gHQtyspjCesa96BK1tW+mzaibGWHNer6AuKAGlcUuI22UJpuJWCD0FXQfu6yZtXcfTNi+9rKRLQAmMg1cjyF8pmaczXA451g2H8uvYXw+aW7Yp3QFGsZ25UAFl3iMnAu/7neNfYNA+B0UoSlSVbFqVbNdRSIc6pSfQWRVMLfbkE+xol1wODK/tD3NnxkE1CXDXpoROqgJhEXnkOb/V/TYbGEbfsm3IlXKm9vZJnMSlnEO+OGKCO0kAbddOIjD3Sz2sfscllJ+8BDzrVxyupL0wxJwGA8vdcRuwuqC4javjOSijh0Wk0cYIExct9gf2zItTQR4UzKPAB48NQ3C03fDk7mB/N9SXXYzgl3TiwulbaWuSDBfJCue/qnHs5RIPT6ew5AUZSKbu1wzmL3o1GkTdQf+gag1MEwA2dAzt12kLMLdzlLEBlPf4t
+ Oq/scXpr
+ Ivo6bFIRpi8hKt8zBUg0V/Tb2kAiF0715jXoLzHoOATNO/1hvO0ksyduewCdk8GW5mBCZ6q58U+WDToGqK4lcxCeL+kgKLa9MogCXQcSvxKLgxrkR4KJWQ0PMNsM1amFXmbwCh96hW6oGBMcZWrjmeE2s9pnaOWcmscqd8vx8n5mL1LRJtBNU3SFKnDYg164dX/kjVG6OBMMUNhckM4FxF2ntx2FhPKxYH86EBu5GfNywXBOUUPgs551l7pSiw5rBFjFa1Y9oiW8FFAm7IWStpNiLy5ExqmlApuuNBxR1C+1mBOyVrwDSGPIF2OhpJ/TGLr3lncNeGW/HoH0nqEFTewSlxlAQ3MIS+YiFx2j1gnrUIq0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,22 +150,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/2/26 23:55, Lisa Wang wrote:
-> Generalize extra_pins handling to all MF_DELAYED cases not only
-> shmem_mapping.
+> Add a shmem memory failure selftest to test the shmem memory failure is
+> correct after modifying shmem return value.
 > 
-> If MF_DELAYED is returned, the filemap continues to hold refcounts on the
-> folio. Hence, take that into account when checking for extra refcounts.
-> 
-> As clarified in an earlier patch, a return value of MF_DELAYED implies that
-> the page still has elevated refcounts. Hence, set extra_pins to true if the
-> return value is MF_DELAYED. This is aligned with the implementation in
-> me_swapcache_dirty(), where, if a folio is still in the swap cache, ret is
-> set to MF_DELAYED and extra_pins is set to true.
+> Specifically, test the expected behavior under various scenarios
+> combining page dirtiness (dirty vs clean) and failure types (hard vs
+> soft):
+> + Dirty + Hard: Trigger a SIGBUS on injection, and trigger another
+>   SIGBUS when reading the page again.
+> + Dirty + Soft: No SIGBUS is triggered, and the original value can be
+>   read successfully.
+> + Clean + Hard: No SIGBUS is triggered on injection, but trigger a
+>   SIGBUS when trying to read the page again.
+> + Clean + Soft: No SIGBUS is triggered, and the page can be read
+>   successfully.
 > 
 > Signed-off-by: Lisa Wang <wyihan@google.com>
 > ---
+>  tools/testing/selftests/mm/memory-failure.c | 111 +++++++++++++++++++++++++++-
+>  1 file changed, 108 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
+> index 3d9e0b9ffb41..43949b3b3565 100644
+> --- a/tools/testing/selftests/mm/memory-failure.c
+> +++ b/tools/testing/selftests/mm/memory-failure.c
+> @@ -30,9 +30,14 @@ enum result_type {
+>  	MADV_HARD_ANON,
+>  	MADV_HARD_CLEAN_PAGECACHE,
+>  	MADV_HARD_DIRTY_PAGECACHE,
+> +	MADV_HARD_CLEAN_SHMEM,
+> +	MADV_HARD_DIRTY_SHMEM,
+>  	MADV_SOFT_ANON,
+>  	MADV_SOFT_CLEAN_PAGECACHE,
+>  	MADV_SOFT_DIRTY_PAGECACHE,
+> +	MADV_SOFT_CLEAN_SHMEM,
+> +	MADV_SOFT_DIRTY_SHMEM,
+> +	READ_ERROR,
+>  };
+>  
+>  static jmp_buf signal_jmp_buf;
+> @@ -165,17 +170,21 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
+>  	case MADV_HARD_CLEAN_PAGECACHE:
+>  	case MADV_SOFT_CLEAN_PAGECACHE:
+>  	case MADV_SOFT_DIRTY_PAGECACHE:
+> -		/* It is not expected to receive a SIGBUS signal. */
+> -		ASSERT_EQ(setjmp, 0);
+> -
+> +	case MADV_SOFT_DIRTY_SHMEM:
+>  		/* The page content should remain unchanged. */
+>  		ASSERT_TRUE(check_memory(vaddr, self->page_size));
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+You should likely use "fallthrough;" ... unless you are missing a break; here.
+
+
 
 -- 
 Cheers,
