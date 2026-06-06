@@ -4,108 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E769CD6E75
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 03:51:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D94CD6E75
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 03:51:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2D3A6B009D; Fri,  5 Jun 2026 23:51:01 -0400 (EDT)
+	id B65CA6B009E; Fri,  5 Jun 2026 23:51:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DD8C6B009E; Fri,  5 Jun 2026 23:51:01 -0400 (EDT)
+	id B16A86B009F; Fri,  5 Jun 2026 23:51:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F3576B009F; Fri,  5 Jun 2026 23:51:01 -0400 (EDT)
+	id A2C726B00A0; Fri,  5 Jun 2026 23:51:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F3D76B009D
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 23:51:01 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 180E1C1991
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 03:51:01 +0000 (UTC)
-X-FDA: 84848111922.09.C6771ED
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EBB76B009E
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 23:51:07 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 572421639CF
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 03:51:07 +0000 (UTC)
+X-FDA: 84848112174.25.43F73BB
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1FA7F40004
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 03:50:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gseG4dB3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OMOV4Lui;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=edv1iVWr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3V7xnSAU;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf11.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6AD2480003
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 03:51:05 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fYObg5kP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tk0XIgTp;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fYObg5kP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tk0XIgTp;
+	spf=pass (imf30.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780717859;
+	s=arc-20220608; t=1780717865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=23nljHwZN8InoElJ8nnzrgWbXOooBuedRgi6MNI+VtE=;
-	b=Hsxvq+cjV0ywKa7kp9DfxE0HODNaUwvkmAqnOQ4DrYfUtlt4EEq793VHGYjKw+Q88jT4Oy
-	yqGIOJiruINu0LECqa1gbqwf8XzpmTb9SltOzP7Ic1MKV+iWlGTer9zdyOx7pBwyOH0xYH
-	c+8wdCZtOVXJkMk+OvQC0qIj3fYDaJ8=
+	bh=JS/GQ7OJ99Dui5f6CA/0f4Twxh8OjoBMiSDQYrLXiNk=;
+	b=ajA5wI/oeChx78uUVQRfTyER/tR/zOdq6mYZFj+Y07kaAs1TYoR+WwA4XPc3jPTuTgBiLc
+	l4hwaLkLm3FoRZ4oStcGInhL88E2KkQrHV6+uGjTDGWcCyOjre1nnPFKh9/DMG8hiViR43
+	RNHJPN/GT8Re6sWHcjKmZk3DmvHf/ok=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gseG4dB3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OMOV4Lui;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=edv1iVWr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3V7xnSAU;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf11.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fYObg5kP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tk0XIgTp;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fYObg5kP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tk0XIgTp;
+	spf=pass (imf30.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780717859;
-	b=dGhGJspZpntVwYZsNn+gsUUwslbTD8E8/QnP5MIJFx3rmQaVTrNfjIwsqHFABJk5o6RXPm
-	nHQgJoCycPoVxPXjJUqlu0WEPuglBFKYrni+fRv7fjKBi6tghk4J5ThjcUAB0XtPYckuQO
-	FTn3GP5R8sAqFv9OM/waPMYAk0KePKA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	t=1780717865;
+	b=FdVq7KT4mDEU9uIi7gRtKF9UAtyIM/JL0C2RnOTAZ5maQEeU5PhBQWSD59T2jN2P6i4/WU
+	C2FO1nzI1spw8NtRj05dmOzB4LIEP9NG/i07UxWN47RDhZxkCYsTKllT1+P6wrCJtZ20QE
+	o3ghy/1vbc9Dlgpq5dImZkdtWpKoa9g=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id F17946B473;
-	Sat,  6 Jun 2026 03:50:39 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E31AD6B373;
+	Sat,  6 Jun 2026 03:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1780717840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=23nljHwZN8InoElJ8nnzrgWbXOooBuedRgi6MNI+VtE=;
-	b=gseG4dB36reexuERC5kjThl1hLPfxICMguSm57v08kDn3GSJsgjXn6aO+VPL7vw53gkpYI
-	EhS7+X9BFc3bYLPTrY73vPfOJW+c5AV4xAwg8sKRzaHKqjZgZPY9XKsokW6T+NqiPyRyvL
-	Cm7+3p7WvIhAVxS0LELiHxBl5EKeaJ0=
+	bh=JS/GQ7OJ99Dui5f6CA/0f4Twxh8OjoBMiSDQYrLXiNk=;
+	b=fYObg5kPurS2k6biMbbyvS/b1l+t44Ntr4dcNmPa5b6rJYeLwoqsaUxOq1MLLCB6dLlMlY
+	TW7DspwwdjLIb8AiAzVVJk+tjORj1GKV5PSKcAEcjd39QDIxF0X9HTOywNiba04bqDPGe4
+	y011mPjX+zBNrS4vpAIul64R/SdWIX8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1780717840;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=23nljHwZN8InoElJ8nnzrgWbXOooBuedRgi6MNI+VtE=;
-	b=OMOV4LuifaUsuyOe1mNSMBIQgGbBzJNjw3OxTW5Bm1LlXjbGDzu3FaGH3MQVfDzgCnuKv9
-	SSAcCj0BaI6NicCg==
+	bh=JS/GQ7OJ99Dui5f6CA/0f4Twxh8OjoBMiSDQYrLXiNk=;
+	b=tk0XIgTpIELBeAbrbrj1ETIovpnJ7UC9+fHSjM86HxjmvfDc6MxBpSM1FLcNVdlK4R2NXK
+	rte44tkobPjV4dBA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780717839; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1780717840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=23nljHwZN8InoElJ8nnzrgWbXOooBuedRgi6MNI+VtE=;
-	b=edv1iVWrollF3PtT0lW0v1Ni2xwoABffKHquNwFGE+Qrzu0GqAcqX/pHcPgjkGoyvof0eg
-	r/lNmuS34ARydgHq8oDW4PjlwiOqnY7ENzLyDaKtHyu57xDt9Xut1KHYW8rsmDx7tRCox8
-	ERkS8stUr5DQS8lLAS1/7uNSZn+PWhc=
+	bh=JS/GQ7OJ99Dui5f6CA/0f4Twxh8OjoBMiSDQYrLXiNk=;
+	b=fYObg5kPurS2k6biMbbyvS/b1l+t44Ntr4dcNmPa5b6rJYeLwoqsaUxOq1MLLCB6dLlMlY
+	TW7DspwwdjLIb8AiAzVVJk+tjORj1GKV5PSKcAEcjd39QDIxF0X9HTOywNiba04bqDPGe4
+	y011mPjX+zBNrS4vpAIul64R/SdWIX8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780717839;
+	s=susede2_ed25519; t=1780717840;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=23nljHwZN8InoElJ8nnzrgWbXOooBuedRgi6MNI+VtE=;
-	b=3V7xnSAUiH82Mm7d2IpaEP7HgCdLnkRs1iZbF6lRIDlwXchCcFU2sKIgd7sDcjFLSkgDh9
-	O9y4lfHCLSXuLWBQ==
+	bh=JS/GQ7OJ99Dui5f6CA/0f4Twxh8OjoBMiSDQYrLXiNk=;
+	b=tk0XIgTpIELBeAbrbrj1ETIovpnJ7UC9+fHSjM86HxjmvfDc6MxBpSM1FLcNVdlK4R2NXK
+	rte44tkobPjV4dBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 19530779A7;
-	Sat,  6 Jun 2026 03:50:39 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11486779A9;
+	Sat,  6 Jun 2026 03:50:40 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6LZiAw+ZI2poQwAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Sat, 06 Jun 2026 03:50:39 +0000
+	id YOR4ARCZI2poQwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sat, 06 Jun 2026 03:50:40 +0000
 From: Oscar Salvador <osalvador@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>,
@@ -123,23 +123,22 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Oscar Salvador <osalvador@suse.de>
-Subject: [PATCH 7/8] arch/sparc32: Rip out hugetlb from sys_sparc_32.c
-Date: Sat,  6 Jun 2026 05:50:02 +0200
-Message-ID: <20260606035003.529685-8-osalvador@suse.de>
+Subject: [PATCH 8/8] mm,hugetlb: Kill huge_page_mask_align
+Date: Sat,  6 Jun 2026 05:50:03 +0200
+Message-ID: <20260606035003.529685-9-osalvador@suse.de>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260606035003.529685-1-osalvador@suse.de>
 References: <20260606035003.529685-1-osalvador@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 1FA7F40004
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6AD2480003
+X-Stat-Signature: su8bckqf68nbhbamwa63sue11seoemc8
 X-Rspam-User: 
-X-Stat-Signature: mi5t8ta9xb9szq4m3o1ktg7kfjpqya9h
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780717858-646646
-X-HE-Meta: U2FsdGVkX18YSg3yhQh8qtExINEXD9InI/m3sslxwREsQLlz3zydnaUbxmRh+MR+9Xvkiz3/OqUMTWXQzaQvrdpgGhAWllU4KxRnwE3JdBlomMYe6yR6ml+llyasyqADhXhTQ1a94ZzZhWucLkdqHswJG1zxZcxovaBRY5WK50EDYFEGeQn9Qkc7UW8PK1wgo2LUumrPOYgqWEmDRlgaujzA8tBd+rhAd5lb/7BfaL8DIcKAcbjKEl2bXG/M/1x7bdc9FbdzVc7VOTFpQld46gdLgkJOCqokwIULy2KJacsK5S59ys3iBdJsPy9eMXBYKtDmNzkm3gXdvNlkNCKAAdnHJoERACOBbe3Biy6ndiZS5eL9Ma7EJAp34VSZggZEKtDPpKHZbyfqHhl7WfnRElYRAcenGWjigHrH8sIKYbaqWiOgdTMfVRVYIC1aPCy+u90B8BIbAgUNQSEMb43Zzi5Sa0yoUy5FE31sZ8LxNL+gS1M0BS4//jtXlTLZWwOPYxfFpVfL+WTOuV8KeE4ZK59w+g8QixkKS2UZoHcc1lXSOijMme8BiiGwf4atLSP/sGeRNbr0r9cmsZL1SuQwailh1hlnd9TSTvtv+MPjt1IEp8BbnZHIx8MJypMMy5n2z32ng01nWh9ybVduzAXeyYAnghHtFJyou86O9uwbfNPCyUPb+y3p6slOdrEXzUinLVNBpgBvUK/bLYlGmYkuT/LvQDlZtodHw2aVoF6N9kQkuc4vMJsfNTV6d2gjPf53bIJie8XtSSMk+thIv6PLmWf7l4DEePugWoYfUCQT7bw3Z0hPh02x1kraFC8GHdhRooGoNlKaDDizwSXtLW9QiJBiZRzOWUHWykURt+Y33HmQKeER25A0988RnkfsXTOFCku+TNLGFMsmiZMejGdvnwUVORVyjgqQMbLw8ikh83SFQTAGs0afKmVcLCF4DR311NTbQttXY5mTq/xkUzI
- Co1uaXSD
- g7EoYUXz406p0vkgg4BPvMX6wTRaTlwsums3gdT0qhn9emF672Kv34py4OGsV5IH6u71J70sRlkYZyI+0clASRFscB9fLrsRiMTcuOrGU1iZKKyf/rtfAI4LQAx82ojgAp3IM7hvmH7pBV4rt2kICiKzzhcfTutn8J5tkeqampFzSWxKSolTj3o6yjzOfNHrG+Qr+5uNRUq+OS5vK4yR6JLnQiLBZ3FpDBGLhLxJ0kkzQFRgIuN9uLAF4EVLj+qv30+dDHZMP1lW5oA2Ckd5hTgiIAMmkDwnrY6OYm5ahhGheLhjnPQhgt0f8Wg==
+X-HE-Tag: 1780717865-86014
+X-HE-Meta: U2FsdGVkX1/B4kWsCKX2TnY+TH+XV31QJfmYiwMJf9Y0lVJQVwF56as5yi+aBnDh4O/mLAUsReseJHLP8pcxkyV4HJ4+IRnOrTiN2FQUgOEqdtLilkydENBfQ7uwiRx93BE/aamAVmE0zRsvWFKauZtYsCLcM7+wWFkPdlxfo6xbIPVlBUqxzoEEpDGdwWA1JafAiuie7HYrLwYC8VQoVGknEQVqL3RI+8uH4F7W79lXPPLhdaZ7/fhG/GjfFovQ5QvdTjKUe3EVW41cTkYepTz5PHYb8UYezpZegxzqvikwW6nTL/illMqsT8/RbffA9pBoiMS2yBa8mX7I8CVQPdaxEUwb/XLK1X71mlm3V6VSE6wh4lFB5ec+49NCV4G06ivfAHyqP3/4HeBTig/pO04IptDXdQyNu4xLy8eduX/5n9hXdldzgLQ+zKWgn1GTGgxA11kOD6KSaKee5pILh6BX0JBOzNhJ7d2zw8JWqF4jseWvKbsKhvPHVVIXtGLMQyTTJ0KUHCD88XjJ4D56/qLdmK9R31ljJjp7G6f9RL5P9ssSpmWFuX1dqgQS4cc1QRw1ws6mmXKGg5ZSAHedQKTyEfFaT1lse2jAtcDD47l+YWx0BDY1OBmVfATuqZRgi3EhRIW2s9BcbTyiCy5f/3+sPJX+QGcwPAXk8pTSWpSbqLuDUwovmw2Q7CO7WM+IT+RipQqwax8BYcrk8Yvo35VVG0G24aLzq+uuuWHujkTlYAjWwFDwxwpQPCJCQv+BYWku0aJUqzKIayy/bqJNFyfwqhlN+I/s9xmaATfOjKwke9YGxW1ZfhTd97tu236gkeqC2/8HUCXzPqE4HffwbWK4v4lVfllgLE6cu0YxS/AsKkdbmKUY8o9oFxs5hqoCljp17SYGv29+vDGIAdlqUn1VCI1eAZEApIrdoniLD11EvF12n642fTjgogbKLkKc1ogR3HulIhuH3uRcyqx
+ +nLVJt7f
+ fzlhgxRWh+VVmovv7SxgEBrBqTTmtKVVCPBi7m9IAze6moYfGyAYiOBGZzyBeD7lVqv7BQvXW5taTN3W1Q1TtNJxPaliz/xShxR0GatDd3aTrtNpEuiIblay0zVUdsksp55jnIzRO67y9EeB+etu4/Gv48uQp3lbHpCce1c2ubKWWe+QgFL+qoj8jooceiVpLwgmlg1MD0g10RL2LhSmHfsL0c4Zszy65S+jxOQDE5yQmz1amkDhp5SjYij9LZFe4qxzCmt7CrW9F0tw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,60 +146,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ARCH_SUPPORTS_HUGETLBFS is only select for sparc64, so rip out hugetlb-special-casing
-from sys_sparc_32.c.
+There are no more users of huge_page_mask_align, so kill it.
 
 Signed-off-by: Oscar Salvador <osalvador@suse.de>
 ---
- arch/sparc/kernel/sys_sparc_32.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ include/linux/hugetlb.h | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/sparc/kernel/sys_sparc_32.c b/arch/sparc/kernel/sys_sparc_32.c
-index fb31bc0c5b48..960f719b2257 100644
---- a/arch/sparc/kernel/sys_sparc_32.c
-+++ b/arch/sparc/kernel/sys_sparc_32.c
-@@ -23,7 +23,6 @@
- #include <linux/utsname.h>
- #include <linux/smp.h>
- #include <linux/ipc.h>
--#include <linux/hugetlb.h>
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 924e9a464214..24e5079aa767 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -1083,19 +1083,9 @@ void hugetlb_unregister_node(struct node *node);
+  */
+ bool is_raw_hwpoison_page_in_hugepage(struct page *page);
  
- #include <linux/uaccess.h>
- #include <asm/unistd.h>
-@@ -43,16 +42,12 @@ SYSCALL_DEFINE0(getpagesize)
- unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len, unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
- {
- 	struct vm_unmapped_area_info info = {};
--	bool file_hugepage = false;
+-static inline unsigned long huge_page_mask_align(struct file *file)
+-{
+-	return 0;
+-}
 -
--	if (filp && is_file_hugepages(filp))
--		file_hugepage = true;
+ #else	/* CONFIG_HUGETLB_PAGE */
+ struct hstate {};
  
- 	if (flags & MAP_FIXED) {
- 		/* We do not accept a shared mapping if it would violate
- 		 * cache aliasing constraints.
- 		 */
--		if (!file_hugepage && (flags & MAP_SHARED) &&
-+		if ((flags & MAP_SHARED) &&
- 		    ((addr - (pgoff << PAGE_SHIFT)) & (SHMLBA - 1)))
- 			return -EINVAL;
- 		return addr;
-@@ -67,13 +62,8 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
- 	info.length = len;
- 	info.low_limit = addr;
- 	info.high_limit = TASK_SIZE;
--	if (!file_hugepage) {
--		info.align_mask = (flags & MAP_SHARED) ?
--			(PAGE_MASK & (SHMLBA - 1)) : 0;
--		info.align_offset = pgoff << PAGE_SHIFT;
--	} else {
--		info.align_mask = huge_page_mask_align(filp);
--	}
-+	info.align_mask = (flags & MAP_SHARED) ? (PAGE_MASK & (SHMLBA - 1)) : 0;
-+	info.align_offset = pgoff << PAGE_SHIFT;
- 	return vm_unmapped_area(&info);
- }
- 
+-static inline unsigned long huge_page_mask_align(struct file *file)
+-{
+-	return 0;
+-}
+-
+ static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio)
+ {
+ 	return NULL;
 -- 
 2.35.3
 
