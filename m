@@ -4,89 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2338ECD8C88
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 16:11:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2407CD8C8E
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 17:44:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07A6B6B008C; Sat,  6 Jun 2026 12:11:30 -0400 (EDT)
+	id 636196B0088; Sat,  6 Jun 2026 13:44:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02B756B0092; Sat,  6 Jun 2026 12:11:29 -0400 (EDT)
+	id 5E70F6B008A; Sat,  6 Jun 2026 13:44:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E832A6B0093; Sat,  6 Jun 2026 12:11:29 -0400 (EDT)
+	id 4D6306B008C; Sat,  6 Jun 2026 13:44:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DB85F6B008C
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 12:11:29 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 70E5D12051A
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 16:11:29 +0000 (UTC)
-X-FDA: 84849977898.12.E82E73A
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C55A91A000C
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 16:11:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=Zdl3qL0m;
-	dmarc=pass (policy=none) header.from=lwn.net;
-	spf=pass (imf19.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A6DE6B0088
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 13:44:24 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CDCBB1C1F34
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 17:44:23 +0000 (UTC)
+X-FDA: 84850212006.11.3374999
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E95E8140007
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 17:44:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AcbncteF;
+	spf=pass (imf26.hostedemail.com: domain of med08elkadiri@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=med08elkadiri@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780762287;
+	s=arc-20220608; t=1780767862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DqGXeDqpKIvvW3QQbyRaGwc6KekIm0MprRWgRPkr2tU=;
-	b=DP+7LjZiyKrBViZi8kV98Cdds/N6D1E2xPoKn6wKKi4Wdd5aj1F3v0xEP90a5SjdmH0DyK
-	pi+zCbuXZDF4e+vYg1fiNrZdp/qpy1IbYcwCnyGNERIHEWIMx8vcWs1oaFSU6ekVKhhO9o
-	UPWMkoU4xBQGI0EXRV+bJODurEj6gBc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=Zdl3qL0m;
-	dmarc=pass (policy=none) header.from=lwn.net;
-	spf=pass (imf19.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
+	bh=Y8/jaItJY7WDpAzUWHVQcS+f43pWTZf1MJey3/FU7xc=;
+	b=v+Na9x41aXyYZVCmjiCyJpq+kZ0ZP4cUlsjXPhmP6uhyYvq1o/Ouj0J6SIxQbTXKy3XUwE
+	xCVs6Kx50ZS5GJ04Gly7J/QruCerMMCLEJJaNt3zoTHFzVbitoxQ3HOrrjsGtd6LWYIP+6
+	CHOMOBw7jnCpangUhqXkDBWxRmCBe0w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780762287;
-	b=arbGouRER3NulAxF1UbwWucqJ/gH7fWwhBhLxs4PcUFN518TZgYoPD/aHEKWF0Wzr0zunJ
-	0DvdiN1O8Rk9gfTgSnmL+sypAHVSDOxV4Pme2SY/q6hxVLz+pAbXgWBjcgRfORH99ikNnO
-	MrA567XWpe/ZiGcvv+3rGFY/gmgmQe0=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 4EBC040E33
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1780762286; bh=DqGXeDqpKIvvW3QQbyRaGwc6KekIm0MprRWgRPkr2tU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Zdl3qL0mTPsA6dWXrgZkxtue29RQ67FMWdoCbH7C1EURLFFPmbcbJZu3qW9J1lYYO
-	 xPfdGc3JATslC7hfgaVGhOLRgNZEtQxW/kfDlAWKh2f1wfxYzbHnb/pJZYxcsvDFGA
-	 9p8smW9WhagTrBFUl12X65Fq4Rwwz/K5X6xpJcJMHY0+uMNE6qZqKsCYgHV4Aodc9d
-	 /JzuvNwAWkaobPXh4Qodlx0Yg7qhPqq0/Ob+yBMnECyWV/hbgToKIy/oIpeJUJjw2i
-	 2Hgt/qtdbF95eGHxShpp//CGCUHOR1WOBvcT9u2FfLDo9jVlFnMLnO4bRI8513W69L
-	 HNABuMEWjFvTQ==
-Received: from localhost (unknown [IPv6:2601:280:4600:27b:67c:16ff:fe81:5f9b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 4EBC040E33;
-	Sat,  6 Jun 2026 16:11:26 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Mohammed EL Kadiri <med08elkadiri@gmail.com>, Andrew Morton
- <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@redhat.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Kees Cook <kees@kernel.org>,
- linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, Mohammed EL
- Kadiri <med08elkadiri@gmail.com>
+	t=1780767862;
+	b=A69xiBFDCvw0uYW3P/k9bg9vS6QeFb4/YC3fS0wrujh4SvydOyb/iWtbR5+gpddDEVTkWa
+	czKEYBkQzy5XbTfePfYyA2Gv3NYI7olqrMYL0Ai7ScwWJA69rwh84zN+0QgMp1OImPJBm3
+	gfr/PswcNQwLNLCyqApoFJhEGmRokSc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AcbncteF;
+	spf=pass (imf26.hostedemail.com: domain of med08elkadiri@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=med08elkadiri@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-490be29c1c5so36721355e9.2
+        for <linux-mm@kvack.org>; Sat, 06 Jun 2026 10:44:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780767860; x=1781372660; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y8/jaItJY7WDpAzUWHVQcS+f43pWTZf1MJey3/FU7xc=;
+        b=AcbncteFF/VtvjrmBiH5uYCl0BX8lqO0i2DXFhGj0Vm5VtEnTIyGyTnZD3XMohtuW2
+         kj5lKzw7ykj0vG/NYL+9boB2nFGnT+8IhXXMIi8WbFiwlAalW9pbFD06SfscePFV3+q0
+         YGW4wMXNoZRE/q0fP9seIGClW01jdOVti1SqVj/LUdn9ko9a5Okg448oliYsJIbZfqMn
+         8uid8/FbHD2zqM5C+vs/Sy3Zn7YUxL4tKwomfhJDleS0Qc7I9PKSxdcueOco0riduhZ1
+         wtu+yPkVI6O4p2Ks7FEy2YUbuhhjrLEBpQW0R7m7s6V/eUB5M4mkvvCpgHWsgzoK2apO
+         97Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780767860; x=1781372660;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Y8/jaItJY7WDpAzUWHVQcS+f43pWTZf1MJey3/FU7xc=;
+        b=d8mtStLGgNpa3Drd8wZuiXqPM6eTLpfAMaUzchrdaAsenkZQaWe68KJyT7KJx24qqP
+         vcUEc9XJnxF4ma8u+7OHVY8hENWploUwas4zhlkRJnuvftYlv8rT+GXf0Ocr+FRCWYxs
+         PeGI8eYNAaXsvJrZOWZnYyrHlzxDxVCr0QcnwZRDtCLjcdXvaRphkv1FL8gzBYhJzNqi
+         lvDFJYbjkVYWLVNzMEeU+iBRTq2Hhp3uWMXueV8IhbvHtYHVugh3PIPA6Veu0nieCf0/
+         zeLLIOAoCq54boOz/qiLKbJQhNYZ9fGWZYlvKY8XJPtwMDQ01ad31VOnRv9l2In/a7ZM
+         oS1g==
+X-Forwarded-Encrypted: i=1; AFNElJ8Ch3lNiLscp2nigr2tJ1vgJU67rRmGUTpxMkxksM8ynbF42gyeUMvBaCGwSi2OzyvVpCLK5PvnUg==@kvack.org
+X-Gm-Message-State: AOJu0YyY+RctBED4zMTaGES9t1xbvXEU8xsyJlRfYGVm2HNJIF2OYaR4
+	+WiynuKmqqEQGjsYTI3fFUIEhHTp+SuaZ5FO5BQiHA0/f3MXKy7ssYE=
+X-Gm-Gg: Acq92OH7NSRL+mTAbDKRSx0/Cv8q7AcWxVjLnBjux9KmWlTd557SFyzrx3PK0IrjLag
+	8JJ76oJFyIbOovhvWzGLnAgN6Iz2ggfQ5qRdqRIrSAMjtaeC7WhSFvRb9hWU8nWeDsv7HvT1A6Y
+	JQ1XlfanRhncAbuBXllroGxR4yeyy96ABRpiJufLIaDgUrviWVDzwfmh/n6nGr4h6eH5WsWePtu
+	6SEmEqHThwl9pX0yBV5ypNMTn8p9vSrgpphVkdi6me8g/UW8GWN3EyAemE5GEa8oyOHjN22/LoW
+	9bpTm+tlwmbe19hA73EK30OvJFqx3Lv3HiLUw7FhVM0DeupbjKRTkDNkcQRxfDOFt5YvQ53/8aH
+	R8+55kwFIThaZjCWIvKrSNCtBI0WvxSOyJ53TKB8iBgHAGr19yJ9nVZ4fEFJCveSWXwfZ5XinU8
+	1rL9rk0CsaGV3SDQxQ8xSsVkaJ+mTUEm9uQ/pCSz8SSs9G1GWa8h7atPvrEGSVlv4OWLeturMXD
+	SsjGWiMQgJGiIabaokRZfPjmMHudP3PFgu2Tz3AFg==
+X-Received: by 2002:a05:600c:524a:b0:490:b11f:2560 with SMTP id 5b1f17b1804b1-490c256f131mr157979935e9.9.1780767860114;
+        Sat, 06 Jun 2026 10:44:20 -0700 (PDT)
+Received: from hp-ubuntu.. ([41.248.186.206])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490c2d5d2b4sm127326035e9.2.2026.06.06.10.44.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jun 2026 10:44:19 -0700 (PDT)
+From: Mohammed EL Kadiri <med08elkadiri@gmail.com>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Kees Cook <kees@kernel.org>,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] docs/mm: document slab cache isolation with SLAB_NO_MERGE
-In-Reply-To: <20260606155856.15548-1-med08elkadiri@gmail.com>
-References: <20260606155856.15548-1-med08elkadiri@gmail.com>
-Date: Sat, 06 Jun 2026 10:11:25 -0600
-Message-ID: <874ijfvec2.fsf@trenco.lwn.net>
+Date: Sat,  6 Jun 2026 18:44:12 +0100
+Message-ID: <20260606174412.4843-1-med08elkadiri@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <874ijfvec2.fsf@trenco.lwn.net>
+References: <20260606155856.15548-1-med08elkadiri@gmail.com> <874ijfvec2.fsf@trenco.lwn.net>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E95E8140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C55A91A000C
-X-Stat-Signature: bo6fikqdcd4n3df59mzsj1x3wi4wmks4
-X-HE-Tag: 1780762287-287508
-X-HE-Meta: U2FsdGVkX18eesyehW/x3uTJexWG9pdOT3QmNv7F0lCbLYb2vVG0SZnjL3WWQ+Z6rpwk6VYyduR5hH4s06x3+BJCDKi3tbBD7KoZXodORUQJJJE9iqEgjYnchiKy8DkSs/vqltUMpJgHphq9nl6WyGOK/rtDC6O3brShvBejCXnhDetFZmz3dkcFMJW7kBk1WAU2gjIDjxQcv11ZSI0vNxC/ipOurG9J9unOykIf0hHK5Rjb0lKMV59OmijnyVlCuRNvghpD6hMMa7dYv3ctMo1NNeoZRyVcmiG5fweiFvD/ZUslM0NuM7b5Tcxq1Q+Fc5UyOM8y5tUS9/XNLiGRC5y1e82GkbItG1jHII5toGDaf+vNWaUvLxekbYI/usiHjVNG4NjBPw0IFnFdCofL3DyqogeCwJf6BU09A32gPO6GHJEd55DEkCGKMp/diOzCu9npLT3XYFM4c4DyDUhniSA3+HMv4bhF8FmIsdWsQGVqqY1/DK/kfHOSv/fIi0SgsQAdm4MBT7VCEc//hcUz1wF7XW97QE83dLJsYncZ+FNJsmMuw3LYeeuRZP9jO+Arz0/rZJR6jo+O1BM/OUq7WOK+yxpS2xE234YtgdQE3vEUpM4fUqTCOUDVBmd53S2SGl1hnQlKp4udgry5fxWT90PBuy8XH0L4CqF1soB0AbxMCQFwL1ra1QVC8TKu2iBMmmZ+u1iUxdMLF191GAlZnC0pBoC/joVwoR1cOfcMDsV3wXz6TxpbwYQb7+8iLU3gk5FOPyI55JSM0vsiYwInnsQZlo2weUpH7pwfXmgngwdyFFbb8g99gIFKLetr3qnpxjXX510ylKP+VIgBBZ9/bqLzq8mCvGTqQ/Y74w0WX6+A/oH4ALNhWjyD3K7rxWmHxzy5Jt0XiS/zXTrbCRKTxQDHiYg62E7Wqj1QyzlUS6cXQ6WcFzxSeVMk6xJl2+eAU4AsNlmANbogay5ugvE
- gevrA/0d
- pteck5HBUK21fDsgX78USQ3NPdm2/eCa9tUmlSUPC/Mhyj65nOuvbzPPivHY0cv5lUi0KnSANIl5xmk/jJ5gjNK6ce3TuuB4j5z1CRo7nJbOW2fBWUxgLM6Elvedg5kB2wgjbgFY2b8VOIPvexEHH2MflXu+SMCHGNFKXcyBRcxefvkAE4BkKQix058W+EusizwlYHIgqSzqNuu1AvKp+HbnDNwW2TcXG37TnXQYNsXYnM1iZqc6yGsvlooqkpkjw3KUhy9/qkyY9ArLiSWx7vxd4GMooJkqv4laErCFSaVomfQI3OMgJmbapeSVwUhcZUzHBvaybywn0s6/m04vZafJGhN/WrI55WfrGRoIYh+aVBlUw0rC3fwqczU9T/7nQidlLpAoi8lr+0yvTNerSUmS3TnOgWc5zqB+t/ElQShsgbcw=
+X-Stat-Signature: 55usqrourxgrf361d784b5sr9cwyg9sf
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780767861-801790
+X-HE-Meta: U2FsdGVkX1+Qp7HeOD/PXlFVMKzzVRpdXDqY3CuvpX4WHgsCakvLeLd2Gr+rrsYMHIbc0IhgRf38e698drjnuPEJ1HsSV+nr9s/q+k62b6Pmt7YlqO4XaDeQypWE/s/AOaf5/n4G+yuRiT+fzVLOhfGQvHZkNnRgT/ZQoSMuRhY+RYkYrlT/FbZjkOep9ZjzZDED7hjAj0fwjDm9WG/utVpyyTDBE8Tc/5dOvJ4U/5c6Uw6MvXB+UXWarmWBDc+QBuA+3Jc/pe5N0YcLsr4baVn1p5DQ1Xgtkqn2+ChkRnTo/UgwPf4M3Qgs6FGm6lqQhO7PPR3/Wla5vFU1+XFkPV3uPYCdLmTqdCNT/P1vtM8zy5RoeHOERX9VQxsjnE2mRtCyLRsgMBlqYoG+/pSRDa+HLui8oR3Jr4U2lwFhK74dnAHS4orLPp6Cf2EL6h2zTKv/8b6hRiZjY9ik3InXSrKY3KnbQpVw2/oBWMuUjIqOhRUY3Fyz8/dCVuI7/IgF4lgPbITECWsmOhILWwN64msHgHOhW2zLfxPPnmSj5ASUDMWoqlHJFUMl+h+njOTivSBwsjYodVoHyORWz81o7dN5xyoMKzVKQ5gsHErDQGWHP44ZINq0xL27zzr4j/RqRoapFUFBZU4PnYGJ2AGbHu5nXhS6Mws4uHqrX8/fKjIk33ZGBsnctcqcRZpDU0o1uM80rahiS+dpSCqOu6A2E3tExQI9KDT+fo3qK4IHoLUe9nOl8GqkCuQFJqCrQDA7LBLfDXf8nCMVXaquysM6/ZfqbIw0MEmdO1hUXahr02PQwyBoBLI4Kd7EZxtPFmpXfA6NpPfaNQKgyJCkk0JigG9lfnXwOxBwlKhujq0IhkVX9wXQwPGWZWnuDbfrScM4qpR/T0caoB+mK6th2XjrLNJInOVyZKfgn84qMIH3QV1B1EJV7OR0GzLiYddCHCZTmS7Xa+2ArdkKoh+jKOU
+ woSvAUsp
+ H0j4G7KFPyQuv6RiR+ZtViAoUozbYURIuDWRv3slkOjZgKMot8gi9ElOTLUh0FgLfe19ARJv1Mh6ncwrLb0VG1hlcyUoY38YBMcQ+5p6PgXSzoU3GtR51Q1zrOnTNPElH8iXbW8IKKtxUodiFjHspYLvW6vYAoMGD0n8pZdU60ZsmsHTHwGEy/xh4+d5KDiW5heFpFK7wkA/yfKdtAMdJIVmXZ5hFXRAeSH7BrRi1rsuM8Zk5POK4qTjfBR2kCg6lof/hB0Tnocw+L7QFpicT4ugWDIKIM3cXpFPJGWdLcurPjDkaLqI8m885uDavZvjkKH0IysIanEyxsrwtNgp5KgfZnPLA37Mhk7JIOCxRZaJacI3bXdcrtgHtrKHK/eRBe3HM6eSTvTT48pwPxi0lEnNLfmLeEI/Q3NsfVNg/DD9PIWVOYFW4rEz4FS/J3ZGIt3i8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,40 +127,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mohammed EL Kadiri <med08elkadiri@gmail.com> writes:
+Hi Jonathan,
 
-> Add documentation explaining when and how to use SLAB_NO_MERGE to
-> protect security-critical slab caches from cross-cache heap
-> exploitation.
->
-> The document covers:
-> - Criteria for identifying caches that need isolation
-> - How the SLUB merge mechanism works and what prevents merging
-> - How to verify merge status on a running system
-> - The cross-cache attack class with CVE reference
-> - Tradeoffs (memory cost vs security benefit)
-> - Relationship to CONFIG_RANDOM_KMALLOC_CACHES, SLAB_TYPESAFE_BY_RCU,
->   and the slab_nomerge boot parameter
->
-> This information was previously undocumented, requiring developers to
-> read mm/slab_common.c to understand when SLAB_NO_MERGE is appropriate.
->
-> Signed-off-by: Mohammed EL Kadiri <med08elkadiri@gmail.com>
-> ---
->  Documentation/mm/index.rst          |   1 +
->  Documentation/mm/slab-isolation.rst | 113 ++++++++++++++++++++++++++++
->  2 files changed, 114 insertions(+)
->  create mode 100644 Documentation/mm/slab-isolation.rst
+Thank you for the review.
 
-Thank you for working to improve our documentation.
+Yes, I used AI assistance in writing this document. The technical
+content reflects my understanding from working on the SLAB_NO_MERGE
+patches (one of which was Acked by Vlastimil Babka), but I failed to
+follow the documentation markup conventions.
 
-Did you write this with machine assistance?
+I will fix the markup and resubmit as v2.
 
-Please review our documentation and adhere to our markup conventions.
-For example, function names should just be function(), with no
-additional markup.
-
-Thanks,
-
-jon
+Mohammed
 
