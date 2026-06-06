@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AD4CCD6E7B
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 00:09:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC47BCD6E7B
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 00:14:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 892D96B0005; Fri,  5 Jun 2026 20:09:03 -0400 (EDT)
+	id 1E42D6B0005; Fri,  5 Jun 2026 20:14:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 843B26B008A; Fri,  5 Jun 2026 20:09:03 -0400 (EDT)
+	id 194EB6B008A; Fri,  5 Jun 2026 20:14:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70AEE6B008C; Fri,  5 Jun 2026 20:09:03 -0400 (EDT)
+	id 0AAF96B008C; Fri,  5 Jun 2026 20:14:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DFE36B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 20:09:03 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0C7441C1151
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 00:09:03 +0000 (UTC)
-X-FDA: 84847552566.15.534534F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C6528180003
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 00:09:00 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nGjqCgVT;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780704541;
-	b=ObcpPVnwQn3yCc8xjNNKVqvEiJPDNRD1FliDUh92x81860T0jzfo3lDozzhD3Cpimyws/6
-	Zhxl7eZ+pYsbYtWTSaRSIq7qCuNy7xtLj+xKi8r7aMZbR5Jcm2mzygAr/YhSaGGdFDkx53
-	yIT4rRwJF2MD5N+4fDTsfC5jdwq/l4U=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nGjqCgVT;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ED4AC6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 20:14:37 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F8221A022A
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 00:14:37 +0000 (UTC)
+X-FDA: 84847566594.19.4F3A776
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 91CCD1C000D
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 00:14:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hkWA6tH2;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780704541;
+	s=arc-20220608; t=1780704875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+NniFBlcUfvN7QPaMYV7ZZNeczE8DDn65tLfNJE+7Q0=;
-	b=48mu7o25EVg2JhunHDNyp9EebsMY8+tyIDqVPZHnNpO84LUz0vhJveyrFAfLsc09s3u/Mt
-	7IL7sIJrzzCViL4/jGcOJR6v0RsA0G2L2y87yDmT765KK/cSO78n9F0aAa5gKrt4Lquusb
-	+ffKZ2+trVna4OmNfSsT6EaHFceblSY=
+	bh=2J96v+2qYDpkIgFeGdx7Pd22ECpoED3Ti9QEkLALI7A=;
+	b=fTniqHgyQBlsgQbcynoIjMvOtUpl4W4f/CEN1A/P06gcg63ZpK5G2SVlvXLa2tYy+f82w/
+	/TCNxMBSJhqgzh6fQlnUqwt06P/cgWpN+320xRGjfc3/IVvAC1CCvnN5Sx/OliYloUKdqJ
+	9y3NQ1MT2hUtoniXPbGNTCLpgCG7eEs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hkWA6tH2;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780704875;
+	b=aAoN+NdjabrJxC5YiComFYBYy/RKP+Lzm1Ad3s25KFkgazE7PY3PbUdLAUfCCOKBW4zsOT
+	cyuWulC6Ek71sTKDiCV59PWXl+jQ6GRiOoDfUWwOxCntTaToF5jPqSB2AHtu+2EF9bGgAl
+	1oWOh89PAeNizrRw3Sw+bwm9+jeBB4M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CC43240C31;
-	Sat,  6 Jun 2026 00:08:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690511F00893;
-	Sat,  6 Jun 2026 00:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780704539;
-	bh=+NniFBlcUfvN7QPaMYV7ZZNeczE8DDn65tLfNJE+7Q0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=nGjqCgVTlJ1icg189+oXTqVABzd7Gze0yQ9M0Lrb0cGWI/zTEeoLhRPI0UWOdmVOU
-	 WTS9j6UAEq/Kn9brHFQYghKu4cOxtBPovmtQzFOfgaory/ZwmEZEShAaiMYo4IfBkk
-	 A/XYFkZ49BdMucFP0wSNAlVSEi16msChMHIUrgHU=
-Date: Fri, 5 Jun 2026 17:08:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, Kent Overstreet
- <kent.overstreet@linux.dev>, Hao Ge <hao.ge@linux.dev>, Shuah Khan
- <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
-Subject: Re: [PATCH v3 0/6] alloc_tag: introduce IOCTL-based filtering for
- MAP
-Message-Id: <20260605170858.9ee9ca2181a041bb9a4c3098@linux-foundation.org>
-In-Reply-To: <cover.1780701922.git.abhishekbapat@google.com>
-References: <cover.1780701922.git.abhishekbapat@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C6528180003
-X-Stat-Signature: hk8c4xjkq6rs5ibozaqq6mrrxpxc8wm1
-X-Rspamd-Server: rspam03
+	by tor.source.kernel.org (Postfix) with ESMTP id E1E40600AE;
+	Sat,  6 Jun 2026 00:14:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401851F00893;
+	Sat,  6 Jun 2026 00:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780704874;
+	bh=2J96v+2qYDpkIgFeGdx7Pd22ECpoED3Ti9QEkLALI7A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=hkWA6tH2aJAACRpgfCpLj5xYmf5yi3+m7zVtfAnv4YUpe/dByCjyjhQighgfqYSz/
+	 0URRiAWvfCFrPXEDC5Amv07ReKrpnNVRFzIYCjX968cS/mXdItTAp9K1Q2KKYySoBB
+	 0E21ounHpT7VUzFUbagRp+sedEk+9qTA4y1bCF8LRCOPSt25UpdPyJSkbtkBd+9s1p
+	 VV//wGshhVuhjB3KG+xi5NIBrC/zffOycHkV+oNhT29I+rnXMWgIBJkkYbfkTr5hsm
+	 m4/dmryJtEm7M3aeuHP3ljH6Z7bKDTfe0Q+EGqU8gDupY/q45s646hIi9XklAcywh2
+	 VFh2eDw962Fvw==
+From: SeongJae Park <sj@kernel.org>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v3 1/4] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto tuning
+Date: Fri,  5 Jun 2026 17:14:30 -0700
+Message-ID: <20260606001430.88471-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cc60cd6b-d841-4b5f-b3f8-b5dd39ea5808@huawei-partners.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 91CCD1C000D
+X-Stat-Signature: qy5nk5y4i3t8afienzxzzgxmgo4cfxsu
 X-Rspam-User: 
-X-HE-Tag: 1780704540-21829
-X-HE-Meta: U2FsdGVkX1+SMlsXHM30IrJPaAdVUk4CoPVvpqtflYwIk5AIJnKbN50VT2zKv7wNrPBxzmJV8XUiE3qvIZoj8x0q8DPds0x108ZMoyq+dZtcy8Gp/WjWEziyEhjiJ3lu6oHRVvPDrUGfWk4T3n0WSJV2KKHPJ5ATb+2G30jBqdVOuYELOmmReTEi8A6mw3/pDt6eDMfaud/0vJoVq578AtVcom//9uKRB6TbU206ye4/iT9Qrkr8AaenNZTwtyMFyIQFhbw2Wz+fGG/fvgFcjczmcK8SbSA8da5jwziGkwF8/h+wrKi1r4G1L8FX8j2iZlC8LV8DTirYgyit6Rl+TmD0DA08XOvnhanKuu852rL3HjPRHHQ7r4ZE0i/3YGi8wZ1XP26f9OpdFo0/cYFTtkbdoPrhmIhx+kppF/F520uY80N9AlP0Bm7S6YaQ86ytE1BScLHlWdvJxEmERaC0g/n6fYXIxA5bDmf+6yYTm1fbFUoa6KVtoXzpxZl+XQ5BEYuCtrY/jmA+X9XPUzqVEmcACKVZl9Yv0XG4nXVXIbQNlxZ1MCQGAdu/vrN0GywFKTEF+9WeqSS1rvU7bV9IftIsjttcEgNSwk2YMmoDS8vUNKRWmRZ47K42j3hpS+IL8I0Ro/xlO8DeBFmCZ9IVflsVTkulk4A1AapI+3Bo/5e49YAIHvy9G2Ffk91xdVhvnC7zALzhLR4XYUXstujFCS67TkXSI//4OrKquPlU5O+FsuL0dEWlUApEBK//PBUQIz0DiIzYm5wk8/rxGbNdH9ePvmWUB6+So6qhzNR2ibjoDWkAu2aE+JAyZ9J7u3Mb0y4L2aYQhe1zhUyYBrT1zEUem2TwYNQq68u7D7CYGQBEpitsvj0dhnEn58joR99ipxsY73Ec9Ryt38CROFaz4ovdSjX196BFX85DUgKKYxp5p5nzF2P91X9rNsXJl2SwUUj2tj6Mb7Yg5zcDNMe
- NUp74Fw5
- 64f/gkmffsiK6qehQrIAeaKt03neIfAn2lvMgOgegx6e+P+oIp/yI6f/gLCFmxnlPZwyQkNg2ZBpfrGrrlpj1JX//aqtucO7gQtHZZB9fdVZOImu8xcXy7bfodsEP5SII2JaqBlqSSl371Ear55/Q+i2Ppx0QMJGOmzeDGcMKtJU5k089R/hmRtrpKqIZPW48mMLj2zt/bPIMPy3v25RwuVciWqKrbWWsZ0KVyzRU+vlFVIwiwA9KS24+9z5u5sB4s9qNQpCzczlsX1NpDD0tSSJD0vj8d3vwJPCWKQCgkpYtVLwvBvv0QJCYTpu+bFQ6ioQtaaL3HGepHXlc8n7ooV0SaUub6TwRbZW37VGU1D/lBHHQFne4JHb9hyAtknBTAzu4
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780704875-890201
+X-HE-Meta: U2FsdGVkX1/FCvHecXjtNoYzoD2LCyCfWGZuRYg1KJzBxeVJUrz6rvn2xUOD3MWFGNpFCeptzzzZOfTu8d5tG0Al+uu2P2s4Ojfu+ICRHuAsUItymXCaAJOv8n4IKx/ZENpqhdE5U/M3DR9fNmPXDF7RWoH/TCv5y2LbgS9SO5SV0CeCJpcloYFz/Qo+VZptXoC4jeJXkY2MgqM4f9wBJ5WSD0T7nIjnjjatJ8nN4w07qvVaZ/5Fbt9PSuxFVNtUkt9uuX1Kn7Dlxl78FvgqByLDlOHbw3qNvxsJaXWzW8ueGMHWxcfenoy8N5p57go8X5FIXNIUZSKmPCWX+yIV23+v9bYhJBJDCawFnuTGxvszhLQoqLc1bNc/B9+6eZ096+yLXfd/8M5pZUHTAv+YTNdMKt08Eq0L25N7nAFo9slMaPt/loEAsgR4L/f1lWWTBA2EAwF2itm9QMbxa/uTnAJskaMx/QcZDG8uSJ1K6wEE47NfFS83OlazGsMPGZwV1J6QECRXwGXfcQnohgSDZ2tcReXy2phhleXM0RakB3YCUmNWegNd8keDsLTgWSZidPicctveBaIv1E85ymXMEV5/ZJoIx3cqSU/N1S2HWD6rSRSl7gYsv6BWeELCNt5Lceo1dYZEWSAtIIfroYegzgptF047lQ7KQCN8aESmqvLItoqa7sp5zO841b1qWMYLTUlf83u75m64v+SFpUzVV2NqI2oSrLD46LnmXRLaVH3ud0n4VUKH3gRQWiklQEp2YiJKXHruL+N3CRUAWO+bBAGqbNmaFOuYYzsZKkKQ6kDD4XruaCyoL8XwJXyt31w0TJc7j6PyzUADL+L498vY6SobFhFTNycH+q+l3NLACJzg17GfdHczB1zf9ws7BW7VdUgK/e1NqRP/XWZQ2FJEXiDW1A0zgdBz4LoHmvQWAQmTRUdxIPgNvQOtS5OZNvMiU0/zAkDsy+Dy9ZOYHQJ
+ YqSl2qY7
+ 73tb/e3QYnYwpekUspOjwquwefvA273DBrigr7regJAZ6GibWl+rvNFK3Nxrd1jx8ypb8mbX+Xn1BQ0+HSLKFPlgr0z8dExDaFY58BIL1SP5sMC5kJM4C2s7Br64MdQCy7I66thk2ldRIup7QML3ZsbdWleJOxL+gpJ8CU36YITZOQwDsI6YRoV3WY3p7T7BVHlP3R+tNIgA8aaxVWPn1iF47dAux0dMk9Dglxw767RVdRO4XQDbT7zDpYTwDkPiH9b8J/5hXUE5I45lXUjkyxzbTJnEoanoFlosojTyAYM3UGPpqBVZUqmOvV9nX0qIe/IH3CznjjPE5FOpA6FzdzBuCQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,27 +98,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  5 Jun 2026 23:36:45 +0000 Abhishek Bapat <abhishekbapat@google.com> wrote:
+On Fri, 5 Jun 2026 14:00:09 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
-> Currently, memory allocation profiling data is primarily exposed through
-> /proc/allocinfo. While useful for manual inspection, this text-based
-> interface poses challenges for production monitoring and large-scale
-> analysis:
 > 
-> 1. Userspace must parse large amounts of text to extract specific
-> fields.
-> 2. To find specific tags, userspace must read the entire dataset,
-> requiring many context switches and high data copying.
-> 3. The kernel currently aggregates per-CPU counters for every allocation
-> size, even those the user intends to filter out immediately.
 > 
-> This series introduces a new IOCTL-based binary interface for allocinfo
-> that supports kernel-side filtering. By allowing the user to specify a
-> filter mask, we significantly reduce the work performed in-kernel and
-> the amount of data transferred to userspace.
+> On 6/5/2026 3:44 AM, SeongJae Park wrote:
+> > On Thu, 4 Jun 2026 15:03:34 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> > 
+> >> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+[...]
+> > I wouldn't mind ignoring Sashiko's 32-bit concern, but do you have any opinion?
+> I just answered. I can cast 10.000 to unsigned long. I don't think many people
+> using 32 bit systems will use over 1.6GB of huge pages, but it makes sense to
+> be safe anyway.
 
-Thanks.  AI review found several things - you'll want to address at
-least the first few.
+I'm not sure if it makes some change.  Let's keep discussing on the Sashiko
+review thread [1].  
 
-	https://sashiko.dev/#/patchset/cover.1780701922.git.abhishekbapat@google.com
+[1] https://lore.kernel.org/20260604151932.93C431F00893@smtp.kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
