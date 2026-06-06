@@ -4,141 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D94CD6E75
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 03:51:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D85D5CD8C90
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 05:53:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B65CA6B009E; Fri,  5 Jun 2026 23:51:07 -0400 (EDT)
+	id 9D4856B0005; Sat,  6 Jun 2026 01:53:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B16A86B009F; Fri,  5 Jun 2026 23:51:07 -0400 (EDT)
+	id 985126B008A; Sat,  6 Jun 2026 01:53:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2C726B00A0; Fri,  5 Jun 2026 23:51:07 -0400 (EDT)
+	id 89B366B008C; Sat,  6 Jun 2026 01:53:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EBB76B009E
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 23:51:07 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 572421639CF
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 03:51:07 +0000 (UTC)
-X-FDA: 84848112174.25.43F73BB
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6AD2480003
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 03:51:05 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fYObg5kP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tk0XIgTp;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fYObg5kP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tk0XIgTp;
-	spf=pass (imf30.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 785326B0005
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 01:53:42 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 022A71403C0
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 05:53:41 +0000 (UTC)
+X-FDA: 84848421084.23.BCBB44B
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D20C81C0002
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 05:53:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=N0sZVdyL;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780717865;
+	s=arc-20220608; t=1780725220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JS/GQ7OJ99Dui5f6CA/0f4Twxh8OjoBMiSDQYrLXiNk=;
-	b=ajA5wI/oeChx78uUVQRfTyER/tR/zOdq6mYZFj+Y07kaAs1TYoR+WwA4XPc3jPTuTgBiLc
-	l4hwaLkLm3FoRZ4oStcGInhL88E2KkQrHV6+uGjTDGWcCyOjre1nnPFKh9/DMG8hiViR43
-	RNHJPN/GT8Re6sWHcjKmZk3DmvHf/ok=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=LPq1Fk40D/LuuxOKYpGBCxzh/CDNQg/kGxL8TNTD8FY=;
+	b=eDbraQ8yGlvzhrKwhKj+xtutT6kMQVuc7hlAEU18pXcpnRLHLND2pZIK31aAoTL6Uq3lzZ
+	GteSpk3TMS55z/oTrdrlBFQ+YPYedlLDTgVrDLx86CvAVZiQiN9Gw/hJLppoxfwRXkuvFC
+	pS4zSns09LA/3308iT3coyndr7oyQAk=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fYObg5kP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tk0XIgTp;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fYObg5kP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tk0XIgTp;
-	spf=pass (imf30.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=N0sZVdyL;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780717865;
-	b=FdVq7KT4mDEU9uIi7gRtKF9UAtyIM/JL0C2RnOTAZ5maQEeU5PhBQWSD59T2jN2P6i4/WU
-	C2FO1nzI1spw8NtRj05dmOzB4LIEP9NG/i07UxWN47RDhZxkCYsTKllT1+P6wrCJtZ20QE
-	o3ghy/1vbc9Dlgpq5dImZkdtWpKoa9g=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E31AD6B373;
-	Sat,  6 Jun 2026 03:50:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780717840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JS/GQ7OJ99Dui5f6CA/0f4Twxh8OjoBMiSDQYrLXiNk=;
-	b=fYObg5kPurS2k6biMbbyvS/b1l+t44Ntr4dcNmPa5b6rJYeLwoqsaUxOq1MLLCB6dLlMlY
-	TW7DspwwdjLIb8AiAzVVJk+tjORj1GKV5PSKcAEcjd39QDIxF0X9HTOywNiba04bqDPGe4
-	y011mPjX+zBNrS4vpAIul64R/SdWIX8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780717840;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JS/GQ7OJ99Dui5f6CA/0f4Twxh8OjoBMiSDQYrLXiNk=;
-	b=tk0XIgTpIELBeAbrbrj1ETIovpnJ7UC9+fHSjM86HxjmvfDc6MxBpSM1FLcNVdlK4R2NXK
-	rte44tkobPjV4dBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780717840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JS/GQ7OJ99Dui5f6CA/0f4Twxh8OjoBMiSDQYrLXiNk=;
-	b=fYObg5kPurS2k6biMbbyvS/b1l+t44Ntr4dcNmPa5b6rJYeLwoqsaUxOq1MLLCB6dLlMlY
-	TW7DspwwdjLIb8AiAzVVJk+tjORj1GKV5PSKcAEcjd39QDIxF0X9HTOywNiba04bqDPGe4
-	y011mPjX+zBNrS4vpAIul64R/SdWIX8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780717840;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JS/GQ7OJ99Dui5f6CA/0f4Twxh8OjoBMiSDQYrLXiNk=;
-	b=tk0XIgTpIELBeAbrbrj1ETIovpnJ7UC9+fHSjM86HxjmvfDc6MxBpSM1FLcNVdlK4R2NXK
-	rte44tkobPjV4dBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11486779A9;
-	Sat,  6 Jun 2026 03:50:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YOR4ARCZI2poQwAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Sat, 06 Jun 2026 03:50:40 +0000
-From: Oscar Salvador <osalvador@suse.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Karsten Desler <kdesler@soohrt.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Oscar Salvador <osalvador@suse.de>
-Subject: [PATCH 8/8] mm,hugetlb: Kill huge_page_mask_align
-Date: Sat,  6 Jun 2026 05:50:03 +0200
-Message-ID: <20260606035003.529685-9-osalvador@suse.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260606035003.529685-1-osalvador@suse.de>
-References: <20260606035003.529685-1-osalvador@suse.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6AD2480003
-X-Stat-Signature: su8bckqf68nbhbamwa63sue11seoemc8
+	t=1780725220;
+	b=ei/54j5qWGO2nN+q+p5AMF/UfmatG1xJdoF22AO64W/pwUaCP6WO3VKzwv7aI9nIrmow+I
+	zVPAvS4jLueFJm/Ilp3ngTS1h0bYX9mmg4QH1Tjw3OgpfHMpP+967UwqZ4klc+Tr1t4Zza
+	JBu6vzhbZhL2c4/y1ix92fRqOZ+twuw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780725219; x=1812261219;
+  h=date:from:to:cc:subject:message-id;
+  bh=gvOohcgxP+DgF2jMC5ghswmVcORSlUZ+yR/rp0dmeFg=;
+  b=N0sZVdyLULNEV1isH4FodOevPCjQQ9NfV1WfGQDMkZkWNe3Ly8JKouZu
+   rbr65CRyiKqbh3tZ7yjM6HRYZtlfRvRPaAOLRaePHghtxVarYzx58x07X
+   8oaH3nLNqFRLjxkJvdWRHBbkDgK7SIfG2blRBd7N6w686cStCeybFU6ED
+   EE2UQN2PwQhpS49RJRfhVKlLK/pwCWnrEGDBZ7KGFGcTc2LyfmWvsXCWq
+   43j5nMD+ArPFZ4nj70IP4FtOXUogogDlF+PBLxrlk7ZE5yeIPoozPLB5M
+   rygytvy21VnOmKxngAJmzBdeg4S89KBSfWKOq9Rthnxo6ICBghoUeXPjJ
+   A==;
+X-CSE-ConnectionGUID: SlGwZ8mfSCSofscXia6zBw==
+X-CSE-MsgGUID: N398oj6LQxKxZHam1XtEIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11808"; a="85438403"
+X-IronPort-AV: E=Sophos;i="6.24,190,1774335600"; 
+   d="scan'208";a="85438403"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 22:53:37 -0700
+X-CSE-ConnectionGUID: nwbau5vRS361H7fruU7Eqw==
+X-CSE-MsgGUID: SL2LoenLQ4CY8t3f51RRNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,190,1774335600"; 
+   d="scan'208";a="242563207"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 05 Jun 2026 22:53:28 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wVjyH-00000000GmI-1GPu;
+	Sat, 06 Jun 2026 05:53:25 +0000
+Date: Sat, 06 Jun 2026 13:52:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Hrushikesh Salunke <hsalunke@amd.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master 8165/11755] mm/page_alloc.o: error:
+ objtool: get_page_from_freelist+0x1584: unknown CFA base reg -1
+Message-ID: <202606061342.et6zQdGM-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Queue-Id: D20C81C0002
 X-Rspam-User: 
-X-HE-Tag: 1780717865-86014
-X-HE-Meta: U2FsdGVkX1/B4kWsCKX2TnY+TH+XV31QJfmYiwMJf9Y0lVJQVwF56as5yi+aBnDh4O/mLAUsReseJHLP8pcxkyV4HJ4+IRnOrTiN2FQUgOEqdtLilkydENBfQ7uwiRx93BE/aamAVmE0zRsvWFKauZtYsCLcM7+wWFkPdlxfo6xbIPVlBUqxzoEEpDGdwWA1JafAiuie7HYrLwYC8VQoVGknEQVqL3RI+8uH4F7W79lXPPLhdaZ7/fhG/GjfFovQ5QvdTjKUe3EVW41cTkYepTz5PHYb8UYezpZegxzqvikwW6nTL/illMqsT8/RbffA9pBoiMS2yBa8mX7I8CVQPdaxEUwb/XLK1X71mlm3V6VSE6wh4lFB5ec+49NCV4G06ivfAHyqP3/4HeBTig/pO04IptDXdQyNu4xLy8eduX/5n9hXdldzgLQ+zKWgn1GTGgxA11kOD6KSaKee5pILh6BX0JBOzNhJ7d2zw8JWqF4jseWvKbsKhvPHVVIXtGLMQyTTJ0KUHCD88XjJ4D56/qLdmK9R31ljJjp7G6f9RL5P9ssSpmWFuX1dqgQS4cc1QRw1ws6mmXKGg5ZSAHedQKTyEfFaT1lse2jAtcDD47l+YWx0BDY1OBmVfATuqZRgi3EhRIW2s9BcbTyiCy5f/3+sPJX+QGcwPAXk8pTSWpSbqLuDUwovmw2Q7CO7WM+IT+RipQqwax8BYcrk8Yvo35VVG0G24aLzq+uuuWHujkTlYAjWwFDwxwpQPCJCQv+BYWku0aJUqzKIayy/bqJNFyfwqhlN+I/s9xmaATfOjKwke9YGxW1ZfhTd97tu236gkeqC2/8HUCXzPqE4HffwbWK4v4lVfllgLE6cu0YxS/AsKkdbmKUY8o9oFxs5hqoCljp17SYGv29+vDGIAdlqUn1VCI1eAZEApIrdoniLD11EvF12n642fTjgogbKLkKc1ogR3HulIhuH3uRcyqx
- +nLVJt7f
- fzlhgxRWh+VVmovv7SxgEBrBqTTmtKVVCPBi7m9IAze6moYfGyAYiOBGZzyBeD7lVqv7BQvXW5taTN3W1Q1TtNJxPaliz/xShxR0GatDd3aTrtNpEuiIblay0zVUdsksp55jnIzRO67y9EeB+etu4/Gv48uQp3lbHpCce1c2ubKWWe+QgFL+qoj8jooceiVpLwgmlg1MD0g10RL2LhSmHfsL0c4Zszy65S+jxOQDE5yQmz1amkDhp5SjYij9LZFe4qxzCmt7CrW9F0tw=
+X-Stat-Signature: tkj9mry1pspy6t3apykct7nga4x4r9ub
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780725218-441984
+X-HE-Meta: U2FsdGVkX1/yBDtyZBbkZgh7jwlDa8W/t0KjGHLtRpR9oPLatc291Jypvn0/JflhWRj8ui7FLu1u+QLwCtPSH7mzTGJUuvUXGEgxdk23BkJxI283DvHPwAVpfsml1Fe9W4JwdkCpBzlN7JexThQSPDuN2D2oAgKTtKXEMkhOuMo99uxAcljIlvqDpI1o12xb4SIXuoc8tVKV3e1+fWmaiZcCsR3B3jNvThrJ8UyplrCAIm7hVooTExKFoWF55U/wGz/Q/MAVDNEvf7m+0TB2jsq6eq88dbM6cQPW0XH/D911AFAoCbPgDvAoS4YMQQNHJKcE0ivcFSsdXTEXfz4sXEpAZKZ9gjA95gnldhTCZ2jJU1ecElAg2AIYYgvIcd9VUwbL16hMFYC5erSON/wHDpBzsvyngmdfBIgTe5iGDhAtQCgYnd7STiTigIAy+QEKGhCrxHg/yD08P87ZBFifmAPo6Kd6Vk+AWZVuSdK7VO9jmPualVxKEhe0OUaadIgTwC8rWv+ewU5vZRUlx88COYZ/8gknFhS/v2AyvS0WlssDYJ3IPdhlnu+Icrc1FJxjysltPLYBILDWdii0FppqEJH7yYQwbrS0lDbNPpU+KAJiu7DWQ0rBTRfnfRvWFnG06vOMkPy/nysoaFMLeTAlRCNpxt9PPRgjjS3Ur8c4uINNSLVkXS4QIA34s4EgHg2fiyPkV5N0mdyWe75JORA3r8knT5DK1VnBlvZZYqFAO8pZwYOuPB/Ap9B0FjytD7kx4NNa219imoCEtVFAyc9Q/78ncMbdGSe/BZfh6VrFNqiKYLsKOLhRPmO77lP8IHiFRtz9abboo/kWmzRBzPuYOzZNmOZmZ/Vt2l0NpXPM9apPDdGAU9E120BNg4uxsbXAj9VVt/ctAxtiPXbSAdGN9dV+w5tTNUGVKQyLTZf9uLFRhPZY+R68rFPk2kMm2bKE3uTQ034xOSdjnWM1je6
+ uImqElwL
+ Fw2mPICmCWx92fJYTYa4D/TEXYR5tYW0Fqx9H/fkVDYZPlueS5SG8/sVt4DWxlj5ZDzPPmmA/uMBeUBC1ws14qZte66NB2yOKGP9l7z+FOwdBK4KLTmR1AeQf/xzsjw/6hDix6dS/qVboL/zQRsbzorVoywVYZV1Fz4GTq2jadhZPzJ3kYFOnG8iC0VHfIwzNky6YBOGG3a8oMTF+A+vb0lpwtIB5SkNxI7XcrnQdsnf1ljEMjui8lchXNqbqrv5EtO7RUwLnlnq9hgXAqnxf0OgAThQRRfWVlHDIma3AyNVVzXYBp8jLeL/6kNFts6g9VyZQOP2aM7k2TKg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,38 +102,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are no more users of huge_page_mask_align, so kill it.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   b7bee4ca5688e30ca50fbc87b1b8f7eed7006c17
+commit: b001cf7d16dd18f14bd372a8018ecbf48197289d [8165/11755] mm/page_alloc: replace kernel_init_pages() with batch page clearing
+config: x86_64-buildonly-randconfig-001-20260606 (https://download.01.org/0day-ci/archive/20260606/202606061342.et6zQdGM-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260606/202606061342.et6zQdGM-lkp@intel.com/reproduce)
 
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
----
- include/linux/hugetlb.h | 10 ----------
- 1 file changed, 10 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606061342.et6zQdGM-lkp@intel.com/
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 924e9a464214..24e5079aa767 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -1083,19 +1083,9 @@ void hugetlb_unregister_node(struct node *node);
-  */
- bool is_raw_hwpoison_page_in_hugepage(struct page *page);
- 
--static inline unsigned long huge_page_mask_align(struct file *file)
--{
--	return 0;
--}
--
- #else	/* CONFIG_HUGETLB_PAGE */
- struct hstate {};
- 
--static inline unsigned long huge_page_mask_align(struct file *file)
--{
--	return 0;
--}
--
- static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio)
- {
- 	return NULL;
--- 
-2.35.3
+All error/warnings (new ones prefixed by >>):
 
+>> mm/page_alloc.o: warning: objtool: get_page_from_freelist+0x1586: undefined stack state
+>> mm/page_alloc.o: error: objtool: get_page_from_freelist+0x1584: unknown CFA base reg -1
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
