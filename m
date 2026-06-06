@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A163CD8C90
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 06:12:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E239CD8C85
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 06:12:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70A576B0005; Sat,  6 Jun 2026 02:12:16 -0400 (EDT)
+	id 97C286B0095; Sat,  6 Jun 2026 02:12:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E2496B0093; Sat,  6 Jun 2026 02:12:16 -0400 (EDT)
+	id 9531A6B0096; Sat,  6 Jun 2026 02:12:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D1476B0095; Sat,  6 Jun 2026 02:12:16 -0400 (EDT)
+	id 869C96B0098; Sat,  6 Jun 2026 02:12:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E4446B0005
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 02:12:16 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E661E1C1A28
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 06:12:15 +0000 (UTC)
-X-FDA: 84848467830.27.C446486
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1783CC0008
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 06:12:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kABdP+uC;
-	spf=pass (imf22.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 76C7D6B0095
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 02:12:40 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17A851A03B0
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 06:12:40 +0000 (UTC)
+X-FDA: 84848468880.06.7C45E4F
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2A882180002
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 06:12:37 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FjwcAI8e;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780726334;
+	s=arc-20220608; t=1780726358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ybLyqkJC8PpxOPGtytqXN1jytQgb2AKCO5QalzHljcA=;
-	b=Hw7IxRKwYlZpA/BsuwO2fAJGYC3AGPmrosPKlzhnLBnUwghStXl0r92LDHjffaO1/0HWyC
-	Cmlsei8ulD34hbunLRfjcMHff7hsLPV4IER3dTLFBAj5TViq9t2Gc185klENkN3Oud3dFx
-	VpBZqFhCn9dG9rGPA+LI4WeJmmkY4ao=
+	bh=VhjLk1CMHsJsOzOKQ1JbfvjErAaIXQv49sV6IFA3w98=;
+	b=I4wrtRmbJLTbk0rqyoL27NBHuFljq3jAauZ6TDTCDjQ3SuI5sLO35ckr0GRr3sv0oGCU2q
+	zplREImr/Q3xgHM5pGnGzB3xbklOnzP20u3BXgH+OjdzMfffh0zViKv8DjH5MiI3ePzdB/
+	foS+lgPEzYd3lwjg7Bd3MSx1RbA0qqU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kABdP+uC;
-	spf=pass (imf22.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FjwcAI8e;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780726334;
-	b=UmHIxh+U1ok8xB6uRmXEUCybQXKZM2vnNjWRgxOgsGRgY1kZEpb2LyJhPBYJtE08JRBAvk
-	u+DKH8107HCi3XcY6elL9f/7XHtxSsvvB5y303p0cACfiQ/hHYws1Hzhb1b6S1kP6xnFjF
-	DHIVWAWzPxEw1ZrsINPgZE9NJYeZg1Q=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490a765d410so27105515e9.1
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 23:12:13 -0700 (PDT)
+	t=1780726358;
+	b=TJJmBA7Hk9qjA8subgeXmtDHftZgHbgM1UFkWH4NN0JPa1ZrQO+F60BDQ6ph9bf2ZfvqpP
+	s4GmuWXQg2aNrQVxWV2UYbCwU8F0xaq31uU5CZrSwQqORY4mh5CZOQU7ZPlhsnIEc1wgw+
+	l2/zaIh0g7FYSWHFeSAWhrJRiL35Q5E=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-45ef779c1c2so1745391f8f.1
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 23:12:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780726333; x=1781331133; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780726357; x=1781331157; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ybLyqkJC8PpxOPGtytqXN1jytQgb2AKCO5QalzHljcA=;
-        b=kABdP+uCDTWAF7ywkH/YrOn52baPDdpxjh1+FJno52/FYXACS7ArGahBDGl6kKCqNh
-         hbIRnbhzlutDQG5TXnHTsGhbhosCVQecKYch+3UVc7SUZM1CN5nOZTGBn5y4/9XqXT49
-         UupBiauVYf3hGtFhnt6LH1r4kAr8Otamfssu08nrLUCIEqrKetyXRciOE9CFcebPVVeg
-         lmh1f2c0AK6lkB78pHTszIxGYPtpllY3ng1JBd018DgRdNVKCnWGXrmHN6vthmkJkQeX
-         9ah6nMrFK9vGFgXV5TQ5ZE5L08u2gsTsrkJIJQovq6p/WP9HiKb+mI4VBpIGfxYbFMpr
-         /L9w==
+        bh=VhjLk1CMHsJsOzOKQ1JbfvjErAaIXQv49sV6IFA3w98=;
+        b=FjwcAI8eOB6q0LFMYWorVhYD9xjqzGs6vbCBLgP2Gmv3oREPDDDBkZja7rkFIx8YGN
+         goM8eZMViFsxeJRIthBpwNRFkx9yNaZgimCTX0GxhQ/ET5MVEwuRzx0N0AR7SetS+KCG
+         1JGJG6ohmyKL+FnYjKiByFzTASRbCKiDBfsmo5PQQzP2yJC7JFocSXudL2yX++jYvJJZ
+         4mPTJ7xoGyljTz1ONqL7yRMQChNYChGFt8Niay4Mbq5IYVNReNJjQSnRkgngCnAqXDlr
+         x7CKBjz/pWnR8mhvWYfnlpyX/2cTzaTr2Y7Pcs0NXn6xUw3ixqh2gTdMMPHEIeZUcdaf
+         Hc/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780726333; x=1781331133;
+        d=1e100.net; s=20251104; t=1780726357; x=1781331157;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ybLyqkJC8PpxOPGtytqXN1jytQgb2AKCO5QalzHljcA=;
-        b=tKF884GTPzJZcVHT57eIZRoGpnxjjeZZ/QpagqjVmD1fks+f4XZH2/nTXEQHlCdCTd
-         k/e/MIvmtFNZDBxJOwiJVotZH5CXUaFhqieS2oF3rJ3TQXAUdGGQFHT+d9U7vYpExegY
-         yATlZWrR1+GtevxRxWaICmt9+SdI8WWAwesgbzVKmoWspxo3gmjCfiqWODGWWMqI2MwC
-         FaapWB+UNqQc9/EZubSg1gZy5DdcqtMWytTjrixb4YNVs44GygSCqHAPIHREViXvNNUR
-         Imp03EEBRUmy6ZX1W5PG5T5e5jXoQ3Z5fiy0i0LEU7PUw2Q+S18fI4AeDzr+VQFKnpyO
-         mqDg==
-X-Forwarded-Encrypted: i=1; AFNElJ9cKMYprKLAt+zmm30RxcoLDH6nJ/ZC+a5UuK5Sz1obTBtv3XNEgaivoK6LTWmjLB4VPaXPfVJZ4Q==@kvack.org
-X-Gm-Message-State: AOJu0YyH1HqZC/5UEanapRDlJi2YatojHNrY7epGZcUhWKSf22a82MPB
-	6cz9Sfq+FrepI9GSv5tGpu3D6zPIbXzPhNNSO/O6WLzx4bgy4HMQBBgS
-X-Gm-Gg: Acq92OHF4YJZjpJ9YtXkJQVKwKH1KzNxzKayb6an+KZTBpgaTgkzSvdJksKfhjD0KE8
-	qRXIKmuHvh1U9w0ZoBaGoNTEZUlyxRCmpjvX/TGejPa2w2nHCFHCPBHBo3xFkgtsZs8oLDsUlmc
-	5f0NqRfGXvP92s85hS/Ha5Py+9lUpS+UpKdDFcKFxgVAXjnvLRXUmR+W6FNZuMCzKVDvDtQzX5d
-	clgXKyYAclZDybtJIYAXTHiKe4IIVzo3Gw6ILs0Q1zSmNsTASOlQKJ/bURWKrOV5yM3fEHviQBy
-	WdZBwonUmklcqpG3j+A7WvVq6vl+WXpGWgMM2nWY4x20ILUwylVok+bu/MTrnEqCQDGU6n/O2G1
-	WcqkgTrwrKx0tRHw3sruJOaUP5yIgYxGemC0Pbqe0yUdLy2fgRNN/FihHwk+qdtgIVe9qq9RqK3
-	Qc8Ix8QPbJeRmOF9eoVdQGqzIe4oUmymqcamyzJgNE
-X-Received: by 2002:a05:600c:8b0c:b0:490:ba61:7981 with SMTP id 5b1f17b1804b1-490c25c1e4amr103918225e9.23.1780726332629;
-        Fri, 05 Jun 2026 23:12:12 -0700 (PDT)
+        bh=VhjLk1CMHsJsOzOKQ1JbfvjErAaIXQv49sV6IFA3w98=;
+        b=qvFoYuWM2jvFs8OSZKWQp7qMiJyC4eCpsJw5G+NjqnEbng70hQonYj9J46251hDVZv
+         swxZDVflX6zdhvnRwsN+oO2xwxuIUNmR1m3bHQiARA023zxYRE4ukjkrb/DCPdhh/ag9
+         KPrNSvoxvzR8YLMu8Bb2ka9eFSTS045ykY+8eTCO+RVZGrX/eoZy5GI+zwAd1OME2BX/
+         vjOY1Vb8oMew/NkqhU3zH52w/youxqkZmkOeO4UAFod2C90e3gpRhD9N0uVY2XIoXSsh
+         Grdc+NdINULdOB4fMCM2ZCqkc308FYydOvUSr1DauJGT7EVGDL6OnrudEI9sKFR4Bq7l
+         WZcg==
+X-Forwarded-Encrypted: i=1; AFNElJ+rPpKkEf0pgKvrP31t7FTo19ddUUJATWV/Ze+VpIIhE0r81a/AI8lOnizWKC0WT5Zk3Fp+0IE7LA==@kvack.org
+X-Gm-Message-State: AOJu0YxLoZXBz2JgXQpQhvIlwnWL4PMh4kJtdcTxZZAFZSUzR0YI42e9
+	yqxhhAH0WiUPgJia7sdh5MeCfXIPw2LJ6mBVkALy8eI6ueIeJGxhi4sK
+X-Gm-Gg: Acq92OFq+Qw2YbDHFtvluH1MuSsH3af8zjs2Sp1QtnP5OVYNKkcp/pmy4VGaIp7Fy9m
+	T0l5N+V8TXAyKLd1HoHfqF95q2Yh5K8jM9N0R9FYk1gLeRewSB342UaJCI1XmykEWT4EUGvSScP
+	RZZYucJWCuywbg60U3Z3hCObPyh+iyhTqDGSfueNF3NNC37vo+BS6wtWCBgsKjMGLKVbttacnTi
+	2qjqFBt6zJN9VSXwH0Q8TesbPwg8nKvzmjXbhgvgSW7Svd/3SM42/crovYxKwNqRqmFXHG5HbS/
+	uCU50owIxABIS9tBMMh/WeX07M8wrcXN6AcBmO2Waztrsm+d2rSPSoxR+e4AERWAz7heMeVBbLI
+	fVsygLcB6TE+B4ph072w2Onv9YoenPLQxJLkZ9SlGvDgxux/4AdFS9zb9eh0X/ZLhJREZ3a5aMy
+	t8RFMtuqOmq8GJoN4anbjsHBsSb5oTSQ==
+X-Received: by 2002:adf:e545:0:b0:45e:e44b:3136 with SMTP id ffacd0b85a97d-4603063a715mr8180799f8f.19.1780726356710;
+        Fri, 05 Jun 2026 23:12:36 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-490c2c9ea37sm178712255e9.0.2026.06.05.23.12.10
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4601f344541sm29667978f8f.22.2026.06.05.23.12.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jun 2026 23:12:12 -0700 (PDT)
+        Fri, 05 Jun 2026 23:12:36 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
 To: linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
@@ -119,22 +119,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Willy Tarreau <w@1wt.eu>,
 	Joanne Koong <joannelkoong@gmail.com>,
 	patches@lists.linux.dev
-Subject: [PATCH 3/5] splice: turn wait_for_space flags argument into bool
-Date: Sat,  6 Jun 2026 06:10:29 +0000
-Message-ID: <20260606061031.3744880-4-safinaskar@gmail.com>
+Subject: [PATCH 4/5] pipe: move wait_for_space to fs/pipe.c and rename it
+Date: Sat,  6 Jun 2026 06:10:30 +0000
+Message-ID: <20260606061031.3744880-5-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260606061031.3744880-1-safinaskar@gmail.com>
 References: <20260606061031.3744880-1-safinaskar@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1783CC0008
-X-Stat-Signature: k1qfu1g5e77xmh3yraa8qph4x1oni8wi
 X-Rspam-User: 
-X-HE-Tag: 1780726333-942515
-X-HE-Meta: U2FsdGVkX19sdpuO8KRa97HW3roj9eCLqk75dsSlVgxEihR4C63XEBHM9pHk7SR6GCkGM7+EbgbADXMCWijKbWRUf+N/Dy/PlBfN/NkkRelxglzsgLW8rLmTwPSP4XV00Q08xalhxWqpEMSMe0+GI8V1wPh7aT6LC36Dsl7SKq4sjba33ZtqLPIUlYfdd9wEIZfl57URLyCuMpX7Rvbi09mhXexBw9zSQCPmJepEURfTd4u77igyLb3MLFaQrT97qhY8eVi58qJ2WKGNyDtQOtYu41Yg1xYEQoGQS2kICsBgUab47LmrwLvjD3PjRVC9U6N376DdJe9MVQT+7wIel6kcgy/KkuLhu5kg8zgwgbZ2T2QRrPsj0EJpEaqQunrARD2jTAzDg5GFTqtxG/Ff4ILLl15oFUOAq0fb4S6602+NEDST4WeOO/p56la6C+39b2UTUxAEcbfe3ukZJIORTsb62OEm/cx8beRPXx+79zx6gCe9AxUbWx1bFRlrFNTrt8/Juy9QYchOw7EdanA6I03YkO5BLPoNeHFWnuV0Jncn2AjJJKuEKT+yuVZT1/nvX4UOBXvgnlrKEndXJ0TD2mx6M18kw7gEnE2IgTARcQ4JTIy/VpcJ5TCVSc2jzXQMAOHhw5MDZbj+tf3fvZrdIv/9A0Re+p0vl7X7D4yRlsoQ6he9+MFfLS9wmKxZJApu0hS+F+qQKlNQZ31f84IVbHAbZTtL5nDISWLxoyDsRaLksdwpq1YAeUAJ2AWnQk87ijlfa0EwNMwtwdRhtFE6GNMrqrSBt6IWfJzq1wgr4m8/H7zgslzhaxLa7hqhWdr2QbIiRag07WReXhMcGIXQXgjcvt7MI3zLpIPHnGEiOfNXBlLQa35W/xDWWbZHHcGxOuv/RZ3q//WnMO1Cj7AP6FNCdXjiShKMn0TcMIyalLk+nwAiRX3wkaJwkFTQrXuz5t8TyiMju0mnbjPQFK/
- Kuvf4+U9
- b35m8kRISV7tCPO1AzGIvABh1R/oul824kJsJ1RN5BcFcbRzGhNVzVKVbPaS9bAqzbVvB1BIW5hHA47cJkMB25jPZ54DEw52OdP8DC7MMQIBvFtzvwd6xi5vKDoWtSqZWdCl8d+ScYhnr8GNl65/zEvAiabsFgVUP+gP2FALBbmvFNBTlxI6NT5SDW4Z8RL+jDFhl3xgp2a8/+Ow2UZMqJuSsFp8j8tpKmOIZcWhU2YgsQCJwbwEfInJv4D8waMmvDfXp1HKTbd+tLBHYLt/vfcilDAGjxAiQVlz7vmqcvloPQFSSX4EjfKZneYLtL/puIPZo57hDnS4u2ARTbAMQKdKnGxfgr/bH2uZRBUhpjjmmZ40CYMTqvbnl2zcH5elgsIYyj7jut5BBcUyVaG2ZaBvTo7H46/lAgUQQkSSv0Sxsh1k4V1rtta5bTbxNSPidYcpm9CCIX1+3yww4fO0Jue/cxtmLeGxyKxpkL+eQddQoM+K1HncuJY0I8Lz5WVkk4YFFqrU3FeTVCpKZLt1BXZhxnlhKXNPY2s5+
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2A882180002
+X-Stat-Signature: nahfip3hsbgqcr8c816cuwbsntz73tm7
+X-HE-Tag: 1780726357-46613
+X-HE-Meta: U2FsdGVkX19eIscErx+7ajiz3oRIkOeACuw6D1T4ZLeb4YD4cieO7B3UaT3neA2NJ3z5njfw9lGSfoHXQS+oDyYIRlAdPjyYrdMNjcWaTL0UO0euJy0TG20KPg4fEqpapSCHavWC2rAllTqvTh6Gh5heBgd63uNIjVsxXTjlAkzNWxn7xLHWTAU8Ys0OxOg6bMvO3/B5F2OmXgwNajmIBdE49RAjZDXZT+mdaNv6dwoJG0+9VAWAMIH71tND7NZZYDKTtdi9tczX5Q5Psq0DtVY/KF51sN6VOuNgHLb962wxHrNA4oo8VLUZe8ISd3YsoM8VR94M0OnnQr17QhGriuB40bg3QVe6RNxpiH7vAO4Dyp5R9NMpvlSISPtznlYlSarrD+0XPsS7EjaVXqYOiwwbdseJ2+l6GFQkoRzUEpZT0Gjhh5yPAaNOpiNhu1xSp6pnkUhZkawMDd+vsgCZ4g49XJjZdOnbq9+owiwTTNJdq1xXMBFODSEn2AxP8R2n8SIdaSB9p2jcWy6HaFXMxchZNkCinlhwcLbMAwazn/nfKQQQ5eBUfsVWRGJNJ/yqjAiQr1QmQELp2dHVazRVmP+JlFdyoGHEG2an1EZAiRTTHq6i2i0/QTh/HjPsA+SNEFpJbECZR2DvZdJuvOQKWC4M3YDnRdBU2SNRd91/dl6EVVQsHfAJahUKyFxLL2e/NX5hbcZfc1ctwSsFkvpPOpWEd/hO6dTKbdjm4X2fXar+s3hSUEoz4u9oK+R4fpSTRBqPx0YR/oL+yUasIbRFZcbSyqdvFG7bYB64OQazhauIUo+IwSNpt1Rq8RHIjkM3bBww1uUQRhbc4xZnWUg6TKl2nSi0D7jj8Q50se+qr9ziTmE6lWLh51XVEV02fPC/ahGDtDL4PH5FHIqkAqccrrVLOtmBSKD7EYh51c0R7U9JwjnS/XDw7J5x0Na8RBpFjEaV2xrNVZiE81wgeSD
+ w+q6kGWb
+ fwK9v1MdT5Gy6J12Lkle0sy+GbKFgm8kXZViK453iu5H3uRvER/jkyP08lFOyGphQFTd2tgu0Xaa3k9Z7uNuXiHrscqzoQpeYParwbJTG3KEGRn4oIPEZkfdvMPtFKhXULeaq96QP1nGo4e+VeFI0rkA5Tnqteed5fpJp5qyviqB3mmJNhbyKbNT2HekAs6SyngrhZxi4WQnSEyrBI9B8+EPCic/+ZgvGsra3BBVWCa+XVZVKXSfG8dCLUY4vOIRyXhRrK+Xx5N7aAjBXUd130v1gT0FVTdsihJXmWrys+3RiMwQr46Vbq1Ggr9ty91w6edDeAkQUpmTMOscQOXF/CfJ8sbuNy72hcgqnU4084d6h9OVNoKaw6tOOO/pNgDnBLGpUKO3qreTcmwfgY/1ctwbGpAb7vpw4KfFjumLX/SE+23oF6wfNUJPzhnhIga7h3C5vuYzkOqpkRnMwLRqqhsgQcrpMJ9UvVBHShMQwKNi+HaTbQQ1WXxD3C5wnpdtJ9kW/6NzTa7Y2jbYKyGdf+CE8pybb+y/wGX+D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,44 +142,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I want to do this, because I will move this function to fs/pipe.c.
+This is needed, because I plan to use it in fs/read_write.c.
 
 Signed-off-by: Askar Safin <safinaskar@gmail.com>
 ---
- fs/splice.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/pipe.c                 | 17 +++++++++++++++++
+ fs/splice.c               | 19 +------------------
+ include/linux/pipe_fs_i.h |  2 ++
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
+diff --git a/fs/pipe.c b/fs/pipe.c
+index 9841648c9..c0ccf21b9 100644
+--- a/fs/pipe.c
++++ b/fs/pipe.c
+@@ -1451,6 +1451,23 @@ long pipe_fcntl(struct file *file, unsigned int cmd, unsigned int arg)
+ 	return ret;
+ }
+ 
++int pipe_wait_for_space(struct pipe_inode_info *pipe, bool non_block)
++{
++	for (;;) {
++		if (unlikely(!pipe->readers)) {
++			send_sig(SIGPIPE, current, 0);
++			return -EPIPE;
++		}
++		if (!pipe_is_full(pipe))
++			return 0;
++		if (non_block)
++			return -EAGAIN;
++		if (signal_pending(current))
++			return -ERESTARTSYS;
++		pipe_wait_writable(pipe);
++	}
++}
++
+ static const struct super_operations pipefs_ops = {
+ 	.destroy_inode = free_inode_nonrcu,
+ 	.statfs = simple_statfs,
 diff --git a/fs/splice.c b/fs/splice.c
-index 6ddf7dd72..707db2c2c 100644
+index 707db2c2c..d12243d19 100644
 --- a/fs/splice.c
 +++ b/fs/splice.c
-@@ -1239,7 +1239,7 @@ ssize_t splice_file_range(struct file *in, loff_t *ppos, struct file *out,
+@@ -1239,23 +1239,6 @@ ssize_t splice_file_range(struct file *in, loff_t *ppos, struct file *out,
  }
  EXPORT_SYMBOL(splice_file_range);
  
--static int wait_for_space(struct pipe_inode_info *pipe, unsigned flags)
-+static int wait_for_space(struct pipe_inode_info *pipe, bool non_block)
- {
- 	for (;;) {
- 		if (unlikely(!pipe->readers)) {
-@@ -1248,7 +1248,7 @@ static int wait_for_space(struct pipe_inode_info *pipe, unsigned flags)
- 		}
- 		if (!pipe_is_full(pipe))
- 			return 0;
--		if (flags & SPLICE_F_NONBLOCK)
-+		if (non_block)
- 			return -EAGAIN;
- 		if (signal_pending(current))
- 			return -ERESTARTSYS;
-@@ -1268,7 +1268,7 @@ ssize_t splice_file_to_pipe(struct file *in,
+-static int wait_for_space(struct pipe_inode_info *pipe, bool non_block)
+-{
+-	for (;;) {
+-		if (unlikely(!pipe->readers)) {
+-			send_sig(SIGPIPE, current, 0);
+-			return -EPIPE;
+-		}
+-		if (!pipe_is_full(pipe))
+-			return 0;
+-		if (non_block)
+-			return -EAGAIN;
+-		if (signal_pending(current))
+-			return -ERESTARTSYS;
+-		pipe_wait_writable(pipe);
+-	}
+-}
+-
+ static int splice_pipe_to_pipe(struct pipe_inode_info *ipipe,
+ 			       struct pipe_inode_info *opipe,
+ 			       size_t len, unsigned int flags);
+@@ -1268,7 +1251,7 @@ ssize_t splice_file_to_pipe(struct file *in,
  	ssize_t ret;
  
  	pipe_lock(opipe);
--	ret = wait_for_space(opipe, flags);
-+	ret = wait_for_space(opipe, flags & SPLICE_F_NONBLOCK);
+-	ret = wait_for_space(opipe, flags & SPLICE_F_NONBLOCK);
++	ret = pipe_wait_for_space(opipe, flags & SPLICE_F_NONBLOCK);
  	if (!ret)
  		ret = do_splice_read(in, offset, opipe, len, flags);
  	pipe_unlock(opipe);
+diff --git a/include/linux/pipe_fs_i.h b/include/linux/pipe_fs_i.h
+index a1eeed800..be653625d 100644
+--- a/include/linux/pipe_fs_i.h
++++ b/include/linux/pipe_fs_i.h
+@@ -335,4 +335,6 @@ struct pipe_inode_info *get_pipe_info(struct file *file, bool for_splice);
+ int create_pipe_files(struct file **, int);
+ unsigned int round_pipe_size(unsigned int size);
+ 
++int pipe_wait_for_space(struct pipe_inode_info *pipe, bool non_block);
++
+ #endif
 -- 
 2.47.3
 
