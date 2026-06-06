@@ -4,88 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48610CD8C88
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 20:19:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BB6CCD8C88
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 22:15:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 326946B0088; Sat,  6 Jun 2026 16:19:14 -0400 (EDT)
+	id E840C6B0088; Sat,  6 Jun 2026 18:15:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D7996B008A; Sat,  6 Jun 2026 16:19:14 -0400 (EDT)
+	id E34BD6B008A; Sat,  6 Jun 2026 18:15:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EDDB6B008C; Sat,  6 Jun 2026 16:19:14 -0400 (EDT)
+	id D23526B008C; Sat,  6 Jun 2026 18:15:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1024A6B0088
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 16:19:14 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9CBBC8F1E1
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 20:19:13 +0000 (UTC)
-X-FDA: 84850602186.29.AF02873
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 46561180003
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 20:19:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=LKiw7YU7;
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C0E926B0088
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 18:15:29 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 491E2A058F
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 22:15:29 +0000 (UTC)
+X-FDA: 84850895178.21.129C6D1
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6F2A5120008
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 22:15:27 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="ovyQ9F/r";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of praan@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=praan@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780777152;
+	s=arc-20220608; t=1780784127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qn/GwpLQrIFJP6RrB5tk+eCxp+XsTc6Qi46I9/Pk/bg=;
-	b=0eC6pE5RTEBI8m+romHWXoT7QjrrupPzkR9ijh2CnZ1rzHIs1Ne+jplwkmQ7Wyo/hOIJcq
-	rFvGPlJyo5WReX5UXWm1PbfFoHqRCSQqfWsx0Z3xhRsXjJU2LLa141WeJmG7lTsVt1Q6VG
-	bQj83WhISau1HHInXhWp6IyWygOKoyc=
+	bh=LYxfXn22R4rSEp+91VSc3le3ou2J0SQ37n2yrmKjM2Q=;
+	b=IDnKvTWhu1KGBeN7zq6c0GR4xOKFsK5SpknTimjkfOU0bXTG3O8m3o+ylDhM/jAo6p5Eaa
+	lWK0W2kGtV7CKYHaaeqDAjSTckjKrb6xOs3DIYyKOz4vZ88SdDQp3yiWMJVvQlNOIPBxvf
+	Evv4RZRJtllcMu3Jy7qBfDPPxMbTYe0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=LKiw7YU7;
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="ovyQ9F/r";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of praan@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=praan@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780777152;
-	b=1ijw37VE2hgBtZpMlNvvah9qw7YSEILNoyy+Ibcd7gIRVsxAs2QTd9spBV2d9I5z+/6yAL
-	TywVqnjfcX79+aq0QGQ6U5mh+dYzGs7q+50mqOw+DzZtSaPzMeh+1nLRWQ4If1NfqsMLUu
-	OMkyk+ftEXzyXwtdPHlGCQfkzdZvYy0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qn/GwpLQrIFJP6RrB5tk+eCxp+XsTc6Qi46I9/Pk/bg=; b=LKiw7YU7YB5iPci7joQBn8opCX
-	QPc4PL+SnIhhQ3mi23T/jG60gOhikMnbAGJW6eqbnMZKNGy2ei/X/uRgLrWL7puLUSdZUwsgu/6EJ
-	ktBNNPXlQR8OYKMHom7a1UajkkvcgYUAzx2ONDX5DCPBeYJFltj3ogCxfH15i0cdA2+Ewk//R70ya
-	Qy+Bkid7+kqgOrOUEZ++1Lk91q3rLOHxw0jpFf690VV6h3Prb8ZNRldrGiSwY1DnboVUtGXfdP+F7
-	iVWhHot6bDPX3Aej+0kdQue9LTn6F43cxhWGwUG9oJayhPCgyI1Hepdr/X7XIGquTs9XzwyuScixg
-	xHD6eaoQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wVxU0-0000000ApOr-3385;
-	Sat, 06 Jun 2026 20:19:04 +0000
-Date: Sat, 6 Jun 2026 21:19:04 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Mohammed EL Kadiri <med08elkadiri@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Jonathan Corbet <corbet@lwn.net>, Kees Cook <kees@kernel.org>,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs/mm: document slab cache isolation with SLAB_NO_MERGE
-Message-ID: <aiSAuP-qEhH_RoCn@casper.infradead.org>
-References: <20260606155856.15548-1-med08elkadiri@gmail.com>
+	t=1780784127;
+	b=j4Aw8+hLVVyW3mB6Q/dCwteYip2w3Ui4rQz7eTC7BlbFIco62vMt2bNO+td5U8UKZ5hj70
+	+cpuYdy/Nv1FKk8KO/9jtShKC8v1ez8UC4hDvLaZI9HKzfBWhnEpuJhDPfT2iKCk1qol/O
+	HKNA2wagNsQNt+jB8gCrP6+uOpJ5U0A=
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-137ff9a7d5eso18361c88.1
+        for <linux-mm@kvack.org>; Sat, 06 Jun 2026 15:15:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780784126; x=1781388926; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LYxfXn22R4rSEp+91VSc3le3ou2J0SQ37n2yrmKjM2Q=;
+        b=ovyQ9F/rEFNvm3b+QGt6KckNHYXPOgF0kzD399hGp84k1NULBSQShzBfJ6eqifiEmw
+         jH+x7fFwnBfaSoKv0jZwivSezbNW5UGkawC0PP0VpePwkf09PV2go0ZrcT4MEeLe8Mcd
+         GgVVZG2qLu6wIwhB6T/NsiXQjex4aQ5QBHwkaR3gsf47AVtWmToh3D1vTy7FOnsHpGjU
+         2bspgZc9H5AQRRQHrWVT575OghRJJjMnp/TYdpNMRlTk+UXyHoUddUzUTK2lZ7uBTgoQ
+         L1N62A0/Z/S22+M3k4daTn3Pjw8AL/mCOtR1n2/RMHKsCV1XqkPMJWsD5Nx9zbR3/nfW
+         VQgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780784126; x=1781388926;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LYxfXn22R4rSEp+91VSc3le3ou2J0SQ37n2yrmKjM2Q=;
+        b=tUxDtKK9mLuLiWdJrZO2XoroWAX9oSrCj29Nb3rMRykRRa7CYBfiyOqDTvwpSf/l3u
+         L6KY8CIPq7ZU+nbcJfpufldhB9KWE9//pWFLBviP0O4HC6Tz2Wm2vNQMjJzVv7byNRB1
+         PmzILRntRzfAW/bjK+Q2nDhwHVYuy+91jJ45JuxdvYyBz5fkothuAUIOtwNO4rmkr8/k
+         kmuKKjsR7rZ0SJ9RQtlwFwE6z/QIQLLvnQ+mnosDa8m6IlkSIwp9nT7tMmY7cTMJ5UpJ
+         +r0tMXHwYW7uffj9qa36qlc0N2PfwYT7JlwJgSNqCMBlMNXav60RB2XGdDpPZdsBOMu0
+         e6XA==
+X-Forwarded-Encrypted: i=1; AFNElJ9Q4oQMxqe1TCxmkpBk0nZ6iBn7SoZEaFyqiKFNRhmMtnEu4rYdZo38fQhu+oLYPWWlplmLpLKHQw==@kvack.org
+X-Gm-Message-State: AOJu0Yyb/cTVjL3ISEh6ec0TQZB6se5r0Nxc8mAPzTVrszhVfPkkQY/R
+	sxF1PBOrg8BY+RyYtvAbKOgVVXO8rhHeaGgDCl4Qy+UvDASfmMqOqi8v8KTq3aKUeg==
+X-Gm-Gg: Acq92OF0lHa3UZeLCq8BhjrlZYHHgesWwE/FYUEjcsaa29BvzOMp5VeZqPLw1ZenQV1
+	+CP8C7iHFf7yoU+S/Lm6LOQ5yrba2Q0hklgSeExNpTLYa1L+Pllgbfc8PF+J33y3JQmvBnwVALx
+	AvFrxv74bTzCZr2gLJaFaJ1INsBiTyFg0Jo5exjjvPW/SxMGBMjQJwuuueeZ3aisGSLZbKBnrLC
+	vdhBfufYv3T5TChA4pwdjETIryIHOLhJSLELK+fJpPZhoap/fog2U/C0DgLLCluuHRG5r0ZzBr7
+	8qAqr2XAXuPyn9iv58QS89jAerE7a7xKEZnW12VTcONtV/KEN3xfQjmsPwKBShK57SR3INw+LZ4
+	3askG9heXzUIe3vpzIzEQ/Fba42ao/XCa38vFIsMpAE7npzmoOO0kMaa36PaJjtjquraohO3J3u
+	mXF1opffIgMUBauULNUgI973LZ/iAD28Jjm7ZUY4jSWUElPhq0C/a3bQU2XSYJlBrrWenZ9eU=
+X-Received: by 2002:a05:7022:12b:b0:137:dbbf:db2c with SMTP id a92af1059eb24-13807bfbad7mr235639c88.5.1780784125379;
+        Sat, 06 Jun 2026 15:15:25 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074df75ff6sm12469930eec.26.2026.06.06.15.15.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jun 2026 15:15:24 -0700 (PDT)
+Date: Sat, 6 Jun 2026 22:15:15 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 06/12] PCI: liveupdate: Auto-preserve upstream bridges
+ across Live Update
+Message-ID: <aiSb85Ec6jW4xPaE@google.com>
+References: <20260522202410.3104264-1-dmatlack@google.com>
+ <20260522202410.3104264-7-dmatlack@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260606155856.15548-1-med08elkadiri@gmail.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 46561180003
-X-Stat-Signature: hc3ws1xzn5c9o3j3ho85htq1hc3cgch9
+In-Reply-To: <20260522202410.3104264-7-dmatlack@google.com>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780777151-900418
-X-HE-Meta: U2FsdGVkX1+9gMG0AJrOpAU6af8oLO/G1x3e74ifZ1F4+Q3Fjf15o1OvaerbsYvkUhyIZC0kpAgxjX4qahgcc/EZwEYakrzvjW8eU+V+pRyPYZqH0/wDPDJwihB1gVlcd25D6ZfD5NAwaCJI1ZYIud+dQ010iOhWvPo6frJYX+U0Mq65aM8iVTA7eZPmBlA8nhWha/IT/yvQ4X0dq/NvDSn+Alm3mzI8ZpEuxZJInxu7ynLV0SeZko6EPIiUWu33pThQrwotHlB9Z9XYnOzzzwsaivZOQDPX/k68XuhXmfqtA7/Q7Z7qIYincVBCDbJZJWeJjeabeYWYwENFgSGwclxkCth28dNRFuZYyljQRsltYAClPDeMLO6tzk/74nRv6FHete5jFCkhQcn4fnR+T34F1SP7J81ohoryR8YJbtlx1EBFM3gRb+A2sirFQzgVHf9+p17TQswSNkIIUfiGqYTdjuZGp20m4Kh+XXRwgB/ZtF0Rnqodlhm+ZvhZREF1rrmWRwf/zaQ40FVemT0b0jMPG0JExZ3rxzsbsrOswuCmmPJNwXdrgBFb6Dj/w/3lwqUmUVlyKQYFiuX/J76+PLJVADRfwtUR6dE1X4H6TnNpHGQYPY6dm5wtQQ897DqzMbrjOfU/FwDmWSo/7cOvej/ofgjK+aiOqORsxpn43yfRV28UY2DBpaRL27qNTI7F9QmQOKEb5qAf1iwsWvWTCOLB4lBf8VxaHPX6W7odcaaLqL5GwFBbWbKZMTh7WvEJQ2/kKopFcXTbhfWXo1KOfC9bLamCnH838QHv/xuKiYL8S90TWpoxOluLqL/yldN6jFjhtwYQIUeydgW46qt/FV4yxgC3WkI3rMxLNLViiR4CJ40adRqlhkrAm0R4dyLnd4hD6erRVrdolQDCISQcgTCrIMvZRvZYdLQM4VvogPOIZM5syG/i1IzRXgsUgKwJhw62yCX/kZqG67Rvq1k
- SRLppT4d
- LfnTtvWcKcl69nFEdTJncv3cUXHZFUVg8EODVB/2ZN1KyxfQ4AwJpZnMSJfdYvdNr6tdaj01uGnEZqeAqf1ITh8/+LciSiI/FuxT6Mi2FH1JDL7c4NQsb1ydEFv9YMsM06402nyy7KVydNCS4y0mJ96MSLlhU6X2qf9S5PPak5qHMkdOI/eNi/4BzPMcb3OBFDX0fvSwEm7jFTfS2lfsdQ5T5lI0Y2uCbxbnRpE/wZ/Li67Fstil47vmm1iMUJwxLbO37Ru2PQt/ZYvW493lSq9gU9qjjKPc3E/jc
+X-Stat-Signature: bmsyk4mekbgxiewbyd4khi1azznnz4px
+X-Rspamd-Queue-Id: 6F2A5120008
+X-HE-Tag: 1780784127-199680
+X-HE-Meta: U2FsdGVkX18qWt34k76NRPO0W9/K6P6MfbPwbh1b/9P5YisFnU+WL+GknZ1W3HF5k6/8Xp8MnpPNHrUpfAuh6ACOITNNSIuRw6jF1Lsi1HGdeNm0hfd6XkXAMRma9O1ZiaShbXKdAiOx9wdbcVndGifbQbyPMmNKpSfBmg5rjmuqP0tydjdNffmBN2DahBYvrQLqKyHPFtrb7jhSA8R6/XV6ssrpsyl2xnxYG0zwfmYlTP7205lna9jCn3enAD41n8cDXuKZdtH3VV5rrXJQQ299FioQ/xuw/l/k1EqLP/6UyHHZ9e4w4Kv7Cx1UnHjDTbAbTfvU88BgTgOhrzkb2ExHJ1B0KhxDu5p8IYohCxmEJLricYbAIJ1QBsI6QB6SvzVSSWqXHB5icjEDZR6I35+7OGvSLUW9BbzzO1TBtlb2RImaE2m0aUzY9EC5muJLPxO/yZ+sbVAgLSdIfsZxWpiPyk1y2o6vbCpGQjyNR/E0hvGyIWqEyeFCVT/h0YSHvcbk9z+Xg0cxiPVTZ+Vaf62eclgZxJDLF4Os6HXM+jIkymzFJYWdgi6tNh2+MiNVY6M2W+6+FZJpWL5XFv6HTiAdzqrOsZih5lWo+eOhzSpalhAoEGssWecSenmty3bVOZtIlPiecOC2wDOhb+mi4fPxoN6zf2C6CQlk/Pxt/lJhyrW34sDt7fsLKUnnUDUahU9svtZh8r1X9o/PR2EPkIIKmv85Vytu/UhJrlU6YWvlEav3GA613HQIYg+HuLe/v0UEhH6IYJhkq0iz8OK5X6RnBMpCJ+Loc0CwHcPtkOQFxF5a9uZ7+CtxX4X5xina7vftdIGDGf5SuTxq2sYq9WIHdW03GItQMrd3AwMDyU4WyCYUVAUDXiIsmLtxsPg+8Je0w72uDzFD/mLyZyJPr8gUQ4av68mVdcOU+/DjDC1YszAj05L4DBGWIkDy6ZIDo6AfQxZuQ/gs1Evmazo
+ LGl6/cl+
+ S5DwCea0hFgjcavroMduTm1dOXMz0OpKaC4S+L9U+eVEEjTDBTXqjsTGrOz7MLKebnf6mxTPg2rvEz1xZV4cUGNdFvgLw7LsJ8wAfyB3NaTCcDWAsYpvAZIFZuDy+5IU+HgpEeMCLKj35dhXM2DOOPG94Xr8F2mpNgILcYvKlpY7lr4wzHkfxyo1E0TrWQg43rrArkD6RXiNdX4sS1ZweppUDy1GNtqPE/Jj2yZGycMgxNKZybZs8GFew/FA8CaLz/22ZIQa0QYdSLRaJwVteQMuoUmJR2o9+2pWYtVO69X8DDxoj1zFmlpKLrj/8hks543waI88vUTcK8DTohxXtvH/M7cTaM/ynXM50n1LtgyxhTrqS6Zlf+xmfU4Tz654FN64/CcvEPKTA8KhHKF+8mObkrPVuVOEg/vIPETP9AyefbVX9YRNOvPA3/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,118 +136,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 06, 2026 at 04:58:55PM +0100, Mohammed EL Kadiri wrote:
-> +The SLUB allocator merges slab caches with compatible size, alignment, and
+On Fri, May 22, 2026 at 08:24:04PM +0000, David Matlack wrote:
+> When a PCI device is preserved across a Live Update, all of its upstream
+> bridges up to the root port must also be preserved. This enables the PCI
+> core and any drivers bound to the bridges to manage bridges correctly
+> across a Live Update.
+> 
+> Notably, this will be used in subsequent commits to ensure that
+> preserved devices can continue performing memory transactions without a
+> disruption or change in routing.
+> 
+> To preserve bridges, the PCI core tracks the number of downstream
+> devices preserved under each bridge using a reference count in struct
+> pci_dev_ser. This allows a bridge to remain preserved until all its
+> downstream preserved devices are unpreserved or finish their
+> participation in the Live Update.
+> 
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>  drivers/pci/liveupdate.c    | 136 +++++++++++++++++++++++++++++++-----
+>  include/linux/kho/abi/pci.h |   5 +-
+>  2 files changed, 122 insertions(+), 19 deletions(-)
+> 
 
-More of a question for Vlastimil ... do we want to continue to
-distinguish between slab (the API) and SLUB (the implementation)?
-I don't think we ever want to go back to a situation where we have
-multiple competing implementations of the slab API in the kernel.
-So shouldn't we deprecate uses of SLUB, particularly in the
-documentation?
+[...]
 
-> +flags to reduce memory fragmentation. While this improves memory efficiency,
-> +it allows objects of different types to share the same slab pages. This
+> +
+> +#define for_each_pci_dev_in_path(_d, _start, _end) \
+> +	for ((_d) = (_start); (_d) != (_end); (_d) = (_d)->bus->self)
+> +
+> +static void __pci_liveupdate_unpreserve_path(struct pci_ser *ser,
+> +					     struct pci_dev *start,
+> +					     struct pci_dev *end)
+> +{
+> +	struct pci_dev *dev;
+> +
+> +	for_each_pci_dev_in_path(dev, start, end) {
+> +		if (pci_liveupdate_unpreserve_device(ser, dev))
 
-s/ pages//
+I might be reading this wrong but are we leaking some upstream devs if 
+an intermediate node fails?
 
-> +enables cross-cache heap exploitation, where a use-after-free in one object
-> +type can be leveraged to corrupt an unrelated type.
-> +
-> +The `SLAB_NO_MERGE` flag prevents a cache from being merged, ensuring it
-> +receives dedicated slab pages.
+			  EP0
+			/
+Assume we have: RC -> B1 -> B2 
+				\
+				 EP1
 
-s/slab pages/a dedicated slab/
+and EP0 & EP1 were preserved successfully.
 
-> +2. *Actually mergeable*: The cache must not already be unmergeable.
-> +   A cache is already unmergeable if any of the following is true:
-> +
-> +   - It has a constructor (`ctor` argument is non-NULL).
-> +   - It has a non-zero `usersize` (with `CONFIG_HARDENED_USERCOPY`).
-> +   - It already has `SLAB_NO_MERGE` or another `SLAB_NEVER_MERGE` flag.
+And then we try unpreserving EP1, we follow:
 
-I don't know if this is good advice for users of the API.  It's true
-that the slab will already be unmergable for these other reasons, but
-it's harmless to specify SLAB_NO_MERGE in that case.  And it
-communicates intent.  And in case somebody removes the ctor in the
-future, or we decide to change which flags are in SLAB_NEVER_MERGE,
-the slab will still be unmergable.
+unpreserve EP1 -> unpreserve B2 failed due to a corruption.
 
-> +3. *Bounded allocation volume*: The cache has a predictable number of
-> +   active objects, so the memory cost of dedicated slab pages is
-> +   acceptable.
+This aborts the loop, skipping B1 and RC completely?
+Their refcounts remain elevated, effectively leaking them as preserved 
+state permanently? (i.e. if we unpreserve EP0 after this, B1 & RC will
+still get preserved).
 
-I don't understand why this is a criteria.
+> +			return;
+> +	}
+> +}
+> +
+> +static void pci_liveupdate_unpreserve_path(struct pci_ser *ser,
+> +					   struct pci_dev *start)
+> +{
+> +	__pci_liveupdate_unpreserve_path(ser, start, /*end=*/NULL);
+> +}
+> +
+> +static int pci_liveupdate_preserve_path(struct pci_ser *ser,
+> +					struct pci_dev *start)
+> +{
+> +	struct pci_dev *dev;
+> +	int ret;
+> +
+> +	for_each_pci_dev_in_path(dev, start, NULL) {
+> +		ret = pci_liveupdate_preserve_device(ser, dev);
+> +		if (ret) {
+> +			__pci_liveupdate_unpreserve_path(ser, start, dev);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  /**
+>   * pci_liveupdate_preserve() - Preserve a PCI device across Live Update
+>   * @dev: The PCI device to preserve.
+> @@ -321,6 +403,9 @@ static int pci_liveupdate_preserve_device(struct pci_ser *ser, struct pci_dev *d
+>   * pci_liveupdate_preserve() from their struct liveupdate_file_handler
+>   * preserve() callback to ensure the outgoing struct pci_ser is already set up.
+>   *
+> + * pci_liveupdate_preserve() automatically preserves all bridges upstream of
+> + * @dev.
+> + *
+>   * Returns: 0 on success, <0 on failure.
+>   */
+>  int pci_liveupdate_preserve(struct pci_dev *dev)
+> @@ -336,7 +421,7 @@ int pci_liveupdate_preserve(struct pci_dev *dev)
+>  	if (IS_ERR(ser))
+>  		return PTR_ERR(ser);
+>  
+> -	return pci_liveupdate_preserve_device(ser, dev);
+> +	return pci_liveupdate_preserve_path(ser, dev);
 
-> +How merging works
-> +=================
-> +
-> +When `kmem_cache_create()` is called:
-> +
-> +1. If `usersize` is non-zero, the merge path is skipped entirely.
-> +
-> +2. Otherwise, `find_mergeable()` in `mm/slab_common.c` searches for a
-> +   compatible existing cache. A merge is prevented if:
-> +
-> +   - The `slab_nomerge` boot parameter is set
-> +   - The new cache has a constructor
-> +   - The new cache's flags include `SLAB_NO_MERGE`
-> +   - No existing cache has compatible size and flags
-> +
-> +3. If a compatible cache is found, the new cache becomes an alias. Both
-> +   share the same slab pages.
+Minor nit: I might be too nitpicky here (and it's NOT a strong opinion)
+but naming it pci_liveupdate_preserve_path_for_dev() reads better to me.
 
-This feels like documenting internals rather than documenting how to use
-the flag.  I'd drop it entirely.
+>  }
+>  EXPORT_SYMBOL_GPL(pci_liveupdate_preserve);
+>  
 
-> +The cross-cache attack class
-> +=============================
-> +
-> +Cross-cache attacks exploit slab merging to achieve type confusion:
-> +
-> +1. Attacker triggers a use-after-free in object type A.
-> +2. Type A's cache is merged with type B (they share slab pages).
-> +3. The freed type A slot is reallocated as type B.
-> +4. Attacker uses the dangling pointer to corrupt type B.
-> +5. Privilege escalation.
-> +
-> +CVE-2022-29582 demonstrates this technique: an io_uring use-after-free is
-> +exploited via cross-cache page-level reallocation to achieve root.
-> +
-> +`SLAB_NO_MERGE` prevents step 2: dedicated pages mean a freed slot of
-> +one type cannot be reallocated as a different type.
+[...]
 
-Not sure this section adds anything to what was already described.
-
-> +Tradeoffs
-> +=========
-> +
-> +*Memory*: Isolated caches may have partially-filled slab pages that
-> +cannot be used by other types. For caches with bounded allocation counts,
-> +this is typically a few extra pages.
-> +
-> +*Performance*: Zero impact on `kmem_cache_alloc()` and
-> +`kmem_cache_free()`. The only effect is at boot when the cache is
-> +created.
-> +
-> +Relationship to other mitigations
-> +==================================
-> +
-> +`CONFIG_RANDOM_KMALLOC_CACHES`
-> +    Creates 16 copies of each `kmalloc` size class and randomly assigns
-> +    allocations among them. Only affects `kmalloc()` users. Does not
-> +    affect named caches created with `kmem_cache_create()`.
-> +
-> +`SLAB_TYPESAFE_BY_RCU`
-> +    Delays freeing the slab page by an RCU grace period. Does not delay
-> +    object slot reuse. Does not prevent cross-cache merging. Solves a
-> +    different problem: safe lockless access to freed-and-reallocated
-> +    objects of the same type.
-> +
-> +`slab_nomerge` boot parameter
-> +    Disables merging for all caches globally. `SLAB_NO_MERGE` provides
-> +    the same protection selectively for individual caches without the
-> +    global memory cost.
-
-These two sections also feel unnecessary.
+Thanks,
+Praan
 
