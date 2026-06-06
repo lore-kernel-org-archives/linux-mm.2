@@ -4,173 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FDD4CD8C8C
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 12:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 978F7CD8C8C
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 13:23:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 484796B0005; Sat,  6 Jun 2026 08:27:49 -0400 (EDT)
+	id 688686B0005; Sat,  6 Jun 2026 09:23:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 434B66B008A; Sat,  6 Jun 2026 08:27:49 -0400 (EDT)
+	id 638D66B008A; Sat,  6 Jun 2026 09:23:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FC906B008C; Sat,  6 Jun 2026 08:27:49 -0400 (EDT)
+	id 54F506B008C; Sat,  6 Jun 2026 09:23:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 180EE6B0005
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 08:27:49 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 41D1B6B0005
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 09:23:52 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 96BAD1C1113
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 12:27:48 +0000 (UTC)
-X-FDA: 84849414216.15.45EDBE9
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021078.outbound.protection.outlook.com [52.101.100.78])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A31A01C000B
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 12:27:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=I+g07KNN;
-	spf=pass (imf20.hostedemail.com: domain of gary@garyguo.net designates 52.101.100.78 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780748865;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A679C8C57B
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 13:23:51 +0000 (UTC)
+X-FDA: 84849555462.15.1E67707
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D7372140009
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 13:23:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YV6zHZ+V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780752229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GTmB3iowFSGbou3l1+NLt/ChMQlTo4QbxaSgwNRvv6Q=;
-	b=QyDavUgMG+IG/B/k8JlJa4Aw6rA4Q3D+iBsmqY1uoaOel4Eq+WTitlM0wjzI+pkZ9aqFaT
-	1M9WDIugtdjqvUAe3hfrV9poFUALSASDNZqR2OE2Q79xjgRvY6tQ6LqizINQ0KXAOWjKYe
-	nJU1H2HxORMkc1aNxtmrOSWEURG52OU=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=I+g07KNN;
-	spf=pass (imf20.hostedemail.com: domain of gary@garyguo.net designates 52.101.100.78 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780748865;
-	b=1XK5U4hKpuV7DD98XW7Czp3cSlr7Oe5fCsqvm8XCXtMXIQP1mEQMWohp3fWG27zvdo7YP4
-	4AakOP06NU6YoigV7KF4mk1tJuBLaA/BR0o9mN5DZSiZQZT+x5cAIRHMMlZcHiWV1Vhm80
-	5BpJsnxuFT/uJoFIPFfsrfpK5Y3QR2g=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GWsAvRlkvHqO+G7xmUGwKlfuWp6fR781LZDVbJJxWwRAznZcccdbien4vI0EMJCMOclrt9MLMDkVYhe5WhvOjnFcLYs8GCAnh1tz0uiNXFSAWG8M1KXN1kgVyWp6ETgaEG4+zN8wSgh4Hr+8QEAxJRi+riChgZ0zzK8kudP+snFoAtOBFqjmrsyh9tmbx+QEoldeGLMCDD10yRNVz8MRxoA47Xh82LrSruyYyYhMLwmEbfhHIMfwim2jjtUljP+eeREbgu1va/VLgqe7mjEnZ+A0E9kXUnLmkhWxVB00EKTOSWNJfJs/FcVgjWOwVpRnOvzYHrTSNOSMDNwtwZFNVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GTmB3iowFSGbou3l1+NLt/ChMQlTo4QbxaSgwNRvv6Q=;
- b=K9ZwCi3snMH18QI/n/W1Ivow+5qhrMT8SislGtxyzP5lOi5LABh2ZhJfDw6o8yIiH8jrUIs2CnQV0BYj6PcnIQYEO/hKwxAgzXmAqmkBCGRpoYMNPc4Am9qNWbRYe5yb//MMzoWGyo6TPEcKycvdtzA+chY8qR9WExvssFQGA8C/meuoUjzH+hduKhIcq+TnT5eurt34478U8rX+Um7P+j0tIC+h4qfosXcR9y47J5yhqZWu+2fkK04H8xMJDaqIRiC3EQlXmeg6V6PgLlfin6DWFyHIHl/goRq0tRiYjp7Uspt5UDZ/VZEt4Kmn3aFgLWj90Pt26ZjwfIq7AE+ERw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GTmB3iowFSGbou3l1+NLt/ChMQlTo4QbxaSgwNRvv6Q=;
- b=I+g07KNNLzWL/RWtN5mlJ6oCT5XKypaB92e3kJfvpbPg8/L7sZPd0C2M3gxNqLXZCicSvBSrDP3cvBvHdWdyLLNr88v+DmRDDXc6l0aJXXV0lbKJEGrBXIxoShmztIiRj92mUDTSk9zksHEUt8fpAz4pk1EG7Z6A/5VotJ5oSR4=
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO6P265MB6506.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2d3::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.11; Sat, 6 Jun 2026
- 12:27:42 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0092.010; Sat, 6 Jun 2026
- 12:27:42 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 06 Jun 2026 13:27:42 +0100
-Message-Id: <DJ1YSDVN7UJJ.XNH9EN0UQCIK@garyguo.net>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich"
- <dakr@kernel.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Boqun Feng"
- <boqun@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>
-Subject: Re: [PATCH v2] rust: alloc: add per-task memalloc scope
- abstractions
-From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>
-X-Mailer: aerc 0.21.0
-References: <20260605-gfp-noio-v2-1-cfa2e236c2a3@kernel.org>
- <aiK3R1yRHj8zcGuh@google.com> <87ecikhyq9.fsf@kernel.org>
-In-Reply-To: <87ecikhyq9.fsf@kernel.org>
-X-ClientProxiedBy: LO4P265CA0117.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c3::20) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	bh=CK3N4reuqkgIU3xCajC0NliBbQ59y+R5TmUR3YDwDpY=;
+	b=w9ZKcg+m6AxcJEerOy4LWHxrWdK3NeZRATD07FQwHZPpM6S6wIJYClw/FftCvxzERk99qp
+	PC5D2eABfoBqQ3iAkoYmN50nAnGyJsO/lw4LADWq6+suECQTFjmk/yX7fMH7YyFqyYvlQG
+	mj2e28ZHHLfBHDIp9i3JmCNX9Xz3zqg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YV6zHZ+V;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780752229;
+	b=Vq+AUD/9iOyJAkY/zlU9n/mtJKG4jVc9qJInS8kJxenmw/u5TDPUPaJXcB4Km25yWHUtJK
+	DITxbRhJaf6p660D2yBLHtFPlBXM28m14xcAPh4WcJgnLFLlzGj9ybDBiUgj1RZ103KgYP
+	jObCeQNIdVeXBpuEMoh9fyCUpl9KUM8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C80BC43949;
+	Sat,  6 Jun 2026 13:23:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4CD1F00893;
+	Sat,  6 Jun 2026 13:23:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780752228;
+	bh=CK3N4reuqkgIU3xCajC0NliBbQ59y+R5TmUR3YDwDpY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YV6zHZ+VJT5tTiv49gnzzRvpZYRC2o9wvK7ViYqsYGzezOzLDbSlgPrVrFRb6NKoH
+	 C9L02BYBbb2NB3TwAQQ6V9zj/pxposDjLo2qvLYSnssT3S80zinwW/Zz4G+8oWnADv
+	 NsWUXqmDqNCiZEfEdTMC13eJg1KjdPrryTj2qWHAa8yvHl+yRL9elbVz16WApDipgm
+	 hfDNLQ3q2qkWZsztk+2wu8orxBCZUdEp2VpHs0rsYNx3GtErrpQuAqVs6eJauAPR8X
+	 m2uHZB/9cT4ZB0NNuwSt8Lu+8kU/rVcJp3mPAsVz2UCXsR7M7Ah+gM9Qe9UAgMfwTF
+	 bNCfwhMqrHTAA==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org,
+	Miklos Szeredi <mszeredi@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 0/4] simple xattr improvements
+Date: Sat,  6 Jun 2026 15:23:22 +0200
+Message-ID: <20260606-gebeugt-mitkommen-eurer-06f3266d54a7@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260605135322.2632068-1-mszeredi@redhat.com>
+References: <20260605135322.2632068-1-mszeredi@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6506:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7d4b40dd-ad0d-4760-a78d-08dec3c701ba
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|1800799024|7416014|376014|7136999003|22082099003|18002099003|11062099010|4143699003|5023799004|6133799003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	lqHhcdociHpCf5qG2EjW+DysXgwP0c55BKQOnY59jzkHTkztQAU2LBjgM9jWrCEpRvG14NIk6bptg/U7Y2C3A+fq/kaHNV+CX6kqTl4ahAiXmmeih4MvX7Hx4otXaux1ccM7rN0vGcpJCuUsINhHxKZnW3g28hOxSLtKregZo9cMqXV1lj9ZYx6Wwp3rRGJzqpdoIIoBitizg680vFjfn+idbYd4v3nOLj/wGwtiHhqvFdWeXtBW7ecffRadF31oljhhuGVnanEpJE5YlSRWfcQyu5psNyApa5jjhrNI0RlG3BHspRDxsNk6Onx9/zeHihpb6uZAyAsNrNKNOHzzyF7j9vAvVEkH1USv9E+P2lXLD3Yd2bryj5a8xiPQRDa/Y4iTetru1WLbzwpNxyAeYLKrJgJpvUpUGakTsfiC19QhnFdLopQwE7EWQqaYCIm9JY8in28+wLp09Mw7dvD/eHAFyEmbxRrfCqsUMS63n6KbIWcCqeMmP5oFu3jYZq1Qwz3WeN9di453QRCOkq7BCDLMSfu6FLlfUgDeeqRLGTFLurhOliKa6mnTXuj7QrKNqChKeiBxy0EQwZT7WeJAlbPyCAV8cAYrwSdxFXKWRGDDLSHUi+eLxtidxmrgAvI8C42ujDQA1oyfYFUHhX2u3i67YYvud9NQL1iGmvmJ9KA1Y8Dx+76OXE1m7EqXkPRB7az+YnhCXkbD7+9tWOAZCA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(7416014)(376014)(7136999003)(22082099003)(18002099003)(11062099010)(4143699003)(5023799004)(6133799003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R3ByUDRVRmpDMXQ4RFFLdFFCWnNpOEhEWWxQS0YxREpvTlNuSnVJRVRqVHRq?=
- =?utf-8?B?OUtlQ08yRDFzOUR5b2NhSEtlaUxLZGZwWXJWTDJ1eHlESVZCQXMzNWthRSt4?=
- =?utf-8?B?bUpIQ3ZxR0hQWUpiaDcxNjF5MVRHUXJEbU95eVd2eHorRFI3emRVdXNrK2xt?=
- =?utf-8?B?N3c2VUJnWUdzTXNDekVqY0dmTU1LUjFJM2xuak96VXg2UnArcGNqa0ZWK1FJ?=
- =?utf-8?B?bm45aGt6MHpSUGdReHprek5IQm1iYzIreHltbittc3Vrc1NMVUsvL3lYRGRB?=
- =?utf-8?B?UThsTUZpb1VFLzRremxzQTNsRFFiNEZTaVNxckFFd0drczRVd0N4T1o3aTd0?=
- =?utf-8?B?NTc5VEdVZHdrc1lXY3BMU2Y0VnpqcTBsQStZSnZrUndSSG9lSjN2RkV3UXJh?=
- =?utf-8?B?dnN0elVZSmx2eVRVRFU1cFM3T0p5NitlUHcvK0RZb0VTS21aZUNMS1RUZmJn?=
- =?utf-8?B?OHo0aGpQZkw1QWpDYVhHbjZTRDRYVC8yZjM1L0VCbXd1c3FJYkJiUDNvQXll?=
- =?utf-8?B?NENpYlRqYUZ5YkU0ZTc1d2hqOXdGN2NzR1dIY2FFbTBwM3d6Q0dNWCs4NEJa?=
- =?utf-8?B?NkVwRytuSjhGdnBNWjBkcjJOS1FMQ2Z4cDk5SU5LbFJRdVIvZDRZT1dpNE15?=
- =?utf-8?B?WlRPNGZQeUFhN0xqTW5nMnVrVGxMR2Z1Y1NTcy9XRHBmSk85K1JMNFNVcy9B?=
- =?utf-8?B?cjFvRVlOOEIyVSswSFhmWFhpQmxEeXhTd0YwK080S3kxVEp1THZvbVhnUjNm?=
- =?utf-8?B?SDZHUVdNWmhKT3o3SnJPV0xveXkrUGtMZjdhVTQvRHczeDBhRmIzMkc1ZVZa?=
- =?utf-8?B?aUJpalJVNTFCZlc1aGdtN0pVR21HY0phN1JLYjRHYkJsZGVtM0w2VUJiWHBZ?=
- =?utf-8?B?TFJpaStmQzhhMDFSNUwwSVhqS290SlJsQTltcEdESzRuYkRMTnFLL3hCemtC?=
- =?utf-8?B?eXNjSGhTcXYyemtRaUFiQmt4c1NTQnRIaTA5UjBtV2tzR2F5TkpCMEt5TTV6?=
- =?utf-8?B?NzE1YWd1YjZjOXgwMVg4UlRMdjRVY2w3dUtheEFjWDZvR28vTVJaUDJEM0RI?=
- =?utf-8?B?UnFUVzBOQnkrY1IwQnFidGp0ZTE2NmZtdzRMWUdmMENValY1a2VLZFZkTlB1?=
- =?utf-8?B?Ry96Ynk4OVlyY1VPc2Y0MGNSaFlDeG93WXlqMWNuVWtIMnNDWWlNVTVRSjk4?=
- =?utf-8?B?dU91ZndXVllLaTBHYWhMNThwdFB2UmdVN09rQlhkdHBQMHNoT3JvV2lxR2R4?=
- =?utf-8?B?UFFaWjYvV3UvNjhuS3pIK1pZZ2lSeVIrSllSSXg2M3NSTWo2VUlHcGdrUS9K?=
- =?utf-8?B?S3VuRmtEYWpjc2hEWlV6eTNYTWZ1VEk3aTJoemxYRWNlbXdlQitmMDVGVlFw?=
- =?utf-8?B?dFVhcmI3ZmRKTVdBZ29XYTBkK09vdjZpcFYrd0ZOT1lXR2VNcFE2c2E2QTdF?=
- =?utf-8?B?bm8rMWZrdVdnNytuUlVsOUg1VkZDSWNhdHFlRHo1SktObXM5NjVaMmR5SjBO?=
- =?utf-8?B?Z1h2VDZSQVZWYWtjRmRGd0pjRGRSYVVMZG9UdGJ4TGlXYzNPNnhOSDBwZnFv?=
- =?utf-8?B?NS83TzVlR3RqYXIyb1V5d1laMTJ6bEhKQ0w0MkgwTHFKMVljWE9ZV256dEU4?=
- =?utf-8?B?WCtxR1ZRWWxvZ1NlczBGQmV2aDA0bUxRUmRLSy9KSHpWZWdZTkIvbzVReDF5?=
- =?utf-8?B?L0kvMm5XOS9RRldNT01RNFNhYW5xT3lyQm1IUlF4elM0VkVUWFpjTW1CTDk2?=
- =?utf-8?B?RTZvS1k0SVJleTlxRjBZYnplNzVMQ2MzdzBod2NWVlJJdlR5ZUFDU1BPeTFv?=
- =?utf-8?B?RktuOW5WSGhJK2kwRzlHQ055OGJja0FoZzgwU0E2eDNEK2JpNjJPYk9SbW9y?=
- =?utf-8?B?ekhGR1hyN3JXVWhoWlA1bndreWtxMlNqMDFPUWpVY09IQmZCeDZsbSt4U1ZK?=
- =?utf-8?B?Z05FQVk3OVJacHVka25QaWhLRjQ0Kys5d3NjU2d4R1hXbnBKUkRRMndLNWE2?=
- =?utf-8?B?MElPVmptenZCUXQ2bkJXQ3J1ZEh6NHZWa2hrWWJrVVlidC9Ic1VSOGNPNzBz?=
- =?utf-8?B?S3Jwdjg4eXBJcGRZb1RQV0pUdGdxMk0weVBCQ2xiSHNzenowMXZTMkdWNHBu?=
- =?utf-8?B?S3UvNWd2Zk1jLzM3VUJ5RVI5UHZEd2ZBMG84Y0FzV2lKTS85MEtpS05zT1M4?=
- =?utf-8?B?bXI4NXRPcWphanZ4b2VqZ3B1MzhWckZGR1IwbGlYTDd5WDk0UXg4NXdsVk8z?=
- =?utf-8?B?WU1lSHYvaEJOcCtUSGFXZzM5OUdMVlBCaXR1QUJUczJRM0JFcGx0U0pmWXFN?=
- =?utf-8?B?aUNlUFprS3FMSEd1Mlg4NzV1M0lySm1mbEgxd3ZKdGJlVk5nQzRJUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d4b40dd-ad0d-4760-a78d-08dec3c701ba
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2026 12:27:42.8660
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: heQNrsMRHB1l5Zoh8wQMyS+MgoJNndIxnRkTafen3o8Snq7cmyixPSy2lOUHRW/a0TowZfiKbxxjs6r9ukHC0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6506
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A31A01C000B
-X-Stat-Signature: qikqwkq8imwe6bxpihawto8adfmk3qfs
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1364; i=brauner@kernel.org; h=from:subject:message-id; bh=KqAzpPi8hGtLJfuBcg1Ih682mVy8O5OwKv5Hr6CSYyE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSpyCeYai+oWStUXcQToX1avf/lEueSQ09Ko73rf87d5 zV1Crd6RykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwETE1jH8U44z82ZNWHPvn7ec T+KhyIsZB+s+r2KSdBX5rnDgB/tDR4b/kbFZKvPlztZlxmgW8991fzlJ9vbHTz/mlekuKJvRfK6 MEQA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780748865-783787
-X-HE-Meta: U2FsdGVkX1+fXIME62FzBUTBgbngX8M2yJFFoF58g9R8ZMoSg24iiMQCFHRxZZmV600ByalMkwnAekZYIBeWYj7Kvp+T03lWKkMe2/dYf0LQK3kxz5bdncv2VcY9WGJAUQbKHjyWQMin6C6srgbumdOybWovvhKkQRdZ1QJKNHm8R4BasQ/m/NKBLMO7fodkNmu80bxt85cmUhH3DIFmm3UVWWRMADfy414H/cSg9cProKZvG3JPpmOI3Nx2g100tzvKVwqri+Cte8nIATYd2Q5mcQViGq5U2tARmPW8yYaV40bVdjTRIAwWcDiyj4zLYphGN6dThK3hgvmWW33j2X8J7TL2/dhtTx2HiocvMcuC/NDaxtfTJ/CcxkdgzTnUtHNEGoPQDqrIlxAlQaTWOBQgulVH6sHwDbXUU+WH3zTA09fj23pkW4qhXuh7e8orM2pfSoxfXLauRFwfrmAgliWXy23YiMQmuEBG28HYXh4vOqy+l5hDCmX/LCPCB3jO3ipBILkJp3YWeqnhnYRkJLIBup80IEcJrm14VLzd1AMbLhbkp0o8aIr6YQADBxIgA/clq7zIp4vKQ8/ueRINqCnVFKAE8hGAaSkGXChod085Hgt6XsjgKivF6BiIUHzPCXAjIkj1ispeBO00aRsNOCylZTndpG1Fwzh7NhGv4ykMES/BbiZEPd9qVUjCrp2/hFeJmhfFfOoIO6Dw+iKpL72qNt4xLYiCFmX/lh6RL/86OkAY/aTdo/AmdWBINQIwDylGJpvfm18/Q2l/rAj4s+W45tVSRl9zt8ErFC0NN5BhIfj5pvApzgKX9JvRBQrFiHpkUvHd+v2d0j6/DrwnIcaMVKh8MsWwzHRMcCEDDM5G9QphOnTFZ2fHW38OtXmXuCQ/h/k+gHN+7qsTsMdueyB3R5NG3+qz5OHgf+pO/Q66eFWfMirgYltNM8dSVDVXio2flkaICnDKO7x9e2o
- WCbd/Vav
- hctQ44MJumFtPaHP3Sn6n0yGzvq+Qgrl0umEI7Txo5ANObYMdScBc741ZlRRap03iNpAWihBLFIabVO5x3UYLsqGurMPAUNsHFdySrHllz68S2IrlF3hjYk2HPQ/Om5un6RIH7MCoB7BJsmGZB6xMLSGK0/zobnpze4A9VSHoJWJclWWNol2lMcsXWPWe6mXCoe3q+RQpDZFEaA9Ih9PTTHi7t5eS9dIO6bOgPa4QRk0BpkFMaKFL7ziEbbl4CGhYqV+DvxvfBkFXAp+0T3ng+0qItcEOxJZWbc4fS7KupolVgQalSfRi4UVwrgp+wnGpiURNnMih+29zQOq8IelWSDAt3NXEhmRYb3fY1drozmQXcy0iLDcmXq9sz66obzg246ZRJjqwMLzqnVP5OONWHfA+ht9JRFca/ZHt0FOGtXo6H+2JsG+4kvfuaewBUXED+14IvM7o0qoO0KSTHaSBEijZg4TNVCOSpaz6QM57M8K2uIY5CG4jspJHKOxrMVJvOIEf9qxr5BplhTmXjz7ngQZove71ntTAkzZi30kcv/fpxOb/JbjDua3v6dQCeCNuho+n/7x7ISQbs4SYNU+60eQl7md0SKWV+95wrTuyhTnSWsNs0cdx9TCJKK4K3OlHhn7utSvT4pqB1M7Ff6zeiSaNvxjkzhvu3y8Bk45PLxCFvfsEExY3HAT03g==
+X-Stat-Signature: ut87cn4up7nqqoq5s767bun73rrknfwi
+X-Rspamd-Queue-Id: D7372140009
+X-HE-Tag: 1780752229-71760
+X-HE-Meta: U2FsdGVkX18SdtarWfhLPoHmjCVHFeaJtOoFgurzZVgCva3lIBNfqr7yg+uwl0eyJnNLx60DVDFQSZ3kZ869lNtTiFclN7oIFQNHjCktUEuLN2Y2LSv4zSIbMSQZaKoeP/N3J7czDokGC4VMFylEvs9Jt2bEbqQJOcmC1Yc2tCyJVp4bmjwoS0PHA1jrgWH6LCo67v7K5UHwNhSeIm11nLoHSd5bHF5e17Hz14iyBzRq92XtniIcgfFYSjLmBXJbrKPysqQrh0tw7jvhoDC4gg+jeGttjvGjx8bkjeBOiAQ73u0FLo8Cdc2FSN81pJKscEVhuGouZ6oxt5q8A5fm57IGh5j1sgGUH5Pk/XkILcnev8+jQ305likLn6YnwZE/sPiv5GQrOt9p9/xzw5kvSgXMxMdM/y2BeQRf7e8f918hHMj30fckbFXu6fF4W6CZVejv4mAaJcxE/dNPGV6sTFnRl+9HR+14c9RfwNYR3Vxfu9v1+DS3FNy94t3dZiD8RFmQapG2vb3WTVs7NWbSzrWhmYWXrW5fbejaFtI3ASZLt9AsOofcZBXQyxvDdupcSByYeU+LIQjsYVo5bqewtT/BpFKtLSvtobKzWUyT/CZHwjY7zXR2qjLuUeVNn8dk7oAgvZsxkphyR0XwyNaO585aFMrEAlJLDTuhE3aEO6l/MofVLWlivLNtcLWpt+oCFNRieIgp204D/WMmEXNYTWDrgsT8/Fxj5o18/abtdX2f7YA9SeR3JaxsXow+vBuIxMaY5i8F3WrqTZApkbpLyqP7JAoY5/NFhCPPAoqxAKyXoi4ocLKbI5EgN3sli+hhYyLi8SUm/nriUZv+GrwKzNMA+OlApr3z+KWkpJY1p4eWIDGTzvRBVh2yzmL73xOmOUgITayjRwOdPCytzRXUkyB6YO3HwASHvXiGASvO8i7I0X9q252kAh/UTT94qdQAItutnTRKnR5LDHBcpcH
+ wMd6n1fo
+ MwmHSGYWUz4E/3AivJMRObBh+o8S41o/jkkGpqFi7EvhEHJDaf4TqDYJJbfbmlE2Bda97cUUdMcLRfoktSzY0hfPQDCB2mBlTlBmgka1sw1W56Zla00Mw7lxmXHFiBLl1FUaIHqx7fuNIWgRqBqqmmHheSF4GxOdUB4x5DinQf8FkcpdngdQ0rxmvErHoIrB4iayOxayDtoBLYtF+50ZPO42F2LQVCRlDVsuZ8NiiLw9XX8Be4ywxByz/g9fnw3qACHj9SeOw3FWj3Z9G+eEOm9u0qKGY9SbUNOwy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,197 +95,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat Jun 6, 2026 at 9:14 AM BST, Andreas Hindborg wrote:
-> Alice Ryhl <aliceryhl@google.com> writes:
->
->> On Fri, Jun 05, 2026 at 12:54:41PM +0200, Andreas Hindborg wrote:
->>> Add an abstraction for the per-task allocation policies exposed by
->>> the kernel through paired save/restore helpers in `linux/sched/mm.h`:
->>> `memalloc_noio`, `memalloc_nofs`, `memalloc_noreclaim` and
->>> `memalloc_pin`. Each pair toggles a bit in `current->flags` and
->>> returns the prior state for a later restore. The pairing assumes
->>> strict LIFO nesting; restoring out of order corrupts the per-task
->>> state.
->>>=20
->>> Wrap the four pairs as a generic `Scope<K>` guard with a sealed
->>> `ScopeKind` trait. Tag types `NoIo`, `NoFs`, `NoReclaim` and
->>> `MemallocPin` select the underlying save/restore pair. `Scope` is
->>> `!Unpin`, `!Send` and `!Sync`, and is only constructed through the
->>> `memalloc_scope!` macro, which binds it via `core::pin::pin!` to a
->>> hidden stack slot and hands out a `Pin<&Scope<K>>`. Safe code
->>> therefore cannot move the guard across tasks, drop it ahead of its
->>> lexical scope or otherwise violate the LIFO save/restore discipline.
->>>=20
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> ---
->>> Changes in v2:
->>> - Rewrite the patch to use scoped allocation flags instead of exposing
->>>   a `GFP_NOIO` flag constant.
->>> - Link to v1: https://lore.kernel.org/r/20260128-gfp-noio-v1-1-9a808fc4=
-9b44@kernel.org
->>>=20
->>> To: Miguel Ojeda <ojeda@kernel.org>
->>> To: Boqun Feng <boqun@kernel.org>
->>> To: Gary Guo <gary@garyguo.net>
->>> To: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
->>> To: Benno Lossin <lossin@kernel.org>
->>> To: Andreas Hindborg <a.hindborg@kernel.org>
->>> To: Alice Ryhl <aliceryhl@google.com>
->>> To: Trevor Gross <tmgross@umich.edu>
->>> To: Danilo Krummrich <dakr@kernel.org>
->>> To: Lorenzo Stoakes <ljs@kernel.org>
->>> To: "Liam R. Howlett" <liam@infradead.org>
->>> To: Vlastimil Babka <vbabka@kernel.org>
->>> To: Uladzislau Rezki <urezki@gmail.com>
->>> Cc: linux-kernel@vger.kernel.org
->>> Cc: rust-for-linux@vger.kernel.org
->>> Cc: linux-mm@kvack.org
->>> ---
->>>  rust/bindings/bindings_helper.h |   1 +
->>>  rust/helpers/mm.c               |  40 +++++++
->>>  rust/kernel/alloc.rs            |   1 +
->>>  rust/kernel/alloc/scoped.rs     | 231 ++++++++++++++++++++++++++++++++=
-++++++++
->>>  4 files changed, 273 insertions(+)
->>>=20
->>> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
-elper.h
->>> index 446dbeaf0866..1931b131345f 100644
->>> --- a/rust/bindings/bindings_helper.h
->>> +++ b/rust/bindings/bindings_helper.h
->>> @@ -83,6 +83,7 @@
->>>  #include <linux/refcount.h>
->>>  #include <linux/regulator/consumer.h>
->>>  #include <linux/sched.h>
->>> +#include <linux/sched/mm.h>
->>>  #include <linux/security.h>
->>>  #include <linux/slab.h>
->>>  #include <linux/sys_soc.h>
->>> diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
->>> index b5540997bd20..b8e7492512e8 100644
->>> --- a/rust/helpers/mm.c
->>> +++ b/rust/helpers/mm.c
->>> @@ -48,3 +48,43 @@ __rust_helper void rust_helper_vma_end_read(struct v=
-m_area_struct *vma)
->>>  {
->>>  	vma_end_read(vma);
->>>  }
->>> +
->>> +unsigned int rust_helper_memalloc_noio_save(void)
->>> +{
->>> +	return memalloc_noio_save();
->>> +}
->>> +
->>> +void rust_helper_memalloc_noio_restore(unsigned int flags)
->>> +{
->>> +	memalloc_noio_restore(flags);
->>> +}
->>> +
->>> +unsigned int rust_helper_memalloc_nofs_save(void)
->>> +{
->>> +	return memalloc_nofs_save();
->>> +}
->>> +
->>> +void rust_helper_memalloc_nofs_restore(unsigned int flags)
->>> +{
->>> +	memalloc_nofs_restore(flags);
->>> +}
->>> +
->>> +unsigned int rust_helper_memalloc_noreclaim_save(void)
->>> +{
->>> +	return memalloc_noreclaim_save();
->>> +}
->>> +
->>> +void rust_helper_memalloc_noreclaim_restore(unsigned int flags)
->>> +{
->>> +	memalloc_noreclaim_restore(flags);
->>> +}
->>> +
->>> +unsigned int rust_helper_memalloc_pin_save(void)
->>> +{
->>> +	return memalloc_pin_save();
->>> +}
->>> +
->>> +void rust_helper_memalloc_pin_restore(unsigned int flags)
->>> +{
->>> +	memalloc_pin_restore(flags);
->>> +}
->>> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
->>> index e38720349dcf..8ebb8c9f3e67 100644
->>> --- a/rust/kernel/alloc.rs
->>> +++ b/rust/kernel/alloc.rs
->>> @@ -6,6 +6,7 @@
->>>  pub mod kbox;
->>>  pub mod kvec;
->>>  pub mod layout;
->>> +pub mod scoped;
->>> =20
->>>  pub use self::kbox::Box;
->>>  pub use self::kbox::KBox;
->>> diff --git a/rust/kernel/alloc/scoped.rs b/rust/kernel/alloc/scoped.rs
->>> new file mode 100644
->>> index 000000000000..0251792c9f3c
->>> --- /dev/null
->>> +++ b/rust/kernel/alloc/scoped.rs
->>> @@ -0,0 +1,231 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +
->>> +//! Scoped allocation policies for the current task.
->>> +//!
->>> +//! The kernel exposes several per-task allocation policies through
->>> +//! save/restore pairs in [`include/linux/sched/mm.h`]: `memalloc_noio=
-`,
->>> +//! `memalloc_nofs`, `memalloc_noreclaim` and `memalloc_pin`. Each pai=
-r
->>> +//! sets a bit in `current->flags` and returns the prior state, which =
-a
->>> +//! later call restores. The save/restore APIs assume strict LIFO
->>> +//! nesting; restoring out of order corrupts the per-task state.
->>> +//!
->>> +//! This module exposes the policies as a generic [`Scope<K>`] guard,
->>> +//! parameterized over a [`ScopeKind`] tag. The type is `!Unpin` and
->>> +//! constructed only through the [`memalloc_scope!`] macro, which bind=
-s
->>> +//! it to a hidden stack slot via [`core::pin::pin!`] and rebinds the
->>> +//! handle as a shared pinned reference. Safe code therefore has no pa=
-th
->>> +//! to either move the guard or drop it ahead of its lexical scope, so
->>> +//! nested scopes always restore in LIFO order.
->>
->> Your scope trick only works in normal fns, not in generators such as
->> async fn.
->
-> Could you elaborate what would happen when this pattern is applied in a
-> generator? I don't immediately see how the LIFO drop order can be broken
-> when this is combined with a generator.
->
-> Would a closure based approach have the same problem?
+On Fri, 05 Jun 2026 15:53:15 +0200, Miklos Szeredi wrote:
+> v4:
+>  - yet another accounting fix for shmem_initxattrs
+> 
+> v3:
+>  - need per kernfs_node locking for simple_xattr_set
+>  - another accounting fix for shmem_initxattrs
+> 
+> [...]
 
-Generator/async allows you to do this:
+Applied to the vfs-7.2.xattr branch of the vfs/vfs.git tree.
+Patches in the vfs-7.2.xattr branch should appear in linux-next soon.
 
-fn bad_fn() {
-    let mut p1 =3D Box::pin(async {
-        memalloc_scope!(let _noio: NoIo);
-        pending().await;
-    });
-    let mut p2 =3D Box::pin(async {
-        memalloc_scope!(let _nofs: NoFs);
-        pending().await;
-    });
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-    let mut ctx =3D Context::from_waker(Waker::noop());
-    p1.as_mut().poll(&mut ctx); // Save mask and set no IO
-    p2.as_mut().poll(&mut ctx); // Save mask again and set no FS
-    drop(p1); // Restore the original mask
-    drop(p2); // Restore to the mask after no IO save, which is wrong
-}
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Best,
-Gary
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
->
-> Best regards,
-> Andreas Hindborg
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.2.xattr
 
-
+[1/4] kernfs: fix xattr race condition with multiple superblocks
+      https://git.kernel.org/vfs/vfs/c/6a07814ff643
+[2/4] tmpfs: simplify constructing "security.foo" xattr names
+      https://git.kernel.org/vfs/vfs/c/832f4de4c8ba
+[3/4] simple_xattr: change interface to pass struct simple_xattrs **
+      https://git.kernel.org/vfs/vfs/c/076e5cef28e2
+[4/4] simpe_xattr: use per-sb cache
+      https://git.kernel.org/vfs/vfs/c/1e7cd8a53b72
 
