@@ -4,99 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31544CD8C88
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 00:54:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B7A3CD8C88
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 01:19:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21FCA6B0005; Fri,  5 Jun 2026 20:54:44 -0400 (EDT)
+	id 74DD76B0005; Fri,  5 Jun 2026 21:19:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F76D6B008A; Fri,  5 Jun 2026 20:54:44 -0400 (EDT)
+	id 6D7796B008A; Fri,  5 Jun 2026 21:19:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 134946B008C; Fri,  5 Jun 2026 20:54:44 -0400 (EDT)
+	id 5C68F6B008C; Fri,  5 Jun 2026 21:19:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 034096B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 20:54:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B247E120342
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 00:54:43 +0000 (UTC)
-X-FDA: 84847667646.18.09FC74C
+	by kanga.kvack.org (Postfix) with ESMTP id 48E5C6B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 21:19:36 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5D874120345
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 01:19:35 +0000 (UTC)
+X-FDA: 84847730310.15.064D269
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0187B40002
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 00:54:41 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nvLlx+JX;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 987361C0008
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 01:19:33 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eoDM6U1K;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780707282;
+	s=arc-20220608; t=1780708773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bazsBwZAqXEpICcoFUWoIJvMdHrXGA7lTnnh4WSjPGg=;
-	b=KGwa1+DDZtyeGwmZGMEE7v+YcdEYqXXAPa4j1z1j9+RQXOyWGW2RUQ5FF6TdJUt3VqTr6q
-	fQEp2RjKl3AHqnrTYrHCHp/lmKICrOqwWpiso9FRxHo65C5nmhKgAFemNibe0GgByDJn/l
-	8rppWfgIC+Q4vtlie0DyJRnp7c0d63E=
+	bh=UdZ+QI2WaNBX57biGXTDOGYvKJ+VsGHA0D7Nm4STxP8=;
+	b=Du6DjwkNvJyAiTIqfpNbfxaX/yIVaaNwouwl8MKY/zBc4LbdegzHGuFUu0J2wS+hzUEqns
+	iGa1QcSKY8LZzRP7MVd1UWucwCjEZt9PF2i7HISv6ONwxg8aOkzJuUytdxPMA/6EbH48yZ
+	IoaV/2x5cDSeeKR1DWsSAIJLPM+oov0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nvLlx+JX;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eoDM6U1K;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780707282;
-	b=YTlLx3ovTJJGwGhipuHgKuRjOTeFqHUpD3YyV4x9XpEd6TZ88/30cDnTVr+YxfdPRJs0UT
-	YfAoY646wRrpaRlmV4NnE6X/J+n6RSD9BEOVGfNJXDpJAGoK0+brP5T5hIYNvG1zZ9rI2X
-	NKAc1RKG4QTFqp6NjE04h1mWcDGwvYc=
+	t=1780708773;
+	b=YepGglKQFvIDnGpuoL1/CCbVVYnqZvdkmB93SvpXvb9J7oYm9iXQd2V+D1PHZt8slA1EDy
+	pLGHUovTOwwo6vwAMHArGS2YW9/qSNWJZPM98xhSC2X4OapxIltotAv1iacN/FtEycfzDw
+	hdzw+K7Q29zKO2j94s1PRR+xt0UfD/Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1C592404D8;
-	Sat,  6 Jun 2026 00:54:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160A51F00893;
-	Sat,  6 Jun 2026 00:54:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780707281;
-	bh=bazsBwZAqXEpICcoFUWoIJvMdHrXGA7lTnnh4WSjPGg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nvLlx+JXPMuOfA7Efk8lfmz0Wv93vn7jXgI+HQEq113UtqBFcb/gZip6Qi/Q/of91
-	 pJKgdBlQGU8pKabFx7bzsn9GmM8xMqHgs6+BXxZsRPkSTTh9ownIcxYO1fcX8jBTS5
-	 HbAF5BBlHwXil7CtDIi37axnnhhE799MEbhqz8bblYIpdb5dNv7dmSI0zMkP88D7q6
-	 T+d/Lu+//IrDhyVHDgk+Gd43yYPlPPEghzMSYC/6UOlwD+2Y+USiOL8U5CpcW3QW6f
-	 2MCib+KAUEsn8m33Gk5v8Z/1guRrPooOPS6B4lackZR1Vx7fKe0EpFmyOkhxUgccsC
-	 P3HANo7QAA8QQ==
-From: SeongJae Park <sj@kernel.org>
-To: Kunwu Chan <kunwu.chan@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wang Lian <lianux.mm@gmail.com>
-Subject: Re: [PATCH] Docs/damon: add TLB flush policy document
-Date: Fri,  5 Jun 2026 17:54:31 -0700
-Message-ID: <20260606005431.89186-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260605031008.397328-1-kunwu.chan@linux.dev>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0187B40002
-X-Stat-Signature: qtjs5uhrsbaw86d4azu3uu1zf3zchr6n
+	by sea.source.kernel.org (Postfix) with ESMTP id 6FD6141962;
+	Sat,  6 Jun 2026 01:19:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099D41F00893;
+	Sat,  6 Jun 2026 01:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1780708772;
+	bh=UdZ+QI2WaNBX57biGXTDOGYvKJ+VsGHA0D7Nm4STxP8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eoDM6U1KyPDBFqOmV2Pr+FAM4q2g2Yq/BLosXtZgfMLWNguvJGTsta4v7w8NKKwZB
+	 XlC5uKCPXXx+HffHpFEvPWuGS+yZ2UOSxo5xoq4/EzjIW9WAIpNc2e0i7vMF9C9qjT
+	 YTb5uRXbg3pJnoxOCK0t4Q8ESKLevuSWn6wFQy4w=
+Date: Fri, 5 Jun 2026 18:19:31 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Wenchao Hao <haowenchao22@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, Minchan Kim
+ <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Nhat
+ Pham <nphamcs@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Barry Song
+ <baohua@kernel.org>, Wenchao Hao <haowenchao@xiaomi.com>
+Subject: Re: [PATCH v3 0/4] mm/zsmalloc: reduce lock contention in zs_free()
+Message-Id: <20260605181931.d6fed8b62c8d91b27d151e71@linux-foundation.org>
+In-Reply-To: <20260605084242.1549811-1-haowenchao22@gmail.com>
+References: <20260605084242.1549811-1-haowenchao22@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 987361C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780707281-216938
-X-HE-Meta: U2FsdGVkX19PW3L9I1eyl0283dRBupwfYYNc72FbMVdWK9nY7oZB1Adlpb2YQSFqbs2YinnBLzVdSYcwyYxI9sR0KUrZpeOm7QPIYuBy4PQ3eSSu6kxGsCYLK1FYyQJ5pAu4+DePV5/YBncSLSKjX+mOnD6bLHQt8xBy2rzuYMMDjP28DA26IMDIUtJ7VmcRYGVTnVz1B/pbq6y3OqZD36324KsazOGsJtWE/lIo/0WmSe0kQPQOnmytdZBHd+Eu5mfEYgz0KqKlt69HZqJj1c673ChoI0Bm3PpM1XZ8rSoHJrQCsBYg17Lshp6YRbR8eRhLOc5GlG9lZ8QJCt7vxhp6PjOGB9e7cea1MZYaeSOGeIu+bPEV+kTmCGbvsWozx1nya/0Y0l9m5uwwXnxqhut7bM8jPt2R3IV8xAJXgUahsJH4zvYZczebPfM3JJ/VGrlApSf5Z+NQz/shyH09/Pk2kZ06eoqY3icwP5+PWxa+Moak4UHodc7BHwke/JX5kZ9xTT6gnaqsC2j3Lc7JxwlcXk6RvpR3V1Zqx9S2mh2w1J0/heocyPrHZdjyOe7f+ZplDMBoF0UV8HSelDjkuHU0w16Vjlzk/DKqHitRUoFQSVPd9KpnYpB6mWH6iaV282PAvpG4EYDVbYtgCUUAPXZRu0EPv1p4V7yXrcGo9TtizCZnH5xogZj5cvFdNLgwgIjAmbcmmGjWDDzgaDyg0LYVX9tac4a1swrz5Y8yzxVvyKpRYiIfdPsQaISGS81iNMCmIAL4gxkUwht2fFrc4pZGle+3OGIplmJgm7dD7LHT6ExPonr1+1lH/hF5Q6DDgyA93NZJ+lmagZEWoWk4tMA3DfXWltQKXhH0gfQzAwKs0iTBM1c0Ta6AV984oTCQiHE6S0flC1Dvc0CcX+cx3qaxqGM3DpvMfArtmQc6XNA/XEflfE5XItLKx/RGG77g2ruKSZahVDtCsq1+dXO
- h2WtsDpB
- gW4vBkuItBHlG8VZuvddSRb8xyreTs2BXJBZFKyOOLtuAqLCiOR9+H3d5r5nSWX7fX38N3mblUUnAKgUSFupt+R7LX9Pi0tO2aNuv2LioNaIJdPWuhVyrLFYkFCNJMTPtCliLlvEAAg6MVPpgEAtoj0CP10B6MjRkE8eUqAQEKQzeU9BGkMcLGlYOM4Tv2SLuD9/ME6AX9Y/9+WbTxJOdJj7hTcmjMM9aAmhzkBdozJGkf7sUWG5vYwoDynWQzI55i/XmJwIdpIcMurO1nYFbSjpa9qHd68TICod53ObBashVJQ2TIDrHDSC5lHRWQwX2mqfyGcxIsFSIMI4rLtwckMIrk9ZfWgxXICcDkcNdPPGcFdbfFB9IQJmlMbZRKUo8yXpjjFmewTLtYXatqa/mHh9DLYLWnyVCtehumCeueABQPU7IILsRunHQlUBdT+1qio01oQ7CJICcl6FV8VkpCEdPYR7SgjtRjuzIqEu6jYxj6nk=
+X-Stat-Signature: zw5bh9hiy1u3uezsi7zcy5zf7w6grqni
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780708773-711478
+X-HE-Meta: U2FsdGVkX1+YNv1PuEUMRUj3H8X8RPGJ8oQ67Nj7bRymwBpIK2KpGtLRZPnlNDXtviyGW5ZDjebFPJ1EFa877zYgpD2PHNUgZeuc6l3PzoCfDduogLjUMENrYAGobtxLArLV0aK/V6BgH7KzhPu7xacSLE/u7FjUV6wVLvPGiLoR0wcmiZDteY8wH2aGKwsyigBcDIJuKQo6UfqpX0wqWfbOqCEnGMX/jLNpRXmxk+gt7xAYTiAh/Hpu7x7wiItrtSAamczSM+aJGIIn0hCnTkRRJQFBlI8j+//ssnkJd+Ez6hLgsdp9lu+KQmallAuDf4hG3jS0+9KzCK3gkfc4BivpGiZJtWY24SUUpRrk6Kv2HUMigsh4LHSqCcPl2GOJkxk9rUGRM5voDwD2mvqMKU57yb8NOd1wlST//PmkBEDXc6QQPBrl7jxk1HfAbQ/8mY0gLNpsYVUpty1yVzD4HGyjWmVDmLc+ISZ3OwpYrTFRO2qCOenrOPQ7e1lzJddd6td8d9ns+oTxmN20AA9Bqs4I/wDHUooPeR2ElX5jh7N5Va7s7Qu84WD4Ox4jJ6ztVOHrF5SsZ/c46B08um7x9fIhNkohvS6SOl/AFXBceu2La38sydKU1lzvAL3naSyoPJyJG6QTHGHvU852abze4aXGo7Ty2mvWld3LjQlVoFG5nENzynQN9Ru2QUKnIGLYDJuCaM3UzCVgdjjZrMY9BnFNEV5IZyU2jUbyNeAXNHKCM7t8klkjoq62sNxvgurBr0nvhVcIH9QBXaWXiWgSshjWQUu0rgvKVRUMVlKkxQNo+FRv9tp2wyd9T8DXEg+jwi002cGHPca3sQjqGqy8/D7baH0LwRkf2eoj9+SI4rx7rxvMugsZBbgDT4IQJZQugi4VO8uR9LpVRaC3TXvlqhGl2YAVi7/uRYHUqE9VKT2GwjwXbbrEbHD+cXhbo+KEuxE9QFO8KCTW2CYqqyM
+ tiz4BB4q
+ Mib4ephVP1i+99/lVe0SmdWsxml3dF9bEgjMin03vMDN1BOO6hDZCaNOjId1rzHXAiEZa0q2NBhrX9ZZN4wmS2WGfE7RsN6lLxlCEvGJCfXWfZMCPAENSbJQ4VzIIYar4f/BNN64XZFIHfUuXG4pS143WgjheQ1+s9kmHYpvE1643jkQLxRRCR5+DxLsefJAec0OtkhA2UZxPesLNZkg0k6cAV90XeKUZ7Jqms84mMAdPB04Qjjpketj5Db7o+T0EdPZiUXXcCW0otdQq/CM9ImQ2r/LklxT0J6Bt87XE8QUyq67QvkGFSsWgnYSK7Suzp373HnU9Vm+ckj4GPl6YzHA5F/EbekWX2SSsHDcKy6MUYeUqYj/vzvlH1HllS0AClvdvi4QKlUDJcCkKqKM1tzqM1Uzjh3S78YVR+WfIzkZiU3M3U6XqCuH38NbuY+h950Obe1itlSJL/3A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,75 +91,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kunwu and Lian,
+On Fri,  5 Jun 2026 16:42:38 +0800 Wenchao Hao <haowenchao22@gmail.com> wrote:
 
-On Fri,  5 Jun 2026 11:10:08 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrote:
+> This series reduces lock contention in zs_free(), which dominates the
+> unmap path under memory pressure on Android (LMK kills) and on x86
+> servers running zswap-heavy workloads.
 
-> From: Kunwu Chan <kunwu.chan@gmail.com>
-> 
-> DAMON avoids TLB flushes after clearing PTE Accessed bits for sampling.
-> The overhead was measured and found significant [1].  Production
-> workloads with large working sets flush TLB buffers naturally, so
-> accuracy impact is negligible.
-> 
-> On systems with large TLB buffers and small test workloads, stale TLB
-> entries persist across sampling intervals and produce false negatives.
-> This comes up repeatedly on the mailing list and in private inquiries
-> [2][3].
-> 
-> Add a document on the design decision, trade-offs, test environment
-> problems, and recommendations.
-> 
-> Link: https://lore.kernel.org/20200403103059.12762-1-sjpark@amazon.com [1]
-> Link: https://lore.kernel.org/20260117020731.226785-3-sj@kernel.org [2]
-> Link: https://lore.kernel.org/all/20260526145034.91594-1-sj@kernel.org [3]
+Thanks.  It's late in the cycle so I'd prefer to merge this after 7.2-rc1, please.
 
-Thank you for this great patch!
-
-> 
-> Co-developed-by: Wang Lian <lianux.mm@gmail.com>
-> Signed-off-by: Wang Lian <lianux.mm@gmail.com>
-> Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
-> ---
->  Documentation/mm/damon/index.rst     |   1 +
->  Documentation/mm/damon/tlb_flush.rst | 131 +++++++++++++++++++++++++++
->  2 files changed, 132 insertions(+)
->  create mode 100644 Documentation/mm/damon/tlb_flush.rst
-> 
-> diff --git a/Documentation/mm/damon/index.rst b/Documentation/mm/damon/index.rst
-> index 318f6a7bfea4..5e239437dab3 100644
-> --- a/Documentation/mm/damon/index.rst
-> +++ b/Documentation/mm/damon/index.rst
-> @@ -19,6 +19,7 @@ DAMON is a Linux kernel subsystem for efficient :ref:`data access monitoring
->  
->     faq
->     design
-> +   tlb_flush
->     api
->     maintainer-profile
->  
-> diff --git a/Documentation/mm/damon/tlb_flush.rst b/Documentation/mm/damon/tlb_flush.rst
-> new file mode 100644
-[...]
-
-Great document!  That said, it feels like a good complete article or a paper,
-rather than DAMON documentation that pursue to be short and essential.  I feel
-like this fit more to be published in a blog like DAMON project blog [1], or
-news site like LWN.  If you'd like to, please feel free to upload a PR or send
-patch for DAMON project blog source [2].
-
-Mainly due to the verbosity, as I above mentionedd, I'm not sure if the current
-shape of this patch is the best to be merged as is.  I also find the background
-part of the document is a kind of duplicate of some information in design.rst.
-What about putting only essential information in a condensed way on the
-design.rst?
-
-[1] https://damonitor.github.io/site_about
-[2] https://github.com/damonitor/damonitor.github.io/tree/master/blog_src
-
-
-Thanks,
-SJ
-
-[...]
+AI review said a few things:
+	https://sashiko.dev/#/patchset/20260605084242.1549811-1-haowenchao22@gmail.com
 
