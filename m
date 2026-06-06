@@ -4,86 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B163CD8C88
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 01:57:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC5F0CD8C89
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 01:57:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 871886B0005; Fri,  5 Jun 2026 21:57:36 -0400 (EDT)
+	id F012E6B008A; Fri,  5 Jun 2026 21:57:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8220D6B008A; Fri,  5 Jun 2026 21:57:36 -0400 (EDT)
+	id EB20E6B008C; Fri,  5 Jun 2026 21:57:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 711786B008C; Fri,  5 Jun 2026 21:57:36 -0400 (EDT)
+	id DC8F76B0092; Fri,  5 Jun 2026 21:57:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D40B6B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 21:57:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07E981C182F
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 01:57:36 +0000 (UTC)
-X-FDA: 84847826112.05.963A7EE
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4C2EA160007
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 01:57:34 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TaQgYn8x;
-	spf=pass (imf08.hostedemail.com: domain of 3jH4jagYKCG8fheRaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3jH4jagYKCG8fheRaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--surenb.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CC07F6B008A
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 21:57:43 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 571F9C18E9
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 01:57:43 +0000 (UTC)
+X-FDA: 84847826406.16.CC8D697
+Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 98D0F40007
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 01:57:41 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Lo4ayJLj;
+	spf=pass (imf07.hostedemail.com: domain of 3k34jagYKCHYmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3k34jagYKCHYmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780711054;
+	s=arc-20220608; t=1780711061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=1d9I+KVhftNxuemtZnTHQgG/X/rMQMH6c1hS3FXahc0=;
-	b=D5xFEgfSGqV6PEl9yUKZRLdqVc1bVriLZVdpSB3Q+uJa4t8iZKkZ8yfrwXSrqgwPpiMN8a
-	AZRjINOn2J2mDlP5i/zrKeiE0gKFkLlYT1T5B/Y/03tlSzqBl2VP4IZf9cRgmQ8jf3e4sU
-	N6gOFLPn4cEi0zI2OhrF4iNpZ+5sOEU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LskI7o3bjkNbR0+FjqKAOKBLRy4mR1cF+3UOhyNarXg=;
+	b=VyzyxOacGcx8vfnHdlRyXx4+KabmvBX427ikVtOMJpiZy/nspE4NX4VZLQEfy6czrWNn56
+	ZQMKDzmBSuYEswY50qn2GfGHVA4lK3ecwR/DExj9T+ie6W/9VDaiAHu42oKfYfSapDODAH
+	MlB/TkZgZUqs86xNT+3BKvYnHnrDh2Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780711054;
-	b=HaYhJNB5hMrxwwp64/TTV5rjV529exrZwmVSpwgtN568pAP/QPMKtRcNZgMHNQVmESVSSP
-	7xZkGYGl30Rk/72r3R56Hfr/Z9RcyhCmJjDP1rBHHEblTpaV/Q5jYyNS5ZF4Nm6Yfb/ULI
-	cZ786xsGJPB4U5yi5xvkDOnzVVbLO8c=
+	t=1780711061;
+	b=7I+KkEOya7gHkFrsXR+nUplDkrPJrMgFIXsa3vbtgkNL7k4XrroPdnNRfPE7fzwKK7pcuP
+	OnjkKzIYsZ8qBG8n2dij9GkgWTCfIFA05XNRz69YYUzyrrZ+w6W9P9zlX/UplNL5ZRGixM
+	PIzQT5tMAN6xhShKhZi4ogJIct+5YfA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TaQgYn8x;
-	spf=pass (imf08.hostedemail.com: domain of 3jH4jagYKCG8fheRaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3jH4jagYKCG8fheRaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--surenb.bounces.google.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Lo4ayJLj;
+	spf=pass (imf07.hostedemail.com: domain of 3k34jagYKCHYmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3k34jagYKCHYmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0c32faa62so44611645ad.2
-        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 18:57:34 -0700 (PDT)
+Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-304ed777a96so1436424eec.1
+        for <linux-mm@kvack.org>; Fri, 05 Jun 2026 18:57:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780711053; x=1781315853; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1d9I+KVhftNxuemtZnTHQgG/X/rMQMH6c1hS3FXahc0=;
-        b=TaQgYn8x9QdKyxcssxEx/UvrfRBlt7U9F+hg0uggBawYHUE9XHx2kMv5jQXysMZazq
-         MwvvYLQRw3c2HLZ+R1zfJ7qsMXQPSQaemZ8MNNyq9GaU3cF7bo8HI67x8tCl6sm8ruCN
-         IBsSQnX6tqEjoGMugXV2qo+y3cwYesLN/t+hUKmCSIenqMmJBvzh3ncD1FRnv5N9Z43Z
-         6qvLCM5K4CIvapNowBaCYc5UK+qATfgZ9suiHCW6unvQOuwuoZcZL9w+Te971fiYNtOy
-         NK/pWptcqCE7CYeVsOLjVM6A/FE5IYfp9HLw+KBWScAUclmk6MC8ViagW9K0eVvHrKFe
-         HwcA==
+        d=google.com; s=20251104; t=1780711060; x=1781315860; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LskI7o3bjkNbR0+FjqKAOKBLRy4mR1cF+3UOhyNarXg=;
+        b=Lo4ayJLjl69gCFwbjNc9RaiemEmGwtX8CvYwc85fJ/rPtvpgUzIXVgAiVaJADHRh0u
+         KXLoJ1crK30vlmzN2Ey6fXlj9frzp0q/V99ciiQlroSoJs6p8SicnrzFRzCysWistJ2N
+         y3wtowsIGM5Tm2AJS20M8GkWlqbNBNrWyccUTpPsaY/H4XHPyhS4tQV6C4Xh+h5nHAus
+         E3QxtuISAgXSYmhfYfoxBqHNOjlFxBCdKAv0vWe2LYWGMRKL7WTrDrrrJqbpEXK8M3ku
+         UoE2octO1sPmbtCc/lhsKAW9hIrvuvG5//hqXfA2MORbHO17KAtuxcVO9pJhVLg2chYu
+         TTJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780711053; x=1781315853;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1d9I+KVhftNxuemtZnTHQgG/X/rMQMH6c1hS3FXahc0=;
-        b=BTMNVavm661d/Zz9iVj9n0lwkcp42F+Abr3fc3zfipNs5IpqWgCKcpKpExqNecWuSW
-         A3h2V0SUvGKo8uIOpakwBTPvL2LC6Kgez4h7tZGMaEtrvg+VWXQ7M3Vkl9shaHWkteeP
-         bT/Z8SvbtZKrPP8hErPYXuonrG/IBYSKKEtdx9F66/QIZvnQ7nSlwBcxFIuu4ou8Ghzm
-         97F4jKE1YhevbYuy1i94rPynSyGOk5lfHuitPaXEUzPmC9r2XU9l6FQ5ghoTtU/WU3Wp
-         UAk4o/poMiER+wJi+SJ6KXRkStZ9hql7aPrwz4AY3GZ3YJ2Afx/gYYw714y5O5sTR8m2
-         e4Qg==
-X-Forwarded-Encrypted: i=1; AFNElJ+mPgvF7f2gdjyJYOgqokOIPCV7u+enlp69bneVaqk3pzZ22rgYrZUzU4BYxsPUbxI3C8qZgCjrlA==@kvack.org
-X-Gm-Message-State: AOJu0YwuED2lMwh4INEUPuasR7IyMahRh1dUjMWfeNPr5B63CJWX58e4
-	WaceeJVvMQwV4wpI7nkIC/3nK5EZo0em+DfHdmgGSISz2uZKMAn++goN6gtVz90tLs/mB+PHeaQ
-	9V+uYsw==
-X-Received: from plblv12.prod.google.com ([2002:a17:903:2a8c:b0:2bf:235:ff11])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:da4b:b0:2c1:f262:495f
- with SMTP id d9443c01a7336-2c1f2624bcemr52181685ad.26.1780711052790; Fri, 05
- Jun 2026 18:57:32 -0700 (PDT)
-Date: Fri,  5 Jun 2026 18:57:28 -0700
+        d=1e100.net; s=20251104; t=1780711060; x=1781315860;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LskI7o3bjkNbR0+FjqKAOKBLRy4mR1cF+3UOhyNarXg=;
+        b=LsJ7VHPte686q7oU2Jyj/4Pve8ukFOLWZ6JgIdifPs6LiEKnicItQDOKXSo0kV0W8s
+         r3exwjcv3GZoFbEYpyDFyjG6va7IjpUvBDkefq7PPXROSB3LQerhf0zVzSelGWkyDun/
+         CsfdtcNjCfUyKBgimjfXf/96G+xGuuS1R9h0Eust0NA7G+MLjQS5JCPqYy8yBm+F+m3E
+         G4rcF9V12Unkn5OG3gNElazMq1FOu2yx2tHdB7x90KVyUMvCVJd8FteW7J2eoo0944zt
+         SIDIXOTjrthuxdhjUcB919tMioaxjn9M6Bnm9kbTAOSxteK3KotqddM5PEYdoVixZP7w
+         CgCA==
+X-Forwarded-Encrypted: i=1; AFNElJ9o8hlD35P4bq0Qh/JhwLVohwUl8XiMnrmXL7ahxuQut1k5ncUli2n3QkqIgN9CAt+OusHS3lRkdQ==@kvack.org
+X-Gm-Message-State: AOJu0YxhVKLUrRJwBAJKSgh50wZTW7uY8jZ8qZXGbGKcF3h/YEg8iSq5
+	wemXd8pHhyMVahlkXKRkcnZCkImcWV395OWW+Fj7wOkmT3wZRYt/yz0qVauisn91QJgtxZRB4Mr
+	AASUfSQ==
+X-Received: from dyblc27.prod.google.com ([2002:a05:7301:131b:b0:303:98b0:efec])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:fe04:b0:304:70d0:4f03
+ with SMTP id 5a478bee46e88-3077fe1125emr2807002eec.6.1780711059900; Fri, 05
+ Jun 2026 18:57:39 -0700 (PDT)
+Date: Fri,  5 Jun 2026 18:57:29 -0700
+In-Reply-To: <20260606015729.1837935-1-surenb@google.com>
 Mime-Version: 1.0
+References: <20260606015729.1837935-1-surenb@google.com>
 X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-Message-ID: <20260606015729.1837935-1-surenb@google.com>
-Subject: [PATCH 1/2] fs/proc/task_mmu: change lock_vma_range() to return error code
+Message-ID: <20260606015729.1837935-2-surenb@google.com>
+Subject: [PATCH 2/2] fs/proc/task_mmu: read proc/pid/smaps_rollup under
+ per-vma lock
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@redhat.com, 
@@ -91,14 +95,14 @@ Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@redhat.com,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, surenb@google.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 4C2EA160007
+X-Rspamd-Queue-Id: 98D0F40007
 X-Rspam-User: 
-X-Stat-Signature: k1xjxjq7dzqms8yurtrkyx15od7qgkm9
+X-Stat-Signature: ecrtxjryn8n4jsgux85qibtxe996u66b
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1780711054-359976
-X-HE-Meta: U2FsdGVkX1/Zg4ugF4e1XbNJa9IY1y1GY+2X95u8kzrbHZ3H5Yu1otJ8Lt7w0LigaM/bO9DvHA7hZM0+zqRXOZ9Gg40ZX8kyVgq3hCbyYOLKzEgWp/Xjt6YD8piKN5vHt5lgItAxSP3VVu0aDkoqjr/RMlM8MW8PqYyeDPNFVO/eNSmCvn/yUHVcgQ+zffpWj5iJvozzOkDco83OfLB08GmMpl97mC7mvgCX2o2ugpwzpb4TLsROxOoBfQzqAfITRcVUbPsqnFEn8NqA9BnbW0Rqhh0OQOVrXgKnAq7tIz2E4SMH9P/fE2lsJHZLUovewQDtxuMH6EBXmg4YrXqgIT275dEeqnaL9+WyDCz759M+tH8FckwGiUllI+KTMbsM1ipTmeu9pKdcrIw2xnoCzOVlUGEta0RDYys6PdYbQ0AatZE0I966WHPPC6I3MBgK8QUkXi2AF1RWFfXXyYqGg8+p9E3yw05iAjCqlCc916qkCr9iq4OpT0EJLtyV4Hw8Ywil713PgKGBSArdaxyj3aMDMU+dKRXrBoUDOCt4zORxpKRNMbgMVPFiLLQe0tyFgwnGdPphC/MnDqF/F3tPym1tmt40vGXouF31f4Y5dbyZXo1WS6tXhrm4vozSfmMsYFxnk/6tQoJK8iE2g8ycqZwgJj0zQtMO4mBPQcFBzYHqNStq0rAJf4q+WwPKpvVwvXYP7wHUCMpmggNbk0TSEf/HdFhCci1gBK6HLWFjPOPBtybgfcw6fxc1TfVw2VggqxHl9oQGnIOVdFBUipYavvLoJGa4iclk4RD9Inx8giDkfNPDA1atMrz5I6mUueQMzoyAg52cqP5oCv6x/DpeNxTv1GIlhpJmQJ5se7xpSes7qhixrxzpZVtaGPBJMUEwLtHtCGOpaFzbzmzLeKRSO6MC+tyKrxoP/Zcg8X6hMTzL3fobcV0m3gBiGPzmuBi5MufKfnH6toCh5Q1rjb9
- aH0hDBCZ
- YctPETx4NYNWBhAHoTMD0lw0r5Jl3ldUoHiYFPFIPHPHeFJxaBqp+S7Bd7BsiIDQvo1n0AeUnSHfRj14VY+VzBUlSEV7T8yKuyWButG/0h64pJCLtNhe2ztXlSPhy5FQngoz+PS9GXBb9znUolU65NlI+FTfUg2+PVI8NsK8qTm0o2y6OH1cpF1ZFObl65w07oMrIY+97PQW580GozjVKAYfXwP+mwJ82FPXb27hSb29vdnpEr3wU7KZGRrx3C8YXHXuYCjNVP7TFpPIQnzc3dDMKXRwAwAHxejJUnucGu9fMp94dpA/wC51fs4i5yGCTb8uYAubX0n0IEAbSV45jlsbBstWoCv+KjbKon/gcfT+qKvd0lpU1MdR/qwfLxJ9EJzGSoCqQwGnP6iVIb8b/6mKc92cXfPF5JNvfe3s5tbZN2CqC6sGm/uuvvu5yNvy+IjNs+V1FrRDFp++0TQxI8TagHmtgkxh2+Av2d9Ev4Dn3ihYpbIaz/6m8XfTEKJC4gQIzuz5nHr6Qf6MWRBdRQYDyi12cqB1+rDKhEKEqcdYGNBZuXm49Bb6MX6Iwrt5PyqyTOD19NLC9hL/BIU56iLTQuCwaCCpGjxY32CnsgMwb3CqgmZkWbV++pg==
+X-HE-Tag: 1780711061-245744
+X-HE-Meta: U2FsdGVkX1+oaOu5zUgOerpldsmHUY82AxJNhfuKRqOog/Spo+fgxyJ1pfEM8gTHrEzFGpQ6V5EclDkUW0JuIiHpCRFMQ6/RM22xIHSLlYrgyGwDnfvxsnIM2sDZU/TwWltrOr44F6MTMjfdwneKJreDXHIgeQysvQ7uqPjlUxjKe6CJZGkcDcZOryTDsV3E1CA8Sux3PQfUVelFJBGWsvFXSyLyjga1DwfL0e14nP7dSndONVnnASl4K/gAWZT53HGxfo6uhyGElY4a9SNGhydIoZ6Mu7m+hZJ4G7SuWQR1dnrJH5y60QyatSqNf1ybNusEmeBHX68Lgwe0/DvDFmkWkiQVo+cygFTLx5MNyH84qle+y7i8z0TbRDxFRHbsIicvF0naVZHj2ALI3PlO1dnZAujjD9KT9gS6sIkZArrMhvKyrKdPPK12BCFJUwhvAKnCH/KURCoUCrA7IhegoG648x4xR84+pDtKWFG5hrujYV0u0KzWv+ftZMmEXIV+mKCYzYEOTsVI/N5E7TWfLk1kfB6btnawKz0Tf9FmsPtZ5R0zvuAlSQnkWN1Om4roNevs+KBbxqNRUhlM2fLvkVuX+pjVVNSnp3J6+cA7IQaKBuwGQXm7jfVhILnCCL2YE7KhPu7VOWVPrQQJInUs/cDkCu/+RKCqJzhHrag0p/HUbabW9MQDlKeI+MY5retqAG9m6DKTuwaRoSndZ0FTu7pNOAvRwDRQejuudqTSG2o6dD78IFk9ya6VkypYFPNj3rnSqDG6WBcUjUip1dE0qrq4woRozWB0JVEQ70n/9euLj2FlViy/HjQ5Y4g4nEfHrDIhbhq5VMhqaLh1fwVf1Emcb0Tr+3fUTEfEe+oyrxBHCj5yTrh4ybH/O6SK3Y9VnhZdBOp0bHL5n+aEuX97vwY6URJTm/mUzoXGzZ3rgwHqs+ewia/Qic/kgzhOQ+dLVNzHoOuWTkLfQIL6OeM
+ m6mjjNoa
+ q11uCBG1YEaQR3zZ87RGikXRc7ECqQt5oU0ij+P39FGOQpvZvhYt7DkVhzg+yb757BabJBqWToz54vqsrdFvpB4mN+Mj/BYdSyYhhzc4mQymSHwhwVDLq4q3XvzmuWgv6N/OAklbWkAN9ygr1Lp8kxdlZdcg3A32DWabfu8SWznrNwSn1TcygywQut7yLKBvlBW7BMW3cMDUCSBpPEetHTP/x6oexWBsj80yKcmmIztSfFyTQqKDAM4lcskbY5H7Buv20O8n9joNCWkq/XqSmizIbhzyMawl6DLmT1mRVrcwzQoUnOC48Hfba5xhqdESdoWhKiipz3/g0ZADb1ihP2tFDXZsheL33MBHqajArg9+OJzZpfiuOBn1Tj9m1fA847Z17axRu9VgsZ/vwFNyOMh+m6JpGrCm9LNSaJ93YU0OSd519EfYSlgKYtf+Sj2vp/6zP5PQGHSRF0OIoDGjRVwYcm3K9FC6GynZ5oe7492wypVEdnvPoqid0octr9Lgh2M957uAd0WmUe2sJCjgGQg9fS8NGPAfBLoL9hmv38UY0gDYTH88gCsNz+ijmKcOjLEMqsntCbnOIvJQLOr7dYP1b1XykRNepIh122JTovXxhfGE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,74 +110,264 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To correctly propagate error code from lock_vma_range(), change it to
-return the error code instead of the boolean. This simplifies error
-propagation code.
+proc/pid/smaps_rollup can be read using the combination of RCU and
+VMA read locks, similar to proc/pid/{maps|smaps|numa_maps}. RCU is
+required to safely traverse the VMA tree and VMA lock stabilizes the
+VMA being processed and the pagetable walk.
+Note that we have to keep the logic to drop mmap_lock on contention
+because even when using per-VMA locks we might have to fall back to
+holding the mmap_lock.
+
+Running Paul's contention benchmark [1] shows considerable improvement
+both in median and in the worst case latencies:
+
+Execution command: run-proc-vs-map.sh --nsamples 20 --rawdata -- \
+--busyduration 2 --procfile smaps_rollup
+
+Baseline:
+
+    0.174     0.161     2.553
+    0.174     0.164     2.663
+    0.174     0.165     2.664
+    0.174     0.166     2.679
+    0.174     0.167     2.691
+    0.174     0.168     2.704
+    0.174     0.169     2.729
+    0.174     0.172     2.741
+    0.174     0.174     2.745
+    0.174     0.174     2.755
+    0.174     0.175     2.790
+    0.174     0.177     2.809
+    0.174     0.179     3.096
+    0.174     0.183     3.144
+    0.174     0.184     3.158
+    0.174     0.185     3.175
+    0.174     0.185     4.568
+    0.174     0.198     4.821
+    0.174     0.214     5.143
+    0.174     0.251     5.220
+
+Patched:
+
+    0.007     0.007     1.952
+    0.007     0.007     1.955
+    0.007     0.007     1.955
+    0.007     0.007     1.955
+    0.007     0.007     1.957
+    0.007     0.007     1.969
+    0.007     0.007     2.065
+    0.007     0.007     2.075
+    0.007     0.007     2.146
+    0.007     0.007     2.195
+    0.007     0.007     2.223
+    0.007     0.007     2.259
+    0.007     0.007     2.488
+    0.007     0.007     2.562
+    0.007     0.007     2.599
+    0.007     0.007     2.697
+    0.007     0.007     3.030
+    0.007     0.007     3.075
+    0.007     0.007     3.145
+    0.007     0.007     3.225
+
+[1] https://github.com/paulmckrcu/proc-mmap_sem-test
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- fs/proc/task_mmu.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ fs/proc/task_mmu.c | 134 ++++++++++++++++++++-------------------------
+ 1 file changed, 59 insertions(+), 75 deletions(-)
 
 diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index d32408f7cd5e..023422fcee12 100644
+index 023422fcee12..c2bd9f5bbbcd 100644
 --- a/fs/proc/task_mmu.c
 +++ b/fs/proc/task_mmu.c
-@@ -162,13 +162,13 @@ static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
- 	}
+@@ -233,6 +233,16 @@ static inline void reacquire_rcu(struct proc_maps_private *priv)
+ 	vma_iter_set(&priv->iter, priv->lock_ctx.locked_vma->vm_end);
  }
  
--static inline bool lock_vma_range(struct seq_file *m,
--				  struct proc_maps_locking_ctx *lock_ctx)
-+static inline int lock_vma_range(struct seq_file *m,
-+				 struct proc_maps_locking_ctx *lock_ctx)
++static inline bool is_mmap_lock_contended(struct proc_maps_private *priv)
++{
++	struct proc_maps_locking_ctx *lock_ctx = &priv->lock_ctx;
++
++	if (!lock_ctx->mmap_locked)
++		return false;
++
++	return !!mmap_lock_is_contended(lock_ctx->mm);
++}
++
+ #else /* CONFIG_PER_VMA_LOCK */
+ 
+ static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+@@ -268,6 +278,11 @@ static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
+ 	return false;
+ }
+ 
++static inline bool is_mmap_lock_contended(struct proc_maps_private *priv)
++{
++	return !!mmap_lock_is_contended(priv->lock_ctx.mm);
++}
++
+ static inline void drop_rcu(struct proc_maps_private *priv) {}
+ static inline void reacquire_rcu(struct proc_maps_private *priv) {}
+ 
+@@ -1486,12 +1501,15 @@ static int show_smap(struct seq_file *m, void *v)
+ static int show_smaps_rollup(struct seq_file *m, void *v)
  {
- 	rcu_read_lock();
- 	reset_lock_ctx(lock_ctx);
+ 	struct proc_maps_private *priv = m->private;
++	struct proc_maps_locking_ctx *lock_ctx = &priv->lock_ctx;
++	struct mm_struct *mm = lock_ctx->mm;
+ 	struct mem_size_stats mss = {};
+-	struct mm_struct *mm = priv->lock_ctx.mm;
+ 	struct vm_area_struct *vma;
+-	unsigned long vma_start = 0, last_vma_end = 0;
++	unsigned long vma_start = 0;
++	unsigned long last_vma_end = 0;
++	loff_t pos = 0;
+ 	int ret = 0;
+-	VMA_ITERATOR(vmi, mm, 0);
++
  
--	return true;
-+	return 0;
- }
- 
- static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
-@@ -245,10 +245,10 @@ static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
- 	mmap_read_unlock(lock_ctx->mm);
- }
- 
--static inline bool lock_vma_range(struct seq_file *m,
-+static inline int lock_vma_range(struct seq_file *m,
- 				  struct proc_maps_locking_ctx *lock_ctx)
- {
--	return lock_ctx_mm(lock_ctx) == 0;
-+	return lock_ctx_mm(lock_ctx);
- }
- 
- static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
-@@ -311,6 +311,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
- 	struct proc_maps_locking_ctx *lock_ctx;
- 	loff_t last_addr = *ppos;
- 	struct mm_struct *mm;
-+	int err;
- 
- 	/* See m_next(). Zero at the start or after lseek. */
- 	if (last_addr == SENTINEL_VMA_END)
-@@ -328,11 +329,12 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
- 		return NULL;
+ 	priv->task = get_proc_task(priv->inode);
+ 	if (!priv->task)
+@@ -1502,89 +1520,55 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
+ 		goto out_put_task;
  	}
  
--	if (!lock_vma_range(m, lock_ctx)) {
-+	err = lock_vma_range(m, lock_ctx);
-+	if (err) {
- 		mmput(mm);
- 		put_task_struct(priv->task);
- 		priv->task = NULL;
--		return ERR_PTR(-EINTR);
-+		return ERR_PTR(err);
- 	}
+-	ret = lock_ctx_mm(&priv->lock_ctx);
++	hold_task_mempolicy(priv);
++	ret = lock_vma_range(m, lock_ctx);
+ 	if (ret)
+ 		goto out_put_mm;
  
- 	/*
-
-base-commit: e178a530a81621a29efbca49b3b78202a18236e4
+-	hold_task_mempolicy(priv);
+-	vma = vma_next(&vmi);
+-
+-	if (unlikely(!vma))
++	vma_iter_init(&priv->iter, mm, 0);
++	vma = proc_get_vma(m, &pos);
++	if (unlikely(!vma) || vma == get_gate_vma(priv->lock_ctx.mm))
+ 		goto empty_set;
+ 
++	if (IS_ERR(vma)) {
++		ret = PTR_ERR(vma);
++		goto out_unlock;
++	}
++
+ 	vma_start = vma->vm_start;
+-	do {
+-		smap_gather_stats(priv, vma, &mss, 0);
++	while (vma) {
++		if (IS_ERR(vma)) {
++			ret = PTR_ERR(vma);
++			goto out_unlock;
++		}
++
++		if (vma == get_gate_vma(priv->lock_ctx.mm))
++			break;
++
++		/*
++		 * If after retaking mmap_lock, already reported VMA grew or
++		 * merged with the next one, then iterate from last_vma_end.
++		 */
++		smap_gather_stats(priv, vma, &mss,
++				  vma->vm_start < last_vma_end ? last_vma_end : 0);
+ 		last_vma_end = vma->vm_end;
+ 
+ 		/*
+ 		 * Release mmap_lock temporarily if someone wants to
+-		 * access it for write request.
++		 * take it for write request.
+ 		 */
+-		if (mmap_lock_is_contended(mm)) {
+-			vma_iter_invalidate(&vmi);
+-			unlock_ctx_mm(&priv->lock_ctx);
+-			ret = lock_ctx_mm(&priv->lock_ctx);
+-			if (ret) {
+-				release_task_mempolicy(priv);
++		if (is_mmap_lock_contended(priv)) {
++			unlock_vma_range(&priv->lock_ctx);
++			ret = lock_vma_range(m, lock_ctx);
++			if (ret)
+ 				goto out_put_mm;
+-			}
+-
+-			/*
+-			 * After dropping the lock, there are four cases to
+-			 * consider. See the following example for explanation.
+-			 *
+-			 *   +------+------+-----------+
+-			 *   | VMA1 | VMA2 | VMA3      |
+-			 *   +------+------+-----------+
+-			 *   |      |      |           |
+-			 *  4k     8k     16k         400k
+-			 *
+-			 * Suppose we drop the lock after reading VMA2 due to
+-			 * contention, then we get:
+-			 *
+-			 *	last_vma_end = 16k
+-			 *
+-			 * 1) VMA2 is freed, but VMA3 exists:
+-			 *
+-			 *    vma_next(vmi) will return VMA3.
+-			 *    In this case, just continue from VMA3.
+-			 *
+-			 * 2) VMA2 still exists:
+-			 *
+-			 *    vma_next(vmi) will return VMA3.
+-			 *    In this case, just continue from VMA3.
+-			 *
+-			 * 3) No more VMAs can be found:
+-			 *
+-			 *    vma_next(vmi) will return NULL.
+-			 *    No more things to do, just break.
+-			 *
+-			 * 4) (last_vma_end - 1) is the middle of a vma (VMA'):
+-			 *
+-			 *    vma_next(vmi) will return VMA' whose range
+-			 *    contains last_vma_end.
+-			 *    Iterate VMA' from last_vma_end.
+-			 */
+-			vma = vma_next(&vmi);
+-			/* Case 3 above */
+-			if (!vma)
+-				break;
+-
+-			/* Case 1 and 2 above */
+-			if (vma->vm_start >= last_vma_end) {
+-				smap_gather_stats(priv, vma, &mss, 0);
+-				last_vma_end = vma->vm_end;
+-				continue;
+-			}
+ 
+-			/* Case 4 above */
+-			if (vma->vm_end > last_vma_end) {
+-				smap_gather_stats(priv, vma, &mss, last_vma_end);
+-				last_vma_end = vma->vm_end;
+-			}
++			/* Resume from the last position. */
++			pos = last_vma_end;
++			vma_iter_init(&priv->iter, mm, pos);
+ 		}
+-	} for_each_vma(vmi, vma);
++		vma = proc_get_vma(m, &pos);
++	}
+ 
+ empty_set:
+ 	show_vma_header_prefix(m, vma_start, last_vma_end, 0, 0, 0, 0);
+@@ -1593,10 +1577,10 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
+ 
+ 	__show_smap(m, &mss, true);
+ 
+-	release_task_mempolicy(priv);
+-	unlock_ctx_mm(&priv->lock_ctx);
+-
++out_unlock:
++	unlock_vma_range(&priv->lock_ctx);
+ out_put_mm:
++	release_task_mempolicy(priv);
+ 	mmput(mm);
+ out_put_task:
+ 	put_task_struct(priv->task);
 -- 
 2.54.0.1032.g2f8565e1d1-goog
 
