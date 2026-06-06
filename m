@@ -4,100 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40D28CD6E75
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 03:50:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90972CD6E55
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 03:50:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B9646B008A; Fri,  5 Jun 2026 23:50:38 -0400 (EDT)
+	id 2B3586B0005; Fri,  5 Jun 2026 23:50:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08EBD6B0093; Fri,  5 Jun 2026 23:50:38 -0400 (EDT)
+	id 2687E6B0092; Fri,  5 Jun 2026 23:50:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9E736B0005; Fri,  5 Jun 2026 23:50:37 -0400 (EDT)
+	id 0B5806B0005; Fri,  5 Jun 2026 23:50:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D920F6B0005
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E96246B008C
 	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 23:50:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 31CE1120365
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B9B51A0349
 	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 03:50:37 +0000 (UTC)
-X-FDA: 84848110914.23.4FCE2C7
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0E90414000F
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 03:50:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="s/SzQXgD";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=17k+KsaE;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="s/SzQXgD";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=17k+KsaE;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf09.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
+X-FDA: 84848110914.29.3E50234
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 886AFC0009
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 03:50:35 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=huQW4xxB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=f+E3cFfL;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=huQW4xxB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=f+E3cFfL;
+	spf=pass (imf22.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1780717835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/83iEfioFt974ERLFFdypfnzGP9tlZXs6SCesUBJTCM=;
-	b=MxVfnSERdaFXbjuCM0rmBWtoKtAqF2Bik47KX3NTQqthJrPyVvILwAQ9GCVL9KNs33NJ1r
-	mvrOWYV8MiNSRt/hlhcMpInO0RsF0wVl85d5kOjBecxS5Jm9hnCFxjyC/0Mx9smkBbxB7N
-	y8lGKpDAr1bx0C+Mh0DrQUMzlUTfc64=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gILGC54YllDJCaWwgWBdRVH7kRRphrRc85OeaLBmt3c=;
+	b=F5kx8c+Jk2n602OdeEUbTNQUCXPezXSx6A42OpJ6R1qxten8SwdJ7v9E/Qrclg06cUH+wB
+	TGsbT/1/dYvzddEZ20OQZEM1S0FcQfn+jEy00hfFNyOHFkeT3C7Lip6HHXSsbj/AEWn8M0
+	dXgVEB6+Ff9dtwOCjSwmJHQOEBsCKHU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="s/SzQXgD";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=17k+KsaE;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="s/SzQXgD";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=17k+KsaE;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf09.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=huQW4xxB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=f+E3cFfL;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=huQW4xxB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=f+E3cFfL;
+	spf=pass (imf22.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1780717835;
-	b=vtMOtCPfhaowO+uJ4t7ZuQQewEN1hnNcQBy7Hs/UkKW0b+SWZm5hl6N52llEaDZfuQAmcr
-	kLHGcZY8xJxu42qT//Lxj2i3Lg/UUNIs7l5zhCQE4HQjVV8B+026bTiInOFOnKD8vytQGl
-	qYdGS0hbZcNF5dXa2iQNuzFz+HiH7eI=
+	b=fGX4AbF0x7DVsGrEHfN0VeGpARD35/MPCcRGXmFReaabc3Y+2UCJIvYWPz3Z8wqFZNqBNm
+	Koit3MWGCZIA+YbhkNkT8VDu6MS7Wg+bLK9hW7aQztQy4oFSCZjagYTmfELDCba1jbGZwf
+	r0ObWRqgGa+9Y2JvEjdJdCQA+irYZXg=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4CB3975BDB;
-	Sat,  6 Jun 2026 03:50:33 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3B4326B341;
+	Sat,  6 Jun 2026 03:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780717833; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=/83iEfioFt974ERLFFdypfnzGP9tlZXs6SCesUBJTCM=;
-	b=s/SzQXgDQeynUvzgMXrhzdTlSVabsBN0SMV1zziJI6JaapxIryL92kAWZJvrDnPNYenCEb
-	gBOyFptk+QwIQtwD3YJwCTtnVhbBJKwpB4LQGqkZOC7hrS/HAfYKNEOB4YrDP1iBwIiTJR
-	XGEWfrDxnt9J+3QIEMjvHV0a9zFWIEA=
+	t=1780717834; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gILGC54YllDJCaWwgWBdRVH7kRRphrRc85OeaLBmt3c=;
+	b=huQW4xxBTIAxaRXB6trlcWTcgaUaAaV9BXoNXC+qlzO0FoFjGyfQQWHzIVbiy93Z+plCnf
+	DC96+q3GgcTW2J/zwWxNju9i6sfu/aUpgFJAwnTL962qUUdstWzfq3pTKH7PY8Y/7/Qijy
+	hCPoM9wwt81oTTeAUBV3By1P2t7DkuQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780717833;
+	s=susede2_ed25519; t=1780717834;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=/83iEfioFt974ERLFFdypfnzGP9tlZXs6SCesUBJTCM=;
-	b=17k+KsaEbkzK8N3myYCe77qbAyQ4bWgEXjDlPC8B1eMhAUjhhgKwihl3FumpDYPLrFCDrm
-	BDFNFfrANXwmezBw==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gILGC54YllDJCaWwgWBdRVH7kRRphrRc85OeaLBmt3c=;
+	b=f+E3cFfL/kX2m7aCDvhoFJLgaOw6mhwc28JiYQ9htfE6abNmw+UhbGaDSWGtoDhzCVdosz
+	krxUmuMFyIz9vlDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780717833; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=/83iEfioFt974ERLFFdypfnzGP9tlZXs6SCesUBJTCM=;
-	b=s/SzQXgDQeynUvzgMXrhzdTlSVabsBN0SMV1zziJI6JaapxIryL92kAWZJvrDnPNYenCEb
-	gBOyFptk+QwIQtwD3YJwCTtnVhbBJKwpB4LQGqkZOC7hrS/HAfYKNEOB4YrDP1iBwIiTJR
-	XGEWfrDxnt9J+3QIEMjvHV0a9zFWIEA=
+	t=1780717834; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gILGC54YllDJCaWwgWBdRVH7kRRphrRc85OeaLBmt3c=;
+	b=huQW4xxBTIAxaRXB6trlcWTcgaUaAaV9BXoNXC+qlzO0FoFjGyfQQWHzIVbiy93Z+plCnf
+	DC96+q3GgcTW2J/zwWxNju9i6sfu/aUpgFJAwnTL962qUUdstWzfq3pTKH7PY8Y/7/Qijy
+	hCPoM9wwt81oTTeAUBV3By1P2t7DkuQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780717833;
+	s=susede2_ed25519; t=1780717834;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=/83iEfioFt974ERLFFdypfnzGP9tlZXs6SCesUBJTCM=;
-	b=17k+KsaEbkzK8N3myYCe77qbAyQ4bWgEXjDlPC8B1eMhAUjhhgKwihl3FumpDYPLrFCDrm
-	BDFNFfrANXwmezBw==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gILGC54YllDJCaWwgWBdRVH7kRRphrRc85OeaLBmt3c=;
+	b=f+E3cFfL/kX2m7aCDvhoFJLgaOw6mhwc28JiYQ9htfE6abNmw+UhbGaDSWGtoDhzCVdosz
+	krxUmuMFyIz9vlDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 637E1779A7;
-	Sat,  6 Jun 2026 03:50:32 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B7EE779A9;
+	Sat,  6 Jun 2026 03:50:33 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id zDDOFAiZI2poQwAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Sat, 06 Jun 2026 03:50:32 +0000
+	id KIiMEwmZI2poQwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sat, 06 Jun 2026 03:50:33 +0000
 From: Oscar Salvador <osalvador@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>,
@@ -115,21 +123,23 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Oscar Salvador <osalvador@suse.de>
-Subject: [PATCH 0/8] Stop special-casing hugetlb mappings in get_unmapped_area
-Date: Sat,  6 Jun 2026 05:49:55 +0200
-Message-ID: <20260606035003.529685-1-osalvador@suse.de>
+Subject: [PATCH 1/8] mm,hugetlb: Encode extra padding for aligning directly in hugetlb_get_unmapped_area
+Date: Sat,  6 Jun 2026 05:49:56 +0200
+Message-ID: <20260606035003.529685-2-osalvador@suse.de>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260606035003.529685-1-osalvador@suse.de>
+References: <20260606035003.529685-1-osalvador@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0E90414000F
-X-Stat-Signature: snzcf3othnecdq8xz76fwj6d4dsgkn7r
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 886AFC0009
+X-Stat-Signature: 4ooim46en31k3jj9yum1hnrmt9q8sm53
 X-Rspam-User: 
-X-HE-Tag: 1780717834-100605
-X-HE-Meta: U2FsdGVkX18nwrfi/qxCzB5KjRB+d8n0KJtwogMFCqCzNEmHCD6SI+20ycrSQajf2D8Ph25xqKdWTsneJM8zJ2PfDb8CJpwqzuDF8nqAAWqgv3KNkF9iJV4OyEXKW/C4/6c+Dt/ncwNpjw+awk8GlZAC+wlIYym/o/jX+4CJ+rX5v1a2XtErJ8VnMWoqp9p4ZhOJCIIfx+XdpjaCBqLe9C32gaBjpLZr6UpQm7Tq4zXtw7EtNrR16jZyIUmKj7J7lgDN6AHba+g28F0gxeouMa+NLH0b6EOUowoKaRaSZzDaeM2WeEhH5QePxqE5H60sd3QkeLCOwM/DlT//IBjwO+RtdboTEZkfMY9LnmEVwZ8n4izz0GvaaKKa92WL8ccAXbuIUkUOAR+J8OeMQXVsqqg7g1njFbA86/s3hBS5CgL4YV4nXLMrWnRAXMpwwbVIrMCx5eyNT68rVHFdbG15YKGS+F/K85O2fOGyKABRtRXhFIbYvKQBAfsP/MWCV1Tuz0iRSjXq+21Dm9rncoo5DzJZV6rv/wzR5jnusli3SBo7A087vfxbqowrDWNWPZpDhmWmR8iAlTvGtPCAw9Cc6v+kujl/cgEy6/WoszLFxB7d6eybMN/e1ifV/AcjG2yJ2yB+WsYK+jR2QQh+LDMbhj/p2Nswj2vjkMsMmb5Qz+Z80gq6W4fibSM19/vDCwEKYAW9VqQ5TWPu53CLl+Pdp9mBzzZjxJfQgrXsKjBb5Nlb4upvEbFXjTNsmNboolxhBon+LTPS/gpHrUsKK1vOU17NYx6QDYj/kYFxg96dC376lpyQSLvk8OWVOChjsXmwzBhLYZgLqHPJYo2bwObH4yxxDirsUy4plS3LFNo9EmHl0DL2ba9e13fl446RY5HQBYbmdLkwyC/UR/xtwBR6e7ZMUTp6Q9lyIPFabjBrO+gw/xqT8U+MpBGoeSNltL5389CvuD2Ahwy/E5hjtml
- GwiqMZeg
- SRU3BGlXN8dEQ/3Xe/JlmTgJTx2kuI7hgi8ww4nm9boaRz3dqoDfc9+KSSGWNaIo5Fv363cRBifEIsmnC/yKbgJlmv6RMUX70oLxAxfeRtldqf0RcObyVYxA28i1+lk/1P0TEp/c8YuGurjkBNHbG8KmNPVzXqBgAMSGAgd3oOUlPGpnxHAxYgD6JMryvtPoZKFZikdzeRWmrRLKxtaxWYUNLcu+skf42Fufhh76xkkMMKQiKDq5FbzBdHuGNI1eRs2IgQhBxbJLAm0htWml8k0ke9TXZ5VoeqfgFrQX+25Blf6OpuNave0zjhtlgYgYdV/vyYE3QjVEfjeQDiIzzi/PDzy2mF7ciuecanXhH8Wys1IbDk95/irIR1pGY1srH7JrGBrApEfH5vF3TS0iFMOs1l6s9X7fvPmUl
+X-HE-Tag: 1780717835-764195
+X-HE-Meta: U2FsdGVkX1/keU8AUtyNmX5hsp+GGkG7fSGp4gs9xmI6JQObF9QN4dtq7UsWxDulK/kAqCR63F+37hyuRjjyv8aAHeyEFHBlouhFVLQS5EVEG/oqEu8XynN/i1KC2nS/PCo9BzTYCy76jFT4jGM7dMS1cFG/Y4lioK/ngTRpaXPNYZu2+KAKkoJqIslMXrvd73WiBDbK+QN6b8eaA1xDwqnlCppFiHfYWdsYm3pP8BdsduHJQgM1+c3Hw+tmJux/EgTUecfDDOdbYZe+RO4PAOrQeQTgr+5r3OMq+EfrLjUDh3AbfkgMmD0w0feu07m4mCjql0Y3cC9G87KOcg2RbcLNhcw4kPAqeyqI5HlK0diUhAo0NqCzGCmnqpVBGWLtwoh8UfW7c/UBSsVaEOg57CmyhZBedNmI5zY+3QcvkvUCyOgRB0a8pQcBq9xAOrSTKmI4aTXNYv49f7XsEyynhPDOJQC9BMiqVp1eoIfrkQpGTz3leoZpbDpGgVnm6pixf22ZVulOuobeadPy3ju3F6/P6t2X6VRJEmSV+SkZJDHGGOZ5d3Z49ih6fIuTPA3VEGF4JjDMKYX5s3ccy7Zc3WB5NIfzb6CcyygCa/AGw2crgwBCBDbUtplzLJSOnoezUBFdnORsTbSI0xHL9k7BPtC/ZZyAwo5whtzVWU4+0IVcrt3IW1z/TJKgsSY+Gs8sn0gMR2QpkT7lllEgnOgvD5FJB5RiVJZn8Pon7GqrHJwClJbEfNu5onif7GuV3Djk1T7Kujj/o+UNXQDE7OtO/KbycxM1THe4LzG/Yt04+tniO20OTwHHbVkivlyQb5SEj0VmrKgJC5p9+8X8XspYA3HG6y1F9sO7jmDWz2t3wMqUopBm19LjuWlAcK6HPbFBdGLlMTxlga6oCSGgWxZZcuiCQf7t72nN1zQZJxTYyFyaPb0+WZ8UL11Nnm/Uze//pqg7H+Ee+QNxb1kFhan
+ /njPKwx7
+ +GV3QxkGoYGM+3kgeXJQkCKo18srfrsbRKh3stVFCP99BwHcjtsQznNcooaIDoTm3OFBIQYHufQRHYRnZsWIRAQF0oFZwBpQafm87ofJb7JTgNPh6zDeDhMc+Z84i4RGaDzl4E9eP6Qohvk2c9ceh+niMcT4Dv4kSu2qnEFLrdCKltSis9LC36qfrpZfYTg0MGWwQT7yGdqQDtP58WpVQAb6nwCDTNEwzgtLPw+eGtbhffIAdbSPxJUsNhvIC1Re3ENH29SJOiSx3CneIPuqhhQUbnmXyJP5EsdMeFrSUZWpBk2FOCW5Znyu1kjiLSy7VWfjCc3mnSPnqYsOaEZt9UKreWKpXin6M8Lrb3Zn6AOwjRtmKapzqNzNLYc71+QmcPgeCKLhtfbfj+A1Egh2eadYelvhX7WLcGl3Z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,70 +147,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Currently, for hugetlb mappings arches query the align_mask needed in order to
+satisfy allocating a gap for the mapping, as it counts the worst-case scenario
+which is being off by one page from boundary of the next hugetlb aligned address.
 
-A regression was reported on AMD 15h Family for hugetlb mappings when 'align_va_addr'
-is set [1].
-Historically, for hugetlb mappings we always ignored 'align_offset' in get_unmapped_area
-functions, but after commit 7bd3f1e1a9ae ("mm: make hugetlb mappings go through
-mm_get_unmapped_area_vmflags") that was no longer the case for x86.
+Later on, unmapped_area{_topdown} add this 'align_mask' on top of the
+mapping's length we requested to count for worst-case scenario and get a gap
+big enough, and then do the proper masking off once we get the address.
 
-While we could fix that by work it around in x86 code, the truth is that the current
-functioning of hugetlb mappings with get_unmapped_area functions is a bit clumsy, and
-we can do better.
-This patchset aims at two things:
+This means we have to special case hugetlb in quite a few places to first
+1) ignore align_offset and 2) return a proper align_mask, but we can just do
+as THP mappings do and encode the align_mask directly in hugetlb_get_unmapped_area
+and pass that down to mm_get_unmapped_area_vmflags.
 
-1) Fix regression reported in [1]
-2) Stop special-casing hugetlb mappings in get_unmapped_area functions
+Once we get the address, we can properly mask it off before handing it over to
+userspace.
 
-Fixing the regression involve doing what we do for THP mappings, which is encoding
-the extra padding we need for worst-case-alignment scenarios directly in the 'len'
-parameter and stop using 'align_mask' for that matter.
-And then, mask off the address we get from mm_get_unmapped_area_vmflags.
-
-After that, since the set up of 'align_mask' for hugetlb mappings disappears, this
-means we do not have to be hugetlb-aware down the road, and we can stop special casing
-it.
-
-The only thing to note though is that depending on the architecture, we sometimes
-use 'align_mask' to do coloring for pagecache and to avoid cache aliasing.
-This was ignored for hugetlb mappings, but after this patchset that is no longer the
-case, so this means that 'align_mask' will be added on top of the requested length
-of the mapping, making us to allocate a larger(ish) gap in the mapple tree, but
-that should be harmless as most of the times that is PAGE_SIZE, and whatever
-the offset is will be masked off in hugetlb_get_unmapped_area.
-
-[NOTE]
-Patch#1 is v2, since Dave Hansen was kind enough to provide some feedback
-in [2] while this was still on the works.
+This also allows us to fix a regression on AMD15h family for hugetlb
+mappings [1].
 
 [1] https://lore.kernel.org/linux-mm/20260527143643.GO31091@soohrt.org/
-[2] https://lore.kernel.org/linux-mm/bae37c0c-f9e8-486b-a1a8-53c9dc0af8e0@intel.com/#t
 
-Oscar Salvador (8):
-  mm,hugetlb: Encode extra padding for aligning directly in
-    hugetlb_get_unmapped_area
-  mm/mmap: Stop special-casing hugetlb in generic_get_unmapped_area path
-  arch/x86: Stop special-casing hugetlb mappings in
-    arch_get_unmapped_area
-  arch/s390: Stop special-casing hugetlb mappings in
-    arch_get_unmapped_area
-  arch/loongarch: Stop special-casing hugetlb in
-    arch_get_unmapped_area_common
-  arch/sparc64: Stop special-casing hugetlb mappings in
-    arch_get_unmapped_area
-  arch/sparc32: Rip out hugetlb from sys_sparc_32.c
-  mm,hugetlb: Kill huge_page_mask_align
+Fixes: 7bd3f1e1a9ae ("mm: make hugetlb mappings go through mm_get_unmapped_area_vmflags")
+Reported-by: Karsten Desler <kdesler@soohrt.org>
+Closes: https://lore.kernel.org/linux-mm/20260527143643.GO31091@soohrt.org/
+Signed-off-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+---
+ fs/hugetlbfs/inode.c    | 25 ++++++++++++++++++++++++-
+ include/linux/hugetlb.h |  2 +-
+ 2 files changed, 25 insertions(+), 2 deletions(-)
 
- arch/loongarch/mm/mmap.c         |  6 +-----
- arch/s390/mm/mmap.c              |  9 ++-------
- arch/sparc/kernel/sys_sparc_32.c | 16 +++-------------
- arch/sparc/kernel/sys_sparc_64.c | 25 ++++++-------------------
- arch/x86/kernel/sys_x86_64.c     | 15 ++++-----------
- fs/hugetlbfs/inode.c             | 25 ++++++++++++++++++++++++-
- include/linux/hugetlb.h          | 10 ----------
- mm/mmap.c                        |  4 ----
- 8 files changed, 40 insertions(+), 70 deletions(-)
-
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 78d61bf2bd9b..da9bfb5b79f7 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -184,7 +184,30 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+ 	if (addr)
+ 		addr0 = ALIGN(addr, huge_page_size(h));
+ 
+-	return mm_get_unmapped_area_vmflags(file, addr0, len, pgoff, flags, 0);
++	/*
++	 * hugetlb mappings need to be huge page aligned.
++	 * mm_get_unmapped_area_vmflags() only gives back PAGE_SIZE aligned
++	 * areas.
++	 *
++	 * Extend the requested unmapped area for the worse case scenario:
++	 * the address comes back and needs to be aligned up to by one small
++	 * page short of a large page.
++	 */
++	len += huge_page_size(h) - PAGE_SIZE;
++	/*
++	 * pgoff is being used for coloring, but hugetlb mappings need strict
++	 * alignment, so it is always ignored by special casing it down the road.
++	 * Set it to 0 here, so we do not need to be hugetlb-aware later on.
++	 */
++	pgoff = 0;
++	addr0 = mm_get_unmapped_area_vmflags(file, addr0, len, pgoff, flags, 0);
++	if (IS_ERR_VALUE(addr0))
++		return addr0;
++
++	/* Align the address to the next huge_page_size boundary */
++	addr0 = ALIGN(addr0, huge_page_size(h));
++
++	return addr0;
+ }
+ 
+ /*
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 5957bc25efa8..924e9a464214 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -1085,7 +1085,7 @@ bool is_raw_hwpoison_page_in_hugepage(struct page *page);
+ 
+ static inline unsigned long huge_page_mask_align(struct file *file)
+ {
+-	return PAGE_MASK & ~huge_page_mask(hstate_file(file));
++	return 0;
+ }
+ 
+ #else	/* CONFIG_HUGETLB_PAGE */
 -- 
 2.35.3
 
