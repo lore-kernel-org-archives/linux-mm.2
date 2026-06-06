@@ -4,93 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAFD8CD8C85
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 08:14:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62ADFCD8C8E
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 09:16:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3E866B008C; Sat,  6 Jun 2026 04:14:48 -0400 (EDT)
+	id 0F6386B0005; Sat,  6 Jun 2026 05:16:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEF866B0092; Sat,  6 Jun 2026 04:14:48 -0400 (EDT)
+	id 0A7576B008A; Sat,  6 Jun 2026 05:16:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E04B76B0093; Sat,  6 Jun 2026 04:14:48 -0400 (EDT)
+	id ED81D6B008C; Sat,  6 Jun 2026 05:16:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CEE6E6B008C
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 04:14:48 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6B02C8D9FD
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 08:14:48 +0000 (UTC)
-X-FDA: 84848776656.04.9240370
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D31E1C0009
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 08:14:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k8U2GTfh;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D7ECF6B0005
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 05:16:27 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 096BFC1ADD
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 09:16:27 +0000 (UTC)
+X-FDA: 84848932014.01.55295F5
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 16FE1140017
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 09:16:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qwJkU1Xz;
+	spf=pass (imf09.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780737385;
+	b=rAXDJpIsIR2TYCW9u96MoMAopxoZg5BuwXl0qHHQaIPVYQVOAz8NwDTk3SSEdCH3K7HX12
+	/lrNqTdDwcUlNoVJU0eCbmv/2IC8TeolJxbtK8wlCeJCmp6/GAYhnTnEss8WRoN+xk8BqJ
+	CPxERoGfiJQ8mmh+9VeGm3PJSAvn2wU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qwJkU1Xz;
+	spf=pass (imf09.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780733686;
+	s=arc-20220608; t=1780737385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fr6szU5JrgZeoEMxPVTiNKODySIrvXOrHp4spLaAgmg=;
-	b=26BuVJXbhJEov7xHDifkaprtasG4mrJcWBW8iRPSvhq9HKx83o62OVTu7yhKkoYyAPXhHy
-	IYWdeu82td/AvYR+S9bomRgztBRftgfq5K98V4V7f2/wUdQh91OIAazSW5WDsaUWsRx7NQ
-	yUVc3R9LPwkoMwQWf/cwaw7L5KKOrMg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k8U2GTfh;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780733686;
-	b=08nN3N2oOUTT+ERIvRQpslt48vfGzZYJaHdgeqGRlexJCslTvl4lAu/xJkSfSMbOas9vho
-	szX9p8HNqOxoHti4e2taq4MPX1nnDf5DNpjvspiTqXDYak0aYPxFQwyL62BiHCyhbGHyaJ
-	Soc2ofT1VE021UYcB2Rwxe5Ncpbtbqk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2EADB600AE;
-	Sat,  6 Jun 2026 08:14:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159A11F00893;
-	Sat,  6 Jun 2026 08:14:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780733685;
-	bh=fr6szU5JrgZeoEMxPVTiNKODySIrvXOrHp4spLaAgmg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=k8U2GTfhHYwFr++KszIsCZK1krSuJaFk3fhELgPqkF6jmWZefSKerAWd1MFqAZRgW
-	 Ig5RkK6/sCmCQgO1dwRlkkm0p8A5VJ5XdZGeNFdTlGFZhRy/aq8dZygy1UkfAg2/fk
-	 u7CaDWv5xPsBCQeDndGiNpzScC30PhqW+xWY5jg5vZiX+Jl8woYcJhkQftUREvSYEg
-	 DbMPyfGn5ld06+EtaZOT0KywJvGpzTQROjH5TdRTutLNkGEmtaCrdi/7QyOhl2KV84
-	 bNoA2wVQxJ9ovnJmOW03WsEJIeXdIHhH7rfgx7JvKbEj+ZDeS8qV66HPn98ItWwadi
-	 6j63WQvs0ogZA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Uladzislau
- Rezki <urezki@gmail.com>, Boqun Feng <boqun@kernel.org>, Lorenzo Stoakes
- <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] rust: alloc: add per-task memalloc scope abstractions
-In-Reply-To: <aiK3R1yRHj8zcGuh@google.com>
-References: <20260605-gfp-noio-v2-1-cfa2e236c2a3@kernel.org>
- <aiK3R1yRHj8zcGuh@google.com>
-Date: Sat, 06 Jun 2026 10:14:38 +0200
-Message-ID: <87ecikhyq9.fsf@kernel.org>
+	bh=/SxOH3sBqh56WyqC7iKaRtAkj2hv0SNo09/WoL7JuhE=;
+	b=A31U34Id2BoSfvjCHnhH92sQJACgl6KuMnPH3ej0579v4tPCy4UNuPGW6NMHbOeN8f/kNc
+	yK+599CFTFmWoCWM8j0+BKIMUa26NZKWwnQX1nk+ROs0T2zopQLDk1zAz7kxX5cf+8yZPd
+	qEIVrL/f5NErSc+IDc+Ox8jTK5ihiio=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490b64c8311so30649515e9.3
+        for <linux-mm@kvack.org>; Sat, 06 Jun 2026 02:16:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780737383; x=1781342183; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/SxOH3sBqh56WyqC7iKaRtAkj2hv0SNo09/WoL7JuhE=;
+        b=qwJkU1XzFYYNg0tT/7shcIW4AGUhqtSwj2incrF4+svjFMfx4aMsQU2mb+t3aymW7W
+         6ZLKFRrgOiZvO3jkX0J1nvEnD3EXYRm/bf9PVeCFVdiCfceVc3/OPaEF9wiVWu8XLNn1
+         AfDChdVv2DWnYOLH1/8Qd4i7vMxkZcdGOxgJR+vZutSCxYAnKqyXaj2UNmpt/85YUJEo
+         VVO9U4QJcWFlzIZ0e0c6dDyWaf/O4d9N6s8SJAMZSYhnYPCgsVJaSqSAkmBP3+4gm791
+         4dP8cmG4Vrh5rJHd7GLWMSuVcj7j8SLwWrPAfNy5YrVrg8WiHTA4KBvPgHMhcPx+zYVE
+         /kng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780737383; x=1781342183;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/SxOH3sBqh56WyqC7iKaRtAkj2hv0SNo09/WoL7JuhE=;
+        b=Ctu0QmKx6s4tRFLcTqCtw6zVZnHTTtqB6VxatJcwHUXeH7aAKr0bfkUaFil4WBSp9+
+         itMLSIOUuic4NC85PMPs1wCD8FPaUAA7EpMOHhwbEC1F2FGCOEK7vNS89FBpYlIa9/Ug
+         y8I5LXcohY1957OyLgT1lugN9SSuIMhzixb7SqFKwPhvo0OUwP85NQuMB+F02d1ylZSP
+         ylFgXQjymbKXKs5+Yh/6PIks0bi+v6wNERoMKfGRLT3boVPbhjMsCwUI4KOjppjGgA5b
+         +Ego00dBGMzVjQbL9fTsh0elDhwjDjduKDAgxG6/7pp/crCiwP3xwZcQAy8FISKs+Jml
+         g6Mw==
+X-Forwarded-Encrypted: i=1; AFNElJ8FKKYutw4iNlD35LhlsJSWQIJ/ETM+MHrx19tI7rZ1ehSYf7Z+FfKW3UQY5vfH9jq7iJFrn80U/w==@kvack.org
+X-Gm-Message-State: AOJu0YyOWNow2b16NzTCYGpecxMKMtxYJbNmPKzY5RTk/ecWfHjkPZ+5
+	uzoU7Kt9Bj5WPMT6h3SNuxkF28v0Bwjua30DGMPvmr7HSh55SDNypx+9
+X-Gm-Gg: Acq92OH5toDi7TMaPyhqj2omtoJunGJmfLrzBCMTWFKuoANJGkju301DOJhrsj95T5h
+	XCj5Yb9K2+IIGhjxmoJU9mcWYiksUnHyel3Xzlw3K22HaAtZjYk4N/zp7MF5wIEmJ39ibhxEU6f
+	95M/Q1xBC7i+wW7zhjhfSTJPu5HeE25OEI26PcqqMy8Bt+7emFgEFPm488bv9M726sbokCvqGtK
+	xd7Q/t6/gpvc1+oG7xYFQNwrxQc0VY/oRJxcVBoa0Wzh/5b4i+FX7+W4YuD2GxYY1zzHBrvHoZ1
+	63Xh7CLAewSwGiYu6F7lgP9eXDAfWb96ItUNlPefXADXggZXEHemvZezVhwONfrgGfwaGJJHGN7
+	TsLiwa+ZDnTB9gz50VxfH4QvgTPPyDdcwrA8tzbq/nDDS2PDNWPoYbA41AEXd+RwojarX9+HC3e
+	Kc7sVdDJgjlAGU9mSbk5xSPhiDuyoVG13TjdknzAieIC0szx/AUsiTUloHx3sUVBeFP+YUCJg=
+X-Received: by 2002:a05:600c:83c3:b0:48f:d612:3c59 with SMTP id 5b1f17b1804b1-490c25a21a9mr135656445e9.9.1780737383320;
+        Sat, 06 Jun 2026 02:16:23 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3fd663sm247272215e9.10.2026.06.06.02.16.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jun 2026 02:16:23 -0700 (PDT)
+Date: Sat, 6 Jun 2026 10:16:20 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Florian Weimer <fweimer@redhat.com>, Askar Safin <safinaskar@gmail.com>,
+ metze@samba.org, akpm@linux-foundation.org, axboe@kernel.dk,
+ brauner@kernel.org, david@kernel.org, dhowells@redhat.com,
+ hch@infradead.org, jack@suse.cz, linux-api@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org,
+ patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk,
+ willy@infradead.org
+Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <20260606101620.602ed92d@pumpkin>
+In-Reply-To: <CAHk-=wiTQr4YYYUH38srGvWAq3_UpDeAPR+qZWVyf-ZU7z8Hzw@mail.gmail.com>
+References: <f919874c-065e-48be-ac5b-300c4ab86d4e@samba.org>
+	<20260603211736.755139-1-safinaskar@gmail.com>
+	<20260604100609.6b37f500@pumpkin>
+	<CAHk-=wjvb56qo27-axALOKCY-CjLsj9_294zeBovPVJaYm14dA@mail.gmail.com>
+	<20260604183829.63c35fd9@pumpkin>
+	<CAHk-=wip3mwLOHOYJ9TtjDxOaq9YUXmuCg2AycyASGgeY6qqUw@mail.gmail.com>
+	<20260604223216.73468830@pumpkin>
+	<CAHk-=wh1Avi8FGbWkt9k0Z-KXWB0spo5mQyowO8PB2sJ3unbkw@mail.gmail.com>
+	<87se71jps4.fsf@oldenburg.str.redhat.com>
+	<CAHk-=wjkZSAhxykvG6tQM5DnBoS30_XCKkYpCsQwEGcxJb=i3Q@mail.gmail.com>
+	<87wlwdhrvr.fsf@oldenburg.str.redhat.com>
+	<CAHk-=wiTQr4YYYUH38srGvWAq3_UpDeAPR+qZWVyf-ZU7z8Hzw@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D31E1C0009
-X-Stat-Signature: jt8kn3kspfwjwjax53pekij7m8tprqfd
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 16FE1140017
 X-Rspam-User: 
-X-HE-Tag: 1780733686-568892
-X-HE-Meta: U2FsdGVkX18e7suuF8KH84SFl/2yyhpzPoxieMp0FPRPECf53B5lkVJXnJTwIgR/nY3A/XCGKfQT/PKWB6EAQ0g9dGrfIbzcPubk89zNA9jEXOR3UQ3+X1bnprHko1viVU8hUX/7buLDMVQGibb1vURx04HdwmYqJ0nCgD8YfAA+GdtHkbNpAR9EPUa1fCZLhNtYe4kWCCxTf1/mT4Q0M3ZGFVySzg+fXhBuR4zmRmwAWR0IPtx7Pjwd6FBVM3aNBXVkbjdyPoZ+Ed59kZWaai5S51GFxQDPdXrEKure9pD1tmui8SCtKnDm09Gei/7z0nPlviCenYdNV1XVYEIHnptHJfefG1OHRjI6+8+FOoKsZHWCML2jCF3tb/PFoObvzy1buyiTTv1xWmQyjleulSqVzpUT/Hso9k4Wpz3eHVMpk4Q6TlMGcKc7xfCAlMJYWS+JbQOOasd2Cqd+yr1Lv0HBbQJqfvaS5K1mkMtUtOHdJSBOSkBiJ0IrdsgJ3+lhmmy56Ql97kVQGiSzwRirwbhwQCfb780/oBheaOgD3LvtZj8ulMwKkk5JI2QiipJLV1GMYa2gXVOFJi6OIo+aNwWELSdy0wV3REE6wHwDHPj4OJqeRwWouLzly+S0rC/aORBrn1KVv6PSTZRhqGQ1MBKYm6yZmsTHkoddovRYjFrHVy3KxDPv7ytuUP8CNJFjoCRg/OO3Trzl+PefuMmqqFQxNSUcOxPTATul7h/3m6g9rG2ZUpZQqmwo5TqhTylhQDn/7waVrcPkeP9ePUg+TiYjNpElE5XXz6KZfQF8h5WlZ/AQenmGhWlPQN7tXDlSxfstvmkDRK05q2Q+ZMh9Obs2g7/zGpsdno4NA0jh4WscGYZH1eP5CqqFO9k+x+WRIlo6zhJ2w8d6JfSurvM5dY+1rnbeMT4m1u8JfYkdOHXYQXM7iTGjrHFhhrHePbvMfABco8xXEityxFkyqYw
- x7MNjJXi
- QE9VfuHglMrGSZlefIQiJg0d3a95nPtrm1ZJgx5Ydw8uHBUEYjoc+t2XChrufFF60bY0ae76Rb6tVYItZKSRzIcXECNtxvTBy/qZjxan/0RaD/YTt0Y/JOAalOzLvyfcdBt/V+hV7QO/V5H3tzinTUdJWOd/4Y3mw6tnQyTgrmrgiajlivWpTkHsSEJchDUz9Lcogg68PmdyjJtmIlCb8gaVpPZRZc98+IALGImNyUC1eSH/RBMs8yfnfStxEoO5SpNnI7kybSzpDPCq9AufKEgBZJ2reExCFPitGv8libognVrIIi0Ed3DTQvToVPu/7ly/FauS+mXI5sRLR2ceH3aR0rwf1uTLUHBlGBED5Q3MqDmMHQVz5ZzyxxLoMVk9tsekaNLKyHL+KmsA3sWBsRACCpwwk/D6ea1egk8tCLc2y0SCLagqBCXyjKSNIBbAzC+zMQSkELaZBYakPUNBGuxas0rTpZuxeoU4MHVIMNkUrwcwMj+G0oJyL38bsfl9c0mwl1XnxPcynKaEniG0GKpXO2lCiiB/15p5N1DsJgWMF/+mEkVLSh97Dlw==
+X-Stat-Signature: dogqqdzwjbjxhah65bmq5e3u31q1brj5
+X-HE-Tag: 1780737384-899098
+X-HE-Meta: U2FsdGVkX1/D1ZQlmIOknryjC/tgo8wMCpVLLJ7jCFAKX2YqF4fpNmbck7NEzIcp8s8gouIyOmU5OhZK/yCemd3UwJe0w3ruuPR9fElcOkM3Tu3B082c5A3a09NYo1H8Nk4kgJ0MAOI5/LzbJg4q+OoQtXA8fmX9Kj7O0F54eVoM0Raed4bxed/02nnEqE4un8ZxbafzVD8QNJpRbEDAgrK94Ql0cxHPBxYgKcdXg6hiYyjus6s2q8ihltzNzQ5MFRX/4tS/xPNbebX+GheptR+r+A7lluXH2wDhvZs0rlZ69EvaIVrHQB0rOVjRzDvp4pWdP838MUh8wZ8ef1acyPBbg7zCxcdSRJQmEAAyt5bOxd0mftJgplyrk9XL3OV+ko8LmU4j+jNglMASAshIv0qmQGHk/ffxqmMoPYuI5/GTH2fuoPUszm/AUFvGD/rJJrovitvKYFa49/zu6FK6p6f9oeGrzae1aQh1ycvmZtB+zNqRo0U+Pr473++zNNTjKzVU92nhWHokY/pXOYepHqLmxDoUFLab0FjHmn++i8ROsoIry8Fx3q8lV6e4MoFJJyoqtgY0DxqGaGRIVu+MwMFKFvPY3MN0bMbG8USwG7WOHl/BXgwKTjpVHe68AGqoUMzhbA0Tqf3EtzBTwea8gjdt2qZAVqhv27FrPPU4OhdHj+6gUh7G/cBz+UaV0piK9yHAyCvrVxn6aOkPweAIgJl/vdvjIqCcqFZVeju9VaceSWtZOXyfSqlWl/unNSpx1Yj+y9huAvxv14GE3u/R6/1/N1GbmeFAbdd1mf9vKjO/PiULxRVjLDgNX978iAM3YImDovizxvsc/8mn4KAl8y4tz7H2KoACptJeVlqcQfQGIVu++KSpQJ+DXqDqMnrwiZHwJRLMraViJcwZSclB7IR7w2Ig+encykwceEvBZgdwhaUQYqCDmAt1VfEdlzz8Om1ZQLwtZVfpjqToSyo
+ odeKFwOQ
+ qDt6Op+LoB0zDFZc2RPJgnKcW3onXuxZwx/3ItdzM2Yz31pH0bmJke1OF8TDUZAnqaYf+obE3f3FqFeM3G0UF4RKcuS/6j0IxZbtduzEs+S5XlGeTyyPRP/P5b6Zvc4UPD9kKOCp0m16aJW9OgEOD1fj31xXvmDTmAUnc+u8raQL8L8LzMwS6iZ1l0oU83X+ckMg36dj7cQBvHkuhqn2GDyA+WKWzdEuNy0l56gWUMNjiG15Ohvq/Aha7f62q8hStT6LKtrXH0VnzwOB5bO/h/UWVjymLvucunpq+R6THBqIM9+IunM7vzDdygs9g08VMsJ3YTGjjziglHOLJfqo9op19RIr0gLfmjQNVXlTo2q3QHlQRj3l2AE+tizd1DGpHv8zL3HHabIrH3pZKC4OuQ4B5dFoxTfgurIL8yf6TjTYU9s5OCPyooTHoLAmfMQOXjyXgQfAml07Lgv2KK9+bfllcg1QNJa3Mf8y4UuCxQEkdz8cILxw3dsUOkyOcl6Tu4XFuRWghPkubBzo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,168 +137,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Alice Ryhl <aliceryhl@google.com> writes:
+On Fri, 5 Jun 2026 10:12:05 -0700
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-> On Fri, Jun 05, 2026 at 12:54:41PM +0200, Andreas Hindborg wrote:
->> Add an abstraction for the per-task allocation policies exposed by
->> the kernel through paired save/restore helpers in `linux/sched/mm.h`:
->> `memalloc_noio`, `memalloc_nofs`, `memalloc_noreclaim` and
->> `memalloc_pin`. Each pair toggles a bit in `current->flags` and
->> returns the prior state for a later restore. The pairing assumes
->> strict LIFO nesting; restoring out of order corrupts the per-task
->> state.
->>=20
->> Wrap the four pairs as a generic `Scope<K>` guard with a sealed
->> `ScopeKind` trait. Tag types `NoIo`, `NoFs`, `NoReclaim` and
->> `MemallocPin` select the underlying save/restore pair. `Scope` is
->> `!Unpin`, `!Send` and `!Sync`, and is only constructed through the
->> `memalloc_scope!` macro, which binds it via `core::pin::pin!` to a
->> hidden stack slot and hands out a `Pin<&Scope<K>>`. Safe code
->> therefore cannot move the guard across tasks, drop it ahead of its
->> lexical scope or otherwise violate the LIFO save/restore discipline.
->>=20
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->> Changes in v2:
->> - Rewrite the patch to use scoped allocation flags instead of exposing
->>   a `GFP_NOIO` flag constant.
->> - Link to v1: https://lore.kernel.org/r/20260128-gfp-noio-v1-1-9a808fc49=
-b44@kernel.org
->>=20
->> To: Miguel Ojeda <ojeda@kernel.org>
->> To: Boqun Feng <boqun@kernel.org>
->> To: Gary Guo <gary@garyguo.net>
->> To: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
->> To: Benno Lossin <lossin@kernel.org>
->> To: Andreas Hindborg <a.hindborg@kernel.org>
->> To: Alice Ryhl <aliceryhl@google.com>
->> To: Trevor Gross <tmgross@umich.edu>
->> To: Danilo Krummrich <dakr@kernel.org>
->> To: Lorenzo Stoakes <ljs@kernel.org>
->> To: "Liam R. Howlett" <liam@infradead.org>
->> To: Vlastimil Babka <vbabka@kernel.org>
->> To: Uladzislau Rezki <urezki@gmail.com>
->> Cc: linux-kernel@vger.kernel.org
->> Cc: rust-for-linux@vger.kernel.org
->> Cc: linux-mm@kvack.org
->> ---
->>  rust/bindings/bindings_helper.h |   1 +
->>  rust/helpers/mm.c               |  40 +++++++
->>  rust/kernel/alloc.rs            |   1 +
->>  rust/kernel/alloc/scoped.rs     | 231 +++++++++++++++++++++++++++++++++=
-+++++++
->>  4 files changed, 273 insertions(+)
->>=20
->> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_he=
-lper.h
->> index 446dbeaf0866..1931b131345f 100644
->> --- a/rust/bindings/bindings_helper.h
->> +++ b/rust/bindings/bindings_helper.h
->> @@ -83,6 +83,7 @@
->>  #include <linux/refcount.h>
->>  #include <linux/regulator/consumer.h>
->>  #include <linux/sched.h>
->> +#include <linux/sched/mm.h>
->>  #include <linux/security.h>
->>  #include <linux/slab.h>
->>  #include <linux/sys_soc.h>
->> diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
->> index b5540997bd20..b8e7492512e8 100644
->> --- a/rust/helpers/mm.c
->> +++ b/rust/helpers/mm.c
->> @@ -48,3 +48,43 @@ __rust_helper void rust_helper_vma_end_read(struct vm=
-_area_struct *vma)
->>  {
->>  	vma_end_read(vma);
->>  }
->> +
->> +unsigned int rust_helper_memalloc_noio_save(void)
->> +{
->> +	return memalloc_noio_save();
->> +}
->> +
->> +void rust_helper_memalloc_noio_restore(unsigned int flags)
->> +{
->> +	memalloc_noio_restore(flags);
->> +}
->> +
->> +unsigned int rust_helper_memalloc_nofs_save(void)
->> +{
->> +	return memalloc_nofs_save();
->> +}
->> +
->> +void rust_helper_memalloc_nofs_restore(unsigned int flags)
->> +{
->> +	memalloc_nofs_restore(flags);
->> +}
->> +
->> +unsigned int rust_helper_memalloc_noreclaim_save(void)
->> +{
->> +	return memalloc_noreclaim_save();
->> +}
->> +
->> +void rust_helper_memalloc_noreclaim_restore(unsigned int flags)
->> +{
->> +	memalloc_noreclaim_restore(flags);
->> +}
->> +
->> +unsigned int rust_helper_memalloc_pin_save(void)
->> +{
->> +	return memalloc_pin_save();
->> +}
->> +
->> +void rust_helper_memalloc_pin_restore(unsigned int flags)
->> +{
->> +	memalloc_pin_restore(flags);
->> +}
->> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
->> index e38720349dcf..8ebb8c9f3e67 100644
->> --- a/rust/kernel/alloc.rs
->> +++ b/rust/kernel/alloc.rs
->> @@ -6,6 +6,7 @@
->>  pub mod kbox;
->>  pub mod kvec;
->>  pub mod layout;
->> +pub mod scoped;
->>=20=20
->>  pub use self::kbox::Box;
->>  pub use self::kbox::KBox;
->> diff --git a/rust/kernel/alloc/scoped.rs b/rust/kernel/alloc/scoped.rs
->> new file mode 100644
->> index 000000000000..0251792c9f3c
->> --- /dev/null
->> +++ b/rust/kernel/alloc/scoped.rs
->> @@ -0,0 +1,231 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Scoped allocation policies for the current task.
->> +//!
->> +//! The kernel exposes several per-task allocation policies through
->> +//! save/restore pairs in [`include/linux/sched/mm.h`]: `memalloc_noio`,
->> +//! `memalloc_nofs`, `memalloc_noreclaim` and `memalloc_pin`. Each pair
->> +//! sets a bit in `current->flags` and returns the prior state, which a
->> +//! later call restores. The save/restore APIs assume strict LIFO
->> +//! nesting; restoring out of order corrupts the per-task state.
->> +//!
->> +//! This module exposes the policies as a generic [`Scope<K>`] guard,
->> +//! parameterized over a [`ScopeKind`] tag. The type is `!Unpin` and
->> +//! constructed only through the [`memalloc_scope!`] macro, which binds
->> +//! it to a hidden stack slot via [`core::pin::pin!`] and rebinds the
->> +//! handle as a shared pinned reference. Safe code therefore has no path
->> +//! to either move the guard or drop it ahead of its lexical scope, so
->> +//! nested scopes always restore in LIFO order.
->
-> Your scope trick only works in normal fns, not in generators such as
-> async fn.
+> On Fri, 5 Jun 2026 at 09:30, Florian Weimer <fweimer@redhat.com> wrote:
+> >  
+> > > Uhhuh. But that is only specific to 'bool', right?  
+> >
+> > Also char and short.  
+> 
+> That sounds like a complete ABI violation as far as I can tell.
+> 
+> Scary. Because I would not be surprised if we have code that assumes otherwise.
+> 
+> Now, the kernel *seldom* uses char/short types, and since compilers
+> are typically at least self-consistent in those cases and we don't
+> interact directly with untrusted sources.
 
-Could you elaborate what would happen when this pattern is applied in a
-generator? I don't immediately see how the LIFO drop order can be broken
-when this is combined with a generator.
+There are plenty of places where char/short are used for function call
+parameters/results (and not for single characters or similar).
 
-Would a closure based approach have the same problem?
+I'm sure some people (even some who should really know better) think
+the smaller type will save space.
 
-Best regards,
-Andreas Hindborg
+I've always worried about whether the calling or called code is responsible
+for ensuring the unused bits are zero (or maybe the sign extension of a
+signed value).
+Clearly the compiler should obey its own rules - so mostly it is just
+extra instruction to do the masking.
+But for interactions with asm code, and possibly code that gets mixed
+between gcc and clang (maybe for out of tree modules) it does matter.
 
+You also don't really want to be doing maths of char/short (and there
+are quite a of of those as well). I think it is only m86 and m68k that
+actually have 8/16 bits maths instructions (is s390 old enough?)
+everywhere else the compiler has to explicitly mask the high bits.
+
+Maybe it is time to 'nuke' all the 'short' locals/parameters/results
+(eg from htons()) as well as all the 'long' for values than aren't
+dependant on 32/64 bit builds.
+
+-- David
 
 
