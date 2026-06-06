@@ -4,93 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B38BCD6E7B
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 00:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FF24CD6E7D
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Jun 2026 00:36:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 798126B0005; Fri,  5 Jun 2026 20:24:56 -0400 (EDT)
+	id 5FBC46B0005; Fri,  5 Jun 2026 20:36:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 748C66B008A; Fri,  5 Jun 2026 20:24:56 -0400 (EDT)
+	id 5D3A66B008A; Fri,  5 Jun 2026 20:36:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65E9A6B008C; Fri,  5 Jun 2026 20:24:56 -0400 (EDT)
+	id 510686B008C; Fri,  5 Jun 2026 20:36:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 589806B0005
-	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 20:24:56 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E829B1C17AD
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 00:24:55 +0000 (UTC)
-X-FDA: 84847592550.09.0983576
+	by kanga.kvack.org (Postfix) with ESMTP id 404266B0005
+	for <linux-mm@kvack.org>; Fri,  5 Jun 2026 20:36:39 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D1F998D280
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 00:36:38 +0000 (UTC)
+X-FDA: 84847622076.02.A549205
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5B70414000F
-	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 00:24:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QyEvHHTG;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4834BC000C
+	for <linux-mm@kvack.org>; Sat,  6 Jun 2026 00:36:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fw/vLaTX";
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780705494;
+	s=arc-20220608; t=1780706197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=moshiuy8JwuZ3+oTcEsfObj1AtXF7PyldC/qvAt/mT8=;
-	b=0Y42zOdzAtWnOxLDsKGivGnCCWamq/ExYX9iloVnqnuf4JFioJgavD2suy585iCY7Cy5vV
-	G/1HZtPVmCgDh3WxWESLv1ee8+GvSwsEPCzFDLhfpxkGqTg+WC4mdpkpeQYfra5cjoiOSG
-	Dv76vS1FgelHDne3PNYO04gdITOcXvg=
+	bh=if7f2i827CYYs4L2MWjOunPYSfsBUmgkGAdZ7VFnG54=;
+	b=rY6eqiNeSahYegRqb135+UWlHpml4ybFIuVh8IJ7tAo2bDdp9704v+4YnFUJ44bvuZ9PDm
+	GCmyqzZW4x9YUaKF/BvUnB7P35LsWUcd/HFX8hf9yD+HzdVnc7XkKvHPc1zpOPnHx6zmKB
+	Wt+t/epPJPcb8A18uTsJQxLmIEgfKkA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QyEvHHTG;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fw/vLaTX";
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780705494;
-	b=e2kgVuZUcgfWApCwdnbezvK9cxn3kQx+MrxrwSinoMTSzYRYOJq8Pm6tUQp7BFvMktV97x
-	R3q9nk5e+aTBKn4vTRkfqfshNvnJSpQGPso9az52Bpz3eehGSpX0fPs2qUkJgAsk1WvifX
-	8R0GNgVxQp7vZ6COrh0YSjtPb94qM8c=
+	t=1780706197;
+	b=U9fB7PbmWa2zWwXyVT5r51YvpVFdZhz/eGx+EXKPNVsWiKDIjVMnf7yuWkNOCI0Z8kVTsI
+	6nfiizAKd2cj2EEDW+LzTHroa9T6tvVqhdAn014yH9FjWLWIEKeWelgtKZWwmIdBF50wYU
+	AZs4eqBBV9BpSZ+EcEfbJSRRwSH/0nw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6C70D4389F;
-	Sat,  6 Jun 2026 00:24:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B041F00893;
-	Sat,  6 Jun 2026 00:24:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6EDF544389;
+	Sat,  6 Jun 2026 00:36:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C481F00893;
+	Sat,  6 Jun 2026 00:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780705493;
-	bh=moshiuy8JwuZ3+oTcEsfObj1AtXF7PyldC/qvAt/mT8=;
+	s=k20260515; t=1780706196;
+	bh=if7f2i827CYYs4L2MWjOunPYSfsBUmgkGAdZ7VFnG54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QyEvHHTGx2S8OfnbQBiJk8vrArJ0wxW/Av0tdx4+2ZBODe1njfPe0a0qu5U6c6NSi
-	 t9t3AGBRb/Y+gnqn8t25ynFGdKFBQACbzmZxJSxWlZDHF19mkKv1c9qNiYKfTlYQo1
-	 u3HOOQdIUkf8Hu5iBdJJBmR28Y8IMO1oJCDt25s675D4E73mTYqDx4Eoma8yrsKJM1
-	 eTypb+Q2Nl7dOJJgqTru5dY+ySXAmsR16L2U1BBGlYdsWJFDvQ7sIK8D2OrN4zD6Ki
-	 t0leWaUvMuwsKSSI/4JyaaZHi70xH4cYyBDX5s4BKcMfWK3zDaZK6imCI+PX09RBZK
-	 K0vizNfCBjGeg==
+	b=Fw/vLaTXL6yirNSzNZu4/QAtzAszDN+U36IQdoYEJdWbuAk6oju9WLGXzn9xi1DvV
+	 sedxmaFJCY7H4ijFitBnuhKd4PYgEsKAwWwuOAWB/cVZ1T9tr0gbefFIDE6qZ6X28J
+	 PfH5zCrVAQte3BUWNF58USZTO9D8Z/qtLNORH61oX6wXpcTd6PgroQj2Vz38GAVqWf
+	 hoen9t5E9ArWsx21uZevAez1HHKtHY9uQFKSP9j77izBeZZ0t6YOEU/jSrFSCPHzNK
+	 JopifGHCD99GzXSM0UHfQ+asewWGBkQzzLvXqwb4VSZC9JA1hvxaiggSXWpnZmbjFh
+	 nRbrhGpiyUg9g==
 From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+To: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
+	shuah@kernel.org,
 	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v3 0/4] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
-Date: Fri,  5 Jun 2026 17:24:45 -0700
-Message-ID: <20260606002445.88776-1-sj@kernel.org>
+Subject: Re: [PATCH v2] selftests/damon: add regression test for damos_walk() vs kdamond exit race
+Date: Fri,  5 Jun 2026 17:36:27 -0700
+Message-ID: <20260606003627.88973-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <9f9e2159-5a6b-496f-9633-fa06c0217948@huawei-partners.com>
+In-Reply-To: <CAF+TLO0TOKr3nef9RnbBuZ8A-jNpV1po26t1BO6JbSqMhfABvw@mail.gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5B70414000F
-X-Stat-Signature: abd8jydwh39t87ukrzw95ado1tgzdebx
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4834BC000C
+X-Stat-Signature: iqghd6g4musw5bp5hx43oixgqz7yawbp
 X-Rspam-User: 
-X-HE-Tag: 1780705494-37833
-X-HE-Meta: U2FsdGVkX1/gsEuahX35UHxqMkgrP/VhSIeubqdhI4jqjwBj2MMdLgDmlkjV9m4tF25dXjwtUhR/5zGQljBqd87LFMwnXqwzJ4BJPgy+ncvWCRA+5Q1KUj8+BSyGrmyM6V921bnSQ1Pz6mnK08s7FwDFiq9aTtF5chAQoKObiKCiadRDfi6p3IWT+m+Bfq0RDXoltB+pMURVUpfJJQXLkPsgj6uu3GqfKSBWvx2ihCxPT+WnKa+vOG3a3o48UXmbCKd1KNU1n5FVdk5bgJK8Cf3Hi848C794rX+HJFCvoY3O8Ai9DbaAylRSv1Io2M4Ia9NqLTEg40suKCLF0qEg1TZVZykNt7pt+dhw5BulMWbXmFSir1SjgdtEd8If0f9ZmFeUQSr26V42r6EWut2ldixgChM74nweQVZf13cbbPSE0LpwlZEYNsPH2CxHiHqCOFmoMYAhQQzH1gxbAfGGMQdvi7NH6vNFS7V2n2rRpQVBszstQJaPHF3hGeGetWJFOJiMuy4GmYHKzjDVdRS9Wco1HVnbRyzvaWZFzDtAMV5XjPOdnJy/GJjow5dbZs/AgtSiq29S1Z2n9ZiExCJ8Q+lrf1bT9juOnPzVWjAEGwnAcmweTL1AtYuC4W4m0GyseJzOTpBCSyzJEd4Tkw0bufJZPlCRZPelZ5i0YS/NG+Hb8WIZsW5GZkdeRthCiQ44urca76v+dOkJgOb9nRqnjOjQJ+YSAxmJg1DK06EbKtYRH4LW8Ihu/NCHJpNacO1brMg+6NC+lbyAE7v4lHa2p3wmDCKFof+vKAZbKmPWaSnwUazn350od44lU6LCAUZA9nkUiWYxiOwoEQ2Rzf1a8ceNhETt3xLIMS9kYbKvfwrzI4xggkc8oDADcRxjnNNqsfDIZF8gmNK4+PC69I19XUmbN02WrzXEzCUknX+b4FU3zZMcRkkS0jB+k4C87bG7GH1aOV4WZngECjGBFVM
- 3pWzcgd5
- cQuwEm9Bv/vhN4ou/TH0ksagDGFYpETWDbERHoAKbjcicmOcKw2Ob1U4HFlkWxwqSNLmf07bKdHulVHdo1JBdU5koKK/f0kMr9ULgKQikwZudQDyH0R4ea1ELtZaOJpkHwLMQpw9WO+yayohKn8zW8ZIXzmUQ8EZN0ngP9JRZmZYZRrDrriphOGQ2NNw3OQ0ts5lyscp7VUnfS7aY+mYcHuLJJxPFYoqUbThetoY7/fzcXUII2pxpcZLVoSMbljNCiDP3Kv+ZKpsQZr+sJY08trzHf00V+K+3Eg1GRQxm+uQiyPMsjfDVp910BA==
+X-HE-Tag: 1780706197-955167
+X-HE-Meta: U2FsdGVkX1+ocAk/Q9H1hVrwmmqrmT5HU704UXnr/HQWj+LktvoUSVEfk1C3cyaFdh+D/dQ/nCkZmeUa49KxYJWcg2IlRgpIYOrfd1e5pBziyp0Gq1CKM/IBtpJAHSL4q3/zQy/1RmjV/Bma4ARalQe6alKNSjXr8p1PcReTxTXAWljoNBG+TIUuVErxG1UmfhM9VpkOfO0VDpfwuG+Rot5mKouiXIlHR8Hjf6FoD4HZGeqPZGM84vgSyXR5aMTnrcwj7hjJHZzNkg16fVqhNGkD7vA9yUieLOwM3lz9rU/R69s7nKCOG4aFgr+aHCeicNX79nuspfL+YyHWVErlWzNKPPezC98Am3OFrG+n0Rn+Tx3+GFBJnfhu8Sdaqar/f62wUbyvt7/ZP37r4YZnKs0e+AzWKd2VIVtOP0PGQQqvkNMOyyO1wfRjO2jtUieLnEC7MGXmUnW4/1CCxPUfgr2mY3uEr4dFSVaPna8u/XispKyIgEtbHs/FKa9CZZtH+Qz6fi5G17qnHV49p2/C3DzZm7syLsCHeFyFikYSzhuvchBqlH3joeMKof1feo8VbdnWksAxiaJVpd1qAJreKEOjiPZslzeTbjbNI04rl1nA5tQwOepFy+OqP/EkG4H6wG+Z1nKhZfUe5pEdzMghxTVdRETeD85OK71yZ20I/JqLOoHLhXnwl+HBnqUuAPhrD1479X0bBw0AsAU3GGYjMLu5ExrMcAdm7FxpqntmPJQv5/sytdQYdjw/u0icieP3yxVlQyC1TTQ5MLWi/L7vCTj0fd678ZDXcgUTO24rUDT7dBZNKonaex2TZ488YxXGO1yGCZFbyTsAtSh2cQlBfib6HFEVu6wl2W6NezuGMvW8LeylP5w3UU1YOEv4rbFrwKAJZcUKabEc8XKeq+X8MD24/20ufCOs0bjbRzXUY8yK3prx0F0fDlWvKVoR4uTOB0KcNt8d2kJmZH3I3Zg
+ 7Z5h4Me0
+ koDZv0SmFe9jjCPMnIljrcRmUQlviiz9tAcRJjtqnvuAx3wZ6Tp7taGKMzhy2d1e4qh1oFlxvTscJ+xeRfOy2WlwlOyXaIF9b1eY+riPQWzNgR4QGyChx/mawfZ3qSi4XcaG7WNF+89OueiSboOW7pVmmDYujb4mJzw3DixMf49LWN3ZXgv6bOueRmE7G3FSh9khPt10t5YNY0N94JoJSvRqYkOWH47xoa2FgZ862NcWExQqyxNTeU3qtNEUO0CxSIhaJtnkYJF1PcV0I9yoj+RvV9dNbkB+X/Gvh8fUCPJrm6gipEQbknzpVPxgNZWpVd5FAmhSMiEs+BKY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,49 +94,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 5 Jun 2026 13:25:56 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+On Fri, 5 Jun 2026 12:44:50 +0530 Sailesh Nandanavanam <saileshnandanavanam@gmail.com> wrote:
 
-> Hi SJ,
+> Hi SeongJae,
 > 
-> On 6/5/2026 4:34 AM, SeongJae Park wrote:
-> > Hello Asier,
-> > 
-> > 
-> > Thank you for revisioning this great patch!
-> > 
-> > On Thu, 4 Jun 2026 15:03:33 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> Apologies for the delayed response.
+
+No worry!
+
 [...]
-> >> Benchmarks
-> >> ==========
-[...]
-> > Also, have you tried temporal quota tuner?
+> I agree that a KUnit test is the right approach since it runs inside the
+> kernel and can directly set walk_control_obsolete to simulate the race
+> condition reliably without timing dependencies.
 > 
-> OK, I will give it try.
+> I will drop the userspace selftest approach and write a KUnit test for
+> damos_walk() functionality including walk_control_obsolete. I will verify
+> it fails on a kernel with commit 33c3f6c2b48c ("mm/damon/core: fix
+> damos_walk() vs kdamond_fn() exit race") reverted and passes with the fix
+> present before sending v3.
+> 
+> Regarding other feedback:
+> - Will use correct commit description format with subject in brackets
+> - Will remove the Fixes: tag
+> - Will add blank line before _damon_sysfs import
+> - Will add changelog and link previous versions
+> - Will share revision plan and wait at least one day
+>   before sending new version
 
-Sounds good!  These test results are great contributions for DAMON community.
-Nonetheless I don't think those are blocker of this series.  You could run more
-tests and share results even after this series is merged first if you want to.
+Sounds good.  Please consider using in-line reply [1] from the next time,
+though!
 
-[...]
-> >> Patches Sequence
-> >> ================
-> >> Patch 1 -> Introduce DAMOS_QUOTA_HUGEPAGE and autotuning
-> >> Patch 2 -> damon_modules_new_vaddr_ctx_target
-> >> Patch 3 -> Module that demonstrates how to use DAMOS_QUOTA_HUGEPAGE
-> >>            and the new VADDR ctx creation
-> >> Patch 4 -> Documentation
-> > 
-> > As I commented to each patch, patch 1 looks good except a few trivial things.
-> > Patch 2 seems unnecessary.  I hope patch 3 to be much simplified and wrote
-> > again following the sample modules' pattern.  Patch 4 seems too much for a
-> > sample module.
-> Thanks for the feedback, I will work out the patches.
+> 
+> Please give me some time to study mm/damon/tests/core-kunit.h and implement
+> this properly.
 
-I have a trivial comment about the 32-bit overflow issue, but everythinng
-except that look good to me.
+No rush, take your time.
 
-I feel like we are going on the right direction and this series is getting
-closer to land!
+[1] https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replying
 
 
 Thanks,
