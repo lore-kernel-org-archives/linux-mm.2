@@ -4,101 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E719CD8C8C
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 19:08:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7372DCD8C8C
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 19:45:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6788C6B0088; Sun,  7 Jun 2026 15:08:41 -0400 (EDT)
+	id 6FE936B0088; Sun,  7 Jun 2026 15:45:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 602516B008A; Sun,  7 Jun 2026 15:08:41 -0400 (EDT)
+	id 6B0186B008A; Sun,  7 Jun 2026 15:45:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9D06B008C; Sun,  7 Jun 2026 15:08:41 -0400 (EDT)
+	id 59E4E6B008C; Sun,  7 Jun 2026 15:45:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 37F9F6B0088
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 15:08:41 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C8C3D91968
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 19:08:40 +0000 (UTC)
-X-FDA: 84854053200.20.FB9F39D
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6338C40011
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 19:08:38 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=hIB2Juxo;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf11.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780859319;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 445BB6B0088
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 15:45:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ABC6EA0819
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 19:45:38 +0000 (UTC)
+X-FDA: 84854146356.21.891BF0E
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BE9B61A0005
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 19:45:36 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dziAG4PM;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780861536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=okDVFSTv4fCBjivazCm7I0myKhLAMvL8UQn0109STco=;
-	b=OBV9MpRYBoSe/siZm/b6hGUUP8EG+I2bUovhfEJsLLMQmfK0Thj8nzpC+9OOXfu4lvD44i
-	T/xLM5cutiz5yqhf7+ZrfcKK1uHCAXeE0sH0wS113k3rb2qx4MaNcE0cV40AyhAO5JPeeC
-	p019SldWIVIRR5c1Geyrxa1kb3LqlhA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=hIB2Juxo;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf11.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780859319;
-	b=BVGWrMJ2BbeC2rkx/V7xMJVzrJqri4b+hE7382950KGOV+NwLbyg3zaLv9eFCQ1ePblki/
-	Fm3+M61d/adiuoZsprJgyuiakBnrGuoyWcc6V2ii+dZsKd4LNdeAd/CMBaxNXy/H9xhMuf
-	PzwuECEFmtvF86mkJHLQC4g24LYO3tg=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C062540E015D;
-	Sun,  7 Jun 2026 19:08:34 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id QAl3fNcanhlf; Sun,  7 Jun 2026 19:08:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1780859304; bh=okDVFSTv4fCBjivazCm7I0myKhLAMvL8UQn0109STco=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hIB2Juxoi41C2nak1bGnPQhU7XE0vXEQwAAdlVdQl6oQC2nQpTxiq41pc/H3MEudq
-	 QYYtfBSnXLtHzb/dHDTUOKEg7iGTimpxsLk1xXo+kwOg32DpNY/FT061/sNBoPBVBL
-	 cjKZBA7wT1A1Tml9E7znkNjiw77/0TN3nDQORozxFEZtU485QGNTJXSGp4MfSPCahi
-	 fg86YTgH44T3eMOPorP/J/ozHp2iU0lPrVqxWGldTSu3iIUyur7ygGd3twJrSf0ji5
-	 LDNWYI0LLHyHdi0aXerenDTEIlWbIaFImylW4HpA4dZdpPHmHP0ij1NSIbkQxA1Pdr
-	 xjcfWpTc/mMuZ/wbYs8KtHM5FiT7s5bgK5vqyl6ST5orNLZi4ayT5gahAMViGlEQ//
-	 7r3iiYFMKGQNOhbgfzYwFp1qbsRrVrQeiW6wYbJvB3iCSZM4tzrJOBcVjsoPP0LPrH
-	 Nawz8/Aj3W2Z36cIfYNasDgBLnq5b2T7cBPPev3Lmd6U7/whVUMoKdwzTJjUIz1vvp
-	 b1rJQw21Q1syJVlgPuEdFRQYaGoxYlM7pvWtL94i8JWxHHzRGhXmwrnN1bh1RPRBsh
-	 v5trxIa/WyUaoUuAHOsoZmHIXpAUe0+MFryTvGDyRq5/kS96++KAsilyB4y1eYze2e
-	 vhRusUz3/6YDNd6PjNAxM2Ns=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5307B40E0031;
-	Sun,  7 Jun 2026 19:08:08 +0000 (UTC)
-Date: Sun, 7 Jun 2026 12:08:04 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
-	dave.hansen@linux.intel.com, david@kernel.org, kees@kernel.org,
-	mingo@redhat.com, rppt@kernel.org, tglx@kernel.org,
-	linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH v4 6/8] string: introduce memcpy_streaming() helpers
-Message-ID: <20260607190804.GAaiXBlGO2eRcfs1oB@fat_crate.local>
-References: <20260603080152.64728-1-lizhe.67@bytedance.com>
- <20260603080152.64728-7-lizhe.67@bytedance.com>
+	bh=WonlPgUFHgcUs9L2FpzERLFLGDIi9P0mv3+MIWNU1M4=;
+	b=26/R51QEZOE2bnZwsjcZqs+iY0mQj3s0nywMfbQ9P10ryJ5R+ioBAal/IOST1QRh/izhyh
+	d+enYD+vDLwWaDlpL3EEwf4ia7As4i89AcpVlvi4UUZQTjkNFWyB1TsT3yxo0dZu8/z2+w
+	hg8lyZwIJJuK2UHS1C1MUvlAB6ru0aQ=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dziAG4PM;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780861536;
+	b=h6nqK8y+oX6UIpx/ZAA3N28eGL2y44k72eR3IJs0oqVh9x90N5V6VkPw5OUTFWKi/DnpuS
+	/PwtVQStZA2m6eLbe6hXJNlwJRPGZvozQ+vhCyo5aoSu2lewMOnVI20v53ze9zeukpsbNI
+	y8z+H1vcw3d15dz/TJgpM99/D/vTZeg=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51765331535so1314291cf.1
+        for <linux-mm@kvack.org>; Sun, 07 Jun 2026 12:45:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780861536; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KF5iFA62Exkj5KedCfofJcYovZjQ9MrdV4vdesI/z1hxRNA74vS3oWgf02xHjW9UL8
+         wkrxDhZ7vjm+WCLj0oGk9smUSkQK8VgJVsknxnDUnhGifwkiazsK412Na4tnEoZgLsEX
+         fE5027lWWu3FSvdbHqq7bfOO5iXPciCFa9s9w2uloEvtlG+Udefb3iA8/f+OSP2Hbzhs
+         REQmPnkAUjJ9yhA7LEJiH9bA18T3vOtzl3D3MP3sdDgR6jLwb0S4+nlvZtjGnbGA724N
+         9X1kEYtVCvwP9rs8gTr7OwkoPTFvSuvaw2LML0eAr3/5ScVqLaBTbrT9912UMJ4eMpxT
+         TwHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WonlPgUFHgcUs9L2FpzERLFLGDIi9P0mv3+MIWNU1M4=;
+        fh=XLP+xuIDhWRgzFvqlVdFvKxuWLpo1VlJ8cDXy9T4qvc=;
+        b=BAyr0rPNzHIoU6htZESMH7r443YWjLiEO50RbNwOcCR/KJwb8wmgE5FXmWb+Lx3Cvi
+         pp5n5uBnmrYc5EX7iiUFiTYWV9rW8imyZihE0fFl43+ZrxmEo6yV1rwYkVCr6EvDWMDy
+         T80VfRw9a7iL08p8eeDEfI2eKW1/4kvxX7xNibZAfVhy4C3agRGoDAFe5dMsdlCADPHO
+         6T+YvjCzNirgOn1K5mZkCy1SB3bmqk5F12cCOIutZHL8Crw79OAOHjm8EmPLKzihdnSK
+         I5u3vFXq37/b7W+d6Yw+HP7Vwh51i63kN8jhDtaJ6+dHzthH538y/rEBm6fgezZF4pfe
+         qdLQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780861536; x=1781466336; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WonlPgUFHgcUs9L2FpzERLFLGDIi9P0mv3+MIWNU1M4=;
+        b=dziAG4PMRx9sYiqFVZDmNi8DyvyZHaDw3+j0K1zi1ufRQCdRt7O+X4RNXWusAqo/mC
+         Oa+ZV0gnSO1Qldae0PwEOt3XXQpCUdQUybUs7SrLmGjHGwTOMYwNsiY9o0yan1ypaRCV
+         5d3/5v/bzdB4R8Pa6/mjdERzWDr0NENhESIKah4B6yU+qwE8HENiOg42mBXFfIR7g3K8
+         GJZaau9BQJD9t6CL34CJGGtduQk9Rp5jUKTpSnQZFGJMm68Ey5ue1lOjkb0w0yY018jb
+         JYizGMFjKcGgwWWNbtWYWQUG22wLf0mZnVOYG5oYa1AwC02hqPeXTuY0tcwshbmG43h8
+         DpRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780861536; x=1781466336;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WonlPgUFHgcUs9L2FpzERLFLGDIi9P0mv3+MIWNU1M4=;
+        b=A9pAkFfMXqV95icSwGjLuZHRBW2rs8jPEj19XYzLWyrkS+SXR8oAw6U7nm41mtFGX9
+         rXx8ZKjIifwa7V1p/u56n2hoq6qwroETyUMzmLWEX2W1dJpTNB7Ji6KO0EUvb5TNaJls
+         RE7R5g3VkGMH/xaRGPsr8rc8JovIrllxPLUdEyVquf7Tc0wWv3uxSwDWl0Mn8PgXpLKn
+         aEvJPZtpincr8+DsuW2BL6fPgy5be4qD6lZYN8bHwJsyB4lBcN1d7kYDLee8dxgBmXU4
+         qmM/7BD5GNY3UnvxLN5ddi2iY4tQiWIBciB9P0XI1PcX1mStlQyZCn49H2B/Me4tN2Ox
+         u3ag==
+X-Forwarded-Encrypted: i=1; AFNElJ9nD/3J26ZIb8O0eCcjEvfY+JFrJMoJZ8mZbSWE2pTkQ6wkPV5rZo7G6kxxCEHb9aZlsxMljTItbg==@kvack.org
+X-Gm-Message-State: AOJu0YwFxPlDRAabfiwlwU8VDm6Blc7dRwO2nrK3hA3vATVnjJwie6RO
+	anr8gKKj8nx2Z3+YOUIDMz3luLZZEqAP+N05AAak+Cptgy/9+0P9AuQjMZA+pkOozB67SDGjNd/
+	53dNAbwzzY92P+DIBc3h70MDyUhgQAlcs8LHyZFRB
+X-Gm-Gg: Acq92OG4oTGQBVqWYxSBubax1ObE/zdyCLYxDhuR6PZQsDCym+au/bg54dUu+QNpYvx
+	qFh/ksbMNNuEB3l2yuGNeTIs/mY/QDF7k3codv7YKUBsYHA4kguHdMkRX9sdwLU9OIcmGUjioaI
+	vV6yMN97BjL1L03KQz1BjYNbE9/WXoA0bdZedhkNwH7WuJiSm2mshUiJX8ucAqFVeAYJLeuZGQR
+	Z2xYblXzcJnHmgQq5IPJUVOiu8eCS1oqMRvP/rNvSG7+BMTn08F++iMrPVE8CoZVERyEEptbt7M
+	6jEL0xVc4nfEM4MX
+X-Received: by 2002:ac8:7404:0:b0:517:5f1d:9f7 with SMTP id
+ d75a77b69052e-51798048095mr17306831cf.7.1780861535240; Sun, 07 Jun 2026
+ 12:45:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260603080152.64728-7-lizhe.67@bytedance.com>
+References: <20260606015729.1837935-1-surenb@google.com> <20260606015729.1837935-2-surenb@google.com>
+ <aiPWD6xZLg6g4DTO@lucifer>
+In-Reply-To: <aiPWD6xZLg6g4DTO@lucifer>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sun, 7 Jun 2026 12:45:23 -0700
+X-Gm-Features: AVVi8CfBcsay7fSf66Sk-qLT0-CR42bdtqU3m7RFkKEe4jFMaUgxiFQKjS-VLls
+Message-ID: <CAJuCfpH74gRmgm2tgwB7SHzL9DrU3Yc4LyS8XLa0tR7fJqaw_A@mail.gmail.com>
+Subject: Re: [PATCH 2/2] fs/proc/task_mmu: read proc/pid/smaps_rollup under
+ per-vma lock
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
+	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
+	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6338C40011
-X-Stat-Signature: hfcuq6w7md4cc87sfwsaik3gyrg6pbzu
+X-Rspamd-Queue-Id: BE9B61A0005
+X-Stat-Signature: 3rusgojhb3xnre8p31h4ewudgzke387o
 X-Rspam-User: 
-X-HE-Tag: 1780859318-708099
-X-HE-Meta: U2FsdGVkX1+BCZoVAnTf1mfy0RVX1LRgs8/hNmLopd4DeWTgVe4KnOggpn+zCWmdiyL/VV9rGg/KrjUVCJJR6FJf7wfsvEiFdUTkntNZ7FW2xIoM2GBV1AponYdRAYJfGjFIeZKA+8UB/KHvdAylH4K21HHZ2LzcRofoIwQInU+gAfnJGmbo6VeOVDVM/dTaULEI1TscrgACCt1AmApi1YNtks/4yOyQuq9X7KgmenmvAdJbaum1HsqCdzzHvz8LZlIljpBcUq5j9Rh5F3KnPQmYNis+vR//io8efn/xI+tXCgRkCX0UbiwEXta1tNsBE1mYYM8qgAG3Bb9OI443kuj5+Khy9FVBZWui0c0G0nTqqqfGWqrhDobGRMCgqGmwCSVeKL97IchVQosUOaAPCIotApATSxHrcXrTvVUl0TL71CLHsDcFVXO2LZ8sxVAdt9Hif1hxy/p0rnZrkoz++CeGOs6FBUlNAQDrSihkHataA6FY96X3RJt0L1GIuBIOT1BzFh3hN6yELXmdHP4VQAS0D71V4sJuj6afTTau+LKHVnE5ll6AGdAafHNXBdTwx1jiH2vCnn75JSsmVY4q+zst+3Y8eSFPM4T3UURmFNvUQ4KvYFiWRcZHUo/cadov9ijbDGYUgawik0SUc/P3aQwTytSC+Vo8mtl/atEA8e7mp+v7EzojPUeemOrFP4rmETvthsnuUcsbgzzUV08wgJDaIrBG+l5a7UatI0yOhQb6/t9UIn1fIBAHjDJWJLztoViBliZ+dRwfm89EgPYOVfCSlfyUl76qALT4NOZG+46pqxk5tzccihQ5bPAvCkbmifI0V3ecYhZ7GUXMCW0KfarA3JTHjROmoiwZzIu5GzzSuCQVTl0wIP/547aKCxA6v7Hxp6+lkPLxQN3A6VvFedSSHeT2t9h0V/uZ+Pn0icXpIDCH7lky5Lh5yb88IWnZRTfhcvCqF9xfczTytp/
- 4wbYtBi1
- 7Llz2qQAR77/+9kYCaBN5fvbSeT/EJadIJ3/ixMv3O7aRrHpMcm/3LPVRvAWWne/gaesS252UNyhPYeVG74JPmxfcnWMW3QrdcyBglf8Bww5IMbksgQHqw8BjEkA5IF+3gUXtARaBPy1SmPRZPZyvb5rse4D4SOBkbcQnwUeJRIFH+gHbuzSBo0njcNd05hiZQZSS7A+9naE8Hm78MClWuoRsSkz0WlUnQU7XWl+AixRuUMZBrmMKiO6/WmJmQ+HBMWypWQDmiey2K6kFTjaqMPU06yP+NBHBC3zLPvn3OIWirpUAwKi1Ynp4dJgLYm4KvYLAzXpZOT8P+vPPofZJSWI1PwK/Rc4zKfjJZ3G3hzkktoP5I2Q0QykBLA==
+X-HE-Tag: 1780861536-99403
+X-HE-Meta: U2FsdGVkX19yNNu7udCHxZ48lpWpFCP1d5evy3ERDwzJ/6e66K27oEK/KnfSffX1anyKeUmjvUsjsFrnd8N/WFzoZynU8LmF8kYsbp52O1bGX9MKfF9cHlqPsnjOV9Ogvx5d0rR+/qmXe5QjEGpuTAwSecBHFY0YaHdknLxBV0kstKA9+WqpSECm9n0IckYeg/+0190tlmKE6lltG7MvwwqUt9FbIf4wjs/x+5l/wLEdvcZA+GvnSx7CGvWgf5rmYgb2965PcYX6z74yhikVDJTMTljfR7t9/JiF4SAAQEtWls9am99tE0IdPxORt6qztVT3zaFfx4ls+aV4w9k+z4/k9uP4dJTPMU3LOE3IHDTxM8pmoW0/kVEzCx4saqgYNYuXR2xQXpISR/zCadQ+QY1fb66n0jNKQHB5TWpK1nHuAmHvlG/iKfiNTQK8k3RSJuA70MAoyH9zpamt1ejwgBQO4anWL7ejWOF3hYlfqfst/MPId/KjalhtbH7iKXFMxNu8ViIvYtKt2xO6JqCnyvhKZnzPGaPdT7mK7YmGebItMg/DpOwrW52CJ3lxLGBxVwN6Tnd+OLl+hTo5ymzKAMR9Sy4+l6iajysLQtjpvimtqzT696M2mQAAFj06wRg6HU9NGA43I4/ZJa6NbxvH4JYRCj5dGEjrE8K/wp+DvCd463zat3kGbG3zmUiNYPwjRAO0BkDD7Cbwjd++OEKorZ6Am0S2h6Qu4O3m2axoxMLUdVVyJgTqvyD1C8w/QnEyQ+pehu8Xr5dkKBrlsat7OAcdXT4LudKYUaF4otaLxESFw6+dvqS1Ec0ySLBSpkCGjRCFEOYQhCrtUwby4//hH7HoT/g2il+ORnFoZ3lLZ64m15/WYM8qabJwf4yyAxbVjNckjFyjcjnFreFu5NGssqKwwBg+ur4s7ELYrmzhT0KcIBKbCO0fFtfT8951ohCie238vlsexFdt0qaizv5
+ xU4slYtR
+ NiE8cxAQPqYQXOKfJsR2geTdzlOOR1K1j8KDv/qHKSAnSkmrRviFrone3cgMEF01PSrEvrdJ9CnYoJk/uFyssX0tN+wVVguZxRtIwa4YFH2HpG3kTQilaa6QfCXDj1KMfhmn+OlVRaNO4ygw28Mp7d9NECwdToX0aXtWOELmWllLP1tkiVWnCFqavbderdiMmCrJwH5S0UnIWbYmV+XIYCjKIBWcRhjDrSjqrj+6jya1KHNsxGH67ODr6UJPNMJIUZxuL3xxvGA6C15NttlK7qfuos2p3CPrtZ29Pg6726RkiJrNxBXKjuiuYHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,100 +142,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 03, 2026 at 04:01:50PM +0800, Li Zhe wrote:
-> Introduce a generic memcpy_streaming() interface for write-once copy
-> sites that can fall back to memcpy() when no architecture-specific
-> optimization is available, or when an architecture-specific backend
-> cannot safely handle a given transfer.
-> 
-> Add memcpy_streaming_drain() alongside it so callers can separate the
-> copy primitive from any required ordering point. On x86, use
-> memcpy_flushcache() and sfence only for aligned transfers that can stay
-> entirely on the non-temporal store path; otherwise fall back to memcpy()
+On Sat, Jun 6, 2026 at 1:12=E2=80=AFAM Lorenzo Stoakes <ljs@kernel.org> wro=
+te:
+>
+> (Will review separately)
+>
+> Sorry to be a pain :) and I know it's a petty thing, but even for a 2 pat=
+ch
+> series it's easier to handle if sent with patches in-reply-to a cover
+> letter :>) also makes it easier to track overall updates in cover letter
+> changelog.
 
-So you throwing "streaming", "non-temporal" and "flush-cache" wildly around
-here and this is adding unnecessary confusion where it shouldn't. I'd suggest
-you stick to "non-temporal" which you can abbreviate short'n'sweet to "nt" and
-that's it. Keep it simple.
+Yeah but the first patch is a simple cleanup of about 10 lines, and
+writing a cover-letter for a single patch seemed excessive. Andrew
+would have folded it in with this patch anyway, I think.
 
-> so the generic API does not expose flushcache semantics on cached
-> head/tail fragments.
-> 
-> Callers are responsible for invoking memcpy_streaming_drain() before
-> later normal stores that must be ordered after the streaming copy.
-> 
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->  arch/x86/include/asm/string_64.h | 32 ++++++++++++++++++++++++++++++++
->  include/linux/string.h           | 20 ++++++++++++++++++++
->  2 files changed, 52 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
-> index 4635616863f5..aee63108577f 100644
-> --- a/arch/x86/include/asm/string_64.h
-> +++ b/arch/x86/include/asm/string_64.h
 
-There's arch/x86/include/asm/string.h. Why are those here, in the _64 variant?
-
-> @@ -4,6 +4,7 @@
->  
->  #ifdef __KERNEL__
->  #include <linux/jump_label.h>
-> +#include <linux/align.h>
->  
->  /* Written 2002 by Andi Kleen */
->  
-> @@ -100,6 +101,37 @@ static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t
->  	}
->  	__memcpy_flushcache(dst, src, cnt);
->  }
-> +
-> +/*
-> + * Only map memcpy_streaming() to memcpy_flushcache() when the destination
-> + * is already 8-byte aligned and the size can be handled without cached
-> + * head/tail fragments in __memcpy_flushcache().
-> + */
-> +static __always_inline bool memcpy_flushcache_nt_safe(const void *dst,
-> +						      size_t cnt)
-
-This is checking alignment. Then call it that.
-
-> +{
-> +	unsigned long d = (unsigned long)dst;
-
-Useless.
-
-> +
-> +	return cnt && IS_ALIGNED(d, 8) && IS_ALIGNED(cnt, 4);
-> +}
-
-AFAICT, this helper is used only once. Zap it completely.
-
-> +
-> +#define __HAVE_ARCH_MEMCPY_STREAMING 1
-> +static __always_inline void memcpy_streaming(void *dst, const void *src,
-
-memcpy_nt()
-
-> +					     size_t cnt)
-> +{
-> +	if (!cnt)
-> +		return;
-> +
-> +	if (memcpy_flushcache_nt_safe(dst, cnt))
-
-That branch can cost. Why is that alignment checking so necessary? Why can't
-you simply DTRT by handling the misaligned parts like __memcpy_flushcache().
-
-What does this bring you? None of that is explained in the commit message so
-why do I want this patch at all?
-
-The commit message is basically telling me what the patch does but I can kinda
-read that from the diff itself. What it is not telling me is *why* it exists.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>
+> Thanks, Lorenzo
 
