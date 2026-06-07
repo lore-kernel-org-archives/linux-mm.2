@@ -4,83 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 981D1CD8C8C
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 08:38:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6AD5CD8C8C
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 11:58:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 669BB6B0088; Sun,  7 Jun 2026 04:38:53 -0400 (EDT)
+	id 91E4B6B0088; Sun,  7 Jun 2026 07:58:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F3726B008A; Sun,  7 Jun 2026 04:38:53 -0400 (EDT)
+	id 8CF1B6B008A; Sun,  7 Jun 2026 07:58:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E1E06B008C; Sun,  7 Jun 2026 04:38:53 -0400 (EDT)
+	id 7E48D6B008C; Sun,  7 Jun 2026 07:58:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A28A6B0088
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 04:38:53 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D95551A06C6
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 08:38:52 +0000 (UTC)
-X-FDA: 84852466104.25.368C291
+	by kanga.kvack.org (Postfix) with ESMTP id 6DFAC6B0088
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 07:58:19 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E0C41A0794
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 11:58:19 +0000 (UTC)
+X-FDA: 84852968718.12.A5C223D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 463561C0002
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 08:38:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XahCIgSf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6941AC0006
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 11:58:17 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QMjl1xiS;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780833497;
+	b=DehOcE9993RENbCggfLLvaWoGs+w4RGi8J0XB7VNfIj3DHHrFPowFvi85CMZEEQn56GnQ5
+	O9lqWN/G4oEADmDnqhF7KzJI6RQv10oMjqZ4X2PbIhE5FaQpPwRIkNRvW/v6abYkNzXEcA
+	EMzqZ+svvLyRDSvwB/PebeDbGLdv7rU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QMjl1xiS;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780821531;
+	s=arc-20220608; t=1780833497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NXFgpgZtmgGyvqSFzwfkAaFL3jpCX7D1eIvkr3SRPGo=;
-	b=MjR64/cZxoUwv65b8qYmrtLWM2Da3tkTNP//SvKK60T30zYMXn1qffe/lmbkjJpY2zwQLA
-	gir8WTD/YCHTcf4jwZvN7gdjd2y9wy5GITFSF6p3YY110BXH9I592NL1z0vMSMdZqwL3FY
-	9+v0niHrrTs7Bs9V2RGMXVY3e5M6m9o=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XahCIgSf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780821531;
-	b=N+2C3PM7/sgfkubnyXp18SmYdXGyBcjRymXmVACVJ6Pc8CD/aNmLqraNh5gRVqQwDv7HVB
-	mdD39/rLl0gkH0m1BaaZEkWsNMZ/mBYUxTerIcDQswRJl2+6J8+pEFKt3vy7eQDMW5hoGf
-	24tC7EkbUt9aUEph+rtn18iLAQ20RCo=
+	bh=wNB4h4utZuNVxiAEqzDEuzLMJdgTJVcCVWUJqa+wJiQ=;
+	b=cS2FfL0BFZtsuagL7XZjJzXlI7Z5uKE6MZvOH5NMARAKk+wIsKfZfKczkNtQxpoq38w4Pn
+	LjxLGfP3Gu0ywcb1lpmX3k41AtXCsdx72uvr5XoqOsH2egA1siiFWnuDSnIKX8RGIF/O+I
+	xBPGV2Gw+Vj0NcfKsN8On/SWwpc7PTY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A587960008;
-	Sun,  7 Jun 2026 08:38:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D5F1F00893;
-	Sun,  7 Jun 2026 08:38:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C6C37600AE;
+	Sun,  7 Jun 2026 11:58:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B8E1F00893;
+	Sun,  7 Jun 2026 11:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780821530;
-	bh=NXFgpgZtmgGyvqSFzwfkAaFL3jpCX7D1eIvkr3SRPGo=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=XahCIgSflUlzl9MWnz+cVVrZO791s3shralebfA1ZscwPQBWMV3lOv6iiqKQWv29e
-	 PMBtpmj/XvsfZUQ12mz6JHz5MztoQUmNtHwN5fBS9k9un17alPkeTS3alohOG/TgvQ
-	 4Z3JL91qpTkvpVykTqVfrd6CyIdEBECULF95rG3CyUhe6CA+MaEival3LEW8TXQrGV
-	 +/xUJQFd2p45QrgM6wSB8aRAQunmi/JJtuyzJbv1AkUruuR7x5tOspHr3g2AEh+WIh
-	 yiID2mj8DEC1GYMAuR21uvwZSU6f1RJ88QjRmjgKO+Ia8jlYqIMaQ7jala4td/Zsss
-	 VqZauw5+EPSgg==
-Content-Type: multipart/mixed; boundary="===============0148180687452261602=="
+	s=k20260515; t=1780833496;
+	bh=wNB4h4utZuNVxiAEqzDEuzLMJdgTJVcCVWUJqa+wJiQ=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=QMjl1xiSwtKwrEq23rBPX3A0XsSxwc4cSJ5sHlFSziemnPv0qynpJ2Whc1E7Mx1cb
+	 FxsV9O3WNpHYknPYNZSmK6eQt+nsBpaqZWwryUxSaTtObyTKtbqYDcPhfqz7M1nom+
+	 MJsRUUCXBAzGqa4+CCmIE/jrnA+l6bfvRFsuAmQ8iXH7LNhMYFsA2KZzQpdwEmBNHj
+	 FytGpxqTRDm81hZo2xT9cKp8gCMDbTXSDEYRpmaG3ZfsE0pIFQlbtmwHRDz6ackGzk
+	 XJpuA5coF6Xqz5BJyYdhCoKs6qFL2SOjcmnQO4a30hUn+K+rxP+c00cQ/IbQpMlFZM
+	 2p7T6LpAC+ykw==
 MIME-Version: 1.0
-Message-Id: <5f68f44310d4878185fd5ebc52d66530b99f174c6d04ab1170dc53cefaa54568@mail.kernel.org>
-In-Reply-To: <088f52fd25860ca961449d53f91b214a@kernel.org>
-References: <088f52fd25860ca961449d53f91b214a@kernel.org>
-Subject: Re: [PATCH bpf-next] arm64: mm: Complete the PTE store in ptep_try_set()
-From: bot+bpf-ci@kernel.org
-To: tj@kernel.org,catalin.marinas@arm.com,will@kernel.org,ast@kernel.org
-Cc: david@kernel.org,arighi@nvidia.com,memxor@gmail.com,akpm@linux-foundation.org,rppt@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@linux.dev,eddyz87@gmail.com,yonghong.song@linux.dev,emil@etsalapatis.com,void@manifault.com,changwoo@igalia.com,linux-arm-kernel@lists.infradead.org,linux-mm@kvack.org,bpf@vger.kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Sun,  7 Jun 2026 08:38:49 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [RFC v1 0/9] kho: granular compatibility and header decoupling
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, 
+ akpm@linux-foundation.org, linux-mm@kvack.org, skhan@linuxfoundation.org, 
+ linux-doc@vger.kernel.org, jasonmiu@google.com, 
+ linux-kernel@vger.kernel.org, corbet@lwn.net, ran.xiaokai@zte.com.cn, 
+ kexec@lists.infradead.org, pratyush@kernel.org, graf@amazon.com
+In-Reply-To: <20260605033235.717351-1-pasha.tatashin@soleen.com>
+References: <20260605033235.717351-1-pasha.tatashin@soleen.com>
+Date: Sun, 07 Jun 2026 14:58:08 +0300
+Message-Id: <178083348872.1648214.17778188633648887952.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Rspamd-Queue-Id: 6941AC0006
+X-Stat-Signature: jip7g1rybmwawemas33yxfqi97cafz81
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 463561C0002
-X-Stat-Signature: 1ygm796dqwqzcfo8tpux5ff4u56br1bc
-X-HE-Tag: 1780821531-150072
-X-HE-Meta: U2FsdGVkX1/nh4Pk4i6BciKjJOrJ9PkitsUXfykZ6VESBv7f/eKY/Jis71+K2y1EF7AYwMtS3zUjmPOSm/v0IYCSJtKPevDepWMpVBRsedDTESWp8e2HQ3YiX8eh4GbblSsBcPe3LkN5MqQyBoG7atUZ6qvR/r0cxgA4CbmGrXyGAb2LT8J+j+vGIfZglyG85sgYOErOnFUWGenAW0iaVVoUlBIvONQ9q67nBOQkWBHuFt6wFW4p+LJf54Hzywq+mGvaMvs4NmZ5zjYpBezQoW5Rfl/QC+S7PG61K29SanPYTmxAuDfCFf+y9sUxXwhDhI8jKEt3pc5qod1h46aEoQt2DfMI4MYHWuX8HryWtCv4r6orDrDW5LQfi4oilnZyhpoxix1e3nV2LgKh7Wd6KjJT+erAxTIew57qCgYx6mlUzj0jD6MsB9HFqzObLNIg3H/zZqQs/5oB36NpjS6mpKXs6LOPCmjFRaeXWK/JanFK5KOTAvSeSCQD345rQnE6zQpNfmDDzpem7b4uPW1WnwGzUNvZf+BF7kT5rEGkAcZqdzuxCH7e5w+p/AbEJPVq/tj+J+RwXCzsqrwmB4m4sDFjlbM6gE815M0tw7QHk0gNwnVzoVwh6hO6iyvm+IKd4JOJtAsnp1aWiiGzoO47ZNFZJo6QSnlfjkN6wwzGCUd7AAqyeZpIcE7ltTUAqZT7EyQLd/uBL4ncEcHM0v7VHcA8fAgqLp220gkfPi0oKSXx5Rp00DsBJ95Z/EzQIw92/at5u70GhWU42JptqIVScoXDpaUtWZwMePYv0gefIFz+l8q/ZAgWl7Ky0LCLKiNOi6CcsNrWQuDwXjEvL+Fi2B1Pe0jLJ0m0pcgEpoVs9DVJCq0op9/wAHD9kFCrqgqkLf3SZA6hyDpTttNZag+khQbSGIxLIZ9qabZGO+ioBSwSvuGiKH2c419hP6WZVmpTMy3Iw+Iqjr8thiFm8ni
- rxCHIoil
- anJVsnhV2DUzHU9viHL/71CyYOAPoYtfDRxN8HO4yYjwf6dSBLIzIwRE7joncnFU0ZwatyfaaS81jUbswo3yzc9ZA/jBjpFmsPpu0qQoruONuUBVDaDEr9MPZacQC2GxoIAN2UN/uTTkcU8prKvSP7hbGQK31pasPmIKQ2LqQIigSpGgs0kRgRcQALiNk/0ie1vp6W/2KL5qxZ8zxvBAN55hwmy7XftpU3ZFhCcylmKL9pRfvNRaOUQ+qGtTnk3h/yaXRKD4NL7EbzOy48+1xJp7/SKZmx2TyvGkljp902qDPJQQ7LgUxHR8N9fA4mTppLV8FizMY0883qNEi8UBZHtavYFWsEjVpRTypS3Kp1+Gl1dXKwDicjQdvZIoPOhAXo/EpBmG00+6KDY756KkcqLbooIU6bZydPdQFeUCQhKeYl7pesFSRPTus/dfRYaBIDGRThu7tCUn0QtkaObCHaGLECSm/T+lIDYclfxikLu8m1s12F55rHXnFmjUwdFGwGW/BWyhpBapdrt57UXYakzDviTvJyfT9jw1D7npZ7F8i7th9hN8F53MeBHlNflTeF/Aj
+X-HE-Tag: 1780833497-550452
+X-HE-Meta: U2FsdGVkX1+tLhzIhhaQeNZtJTqydOjS2/e00QMYQ6r+e/kI6BNQO85CyIgsjk6URua5eP+PE3Q4tjupAVtYxX+1LfJtARERgHkvlI77t77XjrVL3TqGoF5GLEe84SBnQLXJDjCz9c90V4G+SBwi+s8qkmqhidxSlxKFcC1QEfyal8BE//eep6dNfXSEQsG3squoSgxqIskx5n8Fp6HtlMfRUycfca0p4lk7PQrfxcXcZJ7RbwsawZ6jLZDih2sXXU9jJcEJW/wwm/ZVR0mOAgGarhLZjVM1cucPZb1gbTZ+KEDLkE1WdYs0/oP6gA6cMEEb1kXKsfbITwVDa3H0Tv/hpMr/A20mRHTpDXGTD/pNcj3iTMBDrRpTXjzH6AP7+ppfbd6bQxtufvsQ/w7OQsurFvt70yh7D+sj5I53VZET0ZBX178NTY6zAKv/UvjoiHLvKlCikC8uuCrKd4lKdbOutPuZ2iz4XTIYgaKRzhG1qQ1OsXnFNDpSyhSF1P4zWcZp1pxgixCfKSe9Eef4KNlQnaTupBtUUy3XO+usxgtPnTgW0Qk4+67OvMdisXkf+CkMGJ/g51+KM/9oW8woeOc49aVlbKYbqjo7yjyKp4367XGyYmR4zzdDVuFPSeVupRQhhOQjOZ8kLoOcZ/4+fINl1T9q2sT8RLuae4f+SeA60oX3mRpwx9lPfzy6by8EWtl91pQSiSoBvxNk+pzkV+/kAyZUn6CzV/S/2umkJ0dv9u54OhVAEebeNR7KOq0YwZmH8lLYQdRE9KN4cWkZrgfJ0SF+3QORh1YkJqzQeG0N6RGnpXTuI0y1iM90eNTZc/4z8fTzkgmLpCA+TvVwYWTP6r4KAHs4NpKaxi23H/KYOOcgfll1TP1Jh0DmUaNU9wVEl6tJ1aQshXDPXCZSUrXyFEnudkgTSJMOPYguYUc+6NWOXDRRAzUOJ+S83ftsO/fz2mknzIi8Y0VBtgJ
+ Y4DCVuWb
+ Uykt9UxqBwvO7nC4OeyD48rzi4P1HJ4qzQ5j/YROzLONvqHFOKy9nhqTC3k1EG1y2Qv19yOawYJW4CeABcsdXEKFbPN3P4SU0EyIgQ6NeUsMM1nabz/ZaKR3KWxZ3fRwW/HnraFpvZGY53+SOlu25YK4+elxhheT4KWcak1DnBtvkyFRb6rMaduTp/SB+ujinmPaIdE2mJJlNBXLwDMR+J0ome2JtYSuvIdqWunoECT5l1fGhyDn5FufDEzTD6afbTsE0OyvF04nzCDTd18WhAErZPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,57 +95,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============0148180687452261602==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, 05 Jun 2026 03:32:26 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index 3ce0f2a6cab6..dc8525431273 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -1838,7 +1838,11 @@ static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
->  {
->  	pteval_t old = 0;
->
-> -	return try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte));
-> +	if (!try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte)))
-> +		return false;
-> +
-> +	__set_pte_complete(new_pte);
+Hi,
 
-An earlier posting of this drew a question on the mailing list about
-__set_pte_complete() deferring the barriers in some contexts:
+> [...]
+> data structure. Keeping all of this within the same `kexec_handover.c`
+> file, and also under the same global version, is no longer sustainable.
+> 
+> To address this, this series:
+> 1. Refactors and reorganizes the code by splitting out radix tree
+>    and vmalloc into separate files.
 
-  https://lore.kernel.org/all/20260607081229.12BC21F00893@smtp.kernel.org/
+I'd keep vmalloc where it is, it's more of a memory preservation primitive
+rather than a data structure of it's own. The data structure it uses is an
+implementation detail.
 
-The concern is that __set_pte_complete() delegates to
-queue_pte_barriers(), which only sets TIF_LAZY_MMU_PENDING and defers the
-dsb when is_lazy_mmu_mode_active() is true.
+Let's minimize the churn where possible for the sake of git blame and
+backports.
 
-The scenario raised is a synchronous BPF arena fault (for example via a
-kprobe, where in_interrupt() is false) interrupting a task that is inside a
-lazy MMU block such as zap_pte_range(). There is_lazy_mmu_mode_active()
-would be true, so the dsb is deferred, and the fault handler could return
-before the memory system observes the new PTE. The faulting instruction
-would then retry and fault again.
+> 2. Moves and organizes internal and ABI headers into structured
+>    directories under include/linux/kho/ and include/linux/kho/abi/.
+>    Instead of cluttering include/linux/ with prefix-styled headers like
+>    kho_block.h or kho_radix_tree.h, we use the already existing
+>    include/linux/kho/ directory (e.g., kho/block.h and
+>    kho/radix_tree.h).
 
-Can this path actually loop, or is the deferred barrier guaranteed to be
-flushed before the faulting instruction is retried?
+This looks to me like unnecessary churn.
+These all are bundled with KHO anyway, there is no header dependencies
+that justify small headers for each two functions and netiher
+linux/kexec_handover.h nor linux/kho/abi/kexec_handover.h are that long
+to start splitting them.
 
-Note this deferral mechanism is the same one used by the existing
-__set_pte() path that this change deliberately mirrors, and the comment
-above came from an automated review rather than a human, so the scenario
-has not been confirmed.
+> 3. Introduces a standard set of compatibility helpers in
+>    kho/abi/compat.h.
+> 4. Decouples the compatibility strings of individual KHO subsystems
+>    (radix tree, vmalloc, and block) from the global KHO version.
+>    This enables independent, granular compatibility versioning.
 
-> +	return true;
->  }
->  #define ptep_try_set ptep_try_set
+I agree that we should decouple versioning of these components from the
+global KHO versioning.
+Can't say I agree with the way you propose to do it.
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+I don't like that each user of a KHO component should include that
+component version in its own version string (or whatever it may become
+later).
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27087148382
---===============0148180687452261602==--
+It requires ABI headers update each time a user decides to add a new
+data structure and worse when there is a change to that data structure.
+It creates coupling of the data structure user with its particular
+version and just looks ugly IMHO.
+
+Suppose we added new fields to vmalloc, but made the implementation of
+restore to be able to cope with both old and new versions. 
+How this would be reflected in memfd versioning?
+We'll add both versions of vmalloc to memfd version? And all other vmalloc
+users?
+
+Or, say, we add support to kmalloc() and use it in kho_block.
+Then we'd have to add kmalloc() versioning to all kho_block users, right?
+
+I think the versioning of each component should be handled by ->restore()
+of that component. If it sees an incompatible version in the preserved
+data, it returns an error. The versions can be stored e.g. in the base KHO
+fdt.
+
+> 5. Adds a KUnit test suite to verify that the composite compatibility
+>    strings of different subsystems remain unique and sorted in
+>    alphabetical order, guaranteeing a consistent and predictable
+>    representation across configurations.
+
+Without "composite compatibility strings" we don't need to care about
+them "remaining unique and sorted in alphabetical order".
+
+The need for this test alone is already a red flag ;-)
+
+-- 
+Sincerely yours,
+Mike.
+
 
