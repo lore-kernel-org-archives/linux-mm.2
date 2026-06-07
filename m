@@ -4,121 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51868CD8C8C
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 16:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91FA8CD8C8E
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 16:06:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1910D6B0088; Sun,  7 Jun 2026 12:04:56 -0400 (EDT)
+	id B08CF6B0088; Sun,  7 Jun 2026 12:06:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 142B46B008A; Sun,  7 Jun 2026 12:04:56 -0400 (EDT)
+	id AB9386B008A; Sun,  7 Jun 2026 12:06:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0305B6B008C; Sun,  7 Jun 2026 12:04:55 -0400 (EDT)
+	id 9A8226B008C; Sun,  7 Jun 2026 12:06:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E51626B0088
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 12:04:55 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 892FF407D0
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 16:04:55 +0000 (UTC)
-X-FDA: 84853590150.09.4AB7E36
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A6D0DC0006
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 16:04:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J0+CGTxk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BDE26B0088
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 12:06:06 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4DCBD1C1D49
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 16:06:06 +0000 (UTC)
+X-FDA: 84853593132.03.A5F1014
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 89E1C8000B
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 16:06:04 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=SfTSr+6m;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780848293;
+	s=arc-20220608; t=1780848364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eK8MSldLeofL6fbYcJNtrJmeIPFDwpepphNpG1jidfI=;
-	b=GTsvBOQrLjZKCDo8HiVuBvQwFnt6kRatlh9EN+Fa1wuyO36sp0fKBPQZJp9HkqqQiN/pz1
-	dB9EjC2EIm4jPZO837zs7evATjbFY/mIA5r9S7JAv8zBQ6LhZxTVUXcFQxp4ud7sWx44jm
-	ioXtwvQEswyXXU091rFmYX4PGIEdvcQ=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KygAnOo/dmpBJQ+i2VrBBc9LJ5ZQpG2OVVfBe430lG8=;
+	b=7YrXtIRcgnJA+mbRq4vxF6lP8d0fmfg8RaG4SR/8Y6n5yity1dfQDYFQYx8EH1n4emBcIs
+	fcvfEWE2hQVKIkHC3L2Y0ihRWfgxiCEJ5HAe0dhIv8isuTqs7c9yNaJP1mc1ugCBBQV+AU
+	NMXQYTUIUa38FOVKcauDYv+Z9UDMmg4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J0+CGTxk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=SfTSr+6m;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780848293;
-	b=wzRotkM48pqOUZYn7niuym7e/MxLhq8kpx4dJo0GyOfK2opDx/DW7iXtR17v3f2Q6VMfIv
-	WfyVqoDnUT+ix+Gjg3f+FijLH0jgIhnR+yvGQ2twPLjOaVfiIwW5Ubz5M/Im0yTsWaCzx6
-	fBOKgFLMuYV6+fz1jBfcUFKpiTqWxkM=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-45fd464d51fso1868198f8f.3
-        for <linux-mm@kvack.org>; Sun, 07 Jun 2026 09:04:53 -0700 (PDT)
+	t=1780848364;
+	b=tw6vP8vqMpRSvyQKlyogPz4B2DfqYWSBlQZACZZFahf4QTHZaIaS88w4Hzem0Ta54nDDcY
+	xbXWkYne5Y6Ayy8noYPB2yVjvjU8Ik9kZbMvy+3Riqce1vC7d5URIB8xArfz6fjfcDk5t/
+	roXPtZ4hzGkee0zzqisjVZ3uO53504s=
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7e8833c99fcso39961237b3.3
+        for <linux-mm@kvack.org>; Sun, 07 Jun 2026 09:06:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780848292; x=1781453092; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eK8MSldLeofL6fbYcJNtrJmeIPFDwpepphNpG1jidfI=;
-        b=J0+CGTxkyLS1nKMegCyIdjxmlO3UdSvBOwmlD9vPdTx64uXWTwOJ0W5etIMyTNZiKm
-         B7bJgcJ/aF5nw6nn7mSbf3JSdIuvz733YphXQwb6ilRJD6dh5FxbbED+ZX4nHavg21fS
-         26zLtJ9/08nn48xqpZB6QSZ1CMzcavFfqD3nkMmOTGqJjQV6xEGKPZDlLO/c7U/5zG0p
-         KaPuyHh0g9HuK/QVdYUeChybtDKCYLCTGtmT4Ngk761LG74QvL//n/LqpvRtayAM7qt/
-         daWEg9hb1km5fWTItzw0cXpDkFQ14khvQazN6eCYi+7qO2h3mh6nF5e6DSiIM+0bzMEm
-         YgCw==
+        d=soleen.com; s=google; t=1780848363; x=1781453163; darn=kvack.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KygAnOo/dmpBJQ+i2VrBBc9LJ5ZQpG2OVVfBe430lG8=;
+        b=SfTSr+6mCXPObgtindzIyOCx68KRA2sE+wDJtVSgzxH4/v6BU6aak8TEAMJx8sc0Wh
+         1AQwJ2Hjxr436HDLVugGnPCFlHOzLI+XsyIHVwz3xp2+pvZL2KWZXcBzbtZmNQl+qt4Y
+         E2hr6tvXJ1/MVrre2qKatm8YSzA+5FEwCfBcfgwq0WqmAviJ754TgXTgM90cbr9fPzam
+         pBasoWs9cN9jgvcyK4m+6vtu41hpCeyhrqsq64LDcQil6u6XXtqzf31f8ijpw/kkVo/1
+         GexGoJyHy10XQPDyUOw102RozWHQUeRyJfK5l1og9MLi1Hcj+bJZKuS6hDpxEb7VMtsv
+         IsKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780848292; x=1781453092;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eK8MSldLeofL6fbYcJNtrJmeIPFDwpepphNpG1jidfI=;
-        b=KUPGIRXNuhykLuSoof01fzbCxA4bLba2GQMSi+1PcJpjoCFb2z267y8B5alYqPVHg2
-         DqPJiyYHDFCH3nOjfOLuJmS7/22dWUIIL5AHHm/j4bdnohLhTN08VlrNDjQAd9jO7VHx
-         +fKTwfz18BDOhjdNWDbjdFux5NgVk8hlT5QbJrYoMjrUA1BgIpkoGFE6TdgACIM6rWaO
-         8hspNhR53xIlxNtWzi2b3VvksiNhoaLpw0S0eyHQNgVfG+WRfrqVdFyjatY96tBYsKR3
-         JUfCpn76bXPGLzHffq5b0qy3uXOckci0Y+96Azh7CfhCl76wU2L/rzE4yTRgRwoTTecN
-         3mzw==
-X-Forwarded-Encrypted: i=1; AFNElJ9O1le6ymFF79Da65/puoc4nn1ITHbXjb+R2sA0lJ/GjOJMTukgXlL6a8AQTRbqoi6JdtAHC4PuTA==@kvack.org
-X-Gm-Message-State: AOJu0YyeCPsU+pGFJyewYTWiIqlFO34BLeqwhXI5wKyMAv6YruDxxq3e
-	HU165dV5epzVVsAeI1Zl16QJtG8ZqGR5nEXZaDMyUwVyxnuFhhErWOHC
-X-Gm-Gg: Acq92OHJJj2XTShNvCbhBJ0iz8oxk/FVzcFRn7cCSojuiTjyfe1z/wAz+nkJoFqfHfb
-	z6AQrm+TBWgfRXVkHSbETHzb9vmE63gKc4JqoplEX+GOdvLds0dEBXY1rs632XZOrIT6MkiTpH9
-	est18/RMk9rYVMNsgodPdIDC3hcTPl6+l21GxZAGXEHByXZaCon2Qqd6gZMMiUC6o5wnPSrWpoC
-	hoXMRbiaIYneRcvuHIBqPccUViFF6MAatgJMOKGTQKXSBoXWLr5uSuLopltRm3ElD+cprPAXhf9
-	c11CuphBWTXfFOQgustVvJEVRI8fbdlMyiLriFGGjBe2+exF0keIbu1P3agHEf28n36Ygw7sRdq
-	dvkfzob0wPLf5Qcz4rIzW5Rp0jJtbHhoF9+BeAkKcXzjQIrLBvLCUrQXFsiYcEd2umYN2vVLKna
-	z07CL6VYIXmIVOYzKDJICx6/5YPgYQ7lbVhYHJR1FC2DqHi7wOzwBThJcefD418e6/7+/c6cDIE
-	/MSyhGrv93pnJhDaGxEJrsYN+0S0eKw7QXPN96ROZoL
-X-Received: by 2002:a05:6000:2994:10b0:460:3233:f991 with SMTP id ffacd0b85a97d-4603233f9e2mr13227043f8f.40.1780848291905;
-        Sun, 07 Jun 2026 09:04:51 -0700 (PDT)
-Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcbe3sm41826482f8f.8.2026.06.07.09.04.50
+        d=1e100.net; s=20251104; t=1780848363; x=1781453163;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KygAnOo/dmpBJQ+i2VrBBc9LJ5ZQpG2OVVfBe430lG8=;
+        b=nQAT+wdY5keYGAQLmgrjykf8HHvg0t19rxOlXQ7TdtreTsCZfj7llt7ieV/uZormtT
+         cQfKDJEgqT/eEymvRj/TKA3cqHzLydza8EGIMxCVyRqh7cthvVH8atst2JmHGsAuyWvq
+         VAr+b+Yv/9hPeL34GTkFCXZxdTs5dTfsVV1Q+Ef4qC6qXPwIXjZ9uGYee9SgMmb/qgu0
+         Ja/5NZVVQQYVPP8DbCHOrPQG6Y6LvIHWb+IE0ssy5Dt9BqiN8Vm37V6SIPea0YX2eKto
+         yyB8wQy/eCcCKulHdlR4biLSeC47bDpg00etkOCnCkVXFASZ1VWqrqsAOd7ksP4j4KfB
+         ZvIg==
+X-Gm-Message-State: AOJu0YycRVaatsDZjgqEEsFhUzTIjuyYG5VTgplmE4hAyTw91+gDZnvk
+	CcTTfOkROOjjwamz3UDfLBb9cq0rwkIPD6dnq5lXftXXB8ZBMXy5HqanJ9Ar3PEJwfY=
+X-Gm-Gg: Acq92OFDWwUbyyfkubEwTLJvDC6Z2XHxn4D+aRKJ4ojWTOWC5zXU/uRxW1829mPP7FJ
+	W9uj1a0r6fKrJ7gwU+Wzpi3LarLLBhbiTDz7L5w7UDxq+Fko2XQSELGII7l639AX9kJhKwLkb47
+	zUmZR7xwPpfXt2bkJCGxT6DtDiiGAWPoGSsCV2hCqfe3s2lkstnJjbJQMdD6YxVwBTpMpFPqM+c
+	XWXHri3DYqUczjN7r5zt/Hg+h2bD9nh10CZymKApt/vRp8mipbyuoQF0uMrHBOpnimVnn1MGDnc
+	yATQWgFuxaK4CJCk83kpzWgxfDvUxNufZ6mceW06Lobsf/Yo1l4GEdY5hFK81o9wTZOjsBsJv6l
+	buKq/Jdn50hm8im3T7glV/I6jTRg1XlUR3J4D6PK945gCKTq3TA9MueZhwtbK/Dl7ee61FxI4OD
+	PTlasd+bxEsM27n08LyS1fysIlal/Bmr/s4RTVvAbcfl1+Coc0aoXV+Ku1yhCEwa/uC+XqFuGnJ
+	tW4qfxo8gWOsKhl4JhatmawfbAxLhfJGCj+MdT0fEnZkW6RqVFE5wA=
+X-Received: by 2002:a05:690e:1908:b0:650:1cdb:5f57 with SMTP id 956f58d0204a3-66106e0097amr10641440d50.5.1780848363355;
+        Sun, 07 Jun 2026 09:06:03 -0700 (PDT)
+Received: from google.com (212.255.145.34.bc.googleusercontent.com. [34.145.255.212])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-660d5f3b494sm8243034d50.2.2026.06.07.09.06.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Jun 2026 09:04:51 -0700 (PDT)
-Date: Sun, 7 Jun 2026 17:04:49 +0100
-From: Vishal Moola <vishal.moola@gmail.com>
-To: Mohammed EL Kadiri <med08elkadiri@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Kees Cook <kees@kernel.org>, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, linux-hardening@vger.kernel.org,
+        Sun, 07 Jun 2026 09:06:02 -0700 (PDT)
+Date: Sun, 7 Jun 2026 12:06:01 -0400
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Alexander Graf <graf@amazon.com>, 
+	"Andersen, Tycho" <Tycho.Andersen@amd.com>, Anthony Yznaga <anthony.yznaga@oracle.com>, 
+	Baolu Lu <baolu.lu@linux.intel.com>, David Hildenbrand <david@kernel.org>, 
+	David Matlack <dmatlack@google.com>, "Heyne, Maximillian" <mheyne@amazon.de>, 
+	James Gowans <jgowans@amazon.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Mike Rapoport <rppt@kernel.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, "Woodhouse, David" <dwmw@amazon.co.uk>, 
+	Luca Boccassi <luca.boccassi@gmail.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Jork Loeser <jloeser@linux.microsoft.com>
+Cc: linux-mm@kvack.org, kexec@lists.infradead.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] docs/mm/slab: document cache isolation with
- SLAB_NO_MERGE
-Message-ID: <aiWWoUuQyADfIA7I@fedora>
-References: <20260606155856.15548-1-med08elkadiri@gmail.com>
- <20260607070645.9559-1-med08elkadiri@gmail.com>
+Subject: [Hypervisor Live Update] Notes from June 1, 2026
+Message-ID: <aiWW6ZwwalqQmVcB@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260607070645.9559-1-med08elkadiri@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A6D0DC0006
-X-Stat-Signature: hbugdeyxy4xc3byurpuaqgc1tm53s7eb
+X-Rspamd-Queue-Id: 89E1C8000B
+X-Stat-Signature: pkyf44eurrdmd74j9o4esbonxttam4mk
 X-Rspam-User: 
-X-HE-Tag: 1780848293-442826
-X-HE-Meta: U2FsdGVkX19y/3WYRIkTVjapaA5sjohLbPWlab+gck0us6VTIUmhHgW+IBXtIk5ipGlCoUKWZ6v7bXpvHFeq84Y6/GKgQxvUB6LwKfcaUBtfserhuZbwQZKq7DuKPSk+u/UDnOo95HzHRlPo/Nr5ktXcV36Qs5pux8dSgIUxTKEGBlcZyQYu66+9NHfwLK09BW5kQyJ0MLdJh0SIOoNYfhM64hTpSagIzeCxZJ5MgymOZzTxkGXEVfpgR0nVwuynOBSqgvwMnPsSsTkdasz50bKf4J/QEZ8WwhxCQA7yoT5U7cYWRuaaQkfHwBS+gOuRGa+fAQKU1jnLcCsXh34BSSEopb/kf5MEpwi4EXkNTHWHC6rJG/BsRlaisyWQeHDgecsVrmMzXHTzyhrvsv7rfDhWk/yE6sirpgzJ55EKP4hc7fWTeuJHioe+MVaLH4r/DmJ7Bb6NU3aVGOGHkEzz4eb6YkHPfQkbZNl/LsVa/Xpkbfc3o5I0J3pyd1xur8k36MMdq8h1uSX0W69E8A8Hn95VIvA7bPEDBy0jukiIzNAvJvsK8sp0XZrPXtTHtpYMWreM3ufr4J2foFYuubYT72lPnzGZ+APn5wT0zOZl5MOqb7hmgfCykIRmeVpiaIYc4bSdkobKXEdLWlCFCvt7eCn2ZghO4L6C530Cedys5CdhrY+BjNVdKTBDGVuhZvUDp+8ZGAs99nmqGdoHzG/FzgYhS9QrB/bDvtaSUVab7xQAo8cy1qwT46uXMaNNYE/TBHHzFMRxBYNq3oiSDy5NTxQMexDSwCjbpMxDQJmo7jqdICsOhWDnqhpRRJ9/93zRM/XMaYM3HuBfGyRaFFdtNJNa8BgIXUj2B5aJFb2i1nPRto5x06KCdrpXHxMNhHoJMTWTunihds2K6wEISCYh/dq/2wAhpVlmHnRhZBMFkfVNAzrbVSE1J88URenngdH3hivQ3KCzrctfyybK4tM
- mm2MpNPe
- sjmOkBAhWar+300VXj6KDjf20i8rwii+q0wlltCITXa1Amk/pdWjUm3li8VCvv6Q3Hv78QTnJzGR1eXX9c7EiL0k+uuZYAPGFtv7n+G9NO72JRKe9ls9/XYntkSsVCjNLADNvMyl2tKOcREijblfRPtWFXs8/L0TL+hln/5u+5WFXKAiWlsZeX6YnCNLCT/THyRPEU27u4HSDEplkIBzK8QseQraLXgU/gqJpRga7vFYIZ14dkF+PS9Ktv8/15E/reuoMEYQJ7RHSdkmYwykjblvosg6Sl+VunBGi6K0BliHz2j+8io1l739Q2XixLe/W5oMdGj+fFJ8X/OpfVWX0UiQWSGcbZtAXr3sUMvb4M+Wd7biHRWzhm+TkRvhh98ew/H0csl+wNIsoVUzwCBiUxvs6LlcdF86M9/b43dbWjc4vIkTVTKRQO83mML/DFqSv7so97SB7Uzad6d4F2z05yC8QzHIu5ybe1RE8oLey81MQ/rdeGgjgs+4PmwZh1wciOunOyi9AxaQqsZxdKYEheQt5upbQs6EKaL8q
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780848364-678461
+X-HE-Meta: U2FsdGVkX1+ylWVy4DxQwJnd1GIQjkEdPEwbsJTES8FnoJifdRkeyQh2wPRa6QDncO293uaBIEKsm9d8/G8BDh4HByGPmA13m9KjIXq+Y5O0MMN0tf53ScgX48YVWfIludkPpWLYSL+rgepTMFi0MFmciiGdteGiBWDg2TVjfbqk1QA6t1K2/uyRgzU81uw4ecOKTiZx+vKNsTNxlOJswnmHuXrFA9QL9/UcpdEx2na/Z97NfhzOYblZ0hfcsbEirDxEbOmyuvbotvZx2u/0dlTIDjStLD/djaShIWi8jkptqo1qk2IvI0M1iTQm05LxBz9biz8RJd3j0izhsJj7zKzjnrWA2qkSpPSf5BDAuEOD8q37dgVG5bdQaO/B8YJ6m8P2SFnAVS5+iJ5qHJhR2CmpKaB7FavBRDoK0Lwv6R/vvZT6vpvf4f32vucKHai9PTwKVEyXdDR28LgTr/jQ1RI8UPzBuJGRpciOSjIFmOHIqC5ZayB0hETzCWI+F+VKx9yyhSCKknXaHDZC9M6VKIghw6ICMjGjFdBETTbPgRlpr/ARCq873YctagHnhJcQtCtZDEe2uJ2j6BF7ctVvfA7g5RLEy89+7FxEbkbYy+epTpPzPm11J7x7Fhr8Ynk/6OQc07pr7q0Q29srhRYxZ8sxkNB0a9+Pj5COMMMX/eDlnyy4buOj500gwqAc04aHkeOFspiUxfV7v6Y8fgDY0qX7OwGa/xVSLsXLVjvs642xI0HtlksKcfjnm1eFto6RHcfBQuRuNyDU7d2j0ztZPLg/YgfUzf3iexiTtd0A5zrBzezCwtCXBnLE2mfLG95awoaZMOKMDo8qCMbOIm8t6t67+ExTCYlsXYeEJaMPTKiJtcGL6TnK9Ebd+yV8ouH9g9mQotvVUWAiHWFAqGl3/WzrWu5hy5e/nb+/VW1p357OOK3vvmhJkxCSnJF1KznsrYhVpdBVAycPICCDPDx
+ CgydBajU
+ ZG5C8sOkCyzHgrCbSkIDTq92zWsdvLCtzhz3cOUjp9HPjrAZGoVXZ391wMuwrvsNf6cGpha1lb7Cbus22tTVlLZj4MkIa1B3NmkKmEnEc1M8FatQ3wC/Cqk3ZAQUJqv5/smuucw5MK6cspKv0v3b/psGkhtEa72B/VzOIEL6EzqkSd9LtF+FAL3Rn0WBesuptbihi9kOhTdM3WgzHXLsHBp3DXRx/pkQGv2g+kN0og946Q14DGRaFIejSJnKCvpBlOVtD9B1zQebmNgWEyJGN6EB7ohTF8WQl+wZkfWTlM4ssxvESEVwVTztNz7+lnEkKa/D2YBIpEOYbnRnUMMd2M/5DkR7wY/lk8/xZXPnvDQ2GieiOnS9P1X+/2x07ZtsQz3KLyrxmrh4b0jYmWR0JRUVd135c1o2aJv91wSXajdQl/vMBEdcmQUGpFqMkunSQ5YQjz2HC6qorhSQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,17 +123,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jun 07, 2026 at 08:06:45AM +0100, Mohammed EL Kadiri wrote:
-> Add documentation to slab.rst explaining when and how to use
-> SLAB_NO_MERGE to protect security-critical slab caches from
-> cross-cache heap exploitation.
+Hi everybody,
 
-Thanks for helping improve the documentation. I haven't looked at the
-patch, but have some comments in regards to the process.
+Here are the notes from the Hypervisor Live Update call that happened on 
+Monday, June 1. Thanks to everybody who was involved!
 
-We prefer to send new iterations of patches as separate threads,
-with the exception being small fixes/cleanups.
+These notes are intended to bring people up to speed who could not 
+attend the call as well as keep the conversation going in between 
+meetings.
 
-Also, I'd recommend waiting a bit longer between versions to let the
-maintainers comment since getting documentation is pretty particular.
+----->o-----
+LPC 2026 Call for Proposals
+
+The Call for Proposals for the Live Update Microconference at LPC 2026 
+is officially open. Please submit your topics and proposals before the 
+deadline on July 24th.
+
+https://lore.kernel.org/all/ahcc3Qyuy7Oy03Iq@plex
+
+----->o-----
+KHO Xarray Implementation & Core Data Structures
+
+Pratyush is collaborating with Mike on a KHO fallback allocation 
+strategy for memblock. Alongside this, Pratyush is designing a 
+serialized, sparse "KHO Xarray" data structure to lift current mapping 
+restrictions across all three memfd types (shared, hugeTLB, and 
+guest_memfd). By allowing runtime page faults and allocation tracking 
+post-preservation, this avoids flat vmalloc array scalability 
+limitations.
+
+Potential wider use cases for the KHO Xarray were discussed:
+- MSHV sparse bitmap tracking.
+- IOMMU page table tracking (Samiullah will evaluate domain/device tree 
+  association fit).
+- PCI/VFIO sparse tracking via Bus/Device/Function (BDF) key spaces.
+
+Slab/Cache Preservation vs. Linked Blocks:
+David Matlack noted that using an Xarray page per PCI device would be 
+too expensive given their small struct sizes. Pratyush suggested 
+preserving slab caches via dedicated kmem_cache flags to manage small, 
+arbitrary allocations. As an immediate alternative, Pasha's ongoing LUO 
+limits refactor series introduces a highly compact block-linked list 
+structure optimized for runtime file/session tracking. David Matlack 
+will review if this fits the PCI core tracking requirements.
+
+----->o-----
+LUO Limit Removal & PCI Core Status
+
+LUO Refactor: Pasha is updating the LUO series to address Pratyush's 
+comments (primarily renaming iterator functions) and plans to send out 
+v2 shortly. Given that LUO is not yet in fleet production, the group 
+agreed to fast-track this into the upcoming merge window to align with 
+systemd's fdstore integration.
+
+PCI Core v6: David Matlack sent out v6 incorporating two critical fixes 
+spotted by Sachiko regarding get/put semantics and double-retrieval 
+failures. Review tags from the live update team are needed to help 
+secure Bjorn's Ack once he returns from vacation next week.
+
+----->o-----
+IOMMU Persistence & Process Memory
+
+IOMMU v3: Samiullah is addressing recent review feedback on the IOMMU 
+persistence series and intends to post v3 by the end of this week. The 
+associated development roadmap document has received positive 
+stakeholder attention.
+
+CRIU & vm_splice: Maximilian's investigation into optimizing vm_splice 
+for copy-less data preservation remains deferred but remains in the 
+pipeline, with potential future collaboration with Google's tmpfs splice 
+efforts.
+
+----->o-----
+guest_memfd Enlightenment & VMM Documentation
+
+Tarun debriefed the community on his upstream presentation regarding the 
+initial guest_memfd preservation patch series (currently covering fully 
+shared mappings with page-sized folios).
+
+Key design and architecture alignments include:
+- VM File Association: guest_memfd requires an active 'struct kvm' 
+  context to be retrieved. VMMs must preserve the parent VM file 
+  alongside guest_memfd, using LUO tokens to re-link them on the 
+  incoming kernel path. This sets the stage for future private 
+  mapping/secure EPT table tracking.
+- Relaxed Fault Logic: The group agreed to drop strict upfront pre-fault 
+  checks. Instead, standard runtime page-fault semantics will apply. If 
+  a guest page fault occurs post-preservation, it will bubble up via 
+  standard KVM_RUN ioctl exits to the VMM, which can safely pause vCPUs 
+  and retry the fault post-kexec.
+- Centralized VMM Documentation: Pasha and David Matlack proposed 
+  creating a centralized guide under live_update/vmm detailing the 
+  overall live update flow, timing constraints, and subsystem 
+  requirements to assist external QEMU and VMM developers.
+
+----->o-----
+Next meeting will be on Monday, June 15 at 8am PDT (UTC-7), everybody is
+welcome: https://meet.google.com/rjn-dmzu-hgq
+
+Note: I am going to be traveling on June 15th, David Matlack is going to
+be hosting it.
+
+Topics for the next meeting:
+- Presentation of VFIO roadmap (Vipin and David Matlack)
+- Status of KHO Xarray development and slab preservation feasibility
+- Review of PCI core changes v7 and upstream merge coordination
+- IOMMU persistence v3 review feedback
+- Detailed review of guest_memfd v2 and VMM interaction documentation
+- Review and coordination of LPC 2026 Microconference topic submissions
+- later: KHO support for Confidential VMs including page table
+  preservation and pinning
+- later: versioning support for luod to negotiate
+- later: KHO enlightenment for ASI
+- later: update on PCI preservation series and next steps
+- later: testing methodology to allow downstream consumers to qualify
+  that live update works from one version to another
+- later: reducing blackout window during live update, including deferred
+  struct page initialization
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
 
