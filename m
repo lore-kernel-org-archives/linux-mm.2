@@ -4,137 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7372DCD8C8C
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 19:45:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B59CD8C89
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 20:10:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FE936B0088; Sun,  7 Jun 2026 15:45:39 -0400 (EDT)
+	id 305A56B0088; Sun,  7 Jun 2026 16:10:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B0186B008A; Sun,  7 Jun 2026 15:45:39 -0400 (EDT)
+	id 2DD7A6B008A; Sun,  7 Jun 2026 16:10:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59E4E6B008C; Sun,  7 Jun 2026 15:45:39 -0400 (EDT)
+	id 219FC6B008C; Sun,  7 Jun 2026 16:10:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 445BB6B0088
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 15:45:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ABC6EA0819
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 19:45:38 +0000 (UTC)
-X-FDA: 84854146356.21.891BF0E
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BE9B61A0005
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 19:45:36 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dziAG4PM;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780861536;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 135B56B0088
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 16:10:39 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8E65C91EF8
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 20:10:38 +0000 (UTC)
+X-FDA: 84854209356.24.CB64424
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1598A20008
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 20:10:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bShHqSnI;
+	spf=pass (imf03.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780863037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WonlPgUFHgcUs9L2FpzERLFLGDIi9P0mv3+MIWNU1M4=;
-	b=26/R51QEZOE2bnZwsjcZqs+iY0mQj3s0nywMfbQ9P10ryJ5R+ioBAal/IOST1QRh/izhyh
-	d+enYD+vDLwWaDlpL3EEwf4ia7As4i89AcpVlvi4UUZQTjkNFWyB1TsT3yxo0dZu8/z2+w
-	hg8lyZwIJJuK2UHS1C1MUvlAB6ru0aQ=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dziAG4PM;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780861536;
-	b=h6nqK8y+oX6UIpx/ZAA3N28eGL2y44k72eR3IJs0oqVh9x90N5V6VkPw5OUTFWKi/DnpuS
-	/PwtVQStZA2m6eLbe6hXJNlwJRPGZvozQ+vhCyo5aoSu2lewMOnVI20v53ze9zeukpsbNI
-	y8z+H1vcw3d15dz/TJgpM99/D/vTZeg=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51765331535so1314291cf.1
-        for <linux-mm@kvack.org>; Sun, 07 Jun 2026 12:45:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780861536; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KF5iFA62Exkj5KedCfofJcYovZjQ9MrdV4vdesI/z1hxRNA74vS3oWgf02xHjW9UL8
-         wkrxDhZ7vjm+WCLj0oGk9smUSkQK8VgJVsknxnDUnhGifwkiazsK412Na4tnEoZgLsEX
-         fE5027lWWu3FSvdbHqq7bfOO5iXPciCFa9s9w2uloEvtlG+Udefb3iA8/f+OSP2Hbzhs
-         REQmPnkAUjJ9yhA7LEJiH9bA18T3vOtzl3D3MP3sdDgR6jLwb0S4+nlvZtjGnbGA724N
-         9X1kEYtVCvwP9rs8gTr7OwkoPTFvSuvaw2LML0eAr3/5ScVqLaBTbrT9912UMJ4eMpxT
-         TwHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WonlPgUFHgcUs9L2FpzERLFLGDIi9P0mv3+MIWNU1M4=;
-        fh=XLP+xuIDhWRgzFvqlVdFvKxuWLpo1VlJ8cDXy9T4qvc=;
-        b=BAyr0rPNzHIoU6htZESMH7r443YWjLiEO50RbNwOcCR/KJwb8wmgE5FXmWb+Lx3Cvi
-         pp5n5uBnmrYc5EX7iiUFiTYWV9rW8imyZihE0fFl43+ZrxmEo6yV1rwYkVCr6EvDWMDy
-         T80VfRw9a7iL08p8eeDEfI2eKW1/4kvxX7xNibZAfVhy4C3agRGoDAFe5dMsdlCADPHO
-         6T+YvjCzNirgOn1K5mZkCy1SB3bmqk5F12cCOIutZHL8Crw79OAOHjm8EmPLKzihdnSK
-         I5u3vFXq37/b7W+d6Yw+HP7Vwh51i63kN8jhDtaJ6+dHzthH538y/rEBm6fgezZF4pfe
-         qdLQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780861536; x=1781466336; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WonlPgUFHgcUs9L2FpzERLFLGDIi9P0mv3+MIWNU1M4=;
-        b=dziAG4PMRx9sYiqFVZDmNi8DyvyZHaDw3+j0K1zi1ufRQCdRt7O+X4RNXWusAqo/mC
-         Oa+ZV0gnSO1Qldae0PwEOt3XXQpCUdQUybUs7SrLmGjHGwTOMYwNsiY9o0yan1ypaRCV
-         5d3/5v/bzdB4R8Pa6/mjdERzWDr0NENhESIKah4B6yU+qwE8HENiOg42mBXFfIR7g3K8
-         GJZaau9BQJD9t6CL34CJGGtduQk9Rp5jUKTpSnQZFGJMm68Ey5ue1lOjkb0w0yY018jb
-         JYizGMFjKcGgwWWNbtWYWQUG22wLf0mZnVOYG5oYa1AwC02hqPeXTuY0tcwshbmG43h8
-         DpRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780861536; x=1781466336;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WonlPgUFHgcUs9L2FpzERLFLGDIi9P0mv3+MIWNU1M4=;
-        b=A9pAkFfMXqV95icSwGjLuZHRBW2rs8jPEj19XYzLWyrkS+SXR8oAw6U7nm41mtFGX9
-         rXx8ZKjIifwa7V1p/u56n2hoq6qwroETyUMzmLWEX2W1dJpTNB7Ji6KO0EUvb5TNaJls
-         RE7R5g3VkGMH/xaRGPsr8rc8JovIrllxPLUdEyVquf7Tc0wWv3uxSwDWl0Mn8PgXpLKn
-         aEvJPZtpincr8+DsuW2BL6fPgy5be4qD6lZYN8bHwJsyB4lBcN1d7kYDLee8dxgBmXU4
-         qmM/7BD5GNY3UnvxLN5ddi2iY4tQiWIBciB9P0XI1PcX1mStlQyZCn49H2B/Me4tN2Ox
-         u3ag==
-X-Forwarded-Encrypted: i=1; AFNElJ9nD/3J26ZIb8O0eCcjEvfY+JFrJMoJZ8mZbSWE2pTkQ6wkPV5rZo7G6kxxCEHb9aZlsxMljTItbg==@kvack.org
-X-Gm-Message-State: AOJu0YwFxPlDRAabfiwlwU8VDm6Blc7dRwO2nrK3hA3vATVnjJwie6RO
-	anr8gKKj8nx2Z3+YOUIDMz3luLZZEqAP+N05AAak+Cptgy/9+0P9AuQjMZA+pkOozB67SDGjNd/
-	53dNAbwzzY92P+DIBc3h70MDyUhgQAlcs8LHyZFRB
-X-Gm-Gg: Acq92OG4oTGQBVqWYxSBubax1ObE/zdyCLYxDhuR6PZQsDCym+au/bg54dUu+QNpYvx
-	qFh/ksbMNNuEB3l2yuGNeTIs/mY/QDF7k3codv7YKUBsYHA4kguHdMkRX9sdwLU9OIcmGUjioaI
-	vV6yMN97BjL1L03KQz1BjYNbE9/WXoA0bdZedhkNwH7WuJiSm2mshUiJX8ucAqFVeAYJLeuZGQR
-	Z2xYblXzcJnHmgQq5IPJUVOiu8eCS1oqMRvP/rNvSG7+BMTn08F++iMrPVE8CoZVERyEEptbt7M
-	6jEL0xVc4nfEM4MX
-X-Received: by 2002:ac8:7404:0:b0:517:5f1d:9f7 with SMTP id
- d75a77b69052e-51798048095mr17306831cf.7.1780861535240; Sun, 07 Jun 2026
- 12:45:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260606015729.1837935-1-surenb@google.com> <20260606015729.1837935-2-surenb@google.com>
- <aiPWD6xZLg6g4DTO@lucifer>
-In-Reply-To: <aiPWD6xZLg6g4DTO@lucifer>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sun, 7 Jun 2026 12:45:23 -0700
-X-Gm-Features: AVVi8CfBcsay7fSf66Sk-qLT0-CR42bdtqU3m7RFkKEe4jFMaUgxiFQKjS-VLls
-Message-ID: <CAJuCfpH74gRmgm2tgwB7SHzL9DrU3Yc4LyS8XLa0tR7fJqaw_A@mail.gmail.com>
-Subject: Re: [PATCH 2/2] fs/proc/task_mmu: read proc/pid/smaps_rollup under
- per-vma lock
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
-	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BE9B61A0005
-X-Stat-Signature: 3rusgojhb3xnre8p31h4ewudgzke387o
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=7wIHOSWYohEmLG6pMXnfULhqgb287plk20JlAu4I5Ys=;
+	b=zh3hKW28lMBpn2+u0bO3sP1iglg9N6mbPH4dWp2ZNTp9hCMRUrKtZWbdj2lMXmmJFug/XQ
+	dls3aRYVAhtu0YGsIkKA7LpsmSti3qJD28HpKJJhcPNMcBHcDWG4vis8fBuCZsdNd0Tc8U
+	7f3cyd++CcJgn444+uvIwS8qVAZ27YE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bShHqSnI;
+	spf=pass (imf03.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780863037;
+	b=ejkNYw8uEFI4YsT2pkLvCJ/YNSuKKs/uSdkSrzscsxTI2u/QVXvuZQb5phv8a0mEIIinKY
+	Xt2tM8hw1/qfrqJx1KWASQnrrcS0rs+B1841OrxDlQbgBSkcPk6ROCssMEeEHVgGWrec65
+	n1E+yWqK+HUvOLCl5VN0xyNiI8GuTA8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 13F3444281;
+	Sun,  7 Jun 2026 20:10:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BEA1F00893;
+	Sun,  7 Jun 2026 20:10:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780863036;
+	bh=7wIHOSWYohEmLG6pMXnfULhqgb287plk20JlAu4I5Ys=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bShHqSnI6oWOfUDSbW6cYy9eMbRTgUko/xyPhiYjQd4+q8UgRyl4FX9sU96QojKmj
+	 7jK6GH6Y5DzVZNl/oYRof/zwlsdAgIq4fxxaZFx4NGJtrqT4D5dnzx3nfJWfCBYTOo
+	 qOhK6VyjprDy5b4PtURtf5opb1bLBCMSUX9BCEzhGEFgCit94GdQXXSZ8nj/J1X447
+	 DHVTof/qqRgiYNi6dpMLHS0InhtO5TGWFhmblbiv2yVcqPhabshMvd3rR4d7/yfzL6
+	 CUrw06X/S8BL4t3f+hrAxCmBx9mGTYM7AciY6l3xlakeFNLHf3tkdeUpikDVPqcxDZ
+	 IOF2V8sJaovvQ==
+From: Tejun Heo <tj@kernel.org>
+To: bot+bpf-ci@kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>
+Cc: david@kernel.org,
+	arighi@nvidia.com,
+	memxor@gmail.com,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	andrii@kernel.org,
+	daniel@iogearbox.net,
+	martin.lau@linux.dev,
+	martin.lau@kernel.org,
+	eddyz87@gmail.com,
+	yonghong.song@linux.dev,
+	emil@etsalapatis.com,
+	void@manifault.com,
+	changwoo@igalia.com,
+	clm@meta.com,
+	ihor.solodrai@linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next] arm64: mm: Complete the PTE store in ptep_try_set()
+Date: Sun, 07 Jun 2026 10:04:19 -1000
+Message-Id: <1780862659.ccb18e27e916dc4b@kernel.org>
+In-Reply-To: <5f68f44310d4878185fd5ebc52d66530b99f174c6d04ab1170dc53cefaa54568@mail.kernel.org>
+References: <088f52fd25860ca961449d53f91b214a@kernel.org>
+	<5f68f44310d4878185fd5ebc52d66530b99f174c6d04ab1170dc53cefaa54568@mail.kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1598A20008
+X-Stat-Signature: rqd3gaby4me1zajf6o8fkd8gp4tcnpib
 X-Rspam-User: 
-X-HE-Tag: 1780861536-99403
-X-HE-Meta: U2FsdGVkX19yNNu7udCHxZ48lpWpFCP1d5evy3ERDwzJ/6e66K27oEK/KnfSffX1anyKeUmjvUsjsFrnd8N/WFzoZynU8LmF8kYsbp52O1bGX9MKfF9cHlqPsnjOV9Ogvx5d0rR+/qmXe5QjEGpuTAwSecBHFY0YaHdknLxBV0kstKA9+WqpSECm9n0IckYeg/+0190tlmKE6lltG7MvwwqUt9FbIf4wjs/x+5l/wLEdvcZA+GvnSx7CGvWgf5rmYgb2965PcYX6z74yhikVDJTMTljfR7t9/JiF4SAAQEtWls9am99tE0IdPxORt6qztVT3zaFfx4ls+aV4w9k+z4/k9uP4dJTPMU3LOE3IHDTxM8pmoW0/kVEzCx4saqgYNYuXR2xQXpISR/zCadQ+QY1fb66n0jNKQHB5TWpK1nHuAmHvlG/iKfiNTQK8k3RSJuA70MAoyH9zpamt1ejwgBQO4anWL7ejWOF3hYlfqfst/MPId/KjalhtbH7iKXFMxNu8ViIvYtKt2xO6JqCnyvhKZnzPGaPdT7mK7YmGebItMg/DpOwrW52CJ3lxLGBxVwN6Tnd+OLl+hTo5ymzKAMR9Sy4+l6iajysLQtjpvimtqzT696M2mQAAFj06wRg6HU9NGA43I4/ZJa6NbxvH4JYRCj5dGEjrE8K/wp+DvCd463zat3kGbG3zmUiNYPwjRAO0BkDD7Cbwjd++OEKorZ6Am0S2h6Qu4O3m2axoxMLUdVVyJgTqvyD1C8w/QnEyQ+pehu8Xr5dkKBrlsat7OAcdXT4LudKYUaF4otaLxESFw6+dvqS1Ec0ySLBSpkCGjRCFEOYQhCrtUwby4//hH7HoT/g2il+ORnFoZ3lLZ64m15/WYM8qabJwf4yyAxbVjNckjFyjcjnFreFu5NGssqKwwBg+ur4s7ELYrmzhT0KcIBKbCO0fFtfT8951ohCie238vlsexFdt0qaizv5
- xU4slYtR
- NiE8cxAQPqYQXOKfJsR2geTdzlOOR1K1j8KDv/qHKSAnSkmrRviFrone3cgMEF01PSrEvrdJ9CnYoJk/uFyssX0tN+wVVguZxRtIwa4YFH2HpG3kTQilaa6QfCXDj1KMfhmn+OlVRaNO4ygw28Mp7d9NECwdToX0aXtWOELmWllLP1tkiVWnCFqavbderdiMmCrJwH5S0UnIWbYmV+XIYCjKIBWcRhjDrSjqrj+6jya1KHNsxGH67ODr6UJPNMJIUZxuL3xxvGA6C15NttlK7qfuos2p3CPrtZ29Pg6726RkiJrNxBXKjuiuYHQ==
+X-HE-Tag: 1780863036-16754
+X-HE-Meta: U2FsdGVkX1+0UttKTtVb4cwxKoC6sbgewp3CCIJcaMW/eXAIyd0poryS4aNIakjnlkvldSLMNMSzfyXeZf8LwVc6Eb9Qx8vcpQ0x/8sGaWqLzlCwS9wPdjjq2Zy/8ChaSLZGHXx9j+dFLZE/2qs5bUON5QaEEF/k/Sys79T4oGqrDdk/NEBBwak1ytiANcFMz/Pb5MK5LwY8vuWX6drw7yeVOAfhytPySU5xK582CTCGkCiIgIZXVsjeOiLSNzk29iKYJ3ivuSZ93Pnt1hn0G5QgS2CWyST0glilX1VoTQqJTwGyuQzN1F0r4H0Appd7W99bAWETALPLwQ6Q2JOq/FwLWx+mRdZQ8Qv7ISlqswINm/zzjQUqdpyaX2Gw0anHV+1fzhdSA9VqqeHWJMZMtROM/uIob3Amb0jQ0hthtS7HMmKD+NxRaXhUmSnd0tJ5OvrWxdFoUUmcSZlykX7xiI4aRjng6FBFNtROzjBBhbYxGr0mOusuiqfdxgGJ0t5BrhcslbUprNmUoUAn7WstOjxNul/nljs7wbC5qBeHR0i7wxbt511jLP6092CfHDqTIoQGbzRhkMRm9rQlLyatlYYvSAdgtr5QYGbJwP2GOc8DeNoxgZxD4fREpcFN3+khBfUH7w9B1rSPy9wc4bRc+y+vjfER+HS6nLBROSE9bLuZqfWasjV0XW5gGeOJ7xYj3Cd4hKaLWli+wQku1w06uYp9//S3eEsNCBk53mAp9BWi9OqXZBxHvAPJuM1Rm9O60kpL5WbEV80ttdBoMKM9Z9sPrrYuKfyA28MgT3ZUl+UKjA932K9cTyxSqGNfOxz8LKbkeHwxCl417ibFD8MCnnHiGSKdq7yatqDFWtLZBeCLfzsyTkRAu47EqZOsGJ5vThPy7Vm3XgWVgexfBsNU3y0KFmmBkt8Dh7Fnnm9/AnHKA4JWH+a1dcmkKI2/PFTPgm1jNVul+8plNQzBAQa
+ PBlNcSTJ
+ QVDI/jdPMT2PruxyfLYImrVsm1kZ7nG9q/CVeuwRX4C9QKywiO/dnLrEGCpuGEiU64vOljAeOUqFHhmTTi6uyF9x+ukqZEGZ3RktCQv8e6V4o4p2msAPWwsLoKsYR0DpquM8FhA5HD1XEAqkoENQ07rkVMzvezXXXxFFMjAf/MpqQIj/ywIruMS+wVhYmt0hVYRZx438XXRr0Bcft7Gvye4PgsJecb0i569cHnuRc3BdI+XI0FgpPH3Ec4ELi2wwD9amYwCDAZoz2Mkihj9Je0OQpxEHPjQ8kCIUL6hEI9WDP+eau+xFPl9QPsMJ7b9STuua0tY5w21HUaK5H3AArkWYW/Fp8HFL3hx9TU5RxMxB7ePProsd8QBVvBzGRHt3gZq5GGc7T2ORlobU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,22 +109,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 6, 2026 at 1:12=E2=80=AFAM Lorenzo Stoakes <ljs@kernel.org> wro=
-te:
->
-> (Will review separately)
->
-> Sorry to be a pain :) and I know it's a petty thing, but even for a 2 pat=
-ch
-> series it's easier to handle if sent with patches in-reply-to a cover
-> letter :>) also makes it easier to track overall updates in cover letter
-> changelog.
+> Can this path actually loop, or is the deferred barrier guaranteed to be
+> flushed before the faulting instruction is retried?
 
-Yeah but the first patch is a simple cleanup of about 10 lines, and
-writing a cover-letter for a single patch seemed excessive. Andrew
-would have folded it in with this patch anyway, I think.
+I don't know the arm64 paths well enough to say. What I can see is that
+ptep_try_set() only runs as an apply_to_page_range() callback, and
+apply_to_pte_range() brackets it with lazy_mmu_mode_enable()/disable(), with
+the disable() flushing TIF_LAZY_MMU_PENDING before returning. The barriers
+would land before the access is retried. It also looks like the same
+queue_pte_barriers() path __set_pte() already uses. I'd defer to Catalin and
+the arm64 folks on whether that actually closes the case.
 
+Thanks.
 
->
-> Thanks, Lorenzo
+--
+tejun
 
