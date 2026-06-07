@@ -4,86 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1582ECD8C88
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 15:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10653CD8C8E
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 15:28:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E02046B0088; Sun,  7 Jun 2026 11:24:49 -0400 (EDT)
+	id 380446B008C; Sun,  7 Jun 2026 11:28:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD99B6B008A; Sun,  7 Jun 2026 11:24:49 -0400 (EDT)
+	id 331866B0092; Sun,  7 Jun 2026 11:28:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D16CE6B008C; Sun,  7 Jun 2026 11:24:49 -0400 (EDT)
+	id 220576B0093; Sun,  7 Jun 2026 11:28:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C2A646B0088
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 11:24:49 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 728F3407BB
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 15:24:49 +0000 (UTC)
-X-FDA: 84853489098.13.C0F44FA
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6482110000E
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 15:24:47 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B3rKEyWt;
-	spf=pass (imf05.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 110F96B008C
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 11:28:50 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B0A671C2048
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 15:28:49 +0000 (UTC)
+X-FDA: 84853499178.11.4E9561F
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DE1FE140004
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 15:28:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=COBv1Quv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780845887;
+	s=arc-20220608; t=1780846127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M7eM0J2wbw/2K8ZZhLt6TUGKPIkNzPAPBwibQcHHdfg=;
-	b=b+DrBcDYhDhodeT6r6NxYYmi0Dr/Bj3YBWPdpPAoYMp8cQ2c3MV3KKe4QBdo3piWYdqMWP
-	DZxj7maM5yTgjCQ5gr4V2wIxBKQWOkBiJt/R1ZjLg0xu1uUg0nYq6fIGRbPFEIFTXzIPv7
-	LxijYv4dS9pqtN9Xi7yF7H6RCXms4gk=
+	bh=9Nmhbip3VP8uizzhEAR9YT+vvnoLjIUddI9JAhC6TpU=;
+	b=o7h/Ppfml6s2mxizOdzA1K4rOYF8tHoqvRk86znQaQ4qRxUlJATLnQi6VBSiUCYWLgsn1w
+	k+QZ3u5KSmCUxcbVuCAWBwn3nIv1vOAO0LU6pTvEQzEdOZqqJIsYtEYRFNt7MKqIA4Iof1
+	dWmZJ1+xNXs2Zp/Z6+LqRE371t51ip8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B3rKEyWt;
-	spf=pass (imf05.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=COBv1Quv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780845887;
-	b=aLGx0n+u75W5PByaGcmu7kg+uOKiDi3/l4aWqqEjC1biBmPP+K5V6A0MVl8ifupL6gqCHs
-	z9PJl6RsvipG3VpVgMQ87o7001ZUitEpbHtqORtARn8WDHvxYt5flpWvtEDbLpL+vjSeAQ
-	Z5USTYL84BO8Vd8fQBQyrHhebf64SUg=
-Message-ID: <d057097f-2efc-4f27-861b-ac076b93e34f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780845885;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M7eM0J2wbw/2K8ZZhLt6TUGKPIkNzPAPBwibQcHHdfg=;
-	b=B3rKEyWtrMBqQzOjs3BD43CH+i23fev0mW7/g/PB1V+OQ/EcCL2pUGzT1iTuFSd/xwMKr7
-	f4k7GPxMA11+VcVvtQXdpyYVB0Au1zDt5WXZ6FpONLVWZgHsTs1hEsPAPtCG8/27aVCqZs
-	MzHaZ7Aa2Mz672dXagqzB1an+cWHqqA=
-Date: Sun, 7 Jun 2026 23:24:27 +0800
+	t=1780846127;
+	b=P5KVJNX1DuzIVcTQJe8S8ptb5tEzWNnDp7bSpfLbfKKHGqJSeubnPkayI5tWK/twjtcTiE
+	GN30QIcDih1Xera0EbrGa0RxZN9IyPEIR4tsqh0knywqkB61VSV5VsH9aERdHN/o5Yne3w
+	NtDN22v5m048sh+ZfIpkHih37GBSSU0=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-36d5fd50d20so2221120a91.1
+        for <linux-mm@kvack.org>; Sun, 07 Jun 2026 08:28:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780846127; x=1781450927; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9Nmhbip3VP8uizzhEAR9YT+vvnoLjIUddI9JAhC6TpU=;
+        b=COBv1Quv3SqXDLtnvy04dNP4SG5cqtF0kBMG9b/KthV2SftmjBlXF4Z3IjjtKQpyEc
+         w37Wuy4lL4KbWzIl7dRU/Y1C7j3Ob7fymvJInusbxdULL6ZfdE7hL48bm+OM1ege/+df
+         i/iTQdk87qCAunloNh00/oj+LdRKvQpbVbN0USBPUuLXLz+POCwWN680SP5YbxRrsIoI
+         reIDrGi0P6BCldoDqeIRhOsAd41Z7aKrtbxFd1EvBbAzhrqSRPcQlkW2tJcBNS87phpy
+         xE3updoaUxiUKda8K/QJ6r5MzoIRHDSRtd8p7J/W/bz/qRMvNn/4CEXP9+3VBzJaX8o6
+         2e7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780846127; x=1781450927;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9Nmhbip3VP8uizzhEAR9YT+vvnoLjIUddI9JAhC6TpU=;
+        b=pBtvwbmaCuheLTCY396yqkDussRHsbv2O8H3xWcGLWfkcOXlFnE/mcXGfzeKVfbehj
+         7NVfyVIFh5HM44XLh7Sc+lu/YX8BrflpsegDU+/fbQtsDvqNCYz2ILNAzpWN2/R+BpZd
+         alAr9qAHQIEZ7Vc+bJwXAw04223/TfxMn21PTe2UbGbeT7turytaLLr2RraRBAXHaQsd
+         Zmas4WNZBxYlg2TQ39NaTOUmPaQJXSDmo5aPY7pSSslVMjTiItaG/UPayon5reYvR+Xs
+         Mmj/XisivX2oksjDDaS0MgLuM2HXfgLxpAK4fD9c6xMtuvzf9ZN8kVD047bDC9hFWHIV
+         Mwew==
+X-Forwarded-Encrypted: i=1; AFNElJ/yBnImxlx6ZA9OnKQ7ydZLZzyXBztSU1kZNJMO2iPDc8zeZByVwd5zySLKvDuzlgFTJrKcvDLEjQ==@kvack.org
+X-Gm-Message-State: AOJu0Yywmg6w4QgOxSyXMZLOF/Yb00J1EGeUEpuinAj+04oCy6qdrmrz
+	KIDDwVDt6TnFTy2JiMr2i1dBJ8HTZu3+OuwdmnAFGe6FCFT91JzGW8cH
+X-Gm-Gg: Acq92OHcLSrwWyKLF0FE0XqDxzzneOSfFxbFViJ5rdotf9XuT/9sVy+tr8csKJBfAa4
+	TrMajXocU7GOPcL8PjbPabFxX3PJj/N1RzffEjlVsz54c4uZXEV2vQ0qA1xLBHZYOx/IPv+dRJO
+	Ms4G+aB3gun2ZpnbFqR8pC/Jmwdf3AxNKdIpFVixKpfFlCpb9VRDrg3XV0zQ/ee5AIsxvLfHJw3
+	gXcWQKq82r+VCy990D81Y+I3XDPtq0zZPaZTTSeGTMA2RR9VyzXRNKGPE6LdG28ccCtDXjjuDFD
+	nkeOlBD5pH9CWnQbwU/1JFfQ4FqarMXAcT5dN2K32CScCLTVn0SbZgPJonCAvwu1WN04dRIRxgC
+	qNpJoRf7qORTlA27ogp5/ARe8wJ1o9ATOgWajm4a5r7dcnIKjBhmg3Mm5xpWZx0Y8ejJEOSn+w0
+	pHu5s6TOLECpsrJMjyVtYb0aSiXVqvVyUeRqe4i6BPkrdOyJ4WnsFaRs1rr4GmOOmo/g==
+X-Received: by 2002:a17:90b:380e:b0:36d:ae6a:22f0 with SMTP id 98e67ed59e1d1-370f0a5fde1mr12621612a91.14.1780846126591;
+        Sun, 07 Jun 2026 08:28:46 -0700 (PDT)
+Received: from acer-nitro-anv15-41.. ([116.72.144.249])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6bf82841sm15604680a91.2.2026.06.07.08.28.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Jun 2026 08:28:46 -0700 (PDT)
+From: "shaikh.kamal" <shaikhkamal2012@gmail.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: pbonzini@redhat.com,
+	skhan@linuxfoundation.org,
+	me@brighamcampbell.com,
+	"shaikh.kamal" <shaikhkamal2012@gmail.com>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] mm/mmu_notifier: Fix build on !CONFIG_MMU_NOTIFIER
+Date: Sun,  7 Jun 2026 20:58:30 +0530
+Message-ID: <20260607152830.8775-1-shaikhkamal2012@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <202605031109.uxckW5L3-lkp@intel.com>
+References: <202605031109.uxckW5L3-lkp@intel.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 02/10] mm/damon/core: add damon_new_region() debug_sanity
- check
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260306152914.86303-1-sj@kernel.org>
- <20260306152914.86303-3-sj@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20260306152914.86303-3-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6482110000E
-X-Stat-Signature: shjpaj5cbj85xx936djsna33eohnqn6a
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1780845887-201965
-X-HE-Meta: U2FsdGVkX19Q8zm3VBHYXNwcVIHIgUtqWSTlYPr8PaMSBncg56MfBUmg4R3NLQhhlxLPddYG53edXU4IAu6Kw9984d2Vv3jBi4ckGSCDccytRXLq9+iZkdtiO8YkIsmnvCjyXoPmPlUW3Wz7SNbYufmDM1pCKfjGxA/UNjhb54F4hcx+veIFeHkD5eXMPR8/dDyj/muxwKJVfQjt4hxSnS97MuGzbcEltbqQO2OOPmOxlN4mR9nT287uPa8T1PXj/8rMQvAqu4RzfxpyA0FDQ5Yir1yrzlfHiUNr2w4nmzLNpzSBAvF6FiE78qYv3MeizCv6DobdAntZ4g1u7G619J3h+1CRnL/d2gm8cVyjoGzJT07zeyyXzQjSOsOBCvaNWQdZQCt0SnfoIUWYUe7ARtUayCZCIg4buA8OUjBbP11wnXDpqNA0KEBeHQLq59E6EVobNqw4NDconSkXuN0WWBDGacrh91f3PgPRoWpnDQ11f63195RPABBVpCJT1B6uY6FjUiAAxUMY4MyXxBSYdnpQkOYgfuY5vluw2WdCHDnRnvoM0+zquMD8lami5VnLDnA6FVLt0LEP9sC/6iLfuBVwAlqGIZPPxlX6XGxRGgCC29jU1KPMF1RrHpSrp+M83ohvhATNc7BRTxkRPP0pejxezjXHm5N3prKH/31xo1Ap14m4PULilfAo0GO/HEW9mE4xFDE2wEARKquEp5rLdMZ8liUmAXUoHeJKRADRmwzX1FwxvWYdGd5xTH8DPbhSzRMkWP4/4rspz/dk65dqDgN+5rd695irKEKKjAwRSw44A2SqPkO8O4/2Oz4zcpJVOjX3DxeeD/jQOdNSnXt8wy5oQMsQW9g5xXUAHuqr6CL+ezfVfzkJB0iS5jTZUAh20QCe9/lQF2CBu+Y5j+nUygvNPtEHpH8Q6FIl+h8hwr5v5p2ZO+kEFTOzVQtnFjJ486U6Td6OPYeUqo2kWVJ
- fqoaVT7L
- 4hUeGxzRogGjlOx8eL44q2n8JwJZP4ubJUuofmG7nds7bh+062LZCnI6fvso+mtdEjvWDtyxyxjjVT0jQHQ6KYIo3JJZ5R1h6Vt2pkZrCGmAwGFGLCf6Ek3LSE0w2kiBK8iSs2CTRaI0aNgdRJxYtJIHlFtzqp5pqhJg8DnwUSEAYC/hrd8CUmxjlAha2G3ROKEAKF2bzVVpGIVhdv7aPEH7/jSSqk5HvSugV2zm7u6NPCWEsYDcs1VtHuG3ftdKa3faMUkdxdV3nbYGH3qyDut234g==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DE1FE140004
+X-Stat-Signature: x17yixnn1i84eotsuyr4wodngwafn1rf
+X-HE-Tag: 1780846127-958788
+X-HE-Meta: U2FsdGVkX19w8r3BMBJMMwZ0v6N0j6ppTQ56EyOtoO7PzBVu5HQWqI+hSiXccFSSEr4vua+KpWuzMuXGmiusGRhLNXzmbNZpHpA6XfBaYQ+V183cdZDlpSP/FqlkCxtFxPyk6Qpq+FpKNbsYctJWESkTxRMxTXNLWxPyzL8KGmX1F1ClqBmmEue1S5lx2BolBx7usURtHkYNqcydw3PGTtt5idyUatHZt8vvrpFFEEq7MYfRyTbrgLK+xFwG8hYanTSrX9bzuV7uToccyccA8hYYsczFXDyonaMJdIferhp8mRdiJiKYFfp2lYSrrmNq7hbWslTc2xj97QTZ8lBYQ92fx83NNgcB/424NfYnPjB7HmnnbKMaWpeqxVhohQE91NGiSbPlR+z8K8i7k6wNn/3S5tK6WglfPfjE9Gx6vuTWBNOHY0zxu48cA+Jln2QhHtN9hBe++wssA3QVViNRDqL2pGQm5srCj1viIi3o5MjneZ6Nz6QPCh7RdiLSe9BBkZSFcIgXL1YABF22SW1KVRKuRZt7qTcsaQ0K3n+F+/Xk4uy0Vb8/+tBHqT110o62jYfch/2/I58rmTuwt0Rkzab377cISHWzTv6rcFDaD0aXJQRfMHn1LsLPAEqVxMrakx1oHtSdUfIQODP4Dyg5jcaQvoZFYhV3aAKl9vAT/xetI3JFLN+yxARJezs+omUlfPftrC3erEGk5t7MSfivjPD1ItoBpA45aq1JKwQEeUjXIpeda9sFhk1iYBa3ux+256oG+p72hiWh2VJUNoHVb/qNbs9DBezOzHi/DR34qxCatqxoIJOI3lEGCnq5FnED6YsjV7OS7ZqliS2qAb6HzsXmiUL5J5GI3ZPx8eBsbq03Pr6lm+49GkZNeFntm8L5DkKYY24cK1wbQO8khuoeX3xt8FmccPxmEw0ZrR7NNto7aHCIvJtATpE9c8fdD+1f1xHfywzvNLbnMQpvk0x
+ JvoimkJZ
+ jWD5I61Uq2R6KMM57UFxJyDltjRHNuRGG/57Q+FZdC9sgpOKGeDh+AxNPloehKLQrr3JfR79s3wOnuNEWK2kY7oBrZM1+HHp3GppvMj0BUmr5BTrSPJqkj1B5gX4h1n6RlUeQeCitc6C2mbb15+yByrnL51Ph4jqZmBRjSwFypF1+dGK1BqIqDt8IqKHPlXcG+XWfqo8Byh4OaP00hBLFW9/SesO12njV0jXBmOG5QfyKx8otB3FOpiSt5eqcM51jRIe/tEOCfdzzvg2MgsHxS4c2HdfrTlob0OqfqbZ4fxlXw642hsfm09prVbQSeUEGoQE1vjoZ5du7SVowfHZnVnFDARGojz6tHkPUZZDUvakFc2N650k0cQeGLXAZVgz+dgzeFgY4DSpKBLvkbr033ipb2vKD+eINByZHlvmyC2GjbCl4B3xktv16ICbtYCUyAqKLWwakUeqsKObMmdqvQzxeQKqT3YlZ5TnoR0sUwvfr2qCeKqUytuX2VXz6kzO4dLGVcO9kjt8wcIiO5xfD5TWmSj+C3lfmRvNvKHFm8rHFXedua6qRrMWNl8GpmoA3g81GzHhaBQhfZYWfDks7+za9RKHXmJzuCjQddCIVh9gS9CE53sYUSaeuojrXPv9W14bN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,72 +127,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SeongJae,
+Add missing static inline stub for mmu_notifier_oom_enter() in
+the !CONFIG_MMU_NOTIFIER section of include/linux/mmu_notifier.h.
 
-On 3/6/26 11:29 PM, SeongJae Park wrote:
-> damon_new_region() is supposed to be called with only valid address
-> range arguments.  Do the check under DAMON_DEBUG_SANITY.
-> 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->  mm/damon/core.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index f1a97e85824ac..0c1353164ec81 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -109,6 +109,17 @@ int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id)
->  	return err;
->  }
->  
-> +#ifdef CONFIG_DAMON_DEBUG_SANITY
-> +static void damon_verify_new_region(unsigned long start, unsigned long end)
-> +{
-> +	WARN_ONCE(start >= end, "start %lu >= end %lu\n", start, end);
-> +}
-> +#else
-> +static void damon_verify_new_region(unsigned long start, unsigned long end)
-> +{
-> +}
-> +#endif
-> +
->  /*
->   * Construct a damon_region struct
->   *
-> @@ -118,6 +129,7 @@ struct damon_region *damon_new_region(unsigned long start, unsigned long end)
->  {
->  	struct damon_region *region;
->  
-> +	damon_verify_new_region(start, end);
->  	region = kmem_cache_alloc(damon_region_cache, GFP_KERNEL);
->  	if (!region)
->  		return NULL;
+Without this stub, allnoconfig builds fail with:
+  mm/oom_kill.c:523: error: implicit declaration of function
+  'mmu_notifier_oom_enter'
 
-This can be triggered with
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202605031109.uxckW5L3-lkp@intel.com/
 
-	echo Y > /sys/module/damon_sample_mtier/parameters/enabled
+Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
+---
+ include/linux/mmu_notifier.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-because both node{0,1}_{start,end}_addr are 0 if people forget to properly
-initialize them. This can be avoided by checking the parameters right
-before damon_new_region(). But I'm not sure if this is the correct
-solution.
-
-diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
-index 775838a23d93..4a5d3fb12e1b 100644
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -118,6 +118,9 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
- 	} else {
- 		addr.start = promote ? node1_start_addr : node0_start_addr;
- 		addr.end = promote ? node1_end_addr : node0_end_addr;
-+
-+		if (addr.start >= addr.end)
-+			goto free_out;
- 	}
+diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+index 0ccd590f55d3..ad1a5e311ab7 100644
+--- a/include/linux/mmu_notifier.h
++++ b/include/linux/mmu_notifier.h
+@@ -670,6 +670,10 @@ static inline void mmu_notifier_synchronize(void)
+ {
+ }
  
- 	region = damon_new_region(addr.start, addr.end);
++static inline void mmu_notifier_oom_enter(struct mm_struct *mm)
++{
++}
++
+ #endif /* CONFIG_MMU_NOTIFIER */
+ 
+ #endif /* _LINUX_MMU_NOTIFIER_H */
+-- 
+2.43.0
 
-Thanks,
-Zenghui
 
