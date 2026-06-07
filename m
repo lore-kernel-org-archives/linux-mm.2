@@ -4,123 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5B0DCD8C8C
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 13:49:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1582ECD8C88
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 15:24:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E08506B0088; Sun,  7 Jun 2026 09:49:00 -0400 (EDT)
+	id E02046B0088; Sun,  7 Jun 2026 11:24:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB8F86B008A; Sun,  7 Jun 2026 09:49:00 -0400 (EDT)
+	id DD99B6B008A; Sun,  7 Jun 2026 11:24:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCEB86B008C; Sun,  7 Jun 2026 09:49:00 -0400 (EDT)
+	id D16CE6B008C; Sun,  7 Jun 2026 11:24:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C05396B0088
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 09:49:00 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 74596A07EA
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 13:49:00 +0000 (UTC)
-X-FDA: 84853247640.25.71B297E
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 73A7020008
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 13:48:58 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OwMaglQJ;
-	spf=pass (imf03.hostedemail.com: domain of shenxiaogll@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=shenxiaogll@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780840138;
-	b=oU0vxixl0ZrVrfz8zgbBbh/pPDPiksw1d6rayrXqNPA+FyqDquzWUzQi//xIVOyFL30mfg
-	s/ucG5kq4NlG0/t5dr/YOO9r2RfAmRCBzvOI+8nRysrxRze4J2MejtxiwRIVmiiQwuPjSm
-	h2Fk6JVKzpJLxu4QhbsScP1NdPL31bs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OwMaglQJ;
-	spf=pass (imf03.hostedemail.com: domain of shenxiaogll@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=shenxiaogll@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C2A646B0088
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 11:24:49 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 728F3407BB
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 15:24:49 +0000 (UTC)
+X-FDA: 84853489098.13.C0F44FA
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6482110000E
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 15:24:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B3rKEyWt;
+	spf=pass (imf05.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780840138;
+	s=arc-20220608; t=1780845887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=0CTxO7Hcxcsa+DE7y8PeV+aprK4GKwNhOSFfFn9fnPw=;
-	b=F+Gre7PjM+LK9SM9cU2u7TfL/E1KlIuqLR5bSt9esOxb0KHWC9fHqSWYfWnajv+LDEkM2+
-	IRSDty3bSRXW5G/0DlBW2IFJ6WxB5qmcfiVUojABWqNVVdH99DhjgBEZc11/wZpbVxlfo+
-	b7OU2FvY/T2WC0EDKJMJjtHvVBBqTs8=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8423f52af13so2456357b3a.2
-        for <linux-mm@kvack.org>; Sun, 07 Jun 2026 06:48:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780840137; x=1781444937; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0CTxO7Hcxcsa+DE7y8PeV+aprK4GKwNhOSFfFn9fnPw=;
-        b=OwMaglQJMfzyhkdRKznTCxxeyagdSVxHhEKAXx+LppSri2j8bRwzcp07iLZwovX6jB
-         i7f/ekocpuXFHUDZu8N+I9itPCiQhjKv3WMVJjvnZzCu/aEsnJScS2BLUtoaRt2trNFZ
-         Eq1jV15jOCXXHmjnNXVivtTEaHBLAuEtkH+8pJGoj5hoHuXGkI8yDu1zlLsSbFE/n4jh
-         VZpreCMpz2FKs/AgsJQol4WpbP9W9iMPtb7oEpabQeN8i52jNe2ocLyQ5snQTivt3wAK
-         hqicG2AaIB5FQI/0K9cEJjd0U1HxMLzBg3/6gPjyPsUcNBQxhl4F/ljSEvjcPRuSzXrs
-         uGxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780840137; x=1781444937;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0CTxO7Hcxcsa+DE7y8PeV+aprK4GKwNhOSFfFn9fnPw=;
-        b=VZ1eiW9V688ZPcKf7/f/txlETgdEm+5IQoP6y5H3xxLuxm60pJa2DYkN/P5Yu1f4tF
-         5QVMwOuCFvv+MWBSY67tu+7pDNBZ4cS3MDB2ZAZkMHdJUk+jMCdcIrxnTlwyInGokm+q
-         0u0pfWTHmKupz5gm9xYEo+4gXZNCB9hdj0qnRgKsabzxdwYlH743bhnkMh9F7un7sjhD
-         VQVBzMDdidEf5+dqVu1okcX27TiNY2zFfkVDYVwh0d/ESXg3SDKt9lLJ9tTi0hwfBIV1
-         1+GgxAeF4bPdtS2CMrtdOtyf2E9hgNvmCxbPyy4tj+915diFMrfZsU5OP/V6odOJ77tl
-         NxAA==
-X-Forwarded-Encrypted: i=1; AFNElJ+5q3ySIyM1hQdHNPBa8yBUm4qr8xptE567kQxR7AaHaP/fFpnMgiXvawLwe4kgyQFzwo3ykTGOJw==@kvack.org
-X-Gm-Message-State: AOJu0YxC7+FU8m0l5/fXkBdObx1zqQSoIlWxxN+ZQv1DzSMCTaQ1cRq6
-	jneNi345X/4pGCZt2opHjeU3kvI52/Y9G1a/1omzbbpKKQeWe8qsBAQ6
-X-Gm-Gg: Acq92OFhUS1F0UMkF9gX9AxRlDiLba5QoT0HVFT9MXnOZM3zGqRdGMHtKgC3+E89Xwe
-	XJ009wOPug1vGWbx8gw2OrBZjeZu8ABD/7Hl1hgTzzbHSWWDA0O8GcwjsliJd3K80pHnB+wMd3u
-	0zReg9HLQ5CR9l6IXkNj1igUR0sqRNUNMA4nkT25hXzG6GfNzitk30+T3QUsdz0GOH+jeUoOmdT
-	5OTRdhU6oOMX24chp4wxzthqG5KykRHTBI1ZY+nQKNY7/Pw0dmcnM0DxlytxeoDo6vJieV/ZD8f
-	aBk0/6g+BenaRn61ha8aBLwJR6a0U14bTqW9RtPS01zgvSH1wnwG1vgOksO9evijAiZ8jS6RJJx
-	evhTYeMLFSOf3/iIK7+zNk2OasnWpGMf58K8ImbsbZvomwS35azAxND3wgGwehlNBb2SOFFs+V6
-	YQZCjFs0rbL3qkgxqXjFY5fQfa7KUUnFBUWw==
-X-Received: by 2002:a05:6a00:234a:b0:842:7221:dbb8 with SMTP id d2e1a72fcca58-842b0e57474mr10850926b3a.15.1780840137253;
-        Sun, 07 Jun 2026 06:48:57 -0700 (PDT)
-Received: from [127.0.0.1] ([116.80.91.208])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84282918b8csm14365235b3a.57.2026.06.07.06.48.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Jun 2026 06:48:56 -0700 (PDT)
-From: Cunlong Li <shenxiaogll@gmail.com>
-Date: Sun, 07 Jun 2026 21:48:52 +0800
-Subject: [PATCH] mm/damon/vaddr: drop redundant mmap_read_lock from
- damon_va_three_regions
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=M7eM0J2wbw/2K8ZZhLt6TUGKPIkNzPAPBwibQcHHdfg=;
+	b=b+DrBcDYhDhodeT6r6NxYYmi0Dr/Bj3YBWPdpPAoYMp8cQ2c3MV3KKe4QBdo3piWYdqMWP
+	DZxj7maM5yTgjCQ5gr4V2wIxBKQWOkBiJt/R1ZjLg0xu1uUg0nYq6fIGRbPFEIFTXzIPv7
+	LxijYv4dS9pqtN9Xi7yF7H6RCXms4gk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B3rKEyWt;
+	spf=pass (imf05.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780845887;
+	b=aLGx0n+u75W5PByaGcmu7kg+uOKiDi3/l4aWqqEjC1biBmPP+K5V6A0MVl8ifupL6gqCHs
+	z9PJl6RsvipG3VpVgMQ87o7001ZUitEpbHtqORtARn8WDHvxYt5flpWvtEDbLpL+vjSeAQ
+	Z5USTYL84BO8Vd8fQBQyrHhebf64SUg=
+Message-ID: <d057097f-2efc-4f27-861b-ac076b93e34f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780845885;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M7eM0J2wbw/2K8ZZhLt6TUGKPIkNzPAPBwibQcHHdfg=;
+	b=B3rKEyWtrMBqQzOjs3BD43CH+i23fev0mW7/g/PB1V+OQ/EcCL2pUGzT1iTuFSd/xwMKr7
+	f4k7GPxMA11+VcVvtQXdpyYVB0Au1zDt5WXZ6FpONLVWZgHsTs1hEsPAPtCG8/27aVCqZs
+	MzHaZ7Aa2Mz672dXagqzB1an+cWHqqA=
+Date: Sun, 7 Jun 2026 23:24:27 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [PATCH 02/10] mm/damon/core: add damon_new_region() debug_sanity
+ check
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260306152914.86303-1-sj@kernel.org>
+ <20260306152914.86303-3-sj@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zenghui Yu <zenghui.yu@linux.dev>
+In-Reply-To: <20260306152914.86303-3-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260607-rcu-v1-1-3c9f5995a3a0@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAMN2JWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDMwNz3aLkUl0jkyRjI5NUgzQDczMloMqCotS0zAqwKdGxtbUAK8Q7fFU
- AAAA=
-X-Change-ID: 20260607-rcu-24b324e0f076
-To: SeongJae Park <sj@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Cunlong Li <shenxiaogll@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780840135; l=1761;
- i=shenxiaogll@gmail.com; s=20260517; h=from:subject:message-id;
- bh=Cvgq6hNpp3pN4v1ssOQj4C8t60KcXC1VRT5noQtt7FQ=;
- b=PejStRa7IarY8QPXkGy/Nf155AyVFmcMEsGQmhZELK5FxMOFhB4kAhKN2VHYFQy/+DFy14J/h
- Ao3Po6T9PcuAN5TahK0z1kybF+HmDYUawk7HaxWMBHIsKnPC8I8s9P/
-X-Developer-Key: i=shenxiaogll@gmail.com; a=ed25519;
- pk=SKFifnqPdsvsjuhUiq+Y9vtCdhyZ/LrRcfYn8eRq6AE=
-X-Rspamd-Queue-Id: 73A7020008
-X-Stat-Signature: at6u495ryg4xdp1877fd7h1kfbzd88ir
-X-Rspamd-Server: rspam03
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6482110000E
+X-Stat-Signature: shjpaj5cbj85xx936djsna33eohnqn6a
 X-Rspam-User: 
-X-HE-Tag: 1780840138-744072
-X-HE-Meta: U2FsdGVkX18qsJlMjeQXjIYFz1tB8rFKAb422vRDIuEIeYs5/6NPSl2GZp+gWIPxZZ8VrmXlvWSiGz8sqbw34l7DTLHfNqnlQjuCj1x7PE9bPr8PUZVTPzQK2r1cxnwvGZl09Q39NipdL5iAwBxneKXcAogkN8E6HfP57VeasJWI0lQt7/hSpUGkfK4dabTFOfuiN2Lgdg1EecJuwKY8mnTCYQlLQ5Ps5xl2E56BB68QPvuIIRIyFDlCb13QOqlCi8ysIVSWsP2awDiIRf4ED9K4bfeRITgiGwMRU4Rlhl/RCZKWDBTRvcyHBGsZu6tS+rmKEm6a9EHptYu+8R8FyirZjyB5xc7oxIhNWcjqctx18Rzn3AcK5s44d3QF4VgzPm06VPdbxpsxh5zlYrEdCHNWERgTGga5j3/dTQdvSTtzy1b1BOYHFj4TnqM56sTpSCiUdbi8ybr3nKnfn+YKQR8b35tBYq1B8Xx5Rhr+mrR2nvsH+lbRiAxMPxLsKGpGmh3bfbof/UsGuxMNNgKDsVbugjIK8TKlr/nij9WVI8TJadRwMRM0iIl382lj0apw00GuuHQPe5rtXPXDj2VQFjfvYWhZvnFjAeyM/CH1VAPHXje44qnYvjwrcU4hNCGHJLISL2palQ5yVjm3H+hyV3tO7faDS67JByWLQVqDsOn7+fXE/+NSL5ZzCR8JpV0ZwZsT0Dyd4kQ4CjB2lC3LCPcMkwj+KmjDS/aUHLgcdzxArguUx9LUlNjT58T/UvKo1eLmWD+kToqPsYlO94AQIhEiFoJinCl5jlvLOWiQpeFB0kgUqYtTkCt9kRPkP+UA6T3FgmTFAxuef1260p1GKh/nBv4RmjZ4ReX15KITtXu1xghFkneK7MvSnfHIU4Z6jHDiIUQfOZzUpf0Gn2goUv28MOhOT0XTQm4eW/up/iU3iznX4AS1XjOoM6CAowv5DfB6eFbTcstXLB19w0J
- RlPmid8k
- PHGXLRc8pKRJXP8TEzh2MokEgUOdcU1P82VYXreKLhe9JE/5sYU8W/oWtHcOdfJR6N7D/zPgdu6hvF3boMlTZ/M/D/YP8QDMx0VzbiZN+NwlqQw8FXJH30VG7QzAM0Rlv9gI0JPaoA+QoKQf99DSUmVF0USqtI7JhQTQxsw7w8Lr93IllguSHletmP3FFEWPz0F+01vFciIWLuxU6wzfuJO0kS9ipV1oVlOYZPgiV37cKeLTPoD9KoatE48UJdgxGLAtqvRPr1kOHYgIafBDgU/7/pME3c8Eyegdck6H8q2BDEEequ70TUjITX924gEYM7J9X9KJT6Wqd8MOSMDnRO3sjEVWuneQddiqTWk1IFqcpbqLenV0FeWNvFfR2xQqSkq4kvkAenAm+Q/Aidg2CAh9A/dwCVLOPEXPg7ouGicC+g4Q95XO3CA4FAdVVju0T3g6CZaNC3AaR63RWVM4sqdwiW7hgeKuPBJuAcOcfAX2uDDvQDFCncQ1YSRkabNFk1LIkZYYoK5zr3Y4loBX10YEEz9VJ+TaaN09nx5WGbekG0SzAgDVREwcbhcCXhN/IqGXpaNDP7zMf5SFtK33jSgQAJPtY8wsqmScm
+X-HE-Tag: 1780845887-201965
+X-HE-Meta: U2FsdGVkX19Q8zm3VBHYXNwcVIHIgUtqWSTlYPr8PaMSBncg56MfBUmg4R3NLQhhlxLPddYG53edXU4IAu6Kw9984d2Vv3jBi4ckGSCDccytRXLq9+iZkdtiO8YkIsmnvCjyXoPmPlUW3Wz7SNbYufmDM1pCKfjGxA/UNjhb54F4hcx+veIFeHkD5eXMPR8/dDyj/muxwKJVfQjt4hxSnS97MuGzbcEltbqQO2OOPmOxlN4mR9nT287uPa8T1PXj/8rMQvAqu4RzfxpyA0FDQ5Yir1yrzlfHiUNr2w4nmzLNpzSBAvF6FiE78qYv3MeizCv6DobdAntZ4g1u7G619J3h+1CRnL/d2gm8cVyjoGzJT07zeyyXzQjSOsOBCvaNWQdZQCt0SnfoIUWYUe7ARtUayCZCIg4buA8OUjBbP11wnXDpqNA0KEBeHQLq59E6EVobNqw4NDconSkXuN0WWBDGacrh91f3PgPRoWpnDQ11f63195RPABBVpCJT1B6uY6FjUiAAxUMY4MyXxBSYdnpQkOYgfuY5vluw2WdCHDnRnvoM0+zquMD8lami5VnLDnA6FVLt0LEP9sC/6iLfuBVwAlqGIZPPxlX6XGxRGgCC29jU1KPMF1RrHpSrp+M83ohvhATNc7BRTxkRPP0pejxezjXHm5N3prKH/31xo1Ap14m4PULilfAo0GO/HEW9mE4xFDE2wEARKquEp5rLdMZ8liUmAXUoHeJKRADRmwzX1FwxvWYdGd5xTH8DPbhSzRMkWP4/4rspz/dk65dqDgN+5rd695irKEKKjAwRSw44A2SqPkO8O4/2Oz4zcpJVOjX3DxeeD/jQOdNSnXt8wy5oQMsQW9g5xXUAHuqr6CL+ezfVfzkJB0iS5jTZUAh20QCe9/lQF2CBu+Y5j+nUygvNPtEHpH8Q6FIl+h8hwr5v5p2ZO+kEFTOzVQtnFjJ486U6Td6OPYeUqo2kWVJ
+ fqoaVT7L
+ 4hUeGxzRogGjlOx8eL44q2n8JwJZP4ubJUuofmG7nds7bh+062LZCnI6fvso+mtdEjvWDtyxyxjjVT0jQHQ6KYIo3JJZ5R1h6Vt2pkZrCGmAwGFGLCf6Ek3LSE0w2kiBK8iSs2CTRaI0aNgdRJxYtJIHlFtzqp5pqhJg8DnwUSEAYC/hrd8CUmxjlAha2G3ROKEAKF2bzVVpGIVhdv7aPEH7/jSSqk5HvSugV2zm7u6NPCWEsYDcs1VtHuG3ftdKa3faMUkdxdV3nbYGH3qyDut234g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,62 +91,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__damon_va_three_regions() already walks VMAs under rcu_read_lock(), so
-the outer mmap_read_lock() is no longer needed.
+Hi SeongJae,
 
----
-Signed-off-by: Cunlong Li <shenxiaogll@gmail.com>
----
- mm/damon/vaddr.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+On 3/6/26 11:29 PM, SeongJae Park wrote:
+> damon_new_region() is supposed to be called with only valid address
+> range arguments.  Do the check under DAMON_DEBUG_SANITY.
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  mm/damon/core.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index f1a97e85824ac..0c1353164ec81 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -109,6 +109,17 @@ int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id)
+>  	return err;
+>  }
+>  
+> +#ifdef CONFIG_DAMON_DEBUG_SANITY
+> +static void damon_verify_new_region(unsigned long start, unsigned long end)
+> +{
+> +	WARN_ONCE(start >= end, "start %lu >= end %lu\n", start, end);
+> +}
+> +#else
+> +static void damon_verify_new_region(unsigned long start, unsigned long end)
+> +{
+> +}
+> +#endif
+> +
+>  /*
+>   * Construct a damon_region struct
+>   *
+> @@ -118,6 +129,7 @@ struct damon_region *damon_new_region(unsigned long start, unsigned long end)
+>  {
+>  	struct damon_region *region;
+>  
+> +	damon_verify_new_region(start, end);
+>  	region = kmem_cache_alloc(damon_region_cache, GFP_KERNEL);
+>  	if (!region)
+>  		return NULL;
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index b069dbc7e3d2..27e34596c43b 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -77,7 +77,7 @@ static int __damon_va_three_regions(struct mm_struct *mm,
- 	struct damon_addr_range first_gap = {0}, second_gap = {0};
- 	VMA_ITERATOR(vmi, mm, 0);
- 	struct vm_area_struct *vma, *prev = NULL;
--	unsigned long start;
-+	unsigned long start = 0, last_vma_end = 0;
- 
- 	/*
- 	 * Find the two biggest gaps so that first_gap > second_gap > others.
-@@ -104,6 +104,7 @@ static int __damon_va_three_regions(struct mm_struct *mm,
- 		}
- next:
- 		prev = vma;
-+		last_vma_end = vma->vm_end;
+This can be triggered with
+
+	echo Y > /sys/module/damon_sample_mtier/parameters/enabled
+
+because both node{0,1}_{start,end}_addr are 0 if people forget to properly
+initialize them. This can be avoided by checking the parameters right
+before damon_new_region(). But I'm not sure if this is the correct
+solution.
+
+diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
+index 775838a23d93..4a5d3fb12e1b 100644
+--- a/samples/damon/mtier.c
++++ b/samples/damon/mtier.c
+@@ -118,6 +118,9 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
+ 	} else {
+ 		addr.start = promote ? node1_start_addr : node0_start_addr;
+ 		addr.end = promote ? node1_end_addr : node0_end_addr;
++
++		if (addr.start >= addr.end)
++			goto free_out;
  	}
- 	rcu_read_unlock();
  
-@@ -120,7 +121,7 @@ static int __damon_va_three_regions(struct mm_struct *mm,
- 	regions[1].start = ALIGN(first_gap.end, DAMON_MIN_REGION_SZ);
- 	regions[1].end = ALIGN(second_gap.start, DAMON_MIN_REGION_SZ);
- 	regions[2].start = ALIGN(second_gap.end, DAMON_MIN_REGION_SZ);
--	regions[2].end = ALIGN(prev->vm_end, DAMON_MIN_REGION_SZ);
-+	regions[2].end = ALIGN(last_vma_end, DAMON_MIN_REGION_SZ);
- 
- 	return 0;
- }
-@@ -140,9 +141,7 @@ static int damon_va_three_regions(struct damon_target *t,
- 	if (!mm)
- 		return -EINVAL;
- 
--	mmap_read_lock(mm);
- 	rc = __damon_va_three_regions(mm, regions);
--	mmap_read_unlock(mm);
- 
- 	mmput(mm);
- 	return rc;
+ 	region = damon_new_region(addr.start, addr.end);
 
----
-base-commit: 8e65320d91cdc3b241d4b94855c88459b91abf66
-change-id: 20260607-rcu-24b324e0f076
-
-Best regards,
--- 
-Cunlong Li <shenxiaogll@gmail.com>
-
+Thanks,
+Zenghui
 
