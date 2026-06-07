@@ -4,104 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B59CD8C89
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 20:10:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D8FACD8C90
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Jun 2026 20:31:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 305A56B0088; Sun,  7 Jun 2026 16:10:39 -0400 (EDT)
+	id 23A606B0088; Sun,  7 Jun 2026 16:31:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD7A6B008A; Sun,  7 Jun 2026 16:10:39 -0400 (EDT)
+	id 1EBB56B008A; Sun,  7 Jun 2026 16:31:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 219FC6B008C; Sun,  7 Jun 2026 16:10:39 -0400 (EDT)
+	id 101B46B008C; Sun,  7 Jun 2026 16:31:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 135B56B0088
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 16:10:39 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8E65C91EF8
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 20:10:38 +0000 (UTC)
-X-FDA: 84854209356.24.CB64424
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1598A20008
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 20:10:36 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bShHqSnI;
-	spf=pass (imf03.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 032A06B0088
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 16:31:27 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9F2C9A087C
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 20:31:26 +0000 (UTC)
+X-FDA: 84854261772.14.A81F82B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 97A4E100003
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 20:31:24 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tUnZicFS;
+	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780863037;
+	s=arc-20220608; t=1780864285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=7wIHOSWYohEmLG6pMXnfULhqgb287plk20JlAu4I5Ys=;
-	b=zh3hKW28lMBpn2+u0bO3sP1iglg9N6mbPH4dWp2ZNTp9hCMRUrKtZWbdj2lMXmmJFug/XQ
-	dls3aRYVAhtu0YGsIkKA7LpsmSti3qJD28HpKJJhcPNMcBHcDWG4vis8fBuCZsdNd0Tc8U
-	7f3cyd++CcJgn444+uvIwS8qVAZ27YE=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pbV17znVHflCYA4hpHF5VsEyW/rLnWQIwsr+cO/SJlc=;
+	b=32PU8tdfSgszDQ2vp0cWrYyuqN2Q7srGH09YhdXeyCNNLeLEEFBO393j/7C5eDdKiedabQ
+	5R+yWyTytyGa5y4TFZ/VC89+yfMpUcTC8NgeZTxkFTOeiAQpfUMQ9fl6tudUy0drpGsRzh
+	40X3U6p87QVIiXTm1vBFi5GMOYjg5zU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bShHqSnI;
-	spf=pass (imf03.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tUnZicFS;
+	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780863037;
-	b=ejkNYw8uEFI4YsT2pkLvCJ/YNSuKKs/uSdkSrzscsxTI2u/QVXvuZQb5phv8a0mEIIinKY
-	Xt2tM8hw1/qfrqJx1KWASQnrrcS0rs+B1841OrxDlQbgBSkcPk6ROCssMEeEHVgGWrec65
-	n1E+yWqK+HUvOLCl5VN0xyNiI8GuTA8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13F3444281;
-	Sun,  7 Jun 2026 20:10:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BEA1F00893;
-	Sun,  7 Jun 2026 20:10:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780863036;
-	bh=7wIHOSWYohEmLG6pMXnfULhqgb287plk20JlAu4I5Ys=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bShHqSnI6oWOfUDSbW6cYy9eMbRTgUko/xyPhiYjQd4+q8UgRyl4FX9sU96QojKmj
-	 7jK6GH6Y5DzVZNl/oYRof/zwlsdAgIq4fxxaZFx4NGJtrqT4D5dnzx3nfJWfCBYTOo
-	 qOhK6VyjprDy5b4PtURtf5opb1bLBCMSUX9BCEzhGEFgCit94GdQXXSZ8nj/J1X447
-	 DHVTof/qqRgiYNi6dpMLHS0InhtO5TGWFhmblbiv2yVcqPhabshMvd3rR4d7/yfzL6
-	 CUrw06X/S8BL4t3f+hrAxCmBx9mGTYM7AciY6l3xlakeFNLHf3tkdeUpikDVPqcxDZ
-	 IOF2V8sJaovvQ==
-From: Tejun Heo <tj@kernel.org>
-To: bot+bpf-ci@kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>
-Cc: david@kernel.org,
-	arighi@nvidia.com,
-	memxor@gmail.com,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	andrii@kernel.org,
-	daniel@iogearbox.net,
-	martin.lau@linux.dev,
-	martin.lau@kernel.org,
-	eddyz87@gmail.com,
-	yonghong.song@linux.dev,
-	emil@etsalapatis.com,
-	void@manifault.com,
-	changwoo@igalia.com,
-	clm@meta.com,
-	ihor.solodrai@linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH bpf-next] arm64: mm: Complete the PTE store in ptep_try_set()
-Date: Sun, 07 Jun 2026 10:04:19 -1000
-Message-Id: <1780862659.ccb18e27e916dc4b@kernel.org>
-In-Reply-To: <5f68f44310d4878185fd5ebc52d66530b99f174c6d04ab1170dc53cefaa54568@mail.kernel.org>
+	t=1780864285;
+	b=0ryWzvGENtp1EUZdCcA8qP9/6uyMTjCzEmWd025qPLODXBV4/jyf5oosXufJE9rzD0Abpk
+	ddQeXURO3xAnhbUoMQM+C9jRehYYKts5I9E6Soyq/KCIytI6c7rdpmm1OA6MWnaVsmM+RT
+	Vt3vhCXNOFSTdAUEUETgJvWzglMgjeo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8CF252923;
+	Sun,  7 Jun 2026 13:31:18 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DA9893F632;
+	Sun,  7 Jun 2026 13:31:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780864283; bh=vedSbHWVWJe0Ke5/QRNqJHVEboPffZIfJ0Z8nUsS+W8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tUnZicFS6DDHwNp7DB2mtYFmNTdq4Tex2cDVTJRe/IxGJoy1g3goY3hNlCLRaWfIc
+	 zl3fvjq3Duh1oUMdlU3D1WJbGPFMB1sv7OryckcWhUBYTL22ot8PfWqXCKv+AbDVo4
+	 CBpGXbIjmoScDJVn8NQnl0jwiy7Ex5RIv+iuWHO4=
+Date: Sun, 7 Jun 2026 21:31:16 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Tejun Heo <tj@kernel.org>
+Cc: bot+bpf-ci@kernel.org, Will Deacon <will@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>, david@kernel.org,
+	arighi@nvidia.com, memxor@gmail.com, akpm@linux-foundation.org,
+	rppt@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
+	martin.lau@linux.dev, martin.lau@kernel.org, eddyz87@gmail.com,
+	yonghong.song@linux.dev, emil@etsalapatis.com, void@manifault.com,
+	changwoo@igalia.com, clm@meta.com, ihor.solodrai@linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next] arm64: mm: Complete the PTE store in
+ ptep_try_set()
+Message-ID: <aiXVFK_qb54is8b1@arm.com>
 References: <088f52fd25860ca961449d53f91b214a@kernel.org>
-	<5f68f44310d4878185fd5ebc52d66530b99f174c6d04ab1170dc53cefaa54568@mail.kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1598A20008
-X-Stat-Signature: rqd3gaby4me1zajf6o8fkd8gp4tcnpib
+ <5f68f44310d4878185fd5ebc52d66530b99f174c6d04ab1170dc53cefaa54568@mail.kernel.org>
+ <1780862659.ccb18e27e916dc4b@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1780862659.ccb18e27e916dc4b@kernel.org>
+X-Rspamd-Queue-Id: 97A4E100003
+X-Stat-Signature: x3ohbznj84fn3p5wdsow9oa4xex1dfix
 X-Rspam-User: 
-X-HE-Tag: 1780863036-16754
-X-HE-Meta: U2FsdGVkX1+0UttKTtVb4cwxKoC6sbgewp3CCIJcaMW/eXAIyd0poryS4aNIakjnlkvldSLMNMSzfyXeZf8LwVc6Eb9Qx8vcpQ0x/8sGaWqLzlCwS9wPdjjq2Zy/8ChaSLZGHXx9j+dFLZE/2qs5bUON5QaEEF/k/Sys79T4oGqrDdk/NEBBwak1ytiANcFMz/Pb5MK5LwY8vuWX6drw7yeVOAfhytPySU5xK582CTCGkCiIgIZXVsjeOiLSNzk29iKYJ3ivuSZ93Pnt1hn0G5QgS2CWyST0glilX1VoTQqJTwGyuQzN1F0r4H0Appd7W99bAWETALPLwQ6Q2JOq/FwLWx+mRdZQ8Qv7ISlqswINm/zzjQUqdpyaX2Gw0anHV+1fzhdSA9VqqeHWJMZMtROM/uIob3Amb0jQ0hthtS7HMmKD+NxRaXhUmSnd0tJ5OvrWxdFoUUmcSZlykX7xiI4aRjng6FBFNtROzjBBhbYxGr0mOusuiqfdxgGJ0t5BrhcslbUprNmUoUAn7WstOjxNul/nljs7wbC5qBeHR0i7wxbt511jLP6092CfHDqTIoQGbzRhkMRm9rQlLyatlYYvSAdgtr5QYGbJwP2GOc8DeNoxgZxD4fREpcFN3+khBfUH7w9B1rSPy9wc4bRc+y+vjfER+HS6nLBROSE9bLuZqfWasjV0XW5gGeOJ7xYj3Cd4hKaLWli+wQku1w06uYp9//S3eEsNCBk53mAp9BWi9OqXZBxHvAPJuM1Rm9O60kpL5WbEV80ttdBoMKM9Z9sPrrYuKfyA28MgT3ZUl+UKjA932K9cTyxSqGNfOxz8LKbkeHwxCl417ibFD8MCnnHiGSKdq7yatqDFWtLZBeCLfzsyTkRAu47EqZOsGJ5vThPy7Vm3XgWVgexfBsNU3y0KFmmBkt8Dh7Fnnm9/AnHKA4JWH+a1dcmkKI2/PFTPgm1jNVul+8plNQzBAQa
- PBlNcSTJ
- QVDI/jdPMT2PruxyfLYImrVsm1kZ7nG9q/CVeuwRX4C9QKywiO/dnLrEGCpuGEiU64vOljAeOUqFHhmTTi6uyF9x+ukqZEGZ3RktCQv8e6V4o4p2msAPWwsLoKsYR0DpquM8FhA5HD1XEAqkoENQ07rkVMzvezXXXxFFMjAf/MpqQIj/ywIruMS+wVhYmt0hVYRZx438XXRr0Bcft7Gvye4PgsJecb0i569cHnuRc3BdI+XI0FgpPH3Ec4ELi2wwD9amYwCDAZoz2Mkihj9Je0OQpxEHPjQ8kCIUL6hEI9WDP+eau+xFPl9QPsMJ7b9STuua0tY5w21HUaK5H3AArkWYW/Fp8HFL3hx9TU5RxMxB7ePProsd8QBVvBzGRHt3gZq5GGc7T2ORlobU=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780864284-627986
+X-HE-Meta: U2FsdGVkX18uNqLc0hmpiOSW3HK0zzqTI5vCtemruh9NNFaOdez2hQ5huSAe0m6M6TpsiUeOWc/irR9KV5eG7jtpqLbKnrJRLRK0iuXO66rUBPNHPBosTBCBCk6rIbw7nEE68hx3HWCprURKhWoAtgtLlPe6nS6i4Qm/zio+OHNk/kZRRznL1/q7VJYxkNDq7laTzprgmOKlAZJZT1SLtq8iThG0U66+Gv/UKXJalLkxi29wQg+OMFStivYHaV6FIRKl92pkzKEEcKXs2aFAI/2ih9MR8vTAu7xVhVu+9CkH+tyBAcMjil2F7GpbtEk6cqPtwKb2wKCgGkB2A4OSa31UtFdd7hv6I/9ikpuWLx62KFwcXumpPJtEwLfdfcBK2Wk2eal9pxmJswjUaTUJMBVjykeJ+WpkH2C5gTDsj/uT0/sV4We42vuH5emBgKCwR7iq7MBMtlFWoJ3KDogh7Utwqz51k+VVZt1Mg7dqXfldBHjSbxO1Z0GmGsBDcub6+TBWTZgl3u9H3eulbpkLbMsC/DzGqa1NpBuuxem7lLRLf9CK98hLzxhz0ogY1p+NyrG4YDJIea78H2P1HDYIFp7lYVVvtFr4DSuZ1e0zp1xWY84zOcuHIvI3CIsh5+3/cZi3OZzDvXXDkbNEXMFRsIx9JzUAT4m0icFT4WNtpODISdqqepynTwlp0wX65lyvJGA+5arQmGilQYjBYl9HySCGz2s3sRDIkRfc8axSPFMoT5tySjZ7hnOZVTyMy/3bBPA5Td0zF6wgzUvHYx4qHEc06OIUL4/plJnmAjWgc6puRPznMhzQZVFYi3qnrvQhwij9I1Mihlpy59++dJhCGq11dMgnyR2mbhTRfNJiqBTIx+5yIzk440pM4oLCO2SH0ETNtatsytnbcOzN6ai+J6SFLEf3H4X7n2+oyq/G5NXUw9zgPzp1sQYxuwqRMVglB79VS3X6cqABQ0Ag2Lp
+ Ypv9vjKn
+ LPCEvaiPaJUmeNZhSVCoohdkXcoziCRa7QLaTxzt8Y2A6zBhUJv4CaLCGYNs8wSFR8gvubYchEbVBRRZgnR7Y1SyWKFl9xRzRYuiLeGUQdprWXs+Od3QWbCTc+ukCsK6CE1ggZCrusaEwTZKM40tdl6YhF19jf3j1PoazXhVbszG9bYhE12y4wPnZcenJvGdMi/PyticUV/Wey8O9ih3tdfFTlC7jhKCmbrDTh11qYFCFA/MfwCzm3BSRu1N/eWSOULwZaSBq6Ee3yabzpMNTYpdXX8F19ym92DPuHlFsFoAwz7j5FZ9Xef0JZAqWUIs2+qcEGU8bukIJFMB4XMifpXX40fRhYnyXLWYItkf2XnNNJh2AyO0KFv2KOPgufClubPZRhljt7c8TWAE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,19 +97,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Can this path actually loop, or is the deferred barrier guaranteed to be
-> flushed before the faulting instruction is retried?
+On Sun, Jun 07, 2026 at 10:04:19AM -1000, Tejun Heo wrote:
+> > Can this path actually loop, or is the deferred barrier guaranteed to be
+> > flushed before the faulting instruction is retried?
+> 
+> I don't know the arm64 paths well enough to say. What I can see is that
+> ptep_try_set() only runs as an apply_to_page_range() callback, and
+> apply_to_pte_range() brackets it with lazy_mmu_mode_enable()/disable(), with
+> the disable() flushing TIF_LAZY_MMU_PENDING before returning. The barriers
+> would land before the access is retried. It also looks like the same
+> queue_pte_barriers() path __set_pte() already uses. I'd defer to Catalin and
+> the arm64 folks on whether that actually closes the case.
 
-I don't know the arm64 paths well enough to say. What I can see is that
-ptep_try_set() only runs as an apply_to_page_range() callback, and
-apply_to_pte_range() brackets it with lazy_mmu_mode_enable()/disable(), with
-the disable() flushing TIF_LAZY_MMU_PENDING before returning. The barriers
-would land before the access is retried. It also looks like the same
-queue_pte_barriers() path __set_pte() already uses. I'd defer to Catalin and
-the arm64 folks on whether that actually closes the case.
+I don't fully understand the BPF parts but I think the bots have a
+point. If a BPF kprobe fires while we are in lazy mmu mode,
+__set_pte_complete() will defer issuing the barriers.
 
-Thanks.
+I think better to just call emit_pte_barriers() directly. If
+ptep_try_set() is always called with valid kernel ptes, we can skip the
+if (pte_valid_not_user()) check as well (which was just an optimisation
+anyway).
 
---
-tejun
+-- 
+Catalin
 
