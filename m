@@ -4,137 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D41A8CD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EECC1CD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:30:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B58D6B00A4; Mon,  8 Jun 2026 07:27:50 -0400 (EDT)
+	id 37ED16B00A1; Mon,  8 Jun 2026 07:30:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48BAB6B00A5; Mon,  8 Jun 2026 07:27:50 -0400 (EDT)
+	id 32FF56B00A2; Mon,  8 Jun 2026 07:30:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A1F16B00A6; Mon,  8 Jun 2026 07:27:50 -0400 (EDT)
+	id 245B76B00A7; Mon,  8 Jun 2026 07:30:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C6A76B00A4
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:27:50 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E66C5164561
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:27:49 +0000 (UTC)
-X-FDA: 84856520658.19.6DADDDC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 177E06B00A1
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:30:00 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 976D940A51
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:29:59 +0000 (UTC)
+X-FDA: 84856526118.30.8BF615A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 42CDC40014
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:27:48 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DqlpETE2;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 03E7C4000A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:29:57 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ASH3KSrE;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780918068;
+	s=arc-20220608; t=1780918198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aWwG3u0Aflc/Lda1tLzKYbhfKzk+y64NfNIO0xuz6x8=;
-	b=EwE/3exSZjJlS/Kr1A6kdbIMKwC/+PVeAhlYgRPg5jp4FDpKJPWPW3fYFC2XEUjQU3/q8Q
-	206tvAm93GIpEOP1De4EjpJXlxd/66vImLlLuSUmu4VdUo7uJllQaGV6xDU/AUvRMaC+ii
-	cwUFvp4xXogsLvwmdsb+9Hq4y+ktjA8=
+	bh=/bLoWkKU6zRSNbiRPvCYb7WguBa+jCqnG9JHGzaDK+M=;
+	b=zn2T8SbE9jo/VnTWqmjzVKA5G8Il03WU544iXrJ69ouVvMj+u63ZE5Ii4Le3cLFnWd6lKF
+	8001r+j0OQ+jQJyzhR2fP5MpWksTIG5BYSkKbYCdWJriybB46krKCkVXU+u5v4pALHB+X3
+	RXHHs6D2KN1Y0x7OFXgBfjJN4bv49zw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780918068;
-	b=U2gC0zX+ogvmomKUgA1WR5t/AaAevJM/uqLxSpCmi+VUM3ZQI9z0H7NV8gqmiNFSEKVVba
-	0yGhwKOYb/OijD/jfTpOBWx5RaCCS5Phma6ZYAPhW82d9drRpUD/PMUMDwo1WS1rTpYCaV
-	doPYKyLIyXLXOSXcFyobPuaJJE1lpKM=
+	t=1780918198;
+	b=c0oxWx8SZzJ5WNp2yhR+V2Z/lQqgRIFug5vJGqLXGWvqUd7MQMpiVUygi+y0ltdvajvm3u
+	0BBS5s946HpvjzmabCf22uQ71KC4iPQx/Ias5Xn/yofQMReBAqiLXKxKSMiYGHF1dFOFpO
+	n/r9gWcWLkocMEQhYejk0rUJTAzv7i0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DqlpETE2;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ASH3KSrE;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B009C600AE;
-	Mon,  8 Jun 2026 11:27:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438841F00899;
-	Mon,  8 Jun 2026 11:27:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 86A06600AE;
+	Mon,  8 Jun 2026 11:29:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDB71F00893;
+	Mon,  8 Jun 2026 11:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780918067;
-	bh=aWwG3u0Aflc/Lda1tLzKYbhfKzk+y64NfNIO0xuz6x8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DqlpETE2sC+9/CTV46REFHah6qfKdE+9VXVClVpyTA7UyFkQaLR3rqjYbxKfg3BRH
-	 S457z5AIQ2wen3PR38oQIytG0cvxYEdo2YBwyBliRZycsCic9YetdcOBFnU9cIGCCO
-	 HMrYYlDdtOkjVLt56CBdMDFWdfTvbAMX19QtwWsiBEbVCDLQipbP2o48r3LDF1wlk4
-	 2gAsNO4YwXt/eBJmex5keeJZr8/Ohh+HhwOHdTP4kxx4IApo3G6qFZ59BZlwkJOmvC
-	 DTFaWRacxIL5Ioq516CFVwa5irMFJwWxb7u5dDN5u8EOo4lEVyKCMYeDxp7QqhFFRX
-	 T8nfKxWt8ZCvQ==
-Message-ID: <74d6034b-ca63-419b-9241-81f8eb1f31d7@kernel.org>
-Date: Mon, 8 Jun 2026 13:27:42 +0200
+	s=k20260515; t=1780918197;
+	bh=/bLoWkKU6zRSNbiRPvCYb7WguBa+jCqnG9JHGzaDK+M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ASH3KSrEWKEkMmPU3BX0LMCJuqKW/4pxjDUHNyuaL6SM94st1yY+UBI4goLs68V93
+	 xnd7OdESoFQZOMFMdAjzPXWHkxJ8InnA7wG5c78nx6a3uy2I2SZH64W7OLKu1kPhJ3
+	 1ghkiAapTMo1jBhiJ0AWK/++JoneEiCgcdMOxQhCr3u0pB4c6BroFlHuit7e75AntZ
+	 W/smfPyMqLKIhjogXF4QMwI2r8oBBrTtbOy7b+Ewmtn2N4eq/9WGPSqVsb2d+5kov3
+	 vfCEbdxDWwAstJlPPtcCTjrt5Qvli59q9GXn7RtGjvw6c32sHniQ2CeD+5je3KMGe0
+	 jKEcDvloXPSUA==
+Date: Mon, 8 Jun 2026 12:29:43 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
+	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>, 
+	Magnus Lindholm <linmag7@gmail.com>, Greg Ungerer <gerg@linux-m68k.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v10 14/37] mm: remove arch vma_alloc_zeroed_movable_folio
+ overrides
+Message-ID: <aiam0zdR6BJ1HKwP@lucifer>
+References: <cover.1780906288.git.mst@redhat.com>
+ <c374d7a35a35eb4bd5ed85f87ff6885fae605fa9.1780906288.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: fix ksft_process_madv.sh test category
-To: Sarthak Sharma <sarthak.sharma@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Mark Brown <broonie@kernel.org>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260608103224.344101-1-sarthak.sharma@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260608103224.344101-1-sarthak.sharma@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 42CDC40014
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c374d7a35a35eb4bd5ed85f87ff6885fae605fa9.1780906288.git.mst@redhat.com>
+X-Rspamd-Queue-Id: 03E7C4000A
 X-Rspam-User: 
-X-Stat-Signature: 6tf5tke9opzq8zezw1ifi7bradsoxbyr
+X-Stat-Signature: 3zsb7zeh4xpengkp6itmwwu6wmh6qtko
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1780918068-274399
-X-HE-Meta: U2FsdGVkX1843fjFZRnwRNQ1CH053qtOHeaCLXnVvhRnTwaxqF35GQHOJwqjePWABojXj6Z91y+E/kliFynQkz5lI7baAWzlUS3VymB/SCEA3N9mHRh9jmQaXq3TXRyy3/DaGNnpuDuU9KvJ03embAZaUsrszC622mr+LNjEriLp0zSPlCdfO/MTHWo98WZ3uraJCzOYPEwbnxFMHxMcU8rQdk5xOhABJOkxJiJSA8+NkgiNcUCSN/0eLLJgiF9ZecpPQUbjITJoUm5SnmjZ1McG3mpQfj78JThNZ6WOqf0+TwlpmATnZP4FIlpHP7amUqNB5hoPP+sAAT84UGNTnAMfZyTrscNEhHrQuNkRPcSomC6KjwzInQvG3A82J8utZONFEDwSZhwnMRY4Ytzl5+WPuqEUeOcVZ/694u6SdP9x5OxqjGUpB/Vn572o4bJBP0fBa/6fZM78lItKqDSqHiCZFz540oRNH2WIg0gb8SZWYa9u+z0rd/twJMkeav0gMVISiKFuEuEGLnRbQYu90+Oh/C6Z8RsxBKi0HPhfbtgAOmSTKQpZno/dySaGvw5W4pxl7D4TmpjnGffOgqcyJpErZClGlkEMAoKNqfO9AIkNptX3lxC2ATgweokjp80yHf9R8SB64E9cMEzihWin/MkAm5/J9XcMuiSpNt9yLGjn7TCpbVVFgP8qYkyzJr6kkO+Vgh3Nj9TTsh52LdOgHu1z/GSzVdfnLx6s9xEk6QuAs8unxqcYkNnIYBpCsH+C/+POIGDI61Rjjs8MtkFUOXSG3HFgNJH3rDKIC2iC+24kNohEHe5qQEiyiXrqxD3WG66pZkqmUEYn2cOfeQ95dMkYGtRPBlNMV7y3MwyRTCkavIfQfxp0e4wvBs+xK7SNNgZE8TVoHW3gcMsxSEGTU6H3DG8QLPFp6AG7ddS5H5ZiByyXT3MMzpQAp6YzW16qpDW+ek7QoMs7YvjPdrr
- K9VZjx+/
- gPzg4vZYJawyur1VkOlPsKUarTyxxZSZFuc1j4z1ahOjHBPxvhG+anjZGA76RNSpxqC/Qr4XtYnohLY4qIdgefCxtIggyfBi06r774qdqwqBkfx6l7ljXqTBAUb+ZNTKjiTvC0I7HBhwdr+1g7bheTQwdoG/jS9ml2LQVdMvZdoWs6fP2PGaIiTU+tsZqHqxDURNVQ/X2+ZOoY2OZ6vuISOUwQfR9H9CCfaj+b+4nbRt8StC0KXIpqp139l3WYga4MlVMDnSqOL4Z6pgjkIl8kL8skqJozI2FrpJh2p4y2+vuqEAmoprLcSVSGp1ew+qSM4UOTwjFNDBuk/twqXfPpsG3JepHbIViw9wpjZODQAkLYj91MSVY5LXrW8sggnyIXPFLqJKW9eli9ME=
+X-HE-Tag: 1780918197-5430
+X-HE-Meta: U2FsdGVkX18vTu5vAGfFr2+t/CMsXgIXBB03DorDdBVCyQmWro08wI6YtIMWhDd8vbaIR+cl6HuHp4DpwCSdqBuYn2Gs17OFHiQ6t06YNT7YE9uwDMKTQnknEmacbcwYkXJEy2YM9YlxH2eXjZr3NmGzezRnqNRRh0/DvwhpX41fKJRbtkdpJb1POaKJdk1o2iXCt/406Hu4NWVAbdjLIdS7tSBBpF5tonuQudxCLUpiA8+5T2Tl+oVlKLOVft9d5nJ1secxyUAoO6K+vg6FxqVUotyt7wRrNybyw6Sv2LFGzsoT6QyYJ8j4zAvcQYwHUtXK15+5YUVzeBmev5lPiMBaGMGYHOqCWnKoFxw7LVCyxTyAzVJKmfs+bI3WUgC359PhiV9JI1nRGpbMm9K++hEcYoplQBrrkkRUKPKKe6wUD2tANccEBF6LbnRFroQ4BQnGdXsbKF6weRTx0qRDuDYqgmvQhLEZJ40Pc95lBa/6WCQDWVWwOkCGuSKQSDA1XK25Dn8N6oecyAAXowcTvYjS7aaq/EFO7jEkLNhm70088VCZn2+rXGnS8/W0seh9/cpQDBMmSWfDCpZNLlglN3VobopFxlR4gtPvtSERBbKc1R418ITn8DlgT0/l1V/3dFpLuqs2jA5+SwvPYbkEvigFyc9J14AlZY17Vnuckr2vS/9xHG/YdYXCBaeZ5ky4RGQfqbJ07p79EtiObL1JvbiDqxCn9/bhzO6qOLNMgrST/uc9mNI3392iKMtECwvZNAvZuKSchmDhORPT340H5slVUTm5PookdCIAF4mc3LrO6Udi9/NDp4nQtoegXBBYv5F7zBgGi+QQhb67+KwKkxiJSJE/Gzx2y2362VbKDYH7b5ixDOe+XCNLntFom6Ok7QJ/RSQ/dWd454TwQ4R6tfHulgd9lz+dCTkdwv/vejkNN7r+GaQBChGAEcW2EAeXiZ1cx06j9A3VcAGmOTV
+ Xez/+tNh
+ b2eiRpQEp60RsG8GPfXxuDJSg4WFT04bN3YmuRtHkbpcRc+QbcpKSYjj2HSQ8gyrKl/K6xBWdn8R7DEEwhp+BuNsUIuj+cUFTb7MSyliVUCmCha/G4V0sfNUVTImXTHRYcQrSSGdXYvX9d5lKFeDBYNZe39VJ7uz8nMZxDUZjd0ve1j5x0n6oL1fu+OPQc+E/VmGk4RWRTsKPyLYCyAwgHL4wsS7VPPC4l9y1/ZrBFCIuGrWwa851Av4jpN2gMEyDubZIR8/FeEcT759/CK8XwZ2XcC7hiUy8YmG/IfnnreZuXgqqRWdYR3a3Gd9PpGIAE9kKtjszRC+TLzdxXCflJHmNfKQDhdYjZVMjiGjbBxuP5zw/xXn6MWPGF1IhnJxwrrp7bON8RGqgESTBe4n8iCwq9Om+0kEghq0r+sTZEwdwZkJswXhUP5hL3fzfjnsp1Hpm4KL5FhfnwAjMQpmrJbb1zO49Nn7tJHpN0AxuXCMT+5/OtTLVf30V1GQydmEKL6RdjYJd22on4Rfqy75Lw0auPVpcZ63uxdgyc12ezie3iZyoG78aQ5JLpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,37 +113,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/8/26 12:32, Sarthak Sharma wrote:
-> ksft_process_madv.sh currently runs run_vmtests.sh with the
-> mmap category. Update it to run the process_madv category,
-> since ksft_mmap.sh already runs the mmap category tests.
-> 
-> This avoids running mmap tests twice and ensures that process_madv
-> tests are run through the kselftest harness.
-> 
-> Fixes: 6ce964c02f1c ("selftests/mm: have the harness run each test category separately")
-> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+On Mon, Jun 08, 2026 at 04:37:08AM -0400, Michael S. Tsirkin wrote:
+> Now that the generic vma_alloc_zeroed_movable_folio() uses
+> __GFP_ZERO, the arch-specific macros on alpha, m68k, s390, and
+> x86 that did the same thing are redundant.  Remove them.
+>
+> arm64 is not affected: it has a real function override that
+> handles MTE tag zeroing, not just __GFP_ZERO.
+>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Acked-by: Magnus Lindholm <linmag7@gmail.com>
+> Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: Claude:claude-opus-4-6
+> Reviewed-by: Gregory Price <gourry@gourry.net>
 > ---
->  tools/testing/selftests/mm/ksft_process_madv.sh | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/ksft_process_madv.sh b/tools/testing/selftests/mm/ksft_process_madv.sh
-> index 2c3137ae8bc8..edad2d2d888f 100755
-> --- a/tools/testing/selftests/mm/ksft_process_madv.sh
-> +++ b/tools/testing/selftests/mm/ksft_process_madv.sh
-> @@ -1,4 +1,4 @@
->  #!/bin/sh -e
->  # SPDX-License-Identifier: GPL-2.0
->  
-> -./run_vmtests.sh -t mmap
-> +./run_vmtests.sh -t process_madv
+>  arch/alpha/include/asm/page.h   | 3 ---
+>  arch/m68k/include/asm/page_no.h | 3 ---
+>  arch/s390/include/asm/page.h    | 3 ---
+>  arch/x86/include/asm/page.h     | 3 ---
+>  include/linux/highmem.h         | 8 +++++---
+>  5 files changed, 5 insertions(+), 15 deletions(-)
+>
+> diff --git a/arch/alpha/include/asm/page.h b/arch/alpha/include/asm/page.h
+> index 59d01f9b77f6..4327029cd660 100644
+> --- a/arch/alpha/include/asm/page.h
+> +++ b/arch/alpha/include/asm/page.h
+> @@ -12,9 +12,6 @@
+>
+>  extern void clear_page(void *page);
+>
+> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+> -	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+> -
+>  extern void copy_page(void * _to, void * _from);
+>  #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+>
+> diff --git a/arch/m68k/include/asm/page_no.h b/arch/m68k/include/asm/page_no.h
+> index d2532bc407ef..f511b763a235 100644
+> --- a/arch/m68k/include/asm/page_no.h
+> +++ b/arch/m68k/include/asm/page_no.h
+> @@ -12,9 +12,6 @@ extern unsigned long memory_end;
+>
+>  #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+>
+> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+> -	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+> -
+>  #define __pa(vaddr)		((unsigned long)(vaddr))
+>  #define __va(paddr)		((void *)((unsigned long)(paddr)))
+>
+> diff --git a/arch/s390/include/asm/page.h b/arch/s390/include/asm/page.h
+> index 56da819a79e6..e995d2a413f9 100644
+> --- a/arch/s390/include/asm/page.h
+> +++ b/arch/s390/include/asm/page.h
+> @@ -67,9 +67,6 @@ static inline void copy_page(void *to, void *from)
+>
+>  #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+>
+> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+> -	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+> -
+>  #ifdef CONFIG_STRICT_MM_TYPECHECKS
+>  #define STRICT_MM_TYPECHECKS
+>  #endif
+> diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+> index 416dc88e35c1..92fa975b46f3 100644
+> --- a/arch/x86/include/asm/page.h
+> +++ b/arch/x86/include/asm/page.h
+> @@ -28,9 +28,6 @@ static inline void copy_user_page(void *to, void *from, unsigned long vaddr,
+>  	copy_page(to, from);
+>  }
+>
+> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+> -	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+> -
+>  #ifndef __pa
+>  #define __pa(x)		__phys_addr((unsigned long)(x))
+>  #endif
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index 8b0afaabbc6e..642718a50c27 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -303,7 +303,6 @@ static inline void clear_user_highpages(struct page *page, unsigned long vaddr,
+>  #endif
+>  }
+>
+> -#ifndef vma_alloc_zeroed_movable_folio
 
-Thanks!
+We're specifying this function unconditionally even though arm64 overrides?
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>  /**
+>   * vma_alloc_zeroed_movable_folio - Allocate a zeroed page for a VMA.
+>   * @vma: The VMA the page is to be allocated for.
+> @@ -317,12 +316,15 @@ static inline void clear_user_highpages(struct page *page, unsigned long vaddr,
+>   * we are out of memory.
+>   */
+>  static inline
+> -struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+> +struct folio *vma_alloc_zeroed_movable_folio_noprof(struct vm_area_struct *vma,
+>  				   unsigned long vaddr)
+>  {
+> -	return vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO,
+> +	return vma_alloc_folio_noprof(GFP_HIGHUSER_MOVABLE | __GFP_ZERO,
+>  			      0, vma, vaddr);
 
--- 
-Cheers,
+This whole change seems unnecessary?
 
-David
+>  }
+> +#ifndef vma_alloc_zeroed_movable_folio
+> +#define vma_alloc_zeroed_movable_folio(...) \
+> +	alloc_hooks(vma_alloc_zeroed_movable_folio_noprof(__VA_ARGS__))
+>  #endif
+
+I don't know why we need to add more of this alloc_hooks() dance when we could
+just do:
+
+#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+
+Like the existing arch stuff?
+
+>
+>  static inline void clear_highpage(struct page *page)
+> --
+> MST
+>
+
+Thanks, Lorenzo
 
