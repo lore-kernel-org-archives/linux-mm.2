@@ -4,152 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07F91CD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:13:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4741BCD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:14:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33FA16B009B; Mon,  8 Jun 2026 07:13:55 -0400 (EDT)
+	id A942C6B009E; Mon,  8 Jun 2026 07:14:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F07D6B009E; Mon,  8 Jun 2026 07:13:55 -0400 (EDT)
+	id A4B6E6B00A2; Mon,  8 Jun 2026 07:14:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B8256B00A0; Mon,  8 Jun 2026 07:13:55 -0400 (EDT)
+	id 932EA6B00A3; Mon,  8 Jun 2026 07:14:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0815C6B009B
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:13:55 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8CEDE164979
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:13:54 +0000 (UTC)
-X-FDA: 84856485588.24.9BB066B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B8918120005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:13:52 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dVO2Xhpt;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DE296B009E
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:14:33 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 276301C2C23
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:14:33 +0000 (UTC)
+X-FDA: 84856487226.20.7CE356B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 53798140010
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:14:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Va/1owc0";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780917232;
+	s=arc-20220608; t=1780917271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XGLJigV2d51VfcYTfl2W0053EcxmumDAe7qlHgw2QFo=;
-	b=jgej+tq6O3w6fxU9kceNHQjJEyB/2mFVX16kD2vtdSdf/fE3RXK9wiyPLGPVSeKNyYWaly
-	ZyA75DMLFMHXTtoFUPgiu7drl6Jm8LfEwMfZL7MJc8/Xzy9OKV0Gtfr3ApBsNxyh5Efigs
-	iLINDNjSA0GQwE7Qmheff2CgKopFG2w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780917232;
-	b=ivz5ZKxTFlw5X3yErOKYoVq9+D5zwhM2DPH3snF23vHIICmaI0hnOnPKubM2dKGzqkEtjo
-	jHNZJ8Y2J8VVUKVuZXLTYT7rsFHBJ3jY1y56aY93TWwmkqacX4+Ra3l8wDjJIIBZLPFryD
-	VWtvewo6QbEDbFVadHk8MOwtZdsB2ag=
+	bh=IDPAFI5FQvvWZFGQ97+UGzUve2NfcJnlbnzcH8NKyw8=;
+	b=pBDDcXYoEzvFzIkshuOJCAvenK6Mq8DSoQ+YnuoS/JdMKKQ8P7Nldx/aa+bhSlLEiXTChe
+	E+nOznQjKA7WlaGBm1pVvgsWeNeFuU5TD+q+idog8i3UAEXSBqwDtW8hooOWToOmE++JLV
+	dBpSxq2eNTh7IfIayovSlnmio33PmVk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dVO2Xhpt;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Va/1owc0";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780917271;
+	b=IAaNB6Nmxce+vdVxSYOzhpskqe6UprRdEJJjcxh6/fl7p6RbvAQsJxmgeS9W5/iaRIm7Sd
+	55emz66pUPyC9Vwu7g48xwfa65NQYSCoOOlaTGXnDjwaQpvJqlMEV95GsoRG3tjWnpfPg6
+	Ydt2jLy5W5noRnadoUbd2y05TC2OYVg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D917140889;
-	Mon,  8 Jun 2026 11:13:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8544A1F00893;
-	Mon,  8 Jun 2026 11:13:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CD0786001D;
+	Mon,  8 Jun 2026 11:14:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317721F00893;
+	Mon,  8 Jun 2026 11:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780917231;
-	bh=XGLJigV2d51VfcYTfl2W0053EcxmumDAe7qlHgw2QFo=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=dVO2Xhpt5B9et3HtGZ+E5d1dDwlrohdKp3ui6s8ZawWlFdNVIF820M+BYU1lU2ait
-	 w0NEv49grfPSyTsnHbfNTxMPoe0jIAi8DcOTYsU7E1pz4q/MFzX7BDm64USjSZTrB/
-	 f5sMNgZUD514qMoBCoyZ4GHXnNTKDoHU26W1GuAv3Q3TRjHqCGUdc1CadbTSYYHaEL
-	 rCfZ76HtL+z/LqyCEwsRsYwHI2jhvjI/LHBh2UThS/oQM2jDp0lbqpVpgU38tkL2B9
-	 6NTz8VUDL8inCaOfCwgC1iXHvtXQVuNQ0FIU8eJgspROwelNNwbqAJFWgcINsPcoVM
-	 AAgE0rkSS6xxQ==
-Message-ID: <e54f9b79-b6b4-4911-86ac-48b61889765a@kernel.org>
-Date: Mon, 8 Jun 2026 13:13:42 +0200
+	s=k20260515; t=1780917270;
+	bh=IDPAFI5FQvvWZFGQ97+UGzUve2NfcJnlbnzcH8NKyw8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Va/1owc0KxajEPlJS5BuC5H59P2uclmX6uYMA+EIQhUf+tXtOtZzwyVznn82I3hmC
+	 vopYHWEYb8gfVuGAAzCA9HeC1CRFd34EuS3Q23KrscL8B4eCVr0tvvUAjFfDwrKpPE
+	 o9dfY7YHAkCggUZuxvUdPzkK1zGU9TMcgq6lVZQZS+V5TkYJKfqWtTScNp69+wNbEt
+	 LnTDWT5SRlXwVv3RBf83r/zz9sg5fpxsKo8kNPWaLfPXd7JGjVhgO5YX2b9vvII0ig
+	 vUQ7Rde46+pEbB1tiiuLwjEe9Pz+D89TdO4thiY4lmtUeur9i/XmCmxN1tklVgupiQ
+	 ylCNIaXfpCoLg==
+Message-ID: <377d571d-0c41-4d08-90a8-d198e1658358@kernel.org>
+Date: Mon, 8 Jun 2026 13:14:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 00/37] mm/virtio: skip redundant zeroing of
- host-zeroed pages
+Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
+To: Nico Pache <npache@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, yuzhao@google.com,
+ usamaarif642@gmail.com, lance.yang@linux.dev, baohua@kernel.org,
+ dev.jain@arm.com, ryan.roberts@arm.com, liam@infradead.org,
+ baolin.wang@linux.alibaba.com, ziy@nvidia.com, ljs@kernel.org,
+ akpm@linux-foundation.org
+References: <20260508170509.640851-1-npache@redhat.com>
+ <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
+ <CAA1CXcCj7gbcdcuFQ2Zg3fTxys8NRteh4XH36pwQ5=BX6uUasA@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- virtualization@lists.linux.dev, linux-mm@kvack.org,
- Andrea Arcangeli <aarcange@redhat.com>
-References: <cover.1780906288.git.mst@redhat.com>
- <8d5d2fa3-a60c-4d04-b3bf-7a8fe89cb1a0@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <8d5d2fa3-a60c-4d04-b3bf-7a8fe89cb1a0@kernel.org>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAA1CXcCj7gbcdcuFQ2Zg3fTxys8NRteh4XH36pwQ5=BX6uUasA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B8918120005
-X-Stat-Signature: ndry69tuamkrzkau1bckz8d57jjm73sd
-X-HE-Tag: 1780917232-118563
-X-HE-Meta: U2FsdGVkX18VhUqos6VC38UWjK3YLqHprpgF8WRq+a+K7TpOWVgouLIKrytRbheoPqEJiwMiR3aADmLgKTJ8EqxrzLF3NEMhYdckoWtHvjrci1lBZPdftNHOdBZe8MZCFQ+W2XptihJekFJnRJcbes5y7zZs/+ehqtzPpBolT5NzejqaKGUthvZTLjOsXCUHIDUqBcXvEgc7RcP8s41lWOJ6Tda9+l7VPcce3Cmq92uk8k26NAIi63P2vD+Qy6obAVoyrOBeJh3T3PNkRPFILmSooIJMZUHy1AyjOedBYY+IHxs2nAxzSJDhg7h4KEzwMvXv0Gyy8UrgFvzwiIu26VOYV5kWbf8Ub8oLlt7ZsWbjXVN6BCct1YYYennfNor/SamoWa6N+eBQAiXipeFgDaWaF990Fe15AO41lbs7qopBBuxbooqhTL0cxMb7+apqKgpkfwQhooDexOBxK+Ocq/k/wmreL+wosrEQam/v2NF8HhJIDV6N97qg9isciovbjTNcgp4qMSxqAbhUAxR2+47KO34zVPjJ7aUjQcu6Ov2t3t6et1QQpBrA3gML8tWIu1QJLvAlkg3xqanab0cRWxKg6OYcX1Xy8XX5f0TkIWnYsAgM9t5BjlR46R+Lcs5I7BBkq/SYnrl0Pjg2bARNWShWEyVoFe8oOq4DbPoPI04LxLOR35fXEUFmTRaWIPUJaLEolTEeFcZRFMo57X/H/3TZTUWQUoxZN11H+0f02LIbeVAe+b5rto+1jUWVDviGKK4VW8iW4chNqovk0yo/HqHjH2k1xWzcBYIbRGQYyear5TtnEkjPXjiJa09GNlricdbC1wSvF8dWquOriQybmg+rPRZAKTH8wYwzV3QI6erdqnUEWlK3jH0hvKPAhVr2lGU2loJq2+cAqAS2rJ0hTu1CFNDb5s4Nw/m+tawQxudR4gdt4re+kKSbXcEdWVZXNIn/4k0NnoDujQQtsXz
- sSnb/s7V
- 49fp6hc0BwYGeW4eMJ9a5vi7FMlFMSL1TSxBSFYSy9h0eeOcIdAW4GsNoNLoAl5C3C36qCZZ+ns3cblxCaJURnrxzDiy8daWDzmvOtZlejRmVWxuQct8zW+kU82lvTkD/qlD15I/TsDAcOFC6MyWHGSyIiMIB73zgaHrSsYFOXInz9cbkcpTalpoOt3GVjPQ8+2RfkgHxkbndXWpjd8QqCMNnwuF0UCLe4vc9ymTcguaS1J1pV+9FG02ea9vO2ABnqpbxMmMUcu4P/HSqD/4HAmTuJRbQBkKrN8zBYCNINCFiAhDvmqCG8RBkb6ibCLvH1nw6iSMgUuq28w13e7aVhk7+fQ==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 53798140010
+X-Stat-Signature: 9eg3ax5okeajuxsrhc1uogzgh1c6m3gi
+X-HE-Tag: 1780917271-578254
+X-HE-Meta: U2FsdGVkX1+HLVfrcN5+LNzVbIY/NLmoxyUqlCnuKP4B8GZCjGfdDBMrMQGvNpX7AI3wMnE7IsMkV2FLjH/w1Eenh4sm8nEJCJeHVRLqhJewZzxZgh6hCmW5nyUK3IbTPcVve32hsXRWckAgHyUar6xofiQkIN2PKXwAhMGO3TtuqRkbxnTSV0S/1tAZ5eAAjkxvjId6hB7nwR/fPXY362J+kYI2vhkv+IxJILEE5eI8zh7LZj5uwdpFAUiKaWNKB/d/LapoLlhb3JeLvyJVLXz0rtwQ8dJxePEplhduxdHYhRkngvx4VuElR+T+fCxUM5/j4D64ZebKahmp5rTE4+RdcL1yGaIrmYQjZ0/0BV7sC6dQ60u9JRuKUvCqrD3uQVBPsDkaoqPdsOMedWcKB543OYwLsvzZIvxbCWdgDv2ojoE4lvgK/jmDLqUpcdqWVW8Rv2jiqo8mEh4x6YroQh5oKFryyaAwG5S1Btg5EphsL1goZKYJmVs6A1XcpsNPo8RDFUoDeoLM7+zqgynJH2qRZzXwcex2qkiEoCDa78fsfp1LAY82fXLz3UJpwtSQvjSepaIKAT930fv2efYepfnIUknPR7VkE5W5YIZLCZH/lYAOfPPKN793ptDhHCZGSFsiqzEwm4Ep7wthuxTn58Tk3jLCR/F6NdE+L+HC6z5BcnHhiv9uBaS+bxwsRaicNOixVAi5+ChBM0ue5VUj3TDBd+XdKo8aPzaUp5CAmQloX2E19LNe4gxun8rtvhF6DyXhTncq2QvWYf/UaWlPdzEU7tcOswhrF7pXNt9SLesLnSuyuaialdGXILmkN9dlkTWP53qS2Kj4PepdaaCFyUsBx30dJMeh9bvkKkMi9jLmp7nsN/uLLfkRoFnsAKTo4YcdZuLN/kEc5p5Q7vTC1G4j0L7div8mb/90gXJyVovUm0OVav+eGJfTu7xIkoApa3J4ne9JXW97+zj2UeL
+ ppdbKpVd
+ 35VgwD2vBU0vowX2IcbVf71K3lyEV5bav4Kl6ZA8nINIbsZtI01qD2zKAmVwMaBK+bV2byoCaL7DifWHYBB6s+xQYUjCnXm6EPv7JxvANGdA2es8LCNnVGAzhW2S8HQJu9mneBZxqec+l0i4bD9F30f8rreuKycLrt2NQ3o8ROIpMe8Ai/dnvrtRhDmRwn3J9ZkHtTQ4DT2hTY/zLzXgyFjh3D00MoQfB045rQsCS+hcsvqJrHHkrzDeuhI0E4uew6+3hD5NM8TXW5W5uOAtO2vwCjNnV4T+OBwUZ7TnrkJT5XIFMzFCF03XerQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,44 +142,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/8/26 13:02, Vlastimil Babka (SUSE) wrote:
-> On 6/8/26 10:33, Michael S. Tsirkin wrote:
->> Further, on architectures with aliasing caches, upstream with init_on_alloc
+On 6/8/26 12:34, Nico Pache wrote:
+> On Fri, May 8, 2026 at 3:32 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> On 5/8/26 19:05, Nico Pache wrote:
+>>> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
+>>> when splitting isolated thp"), splitting an anonymous THP remaps all
+>>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
+>>> This flag is set unconditionally for every anonymous folio split,
+>>> including splits triggered by KSM.
+>>
+>> And even when the underused scanner is effectively disabled on a system. Hm.
+>>
+>> I don't quite like that we scan for zeropages when nobody even requested us to
+>> split because of zeropages.
+>>
+>> I can see why we would want to scan for zeropages in a setup where the underused
+>> scanner is active, even when the split was triggered by someone/something else
+>> (below).
+>>
+>> [...]
+>>
+>>>  /**
+>>> @@ -4340,7 +4341,13 @@ int folio_split(struct folio *folio, unsigned int new_order,
+>>>               struct page *split_at, struct list_head *list)
+>>>  {
+>>>       return __folio_split(folio, new_order, split_at, &folio->page, list,
+>>> -                          SPLIT_TYPE_NON_UNIFORM);
+>>> +                          SPLIT_TYPE_NON_UNIFORM, false);
+>>> +}
+>>> +
+>>> +int folio_split_underused(struct folio *folio)
+>>> +{
+>>> +     return __folio_split(folio, 0, &folio->page, &folio->page,
+>>> +                          NULL, SPLIT_TYPE_NON_UNIFORM, true);
+>>>  }
+>>>
+>>>  /**
+>>> @@ -4559,7 +4566,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>>>               }
+>>>               if (!folio_trylock(folio))
+>>>                       goto requeue;
+>>> -             if (!split_folio(folio)) {
+>>> +             if (!folio_split_underused(folio)) {
+>>>                       did_split = true;
+>>>                       if (underused)
+>>>                               count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
+>>
+>> In general, this looks clean.
+>>
+>> But imagine the following: someone splits the THP for another reason: for
+>> example, because migration is unable to allocate a 2M THP, or because we have to
+>> split on swapout etc.
+>>
+>> Not freeing the zero-filled pages means that these pages cannot be reclaimed
+>> anymore easily. We split a possibly underused THP but didn't free the memory.
+>>
+>> The only way to free the memory would be to wait for another collapse, and then
+>> have the new THP be detected as underused.
+>>
+>> Hm.
+>>
+>> (1) As you say, the alternative is to let KSM say that it wants to handle the
+>> zero-filled pages itself. I'm not a the biggest fan of that approach. We still
+>> have two mechanisms interacting to some degree.
+>>
+>> (2) Another approach is to just let KSM handle this in VMAs that are marked as
+>> mergable while KSM is active. That is, we check for VM_MERGABLE and ksm_run ==
+>> KSM_RUN_MERGE in try_to_map_unused_to_zeropage() to just let KSM do its thing.
+>>
+>> That really just stops both mechanisms from interacting.
+>>
+>> (3) Yet another approach I could think of (in general) is to disable the
+>> underused handling in a system where the underused splitting is entirely disabled.
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index e9d499da0ac7..5eca99271957 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -82,6 +82,14 @@ unsigned long huge_anon_orders_madvise __read_mostly;
+>>  unsigned long huge_anon_orders_inherit __read_mostly;
+>>  static bool anon_orders_configured __initdata;
+>>
+>> +static bool thp_underused_split_active(void)
+>> +{
+>> +       if (!split_underused_thp)
+>> +               return false;
+>> +
+>> +       return khugepaged_max_ptes_none != HPAGE_PMD_NR - 1;
+>> +}
+>> +
+>>  static inline bool file_thp_enabled(struct vm_area_struct *vma)
+>>  {
+>>         struct inode *inode;
+>> @@ -4188,7 +4196,8 @@ static int __folio_split(struct folio *folio, unsigned int
+>> new_order,
+>>         if (nr_shmem_dropped)
+>>                 shmem_uncharge(mapping->host, nr_shmem_dropped);
+>>
+>> -       if (!ret && is_anon && !folio_is_device_private(folio))
+>> +       if (!ret && is_anon && !folio_is_device_private(folio) &&
+>> +           thp_underused_split_active())
+>>                 ttu_flags = TTU_USE_SHARED_ZEROPAGE;
+>>
+>>         remap_page(folio, 1 << old_order, ttu_flags);
+>> @@ -4497,7 +4506,7 @@ static bool thp_underused(struct folio *folio)
+>>         int num_zero_pages = 0, num_filled_pages = 0;
+>>         int i;
+>>
+>> -       if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+>> +       if (!thp_underused_split_active())
+>>                 return false;
+>>
+>>         if (folio_contain_hwpoisoned_page(folio))
+>>
+>>
+>>
+>> I tend to like (2), and maybe (3) on top. Opinions?
 > 
-> It seems those are niche architectures so we can ignore that part for perf
-> purposes; the other reason why user_alloc_needs_zeroing() would be true is
-> booting with init_on_alloc.
-
-OK I misread how user_alloc_needs_zeroing() works wrt init_on_alloc, as it's
-negated. But you're changing that anyway to skip that user zeroing, right?
-
-"
-This series eliminates that double-zeroing by moving the zeroing
-into the post_alloc_hook + propagating the "host
-already zeroed this page" information through the buddy allocator.
-"
-
-So relying on "everything in buddy is zeroed" would still work I'd think.
-
->> double-zeros user pages: once via kernel_init_pages() in
->> post_alloc_hook, and again via clear_user_highpage() at the
->> callsite (because user_alloc_needs_zeroing() returns true).
->> This series eliminates that double-zeroing by moving the zeroing
->> into the post_alloc_hook + propagating the "host
->> already zeroed this page" information through the buddy allocator.
+> Coming back to this.
 > 
-> I wonder if this whole thing would be much easier if those that would want
-> performance would enable only init_on_free and not init_on_alloc at the same
-> time. If you enable both you're paranoid and just eat the cost I guess. Then
-> you're maybe also paranoid so much that you wouldn't want to trust the host
-> zeroing anyway?
-> 
-> post_alloc_hook() already has logic that if init_on_free is enabled, there's
-> no init during alloc. So then I think you would only need to communicate
-> that host zeroed some pages when the guest adds them to the buddy allocator,
-> and that's it?
-> 
-> I.e. if we can just assume that everything in the buddy is zeroed, we don't
-> need all the PG_zero flag and whatnot complexity.
+> for (2), I have to export the KSM run state, which may be fine, but it
 
+Right, you just need a simple helper.
+
+> introduces a race window. If a user disables KSM, a split occurs, and
+> then re-enables it, the bug will present itself again.
+
+Who cares?
+
+> 
+> Would it be better to just check if its VM_MERGEABLE?
+
+Some user space unconditionally sets VM_MERGEABLE, even if KSM is never enabled
+(IIRC QEMU, for example).
+
+-- 
+Cheers,
+
+David
 
