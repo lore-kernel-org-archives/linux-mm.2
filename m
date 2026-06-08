@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7D7CCD8C8E
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 08:17:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69AA4CD8C8E
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 08:25:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 396D76B0088; Mon,  8 Jun 2026 04:17:11 -0400 (EDT)
+	id 949106B0088; Mon,  8 Jun 2026 04:25:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 347CF6B008A; Mon,  8 Jun 2026 04:17:11 -0400 (EDT)
+	id 8F98B6B008A; Mon,  8 Jun 2026 04:25:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25DB26B008C; Mon,  8 Jun 2026 04:17:11 -0400 (EDT)
+	id 810096B008C; Mon,  8 Jun 2026 04:25:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 17B6E6B0088
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 04:17:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9D3FA409BF
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:17:10 +0000 (UTC)
-X-FDA: 84856040220.23.5657C79
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 035C940006
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:17:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OEWBxu5K;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780906629;
-	b=F19x8HaccjGyDSetpeBZP8DqSuLptDR98P17Q3iOGgBbjS+aMqW0kyurISywNfyHU24STg
-	Fx5Fv1lKxnoLLWCuqacYslZQ94gVGmxzBtJea6YatTlkVZNHyRS2hUwWtbM62jQA3Gkfxg
-	Qzt1Wl5xBioyTkDrqSYwwEaA0J99qI4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OEWBxu5K;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 704216B0088
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 04:25:30 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BEBE1A09D0
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:25:30 +0000 (UTC)
+X-FDA: 84856061220.21.BA7C572
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5776A40009
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:25:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xXdr2MqU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780906629;
+	s=arc-20220608; t=1780907128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2CGzJHMR082CZEaBJvYYklEx/AUabVfo33DoJiswTsg=;
-	b=5OUTvXO5AWqdjPe8chRS6xpVK5sWNf+4XE10K+h+5gDx3PKKmEoM56nQGJJLb5oYcBU32b
-	mL/iUSGvpZMtdPaiZ4A9oAv1jtlCHnkZ6fuJ2wBHyz2LHZPmIwXNkWAPwIKjWVdNfhYa3Y
-	sQ9YuqBDJDot64Hj5DKr46yjx5hX46A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 32EBF40245;
-	Mon,  8 Jun 2026 08:17:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973671F00893;
-	Mon,  8 Jun 2026 08:17:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780906628;
-	bh=2CGzJHMR082CZEaBJvYYklEx/AUabVfo33DoJiswTsg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OEWBxu5KnEguBwQsJmXEOlLVlzd41WaccgHCS8VR/HX3KoqArK5AD3XyC4v/449Rw
-	 h4QokdvZhHHmCVVCXc1m12gHafV1segbzIfA8uFZKOjsWfIHlf8H6w2Xjd6HPlD+AF
-	 /4+OJEnpyV1GKW2Di/dSvT6HvNQrPdUwHpPzLfi0hik9/0VRnBU0/s8XkFkfu8by20
-	 sQiCyOtUtmP0znCP62oXgEI4eEQLRsOwVNv2yNi3bWFZTys6z56zW5JhOYXOep6QrT
-	 CPvnTTDNz38OyCIF5AFykhFHD2yabhfoFfW4Tmg7oEZRK1RBBIaUzDU54/eXJV/VcC
-	 lwlYJJazkHi/Q==
-Date: Mon, 8 Jun 2026 09:17:02 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Imran Khan <imran.f.khan@oracle.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmstat: avoid taking zone lock in /proc/buddyinfo
- reads
-Message-ID: <aiZ6bgmgh6LHHlWj@lucifer>
-References: <20260604134245.1580287-1-imran.f.khan@oracle.com>
+	bh=g/cl94r2sn+iv8ffB105PChTgE1EOVBWGfW9oWrFA4E=;
+	b=e/qgNKfuCdFay+Tuz176mtEL12HNkHLsLUYERcZ2blbLMUD8XxMyDmEsYbldyESK4PluQO
+	gqoKSEABEKGOmeuO2YrMnop5zk+SX9jHwmEBs22z8ahndVx+ZZgccw+U4nEKHmcoSxyoRC
+	+zgndS7JyH3tRQZn+NNUwwWt2nBT410=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xXdr2MqU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780907128;
+	b=0A75SVsZIHQ7vILtYGI1BusZjrIQs9Yi2AZuAfy1BXpilvNOw2dl44mrecG249tROT0I6F
+	DredeC8ItJKu5IxpqemIE7pUUbRQBG+MRfN0HwzINCpkQHfs9FDHn6ZDpwl1nC8SExwjYm
+	QrL9dZbqfyQskiQu4SSmBTw9AIembjQ=
+Message-ID: <a58e659e-5f54-4511-9a29-dc921002d102@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780907123;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g/cl94r2sn+iv8ffB105PChTgE1EOVBWGfW9oWrFA4E=;
+	b=xXdr2MqUm4ZO5i3k+RxHcUjI4HpIhji3s70NJnUCFzQ1RESXVF1DKKPCbLWyRtNO1MLOHL
+	RuI/3Yb+fiy5ZTTGzVhl/1ILrYag9MVjYJDIRSMkikfpV8kef9FWbLzkDtlKcDq2neBBzU
+	xB/FcZW1UKV4zGpe09dq4VzJX+EHLJA=
+Date: Mon, 8 Jun 2026 16:24:50 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260604134245.1580287-1-imran.f.khan@oracle.com>
-X-Rspamd-Queue-Id: 035C940006
-X-Stat-Signature: wqumziyhaza49cwigrnm84kyhps6izut
-X-Rspamd-Server: rspam03
+Subject: Re: [PATCH v3 4/6] alloc_tag: add accuracy based filtering to ioctl
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+To: Abhishek Bapat <abhishekbapat@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Sourav Panda <souravpanda@google.com>, Suren Baghdasaryan
+ <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>
+References: <cover.1780701922.git.abhishekbapat@google.com>
+ <b608a6f7d71e3b728f766dbc6dfa1d1753ddcff5.1780701922.git.abhishekbapat@google.com>
+ <1ec17313-cd2b-4389-a05d-998757af30b3@linux.dev>
+Content-Language: en-US
+In-Reply-To: <1ec17313-cd2b-4389-a05d-998757af30b3@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5776A40009
+X-Stat-Signature: ms8sfb8d41w9ac3qt9b1qwnbkud831nx
 X-Rspam-User: 
-X-HE-Tag: 1780906628-585352
-X-HE-Meta: U2FsdGVkX19Wy7NsHQb16iQk1Ptm830g0VaTdffGGRtWyBK7PcNIN7c98cN/KJo1mf8Q/3lRHJXxPAaxxq5J87f9iyVZiVMjXkjIK7Bt1VlnNHvMCFkvkB1TDREp8Ir5UeWsXTvJWKmMm8b5M9j49QDgH/tn7f+21P2YX6WI3Kzg74UYCkU7cyGzBNPTFdTakqdILcJUN43e5sCsrofywKmwaVtLiVAjMdrFTVo60scGK8QH5TKrTkJmIv4iUysuZax98ylYIhzb43rEJ1FpHlW53vnFtVFijtFdLhPnOa7rgNt3rUamX9C0S/otLA0EQw13KkecxP2jFVVsXXpm4X5OL/kLu5O4H3Y67zpsP/N0xwfaDKIUEC2dJtqpDhnXhwV+7r3OkQvBcwU8LibntgI6/v0Udxj0FtboLP70WqpI3YyTHhl5FsVlF2rPKazGqFcEhrD78hfko0f1n8EvFS3dFOob38WeZKPAF6tDXDnTOJGm1mWM3lu4DZdmhbGjOfs0AKJTFyAnRDlZ1nl8Mau8n7DfdjFHXayg5pau5bN6j1x1/CbK/74UvXdg5pYmj0+7+fMxvWsfSqD0AfWbXaaqYpny49DwM9FQbkqed4BJMTYggu8HoXgxEA51d7i94ZSh2dsDOu9suJVR/sr8VF6czVq+ZIVj8ShTQcQVNfa1YV16xuLUp3BYjD0Ma2BXDuLLnbacBZy53Ea21WvvvqMDvXzn/vHhia2OTn/4qUNdXUUXgwpL2myM57YUSooRWewxzaLWLoknTJpcGpshkhEC+j0+0I0bjZG/Bo9rdaczIyyln6YG+xrxSP1kN38IPVCNEw9l8Rg1+j4BClAtIjpAdPKahYTEKnDVnbq2uTJCTVyl12zxVMX92MqmWeBbeXIle88j6et62kc0dwd795TQ7JpN9v93CkMjT/1mOB5y1VaYgQmFwiAg+jvmUfLAYpVdIfnp2PfL7Egtqq1
- iaT5lDZw
- YZeMU4PfWOX8JKwu16GbUaVtRlKMf0eLcW+Nrnkww1H2HyYigeSnZ33qzdWEYm/d9Soooe2NYTd2dF43xQf7F+gz/NBiwC/cYmhW6SFqQDuf3O1LUW1nVefllI1kOZlCVi6D7FiiUgB/ZpiqnSMXMFZMRtNzJb/3xTthnV9YRnnURBtBsTWmaPG8wDi37Yw3FKMD367fCXkDoYSFt0Fe/okcQxWuE9UkGBui6sQuJzxO33Zu5BUjOE2h0WDjRDXt0r6N+J5AujLIPFdLKO0WR/9qv5QEEjXCnzwEtOFs9DWHUzYc=
+X-HE-Tag: 1780907125-33540
+X-HE-Meta: U2FsdGVkX1/U41jMJP6KNoPEZb4PkLMlcMND37Lc1HdfQ4eKlRfZ1is4cUjNCFQOTaZWmh34f6ha4pPPk/lVEzHzK4bMgjhqeJlN89sBvx3eMMjJkfptyaPWihKESlC842eMMkVot7I+UCJWlBWlTCFNgYOfoUSJ9LpYepmOvFvhQKsr3XFDp3fH8fmI7vmQ190gjq9CoaKQEBjIL8UX/8lSJA6Q/Q2l9bQADuOWgK/ceUFLdyVf7GzPNomHICA2yke0H4kx6nBwb2Ekt7AV369mW9Gw0BffUBxb1YIaawqtslmzLWIZO97Qgkuq9zeQp1Re4T9dWoKdxDxxJNIJv3Q+zUK6FMfNdDqTBL59sa6z4bGMCMAhYvmTsjOIRy84IWOfLixcGEoukkw0C958BGrpUScjRppaDqkbaXsCIQ6aSsf46sIa8waQdui7nO/+GFlup7a5ly7/It71CbReNEuCbHl6VwJFc9ZRryu01aZssYld9cqGqUjHWFazArQ/LFYwcHbUTpf0o3UFuxLmkEh9uGxRn2rzFXPeLSHtpM+FL4uuGMBCCaArBYv4DsfCPGJXURveqfKA2ycWT/eAjcnHbDJ/PhP1JPv200Wi5EbZdLzpE9oSvNKQjxQJhk5WysSfk1bPze6cfsUE9Cxoq5B0fJJDRRgsMeR83GklJzr1qpQKXmspd6vFGng3Wl2cURkAewtuHyb6YhQY9PaNpQVYJZJJT2ll3n2fYWyQ3JExmYHg67XEIgp26pxGSnlBUrXSvRj/7t9DT/g4cIGSZb9Iwt3bsq6dEkPCGStD648xdzYsFN08Vf1rd60i/S0E7WTEvpE0svInj0JanteKLUoZsLrNnGed5gDfyY2FHnQFtmw6ZNC+MuBEK0mF0qabaxMwZXcmJ/LiMbrwBs0xp5xDiMwXzV/T3NPVzUOD6LiroHrmBtj3MbhsRWMhSyGbqA2GJEw9mBev8mVj9x4
+ 98TL13dL
+ sZFf3yGAjCM+FWR2BL1V0ONQuX0VpOWJCPebnG64mOgR+PHU0IoEzPkSsiP64ceBEkXG2cJCnyRt8DiuUhDXKEItgj87z/VRBBtxLtHVLVaeSn4r722Xb2fWSMjNm44Ho5Vq9tg00QPEGngOOVHClvM4JoRbo2uZCBwUvigoC06uCKlMyh8keNt843mrurKYEmB9xOSNTXo/Xffsmt8iMhRSR4LpXmZ416U8vDPRhGyeHKN8ucEkZwkkuKp0qzwISpiwgIV/XnLyv7uvII5Rqkwj7PbtzuQtU9ZGmXZdIrYZE/qxBmq8q0oFe4O3HJic4z4hiKSLzuraK1QM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,41 +94,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 04, 2026 at 09:42:45PM +0800, Imran Khan wrote:
-> frag_show_print() just reads zone->free_area[order].nr_free, so
-> it can safely do this without needing the zone->lock.
->
-> Pass nolock=true from frag_show(), so that walk_zones_in_node()
-> can skip the zone->lock acquisition.
->
-> Signed-off-by: Imran Khan <imran.f.khan@oracle.com>
 
-LGTM, so:
+On 2026/6/8 14:22, Hao Ge wrote:
+> Hi Abhishek
+>
+>
+> On 2026/6/6 07:36, Abhishek Bapat wrote:
+>> Extend the allocinfo filtering mechanism to allow users to filter tags
+>> based on their accuracy.
+>>
+>> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+>> ---
+>>   include/uapi/linux/alloc_tag.h | 3 +++
+>>   lib/alloc_tag.c                | 8 ++++++++
+>>   2 files changed, 11 insertions(+)
+>>
+>> diff --git a/include/uapi/linux/alloc_tag.h 
+>> b/include/uapi/linux/alloc_tag.h
+>> index 0e648192df4d..42445bdb11c5 100644
+>> --- a/include/uapi/linux/alloc_tag.h
+>> +++ b/include/uapi/linux/alloc_tag.h
+>> @@ -20,6 +20,7 @@ struct allocinfo_tag {
+>>       char function[ALLOCINFO_STR_SIZE];
+>>       char filename[ALLOCINFO_STR_SIZE];
+>>       __u64 lineno;
+>> +    __u64 inaccurate;
+>
+>
+> I was wondering if it would make sense to define inaccurate as a flags 
+> field
+>
+> (e.g. __u64 flags with ALLOCINFO_TAG_F_INACCURATE (1 <<0)),
+>
+> so that only bit 0 is used today and the upper bits are reserved for 
+> future use,
+>
+> aligning with current kernel codebase.
+>
+> This design also allows for better extensibility if we need to
+>
+> add new flags for any reason in the future.
+>
+> We also need to add flag validity checks if we go this route.
+>
+And I've reviewed the issue reported by Sashiko, and I think it's valid.
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+When we expand the allocinfo_tag_data structure
 
-> ---
->  mm/vmstat.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index f534972f517de..7b93fbf9af092 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1568,7 +1568,7 @@ static void frag_show_print(struct seq_file *m, pg_data_t *pgdat,
->  static int frag_show(struct seq_file *m, void *arg)
->  {
->  	pg_data_t *pgdat = (pg_data_t *)arg;
-> -	walk_zones_in_node(m, pgdat, true, false, frag_show_print);
-> +	walk_zones_in_node(m, pgdat, true, true, frag_show_print);
->  	return 0;
->  }
->
->
-> base-commit: e43ffb69e0438cddd72aaa30898b4dc446f664f8
-> --
-> 2.34.1
->
+struct allocinfo_tag_data{
 
-Cheers, Lorenzo
+     char modname[64];
+
+     char function[64];
+
+     char filename[64];
+
+     __u64 lineno;
+
+     __u64 inaccurate;
+
+     __u64 bytes;
+
+     __u64 calls;
+
+     __u8 accurate;
+   /* padding */
+
+}
+
+I think user space may see two fields related to inaccuracy.
+
+How do you like these modifications?
+
+
+diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_tag.h
+--- a/include/uapi/linux/alloc_tag.h
++++ b/include/uapi/linux/alloc_tag.h
+@@ -20,7 +20,6 @@ struct allocinfo_tag {
+      char function[ALLOCINFO_STR_SIZE];
+      char filename[ALLOCINFO_STR_SIZE];
+      __u64 lineno;
+-    __u64 inaccurate;
+  };
+
+  /* The alignment ensures 32-bit compatible interfaces are not broken */
+@@ -40,7 +39,7 @@ enum {
+      ALLOCINFO_FILTER_FUNCTION,
+      ALLOCINFO_FILTER_FILENAME,
+      ALLOCINFO_FILTER_LINENO,
+-    ALLOCINFO_FILTER_INACCURATE,
++    ALLOCINFO_FILTER_FLAGS,
+      ALLOCINFO_FILTER_MIN_SIZE,
+      ALLOCINFO_FILTER_MAX_SIZE,
+      __ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_MAX_SIZE
+@@ -50,16 +49,20 @@ enum {
+  #define ALLOCINFO_FILTER_MASK_FUNCTION        (1 << 
+ALLOCINFO_FILTER_FUNCTION)
+  #define ALLOCINFO_FILTER_MASK_FILENAME        (1 << 
+ALLOCINFO_FILTER_FILENAME)
+  #define ALLOCINFO_FILTER_MASK_LINENO        (1 << ALLOCINFO_FILTER_LINENO)
+-#define ALLOCINFO_FILTER_MASK_INACCURATE    (1 << 
+ALLOCINFO_FILTER_INACCURATE)
++#define ALLOCINFO_FILTER_MASK_FLAGS        (1 << ALLOCINFO_FILTER_FLAGS)
+  #define ALLOCINFO_FILTER_MASK_MIN_SIZE        (1 << 
+ALLOCINFO_FILTER_MIN_SIZE)
+  #define ALLOCINFO_FILTER_MASK_MAX_SIZE        (1 << 
+ALLOCINFO_FILTER_MAX_SIZE)
+
+  #define ALLOCINFO_FILTER_MASKS \
+      ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+
++#define ALLOCINFO_FILTER_F_INACCURATE    (1ULL << 0)
++#define ALLOCINFO_FILTER_FLAGS_ALL ALLOCINFO_FILTER_F_INACCURATE
++
+  struct allocinfo_filter {
+      __u64 mask; /* bitmask of the filter fields used */
+      struct allocinfo_tag fields;
++    __u64 flags; /* bitmask of ALLOCINFO_FILTER_F_* */
+      __u64 min_size;
+      __u64 max_size;
+  };
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -249,8 +249,6 @@ static bool matches_filter(struct codetag *ct, 
+struct allocinfo_filter *filter,
+                 struct alloc_tag_counters *counters,
+                 bool *fetched_counters)
+  {
+-    bool inaccurate;
+-
+      if (!filter || !filter->mask)
+          return true;
+
+@@ -277,10 +275,11 @@ static bool matches_filter(struct codetag *ct, 
+struct allocinfo_filter *filter,
+          ct->lineno != filter->fields.lineno)
+          return false;
+
+-    if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
+-        inaccurate = !!(ct->flags & CODETAG_FLAG_INACCURATE);
+-        if (inaccurate != !!(filter->fields.inaccurate))
+-            return false;
++    if (filter->mask & ALLOCINFO_FILTER_MASK_FLAGS) {
++        if (filter->flags & ALLOCINFO_FILTER_F_INACCURATE) {
++            if (!(ct->flags & CODETAG_FLAG_INACCURATE))
++                return false;
++        }
+      }
+
+      if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE | 
+ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
+@@ -318,6 +317,10 @@ static int allocinfo_ioctl_get_at(struct seq_file 
+*m, void __user *arg)
+      if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+          return -EINVAL;
+
++    if ((params.filter.mask & ALLOCINFO_FILTER_MASK_FLAGS) &&
++        (params.filter.flags & ~ALLOCINFO_FILTER_FLAGS_ALL))
++        return -EINVAL;
++
+      if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+          (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+          params.filter.min_size > params.filter.max_size)
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+
+>
+> Thanks
+>
+> Best Regards
+>
+> Hao
+>
+>
+>>   };
+>>     /* The alignment ensures 32-bit compatible interfaces are not 
+>> broken */
+>> @@ -39,6 +40,7 @@ enum {
+>>       ALLOCINFO_FILTER_FUNCTION,
+>>       ALLOCINFO_FILTER_FILENAME,
+>>       ALLOCINFO_FILTER_LINENO,
+>> +    ALLOCINFO_FILTER_INACCURATE,
+>>       ALLOCINFO_FILTER_MIN_SIZE,
+>>       ALLOCINFO_FILTER_MAX_SIZE,
+>>       __ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_MAX_SIZE
+>> @@ -48,6 +50,7 @@ enum {
+>>   #define ALLOCINFO_FILTER_MASK_FUNCTION        (1 << 
+>> ALLOCINFO_FILTER_FUNCTION)
+>>   #define ALLOCINFO_FILTER_MASK_FILENAME        (1 << 
+>> ALLOCINFO_FILTER_FILENAME)
+>>   #define ALLOCINFO_FILTER_MASK_LINENO        (1 << 
+>> ALLOCINFO_FILTER_LINENO)
+>> +#define ALLOCINFO_FILTER_MASK_INACCURATE    (1 << 
+>> ALLOCINFO_FILTER_INACCURATE)
+>>   #define ALLOCINFO_FILTER_MASK_MIN_SIZE        (1 << 
+>> ALLOCINFO_FILTER_MIN_SIZE)
+>>   #define ALLOCINFO_FILTER_MASK_MAX_SIZE        (1 << 
+>> ALLOCINFO_FILTER_MAX_SIZE)
+>>   diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+>> index ddc6946f56ab..cbcd12c4ef9c 100644
+>> --- a/lib/alloc_tag.c
+>> +++ b/lib/alloc_tag.c
+>> @@ -249,6 +249,8 @@ static bool matches_filter(struct codetag *ct, 
+>> struct allocinfo_filter *filter,
+>>                  struct alloc_tag_counters *counters,
+>>                  bool *fetched_counters)
+>>   {
+>> +    bool inaccurate;
+>> +
+>>       if (!filter || !filter->mask)
+>>           return true;
+>>   @@ -275,6 +277,12 @@ static bool matches_filter(struct codetag *ct, 
+>> struct allocinfo_filter *filter,
+>>           ct->lineno != filter->fields.lineno)
+>>           return false;
+>>   +    if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
+>> +        inaccurate = !!(ct->flags & CODETAG_FLAG_INACCURATE);
+>> +        if (inaccurate != !!(filter->fields.inaccurate))
+>> +            return false;
+>> +    }
+>> +
+>>       if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE | 
+>> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
+>>           if (!*fetched_counters) {
+>>               *counters = allocinfo_prefetch_counters(ct);
 
