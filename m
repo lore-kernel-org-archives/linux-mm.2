@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02AAFCD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 03:43:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B55CCD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 03:43:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 299116B0093; Sun,  7 Jun 2026 23:43:04 -0400 (EDT)
+	id BC1396B0096; Sun,  7 Jun 2026 23:43:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2703E6B0095; Sun,  7 Jun 2026 23:43:04 -0400 (EDT)
+	id B71C56B0098; Sun,  7 Jun 2026 23:43:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 186476B0096; Sun,  7 Jun 2026 23:43:04 -0400 (EDT)
+	id A60836B0099; Sun,  7 Jun 2026 23:43:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 06EB16B0093
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 23:43:04 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A3E1E1A08B3
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:03 +0000 (UTC)
-X-FDA: 84855349446.02.7D2B285
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9442B6B0096
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 23:43:08 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0E7AA12014D
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:08 +0000 (UTC)
+X-FDA: 84855349656.06.B4FA463
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1935140002
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D41Iapm4;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 648A2140007
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:06 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YLcEnJ6r;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780890182;
+	s=arc-20220608; t=1780890186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QSu6XsEiboRL19rJVWEiFsNcMRrFU8VXRLqsphg+RLA=;
-	b=F4FGFLNHPSW8rg0zitaPO0q9528D6NJWnvk9b+xjV8x3hqe5ialGODGNR2t9a7mW6fRy3G
-	xi5pL18ye1bipkAPx3nz3hdin3N+NoW6pIEVJt6K3PO5bCsIX9kNde7VHCgdGm1ROorPo3
-	jRFFUx8qMQz41VSEWNRI1S+W5EehXY8=
+	bh=1hTBs93fx+NbCSeVyVNxz5n85uGxtYn/Sbx45vo9Kgc=;
+	b=gDCfsloCHT3HhnytTbNZ3fnZVLuxjxgEVIsfgpnDcD42xDSd+wOZi76pq1cMAZARTtKVzP
+	i1dq96sKj/Pj3AGvHmyylLfA7IJ40BQNFVBh0DT3VuwTAthifV3S8Dhci07mgKzxAupg6H
+	frHunAaO9l+IX1JFefeVI6dPU77/L74=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D41Iapm4;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YLcEnJ6r;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780890182;
-	b=Ueb5vv7a6yW7YDAe85ZYbczrnuljTp5O9KSytt2RbJI1AH1kaLmyBKY7KJAkV61BjFunJK
-	tDZK7kCB9SKmCPWoqu5h/2ryLJ3GNVJ51wc/EbVuRn60LVXVT6zSVxNIzEo09IpiAe/2Wy
-	V7Vi3t7HRDnCwtILdRcgQ+HugxuwpYA=
+	t=1780890186;
+	b=URA2rbklGx7VE/oLaCCErZkCg4eDCVPdDyfXdLT0L8dzzyXWLQyKcGC9f76j2XGIDnsnLI
+	syZw41/Q0JAsCvsEoHG2BOtGUw9kbGJmzDFB0b7f5Fejld0nA1UV9PpJX8tU5rQf9Q8fkQ
+	DX/2ZtG/wcSvzM8CpE5gHbTHbi5ZOtA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 786BE601DC;
+	by tor.source.kernel.org (Postfix) with ESMTP id F25D8601E8;
+	Mon,  8 Jun 2026 03:43:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EE71F00899;
 	Mon,  8 Jun 2026 03:43:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1F31F00898;
-	Mon,  8 Jun 2026 03:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780890181;
-	bh=QSu6XsEiboRL19rJVWEiFsNcMRrFU8VXRLqsphg+RLA=;
+	s=k20260515; t=1780890185;
+	bh=1hTBs93fx+NbCSeVyVNxz5n85uGxtYn/Sbx45vo9Kgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=D41Iapm4tXqr9Ba5E+mBBRULkFhOthmZ/kCNgUh3KHXBEZtxqOUL0uh0RPVQUrrLf
-	 aA5985WZ0YdB/TPxUgWPK8zWajdGX1N75ign661nUvcGvVuB0WXesX4q6eiDHqy9B6
-	 poYoWwIwO2P8VgSsJ8ciii49If7XvmzGt5cGiXw3XJznRsQG44tp3dilXRKXECWrZT
-	 KVTPsCpl85zbSYKBhvwd0uZ10Lpmh3V3QzFYEHG8Jp02aYAEHFothj/C6y2cgSyvvn
-	 /CVeoPr/Jmbe/1mamqhptaWQaYqlPKhooc1f1aQCGZI0DIRWJtmRQj5tyOFfZoLWTL
-	 qJjenKf+xAcXg==
+	b=YLcEnJ6rbEwe6kb0bDhr5znxOm3FiQdH0IHu3VNVC3u4JtQExIVMbN5gDnLN6+88y
+	 TbAKMqqoFHpPmdkivLGrmrSFciAXauyxsUswFMrtauGKTSqTrianUeyRrjDFnIBrFg
+	 LkT6tXcA+d1jXzBX7cZxzrvjeuoeN62S6mORmgUJxS2Vga5BpxNle0wQ28pmjISLRM
+	 rrGPSkZqDtesR5xfyQvmIqcbV991IafyL9bXzRCUE3ahdQfNm+JaJQJy/iqn7c5HTD
+	 rOFEl887SMJDZhkIDG+0IN/DoXFJQJ27ZzYLr1dmDgMLuOvxii2EJWT+Wi3H30HqQ7
+	 o6LnuxYqWR5pQ==
 From: Yu Kuai <yukuai@kernel.org>
 To: nilay@linux.ibm.com,
 	tom.leiming@gmail.com,
@@ -83,9 +83,9 @@ Cc: akpm@linux-foundation.org,
 	linux-block@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/8] blk-cgroup: protect iterating blkgs with blkcg->lock in blkcg_print_stat()
-Date: Mon,  8 Jun 2026 11:42:42 +0800
-Message-ID: <05799877e720dcd300e2ddd4625e8e162959d7cc.1780621988.git.yukuai@fygo.io>
+Subject: [PATCH 2/8] blk-cgroup: delay freeing policy data after rcu grace period
+Date: Mon,  8 Jun 2026 11:42:43 +0800
+Message-ID: <e20e5d984b41a026d61851966bed35eb094c4bff.1780621988.git.yukuai@fygo.io>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1780621988.git.yukuai@fygo.io>
 References: <cover.1780621988.git.yukuai@fygo.io>
@@ -93,12 +93,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: aonyt9wzxksktqufeowjqpb6nuw8tq9w
-X-Rspamd-Queue-Id: 1935140002
-X-HE-Tag: 1780890181-751159
-X-HE-Meta: U2FsdGVkX19Xo21QIcYddHMdD5bk6KfT/PSSUDuwuNrQfEA1ADOrovNd1GQCutV4K0phZz0FKU68eNdz/zGCUuCQwVFNjVVjsLb8NINeNJ9j5DvSB2qXwlaQgIaaAb5S1STKCB8Ab+Q8JvojRkhxsJDnTJwTWmW6J1zY5piPorMy/viIzCYRk5k41O3MT+NH84KbGbiaBrfRgwHHuOipMbtw7Nu2mFZzlEpGGfReUD3X9Wtwtgi4fSU3gPTMySvUJvDDFP75UCn7/OaJ9SJoRwaqoGqZ0e9cp6TwJDC0Hzui4Umx9BhnJEHtwaXws5MN2B+0T6IgTiBMNFtO9E3faD3pbPWZU3k0FMaQ2woUQI81ZxL5gOilc0h6HdmjIEjWlLUO2d/GWpBgU6waGqfQh6fDJHnrGrUXTUhF+523MmdfWqs32GdE1RyQu8RVKRW8AFk8p8qiFT9iXNZ1MyLtJb3YUiI/9kDWpiTlQyFhH4iAQimEb4kUUFzaGve8I8lHFhZ44CdifhhZy9x4LCOEOjJC3xwMrahzAvGtyXc1vkXVGFeAIPOhBNQS3xJrf1pi6dXevhi3hJva5ftvBxRFb2sQKq5W66MUXMbzwoLS/rreIATzzmk3gvCFwkpuaUeSPbsuV7BHsF4W8Blwibs+fbalWM6RhiJtiJaOJG1IuyDTb2WLaClEk0GNl2rdyWy73akI6hdEdlvuBysbZefZ/S2E91OWZNfRzej//ql4jYo/eIKNGq22fE+/4sA+5Z5SW3N86R5G66aqziIqMVT3QjBr6/hbKkmuzge4aM7ocTtE3Ua5HTEsdhnD9HJaXTVWzHqFqvA2vEXQN60IZqb1P9nIl/3w22cklrVbIR/ZmYXV2ojvKw73pOzrIVa7luYa+gXv/dbjFy2Ipk79yMgPetfTx4Ji668G/wV5DwpsZM02ILcWd6HDHW3RkupIInjPrg/SYWBevUT1syRHBWv
- JqLdWkXU
- +Kq1xAzxOcSJmIEJpg2B/319vOz6U2qV68HehSifu5xyWJmcj/LyUPXody3s5wx+/fmJNDXNaZvjjpzDWEakKOXbVM8he0xyjjjtNo4t4IpzY9cUm/4mG1LbwxiKe+IxbROwiNzuBbrxIbDvGFFpniyZZf+aHIpV+d9VHuuswlcpUoyco+cQWlC7oc+DXpJjsKr6AZRcXq2GY/UHA0fc7O4h0Tz780OFqydSlTgVjf5e550pHmkD4eDOvU8k0niDGOdTZ9E7XjlQzdjzqLBCHl7AYwFtqMlXp1s6o
+X-Stat-Signature: fxyhwyaxnmp774wqy5thdycmztohok1m
+X-Rspamd-Queue-Id: 648A2140007
+X-HE-Tag: 1780890186-289760
+X-HE-Meta: U2FsdGVkX18DtdbyJ3ktEoBowHF05N0VuGmFDj6Vr7wjBPstKJFVs7VM8cQMNPyT6JXvxRNo4v2EIE4fx1a7fbw3eHdctnsDCZ6gz6TOHJqap7raFWKhNWDrhC5L3Z9LOkWm5yiSBYgPreRb963nRnDM489/Ykc0NmymuYwOJ7AyGN1+d+ElzI3eGLNFmpI72z82706exvQyyR7CCejbKJaS28kWQNo8FCKBWVfs2KO82AkrVLM7lpTY6oFkCrAhJK+PhTc4fqABJ26uzvl0N//s2fs5qFu5xEGvqh8jo55MoxmCzJVQwvFT+KIIj+Jo0g8N/Ln6LoOBV0JrJYMNTA6hs39aXVVgMeSeGr84QvOWAyv9gwSi6zEuY+Mm91CXxJdQRU2W9YENIdC0HvHZS0WCJlZaUElB9bDrTpIG8h9B4b1V2/c03Vw1SB3MbIpDiU2E5q4khFuk1kc559kuZaQHny87CE8mAu4OMW4HSY9CzNzvM/zIoQ5Es+LppjQCFuyAKHpl/MphWKIogtoy5qeEiwD31R7q4aF9PGZD1AsSdGyILF5LQHoKs20y7yD9am/wmoSI/PKVu/WoalhBSTf+PERRHSl6jNIJCQQIf3WWyPLkIoMmBC5b/bsx+cJnr4pH8m85LyJbcSV0Mp3C18G8GCeYwyGnAC41ZhagnhQEpycZ7+3euCwSPz+7hVcPoRQWt2sVcTup4CMpcIVeRr1GaCurYD+HzxpAh+Qt1ADI2lYZSsLHmtTcrdI83oL7KUF30GgjI5bsVKEN2nydBigbDlmOz4omeK5QplHTioUY8XA197scU+2B4zsT3/BY6T/Q6NvvEgbSZZqKCM35nt90XGf5gRAKvy56JXhOlxE3WHRisnRdZFKSrifkOnMGUv9QxAYyZ595+7v7R8psFcKnnSjrOP00OXDsibB5jsVOKFha2Ecm3E+T3s7IwLjuKzmh02OyMoS0xESNBz8
+ wQYg71dM
+ xFNkc82kqYa/CmTgbeb3n4sx3by7wOA97zc7q9PNzxd31mItzFRdwyCLb9KNVQPKpQAx8GVCeFzE8CneNlcLiUL/aNqa/oqFfXeZVta7znTAzfKc0MeTvDIdVSTg/4sUxpyD+onlg9flRUT3OhbQubHmXgAd0dC6xd13ixK+N1Rqj3Xjowpqyh5QWbRDhxK1JiQN0uM8WiMrXtlEsmtJgrT4oz1skTRns+2uUpTEDeF+EbjEBCjm0XjYYQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,50 +108,177 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Yu Kuai <yukuai@fygo.io>
 
-blkcg_print_one_stat() will be called for each blkg:
-- access blkg->iostat, which is freed from rcu callback
-  blkg_free_workfn();
-- access policy data from pd_stat_fn(), which is freed from
-  pd_free_fn(), while pd_free_fn() can be called by removing blkcg or
-  deactivating policy;
+Currently blkcg_print_blkgs() must hold RCU to iterate blkgs from a
+blkcg, and prfill() must hold queue_lock to prevent policy data from
+being freed by policy deactivation. As a consequence, queue_lock has to
+be nested under RCU from blkcg_print_blkgs().
 
-Take blkcg->lock while iterating so the blkgs stay online and both
-blkg->iostat and policy data for activated policies stay valid.  Use
-irq-safe locking because blkcg->lock can be nested under q->queue_lock,
-which is used from IRQ completion paths.
-
-Prepare to convert protecting blkgs from request_queue with mutex.
+Delay freeing policy data until after an RCU grace period so prfill() can
+be protected by RCU alone.
 
 Signed-off-by: Yu Kuai <yukuai@fygo.io>
 ---
- block/blk-cgroup.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ block/bfq-cgroup.c    |  9 ++++++++-
+ block/blk-cgroup.h    |  2 ++
+ block/blk-iocost.c    | 14 ++++++++++++--
+ block/blk-iolatency.c | 10 +++++++++-
+ block/blk-throttle.c  | 13 +++++++++++--
+ 5 files changed, 42 insertions(+), 6 deletions(-)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index c75b2a103bbc..b55c43f72bcb 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1241,17 +1241,14 @@ static int blkcg_print_stat(struct seq_file *sf, void *v)
- 	if (!seq_css(sf)->parent)
- 		blkcg_fill_root_iostats();
- 	else
- 		css_rstat_flush(&blkcg->css);
- 
--	rcu_read_lock();
--	hlist_for_each_entry_rcu(blkg, &blkcg->blkg_list, blkcg_node) {
--		spin_lock_irq(&blkg->q->queue_lock);
-+	guard(spinlock_irq)(&blkcg->lock);
-+	hlist_for_each_entry(blkg, &blkcg->blkg_list, blkcg_node)
- 		blkcg_print_one_stat(blkg, sf);
--		spin_unlock_irq(&blkg->q->queue_lock);
--	}
--	rcu_read_unlock();
-+
- 	return 0;
+diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c
+index f765e767d36a..56f60e36c799 100644
+--- a/block/bfq-cgroup.c
++++ b/block/bfq-cgroup.c
+@@ -548,17 +548,24 @@ static void bfq_pd_init(struct blkg_policy_data *pd)
+ 	bfqg->active_entities = 0;
+ 	bfqg->num_queues_with_pending_reqs = 0;
+ 	bfqg->rq_pos_tree = RB_ROOT;
  }
  
- static struct cftype blkcg_files[] = {
+-static void bfq_pd_free(struct blkg_policy_data *pd)
++static void bfqg_release(struct rcu_head *rcu)
+ {
++	struct blkg_policy_data *pd =
++		container_of(rcu, struct blkg_policy_data, rcu_head);
+ 	struct bfq_group *bfqg = pd_to_bfqg(pd);
+ 
+ 	bfqg_put(bfqg);
+ }
+ 
++static void bfq_pd_free(struct blkg_policy_data *pd)
++{
++	call_rcu(&pd->rcu_head, bfqg_release);
++}
++
+ static void bfq_pd_reset_stats(struct blkg_policy_data *pd)
+ {
+ 	struct bfq_group *bfqg = pd_to_bfqg(pd);
+ 
+ 	bfqg_stats_reset(&bfqg->stats);
+diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
+index 1cce3294634d..fd206d1fa3c9 100644
+--- a/block/blk-cgroup.h
++++ b/block/blk-cgroup.h
+@@ -138,10 +138,12 @@ static inline struct blkcg *css_to_blkcg(struct cgroup_subsys_state *css)
+ struct blkg_policy_data {
+ 	/* the blkg and policy id this per-policy data belongs to */
+ 	struct blkcg_gq			*blkg;
+ 	int				plid;
+ 	bool				online;
++
++	struct rcu_head			rcu_head;
+ };
+ 
+ /*
+  * Policies that need to keep per-blkcg data which is independent from any
+  * request_queue associated to it should implement cpd_alloc/free_fn()
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index 0cca88a366dc..c136b1f46fcc 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -3024,10 +3024,20 @@ static void ioc_pd_init(struct blkg_policy_data *pd)
+ 	spin_lock_irqsave(&ioc->lock, flags);
+ 	weight_updated(iocg, &now);
+ 	spin_unlock_irqrestore(&ioc->lock, flags);
+ }
+ 
++static void iocg_release(struct rcu_head *rcu)
++{
++	struct blkg_policy_data *pd =
++		container_of(rcu, struct blkg_policy_data, rcu_head);
++	struct ioc_gq *iocg = pd_to_iocg(pd);
++
++	free_percpu(iocg->pcpu_stat);
++	kfree(iocg);
++}
++
+ static void ioc_pd_free(struct blkg_policy_data *pd)
+ {
+ 	struct ioc_gq *iocg = pd_to_iocg(pd);
+ 	struct ioc *ioc = iocg->ioc;
+ 	unsigned long flags;
+@@ -3048,12 +3058,12 @@ static void ioc_pd_free(struct blkg_policy_data *pd)
+ 
+ 		spin_unlock_irqrestore(&ioc->lock, flags);
+ 
+ 		hrtimer_cancel(&iocg->waitq_timer);
+ 	}
+-	free_percpu(iocg->pcpu_stat);
+-	kfree(iocg);
++
++	call_rcu(&pd->rcu_head, iocg_release);
+ }
+ 
+ static void ioc_pd_stat(struct blkg_policy_data *pd, struct seq_file *s)
+ {
+ 	struct ioc_gq *iocg = pd_to_iocg(pd);
+diff --git a/block/blk-iolatency.c b/block/blk-iolatency.c
+index 53e8dd2dfa8a..c79056410cd9 100644
+--- a/block/blk-iolatency.c
++++ b/block/blk-iolatency.c
+@@ -1026,17 +1026,25 @@ static void iolatency_pd_offline(struct blkg_policy_data *pd)
+ 
+ 	iolatency_set_min_lat_nsec(blkg, 0);
+ 	iolatency_clear_scaling(blkg);
+ }
+ 
+-static void iolatency_pd_free(struct blkg_policy_data *pd)
++static void iolat_release(struct rcu_head *rcu)
+ {
++	struct blkg_policy_data *pd =
++		container_of(rcu, struct blkg_policy_data, rcu_head);
+ 	struct iolatency_grp *iolat = pd_to_lat(pd);
++
+ 	free_percpu(iolat->stats);
+ 	kfree(iolat);
+ }
+ 
++static void iolatency_pd_free(struct blkg_policy_data *pd)
++{
++	call_rcu(&pd->rcu_head, iolat_release);
++}
++
+ static struct cftype iolatency_files[] = {
  	{
+ 		.name = "latency",
+ 		.flags = CFTYPE_NOT_ON_ROOT,
+ 		.seq_show = iolatency_print_limit,
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index cabf91f0d0dc..0f89fb03cdb6 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -351,20 +351,29 @@ static void throtl_pd_online(struct blkg_policy_data *pd)
+ 	 * Update has_rules[] after a new group is brought online.
+ 	 */
+ 	tg_update_has_rules(tg);
+ }
+ 
+-static void throtl_pd_free(struct blkg_policy_data *pd)
++static void tg_release(struct rcu_head *rcu)
+ {
++	struct blkg_policy_data *pd =
++		container_of(rcu, struct blkg_policy_data, rcu_head);
+ 	struct throtl_grp *tg = pd_to_tg(pd);
+ 
+-	timer_delete_sync(&tg->service_queue.pending_timer);
+ 	blkg_rwstat_exit(&tg->stat_bytes);
+ 	blkg_rwstat_exit(&tg->stat_ios);
+ 	kfree(tg);
+ }
+ 
++static void throtl_pd_free(struct blkg_policy_data *pd)
++{
++	struct throtl_grp *tg = pd_to_tg(pd);
++
++	timer_delete_sync(&tg->service_queue.pending_timer);
++	call_rcu(&pd->rcu_head, tg_release);
++}
++
+ static struct throtl_grp *
+ throtl_rb_first(struct throtl_service_queue *parent_sq)
+ {
+ 	struct rb_node *n;
+ 
 -- 
 2.51.0
 
