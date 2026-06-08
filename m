@@ -4,89 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A802DCD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 22:26:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57656CD8CA7
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 22:27:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9079C6B0005; Mon,  8 Jun 2026 18:26:22 -0400 (EDT)
+	id 7590D6B0005; Mon,  8 Jun 2026 18:27:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DD396B0088; Mon,  8 Jun 2026 18:26:22 -0400 (EDT)
+	id 730FF6B0088; Mon,  8 Jun 2026 18:27:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 819DD6B008A; Mon,  8 Jun 2026 18:26:22 -0400 (EDT)
+	id 66E226B008A; Mon,  8 Jun 2026 18:27:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 70E016B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 18:26:22 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1297B1C1F8C
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:26:22 +0000 (UTC)
-X-FDA: 84858180204.18.E2F5CD0
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9583F80009
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:26:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=skwSVs6w;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 572F36B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 18:27:23 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0164F1A0311
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:27:22 +0000 (UTC)
+X-FDA: 84858182766.15.989B84F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 35A1F180003
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:27:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MvpMmVGo;
+	spf=pass (imf16.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780957580;
+	s=arc-20220608; t=1780957641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R032pw+MUGAC5psDqJFtlX+YlXSRVhLJfeqjnFhLkAc=;
-	b=fSoZ8uUIervefoJ9KbGxiIQLeg2ntW8ITIpq1Lnwm1M2PWPfubEw7F6uncr2VMVQOAqXel
-	QhHX1JQjFvPAg996TEloaPoApEPIWxWUCM8Gbr4sDvPE5bkwuDgTzyNiHlQqC6l8yI6x/R
-	ao1cuB186rHxwbdy0rD6M7G7Ftn90Qc=
+	bh=ZnzXMKmNNQcMAsK3GQJoXlxxelkBmMuFNwdAjWqeeDg=;
+	b=vWzVBgHTHEud++EWE4d8qctH7H1SmcPSHSxeE76ASMmdUAlK9+kQx+bWsOSmJjgTpeY5TP
+	YZaenZiRvfveIk+koBOpIZBtuQw5+LX54fqv+mgsHRa2zb8M3svlVvKcGGESfwhQMfjn7D
+	Dokv6ka6pXtb95rBXTZa/Z3L4dgPbU0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=skwSVs6w;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MvpMmVGo;
+	spf=pass (imf16.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780957580;
-	b=DxDU/NZ+1mNdv1c0VNYDsyZ+P4Klvneomz8MVgtqMuineOXSKDKum/zypgaPPgt0GeEObc
-	QZCBT+m1rAnoHOaUXaG6kNcrUHPR+WTkqzH1TwGUAVgjrNKixWhmRxG8JzIb9TYDpXSa6N
-	K5mud2Vbwk0HAct63sk00Q1pROTln4c=
-Date: Mon, 8 Jun 2026 15:26:13 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780957578;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R032pw+MUGAC5psDqJFtlX+YlXSRVhLJfeqjnFhLkAc=;
-	b=skwSVs6wwyiFuGTAKEz1neA8EwFRRvgEfXA5P2gEtm/D0phiVv7bgk5PkoZwMkskGRdcS8
-	R56w+WMkwTR+4nZzJ5wGDOe9UX8gOEpD1fcg5NhqB4Ah2qmZzVNpPCPQEyJHW5KhfK8/KE
-	gua3WaW4eMWh8NBUbxKIEhT+clupfUg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	linux-mm@kvack.org, hannes@cmpxchg.org, tj@kernel.org, mkoutny@suse.com, 
-	roman.gushchin@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
-	mhocko@suse.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH 0/2] mm/vmpressure: reduce CPU, memory and code overhead
- on cgroup v2
-Message-ID: <aidBd3Us5FSBKZVo@linux.dev>
-References: <20260606114158.3126210-1-usama.arif@linux.dev>
- <aib11jSWosT6635u@linux.dev>
- <750406a5-1819-4ca6-81d8-5a1d82e0644b@linux.dev>
- <aicdqucZVqAUfh7N@linux.dev>
- <744aae62-ad99-4534-906e-92ddad978ee1@linux.dev>
+	t=1780957641;
+	b=QUHwpVybpC+gm6UQE89sN6jBDcV3a2IRlvohFz/qEqf7Xyw8pKh+Xu+UiQ2tKbBNcd5AK6
+	fTV7ycnBdUNwLiF1Bnw9wVpbP7Iu8qZqsYalwzwmobkd9D8p65TrxugVk5fte20UIzj7tf
+	bwv01XNJVRepH9VfOdy6R8nQuDnE9Yc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B0D03601D8
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:27:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675A71F008A0
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:27:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780957640;
+	bh=ZnzXMKmNNQcMAsK3GQJoXlxxelkBmMuFNwdAjWqeeDg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MvpMmVGoRMm3zfigrF0uV+iRgX42h36CoAm4KPvTx70waksQrU19h5rGcqgk1CPug
+	 Bopifo2qojt34FmwIkzh2ghSJjAiUNaqXroRBUWNx0Hs93HFkIbvjjV51NNzVV5KLc
+	 2y/MuzC032dWidywn7akmnTutYBP7iqrA0pBW+dffg9t7jLYMQr+dDRwCTzc7Jgyr1
+	 Ibxb+R8UVC3j3qzBqej09gIOZB11mgKUZIt0wUawHHLZ824KQ1h3aHhKsn+QVGClm8
+	 R5nAuFpmgu1ZN93yc5fFyliPwzqwrskQX1rHU7SCOklp3a8k0KKF/AAE7PeSkd5FFw
+	 mondi24qgGMxw==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bf046d4da1fso493572966b.3
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 15:27:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8KsBKJ1wVF61dvqASvZJATpWX4lenLoy9qU92LAxbdikKOyLAb3ERTTMlbini6HtT2Jr7UZaYMRg==@kvack.org
+X-Gm-Message-State: AOJu0YzMxGofq6W81u2LAgVBhOfiTi06arKDD8F6x9wc34aplwCWvDGA
+	IqCxwxT4KQxjpJhKDJWZy9SSWqJ3W0bglyvRo/groc6WqW1lZ0nqOSi3qPj8+ReGYRV62dectjK
+	/cbwkkfg527MwhVeA3s+CMOZvow7x6og=
+X-Received: by 2002:a17:906:d552:b0:bf1:1d19:cf95 with SMTP id
+ a640c23a62f3a-bf37077232cmr900655166b.12.1780957639295; Mon, 08 Jun 2026
+ 15:27:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <744aae62-ad99-4534-906e-92ddad978ee1@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+References: <CAKEwX=MQe_KFZe2vBXQYh0aa-x+E8AzNwmyjJGJk4tDoS9ML3A@mail.gmail.com>
+ <aho_VtLCmIRsNyvO@google.com> <6deeaea7-3cd1-4403-29fc-d2dc55c297f8@gmail.com>
+ <aiBqzOtEv5iAC_qC@google.com> <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
+ <6db27a22-cc7a-9a94-db3f-c912fd39aa32@gmail.com> <CAO9r8zM4SDdTgz9L2s1VfXL8K2VBjMD9ej2BTDxaGge1t2+quA@mail.gmail.com>
+ <aicJBVT4pBvmyooT@linux.dev> <aicZ-5GX9De3MAU7@linux.dev> <CAO9r8zNBJ-BsXyKFveA92jbwMu63uFVTY5CuT4fRHTBVcOjhPw@mail.gmail.com>
+ <aictKA0XWMWbxFdN@linux.dev>
+In-Reply-To: <aictKA0XWMWbxFdN@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 8 Jun 2026 15:27:07 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
+X-Gm-Features: AVVi8CcbjjP-avdNaGSAeiW9slgw-LB5QMjLbgQUyQtJGqfa4iRAJG4WdDe98uo
+Message-ID: <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Hao Jia <jiahao.kernel@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org, 
+	tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev, 
+	Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, chengming.zhou@linux.dev, 
+	muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Hao Jia <jiahao1@lixiang.com>, youngjun.park@lge.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 35A1F180003
+X-Stat-Signature: bjur8e53cyrsbxuo31sn47wc9ugjcixh
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9583F80009
-X-Stat-Signature: s875geebijm1ay3jbj7thtk649r9okpg
-X-HE-Tag: 1780957579-255642
-X-HE-Meta: U2FsdGVkX19pk69UcF3eWI8qhP2/kWYyN6qeYzKqzrK3WmooE7sY5DIDjFqc0I9+j0MCEkp2cCtUHr7Roj0TnLoP4Fw1C/8xlHP5lpLFUu+IhJ9ps3eKwkuVKrDMXvgPNdw26GCGPNcTU5mPebCQE61Gn2mZp6lhf2KtuKlURBcgU7z7+OHyGvjUTMKariTk09jsDZFTWTkG5c5N9M2jtXgmint8EQa5SQQ9jcVZzFONhytRlwU4Rb78qiHKGILIYmYK5QYn5ee834WnDnKF/VK/2tKQ/NR//87q5I4BnAnDfxaueaqIRF6CiDwjTPLpF1NSIt7tydDrGNIi4DyB8ONHrPpvUfauu6gbUE375NgI449MS5SS1XsZk4StbuHOKkTmt3nnjmhFebkLMV7hWLinGkPpWWHBLyFkcyeUb6rPGLThAN5EZtrpVTH8741GWCC9EwSzuUYs7bqso1yg+ON8Aj3aoxxDR7UMAyK+4bKJXEjheDDDFXumE0UY9c4OWy9Pa9D557ChJgMhVzf/xU4/RICXj1Q2oyzFgAnmnoYgGQcDcKUOlUACmCeoDFodW7T+e/GgR6bjqbuzcCXxHbMaCu3i1rdzrFttfWvnjyyYXLBv6q8OGBOLl70y74+BPg8uuxOFjc1BWQRKliLUTbCMMYw09v2+1YymMPG0xGKYeehU3cyoTIHo8p0k+SW4HPPWksHRfWgNaJLNaPeXep3+SvvXS39UUcCw/wQPQhdQ/VEA3e+W93xdiEpPBUib6qMrMeVKXfgObR3y3vbV3mDJKTH8AUVXA+PwF2P25UjErboMPGOtXOvOg8cIWmNXiwA6/wn4PoV11Xte82HD6sS6USqJs7hllprf5eLD4CRlo/4t1mnCYnjvRHONB9xmZXZzGU6YcWmp8eVJnA7BF6VISYC3mj4jtGgubCzBifIxPdbuREc17cHemw6QgKfCOCKJ9Iexo2BK9kozt6l
- oJfYUSO7
- Tk5QqGhWFXHPt7ddFrjVJT3f+ZvwKgnGR5sBJ+x5kOR/0EsU1nwwnwcBbwZgZ/4npuK8kvBLb+ybeVAap2Y4xZV8Mdbx25VbhSRBN8vEHfpCu2KSg36Iajhb/RcvR0dTP0sLFkXl3T97SPj2KyRfc5Pxue+gZpk74f3cEPZDVg53lA65JddWRUej4fIMvKnafQxwrSzlJQh2HP9ItMDQlL190mQ==
+X-HE-Tag: 1780957641-504241
+X-HE-Meta: U2FsdGVkX19woBv63QPTgwhqVPd+H22XAMw2tk8QN5GY5HFa/7DRLtEbiZUSCsP7qvlSGxII3UBOnQYUgWP6ANbYAhnerZW6l3xpPSfkoQXLUFbTsw5xWwQhhPt/QNF7HHVg0lxg81XqVHKskRW3Vw4KMjAJNkhvQJfLnotjH2nubFABSB4Vm4v9ytqdK71Yv/WeipKGzv7xnh2h6WuI6FsZsKO7p2o3Hg8TDUIBjSDz2ze0TREfnnqUVLBlLNKhs6UNKjJBMGz7Jsm8bcRh4gx8+an0iQ8bSkIXNHzH3xca417cRG9HohlxRcMqzj/OgLuGjyVNOgKYpvixkb4hx52vqL6bl/DeJzYMQvsCOazkM17/Jve60cd27m8s+d5HDexdvcbySqLjG0B650ga/QkDWQD5nPdNQ/7UpUj8rZWXgmPf2EIsLiWYiEcdj9T9vWjwct2i7XQhrOqu4Ie/TEbEpVD8L7I/H28oRRYNunlJQqe110lfq9VpkZHtvIXKP/A7FXJgC5P1MM9VXyuDOZomkNb26UmwhPFxOqbDHYKbos0Y/w/42sU9/cpRO+yFR+XPpLWbVmpw9UTfJUbrmSzSrAw0YWFHcYxOhVQHnhAUDMAyqe1VfgoHio5Jhc62Q+Ax0MtryR/Ps/qbR5mGfKC3VN2Dy/PXF06xSySn8hWOv2Wg7K+UmQcld4UoW5qcCHZlOFICcoRRKuScp17hcTh8OCbT5sKx8W9qThj56PYQBR+IvKW1wrZpoMeK4J4N/T14C/j7EFdTirfnu1/kYtT1dwnRFIB2bAB9uWfpCb+8mBZ0POFqOgf6vtqHPq4jaBe0hY+c3++WkEGCtNgXBPiLYstJHAvdAMrNty04OFytTyEvixKrixoEU+ZiGKU1l285AOG2fOYGXHDjWYVY2St7OtznQUFDoL7JxRdJrMOfZwhSiyx3oPOL/JuDmvkTgvafOSSLoDp+TU35idz
+ 5krEwIvh
+ MODSQhJwPirvqrvWNyyDz/1RJLI+OmWk0y5y3ZqYdLEQhHzmNgIyOWOWgJni24c8GDhP5HoyUAsLuIkp3B7dMU3HK4EPnBLtjCPU+86I/DaABZGVIJ6yAsCpcvAAdvDfi7Cgwd1uhfaWXZm9EAE1JW/7YCePewO2oHjTMnvpTEUrSk4iyTN8uhGULApDXJs7/vGjt3msgA1w+/duYLuxz+S/rM8mhvmLVvMXxqNU+fHn0K+cWmNe9bKVXDF7A5QesNO/LUjwpTayfw3p+RWTQV6vNny4SdJGWnT51RIhqJQUwC+3+bgW6VgjVKdZtJ+In45kDgC9b1SiI6VcvMRCZiijKxwDguk4tqbCCPCroGlIoSZo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,50 +109,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 10:19:36PM +0100, Usama Arif wrote:
-> 
-> 
-> On 08/06/2026 20:56, Shakeel Butt wrote:
-> > On Mon, Jun 08, 2026 at 07:49:45PM +0100, Usama Arif wrote:
-> >>
-> >>
-> >>>
-> >>> For this, I am wondering if we should just go ahead and work towards making
-> >>> vmpressure memcg-v1 only unless we foresee a lot of or complex work is needed
-> >>> for that and only then patch 2 makes sense.
-> >>>
-> >>
-> >> I think there might be a transition needed? Because vmpressure and PSI
-> >> do not work out to be the same and people might notice a regression with
-> >> increased memory usage or a hit in networking performance and might want to
-> >> opt out? A solution might be to switch socket pressure to PSI while
-> >> keeping vmpressure around gated by a defconfig. And then in a few releases
-> >> remove it completely for cgroup v2 if no one complaints. If we go down that
-> >> path, we would need patch 2 for the medium term.
-> > 
-> > Yeah the reasoning that PSI is not an exact replacement for vmpressure makes
-> > sense and it will take couple of iterations to transition v2 (networking) away
-> > from vmpressure. Can you please update your commit message with this and about
-> > the midterm or transition plan.
-> > 
-> > I assume eventually we will just have vmpressure-v1.c file which will be behind
-> > MEMCG_V1 flag, correct?
-> 
-> Yes.
-> 
-> How about something like below in the commit message? :
-> 
-> This split is the first step toward eventually making vmpressure
-> CONFIG_MEMCG_V1 only. The v2 in-kernel socket pressure path
-> (tree=false) cannot be removed today immediately: PSI is not an
-> exact replacement for vmpressure, and switching networking socket-buffer
-> back-off to PSI may regress networking performance or increase memory pressure
-> in workloads that today rely on vmpressure's hysteresis. The medium-term plan is
-> to introduce a PSI-based socket-pressure path, keep vmpressure available for
-> v2 behind a defconfig as an opt-out for several releases, and only then
-> drop the tree=false path entirely, at which point everything that
-> remains in mm/vmpressure-v1.c is the whole subsystem.
-> 
+> > > Youngjun is working on swap tiers. At the moment he is more interested in
+> > > allowing a specific swap device to a memcg or not. I can imagine in future there
+> > > will be use-cases where there will be a need to demote data on higher tier swap
+> > > to lower tier swap. What would be the appropriate interface?
+> > >
+> > > BTW does zswap folks think of zswap as a top swap tier or something different?
+> >
+> > I haven't been following the swap tiers work closely, but personally I
+> > do think of zswap as a top swap tier.
+>
+> Same for me though I imagine swap tiers would introduce some duplication i.e.
+> different way (interface) to set limits for swap tiers for a given memcg.
+>
+> > Things will probably get more
+> > blurry with memory tiers and compressed memory nodes though.
+>
+> I think there will still be distinction between byte addressable and fault on
+> access devices.
 
-This looks good to me.
+Yeah, I think it makes sense to define "swap" as fault on access
+(zswap, SSD, etc), and memory tiers as byte-addressable (even if you
+put an SSD behind CXL and make it byte-addressable). But I also
+remember seeing discussions about unifying memory tiers and swap in a
+way, and it makes sense from a reclaim perspective (swap or demote
+first?).
 
