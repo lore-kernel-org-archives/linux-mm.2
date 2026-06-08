@@ -4,102 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D39BCD8C8E
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 07:25:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89B6DCD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 07:28:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D3FC6B0088; Mon,  8 Jun 2026 03:25:52 -0400 (EDT)
+	id BD6F46B008A; Mon,  8 Jun 2026 03:28:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 283DD6B008A; Mon,  8 Jun 2026 03:25:52 -0400 (EDT)
+	id B61286B008C; Mon,  8 Jun 2026 03:28:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 172FB6B008C; Mon,  8 Jun 2026 03:25:52 -0400 (EDT)
+	id A28E46B0092; Mon,  8 Jun 2026 03:28:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 018436B0088
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:25:51 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5408B1C21B4
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:25:51 +0000 (UTC)
-X-FDA: 84855910902.11.E9B8817
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CC7DE20003
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:25:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=km2IxtHZ;
-	spf=pass (imf03.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780903549;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=KTBGi8oCZ29Roe5CgH69uQStkzIgyiOeC35FA5eeDPU=;
-	b=HUlKd8CxNCx5R9fha/NCU+PvcMIhzErgx+lE5cj3b32OKzEystor+nB8SMxUMQOhwCpqdA
-	jTCbfw8Vi6Ba5QFpP4Zoxhk/hL6uyg3ov6FaMr2A2CYspwxWZotBfiunKAg2T1e3JnwgVo
-	MhUeGJZtNlBqDpR2w0YJUM/Q1EP6eeI=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F6B56B008A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:28:11 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2C4D71C2AD8
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:28:11 +0000 (UTC)
+X-FDA: 84855916782.02.553EB49
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2753C120003
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:28:09 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JpHaj0hz;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780903549;
-	b=Texm+WzFOZVTEg/rgkjQSHm2AAvtg02tDBO/9EDpkZAWRu3Z+gKj3gh358dwILhPEqzAPs
-	GlB5V9oiviqamuiamOu/tN1F1otqlUZG1oxZ4GrIYbjsoPXgOPag4xosz9eysQVMpLuTEP
-	uHIYcAkYKbMnCIXBEtX5I0lnUo2rqaE=
+	t=1780903689;
+	b=4pwA4Zi2nYH2aNAlhGnMT19ZUPnwkepxv5BB9sMrRpYC1DMKkIJOlUvfWWXZ6uF4ZPgN01
+	Qo2lNnWPJmP13nLQsiyPTkCqcKah7T5G4N7SKbg0csUjIKmCInO+S+mfYlAnn2uTrdpM5O
+	knEEqwY5+yQXpMYX+XOdQ6uuYCjMCNE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=km2IxtHZ;
-	spf=pass (imf03.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C62A240715;
-	Mon,  8 Jun 2026 07:25:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F141F00893;
-	Mon,  8 Jun 2026 07:25:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780903548;
-	bh=KTBGi8oCZ29Roe5CgH69uQStkzIgyiOeC35FA5eeDPU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=km2IxtHZIktwRU6635g8jlJprIRhl9fSIjqUyOj5lz8NlJoVU7udXLnh9gxiQHqfN
-	 Ho8tP98QVDYT7e7M1vtNBaxY3ZqxywP7vPxCLlfSpM5R37nNY4LON6vctCRHBZ9rTJ
-	 AOrOiBs+dZ7MEKnAO2NzHFmJsnmNM9zdqPbSrcKfbT8snI4b0mjjwpcfKftahXkR57
-	 Amyr1wvgAcMN0xcrfpIud3JS0pAhGC71a0s36Az/truacRX9P6qr3vVc8dGSr6VpIG
-	 ibS5OGgaRSMwuZ1n4j6e4QEzUSpG0Bs4StxI4B6M5tp9/dh5M/m70rDA3VfPBW66hF
-	 KKSdU8i8BNyAQ==
-Date: Sun, 07 Jun 2026 21:25:47 -1000
-Message-ID: <7f5f7c94601312c1a401fb18998291cc@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>,
- Andrea Righi <arighi@nvidia.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Yonghong Song <yonghong.song@linux.dev>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- David Vernet <void@manifault.com>,
- Changwoo Min <changwoo@igalia.com>,
- linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org,
- bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH v2 bpf-next] arm64: mm: Complete the PTE store in ptep_try_set()
-In-Reply-To: <aiXVFK_qb54is8b1@arm.com>
-References: <088f52fd25860ca961449d53f91b214a@kernel.org>
- <5f68f44310d4878185fd5ebc52d66530b99f174c6d04ab1170dc53cefaa54568@mail.kernel.org>
- <1780862659.ccb18e27e916dc4b@kernel.org>
- <aiXVFK_qb54is8b1@arm.com>
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JpHaj0hz;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780903689;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=o+UEQbg6AU+TfmK805SP5EpbQqdODkwRVAGdZoxB4k0=;
+	b=FocYn+99cssVO5ugo8RILQCjUdXR4louK7+yNTRIOdRdr0FQBYkHdKPNA+DNsFQaYsv95u
+	wm7lg+xecGv8FAwpVPnmJvT1efKZ+fLrgWWDMhq+cquK3bB1OcRGe6dVKpQPmWmcMNGIRx
+	eEa2OKeDWKlN/hjKipkX7uPf1Iq06TQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780903686;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o+UEQbg6AU+TfmK805SP5EpbQqdODkwRVAGdZoxB4k0=;
+	b=JpHaj0hzUy6GWQsoTGmReTbCiT4mzU8p/9whZkTeag+RVJS1KqdqB4P11lEZ5gdN3qeXnk
+	Sc4Wh0u1hgK7ingH1qu7mkNb3ZzFeUCmIzLy5JbnPQinOCngV6DG7j0F77wzzvoaUgYYG9
+	aNWKbMFCupxYA3dOUJp1SES55xPBXCk=
+From: Lance Yang <lance.yang@linux.dev>
+To: npache@redhat.com
+Cc: linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	aarcange@redhat.com,
+	akpm@linux-foundation.org,
+	anshuman.khandual@arm.com,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	byungchul@sk.com,
+	catalin.marinas@arm.com,
+	cl@gentwo.org,
+	corbet@lwn.net,
+	dave.hansen@linux.intel.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	jack@suse.cz,
+	jackmanb@google.com,
+	jannh@google.com,
+	jglisse@google.com,
+	joshua.hahnjy@gmail.com,
+	kas@kernel.org,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	ljs@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	matthew.brost@intel.com,
+	mhiramat@kernel.org,
+	mhocko@suse.com,
+	peterx@redhat.com,
+	pfalcato@suse.de,
+	rakie.kim@sk.com,
+	raquini@redhat.com,
+	rdunlap@infradead.org,
+	richard.weiyang@gmail.com,
+	rientjes@google.com,
+	rostedt@goodmis.org,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shivankg@amd.com,
+	sunnanyong@huawei.com,
+	surenb@google.com,
+	thomas.hellstrom@linux.intel.com,
+	tiwai@suse.de,
+	usamaarif642@gmail.com,
+	vbabka@suse.cz,
+	vishal.moola@gmail.com,
+	wangkefeng.wang@huawei.com,
+	will@kernel.org,
+	willy@infradead.org,
+	yang@os.amperecomputing.com,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v19 10/14] mm/khugepaged: introduce collapse_possible_orders helper functions
+Date: Mon,  8 Jun 2026 15:27:47 +0800
+Message-Id: <20260608072747.88417-1-lance.yang@linux.dev>
+In-Reply-To: <20260605161422.213817-11-npache@redhat.com>
+References: <20260605161422.213817-11-npache@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2753C120003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CC7DE20003
-X-Stat-Signature: t3aoewurb956n51gwbhqgfnr6fnb4d5q
-X-HE-Tag: 1780903549-45834
-X-HE-Meta: U2FsdGVkX1+aDUqs523CafLyDOSzmT5M7CXoOkeNiBlGeOl7Us2mNrZzJIP/sqNHsNHW34+NAH4IZr40jhE8ewPxdvPu43w0yBC6qEtOzqlAimfSiUzAGRC6MP8GaNYPaPDP1KXov/39p4Xza0mbZO4fgDYGFyNmzIVKXNOpg8AQiwKKVYIGZuJ5Eyau6ZsyOPTtkriAucEnmTXIUEppyrwFV2owKUTbINruuCmFrK4Nul68rUXyglg0L38L59cvrPMAVdU1oXr2ahbKMHjXYL8odv6heY8LKrGvsMY0vWK1nvKKw8vSIN8BOecOqQpcfLhdQAYJtXxmwmNYeogfsibRJOmb3cCIremQlVB4KqleY8c1qt2XYedcSGOR9aV85PqySHfBZCTFgm/Z1XCjkf2f3MgpSVpSPqCoI5Q/C+Q1pqvsSWtJ0Cv3KhchgDmWmYMHboraTBM4QWYKN1FuBDady6PvmQFzm52V1JgFM6emnuA1LO8CMiQHklm8WXEnORjWqcVfjapzmoAtWL3NxPVE7KXeq9b1/QYPLGkR+6EyaBlB6/2iULd1NepE0mGTdA7865AUHPoZbWCGGmKS41dBfO2zrCUyE1FFXY8F0tEhhqLvSibrxREoopF0T80+b04d9XHa4ciZOnXZhu8dpX4tXZ6pJ4SrVnOLinpUv/fjGDTpmFXH1Pp33HVni8/AVtr93W1kaQTu+e47II9z1GygEoouXrWDpbl01WrJb6Awhvlhl2vcm0p+dPS7sDL/9RIQhxq/IMLMw+i4fJFZGXjhzVLuXPAptvPhix3GdeboKL5lfarZfLQw2M8Uk5fhcjycd3NoL3/GJzpoGxmMyLJ+q41/hvxNWwlyH0RF4WxMgVt8WSFnUzSCFuausolb80OWQ6FF+rWNDaY4uhPqJhgLT/w4u/lHhsfV9gkvUzArpD3pTlkl2D0HuDzCm0VEutlKCxx0Qv0UJ6PEjBp
- KgZ4kRFf
- xFWUzQMFw3vyF7y97y252pIq2FyS1QwtDCq7upUwF4kug+LywrxHTFz7asQfv2EnRbk3dvP760vvZDdjuOyn5065C7fIP+J1NvOa2/y+IyFCv2u22NPeVKj8JE8gUa3EIyLPGQTngw1wWKn/kEwCJTdPC1zfWU4313mSNAxl2G83SCkwqybxgUg5cbB1pOSkqBa9bDqYt0KR3O51fxfHG+YrkaamOoKfUCWBStWL1pxIjqIw3c57qHkLuFjli5zv03K6jN6BZ5kvSGBJ9KYoKOxE7/+XVc7qmV4IXezz/fUReLstCz3q1mDB7bybc0v8yWfUuhF4kEqr/hCqSan4/4gD+46sGEGN4kn+kxhGZypxcU+8B3NLXxDK+2Q==
+X-Stat-Signature: 6trmkfc1m73d8cqme578s15zzf9jgy5h
+X-HE-Tag: 1780903689-274899
+X-HE-Meta: U2FsdGVkX19uPyv7uyiBGkF+ztvXdX5ChTqt6SKRDzu5JUHANKPZPXJhDsXOtJigwpUB2wkn4m9qtw9mmW+AlQI2V68AgHxCJEDfxFMD0MAssvayPb++6/Mq5ei3J3zEp08DZDqqrNwy4fiU9zFQFCsh9QfeY3Xtaxjm2Nypa4wNEag4HdiwEUQqJo8eFuWIFC7SRC55F7DM3ZxQMAi3olAMW8aGNOAdSJKgEGo27MvGqlvSoMRKdnpto/8ypyJzCADb0e2OvSMoFGFOn/dxM/CoXW2SjhlyGGhEwBUqsOg9qk5D32nvLCPRZvNTAHjWfRxsSHyDXNIJpijebq2IU3TTeLAb0aI2POnZ/kLaHcXIDhVsGSkUPxBUMhZ0nbHapmsS76EzbgBVlbwTsHOkQTOkEjtPmneXJecDVMzrvZz0VTxw/lLcZ3eGY9u1sjkHNoww5WH2YO44LALKWHqn36VvV2I6CarTnEBVb9zj/uu/+j0LcJkdFih5MxqijFkRY2KevhTwLSGsfcwL2mbfoJj5DuG8gF4ZIIwPW7pLLPGq3c2VwRy6X+nqebv1gn/ljM2gNOMP/DiS8oPKpnPhmYAeH89t3SzuT89rIbN6V24Q7ZJ0lLvp4/CA9FfVZ40eBBUwUrMoSmlFr35Td9M6rwAlOGvL/M9XLsln2BgHsHxSsRIz+OBbcKFj0bf+U4QK5Y5e0v1by2Pc6cJKz9rVo+1pDRLzBasqlo1dZ8LFI9MjMSelM0hs2eRaniKTMfmEYJg8cOKPTz0UIXqmD37OziFpY9I1bMdrgz4JM+PZzyvY5GqjbpbArUhjmAmCzny+u/aqH24DPuEipqjixxitOdD6gzSfdSVM0Sioq8idMDoVChnidP8FAUBko7jEv9owOZSSiaz0d8cEOtam5LRGA2mpfSkXoy4rEJF9pBK83chXQzm4B2TTAv1U56LyR1Nucx7zUSGN5lK3A8ZL3GP
+ MyiP9Jcl
+ tcQ2f6cRU9TjCSdlSwtzHg3AgcNNa/MqoG4RPoqlYBI1pwdNLQZgJw4uYPJSNNpahYBSF1Xeml5ANvJAPJIGd1PLO4rByhT+XJfeGYnmyg2494PjP3nuVTVAQDd+kM4mX7mhsXgbJ2uGzbblp3pnJELpAwc4O5pyGJgm2uXm2CbcxhkPVd4GGw9S/xird3j2yh0lL1hb2KpXTGCjNJ7CDyAz89dzpJvTvRO61rsdoTRe/OtNeKmTdZ3Hn391TMiSGhFj2/aCwwt2u88r2VJUEthZy7clBx+3tZ+77OAj9muWETNgyW57xfmxfMugnxp+Zew3XgOIfV1LP13AP8ZDRfgjkXpv63NVE4FIRdTYJpQe7ZcO1qxhPqtaLBVGJXJjBrC1KX7xk+xAxLGR7LMp8ITYvOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,48 +144,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ptep_try_set() installs a kernel PTE with try_cmpxchg() but, unlike
-__set_pte(), skips the barriers that arm64 requires after writing a valid
-kernel PTE. Without them a subsequent access can fault instead of seeing
-the new mapping.
 
-Issue them with emit_pte_barriers() rather than __set_pte_complete().
-ptep_try_set() must finish the store before it returns, but
-__set_pte_complete() would defer the barriers when the calling context is in
-lazy MMU mode.
+On Fri, Jun 05, 2026 at 10:14:17AM -0600, Nico Pache wrote:
+>Add collapse_possible_orders() to generalize THP order eligibility. The
+>function determines which THP orders are permitted based on collapse
+>context (khugepaged vs madv_collapse). We also add collapse_possible()
+>as a thin wrapper around collapse_possible_orders() that returns a bool
+>rather than the whole bitmap.
+>
+>This consolidates collapse configuration logic and provides a clean
+>interface for future mTHP collapse support where the orders may be
+>different.
+>
+>Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>Signed-off-by: Nico Pache <npache@redhat.com>
+>---
 
-v2: Emit the barriers directly instead of __set_pte_complete(). (Catalin)
-
-Fixes: 258df8fce42f ("mm: Add ptep_try_set() for lockless empty-slot installs")
-Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/all/aiRFcz78QTZdIHHB@arm.com/
-Signed-off-by: Tejun Heo <tj@kernel.org>
----
- arch/arm64/include/asm/pgtable.h | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 3ce0f2a6cab6..3e579c26b383 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1838,7 +1838,16 @@ static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
- {
- 	pteval_t old = 0;
- 
--	return try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte));
-+	if (!try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte)))
-+		return false;
-+
-+	/*
-+	 * The store must be complete by the time this returns, but the caller
-+	 * may be in lazy MMU mode, where __set_pte_complete() would defer the
-+	 * barriers. Issue them directly.
-+	 */
-+	emit_pte_barriers();
-+	return true;
- }
- #define ptep_try_set ptep_try_set
- 
--- 
-2.51.1
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
