@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5CF3CD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 09:43:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0749CD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 09:44:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1DAA6B00AB; Mon,  8 Jun 2026 05:43:39 -0400 (EDT)
+	id EA1886B00AD; Mon,  8 Jun 2026 05:44:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACE696B00AD; Mon,  8 Jun 2026 05:43:39 -0400 (EDT)
+	id E78BE6B00AF; Mon,  8 Jun 2026 05:44:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E45A6B00AE; Mon,  8 Jun 2026 05:43:39 -0400 (EDT)
+	id DB6316B00B0; Mon,  8 Jun 2026 05:44:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 913116B00AB
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 05:43:39 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6EAF51C2A6C
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:43:37 +0000 (UTC)
-X-FDA: 84856258074.29.2CB65C6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C46F4180004
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:43:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FG6271fy;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CDB516B00AD
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 05:44:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F8EEC32B0
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:44:13 +0000 (UTC)
+X-FDA: 84856259586.25.D8EA30F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E00621C000C
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:44:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AMvyeZW5;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780911851;
+	b=Co3Jr0TQ8B5mpirh33Y+XEXNBlH2m1zff6VF8XRs2QgUcupF3Z+Sv7N9r5R6pkDL5NLTWt
+	DvxJ866btLXoxOD7yODABH4ta8V36dqWez/gw0rsOSU9i29+vJgJL87A1mSseU5nesOWB4
+	5a6D+YAmlmBIU/uMMhfnIWCNcqj+49o=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AMvyeZW5;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780911815;
+	s=arc-20220608; t=1780911851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NWzNwd41K014rRzleNCcA3bHTWanKla6egxzBAWBDSE=;
-	b=VC3T7oC61T1iJ2zU+5Ox6bn/AUSpjKvUtp+wdam7LcRFSKXOtpywfeb+bmxr8CFpR9FDjh
-	Rg3oAPsZDsps2qDnNMyNpV7TWgAPtnD+6908Y9JSXc3HATknt0vjK524dBvJ+zyFgYZJ64
-	l5VEVlFmB2vAp9OoN9beARkeTqGz4fg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780911815;
-	b=g+ADsHGYE0o6tjMSQgyWoHK8T74m3a10E3J2P6S+aQrVUvOVKbL+vaVkGC+qWN+bDURv7y
-	rj3CoDJZBDsHzd2/ukHpV8Cu+hDzF+Ydr5rpsshkTeivQoB0K93rHn91EzgA6tC9fCx1ax
-	1h6Pkt88D+v33UylW21LxBtonCTyxqk=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FG6271fy;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=17m8mwsfA3GCBclFS0NKJ16jnmOTO1fnZAeW+abmcCY=;
+	b=0SJcDud8y2ARDEkqw2/Gr7BW/pqBCGq85fCTihchqnT1xl9NGgGIQCnBUeqoAAr15FRVJz
+	1m8Fre2XVMqVd+5GRnsFwSyziSaXLr3RQFH21hy6Kc6c3QLSDXkZ/skWa/kztUYtPB3zkY
+	I5WWSnXwQ90LqJ70HiheFiXLph7eims=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B604843915;
-	Mon,  8 Jun 2026 09:43:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FB91F00893;
-	Mon,  8 Jun 2026 09:43:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 52FC2601D8;
+	Mon,  8 Jun 2026 09:44:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535101F00893;
+	Mon,  8 Jun 2026 09:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780911814;
-	bh=NWzNwd41K014rRzleNCcA3bHTWanKla6egxzBAWBDSE=;
+	s=k20260515; t=1780911851;
+	bh=17m8mwsfA3GCBclFS0NKJ16jnmOTO1fnZAeW+abmcCY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FG6271fyWdED+PCEocy1/8B9zEZikn30HwkNdCmZM2JH0pcqFK5H6+CtzcXXt0EDY
-	 fRTPOyA7R6sPYsZcfZ8+Hey3Z0ZXYGI4wQqrXgKpC1xFjJjQQyeEA1dLg/ACBKk2PK
-	 6JiKAnszdqKmvXR1Lyq75wgNuznoXK+fYknlLtMVmctJJTzh5YaUGFc005dDMb85WI
-	 Eu2ML59W2SP4WEUSYk/pvv3Xvk4+bLgT0/oyStQBYuDynQQBBEvcA8WNbrwF3zCmst
-	 e937L5T05nDdGOQ7RdulyfDazoZqNmRtiN4VnLvJ2G5NIeKwB/UXzIZ3KnpA5jOamn
-	 ozOEQnZPyPmZQ==
-Date: Mon, 8 Jun 2026 10:43:21 +0100
+	b=AMvyeZW5thkSCuPZGUdZYSNC2hm5d3bonc7xsD0+/P9v89ByLDRGzdevN0P96qemF
+	 kyMJVco52PvR1bRNqX+K9x6Ue3uLGss+4arXKeJHILVAe+oOy9JlGNRuM1P4/iyb6V
+	 /fv5pm1zatWy/yY/Rxkt8lElYDg/AfnH23/XgvexjWWOns52opKebab4yacK5qudy8
+	 JUnir+CNDx5FbkciMHezSim9iwtJDb/S5XZGMXHMe5+hXzcSBAI8wdUJ8zbZGa9uV3
+	 uh0siT5xbopvDcEFFeSNTAQ5fceK54Szx5OJQSqfdckrVt5Cf3aSA7Z/eZ9Ybv0lYs
+	 vQjDiJZr6npbA==
+Date: Mon, 8 Jun 2026 10:43:58 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: linux-kernel@vger.kernel.org, 
@@ -86,25 +86,23 @@ Cc: linux-kernel@vger.kernel.org,
 	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
 	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
-	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>
-Subject: Re: [PATCH v10 02/37] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-Message-ID: <aiaOZoa2vSCz_0wY@lucifer>
+	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v10 01/37] mm: mempolicy: fix interleave index calculation
+Message-ID: <aiaI4Of97oH5YTbi@lucifer>
 References: <cover.1780906288.git.mst@redhat.com>
- <df06b66fe4ff8e925ee0714955abc2183a727b90.1780906288.git.mst@redhat.com>
+ <f5b1dcc97baae7183e96743873b943315d93cdb6.1780906288.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780906288.git.mst@redhat.com>
+In-Reply-To: <f5b1dcc97baae7183e96743873b943315d93cdb6.1780906288.git.mst@redhat.com>
+X-Rspamd-Queue-Id: E00621C000C
+X-Stat-Signature: 35gzuctsah1wuwyq4ix59r9wrix69os3
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C46F4180004
-X-Stat-Signature: g6ius443jedpxpi1zbjh6xctyomrpntu
-X-HE-Tag: 1780911815-254651
-X-HE-Meta: U2FsdGVkX180WWc+Gyo5L+bgUbGHrVu2ncicKOOULnO9vAwJbyBfiGeuJF4IRrYoktmPFAZqzgkHcUwOdF7AXwPfWUPdN/LSsuvnzEJdXGiSo+6v5kqhTicsteSwN5rVBdbMqRg8u9ZRqk0kn+Y2vxGvXKWCDwRLVQlhRsiaoWFaMPy29b+MekgxX2DtKx46dRqmOq3YHL0hA6GFNo3SUYMbGsCGprIewDKYI5UJeiwB7nDMJ4B/5M7yy7psvo+8x9iXN7d0G/Oe4UZA73mW54z1Ul+eSAXVEsbvLwI1nwHUISKWEesVsO22tAmg7MZirmoTRRHxv4PH00DKC8GGidOLs4EsiV4S1KZOWS1SNBhQdnXQKY8vEivCdOocSXjAlCn/cRicRq7Nt19RfJ7k2ywfpVlan80gZEnoNQWAWGBeVjXh++9OXO7YS0oKGDz18qkigI0FtwXPHmtzizChqeLuz31Esx0Y3YHymF1Lhr/3jidT30i8vFxGhPUwKx9V7KZrzSD9TYz3Tho5s27RZ0EQlJFdQlLthUZoVyl8WNWKEQIMc5aedIE5GPoCvBkVz9Mbv7YTRCoRsI3OxLIuVg/9Lfn2POG+hIjOzr9yt+tyuF9wkd2SIIvfNHDVGbZZEK6IdiZYtdM6sB6aVqysNb9Bd2ePtsNRyt/Nac/uAMJRor3rcRDMRPgrOqmubyKcp4nbzMNkmQ9VCGKx15nrfXwKZ3habgjeqkZhmViwKosJy1gAwOjWWshxGviQFOcEc42DRPTzYjII9bbQXBYoivZBCcOv0HItlrFI9qnQn5Kc6XgmoQKHIVM2YSEBc8pCcxqwQ5HuXs3My5Uf9lFyDlt53KWjEoMs/5+KFQRM4Cg25AyalogwmJtk6kxjsenDJn2y3xdSAIy6lsxRtgBvrjuxFdQBP6GhlQPS33XE4rVsmYF5wpJxkzA97PQfAys554G93sWUF/Mj5CayGDG
- V2HS2Opb
- zyWOHcbv2KK2tZHYmZ642h3ppTy0zK39SMORmnrCZiaFWMIu7UO2VwcwuBXAtsUlTOIqM3bJOnDkWJGzsUmn+ADOnYtIUK53kbQIX2nBRK+F/F5TjU2xnI5gJtTTCUqrC7K55Ulj6dLs89fWgGw8RFHlleVBbfc4/eOS2AwBbZSARSSkUHjAQyF5QSmst8g4EgkQe4Vs02CUGb2W50j4Hj/4C/SRUQlZ3KHqLoemjutph7Zxg83VRJH3KWbh0w/JwnbCQsDaTj94h7v68puQ2Asw6DxAlupvfb9EHx2L+xGds5KMBansD55rurtnREj+KWS1tOujrEqa3emSW+2po1c6Ta1CfFyqA5/heFReMnz2Hu2Ea9JtEvEXNcpmMwC42vnAsWk6gGxLzN4GEfoMBoBD3oyKt6lXEeIjto0mo+4ryCd8=
+X-HE-Tag: 1780911851-111292
+X-HE-Meta: U2FsdGVkX194f/za4bX5z51Y0AXmixumqrrJUDJwP9O0+CRICSfXptSJ+JpsESQe4XbBSTi+QTa1AKsp5DcsW/lMtNYvENjo5d/2kOf7tme6Y4tAOnLuw9HGAfaXbt9+5Xep6XnLN3zValjCQWIoERAoK1bNLrSZmmoII8fgYqqI6CzOhmmqrQvtS2ARz2556632G3kr9OzsbTk0iFTRGJ8GPSEfpwFbYbR82YJBpHJz3AM9CbN9Mq09yyJFlaQCzzIny0lQAqkjS47y0+DGKuN5Ks3EmPJ1k9zXvXenpQ2sUikVFMXqGnQ28GA/qYptxrSQQ/QYeBECDyW7uYRar0QRJ5n/t0tTvtYAE9wuozDvmVOXpYHOjF1KJDrMUULV01u1biWu2GDxZy0IeFaRatLgDbcU5k/RJNXdh1adxc1vuMn5C8sOWLNZniim2tIDMG+jPv9j1SBGpv8AXFGqNWFQR/IIWtQ4Izz5fjimrw4LF48/A2yfLuLUgFnON/rKqn14hmYlKdumH0g3FTw+DH+tXtHv+io1DCT6Hdx1bjkQkQg32imvXnpH5Cxe4SaHA07AMY0+2OCJD/TVlSIU3yQmpC+zHSBUB6dMiOIxAMQi4qC5zWMgwc5RPqqS2p7goEbJ+SO7NPoYyoLiuDfiU2zLKoDcqoF6Mt+IcjG8BPm8/DRhgGOAkZaPIW2nqBGeKyqwkk4ntG0oB/FW5i2A4tb23mNeJGWjbl5V27TfuSigCsVTiY+WQF4tXOwuso5j+dnZqiOnvcsqS0A7wMIBSwSJAxYGfM8dZczvRSqL9YDe1jNuseBAxnCZJ3bAt9w2x1Kmyal+178NZK73kj5g0N64sY2jfxZlDGIvynFhVNQdcUltKKXe56qR1vvuWG34JEzhHDnod1oY02KnzkjniiZs/ETxZDJk2nUzGoG499YKx1Jyi8kGFahPAwCBtszJ3ReHHDg3sxEzLNjdUeZ
+ 3AiWvU+N
+ Vw1zRXZuAmn0+hUzAh1BKWPhN1sMSk3/N/2+tNURbpK0WeOPYdwpZzhGusWafy0FNqOaru4hbvvXx1EtuM1W1YDojUA7QLKxu5k0q3jM2bLt2ELhv9SY7EeQPLPIXpqit/kP05Y528JbobrwTGXFjN/2GPPY7D7Tit5zcronUuPyrJR9EiGGm9CrZKCc2JZ7tRl/zil0uKVIhPEgl+5hypiJdnM8ZNUSN/Vwf5Fk2bOxef8oS17nDcCQHt+pIbQBWGF3LaIYGF/LQTilcVc9RWGz4FNr8kAf8en2LHmakZtE6RpqbB2nyQ3wCa4Rxf710Hl+SieazMjAnzyN2PcxlfbtU5+sSVxYriRAKDVmLTNSmzgzbikUtNDy/Bs6Qh3FIq93cMXOfh2m719sqVHFcW6SpJVRtTtiVRx8X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,93 +110,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 04:34:23AM -0400, Michael S. Tsirkin wrote:
-> TestSetPageHWPoison() is called without zone->lock, so its atomic
-> update to page->flags can race with non-atomic flag operations
-> that run under zone->lock in the buddy allocator.
+On Mon, Jun 08, 2026 at 04:34:06AM -0400, Michael S. Tsirkin wrote:
+> The NUMA interleave index was computed as two separate terms:
 >
-> In particular, __free_pages_prepare() does:
+>     *ilx += vma->vm_pgoff >> order;
+>     *ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
 >
->     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+> This has two problems:
 >
-> This non-atomic read-modify-write, while correctly excluding
-> __PG_HWPOISON from the mask, can still lose a concurrent
-> TestSetPageHWPoison if the read happens before the poison bit
-> is set and the write happens after.  Follow-up patches in this
-> series add similar non-atomic flag operations as well.
+> 1. When vm_start is not aligned to the folio size, the
+>    subtraction before the shift lets low bits affect the
+>    result via borrows.
+
+This feels really vague. Do you have examples of where the calculation has
+been impacted like this?
+
+How is this a problem that affects things in practice?
+
 >
-> Fix by acquiring zone->lock around TestSetPageHWPoison and
-> around ClearPageHWPoison in the retry path.  This
-> serializes with all buddy flag manipulation.  The cost is
-> negligible: one lock/unlock in an extremely rare path
-> (hardware memory errors).
+> 2. For file-backed VMAs, shifting vm_pgoff and the VMA
+>    offset independently loses carries between them, giving
+>    wrong chunk indices when vm_pgoff is not aligned to order.
+
+Similar comments to the above. An example would be helpful here.
+
 >
-> Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
-> in this file operate on pages already removed from the buddy
-> allocator or on non-buddy pages (DAX, hugetlb), so they do not
-> need zone->lock protection.
+> Combine into a single expression that adds vm_pgoff and
+
+Combining this kind of thing into a single expression is the complete
+opposite of what we want to do when refactoring code. No thanks.
+
+> the page-granularity VMA offset first, then shifts once:
 >
-> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+>     *ilx += (vma->vm_pgoff +
+>             (addr >> PAGE_SHIFT) -
+>             (vma->vm_start >> PAGE_SHIFT)) >> order;
+>
+> For anonymous VMAs, vm_pgoff equals vm_start >> PAGE_SHIFT,
+
+This is completely incorrect.
+
+For anonymous VMAs:
+
+vm_pgoff = vm_start_at_first_fault >> PAGE_SHIFT.
+
+So if you remap a _faulted_ VMA, the vm_start changes, vm_pgoff does
+not. The two terms can be COMPLETELY independent.
+
+> so the vm_pgoff and vm_start terms cancel and the result
+
+No, they do not.
+
+> reduces to addr >> (PAGE_SHIFT + order), same as before.
+
+No, it doesn't.
+
+>
+> For file-backed VMAs, the sum vm_pgoff + (addr >> PAGE_SHIFT)
+> - (vm_start >> PAGE_SHIFT) gives the file page offset of addr.
+
+That's the page offset in a VMA for both anon and file-backed?
+
+(addr - vm_start) >> PAGE_SHIFT is the page offset into a VMA (canonically
+determined by linear_page_index())
+
+> Shifting by order gives the correct file chunk index.
+>
 > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-Can we have Fixes: and Cc: stable and also send this separately please?
-
-These patches seem like unrelated fixups that you've discovered along the way,
-and don't belong as part of the already rather large series, unless I'm missing
-something here.
-
-Thanks, Lorenzo
+You're claiming we have an incorrect calculation here, but are not
+providing a Fixes patch or Cc: stable or sending this separately as a fix?
 
 > Assisted-by: Claude:claude-opus-4-6
+> Reviewed-by: Gregory Price <gourry@gourry.net>
 > ---
->  mm/memory-failure.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  mm/mempolicy.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 >
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index ee42d4361309..3880486028a1 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -2348,6 +2348,8 @@ int memory_failure(unsigned long pfn, int flags)
->  	unsigned long page_flags;
->  	bool retry = true;
->  	int hugetlb = 0;
-> +	struct zone *zone;
-> +	unsigned long mf_flags;
->
->  	if (!sysctl_memory_failure_recovery)
->  		panic("Memory failure on page %lx", pfn);
-> @@ -2390,7 +2392,11 @@ int memory_failure(unsigned long pfn, int flags)
->  	if (hugetlb)
->  		goto unlock_mutex;
->
-> +	/* Serialize with non-atomic buddy flag operations */
-> +	zone = page_zone(p);
-> +	spin_lock_irqsave(&zone->lock, mf_flags);
->  	if (TestSetPageHWPoison(p)) {
-> +		spin_unlock_irqrestore(&zone->lock, mf_flags);
->  		res = -EHWPOISON;
->  		if (flags & MF_ACTION_REQUIRED)
->  			res = kill_accessing_process(current, pfn, flags);
-> @@ -2399,6 +2405,7 @@ int memory_failure(unsigned long pfn, int flags)
->  		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
->  		goto unlock_mutex;
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 4e4421b22b59..d139b074a599 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -2048,8 +2048,9 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
+>  		pol = get_task_policy(current);
+>  	if (pol->mode == MPOL_INTERLEAVE ||
+>  	    pol->mode == MPOL_WEIGHTED_INTERLEAVE) {
+> -		*ilx += vma->vm_pgoff >> order;
+> -		*ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
+> +		*ilx += (vma->vm_pgoff +
+> +			(addr >> PAGE_SHIFT) -
+> +			(vma->vm_start >> PAGE_SHIFT)) >> order;
+
+This is horrible code. Not only are you doing everything in a single
+expression for some reason, you're also making the parens confusing and not
+explaining what you're doing here at all.
+
+The code before was at least tractable, this is objectively making it
+worse.
+
+And anyway, the canonical way to find the page offset into a VMA is
+linear_page_index():
+
+static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
+					const unsigned long address)
+{
+	pgoff_t pgoff;
+	pgoff = (address - vma->vm_start) >> PAGE_SHIFT;
+	pgoff += vma->vm_pgoff;
+	return pgoff;
+}
+
+So isn't a far better solution therefore:
+
+	const pgoff_t index = linear_page_index(vma, addr);
+
+	*ilx += index >> order;
+
+Which has the benefit of being readable, uses the canonical method for
+determining page offset in the VMA + eliminates the open-coded stuff?
+
 >  	}
-> +	spin_unlock_irqrestore(&zone->lock, mf_flags);
->
->  	/*
->  	 * We need/can do nothing about count=0 pages.
-> @@ -2420,7 +2427,10 @@ int memory_failure(unsigned long pfn, int flags)
->  			} else {
->  				/* We lost the race, try again */
->  				if (retry) {
-> +					/* Serialize with non-atomic buddy flag operations */
-> +					spin_lock_irqsave(&zone->lock, mf_flags);
->  					ClearPageHWPoison(p);
-> +					spin_unlock_irqrestore(&zone->lock, mf_flags);
->  					retry = false;
->  					goto try_again;
->  				}
+>  	return pol;
+>  }
 > --
 > MST
 >
+
+Thanks, Lorenzo
 
