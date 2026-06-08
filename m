@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E43E0CD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 08:39:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 020F9CD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 08:39:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5663B6B00C0; Mon,  8 Jun 2026 04:39:08 -0400 (EDT)
+	id 678086B00C2; Mon,  8 Jun 2026 04:39:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 516D66B00C2; Mon,  8 Jun 2026 04:39:08 -0400 (EDT)
+	id 6287B6B00C4; Mon,  8 Jun 2026 04:39:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B7576B00C3; Mon,  8 Jun 2026 04:39:08 -0400 (EDT)
+	id 4F0246B00C5; Mon,  8 Jun 2026 04:39:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 297AA6B00C0
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 04:39:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD5BA930C2
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:39:07 +0000 (UTC)
-X-FDA: 84856095534.12.784D867
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 95415140005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:39:05 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="G/P8iFJm";
-	spf=pass (imf09.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CBDE6B00C2
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 04:39:17 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F910120A00
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:39:17 +0000 (UTC)
+X-FDA: 84856095954.28.8075864
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A94F820003
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:39:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Oc+QV+qs;
+	spf=pass (imf13.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780907945;
-	b=h0roKLz7H9BXvlp6rDGoBAohyIO1F7HqlOd+fo0MaYgMNVLOEUKQB6FZskn/A2vmtfR7hx
-	Ym/wxmyaVhW4rMAp0xSvVKoNBMNGFm+F2iLqV1aQpiYghN+d/CAoFjYJ7v9dZXhFHQzPxb
-	v6OdKLYfAc8J4UCBnnSoSweC9HItagM=
+	t=1780907954;
+	b=ihiNkDEpJ/Wxr6Uc+BQHEfl+Z3KRBYzJaFbj7LmLAOuaGIIVAbOM5iODijyiQhgvfYFZ83
+	DqmaPbudcVsWhjnn3BVQHtPzxogZ0q7KZ30dhEhs9n/HpoTWaUxYZjZMl47x0ac4Z9y8Ui
+	j1/TpU1m0Ww0TJXBKJTkWTe9bCDc3V4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="G/P8iFJm";
-	spf=pass (imf09.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Oc+QV+qs;
+	spf=pass (imf13.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780907945;
+	s=arc-20220608; t=1780907954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DMc8fDrj0D8JcjJ5dRd88tqBSMHmwk7bs26tvZRKcB8=;
-	b=bwcGtq3bUWXqOvZiKJcE4A9b5j99AgLOTJvkgqsfMstaxSXaXBAMiTt5aA8T+nUAok0GMK
-	BEzbrc4y4z/TSIlcJo/kPY1DsTmFf+ooft4GnWx3ZIGrWw3jvQNacatM3yExcH8Po5OIJF
-	VfcB/BuQ3GBB6z+95zh/WCtRWLbwqA0=
+	bh=3+rjGl0pefUb9vVc/tCmuC8Z28GLOAKmmZQW2TUwDlo=;
+	b=V/PNOpRlXcxYmagDlLxxgqr6beGiMAvC3pgzNPWqibBS4Dz0auRsjlnYlT78PfdmA0MDI0
+	AYt7XWAwUHacynZYet5ijQg2u9PvlfUNc/DAq3a/N1EE8DRLdMRvkpUyEjZf2SZLPeSDK8
+	npOPDU/19IUdb/nuPbbHxZBFSWEv2Tw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780907944;
+	s=mimecast20190719; t=1780907954;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DMc8fDrj0D8JcjJ5dRd88tqBSMHmwk7bs26tvZRKcB8=;
-	b=G/P8iFJmpHhwPUu7PIsX4Rbnw+iUDM3kOfvEvk99IpvcmvZWqde1EpJSZiwCo6EktVS1S+
-	hrpQXH7CbZv1NiZ7/yYrAB6S0sSFt/ngtd6saYVfSjBvOFOT79gjLmxb+fWBs+L79y4QMy
-	M+/fnlYkI4Z3XRRQNVOeAqFS6o1mbrY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=3+rjGl0pefUb9vVc/tCmuC8Z28GLOAKmmZQW2TUwDlo=;
+	b=Oc+QV+qs9O3xfqQQflJcbNRabWfHjVlloaRFnzN3mCCW+M31WbwmvhXSWjtIknERJDhox4
+	N9tcvjXj0Uxs9VwL+poSFf45qk4+TPpwfqRz5Bigcu0sunhE49j5ETt9qlO3FY9oAAdM2t
+	UJdQK0lJXAGBYK5UAWRjwhVEcWa0pvo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-266-AF8uiu89PdyINO59MwNHDA-1; Mon, 08 Jun 2026 04:39:03 -0400
-X-MC-Unique: AF8uiu89PdyINO59MwNHDA-1
-X-Mimecast-MFC-AGG-ID: AF8uiu89PdyINO59MwNHDA_1780907942
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45eec2badc4so1974133f8f.2
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 01:39:03 -0700 (PDT)
+ us-mta-675-u5Vg7abMP7yr1Itdnzp03A-1; Mon, 08 Jun 2026 04:39:12 -0400
+X-MC-Unique: u5Vg7abMP7yr1Itdnzp03A-1
+X-Mimecast-MFC-AGG-ID: u5Vg7abMP7yr1Itdnzp03A_1780907951
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-460153ce644so2916748f8f.0
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 01:39:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780907942; x=1781512742;
+        d=1e100.net; s=20251104; t=1780907951; x=1781512751;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DMc8fDrj0D8JcjJ5dRd88tqBSMHmwk7bs26tvZRKcB8=;
-        b=RPWS3JdT+pcVH4M0JaDJ4Mz5M+170t6n35wuNf4p+SEdpGt8Z0fYFBlgunvQMQ/yvs
-         shqhJGltd+NQOgCeLXAdbUwQ4UAY+LgCBVd7g/7pzYagl1dl5LFdF8YmsS3HgKYSoorZ
-         NDDzfwKkaqmpBLA81AXHYVlrzGI92X/2mjaeYwAKYHvZv3o5wILMMUrKXVauSOiXvXQe
-         zuwNSWBxqV1dC6sku2U5GyHjWD1cYKrsaIIO3Vppc7uu6lu1MeFEx5O91C/8CoiL0OTf
-         sCwzKsRT750/BJ8TFXFLWGpEsYMLL6YoPWusF0JVpw/0oIQffquWKbckkEaHz8XOD5uX
-         knvQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+8DVrPJhAxsMe9kGjFy0kNJqySiqX98BFvw2tS9Ci24G2RFMiW9vcemAUxh4+ZqHNEnn3C9dRKtw==@kvack.org
-X-Gm-Message-State: AOJu0YwMfCiZ6PE8w71LUbRwYcqdBSCS1QUR+IQ1+rLHODDyVZv1Mg3l
-	RvTpMxbv4kP+zcIqRhcUvjn+1HDE1pxd4yj9Ozg69K24fi6u+x6nivPcTj85kGYHF+OJriaF8ui
-	iW+rfuSRu0ZFF0tWUbLw78IGTwHsAIu4jXUybeYi313QDu3e/SbBY
-X-Gm-Gg: Acq92OH4Uv4/xqGv0qfDJnA1Yt+vW1G3DLP1Lvk2c/30NEDqJtO4RAt86fU4LmqCTWe
-	cAkx6l1ms/XHf/1G/HrIiakxq222kQkv0MkXOTBzIAgUL2DKBmAxFiXV3hYt3t1+tkrU5WfsDPd
-	3drP0j9kUE/bBhqMLfhezo+/BKSrKtkZRDXuxoh0ojzlrxhjSXZdymndmqqSMRVqqajOsYYgTlt
-	i8h5ZwqfDsyG0eVaEALH+//RVtWcH1qi9gqCC49i69UHurbDTpbJV927iBBi6BBigJJQ4ZsC5Mp
-	qmf8fWrH9xdJe6jZlEaT/JkuOGbo5238yF8ubzYcEXzWy0Xl+0yB5j6MivhnLp47cpDDwJqlFr6
-	4OQwNo1pwi9+j3Ozm8NUp11Q=
-X-Received: by 2002:a05:600c:5252:b0:490:b2a6:8c1d with SMTP id 5b1f17b1804b1-490c25adb2fmr254958515e9.10.1780907942374;
-        Mon, 08 Jun 2026 01:39:02 -0700 (PDT)
-X-Received: by 2002:a05:600c:5252:b0:490:b2a6:8c1d with SMTP id 5b1f17b1804b1-490c25adb2fmr254957625e9.10.1780907941897;
-        Mon, 08 Jun 2026 01:39:01 -0700 (PDT)
+        bh=3+rjGl0pefUb9vVc/tCmuC8Z28GLOAKmmZQW2TUwDlo=;
+        b=tGdoroW4pfltLDx0JXCpUGkdomzqumHTBY5pgo5jXWF21FsM9w5b/tw+y33HW6Rlty
+         j7KVT4+jT8RLshkDZA8NwQDlrABVp5iS4RfFDOv376UIhzFMCGRLTBOsq7BG/tjaJ4ed
+         yOFUBF9fjVmfzFZPXMeTwY115nRyCfObZWePWGKp/svawGiu6YcTup74iwg+ANbev2HW
+         WlF8Y+QZ74MUCHIjfhKqbP8n9XbgKTOp8fueplKuAxnB+cpdPEoOODxSU4e0wn3+hHts
+         dT31WM3otivDn003JWDc8Ke3FNEGJVR1Jbd9zDcGV02StAUVla5UCfBb2oyuEJ9pDRnP
+         TBaQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Hi6Up3HXz0M0pDfJSJBwaOkRv6izHJzMCO65s82FT1Y404XnK64IdYHqeS1qVXOzShNz0azMz3Q==@kvack.org
+X-Gm-Message-State: AOJu0YzdDo5G9q7pBVpY+s1AVLcsyZpQAstbT4Qc2cH2oxE0ZXdHZ3Mv
+	qz5whCjbJbYtGDPvJjDchFNGDxmn8C0x47bTcUwlqCGdyh7WNEtacAAT5Hq8dKBW4WPJf2xpOR6
+	4Z+Um7IkJxMnUVkUP8p2n/dEc29v3PuPU+XmEy3R5qxn7r+whOdW8
+X-Gm-Gg: Acq92OE9T7HCaCuZQbsb2t9YeCKnaf41DPlkBG5zzK6ZJbXx8T10Jlx2mOG79DB8GGo
+	fnzbi/xWTq2Cwq5i4fP196YwcryV0+VQwQcCT03IunMpfM9B5DkbTN8YmcAiETfhP7+sZIQyA6h
+	e9Q9OdGrnK8PVAJ/vElRpq6Huv4xk6QGRoly6SZPk1B9d9x2e5JeoQ6SPHhIFkc9X1Hh4SpR9e4
+	03VsljkgkjG9YN9DcQ8fHAmUOPUJZUTBfRyEjzplY5SdJDPkOovU9WKX7maP2YR5fqAtcCPcCzO
+	RMEYQmK19pdLIse8UvR41HARfVd9+K8VLBF84ioSoNtRGenzfMEd8UiwO8B7IyMmS9J0cX9/u4j
+	I1p/+d/+flzZsZMG6XOlrrX8=
+X-Received: by 2002:a5d:4a85:0:b0:45f:f142:d55a with SMTP id ffacd0b85a97d-460302e5e92mr18158170f8f.14.1780907950682;
+        Mon, 08 Jun 2026 01:39:10 -0700 (PDT)
+X-Received: by 2002:a5d:4a85:0:b0:45f:f142:d55a with SMTP id ffacd0b85a97d-460302e5e92mr18158101f8f.14.1780907950019;
+        Mon, 08 Jun 2026 01:39:10 -0700 (PDT)
 Received: from redhat.com ([31.152.37.159])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2ed944sm52040479f8f.13.2026.06.08.01.38.55
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2f67c6sm48744304f8f.16.2026.06.08.01.39.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 01:39:01 -0700 (PDT)
-Date: Mon, 8 Jun 2026 04:38:54 -0400
+        Mon, 08 Jun 2026 01:39:09 -0700 (PDT)
+Date: Mon, 8 Jun 2026 04:39:02 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
@@ -134,26 +134,26 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
 	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH v10 24/37] mm: add put_page_zeroed and folio_put_zeroed
-Message-ID: <fef7ca7bbf591865defef658b0792b58494aaed5.1780906288.git.mst@redhat.com>
+Subject: [PATCH v10 25/37] mm: use __GFP_ZERO in alloc_anon_folio
+Message-ID: <13ed2aa6607d510bd8dc6d602e96626511ee4fee.1780906288.git.mst@redhat.com>
 References: <cover.1780906288.git.mst@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1780906288.git.mst@redhat.com>
 X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 1xtJh5EFbavXpuzh0I5rEU-qipXB1pm1sRHsg9pY8FQ_1780907942
+X-Mimecast-MFC-PROC-ID: jMijIsY4dmeXPkrK0N7yU6D__9ww4DM5nSf_fXrtXv8_1780907951
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 95415140005
+X-Rspamd-Queue-Id: A94F820003
 X-Rspam-User: 
-X-Stat-Signature: 96puxwdyxgp8xqwb3qw8opgjsm8zjto1
-X-HE-Tag: 1780907945-923214
-X-HE-Meta: U2FsdGVkX1/uw/4czV1A1O1EutSnClxdgLm3G2gnGX6Ztspx8bnDxni6FwjvXLFtxYYz9papSx9UcLkZyghVuaqOoBw2AzQih7ca3ViEcUdWBCrz5tC9knqqVIaBlNaVREhyEO4TwA0Av/xvXlOJXvs5dPcrQoe2HB5nvBvuCazAyZhIqjLn7hRcTBp60ChV7pcHQCdkkb1S0IKp+qcZLjV7Bhgx63U3uo285tY0DKVzs5Y1T4ZzLKZgbBP9EcQVJRHtIH8FN1gunNg1Dd5y+1iZU/o8skBtIZwXYVQSk+ASrCNSj2+UpylaKUuS0uc5/s1kMK0XNxCmzGE/UlPSq/7E5ioL/E2AVsnJV44G+ctWwLvWxo94h/1LrwBHLJAbdXVMfrd3Uju096W2WeVerlfrtwmMAEmQsvBN4Be22ytuofCZjsCkkEPf3d2VZxeVHWnFp8LONvzo9DuNcSHsZ1EydCxd7vd8rISkQatTH9+6AyWT+ZO9AWJym0SRAWvSu4lPLrVL/4Ef+hUfC2L6XgsWhGn9iWnCf3ODzaNtxElvLrdsefKuhcO+9HFSI5OGG/5xvMfUYkEjDrCIkooIyXFgxcbho9bSfe0w7DLPYMb0OLBiNM2Eqe1qAZ52FHCoI5UOkJSfG/2M6aq1lpZ7bhrEnLMVYp7l8sTsaClejapezxNOuFPzq1i6OE89D9B6+3XtwHAER/QGTxxS1rUniuogHsl8iM6aB/fQbOTm2tG4P2KdIIEZEE/kDAhwhKBCnHEpUY8t9TdySd0HuicFFH1x7HoE4lBpvmtpAT0tJsgtLCEIrAvdSU6PPxEYlz5wdJKgXxkq2bQLEjHH1H7VC4u1iKv6iRMBg3pOp9pO0HDhgVymtyuqosv0RKK5wFDMb3By3doWcJa3x+QdKb579N4y3d13yK4Y1BZDsCpMEVzcCGSkUz9Ndms/g9enQId60aUy04pSC4vbiuB3A73
- HmlLEhF9
- UlwVQqnii1X0ZoAtKsROmdRHbfqiSTGRXus2yE2W8OmoncqXZ+ieJ8fCTU/yFU0Z8skAGODYj5z6qeuCMlM9xizp7NsFjBnZTm7NS4CRewgmLZKLYSkUEONsazcxBnW9eJzOK+ac25CTbO+oei7g7eIP6n33f9pUYbtCaUXOpb8bgObWLOxwmYK7RcmZDsQur/kt8MWD2R0iXCRI9hDk2LKfU30L6TtKJJq0QWniypCqEmxJelziQoLrTUP/rd1mBieDc/Vts10gR9yV7m4syu8TDR1qrV2EmSxylcq/FeKj5zgfBB4RBdIpFkimJ1sdqWOgirX8738ux+Rrbvn6+FDVdEOJ1CkAMyCn3/LtAfmmhlTYrYGQdP7Jeq/xEyua4BzvFOQbpGpOaAI8DAeoQ0i8VW6HmFHAzo6aotWIouXdGOExezJuOlOCbobxBCm/0WJUX
+X-Stat-Signature: 1inguyikuaf8bqrhgsuupezq1nwu4rom
+X-HE-Tag: 1780907954-883997
+X-HE-Meta: U2FsdGVkX1+lhWsRnV5ABfcbvnoAW9NcdmuXAvTZzFSOHHjfPqx7xlwfQ+BD7/xdKKhkdAbOUxS2We0cTPQ8CUusOcO9pLRjI4dUTyICtbnhPNja8wuIvCj3OzVKLWMVgcgQROsqJFQHRBuwnxP4W3Eku7fA58V8TPX1X280ieFBSF0n1ZWi9PGI+7vz/zGAnRYo1UoFVnB2iHdZTOdKl8PEHIWdHR8Yky3Bc6irSTZiUbdfM/xNBvKHteC9hyfTOSfQFj/V+tKb4Q0+FhTveG2kJ6Gm9wJxMLKSQxIPHsCnMi/jvOXwnlGQV+H9PnoICttwS7rJk/ixOb21AJQiY4O+zHMwjNt9JVLKLPSvLWyYlccB1yijdbz79elevpNmAHFS9tXoywxnA+zq3kpQ+iaDdzCnUXbUfiA/XK2J32+Zbouf7Pe1NjqeulisCRKv8nMu17AmrZWltoQTSEIPf70QtbLtMefZSqa8pcWhKaw5Js00cUiD8LHKm6LVCQj7Jeec1dl8kjhd0EwuCffyoepL90hr5AEmHwtaU5VmZhL8Krq2U+m2yYZ18mS9p3UJBjCzgkzvZVrBEZjtb+QX+6ATon97HeyaZaoAeMNviHsPpXrVA4m/OvE/9rNFgREbV118sprxcEBPo4/tldtB6WxqZUhFuD91mQSYMKN1eiPFHxryRWXCdSU4jjNiHC63E3cwrB7kO6JF+ZVZgGICIu3BNMpVnrhNZcIMH8gEouI731devjHgMY3y/6fZfJS1SCQV+IS2mYN/nAwpzF/3Jrj8KBxxN+5azar+r7FBG7u2ahIF7t7YCE/WwSF0TssxTx5LNP9lTzAdVaQjuTRHYGgKMgNOqLKOYE07XTrrrv20h3yfnVMYmhkGkbjjI9jaL6uoehtSDD4cnJAEzJMSiFu6xrRj0ZVj+GkflVm4X0+ln8b1GmgXXKv6jrpq4xU8ddT2Y1pFblpGlUBFGRC
+ ERscyfNv
+ 2h9qXBD39OLhVXJTqOJQQSiwEJEjracNFOg2N9wecfOVtngVVleS0Pz3cyqh4564VzY8u019jT/gqnJamktVdsLRvhxyXbDM+rT7kF6h4jq1FHmcBuWhvQHg/jp7+7yZ7XzIGHsYlaoFnhBIxO/4VY3JGPC0/zCDpPnpWa5tI25W8h+3fc+33E93tf5062Me7w9kC1fi3jFvn3DH0EqI1HN7rp4dq6zgCE8YdDdZt2ChwO0UJlVmae/Btpeo5j6cdFKUqoaSRWpy7eTraMiP8Ow9ZLzbCysrF1XHT0F6AO+ZPdRdcxO7SJD8zCrPiS16AkOMPHQph+/1qJmUGPK6ygV0gIyvKVZb7pOtLPbOwnLyzkAKtdmw3acYzQc3Pzf7KF09GPObfLlr+6Kd3UeHqmDrpSxac8fpS7OPfJVNYFZ9wmFkIPiwSd4BhHnNBDc7X+h/UUW2oJKFOLhbbGVfaP2tCPzn67QAxXObS0w8/OB0gV54J32SBgXB6p0A5lg6xk7BJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,111 +161,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add put_page_zeroed() / folio_put_zeroed() for callers that hold
-a reference to a page known to be zeroed.
+Convert alloc_anon_folio() to pass __GFP_ZERO instead of zeroing
+at the callsite. post_alloc_hook uses the fault address passed
+through vma_alloc_folio for cache-friendly zeroing.
 
-If this drops the last reference, the zeroed hint is
-propagated to the buddy allocator.  If someone else still holds a
-reference, the hint is simply lost - this is best-effort.
+Note: before this series, replacing clear_user_highpage() with
+__GFP_ZERO was unsafe on cache-aliasing architectures because
+__GFP_ZERO uses clear_page() without a dcache flush. With this
+series, it is safe if the caller passes a valid user address
+(not USER_ADDR_NONE) to vma_alloc_folio() etc., which delivers
+it to post_alloc_hook() for the dcache flush via
+folio_zero_user(). It is only unsafe if USER_ADDR_NONE is passed.
 
-This is useful for balloon drivers during deflation: the host
-has already zeroed the pages, and the balloon is typically the
-sole owner.  But if the page happens to be shared, silently
-dropping the hint is safe and avoids the need for callers to
-check the refcount.
+Note: with __GFP_ZERO, the folio is zeroed before
+mem_cgroup_charge().  If the charge fails, the zeroing work is
+wasted.  Previously zeroing was done after a successful charge.
+This is inherent to moving zeroing into the allocator.
+Charge failures are rare (only at cgroup limits).
 
-Note: put_page_zeroed uses folio_put_testzero() which only
-detects sole ownership at the instant of the atomic decrement.
-A concurrent reference holder (e.g. migration) means the hint
-is silently lost. This is by design: the zeroed hint is a
-performance optimization, not a correctness requirement.
-Losing it just means the next allocation re-zeroes the page.
+Use folio_put_zeroed() on charge failure so the zeroed hint
+propagates to the buddy allocator, avoiding redundant re-zeroing
+on the next allocation attempt.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Gregory Price <gourry@gourry.net>
 Assisted-by: Claude:claude-opus-4-6
 ---
- include/linux/mm.h | 13 +++++++++++++
- mm/swap.c          | 20 ++++++++++++++++++--
- 2 files changed, 31 insertions(+), 2 deletions(-)
+ mm/memory.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 06bbe9eba636..79b3a8cb9a3b 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1913,6 +1913,7 @@ static inline struct folio *virt_to_folio(const void *x)
- }
+diff --git a/mm/memory.c b/mm/memory.c
+index 6c14b90f558e..6d6a3e1a02c1 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5265,25 +5265,16 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
+ 		goto fallback;
  
- void __folio_put(struct folio *folio);
-+void __folio_put_zeroed(struct folio *folio);
- 
- void split_page(struct page *page, unsigned int order);
- void folio_copy(struct folio *dst, struct folio *src);
-@@ -2090,6 +2091,18 @@ static inline void folio_put(struct folio *folio)
- 		__folio_put(folio);
- }
- 
-+/* Caller must be sole owner to guarantee page is still zero */
-+static inline void folio_put_zeroed(struct folio *folio)
-+{
-+	if (folio_put_testzero(folio))
-+		__folio_put_zeroed(folio);
-+}
-+
-+static inline void put_page_zeroed(struct page *page)
-+{
-+	folio_put_zeroed(page_folio(page));
-+}
-+
- /**
-  * folio_put_refs - Reduce the reference count on a folio.
-  * @folio: The folio.
-diff --git a/mm/swap.c b/mm/swap.c
-index 5cc44f0de987..ecec780172ad 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -94,13 +94,15 @@ static void page_cache_release(struct folio *folio)
- 		lruvec_unlock_irqrestore(lruvec, flags);
- }
- 
--void __folio_put(struct folio *folio)
-+static void ___folio_put(struct folio *folio, bool zeroed)
- {
-+	/* zeroed hint ignored for now, no current user */
- 	if (unlikely(folio_is_zone_device(folio))) {
- 		free_zone_device_folio(folio);
- 		return;
- 	}
- 
-+	/* zeroed hint ignored for now, no current user */
- 	if (folio_test_hugetlb(folio)) {
- 		free_huge_folio(folio);
- 		return;
-@@ -109,10 +111,24 @@ void __folio_put(struct folio *folio)
- 	page_cache_release(folio);
- 	folio_unqueue_deferred_split(folio);
- 	mem_cgroup_uncharge(folio);
--	free_frozen_pages(&folio->page, folio_order(folio));
-+	if (zeroed)
-+		free_frozen_pages_zeroed(&folio->page, folio_order(folio));
-+	else
-+		free_frozen_pages(&folio->page, folio_order(folio));
-+}
-+
-+void __folio_put(struct folio *folio)
-+{
-+	___folio_put(folio, false);
- }
- EXPORT_SYMBOL(__folio_put);
- 
-+void __folio_put_zeroed(struct folio *folio)
-+{
-+	___folio_put(folio, true);
-+}
-+EXPORT_SYMBOL(__folio_put_zeroed);
-+
- typedef void (*move_fn_t)(struct lruvec *lruvec, struct folio *folio);
- 
- static void lru_add(struct lruvec *lruvec, struct folio *folio)
+ 	/* Try allocating the highest of the remaining orders. */
+-	gfp = vma_thp_gfp_mask(vma);
++	gfp = vma_thp_gfp_mask(vma) | __GFP_ZERO;
+ 	while (orders) {
+ 		folio = vma_alloc_folio(gfp, order, vma, vmf->address);
+ 		if (folio) {
+ 			if (mem_cgroup_charge(folio, vma->vm_mm, gfp)) {
+ 				count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
+-				folio_put(folio);
++				folio_put_zeroed(folio);
+ 				goto next;
+ 			}
+ 			folio_throttle_swaprate(folio, gfp);
+-			/*
+-			 * When a folio is not zeroed during allocation
+-			 * (__GFP_ZERO not used) or user folios require special
+-			 * handling, folio_zero_user() is used to make sure
+-			 * that the page corresponding to the faulting address
+-			 * will be hot in the cache after zeroing.
+-			 */
+-			if (user_alloc_needs_zeroing())
+-				folio_zero_user(folio, vmf->address);
+ 			return folio;
+ 		}
+ next:
 -- 
 MST
 
