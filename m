@@ -4,101 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF1CCCD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 02:24:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EA6CCD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 02:40:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0DB86B0088; Sun,  7 Jun 2026 22:24:45 -0400 (EDT)
+	id A01C06B0088; Sun,  7 Jun 2026 22:40:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE55A6B008A; Sun,  7 Jun 2026 22:24:45 -0400 (EDT)
+	id 9B2026B008A; Sun,  7 Jun 2026 22:40:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFB616B008C; Sun,  7 Jun 2026 22:24:45 -0400 (EDT)
+	id 8C84D6B008C; Sun,  7 Jun 2026 22:40:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A439A6B0088
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 22:24:45 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 495051A08C6
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 02:24:45 +0000 (UTC)
-X-FDA: 84855152130.02.F32C568
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8E0154000A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 02:24:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780885483;
-	b=KQFIgKDp8nn8RTPPylPvq+5ylVmCDyYDlnnV71dyqN9NEEwks+NLYRgTy2xNZSdfY4OwOd
-	kbultKGgHcaMUXt8b4SdibV06chLKVBHTYdguYgc6ibk7SsqHtIK1J1fAfM0MV1rAV+G2u
-	sTOE8mJRenKbRXTdSfgE4qNPR/9wn+Y=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 7DB9F6B0088
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 22:40:16 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1F145408EF
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 02:40:16 +0000 (UTC)
+X-FDA: 84855191232.27.CF7F196
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2622520004
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 02:40:13 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PZONv3Sx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780885483;
+	s=arc-20220608; t=1780886414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=v0gpJDAKgCFuGUDHr03K+7t/mGqVQAiRsAIfHMMh5/E=;
+	b=ISOceAKZgVxgZd5YVc6Wtnb1DZrmQ7RsqvZBD2Ln94yNTK5YPskcicqI9QmigxVaKzUmhg
+	/UH28C4g8xrGrOsq65gSarqmD6xphk3NfuPJJfM9bjMUj7TtKqa1tpQqg6r2q8hYHW0U/E
+	VSoE6sNmRfjphJQ+cxjaGR6Lb+0FVUU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PZONv3Sx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780886414;
+	b=O6izUrAS8Rk6p34/o7nua6UGUmbo9IoD5w0kGWx4goKD07LNGT1qw7OTw8nv8wuQCQOdza
+	mx8pBn5R0AaKp0sL8vDZ4XmG9rIJRvxNf07JcFL5an5hNUfx5vMhNdCIxQX8rgVlqRNyb4
+	1qzhUJe3YTFesYSXrl0PIQidx+amLjk=
+Message-ID: <d22d73ab-c519-4a50-b564-5d7299a3c3bd@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780886412;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KMtsqRBjCOrQSULbhoPHLif+8pVKLFOQsh3ANJAM7Pw=;
-	b=Www+Q1mWabbPQzmGmw/BwxbELcdYOHjAdZfkxzbxG7jtwWMB1xkbUWKn/eTBYjRIsh2dEW
-	YEnt2jrDL/1H7MS/gUlVqCijWv3308GVcE3m6gQ8dlaokjk+qhrWc9OF8zBsWI9+ErxeY7
-	W/VGurx0DSYiGc+IXOh57CZ7qx+BJQE=
-Received: from [10.213.6.59] (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowABnTOPhJyZqff_8Ew--.21152S2;
-	Mon, 08 Jun 2026 10:24:33 +0800 (CST)
-Message-ID: <953d7a60-456d-4629-b133-afce62cc5b3e@iscas.ac.cn>
-Date: Mon, 8 Jun 2026 10:24:33 +0800
+	bh=v0gpJDAKgCFuGUDHr03K+7t/mGqVQAiRsAIfHMMh5/E=;
+	b=PZONv3SxcPf4VhOuIPPWT8godfsZtgOX655I5MPm5mRsFV81qLuS1wFRBcyCPtuM4ERIRn
+	zC5CBIPlWDFgzHMu0CYUhE8UnXXghr+CPuSlDSHsagHJZZ1eRA9/oquoUQf+sOGeJnnmxC
+	HtLjhmWlWIitWCYcQ3n4O/gwECegJQM=
+Date: Mon, 8 Jun 2026 10:39:29 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] riscv: mm: Avoid spurious fault after hotplugging
- vmemmap
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260605-mark-after-vmemmap-populate-v3-1-a06001ac9264@iscas.ac.cn>
- <da19ffcf-8042-4f96-9c2d-649468dc6a0a@kernel.org>
+Subject: Re: [PATCH v3 2/6] alloc_tag: add ioctl filters to /proc/allocinfo
+To: Abhishek Bapat <abhishekbapat@google.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Sourav Panda <souravpanda@google.com>
+References: <cover.1780701922.git.abhishekbapat@google.com>
+ <6f3b4aa0aa294cd56a73854c631de3ab7c0c5e01.1780701922.git.abhishekbapat@google.com>
 Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <da19ffcf-8042-4f96-9c2d-649468dc6a0a@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <6f3b4aa0aa294cd56a73854c631de3ab7c0c5e01.1780701922.git.abhishekbapat@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:rQCowABnTOPhJyZqff_8Ew--.21152S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCryrGr45AFWxGFy8JF4ktFb_yoWrAFW8pF
-	WUWFs5KF45Jrn3uws2vw17WF1rKwnYgr1xKw15G348ZrW3Ary8Wrn5KayYqry3XF4kua40
-	v3WY9ry5Ca4DAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvGb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
-	C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr1j6F
-	4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkI
-	wI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
-	73UjIFyTuYvjxUqdHjUUUUU
-X-Originating-IP: [36.110.52.2]
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
-X-Rspamd-Queue-Id: 8E0154000A
-X-Stat-Signature: 6mpacpy844y55jo3fpekk4p9x348bboo
-X-Rspamd-Server: rspam03
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 2622520004
 X-Rspam-User: 
-X-HE-Tag: 1780885481-813380
-X-HE-Meta: U2FsdGVkX18zMIi45bBKoTIHxNN6yGxsKYSJIjBc8hUnvvyPfECbL7ij56DGLOMtHbA0d7LDUvs0f3doqgyQlSeXTCvK34jkL8BWHq3YXMIw88AlEglWglCnr49zuj8wkyNd4iT9573+hXA2TLQvVKlsyhrz0b8Q55YkBZrimDP6RhI+UF7BK1XdOxZkAyr1YqPSGSXihfVgTbHDaALu5SPhvOZeL/all1fCdgHO9MU1jFVhqJL9tYk2ny6udL4ijWMx2+UuM/qTatpfLiAWUpDzGHrCYIDU+dIV5X63oW/3d67t+p4Udsk+GkBTOEVMidYVVWElnnrLGX5K1sxMo8SlR1NDKJUqaFXaZBVjGvo/lwSmD2A4Q1AgpdCFD4z1zg/hnESJqYtI6drKis6P8OfPIqQd3XPfs8FB/miiQEr6pRmn8eoXZPzNUZAojoNmBuEazzWMBZR7yJOSJAHtVBDXWHjf4XFrv0lbtsP18rhY+fvpzb8oyPu1vK8uZfCF+jegF0WDStfrcQrY1WiC5JLtDQqVaVz/1v8obg34BA111OE08RRi8OfmE+qMNr/Yzs4ZjX1ruKSTVUDu+woq89lNtkM25Lpt8rJVMgMoT15qxSwinBeA8A8CqVlOVZIew0SWm4UZza4yohVGqHbdKKjTb1Cweq5A4OiOkJRTQe6aXhdLu6RSdvtnkg9CkNXVO1h70RD8z6f69cgNR17REbTT9LOMMH8TUuDtCpIT40E5mk3YtkWku7qMndA7NwG1HIWMLHJkd41uuMwZVmCUcq7vNrn7U+4It39j30k9CNoKWpP4Un9YbLXV/N1Zp1ShyB8PjYIoDURtVe2k86f72o8vDrb2bb2RZLebvRRf7BQatzIe+keqkp4Pn0iqR0DvgF+SvSMtelusBNU9owRqAA63aUJC+jiDIl2ghlh+uK8bmYpJfNQ7qmhUMWpkNqizg1XlwrJWEL7GSdaiBvQ
- 3/Q9YhiK
- ua5fNMbgpihZvK0VuHir0xbff2wTFEe/W4bhNqJGgkpaYM4cgvfJwhM4jNCnVTwvLz2TTvM9mJl6ryFtR7npX733dqc+hFV8xF7LfKjpcGZH8lvCL7gPFQp4bSs0PPB47ZZvGIxO3slDnJhABA2h25TmzWvTVrhO2JK1IociTMGZRr7CMzzg+vPfkltyuBMAtcw4StnM0nvUFYnZwAdk49XJBirRtvDk0Vrkaz9vGmsvbHpx6VxPHagpjl2oG6km0epXc3jPkSLs0nYho7xiGJWARalJAqcy8jE0PWWIccj2DMYJ8DGINmsUf1Dh1icJqat3q
+X-Stat-Signature: physqwzmfneshkrezyetubgsbc8wdseb
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780886413-629434
+X-HE-Meta: U2FsdGVkX181yuMQNRZWBBxh8hzmZCUyA8CgFhcHyC4Xy7VQFegXkb9e6+LIRPS1gtwbmOqyvAdiryIJtuYtxNqugV3qUKwHNIZ00yOwTdfadbGq57dkleyJNQAjxiHo4dara2IDamp2fp6k5YcLZmO+3usHAdMDbbs5G+NNcxgv0cMtlzLvKwC6rbxtzWpXeAWDMf+//5UD4W7KSEXZJjXn3VTPbIIuP97GnA/s2O6bURS0KrwU6h2FeTPR8KDnXvmWpgUu+ecpRdUwDvYcG7Qme17+TJQ6BbUfyc5CXI5ufHwzSeOqJ2o9zUv+SOTppvRSP5WjrPDzls7jm9eJbePONk0bRWwyeGP2tU025kh8t27mQM/Z9l5+vIBTqnFvnr7+neZv1Qm+FemH704QCpnjw019nFd/ssurX0C/EPPVBH+qI7wM7TUAjondOFYermDbHOCC0HJXhOqE712k0vw+LoAWlZLois8PbD9lz0qRhR65ZJwnz9+NK9umtxWmTeADbGOTndAbjZTQHICSS2SaXJ2MV4ARD8UWhzDFSoatLDkZ2AURVCMdojnPPn+WySZYyqkyj5Ocj11b/aGm/5u6jTt//37BdOK/xywRRXNH/dFx8ZgZQLlMokl6hcVdFa2SWgHnSKItt2S4F65t8ZypJekCMCiwhOkjFbuPO8nAhkMcPDiJDPK8ONcCH5uwCLcLJJW2vkUzPRUBXFzJZVEIo7LlQq0SW0k4ZNRPtKueMHkuXcPc1or6eH2SUvWiwwW80Ipmh7DJwiwz4BVkB/PiW/RSebkivugqXT/5+HuOnmx6UEI1A43FLZwz+WkaqL01XrTeqBkWsH7TTAmF42oC6o+zmCer9TCZHfg2gypPeg+sUQQWrycRy0jgYMs0ttTZWp+m2QAwHxo7H2iPGxuaNq1OXUFrU8Bya/3XqxKJCRSZeZUekiOdv8V2w2BtKsoBweOIvd/Fs/AWcsM
+ 3kHZYbKt
+ ooPPNDCkttnDwoCmnHZJSUQpMdQkTaPF9vJtmfmxreFKV9x+UC9pQjtc2EokOZWPmfqTwjwiqJ+UUWG/D+l6FcUVXeclN3BrcoP95buGxepxeXRxvhW5jzt7vLQ638T7BYenwb3kQYAqW01fm7KF0eQf1bmXkkTaEyMYlG/iO2qR7QeVKQG7gsmO/tCqcmx7frQAQfRIG7AXkWRVWL65lH70QMTRsguGOv9kUckCIrAiqoEWwIQEX85qBq1GRmOgTrqi1jcO8VunAcGVgmd7T0lp1LgybZL27UU+qPlNI+jsHIvo1S9nvzMkHtg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,101 +94,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/5/26 17:16, David Hildenbrand (Arm) wrote:
-> On 6/5/26 07:23, Vivian Wang wrote:
->> section_activate() does not flush TLB after populating new vmemmap
->> pages. On most architectures, this is okay. However it is a problem on
->> RISC-V since there the TLB caching non-present entries is permitted,
->> which causes spurious faults on some hardwares.
->>
->> This seems to be most easily reproduced with DEBUG_VM=y and
->> PAGE_POISONING=y, which causes these newly mapped struct pages to be
->> poisoned i.e. written to immediately after mapping.
->>
->> Add a hook vmemmap_populate_finalize() in __populate_section_memmap()
->> after population, to allow architectures to handle such situations as
->> needed. Then implement it on RISC-V to arrange for the existing
->> exception handler code to deal with these faults if they happen.
->>
->> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
->> ---
->> Depends on my earlier kfence fixes for mark_new_valid_map() [1].
->>
->> Found while testing AMD_HSA/ZONE_DEVICE on SpacemiT K3. Using
->> ZONE_DEVICE requires another fix [2].
->>
->> [1]: https://lore.kernel.org/linux-riscv/20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn
->> [2]: https://lore.kernel.org/linux-riscv/20260309-riscv-sparsemem-vmemmap-limits-v1-2-f40efe18e3cd@iscas.ac.cn
->> ---
->> Changes in v3:
->> - Merged back into one patch (Mike)
->> - (No code changes otherwise.)
->> - Link to v2: https://patch.msgid.link/20260604-mark-after-vmemmap-populate-v2-0-ab6a7d03b434@iscas.ac.cn
->>
->> Changes in v2:
->> - Split patch in two, hook point and riscv hook 
->> - Explain hook necessity in patch 1 message (Mike)
->> - Make hook #define based (Mike)
->> - Call finalize hook only on populate success
->> - Link to v1: https://patch.msgid.link/20260525-mark-after-vmemmap-populate-v1-1-e698d859ba16@iscas.ac.cn
->> ---
->>  arch/riscv/include/asm/pgtable.h | 4 ++++
->>  arch/riscv/mm/init.c             | 6 ++++++
->>  mm/sparse-vmemmap.c              | 8 ++++++++
->>  3 files changed, 18 insertions(+)
->>
->> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
->> index a1a7c6520a09..aa0f50e3d534 100644
->> --- a/arch/riscv/include/asm/pgtable.h
->> +++ b/arch/riscv/include/asm/pgtable.h
->> @@ -1243,6 +1243,10 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
->>  #define TASK_SIZE	FIXADDR_START
->>  #endif
->>  
->> +/* Needed on SPARSEMEM_VMEMMAP */
->> +#define vmemmap_populate_finalize vmemmap_populate_finalize
->> +void __meminit vmemmap_populate_finalize(void);
->> +
->>  #else /* CONFIG_MMU */
->>  
->>  #define PAGE_SHARED		__pgprot(0)
->> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
->> index 706f43523935..cf9ae4099f82 100644
->> --- a/arch/riscv/mm/init.c
->> +++ b/arch/riscv/mm/init.c
->> @@ -1360,6 +1360,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->>  	 */
->>  	return vmemmap_populate_hugepages(start, end, node, altmap);
->>  }
->> +
->> +void __meminit vmemmap_populate_finalize(void)
->> +{
->> +	/* Avoid faults on cached non-present TLB entries. */
->> +	mark_new_valid_map();
->> +}
->>  #endif
-> How does mark_new_valid_map() handle concurrent access?
+Hi Abhishek
+
+
+Thanks for the new version.
+
+
+On 2026/6/6 07:36, Abhishek Bapat wrote:
+> Extend the capability of the IOCTL mechanism to filter allocations based
+> on tag's module name, function name, file name and line number.
 >
-> There is some comment in there, but I am not sure if that actually implies that
-> mark_new_valid_map() can be called concurrently from arbitrary context?
+> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
 
-AFAICT, yes, it is intended to be used concurrently from arbitrary
-context, and this is why I used them.
 
-I had not originally written the code, so some riscv maintainer can
-maybe chime in on this, but as I understand it the idea is that we only
-ever set bits in the bitmap in mark_new_valid_map() while "allocating",
-whereas the assembly code in handle_exception in
-arch/riscv/kernel/entry.S only ever clears individual bits. So at least
-the access to the bitmap itself should be fine.
+Acked-by: Hao Ge <hao.ge@linux.dev>
 
-This was added in commit 503638e0babf ("riscv: Stop emitting preventive
-sfence.vma for new vmalloc mappings").
 
-Do you think the mark_new_valid_map() function needs extra
-synchronization like smp_wmb()?
+> ---
+>   include/uapi/linux/alloc_tag.h | 26 ++++++++++++-
+>   lib/alloc_tag.c                | 68 ++++++++++++++++++++++++++++++++--
+>   2 files changed, 89 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_tag.h
+> index 901199bad514..cffb0c46e0b1 100644
+> --- a/include/uapi/linux/alloc_tag.h
+> +++ b/include/uapi/linux/alloc_tag.h
+> @@ -34,8 +34,32 @@ struct allocinfo_tag_data {
+>   	struct allocinfo_counter counter;
+>   };
+>   
+> +enum {
+> +	ALLOCINFO_FILTER_MODNAME,
+> +	ALLOCINFO_FILTER_FUNCTION,
+> +	ALLOCINFO_FILTER_FILENAME,
+> +	ALLOCINFO_FILTER_LINENO,
+> +	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_LINENO
+> +};
+> +
+> +#define ALLOCINFO_FILTER_MASK_MODNAME		(1 << ALLOCINFO_FILTER_MODNAME)
+> +#define ALLOCINFO_FILTER_MASK_FUNCTION		(1 << ALLOCINFO_FILTER_FUNCTION)
+> +#define ALLOCINFO_FILTER_MASK_FILENAME		(1 << ALLOCINFO_FILTER_FILENAME)
+> +#define ALLOCINFO_FILTER_MASK_LINENO		(1 << ALLOCINFO_FILTER_LINENO)
+> +
+> +#define ALLOCINFO_FILTER_MASKS \
+> +	((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+> +
+> +struct allocinfo_filter {
+> +	__u64 mask; /* bitmask of the filter fields used */
+> +	struct allocinfo_tag fields;
+> +};
+> +
+>   struct allocinfo_get_at {
+> -	__u64 pos;	/* input */
+> +	/* inputs */
+> +	__u64 pos;
+> +	struct allocinfo_filter filter;
+> +	/* output */
+>   	struct allocinfo_tag_data data;
+>   };
+>   
+> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> index a0577215eb3d..93bc976ac505 100644
+> --- a/lib/alloc_tag.c
+> +++ b/lib/alloc_tag.c
+> @@ -49,6 +49,7 @@ struct allocinfo_private {
+>   	struct codetag_iterator iter;
+>   	struct codetag_iterator reported_iter;
+>   	bool print_header;
+> +	struct allocinfo_filter filter;
+>   	/* ioctl uses a separate iterator not to interfere with reads */
+>   	struct codetag_iterator ioctl_iter;
+>   	bool positioned; /* seq_open_private() sets to 0 */
+> @@ -184,6 +185,12 @@ static void allocinfo_copy_str(char *dest, const char *src)
+>   	strscpy_pad(dest, allocinfo_str(src), ALLOCINFO_STR_SIZE);
+>   }
+>   
+> +/* Compare two strings and only consider the trimmed suffix if s1 is too long */
+> +static int allocinfo_cmp_str(const char *str, const char *template)
+> +{
+> +	return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE);
+> +}
+> +
+>   /*
+>    * Populates the UAPI allocinfo_tag_data structure with active runtime
+>    * profiling counters extracted from the given kernel codetag.
+> @@ -223,6 +230,40 @@ static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __user *arg)
+>   	return 0;
+>   }
+>   
+> +/*
+> + * Verifies whether a given codetag satisfies the active filtering criteria by
+> + * matching it's characteristics against the specified filter.
 
-Regards,
-Vivian "dramforever" Wang
 
+nit: s/it's/its/
+
+
+> + */
+> +static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter)
+> +{
+> +	if (!filter || !filter->mask)
+> +		return true;
+> +
+> +	if (filter->mask & ALLOCINFO_FILTER_MASK_MODNAME) {
+> +		/* user wants to filter by modname but ct->modname is NULL */
+> +		if (!ct->modname) {
+> +			/* validate if user was attempting to filter for built-in allocations */
+> +			if (filter->fields.modname[0] != '\0')
+> +				return false;
+> +		} else if (allocinfo_cmp_str(ct->modname, filter->fields.modname))
+> +			return false;
+> +	}
+> +
+> +	if ((filter->mask & ALLOCINFO_FILTER_MASK_FUNCTION) &&
+> +	    ct->function && (allocinfo_cmp_str(ct->function, filter->fields.function)))
+> +		return false;
+> +
+> +	if ((filter->mask & ALLOCINFO_FILTER_MASK_FILENAME) &&
+> +	    ct->filename && (allocinfo_cmp_str(ct->filename, filter->fields.filename)))
+> +		return false;
+> +
+> +	if ((filter->mask & ALLOCINFO_FILTER_MASK_LINENO) &&
+> +	    ct->lineno != filter->fields.lineno)
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>   /*
+>    * Seeks the ioctl iterator to the specified 0-indexed tag position, reads its
+>    * profiling data and returns it to userspace.
+> @@ -231,29 +272,46 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+>   {
+>   	struct allocinfo_private *priv;
+>   	struct codetag *ct;
+> -	__u64 pos;
+>   	struct allocinfo_get_at params = {0};
+> +	__u64 skip_count;
+>   
+>   	if (copy_from_user(&params, arg, sizeof(params)))
+>   		return -EFAULT;
+>   
+> +	if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+> +		return -EINVAL;
+> +
+>   	priv = m->private;
+> -	pos = params.pos;
+>   
+>   	mutex_lock(&priv->ioctl_lock);
+>   	codetag_lock_module_list(alloc_tag_cttype);
+>   
+> -	if (pos >= codetag_get_count(alloc_tag_cttype)) {
+> +	if (params.pos >= codetag_get_count(alloc_tag_cttype)) {
+>   		codetag_unlock_module_list(alloc_tag_cttype);
+>   		mutex_unlock(&priv->ioctl_lock);
+>   		return -ENOENT;
+>   	}
+>   
+> +	skip_count = params.pos;
+> +
+> +	if (params.filter.mask)
+> +		priv->filter = params.filter;
+> +	else
+> +		priv->filter.mask = 0;
+> +
+>   	/* Find the codetag */
+>   	priv->ioctl_iter = codetag_get_ct_iter(alloc_tag_cttype);
+>   	ct = codetag_next_ct(&priv->ioctl_iter);
+> -	while (ct && pos--)
+> +
+> +	while (ct) {
+> +		if (matches_filter(ct, &priv->filter)) {
+> +			if (skip_count == 0)
+> +				break;
+> +			skip_count--;
+> +		}
+>   		ct = codetag_next_ct(&priv->ioctl_iter);
+> +	}
+> +
+>   	if (ct) {
+>   		allocinfo_to_params(ct, &params.data);
+>   		priv->positioned = true;
+> @@ -294,6 +352,8 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
+>   	}
+>   
+>   	ct = codetag_next_ct(&priv->ioctl_iter);
+> +	while (ct && !matches_filter(ct, &priv->filter))
+> +		ct = codetag_next_ct(&priv->ioctl_iter);
+>   	if (ct)
+>   		allocinfo_to_params(ct, &params);
+>   
 
