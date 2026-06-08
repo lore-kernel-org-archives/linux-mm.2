@@ -4,100 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCE7BCD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 12:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9B8ACD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 12:18:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C65C6B0005; Mon,  8 Jun 2026 08:14:35 -0400 (EDT)
+	id 3EF0E6B0088; Mon,  8 Jun 2026 08:18:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 176B66B0088; Mon,  8 Jun 2026 08:14:35 -0400 (EDT)
+	id 39F956B008A; Mon,  8 Jun 2026 08:18:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08D916B008A; Mon,  8 Jun 2026 08:14:35 -0400 (EDT)
+	id 2B6B76B008C; Mon,  8 Jun 2026 08:18:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EAC5F6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:14:34 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 810DF1A0A4C
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:14:34 +0000 (UTC)
-X-FDA: 84856638468.16.D8590B3
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2CBCE1C0009
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:14:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nsVYtCvw;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B5DF6B0088
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:18:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B26AFC34EB
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:18:27 +0000 (UTC)
+X-FDA: 84856648254.01.09C49AA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 065A94000D
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:18:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fhx34/wY";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780920872;
+	s=arc-20220608; t=1780921106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s5o2TRur9x0ddEQ5S1UjxIZP9cFGroi39DgA97WlM4k=;
-	b=u2MXmzimb8B+VDEZjU83e0SzkXi0e7L7sHqfEiKoLZuHPsb3+xBvFGLArbmr+eHIsYkGBo
-	TnSofnIbLkSjUKc+Zn5gdjdkB3McH9Lo/eOeaUBETbpM9YoU02cVUHZEpyI5eBDbVVYyGT
-	snwTDMrRsti1EKQJsWwfW5u2UHAN3xU=
+	bh=4bq7322kWx6CdkqZCl5t40hKw6vHtvbzE6Il0jH62XQ=;
+	b=GmEBb/tHDBtd0kQWoeULwqrd3JZMVRXfGnQCeFjmmJzCcjFd932SfvVeWTZ++gEaE0uyp3
+	fFn4jFs6ef6csxgMjWWLFREHJ3e1WS9JAohJiEuZ244NOtykn3sRlGoTF/DOhGt0DXou5g
+	z7Vd32flKdn26cYmJNDwA90bqrnFr0Y=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nsVYtCvw;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fhx34/wY";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780920872;
-	b=6Gd9eTT6mG8HOgvC4qsVLbZwO991g81fhZJ/HsEw5Ai37aRNtPN54XNOtYHLDZhsWjAIpV
-	kBRfzr3J/5Xr/4eK+UklJBzwm6lM0c5WQ4SttPjvM896Tj4gOp1BSLBcKr92ZpQinuxPdC
-	ODnsPm0UZFULPf3qoZ1XHbi9qR3XxKw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780920869;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s5o2TRur9x0ddEQ5S1UjxIZP9cFGroi39DgA97WlM4k=;
-	b=nsVYtCvwz5kJ/fDZNfegNk2vh28gl5OGT8lmDDl8FnDOkfQ1uX81bOLtIbveMzdycnp3mZ
-	6xambuCN2z3PCH86CXshNpvd8eCNp/50D+EnoQhd/wXFb5ATcf8SHNKF3X4N95BpUoryRS
-	jXeK0MS3kF3w5lFyYMcp0nIVwO9kNlw=
-From: Lance Yang <lance.yang@linux.dev>
-To: xieyuanbin1@huawei.com
-Cc: david@kernel.org,
-	qiuxu.zhuo@intel.com,
-	bp@alien8.de,
-	akpm@linux-foundation.org,
-	rostedt@goodmis.org,
-	linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	mhiramat@kernel.org,
-	mchehab+huawei@kernel.org,
-	tony.luck@intel.com,
-	yi1.lai@intel.com,
-	linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	lilinjie8@huawei.com,
-	liaohua4@huawei.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH] mm/memory-failure: trace: change memory_failure_event to ras subsystem
-Date: Mon,  8 Jun 2026 20:14:20 +0800
-Message-Id: <20260608121420.64197-1-lance.yang@linux.dev>
-In-Reply-To: <20260605081213.154660-1-xieyuanbin1@huawei.com>
-References: <20260605081213.154660-1-xieyuanbin1@huawei.com>
+	t=1780921106;
+	b=G3/y8a8PqpHwp+ukxjBhYBFe0JRu4rosBkX2OGBKkQa1xdIA9WV0vLC+wfs74OtGoBvBKB
+	hOSftcur1EZjLJfkQf9N2QIzgQu68fy8EJgMLhdZcICwNW8cnCJBojFbVfFVJuNprbtArf
+	tTnB8d8fKNF6mUCCLwTTcwh361qHaSY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F2FD42ABC;
+	Mon,  8 Jun 2026 12:18:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544311F00893;
+	Mon,  8 Jun 2026 12:18:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780921105;
+	bh=4bq7322kWx6CdkqZCl5t40hKw6vHtvbzE6Il0jH62XQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fhx34/wYyi4qTtqk4QuiP7p33JtlGJpEvv3WVDq4OHpVAN/F67imxKA0NQ0PqHEOO
+	 ShQSTE81rARoCwQ9cNRunKxJJ84J+2QO2PhgO/o+PyUyavv7Yst3B14CC7xOqqUZGZ
+	 M63vkmttzEJG3+GVuoNTTyrYgclFhpFN3cFQhCxmosN3QKE78i6tIT++nSeHN5PKO/
+	 1qzSKEBjkThQMvqNYdB7dYV/Ar8pPs/LlN7E3nYNn96yANKRBbtcyed3o2rbmtMT3v
+	 NVdQXSbpCvQ5WhFx0fz4IKTeueDE8+W+Bi+L0den+inJc3U9pCC/5TBx2D0YYS/yFA
+	 CMUS8qxjqs+aQ==
+Date: Mon, 8 Jun 2026 13:18:12 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
+	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v10 23/37] mm: page_alloc: skip kernel_init_pages for
+ FPI_ZEROED when safe
+Message-ID: <aiawax1SS7x4_DEi@lucifer>
+References: <cover.1780906288.git.mst@redhat.com>
+ <7de6959a0fb1b255dc9bee2de494f51a6c21e468.1780906288.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7de6959a0fb1b255dc9bee2de494f51a6c21e468.1780906288.git.mst@redhat.com>
 X-Rspam-User: 
-X-Stat-Signature: 55dshobw3f4s319a93yfrrx4jupoi3p6
-X-Rspamd-Queue-Id: 2CBCE1C0009
-X-HE-Tag: 1780920872-69736
-X-HE-Meta: U2FsdGVkX1819dnhV6uCCZp/Sxj4kYqvjPO81tOroqLawbk+xwjhMnYdKY3xOZfpcbn25BgBR4O0ayo0FNU1d78+VElIqOKQvcSmMeYVVGtT8PSCVjxsMfBYx1ge2UMImrJJN0RGW5Q36lbehhNmcHkWBgA0Mwq/ab7Y1uuYMQaGWM7qCTeNCqbfICF0jZIXb3jLudUZJwHI4W+z2Nrk65k4o0EX79P6KxxpzdzJ/KNloMynZCSFBng2yU2Hp4wVtdF+SIwKLpzfTUUsZjFVgacGBqbIFa02Jp8xvgH0V5eM8tOK3utKvE5iwX0eHUGozV9qENj7E/28zjebfXzOCwrZwLp/W/aLgv207wDokvVf+OXao5LgLoOUGCiu67iDQubBcd/Zs+IXBbXIuPaIqedu0JYg33qI5zOpzq4ICawHdqnBpZHAY9oqPiobj+529V+PNMbK2toVQV8lwnCc9W1nUrYsP2spyMHTVhXLFIJmQtm9rhuxEc1v0WgyGCtoKH6Jvf5Y5PNQ7yk0NjZ21UxGk6GeZSCe9RJo8nm63EXXQqc28kVds+vRNDEa0p4n0Qdr3pXcuAuTtB3tsPpb5N3LDCXusoEB1U1WKpsOihOaMyMD/pBO6vPvaxd1J/LaE7w0A4uLypPsonaka0hBCZFHtLOc/ThO0JjncGsNtmxQh9ycgf5o5GpECuBg5MqDSvBkgekHo4ILWKegpYHQt0UET5XnI2OycULMzFUpKKuwIxJm6nuEiwwpwQunbZ7AiT7tmt4wZKSspT6dAyCnBh5LL4z9H0DNIwuNpKTYTi68uryDE8qZ49KQeADJBub7FLC816uGBz8jCNaRjposojiPtMMfIP/gQKCHKiThX7nDdDAKZTO06UW7qJHT/0kO5ubtEn8XSBvY7mD/yfTtDbvWVG22aRPHuwc85RqX7yt5H6rpfFxqCMhBJY4gUGEIY48QN7PxxfZBbsXm/OA
- ztmnuhPx
- IpTDuyTXT3YwTNPx28EsDKEtwjLScgJVLxd5gOn7TOodotvLY0mJ/WKAFP9MMGXTyBVzSPFfxXJjlKh1PgwioiA9md/LHPAed6n9GllcbacWc+FjhIR4a6nWc7ShpxWnmJiT2Pmlk9tqyUBugGZlObN6UQiuzCOyCgBcgkFP9Run22ChY85DTs6+EYwj1vEnlOzGLtCFadOPLmj4i3cpeLkGokGKjdFfmWWvtl9wR3KgOlWCtGiIuNxItOOSZGSQXeiz8TF9U3ADbJUYh3YaFnFkV0xqGkXMSejAv2kHTwYSq4DNdXvHc4BZzBYdSfXstpyoLzI4eZ+IZq15wIn/Yyyf+v7fpBAWAx+lN7avidpGkMDhOYAtFKBqvsmBWrfTlnEVqk5dTa+In8Po+u6sJhy64s5DEN70gDSRehokQFwOa+UZAadaFIxeaWrDJ1JAUXkYf0+4/2bTbVbyK7w+fD797X1eb2W5O5bAmS4ppm+V1Aa9cs4lps8wjkwrh09pC3fjUzmEcM6E2qibrUhyZkxhIG9UdsVCUtAIo/mPPkG2ByDY6vpXzdtbk3fPmIt3RTeZXliI9zx5W2Mk=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 065A94000D
+X-Stat-Signature: z1pxx5xpj3s6bar5f5kj7urcyf8jxccj
+X-HE-Tag: 1780921105-209846
+X-HE-Meta: U2FsdGVkX19s5eGusHxAJVp08z4vDCLpEa4kN7vp8PAGoRVqrQDZ/lBFiV+e4GRcF5kRBgPDVb4Oa9jS+nbYUJEx1gFEQeZF0VzcnvGdEV83ilodOzB1Y+CjXcUHx+LVLVacfNjrOorPJlJYEhER68ozD/+EahasQdoRrm2mBTFnYym8ftFKAz47Q6EULw5zaCW2CDfzONF0csOiwT6C/G5k7Pa1eEtYvw5v0QGCNwRyQ0YUEtQchAT9gQBTbkwbSBgbNNZprsgiRu4VpwxeyWGTHu6svRyxk43JfgzDtEzIrtogdL1Jf6MkgHiGMLDZiSSE//6p8UEZANfyP9rE8i3YORCCuxZNgjiQUq1VG42+8XjlLdZeMl4DNxtalD09G2kEguUvLdm9rlD65SDDLFLuKwGrFU9UK2zDvPuMUbIYORz2ZM9YiG5sILljSNecl+XzUN35ptz58xK5HLVdA0MU2sBDqqz+sfWPn1gj+Ygm6M49f7JGX813bq41C/fHrhtrCQLFejbpO7z/TcrgOoQPUOQzBUnwFYPLIKoCh6rYzCGcQospzvmhqchbJYmm5O5wpeXfCDHM/Z+NtgCRd7UcSEXagaIOXPhxSsDBHHRGdBylb5VIXp3m5z6LZmWp5HgmYO88Vc9WRJHSvF0GslMOOpnZhYLnfl30yFdvF0VZGeAgczH7q4Xmii74ydx5KJ0gTtPrl4toxv02dxF3PilLVECeQXre6ISBlv2yhTxE6AhSnRgnSlpsXLzHt0Fvjhdbz6pZ4unMZmZ91opLjuMYfE9ZFGgagpkzlYF4hkPlYp6Oeouy4Wle3O+XRkRENCHRR4a3D4HCukTIqG1ULIMMM61SDZLP+/dxWn7axHG55dPrXIbmRJZ4Rr8Y0PKBBf5BC1LrqeZISl4xnHzfUiIZZJHOSm1e7jglsVrsmSwM7KV9svL9EnKgOQELWoht1fDvDoCXJC/YQ4HFTLE
+ r8ob50Ko
+ knv25e2kxN38AKENzGu7A8MWBKsiWBaHhktXxCVgyccPiTDa08KajEGRwL3SbJ2JVc5PY30T7swOhXdRfVvtW2pnqbkkJZFqwn1vDSXPZ0cMfel3HMNOV4wjfzUy3qu30bbsohWvLJR6nULDEObfVQNm1qcnAlbi23vFeo7owrgmXDj1KqSaJ8RYveDJxu4oOT+JHTNo5OAGhLkDwCQ5SgDLpX1RcP8nSJWNKZiZK0jCIxumQGk4yLN6gs12jGKZt7Ntu3kPi3rzHEKXwkwporCS0nQJQlBGnIR77lzAmedbWtbRIKKqfOIvnQOnvpdZFqEn6ykMEfgsvkquSF8p8N5fMzCoYJJsRu31fSpx7vx8b5OSde3RP/H+QfntDFMP9LSFJCDTNAHLynDfeRU+Gr9/5fw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,50 +111,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Jun 08, 2026 at 04:38:46AM -0400, Michael S. Tsirkin wrote:
+> In __free_pages_prepare(), when FPI_ZEROED is set the page is already
+> known to be zero. We can skip kernel_init_pages() if page poisoning is
+> not enabled (because poison would overwrite the zeroes).
+>
+> This avoids redundant zeroing work when freeing pages that are already
+> known to contain all zeros.
+>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: Claude:claude-opus-4-6
+> ---
+>  mm/page_alloc.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 008f1a311c40..e3a7c40c769c 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1443,7 +1443,14 @@ __always_inline bool __free_pages_prepare(struct page *page,
+>  		if (kasan_has_integrated_init())
+>  			init = false;
+>  	}
+> -	if (init)
+> +	/*
+> +	 * Skip redundant zeroing when the page is already known-zero
+> +	 * (FPI_ZEROED) and page poisoning did not overwrite it.
+> +	 * When page_poisoning is enabled, kernel_poison_pages above
+> +	 * wrote PAGE_POISON (0xAA), so we must re-zero.
+> +	 */
 
-On Fri, Jun 05, 2026 at 04:12:13PM +0800, Xie Yuanbin wrote:
->For historical version, commit 97f0b1345219 ("tracing: add trace event
->for memory-failure") introduced memory_failure_event in ras subsystem.
->commit 31807483d395 ("mm/memory-failure: remove the selection of RAS")
->changed memory_failure_event to memory_failure subsystem. This breaks
->the backward compatibility, some user programs rely on it.
->
->Change memory_failure_event to ras subsystem to keep backward
->compatibility.
->
->Fixes: 31807483d395 ("mm/memory-failure: remove the selection of RAS")
->
->Reported-by: Yi Lai <yi1.lai@intel.com>
->Reported-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
->Closes: https://lore.kernel.org/linux-mm/CY8PR11MB7134346A3E4BB28ECA28D6E989132@CY8PR11MB7134.namprd11.prod.outlook.com
->Cc: David Hildenbrand <david@kernel.org>
->Cc: Steven Rostedt <rostedt@goodmis.org>
->Cc: Borislav Petkov <bp@alien8.de>
->Cc: Andrew Morton <akpm@linux-foundation.org>
->Cc: Miaohe Lin <linmiaohe@huawei.com>
->Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
->---
-> include/trace/events/memory-failure.h | 6 +++++-
-> 1 file changed, 5 insertions(+), 1 deletion(-)
->
->diff --git a/include/trace/events/memory-failure.h b/include/trace/events/memory-failure.h
->index aa57cc8f896b..7a8ee5d1a44e 100644
->--- a/include/trace/events/memory-failure.h
->+++ b/include/trace/events/memory-failure.h
->@@ -1,6 +1,10 @@
-> /* SPDX-License-Identifier: GPL-2.0 */
-> #undef TRACE_SYSTEM
->-#define TRACE_SYSTEM memory_failure
->+/*
->+ * For historical versions, memory_failure_event is in ras subsystem,
->+ * some user programs depend on it.
->+ */
->+#define TRACE_SYSTEM ras
-> #define TRACE_INCLUDE_FILE memory-failure
-> 
-> #if !defined(_TRACE_MEMORY_FAILURE_H) || defined(TRACE_HEADER_MULTI_READ)
->-- 
+Again, please stop specifying arbitrary hex values in comments, this seems
+mostly 'describing what we do here'.
 
-Thanks. Feel free to add:
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Maybe drop to just e.g.:
+
+/* if poisoned or not zeroed by a virtualised host, zero now. */
+
+or suchlike?
+
+> +	if (init && !((fpi_flags & FPI_ZEROED) &&
+> +		      !page_poisoning_enabled_static()))
+
+This condition is absolutely horrible, !(X && !Y), you're making life difficult
+for the readers.
+
+'if not both zeroed and not poisoned' is how that reads logically. Which is hard
+to understand.
+
+De Morgan's law gives us -> !zeroed || posioned
+
+How about:
+
+	if (init && (!(fpi_flags & FPI_ZEROED) || page_poisoning_enabled_static())
+
+Or preferably something like:
+
+	const bool poisoned = page_poisoning_enabled_static();
+	const bool vm_host_zeroed = fpi_flags & FPI_ZEROED;
+
+	...
+
+	if (init && (poisoned || !vm_host_zeroed))
+		...
+
+?
+
+
+>  		kernel_init_pages(page, 1 << order);
+>
+>  	/*
+> --
+> MST
+>
+
+Thanks, Lorenzo
 
