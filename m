@@ -4,92 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D398CD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:26:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C8B1CD8C9F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:30:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A248C6B009E; Mon,  8 Jun 2026 06:26:21 -0400 (EDT)
+	id 484DA6B009D; Mon,  8 Jun 2026 06:30:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FC2B6B00A2; Mon,  8 Jun 2026 06:26:21 -0400 (EDT)
+	id 45CA76B009F; Mon,  8 Jun 2026 06:30:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 939426B00A4; Mon,  8 Jun 2026 06:26:21 -0400 (EDT)
+	id 372756B00A2; Mon,  8 Jun 2026 06:30:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 835576B009E
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:26:21 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F9891A0A36
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:26:21 +0000 (UTC)
-X-FDA: 84856365762.20.864524B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7493B1C0008
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:26:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kgVwy8zh;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780914379;
-	b=wwI2p3np75tGfTlvEkjHgeJgud67MqBXI9rmSkosbs3hOqtaqiMAur2Xva7LPRNOsY7l81
-	NeohCsux9p8nVQwgiURl8rR0IFWxVCCCFqPUmKvtZbZwxpZuzXfwHyhycCSu0pvn0M9JnY
-	Hu08cY0wyrDz6NDbVj2zhZqqtj0Kx2c=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kgVwy8zh;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 23EF86B009D
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:30:05 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CDCE040A44
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:30:04 +0000 (UTC)
+X-FDA: 84856375128.19.280B92C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 18BB7140016
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:30:02 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLwFPFLG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780914379;
+	s=arc-20220608; t=1780914603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i1lroZnoIaLu1CMzf9kEVvvwG+CcQpGu2by6hNtmkow=;
-	b=BbU3bapmlYMGox/gtcbgJHyWf1wk/VNOuLfMyegSPbt9GvMIIsrMwbAiVq8TWodkwH6CMD
-	omlRQjM/froFiPDjs3Kk458sIUOWlJ0jwiTfVvogG+b2IztYv4+wxpDEIgKEo0EUx9z5E6
-	pSNzJfWZHEPIXMrwnTu9NXSJygcx9pQ=
+	bh=YVTRLRF6w9LEvYfidF9fmm8s09kK9Yw4y/1Wh8KsguI=;
+	b=GKA8aM1a9YGheBUg++2hXLWEJ03WDvG9q/UwbGsECeAXVwp7KHoAyjjDL/KClZt56GRsmB
+	Pa9BPpg0XHbwfI4221uSfFGcTtYt2aT9QRgmaD8X+r9kI0KTgZMJeSe5awYRFBzGZDtTiD
+	E5hU1hKEIH0PJ8T0tTD9VdtHu+UgNd4=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLwFPFLG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780914603;
+	b=mCFEER1SN/fHZE2NK/tZkEDLwzzXZxMgtPLwCbkezz5WL9TNfrjeIib0RfjVR/leaO9Yiv
+	DEQwNR2cW2YrOgWc2qruypLC55srRJd1Y0pxkaJFtESvb+NGVQXzfiSbYDAiwycYrySlw/
+	h6PxxjX/bnZ3z6PMlklWRUqqrvGdrK8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 048956001D;
-	Mon,  8 Jun 2026 10:26:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817231F00893;
-	Mon,  8 Jun 2026 10:26:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2E1A74098B;
+	Mon,  8 Jun 2026 10:30:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D0B1F00893;
+	Mon,  8 Jun 2026 10:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780914378;
-	bh=i1lroZnoIaLu1CMzf9kEVvvwG+CcQpGu2by6hNtmkow=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=kgVwy8zhdyQca1BKeV6lxRurKUs5PF/8H4Yr4L5huRfNMVNH0YwhhuUCzuYXd8mv5
-	 CbdlFVXFX6I/7m+gL8+0kNcyQcQjvwKtuHMu0mLoOg/WCDyzS4FP4eofmRSfoYr26E
-	 5G70YuumsWXfdUFXHkyLauQKAYGEHDz7k8EFeRkSVnjLRYqBBk4c0116AjVCJbRlhw
-	 yJwqLAndgemOL8eT8gkYVqdzaqyWgZkUFJylihyfv9UNkEh9SyU3HKx8xGdLGn7Sfs
-	 4cowKgJmxIYsghmlUWcKOhA5iubapbStqLCBKdl/M0Iblw6O6f1fOi+PNSk9wK6Wd9
-	 T17EaljA2Rt0w==
+	s=k20260515; t=1780914602;
+	bh=YVTRLRF6w9LEvYfidF9fmm8s09kK9Yw4y/1Wh8KsguI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SLwFPFLGfvmJByC6qhtXWy07PdwLkRy01bjk5t1xV7a4YY3Ce3JmDjIe6x7+DacZx
+	 qVRIsiguvng+UA/SBR0YBTy2eZyhGF31dfwl9IXxBSe1V+pPJxONvtaOtA0+NIKpKw
+	 JnfDsY/QvlWbSqQvMeyhh28RaJsGqRGDgvGVf2/4tZ5SUIjURsAZMrmfN/14I3O4x8
+	 Qeer2Uy4FjfnMf1pIoDKAbjx3bloZJ7FwJrV7mRtFr3DCvIurKXpQF+WE/o00CTcVW
+	 pMmF3OBsvhdsh6yvO8UXW6bgb99DDi7BUokHYwxAM6VBqBDdBiFYEc8P0ZGWcLzWkY
+	 kG0Jm2ucRXsSA==
+Date: Mon, 8 Jun 2026 11:29:48 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
+	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v10 08/37] mm: add alloc_contig_frozen_pages_user for
+ cache-friendly zeroing
+Message-ID: <aiaYcZonbHSe5NfO@lucifer>
+References: <cover.1780906288.git.mst@redhat.com>
+ <f2036f596f17f66fb55b74a5fd85e8b7ab51876d.1780906288.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC v1 0/9] kho: granular compatibility and header decoupling
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Mike Rapoport <rppt@kernel.org>, linux-kselftest@vger.kernel.org, 
- shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
- skhan@linuxfoundation.org, linux-doc@vger.kernel.org, jasonmiu@google.com, 
- linux-kernel@vger.kernel.org, corbet@lwn.net, ran.xiaokai@zte.com.cn, 
- kexec@lists.infradead.org, pratyush@kernel.org, graf@amazon.com
-In-Reply-To: <aiVp5RlbWRz5VnPB@plex>
-References: <20260605033235.717351-1-pasha.tatashin@soleen.com>
- <178083348872.1648214.17778188633648887952.b4-review@b4>
- <aiVp5RlbWRz5VnPB@plex>
-Date: Mon, 08 Jun 2026 13:26:12 +0300
-Message-Id: <178091437240.1648214.10761111570005003901.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-Rspamd-Queue-Id: 7493B1C0008
-X-Stat-Signature: gwymdt3833dyij59395g8wkg6afnwc1p
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f2036f596f17f66fb55b74a5fd85e8b7ab51876d.1780906288.git.mst@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1780914379-503576
-X-HE-Meta: U2FsdGVkX19A+ywwJtAF3i4J6srpYHpZDvVtNLp6uQszLj+Khs17lPWaxUyf6tNUFXaPt0M2QkPU05WEXJPCtmRSuXxKTLtp7/eyBiughbK3Mcei3U6vQ2TpNwgClcIgKg/0N3qjRpNnCNGU4K1nb4c29U6vKMjAcWtPtFZsjkOyq8DdV2XC4JIFFf3JRkHjmeVlecLbzYvdR31DTbSVSsvDGVdZBiYcYd0U8inxZYZl9cKzDCEBnoC5702etd6EW/nU42RUG7fdnpBT66kDAGEnv1aylxy/JQhgfuPb62dwT5bI1D+hgW1N1b/UNu+NB63zY3TdXO7Vlmdq0jhOGEqZ9ndhylPyEcJb3CmCIjOBdysxvbEaiT/G0OW9wFfGs7kH97+KRh472IhvIldtw9z5DMQkIIwpzPfX2pIdyyR1Mtci5amtDOB00Lef+UAb9f+xF7KLYGQ5ArydBpJcUlQ7WpxkclEDwsf6vb8QS0fKmZgq5VTToEVVJFi3xrb0sJruX2c7nDG0ETAuPryxcEiEYERGizh7xFZ35uy1/jlppT5iUzLk1AIGuhAfPhj64HAUOnBOR4Mo/Ds+/C5IWf81c+wntJsy3Kvnni91Do4wqEsDHF7JWxSDfh0uaYDRZ2CpkRL4LR6O2o00n76Qs0AJu26ZbEbE99knRL1lrVhTXKjHSnGochL77Wad/bUjJQqbBedpvsCYgSROCHIjbdETap87Ofngg/beaM+qXLGvr63W7MfMEdpAX4jC3raEMC0YyUjX68b/xf9Y5bfSzMYqBI+xNg2L6mZaWGvBwXYL3BDhREDrwGg+x07OI1NkcpNH1sTNcrG/lCepTsNhtefWi6J/4oVXcnfgrxqw1FFf3RpglDeBowSzmDxCz+L4M7Jy9O9592C+ecTUfhqpmHBf3MQx6ELn53UHpNvDeprCKbTABYVsrWIxianxJsbWrSBKt8pEB+ZUKxIGQ9V
- 1qlOszd6
- 0ojMQ+UBWayvNgHwetR//H+8oP+7mxNuGD/7BnF2DikIBiADgaOZ3ejEqIgXeXPnDDEMZhJOZjQ0PKNhM7sojQsTZqtyQA1sP+sKhWRZ8/D+VKAR1cdUWLD3p55Fp9g+mbRxgp8DhfyLEkVtse4LKs9hs9BMwR0nCOA4m41zzEClhqMY2fgRq/yi4cTmPZSZKdq/wzeVQXYeolqoIu2JE1roiY0HESngdDVGuIB1gfOsZFVXDDbymJgdM/GKi7bCqVu8oDu+M8r/gLrUsufedsQXWcw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 18BB7140016
+X-Stat-Signature: uqd3318x5j8xi85b4ugymb6chd5333sn
+X-HE-Tag: 1780914602-198134
+X-HE-Meta: U2FsdGVkX1+t13NPZP631vmpjgTIGg7e63mEKd5xraRP6mAAUNHvbKx190XRY+vk4bF5ZmT50YPb9vLkqUS5HKeQyXBTc17pnuomGKoSO/7T1ffZXxnlzA1EwWz9ti2l5JsJ614+hMwLKLQ03HQbRZN1yXY/tYcYMwnKBrv29G4IRX9sOx1nOgC2ns/PVVvTx4aXjyEKCsqaFFRc7ERJ83crT3as5NAo6Xn6ioUS1ZKBeA869B2zb8TeFhp8LaTanfVr2upDSZeYba759KmXyu+jTxT5O/nCrP1k4gHiw3Phz0fY3x7AcuwLD7nrdZWslEbi7/OSwW3fLZ7RcP+6/7fIC/zEmRFxIPBI92AuJUp9Ek04B4VQqsYyHvzC9zynL4MdMIplg/5Pkp5NTF79/UGuf5cJfZyVrNjuLyjVO7y+M7zcs2waeaSiHtBHLKoV7wmGeQr2G59gx4eEdyGYTKrrOWgj5B4QyVua4s3OJwKQgFI+PorsKvqkpdld2AG5B3f0FmL+dk9GZgbt0PuAZAM3Io8R2TLE8N/VqvcqG36IXBIcW2sQ6TJ2WHKus7uDrbEbR/EZqTylqdyeOgsJDyZoWn8QJrUz77CMQ7I6YHU7yp63IHPlKZB3G0c9I0o5tzVYygQkBCfVeP1BOhoZUZklFynCAEs3VX4Z+Hg7xXeZ5etNqGXKPmufd46YwMVXOBx9iBShvzMex00KFFbgHc2ooAHudNetpt/u8w5DC9BVZhSZ2sR/JIG/gt2+06eKHZHBOJLJm6XvFco+DsvyNNJv98dlAJzfpMePY8u5Iy2mRP7kB3TJbqHHxpQI40bbXbE4fx/1bwbd5yDn8gvew6+Ems24Wc9n0TmZesYRgVMPlm8IC4nq1p7zTkwNQeEuZyNAj/OkPKRj4xqFEdcpja4gHFU6cRJ9kXl4L+BQlRCcadmD3TQquHjdGL7XGP+kv8XirmXa1/7rEAuhzZ0
+ gsP5iH2P
+ oyuQvxj9YzSVUvNpb3dC4Fb6XKHSqDnlwzOfOyCkZnN4qPAB394aEi5muQbna39GvHy0SJ/j1eABxnxz3phIpk3+4QAt+qTWVtkXHdyhBE9y9LPUGrOF6DXS23iFhGjBbUk7ILqM4yn+h9H/OxhnyWaiHQqMdTXr8IXigFhnJwTVMRcr3KBBT/J+Yi7M1g5nSOeRbv9uM/tC3XyVHr/p9DOI9/9UvH4C2XG3DhZGkPQlt4V0g5i5Ps50jJJdcsbSeVCH1sdlMBfs84LloACQ1z3+Pzsy1XcyV7m5DGRw2ElVLWv0zykQlYSSJLloJvsjODsf1+SWdJQOK/QQ2ApqqYkCPKsky9okgzaxz8sv0miuvD1uqZEQEik2oYN6It/QAGt1p5MgH8jrdm+Kr/rlVCCXBEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,222 +111,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-07 13:43:09+00:00, Pasha Tatashin wrote:
-> On 06-07 14:58, Mike Rapoport wrote:
-> 
-> > On Fri, 05 Jun 2026 03:32:26 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> > 
-> > Hi,
-> > 
-> > 
-> > I'd keep vmalloc where it is, it's more of a memory preservation primitive
-> > rather than a data structure of it's own. The data structure it uses is an
-> > implementation detail.
-> 
-> kho vmalloc is absolutely a data structure. KHO core only provides the
-> basic handover mechanism (FDT nodes, physical memory ranges). vmalloc
-> is a structured representation on top of KHO, and should provide its own
-> versioned ABI.
-
-kho_preserve_vmalloc() has the same semantics as kho_preserve_folio().
-It's not intended to be used as a data structure. The data structure is
-an implementation detail unlike with kho_block and kho_radix_tree that
-are intended to be used as data structures and expose clear data
-structure APIs.
-
-Yes, vmalloc should have versioning, but that does not mean it must move
-to different files.
-
-And, btw, moving KHOSER_PTR() infra along with vmalloc is wrong. It was
-my oversight that I didn't insist on using it for most of the
-serializeable pointers instead of open coded
-virt_to_phys()/phys_to_virt(). We need to fix it.
-
-> If we change any of the vmalloc serialized structures (like kho_vmalloc,
-> kho_vmalloc_chunk, or kho_vmalloc_hdr), then vmalloc won't work and
-> compatibility will break.
-> 
-> Core KHO does not need vmalloc; nothing in kexec_handover.c uses it.
-> 
-> Instead, vmalloc has external customers:
-> - memfd (uses it to preserve serialized folio metadata)
-> - KHO test suite in lib/test_kho.c (uses it to preserve physical address arrays)
-
-Following this logic, kho_presrve_folio() should be moved out because
-it's not used by KHO but has external customers. And radix tree should
-forever remain in kexec_handover.c because KHO uses it ;-)
-
-> > Let's minimize the churn where possible for the sake of git blame and
-> > backports.
-> 
-> It is much better to do the right cleanups now while KHO is young. Once more
-> subsystems are added, this refactoring will be twice as hard. Modularizing the
-> code now guarantees a simpler, safer, and scalable design. Placing each data
-> structure in its own file gives us code that is easier to maintain, review, and
-> less prone to bugs.
-
-dependencies
-> > that justify small headers for each two functions and netiher
-> > linux/kexec_handover.h nor linux/kho/abi/kexec_handover.h are that long
-> > to start splitting them.
-> 
-> External users only need to include the headers they actually use. For
-> example, LUO shouldn't have to pull vmalloc or radix tree KHO
-> declarations, and memfd does not need block.
-> 
-> From a maintenance point of view, it is much easier to catch ABI
-> changes when the file with the appropriate version has been changed,
-> and most likely the version of that file should be updated. If a single
-> header contains compatibility versions for several different data
-> structures, it is easier to miss the correct version update.
-
-No matter in what files the definition lives, someone can forget to
-update version and we may miss it during review.
-
-Would be better to spend this time and energy to add kho-specific prompt
-to LLM review to catch such issues ;-)
- 
-> Since we are splitting the source files (like kho_radix.c and
-> kho_vmalloc.c), the headers should logically follow the same
-> modularity.
- 
-They could. Doesn't mean they have to.
-
-> > I agree that we should decouple versioning of these components from the
-> > global KHO versioning.
-> > Can't say I agree with the way you propose to do it.
-> > 
-> > I don't like that each user of a KHO component should include that
-> > component version in its own version string (or whatever it may become
-> > later).
-> > 
-> > It requires ABI headers update each time a user decides to add a new
-> > data structure and worse when there is a change to that data structure.
-> > It creates coupling of the data structure user with its particular
-> > version and just looks ugly IMHO.
-> 
-> It is actually the opposite.
-> 
-> If a user adds a new data structure, that new data structure will have
-> its own compatibility version. Instead of the current approach where
-> the global version string needs to be updated, only the new version
-> string would be added.
-> 
-> Also, if someone updates their code to use the new data structure, their
-> compatibility string is going to be updated anyway, as part of using
-> the data structure requires including the dependency in their
-> compatibility.
-
-Sorry I wasn't clear. I agree that kho_vmalloc, block and radix tree
-should have their own versioning rather than rely on global KHO version.
-
-What I don't like in your proposal is mixing versioning of a component
-with its dependencies.
-
-I think that versioning should be completely local to each component.
-LUO should not care about kho_block "on wire" layout. This should be
-encapsulated in kho_block.
-
-> Backward compatibility is not in scope at the moment, but we can make
-> the version parsing more granular in the future.
-> 
-> Instead of a simple strncmp(), we can introduce a standard callback
-> interface for data structures. Each data structure implementation would
-> implement this interface, and we would pass the parsed version string
-> to the data-structure-specific version check.
-
-Backward compatibility will be in scope sooner or later and string
-parsing is surely not the way to deal with multiple versions.
-
-How do you suggest to represent support for multiple versions?
-"luo-v2;luo-v3;block-v2;block-v3;block-v4"?
-
-> > Or, say, we add support to kmalloc() and use it in kho_block.
-> > Then we'd have to add kmalloc() versioning to all kho_block users, right?
-> 
-> I was thinking about this. Since we don't have examples of data
-> structures depending on each other right now, I simply made sure
-> there are no duplicates in the compatibility strings.
-> 
-> If data structures have interdependencies in the future, we can easily
-> remove this uniqueness restriction. The users of block will still
-> include the block compatibility string (which automatically includes
-> kmalloc), and if user also depends on kmalloc, they will include it
-> as well.
-> 
-> > I think the versioning of each component should be handled by ->restore()
-> > of that component. If it sees an incompatible version in the preserved
-> > data, it returns an error. The versions can be stored e.g. in the base KHO
-> > fdt.
-> 
-> Hm, I think, checking compatibility inside ->restore() of each component may be
-> too late in the boot sequence.
+On Mon, Jun 08, 2026 at 04:35:29AM -0400, Michael S. Tsirkin wrote:
+> Add a _user variant of alloc_contig_frozen_pages that accepts a user_addr
+> parameter for cache-friendly zeroing of contiguous allocations.
 >
-> By checking the composite compatibility strings upfront (before invoking
-> the actual restore/retrieve callbacks), we can guarantee that the entire
-> state configuration is fully compatible. If any mismatch is found, we
-> can cleanly abort the live update.
+> No functional change; all existing callers continue to pass
+> USER_ADDR_NONE.
 
-If a ->restore() returned an error (for any reason) we anyway need to
-reboot, don't we? 
+Well, except that you're adding a new function...
 
-What do we do if memfd discovered incompatibility, but, say hugetlb
-global state was already restored?
+>
+> Note for reviewers: non-compound contiguous allocations are
 
-If you really want to run the compatibility check upfront, we need a
-mechanism for that. And that should probably happen even before
-kho_mem_init().
+Please don't put notes for reviewers in commit messages.
 
-> Additionally, keeping the versioning managed via composite strings on the
-> serialized data and registered handlers keeps the KHO core completely
-> decoupled from individual component ABIs, avoiding the need to bloat the
-> base KHO FDT with subsystem-specific versions.
+> zeroed via kernel_init_pages, same as before this patch.
+> There is no fault address because these allocations are not
+> from the page fault path. For compound allocations, user_addr
+> reaches post_alloc_hook() which calls folio_zero_user() with
+> the dcache flush on cache-aliasing architectures.
 
-Actually FDT "compatible" handles versioning nicer than composite strings
-You can have
+Yeah it's exactly this kind of 'just have to know' stuff that makes this
+user_addr approach unacceptable.
 
-	compatible="kho-v4", "vmalloc-v1", "radix-v1", "block-v2";
+We mustn't add more cognitive overhead for already confusing code. Now
+everybody using these has to figure out what 'user_addr' means and will
+inevitably get it wrong.
 
-and check fdt_node_check_compatible("vmalloc-v1") for vmalloc and
-fdt_node_check_compatible("block-v2") for block.
+This whole approach needs to be rethought.
 
-And we wouldn't need to reimplement string parsing ;-)
+>
+> Note about Sashiko (sashiko.dev) false positives: sashiko
+> flags two issues here: (1) user_addr silently ignored for
+> non-compound allocations, and (2) post_alloc_hook ignores
+> user_addr. Both are false positives: (1) non-compound
+> contiguous allocations have no fault address to pass, and
+> (2) post_alloc_hook does use user_addr when it is not
+> USER_ADDR_NONE.
 
-But yeah, I do see value of making components versioning and KHO global
-versioning independent. I just don't like composite strings and I don't
-like mixing versioning with dependencies.
+Please don't put AI hallucinations in commit messages.
 
-Since we are moving from FDT for the most things, version should become
-a number rather than a string and version compatibility should be
-independently verified by each component.
-Then dependencies between components will remain at API level rather
-than brought into the ABI.
+If you want something to not appear in a commit message, but want reviewers
+to see it, put it below the '---' in the patch.
 
-If you think ->restore() is too late for compatibility check, we should
-work on a mechanism for upfront compatibility verification.
 
-> > > 5. Adds a KUnit test suite to verify that the composite compatibility
-> > 
-> > Without "composite compatibility strings" we don't need to care about
-> > them "remaining unique and sorted in alphabetical order".
-> 
-> These are not strict runtime requirements; they are simply there to enforce
-> code cleanliness and prevent human errors like accidental duplicates or
-> mismatched orders.
-> 
-> Even with a simple strncmp(), it works perfectly fine as long as the
-> strings match exactly. If the uniqueness or sorting constraints are too
-> strict, they can easily be removed.
-> 
-> In the future, we can transition to a more sophisticated version checker
-> that parses the composite string into individual subsystem version tokens
-> and verifies them one-by-one, rather than relying on a strict literal
-> strcmp() string comparison.
-> 
-> > The need for this test alone is already a red flag ;-)
-> 
-> I will remove test ;-)
+>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-It will not remove the red flags ;-)
+This patch is unacceptable for the same reasons given for 7/37.
 
+> Assisted-by: Claude:claude-opus-4-6
+> ---
+>  include/linux/gfp.h |  6 ++++++
+>  mm/page_alloc.c     | 42 ++++++++++++++++++++++++++++++++----------
+>  2 files changed, 38 insertions(+), 10 deletions(-)
+>
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index ee35c5367abc..73109d4e31a4 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -453,6 +453,12 @@ struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
+>  #define alloc_contig_frozen_pages(...) \
+>  	alloc_hooks(alloc_contig_frozen_pages_noprof(__VA_ARGS__))
+>
+> +struct page *alloc_contig_frozen_pages_user_noprof(unsigned long nr_pages,
+> +		gfp_t gfp_mask, int nid, nodemask_t *nodemask,
+> +		unsigned long user_addr);
+> +#define alloc_contig_frozen_pages_user(...) \
+> +	alloc_hooks(alloc_contig_frozen_pages_user_noprof(__VA_ARGS__))
+> +
+>  struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
+>  		int nid, nodemask_t *nodemask);
+>  #define alloc_contig_pages(...)	\
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 21b52c879751..6d3f284c607d 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -6975,13 +6975,15 @@ static void __free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages
+>  }
+>
+>  /**
+> - * alloc_contig_frozen_range() -- tries to allocate given range of frozen pages
+> + * __alloc_contig_frozen_range() -- tries to allocate given range of frozen pages
+>   * @start:	start PFN to allocate
+>   * @end:	one-past-the-last PFN to allocate
+>   * @alloc_flags:	allocation information
+>   * @gfp_mask:	GFP mask. Node/zone/placement hints are ignored; only some
+>   *		action and reclaim modifiers are supported. Reclaim modifiers
+>   *		control allocation behavior during compaction/migration/reclaim.
+> + * @user_addr:	user virtual address for cache-friendly zeroing, or
+> + *		USER_ADDR_NONE for kernel allocations.
+
+Yeah, I really do not want us passing USER_ADDR_NONE for kernel allocations
+thanks. This is hugely confusing already pretty confusing logic.
+
+>   *
+>   * The PFN range does not have to be pageblock aligned. The PFN range must
+>   * belong to a single zone.
+> @@ -6997,8 +6999,9 @@ static void __free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages
+>   *
+>   * Return: zero on success or negative error code.
+>   */
+> -int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+> -		acr_flags_t alloc_flags, gfp_t gfp_mask)
+> +static int __alloc_contig_frozen_range(unsigned long start, unsigned long end,
+> +		acr_flags_t alloc_flags, gfp_t gfp_mask,
+> +		unsigned long user_addr)
+>  {
+>  	const unsigned int order = ilog2(end - start);
+>  	unsigned long outer_start, outer_end;
+> @@ -7125,7 +7128,7 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+>  		struct page *head = pfn_to_page(start);
+>
+>  		check_new_pages(head, order);
+> -		prep_new_page(head, order, gfp_mask, 0, USER_ADDR_NONE);
+> +		prep_new_page(head, order, gfp_mask, 0, user_addr);
+>  	} else {
+>  		ret = -EINVAL;
+>  		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
+> @@ -7135,6 +7138,13 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+>  	undo_isolate_page_range(start, end);
+>  	return ret;
+>  }
+> +
+> +int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+> +		acr_flags_t alloc_flags, gfp_t gfp_mask)
+> +{
+> +	return __alloc_contig_frozen_range(start, end, alloc_flags, gfp_mask,
+> +					   USER_ADDR_NONE);
+> +}
+>  EXPORT_SYMBOL(alloc_contig_frozen_range_noprof);
+>
+>  /**
+> @@ -7227,14 +7237,16 @@ static bool zone_spans_last_pfn(const struct zone *zone,
+>  	return zone_spans_pfn(zone, last_pfn);
+>  }
+>
+> -/**
+> - * alloc_contig_frozen_pages() -- tries to find and allocate contiguous range of frozen pages
+> +/*
+> + * alloc_contig_frozen_pages_user_noprof() -- allocate contiguous frozen pages with user address
+>   * @nr_pages:	Number of contiguous pages to allocate
+>   * @gfp_mask:	GFP mask. Node/zone/placement hints limit the search; only some
+>   *		action and reclaim modifiers are supported. Reclaim modifiers
+>   *		control allocation behavior during compaction/migration/reclaim.
+>   * @nid:	Target node
+>   * @nodemask:	Mask for other possible nodes
+> + * @user_addr:	user virtual address for cache-friendly zeroing, or
+> + *		USER_ADDR_NONE for kernel allocations.
+>   *
+>   * This routine is a wrapper around alloc_contig_frozen_range(). It scans over
+>   * zones on an applicable zonelist to find a contiguous pfn range which can then
+> @@ -7253,8 +7265,9 @@ static bool zone_spans_last_pfn(const struct zone *zone,
+>   *
+>   * Return: pointer to contiguous frozen pages on success, or NULL if not successful.
+>   */
+> -struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
+> -		gfp_t gfp_mask, int nid, nodemask_t *nodemask)
+> +struct page *alloc_contig_frozen_pages_user_noprof(unsigned long nr_pages,
+> +		gfp_t gfp_mask, int nid, nodemask_t *nodemask,
+> +		unsigned long user_addr)
+>  {
+>  	unsigned long ret, pfn, flags;
+>  	struct zonelist *zonelist;
+> @@ -7282,10 +7295,11 @@ struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
+>  				 * win the race and cause allocation to fail.
+>  				 */
+>  				spin_unlock_irqrestore(&zone->lock, flags);
+> -				ret = alloc_contig_frozen_range_noprof(pfn,
+> +				ret = __alloc_contig_frozen_range(pfn,
+>  							pfn + nr_pages,
+>  							ACR_FLAGS_NONE,
+> -							gfp_mask);
+> +							gfp_mask,
+> +							user_addr);
+>  				if (!ret)
+>  					return pfn_to_page(pfn);
+>  				spin_lock_irqsave(&zone->lock, flags);
+> @@ -7307,6 +7321,14 @@ struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
+>  	}
+>  	return NULL;
+>  }
+> +EXPORT_SYMBOL(alloc_contig_frozen_pages_user_noprof);
+
+Generally we don't add EXPORT_SYMBOL() for new stuff unless
+unavoidable. EXPORT_SYMBOL_GPL() is preferred.
+
+> +
+> +struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
+> +		gfp_t gfp_mask, int nid, nodemask_t *nodemask)
+> +{
+> +	return alloc_contig_frozen_pages_user_noprof(nr_pages, gfp_mask, nid,
+> +						     nodemask, USER_ADDR_NONE);
+> +}
+>  EXPORT_SYMBOL(alloc_contig_frozen_pages_noprof);
+>
+>  /**
+> --
+> MST
+>
+
+Thanks, Lorenzo
 
