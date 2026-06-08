@@ -4,155 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96848CD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 21:53:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41594CD6E79
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 21:54:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C305C6B0088; Mon,  8 Jun 2026 17:53:47 -0400 (EDT)
+	id AAA4F6B0005; Mon,  8 Jun 2026 17:54:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C082C6B008A; Mon,  8 Jun 2026 17:53:47 -0400 (EDT)
+	id A81746B008C; Mon,  8 Jun 2026 17:54:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1D546B008C; Mon,  8 Jun 2026 17:53:47 -0400 (EDT)
+	id 9BE9E6B0092; Mon,  8 Jun 2026 17:54:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A1DCC6B0088
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:53:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 56CF08D25B
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:53:47 +0000 (UTC)
-X-FDA: 84858098094.11.BD30CD9
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 73F80C0008
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:53:45 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=R51fy9Bb;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DEEA6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:54:14 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 443C91A0323
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:54:14 +0000 (UTC)
+X-FDA: 84858099228.30.BBB0B1A
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5E7FC40002
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:54:09 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PUZpmHLk;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780955625;
+	s=arc-20220608; t=1780955652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xqf56sX2NNRInjSI0xIcWKifhIm+jUCIOxbaCaOEv34=;
-	b=A5PKqqCGDHpFMB/tHZ1b0OncpvuTXmsYno2CqpLjetxQY3ph+N0LwE+CUcWdK2QWdV5hUo
-	J7afA/+mJUye2y1Cue2n8xOeAkqi1MZoekUHKzqzOHwh96vBRf/eQXtnsp3TATsfULgA9s
-	+OWGEZ+zFNsqIWqjdjkbm8s3HaiZSFQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780955625;
-	b=a/2Lj9K+KYPNUj1A9NrbAghGfFmIesm0KPO8mLXAmZr7cm5mZjJP19Tl8nOp1ealo4uptf
-	7F/DNO98i3C9DcYRw6qsYM9KV2EnYGt2fvkJuKp9AMtOhFDBhrwWrcq17GTozWoNDb9L6Y
-	xsuuYcvklsvqIhOwrCv9+X2VcNYkd3M=
+	bh=3Nzbf92Rg2RFuKwxuKQMD7LFkVELfr0DE02iiQTNScM=;
+	b=1D9ymoFp/dxNJWJwEogoEmSYB7QF4n4Zf5pITJqQr3JxElozoNqfsib5ExJdfBS6CxxFha
+	3gHyJF6dy8n1TFbS9VTHKpPHY5Bp6RU8HGQ9ma9VkZOwUEyfVe6UMeRfnPmr5cYzY79Uf5
+	3BbjcctWB2jX+jrNhYx6AjEez0AXnQY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=R51fy9Bb;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8ce9de10985so57812676d6.0
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 14:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1780955624; x=1781560424; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xqf56sX2NNRInjSI0xIcWKifhIm+jUCIOxbaCaOEv34=;
-        b=R51fy9BbLiHOEwhsfmXMLk0witAQ0nmJ/UhDTQhT2wC/nG2z/W8t8rd+jNjA6FR6fj
-         o1BAOvzW0dNYqMunKYnDAQ0YEjhFVasR2lCB8PEwE/AziWML7sDEy6/xXwzyYTKBVceQ
-         BxXwcT6oobCv7+N2NDkJCMXrIMdafnuefDHlp9qs5n/R/5D3eXlyldHRWLJ3XUtryODy
-         Liwk+RvIa3TwwiajOl24gUa9/gjFfS9s1LziTbOMtvif7PZYy91HGNFtf8hMT3gajjfD
-         uyBtsVa0uPW9fD+x98ii4sx32w7K7XSJWOKctOVdplZ/4G9+2ZrfjaGs6Y2tr6rawjku
-         VHjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780955624; x=1781560424;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xqf56sX2NNRInjSI0xIcWKifhIm+jUCIOxbaCaOEv34=;
-        b=APet9SGZJx644hyi6f1jyTIHos6Fwya5hqXNEGXnaEWywxJQx36AwfQyxVwl/4ydtK
-         PFF9z0p8JvexVXcD6JxSeIVSvQnKA4YwmL++UEQt+C5iu2pa9+9ggbIABUPfi4Ae1IEF
-         3bv2LARmuTyySTlu/1cxJcWRCdLRz6F4E9c1ZHAiWn13FhYhGyl+Y7u0+l8/macIWXlq
-         vxc4XqcNbcy9O+cbI8KKeyh9D0owzctqu4pIf+QobBqmuceFxo4zb6/MpZyC3Lq0m0SX
-         zYxU8zFjbNdTQNubWV4A5k73VJoMdS6oVCvcYCQgDb1PetM4lN9swxtOYh7QrQJJrCFJ
-         rjzw==
-X-Forwarded-Encrypted: i=1; AFNElJ8vnh+lK8nZjMQNxcQgYPRxuG0UqpSOqVpbk5aAnTwMa6Kq/+IrXMiEX7IFVmjKf8ZQVOJEbkNN8g==@kvack.org
-X-Gm-Message-State: AOJu0YxmlzQg/10Vu8P1G/rhbxNmAszw4nr9PQWZC17q8xfbszODabVM
-	jRLbGCw5RD5FwJTGMeZDTPV6ebT4R2hYhPoOvKFjnTctQbGnM411FyA9Y9nipPpEacA=
-X-Gm-Gg: Acq92OFM3WztwXK3z1MQg6QcLMwSMdlFpE9JsrbUd6Q6KyiqJYsdNCYsqR9cN+cEkvJ
-	k4n8yQt6GgvZKuChoDPPbRLYOJ68OmDQ9E5fMIolPuiuBjdBAItZgOjAYNlJMQekrSV7hE50H55
-	LJ7o+aYTJO6WG+Ajz3Hl8u5+Q6LSzreniLGKmxpQVU5AIAOM8an8tmzIMqt5KgAPnN/3kJPin+K
-	He/n+LYUYJmy4aSg+f5sM8DHlfootN69xfriwVKp2B3XdJ3MXhCNDcPbQP9Dojz5Dvpn1BAV+u/
-	dwn/6vyNUJ/AmRvguSMgwkUdnFh+YmFK331G/6k7pnKrOasomGS/ZUpuX21EzTwCanRXZ5vG4ub
-	zeJ7NYkBPEZbgq6Uak3EyDg3kOr8VvZvfbCSCsjBzpjwRlHfUhmWWUdxUH6VJ4t/JuTGcyJwmX6
-	yYcIoBIjWW/Twsbug7xxHm+3xtTmIEzJdK3Xug412JeX680aWxeHyvSFyUZnidK6hnW2mAR0+Ae
-	GvXJa5HM6XdhFubPQ==
-X-Received: by 2002:a05:6214:1242:b0:8ca:256b:8751 with SMTP id 6a1803df08f44-8cee8b1db55mr210068126d6.1.1780955624660;
-        Mon, 08 Jun 2026 14:53:44 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ceccd9fe25sm183503066d6.3.2026.06.08.14.53.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 14:53:44 -0700 (PDT)
-Date: Mon, 8 Jun 2026 17:53:42 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v10 12/37] mm: use folio_zero_user for user pages in
- post_alloc_hook
-Message-ID: <aic55lsQQ4Hegw7-@gourry-fedora-PF4VCD3F>
-References: <f92f6f06e5804b4ea7f68b8664b7e69953b50f4e.1780906288.git.mst@redhat.com>
- <aiacZ6_7SG3nvVjM@lucifer>
- <aiblhJv_BvMn_8XY@gourry-fedora-PF4VCD3F>
- <20260608154354-mutt-send-email-mst@kernel.org>
- <aicjNRrHYOOBt0Hx@gourry-fedora-PF4VCD3F>
- <20260608161810-mutt-send-email-mst@kernel.org>
- <aicruns_4nOx0hD-@gourry-fedora-PF4VCD3F>
- <20260608170646-mutt-send-email-mst@kernel.org>
- <aic1PoxSiHzZ40Jr@gourry-fedora-PF4VCD3F>
- <20260608174430-mutt-send-email-mst@kernel.org>
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PUZpmHLk;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780955652;
+	b=YgeyjLezrDQ3XU3KEuHmxHDM58AF+XJ/w9bzakdOd22QuZKvrBa/I6m3Vsh71aZH1RWRGy
+	b86l7dWuXohdFxe5tFevd4BmchBTnJ11aTwLa33lhLbd5CFSbscZ3cPn3x/FLAokWimJqj
+	+y2F0z8UA4D4Q90scQaWi++L6BiN1BA=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260608174430-mutt-send-email-mst@kernel.org>
-X-Rspamd-Queue-Id: 73F80C0008
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780955647;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Nzbf92Rg2RFuKwxuKQMD7LFkVELfr0DE02iiQTNScM=;
+	b=PUZpmHLkwuxb6lTcTcGTp2FqVbIL5ZGd9oa4qRnMd7qXTTXJ+/uvIw5TIPwEnGz2g/sapO
+	y3FGdi/wotDTa1W1EwGmdfkTB8EPw7sP25EWdRi5nMa8OCsHYD3ec44B/mAKmQglXrO4Ku
+	TwQZr1Tr7dAX8Vgv0MwzrChx3HToPq8=
+Date: Mon, 08 Jun 2026 21:54:03 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: ilya.gladyshev@linux.dev
+Message-ID: <7e69c353ecfbbcdecfee2d85a35635cb9a07fec8@linux.dev>
+TLS-Required: No
+Subject: [PATCH v4 1/2] mm: drop page refcount zero state semantics
+To: ivgorbunov@me.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ apopple@nvidia.com, artem.kuzin@huawei.com,
+ baolin.wang@linux.alibaba.com, david@kernel.org, foxido@foxido.dev,
+ harry.yoo@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
+ rppt@kernel.org, surenb@google.com, torvalds@linuxfoundation.org,
+ vbabka@suse.cz, willy@infradead.org, yuzhao@google.com, ziy@nvidia.com,
+ pfalcato@suse.de, kirill@shutemov.name
+In-Reply-To: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
+References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 5E7FC40002
 X-Rspam-User: 
-X-Stat-Signature: d7gogntkcajrwqz8wbf8d8netczdakaz
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780955625-999621
-X-HE-Meta: U2FsdGVkX18XP5flFSZ9FD8KCvEmq2en2CK+1jCqf/ybfb5x6aj27ez1o/d7dAckHFX9hSX9SD+DPa1iKcNJIoFgOBnYMuj8xVzcoyolJTgIkvxyjeNejPcS7i90MDSnCJ+lTB2+cZFOODFeVwW9kSidyw+7WVU8e7fXf98tO6YSCFeH+QRhtOOGJU6qwj+6VGrZmb85XvIIOkCoDVYy87MSXWihBx3+8ZY9Mprz2IMtvAr6B00oP8JatkJ3dduffx3pu2kArc5lh5ehAmfDyLgXXdDbOVDEHBAL9alvI9v7PpztWyvid6Darux+NplYriOFXac574HhJ5KeboJHar/w+LcUUFtROgo4vX+HmZYeue83qo46Wkvd8DZIfmPwRyMqcSOEJ5d6NXjyPmWwwRSwl1hUb595XhtQnCB3QlO1fZK9RnTDh0gDhn8tu7PrqiT5XeuqwqxC0OXRO+dGk3qnbfQ76m2zMf12EvG0RPMDHy5Ru54zoh0ro+lGScOX5oJBqRx+jQ/dgIZ/P0/Gg9gQEOIAYgKuDZ8lBGoqSWW9qlg+zlx0ikSbVR+opqreYc8fILpsoWn1E95NDNCi0Bj4C8C2N3TjHeAEbLSe3PdeXIb0+VJgpugizphYOolQUhJ1lSb4WOepYlzn37liZS2ljWsJKc0nE+HdSvGjAUZE2nccQgCT9xrpyC+6Bm+NjNv9SEiqaIZCHf/smCsMC8GN2TvsjbtxAkw7Paj1JGJWLODiBRFSk5Cvi5fob6BKWVUGs+5MACd3ZkaPrHSp1SdhLCEgCEiTi80b6bmCj+staOlZ8Sxj7EW85vMs7YiGqOoDBZ8CELM5S5Z2urBlvUt9ba3bs2dG2OlDgXVq/gcuHqWf6QQDuaxwODF5snbpMxLkmzAL3mgAgJHqaLLK/EUh7IB8Aw10HTFfx9lo4UvGplaxGTaT56zidJIy8MF33bH+3kiB3uxFX5T78F2
- aMrIJVgS
- ZON2mLNvN741mq6lSI19mYdkt4c4gafQeNK4ohUM04W+Cp+vV5p/gFbH45nlTRgXDUDdQHQhwb47jW++Ff7StD5ZMIVzul53TtAALTa3cLIGsBWmdZRD57opID0tjp0QFpJ4vyqj7IXjwIfNhwu3HdGO3PZPKI11MYYjXVt/cHZPfAy6IgpR8/s3vKna5RrV7gbqOS4wuzJhN1oz+0q+kYz2cUA28WcTsV0GZPvBJ2ZmOY7kUz0HyvJYzfkDDTSQBAj9Cj8GFF0WXNq/fUaq+omG7soXQc1yljTQFDNNdNG3axWTqRYQonAcfWsGx8zZaPeJ2RJD3ZXLfMmCRBLXh+FfcSyd9JcuHhLCKYR+trCFQTP0rxlGlamrEWjIKEwS8wpk/DzZvRdydUDOMVrQi6uGoW+C0P4VW4YxTPnUfQ0zd3OC6pPe6OdSn4KrTy0ZTnzoBQuPdCz+fDsU=
+X-Stat-Signature: g4ac59xz1tkuit5qmdujwffmbcfp4jh1
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780955649-371969
+X-HE-Meta: U2FsdGVkX18JNatptlYuaPZt+Ptxcb5ka02sPco/hC2wcV+DzFUjP+wU9OpMtPfd0UgDwTEznohoGf57I7SWfxwauG8/taogQPCUMK2XYt58+QFhrmXe7vRJ/LhvpomfDk2vYZU635TTTRe4AHP+LmmhKA4eE2wHP9mEbT8aCPHRHC9NNaljzakiIFVSg+KhoNXD+i1DJn/weNoDLbkFs2GynoG6qysWpvhsg/gcU2QM99DwtuXP4KmSNl8/Wo0rMLDsERjMid0/bx135YOrQKrAGhrOsCBiDCKEt6S977C9b8SrQeHaqi3IHaUgK4rXDomvHreBMdr1hIM4xTzOCXALbbzP/b9jv/OgG6x4CJGaIakDrDSwOYX0vI924gSGgCcsFcqv8GmIWsvgHzQP6MqysMTuwKlW/R2zaiuwmF3ue+VjNPV4hKgKV+a5CdEdEXTTaNLdEp4PPG0f7TBIxz9PLhBENs4p0O4T2OXedzsKu7xquKWfGu2d+VebCBme03tvh+MEdwOpAft899zWtNB/pxOVGZuuIP8FRvnWpZkSyjcwFaIvR5tfQy47v+ukgfqOe/F9AD1Q2zWHsa7EFJtA8f5TDR5/YV1C6XlLZlM84ze/BHBjEDb+2tFoYpJRWOmeFslLyw4WvgDlWdox+wA42YlhuT4pBeq3uHpzUgzlS8HtlBYrZ1/VUV9kJIbM1szWERLW2go89r2QJQoGE1dx/m8sHPVXlCiVhprwBPEe6oLVcesWTP2KwxGIXRNpvdswtfbWVRUI2FgROTf9azAJU2ESMN0Ac9iWgCI9jfh0LCWQjBMdQ0eV4KrKE9ljQiCUkSArJm4TOsc95cPPj0AbWZp8p/oOQD/9Zaw3hiJOeVH3Pl1W9avASn1vxjCXzL2DCuQo1BImAPqUciEi6CZk1XHxhQwMgA6gKvGC623DQXsoYy/IWt6CrSKsoqLxaW4JAXevFFIkT2XGXyk
+ yJB/o3O/
+ jlRyGjLQpiEt4r7rpgDna8eeNsM33oa/kQodCgWbYqSmdTJzWhwksV65uoQ2CKHJxqaG2QJ4NzFwj7lGoonvSCQ4sJ3O0huDOVQjWPU9fgWM5Vj8Jwqjjl22qlManftJcO1G2vIe5yTThP3Om1gfTVtYNEM7TN3wuuZkOmEGBt81S6AJ0DSu1psQnszyclkrr94lP5fIC/Jro0NlddlPzIPDhP7fuKTwxvsR7dpdzqC4LOhh5F2wqsx4kYgsutpEZ3rbzTqQdL3oXQ2zY1rwU7hFlGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,23 +94,395 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 05:46:27PM -0400, Michael S. Tsirkin wrote:
-> On Mon, Jun 08, 2026 at 05:33:50PM -0400, Gregory Price wrote:
-> > 
-> > You'd save yourself some revisions by taking the attention you have
-> > right now and starting the discussion thread (and consider submitting
-> > the topic to LPC if that's something interests you!).
-> 
-> Well it's in october, is it not? I don't think I have the patience to
-> keep fiddling with that for half a year.
-> 
+From: Gorbunov Ivan <ivgorbunov@me.com>
 
-You might be able to find a way forward that doesn't take that long, but
-that starts with trying to build consensus on what to build before you
-build it.
+Some call sites manipulate page refcount directly via
+set_page_count() instead of using more direct API like set_frozen() /
+init_refcount().
 
-You're proposing a non-trivial change to the page allocator API, I would
-not expect this to move at the speed of claude.
+This conflicts with the next patch, which will stop treating zeroed
+refcount as the indicator of a frozen page. To prepare for that change,
+this patch:
 
-~Gregory
+- "Deprecates" the internal assumption that a frozen page has refcount=3D=
+0
+(and vice versa). Callers of page_ref_count() still see 0 for frozen
+pages.
+
+- Inserts VM_BUG_ON() checks in every refcount API function to prevent
+  following errnous behaviour:
+
+page =3D alloc_frozen_page() // page is frozen
+page_ref_inc(page, 1) // BUG: Increment on frozen page instead of init
+
+- Renames _unless_zero() functions into _unless_frozen()
+
+Reviewed-by: Artem Kuzin <artem.kuzin@huawei.com>
+Co-developed-by: Gladyshev Ilya <ilya.gladyshev@linux.dev>
+Signed-off-by: Gladyshev Ilya <ilya.gladyshev@linux.dev>
+Signed-off-by: Gorbunov Ivan <ivgorbunov@me.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com> # p2pdma.c
+---
+ drivers/pci/p2pdma.c               |  4 ++--
+ include/linux/mm.h                 |  2 +-
+ include/linux/page_ref.h           | 36 ++++++++++++++++++++++++------
+ kernel/liveupdate/kexec_handover.c |  6 ++---
+ lib/test_hmm.c                     |  4 ++--
+ mm/hugetlb.c                       |  2 +-
+ mm/internal.h                      |  2 +-
+ mm/memremap.c                      |  4 ++--
+ mm/mm_init.c                       |  6 ++---
+ mm/page_alloc.c                    |  4 ++--
+ 10 files changed, 46 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 7c898542af8d..43ed40a6183b 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -148,7 +148,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struc=
+t kobject *kobj,
+ 		 * using it.
+ 		 */
+ 		VM_WARN_ON_ONCE_PAGE(page_ref_count(page), page);
+-		set_page_count(page, 1);
++		init_page_count(page);
+ 		ret =3D vm_insert_page(vma, vaddr, page);
+ 		if (ret) {
+ 			gen_pool_free(p2pdma->pool, (uintptr_t)kaddr, len);
+@@ -158,7 +158,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struc=
+t kobject *kobj,
+ 			 * because we don't want to trigger the
+ 			 * p2pdma_folio_free() path.
+ 			 */
+-			set_page_count(page, 0);
++			set_page_count_frozen(page);
+ 			percpu_ref_put(ref);
+ 			return ret;
+ 		}
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index fc2acedf0b76..91482c868f66 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1780,7 +1780,7 @@ static inline int folio_put_testzero(struct folio *=
+folio)
+  */
+ static inline bool get_page_unless_zero(struct page *page)
+ {
+-	return page_ref_add_unless_zero(page, 1);
++	return page_ref_add_unless_frozen(page, 1);
+ }
+=20
+=20static inline struct folio *folio_get_nontail_page(struct page *page)
+diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
+index 94d3f0e71c06..f784db6f775a 100644
+--- a/include/linux/page_ref.h
++++ b/include/linux/page_ref.h
+@@ -62,6 +62,16 @@ static inline void __page_ref_unfreeze(struct page *pa=
+ge, int v)
+=20
+=20#endif
+=20
++static=20inline bool __page_count_is_frozen(int count)
++{
++	return count =3D=3D 0;
++}
++
++static inline bool __page_is_frozen(const struct page *page)
++{
++	return __page_count_is_frozen(atomic_read(&page->_refcount));
++}
++
+ static inline int page_ref_count(const struct page *page)
+ {
+ 	return atomic_read(&page->_refcount);
+@@ -101,9 +111,9 @@ static inline void set_page_count(struct page *page, =
+int v)
+ 		__page_ref_set(page, v);
+ }
+=20
+-static=20inline void folio_set_count(struct folio *folio, int v)
++static inline void folio_init_count(struct folio *folio)
+ {
+-	set_page_count(&folio->page, v);
++	set_page_count(&folio->page, 1);
+ }
+=20
+=20/*
+@@ -115,8 +125,14 @@ static inline void init_page_count(struct page *page=
+)
+ 	set_page_count(page, 1);
+ }
+=20
++static=20inline void set_page_count_frozen(struct page *page)
++{
++	set_page_count(page, 0);
++}
++
+ static inline void page_ref_add(struct page *page, int nr)
+ {
++	VM_BUG_ON_PAGE(__page_is_frozen(page), page);
+ 	atomic_add(nr, &page->_refcount);
+ 	if (page_ref_tracepoint_active(page_ref_mod))
+ 		__page_ref_mod(page, nr);
+@@ -129,6 +145,7 @@ static inline void folio_ref_add(struct folio *folio,=
+ int nr)
+=20
+=20static inline void page_ref_sub(struct page *page, int nr)
+ {
++	VM_BUG_ON_PAGE(__page_is_frozen(page), page);
+ 	atomic_sub(nr, &page->_refcount);
+ 	if (page_ref_tracepoint_active(page_ref_mod))
+ 		__page_ref_mod(page, -nr);
+@@ -142,6 +159,7 @@ static inline void folio_ref_sub(struct folio *folio,=
+ int nr)
+ static inline int folio_ref_sub_return(struct folio *folio, int nr)
+ {
+ 	int ret =3D atomic_sub_return(nr, &folio->_refcount);
++	VM_BUG_ON_FOLIO(__page_count_is_frozen(ret + nr), folio);
+=20
+=20	if (page_ref_tracepoint_active(page_ref_mod_and_return))
+ 		__page_ref_mod_and_return(&folio->page, -nr, ret);
+@@ -150,6 +168,7 @@ static inline int folio_ref_sub_return(struct folio *=
+folio, int nr)
+=20
+=20static inline void page_ref_inc(struct page *page)
+ {
++	VM_BUG_ON_PAGE(__page_is_frozen(page), page);
+ 	atomic_inc(&page->_refcount);
+ 	if (page_ref_tracepoint_active(page_ref_mod))
+ 		__page_ref_mod(page, 1);
+@@ -162,6 +181,7 @@ static inline void folio_ref_inc(struct folio *folio)
+=20
+=20static inline void page_ref_dec(struct page *page)
+ {
++	VM_BUG_ON_PAGE(__page_is_frozen(page), page);
+ 	atomic_dec(&page->_refcount);
+ 	if (page_ref_tracepoint_active(page_ref_mod))
+ 		__page_ref_mod(page, -1);
+@@ -189,6 +209,7 @@ static inline int folio_ref_sub_and_test(struct folio=
+ *folio, int nr)
+ static inline int page_ref_inc_return(struct page *page)
+ {
+ 	int ret =3D atomic_inc_return(&page->_refcount);
++	VM_BUG_ON_PAGE(__page_count_is_frozen(ret - 1), page);
+=20
+=20	if (page_ref_tracepoint_active(page_ref_mod_and_return))
+ 		__page_ref_mod_and_return(page, 1, ret);
+@@ -217,6 +238,7 @@ static inline int folio_ref_dec_and_test(struct folio=
+ *folio)
+ static inline int page_ref_dec_return(struct page *page)
+ {
+ 	int ret =3D atomic_dec_return(&page->_refcount);
++	VM_BUG_ON_PAGE(__page_count_is_frozen(ret + 1), page);
+=20
+=20	if (page_ref_tracepoint_active(page_ref_mod_and_return))
+ 		__page_ref_mod_and_return(page, -1, ret);
+@@ -228,7 +250,7 @@ static inline int folio_ref_dec_return(struct folio *=
+folio)
+ 	return page_ref_dec_return(&folio->page);
+ }
+=20
+-static=20inline bool page_ref_add_unless_zero(struct page *page, int nr)
++static inline bool page_ref_add_unless_frozen(struct page *page, int nr)
+ {
+ 	bool ret =3D atomic_add_unless(&page->_refcount, nr, 0);
+=20
+@@=20-237,9 +259,9 @@ static inline bool page_ref_add_unless_zero(struct =
+page *page, int nr)
+ 	return ret;
+ }
+=20
+-static=20inline bool folio_ref_add_unless_zero(struct folio *folio, int =
+nr)
++static inline bool folio_ref_add_unless_frozen(struct folio *folio, int =
+nr)
+ {
+-	return page_ref_add_unless_zero(&folio->page, nr);
++	return page_ref_add_unless_frozen(&folio->page, nr);
+ }
+=20
+=20/**
+@@ -255,12 +277,12 @@ static inline bool folio_ref_add_unless_zero(struct=
+ folio *folio, int nr)
+  */
+ static inline bool folio_try_get(struct folio *folio)
+ {
+-	return folio_ref_add_unless_zero(folio, 1);
++	return folio_ref_add_unless_frozen(folio, 1);
+ }
+=20
+=20static inline bool folio_ref_try_add(struct folio *folio, int count)
+ {
+-	return folio_ref_add_unless_zero(folio, count);
++	return folio_ref_add_unless_frozen(folio, count);
+ }
+=20
+=20static inline int page_ref_freeze(struct page *page, int count)
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec=
+_handover.c
+index 1b592d86dc48..d436f6d6913f 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -361,7 +361,7 @@ EXPORT_SYMBOL_GPL(kho_radix_walk_tree);
+ static void kho_init_pages(struct page *page, unsigned long nr_pages)
+ {
+ 	for (unsigned long i =3D 0; i < nr_pages; i++) {
+-		set_page_count(page + i, 1);
++		init_page_count(page + i);
+ 		/* Clear each page's codetag to avoid accounting mismatch. */
+ 		clear_page_tag_ref(page + i);
+ 	}
+@@ -372,13 +372,13 @@ static void kho_init_folio(struct page *page, unsig=
+ned int order)
+ 	unsigned long nr_pages =3D (1 << order);
+=20
+=20	/* Head page gets refcount of 1. */
+-	set_page_count(page, 1);
++	init_page_count(page);
+ 	/* Clear head page's codetag to avoid accounting mismatch. */
+ 	clear_page_tag_ref(page);
+=20
+=20	/* For higher order folios, tail pages get a page count of zero. */
+ 	for (unsigned long i =3D 1; i < nr_pages; i++)
+-		set_page_count(page + i, 0);
++		set_page_count_frozen(page + i);
+=20
+=20	if (order > 0)
+ 		prep_compound_page(page, order);
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 213504915737..0cbcf9da4911 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1715,7 +1715,7 @@ static void dmirror_devmem_folio_split(struct folio=
+ *head, struct folio *tail)
+ 	if (tail =3D=3D NULL) {
+ 		folio_reset_order(rfolio);
+ 		rfolio->mapping =3D NULL;
+-		folio_set_count(rfolio, 1);
++		folio_init_count(rfolio);
+ 		return;
+ 	}
+=20
+@@=20-1729,7 +1729,7 @@ static void dmirror_devmem_folio_split(struct fol=
+io *head, struct folio *tail)
+=20
+=20	folio_page(tail, 0)->mapping =3D folio_page(head, 0)->mapping;
+ 	tail->pgmap =3D head->pgmap;
+-	folio_set_count(page_folio(rpage_tail), 1);
++	folio_init_count(page_folio(rpage_tail));
+ }
+=20
+=20static const struct dev_pagemap_ops dmirror_devmem_ops =3D {
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index c921287489de..f2fec6b1b1df 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3133,7 +3133,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(=
+struct folio *folio,
+ 	for (pfn =3D head_pfn + start_page_number; pfn < end_pfn; page++, pfn++=
+) {
+ 		__init_single_page(page, pfn, zone, nid);
+ 		prep_compound_tail(page, &folio->page, order);
+-		set_page_count(page, 0);
++		set_page_count_frozen(page);
+ 	}
+ }
+=20
+diff=20--git a/mm/internal.h b/mm/internal.h
+index 5a2ddcf68e0b..3f2a91de8a80 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -595,7 +595,7 @@ static inline void set_page_refcounted(struct page *p=
+age)
+ {
+ 	VM_BUG_ON_PAGE(PageTail(page), page);
+ 	VM_BUG_ON_PAGE(page_ref_count(page), page);
+-	set_page_count(page, 1);
++	init_page_count(page);
+ }
+=20
+=20static inline void set_pages_refcounted(struct page *page, unsigned lo=
+ng nr_pages)
+diff --git a/mm/memremap.c b/mm/memremap.c
+index 053842d45cb1..8025cc27b408 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -462,7 +462,7 @@ void free_zone_device_folio(struct folio *folio)
+ 		 * Reset the refcount to 1 to prepare for handing out the page
+ 		 * again.
+ 		 */
+-		folio_set_count(folio, 1);
++		folio_init_count(folio);
+ 		break;
+=20
+=20	case MEMORY_DEVICE_FS_DAX:
+@@ -519,7 +519,7 @@ void zone_device_page_init(struct page *page, struct =
+dev_pagemap *pgmap,
+ 	 * memunmap_pages().
+ 	 */
+ 	WARN_ON_ONCE(!percpu_ref_tryget_many(&page_pgmap(page)->ref, 1 << order=
+));
+-	set_page_count(page, 1);
++	init_page_count(page);
+ 	lock_page(page);
+=20
+=20	if (order)
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index f9f8e1af921c..96fcace24b6d 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1040,7 +1040,7 @@ static void __ref __init_zone_device_page(struct pa=
+ge *page, unsigned long pfn,
+ 	case MEMORY_DEVICE_PRIVATE:
+ 	case MEMORY_DEVICE_COHERENT:
+ 	case MEMORY_DEVICE_PCI_P2PDMA:
+-		set_page_count(page, 0);
++		set_page_count_frozen(page);
+ 		break;
+=20
+=20	case MEMORY_DEVICE_GENERIC:
+@@ -1086,7 +1086,7 @@ static void __ref memmap_init_compound(struct page =
+*head,
+=20
+=20		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+ 		prep_compound_tail(page, head, order);
+-		set_page_count(page, 0);
++		set_page_count_frozen(page);
+ 	}
+ 	prep_compound_head(head, order);
+ }
+@@ -2224,7 +2224,7 @@ void __init init_cma_reserved_pageblock(struct page=
+ *page)
+=20
+=20	do {
+ 		__ClearPageReserved(p);
+-		set_page_count(p, 0);
++		set_page_count_frozen(p);
+ 	} while (++p, --i);
+=20
+=20	init_pageblock_migratetype(page, MIGRATE_CMA, false);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index d49c254174da..730dc6301a07 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1599,14 +1599,14 @@ void __meminit __free_pages_core(struct page *pag=
+e, unsigned int order,
+ 		for (loop =3D 0; loop < nr_pages; loop++, p++) {
+ 			VM_WARN_ON_ONCE(PageReserved(p));
+ 			__ClearPageOffline(p);
+-			set_page_count(p, 0);
++			set_page_count_frozen(p);
+ 		}
+=20
+=20		adjust_managed_page_count(page, nr_pages);
+ 	} else {
+ 		for (loop =3D 0; loop < nr_pages; loop++, p++) {
+ 			__ClearPageReserved(p);
+-			set_page_count(p, 0);
++			set_page_count_frozen(p);
+ 		}
+=20
+=20		/* memblock adjusts totalram_pages() manually. */
+--=20
+2.54.0
 
