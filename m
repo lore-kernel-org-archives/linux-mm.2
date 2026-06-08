@@ -4,109 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D9ECD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 14:15:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70509CD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 14:16:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3ECF6B0005; Mon,  8 Jun 2026 10:15:07 -0400 (EDT)
+	id B33336B008A; Mon,  8 Jun 2026 10:16:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEFA16B0088; Mon,  8 Jun 2026 10:15:07 -0400 (EDT)
+	id B0ADD6B008C; Mon,  8 Jun 2026 10:16:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDE4B6B008A; Mon,  8 Jun 2026 10:15:07 -0400 (EDT)
+	id A20936B0092; Mon,  8 Jun 2026 10:16:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5B96B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:15:07 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6309C161169
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 14:15:07 +0000 (UTC)
-X-FDA: 84856942254.09.38DF617
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B5547100005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 14:15:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lrSQ6NGW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F5936B008A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:16:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F6728AABE
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 14:16:00 +0000 (UTC)
+X-FDA: 84856944480.20.575B2A6
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8716C140015
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 14:15:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=a6tRNfOm;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780928105;
+	s=arc-20220608; t=1780928158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+JjRMFYZ9bfnyvS4nS4o2iK2w7M52sPr8xosvfHngF8=;
-	b=BgL9Fw1eHfnA5B2mD07AoFIMcFWOGL5fp5mom/FkYguGZ5pVIWNj+XJ/R+NNAHoBnjQsd8
-	2/8xEQ8X9EoV0x5gifi+m4Ll9NFuYPb6GNvq0Qi89cDwxWmvliYXWXL6hRDB4TQQSq4eGF
-	QUS0w6n79k5Hb3WyoVuXJYVEvLUI8Lc=
+	bh=BoptLYrQ/yGEg1kcudHiCfX9+RB6G6nAL273PX8CPRc=;
+	b=FqP6Q0OS3sPvzN9ZsQJE1zuYkniFSk2XdOHiXB98mFxua33eQ04VS5SLunvzQb8OzTPRly
+	2RN2lDWyka5Qn1i39O7/6ytz4YM2TIoaeHWiBF7lJZRlA0ggjLBPvmSgEQMw96P1PvkRJE
+	nB2SWk6s7vrYGHQYgN7wMx7TW88QkT0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lrSQ6NGW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=a6tRNfOm;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780928105;
-	b=AyHnkh5cjJIq8rwpKahfPA8W4x6HVWHPuPIZKgAwpxmnz9g65JGqX8KBOxZ4tZ2wbkhDTs
-	eLVLAdULWKmqLcgBTCUvjEU6q7bpd4kCzIVhR22FVreKM3HHbvkjbfyPfOlQ80Ryg5RZ/p
-	0V63z2+9p0mENg3HqGTL/YlLEvPTz/E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9333F40A38;
-	Mon,  8 Jun 2026 14:15:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E7E1F00893;
-	Mon,  8 Jun 2026 14:14:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780928104;
-	bh=+JjRMFYZ9bfnyvS4nS4o2iK2w7M52sPr8xosvfHngF8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lrSQ6NGWbgbwU+TrG/4asikVamSg3+rK6G39mFxSJGIY2txePMoj79z5wzKfUb98d
-	 jWyaZ3wrYE7qZnx6lbMDlzmvoliM9J1192Th8k0MtLS9xbh73nM+0pEV7mcI5qNKDA
-	 EUtZQkEIgtQcJUhqW5ZS0lkciWP6+l+H06X3NvRNS3W/sfSxoHWaaPNHNl5UBpZ7u0
-	 5EF4iH6EsBBhZGCJ+U89dZiw639QkCq5Iv3mFjpiGYIxrK65bjTZ1T4kWZ5FZfhmhm
-	 EEOwEbeU3LSRqRgQHrsv6UCcYlM4h2uZ1kFEDMvNrIuW4U8acH1N3rtFb1qdx9SoqK
-	 gHO+8SMrX8MUg==
-Date: Mon, 8 Jun 2026 15:14:51 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	t=1780928158;
+	b=fAUYjaWITKlXz6qfprev7mnKWsT61DYe/+7J1nht+OJSUM58HBKr7hctHqO7LM+5Fo50hZ
+	Rz3zNMufIp4/jlTtY8uQGdClAPOcWqucNXaD0Q/0ZlgDPMn67Iz2/kUMAMI+qmod5r2P2u
+	WTubs9NoVddSQ+FBYAyKD0Az92O/10E=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=BoptLYrQ/yGEg1kcudHiCfX9+RB6G6nAL273PX8CPRc=; b=a6tRNfOmAflmUrPXXCxKRgWVru
+	iNPc/WKDKmTh/dwpZxhTjUQw7yU0VkULPq7LRnfMgRO1+ytdZGjyX9Kieq5r25zoaET0BSP17OF8u
+	dBmTPnOWf/2MK+5f3L5mkHsvLWa4ATBctZwb267FWUCoU33MZzXgJy5D1bnuFkCSRzzHLaSrBtVin
+	DxtQeWnFL5GfOYbObu+dCu+s8JhX5MtJDcpk68rYjVzKeT4LCzWJpZ6DaOhnUsvUFfCXVqS84juWV
+	3xav5eB+GMchWt48uXiSx4JJ02Yn6c1b+wXGSccYNFe2ob5a9AZru2f1wKewsycQOzTHXlv2EJRk8
+	ERPucmkg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wWalX-007gH8-2v;
+	Mon, 08 Jun 2026 14:15:48 +0000
+Date: Mon, 8 Jun 2026 07:15:40 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, Lance Yang <lance.yang@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
 	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
-	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>
-Subject: Re: [PATCH v10 02/37] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-Message-ID: <aibMs9DXuhH_5F2Z@lucifer>
-References: <cover.1780906288.git.mst@redhat.com>
- <df06b66fe4ff8e925ee0714955abc2183a727b90.1780906288.git.mst@redhat.com>
- <aiaOZoa2vSCz_0wY@lucifer>
- <20260608094153-mutt-send-email-mst@kernel.org>
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>
+Subject: Re: [PATCH v8 2/6] mm/memory-failure: surface unhandlable kernel
+ pages as -ENOTRECOVERABLE
+Message-ID: <aibN4osY_QF1Rejh@gmail.com>
+References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
+ <20260527-ecc_panic-v8-2-9ea0cfa16bb0@debian.org>
+ <19f968f5-1289-f573-4406-e5c91dcd8923@huawei.com>
+ <e3d023f1-ab6e-4424-b304-55f1294480c3@kernel.org>
+ <33ef8821-c809-b7d1-ea77-6e8a07a6e784@huawei.com>
+ <21732071-14a1-486a-951c-34de97b7c757@kernel.org>
+ <4b27467e-935f-5587-2f48-5a794c30a592@huawei.com>
+ <aiKXrovzrNN-gExm@gmail.com>
+ <f1a742be-80cb-4256-b1f9-e50a0f83cb15@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260608094153-mutt-send-email-mst@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B5547100005
-X-Stat-Signature: 9hbi8zfhr1ygcntg53op5eok7fka11ad
+In-Reply-To: <f1a742be-80cb-4256-b1f9-e50a0f83cb15@kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 8716C140015
 X-Rspam-User: 
-X-HE-Tag: 1780928105-649566
-X-HE-Meta: U2FsdGVkX1+EQiq0CWG1qgVZ29sAPq24LxJZ0RJKxSIRO+EVNimoOFtWRh58MzQR8NZxrAxgM3KwvZow/OzlMRw2VxjvLw6LGqooLu0z0zY7XbZoIK+rARnICsUxVmNlHmmsWhkLfnWlwZHYJTFjJTVN9BwfEhqcTzZjn9TxePF7MKjLwiOrrWf3N5wc/J1EcCrfE7DbU3lso3bvO3SOZQLRUFfI4/ACgB/dVh5ZuKILxdXo4eOlNMr1AMbmQ3HdB5q4Ujv2M7fDiIZl24ZcQPEMRA232GEvIUecOlXaDRNRh2kYiTsszyQWNJwI23/L6oHgbzX9B3UX07KOzdWUkpB/xwM85fyXGIcRXr5JnhbD4wKmhUyvE5rUfPTYqvfFphWc4azbi5vCD4Lfmbi0jLxqtaC2XMSUkrIQDKlYz2Ikc4qjm65zdKcLfYWQlSPD50nxuCa6rPezA1Vovpl6chgert3RlD8AL0v61KjIebJhlCyZUn57drv2xCcwHJzfEArR1oDmMikgOVhevl2bjQno+gWP2W72z9x1+KSt9T8z/27XKIR8UV6FmZjRrJBxH5OuLlsueA4jPLdheaENAGH+Z/Yqhfx7BbcOrXxr1AS/4bHXfOcodMm8FIvt8oUL/jy2FfSb8nMpHvF/0riLqv6n80pbyZZshFt5a2s8IPxa+SIsvSLBs7h/GTQHr4lj3klMmHlXBm4CYC8ft1JE225STxuQ6+oDFJJ6Rwtg/1djvQ0xXTxbLBLlbhhbuj4cSDlZDozeKexgUWwXfdNbAANbRgLc1jHNvI0p/jLJfo7wPM0K4oBejpU7c6ItuYfWGhMZy8ZHeTCAkrJ19st4I9TnhurU3E9/3nKdXn74iMzMwsQsRGiRXU49fNXon+l1FIxrERxot0KZtA0QDtlH6FVCnpgqwA03hJ1ny1BI4dfocNk5H7Ku3IvqnhCEeMcLgp7/0jh0CYM00todmPf
- ZE443I+b
- bBtm/bmJm1T9Z2HjfX0aS8djhUrX2MVvpk3752pnYqT1qmD9KStBvJrfk3BvlLuGQAb5Csnnfu6AfXSq7PsJ9dtYNDtJn4AUgLnTv2Gp4SLt8lf+zs2Yo3o1WtkU5S4hGy31vqHHAXy02fJg7bF/1eTCRo2yyPygFZ0uq1t93HSxzaWV1b71JxGo5OBfFXpLtRoQnSfBup5iqX34JthWuctY0Ps9zxHOFhA7aDc9ZPZ2MBCdgdMrizn8NMvM/9KrXlF8h84+rcvln9qFFd4t/kMIly2mQnz1OtgVP9T4HlBgGX36irXwIIC+5WaQBt9MtAS5I2tICs1JJSybISn4pM/ENJ6tTI4GlQ0+61mRzaGCzjnTCCw9LvfftTDDvRq7SMe4HWsmGY4Jl7Or5162WYv/+BXytWMeEvQ76ZDkBQUpXWXw=
+X-Stat-Signature: umo19itn9tt4nwik48u9cmc1utiwpbm8
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780928158-977821
+X-HE-Meta: U2FsdGVkX1+VVKsZSVr70Oh3uQr8Lkye/1r8IV7Pjg9861tZBEqOehMf0IN2+olPt7gGCfUHxyJNsZSIYZVNXhRlFAq54pDf5rVIO/c6ykGSVXud17iRGzpq4FTw5N7VsKi0Ro1EPETP6ebIhkg40k8wsLarEwXpiMh2GLEKB59SGEjZnKGYcpJlmuFlZgFgBYe5ex5gJZp3e/dRYibrmjXOIYGlkMmfFia4LOaFohUcx/uNu0HAWiZyYRBp/mHVTmhEuYinGg4dy6paKAYM7lAWnvfaTyF4W3SDVJSyWy1XEqGQR/6FjtZOrfev+HH02sSGIFpxsUe1pUHkCti0fIU81cgMW7V1yxLfXYGvq8L0Z4BUaMMpLl6IIjbupifPNSkl98WPYw7U+LeWCsAkDN8DbdGN7E5XgutI/fov1B8JnvCjk5d3wS1yODWZWOaabPI38OcGGDAsmT8SnBPEp6yx/+4PZc2SJ1yP/ZGCZb2HnKam/lflKVIcgy4zrZrUmzZ5XQTGXCMopWvXXN9R+ONPXTrMIb3z2XkuAsNn3RS4yfRd4qjPetKftkDKnqfZD6QI2aVnTo5u4OkXzmQ9fwK+O3MfVv5GNLSQZcazuIJakWxV3NpPzjRFDDpbyhrzs3MfTljN/pRUSwW3HMhScnmFMit1u7IZhOmMKqhoRJPKwt0yjyW01e4ZwD9QIRn1AR7JSHEkPMqIauzbSrJg2udGUIASdhwtfKZdZOzzjGBIRiHiClQvjG3KZokw/oLRsQKrJ16aGJ+1MZfB1E0kNzwiE/kH6qQms758ibnGCO8Sx/52OWDkouO9DiiNxyM0mX+6lFafEtlvs+KRpf3VPCHHKLw451ynK+09XMtLTcRh+NLte4eGbW700OaATrU4L3mzpgPXONXddH6khN/64OKKfIcHTGRCMrxA4sCVWyf9M9VNkcc6fUMhf31wdGrSXmxRXW1sMt+QM513Bio
+ g0Su2QV6
+ 9VjxWtlu5zmm7OIoqtt7wuUIIaycTIv0jquVL4IdJvHgr80PyVmqCblDdY9Wr30nTw3MuwVDu6lT1MSf5X6RL8DtYRD2Nz7yKsm60rwUcQoghz2ZX6lT8HV6kigfSVfU3EgT557my1PiXgfSaBaL8593fD24YSLuCKYNphue/ZYVE7w3RR7RXljMDCDuPQyKHusrg9HVOeIfQ6qJGUSN2O6cd8t/ijc4g3bMUNNmIgj2By3WZLI0wBJDSI03+aDwzmzKL94CMaiOiy2xCVFpYRpQpYEZYbaAbuSjqpmuROOCbEAPA1nmHi5gDfDDRoqzo5ivWIkaUeGKcqy8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,77 +109,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 09:48:34AM -0400, Michael S. Tsirkin wrote:
-> On Mon, Jun 08, 2026 at 10:43:21AM +0100, Lorenzo Stoakes wrote:
-> > On Mon, Jun 08, 2026 at 04:34:23AM -0400, Michael S. Tsirkin wrote:
-> > > TestSetPageHWPoison() is called without zone->lock, so its atomic
-> > > update to page->flags can race with non-atomic flag operations
-> > > that run under zone->lock in the buddy allocator.
-> > >
-> > > In particular, __free_pages_prepare() does:
-> > >
-> > >     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-> > >
-> > > This non-atomic read-modify-write, while correctly excluding
-> > > __PG_HWPOISON from the mask, can still lose a concurrent
-> > > TestSetPageHWPoison if the read happens before the poison bit
-> > > is set and the write happens after.  Follow-up patches in this
-> > > series add similar non-atomic flag operations as well.
-> > >
-> > > Fix by acquiring zone->lock around TestSetPageHWPoison and
-> > > around ClearPageHWPoison in the retry path.  This
-> > > serializes with all buddy flag manipulation.  The cost is
-> > > negligible: one lock/unlock in an extremely rare path
-> > > (hardware memory errors).
-> > >
-> > > Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
-> > > in this file operate on pages already removed from the buddy
-> > > allocator or on non-buddy pages (DAX, hugetlb), so they do not
-> > > need zone->lock protection.
-> > >
-> > > Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> >
-> > Can we have Fixes: and Cc: stable and also send this separately please?
-> >
-> > These patches seem like unrelated fixups that you've discovered along the way,
-> > and don't belong as part of the already rather large series, unless I'm missing
-> > something here.
-> >
-> > Thanks, Lorenzo
->
-> I think you are mising that they are a dependency, not unrelated.
+On Fri, Jun 05, 2026 at 11:42:53AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/5/26 11:35, Breno Leitao wrote:
+> > On Wed, Jun 03, 2026 at 10:33:04AM +0800, Miaohe Lin wrote:
+> >> On 2026/6/2 17:41, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> Races are fine. We might miss some pages, but that can happen on races either way.
+> >>>
+> >>>
+> >>> I'd just do something like
+> >>>
+> >>> if (PageReserved(page))
+> >>> 	return true;
+> >>>
+> >>> head = compound_head(page);
+> >>
+> >> If @head is split just after compound_head. And then @head is freed into buddy and re-allocated as slab
+> >> page while @page is still in the buddy. We would panic on this scene as @head is PageSlab. But we were
+> >> supposed to successfully handle @page. Or am I miss something?
+> > 
+> > You're right that it is racy, but I think it is an acceptable race here.
+> > 
+> 
+> I mean, any such races can currently already happen one way or the other?
+> 
+> Really, the only way to not get races is to tryget the (compound)page,
+> revalidate that the page is still part of the compound page.
+> 
+> I'm not sure if that's really a good idea.
+> 
+> But my memory is a bit vague in which scenarios we already hold a page reference
+> here to prevent any concurrent freeing?
 
-Then say so.
+No, we don't hold one here in the case that matters.
 
-> For example, this issue gets worse with the patchset as there are more
-> places that manipulate flags without atomics. No?
+HWPoisonKernelOwned() runs at the very top of get_any_page(), before
+try_again: and before __get_hwpoison_page(). The first refcount taken in
+the whole path is the folio_try_get() inside __get_hwpoison_page(), which
+runs *after* the short-circuit.
 
-It's your job to make that case, not mine.
+So get_any_page() itself never holds a reference at the check -- the only way
+one exists is if the caller passed MF_COUNT_INCREASED (count_increased ==
+true).
 
->
->
-> You are welcome to send this to stable, but I think stable rules
-> preclude theoretical bugfixes.
+So on the MCE/GHES path -- the one this panic option exists for -- no
+reference is held when HWPoisonKernelOwned() does its compound_head() +
+PageSlab()/PageTable()/PageLargeKmalloc() checks.
 
-It's a dependency but also theoretical?
-
->
-> As for Fixes: the issue has been there for decades. I wouldn't know
-> what to attribute it for.
-
-Again, your job.
-
->
->
-> I guess I could send these separately, too, why not. Not sure
-> what this accomplishes, but hey.  But is that an ack? You want
-> this fix merged even before the feature?
-
-I already made the case as to why, as have other maintainers.
-
-If you need to review what an ack looks like please consult
-https://docs.kernel.org/process/5.Posting.html
-
-Thanks, Lorenzo
+Given that, I'd rather keep it racy and take no refcount than add a
+tryget + revalidate purely for this check. As I've said earleir, an operator
+who enabled it has chosen to crash rather than run on corrupted memory;
+mis-attributing one such rare, genuinely-poisoned page is within that contract.
 
