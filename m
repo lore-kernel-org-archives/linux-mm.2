@@ -4,96 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5DABCD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 20:16:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5283CD6E79
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 20:18:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ED2C6B0005; Mon,  8 Jun 2026 16:16:59 -0400 (EDT)
+	id 169316B0005; Mon,  8 Jun 2026 16:18:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 277066B0088; Mon,  8 Jun 2026 16:16:59 -0400 (EDT)
+	id 119D46B0088; Mon,  8 Jun 2026 16:18:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1177B6B008A; Mon,  8 Jun 2026 16:16:59 -0400 (EDT)
+	id EFC206B008A; Mon,  8 Jun 2026 16:18:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F114F6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:16:58 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A20048D06C
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:16:58 +0000 (UTC)
-X-FDA: 84857854116.29.C4711FC
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C855E1C0018
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:16:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=H0jTJ8i4;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E0C286B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:18:08 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89282163A90
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:18:08 +0000 (UTC)
+X-FDA: 84857857056.09.E13F86F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3EC0310000E
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:18:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WFf0GFEC;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780949816;
+	s=arc-20220608; t=1780949886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5P0019yd+Yz79EK8psJPf72tTRfll1uVTKsf/rhDJ6c=;
-	b=2/OivZL1YuOLL7zYqX3dhU3jTcK4tk6jr/1ahBJAPN0LV2In6oy1IKMIVtxhDPE4DvtCyr
-	RbxUM8sOogoh0igreaPnDdlXclAknpeQHD2IbJDNnf6RGXtjQbokbJKIFqJ6eqtM0HvjGa
-	2NM5KCUmxZ6FoxnczlJhJxbv9mPDujY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780949816;
-	b=NaBhJh4jDESzqaI/d4kGq4uUpOgSlWJuekIn9+N0FROc7UpjvdGlzDc78ujJYqMzh56ogW
-	nAf9A6OxNdMUBIgddb3BOHwMJP3Tc5hGMTiR2eVVqw+tuLhZLrJC/CFHeJpXO0wugqJA6M
-	MWwp8oSlWNsG6orsOxgj2Cfqde4aoqo=
+	bh=Vroj8FPw/hBBf0mVIETR1AI/cdAWI1hHo3K6Dubb1Jo=;
+	b=NGK6k/I/D3KBi8Qa4JL9zaoBTu4Pbarmy7mcwxczgnCz8NH1q2GX9WXs+q4/7EFKoR+eTR
+	7e7xsOtOhRvIT8MYqfzvL+3uWJkmlieD7UAjnOPi5skTDbH5PUD8hWhHbpqEMdLIgrwtSE
+	Vb2lWV7ZQK8rQf/08ATnhDW7ypHRd3I=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=H0jTJ8i4;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5176fc0cc72so49419761cf.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 13:16:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1780949816; x=1781554616; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5P0019yd+Yz79EK8psJPf72tTRfll1uVTKsf/rhDJ6c=;
-        b=H0jTJ8i4ExhRnJmSIASfoB09l2VUFxY8Mrjr1zP+aHVtjk0znmFoFMx7yLm0cLJrrb
-         cyykRLDQTQqPwl1r/ulNG9zUf8ysfBLgnfVfa3+YrkfPDL6UZ0VWWd/81ZKX6MS+l2vp
-         H7dcMngPYoLKkx7IXM/YdckKrkEOScuNjKLsREtQmJWHdPmV6FjAscCIfWCiVNu0M/lu
-         rAVBXvaFDakHbn86txua9Lhsniptld5lVf3pteFsj2eYLR/XienpnDn4zSi3CzrXNBkg
-         o0xrDwkOSMth7RrQ9r1AoNnsOlpg1jUB//QOfEvOCqKMcRZE/OQMMxmIOY8Pw+AzgoGW
-         iRjA==
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WFf0GFEC;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780949886;
+	b=Fist1H1kggR/2nG7Qn+qMSPinJsTowxms3EKESZipePdncXK53wVswpkzRE1uC59IJK0g+
+	ICoahzPOdDmDp7TdWY5z0r5iqD1bNKBcMLfzrYdQB7FiHCLNyyiEVK9nwC61QyyNBgYaoA
+	iGmv7/gcigs6IAnjdPxUPlITMmYcayI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780949885;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Vroj8FPw/hBBf0mVIETR1AI/cdAWI1hHo3K6Dubb1Jo=;
+	b=WFf0GFECBCt1sFCmwQMwOPTyR9ey345ISMKMvWyRTxtwcJJ2TEiHKCY1OvW0Xb2veuXjxD
+	1qnAldiMZbNUD/LOPTNAkY4DvJz5EDvNXb5JOyPHiXxE/A0wSL6/2R8FW5g6vWGjQcM0/y
+	a6MddeFz3BphRTlrUEnwChvDnfJu7Os=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-jTwqitmVMhS6U2pggMDUvw-1; Mon, 08 Jun 2026 16:17:57 -0400
+X-MC-Unique: jTwqitmVMhS6U2pggMDUvw-1
+X-Mimecast-MFC-AGG-ID: jTwqitmVMhS6U2pggMDUvw_1780949876
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490b79e6b94so33783945e9.2
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 13:17:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780949816; x=1781554616;
+        d=1e100.net; s=20251104; t=1780949876; x=1781554676;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5P0019yd+Yz79EK8psJPf72tTRfll1uVTKsf/rhDJ6c=;
-        b=asnESTvBt7/EsSFgUF01ZMvZ94CqeBPH3kkahkYx7x/34cn/Eh0mpjN891Y9B0qN5C
-         MkRFFBWIfLMD6M0xkXoWPmvL1K6DIp3NLxk72wNJCbiRhpyGoPqe45Uve56IXEmEKWzZ
-         Z/NjmFvPghNcR0MKIy2ZjAkQkZ11O3BTTxqcRj4YmjSivVuHUnEp85dciqJ/NlwRB7gR
-         IgSHt6wckG4B3LHzdb40WZprrCXvGnShEGM1BwumjqgDaD1QUqmW4dAFuGY8nipfRv7V
-         RgySwu1coDaE04//AHFA3K0wEy7qd0XdRP09eQuM/J3O9DC4wCFOaWPip0oC/am4V7Sd
-         IB6w==
-X-Forwarded-Encrypted: i=1; AFNElJ8uoVU/2vatenmjoYA93c6RomUc0xRBVioYLQS11QxnHAfCoayQn4sc5wWpm32niVy/h7XTJk1dtw==@kvack.org
-X-Gm-Message-State: AOJu0YzUhPgcnE2FbQ0Lny/UG2FXg7dqRn15Vx9tRAthNCSirNH0m/KW
-	abqump+MYZmmyA9jYB1pKq9hZqm+vwSv2yqfvNFnUSVILslbB5HVWp6f7hc3ZrUo6kU=
-X-Gm-Gg: Acq92OGTVmtxLIB0dh4Gpu/w0FgIa3LXLHjRNThO8aV/y4BwbkYxLQ/y3BtEqKMM0Cy
-	yJ5Af0nhGaHVrGWUqZDFnIr1Sr5o5TkhukkBilLE6DF97bcnoBdohzlswcPqMNWbPYatTi7pl6C
-	ZsUJJ64nV5129WgROrI//mCovgi0jyBxBWutQTETcp/wbX6lcDqDY5vQGn4VNyLqNwPwWmiv1yU
-	zLGV2pTL+5pMcB0gWsOK5sJoBcn1EaxAUhF4Cd3gMzGP9ZLn/c1LGHR5GU5RvIMw8fz551TYyKy
-	w0E/a+/+QOGyFuaW4O8faSVyKrYYZVfvjuwR9DlGt6WkTmcIGYoGZ4DhnAlVQcyJB6ILcPczHov
-	J9kntCTxnOyZ+sMNmoi4Ds1YsJjIZG2KDeHjGuC2rMMQdqOIYtLjheBkEJj3htRzBNLKaJTm8uZ
-	13sWkSg8J1gLWxVmwHDZrmsXrz7xNzYF7XS4VoBrcd7C2G0J36OWyHSkCFiGmZTfizC+LTOZ7Va
-	9nZtSRm2+5071NtTRo+ildStHi6
-X-Received: by 2002:a05:622a:a6c4:b0:517:79f0:ae34 with SMTP id d75a77b69052e-51795bbfb19mr190530941cf.20.1780949815842;
-        Mon, 08 Jun 2026 13:16:55 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775c4648asm177764561cf.10.2026.06.08.13.16.54
+        bh=Vroj8FPw/hBBf0mVIETR1AI/cdAWI1hHo3K6Dubb1Jo=;
+        b=SeHFaLmpFWC4ULJpnS/Eyj/IYWwaorGEEvmrhmh7r4iqyEh/Q5tDbabnyhqDIf2kC9
+         hlx0thplYWtbuOOvJSHN2QKKuRGB1zNLzMJVA5nWkm+LvEK6IePRjSWW0ZJiaEIs4Wyf
+         VTOWWl1NRrGaDA56K+Ke0ha9u4ky8+tqqZQfUp9htEZBvSC17nWYgOydGiBu3J6lAV2i
+         YNWGDhLHAmOq8dVUQni9Hr27XD9NL1/ffb1esF8Fd2QAh+7pPDNeQxhedO8h9Ex93Bw2
+         rQeRv2vI0IHNw3a9lDFNfBnc31RSeLU1b3GaSE8cwW2sbNy+mCjx6LWierCgD1YJTbk1
+         1cSg==
+X-Forwarded-Encrypted: i=1; AFNElJ+sUsXRYENqBMcShz8Le00Hx9LldBUYpxnkIm0z3w6g8l5bgRscONE4oyM5XcWS4OQtt+MP64TuQg==@kvack.org
+X-Gm-Message-State: AOJu0YyGwnGpUZeRVA50kRJe3O9PXZsog9blTCcnUeJ++3Wvu2o9DNxQ
+	eYK4L5p/uoeE5dvoiUY9wyisSo3mrh6Cu1MCrS4e53B7lkZ55HiKdOmDPcnzKvu5iNsvSTrrT8o
+	KPDluMRDV0O1iSqupJjelayl9Y9MeGXjCa2ROwNcdkJFvqH/MeNof
+X-Gm-Gg: Acq92OGVtHNn/1ddjLfp1ISKcIuCJ4Q5b1Li+ITqr6VikPK+O2YchkatnmR7GIdxhyK
+	R5fERijHEAn/R6Jb1k4/U+yTRmGBzdgz08Fl9juL+cIcXO03jxZKSeDgqJizPmLIKzJhJ1rU+i8
+	y9Lx8+gXWeTAZkfNmApu45dXWjYGB3ILRAyBuutXCdZkfvivJ4NlvNA/GxW4ZYGlNjv3BR+Cj+I
+	7GyOB/U9Mc3GPZnknVba/+51bA+MNR6/KOO9k6UZ6Cpc6HIzKmKvGkrpUoLwky42JZ6yQfW9r9l
+	A6u7keapCfRLexRlgc3Wu1D+pWPco7/AYlvUMYhjpdC69Fz4Z37YOoPVQzq0CCxXz2Aw4aby/rX
+	0Avrta3rcfLnFGQhAW0gy3enBovbyHgXQ0P2N6ftrAGT6ofbW2usUiA==
+X-Received: by 2002:a05:600c:8b6e:b0:490:b7a2:8864 with SMTP id 5b1f17b1804b1-490c25237e4mr294515785e9.0.1780949875698;
+        Mon, 08 Jun 2026 13:17:55 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b6e:b0:490:b7a2:8864 with SMTP id 5b1f17b1804b1-490c25237e4mr294515045e9.0.1780949875120;
+        Mon, 08 Jun 2026 13:17:55 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490c2d37edbsm327199975e9.2.2026.06.08.13.17.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 13:16:55 -0700 (PDT)
-Date: Mon, 8 Jun 2026 16:16:53 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
+        Mon, 08 Jun 2026 13:17:54 -0700 (PDT)
+Date: Mon, 8 Jun 2026 16:17:49 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
 	"David Hildenbrand (Arm)" <david@kernel.org>,
 	Jason Wang <jasowang@redhat.com>,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
@@ -115,6 +120,7 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
 	Matthew Brost <matthew.brost@intel.com>,
 	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
 	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
 	Ying Huang <ying.huang@linux.alibaba.com>,
 	Alistair Popple <apopple@nvidia.com>,
 	Christoph Lameter <cl@gentwo.org>,
@@ -127,27 +133,31 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
 	Kemeng Shi <shikemeng@huaweicloud.com>,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v10 12/37] mm: use folio_zero_user for user pages in
- post_alloc_hook
-Message-ID: <aicjNRrHYOOBt0Hx@gourry-fedora-PF4VCD3F>
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>
+Subject: Re: [PATCH v10 02/37] mm: memory-failure: serialize
+ TestSetPageHWPoison with zone->lock
+Message-ID: <20260608160954-mutt-send-email-mst@kernel.org>
 References: <cover.1780906288.git.mst@redhat.com>
- <f92f6f06e5804b4ea7f68b8664b7e69953b50f4e.1780906288.git.mst@redhat.com>
- <aiacZ6_7SG3nvVjM@lucifer>
- <aiblhJv_BvMn_8XY@gourry-fedora-PF4VCD3F>
- <20260608154354-mutt-send-email-mst@kernel.org>
+ <df06b66fe4ff8e925ee0714955abc2183a727b90.1780906288.git.mst@redhat.com>
+ <aiaOZoa2vSCz_0wY@lucifer>
+ <20260608094153-mutt-send-email-mst@kernel.org>
+ <aibMs9DXuhH_5F2Z@lucifer>
 MIME-Version: 1.0
+In-Reply-To: <aibMs9DXuhH_5F2Z@lucifer>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 0e8oLuZTVw7AaFBpWWcj7hYFv8GsRxDwE0s7EGB9ems_1780949876
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260608154354-mutt-send-email-mst@kernel.org>
-X-Rspamd-Queue-Id: C855E1C0018
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3EC0310000E
+X-Stat-Signature: m5585t83jbh7zwncau8ji3bu6fd9nhmb
 X-Rspam-User: 
-X-Stat-Signature: 5mxhb9c3kn4pko39g8p84gnujkmticjr
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780949816-455349
-X-HE-Meta: U2FsdGVkX18aTwmZQc6uqi0INmmV6PIxHtJYV6EluoOUcSBGtrviCr9xKu7x8Y3P1BXd3QwiVSjVqj2ng5RwnZxIFPVgbd5i89hoXE9Jpq6l25W9b68Fe4o8hhm1Zfm2D1Xp9h7UhZO1WJNyMznrbz1JobzhhCy9nbcf/iQYTMTao4+K/NRzcWLb6AnKLsRHyKZSHzWD6TZvDXgTcK1AMIC9gVOFZROZDLcD6goBRqwueQxQowu0hZl8eKOyZ0GZRC9u0vSYX06xydhEX6qdMS5vE9cAEUvI0XEZeRsE1xHlJxsrb4yfXY8FoOp1W02b7RoO3FUjRsGkZ8bwgyA0+6UjCSdiyGL6IuRP8VurDIb9rPRdhlfUZOqf3W/9/OQ+aLCCD08RhEsYJD1E89f23zq7/6SyX8Yj5f4PIiKYN8AExpW0MW2p6+Zad0jiO4VV2a8Qp0D1OmvpKs5oj31/o6h5R4txb7xntZRmFgICii3seLtJhXVhH7RgcO8IzegrTgO+WblghkUXPpiwIU41SpzpGMiSxqkZLAQOLDCkOgleYePG5OdGp0QdWNDgOiGtUPRZotrb3sqYdjKhj/ooUnyRMJjfN5UIm8UBx1DL8ITPMk1KMvMzQujEKWMramK4qenWyyirvXWvDAkzY/hWQnL7V0BMur0p7JLzwXMPjjmrngfzBx86MqpB2/CaZics2NArt9/tHWzN+NKYuD1aNgB7P6u8oQTqYW9IfMk5htn5e80M2tC+En1+pSUsU49seDpKmVtwA8VjwvQem3/0K34uovBxcv2mQExFZb3Z8a3+ocT4MM2PRUx6h0jGrfDn4VgwIQqnvAKgQ7mUyu5u281Jay+o3iPJkNdlOdlr0eHFq1tFx3yGFdD0pR8D7U8uzjbZarUa/kzltiNzJsAC8Lmi29vU9LeGA3xtx+cQbRggowt/wqaT2eJK1+6XEJtMY+8IOm5ePQBp41xdO0r
- BKScjd9Y
- XFTBHdaX4H4FuCg+48WfUKN2JI6Rver/lfSHoN0BPVq+rohjzpotGVx6X6MpZ25EJk0jkriBWo0r48TfS6DcU/uvt6qisDeV5Y1OfZhr4MDZFrgrLXTur2RRRk80Ry27pi1MMQd+yjmQKuBK7aKDspoQGE7ThO97hgb2Q54LAd3IPr5Xpok+HZ239v+u85F6PmX02Ny8QBiVHlTGu2B9jzo79ZXzyuneGx2ExR8jDZodzWs+57KUjo7n2N2TSX+fu5nPVH7FqeoYsDkOb0eJQSgbPMTtTeXFMS3M7IcgOqt0sPvM7QVu9HuZeL5kvyCfzQdfWgbUN8mpCFbUB19S2ciMgyHNXAMsej+wUCuV+vdp8cJ/dWJm7UNQFo0fQYrd0ifkVhks3qiDfb7ZEXkDCvyxTs3bDEkkDk2PN2IgerWSYro7GbCCOs2CkP8BL6sRFAf8E013XTQ532Ys=
+X-HE-Tag: 1780949886-305042
+X-HE-Meta: U2FsdGVkX19pnoT+CP/ooFJlRQ7FECCMaebx0/R0dol3ByAn3J7n7wc2X8y6XexkDG3dpwEgQpn2w6aVvTYPtaj4RB9VNSMxheWvjTn3T1jsHg8edLjmE7VAdgok8G2R75oE8cegPR4S3KPmwrQ/ATv2+nLgzIxYpJ10sxWsw/E3Dze698AFZUy0j6khbRTqkQHl4FJndOELaGhW9y4L5/L6ogqS1tTSKJvCccKrU0yWFQpmkLvDzVEkAt+6qRgICgzgf4PKUWvWqhRCJhLHTqK1dQ9Lj4wLwa3TVhdawPCPk365nBT4g3hp5zj2N8yWQTVOLPCHNHcZSRS+LBnoDdCneM4mzUFDvT4GAvHUyEJpN6hXhdHEFzX3P3Y7BchxSPd5kxDKeEi3DJdYFeXHsXeqU049PAnN14T7Gc7mNc0g8jeG5L+xlBY2Ce7CrmsviGzRGhcFWrnye2zbQjYDvayLs4VHdVHI72Q+QC0ccNRPtMd33hQc1eE3Ans4wBi5UZUwaqMXNUemcJgHW3k+jgHOaBN/ke6Jns/wmFWGuoAKQgPDpEq7vjDe9N0wCwlRlZ/ScCTnFuS+z0bVY+MBG5I10MRlhA3gD9Ow+GAbj3HdOSlKvP3/2l5yKjIyrNoNbYiVVV/pwwqXQgMp8u3ovMbCDtRzfC4hbOySseStz7y5ArEjEsHRmLSjFPMzT3xIRHCuyCkcozcbkfAOMlHg7XCX+qf9F7hcPfpv0UCC+W1aOMB9kpV1WPdyp3jP8L/eUr0+uRV83zxOHHFhlipQVpytJ9BOcOLOySxOd9mmcj2Xa7gkA4jjRqLItGhokwiTUFWlzbAYmynvQ32fDngUtoEQc60ThXrZfY3IDeXoRHtblvfFv+OGXCNjpOq+u8OhToOw2XgBVVqUR3VQf+Ww3z3jcNmMJt0VNQwf9bBMrP+h40/59ffIRxjx2zfedegkjpN+o5wpyYTqBC2OdrN
+ WCADyuGf
+ PQEO2ALFSBjfFF7CSzgQUXAk0+Lb4HCjVNp7pkD6v2sJlPephHyEI8FAz9pTOt44S33R3asqjDdrFMfRn7CmhSYZK/3WbFUwHQZD4kUz7g0r0vOSEGoTLCFz/GwQFPByiAIacA90tABpkU+NRfQQBh7XViOkT9anmNXc94wOpDmvKoiY1RvH9CyM1LZCNin11wWvl+ASelZXTxcLjhQ8fz9ICsIJSriI5g7w0o1FI3ICov8a4xWNOqdJiSYWVqjK+X1jts2xzFcrlOB0h38tNN0tKYC1OgjRZWd2Ec5sPf2DHBxR6ltAB4eQSGsX3DpihM/G5aswQpnDN2tdTzYe3oCnMTWMQIGtyXQa092Yvvo40PpJUs/+QQOkRUP9qTay7UUu8PJnHo2bTFMBqfBabN7U/2O2WLzqqudaiK8Avpnf9MgMTIFaVrRHTkXW34rg+7Q1CTCaVZUs6S4ChrWmw+E1dFD60rl/JBbitLEeKwiy1OG3EMSUWTS6onCOyLHi7XN11
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,40 +165,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 03:45:58PM -0400, Michael S. Tsirkin wrote:
-> On Mon, Jun 08, 2026 at 11:53:40AM -0400, Gregory Price wrote:
-> > 
-> > If `user_addr` is now implying anything other than exactly: "This needs
-> > to be zeroed / caches flushed", then this is bad.
-> > 
-> > ~Gregory
+On Mon, Jun 08, 2026 at 03:14:51PM +0100, Lorenzo Stoakes wrote:
+> On Mon, Jun 08, 2026 at 09:48:34AM -0400, Michael S. Tsirkin wrote:
+> > On Mon, Jun 08, 2026 at 10:43:21AM +0100, Lorenzo Stoakes wrote:
+> > > On Mon, Jun 08, 2026 at 04:34:23AM -0400, Michael S. Tsirkin wrote:
+> > > > TestSetPageHWPoison() is called without zone->lock, so its atomic
+> > > > update to page->flags can race with non-atomic flag operations
+> > > > that run under zone->lock in the buddy allocator.
+> > > >
+> > > > In particular, __free_pages_prepare() does:
+> > > >
+> > > >     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+> > > >
+> > > > This non-atomic read-modify-write, while correctly excluding
+> > > > __PG_HWPOISON from the mask, can still lose a concurrent
+> > > > TestSetPageHWPoison if the read happens before the poison bit
+> > > > is set and the write happens after.  Follow-up patches in this
+> > > > series add similar non-atomic flag operations as well.
+> > > >
+> > > > Fix by acquiring zone->lock around TestSetPageHWPoison and
+> > > > around ClearPageHWPoison in the retry path.  This
+> > > > serializes with all buddy flag manipulation.  The cost is
+> > > > negligible: one lock/unlock in an extremely rare path
+> > > > (hardware memory errors).
+> > > >
+> > > > Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
+> > > > in this file operate on pages already removed from the buddy
+> > > > allocator or on non-buddy pages (DAX, hugetlb), so they do not
+> > > > need zone->lock protection.
+> > > >
+> > > > Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > >
+> > > Can we have Fixes: and Cc: stable and also send this separately please?
+> > >
+> > > These patches seem like unrelated fixups that you've discovered along the way,
+> > > and don't belong as part of the already rather large series, unless I'm missing
+> > > something here.
+> > >
+> > > Thanks, Lorenzo
+> >
+> > I think you are mising that they are a dependency, not unrelated.
 > 
-> Well if you do folio_zero_user in a non sleepable context then things
-> are not going to work. So combining e.g. GFP_ATOMIC and GFP_ZERO and
-> user_addr all together is not a good idea.
->
-
-Can you say whether (GFP_ATOMIC | GFP_ZERO) w/o user_addr has the same
-issue?  If not, then this subtle complexity is now a tripping hazard.
-
-Is there some combination of arguments here that should just outright
-fail if a user attempts it?
-
->
-> You are saying it's bad? It's pretty fundamental to the idea of moving
-> zeroing into the allocator, I feel.
+> Then say so.
 > 
+> > For example, this issue gets worse with the patchset as there are more
+> > places that manipulate flags without atomics. No?
+> 
+> It's your job to make that case, not mine.
+> 
+> >
+> >
+> > You are welcome to send this to stable, but I think stable rules
+> > preclude theoretical bugfixes.
+> 
+> It's a dependency but also theoretical?
 
-I'm saying having to infer that safety state from the cobbling of those
-things together is not a good pattern (at least as-is).
+As in, the race is exteremely hard to trigger and I have no idea if it
+triggers for anyone, but it's obvious from reading the code that
+theoretically it exists? Yes.
 
-If the introduction of user_addr into the mix is the thing that causes
-us to have to infer safety, then there's an argument the page allocator
-shouldn't handle that operation (in this case: user_addr cache flush).
+> >
+> > As for Fixes: the issue has been there for decades. I wouldn't know
+> > what to attribute it for.
+> 
+> Again, your job.
 
-Please consider that this is arguably the most fundamental interface in
-in all of mm/.  All we're doing is going through the process of figuring
-out what changes here are reasonable while trying to meet your goal.
+Alright, if you insist:
 
-~Gregory
+Fixes: 6a46079cf57a ("HWPOISON: The high level memory error handler in the VM v7")
+
+now everyone running 2.6 kernels will backport this fix, I presume.
+
+
+> >
+> >
+> > I guess I could send these separately, too, why not. Not sure
+> > what this accomplishes, but hey.  But is that an ack? You want
+> > this fix merged even before the feature?
+> 
+> I already made the case as to why, as have other maintainers.
+> 
+> If you need to review what an ack looks like please consult
+> https://docs.kernel.org/process/5.Posting.html
+> 
+> Thanks, Lorenzo
+
+I am merely asking if you want this patch in the set including
+all these nits I had to fix.
+
+-- 
+MST
+
 
