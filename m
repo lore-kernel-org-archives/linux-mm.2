@@ -4,121 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FD18CD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:33:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 391A0CD8C9F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:34:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65F846B00A3; Mon,  8 Jun 2026 06:33:49 -0400 (EDT)
+	id A09726B00A4; Mon,  8 Jun 2026 06:34:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 636946B00A4; Mon,  8 Jun 2026 06:33:49 -0400 (EDT)
+	id 9E0856B00A6; Mon,  8 Jun 2026 06:34:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54CA66B00A5; Mon,  8 Jun 2026 06:33:49 -0400 (EDT)
+	id 91DCB6B00A7; Mon,  8 Jun 2026 06:34:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 44EF56B00A3
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:33:49 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD6111A0A3B
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:33:48 +0000 (UTC)
-X-FDA: 84856384536.12.BA2A93D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 879274000E
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:33:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=b9DksW6W;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 812426B00A4
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:34:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 418341C2B6D
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:34:08 +0000 (UTC)
+X-FDA: 84856385376.03.03F4E71
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 96E4A180003
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:34:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZHnYKrz9;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780914846;
+	b=DgYLkA6tn/QOeb4psC1zwNe7ziUnohDkHWWudv2EwpdRiMmguhsSYkcMGTmC86AGW7GxB6
+	7iopBOIRXB7LT0kmr4VTHOXPMnH3se8/ijKMPy4czRd39G2TLt6q8dXBa98nVZZJZaWFjY
+	vZw1V5R7aMDd3A8X/w/Wk2XceIPeZnk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZHnYKrz9;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780914826;
+	s=arc-20220608; t=1780914846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZPTWydL2gyYK6rrTGbtwML7Nkf7Wr+6W3UdOPzF34xk=;
-	b=excDYBL6tcbgu95Mx/j0NjLGFkpbTFYcDwnZWZIexONnZedb6BnYUbtRo0q2j/PGBDEsyr
-	3MsKg4yWZsjXT4/3ZBPFD2K+ADlLaSgJ6ul1iTAt6FNg6vDcjyfgR7YG1AACGZ8RFydjPz
-	qzHEPA8kSL8hbSz8XB/APP7IBBU/mv0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=b9DksW6W;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780914826;
-	b=MF9cBiiLz/fIb3F3AVBat4WK0/cAdYM/XKWz0KtaZhsQKoRuTK8Et8fsNE8z/IArJAEJFz
-	qVGrZZlQoXlIY/ab2nv6Z0ge9C5B1va9wM7YzzzyPIp4tMTWZNTZX0JLSxiUOI20vcbT5l
-	2ga/3nPpVB15mCaaGicVEPVA0ElQgg0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780914825;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZPTWydL2gyYK6rrTGbtwML7Nkf7Wr+6W3UdOPzF34xk=;
-	b=b9DksW6WoU20PpSGe5JHvBHXrU5rEVVLne2aPuafqoKW6mR70FYffntNjMa4GzXNT5lbhE
-	Wsiq+AQo5xq9cbLGKCciy9IFnXK6TM+V8cL1m0khpEFCRJNGvJzutgZCmLskPrHQkJgiPs
-	eHQA941Z8f3LxQRjgwES5cFkgMGTIFo=
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
- [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-457-ZcMeQs8aNcCz1w5fpM4D9w-1; Mon, 08 Jun 2026 06:33:42 -0400
-X-MC-Unique: ZcMeQs8aNcCz1w5fpM4D9w-1
-X-Mimecast-MFC-AGG-ID: ZcMeQs8aNcCz1w5fpM4D9w_1780914822
-Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-6607988ca90so7075938d50.0
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 03:33:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780914822; x=1781519622;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZPTWydL2gyYK6rrTGbtwML7Nkf7Wr+6W3UdOPzF34xk=;
-        b=MV1DldvkL0Myu0zCbUP5Q3ggDNGucN8Q7z3pWGxAOiUeInmst3ImUpsDfJ7qvF3PaU
-         ixvrGMQ1M+wF+0s6dCCZ0O4TENxCiYbWF65JLeJ2KZ+LmsoUwmbA1/T0vBM3JGNGMzjK
-         qPF+BNJBw2CKXmxHw8UTOknQr+fT0i6uDb2T+0OBtLN8sS2Ab8uvyRIjE9J5B0XVSm1v
-         4gu8bXvSfr3wwMGKiEbnV7LC2g4H8S34YSiA22kDNCyv1DCPUVBpmWLRHmNhi1kkeK5k
-         1l1ABMjffJsKrXmnFSH2V3EbXz9ggNikKihvauE5z8eYBRcZ0x3A0UngShwvGAVxmegJ
-         5+mw==
-X-Gm-Message-State: AOJu0YwmnXlRGdqk3YXU39PIQc657k7yWTUkKlK7Y2ja8YAM+2doSK/L
-	Y+AuYDjhKWQMNf6dbyXTw5g3ilngCLDlDukNziSdWqB2zTnA8aPBwCOMAGN8cmIRUoCDC6w4ug9
-	R0dbPVXoxSGKw8GZYEVQGG/wxk/YKNPGtwGt7H7JejYxTTfU9sdm5bPNBU6puChzm2g9JqzZI4/
-	tu/JUjxH40KJIwIMN/Ai/4Ko1pqkE=
-X-Gm-Gg: Acq92OGKhT90Ze08T/Plbu/iXqO7HohMF5rteTBKM85sZj8K6Lo5K88UjR7xjTpQSKO
-	WwA8ELb0sBlpjGhG/Fr2Sp0lihvCPzGpby/Gcn+n2fKk/3NX2/XcEO6nYMvaaZHqrNVurqOPBLA
-	AW7/y7n6X3/urpdFLPiT4Qkjqcyxbw6+vLDIbU/kSJLnYJjqN5/KjF+XIghaMqXh3UAJDxDhIPk
-	6oNNskbD1TP/Kc=
-X-Received: by 2002:a05:690e:c49:b0:660:481b:c56 with SMTP id 956f58d0204a3-6610708d728mr13746975d50.58.1780914821993;
-        Mon, 08 Jun 2026 03:33:41 -0700 (PDT)
-X-Received: by 2002:a05:690e:c49:b0:660:481b:c56 with SMTP id
- 956f58d0204a3-6610708d728mr13746943d50.58.1780914821542; Mon, 08 Jun 2026
- 03:33:41 -0700 (PDT)
+	bh=MSISkVncYbol5NQ8VxRTT0axoLQuPhRhAriBgGYAZXg=;
+	b=jRcjqgZ6RuVVHHlwILetTdAgfG+EYRwvggGDxocSTdJL+/Q1/J7bvofJerQWkLt89YcWph
+	YuznUHoFk4qkW18OlfSqhtqsMlcERtChGCgvQGZcKVo1Iwf4iDhrNGAJLKodCzc9KtSKMS
+	Z5LBqz3TGW+cGbawEXAcsYDMrE6KZoM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AB5C043CB2;
+	Mon,  8 Jun 2026 10:34:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74F91F00893;
+	Mon,  8 Jun 2026 10:33:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780914845;
+	bh=MSISkVncYbol5NQ8VxRTT0axoLQuPhRhAriBgGYAZXg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZHnYKrz9Qs8aK4+fkFURCjmiiXG1BeMHMEMJ/ZAHTREqJhvUqZrAr7YOLGmfvQ+Ox
+	 jVWnmIEpAcv8t5QzkYv5pJGNnGbgq0+Z8YL+zegc7IcwlcZJf4g7FfDplW6wfnYkuf
+	 tzr2pEdthhZpjZ2czMDoYlsDicBUOFkXZKeQ6NiMyq9vFkx/kV373PeDHerO0CTTbO
+	 sC+n3O7gGJ5Htn2skdyf60ZDotpFXXgU6+nWynLOxt1NNbTw4BY9xzZlxW0Flsih1p
+	 jcqXhksxWYI+4Bni/EgC2t9htE27d6iGTlsjvkkC14cy7bBI17c7sTxFUWixl4GOhC
+	 0bDP77Dp2wBpw==
+Date: Mon, 8 Jun 2026 11:33:52 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
+	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v10 11/37] mm: page_alloc: move prep_compound_page before
+ post_alloc_hook
+Message-ID: <aiaZ4vhWq6vl-Yts@lucifer>
+References: <cover.1780906288.git.mst@redhat.com>
+ <de0433334a7763b81ce8ca8f8a332c800cfe64ed.1780906288.git.mst@redhat.com>
 MIME-Version: 1.0
-References: <20260508170509.640851-1-npache@redhat.com> <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
-In-Reply-To: <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
-From: Nico Pache <npache@redhat.com>
-Date: Mon, 8 Jun 2026 04:34:26 -0600
-X-Gm-Features: AVVi8CcNSt1ptIP_oCgTguk6In5klbvhbZRzef-mQLFACUnfD2PKaqd_yypC4RA
-Message-ID: <CAA1CXcCj7gbcdcuFQ2Zg3fTxys8NRteh4XH36pwQ5=BX6uUasA@mail.gmail.com>
-Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, yuzhao@google.com, 
-	usamaarif642@gmail.com, lance.yang@linux.dev, baohua@kernel.org, 
-	dev.jain@arm.com, ryan.roberts@arm.com, liam@infradead.org, 
-	baolin.wang@linux.alibaba.com, ziy@nvidia.com, ljs@kernel.org, 
-	akpm@linux-foundation.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZPyAoAtwVeSydlE79PHCRnyni80NCMAZIIxGcTOT1lY_1780914822
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <de0433334a7763b81ce8ca8f8a332c800cfe64ed.1780906288.git.mst@redhat.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 96E4A180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 879274000E
-X-Stat-Signature: dm6kugkm741wxizc6ipbsztq5r4mwdjm
-X-HE-Tag: 1780914826-513725
-X-HE-Meta: U2FsdGVkX18+MfiAMTmq3kphAEp/DUzhJVwuYM6dYyvRNcHkKQWR7Pqq7qACVMB2O0ngSvC/duzTHkN222eURH2JPUQz38rGH+qCm9L99dHZf+MkccMQOSnqyvv8KLGV6Z/J4dzDBTpSJp5uUSlpuQPYjyu+kcCHK/AiI+BZMNaOewRd5IH5NLYscAcPOVh1enN4HzdRszTs54/8A/Jtkrt5rBkImoK5bHLDEJ0lCxD59lF9RReOQuEXTVaBxtMPoUsy6Q6157Z7B1ZFbQL50akh8smuFUWxUXPaR74YU0QkoYxyjF352v5fp2ulMk++eTsC8iCWcr4yknUnzx7Kov+a00P/Jrup609R/cxD+0AfXalhQT3oS/b7lXYOpsuQeHcyVYbMdNfTkCuFE9OKt3ul9FYpRKzsHOOTKaJXAmtTAnoVXWKzjS1EDydC5gHEz5h8M+jdGkug+zILEVOaddvqcX6vsaJWUxu5M0fBjruH6uia5lyJw2NbHrWijLA0mTX7I4CxVM1OPMdO6/9jGVlJNRWMYp+byfEeUXtZDipMAOpcJLJVxpqYD06bdByMnXF37IQl9x2KPGY7OkzTcaTVkvn1u6WWlko0MSLwUG2G8+xrY7m3wcKUll3uOSHgpf8i6rtRHi+UASAzo0o4DxEEjrtciQw07YIthPwFK4mH07nIPRz7jshRFd7jf7yFgcfs3Q99050wwM7kLTZyKwv84CGz14SSfeyVCC6Wtoo5EmoNWYjNypduoopAWoHCmHaDj2xCdtIhMgTeyjsmDScN60DfPWfrmlgtsCJi33VwV70vO6SRnti+9yt8IUFJIkxMJ3+8Mm4Y43j39/fBFs4UwY51ChC7KRD6Mqo9/o678DgPINY9JhPQDLuip5x+UN1ISpoE237255GOU9+N6PtVO9x1x4XKB5qrsdiSH+EeehMIa+nKG5BvV0DAGqCmcWWc+19t5x0+SWDvgSJ
- e/QGaZZv
- da0P7wyavWpq/HSo9B01W65esoyYrOdjuKwAoK1KM93dIDm/8rvtLJ+SYSt9c0TrTsrapvimS67IHvxONk68bTUhxvNpKX2egEIFEWWc4NEzTgwY2ctPPJtTG5KijscS9xh/MO4livdcMOFJ7vKfo4rnmwSmUWOx7vRLNFI3uYl2MLraI65BUEvzr2qNdFlX3ggFf3I3bB5yR728jlQZfksUCsHAdCXqMPE5VuvdbCAod6UvxbsxktoWbENJtCuUx+oawlp+Hdf72xulS/sbtQrvta8RjdpA6FcFwOxugEPQsFR0igmUq81w983Ey2pY8EvJlnFJFNTSERBM=
+X-Stat-Signature: dbcj45hznu67wgoswwmcyaaq6yr6z545
+X-HE-Tag: 1780914846-407674
+X-HE-Meta: U2FsdGVkX1+htskea3Mg6eC8klK0kqS0w63HbFFMgHF4jY45fj02inm1KA70rADrIEPQW6iFgIv29HCmrCKbnmfKy9Zm92eGT1bVHcz7AWBiGX6a1k6SUixrkqMSwss5kFEyMdTuE90c1CzhNtUHb8FoVsLQSxHS1pJKsUNnco/lfUUG9R2ucuxA4emvyOEb/6B3cTD70C4b7m1jTl+Fdyat//jE7ojVg7aFTv1m9xhyg49fNHvfVl854IC/ziODqlRCneMoxHJqqpFNSt7z+2RcEZgik2sJg1UoTRCBJbLphxo71T2gYRI1qzwdko2mUO6/ZFD5Y3XDuHfEwYz4kPGKuAbRh5CxlaAAwNkBKU8v1Kt6YuWw0V8mxQhEBHWncss4wvCRq1Yy/s7NAjXc0QW14wsox2SJGSOaonXIaFWwVBZTb4TL2lhWTN2r7zAnAlDfvHJ/y8MXRgnagZhPj8iuBRFewtm7PLwc3tl7MgN6eK36vekMH/4zeCiXnXwqTCp9A4L4Go1fdIXY9vRti/UYuWE3rtgm/pbl3VhNojSCdK2brvYxWSWMhoyrOEI9Ixm7TZMpJGxVjD4Q6PRziD2q03WSK77IghQJRAV92+rND8UqklZzEZF6xXiR8Zs/nNJuTBkp8+kkASfhpDhfNlFVpQuW9h7CO3dZGCVZYRgOPAl3qe6lZzdphTDyhi3ZPF2bH7hQTfmNM++b9LWfoGhcoxrmQrHzL/Yh4NjOBmRJfL6ceAubel3BXsbYHfqKprx6pv+m8JSLru8d0ey2dsO11BDnzMoEuTxFY5oohA3e1tkbEoNSVIa8S5PSXOXXd3CKtQqO8OzlqCNacb/ugVZEfviZwP7k/X4ho71cqbgB++bzqVkr7Kd2qcpXRzG3ypyyxENE8uLe1UfSX2h3r0WeSh139smzL7+CvNiAnr05+pI/cRrWxtEJ/ZRm6vXEsAv50s1wsrh2tE0D9jJ
+ p6sfF47Z
+ wyLv6eJIIGWRfszf8f44G9wSNdnQe1Wa8xvQR6EZ5n1dg15CaqzkMkKchv34CBKYiMxAN6Nspxw9d6agAwJLskkXuJWlxzT8wwu0k2t+OTMgEbc0p5x25qaHgn76+bxx9EfeLVdT9d5BPRyfj4s097QIM3ozAfcIpPelXKXoX4Eav8PQsXIaYSMwq4L7/Yp+4r3en9T9fU5xQdnohtz1umUUWIHJJ4xazbCKKP4rAYZgj24o0azs44wsyYyNg6rbPctG6qNTCF5KzYeGMHs619iYFK9ZCQaYfvFzMLL+RrIOcypPj/L97fGwPJb8Yn7WKDKq21Klm0ZSccijnN+qLXhnFeXSb1adKPI4O9OcZw0lQRr71ySognBAIlWfmbMi/GAagqctnNvCfJcWL9Gts4h9T+X3yoBiccjT1bCFFJh0kwV8vnpYIxD+RhqLK862faoYM9wFYf6a6IlA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,162 +111,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 8, 2026 at 3:32=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
+On Mon, Jun 08, 2026 at 04:36:20AM -0400, Michael S. Tsirkin wrote:
+> Move prep_compound_page() before post_alloc_hook() in prep_new_page().
 >
-> On 5/8/26 19:05, Nico Pache wrote:
-> > Since commit b1f202060afe ("mm: remap unused subpages to shared zeropag=
-e
-> > when splitting isolated thp"), splitting an anonymous THP remaps all
-> > zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE=
-.
-> > This flag is set unconditionally for every anonymous folio split,
-> > including splits triggered by KSM.
+> The next patch adds a folio_zero_user() call to post_alloc_hook(),
+> which uses folio_nr_pages() to determine how many pages to zero.
+> Without compound metadata set up first, folio_nr_pages() returns 1
+> for higher-order allocations, so only the first page would be zeroed.
 >
-> And even when the underused scanner is effectively disabled on a system. =
-Hm.
+> All other operations in post_alloc_hook() (arch_alloc_page, KASAN,
+> debug, page owner, etc.) use raw page pointers with explicit order
+> counts and are unaffected by this reordering.
+
+I'd put this justification for why this is safe above the 'next patch' stuff.
+
 >
-> I don't quite like that we scan for zeropages when nobody even requested =
-us to
-> split because of zeropages.
+> Also reorder compaction_alloc_noprof() for consistency. Compaction
+> currently passes USER_ADDR_NONE so folio_zero_user() is not called
+
+Yeah again, this 'just so' stuff of when or when not an address is passed is
+concerning.
+
+> there, but keeping the same ordering avoids a future tripping hazard.
+
+No functional changes or functional changes? If none then say so.
+
 >
-> I can see why we would want to scan for zeropages in a setup where the un=
-derused
-> scanner is active, even when the split was triggered by someone/something=
- else
-> (below).
+> Reviewed-by: Gregory Price <gourry@gourry.net>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: Claude:claude-opus-4-6
+> Assisted-by: cursor-agent:GPT-5.4-xhigh
+> ---
+>  mm/compaction.c | 4 ++--
+>  mm/page_alloc.c | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 >
-> [...]
->
-> >  /**
-> > @@ -4340,7 +4341,13 @@ int folio_split(struct folio *folio, unsigned in=
-t new_order,
-> >               struct page *split_at, struct list_head *list)
-> >  {
-> >       return __folio_split(folio, new_order, split_at, &folio->page, li=
-st,
-> > -                          SPLIT_TYPE_NON_UNIFORM);
-> > +                          SPLIT_TYPE_NON_UNIFORM, false);
-> > +}
-> > +
-> > +int folio_split_underused(struct folio *folio)
-> > +{
-> > +     return __folio_split(folio, 0, &folio->page, &folio->page,
-> > +                          NULL, SPLIT_TYPE_NON_UNIFORM, true);
-> >  }
-> >
-> >  /**
-> > @@ -4559,7 +4566,7 @@ static unsigned long deferred_split_scan(struct s=
-hrinker *shrink,
-> >               }
-> >               if (!folio_trylock(folio))
-> >                       goto requeue;
-> > -             if (!split_folio(folio)) {
-> > +             if (!folio_split_underused(folio)) {
-> >                       did_split =3D true;
-> >                       if (underused)
-> >                               count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
->
-> In general, this looks clean.
->
-> But imagine the following: someone splits the THP for another reason: for
-> example, because migration is unable to allocate a 2M THP, or because we =
-have to
-> split on swapout etc.
->
-> Not freeing the zero-filled pages means that these pages cannot be reclai=
-med
-> anymore easily. We split a possibly underused THP but didn't free the mem=
-ory.
->
-> The only way to free the memory would be to wait for another collapse, an=
-d then
-> have the new THP be detected as underused.
->
-> Hm.
->
-> (1) As you say, the alternative is to let KSM say that it wants to handle=
- the
-> zero-filled pages itself. I'm not a the biggest fan of that approach. We =
-still
-> have two mechanisms interacting to some degree.
->
-> (2) Another approach is to just let KSM handle this in VMAs that are mark=
-ed as
-> mergable while KSM is active. That is, we check for VM_MERGABLE and ksm_r=
-un =3D=3D
-> KSM_RUN_MERGE in try_to_map_unused_to_zeropage() to just let KSM do its t=
-hing.
->
-> That really just stops both mechanisms from interacting.
->
-> (3) Yet another approach I could think of (in general) is to disable the
-> underused handling in a system where the underused splitting is entirely =
-disabled.
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index e9d499da0ac7..5eca99271957 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -82,6 +82,14 @@ unsigned long huge_anon_orders_madvise __read_mostly;
->  unsigned long huge_anon_orders_inherit __read_mostly;
->  static bool anon_orders_configured __initdata;
->
-> +static bool thp_underused_split_active(void)
-> +{
-> +       if (!split_underused_thp)
-> +               return false;
-> +
-> +       return khugepaged_max_ptes_none !=3D HPAGE_PMD_NR - 1;
-> +}
-> +
->  static inline bool file_thp_enabled(struct vm_area_struct *vma)
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index 72684fe81e83..4336e433c99b 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -1849,10 +1849,10 @@ static struct folio *compaction_alloc_noprof(struct folio *src, unsigned long da
+>  		set_page_private(&freepage[size], start_order);
+>  	}
+>  	dst = (struct folio *)freepage;
+> -	post_alloc_hook(&dst->page, order, __GFP_MOVABLE, USER_ADDR_NONE);
+> -	set_page_refcounted(&dst->page);
+>  	if (order)
+>  		prep_compound_page(&dst->page, order);
+> +	post_alloc_hook(&dst->page, order, __GFP_MOVABLE, USER_ADDR_NONE);
+> +	set_page_refcounted(&dst->page);
+>  	cc->nr_freepages -= 1 << order;
+>  	cc->nr_migratepages -= 1 << order;
+>  	return page_rmappable_folio(&dst->page);
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 0943ab724032..4676fd49819e 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1874,11 +1874,11 @@ static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags
+>  							unsigned int alloc_flags,
+>  							unsigned long user_addr)
 >  {
->         struct inode *inode;
-> @@ -4188,7 +4196,8 @@ static int __folio_split(struct folio *folio, unsig=
-ned int
-> new_order,
->         if (nr_shmem_dropped)
->                 shmem_uncharge(mapping->host, nr_shmem_dropped);
+> -	post_alloc_hook(page, order, gfp_flags, user_addr);
+> -
+>  	if (order && (gfp_flags & __GFP_COMP))
+>  		prep_compound_page(page, order);
 >
-> -       if (!ret && is_anon && !folio_is_device_private(folio))
-> +       if (!ret && is_anon && !folio_is_device_private(folio) &&
-> +           thp_underused_split_active())
->                 ttu_flags =3D TTU_USE_SHARED_ZEROPAGE;
->
->         remap_page(folio, 1 << old_order, ttu_flags);
-> @@ -4497,7 +4506,7 @@ static bool thp_underused(struct folio *folio)
->         int num_zero_pages =3D 0, num_filled_pages =3D 0;
->         int i;
->
-> -       if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
-> +       if (!thp_underused_split_active())
->                 return false;
->
->         if (folio_contain_hwpoisoned_page(folio))
->
->
->
-> I tend to like (2), and maybe (3) on top. Opinions?
-
-Coming back to this.
-
-for (2), I have to export the KSM run state, which may be fine, but it
-introduces a race window. If a user disables KSM, a split occurs, and
-then re-enables it, the bug will present itself again.
-
-Would it be better to just check if its VM_MERGEABLE?
-
-(3) makes sense to me; I'll add that before sending the V1 :)
-
--- Nico
-
->
->
+> +	post_alloc_hook(page, order, gfp_flags, user_addr);
+> +
+>  	/*
+>  	 * page is set pfmemalloc when ALLOC_NO_WATERMARKS was necessary to
+>  	 * allocate the page. The expectation is that the caller is taking
 > --
-> Cheers,
->
-> David
+> MST
 >
 
+Thanks, Lorenzo
 
