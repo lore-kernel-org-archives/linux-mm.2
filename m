@@ -4,137 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4741BCD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:14:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0407CD8C9F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:15:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A942C6B009E; Mon,  8 Jun 2026 07:14:33 -0400 (EDT)
+	id 20A7A6B0088; Mon,  8 Jun 2026 07:15:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4B6E6B00A2; Mon,  8 Jun 2026 07:14:33 -0400 (EDT)
+	id 1E1D96B009D; Mon,  8 Jun 2026 07:15:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 932EA6B00A3; Mon,  8 Jun 2026 07:14:33 -0400 (EDT)
+	id 0FB7F6B00A2; Mon,  8 Jun 2026 07:15:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DE296B009E
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:14:33 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 276301C2C23
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:14:33 +0000 (UTC)
-X-FDA: 84856487226.20.7CE356B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 53798140010
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:14:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Va/1owc0";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F2FB16B0088
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:15:47 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA333A0ABB
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:15:47 +0000 (UTC)
+X-FDA: 84856490334.13.C6E5AE3
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 97FD71C000F
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:15:45 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=MTm0efw7;
+	spf=pass (imf20.hostedemail.com: domain of yuzenghui@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=yuzenghui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780917271;
+	s=arc-20220608; t=1780917346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IDPAFI5FQvvWZFGQ97+UGzUve2NfcJnlbnzcH8NKyw8=;
-	b=pBDDcXYoEzvFzIkshuOJCAvenK6Mq8DSoQ+YnuoS/JdMKKQ8P7Nldx/aa+bhSlLEiXTChe
-	E+nOznQjKA7WlaGBm1pVvgsWeNeFuU5TD+q+idog8i3UAEXSBqwDtW8hooOWToOmE++JLV
-	dBpSxq2eNTh7IfIayovSlnmio33PmVk=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=5FPC2aDwg5mBNqHLEf0QUYF464aa6oMYs9z5oC3+/mQ=;
+	b=a1P6xIMh/unLm77NEEHPXKy+4Oq7yU8GBDjRu4QRpYT1FnqkGb02dG8V4hCGToGE3lq7hT
+	SRLYTgG2nHkTDHjrJur36k3/CttJM1thO/Mt/AcjfrDcKph+wd+vIgFwIRg9Dw3Tr/s0B1
+	b1U4+5w2zbL5LP5OIn5KlFpvrmly688=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Va/1owc0";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=MTm0efw7;
+	spf=pass (imf20.hostedemail.com: domain of yuzenghui@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=yuzenghui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780917271;
-	b=IAaNB6Nmxce+vdVxSYOzhpskqe6UprRdEJJjcxh6/fl7p6RbvAQsJxmgeS9W5/iaRIm7Sd
-	55emz66pUPyC9Vwu7g48xwfa65NQYSCoOOlaTGXnDjwaQpvJqlMEV95GsoRG3tjWnpfPg6
-	Ydt2jLy5W5noRnadoUbd2y05TC2OYVg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD0786001D;
-	Mon,  8 Jun 2026 11:14:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317721F00893;
-	Mon,  8 Jun 2026 11:14:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780917270;
-	bh=IDPAFI5FQvvWZFGQ97+UGzUve2NfcJnlbnzcH8NKyw8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Va/1owc0KxajEPlJS5BuC5H59P2uclmX6uYMA+EIQhUf+tXtOtZzwyVznn82I3hmC
-	 vopYHWEYb8gfVuGAAzCA9HeC1CRFd34EuS3Q23KrscL8B4eCVr0tvvUAjFfDwrKpPE
-	 o9dfY7YHAkCggUZuxvUdPzkK1zGU9TMcgq6lVZQZS+V5TkYJKfqWtTScNp69+wNbEt
-	 LnTDWT5SRlXwVv3RBf83r/zz9sg5fpxsKo8kNPWaLfPXd7JGjVhgO5YX2b9vvII0ig
-	 vUQ7Rde46+pEbB1tiiuLwjEe9Pz+D89TdO4thiY4lmtUeur9i/XmCmxN1tklVgupiQ
-	 ylCNIaXfpCoLg==
-Message-ID: <377d571d-0c41-4d08-90a8-d198e1658358@kernel.org>
-Date: Mon, 8 Jun 2026 13:14:24 +0200
+	t=1780917346;
+	b=LSc9YzThZz4CF75vy/S8tFYA10AJNpR2+PZ1qytvlfDektYeAhoYx/ODGK1ga1doOyGovW
+	BDFMuWH/WULSfjKJZBL9orH63ydOo2YcJGTbNEADg/UjMvRBWFskhiRkuJIw5K5sNWxu4/
+	Du7zdRwblk15hkdet+KPE6KK1n+LLIA=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=5FPC2aDwg5mBNqHLEf0QUYF464aa6oMYs9z5oC3+/mQ=;
+	b=MTm0efw7c9Kg084CS0dQqAJe5WrTttbpao8SeMxt3fefxTd2DcxZJBgejnC92rLgTGh2VQRaD
+	Xf48sm+p7iPqkzJPii/f/Tk9j+WBsTc4bm9DguS732djCEQoW2VNpQWqvHnzcUGS9UMUx8Rqbbi
+	zSWAaL1IO0t1RWfgKe52KfQ=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4gYq5L49b8znTVy;
+	Mon,  8 Jun 2026 19:07:50 +0800 (CST)
+Received: from kwepemk200017.china.huawei.com (unknown [7.202.194.83])
+	by mail.maildlp.com (Postfix) with ESMTPS id C20E640575;
+	Mon,  8 Jun 2026 19:15:40 +0800 (CST)
+Received: from DESKTOP-8RFUVS3.china.huawei.com (10.174.178.219) by
+ kwepemk200017.china.huawei.com (7.202.194.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 8 Jun 2026 19:15:40 +0800
+From: Zenghui Yu <yuzenghui@huawei.com>
+To: <damon@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <sj@kernel.org>, <akpm@linux-foundation.org>, <wangzhigang17@huawei.com>,
+	<liqiqi23@huawei.com>, Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH] samples/damon/mtier: fail early if address range parameters are invalid
+Date: Mon, 8 Jun 2026 19:15:34 +0800
+Message-ID: <20260608111534.264-1-yuzenghui@huawei.com>
+X-Mailer: git-send-email 2.23.0.windows.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
-To: Nico Pache <npache@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, yuzhao@google.com,
- usamaarif642@gmail.com, lance.yang@linux.dev, baohua@kernel.org,
- dev.jain@arm.com, ryan.roberts@arm.com, liam@infradead.org,
- baolin.wang@linux.alibaba.com, ziy@nvidia.com, ljs@kernel.org,
- akpm@linux-foundation.org
-References: <20260508170509.640851-1-npache@redhat.com>
- <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
- <CAA1CXcCj7gbcdcuFQ2Zg3fTxys8NRteh4XH36pwQ5=BX6uUasA@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAA1CXcCj7gbcdcuFQ2Zg3fTxys8NRteh4XH36pwQ5=BX6uUasA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.174.178.219]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk200017.china.huawei.com (7.202.194.83)
+X-Rspamd-Queue-Id: 97FD71C000F
+X-Stat-Signature: ibgr6auwfhtwu4ct1x5whjnqb531f4y6
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 53798140010
-X-Stat-Signature: 9eg3ax5okeajuxsrhc1uogzgh1c6m3gi
-X-HE-Tag: 1780917271-578254
-X-HE-Meta: U2FsdGVkX1+HLVfrcN5+LNzVbIY/NLmoxyUqlCnuKP4B8GZCjGfdDBMrMQGvNpX7AI3wMnE7IsMkV2FLjH/w1Eenh4sm8nEJCJeHVRLqhJewZzxZgh6hCmW5nyUK3IbTPcVve32hsXRWckAgHyUar6xofiQkIN2PKXwAhMGO3TtuqRkbxnTSV0S/1tAZ5eAAjkxvjId6hB7nwR/fPXY362J+kYI2vhkv+IxJILEE5eI8zh7LZj5uwdpFAUiKaWNKB/d/LapoLlhb3JeLvyJVLXz0rtwQ8dJxePEplhduxdHYhRkngvx4VuElR+T+fCxUM5/j4D64ZebKahmp5rTE4+RdcL1yGaIrmYQjZ0/0BV7sC6dQ60u9JRuKUvCqrD3uQVBPsDkaoqPdsOMedWcKB543OYwLsvzZIvxbCWdgDv2ojoE4lvgK/jmDLqUpcdqWVW8Rv2jiqo8mEh4x6YroQh5oKFryyaAwG5S1Btg5EphsL1goZKYJmVs6A1XcpsNPo8RDFUoDeoLM7+zqgynJH2qRZzXwcex2qkiEoCDa78fsfp1LAY82fXLz3UJpwtSQvjSepaIKAT930fv2efYepfnIUknPR7VkE5W5YIZLCZH/lYAOfPPKN793ptDhHCZGSFsiqzEwm4Ep7wthuxTn58Tk3jLCR/F6NdE+L+HC6z5BcnHhiv9uBaS+bxwsRaicNOixVAi5+ChBM0ue5VUj3TDBd+XdKo8aPzaUp5CAmQloX2E19LNe4gxun8rtvhF6DyXhTncq2QvWYf/UaWlPdzEU7tcOswhrF7pXNt9SLesLnSuyuaialdGXILmkN9dlkTWP53qS2Kj4PepdaaCFyUsBx30dJMeh9bvkKkMi9jLmp7nsN/uLLfkRoFnsAKTo4YcdZuLN/kEc5p5Q7vTC1G4j0L7div8mb/90gXJyVovUm0OVav+eGJfTu7xIkoApa3J4ne9JXW97+zj2UeL
- ppdbKpVd
- 35VgwD2vBU0vowX2IcbVf71K3lyEV5bav4Kl6ZA8nINIbsZtI01qD2zKAmVwMaBK+bV2byoCaL7DifWHYBB6s+xQYUjCnXm6EPv7JxvANGdA2es8LCNnVGAzhW2S8HQJu9mneBZxqec+l0i4bD9F30f8rreuKycLrt2NQ3o8ROIpMe8Ai/dnvrtRhDmRwn3J9ZkHtTQ4DT2hTY/zLzXgyFjh3D00MoQfB045rQsCS+hcsvqJrHHkrzDeuhI0E4uew6+3hD5NM8TXW5W5uOAtO2vwCjNnV4T+OBwUZ7TnrkJT5XIFMzFCF03XerQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780917345-962256
+X-HE-Meta: U2FsdGVkX1/tCsSLy03aSOLf+CFG2EjNKqTQ4VaPBvEiA2Y0dnoaPnEoiYV+//e5Hk5ufV5aXIqGAts+82eUOjS/rsXdKX8wYRCw/RK3J+4xMcTuJzJrAiO6lEty+q6V5iD6WnXFfY69th4nijZxMbnMLVOSXu6NUwBu31Vydngb6rRuEXzfVOzck0RkIuWmbOD+otcjizJyhQOhLjKl4DJSmmEIZQScta/6d4jXxsY5jehlTs1/gKCYBXnp0EX5CD63ta9KcmPmox/O9iM6FMXLUTpF+nh5i3M9022oQXs3xyYh9q8SSxoJcyQSeLJQ35TvbnfcvaEkchmnKTL3u9fF+ziRBGYn4ND4LswWk4EDjS+3Kc2OkriPA8wcYRqd8/J/jkuqqeq1aFaIt0uZ0L65dm1pWqySPPrANck9V+5XizXkK7Eb8awHQiWdoHSdVccprPeqc+KTRRd+rj+0xzZ1jZcNWOr1j1y/Xv6Aov/WfqzL3WsWA4Jq2geV6poCaGxp6EquySJZ70Q9k9TlBVspbVOphmPvi6Mh7FdlW0SxLz6Ne4OewBfXuJx8V68ZsgN2u3raJVl1P3Xn2hy9PcM9BlF7EOpzt/7BZnjK9g0DgWMN1ZtuP7vO7EN41SJcj3sMQZqkyIy1vz8zi46iLuePs30X0KieoCJKMiXBXwKpUDLYuH9FzFMyP8yjnX7VvFw5oK/Rtz8kBunvNZsg4Ex/86oz55vfVz+h+UO09/4pD3j7HY9zzJH/tkjASGxC3UIc1fi8XMA8OV3mp6EbOS7MILRbEI5laSndMFa+erGgN1cWAb9bHb5F87Fe30DnxPjgzfgIWIv5c+EZV4DwATZBz3Rlh1AvkEg9+WmicUQBVqNE5lrAb3/2Hfbmur2sK3+ZfJ6EoZGkOUnHoEaeiMdZB9oMvPTeSxFkpdtXQFjc5BdgZRcG9utMeXSKRs5CL4BqLF7HHHBEFq+wyBC
+ rSraAw2X
+ R2lWAJ5U//JoNnmkWqmzfD/gPeZg0oDpfjyFIwP0VHrCh9r3ZiYqq3wySPPvqqj1u2AqOuG8UFqwFEEEt21Rloca7ioQy7cf5/4OvWb5n2bspBSLIuB0jTznTAPAQyb7Or99N9Peo4PltVW+WIYk2dsE2MExRFIaIStHW9L0qkFh5wvlaCZHtvWZKqKr6ta5bESQZP6dI3uUx32ZTlEZuCjTSWaipRTC1zzXM0Nu+I7uSthAT8kRQIExof+6zJDA20ZtfrOa6O1AUOlvIfGhykr23Dv9wWGQZBOM6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,143 +95,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/8/26 12:34, Nico Pache wrote:
-> On Fri, May 8, 2026 at 3:32 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
->>
->> On 5/8/26 19:05, Nico Pache wrote:
->>> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
->>> when splitting isolated thp"), splitting an anonymous THP remaps all
->>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
->>> This flag is set unconditionally for every anonymous folio split,
->>> including splits triggered by KSM.
->>
->> And even when the underused scanner is effectively disabled on a system. Hm.
->>
->> I don't quite like that we scan for zeropages when nobody even requested us to
->> split because of zeropages.
->>
->> I can see why we would want to scan for zeropages in a setup where the underused
->> scanner is active, even when the split was triggered by someone/something else
->> (below).
->>
->> [...]
->>
->>>  /**
->>> @@ -4340,7 +4341,13 @@ int folio_split(struct folio *folio, unsigned int new_order,
->>>               struct page *split_at, struct list_head *list)
->>>  {
->>>       return __folio_split(folio, new_order, split_at, &folio->page, list,
->>> -                          SPLIT_TYPE_NON_UNIFORM);
->>> +                          SPLIT_TYPE_NON_UNIFORM, false);
->>> +}
->>> +
->>> +int folio_split_underused(struct folio *folio)
->>> +{
->>> +     return __folio_split(folio, 0, &folio->page, &folio->page,
->>> +                          NULL, SPLIT_TYPE_NON_UNIFORM, true);
->>>  }
->>>
->>>  /**
->>> @@ -4559,7 +4566,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->>>               }
->>>               if (!folio_trylock(folio))
->>>                       goto requeue;
->>> -             if (!split_folio(folio)) {
->>> +             if (!folio_split_underused(folio)) {
->>>                       did_split = true;
->>>                       if (underused)
->>>                               count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
->>
->> In general, this looks clean.
->>
->> But imagine the following: someone splits the THP for another reason: for
->> example, because migration is unable to allocate a 2M THP, or because we have to
->> split on swapout etc.
->>
->> Not freeing the zero-filled pages means that these pages cannot be reclaimed
->> anymore easily. We split a possibly underused THP but didn't free the memory.
->>
->> The only way to free the memory would be to wait for another collapse, and then
->> have the new THP be detected as underused.
->>
->> Hm.
->>
->> (1) As you say, the alternative is to let KSM say that it wants to handle the
->> zero-filled pages itself. I'm not a the biggest fan of that approach. We still
->> have two mechanisms interacting to some degree.
->>
->> (2) Another approach is to just let KSM handle this in VMAs that are marked as
->> mergable while KSM is active. That is, we check for VM_MERGABLE and ksm_run ==
->> KSM_RUN_MERGE in try_to_map_unused_to_zeropage() to just let KSM do its thing.
->>
->> That really just stops both mechanisms from interacting.
->>
->> (3) Yet another approach I could think of (in general) is to disable the
->> underused handling in a system where the underused splitting is entirely disabled.
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index e9d499da0ac7..5eca99271957 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -82,6 +82,14 @@ unsigned long huge_anon_orders_madvise __read_mostly;
->>  unsigned long huge_anon_orders_inherit __read_mostly;
->>  static bool anon_orders_configured __initdata;
->>
->> +static bool thp_underused_split_active(void)
->> +{
->> +       if (!split_underused_thp)
->> +               return false;
->> +
->> +       return khugepaged_max_ptes_none != HPAGE_PMD_NR - 1;
->> +}
->> +
->>  static inline bool file_thp_enabled(struct vm_area_struct *vma)
->>  {
->>         struct inode *inode;
->> @@ -4188,7 +4196,8 @@ static int __folio_split(struct folio *folio, unsigned int
->> new_order,
->>         if (nr_shmem_dropped)
->>                 shmem_uncharge(mapping->host, nr_shmem_dropped);
->>
->> -       if (!ret && is_anon && !folio_is_device_private(folio))
->> +       if (!ret && is_anon && !folio_is_device_private(folio) &&
->> +           thp_underused_split_active())
->>                 ttu_flags = TTU_USE_SHARED_ZEROPAGE;
->>
->>         remap_page(folio, 1 << old_order, ttu_flags);
->> @@ -4497,7 +4506,7 @@ static bool thp_underused(struct folio *folio)
->>         int num_zero_pages = 0, num_filled_pages = 0;
->>         int i;
->>
->> -       if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
->> +       if (!thp_underused_split_active())
->>                 return false;
->>
->>         if (folio_contain_hwpoisoned_page(folio))
->>
->>
->>
->> I tend to like (2), and maybe (3) on top. Opinions?
-> 
-> Coming back to this.
-> 
-> for (2), I have to export the KSM run state, which may be fine, but it
+The comment on top of `struct damon_region` clearly says that
 
-Right, you just need a simple helper.
+    For any use case, @ar should be non-zero positive size.
 
-> introduces a race window. If a user disables KSM, a split occurs, and
-> then re-enables it, the bug will present itself again.
+which is now verified in damon_verify_new_region() if the kernel is built
+with DAMON_DEBUG_SANITY.
 
-Who cares?
+The WARN_ONCE() can be triggered if the mtier sample module is enabled
+before node{0,1}_{start,end}_addr have been properly initialized, which is
+obviously not good.
 
-> 
-> Would it be better to just check if its VM_MERGEABLE?
+ ------------[ cut here ]------------
+ start 0 >= end 0
+ WARNING: mm/damon/core.c:116 at damon_new_region+0xf0/0x118, CPU#39: bash/34144
+ Call trace:
+  damon_new_region+0xf0/0x118 (P)
+  damon_sample_mtier_build_ctx+0xd4/0x368
+  damon_sample_mtier_start+0x1c/0x90
+  damon_sample_mtier_enable_store+0x98/0xb0
+  param_attr_store+0xb4/0x128
+  module_attr_store+0x2c/0x50
+  sysfs_kf_write+0x58/0x90
+  kernfs_fop_write_iter+0x16c/0x238
+  vfs_write+0x2c0/0x370
+  ksys_write+0x74/0x118
+  __arm64_sys_write+0x24/0x38
+  invoke_syscall+0xa8/0x118
+  el0_svc_common.constprop.0+0x48/0xf0
+  do_el0_svc+0x24/0x38
+  el0_svc+0x54/0x370
+  el0t_64_sync_handler+0xa0/0xe8
+  el0t_64_sync+0x1ac/0x1b0
+ ---[ end trace 0000000000000000 ]---
 
-Some user space unconditionally sets VM_MERGEABLE, even if KSM is never enabled
-(IIRC QEMU, for example).
+Fix it by checking the validity of parameters right before
+damon_new_region() and fail early if they're invalid.
 
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+---
+ samples/damon/mtier.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
+index 775838a23d93..4a5d3fb12e1b 100644
+--- a/samples/damon/mtier.c
++++ b/samples/damon/mtier.c
+@@ -118,6 +118,9 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
+ 	} else {
+ 		addr.start = promote ? node1_start_addr : node0_start_addr;
+ 		addr.end = promote ? node1_end_addr : node0_end_addr;
++
++		if (addr.start >= addr.end)
++			goto free_out;
+ 	}
+ 
+ 	region = damon_new_region(addr.start, addr.end);
 -- 
-Cheers,
+2.33.0
 
-David
 
