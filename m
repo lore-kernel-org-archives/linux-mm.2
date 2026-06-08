@@ -4,85 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 699EECD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 12:19:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 763BFCD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 12:25:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF5DA6B008A; Mon,  8 Jun 2026 08:19:35 -0400 (EDT)
+	id 88EF76B0005; Mon,  8 Jun 2026 08:25:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA6A66B008C; Mon,  8 Jun 2026 08:19:35 -0400 (EDT)
+	id 817AE6B0088; Mon,  8 Jun 2026 08:25:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BC606B0092; Mon,  8 Jun 2026 08:19:35 -0400 (EDT)
+	id 6E47E6B008A; Mon,  8 Jun 2026 08:25:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E90D6B008A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:19:35 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 33EAF140ACD
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:19:35 +0000 (UTC)
-X-FDA: 84856651110.08.A06348C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 74849C0008
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:19:32 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pK+Z52VA;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 59A3E6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:25:51 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD04A93A53
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:25:50 +0000 (UTC)
+X-FDA: 84856666860.22.F164030
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 386591A0007
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:25:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZEqMGr9y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780921173;
+	s=arc-20220608; t=1780921549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qERTLKCFsdtVE8IpdID0EeMDJispzoTVRSNdOHDPl+k=;
-	b=AHlcsV7Sp/zyEuvPPP3a0H1wd4tDJ9KpfupCxLt4uIay26E42SoSByxQypR//jOqyVhQJM
-	wjXsP1KrNPq1vZ2DA3gyuKHPiyz7diO5siAM4M5sE2PqsOHwTJ8vYmesWC3a+PC69nLuF9
-	c87ttAta8aRHrnO/ZnKaBapzHfH6M/s=
+	bh=7v9sMwWREmFeEIpVeq4eIiipq1ZEwTPV1JoPE5Cwhi8=;
+	b=Ijn7ljLl33TQBPI+rS/jooTNswA4dMzXxWxjW9ViZdpkmqqi0yzQAgPmNvEcQWWXWzRwdm
+	aVLU3wARklWGl0+SZs25SVmtPZMln0ibNoY8uXbZB+eg1BfYLhVg2HVgfHSkeCf4nwbEfR
+	FsrZNj++Sm5dInzzfUJyqZlFdRGNx6U=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pK+Z52VA;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZEqMGr9y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780921173;
-	b=M3VCWz8oMV2QeA+EfYqhd38nWkooUYIA2zNr6gB6nHmb1DPPQ8ggI56pDLpG0uQYL1sXy2
-	W89z6gvbCDTFa6F4kUJvV8NF+3/EpyBNTNs4cLI79425tFd5sz4H7DoFJGDQ78JGYB1lzG
-	9lWn7eTN5iM/jZubY9iPlwFwL2yyUZc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qERTLKCFsdtVE8IpdID0EeMDJispzoTVRSNdOHDPl+k=; b=pK+Z52VAGK7KZAkOuITnxC5Vb3
-	PHYL5/DgnXPAXjaENesapBN3zjmkmz57XsRw8+bJY+htyOPt5FpciVJww09WW4VYADB/o3pCPBa+o
-	ITQzIAQxDQ6ajm9AiQLxeRKpk0ymSQm4RiFaCgEFylJdFsDx8wn0vu3aBBMFnoVGUiAeyyFdMVAWx
-	c8DQPYwUDeUtlb8qJqAsFHk64VN+7v1Ku70v/bxaYv3Gm8zHr0rAhg5D9VIF/bbpoDy1u+F8LVNCf
-	6dJeaZUFkrrUe7jJTISR/DA18ypFmeTq1siCNdf7QqN1ucOHV34oQQ79CnsjJwfMC2XVZnkKbKRxh
-	vh8bnBjQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wWYx0-0000000DffW-0nlk;
-	Mon, 08 Jun 2026 12:19:30 +0000
-Date: Mon, 8 Jun 2026 13:19:30 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Jan Kara <jack@suse.cz>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	David Hildenbrand <david@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [BUG?] invalidate_lock not held in read_cache_folio()
-Message-ID: <aiazUtNaS5mVlaCy@casper.infradead.org>
-References: <5ca6512c-bdc1-4620-9c99-c7525e059099@arm.com>
+	t=1780921549;
+	b=JNqaE+AzauxBpcz6gKFEnrPguv64ij6kmP78P1Uv1wzzG9R+4vXi5dFPxfH7FqAMz3vBo4
+	pycKc6ouv07ha8AILlk0/HFWm3lfjb7SLOs4yq1C8jxrhtMZwZJ6XGuLS+Y9KfR1O4w6oZ
+	Y8gKAfE1Ybm2hO5FcXORMQ9UtMdTBDY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 58267434FB;
+	Mon,  8 Jun 2026 12:25:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF411F00893;
+	Mon,  8 Jun 2026 12:25:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780921548;
+	bh=7v9sMwWREmFeEIpVeq4eIiipq1ZEwTPV1JoPE5Cwhi8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZEqMGr9yJAnP5zlkZnITsxa56PNYj1eaUlPo6+9nS0CZ344Qb7m6eFU8Fooc9252F
+	 7oOj2aDj1+5q1ajsauTIZRwEDNzD+J3WcA0jTXjPd/uW9JeItGF0xiOUjb6jiRp//K
+	 EuZnSeJ538+w8V3sAVBSd0+5cd0VKB2IhqIZA1lKOPMiZUq3UeRt6nELZ85SnQHocV
+	 c8vFmP5qrbtaoDnlVeflv3BX1877qBnMOSUDJXM7vvMKUA1Ls5oWsPm2sPlI6tv9DL
+	 95bgOafG7ubwMUj7JDinXyuS+JNWHkv+m/5/XHVtgcO8sCX7Ps3qDdWqNIby7CxqYz
+	 eBKsC6vafrdhw==
+Date: Mon, 8 Jun 2026 13:25:35 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
+	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v10 24/37] mm: add put_page_zeroed and folio_put_zeroed
+Message-ID: <aiazXE8pUDeCmP7c@lucifer>
+References: <cover.1780906288.git.mst@redhat.com>
+ <fef7ca7bbf591865defef658b0792b58494aaed5.1780906288.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5ca6512c-bdc1-4620-9c99-c7525e059099@arm.com>
-X-Rspamd-Server: rspam07
+In-Reply-To: <fef7ca7bbf591865defef658b0792b58494aaed5.1780906288.git.mst@redhat.com>
+X-Rspamd-Queue-Id: 386591A0007
 X-Rspam-User: 
-X-Stat-Signature: 6qim9e3hq76jgza93cpx3iax1oyscd6k
-X-Rspamd-Queue-Id: 74849C0008
-X-HE-Tag: 1780921172-565123
-X-HE-Meta: U2FsdGVkX18Se4AC9IL77hOlH6RUF6dkSjrdr5hTfOhpmSWIU2lhLPRK2pecoTTyWXO4QmMSpXVXlKt//7j2lwfV+NT/iwYhT6bsOfY7j8wNWRqrJYZJJ1UhjRsmkntn392eRmBcu6jQPHjonO1Q2/bJBTdvNgYZ3qDw9kFKJlF9Qr7g9tRUmF1gdr8cfzHdClkgDZV/c7bH/YM3Drer9zDxBCFm72wvuTKHlRHI1tjr57HzQYjCkL1G+T3xgSQ2KpRFIIq78dN0tIN23eXNOnxgfD30/ncheFNppPxuZ+53TDZf7ndnxI4Xq8roPrm4U62EFqpRZqc36HO631m6reXZtcQmTosdlKZxcBqEvqkzgrGfqGgqmI5bPDmPi+qCKpblFdjtPbeTP7iKX0PBZjKgp9e2+L0ScwJURz01gYfHkjpPGYYUxCpCln+n5S8GhSg0m8vcEcBgNn7KHCSJ7QMFTsaPGoWH59IdTvLV4eiET4z5jEFD4sZOCC4DLCSV1An/AiD5DT4HkHXtxmPZg0HVp1bM9zRrl4VbXOgtpZ6CZFSj2zKXf3gZ14+achrsoeZLUEyU6IdlK1ZAewHkqnyA8vZTK+xKLeL+Rc/2XdV32bFAR2lSF33bQ2xzcdCbLCFWaD3HEFx6lQ/8tqDQQGlb4ZSmEDGULCxn5OAagkB2gd2vXHOdoOR3jSM4GCy/MYo2+NNK2oLY30bsadqRNj3V3az3bOLfihWNfGsumuZx7ykz8wYA4nyGYPpqdmXhupdLQSUsUqQex4S6olC/vjNp9IAksm0YsBLpw3bwqB7wRQsDy9zHGSmxiC2hNFu6yZEwSHwtB0NmPiQvVwlfBfagjZpRuZRi8r6WSZGRkjNmUc/LhnPWNHgyKRE9Be+ih0aB7stJkja4K3xeJ47VuyeEl/zg/N9e7cpZetrfThudRVeJZS+TYkIEMmAq8TL1I2al+ldazZpxx6QySTp
- dSMY/Orj
- V76eQMOYiHMBRNWKjpqya6G16TspikDFLRuUru3jat9zrVo17zYb+0rWPhZY+uGoNNcoTKGnheoxoSNXfjq1RCkY/U+EPVj5rqZRxPR6/iVsyW7DAMrY1z7fIrDTwH5ng3sHyKtz64zUSPvo0MGSvG/vCDr7AWHpXJMqTkQSe0YEE8XQirbB5hvhJjA7us2/KLdYXSIF4Lb3oikVtvWw8+uu7zb2ztTjEfWgUw7BJQWs22lmW5hyoDtdE09MQH5Rhriz+mJPksib3x9fp3BUcqpfCYEvbSuEiDstKRi3X9oIL3VFa9edtIx4lwq+nd4/KxnkQCQZnWAJSurwG0RcgngpetIn0yE0ufqu/nN5tsxnLx/1FG7b26uT7ZQ==
+X-Stat-Signature: 8nx37s6fmxkga8x8sn5uq8acoyqeod47
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780921549-689893
+X-HE-Meta: U2FsdGVkX18buxoA+RcYg62e052qTrNAu2XnaKNDVTl0fG275rPShnetuC267vq5cFmoXJDHrQdtkHqBYYKF1/jMkKYASBdFENhZW0qmGYWyaMqXcgbNObGT6W8EJ9Q0hBnRGXXzihyTJiB4P6wKEH88j90DGiXE+QG3+A5zfD6ba8TIUqKR0WEk53aS+1DsHg/1CeBnkagUm11Xyq2vccvE2e8jshYEbKQsRpFWUXi5qmQtXz9joOg7cY2546FGsvO+451UaY20SbOEeJGK1y6ahED33147eLfVJWvNnbmMDw9LXhez4KCd30xl+6VGDvZdKzW7Vf4fsKhVitpSaPFMQIAx/S9gMA94R3JopRamxthDTYvzD3NNnU5X6zPsG0s9drClckCLS4TKEptJ15o3QU3QdrnTK5EJ7HdsWzGDE7Glt7PF3lczmaGPrOkDwFn8rlMEwKLMuHl90sbhcK9YZtdkjabcpcWBV3kglvkopQmyQ36hNiExr5tV8Vg9D8z9PPvaupq4trNC37v/UplwIucDStMIbUcM/Nz6XGraTReaobYoQ6fDl8aOL+IvPC+tNYjyliJPfITmYlXUWCsi2YE82hKOQxJ73+eULCZ1iv10M3QbI1pD5wlMJpPhDQpLNNb7SUH8sSfka0IhibK0uuyxYrOMy/iO91Fp5sbdKguc2XtqwJuhA4m320jpf/CAtZT4wYimiqpVjtoWxtCeeCe4uOIv5Ay/3eD8FmHDXjBdnnNHLFixRnBHIZlm0h9qbp3ffl1i1RgkV5Kdz66jZGX6P/6JLCbi9bFEfHZR4AyZYEQyA0Lm91i50bjeQYrZmavBwFZ2tAYRUIA1fKe4LNeEaraFzOxALAcq8E4AaF0mNciUeB028f3+ruZLFQBvbFZP1aWeEw5mBE1LKcBYFomFQkmi2MH6Vtdv8mDI7lohsjFXvW85+zbclMBqsBpc+EXmhrCALRkLSf2
+ Vv1goCyS
+ z6wRjGaXecFxJUnKo8xjrXq0pyvWQI0g4k2sKrtn428AFnqx43JAI1FledALWzXZRgbQLrMvmDA54uOLGfZ73YQdYNmjelMcgzACfnjUB2jMhT5v1BAULn0+0ROlI9V/qzhaycv+EjN6lZGg0XLqRn8xHxiDKl5p/VVBxKO7l4PDpMQzH9Mx7YhqLyQ08Cfq6wNgb3p+Xy9sIa1KzAtmLDn1MnWIc4SiwfOaCOaTkHVtxP4Khq5PtsUaPQnKOIC0yz7Sa8GoUaazUVxvu5YSf9WiC4mALMOqMbIKAotuoWclCvSTdEJFebObNbZYS5R3xfJozECnpkSAEZG3Yn8Ly3v1Xo1V+BJ4EsnPSv2kHUUkZnXNnTic3VtFTZmzraKiyGrUoX0Clb05EwaJ4TL5q1u3qcg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,36 +110,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 04:54:51PM +0530, Dev Jain wrote:
-> Hi,
-> 
-> My understanding is that there are two ways we are serializing against concurrent
-> addition of a folio into the pagecache (see 730633f0b7f9).
-> 
-> The kerneldoc of read_cache_folio() says:
-> 
-> "Context: May sleep.  Expects mapping->invalidate_lock to be held."
-> 
-> I put the following in __filemap_add_folio():
-> 
-> +       BUG_ON(!inode_is_locked(mapping->host) &&
-> +              !rwsem_is_locked(&mapping->invalidate_lock));
-> 
-> 
-> And got the following trace:
-> 
-> 
-> [    0.115587] Call trace:
-> [    0.115686]  __filemap_add_folio+0x5dc/0x680 (P)
-> [    0.115871]  filemap_add_folio+0xec/0x2d0
-> [    0.116031]  do_read_cache_folio+0x144/0x2d8
-> [    0.116194]  read_cache_folio+0x1c/0x30
-> [    0.116344]  read_part_sector+0x4c/0xf0
-> [    0.116499]  read_lba+0xb0/0x1a0
-> [    0.116627]  efi_partition+0xa8/0x740
-> [    0.116769]  bdev_disk_changed+0x238/0x620
-> [    0.116939]  blkdev_get_whole+0xac/0x100
-> [    0.117090]  bdev_open+0x280/0x3c0
+On Mon, Jun 08, 2026 at 04:38:54AM -0400, Michael S. Tsirkin wrote:
+> Add put_page_zeroed() / folio_put_zeroed() for callers that hold
+> a reference to a page known to be zeroed.
+>
+> If this drops the last reference, the zeroed hint is
+> propagated to the buddy allocator.  If someone else still holds a
+> reference, the hint is simply lost - this is best-effort.
+>
+> This is useful for balloon drivers during deflation: the host
+> has already zeroed the pages, and the balloon is typically the
+> sole owner.  But if the page happens to be shared, silently
+> dropping the hint is safe and avoids the need for callers to
+> check the refcount.
+>
+> Note: put_page_zeroed uses folio_put_testzero() which only
+> detects sole ownership at the instant of the atomic decrement.
+> A concurrent reference holder (e.g. migration) means the hint
+> is silently lost. This is by design: the zeroed hint is a
+> performance optimization, not a correctness requirement.
+> Losing it just means the next allocation re-zeroes the page.
 
-You can't truncate or holepunch a bdev
+Do not put comments about specific expected races like this in the commit
+message but not in the code. Subtleties need to be called out.
+
+The commit message also doesn't at all explain why PG_zeroed doesn't
+suffice here.
+
+>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: Claude:claude-opus-4-6
+
+I really don't understand why you have a 'zeroed' folio flag but need to
+also have new API calls to detect that?
+
+They're also HORRIBLY named. Zeroed as in what? Zero page? Huge zero page?
+Memory zeroed by kernel? Pages that userland happen to have zeroed? Or host
+VM zeroed?
+
+Each are cases we address individually and relate to folios.
+
+You absolutely fail to clarify _which one_ you mean, and provide absolutely
+no documentation and add an exported mm API with no description.
+
+This is just I think not something we want to add? Especially on something
+so fundamental?
+
+> ---
+>  include/linux/mm.h | 13 +++++++++++++
+>  mm/swap.c          | 20 ++++++++++++++++++--
+>  2 files changed, 31 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 06bbe9eba636..79b3a8cb9a3b 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -1913,6 +1913,7 @@ static inline struct folio *virt_to_folio(const void *x)
+>  }
+>
+>  void __folio_put(struct folio *folio);
+> +void __folio_put_zeroed(struct folio *folio);
+>
+>  void split_page(struct page *page, unsigned int order);
+>  void folio_copy(struct folio *dst, struct folio *src);
+> @@ -2090,6 +2091,18 @@ static inline void folio_put(struct folio *folio)
+>  		__folio_put(folio);
+>  }
+>
+> +/* Caller must be sole owner to guarantee page is still zero */
+> +static inline void folio_put_zeroed(struct folio *folio)
+> +{
+> +	if (folio_put_testzero(folio))
+> +		__folio_put_zeroed(folio);
+> +}
+> +
+> +static inline void put_page_zeroed(struct page *page)
+> +{
+> +	folio_put_zeroed(page_folio(page));
+> +}
+> +
+
+Please stop adding more APIs to mm without kdocs. This just isn't
+acceptable.
+
+>  /**
+>   * folio_put_refs - Reduce the reference count on a folio.
+>   * @folio: The folio.
+> diff --git a/mm/swap.c b/mm/swap.c
+> index 5cc44f0de987..ecec780172ad 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -94,13 +94,15 @@ static void page_cache_release(struct folio *folio)
+>  		lruvec_unlock_irqrestore(lruvec, flags);
+>  }
+>
+> -void __folio_put(struct folio *folio)
+> +static void ___folio_put(struct folio *folio, bool zeroed)
+>  {
+> +	/* zeroed hint ignored for now, no current user */
+
+Please don't add comments about why you didn't do something that nobody
+here knows about with no context.
+
+If you want to say something about this, make it clear. This is so succinct
+it's utterly meaningless.
+
+>  	if (unlikely(folio_is_zone_device(folio))) {
+>  		free_zone_device_folio(folio);
+>  		return;
+>  	}
+>
+> +	/* zeroed hint ignored for now, no current user */
+>  	if (folio_test_hugetlb(folio)) {
+>  		free_huge_folio(folio);
+>  		return;
+> @@ -109,10 +111,24 @@ void __folio_put(struct folio *folio)
+>  	page_cache_release(folio);
+>  	folio_unqueue_deferred_split(folio);
+>  	mem_cgroup_uncharge(folio);
+> -	free_frozen_pages(&folio->page, folio_order(folio));
+> +	if (zeroed)
+> +		free_frozen_pages_zeroed(&folio->page, folio_order(folio));
+> +	else
+> +		free_frozen_pages(&folio->page, folio_order(folio));
+> +}
+> +
+> +void __folio_put(struct folio *folio)
+> +{
+> +	___folio_put(folio, false);
+>  }
+>  EXPORT_SYMBOL(__folio_put);
+>
+
+No documentation again...
+
+> +void __folio_put_zeroed(struct folio *folio)
+> +{
+> +	___folio_put(folio, true);
+> +}
+> +EXPORT_SYMBOL(__folio_put_zeroed);
+> +
+>  typedef void (*move_fn_t)(struct lruvec *lruvec, struct folio *folio);
+>
+>  static void lru_add(struct lruvec *lruvec, struct folio *folio)
+> --
+> MST
+>
+
+Thanks, Lorenzo
 
