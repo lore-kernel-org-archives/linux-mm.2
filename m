@@ -4,146 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59665CD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04BACCD8C9F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:24:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFDB46B00A2; Mon,  8 Jun 2026 06:14:49 -0400 (EDT)
+	id 20AF46B00A0; Mon,  8 Jun 2026 06:24:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD58C6B00A4; Mon,  8 Jun 2026 06:14:49 -0400 (EDT)
+	id 1BBBB6B00A2; Mon,  8 Jun 2026 06:24:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EB196B00A5; Mon,  8 Jun 2026 06:14:49 -0400 (EDT)
+	id 0835B6B00A3; Mon,  8 Jun 2026 06:24:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DAEE6B00A2
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:14:49 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 560761C2BCF
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:14:48 +0000 (UTC)
-X-FDA: 84856336656.21.A3D24D5
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4F72F16000C
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:14:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Dr2jh2Jv;
-	spf=pass (imf08.hostedemail.com: domain of jgross@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=jgross@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E9A1D6B00A0
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:24:05 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A07BF1208C3
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:24:05 +0000 (UTC)
+X-FDA: 84856360050.06.83722D9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 04AA240004
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:24:03 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WvGXHtzl;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780914244;
+	b=QvaAnUKYbhV/aA8I54RP47CrTbls2GuYigenqAyo/1sbjXp6xYVdBLrK43IvkF+/lx6d5L
+	JYNsXH3UAoEyiZhuvh7/lXiFvRe7TZYl89akKMzA+4Ei1noekXaLazV9Xla3vsInIPSr1l
+	F7H1B2BOHBcRr2jp7U1P/7Mx6X5sEEg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WvGXHtzl;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780913686;
+	s=arc-20220608; t=1780914244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nxBQAWC7FUeGTJNBfhWbQ+ZfQbJdlJJx+tZ9LegFXV0=;
-	b=mA1258g1TgpSRUA7KTOQPS9GtIGVDQGsieEWW1Ix1A9wvMpiQw42lH+CBlpDYEDeENpNjs
-	HfqjC1LuqWTwXUnqT6zE0kFOAZD7dmFcOrWUtqn/aCCj8OFdZ2lAr7z8Id7kMSZNV2DhXg
-	2haY/IeBv50ap0OAQtYbS0pNlQejELo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780913686;
-	b=GXEAW7ypSTy7u6zkyS7ajZmMf5pz9gTHxZJId+tF3Hp0vWqaMmzNoTR4s7PrrJ6f1zRgwD
-	4Z4c7j6bDVLyADschtwf5iq3/BzRcPZMchRhr2AQXbc6OmeRFHHjNiYiyPILJVe7lmE+lA
-	0Z7jNlqQycBCAabB/oHDj+e4DFxdIA0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Dr2jh2Jv;
-	spf=pass (imf08.hostedemail.com: domain of jgross@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=jgross@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bf0170c80f7so669577066b.3
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 03:14:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1780913685; x=1781518485; darn=kvack.org;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nxBQAWC7FUeGTJNBfhWbQ+ZfQbJdlJJx+tZ9LegFXV0=;
-        b=Dr2jh2JvQaK4efUDaIQrGjMJG1odBYGljL673VLAJwN0YR0FSX9Rgkvbej8cpi8jmu
-         /pwI2E3JzRk0ub/njGsr8C5/GaxSzEgyZWUxNWnxuszLH24akox3xmXNJQRFFqCf8efp
-         8FsYIrxbW2+FluVH/DM3wzixztVWgUsB8Sxwi2gNFsX0lOuSpzx/Q5oAsPPNzZAfnaax
-         wOWdrZTWzq2boMcqT7x4mox+9/68z8KCTEoiSiXzNsiOe37Nz/nxPKGsZemYYjJWXhHG
-         Gy4pwlNI3Sr3tJoDEY23TmfRdHYxcWeTkqlKF+LfqSQlX01f3n/SVqJ42jlpPMsj4f73
-         L3OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780913685; x=1781518485;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nxBQAWC7FUeGTJNBfhWbQ+ZfQbJdlJJx+tZ9LegFXV0=;
-        b=ktgDS/lqbGV/YgGuEdSzk1t1j8sUilb7k8UtqOS0Sgfd8uYC1EWAGdzZ86uP1WdleS
-         Dxael2k9mrsy2Iw8Lx5Z7jVtWldJTb6oHSbeQNsj4hi4UgNdiBz67y6F7bpk2uTE2zw+
-         CU0j9aoMC0GCutfC1XtoUOuhQX/rb66CJ1blk2jF8m2bAuZct8ko8zbNYB+r9E0EwlmJ
-         /NnksSguqS90K+sBQYYYC0dS9bX3BiNQ1obnnI0Gh22aJF/had66EkG2CiWvD9A3GOpX
-         oquNYTUhgxKu1YtQdhbwygoxV6p6IldiWs1t0wstAdqiUWqd3zgyXB1Xz4bZkXMIbksT
-         L8aA==
-X-Forwarded-Encrypted: i=1; AFNElJ9QFsLWbnb/pNdNYZIDmUgezBRtGCkFoTSI9w6MxxKIs74V7c9zN9DY5T9/1qz4ASS+Lb5+Cfgh1g==@kvack.org
-X-Gm-Message-State: AOJu0YyG2x57tD/NCYVfn6qP5jVqHtCIZZgwRPOXpFlgcz24RypMCdnC
-	8lw1ZLRokojqApBYswGLeelDEPZyAfHpkeo5Z5E76EXQSV2Q0Rrzs2YHo+v5DFViDdc=
-X-Gm-Gg: Acq92OF8YSUGKpdqo+tFLik0SRIGMEduaiUVbpWBSDH60skaDHM36QHLEBkNi9JtSS8
-	s9kk1GgIAwk72BNiF9EO681uR2lXsGCv0u9GNm5nG/Ayt2bdEx6hsxYkLM8Oynjgf0cAho1xaLr
-	aF9N8CBH9ZmMGDx9RhdwjadtOKYtIiK/buM0KuYDCKgCFjYxk8gi6SfLBWgwB0rljCra7p1nuG+
-	oYopFBL9HtcN0WiUyVn8YY4fUpZWHkhXi/ebbx6p21tGtMjaasFFHGHhMdfMU1rzlZvXajcvXkQ
-	ZYeKTgQXi43Q2RD67POCnmNVrKdPydq8EfITv8AzR2LlzhBm6FlTSW8eD34wE/JNSi2FhVk8eWR
-	nTfq1LZnswLlKneWWN2AcNkqsy/f721QMGJXL0iewsTL3prIYtXYcUVKGdJAG2Ds/9ljxUcvHKh
-	WJkLCcUc5r23Mc0zk41IREWwy6IfBdZ6VNNORxvPOAygaRuvAE001U/tSNmqYIsIPnJt1pf7Xni
-	g720CFqsp3iWdUmWwZNTE/AvuC9xFZb8zBLQzCk5IMkAsTGcfMn+MllLZ/94JMZ
-X-Received: by 2002:a17:907:2803:b0:bec:228e:26e5 with SMTP id a640c23a62f3a-bf36fba1ed3mr502078366b.7.1780913684833;
-        Mon, 08 Jun 2026 03:14:44 -0700 (PDT)
-Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf0517721c2sm820999866b.3.2026.06.08.03.14.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2026 03:14:44 -0700 (PDT)
-Message-ID: <0c1b9be8-258a-4f2f-bcdd-e8594ddc1aec@suse.com>
-Date: Mon, 8 Jun 2026 12:14:44 +0200
+	bh=2c0Z9fzn/ILwgYz3WwYK1j/lfJw9rfMYY5NCvFUcCsg=;
+	b=LszV6xoyTUWqJWinPhncwAvEOnwT1rivy81H0TksLxwim8DKXihfGYSI/0tIvg+uW33E2s
+	TWKx9ayip0KlHnFyXiU3sHNmnBL3yc2LtioMUagybQYttWyHTIF5jzz1ehjlyEVlnbh/Gg
+	lndFePzbkfxcbDGYzpEZz3Z+3f6hcWo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 409486001D;
+	Mon,  8 Jun 2026 10:24:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB871F0089A;
+	Mon,  8 Jun 2026 10:23:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780914242;
+	bh=2c0Z9fzn/ILwgYz3WwYK1j/lfJw9rfMYY5NCvFUcCsg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WvGXHtzlFJjd0sNyrhC2TdIMUQZUizk65TJQgkdor7vuNnkxfBdmKMrlRau52d/HK
+	 RhadZk0MyaWdRtRRIvQPTN5EuRiU536rZv0GF0BgO2nnts4Tyf3Hax0vzVxSAbkMr1
+	 ZV1b8zNWjpsC/n24pyEKXn2YJva0+MhV+TK7NXFVaXXu7I/VNuR1PipGbT91+321b3
+	 rYIc5aci66EigzdcPWjZCf5Y8PKpAazBsy1fbtpl7i6MlKC0q2uBxSVI4BYiIeUi+J
+	 PUiWXC4kldfPDqwikjEMKmHJM939I/1CBBBojDVjTJT8zl4aqcPgllFZs0GrEiXjMv
+	 /c7+W14pid+5Q==
+Date: Mon, 8 Jun 2026 11:23:50 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
+	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v10 07/37] mm: thread user_addr through page allocator
+ for cache-friendly zeroing
+Message-ID: <aiaUDTeHDA45ZXFS@lucifer>
+References: <cover.1780906288.git.mst@redhat.com>
+ <50d410b47fe3f45327783e05bd306d5eaab75e65.1780906288.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 9/9] x86/xen: Convert xen_mm_unpin_all() to ptdescs
-To: Vishal Moola <vishal.moola@gmail.com>, Dave Hansen
- <dave.hansen@intel.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- x86@kernel.org
-Cc: Mike Rapoport <rppt@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
- xen-devel@lists.xenproject.org, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>
-References: <20260527140316.294621-1-vishal.moola@gmail.com>
- <20260527140316.294621-10-vishal.moola@gmail.com>
-Content-Language: en-US
-From: Juergen Gross <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20260527140316.294621-10-vishal.moola@gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------15uZ9BCclmHdokGRSdMRESv0"
-X-Rspamd-Queue-Id: 4F72F16000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <50d410b47fe3f45327783e05bd306d5eaab75e65.1780906288.git.mst@redhat.com>
+X-Rspamd-Queue-Id: 04AA240004
+X-Stat-Signature: gwnmoezcbcmb8wg64bmm75tindj7rry9
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: dgrzmyowiprdy97rf3q9darkie9rdwg7
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780913686-353785
-X-HE-Meta: U2FsdGVkX19mcJdzrdz3ZXOPX0cSMePcvNMhik+k0mxK4T60AQ8OvQN1KMjfFLTjhRU3SEXgKMKWgE8DdBxEXMWGqYWzMncR2DLsn1c/dKaFVOxdCiux6J+Ro0q/rjgsrOg5jtt2Zn5bWEeqQ9vV/rAacv14qRkCYjjwV23Cvvh5Hwy2odxJg8g7/A/leMPp6N0qIqQhfDjpWaLtQyMZfGU2bkX89ond0sMT5MaBL3Fd8sim3Ax3p/VA12fzkoKj2A+qC6q8kYxrS3oGS7h5dqG1GcftZ0z0siELd/AcDTdbSllegjHG07zzWaSh/TEZ1E9mQV8hyhM0MsK+mO1602Fx8LVb+vUiFE42GRDR9k+NZ6eaxGQfJjEzvCdbfE7DbQ8O9glXa2db+HnEqgQHST+58UMddOoodBSIqjrF1Pi233Ry+NdGRdQ1DTlu6YoCyTLtmzWx0MS7CfGHR08gga38ydD0ry1EUCpRtu5Ut37GGEE12QNRJe4oSJeozvtXODn4fcI+/vepmpo9fUcpqtvADTyr4NQvR+WIYuaR/ZSRKHlGLew56T41zso3vS7KFdnlrECq+5DXoxNLlTsMKztoAZ/NQ433L5NSVBbUCkwXvRpCq83uA98zGoX1/tpMUM+q4HpJJ45R1pbIwC8ufKumGBx0OJSCR8psvBcO6mboF5L8Ngu5bNrp5dN0ZdKuN91mF0Awq1HESPgnCGHRomxzsCbmgIL7OXdmTLiOY83ehOIdpjQq5J5/RYCoJlus2HTzpG/jFffgP9yCuPc4WfNb69wQCETeS4BHb3F8KkLc5MzoJRoqk8NKMaVncGoIwqfnJlq7XM+iaSZLkKDFsrCM6m2IPJ+wpXk7AsYqMU5h/A7h73ktJKXx4R+WUhVL66iY2c4lgl552GaW74GwGL0uYdCuuFCPVctAsFhW4foGOXfAfiIyHNG2brtow09amxI/r65s5IIHdyhNDDu
- YNLi3V1m
- 81b6TEU2UGDWcIehAsTKn9FXsRJBfP3IWjtrfeZef8VA2Kn1f+2cUQCB6NmYAifDj6wvK1T0ZOxO6pBU3izX+Q/qr2f7JTAPwgU3dT8C98pnZ5tfHu2Z/t70HN+HDTRKKq4mz03bHnVLPO1p057fDyT1EVLzMv7G9i4k5o4yeziH0mMuCdT0jp40eLWXY4ewpiRO08DuQW+IAapsrJrNHXafY8CeNppIER6N1AX/y3hBqFX7bmIPiONYWmz5czXBM5VdgSA3ifx08zF+440ULPxoOVtU3Zpl96JlWvHjf7nsgU++qCpUqdi/ClWPUXZQVGuhWDdScODu1HWUk1+Ad33LRSkd3gs8s17T+S4xnG5yfmEzjCJWICMCYEtnUdpWqEYPEu0EpacpNtOcr2rZwrk4FqYb+Zk/OwjgHYyezR6KLfN9WppNnew0p38DaI0WEJqnWbzGtnDTFYG6Gs5VPYviZnhHqgO5wdwx/d930GIpVR3poVII2tuFtxUgHBXPyzTM/z5Mb7abRhkGq0/iAhRxnYHCgVskRcuzogwFEAr0RCTXPwC/vsuf6Zy0cQtl7j/NSd/YVyP2REQKslwWI5f0zwUDx7u3T8i3rXMDcRV5/0UaAAE+vALf3JZKtU48ZZA+40Xe08pPzvLEX7px4DdtILdfjlGRSamCFwOX9/QfXLAkK1bnX1bHWafig6/6ugVzv1x2tXdFLzptaeT91Udwro1QC1x1JkgmFb0TtXkJwlQOGvIPC6veqkyI6GUk7GWjX6uE46nO3U16tqq6InxRCbHPmp3Mg+SfoYm4jMEARmGHngFQGUYMX4+tJXvQsHKLF8PoUXp7wXSxwyeXTFoVEFqz7GOQZbNLemV8/7s1MwpXQnHMfDGQr/KQRyqUHExLHMVdtkBeFfWV7CfVo5aKuHMKocTiMqeUnXQ9eVbvuKAj3ZSF/uOitag==
+X-HE-Tag: 1780914243-909997
+X-HE-Meta: U2FsdGVkX19bQMOv1uSZ0gYT1Gfqx9y5kj7WJcX7pu6Hw09DMFXirKzlTq4+ytX+8Nf7OLAybmkw+puUCBjeNJuM0oB9PRgOLRpRMkAelkADx14f23rdk205E5ZFTfE9+un9RGA/liBf+H4Dn82KFdoVOomP88A5PvKVn7PjvPxj8SKDd1Y18i6lLu1Fc3kG3CrT2DmDFX8O4Wu7VQKkshCtFEIMqwbsgqQRf3wTSKh8hVlaCcFDq12K6rOQLBV4CeKtLtjhGs7rjbIzQAgbWBYsl77HBWo5q38jxniLy9QDfFoucwf3weJaGE8HOB/dJGQhAYYv038nIsDQaJcTL7idjWv+RvXfQGuVnA0rXgHjVOWZpK9nQQDLwdYQ5c5Wft//59HrGjIjSHFEh60+fpVOWBpjFPvipRPgP3+hs330QqUyQVQcwKrnLcmZCPQFAwPeLxVWkRHZKEG0IbEGXPF63+zLxehpCjvBO+3liJ9GIKOHAHFOjr8fOvr2+0GJWjb5D05vArsVlXFD+amsYp+Eq2DktbNe6oxCU5Cy+eb69sPZCFry+0cSxTxcNTAYpNd8Z8W9EczJpCxKTMBSI5I2vk9z9QeQVc2huTMdPQicnU4m67TD5Odh4SpnEmEeKpuzlVb5nZL25i3uzysCk6kN/54eplrSFxK8KQ5hb25g3tzGyRUyhvwjkYH63CoKEJ8KlBzS8SSXcS8+WsRCeIymMkSrpqImuF2BZWHHRABln7Vf2y7pYzB9s0IbNPN2ndeMsDMA1cC9u+f5HFxfkVWVzS35l6lWbZHkKGaXMTBOfKfzuJGqGPXhpgcQM/vp1VXHMzUtdAr9SM1i+ZCji7XhJ/Q3DTRIW2HVjCOJbwp5mmU80DaZRhq9a/cbqWGpZn2z8hZQuEkZOkYc5ZLktAJ1BgxjrWya9ZDYAMIvnjlCrg5+yonqwoApQv11UaPOLw4Cgf1tjD+2iE3cvsp
+ fI70pJE/
+ 1XDhSug8vVO8Dwt5CWunh2WuduUXt9d9Vr7nvyzG0KEUGZafKzRnI+LU4xJIibfmK6sv3VFG1X7DytGtNZovntwlrhOLpa4aG8A78nAqkHS35fafr526iqnCwm1+o+dDWaYKtohpZK6I+2FL7xePwseJ++yadDnUXqufGsnK7Wbzh9HYOS4L0BS5t4WEnqLzQR73JANcu17xBPD5uvc0wapQyjqmXVze4Vcu9CdoozXxV0QIeYLkvmGgAKIvCvCZkNbbiBZvm6rKdBbE2hIn2AYxV8X7N4eAn5YPr8EgFWBerLiTBRpCvNVXsn/vGAxVYKOp3mjQctxQVT2fVIZlae9AzRWwn+kuBcHTBEEWvf1IyA1+Favaoz5c40PqftSNCVsmVZXsF3pdkYXgLUnJx1yFDiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,127 +111,652 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------15uZ9BCclmHdokGRSdMRESv0
-Content-Type: multipart/mixed; boundary="------------0PH114zVSoGpQ4tBm8RXhOwi";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Vishal Moola <vishal.moola@gmail.com>, Dave Hansen
- <dave.hansen@intel.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- x86@kernel.org
-Cc: Mike Rapoport <rppt@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
- xen-devel@lists.xenproject.org, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Message-ID: <0c1b9be8-258a-4f2f-bcdd-e8594ddc1aec@suse.com>
-Subject: Re: [PATCH 9/9] x86/xen: Convert xen_mm_unpin_all() to ptdescs
-References: <20260527140316.294621-1-vishal.moola@gmail.com>
- <20260527140316.294621-10-vishal.moola@gmail.com>
-In-Reply-To: <20260527140316.294621-10-vishal.moola@gmail.com>
+I noticed this patch, again, sneaks in some additional code changes that
+are not mentioned in the commit message and seem irrelevant to the patch.
 
---------------0PH114zVSoGpQ4tBm8RXhOwi
-Content-Type: multipart/mixed; boundary="------------cXBNXfou8d7pbxhXUj79ph7U"
+Not sure if the AI is doing this, but please don't do that.
 
---------------cXBNXfou8d7pbxhXUj79ph7U
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+On Mon, Jun 08, 2026 at 04:35:17AM -0400, Michael S. Tsirkin wrote:
+> Thread a user virtual address from vma_alloc_folio() down through
+> the page allocator to post_alloc_hook(). This is plumbing
+> preparation for a subsequent patch that will use user_addr to
+> call folio_zero_user() for cache-friendly zeroing of user pages.
 
-T24gMjcuMDUuMjYgMTY6MDMsIFZpc2hhbCBNb29sYSB3cm90ZToNCj4gQ29udmVydCB4ZW5f
-bW1fdW5waW5fYWxsKCkgdG8gcHRkZXNjcyBpbiBwcmVwYXJhdGlvbiBmb3IgdGhlIGV2ZW50
-dWFsDQo+IHNwbGl0dGluZyBvZiBwdGRlc2NzIGZyb20gc3RydWN0IHBhZ2UuIENvbnRpbnVl
-IGNoZWNraW5nIFBhZ2VQaW5uZWQNCj4gdGhyb3VnaCB0aGUgdW5kZXJseWluZyBwYWdlIGFz
-IHdlIGRvIG5vdCBoYXZlIGEgcGVyLW1lbWRlc2MgYXBpIHlldC4NCj4gDQo+IFNpZ25lZC1v
-ZmYtYnk6IFZpc2hhbCBNb29sYSA8dmlzaGFsLm1vb2xhQGdtYWlsLmNvbT4NCg0KUmV2aWV3
-ZWQtYnk6IEp1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT4NCg0KDQpKdWVyZ2VuDQo=
+This feels like very weak justification for code that massively changes mm
+code and makes it all much worse.
 
---------------cXBNXfou8d7pbxhXUj79ph7U
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+>
+> The user_addr is stored in struct alloc_context and flows through:
+>   vma_alloc_folio -> folio_alloc_mpol -> __alloc_pages_mpol ->
+>   __alloc_frozen_pages -> get_page_from_freelist -> prep_new_page ->
+>   post_alloc_hook
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+Is this the only relevant code path? You're changing a TON of code here
+that will have multiple different code paths?
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+>
+> USER_ADDR_NONE ((unsigned long)-1) is used for non-user
+> allocations, since address 0 is a valid userspace mapping.
 
---------------cXBNXfou8d7pbxhXUj79ph7U--
+Ugh god, so now we're passing a user address through allocation paths that
+might not even be aware of this or be allocating memory at a point when the
+mapping is known?
 
---------------0PH114zVSoGpQ4tBm8RXhOwi--
+>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
---------------15uZ9BCclmHdokGRSdMRESv0
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+Honestly I absolutely hate this patch.
 
------BEGIN PGP SIGNATURE-----
+You're passing a user address through allocation paths that might not even
+have one associated with them, you're vandalising a bunch of core mm stuff
+here for virtio, and then also adding a sentinel to indicate 'not user
+address' just to confuse matters further.
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmomlhQFAwAAAAAACgkQsN6d1ii/Ey+c
-nggAiU7PaHe2GWgjkyU+bQ5XYfd8d3Vprzu2LSpdmXgf4mmpk8UqYrmnLF0AFoEDjbaWslVHE1g+
-xDBDEVsmCV/vGoUc+3sGJTHTRq7VsAsLz/Gd4DxgZ2e2NeZpyqCAf9IhKimVZotTrYsP40ddDcAd
-9YAxZkuc4oXiIvI0zqF76HzMExAMOkgfw3Vwsm9jT8fJDm/8DjvqFzFdR6aPjZidujNczaNrI611
-6dpvLXmptPUhx5DlMh5ivijpquwYyBYmnGMPbccba7WuVAiCRyvVIO0Sj5k1tYcP+IEiHTvEu98X
-6U7WslxT3SgqOowiWGAe9Jf8+QZLJ/+kGjnju8ODag==
-=r6p4
------END PGP SIGNATURE-----
+We separate the physical allocation of memory from mapping it, and you're
+now coupling something that is explicitly decoupled to suit a specific
+usecase.
 
---------------15uZ9BCclmHdokGRSdMRESv0--
+It feels like a hack and I don't think we can accept this upstream, as-is.
+
+> Assisted-by: Claude:claude-opus-4-6
+> Assisted-by: cursor-agent:GPT-5.4-xhigh
+
+This really feels like the kind of brute force thing AI does when coming up
+with code for this kind of thing.
+
+I think it needs some architectural thought rather than that here. I'd
+suggest thinking about how we might achieve the same objective without
+doing this.
+
+> ---
+>  include/linux/gfp.h |  2 +-
+>  mm/compaction.c     |  5 ++---
+>  mm/hugetlb.c        | 36 ++++++++++++++++++++----------------
+>  mm/internal.h       | 21 ++++++++++++++++++---
+>  mm/mempolicy.c      | 44 ++++++++++++++++++++++++++++++++------------
+>  mm/mmap.c           |  6 ++++++
+>  mm/page_alloc.c     | 44 +++++++++++++++++++++++++++++---------------
+>  mm/slub.c           |  4 ++--
+>  8 files changed, 110 insertions(+), 52 deletions(-)
+>
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index 7ccbda35b9ad..ee35c5367abc 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -337,7 +337,7 @@ static inline struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order)
+>  static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+>  		struct mempolicy *mpol, pgoff_t ilx, int nid)
+>  {
+> -	return folio_alloc_noprof(gfp, order);
+> +	return __folio_alloc_noprof(gfp, order, numa_node_id(), NULL);
+>  }
+>  #endif
+>
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index 3648ce22c807..72684fe81e83 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -82,7 +82,7 @@ static inline bool is_via_compact_memory(int order) { return false; }
+>
+>  static struct page *mark_allocated_noprof(struct page *page, unsigned int order, gfp_t gfp_flags)
+>  {
+> -	post_alloc_hook(page, order, __GFP_MOVABLE);
+> +	post_alloc_hook(page, order, __GFP_MOVABLE, USER_ADDR_NONE);
+
+This is really confusing. Essentially 'we don't know what the user address
+is' here. And now we're making anybody who calls this have to figure out
+what the user address field is actually for and under what circumstances we supply it.
+
+>  	set_page_refcounted(page);
+>  	return page;
+>  }
+> @@ -1849,8 +1849,7 @@ static struct folio *compaction_alloc_noprof(struct folio *src, unsigned long da
+>  		set_page_private(&freepage[size], start_order);
+>  	}
+>  	dst = (struct folio *)freepage;
+> -
+> -	post_alloc_hook(&dst->page, order, __GFP_MOVABLE);
+> +	post_alloc_hook(&dst->page, order, __GFP_MOVABLE, USER_ADDR_NONE);
+>  	set_page_refcounted(&dst->page);
+>  	if (order)
+>  		prep_compound_page(&dst->page, order);
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 4b80b167cc9c..f3bc15a7889a 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -1786,7 +1786,8 @@ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio)
+>  }
+>
+>  static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
+> -		int nid, nodemask_t *nmask, nodemask_t *node_alloc_noretry)
+> +		int nid, nodemask_t *nmask, nodemask_t *node_alloc_noretry,
+> +		unsigned long addr)
+
+addr? Can we use user_addr please? This is confusing.
+
+>  {
+>  	struct folio *folio;
+>  	bool alloc_try_hard = true;
+> @@ -1803,7 +1804,7 @@ static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
+>  	if (alloc_try_hard)
+>  		gfp_mask |= __GFP_RETRY_MAYFAIL;
+>
+> -	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask);
+> +	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask, addr);
+>
+>  	/*
+>  	 * If we did not specify __GFP_RETRY_MAYFAIL, but still got a
+> @@ -1832,7 +1833,7 @@ static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
+>
+>  static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
+>  		gfp_t gfp_mask, int nid, nodemask_t *nmask,
+> -		nodemask_t *node_alloc_noretry)
+> +		nodemask_t *node_alloc_noretry, unsigned long addr)
+>  {
+>  	struct folio *folio;
+>  	int order = huge_page_order(h);
+> @@ -1844,7 +1845,7 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
+>  		folio = alloc_gigantic_frozen_folio(order, gfp_mask, nid, nmask);
+>  	else
+>  		folio = alloc_buddy_frozen_folio(order, gfp_mask, nid, nmask,
+> -						 node_alloc_noretry);
+> +						 node_alloc_noretry, addr);
+>  	if (folio)
+>  		init_new_hugetlb_folio(folio);
+>  	return folio;
+> @@ -1858,11 +1859,12 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
+>   * pages is zero, and the accounting must be done in the caller.
+>   */
+>  static struct folio *alloc_fresh_hugetlb_folio(struct hstate *h,
+> -		gfp_t gfp_mask, int nid, nodemask_t *nmask)
+> +		gfp_t gfp_mask, int nid, nodemask_t *nmask,
+> +		unsigned long addr)
+>  {
+>  	struct folio *folio;
+>
+> -	folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, NULL);
+> +	folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, NULL, addr);
+>  	if (folio)
+>  		hugetlb_vmemmap_optimize_folio(h, folio);
+>  	return folio;
+> @@ -1902,7 +1904,7 @@ static struct folio *alloc_pool_huge_folio(struct hstate *h,
+>  		struct folio *folio;
+>
+>  		folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, node,
+> -					nodes_allowed, node_alloc_noretry);
+> +					nodes_allowed, node_alloc_noretry, USER_ADDR_NONE);
+>  		if (folio)
+>  			return folio;
+>  	}
+> @@ -2071,7 +2073,8 @@ int dissolve_free_hugetlb_folios(unsigned long start_pfn, unsigned long end_pfn)
+>   * Allocates a fresh surplus page from the page allocator.
+>   */
+>  static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
+> -				gfp_t gfp_mask,	int nid, nodemask_t *nmask)
+> +				gfp_t gfp_mask,	int nid, nodemask_t *nmask,
+> +				unsigned long addr)
+
+Sometimes user_addr, sometimes addr. no thanks.
+
+>  {
+>  	struct folio *folio = NULL;
+>
+> @@ -2083,7 +2086,7 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
+>  		goto out_unlock;
+>  	spin_unlock_irq(&hugetlb_lock);
+>
+> -	folio = alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask);
+> +	folio = alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, addr);
+>  	if (!folio)
+>  		return NULL;
+>
+> @@ -2126,7 +2129,7 @@ static struct folio *alloc_migrate_hugetlb_folio(struct hstate *h, gfp_t gfp_mas
+>  	if (hstate_is_gigantic(h))
+>  		return NULL;
+>
+> -	folio = alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask);
+> +	folio = alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, USER_ADDR_NONE);
+>  	if (!folio)
+>  		return NULL;
+>
+> @@ -2162,14 +2165,14 @@ struct folio *alloc_buddy_hugetlb_folio_with_mpol(struct hstate *h,
+>  	if (mpol_is_preferred_many(mpol)) {
+>  		gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
+>
+> -		folio = alloc_surplus_hugetlb_folio(h, gfp, nid, nodemask);
+> +		folio = alloc_surplus_hugetlb_folio(h, gfp, nid, nodemask, addr);
+>
+>  		/* Fallback to all nodes if page==NULL */
+>  		nodemask = NULL;
+>  	}
+>
+>  	if (!folio)
+> -		folio = alloc_surplus_hugetlb_folio(h, gfp_mask, nid, nodemask);
+> +		folio = alloc_surplus_hugetlb_folio(h, gfp_mask, nid, nodemask, addr);
+>  	mpol_cond_put(mpol);
+>  	return folio;
+>  }
+> @@ -2276,7 +2279,8 @@ static int gather_surplus_pages(struct hstate *h, long delta)
+>  		 * down the road to pick the current node if that is the case.
+>  		 */
+>  		folio = alloc_surplus_hugetlb_folio(h, htlb_alloc_mask(h),
+> -						    NUMA_NO_NODE, &alloc_nodemask);
+> +						    NUMA_NO_NODE, &alloc_nodemask,
+> +						    USER_ADDR_NONE);
+>  		if (!folio) {
+>  			alloc_ok = false;
+>  			break;
+> @@ -2682,7 +2686,7 @@ static int alloc_and_dissolve_hugetlb_folio(struct folio *old_folio,
+>  			spin_unlock_irq(&hugetlb_lock);
+>  			gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
+>  			new_folio = alloc_fresh_hugetlb_folio(h, gfp_mask,
+> -							      nid, NULL);
+> +							      nid, NULL, USER_ADDR_NONE);
+>  			if (!new_folio)
+>  				return -ENOMEM;
+>  			goto retry;
+> @@ -3380,13 +3384,13 @@ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
+>  			gfp_t gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
+>
+>  			folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
+> -					&node_states[N_MEMORY], NULL);
+> +					&node_states[N_MEMORY], NULL, USER_ADDR_NONE);
+>  			if (!folio && !list_empty(&folio_list) &&
+>  			    hugetlb_vmemmap_optimizable_size(h)) {
+>  				prep_and_add_allocated_folios(h, &folio_list);
+>  				INIT_LIST_HEAD(&folio_list);
+>  				folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
+> -						&node_states[N_MEMORY], NULL);
+> +						&node_states[N_MEMORY], NULL, USER_ADDR_NONE);
+>  			}
+>  			if (!folio)
+>  				break;
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 5a2ddcf68e0b..9d2198114510 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -662,6 +662,16 @@ void calculate_min_free_kbytes(void);
+>  int __meminit init_per_zone_wmark_min(void);
+>  void page_alloc_sysctl_init(void);
+>
+> +/*
+> + * Sentinel for user_addr: indicates a non-user allocation.
+> + * Cannot use 0 because address 0 is a valid userspace mapping.
+> + * (unsigned long)-1 is safe because:
+> + * 1. vm_end = addr + len <= TASK_SIZE, and vm_end is exclusive,
+> + *    so -1 is never inside any VMA.
+> + * 2. It will only be compared to page-aligned addresses.
+> + */
+> +#define USER_ADDR_NONE	((unsigned long)-1)
+> +
+>  /*
+>   * Structure for holding the mostly immutable allocation parameters passed
+>   * between functions involved in allocations, including the alloc_pages*
+> @@ -693,6 +703,7 @@ struct alloc_context {
+>  	 */
+>  	enum zone_type highest_zoneidx;
+>  	bool spread_dirty_pages;
+> +	unsigned long user_addr;
+>  };
+>
+>  /*
+> @@ -916,13 +927,14 @@ static inline void init_compound_tail(struct page *tail,
+>  	prep_compound_tail(tail, head, order);
+>  }
+>
+> -void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags);
+> +void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags,
+> +		     unsigned long user_addr);
+>  extern bool free_pages_prepare(struct page *page, unsigned int order);
+>
+>  extern int user_min_free_kbytes;
+>
+>  struct page *__alloc_frozen_pages_noprof(gfp_t, unsigned int order, int nid,
+> -		nodemask_t *);
+> +		nodemask_t *, unsigned long user_addr);
+>  #define __alloc_frozen_pages(...) \
+>  	alloc_hooks(__alloc_frozen_pages_noprof(__VA_ARGS__))
+>  void free_frozen_pages(struct page *page, unsigned int order);
+> @@ -930,10 +942,13 @@ void free_unref_folios(struct folio_batch *fbatch);
+>
+>  #ifdef CONFIG_NUMA
+>  struct page *alloc_frozen_pages_noprof(gfp_t, unsigned int order);
+> +struct folio *folio_alloc_mpol_user_noprof(gfp_t gfp, unsigned int order,
+> +		struct mempolicy *pol, pgoff_t ilx, int nid,
+> +		unsigned long user_addr);
+>  #else
+>  static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order)
+>  {
+> -	return __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL);
+> +	return __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL, USER_ADDR_NONE);
+>  }
+>  #endif
+>
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index a1707ad498a8..f573ff32e94d 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -2413,7 +2413,8 @@ bool mempolicy_in_oom_domain(struct task_struct *tsk,
+>  }
+>
+>  static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
+> -						int nid, nodemask_t *nodemask)
+> +						int nid, nodemask_t *nodemask,
+> +						unsigned long user_addr)
+>  {
+>  	struct page *page;
+>  	gfp_t preferred_gfp;
+> @@ -2426,25 +2427,29 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
+>  	 */
+>  	preferred_gfp = gfp | __GFP_NOWARN;
+>  	preferred_gfp &= ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
+> -	page = __alloc_frozen_pages_noprof(preferred_gfp, order, nid, nodemask);
+> +	page = __alloc_frozen_pages_noprof(preferred_gfp, order, nid,
+> +					   nodemask, user_addr);
+>  	if (!page)
+> -		page = __alloc_frozen_pages_noprof(gfp, order, nid, NULL);
+> +		page = __alloc_frozen_pages_noprof(gfp, order, nid, NULL,
+> +						   user_addr);
+>
+>  	return page;
+>  }
+>
+>  /**
+> - * alloc_pages_mpol - Allocate pages according to NUMA mempolicy.
+> + * __alloc_pages_mpol - Allocate pages according to NUMA mempolicy.
+>   * @gfp: GFP flags.
+>   * @order: Order of the page allocation.
+>   * @pol: Pointer to the NUMA mempolicy.
+>   * @ilx: Index for interleave mempolicy (also distinguishes alloc_pages()).
+>   * @nid: Preferred node (usually numa_node_id() but @mpol may override it).
+> + * @user_addr: User fault address for cache-friendly zeroing, or USER_ADDR_NONE.
+
+OK this isn't great - 'for cache-friendly zeroing' is vague, confusing, and
+an break in the abstraction (don't tell me one specific detail of what
+you're doing down the callstack) .
+
+'User fault address' is nebulous and confusing.
+
+>   *
+>   * Return: The page on success or NULL if allocation fails.
+>   */
+> -static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+> -		struct mempolicy *pol, pgoff_t ilx, int nid)
+> +static struct page *__alloc_pages_mpol(gfp_t gfp, unsigned int order,
+> +		struct mempolicy *pol, pgoff_t ilx, int nid,
+> +		unsigned long user_addr)
+>  {
+>  	nodemask_t *nodemask;
+>  	struct page *page;
+> @@ -2452,7 +2457,8 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+>  	nodemask = policy_nodemask(gfp, pol, ilx, &nid);
+>
+>  	if (pol->mode == MPOL_PREFERRED_MANY)
+> -		return alloc_pages_preferred_many(gfp, order, nid, nodemask);
+> +		return alloc_pages_preferred_many(gfp, order, nid, nodemask,
+> +						 user_addr);
+>
+>  	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+>  	    /* filter "hugepage" allocation, unless from alloc_pages() */
+> @@ -2476,7 +2482,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+>  			 */
+>  			page = __alloc_frozen_pages_noprof(
+>  				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
+> -				nid, NULL);
+> +				nid, NULL, user_addr);
+>  			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
+>  				return page;
+>  			/*
+> @@ -2488,7 +2494,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+>  		}
+>  	}
+>
+> -	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask);
+> +	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask, user_addr);
+>
+>  	if (unlikely(pol->mode == MPOL_INTERLEAVE ||
+>  		     pol->mode == MPOL_WEIGHTED_INTERLEAVE) && page) {
+> @@ -2504,11 +2510,18 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+>  	return page;
+>  }
+>
+> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+> +static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+>  		struct mempolicy *pol, pgoff_t ilx, int nid)
+>  {
+> -	struct page *page = alloc_pages_mpol(gfp | __GFP_COMP, order, pol,
+> -			ilx, nid);
+> +	return __alloc_pages_mpol(gfp, order, pol, ilx, nid, USER_ADDR_NONE);
+> +}
+> +
+> +struct folio *folio_alloc_mpol_user_noprof(gfp_t gfp, unsigned int order,
+> +		struct mempolicy *pol, pgoff_t ilx, int nid,
+> +		unsigned long user_addr)
+> +{
+> +	struct page *page = __alloc_pages_mpol(gfp | __GFP_COMP, order, pol,
+> +			ilx, nid, user_addr);
+>  	if (!page)
+>  		return NULL;
+>
+> @@ -2516,6 +2529,13 @@ struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+>  	return page_rmappable_folio(page);
+>  }
+>
+> +struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+> +		struct mempolicy *pol, pgoff_t ilx, int nid)
+> +{
+> +	return folio_alloc_mpol_user_noprof(gfp, order, pol, ilx, nid,
+> +					    USER_ADDR_NONE);
+> +}
+> +
+>  struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned order)
+>  {
+>  	struct mempolicy *pol = &default_policy;
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 5754d1c36462..73413cebc418 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -855,6 +855,12 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
+>  	if (IS_ERR_VALUE(addr))
+>  		return addr;
+>
+> +	/*
+> +	 * The check below ensures vm_end = addr + len <= TASK_SIZE.
+> +	 * Since (unsigned long)-1 (USER_ADDR_NONE) >= TASK_SIZE and
+> +	 * vm_end is exclusive, USER_ADDR_NONE is thus never a valid
+> +	 * userspace address.
+> +	 */
+
+You're adding what seems to be an AI-generated comment randomly here for some
+reason? Let's not thanks?
+
+>  	if (addr > TASK_SIZE - len)
+>  		return -ENOMEM;
+>  	if (offset_in_page(addr))
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 6a605d05e8cd..21b52c879751 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1815,7 +1815,7 @@ static inline bool should_skip_init(gfp_t flags)
+>  }
+>
+>  inline void post_alloc_hook(struct page *page, unsigned int order,
+> -				gfp_t gfp_flags)
+> +				gfp_t gfp_flags, unsigned long user_addr)
+>  {
+>  	const bool zero_tags = gfp_flags & __GFP_ZEROTAGS;
+>  	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
+> @@ -1870,9 +1870,10 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+>  }
+>
+>  static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
+> -							unsigned int alloc_flags)
+> +							unsigned int alloc_flags,
+> +							unsigned long user_addr)
+>  {
+> -	post_alloc_hook(page, order, gfp_flags);
+> +	post_alloc_hook(page, order, gfp_flags, user_addr);
+>
+>  	if (order && (gfp_flags & __GFP_COMP))
+>  		prep_compound_page(page, order);
+> @@ -3956,7 +3957,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+>  		page = rmqueue(zonelist_zone(ac->preferred_zoneref), zone, order,
+>  				gfp_mask, alloc_flags, ac->migratetype);
+>  		if (page) {
+> -			prep_new_page(page, order, gfp_mask, alloc_flags);
+> +			prep_new_page(page, order, gfp_mask, alloc_flags,
+> +				      ac->user_addr);
+>
+>  			return page;
+>  		} else {
+> @@ -4184,7 +4186,8 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+>
+>  	/* Prep a captured page if available */
+>  	if (page)
+> -		prep_new_page(page, order, gfp_mask, alloc_flags);
+> +		prep_new_page(page, order, gfp_mask, alloc_flags,
+> +			      ac->user_addr);
+>
+>  	/* Try get a page from the freelist if available */
+>  	if (!page)
+> @@ -5061,7 +5064,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  	struct zoneref *z;
+>  	struct per_cpu_pages *pcp;
+>  	struct list_head *pcp_list;
+> -	struct alloc_context ac;
+> +	struct alloc_context ac = { .user_addr = USER_ADDR_NONE };
+>  	gfp_t alloc_gfp;
+>  	unsigned int alloc_flags = ALLOC_WMARK_LOW;
+>  	int nr_populated = 0, nr_account = 0;
+> @@ -5176,7 +5179,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  		}
+>  		nr_account++;
+>
+> -		prep_new_page(page, 0, gfp, 0);
+> +		prep_new_page(page, 0, gfp, 0, USER_ADDR_NONE);
+>  		set_page_refcounted(page);
+>  		page_array[nr_populated++] = page;
+>  	}
+> @@ -5201,12 +5204,13 @@ EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
+>   * This is the 'heart' of the zoned buddy allocator.
+>   */
+>  struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+> -		int preferred_nid, nodemask_t *nodemask)
+> +		int preferred_nid, nodemask_t *nodemask,
+> +		unsigned long user_addr)
+>  {
+>  	struct page *page;
+>  	unsigned int alloc_flags = ALLOC_WMARK_LOW;
+>  	gfp_t alloc_gfp; /* The gfp_t that was actually used for allocation */
+> -	struct alloc_context ac = { };
+> +	struct alloc_context ac = { .user_addr = user_addr };
+>
+>  	/*
+>  	 * There are several places where we assume that the order value is sane
+> @@ -5267,10 +5271,12 @@ EXPORT_SYMBOL(__alloc_frozen_pages_noprof);
+>
+>  struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order,
+>  		int preferred_nid, nodemask_t *nodemask)
+> +
+>  {
+>  	struct page *page;
+>
+> -	page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, nodemask);
+> +	page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid,
+> +					   nodemask, USER_ADDR_NONE);
+>  	if (page)
+>  		set_page_refcounted(page);
+>  	return page;
+> @@ -5313,7 +5319,8 @@ struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+>  		gfp |= __GFP_NOWARN;
+>
+>  	pol = get_vma_policy(vma, addr, order, &ilx);
+> -	folio = folio_alloc_mpol_noprof(gfp, order, pol, ilx, numa_node_id());
+> +	folio = folio_alloc_mpol_user_noprof(gfp, order, pol, ilx,
+> +					     numa_node_id(), addr);
+>  	mpol_cond_put(pol);
+>  	return folio;
+>  }
+> @@ -5321,10 +5328,17 @@ struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+>  struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+>  		struct vm_area_struct *vma, unsigned long addr)
+>  {
+> +	struct page *page;
+> +
+>  	if (vma->vm_flags & VM_DROPPABLE)
+>  		gfp |= __GFP_NOWARN;
+>
+> -	return folio_alloc_noprof(gfp, order);
+> +	page = __alloc_frozen_pages_noprof(gfp | __GFP_COMP, order,
+> +					   numa_node_id(), NULL, addr);
+> +	if (!page)
+> +		return NULL;
+> +	set_page_refcounted(page);
+> +	return page_rmappable_folio(page);
+
+Err, what?
+
+You're adding arbitrary new code here? What's the justification? Is it an
+open-coded version of what was there before just to propagate the addr?
+
+In any case this is totally unacceptable, don't open code like this, don't
+make changes like this when the commit message doesn't mention them.
+
+>  }
+>  #endif
+>  EXPORT_SYMBOL(vma_alloc_folio_noprof);
+> @@ -6905,7 +6919,7 @@ static void split_free_frozen_pages(struct list_head *list, gfp_t gfp_mask)
+>  		list_for_each_entry_safe(page, next, &list[order], lru) {
+>  			int i;
+>
+> -			post_alloc_hook(page, order, gfp_mask);
+> +			post_alloc_hook(page, order, gfp_mask, USER_ADDR_NONE);
+>  			if (!order)
+>  				continue;
+>
+> @@ -7111,7 +7125,7 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+>  		struct page *head = pfn_to_page(start);
+>
+>  		check_new_pages(head, order);
+> -		prep_new_page(head, order, gfp_mask, 0);
+> +		prep_new_page(head, order, gfp_mask, 0, USER_ADDR_NONE);
+>  	} else {
+>  		ret = -EINVAL;
+>  		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
+> @@ -7776,7 +7790,7 @@ struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned
+>  	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_ZERO | __GFP_NOMEMALLOC | __GFP_COMP
+>  			| gfp_flags;
+>  	unsigned int alloc_flags = ALLOC_TRYLOCK;
+> -	struct alloc_context ac = { };
+> +	struct alloc_context ac = { .user_addr = USER_ADDR_NONE };
+>  	struct page *page;
+>
+>  	VM_WARN_ON_ONCE(gfp_flags & ~__GFP_ACCOUNT);
+> diff --git a/mm/slub.c b/mm/slub.c
+> index a2bf3756ca7d..f397fa2f3f80 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -3275,7 +3275,7 @@ static inline struct slab *alloc_slab_page(gfp_t flags, int node,
+>  	else if (node == NUMA_NO_NODE)
+>  		page = alloc_frozen_pages(flags, order);
+>  	else
+> -		page = __alloc_frozen_pages(flags, order, node, NULL);
+> +		page = __alloc_frozen_pages(flags, order, node, NULL, USER_ADDR_NONE);
+>
+>  	if (!page)
+>  		return NULL;
+> @@ -5236,7 +5236,7 @@ static void *___kmalloc_large_node(size_t size, gfp_t flags, int node)
+>  	if (node == NUMA_NO_NODE)
+>  		page = alloc_frozen_pages_noprof(flags, order);
+>  	else
+> -		page = __alloc_frozen_pages_noprof(flags, order, node, NULL);
+> +		page = __alloc_frozen_pages_noprof(flags, order, node, NULL, USER_ADDR_NONE);
+>
+>  	if (page) {
+>  		ptr = page_address(page);
+> --
+> MST
+>
+
+Thanks, Lorenzo
 
