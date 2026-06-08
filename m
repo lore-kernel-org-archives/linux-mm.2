@@ -4,157 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D669CD8C8E
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 08:34:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A1E9CD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 08:35:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C17136B0095; Mon,  8 Jun 2026 04:34:56 -0400 (EDT)
+	id B2C4D6B0099; Mon,  8 Jun 2026 04:35:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEE986B0096; Mon,  8 Jun 2026 04:34:56 -0400 (EDT)
+	id B03B66B009B; Mon,  8 Jun 2026 04:35:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B03D46B0098; Mon,  8 Jun 2026 04:34:56 -0400 (EDT)
+	id 9F3896B009D; Mon,  8 Jun 2026 04:35:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A3C726B0095
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 04:34:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 43ADD1C2B49
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:34:56 +0000 (UTC)
-X-FDA: 84856084992.22.72CB019
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id F0945140009
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:34:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GlvlVEzX;
-	spf=pass (imf23.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780907694;
-	b=vIrqvCdAYVgn1gOvyB/JE+nZ/SUOdMy/8se+4I7WMWZV8licy1ZBIZ3INJLWC8vk2pFgYl
-	qhIcponfGTwsDVhHAyQ6vxy2VuSFNAY6ADX6QuSaZhWVHJWeiuEYcctTxyrmIqFteJNELm
-	HjRGL9QFjAHwLeKT+Ztup8hNrxg4jbM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GlvlVEzX;
-	spf=pass (imf23.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780907694;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 900B76B0099
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 04:35:02 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 46FFE409DF
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:35:02 +0000 (UTC)
+X-FDA: 84856085244.02.1DA8444
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5ACC540007
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:35:00 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eGcPKxUH;
+	spf=pass (imf07.hostedemail.com: domain of ruoyuw560@gmail.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=ruoyuw560@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780907700;
+	b=O7G6Uuxc5cW4JnYpdDC0O1GY9jaLRC3lba/A9Q33cd/uzS/HFnxnVk/OixIrmZU4SB3hVW
+	Rpqw4ABjB6MjUQ/ZKhOzquqJp9yR96yHMm5fotYpQhCfFTr5BL2VJYMVt9jVUi7KkeUjyA
+	yv49HfiA5ciU7t1w/Og6ZvIbAGOyXaU=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eGcPKxUH;
+	spf=pass (imf07.hostedemail.com: domain of ruoyuw560@gmail.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=ruoyuw560@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780907700;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BG5vFIZuWkBfCpPnsH5jvRyFO8VXn5agYH6VILwADzw=;
-	b=I7KYZOlmRlnm88I+jySNaBy4No3YlEUlTq40IUWp/CQ3M8YYuQ1Ur0K+a4a3WjYIzIGLdS
-	IIIlwxx2X81hKkNNm8w6MI6RdsdGdKRNr5BRYH6T34b1VfOTRD/CFH/w5/dO6aLx74HksI
-	U3yHRBaLOFZrFElGduAxOei+8bqoaIs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780907693;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BG5vFIZuWkBfCpPnsH5jvRyFO8VXn5agYH6VILwADzw=;
-	b=GlvlVEzXF2/x4tTmzwSSU3dKXk6YHAkjBM2z8Zw5T/FHg8lI01TnFdXVANRpFzkIHpNJi8
-	GAyxBUdFxcEeY/sAxJ3uQDEZcsgJkgeUUVS6X0mQpXs4xbMWo2h97zIxB95f3Lw2432TOs
-	9mwSM31G34DNB7h3qL2G5NZdlLAOfdg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-tI7OnRu4Nci3CpHjnSoJnQ-1; Mon, 08 Jun 2026 04:34:52 -0400
-X-MC-Unique: tI7OnRu4Nci3CpHjnSoJnQ-1
-X-Mimecast-MFC-AGG-ID: tI7OnRu4Nci3CpHjnSoJnQ_1780907691
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490b2f22ea2so42614065e9.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 01:34:52 -0700 (PDT)
+	bh=GI9HyRivvXFEnmqNkS1Rb0d5x/ibbUpDkgguHD0gNns=;
+	b=rwyOfSeNMLHPdHbNuZ1wJW7laNAe8p8jyBTXwukV3UN+FUPKtVJmOrpQLVPNnWfP/LEzC3
+	k2yTNFsepXVztCKChSTvCpaboPo5qFczZP7EVb8vHv9sUL7T/d4z5BuK5cw/wFfhrUO+XF
+	v91dFm9rHrem/oO78ak4/ksL4v+VOMg=
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-59bbe027424so3381626e0c.3
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 01:35:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780907699; cv=none;
+        d=google.com; s=arc-20240605;
+        b=a6Dtzud32cscjvIY0j82rubfmu9zpFkuIr9UfZFriYS1QSQSjuVTBq4R0Z66glpTHw
+         tkX55d3BLyFISy2V4JvtNooKICsjlbrr7BZAH2IdI8gn9fPLTrqUY/ryvW31EEqXriuI
+         OhiEsdJAcLM6I6Sck8VapecBhY93CbQDIqNgzSbK3oyKLBl/EgZo4C+R/nUDz8joz5LK
+         rntFjKYu3deCWj+kF3fQhwS2kRUzLxpN2vD1tysb79tmnqGkcNQTm11Scap26sFULeNH
+         orR8JlF/UL2dj1SWvdrXkIBlO6CYasBhWJdTl3QBfGz8jHONANs0J6lOQP1IhG4VjHLW
+         WMbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=GI9HyRivvXFEnmqNkS1Rb0d5x/ibbUpDkgguHD0gNns=;
+        fh=azYjrwjZ+QF5toeaF/OpvzmkSXDoAeVFtpwEARZSUgo=;
+        b=ZdYd+yYKTNy3eDCH4DVheMz4gd3fRycbKgEJXZ0mThL0w3m86VmMr9ldpvBATBSRw4
+         zVOtmMwCEv5wG4adgFcub+rlST31HpdEcJD73yBAek9n/rxiBIeq3A0wUIHIm3kUKtgl
+         BKRMwnRbWTBLSd6P2paLMQMde9anKmCx78JeraK3EVHf0jdOpjJauJS/tAl7EtQj3Yoz
+         0iMd0yqfMPbQz9M6SNSwlnpb+yp77SfXj9/goWxNg5V4SZZcXoC0DIptCLCY/cJ1asKz
+         vxx2p3M+IK9dIuQ6BNA9OlhZ1uwFPZtEhrODgxdbPwWz2P/AuQfx0yorcCiW8wKc0BVI
+         aDYw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780907699; x=1781512499; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=GI9HyRivvXFEnmqNkS1Rb0d5x/ibbUpDkgguHD0gNns=;
+        b=eGcPKxUHx8HAy+fOtjNxT5hg8r2HsSjJUYNu/5jgHSQstV627EswR2ZdUr10dTByQ7
+         BQ3CJiyqpfp/D2rfORIsaO3DccrVzbfcbswloJwUwsNasYEcb4l3tMj8M1jRUDu8UunI
+         1P9Vg15XJTZlYoTjUa5905LFwNTP565M/mzs+YW+NdoasGisX/5eZ8Rpc3bJaX53N6VC
+         ePqVzfrJ1lE8XQFZ8hnf1d7nqluRBx7TdfbnlTnMsg8AdaHbckdQBFpcnHAdPZ0eg6z9
+         huUScrUGw4ZgV8XYpdoiLkX6GfoX0WezLYMx8zWoldNPK/iZcCgekOCxg21k9sGSvdN4
+         u6VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780907691; x=1781512491;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BG5vFIZuWkBfCpPnsH5jvRyFO8VXn5agYH6VILwADzw=;
-        b=JkpKhZdCJ4qNJVid3Djf5IHCrXBfhkTtlYD6GDgDe+Yc9eXddXMBJrq52xiNHQ059k
-         8lQE2Q+OZJdtiluxyjgJuZRmDmPDqdFQOBKn3bKkAEifnCgn+xXhsZ5eKLGMG++QmYQT
-         lc2i68jVjzb9bV7VnpBI2R4IXxMR9YcsuQd9nPG9MjuYOdYODBpnh5LoD050CgSFDIRB
-         Q9BRXuF/HqqFpX+D4TnAu9kIyqcdUTu4lXWC79q5bmJuZud/nsR7Q3RpHbRn/YWOs76a
-         UbKY7pyp39Y1rqmjOrDrYQrfnRHXZPa+Y25/LpfT0nmyHP07JsWynq6xEvvWpALYZ9Hb
-         vVzA==
-X-Forwarded-Encrypted: i=1; AFNElJ+dm2LLCGORGuABnehjNfz1mNmlOrZpPtdDombpm5QL73OmUvhQQ9rcEbS62UEOlg8Dp54ii/H7kg==@kvack.org
-X-Gm-Message-State: AOJu0Yymu9Auk5DyhVg97fz0+1OXqDDdXUYyrZasDYLFunJPG93S8mr1
-	XN4LOTQzTF2bOitYSaPCiPbt1TeTBXYwzZ923PZxSI0RjTd6JJguczdxS1G21MbeVf1iYIobIBq
-	iBPcTWTBchdhTVZLmBgv5ASuCIHKCoOM8MsvDpjn8DgjgNnRAg0C4
-X-Gm-Gg: Acq92OEEQhrqk5dAWp6HLAXN+flIhtjwKan0MOtLztVw7OZFXcurxgISgUYXTD9pQaQ
-	2TrmRRNG8o8skM4HQdIU6c09KnqpfLDhGRNyGkCyTvmv5wZdkDJvqUtostp7wfzo82wBXir8XcC
-	YW8NVgLqCC6SB/Gzs7DuRPqrsSoz+JVk+/6klK5TWLNs6ZzVf1UM5y7GauGQk080S7CoV2cuFNi
-	9ruz8x9zkhbmtaRT9tMV1Ou/KMh63YzH07zUOgZE50zOqGmGrmB9XzmzAoVnMJCBvkM97RqAuSR
-	yrMc8Ef0J4GXeKyrLlg3t4rrnfFLucnFD5LIHkGDVHTxRIGjgjroXziItGe6qR5ij4avmd1B8XI
-	Jv6M65EGnLJ8v/aO6GUnKWLw=
-X-Received: by 2002:a05:600c:a011:b0:490:58ef:cea7 with SMTP id 5b1f17b1804b1-490c25ee058mr246872115e9.22.1780907690556;
-        Mon, 08 Jun 2026 01:34:50 -0700 (PDT)
-X-Received: by 2002:a05:600c:a011:b0:490:58ef:cea7 with SMTP id 5b1f17b1804b1-490c25ee058mr246870995e9.22.1780907690081;
-        Mon, 08 Jun 2026 01:34:50 -0700 (PDT)
-Received: from redhat.com ([31.152.37.159])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2ed944sm52009994f8f.13.2026.06.08.01.34.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 01:34:49 -0700 (PDT)
-Date: Mon, 8 Jun 2026 04:34:39 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH v10 03/37] mm: page_alloc: propagate PageReported flag across
- buddy splits
-Message-ID: <1a407d39a9ebd95e9de67e44f9ad2db37c9f31e9.1780906288.git.mst@redhat.com>
-References: <cover.1780906288.git.mst@redhat.com>
+        d=1e100.net; s=20251104; t=1780907699; x=1781512499;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GI9HyRivvXFEnmqNkS1Rb0d5x/ibbUpDkgguHD0gNns=;
+        b=KXL1MfhBZ1QjfpTXRYPZX0Q4RKpgJoyuD82Buwom/LP+ZMXDbbeMqysAVLORtXQVjK
+         utRb9wZ5DN5Vrk/iJWZwMaXZHimnz8EedzIIGFrqkzIC3CjyEA2aqmxhQtGEuf3nLIJW
+         FwXy/KLZzmTEvLHo1dk/KdSpimcCACYABQemZ9KNLw65kLni4QjPEgLBDNIK4PwOEB5J
+         CGCJGeIvg3f+Ec3D8dxnT7lkGifPaEqZ+ayCM9HadRgggnp50o6F0hpbcLQg2Hr8v1c4
+         XcyWgl1QDYHunA2+wt5dwzcgy0CoLDsKaFov2gFUYDvxfFIZ3Gf+QLFhbLF9e3lJNsQz
+         z1vg==
+X-Forwarded-Encrypted: i=1; AFNElJ9YphY2qhgJC1nuO0ZJtnRnK00TAM7BltuyotNUTTG8RaUoOowldXj6pqSi6kVRq8UU6nsxbyPihA==@kvack.org
+X-Gm-Message-State: AOJu0YxJWq3yvsnerroGbBola2yqU3mH4+DerV0F4NITBn8JUVA4msyL
+	y21pCFTlaeuLEXISIvPeiBeZJYKtPpdqtwV3Sobor7xpdUr+F9/7crAteWYJwacETPdbINuPIap
+	/gN8TrXtdw3WDz9chejQGebg1sj8n4L8=
+X-Gm-Gg: Acq92OFl9UF/OF0rDUABuuu+z2uuhzoq2lOZsIxKP67iTzaufhOlRhrp74XBjWZTOrG
+	FfBtAWJ2MyJhyN5ooKEMVDJVLV9Y97RAr6jOVfnQdqNiF7hxd7o1HICxZw98xrtSyXtuI+1hWm2
+	oBLvybMIClHMDHPZ0nTXnJgFazSKc4zLk57LLJK8j+lOe67pdJ9ao+lDR4DV72sYoTM9MiSxkY0
+	ZOnNRoLCm6Cludbzex/TOAKUOuw1KNLxPvaukFnTDVeaHmkBrHcnXRyyZY6qPqdDkDBHnuyUTAe
+	WJ54TkjPDHRbWuYf/uNZ4Scr
+X-Received: by 2002:a05:6102:6899:b0:631:ec2d:12b2 with SMTP id
+ ada2fe7eead31-6feed1ac3ebmr7065800137.1.1780907699317; Mon, 08 Jun 2026
+ 01:34:59 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <cover.1780906288.git.mst@redhat.com>
-X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
-X-Mutt-Fcc: =sent
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nBNtbxwFhMB9u3KmUZbNsNMmFhdaUANag3Ick65DiXk_1780907691
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260608063644.39-1-ruoyuw560@gmail.com> <aiZ3EZZV6LqsTxQM@tiehlicka>
+In-Reply-To: <aiZ3EZZV6LqsTxQM@tiehlicka>
+From: Ruoyu Wang <ruoyuw560@gmail.com>
+Date: Mon, 8 Jun 2026 16:34:48 +0800
+X-Gm-Features: AVVi8Ce-bK3bF-qiL5XYy4uPurdqMGonNC1rAfZl6eSsKB-AW_HbDWLDhQpKCtk
+Message-ID: <CAK_7xqyyDqNW1+puMSp2LzxmOKxFUx-UO9uGiDKoL7ZTJ8+3ZQ@mail.gmail.com>
+Subject: Re: [PATCH] mm: memcontrol-v1: use nofail allocations for soft limit trees
+To: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: multipart/alternative; boundary="000000000000cbb0e90653b9e22e"
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F0945140009
+X-Rspamd-Queue-Id: 5ACC540007
 X-Rspam-User: 
-X-Stat-Signature: m8ma8xu5nkc9nqwy7czysuaufui1cdnj
-X-HE-Tag: 1780907693-787268
-X-HE-Meta: U2FsdGVkX1+hrCU2A5KArrc8a0Mryhf0VcK7O/YhCX7FYevF1/SFDXhh7qKoiczAK2Dplc4FRLFmf/fiUK27WP+EwIRQfB2/IrrXYjUUaN25+ApTAoXRTuibXNE1JzSD5Kyi2jMliywPNvUEexz0YMKROQfvMhloIvnnJeiVovuo52n7FslInYwL6Yl7Gha30l+dlSsBWh8zVCDIRCYy8cQWaEtnBO2ksDEAs51nG1Z2hRskVJBgb/BJ+W8dQPwM7STX1Qsr145HAou0fQa2flMOmJELixRZr6viNLwbymD4obxKZNVpFlnhT+GKdsrxR9Nlzuyg5Fi67gP+l3+mBZiwidG0/cmRjgNPMhXC9F+6p+NLxZWHtkOQIk+pjFZqC4UDMje1NXvohj8uX7Dbgju4+3rhWBpzFjnfQwmD9BfZBm+tDAytfbzS0aE5cZnSrUKUNAB3WPEKQShPjkk5s7xDQMXFQnbW5tycJT7TRVVou4qZinfisSS2aNYdPokGGwriqBVjg/HCV4nnrPB54Xu9elJHduldfrvATxAlFfsvluLufcnvbzo4ypwpSdjQ9hrIgaCTvGfim3raxXEoCZxc+m1OwZudsDt7o6C5Stp2dC60t14C4Erxk96SCdgloUJe/kzsEkK0+jNP6UDbrv6tUxPht5tnmT3XSEzS+TnL0LkVmhMRmM6Yb57sqx95W2G1qgbNd8MfHskrdjs5b9Q1LTp+tFZjWpbk7zS6bmYEbKo/3msE0/J7yF4C4YU/7RJdrJUpJGjZNtXA6PIoOcdLGpom72Mb5iTzY46UnQNAuAAnhEVBwT5g47nlu0qmotdD2M7ZrKG223JR5KIzyjB+uUgdGc2LD9P2QMIXqxT3G6QGBfLuUA7v5ArwNp/482DFt31JIy97+Q9wxvkbDuDiZP8MOVOykF2XnyQvNYU5UYEJifTENjVKf4y5LG1i5P351Ytk92J1ek9q6Wd
- gWKWMrC6
- QZQjHzEGL2n6tfND825wL4zwC8/XBf5mBPGhDc3pnbRFxmvtkKnZ0j0VEFGLlxhBgHDcWotBX/GzLjtNjPLlq+RDUetpAOwXmUO1++GdCXZx5jvKn2C2dCXsElNYCTz/lKNXo0pbNPhSr0s+S5XqD8pttokRRRUblsSaPlYh0R/nSfDwf4OnL3tT0koSXe8qJx2Ld8/OT8Vn02S9OSbfyTjwXTp44EW0nP2p8csfy1Sci7e1rqQ5LEgMuGC4lzB8INrBe8X+a0ih3v5r3XoTT8CGDhT4Dfm+By+fUmQ7kp5Qgn6lUw4oTjyicfjBvTr98BDaFCHnfR4TBDoCpuUrOx/UXnTu//h6AkTSNbt17kzSTWicQk49CDGLmyi/LsbtwOhF7e6flTb1XRwKczxUPIIEHE03RRYr9hZbhqacH+GNUjo1ViUZkQ7LcRVBpGvxQ6peH
+X-Stat-Signature: 3ejx6acxdodqyg3z1z7331zqrgujw939
+X-HE-Tag: 1780907700-650041
+X-HE-Meta: U2FsdGVkX192DCJcS9lyneUepnDKJ/kih9cQ3Xui48LJk7f0wy3+ro8q1/b+JCjvPuqjXJAQAie/oqnqLVe3wwwKOVdUyDUQwDllejc8GO99LJJuHoOcYbrfm5JPj7dK5DnhnewX00sSiuZ1OnLkLtGccfVx60NGiK+BM5XiqPqh47Frfi+6O4JkIg90J36d6nJQ4KWwOh4Z3udAZzoTm8VyO4pcWL5vWJl/79/i6HcQH2JmYNYoPDdyMoUHVprCtfwNdjNOX0tl8HqkWS5efz8ytEk8jN53xE+AgaqAOOiexp7Si8vu1w7u8KcqOdEsoC8LKX5SHxSgVfvhPb5212Q2cX1yrQf1D1FFJSmhOOJSEYASHpe/pdAFiPSnXVsX4rhTDtVXzk1/z5qroa/GfFR9GMfSTDiC5rRGjXr7LWjPrb6fPtneX+OYEICxZAu//jtpHSa3utMzL94sx2wE4WxkUQnBGqEcyJusYUxDWYs4GRTHqCXr1jIGRzmnfD0AiZ5Dl0Raoi4htTWNs7wgzQcJNK0+xwRayQVCU34WCSrwcc8F8beFtfJJLwJwIJvfVYEOT6sW/ZlhxUhvGKmHH5991w9MBmC7EF79/mCZzXk07kWL2C1ixTRdcYfCzZjJaqxGYpTVqNgIpHAHECG5WP5f+q+YVQ7LgOvQn2J60/Y0J8RbW1QfoRq2/3qEQUCOP8uC35zGBKAxeCMcOfTCRyX8pvPqZmgUC1k314B6vbtQiJpt+0ve1rQXjlrXSUqsGbz9NfCF51V7DcPimWlRAV1nVm78EJrmzfbsLquy3L8EuXIcr7Jx9upGtXbOCvocqYT30ujEO58LOUOru4VLhZ9rdYC5m/Y3HJmuQsI81ymkdN3BUyxhWZHnKp9zqLJirPXzydWAQzOamtzQJOEQJQN6RgiQR3Z7JWHcP5U7oL22VfcFJW4UpzSU/AAfXodyjrxhHLCLV2Ak3Mj1H4q
+ kc2JvWWi
+ 8IGdPuRU6JrjuSjiK/FgE0rUEJuzR8DaqVYlP11OMBu60wGrs/WchFAn9R1G+1Tw9OBwH8prVnVcwIIgm2p1ofhUFWOBrGyVOQuMawDPmNeiyYNCxDab4JHg/qU2/OTGZcql9XVovLq9pCGg7tZJc3KYeDCY3MJnWJz753dd4hKIVmNrI33ikK52b/wxm0UCWDhsmCscNtTR+ae75S8GMi1W+HXFXh/O8JRvZaUHeB7NYZp6D+JTv8r9PhIw8ASK40nbObX+8Usbl1fq0/d/RZk6rsF+U5o8uVrRLBBDfczylfWlhioHMdQZoV/7Bw1eUwg1B9kh/oToxE69vv/+UwNFzOq19yfp7QPv//bCHZtVyBp5WLDxaX3mqbsjWaBKFdoRc19ZL2FFgHtHebWjT7m6eZJCiiiolqNPudKa5m9aIdP5GGKtoGX0PzIrWGv/pK+8eH4C83aHJBfZ/wA6wiMAk9IL1FhB68fkkFx+AIj6Z3RyEXeBtGgs/7HcjoLL2zCQT3K6DIEa9RpKjwSHwFD2yitsyWi06DozuFY/lEuw8beIb9qUlxwS6cMQTv4AjdZyKgQk8SSEXvLThfO2IEWopQwStqMWnlwc2fxfe5sSvNrW2fe11KGCD6c/rjTq8jRSNyBSEoDjrQJ6e2OZKoeTmyNfxmyjyQ4MAwnib5Hmk2OY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,138 +137,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a reported free page is split via expand() to satisfy a
-smaller allocation, the sub-pages placed back on the free lists
-lose the PageReported flag.  This means they will be unnecessarily
-re-reported to the hypervisor in the next reporting cycle, wasting
-work.
+--000000000000cbb0e90653b9e22e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-While I was unable to quantify the performance difference, it is
-an obvious waste, even if small.
+No, I have not observed this allocation failing in practice.
 
-Propagate the PageReported flag to sub-pages during expand(),
-both in page_del_and_expand() and try_to_claim_block(), so
+This was found by static analysis and then checked by reading the code:
+memcg1_init() dereferences rtpn unconditionally after kzalloc_node(). I
+treated the soft-limit tree as mandatory memcg v1 init state and used
+__GFP_NOFAIL because continuing without it would not be useful.
 
-split_large_buddy() also propagates PageReported via a bool
-parameter: the caller saves PageReported before
-del_page_from_free_list() clears it, then passes the saved
-value. The flag is set after __free_one_page() with a
-PageBuddy check, matching the page_reporting_drain() pattern.
-Free-path callers pass false (freshly freed pages are never
-reported).
-that they are recognized as already-reported.
+I agree this is early boot init code, and I do not have a
+runtime failure report or fault-injection reproduction for it. If such
+allocations are considered not worth handling in this path, feel
+free to drop the patch.
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
----
- mm/page_alloc.c | 32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+Thanks,
+Ruoyu Wang
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d49c254174da..8dae5b3f5876 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1502,7 +1502,8 @@ static void free_pcppages_bulk(struct zone *zone, int count,
- 
- /* Split a multi-block free page into its individual pageblocks. */
- static void split_large_buddy(struct zone *zone, struct page *page,
--			      unsigned long pfn, int order, fpi_t fpi)
-+			      unsigned long pfn, int order, fpi_t fpi,
-+			      bool reported)
- {
- 	unsigned long end = pfn + (1 << order);
- 
-@@ -1517,6 +1518,8 @@ static void split_large_buddy(struct zone *zone, struct page *page,
- 		int mt = get_pfnblock_migratetype(page, pfn);
- 
- 		__free_one_page(page, pfn, zone, order, mt, fpi);
-+		if (reported && PageBuddy(page) && buddy_order(page) == order)
-+			__SetPageReported(page);
- 		pfn += 1 << order;
- 		if (pfn == end)
- 			break;
-@@ -1559,11 +1562,12 @@ static void free_one_page(struct zone *zone, struct page *page,
- 		llist_for_each_entry_safe(p, tmp, llnode, pcp_llist) {
- 			unsigned int p_order = p->private;
- 
--			split_large_buddy(zone, p, page_to_pfn(p), p_order, fpi_flags);
-+			split_large_buddy(zone, p, page_to_pfn(p), p_order,
-+					  fpi_flags, false);
- 			__count_vm_events(PGFREE, 1 << p_order);
- 		}
- 	}
--	split_large_buddy(zone, page, pfn, order, fpi_flags);
-+	split_large_buddy(zone, page, pfn, order, fpi_flags, false);
- 	spin_unlock_irqrestore(&zone->lock, flags);
- 
- 	__count_vm_events(PGFREE, 1 << order);
-@@ -1694,7 +1698,7 @@ struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
-  * -- nyc
-  */
- static inline unsigned int expand(struct zone *zone, struct page *page, int low,
--				  int high, int migratetype)
-+				  int high, int migratetype, bool reported)
- {
- 	unsigned int size = 1 << high;
- 	unsigned int nr_added = 0;
-@@ -1716,6 +1720,15 @@ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
- 		__add_to_free_list(&page[size], zone, high, migratetype, false);
- 		set_buddy_order(&page[size], high);
- 		nr_added += size;
-+
-+		/*
-+		 * The parent page has been reported to the host.  The
-+		 * sub-pages are part of the same reported block, so mark
-+		 * them reported too.  This avoids re-reporting pages that
-+		 * the host already knows about.
-+		 */
-+		if (reported)
-+			__SetPageReported(&page[size]);
- 	}
- 
- 	return nr_added;
-@@ -1726,9 +1739,10 @@ static __always_inline void page_del_and_expand(struct zone *zone,
- 						int high, int migratetype)
- {
- 	int nr_pages = 1 << high;
-+	bool was_reported = page_reported(page);
- 
- 	__del_page_from_free_list(page, zone, high, migratetype);
--	nr_pages -= expand(zone, page, low, high, migratetype);
-+	nr_pages -= expand(zone, page, low, high, migratetype, was_reported);
- 	account_freepages(zone, -nr_pages, migratetype);
- }
- 
-@@ -2116,11 +2130,13 @@ static bool __move_freepages_block_isolate(struct zone *zone,
- 	/* We're a part of a larger buddy */
- 	if (PageBuddy(buddy) && buddy_order(buddy) > pageblock_order) {
- 		int order = buddy_order(buddy);
-+		bool reported = PageReported(buddy);
- 
- 		del_page_from_free_list(buddy, zone, order,
- 					get_pfnblock_migratetype(buddy, buddy_pfn));
- 		toggle_pageblock_isolate(page, isolate);
--		split_large_buddy(zone, buddy, buddy_pfn, order, FPI_NONE);
-+		split_large_buddy(zone, buddy, buddy_pfn, order, FPI_NONE,
-+				  reported);
- 		return true;
- 	}
- 
-@@ -2283,10 +2299,12 @@ try_to_claim_block(struct zone *zone, struct page *page,
- 	/* Take ownership for orders >= pageblock_order */
- 	if (current_order >= pageblock_order) {
- 		unsigned int nr_added;
-+		bool was_reported = page_reported(page);
- 
- 		del_page_from_free_list(page, zone, current_order, block_type);
- 		change_pageblock_range(page, current_order, start_type);
--		nr_added = expand(zone, page, order, current_order, start_type);
-+		nr_added = expand(zone, page, order, current_order, start_type,
-+				  was_reported);
- 		account_freepages(zone, nr_added, start_type);
- 		return page;
- 	}
--- 
-MST
+On Mon, Jun 8, 2026 at 4:02=E2=80=AFPM Michal Hocko <mhocko@suse.com> wrote=
+:
 
+> On Mon 08-06-26 14:36:44, Ruoyu Wang wrote:
+> > memcg1_init() allocates one soft-limit tree node per NUMA node and
+> > then initializes the returned object. If kzalloc_node() fails, the
+> rb_root
+> > and lock initialization dereference NULL.
+> >
+> > The per-node soft-limit tree is required by memcg v1. Use nofail
+> > GFP_KERNEL allocations for these init-time objects so the init path doe=
+s
+> > not continue without the required tree nodes.
+>
+> This is an early init code executing in during boot. Have you really
+> seen this allocation failing?
+>
+> > Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
+> > ---
+> >  mm/memcontrol-v1.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+> > index 433bba9dfe715..3f41a15d8a8cf 100644
+> > --- a/mm/memcontrol-v1.c
+> > +++ b/mm/memcontrol-v1.c
+> > @@ -2246,7 +2246,8 @@ static int __init memcg1_init(void)
+> >       for_each_node(node) {
+> >               struct mem_cgroup_tree_per_node *rtpn;
+> >
+> > -             rtpn =3D kzalloc_node(sizeof(*rtpn), GFP_KERNEL, node);
+> > +             rtpn =3D kzalloc_node(sizeof(*rtpn), GFP_KERNEL |
+> __GFP_NOFAIL,
+> > +                                 node);
+> >
+> >               rtpn->rb_root =3D RB_ROOT;
+> >               rtpn->rb_rightmost =3D NULL;
+> > --
+> > 2.51.0
+>
+> --
+> Michal Hocko
+> SUSE Labs
+>
+
+--000000000000cbb0e90653b9e22e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">No, I have not observed this allocation failing in practic=
+e.<br><br>This was found by static analysis and then checked by reading the=
+ code:<br>memcg1_init() dereferences rtpn unconditionally after kzalloc_nod=
+e(). I<br>treated the soft-limit tree as mandatory memcg v1 init state and =
+used<br>__GFP_NOFAIL because continuing without it would not be useful.<br>=
+<br>I agree this is early boot init code, and I do not have a<br>runtime fa=
+ilure report or fault-injection reproduction for it. If such<br>allocations=
+ are considered not worth handling in this path, feel<br>free to drop the p=
+atch.<br><br>Thanks,<br>Ruoyu Wang</div><br><div class=3D"gmail_quote gmail=
+_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jun 8, 2026=
+ at 4:02=E2=80=AFPM Michal Hocko &lt;<a href=3D"mailto:mhocko@suse.com">mho=
+cko@suse.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
+g-left:1ex">On Mon 08-06-26 14:36:44, Ruoyu Wang wrote:<br>
+&gt; memcg1_init() allocates one soft-limit tree node per NUMA node and<br>
+&gt; then initializes the returned object. If kzalloc_node() fails, the rb_=
+root<br>
+&gt; and lock initialization dereference NULL.<br>
+&gt; <br>
+&gt; The per-node soft-limit tree is required by memcg v1. Use nofail<br>
+&gt; GFP_KERNEL allocations for these init-time objects so the init path do=
+es<br>
+&gt; not continue without the required tree nodes.<br>
+<br>
+This is an early init code executing in during boot. Have you really<br>
+seen this allocation failing?<br>
+<br>
+&gt; Signed-off-by: Ruoyu Wang &lt;<a href=3D"mailto:ruoyuw560@gmail.com" t=
+arget=3D"_blank">ruoyuw560@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 mm/memcontrol-v1.c | 3 ++-<br>
+&gt;=C2=A0 1 file changed, 2 insertions(+), 1 deletion(-)<br>
+&gt; <br>
+&gt; diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c<br>
+&gt; index 433bba9dfe715..3f41a15d8a8cf 100644<br>
+&gt; --- a/mm/memcontrol-v1.c<br>
+&gt; +++ b/mm/memcontrol-v1.c<br>
+&gt; @@ -2246,7 +2246,8 @@ static int __init memcg1_init(void)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0for_each_node(node) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct mem_cgrou=
+p_tree_per_node *rtpn;<br>
+&gt;=C2=A0 <br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0rtpn =3D kzalloc_node=
+(sizeof(*rtpn), GFP_KERNEL, node);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0rtpn =3D kzalloc_node=
+(sizeof(*rtpn), GFP_KERNEL | __GFP_NOFAIL,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0node);<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0rtpn-&gt;rb_root=
+ =3D RB_ROOT;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0rtpn-&gt;rb_righ=
+tmost =3D NULL;<br>
+&gt; -- <br>
+&gt; 2.51.0<br>
+<br>
+-- <br>
+Michal Hocko<br>
+SUSE Labs<br>
+</blockquote></div>
+
+--000000000000cbb0e90653b9e22e--
 
