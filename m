@@ -4,133 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A0D2CD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 20:51:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45D49CD8CA8
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 20:53:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6547A6B0005; Mon,  8 Jun 2026 16:51:10 -0400 (EDT)
+	id A9CFE6B008A; Mon,  8 Jun 2026 16:53:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 605556B0088; Mon,  8 Jun 2026 16:51:10 -0400 (EDT)
+	id A27526B008C; Mon,  8 Jun 2026 16:53:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51AC36B008A; Mon,  8 Jun 2026 16:51:10 -0400 (EDT)
+	id 8C7B26B0092; Mon,  8 Jun 2026 16:53:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 43FC16B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:51:10 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B65A8402FB
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:51:09 +0000 (UTC)
-X-FDA: 84857940258.17.7FD54B7
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D91F2100005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:51:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mLVOUmhr;
-	spf=pass (imf14.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 787BE6B008A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:53:20 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 25844402FD
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:53:20 +0000 (UTC)
+X-FDA: 84857945760.12.D8382CE
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2C9A5120002
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:53:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=V1kieY6E;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780951867;
+	s=arc-20220608; t=1780951998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OqANBGSP00mnERvECbdyBZ/QnoUicIMj2Z9x9A+M1D8=;
-	b=JrXJCmlk4Jte/Rq81ouAn1W3a7DHUaOsB/OsOq64s3CtjLEbZhqT3Lt5A5Bmx5wZ+7uphZ
-	RX+VTD9GSU5wrwODGEgEXYl3jC/pBuOavy6Fr7UW8t0CloZEc+LDiX/ql0+PDrP5XlbsTb
-	TwY6Wr8eDswC9v078gaX3l6DDLw60pc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780951867;
-	b=HqK/XPqjoZdK2CY/B5ELfWl4J5EDtj85TVsL2XYKXtcJCfk+oGNhQUtQ1l9pMJC2W7uWLi
-	ZnKW1vMYdPD2wsZ8VFQEBCxLyTt8FWO+iOIBnwaW0A8njS0TPHy5PrVEvb+bQQrsBRtl2y
-	GEm4f4rUcVmTCD+UzzvEEg0pk8yZRoc=
+	bh=Ay3/m/3X5+0dQjvVaZrZxESaXlBV8MmvxOSkVFCxjsQ=;
+	b=ETrUhbnRNkZKYUJ3/fktNlds95cswJqqMkFSetQ20WkFZSUXUbh5mz0M6Y77w29vPZ0Jgs
+	MZFgAzFPRlauHrlbCtD4oTjIhVxaJj+UPxD8U7WpHHo/75wsJIWOfetX5ujIeVQOQfby5g
+	j0/FUp75H6GUUC/IvlJNLn+ImYINiyY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mLVOUmhr;
-	spf=pass (imf14.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c85b2139015so1578398a12.2
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 13:51:07 -0700 (PDT)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=V1kieY6E;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780951998;
+	b=DWxCR23kwzW8tuBwG6OTud5HuqGBJenvGMxiF84K6XITlMvDKEM+2XAsyZNXlqAJVH8sri
+	41YRjiZ1bviSshlbKH/xazmHQQQZUsoi50Sa2aiHGaJEIlv3jiY+JEeLJuc1Q0RsRIn1F5
+	XUO33O2kxPDXawHDi6TybG0kjEPZkhc=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8ccda0ac4fcso49113686d6.2
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 13:53:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780951867; x=1781556667; darn=kvack.org;
+        d=gourry.net; s=google; t=1780951997; x=1781556797; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OqANBGSP00mnERvECbdyBZ/QnoUicIMj2Z9x9A+M1D8=;
-        b=mLVOUmhr1H2y/5fHWuMWhTyFWgaGrp9mG3H6FvQ82+3I00yCowvEvcJZXbJxMYnZ5J
-         Z37qXUnDRYS10UInAeonnd5iuy9Wrg/fUfm2sI7eKSbwYZqhbxWBjYEbtQfVqwXB2ZZ0
-         2/7r1ZqXyXAFqrTVBFTwAfMT/hu9KACSIr1bCPHcv5UwNG1lqBYWUghlHuvcGL5ZKIy2
-         fhFcow7s5vjSG3DmK7UJ3+smAOWk6Ct9qcJW1Vyu5HdhzEJCo5tdQBXMSQxl+8qzOn+q
-         DkD9d2WV98AZdNGSCrkh1VuXs1e+6cv/MfO5kAwEvqsOUGBJoKnMXXnm8c8E5XZsTFzI
-         wpfA==
+        bh=Ay3/m/3X5+0dQjvVaZrZxESaXlBV8MmvxOSkVFCxjsQ=;
+        b=V1kieY6EDpSiVTU8TvdbQJaQdMdqrEK2eR2cnK2LbAR4L4tXA+ZMIgXGpcGHMVqt+V
+         tT5qiSJRbHMBk3TuXJ3MyKLRJqnv3jLYfRIKwSwbZ3QoDZmHi/6ZGE0Pk88NT6xOOdem
+         SBLXkT3vYyvPJTNzwbNTVFCyZXdtAO14NiR028VqLD1hFQddrDEEbSGkXIxJxe6VaOiT
+         Bf+iHcV9mi8vi/h0IOxt14PYEt/L9JSj67TClsPFDjs/sAcLm0QXmJV7RIKNH5yyXasu
+         qCbsboz54Bv3AM9Nme5Xj9McfQfaVcEBJ7cYdgARD49Ma7YL9s5vFN+TFCwqQw9/eVmd
+         X4vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780951867; x=1781556667;
+        d=1e100.net; s=20251104; t=1780951997; x=1781556797;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OqANBGSP00mnERvECbdyBZ/QnoUicIMj2Z9x9A+M1D8=;
-        b=jlSzNOYfCPlEFzagVILZWGmm/XL6Gz7Rtnqte5EiepmqFhkhyKLq3tR1zuzI5AyQw0
-         MjWh1fw51yYAJQtLKnHNj+dtU8VbRR2Q8ku31onE/bNSWD+V4gFE4s81gi2+qlrRmbea
-         eZSjP6qNIZeRe+7c2q8Dx+LjcXuP8C779m/06KpovfvfSFNEcPAPLCKhcRcWYUpLqmJo
-         7QI72PAnvbEo2SsT8HrGdrg/TmvoCASGcKBTxgq4t2U5Zv7flsRmAYJe5LXfskGZkjYt
-         MftuzaD/1jk3uOp4KKd/tGFIfgCx2EK5b9FM5KcHLiCgGy8ZeVM/vGABXgv+5fbeGNrw
-         1ZmA==
-X-Forwarded-Encrypted: i=1; AFNElJ+0kTH51GvnjaY3GVGvoTJ6bu77n5K+8gIa8X1X0gpdLASKqIoUgJ7t80FAWAgMJqqokluBxgQuXw==@kvack.org
-X-Gm-Message-State: AOJu0Yw7gT2s9BupFl/85qo8qYuSSpaCpPnuoir7+pghyhxE78KiHQqX
-	CLkq7HIqQ4cahCALJ9msG75wjV4UNY/LR7OdSChZlfNgwWf6sTrTSafVhjxHELcPrksEU61W4jQ
-	w+kQeuk7/
-X-Gm-Gg: Acq92OGVdUvNI8+P9bvIOFOMB38a2xfrWcP20D80Smwp/Tjs79hzc+pn7pIEe5Dn4ye
-	cImsAMsppSatSG+cYf7s2XKafRzzPEDsvrVWnMAK5XZECbOboTqKjVbPhNx7FaP8LG4dKzcEZ6L
-	Apmlk3q9/YbFt7x1+f3raLLpA/KmNco0oO0hpv4fXUulPt+gv0J1RIq+p/d6WDaPDHVc8j2ZAIA
-	DXEyz6jjq2KrRySyZVJHIMuOnqbE44JE8zI0h1+z2XaRR7HggCGzfO4N/OlWQQQUj9AoKcchRM8
-	7YGCetRsBNLWH4N1QHER4nkCGQJkS82hm1djm7RkMyLH5dXZXMXFZhMTVqAZwdWYShCqpHaYtsZ
-	o4RiZ66jlV2TXId4gXtQqprcppfk7hF+eIEk4ufM1pBkKp4TMTszDM3njX/iVOymQZGwfZC24IE
-	9eEp6BP3HXaSYywBhr+GxVdKUZhFkbyn1Eqgz+hXqkTGWkGQvy2VZrZoCg8PKbCxhbMYTCNloX
-X-Received: by 2002:a05:6a21:a38b:b0:3b4:904f:c9cd with SMTP id adf61e73a8af0-3b4cccffc4fmr20088541637.6.1780951866181;
-        Mon, 08 Jun 2026 13:51:06 -0700 (PDT)
-Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0b315esm15840734a12.26.2026.06.08.13.51.04
+        bh=Ay3/m/3X5+0dQjvVaZrZxESaXlBV8MmvxOSkVFCxjsQ=;
+        b=Sf1/OWqeLXhXmVObNFsaUM46yHFSqyqYKm1DAQgrZ54GnOZJbYa38zD0KYJ47L5okV
+         /UWrIyzcB3GbwIv/Dibhsa0Wpom2OEdJtouWj/A98siZfYAMQJ+d94oFtknlAhNRgtCl
+         NgGZmz9mXmZtmRP/XbG8ZkU8aZpDlPadICUJopnZbPkcP20HGhahafxqmf6hk3ry+fip
+         AnzOo4uZ8/Tj4+oo33xmvWip2oMEoqm4f9jBuY0MGGlkjFQ2DZzsYTyOdHFtBngKutTN
+         e9+0HPAgRD4zde+Qd9K5KaPnnfkctaRu/xaiV+d2J2saYmd+gW8yR8XxPc6hQqJLJY1x
+         nZYQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/W8ejZ/IqLEq5JS2uXcSC8y+sVpW+9staS6lVlmjWz/K9prnrqKWOo50w+c2VBXHeY+pBS1+mw1w==@kvack.org
+X-Gm-Message-State: AOJu0Ywp/Hc2gMWFba2Se+QeRdxqA9boqZFOjsYhbgXdBWLQF6FMBclX
+	Km2jP8eojHCqo8LteDyreYgWq6GzK+BmNQMxqItvNIYONpKT0A7ZK0243icj75bXEik=
+X-Gm-Gg: Acq92OEfnJJqJOAS8EHV8eUNz6l4W4DcnELcX2xYKl49AKK2fgzbfO16W9Mn8mR1eoo
+	0N0+9a0qF1kjCyvTHmzWSiYvZ590bBZwK8Dm8LqR4dGdJLVzIxHRL51SmuTfbiDnc0DjZkBPAs6
+	w3arq9IMgF3+gsZ5gAvdI2uXa6XnSTtVhj4C689ThKCtDinYBTi+6u7NIpd7jxxq/eqK0/2UyrX
+	pnBaVH3ODjl30HA6WrWJD3UXb0QuCuJgwY8X41XEesJ8WBbyM/GYAT81IN1hneAFwSuKF9UENYq
+	CZMiUb/aTOOIYdTlUoCjdrfUdptvNrzff9Y+kgij/RiPX899Gfign7jbeW0a1mNgNnXO8ik7NJl
+	2s1CJpfQYoRAJm+09a44zmXYprVgraNvbFkE7jXLA0oN3zvOLbfvIB5JPfeKKwksPCQVZb4TZlu
+	eYi0SefkYaC45dmvo2XRRIhJYGBV6K45XWYqJyKUb07KvK4wrd8D8G38xVdHrD5pBf5pwFMTGJz
+	ggn8dnhslfcSv2KPg==
+X-Received: by 2002:a05:6214:4809:b0:8cc:e8f4:1636 with SMTP id 6a1803df08f44-8cee6131695mr193150026d6.25.1780951997212;
+        Mon, 08 Jun 2026 13:53:17 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecc8222bcsm179103816d6.0.2026.06.08.13.53.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 13:51:04 -0700 (PDT)
-Date: Mon, 8 Jun 2026 20:51:00 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+        Mon, 08 Jun 2026 13:53:16 -0700 (PDT)
+Date: Mon, 8 Jun 2026 16:53:14 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
 	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 01/12] PCI: liveupdate: Set up FLB handler for the PCI
- core
-Message-ID: <aicrNNVrMBtJD2iZ@google.com>
-References: <20260522202410.3104264-1-dmatlack@google.com>
- <20260522202410.3104264-2-dmatlack@google.com>
- <aiJhoq_Yj6-1Hl5r@google.com>
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v10 12/37] mm: use folio_zero_user for user pages in
+ post_alloc_hook
+Message-ID: <aicruns_4nOx0hD-@gourry-fedora-PF4VCD3F>
+References: <cover.1780906288.git.mst@redhat.com>
+ <f92f6f06e5804b4ea7f68b8664b7e69953b50f4e.1780906288.git.mst@redhat.com>
+ <aiacZ6_7SG3nvVjM@lucifer>
+ <aiblhJv_BvMn_8XY@gourry-fedora-PF4VCD3F>
+ <20260608154354-mutt-send-email-mst@kernel.org>
+ <aicjNRrHYOOBt0Hx@gourry-fedora-PF4VCD3F>
+ <20260608161810-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aiJhoq_Yj6-1Hl5r@google.com>
+In-Reply-To: <20260608161810-mutt-send-email-mst@kernel.org>
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D91F2100005
-X-Stat-Signature: yrffkksojqrsbnq9yo3ep39shcu11esm
-X-HE-Tag: 1780951867-673611
-X-HE-Meta: U2FsdGVkX1/1ino3sznhAe8VDFe7ZxvYQY7zqWZKZhVWbTzjzrxl13AdOrWYx2LQfQeLalKNEc1h/EcINOFP2Un8pmtywHy4J+xF72jSulBDzViFHxuMOdFZ2pKxWvCcs/VYoF6oLjfvNIa5LyX8hvNzHO2HfYPcfdxfYlb2vb4QP14hNvgIwNax3tYln2zmnLEdfFoegWNiKh1DmB8P24/w5z7lalx+yuPbHKMDlfhqCgfh3RvdP7CYuMRnzwFGWMzns8g5smxdDkO/e7DNNYK2aUfOs8Rr0q4nJied4v2IUDTkkOsuyRD22JINsXHJF7BmR0/ysFLC8bZr9tyPJ55rKiXQyGOgr7LCgsNpTS69VuLqdf8x5Oa5/4+HnoSrNvTOx6oY74tqPbZSCujEatpeVQ94Y+lOn0ofTYMN/U9oRagqdilU97hlylKdIeZZVWcrnk4cvJ7yAGQVWVKv8ngTWZOd0B30OZyiWsMR2eOL/Z1Ty1bJx4y1fZh8lrpq0/6Fr9y7CiQT+zeOi5wI5g5U0QqpnCh0e133gqZKl9RmaLq45yzorLu0LSGUXRbfiCipTXpZi7kp2UNPPWzrfzQuV+18o/gvaiWQFvr/seOw4ptHZE0xRD1T9CYpwLo5XVkECHIwlGyIe7NpvrHZTtIC6zcjJe6pM39OskC3KKP0mV1ftrpN7chzBn/CNGwLBiXtD6ANkzE6pSOU78O0EYLuO/fhYHh2JEztjk4gNJa+f+8VWZfb6NcJwoed/fcGu71Mfmy4dobrHXIlBcyr32OIFYNJE+CSaaeEvH45CLSaBViBhAYrvjHYt5EylKK9l/CyufBDL/bBVxH6SBxJvxk6aE/958Sfve/RTdzgAQ8l2yGwejCMDsk86AxeanbWAcavzmq5tAlHns4iHfdtkXSFRK+6pQk4zlWShLyZDQPeUC2S2mJoWi17/3A4vHkepnVI8V2C3i6vsZyx0/q
- hXj9jAQc
- rSkUOhKqfxjVXH+Ns2F3OiYAdcfKq7QeGfr7R6H3q1FXoL/isRtnCXF4okz27PyoMyeP+3LqFWRbc8ZnME+SSz/M37Ie97Hk3xgo2paSBXbkCoQfE5rc7VfuWtCFP7NUpelMLgHIeTyg+0oDP/+dTPVSU9UCMpxxb2VoOG+8GeYTs1X15mzZyAwXloElUaFJlqTVfVWm2gziaBf3aGukMGA5rMQumf9mWU/EdLGFI8QzmbixYl/sMF5UxqGjpoiqP38RPjXuS3/NITnOrpSMtTFcFXG8OmRF8Xugg4DgN7ieYZmQ79U4WmSc8FsqkOvvmmBDIKamI3WL+MkI0GyCzFYPW9/2cCL/+pAPw
+X-Stat-Signature: 8yh86qh4udsahncrtr6rcse7dg1dsp3i
+X-Rspamd-Queue-Id: 2C9A5120002
+X-HE-Tag: 1780951997-444059
+X-HE-Meta: U2FsdGVkX19X0rEnoySaLkekrQJqgeZ2TvA4S/FHJ6I1hUaTwKaYqw2/MHo6jsQg149/MFr+qRwHRAxsBZb2FFzKcrEHs3D6ipAY/t2pLKk9Dk2cmPi8xr6J6IwqYLZbu+HkZzcIQLTie4u8mDlNGH2AVf08fBDuXIDcqS+pR/mz7LzTdqbIIeEp3PJrd0vOFDd8yjE8ZoGoskmDVzBJO82GFAjlGDoxtULXvgRqyBptVJjJ2dFBXs7ORBJQhIIdfUg1p58LEPbkMWDtviPXKteZ9B/pwSLaGdMl8iRGYepxyI/CEDBuThB7IfLYn6PbCItdOvtI3SkgYgZwFqFin3fxg7LUQbMXpLnOV0LzElp39QdVCY/1ld8xeVTrQGFogDCtiyJBe+8Yd8fxHigc/hgcxXH1KaOUPO3RRXO9JAk6y1H8CUj8oIlIIe9KbzqzRXB/2n1+roSki/JrU2SWVQsUvjT9m70BFMtFqcN+e0AxCaLt6uq95MbMOk5j1XTfrBDCO4P+4VmBm319EskQsHf+UAdQPcVlx5N41jJtigXjaIPZIdAbzeAzwlFKzUtp5g5OSrh2ovnI9YlB9wmqG8YH25LiJl3yebMlymX9TBvg8YBZjE6f+HPqh3IjTP191NpZ5r+KFB150FE4Eyyenv1QhJ4U4qDF84LMiMBBuUMEjnvO0oNlfe646qNc1EgL2qDbm5Tes4FSJzhzhX0J3JGCs7HqCFMAiJQOk1GiqRtmlhOn2agaZpp/XEZUURJdOnDRkpx3AxzsDPP8cFWSzFOesXUMYWFhmdTYiCkic5aHFlhGl355xDrAQzqIwjaf5Rm21IaUqwpof87Wk1Dviab/RUj7ITLrxaPRJjkACelZBdWLuVKr7sE1aqIfrxzUYguA1uAWhUhb7/sn70xnDLaKS/WIQel1ft4+1HaYbz7dxP0mcwNvLzYCUxCojWeA2UGQXyBZa/YRsoIdgl9
+ DAqvnyps
+ K7wH8Mm6fWtozHKZqohOmod8grL0jWBXJwgQ9bxOQ140y5uPsDadROMsUi7HhAfRNSqSlcbbH6DMBg2U09yJruF+8VVRCKJi+7GSaqcSp+OmSW/Q2K3Um7fYw99eXkpfauaPt64maIDwNqoqtDLLfTOE4Jah46MGXKyoJ3UhAh2thwvUuz2Vq7Bmoqr5l9ZpF/d4NJxjWFTL2thWACoaOZNJYdv81LOD5htBJi6a147CQ5+Wq7ckXwMYPc49qUL1oOzpXt5Yh/XyRMsfsg8N5eK00X4wuy3H822hNkigetEiDjJa7gUsUep+l+vlXck5fs55Bhl22dFHgH9ejIKE3jXe8OUnt0pKrw86unCKBDP+I0t/dX0z7reKAzH7bMg1lJEARwgG134pnuwceHvZ9QCsauuh3FcfcIbDBlvlWVgI8ud9E+P38rEs/Lg8UzKlZynT156jQKnp1o98=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,96 +157,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-05 05:41 AM, Pranjal Shrivastava wrote:
-> On Fri, May 22, 2026 at 08:23:59PM +0000, David Matlack wrote:
-> > Set up a File-Lifecycle-Bound (FLB) handler for the PCI core to enable
-> > it to participate in the preservation of PCI devices across Live Update.
-> > Essentially, this commit enables the PCI core to allocate a struct
-> > (struct pci_ser) and preserve it across a Live Update whenever at least
-> > one device is preserved.
+On Mon, Jun 08, 2026 at 04:30:46PM -0400, Michael S. Tsirkin wrote:
 > > 
-> > Preserving PCI devices across Live Update is built on top of the Live
-> > Update Orchestrator's (LUO) support for file preservation. Drivers are
-> > expected to expose a file to userspace to represent a single PCI device
-> > and support preservation of that file. This is intended primarily to
-> > support preservation of PCI devices bound to VFIO drivers.
+> > Please consider that this is arguably the most fundamental interface in
+> > in all of mm/.  All we're doing is going through the process of figuring
+> > out what changes here are reasonable while trying to meet your goal.
 > > 
-> > This commit enables drivers to register their liveupdate_file_handler
-> > with the PCI core so that the PCI core can do its own tracking and
-> > enforcement of which devices are preserved.
-> > 
-> >   pci_liveupdate_register_flb(driver_file_handler);
-> >   pci_liveupdate_unregister_flb(driver_file_handler);
-> > 
-> > When the first file (with a handler registered with the PCI core) is
-> > preserved, the PCI core will be notified to allocate its tracking struct
-> > (pci_ser). When the last file is unpreserved (i.e. preservation
-> > cancelled) the PCI core will be notified to free struct pci_ser.
-> > 
-> > This struct is preserved across a Live Update using KHO and can be
-> > fetched by the PCI core during early boot (e.g. during device
-> > enumeration) so that it knows which devices were preserved.
-> > 
-> > Note: This commit only allocates struct pci_ser and preserves it across
-> > Live Update. A subsequent commit will add an API for drivers to tell the
-> > PCI core exactly which devices are being preserved.
-> > 
-> > Note: There is no reason to check for kho_is_enabled() since it can be
-> > assumed to return true. If KHO was not enabled then Live Update would
-> > not be enabled and these routines would never run.
-> > 
+> > ~Gregory
 > 
-> [...]
-> 
-> > +/**
-> > + * struct pci_dev_ser - Serialized state about a single PCI device.
-> > + *
-> > + * @domain: The device's PCI domain number (segment).
-> > + * @bdf: The device's PCI bus, device, and function number.
-> > + * @padding: Padding to naturally align struct pci_dev_ser.
-> > + */
-> > +struct pci_dev_ser {
-> > +	u32 domain;
-> > +	u16 bdf;
-> > +	u16 padding;
-> > +} __packed;
-> > +
-> > +/**
-> > + * struct pci_ser - PCI Subsystem Live Update State
-> > + *
-> > + * This struct tracks state about all devices that are being preserved across
-> > + * a Live Update for the next kernel.
-> > + *
-> > + * @max_nr_devices: The length of the devices[] flexible array.
-> > + * @nr_devices: The number of devices that were preserved.
-> > + * @devices: Flexible array of pci_dev_ser structs for each device.
-> > + */
-> > +struct pci_ser {
-> > +	u32 max_nr_devices;
-> > +	u32 nr_devices;
-> > +	struct pci_dev_ser devices[];
-> > +} __packed;
-> > +
-> > +/* Ensure all elements of devices[] are naturally aligned. */
-> > +static_assert(offsetof(struct pci_ser, devices) % sizeof(unsigned long) == 0);
-> > +static_assert(sizeof(struct pci_dev_ser) % sizeof(unsigned long) == 0);
-> 
-> Minor Nit: Shall we consider using specific bitwidth types here?
-> I'm wondering if down the line another u32 field is added to 
-> struct pci_dev_ser.. in that case on a 32-bit machine 12 % 4 == 0 but on
-> a 64-bit machine 12 % 8 != 0..
+> I don't mind discarding all of this and doing something else completely,
+> but I dislike it that multiple people are apparently now angry that I
 
-I think natural alignment is what matters for efficient access of the
-array elements. So failing the assert only on 64-bit architectures seems
-like the correct behavior.
+I wouldn't say anyone is angry, I think most folks are tripping on the
+complexity of the set - which has increased (at the request of others).
 
+> don't address all the contradictory comments at the same time.
+
+Such is life in mm/ :] - it's hard to known the entire state machine,
+and sometimes the contradictions aren't even wrong.
+
+> I thought just sending a patchset to show how the result looks like
+> is easier than arguing about architecture, and would be helpful.
 > 
-> [...]
+
+Notice: When folks argue implementation, they largely agree the
+end goal is useful.  I haven't seen anyone say your problem isn't
+real or that it shouldn't be addressed - just opinions on a particular
+path forward (which is utterly normal here).
+
+Getting the right incantation of an API is really hard when the
+API being changes is something that underpins the entire kernel.
+
+> I'm not pushing any of the mm rework, I was asked to do it,
+> myself I just want the ridiculously effective optimization in there.
 > 
-> With the nit:
-> 
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> 
-> Thanks,
-> Praan
+
+As Lorenzo, David, and Matthew have said, the focus of the patch set
+does seem to have become unweildy (in part at the request of folks
+asking something be done differently).
+
+What needs to be done now is to break it up into some pull-ahead 
+sets that are easier to review.  Having a brief RFC doc that lays out
+the set of patches might help clarify the confusion going on here,
+especially as new folks come in to ask "What's all this about?".
+
+As a start:
+
+  1) the user_addr and zeroing piece seems like a discrete
+     improvement worthy of its own set - aside from end goal.
+
+     This is needed by your patch set, but was requested to
+     try to push us towards a more reasonable pattern for
+     folio_zero_user().
+
+  2) There are a handful of patches that seem able to pull-ahead
+     (some of the mempolicy stuff), either as prep work for #1 or
+     just on their own.
+
+     Some of these patches seem like latent bugs that aren't hit by
+     current users, but do seem to be doing something subtly wrong?
+
+  3) the final virtio piece seems like it should be entirely separate
+     once the core pieces are done.
+
+It's not uncommon for core changes like this to take multiple prepatory
+sets over many major versions before the final feature lands.
+
+~Gregory
 
