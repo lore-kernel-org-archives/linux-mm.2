@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0749CD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 09:44:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FC47CD8C9F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 09:52:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA1886B00AD; Mon,  8 Jun 2026 05:44:13 -0400 (EDT)
+	id 1DC5C6B00A9; Mon,  8 Jun 2026 05:52:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E78BE6B00AF; Mon,  8 Jun 2026 05:44:13 -0400 (EDT)
+	id 18D4C6B00AA; Mon,  8 Jun 2026 05:52:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB6316B00B0; Mon,  8 Jun 2026 05:44:13 -0400 (EDT)
+	id 07BFC6B00AB; Mon,  8 Jun 2026 05:52:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CDB516B00AD
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 05:44:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F8EEC32B0
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:44:13 +0000 (UTC)
-X-FDA: 84856259586.25.D8EA30F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E00621C000C
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:44:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AMvyeZW5;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780911851;
-	b=Co3Jr0TQ8B5mpirh33Y+XEXNBlH2m1zff6VF8XRs2QgUcupF3Z+Sv7N9r5R6pkDL5NLTWt
-	DvxJ866btLXoxOD7yODABH4ta8V36dqWez/gw0rsOSU9i29+vJgJL87A1mSseU5nesOWB4
-	5a6D+YAmlmBIU/uMMhfnIWCNcqj+49o=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AMvyeZW5;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E76946B00A9
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 05:52:44 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 82C7A40A25
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:52:44 +0000 (UTC)
+X-FDA: 84856281048.06.80F95F4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B128F14000C
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:52:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MhbmsSQb;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780911851;
+	s=arc-20220608; t=1780912362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=17m8mwsfA3GCBclFS0NKJ16jnmOTO1fnZAeW+abmcCY=;
-	b=0SJcDud8y2ARDEkqw2/Gr7BW/pqBCGq85fCTihchqnT1xl9NGgGIQCnBUeqoAAr15FRVJz
-	1m8Fre2XVMqVd+5GRnsFwSyziSaXLr3RQFH21hy6Kc6c3QLSDXkZ/skWa/kztUYtPB3zkY
-	I5WWSnXwQ90LqJ70HiheFiXLph7eims=
+	bh=JFcb5wznsh7Dtoc8obtApEc1nOCjqE6tfgXIvwztLZA=;
+	b=iTQIxI3+Dd48o9bo+tS7eolkSdrDvfMZv+b5YVuKMn57LCCDB60anNlJxFByFjtGxOtCRh
+	XLraGGgUhHzGNgsnvoYYiLeWB8PsA8nOmamN17DHnsgbfIuR6lfXpmfhIdosWA1gUlk2b9
+	dbJdM6MoB9yL8CUFhlX2yjYwiXUax/M=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MhbmsSQb;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780912362;
+	b=r9cMsjRBpTMvqBjj6LiloPSiJ741yi7XRgn0gTpewOhFg2ezM3BDn8wSr9djgLoSfn1b2m
+	lWxsPVka9buSb+Ng7H8UUMsE/MbVIixXAa45dBzsV4NI2wpXXc37rwaYk8WBDob3MPRpcQ
+	21Jl1enQYj9eX4GZskBlA3PmAFTlf7U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52FC2601D8;
-	Mon,  8 Jun 2026 09:44:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535101F00893;
-	Mon,  8 Jun 2026 09:44:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CEB474001C;
+	Mon,  8 Jun 2026 09:52:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AB61F00893;
+	Mon,  8 Jun 2026 09:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780911851;
-	bh=17m8mwsfA3GCBclFS0NKJ16jnmOTO1fnZAeW+abmcCY=;
+	s=k20260515; t=1780912361;
+	bh=JFcb5wznsh7Dtoc8obtApEc1nOCjqE6tfgXIvwztLZA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AMvyeZW5thkSCuPZGUdZYSNC2hm5d3bonc7xsD0+/P9v89ByLDRGzdevN0P96qemF
-	 kyMJVco52PvR1bRNqX+K9x6Ue3uLGss+4arXKeJHILVAe+oOy9JlGNRuM1P4/iyb6V
-	 /fv5pm1zatWy/yY/Rxkt8lElYDg/AfnH23/XgvexjWWOns52opKebab4yacK5qudy8
-	 JUnir+CNDx5FbkciMHezSim9iwtJDb/S5XZGMXHMe5+hXzcSBAI8wdUJ8zbZGa9uV3
-	 uh0siT5xbopvDcEFFeSNTAQ5fceK54Szx5OJQSqfdckrVt5Cf3aSA7Z/eZ9Ybv0lYs
-	 vQjDiJZr6npbA==
-Date: Mon, 8 Jun 2026 10:43:58 +0100
+	b=MhbmsSQbAP4dukA9xxTpQlDXZRzK7wZ9UBnUq/Nbt7QXRBpCZg3VoUk7r3WaeT2OM
+	 ooYYM4FdktOUtjWi7lLhZl0JcIlO1nCd0f86FsX4i/pdBZebuGRSBnOd+POhDIjr5V
+	 KbIJDt1l0UppECkj7VM40TFGhRaYQXY1kqONZOHlF7G1MaAXoVLlFasBN5VEKN1tMq
+	 QtqNrCL/uN6Ozex01tpu9Ho6NVJgNlK6kTaFseku2BgUhT6Mo7MZROwYlFYm3R8s3w
+	 Q7Q5LJF8lJtcjfy9Wrnb6HOyoW1Ei891MjFn8OQw5IjRjHztdcbolIY2MAkGq2MucI
+	 XE6+0HSbWekWw==
+Date: Mon, 8 Jun 2026 10:52:28 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: linux-kernel@vger.kernel.org, 
@@ -87,22 +87,23 @@ Cc: linux-kernel@vger.kernel.org,
 	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
 	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v10 01/37] mm: mempolicy: fix interleave index calculation
-Message-ID: <aiaI4Of97oH5YTbi@lucifer>
+Subject: Re: [PATCH v10 03/37] mm: page_alloc: propagate PageReported flag
+ across buddy splits
+Message-ID: <aiaPBRm0Mp_WDPFa@lucifer>
 References: <cover.1780906288.git.mst@redhat.com>
- <f5b1dcc97baae7183e96743873b943315d93cdb6.1780906288.git.mst@redhat.com>
+ <1a407d39a9ebd95e9de67e44f9ad2db37c9f31e9.1780906288.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f5b1dcc97baae7183e96743873b943315d93cdb6.1780906288.git.mst@redhat.com>
-X-Rspamd-Queue-Id: E00621C000C
-X-Stat-Signature: 35gzuctsah1wuwyq4ix59r9wrix69os3
-X-Rspamd-Server: rspam03
+In-Reply-To: <1a407d39a9ebd95e9de67e44f9ad2db37c9f31e9.1780906288.git.mst@redhat.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B128F14000C
+X-Stat-Signature: ki7dh4mqppp8nmpt64isfqprcoz84oe7
 X-Rspam-User: 
-X-HE-Tag: 1780911851-111292
-X-HE-Meta: U2FsdGVkX194f/za4bX5z51Y0AXmixumqrrJUDJwP9O0+CRICSfXptSJ+JpsESQe4XbBSTi+QTa1AKsp5DcsW/lMtNYvENjo5d/2kOf7tme6Y4tAOnLuw9HGAfaXbt9+5Xep6XnLN3zValjCQWIoERAoK1bNLrSZmmoII8fgYqqI6CzOhmmqrQvtS2ARz2556632G3kr9OzsbTk0iFTRGJ8GPSEfpwFbYbR82YJBpHJz3AM9CbN9Mq09yyJFlaQCzzIny0lQAqkjS47y0+DGKuN5Ks3EmPJ1k9zXvXenpQ2sUikVFMXqGnQ28GA/qYptxrSQQ/QYeBECDyW7uYRar0QRJ5n/t0tTvtYAE9wuozDvmVOXpYHOjF1KJDrMUULV01u1biWu2GDxZy0IeFaRatLgDbcU5k/RJNXdh1adxc1vuMn5C8sOWLNZniim2tIDMG+jPv9j1SBGpv8AXFGqNWFQR/IIWtQ4Izz5fjimrw4LF48/A2yfLuLUgFnON/rKqn14hmYlKdumH0g3FTw+DH+tXtHv+io1DCT6Hdx1bjkQkQg32imvXnpH5Cxe4SaHA07AMY0+2OCJD/TVlSIU3yQmpC+zHSBUB6dMiOIxAMQi4qC5zWMgwc5RPqqS2p7goEbJ+SO7NPoYyoLiuDfiU2zLKoDcqoF6Mt+IcjG8BPm8/DRhgGOAkZaPIW2nqBGeKyqwkk4ntG0oB/FW5i2A4tb23mNeJGWjbl5V27TfuSigCsVTiY+WQF4tXOwuso5j+dnZqiOnvcsqS0A7wMIBSwSJAxYGfM8dZczvRSqL9YDe1jNuseBAxnCZJ3bAt9w2x1Kmyal+178NZK73kj5g0N64sY2jfxZlDGIvynFhVNQdcUltKKXe56qR1vvuWG34JEzhHDnod1oY02KnzkjniiZs/ETxZDJk2nUzGoG499YKx1Jyi8kGFahPAwCBtszJ3ReHHDg3sxEzLNjdUeZ
- 3AiWvU+N
- Vw1zRXZuAmn0+hUzAh1BKWPhN1sMSk3/N/2+tNURbpK0WeOPYdwpZzhGusWafy0FNqOaru4hbvvXx1EtuM1W1YDojUA7QLKxu5k0q3jM2bLt2ELhv9SY7EeQPLPIXpqit/kP05Y528JbobrwTGXFjN/2GPPY7D7Tit5zcronUuPyrJR9EiGGm9CrZKCc2JZ7tRl/zil0uKVIhPEgl+5hypiJdnM8ZNUSN/Vwf5Fk2bOxef8oS17nDcCQHt+pIbQBWGF3LaIYGF/LQTilcVc9RWGz4FNr8kAf8en2LHmakZtE6RpqbB2nyQ3wCa4Rxf710Hl+SieazMjAnzyN2PcxlfbtU5+sSVxYriRAKDVmLTNSmzgzbikUtNDy/Bs6Qh3FIq93cMXOfh2m719sqVHFcW6SpJVRtTtiVRx8X
+X-HE-Tag: 1780912362-106341
+X-HE-Meta: U2FsdGVkX18KDwObp856ua01PZIAAdPq3g2f23zEiCJeE6bxazOsgG9z3RW6QeDoHs4ZONKC56n9D63RL0H6ZS62sKofaVNoekS2nCi1GFXqUsoDbI1Ti81ukexnmD5hHmHfvCh+tecfuBdBiLrY43ZIR7IDVivvevFvNW+Aq8pmsbEnIvyQwsylvaEK95pt+oZD75eYm8BhBAbHAHB/KytW6PxdhnmJhYflX0QDCMTOb55KBxaO5S7Lt/X6UY0Se+9OUbY/ZABUoQ0olJUGpjWKPZajM3DwZLdCk3ZOCgda/HLvzSG5jk1cl1toCAnKsTVp4VDEm4K4uT0v7EqSTGgBEwUWmrjLyIzyDbfK8PHUuzKPG2fd5feBejpwy0iV116oaYxLR/Wq8Eb1haBxESYh5yM/rkdL9cnhPy2p19iD+CssV7dthLd1uNfW9pJApiHCPK3vxeIIj9lyToBcf5yQpnfVpts9F+rWWnljDlNjTJGM7Kv37J1F3eK8GsQARLU9NvC5FM35K+rz0pgvw9BY6wMhaUaqqKU32XJz1Ddqb9INeE69fXSmy8Z8goLSYb78sOD1HrrcwOunyDIhQXYYmeXzVXDkVWbGZIUhaB2WOFH6eNWgZeMCjIEczLPbW0EJy37dvyyCVHC7+RK1/bCUPrXbt4ARmI2erP0IehRRRig9Epd3UWh8mEngrzFqRmPoAsQ3BoeetRcuccj3Al5CTjKcBTfY9cK1KUhVJL4r1d+1et22Tu91tRDQilr6CMTLJANSeWl/bk+3Yq/nLDsDTOg2m/7kMcex11lZ4Te+8l7K4clu/INikiIX4HtUUiM9+s2HwW4T5Oc13YZTSSYQ4X4nhT5y0GuOQkGUvkohnH7f4+TOI6jqYplVnPbVL7ap62NghpmntxA/WtPM8s3pjge4Znu957/s2Bu49v+AoWk3OeXxa9jDpJAz36eiy4vDw5+z8FpbjiAztBq
+ 0bSu/hP1
+ cRYQYlyVqVp6siAqs3lTl53t/8Mku3uUkT/WKxrQHnwA1mrLoI7r2e1el0p1N7xJaAo3KPHoV+pOyoMpYyVMxkCv6+n6iDMOpg9eBr5IwlmFsKN5mxo3xTNcQs2S5lKPCB8cdEhhZkEkFg261Ixn4oSEjt8eqD6yUX4DM6bdHHg9SoIbjWLEFxFskfJ2k1Q8J67ij6ZBgj/jlvQMtXPocYEkDqJXuhpomWHzaLPMNg5C9KYxwSanyZFhbkmcjnV8FtW4b71CesjmVmOmfAPLp1jh7GjQlyI1Aja/484aE6c+I1rBXyq71QkNKXLCFUbmAG7aYgvB+p6U6p5CRL8QZZEoNKw5lyTlWiI12phGXCLdvz7Mc3lUvzeiliy6gIaEgJ7/vHYTfkWPT2qsVkisRcS2IwmIZRMJhWY+USeLuIqqYW+Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,128 +111,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 04:34:06AM -0400, Michael S. Tsirkin wrote:
-> The NUMA interleave index was computed as two separate terms:
+On Mon, Jun 08, 2026 at 04:34:39AM -0400, Michael S. Tsirkin wrote:
+> When a reported free page is split via expand() to satisfy a
+> smaller allocation, the sub-pages placed back on the free lists
+> lose the PageReported flag.  This means they will be unnecessarily
+> re-reported to the hypervisor in the next reporting cycle, wasting
+> work.
 >
->     *ilx += vma->vm_pgoff >> order;
->     *ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
->
-> This has two problems:
->
-> 1. When vm_start is not aligned to the folio size, the
->    subtraction before the shift lets low bits affect the
->    result via borrows.
+> While I was unable to quantify the performance difference, it is
+> an obvious waste, even if small.
 
-This feels really vague. Do you have examples of where the calculation has
-been impacted like this?
+Hmm, that makes me wonder if this is really worth it?
 
-How is this a problem that affects things in practice?
-
->
-> 2. For file-backed VMAs, shifting vm_pgoff and the VMA
->    offset independently loses carries between them, giving
->    wrong chunk indices when vm_pgoff is not aligned to order.
-
-Similar comments to the above. An example would be helpful here.
+You're making everything more complicated propagating yet another parameter
+around (which could actually in itself cause perf/bloat issues) for
+something you say yourself isn't really doing much?
 
 >
-> Combine into a single expression that adds vm_pgoff and
-
-Combining this kind of thing into a single expression is the complete
-opposite of what we want to do when refactoring code. No thanks.
-
-> the page-granularity VMA offset first, then shifts once:
+> Propagate the PageReported flag to sub-pages during expand(),
+> both in page_del_and_expand() and try_to_claim_block(), so
 >
->     *ilx += (vma->vm_pgoff +
->             (addr >> PAGE_SHIFT) -
->             (vma->vm_start >> PAGE_SHIFT)) >> order;
->
-> For anonymous VMAs, vm_pgoff equals vm_start >> PAGE_SHIFT,
+> split_large_buddy() also propagates PageReported via a bool
+> parameter: the caller saves PageReported before
+> del_page_from_free_list() clears it, then passes the saved
+> value. The flag is set after __free_one_page() with a
+> PageBuddy check, matching the page_reporting_drain() pattern.
+> Free-path callers pass false (freshly freed pages are never
+> reported).
+> that they are recognized as already-reported.
 
-This is completely incorrect.
+The sentence is completely garbled?
 
-For anonymous VMAs:
-
-vm_pgoff = vm_start_at_first_fault >> PAGE_SHIFT.
-
-So if you remap a _faulted_ VMA, the vm_start changes, vm_pgoff does
-not. The two terms can be COMPLETELY independent.
-
-> so the vm_pgoff and vm_start terms cancel and the result
-
-No, they do not.
-
-> reduces to addr >> (PAGE_SHIFT + order), same as before.
-
-No, it doesn't.
-
->
-> For file-backed VMAs, the sum vm_pgoff + (addr >> PAGE_SHIFT)
-> - (vm_start >> PAGE_SHIFT) gives the file page offset of addr.
-
-That's the page offset in a VMA for both anon and file-backed?
-
-(addr - vm_start) >> PAGE_SHIFT is the page offset into a VMA (canonically
-determined by linear_page_index())
-
-> Shifting by order gives the correct file chunk index.
 >
 > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-You're claiming we have an incorrect calculation here, but are not
-providing a Fixes patch or Cc: stable or sending this separately as a fix?
+Again this really doesn't feel like it belongs to this series.
+
+If it's really a bug, it should have fixes/Cc: stable, but honestly my
+assessment here is this doesn't seem worthwhile at all.
+
+You're not making a case for it and you're adding complexity. We don't just
+take AI-reported bugs at face value (if this was indeed one).
+
+(If sashiko-reported some people do Reported-by: sashiko-bot@kernel.org
+now)
 
 > Assisted-by: Claude:claude-opus-4-6
-> Reviewed-by: Gregory Price <gourry@gourry.net>
 > ---
->  mm/mempolicy.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  mm/page_alloc.c | 32 +++++++++++++++++++++++++-------
+>  1 file changed, 25 insertions(+), 7 deletions(-)
 >
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 4e4421b22b59..d139b074a599 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2048,8 +2048,9 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
->  		pol = get_task_policy(current);
->  	if (pol->mode == MPOL_INTERLEAVE ||
->  	    pol->mode == MPOL_WEIGHTED_INTERLEAVE) {
-> -		*ilx += vma->vm_pgoff >> order;
-> -		*ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-> +		*ilx += (vma->vm_pgoff +
-> +			(addr >> PAGE_SHIFT) -
-> +			(vma->vm_start >> PAGE_SHIFT)) >> order;
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index d49c254174da..8dae5b3f5876 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1502,7 +1502,8 @@ static void free_pcppages_bulk(struct zone *zone, int count,
+>
+>  /* Split a multi-block free page into its individual pageblocks. */
+>  static void split_large_buddy(struct zone *zone, struct page *page,
+> -			      unsigned long pfn, int order, fpi_t fpi)
+> +			      unsigned long pfn, int order, fpi_t fpi,
+> +			      bool reported)
+>  {
+>  	unsigned long end = pfn + (1 << order);
+>
+> @@ -1517,6 +1518,8 @@ static void split_large_buddy(struct zone *zone, struct page *page,
+>  		int mt = get_pfnblock_migratetype(page, pfn);
+>
+>  		__free_one_page(page, pfn, zone, order, mt, fpi);
+> +		if (reported && PageBuddy(page) && buddy_order(page) == order)
 
-This is horrible code. Not only are you doing everything in a single
-expression for some reason, you're also making the parens confusing and not
-explaining what you're doing here at all.
+Isn't this racey? We just freed this page to the buddy allocator, couldn't
+it be allocated before we set this flag?
 
-The code before was at least tractable, this is objectively making it
-worse.
+> +			__SetPageReported(page);
+>  		pfn += 1 << order;
+>  		if (pfn == end)
+>  			break;
+> @@ -1559,11 +1562,12 @@ static void free_one_page(struct zone *zone, struct page *page,
+>  		llist_for_each_entry_safe(p, tmp, llnode, pcp_llist) {
+>  			unsigned int p_order = p->private;
+>
+> -			split_large_buddy(zone, p, page_to_pfn(p), p_order, fpi_flags);
+> +			split_large_buddy(zone, p, page_to_pfn(p), p_order,
+> +					  fpi_flags, false);
 
-And anyway, the canonical way to find the page offset into a VMA is
-linear_page_index():
+I don't love adding a mystery meat boolean parameter like this.
 
-static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
-					const unsigned long address)
-{
-	pgoff_t pgoff;
-	pgoff = (address - vma->vm_start) >> PAGE_SHIFT;
-	pgoff += vma->vm_pgoff;
-	return pgoff;
-}
-
-So isn't a far better solution therefore:
-
-	const pgoff_t index = linear_page_index(vma, addr);
-
-	*ilx += index >> order;
-
-Which has the benefit of being readable, uses the canonical method for
-determining page offset in the VMA + eliminates the open-coded stuff?
-
+>  			__count_vm_events(PGFREE, 1 << p_order);
+>  		}
 >  	}
->  	return pol;
+> -	split_large_buddy(zone, page, pfn, order, fpi_flags);
+> +	split_large_buddy(zone, page, pfn, order, fpi_flags, false);
+>  	spin_unlock_irqrestore(&zone->lock, flags);
+>
+>  	__count_vm_events(PGFREE, 1 << order);
+> @@ -1694,7 +1698,7 @@ struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
+>   * -- nyc
+>   */
+>  static inline unsigned int expand(struct zone *zone, struct page *page, int low,
+> -				  int high, int migratetype)
+> +				  int high, int migratetype, bool reported)
+>  {
+>  	unsigned int size = 1 << high;
+>  	unsigned int nr_added = 0;
+> @@ -1716,6 +1720,15 @@ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
+>  		__add_to_free_list(&page[size], zone, high, migratetype, false);
+>  		set_buddy_order(&page[size], high);
+>  		nr_added += size;
+> +
+> +		/*
+> +		 * The parent page has been reported to the host.  The
+> +		 * sub-pages are part of the same reported block, so mark
+> +		 * them reported too.  This avoids re-reporting pages that
+> +		 * the host already knows about.
+> +		 */
+
+This comment seems entirely redundant (and very much like something claude would
+add, it's too verbose like this).
+
+> +		if (reported)
+> +			__SetPageReported(&page[size]);
+>  	}
+>
+>  	return nr_added;
+> @@ -1726,9 +1739,10 @@ static __always_inline void page_del_and_expand(struct zone *zone,
+>  						int high, int migratetype)
+>  {
+>  	int nr_pages = 1 << high;
+> +	bool was_reported = page_reported(page);
+>
+>  	__del_page_from_free_list(page, zone, high, migratetype);
+> -	nr_pages -= expand(zone, page, low, high, migratetype);
+> +	nr_pages -= expand(zone, page, low, high, migratetype, was_reported);
+
+I don't love propagating yet another parameter like this.
+
+>  	account_freepages(zone, -nr_pages, migratetype);
 >  }
+>
+> @@ -2116,11 +2130,13 @@ static bool __move_freepages_block_isolate(struct zone *zone,
+>  	/* We're a part of a larger buddy */
+>  	if (PageBuddy(buddy) && buddy_order(buddy) > pageblock_order) {
+>  		int order = buddy_order(buddy);
+> +		bool reported = PageReported(buddy);
+>
+>  		del_page_from_free_list(buddy, zone, order,
+>  					get_pfnblock_migratetype(buddy, buddy_pfn));
+>  		toggle_pageblock_isolate(page, isolate);
+> -		split_large_buddy(zone, buddy, buddy_pfn, order, FPI_NONE);
+> +		split_large_buddy(zone, buddy, buddy_pfn, order, FPI_NONE,
+> +				  reported);
+>  		return true;
+>  	}
+>
+> @@ -2283,10 +2299,12 @@ try_to_claim_block(struct zone *zone, struct page *page,
+>  	/* Take ownership for orders >= pageblock_order */
+>  	if (current_order >= pageblock_order) {
+>  		unsigned int nr_added;
+> +		bool was_reported = page_reported(page);
+>
+>  		del_page_from_free_list(page, zone, current_order, block_type);
+>  		change_pageblock_range(page, current_order, start_type);
+> -		nr_added = expand(zone, page, order, current_order, start_type);
+> +		nr_added = expand(zone, page, order, current_order, start_type,
+> +				  was_reported);
+>  		account_freepages(zone, nr_added, start_type);
+>  		return page;
+>  	}
 > --
 > MST
 >
