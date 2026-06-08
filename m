@@ -4,139 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5AB3CD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 16:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41616CD6E79
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 16:30:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0336D6B0005; Mon,  8 Jun 2026 12:26:47 -0400 (EDT)
+	id A719B6B008A; Mon,  8 Jun 2026 12:30:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00B2B6B008A; Mon,  8 Jun 2026 12:26:46 -0400 (EDT)
+	id A22006B008C; Mon,  8 Jun 2026 12:30:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3CD06B008C; Mon,  8 Jun 2026 12:26:46 -0400 (EDT)
+	id 8EA066B0092; Mon,  8 Jun 2026 12:30:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D5AB26B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:26:46 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ABEFE1C14AF
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:26:46 +0000 (UTC)
-X-FDA: 84857274012.29.262A016
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 63F084000C
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:26:44 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=utcAAemx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780936005;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 792966B008A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:30:10 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F1F58401D9
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:30:09 +0000 (UTC)
+X-FDA: 84857282538.12.02C2119
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011005.outbound.protection.outlook.com [40.107.208.5])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C27CE40015
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:30:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=naPJxCHA;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.5 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780936207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rFe8JeI/xgeGVuBJ7OtpfZjfx01poIP3QOXbHZ80Fsc=;
-	b=nV/6gXS4awge38Je/xsYtvA4vNKQdqpKUCGJ6ksCQg+JNRXYQQV/NsWHZP+4bldoByByQe
-	GGsqFDmo/bXjqOtMMR1q7Ws7gCL2YejOrg/kCt/9+ppf9c75m2y+R3TqUq42wFDR5oQby7
-	hR7gsn3AB1GAxhhue7Ct4W4YI/5fmSU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=utcAAemx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780936005;
-	b=SdpoMQBYrO+Yxp90/SAh1nhEH5yA9Ud/q8M7noZWUaHOfZ+znQNAB7P7pil6PQIdC/BkjM
-	uRi6KkUVQcFsR1gYRF43qfOzoAV3UjIDy1a8f4tcEdlOo1Ep5xZbgke8dSvU6AlFEXQd9I
-	3gllgu0xfdy02Ug3c3XatUsFiGJx/P4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780936001;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rFe8JeI/xgeGVuBJ7OtpfZjfx01poIP3QOXbHZ80Fsc=;
-	b=utcAAemxvsGz6LNQbA/4iedZt57xrnUw0BI5tskQnbWhKRzbtCrKVLhcdm4SzNz+nE4SR/
-	SDWZdz8poq1rWQFbuFIu3hr7cIjZeP8xURc3TuPgoW6gBGmCsjmjlfAYr4VEKr5oBVgHm6
-	qniLRpmnq9r6kGWX7qdOUfetA7LOzuA=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: lance.yang@linux.dev,
-	npache@redhat.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jackmanb@google.com,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	liam@infradead.org,
-	ljs@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v19 11/14] mm/khugepaged: Introduce mTHP collapse support
-Date: Tue,  9 Jun 2026 00:26:12 +0800
-Message-Id: <20260608162612.27122-1-lance.yang@linux.dev>
-In-Reply-To: <2553caae-9e0e-42a7-8b61-d1216f1e81fa@kernel.org>
-References: <2553caae-9e0e-42a7-8b61-d1216f1e81fa@kernel.org>
+	bh=neH++zn0YCzgXJslGpLBw45mRE+DzvoCIusY0pznlx8=;
+	b=uqdC09PiXlhZEJEoYOUSHZecPcXWKAwBrf+V96LJztoQjv+nFb7YRM12+4sG2JAejZW8Wc
+	bbJ2Nd7cnNG/4kVqIgi2GHzTNldS8o5MpiofOYoRLjAo2i+N8arg20fAb4OZTWhXxpQsvG
+	9EFqsoIEDA1n1F8/MxDyya+GSrKdcZQ=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=naPJxCHA;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.5 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780936207;
+	b=iWijpevwJrxltze5bzr1MtjpehpK4NwT1LRyUlt/vbjBUfZ3S0c5vdPgawYxEIGxepYVqk
+	mOBkLeN+aVL8GL6KZNwI8cwf9osH+5j8n7raaboAUpj5x4R988VxS5FhpHr8q2BEQLVzdH
+	aljC4O0+WXCoVTYIz+TnjME0NfVJ9b8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tbOcJd0sFtV0w4/j4i7XCRYXUA0gRaTh8DYRkvx2Yb44DCNUBFmdLwuWL/BrzErvk2gURgzlenaHQr2fRUproL4NMO9iC1W9kVdnv5xynQh+76YkHkRZvoXWQOdU6MwRoBikngluabFzHHv1rV4zdW/oVLJCp++odB4P36ZEA82rDuUNjXob44EdNhzftLD/falatTyAv2llxskG+4HE0kAF5Tqs1hsbcpKY6dsGsIlS8FBg2gSs/w3V/Pl6YQSz1uiCV+vtOdwSTYEPbMhYNdFueL11Ny2p/5Zr87ZDMQvqXcags8r/b9d5cXEuZXZBJi8R2uYfUMNfWHKw96Rrpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=neH++zn0YCzgXJslGpLBw45mRE+DzvoCIusY0pznlx8=;
+ b=Ppdt7EA/1ihvVE9C8syT2hlr8y4fokBV/mTGCBeOQiena6GHwGU5fV/t0yFUSq0djWFEDW3JS08xBx9Xz2tybWzDcD2/iUBAuhaBNXYXrjTYTAMDG1umkVDAYapLf8Lx79OKmLzbNb5+xxQWBMJddE7QHW0f0ZjOVDxOJGox0R2v+AedQuIcz5YSLVr1rt1lOsC0zVxs2TkROkWvoE8gd5qC6GLmhKNNHAipBqre2IvVooVC+kJC5i2HmOVt2BtVxOrzgEJ3nQptVerKHRK0wcc3RJxs6htcjlrGe/BcLen+Yc0Fr151yErSS2rKDd9j+uKfoW9fmAmTXM3skzPJWg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=neH++zn0YCzgXJslGpLBw45mRE+DzvoCIusY0pznlx8=;
+ b=naPJxCHA8jzs02NMbxP91bLpavQXZLjB8FUSxmDldFdJgNwWkrA8bbG/HnfphC2DGrKmSie9zxbqgt+FXfDx9Ln1nmOBEA4jE/JMj3Xn42k+0miOx3ZL7qYjxoU23cVB6zywEXfDwFkKlmCrcoTApDN+Me3A2ZgMmQENIZX55QnaRlxWGU8fFNKEnrPLa/aeQEE2NZ6sVXckNP4i7ubtXuT2T30wsxLKu9pIrWcHeCBmI51idayrIeiZmVHt9Z9+2ZjZ+y0Ztxt/0LpWMBovqn70185SMy/bwFLY5aKsgFagrLke8lDKb1r2A59KM0u2BYrvLevdxfhXhjawd1mwWg==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ PH7PR12MB9255.namprd12.prod.outlook.com (2603:10b6:510:30c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Mon, 8 Jun 2026
+ 16:29:57 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
+ 16:29:57 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Alexandra Diupina <adiupina@astralinux.ru>
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ lvc-project@linuxtesting.org, Jinjiang Tu <tujinjiang@huawei.com>,
+ Miaohe Lin <linmiaohe@huawei.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Luis Chamberalin <mcgrof@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Michal Hocko <mhocko@kernel.org>, Pankaj Raghav <kernel@pankajraghav.com>
+Subject: Re: [PATCH v2 6.1] mm/memory_hotplug: fix hwpoisoned large folio
+ handling in do_migrate_range()
+Date: Mon, 08 Jun 2026 12:29:52 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <A307CF74-4099-4FCA-96C5-0902F9E52F3E@nvidia.com>
+In-Reply-To: <20260605190756.20413-1-adiupina@astralinux.ru>
+References: <20260605190756.20413-1-adiupina@astralinux.ru>
+Content-Type: text/plain
+X-ClientProxiedBy: BY3PR04CA0008.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::13) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH7PR12MB9255:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43495849-5f84-4343-d524-08dec57b2ddf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|6133799003|22082099003|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	z3EYUSgen1taNUcXJs2ZoNMYZSXoLRKliCDQhKGlwx8Etkm2f+fu4Lg6/Y/fIvyUdbeojOGWQ9VJRhsEQ5roeoF6vzW2uAOyzbx4ePdmyBT3zuKnOuZqRlW5CujXMj6o/lFbVnxQq9MKtkT4x/HtXWWk2nDNvB1jV71jztjR256K6IPyyo77pciTaXG8tJ1Z6e6Myo/vrYFKJ4i5BOtpXtrIwqfHE7DXqTMMxrC2Gx6eOxZAD51IZWRNq/VEdyuLv7ivPzVgMcacLphLc+Nxi98+kc2xjQLH7DaP2RFzpYkeupJt+5MgGBNfTFlFf+2s0pZm9CHW0uxgYnh0inQSDLzfmcW66uz2F0rtzgXPMRGAqkiqBKBkb0LJ9kpPOp3kLsC39tYWpApAOrKKjsT1WReEQm8e+pz2u/HvDwbZjREHIxVDEDzfKLRlPb3K+ZoOrAqyWHukKOFGsLRe0bP4tmYvXajgp9LLnIVatA1Vogr/x18lvlguqQ/VEc3l/iMD0x3fXthjLOS/YcXsTJTXSpPBtSZSgmXp/l6SbZlCGZHYj8BGiX93L3VIzcbOgRrnRstGQcj5/u9ma08vdO06QSvhtP609sONhruJjLW57yikPLKvzDckJzkmG4lsxPXTl24NdCYvGAsIWXUZcVtBkzl7rVXXxX7T/oA1O9CcvcDlqLSFUGjXDrnbF+eHXPfH+Zdz8AVfqXB7NlYQY0rlYQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(6133799003)(22082099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0GkJOt9Cdwl/arocWcb/W6XlbfD9Fvlqpt9z/ACoF7mznyTvD3q8s51F122u?=
+ =?us-ascii?Q?K3fQgyIda6G2KoayXVynTt1hoh6EQaqd0QKtu2PxCzDPdtUdptt4Bl7CBnIB?=
+ =?us-ascii?Q?5qTMvh/tFEMp8UIqct4oUfshGL7CRcyRT+EuSK9mvlXr2QzLEeTacRDBVmEM?=
+ =?us-ascii?Q?i28V0dsl+9KjMpbVj/Vcvlr6sFwSjNMcY7G5gH4V6gZhpuohIc1SZEZuoDiE?=
+ =?us-ascii?Q?QN6eMstSjFfLXMl3dImERpZLrgR5zgAUwzkkK/BAqs3kJAA96SWbZwQOSLQx?=
+ =?us-ascii?Q?BPwiPzTHFou670CLqdYa8vSFFHe7DrhuR6FuLQ1PlQmYkPeR0AKINIDAFW8c?=
+ =?us-ascii?Q?4bXUT5m/QSpcZ80VZuhwAJoGLlU4R2Zp3q4ANqyGlAIZhY+RVn4fCFTmvcDv?=
+ =?us-ascii?Q?ZH5Rc39BvS62L6hb/diI8pFTI0WOyo+Tu5W8ifQi8oabg4nMCdt3atNvR/s7?=
+ =?us-ascii?Q?2SvTmMQru+n2/TQ6X5whRUSirjy0/+ASrCGwu1GusHezXvxglEoafw86Zjz/?=
+ =?us-ascii?Q?DVZLuw6V7iLgXxfwsnwGZaGXztD3x24BySi/IHRBw+VwKFPmn4cg3IuZq073?=
+ =?us-ascii?Q?hZkCDDcn71LzXTMNzdfvgEfI4BDotvvi58ioQWG78W7QTo2w8Z7mPvFdBL4b?=
+ =?us-ascii?Q?ga3cDJEfPJ4FbrOFqGDGYP5xwnc9KPnRq26Oa9Zz7qPghSA+/j0zqiClafnV?=
+ =?us-ascii?Q?Y136Jydzdmarwv/xEUBS3+pT4SbLNZoIF6R4vnPKdOcJP2vhHI7PN/m1jx2k?=
+ =?us-ascii?Q?JuXDEXBncB0nuN9xf8dfhaKnlvM+KjOZHN8H/3BHIBdKSMVVIgCDcFYSPhte?=
+ =?us-ascii?Q?V98pqrt1WNyqq/rGvZEY7dD+Zd0bE8Kcu2F8i3HMcqJWaATtby8v2kOVWDF8?=
+ =?us-ascii?Q?OxeptLHk7SLJehF++D4zU+42+0Xw4u1FIcPTkrKktKKNaMRJUyhc2VMX0N+5?=
+ =?us-ascii?Q?XhOEWDG+UHcD+I6qOy5wSQSZ3w/Rz2XzGUOoSWPxyprwy0DzL+xOyCGoYB2D?=
+ =?us-ascii?Q?5RfFabQ34v1WtaTURaoCCXy1WgdrGe5OGjFIw46zKPF6KXfjq/fodSZhi967?=
+ =?us-ascii?Q?WSsJuVFZjMB+W6uBkOSa20kC9l2QY7Eh938oo64PioSyH3FFD3khYfa/qG98?=
+ =?us-ascii?Q?n1ivCVW2g0WfkrhhiNGkaikQOJ55TcJBduQWESDwqP6UnE5qk3IAiPAhh2eI?=
+ =?us-ascii?Q?bDtUj/twNZaYW8nkexMuyLdSjYPrBWIxZqOS4XAXArZxQ1nkbmsZJQHvhOiw?=
+ =?us-ascii?Q?r38UztzqyduIAs/UkdKIWnZcYTWNoun/GU9vsQC7fMRZ3AwnpQ91EtRr7oyJ?=
+ =?us-ascii?Q?vaFfY3v1MnnH5v4pulWf8eDtXQlzOQKLZ8NlQ2uFOgycD6CquBCeeeV24dJv?=
+ =?us-ascii?Q?5buoCrlFNEcwzjEGQxkwf2/bvDkog8FgIOTu0n5Wsd4742mrL6WK7Aw347zc?=
+ =?us-ascii?Q?zD38hlch8WK5Oi03HU8wHiS7cdYDBOLHz+NXcnmp1KgmIbJN9diiqbH/sik/?=
+ =?us-ascii?Q?13qx4FGaJsntggcSpo1VbYLA/1XbjADcCvEQ64n5UKdQJRX3N3ej8qGAmIzC?=
+ =?us-ascii?Q?mYd7pWijokjtJuVMevtt522oTGWz0JvuOOtxCv4vguBvtncKetFYlP8EEjQm?=
+ =?us-ascii?Q?VKumQeJKXpYpiBggvIl0D55P4WFRw91LmQyV5C/gj5VLDTCmCGGKRxso9LlQ?=
+ =?us-ascii?Q?qg0ZVqGeHbmp9KBzKsTMmW1DGei/nkSSBz6A7aWhzuWyv5+x?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43495849-5f84-4343-d524-08dec57b2ddf
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 16:29:57.5703
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KAVIygKRrxOC1EPlrK2xQZCEsh4+bLYhWGMLEuZx+eOj36cAwYDFXTmmuxo6abu2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9255
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C27CE40015
+X-Stat-Signature: 3qfczfemzpwi195ii3mgm5ryks896m8j
 X-Rspam-User: 
-X-Stat-Signature: 1u4qmm7t1fx3fb61m4qnuorh7ai157na
-X-Rspamd-Queue-Id: 63F084000C
-X-HE-Tag: 1780936004-203740
-X-HE-Meta: U2FsdGVkX1/s4EZSgLrJpPJnG1UIldZ6R1w0wNvt9+pZRsjKfVSZCZw0P17oNDSp1ukLa7DzAOZ2FHDuEGJz4PYcUMIfpBJEejDf/VOJn/Vj7SM2BRagpe7mMERKM6S6ZOgT7QEOkkUgOCLgYMQkYqho6NzIoeEuxyBBxv/DxUZKtTt2Pndj6tFGMmu3h9SAKhJSci03cldtwWn+tf1WLBNzyJAdMqzHAyWiQtw+BXuhI/ruc20zSts0323fHwf6SW7M26Be3zKLRwpFZvyZedwxgQk6E1SSzep6T/YxFzUIH/uY9cGX7ycG1UDMz0A3DHr9KtrmexnRykvYEw9d76ux09NKJ4PncAU5JYCmSUwlB6MjoPMLrZ/bNwYRC1J+0NfvhU/wVuP6TETUwh13ctomvASOlT8CWqb7ZU0q3AWQx7Ur1VtN1sMqT40R2xvoZh8TMr6xzOUagIMqNUkeRggOfTfyq7AX8oOg0x9Pr44I1wnSsmASUHWav5Pp1ihvHIYRRCGjLAxl8cFEUdP+i2ZtUnKG0F4wLNepLDD9xdtDyUT8y6/zHcd/kwlUmXd2uHGBr3dCv/N9QTdZBqcgIrqwbPxWi2L32fxvJszZ6mueoOE7XYz2GcWYKNCfOrcvpRLrs7oPeTb61MGvcVhAL/HGnQFuGNeVKcz8O9Gi591eJYtHgkRfZWQluTBsrNoaG6PPR37ErnO6K1FexS7buLKht/aEcDOZWdz50F7ozieFvf21dVbMR/s6aYEx/ax3C/4pYho9eczONWjdTFk1VBW6UiAOPG9VyyR4mN/3fZP/qHwOKTGMHyavq9mq9funPVKfkJQ4QlNCq8KNMfJAhu3legOyxBasBweEb/rXMzRecUrIADTz6No1H0FWB3Uf8BZCHm1tnNj25WU5YgLPit+rZRo2cLTLxapJCvfjG6Gh9VJqPx9NGrlrTY7ywCOkaQG5H0sWB86bREtm1Ox
- NuQRJD4K
- cdpyBj6r9wtRPQNiK0pwGeOOtCtwZ7P+G9F0aau1EHISgxM5v+KYY450gs2lStDS82UbclRbYFb7E2A0uqeratJrlga/CliU+rVfdTfYbecA11PrrYWh184VScg8kAz8LB7gQt+I8m78/GTUS9cLA1v/iPMzvKYJj+lecI8XCuef38S1JKXKp6X3EmHJsiFLgh+3he/aUfGjLU2gD19R22fCfInTyapfbVqvMmy+Hezp2zL20V2ALNClobUMH0iEKf74kQF1eMG7/9o0gKc0Tcyom2nLSLhb+4P9LZkKX4aAf4w4okKj/w9FgBA==
+X-HE-Tag: 1780936206-83850
+X-HE-Meta: U2FsdGVkX1+yJQhjcLvOdgp/oUioIkX2HJUZB9l47mReZjgzVgXAGgrVoQqKrxoM6TaM67u+gSqX/6sD/d33n+9U5r9DR8p2+uhyy/u+F362TuGhyoY9TTQV/+FxZIgIJqi7wTi1fCtqYnt0vILC0tcpb/mBHqSWsr1LJO+OuapxLlM63ULfWp58OE79ebsWvxUCvnO2PBdoaP/MLt9/Xm+KGqswfF+pIBNHezdZ/w+BX14g7ni38zVxveCjIj53aVPxlUGbazM5IRxcBaMDlfowwWrekpp/a4xWmvqZOwCWBlKspjEvcRXJIWOUqO91IS1QSj5GFxkW45EyMIlo8qyLLuPIBtTzutwm+35EDc+NQIkr95cXfGb1jSz8j6EY3fRrTvkb+ABkPXfw8d2Y/+f2dGO5SqFWEybzupkTorEy2RxT39dIL0wrkcri+Rh+4OwcLTgkhGShZJHIbNPQrXFqgZ4GcbSuYDEy/GP5M3+pXRobHL2AzcKHczgD7HV5JNOpUWaMoFALgTGgELVzYksFIoHIR26hQafYoco2jgxDLloT1N7EEegL93UO3XDi4bE5WSKgLpzRfwsMuB8HJK1dkm1wI4aKvjA5ye/u/ooKVFAp7r+60quzcD7wjGvW5nW/AC7AL54/3kyyVgZ3l7+0isWyJY2zfLe60g9cEHHRkJHI/56uJbwG8+7ajR5XSe6QvEKETmEMrmFA0PFgrvX14xO6MFmc4AEwBn0kkG569nWpKk/HKYiMQymof6Ee8tMpsUH9jrTUNSLxH1dJxeKFs3CgWVsl/KnomEAmocBIcmHHRcKHOmcMB35jap+2PeUbL8NEtv+g5YYLhMPSIRsZ3VYh9uUMigbqrJXvKjRRORUOQNbNyRQ8B2c5z2h2VS5K1GYLULO2AwD0mqAiCkuwAA9etqsiKUgADKmLYAHfqX3M5XbaRTySnd/35Gu620YaMui+0EetNgQSHhF
+ cv1Xp4cp
+ ErS3yL+HxHz4tDzyxZvRq1/Sm+Y7iSfc/Kz8W7z/CSvDYVtrXscJmehzEUmVzWzt+sQiP8+AD/iqlVoomXSqjIKBN0Lri6yeyNGyYZuBJ3kztWignEvkN5NUhksh2tVGMVufsBnpC67STPyr3iMR7TZCiN0M3f3EEN6N8N44YSFzfyE1R3JBO4mgv1A8PmJFplNfv4U7dqJN+hdLCxlAju3AVHXhT12VslvLF3HPNjAIq+UPO2ZJykJsC75EdtY0pKusGwdgzS+sQZvofcY5xEx48HHqBm2/k2TnjWpMmVNrEQ0etpCldFu3CoEdk+zUsd0T7k5uqN9104FmTV9MpTM88lqg83b3Y3NDigfVTcipRb64CM9wsFW2QLgo/R+lPQfKAM4ERwdvATJNMQM63fn2xmZSRHADb89+TsD01Zjd5UZFrzzBMIXu7RmpeIkCJJyGwmeKxKtpFzTsME9sDY63N0CJAhSSns6DcEiEqNCU29ywlBdYMuu6k/8KfK6rSF/3IbkJiQJQJFr/Y75UdDjcG8x6lN2av+Le4F2VAo48t4wGjjlq5SzZIvDrg83aBpeJJiMrvgzd/K1L1LTe1LOHurxFUaI3fR7vMl04MI5Yndo/MPXbhq9v3afKBx7crgzF0Vp2lqAAFkJ1V2milH7omMTRMQm/12sH9kjg//1nylShL1UV3Aucuh8XDP68Cpnxz/qoCwj5jBKbCvRD0v2M0uQsme54lodfO7y+7q1+lRI0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,218 +165,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 5 Jun 2026, at 15:07, Alexandra Diupina wrote:
 
-On Mon, Jun 08, 2026 at 04:56:37PM +0200, David Hildenbrand (Arm) wrote:
->On 6/6/26 12:28, Lance Yang wrote:
->> 
->> On Fri, Jun 05, 2026 at 10:14:18AM -0600, Nico Pache wrote:
->>> Enable khugepaged to collapse to mTHP orders. This patch implements the
->>> main scanning logic using a bitmap to track occupied pages and the
->>> algorithm to find optimal collapse sizes.
->>>
->>> Previous to this patch, PMD collapse had 3 main phases, a light weight
->>> scanning phase (mmap_read_lock) that determines a potential PMD
->>> collapse, an alloc phase (mmap unlocked), then finally heavier collapse
->>> phase (mmap_write_lock).
->>>
->>> To enabled mTHP collapse we make the following changes:
->>>
->>> During PMD scan phase, track occupied pages in a bitmap. When mTHP
->>> orders are enabled, we remove the restriction of max_ptes_none during the
->>> scan phase to avoid missing potential mTHP collapse candidates. Once we
->>> have scanned the full PMD range and updated the bitmap to track occupied
->>> pages, we use the bitmap to find the optimal mTHP size.
->>>
->>> Implement mthp_collapse() to walk forward through the bitmap and
->>> determine the best eligible order for each naturally-aligned region. The
->>> algorithm starts at the beginning of the PMD range and, for each offset,
->>> tries the highest order that fits the alignment. If the number of
->>> occupied PTEs in that region satisfies the max_ptes_none threshold for
->>> that order, a collapse is attempted. On failure, the order is
->>> decremented and the same offset is retried at the next smaller size. Once
->>> the smallest enabled order is exhausted (or a collapse succeeds), the
->>> offset advances past the region just processed, and the next attempt
->>> starts at the highest order permitted by the new offset's natural
->>> alignment.
->>>
->>> The algorithm works as follows:
->>>    1) set offset=0 and order=HPAGE_PMD_ORDER
->>>    2) if the order is not enabled, go to step (5)
->>>    3) count occupied PTEs in the (offset, order) range using
->>>       bitmap_weight_from()
->>>    4) if the count satisfies the max_ptes_none threshold, attempt
->>>       collapse; on success, advance to step (6)
->>>    5) if a smaller enabled order exists, decrement order and retry
->>>       from step (2) at the same offset
->>>    6) advance offset past the current region and compute the next
->>>       order from the new offset's natural alignment via __ffs(offset),
->>>       capped at HPAGE_PMD_ORDER
->>>    7) repeat from step (2) until the full PMD range is covered
->>>
->>> mTHP collapses reject regions containing swapped out or shared pages.
->>> This is because adding new entries can lead to new none pages, and these
->>> may lead to constant promotion into a higher order mTHP. A similar
->>> issue can occur with "max_ptes_none > HPAGE_PMD_NR/2" due to a collapse
->>> introducing at least 2x the number of pages, and on a future scan will
->>> satisfy the promotion condition once again. This issue is prevented via
->>> the collapse_max_ptes_none() function which imposes the max_ptes_none
->>> restrictions above.
->>>
->>> We currently only support mTHP collapse for max_ptes_none values of 0
->>> and HPAGE_PMD_NR - 1. resulting in the following behavior:
->>>
->>>    - max_ptes_none=0: Never introduce new empty pages during collapse
->>>    - max_ptes_none=HPAGE_PMD_NR-1: Always try collapse to the highest
->>>      available mTHP order
->>>
->>> Any other max_ptes_none value will emit a warning and default mTHP
->>> collapse to max_ptes_none=0. There should be no behavior change for PMD
->>> collapse.
->>>
->>> Once we determine what mTHP sizes fits best in that PMD range a collapse
->>> is attempted. A minimum collapse order of 2 is used as this is the lowest
->>> order supported by anon memory as defined by THP_ORDERS_ALL_ANON.
->>>
->>> Currently madv_collapse is not supported and will only attempt PMD
->>> collapse.
->>>
->>> We can also remove the check for is_khugepaged inside the PMD scan as
->>> the collapse_max_ptes_none() function handles this logic now.
->>>
->>> Signed-off-by: Nico Pache <npache@redhat.com>
->>> ---
->>> mm/khugepaged.c | 146 +++++++++++++++++++++++++++++++++++++++++++++---
->>> 1 file changed, 138 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>> index ec886a031952..430047316f43 100644
->>> --- a/mm/khugepaged.c
->>> +++ b/mm/khugepaged.c
->>> @@ -99,6 +99,8 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
->>>
->>> static struct kmem_cache *mm_slot_cache __ro_after_init;
->>>
->>> +#define KHUGEPAGED_MIN_MTHP_ORDER	2
->>> +
->>> struct collapse_control {
->>> 	bool is_khugepaged;
->>>
->>> @@ -110,6 +112,9 @@ struct collapse_control {
->>>
->>> 	/* nodemask for allocation fallback */
->>> 	nodemask_t alloc_nmask;
->>> +
->>> +	/* Each bit represents a single occupied (!none/zero) page. */
->>> +	DECLARE_BITMAP(mthp_present_ptes, MAX_PTRS_PER_PTE);
->>> };
->>>
->>> /**
->>> @@ -1440,20 +1445,130 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
->>> 	return result;
->>> }
->>>
->>> +/* Return the highest naturally aligned order that fits at @offset within a PMD. */
->>> +static unsigned int max_order_from_offset(unsigned int offset)
->>> +{
->>> +	if (offset == 0)
->>> +		return HPAGE_PMD_ORDER;
->>> +
->>> +	return min_t(unsigned int, __ffs(offset), HPAGE_PMD_ORDER);
->>> +}
->>> +
->>> +/*
->>> + * mthp_collapse() consumes the bitmap that is generated during
->>> + * collapse_scan_pmd() to determine what regions and mTHP orders fit best.
->>> + *
->>> + * Each bit in cc->mthp_present_ptes represents a single occupied (!none/zero)
->>> + * page. We start at the PMD order and check if it is eligible for collapse;
->>> + * if not, we check the left and right halves of the PTE page table we are
->>> + * examining at a lower order.
->>> + *
->>> + * For each of these, we determine how many PTE entries are occupied in the
->>> + * range of PTE entries we propose to collapse, then we compare this to a
->>> + * threshold number of PTE entries which would need to be occupied for a
->>> + * collapse to be permitted at that order (accounting for max_ptes_none).
->>> + *
->>> + * If a collapse is permitted, we attempt to collapse the PTE range into a
->>> + * mTHP.
->>> + */
->>> +static enum scan_result mthp_collapse(struct mm_struct *mm,
->>> +		unsigned long address, int referenced, int unmapped,
->>> +		struct collapse_control *cc, unsigned long enabled_orders)
->>> +{
->>> +	unsigned int nr_occupied_ptes, nr_ptes, max_ptes_none;
->>> +	enum scan_result last_result = SCAN_FAIL;
->>> +	int collapsed = 0;
->>> +	bool alloc_failed = false;
->>> +	unsigned long collapse_address;
->>> +	unsigned int offset = 0;
->>> +	unsigned int order = HPAGE_PMD_ORDER;
->>> +
->>> +	while (offset < HPAGE_PMD_NR) {
->>> +		nr_ptes = 1UL << order;
->>> +
->>> +		if (!test_bit(order, &enabled_orders))
->>> +			goto next_order;
->>> +
->>> +		max_ptes_none = collapse_max_ptes_none(cc, NULL, order);
->>> +		nr_occupied_ptes = bitmap_weight_from(cc->mthp_present_ptes, offset,
->>> +						      offset + nr_ptes);
->>> +
->>> +		if (nr_occupied_ptes >= nr_ptes - max_ptes_none) {
->> 
->> Looks broken for swap PTEs in PMD collapse ...
->> 
->> collapse_scan_pmd() allows them up to max_ptes_swap and record them in
->> unmapped, but they don't get a bit in mthp_present_ptes. And then
->> mthp_collapse() does the check above:
+> From: Jinjiang Tu <tujinjiang@huawei.com>
 >
->Right. I assumed this is implicitly handled by the optimization in collapse_scan_pmd:
+> commit 397f6d14f9c370e4910e6885294c340f39dedbf5 upstream.
 >
->	if (enabled_orders != BIT(HPAGE_PMD_ORDER))
->		max_ptes_none = KHUGEPAGED_MAX_PTES_LIMIT;
+> In do_migrate_range(), the hwpoisoned folio may be large folio, which
+> can't be handled by unmap_poisoned_folio().
 >
->But we perform the check a second time.
-
-Note that once lower orders are enabled, the scan *relaxes* max_ptes_none
-only so it can cover the whole PMD and build the bitmap ...
-
->> 
->> nr_occupied_ptes >= nr_ptes - max_ptes_none
->> 
->> So max_ptes_none=0 + 511 present PTEs + one allowed swap PTE won't even
->> call collapse_huge_page() for PMD order.
->> 
->> Shouldn't we account for them in the PMD-order check? Something like:
->> 
->> if (is_pmd_order(order))
->> 	nr_occupied_ptes += unmapped;
->As an alternative, we could either 1) skip the check there for
->pmd order (as the check was already done); or 2) introduce+maintain
-
-Yeah, skipping the check would do the trick, since isolate will check
-max_ptes_none again later :)
-
->a bitmap that tracks non-present PTEs.
+> I can reproduce this issue in qemu after adding delay in memory_failure()
 >
->@@ -1475,7 +1477,9 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
->                nr_occupied_ptes = bitmap_weight_from(cc->mthp_present_ptes, offset,
->                                                      offset + nr_ptes);
-> 
->-               if (nr_occupied_ptes >= nr_ptes - max_ptes_none) {
->+               /* Check was already done in the caller. */
-
-This check is not quite redundant for PMD order, though. It avoids
-entering collapse_huge_page() for a range that already exceeds
-max_ptes_none for that order.
-
->+               if (is_pmd_order(order) ||
->+                   nr_occupied_ptes >= nr_ptes - max_ptes_none) {
->                        enum scan_result ret;
-> 
->                        collapse_address = address + offset * PAGE_SIZE;
+> BUG: kernel NULL pointer dereference, address: 0000000000000000
+> Workqueue: kacpi_hotplug acpi_hotplug_work_fn
+> RIP: 0010:try_to_unmap_one+0x16a/0xfc0
+>   <TASK>
+>   rmap_walk_anon+0xda/0x1f0
+>   try_to_unmap+0x78/0x80
+>   ? __pfx_try_to_unmap_one+0x10/0x10
+>   ? __pfx_folio_not_mapped+0x10/0x10
+>   ? __pfx_folio_lock_anon_vma_read+0x10/0x10
+>   unmap_poisoned_folio+0x60/0x140
+>   do_migrate_range+0x4d1/0x600
+>   ? slab_memory_callback+0x6a/0x190
+>   ? notifier_call_chain+0x56/0xb0
+>   offline_pages+0x3e6/0x460
+>   memory_subsys_offline+0x130/0x1f0
+>   device_offline+0xba/0x110
+>   acpi_bus_offline+0xb7/0x130
+>   acpi_scan_hot_remove+0x77/0x290
+>   acpi_device_hotplug+0x1e0/0x240
+>   acpi_hotplug_work_fn+0x1a/0x30
+>   process_one_work+0x186/0x340
 >
->2) would probably be cleanest long-term.
+> Besides, do_migrate_range() may be called between memory_failure set
+> hwpoison flag and isolate the folio from lru, so remove WARN_ON(). In other
+> places, unmap_poisoned_folio() is called when the folio is isolated, obey
+> it in do_migrate_range() too.
+>
+> [david@redhat.com: don't abort offlining, fixed typo, add comment]
+> Link: https://lkml.kernel.org/r/3c214dff-9649-4015-840f-10de0e03ebe4@redhat.com
+> Fixes: b15c87263a69 ("hwpoison, memory_hotplug: allow hwpoisoned pages to be offlined")
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Cc: Luis Chamberalin <mcgrof@kernel.org>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Pankaj Raghav <kernel@pankajraghav.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> [ Alexandra: replace "goto put_folio" with "continue" ]
+> Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+> ---
+> v2: replace "goto put_folio" in the original patch with "continue"
+>  mm/memory_hotplug.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index c8cc2f63c3ea..536478e688a0 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1654,8 +1654,14 @@ do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+>  		 * the unmap as the catch all safety net).
+>  		 */
+>  		if (PageHWPoison(page)) {
+> -			if (WARN_ON(folio_test_lru(folio)))
+> -				folio_isolate_lru(folio);
+> +			/*
+> +			 * unmap_poisoned_folio() cannot handle large folios
+> +			 * in all cases yet.
+> +			 */
+> +			if (folio_test_large(folio) && !folio_test_hugetlb(folio))
+> +				continue;
+> +			if (folio_test_lru(folio) && !folio_isolate_lru(folio))
+> +				continue;
+>  			if (folio_mapped(folio)) {
+>  				folio_lock(folio);
+>  				try_to_unmap(folio, TTU_IGNORE_MLOCK);
+> -- 
+> 2.30.2
 
-Yeah, Agreed.
+The changes look good to me. My above ack tag applies here too.
+
+Best Regards,
+Yan, Zi
 
