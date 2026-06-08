@@ -4,106 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74D7ACD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:23:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6271BCD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:25:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B646A6B009B; Mon,  8 Jun 2026 07:23:24 -0400 (EDT)
+	id CC6456B0099; Mon,  8 Jun 2026 07:25:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3C2E6B009D; Mon,  8 Jun 2026 07:23:24 -0400 (EDT)
+	id C77EE6B009B; Mon,  8 Jun 2026 07:25:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A78D46B009E; Mon,  8 Jun 2026 07:23:24 -0400 (EDT)
+	id BB44D6B009D; Mon,  8 Jun 2026 07:25:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 93C7E6B009B
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:23:24 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 53ACAA0AD1
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:23:23 +0000 (UTC)
-X-FDA: 84856509486.07.CE01B10
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B87B61C000D
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:23:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W2pvxdEn;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AAB506B0099
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:25:02 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 56140164D5B
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:25:02 +0000 (UTC)
+X-FDA: 84856513644.14.EEDACE1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D075820002
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:24:59 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ilWtWRuA;
+	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780917801;
-	b=LHMrLyy6NAC8i4XyfczRkUgoVE/GZ+opkTEznn1Uh0Hdmoi07JTjX1XMYU7P4MTjR0saOs
-	IE5cC+QmotJKB+bQcxWnj3P2LyctYbumnI1yFzo3OkoZhsq93spB0Ej9hWyJwby1hx7oJB
-	GL31jG6eRvo7KM6ZEfPvEczJQhHABus=
+	t=1780917900;
+	b=W/3w832w3ycgFYiqbjV6NfVmJvyCnvgyOAfCJHmZ94Gx3uWvFfT5H7fNGq/GCYXYJ8idwP
+	of3GO/0LiOd7uCj+BCoyKC06+q2LC5X3zhtHMe/fdZWamDC9hA+kuNoO7L/7XofROD7Xg9
+	2I0ATQNHW8ZLud1iZsbsmsV5uR0PBi0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W2pvxdEn;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ilWtWRuA;
+	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780917801;
+	s=arc-20220608; t=1780917900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x0WNa35PkAieRM1DUOHaPgcwBJSjLyea6ACWB1AdAx4=;
-	b=PEr9HPSAORYk/Nk4Y+3PQUn6uq+YYF5MpmHYWaLOOU9TY9NNtpIo8lUa3zPN2Tq3ElE3tf
-	1bfWG/+34Yqw7NjiLEhth0YShSnQneDCGTqTJnT6Pitrtfp8+4kJlRBDZpr2RWh90j9U7W
-	aaGQ6RWYVwB1ph8NowswG97kTh65Ksc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 17B9F601D8;
-	Mon,  8 Jun 2026 11:23:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B449F1F00893;
-	Mon,  8 Jun 2026 11:23:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780917800;
-	bh=x0WNa35PkAieRM1DUOHaPgcwBJSjLyea6ACWB1AdAx4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=W2pvxdEnX5tI57Wohq0lKd2Bw0KQ/2lc2odLZ/D/PYfXgh9m5G3s/Mscjj0hosH9e
-	 RYC9mqk9BNr6zEVfKN0sfTzY8ga3xOC/AiYTGAwIaRpBkRwwF/PThgg3VY/Rri4cg5
-	 sDGk1ZMjuff+r0bzM878C37tGMb2iXYZ1lOrstFCgl3irbEcdIDFmb9t47/3aZOU9Q
-	 aLfqBPSeYhYJVW/luvcXJY8envTbvUqJL8s7O7UuZgbGa9ANcTsXzGwiZRlXK1rRlE
-	 kJcAkTiZ7EavrBx5xJze1DCBl0gtOwzEH1kWPBO6ULUUFKmHEpMRpeiuD32SApOhW7
-	 YndNpalrnPANw==
-Date: Mon, 8 Jun 2026 12:23:07 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
-	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v10 12/37] mm: use folio_zero_user for user pages in
- post_alloc_hook
-Message-ID: <aiacZ6_7SG3nvVjM@lucifer>
-References: <cover.1780906288.git.mst@redhat.com>
- <f92f6f06e5804b4ea7f68b8664b7e69953b50f4e.1780906288.git.mst@redhat.com>
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=9f5T1BSk58DX0DmxRMirXoZ5HUqv5xhVLbUyPoM5/04=;
+	b=LIfjGCyiTNZm09+6xwHU3LacpMPkRQ65iidsbdxn2qZVBiC3LHr3NwoI2e32R4haMyqKFT
+	K37Pjo9jazS7ARX6n0sGu6mYJ9+nRnh/NDAjntRg4J9vVJcCu7F4CFGyskm+QnQ56l1D5h
+	1b/PUh7Kj7ZAVGsYskRRaWrhzf8Tk9k=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 460FF2381;
+	Mon,  8 Jun 2026 04:24:53 -0700 (PDT)
+Received: from [10.164.19.15] (unknown [10.164.19.15])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DD71C3F86F;
+	Mon,  8 Jun 2026 04:24:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780917897; bh=H0j2h/IuHXRAGbZayNOkBH0sXrTKcXJvAH7vKH8W7is=;
+	h=Date:To:From:Subject:From;
+	b=ilWtWRuAoX4VA99FP1OVnP40YBIxS1VZnPKlxQ6i0nM8JzcfNMfRhuXS0sp5M5r02
+	 zdmKWOA9+deFTUtaMYcvtNlx8Ta0rU6auzXLhDRCCDo8Q7fuLahVPgXAqalNT6L23R
+	 KLSPDrDCzQxQ7i9DLG3iFzXU3oDAgFitziJFh3w8=
+Message-ID: <5ca6512c-bdc1-4620-9c99-c7525e059099@arm.com>
+Date: Mon, 8 Jun 2026 16:54:51 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f92f6f06e5804b4ea7f68b8664b7e69953b50f4e.1780906288.git.mst@redhat.com>
-X-Rspamd-Queue-Id: B87B61C000D
-X-Stat-Signature: sdmm336ahwi1a6nerp73b8sbawmit9tz
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ David Hildenbrand <david@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ LKML <linux-kernel@vger.kernel.org>
+From: Dev Jain <dev.jain@arm.com>
+Subject: [BUG?] invalidate_lock not held in read_cache_folio()
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D075820002
+X-Stat-Signature: rpug4sco5d55xj7qzf6jtyd1s9oakyun
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780917801-770274
-X-HE-Meta: U2FsdGVkX1/Vr6z/8RsqMhBp4TQMrsfM/Wwo8HImHbAPqL3ykfErnG2iuNepvBTqnXeWJneo9u7bK+P18QtSjZwjhfrYvA+nS0IqTjEJLNC+39u5K68jUAH+PIeSB1jYXtNhqRc7fXYolh+24Wei0iO9U2Oj9NFgEqCVj1hB1kmUepOHLGOFydQKVjCelSZpoCfnPIla0PHnDO4eHJojiPyiM8osZ3f7JoF0iEtzyNrjouCG27jl/V5RQ3w2tJMeieyFtHMTnW2FXCLldn8YTql1d8zhG5MVeprvwEQRguqVatN2QQBHQXk8JFWzDJSUP6EH+bzN0TwpGz7o2b0toyoDU9r9sWWCC5Sq55koiUl3m2FUDULVGtrnkJMcwCUIcaidYsfs7dJQyukgcLCufeCn7bW6pK3QYlaVV7/UjWd8E7z9vKvQXN5M91fpFbKEmrQwNyt21S4+hZ+ThzO/XE8nsrFV0ZRwJNollDA/yOVehBOeRLmy3kEJB+uBT0fIZbn/nBpjhFH4UUEMPo+fwcDrtMwCdcsFXJIPOY84wRhSeKCyQnHWOqnhw3UASXyKJLZtqMf+zVU2rPXAe0WYba7zE7hDan2v75cY5ilC7fmfGnUwYhOZT58OP32UfXDU0opSJpLaPhnfIuHYKsgrn5kjxn01glrtcid983rGvncfc0ptGj+eC9LYhVGdW+zVoDuTVLdJAGPvL1BDLyoK5m28xxlDhABMhW/9yR9VPcfz4WiHTyEUngdqT6WVZDZznwzatH+WBFhoorLGqt9rXR0z0ehZ41JlGILMas17Yk54L2U3d9In7lkkPKqsgUuc2R0Ahmb7fZlZAOUjxCDPoWYc2V066TEyH8+EbO7QPLcPK94YLLr4sXwMnLxmIO5MCnQ3li+ylC2jzCjYC/uYRW+l5PYo/7WKHH7KaaTT63h2M/askj/IQ9SXLSSKgIRpQzw2d28K/lRaamjxDgZ
- za0JmLvG
- PeyWeQ00frawm0yQFMTESTrl3rWhFwbBKyyg1C4qrjGAfe8yyIfCxKlQUigBN/UAHgW5kNqhpdupGTsENBrw0Aav43KbKS5JM0uLaLNOgNhpcq/a2hT18aJZYZ02WNKlN27maggj9ukK+1zCtDU5ux0LL5pEXVv1pHrp5B5GYMBUszzsFpLDswufZI9kXR3aY2pvu6zEb6BTLliMdd5R6vGDEfeOgFwS+dIyWDInO42R/uv0sSnE9aAuh4spR37Io/fEEQaDYEKmqxnxWncAHanblJI7OR0FSPeuTJ0LTvbaT1eUjfXL2OGbUx6Q4EUxs9ewiOupEoQsQAZF98TgsMccSNbn3pKhU5CQaF3PWZZAbLlrfHf/UVQCz12A8MFwfPV/bD8D6CUe0qpltW7ygXbo4JfeQoxOzhLd/SmhhdHOvzOgtgvEHt9mzTocVTx5Cuxj4
+X-HE-Tag: 1780917899-260875
+X-HE-Meta: U2FsdGVkX19N6IMF8pADefnh0ciL+wnkaelFdY9F6r2ZANy5uMaZfYJQ2v2CpX+uV0Hr2FeOQtH7c/Oyv9MG7/KgTZyCw1cAz7rnkzKRoDY4czrC88kAjYcw0ZaSn7Ht65OP8YPDDxXHRp4FRsNoFo86d6S50yR4c/z/Qr9gk5QuczfKKq5/is/Gw2egAsSAV+D8/ohQhJO/Nlfa0SrEQ8Yq5LVOasB262Wq2FmGYageJc12gblxGNvjG+oi55liqPpCLR3wNoRXg7i3JLXzZaltW9rLw/iWL0l4JwjkmmiYUVcn/J4o5W0r57ZXae5r4ovynVdDvqhKWAYsqVdqtnpOUnlDo9GzXTi8CKsSIN7EMFzpbSuEYtnhkvgh7N9LkEcSl1ZqavhYXUiD65DzAoCkPpXPMxcpks/fzWLNCg9nafj7qsRERFoehaNgdso9l+9ljplYUi4JXpoK5eBQvPsPstOWV0Mb0ZgggvuML0BrYUIMFH6vjYUcT01Y6ktB5CKKLJH24yhLZ29dzS8yOaWOAS2NpGfEqIj9hMWRhq1Uyv07UiSj/LiD7FGHzKYzxWP09YUadoSF+x5nmch6EHCvBycVYe0ESjy0UF/TpDJ9IzoZiv4X4wjxYfPnF6sVvT4di7o6l4gl9d3W1h6eyin6QMO0ALxDCAdG2IxSTxikR5P9HMGa2ztj3SsEu5S/W/HS3jcvTnNxUbKQwZjRR+0G2BeKSt88g63WHZZ3lJOLsJkdI/R4+x0JA1PwqfIQxD/AhWtRZiJ6SuvMHxUHrJ4/lgQFIo+sZ/nLFUMqJbjyZosgXAex2YGibsvsNtcFDMTlgRSXeH/2ItOxzeUPPZNg3x2+2liP9seTvI8Twu5WoiwQs3gcVb8EsFB2eCgJbk05xmzeDl1Phj6dKYA/xIMNsWB0zPJarhfX4TrbtgNiySe5+AyBK1lUnG2IsZWFrWKeg9PEOdOqOamfmeb
+ A1B5Mg2c
+ 4SP4VzcsQtx+ZXo6UX9vFwXD7RgIiateBalsmALzx+rigDFohe1Pgvdum1DmTNAnvzCTKHXFImqKUPdH9WqNj7qcIyBVyOMc6YwQoIBPcOEnpsVqJIeb930I4NSDq1f8L520FrtjyLl0xpMcbmhUPZXfKZMmEMBRoX6P1yitAJ2YzqefQlaC2agVYRr/CjDRsfiJqEysYDc952Ob6/S+r90VkLPNKoeSqf6/fr+Ru8Eo/ZS/IY4LfRCP/T6y+Ekv43GuMhdyeqLNA/TwIdh0m7Ef37brkYewVwjwLDgon7sNgDwlQzU5tHkW4jmrUTDMO26QBkp9/tMMonJTl63cQFePn48/G0hXe6Gb5swz1DJeQAcA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,141 +88,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 04:36:38AM -0400, Michael S. Tsirkin wrote:
-> When post_alloc_hook() needs to zero a page for an explicit
-> __GFP_ZERO allocation for a user page (user_addr is set), use folio_zero_user()
-> instead of kernel_init_pages().  This zeros near the faulting
-> address last, keeping those cachelines hot for the impending
-> user access.
->
-> folio_zero_user() is only used for explicit __GFP_ZERO, not for
-> init_on_alloc.  On architectures with virtually-indexed caches
-> (e.g., ARM), clear_user_highpage() performs per-line cache
-> operations; using it for init_on_alloc would add overhead that
-> kernel_init_pages() avoids (the page fault path flushes the
-> cache at PTE installation time regardless).
->
-> No functional change yet: current callers do not pass __GFP_ZERO
-> for user pages (they zero at the callsite instead).  Subsequent
-> patches will convert them.
->
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
-> ---
->  mm/page_alloc.c | 35 ++++++++++++++++++++++++++++++++---
->  1 file changed, 32 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 4676fd49819e..d4fbf1861a8a 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1861,9 +1861,38 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
->  		for (i = 0; i != 1 << order; ++i)
->  			page_kasan_tag_reset(page + i);
->  	}
-> -	/* If memory is still not initialized, initialize it now. */
-> -	if (init)
-> -		kernel_init_pages(page, 1 << order);
-> +	/*
-> +	 * On architectures with cache aliasing, pages zeroed via the
-> +	 * kernel direct map (e.g. init_on_free) must be re-zeroed
-> +	 * through a user-congruent mapping.  Host-zeroed pages
-> +	 * (zeroed flag) don't need this: physical RAM is clean.
-> +	 */
-> +	if (!init && (gfp_flags & __GFP_ZERO) &&
-> +	    user_addr != USER_ADDR_NONE &&
-> +	    user_alloc_needs_zeroing())
+Hi,
 
-We check this (gfp_flags & __GFP_ZERO) && user_addr != USER_ADDR_NONE thing
-twice, can we just put in a 'init_should_folio_zero' const bool or something?
+My understanding is that there are two ways we are serializing against concurrent
+addition of a folio into the pagecache (see 730633f0b7f9).
 
-> +		init = true;
+The kerneldoc of read_cache_folio() says:
 
-As Vlasta says not sure if we want to add complexity just for these arches.
+"Context: May sleep.  Expects mapping->invalidate_lock to be held."
 
-> +	/*
-> +	 * If memory is still not initialized, initialize it now.
+I put the following in __filemap_add_folio():
 
-I kinda hate that 'init' is unclear as to 'do init' or 'was init somewhere
-else'... Anwyay.
++       BUG_ON(!inode_is_locked(mapping->host) &&
++              !rwsem_is_locked(&mapping->invalidate_lock));
 
-> +	 * When __GFP_ZERO was explicitly requested and user_addr is set,
-> +	 * use folio_zero_user() which zeros near the faulting address
-> +	 * last, keeping those cachelines hot.  For init_on_alloc, use
-> +	 * kernel_init_pages() to avoid unnecessary cache flush overhead
-> +	 * on architectures with virtually-indexed caches.
 
-This whole paragraph seems pretty useless and just describing the code?
+And got the following trace:
 
-> +	 */
-> +	if (init) {
-> +		if ((gfp_flags & __GFP_ZERO) && user_addr != USER_ADDR_NONE) {
-> +			/*
-> +			 * folio_zero_user relies on folio_nr_pages which
-> +			 * requires __GFP_COMP for order > 0.  All user folio
-> +			 * allocations set __GFP_COMP via __folio_alloc.
 
-This whole paragraph is useless and very like the kind of stuff AI generates for
-comments, i.e. overly long + entirely unnecessary stuff.
-
-> +			 * user_addr != USER_ADDR_NONE implies sleepable
-> +			 * context (user page fault).
-
-Can you safely assume that? Also inferring which context we are in from this
-parameter seems risky.
-
-It seems to me that you're now making it such that kernel developers:
-
-- Have to know when and when not to specify a user address, and under what
-  circumstances we might consider that to be mapped.
-
-- Need to know to do this correctly for aliasing architectures or have silent
-  correctness issues.
-
-- Need to take context into account when specifying this.
-
-We definitely need to find a simpler way to do this!
-
-> +			 */
-> +			VM_WARN_ON_ONCE(order && !(gfp_flags & __GFP_COMP));
-
-Surely by now we can assume this?
-
-> +			folio_zero_user(page_folio(page), user_addr);
-> +		} else
-> +			kernel_init_pages(page, 1 << order);
-
-I hate this hanging else branch... definitely prefer {} on both branches.
-
-But in any case it seems like we could avoid some indentation with something
-like:
-
-	if (init && init_should_folio_zero) {
-		...
-	} else if (init) {
-		...
-	}
-
-Or even a:
-
-	if (!init)
-		goto out;
-
-And stick an out label below?
-
-> +	}
-
->
->  	set_page_owner(page, order, gfp_flags);
->  	page_table_check_alloc(page, order);
-> --
-> MST
->
-
-Oh and in general it seems that this conflicts with [0] which removes
-kernel_init_pages().
-
-[0];https://lore.kernel.org/all/20260422102729.166599-1-hsalunke@amd.com/
-
-Thanks, Lorenzo
+[    0.088725] kernel BUG at mm/filemap.c:858!
+[    0.088727] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[    0.111312] Modules linked in:
+[    0.111437] CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.1.0-rc5-00493-g65484bf449f7 #178 PREEMPT
+[    0.111801] Hardware name: linux,dummy-virt (DT)
+[    0.111987] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[    0.112255] pc : __filemap_add_folio+0x5dc/0x680
+[    0.112437] lr : __filemap_add_folio+0x168/0x680
+[    0.112629] sp : ffff80008005b550
+[    0.112757] x29: ffff80008005b5b0 x28: 0000000000100cc0 x27: 00000000ffffffff
+[    0.113030] x26: 0000000000000000 x25: 0000000000000001 x24: 0000000000000000
+[    0.113312] x23: 0000000000100cc0 x22: ffff0000c2825cc8 x21: 0000000000000000
+[    0.113599] x20: fffffdffc30cd700 x19: 0000000000000000 x18: 00000000ffffffff
+[    0.113885] x17: 2e33352820736b63 x16: 6f6c62206c616369 x15: ffff80008005b4d0
+[    0.114167] x14: 0000000000000000 x13: ffff0000c34a225f x12: 0000000000000000
+[    0.114451] x11: 0000000000000000 x10: 000000000000003a x9 : ffffce3993f54940
+[    0.114759] x8 : 0000000000000000 x7 : ffff00017f3fc910 x6 : 05ffff0000000001
+[    0.115040] x5 : ffff0000c150b000 x4 : ffff80008005b610 x3 : 0000000000100cc0
+[    0.115312] x2 : 0000000000000003 x1 : 0000000000000000 x0 : 0000000000000000
+[    0.115587] Call trace:
+[    0.115686]  __filemap_add_folio+0x5dc/0x680 (P)
+[    0.115871]  filemap_add_folio+0xec/0x2d0
+[    0.116031]  do_read_cache_folio+0x144/0x2d8
+[    0.116194]  read_cache_folio+0x1c/0x30
+[    0.116344]  read_part_sector+0x4c/0xf0
+[    0.116499]  read_lba+0xb0/0x1a0
+[    0.116627]  efi_partition+0xa8/0x740
+[    0.116769]  bdev_disk_changed+0x238/0x620
+[    0.116939]  blkdev_get_whole+0xac/0x100
+[    0.117090]  bdev_open+0x280/0x3c0
+[    0.117221]  bdev_file_open_by_dev+0xe4/0x158
+[    0.117394]  disk_scan_partitions+0x70/0x160
+[    0.117565]  add_disk_fwnode+0x1a4/0x1d0
+[    0.117725]  device_add_disk+0x1c/0x30
+[    0.117869]  virtblk_probe+0x6a0/0x918
+[    0.118025]  virtio_dev_probe+0x1c8/0x310
+[    0.118184]  really_probe+0xc4/0x2b0
+[    0.118330]  __driver_probe_device+0x88/0x170
+[    0.118497]  driver_probe_device+0x44/0x178
+[    0.118669]  __driver_attach+0x98/0x1b8
+[    0.118819]  bus_for_each_dev+0x84/0xf0
+[    0.118979]  driver_attach+0x2c/0x40
+[    0.119123]  bus_add_driver+0xec/0x218
+[    0.119269]  driver_register+0x64/0x138
+[    0.119419]  __register_virtio_driver+0x2c/0x50
+[    0.119598]  virtio_blk_init+0x74/0xd0
+[    0.119757]  do_one_initcall+0x60/0x3f0
+[    0.119903]  kernel_init_freeable+0x1f4/0x540
+[    0.120075]  kernel_init+0x2c/0x1f8
+[    0.120218]  ret_from_fork+0x10/0x20
+[    0.120357] Code: 9401562d d4210000 f9400ec0 b5ffdd20 (d4210000)
+[    0.120592] ---[ end trace 0000000000000000 ]---
 
