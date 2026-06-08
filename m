@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99A76CD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 03:43:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA75CD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 03:43:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09DA06B00A0; Sun,  7 Jun 2026 23:43:27 -0400 (EDT)
+	id 817DB6B00A1; Sun,  7 Jun 2026 23:43:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04EAE6B00A1; Sun,  7 Jun 2026 23:43:26 -0400 (EDT)
+	id 7EEE36B00A2; Sun,  7 Jun 2026 23:43:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECDB46B00A2; Sun,  7 Jun 2026 23:43:26 -0400 (EDT)
+	id 72C8D6B00A3; Sun,  7 Jun 2026 23:43:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DC7B96B00A0
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 23:43:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A06ABA0948
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:26 +0000 (UTC)
-X-FDA: 84855350412.07.A58C3EB
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6224E6B00A1
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 23:43:31 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A63716497C
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:31 +0000 (UTC)
+X-FDA: 84855350622.05.51C389E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 03A13180005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ilSao1YB;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 912E7180002
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:29 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UTPS5cu7;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of yukuai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yukuai@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of yukuai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yukuai@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780890205;
+	s=arc-20220608; t=1780890209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+GGMH6tty5FLIeZM+POYH+qzK23yhtXmMhvkWYu3LDU=;
-	b=Xbr6bAtQbo5+CpU8gIDyrO7D3+0XlBBgWIGRoI+ysCqejAl9yJU5c4X4ZNj8VAshs8BAYT
-	Bo9PtRFzb7pCq4QlJvdPHJ09pt41kGns5eO5jFMJAc/0xcNWiUDzDwfTCG/O5Vv1XbeojW
-	w7eDahU/NXcp5V01AeTniNRT/5+QnaU=
+	bh=xbxrLUIuHStdHaKlhEhtpSuTr7xLq2M6g2rOrGI1zRY=;
+	b=M+vxk4EIEaGuIJG7Z7xCDdwbQJUn0UxcmWSR8gYMjnehmtYjs+BRV1M8BZOqrDnZxnrNZ9
+	+S5LHTzMuu+D0cF9zGLhD0IHg9WlKCKZ6700Z5CtiKf8uYrzK51F14IjbRBmNOJCeQkI2v
+	jyxY+1OASiFV1HC+F9YJ0dJx/6F4FWU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ilSao1YB;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UTPS5cu7;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of yukuai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yukuai@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of yukuai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yukuai@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780890205;
-	b=v3qnHYTkWg/KiBfZ2mf0IlTCLSiaWlSanBrBUKXUwwRKjAfYr08sISJoJq3FrTl4PZtb0W
-	snTzRVZMn5gvMyzT+pVh5bQZfRJ+OvCe8lZDpbXSuhJA/ndf/o+XsdRGIa76Htt1xvxvXD
-	1mazhuAqIebxMrRnt5sRA299W8KJ/2w=
+	t=1780890209;
+	b=XTdRVok+jIpwotPOuXRHLOyHFNjOwM/KhE4vULE+SBoQq6//czwu+C3ViYZX3nM9doyv1u
+	QnLLbXfri6uk20Nw4wXuu7GEgg2svAH18fXCI8qj3oeIHQpvsaJ06lEGZ9q99CPp1t5ax4
+	Rol09wFk1jpKHdLVdFKCg9scgr9KrJM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 46CC440476;
+	by sea.source.kernel.org (Postfix) with ESMTP id E14E043867;
+	Mon,  8 Jun 2026 03:43:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27DE1F00893;
 	Mon,  8 Jun 2026 03:43:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7AD1F00898;
-	Mon,  8 Jun 2026 03:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780890204;
-	bh=+GGMH6tty5FLIeZM+POYH+qzK23yhtXmMhvkWYu3LDU=;
+	s=k20260515; t=1780890208;
+	bh=xbxrLUIuHStdHaKlhEhtpSuTr7xLq2M6g2rOrGI1zRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ilSao1YBHviA+H3l+VdOSbhmDAN2xxeZYpIZV8xr1Au1go4gQR5Sq1gFk3or2Kl50
-	 OZo0qnAylTCra8E+swhFiOTCCUFdE8lM65WpM+WgUQY1EhOaM06vWeO9pba77JZNDT
-	 DIlz3gA0WQ0GLOGJikvft+Zabgn6VyTpM/YKeUIjPAfZ/Y6nO8tg5fohWyo31TsNLY
-	 RNXjrjqyZQBb44UdFOXRs0c+apDVKdaofrG2SNg/WC25YtAdf28oU2sxaozXJNTvHC
-	 hIVXG2PJPG18e62kckP0o3G1O4XiRB06o0XZQk0lxeiIYNm/XfvpXl5KKMs8Qpi4Xq
-	 klZxVCVqWnqSg==
+	b=UTPS5cu7VlzINgI3kKmHxHbbFQvryV9PycNA5wH3n8YHw1oTF6/2JHEKn3uCofyQy
+	 waOb2600Hd8AYZFpZP/nPBIVZ2F0EkQ3P8HUWjb9Gm2iDAyCiZOE7Y+l2xyQt3ee34
+	 CQUBignVLDwUjLOBcekxUuJxcBj7EsOTToYRg5hu1OJcnX7iW0IzFDBV/OfJHpAKMT
+	 aY9ukY+NSF+yjMYDkMqrSL/FTHCIG3Hn2r0xGSrdNGU7isnnSDZKhGnYVhl7QNehKe
+	 GdgIIW2RY7rk25dDZNXn4rUu3JGWYBKcKvc9tQ0ychxYj0msv769sHOtAeAJkQ+847
+	 ViJzYOZgf0f3g==
 From: Yu Kuai <yukuai@kernel.org>
 To: nilay@linux.ibm.com,
 	tom.leiming@gmail.com,
@@ -83,22 +83,22 @@ Cc: akpm@linux-foundation.org,
 	linux-block@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 6/8] blk-cgroup: don't nest queue_lock under blkcg->lock in blkcg_destroy_blkgs()
-Date: Mon,  8 Jun 2026 11:42:47 +0800
-Message-ID: <00b03cf74a9937cb4d6dd67a189ddc00a3de0451.1780621988.git.yukuai@fygo.io>
+Subject: [PATCH 7/8] mm/page_io: don't nest queue_lock under rcu in bio_associate_blkg_from_page()
+Date: Mon,  8 Jun 2026 11:42:48 +0800
+Message-ID: <c910d2c39d3ec97f67de68af636a52394342d55f.1780621988.git.yukuai@fygo.io>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1780621988.git.yukuai@fygo.io>
 References: <cover.1780621988.git.yukuai@fygo.io>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 03A13180005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: mnumd91eq8mpakjakfb64d1wan1bwz3b
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780890204-481069
-X-HE-Meta: U2FsdGVkX18wdojClKWyJ08XEjlYxKH9tC57lfNftAuofXQKCp66auMqa5xTORGMeciSmisjtSJEO7sg9S87FFOyOYNlvG8v5Tp/O/NyaMsO/tC5BxwqqzqBosCfFva61YMBSBFR6qlL6hRwvc3HBigdB/vVVr2EDQHnDlp066DfHhVM626fN7nHuRMjTuT7e1ER9zMn1IFw9JsRBvGjv4PXS52g7plUfYq15JZrH+2DK4sy2mq6uecnI1sLSrtrmBUazQGsc1WdSxTNhTMkLjOJH1bX9AK9tw8R5wDkOXXaH3/5eLQB3JprpKJzlO/z5e6EY5dFSM4tXv10MyCq/YezcIifqylNY+OIQujCwmOOeu0H8atzgsQfl+/HLbaGorKVSkQ9cmdoAR50KuSJxLZDIZpv7h91DHq3ICOLVFP+Gnz4x7QkRyo3KVVY5snKyHFn+a6/4cqwDmpu48HDPeLgMFojplsYha0YnFBGM3yeF+5WXKJKmn7iS1nQsFseOdqQuSy7dre+MgXZXaqbsnosCLAkBAlMilq9p91TRQ/olMomv9MTdNQyG3SrOwGWlY/q+QGESyL1Or7IPxCDEY3gMwr905cX1dUL3hYzckAPvmoN4iHeV/Xc26DtFrMcmsoJNsegp5c/uyZz8s5eyEi4P5K4MObPcdXzTTqyNE1UPXN0wdowuGzgAR1OhrCdRXO7u/8Y3xzHNV3A1Sy85Qxipb597UDJ6ocE4GtfhkSP28Ybs0nvBBWwmTle7QW2/KYM1acPJfvlOrfixBG9UhCz2xFsRWhLquA29d4O8MAepGlIixOEWd7jcGDXVhfwNxqtTJ+wncpvrhLaQgQPAvEihAmoCRTQAmIWNszSEmeFYSw04VXDk7AY0MPXQ6TmUjZKf3pBd+c7BGuauYHlcvH+HolbTYO52yEcjAsfQRqE/9eQqwOdu1It8jxfkVJq7GOtDBOPvpho9L7xHD4
- yd2D/J7C
- t4WvtQt5nsP/bvMBPGMkaRH/Nn2KU+yvb4wW4yJv4N/xzO/HTtowm62NmHwVzXGwQRDJSnI9SM48q+lEpzMSzcqRC3DnajOenn0TlqVNPnfRMgDZsxB9umPFTKLTwFRoLlsZ71W7G0NI8TwWMM0Gd5sTXRyPNMfRFbJhkk4UOMelYVc5hcgpLkZVqs5uMaQMqiePs9LGboLiQWBlSznDSs9cGjx4d62sqMu7h49/pvJJynIOIqISBTWSFghGerZrPyI1wdsM+/8umzzFKybZ8dro7gNBeJfLitBTF
+X-Stat-Signature: 1da4odaruq8yxgbmkudhwcw8y77pth8i
+X-Rspamd-Queue-Id: 912E7180002
+X-HE-Tag: 1780890209-395775
+X-HE-Meta: U2FsdGVkX18HryGF4d0w0vCxB6stk3olQqO7AKKClt6AHIOOMi8FSDQNkuviw8aA8d+Eoqc06tJEtlbvqliSrNFlQB9l6FHdC+qSuxBPK1TsntEDrdLxwuybO8ZPp4EMTC0jBZVAhphLaa6L7sX4U/DZISZk8yYRu1XdV2fxkTHPYZJY56R5xVPLlfmYoQZXpUO6qVinhQXvFZX/b1VgG40rN6VLcF0LKjfqtUQyHmkZSqQxVXsJwVAnE9B1G2E+L+Y3NVYFrjg7QU1EQXbmaqIQl+UuvslMe0s2wjZH8pU4wtgc0fn1jhuXB3NveLDX5NArJwSKV8286Ii58Hu2f9EVBa5rD6ResiPwTJ0iL+eT891wo5v36+E87M/N97WJL9lU0bxTsIBKYe8fkgtkxJhRXUDqN2q7a7Cw35HxIKe92I1LDYddMvFgL5uIYIvt3aJ8YzZh06QruNrSqRT2PoZf2ugw6MdVzhr4fUnGXr9jsU1t74A9xYfIm9eEuBm0iEUBtFHZ17753I6FpIV409WTn6TUtfvYAc+tU3eGkFnx9bnUoMMitc6q7IitXo1SOL7u0wi9rSTDAsVR8mTT9OxwZmB61o4JQOsvv9ua2LUkQMuBpRKo2cdGHBSBSO0A+n4sqKslGQ8PdJlwQSt8q2yeA2/yxG7LURzGKMymgDk6G9Qb2zf7m3ept0PEoAvjjXz4TWRxGHgDYpbj0ucJIbr9X/cDbwgPH87MHhhMIO0CvQetAkccWD0toWYoEtiyTqY6T1QrOE1uyWcURKch8YJbUnmYDN0xEQqIjbis2OLCpgjnMXumEmJacOzuMQSNw+dM8oM97IGywYkB+eqa9XQXlew+BF4AfDJEAdGDEbCf10bNS1EqA07CvEbsVSzyMCEO7RybNpGrtvJ2tFlMnYN/GEmhvFhvvYS0YgJzSt4lsrUDzCfzaDB2Stnyo5nNnrnKz40rkSFKqNn7nKP
+ Rc/pYFWl
+ zX5YzlAKovAOh9UmX13YpucDhXD95w9IzK0o7Ug5yscbb3jUg6zSzT47iOHN1gn6K9tRbaVwJKZ/I75DMf6b7GGogo8YLVpbmPeC1Tkp/W/thZlvDACRSVGKUlti2wevGKkW5Tdyl8d+DVowcASjQ5B147A1J+UAcveUi5393dZ/R/ks5D1CY3PVV1DJXWxuiFVS66zykXEig2wXfXVGxVP4cK1WtMW5Y5z+aokF0yzO6QOBGV6jrEbytGpaMzPaIRESf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,101 +108,43 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Yu Kuai <yukuai@fygo.io>
 
-The correct lock order is q->queue_lock before blkcg->lock, and in order
-to prevent deadlock from blkcg_destroy_blkgs(), trylock is used for
-q->queue_lock while blkcg->lock is already held, this is hacky.
+Take a css reference under RCU, drop RCU, and then associate the bio with
+the blkg. This avoids nesting queue_lock under RCU and prepares to protect
+blkcg with blkcg_mutex instead of queue_lock.
 
-Refactor blkcg_destroy_blkgs() to hold blkcg->lock only long enough to
-get the first blkg and then release it. Then take q->queue_lock and
-blkcg->lock in the correct order to destroy the blkg. This is a very cold
-path, so the extra lock/unlock cycles are acceptable.
-
-Also prepare to convert protecting blkcg with blkcg_mutex instead of
-queue_lock.
+Use css_tryget() instead of css_tryget_online() so swap writeback for
+pages charged to a dying memcg still passes the dying css to
+bio_associate_blkg_from_css(). That preserves the existing closest-live
+ancestor fallback instead of charging those bios to the root blkg.
 
 Signed-off-by: Yu Kuai <yukuai@fygo.io>
 ---
- block/blk-cgroup.c | 45 ++++++++++++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 19 deletions(-)
+ mm/page_io.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 8c9ca52a54f4..d1f69a23c9d6 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1289,10 +1289,25 @@ struct list_head *blkcg_get_cgwb_list(struct cgroup_subsys_state *css)
-  *
-  * 3. Once the blkcg ref count goes to zero, blkcg_css_free() is called.
-  *    This finally frees the blkcg.
-  */
+diff --git a/mm/page_io.c b/mm/page_io.c
+index 70cea9e24d2f..3b54c60c278e 100644
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -315,12 +315,17 @@ static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
+ 		return;
  
-+static struct blkcg_gq *blkcg_get_first_blkg(struct blkcg *blkcg)
-+{
-+	struct blkcg_gq *blkg = NULL;
+ 	rcu_read_lock();
+ 	memcg = folio_memcg(folio);
+ 	css = cgroup_e_css(memcg->css.cgroup, &io_cgrp_subsys);
+-	bio_associate_blkg_from_css(bio, css);
++	if (!css || !css_tryget(css))
++		css = NULL;
+ 	rcu_read_unlock();
 +
-+	spin_lock_irq(&blkcg->lock);
-+	if (!hlist_empty(&blkcg->blkg_list)) {
-+		blkg = hlist_entry(blkcg->blkg_list.first, struct blkcg_gq,
-+				   blkcg_node);
-+		blkg_get(blkg);
-+	}
-+	spin_unlock_irq(&blkcg->lock);
-+
-+	return blkg;
-+}
-+
- /**
-  * blkcg_destroy_blkgs - responsible for shooting down blkgs
-  * @blkcg: blkcg of interest
-  *
-  * blkgs should be removed while holding both q and blkcg locks.  As blkcg lock
-@@ -1302,36 +1317,28 @@ struct list_head *blkcg_get_cgwb_list(struct cgroup_subsys_state *css)
-  *
-  * This is the blkcg counterpart of ioc_release_fn().
-  */
- static void blkcg_destroy_blkgs(struct blkcg *blkcg)
- {
--	might_sleep();
-+	struct blkcg_gq *blkg;
- 
--	spin_lock_irq(&blkcg->lock);
-+	might_sleep();
- 
--	while (!hlist_empty(&blkcg->blkg_list)) {
--		struct blkcg_gq *blkg = hlist_entry(blkcg->blkg_list.first,
--						struct blkcg_gq, blkcg_node);
-+	while ((blkg = blkcg_get_first_blkg(blkcg))) {
- 		struct request_queue *q = blkg->q;
- 
--		if (need_resched() || !spin_trylock(&q->queue_lock)) {
--			/*
--			 * Given that the system can accumulate a huge number
--			 * of blkgs in pathological cases, check to see if we
--			 * need to rescheduling to avoid softlockup.
--			 */
--			spin_unlock_irq(&blkcg->lock);
--			cond_resched();
--			spin_lock_irq(&blkcg->lock);
--			continue;
--		}
-+		spin_lock_irq(&q->queue_lock);
-+		spin_lock(&blkcg->lock);
- 
- 		blkg_destroy(blkg);
--		spin_unlock(&q->queue_lock);
--	}
- 
--	spin_unlock_irq(&blkcg->lock);
-+		spin_unlock(&blkcg->lock);
-+		spin_unlock_irq(&q->queue_lock);
-+
-+		blkg_put(blkg);
-+		cond_resched();
-+	}
++	bio_associate_blkg_from_css(bio, css);
++	if (css)
++		css_put(css);
  }
+ #else
+ #define bio_associate_blkg_from_page(bio, folio)		do { } while (0)
+ #endif /* CONFIG_MEMCG && CONFIG_BLK_CGROUP */
  
- /**
-  * blkcg_pin_online - pin online state
-  * @blkcg_css: blkcg of interest
 -- 
 2.51.0
 
