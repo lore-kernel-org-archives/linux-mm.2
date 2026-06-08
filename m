@@ -4,131 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D37E4CD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 21:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30A6ACD6E79
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 21:52:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DEE96B0005; Mon,  8 Jun 2026 17:49:36 -0400 (EDT)
+	id 6FD936B0005; Mon,  8 Jun 2026 17:52:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0908B6B0088; Mon,  8 Jun 2026 17:49:36 -0400 (EDT)
+	id 6D5056B0088; Mon,  8 Jun 2026 17:52:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC0846B008A; Mon,  8 Jun 2026 17:49:35 -0400 (EDT)
+	id 5C3F86B008A; Mon,  8 Jun 2026 17:52:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D6FFE6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:49:35 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A73C3A030A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:49:35 +0000 (UTC)
-X-FDA: 84858087510.01.775F062
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A536A160002
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:49:33 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dr09GYwo;
-	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DA8C6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:52:03 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB9961A031C
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:52:02 +0000 (UTC)
+X-FDA: 84858093684.27.3F36400
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1008E140008
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:52:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qg375DoF;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780955521;
+	b=L50KGYGv+yoqOBzJGWdF1NTycOEkodQiXSUmlI6ir67vPrG5wXsAp7IUl/2Hn7dh+GNKOQ
+	GV3UrasSwCIFjxB7xRKWPmpQAylLR+SKTwCaUEjgx0QICJfnhWh/j8Qi/CcBtMPzSRNTFU
+	Bq93tPw+1B/SFf4lMl2/abA1JOvE//k=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qg375DoF;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780955373;
+	s=arc-20220608; t=1780955521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/VPaRCEiFTRGJk9h7XnzGq6197n1Ij6plODDt3+seDY=;
-	b=5JTRtWUWFLppQs5vZKOu9hrp0PxJkDrinVndigGP/j0HGxZYXWj8EeAXKODndfy1z6/VM6
-	GZG+92KU5HE5heExzUG7aGDdM+JWOMFO3BHaYs/h7O6fVWHfx3Sz8G9G7vO3b71GUk4IJj
-	cqnCR5+R61g0OcUODjp9Vc1J3RCqUTc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dr09GYwo;
-	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780955373;
-	b=4Irh7qNBJFcmPyBrWT4M6FPlKN5Y7h5M+Bdu/7UL38VewSyh2L9HHvoGDotNvKR9ot09UX
-	SpeTGCXDwA03khY0TCE752ylCGqO7fAGDRFEEo2im+xPIQQdX5svm5MyAuedb+CFAeLAxu
-	U09Gu3mPjP7kkP/5j526mS1IMa5J3TQ=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8422a92b6d6so2543431b3a.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 14:49:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780955372; x=1781560172; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/VPaRCEiFTRGJk9h7XnzGq6197n1Ij6plODDt3+seDY=;
-        b=dr09GYwoybNS6ZmvMCCVzpcFVppkjgBIZBHbfc90+1veEeYjxChoJ1bZ/4WUzkKrvY
-         pWAgJTBFEFMbMQXkYdm5K/iSDIF6XobkJDS1w7dZe5TRyg+rynWgX0rZj1C28j5tpGx2
-         2KYGKd1rRCaPFNmjlL/y9USwh9lx7vUovZRR08/NlBWAI7xTERi7/3W1YRTlNyJ1b80M
-         PMy1JPFNV3Gd73hN+rfuq7C/nsXMfErgJllkZVy/j64TB664gSsMCxFjysEZ7fCzYAk1
-         K+DIAmUUybKybztTZyDn/yfjFujV0mV2ux6JfNAOIMEO+1ma6Cjj6eE2aV/YWWFHveNI
-         DPeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780955372; x=1781560172;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/VPaRCEiFTRGJk9h7XnzGq6197n1Ij6plODDt3+seDY=;
-        b=aoIgWSD83HlyWfVNEynZsI223bC7LLOv4m0tkIAsYe3uCdVX7Q3vTb7eHLnyJhTVaZ
-         ewq6vJm2gFUm4PH9Cgk3qqonImVc+v9Ut37Bcl+nlWeXB4lEQr3bpBd5sICdmqBXON16
-         q7QuecoIiHi+G9gRGsK/822kzhfXQUZPomFRNJFMAO5abT5Mdi5iVfBJAEgvnIOoiT/i
-         80yfHJ0MNGCQC/+xgNbPyKqeNIYb4eDJvWEWjT4viKkPU7hy/DOxrlgo1/M4SxPo6/Xh
-         VlI0kBbxkYNEW2RHyOy6w+FIg1UZaggY+B+tg/hc/pcnCF8T6I88GlJogCEkFkEUWGCZ
-         lpqA==
-X-Forwarded-Encrypted: i=1; AFNElJ8lmULXMR2UFcfQ/ME//AvDR2gMfe94l75Lt9pel64BIjshVoDbaB/M/OiWt0ta7qt4Uwkyop+k6A==@kvack.org
-X-Gm-Message-State: AOJu0Ywik/KNxioEhej52Luc/pO9Z8+q6YkL0IRHo8eT5vn9EJNDw4s/
-	iYY59vQ879EiC4XKRsB18VrUJpAWjWl6sbTAh4HBxSt2lIUHjFm3VvFxUceyk2GJ4Q==
-X-Gm-Gg: Acq92OFkEpk+zMyf8yzaKCaVhiFWwRg5cc5qCvUPV1d1KKk8dE/RHp+vHmvtYO24Avq
-	5P3gLsUJ8oMxJKqZ/l4fURWpPz4RCJmveQ+qbQ6blhcMCbSotxtKGKA+3+r030Nq5tlpPBwnr9p
-	tkxXyPhoLOEUegGxYZa/2j/NePHKWdd3Jii8SHht10sDoeRcxkXo18CnHCdUqPN0t9PZ096rBUm
-	8xf8IkvjHlxhSmLOJHGIWNakgMwGNLtR7TfdTC71cOi/3hlN7HB1NP3XH4iWPVyviAETqfUskhX
-	sUID/cOosTreLHd7G2rR5BZ3SCTGt7BC6/ae4oi0C/dUL7KT0QAw0GGBhoVKmkVFHBD4dutogyx
-	GNU9TYa9M+//uVZBD9TLtP8Ycjaq6YnxcMc2TGIvUhSIHGdomXOpSYBOb8SaszF3cs/e40NSyzz
-	g9m/MlksFaQFKv/N2wql1U/Wwb/BNBEWmdhe7m83wX2sPJ+DSQsRdJTGe0Q67guYBh/PJEjgBi
-X-Received: by 2002:a05:6a00:4f81:b0:835:3861:812c with SMTP id d2e1a72fcca58-842b67b0a55mr12776470b3a.23.1780955372050;
-        Mon, 08 Jun 2026 14:49:32 -0700 (PDT)
-Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8428288002asm18941791b3a.31.2026.06.08.14.49.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 14:49:31 -0700 (PDT)
-Date: Mon, 8 Jun 2026 21:49:28 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 07/12] PCI: Refactor matching logic for pci_dev_acs_ops
-Message-ID: <aic46OtIKfLhdoKy@google.com>
-References: <20260522202410.3104264-1-dmatlack@google.com>
- <20260522202410.3104264-8-dmatlack@google.com>
- <aiW_M7y0fFwLN84G@google.com>
+	bh=saHarhH9VxFYDUSrZkblFzE37vMO//iE/VbgD3EThhw=;
+	b=f1z4+IzEflyPgni6HdctXd9iKxauclnFkNNQfqGJqOLJMdocx+XaZ+to0GLGU7TRGLcC/Q
+	rBxqyWLZLjoCAwL7MN7PK37OhhHyaXmEAWQywPpXQpwTB5HiLseeBzHz1g3CaRctj8i88C
+	+1DCUIT/05+f6grcECrtgBPAWQdTY+8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 31E1A43AD0;
+	Mon,  8 Jun 2026 21:52:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB4E1F00893;
+	Mon,  8 Jun 2026 21:51:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780955520;
+	bh=saHarhH9VxFYDUSrZkblFzE37vMO//iE/VbgD3EThhw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Qg375DoFFhEadW+V8xhmo3ekB2jFKO7GMmLi7Gwez0nXKDA+A1Y9XOuuY+z3Xkbit
+	 KqlO5YXh1q/2oeHbSmtXEigZXhU3d1opMtLY9BEKd1TepYdudwGXGUWydOXsKDqlW3
+	 W259eVbUWBTuxXUTDxT/O5zdmBY3Cl6u5L8OdWJ2Zarwxq+WLg/6uEG4nW9hJWjQZ6
+	 J2nx4byUBLafdaraV7qy4PM45xFm9x/X6g/2ojdx5MHLBzMNoeoaQ9WEbwvOoV/hbk
+	 XGcAKv/Vpv/c7xnNSk3g6Jx5rSk3MaRqdKcn+NYfZhdwNAigezEDs8Cf9kkwIwuL6L
+	 uu959XxiLYn3w==
+Message-ID: <afb14c99-162c-4c36-b1ef-fe971678f6b9@kernel.org>
+Date: Mon, 8 Jun 2026 23:51:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiW_M7y0fFwLN84G@google.com>
-X-Rspamd-Queue-Id: A536A160002
-X-Stat-Signature: rgwytjg5bu8om8g5ka7mjird8mijor15
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 07/37] mm: thread user_addr through page allocator for
+ cache-friendly zeroing
+To: Zi Yan <ziy@nvidia.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Gregory Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Hugh Dickins <hughd@google.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ virtualization@lists.linux.dev, linux-mm@kvack.org,
+ Andrea Arcangeli <aarcange@redhat.com>
+References: <cover.1780906288.git.mst@redhat.com>
+ <50d410b47fe3f45327783e05bd306d5eaab75e65.1780906288.git.mst@redhat.com>
+ <aiaUDTeHDA45ZXFS@lucifer> <aiagMc9Ng_AE_adh@lucifer>
+ <aia93IzhTgi1vGi6@casper.infradead.org>
+ <aicfERTP3H6AndOs@gourry-fedora-PF4VCD3F>
+ <D1CF67EF-2CF1-45F8-9265-70A528C1CB01@nvidia.com>
+ <20260608163257-mutt-send-email-mst@kernel.org>
+ <BD0C8760-BC10-4BF0-9EE3-9B0DAF0D977A@nvidia.com>
+ <20260608170348-mutt-send-email-mst@kernel.org>
+ <DD2E08E8-1FD7-43E3-A2C8-B4435D3773D1@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <DD2E08E8-1FD7-43E3-A2C8-B4435D3773D1@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1008E140008
+X-Stat-Signature: yh5iikq8i6to5839h1kh4wdu3q3dkog7
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780955373-376482
-X-HE-Meta: U2FsdGVkX1+cHkzA0d1F98xQi+m7Lix3Dhii5f8/IElPd9hm+ly95yC04lbcocSFs15JQcLprK/RRi4plZOeJJ1VIGWnFl1xbVPpKl+AkPZcSXbs+Yfh7CoQYJ/7y38uFhMTuipfePKmPNmYteY8c1w2yGO9sfgFt63BmAuu1CPqtG16pTa+9h8mc73RrXjtwdKot23LoeemRvLbDx2YfNG1v7hZWPCQ96H0/fPJKgNw82QgLia2Z78AmoHfgPPJVvOFAUKK5SYEOFtzJGLvlPjmA8bq+GlFmdiHrgKrfN1q17lZnXBXdtuBCgJyJvZiMCQB21Rm7u/zLOgocVp/jitIgcUeEbtIc93CA4zA4SREF+VOjgFy8aGTnh4zEwElhvxyS5SJ+z3z1Be735iwZyvcXFMNF4rUrCA46EGz7IByEW0W4nVcFy0hzkSDFl3Y4qXSNtyyTYs+YUk25WDKlNvpM7creXRVV8086T+TGhnrL8WWM/rGyOIsR6O/Yu/BVM61B5sTrmlPEaTMK2vfK3L7M4PtKFR3ksJV6h727vvdYkUPfLcfvZ78Y6AlnDEyi2eEwkNmrWKMNlSoxpL3hvHtnb/qIcv4DA8Qc02FkuOrwllYpj+Dn7Xo3mHCzGUOeejJTnbRLiCJyN99OFQkUN47GNlF/ek9eD0phVNMq6334/mcvs+bbWPZgZ1szt8f4G6t2+CfyXniIhv9/S9+S0m+uYfpwe0Z9PTCn4XdK0hef2emnDDhXXQsKm/P/HNFkVj+YwxwZRGZTGzYkQ/lWvgkK/flTT2qF1Is5fiTkednpi0MUEPIeXu/LYI8/MdjpGO/k574lhjqRWPW9/pk7JassqxzIeF00se2+JEwhItte+Y78BV7Rge3bt49IKhyrQY9PMcp5sD/J+TOFGqvt6cEDzsmYy5OXXHAqL6LKJ7Pl1WNCZbec5S1OFkn9Rlj39X5D0XAFkCY1Ov2LQS
- EhfBVaKN
- 8ab91aZ24ONG3FJMCFbpGdxgByLtmLRoJQf3L1gzjitT8S1Ls/HArGyEzJRVg+uBqgbNpcenz8PBfWHoCpRx8bz70jh9WtFCGpnWIa8EJf5PyVxaLXWY9lFEoJZWBEE5bAGkE+w6U5ljp3dFah6ZOv2yKd1I7M/TXzcdEfUv4/1cLYh47DH/UublnAgobMjhO9vqw7yL42gSCA8gebc3MiXQfp3tcykJPQXtN2LuxmVY+IRkfDpGyALPNajJeDX+wxmWCq1ZBPy3Oe+TGLbFxJjECDRud4VNz6h/Ryec7Lgq/UYhW7jgwSKSOiWbCpiwfVMYa372ANvKi4DXyye9iagzlwPAWa2rrUusF0RvN+hStLkgrZ1gIkbBxV6AYu0FMuU8B3C4gNtyf+73v/MNz0xjUWWg7G/RfdgFMi7KAx5IDW95FIj+M6TGBOg==
+X-HE-Tag: 1780955520-525559
+X-HE-Meta: U2FsdGVkX19+YEGJ0xsblX62Qt8rCcMkrcOBgN9f8eAc3db9ukDCYn5QMrZuboLtcV3nlVGtKvZ9QwQmccZ/ez+mnssou3rZZ9LhgwAnjUIbPIXp/nTF5IHnKgSSo1+D8tTqRQ259uHAMp/QUBpF4mJiM4PqUQbp0yTX7156frjSsfZwbysBlxQtIEufwCuYOGQf0KWXV18dbUbv7wjo0h8bCfJ95OY0uhzxHDf9KIZzCRNX+VTgXhCQ6xLOV4TS/suLwy3t5Y8ZMaK6StJFrsD70fxAGaXJiW9oNlawzPyH/YMqs14tOOeVfE/j+AvzI218HnpQ11DwCmIBoGc0nhSDpH0uxU8T8m5H+FcWQ3rUrypQCjhJFwj5dhKmRzw29o/oJldqC6fuV5tEjVPYmUBhBjLr/d2Jz6oWvemv1lhY6nFikvarYbb6CVIp7c0+WE9R7OkJC7g2e/FGoqwtvV+fLUscAD7BaR3p1QEq3/B7zL+nnNj06/vcKSVXANp57gnHJB0WDBgfhSdTj5mji+53OWLUOux60kDNlxZ9zy3RRJ6S3eliWCIiek1tr5fgNfTiAYJ3If2sqWxZxMY38PbnppykxcFRpvl9Tff3OosOmte6PlolmshXyLDQ+mrBnXtlj9B71lv7qjEoAf757Mr2sgqaWgcTRpTnhw9tQkAWkVfx/JLB6wagoc1mPp7xzvuaWI9UP+VJXVOGklaxem3rBkgxHpSPDTAV+j8CJ+GDdnnB9BFERM36wdsum7/LQ2+OiIhf1rzNyy/C7x6+aCOSjQfN3iYR4U2v2nsNnWRUZ5VJeYMjGqUtIjpyeTSoxgN8mCDVeDlqaLIxV+AsBNv34+ELWxWR9GucCGXUHw9YpZD0kERVeF8XO6bgAO6bp6VHfRKr4SnN32JsvQUY2JUvDrMu8sxXLw/YFQLlqp7onQ+VNvwFQrOTBZZDstO7vJzVUVA0WqBJkCP6FIe
+ AIaUtRx0
+ uWV4iah761Y+5Mob6hnoxkZN6h0MoKEkhvrYdUQHKgzX9wvCYZjpDMSmy+1L62QTtsPMry+ZOOpOSD11nsXWK8dSx987BkA4XWvRzEBj6ves09FYlZ5mlxK0gF1L52IihIf/NzIvAWELaGOQBpDFXNX4DQnLDECk28yaNgufFc053cTOxLFZRdA0aSZhpQbHJk/tu2YT/HUdIYtXRkxfStwljQw24JdLVMVKBaOHvYAmBj/GdGli8LbrxgOtH03ZvDbvSKYunEOZdcas8MoRtpK7XgwALttc7hnKAwA7H6qLAQRyuyOUnZpLrTNwCgCP25V6l6kAX4Ez2yd6YUDqQZqX4KaubPq6AWHl1Hde0AuTQi4LCcSBspbNHY1V/7DRYAfyUWsOxIekAdgMjy4D2o45krFpK8hPC4ukaJyp+agAEiBqWl+bZYqjCIoDmsmKiTB1Jpk9x0eJ6yCcdLSQVv8HuSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,99 +170,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-07 07:01 PM, Pranjal Shrivastava wrote:
-> On Fri, May 22, 2026 at 08:24:05PM +0000, David Matlack wrote:
-> > Refactor the logic to match devices to pci_dev_acs_ops by factoring out
-> > the loop and device matching into its own routine. This eliminates some
-> > duplicate code between pci_dev_specific_enable_acs() and
-> > pci_dev_specific_disable_acs_redir(), and will also be used in a
-> > subsequent commit to check if a device requires device-specific
-> > enable_acs() during a Live Update.
-> > 
-> > No functional change intended.
-> > 
-> > Signed-off-by: David Matlack <dmatlack@google.com>
-> > ---
-> >  drivers/pci/quirks.c | 50 ++++++++++++++++++--------------------------
-> >  1 file changed, 20 insertions(+), 30 deletions(-)
-> > 
+On 6/8/26 23:16, Zi Yan wrote:
+> On 8 Jun 2026, at 17:04, Michael S. Tsirkin wrote:
 > 
-> [...]
-> 
-> >  } pci_dev_acs_ops[] = {
-> >  	{ PCI_VENDOR_ID_INTEL, PCI_ANY_ID,
-> > +	    .match = pci_quirk_intel_pch_acs_match,
-> >  	    .enable_acs = pci_quirk_enable_intel_pch_acs,
-> >  	},
-> >  	{ PCI_VENDOR_ID_INTEL, PCI_ANY_ID,
-> > +	    .match = pci_quirk_intel_spt_pch_acs_match,
-> >  	    .enable_acs = pci_quirk_enable_intel_spt_pch_acs,
-> >  	    .disable_acs_redir = pci_quirk_disable_intel_spt_pch_acs_redir,
-> >  	},
-> >  };
-> >  
-> > -int pci_dev_specific_enable_acs(struct pci_dev *dev)
-> > +static const struct pci_dev_acs_ops *pci_dev_acs_ops_get(struct pci_dev *dev)
-> >  {
-> >  	const struct pci_dev_acs_ops *p;
-> > -	int i, ret;
-> > +	int i;
-> >  
-> >  	for (i = 0; i < ARRAY_SIZE(pci_dev_acs_ops); i++) {
-> >  		p = &pci_dev_acs_ops[i];
-> > @@ -5481,33 +5475,29 @@ int pci_dev_specific_enable_acs(struct pci_dev *dev)
-> >  		     p->vendor == (u16)PCI_ANY_ID) &&
-> >  		    (p->device == dev->device ||
-> >  		     p->device == (u16)PCI_ANY_ID) &&
-> > -		    p->enable_acs) {
-> > -			ret = p->enable_acs(dev);
-> > -			if (ret >= 0)
-> > -				return ret;
-> > -		}
-> > +		    p->match(dev))
-> > +			return p;
-> 
-> Nit:
-> Should we check if (p->match != NULL) like we check for p->enable_acs &
-> p->disable_acs_redir(). 
-> 
-> Otherwise, it seems like we're mandating the existence of a match op in
-> the pci_dev_acs_ops here? Today, we just have two Intel entries in that
-> array, both of which need the match op. However, AFAICT, it shouldn't be
-> mandatory for future SoCs that might only need a simple vid + devid match
+>> On Mon, Jun 08, 2026 at 04:40:15PM -0400, Zi Yan wrote:
+>>>
+>>>
+>>> Change user_alloc_needs_zeroing() to only check address aliasing even
+>>> if that can cause double zeroing for virtio.
+>>>
+>>> Best Regards,
+>>> Yan, Zi
+>>
+>> Ah. I started with exactly that in v1/v2. It's a simple approach.
 
-*shrug*
+Simple, and hacky -> unmergable. I tried to push it into a different (no GFP
+flags -> IMHO better) direction, but the patch set grew in complexity.
 
-I would usually say those future SoCs should be the ones to make it
-optional if and when they need to.
+I kept telling to keep it simple (e.g., no folio_put optimization, no hugetlb
+optimization, simple wrapper functions), and ideally we would have gotten a
+better discussion with other folks here much earlier.
 
-But making p->matc optional now isn't so bad:
+And I still do not consider providing an user address to selected interfaces
+while centralizing zeroing a bad idea. The real question is how that could be
+done in a cleaner way.
 
-        for (i = 0; i < ARRAY_SIZE(pci_dev_acs_ops); i++) {
-                p = &pci_dev_acs_ops[i];
-                if ((p->vendor == dev->vendor ||
-                     p->vendor == (u16)PCI_ANY_ID) &&
-                    (p->device == dev->device ||
--                    p->device == (u16)PCI_ANY_ID) &&
--                   p->enable_acs) {
--                       ret = p->enable_acs(dev);
--                       if (ret >= 0)
--                               return ret;
-+                    p->device == (u16)PCI_ANY_ID)) {
-+                       if (!p->match || p->match(dev))
-+                               return p;
-                }
-        }
+Or as Willy said, if we could move zeroing further out to callers, where they
+can special-case. But given that KASAN and friends interact in their own way
+with zeroing doesn't make that super straight forward as people might think.
 
-I can include this in v7 if you would like.
+>>
+>> But mm maintainers said no, user_alloc_needs_zeroing is a hack and
+>> I must not add to it.
 
+I mean, I would hope that we can agree that our existing page/folio zeroing is a
+mess and should not be extended by slapping more special casing on top?
+
+Sure, we can try cleaning it up, but conceptually, zeroing happening at two
+places in the callchain, with random optimizations to avoid double-zeroing is
+just bad.
+
+The fact that a vma_alloc_zeroed_movable_folio() that can be overridden by
+architectures even exists makes me angry. user_alloc_needs_zeroing() is jsut the
+tip of the ugly iceberg.
 
 > 
-> [...]
+> Got it. It sounds that you now get conflicting ideas. Maybe you should
+> start a [DISCUSSION] thread that presents the high level idea of what
+> you want to achieve and all the ideas you got from the reviews, so that
+> people in this thread can have the big picture and come up a consensus
+> before you send another version.
 > 
-> with that nit:
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
+> Thank you for patiently replying my comments, since those points
+> apparently have been discussed in prior submissions.
 > 
-> Thanks,
-> Praan
+
+There was Willy's comment in RFC v3 [1], which had 19 patches. Unfortunately, he
+no longer followed up to my initial push back and Michael's question later [2].
+
+That would have probably been the right time to wait for more discussion.
+
+RFC v4 had 22 patches with little replies.
+v5 had 28 patches with little replies.
+v6 had 30 patches with no replies.
+v7 had 31 patches with little replies.
+v8 had 37 patches with no replies.
+
+[1] https://lore.kernel.org/lkml/aeu5P1bZW3yEH54t@casper.infradead.org/
+[2] https://lore.kernel.org/lkml/20260426165330-mutt-send-email-mst@kernel.org/
+
+-- 
+Cheers,
+
+David
 
