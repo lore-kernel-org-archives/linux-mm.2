@@ -4,106 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFAF6CD8CA8
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 12:52:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2004CD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 13:03:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3383D6B008A; Mon,  8 Jun 2026 08:52:16 -0400 (EDT)
+	id DF7466B0005; Mon,  8 Jun 2026 09:03:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30F766B0093; Mon,  8 Jun 2026 08:52:16 -0400 (EDT)
+	id DCED36B0088; Mon,  8 Jun 2026 09:03:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24D106B0095; Mon,  8 Jun 2026 08:52:16 -0400 (EDT)
+	id D0B966B008A; Mon,  8 Jun 2026 09:03:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1720E6B008A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:52:16 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D53AA1A0ABD
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:52:15 +0000 (UTC)
-X-FDA: 84856733430.20.E063951
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4E6C71C0007
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:52:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AGt1SmTQ;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id BD7886B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:03:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 753D61A0AB6
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:03:19 +0000 (UTC)
+X-FDA: 84856761318.24.88BCA9D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B5A0D14000F
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:03:17 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WnCrlLI4;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780923797;
+	b=K1HTjW1uNw/sGcJREsi6IRajQdlCMEorg5rIpKWKJdGSpos1lQlgIMTI+0ev7mN7Aa2z+r
+	4mfpKV1cxKGzhr49ZZtGYF4txPSR3fGu2bgPss2tDTL9qNu2hVz4fEDjN0TCNey8T+5sRG
+	hpq5ut+t2wnXa4S/WXw3+1bDIkIZtlI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WnCrlLI4;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780923134;
+	s=arc-20220608; t=1780923797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gmVe8ku3CY5kinxGUaPpQUp63b+9qm/CHLoW2Y5uqCY=;
-	b=OWi9JscDiZW/10R9BEyL7Th0rZx2Tls08BSjMZhrS65sFJKlFO/i8yBegH4FXIkizDJnSa
-	DtcG0+h2W80q+xIzkGcWbBTR0ISN+Xz2WFHRC/l+CqEIkUE9CvReprdUAsnxgi99i3gYvw
-	DtKnxeO8rK9auGu5AHBXlyZBNEdb4go=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AGt1SmTQ;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780923134;
-	b=GjunW04JGzHJQY49bCYxnUK6uEk7BqUUpChgr6VXXTyPoRnhMwrZ4jP3Nx5HM3tJy/HitN
-	D2TcjMwoWvFRh3izmSbdBmqXWJT1WAhLSZFgzxQBnprpL2NBS9sZS30PetB8egVmQsEXq6
-	qRx4R89ONz6NuVlmjBKJ8sUaj2V4lHw=
+	bh=u8t0JmXdFbFbeA5ltIt8qNK+2eno+amYqyTTozeq0js=;
+	b=TF0KIb7G5LbCp9WZxRg1ZYs1Jdh1WxV+/ELqr5M2+H6nwqZ5s1EokoBTO+nukTQsj2IhdE
+	x2aqEDKlCrhXZseiKC4S7Vyzpq4jDPx+GuFrVmd+kgjPm7RstU3d3TWS2b0pDSKO/FdCG3
+	XA9Uw3bBitcsFvUPDVwVrUlVMIiIJ6M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C1FD36001D;
-	Mon,  8 Jun 2026 12:52:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F4E1F00893;
-	Mon,  8 Jun 2026 12:52:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CF73A437E8;
+	Mon,  8 Jun 2026 13:03:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543481F00893;
+	Mon,  8 Jun 2026 13:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780923133;
-	bh=gmVe8ku3CY5kinxGUaPpQUp63b+9qm/CHLoW2Y5uqCY=;
+	s=k20260515; t=1780923796;
+	bh=u8t0JmXdFbFbeA5ltIt8qNK+2eno+amYqyTTozeq0js=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AGt1SmTQgIucQ1ZtlRcS2Py3s4ECdl94z2/YN90I7SjGfvkcn+zQpRanBTE+QkzpA
-	 igmMjICG+puOyd9F6z7V86Rwz8l0PcYfX2zlxUZ0QZwtRhyu9Gvn7lbuu7hW9/DPFl
-	 19FyvqCbwuq06TfhnINGGwoKK60uJNcaioY8v6BVwOmfa3NnsVpgdWJ/yKnNcoLzBo
-	 uL8X5yzJZ0A4aiNM1H5imsW+Uad5zwiU80LQ9eAOZeQyHVvXwcoEehfxXvhrvec1Zv
-	 kxqHgJ6nPvELaGUeqFzv1eJbKuQX5BoN4F7Wue6ncQUU4P7lWmKawDI7czyGTF/OrB
-	 I1qEc1ZiCG4mw==
-Date: Mon, 8 Jun 2026 13:52:00 +0100
+	b=WnCrlLI4cEoMqxpHS7crTMZ3G8aXdSp+Y2MrhSAn29GjoXlwtyB1iVzwJBlcShKgQ
+	 pS+Y/y7PAA5vbOAIYl/Ohabzt6Jd8sPvo92QX+E4ZZNL0NqwSw/EsU4co8tpclya3d
+	 XDHgb3y5I0lROYr5Rl4fSbLacF4QPl9IXOxMMegPyxwXYQ6X+d/actDFi6mMVbUJJo
+	 nLgGoxZRjfRD0UKJYiiIu6BbPMg0ubpsUO5e3nusonpfgll/NaNxrd8t7xOWgtj0Y0
+	 X+xKatEulWW/roSNbMe7xFy9ukkH6ve242zAXed11Qud7X4d1KT63aruFmsVYKgkER
+	 ukQnsV6eKeW/w==
+Date: Mon, 8 Jun 2026 14:03:11 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
-	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v10 00/37] mm/virtio: skip redundant zeroing of
- host-zeroed pages
-Message-ID: <aia6Xi-zyb1N-y_I@lucifer>
-References: <cover.1780906288.git.mst@redhat.com>
- <aiaHd3T42XyB3UBn@lucifer>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Carlier <devnexen@gmail.com>, David Hildenbrand <david@kernel.org>, 
+	Heechan Kang <gganji11@naver.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Michael Bommarito <michael.bommarito@gmail.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] userfaultfd: verify VMA state across UFFDIO_COPY
+ retry
+Message-ID: <aia8nKXtShnhQpVY@lucifer>
+References: <20260527184751.4147364-1-rppt@kernel.org>
+ <20260527184751.4147364-2-rppt@kernel.org>
+ <ahhAHNSZOeW49ms2@lucifer>
+ <ahhUM0A8-q0UqFv1@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aiaHd3T42XyB3UBn@lucifer>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4E6C71C0007
-X-Stat-Signature: 73oouy3ieejr1n677grjw3m1xrqsn8bo
+In-Reply-To: <ahhUM0A8-q0UqFv1@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B5A0D14000F
 X-Rspam-User: 
-X-HE-Tag: 1780923134-808680
-X-HE-Meta: U2FsdGVkX19qjL5h6C3YVmP3lDHkwd7JXr63mkn4DS2ZSBqmbxFBHkOlSV+4ox8RXaUaMp8YFbfE0g69CgVehlwLbemQVDYei7zYQwKCr4vjFq6moCCkVcqplj90uZ9lCpDfJuIoUJ54kvjBGbE3PI99xac+SZhUgBWZ2iHuAFVFGf0KCLUvFonzGpZt7cZe+hJ8SAYGiNk36NPxmd/L0ye65ZvCZl9CrfUykoq65k9eXtZ5h25pOTbnX5CIZHdpe4uR9G1Hrkx5OByKYtDa800Kh/dyZuawdLtSHCJLzmLjud6YPrb33nmdaI6LdA3kiWsAYZrlemRgQCrt/lb4SJmB4DipOuXwfyXceXE6Hz3AxCnjQylk+f4bIWjMcGhf6/dlbzmYbDeDNVnBP90zlMN55SqgRr5TuAV1uCa9mDn0LwO7rIWeWS0i/rOCwww0r99nktFy8QYaFvfxDD0y0ysWp9h3rkkKp+EoYR/OpdcMarBMXnDJYXtcSALUbqjTLttCAAeP50HW9rAaahqjL8TeAYfRygMIDlaJcPrJ+Jl7ps6QKOCMTTbcW0If+5F97fmgYWVh1t9OYIkT4riENNGIsU6171Ja4ORN8GDJWLjGDlql8AuZX1Sqc4BsxV0Btbcvyjclq87HXQcnBCJVf393zKQqqAVEak03ep6Edrc+xTKUwPRn756yVlrXcI2+fT9tiDAEN0QCvMi9pb2kZHqOR6EcEnQlitjxP0riaAWXGWP24N8DhorwmiqtKy6WG3gj2YM/AeSHyebYIWXDwg8kqGST+G6DEY3MVR2FTDNufLCrrOInTBL/4J22vU0kPHf4lrBCY3K00r5BhXTH1U6Dxg4kmnrpgorWt7skzf4HKsWM9uaVi4yFFkaFh4DgnYGk52RgR8FiZnGTm/9uWVXM5BehM1INvk9wsnPqKKdnytNeu+QYsWBMM6j+M4RhiirWau7bxgIItXpgdGG
- Tw5/uQr7
- ySd5IyXEeP4DA9Bh3Jdsx1JRs1ngQTL8jOYRfdmd9VCMqjRV0VDu0sAZgM8OrLmsl6Kp0aiumV9nV3RCgltAv04pvdz113RLQ1UC+rWD6/+OhicZM/mxAfbQvq0seE6MnlqPpfvYZhbQG7I2HUMS6fM42ocfnttkYwjZY07kdXc+U3U0+L4x5NG9hkBoC/ncp+J21ZwU1l85XJ19WcDmu5l6nR0yb4VKGgepqj23mYivYXJlBYlhzEUTz9TUga7K3/4n22yTCOb/nyUsCDyZ+IC7Qp2uXoiSVpX2da+UGxG3L8DM5OHlhoAcv8BNbG3UGtNXjWXkwZhhEMNDmaI2UBReatBG3CAUfCPrx2y6VvvLDzNIfiXmVfDu+uw==
+X-Stat-Signature: jkyrayns3noez6jn3wec7suuucpcb59c
+X-HE-Tag: 1780923797-982308
+X-HE-Meta: U2FsdGVkX1+8h0wuuW5LcQVXBbEMGLYb1usnaNj/oYIBU+ELkWgcbXJ7vBrRchplKqFYLj9WchS39QttdFY0l5ur14lF0ceWCu73dHH6Rp9gbRL2oxrnPoFzqqOoxwSxS4M26QjM9MsC+HW9JoitXVOhvucn2nWZcO6akeTgyiy+P4+ObnA57oTwLRK5PcuBDHSPOaPlfOJaVCweyPP3qKlIhSB9T6x2lWta31jtgbfEt5A4dHAM17xzZLOcQTB+LAIteNH43Ubo01556ox8hmLKrnEC97laG5CMFx05d0R5+2bKPSlBaBBBL+ggUQdPK1p/iGFm2sGS/tZr13Fh5AfEhJTr9W+wbQ95f5wnd5Mg2VeUqS+w1srP0OgXZ65PuMHL+7b8nxeuNAMkK2gPvPp9Lh1vr21/2gYWQa6fHW7q+1R6zXstU6Dy9g2p/KT2VLGrti2D2BogtZL8FKdgDiZ+ZjOD0beUfojPivcLlQUMfmEn3aB4wcBzoOqSJS95hc8uP1A5Lz279rj+/VQ6Gpo2L3+RfLV34Er/7eS/l6R9h7b4haxlYjtmmNFF5fp7HvSx1tAkkghf+G/6hbmxjmJsdLSXfi8yyjSwSC/oBhvY1zX/D8o6a0QN+1hbvOZZ6JQTieptOlJPEZFzyXIeP9EPQBcVdzPXEPLIUvN0oe9FLT278pU5Zv8H4UNDbTD2uxVRJ3XHV2kl5j1dZmFoy+/qZZ3R8xmj8+MjplwG0NBhaNyHrg0hzLNdRC271xIhB98CC3i/zINMdHwCqLY4CRIWrAJuDQ4OYYoKt0dZn+tmSb+jVW3M9/9MMlv3QuoyUN9R0TMTjgDF94FQjtekN015B0AKMKAH+/Iq4/hS8PKMRIqGj8t54NZsBVzNsdALHnAZjkiqV0FvR0/tWOCIU3kT/baOZ6AfYz+AUMa0/D3vQwXhiAcXLYxwujDlu7btfBJuTZFlyWU/sBSuuK9
+ CoorUD7Y
+ gA1STRptuBrw/nL8WlT8rm6KaRdtbrCASG18AcQHLeUuyy1xPofqkAxAyuWOmSfy3sZmJ1DjSed+3uugA5xWR9b0C11thEDIWhj2WTfCpuHMUvCFrexdiboPUGi6pniv+uBoTTbBWz184tylTeaoRt7ABoFf7QTZ+QKjAESw76Ol7kEYK/u/w/jzAQ1Yioxv0zVCZ9CYMK95vsmaqUv1jhcbKbXBKM2SFwKLv+py0AeKWpQ+dsMKNyd5XMCzy/wCUtG0p6dSAuJMYUvBso2CYhcdOVK+/zpaR9LzG4FjSTGM6zO0QixRk1Hz7XG2T0oSAQyB19WHck4dxTyJd4aIU0HyzTDjcuNRmGM1MmbVMKO4u9d76uh4nZuASeVeNdxMAdKAzXkEYBfPP33gR4naesEEFHR5i/1WLqmMDPTK5KDB4pWr7UjTXx2S/iEhX7cqICSbV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,70 +97,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 10:17:47AM +0100, Lorenzo Stoakes wrote:
-> On Mon, Jun 08, 2026 at 04:33:46AM -0400, Michael S. Tsirkin wrote:
-> > Further, on architectures with aliasing caches, upstream with init_on_alloc
-> > double-zeros user pages: once via kernel_init_pages() in
-> > post_alloc_hook, and again via clear_user_highpage() at the
-> > callsite (because user_alloc_needs_zeroing() returns true).
-> > This series eliminates that double-zeroing by moving the zeroing
-> > into the post_alloc_hook + propagating the "host
-> > already zeroed this page" information through the buddy allocator.
+On Thu, May 28, 2026 at 05:41:55PM +0300, Mike Rapoport wrote:
+> On Thu, May 28, 2026 at 02:31:00PM +0100, Lorenzo Stoakes wrote:
+> > On Wed, May 27, 2026 at 09:47:49PM +0300, Mike Rapoport wrote:
+> > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > >
+> > > mfill_copy_folio_retry() drops the VMA lock for copy_from_user() and
+> > > reacquires it afterwards. The destination VMA can be replaced during that
+> > > window.
+> > >
+> > > The existing check compares vma_uffd_ops() before and after the retry, but
+> > > if a shmem VMA with MAP_SHARED is replaced with a shmem VMA with
+> > > MAP_PRIVATE (or vice versa) the replacement goes undetected.
+> > >
+> > > The change from MAP_PRIVATE to MAP_SHARED will treat the folio allocated
+> > > with shmem_alloc_folio() as anonymous and this will cause BUG() when
+> > > mfill_atomic_install_pte() will try to folio_add_new_anon_rmap().
+> > >
+> > > The change from MAP_SHARED to MAP_PRIVATE allows injection of folios into
+> > > the page cache of the original VMA.
+> > >
+> > > There is no need to change for hugetlb because it never uses
+> > > mfill_copy_folio_retry().
+> > >
+> > > Introduce helpers for more comprehensive comparison of VMA state:
+> > > - mfill_retry_state_save() to save the relevant VMA state into a struct
+> > >   mfill_retry_state (original uffd_ops, relevant VMA flags, vm_file and
+> > >   pgoff) before dropping the lock
+> > > - mfill_retry_state_changed() to compare the saved state with the state
+> > >   of the VMA acquired after retaking the locks
+> > > - mfill_retry_state_put() to release vm_file pinning.
+> > >
+> > > Use DEFINE_FREE() cleanup to wrap mfill_retry_state_put() to avoid
+> > > complicating error handling paths in mfill_copy_folio_retry().
+> > >
+> > > Fixes: 292411fda25b ("mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()")
+> > > Fixes: 6ab703034f14 ("userfaultfd: mfill_atomic(): remove retry logic")
 > >
-> > For page reporting, VIRTIO_BALLOON_F_DEVICE_INIT_REPORTED (bit 6)
-> > is used. For the inflate/deflate path,
-> > VIRTIO_BALLOON_F_DEVICE_INIT_ON_INFLATE (bit 7) is used.
-> >
-> > Virtio spec: https://lore.kernel.org/all/cover.1778140241.git.mst@redhat.com
-> >
-> > Based on v7.1-rc6.  When applying on mm-unstable, two conflicts
-> > are expected:
-> > - kernel_init_pages() was renamed to clear_highpages_kasan_tagged()
-> >   in mm-unstable.  Use clear_highpages_kasan_tagged() in the
-> >   post_alloc_hook else branch.
-> > - FPI_PREPARED uses BIT(3) in mm-unstable.  Bump FPI_ZEROED to
-> >   BIT(4).
-> > Build-tested on mm-unstable at e9dd96806dbc:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git zero-mm-unstable
-> >
-> > Patches 1-5: fixes/cleanups, dependencies of the zeroing patches.
-> > Patches 6-9: thread user_addr through page allocator, contig API,
-> >   and gigantic hugetlb allocation.
-> > Patches 10-16: folio_zero_user in post_alloc_hook, vma_alloc_zeroed
-> >   conversion, raw fault address threading.
-> > Patches 17-24: PG_zeroed flag, aliasing guard, buddy merge/split
-> >   tracking, FPI_ZEROED optimization, folio_put_zeroed.
-> > Patches 25-27: __GFP_ZERO callsite conversions (alloc_anon_folio,
-> >   vma_alloc_anon_folio_pmd) with memcg charge failure mitigation.
-> > Patches 28-29: hugetlb __GFP_ZERO + HPG_zeroed.
-> > Patches 30-35: page reporting zeroing (DEVICE_INIT_REPORTED),
-> >   disable indirect descriptors.
-> > Patches 36-37: inflate/deflate zeroing (DEVICE_INIT_ON_INFLATE).
+> > Did we want a Cc: Stable?
 >
-> This seems far too much for one series.
->
-> YOu're doing a bunch of mm stuff that seems relatively independent, then
-> putting the virtio stuff on top.
->
-> I think this should be broken out into separate series laying foundations
-> rather than doing it all in one go, which is also difficult for review
-> purposes.
->
-> Adding a new folio flag is contentious also for instance, we maybe want to
-> go bit-by-bit and ensure that each foundational element is acceptable
-> before doing the next bit rather than having it as part of a big series.
->
-> Looking through the changelog only adds to this feeling! Huge numbers of
-> changes, even relatively recently and I'm not sure all relevant maintainers
-> in mm have had a look through either.
->
-> Thanks, Lorenzo
+> Andrew adds it when applying.
 
-Additionally, it seems you've missed/ignored (I hope not) a bunch of
-pre-existing feedback, so it'd be helpful if you'd carefully go through
-what people have previously asked!
+Hmm, I didn't think this always happened by default? :)
 
-Keeping track of that, especially on a big series, is a lot of work.
+>
+> > > Suggested-by: Peter Xu <peterx@redhat.com>
+> > > Co-developed-by: David Carlier <devnexen@gmail.com>
+> > > Signed-off-by: David Carlier <devnexen@gmail.com>
+> > > Co-developed-by: Michael Bommarito <michael.bommarito@gmail.com>
+> > > Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+> > > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> >
+> > OK the logic here looks good, thanks for the changes. I have one comment below
+> > re: a redundant check, with that addressed feel free to add:
+> >
+> > Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> >
+> > > ---
+> > >  mm/userfaultfd.c | 85 +++++++++++++++++++++++++++++++++++++++++-------
+> > >  1 file changed, 73 insertions(+), 12 deletions(-)
+> >
+> > > +static bool mfill_retry_state_changed(struct mfill_retry_state *state,
+> > > +				      struct vm_area_struct *vma)
+> > > +{
+> > > +	vma_flags_t flags = vma_flags_and_mask(&vma->flags,
+> > > +					       MFILL_RETRY_STATE_VMA_FLAGS);
+> > > +
+> > > +	/* Have any UFFD flags (missing, WP, minor) changed? */
+> > > +	if (!vma_flags_same_pair(&state->flags, &flags))
+> > > +		return true;
+> > > +
+> > > +	/* VMA type or effective uffd_ops changed while the lock was dropped */
+> > > +	if (state->ops != vma_uffd_ops(vma))
+> > > +		return true;
+> > > +
+> > > +	/* VMA was anonymous before; changed only if it no longer is */
+> > > +	if (!state->file)
+> > > +		return !vma_is_anonymous(vma);
+> > > +
+> > > +	/* VMA was file backed, but file, inode or offset has changed */
+> > > +	if (!vma->vm_file || vma->vm_file->f_inode != state->file->f_inode ||
+> > > +	    state->file != vma->vm_file || vma->vm_pgoff != state->pgoff)
+> > > +		return true;
+> >
+> > Doesn't state->file != vma->vm_file render the inode check redundant?
+>
+> Nope, struct file is TYPESAFE_BY_RCU, it can be recycled with the same
+> file * pointing to different objects.
 
-Thanks, Lorenzo
+Oh lord :)
+
+OK ack on that then!
+
+>
+> --
+> Sincerely yours,
+> Mike.
+
+Cheers, Lorenzo
 
