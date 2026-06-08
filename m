@@ -4,118 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 965E7CD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 13:29:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEBB7CD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 13:29:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4FDE6B008A; Mon,  8 Jun 2026 09:29:12 -0400 (EDT)
+	id 34C2B6B008C; Mon,  8 Jun 2026 09:29:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A27E46B008C; Mon,  8 Jun 2026 09:29:12 -0400 (EDT)
+	id 323F06B0092; Mon,  8 Jun 2026 09:29:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 964666B0092; Mon,  8 Jun 2026 09:29:12 -0400 (EDT)
+	id 2609E6B0093; Mon,  8 Jun 2026 09:29:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 87F1B6B008A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:29:12 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 420871A0AD7
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:29:12 +0000 (UTC)
-X-FDA: 84856826544.10.CB006A4
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 46B31C0013
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:29:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=dAKsO52F;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 195A86B008C
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:29:55 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC8F8A0B4D
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:29:54 +0000 (UTC)
+X-FDA: 84856828308.05.B99742F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8BCD5C0004
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:29:52 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="NJc/kQxI";
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780925350;
-	b=wkjWMVbOTUsMcj5s+mkY/7LwTEgFHi3O0/hy6DuZso8d91lzm0b0jzq41lJP47ymw8uS2n
-	aFTQZM+7TS4KfE3RH2vhi9NgIRM4JeWMJR8IF8femRDGWq0FEey+Jt+LrpZy7ksjKDx3wy
-	voWkGsp+4Nz5aqFJF5q6SPTtWx8ka/M=
+	t=1780925393;
+	b=gZeMQj3xmEGgFEkF3LFYikIj80D3tla2AA+g8RDZRte8pG/lhLLMfmtUnaVnEYXj2GPi3H
+	W602nyZ4LfOMK3tWD72FkZXVeijnQUkk3tk6edwq6acyRVlmk1RGfpLXbixxLQaAIj7j5v
+	Q1/+CVi1M27EmbMUQ7fCwt4sfEY6krI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=dAKsO52F;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="NJc/kQxI";
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780925350;
+	s=arc-20220608; t=1780925393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RIOQhdcIWAF1YfBlwwhBIJIz3OtmjYbgnjZxpRy9+yY=;
-	b=mH57fP1NCkG+7BL7/kTcrYeH2NZEJInooHindCgINfwoXBmZmfyR+DOo/3GN4nUfPHS+OL
-	5hdbanPuDsAsxQxRutXHdanVonBHCHz2etEO/YgxFZNVvwAFMhoxTnIqHX5JhztqbKtYeq
-	I58DFkXEYYhDZUNb2U7xQwbrsmYZMH4=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-490b1bbcf3aso35335825e9.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 06:29:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1780925348; x=1781530148; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RIOQhdcIWAF1YfBlwwhBIJIz3OtmjYbgnjZxpRy9+yY=;
-        b=dAKsO52FqPJ7LMXM+tjPU1mxTaRauayHHSj4f9B7T3nhJsAG/hPxBmh9vFT8zleKN6
-         YU6lhaYzZNUO6/unUQ99LM+Dym54XbQZ7yahe5MxdUU83K/j1YQhd9Z5MoT8pa4cxLCh
-         47MlafI3ApRJkFPXAb/Ty8VZh3FJU+SFXLI98mk8jJae2qgJr3cos3Y9HMAUQZRD8Lcb
-         AHMPXL87xC4y7OmFVD4muSPIfbKWYZYeyPiz/n0GIfq2klGvPqJIFtLGu5BX8FaUAjBo
-         duQWF1xvOTulifdOUwgdwrrvIOqpkDAtlIc1NcMcyuaq9AtHsrj3PeZZyRDEUEWYsOtU
-         Os/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780925348; x=1781530148;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RIOQhdcIWAF1YfBlwwhBIJIz3OtmjYbgnjZxpRy9+yY=;
-        b=QzBHnKoQPzXUtl1gmMoFivUayBBew/+8oAJR0ry7u6F9ixmlLir+SUxl+q9uxXFhcf
-         2G5Bto0rhQo0C7ZDB8HUZy7dUacBjxv6zLrF9gMM8QNNgIH2hE2ryvSVfqA+oz6B3+z8
-         u6I14CHCS+Gy6paePDow16yEoOSfybaNYGDr1xJD79mBlEYNSFlZ1TeC7HVazXI7QQfE
-         oOYu/JXJPv/f6bIuuTlpMoeBeb/N/e7+mRl+WiO0S3br3xTT2UdgUEQYUY/MKbiASpbp
-         9Jem3yWS0GRi1GJP8QggY3tHX11RTHmMGlAE1XgIP3vML0FNV9/BaCLAieTIhIfp6jmf
-         8d+A==
-X-Forwarded-Encrypted: i=1; AFNElJ8bybz4Zcjx4wTOVnOkcIohCLGVaO7fd1G1IwOoJzGqPvLB+27fTX91i3BzoewkR3w7EEVNGZ0hcQ==@kvack.org
-X-Gm-Message-State: AOJu0YzGdxFNZXZvn8UFN+SgcoepDxwkLjvzm062t+LLu3lp4ErWNP1U
-	LxML7fs8vjeHS+q0ceekcGcq4QfFz5XJwh6csJnQuSltO4zLavIINwTFnTl28ppMYRE=
-X-Gm-Gg: Acq92OEJEGc5VViuTV9EKLct9PxR5eSIh9nRyuk7p1ni05i4bewhTHcwMLPJomC2O9I
-	zqPfW2c98xZ/xhR0STEbn6hBh7zcJ09PlMm9Uqzyo501hnu6VvWYElI3SEzFTft8MybqvYaiLrK
-	fI2uC/IfggSQWkh+APEZyql7HeJXOvSJSISDDmoQ8j4unjHlKGirbFxr1vZOX0QUsm2XrBxkaDZ
-	vEMI7GvdqR2pNcfn5J6wN7/g4AMlGspAAFLu4RLA3+xthDQws0mPu9pEf1ENVarB8qyZNBlkNp4
-	ySMQyewdYTaDAICnAQZkrdZMFWvJ+W3dCO2kNWWpvbk0Qxyrget+pHMlKRJHnVLD2DHfR8D/2H8
-	mOdkYBPJC9Tz3tGAsI3SUZvLHyr7geP4WoTAxSCBcoZBfc6GFHKHkFAIhdgHfrsFNqQJzA/+f2e
-	BWBZrKTHr7eTJF8/TqeX2ZNh3bclr7Q3C377FabKY5LNLDmZE=
-X-Received: by 2002:a05:600c:1c1e:b0:490:44eb:c1e0 with SMTP id 5b1f17b1804b1-490c26056a4mr274307955e9.21.1780925348589;
-        Mon, 08 Jun 2026 06:29:08 -0700 (PDT)
-Received: from localhost (109-81-90-161.rct.o2.cz. [109.81.90.161])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490c2d2d11asm337684075e9.1.2026.06.08.06.29.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 06:29:08 -0700 (PDT)
-Date: Mon, 8 Jun 2026 15:29:07 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: memcontrol-v1: use nofail allocations for soft limit
- trees
-Message-ID: <aibDo_pYN8FaGSgU@tiehlicka>
-References: <20260608063644.39-1-ruoyuw560@gmail.com>
- <aiZ3EZZV6LqsTxQM@tiehlicka>
- <CAK_7xqyyDqNW1+puMSp2LzxmOKxFUx-UO9uGiDKoL7ZTJ8+3ZQ@mail.gmail.com>
+	bh=uUkJBSNOnoA10/A6KDnwlKgtc8FUefSWsQrMwnabMn0=;
+	b=jzLEpJOz20sqLDZ121Zh+8hG3Bnweq/wtC153z9sI83j5fIgxGMHsYqQrjcetbkJq7caHv
+	yWy4c0BYFVwpKB+YRi7YTCogYVv+mOP2bPn3NfUYSgzFRbkPTNLpUI0v7iHZ4o33mdYF00
+	rSdMHTe/JG/pql1hti/+ukLGOTyb2Tc=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 974DF2403;
+	Mon,  8 Jun 2026 06:29:46 -0700 (PDT)
+Received: from [10.164.19.15] (unknown [10.164.19.15])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8FE823F86F;
+	Mon,  8 Jun 2026 06:29:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780925391; bh=c7M+hivlyg+F6v5Mi/L9hmuj5dSm1f0V79z/a0ReWCE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NJc/kQxIs4jkLrn/5fXdA0MXYh+Ww/rixpyzsiBMMa86Syzya8YxfMjSldU128au/
+	 rPV8JVR17KkDyhaNCNLOr6QR2f5dQnk3QgZpeqawEIYja/rq0RzIpVyMeXgtY/6+Hi
+	 O5uv9VzrLBv8lkr6GQTQu3MFpS4JatWZkhqPOSeM=
+Message-ID: <903740a1-d48d-458e-8fa3-c129c68b5390@arm.com>
+Date: Mon, 8 Jun 2026 18:59:46 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK_7xqyyDqNW1+puMSp2LzxmOKxFUx-UO9uGiDKoL7ZTJ8+3ZQ@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 46B31C0013
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG?] invalidate_lock not held in read_cache_folio()
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ David Hildenbrand <david@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ LKML <linux-kernel@vger.kernel.org>
+References: <5ca6512c-bdc1-4620-9c99-c7525e059099@arm.com>
+ <aiazUtNaS5mVlaCy@casper.infradead.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <aiazUtNaS5mVlaCy@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8BCD5C0004
+X-Stat-Signature: ypae1co5stggcr9rf83ac9g3b96gsa9c
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: fogmirbt9ozu9iuj9i7s7iojigkpz5fu
-X-HE-Tag: 1780925350-184654
-X-HE-Meta: U2FsdGVkX19wQD01wu8YOCsyhLBpCv2KoGWarOh7dPba/ODr7+UUG2TYc2aN3U+YSG6KVYtS1W1AR04PCXVqeOFAfAQUKbLRmRIxjuTqiR0kH4JD3HExrRRtghE/FF/9ErprqoWng800yNGhhe/ulv1b40c4qI8aYx6WEtGKVrfWjQKD099wPAf7CGOy90CYjY3m9tAFPj3r8Q0RxidYUkZyxVO8FLqTNKtwjUJ52zSvQsHXwjpa75ekLeeq/M+8xT1TrN4daa7yFiIOq62Q8IE573S7qyeO7YZaJc/CoGQfas1xxb3xuCn+NNhT2Ysho+1CJtMFgCQ83wrdHiALWNQ92niVj+Ceha/2dZW95Uv1WSl2JHUtSbQhPq+Cuq6aYHnXAJc/gp20FUfh5OeAcQt+EzP+P+b1iWbeJWnZNzlKviUTy1SV2Uiwy8w0Lu9MlS9xs+EAtoFJ7cbtp0eZRyDuuwxWBwoM7lDgujo2RE0B/zgvGw5Kf49IsyDNxsNNg7qonFVrucY0CE/NMP+AiblZQNYfUaTty6Pd9E7B8TBKXw94l8jqupn5EQk6HK6tgYVoa5TKfg+j8l59zmw/aS/Lo/YvAOHT6/k780V93jU9CSW+EOx5H3haTVXfU0liS7ab5XsCFVl4QTFiqmyicdyAsLwwiZgk8g0eupwC/FpoC37uSMuHDte22orH7J8gv0Kl17ScSGgL0X+EzW0/OIKCZsQd659ZyC54IWaqEmL+gk98VvmAPhukqAt3kSoH1zjBVlo9wgzxPhTGhXgiqhhY3Fpn3LQSgJp69sj2b7IHKgU119/iFBOWkD7tFj72QmH7tnXFs/PhxmN4A4Cp6H741LLcXDyZO9Vam+28p3I2jOruY2/DrW6FkhKzdrws5zoIOqK1eL285Iee5aiRwzBQFD/NcWSI9QtBBOpA1cfLNTxPNkWEMGbmSFFXohCGp77jI4FqPy+JLuJ/ZMf
- RcLCANp0
- JHxkd9Jg7fiigh1ANKyIeD4jBx59TvNUgEn1DXXaNVtwb3Bld6VZqNGI2BKvBcoRmH8QKG4tCL15aQ265OxCC66M57HCcu3fXG/9bL02EY9PR7WmghmOLQajKMmVquv8v5k2FG7x4BQM4VbPgpnCb0gquU1I5lGV2VTCSKfKMXz1f2GRCD8AHdU+WPhyjtxG8hKzMxJHl1Ws2weWlB82sUCZHRfAtcUfhqg2BXSbAkV3XNSRRNVEdl9x9V2PekVQjEQjqSpu4Y6HgnUR/WojzyWkqpEV85OzBLVikZowifw2gjmlF44yLcy4sEz09anPpo0USESsBjj1/7YjGW0U9o9ESVkqoPV/P6+ZV
+X-HE-Tag: 1780925392-718781
+X-HE-Meta: U2FsdGVkX187k2UHIKW+DDz2hzglYr5WdaVa/mu7fKGKViIDh37pUrSwC+I4ArS7PC+YLfAxYH4gdkTc6yAjWwUW6//0uYS36H8a3V9do2ZMCtMFRJuMD2UjEdG0tGqXQnXbS1+s89EQ/ZTljYXSnaSi9QQAqVDSAqsHtOsxErXBzgo1U1dk6nt9Vx5wmxXVyhI8vn0ej3+v2WimvmwD/T2KU/DBIGJI7tH01kcZypNUHKFLnmN1PlWFG5O8NOrcjaE9YZmoDah3r4YhAG+0jpycyS7cQwrYTflITR1bJ/TT0vtO1Aapp1vwEHCpOzGs0UG1ecmedzi6Y7AsrktPS3l55EFmtw/BUSgwDgjqznq/+Aiiv6KXY/lOcoSnQ8muqXi2QFHeLOd2/k1LdodUuV+4ttZVgoyu/JjQszpydlh9rVYJXSM+zi4nM1r5bX8J/nVGJFZf6WuuiXD3Hfzc3221wggMQUDG4nDoBe0eGih2gdKCNb6aesNAyF/ab9xrfjhzpJMpc7OIrGoj4VmWVZreefc6M0UFb5DpFI74uP7pfqD0fSHGfLfUvaMJmU5IFcOxG2iJbprPFEwTY0Iwh2I+aPQvOL4FBlzFwNW4wQCoGJkTfZzpvT/1gk6YtiWaiJEZk7W/X9cZIr+48ppOB+0koM4fdxrTsLQMjcohUcSku2SifhYZeomn0yvu2qQC65fT0iERdrt8u51x7/QiXHrycCggezMfc/ZNZ1RvEl3jOP5aEcIXfsqQTxAoxP9Xn+HCLju9J4AUq697t3NjWLle6+gpt0OPvF66iVuuEFUmeKyS0ivIDRXN5Z1dHc8MHn5SgxEoqg2ONVbWsSNWFsq9WD3QV+P8ANJmYiRSsDl1hmv6qnTLHxmhhHp6efrSJMKoCiau5rqPs7+5kSnhR22fkrJsjjlhsG7Q7cqLtRX3JnOVQUJlo+FKCWi5mSm0meLoyrvPv+s0+stZLHx
+ Vi3lFqK+
+ SmSe/hAIPQdFlYYDTLvVzjWD/K7sxqTlBcLvLrx+MxteWOS0tvwBruvTcSBn7ud8jUfARIQblCrOdIn12+9aYkFu3qJV/J+Q09UFrlJgTM5oH5vWKH6Hb6InNe3KvrCocVSMN4scZrHZfu7dDhdFh2ZEb4LgMrJciT8co7cPptKmLMFSl59++7z+zyQNuuSNf9rL8BBnLEmZIKAEeXPZ1qTZ1XYrzwdEodp796jrLI6rWgPuO3ffGBaYDJepbbdNWqwt4Cp3ZCpqERVnRXX+dUhyESeXKe6mOOresc0kvmXujErgwB9KJHPEZByEr/8mz+Tt5CPbJUjYIw3As4EQzzGyk8nOzxOf4CQRzzro6jRtdlXo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,28 +92,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 08-06-26 16:34:48, Ruoyu Wang wrote:
-> No, I have not observed this allocation failing in practice.
+
+
+On 08/06/26 5:49 pm, Matthew Wilcox wrote:
+> On Mon, Jun 08, 2026 at 04:54:51PM +0530, Dev Jain wrote:
+>> Hi,
+>>
+>> My understanding is that there are two ways we are serializing against concurrent
+>> addition of a folio into the pagecache (see 730633f0b7f9).
+>>
+>> The kerneldoc of read_cache_folio() says:
+>>
+>> "Context: May sleep.  Expects mapping->invalidate_lock to be held."
+>>
+>> I put the following in __filemap_add_folio():
+>>
+>> +       BUG_ON(!inode_is_locked(mapping->host) &&
+>> +              !rwsem_is_locked(&mapping->invalidate_lock));
+>>
+>>
+>> And got the following trace:
+>>
+>>
+>> [    0.115587] Call trace:
+>> [    0.115686]  __filemap_add_folio+0x5dc/0x680 (P)
+>> [    0.115871]  filemap_add_folio+0xec/0x2d0
+>> [    0.116031]  do_read_cache_folio+0x144/0x2d8
+>> [    0.116194]  read_cache_folio+0x1c/0x30
+>> [    0.116344]  read_part_sector+0x4c/0xf0
+>> [    0.116499]  read_lba+0xb0/0x1a0
+>> [    0.116627]  efi_partition+0xa8/0x740
+>> [    0.116769]  bdev_disk_changed+0x238/0x620
+>> [    0.116939]  blkdev_get_whole+0xac/0x100
+>> [    0.117090]  bdev_open+0x280/0x3c0
 > 
-> This was found by static analysis and then checked by reading the code:
-> memcg1_init() dereferences rtpn unconditionally after kzalloc_node(). I
-> treated the soft-limit tree as mandatory memcg v1 init state and used
-> __GFP_NOFAIL because continuing without it would not be useful.
+> You can't truncate or holepunch a bdev
 
-This should have been part of the changelog because it provides an
-insight into how have you reached your conclusion.
+Yep, I realized that later, thanks : )
 
-> I agree this is early boot init code, and I do not have a
-> runtime failure report or fault-injection reproduction for it. If such
-> allocations are considered not worth handling in this path, feel
-> free to drop the patch.
+Just that the kerneldoc says "Expects mapping->invalidate_lock to be held"
+so was wondering whether this comment is appropriate. Difficult for me to
+reason about that since this goes into fs/block code.
 
-Yes, there is simply no point in handling these failures because early
-allocation failure like this one would very likely lead to massive
-failure before userspace is brought up anyway so there is no practical
-way to trigger the NULL ptr.
-
--- 
-Michal Hocko
-SUSE Labs
 
