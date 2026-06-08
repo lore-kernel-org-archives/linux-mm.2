@@ -4,160 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5283CD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 20:18:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1D8FCD8CA4
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 20:19:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 169316B0005; Mon,  8 Jun 2026 16:18:09 -0400 (EDT)
+	id 5FE426B0005; Mon,  8 Jun 2026 16:19:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 119D46B0088; Mon,  8 Jun 2026 16:18:09 -0400 (EDT)
+	id 5AF496B0088; Mon,  8 Jun 2026 16:19:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFC206B008A; Mon,  8 Jun 2026 16:18:08 -0400 (EDT)
+	id 4C5176B008A; Mon,  8 Jun 2026 16:19:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E0C286B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:18:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89282163A90
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:18:08 +0000 (UTC)
-X-FDA: 84857857056.09.E13F86F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3EC0310000E
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:18:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WFf0GFEC;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C2DC6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:19:48 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EAE7B1C1C6D
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:19:47 +0000 (UTC)
+X-FDA: 84857861214.05.F47A39E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 05DDC20003
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:19:45 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CCaq9/IJ";
+	spf=pass (imf31.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780949886;
+	s=arc-20220608; t=1780949986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vroj8FPw/hBBf0mVIETR1AI/cdAWI1hHo3K6Dubb1Jo=;
-	b=NGK6k/I/D3KBi8Qa4JL9zaoBTu4Pbarmy7mcwxczgnCz8NH1q2GX9WXs+q4/7EFKoR+eTR
-	7e7xsOtOhRvIT8MYqfzvL+3uWJkmlieD7UAjnOPi5skTDbH5PUD8hWhHbpqEMdLIgrwtSE
-	Vb2lWV7ZQK8rQf/08ATnhDW7ypHRd3I=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WFf0GFEC;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	bh=2E8zGT5xOyDSmdwu3J6sYJf2Yq5VI7x+0ZWpD9LyuJc=;
+	b=iQpi6mlfA/m1Ohe8S6QlEhJRfTQwy0RlInTVEjaOyxLvJWcVRqyeTAmBAtRJFC2Outwch0
+	WtwmfKbJdSjNx6kLSHJqmkKZl8ry2/HmDDLbzvOLXK2C3Diyllm6OtmxcgiOR/X/acn8tB
+	Sc8t3vVi6aVNdhyZA3Vriam6owOJ+l4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780949886;
-	b=Fist1H1kggR/2nG7Qn+qMSPinJsTowxms3EKESZipePdncXK53wVswpkzRE1uC59IJK0g+
-	ICoahzPOdDmDp7TdWY5z0r5iqD1bNKBcMLfzrYdQB7FiHCLNyyiEVK9nwC61QyyNBgYaoA
-	iGmv7/gcigs6IAnjdPxUPlITMmYcayI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780949885;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vroj8FPw/hBBf0mVIETR1AI/cdAWI1hHo3K6Dubb1Jo=;
-	b=WFf0GFECBCt1sFCmwQMwOPTyR9ey345ISMKMvWyRTxtwcJJ2TEiHKCY1OvW0Xb2veuXjxD
-	1qnAldiMZbNUD/LOPTNAkY4DvJz5EDvNXb5JOyPHiXxE/A0wSL6/2R8FW5g6vWGjQcM0/y
-	a6MddeFz3BphRTlrUEnwChvDnfJu7Os=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-jTwqitmVMhS6U2pggMDUvw-1; Mon, 08 Jun 2026 16:17:57 -0400
-X-MC-Unique: jTwqitmVMhS6U2pggMDUvw-1
-X-Mimecast-MFC-AGG-ID: jTwqitmVMhS6U2pggMDUvw_1780949876
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490b79e6b94so33783945e9.2
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 13:17:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780949876; x=1781554676;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vroj8FPw/hBBf0mVIETR1AI/cdAWI1hHo3K6Dubb1Jo=;
-        b=SeHFaLmpFWC4ULJpnS/Eyj/IYWwaorGEEvmrhmh7r4iqyEh/Q5tDbabnyhqDIf2kC9
-         hlx0thplYWtbuOOvJSHN2QKKuRGB1zNLzMJVA5nWkm+LvEK6IePRjSWW0ZJiaEIs4Wyf
-         VTOWWl1NRrGaDA56K+Ke0ha9u4ky8+tqqZQfUp9htEZBvSC17nWYgOydGiBu3J6lAV2i
-         YNWGDhLHAmOq8dVUQni9Hr27XD9NL1/ffb1esF8Fd2QAh+7pPDNeQxhedO8h9Ex93Bw2
-         rQeRv2vI0IHNw3a9lDFNfBnc31RSeLU1b3GaSE8cwW2sbNy+mCjx6LWierCgD1YJTbk1
-         1cSg==
-X-Forwarded-Encrypted: i=1; AFNElJ+sUsXRYENqBMcShz8Le00Hx9LldBUYpxnkIm0z3w6g8l5bgRscONE4oyM5XcWS4OQtt+MP64TuQg==@kvack.org
-X-Gm-Message-State: AOJu0YyGwnGpUZeRVA50kRJe3O9PXZsog9blTCcnUeJ++3Wvu2o9DNxQ
-	eYK4L5p/uoeE5dvoiUY9wyisSo3mrh6Cu1MCrS4e53B7lkZ55HiKdOmDPcnzKvu5iNsvSTrrT8o
-	KPDluMRDV0O1iSqupJjelayl9Y9MeGXjCa2ROwNcdkJFvqH/MeNof
-X-Gm-Gg: Acq92OGVtHNn/1ddjLfp1ISKcIuCJ4Q5b1Li+ITqr6VikPK+O2YchkatnmR7GIdxhyK
-	R5fERijHEAn/R6Jb1k4/U+yTRmGBzdgz08Fl9juL+cIcXO03jxZKSeDgqJizPmLIKzJhJ1rU+i8
-	y9Lx8+gXWeTAZkfNmApu45dXWjYGB3ILRAyBuutXCdZkfvivJ4NlvNA/GxW4ZYGlNjv3BR+Cj+I
-	7GyOB/U9Mc3GPZnknVba/+51bA+MNR6/KOO9k6UZ6Cpc6HIzKmKvGkrpUoLwky42JZ6yQfW9r9l
-	A6u7keapCfRLexRlgc3Wu1D+pWPco7/AYlvUMYhjpdC69Fz4Z37YOoPVQzq0CCxXz2Aw4aby/rX
-	0Avrta3rcfLnFGQhAW0gy3enBovbyHgXQ0P2N6ftrAGT6ofbW2usUiA==
-X-Received: by 2002:a05:600c:8b6e:b0:490:b7a2:8864 with SMTP id 5b1f17b1804b1-490c25237e4mr294515785e9.0.1780949875698;
-        Mon, 08 Jun 2026 13:17:55 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b6e:b0:490:b7a2:8864 with SMTP id 5b1f17b1804b1-490c25237e4mr294515045e9.0.1780949875120;
-        Mon, 08 Jun 2026 13:17:55 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490c2d37edbsm327199975e9.2.2026.06.08.13.17.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 13:17:54 -0700 (PDT)
-Date: Mon, 8 Jun 2026 16:17:49 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>
-Subject: Re: [PATCH v10 02/37] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-Message-ID: <20260608160954-mutt-send-email-mst@kernel.org>
-References: <cover.1780906288.git.mst@redhat.com>
- <df06b66fe4ff8e925ee0714955abc2183a727b90.1780906288.git.mst@redhat.com>
- <aiaOZoa2vSCz_0wY@lucifer>
- <20260608094153-mutt-send-email-mst@kernel.org>
- <aibMs9DXuhH_5F2Z@lucifer>
+	t=1780949986;
+	b=R5MsVoiZ9GNpiaheInqhZbebDJU3vA4qMdsXIZkjgGb6pYd1MtGZKKDpYS5EzFdnO295hJ
+	lc9QFgdvFlXFUztlVk4BghtrBa/t8a5QCiKW7s4dLSvIt2ejaS1e+mCmZSh87E0q+qxNJk
+	Z3rtVOF6fVO3U7w48PHBYeguxsEPO/k=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CCaq9/IJ";
+	spf=pass (imf31.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D0D643671
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:19:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E43FC1F0089D
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:19:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780949984;
+	bh=2E8zGT5xOyDSmdwu3J6sYJf2Yq5VI7x+0ZWpD9LyuJc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=CCaq9/IJBxuXvV6cfEUyYGqZZ353g2VavYVoMHw1Mj4h5NVjZQEIv1MgkROtD1YJZ
+	 gh0mQJlrVUQzwSufctn/wjDP1PV/3djpyJngB01kGvXnGK+OVsuLdA38arOor7pWfG
+	 lTIAxSurAPDs1exx2/1WemHtIy7dgJNXs/FQx17zYEFRBP5mZRfGUw60iW27LLuTns
+	 702QcNjyLcS695xsH9orvhNN8wlZl0GAlt8imcu2xZQxJRGhAbkmAdAxtWjqciUWcZ
+	 qZTkoRkmnCw4O/tKRQlxWwSoR/v6D7lcoULAnhP87wZNM8C17IP1/OWHlmZUgPelis
+	 1ooxkgVGXhHzA==
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-691c5776f95so2237534a12.3
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 13:19:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9HjlXE91AK7PfZNVH/gnQikKdXgPYSV+RfkaOZoB49g8VGOK2MEJN1rVw/TM/IOHYOmxqFue7BHA==@kvack.org
+X-Gm-Message-State: AOJu0YwiMXTSO52Irb+Ka66oncV3jENxVE8ymNaYk5cepPJmOIwPvnaE
+	0uIi6+9bYLzQN+f61bhf7CN+cu3oPLNQ3JRT8k0I8hC1GrFHnzTwsEQcBhvchLMZ2jW6hbcZSA5
+	UNIr0LY+1g4cV2pwC1f9U/HkxCnhOjw0=
+X-Received: by 2002:a17:907:9812:b0:bec:18d5:ddec with SMTP id
+ a640c23a62f3a-bf37311392cmr824666966b.41.1780949983628; Mon, 08 Jun 2026
+ 13:19:43 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <aibMs9DXuhH_5F2Z@lucifer>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 0e8oLuZTVw7AaFBpWWcj7hYFv8GsRxDwE0s7EGB9ems_1780949876
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3EC0310000E
-X-Stat-Signature: m5585t83jbh7zwncau8ji3bu6fd9nhmb
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-3-jiahao.kernel@gmail.com> <CAKEwX=MQe_KFZe2vBXQYh0aa-x+E8AzNwmyjJGJk4tDoS9ML3A@mail.gmail.com>
+ <aho_VtLCmIRsNyvO@google.com> <6deeaea7-3cd1-4403-29fc-d2dc55c297f8@gmail.com>
+ <aiBqzOtEv5iAC_qC@google.com> <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
+ <6db27a22-cc7a-9a94-db3f-c912fd39aa32@gmail.com> <CAO9r8zM4SDdTgz9L2s1VfXL8K2VBjMD9ej2BTDxaGge1t2+quA@mail.gmail.com>
+ <aicJBVT4pBvmyooT@linux.dev> <aicZ-5GX9De3MAU7@linux.dev>
+In-Reply-To: <aicZ-5GX9De3MAU7@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 8 Jun 2026 13:19:32 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNBJ-BsXyKFveA92jbwMu63uFVTY5CuT4fRHTBVcOjhPw@mail.gmail.com>
+X-Gm-Features: AVVi8CeXOXcjGUkNg7x1wCjnQhVCU2d5Mo_U0_PWWSBCHknTzqRDtrc94LmYLm8
+Message-ID: <CAO9r8zNBJ-BsXyKFveA92jbwMu63uFVTY5CuT4fRHTBVcOjhPw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Hao Jia <jiahao.kernel@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org, 
+	tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev, 
+	Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, chengming.zhou@linux.dev, 
+	muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Hao Jia <jiahao1@lixiang.com>, youngjun.park@lge.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1780949886-305042
-X-HE-Meta: U2FsdGVkX19pnoT+CP/ooFJlRQ7FECCMaebx0/R0dol3ByAn3J7n7wc2X8y6XexkDG3dpwEgQpn2w6aVvTYPtaj4RB9VNSMxheWvjTn3T1jsHg8edLjmE7VAdgok8G2R75oE8cegPR4S3KPmwrQ/ATv2+nLgzIxYpJ10sxWsw/E3Dze698AFZUy0j6khbRTqkQHl4FJndOELaGhW9y4L5/L6ogqS1tTSKJvCccKrU0yWFQpmkLvDzVEkAt+6qRgICgzgf4PKUWvWqhRCJhLHTqK1dQ9Lj4wLwa3TVhdawPCPk365nBT4g3hp5zj2N8yWQTVOLPCHNHcZSRS+LBnoDdCneM4mzUFDvT4GAvHUyEJpN6hXhdHEFzX3P3Y7BchxSPd5kxDKeEi3DJdYFeXHsXeqU049PAnN14T7Gc7mNc0g8jeG5L+xlBY2Ce7CrmsviGzRGhcFWrnye2zbQjYDvayLs4VHdVHI72Q+QC0ccNRPtMd33hQc1eE3Ans4wBi5UZUwaqMXNUemcJgHW3k+jgHOaBN/ke6Jns/wmFWGuoAKQgPDpEq7vjDe9N0wCwlRlZ/ScCTnFuS+z0bVY+MBG5I10MRlhA3gD9Ow+GAbj3HdOSlKvP3/2l5yKjIyrNoNbYiVVV/pwwqXQgMp8u3ovMbCDtRzfC4hbOySseStz7y5ArEjEsHRmLSjFPMzT3xIRHCuyCkcozcbkfAOMlHg7XCX+qf9F7hcPfpv0UCC+W1aOMB9kpV1WPdyp3jP8L/eUr0+uRV83zxOHHFhlipQVpytJ9BOcOLOySxOd9mmcj2Xa7gkA4jjRqLItGhokwiTUFWlzbAYmynvQ32fDngUtoEQc60ThXrZfY3IDeXoRHtblvfFv+OGXCNjpOq+u8OhToOw2XgBVVqUR3VQf+Ww3z3jcNmMJt0VNQwf9bBMrP+h40/59ffIRxjx2zfedegkjpN+o5wpyYTqBC2OdrN
- WCADyuGf
- PQEO2ALFSBjfFF7CSzgQUXAk0+Lb4HCjVNp7pkD6v2sJlPephHyEI8FAz9pTOt44S33R3asqjDdrFMfRn7CmhSYZK/3WbFUwHQZD4kUz7g0r0vOSEGoTLCFz/GwQFPByiAIacA90tABpkU+NRfQQBh7XViOkT9anmNXc94wOpDmvKoiY1RvH9CyM1LZCNin11wWvl+ASelZXTxcLjhQ8fz9ICsIJSriI5g7w0o1FI3ICov8a4xWNOqdJiSYWVqjK+X1jts2xzFcrlOB0h38tNN0tKYC1OgjRZWd2Ec5sPf2DHBxR6ltAB4eQSGsX3DpihM/G5aswQpnDN2tdTzYe3oCnMTWMQIGtyXQa092Yvvo40PpJUs/+QQOkRUP9qTay7UUu8PJnHo2bTFMBqfBabN7U/2O2WLzqqudaiK8Avpnf9MgMTIFaVrRHTkXW34rg+7Q1CTCaVZUs6S4ChrWmw+E1dFD60rl/JBbitLEeKwiy1OG3EMSUWTS6onCOyLHi7XN11
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 05DDC20003
+X-Stat-Signature: orkfprm4fomqa4qmk48wp936kugpowuy
+X-HE-Tag: 1780949985-8524
+X-HE-Meta: U2FsdGVkX1+eNHZNqrffgwSwfUgvUwQ+kbmrb0VxPo9I1FUAvG8qMvSmMs7cjqwomAKxkEAP+lFu/ZZCy1BHmvD6sjtRLl2GHsntogJUBAqpDvP6q74nidd5KSKdY4lWgF5+FFZ84qYivLAq61S7vF/nCmuV2WwbT0U3i8McG2ePwTKbZ8g8/lukvEI8Qdw7d/tLRuIyWUuPGHAC3pOXmFFOcAZTcnAOcvnk/+9o+YC1HXeXuHJH36e0nTZadOmyPwTJHHwjFQK0EOz6Wf/0IeGXmKKCH5FighuFndypCuL15OK0DXHq967U4E6SjNwZqaofwp+FTt63njLzWf71jM6SuFK4xUltoJk7nqLagiz07F3TksITRj7VoMCG2TFWp8TbF0AkYCLTnBUl5z+SHcPGqp/K00WOF0oPnJnnKWiLruVtODJGFdF7DjdC0o3eVIfXZGYgktOpJwl593jyUxM3to07o3MEGMlpf+5TD0i9ahJ798AdxNbLq8XWJwVMVE5CiSnPJksTGLOGcxDcimLOZsVnCWXnXaWB++rQDi6Q+WKaJiwbYAj0pmZzNdMHq0oWeMc0zxJ4ffzysEUImJO6MRXxzuBCma8yxnPmZxeOIJM7i6oFOwQYbDlmQLXl47jMkqReIksYgVW6XR8Y1NHFCv+h2aGih17w8VZL7g8euns1Q3/sv25FLXszzw6Cv3IJuM5+disblLC8vt5nA11AlcJ9p4yguq5O4MOKe31QmsvZEFa1wDxJ1fYdPPpiMgLuXInX72ieKfqkLaWxZD3hCfmvE7qDgiKw3pWeIMo8ZQySZ9O2ZOvP3aQ3LdGAUgSBJKyE2LM5PYNApQjm8sgY8/i4hVBNxIIdvuO6SIAtPPde4qqPEmErmRZdNyo/HJ3u/Tk1P9A0w6dm4IgGb8/9UA/w3wdvUu9i5IFNvN6RghzI0I6vKhMpzkZ1mKHcnn3U5BgktJdKSTlh8dl
+ BApi5NIT
+ pvuCSTVf0zIFqS9kXGhsEIxnukGpH8ftDbFz34vA+vokCl4ppvZIVTXizL+OHEKfsSnRBFljHWIJr/FU0DJVfT8B1WhcFDUjAN1FDSU/031GR6rFJaoUt2gwJoQNCpwIwBi/OaOFaV6uJ0wvZGkcLxmTYqpUi1wH7s5fhm1/nqTlR4NWhwOh/Y+tKaoZZG2qjR0YAueHUnHxOTfZPl9Uf9FWBtHMK6FPahXx6+r1B+Zj+y7en9DNJP0CCiqIPGqeGiRPeLyZqkAPHA9AZdyBH1MZjxzvFn4cNxRiKyr22nwGVybqXjEuDHBBLr1kS3OqVYndvy0ZXbdLMLI59XojxoBvV6QZMJN/ZYHhHjTTmnWrnZTQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,96 +111,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 03:14:51PM +0100, Lorenzo Stoakes wrote:
-> On Mon, Jun 08, 2026 at 09:48:34AM -0400, Michael S. Tsirkin wrote:
-> > On Mon, Jun 08, 2026 at 10:43:21AM +0100, Lorenzo Stoakes wrote:
-> > > On Mon, Jun 08, 2026 at 04:34:23AM -0400, Michael S. Tsirkin wrote:
-> > > > TestSetPageHWPoison() is called without zone->lock, so its atomic
-> > > > update to page->flags can race with non-atomic flag operations
-> > > > that run under zone->lock in the buddy allocator.
+On Mon, Jun 8, 2026 at 12:50=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> +Youngjun
+>
+> On Mon, Jun 08, 2026 at 11:30:30AM -0700, Shakeel Butt wrote:
+> > On Wed, Jun 03, 2026 at 10:36:07PM -0700, Yosry Ahmed wrote:
+> > > > >> But doesn't it make more sense to specify the compressed size, w=
+hich is
+> > > > >> ultimately the amount of memory you actually want to reclaim.
+> > > > >>
+> > > > >
+> > > > > I personally prefer compressed size to pre-compressed size. That'=
+s
+> > > > > kinda what user cares about, no?
+> > > > >
+> > > > > One thing we can do is let users prescribe a compressed size, but
+> > > > > internally, we can multiply that by the average compression ratio=
+.
+> > > > > That gives us a guesstimate of how many pages we need to reclaim,=
+ and
+> > > > > you can follow the rest of your implementation as is (perhaps wit=
+h
+> > > > > short-circuit when we reach the goal with fewer pages reclaimed).
 > > > >
-> > > > In particular, __free_pages_prepare() does:
+> > > > Got it. I will change it to use the compressed size in the next ver=
+sion.
 > > > >
-> > > >     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-> > > >
-> > > > This non-atomic read-modify-write, while correctly excluding
-> > > > __PG_HWPOISON from the mask, can still lose a concurrent
-> > > > TestSetPageHWPoison if the read happens before the poison bit
-> > > > is set and the write happens after.  Follow-up patches in this
-> > > > series add similar non-atomic flag operations as well.
-> > > >
-> > > > Fix by acquiring zone->lock around TestSetPageHWPoison and
-> > > > around ClearPageHWPoison in the retry path.  This
-> > > > serializes with all buddy flag manipulation.  The cost is
-> > > > negligible: one lock/unlock in an extremely rare path
-> > > > (hardware memory errors).
-> > > >
-> > > > Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
-> > > > in this file operate on pages already removed from the buddy
-> > > > allocator or on non-buddy pages (DAX, hugetlb), so they do not
-> > > > need zone->lock protection.
-> > > >
-> > > > Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > > Yosry, Nhat, should we continue using the zswap_writeback_only key =
+to
+> > > > trigger proactive writeback?
 > > >
-> > > Can we have Fixes: and Cc: stable and also send this separately please?
+> > > I *really* want the memcg maintainers to chime in here, it's
+> > > ultimately their call.
 > > >
-> > > These patches seem like unrelated fixups that you've discovered along the way,
-> > > and don't belong as part of the already rather large series, unless I'm missing
-> > > something here.
-> > >
-> > > Thanks, Lorenzo
+> > > Michal? Johannes? Shakeel? Roman? Anyone? :D
 > >
-> > I think you are mising that they are a dependency, not unrelated.
-> 
-> Then say so.
-> 
-> > For example, this issue gets worse with the patchset as there are more
-> > places that manipulate flags without atomics. No?
-> 
-> It's your job to make that case, not mine.
-> 
+> > Between the options of having an explicit interface (i.e.
+> > memory.zswap.writeback*) or a key (i.e. zswap_writeback_only) to memory=
+.reclaim
+> > interface, I prefer the key option. I have not looked into how much pro=
+actively
+> > reclaiming zswap memory or proactively triggering zswap writeback makes=
+ sense
+> > but from the perspective of memcg interface, I think the key option wou=
+ld give a
+> > more clean solution if we decide in the future that this whole thing wa=
+s a bad
+> > idea.
 > >
-> >
-> > You are welcome to send this to stable, but I think stable rules
-> > preclude theoretical bugfixes.
-> 
-> It's a dependency but also theoretical?
+> > Next regarding future proofing zswap writeback trigger, do we expect an=
+y
+> > potential additions/changes/new-features for this interface? For exampl=
+e do we
+> > expect in future we may want to trigger the zswap writeback only from a=
+ specific
+> > node or lowest memory tier?
 
-As in, the race is exteremely hard to trigger and I have no idea if it
-triggers for anyone, but it's obvious from reading the code that
-theoretically it exists? Yes.
+The way I see it, zswap writeback is just a "special" type of
+proactive reclaim, but the goal is still proactively freeing cold
+memory. In that regard, I think it makes sense to have things like
+node-specific reclaim. Not sure about other extensions, but Hao
+initially suggested making this age-based, so I think the answer is
+yes.
 
-> >
-> > As for Fixes: the issue has been there for decades. I wouldn't know
-> > what to attribute it for.
-> 
-> Again, your job.
+For both of these examples (node-specific reclaim, age-based reclaim),
+I think the same semantics could apply to memory.reclaim in general,
+which is why I suggested making it a part of memory.reclaim. I also
+like the idea of having a single proactive reclaim interface in
+general, but maybe we don't want to overload it too much.
 
-Alright, if you insist:
+> Youngjun is working on swap tiers. At the moment he is more interested in
+> allowing a specific swap device to a memcg or not. I can imagine in futur=
+e there
+> will be use-cases where there will be a need to demote data on higher tie=
+r swap
+> to lower tier swap. What would be the appropriate interface?
+>
+> BTW does zswap folks think of zswap as a top swap tier or something diffe=
+rent?
 
-Fixes: 6a46079cf57a ("HWPOISON: The high level memory error handler in the VM v7")
-
-now everyone running 2.6 kernels will backport this fix, I presume.
-
-
-> >
-> >
-> > I guess I could send these separately, too, why not. Not sure
-> > what this accomplishes, but hey.  But is that an ack? You want
-> > this fix merged even before the feature?
-> 
-> I already made the case as to why, as have other maintainers.
-> 
-> If you need to review what an ack looks like please consult
-> https://docs.kernel.org/process/5.Posting.html
-> 
-> Thanks, Lorenzo
-
-I am merely asking if you want this patch in the set including
-all these nits I had to fix.
-
--- 
-MST
-
+I haven't been following the swap tiers work closely, but personally I
+do think of zswap as a top swap tier. Things will probably get more
+blurry with memory tiers and compressed memory nodes though.
 
