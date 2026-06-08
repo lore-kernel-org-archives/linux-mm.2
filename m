@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72B79CD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 15:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25A96CD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 15:25:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB40B6B0005; Mon,  8 Jun 2026 11:18:40 -0400 (EDT)
+	id 384E06B0005; Mon,  8 Jun 2026 11:25:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D64346B0088; Mon,  8 Jun 2026 11:18:40 -0400 (EDT)
+	id 335906B0088; Mon,  8 Jun 2026 11:25:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2C886B008C; Mon,  8 Jun 2026 11:18:40 -0400 (EDT)
+	id 2243D6B008A; Mon,  8 Jun 2026 11:25:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B180B6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:18:40 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4D0E6120166
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:18:40 +0000 (UTC)
-X-FDA: 84857102400.23.DFD2C28
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F6EC6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:25:46 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A5DBA140174
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:25:45 +0000 (UTC)
+X-FDA: 84857120250.17.16AB6AF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8306880014
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:18:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1uyet7h;
+	by imf13.hostedemail.com (Postfix) with ESMTP id E821B20003
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:25:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I9Jd5nfZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780931918;
+	s=arc-20220608; t=1780932343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tbanNgvzOTBZc/hxgfXOVnrR1EORd9B3hY+LTWCW/Mk=;
-	b=pWLG+oAjvm4XSrmgQArc50wSq0nFRvXIRsIy8wP8SHSMGFvdBsAPQ+gPCod8V/AZAipViH
-	uz+H/vF1M1T/126SIUk3wPYBGQlO11SL5gyuRE25fU7rsLwirVTvXi31216ibPM2bM1Hff
-	SJ+zZLIZSmW7TcTTn8PhMRH/nyaCYpc=
+	bh=DmENGgQRwxMmo42f5vCP8Aa9knmtXvGq5kfEhKqCwHg=;
+	b=EfOoEYKOhnpXWN4x9Ea2nnrU4RvwArXGScKjCv3kS6Outxyz51aAr4onHHJfIWap1H6kJj
+	lmCbkJBp3N6XdiqA/T2eAd0CDvL2X50xHOMA/JO3W08/aoFC7GoxHUZu41E2NQcHJFJUIV
+	VKbiAoqU1ZV0WdxIDbHwhMbv/cfXvJ8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1uyet7h;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I9Jd5nfZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780931918;
-	b=dXMN1+xeBhtargEk/Z599zt2fwAd5P7w/2CVs11Nvw46nR2WVynZ/GfCQvZ+Zh6m+mq0ES
-	pqdr9fXFF7wT3VAcpjYDW386Na5y0MZwalWDqwBq7kIH/YOfZko77TKpCprjN7tOEF2Cs9
-	KEhclc0mdbyARZYBm+ukemq80piBF94=
+	t=1780932343;
+	b=vMieEJ6Q1oftU1YpIcDGL64wIyjzBqHZOnsKkLZbC3JXPZco/MKIuJDzBcafT9C2BJ2jun
+	Z4NP8TM3x4qtF0w/a681GqPw22jqNEBuhSAz6IVKKcfJW+kJINt9rgWO3l4hZNjpk/yz4U
+	/oRwmcfKrq45X5RpJCwCStMoftkw17Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 10C8D601FE;
-	Mon,  8 Jun 2026 15:18:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91FB1F00893;
-	Mon,  8 Jun 2026 15:18:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 55D27601D8;
+	Mon,  8 Jun 2026 15:25:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6111F00893;
+	Mon,  8 Jun 2026 15:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780931917;
-	bh=tbanNgvzOTBZc/hxgfXOVnrR1EORd9B3hY+LTWCW/Mk=;
+	s=k20260515; t=1780932343;
+	bh=DmENGgQRwxMmo42f5vCP8Aa9knmtXvGq5kfEhKqCwHg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Q1uyet7hoyFl9IWg+nYeyondribXFjMAh2LCw6haQsZg1rJhTAMlv+zCb90FebntO
-	 q5mTQED8peHtkzPqcVgwLLSvEXsIWMn1DIKxjuVd7gu10UKcZh71cH+SLvzjkohKhq
-	 SN0oa+XNFw0/gOWQVaudBYL109MnmAyoDPtq6UkE3PD50OiTpQKbZfPyUiEr6H0IJJ
-	 VZpjsU4kZ56FWy9NMcYfhsFxN2Xd1097YYgrXqaichBKME1QVQnsH6eyl4XXENmY5o
-	 NYbvOzVd8dSXTToc4XMdKuYWUsgmrAp7aKi2GQVSZO9qCWR/Sd6WNyJEUCDHZ2rrWR
-	 5cGCgnoMMjoBA==
-Message-ID: <7430d69a-616b-40cf-a2e8-6ef4e57b6857@kernel.org>
-Date: Mon, 8 Jun 2026 17:18:25 +0200
+	b=I9Jd5nfZWYnAAIWkm5HtQ41vtn2X45+QnXvjTYfZ712ObRMdSmxGFfCesA+4JOlm1
+	 cC0u7ZPHAxYlA5LuSH9cuJmMpOxJxp1Wx1+tW3CxsTnzw8ntiXntwwgVtroS152JtP
+	 knfcQ9x/RL97zasSs7R+JZxmE0it9X/eiJp8LW1/EqJl7IBvM/uVHyB5uj7ZHUpeNK
+	 AnWw9ANRmaBo2M/YHJc5hoEZRA48jwd3tY98B0YruB01EhZddZQK2KhAAzcHLvEPMu
+	 BKlkMRkq6pKa+bUSGtbYLQduocH5Bq8y8pbCvH9jkLMUfjn2rRPXDww2TZE80P+q3P
+	 RanO510TC6Lsg==
+Message-ID: <27f6f5d6-e81b-4e0a-af39-b175187299e2@kernel.org>
+Date: Mon, 8 Jun 2026 17:25:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/7] mm/migrate: skip data copy for already-copied folios
+Subject: Re: [PATCH 4/7] mm/migrate: add batch-copy path in
+ migrate_pages_batch
 To: "Garg, Shivank" <shivankg@amd.com>, akpm@linux-foundation.org
 Cc: kinseyho@google.com, weixugc@google.com, ljs@kernel.org,
  Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org,
  rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
  matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
  byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, dave@stgolabs.net, rkodsara@amd.com, vkoul@kernel.org,
- bharata@amd.com, sj@kernel.org, rientjes@google.com, xuezhengchu@huawei.com,
- yiannis@zptcorp.com, dave.hansen@intel.com, hannes@cmpxchg.org,
- jhubbard@nvidia.com, peterx@redhat.com, riel@surriel.com,
- shakeel.butt@linux.dev, stalexan@redhat.com, tj@kernel.org,
- nifan.cxl@gmail.com, jic23@kernel.org, aneesh.kumar@kernel.org,
- nathan.lynch@amd.com, Frank.li@nxp.com, djbw@kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
+ apopple@nvidia.com, dave@stgolabs.net, Jonathan.Cameron@huawei.com,
+ rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org,
+ rientjes@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+ dave.hansen@intel.com, hannes@cmpxchg.org, jhubbard@nvidia.com,
+ peterx@redhat.com, riel@surriel.com, shakeel.butt@linux.dev,
+ stalexan@redhat.com, tj@kernel.org, nifan.cxl@gmail.com, jic23@kernel.org,
+ aneesh.kumar@kernel.org, nathan.lynch@amd.com, Frank.li@nxp.com,
+ djbw@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20260428155043.39251-2-shivankg@amd.com>
- <20260428155043.39251-8-shivankg@amd.com>
- <810e9a58-9c08-4f5e-af5f-866685ca09b2@kernel.org>
- <a36348d0-73f5-4599-8d06-c9472d0b8d72@amd.com>
- <7e6a7626-5a1b-4672-91bd-85b0f4ee2ecb@amd.com>
+ <20260428155043.39251-10-shivankg@amd.com>
+ <b7956894-86b9-472f-b2e9-bb50c0316c39@kernel.org>
+ <c2bfdf39-8caa-43bd-b1ad-2285b4cc767a@amd.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <7e6a7626-5a1b-4672-91bd-85b0f4ee2ecb@amd.com>
+In-Reply-To: <c2bfdf39-8caa-43bd-b1ad-2285b4cc767a@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8306880014
-X-Stat-Signature: w18qo3sdbsm9t61xyjsxp6dowrurwwok
-X-HE-Tag: 1780931918-863302
-X-HE-Meta: U2FsdGVkX19wvBv9WjMRRosTWxysNdAyQSNdLoIF+yA/zm9KnTEuq/TbJ7IJ8duDDxuCCIeccT+UFBpG98qPk5jhmNcQxpcAO8mLa796Y5EEHUeHZ5Q1rye9OV6S3mUfe/PdevP3U0WyLTcwMr1djQXB7WWZDhufOMKED/oxCo9GQOJLJOQ7oDUUhHxuxyQVwLTn7HSADDeondIvbOP/exR5omr4YJeCX4UB8Nmd6Us00dnkhTOpjYFPP6tZV57/c63LNmKwEYRKmGNQvy4YWUU3vP8WDOHvEEWP7pDbosexQhK6xqb9YRkSbdFIxfDnIwOYVT6uIRVysrSHo+2ucfLGGKMpCJCZeTQlG5K2mW21NEHKXd8QnZO/KhI8Pa4EFIVbGZmmKv87b8S4EduxWZdaAGThDj+814wcWiYh6cBKr+75vXhEZF7NbIlrtk0gtRdJPkk2e3+O2rU79atL57W/gP8rHZtPZ496jTl5vUwCYu2FRU5HRRgiuth7ipcQqVkFWjbTa43KOz2RcaB5qS7wk7Rh+dqsGdsh03JtVAbsednfHKCG86EG45CtJGafERt0z1V2RDRp5cwhs+TJXx2sfLx7BLUKo7FkelmUYU69ibPOZPLuMZLDSVGw3K5AbPWj6D3aGoqN3PJhbaojt/HEMDZ1YE8nybWJXv0wYZWHp1qX4JUQZS2yGoBt85/DM6s3DkbdA910nAmzUQBrP5O/Ls38TRagjtGax6xMoQc5aFNBt/bLaXNBXhMdNrHazRGE6lvonZW/ZG8T7UpIqnWmj6lQfmJCLpF6BkjcQIzGXOLtnHjYP5RRlpMknWXBJXFRQst0tibqVL/r+S7T2fL40ItKOnvmOSfB/DSdzyJiLPmACZEW6UtKKVD/TLYvmUL3dOAEwiiJnvqqoSgln1l1pXVbV8HjCNRRvDAwUcDKW+pnfrwbafwLy2LINpnSLMvutRnKuia7JVxGDeh
- vn2vs1M0
- 2GrbhNbkMRXlHC8tsZ83+mq6xwCKeSH4p3Q769AC3JWnvCBTcyyX6hFmsbLLmKuqr+q5OkHZk6e1awWyIdVqhEO/ys1/OdQC9sfr8EIMOPoS5l+sVJtHJ01B+cAeutHGs0NKSPSqd0rl6zIOmbxtCCunlxN44pGGYj5KedRI96tqPq9qMVkgv74Gylg0EO8g8CDOtWbgFC8m4p/fPaEp6rEVSD8MFwYhGR8GmLu1bnI065aHYZReQoFV5Iq91GRw/ieQehRWGiMzhIe98hgpzdhuC9wu9MXMUbVsC+NoLq0N2FVB6J0d7/43hDKxd3MCzuLtrgB1KOGebxSb8Yu8IdFO1bnryD4umMQC2yk3ipq6HomsUvYba6kme1ov9QV6x6AoG
+X-Stat-Signature: umh9iigsca1kkx6bk5zft54a6t4ghgmf
+X-Rspamd-Queue-Id: E821B20003
+X-HE-Tag: 1780932343-549464
+X-HE-Meta: U2FsdGVkX1/Bu9Gn9/cPmVTeiYILNb0RvD74VA9ylRCkDpaqPV17l8CZaEA9izbEqJYcl+ueOksR9kMVIjwbV51oKlbPRFK+tMo5j6JFR1cW08dOroJhzKt+wUXgGTj+koNhl+jSg/04DdZ0syAcnYz3T9mQ69uUkn08ZakR/SrAZxtS9+9+y9bw0cqlWIUYFAHT8sBDlhe2GdSLAW8/uMK7/xJesmw/+awzr4rew/c90g8ptEIqSeqdLUfw9B9OKuJzn8nw5aubR6yh2Hj5oarRng18vUl5oeaRoe/xs809Gkb6ALMjHOC1pTrV3aE08PLmT31s/csklycVdKLNwL+VQtUPiHl5VQV75i6WWutCTWsHUunYTPT05n78dgd/hYSrZnCNwSAf1udK9V9jn5+CQ3umwKL+xie/zdjg58Arljvi5DmwItx77rsY0KcJKIdH1GRNHQ5hFgjjQ0twV4p9sWwz3/CfkC+zYF8HicyDJ4g4t3A/YEamblcmwJdVKAethXeSYUsTu/eFEVRNfmuwqjjvKOMqrLFAsXR6ZHMRajMJn1SQ6lCPcQHitFMxUgmYHogjZG/lTd+ivplGbG6GqmNf696wR8ShAPs7J9/K4Dp8v1Stjl6EJXhBv9xx2vRUkhH4i7Q+DSWvwsFH8S5k/fibHsE/1s2aWgWYvox3aKkpvOixI6nLO90BKb7LjitECmkA122iLF93tJSkB/WWglNcV3N4B40aqPOSj2dley9sdoEVkyOs1Wtyt10adV+OGS2/jisE0IT8Q8YVi69FPF/vGNXbMtVd0sRLLZNCP7A+dJqey5akY9PCiOtPojNJ1sg/ogyAp5Krd5XF8jCb5AiZLQWLmjZgRELG5YWc/oeWEXscczpUV2EbQ9nrhmwsk8SrZ/B5SIrgX81kyYbTzhCGzBVbbWMkLglL4JsvrD2OLUX4JK/PaOl1LZph029Zfq6/5Oa46K1su3v
+ RkSzOOmu
+ 2AH8iEi0T3yV+RKrCafiTT4Mp8r9dIyOcEtd8FCik+jm0LZbeH+lm17o84bAwybkY+YOTnhY3ri/hr0VmR4lXmqeduvs4fTGq5um5aIhz7g4WC/MFqiYs62Z2JJJavQfm2LdNfUNrvhX1oceKlWLE6NsbA2aO7AqqhMnuA504T9oOq2z7oGVDPb1uyLjru6QcNcfP2N+6ldso7LK+ESVudfrJSiVrVDA8TT+IY5kkYfA4aCkmuz+bFXOiUFsDntSX58o2cLT5bcuAcUB+5BV9NmpY2tFHf7y94Z9bc7SWl3HzD0biZbP/ivj+cOaR9X1DaKuaopa2AE2VhhHCgzumAdjDP5Y28v7DotIRqthGA74Mvg5w1esUh873oodVSMYxIVR4VUtJCDaqvXUeCeKyYkrt2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,51 +152,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Sashiko Comment:
-> Does expanding FOLIO_OLD_STATES to include BIT(2) silently corrupt anon_vma
-> pointers on 32-bit architectures?
-> The anon_vma pointer is packed with FOLIO_OLD_STATES inside dst->migrate_info.
-> To separate them, __migrate_folio_extract() uses info & ~FOLIO_OLD_STATES.
-> Since anon_vma objects are allocated from a kmem_cache with align=0,
-> ARCH_SLAB_MINALIGN defaults to 4 bytes on many 32-bit architectures. This
-> means a valid anon_vma pointer can legitimately end in 0x4 or 0xC (meaning
-> bit 2 is set).
-> When __migrate_folio_extract() masks the pointer with ~7, it will silently
-> clear bit 2 from the anon_vma pointer. Any subsequent call to put_anon_vma()
-> with this corrupted pointer could cause a use-after-free or a kernel panic.
-> --
+On 5/20/26 17:06, Garg, Shivank wrote:
 > 
-> #define ARCH_SLAB_MINALIGN __alignof__(unsigned long long)
 > 
-> I initially assumed this to be always 8, confusing it to be same as size of
-> unsigned long long.
-> But the GCC docs note that alignment can be smaller in size:
+> On 5/11/2026 9:10 PM, David Hildenbrand (Arm) wrote:
+>> On 4/28/26 17:50, Shivank Garg wrote:
+>>> Add folios_mc_copy() which walks list of src and dst folios in lockstep,
+>>> and copies folio content via folio_mc_copy(). folios_cnt parameter is
+>>> unused here, but is part of the offload_copy callback signature used by
+>>> later patches in the series.
+>>>
+>>> Split unmapped folios into batch-eligible (unmap_batch/dst_batch) and
+>>> standard (unmap_single/dst_single) lists, gated by the
+>>> migrate_offload_enabled which is off by default. So, when no offload
+>>> driver is active, the branch is never taken and everything goes
+>>> through the standard path.
+>>>
+>>> After TLB flush, batch copy the eligible folios via folios_mc_copy()
+>>> and pass already_copied=true into migrate_folios_move() so
+>>> __migrate_folio() skips the per-folio copy.
+>>>
+>>> On batch copy failure, already_copied flag stays false and each folio
+>>> fall back to individual copy.
+>>>
+>>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+>>> ---
+>>>  include/linux/mm.h |  2 ++
+>>>  mm/migrate.c       | 61 +++++++++++++++++++++++++++++++++++-----------
+>>>  mm/util.c          | 30 +++++++++++++++++++++++
+>>>  3 files changed, 79 insertions(+), 14 deletions(-)
+>>
+>> [...]
+>>
+>>>  
+>>> +DEFINE_STATIC_KEY_FALSE(migrate_offload_enabled);
+>>> +
+>>>  static const struct movable_operations *offline_movable_ops;
+>>>  static const struct movable_operations *zsmalloc_movable_ops;
+>>>  
+>>> @@ -1724,6 +1727,12 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
+>>>  	return nr_failed;
+>>>  }
+>>>  
+>>> +/* movable_ops folios have their own migrate path */
+>>> +static bool folio_supports_batch_copy(struct folio *folio)
+>>> +{
+>>> +	return likely(!page_has_movable_ops(&folio->page));
+>>> +}
+>>
+>> As these things are not actually folios (and callers will have to be taught to
+>> distinguish them way, way earlier), I guess you should make this
+>>
+>> /* movable_ops pages have a separate migration path */
+>> static bool page_supports_batch_copy(struct page *page)
+>> ...
 > 
-> https://gcc.gnu.org/onlinedocs/gcc/Alignment.html
-> "For example, if the target machine requires a double value to be aligned on
-> an 8-byte boundary, then __alignof__ (double) is 8. This is true on many RISC
-> machines. On more traditional machine designs, __alignof__ (double) is 4 or
-> even 2." 
+> I'll change this.
 > 
-> If my understanding is right, Sashiko concern is valid, and I can't safely
-> use BIT(2).
+>>
+>>> +
+>>>  static void migrate_folios_move(struct list_head *src_folios,
+>>>  		struct list_head *dst_folios,
+>>>  		free_folio_t put_new_folio, unsigned long private,
+>>> @@ -1752,7 +1761,7 @@ static void migrate_folios_move(struct list_head *src_folios,
+>>>  		/*
+>>>  		 * The rules are:
+>>>  		 *	0: folio will be freed
+>>> -		 *	-EAGAIN: stay on the unmap_folios list
+>>> +		 *	-EAGAIN: stay on the src_folios list
+>>>  		 *	Other errno: put on ret_folios list
+>>>  		 */
+>>>  		switch (rc) {
+>>
+>>
+>> [...]
+>>
+>>> --- a/mm/util.c
+>>> +++ b/mm/util.c
+>>> @@ -778,6 +778,36 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
+>>>  }
+>>>  EXPORT_SYMBOL(folio_mc_copy);
+>>>  
+>>> +/**
+>>> + * folios_mc_copy - Copy the contents of list of folios.
+>>> + * @dst_list: destination folio list.
+>>> + * @src_list: source folio list.
+>>> + * @folios_cnt: unused here, present for callback signature compatibility.
+>>> + *
+>>> + * Walks list of src and dst folios in lockstep and copies folio
+>>> + * content via folio_mc_copy(). The caller must ensure both lists have
+>>> + * the same number of entries. This may sleep.
+>>
+>> This *function*
+>>
+> 
+> Will add function.
+> 
+>>> + *
+>>> + * Return: 0 on success, negative errno on failure.
+>>> + */
+>>> +int folios_mc_copy(struct list_head *dst_list, struct list_head *src_list,
+>>> +		unsigned int __always_unused folios_cnt)
+>>> +{
+>>> +	struct folio *src, *dst;
+>>> +	int ret;
+>>> +
+>>> +	dst = list_first_entry(dst_list, struct folio, lru);
+>>> +	list_for_each_entry(src, src_list, lru) {
+>>> +		ret = folio_mc_copy(dst, src);
+>>> +		if (ret)
+>>> +			return ret;
+>>> +		dst = list_next_entry(dst, lru);
+>>> +	}
+>>
+>> Wouldn't it be cleaner to remember "already copied" immediately after we ...
+>> performed the copy? (succeeded with folio_mc_copy)
+> 
+> IIUC, you mean something like:
+> 	list_for_each_entry(src, src_list, lru) {
+> 		ret = folio_mc_copy(dst, src);
+> 		if (ret)
+> 			return ret;
+> 		dst->migrate_info |= FOLIO_CONTENT_COPIED;
+> 		dst = list_next_entry(dst, lru);
+> 	}
+> 
+> This will be cleaner. However, it will make the folios_mc_copy() specific for
+> page migration and can't be reused by other potential callers.
+> And offload driver (like DCBM) must set the already copied marker
+> themselves for successful copies.
 
-32bit makes this tricky indeed. And that's also the reason why
-FOLIO_MAPPING_FLAGS is currently limited to 2 bits.
+Right, maybe some helper for that would be possible?
 
-> I see few option from here. Either I can gate batch copy for CONFIG_64BIT,
+> This will have an upside that on partial-success (even a single failed copy),
+> it will no longer forces re-copy of the whole batch.
+> If that's the intention, I'll move this to migrate.c itself.
 
-That's a bit nasty as we'll have to special case 32bit vs 64bit.
-
-> or I can force anon_vma_cachep to 8-byte alignment via kmem_cache_create()
-
-That's an option, but I would not do it just for this optimization.
-
-> align arg. Or I can change the migrate_folio() callback to pass already_copied
-> info to change to dst->migrate_info enum.
-
-Can you elaborate how that would look like?
-
+True. I'd probably have to take a look at the end result to see if it looks
+better that way.
 
 -- 
 Cheers,
