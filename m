@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1217CD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 03:43:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02AAFCD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 03:43:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAA9E6B008C; Sun,  7 Jun 2026 23:42:59 -0400 (EDT)
+	id 299116B0093; Sun,  7 Jun 2026 23:43:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5B806B0092; Sun,  7 Jun 2026 23:42:59 -0400 (EDT)
+	id 2703E6B0095; Sun,  7 Jun 2026 23:43:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B992B6B0093; Sun,  7 Jun 2026 23:42:59 -0400 (EDT)
+	id 186476B0096; Sun,  7 Jun 2026 23:43:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AA0A56B008C
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 23:42:59 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4763AC2DE7
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:42:59 +0000 (UTC)
-X-FDA: 84855349278.11.8CB32DB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BFDACA0003
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:42:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l79LEIS4;
-	spf=pass (imf15.hostedemail.com: domain of yukuai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yukuai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 06EB16B0093
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 23:43:04 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A3E1E1A08B3
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:03 +0000 (UTC)
+X-FDA: 84855349446.02.7D2B285
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1935140002
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:01 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D41Iapm4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780890177;
+	s=arc-20220608; t=1780890182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=kTfnsBWKWstk18ZI7HL6+/xILjAyO2gIFYcndqvX6qQ=;
-	b=WVKypJlV2LQ8FBDsd2HYWbqRchgL9dN3CWt0m7ktK7gbJrz5LYTGCyA9AIIYTCHEipiFne
-	jJwWg43eRA0uy9sd3w1HTqhjl3DetHJh2BhiiOZrJTUbNbC8tBebhUWvLbddKHiewThFet
-	/GJEJqktLH20UsrD4rR4EVE+8I00oEo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QSu6XsEiboRL19rJVWEiFsNcMRrFU8VXRLqsphg+RLA=;
+	b=F4FGFLNHPSW8rg0zitaPO0q9528D6NJWnvk9b+xjV8x3hqe5ialGODGNR2t9a7mW6fRy3G
+	xi5pL18ye1bipkAPx3nz3hdin3N+NoW6pIEVJt6K3PO5bCsIX9kNde7VHCgdGm1ROorPo3
+	jRFFUx8qMQz41VSEWNRI1S+W5EehXY8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l79LEIS4;
-	spf=pass (imf15.hostedemail.com: domain of yukuai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yukuai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D41Iapm4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780890177;
-	b=fYt1ATWvGIJH2M4g86w548YsKFm2OO36qYb4ifuTGnlhmkj5EWLyMKo4xTyso5ZBz0d8RQ
-	B4TocjDzvu8FEhFMLE5gHLGpSUgdjg/GBiz/fqRdBg4AQQEOpR9vArfgtcNFo4N8FBW4k5
-	OLcwK1DsdvT8W9iIPSb+ujEr2CFFbtc=
+	t=1780890182;
+	b=Ueb5vv7a6yW7YDAe85ZYbczrnuljTp5O9KSytt2RbJI1AH1kaLmyBKY7KJAkV61BjFunJK
+	tDZK7kCB9SKmCPWoqu5h/2ryLJ3GNVJ51wc/EbVuRn60LVXVT6zSVxNIzEo09IpiAe/2Wy
+	V7Vi3t7HRDnCwtILdRcgQ+HugxuwpYA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B3D0D42AF8;
+	by tor.source.kernel.org (Postfix) with ESMTP id 786BE601DC;
+	Mon,  8 Jun 2026 03:43:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1F31F00898;
 	Mon,  8 Jun 2026 03:42:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F58A1F00893;
-	Mon,  8 Jun 2026 03:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780890176;
-	bh=kTfnsBWKWstk18ZI7HL6+/xILjAyO2gIFYcndqvX6qQ=;
-	h=From:To:Cc:Subject:Date;
-	b=l79LEIS4XhbNdoLkkK3F0lXimfDS8dnD5BMItZVYJottxcS1M8KxguF1uQxNctd+B
-	 tADht0NE86tZ1vit4SMnac6zRD9AE9aamVouDK2C/0VrLC6WH+xVe0jfG5kDChoVTN
-	 Iaoq9WDdCAuGAAHCtWIV0DO9ziDyz1SfVsRTH5Rn55KdhuiO3Bocijgg5KhCk/S/ap
-	 ZUPLcEexYFBjSVFZvMEHtRetNnNbLAvK7ILzXYuc9czKHTVXgVYxI0Ab+kVf8n/8fe
-	 Jk+oYHurZxt5mSXeh/bsihd34n3nIpuWd1x2FtDoeVw44z8nIlTMw+uyY2wV9dU6NF
-	 lb0ZokElT9e9g==
+	s=k20260515; t=1780890181;
+	bh=QSu6XsEiboRL19rJVWEiFsNcMRrFU8VXRLqsphg+RLA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=D41Iapm4tXqr9Ba5E+mBBRULkFhOthmZ/kCNgUh3KHXBEZtxqOUL0uh0RPVQUrrLf
+	 aA5985WZ0YdB/TPxUgWPK8zWajdGX1N75ign661nUvcGvVuB0WXesX4q6eiDHqy9B6
+	 poYoWwIwO2P8VgSsJ8ciii49If7XvmzGt5cGiXw3XJznRsQG44tp3dilXRKXECWrZT
+	 KVTPsCpl85zbSYKBhvwd0uZ10Lpmh3V3QzFYEHG8Jp02aYAEHFothj/C6y2cgSyvvn
+	 /CVeoPr/Jmbe/1mamqhptaWQaYqlPKhooc1f1aQCGZI0DIRWJtmRQj5tyOFfZoLWTL
+	 qJjenKf+xAcXg==
 From: Yu Kuai <yukuai@kernel.org>
 To: nilay@linux.ibm.com,
 	tom.leiming@gmail.com,
@@ -83,20 +83,22 @@ Cc: akpm@linux-foundation.org,
 	linux-block@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/8] blk-cgroup: remove queue_lock nesting from blkcg paths
-Date: Mon,  8 Jun 2026 11:42:41 +0800
-Message-ID: <cover.1780621988.git.yukuai@fygo.io>
+Subject: [PATCH 1/8] blk-cgroup: protect iterating blkgs with blkcg->lock in blkcg_print_stat()
+Date: Mon,  8 Jun 2026 11:42:42 +0800
+Message-ID: <05799877e720dcd300e2ddd4625e8e162959d7cc.1780621988.git.yukuai@fygo.io>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1780621988.git.yukuai@fygo.io>
+References: <cover.1780621988.git.yukuai@fygo.io>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BFDACA0003
-X-Stat-Signature: z57r79qsssifnyibq7ytcngjfnb4qjb9
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780890177-309374
-X-HE-Meta: U2FsdGVkX1/2SThfoboeJEri5N+A87Au7al7jGmaHqWYLG5MIWflrDbq8uF0qqXe8/LCN7UwhepkV8x76F8lEI8KcdHBMJxyASTCAcGV75YrbztihzT4uSMSBIM7WJHtTQU8UFdmMFL0D5Tc1Ca3DdZU8hNSbFKfysl9fJc934iFgZJwQ3m2li0wGLYEhvT68Vgy262zeefQuwj6106Q+DbYQ56v5YJvU6/gCwsZ/O32TcltTZweZ5Q4IXXAYfPLSuPGIhRYCt4TnQxibnowDnirxmGv8grwMfkKU8TiucUbyOI33f2eaeMyffbEu2aWJ+nrOLemhEVWWo1DfmB+GQjHgQ2wo0gpaXGPKYQMdqtfDtQIbK6bGFxcsn55emnt3mXLYG/Oe93uQgSedwbO+f3SCL8ByHDpBHR2nJs+YLNfPoW5DsLtBkoEo2h2z2AsjItOKD/O4DKLfAHA3Gw2lesAK3+d6HrzMtFm3fim+xupQHpnNiD8ImSuXGbHXbKZMeUlWoT7xeq9Z7vHRXiZqA90kPumroORAKT90WBJKV4g2m1C2Lu6AQm6aTrQEWWsE18+Vs9cBOAVf36+kvB7sPm3yPJYCWX1r1R2NubQeweuScbSngoeo4qdMQ+eePpkZBa9m64WdQ5pAMa0ySIy3Pd1SEmJqt9cQ5WOapKTaQyUOcAezBO0sgWTI0ElvUMR+vOhGOn8g+lttfgaHwqYavAxM2TvhmwS5T00Vqudi9NSVET5JceiG83frTlc9NT1raewglEOAUhWxPuuvL/GFA14OIyXpSGr6v2RgNys2NWY8z8Pl3xPGmpxiUhKPB8k0DzDTF25uPqeYAqDPjpWhiC+VDtnd6hxLB9uHEHxZJ6HIDrFsi758VOIkw5R8nrc+e8gNa/Rl20fZ2Pf5sfuWIHFE1ljSHfJ3RqIALcDTZeIUHqoZA2loTjDER+aYs2xMzR7n0c9MV8m/ejZ1+r
- KEh2TbAB
- svNam0BaE1+hlbePRnQhnr7ob5agTprGtI+Vv/Gxrss73iakOn0JqDp9s2VCaQ42HDCq8Z7e8heG3xUSv6sXuqi8s96fmVFZoIOgeDCM7tDfU29B8qug6IemLXoHeGaYC6R+RWPHr5iv9Og5SqsW4ahZ4jKCCjqSBuSZhPf4KoYILUkl+nvXe+bHdHssWnjs3D39/PYMoX/QBnW93n97C2sx2UqpS5V1MjsqMdoZft8SVtecD75itUOJ8Ooj0bnpL/hqrzaobp5fw66kOmeF1Fb53aUz6HwzpoWs6
+X-Stat-Signature: aonyt9wzxksktqufeowjqpb6nuw8tq9w
+X-Rspamd-Queue-Id: 1935140002
+X-HE-Tag: 1780890181-751159
+X-HE-Meta: U2FsdGVkX19Xo21QIcYddHMdD5bk6KfT/PSSUDuwuNrQfEA1ADOrovNd1GQCutV4K0phZz0FKU68eNdz/zGCUuCQwVFNjVVjsLb8NINeNJ9j5DvSB2qXwlaQgIaaAb5S1STKCB8Ab+Q8JvojRkhxsJDnTJwTWmW6J1zY5piPorMy/viIzCYRk5k41O3MT+NH84KbGbiaBrfRgwHHuOipMbtw7Nu2mFZzlEpGGfReUD3X9Wtwtgi4fSU3gPTMySvUJvDDFP75UCn7/OaJ9SJoRwaqoGqZ0e9cp6TwJDC0Hzui4Umx9BhnJEHtwaXws5MN2B+0T6IgTiBMNFtO9E3faD3pbPWZU3k0FMaQ2woUQI81ZxL5gOilc0h6HdmjIEjWlLUO2d/GWpBgU6waGqfQh6fDJHnrGrUXTUhF+523MmdfWqs32GdE1RyQu8RVKRW8AFk8p8qiFT9iXNZ1MyLtJb3YUiI/9kDWpiTlQyFhH4iAQimEb4kUUFzaGve8I8lHFhZ44CdifhhZy9x4LCOEOjJC3xwMrahzAvGtyXc1vkXVGFeAIPOhBNQS3xJrf1pi6dXevhi3hJva5ftvBxRFb2sQKq5W66MUXMbzwoLS/rreIATzzmk3gvCFwkpuaUeSPbsuV7BHsF4W8Blwibs+fbalWM6RhiJtiJaOJG1IuyDTb2WLaClEk0GNl2rdyWy73akI6hdEdlvuBysbZefZ/S2E91OWZNfRzej//ql4jYo/eIKNGq22fE+/4sA+5Z5SW3N86R5G66aqziIqMVT3QjBr6/hbKkmuzge4aM7ocTtE3Ua5HTEsdhnD9HJaXTVWzHqFqvA2vEXQN60IZqb1P9nIl/3w22cklrVbIR/ZmYXV2ojvKw73pOzrIVa7luYa+gXv/dbjFy2Ipk79yMgPetfTx4Ji668G/wV5DwpsZM02ILcWd6HDHW3RkupIInjPrg/SYWBevUT1syRHBWv
+ JqLdWkXU
+ +Kq1xAzxOcSJmIEJpg2B/319vOz6U2qV68HehSifu5xyWJmcj/LyUPXody3s5wx+/fmJNDXNaZvjjpzDWEakKOXbVM8he0xyjjjtNo4t4IpzY9cUm/4mG1LbwxiKe+IxbROwiNzuBbrxIbDvGFFpniyZZf+aHIpV+d9VHuuswlcpUoyco+cQWlC7oc+DXpJjsKr6AZRcXq2GY/UHA0fc7O4h0Tz780OFqydSlTgVjf5e550pHmkD4eDOvU8k0niDGOdTZ9E7XjlQzdjzqLBCHl7AYwFtqMlXp1s6o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,56 +108,50 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Yu Kuai <yukuai@fygo.io>
 
-Hi,
+blkcg_print_one_stat() will be called for each blkg:
+- access blkg->iostat, which is freed from rcu callback
+  blkg_free_workfn();
+- access policy data from pd_stat_fn(), which is freed from
+  pd_free_fn(), while pd_free_fn() can be called by removing blkcg or
+  deactivating policy;
 
-This series is the follow-up blk-cgroup locking cleanup on top of the
-earlier blkg-list protection fixes, and prepares blk-cgroup to stop using
-q->queue_lock as the global blkg lifetime/iteration lock.
+Take blkcg->lock while iterating so the blkgs stay online and both
+blkg->iostat and policy data for activated policies stay valid.  Use
+irq-safe locking because blkcg->lock can be nested under q->queue_lock,
+which is used from IRQ completion paths.
 
-The current queue_lock based protection is hard to maintain because
-queue_lock is used from hardirq and softirq completion paths, while some
-blkcg cgroup file paths also need to iterate blkgs, print policy data, or
-create blkgs from RCU-protected contexts.  This series first tightens the
-blkcg-side lifetime rules:
+Prepare to convert protecting blkgs from request_queue with mutex.
 
-- blkcg_print_stat() iterates blkgs under blkcg->lock with IRQs disabled.
-- policy data freeing is delayed past an RCU grace period.
-- blkcg_print_blkgs(), blkg lookup/create, bio association, page-IO
-  association, blkg destruction, and BFQ initialization stop nesting
-  queue_lock under RCU or blkcg->lock.
+Signed-off-by: Yu Kuai <yukuai@fygo.io>
+---
+ block/blk-cgroup.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-Using blkcg->lock and RCU for blkcg-owned lists/data keeps the lock order
-local to blk-cgroup and avoids extending queue_lock into cgroup file
-iteration paths.  It also makes the subsequent conversion to q->blkcg_mutex
-possible without carrying forward queue_lock's interrupt-context
-constraints.
-
-Yu Kuai (8):
-  blk-cgroup: protect iterating blkgs with blkcg->lock in
-    blkcg_print_stat()
-  blk-cgroup: delay freeing policy data after rcu grace period
-  blk-cgroup: don't nest queue_lock under rcu in blkcg_print_blkgs()
-  blk-cgroup: don't nest queue_lock under rcu in blkg_lookup_create()
-  blk-cgroup: don't nest queue_lock under rcu in bio_associate_blkg()
-  blk-cgroup: don't nest queue_lock under blkcg->lock in
-    blkcg_destroy_blkgs()
-  mm/page_io: don't nest queue_lock under rcu in
-    bio_associate_blkg_from_page()
-  block, bfq: don't grab queue_lock to initialize bfq
-
- block/bfq-cgroup.c        |  17 ++++-
- block/bfq-iosched.c       |   5 --
- block/blk-cgroup-rwstat.c |  15 ++--
- block/blk-cgroup.c        | 151 ++++++++++++++++++++++----------------
- block/blk-cgroup.h        |   8 +-
- block/blk-iocost.c        |  22 ++++--
- block/blk-iolatency.c     |  10 ++-
- block/blk-throttle.c      |  13 +++-
- mm/page_io.c              |   7 +-
- 9 files changed, 158 insertions(+), 90 deletions(-)
-
-
-base-commit: b23df513de562739af61fa61ba80ef5e8059a636
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index c75b2a103bbc..b55c43f72bcb 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -1241,17 +1241,14 @@ static int blkcg_print_stat(struct seq_file *sf, void *v)
+ 	if (!seq_css(sf)->parent)
+ 		blkcg_fill_root_iostats();
+ 	else
+ 		css_rstat_flush(&blkcg->css);
+ 
+-	rcu_read_lock();
+-	hlist_for_each_entry_rcu(blkg, &blkcg->blkg_list, blkcg_node) {
+-		spin_lock_irq(&blkg->q->queue_lock);
++	guard(spinlock_irq)(&blkcg->lock);
++	hlist_for_each_entry(blkg, &blkcg->blkg_list, blkcg_node)
+ 		blkcg_print_one_stat(blkg, sf);
+-		spin_unlock_irq(&blkg->q->queue_lock);
+-	}
+-	rcu_read_unlock();
++
+ 	return 0;
+ }
+ 
+ static struct cftype blkcg_files[] = {
+ 	{
 -- 
 2.51.0
 
