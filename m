@@ -4,101 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF66FCD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 03:43:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE8DECD6E79
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 04:10:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 384076B00A3; Sun,  7 Jun 2026 23:43:36 -0400 (EDT)
+	id 161126B0088; Mon,  8 Jun 2026 00:10:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 334DA6B00A4; Sun,  7 Jun 2026 23:43:36 -0400 (EDT)
+	id 112766B008A; Mon,  8 Jun 2026 00:10:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 271E46B00A5; Sun,  7 Jun 2026 23:43:36 -0400 (EDT)
+	id 027D36B008C; Mon,  8 Jun 2026 00:10:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 155576B00A3
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 23:43:36 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AF17592677
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:35 +0000 (UTC)
-X-FDA: 84855350790.13.D022CD6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 28A8840003
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:43:34 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="I/hy1WWM";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of yukuai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yukuai@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E8A036B0088
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 00:10:22 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 860E49293C
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 04:10:22 +0000 (UTC)
+X-FDA: 84855418284.15.0365E99
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8F932180005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 04:10:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PhJQmJ4C;
+	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780890214;
+	s=arc-20220608; t=1780891820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AonplpX8sMcYxl+OvnPIJmvLE6nh3WkDiHtVVORseZY=;
-	b=VvlkQaBLzEtSjKLGivRWRFjg61T7VZPlQF1w0/sH1BJLVRkt/bjTTgt/amV3DpDoZVHbSm
-	xChd7gGh7RHBOxkJonPqo7fk9TLntUJ/gbRuxihmSIClz6TM14Ybt0IDC4Sk+wue5x7d1f
-	hg7YwuC9HRQVTLYmZfQl3u/Gnoxwpag=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="I/hy1WWM";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of yukuai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yukuai@kernel.org
+	bh=RQr+FS5WTq4T7wFBMSLf3go6FakMkvtgbNGjQKWlmw8=;
+	b=mXcNbUytlFfiIKalirksHXzo9q+9Ab5idE4RYuOImr0++9zb0Kubm00CYEF5YbmfGAOs+6
+	PUq6aQDualLr8Fymkdv7DGomYprHFQkUCN3QFiTx9KThg729i0qhlcFRNJR85as0bt+Uqr
+	AnsRfP7ZsPg5i2KQyIkIitYcA6BreuY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780890214;
-	b=qYqNyhwfM/daxXoqtSaKISQztg/8eNtqJ80OFz6U2VdD8bmPNqbEnWXEM+Ax0w0H88tfN3
-	uZQyA/4vqAnYz9CfMNdIIZN1r7+FlhpWmKxYA6ZX9CgixiZuqrJHXu0NxqwDMY6JGjz9cq
-	IhC5ddQBFQa/KiGUl0IDkwR93KxNR4g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 807F040248;
-	Mon,  8 Jun 2026 03:43:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FB51F00898;
-	Mon,  8 Jun 2026 03:43:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780890213;
-	bh=AonplpX8sMcYxl+OvnPIJmvLE6nh3WkDiHtVVORseZY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I/hy1WWM0CXwiJZsze4Z95np3aJq6uUHdKzNYSVT8eFfJc8A8LFQpseaCtzOdOpAb
-	 UE3j53LDXK6ypjGYSIdIPUdfqOMczpANEUCyukcBALvGj1Rv64qZTEfXBixfsMm7Yi
-	 u8J+/5ib6E24hQ/VCBMxIZ6mseDM5o6Rinb3revCHCGp93zLytyucnuMiwzg16L81n
-	 19aTzKCP0MxwTu9WN0iPjTe6QgC4TqCUhKVea7Cj2PeWPAKWZ2A8l2UyiQ+j3k4iX7
-	 ezLRGxkEFmVWu7ajqdqTqn6E9agBUPjnj4s2qGA0uxFvxTFfkwLS6mur1TLoA8CFz5
-	 V8mrh/8dkQdNQ==
-From: Yu Kuai <yukuai@kernel.org>
-To: nilay@linux.ibm.com,
-	tom.leiming@gmail.com,
-	bvanassche@acm.org,
-	tj@kernel.org,
-	josef@toxicpanda.com,
-	axboe@kernel.dk,
-	yukuai@fygo.io
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	cgroups@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 8/8] block, bfq: don't grab queue_lock to initialize bfq
-Date: Mon,  8 Jun 2026 11:42:49 +0800
-Message-ID: <1965073ea20f33114a8d903816b986e483b9bb34.1780621988.git.yukuai@fygo.io>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1780621988.git.yukuai@fygo.io>
-References: <cover.1780621988.git.yukuai@fygo.io>
+	t=1780891820;
+	b=nMcmzpe06bVHFBIQ7g9qd1c2E0mx5HSHUicAF2InlMpW1EADkbI3+uDVKF/yZmAmgH3e3N
+	aNCTFoj+KvVDIaaRI3gNzE+xe4zFBllyRIhJVRjDU6+HnnWV2hhksTlGn4INsZUS3aXGSh
+	Y+sZDaA93WaA54UZmD9QV/Gu4jaw3Cg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PhJQmJ4C;
+	spf=pass (imf16.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <5d77fadd-13a9-40ed-a8e8-2982ceb69af2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780891818;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RQr+FS5WTq4T7wFBMSLf3go6FakMkvtgbNGjQKWlmw8=;
+	b=PhJQmJ4C/cVE3UbVc5wYGTEjz2tdfRoaX48ehWPeZGWP7Nl/U5dlWYmpKB1nM2j5tvtc1F
+	TO+/1SxF/Rg2fTp6M1SiLweIkGXWaSsWgQCzz3tFTWcWSg8Oqo4qT8Zv9umC7GkENoV4QC
+	MLD6Yv9D6n9IuOrQPo76T96avYRGiaA=
+Date: Mon, 8 Jun 2026 12:09:37 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 28A8840003
-X-Stat-Signature: fomhi89y9sro5kp6jxjfp4k4qbmt9thg
+Subject: Re: [PATCH v3 3/6] alloc_tag: add size-based filtering to ioctl
+To: Abhishek Bapat <abhishekbapat@google.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Sourav Panda <souravpanda@google.com>
+References: <cover.1780701922.git.abhishekbapat@google.com>
+ <ef88e52368463e312086a966f10287a29d0edeca.1780701922.git.abhishekbapat@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <ef88e52368463e312086a966f10287a29d0edeca.1780701922.git.abhishekbapat@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 8F932180005
 X-Rspam-User: 
-X-HE-Tag: 1780890214-472729
-X-HE-Meta: U2FsdGVkX1/BLKo9Q9Y/M8ICToEj6OJirvsB0oBK5dsNBjoXILhRCuaifSonvMoinu5tthSHKBkjHd9/oBEXjDnlyuzU4WvXT5R9k9MkGT0cNDZIxrqYP02APaj7iopCs/VgJNiVmJrqLqOjpCUpLK3tGTTk1e7VOjogRIGf/Wi41Q2vGFhfs4KTXWYm4eTwUjdg+GiwqznPdd+cBK3PkeuG+mo+E8bOsihR89J+4jPOWB7tV51K75Y3JsGxM8OdgOHIfqFZsgoytcxZTPNdFLgXSP4G+Xx8vXU0GEfgQ/o7ig/jyXuBW3MSuJ9b5SyH3ejgaSaHixBWhxqSi7pVYzkB2WWNos4II1al6Zrre6EvOR79e0us7Emubb3wR+F63J8ZSw0PhF9VR//7PLNrimWNptZFHRaaQKa5pJvfvqnhYpgll3JPL3FXJQkp/ZDuCSiwfux9Y+DCMOM8t3cKvZ9rUwrU65ElkeSXFE7G4Ui6lXRDTaAwzJQbxN54LmjmjRwrHexUeW1lXdYaMrtTxYefe5pnib4Poiuh7kmIJJeWm1ONgq5mUJST+TAydKC1j3lEVOc7MEY2UoqmfNQwhboEjds69fnpOcNkA5viOMsvZ9cWx3Mz+CqkcymuQ8MJbsT7hFX67G6xLJ2KEWMJV0Hlxu5o5H5asPhkWGixtfuINSxBRzOvglWjlblwIcl/LhegONwmmECwRIySqwT/MGBSI2JfK9+p7LTBuT/T/Bwn3ulVwLD5jmfXwErCUkLjeWFcy1MypPeRqe1cxlToHL9CQBMCEwmOLGkzKHHvwKtL7XH/jS6FT56e8j7AuoAr9w4MgXj2UgX8T1RDytD0UkaEajkckUL31tuCIsjBVm8gkGFjw8oyDOPwqI0zrqjbIO4f3oHZXYZbZ4U5ERPvUKjec9pnfhuMzSa7IADtKMqr5YarfMQ44lRJA/LTfQbKa439wwW1Y1FU7hpCp+u
- Uxx4p5iC
- NYXQVoHDVRiBymw68HrSAaYQBNBnl1EPd0Hq0CKboRBMsJ3iTYTQEjYRpS53RpNi+KHVqgXF4ynnbGBcvMdNtdq6SXGp+0bU8XffowIKVFfM5ttZDPKMTLSsZQf2cCgcR7MMYu9EBGZYEewDNoXameqowJKpbehCBaa6Vs9YpBpn7IZ4AklMwVetcEsMEW8O7wxXXkFnc6iDSaUahyD55nULP6ASXiP3OHFstK45/CFWL9la34QOhq7MkttcEfUkCD0bpL6TDZxwQKFtU697tiRWRuUB+8rtoyhjeIqNn3ED2674=
+X-Stat-Signature: n9s3s1ws34ff6h714co99z15k54a4tjy
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780891820-718607
+X-HE-Meta: U2FsdGVkX1/mDUfmst7wynSEQRlSZVDaPmGIPXjgTRWdavuTa8nQ1wMnbqHAovigtuhWNqfeIwBvFXSegh6N1vd829R7vTTbOq6X+gVbFjCf03q1M3CBjxJvm3KucEz58EKZT/1GEDQnife/b836+sckO4jvU8U14DSaoakL67iSCPKBL6vZD1PxVRk6zCDk4H0OuAWgQxsw8Uu9qW4ESBXOE8PDwnvZbYNh/garVgd0aUPha40wtDqTo63RaIPsmcv62KuqxJgTrCzD6qLFThDhEFAA7cHbBScm39WGgikZopEdsGyBjB0lpZFRxsQwVDNE21KpYvJq03L/iFE9CtQOQcCcPwHp5etauHKfoGFEIGd0ntBLpNIf1IOkYofIqiu1yXpu156eX+JMWzyV1MDulbETVTdK9xccKzclg/mkG9YS42wlhJxXGdGwGZxQF6OEE/r4ywOwwbxd5H2gzInRexJ21PGmfDh40uIOghXLUdgkafCfd+rUugUuzMRokZTgz0r+9Bg1yQdyYuWKjUam8xhQiLJeJu18euYsbkdJ5Fl071b0LDhijXWFysTE7Pbj3vcJksGL725dQe7VUeqFNf8r7BECoRNrrJ8Qw0RQv9Jtsjyc8V0WKAKC8K70yGwWVY7zqwYI6uxY7xPHiBKU30BcVBz+mvcFN3C0Sf6DEhKnkNMUtKztJu+aPLiL+w8mRQ7A2wb8BlnZ/tu4nZvcHmwtrF0bBTjBe0zwwNiUdI6SF1JNr23u+iB8IKxqZ0JaW/peYm4QO9V2ULc9wbRCaOxva3di01pqa+ayaqPCdRiMGvoQnxoOKOxHj36usVjDk9HeRUFL/t7YolniDDT1HaHOGJJVWEfCvuONPRU8v7d3YdzcXmkONSoLCNFlnwL8fN6nIYVng7cxx9uaXR1oKWlbVvp21fKBTrkUUrIWc18/zgwl1t3ImEUDLLHEvs2ed0Chc9Dql519iN7
+ EfPlqTl1
+ 8OsK/9+WWgodyW71V6Exz+9k4N+kOG9+RzY5IH80FNX48wmH+VshoUF9MT+uYewQ0YeZnOVzJtyCXAjj2DWKiyT3a+TpFx+x18eenouyRwQT1S29nuwX3QK45WdsaqsIdXiIure4ekoez+FirUpasydAjlKGIzrbFqRrZ5kNI4ZW67OJJT/oUvgYmFENDpC8GwXLW4dkuvtZcEzpaf5baBMGILYSsF6U0dLV9fOPuMUAP3hbgFVv1Twpe4CYHuuIjiSeLsFN/4xjmuVzB4s2YiKm765uNi+4adrqqRrwwHjnb2gua8XwXP7VWJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,59 +94,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Yu Kuai <yukuai@fygo.io>
+Hi Abhishek
 
-The request_queue is frozen and quiesced while the elevator init_sched()
-method runs, so queue_lock is not needed for BFQ cgroup initialization.
 
-Signed-off-by: Yu Kuai <yukuai@fygo.io>
----
- block/bfq-iosched.c | 5 -----
- 1 file changed, 5 deletions(-)
+Thanks for the new version.
 
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index 42ccfd0c6140..5cabee2d4e7c 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -7207,14 +7207,11 @@ static int bfq_init_queue(struct request_queue *q, struct elevator_queue *eq)
- 	bfqd = kzalloc_node(sizeof(*bfqd), GFP_KERNEL, q->node);
- 	if (!bfqd)
- 		return -ENOMEM;
- 
- 	eq->elevator_data = bfqd;
--
--	spin_lock_irq(&q->queue_lock);
- 	q->elevator = eq;
--	spin_unlock_irq(&q->queue_lock);
- 
- 	/*
- 	 * Our fallback bfqq if bfq_find_alloc_queue() runs into OOM issues.
- 	 * Grab a permanent reference to it, so that the normal code flow
- 	 * will not attempt to free it.
-@@ -7243,11 +7240,10 @@ static int bfq_init_queue(struct request_queue *q, struct elevator_queue *eq)
- 	bfqd->num_actuators = 1;
- 	/*
- 	 * If the disk supports multiple actuators, copy independent
- 	 * access ranges from the request queue structure.
- 	 */
--	spin_lock_irq(&q->queue_lock);
- 	if (ia_ranges) {
- 		/*
- 		 * Check if the disk ia_ranges size exceeds the current bfq
- 		 * actuator limit.
- 		 */
-@@ -7269,11 +7265,10 @@ static int bfq_init_queue(struct request_queue *q, struct elevator_queue *eq)
- 	/* Otherwise use single-actuator dev info */
- 	if (bfqd->num_actuators == 1) {
- 		bfqd->sector[0] = 0;
- 		bfqd->nr_sectors[0] = get_capacity(q->disk);
- 	}
--	spin_unlock_irq(&q->queue_lock);
- 
- 	INIT_LIST_HEAD(&bfqd->dispatch);
- 
- 	hrtimer_setup(&bfqd->idle_slice_timer, bfq_idle_slice_timer, CLOCK_MONOTONIC,
- 		      HRTIMER_MODE_REL);
--- 
-2.51.0
+
+On 2026/6/6 07:36, Abhishek Bapat wrote:
+> Extend the allocinfo filtering mechanism to allow users to filter tags
+> based on the total number of bytes allocated [min_size, max_size]. The
+> size range is inclusive.
+>
+> Filtering by size involves retrieving allocinfo per-CPU counters, which
+> is an expensive operation. Hence, the performance of size-based
+> filtering will be worse than other filters.
+>
+> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> ---
+>   include/uapi/linux/alloc_tag.h |  8 +++-
+>   lib/alloc_tag.c                | 68 +++++++++++++++++++++++++++-------
+>   2 files changed, 62 insertions(+), 14 deletions(-)
+>
+> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_tag.h
+> index cffb0c46e0b1..0e648192df4d 100644
+> --- a/include/uapi/linux/alloc_tag.h
+> +++ b/include/uapi/linux/alloc_tag.h
+> @@ -39,13 +39,17 @@ enum {
+>   	ALLOCINFO_FILTER_FUNCTION,
+>   	ALLOCINFO_FILTER_FILENAME,
+>   	ALLOCINFO_FILTER_LINENO,
+> -	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_LINENO
+> +	ALLOCINFO_FILTER_MIN_SIZE,
+> +	ALLOCINFO_FILTER_MAX_SIZE,
+> +	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_MAX_SIZE
+>   };
+>   
+>   #define ALLOCINFO_FILTER_MASK_MODNAME		(1 << ALLOCINFO_FILTER_MODNAME)
+>   #define ALLOCINFO_FILTER_MASK_FUNCTION		(1 << ALLOCINFO_FILTER_FUNCTION)
+>   #define ALLOCINFO_FILTER_MASK_FILENAME		(1 << ALLOCINFO_FILTER_FILENAME)
+>   #define ALLOCINFO_FILTER_MASK_LINENO		(1 << ALLOCINFO_FILTER_LINENO)
+> +#define ALLOCINFO_FILTER_MASK_MIN_SIZE		(1 << ALLOCINFO_FILTER_MIN_SIZE)
+> +#define ALLOCINFO_FILTER_MASK_MAX_SIZE		(1 << ALLOCINFO_FILTER_MAX_SIZE)
+>   
+>   #define ALLOCINFO_FILTER_MASKS \
+>   	((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+> @@ -53,6 +57,8 @@ enum {
+>   struct allocinfo_filter {
+>   	__u64 mask; /* bitmask of the filter fields used */
+>   	struct allocinfo_tag fields;
+> +	__u64 min_size;
+> +	__u64 max_size;
+>   };
+>   
+>   struct allocinfo_get_at {
+> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> index 93bc976ac505..ddc6946f56ab 100644
+> --- a/lib/alloc_tag.c
+> +++ b/lib/alloc_tag.c
+> @@ -191,15 +191,26 @@ static int allocinfo_cmp_str(const char *str, const char *template)
+>   	return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE);
+>   }
+>   
+> +/* Fetch the per-CPU counters */
+> +static inline struct alloc_tag_counters allocinfo_prefetch_counters(struct codetag *ct)
+> +{
+> +	return alloc_tag_read(ct_to_alloc_tag(ct));
+> +}
+> +
+>   /*
+>    * Populates the UAPI allocinfo_tag_data structure with active runtime
+>    * profiling counters extracted from the given kernel codetag.
+>    */
+>   static void allocinfo_to_params(struct codetag *ct,
+> -				struct allocinfo_tag_data *data)
+> +				struct allocinfo_tag_data *data,
+> +				struct alloc_tag_counters *counters)
+>   {
+> -	struct alloc_tag *tag = ct_to_alloc_tag(ct);
+> -	struct alloc_tag_counters counter = alloc_tag_read(tag);
+> +	struct alloc_tag_counters local_counters;
+> +
+> +	if (!counters) {
+> +		local_counters = allocinfo_prefetch_counters(ct);
+> +		counters = &local_counters;
+> +	}
+>   
+>   	if (ct->modname)
+>   		allocinfo_copy_str(data->tag.modname, ct->modname);
+> @@ -208,9 +219,9 @@ static void allocinfo_to_params(struct codetag *ct,
+>   	allocinfo_copy_str(data->tag.function, ct->function);
+>   	allocinfo_copy_str(data->tag.filename, ct->filename);
+>   	data->tag.lineno = ct->lineno;
+> -	data->counter.bytes = counter.bytes;
+> -	data->counter.calls = counter.calls;
+> -	data->counter.accurate = !alloc_tag_is_inaccurate(tag);
+> +	data->counter.bytes = counters->bytes;
+> +	data->counter.calls = counters->calls;
+> +	data->counter.accurate = !alloc_tag_is_inaccurate(ct_to_alloc_tag(ct));
+>   }
+>   
+>   /*
+> @@ -234,7 +245,9 @@ static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __user *arg)
+>    * Verifies whether a given codetag satisfies the active filtering criteria by
+>    * matching it's characteristics against the specified filter.
+>    */
+> -static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter)
+> +static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter,
+> +			   struct alloc_tag_counters *counters,
+> +			   bool *fetched_counters)
+>   {
+>   	if (!filter || !filter->mask)
+>   		return true;
+> @@ -247,20 +260,34 @@ static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter)
+>   				return false;
+>   		} else if (allocinfo_cmp_str(ct->modname, filter->fields.modname))
+>   			return false;
+> +		}
+It seems an extra } was accidentally added here
+>   	}
+>   
+>   	if ((filter->mask & ALLOCINFO_FILTER_MASK_FUNCTION) &&
+> -	    ct->function && (allocinfo_cmp_str(ct->function, filter->fields.function)))
+> +	    ct->function && allocinfo_cmp_str(ct->function, filter->fields.function))
+>   		return false;
+>   
+This should be fixed in the second patch; it's unrelated to current 
+functionality.
+>   	if ((filter->mask & ALLOCINFO_FILTER_MASK_FILENAME) &&
+> -	    ct->filename && (allocinfo_cmp_str(ct->filename, filter->fields.filename)))
+> +	    ct->filename && allocinfo_cmp_str(ct->filename, filter->fields.filename))
+>   		return false;
+
+Ditto
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+>   	if ((filter->mask & ALLOCINFO_FILTER_MASK_LINENO) &&
+>   	    ct->lineno != filter->fields.lineno)
+>   		return false;
+>   
+> +	if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
+> +		if (!*fetched_counters) {
+> +			*counters = allocinfo_prefetch_counters(ct);
+> +			*fetched_counters = true;
+> +		}
+> +		if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+> +		    counters->bytes < filter->min_size)
+> +			return false;
+> +		if ((filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+> +		    counters->bytes > filter->max_size)
+> +			return false;
+> +	}
+> +
+>   	return true;
+>   }
+>   
+> @@ -274,6 +301,8 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+>   	struct codetag *ct;
+>   	struct allocinfo_get_at params = {0};
+>   	__u64 skip_count;
+> +	struct alloc_tag_counters counters;
+> +	bool fetched_counters;
+>   
+>   	if (copy_from_user(&params, arg, sizeof(params)))
+>   		return -EFAULT;
+> @@ -281,6 +310,11 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+>   	if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+>   		return -EINVAL;
+>   
+> +	if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+> +	    (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+> +	    params.filter.min_size > params.filter.max_size)
+> +		return -EINVAL;
+> +
+>   	priv = m->private;
+>   
+>   	mutex_lock(&priv->ioctl_lock);
+> @@ -304,7 +338,8 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+>   	ct = codetag_next_ct(&priv->ioctl_iter);
+>   
+>   	while (ct) {
+> -		if (matches_filter(ct, &priv->filter)) {
+> +		fetched_counters = false;
+> +		if (matches_filter(ct, &priv->filter, &counters, &fetched_counters)) {
+>   			if (skip_count == 0)
+>   				break;
+>   			skip_count--;
+> @@ -313,7 +348,7 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+>   	}
+>   
+>   	if (ct) {
+> -		allocinfo_to_params(ct, &params.data);
+> +		allocinfo_to_params(ct, &params.data, fetched_counters ? &counters : NULL);
+>   		priv->positioned = true;
+>   	}
+>   
+> @@ -339,6 +374,8 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
+>   	struct codetag *ct;
+>   	struct allocinfo_tag_data params;
+>   	int ret = 0;
+> +	struct alloc_tag_counters counters;
+> +	bool fetched_counters;
+>   
+>   	memset(&params, 0, sizeof(params));
+>   	priv = m->private;
+> @@ -352,10 +389,15 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
+>   	}
+>   
+>   	ct = codetag_next_ct(&priv->ioctl_iter);
+> -	while (ct && !matches_filter(ct, &priv->filter))
+> +	while (ct) {
+> +		fetched_counters = false;
+> +		if (matches_filter(ct, &priv->filter, &counters, &fetched_counters))
+> +			break;
+>   		ct = codetag_next_ct(&priv->ioctl_iter);
+> +	}
+> +
+>   	if (ct)
+> -		allocinfo_to_params(ct, &params);
+> +		allocinfo_to_params(ct, &params, fetched_counters ? &counters : NULL);
+>   
+>   	if (!ct) {
+>   		priv->positioned = false;
 
