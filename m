@@ -4,85 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E87FCD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 15:37:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFE00CD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 15:38:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14C0B6B008C; Mon,  8 Jun 2026 11:37:10 -0400 (EDT)
+	id 2FC036B0088; Mon,  8 Jun 2026 11:38:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FC366B0096; Mon,  8 Jun 2026 11:37:10 -0400 (EDT)
+	id 2ABFB6B0092; Mon,  8 Jun 2026 11:38:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2D016B0098; Mon,  8 Jun 2026 11:37:09 -0400 (EDT)
+	id 19AC66B0098; Mon,  8 Jun 2026 11:38:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE2FE6B008C
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:37:09 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 933EB1C095B
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:37:09 +0000 (UTC)
-X-FDA: 84857148978.26.77461A6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9BF41A0002
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:37:07 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="d0/nWOEC";
-	spf=pass (imf15.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0ACE46B0088
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:38:35 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2F59EA0176
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:38:34 +0000 (UTC)
+X-FDA: 84857152548.08.48B0D3E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4B2191C000C
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:38:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bQxyOqT/";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780933112;
+	b=k2Kqcce31nw4l4NiGWy0aZ0SQBgACvVSdAKlKZF6FHVdJoW15Swa/SBY4cRZ98ofwCMGO6
+	A7FVeAMoZNwcUxYJ0t6RfpQJyixCB3djF513GbQcLgeFlDf/BSmVpe8bNAECWwU2TUdWNY
+	5cxpPktMEy1qxXbdspjMjWyKteFfLPc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bQxyOqT/";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780933028;
+	s=arc-20220608; t=1780933112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b8MjpuiW4UVZFDzn32268k2v8y94maVlbn66DhAxaE0=;
-	b=Yvme8pP13XBxzB/z6qAYEjlt78rr2oj39ZdYBsS0rgSYaO9qJpB3kjaIvA57FztQKfCifT
-	OCqwaWZJrfKDRWTYnYqnmcg4Xc+EzA/HJAUYn57pYY+Ad3dXod/2bQYrfup9wNvmpTjOiI
-	73W9XKsXbKRpdpk9fKGN+qpgVsG2wnE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780933028;
-	b=iHfmg7Adz7KHHjDzs/RJ/Agpgk+oC6z6MS/Js1lPFe7kuarStEmyFcDAXbR7+YXS29C3QA
-	1mc2Y3oPZLhS2Z2QmwH0JsGH/GMyolVtCD74L7z9a3Uow0KRjGL5A2rPU1xBP2UXRy063M
-	RD5SToWyGVXtOsqFy8ATVJC2WsmGGF8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="d0/nWOEC";
-	spf=pass (imf15.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B20D11E2F;
-	Mon,  8 Jun 2026 08:37:01 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3FB4D3FD80;
-	Mon,  8 Jun 2026 08:37:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780933026; bh=Xu4EpoEVeMBr4+03yHgtOAgELj7OjAwLMfxBTH0IrbU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d0/nWOECo2S/dhvr4nKDtkYkcWA+bUJVSZOhi0EsXdPJnQVMRplE1SOJFOTNAklR/
-	 glKbWqMaGn/PnX4OeU7HHLIB9M755vR8t/aaCVQ8pVwpM/NRo4T2NuYK4y+yzqR1fg
-	 O6He95z1esL+nbujmVR7gD/POR01aJyU++Dtg9wc=
-Date: Mon, 8 Jun 2026 16:37:02 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Kameron Carr <kameroncarr@linux.microsoft.com>
-Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rppt@kernel.org, mhklinux@outlook.com,
-	linux-coco@lists.linux.dev,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>
-Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
- vzalloc_decrypted()
-Message-ID: <aibhnnDFQTHWMEFe@arm.com>
-References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
+	bh=i+8PnYD0gabW4Oe0rUJLesGb3GBzLwEDsBFUW101snk=;
+	b=2csGEQIIGtLQunGnVsGfy8kIF7lkn9luZmg/J2fpJmDG8yKEaV5D/63kdi7gTl1vGt2Ndc
+	/hRuISDR6+7Mc47wGae2ww/sSCf5MrV+v8co4MCY5grpWYyPXZ4MUZvNgfZ+KBdyowZoYb
+	3W/UDNxZzUo0I8x5euWmdjqdvwd0MGM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BED71601D8;
+	Mon,  8 Jun 2026 15:38:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503EB1F00893;
+	Mon,  8 Jun 2026 15:38:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780933111;
+	bh=i+8PnYD0gabW4Oe0rUJLesGb3GBzLwEDsBFUW101snk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bQxyOqT/AdkFJIeW2HC/zmb923F9BBOds3pOH3xHRMAOhodoJ6Nnhhru3TkjrN2dl
+	 VVIQzX/3Ausm/7OzU/HtweZ/x2+xUeysI3CwSHsCAwwzHxxEAL1LIb2/3uvgXfwIYd
+	 ZV/buSnjOWk3q43iF0Vn2mQg93Ew38J0RWKcBocDx7H1RhJ9yfnnjNe+TXPZgNZksW
+	 yrFZZpt7HO3X0exOPgiw7vpoBqLkNIXXwt86JAz4fkE/TfriTih+IDMBujPkwuhc2T
+	 HT24REevPf4eBpBeE1DmvJHbTMuY/facWnQtn6n7cnrOokvXBCFTk7YsJtecJVhVzC
+	 +5I0y1tM/OtTQ==
+Message-ID: <fb25c5c3-c3b4-44df-acd6-46040ff1027b@kernel.org>
+Date: Mon, 8 Jun 2026 17:38:26 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] fs/proc/task_mmu: change lock_vma_range() to return
+ error code
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
+ willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+References: <20260606015729.1837935-1-surenb@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260606015729.1837935-1-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4B2191C000C
+X-Stat-Signature: jq3kmu9s9fa1jyszmm6qswfg919fno58
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9BF41A0002
-X-Stat-Signature: h5anutp8hk8zac877hoqasya1r918ehn
-X-HE-Tag: 1780933027-810379
-X-HE-Meta: U2FsdGVkX1/V9W+ecTVahSmSw70dkjzss6L712mpiidl1cfTPlR/I8RRVEoTOUk+XooUro9FGaPerf2kKUzn+1X8y+kAKxFN0M6WZkJkMh7zb15Wn7Z/5LwtWV80+dlLLUo6D4tvIiGnwxmNKdLlxefKJj4JsbQCqDeDLd3oz66g4rDg+WEF+Jihn4qUrNnHpIbt+u4MLOiYq/D52X2QhoQXiUYnAG9AbKKwfm8KQqLdVevviqEWAEGtv1NpxaRKd2ZCZwsN0ypJk7vO6DkyFFyyNwVtO6tdjG5Do7pcqGQbAvsaCGcCvUrXw1ZaMcxKDppu9RowCjduGyygbLk0QHoMlUUvs5CaJpSrmt3OuKd0mKogCRYiuYzJP6CGl7lWrzwOIiyzrcvlpsM2Z/7oZyNu13i6G+x/ke4eg18ozw8S5cIL/Q+TNQxvSAPJluz8JK0zi/XTerYbCzRZ4AlrIX25hPFggQWvnhvcOUIRgfX8/wf0JwLIQB1oR5y9puBZqt+TmgB2q0wcd858yGhFgjK9oNdLw7URd6izP50DD+6+uqchz/PcuPHiVitW+sPDcxWubE7KqHoEM6Odl7K2uK+WFdMNYxAureNpydaH1Q+ang4ce5nik8CGMPJ2uL2XqEf9cDjOZIwxX1acZdS5wXnMsyEiEC/YF5gg3POpI9pc0emyKYwzvMoGx7rLzedJk83Vj7ikpush+8Tf8eYnf9OfjkHgWtRBiM9j7d06FkJq/GMGfzQXjXS/YawEnufNeK9GJJuMmoQdsr6W2Y0bWYB9soQbDTQNtWt/KJX2fPP8tslAHsXfeWUCVwsNV000o9uKsHZmmk1dtqqvO0k6tXbXB3J1LuKRkKf9z44ZaXZx9n/ekioXzm6s8tHRxrn8smarYG7dXcUJq7Gy6S6PjpXAFZy49CwoOB85wShU8tF3+ifWcGXEMDxBp/IqF0sL2VLcls0We3ZCduW6gX3
- T7xK+Qwo
- XbZgueVN4V/7g44qtSm20hbK4xN7WJPyjq9JoEY+rGLaVtzaZkyuDfaHFqs94bPHy031faBAF6kEZLoDkQs+3Ixaov9KaMGo/GOcc02EpTzEOsqn385IsHkFd9raZE2dQwjZHs60ZqchDV4LwCO4huBgNa/N6aJ3kj1K5hTIPsrw0LAhRr+FVTOZuTg4/nwofZjgTkZtutgZhEO+PHF2LAWQxr9DNIycQeUlX+9uXo8YEGPFI6szZzY3DD7lgK8cu1yJRMpikDUKWO0A8Uw6BjXZNuA0xPw+hBPejnAZGOOZbzS/8OMSa3RY/95zjJFvhA5xC7bC6VyAMYa09rwAEKXP4RoBlvLsJ3b34zvN00Jr3BCO1RVElv8NbXL+0U4H/63xDl6LDqMTZ87dRsi949BtazXjCIrlOaIEGRAku/dvBfNdZUs35GdlaJQ==
+X-HE-Tag: 1780933112-259739
+X-HE-Meta: U2FsdGVkX1+S5hpgG0OZ8q9Zgr1VDJZJr0YdY07F5aPD439tUJYapgaDd+Z0O59rObfj0AL4YtOpr5RFsqgAaSoyfwLRCo2WhTJldFz4CCBcw2QBrSD6aaZTUPr2aNISoYDup9+Kui1Bu7MrnOJHxomfJThg3qGu8JqrxRN26NbO9WbB7EZruyUDryIERojthhzcv+/i4j+1PHE4hrD/fGz1xPdCLNFQndndBLjb1hlQGPMN5wSWTYRMAF2wbu02IwrTEW8UPYM7K6iZ6bQn9oQqO6FGsyDrI5igOZ1/bb5DGX/qVrC0tomPXLAfK1yXiVizs2KqRr+0xqlT9u+zcrVf6Si53l9sicj5xxmZ9SnF3IkYyJOx8EObSbcKHuDeWhRe4Uua5+hbSjBAKzF++blKZ7g9I9fRsRBFjVtfBepWRsN24MvH6yXrkTe+PVgE2rPCv5Ge29jduY8XNKyv3rKlzvoY9ICn247J0CkEwDkpuuZKSrsaHKPd4GK+NACgHMxJAm62mhtnogtjHnkNl0IQhtePmkIgAQtPT2u2Y2ersrlqQPJ9BK6Bd6GBObRfxPki/pXImQPvdIRLXesWnogEKC31X2KSCHRCtUrG0b60mZO142DAMjqS5tRrVJb97AnPGamGtAriyiyO3vmSh1uh5lthieJFFEqWd7Rqi6cpTPoofnfG1PrxO2OrJRiwrXwGppHensZzYyhvMnfTND0vkl1N5wf9TxR+NGZq98VbKuaD2qxaVTDUakif8f/KhkvNtxfdygHT/p3+VDsfxyJJ5GBiGfgZVhyfeMWMiWM1jROyC42MRlNHnkF7SEt8xZr1tEAZonax3fI2oH8CdJ5+A2B6dA3wqHUyGesw2UFl8imJYL6hLUuu82qQOxuKQcfhX0CrGBlqF1qGnFOQA2KJmFQlP/9P5uuTp+ec4LIzjfV6c77+Oi3NmQMNo9x2nh3D37cXzs79nyyOFEC
+ 7GpcyZni
+ IpNk6/HlKb1YKludru+C96yAarCMW0LDlor5EiAYLUBaSIVYvoh+rQd/02wROOsP3O3QFedYY1jM+S9rkLQyvxYH5+w7AradKGwu/QjA6KY8Yzltra179rBApgtlTl70ZixAZJMCGejLcOoxOe8D8Jjrglp7bquWy87RDEzGbxGBz7rJGhphJxdsvaqkBjl+FR0BpiO8IsGUvu/5QYCooSHx+lnlRXcUCPXIQSE3uHy6F9+LptYUHJzr3Teusp1264qEY9MoHxdrBNe2qh8pkDGEipcD80t2FhyFm7Zo1vj7BeWo/Jm9lktWEzvoQwyXgdyLMWRjSp1204BR5IOmwnQUahQQvRbEIbv+P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,141 +140,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+ linux-coco, Suzuki (for the arm64 behaviour)
-
-On Thu, May 21, 2026 at 01:58:34PM -0700, Kameron Carr wrote:
-> In confidential computing environments (arm64 CCA, x86 SEV/TDX), guest
-> memory is encrypted by default and must be explicitly transitioned to a
-> decrypted/shared state for host-visible access.  Calling
-> set_memory_decrypted() on a vmalloc address is not supported, and not
-> recommended as it would be inefficient to decrypt the pages after they
-> have been mapped.
+On 6/6/26 03:57, Suren Baghdasaryan wrote:
+> To correctly propagate error code from lock_vma_range(), change it to
+> return the error code instead of the boolean. This simplifies error
+> propagation code.
 > 
-> Add vmalloc_decrypted() and vzalloc_decrypted() which decrypt pages on
-> the linear map before creating the vmalloc mapping via vmap(), so
-> physical pages are never mapped with conflicting encryption attributes
-> across aliases.  A new VM_DECRYPTED flag marks these allocations so that
-> vfree() automatically re-encrypts pages before returning them to the
-> page allocator.
-> 
-> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-> Link: https://lore.kernel.org/linux-arm-kernel/ZmNJdSxSz-sYpVgI@arm.com/
-> Signed-off-by: Kameron Carr <kameroncarr@linux.microsoft.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 > ---
->  include/linux/vmalloc.h |   7 ++
->  mm/vmalloc.c            | 163 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 170 insertions(+)
-
-There are a few Sashiko comments worth reviewing:
-
-https://sashiko.dev/#/patchset/20260521205834.1012925-1-kameroncarr@linux.microsoft.com
-
-[...]
-> +/*
-> + * Re-encrypt the linear-map alias of all pages backing a VM_DECRYPTED area.
-> + * Best-effort: on per-block failure the loop continues so as many pages as
-> + * possible are returned to the encrypted state.  Pages that fail to
-> + * transition are left out of area->pages and leaked.
-> + */
-> +static int vm_pages_encrypt(struct vm_struct *area)
-> +{
-> +	unsigned int nr = 1U << vm_area_page_order(area);
-> +	unsigned int i;
-> +	unsigned int leaked;
-> +	int ret = 0;
-> +
-> +	for (i = 0; i < area->nr_pages; i += nr) {
-> +		int err = __vm_pages_enc_dec(area, i, nr, true);
-> +
-> +		if (err && !ret)
-> +			ret = err;
-> +	}
-> +
-> +	leaked = vm_compact_leaked_pages(area);
-> +	if (leaked)
-> +		pr_warn("vmalloc: re-encryption failed, leaked %u pages\n",
-> +			leaked);
-> +	return ret;
-> +}
-> +
-> +/*
-> + * Decrypt the linear-map alias of all pages backing a VM_DECRYPTED area.
-> + * On failure, the already-decrypted prefix is rolled back to encrypted.
-> + * Pages that fail either the initial decrypt or the rollback re-encrypt are
-> + * left out of area->pages and leaked.
-> + */
-> +static int vm_pages_decrypt(struct vm_struct *area)
-> +{
-> +	unsigned int nr = 1U << vm_area_page_order(area);
-> +	unsigned int i;
-> +	unsigned int leaked;
-> +	int ret = 0;
-> +
-> +	for (i = 0; i < area->nr_pages; i += nr) {
-> +		ret = __vm_pages_enc_dec(area, i, nr, false);
-> +		if (ret)
-> +			goto rollback;
-> +	}
+>  fs/proc/task_mmu.c | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index d32408f7cd5e..023422fcee12 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -162,13 +162,13 @@ static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
+>  	}
+>  }
+>  
+> -static inline bool lock_vma_range(struct seq_file *m,
+> -				  struct proc_maps_locking_ctx *lock_ctx)
+> +static inline int lock_vma_range(struct seq_file *m,
+> +				 struct proc_maps_locking_ctx *lock_ctx)
+>  {
+>  	rcu_read_lock();
+>  	reset_lock_ctx(lock_ctx);
+>  
+> -	return true;
 > +	return 0;
-> +
-> +rollback:
-> +	while (i) {
-> +		i -= nr;
-> +		__vm_pages_enc_dec(area, i, nr, true);
-> +	}
-> +
-> +	leaked = vm_compact_leaked_pages(area);
-> +	if (leaked)
-> +		pr_warn("vmalloc: decryption failed, leaked %u pages\n",
-> +			leaked);
-> +	return ret;
-> +}
-> +
->  /**
->   * vfree - Release memory allocated by vmalloc()
->   * @addr:  Memory base address
-> @@ -3457,6 +3554,9 @@ void vfree(const void *addr)
->  		return;
+>  }
+>  
+>  static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
+> @@ -245,10 +245,10 @@ static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+>  	mmap_read_unlock(lock_ctx->mm);
+>  }
+>  
+> -static inline bool lock_vma_range(struct seq_file *m,
+> +static inline int lock_vma_range(struct seq_file *m,
+>  				  struct proc_maps_locking_ctx *lock_ctx)
+>  {
+> -	return lock_ctx_mm(lock_ctx) == 0;
+> +	return lock_ctx_mm(lock_ctx);
+>  }
+>  
+>  static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
+> @@ -311,6 +311,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
+>  	struct proc_maps_locking_ctx *lock_ctx;
+>  	loff_t last_addr = *ppos;
+>  	struct mm_struct *mm;
+> +	int err;
+>  
+>  	/* See m_next(). Zero at the start or after lseek. */
+>  	if (last_addr == SENTINEL_VMA_END)
+> @@ -328,11 +329,12 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
+>  		return NULL;
 >  	}
 >  
-> +	if (unlikely(vm->flags & VM_DECRYPTED))
-> +		vm_pages_encrypt(vm);
+> -	if (!lock_vma_range(m, lock_ctx)) {
+> +	err = lock_vma_range(m, lock_ctx);
+> +	if (err) {
+>  		mmput(mm);
+>  		put_task_struct(priv->task);
+>  		priv->task = NULL;
+> -		return ERR_PTR(-EINTR);
+> +		return ERR_PTR(err);
 
-I think we still have the vmalloc aliases at this point as we lazily
-reclaim them. We should call vm_unmap_aliases() before
-vm_pages_encrypt(). It matches the x86 __set_memory_enc_pgtable() as
-well with the explicit call to vm_unmap_aliases().
+Looks good: down_read_killable() would also have returned -EINTR.
 
-The vrealloc() path may have some issues as well but I haven't looked in
-detail. Not sure it actually re-allocs decrypted pages. The simplest is
-to reject vrealloc() for such vms until we have a use-case.
-
-> +/**
-> + * vzalloc_decrypted - allocate zeroed virtually contiguous decrypted memory
-> + * @size:    allocation size
-> + *
-> + * Like vmalloc_decrypted(), but the memory is set to zero.
-> + *
-> + * Return: pointer to the allocated memory or %NULL on error
-> + */
-> +void *vzalloc_decrypted_noprof(unsigned long size)
-> +{
-> +	void *addr;
-> +
-> +	addr = __vmalloc_node_range_noprof(size, 1, VMALLOC_START, VMALLOC_END,
-> +					   GFP_KERNEL,
-> +					   pgprot_decrypted(PAGE_KERNEL),
-> +					   VM_DECRYPTED, NUMA_NO_NODE,
-> +					   __builtin_return_address(0));
-> +	if (addr)
-> +		memset(addr, 0, size);
-
-Talking to Suzuki, the small window between set_memory_decrypted() and
-memset() potentially exposing stale data is safe, at least for Arm CCA
-as the memory would be scrubbed (there are other places in the kernel
-where we do something similar). I assume that's also the case for other
-architectures, although not sure what pKVM does.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-Catalin
+Cheers,
+
+David
 
