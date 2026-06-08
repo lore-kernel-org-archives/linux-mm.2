@@ -4,122 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE7C9CD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 17:53:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55713CD8C9F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 18:01:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 017516B0005; Mon,  8 Jun 2026 13:53:55 -0400 (EDT)
+	id 665696B0005; Mon,  8 Jun 2026 14:01:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0AA16B0088; Mon,  8 Jun 2026 13:53:54 -0400 (EDT)
+	id 63D026B0088; Mon,  8 Jun 2026 14:01:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E206D6B008A; Mon,  8 Jun 2026 13:53:54 -0400 (EDT)
+	id 552326B008A; Mon,  8 Jun 2026 14:01:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D53556B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:53:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4A28EA0214
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:53:54 +0000 (UTC)
-X-FDA: 84857493588.04.0F4A1B8
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5E2F8100002
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:53:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=bug903aT;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of praan@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=praan@google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780941232;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 471496B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 14:01:37 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F34451A0236
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 18:01:36 +0000 (UTC)
+X-FDA: 84857512992.17.0B2F996
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A86C61A001D
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 18:01:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RP68i5uN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780941694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HKaJq/FqOrnnsfhBbbAGAUYIrDaTZV/8Gb9XfRMpf40=;
-	b=Oyf+MRmAn6M1e56RegOSDSBGZAkn4T71ikWRnrB6DICFgeFZg6DFeMP9da8wLTn66+6N22
-	iFFl8XQajgeYm7PO2E3vdmnU6sVsLcVJz299vE5rJUArTz5W/F+KjjrXyc+j4doYsCR3/l
-	OHp2OyTxCwbW44ykt2LXveaakOfdTqs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=bug903aT;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of praan@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=praan@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780941232;
-	b=YT6Oqy3/pJEecmcQg0lG2DANg0p3T2jmRrUpbbOEmK9bYY2YWFkn0Oq1duEEhq6iTp3Wed
-	oE19yVo8i8vBSpg+Fv2abAgy9P5LShYNZyoLQxvalIGESZLak0kH8+19Ya3JJhgifAACvn
-	ewYOXQqFD2SzDpEpoJShZkQ7QiPll4k=
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-137ff9a7d5eso28850c88.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 10:53:52 -0700 (PDT)
+	bh=6UoX/xydv0CvknQ1ef5QoOdvD3AYDMennvM/Sj2Oa9g=;
+	b=ZqT6Og5Bab+zDnYmOCV9yyrKYEr/6FSUEcKNjqH8p5wb1+2VmJ3RjNrjhohGxMVelMpPmH
+	HIxQsCRQt7D5ANT2f5RDvmrA7gEYLB8rbmD2RjSgjHoTl+U6qmPPBw1ldRrdMHcC0iN/P1
+	YCa+kBzJTnayIh+A5C3hIu4CPv5skco=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RP68i5uN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780941694;
+	b=iKlMvoM9MXtQLACnyvP3PLH5sD2n+LFtTqOPA8Dq2+P8ySuAcmThFtlDJJC5FfkFbYkBOJ
+	490Xw3MH16KuIq1JUDuxMARYDADwQRrDacclrpWN/5WTCKRCsQ4zt3Dr9eZb5//pK9wZTh
+	+ZDpv5b/zKB2jpJsNKWDIdvcWai8Dls=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-490b9318997so34535975e9.2
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 11:01:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780941693; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Y5VYYQNkBICA4Jyxp9QiyTOjIhz2eOc6OpJ79SB+ELKjdRuxBjkWlLUK5UFv8rZuKK
+         zDRFSMvcCbxtAXh2EjXM6y4HH8gXdRdETNNy5UyX5ibR8Mx6ZA6DDleq7BeCqyIeYbaL
+         iSEaBxYcuKCLIZICy3srLUXgrqdInajjC/3vTM30OTfbFsueyrId1D3eHFObrFSNBR9v
+         BCqdJTFwBnc9782/SBJ+BQmrMZaaryB40rNJmpLLIu3iW66cZw6/A/LKjAdKtebHsNm/
+         rwOr6KjK2g94945osGXPmbaLkSRxm0HUNd5Z18xP67m8yj6eoEBlUrpysbOo8K5T+gFy
+         vxGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6UoX/xydv0CvknQ1ef5QoOdvD3AYDMennvM/Sj2Oa9g=;
+        fh=JfzbElF8Y8DFqGPkX5CGt7PEdDD21QMvGA0J0uJwQsw=;
+        b=M53YqGHt23evWj4qKV4wXC5grtPzLqGPrR21MO5vQy5/ROsgUFlsNwiN14Vw50aJQh
+         bYA85xJdnjd2MhfKPorhVCwp96b42KSU9Kocf32Sw07H4LfkIQFtac1T4sJew+0UOfgI
+         SFU6zd2BIYAkeNF/Eh/ZbLN0bsOe8LRvjYft9cpq0YjTJOygQaWOiCAPv65A5prKEx8n
+         JghUK2LlVsVEEsh3DWJeSjcY/jC/4mhXuqeah663W++hCYapKZPUI6f/uvRLhgmEQnBr
+         gy/CurUqEeYy/iWRdxRfrjYsZFwe0p43v0x2H7RYIkHtXPjvIDL7e0E745HMhlgYMudc
+         Wq8A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780941231; x=1781546031; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HKaJq/FqOrnnsfhBbbAGAUYIrDaTZV/8Gb9XfRMpf40=;
-        b=bug903aTx5YPT23yS7QbsteayUpBCQt57PZF9ZGijsJpkL2+alVTmlF+3YeApN9EWY
-         llwD0i9mZ/wgigVIQUiXjqR0L8UCWJB8nZO7SVDoTObxwJnTvBA4q3iQwYsWdaA+jfTk
-         X5uBt7SvnnnPBVBZgwWx/u84J1vnhZ5wujFZAiOXHzBUN0rfI7vaDP58bi9ZGyapNzVV
-         7bcpMcdfph6jxiZHRstSvajSMG0dZ5vfwOE58ZJ0+NLf7zZjT77sBPlmI9z8GLEc2AKx
-         8oAoy41c4MmVFyrFLXo1o7RJxezqRB35BYFP8gWc1JRn+dh+EeYGGsYEgQDFFUmvNook
-         cf3g==
+        d=gmail.com; s=20251104; t=1780941693; x=1781546493; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6UoX/xydv0CvknQ1ef5QoOdvD3AYDMennvM/Sj2Oa9g=;
+        b=RP68i5uNTXx192ZyQVw/AOMC0NA93RW6zXXK27baqIvAwsP2cnnFzTI2j6XXEknjMa
+         dkXQ/0Cj8JDO8yb2VGNDaXIbcI82Wu3qXtG4h90cj/kOvBYEV1q5eayvdvaikxs0lLIW
+         qw+JJp+/9Dy19CxLfmBR4EFLFLVXqbsMXuKGPUd+8pTBr3pNfE34kcumhwCXGiylNcFl
+         PBKu1pmDSHQMC68BFtpIAtX5GL+qSTAYWeN8yiCAItNiAX/nSCIPGejoHzLO18khAuLN
+         +IFtF3PCKA0HFd97e8kSYuZtZ7DJeg83jpeNuXTql8Nk9kUlQb9KQGbkaoTzdwzgBcFw
+         vXOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780941231; x=1781546031;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HKaJq/FqOrnnsfhBbbAGAUYIrDaTZV/8Gb9XfRMpf40=;
-        b=hAWVN0MZIZ2s6poTE+PojlGDast3qPBqmUdnbxc3I9vvs5NwQkICqcvBSBHfouhCxn
-         9J3R+tqk9b71ez1bXGayRN3Nrk0cWA5rghMTGLQHyQY6b3+91l85mUtIFc9+IRifffWM
-         5r+reS+ubpb/NvTeUHF3w/Ks5EIS2t2WNdG13cvjPbUjSFjSg0TIF/zrassZ2sR4i5sI
-         Lg57g+SBVHdqQld6VXDXq8bOHv8lYtkiTbCW3ka/K8OgvJGzp6d98Iii7O3ZobVRjtnf
-         jh/WRhYUd8gzJWiFLmLTe7I/ymlBsOffJQSkTNosJiA0eJ4nOngofTAAybgfM8AFRQIH
-         0Tgg==
-X-Forwarded-Encrypted: i=1; AFNElJ85ChZDtyTuRTmqwSQzDlc9ze5mXZP01w/OVCofBzNMDOMk4DDA/258QCIhzcKDdcrtGcmuTEfOCw==@kvack.org
-X-Gm-Message-State: AOJu0YyEWKOde1JGWlmHPga0baFZw32/xRcjGtrk5CF+JpfmuuZV/kSB
-	MrpBSiglWoQ0YUzeAeQJSiX9whX1MYXVS1dpwMiiWOhBLPhp8aDTn+DDxqS5F4jTkA==
-X-Gm-Gg: Acq92OH7CSU6xJ+FTrTK7zuIlxg/5AciY+SxoSJq9JqzcYs5ljZ8VWTA9xQUPJ45s9k
-	bIyM4LhjblY5J+OXbn6D4p4ANdPHl54Bqxd06WgMvkJwWk8NaASGVYDRkU88QXfjgZycK7rexkd
-	RKA5WBx7rhVgpsEQYV0pT+KTjf+rt+Ahll2r4IASzkD9jQiuDS5th2CIjP9JFvgoHRBhv/8UtHr
-	bLhDBBTm6d+IPbNbUCfCEv4uTZE/rR1CEvIRPxBC48pUg+7j8SQ+cI5nJXK/MNuLJTxXl7+X9Fu
-	ah/yoggv7nq/Ovv1K03YJMKfcn8tzpwx254qshQYQn90bcsRaex8yEOaehpFVf8CA0ApFLK5Foe
-	YafFKejUh0Em5nHMmkMGTKWvOJEyVlHJ/hdamuTvsYl6F2uZrYiwpoyemWCs5lxSmucbgZhc6XJ
-	Vz8gtClD/QkCXCoX+lcXxRqHdednC49JiPE4UZWrO0085lF22yz8/drdZ+yBRSsnfqVkHO3eM=
-X-Received: by 2002:a05:7022:48f:b0:137:ead9:4608 with SMTP id a92af1059eb24-13807cbdceamr310348c88.17.1780941230355;
-        Mon, 08 Jun 2026 10:53:50 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074db528dcsm21257291eec.3.2026.06.08.10.53.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 10:53:49 -0700 (PDT)
-Date: Mon, 8 Jun 2026 17:53:43 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>, iommu@lists.linux.dev,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [RFC PATCH 1/4] dma: Add DMA allocation preservation KHO ABI
-Message-ID: <aicBp4tSyzyYBnzn@google.com>
-References: <20260505002737.2213734-1-skhawaja@google.com>
- <20260505002737.2213734-2-skhawaja@google.com>
+        d=1e100.net; s=20251104; t=1780941693; x=1781546493;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6UoX/xydv0CvknQ1ef5QoOdvD3AYDMennvM/Sj2Oa9g=;
+        b=NnjduuulGDNKKDZFY+hSz6X/O2ZjXleSWU0AXk6Gx1aQKkmFp8F8aOjPfHa6ic6cRM
+         PF1dV7TJsu3vwpmzfD3nJ9SNP1H+4gHAg6X2z2lLw2l1V8glY3tn90hedYubcOPG2/mg
+         +a0VrJa+AWV3s+x5ooyLr3fSrPai7aCY1dmJZnmwlnWo6KvvvKxLzCTpEBGe5sAyIpHP
+         zgoiP7zhvz1n5FTlc0kt0ThXHNGIWHVAlAO2e3hUcptqqa0RO0rhIrIFUT/adb3yjJoU
+         ZmCcGp9stYFg+IFm7c5lMbMx+uczYPONjMGEEUDqMA+GIY4uapXJEbWnBSslH06rVBiN
+         fkAA==
+X-Forwarded-Encrypted: i=1; AFNElJ/FU6/siqV6UYRyBc1qHJQGsxMekwe1KLMuCUglNRyUnCE4j4772eRhDKyK8dAVE77a83heYbGQsg==@kvack.org
+X-Gm-Message-State: AOJu0YxsZSwL6uuTpgKBN1sCKY6pxLF614Cbp7KsVUqkJGPodOAKfLya
+	zamJkcR57/7sSqNyLyyId86zq39f6t4bUNsrKga7NQS8+FrZle1XRlmiqTgqgo09Q872UtgcQC8
+	HfJi+UUFBqKnNWaTp376Kk8vSGKjjwEQSmfLl
+X-Gm-Gg: Acq92OELgs+JD1ppVDSiiRyBAJg+xA1yfU1UIEY161oL4FZV1/Y/h//1nMvVCTySQ8h
+	FUfZ/mfzxdK1pG0l/qfxXVSxr4QotWq0OiYoTNuFEoto0YFy3XkVstw+jHQRQ4IEZiWxN4Jobd0
+	nDnw+ar1I+1HGPvnH4sEcsRf6UoJxleg/FsYeSnlD3GHKGxlZdryFWeevjOXoaU+UbQ2jKvFhBW
+	qUmC6IW1ZftWpGf9OCp68cN0H1hbMgsaP3TM+JyeK+bdHCI6q/6GgeEC/IMzFbLQgcDcBOCRy8z
+	LkAsOOYeLx/CjlR1M+hfoxr/sJMQEBWquoGcfTvDhk5D6zWo5A==
+X-Received: by 2002:a05:600c:190b:b0:490:9804:afdc with SMTP id
+ 5b1f17b1804b1-490c25ff35dmr290599385e9.23.1780941692853; Mon, 08 Jun 2026
+ 11:01:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260505002737.2213734-2-skhawaja@google.com>
-X-Rspamd-Queue-Id: 5E2F8100002
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-2-jiahao.kernel@gmail.com> <aho7nepN5jZtKmef@google.com>
+ <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com> <ah4ZZGl7GYJf54Wz@google.com>
+ <ff344c9f-51da-8b3a-e7a9-c4a7f4702ef8@gmail.com> <ah9i3uhh3PFiS0Uk@google.com>
+ <c7870fe2-3588-79db-cbfb-bd6a2b78f594@gmail.com> <aiBpibRNi0BcM1Zu@google.com>
+ <9898f83d-fae9-e284-6b85-c7f4089840a0@gmail.com> <CAO9r8zPBH6-0SQ6-_ZOhTQeyu=rz4F=ugikCrU-JR_skm6fEWA@mail.gmail.com>
+ <a60eedb6-f3fd-4092-b726-04a17a695ace@gmail.com> <CAKEwX=MQ3xXBAY-2H8vA+XSX5GHNBubJ2GCYAXGD+Hra++ZM7A@mail.gmail.com>
+ <90730fa7-62e7-d5f4-b638-23b22a8509f2@gmail.com> <CAKEwX=PF9hfERC_QMq+rjkSc-BsJyawMgTe+EhwR_86HiQKm=Q@mail.gmail.com>
+ <CAO9r8zN6VVZz7dpjNrh8n7wbLkqcrsROPm70MQQxO49HJSmMFw@mail.gmail.com>
+In-Reply-To: <CAO9r8zN6VVZz7dpjNrh8n7wbLkqcrsROPm70MQQxO49HJSmMFw@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 8 Jun 2026 11:01:21 -0700
+X-Gm-Features: AVVi8CfPM9EinXbnTowRrF8hGIP3rew15f95GiBStV7nPCFnW8PfDTRssPsRAOY
+Message-ID: <CAKEwX=MCFbsh9ndBtR0-bGRr_=v-6bBwTo=muzd9ZSD-LAK1nQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor per-memcg
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Hao Jia <jiahao.kernel@gmail.com>, akpm@linux-foundation.org, tj@kernel.org, 
+	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
+	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Hao Jia <jiahao1@lixiang.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: yk8y43giejbz51fdfafn3aautgrrnf49
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780941232-673239
-X-HE-Meta: U2FsdGVkX198keFDRzmqPHoMRA0XTQ3UrLCLlAOywV1jMl2ys/2HjfUhcncarmlEM/VtfYB7cOMG9MEADAF8gV4+8F3Tc/F24EvtFlyI7PkKLCTTjckuRSSfGi2sQRr55eBzlAbXC1MPMqptadYEc2wc1UzahOfc33MAu9OrFk+/1o9Zpi+GuA4kQtMd8zU08UkUGBE2MFBGqzT6JHRCyQCgAuoVJ9pD78HJBonMwCoexQtcFXFIpUmJOCuhHK2l0hC0G2DKd9+8j8yYAectvPwRdnaacmmMAETd9uCy8OnHZCafer9DvOc4t8GmMKTEy5rN/G0nLLoEqQNrqZI0Ui7c+QQZOrOq7bMQvi4UUBBme8F4eXDdkd7VczWtPYqHJd3k25MtncxBqbZ81xRZQCaphWH9CX+fAVigRvZSg2vC8gfuRSbegyHn9eLA9OoD+pHUT6PXV6mSAliEN5WSI0HxAR+m3kb4TfYOYwpPr5rVoVWjuhMAhZR0P+ioDJTtP8Rl/DfDunkIz3GMGd/yDEjtTMpSpsYf0VrRK5b7yzvgpbpQ3GCCzdvCILGKqtGCv1RAsFxBeZBbwrx3lB+pLBEPwDmLZJBC11grzckh1E7nngJFBYbA/IYr4d9nZ3w0HvNcA4BdlCqsKO72fkUEYTs5jjx8wY7QxxVJ1zahhIkWiG8eN6QzXRGO9yyFs6o5gebRAyLQvGF21gCooY2b2CgFXKzg9utmppdxuTQRJTq7Lq7pVSyHrvCdinASfzmf2gVzwoFNix8V3RIvhmoTav+i+UREgW963Y9zKwtQud2GfSkbmymVteGsmg+NQ5Ojms2UNOLP8BwrKd4vWVXdRHg7W47cMhKnN29vsfNVsPpazlZkJQWI1vhcczn+DnLELE6sPy1mCCeQ9EQvymflC3n50IjsyoHSxDro5bglxaxfKbLNt4RggyRl7reGB229cfCK6fWzdE5sb7vLf/O
- Zy2Vhipr
- fYqWNo2lq3FxmH2r0BT1ZvD7YjwwyGut2NvJTpKhQniiJd93ugNLngyIbvrLvpkmH16VtSpAutYpPQ6R4k6UF4JUAVZjgVUcX9/CoYiZ9IT1gS+p3MTvh7OLrnv7zMEP/8CLfMm9k5lvTfxZByIbb6EA5MlmwiNyGSyJpXAs3f1VLWMlteS2A/IpK1PU1Xx9wNBnRY93BUPM7ZKtgeoRJdJt8VCwfDaEoiZ1LOsqJZ2U7xgwSvr1QAotvZX+EvTzVrTurnBqKhaIarKym9buV28WmP7gDIxgT32EfGvP9gxhXRSjv4nJY6/HPDG56F1Uz9/ki8TqQutX1NmXXAMrezSL7rEtlbrdp7/oV
+X-Stat-Signature: emg8ynwj13njzcsfpmfixmq5jzakuq6i
+X-Rspamd-Queue-Id: A86C61A001D
+X-HE-Tag: 1780941694-323238
+X-HE-Meta: U2FsdGVkX1+tOVQ7AvXLRNx/S8fgq0VtCc9b+ugR3NWs3+Wjsvn/c8a8IY4AnLPJ5FJM5zDS1tE+/wwnXMAvFPTNTnDTNv/S8E24IAAWmteIlSGv5RmaaEv97Xl9E7ZrbA77zhhz5KAWyYWy6Si74KRjDXmgZUCiFA7oEHGWBAEfzliVcWJZTRIoMNEM9jhjJFE2wF0oStsae08X8p75TxZc1EgjX3OOtuEpZXSTU1mot9EC+fXynde7MGkD4uP1AhuCOs+FCvyKuuNKSujeA4jU+Ov709I1U92ac28/iWEZrh6BGXmlHnrEskWFxGu21iUsg47TOq7n8HQWaDnP5hoU9EmUO8SxGiFIPvmQMA9mHtjNxD+w8qvAmPQLbmdOGDsfp8WGaBpJwSHqjlQaI6Y2ZbOESh1EKGQ+TPBesoxaiQA7vLw5gBlflQtFvKdJv0rEZYTxyoqLwqyH8JI+UPX6YJh3Igutz3KA82GocpGZGvvilaqZQt/ea4fkhycQVGMtZBWAcn6rx7g3kmHOb4rLP4no9QP3X+uleaosGxZGQeBDE1JG2M4eLGXL5gYhrQM8gNn+zsw73WCyyy9bMjyZ5fCCIm431xxbjCAL7Fo0BSrqcJFEiPbRJ6u7gQ31+UAZe+kJHj6B75Lsc57Y+YrbMjr1XkdsR52wLKI85yepXd8YTkcl7T353JSgQm1MA/VwJaPW0zo9pXk+Yho5qe778C9lq2iH7NiGLBcD063IMMsZM5aoqWaRw4yW+nLPMPcZTukHJ53ghjzdV9+yLRiQ7gG22dItq8IFiYE781PE4Gw44wGTCjMiatp6vFq97HHFz4TUmIHjoui9mL3lJxj+qRpHztDT3IOF0C9rQkRGtWjzGTTdcHOPo38E1OmviN6npOXZsHV4Vd7+A6RVp8XoOchumMWwaX27lEec0cak/E/aysZf4iPFCxmSszJ2pYweDRQNPeZO6PkxzD1
+ tB49kirf
+ Z1V57nELtYVU4K8hnSr3CdDYkCLIYp41FPFx8tik9QWWduppmO//ERI5CDJIFiBDO89+cVZ3m6ZdKcKtwdsOIVtC/5xdpvB43nihxt8fhp497HMcGM+DP4fwoB15oKd0s9MFNO3JgUvibc4T2gs9QeOhyyC3z4aQMxLl/8fH9DOVl+iOJfLhfBNAeUKtAuWfIE6uvQkeo0sPpmgcJ2ifzWVLHcMGfe5BXl+Uuy8WxteylX+TJW9VRe3SeZzZcshcH9fprKdb5dsynSnKov3PTMvNAx2SRa/Taqt6Js3SpoRocdpT4laKAEEL8hkHvJ0ri+9PuAHsr/rq0dQKCJ6ddhvsilL0JcQ9fl2fmDiyW9ArTypDB8Cu5Lio3nCQrtyCCIwjYEk7tsXKLmXgt1Dpvu8t+z5kVDE/9jVgyj1xc+I2sZObMEGEtFFoDSrQLukurjxkVCPEMkXUJUnz1jTR8u6Bz2bQeU8/nzKU6cpbL2PZTKvtkmcLDT6LSJzConw7JhdQjJrY5fCOr3haZc7NtxYg7x1D2ZRS9Qwi7iel4YVsvZzE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,62 +150,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 05, 2026 at 12:27:34AM +0000, Samiullah Khawaja wrote:
-> The DMA allocations can be backed by a variety of allocators. Add KHO
-> ABI for the preservation of contiguous allocations that are done through
-> dma-direct.
-> 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->  include/linux/kho/abi/dma_alloc.h | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
->  create mode 100644 include/linux/kho/abi/dma_alloc.h
-> 
-> diff --git a/include/linux/kho/abi/dma_alloc.h b/include/linux/kho/abi/dma_alloc.h
-> new file mode 100644
-> index 000000000000..46e61db81abe
-> --- /dev/null
-> +++ b/include/linux/kho/abi/dma_alloc.h
-> @@ -0,0 +1,30 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_KHO_ABI_DMA_ALLOC_H
-> +#define _LINUX_KHO_ABI_DMA_ALLOC_H
-> +
-> +#include <linux/types.h>
-> +
-> +/**
-> + * DOC: DMA Alloc ABI
-> + *
-> + * This header defines the structures used to serialize the state of DMA
-> + * allocations, done by device driver, across a Live Update.
-> + *
-> + * Only DMA allocations done through dma-direct that are contiguous and
-> + * allocated using alloc_page are supported.
-> + */
-> +
-> +/**
-> + * struct dma_alloc_ser - Serialized state of a single DMA allocation
-> + * @page_phys: Physical address of the preserved pages
-> + * @size: Size of the DMA allocation
-> + * @force_decrypted: Whether the memory is force decrypted in previous kernel
-> + */
-> +struct dma_alloc_ser {
-> +	u64 page_phys;
-> +	u64 size;
-> +	u8 force_decrypted;
+On Mon, Jun 8, 2026 at 9:48=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrote=
+:
+>
+> > But OTOH, this does seem like a recipe for inefficient reclaim. We
+> > might exhaust hotter memory of a cgroup while sparing colder memory of
+> > another cgroup... But maybe if they're all cold anyway, then who
+> > cares, and eventually you'll get to the cold stuff of other child?
+>
+> Forgot to respond to this part, the unfairness is limited to the batch
+> size per-invocation, so it should be fine as long as you don't divide
+> the amount over 100 iterations for some reason. Also yes, all memory
+> in zswap is cold, the relative coldness is not that important (e.g.
+> compared to relative coldness during reclaim).
 
-Should we also stope attrs in this ser state here? There might be flags
-like DMA_ATTR_NO_KERNEL_MAPPING which would need to be preserved across
-a kexec? 
-
-> +	u8 padding[7];
-> +} __packed;
-> +
-> +#endif /* _LINUX_KHO_ABI_DMA_ALLOC_H */
-> -- 
-> 2.54.0.545.g6539524ca2-goog
-> 
-
-Thanks,
-Praan
+Ok then yeah, I think we should shelve per-memcg cursor for the next
+version. Down the line, if we have more data that unfairness is an
+issue, we can always fix it. One step at a time :)
 
