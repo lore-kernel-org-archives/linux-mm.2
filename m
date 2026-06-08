@@ -4,108 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EECC1CD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EF48CD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:33:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37ED16B00A1; Mon,  8 Jun 2026 07:30:00 -0400 (EDT)
+	id A62746B0098; Mon,  8 Jun 2026 07:33:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32FF56B00A2; Mon,  8 Jun 2026 07:30:00 -0400 (EDT)
+	id A12D76B009D; Mon,  8 Jun 2026 07:33:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 245B76B00A7; Mon,  8 Jun 2026 07:30:00 -0400 (EDT)
+	id 901726B009E; Mon,  8 Jun 2026 07:33:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 177E06B00A1
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:30:00 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 976D940A51
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:29:59 +0000 (UTC)
-X-FDA: 84856526118.30.8BF615A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 03E7C4000A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:29:57 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ASH3KSrE;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C7B56B0098
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:33:20 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 23949164C06
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:33:20 +0000 (UTC)
+X-FDA: 84856534560.09.6186946
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3F55820005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:33:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mcCZ+LLy;
+	spf=pass (imf13.hostedemail.com: domain of praan@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780918398;
+	b=1XJVXeXw2WgZcqOpoOlo5s3NFHjxZixQec/8k08RCdXXSHdf82Bno1vSvFN7jr98lnljct
+	0ylPXl+bfJEylnv1o3QMavN+RphPsTZTCrDT2RptOD8uY+K9hvAwnR1DkJsmlXEo6AZNTY
+	b65vujbPGYhdcI3Pc0g23VGjCrb8NDA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mcCZ+LLy;
+	spf=pass (imf13.hostedemail.com: domain of praan@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780918198;
+	s=arc-20220608; t=1780918398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/bLoWkKU6zRSNbiRPvCYb7WguBa+jCqnG9JHGzaDK+M=;
-	b=zn2T8SbE9jo/VnTWqmjzVKA5G8Il03WU544iXrJ69ouVvMj+u63ZE5Ii4Le3cLFnWd6lKF
-	8001r+j0OQ+jQJyzhR2fP5MpWksTIG5BYSkKbYCdWJriybB46krKCkVXU+u5v4pALHB+X3
-	RXHHs6D2KN1Y0x7OFXgBfjJN4bv49zw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780918198;
-	b=c0oxWx8SZzJ5WNp2yhR+V2Z/lQqgRIFug5vJGqLXGWvqUd7MQMpiVUygi+y0ltdvajvm3u
-	0BBS5s946HpvjzmabCf22uQ71KC4iPQx/Ias5Xn/yofQMReBAqiLXKxKSMiYGHF1dFOFpO
-	n/r9gWcWLkocMEQhYejk0rUJTAzv7i0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ASH3KSrE;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 86A06600AE;
-	Mon,  8 Jun 2026 11:29:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDB71F00893;
-	Mon,  8 Jun 2026 11:29:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780918197;
-	bh=/bLoWkKU6zRSNbiRPvCYb7WguBa+jCqnG9JHGzaDK+M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ASH3KSrEWKEkMmPU3BX0LMCJuqKW/4pxjDUHNyuaL6SM94st1yY+UBI4goLs68V93
-	 xnd7OdESoFQZOMFMdAjzPXWHkxJ8InnA7wG5c78nx6a3uy2I2SZH64W7OLKu1kPhJ3
-	 1ghkiAapTMo1jBhiJ0AWK/++JoneEiCgcdMOxQhCr3u0pB4c6BroFlHuit7e75AntZ
-	 W/smfPyMqLKIhjogXF4QMwI2r8oBBrTtbOy7b+Ewmtn2N4eq/9WGPSqVsb2d+5kov3
-	 vfCEbdxDWwAstJlPPtcCTjrt5Qvli59q9GXn7RtGjvw6c32sHniQ2CeD+5je3KMGe0
-	 jKEcDvloXPSUA==
-Date: Mon, 8 Jun 2026 12:29:43 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
-	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>, 
-	Magnus Lindholm <linmag7@gmail.com>, Greg Ungerer <gerg@linux-m68k.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v10 14/37] mm: remove arch vma_alloc_zeroed_movable_folio
- overrides
-Message-ID: <aiam0zdR6BJ1HKwP@lucifer>
-References: <cover.1780906288.git.mst@redhat.com>
- <c374d7a35a35eb4bd5ed85f87ff6885fae605fa9.1780906288.git.mst@redhat.com>
+	bh=/AClK5b2UGJLL9HjNCJk/rNNqh+8+sTLcKYFLOrhzbk=;
+	b=y+vEeT5fVNTEOI3H78vDRmQaKr4ev/uMp8jy31xLzqfpu+f0RkKx2dvzSODDsc/0n93E2q
+	QY7aFdwL2jYMVPEnCQU55uqyHlAl8Gymf2c664J19+19/ySL9d8JYoHYVtPqNEjRKnBo5/
+	Kxpd71VGDi4DEYuKqxUBYlLtng4EMCI=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2c0b1a48855so368935ad.0
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 04:33:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780918397; x=1781523197; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/AClK5b2UGJLL9HjNCJk/rNNqh+8+sTLcKYFLOrhzbk=;
+        b=mcCZ+LLySU9Og03FrdgwYjcfufTk74tGmMdS6CupTXfqzu+HGCuzFXV/ZA5TjMUsI1
+         UwockeOwAezM73yoa1NfQGAioHXPDLoEIw5vzpfslKY3x3YSX5qKxln8vH56EmLKZ9V8
+         8friy8QvdBpyko8ZIfce13uZ3zy5viebbCyO6PKLIegkpjR1feAtekYwhGfyXYzdW1nw
+         J3weYnmhnYp/phndfGgFeVMOl8Cz/BmEqU6KHyyIKu2cQ13yrTDcANCm/5BCvZ9SJZ2G
+         k8WztTDXybHBD/5UlzBLaPAo/+iqA3n4V7dShox3PJ6a2XLko8Egv8HsoIxVOexPnrI6
+         2LqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780918397; x=1781523197;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/AClK5b2UGJLL9HjNCJk/rNNqh+8+sTLcKYFLOrhzbk=;
+        b=ieDbyoE/eC9dNmsvx8m+kOUm0yb/Qy4KtOwdc1xcuViObb1sdL6hr+defTDkOfgPhe
+         XHsSiX3TxypEgAZDl3osRNcEWIMKRuYACGSJGypw//UfMwPGPZZLf7V5OPr2DKWu7SAQ
+         Z3Ut/eSzIVZTKz+L44eAulbViFBRVkSouBwS5Y/06Kh+tggX5TuyGUqlDjaLcr7PBfkF
+         7hJF7rx2qq9LZB4qYakW4Fn0PSNFFQ+OJzaPiDuABHfhaUD3wgtcDXchRgGvihRyIHzz
+         l1SNtjq6C1TOOV5H7AklEbbym3GlMG3pHWVUphQTq/9pBRuxKsovm4n1cpE5WmTSmea1
+         W16A==
+X-Forwarded-Encrypted: i=1; AFNElJ9LvfimHSiOTNdo2UlyHJIWInNDB885iWQEYZ12QkXylextQcN+8StFguLUnsa9lkPEEexnmlUOfQ==@kvack.org
+X-Gm-Message-State: AOJu0YyMDrLnarYrouRBqOP0797c4O6eDujhI+zIGfEQ/bQdLMMuh1v2
+	PmR4pazSWOiQf7oSTWJv3tSGtvGhA/ccqkeWJox5SIQqF/FOtCxNYQQphmkvvFeurYEf5lzPQ2b
+	mHi2D5A==
+X-Gm-Gg: Acq92OHSPP8Y/qV7Yxm9eZMSAU1UV3bXTGDBNHXVsgKG/OFcY3Ccypjaq6HgRuImhaB
+	ivGWIz1FReGlng9ThwczHZVpIIA8r8YPnO+Bb+UcTPvImNO/dI4QvmLO2zrd9od0EnrNaQaT8IP
+	g+DFyPwkDNtoaLnCoYKJDApSlzVfGstAxgBbs/qPbfSaaZs2MZihQWSsYmhtwdIEmDM6ru0Nynh
+	mFMZpKtUFbgVStY3OZnsA01mzAj7J5XL/sCais2aG8cty+K+m9RaA99hNzohG7O9HDIa4t7j3So
+	YEAAk6YMcRejYb9FumLXBd6HH7cSLGQfXnniegusuDU/pXGzV+SgJ2B0V6/G+Hn++QGYO4ULRo1
+	aRzRsvptqAqSk2r+Xc4P59zFt2cEPqy4QXAXdroSbD/iNCr5+55keDW7gVO5XXJwx7GPZqGOPAB
+	ZeAaWlllbAsFKjDqpouC5fJRiuziF8HIdv16CdWOitIQ7hamQ1qwcReI9/D+KrODqNPyxJWxU=
+X-Received: by 2002:a17:903:2349:b0:2bd:3c1b:3073 with SMTP id d9443c01a7336-2c1ebea9c71mr4318635ad.16.1780918396547;
+        Mon, 08 Jun 2026 04:33:16 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f9ed6csm182143405ad.31.2026.06.08.04.33.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 04:33:15 -0700 (PDT)
+Date: Mon, 8 Jun 2026 11:33:07 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 09/12] PCI: liveupdate: Inherit ARI Forwarding Enable
+ on preserved bridges
+Message-ID: <aiaoc6Y6qeF_5Wn9@google.com>
+References: <20260522202410.3104264-1-dmatlack@google.com>
+ <20260522202410.3104264-10-dmatlack@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c374d7a35a35eb4bd5ed85f87ff6885fae605fa9.1780906288.git.mst@redhat.com>
-X-Rspamd-Queue-Id: 03E7C4000A
+In-Reply-To: <20260522202410.3104264-10-dmatlack@google.com>
+X-Rspamd-Queue-Id: 3F55820005
+X-Stat-Signature: z7ydehum3rg4gftwm986ywittpwbhykz
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 3zsb7zeh4xpengkp6itmwwu6wmh6qtko
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780918197-5430
-X-HE-Meta: U2FsdGVkX18vTu5vAGfFr2+t/CMsXgIXBB03DorDdBVCyQmWro08wI6YtIMWhDd8vbaIR+cl6HuHp4DpwCSdqBuYn2Gs17OFHiQ6t06YNT7YE9uwDMKTQnknEmacbcwYkXJEy2YM9YlxH2eXjZr3NmGzezRnqNRRh0/DvwhpX41fKJRbtkdpJb1POaKJdk1o2iXCt/406Hu4NWVAbdjLIdS7tSBBpF5tonuQudxCLUpiA8+5T2Tl+oVlKLOVft9d5nJ1secxyUAoO6K+vg6FxqVUotyt7wRrNybyw6Sv2LFGzsoT6QyYJ8j4zAvcQYwHUtXK15+5YUVzeBmev5lPiMBaGMGYHOqCWnKoFxw7LVCyxTyAzVJKmfs+bI3WUgC359PhiV9JI1nRGpbMm9K++hEcYoplQBrrkkRUKPKKe6wUD2tANccEBF6LbnRFroQ4BQnGdXsbKF6weRTx0qRDuDYqgmvQhLEZJ40Pc95lBa/6WCQDWVWwOkCGuSKQSDA1XK25Dn8N6oecyAAXowcTvYjS7aaq/EFO7jEkLNhm70088VCZn2+rXGnS8/W0seh9/cpQDBMmSWfDCpZNLlglN3VobopFxlR4gtPvtSERBbKc1R418ITn8DlgT0/l1V/3dFpLuqs2jA5+SwvPYbkEvigFyc9J14AlZY17Vnuckr2vS/9xHG/YdYXCBaeZ5ky4RGQfqbJ07p79EtiObL1JvbiDqxCn9/bhzO6qOLNMgrST/uc9mNI3392iKMtECwvZNAvZuKSchmDhORPT340H5slVUTm5PookdCIAF4mc3LrO6Udi9/NDp4nQtoegXBBYv5F7zBgGi+QQhb67+KwKkxiJSJE/Gzx2y2362VbKDYH7b5ixDOe+XCNLntFom6Ok7QJ/RSQ/dWd454TwQ4R6tfHulgd9lz+dCTkdwv/vejkNN7r+GaQBChGAEcW2EAeXiZ1cx06j9A3VcAGmOTV
- Xez/+tNh
- b2eiRpQEp60RsG8GPfXxuDJSg4WFT04bN3YmuRtHkbpcRc+QbcpKSYjj2HSQ8gyrKl/K6xBWdn8R7DEEwhp+BuNsUIuj+cUFTb7MSyliVUCmCha/G4V0sfNUVTImXTHRYcQrSSGdXYvX9d5lKFeDBYNZe39VJ7uz8nMZxDUZjd0ve1j5x0n6oL1fu+OPQc+E/VmGk4RWRTsKPyLYCyAwgHL4wsS7VPPC4l9y1/ZrBFCIuGrWwa851Av4jpN2gMEyDubZIR8/FeEcT759/CK8XwZ2XcC7hiUy8YmG/IfnnreZuXgqqRWdYR3a3Gd9PpGIAE9kKtjszRC+TLzdxXCflJHmNfKQDhdYjZVMjiGjbBxuP5zw/xXn6MWPGF1IhnJxwrrp7bON8RGqgESTBe4n8iCwq9Om+0kEghq0r+sTZEwdwZkJswXhUP5hL3fzfjnsp1Hpm4KL5FhfnwAjMQpmrJbb1zO49Nn7tJHpN0AxuXCMT+5/OtTLVf30V1GQydmEKL6RdjYJd22on4Rfqy75Lw0auPVpcZ63uxdgyc12ezie3iZyoG78aQ5JLpQ==
+X-HE-Tag: 1780918398-105033
+X-HE-Meta: U2FsdGVkX1+dVHULtn9UboBt2UZe3exH1HZXkft5ZUglHOjACJl7RfKvtouagIl3tVgehq7Vy/p4uJf0hDLAAw7XS64qwSZAACRZ3VDc8FSiga0GANfKwhck00ueR5K7+B7nxMTcdAIo0zgph0I6ZrZ9ub9BN8jJ2IyM2et+MRadREVkX+MzjeXwB8Tz84udL0pRmLFgnama4xYhUVyRpc3wV/Mux1iwVJvr8KIkVE24tTe2hab9wle2OT/wvAXRelgHypnXuQDLRb/aYlB7n9CfEO0rB0td38VW7zlcOzL5dVy3M2oCj1t9CMbe4epkZjtZArHCmwaIGKJ+lFdaM03OZJbCoMkU1IQ+Pi454aChfM8ClV+Xh7mn6mx0Ut/hI9pdbOw76u6tlLwVj9E9NJC3JbxlepaqYaJVoTr0dRrVoY7WC905FSpjPV/FR5XPHoX5HRa+MJfFd73maFj2dH/w0QhpgX69+qrazL4KE1ouTLMRymYdlzSjagotjjTHcZR4ZbyIKrw8bWtkQvEU5xFTD735J0bNsz3i6ZZECpusTHcKCIHVRkvnj8mfSYgqpSZLTrm8miYnPOMRgh/Wbt2v4qtbeRxS3SBBHfKjYrKNfhml32BdFzSlaIi1Q1g3s+TIXGNLu5UwAfcEDH8PBKqjnP0fBsr7d81wZGrYK+udQrM1Ewagb0Pm5hnpalUhNXw9NhidERjuy8PNjQrKXHJNOvNj/0udcRj/SDhcOi6tmMVz6V928ISbSl9vpNl8+M4N0PDTVu6Ez98A75p66IGG7xyc++KzEUdjqE4L8lLCB/2fyPG/uZk0jNLCsITXEooWWbKm1jn/MQTfNoeRGkKtd1lcbRVgEwPbnjuxVxTxmEMZNDOS5dwaiF7QCWfOKIEycACru6MTC16cO71aknxTakWJD2kj5yqTjkaYKJ67zRVKm8apnPnN+iNs0lyk+8c34USKJzmpib3eSVm
+ BqAd3HtN
+ 3NKJue62+HCP9xAwLEX1eOpsygpfntEJ4amE0qa5US+XhmuOpIYW1YJwqJe8TcZt1J0GTA8KGXwsK9QBYvttBJ/bgigSsFOuEyo5yzarIdV3G3M9NkS6zz3Sw6NPtr9f3LujrjKz0tk4RHWN5OcTK9Kd09AzbBP8j6Y0fxJ+KGHhV+69kyTTeifkjEguI7RcOhF/ZjBiNiLrMAtieGdYgRI+T+opgf81uyE7+b+ctbkF9R/jv2FwprFa/nj2xAyJmnX1bYgHx9s9q01ipt/U8sqAant1XFSnjH4JNuJ9jQ/OwInlDB8aOLf/Ovp767GyOdryS1xr8Pwq/MLxeJSW5ikGcT06UL5hEZDSG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,133 +137,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 04:37:08AM -0400, Michael S. Tsirkin wrote:
-> Now that the generic vma_alloc_zeroed_movable_folio() uses
-> __GFP_ZERO, the arch-specific macros on alpha, m68k, s390, and
-> x86 that did the same thing are redundant.  Remove them.
->
-> arm64 is not affected: it has a real function override that
-> handles MTE tag zeroing, not just __GFP_ZERO.
->
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Acked-by: Magnus Lindholm <linmag7@gmail.com>
-> Acked-by: Greg Ungerer <gerg@linux-m68k.org>
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
-> Reviewed-by: Gregory Price <gourry@gourry.net>
+On Fri, May 22, 2026 at 08:24:07PM +0000, David Matlack wrote:
+> Inherit the ARI Forwarding Enable on preserved bridges and update
+> pci_dev->ari_enabled accordingly during a Live Update. This ensures that
+> the preserved devices on the bridge's secondary bus can be identified
+> with the same expanded 8-bit function number after a Live Update.
+> 
+> Signed-off-by: David Matlack <dmatlack@google.com>
 > ---
->  arch/alpha/include/asm/page.h   | 3 ---
->  arch/m68k/include/asm/page_no.h | 3 ---
->  arch/s390/include/asm/page.h    | 3 ---
->  arch/x86/include/asm/page.h     | 3 ---
->  include/linux/highmem.h         | 8 +++++---
->  5 files changed, 5 insertions(+), 15 deletions(-)
->
-> diff --git a/arch/alpha/include/asm/page.h b/arch/alpha/include/asm/page.h
-> index 59d01f9b77f6..4327029cd660 100644
-> --- a/arch/alpha/include/asm/page.h
-> +++ b/arch/alpha/include/asm/page.h
-> @@ -12,9 +12,6 @@
->
->  extern void clear_page(void *page);
->
-> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
-> -	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
-> -
->  extern void copy_page(void * _to, void * _from);
->  #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
->
-> diff --git a/arch/m68k/include/asm/page_no.h b/arch/m68k/include/asm/page_no.h
-> index d2532bc407ef..f511b763a235 100644
-> --- a/arch/m68k/include/asm/page_no.h
-> +++ b/arch/m68k/include/asm/page_no.h
-> @@ -12,9 +12,6 @@ extern unsigned long memory_end;
->
->  #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
->
-> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
-> -	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
-> -
->  #define __pa(vaddr)		((unsigned long)(vaddr))
->  #define __va(paddr)		((void *)((unsigned long)(paddr)))
->
-> diff --git a/arch/s390/include/asm/page.h b/arch/s390/include/asm/page.h
-> index 56da819a79e6..e995d2a413f9 100644
-> --- a/arch/s390/include/asm/page.h
-> +++ b/arch/s390/include/asm/page.h
-> @@ -67,9 +67,6 @@ static inline void copy_page(void *to, void *from)
->
->  #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
->
-> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
-> -	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
-> -
->  #ifdef CONFIG_STRICT_MM_TYPECHECKS
->  #define STRICT_MM_TYPECHECKS
->  #endif
-> diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
-> index 416dc88e35c1..92fa975b46f3 100644
-> --- a/arch/x86/include/asm/page.h
-> +++ b/arch/x86/include/asm/page.h
-> @@ -28,9 +28,6 @@ static inline void copy_user_page(void *to, void *from, unsigned long vaddr,
->  	copy_page(to, from);
->  }
->
-> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
-> -	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
-> -
->  #ifndef __pa
->  #define __pa(x)		__phys_addr((unsigned long)(x))
->  #endif
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index 8b0afaabbc6e..642718a50c27 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -303,7 +303,6 @@ static inline void clear_user_highpages(struct page *page, unsigned long vaddr,
->  #endif
->  }
->
-> -#ifndef vma_alloc_zeroed_movable_folio
-
-We're specifying this function unconditionally even though arm64 overrides?
-
->  /**
->   * vma_alloc_zeroed_movable_folio - Allocate a zeroed page for a VMA.
->   * @vma: The VMA the page is to be allocated for.
-> @@ -317,12 +316,15 @@ static inline void clear_user_highpages(struct page *page, unsigned long vaddr,
->   * we are out of memory.
+>  drivers/pci/liveupdate.c | 18 ++++++++++++++++++
+>  drivers/pci/liveupdate.h |  6 ++++++
+>  drivers/pci/pci.c        |  8 +++++++-
+>  3 files changed, 31 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index a93b7ef065f2..701276ef6cfb 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+> @@ -128,6 +128,10 @@
+>   *    way after Live Update and ensures that IOMMU groups do not change. Note
+>   *    that a device will use its inherited ACS flags for the lifetime of its
+>   *    struct pci_dev (i.e. even after pci_liveupdate_finish()).
+> + *
+> + *  * The PCI core inherits ARI Forwarding Enable on all bridges with downstream
+> + *    preserved devices to ensure that all preserved devices on the bridge's
+> + *    secondary bus are addressable after the Live Update.
 >   */
->  static inline
-> -struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
-> +struct folio *vma_alloc_zeroed_movable_folio_noprof(struct vm_area_struct *vma,
->  				   unsigned long vaddr)
->  {
-> -	return vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO,
-> +	return vma_alloc_folio_noprof(GFP_HIGHUSER_MOVABLE | __GFP_ZERO,
->  			      0, vma, vaddr);
-
-This whole change seems unnecessary?
-
+>  
+>  #define pr_fmt(fmt) "PCI: liveupdate: " fmt
+> @@ -756,6 +760,20 @@ int pci_liveupdate_enable_acs(struct pci_dev *dev)
+>  	return 0;
 >  }
-> +#ifndef vma_alloc_zeroed_movable_folio
-> +#define vma_alloc_zeroed_movable_folio(...) \
-> +	alloc_hooks(vma_alloc_zeroed_movable_folio_noprof(__VA_ARGS__))
->  #endif
+>  
+> +int pci_liveupdate_configure_ari(struct pci_dev *dev)
+> +{
+> +	u16 val;
+> +
+> +	guard(rwsem_read)(&pci_liveupdate.rwsem);
+> +
+> +	if (!dev->liveupdate.incoming)
+> +		return -EINVAL;
+> +
+> +	pcie_capability_read_word(dev, PCI_EXP_DEVCTL2, &val);
 
-I don't know why we need to add more of this alloc_hooks() dance when we could
-just do:
+Again, I might be thinking out loud here, but since these are
+hot-pluggable devices, with some FW / SW running on them, I'm a little
+worried while assuming the HW registers can be trusted across a kexec.
 
-#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
-	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+Say, if the bridge experiences a reset (e.g. link drop etc) during the
+kexec blackout, the PCI_EXP_DEVCTL2 register could revert to its default
+state, meaning the ARI bit will be 0.
 
-Like the existing arch stuff?
+In that scenario, pci_liveupdate_configure_ari() will read 0, set
+bridge->ari_enabled = false, and bypass the pci_configure_ari() logic
+as well, permanently leaving ARI disabled on the bridge. Any preserved
+downstream devices with function numbers > 7 will instantly become
+unaddressable, breaking the Live Update. Even if that's desired it gets
+hard to identify why the Liveupdate broke.
 
->
->  static inline void clear_highpage(struct page *page)
-> --
-> MST
->
+Should ari_enabled be serialized with bridge's pci_ser to ensure we
+correctly restore / match it in case HW changed it during the kexec?
 
-Thanks, Lorenzo
+> +	dev->ari_enabled = !!(val & PCI_EXP_DEVCTL2_ARI);
+> +	return 0;
+> +}
+> +
+
+[...]
+
+Thanks,
+Praan
 
