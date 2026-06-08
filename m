@@ -4,116 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C82C0CD8C90
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 02:51:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA75DCD6E79
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 03:19:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F41656B0088; Sun,  7 Jun 2026 22:51:07 -0400 (EDT)
+	id BF1886B0088; Sun,  7 Jun 2026 23:19:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF2A76B008A; Sun,  7 Jun 2026 22:51:07 -0400 (EDT)
+	id B9B7A6B008A; Sun,  7 Jun 2026 23:19:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE11D6B008C; Sun,  7 Jun 2026 22:51:07 -0400 (EDT)
+	id AB16C6B008C; Sun,  7 Jun 2026 23:19:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD98C6B0088
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 22:51:07 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7AE9D1C2727
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 02:51:07 +0000 (UTC)
-X-FDA: 84855218574.22.20AC0ED
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E763E160002
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 02:51:04 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A5876B0088
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 23:19:04 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB45B1649F4
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:19:03 +0000 (UTC)
+X-FDA: 84855288966.18.C5E6B8C
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C0CE2160007
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 03:19:00 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=BUWAbdgT;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf08.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com
+	dkim=pass header.d=intel.com header.s=Intel header.b=BS5nQx00;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780887065;
+	s=arc-20220608; t=1780888741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=y6pATA/q2zOEosF2pnrG8syYg/IBJ1PmeGXJDn1SU0Q=;
-	b=JrDycqQCYaIoAqhGFIjp9e5GpCrHSSR9Xv5ILvo7h+UgSV5VhmdtYmC8FonR38rTwpw6KF
-	38R9FfqW8Ts9HONXgDu1u6CpHnlXJmNXwb259DQQFPFX03DqhDSV/tBaCgVaeud0ggTuGd
-	syAp16+Q7kBI56USisiHf7xbTSAl8Vw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=++MjK/A42HbDKHPOJGo5UVU7C6oGVWhJkis01RJZOto=;
+	b=UWJIWpTAS9Lh+fCfOZPX7r5av154EreLQ2grj1P2D21X8tFCdYxh8+Ubk/jcKJgYE0BDKb
+	J4pJPEolsYTTi7t58PoYjnc+3NQ8/5e1RbdAg3GxmQyNlR+7U8+emJufpfdzsY+1FVjrCY
+	pegBsF+c1bzFxPMCZiWB9TZbhP35xkA=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=BUWAbdgT;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf08.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com
+	dkim=pass header.d=intel.com header.s=Intel header.b=BS5nQx00;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780887065;
-	b=WB9q/U1DdLHE5V4J1DvQKbhCwh+3Xw8vLy8zUsnJgSv4rry+HiudzLcJRylpaxnNxfRp8f
-	lp7oRl2A7VMEo/lQa4GlFHHsF5UMSc4m2LbaGiEQpTNCQTIQX9SEMcMF17EUF8NnQBypf1
-	JdejMpdi0L/4xas/ejP6dr1xPnSZ0Kk=
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-842338c18e0so2660050b3a.1
-        for <linux-mm@kvack.org>; Sun, 07 Jun 2026 19:51:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1780887063; x=1781491863; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=y6pATA/q2zOEosF2pnrG8syYg/IBJ1PmeGXJDn1SU0Q=;
-        b=BUWAbdgT+ieZT+/BLmy+mSknyy+hPkeLWlIswEIhJruwwaudhExz83Z1RylIS3IFaM
-         52N+LLZAzZ7Y2MfhR8Dgffr+YMjJ0GZUwsKKpIDLKEGa5/lTzk6SifQpTNHYyMWq7T7W
-         6HgMDL7vx6P/fG/x0uvYSM2S/GnA+Sw+nMOKL10DMoNrDLlmRnw1yOZhjVkqmNCtU6pI
-         r9JR230Ua3Nb4hnVXH/Rec8gVEJKdPrVXPgqgeTVUBwURfBt8JeR+A1t9uJvAzJXt63i
-         EGJ4FzMNghiRF7cf9l/QAZDoHPgWmcBFbRSwJlWLdysv54OSTdjGS9AGcmpbOu13KbXZ
-         TXjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780887063; x=1781491863;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y6pATA/q2zOEosF2pnrG8syYg/IBJ1PmeGXJDn1SU0Q=;
-        b=FYp6CBKTah85XzkmRcw7dtnUh/6d0zTrzlylOH+pJIF2Oipyr6KUMl0D7+AErQQJVl
-         ZwEouWgEHpbnADGG/2crtdZ2fnLbvCKM1tELZFXhBE5OsUhyGDvI8HcuL6/+/8QZzqRU
-         hqPQYssphHExvEIAjWDRiXfqcvJlGTmGqZ87wLN+nKgp5JYsLYCSQOfWVQEE97JMbaNk
-         hYSa4bGjCoDR5pInBYOQC75K3NhykZHuZ7vdkZcvtuHnqYZ2RLFKBoZMGFE9DXub4IsI
-         hBNRDyiMDv9gmwTJYCKFO9eSE72RGU5eeOmiLvkHSNDSlL3Ojzriw5eGUHcW3o+GqEN4
-         0pSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+SMaFAdoNHAdD8s0BHbzYJeFBReFkB9X+wSRNLndiqNGHk/OICoh5UEOkw+48pzfkQLQDepmiIXw==@kvack.org
-X-Gm-Message-State: AOJu0Yyi524Z7Sk4nyr3VhX2AAFQQ1oo8EukCDmst4RXuyvSq29pgbPi
-	WOm7V37D+T6PmIyFuEbR1GLM9UZrjYcupRJxrU1L7e821t3pKfEdkGHcA+lhF3dxJR4=
-X-Gm-Gg: Acq92OE1xr2XR6/MJm3OPUIKb4vkShTDefeTd+W5PtM3AysRDBY2biJpeGYueeAuwMp
-	mNIJlvr1tEqCy07TjNA49j7vSuQWuOhRoO6nREL6UOsOaXOwrBbINi4eY20ravjENVjZtm4zyRM
-	vNknhI9ly9UQnBHfNWfWWhJ5uP95lqiVnovr80S12tBwpaW1qf8Iw+8KrmrVUgBJoZuZSnleP9z
-	yXIMEVwU+ygZMvcEP0c/6QiewrgZfT9KVZ/AJplBlYhuU17Ue0DP1JInt/3BYODnS/Zjr3giKnq
-	fJTlyDM01nOhh7jjBR7FQ06wEyQuI3myFBt1Q3F1Hd8tsIzWTNupLk2Y2FdCJKh1vvDVwiri5jr
-	XeFtbbbPFuluhClrnmebjc1bsKr7Mn797tAnJM/iKCOLuSHd6D8onK0l9X60szcdJJ7cgnCH/Co
-	b9zpOZqNfjpSeMm9SoxZJVnafOCxmTXSwA9fwgk5+rIJ6fYYad24GlBW7vehmgeGCcVxE=
-X-Received: by 2002:a05:6a00:1942:b0:842:623b:38a9 with SMTP id d2e1a72fcca58-842b0e1e761mr13215260b3a.4.1780887063320;
-        Sun, 07 Jun 2026 19:51:03 -0700 (PDT)
-Received: from L6YN4KR4K9.bytedance.net ([139.177.225.224])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-842828821d0sm16033532b3a.28.2026.06.07.19.50.58
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 07 Jun 2026 19:51:02 -0700 (PDT)
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	yang.lee@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Yunhui Cui <cuiyunhui@bytedance.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/gup_test: fix race with PIN_LONGTERM_TEST ioctls
-Date: Mon,  8 Jun 2026 10:50:42 +0800
-Message-Id: <20260608025043.88087-1-cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+	t=1780888741;
+	b=uASgCW2jckRO0688xTU6+/4xsySM2jNrchLuDUQG2Q+vA6zbu5LdZpXBrqBCSz6sUIE4iV
+	vPHaK7Q1MQBWZRB7nT7bh0SNp2kMQyiFG3U9XHBaF/Amfq/NW/CHExx6OaAca6ZE+2Q7xV
+	1D9QPTnrruOjgsLKxjxQ+2sjkfx5Cds=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780888740; x=1812424740;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RUUJTtyCni/ePuv33E/2tFZWOXkpAKWHxZNEE7bWTAU=;
+  b=BS5nQx00yIITkcH0NiS3DlKcCMvtYyvsui9mnlthUJCNizBJTKKa9Wng
+   lOI4PNJWd/elT9W3SnKsWT3AljjbarHgcIlxFomKKxFrro0P9IEqFnn5F
+   +p39QBgZHtsGOHIYMISf2ImeXsGf+r3xYLjEV6hBPpjGn0fwfVUizt2xd
+   vQamtUjdSXOrFRfTSdzYWi5RjGQnobEhcC/cvl55WGq+HwXuB8aRC1/T0
+   fRT1rSPmGENiJQWI/Gv8lyQN/I6MSgsoaD7bNlUYK0x+y34oEFczrmU0G
+   +cc0jGhku385qohAuo826ef6iL9AAbjQHh8epDC/3dmebX9rNEOkfjoOF
+   g==;
+X-CSE-ConnectionGUID: /6qkANHDTbuWbe1jUpyOMA==
+X-CSE-MsgGUID: JkYU1wqGRV6GcZomvjpS1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="93105357"
+X-IronPort-AV: E=Sophos;i="6.24,193,1774335600"; 
+   d="scan'208";a="93105357"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2026 20:18:58 -0700
+X-CSE-ConnectionGUID: NJdzsv5HSw2ham0VD0FZzA==
+X-CSE-MsgGUID: eM+0rSJER/ezEhuRhUZw7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,193,1774335600"; 
+   d="scan'208";a="240971516"
+Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
+  by fmviesa006.fm.intel.com with ESMTP; 07 Jun 2026 20:18:56 -0700
+Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wWQVq-000000003B3-2yEM;
+	Mon, 08 Jun 2026 03:18:54 +0000
+Date: Mon, 8 Jun 2026 05:18:03 +0200
+From: kernel test robot <lkp@intel.com>
+To: yahia <yahia.a.abdrabou@gmail.com>, akpm@linux-foundation.org
+Cc: oe-kbuild-all@lists.linux.dev, david@kernel.org, ziy@nvidia.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	yahia <yahia.a.abdrabou@gmail.com>
+Subject: Re: [PATCH] mm/migrate: Add native folio functions
+Message-ID: <202606080542.ER5s80Rl-lkp@intel.com>
+References: <20260608001251.66847-1-yahia.a.abdrabou@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260608001251.66847-1-yahia.a.abdrabou@gmail.com>
+X-Rspamd-Queue-Id: C0CE2160007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E763E160002
-X-Stat-Signature: fzh6smcn4be14sms5x4rsohhiey3eot3
-X-HE-Tag: 1780887064-732377
-X-HE-Meta: U2FsdGVkX182BAWdZsLjAiSyArogumPpyhK+p5pSgteOrU0nYi0BLOaqnEdZETHZJ6aduKNYYXOpcm/1VLAEN/bpoRONIHQl3XhlCzOqQxMWqkFRz7AfuaaoWAtSgVLmzdIqXlLhVxKDaB+knh8WjwEdlH7qTONIo0kx4NWsMXh2iSZ5/7WErYquU5dagnQyQjAr9xjB/sSzkb35wzBlimJnRNUURCwOe+u9hKc9zD15t49RLp1jAEJPS6hEB8PPT2SMtGwoqlMxE/pDL7rIwnsrCPma55u4VhY5Lf4RfVqYSfyWsxOidayXrTAzelRSAP3MW4ktBS+l3XUf42ayHrssW2E+9JTZzcO2vH9P9RIVg+ojdgi21tEnClfkRySCCL9Bzl858ipIdvybaoW2/t5xTn2SzrNH6RWXmpu0VEaZYbmhMG3cT9z7y919JmA33F8uyOa4FsgBFYBUinlF/RlppOr6D+jo/8jTrbE/bw1WJpkEfnJ8nWiiwF6TTbcN8RPpToFLddBgtiremkvvhmWmE82BppVaFmujiGcVtiIxXWotUxxJkVEyZWZLQ2AXW1o9uyYbbf+ixWdd6hqqsCO+9yE54Uj4HPzrTTby+yHRf5ewnyF2fGoLJKjmrOgx9mb2W/HVqZAedJgzfubB1qlQcjGKqAk/jcwmElLfrX81UOZ4tliCCbWo7MdEWzQsCYVpLXVv62XHkh0x4epX+l+Jjtk9rQxgLybS4fQdvrZTtSy+OSONAt6D7zAqh/FMcg94Y9So4yYBbW4hkF7Iwn4InWD9qKEp8j+HTS43cCikiiFnPzjvWAWYx3Hs1yC6Hd5kLco8ccR0y/OgAqXAjAvNUhqaFpWc+H9/xvbO8m4T3AikGddMXVfkX5VbKypUgvuXmnUigA8QLOej5oGULn/46vM2baRom7lRU75dupg9VhDSmeilpWI4aQ6kgyHVlTdYnFJMCktD8lkn1yi
- Bxh2C4p0
- enJtqx36PQRbp3ocy18VwtPLuNudsg3nSIZ7C/GTppUeRL5VbaZB6GE0NWGfusyPD1VApFAsjAe4bTzujgRdx1AaKFDXz9p/dHuDFBnUBWFA+ScSIDOroE475x0QzqiYmSdpXEPSu9VNTjiQjHzdqBmNgjfhVDobVbmVp9TK8VM0LuPwzsx287MJo5kzvvyu22A4LTN0ttYKo2c7sDxCm6BMNaG/VdH5jyuHCWigLABqjwqOGxkaFKIrpmFQu+5yigQEmuCrbS0Mf/X4hvJpaxCW5DcHpOTTSrRoxuTR8j9zE5lxPXo8Dk4ExYVSBaAYjxYRnyteXNdbYeZVNiz99RZXe99qCe0oyUcMUkI7KtaNlGIeoGaiHi6dVRWBQchkWwAlyetvI0WMMQjOkqqnFAr+QIgB3pe29I2rD4HDumuSjpBHAXSSAZ/FDwZBXAu8B6WL4AWRtuWSr/XiakEPEPlAv5A==
+X-Stat-Signature: igcnhguwunpqiejfc45njetsytz5e4zb
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780888740-621526
+X-HE-Meta: U2FsdGVkX1/a7sHVctclXQD7gTFBSz1Ukb2mG9ne/g1Rbo50waTs+qhc2On/lJHxUBLgvbWIqyg/SJDMjLr91BftWQRw8NydF9k2uDe+BzQa2XT7l/q/hUMAsZbT5VvXg1VfePnqdy4tNw7p8T/l41WfLplTh5zvFtR6PZ5h0sWPyWvOFs+hpF4/Tr4749zCLkRfQEfX/G0alZ69Z8zVCA/mvsyENY8+2wX+/mP1jNdLzVqH9IiNOqTAilGM12k4zkYMF9MBsDEiE33m+9ZgaY6xcCJ2j1w/C40Fk0Thoi51SfIGxJaBHGSPd7rswk2SQ9jEkLo0Bms9KS7vFSyxlQ7aSLgwk6ouKI/OjabDbRQiDiltXdi5Vng21UJXBr59ROedpCjlY9DE23SNomyx+u/Z/StHT7iNYQwvACieqgct4+s4zphlPTzkYgxuIoelBNqdH9iH82dZFyc5SMrsfCpG54wsageUGMs/K1EdZwem1bFdcj1Lji4eF3/nriFx0nzFiw4HNohl4/5d/vkKZTz2RnfhTGPxrSbfz5sXEQMTL6e0gKhell+LBO9hq2ZOCPKX3HNx4n26Qv4rl+XvwXoNRT6I3vhL5hvJ4t5tGJxSGKI2SmewMat4Lwhkv0b4+1S8WkUcah8rDksQH2cc+Oc4KCc2H0EOQhMHRH1j9zWTJvUum6Ud7aIO2EA98JiMJTujcI0JgyL1J8D1FHjTGGvDEsblCFqbGAb5GVsvElo2coFpbAaEvc7PHqBmObwBqzfhQm7d02TQrA6LsqSYjAvCDu9mcuZXw9ENMyV959KQP9Lg6S+UN3/eNqoGUJ2XG9kgPdd6VZu0INBoOiN2ZuWjMldc4dYcHv77LnmIKzDdDjykZxMLcNtV9u0oeFfrxjoaQg2bOtnReBLfY80/g5+3cCuHzZdCYu2xjht5QJxH/j2kdbSChxsyEB6TTHrOso/pomifWXn497hu5Tg
+ EzRExtXH
+ pqUxjscdQHGhgMJLjmBUfpcBg6k/ONXkDMAuPed0xczOKVSbU35nrNL3P01oUWGl9wy9VKieTW/zK0wlmyolVMIrXsoHnmaRYQuCi75JeUg7cXhJ/FZ04gxV40Hs2Q+7wGiEAhVThFzm+sVsbMBzfMEa9CfvtLhWxfkbW98Xp6nhFF702p7p09/endj4EXsw06bydDLbv/C1LNCoaskXd7T8E+rh9RD57g+BYozId8PMKN8ziY9XVy2QcRMbwe6YXYIfG89xYSxO/lrNQDZhLYPySxE4Liu2D7VB32jkoY3u+ydVDca9LEUWTWnR1RlMrdjO9w+LfuThEC5ppWHgegkNs7qfxooJGCXvlaVEfKGHu5Q2UPCVuUieuouoiuTa5/anU8KHEv/7eyHzk/RlcXiPP5XMITGePYQhhhgQlAaCzlF0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,57 +107,274 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The PIN_LONGTERM_TEST helpers keep their state in global variables that
-are protected by pin_longterm_test_mutex when accessed from ioctl().
-However, gup_test_release() calls pin_longterm_test_stop() without
-holding that mutex.
+Hi yahia,
 
-This can race with PIN_LONGTERM_TEST_STOP and let two callers operate on
-the same pages array concurrently, corrupting the test state and possibly
-freeing it twice:
+kernel test robot noticed the following build errors:
 
- CPU 0                              CPU 1
- -----                              -----
- ioctl(PIN_LONGTERM_TEST_STOP)
-   mutex_lock(&pin_longterm_test_mutex)
-   pin_longterm_test_stop()
-     if (pin_longterm_test_pages)
-       kvfree(pin_longterm_test_pages)
+[auto build test ERROR on akpm-mm/mm-everything]
 
-                                    close()
-                                      gup_test_release()
-                                        pin_longterm_test_stop()
-                                          if (pin_longterm_test_pages)
-                                            kvfree(pin_longterm_test_pages)
+url:    https://github.com/intel-lab-lkp/linux/commits/yahia/mm-migrate-Add-native-folio-functions/20260608-081741
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260608001251.66847-1-yahia.a.abdrabou%40gmail.com
+patch subject: [PATCH] mm/migrate: Add native folio functions
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260608/202606080542.ER5s80Rl-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project f43d6834093b19baf79beda8c0337ab020ac5f17)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260608/202606080542.ER5s80Rl-lkp@intel.com/reproduce)
 
-     pin_longterm_test_pages = NULL
-   mutex_unlock(&pin_longterm_test_mutex)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606080542.ER5s80Rl-lkp@intel.com/
 
-Protect the release path with the same mutex so that stop and release
-cannot run pin_longterm_test_stop() concurrently.
+All errors (new ones prefixed by >>):
 
-Fixes: c77369b437f9 ("mm/gup_test: start/stop/read functionality for PIN LONGTERM test")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
----
- mm/gup_test.c | 2 ++
- 1 file changed, 2 insertions(+)
+   In file included from arch/x86/kernel/asm-offsets.c:9:
+   In file included from include/linux/crypto.h:18:
+   In file included from include/linux/slab.h:17:
+   In file included from include/linux/gfp.h:7:
+   In file included from include/linux/mmzone.h:23:
+>> include/linux/page-flags.h:1113:1: error: use of undeclared identifier 'PG_MovableOpsIsolated'; did you mean 'PG_movable_ops_isolated'?
+    1113 | FOLIO_TEST_FLAG(MovableOpsIsolated, movable_ops_isolated)
+         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/page-flags.h:412:19: note: expanded from macro 'FOLIO_TEST_FLAG'
+     412 | { return test_bit(PG_##name, const_folio_flags(folio, page)); }
+         |                   ^~~~~~~~~
+   <scratch space>:185:1: note: expanded from here
+     185 | PG_MovableOpsIsolated
+         | ^~~~~~~~~~~~~~~~~~~~~
+   include/linux/page-flags.h:172:2: note: 'PG_movable_ops_isolated' declared here
+     172 |         PG_movable_ops_isolated = PG_reclaim,
+         |         ^
+>> include/linux/page-flags.h:1113:37: error: use of undeclared identifier 'movable_ops_isolated'; did you mean 'PG_movable_ops_isolated'?
+    1113 | FOLIO_TEST_FLAG(MovableOpsIsolated, movable_ops_isolated)
+         |                                     ^~~~~~~~~~~~~~~~~~~~
+         |                                     PG_movable_ops_isolated
+   include/linux/page-flags.h:412:55: note: expanded from macro 'FOLIO_TEST_FLAG'
+     412 | { return test_bit(PG_##name, const_folio_flags(folio, page)); }
+         |                                                       ^~~~
+   include/linux/bitops.h:60:50: note: expanded from macro 'test_bit'
+      60 | #define test_bit(nr, addr)              bitop(_test_bit, nr, addr)
+         |                                                              ^~~~
+   include/linux/bitops.h:44:37: note: expanded from macro 'bitop'
+      44 |           __builtin_constant_p((uintptr_t)(addr) != (uintptr_t)NULL) && \
+         |                                            ^~~~
+   include/linux/page-flags.h:172:2: note: 'PG_movable_ops_isolated' declared here
+     172 |         PG_movable_ops_isolated = PG_reclaim,
+         |         ^
+>> include/linux/page-flags.h:1113:37: error: use of undeclared identifier 'movable_ops_isolated'; did you mean 'PG_movable_ops_isolated'?
+    1113 | FOLIO_TEST_FLAG(MovableOpsIsolated, movable_ops_isolated)
+         |                                     ^~~~~~~~~~~~~~~~~~~~
+         |                                     PG_movable_ops_isolated
+   include/linux/page-flags.h:412:55: note: expanded from macro 'FOLIO_TEST_FLAG'
+     412 | { return test_bit(PG_##name, const_folio_flags(folio, page)); }
+         |                                                       ^~~~
+   include/linux/bitops.h:60:50: note: expanded from macro 'test_bit'
+      60 | #define test_bit(nr, addr)              bitop(_test_bit, nr, addr)
+         |                                                              ^~~~
+   include/linux/bitops.h:45:16: note: expanded from macro 'bitop'
+      45 |           (uintptr_t)(addr) != (uintptr_t)NULL &&                       \
+         |                       ^~~~
+   include/linux/page-flags.h:172:2: note: 'PG_movable_ops_isolated' declared here
+     172 |         PG_movable_ops_isolated = PG_reclaim,
+         |         ^
+>> include/linux/page-flags.h:1113:37: error: use of undeclared identifier 'movable_ops_isolated'; did you mean 'PG_movable_ops_isolated'?
+    1113 | FOLIO_TEST_FLAG(MovableOpsIsolated, movable_ops_isolated)
+         |                                     ^~~~~~~~~~~~~~~~~~~~
+         |                                     PG_movable_ops_isolated
+   include/linux/page-flags.h:412:55: note: expanded from macro 'FOLIO_TEST_FLAG'
+     412 | { return test_bit(PG_##name, const_folio_flags(folio, page)); }
+         |                                                       ^~~~
+   include/linux/bitops.h:60:50: note: expanded from macro 'test_bit'
+      60 | #define test_bit(nr, addr)              bitop(_test_bit, nr, addr)
+         |                                                              ^~~~
+   include/linux/bitops.h:46:50: note: expanded from macro 'bitop'
+      46 |           __builtin_constant_p(*(const unsigned long *)(addr))) ?       \
+         |                                                         ^~~~
+   include/linux/page-flags.h:172:2: note: 'PG_movable_ops_isolated' declared here
+     172 |         PG_movable_ops_isolated = PG_reclaim,
+         |         ^
+>> include/linux/page-flags.h:1113:1: error: use of undeclared identifier 'PG_MovableOpsIsolated'; did you mean 'PG_movable_ops_isolated'?
+    1113 | FOLIO_TEST_FLAG(MovableOpsIsolated, movable_ops_isolated)
+         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/page-flags.h:412:19: note: expanded from macro 'FOLIO_TEST_FLAG'
+     412 | { return test_bit(PG_##name, const_folio_flags(folio, page)); }
+         |                   ^~~~~~~~~
+   <scratch space>:185:1: note: expanded from here
+     185 | PG_MovableOpsIsolated
+         | ^~~~~~~~~~~~~~~~~~~~~
+   include/linux/page-flags.h:172:2: note: 'PG_movable_ops_isolated' declared here
+     172 |         PG_movable_ops_isolated = PG_reclaim,
+         |         ^
+>> include/linux/page-flags.h:1113:37: error: use of undeclared identifier 'movable_ops_isolated'; did you mean 'PG_movable_ops_isolated'?
+    1113 | FOLIO_TEST_FLAG(MovableOpsIsolated, movable_ops_isolated)
+         |                                     ^~~~~~~~~~~~~~~~~~~~
+         |                                     PG_movable_ops_isolated
+   include/linux/page-flags.h:412:55: note: expanded from macro 'FOLIO_TEST_FLAG'
+     412 | { return test_bit(PG_##name, const_folio_flags(folio, page)); }
+         |                                                       ^~~~
+   include/linux/bitops.h:60:50: note: expanded from macro 'test_bit'
+      60 | #define test_bit(nr, addr)              bitop(_test_bit, nr, addr)
+         |                                                              ^~~~
+   include/linux/bitops.h:47:17: note: expanded from macro 'bitop'
+      47 |          const##op(nr, addr) : op(nr, addr))
+         |                        ^~~~
+   include/linux/page-flags.h:172:2: note: 'PG_movable_ops_isolated' declared here
+     172 |         PG_movable_ops_isolated = PG_reclaim,
+         |         ^
+>> include/linux/page-flags.h:1113:1: error: use of undeclared identifier 'PG_MovableOpsIsolated'; did you mean 'PG_movable_ops_isolated'?
+    1113 | FOLIO_TEST_FLAG(MovableOpsIsolated, movable_ops_isolated)
+         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/page-flags.h:412:19: note: expanded from macro 'FOLIO_TEST_FLAG'
+     412 | { return test_bit(PG_##name, const_folio_flags(folio, page)); }
+         |                   ^~~~~~~~~
+   <scratch space>:185:1: note: expanded from here
+     185 | PG_MovableOpsIsolated
+         | ^~~~~~~~~~~~~~~~~~~~~
+   include/linux/page-flags.h:172:2: note: 'PG_movable_ops_isolated' declared here
+     172 |         PG_movable_ops_isolated = PG_reclaim,
+         |         ^
+>> include/linux/page-flags.h:1113:37: error: use of undeclared identifier 'movable_ops_isolated'; did you mean 'PG_movable_ops_isolated'?
+    1113 | FOLIO_TEST_FLAG(MovableOpsIsolated, movable_ops_isolated)
+         |                                     ^~~~~~~~~~~~~~~~~~~~
+         |                                     PG_movable_ops_isolated
+   include/linux/page-flags.h:412:55: note: expanded from macro 'FOLIO_TEST_FLAG'
+     412 | { return test_bit(PG_##name, const_folio_flags(folio, page)); }
+         |                                                       ^~~~
+   include/linux/bitops.h:60:50: note: expanded from macro 'test_bit'
+      60 | #define test_bit(nr, addr)              bitop(_test_bit, nr, addr)
+         |                                                              ^~~~
+   include/linux/bitops.h:47:32: note: expanded from macro 'bitop'
+      47 |          const##op(nr, addr) : op(nr, addr))
+         |                                       ^~~~
+   include/linux/page-flags.h:172:2: note: 'PG_movable_ops_isolated' declared here
+     172 |         PG_movable_ops_isolated = PG_reclaim,
+         |         ^
+   In file included from arch/x86/kernel/asm-offsets.c:14:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:13:
+   In file included from include/linux/cgroup.h:17:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:13:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      98 |                 return (set->sig[3] | set->sig[2] |
+         |                         ^        ~
+   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
+      24 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/x86/kernel/asm-offsets.c:14:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:13:
+   In file included from include/linux/cgroup.h:17:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:13:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      98 |                 return (set->sig[3] | set->sig[2] |
+         |                                       ^        ~
+   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
+      24 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/x86/kernel/asm-offsets.c:14:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:13:
+   In file included from include/linux/cgroup.h:17:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:13:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:99:4: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      99 |                         set->sig[1] | set->sig[0]) == 0;
+         |                         ^        ~
+   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
+      24 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/x86/kernel/asm-offsets.c:14:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:13:
+   In file included from include/linux/cgroup.h:17:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:13:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:101:11: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+     101 |                 return (set->sig[1] | set->sig[0]) == 0;
+         |                         ^        ~
+   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
+      24 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/x86/kernel/asm-offsets.c:14:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:13:
+   In file included from include/linux/cgroup.h:17:
+   In file included from include/linux/fs.h:5:
+   In file included from include/linux/fs/super.h:5:
+   In file included from include/linux/fs/super_types.h:13:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
+         |                          ^         ~
+   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
+      24 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
 
-diff --git a/mm/gup_test.c b/mm/gup_test.c
-index 9dd48db897b95..d1c2b1014f0ef 100644
---- a/mm/gup_test.c
-+++ b/mm/gup_test.c
-@@ -373,7 +373,9 @@ static long gup_test_ioctl(struct file *filep, unsigned int cmd,
- 
- static int gup_test_release(struct inode *inode, struct file *file)
- {
-+	mutex_lock(&pin_longterm_test_mutex);
- 	pin_longterm_test_stop();
-+	mutex_unlock(&pin_longterm_test_mutex);
- 
- 	return 0;
- }
--- 
-2.39.5
 
+vim +1113 include/linux/page-flags.h
+
+  1093	
+  1094	#ifdef CONFIG_MIGRATION
+  1095	/*
+  1096	 * This page is migratable through movable_ops (for selected typed pages
+  1097	 * only).
+  1098	 *
+  1099	 * Page migration of such pages might fail, for example, if the page is
+  1100	 * already isolated by somebody else, or if the page is about to get freed.
+  1101	 *
+  1102	 * While a subsystem might set selected typed pages that support page migration
+  1103	 * as being movable through movable_ops, it must never clear this flag.
+  1104	 *
+  1105	 * This flag is only cleared when the page is freed back to the buddy.
+  1106	 *
+  1107	 * Only selected page types support this flag (see page_movable_ops()) and
+  1108	 * the flag might be used in other context for other pages. Always use
+  1109	 * page_has_movable_ops() instead.
+  1110	 */
+  1111	TESTPAGEFLAG(MovableOps, movable_ops, PF_NO_TAIL);
+  1112	SETPAGEFLAG(MovableOps, movable_ops, PF_NO_TAIL);
+> 1113	FOLIO_TEST_FLAG(MovableOpsIsolated, movable_ops_isolated)
+  1114	/*
+  1115	 * A movable_ops page has this flag set while it is isolated for migration.
+  1116	 * This flag primarily protects against concurrent migration attempts.
+  1117	 *
+  1118	 * Once migration ended (success or failure), the flag is cleared. The
+  1119	 * flag is managed by the migration core.
+  1120	 */
+  1121	PAGEFLAG(MovableOpsIsolated, movable_ops_isolated, PF_NO_TAIL);
+  1122	#else /* !CONFIG_MIGRATION */
+  1123	TESTPAGEFLAG_FALSE(MovableOps, movable_ops);
+  1124	SETPAGEFLAG_NOOP(MovableOps, movable_ops);
+  1125	PAGEFLAG_FALSE(MovableOpsIsolated, movable_ops_isolated);
+  1126	#endif /* CONFIG_MIGRATION */
+  1127	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
