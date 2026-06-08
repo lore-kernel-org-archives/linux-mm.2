@@ -4,138 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E11F9CD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 15:17:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72B79CD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 15:18:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A3DD6B008A; Mon,  8 Jun 2026 11:17:31 -0400 (EDT)
+	id DB40B6B0005; Mon,  8 Jun 2026 11:18:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17B886B008C; Mon,  8 Jun 2026 11:17:31 -0400 (EDT)
+	id D64346B0088; Mon,  8 Jun 2026 11:18:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B8556B0092; Mon,  8 Jun 2026 11:17:31 -0400 (EDT)
+	id C2C886B008C; Mon,  8 Jun 2026 11:18:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 000E86B008A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:17:30 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9B2C61C08C8
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:17:30 +0000 (UTC)
-X-FDA: 84857099460.06.7AAC411
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 64F78C0003
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:17:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=wTxatEJ6;
-	spf=pass (imf28.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.218.42 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780931848;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B180B6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:18:40 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4D0E6120166
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:18:40 +0000 (UTC)
+X-FDA: 84857102400.23.DFD2C28
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8306880014
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:18:38 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1uyet7h;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780931918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yOZ7AW/TQxNVQJPSlsPWX5PMQzNffbEW+fgTz/Ammvw=;
-	b=yUp91fJuzFKy3ttGg50dmP4THQk+nZQYOVpLtVqaguz3o2bcSeGQiBIKneRUMe2H2hNhNx
-	YyLZ56lfVzAjVbFbmkEs7wHZxQRug+EC5L0uzBa8UXbtwoNptHMrePYm+3fRLt+0i2j2+g
-	QMYKw1fNqUy/1OTtV4I4yzAPvRUBMCc=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780931848;
-	b=6c2o5f8VkJQ5AibY7abDbzPPwYyaddA+VGyPgbWVFHadtkYeCk0tmRYvz8ozrS8e60NHWV
-	ITD8HZHH0OyaZT5Ej4tCFbBL+zcA7O+r4oMGpGh5cFNdusl00Gc8lyZpGkK6E4EkU8lw7C
-	XgxaXZ0bcSfLNkVAlyaTpY9bZthYHIw=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=wTxatEJ6;
-	spf=pass (imf28.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.218.42 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-becfa735b9aso616077266b.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 08:17:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780931847; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VlWaAon7shlWwdw83j61ZuRY8+xLq9iPzBARlT3xOmBoV/p/q54v6VnIpbycnwywIY
-         nbWBE8rFXAzXAtJ4CxxNZf4oWO6webOFfvrYMDEhRkfa2ZMX/gHYMs4ESZgKVhWiPrq9
-         faRY/PAhWr+g9hL/d/ofK3KMw2qk+6bs/fZn6lJGT2IfXgInL+iAgR1/VU5plz/wD/gb
-         G6cyhTxAR82WKjVm3geD0QVklKErmm6szjV04OSeHecJYyG/u+cxIeLac7n241QM6Zlc
-         /sovWlCZACZW0HFQRzVlSNuwCpZC0k31gses9kqcBLsKmfQZ7W9GqjaWgetqHwfCAgFc
-         Mn0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=yOZ7AW/TQxNVQJPSlsPWX5PMQzNffbEW+fgTz/Ammvw=;
-        fh=iRKtx0AZUV0N1NSHTnzZjJXWslfCXYHv+v4x0Xy5MMA=;
-        b=GA2RIwbh0xgpBo9G/HHmYp+1oTUuAqGGFPydz4iLyMOaBmJMmKgkzfvjPXQcq600Df
-         buxQbBmoHbhuN/0p+RKDnnvqTMfh2KtYv56EszVkglB4Gjjw9cxkbcF7+TWf60F7Vt/b
-         p0GAD+w3CDWCeaeWnoUF7VweDTSABINnwQDkroPpwQVTKTmPZjE4VTSwB0I5NMYX/WW8
-         uMAVpQDruXJUozKXqAvkRRuwAtWtFlZyEgSXmonO16rrKrHOgRGXmHOzppBMevidzgLV
-         7kghRUQqBfHOkJ24UbdY8qtl8p9cluP/fslX4JrAcdaNXZsv0FHjDnkKLwIve3Lwh5yx
-         J8BQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780931847; x=1781536647; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=yOZ7AW/TQxNVQJPSlsPWX5PMQzNffbEW+fgTz/Ammvw=;
-        b=wTxatEJ6mkggzJcNU1VexxSX2tWqvZK75sjBTYNvYyZVni1LdO8nvDgQ0EeA1P6cn6
-         ES0sN9j+IBfuNWK3Zn6AcxJG1VGuEvdEbMtqiH/kBjqzZeqNjWe+U9bCUyIouYaUUFxU
-         1pLo6jWq3yJFZx8zAhuOy2+Rx+J3CoewoOWyvAhvZhGu952HCzDyt/Ls8vE96TbUlOn2
-         vHU/nasEFHLa9wdZgKKJn/E+Ol0yjsOrl6z6bmSEvlL31eJvdelpnKhoOqzl+xCypEvR
-         4RcC2e8Z9eOq7weEmRLSN1h/0MRiH0nTJhx/yCTUEinHvTjasyglu25Tbi5a698XGv32
-         HB1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780931847; x=1781536647;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yOZ7AW/TQxNVQJPSlsPWX5PMQzNffbEW+fgTz/Ammvw=;
-        b=F9plyzD/eM7KC538Pld/2I67/kSoJE1DB+GGK26FUuwym64ZJnxz9EBcBEqv7j2lbq
-         miKAjx30ZiyF2p1Q8LoRplwYP8ksIchkGgNYneK0QIeGwv9Yqh1VtaEBG5LsAKTUBVVa
-         na8xEeatz/HkeYxy202MLnRPl6GA42+YoucRRD7AYw9XZG42C/BTU2m2ul+GNy4YBv5/
-         /Ob2zieDbw0Ai4mVYX8YlMbGC8/Zd56Ly46sN6Oao6O348JePwhu26rMK2l4wiV2upU2
-         WqOwqNxoHVFXC3h99XTsIcCNxZobIgy07drnYZkHAW8Np6oTj2baRKPc4wD2a8tjP9Nn
-         tzlw==
-X-Forwarded-Encrypted: i=1; AFNElJ8kRn8b0JiNNbZu+u0JORdaImDX+FiQlLC8Og1+6dk2GATeCMH3vRN55Y4P0mpVZ9VEo+/M3vperw==@kvack.org
-X-Gm-Message-State: AOJu0Yze6KJD7PHKq7qQ8gTdq9K4+mcU0qLq7RPav4qNDYbwqBYelpff
-	+tVNvIMdYjIYGM3p/HgqRY03pPpQ/InA9RTBLUVY8gZFJYWEZ37RkxWhma0Tb1gZKNXEJVBVDyR
-	sdAZ13T3Il6UcuJfxPxZc8FkkP0dIvrHz56vvu101/A==
-X-Gm-Gg: Acq92OE0c78gAojaF1S6S6D/TXE3hY7TqXKhokKHK9hmOqYvTV5cq6jTuF4TnyymvOP
-	FCPIse80LP9fOcOVD3/jtYPh3wD9aZLDLC5S7Gs/y6qTJavEck0HijnnAH2hSUUPA/85+m05yaF
-	ZGmvA8s1QxQLenuIcj4wGKBRTFTtpAAV3kO1TT4ux24cb6QvfM15WYu1oGb9c6uAR7YjEOowyyW
-	v6ntyflbN7jFf5pvHcP2gBKDFvLUnBwUkRPpHwCL+Sn+tExaVzRUnUEYhF6E/yoabwQxYR2QFv1
-	JNZam5CgJWDjXPHZIb5EFnqGsoC0a3U82IMyW2isbhp5FsxelDHrvgr20kc=
-X-Received: by 2002:a17:907:c22:b0:bec:d077:c4e1 with SMTP id
- a640c23a62f3a-bf373ff1dbdmr731904466b.47.1780931846675; Mon, 08 Jun 2026
- 08:17:26 -0700 (PDT)
+	bh=tbanNgvzOTBZc/hxgfXOVnrR1EORd9B3hY+LTWCW/Mk=;
+	b=pWLG+oAjvm4XSrmgQArc50wSq0nFRvXIRsIy8wP8SHSMGFvdBsAPQ+gPCod8V/AZAipViH
+	uz+H/vF1M1T/126SIUk3wPYBGQlO11SL5gyuRE25fU7rsLwirVTvXi31216ibPM2bM1Hff
+	SJ+zZLIZSmW7TcTTn8PhMRH/nyaCYpc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1uyet7h;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780931918;
+	b=dXMN1+xeBhtargEk/Z599zt2fwAd5P7w/2CVs11Nvw46nR2WVynZ/GfCQvZ+Zh6m+mq0ES
+	pqdr9fXFF7wT3VAcpjYDW386Na5y0MZwalWDqwBq7kIH/YOfZko77TKpCprjN7tOEF2Cs9
+	KEhclc0mdbyARZYBm+ukemq80piBF94=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 10C8D601FE;
+	Mon,  8 Jun 2026 15:18:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91FB1F00893;
+	Mon,  8 Jun 2026 15:18:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780931917;
+	bh=tbanNgvzOTBZc/hxgfXOVnrR1EORd9B3hY+LTWCW/Mk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Q1uyet7hoyFl9IWg+nYeyondribXFjMAh2LCw6haQsZg1rJhTAMlv+zCb90FebntO
+	 q5mTQED8peHtkzPqcVgwLLSvEXsIWMn1DIKxjuVd7gu10UKcZh71cH+SLvzjkohKhq
+	 SN0oa+XNFw0/gOWQVaudBYL109MnmAyoDPtq6UkE3PD50OiTpQKbZfPyUiEr6H0IJJ
+	 VZpjsU4kZ56FWy9NMcYfhsFxN2Xd1097YYgrXqaichBKME1QVQnsH6eyl4XXENmY5o
+	 NYbvOzVd8dSXTToc4XMdKuYWUsgmrAp7aKi2GQVSZO9qCWR/Sd6WNyJEUCDHZ2rrWR
+	 5cGCgnoMMjoBA==
+Message-ID: <7430d69a-616b-40cf-a2e8-6ef4e57b6857@kernel.org>
+Date: Mon, 8 Jun 2026 17:18:25 +0200
 MIME-Version: 1.0
-References: <20260522225853.878411-1-tjmercier@google.com> <ahPqbfH54R3JJyaV@infradead.org>
- <20260527160716.GN2487554@ziepe.ca> <20260604-dangerous-tuatara-of-sympathy-28e05e@houat>
- <CAO_48GEJsg4X7++zg-ztQgVibY_FjjManaA5_W3usjicGUQPdg@mail.gmail.com> <20260604135712.GV2487554@ziepe.ca>
-In-Reply-To: <20260604135712.GV2487554@ziepe.ca>
-From: Sumit Semwal <sumit.semwal@linaro.org>
-Date: Mon, 8 Jun 2026 20:47:15 +0530
-X-Gm-Features: AVVi8CdcrMng9NlewA5irjsXERkw9Ix0pSFdV0gf1_HiahCuxCNItaDbqkFH3sQ
-Message-ID: <CAO_48GH3NP09U6TdB5drbKY0TpwvtBXwrf=Jajsr5ttNbC_u9g@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: Export set_memory_encrypted and set_memory_decrypted
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Maxime Ripard <mripard@kernel.org>, Jiri Pirko <jiri@resnulli.us>, 
-	Christoph Hellwig <hch@infradead.org>, "T.J. Mercier" <tjmercier@google.com>, maddy@linux.ibm.com, 
-	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, lkp@intel.com, linux-kernel@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-mm@kvack.org, agordeev@linux.ibm.com, 
-	gerald.schaefer@linux.ibm.com, linux-s390@vger.kernel.org, 
-	Dan Williams <djbw@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org, 
-	Arnd Bergmann <arnd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/7] mm/migrate: skip data copy for already-copied folios
+To: "Garg, Shivank" <shivankg@amd.com>, akpm@linux-foundation.org
+Cc: kinseyho@google.com, weixugc@google.com, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, dave@stgolabs.net, rkodsara@amd.com, vkoul@kernel.org,
+ bharata@amd.com, sj@kernel.org, rientjes@google.com, xuezhengchu@huawei.com,
+ yiannis@zptcorp.com, dave.hansen@intel.com, hannes@cmpxchg.org,
+ jhubbard@nvidia.com, peterx@redhat.com, riel@surriel.com,
+ shakeel.butt@linux.dev, stalexan@redhat.com, tj@kernel.org,
+ nifan.cxl@gmail.com, jic23@kernel.org, aneesh.kumar@kernel.org,
+ nathan.lynch@amd.com, Frank.li@nxp.com, djbw@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260428155043.39251-2-shivankg@amd.com>
+ <20260428155043.39251-8-shivankg@amd.com>
+ <810e9a58-9c08-4f5e-af5f-866685ca09b2@kernel.org>
+ <a36348d0-73f5-4599-8d06-c9472d0b8d72@amd.com>
+ <7e6a7626-5a1b-4672-91bd-85b0f4ee2ecb@amd.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <7e6a7626-5a1b-4672-91bd-85b0f4ee2ecb@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 64F78C0003
-X-Stat-Signature: gui5wk1raua1nqe8rd6unx4q9iyx8kgb
-X-HE-Tag: 1780931848-120587
-X-HE-Meta: U2FsdGVkX1+xygDlw6PF0wHbsTNnOmlAGalPRC+WRHxxLOl25nO3jTumjNS7fMarbHw161PkjUmym2QPhIQ8yXp9rAqMRgGzYx9e1BXdJ4CtV4EfUVMuBWAC+GzlwJUnwuK3XfHKN77GrKHZM56I7vM33dwjtk9sbCQKJM2i7EqOFMyvr3eSk9TMUUh4HSFL4vpRuCr9B+n5rrrkDbMcWT+ixZ59uzgOJZ34LSyg6oGA4KWmK9UKq4OsjgH8tZhtp3AzDLTZZr5AQS7bplmrHOnwlBaZFvVuxHrVgSyh/BUbDLv2+WFLM7auPOorFrTp6f3caQlangpvkAvAON4tMBB+78ghn2bQReRdqveShcqCS9Kbp2MWigq/1rdzLWuHKo28WAJ25gjna3Vcb2vZUNlWnH4MaSzDpt6ukpGkWrhDBe/GMlfOyxddqF5aoaK3yycqVEXxK0FVwkLFdfQKZsxilxswekii4k3yuR3wXVdyJiQ7CLtbacvvHekvxdh+4+5u/A3vPHHE8qGbuvsnhtqV2MYVpBUyAyiN+03AsEfjXvp6xbBBI6aED6sitvi1tquDlifQGKyp+vlzP7s1feA9HXITYZFc6LgpMOMHaq6+l55dTUtReNCLMsU8Hh68+qoupX7aWsQwmDoRZry9jSb2+hfcsInZHcpO84iXfAIR+I9Uc8Z9nHgLJoWj+3sylRTyK3PKm2YDfcthxqVKfYkdIa5BuiMidy+D/b+57MVtlV6ZYhC/cbd/PFsjUCS99RwL9woGQghY1KwCiXcXKIpk+/N6YxTwyEBVrlIlApPhiKhrtPMm9YkoXe17IpCi/jAJ49G/CAKjpO7tx7BdwIfYraKMCLFklJiiPCocsO7Sa6483oWRn8YlcPzmsrcrR2JSm0/JnL+tHlT28EaGSaII/rDTdDDLe9N9wzlv7nA9+BGew+Qv++FCZQnwzCkVkPSJhPEH1dn+AhLIf6+
- zAUusAQ5
- ccsGq0gJTxBuI+UxGiHagw6O4mDUYtYlIr3iXDs5F4+XwQnuXf/VH2mf/6ch6fzvdCwmQ8Fprcm3D4Oru8sSN2waIS1xgN36pX+ZEOqAz/Egwi25V7BuXzntE8S8lvf9oVuY573wkMQPGmPcW/DoPhQRva9oCc8lJPImd+50ziDbbqnZ6PQboBlto/1e2Ve3VZG0EB/e69GIi089T0H0e2ziTAwx4UvmGMyl2HAA531oYoz0wnOzuGWnB1BHI/5+cZ+HkW60fbz3u0v1+/L6RLiroY5Z12on0Z03Hn0VH4Bh3L0vcHMLc7DdSEQfGahcq3pddnOfA5zifuxk/GH278o1fAg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8306880014
+X-Stat-Signature: w18qo3sdbsm9t61xyjsxp6dowrurwwok
+X-HE-Tag: 1780931918-863302
+X-HE-Meta: U2FsdGVkX19wvBv9WjMRRosTWxysNdAyQSNdLoIF+yA/zm9KnTEuq/TbJ7IJ8duDDxuCCIeccT+UFBpG98qPk5jhmNcQxpcAO8mLa796Y5EEHUeHZ5Q1rye9OV6S3mUfe/PdevP3U0WyLTcwMr1djQXB7WWZDhufOMKED/oxCo9GQOJLJOQ7oDUUhHxuxyQVwLTn7HSADDeondIvbOP/exR5omr4YJeCX4UB8Nmd6Us00dnkhTOpjYFPP6tZV57/c63LNmKwEYRKmGNQvy4YWUU3vP8WDOHvEEWP7pDbosexQhK6xqb9YRkSbdFIxfDnIwOYVT6uIRVysrSHo+2ucfLGGKMpCJCZeTQlG5K2mW21NEHKXd8QnZO/KhI8Pa4EFIVbGZmmKv87b8S4EduxWZdaAGThDj+814wcWiYh6cBKr+75vXhEZF7NbIlrtk0gtRdJPkk2e3+O2rU79atL57W/gP8rHZtPZ496jTl5vUwCYu2FRU5HRRgiuth7ipcQqVkFWjbTa43KOz2RcaB5qS7wk7Rh+dqsGdsh03JtVAbsednfHKCG86EG45CtJGafERt0z1V2RDRp5cwhs+TJXx2sfLx7BLUKo7FkelmUYU69ibPOZPLuMZLDSVGw3K5AbPWj6D3aGoqN3PJhbaojt/HEMDZ1YE8nybWJXv0wYZWHp1qX4JUQZS2yGoBt85/DM6s3DkbdA910nAmzUQBrP5O/Ls38TRagjtGax6xMoQc5aFNBt/bLaXNBXhMdNrHazRGE6lvonZW/ZG8T7UpIqnWmj6lQfmJCLpF6BkjcQIzGXOLtnHjYP5RRlpMknWXBJXFRQst0tibqVL/r+S7T2fL40ItKOnvmOSfB/DSdzyJiLPmACZEW6UtKKVD/TLYvmUL3dOAEwiiJnvqqoSgln1l1pXVbV8HjCNRRvDAwUcDKW+pnfrwbafwLy2LINpnSLMvutRnKuia7JVxGDeh
+ vn2vs1M0
+ 2GrbhNbkMRXlHC8tsZ83+mq6xwCKeSH4p3Q769AC3JWnvCBTcyyX6hFmsbLLmKuqr+q5OkHZk6e1awWyIdVqhEO/ys1/OdQC9sfr8EIMOPoS5l+sVJtHJ01B+cAeutHGs0NKSPSqd0rl6zIOmbxtCCunlxN44pGGYj5KedRI96tqPq9qMVkgv74Gylg0EO8g8CDOtWbgFC8m4p/fPaEp6rEVSD8MFwYhGR8GmLu1bnI065aHYZReQoFV5Iq91GRw/ieQehRWGiMzhIe98hgpzdhuC9wu9MXMUbVsC+NoLq0N2FVB6J0d7/43hDKxd3MCzuLtrgB1KOGebxSb8Yu8IdFO1bnryD4umMQC2yk3ipq6HomsUvYba6kme1ov9QV6x6AoG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,44 +152,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
+> Sashiko Comment:
+> Does expanding FOLIO_OLD_STATES to include BIT(2) silently corrupt anon_vma
+> pointers on 32-bit architectures?
+> The anon_vma pointer is packed with FOLIO_OLD_STATES inside dst->migrate_info.
+> To separate them, __migrate_folio_extract() uses info & ~FOLIO_OLD_STATES.
+> Since anon_vma objects are allocated from a kmem_cache with align=0,
+> ARCH_SLAB_MINALIGN defaults to 4 bytes on many 32-bit architectures. This
+> means a valid anon_vma pointer can legitimately end in 0x4 or 0xC (meaning
+> bit 2 is set).
+> When __migrate_folio_extract() masks the pointer with ~7, it will silently
+> clear bit 2 from the anon_vma pointer. Any subsequent call to put_anon_vma()
+> with this corrupted pointer could cause a use-after-free or a kernel panic.
+> --
+> 
+> #define ARCH_SLAB_MINALIGN __alignof__(unsigned long long)
+> 
+> I initially assumed this to be always 8, confusing it to be same as size of
+> unsigned long long.
+> But the GCC docs note that alignment can be smaller in size:
+> 
+> https://gcc.gnu.org/onlinedocs/gcc/Alignment.html
+> "For example, if the target machine requires a double value to be aligned on
+> an 8-byte boundary, then __alignof__ (double) is 8. This is true on many RISC
+> machines. On more traditional machine designs, __alignof__ (double) is 4 or
+> even 2." 
+> 
+> If my understanding is right, Sashiko concern is valid, and I can't safely
+> use BIT(2).
 
-On Thu, 4 Jun 2026 at 19:27, Jason Gunthorpe <jgg@ziepe.ca> wrote:
->
-> On Thu, Jun 04, 2026 at 12:51:49PM +0530, Sumit Semwal wrote:
->
-> > Given that Christoph's objection is not really about the modules part,
-> > but that the set_memory_{encrypted,decrypted} should not be used here,
-> > one option is to revert 78b30c50a7ac until that issue is sorted out?
->
-> Please no, we have stuff already using this so it would be a
-> functional regression. Revert making heaps into a module since that
-> doesn't have a functional regression.
+32bit makes this tricky indeed. And that's also the reason why
+FOLIO_MAPPING_FLAGS is currently limited to 2 bits.
 
-Thanks for your comments.
+> I see few option from here. Either I can gate batch copy for CONFIG_64BIT,
 
-To me, it looks like while system and system_cc_shared heaps share a
-lot of code, their user bases have different needs. It's apparent that
-system_cc_heap users don't care about it being a module while system
-heap users would very much like so.
+That's a bit nasty as we'll have to special case 32bit vs 64bit.
 
-I also discussed this with Arnd, and he suggested we could rearrange
-the code so that system_heap_cc_shared_priv depends on a new Kconfig
-symbol like
+> or I can force anon_vma_cachep to 8-byte alignment via kmem_cache_create()
 
-config DMABUF_HEAPS_CC_SYSTEM
-        bool "DMA-BUF System Heap for memory encryption"
-        depends on ARCH_HAS_MEM_ENCRYPT && DMABUF_HEAPS_SYSTEM=y
+That's an option, but I would not do it just for this optimization.
 
-This allows building both into the kernel or leave encryption choice
-up to the consumers of the system heap.
+> align arg. Or I can change the migrate_folio() callback to pass already_copied
+> info to change to dst->migrate_info enum.
 
-If this is agreeable to everyone, I can post Arnd's patch.
-
->
-> Jason
+Can you elaborate how that would look like?
 
 
-Best,
-Sumit.
+-- 
+Cheers,
+
+David
 
