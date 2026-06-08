@@ -4,137 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B68CD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 16:20:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEBAECD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 16:21:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 904536B0088; Mon,  8 Jun 2026 12:20:48 -0400 (EDT)
+	id 535816B0088; Mon,  8 Jun 2026 12:21:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DBB16B008A; Mon,  8 Jun 2026 12:20:48 -0400 (EDT)
+	id 50CF66B008A; Mon,  8 Jun 2026 12:21:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F1B26B008C; Mon,  8 Jun 2026 12:20:48 -0400 (EDT)
+	id 422AD6B008C; Mon,  8 Jun 2026 12:21:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F0816B0088
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:20:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 385B51401D4
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:20:48 +0000 (UTC)
-X-FDA: 84857258976.28.8EA140F
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3D7C92000C
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:20:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=S07zW24+;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780935646;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 33D226B0088
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:21:41 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B4721A0136
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:21:40 +0000 (UTC)
+X-FDA: 84857261160.19.2519EBA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4331016000B
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:21:38 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AHnbUd+b;
+	spf=pass (imf08.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780935698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GZELcPlf12Yzmbyn4ebaNsKuSouoT7BC2a4NKxUUWCk=;
-	b=by9rsgYRNANYo60Dlu9+B6fD+ZtUKDvpVxSTSLsTa49tolr7lJNUxKmZ/aw3+BjlPR2rhb
-	PYBTGYQB5ZVsdNA6mrAdHsABWcTBBQC9uDMCJwWEE8anCIUbDR8o9MixLaZnq+B/0JzKVA
-	Zv7vz4OqoOaCwnni5vh8k8qk50elbz8=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=S07zW24+;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780935646;
-	b=Z1ZuJBdQiE5DsAkEgZtY0KW9zKvDLPCNCj8xZwm3r5rWRqSWTDyEMUSAWCh0ODNbGS5p+G
-	00qkDy0arAhaywFi9wNJVYfb0y7M0rXF5XEIZ2tG33w5v4ptW4oRtSywFhzzItAiBFgX30
-	x7gCz7P8phJjfAhNDU0O1YyGAA1cmBI=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5175d339e8bso1901311cf.0
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 09:20:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780935645; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QrPRkrG8AKMs4s/YTFn8B+xVP4SHQA9TEsjNBO9lDiQR9eY3dtq3w3/Kp4GT+nk9HT
-         4WR70ncTPpc8K5vmV9+8uTvsvXz8sJ7SRV0v8s7PYZt+b8530fpJLjpMt2zF3L78bnNE
-         02ic2ZNnREc45BtbbbumeziYZaT2Zt6KOFMUy5w/M/vFhOckcTsgIurEF6Z3WP5dIB67
-         XYtSgZueOdVFhRCcHlLklP0NsJ0ND2W7nDDobPIEZeaYjKIyvXQWLeKFM6BLoVGBY0V5
-         8o2F1vsOeOBKwilH/7XNBENcSvWMNMxH9416LBvjzmzl0TtiDEVRt8t3p8m4dYK41ZqC
-         0YQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GZELcPlf12Yzmbyn4ebaNsKuSouoT7BC2a4NKxUUWCk=;
-        fh=eN6VF+e8KN3h3WUhAfgVKlXlxFqwzw+iLPpo7I3mVSI=;
-        b=XKQy3m4pS1ur1M3sjtlYwCkAiQfo5X3Vl6L/ILPyBX8L8TYLb91y7T7nyY5vbt0ksD
-         t0Fi8Jblqjh8MabQSIn1/k5FPFTGi+wQz4hAi9cgVlqGHuuPFlFlcBbwJnQyEGKUFRQ3
-         ELXm1Dbegr1BgHowACkriGCb5+m6hBYAjMdJdqDt5QKC91pDdW58ZPXQmlySkAs4eyYY
-         tal6EO/HbHG2hbt8dZCi5oD3p5zVLot9xFWmRX8jpWK8NBfcUbhsgv77lZIyug0eQvlI
-         4gz7/OH+ITrRQWM2UArt2+UdJEQs/APjqaMfHfYpteKTf8XU5MIR6uDJdY2undksdOtQ
-         ibjw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780935645; x=1781540445; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GZELcPlf12Yzmbyn4ebaNsKuSouoT7BC2a4NKxUUWCk=;
-        b=S07zW24+xS+O3vVdMZVxo7Z+boGSh5LqaT/Vj0O1vPHh6716wwZuhhuCgtcEJX4F3x
-         avhDtg34iQBdUte9j0oJanYWnECvBBN2wOLYDCujaAd1Vl0TG4v/t2spQOBzVK7JjLnl
-         oYP6uD5VTcP+uThTqa8pQFmSv+XsaP4lpLhVV0KmOHzsud/VOxurJ5e2EAjvnp/rneMo
-         X4ILX+0GQneWhJZkXePVLcFyXkfMYdfZmKsDvF3VfZB8suQhqWOLwQT163o/Lfx0pYmk
-         MdsnvN0jsR2nxSWHzsdroMlmt1ngU8UN1gvEOvYMRtgSwbPwPjfXCljAulpR0nePpfU7
-         b9YA==
+	bh=Ct84BW5EnJo4ga+XD9TIj1NXZ7cJKFv0iZy7WsJtVao=;
+	b=kzbyYadTx/+VBQ16EeWEvUam1jaQy/MMOTvcJ+UERXBAhDFPIMRWXDtQZN22Yj9goIawI8
+	p6GzZiwTInO0VtRIT/wXEA4bTU8h97VUJEV2jvGJbleUED9WB5dU7X+RzdcDdLu2ONQHVy
+	iryDXUDOZd23RKw3MRxBhwlwSMYmre0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AHnbUd+b;
+	spf=pass (imf08.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780935698;
+	b=PG/vfGrKTSU5z39jtl0geRxZspCspuF2R68OM7H+yOkDSNrH6T6LVnJ7uoKtqs9KS2bjFl
+	5wKGc5Fj8FVrDUYAuDNa/yuzGqnbicV0OqdWIt8Q5C7CMoY9IsX9xQyN41158ngDpZ43WD
+	/t+xEWecKJVSy3H0Y3DroGSscW25ook=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780935697;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ct84BW5EnJo4ga+XD9TIj1NXZ7cJKFv0iZy7WsJtVao=;
+	b=AHnbUd+bdUSezQGfWQPiLYvsMczUvUPunwYIKuoysIWkgJr3sFgWmxl+rBqDTcaKZ89KQO
+	vH1oU6N/TRwG1sIyXQmbGgMPkFD4uuFv0ETaCtArwE8IoYIE8hQiDwzaTaSacryvPYZtN3
+	D5fUOLoM/Jfl7eCUUmCvuVh6Ml56CyM=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-17-7xgGlJFEN0uzEv3JnJQalw-1; Mon, 08 Jun 2026 12:21:36 -0400
+X-MC-Unique: 7xgGlJFEN0uzEv3JnJQalw-1
+X-Mimecast-MFC-AGG-ID: 7xgGlJFEN0uzEv3JnJQalw_1780935695
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-691ac5b31cbso1432914a12.0
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 09:21:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780935645; x=1781540445;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GZELcPlf12Yzmbyn4ebaNsKuSouoT7BC2a4NKxUUWCk=;
-        b=fRDaZTXMlMFdgjH54YFWcMAGfLWDHHJMPAPW6z4D+kTi5axGFq16+beYSsBpjyKjZY
-         p+pPy4en0nCiMsw+DNAD1OGOny6so3+VgfwH5okbIqKRAKWh3pQn2m4+g/dkLKoAWP8w
-         Q0AyjdzR2oQOApnvdomWYNRI1zm6LgObz1xFOL27tTZvtV9QzsJLN9T34aIjMvvYYuIj
-         lcevQOpBi3lYeSpKJRvOWHDkb2jtpXWKc4qnoSJpjdWTwarf9D5bDeWRsqSl9qpTqHlf
-         c0dM3a61GdENo/uhPja1qAh2rJSg16709yaDfCZ2L2DjGZ8EMm53qdws7XY00G0HdMjs
-         5P/A==
-X-Forwarded-Encrypted: i=1; AFNElJ/QFLtFd9kA71nO+he3MRU7affFOgQfiZaYxOSRwPlSTDdsassXohDL7NJv/KhT7YDBV++5wOtsQg==@kvack.org
-X-Gm-Message-State: AOJu0YyMPRAzlQdcNpP3g0H4EUIV7LnaMTy2nAClSixgZlYH5UE5zPGO
-	lMUioucHd51QLRMBUxNpbeZqDCDW2NPaU6MSawIrfCkyYcX1xbHohkMI2xh1tJuQTbJjYKr5oLR
-	7QY6kcj5RUW6qroBbqAHd5bAAPjxXAMo0cSXTRDxF
-X-Gm-Gg: Acq92OE1Ge+QmwxcNckPPlhS3wH4RyOybxyHxsP9ozzgJeGgyDtO1Y/doav3aO5za8F
-	1U4rFVfi7x71dkPBL/zfxS+XtZQ3H1O075vMqghKm6njplBrJQyX50rlCTNzMdEkXQ3utjKXbx3
-	ltm0167dlv4EQxvo6CGA9ZNX8dC8h02OWrE1i/ckrPBObu9Fv9hBLoIfpmhiVvRiNALNhUF3piW
-	3LJWG0LCmMSyar9ZWg8xORwzmCo8nObCD03ALoeOE57LQa9hwetzpH1PZDMP71WRRTMCinPhfr6
-	Y/s9FTqWHkXPPlnz
-X-Received: by 2002:a05:622a:58b:b0:516:cc18:4760 with SMTP id
- d75a77b69052e-517982a0d84mr29047771cf.21.1780935644687; Mon, 08 Jun 2026
- 09:20:44 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780935695; x=1781540495;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ct84BW5EnJo4ga+XD9TIj1NXZ7cJKFv0iZy7WsJtVao=;
+        b=IVaNzpt17w5yV2jGMy3vNjePcZO/CqujxiHOoHaDyaphu4sqOWyCdyjjmwfz4aSZNW
+         NvO3mDVcHLPZ+tMouWxNApujxYIWL09C+fCXq9ydnHGaj0bFRAlTUKPwTmWcU5WAR62p
+         Is/+dln3+rzMu+3qBTMU/CmCazc6mB4FxjWlzlz5edqywiIVGAV/Lr2+teesxjP1E3Si
+         65pfdiYxP1QzEmHtDjQpeTFe1sEOUDrtDr4MRfj+kso7NQJ8yJfsmojOiwe+xkmz/XaB
+         xQIcqjvgZhE5AE/+Q5vXWS1XzXjhiR+Jt+bTXKG4MLn4ddmg0D/JZuzthWEkVfAKSe6x
+         M+vQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+42h8lROefyXka2+mOyNokL8516IzhCbUfr9uGQoCj2Vy48NuIDd4pipFegfs2qkbbIGVb31E7vg==@kvack.org
+X-Gm-Message-State: AOJu0Ywf2Ilohn40Xj+VDShcwpJKjdmgg65U3DI1M07CcGJlIqWktHWf
+	5sRVL0mlsfczEkZPGmex3b89o2TB3whjwzCU4j8iTTG16jQr2anllwWKpX2nLb9y9YuEbxJn7HV
+	dFe+/t1TZTvfav13IokM7L8gvc9BHiwPHCrPSRX+dfaMPoSlzQhSEn1Yo3MbBWuBf/aCUvlE+fw
+	zxffZdFfG6VnO1Gx6X7e7qEFJgNISn7jxaZreTMA==
+X-Gm-Gg: Acq92OGxR3TonrRRTQUwM+s4krb+6PbCatymWXFuEKHsa13vcB56B24DAJbxvMNxzv4
+	MeNpTTuv06Vgy6jlA/iUPENITBHkHApFfFbzhMJFVxkUemkylvxbzT1UmNBC9qTVojAHumfvu3b
+	ve4vhV79bbBYhlXweoO7oUPtLe0XXKCtLAyLTsg5+MPYgTHgDViXlVrsHxNax/iom9cUd5bi4mN
+	w7Ov3dmzvvbuDoSvw==
+X-Received: by 2002:a05:6402:3988:b0:691:6fc9:da93 with SMTP id 4fb4d7f45d1cf-6916fc9ded9mr3292155a12.19.1780935694777;
+        Mon, 08 Jun 2026 09:21:34 -0700 (PDT)
+X-Received: by 2002:a05:6402:3988:b0:691:6fc9:da93 with SMTP id
+ 4fb4d7f45d1cf-6916fc9ded9mr3292142a12.19.1780935694321; Mon, 08 Jun 2026
+ 09:21:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260606015729.1837935-1-surenb@google.com> <20260606015729.1837935-2-surenb@google.com>
- <0d103616-56e5-4a31-abfc-f50f03253588@kernel.org>
-In-Reply-To: <0d103616-56e5-4a31-abfc-f50f03253588@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 8 Jun 2026 09:20:33 -0700
-X-Gm-Features: AVVi8CcoFyhnB1XjOcW5rIv4uaFa6g1DxGIO-CMd7PQfm-mRDJ6e3bxepTbhj0g
-Message-ID: <CAJuCfpFYG1Y_K683w0eZF3hDPZYCFkxe_YZNmt8UVmDU7_6LRw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] fs/proc/task_mmu: read proc/pid/smaps_rollup under
- per-vma lock
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
-	vbabka@kernel.org, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3D7C92000C
-X-Stat-Signature: yqpngzrumn85buk6gf8yhoks3cf36wt1
+References: <20260527224848.1753560-1-chaithco@redhat.com> <20260602152022.2673803-1-joshua.hahnjy@gmail.com>
+In-Reply-To: <20260602152022.2673803-1-joshua.hahnjy@gmail.com>
+From: Charles Haithcock <chaithco@redhat.com>
+Date: Mon, 8 Jun 2026 10:21:22 -0600
+X-Gm-Features: AVVi8CeWJOu2Z1PIj-rgNdLnSdFg2ZdcZoZ0TmLnq61Q95XtGvSJdqgISczthmM
+Message-ID: <CAMcbwu5=TK_EjZ=wN5fqLC-DVUendE+CBWX0pN7KBF+1ZwD7Vw@mail.gmail.com>
+Subject: Re: [PATCH] Respect mempolicy when calculating surplus huge pages.
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: PY64SH7jzyqy9AkJV0GAmt8MTsXtFbUexoA5-XrtWrQ_1780935695
+X-Mimecast-Originator: redhat.com
+Content-Type: multipart/alternative; boundary="0000000000006dad4a0653c0672b"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4331016000B
+X-Stat-Signature: jh5j8pk47kj4rn857nna68o8ithec11j
 X-Rspam-User: 
-X-HE-Tag: 1780935646-193809
-X-HE-Meta: U2FsdGVkX1/XkfUchUTu/W4u+jUAHlFO1W1xT3ko2pxTnmoctCGb3xftdbxmWMeymi7Byawt9ZrFaVrbmiaHUj9sgv0WBSgC0QsuFfJLMDtNA9Pm/X8AxCPzGG/WuV1dlkIiN+KIbGrB57NyZrTT/ZNiLFfMB3zaC7D1QD/vHeZ4yrXUd4iuqfYA6l/QPtpnBNgoFloe25WpZ3S9BtQrlykyLuNAHk3QODLmc2NV0ilAVmbNtJesbDlRB06LNl9oWX3g+w1yUqibwEF+tiF/0BUtiYnru3ucOOONwc5HSq7HurV1OvFN6sl14ZdnnCDVzX/ZvZoMoTmykOjohYNhjDsFtWpwAKtWaAIrC66w5S45L1bTvQg4JkfFIWdmhurb59b02PAuaSCqHXLb2TjFiGgEsdFf5soQhXETHJsPaI9JQsAyHmibcJKYczQ/dgYsOiYKzOvaW3rI+IHWJW6Ysu3fPH/NcpCQOONuRsOB0eBD4kThwTgQY/2iEUPqQLLMV+I2GbXmgWUMvQACn99A2AOIrH8h+NzRLQ8AJWNBknBkbl7BKA6Y8mFEN17i2qyvHFB4WYawOgmO8buRUZm2VVezBfDb8Qid/yVue7c5Tw6J/BVZI1t0AerZLsfH9EnWDOXKHKl75I8TZZHCmH5npj6WhlL6S5NjffbA/FiFbkQcNiCXXQMKUIVOLEk40R3qwCdvrwvLZTwHU035NhKDVmtqy0UtF+fu7MlB5eWvuRJubWBBpBDyQ6TpdPywjyFjyupXOhmLLQJeQXSyQFnFhPgx0vJ3axXc1UzOz/FRyYFeybaE7YQJkajMqbQVOJAcgXrhJD7ZDFdBh99DPQ/F4fU/xVX0x9+YR/ZpNq6fmflzoOGb4wrQkUmiNjQ5SIMmNH7k0gqiHniNbYpJw2HDJ8ReX2PM24+ZBPzdxbHsvg7JZvKT9UmfaFOegxIUdNCmluTgttrHKqbGhYAP+QF
- IHavX0H+
- J4T2gNyfHxUMhRu1cNx8JyZPvfg35nvpHSkSjGsA/zU8ACjabVubxSXfxEkZYmV5pQMpo34xlEt1ZPobOnPrIF7ogbXywPNeIo3g/vY9kmQBpxHvnOKHj9+hprOslKAYvj7g7u3PP1w2GzYop7WWnQ0Ro8vcnU8UkqoGEydmGTkmz0d84aLWehnVRsz4Tm77UYkcAhCoWXHMpcxg3Nt5Xnz2rguDhB7r8dDuCjA4RBQDAO9BWvwptW5NC0/KKj2Dm4E08ZXm52nTQgzvGw7G30nNM8pTYm1LKMzjzsBDUWCmd2HkftMYw2hsGaEYL1UT2p23xp0901h+hqfQvzA0uQd7fcBOnPbnxAmwDdD/vfuDelTA=
+X-HE-Tag: 1780935698-665846
+X-HE-Meta: U2FsdGVkX181ziymcDpdAPWQKIVKr4mOiiV3w9sYDNAW+tvYlfU8UAQvqGZMAmUyYeM/p/F3CoslF6Mdu7kKkMZqYxZl/GaIVYU16S1N9/oc6LeMgB5BUYJY6m9BJalj/Or8hY7gJZZowgZA2IJ+i0LibFt5xlHEJauVy2mPSLEBSe2oNqqlsylDwiGRqOnhce1qM3vC92IioUaSzO/XpXdCYOmfJexKc4crV7E/j55zcVi9AoKe3REIH94+ZdymtZ1Cw69vZzrcd2Yc1t2FxHbopzX9sAE5/LrWWa63QP4riVjBA9/v/d84PBgrqmfDt8PvzfywDR6E1aiaYcRPl4cnRk6gQgZVuJ01V4/oIsKWVxUt/yAzYnv5eND+OkdXE38nm0Xo8u9hjuSgmFKtQklsjEd1p5tUR0oOtVLGM3EUOwOc9F3OFUNUvgpsOJoViX0nGAmGeQIyJUr+86ju6HQngKzu2bQ+ipVPc2zCFO3jP1+kuHIzds+o/HmEF562MY9PcSF6wX5AzjUAEvJvXLLtMFsWMIIrWhfdDK3qhCCwEk5hpoNN0wGWSuyiSVzAiZjVcv/Qg1ceSysPe1utRO82tI1ARfahPC0gdPebDc7+cCMivkgxSqTVEZJoKzxnKbFry0/7/y1M2QqelNlcRFiB5XWCEhxCQm65mkysYhitXckcX6bXkDSorS8koQy0uGSJAFKlG/6bJ4qR7KWy7hjDWmSIMcK2/bcnh7iGTnuBr6eWDfM/U8ndsogOc0Ris1tL2Q8qvYY+DBhEoEeqqe6VFUd145r/7kUA+7OkGeBX+ZfgmEUcnJBSTfaeoWPcw1yW4haX059XliK34L9n7lw3rezKpFAAUXd5WL/gDdPJ+zm/H7MCQuxw10+/zPZ/mI+qxs9xgegQxyrxlJJv3h7C1+w+YhUt2M0eRIKFpADMCgCV3bbs8EHK59kjiiXJE3YBcyyiw6NXKl5y3jw
+ WXELbjaj
+ MMTxXy/wpKwf55c4t/1+lHP/a94deQ4PB5kUMW1GSehfx/3OKyu4V6lHCZY9IOhELxBpQoqH0jaVhdnHRB/VzdNsCg6vRyKNxqJ9qZ4C7bBYYxurBNMcQ2eNwmcQy9yISd9PmfQAX4ozoNPG2TEWYQ3vvZ576S89F16qt6sI1BmPskVV8IWBdE27QalAU1vGhcH96D/TjNduu/UkdkcYaSslK1Z3n3x/lOUDbvjl18r43f4JJSNet6vViypJVcVuQrjb40B1Me/T3BFPdfs7R8FARrcuBIAK7OKLhcyR+Kt+q0ZqO1xmmS5knU/NpKH6Pa1Vm4f5tPWF58pgwCNPe2ROlYRmiqaji7iD27WwVDpa76911DKSdQ5GUHTeJDQQrSGNpkM9TU0HT5m+Zy5yIpzo86w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,314 +121,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 8, 2026 at 8:52=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
->
-> On 6/6/26 03:57, Suren Baghdasaryan wrote:
-> > proc/pid/smaps_rollup can be read using the combination of RCU and
-> > VMA read locks, similar to proc/pid/{maps|smaps|numa_maps}. RCU is
-> > required to safely traverse the VMA tree and VMA lock stabilizes the
-> > VMA being processed and the pagetable walk.
-> > Note that we have to keep the logic to drop mmap_lock on contention
-> > because even when using per-VMA locks we might have to fall back to
-> > holding the mmap_lock.
-> >
-> > Running Paul's contention benchmark [1] shows considerable improvement
-> > both in median and in the worst case latencies:
-> >
-> > Execution command: run-proc-vs-map.sh --nsamples 20 --rawdata -- \
-> > --busyduration 2 --procfile smaps_rollup
-> >
-> > Baseline:
-> >
-> >     0.174     0.161     2.553
-> >     0.174     0.164     2.663
-> >     0.174     0.165     2.664
-> >     0.174     0.166     2.679
-> >     0.174     0.167     2.691
-> >     0.174     0.168     2.704
-> >     0.174     0.169     2.729
-> >     0.174     0.172     2.741
-> >     0.174     0.174     2.745
-> >     0.174     0.174     2.755
-> >     0.174     0.175     2.790
-> >     0.174     0.177     2.809
-> >     0.174     0.179     3.096
-> >     0.174     0.183     3.144
-> >     0.174     0.184     3.158
-> >     0.174     0.185     3.175
-> >     0.174     0.185     4.568
-> >     0.174     0.198     4.821
-> >     0.174     0.214     5.143
-> >     0.174     0.251     5.220
-> >
-> > Patched:
-> >
-> >     0.007     0.007     1.952
-> >     0.007     0.007     1.955
-> >     0.007     0.007     1.955
-> >     0.007     0.007     1.955
-> >     0.007     0.007     1.957
-> >     0.007     0.007     1.969
-> >     0.007     0.007     2.065
-> >     0.007     0.007     2.075
-> >     0.007     0.007     2.146
-> >     0.007     0.007     2.195
-> >     0.007     0.007     2.223
-> >     0.007     0.007     2.259
-> >     0.007     0.007     2.488
-> >     0.007     0.007     2.562
-> >     0.007     0.007     2.599
-> >     0.007     0.007     2.697
-> >     0.007     0.007     3.030
-> >     0.007     0.007     3.075
-> >     0.007     0.007     3.145
-> >     0.007     0.007     3.225
-> >
-> > [1] https://github.com/paulmckrcu/proc-mmap_sem-test
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  fs/proc/task_mmu.c | 134 ++++++++++++++++++++-------------------------
-> >  1 file changed, 59 insertions(+), 75 deletions(-)
-> >
-> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> > index 023422fcee12..c2bd9f5bbbcd 100644
-> > --- a/fs/proc/task_mmu.c
-> > +++ b/fs/proc/task_mmu.c
-> > @@ -233,6 +233,16 @@ static inline void reacquire_rcu(struct proc_maps_=
-private *priv)
-> >       vma_iter_set(&priv->iter, priv->lock_ctx.locked_vma->vm_end);
-> >  }
-> >
-> > +static inline bool is_mmap_lock_contended(struct proc_maps_private *pr=
-iv)
->
-> is_mmap_lock_contended() vs. mmap_lock_is_contended() ... really nasty.
+--0000000000006dad4a0653c0672b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Agree. Once Dave Hansen's cleanup patchset is posted we will be able
-to remove most of this nastiness. Maybe I should wait for it before
-posting this patch.
+On Tue, Jun 2, 2026, 9:20=E2=80=AFAM Joshua Hahn <joshua.hahnjy@gmail.com> =
+wrote:
 
+> Hello Charles, thank you for the patch!
 
->
-> > +{
-> > +     struct proc_maps_locking_ctx *lock_ctx =3D &priv->lock_ctx;
-> > +
-> > +     if (!lock_ctx->mmap_locked)
-> > +             return false;
-> > +
-> > +     return !!mmap_lock_is_contended(lock_ctx->mm);
->
-> !! is not required anymore, the compiler nowadays knows how to handle boo=
-leans
-> correctly.
+You are so welcome, and thank you! I'm newer to contributing to upstream so
+I welcome any and all feedback!
 
-Ack.
+> I just wanted to add that it seems like this is a known issue. From the
+> comment in hugetlb_acct_memory (the only caller of gather_surplus_pages)
+> we have the following comment block:
+> [...]
+> So it would appear that getting an exact number of pages to allocate,
+> and ensure that there are no changes with the reservation or which nodes
+> those reservations actually go to is a lot more difficult. But I think
+> we can do a bit better.
 
->
-> > +}
-> > +
-> >  #else /* CONFIG_PER_VMA_LOCK */
-> >
-> >  static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> > @@ -268,6 +278,11 @@ static inline bool fallback_to_mmap_lock(struct pr=
-oc_maps_private *priv,
-> >       return false;
-> >  }
-> >
-> > +static inline bool is_mmap_lock_contended(struct proc_maps_private *pr=
-iv)
-> > +{
-> > +     return !!mmap_lock_is_contended(priv->lock_ctx.mm);
-> > +}
-> > +
-> >  static inline void drop_rcu(struct proc_maps_private *priv) {}
-> >  static inline void reacquire_rcu(struct proc_maps_private *priv) {}
-> >
-> > @@ -1486,12 +1501,15 @@ static int show_smap(struct seq_file *m, void *=
-v)
-> >  static int show_smaps_rollup(struct seq_file *m, void *v)
-> >  {
-> >       struct proc_maps_private *priv =3D m->private;
-> > +     struct proc_maps_locking_ctx *lock_ctx =3D &priv->lock_ctx;
-> > +     struct mm_struct *mm =3D lock_ctx->mm;
-> >       struct mem_size_stats mss =3D {};
-> > -     struct mm_struct *mm =3D priv->lock_ctx.mm;
-> >       struct vm_area_struct *vma;
-> > -     unsigned long vma_start =3D 0, last_vma_end =3D 0;
-> > +     unsigned long vma_start =3D 0;
-> > +     unsigned long last_vma_end =3D 0;
-> > +     loff_t pos =3D 0;
-> >       int ret =3D 0;
-> > -     VMA_ITERATOR(vmi, mm, 0);
-> > +
-> >
->
-> Is there now a double-empty line? (it's getting late here)
+Agreed; actually, after submitting the initial version, I went back and
+have been working on adding per-node reserve hugepage counts to the hstates
+and adding some selftests for them.  It's going well so far, but I'm
+hitting an issue in accounting where, after reserving a static hugetlb page
+on node0, reserving and then freeing a surplus hugetlb page on node1, and
+then freeing the static hugetlb page on node0, followup reservations on
+node0 additionally count towards surplus pages even when there are free
+static hugetlb pages on that node. Trace-cmd revealed allowed_mems_nr_free
+is returning more than what was requested resulting in the over-allocated
+surplus pages to stick around rather than be freed back. I plan to dig into
+what's causing that, however, if doing so leads down a nasty path of adding
+per-node accounting, I may need to fall back to the first version of this
+patch (but with selftests) and be ok with simply doing "a bit better" like
+you mention.
 
-Oops. Right. Will fix.
+> FWIW, I think over-allocating is actually not fatal (although
+overallocating
+> by a lot is obviously not desirable) since we free all the unused hugetlb
+> pages at the end of gather_surplus_pages.
 
->
-> >       priv->task =3D get_proc_task(priv->inode);
-> >       if (!priv->task)
-> > @@ -1502,89 +1520,55 @@ static int show_smaps_rollup(struct seq_file *m=
-, void *v)
-> >               goto out_put_task;
-> >       }
-> >
-> > -     ret =3D lock_ctx_mm(&priv->lock_ctx);
-> > +     hold_task_mempolicy(priv);
-> > +     ret =3D lock_vma_range(m, lock_ctx);
-> >       if (ret)
-> >               goto out_put_mm;
-> >
-> > -     hold_task_mempolicy(priv);
-> > -     vma =3D vma_next(&vmi);
-> > -
-> > -     if (unlikely(!vma))
-> > +     vma_iter_init(&priv->iter, mm, 0);
-> > +     vma =3D proc_get_vma(m, &pos);
-> > +     if (unlikely(!vma) || vma =3D=3D get_gate_vma(priv->lock_ctx.mm))
-> >               goto empty_set;
-> >
-> > +     if (IS_ERR(vma)) {
-> > +             ret =3D PTR_ERR(vma);
-> > +             goto out_unlock;
-> > +     }
-> > +
-> >       vma_start =3D vma->vm_start;
-> > -     do {
-> > -             smap_gather_stats(priv, vma, &mss, 0);
-> > +     while (vma) {
-> > +             if (IS_ERR(vma)) {
-> > +                     ret =3D PTR_ERR(vma);
-> > +                     goto out_unlock;
-> > +             }
-> > +
-> > +             if (vma =3D=3D get_gate_vma(priv->lock_ctx.mm))
-> > +                     break;
-> > +
->
-> Can you refresh my brain why we now have to check for gate VMAs explicitl=
-y?
+Agreed on this point as well; afaik, surplus hugetlb pages are viewed quite
+differently from static hugetlb pages where surplus hugetlb pages are "best
+effort." Obviously we should try to reserve the requested amount, true
+users of large quantities of hugetlb pages should tend towards setting them
+on boot rather than dynamically.
 
-smap_gather_stats() skips the gate VMA anyway and after the gate we
-will be terminating the loop. So, once we see the gate VMA we can exit
-the loop. I could teach proc_get_vma() to handle the gate VMA but this
-early termination seemed simpler.
+> [...] I wonder if an approach like this
+> could work:
+> [...]
+> So we compare the mempolicy-perspective "needed" and compare it to the
+> global "needed" and take whatever. Since we are taking a max it should
+> only ever make it more likely to actually succeed with the mempolicy-boun=
+d
+> hugetlb page usage, even though we still can't make guarantees since
+> a free page on our node may be taken by a different reservation later.
 
->
-> > +             /*
-> > +              * If after retaking mmap_lock, already reported VMA grew=
- or
-> > +              * merged with the next one, then iterate from last_vma_e=
-nd.
-> > +              */
-> > +             smap_gather_stats(priv, vma, &mss,
-> > +                               vma->vm_start < last_vma_end ? last_vma=
-_end : 0);
-> >               last_vma_end =3D vma->vm_end;
-> >
-> >               /*
-> >                * Release mmap_lock temporarily if someone wants to
-> > -              * access it for write request.
-> > +              * take it for write request.
-> >                */
-> > -             if (mmap_lock_is_contended(mm)) {
-> > -                     vma_iter_invalidate(&vmi);
-> > -                     unlock_ctx_mm(&priv->lock_ctx);
-> > -                     ret =3D lock_ctx_mm(&priv->lock_ctx);
-> > -                     if (ret) {
-> > -                             release_task_mempolicy(priv);
-> > +             if (is_mmap_lock_contended(priv)) {
-> > +                     unlock_vma_range(&priv->lock_ctx);
-> > +                     ret =3D lock_vma_range(m, lock_ctx);
-> > +                     if (ret)
-> >                               goto out_put_mm;
-> > -                     }
-> > -
-> > -                     /*
-> > -                      * After dropping the lock, there are four cases =
-to
-> > -                      * consider. See the following example for explan=
-ation.
-> > -                      *
-> > -                      *   +------+------+-----------+
-> > -                      *   | VMA1 | VMA2 | VMA3      |
-> > -                      *   +------+------+-----------+
-> > -                      *   |      |      |           |
-> > -                      *  4k     8k     16k         400k
-> > -                      *
-> > -                      * Suppose we drop the lock after reading VMA2 du=
-e to
-> > -                      * contention, then we get:
-> > -                      *
-> > -                      *      last_vma_end =3D 16k
-> > -                      *
-> > -                      * 1) VMA2 is freed, but VMA3 exists:
-> > -                      *
-> > -                      *    vma_next(vmi) will return VMA3.
-> > -                      *    In this case, just continue from VMA3.
-> > -                      *
-> > -                      * 2) VMA2 still exists:
-> > -                      *
-> > -                      *    vma_next(vmi) will return VMA3.
-> > -                      *    In this case, just continue from VMA3.
-> > -                      *
-> > -                      * 3) No more VMAs can be found:
-> > -                      *
-> > -                      *    vma_next(vmi) will return NULL.
-> > -                      *    No more things to do, just break.
-> > -                      *
-> > -                      * 4) (last_vma_end - 1) is the middle of a vma (=
-VMA'):
-> > -                      *
-> > -                      *    vma_next(vmi) will return VMA' whose range
-> > -                      *    contains last_vma_end.
-> > -                      *    Iterate VMA' from last_vma_end.
-> > -                      */
-> > -                     vma =3D vma_next(&vmi);
-> > -                     /* Case 3 above */
-> > -                     if (!vma)
-> > -                             break;
-> > -
-> > -                     /* Case 1 and 2 above */
-> > -                     if (vma->vm_start >=3D last_vma_end) {
-> > -                             smap_gather_stats(priv, vma, &mss, 0);
-> > -                             last_vma_end =3D vma->vm_end;
-> > -                             continue;
-> > -                     }
-> >
-> > -                     /* Case 4 above */
-> > -                     if (vma->vm_end > last_vma_end) {
-> > -                             smap_gather_stats(priv, vma, &mss, last_v=
-ma_end);
-> > -                             last_vma_end =3D vma->vm_end;
-> > -                     }
->
-> That's quite the simplification.
+This is considerably simpler than a per-node reserved hugetlb page count!
+If I end up falling back to my initial patch, I will absolutely be adding
+this and attributing you. Thank you!
 
-True, that's why I decided to remove this comment. I handle this Case
-4 in the new code and Cases 1-3 are handled naturally, nothing special
-about them.
+--0000000000006dad4a0653c0672b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->
-> > +                     /* Resume from the last position. */
-> > +                     pos =3D last_vma_end;
-> > +                     vma_iter_init(&priv->iter, mm, pos);
->
-> I'll leave checking the VMA locking details to VMA locking experts :)
+<div dir=3D"ltr"><div dir=3D"auto"><div><div><br></div><br><div class=3D"gm=
+ail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jun 2, 2026, 9:20=
+=E2=80=AFAM Joshua Hahn &lt;<a href=3D"mailto:joshua.hahnjy@gmail.com" targ=
+et=3D"_blank">joshua.hahnjy@gmail.com</a>&gt; wrote:</div><div dir=3D"ltr" =
+class=3D"gmail_attr"><br></div><div dir=3D"ltr" class=3D"gmail_attr">&gt; H=
+ello Charles, thank you for the patch!</div><div>=C2=A0</div><div>You are s=
+o welcome, and thank you! I&#39;m newer to contributing to upstream so I we=
+lcome any and all feedback!</div><div><br></div><div>&gt; I just wanted to =
+add that it seems like this is a known issue. From the</div><div>&gt; comme=
+nt in hugetlb_acct_memory (the only caller of gather_surplus_pages)</div><d=
+iv>&gt; we have the following comment block:</div><div>&gt; [...]</div><div=
+>&gt; So it would appear that getting an exact number of pages to allocate,=
+</div><div>&gt; and ensure that there are no changes with the reservation o=
+r which nodes</div><div>&gt; those reservations actually go to is a lot mor=
+e difficult. But I think</div><div>&gt; we can do a bit better.</div><div><=
+br></div><div>Agreed; actually, after submitting the initial version, I wen=
+t back and have been working=C2=A0on adding per-node reserve hugepage count=
+s to the hstates and adding some selftests for them.=C2=A0 It&#39;s going w=
+ell so far, but I&#39;m hitting an issue in accounting where, after reservi=
+ng a static hugetlb page on node0, reserving and then freeing a surplus hug=
+etlb page on node1, and then freeing the static hugetlb page on node0, foll=
+owup reservations on node0 additionally count towards surplus pages even wh=
+en there are free static hugetlb pages on that node. Trace-cmd revealed all=
+owed_mems_nr_free is returning more than what was requested resulting in th=
+e over-allocated surplus pages to stick around rather than be freed back.=
+=C2=A0I plan to dig into what&#39;s causing that, however, if doing so lead=
+s down a nasty path of adding per-node accounting, I may need to fall back =
+to the first version of this patch (but with selftests) and be ok with simp=
+ly doing &quot;a bit better&quot; like you mention.</div><div><br></div><di=
+v>&gt; FWIW, I think over-allocating is actually not fatal (although overal=
+locating</div><div>&gt; by a lot is obviously not desirable) since we free =
+all the unused hugetlb</div><div>&gt; pages at the end of gather_surplus_pa=
+ges.=C2=A0</div><div><br></div><div>Agreed on this point as well; afaik, su=
+rplus hugetlb pages are viewed quite differently from static hugetlb pages =
+where surplus hugetlb pages are &quot;best effort.&quot; Obviously we shoul=
+d try to reserve the requested amount, true users of large quantities of hu=
+getlb pages should tend towards setting them on boot rather than dynamicall=
+y.=C2=A0</div><div><br></div><div>&gt; [...] I wonder if an approach like t=
+his</div><div>&gt; could work:</div><div>&gt; [...]</div><div>&gt; So we co=
+mpare the mempolicy-perspective &quot;needed&quot; and compare it to the</d=
+iv><div>&gt; global &quot;needed&quot; and take whatever. Since we are taki=
+ng a max it should</div><div>&gt; only ever make it more likely to actually=
+ succeed with the mempolicy-bound</div><div>&gt; hugetlb page usage, even t=
+hough we still can&#39;t make guarantees since</div><div>&gt; a free page o=
+n our node may be taken by a different reservation later.</div><div><br></d=
+iv><div>This is considerably simpler than a per-node reserved hugetlb page =
+count! If I end up falling back to my initial patch, I will absolutely be a=
+dding this and attributing you. Thank you!</div></div></div></div>
+</div>
 
-This is the same pattern we now use for reading maps/smaps/numa_maps.
-lock_vma_range() takes rcu_read_lock and proc_get_vma() locks the VMA
-under that RCU.
+--0000000000006dad4a0653c0672b--
 
-Thanks for the feedback!
-
->
-> --
-> Cheers,
->
-> David
 
