@@ -4,89 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3999CD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 01:53:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF1CCCD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 02:24:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C53E56B0088; Sun,  7 Jun 2026 21:53:22 -0400 (EDT)
+	id C0DB86B0088; Sun,  7 Jun 2026 22:24:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDDB16B008A; Sun,  7 Jun 2026 21:53:22 -0400 (EDT)
+	id BE55A6B008A; Sun,  7 Jun 2026 22:24:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA54B6B008C; Sun,  7 Jun 2026 21:53:22 -0400 (EDT)
+	id AFB616B008C; Sun,  7 Jun 2026 22:24:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 945D66B0088
-	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 21:53:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1B4721A08C3
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 01:53:22 +0000 (UTC)
-X-FDA: 84855073044.08.ACEDC80
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E1837180004
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 01:53:19 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VBT5WTG7;
-	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id A439A6B0088
+	for <linux-mm@kvack.org>; Sun,  7 Jun 2026 22:24:45 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 495051A08C6
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 02:24:45 +0000 (UTC)
+X-FDA: 84855152130.02.F32C568
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8E0154000A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 02:24:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780883600;
-	b=VQb5gVqY2Ghzy0P/pg96lV4SzWI7gTr6cOKARCkU5HaWAWxfY8BoKx799LGak6WN2lIv+u
-	3UvVRNmKFXh8LtChhKXK3p9y3wtud/nvi8XCTl0LYbee5G6VOyMfLwEhyl6EVlfmTRc+fa
-	hWL2e8kwU5z5Fx3Ue2cenFVtDMBYN7c=
+	t=1780885483;
+	b=KQFIgKDp8nn8RTPPylPvq+5ylVmCDyYDlnnV71dyqN9NEEwks+NLYRgTy2xNZSdfY4OwOd
+	kbultKGgHcaMUXt8b4SdibV06chLKVBHTYdguYgc6ibk7SsqHtIK1J1fAfM0MV1rAV+G2u
+	sTOE8mJRenKbRXTdSfgE4qNPR/9wn+Y=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VBT5WTG7;
-	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780883600;
+	s=arc-20220608; t=1780885483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6rfcq/p9Ex/DosTRJc1iHXiGyUNb50oDle0NJARWuP8=;
-	b=7y/6qdhKm0M5Qi1q3pi6rRDRXlERAAV8V2r5D15vkf/IVDWZL61p3FFa44qlmHD8gEY0JQ
-	s7+u9sOclQ+qXVKQWMBegR+qfWohgxdebxqCtEhFIqawwlcdz1tKgX5VQLmlrYryrlhZl1
-	DIOG/gKi83bTVWwskYETLNKqyUzs4Fs=
-Message-ID: <41a7ebb9-1113-4f13-abbf-6f55d99d62f3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780883598;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6rfcq/p9Ex/DosTRJc1iHXiGyUNb50oDle0NJARWuP8=;
-	b=VBT5WTG78Iyes8xM91MR9TryzbziAXlYL0kYlmosbEpHQZdxkdLwXymmNWzM7PuhfPAtvI
-	nPO3cVULhSrOmT581RzF0LEcWVv8U0UqXdf7Fz3cNZYIM/8OAAda3Pn2hKnl3C8Tj4t0qs
-	Mr+KF2OXaE63+6KawHyKnv78bxnLk4s=
-Date: Mon, 8 Jun 2026 09:52:36 +0800
+	bh=KMtsqRBjCOrQSULbhoPHLif+8pVKLFOQsh3ANJAM7Pw=;
+	b=Www+Q1mWabbPQzmGmw/BwxbELcdYOHjAdZfkxzbxG7jtwWMB1xkbUWKn/eTBYjRIsh2dEW
+	YEnt2jrDL/1H7MS/gUlVqCijWv3308GVcE3m6gQ8dlaokjk+qhrWc9OF8zBsWI9+ErxeY7
+	W/VGurx0DSYiGc+IXOh57CZ7qx+BJQE=
+Received: from [10.213.6.59] (unknown [36.110.52.2])
+	by APP-03 (Coremail) with SMTP id rQCowABnTOPhJyZqff_8Ew--.21152S2;
+	Mon, 08 Jun 2026 10:24:33 +0800 (CST)
+Message-ID: <953d7a60-456d-4629-b133-afce62cc5b3e@iscas.ac.cn>
+Date: Mon, 8 Jun 2026 10:24:33 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 1/6] alloc_tag: add ioctl to /proc/allocinfo
-To: Abhishek Bapat <abhishekbapat@google.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Sourav Panda <souravpanda@google.com>
-References: <cover.1780701922.git.abhishekbapat@google.com>
- <0e91fdd3a88dbe5220d15c4c8ff7b8f66e86af7c.1780701922.git.abhishekbapat@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] riscv: mm: Avoid spurious fault after hotplugging
+ vmemmap
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260605-mark-after-vmemmap-populate-v3-1-a06001ac9264@iscas.ac.cn>
+ <da19ffcf-8042-4f96-9c2d-649468dc6a0a@kernel.org>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <0e91fdd3a88dbe5220d15c4c8ff7b8f66e86af7c.1780701922.git.abhishekbapat@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <da19ffcf-8042-4f96-9c2d-649468dc6a0a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: E1837180004
-X-Stat-Signature: qx1tdb7p4hqrxhg3g6nzwyrhhncsbppn
+X-CM-TRANSID:rQCowABnTOPhJyZqff_8Ew--.21152S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCryrGr45AFWxGFy8JF4ktFb_yoWrAFW8pF
+	WUWFs5KF45Jrn3uws2vw17WF1rKwnYgr1xKw15G348ZrW3Ary8Wrn5KayYqry3XF4kua40
+	v3WY9ry5Ca4DAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvGb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
+	C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr1j6F
+	4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkI
+	wI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
+	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
+	17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
+	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
+	73UjIFyTuYvjxUqdHjUUUUU
+X-Originating-IP: [36.110.52.2]
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+X-Rspamd-Queue-Id: 8E0154000A
+X-Stat-Signature: 6mpacpy844y55jo3fpekk4p9x348bboo
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780883599-474318
-X-HE-Meta: U2FsdGVkX190SmL8ZZTjOIgiECRzJTB+MNfaoKZ4gNLprcisTBCpjEBMCRnlq1dn5ZkHMBhe2nyd+wz1PWG8WorA6HLl0OQYP1aPpL08OJ+WmqF/JzD2x+QaBfvBjxUF49vRs/3QVtMOPwa/8MlpZRFQWusJq+zsna0nWADOe6KzTgxhpTElEESkrF7O7Uio7qBCCvMpPIqury+wWtdTHhxyYVN1Qwg1tlAQgdfCjUrfGefsoeJd/lBvAmghvNPJReuQskRW+rX/5bQ0uGptCliqBu0sH0beq+i6HgTj9BiP5N1ULqPunnzh4dJIsWd7uBEQgYZ71qOsflJ5tZyvZRz3JBAvhGGTJPmfuvsQHQzPS6TGe41/EKcZv7cX8OqGLmA45BZ1MsqJAGrZ8SsAU3rt9RGVhNPHKMpdCNxi682cbE0bTzDRfDjJF9APOgw14XXyOxVGs4ryIJXUEXy3i7dwCZkjZJ0P5lZv+mqHFys1PpMvhe4Nuzm4VIhZ16VfsyTk6f8N+IYxtcRexEWKF0jIYCpmPahao/ZTxAUe9J7PeANlCTvF5eIEUEK863Nv21fP3PfXdbvdTPdeFp+mxc1ggxVGNYei1vY4yQMjwIFgcVZkZPOzhRUky4pM48Cs7NKAUZtH5g41H4RAcuESW7qEEuGDDffOFcOiWOeEFTsq9xGfOQeQkcV/36CMF0CsmoSLOx5muK615cvJyo4hScrFpCAAa6iG/jGe2LVoYHqI5m9lMGk8SrocvCJqjGiZlNxvMX1z5PXaG4koZz47+nvIEUshEs2X2GBTkUrqkfoF2eUaiBub7StbmsKsRZNjiiquOGzBfyuCSuLVT16V4v/ddfEW/k+pbQvVxMFfkID/5GS/lLAJLjUP7cW00ofSzi7XrHUovGXLe+QRatMJhn2aMNJQu3XSsXkpsFCIPUoJ083TNJkCV+hUpFdEeiZx7U1us46AugujR0/n1T7
- GsftwE6K
- wRt8bAqc6QV6sR9t5rtisUja1roQS0f/ZOUZZSSOCUIGkQTE88yzv0+yQs3kUniUyoI3cQPu8tmlwDjaTWAJ+9uMCqSYqf1cWsTOxXS6Bf+QiwkoH+yme5QU7FewZaWpRGgkqyxTcMy7R7zcmiVIvZw9IV0ZDwWG1SMBv1NiQ04bTQRqkmmTXXNoXF5G/OBH2P1IftXNVp3spdzRCStMnWsZ5mmzi4u+wWEpvSaeWhRp+xFitAaEbrgpqwp3yzL4WxKGJ64DBXjgD3X4KIUhnoyy6TJeTLO8Pqc6mn67Su7vji5c=
+X-HE-Tag: 1780885481-813380
+X-HE-Meta: U2FsdGVkX18zMIi45bBKoTIHxNN6yGxsKYSJIjBc8hUnvvyPfECbL7ij56DGLOMtHbA0d7LDUvs0f3doqgyQlSeXTCvK34jkL8BWHq3YXMIw88AlEglWglCnr49zuj8wkyNd4iT9573+hXA2TLQvVKlsyhrz0b8Q55YkBZrimDP6RhI+UF7BK1XdOxZkAyr1YqPSGSXihfVgTbHDaALu5SPhvOZeL/all1fCdgHO9MU1jFVhqJL9tYk2ny6udL4ijWMx2+UuM/qTatpfLiAWUpDzGHrCYIDU+dIV5X63oW/3d67t+p4Udsk+GkBTOEVMidYVVWElnnrLGX5K1sxMo8SlR1NDKJUqaFXaZBVjGvo/lwSmD2A4Q1AgpdCFD4z1zg/hnESJqYtI6drKis6P8OfPIqQd3XPfs8FB/miiQEr6pRmn8eoXZPzNUZAojoNmBuEazzWMBZR7yJOSJAHtVBDXWHjf4XFrv0lbtsP18rhY+fvpzb8oyPu1vK8uZfCF+jegF0WDStfrcQrY1WiC5JLtDQqVaVz/1v8obg34BA111OE08RRi8OfmE+qMNr/Yzs4ZjX1ruKSTVUDu+woq89lNtkM25Lpt8rJVMgMoT15qxSwinBeA8A8CqVlOVZIew0SWm4UZza4yohVGqHbdKKjTb1Cweq5A4OiOkJRTQe6aXhdLu6RSdvtnkg9CkNXVO1h70RD8z6f69cgNR17REbTT9LOMMH8TUuDtCpIT40E5mk3YtkWku7qMndA7NwG1HIWMLHJkd41uuMwZVmCUcq7vNrn7U+4It39j30k9CNoKWpP4Un9YbLXV/N1Zp1ShyB8PjYIoDURtVe2k86f72o8vDrb2bb2RZLebvRRf7BQatzIe+keqkp4Pn0iqR0DvgF+SvSMtelusBNU9owRqAA63aUJC+jiDIl2ghlh+uK8bmYpJfNQ7qmhUMWpkNqizg1XlwrJWEL7GSdaiBvQ
+ 3/Q9YhiK
+ ua5fNMbgpihZvK0VuHir0xbff2wTFEe/W4bhNqJGgkpaYM4cgvfJwhM4jNCnVTwvLz2TTvM9mJl6ryFtR7npX733dqc+hFV8xF7LfKjpcGZH8lvCL7gPFQp4bSs0PPB47ZZvGIxO3slDnJhABA2h25TmzWvTVrhO2JK1IociTMGZRr7CMzzg+vPfkltyuBMAtcw4StnM0nvUFYnZwAdk49XJBirRtvDk0Vrkaz9vGmsvbHpx6VxPHagpjl2oG6km0epXc3jPkSLs0nYho7xiGJWARalJAqcy8jE0PWWIccj2DMYJ8DGINmsUf1Dh1icJqat3q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,507 +106,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren and Abhishek
-
-
-Thanks for the new version.
-
-
-On 2026/6/6 07:36, Abhishek Bapat wrote:
-> From: Suren Baghdasaryan <surenb@google.com>
+On 6/5/26 17:16, David Hildenbrand (Arm) wrote:
+> On 6/5/26 07:23, Vivian Wang wrote:
+>> section_activate() does not flush TLB after populating new vmemmap
+>> pages. On most architectures, this is okay. However it is a problem on
+>> RISC-V since there the TLB caching non-present entries is permitted,
+>> which causes spurious faults on some hardwares.
+>>
+>> This seems to be most easily reproduced with DEBUG_VM=y and
+>> PAGE_POISONING=y, which causes these newly mapped struct pages to be
+>> poisoned i.e. written to immediately after mapping.
+>>
+>> Add a hook vmemmap_populate_finalize() in __populate_section_memmap()
+>> after population, to allow architectures to handle such situations as
+>> needed. Then implement it on RISC-V to arrange for the existing
+>> exception handler code to deal with these faults if they happen.
+>>
+>> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+>> ---
+>> Depends on my earlier kfence fixes for mark_new_valid_map() [1].
+>>
+>> Found while testing AMD_HSA/ZONE_DEVICE on SpacemiT K3. Using
+>> ZONE_DEVICE requires another fix [2].
+>>
+>> [1]: https://lore.kernel.org/linux-riscv/20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn
+>> [2]: https://lore.kernel.org/linux-riscv/20260309-riscv-sparsemem-vmemmap-limits-v1-2-f40efe18e3cd@iscas.ac.cn
+>> ---
+>> Changes in v3:
+>> - Merged back into one patch (Mike)
+>> - (No code changes otherwise.)
+>> - Link to v2: https://patch.msgid.link/20260604-mark-after-vmemmap-populate-v2-0-ab6a7d03b434@iscas.ac.cn
+>>
+>> Changes in v2:
+>> - Split patch in two, hook point and riscv hook 
+>> - Explain hook necessity in patch 1 message (Mike)
+>> - Make hook #define based (Mike)
+>> - Call finalize hook only on populate success
+>> - Link to v1: https://patch.msgid.link/20260525-mark-after-vmemmap-populate-v1-1-e698d859ba16@iscas.ac.cn
+>> ---
+>>  arch/riscv/include/asm/pgtable.h | 4 ++++
+>>  arch/riscv/mm/init.c             | 6 ++++++
+>>  mm/sparse-vmemmap.c              | 8 ++++++++
+>>  3 files changed, 18 insertions(+)
+>>
+>> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+>> index a1a7c6520a09..aa0f50e3d534 100644
+>> --- a/arch/riscv/include/asm/pgtable.h
+>> +++ b/arch/riscv/include/asm/pgtable.h
+>> @@ -1243,6 +1243,10 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+>>  #define TASK_SIZE	FIXADDR_START
+>>  #endif
+>>  
+>> +/* Needed on SPARSEMEM_VMEMMAP */
+>> +#define vmemmap_populate_finalize vmemmap_populate_finalize
+>> +void __meminit vmemmap_populate_finalize(void);
+>> +
+>>  #else /* CONFIG_MMU */
+>>  
+>>  #define PAGE_SHARED		__pgprot(0)
+>> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+>> index 706f43523935..cf9ae4099f82 100644
+>> --- a/arch/riscv/mm/init.c
+>> +++ b/arch/riscv/mm/init.c
+>> @@ -1360,6 +1360,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+>>  	 */
+>>  	return vmemmap_populate_hugepages(start, end, node, altmap);
+>>  }
+>> +
+>> +void __meminit vmemmap_populate_finalize(void)
+>> +{
+>> +	/* Avoid faults on cached non-present TLB entries. */
+>> +	mark_new_valid_map();
+>> +}
+>>  #endif
+> How does mark_new_valid_map() handle concurrent access?
 >
-> Add the following ioctl commands for /proc/allocinfo file:
->
-> ALLOCINFO_IOC_CONTENT_ID - gets content identifier which can be used
-> to check whether the file content has changed specifically due to module
-> load/unload. Every time a module is loaded / unloaded, the returned
-> value will be different. By comparing the identifier value at the
-> beginning and at the end of the content retrieval operation, users can
-> validate retrieved information for consistency.
->
-> ALLOCINFO_IOC_GET_AT - gets the record at the specified position. This
-> is the position of a record in /proc/allocinfo.
->
-> ALLOCINFO_IOC_GET_NEXT - gets the record next to the last retrieved
-> one. If no records were previously retrieved, returns the first
-> record.
->
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> ---
->   Documentation/mm/allocation-profiling.rst     |   5 +
->   .../userspace-api/ioctl/ioctl-number.rst      |   2 +
->   MAINTAINERS                                   |   1 +
->   include/linux/codetag.h                       |   2 +
->   include/uapi/linux/alloc_tag.h                |  54 ++++
->   lib/alloc_tag.c                               | 232 +++++++++++++++++-
->   lib/codetag.c                                 |  18 ++
->   7 files changed, 312 insertions(+), 2 deletions(-)
->   create mode 100644 include/uapi/linux/alloc_tag.h
->
-> diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
-> index 5389d241176a..c3a28467955f 100644
-> --- a/Documentation/mm/allocation-profiling.rst
-> +++ b/Documentation/mm/allocation-profiling.rst
-> @@ -46,6 +46,11 @@ sysctl:
->   Runtime info:
->     /proc/allocinfo
->   
-> +  Profiling data can be retrieved either by reading `/proc/allocinfo` directly as
-> +  text or programmatically via `ioctl()` calls defined in `<uapi/linux/alloc_tag.h>`.
-> +  The ioctl interface supports structured binary data extraction as well as filtering
-> +  by module name, function, file, line number, accuracy, or allocation size limits.
-> +
->   Example output::
->   
->     root@moria-kvm:~# sort -g /proc/allocinfo|tail|numfmt --to=iec
-> diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
-> index 331223761fff..84f6808a8578 100644
-> --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
-> +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-> @@ -349,6 +349,8 @@ Code  Seq#    Include File                                             Comments
->                                                                          <mailto:luzmaximilian@gmail.com>
->   0xA5  20-2F  linux/surface_aggregator/dtx.h                            Microsoft Surface DTX driver
->                                                                          <mailto:luzmaximilian@gmail.com>
-> +0xA6  00-0F  uapi/linux/alloc_tag.h                                    Memory allocation profiling
-> +                                                                       <mailto:surenb@google.com>
->   0xAA  00-3F  linux/uapi/linux/userfaultfd.h
->   0xAB  00-1F  linux/nbd.h
->   0xAC  00-1F  linux/raw.h
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a31f6f207afd..77f3fc487691 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16711,6 +16711,7 @@ S:	Maintained
->   F:	Documentation/mm/allocation-profiling.rst
->   F:	include/linux/alloc_tag.h
->   F:	include/linux/pgalloc_tag.h
-> +F:	include/uapi/linux/alloc_tag.h
->   F:	lib/alloc_tag.c
->   
->   MEMORY CONTROLLER DRIVERS
-> diff --git a/include/linux/codetag.h b/include/linux/codetag.h
-> index ddae7484ca45..a25a085c2df1 100644
-> --- a/include/linux/codetag.h
-> +++ b/include/linux/codetag.h
-> @@ -77,6 +77,8 @@ struct codetag_iterator {
->   void codetag_lock_module_list(struct codetag_type *cttype);
->   bool codetag_trylock_module_list(struct codetag_type *cttype);
->   void codetag_unlock_module_list(struct codetag_type *cttype);
-> +unsigned long codetag_get_content_id(struct codetag_type *cttype);
-> +unsigned int codetag_get_count(struct codetag_type *cttype);
->   struct codetag_iterator codetag_get_ct_iter(struct codetag_type *cttype);
->   struct codetag *codetag_next_ct(struct codetag_iterator *iter);
->   
-> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_tag.h
-> new file mode 100644
-> index 000000000000..901199bad514
-> --- /dev/null
-> +++ b/include/uapi/linux/alloc_tag.h
-> @@ -0,0 +1,54 @@
-> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> +/*
-> + *  include/linux/alloc_tag.h
+> There is some comment in there, but I am not sure if that actually implies that
+> mark_new_valid_map() can be called concurrently from arbitrary context?
 
-nit: it should be include/uapi/linux/alloc_tag.h
+AFAICT, yes, it is intended to be used concurrently from arbitrary
+context, and this is why I used them.
 
-(I guess you may have missed the comment I brought up before. It is not 
-a critical problem though.)
+I had not originally written the code, so some riscv maintainer can
+maybe chime in on this, but as I understand it the idea is that we only
+ever set bits in the bitmap in mark_new_valid_map() while "allocating",
+whereas the assembly code in handle_exception in
+arch/riscv/kernel/entry.S only ever clears individual bits. So at least
+the access to the bitmap itself should be fine.
 
-> + */
-> +
-> +#ifndef _UAPI_ALLOC_TAG_H
-> +#define _UAPI_ALLOC_TAG_H
-> +
-> +#include <linux/types.h>
-> +
-> +#define ALLOCINFO_STR_SIZE	64
-> +
-> +struct allocinfo_content_id {
-> +	__u64 id;
-> +};
-> +
-> +struct allocinfo_tag {
-> +	/* Longer names are trimmed */
-> +	char modname[ALLOCINFO_STR_SIZE];
-> +	char function[ALLOCINFO_STR_SIZE];
-> +	char filename[ALLOCINFO_STR_SIZE];
-> +	__u64 lineno;
-> +};
-> +
-> +/* The alignment ensures 32-bit compatible interfaces are not broken */
-> +struct allocinfo_counter {
-> +	__u64 bytes;
-> +	__u64 calls;
-> +	__u8 accurate;
-> +} __attribute__((aligned(8)));
-> +
-> +struct allocinfo_tag_data {
-> +	struct allocinfo_tag tag;
-> +	struct allocinfo_counter counter;
-> +};
-> +
-> +struct allocinfo_get_at {
-> +	__u64 pos;	/* input */
-> +	struct allocinfo_tag_data data;
-> +};
-> +
-> +#define _ALLOCINFO_IOC_CONTENT_ID	0
-> +#define _ALLOCINFO_IOC_GET_AT		1
-> +#define _ALLOCINFO_IOC_GET_NEXT		2
-> +
-> +#define ALLOCINFO_IOC_BASE		0xA6
-> +#define ALLOCINFO_IOC_CONTENT_ID	_IOR(ALLOCINFO_IOC_BASE, _ALLOCINFO_IOC_CONTENT_ID,	\
-> +					     struct allocinfo_content_id)
-> +#define ALLOCINFO_IOC_GET_AT		_IOWR(ALLOCINFO_IOC_BASE, _ALLOCINFO_IOC_GET_AT,	\
-> +					      struct allocinfo_get_at)
-> +#define ALLOCINFO_IOC_GET_NEXT		_IOR(ALLOCINFO_IOC_BASE, _ALLOCINFO_IOC_GET_NEXT,	\
-> +					     struct allocinfo_tag_data)
-> +
-> +#endif /* _UAPI_ALLOC_TAG_H */
-> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> index d9be1cf5187d..a0577215eb3d 100644
-> --- a/lib/alloc_tag.c
-> +++ b/lib/alloc_tag.c
-> @@ -5,6 +5,7 @@
->   #include <linux/gfp.h>
->   #include <linux/kallsyms.h>
->   #include <linux/module.h>
-> +#include <linux/mutex.h>
->   #include <linux/page_ext.h>
->   #include <linux/pgalloc_tag.h>
->   #include <linux/proc_fs.h>
-> @@ -14,6 +15,7 @@
->   #include <linux/string_choices.h>
->   #include <linux/vmalloc.h>
->   #include <linux/kmemleak.h>
-> +#include <uapi/linux/alloc_tag.h>
->   
->   #define ALLOCINFO_FILE_NAME		"allocinfo"
->   #define MODULE_ALLOC_TAG_VMAP_SIZE	(100000UL * sizeof(struct alloc_tag))
-> @@ -47,6 +49,10 @@ struct allocinfo_private {
->   	struct codetag_iterator iter;
->   	struct codetag_iterator reported_iter;
->   	bool print_header;
-> +	/* ioctl uses a separate iterator not to interfere with reads */
-> +	struct codetag_iterator ioctl_iter;
-> +	bool positioned; /* seq_open_private() sets to 0 */
-> +	struct mutex ioctl_lock;
->   };
->   
->   static void *allocinfo_start(struct seq_file *m, loff_t *pos)
-> @@ -130,6 +136,229 @@ static const struct seq_operations allocinfo_seq_op = {
->   	.show	= allocinfo_show,
->   };
->   
-> +/*
-> + * Initializes seq_file operations and allocates private state when opening
-> + * the /proc/allocinfo procfs entry.
-> + */
-> +static int allocinfo_open(struct inode *inode, struct file *file)
-> +{
-> +	int ret;
-> +
-> +	ret = seq_open_private(file, &allocinfo_seq_op,
-> +			       sizeof(struct allocinfo_private));
-> +	if (!ret) {
-> +		struct seq_file *m = file->private_data;
-> +		struct allocinfo_private *priv = m->private;
-> +
-> +		mutex_init(&priv->ioctl_lock);
-> +	}
-> +	return ret;
-> +}
-> +
-> +/*
-> + * Cleans up the seq_file state and frees up the private state allocated in
-> + * allocinfo_open() when closing the /proc/allocinfo file descriptor.
-> + */
-> +static int allocinfo_release(struct inode *inode, struct file *file)
-> +{
-> +	return seq_release_private(inode, file);
-> +}
-> +
-> +/*
-> + * Returns a pointer to the suffix of a string so that its length fits within
-> + * ALLOCINFO_STR_SIZE, preserving the trailing characters.
-> + */
-> +static const char *allocinfo_str(const char *str)
-> +{
-> +	size_t len = strlen(str);
-> +
-> +	/* Keep an extra space for the trailing NULL. */
-> +	if (len >= ALLOCINFO_STR_SIZE)
-> +		str += (len - ALLOCINFO_STR_SIZE) + 1;
-> +	return str;
-> +}
-> +
-> +/* Copy a string and trim from the beginning if it's too long */
-> +static void allocinfo_copy_str(char *dest, const char *src)
-> +{
-> +	strscpy_pad(dest, allocinfo_str(src), ALLOCINFO_STR_SIZE);
-> +}
-> +
-> +/*
-> + * Populates the UAPI allocinfo_tag_data structure with active runtime
-> + * profiling counters extracted from the given kernel codetag.
-> + */
-> +static void allocinfo_to_params(struct codetag *ct,
-> +				struct allocinfo_tag_data *data)
-> +{
-> +	struct alloc_tag *tag = ct_to_alloc_tag(ct);
-> +	struct alloc_tag_counters counter = alloc_tag_read(tag);
-> +
-> +	if (ct->modname)
-> +		allocinfo_copy_str(data->tag.modname, ct->modname);
-> +	else
-> +		data->tag.modname[0] = '\0';
-> +	allocinfo_copy_str(data->tag.function, ct->function);
-> +	allocinfo_copy_str(data->tag.filename, ct->filename);
-> +	data->tag.lineno = ct->lineno;
-> +	data->counter.bytes = counter.bytes;
-> +	data->counter.calls = counter.calls;
-> +	data->counter.accurate = !alloc_tag_is_inaccurate(tag);
-> +}
-> +
-> +/*
-> + * Retrieves the unique content ID representing the current allocation tag module
-> + * layout, allowing userspace to detect if modules were loaded / unloaded.
-> + */
-> +static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __user *arg)
-> +{
-> +	struct allocinfo_content_id params;
-> +
-> +	codetag_lock_module_list(alloc_tag_cttype);
-> +	params.id = codetag_get_content_id(alloc_tag_cttype);
-> +	codetag_unlock_module_list(alloc_tag_cttype);
-> +	if (copy_to_user(arg, &params, sizeof(params)))
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Seeks the ioctl iterator to the specified 0-indexed tag position, reads its
-> + * profiling data and returns it to userspace.
-> + */
-> +static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
-> +{
-> +	struct allocinfo_private *priv;
-> +	struct codetag *ct;
-> +	__u64 pos;
-> +	struct allocinfo_get_at params = {0};
-> +
-> +	if (copy_from_user(&params, arg, sizeof(params)))
-> +		return -EFAULT;
-> +
-> +	priv = m->private;
-> +	pos = params.pos;
-> +
-> +	mutex_lock(&priv->ioctl_lock);
-> +	codetag_lock_module_list(alloc_tag_cttype);
-> +
-> +	if (pos >= codetag_get_count(alloc_tag_cttype)) {
-> +		codetag_unlock_module_list(alloc_tag_cttype);
-> +		mutex_unlock(&priv->ioctl_lock);
-> +		return -ENOENT;
-> +	}
-> +
-> +	/* Find the codetag */
-> +	priv->ioctl_iter = codetag_get_ct_iter(alloc_tag_cttype);
-> +	ct = codetag_next_ct(&priv->ioctl_iter);
-> +	while (ct && pos--)
-> +		ct = codetag_next_ct(&priv->ioctl_iter);
-> +	if (ct) {
-> +		allocinfo_to_params(ct, &params.data);
-> +		priv->positioned = true;
-> +	}
-> +
-> +	codetag_unlock_module_list(alloc_tag_cttype);
-> +	mutex_unlock(&priv->ioctl_lock);
-> +
-> +	if (!ct)
-> +		return -ENOENT;
-> +
-> +	if (copy_to_user(arg, &params, sizeof(params)))
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Advances the ioctl iterator to the next allocation tag in the sequence and
-> + * returns its profiling data to userspace.
-> + */
-> +static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
-> +{
-> +	struct allocinfo_private *priv;
-> +	struct codetag *ct;
-> +	struct allocinfo_tag_data params;
-> +	int ret = 0;
-> +
-> +	memset(&params, 0, sizeof(params));
-> +	priv = m->private;
-> +
-> +	mutex_lock(&priv->ioctl_lock);
-> +	codetag_lock_module_list(alloc_tag_cttype);
-> +
-> +	if (!priv->positioned) {
-> +		priv->ioctl_iter = codetag_get_ct_iter(alloc_tag_cttype);
-> +		priv->positioned = true;
-> +	}
-> +
-> +	ct = codetag_next_ct(&priv->ioctl_iter);
-> +	if (ct)
-> +		allocinfo_to_params(ct, &params);
-> +
-> +	if (!ct) {
-> +		priv->positioned = false;
-> +		ret = -ENOENT;
-> +	}
-> +	codetag_unlock_module_list(alloc_tag_cttype);
-> +	mutex_unlock(&priv->ioctl_lock);
-> +
-> +	if (ret == 0) {
-> +		if (copy_to_user(arg, &params, sizeof(params)))
-> +			return -EFAULT;
-> +	}
-> +	return ret;
-> +}
-> +
-> +/*
-> + * Entry point ioctl function for /proc/allocinfo routing requests to fetch the
-> + * layout content ID, seek to a specific tag, or read sequential tags.
-> + */
-> +static long allocinfo_ioctl(struct file *file, unsigned int cmd,
-> +			    unsigned long __arg)
-> +{
-> +	void __user *arg = (void __user *)__arg;
-> +	int ret;
-> +
-> +	switch (cmd) {
-> +	case ALLOCINFO_IOC_CONTENT_ID:
-> +		ret = allocinfo_ioctl_get_content_id(file->private_data, arg);
-> +		break;
-> +	case ALLOCINFO_IOC_GET_AT:
-> +		ret = allocinfo_ioctl_get_at(file->private_data, arg);
-> +		break;
-> +	case ALLOCINFO_IOC_GET_NEXT:
-> +		ret = allocinfo_ioctl_get_next(file->private_data, arg);
-> +		break;
-> +	default:
-> +		ret = -ENOIOCTLCMD;
-> +		break;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +#ifdef CONFIG_COMPAT
-> +static long allocinfo_compat_ioctl(struct file *file, unsigned int cmd,
-> +				   unsigned long arg)
-> +{
-> +	return allocinfo_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
-> +}
-> +#endif
-> +
-> +static const struct proc_ops allocinfo_proc_ops = {
-> +	.proc_open		= allocinfo_open,
-> +	.proc_read_iter		= seq_read_iter,
-> +	.proc_lseek		= seq_lseek,
-> +	.proc_release		= allocinfo_release,
-> +	.proc_ioctl		= allocinfo_ioctl,
-> +#ifdef CONFIG_COMPAT
-> +	.proc_compat_ioctl	= allocinfo_compat_ioctl,
-> +#endif
-> +
-> +};
-> +
->   size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sleep)
->   {
->   	struct codetag_iterator iter;
-> @@ -993,8 +1222,7 @@ static int __init alloc_tag_init(void)
->   		return 0;
->   	}
->   
-> -	if (!proc_create_seq_private(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_seq_op,
-> -				     sizeof(struct allocinfo_private), NULL)) {
-> +	if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc_ops)) {
->   		pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
->   		shutdown_mem_profiling(false);
->   		return -ENOMEM;
-> diff --git a/lib/codetag.c b/lib/codetag.c
-> index 4001a7ea6675..a9cda4c962a3 100644
-> --- a/lib/codetag.c
-> +++ b/lib/codetag.c
-> @@ -19,6 +19,8 @@ struct codetag_type {
->   	struct codetag_type_desc desc;
->   	/* generates unique sequence number for module load */
->   	unsigned long next_mod_seq;
-> +	/* bumped on every module load and unload */
-> +	unsigned long content_id;
->   };
->   
->   struct codetag_range {
-> @@ -50,6 +52,20 @@ void codetag_unlock_module_list(struct codetag_type *cttype)
->   	up_read(&cttype->mod_lock);
->   }
->   
-> +unsigned long codetag_get_content_id(struct codetag_type *cttype)
-> +{
-> +	lockdep_assert_held(&cttype->mod_lock);
-> +
-> +	return cttype->content_id;
-> +}
-> +
-> +unsigned int codetag_get_count(struct codetag_type *cttype)
-> +{
-> +	lockdep_assert_held(&cttype->mod_lock);
-> +
-> +	return cttype->count;
-> +}
-> +
->   struct codetag_iterator codetag_get_ct_iter(struct codetag_type *cttype)
->   {
->   	struct codetag_iterator iter = {
-> @@ -204,6 +220,7 @@ static int codetag_module_init(struct codetag_type *cttype, struct module *mod)
->   
->   	down_write(&cttype->mod_lock);
->   	cmod->mod_seq = ++cttype->next_mod_seq;
-> +	++cttype->content_id;
+This was added in commit 503638e0babf ("riscv: Stop emitting preventive
+sfence.vma for new vmalloc mappings").
 
-I have a comment on the content_id bump placement.
+Do you think the mark_new_valid_map() function needs extra
+synchronization like smp_wmb()?
 
-++cttype->content_id is placed before idr_alloc and the module_load
+Regards,
+Vivian "dramforever" Wang
 
-callback. If idr_alloc fails or module_load returns an error
-
-(While the chance of this occurring is very low.), the idr entry gets
-
-rolled back but content_id has already been bumped. The actual
-
-content didn't change in this case, so userspace would see a
-
-different content_id and assume the data is inconsistent when it
-
-isn't.
-
-
-Thanks
-
-Best Regards
-
-Hao
-
->   	mod_id = idr_alloc(&cttype->mod_idr, cmod, 0, 0, GFP_KERNEL);
->   	if (mod_id >= 0) {
->   		if (cttype->desc.module_load) {
-> @@ -368,6 +385,7 @@ void codetag_unload_module(struct module *mod)
->   			cttype->count -= range_size(cttype, &cmod->range);
->   			idr_remove(&cttype->mod_idr, mod_id);
->   			kfree(cmod);
-> +			++cttype->content_id;
->   		}
->   		up_write(&cttype->mod_lock);
->   		if (found && cttype->desc.free_section_mem)
 
