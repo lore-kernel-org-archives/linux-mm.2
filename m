@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD397CD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:14:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59665CD8C9F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:14:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E31286B00A1; Mon,  8 Jun 2026 06:14:22 -0400 (EDT)
+	id AFDB46B00A2; Mon,  8 Jun 2026 06:14:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE2576B00A2; Mon,  8 Jun 2026 06:14:22 -0400 (EDT)
+	id AD58C6B00A4; Mon,  8 Jun 2026 06:14:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD0C16B00A3; Mon,  8 Jun 2026 06:14:22 -0400 (EDT)
+	id 9EB196B00A5; Mon,  8 Jun 2026 06:14:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BBD1F6B00A1
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:14:22 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 756F1A0A8B
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:14:21 +0000 (UTC)
-X-FDA: 84856335522.23.09D1F02
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 35CF2100011
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:14:18 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=F32X9w6b;
-	spf=pass (imf05.hostedemail.com: domain of jgross@suse.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jgross@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780913659;
-	b=K/5MRs/LaNURIfV2DHJet2lalwJjg+hxyBYMiiauv28sodCHLpBRMdA5Ls350nEqgN6ZB6
-	qm+h8Q7UPD/r9+kP3vd3tJBXIduQiYyRvV9h09oVVO4CrW6/EBJbBJHiBmztGxx9LTZp0v
-	skkj+tZuHJ2fx3aHZskcrqrE07/OhJA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=F32X9w6b;
-	spf=pass (imf05.hostedemail.com: domain of jgross@suse.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jgross@suse.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DAEE6B00A2
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:14:49 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 560761C2BCF
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:14:48 +0000 (UTC)
+X-FDA: 84856336656.21.A3D24D5
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4F72F16000C
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:14:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Dr2jh2Jv;
+	spf=pass (imf08.hostedemail.com: domain of jgross@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=jgross@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780913659;
+	s=arc-20220608; t=1780913686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ICUYmzYvi3Npp7Z3gMsJhlNCaTZ1S0P4tdLevTu8olY=;
-	b=1oDBAQkUnE+neuIUru9Y0UVR0jLEyucFRG8upo2Nz51GXqJez08Z1MIFK4xxNW+bdF6SYy
-	cNFnNJxZkNWtAbp2e3GZl6IrDlahzEinJUQTdbwE9CHV9ufwszXYvvCry8o7hbnfLHl6LA
-	JhpnYvCn0FS+/onLucLWZF4Z16skCAg=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bec43ee8ff0so584415066b.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 03:14:18 -0700 (PDT)
+	bh=nxBQAWC7FUeGTJNBfhWbQ+ZfQbJdlJJx+tZ9LegFXV0=;
+	b=mA1258g1TgpSRUA7KTOQPS9GtIGVDQGsieEWW1Ix1A9wvMpiQw42lH+CBlpDYEDeENpNjs
+	HfqjC1LuqWTwXUnqT6zE0kFOAZD7dmFcOrWUtqn/aCCj8OFdZ2lAr7z8Id7kMSZNV2DhXg
+	2haY/IeBv50ap0OAQtYbS0pNlQejELo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780913686;
+	b=GXEAW7ypSTy7u6zkyS7ajZmMf5pz9gTHxZJId+tF3Hp0vWqaMmzNoTR4s7PrrJ6f1zRgwD
+	4Z4c7j6bDVLyADschtwf5iq3/BzRcPZMchRhr2AQXbc6OmeRFHHjNiYiyPILJVe7lmE+lA
+	0Z7jNlqQycBCAabB/oHDj+e4DFxdIA0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Dr2jh2Jv;
+	spf=pass (imf08.hostedemail.com: domain of jgross@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bf0170c80f7so669577066b.3
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 03:14:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1780913657; x=1781518457; darn=kvack.org;
+        d=suse.com; s=google; t=1780913685; x=1781518485; darn=kvack.org;
         h=in-reply-to:autocrypt:from:content-language:references:cc:to
          :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ICUYmzYvi3Npp7Z3gMsJhlNCaTZ1S0P4tdLevTu8olY=;
-        b=F32X9w6bb+t+zcGSaxmdrql766EqNAyMa7oGssR8jO2CyRCv6RcnlA6dnRqOBjWhXk
-         2zAnmwykleAjfw2CTY8NsSNnOZQf3E1Traxzmi5d4tcVEfq/JC2154MJdjV+No14o8/q
-         IptIFCsSk7FvuSa341lXxR9xjfxqC+Z+OA2QPSv/09aG5XTzKwLM2VDnOKRJrskNnaC9
-         pLGgzpp98yZt0n0ces2FEHl6AupbWgK1LyxpGBymbR/7szKi1J9vdrrinLS0DuaGBcUo
-         zXxQHXcuODs1dMTM+pkEusRpwIGVoB/a7mxAF05g1c/UbZz4+7YaC5V/pyPaHR8OWswI
-         RcOw==
+        bh=nxBQAWC7FUeGTJNBfhWbQ+ZfQbJdlJJx+tZ9LegFXV0=;
+        b=Dr2jh2JvQaK4efUDaIQrGjMJG1odBYGljL673VLAJwN0YR0FSX9Rgkvbej8cpi8jmu
+         /pwI2E3JzRk0ub/njGsr8C5/GaxSzEgyZWUxNWnxuszLH24akox3xmXNJQRFFqCf8efp
+         8FsYIrxbW2+FluVH/DM3wzixztVWgUsB8Sxwi2gNFsX0lOuSpzx/Q5oAsPPNzZAfnaax
+         wOWdrZTWzq2boMcqT7x4mox+9/68z8KCTEoiSiXzNsiOe37Nz/nxPKGsZemYYjJWXhHG
+         Gy4pwlNI3Sr3tJoDEY23TmfRdHYxcWeTkqlKF+LfqSQlX01f3n/SVqJ42jlpPMsj4f73
+         L3OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780913657; x=1781518457;
+        d=1e100.net; s=20251104; t=1780913685; x=1781518485;
         h=in-reply-to:autocrypt:from:content-language:references:cc:to
          :subject:user-agent:mime-version:date:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ICUYmzYvi3Npp7Z3gMsJhlNCaTZ1S0P4tdLevTu8olY=;
-        b=mY+MSKwtPv3Q/hKdFkNqvtYC88RSAMIerC659CM4NJmJsUnyNcLxPgHvB5tKMOfK1O
-         L9S4Ezks6F6VjGF/zGCwKzhjqC8/NGcFZas7XHC6lrB8kBRk4DNC+UDTVVlH9Zm+r7tC
-         +0P/o4qt0RsTmIuaxRCutMsZmorMU61sd2Xx3zA6aWLxKjutmYd6bGq6eW7Xb9k7FAPJ
-         ZLnBSOPBm3WK1jM4Ynghy0wjcUjdP+VNc9VwemtSnoOpg5aVCa361Lll6g088wiDakqY
-         M8GPD3la3+3TviPtxXZ+VOC2S2hulbqYtEGqXBdLU847WQyRwhAet9R0Qb5o7sENGVZR
-         +8xQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/+1hexMW0xACjtg7a/uiQdFE5fIWIhJ0JBWAbvzOlc5ZhgkL9hIAYv6exdSyYsUKMr0yWeV0dGQg==@kvack.org
-X-Gm-Message-State: AOJu0YzUcAMLBjt4TnirTfTYQnrTgW+NFhlZVst7koGMyDUqZFhEgR/i
-	vVpcWl//cTG2BSpOyOYI2xewiR4mO7TrkVIEfNo77o1LgcQSxEtD6n7B/XhELcXsVV4=
-X-Gm-Gg: Acq92OF+9cBfq/dAbsX1kYHfIdIpLcF+tkIPBDJhBxOPynCu/QUuOJbLTp3JS2qhcRX
-	1/hSYYHAz/KwIQQPdSd5UQT9qOU/JRsmS4CG5Vseq2aMAEcC7JZO0ZA1y0YS1/4I6k7f4MkaFNI
-	mGuITRUi/uT+kFnfFo2rXYUkEVgb3qK3WgnlqoVPsxn7l3yCujjVHqKHpaQxNUSsDY+QV23MYtt
-	Tdf1ukyAIeFDhwRuy/GQLcsNJJvOLDcfF5KJM/KD5/21N2G3nIL0ThdbQLx6EFmHsgMaXHovF3D
-	Df738ndy2L2W46QtE1fX+d6Bjc3zkAXNgqq5Cgln+LlcUzM3wF68Ncafo6LO5Q9N5dtcYMWn4xL
-	iWZSHVq9Em/eTMuYPGq++XUmW0HBlSv5Ccx/e6y0J/zl4JLlxWY5xJ2j7PSVFSL6pURa0KdBWVh
-	MDvstRWbgfSdQzcBGdEEg6Z7/RUQFJC1MSUeoy8CuX0shnfm7xYcKSSqlq8iW9lVCz/Bcxe/AX7
-	nVebWVMbZJr/I2cbFxhMB5/crYbLnUuwOT5NkydT4byKHqeOk/7aBivrcpAUfu2
-X-Received: by 2002:a17:907:60d1:b0:bd8:fc89:cda0 with SMTP id a640c23a62f3a-bf3a8a0cdbamr553511066b.24.1780913657464;
-        Mon, 08 Jun 2026 03:14:17 -0700 (PDT)
+        bh=nxBQAWC7FUeGTJNBfhWbQ+ZfQbJdlJJx+tZ9LegFXV0=;
+        b=ktgDS/lqbGV/YgGuEdSzk1t1j8sUilb7k8UtqOS0Sgfd8uYC1EWAGdzZ86uP1WdleS
+         Dxael2k9mrsy2Iw8Lx5Z7jVtWldJTb6oHSbeQNsj4hi4UgNdiBz67y6F7bpk2uTE2zw+
+         CU0j9aoMC0GCutfC1XtoUOuhQX/rb66CJ1blk2jF8m2bAuZct8ko8zbNYB+r9E0EwlmJ
+         /NnksSguqS90K+sBQYYYC0dS9bX3BiNQ1obnnI0Gh22aJF/had66EkG2CiWvD9A3GOpX
+         oquNYTUhgxKu1YtQdhbwygoxV6p6IldiWs1t0wstAdqiUWqd3zgyXB1Xz4bZkXMIbksT
+         L8aA==
+X-Forwarded-Encrypted: i=1; AFNElJ9QFsLWbnb/pNdNYZIDmUgezBRtGCkFoTSI9w6MxxKIs74V7c9zN9DY5T9/1qz4ASS+Lb5+Cfgh1g==@kvack.org
+X-Gm-Message-State: AOJu0YyG2x57tD/NCYVfn6qP5jVqHtCIZZgwRPOXpFlgcz24RypMCdnC
+	8lw1ZLRokojqApBYswGLeelDEPZyAfHpkeo5Z5E76EXQSV2Q0Rrzs2YHo+v5DFViDdc=
+X-Gm-Gg: Acq92OF8YSUGKpdqo+tFLik0SRIGMEduaiUVbpWBSDH60skaDHM36QHLEBkNi9JtSS8
+	s9kk1GgIAwk72BNiF9EO681uR2lXsGCv0u9GNm5nG/Ayt2bdEx6hsxYkLM8Oynjgf0cAho1xaLr
+	aF9N8CBH9ZmMGDx9RhdwjadtOKYtIiK/buM0KuYDCKgCFjYxk8gi6SfLBWgwB0rljCra7p1nuG+
+	oYopFBL9HtcN0WiUyVn8YY4fUpZWHkhXi/ebbx6p21tGtMjaasFFHGHhMdfMU1rzlZvXajcvXkQ
+	ZYeKTgQXi43Q2RD67POCnmNVrKdPydq8EfITv8AzR2LlzhBm6FlTSW8eD34wE/JNSi2FhVk8eWR
+	nTfq1LZnswLlKneWWN2AcNkqsy/f721QMGJXL0iewsTL3prIYtXYcUVKGdJAG2Ds/9ljxUcvHKh
+	WJkLCcUc5r23Mc0zk41IREWwy6IfBdZ6VNNORxvPOAygaRuvAE001U/tSNmqYIsIPnJt1pf7Xni
+	g720CFqsp3iWdUmWwZNTE/AvuC9xFZb8zBLQzCk5IMkAsTGcfMn+MllLZ/94JMZ
+X-Received: by 2002:a17:907:2803:b0:bec:228e:26e5 with SMTP id a640c23a62f3a-bf36fba1ed3mr502078366b.7.1780913684833;
+        Mon, 08 Jun 2026 03:14:44 -0700 (PDT)
 Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf0559f1f62sm862110466b.57.2026.06.08.03.14.16
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf0517721c2sm820999866b.3.2026.06.08.03.14.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2026 03:14:16 -0700 (PDT)
-Message-ID: <af7a7a96-c1f9-47bb-9c4c-c83fe6a9f70b@suse.com>
-Date: Mon, 8 Jun 2026 12:14:16 +0200
+        Mon, 08 Jun 2026 03:14:44 -0700 (PDT)
+Message-ID: <0c1b9be8-258a-4f2f-bcdd-e8594ddc1aec@suse.com>
+Date: Mon, 8 Jun 2026 12:14:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/9] x86/xen: Convert xen_mm_pin_all() to ptdescs
+Subject: Re: [PATCH 9/9] x86/xen: Convert xen_mm_unpin_all() to ptdescs
 To: Vishal Moola <vishal.moola@gmail.com>, Dave Hansen
  <dave.hansen@intel.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  x86@kernel.org
@@ -106,7 +106,7 @@ Cc: Mike Rapoport <rppt@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
  Peter Zijlstra <peterz@infradead.org>,
  Boris Ostrovsky <boris.ostrovsky@oracle.com>
 References: <20260527140316.294621-1-vishal.moola@gmail.com>
- <20260527140316.294621-9-vishal.moola@gmail.com>
+ <20260527140316.294621-10-vishal.moola@gmail.com>
 Content-Language: en-US
 From: Juergen Gross <jgross@suse.com>
 Autocrypt: addr=jgross@suse.com; keydata=
@@ -132,18 +132,18 @@ Autocrypt: addr=jgross@suse.com; keydata=
  HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
  QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
  ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20260527140316.294621-9-vishal.moola@gmail.com>
+In-Reply-To: <20260527140316.294621-10-vishal.moola@gmail.com>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------mqeEDAX0jgEctDcOkQ0EDxdK"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 35CF2100011
+ boundary="------------15uZ9BCclmHdokGRSdMRESv0"
+X-Rspamd-Queue-Id: 4F72F16000C
 X-Rspam-User: 
-X-Stat-Signature: oetjpeprwxnd3fmkmc61hpx66en51yx3
-X-HE-Tag: 1780913658-268688
-X-HE-Meta: U2FsdGVkX1960fyqt+h5o8Lnx4bnPH+8/f3iNDgKkIE8cegK+DSBgTzMSVn9/SZ1ndgqII3FHpUiUkfBc8w3PXVl8SI+dXbgJzgY2ry8Xye8r6f9rxb5KezNw2W4oT/1f4A4ROJU3gHE8Bg3t7hrq+AAve5X8ngzL1YcteN0RRr56WNdQZAim9GMyfIqoGYCvah2o923GHPVpGfMJsYcyjFJNrfPfi65X5GY5CanMQ4NkgXZ3aOlgTLa4l8NKc1PpUb/zOeW3VqQPrOK+uYTkVE3fZ0a6OKEXAbsj+gmw7iFlGrpLjM9qGdXATipcND/BQWKfp1b+QMsdLEzt0vfWU5DcuPN8uC9JgvgCiIcfw1E3zlmDXpTZD1Vqpf9aMroZlggwTilJH8K4BxTR4dedlGAGyVmCNlFkeg31kGEcq6nz7jFV/EoCYF42yqm+jjvq5RdlTD/wXKhL9d50fO2XAbUjBQkAUfrN8wzYhouQQ7lt3UD8Yna0mCAtcAI8MH2X8FAd/q0M3jOY/6sPKZmvo3JwHh+/3RaUzrHwUgEzZvhUeVdXwG5FKdUJqhQ3FDhI1PLN+bkoxAdP3BH4ywhso0lrn8F8HHsiKTyAXRQ9I7mlSoVt95CsTRKkw5HYjTGQQVzk/nkVd8xJqSf1okg1fPtkUsJ5Ixkq00IlMEp0kq5Ptd9OSX9XE//QzXrA2GI63UWjZ7CvwHFcNRl7wzni4eS8l0FdXBrOgADbDDaC+MtTGdtnBqIEmRi2xVAZxSb1ocOiPwWz+moz/+dSoAQegDw85DL3WSWyqeGclLjzN6zQOnigZFnP1O7BHWdqc6DKZlulQYOxXgiYqJs7anYgILHJDHrCACMj+apiHCxEvFqCjk0RTQ1o0QqyIIHm1lexNRTbjNeWxMbexnpl3El4pc0TRM28SG3+VkVwyi5zoEYEdwCzuQmZ5iz0MvysnjiPVvoJVL8h/fiS3SMY7i
- D83uAW+J
- iQUeCH6RRknDoQdLgPk3+b1lx0kJh/zKAAbbIIGkta4U8Xj6p/sOen3mROIvYs/fVoddzuLXkYkY8bKtrXCCjcZiOgznMeNB0t7StHS0V+iNroeaPEDb1feGyjz+yaFidhg2+IwAMOaTRL+HMyeHRFSGgBVDpHxL5SNxpFCkELLf5GSDYai/Ss5rRl381W1oqO3yP6gpCzMqNV40AccfmpzOxY8tO+NL5/zg80uEIDRWZgEwItNAp068w8lT0hqSi2J6c27hQlmzUUnXNGk+8S1NZqc8iHptAasYc7usi2xFJC+rFw+mV0LFKld8toTOwRAnIrQyEhI4tUZDxAwCbSAg/O/M7Ik0IHYc9RWG7NUElURXQIuQqK5JeNrsJxgm87wuVTZqNwkbtu3JYzmTDl2s/ODUum91ggcfzBbVb6X3jU1/Leh16qU7hLBCuZyq03YDlOVUZTshU96DQQUSH3b4mHJmR/4aFYtWV/eCcP2jvId9F2E1GjgCcS/rRgC/Nf+obUJHcOcN1etMwuMgOMp9z/hB5w3Cim3NEut7OMKHV/QQ9RH1gdDUCRUGXeJvBh7yD6bOrpWsW1i6t9xLx4EJBXczIVOV7LGaYaVN/9mngT5ghBUWE97vpxzfxs6w57v1aPEEILlEWiqboPa/jk8mjlOpjoTna5hoLGQJpjDWf8Flqo/QwZwAbJ4tcqeCazkNER4CGcsMousnd6JO+MeIYFbSQNfq4o+MyGyaRE1nAS0ambWwuSxsZyQ1xKNMczJswvPVhNsuO7VUbydxpu47LRP+ypS1PvkgasGsvTVO1oMrQQA0ASLKskE8rT7FncOCsxgxoKvYpVZTTKa7eo4qHQvCP77L94DOPAUbWqQbBJYXModZRPHIZeTVMDBdk1kmQe+mB4o93LuVpYrNGWKsKpfT6qiM2HFKSUPWPUImw3NBN/IRKpT85xg==
+X-Stat-Signature: dgrzmyowiprdy97rf3q9darkie9rdwg7
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780913686-353785
+X-HE-Meta: U2FsdGVkX19mcJdzrdz3ZXOPX0cSMePcvNMhik+k0mxK4T60AQ8OvQN1KMjfFLTjhRU3SEXgKMKWgE8DdBxEXMWGqYWzMncR2DLsn1c/dKaFVOxdCiux6J+Ro0q/rjgsrOg5jtt2Zn5bWEeqQ9vV/rAacv14qRkCYjjwV23Cvvh5Hwy2odxJg8g7/A/leMPp6N0qIqQhfDjpWaLtQyMZfGU2bkX89ond0sMT5MaBL3Fd8sim3Ax3p/VA12fzkoKj2A+qC6q8kYxrS3oGS7h5dqG1GcftZ0z0siELd/AcDTdbSllegjHG07zzWaSh/TEZ1E9mQV8hyhM0MsK+mO1602Fx8LVb+vUiFE42GRDR9k+NZ6eaxGQfJjEzvCdbfE7DbQ8O9glXa2db+HnEqgQHST+58UMddOoodBSIqjrF1Pi233Ry+NdGRdQ1DTlu6YoCyTLtmzWx0MS7CfGHR08gga38ydD0ry1EUCpRtu5Ut37GGEE12QNRJe4oSJeozvtXODn4fcI+/vepmpo9fUcpqtvADTyr4NQvR+WIYuaR/ZSRKHlGLew56T41zso3vS7KFdnlrECq+5DXoxNLlTsMKztoAZ/NQ433L5NSVBbUCkwXvRpCq83uA98zGoX1/tpMUM+q4HpJJ45R1pbIwC8ufKumGBx0OJSCR8psvBcO6mboF5L8Ngu5bNrp5dN0ZdKuN91mF0Awq1HESPgnCGHRomxzsCbmgIL7OXdmTLiOY83ehOIdpjQq5J5/RYCoJlus2HTzpG/jFffgP9yCuPc4WfNb69wQCETeS4BHb3F8KkLc5MzoJRoqk8NKMaVncGoIwqfnJlq7XM+iaSZLkKDFsrCM6m2IPJ+wpXk7AsYqMU5h/A7h73ktJKXx4R+WUhVL66iY2c4lgl552GaW74GwGL0uYdCuuFCPVctAsFhW4foGOXfAfiIyHNG2brtow09amxI/r65s5IIHdyhNDDu
+ YNLi3V1m
+ 81b6TEU2UGDWcIehAsTKn9FXsRJBfP3IWjtrfeZef8VA2Kn1f+2cUQCB6NmYAifDj6wvK1T0ZOxO6pBU3izX+Q/qr2f7JTAPwgU3dT8C98pnZ5tfHu2Z/t70HN+HDTRKKq4mz03bHnVLPO1p057fDyT1EVLzMv7G9i4k5o4yeziH0mMuCdT0jp40eLWXY4ewpiRO08DuQW+IAapsrJrNHXafY8CeNppIER6N1AX/y3hBqFX7bmIPiONYWmz5czXBM5VdgSA3ifx08zF+440ULPxoOVtU3Zpl96JlWvHjf7nsgU++qCpUqdi/ClWPUXZQVGuhWDdScODu1HWUk1+Ad33LRSkd3gs8s17T+S4xnG5yfmEzjCJWICMCYEtnUdpWqEYPEu0EpacpNtOcr2rZwrk4FqYb+Zk/OwjgHYyezR6KLfN9WppNnew0p38DaI0WEJqnWbzGtnDTFYG6Gs5VPYviZnhHqgO5wdwx/d930GIpVR3poVII2tuFtxUgHBXPyzTM/z5Mb7abRhkGq0/iAhRxnYHCgVskRcuzogwFEAr0RCTXPwC/vsuf6Zy0cQtl7j/NSd/YVyP2REQKslwWI5f0zwUDx7u3T8i3rXMDcRV5/0UaAAE+vALf3JZKtU48ZZA+40Xe08pPzvLEX7px4DdtILdfjlGRSamCFwOX9/QfXLAkK1bnX1bHWafig6/6ugVzv1x2tXdFLzptaeT91Udwro1QC1x1JkgmFb0TtXkJwlQOGvIPC6veqkyI6GUk7GWjX6uE46nO3U16tqq6InxRCbHPmp3Mg+SfoYm4jMEARmGHngFQGUYMX4+tJXvQsHKLF8PoUXp7wXSxwyeXTFoVEFqz7GOQZbNLemV8/7s1MwpXQnHMfDGQr/KQRyqUHExLHMVdtkBeFfWV7CfVo5aKuHMKocTiMqeUnXQ9eVbvuKAj3ZSF/uOitag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,8 +152,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------mqeEDAX0jgEctDcOkQ0EDxdK
-Content-Type: multipart/mixed; boundary="------------uCZRBKwpO9lYtVcfTExo30um";
+--------------15uZ9BCclmHdokGRSdMRESv0
+Content-Type: multipart/mixed; boundary="------------0PH114zVSoGpQ4tBm8RXhOwi";
  protected-headers="v1"
 From: Juergen Gross <jgross@suse.com>
 To: Vishal Moola <vishal.moola@gmail.com>, Dave Hansen
@@ -165,28 +165,28 @@ Cc: Mike Rapoport <rppt@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
  "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>,
  Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Message-ID: <af7a7a96-c1f9-47bb-9c4c-c83fe6a9f70b@suse.com>
-Subject: Re: [PATCH 8/9] x86/xen: Convert xen_mm_pin_all() to ptdescs
+Message-ID: <0c1b9be8-258a-4f2f-bcdd-e8594ddc1aec@suse.com>
+Subject: Re: [PATCH 9/9] x86/xen: Convert xen_mm_unpin_all() to ptdescs
 References: <20260527140316.294621-1-vishal.moola@gmail.com>
- <20260527140316.294621-9-vishal.moola@gmail.com>
-In-Reply-To: <20260527140316.294621-9-vishal.moola@gmail.com>
+ <20260527140316.294621-10-vishal.moola@gmail.com>
+In-Reply-To: <20260527140316.294621-10-vishal.moola@gmail.com>
 
---------------uCZRBKwpO9lYtVcfTExo30um
-Content-Type: multipart/mixed; boundary="------------moBdeYGjNrSgg2fuugMy79vf"
+--------------0PH114zVSoGpQ4tBm8RXhOwi
+Content-Type: multipart/mixed; boundary="------------cXBNXfou8d7pbxhXUj79ph7U"
 
---------------moBdeYGjNrSgg2fuugMy79vf
+--------------cXBNXfou8d7pbxhXUj79ph7U
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: base64
 
 T24gMjcuMDUuMjYgMTY6MDMsIFZpc2hhbCBNb29sYSB3cm90ZToNCj4gQ29udmVydCB4ZW5f
-bW1fcGluX2FsbCgpIHRvIHB0ZGVzY3MgaW4gcHJlcGFyYXRpb24gZm9yIHRoZSBldmVudHVh
-bA0KPiBzcGxpdHRpbmcgb2YgcHRkZXNjcyBmcm9tIHN0cnVjdCBwYWdlLiBDb250aW51ZSBj
-aGVja2luZyBQYWdlUGlubmVkDQo+IHRocm91Z2ggdGhlIHVuZGVybHlpbmcgcGFnZSBhcyB3
-ZSBkbyBub3QgaGF2ZSBhIHBlci1tZW1kZXNjIGFwaSBmb3INCj4gcGFnZSBmbGFncyB5ZXQu
-DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBWaXNoYWwgTW9vbGEgPHZpc2hhbC5tb29sYUBnbWFp
-bC5jb20+DQoNClJldmlld2VkLWJ5OiBKdWVyZ2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+
-DQoNCg0KSnVlcmdlbg0K
---------------moBdeYGjNrSgg2fuugMy79vf
+bW1fdW5waW5fYWxsKCkgdG8gcHRkZXNjcyBpbiBwcmVwYXJhdGlvbiBmb3IgdGhlIGV2ZW50
+dWFsDQo+IHNwbGl0dGluZyBvZiBwdGRlc2NzIGZyb20gc3RydWN0IHBhZ2UuIENvbnRpbnVl
+IGNoZWNraW5nIFBhZ2VQaW5uZWQNCj4gdGhyb3VnaCB0aGUgdW5kZXJseWluZyBwYWdlIGFz
+IHdlIGRvIG5vdCBoYXZlIGEgcGVyLW1lbWRlc2MgYXBpIHlldC4NCj4gDQo+IFNpZ25lZC1v
+ZmYtYnk6IFZpc2hhbCBNb29sYSA8dmlzaGFsLm1vb2xhQGdtYWlsLmNvbT4NCg0KUmV2aWV3
+ZWQtYnk6IEp1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT4NCg0KDQpKdWVyZ2VuDQo=
+
+--------------cXBNXfou8d7pbxhXUj79ph7U
 Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
 Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
 Content-Description: OpenPGP public key
@@ -253,25 +253,25 @@ kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
 =3DeeAB
 -----END PGP PUBLIC KEY BLOCK-----
 
---------------moBdeYGjNrSgg2fuugMy79vf--
+--------------cXBNXfou8d7pbxhXUj79ph7U--
 
---------------uCZRBKwpO9lYtVcfTExo30um--
+--------------0PH114zVSoGpQ4tBm8RXhOwi--
 
---------------mqeEDAX0jgEctDcOkQ0EDxdK
+--------------15uZ9BCclmHdokGRSdMRESv0
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmomlfgFAwAAAAAACgkQsN6d1ii/Ey/+
-BQf+MrwoMszO2YF1wyc7UFe2jjUkzG3MxLz8ZDDIfPq5GevYLm96pwvTy1Crl6gEPPPB22CGlJiY
-D641+JUpZt9XtdJ23t+p885R7nOtDj6mj6F2vt1kgutnvAf5ez+b/WbzuZh7X9zoN4aSPwJdkVsJ
-6b0VXBizvpnOvxGs5U6AfEpRP99o3JpTc37aT6ksuzLtrYLH/xb78OHiI28Pxffau7lZsZDNIAWn
-1/SlT86cYVBxgiG4WusRDrjBpFwGKzEsJblea4zdOtmCJEWLF6Xt9+5ZdYdD2HIO6j8ZdxLVlhTO
-At8V2crdTjvp9nKmf59yq5rAC7QoRfcgMUgqwT1FwQ==
-=Q4h9
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmomlhQFAwAAAAAACgkQsN6d1ii/Ey+c
+nggAiU7PaHe2GWgjkyU+bQ5XYfd8d3Vprzu2LSpdmXgf4mmpk8UqYrmnLF0AFoEDjbaWslVHE1g+
+xDBDEVsmCV/vGoUc+3sGJTHTRq7VsAsLz/Gd4DxgZ2e2NeZpyqCAf9IhKimVZotTrYsP40ddDcAd
+9YAxZkuc4oXiIvI0zqF76HzMExAMOkgfw3Vwsm9jT8fJDm/8DjvqFzFdR6aPjZidujNczaNrI611
+6dpvLXmptPUhx5DlMh5ivijpquwYyBYmnGMPbccba7WuVAiCRyvVIO0Sj5k1tYcP+IEiHTvEu98X
+6U7WslxT3SgqOowiWGAe9Jf8+QZLJ/+kGjnju8ODag==
+=r6p4
 -----END PGP SIGNATURE-----
 
---------------mqeEDAX0jgEctDcOkQ0EDxdK--
+--------------15uZ9BCclmHdokGRSdMRESv0--
 
