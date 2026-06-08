@@ -4,88 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F030CD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 22:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E75CCCD6E79
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 22:22:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5534D6B0005; Mon,  8 Jun 2026 18:20:40 -0400 (EDT)
+	id 41D336B008A; Mon,  8 Jun 2026 18:22:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DCE56B0088; Mon,  8 Jun 2026 18:20:40 -0400 (EDT)
+	id 3A7C66B008C; Mon,  8 Jun 2026 18:22:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CC646B008A; Mon,  8 Jun 2026 18:20:40 -0400 (EDT)
+	id 296966B0092; Mon,  8 Jun 2026 18:22:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 282CC6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 18:20:40 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D336DA031A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:20:39 +0000 (UTC)
-X-FDA: 84858165798.13.94E93C5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5743F40015
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:20:38 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f7JYR6oA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 140FA6B008A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 18:22:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 45B1DA0331
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:22:39 +0000 (UTC)
+X-FDA: 84858170838.02.8DAAA5A
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf31.hostedemail.com (Postfix) with ESMTP id F16E720009
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:22:36 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PWqt6F9C;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780957238;
+	s=arc-20220608; t=1780957357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pj4zDASXAMVVqBLSsY3DUyz/qFy1Cgs1DkPKV67407I=;
-	b=k4xhsDRWauZtdGUSUmtd9IjXyPs3QPBZa340d4mXvHwYdqTAfRjot8f1EvJKGSBWHjMPed
-	Hkf/G5XHzTj5xMPj4kW+fRJE3FU8K1wl/VCWEVNM1a/nYgagAHkNR+JjSPnkKYsPUGeaFX
-	bACIgUYOaJQuiFFFIvIVkMw6/KNDwrI=
+	bh=QMaWH3U/PUxuaTtJVkRr3vzg+Jb8ytHkTkyCatAiMdE=;
+	b=DdRrQ1CH3p7jq/dwqAmUhmXs2Im7rzYynLyO+A0qT8AZwyx8BQuCKJLOSMruG9D7YspTH7
+	7oQEMIXlxwQWGbbRDPLY48Owke6fwNFZdll/py+w+54Kt0zv3XOXz4v7Eegzgj+3uzhfnf
+	psQAj69HJZmoiiVd6ZrxKaF8CrPBcVQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f7JYR6oA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PWqt6F9C;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780957238;
-	b=40KWZCJtK7pIp5t+CCAzirYL9fpDvQIRR9XQgtJIxnVakPi6Cb8Srpy1d6sYRalQOBAukI
-	X6meSJ0U+v9ZRmILZ7xOwhu/i4+vJMDMU/83BkCdwn9yoWWdk88yTW/j1CpaBRT8SISDi8
-	VI/rLQXGPOOi1kDIDyzDfl4X9bf2YBg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AAFCD6001D;
-	Mon,  8 Jun 2026 22:20:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29761F00893;
-	Mon,  8 Jun 2026 22:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780957237;
-	bh=pj4zDASXAMVVqBLSsY3DUyz/qFy1Cgs1DkPKV67407I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=f7JYR6oAy8KAeO+iTwXmQ9xwNVNMpDX5V/D+2ivFxaS4yfhM7h/SJxTGiUk8y0o1i
-	 4QzgzwsNilI8AeZFnNPbDMY4jhyXgfI3uxYK9d4EbaFHTgHreAjjBTxeOvCXwTBgwA
-	 abVPZPI8ODcUEwsKJVv78z7kmG4CsdK/M5c1b8zw3MdHrxgGL8qQTgWS4AN+VFkBn5
-	 1ex55s0XaDQUz+bzMlSLt2HAU6cLBgYWr+9J4PcJW6G6ahCJDcLSI/U3ZBrJWxsoya
-	 7m85ka535QGgnZDxv+se17Egh5iyXou0smZvydULJERheKMmg5txtM1mHyw4gF5m5+
-	 cM9iEDyd1HWfA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Yuanhe Shu
- <xiangzao@linux.alibaba.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: "Paul E . McKenney" <paulmck@kernel.org>, Boqun Feng <boqun@kernel.org>,
- linux-kernel@vger.kernel.org, Michal Hocko <mhocko@suse.com>, David
- Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org
-Subject: Re: [PATCH] rseq: don't promote transient TLS faults to SIGSEGV
-In-Reply-To: <22819c09-8d8f-4448-801e-742282e50693@efficios.com>
+	t=1780957357;
+	b=qzugqc/nyRYZBKoujnZAlBKUEnMSVyBZGyoavoQ/7KmsIISVWFmS3r099UC/aP5PG7vdeG
+	OAGim+SrVOQgUzCE7Sj2goJfe7/A3z/N2fWvGAZCwxU6IOE6qP/Mf2jzLE5GnUOy37PeH0
+	0No9IkRKUPSO/mDT1xFUWAEVeBW9AoU=
+Date: Mon, 8 Jun 2026 15:22:29 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780957354;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QMaWH3U/PUxuaTtJVkRr3vzg+Jb8ytHkTkyCatAiMdE=;
+	b=PWqt6F9CKEwPgQ//P+2rVaSaqvWcRHhLi/Biw7KvgfDFqSvA49YeL8y+4/aoK+8pIISmWd
+	W/NjR3Pz+A+qcCcgQrEnSOWgUpxdAwrhzANRo9RfUy7qD6FF9WpNsecqZ/k9E50d2uCTDP
+	rD6zmztQ0AiUQ8YKBbjcgNm+TdNkAHU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Hao Jia <jiahao.kernel@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org, tj@kernel.org, mkoutny@suse.com, 
+	roman.gushchin@linux.dev, Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, 
+	chengming.zhou@linux.dev, muchun.song@linux.dev, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Hao Jia <jiahao1@lixiang.com>, youngjun.park@lge.com
+Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
+Message-ID: <aictKA0XWMWbxFdN@linux.dev>
+References: <CAKEwX=MQe_KFZe2vBXQYh0aa-x+E8AzNwmyjJGJk4tDoS9ML3A@mail.gmail.com>
+ <aho_VtLCmIRsNyvO@google.com>
+ <6deeaea7-3cd1-4403-29fc-d2dc55c297f8@gmail.com>
+ <aiBqzOtEv5iAC_qC@google.com>
+ <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
+ <6db27a22-cc7a-9a94-db3f-c912fd39aa32@gmail.com>
+ <CAO9r8zM4SDdTgz9L2s1VfXL8K2VBjMD9ej2BTDxaGge1t2+quA@mail.gmail.com>
+ <aicJBVT4pBvmyooT@linux.dev>
+ <aicZ-5GX9De3MAU7@linux.dev>
+ <CAO9r8zNBJ-BsXyKFveA92jbwMu63uFVTY5CuT4fRHTBVcOjhPw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-References: <20260608021553.1037128-1-xiangzao@linux.alibaba.com>
- <22819c09-8d8f-4448-801e-742282e50693@efficios.com>
-Date: Tue, 09 Jun 2026 00:20:33 +0200
-Message-ID: <87cxy04qtq.ffs@fw13>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5743F40015
-X-Stat-Signature: rdti8r4m8f4zgane3d1juho111w3nrbu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAO9r8zNBJ-BsXyKFveA92jbwMu63uFVTY5CuT4fRHTBVcOjhPw@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: F16E720009
+X-Stat-Signature: auurwry9xoe3c8jbozix86pkgq1dyi5q
 X-Rspam-User: 
-X-HE-Tag: 1780957238-977883
-X-HE-Meta: U2FsdGVkX1+meQvvUhbm++jhmZLkg1MY0/cOciD332yN41OptqG860svvjksJ03tUtEeklw7rmoGGJ91BgXLbPI8TDpA+ZjpyNXXpsf65suebkky2Z5ZZSDhvSGXmwjkFozZ6PcO1Ta/QmIB7yQhSB5nVgRjZnsZxMBjdPZrqve9ErX5XUU2cbsd6kylAykVxspm9owEJ+qz63DT02dqUQ4WT1LfaqTLAeHxKC8f6hoX0cr6uvivnf6g6sjuyLT8kLmmrXIoygEY2xihB9QeYSQvzkvLH+CGZ5Ejj2vwoM1JSFTkSGPNmJbdMmcIXl4NC81BLFThoWTgw37RlYaByvukHftvEFO1GRsCec/YjqigOPNNfm0OZ/TUdc7LK4OvImq+ycL5hjUWYMcdK382bra8l7SL0ncN6vrC3RwUVu+P1XK3tqsWxz1yPkxe7UJ3roLHe76Ucz5/KOUwL5JyE/apW87CPKER5y3SrErRUp5zFaq77Pye1WVcwfARwZkxgcb3Wb8BNznCpGJaY2t9I5bMmgdxdml1kgpNbDpm1883nwkmC1NsYmVUE7qZ+ea/YmJc0dX2zWn/xvT9qMOjuLtHMp542FGq0rJKGvmLZ9n6wqXVUnVqQzU2mi3sYok1JTLus/QUru0z1AkcerIq0o66c3jZP06v7Nw3uhH8uNU5bnmpetN1JFXXuRhcMSu/wScry5FWVmKt/fAF7EIQwt5WuBQtiSMa7ok8n0s2EUEVKfih1RGZEwX3RtceQ8BhU+8iKgdxIj5JpTxHgglteVgeKWGoCU5N3Za9XwxDR04L5Fvh0114kigCoPien6z8lqvs9LnL5mgBa/wxb97rXOmyPwsp9jJegzYC5c2niYmH6Y7gY6zy+eRmjXo1FnWi/TqroDfRZmP5v72/TAgSFwlFWsUFQXQNI2wD8eK6tww/kn7YRe3p/sY/sENzEYit6Ae3tRscIX4EAxG3pf9
- JLn7l99q
- lvhwGJ0cA1VrarY0JBSxv+nNSz7oEh4Ighj5eUDbxWdtFV/LO83o+ptD90VXyIgR2pZbvCaFZmY8JNP6hkUMX9Rq+96GA89yVY2NyMP7WRpL4VW34lv+e84/gedtp/BSZX39Qe2XOANGgBjDelwbOjaLyJl4BOcQXsWu2G6XW9D9766FldLFHEhH1L0YiBmiah3siBwL/lA0hymJuVanxH78i3E3JsQwqHcHgaJo3FkmoUms=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780957356-462032
+X-HE-Meta: U2FsdGVkX1/BQRGXHsJT0PHfpSQnh4tfaxBcAgZ0uI0BlC6ABwnWU1+uIwVReXabNq8zneuJ6KTz5FDVzFcXp/NmieKaggpzMbbZL3QqLzREBXiTXZcnqloWhQ706fmi/zcDXaghWRB7cx5fw5D3QkLVERT82jIYxxd0wwQYFhVHIs2mFHJTH0IxN8K7txEDvLyzdsr7zrv7AuthUzYbfT9xZTMq8Avw7V+oNQfy+jhWGfuoOTurba/AXQIqC9De1dPobx1nriszxv2lRoyQfB8e4orowtc/RCSiT/pMwgaOenxt1TmHM325SLNQLJ1yuzVYL1YGVnmgQV/Jl5hqqcom/R7IjQG0/ZnxtH/g38xX++pBoJLTINZ0dL1n6WoAuICFXo9nXJhzWyxAhGMwBZhtfub5REYFhlb8oq/pu2LCKZ/fWng314C+Y4V51omgBMBI4y04bxffU2BBt9sAondFXPDnuF2GZfygkjFf34W4wIFz/tTq1WTpJoEUgLQOzzWe8ExmEh3Z0j+dyxgY/aOiEFTAnN8uINjY0qAK0isFWJNlHkoHvZRWrURF7pz5dZgvYWUYTnLQ2oqki5LDm9Rp0iOuu3NJ69lRgpLX8UdLQU37EYGW703HJK2cj5t4SrEVRaWId+oikA2mrhcJqbn784atibqKf7Bqmu66kK7St1FSXjEfq36j7WpQR1RObYSWVYaiflD7ssHqWoH2rp+Q5GaWEbZ0Ie3RrhwcHmWHGjS/oa5sRgv1d7eN/3Mg/BhzRLvVHz4LX95obcAjIWXTWIG4GBwmAkOdt6Hzvp8o5SnlOdVseaTYz57/1rv+jvkcdDCz+f8h5X66/rJ6hW3hqpg86+W/icdTmEEh9TzeheJtHFMWy8ByBY33mw5BoXfEkyEYEHdcoHWdjiljjCPWDypNrp96qFtXXOE5cECWDJDcQv6QYQM2VxbViE+0rhUvDM88BAQFZYCwEL+
+ L+j53/GS
+ kwj/Yo0SlwMsvfafikbZEk0JM+mNFoc1+IZNW3/McBk4SzNuzyMfW0xD1IxpZiMCOtDxaqaACrZKK8wUIk3BGOap2eLty97i5QO+RLi279uUYtLqyH1rWdhm2oKqn6W9JILqXzp9AaBwPJ37v1MBjRgxFiyYzyFOydPV51eBpyTZ1xWofvSFbxeXZHkkkxH2+P0STKDtRpyDsGnemjHD0xPiiEgpI7U03XWT/QejiORzY5lI+xoJfA0fJXMtkGV6YVqRrIFTlcqLdvmxnkWbRpBNPO8kr24tWQls8KMpIAX+gaAi708VfcvCqGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,65 +102,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08 2026 at 08:52, Mathieu Desnoyers wrote:
-> On 2026-06-07 22:15, Yuanhe Shu wrote:
->> With oom_score_adj=-1000 the OOM killer finds no killable task, so the
->> rseq SIGSEGV is the sole outcome; otherwise the rseq SIGSEGV can be
->> delivered before the OOM killer queues SIGKILL, and the process exits
->> 139 instead of 137, breaking OOMKilled detection in container
->> runtimes
-> As Peter and Thomas said, this is not transient. We simply cannot return
-> to userspace with an out-of-date value.
->
-> It looks like an issue with the choice of which signal should be
-> delivered in priority: rseq force signal enqueues SIGSEGV, and you
-> would expect the OOM killer to issue SIGKILL, and somehow it's the
-> forced SIGSEGV that wins.
->
-> Perhaps look into fixing that instead if you really care about which
-> signal is emitted ? (and that's a big _if_)
+On Mon, Jun 08, 2026 at 01:19:32PM -0700, Yosry Ahmed wrote:
+> On Mon, Jun 8, 2026 at 12:50 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> >
+> > +Youngjun
+> >
+> > On Mon, Jun 08, 2026 at 11:30:30AM -0700, Shakeel Butt wrote:
+> > > On Wed, Jun 03, 2026 at 10:36:07PM -0700, Yosry Ahmed wrote:
+> > > > > >> But doesn't it make more sense to specify the compressed size, which is
+> > > > > >> ultimately the amount of memory you actually want to reclaim.
+> > > > > >>
+> > > > > >
+> > > > > > I personally prefer compressed size to pre-compressed size. That's
+> > > > > > kinda what user cares about, no?
+> > > > > >
+> > > > > > One thing we can do is let users prescribe a compressed size, but
+> > > > > > internally, we can multiply that by the average compression ratio.
+> > > > > > That gives us a guesstimate of how many pages we need to reclaim, and
+> > > > > > you can follow the rest of your implementation as is (perhaps with
+> > > > > > short-circuit when we reach the goal with fewer pages reclaimed).
+> > > > >
+> > > > > Got it. I will change it to use the compressed size in the next version.
+> > > > >
+> > > > > Yosry, Nhat, should we continue using the zswap_writeback_only key to
+> > > > > trigger proactive writeback?
+> > > >
+> > > > I *really* want the memcg maintainers to chime in here, it's
+> > > > ultimately their call.
+> > > >
+> > > > Michal? Johannes? Shakeel? Roman? Anyone? :D
+> > >
+> > > Between the options of having an explicit interface (i.e.
+> > > memory.zswap.writeback*) or a key (i.e. zswap_writeback_only) to memory.reclaim
+> > > interface, I prefer the key option. I have not looked into how much proactively
+> > > reclaiming zswap memory or proactively triggering zswap writeback makes sense
+> > > but from the perspective of memcg interface, I think the key option would give a
+> > > more clean solution if we decide in the future that this whole thing was a bad
+> > > idea.
+> > >
+> > > Next regarding future proofing zswap writeback trigger, do we expect any
+> > > potential additions/changes/new-features for this interface? For example do we
+> > > expect in future we may want to trigger the zswap writeback only from a specific
+> > > node or lowest memory tier?
+> 
+> The way I see it, zswap writeback is just a "special" type of
+> proactive reclaim, but the goal is still proactively freeing cold
+> memory. In that regard, I think it makes sense to have things like
+> node-specific reclaim. Not sure about other extensions, but Hao
+> initially suggested making this age-based, so I think the answer is
+> yes.
+> 
+> For both of these examples (node-specific reclaim, age-based reclaim),
+> I think the same semantics could apply to memory.reclaim in general,
+> which is why I suggested making it a part of memory.reclaim. I also
+> like the idea of having a single proactive reclaim interface in
+> general, but maybe we don't want to overload it too much.
 
-It's even worse. The proposed patch is actually creating an endless
-loop unless there is really a signal pending at some point.
+IMHO it is fine.
 
-exit_to_user()
-   rseq_update_usr();  // faults and defers the fault handling to rseq_slowpath_update_usr()
+> 
+> > Youngjun is working on swap tiers. At the moment he is more interested in
+> > allowing a specific swap device to a memcg or not. I can imagine in future there
+> > will be use-cases where there will be a need to demote data on higher tier swap
+> > to lower tier swap. What would be the appropriate interface?
+> >
+> > BTW does zswap folks think of zswap as a top swap tier or something different?
+> 
+> I haven't been following the swap tiers work closely, but personally I
+> do think of zswap as a top swap tier.
 
-rseq_slowpath_update_usr()
-   rseq_update_usr();  // Faults again and the fault cannot be resolved
+Same for me though I imagine swap tiers would introduce some duplication i.e.
+different way (interface) to set limits for swap tiers for a given memcg.
 
-   if (!fatal)         // Proposed solution....
-      return;
-      
-So if there is no signal queued, then this will end up in exit_to_user()
-again, which faults and defers the fault handling to
-rseq_slowpath_update_usr() again, which just goes on in circles.
+> Things will probably get more
+> blurry with memory tiers and compressed memory nodes though.
 
-IOW, this would create an unpriviledged DoS attack - not a fatal one,
-but at least one which eats up a full time slice in the kernel
-forever. Use enough tasks, which register a rseq region and unregister it
-after returning to user space ....
-
-So no. And this comment in the patch does not make any sense at all:
-
-> +		 * rseq_update_usr() sets rseq_event::fatal only on corrupt
-> +		 * user data, which keeps its SIGSEGV. A clear fatal bit is an
-> +		 * unresolved page fault on a still-registered rseq area (e.g.
-> +		 * a CoW that cannot be charged to an OOM-locked memcg): that
-> +		 * is transient, so leave the cached IDs untouched and retry on
-> +		 * a later return to user instead of killing the task.
-
-If the page fault handler fails to wait until the OOM locked memcg
-figured out what to do, then that's a clear violation of expectation
-vs. resolving a page fault in the context of user/kernel shared memory
-with ABI constraints. But definitely not some transient failure which
-can be hand waved away.
-
-Not that it matters much whether the task dies from SIGSEGV or SIGKILL,
-but that's clearly not a problem which can be papered over in the rseq
-code.
-
-Thanks,
-
-        tglx
+I think there will still be distinction between byte addressable and fault on
+access devices.
 
