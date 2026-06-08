@@ -4,84 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2677BCD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 21:06:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69D39CD8CA8
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 21:06:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 581046B008A; Mon,  8 Jun 2026 17:06:25 -0400 (EDT)
+	id AD8CB6B0093; Mon,  8 Jun 2026 17:06:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 558A66B0092; Mon,  8 Jun 2026 17:06:25 -0400 (EDT)
+	id A382E6B0092; Mon,  8 Jun 2026 17:06:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46EE36B0093; Mon,  8 Jun 2026 17:06:25 -0400 (EDT)
+	id 926A76B0092; Mon,  8 Jun 2026 17:06:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FA796B008A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BA366B0092
 	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:06:25 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC7271C1230
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B4728C180B
 	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:06:24 +0000 (UTC)
-X-FDA: 84857978688.13.9766EEB
+X-FDA: 84857978688.16.FD9796E
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 646AEC000F
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8CB8118000F
 	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:06:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OMslnKvm;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=eYvcnt5S;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf28.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1780952783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nIKZ5rJR78Kn2rpf1TUpOelTrfrESbwwBnKGcUB/zAA=;
-	b=Tgul0x/ROLdFy2H5DLo448XTyPVUH/ST4rw58xbT6sfdAzwX0phMjMPH2+krb+mBihkJcM
-	BaMS+mU7U5nQxFs7WEEI8kZn5EJmtxEBJKcR4CiVECNQUKLgHnA/eGbc16vH9wyxrg8jME
-	KEB1jEXkzTIXt/H2uNXrKs4n2hqrKmo=
+	bh=8+ZuF2r2Oud129G1tEYJnRmLJ02jsFWuNiWcn1m32OU=;
+	b=6U3imdl8XUyqvZrDeE56yqwXiCTl8I2GfJssLv99evZq0FYnQqaTNvUfgXaxBwVT4SjgAE
+	BGUNK4myCdpZRsIsZLM30TdDIJW1p0sMu8VdyPB6vNge2N+2XqfGHyFfw59kghzXMQu/K9
+	HOxPreyXJOWXsH9AVNN5y2jVx4iBvMc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OMslnKvm;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=eYvcnt5S;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf28.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1780952783;
-	b=bgzK0coDsYo7Ra3HDq7lASe1yLtO6vnXkFdtZfT98v4n/nkEDEo/+ku+9kvo6Dy97V2OAm
-	ReiA9uebhxXnGvFNurg/yBtQ4WnuPHj1urAL00drWWH6saM37GnoFnXrZgHBJsMM3rYrFn
-	UWv9PIL2KNQ32Gi1tJOVQ31maufpSRQ=
+	b=1N/D5aT86cMY1DwmIt3s6QRQUT4NZTIxz6EnFz+dQdBJ82N1ursKKqW5iSV4+IJiXeUnxq
+	zvERPmWFEc3s4Fr+1s/6u+I4JhL+lFdv47Y7g1XWMO8314O67k8ZR/ZuWN4viEuXTvBk5h
+	Cbb1blxjwr+dMUirh91jdRXp1j7CMxM=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=nIKZ5rJR78Kn2rpf1TUpOelTrfrESbwwBnKGcUB/zAA=; b=OMslnKvmAjDoKlhg6em2dj99WB
-	AJXmAgy+mGNeh2s7JVGXQvRFFCHQFMXXWWYH8sU/FeR/uHsl4L36Q7ZYCIs8g0etBqKBYcC+vx8uC
-	PdwTVUuTCZRIfnKw0HMeTvQFrcYeaXrpiqKE6aepLDP87VqZDY1WLRGdFNTvFNnvDF2sqMRKDYK+J
-	xQMPQzjy539OKdwdHNTRo6U5dH1NI9V9CwRl9QwLhJkff2+uw6tKQ3meIt3ybwSWPRfLnfaVDxgz6
-	um5VWIY3BhkaqpQX3NPuhTVV0EbFLM6k8kvcUGJtrifaxj322jiGDKzLMbCPSkOhVtTAklRh2nE5K
-	lFQWOvVw==;
+	bh=8+ZuF2r2Oud129G1tEYJnRmLJ02jsFWuNiWcn1m32OU=; b=eYvcnt5S6kwXMOOa4EbrcNpxle
+	gFABR7F2zxEDFHd5pl+olcRm2361wFpKa7DvNpB4yF0EzJxk69XuVhapbTSPqrB2yPGsWWLotDIof
+	f8fl/LXQku8tXoSP9AQdf1EmVkiFjRJqrvqIWEbijWc+GApzR4J0VXDf5hhhHLZePvZPNYJGFfX3i
+	LfdfJE1XTPDG8rU/a4HMykfbmbfnEBJIPbKK6EXsVRAwV6Mz+1qCOyPA069Nc8Eex+43PH43YTlow
+	Ly0TdX5enMacJ6GOVKRpLgThZAi9ch//suhsB3XdfCGxuS9/P3e0a4yGegVTVv4griv37n16k70pI
+	Xe6srkNw==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wWhAq-0000000EQBK-2RU9;
+	id 1wWhAq-0000000EQBS-3Ec6;
 	Mon, 08 Jun 2026 21:06:20 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 3/6] ntfs: Use zero_user_segment() in handle_bounds_compressed_page()
-Date: Mon,  8 Jun 2026 22:06:13 +0100
-Message-ID: <20260608210618.3437216-4-willy@infradead.org>
+	linux-mm@kvack.org,
+	Christoph Hellwig <hch@lst.de>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH v2 4/6] ntfs: Remove references to page->__folio_index
+Date: Mon,  8 Jun 2026 22:06:14 +0100
+Message-ID: <20260608210618.3437216-5-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260608210618.3437216-1-willy@infradead.org>
 References: <20260608210618.3437216-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 646AEC000F
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8CB8118000F
+X-Stat-Signature: 9r69oyuahi6f4g16bwdy8fji3o3hsd8i
 X-Rspam-User: 
-X-Stat-Signature: 7kdm9hjd7yniiyu5myhztsr6jzsxifkc
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780952782-461043
-X-HE-Meta: U2FsdGVkX1/GGFqOuJqZpVi+7j3SF9eWf2en3yRxCn08VpC6lczlupWvDc09we7SWE0O0yuZFvxrMmtr0Yhoh3sWllR/M8NKdtnBnsFW1QHvD20QMoKTm7oGSOfYsHb7bdb3sHMAvFPys4e6gyihpRoN4fl15n3RKbff/6Cwvw/UJ5WEY44i69lM+VZLxaDO4ob0oIudVAps49sl6a9grnppb9Ije6S5Z9GQHvYzlE07Tsqt/SCqrCADw5rmp4MicX01tMlf1DdEzrskB68IqDKzOtofZ9AlxL85V+G7zuSBTs8fc9UKC7wUBMnQWgzmV03f6Y0JdKNDxo1zV+SnhdOmZk0kUNMgA4DiV/UBJbhAfs8SXSBIl9jsvZ7D9/4WXdHiGAkZ5q4QXRqK+xEaot9FmQydlqRraLzgD2G6ZIFSne4F6n9/KHLMACGb1nss6FmLSZJ5dHyCFl268XBHlT4zSZNClZ2IyZ+Q+/VNgc7+6iL0nqnipmUZz3Ul3lOQTDF0JZ64ERtp1C9lhV7ToeIcwB0M6MP0tjLZ+CWIBdUHUqx4aEl+mMfOv6r/SBLPjIWe6N7xEDH3AaaPvLkiqGkBP0SISQBlhIqGJZ38aZe9/5VuuanwezdaMXbkp75EmAV6p/GykXRXFAH9LerGMDnlzoGM6QDNGxvYSqDTUIT8obfQtel+0GDOKJkt6PHIiGzJD0jpL43J0oUME2Ke/2UlQSel5HB0yVVtEy1PC0e3d1dBP5LM4d98HCOtMsYbclRK5juzQ9ZBG4zj/yc5dnWN6hD2rvJNl35wD49g66OwZ6c8ZPlRCSIc1dIByDNU3nkXCNzu5p9NZqjpQc/3nJ8NUGiMjnfrwl33M8S/FaA6JgI0wT1IKBNoPMAVoI1SOp8NjFfH3vYy8t7VQo6kOdswte/5n8SjNqk+veOqNi+ia2EzCBf4sSOCNME+hd7/XzmLzGAoBsGIITeE1r3
- 3mYCH8o0
- Mx1M8vwAJ17my5kfW2sflMklTrXJeDb9Q2Wps4FWSP5ogWWbkF/EfoPUKNOhTcEufq9xZMR9XzOTL20bjNHfKzBVKX0PG8aihVU6m0nb33/Lbki8AaEo6ZwuqDmFfxL6NCMkoi0RmIBsSDC+8sdChXh+3exj0qeKDlDHPWh6WzZ40VGYl13Nx2vcy2DE+zRNUueA5HZgkZFJy5wXDXl5M13A71uO0DUMqOvhJVjRM00eT+84ILFo8DEDUONI44nvqH6L41ovHvoDarO7Putd6ad1/GDDHoqHwz9RTQint8a/ndhx4WS9heuSbr8fIvrRAS09t2u0nRG1KofnKufEBsbuZrQ4EETYhCURHlzJ7awY+qJQ=
+X-HE-Tag: 1780952782-968997
+X-HE-Meta: U2FsdGVkX1/KDYxHuDgU3bWRkE1T4LetkaFBeyS3rfD4uBBFJK1JOfUDlXlZJ18P43zumDbC8MJbWrhqO0Q6FcyGaoWqlwZTGJrNQG2V4q1OxGzFip0QTXjB7PLnx4VBEpklVgFNnExIAuZKNrkPUqDZMIQ+7OuBcThQOFuovie7IU9bcG8ax11xjcc29AYvBOsw54Vd9y7E5RQWQ8m/vnJ7YNXu/wkyg5zwYfX2BjUFVnr2xVF8Al+old+9wG8N6eaCWH+CvgTCnAFP/LvJ8TAxb1HirKcmO2EJxpAAospSMxeqOKf2e88f/V9pdyBmXX9VbJGfRMCDHtUf/pYP9CN2MXafzalpBq71p435ubQvCcvjKuQ3KvZqdbWFX7ROc3mjOheuYN+9sZd1o9IGxGZvpueVBqPbMn9FGqwKA/Vs7offjwiYyoR4satHbBlBNPrylCfqRIWjvAbteGZwh7SoF7P/Ebu8sNcqBb2AeqCMla2OFk8KjfDKoksq7OGtmpc+p3LPpDJOG1tyGTSGYXIme4os8mPHT7p+PzbqXEic3AF9YRYUDOnx5RWzHnOpWpinVvhteQB0htrMU3oR0RhdH3jkRURtRoJIi6BCfAHbtM/OAvKxvG3VTsF/aC0jsBYbXDkfGgrC1F43MXJPq3Fh60/HCBakpzN2Bqt7HasrFph1rwQIW1BqRKMB02Cg/IM1VSZrSHi4iX5835IsRDHGwNbsvDS9pOpNZDDwoYUOB07fQNSyh4E9oL4oo+Od14s8YwUPNCkxDHNxtXzLdgm7UuYh3sse2gqgTluDkvjOm+DjKhjXD0REvqDXq0KDXu7RiMijT6Bn1nqlelF6Xdy7PIebp4HiZY1eIHUhegYC3+WISB1n9YdH05jwPKFXe7YovuDIhCB2PBw2LLOmCIqm+d4XSk6M6C3gQkCwRY5KqeKbBODqBzi2d6YhgOgzete1QTrmPf+a+GfAgUV
+ f0felEfu
+ T56ROdwcmnZm+1Ta1c1sgohwYWw6aZBhi+dsi5EOEchoMk2ZFi46qmlsFHLNn0p0RlmSq5bI7bPpaCazUh3h8yUppsy8BQF/Nw5b42HNBjdxs+dUDEypmGkk5YKgQtL2Xp+9EXPHiosgMAM6CZWM6ybpE3HELCeH0A+5Bf8Nhf7onrq54Trr8roiGktjN2A4tZxAA579OcjzgrlXoVNMzDdKG7C0Psjryv+quXBxng07qaCYo/vNpN991rq8WobiiJ2jtZMRcgY1HFXVybAg+D9u+FQSdyNBq4ggQvMMLi5cksJc+9Bp6hylcX3QJnoINdqhQ+xHCbj0DJxXoHIpsXuQ0oxJCL3zrJCvAUtcsk+dwILF9xKvR9pJKBTXjY+6rH3t8e8XbHy8Hh+6eiH0JeVNwldB+mrWJNU9pjOg6NE85smRJYR+QLnEWZRz8W5Vi5Nq1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,60 +92,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This fixes handle_bounds_compressed_page() on highmem memory
-as page_address() does not work on memory which has been kmap_local(),
-only on kmap() memory.
+Pages don't have indexes, folios have indexes.  Correct this in
+ntfs_read_compressed_block() and also remove a use of page->mapping
+while I'm in here.  Also convert the calls to unlock_page() and
+flush_dcache_page().
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 495e90fa3348 (ntfs: update attrib operations)
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Hyunchul Lee <hyc.lee@gmail.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
 ---
- fs/ntfs/compress.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ fs/ntfs/compress.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
-index b279f38636d6..89067fecf5a0 100644
+index 89067fecf5a0..eae0339a8518 100644
 --- a/fs/ntfs/compress.c
 +++ b/fs/ntfs/compress.c
-@@ -108,16 +108,16 @@ static inline void handle_bounds_compressed_page(struct page *page,
- 	loff_t pos = page_offset(page);
- 
- 	if ((pos >= initialized_size) && (initialized_size < i_size)) {
--		u8 *kp = page_address(page);
--		unsigned int kp_ofs;
-+		size_t offset;
- 
- 		ntfs_debug("Zeroing page region outside initialized size.");
--		if (pos >= initialized_size) {
--			clear_page(kp);
--			return;
--		}
--		kp_ofs = initialized_size & ~PAGE_MASK;
--		memset(kp + kp_ofs, 0, PAGE_SIZE - kp_ofs);
-+		if (pos >= initialized_size)
-+			offset = 0;
-+		else
-+			offset = offset_in_page(initialized_size);
-+		zero_user_segment(page, offset, PAGE_SIZE);
-+	} else {
-+		flush_dcache_page(page);
+@@ -455,14 +455,14 @@ int ntfs_read_compressed_block(struct folio *folio)
+ 	struct page *page = &folio->page;
+ 	loff_t i_size;
+ 	s64 initialized_size;
+-	struct address_space *mapping = page->mapping;
++	struct address_space *mapping = folio->mapping;
+ 	struct ntfs_inode *ni = NTFS_I(mapping->host);
+ 	struct ntfs_volume *vol = ni->vol;
+ 	struct super_block *sb = vol->sb;
+ 	struct runlist_element *rl;
+ 	unsigned long flags;
+ 	u8 *cb, *cb_pos, *cb_end;
+-	unsigned long offset, index = page->__folio_index;
++	unsigned long offset, index = folio->index;
+ 	u32 cb_size = ni->itype.compressed.block_size;
+ 	u64 cb_size_mask = cb_size - 1UL;
+ 	s64 vcn;
+@@ -811,14 +811,16 @@ int ntfs_read_compressed_block(struct folio *folio)
+ 	for (cur_page = 0; cur_page < max_page; cur_page++) {
+ 		page = pages[cur_page];
+ 		if (page) {
++			folio = page_folio(page);
++
+ 			ntfs_error(vol->sb,
+ 				"Still have pages left! Terminating them with extreme prejudice.  Inode 0x%llx, page index 0x%lx.",
+-				ni->mft_no, page->__folio_index);
+-			flush_dcache_page(page);
++				ni->mft_no, folio->index);
++			flush_dcache_folio(folio);
+ 			kunmap_local(page_address(page));
+-			unlock_page(page);
++			folio_unlock(folio);
+ 			if (cur_page != xpage)
+-				put_page(page);
++				folio_put(folio);
+ 			pages[cur_page] = NULL;
+ 		}
  	}
- }
- 
-@@ -222,7 +222,6 @@ static int ntfs_decompress(struct page *dest_pages[], int completed_pages[],
- 				 */
- 				handle_bounds_compressed_page(dp, i_size,
- 						initialized_size);
--				flush_dcache_page(dp);
- 				kunmap_local(page_address(dp));
- 				SetPageUptodate(dp);
- 				unlock_page(dp);
-@@ -758,7 +757,6 @@ int ntfs_read_compressed_block(struct folio *folio)
- 				 */
- 				handle_bounds_compressed_page(page, i_size,
- 						initialized_size);
--				flush_dcache_page(page);
- 				kunmap_local(page_address(page));
- 				SetPageUptodate(page);
- 				unlock_page(page);
 -- 
 2.47.3
 
