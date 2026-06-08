@@ -4,158 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DBFCD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 13:48:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77C54CD8CAB
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 13:55:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B57F16B0005; Mon,  8 Jun 2026 09:48:48 -0400 (EDT)
+	id B88956B0005; Mon,  8 Jun 2026 09:55:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B08906B0088; Mon,  8 Jun 2026 09:48:48 -0400 (EDT)
+	id B606F6B0088; Mon,  8 Jun 2026 09:55:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F6F06B008A; Mon,  8 Jun 2026 09:48:48 -0400 (EDT)
+	id A76326B008A; Mon,  8 Jun 2026 09:55:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E4BF6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:48:48 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 567E71C012E
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:48:48 +0000 (UTC)
-X-FDA: 84856875936.13.EC9FFE7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 052BB1C000D
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:48:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EVGYg7cy;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 981C26B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 09:55:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 466501C0009
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:55:04 +0000 (UTC)
+X-FDA: 84856891728.04.4E370DC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8057920002
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:55:02 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S12NdG3A;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780926526;
+	s=arc-20220608; t=1780926902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xoJIhnuvHMP+I5R4ZGbFyAQYvKF+rv0fOA2ZXMSfz9U=;
-	b=1K4fmW9N2iapGx3NcEntRYPmazeAs8FbhFef3H6aUgRZP2KhSzHHP/DfA9iwBKq564tdGZ
-	WZUGX+/pYGi9rhcCmMXEcubVq/YRJJxlIsZeliGXQLJIdklDvqf28/AhLRl/GR99HTpWVB
-	5qiyawSbzkquH4KYRtpiEb0tlIMU9ho=
+	bh=H5m0OrUso51DWZxaLpU6hhwt0mtSHqudSR2A+B8zIGk=;
+	b=4aQ7mI+DR7OENCUd7tJoMLF40xIwyBkKAFlGvRY+vXtprQ2b9FtRp0aUdEOHye3vKH9bS6
+	DycByNIIHaJNUfhsAq1QcWQvBuj2KkNmS6TfQ+DvQq5kSE/yl8ZmKl9cGUiw76zfWNA/rM
+	Lvp2VoK9wDtwMbtyNCadyyZR599lwtI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EVGYg7cy;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S12NdG3A;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780926526;
-	b=bA4BdYEcXXQf9GFXpoj0ZeteF1LsFZeOYZkMa+gypiA262GibzXkXlmALACUsGQT4A7tBe
-	WnrtqshUBWZTe+Mw6M+ro+ykwgIv+q6jb663LfNMR99l+5jyByPJGhzBGmN0LrUkuRzcBu
-	ZO8b1LoaYCglI+hpDPh8pViremA0C94=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780926525;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xoJIhnuvHMP+I5R4ZGbFyAQYvKF+rv0fOA2ZXMSfz9U=;
-	b=EVGYg7cyu/iPAsmSM8+XkooC0xS7zKZ56YWvDvucfvCkkIFbdNpy4V9B/3CoKdJxJ7C4ji
-	YjED0vGeapWrfi7ZOYOYtfE79Ijwf1uZMKlfLWhofB/A9V8bGjrFnXPWaINk7oyWc7oYHZ
-	EddBWv9fx25OEqdU9yVVjNqoqKEIlVQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-ystF6_qmND-lnS-0ySHFjw-1; Mon, 08 Jun 2026 09:48:42 -0400
-X-MC-Unique: ystF6_qmND-lnS-0ySHFjw-1
-X-Mimecast-MFC-AGG-ID: ystF6_qmND-lnS-0ySHFjw_1780926521
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490a786f987so50513485e9.3
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 06:48:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780926521; x=1781531321;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xoJIhnuvHMP+I5R4ZGbFyAQYvKF+rv0fOA2ZXMSfz9U=;
-        b=Kczmbk5LYNdN1HiI7tSAwffb8ifMI37H6fZ+8yyFZqoA1frULp4KbMJo3njahpuezV
-         v4Kv35Yfb2Q0vJjVAyYFuGqLFwmF7w9IfI/EtREcJnmTJNfzo/14+MFk9sndb8+JZvnM
-         ersoBoI74G4xY3QKxL7XOQgS46Ms2XaQnLySk8Kc5PoBJWZeYMsK8YfRfEg/VWBBK/SN
-         lHPbTzzgHexwsBy/UWb92GzYi6wvfQ6XoSsVyAmQAFUJR+XLIhkABloYFjqdTa8MSdkR
-         E587BWfb1H3gdu4FfWj3Hduma6QDagAJ2upRAX+9wjPV40aGjE10aACuERu/R/UQucxN
-         8ulg==
-X-Forwarded-Encrypted: i=1; AFNElJ+ABm1xx+ApQTVAvC0uvIIYmQIcPQMg3NuOx0WOYa58D2VcScapzsV7FyvHrzFpdJY2ZOatvvUs+A==@kvack.org
-X-Gm-Message-State: AOJu0YxFkJ7IZueU5G6yih1/con0Ttl5W8MxEIIGC6X8GYLI1kLZK3g+
-	LHXrh+aqMLb7pdVDf/iBznRvjKuQP5iro1pLxkUJQ9AkV7A/E243bvCpu58LzScVSRKzlWjfkUM
-	NEwi+z2F0CQ7IgeTA3JsKGVKBU4Sq4sLOTcQtqEdfn5VBhUr2c96s
-X-Gm-Gg: Acq92OG4wf58dLkCHCuNQ5GOAuqBhb6b1wDKtT1ghXhJZVTnC0Vqje3KVxhV5qdiRSl
-	Aktt5fA7YQxBHK7UATt4SJYHLv5z5uIQkT81Cd4egdDE47Qlq8itP8/MM34rdwea6U1Yhe1tEyS
-	JS6hgiyp60Y09hX+ExVemospMT5W6ujn1Bizr6iu5d7AsQQtbL9Ps/cehu8WOors+xx+HBwUaez
-	9V86Lahf0IcR53C4HAUfVK/y8umveDYK/K/WpWO/EK31XAqgRSCCJw1vpeEdRQ1doIcHxJ5QNAP
-	srmfKxsGxIWfFGC6rvJ7Y46i1NdjqVYZ5IFZAi4MBkdFEFsdtFMXoDcneei+NgzX1plOcapPppe
-	C/wgGOJPw1gUu+0fO5cAgcJE=
-X-Received: by 2002:a05:600c:c0d3:b0:490:53b0:9e53 with SMTP id 5b1f17b1804b1-490c265c107mr216680255e9.1.1780926521302;
-        Mon, 08 Jun 2026 06:48:41 -0700 (PDT)
-X-Received: by 2002:a05:600c:c0d3:b0:490:53b0:9e53 with SMTP id 5b1f17b1804b1-490c265c107mr216679675e9.1.1780926520756;
-        Mon, 08 Jun 2026 06:48:40 -0700 (PDT)
-Received: from redhat.com ([185.16.164.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3918fcsm451375885e9.3.2026.06.08.06.48.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 06:48:40 -0700 (PDT)
-Date: Mon, 8 Jun 2026 09:48:34 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>
-Subject: Re: [PATCH v10 02/37] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-Message-ID: <20260608094153-mutt-send-email-mst@kernel.org>
-References: <cover.1780906288.git.mst@redhat.com>
- <df06b66fe4ff8e925ee0714955abc2183a727b90.1780906288.git.mst@redhat.com>
- <aiaOZoa2vSCz_0wY@lucifer>
+	t=1780926902;
+	b=KBcQ8DgsY+/XIfd2C/l48FbyjIXz57Q/nHh+IEaUwzBYZatHIno+2tmZRDOsfG27CFTKt/
+	A49ZMrfPDZtJoZXD4iylna+AZsk+pbV1Vmr/QhkwVF/f4BqpabLheg5/fiBV0m5rF7Wbdl
+	bcK3JCdlwBHr/uGYxwLVjZPzfGtCf00=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B8CEC60204;
+	Mon,  8 Jun 2026 13:55:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A739B1F0089A;
+	Mon,  8 Jun 2026 13:54:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780926901;
+	bh=H5m0OrUso51DWZxaLpU6hhwt0mtSHqudSR2A+B8zIGk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=S12NdG3AelksNjnH89veVvFl/2lzV2kHIAxrFX+qj12jzWiq6V2AlQUII7baNzB3q
+	 g+WhiasGnZ/F6SME10UMZx11bw0nc5uyiKiPbBf99foFWIA9z8VN2fR7Ah2eOdl9Ij
+	 qUQTbrda8HJcvBn93PffL43RvuuQfyT6xjstxLaDhdW2pgkD9+kM+UwVSw7N1D7T1M
+	 N5o2JbEOtLPIBFropuUfRYsM64F2mqu6LTqnFN/JWmdg4o3jv9Dr+NdiXe8C6kW9xJ
+	 rk93de4vJjbnUWRs/IIr0pBWg1xRI8Cnld/l+ltah1GsZqtB3hNj9q3LBw+rdjVbtm
+	 68GnzDmYzgf1A==
+Message-ID: <4c21bee6-fa58-4d28-b6e5-aefc9dd67cb5@kernel.org>
+Date: Mon, 8 Jun 2026 15:54:55 +0200
 MIME-Version: 1.0
-In-Reply-To: <aiaOZoa2vSCz_0wY@lucifer>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: WCW0GDDOIDBkSqhhNm0waCGLuKNLWZwwasWH0L-KQPI_1780926521
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 052BB1C000D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iommu/iommufd: Require write access for writable MAP_FILE
+ mappings
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Yiming Qian <yimingqian591@gmail.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, keenanat2000@gmail.com,
+ linux-mm@kvack.org, Christoph Hellwig <hch@lst.de>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>
+References: <20260607085320.73274-1-yimingqian591@gmail.com>
+ <20260607120935.GG1962447@nvidia.com>
+ <38b49fb2-c2c0-4c7f-ac5c-3e79d54728f0@kernel.org>
+ <20260608134614.GA4111154@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260608134614.GA4111154@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8057920002
+X-Stat-Signature: wn7h4uzcnxw5mwur7ufh7niq5w8x3o1z
 X-Rspam-User: 
-X-Stat-Signature: n6jtipsfzjuceo1a8daqys8jf3f3smdy
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780926525-155797
-X-HE-Meta: U2FsdGVkX1/RWchk71r9QQ+EuaFLwXDocOeXdAm4gp0s357lXC042GipinfyXVBu4wcfLuQBJdoNY8cjSg4RaIggicsDKl86yWLNnCh4gRpn0ZFGZoXfW291aoOQD7ZYYpxViIUhVvvFbGXjzatpg7cmXHyaH1Odx7J1Mskpqcx5NEHV1wGVvvT8xhC7xmzfKayI47Ws1lK5XlsCAe6A1P8XcdD9KvaZbpWwfG1qUnUVcvinsdsPtRJopb42LU2ZCuZYVPtNfXSfM2raBgLxbauPHymSXMN9ueEXWtllYfLhpkIhgPsJCH5Cu4W1NuLhRoB52E3GGxho7VHVxBGTLEWq7Z1FIA6VMJC4VvqZ+IrtbFaAZn2tJpJr09LqhEhAq3tM61+8wLhkeQYOBz5CUrq/zLLYDfVsIEI0qrDDjuOc/SvyGHspndVEuKDyXLFI82Zs3tU2/oTMM5UNwySvWEwYnAZJaEK0zhOnqPdvdJECS9jdRbhElX6UclrI5Ozu1Peli1OeWP9kXc5rtLyoqiPDJ/jpcF+iPc0/WfDHabnKkPPfYBSBtXOeXdWEVnizApwmyVdDUjumYDJCufISLjxUC6DASF3O/7CUSb1xdMMu+8gUARR3J62DHqJqEW2NfWcnQYsfnjhl9QIXNC3LNYwvJzOeogokNvX+wI1iXfBinRgdNDnlYAjHUlBgDWQuhwf0IUo4awg30SmtL7tjnTtHRf+DH508tvqbwVpT+iRLt1YrzCRzSTJ/CIcQEbbescffQLIGYa2SUkG1QRWULkeiTaNg9Uf6Y3VcrG9ZVx8VxGadaW7i0PBjwKpmZ8QYKRVagZY6saur1IR8X6XQmyOsLwlYqNsDHcgGMuEd0SmtJ/SdjDKJyPI5kGM27wXfFrheZ1i92gKszZIA6mjTem0VTfrlHME5dj5KrUrz37E/MmemX/IEMuydJGPYJ1o6SE8r2gm/mWYJ/IMEeji
- AoEEo2yh
- MYa61QiiNhiL1Rxbb88NQQOnwYjYzQSZXMsNV1X1z8Go3/iFxrqILw43E78ZJnkFdD76KZlMbEXzRMrLV51L7GooWzPRAtPkkrQZ2n//AXbpDXAXS4Eugy+y8dZxVjfuG1r+y73qxLiGK66j03WWne1Wb+H1XYIsbEiEheWO/7LH4ZHu0Qwbsg1W0e1FLNbaBxTZuz4/zAH1tKbWQv/emZQpvIeTZzXl/I/mv4HifgM2yTI8j8EVT4nM5SRyicAdQY3D9POQUxMbrBfMfV0T1OCID0ER1rAW2JqcStFa3rd0Q343p/LdmvMOX3I2UhnLymzenuYWk6jPBYOdBWYLjOxvBYtHxxlK6jl251AEbejCmfoDANGnN873PR3NG/e53LKJ4zfyt8GngKaNmXazuFOnj0wrN3w/qEA9IEx9zrZJXxdpPJl1Fs7830g7GwiiUIH4wH+Zl2pzlBVTsIws46vchz2R1tFnGnTh7Gnn97q266j12iozb0AoSvQ==
+X-HE-Tag: 1780926902-535848
+X-HE-Meta: U2FsdGVkX18+doNK6PZXY8BDSl2ajYDPWpOOx06u7LCCEbkHN2KcS+IULiUTp5R5OC9/sYh0/PcoU/80eHkKjjKsQXSNTLEA6pKBgki/78Rt4ymr0LmdpbLoRW3Exr74IbR8SZ9Hs9Ap8USYavZMnBov+rzNsMusI40dvpbCNE97NqN9st45tne75i76WpQrN6+TpkQaRVFDhXXXloVhFxWkKO6nVIN3QB9TEovk/m5zTaQ4ticIQUAK21AESpzsg398f0CctnLPhHd+13ZhnnMViKNkfI6qXHIHiBO0ng/Nx2ziSKV78RpR0PU7pOlJ0yWDHvWx75eyA3e6ROdN4eBFVX/Z2uhoT8NkyA2iiJbHuLumRJkVb8VWPJWqJJLmNqXKS133tMaNxYrLkz237uHqj1wigjwunOlAW5PKWQn2HhOBDHFuRnMK0WcQofLupX5oq66bqaMxjEOP49iyP2zEV0aMXVR3ZYqC/NB/8TzGjsq6fQY/ES5tvP0623/ByS1hsdWKpwWVkzuDrF6LEZ1eMMAxiYRYepxXRDiJxmixBlIt3+MXAfbLjXIofMczupfp8BZxCBwzIC5+SsC1T84ognofb3ojcF7psA/ufAtqLZD8+IYAwUoGsXps6DxdxEEJsdAX2GFv3mdnrS7SfOj6D7UEC2eAMtZEu8bzEx0tG9rY396vkHXMWYohPwL2tjNQaITvghbJrec7YvAQqUsOa6B/7ZPpJmK4UqgC1dWsiBFLY6VRiGkb8LGnw/5asnqXMvM8CGw5t/i67RxpiusiIxDFIPaJrt0zCbWnuch6xSERL1Ql58+V2tpV5iSpH0MWQMo68tZ3hbCb6FgufTAHkecTJDRM6rewy7B+S+TEGU4QX8QLaC951+Y+MmcI2cXlHfPuc83ZOFXmnL0oe6anOYs6/tJsEklVkMFF1+ZHEsCwkOQiW0XBgyRX/j1p/shcKaEArbd+fi8vSHl
+ TTHXiaNV
+ EIaYIMNz6TViftYRP0b9VPAEJqeM5Nxut2fshTJgVFEvPHL+7/KpPuMDRCyp6og8CclqohvfGwoGXKEsff2hazpLGtRmv2r24OL4LXldZ4s3FIDucnzLz8cs+7KG49Cs6k5kXlZ8YGZTLy1NLCf7VxWfJdJhYe9xRirp2sVZ8DRJRx1xjVuU4vuRFCf+b4+ZRpCODTKLTbU9goMNLcU32qUPxATmZQ1+p3xmzC1nEO1spWDMbWnwQ5zXgilwKlGLaDwG3dGDdSCvLcuAaopc5qW7Ywm72rUwMnvnlJ/fGxClL6mcfA10Cg5O7vA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,113 +146,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 10:43:21AM +0100, Lorenzo Stoakes wrote:
-> On Mon, Jun 08, 2026 at 04:34:23AM -0400, Michael S. Tsirkin wrote:
-> > TestSetPageHWPoison() is called without zone->lock, so its atomic
-> > update to page->flags can race with non-atomic flag operations
-> > that run under zone->lock in the buddy allocator.
-> >
-> > In particular, __free_pages_prepare() does:
-> >
-> >     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-> >
-> > This non-atomic read-modify-write, while correctly excluding
-> > __PG_HWPOISON from the mask, can still lose a concurrent
-> > TestSetPageHWPoison if the read happens before the poison bit
-> > is set and the write happens after.  Follow-up patches in this
-> > series add similar non-atomic flag operations as well.
-> >
-> > Fix by acquiring zone->lock around TestSetPageHWPoison and
-> > around ClearPageHWPoison in the retry path.  This
-> > serializes with all buddy flag manipulation.  The cost is
-> > negligible: one lock/unlock in an extremely rare path
-> > (hardware memory errors).
-> >
-> > Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
-> > in this file operate on pages already removed from the buddy
-> > allocator or on non-buddy pages (DAX, hugetlb), so they do not
-> > need zone->lock protection.
-> >
-> > Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+On 6/8/26 15:46, Jason Gunthorpe wrote:
+> On Mon, Jun 08, 2026 at 03:38:00PM +0200, David Hildenbrand (Arm) wrote:
+>> On 6/7/26 14:09, Jason Gunthorpe wrote:
+>>>
+>>> This looks like an issue with the API design in memfd_pin_folios(),
+>>> all users would have a similar bug I think.
+>>
+>> Agreed.
+>>
+>> Not sure if it should be part of memfd_pin_folios() itself.
 > 
-> Can we have Fixes: and Cc: stable and also send this separately please?
+> I think it should, drivers should not be open coding this.
 > 
-> These patches seem like unrelated fixups that you've discovered along the way,
-> and don't belong as part of the already rather large series, unless I'm missing
-> something here.
+> If there is such a thing as a read-only memfd then memfd_pin_folios()
+> should accept the usual FOLL_WRITE and deal with it internally.
+
+I'd rather not want to use FOLL flags (FOLLOW PAGE leftovers, to be renamed to
+GUP_ on some lucky day) on this interface.
+
+But sure, we could add a new set of flags (single flag for now).
+
 > 
-> Thanks, Lorenzo
+>>> start/pin/destroy kind of thing to manage this?
+>>>
+>>> It should not be open coded like this.
+>>
+>> The permission check is one thing that's clearly missing.
+>>
+>> Not sure about the mapping_map_writable() handling ... it's weird to rely on
+>> that when we are not actually mmaping.
+> 
+> I don't know anything about sealing, but it shouldn't something check
+> if it is sealed read-only ?
 
-I think you are mising that they are a dependency, not unrelated.
-For example, this issue gets worse with the patchset as there are more
-places that manipulate flags without atomics. No?
+Right. We could do mapping_map_writable() over the duration of the function I
+guess if we care about concurrent races.
+
+Alternative have a new helper that makes sure that mapping->i_mmap_writable is
+not negative (write denied).
+
+> 
+>> Assume we GUP a page and then munmap, mapping_unmap_writable() would be called
+>> while we still have a writable GUP reference. Hm.
+> 
+> I suspect the user doing the sealing has to ensure there are no pins
+> to the memfd before it seals it. If it already let the unsealed memfd
+> out of its control then it probably cannot be reliably sealed read
+> only?
+
+Yes, that's my assumption. writable pins derived pre-sealing stay valid.
 
 
-You are welcome to send this to stable, but I think stable rules
-preclude theoretical bugfixes.
+-- 
+Cheers,
 
-As for Fixes: the issue has been there for decades. I wouldn't know
-what to attribute it for.
-
-
-I guess I could send these separately, too, why not. Not sure
-what this accomplishes, but hey.  But is that an ack? You want
-this fix merged even before the feature?
-
-
-
-> > Assisted-by: Claude:claude-opus-4-6
-> > ---
-> >  mm/memory-failure.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index ee42d4361309..3880486028a1 100644
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> > @@ -2348,6 +2348,8 @@ int memory_failure(unsigned long pfn, int flags)
-> >  	unsigned long page_flags;
-> >  	bool retry = true;
-> >  	int hugetlb = 0;
-> > +	struct zone *zone;
-> > +	unsigned long mf_flags;
-> >
-> >  	if (!sysctl_memory_failure_recovery)
-> >  		panic("Memory failure on page %lx", pfn);
-> > @@ -2390,7 +2392,11 @@ int memory_failure(unsigned long pfn, int flags)
-> >  	if (hugetlb)
-> >  		goto unlock_mutex;
-> >
-> > +	/* Serialize with non-atomic buddy flag operations */
-> > +	zone = page_zone(p);
-> > +	spin_lock_irqsave(&zone->lock, mf_flags);
-> >  	if (TestSetPageHWPoison(p)) {
-> > +		spin_unlock_irqrestore(&zone->lock, mf_flags);
-> >  		res = -EHWPOISON;
-> >  		if (flags & MF_ACTION_REQUIRED)
-> >  			res = kill_accessing_process(current, pfn, flags);
-> > @@ -2399,6 +2405,7 @@ int memory_failure(unsigned long pfn, int flags)
-> >  		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-> >  		goto unlock_mutex;
-> >  	}
-> > +	spin_unlock_irqrestore(&zone->lock, mf_flags);
-> >
-> >  	/*
-> >  	 * We need/can do nothing about count=0 pages.
-> > @@ -2420,7 +2427,10 @@ int memory_failure(unsigned long pfn, int flags)
-> >  			} else {
-> >  				/* We lost the race, try again */
-> >  				if (retry) {
-> > +					/* Serialize with non-atomic buddy flag operations */
-> > +					spin_lock_irqsave(&zone->lock, mf_flags);
-> >  					ClearPageHWPoison(p);
-> > +					spin_unlock_irqrestore(&zone->lock, mf_flags);
-> >  					retry = false;
-> >  					goto try_again;
-> >  				}
-> > --
-> > MST
-> >
-
+David
 
