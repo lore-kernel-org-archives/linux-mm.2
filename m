@@ -4,89 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E124ECD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 22:47:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D48EBCD8CA7
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 23:06:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA6FD6B0005; Mon,  8 Jun 2026 18:47:39 -0400 (EDT)
+	id F34FB6B0005; Mon,  8 Jun 2026 19:06:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C58616B0088; Mon,  8 Jun 2026 18:47:39 -0400 (EDT)
+	id EE6BF6B0088; Mon,  8 Jun 2026 19:06:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6DC96B008A; Mon,  8 Jun 2026 18:47:39 -0400 (EDT)
+	id DD4A16B008A; Mon,  8 Jun 2026 19:06:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A65736B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 18:47:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38BDC1402D3
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:47:39 +0000 (UTC)
-X-FDA: 84858233838.30.6F86001
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7468A20006
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 22:47:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yx6LohOh;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CD5366B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 19:06:46 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 488611A024A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:06:46 +0000 (UTC)
+X-FDA: 84858282012.19.6EE8216
+Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 269D120006
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:06:44 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=johnericson.me header.s=fm3 header.b=LyDNtmsk;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="Q EH0pQ/";
+	dmarc=pass (policy=none) header.from=johnericson.me;
+	spf=pass (imf03.hostedemail.com: domain of mail@johnericson.me designates 202.12.124.140 as permitted sender) smtp.mailfrom=mail@johnericson.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780958857;
+	s=arc-20220608; t=1780960004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xfqYHZdSV2g90vjfkntECdqiOvsjE2JnYKQaDnDRVtw=;
-	b=LkjeV4bU/RYuzHu8RIJSJBHGce08GC9u6JwCOBNvwPHQM3P8KRq2y3028vozzHC2ENSX71
-	bvj+dixkJp1ohglml/HQ42EulqCdhvSTMqQI1A5KHiBt4GBnFrsTOKuuw1LbogEApA5Vwx
-	j3NtzDR6cDIwIh7nv0L9CyBHWbz7M7c=
+	bh=rLquViJ1BJjkvxIEZyfcq9Ou395GapTiUI7VA10/Tak=;
+	b=65fSN7XmYItezboGuICLHrhIXaFMPirICufS726ksC2voZColik4FZxo5JFZTG/EgzTOET
+	fB9FF9POG3BIVbXnwKS/wDtRsojfi9CbHv/+Jh4qMof7P3UVhLB/UBzJtlfl5fkB6VCchu
+	CUv8lZuYT9Cr5iS1xzFhvA8CChEYXE8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yx6LohOh;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=johnericson.me header.s=fm3 header.b=LyDNtmsk;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="Q EH0pQ/";
+	dmarc=pass (policy=none) header.from=johnericson.me;
+	spf=pass (imf03.hostedemail.com: domain of mail@johnericson.me designates 202.12.124.140 as permitted sender) smtp.mailfrom=mail@johnericson.me
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780958857;
-	b=JzkarEFEysCRT8CEshB+Bozq1CaA98jcbTCS/vlMj8l0mZtRXhb6EBIPwt9fqHh0axCZHy
-	GrmOZ61TAbyfKmqQ6T7DaW/Foiws6uFA5D8ewlz+MiPryvSKKJCzATM7U/fcoTJL6ANSCR
-	ZAJ+uL1h25EQumsY13p8JbE/540oFIw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 551DF43B29;
-	Mon,  8 Jun 2026 22:47:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323561F00893;
-	Mon,  8 Jun 2026 22:47:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780958856;
-	bh=xfqYHZdSV2g90vjfkntECdqiOvsjE2JnYKQaDnDRVtw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=yx6LohOhCyzEQ9653HoE7Z+miQUqXDnJbsgKOqJCXzNIFYt8Rk57lhYj1v38uLn9K
-	 +pMfiJcfnbg+LH8uWJC2LwPnfksKDZGFhcidi6wXi4ZBkqigdWwcjV98EHeklXI6Q6
-	 +p/0WSu81awGKaS0GOme2nhoO9VlyuekGLJ6R3L8=
-Date: Mon, 8 Jun 2026 15:47:34 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Gladyshev Ilya" <ilya.gladyshev@linux.dev>
-Cc: ivgorbunov@me.com, Liam.Howlett@oracle.com, apopple@nvidia.com,
- artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com, david@kernel.org,
- foxido@foxido.dev, harry.yoo@oracle.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
- muchun.song@linux.dev, rppt@kernel.org, surenb@google.com,
- torvalds@linuxfoundation.org, vbabka@suse.cz, willy@infradead.org,
- yuzhao@google.com, ziy@nvidia.com, pfalcato@suse.de, kirill@shutemov.name
-Subject: Re: [PATCH v4 0/2] mm: improve folio refcount scalability
-Message-Id: <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
-In-Reply-To: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
-References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	t=1780960004;
+	b=NcKHUlgOovVcH9h6LZBT/7MmzozxhM3zrgdpfch3njvxt5AXBkHQq7S6cuz8rf42ADfCFE
+	0uytukOUdle20iIkSyWD7VzfEDe8KM8IeGF2EvceKbDvCQAu3np7jGgpH9iYWrSonsNJht
+	wwMpMPcRmWvPHiHQX1M4wIRslP5PCzo=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id 650A713002F9;
+	Mon,  8 Jun 2026 19:06:42 -0400 (EDT)
+Received: from phl-imap-16 ([10.202.2.88])
+  by phl-compute-05.internal (MEProxy); Mon, 08 Jun 2026 19:06:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=johnericson.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1780960002; x=1780967202; bh=rLquViJ1BJjkvxIEZyfcq9Ou395GapTi
+	UI7VA10/Tak=; b=LyDNtmskr02dMGaG40+nQ6JSSiYbncUNfAZ7FVM68h5E+rU5
+	6gj9GkhfxBr/dUCljddn+TvPjP06W8UWSqL/KrIdHevpe7OoUzstv+NAHiAQuSuH
+	Rmlcxn1MWRh1rKHsNSj513XDVYpIFRh0Re+j8Gd31tKv3oe65scLtyudQ2MTw/Xn
+	O+Goi/OZ5BqBSc6p1BOo9NmuD5l6gC5S0EuU6OteqAg4Yus84EkiZGb4I2QadPGp
+	HVV8mjk3LqfVuDqYHjsjevGbqwE5S+n3n7XjtMHjqk7D78F0NyjwUZcNLkt5rOiN
+	U9dygeIwvXxqYWjhBmxwbCfT4uasXv8j6H57/g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780960002; x=
+	1780967202; bh=rLquViJ1BJjkvxIEZyfcq9Ou395GapTiUI7VA10/Tak=; b=Q
+	EH0pQ/1p0KA0IuCeKMJwAeQYFCldYIkufFy4tG8TLmfBLVkT3958nv48qQdWycfL
+	/onv8UqieEOg5xTlOiEIOi5L7EQLWx3WRki8i2ccUtoeV77R3M3JCKNZjwZhImL9
+	XgnpgzkFNAMzTZBW7TF83maUOgoEUaJ5PfM7S9DDnRDnY9AX+Va12IHF+zjr5sji
+	RqTJJCq2DRe/4IwNHi9grz8mCREYTdzmnLGvQUbJ417PziyMR8D2bOlhdu0/FuZ1
+	s/0ZTeOcCMezLPbpO7cNbWdIIp9b2l6fXr5ln0ESf0P9A5637Ry8zf/nxBx/r6XD
+	chYlzyVVM62jg6hT/BsGA==
+X-ME-Sender: <xms:AEsnavbvsfSPeyfeqJgyRkUJsavFNsBIC4G0QI55KxyH6dT2nQpoUA>
+    <xme:AEsnapMDsXP61PoopAKWHm-uzmdEh1-tS-k9k5eIr5QjH2gpD4TeuTUFYs1GJJml3
+    XEDVPOddJcHPZrw6w-3JIYx90sj0nIevtvf0eHjnZRa4lumnDvpYYdN>
+X-ME-Proxy-Cause: dmFkZTG3M8rrZKU4tEtLU06spritGrGuTfKJVQXIx2FU5uZZPOaKLPmrDThQIuvwoWk4jo
+    cvonQ2H7LlVykVmZdrTtJG0h1QiQ9kYzy3i8jZV8s9GXNKnXPK/DbS5uTXbqOaPvaJbbUp
+    1T/0A5PxUyRHO8mDYHABJQ9Fwc/i5szi3FrdkuHdSIRHMgqxhk9tk3CC1Kx/AvSjRjdLCY
+    37nDeR38bJYMU6pS5aSnx43vwDOXd/v3s5NJP42LGAH1YFuRhFyXvo6P+C2bSV6/m5FQri
+    oiTF5K4o3uO774TQ/2z3MQAjkpoeqqg2skr7CyEFnPwXcrsquyVX9U2gD9s19OYtJ69Opf
+    5bwDYi1R86DaJYRP+VD3bcbUaRU5+AMeNyR6icipOA/1mw+nKkxHviCeEfOJoBMG+29EwR
+    QM6EJ+0IkMJEBfVrKocHcA2DcxDrmMAN+2DPrWm3fgcPWw3tayEZi3u2KbWII1C44X4D67
+    BbSXAq1AAKHTXBZx4SvNGsg5hP0N3I+yzSnyTPYb39Dxsz1c4bidls/W2YgGZr9yNaMCRp
+    OogjDoVNeXBTn1AV3wehnkVDx0fjxkT7gLpGepKUMOdJoSG1G+4sfH4eEV2keVBqtuZq4S
+    HUbSHW6yA8Qgl2bmCdbSn1pkq/0g21wvpo7Lun6zfD570fb3FbxQLT/dTi9g
+X-ME-Proxy: <xmx:AEsnalw2GkBVKFH4dsOqHwhO7VtRJcwqDr8mYqhH8oYxdlMGQn_YvQ>
+    <xmx:AEsnapMU-or6IQ93qWEL17HeQbxw_yx3UTIWbn5bH80TMmvtRSADsg>
+    <xmx:AEsnan0UOJWU84HjrdOEVb3nNdNh3byuSVYmcgg19InzZW_z-x6OIg>
+    <xmx:AEsnahEYYaYlWhyiRNsDk2-V_UweIdAp2FczeeI1qinIwZMlgoLPhQ>
+    <xmx:AksnappV2XjMPgA6aR4BMh__jA1M9d-2rARIx37CuQ1d9WTX-C8NTsHm>
+Feedback-ID: ieb4144f1:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id CF5942CC0083; Mon,  8 Jun 2026 19:06:40 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+MIME-Version: 1.0
+X-ThreadId: AtGJywdvvpER
+Date: Mon, 08 Jun 2026 19:06:20 -0400
+From: "John Ericson" <mail@johnericson.me>
+To: "Li Chen" <me@linux.beauty>, "Christian Brauner" <brauner@kernel.org>
+Cc: "Kees Cook" <kees@kernel.org>, "Al Viro" <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ linux-api <linux-api@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-doc <linux-doc@vger.kernel.org>,
+ linux-kselftest <linux-kselftest@vger.kernel.org>, x86 <x86@kernel.org>,
+ "Arnd Bergmann" <arnd@arndb.de>, "Andy Lutomirski" <luto@kernel.org>,
+ "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Jan Kara" <jack@suse.cz>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>
+Message-Id: <ce71d6df-6851-4e4b-9603-1d55d8d522b8@app.fastmail.com>
+In-Reply-To: <19e8113d290.893abab26142069.5024234139508454104@linux.beauty>
+References: <20260528095235.2491226-1-me@linux.beauty>
+ <20260528-madig-fachrichtung-fehlinformation-61117ba640da@brauner>
+ <19e8113d290.893abab26142069.5024234139508454104@linux.beauty>
+Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated executable
+ startup
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 269D120006
 X-Rspam-User: 
-X-Stat-Signature: 7ok46wgmrfhkgsxei78utf9zytwi1o5h
-X-Rspamd-Queue-Id: 7468A20006
-X-HE-Tag: 1780958857-337811
-X-HE-Meta: U2FsdGVkX19HraLP0Gzkejz1Ftb6E9iaFvceZm1iCk99M7EmRy1PVDpvqbHNpFxOQxoNR6o6lB2aKWlhMYclj29PKIR9hZW4il8NcD/q0KmkXVaG6OOdpB+IXQWKtiiW7hMIA0M7Cg/Tdk2/fRIy6Rq7Co7g6p6veN/4GSbevBXY4vdsUtDO/iVTMDSmj7Fus1cz3f1zgx+ZTEdgcNtWWI2ejBIRZa658ypXXYmBymbHpZwv594VUpb1q80LTBk1smDJ2FxLP6kIRgZ+bqVAjRIzA44/espUh1g/fLuZEpX6nsji/RDskI6t/HQrQL0bVIcfhU1BwM+g/cEmZTd6SLS0+0Ij/zjOXQrakVhc1Fr53NGJmMma/H/v3u0Le6XlCKRX9T0A8xreSmShhr/meX0Wx2cnu1IBzyRwTXDk0w3e7GCCc3iYsjSykboOs2R+yJ6s8ccAdquA+BWAfRF5OqA8TEyj3cCW80JiJtD3svGxgt3hK3zS4KQFvw9WQpICH6rm5wm+Gcn0FedpMawiix8J9jQRNJr7VoqY7RDi0vBF59F313f9tQbML1ep2ZPA4hJHPeSVQymGLakkIfEC8xsB0URJDMKistZYXpv9uIqGl6e7gnaqHajXPaAxOhUHrs8DswLTCzrG98CDBufdBjUOUhLrdbUlxYfzZ1U3p6DFPk7fQd74aACIy09eu8dU+ZBrieJSHXyKMb/m4ynsf4pbLkC7wDRTJ1wIdP+BAzsuom7QHYriEuv1QSLnWrq1yZw7ueo1KuNzExk8gcPPYPo0mvP2AYlwJU0fGRtL+yFOoe6/sUPSbUYOArUmurzsrnmo31HK4c2VLtM9RoyDU9u7MGpeqUkNbkzWAnNmz/wrYGbt8NHKJoxiW3UIPBlUFfHeMqmOns4YPI8MpcTbbQwnS9eKu3I8V+bsPvU0BKliEPVy3WRBSSoCu9ZoYgvnL8doZaizfD47D8LvOjQ
- rKrDIivP
- vJDIQ8KlmiqzhFTpFtKgqrLJK7PYG5fs/V19ciY8IOVicYrb+RNubkcKmDw6aXuaPmiFMssnNViuEc6kVTXIKdBR2FrNVcb+9mRDt5vPCDoVYwjIrKBz31eb10kA+Lnnhxm0fjqGV04HSfc8+X960H1F1szcr+3ho473uY5DnAzZYiLcggXWPk6EVgVmprn0lFLmw06VCOizRnrLxs4zY8QQwuYo150qy+v0i2lfpGwm64lVkfIBSgkDwpZ4YdCuV2DrU0Ax5BSHUZCOGN7ClMFnjlhQP+oyLbPqLHAdWS+DseMFza7tbW3jgfw==
+X-Stat-Signature: cgtasuuecdy7t5abcrjf6695dn6rkrqt
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780960004-590576
+X-HE-Meta: U2FsdGVkX1+7KKLRBV8UgsLQYUVV3B+NLeTYYQhZ60pUStPr6qwrb8tCfAeujF7EqR2ZPQbIZ+q1anhX7XmeluyjXy++1WlM4j46nfnSLm2RnlGCurmKElvfO0PJwuVESlwMg37q1+436IVWfaJrQg/gyEb8vcal9H3YIKEfrPKz4vbUlPQeiUpcFFbGSE1Zd/2pjzDmbGLf5efhy3ZK7iiZ5m0bgaUMLB7zlqANt3WCBvJ1SK6fvXvnP1hfrR78b8PImd09C3/toyUMzQK5LJsJJhAxaapfaw0oCrsHQlWSuky3oSChgBuuwvdwxUT46LMlHqX1enZTnRvPyQPVuDjnDgmKa5fOQO7j1TCYkRt9fve68tTiFjNBGcm7u/sJ4DY2WND/Ltl1+aBXVwJI31vYUgw5GRR4S/cE0JzpJg4++xiFSK4wuDZIRSUGIWl9+yEVNf24sfxi9HCfgN1Jb4pwBHxvXOqPin4YRAaX4XsxiB0iGsshiPjOmgbIzyU5guayDMOWzQKiMMDyR2tgr7R+Lar6ygUguY7tOxKmiVV8Bsmafi5mqyjsxOeTQjfz0DNfLQc/QVgITBa4YCxTpXk//gNGLY7sGMAkqEgBOOv4xIVIk4xhhu88i33InY3xkrFTG0okOCjWOm29M0do/3dWOSOsg/8c52FfgbeLo/qWnHshsR9u+mm1PVBYugBAhgLQnDnNAngnl60leFmU3qUr185Llh3gDUZ/M3oEDJMnVeu5vvFsyIZAYs2EV49rdpDVkO9Fh7DRAAncksXcwOWiEzaTUfsD8aa0rjc+Gl+UDaUlR5N43o3eslVE3MUz68jHISGteY49Dj2wOha/uIKL3qYdEP5Jc0e18ba5q6/lqSmz9e2yvlZw+IsPLGo9s5MtedVhciIXn158FbtH4SossL57+NMFi9lZ2Iat+bkJciNh68uMNmuKJRtKT0DP7bZbTI3d3jWKSBQQzxN
+ mXsQ54OR
+ PJbfDX3CRRiFUzCoRUGNro2RX+k7hNER9cCKbMXP8OYoau7oKRRnmyPPy2up1umxa+MmBGiNZWzspa4uZ0WdsUqmSNrO65exjgzF6zVqQtcAzD+8NU/TmoxgUPPDIQkIwseM/0Fn2Cwfz58HtknIp1u0W4KbogebvQrsGX9SLFpFfiRHC+PtOENrKD3PowHzx6jwFizqJvVkXk98pwpW9z87DAaxuegrlcIioAzpV73K+RR5r1XMJxw5hFbLzjOLX68mmHFQfQTS+x4l+32LE4syW5nb/GexF8g5bnq/3fvtSy1S0U/drLpv7mwJQYTDYYImI+tOb8dh054gjnZGhassUm9VF0pwyESvafgvq0A18XMbig6ED7qWwYIrYdGIVFGbvZX90Xwe6SLoD6miM5aLA8jLnoNcX0XkqRgP8Oz78p3/yq1Qi6iDZVD4QgcLidQK5n0j/m3B8V4lIFq4pC0LjNs9zYmhG6YEoDf9PsXzhXIOd3qeqCzGz4yonJg+aVF03
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,21 +143,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 08 Jun 2026 21:53:01 +0000 "Gladyshev Ilya" <ilya.gladyshev@linux.dev> wrote:
+Hi all,
 
-> This patch optimizes small file read performance and overall folio refcount
-> scalability by refactoring page_ref_add_unless [core of folio_try_get].
-> This is alternative approach to previous attempts to fix small read
-> performance by avoiding refcount bumps [1][2].
+I am happy to see this thread appear. I emailed Christian and others ~5 years
+ago about this in this thread[1]; it would be great to see it finally happen!
 
-Thanks.  Nice numbers.
+I very much agree that the new process spawning should be pidfd based. I also
+want to emphasize that the crux of the matter is that code needed to set up the
+initial unscheduled process --- which I do think should be "real state" and
+more than a mere template --- is currently chopped up between clone and exec.
+So the real meat of the implementation would be factoring out a bunch of stuff
+so it can be reused in both the legacy clone+exec and modern code paths.
 
-AI review had some things to say:
-	https://sashiko.dev/#/patchset/df26082871b4c65b2bd38d409026237c08572836@linux.dev
+I'll say a bit more about this "real state" vs "mere template" distinction,
+which is that the latter is effectively some sort of ad-hoc operation batching
+language, and always runs the risk of falling behind what the kernel actually
+supports. The "real state" approach, where we have honest-to-goodness process
+state, just in some partially initialized fashion and thus it's not yet
+scheduled, always supports everything the kernel supports in principle.
 
-I'm not sure we want all those new VM_BUG_ON_PAGE() calls in the long
-term.  They look like development-time assistance.  Perhaps you could
-make those a standalone patch at tail-of-series so we can keep it in
-linux-next for a couple of months then throw it away before any
-upstreaming?
+Yes, alternative syscalls that specify which "embryonic" process (as opposed to
+always the current active process) need to be created, but that is less bad
+than trying to stuff things into flags etc. for a single existing system call,
+and also one can imagine a world (as described in
+https://catern.com/rsys21.pdf) where the exact "which process?" parameter
+starts getting added to new process modifying machinery by *default*, with a
+sentinel value analogous to `AT_FDCWD` used to mean "the current process" for
+the legacy used-between-fork-and-exec usecase.
+
+---
+
+Anyways, years ago, after taking a glance at the relevant code in Linux and
+FreeBSD, I figured that it would be easier for me personally to first implement
+this functionality in FreeBSD, and then, once I had a feel for some of the
+refactoring, take a stab at it in Linux. This is because Linux's feature set,
+especially things like `binfmt_misc`, makes its clone and exec quite a bit more
+complex, and thus the (IMO) necessary heavy refactoring quite a bit more
+extensive too.
+
+I never got around to it in the 5 years, but these days, with LLMs, doing an
+"exploratory refactor" (to get a sketch of a patch that is fodder for discussion
+not yet fit for actual submission) is much easier. So inspired by this thread, I
+took a few hours to do the exploratory FreeBSD refactor in [2]. The man page for
+the new syscalls, [3], might be a good place to start reading. (This, being from
+a FreeBSD patch, describes the change in terms of "proc fds", but the switch to
+Linux's "pidfds" should be self-explanatory. The former after all inspired the
+latter.)
+
+Hope discussion of such a patch isn't too off topic here, but there is an
+interesting thing to note that would also apply to a Linux implementation. It
+took *more* factored out helper functions than I thought. The current count is
+over 15(!) --- there didn't seem to be a way to build both the old and new way
+of doing things with fewer, coarser building blocks. Now, granted, maybe
+someone more familiar with either kernel than me could do a better job, but I
+think it will still be a number of functions. This indicates just how much
+untangling there is to do. And the number will surely be much higher for Linux.
+
+[1]: https://lore.kernel.org/all/f8457e20-c3cc-6e56-96a4-3090d7da0cb6@JohnEricson.me/
+
+[2]: https://github.com/obsidiansystems/freebsd-src/commit/better-proc-spawn
+     239dcdefe6ad244e58d998155b527375e5293ff7 for posterity
+
+[3]: https://raw.githubusercontent.com/obsidiansystems/freebsd-src/refs/heads/better-proc-spawn/lib/libsys/proc_new.2
+
+
+On Sun, May 31, 2026, at 10:47 PM, Li Chen wrote:
+> Hi Christian,
+>
+> Thanks a lot for your great review!
+>
+> ---- On Thu, 28 May 2026 19:02:53 +0800  Christian Brauner <brauner@kernel.org> wrote ---
+> > On Thu, May 28, 2026 at 05:52:21PM +0800, Li Chen wrote:
+> > > Hi,
+> > >
+> > > This is an early RFC for an idea that is probably still rough in both the
+> > > UAPI and implementation details. Sorry for the rough edges; I am sending
+> > > it now to check whether this direction is worth pursuing and to get
+> > > feedback on the kernel/userspace boundary.
+> >
+> > The idea of having a builder api for exec isn't all that crazy. But it
+> > should simply be built on top of pidfds and thus pidfs itself instead.
+> > It has all the basic infrastructure in place already.
+>
+> Yes, that makes a lot more sense. I was staring too hard at the "hot
+> executable" part and made the cache/template the API, which was probably
+> the wrong thing to expose. Sorry about that.
+>
+> > Any implementation
+> > should also allow userspace to implement posix_spawn() on top of it.
+>
+> That's so cool, and this is a really useful point. I had not thought about this as
+> something that could sit under posix_spawn(), but that makes the target
+> much clearer. It should be a generic exec/spawn builder first, and the
+> agent use case should just be one user of it.
+>
+> > fd = pidfd_open(0, PIDFD_EMPTY /* or better name */)
+> >
+> > pidfd_config(fd, ...) // modeled similar to fsconfig()
+>
+> Reusing pidfd_open() with an empty target is nice because it keeps the API close
+> to pidfds, but I wonder if a separate entry point such as
+> pidfd_spawn_open() or pidfd_create() would make the "new process
+> builder" case a bit more explicit? Either way, the configuration side
+> being fsconfig-like makes sense to me.
+
+Yeah check out my syscalls [3] on that front. It's important to design the
+workflow / state machine in a good way. Performance/efficiency, security (share
+less state/privileges by default!), and extensibility (where will newer
+concepts, like a new type of namespace, fit in?) are all competing concerns,
+but I think they mostly pull in the same direction. (Only no ambient authority,
+back compat, and extensibility exist in some tension.)
+
+> Thanks again for pointing me in this direction. It helps a lot.
+>
+> Regards,
+> Li
+
+Glad you are sold on pidfds, and more broadly, best of luck! You'll be a hero
+to everyone else that has wanted this over the years :)
+
+John
 
