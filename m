@@ -4,183 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F93ACD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 20:40:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB953CD8CA4
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 20:40:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CF546B0005; Mon,  8 Jun 2026 16:40:29 -0400 (EDT)
+	id 4BFF06B008C; Mon,  8 Jun 2026 16:40:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 580A16B0088; Mon,  8 Jun 2026 16:40:29 -0400 (EDT)
+	id 4960F6B0092; Mon,  8 Jun 2026 16:40:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 447EC6B0092; Mon,  8 Jun 2026 16:40:29 -0400 (EDT)
+	id 385606B0093; Mon,  8 Jun 2026 16:40:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3268C6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:40:29 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 259146B008C
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:40:47 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC2158D08A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:40:28 +0000 (UTC)
-X-FDA: 84857913336.09.2DCADC3
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010017.outbound.protection.outlook.com [52.101.201.17])
-	by imf10.hostedemail.com (Postfix) with ESMTP id EB109C0006
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:40:25 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KC+MFJF+;
-	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C6EE3163924
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:40:46 +0000 (UTC)
+X-FDA: 84857914092.09.895E9CA
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012023.outbound.protection.outlook.com [40.107.209.23])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AFCF040007
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:40:43 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=dIKGpIVN;
+	spf=pass (imf17.hostedemail.com: domain of shivankg@amd.com designates 40.107.209.23 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780951226;
+	s=arc-20220608; t=1780951244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qYDHR5HN6OuBZvf6G6BPWv0yzyiyh0hXG1CQEd1+v6k=;
-	b=ysUlVvFPm0a48b13USBvTt55hH2sQ9ambxg/WzkomuzVSXczIJCqtvvKpCOwDDmX6xoZN/
-	54hsfcXtuoYlhxhrtcfm6McRkd+BCGl+UTlx+hqtr6lvRKOlLkOPaREIR9QTSI2EX0UQMO
-	pdydyivanQ5B6xOdsBqjLn7yOP+TqhE=
+	bh=bsV9gm3txVLjt0lv/Gb8zkhRBqZiTuSWK53QAI+Z1Bc=;
+	b=UVSoIMdJGJUaX7sOg1L4/ixJsbVpqiaSNLJKUUmvlN2m2Fr8Q53K5wVNSY7LPEnq8JiYyt
+	95Jj0MBihjYaAfkHyco/h8ir1IrnNsNafdbXuOImW76jRAfTfjeyvNxYqswwn49RP1AqYt
+	8Yq8q0eqANsz0JHFQ2k305L72nMAbp4=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780951226;
-	b=OnFTAlCHCrMUD11XwzO7ng4oHkZTIehkG7R/wdGJK7deZgO8bD4FGNTd5Ec80yIGQutjlf
-	RezRV0f5idb3z4OcNojsK5OoyCHwiiw+Sj7Fa6KyfRU3vY8bXSQE2uXQ/ifxKjbrgMLM+c
-	5BC+Op8rb29LE8V8f6c2e7MY4l66n1A=
+	t=1780951244;
+	b=x288MiQskdTrG/kd5EI8GRAIbJ4qAl24Qc3TooZIGl7o7PyHf6DOknBKlmKEN+60Upu0CU
+	pufdLFXXUItcIFuptuPdulYaafVKtE0NYZqRRqqvViUr2u8zvm3rM6JHMJY+ONgjBv99n1
+	y/dULfTrLMv5bX37SBQ/u7SMBdX8YSo=
 ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KC+MFJF+;
-	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=dIKGpIVN;
+	spf=pass (imf17.hostedemail.com: domain of shivankg@amd.com designates 40.107.209.23 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U9C3FGFldftH+0myY7Um6EfeJD2kRvLiqRb4pVjTT4cEPCkW0TR9ZClH9HiFjBFTQwus+WqmPk9lmL0ELElQxwigSgaHn5eWq7D9d5cnh+W+2dXhO3Pua/kP8ZXH6eR7na3OzU3g2sT2PUolIrMEpuUrk8gU0gq+ac5/JEQei8ss1FssrFCNb4VdLvZzdIcrYDNdVdVkHA1e9fc3y33Kjh/4Z0OvaCSK3tT97mJIyFUvkqqA4a4fdX6CMaWsW8dml2yKMhQR0yN6uwqxH8w5EqkRS5kkMNsY2ED5vpgu5fVp8UHzw/aFfLNdKSPwrlSP6xhWR2xqyzcOWIkPr7FI1A==
+ b=nWId6TYUkfJ6/t3it0YrPfMYOglGY/HZukMnNA/LpCXlerd12tB+FEyd3Dor22q4Trh9vHdqMlouYZRXo4GjSHvAksjQV50uHs9VGicHSjbs7n4rOidFZDXizP+oSQjsDSAqZVmLHBUoYnngJEycqSXRlvdw5kenXQ2SNIIV6RTpbYCUcbbyar7IwS3ARaML1+MbG0e+3J6OKz74olWDlIxfa8g/m6AOokCmmFZPYsAqno3fUo43wO/Uh3LKF+Vd53WGn5xbSai/S1ZbeU0CVuOKM5zj1NpKPnzBebQklpVzWjuz+TKjGc6dYK5UOLyajh8fpIZStjQEBQh2txPzCw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qYDHR5HN6OuBZvf6G6BPWv0yzyiyh0hXG1CQEd1+v6k=;
- b=cr4zOQyUHALETTzNjzFbxVLvR++qrQMi+V09BzSn/YGgZA9izg0mwmRSxHKLOQE+SG5iE7tcBNdH23A3Ic0gVHGEmvM3H+A9ywVyjvgxuJ5UzzA5Pr8Qs4eQu14L8QzYwH48pypjn+CrWAKgioCUmQkUDHYLNLjci9SOT8mS/KmG6bOnrD4ZyP2sxBBxUI4bYBeNRvlp1MZMJk+Y4MPDdwQcxykAI42r3ANeTa0mhlzAGqMKeFfYpuikJIiJIkFpQOgbOQkpzWWO849PXsg7xhj4prbmBVV9ofmQJfZqONj0G6Rmhpp5qmvwrEaRHjx+xaQw0e7ZecKcuTRXLNfSrA==
+ bh=bsV9gm3txVLjt0lv/Gb8zkhRBqZiTuSWK53QAI+Z1Bc=;
+ b=LZuYnK1eNBc1r/j6ZymEMDKtbU9teGNVBN45TV1gJ4xhPHE49fQb8WcwaYakTWPC3aqPhpT9w290bg4tLSjjaaUqc4LNMyzqNim0zaSFz7E7J/+396YiDJLhKRk2SSB/nx71F9SqcQL6sG4+yEQHEOko5HgIvMgWalTR4zs1rFjW5Ap9z3cAlOYvFeCR/gkJm1t/KCXu9paAguOBirkDrtyyPm1gx0HJ8Zoo8/rN+4ctDRXG2XdOx3hm/eHsmxN9n7GKBB+G95JF/tIIUiHek+FBISXra+HnIVcHYhenhy+yL/kunPP1qb+2rnThSWbI/QPPfB3oABj2VZYJ9RhLjw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qYDHR5HN6OuBZvf6G6BPWv0yzyiyh0hXG1CQEd1+v6k=;
- b=KC+MFJF+/agUrQNFG/ugYqVOnsjG7Imjc/uxXClSGfRG1KSgCPnAbDuo2DPsFbhKZUhHB2mRuQQOEfsBQA9qyuW24Bs+yD+QHZo9ZtMr6oECEw9pf4xY2ZJsPMSnuWX4Uz3aA6OEH8S//GqIlEoXHK6BQ5LAAL57pehozZwSFTjXVBMDSH1JeNbouLsyDBPhCkyQvkSoW4VQzdwDmnLfg6h30VGQu80bcZ+s5ZufXJyJoUpGJe13oZJWxGYJ3BgT3E0HKz0Mrzpi3HVWdr36L4Rtn2lx2UrAeo+JZmcoAWm77zl4YqKThFK1Sn665LG8JOE84HfBsA/xWFNx+RKIGQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- PH8PR12MB7325.namprd12.prod.outlook.com (2603:10b6:510:217::19) with
+ bh=bsV9gm3txVLjt0lv/Gb8zkhRBqZiTuSWK53QAI+Z1Bc=;
+ b=dIKGpIVNdq4tzHMli3y9r77H/JK4W94Mqigu3w64GcFiQyMOoewMedk/kPTNrqUhRFuAWvRl4JaL4VWo7sJgb7nBXjjfKRPRdZl48rCu4RCNmgoS1dk1UAkYnzi5oMJD6+pM7uA0YKpAfdnfiQMl7ZPY+gHEAIbAZnqjFZzIgIQ=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by MW4PR12MB7239.namprd12.prod.outlook.com (2603:10b6:303:228::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Mon, 8 Jun 2026
- 20:40:20 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
- 20:40:20 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Gregory Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Hugh Dickins <hughd@google.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- virtualization@lists.linux.dev, linux-mm@kvack.org,
- Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v10 07/37] mm: thread user_addr through page allocator for
- cache-friendly zeroing
-Date: Mon, 08 Jun 2026 16:40:15 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <BD0C8760-BC10-4BF0-9EE3-9B0DAF0D977A@nvidia.com>
-In-Reply-To: <20260608163257-mutt-send-email-mst@kernel.org>
-References: <cover.1780906288.git.mst@redhat.com>
- <50d410b47fe3f45327783e05bd306d5eaab75e65.1780906288.git.mst@redhat.com>
- <aiaUDTeHDA45ZXFS@lucifer> <aiagMc9Ng_AE_adh@lucifer>
- <aia93IzhTgi1vGi6@casper.infradead.org>
- <aicfERTP3H6AndOs@gourry-fedora-PF4VCD3F>
- <D1CF67EF-2CF1-45F8-9265-70A528C1CB01@nvidia.com>
- <20260608163257-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain
-X-ClientProxiedBy: MN2PR22CA0008.namprd22.prod.outlook.com
- (2603:10b6:208:238::13) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Mon, 8 Jun 2026
+ 20:40:36 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%4]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
+ 20:40:35 +0000
+Message-ID: <e0b16bc6-45ad-4383-a4c3-f0265dfae1b4@amd.com>
+Date: Tue, 9 Jun 2026 02:10:21 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/7] mm/migrate: add batch-copy path in
+ migrate_pages_batch
+To: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, kinseyho@google.com, weixugc@google.com,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ willy@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, dave@stgolabs.net, Jonathan.Cameron@huawei.com,
+ rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org,
+ rientjes@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+ dave.hansen@intel.com, hannes@cmpxchg.org, jhubbard@nvidia.com,
+ peterx@redhat.com, riel@surriel.com, shakeel.butt@linux.dev,
+ stalexan@redhat.com, tj@kernel.org, nifan.cxl@gmail.com, jic23@kernel.org,
+ aneesh.kumar@kernel.org, nathan.lynch@amd.com, Frank.li@nxp.com,
+ djbw@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260428155043.39251-2-shivankg@amd.com>
+ <20260428155043.39251-10-shivankg@amd.com>
+ <b7956894-86b9-472f-b2e9-bb50c0316c39@kernel.org>
+ <c2bfdf39-8caa-43bd-b1ad-2285b4cc767a@amd.com>
+ <27f6f5d6-e81b-4e0a-af39-b175187299e2@kernel.org>
+ <8EAC3D9C-6956-44DF-861F-A4864F08273D@nvidia.com>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <8EAC3D9C-6956-44DF-861F-A4864F08273D@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5PR01CA0147.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b9::16) To BN9PR12MB5259.namprd12.prod.outlook.com
+ (2603:10b6:408:100::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH8PR12MB7325:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4c8605e7-d8dd-43c2-2a65-08dec59e2807
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5259:EE_|MW4PR12MB7239:EE_
+X-MS-Office365-Filtering-Correlation-Id: 10399f16-3e07-4076-e0c6-08dec59e3134
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|22082099003|18002099003|56012099006|11063799006|4143699003;
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|11063799006|4143699003|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	qnYzASL/luNJ7X1n5Sdzfj2hCsWppLwuqRbbXnRkjL9iV9MNlU4kGyg57EWb7C5EFEYsvJEL5FhVvvlRXCsUi80CA08ohRQMFiGETw5jUsqzRLsH2NuwoRTx1RDFne+H8+ISBAE0E7gRbAW/680WbNsthJH/OAoGMuqNQYI+wPXIydSfhoKFiPlO9MQK3r/HHEzfPsr6NCsT6DhF9lpIc7hSeJT4q8zYbd16qmI3uWp3PSyXIzvRhGQzvrXzgYr2etOnJSJPSgFrlxYACf1Pxt4Zx5qWZW+RhY8gvdGKkJBgMmeGkYV/VADkl4MH0ArDKVk6q7lBQXkGEvbjepqX4K02voZav4ES7rigEPbbZ2zOw7Z72Zy3WAwc9OD3O36PnXFkVQnFLMzsHwnDDuFV1qJdJ2Hf4OClCpNx96u7XPlR1gQ0rprJ1uJCuxWlXnbvdNK7+kJUDKBdhDPDZxJ2lHJrfSN00zsuN9nM7O/zRbN8QIuNDVrMtIxZhlLwTg1vkKb//CKHM/0crsMyiYt9D/L2oM5EmhJncELEfPsmRw0Aeet9o/2GXB88KIMnXm7HA9S0qEKdouaKo8E+zKZiw31Ajztby133jMgsXuSCXYJ2Vrop1qIN+FmpF7fCx+1FOqpIF67vncDiuOxOY4SXgSfSfUBoK9+PvTPE8aHCM706kVYtUr1AsFq7lZadtl1q
+	ky+7Urw5jnH1xDy6uCFT5FtlVRldCNDTGA4ZfQnwZhy4WKUrDB9G12A+xbNdupui97QnR1+0rVRNiU4uq82p9k5KYgahoWPLxPDONKzkJU4f1wSD9z8PPZ39/Cxz6be0utTK+CE+pw6Kf+9v4dUelbwR308zSA+fMAFwwDd2HIbmlPDprQKRJW5ydg8mNVx+LflwMyB38FSkzPmV49h2XNAoYNxE62kPkCY5fPit1euupThrnO0m8bOGhQPQ/8YpzpzW2o1Yd26/l84mjx57RzKdkVmhAUOe3RWkoj8HI1x5VqBYnS6jekymTgxvJRLkPNmCmAIbvAroe1u2sku1E81TT1bgY53rvGEftEwDRN/ZAHrlWT5lFF3bMS9LoBBR9wtu6X97t1fRzY3fTKULURaLOnPA3wcKa/c56yTHJ2Q3AiICkrsqIz81DGkoSQGiy8BDkDTwtSr6lNCFNKBB2mSj6H8v3nWYMjw0Btjkuw7xuznGmW2ZDap2ePhMspT7YLr/JFS3RE8oRNvVqXTrVdzHJDGFe/bXQpzVRbWrI25uPf5kTYGaZPsYlP2uvvnlJIqccCgkHjETxJDJsumiGxiJn0iwv0clrvrd6ehrskOaM+JMlRfO9Tbf6iALIHA3+CDFKj08h7eJB+L62ET1JU3RM2QHTnuYEdRdDyABEb/XhADnBTPLKMCSlvxkpMDgHI0+iZBljWS7wPozBGUdWA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qk2y9LXV/OIkGSanfDWSBGGJEu6xN1wm9vSYPpxclJ2/e6esa1r7Jke2FJpV?=
- =?us-ascii?Q?Ak+1z9nQ0AnQxm0EcscGm6GKVviI6mxTTbHz/LuoyS9GG79eQD/yMKgVZ7M/?=
- =?us-ascii?Q?Yl0Pil92jMi5EhPsPiR4p7B+QQwNMNHqJ9QHu9t1Zou98exIa6IRWe0EqOLv?=
- =?us-ascii?Q?r2FOJ76fujGlOiNXQMVKf9PNwRghwNE9PqRSPJOY0pVqaHAw0GrCC0bsPtDo?=
- =?us-ascii?Q?pVIteZcbCgJm9pNQ7mtONm+iq7VibiqgIT9f09mhUuSO7vuVxHeKwbNqOmh+?=
- =?us-ascii?Q?bytlAqhYfVvFtdNrKTYzd51m2femb7LbR2ucnDXnt097AczGWZTjBncGmEyi?=
- =?us-ascii?Q?JzriZOk/7cafpA1a+Kb4eNPhF/ztzcfgyairrCpmKi6KPit+nTijD2TRa6Xi?=
- =?us-ascii?Q?yrN4DuFjaxzDoH1Wwh8IHn6h5o+AyJEy+78jpK3fHHutNdyUCgaM4pOx12l9?=
- =?us-ascii?Q?yueuxKbmO15/o6qN7qDXrw4qLlO8UOiVmx01avE7szcswrE/Rkl+bcFXB4Md?=
- =?us-ascii?Q?F1DjCD9Ok8op2aEPf5/uGgYbuFsZX+WtFwn5rb4UVk/CU2pUxnyuCTDFN4AN?=
- =?us-ascii?Q?Fz+gyNgGGP6HA7X0w9hoRXx2cFrzivU2c+io3/SlmHeIpRphWr61d2kVpVxF?=
- =?us-ascii?Q?olvcoQm4ZzG31+aXsFEYvvzucFGtl2txeFxf0nPstqoOLd4Z93njBKN4EVCC?=
- =?us-ascii?Q?J/l4OXu4HoGTpxfso/qucrmyr4frRjRiechswnkeo/ua79LQY3m6RKcZYzuv?=
- =?us-ascii?Q?Tk0KeBaRE2SC+MwJ1olcVh7cTXGhAOe+eHJ61U4fnZy+XKcsIvFzUi/02WN6?=
- =?us-ascii?Q?8Qk2A6N1i2ZUH0rUf1rac34aQTHiVJdTsjcgDagBzVKvqQYVK91UMj+8YdhB?=
- =?us-ascii?Q?jN0ivyt/xThZzjUiUBW04CaO3SO1OjJ3b/2ajva2Vio5zd8SyDMky7P/9gzL?=
- =?us-ascii?Q?r17zElbr2aV6zXA9PganaVuj+GRQEGU7WmOZfkt0jwitL3fftDy9PWpJMOfj?=
- =?us-ascii?Q?gVwdr4sxXO+PrBJ9/ZBEa7Vxj9AbYL/SQWvaM51oCQ1HtX1xNNpGb7yN1B34?=
- =?us-ascii?Q?0MsQOSTxFZe7sPPZPlcCZUTJ13z8Z9jter+IQyx0Aj1M4sDDbyGANB8/nFWF?=
- =?us-ascii?Q?/hZV/yI0Sv2zqj9GLeHkICDqQbPGMeDUNdTeOuWGfGq4W//B7LvpP2m2jgLS?=
- =?us-ascii?Q?h8vaqATCbxCXFjS52Gz743BVKUFQK9qT5Ju9+P1Ab3zTzksrY0T+/P94sLGb?=
- =?us-ascii?Q?W3OS8TbJbInSCSFbHC7Y1n4qDjDCbc8Do9awwmz3f4CuctVSNIDnQlcMZPej?=
- =?us-ascii?Q?xNFdLOnUQH2YDa7Z33RBh3TUqofQ1v1VlqOwaGnrmlJ14cZIuGt3o70d+6I6?=
- =?us-ascii?Q?lM8P9T+poKMMFU4hhsRBTkTUDe3lNRbwVMDawCl8zZyp+nQxge5w2xmP8B32?=
- =?us-ascii?Q?a9ZDNijWMhuLG/Tb1cdI1i49oCWLZHCdNlmuPuH2iqu3iBU0GVxy3AYY5fr8?=
- =?us-ascii?Q?FcRvZtMduQwpZVJkW/Q7UO49TRonnmKv6iir3k6IJimjLpMBchWgW8pMtsmX?=
- =?us-ascii?Q?2t39bKZpzZ36slITvLkL+qNpWZijsOpCo0ijJbvH2/ZhdNIGEt5MoiOC/c9V?=
- =?us-ascii?Q?Zutv5CHUn/2+Zd+gWmCUmwMErLJnagflEY6Iy/VhEwkgYtnYygPxjO0SVkHY?=
- =?us-ascii?Q?cOmAHXLgaYxQXIah99FDyorzSE1b2SA/DTnlW93HfWJnnfs1?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c8605e7-d8dd-43c2-2a65-08dec59e2807
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+	=?utf-8?B?Qzk1RlFlN2lvcVZHUE1XSG9QdnpEUFkvMHRUQVJobTYwaXBVQWFZRjhRVUhu?=
+ =?utf-8?B?aGp3Nmg4VmVJNE1XMXJvNkcybS9SZnVmZUd5VFlOYUdQblAxUlpTenZEbUh2?=
+ =?utf-8?B?MkxvYTZkcHR5WjJvWExHQlA3enM3cklIMlNOQzhEWVR0d04vQ2ZmUWtqZWY2?=
+ =?utf-8?B?TkVyZjBRZEhDZjBvMWUvdnNMcjlnVGF6aWN2ellvV0o0OWxDSG41eFFMTDc1?=
+ =?utf-8?B?dndPTXNmS1ZjMWZHM2p2OTlEeDVKMnRpS1JVVnZYOStDVFdWMXIzZjB5VVlz?=
+ =?utf-8?B?Nkp6M2NGZ1RTdDFYSTUveUFpNlZhMkdkYm5tOTlpeFdrL1RYb3kySkk4SXh1?=
+ =?utf-8?B?Z0R6MnZ3aDhUR1ZIcUU2SkhiQk56MzZZODFKQUpMUzdWbUF0VVl2R2FJdlZQ?=
+ =?utf-8?B?bVp1MHdMV0w1T2Z6a2tCenlxNm05d1ZkV2d1ZUhFQW4rNzRmNTgranJ0dmg4?=
+ =?utf-8?B?QnZBd0luYnJqTzBmWUtLR1Rha0NVV1JMM3ZEMlVhOVF4dnNQejRrQWlzeU9r?=
+ =?utf-8?B?d1ZuRGJJL2NQRTYyeDRXUGJhdDJZVDF6T0xmVFYwOTJZNEJOMXpHR2ZKb0Q3?=
+ =?utf-8?B?NnhTRVYwMWpsU2FPV2xWa3lVdkVUZGpFZTFiai9hLy85ZURWOEtjalRZZnR2?=
+ =?utf-8?B?cTl4ZWpkWjlicWduY1VVVitrbkZlYjZ6aFAzYnowOVJqZVRhelpvdjZRR04x?=
+ =?utf-8?B?Q0F1QTBiVXVzbDJqaVFVRW5VNVBFOTR3ZmNQSlhUVEU5TTR2V1pSQVBYNHg2?=
+ =?utf-8?B?RlhadHJnVnRMVGJWRGVMK2VTUkhwcWZPVmlsSW1hRlVzVmJQRjFBZ2lyUDRv?=
+ =?utf-8?B?VFd6cUNhbFJZZjhrdW05UEdJSXhmTGJzRFcvVUdCRjhyeUQ3Uk1kbHcvNmtB?=
+ =?utf-8?B?RUFpOVJqUjdGbWY1OEtQcE5ucForR2hTNjZMMVJtVk1uWUQwRjcxUjZCTnFn?=
+ =?utf-8?B?VElxZnU2UUk4ZWJRSjhqd1huRWlxUm51MUw4cFBFWlVCR0tnaStYY3RwSEdS?=
+ =?utf-8?B?YU1KeTRrcy8xazZ2SGF3NUZPR0JVTVFUcXBySXo4VTd5WEdHcGhhOStVcjl2?=
+ =?utf-8?B?ZkZUTEp0UW1uSHpROUJCVXBiRnk4bG5jR0pOVUdiZkh0SGRoMWhOTlJDNHl0?=
+ =?utf-8?B?a1B2LzVEMzlyS0FVVUhCMXBZTEROL09WVlY1RGFBOCtXTmI0UHRjRjB1MCtj?=
+ =?utf-8?B?TWsyMzJVTE5CR3l5aU1FR3l1Y01qb09xM2Y4K25qbE5GU3h5RHp4NHVpNDVm?=
+ =?utf-8?B?WFViTk1ZU2pkbEljdXRQRFVzNE54WGZFMFlyTG5GQ01WKzNLVWpZemdrMDJV?=
+ =?utf-8?B?MWxFOWVDY0E5Zm9vN2NFbDM2M0Jwem9QcUhndEIxdkNtQ2Q2UlpNeWs5MDRn?=
+ =?utf-8?B?a0E3VkVaUFZtUVpSZWhJUlF6ZnliZHc0RTdRNXp2dlNEY1pkVDdaTDdMbVdN?=
+ =?utf-8?B?Vll5azBDU3lJeXRpdW5PeUl5RzZRbnVCblJmRE54UCtIc3FpcGxHaVZsSXZl?=
+ =?utf-8?B?a01lRFFZWGhoOCt6TTRIZ1B6VVVyRDBaT1JlMWNRTHBFUVlIY241WlpnUTBq?=
+ =?utf-8?B?MHlDQy9rd0htTW81UTZQNDlYVzhoUDdVRHVncmJRZ1QwSmpGT1hFb3lZUHlB?=
+ =?utf-8?B?Z2gzRXNFUVhtb0ttZjZEL1VWckpRSlpuUzBNdCtQSEhxQW9OQ1ZVbHBqWHdr?=
+ =?utf-8?B?MXZhZGFoWkJTUEpMYXIwNDhNbThQdTBlSkY1dWVHTTBSbitiNGNOK05OSzJq?=
+ =?utf-8?B?UWFsUk1MaEJMV0ZnVTFJK1BwUXY0QW0vWkFqMkdyWjFxRlpYL3YyQnJCODFy?=
+ =?utf-8?B?YzU5Z1diRmpwUzZITDdyR3RWU3NsdXI0LzBxUlNxa25oK0pGenRGTEppcDkw?=
+ =?utf-8?B?R2NxZ3lRTnBuQ2wzZGg0SkVreU45NXFFUjRUV0tPQWxYa0xvUURLTUZDaEhT?=
+ =?utf-8?B?NEVDTUxRRTEyalgvbEhvNVowdW16d29SYy9hdnh4T1Y2ZCtJaEVPMU10T3dp?=
+ =?utf-8?B?bmoweWZXMGhMQ3NVQ2dFNzVZYWV4ZUc5U3YyUXVEdVUxZUYyTHJjOXJ6bUFn?=
+ =?utf-8?B?amdISzFpTy9qSVhIRFduWFNLQ1lJaVZJcjE2aVdwKythbHFwL0IrNUt2eEFL?=
+ =?utf-8?B?NG81N1UyMWhYVnpTdDdnaXZZZmN3VmpJME1VQjVNVDc5ZW1nN1hvMXNGdktv?=
+ =?utf-8?B?YTZJWFl4RjUvSmpabVNQOWE5bE0yQ0YvM1BPUTNkT1l4OU5JK1BnZXhzbm1T?=
+ =?utf-8?B?NElxcEN4QlRON2NMdGRXL2dkQXFsNXkrWDQ1RHQ0REpERG5zUzJEVjlacGFP?=
+ =?utf-8?B?TDVwbFp4VzN4UmhwUjFORXRnVGY1U3VjRldCSUNKOVRRc2Rrb3BWZz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10399f16-3e07-4076-e0c6-08dec59e3134
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 20:40:20.1616
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 20:40:35.7547
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fUTzWghyaXvizoo/GN0FMpmKS20zrmLcceyrgFohsvCFuvEYSARHzSfOyQu1QAlz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7325
+X-MS-Exchange-CrossTenant-UserPrincipalName: eaEGf9UXibtXqxctvJiM08iwN0Z5Jp+s7nkYg1meg/emm0q9XVu6CINHHleDSOGHm6YAaRsLP0SGJLRNWksnzg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7239
+X-Rspamd-Queue-Id: AFCF040007
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EB109C0006
-X-Stat-Signature: pe49nsgdjo1xtozwnxo1ua7hb3ehbkwo
-X-HE-Tag: 1780951225-562052
-X-HE-Meta: U2FsdGVkX1/fTcja+RVZ2Rpq6WICO54Mi8uojdS+v3JNJndi28g+k6rJOMrt3tXg/R3FCFau2lV1dLBDsWuAXw6aor2o0MBsOtU3CxcNBrHNiButKo3iQ2m0H9gmAMtD5ijL/ttOAgtFBoHCjWd7gRD1Y02285zQMh5Fb4RXZ1vWiIzcWeYKA9qoRv1sK9yWA0x8OmFzsyJYTdmQFEVFwXN9d6AGUjF8U9s5DZhgs61xOAvMPXzItOVojjAr4AZtyEX59jVy9teWR+r9dfjwxUXLZJUHa0Q8yBgRd3rTMhR6gaQiIyv1yt+//bj68oz2Hmu08OLoMrNQUSi+NsNugTTiSEJOF/xrcytMuX9nnG2FbCfEwAnq+ZRHeOQ6X0/XN+ynGDAZl3HAJaSNFCBDbTKCS/5pRb3mMKHJqo+POtbVnlc1cfi9gN7Q12H4A4yeQnhTC1osRQOe6PEIMiuRnVvGopmFQU1umLOVIjhjt4do8AbVpYTnl60SndF/KgRMLNESyJ27G1cXmp/OY8aQtrhr6MqIOsyNzpLgbPkIFIuGByKxzv39rxDCpM414INSJ7oE9B6WtaaY1QEYHhvHnASZCNNtfB18jlXArY6l/E7eGWJV+FMAlsOUbo9cYR33CEPx1wRFV/mIhR7LS7cZh12KStG0pgW9fOrM2S7Hh7s6I2BTeoGH1AZruRVJvEJmMsBVeBKGPYIA1UH7tTmlNEjEd9H4fyxHPLvUnh0XvQ+KsOTvJVhVfsy2kuNCWL+sIEB4ba2ZS6Xmq8cO7Kekl13aVWto0GWYWF25g1kS7TBHCowRltuUe79UHmsL6+bNQD31QEIMuV6IkHoaMj9vuENXl9rLmOVL/6FdPosMfGncVYj6lUO28w2wRoivAXQceo+7uxbvFJ5m1aUftES7SzF3sXHpebftDCdEC+NZPJP/95MBsCXXB27ouRGhk8EmebTYNTWRN8kpehVMevz
- QLvun7EQ
- rK2f3VPclqLGX0e0ltx3vKQ8K5zeHiZ1EN4Ks/v4vnsKZamxoEDmSW/S0oyxxWaqbFNX8/ZlvVTF4lJV2gqOkPocGHSbWJZkjtCnd2ZFqLYkehv0+UwO/cyv5dahC9KYcIRnRSn0YsP6lb56/K2wtZvSsErOmwn42i4YouOk4crF/QuN29ns9tePZyBTFGolYLjzPU38QG6WLq/vh37xOpxAfzxOdFjNYCua1GX6DgDWvIJydzXxZ9Gdlb4q36TbOF4Gx4DP0iHZjxCV99l6RZ78fQkKsgfvDGEKbWtI9h6K4X3gYXJyNRA0S7zXXfgD8DPuIiEZBGs+IS0O/uwOck0oLcIypx4DdQ6JzSdBP1gWqCXMO8JWg6kbBHYn6YhzxZj93+t4HSw91KBI0U4g0TCeBzgaleaYMd3WVMCh7arJg777g+jbKWfAwxLcDjuCEGxFU3VKfu8D6iavLObMmUFpcaI+Aw4LBkxbEdrVAe6vS4PA=
+X-Stat-Signature: 6dqeddqry7ehmqu3cdt83d6koqqp4t6f
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780951243-175965
+X-HE-Meta: U2FsdGVkX19IDYvHXU40ChIL0+ovo7ZuH9+/EUmzf60NCK9cuTkZweOnlJCXtlobvpQiKdgMfeRjdIkn998a5SpXMYndWwoHmZGgjX3/fkLYrtUzGP4LnXUztHAPRp/kvXIdk+iKdHllQEy+GWRrnH+COYJv+QdU9bDTO3ECkS/j8uYcQP4Eeu2rYCxhZK4BCT0QV3vsHW9X5iX1cllukMEsr1gdLl0OxQGya9FjzT4E3zYNz5BRtw4eCcKiaWBYMOPdqXB1Z/xQOuqCKMslIGRBNU2WVXh9Wj+9Cwoix+cRRIseu8XLmtV+3XBx+VT7hV75KbYq3EXAsqZ7qeZ0KOemWp+Ba5YNEmmq0ZnxBoJmJlTqeIHDsR7F/N7U8KpFEmFxV5Imub2B9PNyLYFcc/Y/Xmprd+5pw0SY6QiNJlbwxDDm1Ys2lv1pZkSeTPuUAQvk2hxD9tWqpYJ1DyerXOviXdkHIJkMc3XceiexXwMBZ2LZ/KjStHJZw+j1ZIxykMIPtAoKaZyx6NhVRkHfjd6FgY8Z5ZHo4gb6cACo59d3nOnCI8uXiEgtfZX1DEGzYo/bNsjgiEukuHaTkBqq54qckHQUL0fcGNi6wDitTtEcvSK5MXkOpZer+gVgk/CUjInO8IYowWfKnICXtq17PD9ONZqjYtGk1UYR9J55UBGhQq5Oj+XVai6+/jeMRIF6B2bjk4lk0nOvf716iwxjMhPGmSJG0WhpjDFles15V8KBph0+qmwdD/7uC4uy+2rCmIehI+PjhsGhAjW60SFvRDcAwbxsQe0JgkjWpUOTUMajNR7z7noLw12I7UKMifwahiatoRt01lHrEI/UX+KGKaIs/VHyAUzZo/Xub+E8zHcFkRpCtFZriepHAugRujlc7Jd77LDAJDUOwQLn8hz1Yn/rgv6vXVcP/G7CUWoKaU2KG5WwSEeVcphg1PWBO0MNz8aUUeI80HEGWGOuVBo
+ RlAHCr8O
+ 5OZC3kaCPI0Vi8kD+gRiesVu2bmmT/El5LqWByxAMDx0XB3mMzBbukmtEsvfAXXELNr3YLP3/35Ev0r0TNfs3Djnmlq8vaG1/ISnYnL1PNWZGIn4mcajt++knmC8zHgXBli2xZLsQe7tB1DjbXKFyF0XfIfKCuiXDTi8MLY3ABwyBe2oGcV2ymPO1EsP/4dDGZ/688f2POA0ZIQg+6JOwpilIt7+lLSiPS9BOYvRJLvx9dc5TrLYhRcS5LPGQdBiNxKNU6UOxXrpe1N2WHPzFM/E1jq/IwFnyT1QIMFgm5BsYWEbBMBxIi7QXiAy1Dal0OnvH7PNLQqaHV8TNyN0sYyMX6ih1jnmCjNv0URwwAe/8KSFqlPYv6zEa4Itzcf1j2wU9covrb6/KtX96/QY4T+Fqvenitk46pUFHRE4mpuSzL9Vu6M8uand8/6mtc4z3W8ScbPM8HveYTBjxJYRFoshWLAhBANObGAPgGwCTI1eEc4rVTUtjzUGwusJEiNLdZWULAzewYqSV5rTzkas0Dwt63Mb83RuDjxl/sTnU8Dykgzxp0htQqfRih3mYP8SRHBnUpMu60gE9sb8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,65 +186,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8 Jun 2026, at 16:33, Michael S. Tsirkin wrote:
 
-> On Mon, Jun 08, 2026 at 04:21:08PM -0400, Zi Yan wrote:
->> On 8 Jun 2026, at 15:59, Gregory Price wrote:
->>
->>> On Mon, Jun 08, 2026 at 02:04:28PM +0100, Matthew Wilcox wrote:
->>>> On Mon, Jun 08, 2026 at 12:06:35PM +0100, Lorenzo Stoakes wrote:
->>>>> But instead of overloading user_addr to indicate all kinds of things, instead
->>>>> make life easier by actually breaking things out.
+
+On 6/8/2026 9:06 PM, Zi Yan wrote:
+> On 8 Jun 2026, at 11:25, David Hildenbrand (Arm) wrote:
+> 
+>> On 5/20/26 17:06, Garg, Shivank wrote:
+>>>
+>>>
+>>> On 5/11/2026 9:10 PM, David Hildenbrand (Arm) wrote:
+>>>> On 4/28/26 17:50, Shivank Garg wrote:
+>>>>> Add folios_mc_copy() which walks list of src and dst folios in lockstep,
+>>>>> and copies folio content via folio_mc_copy(). folios_cnt parameter is
+>>>>> unused here, but is part of the offload_copy callback signature used by
+>>>>> later patches in the series.
 >>>>>
->>>>> Like:
+>>>>> Split unmapped folios into batch-eligible (unmap_batch/dst_batch) and
+>>>>> standard (unmap_single/dst_single) lists, gated by the
+>>>>> migrate_offload_enabled which is off by default. So, when no offload
+>>>>> driver is active, the branch is never taken and everything goes
+>>>>> through the standard path.
 >>>>>
->>>>> enum alloc_context_type {
->>>>> 	KERNEL_ALLOCATION,
->>>>> 	USER_MAPPED_ALLOCATION,
->>>>> 	USER_UNMAPPED_ALLOCATION, // Maybe? Do we ever?
->>>>> 	/* Perhaps some other states we want to encode? */
->>>>> };
+>>>>> After TLB flush, batch copy the eligible folios via folios_mc_copy()
+>>>>> and pass already_copied=true into migrate_folios_move() so
+>>>>> __migrate_folio() skips the per-folio copy.
 >>>>>
->>>>> struct alloc_context {
->>>>> 	...
+>>>>> On batch copy failure, already_copied flag stays false and each folio
+>>>>> fall back to individual copy.
 >>>>>
->>>>> 	enum alloc_context_type type;
->>>>> 	unsigned long user_addr; // Only set if type == USER_ALLOCATION
->>>>>
->>>>> 	// Maybe something suggesting context or whether we init before in some
->>>>> 	// cases?
->>>>> };
+>>>>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+>>>>> ---
+>>>>>  include/linux/mm.h |  2 ++
+>>>>>  mm/migrate.c       | 61 +++++++++++++++++++++++++++++++++++-----------
+>>>>>  mm/util.c          | 30 +++++++++++++++++++++++
+>>>>>  3 files changed, 79 insertions(+), 14 deletions(-)
 >>>>
->>>> Ugh, please, no.  As I suggested last time I commented on this
->>>> trainwreck of a series, lift the zeroing functionality from
->>>> alloc_frozen_pages() into its callers.
+>>>> [...]
+>>>>
+>>>>>
+>>>>> +DEFINE_STATIC_KEY_FALSE(migrate_offload_enabled);
+>>>>> +
+>>>>>  static const struct movable_operations *offline_movable_ops;
+>>>>>  static const struct movable_operations *zsmalloc_movable_ops;
+>>>>>
+>>>>> @@ -1724,6 +1727,12 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
+>>>>>  	return nr_failed;
+>>>>>  }
+>>>>>
+>>>>> +/* movable_ops folios have their own migrate path */
+>>>>> +static bool folio_supports_batch_copy(struct folio *folio)
+>>>>> +{
+>>>>> +	return likely(!page_has_movable_ops(&folio->page));
+>>>>> +}
+>>>>
+>>>> As these things are not actually folios (and callers will have to be taught to
+>>>> distinguish them way, way earlier), I guess you should make this
+>>>>
+>>>> /* movable_ops pages have a separate migration path */
+>>>> static bool page_supports_batch_copy(struct page *page)
+>>>> ...
 >>>
->>> This sort of just implies writing the "alloc_frozen_zeroed_pages()"
->>> wrapper that does the zeroing at the end before return, and then killing
->>> the post hook nonsense associated with it in the first place.
->>
->> This means it is going to be a multi-step optimization. This is probably
->> step 1.
->>
+>>> I'll change this.
 >>>
->>> None of this resolves the user address annoyance which is needed on some
->>> archs for cache flushing.  Whether anyone agrees that the page allocator
->>> should be responsible for this particular operation - open debate.
+>>>>
+>>>>> +
+>>>>>  static void migrate_folios_move(struct list_head *src_folios,
+>>>>>  		struct list_head *dst_folios,
+>>>>>  		free_folio_t put_new_folio, unsigned long private,
+>>>>> @@ -1752,7 +1761,7 @@ static void migrate_folios_move(struct list_head *src_folios,
+>>>>>  		/*
+>>>>>  		 * The rules are:
+>>>>>  		 *	0: folio will be freed
+>>>>> -		 *	-EAGAIN: stay on the unmap_folios list
+>>>>> +		 *	-EAGAIN: stay on the src_folios list
+>>>>>  		 *	Other errno: put on ret_folios list
+>>>>>  		 */
+>>>>>  		switch (rc) {
+>>>>
+>>>>
+>>>> [...]
+>>>>
+>>>>> --- a/mm/util.c
+>>>>> +++ b/mm/util.c
+>>>>> @@ -778,6 +778,36 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
+>>>>>  }
+>>>>>  EXPORT_SYMBOL(folio_mc_copy);
+>>>>>
+>>>>> +/**
+>>>>> + * folios_mc_copy - Copy the contents of list of folios.
+>>>>> + * @dst_list: destination folio list.
+>>>>> + * @src_list: source folio list.
+>>>>> + * @folios_cnt: unused here, present for callback signature compatibility.
+>>>>> + *
+>>>>> + * Walks list of src and dst folios in lockstep and copies folio
+>>>>> + * content via folio_mc_copy(). The caller must ensure both lists have
+>>>>> + * the same number of entries. This may sleep.
+>>>>
+>>>> This *function*
+>>>>
+>>>
+>>> Will add function.
+>>>
+>>>>> + *
+>>>>> + * Return: 0 on success, negative errno on failure.
+>>>>> + */
+>>>>> +int folios_mc_copy(struct list_head *dst_list, struct list_head *src_list,
+>>>>> +		unsigned int __always_unused folios_cnt)
+>>>>> +{
+>>>>> +	struct folio *src, *dst;
+>>>>> +	int ret;
+>>>>> +
+>>>>> +	dst = list_first_entry(dst_list, struct folio, lru);
+>>>>> +	list_for_each_entry(src, src_list, lru) {
+>>>>> +		ret = folio_mc_copy(dst, src);
+>>>>> +		if (ret)
+>>>>> +			return ret;
+>>>>> +		dst = list_next_entry(dst, lru);
+>>>>> +	}
+>>>>
+>>>> Wouldn't it be cleaner to remember "already copied" immediately after we ...
+>>>> performed the copy? (succeeded with folio_mc_copy)
+>>>
+>>> IIUC, you mean something like:
+>>> 	list_for_each_entry(src, src_list, lru) {
+>>> 		ret = folio_mc_copy(dst, src);
+>>> 		if (ret)
+>>> 			return ret;
+>>> 		dst->migrate_info |= FOLIO_CONTENT_COPIED;
+>>> 		dst = list_next_entry(dst, lru);
+>>> 	}
+>>>
+>>> This will be cleaner. However, it will make the folios_mc_copy() specific for
+>>> page migration and can't be reused by other potential callers.
+>>> And offload driver (like DCBM) must set the already copied marker
+>>> themselves for successful copies.
 >>
->> This is probably step 2. But does the virtio use case apply to these
->> archs? Does the performance matter for them? If not, maybe this part can
->> be left as a TODO.
+>> Right, maybe some helper for that would be possible?
 >>
->>
->> Best Regards,
->> Yan, Zi
->
-> I doubt it. But I don't get what's proposed, the code that we
-> have to modify is arch independent?
 
-Change user_alloc_needs_zeroing() to only check address aliasing even
-if that can cause double zeroing for virtio.
+I'm adding a migrate.c specific implementation: migrate_folios_mc_copy().
 
-Best Regards,
-Yan, Zi
+>>> This will have an upside that on partial-success (even a single failed copy),
+>>> it will no longer forces re-copy of the whole batch.
+>>> If that's the intention, I'll move this to migrate.c itself.
+>>
+>> True. I'd probably have to take a look at the end result to see if it looks
+>> better that way.
+> 
+> Maybe do this optimization in a separate patch to make it simpler to review.
+> 
+> BTW, the whole migration code has become more and more complicated due to
+> batching at different levels, I wonder if it is worth the complication to
+> optimize for the rare memory error case.
+
+
+I agree on complication, but I think this change is actually simpler than my previous patch.
+
+Using per-folio marker lets me drop the already_copied arg that was passed through
+different function:
+migrate_folios_move() -> migrate_folio_move() -> move_to_new_folio().
+And there is no separate error path with this.
+
+Whoever performs the batch copy (migrate_folios_mc_copy() or a driver callback)
+sets FOLIO_CONTENT_COPIED on each dst it successfully copied, and __migrate_folio()
+reads that marker to skip folio_mc_copy().
+
+If copy is unsuccessful (e.g. memory error), FOLIO_CONTENT_COPIED is NOT marked,
+and __migrate_folio() will not skip the folio_mc_copy().
+
+Since the per-folio marking is the natural implementation for this, I kept it
+in this patch (af44801ee).
+
+Git Tree for reference: https://github.com/AMDESE/linux-mm/commits/shivank/batch-migrate-offload-v6-wip
+
+
+Thanks,
+Shivank
 
