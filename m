@@ -4,105 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D8CCD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 12:32:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2214ACD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 12:44:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4522E6B0005; Mon,  8 Jun 2026 08:32:36 -0400 (EDT)
+	id 59BC46B0005; Mon,  8 Jun 2026 08:44:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42A486B0088; Mon,  8 Jun 2026 08:32:36 -0400 (EDT)
+	id 54CCB6B0088; Mon,  8 Jun 2026 08:44:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 366F96B0092; Mon,  8 Jun 2026 08:32:36 -0400 (EDT)
+	id 43B7C6B008A; Mon,  8 Jun 2026 08:44:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 250F86B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:32:36 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3073B6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:44:01 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF5AD1C2CA1
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:32:35 +0000 (UTC)
-X-FDA: 84856683870.15.09D8C18
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D79B0A0B2B
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:44:00 +0000 (UTC)
+X-FDA: 84856712640.15.D0AE5B8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 113CF4000C
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:32:33 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BokOJ/53";
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0869D1C000A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:43:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DHnK39Pr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780921954;
+	s=arc-20220608; t=1780922639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0S/mGlm2XVUNmf88aZNmWlasF/PmDk0YOd5RS53eddI=;
-	b=lGI4Z7JartAMjwC5VDv7ZVXdYLL4NEPfrpVBjzH3lgMNIh0ccKRkQtwkOZP5zJ8/IR5ngI
-	HNURsKU+fV3HWOSTiNWjdHcq9WxH62nKYEy0aAXoYkzZZAVRaKeStUp8EiBVdu7DaRNR0w
-	9xS0AiYeXfe6J/FhcwIKGgwoMYwat+4=
+	bh=jLcAgrGvi7SdC6jzoWYkO8ugj2qnlkxJAEGttFGnMYI=;
+	b=rX6+C3pmfsa2ALkLWCMyB9XG6fJpFN3GnfBGdq5ng3+YDoNqsSZcQ7rynYHviPLLnAcm+v
+	ZHEgM5FbAvEfST+90TfcxBWAtqDPhbW4v/BoCR85rpfTRauli8F6fCBFNXbe5rloiSmKQg
+	LrJ4u38ITa8sPx5bCAtCRmQE4nxtewU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BokOJ/53";
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DHnK39Pr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780921954;
-	b=jDeSRKGqaBsA1/id5nFyqeacJhdaIkvSLzaut3UBwX2igfuV7u4kru3W0wVPddGYWs0YVK
-	AuL1TmYLawKOtkOKN7W1haLPToXt5Or4IPCocFcp+XErp6v8yal47inBT02uuYgc5+Bozj
-	pi87IIJr2l+mdkPPmbquuW35caNFGVY=
+	t=1780922639;
+	b=4bWnRShdTHpGW87q7BkmIjeWM6dnoS7ZyZ4ARgICLvVrBUSQEEGI02lqlNpg0th1c+MZei
+	MuiV50C30CdkvOfU0HMsveXOXWtQPd8U4daYhki19SWp2g6EuXv1XLxeH7toNYX5njWd/7
+	WJ7CA62dKcqZXBB2ztRK2u++NSjBlWQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3ABE1434D2;
-	Mon,  8 Jun 2026 12:32:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689F31F00893;
-	Mon,  8 Jun 2026 12:32:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 029FC436E5;
+	Mon,  8 Jun 2026 12:43:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54371F00893;
+	Mon,  8 Jun 2026 12:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780921953;
-	bh=0S/mGlm2XVUNmf88aZNmWlasF/PmDk0YOd5RS53eddI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BokOJ/53zXQSSC08VD4iug5xPluwrLQ0Ns/1S+/wn18UiuwksvNkniq3qN2FiyewF
-	 GMuvCqRpVL0AlJs6aH6tV8YnDN6p+tnV36+1VnBfbTg0jLsYa8433FvIyLHiH3L8yt
-	 htaAfUxpnK80iRWeE/PmXHjXPd4o8iNJJ3tVHTfoDnfYO85+edAF3UZK+nO5rForZG
-	 /e0J1UFqLl49pfl5O5uW9t+z+yty8dCmRSFwYT4x34bo+/LfAw2X0dBGkMs0gnUA5O
-	 LsnRz9VdOFvVPpU9ZGJJYEmusi3LUDyWanA4z1E41tVtyd4j0FxP+4OJa44yqGoh7E
-	 qNprUiV5urzPg==
-Date: Mon, 8 Jun 2026 13:32:20 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
-	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v10 27/37] mm: use __GFP_ZERO in vma_alloc_anon_folio_pmd
-Message-ID: <aia2G06-ZjsTSD2u@lucifer>
-References: <cover.1780906288.git.mst@redhat.com>
- <2ee827fed4765a155d2b56bb0e13d7ee5fc6dce8.1780906288.git.mst@redhat.com>
+	s=k20260515; t=1780922637;
+	bh=jLcAgrGvi7SdC6jzoWYkO8ugj2qnlkxJAEGttFGnMYI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=DHnK39PrKhgM7DYyE01pxLC54LX0SCxyFWnIQzirig+X6sZr2BHTLJf6S2tHfhKvL
+	 eO7n9PDRIir2s2KuMp6sM0ondR+wUlGC+jLXoElgEEzFubTr5tpX/U4heFDIpvBgdT
+	 WBqn+pZeyDxEtzZbSbJclOQ+p9AMnn2KM6RdmMVnMoOqVQYFNgIZgf6RtNnDKDRunW
+	 um9mx6AV8C82N/6ZLatVW2MQJL0kdSA/nKNyVtED30vgmaIuhzBgVs/DA1e2ex6uMl
+	 xtYvnMRJXGNhVz9BbXsztfLcfTX88DXUXhfGU+wv/5v3mQtX58GiiqB42UVneQ2Tqf
+	 MSh7xYhvgNZAQ==
+Message-ID: <3c88dee8-6fcd-4f72-9a73-17044214b087@kernel.org>
+Date: Mon, 8 Jun 2026 14:43:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2ee827fed4765a155d2b56bb0e13d7ee5fc6dce8.1780906288.git.mst@redhat.com>
-X-Rspamd-Queue-Id: 113CF4000C
-X-Stat-Signature: 3yjc784iopask1kzgg1g4943cenb9qon
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] riscv: mm: Avoid spurious fault after hotplugging
+ vmemmap
+To: Vivian Wang <wangruikang@iscas.ac.cn>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti <alex@ghiti.fr>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260605-mark-after-vmemmap-populate-v3-1-a06001ac9264@iscas.ac.cn>
+ <da19ffcf-8042-4f96-9c2d-649468dc6a0a@kernel.org>
+ <953d7a60-456d-4629-b133-afce62cc5b3e@iscas.ac.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <953d7a60-456d-4629-b133-afce62cc5b3e@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780921953-746287
-X-HE-Meta: U2FsdGVkX1/wvoBc+YHWdmEz+bGfj4Slha6ul2WYqNmVi69czkfjS9/3oIguvklXT5LtqXcxRRnJ5J4F6tIBb4OLBXkO2JJuhtMyCEGQWx893ztJFwMBZdEPsTvF85dOLGVE81KRX+FgzgyluSUvS+5jJPheR9dRVCOjehA2E03Q6EOs7T/K8ANElAFU2wubxk6c0smVf+w940jc8jc4DFFR1rXWkU16dOK4Y8dgKnW2plPXi/9jr8irq6CKHxQ+Kbvxb5bIhNVyeTYU0IdRcLvYkI6Jbgs4/gP9Y/zn2mJ0KE2jW5eDTpScskkRiZyV0MBCBp0IJyLJNP2dC6DmttgzGlsuq4tF6J/bGECMV92Eb56iU3G7GAieNkl/dpHMdGVxsfW8WNcpmO9ecqBmS06bCXNLn/2p+ZVF9sqUmHU74KfdamSemf7GbUTM6ZucDw4aEL9FtYzK9jV80fp0qWcLCewBA4XgfjtmWvQbmmhe5GuuysJFZp6fFMt2A8FOUvgsoQSIb6v1ZnD27o0nCmGDXbcGBLBKwejrJQv2h048o9QSYEAAhuChdaH1p4tSUXV4Q1ODOwvOURvq2f8Opt56jV6KMc1yfbw9kxQXAjw9uPUkSPgPSQpUezM8iFv+8aqdsL8SJCeW427VMGfSFHepImkPhitH3iRe1qJOhzmJyIiJuFW80XSUvbCMcNU55qWhkkJ7STRkdZJQhXMk2uAdG+i+N0nM35Gywfibx1SbpXRr8a4nEwvCJ2hFfr3AFkvvO30Fk1ZDFoyi2IWDSh9XGyyAow5roBgsCH2lNlXORcTBlj7LhQm71IOZzu1oQ5C1wo41VFVvVURWe1kcJaCdbQ7ZQUwumzg3yFluGFYtvJQ0z56Js+qgquS/PMuwxf1/AFQbTd6DFKax6w5oq2ilAnWvBvPFny7CTa0MHo32owDxFq9gLsZLhZ5j70XvU7yiZNL3iJVwKvMaMeV
- 06UG+75i
- zY/4dObL6eh14TDlI/uCH53WkF0pmTNc+Cby9MJ01gGU4/EZPw7g+/FcJxIrNDz8xNSEfHCqsPyuu57lfvg/luiONY3Lxg4IZc2BED8wkS8zsu8XM0f/Qv8fBGXmfj1SIQoQigcJQ036o/agr2QKmjib9qknsJBV0TPh9OYP9y9G5afUNElsfIXI76NLQuubVC55mL1PonodQ8bQxXpVkQs0eW0VmchwSqzXV1nb1dwylkyoedsLixW3x1PBQo1pvijrsRUdYEccXpe0jbACKf1Yg/dvjUwrNQOXKM1bFNP4Um1SgHPSuh8VXfDnPAnMYr3uzi44dyhzC2B+i6EmirbjRwKyiIzr0XvcLuvAjKnfjDKHuzzCtXGIca9oBQCKiguhwYvKzFw707cipoTjSgk6oZYxEJBZ1/4cwebTF46TiWrhAPBBiiAtj5+niF04bXJMfvlIVxmlh3pc=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0869D1C000A
+X-Stat-Signature: 6pejgm8hwnpbj8eujmkyncxpa5k3q8dp
+X-HE-Tag: 1780922638-545802
+X-HE-Meta: U2FsdGVkX1/HuIN+Pu4RdT2axDsLYvxxC7zZTFq8dBbON0TYcHnEjnyFMyZT4ItYdhebJ7NVo/UUsI/QZC793m2lz+T4aBY8SbaPzQq2vqm1kPEZpQNw9J/LJLk20u7WaIYFEKtxWl99XFzGW5Ibflb3wr4a3jwoPmxYMaAypy8tnxTmYKS75rVGFdMvzSPN8+Vp/DUuCDBg/agZNXh8Bmn9MqIxZNmx89s/9EE5HFKLA+9JQq5ProENOfMotlUOe58kbR6uvvqUzYhrPb9ky8xx8XIYa2HtKYNma+y5qwnnkso3IKalBqNbbTcTfBm1Wd9SE0yjJos5KcK+K76u5BpuoAd65/lujyK4ZmCSUw9vM8o7lf1pbyY4rIds0OhJTEfj3ug4k04yMnwwgTolhd6k2kHnVcZsdjlHC5YTR5g1O9bHeqoaOw7j8LtPdUbQUbpXdOTtt8XW9clX3Oa99IASPbCEgW7caalUalhPaA6eMEUlxnOIFCzUVaVBr69fu6cxx6D3xkjPesuqu6IZa+VBtSLbqtaMJwP9R/6whau0uJLRz+Qw70swKI3QjyCTWvfn55kNj35guXFLdrOSPGLK8jSdXPbOHhw+r4HNiyvghE3OjgZymWVZEbxJh3u+HjgUPZh/jEsio4eL2w647chOCnKhEHtBPSnQZmCJ8r6G0P7ySgdWw0AhDemP/V5AAJhI3Q+nFg2Trpdeb9Sa8cz4D7ZKzRCj7RwD6wPWhKR26oii5KfcVR56NDiCD989cw34r66ZDLGh/fcjYPoJt/KsSJP9rjiuAHvhOMYkEZWcQTlczR+NnZs8bjQZ6dRtt1FSMfW5XCsGZAXVZ3IVbcQJHO7lMc9K/cZqYxoiTYdrcBw4uczRidUP2dk8ZzrCHSLFY9WEXRV9O2FoXJv4JRxrEk50KZ8XKLETgn6oqxkDtmPTWz3RjX4QSnpXiLbFUMQviqNzvhkiTyXQCbV
+ zTBJh6D7
+ iG+ccondSk8KxbZ1Hi+QZYbr4tbTYYKetD7yqbwFOJOtUiU1mMQtldgjVRxyDWnN86A/9/ZwlfWpZeQJg7Oyoq1NcRZV58kASkoy/3XL9rNzdGtXtX3+cRZiiy42LVJnxrI8PJwIBbDRyoNMU6OvhyhJV/VjpYFQbUEEna7KLWyHE6SUaz4iLAoGKNE/u9y5OEU/ZXE7+7qhh1wBddU8WE1CjS0QNLHSJx+IrMiikojkFAlJUImsOZ5eygNdmsHxAjKQSM55EnwSEkKSgswumtu3I6AM7Q/c2X4b4+vqTsTGpT5+xJP930WCkbMYtXa8rLtO40c/iQtWb3Pl79LtRIoH5tF5bG8onsF1iLSAeFZMLllFn7pbM6lM11g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,92 +145,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 04:39:18AM -0400, Michael S. Tsirkin wrote:
-> Convert vma_alloc_anon_folio_pmd() to pass __GFP_ZERO instead of
-> zeroing at the callsite. post_alloc_hook uses the fault address
-> passed through vma_alloc_folio for cache-friendly zeroing.
->
-> Note: before this series, replacing folio_zero_user() with
-> __GFP_ZERO was unsafe on cache-aliasing architectures because
-> __GFP_ZERO uses clear_page() without a dcache flush. With this
-> series, it is safe if the caller passes a valid user address
-> (not USER_ADDR_NONE) to vma_alloc_folio() etc., which delivers
-> it to post_alloc_hook() for the dcache flush via
-> folio_zero_user(). It is only unsafe if USER_ADDR_NONE is passed.
->
-> Note: with __GFP_ZERO, the folio is zeroed before
-> mem_cgroup_charge().  If the charge fails, the zeroing work is
-> wasted.  Previously zeroing was done after a successful charge.
-> This is inherent to moving zeroing into the allocator.
-> Charge failures are rare (only at cgroup limits).
->
-> Use folio_put_zeroed() on charge failure so the zeroed hint
-> propagates to the buddy allocator, avoiding redundant re-zeroing
-> on the next allocation attempt.
+On 6/8/26 04:24, Vivian Wang wrote:
+> On 6/5/26 17:16, David Hildenbrand (Arm) wrote:
+>> On 6/5/26 07:23, Vivian Wang wrote:
+>>> section_activate() does not flush TLB after populating new vmemmap
+>>> pages. On most architectures, this is okay. However it is a problem on
+>>> RISC-V since there the TLB caching non-present entries is permitted,
+>>> which causes spurious faults on some hardwares.
+>>>
+>>> This seems to be most easily reproduced with DEBUG_VM=y and
+>>> PAGE_POISONING=y, which causes these newly mapped struct pages to be
+>>> poisoned i.e. written to immediately after mapping.
+>>>
+>>> Add a hook vmemmap_populate_finalize() in __populate_section_memmap()
+>>> after population, to allow architectures to handle such situations as
+>>> needed. Then implement it on RISC-V to arrange for the existing
+>>> exception handler code to deal with these faults if they happen.
+>>>
+>>> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+>>> ---
+>>> Depends on my earlier kfence fixes for mark_new_valid_map() [1].
+>>>
+>>> Found while testing AMD_HSA/ZONE_DEVICE on SpacemiT K3. Using
+>>> ZONE_DEVICE requires another fix [2].
+>>>
+>>> [1]: https://lore.kernel.org/linux-riscv/20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn
+>>> [2]: https://lore.kernel.org/linux-riscv/20260309-riscv-sparsemem-vmemmap-limits-v1-2-f40efe18e3cd@iscas.ac.cn
+>>> ---
+>>> Changes in v3:
+>>> - Merged back into one patch (Mike)
+>>> - (No code changes otherwise.)
+>>> - Link to v2: https://patch.msgid.link/20260604-mark-after-vmemmap-populate-v2-0-ab6a7d03b434@iscas.ac.cn
+>>>
+>>> Changes in v2:
+>>> - Split patch in two, hook point and riscv hook 
+>>> - Explain hook necessity in patch 1 message (Mike)
+>>> - Make hook #define based (Mike)
+>>> - Call finalize hook only on populate success
+>>> - Link to v1: https://patch.msgid.link/20260525-mark-after-vmemmap-populate-v1-1-e698d859ba16@iscas.ac.cn
+>>> ---
+>>>  arch/riscv/include/asm/pgtable.h | 4 ++++
+>>>  arch/riscv/mm/init.c             | 6 ++++++
+>>>  mm/sparse-vmemmap.c              | 8 ++++++++
+>>>  3 files changed, 18 insertions(+)
+>>>
+>>> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+>>> index a1a7c6520a09..aa0f50e3d534 100644
+>>> --- a/arch/riscv/include/asm/pgtable.h
+>>> +++ b/arch/riscv/include/asm/pgtable.h
+>>> @@ -1243,6 +1243,10 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+>>>  #define TASK_SIZE	FIXADDR_START
+>>>  #endif
+>>>  
+>>> +/* Needed on SPARSEMEM_VMEMMAP */
+>>> +#define vmemmap_populate_finalize vmemmap_populate_finalize
+>>> +void __meminit vmemmap_populate_finalize(void);
+>>> +
+>>>  #else /* CONFIG_MMU */
+>>>  
+>>>  #define PAGE_SHARED		__pgprot(0)
+>>> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+>>> index 706f43523935..cf9ae4099f82 100644
+>>> --- a/arch/riscv/mm/init.c
+>>> +++ b/arch/riscv/mm/init.c
+>>> @@ -1360,6 +1360,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+>>>  	 */
+>>>  	return vmemmap_populate_hugepages(start, end, node, altmap);
+>>>  }
+>>> +
+>>> +void __meminit vmemmap_populate_finalize(void)
+>>> +{
+>>> +	/* Avoid faults on cached non-present TLB entries. */
+>>> +	mark_new_valid_map();
+>>> +}
+>>>  #endif
+>> How does mark_new_valid_map() handle concurrent access?
+>>
+>> There is some comment in there, but I am not sure if that actually implies that
+>> mark_new_valid_map() can be called concurrently from arbitrary context?
+> 
+> AFAICT, yes, it is intended to be used concurrently from arbitrary
+> context, and this is why I used them.
+> 
+> I had not originally written the code, so some riscv maintainer can
+> maybe chime in on this, but as I understand it the idea is that we only
+> ever set bits in the bitmap in mark_new_valid_map() while "allocating",
+> whereas the assembly code in handle_exception in
+> arch/riscv/kernel/entry.S only ever clears individual bits. So at least
+> the access to the bitmap itself should be fine.
 
-Again, is this worth it?...
+Right, flush_cache_vmap() looks like a bitmap_set() -- non-atomically.
 
-Every bit of code added increases risks of bugs, maintenance burden,
-etc. let's just not do stuff because we can.
+.Lnew_vmalloc_kernel_address does an atomic bitmap clearing ("Atomically reset
+the current cpu bit in new_vmalloc").
 
->
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-> Assisted-by: Claude:claude-opus-4-6
-> ---
->  mm/huge_memory.c | 14 +++-----------
->  1 file changed, 3 insertions(+), 11 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index d689e6491ddb..0dec3c717ff2 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1333,7 +1333,7 @@ EXPORT_SYMBOL_GPL(thp_get_unmapped_area);
->  static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
->  		unsigned long addr)
->  {
-> -	gfp_t gfp = vma_thp_gfp_mask(vma);
-> +	gfp_t gfp = vma_thp_gfp_mask(vma) | __GFP_ZERO;
->  	const int order = HPAGE_PMD_ORDER;
->  	struct folio *folio;
->
-> @@ -1347,7 +1347,7 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
->
->  	VM_BUG_ON_FOLIO(!folio_test_large(folio), folio);
->  	if (mem_cgroup_charge(folio, vma->vm_mm, gfp)) {
-> -		folio_put(folio);
-> +		folio_put_zeroed(folio);
+I am primarily wondering whether we'd want atomic bit-setting as well?
 
-Same comments as previously.
+> 
+> This was added in commit 503638e0babf ("riscv: Stop emitting preventive
+> sfence.vma for new vmalloc mappings").
+> 
+> Do you think the mark_new_valid_map() function needs extra
+> synchronization like smp_wmb()?
 
->  		count_vm_event(THP_FAULT_FALLBACK);
->  		count_vm_event(THP_FAULT_FALLBACK_CHARGE);
->  		count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK);
-> @@ -1356,17 +1356,9 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
->  	}
->  	folio_throttle_swaprate(folio, gfp);
->
-> -       /*
-> -	* When a folio is not zeroed during allocation (__GFP_ZERO not used)
-> -	* or user folios require special handling, folio_zero_user() is used to
-> -	* make sure that the page corresponding to the faulting address will be
-> -	* hot in the cache after zeroing.
-> -	*/
-> -	if (user_alloc_needs_zeroing())
-> -		folio_zero_user(folio, addr);
->  	/*
->  	 * The memory barrier inside __folio_mark_uptodate makes sure that
-> -	 * folio_zero_user writes become visible before the set_pmd_at()
-> +	 * page zeroing becomes visible before the set_pmd_at()
+Right, I wonder about atomic access, but also about memory barriers.
 
-folio zeroing?
+-- 
+Cheers,
 
->  	 * write.
->  	 */
->  	__folio_mark_uptodate(folio);
-> --
-> MST
->
-
-Thanks, Lorenzo
+David
 
